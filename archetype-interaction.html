@@ -430,13 +430,6 @@
             margin-bottom: 12px;
         }
 
-        .category-row {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin-bottom: 10px;
-        }
-
         .category-label {
             width: 24px;
             font-weight: 700;
@@ -613,6 +606,274 @@
             to { opacity: 0; }
         }
 
+        /* Info Icon */
+        .section-title-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 12px;
+        }
+
+        .info-icon {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.1);
+            border: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .info-icon:hover {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        /* Clickable Category Row */
+        .category-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 10px;
+            cursor: pointer;
+            padding: 4px;
+            margin: -4px;
+            margin-bottom: 6px;
+            border-radius: 8px;
+            transition: background 0.2s ease;
+        }
+
+        .category-row:hover {
+            background: rgba(255,255,255,0.05);
+        }
+
+        .category-row:active {
+            background: rgba(255,255,255,0.1);
+        }
+
+        /* Modal */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.85);
+            z-index: 200;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            backdrop-filter: blur(5px);
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal {
+            background: var(--bg-card);
+            border-radius: 20px;
+            border: 1px solid var(--border);
+            max-width: 400px;
+            width: 100%;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        .modal-header {
+            padding: 18px 20px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            background: var(--bg-card);
+            z-index: 1;
+        }
+
+        .modal-title {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .modal-close {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.1);
+            border: none;
+            color: var(--text-secondary);
+            font-size: 1.2rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .modal-close:hover {
+            background: var(--danger);
+            color: white;
+        }
+
+        .modal-body {
+            padding: 20px;
+        }
+
+        .modal-category {
+            margin-bottom: 20px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .modal-category:last-child {
+            margin-bottom: 0;
+            padding-bottom: 0;
+            border-bottom: none;
+        }
+
+        .modal-category-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 8px;
+        }
+
+        .modal-category-letter {
+            width: 28px;
+            height: 28px;
+            border-radius: 8px;
+            background: var(--primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 0.9rem;
+        }
+
+        .modal-category-name {
+            font-weight: 600;
+            font-size: 0.95rem;
+            color: var(--text-primary);
+        }
+
+        .modal-category-desc {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            line-height: 1.5;
+            margin-bottom: 10px;
+        }
+
+        .modal-subdimensions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+
+        .modal-subdim-tag {
+            font-size: 0.7rem;
+            padding: 4px 8px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 12px;
+            color: var(--text-muted);
+        }
+
+        /* Legend Page */
+        .legend-section {
+            margin-bottom: 25px;
+        }
+
+        .legend-title {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 12px;
+        }
+
+        .color-scale {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .color-scale-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .color-scale-bar {
+            width: 60px;
+            height: 18px;
+            border-radius: 9px;
+        }
+
+        .color-scale-label {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+
+        .color-scale-range {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            margin-left: auto;
+        }
+
+        .legend-category-item {
+            display: flex;
+            gap: 12px;
+            padding: 12px;
+            background: var(--bg-dark);
+            border-radius: 12px;
+            margin-bottom: 10px;
+            cursor: pointer;
+            transition: background 0.2s ease;
+        }
+
+        .legend-category-item:hover {
+            background: var(--bg-hover);
+        }
+
+        .legend-category-letter {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            background: var(--primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 0.9rem;
+            flex-shrink: 0;
+        }
+
+        .legend-category-content {
+            flex: 1;
+        }
+
+        .legend-category-name {
+            font-weight: 600;
+            font-size: 0.9rem;
+            color: var(--text-primary);
+            margin-bottom: 4px;
+        }
+
+        .legend-category-desc {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            line-height: 1.4;
+        }
+
         /* Responsive */
         @media (min-width: 600px) {
             .mini-cards-grid {
@@ -755,7 +1016,10 @@
 
                     <!-- Category Bars -->
                     <div class="category-section">
-                        <div class="section-title">Kategorie-Details</div>
+                        <div class="section-title-row">
+                            <div class="section-title" style="margin-bottom: 0;">Kategorie-Details</div>
+                            <div class="info-icon" onclick="openCategoryModal()">ℹ</div>
+                        </div>
                         <div id="categoryBars"></div>
                     </div>
 
@@ -785,6 +1049,60 @@
                 </div>
             </div>
         </div>
+
+        <!-- CARD 4: LEGENDE -->
+        <div class="card" data-card="3">
+            <div class="card-inner">
+                <div class="card-header">
+                    <span class="card-title">Legende</span>
+                </div>
+                <div class="card-body">
+                    <!-- Farbskala -->
+                    <div class="legend-section">
+                        <div class="legend-title">Bewertungsskala</div>
+                        <div class="color-scale">
+                            <div class="color-scale-item">
+                                <div class="color-scale-bar bar-excellent"></div>
+                                <span class="color-scale-label">Exzellent</span>
+                                <span class="color-scale-range">78-100%</span>
+                            </div>
+                            <div class="color-scale-item">
+                                <div class="color-scale-bar bar-good"></div>
+                                <span class="color-scale-label">Gut</span>
+                                <span class="color-scale-range">70-77%</span>
+                            </div>
+                            <div class="color-scale-item">
+                                <div class="color-scale-bar bar-medium"></div>
+                                <span class="color-scale-label">Mittel</span>
+                                <span class="color-scale-range">60-69%</span>
+                            </div>
+                            <div class="color-scale-item">
+                                <div class="color-scale-bar bar-low"></div>
+                                <span class="color-scale-label">Herausfordernd</span>
+                                <span class="color-scale-range">&lt;60%</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Kategorien -->
+                    <div class="legend-section">
+                        <div class="legend-title">Bewertungskategorien</div>
+                        <div id="legendCategories"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Category Modal -->
+    <div class="modal-overlay" id="categoryModal" onclick="closeCategoryModal(event)">
+        <div class="modal" onclick="event.stopPropagation()">
+            <div class="modal-header">
+                <span class="modal-title" id="modalTitle">Kategorie-Details</span>
+                <button class="modal-close" onclick="closeCategoryModal()">&times;</button>
+            </div>
+            <div class="modal-body" id="modalBody"></div>
+        </div>
     </div>
 
     <!-- Navigation Dots -->
@@ -792,6 +1110,7 @@
         <div class="nav-dot active" data-card="0" onclick="scrollToCard(0)"></div>
         <div class="nav-dot" data-card="1" onclick="scrollToCard(1)"></div>
         <div class="nav-dot" data-card="2" onclick="scrollToCard(2)"></div>
+        <div class="nav-dot" data-card="3" onclick="scrollToCard(3)"></div>
     </div>
 
     <div class="swipe-hint">← Swipe →</div>
@@ -819,10 +1138,17 @@
             F: 'Soziale Kompatibilität'
         };
 
+        // Category descriptions loaded from data
+        let categoryDescriptions = {};
+
         async function loadData() {
             try {
                 const response = await fetch('archetype-matrix.json');
                 data = await response.json();
+                // Load category descriptions from data
+                if (data.categories) {
+                    categoryDescriptions = data.categories;
+                }
             } catch (error) {
                 console.error('Error loading data:', error);
                 data = getFallbackData();
@@ -866,6 +1192,7 @@
             updateTopAndChallenge();
             updatePartnerView();
             updateAllTypesGrid();
+            updateLegendCategories();
         }
 
         function updateTheme() {
@@ -1027,7 +1354,7 @@
                 const name = categoryNames[cat] || cat;
 
                 return `
-                    <div class="category-row">
+                    <div class="category-row" onclick="openSingleCategoryModal('${cat}')">
                         <span class="category-label">${cat}</span>
                         <div class="category-bar-wrap">
                             <div class="category-bar-container">
@@ -1096,6 +1423,81 @@
                 dot.classList.toggle('active', i === currentCard);
             });
         }
+
+        // Legend Categories
+        function updateLegendCategories() {
+            const container = document.getElementById('legendCategories');
+            const categories = ['A', 'B', 'C', 'D', 'E', 'F'];
+
+            container.innerHTML = categories.map(cat => {
+                const catData = categoryDescriptions[cat] || {};
+                const name = catData.name || categoryNames[cat] || cat;
+                const desc = catData.description || 'Beschreibung nicht verfügbar';
+
+                return `
+                    <div class="legend-category-item" onclick="openSingleCategoryModal('${cat}')">
+                        <div class="legend-category-letter">${cat}</div>
+                        <div class="legend-category-content">
+                            <div class="legend-category-name">${name}</div>
+                            <div class="legend-category-desc">${desc}</div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // Modal Functions
+        function openCategoryModal() {
+            const categories = ['A', 'B', 'C', 'D', 'E', 'F'];
+            document.getElementById('modalTitle').textContent = 'Alle Kategorien';
+            document.getElementById('modalBody').innerHTML = categories.map(cat => getCategoryModalContent(cat)).join('');
+            document.getElementById('categoryModal').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function openSingleCategoryModal(category) {
+            const catData = categoryDescriptions[category] || {};
+            const name = catData.name || categoryNames[category] || category;
+            document.getElementById('modalTitle').textContent = `Kategorie ${category}`;
+            document.getElementById('modalBody').innerHTML = getCategoryModalContent(category);
+            document.getElementById('categoryModal').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function getCategoryModalContent(cat) {
+            const catData = categoryDescriptions[cat] || {};
+            const name = catData.name || categoryNames[cat] || cat;
+            const desc = catData.description || 'Beschreibung nicht verfügbar';
+            const subDims = catData.subDimensions || [];
+
+            return `
+                <div class="modal-category">
+                    <div class="modal-category-header">
+                        <div class="modal-category-letter">${cat}</div>
+                        <div class="modal-category-name">${name}</div>
+                    </div>
+                    <div class="modal-category-desc">${desc}</div>
+                    ${subDims.length > 0 ? `
+                        <div class="modal-subdimensions">
+                            ${subDims.map(sd => `<span class="modal-subdim-tag">${sd}</span>`).join('')}
+                        </div>
+                    ` : ''}
+                </div>
+            `;
+        }
+
+        function closeCategoryModal(event) {
+            if (event && event.target !== event.currentTarget) return;
+            document.getElementById('categoryModal').classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        // Close modal on escape key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                closeCategoryModal();
+            }
+        });
 
         // Initialize
         loadData();
