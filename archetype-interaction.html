@@ -2,8 +2,8 @@
 <html lang="de">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Archetypen-Kompatibilität | Dashboard</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Archetypen-Kompatibilität | Swipe</title>
     <style>
         :root {
             --primary: #457B9D;
@@ -27,7 +27,8 @@
             background: var(--bg-dark);
             color: var(--text-primary);
             min-height: 100vh;
-            line-height: 1.6;
+            line-height: 1.5;
+            overflow-x: hidden;
         }
 
         /* Theme Colors */
@@ -40,115 +41,138 @@
 
         /* Header */
         header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
             text-align: center;
-            padding: 20px;
-            background: linear-gradient(180deg, rgba(69,123,157,0.15) 0%, transparent 100%);
+            padding: 12px 15px;
+            background: rgba(15,15,26,0.95);
+            backdrop-filter: blur(10px);
             border-bottom: 1px solid var(--border);
         }
 
         h1 {
-            font-size: 1.5rem;
-            font-weight: 300;
+            font-size: 1rem;
+            font-weight: 400;
             letter-spacing: 2px;
-            margin-bottom: 15px;
-        }
-
-        /* Main Dropdown */
-        .main-select-container {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 12px;
-        }
-
-        .main-select-label {
-            font-size: 1.1rem;
             color: var(--text-secondary);
         }
 
-        .dropdown-wrapper {
-            position: relative;
+        /* Carousel Container */
+        .carousel-container {
+            display: flex;
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: none;
+            padding-top: 60px;
+            height: 100vh;
         }
 
-        #archetypeSelect {
-            appearance: none;
+        .carousel-container::-webkit-scrollbar {
+            display: none;
+        }
+
+        /* Cards */
+        .card {
+            flex: 0 0 100vw;
+            width: 100vw;
+            scroll-snap-align: start;
+            padding: 15px;
+            overflow-y: auto;
+            height: calc(100vh - 60px);
+        }
+
+        .card-inner {
             background: var(--bg-card);
-            border: 2px solid var(--primary);
-            color: var(--text-primary);
-            padding: 10px 45px 10px 18px;
-            font-size: 1rem;
+            border-radius: 20px;
+            border: 1px solid var(--border);
+            min-height: 100%;
+            overflow: hidden;
+        }
+
+        .card-header {
+            padding: 18px 20px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .card-title {
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: var(--text-muted);
+        }
+
+        .card-body {
+            padding: 20px;
+        }
+
+        /* Navigation Dots */
+        .nav-dots {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 10px;
+            z-index: 100;
+            background: rgba(26,26,46,0.9);
+            padding: 10px 20px;
             border-radius: 25px;
+            border: 1px solid var(--border);
+        }
+
+        .nav-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: var(--text-muted);
             cursor: pointer;
             transition: all 0.3s ease;
         }
 
-        #archetypeSelect:hover {
-            box-shadow: 0 0 15px rgba(69,123,157,0.3);
+        .nav-dot.active {
+            background: var(--primary);
+            transform: scale(1.3);
         }
 
-        .dropdown-wrapper::after {
-            content: '';
-            position: absolute;
-            right: 18px;
-            top: 50%;
-            transform: translateY(-50%);
-            border-left: 5px solid transparent;
-            border-right: 5px solid transparent;
-            border-top: 6px solid var(--primary);
-            pointer-events: none;
+        .nav-dot-label {
+            display: none;
         }
 
-        /* Dashboard Layout */
-        .dashboard {
-            display: grid;
-            grid-template-columns: 38% 62%;
-            gap: 20px;
-            padding: 20px;
-            max-width: 1400px;
-            margin: 0 auto;
-            min-height: calc(100vh - 120px);
+        /* Main Select in Card 1 */
+        .main-select {
+            margin-bottom: 20px;
         }
 
-        @media (max-width: 900px) {
-            .dashboard {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        /* Left Panel */
-        .left-panel {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-        }
-
-        .panel-card {
-            background: var(--bg-card);
-            border-radius: 16px;
-            border: 1px solid var(--border);
-            overflow: hidden;
-        }
-
-        .panel-header {
-            padding: 15px 20px;
-            border-bottom: 1px solid var(--border);
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .panel-title {
+        .main-select-label {
             font-size: 0.9rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            color: var(--text-muted);
+            color: var(--text-secondary);
+            margin-bottom: 8px;
+            display: block;
         }
 
-        .panel-body {
-            padding: 20px;
+        #archetypeSelect {
+            width: 100%;
+            appearance: none;
+            background: var(--bg-dark);
+            border: 2px solid var(--primary);
+            color: var(--text-primary);
+            padding: 14px 45px 14px 18px;
+            font-size: 1.1rem;
+            border-radius: 12px;
+            cursor: pointer;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23a0a0b0' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 15px center;
         }
 
-        /* My Type Card */
+        /* My Type Display */
         .my-type-header {
             display: flex;
             align-items: center;
@@ -157,18 +181,18 @@
         }
 
         .my-type-icon {
-            width: 50px;
-            height: 50px;
-            border-radius: 12px;
+            width: 55px;
+            height: 55px;
+            border-radius: 14px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.5rem;
+            font-size: 1.6rem;
             background: var(--primary);
         }
 
         .my-type-name {
-            font-size: 1.4rem;
+            font-size: 1.5rem;
             font-weight: 600;
             color: var(--primary);
         }
@@ -176,7 +200,8 @@
         .my-type-desc {
             color: var(--text-secondary);
             font-size: 0.9rem;
-            margin-bottom: 15px;
+            margin-bottom: 20px;
+            line-height: 1.6;
         }
 
         /* Collapsible Sections */
@@ -185,21 +210,18 @@
         }
 
         .collapsible-header {
-            padding: 12px 0;
+            padding: 14px 0;
             display: flex;
             justify-content: space-between;
             align-items: center;
             cursor: pointer;
             color: var(--text-secondary);
-            font-size: 0.85rem;
-        }
-
-        .collapsible-header:hover {
-            color: var(--primary);
+            font-size: 0.9rem;
         }
 
         .collapsible-icon {
             transition: transform 0.3s ease;
+            font-size: 0.8rem;
         }
 
         .collapsible.open .collapsible-icon {
@@ -213,13 +235,13 @@
         }
 
         .collapsible.open .collapsible-content {
-            max-height: 500px;
+            max-height: 600px;
         }
 
-        .pro-contra-mini {
+        .pro-contra-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 10px;
+            gap: 12px;
             padding-bottom: 15px;
         }
 
@@ -229,7 +251,8 @@
 
         .mini-list-title {
             font-weight: 600;
-            margin-bottom: 5px;
+            margin-bottom: 6px;
+            font-size: 0.85rem;
         }
 
         .mini-list-title.pro { color: var(--success); }
@@ -241,8 +264,8 @@
         }
 
         .mini-list li {
-            padding: 2px 0;
-            padding-left: 12px;
+            padding: 3px 0;
+            padding-left: 14px;
             position: relative;
         }
 
@@ -252,26 +275,40 @@
             left: 0;
         }
 
-        .pathos-logos-mini {
-            font-size: 0.8rem;
+        .pathos-logos-content {
+            font-size: 0.85rem;
             color: var(--text-muted);
-            padding-bottom: 10px;
+            padding-bottom: 15px;
         }
 
-        .pathos-logos-mini p {
-            margin-bottom: 8px;
+        .pathos-logos-content p {
+            margin-bottom: 10px;
             font-style: italic;
+            line-height: 1.5;
         }
 
         /* Match Cards */
+        .match-section {
+            margin-top: 20px;
+        }
+
         .match-card {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 12px 15px;
-            background: rgba(255,255,255,0.03);
-            border-radius: 10px;
-            margin-bottom: 8px;
+            padding: 14px 16px;
+            border-radius: 12px;
+            margin-bottom: 10px;
+        }
+
+        .match-card.top {
+            background: rgba(0,206,201,0.1);
+            border: 1px solid rgba(0,206,201,0.3);
+        }
+
+        .match-card.challenge {
+            background: rgba(231,76,60,0.1);
+            border: 1px solid rgba(231,76,60,0.3);
         }
 
         .match-info {
@@ -281,60 +318,50 @@
         }
 
         .match-dot {
-            width: 10px;
-            height: 10px;
+            width: 12px;
+            height: 12px;
             border-radius: 50%;
         }
 
+        .match-label-text {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
         .match-name {
-            font-size: 0.9rem;
+            font-size: 1rem;
+            font-weight: 500;
         }
 
         .match-score {
-            font-size: 1.1rem;
+            font-size: 1.3rem;
             font-weight: 700;
         }
 
         .match-score.excellent { color: #00cec9; }
-        .match-score.good { color: #27ae60; }
-        .match-score.medium { color: #f39c12; }
         .match-score.low { color: #e74c3c; }
 
-        .match-label {
-            font-size: 0.7rem;
-            color: var(--text-muted);
-            text-transform: uppercase;
-        }
-
-        /* Right Panel */
-        .right-panel {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-        }
-
-        /* Partner Selector - Clickable Buttons */
+        /* Card 2: Partner Selector */
         .partner-selector {
             display: flex;
             flex-wrap: wrap;
             gap: 8px;
-            padding: 15px;
-            background: var(--bg-card);
-            border-radius: 16px;
-            border: 1px solid var(--border);
+            margin-bottom: 20px;
         }
 
         .partner-btn {
             display: flex;
             align-items: center;
-            gap: 8px;
-            padding: 10px 16px;
+            gap: 6px;
+            padding: 10px 14px;
             border: 2px solid var(--border);
             background: transparent;
             color: var(--text-secondary);
-            border-radius: 25px;
+            border-radius: 20px;
             cursor: pointer;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             transition: all 0.3s ease;
         }
 
@@ -350,76 +377,70 @@
         }
 
         .partner-btn .dot {
-            width: 12px;
-            height: 12px;
+            width: 10px;
+            height: 10px;
             border-radius: 50%;
         }
 
-        /* Radar Chart Container */
-        .radar-container {
-            background: var(--bg-card);
-            border-radius: 16px;
-            border: 1px solid var(--border);
-            padding: 20px;
-            flex: 1;
+        /* Radar Chart */
+        .radar-section {
+            margin-bottom: 25px;
         }
 
         .radar-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 15px;
+            margin-bottom: 10px;
         }
 
         .radar-title {
-            font-size: 1rem;
+            font-size: 0.9rem;
             color: var(--text-secondary);
         }
 
         .radar-score {
-            font-size: 2rem;
+            font-size: 2.2rem;
             font-weight: 700;
         }
 
         .radar-score-label {
-            font-size: 0.75rem;
+            font-size: 0.7rem;
             color: var(--text-muted);
+            text-transform: uppercase;
         }
 
         #radarChart {
             width: 100%;
-            max-width: 350px;
+            max-width: 280px;
             margin: 0 auto;
             display: block;
         }
 
-        /* Detail Matrix */
-        .detail-matrix {
-            background: var(--bg-card);
-            border-radius: 16px;
-            border: 1px solid var(--border);
-            padding: 20px;
+        /* Category Bars */
+        .category-section {
+            margin-bottom: 25px;
         }
 
-        .matrix-title {
-            font-size: 0.9rem;
+        .section-title {
+            font-size: 0.8rem;
             color: var(--text-muted);
             text-transform: uppercase;
             letter-spacing: 1px;
-            margin-bottom: 15px;
+            margin-bottom: 12px;
         }
 
         .category-row {
             display: flex;
             align-items: center;
-            gap: 12px;
-            margin-bottom: 12px;
+            gap: 10px;
+            margin-bottom: 10px;
         }
 
         .category-label {
-            width: 30px;
+            width: 24px;
             font-weight: 700;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             color: var(--primary);
         }
 
@@ -428,15 +449,15 @@
         }
 
         .category-bar-container {
-            height: 20px;
+            height: 18px;
             background: rgba(255,255,255,0.05);
-            border-radius: 10px;
+            border-radius: 9px;
             overflow: hidden;
         }
 
         .category-bar {
             height: 100%;
-            border-radius: 10px;
+            border-radius: 9px;
             transition: width 0.6s ease;
             display: flex;
             align-items: center;
@@ -445,13 +466,13 @@
         }
 
         .category-bar-value {
-            font-size: 0.75rem;
+            font-size: 0.7rem;
             font-weight: 600;
             color: white;
         }
 
         .category-name {
-            font-size: 0.75rem;
+            font-size: 0.7rem;
             color: var(--text-muted);
             margin-top: 2px;
         }
@@ -461,28 +482,15 @@
         .bar-medium { background: linear-gradient(90deg, #f39c12, #d68910); }
         .bar-low { background: linear-gradient(90deg, #e74c3c, #c0392b); }
 
-        /* Pro/Contra for selected partner */
-        .partner-analysis {
-            background: var(--bg-card);
-            border-radius: 16px;
-            border: 1px solid var(--border);
-            padding: 20px;
-        }
-
+        /* Pro/Contra Analysis */
         .analysis-grid {
             display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
-        }
-
-        @media (max-width: 600px) {
-            .analysis-grid {
-                grid-template-columns: 1fr;
-            }
+            grid-template-columns: 1fr;
+            gap: 12px;
         }
 
         .analysis-section {
-            padding: 15px;
+            padding: 14px;
             border-radius: 10px;
         }
 
@@ -498,10 +506,8 @@
 
         .analysis-title {
             font-weight: 600;
-            margin-bottom: 10px;
-            display: flex;
-            align-items: center;
-            gap: 6px;
+            margin-bottom: 8px;
+            font-size: 0.9rem;
         }
 
         .analysis-section.pro .analysis-title { color: var(--success); }
@@ -509,13 +515,13 @@
 
         .analysis-list {
             list-style: none;
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             color: var(--text-secondary);
         }
 
         .analysis-list li {
-            padding: 4px 0;
-            padding-left: 15px;
+            padding: 3px 0;
+            padding-left: 14px;
             position: relative;
         }
 
@@ -523,52 +529,138 @@
             content: '';
             position: absolute;
             left: 0;
-            top: 10px;
-            width: 6px;
-            height: 6px;
+            top: 9px;
+            width: 5px;
+            height: 5px;
             border-radius: 50%;
         }
 
         .analysis-section.pro .analysis-list li::before { background: var(--success); }
         .analysis-section.contra .analysis-list li::before { background: var(--danger); }
 
-        /* Footer */
-        footer {
-            text-align: center;
-            padding: 20px;
+        /* Card 3: Alle Typen - Mini Cards Grid */
+        .mini-cards-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+        }
+
+        .mini-card {
+            background: var(--bg-dark);
+            border-radius: 14px;
+            padding: 14px;
+            border: 1px solid var(--border);
+            transition: all 0.3s ease;
+        }
+
+        .mini-card:hover {
+            border-color: var(--text-muted);
+        }
+
+        .mini-card-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        .mini-card-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+        }
+
+        .mini-card-name {
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        .mini-card-desc {
+            font-size: 0.75rem;
             color: var(--text-muted);
-            font-size: 0.85rem;
-            border-top: 1px solid var(--border);
+            line-height: 1.4;
+            margin-bottom: 10px;
+        }
+
+        .mini-card-self-score {
+            font-size: 0.7rem;
+            color: var(--text-secondary);
+        }
+
+        .mini-card-self-score span {
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        /* Swipe Hint */
+        .swipe-hint {
+            position: fixed;
+            bottom: 70px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            opacity: 0.7;
+            animation: fadeOut 3s forwards;
+            animation-delay: 2s;
+        }
+
+        @keyframes fadeOut {
+            to { opacity: 0; }
+        }
+
+        /* Responsive */
+        @media (min-width: 600px) {
+            .mini-cards-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+
+            .analysis-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        @media (min-width: 900px) {
+            .card {
+                padding: 20px 10%;
+            }
+
+            .mini-cards-grid {
+                grid-template-columns: repeat(3, 1fr);
+                gap: 15px;
+            }
         }
     </style>
 </head>
 <body>
     <header>
         <h1>ARCHETYPEN-KOMPATIBILITÄT</h1>
-        <div class="main-select-container">
-            <span class="main-select-label">Ich bin...</span>
-            <div class="dropdown-wrapper">
-                <select id="archetypeSelect">
-                    <option value="single">Single</option>
-                    <option value="duo">Duo</option>
-                    <option value="duo_flex">Duo-Flex</option>
-                    <option value="solopoly">Solopoly</option>
-                    <option value="poly_hedo">Poly Hedo</option>
-                    <option value="polyamor">Polyamor</option>
-                </select>
-            </div>
-        </div>
     </header>
 
-    <div class="dashboard">
-        <!-- LEFT PANEL -->
-        <div class="left-panel">
-            <!-- My Type Card -->
-            <div class="panel-card">
-                <div class="panel-header">
-                    <span class="panel-title">Mein Typ</span>
+    <div class="carousel-container" id="carousel">
+        <!-- CARD 1: MEIN TYP -->
+        <div class="card" data-card="0">
+            <div class="card-inner">
+                <div class="card-header">
+                    <span class="card-title">Mein Typ</span>
                 </div>
-                <div class="panel-body">
+                <div class="card-body">
+                    <div class="main-select">
+                        <label class="main-select-label">Ich bin...</label>
+                        <select id="archetypeSelect">
+                            <option value="single">Single</option>
+                            <option value="duo">Duo</option>
+                            <option value="duo_flex">Duo-Flex</option>
+                            <option value="solopoly">Solopoly</option>
+                            <option value="poly_hedo">Poly Hedo</option>
+                            <option value="polyamor">Polyamor</option>
+                        </select>
+                    </div>
+
                     <div class="my-type-header">
                         <div class="my-type-icon" id="myTypeIcon">★</div>
                         <div class="my-type-name" id="myTypeName">Single</div>
@@ -582,7 +674,7 @@
                             <span class="collapsible-icon">▼</span>
                         </div>
                         <div class="collapsible-content">
-                            <div class="pro-contra-mini">
+                            <div class="pro-contra-grid">
                                 <div class="mini-list">
                                     <div class="mini-list-title pro">✓ Pro</div>
                                     <ul id="myTypePro"></ul>
@@ -602,98 +694,107 @@
                             <span class="collapsible-icon">▼</span>
                         </div>
                         <div class="collapsible-content">
-                            <div class="pathos-logos-mini">
+                            <div class="pathos-logos-content">
                                 <p id="myTypePathos"></p>
                                 <p id="myTypeLogos"></p>
                             </div>
                         </div>
                     </div>
-                </div>
-            </div>
 
-            <!-- Top Match -->
-            <div class="panel-card">
-                <div class="panel-header">
-                    <span class="panel-title">Top Match</span>
-                </div>
-                <div class="panel-body" style="padding: 15px;">
-                    <div class="match-card" id="topMatch" style="background: rgba(0,206,201,0.1); border: 1px solid rgba(0,206,201,0.3);">
-                        <div class="match-info">
-                            <div class="match-dot" id="topMatchDot"></div>
-                            <span class="match-name" id="topMatchName">...</span>
-                        </div>
-                        <div style="text-align: right;">
+                    <!-- Match Section -->
+                    <div class="match-section">
+                        <div class="match-card top">
+                            <div class="match-info">
+                                <div class="match-dot" id="topMatchDot"></div>
+                                <div>
+                                    <div class="match-label-text">Top Match</div>
+                                    <div class="match-name" id="topMatchName">...</div>
+                                </div>
+                            </div>
                             <div class="match-score excellent" id="topMatchScore">0%</div>
-                            <div class="match-label">Match</div>
                         </div>
-                    </div>
-                </div>
-            </div>
 
-            <!-- Challenge -->
-            <div class="panel-card">
-                <div class="panel-header">
-                    <span class="panel-title">Challenge</span>
-                </div>
-                <div class="panel-body" style="padding: 15px;">
-                    <div class="match-card" id="challengeMatch" style="background: rgba(231,76,60,0.1); border: 1px solid rgba(231,76,60,0.3);">
-                        <div class="match-info">
-                            <div class="match-dot" id="challengeDot"></div>
-                            <span class="match-name" id="challengeName">...</span>
-                        </div>
-                        <div style="text-align: right;">
+                        <div class="match-card challenge">
+                            <div class="match-info">
+                                <div class="match-dot" id="challengeDot"></div>
+                                <div>
+                                    <div class="match-label-text">Challenge</div>
+                                    <div class="match-name" id="challengeName">...</div>
+                                </div>
+                            </div>
                             <div class="match-score low" id="challengeScore">0%</div>
-                            <div class="match-label">Match</div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- RIGHT PANEL -->
-        <div class="right-panel">
-            <!-- Partner Selector (Clickable Buttons) -->
-            <div class="partner-selector" id="partnerSelector"></div>
+        <!-- CARD 2: KOMPATIBILITÄT -->
+        <div class="card" data-card="1">
+            <div class="card-inner">
+                <div class="card-header">
+                    <span class="card-title">Kompatibilität</span>
+                </div>
+                <div class="card-body">
+                    <!-- Partner Selector -->
+                    <div class="partner-selector" id="partnerSelector"></div>
 
-            <!-- Radar Chart -->
-            <div class="radar-container">
-                <div class="radar-header">
-                    <div>
-                        <div class="radar-title">Kompatibilität mit <span id="partnerNameDisplay">...</span></div>
+                    <!-- Radar Chart -->
+                    <div class="radar-section">
+                        <div class="radar-header">
+                            <div>
+                                <div class="radar-title">mit <span id="partnerNameDisplay">...</span></div>
+                            </div>
+                            <div style="text-align: right;">
+                                <div class="radar-score" id="overallScore" style="color: var(--primary);">0%</div>
+                                <div class="radar-score-label">Gesamt</div>
+                            </div>
+                        </div>
+                        <svg id="radarChart" viewBox="0 0 280 260"></svg>
                     </div>
-                    <div style="text-align: right;">
-                        <div class="radar-score" id="overallScore" style="color: var(--primary);">0%</div>
-                        <div class="radar-score-label">Gesamt</div>
+
+                    <!-- Category Bars -->
+                    <div class="category-section">
+                        <div class="section-title">Kategorie-Details</div>
+                        <div id="categoryBars"></div>
+                    </div>
+
+                    <!-- Pro/Contra Analysis -->
+                    <div class="analysis-grid">
+                        <div class="analysis-section pro">
+                            <div class="analysis-title">✓ Was funktioniert</div>
+                            <ul class="analysis-list" id="partnerPro"></ul>
+                        </div>
+                        <div class="analysis-section contra">
+                            <div class="analysis-title">✗ Herausforderungen</div>
+                            <ul class="analysis-list" id="partnerContra"></ul>
+                        </div>
                     </div>
                 </div>
-                <svg id="radarChart" viewBox="0 0 300 280"></svg>
             </div>
+        </div>
 
-            <!-- Detail Matrix -->
-            <div class="detail-matrix">
-                <div class="matrix-title">Kategorie-Details</div>
-                <div id="categoryBars"></div>
-            </div>
-
-            <!-- Pro/Contra Analysis -->
-            <div class="partner-analysis">
-                <div class="analysis-grid">
-                    <div class="analysis-section pro">
-                        <div class="analysis-title">✓ Was funktioniert</div>
-                        <ul class="analysis-list" id="partnerPro"></ul>
-                    </div>
-                    <div class="analysis-section contra">
-                        <div class="analysis-title">✗ Herausforderungen</div>
-                        <ul class="analysis-list" id="partnerContra"></ul>
-                    </div>
+        <!-- CARD 3: ALLE TYPEN -->
+        <div class="card" data-card="2">
+            <div class="card-inner">
+                <div class="card-header">
+                    <span class="card-title">Alle Typen</span>
+                </div>
+                <div class="card-body">
+                    <div class="mini-cards-grid" id="allTypesGrid"></div>
                 </div>
             </div>
         </div>
     </div>
 
-    <footer>
-        Archetypen-Interaktionsmatrix v5.0 | Dashboard-Layout | 6×6 Matrix
-    </footer>
+    <!-- Navigation Dots -->
+    <div class="nav-dots">
+        <div class="nav-dot active" data-card="0" onclick="scrollToCard(0)"></div>
+        <div class="nav-dot" data-card="1" onclick="scrollToCard(1)"></div>
+        <div class="nav-dot" data-card="2" onclick="scrollToCard(2)"></div>
+    </div>
+
+    <div class="swipe-hint">← Swipe →</div>
 
     <script>
         let data = null;
@@ -750,6 +851,11 @@
                 currentArchetype = e.target.value;
                 updateAll();
             });
+
+            // Carousel scroll detection
+            const carousel = document.getElementById('carousel');
+            carousel.addEventListener('scroll', updateNavDots);
+
             updateAll();
         }
 
@@ -759,6 +865,7 @@
             updatePartnerSelector();
             updateTopAndChallenge();
             updatePartnerView();
+            updateAllTypesGrid();
         }
 
         function updateTheme() {
@@ -775,15 +882,12 @@
             document.getElementById('myTypeName').style.color = arch.color;
             document.getElementById('myTypeDesc').textContent = arch.shortDescription || '';
 
-            // Pro list
             const proList = document.getElementById('myTypePro');
-            proList.innerHTML = (arch.pro || []).slice(0, 3).map(p => `<li>${p}</li>`).join('');
+            proList.innerHTML = (arch.pro || []).slice(0, 4).map(p => `<li>${p}</li>`).join('');
 
-            // Contra list
             const contraList = document.getElementById('myTypeContra');
-            contraList.innerHTML = (arch.contra || []).slice(0, 3).map(c => `<li>${c}</li>`).join('');
+            contraList.innerHTML = (arch.contra || []).slice(0, 4).map(c => `<li>${c}</li>`).join('');
 
-            // Pathos/Logos
             document.getElementById('myTypePathos').textContent = arch.pathos || '';
             document.getElementById('myTypeLogos').textContent = arch.logos || '';
         }
@@ -792,7 +896,6 @@
             const container = document.getElementById('partnerSelector');
             const others = Object.values(data.archetypes).filter(a => a.id !== currentArchetype);
 
-            // Set default selected partner
             if (selectedPartner === currentArchetype || !others.find(o => o.id === selectedPartner)) {
                 selectedPartner = others[0]?.id || 'duo';
             }
@@ -809,12 +912,9 @@
 
         function selectPartner(partnerId) {
             selectedPartner = partnerId;
-
-            // Update button states
             document.querySelectorAll('.partner-btn').forEach(btn => {
                 btn.classList.toggle('active', btn.dataset.id === partnerId);
             });
-
             updatePartnerView();
         }
 
@@ -836,7 +936,6 @@
                 }
             });
 
-            // Update Top Match
             if (topMatch.id) {
                 const arch = data.archetypes[topMatch.id];
                 document.getElementById('topMatchDot').style.background = arch.color;
@@ -844,7 +943,6 @@
                 document.getElementById('topMatchScore').textContent = topMatch.score + '%';
             }
 
-            // Update Challenge
             if (challenge.id) {
                 const arch = data.archetypes[challenge.id];
                 document.getElementById('challengeDot').style.background = arch.color;
@@ -858,22 +956,16 @@
             const interactionKey = `${currentArchetype}_${selectedPartner}`;
             const interaction = data.interactions[interactionKey] || {};
 
-            // Update partner name display
             document.getElementById('partnerNameDisplay').textContent = partnerArch?.name || '...';
 
-            // Update overall score
             const score = interaction.overall || 0;
             const scoreEl = document.getElementById('overallScore');
             scoreEl.textContent = score + '%';
             scoreEl.style.color = getScoreColor(score);
 
-            // Update radar chart
             drawRadarChart(interaction.scores || {}, partnerArch?.color || '#457B9D');
-
-            // Update category bars
             updateCategoryBars(interaction.scores || {});
 
-            // Update Pro/Contra
             const proList = document.getElementById('partnerPro');
             proList.innerHTML = (interaction.pro || []).map(p => `<li>${p}</li>`).join('') || '<li>Keine Daten</li>';
 
@@ -883,30 +975,27 @@
 
         function drawRadarChart(scores, color) {
             const svg = document.getElementById('radarChart');
-            const cx = 150, cy = 130, maxR = 100;
+            const cx = 140, cy = 120, maxR = 90;
             const categories = ['A', 'B', 'C', 'D', 'E', 'F'];
             const n = categories.length;
 
             let html = '';
 
-            // Background circles
-            for (let r = 20; r <= maxR; r += 20) {
-                html += `<circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>`;
+            for (let r = 18; r <= maxR; r += 18) {
+                html += `<circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>`;
             }
 
-            // Axis lines and labels
             categories.forEach((cat, i) => {
                 const angle = (Math.PI * 2 * i / n) - Math.PI / 2;
                 const x = cx + Math.cos(angle) * maxR;
                 const y = cy + Math.sin(angle) * maxR;
-                const labelX = cx + Math.cos(angle) * (maxR + 20);
-                const labelY = cy + Math.sin(angle) * (maxR + 20);
+                const labelX = cx + Math.cos(angle) * (maxR + 18);
+                const labelY = cy + Math.sin(angle) * (maxR + 18);
 
-                html += `<line x1="${cx}" y1="${cy}" x2="${x}" y2="${y}" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>`;
-                html += `<text x="${labelX}" y="${labelY}" fill="var(--text-muted)" font-size="11" text-anchor="middle" dominant-baseline="middle">${cat}</text>`;
+                html += `<line x1="${cx}" y1="${cy}" x2="${x}" y2="${y}" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>`;
+                html += `<text x="${labelX}" y="${labelY}" fill="var(--text-muted)" font-size="10" text-anchor="middle" dominant-baseline="middle">${cat}</text>`;
             });
 
-            // Data polygon
             const points = categories.map((cat, i) => {
                 const value = scores[cat]?.value || 0;
                 const r = (value / 100) * maxR;
@@ -916,7 +1005,6 @@
 
             html += `<polygon points="${points}" fill="${color}33" stroke="${color}" stroke-width="2"/>`;
 
-            // Data points
             categories.forEach((cat, i) => {
                 const value = scores[cat]?.value || 0;
                 const r = (value / 100) * maxR;
@@ -954,6 +1042,27 @@
             }).join('');
         }
 
+        function updateAllTypesGrid() {
+            const container = document.getElementById('allTypesGrid');
+            const archetypes = Object.values(data.archetypes);
+
+            container.innerHTML = archetypes.map(arch => {
+                const selfKey = `${arch.id}_${arch.id}`;
+                const selfScore = data.interactions[selfKey]?.overall || '—';
+
+                return `
+                    <div class="mini-card">
+                        <div class="mini-card-header">
+                            <div class="mini-card-icon" style="background: ${arch.color}">${icons[arch.id]}</div>
+                            <div class="mini-card-name" style="color: ${arch.color}">${arch.name}</div>
+                        </div>
+                        <div class="mini-card-desc">${arch.shortDescription || ''}</div>
+                        <div class="mini-card-self-score">Selbst-Match: <span>${selfScore}%</span></div>
+                    </div>
+                `;
+            }).join('');
+        }
+
         function getScoreColor(score) {
             if (score >= 78) return '#00cec9';
             if (score >= 70) return '#27ae60';
@@ -970,6 +1079,22 @@
 
         function toggleCollapsible(id) {
             document.getElementById(id).classList.toggle('open');
+        }
+
+        function scrollToCard(index) {
+            const carousel = document.getElementById('carousel');
+            const cardWidth = window.innerWidth;
+            carousel.scrollTo({ left: cardWidth * index, behavior: 'smooth' });
+        }
+
+        function updateNavDots() {
+            const carousel = document.getElementById('carousel');
+            const cardWidth = window.innerWidth;
+            const currentCard = Math.round(carousel.scrollLeft / cardWidth);
+
+            document.querySelectorAll('.nav-dot').forEach((dot, i) => {
+                dot.classList.toggle('active', i === currentCard);
+            });
         }
 
         // Initialize
