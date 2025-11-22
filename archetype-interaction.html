@@ -1224,17 +1224,16 @@
 
         function updatePartnerSelector() {
             const container = document.getElementById('partnerSelector');
-            // Use fixed order instead of Object.values to ensure consistent display
-            const others = archetypeOrder
-                .filter(id => id !== currentArchetype)
+            // Show ALL archetypes as partner options (including own type for self-matching)
+            const allPartners = archetypeOrder
                 .map(id => data.archetypes[id])
                 .filter(arch => arch); // Remove any undefined
 
-            if (selectedPartner === currentArchetype || !others.find(o => o.id === selectedPartner)) {
-                selectedPartner = others[0]?.id || 'duo';
+            if (!allPartners.find(o => o.id === selectedPartner)) {
+                selectedPartner = allPartners[0]?.id || 'duo';
             }
 
-            container.innerHTML = others.map(arch => `
+            container.innerHTML = allPartners.map(arch => `
                 <button class="partner-btn ${arch.id === selectedPartner ? 'active' : ''}"
                         onclick="selectPartner('${arch.id}')"
                         data-id="${arch.id}">
@@ -1253,7 +1252,8 @@
         }
 
         function updateTopAndChallenge() {
-            const others = archetypeOrder.filter(id => id !== currentArchetype);
+            // Include all types (including self) for top match and challenge
+            const others = archetypeOrder;
             let topMatch = { id: null, score: 0 };
             let challenge = { id: null, score: 100 };
 
