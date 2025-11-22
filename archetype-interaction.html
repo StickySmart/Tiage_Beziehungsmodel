@@ -1,0 +1,1104 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Archetypen-Kompatibilität | Swipe</title>
+    <style>
+        :root {
+            --primary: #457B9D;
+            --primary-light: #A8D5E2;
+            --bg-dark: #0f0f1a;
+            --bg-card: #1a1a2e;
+            --bg-hover: #252542;
+            --text-primary: #f0f0f0;
+            --text-secondary: #a0a0b0;
+            --text-muted: #6a6a7a;
+            --border: rgba(255,255,255,0.1);
+            --success: #2ecc71;
+            --warning: #f39c12;
+            --danger: #e74c3c;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-dark);
+            color: var(--text-primary);
+            min-height: 100vh;
+            line-height: 1.5;
+            overflow-x: hidden;
+        }
+
+        /* Theme Colors */
+        body.theme-single { --primary: #E63946; --primary-light: #FFB4A2; }
+        body.theme-duo { --primary: #E84393; --primary-light: #FDA7DF; }
+        body.theme-duo_flex { --primary: #FF6B6B; --primary-light: #FFA5A5; }
+        body.theme-solopoly { --primary: #2A9D8F; --primary-light: #A8DADC; }
+        body.theme-poly_hedo { --primary: #9B5DE5; --primary-light: #D4A5FF; }
+        body.theme-polyamor { --primary: #F4A261; --primary-light: #FFE5B4; }
+
+        /* Header */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            text-align: center;
+            padding: 12px 15px;
+            background: rgba(15,15,26,0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border);
+        }
+
+        h1 {
+            font-size: 1rem;
+            font-weight: 400;
+            letter-spacing: 2px;
+            color: var(--text-secondary);
+        }
+
+        /* Carousel Container */
+        .carousel-container {
+            display: flex;
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: none;
+            padding-top: 60px;
+            height: 100vh;
+        }
+
+        .carousel-container::-webkit-scrollbar {
+            display: none;
+        }
+
+        /* Cards */
+        .card {
+            flex: 0 0 100vw;
+            width: 100vw;
+            scroll-snap-align: start;
+            padding: 15px;
+            overflow-y: auto;
+            height: calc(100vh - 60px);
+        }
+
+        .card-inner {
+            background: var(--bg-card);
+            border-radius: 20px;
+            border: 1px solid var(--border);
+            min-height: 100%;
+            overflow: hidden;
+        }
+
+        .card-header {
+            padding: 18px 20px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .card-title {
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: var(--text-muted);
+        }
+
+        .card-body {
+            padding: 20px;
+        }
+
+        /* Navigation Dots */
+        .nav-dots {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 10px;
+            z-index: 100;
+            background: rgba(26,26,46,0.9);
+            padding: 10px 20px;
+            border-radius: 25px;
+            border: 1px solid var(--border);
+        }
+
+        .nav-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: var(--text-muted);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .nav-dot.active {
+            background: var(--primary);
+            transform: scale(1.3);
+        }
+
+        .nav-dot-label {
+            display: none;
+        }
+
+        /* Main Select in Card 1 */
+        .main-select {
+            margin-bottom: 20px;
+        }
+
+        .main-select-label {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        #archetypeSelect {
+            width: 100%;
+            appearance: none;
+            background: var(--bg-dark);
+            border: 2px solid var(--primary);
+            color: var(--text-primary);
+            padding: 14px 45px 14px 18px;
+            font-size: 1.1rem;
+            border-radius: 12px;
+            cursor: pointer;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23a0a0b0' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 15px center;
+        }
+
+        /* My Type Display */
+        .my-type-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .my-type-icon {
+            width: 55px;
+            height: 55px;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.6rem;
+            background: var(--primary);
+        }
+
+        .my-type-name {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--primary);
+        }
+
+        .my-type-desc {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+
+        /* Collapsible Sections */
+        .collapsible {
+            border-top: 1px solid var(--border);
+        }
+
+        .collapsible-header {
+            padding: 14px 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .collapsible-icon {
+            transition: transform 0.3s ease;
+            font-size: 0.8rem;
+        }
+
+        .collapsible.open .collapsible-icon {
+            transform: rotate(180deg);
+        }
+
+        .collapsible-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+
+        .collapsible.open .collapsible-content {
+            max-height: 600px;
+        }
+
+        .pro-contra-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            padding-bottom: 15px;
+        }
+
+        .mini-list {
+            font-size: 0.8rem;
+        }
+
+        .mini-list-title {
+            font-weight: 600;
+            margin-bottom: 6px;
+            font-size: 0.85rem;
+        }
+
+        .mini-list-title.pro { color: var(--success); }
+        .mini-list-title.contra { color: var(--danger); }
+
+        .mini-list ul {
+            list-style: none;
+            color: var(--text-muted);
+        }
+
+        .mini-list li {
+            padding: 3px 0;
+            padding-left: 14px;
+            position: relative;
+        }
+
+        .mini-list li::before {
+            content: '•';
+            position: absolute;
+            left: 0;
+        }
+
+        .pathos-logos-content {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            padding-bottom: 15px;
+        }
+
+        .pathos-logos-content p {
+            margin-bottom: 10px;
+            font-style: italic;
+            line-height: 1.5;
+        }
+
+        /* Match Cards */
+        .match-section {
+            margin-top: 20px;
+        }
+
+        .match-card {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 14px 16px;
+            border-radius: 12px;
+            margin-bottom: 10px;
+        }
+
+        .match-card.top {
+            background: rgba(0,206,201,0.1);
+            border: 1px solid rgba(0,206,201,0.3);
+        }
+
+        .match-card.challenge {
+            background: rgba(231,76,60,0.1);
+            border: 1px solid rgba(231,76,60,0.3);
+        }
+
+        .match-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .match-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+
+        .match-label-text {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .match-name {
+            font-size: 1rem;
+            font-weight: 500;
+        }
+
+        .match-score {
+            font-size: 1.3rem;
+            font-weight: 700;
+        }
+
+        .match-score.excellent { color: #00cec9; }
+        .match-score.low { color: #e74c3c; }
+
+        /* Card 2: Partner Selector */
+        .partner-selector {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 20px;
+        }
+
+        .partner-btn {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 10px 14px;
+            border: 2px solid var(--border);
+            background: transparent;
+            color: var(--text-secondary);
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            transition: all 0.3s ease;
+        }
+
+        .partner-btn:hover {
+            border-color: var(--text-muted);
+            background: var(--bg-hover);
+        }
+
+        .partner-btn.active {
+            border-color: var(--primary);
+            background: rgba(69,123,157,0.2);
+            color: var(--text-primary);
+        }
+
+        .partner-btn .dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+        }
+
+        /* Radar Chart */
+        .radar-section {
+            margin-bottom: 25px;
+        }
+
+        .radar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .radar-title {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        .radar-score {
+            font-size: 2.2rem;
+            font-weight: 700;
+        }
+
+        .radar-score-label {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+        }
+
+        #radarChart {
+            width: 100%;
+            max-width: 280px;
+            margin: 0 auto;
+            display: block;
+        }
+
+        /* Category Bars */
+        .category-section {
+            margin-bottom: 25px;
+        }
+
+        .section-title {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 12px;
+        }
+
+        .category-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        .category-label {
+            width: 24px;
+            font-weight: 700;
+            font-size: 0.85rem;
+            color: var(--primary);
+        }
+
+        .category-bar-wrap {
+            flex: 1;
+        }
+
+        .category-bar-container {
+            height: 18px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 9px;
+            overflow: hidden;
+        }
+
+        .category-bar {
+            height: 100%;
+            border-radius: 9px;
+            transition: width 0.6s ease;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            padding-right: 8px;
+        }
+
+        .category-bar-value {
+            font-size: 0.7rem;
+            font-weight: 600;
+            color: white;
+        }
+
+        .category-name {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            margin-top: 2px;
+        }
+
+        .bar-excellent { background: linear-gradient(90deg, #00cec9, #0984e3); }
+        .bar-good { background: linear-gradient(90deg, #27ae60, #1e8449); }
+        .bar-medium { background: linear-gradient(90deg, #f39c12, #d68910); }
+        .bar-low { background: linear-gradient(90deg, #e74c3c, #c0392b); }
+
+        /* Pro/Contra Analysis */
+        .analysis-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 12px;
+        }
+
+        .analysis-section {
+            padding: 14px;
+            border-radius: 10px;
+        }
+
+        .analysis-section.pro {
+            background: rgba(46, 204, 113, 0.1);
+            border: 1px solid rgba(46, 204, 113, 0.3);
+        }
+
+        .analysis-section.contra {
+            background: rgba(231, 76, 60, 0.1);
+            border: 1px solid rgba(231, 76, 60, 0.3);
+        }
+
+        .analysis-title {
+            font-weight: 600;
+            margin-bottom: 8px;
+            font-size: 0.9rem;
+        }
+
+        .analysis-section.pro .analysis-title { color: var(--success); }
+        .analysis-section.contra .analysis-title { color: var(--danger); }
+
+        .analysis-list {
+            list-style: none;
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+        }
+
+        .analysis-list li {
+            padding: 3px 0;
+            padding-left: 14px;
+            position: relative;
+        }
+
+        .analysis-list li::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 9px;
+            width: 5px;
+            height: 5px;
+            border-radius: 50%;
+        }
+
+        .analysis-section.pro .analysis-list li::before { background: var(--success); }
+        .analysis-section.contra .analysis-list li::before { background: var(--danger); }
+
+        /* Card 3: Alle Typen - Mini Cards Grid */
+        .mini-cards-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+        }
+
+        .mini-card {
+            background: var(--bg-dark);
+            border-radius: 14px;
+            padding: 14px;
+            border: 1px solid var(--border);
+            transition: all 0.3s ease;
+        }
+
+        .mini-card:hover {
+            border-color: var(--text-muted);
+        }
+
+        .mini-card-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        .mini-card-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+        }
+
+        .mini-card-name {
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        .mini-card-desc {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            line-height: 1.4;
+            margin-bottom: 10px;
+        }
+
+        .mini-card-self-score {
+            font-size: 0.7rem;
+            color: var(--text-secondary);
+        }
+
+        .mini-card-self-score span {
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        /* Swipe Hint */
+        .swipe-hint {
+            position: fixed;
+            bottom: 70px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            opacity: 0.7;
+            animation: fadeOut 3s forwards;
+            animation-delay: 2s;
+        }
+
+        @keyframes fadeOut {
+            to { opacity: 0; }
+        }
+
+        /* Responsive */
+        @media (min-width: 600px) {
+            .mini-cards-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+
+            .analysis-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        @media (min-width: 900px) {
+            .card {
+                padding: 20px 10%;
+            }
+
+            .mini-cards-grid {
+                grid-template-columns: repeat(3, 1fr);
+                gap: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>ARCHETYPEN-KOMPATIBILITÄT</h1>
+    </header>
+
+    <div class="carousel-container" id="carousel">
+        <!-- CARD 1: MEIN TYP -->
+        <div class="card" data-card="0">
+            <div class="card-inner">
+                <div class="card-header">
+                    <span class="card-title">Mein Typ</span>
+                </div>
+                <div class="card-body">
+                    <div class="main-select">
+                        <label class="main-select-label">Ich bin...</label>
+                        <select id="archetypeSelect">
+                            <option value="single">Single</option>
+                            <option value="duo">Duo</option>
+                            <option value="duo_flex">Duo-Flex</option>
+                            <option value="solopoly">Solopoly</option>
+                            <option value="poly_hedo">Poly Hedo</option>
+                            <option value="polyamor">Polyamor</option>
+                        </select>
+                    </div>
+
+                    <div class="my-type-header">
+                        <div class="my-type-icon" id="myTypeIcon">★</div>
+                        <div class="my-type-name" id="myTypeName">Single</div>
+                    </div>
+                    <p class="my-type-desc" id="myTypeDesc">...</p>
+
+                    <!-- Collapsible: Pro/Contra -->
+                    <div class="collapsible" id="proContraCollapse">
+                        <div class="collapsible-header" onclick="toggleCollapsible('proContraCollapse')">
+                            <span>Pro & Contra</span>
+                            <span class="collapsible-icon">▼</span>
+                        </div>
+                        <div class="collapsible-content">
+                            <div class="pro-contra-grid">
+                                <div class="mini-list">
+                                    <div class="mini-list-title pro">✓ Pro</div>
+                                    <ul id="myTypePro"></ul>
+                                </div>
+                                <div class="mini-list">
+                                    <div class="mini-list-title contra">✗ Contra</div>
+                                    <ul id="myTypeContra"></ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Collapsible: Pathos/Logos -->
+                    <div class="collapsible" id="pathosLogosCollapse">
+                        <div class="collapsible-header" onclick="toggleCollapsible('pathosLogosCollapse')">
+                            <span>Pathos & Logos</span>
+                            <span class="collapsible-icon">▼</span>
+                        </div>
+                        <div class="collapsible-content">
+                            <div class="pathos-logos-content">
+                                <p id="myTypePathos"></p>
+                                <p id="myTypeLogos"></p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Match Section -->
+                    <div class="match-section">
+                        <div class="match-card top">
+                            <div class="match-info">
+                                <div class="match-dot" id="topMatchDot"></div>
+                                <div>
+                                    <div class="match-label-text">Top Match</div>
+                                    <div class="match-name" id="topMatchName">...</div>
+                                </div>
+                            </div>
+                            <div class="match-score excellent" id="topMatchScore">0%</div>
+                        </div>
+
+                        <div class="match-card challenge">
+                            <div class="match-info">
+                                <div class="match-dot" id="challengeDot"></div>
+                                <div>
+                                    <div class="match-label-text">Challenge</div>
+                                    <div class="match-name" id="challengeName">...</div>
+                                </div>
+                            </div>
+                            <div class="match-score low" id="challengeScore">0%</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- CARD 2: KOMPATIBILITÄT -->
+        <div class="card" data-card="1">
+            <div class="card-inner">
+                <div class="card-header">
+                    <span class="card-title">Kompatibilität</span>
+                </div>
+                <div class="card-body">
+                    <!-- Partner Selector -->
+                    <div class="partner-selector" id="partnerSelector"></div>
+
+                    <!-- Radar Chart -->
+                    <div class="radar-section">
+                        <div class="radar-header">
+                            <div>
+                                <div class="radar-title">mit <span id="partnerNameDisplay">...</span></div>
+                            </div>
+                            <div style="text-align: right;">
+                                <div class="radar-score" id="overallScore" style="color: var(--primary);">0%</div>
+                                <div class="radar-score-label">Gesamt</div>
+                            </div>
+                        </div>
+                        <svg id="radarChart" viewBox="0 0 280 260"></svg>
+                    </div>
+
+                    <!-- Category Bars -->
+                    <div class="category-section">
+                        <div class="section-title">Kategorie-Details</div>
+                        <div id="categoryBars"></div>
+                    </div>
+
+                    <!-- Pro/Contra Analysis -->
+                    <div class="analysis-grid">
+                        <div class="analysis-section pro">
+                            <div class="analysis-title">✓ Was funktioniert</div>
+                            <ul class="analysis-list" id="partnerPro"></ul>
+                        </div>
+                        <div class="analysis-section contra">
+                            <div class="analysis-title">✗ Herausforderungen</div>
+                            <ul class="analysis-list" id="partnerContra"></ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- CARD 3: ALLE TYPEN -->
+        <div class="card" data-card="2">
+            <div class="card-inner">
+                <div class="card-header">
+                    <span class="card-title">Alle Typen</span>
+                </div>
+                <div class="card-body">
+                    <div class="mini-cards-grid" id="allTypesGrid"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Navigation Dots -->
+    <div class="nav-dots">
+        <div class="nav-dot active" data-card="0" onclick="scrollToCard(0)"></div>
+        <div class="nav-dot" data-card="1" onclick="scrollToCard(1)"></div>
+        <div class="nav-dot" data-card="2" onclick="scrollToCard(2)"></div>
+    </div>
+
+    <div class="swipe-hint">← Swipe →</div>
+
+    <script>
+        let data = null;
+        let currentArchetype = 'single';
+        let selectedPartner = 'duo';
+
+        const icons = {
+            single: '★',
+            duo: '♡',
+            duo_flex: '⚡',
+            solopoly: '◆',
+            poly_hedo: '☀',
+            polyamor: '♥'
+        };
+
+        const categoryNames = {
+            A: 'Beziehungsphilosophie',
+            B: 'Werte-Alignment',
+            C: 'Nähe-Distanz',
+            D: 'Autonomie',
+            E: 'Kommunikation',
+            F: 'Soziale Kompatibilität'
+        };
+
+        async function loadData() {
+            try {
+                const response = await fetch('archetype-matrix.json');
+                data = await response.json();
+            } catch (error) {
+                console.error('Error loading data:', error);
+                data = getFallbackData();
+            }
+            initApp();
+        }
+
+        function getFallbackData() {
+            return {
+                archetypes: {
+                    single: { id: "single", name: "Single", color: "#E63946", shortDescription: "Fokus auf Selbstentwicklung", pro: [], contra: [], pathos: "", logos: "" },
+                    duo: { id: "duo", name: "Duo", color: "#E84393", shortDescription: "Klassische monogame Zweierbeziehung", pro: [], contra: [], pathos: "", logos: "" },
+                    duo_flex: { id: "duo_flex", name: "Duo-Flex", color: "#FF6B6B", shortDescription: "Primär Zweierbeziehung mit situativer Öffnung", pro: [], contra: [], pathos: "", logos: "" },
+                    solopoly: { id: "solopoly", name: "Solopoly", color: "#2A9D8F", shortDescription: "Polyamor mit Autonomie", pro: [], contra: [], pathos: "", logos: "" },
+                    poly_hedo: { id: "poly_hedo", name: "Poly Hedo", color: "#9B5DE5", shortDescription: "Lustorientierte Mehrfachbeziehungen", pro: [], contra: [], pathos: "", logos: "" },
+                    polyamor: { id: "polyamor", name: "Polyamor", color: "#F4A261", shortDescription: "Strukturierte Mehrfachbeziehungen", pro: [], contra: [], pathos: "", logos: "" }
+                },
+                categories: {},
+                interactions: {},
+                aggregatedMatrix: { rows: [], cols: [], values: [] }
+            };
+        }
+
+        function initApp() {
+            document.getElementById('archetypeSelect').addEventListener('change', (e) => {
+                currentArchetype = e.target.value;
+                updateAll();
+            });
+
+            // Carousel scroll detection
+            const carousel = document.getElementById('carousel');
+            carousel.addEventListener('scroll', updateNavDots);
+
+            updateAll();
+        }
+
+        function updateAll() {
+            updateTheme();
+            updateMyType();
+            updatePartnerSelector();
+            updateTopAndChallenge();
+            updatePartnerView();
+            updateAllTypesGrid();
+        }
+
+        function updateTheme() {
+            document.body.className = `theme-${currentArchetype}`;
+        }
+
+        function updateMyType() {
+            const arch = data.archetypes[currentArchetype];
+            if (!arch) return;
+
+            document.getElementById('myTypeIcon').textContent = icons[currentArchetype];
+            document.getElementById('myTypeIcon').style.background = arch.color;
+            document.getElementById('myTypeName').textContent = arch.name;
+            document.getElementById('myTypeName').style.color = arch.color;
+            document.getElementById('myTypeDesc').textContent = arch.shortDescription || '';
+
+            const proList = document.getElementById('myTypePro');
+            proList.innerHTML = (arch.pro || []).slice(0, 4).map(p => `<li>${p}</li>`).join('');
+
+            const contraList = document.getElementById('myTypeContra');
+            contraList.innerHTML = (arch.contra || []).slice(0, 4).map(c => `<li>${c}</li>`).join('');
+
+            document.getElementById('myTypePathos').textContent = arch.pathos || '';
+            document.getElementById('myTypeLogos').textContent = arch.logos || '';
+        }
+
+        function updatePartnerSelector() {
+            const container = document.getElementById('partnerSelector');
+            const others = Object.values(data.archetypes).filter(a => a.id !== currentArchetype);
+
+            if (selectedPartner === currentArchetype || !others.find(o => o.id === selectedPartner)) {
+                selectedPartner = others[0]?.id || 'duo';
+            }
+
+            container.innerHTML = others.map(arch => `
+                <button class="partner-btn ${arch.id === selectedPartner ? 'active' : ''}"
+                        onclick="selectPartner('${arch.id}')"
+                        data-id="${arch.id}">
+                    <span class="dot" style="background: ${arch.color}"></span>
+                    ${arch.name}
+                </button>
+            `).join('');
+        }
+
+        function selectPartner(partnerId) {
+            selectedPartner = partnerId;
+            document.querySelectorAll('.partner-btn').forEach(btn => {
+                btn.classList.toggle('active', btn.dataset.id === partnerId);
+            });
+            updatePartnerView();
+        }
+
+        function updateTopAndChallenge() {
+            const others = Object.keys(data.archetypes).filter(id => id !== currentArchetype);
+            let topMatch = { id: null, score: 0 };
+            let challenge = { id: null, score: 100 };
+
+            others.forEach(otherId => {
+                const key = `${currentArchetype}_${otherId}`;
+                const interaction = data.interactions[key];
+                const score = interaction?.overall || 0;
+
+                if (score > topMatch.score) {
+                    topMatch = { id: otherId, score };
+                }
+                if (score < challenge.score) {
+                    challenge = { id: otherId, score };
+                }
+            });
+
+            if (topMatch.id) {
+                const arch = data.archetypes[topMatch.id];
+                document.getElementById('topMatchDot').style.background = arch.color;
+                document.getElementById('topMatchName').textContent = arch.name;
+                document.getElementById('topMatchScore').textContent = topMatch.score + '%';
+            }
+
+            if (challenge.id) {
+                const arch = data.archetypes[challenge.id];
+                document.getElementById('challengeDot').style.background = arch.color;
+                document.getElementById('challengeName').textContent = arch.name;
+                document.getElementById('challengeScore').textContent = challenge.score + '%';
+            }
+        }
+
+        function updatePartnerView() {
+            const partnerArch = data.archetypes[selectedPartner];
+            const interactionKey = `${currentArchetype}_${selectedPartner}`;
+            const interaction = data.interactions[interactionKey] || {};
+
+            document.getElementById('partnerNameDisplay').textContent = partnerArch?.name || '...';
+
+            const score = interaction.overall || 0;
+            const scoreEl = document.getElementById('overallScore');
+            scoreEl.textContent = score + '%';
+            scoreEl.style.color = getScoreColor(score);
+
+            drawRadarChart(interaction.scores || {}, partnerArch?.color || '#457B9D');
+            updateCategoryBars(interaction.scores || {});
+
+            const proList = document.getElementById('partnerPro');
+            proList.innerHTML = (interaction.pro || []).map(p => `<li>${p}</li>`).join('') || '<li>Keine Daten</li>';
+
+            const contraList = document.getElementById('partnerContra');
+            contraList.innerHTML = (interaction.contra || []).map(c => `<li>${c}</li>`).join('') || '<li>Keine Daten</li>';
+        }
+
+        function drawRadarChart(scores, color) {
+            const svg = document.getElementById('radarChart');
+            const cx = 140, cy = 120, maxR = 90;
+            const categories = ['A', 'B', 'C', 'D', 'E', 'F'];
+            const n = categories.length;
+
+            let html = '';
+
+            for (let r = 18; r <= maxR; r += 18) {
+                html += `<circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>`;
+            }
+
+            categories.forEach((cat, i) => {
+                const angle = (Math.PI * 2 * i / n) - Math.PI / 2;
+                const x = cx + Math.cos(angle) * maxR;
+                const y = cy + Math.sin(angle) * maxR;
+                const labelX = cx + Math.cos(angle) * (maxR + 18);
+                const labelY = cy + Math.sin(angle) * (maxR + 18);
+
+                html += `<line x1="${cx}" y1="${cy}" x2="${x}" y2="${y}" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>`;
+                html += `<text x="${labelX}" y="${labelY}" fill="var(--text-muted)" font-size="10" text-anchor="middle" dominant-baseline="middle">${cat}</text>`;
+            });
+
+            const points = categories.map((cat, i) => {
+                const value = scores[cat]?.value || 0;
+                const r = (value / 100) * maxR;
+                const angle = (Math.PI * 2 * i / n) - Math.PI / 2;
+                return `${cx + Math.cos(angle) * r},${cy + Math.sin(angle) * r}`;
+            }).join(' ');
+
+            html += `<polygon points="${points}" fill="${color}33" stroke="${color}" stroke-width="2"/>`;
+
+            categories.forEach((cat, i) => {
+                const value = scores[cat]?.value || 0;
+                const r = (value / 100) * maxR;
+                const angle = (Math.PI * 2 * i / n) - Math.PI / 2;
+                const x = cx + Math.cos(angle) * r;
+                const y = cy + Math.sin(angle) * r;
+                html += `<circle cx="${x}" cy="${y}" r="4" fill="${color}"/>`;
+            });
+
+            svg.innerHTML = html;
+        }
+
+        function updateCategoryBars(scores) {
+            const container = document.getElementById('categoryBars');
+            const categories = ['A', 'B', 'C', 'D', 'E', 'F'];
+
+            container.innerHTML = categories.map(cat => {
+                const value = scores[cat]?.value || 0;
+                const barClass = getBarClass(value);
+                const name = categoryNames[cat] || cat;
+
+                return `
+                    <div class="category-row">
+                        <span class="category-label">${cat}</span>
+                        <div class="category-bar-wrap">
+                            <div class="category-bar-container">
+                                <div class="category-bar ${barClass}" style="width: ${value}%">
+                                    <span class="category-bar-value">${value}%</span>
+                                </div>
+                            </div>
+                            <div class="category-name">${name}</div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function updateAllTypesGrid() {
+            const container = document.getElementById('allTypesGrid');
+            const archetypes = Object.values(data.archetypes);
+
+            container.innerHTML = archetypes.map(arch => {
+                const selfKey = `${arch.id}_${arch.id}`;
+                const selfScore = data.interactions[selfKey]?.overall || '—';
+
+                return `
+                    <div class="mini-card">
+                        <div class="mini-card-header">
+                            <div class="mini-card-icon" style="background: ${arch.color}">${icons[arch.id]}</div>
+                            <div class="mini-card-name" style="color: ${arch.color}">${arch.name}</div>
+                        </div>
+                        <div class="mini-card-desc">${arch.shortDescription || ''}</div>
+                        <div class="mini-card-self-score">Selbst-Match: <span>${selfScore}%</span></div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function getScoreColor(score) {
+            if (score >= 78) return '#00cec9';
+            if (score >= 70) return '#27ae60';
+            if (score >= 60) return '#f39c12';
+            return '#e74c3c';
+        }
+
+        function getBarClass(value) {
+            if (value >= 78) return 'bar-excellent';
+            if (value >= 70) return 'bar-good';
+            if (value >= 60) return 'bar-medium';
+            return 'bar-low';
+        }
+
+        function toggleCollapsible(id) {
+            document.getElementById(id).classList.toggle('open');
+        }
+
+        function scrollToCard(index) {
+            const carousel = document.getElementById('carousel');
+            const cardWidth = window.innerWidth;
+            carousel.scrollTo({ left: cardWidth * index, behavior: 'smooth' });
+        }
+
+        function updateNavDots() {
+            const carousel = document.getElementById('carousel');
+            const cardWidth = window.innerWidth;
+            const currentCard = Math.round(carousel.scrollLeft / cardWidth);
+
+            document.querySelectorAll('.nav-dot').forEach((dot, i) => {
+                dot.classList.toggle('active', i === currentCard);
+            });
+        }
+
+        // Initialize
+        loadData();
+    </script>
+</body>
+</html>
