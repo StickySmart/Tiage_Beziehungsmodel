@@ -1004,7 +1004,7 @@
                     <div class="radar-section">
                         <div class="radar-header">
                             <div>
-                                <div class="radar-title">mit <span id="partnerNameDisplay">...</span></div>
+                                <div class="radar-title"><span id="myTypeNameDisplay">...</span> mit <span id="partnerNameDisplay">...</span></div>
                             </div>
                             <div style="text-align: right;">
                                 <div class="radar-score" id="overallScore" style="color: var(--primary);">0%</div>
@@ -1286,10 +1286,12 @@
         }
 
         function updatePartnerView() {
+            const myArch = data.archetypes[currentArchetype];
             const partnerArch = data.archetypes[selectedPartner];
             const interactionKey = `${currentArchetype}_${selectedPartner}`;
             const interaction = data.interactions[interactionKey] || {};
 
+            document.getElementById('myTypeNameDisplay').textContent = myArch?.name || '...';
             document.getElementById('partnerNameDisplay').textContent = partnerArch?.name || '...';
 
             const score = interaction.overall || 0;
