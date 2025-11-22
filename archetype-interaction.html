@@ -1219,9 +1219,16 @@
             document.getElementById('myTypeLogos').textContent = arch.logos || '';
         }
 
+        // Fixed archetype order to ensure all types are shown
+        const archetypeOrder = ['single', 'duo', 'duo_flex', 'solopoly', 'poly_hedo', 'polyamor'];
+
         function updatePartnerSelector() {
             const container = document.getElementById('partnerSelector');
-            const others = Object.values(data.archetypes).filter(a => a.id !== currentArchetype);
+            // Use fixed order instead of Object.values to ensure consistent display
+            const others = archetypeOrder
+                .filter(id => id !== currentArchetype)
+                .map(id => data.archetypes[id])
+                .filter(arch => arch); // Remove any undefined
 
             if (selectedPartner === currentArchetype || !others.find(o => o.id === selectedPartner)) {
                 selectedPartner = others[0]?.id || 'duo';
@@ -1246,7 +1253,7 @@
         }
 
         function updateTopAndChallenge() {
-            const others = Object.keys(data.archetypes).filter(id => id !== currentArchetype);
+            const others = archetypeOrder.filter(id => id !== currentArchetype);
             let topMatch = { id: null, score: 0 };
             let challenge = { id: null, score: 100 };
 
@@ -1371,7 +1378,7 @@
 
         function updateAllTypesGrid() {
             const container = document.getElementById('allTypesGrid');
-            const archetypes = Object.values(data.archetypes);
+            const archetypes = archetypeOrder.map(id => data.archetypes[id]).filter(arch => arch);
 
             container.innerHTML = archetypes.map(arch => {
                 const selfKey = `${arch.id}_${arch.id}`;
