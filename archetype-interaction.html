@@ -680,6 +680,188 @@
             flex-wrap: wrap;
             gap: 10px;
         }
+
+        /* Comment Section Styles */
+        .comment-section {
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid var(--border);
+        }
+
+        .comment-section-title {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .comment-section-title::before {
+            content: '💬';
+        }
+
+        .comment-form {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .comment-form input,
+        .comment-form textarea {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 12px 15px;
+            color: var(--text-primary);
+            font-family: inherit;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+
+        .comment-form input:focus,
+        .comment-form textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .comment-form input::placeholder,
+        .comment-form textarea::placeholder {
+            color: var(--text-muted);
+        }
+
+        .comment-form textarea {
+            min-height: 80px;
+            resize: vertical;
+        }
+
+        .comment-form button {
+            align-self: flex-end;
+            background: var(--primary);
+            border: none;
+            color: white;
+            padding: 10px 25px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .comment-form button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .comment-form button:active {
+            transform: translateY(0);
+        }
+
+        .comments-list {
+            max-height: 300px;
+            overflow-y: auto;
+            padding-right: 10px;
+        }
+
+        .comments-list::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .comments-list::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 3px;
+        }
+
+        .comments-list::-webkit-scrollbar-thumb {
+            background: var(--primary);
+            border-radius: 3px;
+        }
+
+        .comment-item {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 10px;
+            animation: commentSlideIn 0.3s ease;
+        }
+
+        @keyframes commentSlideIn {
+            from {
+                opacity: 0;
+                transform: translateX(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .comment-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .comment-author {
+            font-weight: 600;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .comment-author::before {
+            content: '👤';
+            font-size: 0.9rem;
+        }
+
+        .comment-date {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        .comment-text {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+
+        .comment-delete {
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            cursor: pointer;
+            font-size: 0.8rem;
+            padding: 2px 6px;
+            border-radius: 4px;
+            transition: all 0.2s ease;
+        }
+
+        .comment-delete:hover {
+            color: var(--danger);
+            background: rgba(231, 76, 60, 0.1);
+        }
+
+        .no-comments {
+            text-align: center;
+            color: var(--text-muted);
+            font-style: italic;
+            padding: 20px;
+        }
+
+        .comment-count {
+            background: var(--primary);
+            color: white;
+            font-size: 0.7rem;
+            padding: 2px 8px;
+            border-radius: 10px;
+            margin-left: 8px;
+        }
     </style>
 </head>
 <body>
@@ -747,7 +929,7 @@
     </div>
 
     <footer>
-        <p>Archetypen-Interaktionsmatrix v2.0 | Asymmetrische 4x4 Matrix</p>
+        <p>Archetypen-Interaktionsmatrix v3.0 | Asymmetrische 5x5 Matrix</p>
         <p style="margin-top: 10px;">Die Perspektive beeinflusst die wahrgenommene Kompatibilität</p>
     </footer>
 
@@ -938,7 +1120,7 @@
                             <div class="compat-body">
                                 ${renderCategoryBars(interaction, other.color)}
                                 ${renderCompatAnalysis(interaction)}
-                                ${renderCompatPathosLogos(interaction)}
+                                ${renderCompatPathosLogos(interaction, currentArchetype, other.id)}
                             </div>
                         </div>
                     </div>
@@ -1009,23 +1191,30 @@
             `;
         }
 
-        function renderCompatPathosLogos(interaction) {
-            if (!interaction.pathos && !interaction.logos) return '';
+        function renderCompatPathosLogos(interaction, fromType, toType) {
+            let html = '';
 
-            return `
-                <div class="compat-pathos-logos">
-                    <div class="pathos-logos-grid">
-                        <div class="pathos-section">
-                            <div class="section-label">Emotionale Dynamik</div>
-                            <p class="pathos-text">${interaction.pathos || ''}</p>
-                        </div>
-                        <div class="logos-section">
-                            <div class="section-label">Strukturelle Passung</div>
-                            <p class="logos-text">${interaction.logos || ''}</p>
+            if (interaction.pathos || interaction.logos) {
+                html += `
+                    <div class="compat-pathos-logos">
+                        <div class="pathos-logos-grid">
+                            <div class="pathos-section">
+                                <div class="section-label">Emotionale Dynamik</div>
+                                <p class="pathos-text">${interaction.pathos || ''}</p>
+                            </div>
+                            <div class="logos-section">
+                                <div class="section-label">Strukturelle Passung</div>
+                                <p class="logos-text">${interaction.logos || ''}</p>
+                            </div>
                         </div>
                     </div>
-                </div>
-            `;
+                `;
+            }
+
+            // Add comment section
+            html += renderCommentSection(fromType, toType);
+
+            return html;
         }
 
         function getScoreClass(score) {
@@ -1040,6 +1229,156 @@
             if (value < 70) return 'bar-medium';
             if (value < 78) return 'bar-good';
             return 'bar-excellent';
+        }
+
+        // Comment Functions
+        function getCommentsKey(fromType, toType) {
+            return `archetype_comments_${fromType}_${toType}`;
+        }
+
+        function loadComments(fromType, toType) {
+            const key = getCommentsKey(fromType, toType);
+            const stored = localStorage.getItem(key);
+            return stored ? JSON.parse(stored) : [];
+        }
+
+        function saveComment(fromType, toType, author, text) {
+            const key = getCommentsKey(fromType, toType);
+            const comments = loadComments(fromType, toType);
+
+            const newComment = {
+                id: Date.now(),
+                author: author.trim() || 'Anonym',
+                text: text.trim(),
+                date: new Date().toISOString()
+            };
+
+            comments.unshift(newComment);
+            localStorage.setItem(key, JSON.stringify(comments));
+            return comments;
+        }
+
+        function deleteComment(fromType, toType, commentId) {
+            const key = getCommentsKey(fromType, toType);
+            let comments = loadComments(fromType, toType);
+            comments = comments.filter(c => c.id !== commentId);
+            localStorage.setItem(key, JSON.stringify(comments));
+            return comments;
+        }
+
+        function formatDate(isoString) {
+            const date = new Date(isoString);
+            return date.toLocaleDateString('de-DE', {
+                day: '2-digit',
+                month: '2-digit',
+                year: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
+            });
+        }
+
+        function renderComments(fromType, toType) {
+            const comments = loadComments(fromType, toType);
+
+            if (comments.length === 0) {
+                return '<div class="no-comments">Noch keine Kommentare. Sei der Erste!</div>';
+            }
+
+            return comments.map(comment => `
+                <div class="comment-item" data-comment-id="${comment.id}">
+                    <div class="comment-header">
+                        <span class="comment-author">${escapeHtml(comment.author)}</span>
+                        <div>
+                            <span class="comment-date">${formatDate(comment.date)}</span>
+                            <button class="comment-delete" onclick="handleDeleteComment('${fromType}', '${toType}', ${comment.id})" title="Löschen">✕</button>
+                        </div>
+                    </div>
+                    <div class="comment-text">${escapeHtml(comment.text)}</div>
+                </div>
+            `).join('');
+        }
+
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        function renderCommentSection(fromType, toType) {
+            const comments = loadComments(fromType, toType);
+            const commentCount = comments.length;
+
+            return `
+                <div class="comment-section" data-from="${fromType}" data-to="${toType}">
+                    <div class="comment-section-title">
+                        Kommentare
+                        ${commentCount > 0 ? `<span class="comment-count">${commentCount}</span>` : ''}
+                    </div>
+                    <form class="comment-form" onsubmit="handleCommentSubmit(event, '${fromType}', '${toType}')">
+                        <input type="text" name="author" placeholder="Dein Name" maxlength="50">
+                        <textarea name="text" placeholder="Dein Kommentar zu dieser Kombination..." maxlength="500" required></textarea>
+                        <button type="submit">Kommentar hinzufügen</button>
+                    </form>
+                    <div class="comments-list" id="comments-${fromType}-${toType}">
+                        ${renderComments(fromType, toType)}
+                    </div>
+                </div>
+            `;
+        }
+
+        function handleCommentSubmit(event, fromType, toType) {
+            event.preventDefault();
+            const form = event.target;
+            const author = form.querySelector('[name="author"]').value;
+            const text = form.querySelector('[name="text"]').value;
+
+            if (!text.trim()) return;
+
+            saveComment(fromType, toType, author, text);
+
+            // Reset form
+            form.reset();
+
+            // Update comments display
+            const commentsList = document.getElementById(`comments-${fromType}-${toType}`);
+            if (commentsList) {
+                commentsList.innerHTML = renderComments(fromType, toType);
+            }
+
+            // Update comment count
+            updateCommentCount(fromType, toType);
+        }
+
+        function handleDeleteComment(fromType, toType, commentId) {
+            if (!confirm('Kommentar wirklich löschen?')) return;
+
+            deleteComment(fromType, toType, commentId);
+
+            // Update comments display
+            const commentsList = document.getElementById(`comments-${fromType}-${toType}`);
+            if (commentsList) {
+                commentsList.innerHTML = renderComments(fromType, toType);
+            }
+
+            // Update comment count
+            updateCommentCount(fromType, toType);
+        }
+
+        function updateCommentCount(fromType, toType) {
+            const comments = loadComments(fromType, toType);
+            const section = document.querySelector(`.comment-section[data-from="${fromType}"][data-to="${toType}"]`);
+            if (section) {
+                const title = section.querySelector('.comment-section-title');
+                const existingCount = title.querySelector('.comment-count');
+                if (existingCount) existingCount.remove();
+
+                if (comments.length > 0) {
+                    const countBadge = document.createElement('span');
+                    countBadge.className = 'comment-count';
+                    countBadge.textContent = comments.length;
+                    title.appendChild(countBadge);
+                }
+            }
         }
 
         // Initialize

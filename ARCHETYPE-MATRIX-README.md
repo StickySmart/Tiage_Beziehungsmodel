@@ -129,12 +129,23 @@ Archetypen und Kompatibilitäten können expandiert werden für mehr Details.
 3. Klicke auf Archetypen-Karten für Details
 4. Klicke auf Kompatibilitäts-Karten für Analyse
 
+## Kommentar-System
+
+Nutzer können Kommentare zu jeder Archetypen-Kombination hinterlassen:
+
+- **Name eingeben** (optional, sonst "Anonym")
+- **Kommentar schreiben** (max. 500 Zeichen)
+- **localStorage** - Kommentare werden lokal im Browser gespeichert
+- **Löschen möglich** - Jeder Kommentar kann entfernt werden
+- **Scrollbare Liste** - Bei vielen Kommentaren wird gescrollt
+
 ## Weiterentwicklung
 
 - [ ] PDF Export der persönlichen Analyse
 - [ ] Selbst-Kombination (z.B. Single × Single) optional anzeigen
 - [ ] URL-Parameter für direkten Link zu bestimmtem Typ
 - [ ] Dark/Light Mode Toggle
+- [ ] Server-seitige Kommentar-Speicherung
 
 ---
 
