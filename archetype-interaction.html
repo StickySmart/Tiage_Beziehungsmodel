@@ -312,6 +312,17 @@
             padding: 14px 16px;
             border-radius: 12px;
             margin-bottom: 10px;
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .match-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+        }
+
+        .match-card:active {
+            transform: translateY(0);
         }
 
         .match-card.top {
@@ -800,6 +811,154 @@
             color: var(--text-secondary);
         }
 
+        /* Match Modal Content */
+        .match-modal-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .match-modal-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+
+        .match-modal-info h3 {
+            font-size: var(--font-lg);
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .match-modal-info p {
+            font-size: var(--font-sm);
+            color: var(--text-muted);
+        }
+
+        .match-modal-score {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 16px;
+            background: var(--bg-dark);
+            border-radius: 12px;
+            margin-bottom: 20px;
+        }
+
+        .match-modal-score-label {
+            font-size: var(--font-sm);
+            color: var(--text-muted);
+            text-transform: uppercase;
+        }
+
+        .match-modal-score-value {
+            font-size: var(--font-xl);
+            font-weight: 700;
+        }
+
+        .match-modal-categories {
+            margin-bottom: 20px;
+        }
+
+        .match-modal-categories-title {
+            font-size: var(--font-sm);
+            color: var(--text-muted);
+            text-transform: uppercase;
+            margin-bottom: 12px;
+        }
+
+        .match-modal-bar-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 8px;
+        }
+
+        .match-modal-bar-label {
+            width: 24px;
+            font-weight: 700;
+            font-size: var(--font-sm);
+            color: var(--primary);
+        }
+
+        .match-modal-bar-container {
+            flex: 1;
+            height: var(--bar-height);
+            background: rgba(255,255,255,0.05);
+            border-radius: var(--bar-radius);
+            overflow: hidden;
+        }
+
+        .match-modal-bar {
+            height: 100%;
+            border-radius: var(--bar-radius);
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            padding-right: 8px;
+        }
+
+        .match-modal-bar-value {
+            font-size: var(--font-xs);
+            font-weight: 600;
+            color: white;
+        }
+
+        .match-modal-bar-name {
+            width: 120px;
+            font-size: var(--font-xs);
+            color: var(--text-muted);
+            text-align: right;
+        }
+
+        .match-modal-section {
+            padding: 14px;
+            border-radius: 10px;
+            margin-bottom: 12px;
+        }
+
+        .match-modal-section.pro {
+            background: rgba(46, 204, 113, 0.1);
+            border: 1px solid rgba(46, 204, 113, 0.3);
+        }
+
+        .match-modal-section.contra {
+            background: rgba(231, 76, 60, 0.1);
+            border: 1px solid rgba(231, 76, 60, 0.3);
+        }
+
+        .match-modal-section-title {
+            font-weight: 600;
+            margin-bottom: 8px;
+            font-size: var(--font-base);
+        }
+
+        .match-modal-section.pro .match-modal-section-title { color: var(--success); }
+        .match-modal-section.contra .match-modal-section-title { color: var(--danger); }
+
+        .match-modal-list {
+            list-style: none;
+            font-size: var(--font-sm);
+            color: var(--text-secondary);
+        }
+
+        .match-modal-list li {
+            padding: 3px 0;
+            padding-left: 14px;
+            position: relative;
+        }
+
+        .match-modal-list li::before {
+            content: '•';
+            position: absolute;
+            left: 0;
+        }
+
         /* Legend Page */
         .legend-section {
             margin-bottom: 25px;
@@ -990,7 +1149,7 @@
 
                     <!-- Match Section -->
                     <div class="match-section">
-                        <div class="match-card top">
+                        <div class="match-card top" id="topMatchCard" onclick="openMatchModal('top')">
                             <div class="match-info">
                                 <div class="match-dot" id="topMatchDot"></div>
                                 <div>
@@ -1001,7 +1160,7 @@
                             <div class="match-score excellent" id="topMatchScore">0%</div>
                         </div>
 
-                        <div class="match-card challenge">
+                        <div class="match-card challenge" id="challengeCard" onclick="openMatchModal('challenge')">
                             <div class="match-info">
                                 <div class="match-dot" id="challengeDot"></div>
                                 <div>
@@ -1296,6 +1455,10 @@
                 }
             });
 
+            // Store for modal access
+            currentTopMatch = topMatch;
+            currentChallenge = challenge;
+
             if (topMatch.id) {
                 const arch = data.archetypes[topMatch.id];
                 document.getElementById('topMatchDot').style.background = arch.color;
@@ -1525,6 +1688,86 @@
             if (event && event.target !== event.currentTarget) return;
             document.getElementById('categoryModal').classList.remove('active');
             document.body.style.overflow = '';
+        }
+
+        // Store current match data for modal access
+        let currentTopMatch = { id: null, score: 0 };
+        let currentChallenge = { id: null, score: 0 };
+
+        // Match Modal Functions
+        function openMatchModal(type) {
+            const matchData = type === 'top' ? currentTopMatch : currentChallenge;
+            if (!matchData.id) return;
+
+            const myArch = data.archetypes[currentArchetype];
+            const partnerArch = data.archetypes[matchData.id];
+            const interactionKey = `${currentArchetype}_${matchData.id}`;
+            const interaction = data.interactions[interactionKey] || {};
+            const scores = interaction.scores || {};
+
+            const title = type === 'top' ? 'Top Match' : 'Challenge';
+            const scoreColor = getScoreColor(matchData.score);
+
+            document.getElementById('modalTitle').textContent = `${myArch.name} + ${partnerArch.name}`;
+            document.getElementById('modalBody').innerHTML = getMatchModalContent(partnerArch, interaction, scores, scoreColor, myArch);
+            document.getElementById('categoryModal').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function getMatchModalContent(partnerArch, interaction, scores, scoreColor, myArch) {
+            const categories = ['A', 'B', 'C', 'D', 'E', 'F'];
+            const overall = interaction.overall || 0;
+
+            const categoryBars = categories.map(cat => {
+                const value = scores[cat]?.value || 0;
+                const barClass = getBarClass(value);
+                const name = categoryNames[cat] || cat;
+
+                return `
+                    <div class="match-modal-bar-row">
+                        <span class="match-modal-bar-label">${cat}</span>
+                        <div class="match-modal-bar-container">
+                            <div class="match-modal-bar ${barClass}" style="width: ${value}%">
+                                <span class="match-modal-bar-value">${value}%</span>
+                            </div>
+                        </div>
+                        <span class="match-modal-bar-name">${name}</span>
+                    </div>
+                `;
+            }).join('');
+
+            const proItems = (interaction.pro || []).map(p => `<li>${p}</li>`).join('') || '<li>Keine Daten</li>';
+            const contraItems = (interaction.contra || []).map(c => `<li>${c}</li>`).join('') || '<li>Keine Daten</li>';
+
+            return `
+                <div class="match-modal-header">
+                    <div class="match-modal-icon" style="background: ${partnerArch.color}">${icons[partnerArch.id]}</div>
+                    <div class="match-modal-info">
+                        <h3 style="color: ${partnerArch.color}">${partnerArch.name}</h3>
+                        <p>${partnerArch.shortDescription || ''}</p>
+                    </div>
+                </div>
+
+                <div class="match-modal-score">
+                    <span class="match-modal-score-label">Kompatibilität mit ${myArch.name}</span>
+                    <span class="match-modal-score-value" style="color: ${scoreColor}">${overall}%</span>
+                </div>
+
+                <div class="match-modal-categories">
+                    <div class="match-modal-categories-title">Kategorie-Bewertungen</div>
+                    ${categoryBars}
+                </div>
+
+                <div class="match-modal-section pro">
+                    <div class="match-modal-section-title">✓ Was funktioniert</div>
+                    <ul class="match-modal-list">${proItems}</ul>
+                </div>
+
+                <div class="match-modal-section contra">
+                    <div class="match-modal-section-title">✗ Herausforderungen</div>
+                    <ul class="match-modal-list">${contraItems}</ul>
+                </div>
+            `;
         }
 
         // Close modal on escape key
