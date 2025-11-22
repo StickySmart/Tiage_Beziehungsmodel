@@ -654,6 +654,10 @@
             --primary: #E84393;
             --primary-light: #FDA7DF;
         }
+        body.theme-duo_flex {
+            --primary: #FF6B6B;
+            --primary-light: #FFA5A5;
+        }
 
         /* Expand All Button */
         .expand-all-btn {
@@ -873,6 +877,7 @@
                 <select id="archetypeSelect">
                     <option value="single">Single</option>
                     <option value="duo">Duo</option>
+                    <option value="duo_flex">Duo-Flex</option>
                     <option value="solopoly">Solopoly</option>
                     <option value="poly_hedo">Poly Hedo</option>
                     <option value="polyamor">Polyamor</option>
@@ -885,7 +890,7 @@
         <!-- Archetypes Section -->
         <section class="archetypes-section">
             <div class="section-header">
-                <h2 class="section-title">Die 4 Beziehungsarchetypen</h2>
+                <h2 class="section-title">Die 6 Beziehungsarchetypen</h2>
                 <button class="expand-all-btn" id="expandAllTypes">Alle einblenden</button>
             </div>
             <div class="archetypes-grid" id="archetypesGrid"></div>
@@ -929,7 +934,7 @@
     </div>
 
     <footer>
-        <p>Archetypen-Interaktionsmatrix v3.0 | Asymmetrische 5x5 Matrix</p>
+        <p>Archetypen-Interaktionsmatrix v4.0 | Asymmetrische 6x6 Matrix</p>
         <p style="margin-top: 10px;">Die Perspektive beeinflusst die wahrgenommene Kompatibilität</p>
     </footer>
 
@@ -943,6 +948,7 @@
         const icons = {
             single: '★',
             duo: '♡',
+            duo_flex: '♡⚡',
             solopoly: '◆',
             poly_hedo: '☀',
             polyamor: '♥'
@@ -966,6 +972,7 @@
                 archetypes: {
                     single: { id: "single", name: "Single", color: "#E63946", shortDescription: "Fokus auf Selbstentwicklung", pro: [], contra: [], pathos: "", logos: "" },
                     duo: { id: "duo", name: "Duo", color: "#E84393", shortDescription: "Klassische monogame Zweierbeziehung", pro: [], contra: [], pathos: "", logos: "" },
+                    duo_flex: { id: "duo_flex", name: "Duo-Flex", color: "#FF6B6B", shortDescription: "Primär Zweierbeziehung mit situativer Öffnung", pro: [], contra: [], pathos: "", logos: "" },
                     solopoly: { id: "solopoly", name: "Solopoly", color: "#2A9D8F", shortDescription: "Polyamor mit Autonomie", pro: [], contra: [], pathos: "", logos: "" },
                     poly_hedo: { id: "poly_hedo", name: "Poly Hedo", color: "#9B5DE5", shortDescription: "Lustorientierte Mehrfachbeziehungen", pro: [], contra: [], pathos: "", logos: "" },
                     polyamor: { id: "polyamor", name: "Polyamor", color: "#F4A261", shortDescription: "Strukturierte Mehrfachbeziehungen", pro: [], contra: [], pathos: "", logos: "" }

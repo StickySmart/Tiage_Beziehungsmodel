@@ -1,6 +1,6 @@
-# Archetypen-Interaktionsmatrix v3.0
+# Archetypen-Interaktionsmatrix v4.0
 
-Eine interaktive 5x5 Matrix zur Bewertung der Kompatibilität verschiedener Beziehungsarchetypen.
+Eine interaktive 6x6 Matrix zur Bewertung der Kompatibilität verschiedener Beziehungsarchetypen.
 
 ## Live Demo
 
@@ -8,24 +8,26 @@ Eine interaktive 5x5 Matrix zur Bewertung der Kompatibilität verschiedener Bezi
 
 ## Dateien
 
-- `archetype-matrix.json` - Vollständige Datenstruktur mit allen 25 Interaktionen
+- `archetype-matrix.json` - Vollständige Datenstruktur mit allen 36 Interaktionen
 - `archetype-interaction.html` - Interaktive Single-Page-App
 
-## Die 5 Archetypen
+## Die 6 Archetypen
 
 | Archetyp | Kernfokus | Farbe |
 |----------|-----------|-------|
 | **Single** | Selbst-Exploration, Ungebundenheit | Rot (#E63946) |
 | **Duo** | Klassische Monogamie, Exklusivität | Pink (#E84393) |
+| **Duo-Flex** | Primär Zweierbeziehung mit situativer Öffnung | Koralle (#FF6B6B) |
 | **Solopoly** | Autonomie + Poly, kein Nesting | Grün (#2A9D8F) |
 | **Poly Hedo** | Lustorientiert, spontan, Genuss | Lila (#9B5DE5) |
 | **Polyamor** | Strukturiert, romantisch, regelbasiert | Orange (#F4A261) |
 
-### Duo vs. Poly-Varianten
+### Duo vs. Duo-Flex vs. Poly-Varianten
 
 Der entscheidende Unterschied:
 
 - **Duo**: Klassische monogame Zweierbeziehung. Exklusivität, tiefe Verschmelzung, gesellschaftlich maximal akzeptiert.
+- **Duo-Flex**: Primär monogam, aber mit situativer Öffnung nach Absprache. "Monogamish" - Swingen, Hall Pass, gelegentliche Dreier möglich.
 
 ### Poly Hedo vs. Polyamor
 
@@ -85,21 +87,24 @@ Solopoly → Single: 66%
 
 Zeile = VON (deine Perspektive), Spalte = ZU (der andere Archetyp)
 
-## 5x5 Übersichtsmatrix
+## 6x6 Übersichtsmatrix
 
-|              | Single | Duo | Solopoly | Poly Hedo | Polyamor |
-|--------------|--------|-----|----------|-----------|----------|
-| **Single**   | 72%    | 71% | 61%      | 60%       | 57%      |
-| **Duo**      | 68%    | 84% | 36%      | 33%       | 51%      |
-| **Solopoly** | 66%    | 38% | 78%      | 68%       | 70%      |
-| **Poly Hedo**| 64%    | 37% | 67%      | 72%       | 64%      |
-| **Polyamor** | 60%    | 51% | 71%      | 66%       | 78%      |
+|              | Single | Duo | Duo-Flex | Solopoly | Poly Hedo | Polyamor |
+|--------------|--------|-----|----------|----------|-----------|----------|
+| **Single**   | 72%    | 71% | 65%      | 61%      | 60%       | 57%      |
+| **Duo**      | 68%    | 84% | 75%      | 36%      | 47%       | 51%      |
+| **Duo-Flex** | 65%    | 75% | 85%      | 64%      | 75%       | 61%      |
+| **Solopoly** | 66%    | 38% | 59%      | 78%      | 68%       | 70%      |
+| **Poly Hedo**| 64%    | 37% | 68%      | 67%      | 72%       | 64%      |
+| **Polyamor** | 60%    | 51% | 65%      | 71%      | 66%       | 78%      |
 
 ### Kernerkenntnisse
 
-- **Duo × Duo (84%)** hat die höchste Selbst-Kompatibilität
-- **Duo × Poly-Varianten (33-51%)** zeigt die niedrigsten Werte - fundamentale Inkompatibilität
-- **Single × Duo (71%)** zeigt gute Kompatibilität - klassischer Beziehungsstart
+- **Duo-Flex × Duo-Flex (85%)** hat die höchste Selbst-Kompatibilität
+- **Duo × Duo (84%)** zeigt ebenfalls sehr hohe Selbst-Kompatibilität
+- **Duo-Flex × Poly Hedo (75%)** zeigt hohe Kompatibilität - Flexibilität trifft Genuss
+- **Duo × Poly-Varianten (36-51%)** zeigt niedrige Werte - fundamentale Inkompatibilität
+- **Duo-Flex als Brücke**: Höhere Kompatibilität mit Poly-Typen als reines Duo
 
 ## Design-Entscheidungen
 

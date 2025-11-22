@@ -1,9 +1,9 @@
 {
   "meta": {
     "title": "Archetypen-Interaktionsmatrix für Beziehungsmodelle",
-    "version": "3.0.0",
+    "version": "4.0.0",
     "created": "2025-01-22",
-    "description": "Eine 5x5 Matrix zur Bewertung der Kompatibilität verschiedener Beziehungsarchetypen",
+    "description": "Eine 6x6 Matrix zur Bewertung der Kompatibilität verschiedener Beziehungsarchetypen",
     "matrixType": "asymmetric",
     "note": "Asymmetrisch, da die Perspektive die wahrgenommene Kompatibilität beeinflusst"
   },
@@ -166,6 +166,31 @@
       ],
       "pathos": "Das Gefühl von 'Du bist mein Zuhause'. Tiefe Geborgenheit in der Exklusivität. Die romantische Vorstellung von der einen Person, die alles versteht. Aber auch die Last, alles füreinander sein zu müssen.",
       "logos": "Strukturell einfach und klar: Eine Beziehung, klare Rollen, gesellschaftlich definierte Erwartungen. Ressourcen (Zeit, Energie, Geld) fließen in eine Partnerschaft. Entscheidungen werden gemeinsam getroffen."
+    },
+    "duo_flex": {
+      "id": "duo_flex",
+      "name": "Duo-Flex",
+      "color": "#FF6B6B",
+      "colorLight": "#FFA5A5",
+      "colorDark": "#CC5555",
+      "shortDescription": "Primär Zweierbeziehung mit situativer Öffnung. Monogamisch mit Flexibilität nach Absprache.",
+      "fullDescription": "Das Duo-Flex-Modell vereint die Stabilität einer Hauptbeziehung mit situativer Offenheit. Die Primärpartnerschaft hat klare Priorität, aber für bestimmte Situationen oder Bedürfnisse kann die Beziehung nach Absprache geöffnet werden. Typische Formen: Swingen, gelegentliche Dreier, Hall Pass, oder 'Don't Ask Don't Tell'-Arrangements.",
+      "pro": [
+        "Stabilität einer Hauptbeziehung mit Flexibilität",
+        "Offenheit für neue Erfahrungen ohne Beziehung zu gefährden",
+        "Klare Priorität und Sicherheit der Primärbeziehung",
+        "Gesellschaftlich akzeptabler als volle Polyamorie",
+        "Ermöglicht sexuelle Exploration als Paar oder einzeln"
+      ],
+      "contra": [
+        "Grenzen müssen ständig neu verhandelt werden",
+        "Eifersucht kann trotz Absprachen auftreten",
+        "Gesellschaftlich immer noch erklärungsbedürftig",
+        "Risiko der ungleichen Erwartungen zwischen Partnern",
+        "'Öffnung' kann zu Spannungen führen wenn unterschiedlich genutzt"
+      ],
+      "pathos": "Die Suche nach dem Besten aus beiden Welten: Die Geborgenheit einer festen Partnerschaft mit der Freiheit für besondere Momente. Manchmal die Unsicherheit: 'Ist das genug? Ist das zu viel?' Die Balance zwischen Sicherheit und Abenteuer.",
+      "logos": "Strukturell komplex: Klare Primärbeziehung mit definierten Ausnahmen. Regeln sind kontextabhängig (Urlaub, bestimmte Situationen, spezifische Personen). Kommunikation über Grenzen ist zentral. Flexibilität erfordert Vertrauen und klare Agreements."
     }
   },
 
@@ -763,14 +788,14 @@
     "duo_poly_hedo": {
       "from": "duo", "to": "poly_hedo",
       "scores": {
-        "A": { "value": 22, "note": "Exklusivität vs. Hedonismus - Grundkonflikt" },
-        "B": { "value": 30, "note": "Völlig unterschiedliche Wertesysteme" },
-        "C": { "value": 55, "note": "Intensität möglich, aber ohne Exklusivität" },
-        "D": { "value": 28, "note": "Duo fühlt sich durch Poly Hedo's Freiheit bedroht" },
-        "E": { "value": 40, "note": "Kommunikation über verschiedene Sprachen" },
-        "F": { "value": 25, "note": "Gesellschaftlich als Demütigung für Duo gesehen" }
+        "A": { "value": 35, "note": "Exklusivität vs. Hedonismus - Grundkonflikt, aber Kompromisse möglich" },
+        "B": { "value": 45, "note": "Unterschiedliche Wertesysteme, aber Ehrlichkeit verbindet" },
+        "C": { "value": 60, "note": "Intensität möglich, Duo könnte sich öffnen lernen" },
+        "D": { "value": 40, "note": "Duo könnte von Poly Hedo's Leichtigkeit lernen" },
+        "E": { "value": 50, "note": "Kommunikation herausfordernd aber möglich" },
+        "F": { "value": 50, "note": "Gesellschaftlich als 'offene Beziehung' erklärbar" }
       },
-      "overall": 33,
+      "overall": 47,
       "pro": [
         "Intensive, leidenschaftliche Momente",
         "Poly Hedo bringt Leichtigkeit",
@@ -838,19 +863,317 @@
       ],
       "pathos": "Die klassische Liebesgeschichte. 'Du und ich gegen die Welt.' Tiefe Geborgenheit in der Exklusivität. Aber auch: Die Last, alles füreinander sein zu müssen.",
       "logos": "Strukturell ideal für beide. Gleiche Erwartungen, gleiche Sprache, gleiche gesellschaftliche Einbettung. Die Herausforderung liegt im Alltag, nicht im Modell."
+    },
+
+    "single_duo_flex": {
+      "from": "single", "to": "duo_flex",
+      "scores": {
+        "A": { "value": 65, "note": "Single könnte Flexibilität schätzen" },
+        "B": { "value": 68, "note": "Offenheit für verschiedene Modelle" },
+        "C": { "value": 60, "note": "Nähe möglich, aber nicht erzwungen" },
+        "D": { "value": 70, "note": "Duo-Flex respektiert Autonomie mehr als Duo" },
+        "E": { "value": 62, "note": "Kommunikation über Grenzen nötig" },
+        "F": { "value": 68, "note": "Gesellschaftlich als moderne Beziehung erklärbar" }
+      },
+      "overall": 65,
+      "pro": [
+        "Flexibilität passt zum Single-Lebensstil",
+        "Weniger Verschmelzungsdruck als bei reinem Duo",
+        "Offenheit für Exploration wird verstanden",
+        "Moderner Beziehungsansatz"
+      ],
+      "contra": [
+        "Single muss sich auf Primärbeziehung einlassen",
+        "Regeln und Grenzen können verwirrend sein",
+        "Unklare Position: Teil des Paares oder Außenkontakt?",
+        "Komplexe Dynamiken möglich"
+      ],
+      "pathos": "Der Single spürt die Anziehung eines offenen, aber verbundenen Paares. Neugier mischt sich mit der Frage: 'Wo ist mein Platz in diesem System?'",
+      "logos": "Strukturell flexibler als Duo. Single kann verschiedene Rollen einnehmen. Klarheit über die eigene Position im System ist essenziell."
+    },
+
+    "solopoly_duo_flex": {
+      "from": "solopoly", "to": "duo_flex",
+      "scores": {
+        "A": { "value": 58, "note": "Duo-Flex akzeptiert Nicht-Exklusivität situativ" },
+        "B": { "value": 62, "note": "Beide verstehen Offenheit, unterschiedlich strukturiert" },
+        "C": { "value": 52, "note": "Duo-Flex will mehr Nähe als Solopoly bietet" },
+        "D": { "value": 65, "note": "Solopoly's Autonomie teilweise kompatibel" },
+        "E": { "value": 68, "note": "Kommunikation über Grenzen funktioniert" },
+        "F": { "value": 48, "note": "Gesellschaftlich komplex zu erklären" }
+      },
+      "overall": 59,
+      "pro": [
+        "Duo-Flex versteht Nicht-Exklusivität",
+        "Situative Öffnung kann Solopoly integrieren",
+        "Weniger Druck als bei reinem Duo",
+        "Ehrliche Kommunikation von beiden Seiten"
+      ],
+      "contra": [
+        "Solopoly passt nicht in Primär-Struktur",
+        "Duo-Flex erwartet mehr Verbindlichkeit",
+        "Statusfragen: Hauptpartner vs. Außenkontakt",
+        "Unterschiedliche Tiefenerwartungen"
+      ],
+      "pathos": "Solopoly sieht in Duo-Flex einen Kompromiss - näher als Duo, aber immer noch mit Verschmelzungswunsch. Respekt für den Versuch der Öffnung.",
+      "logos": "Strukturell möglich als Außenkontakt, nicht als Primärpartner. Solopoly muss klären: Will ich Teil dieses Systems sein oder eigenständig bleiben?"
+    },
+
+    "poly_hedo_duo_flex": {
+      "from": "poly_hedo", "to": "duo_flex",
+      "scores": {
+        "A": { "value": 72, "note": "Beide schätzen Offenheit und Erfahrung" },
+        "B": { "value": 68, "note": "Gemeinsames Verständnis für situative Öffnung" },
+        "C": { "value": 70, "note": "Intensität ohne permanente Verpflichtung" },
+        "D": { "value": 78, "note": "Freiheit wird von Duo-Flex respektiert" },
+        "E": { "value": 65, "note": "Pragmatische Kommunikation funktioniert" },
+        "F": { "value": 55, "note": "Gesellschaftlich als 'offene Beziehung' erklärbar" }
+      },
+      "overall": 68,
+      "pro": [
+        "Duo-Flex kann stabiler Anker für Poly Hedo sein",
+        "Offenheit wird verstanden und akzeptiert",
+        "Intensive Momente ohne Beziehungsdruck",
+        "Win-Win: Stabilität + Freiheit"
+      ],
+      "contra": [
+        "Poly Hedo könnte zu viel Freiheit wollen",
+        "Duo-Flex Grenzen könnten einschränken",
+        "Unterschiedliche Intensitäts-Erwartungen",
+        "Risiko wenn Poly Hedo 'mehr' wird als geplant"
+      ],
+      "pathos": "Poly Hedo findet in Duo-Flex einen interessanten Kompromiss: Menschen, die Spaß verstehen, aber auch Wurzeln haben. Leichtigkeit trifft auf Stabilität.",
+      "logos": "Strukturell kompatibel für situative Begegnungen. Poly Hedo als 'Bereicherung' für Duo-Flex, nicht als Bedrohung. Klare Grenzen schützen alle."
+    },
+
+    "polyamor_duo_flex": {
+      "from": "polyamor", "to": "duo_flex",
+      "scores": {
+        "A": { "value": 68, "note": "Beide verstehen nicht-exklusive Beziehungen" },
+        "B": { "value": 72, "note": "Ethische Grundlagen ähnlich" },
+        "C": { "value": 65, "note": "Tiefe Verbindung möglich" },
+        "D": { "value": 62, "note": "Polyamor braucht mehr als situative Öffnung" },
+        "E": { "value": 75, "note": "Beide kommunikationsstark" },
+        "F": { "value": 52, "note": "Gesellschaftlich herausfordernd" }
+      },
+      "overall": 65,
+      "pro": [
+        "Duo-Flex versteht Poly-Konzepte",
+        "Tiefe Verbindung als sekundärer Partner möglich",
+        "Kommunikation funktioniert auf ähnlicher Ebene",
+        "Respekt vor verschiedenen Beziehungsmodellen"
+      ],
+      "contra": [
+        "Polyamor will mehr als situative Öffnung",
+        "Hierarchie-Konflikte möglich",
+        "Polyamor fühlt sich möglicherweise als 'Bonus'",
+        "Unterschiedliche Tiefen-Erwartungen langfristig"
+      ],
+      "pathos": "Polyamor sieht in Duo-Flex einen Kompromiss-Partner: offen genug für Verbindung, aber mit eingebauten Grenzen. Respekt und leichte Frustration mischen sich.",
+      "logos": "Strukturell möglich wenn Polyamor die sekundäre Rolle akzeptiert. Duo-Flex bietet Stabilität, Polyamor bringt Poly-Erfahrung. Klare Hierarchie-Absprachen nötig."
+    },
+
+    "duo_duo_flex": {
+      "from": "duo", "to": "duo_flex",
+      "scores": {
+        "A": { "value": 72, "note": "Ähnliche Grundwerte mit Offenheits-Unterschied" },
+        "B": { "value": 78, "note": "Beide schätzen Primärbeziehung" },
+        "C": { "value": 80, "note": "Tiefe Nähe ist beidseitig möglich" },
+        "D": { "value": 58, "note": "Duo-Flex's Öffnung könnte Duo verunsichern" },
+        "E": { "value": 70, "note": "Kommunikation über unterschiedliche Grenzen" },
+        "F": { "value": 70, "note": "Gesellschaftlich ähnlich akzeptiert" }
+      },
+      "overall": 75,
+      "pro": [
+        "Ähnliche Grundwerte bei Partnerschaft",
+        "Duo-Flex könnte Duo zur Öffnung inspirieren",
+        "Tiefe Verbindung möglich",
+        "Verständnis für Primärbeziehungs-Fokus"
+      ],
+      "contra": [
+        "Duo könnte Öffnung als Bedrohung sehen",
+        "Unterschiedliche Treue-Definitionen",
+        "Duo fürchtet 'nicht genug' zu sein",
+        "Kann Duo in Identitätskrise stürzen"
+      ],
+      "pathos": "Duo sieht in Duo-Flex eine Variante von sich selbst - ähnlich, aber mit einer Tür nach draußen. Faszination und Angst: 'Könnte ich das auch? Will ich das?'",
+      "logos": "Strukturell kompatibel bei Primärbeziehung, unterschiedlich bei Grenzen. Funktioniert wenn Duo die situative Öffnung toleriert oder übernimmt."
+    },
+
+    "duo_flex_single": {
+      "from": "duo_flex", "to": "single",
+      "scores": {
+        "A": { "value": 62, "note": "Single als Bereicherung oder neuer Partner möglich" },
+        "B": { "value": 65, "note": "Offenheit für verschiedene Entwicklungen" },
+        "C": { "value": 58, "note": "Situative Nähe passt" },
+        "D": { "value": 72, "note": "Single's Unabhängigkeit ist kompatibel" },
+        "E": { "value": 60, "note": "Kommunikation über Erwartungen nötig" },
+        "F": { "value": 75, "note": "Gesellschaftlich als Dating oder mehr erklärbar" }
+      },
+      "overall": 65,
+      "pro": [
+        "Single kann verschiedene Rollen einnehmen",
+        "Flexibilität passt zu Duo-Flex Modell",
+        "Keine Poly-Vorkenntnisse nötig",
+        "Gesellschaftlich unkompliziert"
+      ],
+      "contra": [
+        "Single könnte mehr wollen (Primärposition)",
+        "Unklare Erwartungen möglich",
+        "Single versteht Paar-Dynamik möglicherweise nicht",
+        "Risiko der Enttäuschung bei einseitiger Entwicklung"
+      ],
+      "pathos": "Duo-Flex sieht im Single eine angenehme Ergänzung: unkompliziert, offen, ohne die Komplexität etablierter Poly-Menschen. Aber auch die Frage: Was will der Single wirklich?",
+      "logos": "Strukturell einfach: Single als Bereicherung ohne System-Integration. Klarheit über Rolle und Erwartungen von Anfang an wichtig."
+    },
+
+    "duo_flex_solopoly": {
+      "from": "duo_flex", "to": "solopoly",
+      "scores": {
+        "A": { "value": 65, "note": "Beide verstehen nicht-exklusive Modelle" },
+        "B": { "value": 68, "note": "Ethische Offenheit verbindet" },
+        "C": { "value": 55, "note": "Duo-Flex will mehr Nähe als Solopoly bietet" },
+        "D": { "value": 78, "note": "Solopoly's Autonomie funktioniert im Flex-Modell" },
+        "E": { "value": 72, "note": "Starke Kommunikation beidseitig" },
+        "F": { "value": 48, "note": "Gesellschaftlich komplex" }
+      },
+      "overall": 64,
+      "pro": [
+        "Solopoly passt als Außenkontakt perfekt",
+        "Keine Konkurrenz um Primärposition",
+        "Klare Grenzen beidseitig",
+        "Ehrliche, erwachsene Kommunikation"
+      ],
+      "contra": [
+        "Solopoly bietet nie 'mehr'",
+        "Duo-Flex könnte tiefere Verbindung wünschen",
+        "Strukturelle Grenzen fest",
+        "Kann emotional unbefriedigend werden"
+      ],
+      "pathos": "Duo-Flex schätzt die Klarheit des Solopoly: keine versteckten Agenden, keine Primär-Ansprüche. Aber manchmal die Sehnsucht nach mehr Tiefe.",
+      "logos": "Strukturell ideal als Außenkontakt. Solopoly bringt keine Bedrohung für Primärbeziehung. Win-Win wenn Erwartungen klar sind."
+    },
+
+    "duo_flex_poly_hedo": {
+      "from": "duo_flex", "to": "poly_hedo",
+      "scores": {
+        "A": { "value": 75, "note": "Beide schätzen Offenheit und Erfahrung" },
+        "B": { "value": 70, "note": "Gemeinsames Verständnis für Genuss" },
+        "C": { "value": 72, "note": "Intensive Momente ohne Verpflichtung" },
+        "D": { "value": 82, "note": "Perfekte Freiheits-Kompatibilität" },
+        "E": { "value": 68, "note": "Pragmatische, ehrliche Kommunikation" },
+        "F": { "value": 58, "note": "Gesellschaftlich als 'offene Beziehung' erklärbar" }
+      },
+      "overall": 75,
+      "pro": [
+        "Poly Hedo als perfekter Außenkontakt",
+        "Keine Primär-Ansprüche, nur Genuss",
+        "Leichtigkeit und Spaß",
+        "Bereichert ohne zu bedrohen"
+      ],
+      "contra": [
+        "Poly Hedo könnte zu chaotisch sein",
+        "Grenzen müssen klar kommuniziert werden",
+        "Risiko der emotionalen Verstrickung",
+        "Kann Primärbeziehung belasten wenn zu intensiv"
+      ],
+      "pathos": "Duo-Flex sieht in Poly Hedo die perfekte Bereicherung: Spaß, Leichtigkeit, keine schweren Gespräche. Aber die Frage bleibt: Wo ziehen wir die Linie?",
+      "logos": "Strukturell sehr kompatibel. Poly Hedo bringt Würze ohne System-Komplexität. Klare Grenzen schützen die Primärbeziehung. Win-Win für alle."
+    },
+
+    "duo_flex_polyamor": {
+      "from": "duo_flex", "to": "polyamor",
+      "scores": {
+        "A": { "value": 62, "note": "Beide offen, aber unterschiedlich strukturiert" },
+        "B": { "value": 68, "note": "Ethische Grundlagen ähnlich" },
+        "C": { "value": 60, "note": "Polyamor will mehr kontinuierliche Tiefe" },
+        "D": { "value": 55, "note": "Polyamor's Bedürfnisse übersteigen Duo-Flex Rahmen" },
+        "E": { "value": 72, "note": "Beide kommunikationsstark" },
+        "F": { "value": 48, "note": "Gesellschaftlich komplex" }
+      },
+      "overall": 61,
+      "pro": [
+        "Polyamor bringt Poly-Erfahrung",
+        "Tiefe Verbindung möglich",
+        "Kommunikation auf hohem Niveau",
+        "Gegenseitiger Respekt für Beziehungsmodelle"
+      ],
+      "contra": [
+        "Polyamor will mehr als situative Öffnung bietet",
+        "Regelkonflikte möglich",
+        "Polyamor fühlt sich eingeschränkt",
+        "Langfristig unterschiedliche Bedürfnisse"
+      ],
+      "pathos": "Duo-Flex sieht in Polyamor einen erfahrenen Partner, aber mit komplexen Bedürfnissen. Respekt, aber auch Vorsicht: 'Kann ich dir genug geben?'",
+      "logos": "Strukturell herausfordernd. Polyamor's Bedürfnisse passen nicht immer in Duo-Flex Rahmen. Funktioniert wenn Polyamor die Grenzen akzeptiert."
+    },
+
+    "duo_flex_duo": {
+      "from": "duo_flex", "to": "duo",
+      "scores": {
+        "A": { "value": 78, "note": "Ähnliche Primär-Werte" },
+        "B": { "value": 80, "note": "Beide schätzen tiefe Partnerschaft" },
+        "C": { "value": 82, "note": "Tiefe Nähe beidseitig möglich" },
+        "D": { "value": 52, "note": "Duo-Flex's Öffnung muss erklärt werden" },
+        "E": { "value": 72, "note": "Kommunikation über Grenzen funktioniert" },
+        "F": { "value": 85, "note": "Gesellschaftlich sehr akzeptiert" }
+      },
+      "overall": 75,
+      "pro": [
+        "Geteilte Werte bei Primärbeziehung",
+        "Duo könnte sich öffnen",
+        "Tiefe Verbindung ist Kernziel beider",
+        "Gesellschaftlich voll akzeptiert"
+      ],
+      "contra": [
+        "Duo muss Öffnung verstehen/akzeptieren",
+        "Potenzielle Eifersucht bei Duo",
+        "Unterschiedliche Erwartungen an Exklusivität",
+        "Duo-Flex muss Geduld haben"
+      ],
+      "pathos": "Duo-Flex sieht in Duo die tiefe Verbindung, die beide suchen. Die Öffnungs-Frage kann Brücke oder Mauer sein. Hoffnung auf gemeinsames Wachstum.",
+      "logos": "Strukturell sehr kompatibel bei Primär-Fokus. Die Öffnungs-Frage muss geklärt werden. Funktioniert wenn Duo sich entwickelt oder Duo-Flex anpasst."
+    },
+
+    "duo_flex_duo_flex": {
+      "from": "duo_flex", "to": "duo_flex",
+      "scores": {
+        "A": { "value": 95, "note": "Perfekte philosophische Übereinstimmung" },
+        "B": { "value": 88, "note": "Geteilte Werte bei Primär + Flexibilität" },
+        "C": { "value": 85, "note": "Tiefe Nähe mit Raum für Abenteuer" },
+        "D": { "value": 82, "note": "Beide verstehen Flexibilitäts-Bedürfnisse" },
+        "E": { "value": 85, "note": "Starke Kommunikation über Grenzen" },
+        "F": { "value": 72, "note": "Gesellschaftlich als moderne Partnerschaft akzeptiert" }
+      },
+      "overall": 85,
+      "pro": [
+        "Vollständiges Verständnis des Modells",
+        "Geteilte Sprache und Erwartungen",
+        "Stabilität + Flexibilität für beide",
+        "Gemeinsame Abenteuer möglich"
+      ],
+      "contra": [
+        "Grenzen müssen perfekt abgestimmt sein",
+        "Eifersucht möglich bei unterschiedlicher Nutzung",
+        "Gesellschaftlich immer noch erklärungsbedürftig",
+        "Komplexität bei gemeinsamen Außenkontakten"
+      ],
+      "pathos": "Zwei Seelen, die dieselbe Balance suchen: Tiefe Verbundenheit mit Raum für Abenteuer. Das Gefühl: 'Endlich jemand, der versteht.'",
+      "logos": "Strukturell ideal. Gleiche Grundregeln, gleiche Erwartungen. Herausforderung ist Feinabstimmung der Grenzen, nicht das Grundmodell."
     }
   },
 
   "aggregatedMatrix": {
-    "description": "5x5 Übersichtsmatrix mit Gesamtwerten (Zeile = VON, Spalte = ZU)",
-    "rows": ["single", "solopoly", "poly_hedo", "polyamor", "duo"],
-    "cols": ["single", "solopoly", "poly_hedo", "polyamor", "duo"],
+    "description": "6x6 Übersichtsmatrix mit Gesamtwerten (Zeile = VON, Spalte = ZU)",
+    "rows": ["single", "duo", "duo_flex", "solopoly", "poly_hedo", "polyamor"],
+    "cols": ["single", "duo", "duo_flex", "solopoly", "poly_hedo", "polyamor"],
     "values": [
-      [72, 61, 60, 57, 71],
-      [66, 78, 68, 70, 38],
-      [64, 67, 72, 64, 37],
-      [60, 71, 66, 78, 51],
-      [68, 36, 33, 51, 84]
+      [72, 71, 65, 61, 60, 57],
+      [68, 84, 75, 36, 47, 51],
+      [65, 75, 85, 64, 75, 61],
+      [66, 38, 59, 78, 68, 70],
+      [64, 37, 68, 67, 72, 64],
+      [60, 51, 65, 71, 66, 78]
     ]
   }
 }
