@@ -1,9 +1,9 @@
 {
   "meta": {
     "title": "Archetypen-Interaktionsmatrix für Beziehungsmodelle",
-    "version": "2.0.0",
+    "version": "3.0.0",
     "created": "2025-01-22",
-    "description": "Eine 4x4 Matrix zur Bewertung der Kompatibilität verschiedener Beziehungsarchetypen",
+    "description": "Eine 5x5 Matrix zur Bewertung der Kompatibilität verschiedener Beziehungsarchetypen",
     "matrixType": "asymmetric",
     "note": "Asymmetrisch, da die Perspektive die wahrgenommene Kompatibilität beeinflusst"
   },
@@ -141,6 +141,31 @@
       ],
       "pathos": "Tiefe Liebe zu mehreren Menschen gleichzeitig. Ein Gefühl von 'Das Herz wird größer, nicht geteilt'. Freude an der Komplexität menschlicher Verbindungen. Manchmal Überforderung durch die vielen emotionalen Fäden.",
       "logos": "Hochstrukturiert mit klaren Regeln, Verhandlungen und Agreements. Kalendermanagement als Kernkompetenz. Hierarchien (Primary/Secondary) oder bewusste Nicht-Hierarchie. Kommunikation ist das Fundament aller Beziehungen."
+    },
+    "duo": {
+      "id": "duo",
+      "name": "Duo",
+      "color": "#E84393",
+      "colorLight": "#FDA7DF",
+      "colorDark": "#B53471",
+      "shortDescription": "Klassische monogame Zweierbeziehung. Exklusivität, Tiefe und Verbindlichkeit mit einer Person.",
+      "fullDescription": "Das Duo-Modell repräsentiert die traditionelle monogame Partnerschaft: Eine tiefe, exklusive Verbindung zwischen zwei Menschen. Fokus liegt auf gemeinsamer Lebensgestaltung, emotionaler Verschmelzung und langfristiger Verbindlichkeit. Gesellschaftlich das am meisten akzeptierte Modell.",
+      "pro": [
+        "Maximale gesellschaftliche Akzeptanz und Unterstützung",
+        "Klare Erwartungen und Strukturen",
+        "Volle emotionale Verfügbarkeit für eine Person",
+        "Tiefe Intimität durch exklusive Fokussierung",
+        "Rechtliche und institutionelle Absicherung möglich"
+      ],
+      "contra": [
+        "Hohe Erwartungen können zu Druck führen",
+        "Eine Person muss alle Bedürfnisse erfüllen",
+        "Risiko der emotionalen Abhängigkeit",
+        "Wenig Spielraum für Individualität außerhalb der Beziehung",
+        "Trennung gesellschaftlich als Scheitern wahrgenommen"
+      ],
+      "pathos": "Das Gefühl von 'Du bist mein Zuhause'. Tiefe Geborgenheit in der Exklusivität. Die romantische Vorstellung von der einen Person, die alles versteht. Aber auch die Last, alles füreinander sein zu müssen.",
+      "logos": "Strukturell einfach und klar: Eine Beziehung, klare Rollen, gesellschaftlich definierte Erwartungen. Ressourcen (Zeit, Energie, Geld) fließen in eine Partnerschaft. Entscheidungen werden gemeinsam getroffen."
     }
   },
 
@@ -574,18 +599,258 @@
       ],
       "pathos": "Zwei Herzen, die die gleiche Sprache der Liebe sprechen. Tiefes Verständnis und Compersion. Aber auch die geteilte Last: Die Welt versteht uns nicht immer.",
       "logos": "Strukturell ideal: Gleiche Regeln, gleiche Erwartungen. Herausforderung ist Ressourcenmanagement, nicht Verständnis. Beide bringen etablierte Netzwerke mit - Integration nötig."
+    },
+
+    "single_duo": {
+      "from": "single", "to": "duo",
+      "scores": {
+        "A": { "value": 70, "note": "Single könnte klassische Beziehung anstreben" },
+        "B": { "value": 75, "note": "Monogame Werte oft kompatibel" },
+        "C": { "value": 65, "note": "Single muss sich auf mehr Nähe einlassen" },
+        "D": { "value": 55, "note": "Duo erwartet mehr Verschmelzung als Single gewohnt" },
+        "E": { "value": 65, "note": "Kommunikation muss sich entwickeln" },
+        "F": { "value": 95, "note": "Gesellschaftlich ideal - 'endlich in einer Beziehung'" }
+      },
+      "overall": 71,
+      "pro": [
+        "Gesellschaftlich voll akzeptiert",
+        "Klare Erwartungen an die Beziehung",
+        "Single kann in feste Struktur hineinwachsen",
+        "Traditioneller Beziehungspfad"
+      ],
+      "contra": [
+        "Single muss Freiheit aufgeben",
+        "Anpassungsdruck an Duo-Erwartungen",
+        "Single's Unabhängigkeit könnte als Distanz wahrgenommen werden",
+        "Risiko der Überforderung durch Verschmelzungserwartung"
+      ],
+      "pathos": "Die romantische Hoffnung des Singles: Endlich ankommen, endlich dazugehören. Aber auch die Angst: Verliere ich mich selbst in dieser Zweisamkeit?",
+      "logos": "Struktureller Übergang von Unabhängigkeit zu Partnerschaft. Single muss lernen, Raum zu teilen. Funktioniert wenn Single bereit für Verbindlichkeit ist."
+    },
+
+    "solopoly_duo": {
+      "from": "solopoly", "to": "duo",
+      "scores": {
+        "A": { "value": 25, "note": "Fundamentaler philosophischer Konflikt" },
+        "B": { "value": 45, "note": "Unterschiedliche Treue-Definitionen" },
+        "C": { "value": 40, "note": "Duo will Verschmelzung, Solopoly will Distanz" },
+        "D": { "value": 30, "note": "Solopoly's Autonomie ist inkompatibel mit Duo" },
+        "E": { "value": 55, "note": "Kommunikation über unvereinbare Bedürfnisse" },
+        "F": { "value": 35, "note": "Gesellschaftlich nicht als 'echte Beziehung' akzeptiert" }
+      },
+      "overall": 38,
+      "pro": [
+        "Duo bietet Stabilität und Tiefe",
+        "Klare Kommunikation von beiden Seiten",
+        "Kann funktionieren wenn Duo sich öffnet"
+      ],
+      "contra": [
+        "Fundamentale Inkompatibilität bei Exklusivität",
+        "Solopoly kann nie 'alles' für Duo sein",
+        "Duo fühlt sich wahrscheinlich betrogen oder vernachlässigt",
+        "Gesellschaftlicher Druck auf Duo, Solopoly zu 'heilen'"
+      ],
+      "pathos": "Ein fast unmöglicher Brückenschlag. Solopoly spürt die Anziehung zur Tiefe des Duos, aber weiß: 'Ich kann dir nicht geben, was du brauchst.' Schmerz und Respekt.",
+      "logos": "Strukturell inkompatibel. Duo erwartet Exklusivität, Solopoly kann sie nicht bieten. Nur möglich wenn Duo sein Modell fundamental überdenkt."
+    },
+
+    "poly_hedo_duo": {
+      "from": "poly_hedo", "to": "duo",
+      "scores": {
+        "A": { "value": 28, "note": "Hedonismus vs. Exklusivität - Grundkonflikt" },
+        "B": { "value": 35, "note": "Völlig unterschiedliche Werte bei Treue" },
+        "C": { "value": 50, "note": "Intensität ist möglich, aber nicht exklusiv" },
+        "D": { "value": 35, "note": "Poly Hedo braucht Freiheit, die Duo nicht bietet" },
+        "E": { "value": 45, "note": "Schwierige Kommunikation über unterschiedliche Welten" },
+        "F": { "value": 30, "note": "Gesellschaftlich als 'Betrug' wahrgenommen" }
+      },
+      "overall": 37,
+      "pro": [
+        "Duo bietet Anker und Stabilität",
+        "Intensive Momente sind möglich",
+        "Kann Poly Hedo zur Reflexion über Tiefe bringen"
+      ],
+      "contra": [
+        "Duo fühlt sich wahrscheinlich hintergangen",
+        "Poly Hedo kann Exklusivität nicht leben",
+        "Gesellschaftlich als Affäre oder Betrug gesehen",
+        "Hohe Verletzungswahrscheinlichkeit für Duo"
+      ],
+      "pathos": "Ein Zusammenprall von Welten. Poly Hedo fühlt sich eingesperrt, Duo fühlt sich betrogen. Nur die Intensität der Momente verbindet - aber reicht das?",
+      "logos": "Strukturell nahezu unmöglich. Duo's Kernbedürfnis (Exklusivität) steht gegen Poly Hedo's Kernbedürfnis (Freiheit). Funktioniert nur bei fundamentaler Neuverhandlung."
+    },
+
+    "polyamor_duo": {
+      "from": "polyamor", "to": "duo",
+      "scores": {
+        "A": { "value": 35, "note": "Poly vs. Mono - Grundsatzkonflikt" },
+        "B": { "value": 55, "note": "Ethische Basis unterschiedlich, aber beide haben eine" },
+        "C": { "value": 60, "note": "Tiefe ist beidseitig möglich" },
+        "D": { "value": 45, "note": "Duo's Exklusivitätswunsch vs. Poly's Netzwerk" },
+        "E": { "value": 70, "note": "Beide kommunikationsstark, aber über unterschiedliche Ziele" },
+        "F": { "value": 40, "note": "Gesellschaftlich als 'Betrug' oder 'offene Ehe' gesehen" }
+      },
+      "overall": 51,
+      "pro": [
+        "Tiefe romantische Verbindung ist möglich",
+        "Polyamor bringt starke Kommunikationsskills",
+        "Duo kann Primary werden wenn Hierarchie akzeptiert wird",
+        "Beide suchen bedeutungsvolle Beziehungen"
+      ],
+      "contra": [
+        "Duo muss geteilte Zeit akzeptieren",
+        "Gesellschaftlicher Druck auf Duo",
+        "Eifersucht als ständige Herausforderung",
+        "Duo's Exklusivitätswunsch wird nie erfüllt"
+      ],
+      "pathos": "Eine Brücke zwischen zwei Welten. Der Polyamor liebt das Duo tief - aber nicht exklusiv. Die Frage bleibt: Kann Duo damit leben, geliebt aber geteilt zu sein?",
+      "logos": "Strukturell herausfordernd aber nicht unmöglich. Wenn Duo als Primary akzeptiert wird und andere Beziehungen tolerieren kann. Erfordert massive Anpassung von Duo."
+    },
+
+    "duo_single": {
+      "from": "duo", "to": "single",
+      "scores": {
+        "A": { "value": 65, "note": "Duo hofft auf Entwicklung zur Partnerschaft" },
+        "B": { "value": 70, "note": "Werte können kompatibel sein" },
+        "C": { "value": 70, "note": "Duo bietet die Nähe, die Single vielleicht sucht" },
+        "D": { "value": 50, "note": "Duo erwartet mehr Verschmelzung als Single bietet" },
+        "E": { "value": 65, "note": "Kommunikation über Erwartungen nötig" },
+        "F": { "value": 90, "note": "Gesellschaftlich perfekter Start in Beziehung" }
+      },
+      "overall": 68,
+      "pro": [
+        "Single ist offen für verschiedene Entwicklungen",
+        "Gesellschaftlich idealer Beziehungsstart",
+        "Klare Struktur kann Single Orientierung geben",
+        "Duo bringt Beziehungserfahrung mit"
+      ],
+      "contra": [
+        "Single könnte zögern bei Verbindlichkeit",
+        "Duo könnte zu schnell zu viel wollen",
+        "Risiko der Enttäuschung wenn Single ungebunden bleiben will",
+        "Tempo-Unterschiede bei Beziehungsentwicklung"
+      ],
+      "pathos": "Aus Duo-Sicht: Die Hoffnung auf ein 'Wir'. Der Single ist wie ein unbeschriebenes Blatt - alles ist möglich. Aber auch die Angst: Will er/sie wirklich das Gleiche wie ich?",
+      "logos": "Strukturell klassischer Beziehungsstart. Duo bringt Template mit, Single muss sich entscheiden ob es passt. Funktioniert bei geteilten Langzeitzielen."
+    },
+
+    "duo_solopoly": {
+      "from": "duo", "to": "solopoly",
+      "scores": {
+        "A": { "value": 20, "note": "Fundamentaler Weltanschauungs-Konflikt" },
+        "B": { "value": 40, "note": "Unterschiedliche Ethik bei Treue und Bindung" },
+        "C": { "value": 45, "note": "Duo will mehr als Solopoly geben kann" },
+        "D": { "value": 25, "note": "Duo's Verschmelzungswunsch vs. Solopoly's Autonomie" },
+        "E": { "value": 55, "note": "Kommunikation über unvereinbare Erwartungen" },
+        "F": { "value": 30, "note": "Gesellschaftlich nicht als Beziehung anerkannt" }
+      },
+      "overall": 36,
+      "pro": [
+        "Solopoly ist ehrlich über seine Grenzen",
+        "Intensität der Begegnungen kann hoch sein",
+        "Kann Duo zu Selbstreflexion anregen"
+      ],
+      "contra": [
+        "Duo fühlt sich nie 'genug'",
+        "Exklusivität ist unmöglich",
+        "Gesellschaftlicher Druck auf Duo",
+        "Hohes Verletzungsrisiko für Duo"
+      ],
+      "pathos": "Aus Duo-Sicht: Die schmerzhafte Erkenntnis, dass Liebe nicht genug ist. 'Ich liebe dich, aber du kannst mir nicht geben, was ich brauche.' Trauer und Loslassen.",
+      "logos": "Strukturell fast unmöglich. Duo's Grundbedürfnisse werden nicht erfüllt. Nur möglich wenn Duo sein Modell komplett verändert - was es dann kein Duo mehr wäre."
+    },
+
+    "duo_poly_hedo": {
+      "from": "duo", "to": "poly_hedo",
+      "scores": {
+        "A": { "value": 22, "note": "Exklusivität vs. Hedonismus - Grundkonflikt" },
+        "B": { "value": 30, "note": "Völlig unterschiedliche Wertesysteme" },
+        "C": { "value": 55, "note": "Intensität möglich, aber ohne Exklusivität" },
+        "D": { "value": 28, "note": "Duo fühlt sich durch Poly Hedo's Freiheit bedroht" },
+        "E": { "value": 40, "note": "Kommunikation über verschiedene Sprachen" },
+        "F": { "value": 25, "note": "Gesellschaftlich als Demütigung für Duo gesehen" }
+      },
+      "overall": 33,
+      "pro": [
+        "Intensive, leidenschaftliche Momente",
+        "Poly Hedo bringt Leichtigkeit",
+        "Kann Duo's Horizont erweitern"
+      ],
+      "contra": [
+        "Duo fühlt sich höchstwahrscheinlich betrogen",
+        "Exklusivität ist unmöglich",
+        "Gesellschaftlich als Erniedrigung wahrgenommen",
+        "Maximales Verletzungsrisiko für Duo"
+      ],
+      "pathos": "Aus Duo-Sicht: Faszination und Schmerz. Die Intensität des Poly Hedo zieht an, aber die fehlende Exklusivität zerreißt. 'Bin ich nicht genug?'",
+      "logos": "Strukturell nahezu unmöglich ohne fundamentale Transformation des Duo. Die Kernbedürfnisse sind diametral entgegengesetzt."
+    },
+
+    "duo_polyamor": {
+      "from": "duo", "to": "polyamor",
+      "scores": {
+        "A": { "value": 38, "note": "Mono vs. Poly Grundkonflikt, aber beide suchen Tiefe" },
+        "B": { "value": 58, "note": "Beide haben ethische Grundlagen" },
+        "C": { "value": 65, "note": "Tiefe Nähe ist beidseitig möglich" },
+        "D": { "value": 40, "note": "Duo muss Teilen akzeptieren lernen" },
+        "E": { "value": 68, "note": "Beide kommunikationsfähig" },
+        "F": { "value": 35, "note": "Gesellschaftlich schwer zu erklären" }
+      },
+      "overall": 51,
+      "pro": [
+        "Tiefe romantische Verbindung möglich",
+        "Polyamor kommuniziert klar und ethisch",
+        "Duo könnte Primary werden",
+        "Beide schätzen bedeutungsvolle Beziehungen"
+      ],
+      "contra": [
+        "Duo muss Exklusivität aufgeben",
+        "Eifersucht als ständige Herausforderung",
+        "Gesellschaftlicher Druck auf Duo",
+        "Duo's Selbstwert könnte leiden"
+      ],
+      "pathos": "Aus Duo-Sicht: Die Zerrissenheit zwischen Liebe und Prinzip. 'Ich liebe diesen Menschen, aber kann ich teilen?' Die Frage, ob Liebe stärker ist als Besitzanspruch.",
+      "logos": "Strukturell möglich wenn Duo bereit ist, sein Modell zu erweitern. Erfordert massive persönliche Entwicklung. Kann zur Öffnung oder zum Bruch führen."
+    },
+
+    "duo_duo": {
+      "from": "duo", "to": "duo",
+      "scores": {
+        "A": { "value": 95, "note": "Perfekte philosophische Übereinstimmung" },
+        "B": { "value": 90, "note": "Geteilte traditionelle Werte" },
+        "C": { "value": 85, "note": "Beide wollen tiefe Verschmelzung" },
+        "D": { "value": 60, "note": "Beide müssen Individualität balancieren" },
+        "E": { "value": 75, "note": "Kommunikation über geteilte Erwartungen" },
+        "F": { "value": 98, "note": "Maximale gesellschaftliche Akzeptanz" }
+      },
+      "overall": 84,
+      "pro": [
+        "Vollständiges Verständnis der Erwartungen",
+        "Maximale gesellschaftliche Unterstützung",
+        "Klare Struktur und Rollen",
+        "Tiefe exklusive Intimität"
+      ],
+      "contra": [
+        "Hohe Erwartungen können überfordern",
+        "Risiko der Verschmelzung ohne Individualität",
+        "Eine Person muss alles sein",
+        "Bei Scheitern: gesellschaftliches Stigma"
+      ],
+      "pathos": "Die klassische Liebesgeschichte. 'Du und ich gegen die Welt.' Tiefe Geborgenheit in der Exklusivität. Aber auch: Die Last, alles füreinander sein zu müssen.",
+      "logos": "Strukturell ideal für beide. Gleiche Erwartungen, gleiche Sprache, gleiche gesellschaftliche Einbettung. Die Herausforderung liegt im Alltag, nicht im Modell."
     }
   },
 
   "aggregatedMatrix": {
-    "description": "4x4 Übersichtsmatrix mit Gesamtwerten (Zeile = VON, Spalte = ZU)",
-    "rows": ["single", "solopoly", "poly_hedo", "polyamor"],
-    "cols": ["single", "solopoly", "poly_hedo", "polyamor"],
+    "description": "5x5 Übersichtsmatrix mit Gesamtwerten (Zeile = VON, Spalte = ZU)",
+    "rows": ["single", "solopoly", "poly_hedo", "polyamor", "duo"],
+    "cols": ["single", "solopoly", "poly_hedo", "polyamor", "duo"],
     "values": [
-      [72, 61, 60, 57],
-      [66, 78, 68, 70],
-      [64, 67, 72, 64],
-      [60, 71, 66, 78]
+      [72, 61, 60, 57, 71],
+      [66, 78, 68, 70, 38],
+      [64, 67, 72, 64, 37],
+      [60, 71, 66, 78, 51],
+      [68, 36, 33, 51, 84]
     ]
   }
 }

@@ -650,6 +650,10 @@
             --primary: #F4A261;
             --primary-light: #FFE5B4;
         }
+        body.theme-duo {
+            --primary: #E84393;
+            --primary-light: #FDA7DF;
+        }
 
         /* Expand All Button */
         .expand-all-btn {
@@ -686,6 +690,7 @@
             <div class="dropdown-wrapper">
                 <select id="archetypeSelect">
                     <option value="single">Single</option>
+                    <option value="duo">Duo</option>
                     <option value="solopoly">Solopoly</option>
                     <option value="poly_hedo">Poly Hedo</option>
                     <option value="polyamor">Polyamor</option>
@@ -755,6 +760,7 @@
         // Icons for archetypes
         const icons = {
             single: '★',
+            duo: '♡',
             solopoly: '◆',
             poly_hedo: '☀',
             polyamor: '♥'
@@ -777,6 +783,7 @@
             return {
                 archetypes: {
                     single: { id: "single", name: "Single", color: "#E63946", shortDescription: "Fokus auf Selbstentwicklung", pro: [], contra: [], pathos: "", logos: "" },
+                    duo: { id: "duo", name: "Duo", color: "#E84393", shortDescription: "Klassische monogame Zweierbeziehung", pro: [], contra: [], pathos: "", logos: "" },
                     solopoly: { id: "solopoly", name: "Solopoly", color: "#2A9D8F", shortDescription: "Polyamor mit Autonomie", pro: [], contra: [], pathos: "", logos: "" },
                     poly_hedo: { id: "poly_hedo", name: "Poly Hedo", color: "#9B5DE5", shortDescription: "Lustorientierte Mehrfachbeziehungen", pro: [], contra: [], pathos: "", logos: "" },
                     polyamor: { id: "polyamor", name: "Polyamor", color: "#F4A261", shortDescription: "Strukturierte Mehrfachbeziehungen", pro: [], contra: [], pathos: "", logos: "" }
