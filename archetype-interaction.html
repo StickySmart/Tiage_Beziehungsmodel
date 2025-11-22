@@ -18,6 +18,19 @@
             --success: #2ecc71;
             --warning: #f39c12;
             --danger: #e74c3c;
+
+            /* Responsive Typography with clamp() */
+            --font-xs: clamp(0.7rem, 1vw + 0.4rem, 0.85rem);
+            --font-sm: clamp(0.8rem, 1.2vw + 0.45rem, 0.95rem);
+            --font-base: clamp(0.9rem, 1.5vw + 0.5rem, 1.1rem);
+            --font-md: clamp(1rem, 1.8vw + 0.5rem, 1.25rem);
+            --font-lg: clamp(1.2rem, 2.5vw + 0.5rem, 1.6rem);
+            --font-xl: clamp(1.5rem, 3vw + 0.5rem, 2.2rem);
+            --font-label: clamp(0.75rem, 1vw + 0.4rem, 0.9rem);
+
+            /* Responsive Bar Height */
+            --bar-height: clamp(16px, 1.5vw + 12px, 22px);
+            --bar-radius: calc(var(--bar-height) / 2);
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -54,7 +67,7 @@
         }
 
         h1 {
-            font-size: 1rem;
+            font-size: var(--font-base);
             font-weight: 400;
             letter-spacing: 2px;
             color: var(--text-secondary);
@@ -102,7 +115,7 @@
         }
 
         .card-title {
-            font-size: 0.85rem;
+            font-size: var(--font-sm);
             text-transform: uppercase;
             letter-spacing: 1.5px;
             color: var(--text-muted);
@@ -151,7 +164,7 @@
         }
 
         .main-select-label {
-            font-size: 0.9rem;
+            font-size: var(--font-base);
             color: var(--text-secondary);
             margin-bottom: 8px;
             display: block;
@@ -164,7 +177,7 @@
             border: 2px solid var(--primary);
             color: var(--text-primary);
             padding: 14px 45px 14px 18px;
-            font-size: 1.1rem;
+            font-size: var(--font-md);
             border-radius: 12px;
             cursor: pointer;
             background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23a0a0b0' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
@@ -192,14 +205,14 @@
         }
 
         .my-type-name {
-            font-size: 1.5rem;
+            font-size: var(--font-lg);
             font-weight: 600;
             color: var(--primary);
         }
 
         .my-type-desc {
             color: var(--text-secondary);
-            font-size: 0.9rem;
+            font-size: var(--font-base);
             margin-bottom: 20px;
             line-height: 1.6;
         }
@@ -216,7 +229,7 @@
             align-items: center;
             cursor: pointer;
             color: var(--text-secondary);
-            font-size: 0.9rem;
+            font-size: var(--font-base);
         }
 
         .collapsible-icon {
@@ -240,19 +253,19 @@
 
         .pro-contra-grid {
             display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 12px;
+            grid-template-columns: 1fr;
+            gap: 16px;
             padding-bottom: 15px;
         }
 
         .mini-list {
-            font-size: 0.8rem;
+            font-size: var(--font-base);
         }
 
         .mini-list-title {
             font-weight: 600;
-            margin-bottom: 6px;
-            font-size: 0.85rem;
+            margin-bottom: 8px;
+            font-size: var(--font-base);
         }
 
         .mini-list-title.pro { color: var(--success); }
@@ -276,7 +289,7 @@
         }
 
         .pathos-logos-content {
-            font-size: 0.85rem;
+            font-size: var(--font-base);
             color: var(--text-muted);
             padding-bottom: 15px;
         }
@@ -299,6 +312,17 @@
             padding: 14px 16px;
             border-radius: 12px;
             margin-bottom: 10px;
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .match-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+        }
+
+        .match-card:active {
+            transform: translateY(0);
         }
 
         .match-card.top {
@@ -324,19 +348,19 @@
         }
 
         .match-label-text {
-            font-size: 0.7rem;
+            font-size: var(--font-xs);
             color: var(--text-muted);
             text-transform: uppercase;
             letter-spacing: 0.5px;
         }
 
         .match-name {
-            font-size: 1rem;
+            font-size: var(--font-base);
             font-weight: 500;
         }
 
         .match-score {
-            font-size: 1.3rem;
+            font-size: var(--font-md);
             font-weight: 700;
         }
 
@@ -361,7 +385,7 @@
             color: var(--text-secondary);
             border-radius: 20px;
             cursor: pointer;
-            font-size: 0.95rem;
+            font-size: var(--font-base);
             transition: all 0.3s ease;
         }
 
@@ -395,17 +419,17 @@
         }
 
         .radar-title {
-            font-size: 0.9rem;
+            font-size: var(--font-base);
             color: var(--text-secondary);
         }
 
         .radar-score {
-            font-size: 2.2rem;
+            font-size: var(--font-xl);
             font-weight: 700;
         }
 
         .radar-score-label {
-            font-size: 0.7rem;
+            font-size: var(--font-xs);
             color: var(--text-muted);
             text-transform: uppercase;
         }
@@ -423,7 +447,7 @@
         }
 
         .section-title {
-            font-size: 0.8rem;
+            font-size: var(--font-sm);
             color: var(--text-muted);
             text-transform: uppercase;
             letter-spacing: 1px;
@@ -431,9 +455,9 @@
         }
 
         .category-label {
-            width: 24px;
+            width: clamp(20px, 3vw + 10px, 28px);
             font-weight: 700;
-            font-size: 0.85rem;
+            font-size: var(--font-sm);
             color: var(--primary);
         }
 
@@ -442,15 +466,15 @@
         }
 
         .category-bar-container {
-            height: 18px;
+            height: var(--bar-height);
             background: rgba(255,255,255,0.05);
-            border-radius: 9px;
+            border-radius: var(--bar-radius);
             overflow: hidden;
         }
 
         .category-bar {
             height: 100%;
-            border-radius: 9px;
+            border-radius: var(--bar-radius);
             transition: width 0.6s ease;
             display: flex;
             align-items: center;
@@ -459,13 +483,13 @@
         }
 
         .category-bar-value {
-            font-size: 0.8rem;
+            font-size: var(--font-xs);
             font-weight: 600;
             color: white;
         }
 
         .category-name {
-            font-size: 0.85rem;
+            font-size: var(--font-sm);
             color: var(--text-muted);
             margin-top: 2px;
         }
@@ -500,7 +524,7 @@
         .analysis-title {
             font-weight: 600;
             margin-bottom: 8px;
-            font-size: 0.9rem;
+            font-size: var(--font-base);
         }
 
         .analysis-section.pro .analysis-title { color: var(--success); }
@@ -508,7 +532,7 @@
 
         .analysis-list {
             list-style: none;
-            font-size: 0.9rem;
+            font-size: var(--font-base);
             color: var(--text-secondary);
         }
 
@@ -568,19 +592,19 @@
         }
 
         .mini-card-name {
-            font-size: 0.9rem;
+            font-size: var(--font-base);
             font-weight: 600;
         }
 
         .mini-card-desc {
-            font-size: 0.85rem;
+            font-size: var(--font-sm);
             color: var(--text-muted);
             line-height: 1.5;
             margin-bottom: 10px;
         }
 
         .mini-card-self-score {
-            font-size: 0.85rem;
+            font-size: var(--font-sm);
             color: var(--text-secondary);
         }
 
@@ -700,7 +724,7 @@
         }
 
         .modal-title {
-            font-size: 1rem;
+            font-size: var(--font-md);
             font-weight: 600;
             color: var(--text-primary);
         }
@@ -749,25 +773,25 @@
         }
 
         .modal-category-letter {
-            width: 28px;
-            height: 28px;
+            width: clamp(24px, 3vw + 14px, 32px);
+            height: clamp(24px, 3vw + 14px, 32px);
             border-radius: 8px;
             background: var(--primary);
             display: flex;
             align-items: center;
             justify-content: center;
             font-weight: 700;
-            font-size: 0.9rem;
+            font-size: var(--font-sm);
         }
 
         .modal-category-name {
             font-weight: 600;
-            font-size: 0.95rem;
+            font-size: var(--font-base);
             color: var(--text-primary);
         }
 
         .modal-category-desc {
-            font-size: 0.95rem;
+            font-size: var(--font-base);
             color: var(--text-secondary);
             line-height: 1.6;
             margin-bottom: 12px;
@@ -780,11 +804,159 @@
         }
 
         .modal-subdim-tag {
-            font-size: 0.8rem;
+            font-size: var(--font-sm);
             padding: 6px 10px;
             background: rgba(255,255,255,0.08);
             border-radius: 12px;
             color: var(--text-secondary);
+        }
+
+        /* Match Modal Content */
+        .match-modal-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .match-modal-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+
+        .match-modal-info h3 {
+            font-size: var(--font-lg);
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .match-modal-info p {
+            font-size: var(--font-sm);
+            color: var(--text-muted);
+        }
+
+        .match-modal-score {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 16px;
+            background: var(--bg-dark);
+            border-radius: 12px;
+            margin-bottom: 20px;
+        }
+
+        .match-modal-score-label {
+            font-size: var(--font-sm);
+            color: var(--text-muted);
+            text-transform: uppercase;
+        }
+
+        .match-modal-score-value {
+            font-size: var(--font-xl);
+            font-weight: 700;
+        }
+
+        .match-modal-categories {
+            margin-bottom: 20px;
+        }
+
+        .match-modal-categories-title {
+            font-size: var(--font-sm);
+            color: var(--text-muted);
+            text-transform: uppercase;
+            margin-bottom: 12px;
+        }
+
+        .match-modal-bar-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 8px;
+        }
+
+        .match-modal-bar-label {
+            width: 24px;
+            font-weight: 700;
+            font-size: var(--font-sm);
+            color: var(--primary);
+        }
+
+        .match-modal-bar-container {
+            flex: 1;
+            height: var(--bar-height);
+            background: rgba(255,255,255,0.05);
+            border-radius: var(--bar-radius);
+            overflow: hidden;
+        }
+
+        .match-modal-bar {
+            height: 100%;
+            border-radius: var(--bar-radius);
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            padding-right: 8px;
+        }
+
+        .match-modal-bar-value {
+            font-size: var(--font-xs);
+            font-weight: 600;
+            color: white;
+        }
+
+        .match-modal-bar-name {
+            width: 120px;
+            font-size: var(--font-xs);
+            color: var(--text-muted);
+            text-align: right;
+        }
+
+        .match-modal-section {
+            padding: 14px;
+            border-radius: 10px;
+            margin-bottom: 12px;
+        }
+
+        .match-modal-section.pro {
+            background: rgba(46, 204, 113, 0.1);
+            border: 1px solid rgba(46, 204, 113, 0.3);
+        }
+
+        .match-modal-section.contra {
+            background: rgba(231, 76, 60, 0.1);
+            border: 1px solid rgba(231, 76, 60, 0.3);
+        }
+
+        .match-modal-section-title {
+            font-weight: 600;
+            margin-bottom: 8px;
+            font-size: var(--font-base);
+        }
+
+        .match-modal-section.pro .match-modal-section-title { color: var(--success); }
+        .match-modal-section.contra .match-modal-section-title { color: var(--danger); }
+
+        .match-modal-list {
+            list-style: none;
+            font-size: var(--font-sm);
+            color: var(--text-secondary);
+        }
+
+        .match-modal-list li {
+            padding: 3px 0;
+            padding-left: 14px;
+            position: relative;
+        }
+
+        .match-modal-list li::before {
+            content: '•';
+            position: absolute;
+            left: 0;
         }
 
         /* Legend Page */
@@ -793,7 +965,7 @@
         }
 
         .legend-title {
-            font-size: 0.8rem;
+            font-size: var(--font-sm);
             color: var(--text-muted);
             text-transform: uppercase;
             letter-spacing: 1px;
@@ -813,18 +985,18 @@
         }
 
         .color-scale-bar {
-            width: 60px;
-            height: 18px;
-            border-radius: 9px;
+            width: clamp(50px, 8vw + 20px, 80px);
+            height: var(--bar-height);
+            border-radius: var(--bar-radius);
         }
 
         .color-scale-label {
-            font-size: 0.95rem;
+            font-size: var(--font-base);
             color: var(--text-secondary);
         }
 
         .color-scale-range {
-            font-size: 0.85rem;
+            font-size: var(--font-sm);
             color: var(--text-muted);
             margin-left: auto;
         }
@@ -845,15 +1017,15 @@
         }
 
         .legend-category-letter {
-            width: 32px;
-            height: 32px;
+            width: clamp(28px, 4vw + 16px, 36px);
+            height: clamp(28px, 4vw + 16px, 36px);
             border-radius: 8px;
             background: var(--primary);
             display: flex;
             align-items: center;
             justify-content: center;
             font-weight: 700;
-            font-size: 0.9rem;
+            font-size: var(--font-base);
             flex-shrink: 0;
         }
 
@@ -863,13 +1035,13 @@
 
         .legend-category-name {
             font-weight: 600;
-            font-size: 1rem;
+            font-size: var(--font-md);
             color: var(--text-primary);
             margin-bottom: 4px;
         }
 
         .legend-category-desc {
-            font-size: 0.9rem;
+            font-size: var(--font-base);
             color: var(--text-muted);
             line-height: 1.5;
         }
@@ -882,6 +1054,19 @@
 
             .analysis-grid {
                 grid-template-columns: 1fr 1fr;
+            }
+
+            .pro-contra-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 12px;
+            }
+
+            .mini-list {
+                font-size: var(--font-sm);
+            }
+
+            .mini-list-title {
+                font-size: var(--font-sm);
             }
         }
 
@@ -964,7 +1149,7 @@
 
                     <!-- Match Section -->
                     <div class="match-section">
-                        <div class="match-card top">
+                        <div class="match-card top" id="topMatchCard" onclick="openMatchModal('top')">
                             <div class="match-info">
                                 <div class="match-dot" id="topMatchDot"></div>
                                 <div>
@@ -975,7 +1160,7 @@
                             <div class="match-score excellent" id="topMatchScore">0%</div>
                         </div>
 
-                        <div class="match-card challenge">
+                        <div class="match-card challenge" id="challengeCard" onclick="openMatchModal('challenge')">
                             <div class="match-info">
                                 <div class="match-dot" id="challengeDot"></div>
                                 <div>
@@ -1270,6 +1455,10 @@
                 }
             });
 
+            // Store for modal access
+            currentTopMatch = topMatch;
+            currentChallenge = challenge;
+
             if (topMatch.id) {
                 const arch = data.archetypes[topMatch.id];
                 document.getElementById('topMatchDot').style.background = arch.color;
@@ -1393,7 +1582,7 @@
                             <div class="mini-card-name" style="color: ${arch.color}">${arch.name}</div>
                         </div>
                         <div class="mini-card-desc">${arch.shortDescription || ''}</div>
-                        <div class="mini-card-self-score">Selbst-Match: <span>${selfScore}%</span></div>
+                        <div class="mini-card-self-score">${arch.name} + ${arch.name}: <span>${selfScore}%</span></div>
                     </div>
                 `;
             }).join('');
@@ -1499,6 +1688,86 @@
             if (event && event.target !== event.currentTarget) return;
             document.getElementById('categoryModal').classList.remove('active');
             document.body.style.overflow = '';
+        }
+
+        // Store current match data for modal access
+        let currentTopMatch = { id: null, score: 0 };
+        let currentChallenge = { id: null, score: 0 };
+
+        // Match Modal Functions
+        function openMatchModal(type) {
+            const matchData = type === 'top' ? currentTopMatch : currentChallenge;
+            if (!matchData.id) return;
+
+            const myArch = data.archetypes[currentArchetype];
+            const partnerArch = data.archetypes[matchData.id];
+            const interactionKey = `${currentArchetype}_${matchData.id}`;
+            const interaction = data.interactions[interactionKey] || {};
+            const scores = interaction.scores || {};
+
+            const title = type === 'top' ? 'Top Match' : 'Challenge';
+            const scoreColor = getScoreColor(matchData.score);
+
+            document.getElementById('modalTitle').textContent = `${myArch.name} + ${partnerArch.name}`;
+            document.getElementById('modalBody').innerHTML = getMatchModalContent(partnerArch, interaction, scores, scoreColor, myArch);
+            document.getElementById('categoryModal').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function getMatchModalContent(partnerArch, interaction, scores, scoreColor, myArch) {
+            const categories = ['A', 'B', 'C', 'D', 'E', 'F'];
+            const overall = interaction.overall || 0;
+
+            const categoryBars = categories.map(cat => {
+                const value = scores[cat]?.value || 0;
+                const barClass = getBarClass(value);
+                const name = categoryNames[cat] || cat;
+
+                return `
+                    <div class="match-modal-bar-row">
+                        <span class="match-modal-bar-label">${cat}</span>
+                        <div class="match-modal-bar-container">
+                            <div class="match-modal-bar ${barClass}" style="width: ${value}%">
+                                <span class="match-modal-bar-value">${value}%</span>
+                            </div>
+                        </div>
+                        <span class="match-modal-bar-name">${name}</span>
+                    </div>
+                `;
+            }).join('');
+
+            const proItems = (interaction.pro || []).map(p => `<li>${p}</li>`).join('') || '<li>Keine Daten</li>';
+            const contraItems = (interaction.contra || []).map(c => `<li>${c}</li>`).join('') || '<li>Keine Daten</li>';
+
+            return `
+                <div class="match-modal-header">
+                    <div class="match-modal-icon" style="background: ${partnerArch.color}">${icons[partnerArch.id]}</div>
+                    <div class="match-modal-info">
+                        <h3 style="color: ${partnerArch.color}">${partnerArch.name}</h3>
+                        <p>${partnerArch.shortDescription || ''}</p>
+                    </div>
+                </div>
+
+                <div class="match-modal-score">
+                    <span class="match-modal-score-label">Kompatibilität mit ${myArch.name}</span>
+                    <span class="match-modal-score-value" style="color: ${scoreColor}">${overall}%</span>
+                </div>
+
+                <div class="match-modal-categories">
+                    <div class="match-modal-categories-title">Kategorie-Bewertungen</div>
+                    ${categoryBars}
+                </div>
+
+                <div class="match-modal-section pro">
+                    <div class="match-modal-section-title">✓ Was funktioniert</div>
+                    <ul class="match-modal-list">${proItems}</ul>
+                </div>
+
+                <div class="match-modal-section contra">
+                    <div class="match-modal-section-title">✗ Herausforderungen</div>
+                    <ul class="match-modal-list">${contraItems}</ul>
+                </div>
+            `;
         }
 
         // Close modal on escape key
