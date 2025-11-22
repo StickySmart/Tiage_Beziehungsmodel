@@ -1,11 +1,9 @@
 {
   "meta": {
     "title": "Archetypen-Interaktionsmatrix für Beziehungsmodelle",
-    "version": "1.0.0",
-    "author": "Tiage",
+    "version": "2.0.0",
     "created": "2025-01-22",
-    "description": "Eine 5x5 Matrix zur Bewertung der Kompatibilität verschiedener Beziehungsarchetypen",
-    "perspective": "Tiage (hedonistisch-poly lebend)",
+    "description": "Eine 4x4 Matrix zur Bewertung der Kompatibilität verschiedener Beziehungsarchetypen",
     "matrixType": "asymmetric",
     "note": "Asymmetrisch, da die Perspektive die wahrgenommene Kompatibilität beeinflusst"
   },
@@ -13,57 +11,33 @@
   "categories": {
     "A": {
       "name": "Beziehungsphilosophie",
-      "description": "Die fundamentale Einstellung zu Beziehungen: Wie sieht jemand die Rolle von Beziehungen im Leben? Welchen Stellenwert haben Exklusivität, Offenheit, Tiefe und Freiheit?",
-      "subDimensions": [
-        "Exklusivitäts-Erwartung",
-        "Offenheit für alternative Modelle",
-        "Beziehung als Lebensinhalt vs. Lebensbereich"
-      ]
+      "description": "Die fundamentale Einstellung zu Beziehungen: Exklusivität, Offenheit, Tiefe und Freiheit",
+      "subDimensions": ["Exklusivitäts-Erwartung", "Offenheit für alternative Modelle", "Beziehung als Lebensinhalt vs. Lebensbereich"]
     },
     "B": {
       "name": "Werte-Alignment",
-      "description": "Übereinstimmung in Kernwerten wie Ehrlichkeit, Treue-Definition, Verantwortung, und ethischem Umgang mit Partnern",
-      "subDimensions": [
-        "Definition von Treue",
-        "Ethische Grundhaltung",
-        "Verantwortungsbewusstsein"
-      ]
+      "description": "Übereinstimmung in Kernwerten wie Ehrlichkeit, Treue-Definition und ethischem Umgang",
+      "subDimensions": ["Definition von Treue", "Ethische Grundhaltung", "Verantwortungsbewusstsein"]
     },
     "C": {
       "name": "Nähe-Distanz-Präferenzen",
-      "description": "Wie viel emotionale und physische Nähe wird gewünscht? Wie wird Raum gegeben und genommen?",
-      "subDimensions": [
-        "Emotionale Verschmelzungs-Tendenz",
-        "Physische Nähe-Bedürfnisse",
-        "Fähigkeit, Raum zu geben"
-      ]
+      "description": "Gewünschte emotionale und physische Nähe, Fähigkeit Raum zu geben",
+      "subDimensions": ["Emotionale Verschmelzungs-Tendenz", "Physische Nähe-Bedürfnisse", "Fähigkeit, Raum zu geben"]
     },
     "D": {
       "name": "Autonomie-Bedürfnisse",
-      "description": "Das Bedürfnis nach Unabhängigkeit, eigenen Projekten, Zeit für sich selbst und Freiheit in der Lebensgestaltung",
-      "subDimensions": [
-        "Individuelle Freiheit",
-        "Entscheidungsautonomie",
-        "Akzeptanz der Autonomie des anderen"
-      ]
+      "description": "Bedürfnis nach Unabhängigkeit, eigenen Projekten und Freiheit",
+      "subDimensions": ["Individuelle Freiheit", "Entscheidungsautonomie", "Akzeptanz der Autonomie des anderen"]
     },
     "E": {
       "name": "Kommunikations-Matching",
-      "description": "Wie gut passen die Kommunikationsstile? Tiefe, Direktheit, Konfliktfähigkeit und emotionale Artikulation",
-      "subDimensions": [
-        "Kommunikationstiefe",
-        "Konfliktfähigkeit",
-        "Emotionale Transparenz"
-      ]
+      "description": "Passung der Kommunikationsstile: Tiefe, Direktheit, Konfliktfähigkeit",
+      "subDimensions": ["Kommunikationstiefe", "Konfliktfähigkeit", "Emotionale Transparenz"]
     },
     "F": {
       "name": "Soziale Kompatibilität",
-      "description": "Wie gut funktioniert die Beziehung im sozialen Kontext? Umgang mit Familie, Freunden, gesellschaftlichen Normen",
-      "subDimensions": [
-        "Gesellschaftliche Akzeptanz",
-        "Integration in soziale Kreise",
-        "Umgang mit Stigma"
-      ]
+      "description": "Funktion der Beziehung im sozialen Kontext, Umgang mit Normen",
+      "subDimensions": ["Gesellschaftliche Akzeptanz", "Integration in soziale Kreise", "Umgang mit Stigma"]
     }
   },
 
@@ -72,113 +46,107 @@
       "id": "single",
       "name": "Single",
       "color": "#E63946",
-      "colorSecondary": "#FFB4A2",
-      "description": "Fokus auf Selbstentwicklung, temporär oder dauerhaft ungebunden. Offen für verschiedene Beziehungsformen, aber aktuell nicht in fester Bindung.",
-      "coreTraits": [
-        "Selbstfokussiert",
-        "Flexibel in Beziehungsvorstellungen",
-        "Explorativ oder bewusst ungebunden",
-        "Kann monogam oder poly orientiert sein"
+      "colorLight": "#FFB4A2",
+      "colorDark": "#9D2933",
+      "shortDescription": "Fokus auf Selbstentwicklung, temporär oder bewusst ungebunden. Maximale persönliche Freiheit mit Offenheit für verschiedene Beziehungsformen.",
+      "fullDescription": "Der Single-Archetyp lebt primär für sich selbst und eigene Projekte. Dies kann eine bewusste Lebensphase oder eine dauerhafte Entscheidung sein. Singles sind oft besonders reflektiert über ihre Bedürfnisse und können sowohl monogam als auch poly orientiert sein.",
+      "pro": [
+        "Volle Kontrolle über Zeit und Energie",
+        "Ungestörte Selbstentwicklung möglich",
+        "Flexibilität bei Lebensentscheidungen",
+        "Keine Kompromisse bei Grundwerten nötig",
+        "Freiheit, verschiedene Beziehungsformen zu explorieren"
       ],
-      "profile": {
-        "A_philosophy": 50,
-        "B_values": 55,
-        "C_closeness": 45,
-        "D_autonomy": 85,
-        "E_communication": 50,
-        "F_social": 75
-      }
+      "contra": [
+        "Risiko der Isolation und Einsamkeit",
+        "Keine geteilte emotionale Last",
+        "Gesellschaftlicher Druck ('Wann heiratest du?')",
+        "Fehlende Intimität und körperliche Nähe",
+        "Mangelnde Übung in Beziehungsskills"
+      ],
+      "pathos": "Eine Mischung aus Freiheitsgefühl und gelegentlicher Sehnsucht. Der Single spürt die Weite der Möglichkeiten, aber manchmal auch die Leere eines unbewohnten Raums. Stolz auf Unabhängigkeit, aber offen für Verbindung.",
+      "logos": "Strukturell optimiert für Selbstverwirklichung. Alle Ressourcen (Zeit, Geld, Aufmerksamkeit) fließen in eigene Projekte. Beziehungen werden als Option, nicht als Notwendigkeit betrachtet. Rationalität in der Partnersuche möglich."
     },
     "solopoly": {
       "id": "solopoly",
       "name": "Solopoly",
       "color": "#2A9D8F",
-      "colorSecondary": "#A8DADC",
-      "description": "Polyamor lebend mit Betonung auf voller Autonomie. Kein 'Nesting Partner', jede Beziehung ist eigenständig und gleichwertig.",
-      "coreTraits": [
-        "Maximale Autonomie",
-        "Nicht-hierarchisch",
-        "Bewusste Ablehnung von Verschmelzung",
-        "Tiefe Beziehungen ohne Zusammenleben"
+      "colorLight": "#A8DADC",
+      "colorDark": "#1D7069",
+      "shortDescription": "Polyamor mit maximaler Autonomie. Keine Primärbeziehung, kein Zusammenleben - jede Verbindung ist eigenständig und gleichwertig.",
+      "fullDescription": "Solopoly vereint polyamore Offenheit mit konsequenter Autonomie. Der Fokus liegt auf dem 'Solo' - kein Nesting Partner, keine Verschmelzung. Mehrere tiefe Beziehungen sind möglich, aber jede Person bleibt primär bei sich selbst verankert.",
+      "pro": [
+        "Maximale Autonomie bei gleichzeitiger Verbundenheit",
+        "Keine Hierarchie zwischen Partnern schafft Gleichwertigkeit",
+        "Eigenes Zuhause als sicherer Rückzugsort",
+        "Beziehungen entstehen aus Wahl, nicht aus Gewohnheit",
+        "Hohe Selbstkenntnis durch bewusste Lebensgestaltung"
       ],
-      "profile": {
-        "A_philosophy": 75,
-        "B_values": 70,
-        "C_closeness": 55,
-        "D_autonomy": 95,
-        "E_communication": 80,
-        "F_social": 45
-      }
+      "contra": [
+        "Gesellschaftlich schwer zu erklären und zu leben",
+        "Risiko der emotionalen Distanzierung",
+        "Kein Zusammenleben bedeutet getrennte Lebensrealitäten",
+        "Partner können sich als 'nicht wichtig genug' fühlen",
+        "Hoher Organisationsaufwand für multiple Beziehungen"
+      ],
+      "pathos": "Tiefe Wertschätzung für Freiheit und Selbstbestimmung. Ein Gefühl von 'Ich gehöre mir selbst' durchzieht alle Beziehungen. Liebe wird als Geschenk gegeben, nicht als Anspruch erhoben. Manchmal Sehnsucht nach Verschmelzung, die bewusst zurückgehalten wird.",
+      "logos": "Klare Struktur: Jede Beziehung hat ihren eigenen Kontext, keine überlappenden Erwartungen. Zeit wird bewusst verteilt, nicht automatisch geteilt. Das eigene Leben ist die Basis, Beziehungen sind Bereicherungen, keine Fundamente."
     },
-    "tiage": {
-      "id": "tiage",
-      "name": "Tiage",
-      "color": "#457B9D",
-      "colorSecondary": "#A8D5E2",
-      "description": "Zwischen Monogamie und Polyamorie positioniert. Höchste emotionale Tiefe und Resonanzfähigkeit, starke moralische Integrität, maximale Verletzbarkeit.",
-      "coreTraits": [
-        "Maximale Resonanzfähigkeit",
-        "Tiefe vor Breite",
-        "Hohe moralische Reflexion",
-        "Schwierigkeit mit Distanz ohne Verlust"
+    "poly_hedo": {
+      "id": "poly_hedo",
+      "name": "Poly Hedo",
+      "color": "#9B5DE5",
+      "colorLight": "#D4A5FF",
+      "colorDark": "#7340B0",
+      "shortDescription": "Lustorientierte, spontane Mehrfachbeziehungen. Fokus auf Genuss, Erfahrung und Lebensfreude - weniger auf Struktur und Regeln.",
+      "fullDescription": "Poly Hedo (hedonistisch-polyamor) feiert die Sinnlichkeit und Spontaneität von Beziehungen. Weniger interessiert an Regelwerken und Kalendern, mehr an authentischen Momenten und intensiven Erfahrungen. Genuss steht im Vordergrund, ohne dabei unethisch zu werden.",
+      "pro": [
+        "Maximale Lebensfreude und Genuss",
+        "Spontaneität und Abenteuerlust",
+        "Wenig Drama durch geringe Erwartungen",
+        "Intensive, unvergessliche Momente",
+        "Freiheit von starren Beziehungsregeln"
       ],
-      "profile": {
-        "A_philosophy": 70,
-        "B_values": 85,
-        "C_closeness": 90,
-        "D_autonomy": 55,
-        "E_communication": 85,
-        "F_social": 55
-      }
+      "contra": [
+        "Gesellschaftlich am stärksten stigmatisiert",
+        "Risiko der Oberflächlichkeit",
+        "Schwierig, tiefe emotionale Bindungen aufzubauen",
+        "Kann als verantwortungslos wahrgenommen werden",
+        "Fehlende Struktur kann zu Chaos führen"
+      ],
+      "pathos": "Feier des Augenblicks, Ekstase und Lebendigkeit. Ein tiefes 'Ja' zum Leben in allen seinen Facetten. Verbindung entsteht durch geteilte Intensität, nicht durch Versprechen. Manchmal Sehnsucht nach Ankern in der Flut der Erfahrungen.",
+      "logos": "Wenig strukturiert, aber nicht regellos. Ethik basiert auf Ehrlichkeit und Consent, nicht auf Zeitplänen. Beziehungen sind Flows, keine Verträge. Flexibilität als höchstes Gut. Energie folgt der Lust, nicht dem Kalender."
     },
     "polyamor": {
       "id": "polyamor",
       "name": "Polyamor",
       "color": "#F4A261",
-      "colorSecondary": "#FFE5B4",
-      "description": "Klassisch polyamor mit mehreren romantischen Beziehungen. Oft hierarchisch organisiert (Primary/Secondary), Fokus auf ethische Nicht-Monogamie.",
-      "coreTraits": [
-        "Mehrere Liebesbeziehungen",
-        "Oft hierarchisch",
-        "Hoher Kommunikationsaufwand",
-        "Community-orientiert"
+      "colorLight": "#FFE5B4",
+      "colorDark": "#C07B3E",
+      "shortDescription": "Strukturierte, ethische Mehrfachbeziehungen. Klare Kommunikation, oft hierarchisch organisiert, mit Fokus auf tiefe romantische Bindungen.",
+      "fullDescription": "Klassisches Polyamory mit Betonung auf Ethik, Kommunikation und oft einer hierarchischen Struktur (Primary/Secondary). Der Fokus liegt auf mehreren romantischen Liebesbeziehungen, nicht primär auf Sexualität. Community und gegenseitige Unterstützung sind wichtig.",
+      "pro": [
+        "Tiefe Liebesbeziehungen mit mehreren Menschen möglich",
+        "Starke Community und Unterstützungsnetzwerk",
+        "Klare Regeln schaffen Sicherheit",
+        "Hohe Kommunikationskompetenz",
+        "Compersion - Mitfreude am Glück der Partner"
       ],
-      "profile": {
-        "A_philosophy": 80,
-        "B_values": 75,
-        "C_closeness": 70,
-        "D_autonomy": 65,
-        "E_communication": 85,
-        "F_social": 40
-      }
-    },
-    "hedonistic_poly": {
-      "id": "hedonistic_poly",
-      "name": "Hedonistisch-Poly",
-      "color": "#9B5DE5",
-      "colorSecondary": "#D4A5FF",
-      "description": "Polyamor mit Fokus auf Genuss, Freiheit und Erfahrungen. Weniger Fokus auf romantische Tiefe, mehr auf Verbindung und Lebensfreude.",
-      "coreTraits": [
-        "Genuss-orientiert",
-        "Erfahrungs-fokussiert",
-        "Flexible Bindungsintensitäten",
-        "Feier der Sinnlichkeit"
+      "contra": [
+        "Hoher Zeit- und Kommunikationsaufwand",
+        "Gesellschaftliche Stigmatisierung",
+        "Komplexe Kalenderverwaltung nötig",
+        "Hierarchien können verletzen",
+        "Eifersucht und Unsicherheiten als ständige Arbeit"
       ],
-      "profile": {
-        "A_philosophy": 85,
-        "B_values": 60,
-        "C_closeness": 60,
-        "D_autonomy": 80,
-        "E_communication": 70,
-        "F_social": 35
-      }
+      "pathos": "Tiefe Liebe zu mehreren Menschen gleichzeitig. Ein Gefühl von 'Das Herz wird größer, nicht geteilt'. Freude an der Komplexität menschlicher Verbindungen. Manchmal Überforderung durch die vielen emotionalen Fäden.",
+      "logos": "Hochstrukturiert mit klaren Regeln, Verhandlungen und Agreements. Kalendermanagement als Kernkompetenz. Hierarchien (Primary/Secondary) oder bewusste Nicht-Hierarchie. Kommunikation ist das Fundament aller Beziehungen."
     }
   },
 
   "interactions": {
     "single_single": {
-      "from": "single",
-      "to": "single",
+      "from": "single", "to": "single",
       "scores": {
         "A": { "value": 75, "note": "Ähnliche Flexibilität, aber oft unterschiedliche Zukunftsvisionen" },
         "B": { "value": 65, "note": "Variable Werte je nach individueller Orientierung" },
@@ -188,415 +156,436 @@
         "F": { "value": 85, "note": "Gesellschaftlich völlig akzeptiert" }
       },
       "overall": 72,
-      "dynamic": "Zwei Singles können eine unverbindliche, explorative Dynamik leben. Die Kompatibilität hängt stark davon ab, ob beide ähnliche Zukunftsvorstellungen haben."
+      "pro": [
+        "Keine Erwartungshaltung schafft Leichtigkeit",
+        "Beide verstehen das Bedürfnis nach Freiraum",
+        "Explorative Dynamik ohne Druck",
+        "Gesellschaftlich unkompliziert"
+      ],
+      "contra": [
+        "Risiko des Stillstands - niemand macht den ersten Schritt",
+        "Fehlende emotionale Tiefe wenn beide zu vorsichtig sind",
+        "Unterschiedliche Zukunftsvorstellungen können aufeinanderprallen"
+      ],
+      "pathos": "Zwei Planeten, die sich umkreisen, ohne zu kollidieren. Neugier und Vorsicht halten sich die Waage. Potenzial für alles - von flüchtiger Begegnung bis tiefer Verbindung - aber beidseitige Offenheit nötig.",
+      "logos": "Strukturell kompatibel durch gemeinsame Ungebundenheit. Keine festen Erwartungen erleichtern den Einstieg. Risiko: Ohne Initiative bleibt es bei unverbindlichem Flirt."
     },
 
     "single_solopoly": {
-      "from": "single",
-      "to": "solopoly",
+      "from": "single", "to": "solopoly",
       "scores": {
         "A": { "value": 55, "note": "Single könnte Exklusivität wünschen, Solopoly bietet das nicht" },
         "B": { "value": 60, "note": "Ethische Basis kann unterschiedlich interpretiert werden" },
-        "C": { "value": 50, "note": "Single könnte mehr Nähe wünschen als Solopoly bereit ist zu geben" },
+        "C": { "value": 50, "note": "Single könnte mehr Nähe wünschen als Solopoly bereit ist" },
         "D": { "value": 85, "note": "Beide schätzen Freiheit, aber aus unterschiedlichen Gründen" },
-        "E": { "value": 65, "note": "Solopoly kommuniziert klar, Single muss sich darauf einlassen" },
+        "E": { "value": 68, "note": "Solopoly kommuniziert klar, Single muss sich darauf einlassen" },
         "F": { "value": 45, "note": "Sozial erklärungsbedürftig, wenn es über Dating hinausgeht" }
       },
-      "overall": 60,
-      "dynamic": "Ein Single kann von der Klarheit eines Solopoly profitieren, muss aber akzeptieren, nie 'der Eine' zu sein. Funktioniert gut als explorative Phase."
+      "overall": 61,
+      "pro": [
+        "Solopoly bietet klare Kommunikation über Grenzen",
+        "Single behält volle Freiheit ohne Beziehungsdruck",
+        "Gute Einstiegsoption für Poly-Neugierige",
+        "Keine Verschmelzungserwartung auf beiden Seiten"
+      ],
+      "contra": [
+        "Single könnte sich als 'einer von vielen' fühlen",
+        "Exklusivitätswunsch wird nie erfüllt",
+        "Gesellschaftlich schwer zu erklären",
+        "Single muss Poly-Grundlagen verstehen lernen"
+      ],
+      "pathos": "Der Single spürt die Anziehung zur Klarheit des Solopoly, aber vielleicht auch Frustration: 'Warum kann ich nicht genug sein?' Gleichzeitig Faszination für diese selbstbestimmte Lebensform.",
+      "logos": "Strukturell herausfordernd: Single's möglicher Exklusivitätswunsch vs. Solopoly's definierte Nicht-Exklusivität. Funktioniert wenn Single das Modell akzeptiert, scheitert bei heimlichen Hoffnungen."
     },
 
-    "single_tiage": {
-      "from": "single",
-      "to": "tiage",
+    "single_poly_hedo": {
+      "from": "single", "to": "poly_hedo",
       "scores": {
-        "A": { "value": 50, "note": "Single's Offenheit trifft auf Tiage's Tiefenwunsch - kann irritieren" },
-        "B": { "value": 70, "note": "Tiage's hohe moralische Standards können Single fordern" },
-        "C": { "value": 45, "note": "Tiage's Nähebedürfnis kann Single überfordern" },
-        "D": { "value": 55, "note": "Single braucht Raum, Tiage hat Schwierigkeiten mit Distanz" },
-        "E": { "value": 75, "note": "Tiage's Kommunikationstiefe kann Single bereichern oder überfordern" },
-        "F": { "value": 65, "note": "Gesellschaftlich unkompliziert, da nicht offen poly" }
+        "A": { "value": 62, "note": "Beide können unverbindlichen Spaß teilen" },
+        "B": { "value": 52, "note": "Werte-Unterschiede möglich aber nicht zwingend störend" },
+        "C": { "value": 58, "note": "Nähe ist intensiv aber situativ" },
+        "D": { "value": 88, "note": "Maximale Freiheit auf beiden Seiten" },
+        "E": { "value": 55, "note": "Kommunikation pragmatisch, nicht immer tief" },
+        "F": { "value": 42, "note": "Kann als 'nur Spaß' sozial akzeptiert sein" }
       },
       "overall": 60,
-      "dynamic": "Kann tiefe Verbindung entstehen, wenn der Single bereit ist für emotionale Tiefe. Risiko: Tiage investiert emotional mehr als Single zurückgeben kann."
+      "pro": [
+        "Spaß und Genuss ohne Verpflichtung",
+        "Keine Erwartungen = wenig Enttäuschungspotenzial",
+        "Ideal für Erfahrungssammlung",
+        "Intensive Momente ohne Langzeitverpflichtung"
+      ],
+      "contra": [
+        "Risiko der Oberflächlichkeit",
+        "Single könnte mehr Tiefe wünschen",
+        "Gesellschaftlich heikel wenn es öffentlich wird",
+        "Fehlende emotionale Kontinuität"
+      ],
+      "pathos": "Funken und Feuerwerk - aufregend, aber flüchtig. Der Single genießt die Intensität, fragt sich aber vielleicht: 'Ist das alles?' Gleichzeitig Befreiung vom Beziehungsdruck.",
+      "logos": "Strukturell einfach: Niedrige Erwartungen, klarer Fokus auf Genuss. Keine Verhandlungen über Zukunft nötig. Risiko: Wenn Single mehr will, entsteht Asymmetrie."
     },
 
     "single_polyamor": {
-      "from": "single",
-      "to": "polyamor",
+      "from": "single", "to": "polyamor",
       "scores": {
-        "A": { "value": 45, "note": "Grundsätzlich unterschiedliche Beziehungsphilosophien" },
-        "B": { "value": 55, "note": "Werte-Clash bei Exklusivitätserwartungen möglich" },
-        "C": { "value": 55, "note": "Nähe ist möglich, aber Single konkurriert um Aufmerksamkeit" },
-        "D": { "value": 70, "note": "Single hat Freiheit, aber nicht die gewünschte Exklusivität" },
+        "A": { "value": 48, "note": "Grundsätzlich unterschiedliche Beziehungsphilosophien" },
+        "B": { "value": 58, "note": "Werte-Clash bei Exklusivitätserwartungen möglich" },
+        "C": { "value": 55, "note": "Nähe möglich, aber Single konkurriert um Aufmerksamkeit" },
+        "D": { "value": 72, "note": "Single hat Freiheit, aber nicht die gewünschte Exklusivität" },
         "E": { "value": 70, "note": "Poly-Kommunikation erfordert Einarbeitung" },
-        "F": { "value": 35, "note": "Gesellschaftlich herausfordernd zu erklären" }
+        "F": { "value": 38, "note": "Gesellschaftlich herausfordernd zu erklären" }
       },
-      "overall": 55,
-      "dynamic": "Ein Single, der einen Polyamorösen dated, muss sich auf geteilte Zeit und Aufmerksamkeit einstellen. Kann für Neugierige funktionieren, für Exklusivitätssuchende frustrierend."
-    },
-
-    "single_hedonistic_poly": {
-      "from": "single",
-      "to": "hedonistic_poly",
-      "scores": {
-        "A": { "value": 60, "note": "Beide können unverbindlichen Spaß teilen" },
-        "B": { "value": 50, "note": "Hedonismus kann mit Single's Werten kollidieren" },
-        "C": { "value": 55, "note": "Nähe ist situativ, nicht kontinuierlich" },
-        "D": { "value": 85, "note": "Maximale Freiheit auf beiden Seiten" },
-        "E": { "value": 55, "note": "Kommunikation oft oberflächlicher, aber ehrlich" },
-        "F": { "value": 40, "note": "Kann als 'nur Spaß' abgetan werden, aber sozial heikel" }
-      },
-      "overall": 58,
-      "dynamic": "Gute Basis für Fun und Exploration. Wenig Druck, aber auch wenig Tiefe. Ideal für Singles, die Erfahrungen sammeln wollen ohne Verpflichtung."
+      "overall": 57,
+      "pro": [
+        "Zugang zu Poly-Community und Erfahrungen",
+        "Klare Kommunikationskultur des Polyamors",
+        "Single kann Poly 'testen' ohne Commitment",
+        "Tiefe Verbindung ist möglich"
+      ],
+      "contra": [
+        "Single muss geteilte Zeit akzeptieren",
+        "Komplexe Regeln und Hierarchien verstehen",
+        "Gefühl 'Sekundär' zu sein kann verletzen",
+        "Gesellschaftlich erklärungsbedürftig"
+      ],
+      "pathos": "Der Single betritt eine neue Welt mit eigenen Regeln. Faszination und Überforderung mischen sich. Die Frage 'Wo ist mein Platz hier?' begleitet die Erfahrung. Potenzial für Wachstum oder Frustration.",
+      "logos": "Strukturelle Lernkurve: Single muss Poly-Vokabular und Regelwerke verstehen. Kalendermanagement und Hierarchien sind fremd. Funktioniert bei Offenheit, scheitert bei heimlichem Exklusivitätswunsch."
     },
 
     "solopoly_single": {
-      "from": "solopoly",
-      "to": "single",
+      "from": "solopoly", "to": "single",
       "scores": {
-        "A": { "value": 60, "note": "Solopoly schätzt Single's Unabhängigkeit" },
-        "B": { "value": 65, "note": "Werte können kompatibel sein, wenn Single nicht exklusiv sucht" },
+        "A": { "value": 62, "note": "Solopoly schätzt Single's Unabhängigkeit" },
+        "B": { "value": 65, "note": "Werte kompatibel wenn Single nicht exklusiv sucht" },
         "C": { "value": 55, "note": "Solopoly hält natürliche Distanz, Single könnte mehr wollen" },
-        "D": { "value": 90, "note": "Perfektes Match bei Autonomie" },
+        "D": { "value": 92, "note": "Perfektes Match bei Autonomie" },
         "E": { "value": 70, "note": "Solopoly kommuniziert Bedürfnisse klar" },
-        "F": { "value": 50, "note": "Sozial einfacher als mit anderen Poly-Varianten" }
+        "F": { "value": 52, "note": "Sozial einfacher als mit anderen Poly-Varianten" }
       },
-      "overall": 65,
-      "dynamic": "Aus Solopoly-Sicht ein komfortables Arrangement. Der Single bringt keine Verschmelzungserwartungen mit, solange beide wissen, worauf sie sich einlassen."
+      "overall": 66,
+      "pro": [
+        "Single bringt keine Verschmelzungserwartungen",
+        "Unkomplizierte Dynamik ohne Poly-Erklärungsbedarf",
+        "Autonomie wird von beiden geschätzt",
+        "Leichter Einstieg in Beziehung"
+      ],
+      "contra": [
+        "Single könnte heimlich mehr wollen",
+        "Risiko der Enttäuschung wenn Erwartungen divergieren",
+        "Single versteht Poly-Kontext möglicherweise nicht",
+        "Langfristig nur stabil wenn Single das Modell akzeptiert"
+      ],
+      "pathos": "Aus Solopoly-Sicht: Ein angenehmer, unproblematischer Partner. Keine Kämpfe um Hierarchien, keine Poly-Dramen. Aber vielleicht unterschätzt der Single die Tiefe, die Solopoly bieten kann.",
+      "logos": "Strukturell komfortabel für Solopoly. Single's Unabhängigkeit passt zum Modell. Risiko: Asymmetrie wenn Single Exklusivität entwickelt. Klare Kommunikation von Anfang an essenziell."
     },
 
     "solopoly_solopoly": {
-      "from": "solopoly",
-      "to": "solopoly",
+      "from": "solopoly", "to": "solopoly",
       "scores": {
         "A": { "value": 95, "note": "Perfekte philosophische Übereinstimmung" },
         "B": { "value": 85, "note": "Geteilte Ethik der Autonomie und Ehrlichkeit" },
-        "C": { "value": 65, "note": "Nähe möglich, aber nie verschmelzend - gewollt so" },
+        "C": { "value": 65, "note": "Nähe möglich, aber nie verschmelzend - gewollt" },
         "D": { "value": 98, "note": "Maximale gegenseitige Autonomie-Akzeptanz" },
         "E": { "value": 85, "note": "Klare, direkte Kommunikation ist Standard" },
-        "F": { "value": 40, "note": "Gesellschaftlich schwer zu erklären" }
+        "F": { "value": 42, "note": "Gesellschaftlich schwer zu erklären" }
       },
       "overall": 78,
-      "dynamic": "Traumkonstellation für Autonomie-Liebhaber. Tiefe Verbindung ohne Besitzanspruch. Risiko: Kann emotional 'dünn' wirken, wenn beide zu distanziert sind."
+      "pro": [
+        "Vollständiges Verständnis des Modells",
+        "Keine Erklärungen nötig, geteilte Sprache",
+        "Tiefe Verbindung ohne Besitzanspruch",
+        "Gegenseitige Autonomie als Wert"
+      ],
+      "contra": [
+        "Kann emotional 'dünn' wirken",
+        "Gesellschaftlich besonders schwer zu erklären",
+        "Risiko dass beide zu distanziert bleiben",
+        "Fehlende Verschmelzung kann als Mangel empfunden werden"
+      ],
+      "pathos": "Zwei Seelen, die die gleiche Sprache sprechen. Tiefes Verstehen ohne Worte. Aber vielleicht auch die Frage: 'Wäre mehr möglich, wenn wir uns trauen?' Die Schönheit und Trauer bewusster Distanz.",
+      "logos": "Strukturell ideal: Beide verstehen die Regeln, keine Asymmetrien. Perfekte Autonomie-Kompatibilität. Risiko: Wenn beide zu sehr 'Solo' bleiben, verkümmert die 'Poly'-Verbindung."
     },
 
-    "solopoly_tiage": {
-      "from": "solopoly",
-      "to": "tiage",
+    "solopoly_poly_hedo": {
+      "from": "solopoly", "to": "poly_hedo",
       "scores": {
-        "A": { "value": 55, "note": "Philosophischer Grundkonflikt: Autonomie vs. tiefe Bindung" },
-        "B": { "value": 75, "note": "Beide haben starke ethische Grundlagen" },
-        "C": { "value": 45, "note": "Tiage's Nähewunsch vs. Solopoly's Distanz-Präferenz" },
-        "D": { "value": 50, "note": "Tiage könnte sich vernachlässigt fühlen" },
-        "E": { "value": 80, "note": "Beide kommunizieren offen, aber über unterschiedliche Bedürfnisse" },
-        "F": { "value": 50, "note": "Gemeinsam gegen Normen, aber unterschiedlich motiviert" }
-      },
-      "overall": 59,
-      "dynamic": "Herausfordernde Kombination. Tiage's Resonanzwunsch trifft auf Solopoly's bewusste Distanz. Kann funktionieren, wenn Tiage Abstand als Wertschätzung lernt."
-    },
-
-    "solopoly_polyamor": {
-      "from": "solopoly",
-      "to": "polyamor",
-      "scores": {
-        "A": { "value": 75, "note": "Gemeinsame Poly-Basis, unterschiedliche Strukturpräferenzen" },
-        "B": { "value": 80, "note": "Ethische Nicht-Monogamie als gemeinsamer Nenner" },
-        "C": { "value": 60, "note": "Poly könnte mehr Nähe wollen als Solopoly bietet" },
-        "D": { "value": 70, "note": "Solopoly braucht mehr Autonomie als hierarchisches Poly bietet" },
-        "E": { "value": 85, "note": "Beide Kommunikationsstark" },
-        "F": { "value": 45, "note": "Beide kämpfen mit gesellschaftlicher Akzeptanz" }
-      },
-      "overall": 69,
-      "dynamic": "Funktioniert gut, wenn der Polyamoröse nicht auf Hierarchie besteht. Solopoly wird nie 'Primary' sein wollen - das muss klar sein."
-    },
-
-    "solopoly_hedonistic_poly": {
-      "from": "solopoly",
-      "to": "hedonistic_poly",
-      "scores": {
-        "A": { "value": 80, "note": "Beide schätzen Freiheit und Erfahrung" },
-        "B": { "value": 65, "note": "Hedonismus könnte ethische Grenzen des Solopoly testen" },
-        "C": { "value": 60, "note": "Situative Nähe ohne Erwartung - passt beiden" },
-        "D": { "value": 90, "note": "Excellente Autonomie-Kompatibilität" },
-        "E": { "value": 70, "note": "Funktionale Kommunikation, nicht immer tief" },
-        "F": { "value": 35, "note": "Gesellschaftlich besonders herausfordernd" }
-      },
-      "overall": 67,
-      "dynamic": "Natürliche Verbindung von Freiheitsliebenden. Wenig Drama, viel Genuss. Kann oberflächlich bleiben, was für beide okay sein kann."
-    },
-
-    "tiage_single": {
-      "from": "tiage",
-      "to": "single",
-      "scores": {
-        "A": { "value": 55, "note": "Tiage hofft auf Tiefe, Single ist möglicherweise noch explorierend" },
-        "B": { "value": 72, "note": "Tiage's Werte können Single inspirieren oder überfordern" },
-        "C": { "value": 50, "note": "Tiage wünscht sich mehr Nähe als Single bereit ist zu geben" },
-        "D": { "value": 50, "note": "Tiage's Schwierigkeit mit Distanz trifft auf Single's Freiheitswunsch" },
-        "E": { "value": 70, "note": "Tiage bringt Tiefe ein, die Single bereichern kann" },
-        "F": { "value": 70, "note": "Gesellschaftlich unkompliziert" }
-      },
-      "overall": 61,
-      "dynamic": "Aus Tiage-Sicht riskant. Viel emotionale Investition in jemanden, der vielleicht nicht auf der gleichen Tiefenebene agiert. Kann schmerzhaft sein, wenn Single weiterzieht."
-    },
-
-    "tiage_solopoly": {
-      "from": "tiage",
-      "to": "solopoly",
-      "scores": {
-        "A": { "value": 50, "note": "Tiage sucht Resonanz, Solopoly bietet strukturierte Distanz" },
-        "B": { "value": 78, "note": "Gemeinsame ethische Basis trotz unterschiedlicher Modelle" },
-        "C": { "value": 40, "note": "Kernkonflikt: Tiage's Nähewunsch wird nicht erfüllt" },
-        "D": { "value": 55, "note": "Tiage muss Autonomie akzeptieren lernen" },
-        "E": { "value": 82, "note": "Beide kommunizieren gut, verstehen sich konzeptuell" },
-        "F": { "value": 45, "note": "Gesellschaftlich herausfordernd für beide" }
-      },
-      "overall": 58,
-      "dynamic": "Schwierige Konstellation für Tiage. Die strukturelle Distanz des Solopoly kann sich wie Ablehnung anfühlen. Erfordert viel Selbstarbeit von Tiage."
-    },
-
-    "tiage_tiage": {
-      "from": "tiage",
-      "to": "tiage",
-      "scores": {
-        "A": { "value": 95, "note": "Perfekte philosophische Resonanz" },
-        "B": { "value": 92, "note": "Höchste moralische Übereinstimmung" },
-        "C": { "value": 95, "note": "Maximale Tiefe und Nähe möglich" },
-        "D": { "value": 45, "note": "Beide haben Schwierigkeiten mit Distanz - kann toxisch werden" },
-        "E": { "value": 95, "note": "Tiefste Kommunikation möglich" },
-        "F": { "value": 60, "note": "Intensität kann nach außen befremdlich wirken" }
-      },
-      "overall": 80,
-      "dynamic": "Intensivste mögliche Verbindung. Seelenverwandtschaftspotenzial ist maximal. Risiko: Gegenseitige Verstrickung wenn beide nicht auch Distanz halten können."
-    },
-
-    "tiage_polyamor": {
-      "from": "tiage",
-      "to": "polyamor",
-      "scores": {
-        "A": { "value": 70, "note": "Gemeinsame Offenheit für multiple Bindungen" },
-        "B": { "value": 78, "note": "Ethische Basis stimmt überein" },
-        "C": { "value": 70, "note": "Tiage's Tiefe ist möglich, aber geteilt" },
-        "D": { "value": 60, "note": "Tiage muss geteilte Aufmerksamkeit akzeptieren" },
-        "E": { "value": 85, "note": "Beide kommunikationsstark" },
-        "F": { "value": 45, "note": "Gesellschaftlich herausfordernd" }
-      },
-      "overall": 68,
-      "dynamic": "Gute Kompatibilität wenn Tiage bereit ist, Tiefe mit mehreren zu teilen. Kann bereichernd sein. Wichtig: Klärung der Hierarchie-Frage."
-    },
-
-    "tiage_hedonistic_poly": {
-      "from": "tiage",
-      "to": "hedonistic_poly",
-      "scores": {
-        "A": { "value": 72, "note": "Tiage's hedonistische Seite findet Resonanz" },
-        "B": { "value": 62, "note": "Werte-Unterschiede bei Tiefe vs. Genuss" },
-        "C": { "value": 65, "note": "Nähe ist situativ, aber intensiv möglich" },
-        "D": { "value": 70, "note": "Hedonist bietet Freiheit, die Tiage manchmal braucht" },
-        "E": { "value": 68, "note": "Kommunikation funktioniert, aber auf unterschiedlichen Ebenen" },
-        "F": { "value": 40, "note": "Gesellschaftlich komplex" }
-      },
-      "overall": 63,
-      "dynamic": "Persönlich relevante Kombination. Als Tiage mit hedonistischer Tendenz: Der Genuss-Aspekt erfüllt einen Teil, aber die Tiefe-Sehnsucht bleibt teils unbefriedigt."
-    },
-
-    "polyamor_single": {
-      "from": "polyamor",
-      "to": "single",
-      "scores": {
-        "A": { "value": 50, "note": "Poly sieht Potenzial, Single muss sich öffnen" },
-        "B": { "value": 58, "note": "Werte-Alignment erfordert Einführung in Poly-Ethik" },
-        "C": { "value": 60, "note": "Nähe möglich wenn Single sich darauf einlässt" },
-        "D": { "value": 75, "note": "Single's Freiheit wird respektiert" },
-        "E": { "value": 72, "note": "Poly bringt Kommunikationskompetenz mit" },
-        "F": { "value": 40, "note": "Single muss lernen, öffentlich damit umzugehen" }
-      },
-      "overall": 59,
-      "dynamic": "Aus Poly-Sicht: Interessant als neuer Partner, aber Einarbeitungsaufwand. Single muss Poly-Basics verstehen und akzeptieren lernen."
-    },
-
-    "polyamor_solopoly": {
-      "from": "polyamor",
-      "to": "solopoly",
-      "scores": {
-        "A": { "value": 78, "note": "Gemeinsame Poly-Basis mit unterschiedlicher Struktur" },
-        "B": { "value": 82, "note": "Ethische Nicht-Monogamie verbindet" },
-        "C": { "value": 55, "note": "Poly könnte mehr Nähe wünschen" },
-        "D": { "value": 72, "note": "Solopoly's Autonomie muss respektiert werden" },
-        "E": { "value": 88, "note": "Excellente Kommunikationsbasis" },
-        "F": { "value": 42, "note": "Beide kennen gesellschaftliche Herausforderungen" }
-      },
-      "overall": 70,
-      "dynamic": "Funktioniert gut wenn klassischer Poly akzeptiert, dass Solopoly nie einziehen wird. Gegenseitiger Respekt für unterschiedliche Poly-Ausprägungen ist key."
-    },
-
-    "polyamor_tiage": {
-      "from": "polyamor",
-      "to": "tiage",
-      "scores": {
-        "A": { "value": 75, "note": "Poly schätzt Tiage's Offenheit und Tiefe" },
-        "B": { "value": 80, "note": "Starke ethische Übereinstimmung" },
-        "C": { "value": 75, "note": "Tiage's Tiefe ist wertvoll für Poly" },
-        "D": { "value": 62, "note": "Tiage braucht möglicherweise mehr Aufmerksamkeit" },
-        "E": { "value": 88, "note": "Kommunikativ excellente Kombination" },
-        "F": { "value": 48, "note": "Gemeinsam gegen Normen, unterschiedliche Sichtbarkeit" }
-      },
-      "overall": 71,
-      "dynamic": "Aus Poly-Sicht: Tiage ist ein wertvoller Partner wegen der emotionalen Tiefe. Muss Tiage's erhöhtes Nähebedürfnis berücksichtigen."
-    },
-
-    "polyamor_polyamor": {
-      "from": "polyamor",
-      "to": "polyamor",
-      "scores": {
-        "A": { "value": 90, "note": "Vollständige philosophische Übereinstimmung" },
-        "B": { "value": 88, "note": "Geteilte Ethik und Community-Verständnis" },
-        "C": { "value": 75, "note": "Nähe ist möglich, aber Zeit ist begrenzt" },
-        "D": { "value": 70, "note": "Beide kennen Balance zwischen Bindung und Freiheit" },
-        "E": { "value": 90, "note": "Kommunikation ist Kernkompetenz" },
-        "F": { "value": 45, "note": "Gemeinsam gegen gesellschaftliche Normen" }
-      },
-      "overall": 76,
-      "dynamic": "Natürliche Verbindung mit geteiltem Verständnis. Herausforderung: Kalender-Tetris und Ressourcenverteilung. Compersion als verbindendes Element."
-    },
-
-    "polyamor_hedonistic_poly": {
-      "from": "polyamor",
-      "to": "hedonistic_poly",
-      "scores": {
-        "A": { "value": 75, "note": "Gemeinsame Offenheit, unterschiedlicher Fokus" },
-        "B": { "value": 65, "note": "Hedonismus kann romantischen Poly irritieren" },
-        "C": { "value": 65, "note": "Hedonist weniger auf kontinuierliche Tiefe aus" },
-        "D": { "value": 78, "note": "Freiheit funktioniert gut für beide" },
-        "E": { "value": 72, "note": "Kommunikation funktional, aber unterschiedliche Prioritäten" },
-        "F": { "value": 38, "note": "Gesellschaftlich besonders herausfordernd" }
-      },
-      "overall": 66,
-      "dynamic": "Kann funktionieren als Teil eines größeren Polycule. Hedonist bringt Leichtigkeit ein, Poly bringt Struktur. Unterschiedliche Erwartungen klären!"
-    },
-
-    "hedonistic_poly_single": {
-      "from": "hedonistic_poly",
-      "to": "single",
-      "scores": {
-        "A": { "value": 65, "note": "Beide können Unverbindlichkeit genießen" },
-        "B": { "value": 52, "note": "Werte-Unterschiede möglich aber nicht störend" },
-        "C": { "value": 60, "note": "Situative Nähe funktioniert gut" },
-        "D": { "value": 88, "note": "Maximale gegenseitige Freiheit" },
-        "E": { "value": 55, "note": "Kommunikation pragmatisch" },
-        "F": { "value": 50, "note": "Kann als 'Dating' oder 'FWB' sozial akzeptiert sein" }
-      },
-      "overall": 62,
-      "dynamic": "Unkomplizierte Verbindung für Spaß und Genuss. Keine großen Erwartungen = wenig Enttäuschungspotenzial. Ideal für lockere Arrangements."
-    },
-
-    "hedonistic_poly_solopoly": {
-      "from": "hedonistic_poly",
-      "to": "solopoly",
-      "scores": {
-        "A": { "value": 82, "note": "Starke Übereinstimmung bei Freiheit und Exploration" },
+        "A": { "value": 82, "note": "Starke Übereinstimmung bei Freiheit und Erfahrung" },
         "B": { "value": 68, "note": "Solopoly möglicherweise strukturierter in der Ethik" },
         "C": { "value": 62, "note": "Beide genießen ohne Verschmelzungsanspruch" },
         "D": { "value": 92, "note": "Perfekte Autonomie-Harmonie" },
-        "E": { "value": 72, "note": "Funktionale, ehrliche Kommunikation" },
+        "E": { "value": 70, "note": "Funktionale, ehrliche Kommunikation" },
         "F": { "value": 35, "note": "Gesellschaftlich beide Außenseiter" }
       },
-      "overall": 69,
-      "dynamic": "Excellente Kompatibilität für Genuss ohne Drama. Beide verstehen das Konzept von Verbindung ohne Bindung. Leichter, genussvoller Umgang."
+      "overall": 68,
+      "pro": [
+        "Gemeinsame Wertschätzung von Freiheit",
+        "Wenig Drama durch klare Erwartungen",
+        "Genuss ohne Verpflichtung",
+        "Ähnliche Lebensentwürfe"
+      ],
+      "contra": [
+        "Poly Hedo könnte Solopoly's Struktur als rigid empfinden",
+        "Solopoly könnte Poly Hedo als zu chaotisch sehen",
+        "Gesellschaftlich besonders herausfordernd",
+        "Langfristig unterschiedliche Tiefen-Bedürfnisse"
+      ],
+      "pathos": "Natürliche Verbindung von Freiheitsliebenden. Leichtigkeit und Genuss ohne schwere Diskussionen. Aber vielleicht fragt Solopoly: 'Ist da auch Tiefe möglich?'",
+      "logos": "Strukturell kompatibel bei Autonomie, unterschiedlich bei Organisation. Solopoly plant, Poly Hedo fließt. Funktioniert bei gegenseitiger Akzeptanz der Unterschiede."
     },
 
-    "hedonistic_poly_tiage": {
-      "from": "hedonistic_poly",
-      "to": "tiage",
+    "solopoly_polyamor": {
+      "from": "solopoly", "to": "polyamor",
       "scores": {
-        "A": { "value": 68, "note": "Hedonist schätzt Tiage's Intensität in Momenten" },
-        "B": { "value": 60, "note": "Tiage's Moralität kann Hedonisten fordern" },
-        "C": { "value": 70, "note": "Tiage's Tiefe kann Hedonisten überraschen - positiv" },
-        "D": { "value": 72, "note": "Hedonist kann Tiage's Raumbedürfnisse akzeptieren" },
-        "E": { "value": 70, "note": "Kommunikation funktioniert auf unterschiedlichen Ebenen" },
-        "F": { "value": 42, "note": "Gesellschaftlich komplex" }
+        "A": { "value": 78, "note": "Gemeinsame Poly-Basis, unterschiedliche Strukturpräferenzen" },
+        "B": { "value": 82, "note": "Ethische Nicht-Monogamie als gemeinsamer Nenner" },
+        "C": { "value": 58, "note": "Polyamor könnte mehr Nähe wollen als Solopoly bietet" },
+        "D": { "value": 70, "note": "Solopoly braucht mehr Autonomie als hierarchisches Poly bietet" },
+        "E": { "value": 85, "note": "Beide kommunikationsstark" },
+        "F": { "value": 45, "note": "Beide kämpfen mit gesellschaftlicher Akzeptanz" }
+      },
+      "overall": 70,
+      "pro": [
+        "Geteilte Poly-Community und Sprache",
+        "Gegenseitiges Verständnis der Lebensform",
+        "Starke Kommunikationsbasis",
+        "Ethische Übereinstimmung"
+      ],
+      "contra": [
+        "Hierarchie-Konflikt: Solopoly passt nicht als 'Primary'",
+        "Polyamor könnte mehr Nähe/Verschmelzung wollen",
+        "Unterschiedliche Strukturpräferenzen",
+        "Kalenderkonflikte möglich"
+      ],
+      "pathos": "Zwei Dialekte derselben Sprache. Verstehen, aber mit Nuancen-Unterschieden. Solopoly schätzt die Tiefe des Polyamors, zögert aber bei der Nähe. Respekt und leichte Distanz.",
+      "logos": "Strukturell kompatibel auf Poly-Ebene, unterschiedlich bei Hierarchie. Solopoly akzeptiert keine Primary-Rolle, Polyamor muss das integrieren. Klärung der Struktur essenziell."
+    },
+
+    "poly_hedo_single": {
+      "from": "poly_hedo", "to": "single",
+      "scores": {
+        "A": { "value": 65, "note": "Beide können unverbindlichen Spaß genießen" },
+        "B": { "value": 55, "note": "Werte-Unterschiede möglich aber nicht zentral" },
+        "C": { "value": 62, "note": "Situative Intensität funktioniert gut" },
+        "D": { "value": 90, "note": "Maximale gegenseitige Freiheit" },
+        "E": { "value": 58, "note": "Kommunikation pragmatisch" },
+        "F": { "value": 52, "note": "Sozial als 'Dating' oder 'FWB' akzeptierbar" }
       },
       "overall": 64,
-      "dynamic": "Interessante Mischung. Hedonist kann von Tiage's Tiefe profitieren, Tiage von Hedonist's Leichtigkeit. Gegenseitige Bereicherung möglich."
+      "pro": [
+        "Unkomplizierter Spaß ohne Erwartungen",
+        "Single akzeptiert die Unverbindlichkeit",
+        "Intensive Momente ohne Langzeitdruck",
+        "Gegenseitige Freiheit"
+      ],
+      "contra": [
+        "Single könnte mehr entwickeln wollen",
+        "Fehlende emotionale Tiefe langfristig",
+        "Risiko der Oberflächlichkeit",
+        "Unterschiedliche Langzeit-Vorstellungen"
+      ],
+      "pathos": "Aus Poly-Hedo-Sicht: Ein angenehmer Spielpartner. Keine Dramen, keine schweren Gespräche. Aber vielleicht auch die Frage, ob der Single wirklich versteht, was hier passiert.",
+      "logos": "Strukturell einfach: Klare Erwartungen (wenig bis keine). Single's Status passt zum unverbindlichen Modus. Risiko bei einseitiger Entwicklung von Gefühlen."
     },
 
-    "hedonistic_poly_polyamor": {
-      "from": "hedonistic_poly",
-      "to": "polyamor",
+    "poly_hedo_solopoly": {
+      "from": "poly_hedo", "to": "solopoly",
       "scores": {
-        "A": { "value": 72, "note": "Gemeinsame Poly-Basis mit Genuss-Unterschied" },
-        "B": { "value": 62, "note": "Poly's Romantik vs. Hedonist's Pragmatik" },
-        "C": { "value": 60, "note": "Nähe möglich aber weniger kontinuierlich wichtig" },
-        "D": { "value": 80, "note": "Freiheit ist für beide zentral" },
-        "E": { "value": 70, "note": "Kommunikation über unterschiedliche Prioritäten" },
-        "F": { "value": 38, "note": "Beide sozial herausgefordert" }
+        "A": { "value": 80, "note": "Beide schätzen Freiheit und Erfahrung" },
+        "B": { "value": 65, "note": "Unterschiedliche ethische Strukturiertheit" },
+        "C": { "value": 60, "note": "Situative Nähe ohne Erwartung passt beiden" },
+        "D": { "value": 90, "note": "Excellente Autonomie-Kompatibilität" },
+        "E": { "value": 68, "note": "Funktionale Kommunikation, nicht immer tief" },
+        "F": { "value": 38, "note": "Gesellschaftlich beide herausfordernd" }
       },
-      "overall": 64,
-      "dynamic": "Funktioniert als Teil eines diversen Netzwerks. Hedonist bringt Spontaneität, Poly bringt Beständigkeit. Klare Erwartungsklärung wichtig."
+      "overall": 67,
+      "pro": [
+        "Gemeinsame Freiheitsliebe",
+        "Wenig Erwartungsdruck",
+        "Natürliche Verbindung",
+        "Leichtigkeit im Umgang"
+      ],
+      "contra": [
+        "Solopoly könnte als 'zu regelhaft' empfunden werden",
+        "Unterschiedliche Tiefen-Kapazitäten",
+        "Gesellschaftlich schwer zu navigieren",
+        "Langfristig möglicherweise divergierende Bedürfnisse"
+      ],
+      "pathos": "Aus Poly-Hedo-Sicht: Ein Partner, der die Freiheit versteht. Vielleicht etwas zu strukturiert, aber zuverlässig. Genuss ist möglich, Tiefe überraschend erreichbar.",
+      "logos": "Poly Hedo schätzt die Klarheit des Solopoly, auch wenn die Struktur manchmal einengend wirkt. Funktioniert wenn beide ihre Unterschiede akzeptieren."
     },
 
-    "hedonistic_poly_hedonistic_poly": {
-      "from": "hedonistic_poly",
-      "to": "hedonistic_poly",
+    "poly_hedo_poly_hedo": {
+      "from": "poly_hedo", "to": "poly_hedo",
       "scores": {
         "A": { "value": 95, "note": "Perfekte Genuss-Philosophie-Übereinstimmung" },
-        "B": { "value": 75, "note": "Geteilte hedonistische Ethik" },
+        "B": { "value": 72, "note": "Geteilte hedonistische Ethik" },
         "C": { "value": 70, "note": "Nähe ist intensiv aber situativ" },
         "D": { "value": 95, "note": "Maximale gegenseitige Freiheit" },
         "E": { "value": 65, "note": "Kommunikation pragmatisch und ehrlich" },
         "F": { "value": 35, "note": "Gesellschaftlich beide als 'wild' wahrgenommen" }
       },
-      "overall": 73,
-      "dynamic": "Feier des Lebens zu zweit oder in Gruppen. Wenig Drama, viel Genuss. Kann oberflächlich bleiben, was für beide funktioniert."
+      "overall": 72,
+      "pro": [
+        "Perfektes Verständnis des Modells",
+        "Maximaler Genuss ohne Erklärungsbedarf",
+        "Spontaneität und Abenteuer",
+        "Keine Kompromisse bei Freiheit"
+      ],
+      "contra": [
+        "Risiko der Oberflächlichkeit",
+        "Gesellschaftlich stigmatisiert",
+        "Fehlende Anker können destabilisieren",
+        "Langfristig möglicherweise unbefriedigend"
+      ],
+      "pathos": "Zwei Flammen, die zusammen tanzen. Ekstase und Lebensfreude im Überfluss. Aber manchmal auch die leise Frage: 'Ist das alles, was wir sein können?'",
+      "logos": "Strukturell minimal aber funktional. Beide verstehen das Spiel. Risiko: Ohne Anker kann die Verbindung verdampfen. Intensität ersetzt keine Kontinuität."
+    },
+
+    "poly_hedo_polyamor": {
+      "from": "poly_hedo", "to": "polyamor",
+      "scores": {
+        "A": { "value": 72, "note": "Gemeinsame Poly-Basis, unterschiedlicher Fokus" },
+        "B": { "value": 62, "note": "Polyamor's Romantik vs. Hedo's Pragmatik" },
+        "C": { "value": 62, "note": "Polyamor will mehr kontinuierliche Tiefe" },
+        "D": { "value": 78, "note": "Freiheit funktioniert für beide" },
+        "E": { "value": 68, "note": "Unterschiedliche Kommunikationsprioritäten" },
+        "F": { "value": 40, "note": "Beide sozial herausgefordert" }
+      },
+      "overall": 64,
+      "pro": [
+        "Geteilte Poly-Grundlage",
+        "Polyamor bringt Struktur, Hedo bringt Leichtigkeit",
+        "Gegenseitige Bereicherung möglich",
+        "Gemeinsame Community"
+      ],
+      "contra": [
+        "Unterschiedliche Prioritäten: Romantik vs. Genuss",
+        "Polyamor könnte Hedo als oberflächlich sehen",
+        "Hedo könnte Polyamor als zu ernst empfinden",
+        "Regelkonflikte möglich"
+      ],
+      "pathos": "Aus Poly-Hedo-Sicht: Der Polyamor ist wie ein älterer Geschwister - respektabel, aber manchmal zu ernst. Faszination für die Tiefe, Unbehagen bei den Regeln.",
+      "logos": "Strukturkollision: Polyamor's Regelwerk vs. Hedo's Flow. Kann funktionieren in einem diversen Polycule, schwieriger als exklusive Dyade. Kompromissbereitschaft nötig."
+    },
+
+    "polyamor_single": {
+      "from": "polyamor", "to": "single",
+      "scores": {
+        "A": { "value": 52, "note": "Polyamor sieht Potenzial, Single muss sich öffnen" },
+        "B": { "value": 60, "note": "Werte-Alignment erfordert Einführung in Poly-Ethik" },
+        "C": { "value": 60, "note": "Nähe möglich wenn Single sich einlässt" },
+        "D": { "value": 75, "note": "Single's Freiheit wird respektiert" },
+        "E": { "value": 72, "note": "Polyamor bringt Kommunikationskompetenz" },
+        "F": { "value": 42, "note": "Single muss öffentlichen Umgang lernen" }
+      },
+      "overall": 60,
+      "pro": [
+        "Potenzial für neuen Partner im Polycule",
+        "Single kann Poly-Welt kennenlernen",
+        "Keine sofortige Commitment-Erwartung",
+        "Kommunikationskultur bereichert Single"
+      ],
+      "contra": [
+        "Einarbeitungsaufwand in Poly-Grundlagen",
+        "Single muss Hierarchie verstehen und akzeptieren",
+        "Gesellschaftliche Herausforderung für Single",
+        "Risiko der Überforderung"
+      ],
+      "pathos": "Aus Polyamor-Sicht: Ein potenzieller neuer Stern im Netzwerk. Hoffnung auf Bereicherung, aber auch Vorsicht. Wird der Single die Komplexität verstehen und schätzen?",
+      "logos": "Strukturelle Asymmetrie: Polyamor hat etabliertes System, Single tritt neu ein. Onboarding nötig. Funktioniert bei Single's Offenheit und Lernbereitschaft."
+    },
+
+    "polyamor_solopoly": {
+      "from": "polyamor", "to": "solopoly",
+      "scores": {
+        "A": { "value": 80, "note": "Gemeinsame Poly-Basis mit unterschiedlicher Struktur" },
+        "B": { "value": 85, "note": "Ethische Nicht-Monogamie verbindet" },
+        "C": { "value": 55, "note": "Polyamor könnte mehr Nähe wünschen" },
+        "D": { "value": 72, "note": "Solopoly's Autonomie muss respektiert werden" },
+        "E": { "value": 88, "note": "Excellente Kommunikationsbasis" },
+        "F": { "value": 45, "note": "Beide kennen gesellschaftliche Herausforderungen" }
+      },
+      "overall": 71,
+      "pro": [
+        "Geteilte Poly-Sprache und Ethik",
+        "Gegenseitiges Verständnis",
+        "Starke Kommunikation",
+        "Respekt vor unterschiedlichen Modellen"
+      ],
+      "contra": [
+        "Solopoly wird nie Primary sein",
+        "Nähe-Distanz-Konflikt möglich",
+        "Strukturelle Inkompatibilität bei Zusammenleben",
+        "Unterschiedliche Bindungsintensitäten"
+      ],
+      "pathos": "Aus Polyamor-Sicht: Der Solopoly ist ein geschätzter Partner, aber mit eingebauter Grenze. Respekt für die Autonomie, manchmal Sehnsucht nach mehr Verschmelzung.",
+      "logos": "Strukturell kompatibel auf Poly-Ebene, inkompatibel bei Nesting. Polyamor muss akzeptieren: Solopoly bleibt 'solo'. Funktioniert als Teil eines größeren Netzwerks."
+    },
+
+    "polyamor_poly_hedo": {
+      "from": "polyamor", "to": "poly_hedo",
+      "scores": {
+        "A": { "value": 75, "note": "Gemeinsame Offenheit, unterschiedlicher Fokus" },
+        "B": { "value": 65, "note": "Hedonismus könnte romantischen Poly irritieren" },
+        "C": { "value": 65, "note": "Hedo weniger auf kontinuierliche Tiefe aus" },
+        "D": { "value": 80, "note": "Freiheit funktioniert für beide" },
+        "E": { "value": 72, "note": "Kommunikation funktional, unterschiedliche Prioritäten" },
+        "F": { "value": 40, "note": "Gesellschaftlich besonders herausfordernd" }
+      },
+      "overall": 66,
+      "pro": [
+        "Poly Hedo bringt Leichtigkeit ins System",
+        "Gemeinsame Poly-Grundlage",
+        "Gegenseitige Bereicherung durch unterschiedliche Fokus",
+        "Flexibilität in der Beziehungsgestaltung"
+      ],
+      "contra": [
+        "Poly Hedo könnte als 'nicht ernst genug' wahrgenommen werden",
+        "Romantik vs. Hedonismus Spannung",
+        "Unterschiedliche Regel-Erwartungen",
+        "Eifersucht-Trigger möglich"
+      ],
+      "pathos": "Aus Polyamor-Sicht: Der Poly Hedo ist erfrischend und herausfordernd. Leichtigkeit, die manchmal oberflächlich wirkt. Aber vielleicht auch ein Spiegel: Nehmen wir uns zu ernst?",
+      "logos": "Strukturelle Spannung: Polyamor's Regelwerk vs. Hedo's Flow. Integration in Polycule möglich wenn Erwartungen geklärt. Beide müssen Kompromisse finden."
+    },
+
+    "polyamor_polyamor": {
+      "from": "polyamor", "to": "polyamor",
+      "scores": {
+        "A": { "value": 92, "note": "Vollständige philosophische Übereinstimmung" },
+        "B": { "value": 88, "note": "Geteilte Ethik und Community-Verständnis" },
+        "C": { "value": 75, "note": "Nähe möglich, aber Zeit ist begrenzt" },
+        "D": { "value": 72, "note": "Balance zwischen Bindung und Freiheit bekannt" },
+        "E": { "value": 92, "note": "Kommunikation ist Kernkompetenz" },
+        "F": { "value": 48, "note": "Gemeinsam gegen gesellschaftliche Normen" }
+      },
+      "overall": 78,
+      "pro": [
+        "Vollständiges Verständnis des Modells",
+        "Geteilte Sprache und Community",
+        "Starke Kommunikationsbasis",
+        "Compersion als verbindendes Element"
+      ],
+      "contra": [
+        "Kalender-Tetris als ständige Herausforderung",
+        "Ressourcenverteilung komplex",
+        "Eifersucht und Vergleiche möglich",
+        "Gesellschaftliche Stigmatisierung"
+      ],
+      "pathos": "Zwei Herzen, die die gleiche Sprache der Liebe sprechen. Tiefes Verständnis und Compersion. Aber auch die geteilte Last: Die Welt versteht uns nicht immer.",
+      "logos": "Strukturell ideal: Gleiche Regeln, gleiche Erwartungen. Herausforderung ist Ressourcenmanagement, nicht Verständnis. Beide bringen etablierte Netzwerke mit - Integration nötig."
     }
   },
 
-  "specialPerspective": {
-    "note": "Diese Matrix berücksichtigt die Perspektive einer Person, die zwischen Tiage und Hedonistisch-Poly lebt",
-    "hybridProfile": {
-      "name": "Tiage-Hedonist Hybrid",
-      "description": "Vereint Tiage's Tiefenwunsch mit hedonistischer Genussorientierung. Sucht intensive Momente UND tiefe Resonanz.",
-      "challenges": [
-        "Innerer Konflikt zwischen Tiefe-Sehnsucht und Freiheits-Bedürfnis",
-        "Schwierigkeit, beide Seiten in einer Beziehung zu leben",
-        "Wechselnde Bedürfnisse je nach Lebensphase"
-      ],
-      "strengths": [
-        "Hohe Adaptivität an verschiedene Beziehungsformen",
-        "Kann sowohl leicht als auch tief verbinden",
-        "Versteht beide Welten"
-      ]
-    },
-    "optimalMatches": [
-      {
-        "archetype": "polyamor",
-        "reason": "Bietet Struktur für Tiefe UND Freiheit für Genuss",
-        "compatibility": 75
-      },
-      {
-        "archetype": "tiage",
-        "reason": "Maximale Tiefe, wenn die hedonistische Seite auch Raum bekommt",
-        "compatibility": 78
-      },
-      {
-        "archetype": "hedonistic_poly",
-        "reason": "Genuss-Kompatibilität, aber Tiefe-Bedürfnis nur teilweise erfüllt",
-        "compatibility": 70
-      }
-    ]
-  },
-
   "aggregatedMatrix": {
-    "description": "5x5 Übersichtsmatrix mit Gesamtwerten",
-    "rows": ["single", "solopoly", "tiage", "polyamor", "hedonistic_poly"],
-    "cols": ["single", "solopoly", "tiage", "polyamor", "hedonistic_poly"],
+    "description": "4x4 Übersichtsmatrix mit Gesamtwerten (Zeile = VON, Spalte = ZU)",
+    "rows": ["single", "solopoly", "poly_hedo", "polyamor"],
+    "cols": ["single", "solopoly", "poly_hedo", "polyamor"],
     "values": [
-      [72, 60, 60, 55, 58],
-      [65, 78, 59, 69, 67],
-      [61, 58, 80, 68, 63],
-      [59, 70, 71, 76, 66],
-      [62, 69, 64, 64, 73]
+      [72, 61, 60, 57],
+      [66, 78, 68, 70],
+      [64, 67, 72, 64],
+      [60, 71, 66, 78]
     ]
   }
 }

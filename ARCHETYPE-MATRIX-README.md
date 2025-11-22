@@ -1,126 +1,127 @@
-# Archetypen-Interaktionsmatrix
+# Archetypen-Interaktionsmatrix v2.0
 
-Eine 5x5 Matrix zur Bewertung der Kompatibilität verschiedener Beziehungsarchetypen aus der Tiage-Hedonist Perspektive.
+Eine interaktive 4x4 Matrix zur Bewertung der Kompatibilität verschiedener Beziehungsarchetypen.
+
+## Live Demo
+
+Öffne `archetype-interaction.html` in einem Browser.
 
 ## Dateien
 
-- `archetype-matrix.json` - Vollständige Datenstruktur mit allen 25 Interaktionen
-- `archetype-interaction.html` - Interaktive Visualisierung mit Heatmap und Netzwerk-Graph
+- `archetype-matrix.json` - Vollständige Datenstruktur mit allen 16 Interaktionen
+- `archetype-interaction.html` - Interaktive Single-Page-App
 
-## Designentscheidungen
-
-### 1. Kategorie A: Beziehungsphilosophie
-
-Ich habe Kategorie A als **"Beziehungsphilosophie"** definiert, weil sie die logische Grundlage für alle anderen Kategorien bildet:
-
-- **Definition**: Die fundamentale Einstellung zu Beziehungen - welchen Stellenwert haben Exklusivität, Offenheit, Tiefe und Freiheit?
-- **Sub-Dimensionen**:
-  - Exklusivitäts-Erwartung
-  - Offenheit für alternative Modelle
-  - Beziehung als Lebensinhalt vs. Lebensbereich
-
-Diese Kategorie ist das Fundament, auf dem B-F aufbauen: Wer die gleiche Grundphilosophie teilt, hat bei den anderen Kategorien bessere Chancen auf Alignment.
-
-### 2. Asymmetrische Matrix
-
-Die Matrix ist **asymmetrisch**, weil die Perspektive die wahrgenommene Kompatibilität beeinflusst:
-
-```
-Single → Tiage: 60%
-Tiage → Single: 61%
-```
-
-**Begründung**: Ein Single sieht die Beziehung zu einem Tiage anders als der Tiage sie erlebt. Der Single könnte die Intensität als "interessant" empfinden, während der Tiage möglicherweise fürchtet, zu viel zu investieren.
-
-### 3. Der 5. Archetyp: Hedonistisch-Poly
-
-Der neue Archetyp **"Hedonistisch-Poly"** ergänzt die bestehenden vier Archetypen:
+## Die 4 Archetypen
 
 | Archetyp | Kernfokus | Farbe |
 |----------|-----------|-------|
-| Single | Selbst-Exploration | Rot (#E63946) |
-| Solopoly | Autonomie + Poly | Grün (#2A9D8F) |
-| Tiage | Resonanz + Tiefe | Blau (#457B9D) |
-| Polyamor | Romantik + Struktur | Orange (#F4A261) |
-| **Hedonistisch-Poly** | Genuss + Freiheit | Lila (#9B5DE5) |
+| **Single** | Selbst-Exploration, Ungebundenheit | Rot (#E63946) |
+| **Solopoly** | Autonomie + Poly, kein Nesting | Grün (#2A9D8F) |
+| **Poly Hedo** | Lustorientiert, spontan, Genuss | Lila (#9B5DE5) |
+| **Polyamor** | Strukturiert, romantisch, regelbasiert | Orange (#F4A261) |
 
-**Charakteristik**: Polyamor lebend mit Fokus auf Genuss, Erfahrung und Sinnlichkeit. Weniger auf romantische Tiefe als klassische Poly-Varianten, mehr auf Lebensfreude und Exploration.
+### Poly Hedo vs. Polyamor
 
-### 4. Bewertungsmethodik
+Der entscheidende Unterschied:
 
-Jede der 25 Zellen enthält:
+- **Poly Hedo**: Energie folgt der Lust. Wenig Regeln, viel Spontaneität. Beziehungen sind Flows, keine Verträge.
+- **Polyamor**: Energie folgt der Struktur. Klare Agreements, Kalender, oft Hierarchien. Beziehungen sind verhandelt und organisiert.
 
-- **6 Kategorie-Werte (A-F)**: 0-100% pro Dimension
-- **Gesamtwert**: Ungewichteter Durchschnitt (bewusste Entscheidung)
-- **Qualitative Beschreibung**: Dynamik der Interaktion
+## Features
 
-**Warum ungewichtet?** Alle sechs Kategorien sind gleich wichtig für eine funktionierende Beziehung. Je nach individueller Situation kann eine Kategorie wichtiger werden - das überlasse ich der Interpretation.
+### Dropdown-Filter
+Wähle "Ich bin..." und sieh nur die für dich relevanten Kompatibilitäten.
 
-### 5. Farbschema
+### Für jeden Archetyp
+- Kurz- und Langbeschreibung
+- **PRO**: Was an diesem Modell funktioniert
+- **CONTRA**: Die Herausforderungen
+- **Pathos**: Emotionale Grundhaltung
+- **Logos**: Strukturelle Logik
 
-Das Farbschema spiegelt die Energie der Archetypen wider:
+### Für jede Kombination
+- Gesamtscore (0-100%)
+- 6 Kategorie-Werte (A-F) mit Fortschrittsbalken
+- **PRO**: Was in dieser Kombination funktioniert
+- **CONTRA**: Wo Reibung entsteht
+- **Emotionale Dynamik**: Pathos der Interaktion
+- **Strukturelle Passung**: Logos der Interaktion
 
-- **Rot (Single)**: Warme, selbstbezogene Energie
-- **Grün (Solopoly)**: Balancierte, naturnahe Autonomie
-- **Blau (Tiage)**: Tiefe, ruhige Resonanz
-- **Orange (Polyamor)**: Warme, verbindende Kommunikation
-- **Lila (Hedonistisch-Poly)**: Mystische Mischung aus Leidenschaft und Spiritualität
+## Die 6 Kategorien
 
-### 6. Visualisierung
-
-Drei komplementäre Visualisierungen:
-
-1. **Archetypen-Karten**: Übersicht der 5 Typen mit Kernmerkmalen
-2. **Heatmap-Matrix**: 5x5 Raster mit Farbcodierung der Kompatibilität
-3. **Netzwerk-Graph**: Pentagon-Anordnung mit Verbindungsstärken
+| Kat. | Name | Beschreibung |
+|------|------|--------------|
+| **A** | Beziehungsphilosophie | Fundamentale Einstellung zu Beziehungen |
+| **B** | Werte-Alignment | Übereinstimmung in Kernwerten |
+| **C** | Nähe-Distanz-Präferenzen | Gewünschte emotionale/physische Nähe |
+| **D** | Autonomie-Bedürfnisse | Bedürfnis nach Unabhängigkeit |
+| **E** | Kommunikations-Matching | Passung der Kommunikationsstile |
+| **F** | Soziale Kompatibilität | Funktion im sozialen Kontext |
 
 ## Kompatibilitäts-Skala
 
 | Bereich | Bedeutung | Farbe |
 |---------|-----------|-------|
-| < 55% | Schwierig - erfordert viel Arbeit | Rot |
-| 55-62% | Herausfordernd - möglich mit Bewusstsein | Orange |
-| 63-69% | Moderat - funktioniert mit Kommunikation | Gelb |
-| 70-77% | Gut - natürliche Kompatibilität | Grün |
-| > 77% | Excellent - hohe Resonanz | Türkis |
+| < 60% | Herausfordernd | Rot |
+| 60-69% | Moderat | Orange |
+| 70-77% | Gut | Grün |
+| > 77% | Excellent | Türkis |
 
-## Besondere Perspektive: Tiage-Hedonist Hybrid
+## Asymmetrische Matrix
 
-Die Matrix berücksichtigt die Perspektive einer Person, die zwischen Tiage und Hedonistisch-Poly lebt:
+Die Matrix ist **asymmetrisch**, weil die Perspektive die wahrgenommene Kompatibilität beeinflusst:
 
-**Optimale Matches für den Hybrid:**
+```
+Single → Solopoly: 61%
+Solopoly → Single: 66%
+```
 
-1. **Tiage (78%)** - Maximale Tiefe, wenn hedonistische Seite Raum bekommt
-2. **Polyamor (75%)** - Bietet Struktur für Tiefe UND Freiheit für Genuss
-3. **Hedonistisch-Poly (70%)** - Genuss-Kompatibilität, Tiefe teilweise erfüllt
+Zeile = VON (deine Perspektive), Spalte = ZU (der andere Archetyp)
 
-**Kernkonflikt**: Innerer Widerspruch zwischen Tiefe-Sehnsucht und Freiheits-Bedürfnis.
+## 4x4 Übersichtsmatrix
 
-## Interpretation & Nutzung
+|         | Single | Solopoly | Poly Hedo | Polyamor |
+|---------|--------|----------|-----------|----------|
+| **Single**   | 72%    | 61%      | 60%       | 57%      |
+| **Solopoly** | 66%    | 78%      | 68%       | 70%      |
+| **Poly Hedo**| 64%    | 67%      | 72%       | 64%      |
+| **Polyamor** | 60%    | 71%      | 66%       | 78%      |
 
-Diese Matrix ist ein **Reflexionswerkzeug**, kein Determinismus:
+## Design-Entscheidungen
 
-- Niedrige Werte bedeuten nicht "unmöglich", sondern "erfordert Bewusstsein"
-- Hohe Werte garantieren keinen Erfolg, erleichtern aber den Start
-- Menschen leben oft Mischformen - betrachte angrenzende Archetypen
-- Die Perspektive (Zeile = VON, Spalte = ZU) ist entscheidend
+### Single-Page-App
+Alles auf einer Seite, keine Navigation nötig. Der Dropdown filtert die Ansicht dynamisch.
+
+### Mobile-First
+Responsive Design, funktioniert auf allen Geräten.
+
+### Farbcodierung
+Der gewählte Archetyp bestimmt das Farbschema der gesamten Seite.
+
+### Kollabierbare Karten
+Archetypen und Kompatibilitäten können expandiert werden für mehr Details.
 
 ## Technische Details
 
-- **Datenformat**: JSON mit vollständiger Struktur
-- **Visualisierung**: Vanilla JavaScript, keine externen Dependencies
-- **Responsive**: Funktioniert auf Desktop und Mobile
-- **Interaktiv**: Klickbare Zellen zeigen Details
+- **Vanilla JavaScript** - keine Dependencies
+- **CSS Custom Properties** - für dynamisches Theming
+- **JSON Data** - externe Datenquelle für einfache Anpassung
+- **Responsive Grid** - CSS Grid mit auto-fit
+
+## Nutzung
+
+1. Öffne `archetype-interaction.html` im Browser
+2. Wähle deinen Archetyp im Dropdown
+3. Klicke auf Archetypen-Karten für Details
+4. Klicke auf Kompatibilitäts-Karten für Analyse
 
 ## Weiterentwicklung
 
-Mögliche Erweiterungen:
-
-- [ ] Gewichtete Gesamtwerte (User wählt Prioritäten)
-- [ ] Zeitliche Dimension (Kompatibilität in verschiedenen Beziehungsphasen)
-- [ ] Triade-Kombinationen (3er-Konstellationen)
-- [ ] Export als PDF/Image
+- [ ] PDF Export der persönlichen Analyse
+- [ ] Selbst-Kombination (z.B. Single × Single) optional anzeigen
+- [ ] URL-Parameter für direkten Link zu bestimmtem Typ
+- [ ] Dark/Light Mode Toggle
 
 ---
 
-*Teil des [Tiage Beziehungsmodells](index.html)*
+*Teil des Tiage Beziehungsmodells*
