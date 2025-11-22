@@ -1668,11 +1668,26 @@
             const desc = catData.description || 'Beschreibung nicht verfügbar';
             const subDims = catData.subDimensions || [];
 
+            // Get current interaction score for this category
+            const interactionKey = `${currentArchetype}_${selectedPartner}`;
+            const interaction = data.interactions[interactionKey] || {};
+            const scores = interaction.scores || {};
+            const value = scores[cat]?.value || 0;
+            const scoreColor = getScoreColor(value);
+            const barClass = getBarClass(value);
+
+            const myArch = data.archetypes[currentArchetype];
+            const partnerArch = data.archetypes[selectedPartner];
+
             return `
                 <div class="modal-category">
                     <div class="modal-category-header">
                         <div class="modal-category-letter">${cat}</div>
                         <div class="modal-category-name">${name}</div>
+                    </div>
+                    <div class="match-modal-score" style="margin: 12px 0;">
+                        <span class="match-modal-score-label">${myArch?.name || '...'} + ${partnerArch?.name || '...'}</span>
+                        <span class="match-modal-score-value" style="color: ${scoreColor}">${value}%</span>
                     </div>
                     <div class="modal-category-desc">${desc}</div>
                     ${subDims.length > 0 ? `
