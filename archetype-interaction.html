@@ -1393,7 +1393,7 @@
                             <div class="mini-card-name" style="color: ${arch.color}">${arch.name}</div>
                         </div>
                         <div class="mini-card-desc">${arch.shortDescription || ''}</div>
-                        <div class="mini-card-self-score">Selbst-Match: <span>${selfScore}%</span></div>
+                        <div class="mini-card-self-score">${arch.name} + ${arch.name}: <span>${selfScore}%</span></div>
                     </div>
                 `;
             }).join('');
