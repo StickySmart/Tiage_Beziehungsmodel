@@ -2222,6 +2222,345 @@
                 grid-column: 1 / -1;
             }
         }
+
+        /* ========================================
+           Pathos/Logos Check System
+           ======================================== */
+
+        /* Pathos Blocker (K.O. - No Compatibility) */
+        .pathos-blocker {
+            background: rgba(231, 76, 60, 0.1);
+            border: 2px solid var(--danger);
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 20px;
+            display: none;
+        }
+
+        .pathos-blocker.active {
+            display: block;
+        }
+
+        .pathos-blocker-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .pathos-blocker-icon {
+            font-size: 1.8rem;
+        }
+
+        .pathos-blocker-title {
+            font-size: var(--font-md);
+            font-weight: 600;
+            color: var(--danger);
+        }
+
+        .pathos-blocker-reason {
+            background: rgba(0,0,0,0.2);
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            font-size: var(--font-sm);
+            color: var(--text-secondary);
+        }
+
+        .pathos-blocker-persons {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-bottom: 15px;
+            padding: 12px;
+            background: rgba(0,0,0,0.15);
+            border-radius: 8px;
+        }
+
+        .pathos-blocker-person {
+            font-size: var(--font-sm);
+            color: var(--text-primary);
+        }
+
+        .pathos-blocker-person-label {
+            color: var(--text-muted);
+            margin-right: 8px;
+        }
+
+        .pathos-blocker-divider {
+            height: 1px;
+            background: var(--border);
+            margin: 15px 0;
+        }
+
+        .pathos-blocker-explanation {
+            margin-bottom: 15px;
+        }
+
+        .pathos-blocker-explanation h4 {
+            font-size: var(--font-sm);
+            color: var(--text-primary);
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .pathos-blocker-explanation p {
+            font-size: var(--font-sm);
+            color: var(--text-secondary);
+            line-height: 1.6;
+            margin-bottom: 10px;
+        }
+
+        .pathos-blocker-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .pathos-blocker-btn {
+            padding: 10px 16px;
+            border-radius: 8px;
+            font-size: var(--font-sm);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: none;
+        }
+
+        .pathos-blocker-btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+
+        .pathos-blocker-btn-primary:hover {
+            opacity: 0.9;
+            transform: translateY(-1px);
+        }
+
+        .pathos-blocker-btn-secondary {
+            background: transparent;
+            border: 1px solid var(--border);
+            color: var(--text-secondary);
+        }
+
+        .pathos-blocker-btn-secondary:hover {
+            background: var(--bg-hover);
+        }
+
+        /* Logos Warning (Warning, but analysis continues) */
+        .logos-warning {
+            background: rgba(243, 156, 18, 0.1);
+            border: 2px solid var(--warning);
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 20px;
+            display: none;
+        }
+
+        .logos-warning.active {
+            display: block;
+        }
+
+        .logos-warning-header {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            cursor: pointer;
+        }
+
+        .logos-warning-icon {
+            font-size: 1.4rem;
+            flex-shrink: 0;
+        }
+
+        .logos-warning-content {
+            flex: 1;
+        }
+
+        .logos-warning-title {
+            font-size: var(--font-sm);
+            font-weight: 600;
+            color: var(--warning);
+            margin-bottom: 4px;
+        }
+
+        .logos-warning-subtitle {
+            font-size: var(--font-xs);
+            color: var(--text-secondary);
+        }
+
+        .logos-warning-toggle {
+            font-size: var(--font-xs);
+            color: var(--text-muted);
+            transition: transform 0.2s ease;
+        }
+
+        .logos-warning.expanded .logos-warning-toggle {
+            transform: rotate(180deg);
+        }
+
+        .logos-warning-details {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+
+        .logos-warning.expanded .logos-warning-details {
+            max-height: 400px;
+        }
+
+        .logos-warning-details-inner {
+            padding-top: 15px;
+            border-top: 1px solid rgba(243, 156, 18, 0.3);
+            margin-top: 15px;
+        }
+
+        .logos-warning-score {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 12px;
+        }
+
+        .logos-warning-score-label {
+            font-size: var(--font-xs);
+            color: var(--text-muted);
+        }
+
+        .logos-warning-score-value {
+            font-size: var(--font-md);
+            font-weight: 700;
+            color: var(--warning);
+        }
+
+        .logos-warning-text {
+            font-size: var(--font-sm);
+            color: var(--text-secondary);
+            line-height: 1.5;
+            margin-bottom: 12px;
+        }
+
+        .logos-warning-positive {
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+            padding: 10px;
+            background: rgba(46, 204, 113, 0.1);
+            border-radius: 8px;
+            margin-bottom: 12px;
+        }
+
+        .logos-warning-positive-icon {
+            color: var(--success);
+        }
+
+        .logos-warning-positive-text {
+            font-size: var(--font-sm);
+            color: var(--text-secondary);
+        }
+
+        .logos-warning-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .logos-warning-list li {
+            font-size: var(--font-sm);
+            color: var(--text-secondary);
+            padding: 4px 0 4px 20px;
+            position: relative;
+        }
+
+        .logos-warning-list li::before {
+            content: '•';
+            position: absolute;
+            left: 6px;
+            color: var(--warning);
+        }
+
+        .logos-warning-quote {
+            font-style: italic;
+            font-size: var(--font-sm);
+            color: var(--text-muted);
+            padding: 10px;
+            border-left: 2px solid var(--warning);
+            margin-top: 12px;
+        }
+
+        /* Double Warning (Pathos uncertain + Logos low) */
+        .double-warning {
+            background: rgba(231, 76, 60, 0.08);
+            border: 2px solid var(--danger);
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 20px;
+            display: none;
+        }
+
+        .double-warning.active {
+            display: block;
+        }
+
+        .double-warning-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 12px;
+        }
+
+        .double-warning-title {
+            font-size: var(--font-sm);
+            font-weight: 600;
+            color: var(--danger);
+        }
+
+        .double-warning-item {
+            padding: 10px;
+            background: rgba(0,0,0,0.15);
+            border-radius: 8px;
+            margin-bottom: 10px;
+        }
+
+        .double-warning-item-title {
+            font-size: var(--font-xs);
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 4px;
+        }
+
+        .double-warning-item-text {
+            font-size: var(--font-xs);
+            color: var(--text-secondary);
+        }
+
+        /* Pathos uncertain warning (less severe than blocker) */
+        .pathos-uncertain {
+            background: rgba(243, 156, 18, 0.08);
+            border: 1px solid rgba(243, 156, 18, 0.3);
+            border-radius: 8px;
+            padding: 10px 12px;
+            margin-bottom: 15px;
+            display: none;
+        }
+
+        .pathos-uncertain.active {
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+        }
+
+        .pathos-uncertain-icon {
+            font-size: 1rem;
+            flex-shrink: 0;
+        }
+
+        .pathos-uncertain-text {
+            font-size: var(--font-xs);
+            color: var(--text-secondary);
+            line-height: 1.4;
+        }
     </style>
 </head>
 <body>
@@ -2520,6 +2859,111 @@
                         <span class="analysis-overview-edit">Bearbeiten →</span>
                     </div>
 
+                    <!-- PATHOS BLOCKER (K.O. - replaces entire analysis) -->
+                    <div class="pathos-blocker" id="pathosBlocker">
+                        <div class="pathos-blocker-header">
+                            <span class="pathos-blocker-icon">⛔</span>
+                            <span class="pathos-blocker-title">Keine romantische Kompatibilität</span>
+                        </div>
+                        <div class="pathos-blocker-reason" id="pathosBlockerReason">
+                            Grund: Inkompatible sexuelle Orientierungen
+                        </div>
+                        <div class="pathos-blocker-persons">
+                            <div class="pathos-blocker-person">
+                                <span class="pathos-blocker-person-label">ICH:</span>
+                                <span id="pathosBlockerPerson1">männlich, heterosexuell (Fakt)</span>
+                            </div>
+                            <div class="pathos-blocker-person">
+                                <span class="pathos-blocker-person-label">PARTNER:</span>
+                                <span id="pathosBlockerPerson2">männlich, heterosexuell (Fakt)</span>
+                            </div>
+                        </div>
+                        <div class="pathos-blocker-divider"></div>
+                        <div class="pathos-blocker-explanation">
+                            <h4>Pathos vs. Logos</h4>
+                            <p>Ohne <strong>PATHOS</strong> (körperliche/emotionale Anziehung) kann keine romantische Beziehung entstehen.</p>
+                            <p>Im Gegensatz zu philosophischen Differenzen (<strong>LOGOS</strong>), die durch Kommunikation und Lernen überbrückt werden können, ist sexuelle Orientierung (<strong>PATHOS</strong>) keine Wahl und nicht veränderbar.</p>
+                            <p>Das Tiage-Modell analysiert romantische Beziehungen und ist für diese Konstellation nicht anwendbar.</p>
+                        </div>
+                        <div class="pathos-blocker-actions">
+                            <button class="pathos-blocker-btn pathos-blocker-btn-primary" onclick="scrollToCard(0)">
+                                Angaben korrigieren
+                            </button>
+                            <button class="pathos-blocker-btn pathos-blocker-btn-secondary" onclick="showPathosLogosInfo()">
+                                Mehr über Pathos/Logos
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- LOGOS WARNING (Warning, analysis continues) -->
+                    <div class="logos-warning" id="logosWarning" onclick="toggleLogosWarning()">
+                        <div class="logos-warning-header">
+                            <span class="logos-warning-icon">⚠️</span>
+                            <div class="logos-warning-content">
+                                <div class="logos-warning-title" id="logosWarningTitle">LOGOS-WARNUNG: Fundamentale philosophische Unterschiede</div>
+                                <div class="logos-warning-subtitle" id="logosWarningSubtitle">Beziehungsphilosophie: 25%</div>
+                            </div>
+                            <span class="logos-warning-toggle">▼</span>
+                        </div>
+                        <div class="logos-warning-details">
+                            <div class="logos-warning-details-inner">
+                                <div class="logos-warning-score">
+                                    <span class="logos-warning-score-label">Philosophie-Kompatibilität:</span>
+                                    <span class="logos-warning-score-value" id="logosWarningScore">25%</span>
+                                </div>
+                                <p class="logos-warning-text" id="logosWarningText">
+                                    Eure Grundüberzeugungen über Beziehungen sind sehr unterschiedlich. Dies erfordert intensive Kommunikation und Kompromissbereitschaft.
+                                </p>
+                                <div class="logos-warning-positive">
+                                    <span class="logos-warning-positive-icon">✓</span>
+                                    <span class="logos-warning-positive-text">ABER: Körperliche Anziehung ist vorhanden!</span>
+                                </div>
+                                <p class="logos-warning-text">Eine Beziehung ist möglich, erfordert aber:</p>
+                                <ul class="logos-warning-list">
+                                    <li>Intensive Kommunikation</li>
+                                    <li>Fundamentale Kompromisse</li>
+                                    <li>Gegenseitiges tiefes Verständnis</li>
+                                </ul>
+                                <div class="logos-warning-quote">
+                                    "Pathos kann Brücken bauen, wo Logos sich widerspricht - aber es wird nicht leicht."
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- PATHOS UNCERTAIN (Exploration phase warning) -->
+                    <div class="pathos-uncertain" id="pathosUncertain">
+                        <span class="pathos-uncertain-icon">🔄</span>
+                        <span class="pathos-uncertain-text" id="pathosUncertainText">
+                            Mindestens eine Person ist in der Explorationsphase (Status: "Interessiert"). Die tatsächliche körperliche Anziehung ist noch unklar.
+                        </span>
+                    </div>
+
+                    <!-- DOUBLE WARNING (Both Pathos uncertain + Logos low) -->
+                    <div class="double-warning" id="doubleWarning">
+                        <div class="double-warning-header">
+                            <span>⚠️</span>
+                            <span class="double-warning-title">Doppelte Herausforderung</span>
+                        </div>
+                        <div class="double-warning-item">
+                            <div class="double-warning-item-title">1. PATHOS: Unsichere körperliche Anziehung</div>
+                            <div class="double-warning-item-text" id="doubleWarningPathos">
+                                Partner: bisexuell (interessiert) → Exploration-Phase
+                            </div>
+                        </div>
+                        <div class="double-warning-item">
+                            <div class="double-warning-item-title">2. LOGOS: Philosophische Konflikte</div>
+                            <div class="double-warning-item-text" id="doubleWarningLogos">
+                                Beziehungsphilosophie: 25% → DUO vs. POLYAMOR
+                            </div>
+                        </div>
+                        <p class="logos-warning-text" style="margin-top: 10px; font-size: var(--font-xs);">
+                            Sowohl körperliche als auch philosophische Ebene haben Unsicherheiten.
+                        </p>
+                    </div>
+
+                    <!-- Compatibility Content Wrapper (hidden when pathos blocked) -->
+                    <div id="compatibilityContent">
                     <!-- Radar Chart -->
                     <div class="radar-section">
                         <div class="radar-header">
@@ -2558,6 +3002,7 @@
                             <ul class="analysis-list" id="partnerContra"></ul>
                         </div>
                     </div>
+                    </div><!-- End compatibilityContent -->
                 </div>
             </div>
         </div>
@@ -3739,6 +4184,13 @@
             const interactionKey = `${currentArchetype}_${selectedPartner}`;
             const interaction = data.interactions[interactionKey] || {};
 
+            // Run Pathos/Logos checks first
+            const checkResult = runCompatibilityChecks();
+            if (checkResult && checkResult.blocked) {
+                // Pathos blocked - don't render the rest
+                return;
+            }
+
             document.getElementById('myTypeNameDisplay').textContent = myArch?.name || '...';
             document.getElementById('partnerNameDisplay').textContent = partnerArch?.name || '...';
             document.getElementById('myTypeTooltipPage3').textContent = getShortDef(currentArchetype);
@@ -4886,6 +5338,11 @@
 
             // Update overview box
             updateAnalysisOverview();
+
+            // Re-run compatibility checks when dimensions change
+            if (data) {
+                updatePartnerView();
+            }
         }
 
         function getGeschlechtKurz(geschlecht) {
@@ -4968,6 +5425,258 @@
             document.querySelectorAll('input[name="partner-status"]').forEach(radio => {
                 radio.addEventListener('change', (e) => handleDimensionChange('partner', 'orientierungStatus', e.target.value, e.target));
             });
+        }
+
+        // ========================================
+        // Pathos/Logos Check System
+        // ========================================
+
+        function checkPhysicalCompatibility(person1, person2) {
+            const g1 = person1.geschlecht;
+            const o1 = person1.orientierung;
+            const s1 = person1.orientierungStatus;
+            const g2 = person2.geschlecht;
+            const o2 = person2.orientierung;
+            const s2 = person2.orientierungStatus;
+
+            // Both have "Fakt" status
+            if (s1 === 'fakt' && s2 === 'fakt') {
+
+                // Bisexuell: Always compatible
+                if (o1 === 'bisexuell' || o2 === 'bisexuell') {
+                    return { result: 'möglich', confidence: 'hoch' };
+                }
+
+                // Both heterosexuell
+                if (o1 === 'heterosexuell' && o2 === 'heterosexuell') {
+                    if (g1 !== g2) {
+                        return { result: 'möglich', confidence: 'hoch' };
+                    } else {
+                        return {
+                            result: 'unmöglich',
+                            reason: 'Beide heterosexuell, gleiches Geschlecht',
+                            explanation: 'Heterosexuelle Personen fühlen sich zu Menschen des anderen Geschlechts hingezogen.'
+                        };
+                    }
+                }
+
+                // Both homosexuell
+                if (o1 === 'homosexuell' && o2 === 'homosexuell') {
+                    if (g1 === g2) {
+                        return { result: 'möglich', confidence: 'hoch' };
+                    } else {
+                        return {
+                            result: 'unmöglich',
+                            reason: 'Beide homosexuell, unterschiedliche Geschlechter',
+                            explanation: 'Homosexuelle Personen fühlen sich zu Menschen des gleichen Geschlechts hingezogen.'
+                        };
+                    }
+                }
+
+                // Mixed: hetero + homo
+                if ((o1 === 'heterosexuell' && o2 === 'homosexuell') ||
+                    (o1 === 'homosexuell' && o2 === 'heterosexuell')) {
+                    // Check if attraction is possible
+                    const hetero = o1 === 'heterosexuell' ? { g: g1, o: o1 } : { g: g2, o: o2 };
+                    const homo = o1 === 'homosexuell' ? { g: g1, o: o1 } : { g: g2, o: o2 };
+
+                    // Hetero wants opposite gender, homo wants same gender
+                    // They can be compatible if hetero wants homo's gender AND homo wants hetero's gender
+                    const heteroG = o1 === 'heterosexuell' ? g1 : g2;
+                    const homoG = o1 === 'homosexuell' ? g1 : g2;
+
+                    // Hetero attracted to opposite of their own gender
+                    // Homo attracted to same as their own gender
+                    if (heteroG !== homoG && homoG === homoG) {
+                        // Hetero is attracted to homo's gender (opposite of hetero)
+                        // But homo is only attracted to their own gender
+                        if (homoG === heteroG) {
+                            // Homo would be attracted to hetero (same gender as homo)
+                            // But hetero wants opposite, which is homo's gender... complex
+                        }
+                    }
+
+                    return {
+                        result: 'unmöglich',
+                        reason: 'Inkompatible Orientierungen',
+                        explanation: 'Die sexuellen Orientierungen schließen gegenseitige Anziehung aus.'
+                    };
+                }
+            }
+
+            // At least one has "Interessiert" status
+            if (s1 === 'interessiert' || s2 === 'interessiert') {
+
+                // If one is bisexuell: Always open
+                if (o1 === 'bisexuell' || o2 === 'bisexuell') {
+                    return {
+                        result: 'unsicher',
+                        confidence: 'mittel',
+                        explanation: 'Eine Person exploriert, die andere ist bisexuell und offen für alle Geschlechter.',
+                        note: 'Exploration könnte zu Anziehung führen'
+                    };
+                }
+
+                // Check theoretical compatibility
+                const theoreticalMatch =
+                    (o1 === 'heterosexuell' && o2 === 'heterosexuell' && g1 !== g2) ||
+                    (o1 === 'homosexuell' && o2 === 'homosexuell' && g1 === g2);
+
+                if (theoreticalMatch) {
+                    return {
+                        result: 'unsicher',
+                        confidence: 'mittel-niedrig',
+                        explanation: 'Theoretisch kompatibel, aber Exploration ist unsicher',
+                        note: 'Ob tatsächlich Anziehung entsteht, ist offen'
+                    };
+                } else {
+                    return {
+                        result: 'unsicher',
+                        confidence: 'sehr niedrig',
+                        explanation: 'Selbst wenn Exploration erfolgreich, geringe Wahrscheinlichkeit',
+                        note: 'Hohe Unsicherheit'
+                    };
+                }
+            }
+
+            return { result: 'möglich', confidence: 'hoch' };
+        }
+
+        function calculatePhilosophyCompatibility(type1, type2) {
+            // Get the philosophy score (Category A) from the matrix
+            const key = `${type1}_${type2}`;
+            const interaction = data?.interactions[key];
+
+            if (interaction && interaction.scores && interaction.scores.A) {
+                return {
+                    score: interaction.scores.A.value,
+                    note: interaction.scores.A.note
+                };
+            }
+
+            // Fallback if not found
+            return { score: 50, note: 'Keine spezifischen Daten verfügbar' };
+        }
+
+        function formatPersonSummary(person) {
+            const statusSuffix = person.orientierungStatus === 'interessiert' ? ' (Interessiert)' : ' (Fakt)';
+            return `${person.geschlecht}, ${person.orientierung}${statusSuffix}`;
+        }
+
+        function runCompatibilityChecks() {
+            const person1 = {
+                archetyp: currentArchetype,
+                ...personDimensions.ich
+            };
+            const person2 = {
+                archetyp: selectedPartner,
+                ...personDimensions.partner
+            };
+
+            // Reset all warnings
+            document.getElementById('pathosBlocker').classList.remove('active');
+            document.getElementById('logosWarning').classList.remove('active');
+            document.getElementById('pathosUncertain').classList.remove('active');
+            document.getElementById('doubleWarning').classList.remove('active');
+            document.getElementById('compatibilityContent').style.display = 'block';
+
+            // 1. PATHOS CHECK
+            const pathosCheck = checkPhysicalCompatibility(person1, person2);
+
+            if (pathosCheck.result === 'unmöglich') {
+                // Show Pathos Blocker, hide everything else
+                document.getElementById('pathosBlocker').classList.add('active');
+                document.getElementById('compatibilityContent').style.display = 'none';
+
+                document.getElementById('pathosBlockerReason').textContent =
+                    `Grund: ${pathosCheck.reason}`;
+                document.getElementById('pathosBlockerPerson1').textContent =
+                    formatPersonSummary(person1);
+                document.getElementById('pathosBlockerPerson2').textContent =
+                    formatPersonSummary(person2);
+
+                return { blocked: true, reason: 'pathos' };
+            }
+
+            // 2. LOGOS CHECK
+            const logosCheck = calculatePhilosophyCompatibility(person1.archetyp, person2.archetyp);
+            const hasLogosWarning = logosCheck.score < 50;
+            const hasPathosUncertain = pathosCheck.result === 'unsicher';
+
+            // Handle different warning combinations
+            if (hasPathosUncertain && hasLogosWarning) {
+                // Double Warning
+                document.getElementById('doubleWarning').classList.add('active');
+                document.getElementById('doubleWarningPathos').textContent =
+                    `${person2.orientierung} (${person2.orientierungStatus}) → Exploration-Phase`;
+                document.getElementById('doubleWarningLogos').textContent =
+                    `Beziehungsphilosophie: ${logosCheck.score}% → ${data?.archetypes[person1.archetyp]?.name || person1.archetyp} vs. ${data?.archetypes[person2.archetyp]?.name || person2.archetyp}`;
+            } else {
+                // Single warnings
+                if (hasLogosWarning) {
+                    document.getElementById('logosWarning').classList.add('active');
+                    const warningTitle = logosCheck.score < 30
+                        ? 'LOGOS-WARNUNG: Fundamentale philosophische Unterschiede'
+                        : 'LOGOS-HINWEIS: Unterschiedliche philosophische Ansätze';
+                    document.getElementById('logosWarningTitle').textContent = warningTitle;
+                    document.getElementById('logosWarningSubtitle').textContent =
+                        `Beziehungsphilosophie: ${logosCheck.score}%`;
+                    document.getElementById('logosWarningScore').textContent = `${logosCheck.score}%`;
+                    document.getElementById('logosWarningText').textContent = logosCheck.score < 30
+                        ? 'Eure Grundüberzeugungen über Beziehungen sind sehr unterschiedlich. Dies erfordert intensive Kommunikation und Kompromissbereitschaft.'
+                        : 'Ihr habt verschiedene Vorstellungen von Beziehungen. Offene Kommunikation ist wichtig.';
+                }
+
+                if (hasPathosUncertain) {
+                    document.getElementById('pathosUncertain').classList.add('active');
+                    document.getElementById('pathosUncertainText').textContent =
+                        `Mindestens eine Person ist in der Explorationsphase (Status: "Interessiert"). Die tatsächliche körperliche Anziehung ist noch unklar.`;
+                }
+            }
+
+            return {
+                blocked: false,
+                pathosCheck,
+                logosCheck,
+                warnings: { hasLogosWarning, hasPathosUncertain }
+            };
+        }
+
+        function toggleLogosWarning() {
+            const warning = document.getElementById('logosWarning');
+            warning.classList.toggle('expanded');
+        }
+
+        function showPathosLogosInfo() {
+            // Show info modal about Pathos vs Logos
+            const title = 'Pathos vs. Logos';
+            const content = `
+                <div style="line-height: 1.6;">
+                    <h4 style="color: var(--primary); margin-bottom: 10px;">PATHOS (Emotion/Körper)</h4>
+                    <ul style="margin-bottom: 15px; padding-left: 20px;">
+                        <li>Körperliche/emotionale Anziehung</li>
+                        <li>Sexuelle Orientierung</li>
+                        <li>Nicht durch Lernen/Kommunikation veränderbar</li>
+                        <li><strong>OHNE PATHOS:</strong> Keine romantische Beziehung möglich</li>
+                    </ul>
+
+                    <h4 style="color: var(--warning); margin-bottom: 10px;">LOGOS (Verstand/Philosophie)</h4>
+                    <ul style="margin-bottom: 15px; padding-left: 20px;">
+                        <li>Beziehungsphilosophie</li>
+                        <li>Überzeugungen und Werte</li>
+                        <li>Durch Kommunikation/Lernen veränderbar</li>
+                        <li><strong>OHNE LOGOS:</strong> Schwierige, aber mögliche Beziehung</li>
+                    </ul>
+
+                    <p style="font-style: italic; color: var(--text-muted);">
+                        "Pathos ist das Fundament - ohne körperliche Anziehung kann keine romantische Beziehung entstehen. Logos ist das Dach - es schützt und strukturiert, kann aber umgebaut werden."
+                    </p>
+                </div>
+            `;
+
+            document.getElementById('modalTitle').textContent = title;
+            document.getElementById('modalBody').innerHTML = content;
+            document.getElementById('categoryModal').classList.add('active');
         }
 
         // Initialize
