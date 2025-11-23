@@ -1022,33 +1022,42 @@
             display: inline-block;
         }
 
-        /* Tag Tooltip */
+        /* Tag Tooltip - Click to open, stays open */
         .tag-tooltip {
-            visibility: hidden;
-            opacity: 0;
+            display: none;
             position: fixed;
-            z-index: 1000;
-            width: min(320px, 90vw);
-            max-width: 90vw;
-            background: var(--bg-dark);
-            border: 1px solid var(--border);
+            z-index: 1001;
+            width: min(360px, 92vw);
+            max-width: 92vw;
+            max-height: 85vh;
+            overflow-y: auto;
+            background: var(--bg-card);
+            border: 2px solid var(--primary);
             border-radius: 12px;
             padding: 0;
-            box-shadow: 0 8px 32px rgba(0,0,0,0.4);
-            transition: opacity 0.2s ease, visibility 0.2s ease;
-            pointer-events: none;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.6);
         }
 
         .tag-tooltip.active {
-            visibility: visible;
-            opacity: 1;
-            pointer-events: auto;
+            display: block;
         }
 
-        /* Tooltip Arrow - hidden for fixed positioning */
-        .tag-tooltip::after,
-        .tag-tooltip::before {
-            display: none;
+        .tag-tooltip-close {
+            position: absolute;
+            top: 6px;
+            right: 8px;
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            font-size: 22px;
+            cursor: pointer;
+            padding: 4px 8px;
+            line-height: 1;
+            z-index: 10;
+        }
+
+        .tag-tooltip-close:hover {
+            color: var(--text-primary);
         }
 
         /* Tooltip Header */
@@ -3498,9 +3507,10 @@
             }).join('');
 
             return `
-                <span class="tag-tooltip-container" onmouseenter="positionTagTooltip(this)" onmouseleave="hideTagTooltip(this)">
-                    <span class="modal-subdim-tag">${tagName}</span>
+                <span class="tag-tooltip-container">
+                    <span class="modal-subdim-tag" onclick="openTagTooltip(this.parentElement, '${category}')">${tagName}</span>
                     <div class="tag-tooltip">
+                        <button class="tag-tooltip-close" onclick="closeTagTooltip()">&times;</button>
                         <div class="tag-tooltip-header">${tagName}</div>
 
                         <div class="tag-tooltip-type-switcher">
@@ -3554,72 +3564,38 @@
         }
 
         // Active tooltip tracking
-        let activeTooltipContainer = null;
-        let tooltipHideTimeout = null;
+        let activeTooltipElement = null;
 
-        // Position tag tooltip to ensure visibility
-        function positionTagTooltip(container) {
-            // Clear any pending hide
-            if (tooltipHideTimeout) {
-                clearTimeout(tooltipHideTimeout);
-                tooltipHideTimeout = null;
-            }
+        // Open tag tooltip on click
+        function openTagTooltip(container, category) {
+            // Close any open tooltip first
+            closeTagTooltip();
 
             const tooltip = container.querySelector('.tag-tooltip');
             const tag = container.querySelector('.modal-subdim-tag');
             if (!tooltip || !tag) return;
 
-            activeTooltipContainer = container;
+            activeTooltipElement = tooltip;
             tooltip.classList.add('active');
 
-            const tagRect = tag.getBoundingClientRect();
-            const tooltipWidth = Math.min(320, window.innerWidth * 0.9);
-            const padding = 10;
-
-            // Calculate horizontal position - center on tag, but keep within viewport
-            let left = tagRect.left + (tagRect.width / 2) - (tooltipWidth / 2);
-
-            // Ensure tooltip doesn't go off-screen
-            if (left < padding) {
-                left = padding;
-            } else if (left + tooltipWidth > window.innerWidth - padding) {
-                left = window.innerWidth - tooltipWidth - padding;
-            }
-
-            // Position above the tag with small gap
-            const tooltipHeight = tooltip.offsetHeight || 200;
-            let top = tagRect.top - tooltipHeight - 5;
-
-            // If not enough space above, show below
-            if (top < padding) {
-                top = tagRect.bottom + 5;
-            }
+            // Position in center of screen
+            const tooltipWidth = Math.min(360, window.innerWidth * 0.92);
+            const left = (window.innerWidth - tooltipWidth) / 2;
+            const top = Math.max(20, (window.innerHeight - 400) / 2);
 
             tooltip.style.left = left + 'px';
             tooltip.style.top = top + 'px';
             tooltip.style.width = tooltipWidth + 'px';
-
-            // Add hover listener to tooltip itself
-            tooltip.onmouseenter = () => {
-                if (tooltipHideTimeout) {
-                    clearTimeout(tooltipHideTimeout);
-                    tooltipHideTimeout = null;
-                }
-            };
-            tooltip.onmouseleave = () => {
-                hideTagTooltip(container);
-            };
         }
 
-        // Hide tag tooltip with delay
-        function hideTagTooltip(container) {
-            tooltipHideTimeout = setTimeout(() => {
-                const tooltip = container.querySelector('.tag-tooltip');
-                if (tooltip) {
-                    tooltip.classList.remove('active');
-                }
-                activeTooltipContainer = null;
-            }, 150); // Small delay to allow moving to tooltip
+        // Close tag tooltip
+        function closeTagTooltip() {
+            if (activeTooltipElement) {
+                activeTooltipElement.classList.remove('active');
+                activeTooltipElement = null;
+            }
+            // Also close any other open tooltips
+            document.querySelectorAll('.tag-tooltip.active').forEach(t => t.classList.remove('active'));
         }
 
         function closeCategoryModal(event) {
