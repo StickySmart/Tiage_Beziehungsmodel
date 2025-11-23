@@ -1996,6 +1996,232 @@
             margin-top: 15px !important;
             margin-bottom: 0 !important;
         }
+
+        /* ========================================
+           Extended Dimensions UI
+           ======================================== */
+
+        .dimensions-section {
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid var(--border);
+        }
+
+        .dimensions-section-title {
+            font-size: var(--font-sm);
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 15px;
+        }
+
+        .dimension-group {
+            margin-bottom: 18px;
+        }
+
+        .dimension-label {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: var(--font-sm);
+            color: var(--text-secondary);
+            margin-bottom: 8px;
+        }
+
+        .dimension-info-icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.1);
+            color: var(--text-muted);
+            font-size: 10px;
+            cursor: help;
+            transition: all 0.2s ease;
+        }
+
+        .dimension-info-icon:hover {
+            background: var(--primary);
+            color: white;
+        }
+
+        .dimension-options {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .dimension-radio {
+            display: none;
+        }
+
+        .dimension-option {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 8px 14px;
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            background: transparent;
+            color: var(--text-secondary);
+            font-size: var(--font-sm);
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .dimension-option:hover {
+            border-color: var(--text-muted);
+            background: var(--bg-hover);
+        }
+
+        .dimension-radio:checked + .dimension-option {
+            border-color: var(--primary);
+            background: rgba(69,123,157,0.2);
+            color: var(--text-primary);
+        }
+
+        .dimension-option.highlight-change {
+            animation: highlightPulse 0.3s ease;
+        }
+
+        @keyframes highlightPulse {
+            0% { border-color: var(--primary); box-shadow: 0 0 0 0 rgba(69,123,157,0.4); }
+            50% { border-color: var(--success); box-shadow: 0 0 0 4px rgba(46,204,113,0.3); }
+            100% { border-color: var(--primary); box-shadow: 0 0 0 0 rgba(69,123,157,0); }
+        }
+
+        /* Status sub-options (indented) */
+        .dimension-status-group {
+            margin-left: 20px;
+            margin-top: 10px;
+            padding-left: 10px;
+            border-left: 2px solid var(--border);
+        }
+
+        .dimension-status-label {
+            font-size: var(--font-xs);
+            color: var(--text-muted);
+            margin-bottom: 6px;
+        }
+
+        /* Compact Overview Box */
+        .analysis-overview {
+            background: var(--bg-dark);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 12px 16px;
+            margin-bottom: 20px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .analysis-overview:hover {
+            border-color: var(--primary);
+            background: var(--bg-hover);
+        }
+
+        .analysis-overview-title {
+            font-size: var(--font-xs);
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 6px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .analysis-overview-content {
+            font-size: var(--font-sm);
+            color: var(--text-primary);
+            line-height: 1.4;
+        }
+
+        .analysis-overview-content .type-name {
+            color: var(--primary);
+            font-weight: 500;
+        }
+
+        .analysis-overview-content .dim-info {
+            color: var(--text-secondary);
+            font-size: var(--font-xs);
+        }
+
+        .analysis-overview-edit {
+            font-size: var(--font-xs);
+            color: var(--primary);
+            margin-top: 6px;
+            display: inline-block;
+        }
+
+        /* Dimension Tooltip */
+        .dimension-tooltip-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .dimension-tooltip-overlay.active {
+            display: flex;
+        }
+
+        .dimension-tooltip-content {
+            background: var(--bg-card);
+            border: 1px solid var(--primary);
+            border-radius: 12px;
+            padding: 20px;
+            max-width: 320px;
+            width: 100%;
+        }
+
+        .dimension-tooltip-title {
+            font-size: var(--font-base);
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 10px;
+        }
+
+        .dimension-tooltip-text {
+            font-size: var(--font-sm);
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+
+        .dimension-tooltip-close {
+            display: block;
+            margin-top: 15px;
+            padding: 8px 16px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: var(--font-sm);
+            cursor: pointer;
+            width: 100%;
+        }
+
+        /* Responsive: Two columns on larger screens */
+        @media (min-width: 500px) {
+            .dimensions-grid {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 15px;
+            }
+
+            .dimension-group.full-width {
+                grid-column: 1 / -1;
+            }
+        }
     </style>
 </head>
 <body>
@@ -2042,6 +2268,83 @@
                             <option value="poly_hedo">Poly Hedo</option>
                             <option value="polyamor">Polyamor</option>
                         </select>
+                    </div>
+
+                    <!-- Extended Dimensions: ICH -->
+                    <div class="dimensions-section">
+                        <div class="dimensions-grid">
+                            <!-- Geschlecht -->
+                            <div class="dimension-group">
+                                <div class="dimension-label">
+                                    Geschlecht
+                                    <span class="dimension-info-icon" onclick="showDimensionTooltip('geschlecht')">ℹ</span>
+                                </div>
+                                <div class="dimension-options">
+                                    <input type="radio" name="ich-geschlecht" id="ich-geschlecht-m" value="männlich" class="dimension-radio" checked>
+                                    <label for="ich-geschlecht-m" class="dimension-option">männlich</label>
+
+                                    <input type="radio" name="ich-geschlecht" id="ich-geschlecht-w" value="weiblich" class="dimension-radio">
+                                    <label for="ich-geschlecht-w" class="dimension-option">weiblich</label>
+
+                                    <input type="radio" name="ich-geschlecht" id="ich-geschlecht-nb" value="non-binär" class="dimension-radio">
+                                    <label for="ich-geschlecht-nb" class="dimension-option">non-binär</label>
+                                </div>
+                            </div>
+
+                            <!-- Dominanz -->
+                            <div class="dimension-group">
+                                <div class="dimension-label">
+                                    Dominanz-Präferenz
+                                    <span class="dimension-info-icon" onclick="showDimensionTooltip('dominanz')">ℹ</span>
+                                </div>
+                                <div class="dimension-options">
+                                    <input type="radio" name="ich-dominanz" id="ich-dominanz-dom" value="dominant" class="dimension-radio">
+                                    <label for="ich-dominanz-dom" class="dimension-option">dominant</label>
+
+                                    <input type="radio" name="ich-dominanz" id="ich-dominanz-sub" value="submissiv" class="dimension-radio">
+                                    <label for="ich-dominanz-sub" class="dimension-option">submissiv</label>
+
+                                    <input type="radio" name="ich-dominanz" id="ich-dominanz-switch" value="switch" class="dimension-radio">
+                                    <label for="ich-dominanz-switch" class="dimension-option">switch</label>
+
+                                    <input type="radio" name="ich-dominanz" id="ich-dominanz-ausgeglichen" value="ausgeglichen" class="dimension-radio" checked>
+                                    <label for="ich-dominanz-ausgeglichen" class="dimension-option">ausgeglichen</label>
+                                </div>
+                            </div>
+
+                            <!-- Sexuelle Orientierung -->
+                            <div class="dimension-group full-width">
+                                <div class="dimension-label">
+                                    Sexuelle Orientierung
+                                    <span class="dimension-info-icon" onclick="showDimensionTooltip('orientierung')">ℹ</span>
+                                </div>
+                                <div class="dimension-options">
+                                    <input type="radio" name="ich-orientierung" id="ich-orientierung-hetero" value="heterosexuell" class="dimension-radio" checked>
+                                    <label for="ich-orientierung-hetero" class="dimension-option">heterosexuell</label>
+
+                                    <input type="radio" name="ich-orientierung" id="ich-orientierung-homo" value="homosexuell" class="dimension-radio">
+                                    <label for="ich-orientierung-homo" class="dimension-option">homosexuell</label>
+
+                                    <input type="radio" name="ich-orientierung" id="ich-orientierung-bi" value="bisexuell" class="dimension-radio">
+                                    <label for="ich-orientierung-bi" class="dimension-option">bisexuell</label>
+                                </div>
+
+                                <!-- Status (indented) -->
+                                <div class="dimension-status-group">
+                                    <div class="dimension-status-label">
+                                        Status
+                                        <span class="dimension-info-icon" onclick="showDimensionTooltip('status')">ℹ</span>
+                                    </div>
+                                    <div class="dimension-options">
+                                        <input type="radio" name="ich-status" id="ich-status-fakt" value="fakt" class="dimension-radio" checked>
+                                        <label for="ich-status-fakt" class="dimension-option">Fakt</label>
+
+                                        <input type="radio" name="ich-status" id="ich-status-interessiert" value="interessiert" class="dimension-radio">
+                                        <label for="ich-status-interessiert" class="dimension-option">Interessiert</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
 
                     <div class="my-type-header">
@@ -2125,6 +2428,97 @@
                 <div class="card-body">
                     <!-- Partner Selector -->
                     <div class="partner-selector" id="partnerSelector"></div>
+
+                    <!-- Extended Dimensions: PARTNER -->
+                    <div class="dimensions-section" style="margin-top: 0; padding-top: 15px; border-top: none;">
+                        <div class="dimensions-section-title">Partner-Eigenschaften</div>
+                        <div class="dimensions-grid">
+                            <!-- Geschlecht -->
+                            <div class="dimension-group">
+                                <div class="dimension-label">
+                                    Geschlecht
+                                    <span class="dimension-info-icon" onclick="showDimensionTooltip('geschlecht')">ℹ</span>
+                                </div>
+                                <div class="dimension-options">
+                                    <input type="radio" name="partner-geschlecht" id="partner-geschlecht-m" value="männlich" class="dimension-radio" checked>
+                                    <label for="partner-geschlecht-m" class="dimension-option">männlich</label>
+
+                                    <input type="radio" name="partner-geschlecht" id="partner-geschlecht-w" value="weiblich" class="dimension-radio">
+                                    <label for="partner-geschlecht-w" class="dimension-option">weiblich</label>
+
+                                    <input type="radio" name="partner-geschlecht" id="partner-geschlecht-nb" value="non-binär" class="dimension-radio">
+                                    <label for="partner-geschlecht-nb" class="dimension-option">non-binär</label>
+                                </div>
+                            </div>
+
+                            <!-- Dominanz -->
+                            <div class="dimension-group">
+                                <div class="dimension-label">
+                                    Dominanz-Präferenz
+                                    <span class="dimension-info-icon" onclick="showDimensionTooltip('dominanz')">ℹ</span>
+                                </div>
+                                <div class="dimension-options">
+                                    <input type="radio" name="partner-dominanz" id="partner-dominanz-dom" value="dominant" class="dimension-radio">
+                                    <label for="partner-dominanz-dom" class="dimension-option">dominant</label>
+
+                                    <input type="radio" name="partner-dominanz" id="partner-dominanz-sub" value="submissiv" class="dimension-radio">
+                                    <label for="partner-dominanz-sub" class="dimension-option">submissiv</label>
+
+                                    <input type="radio" name="partner-dominanz" id="partner-dominanz-switch" value="switch" class="dimension-radio">
+                                    <label for="partner-dominanz-switch" class="dimension-option">switch</label>
+
+                                    <input type="radio" name="partner-dominanz" id="partner-dominanz-ausgeglichen" value="ausgeglichen" class="dimension-radio" checked>
+                                    <label for="partner-dominanz-ausgeglichen" class="dimension-option">ausgeglichen</label>
+                                </div>
+                            </div>
+
+                            <!-- Sexuelle Orientierung -->
+                            <div class="dimension-group full-width">
+                                <div class="dimension-label">
+                                    Sexuelle Orientierung
+                                    <span class="dimension-info-icon" onclick="showDimensionTooltip('orientierung')">ℹ</span>
+                                </div>
+                                <div class="dimension-options">
+                                    <input type="radio" name="partner-orientierung" id="partner-orientierung-hetero" value="heterosexuell" class="dimension-radio" checked>
+                                    <label for="partner-orientierung-hetero" class="dimension-option">heterosexuell</label>
+
+                                    <input type="radio" name="partner-orientierung" id="partner-orientierung-homo" value="homosexuell" class="dimension-radio">
+                                    <label for="partner-orientierung-homo" class="dimension-option">homosexuell</label>
+
+                                    <input type="radio" name="partner-orientierung" id="partner-orientierung-bi" value="bisexuell" class="dimension-radio">
+                                    <label for="partner-orientierung-bi" class="dimension-option">bisexuell</label>
+                                </div>
+
+                                <!-- Status (indented) -->
+                                <div class="dimension-status-group">
+                                    <div class="dimension-status-label">
+                                        Status
+                                        <span class="dimension-info-icon" onclick="showDimensionTooltip('status')">ℹ</span>
+                                    </div>
+                                    <div class="dimension-options">
+                                        <input type="radio" name="partner-status" id="partner-status-fakt" value="fakt" class="dimension-radio" checked>
+                                        <label for="partner-status-fakt" class="dimension-option">Fakt</label>
+
+                                        <input type="radio" name="partner-status" id="partner-status-interessiert" value="interessiert" class="dimension-radio">
+                                        <label for="partner-status-interessiert" class="dimension-option">Interessiert</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Analysis Overview Box -->
+                    <div class="analysis-overview" id="analysisOverview" onclick="scrollToCard(0)">
+                        <div class="analysis-overview-title">
+                            <span>🔍</span> Analysiere:
+                        </div>
+                        <div class="analysis-overview-content" id="analysisOverviewContent">
+                            <span class="type-name">Single</span> <span class="dim-info">(m, ausgeglichen, hetero)</span>
+                            <span> × </span>
+                            <span class="type-name">Duo</span> <span class="dim-info">(m, ausgeglichen, hetero)</span>
+                        </div>
+                        <span class="analysis-overview-edit">Bearbeiten →</span>
+                    </div>
 
                     <!-- Radar Chart -->
                     <div class="radar-section">
@@ -2351,6 +2745,15 @@
         </div>
     </div>
 
+    <!-- Dimension Info Tooltip Modal -->
+    <div class="dimension-tooltip-overlay" id="dimensionTooltipOverlay" onclick="closeDimensionTooltip()">
+        <div class="dimension-tooltip-content" onclick="event.stopPropagation()">
+            <div class="dimension-tooltip-title" id="dimensionTooltipTitle">Info</div>
+            <div class="dimension-tooltip-text" id="dimensionTooltipText">...</div>
+            <button class="dimension-tooltip-close" onclick="closeDimensionTooltip()">Verstanden</button>
+        </div>
+    </div>
+
     <!-- Navigation Dots with Arrows -->
     <div class="nav-dots">
         <button class="nav-arrow" onclick="navigatePrev()">‹</button>
@@ -2367,6 +2770,42 @@
         let data = null;
         let currentArchetype = 'single';
         let selectedPartner = 'duo';
+
+        // Extended Person Dimensions
+        const personDimensions = {
+            ich: {
+                geschlecht: 'männlich',
+                dominanz: 'ausgeglichen',
+                orientierung: 'heterosexuell',
+                orientierungStatus: 'fakt'
+            },
+            partner: {
+                geschlecht: 'männlich',
+                dominanz: 'ausgeglichen',
+                orientierung: 'heterosexuell',
+                orientierungStatus: 'fakt'
+            }
+        };
+
+        // Dimension tooltip content
+        const dimensionTooltips = {
+            geschlecht: {
+                title: "Geschlecht",
+                text: "Dein Geschlecht. Dies beeinflusst die körperliche Anziehungskompatibilität zusammen mit der sexuellen Orientierung."
+            },
+            dominanz: {
+                title: "Dominanz-Präferenz",
+                text: "Deine bevorzugte Rolle in emotionalen und praktischen Beziehungsdynamiken. Dies hat nichts mit Geschlecht zu tun."
+            },
+            orientierung: {
+                title: "Sexuelle Orientierung",
+                text: "Zu welchem Geschlecht fühlst du dich romantisch/sexuell hingezogen?"
+            },
+            status: {
+                title: "Orientierungs-Status",
+                text: "Fakt: Du lebst diese Orientierung und bist dir sicher.\n\nInteressiert: Du bist neugierig oder in einer Explorationsphase. Die tatsächliche Anziehung ist noch unklar."
+            }
+        };
 
         const icons = {
             single: '★',
@@ -3193,6 +3632,7 @@
             updateTopAndChallenge();
             updatePartnerView();
             updateLegendCategories();
+            updateAnalysisOverview();
         }
 
         function updateTheme() {
@@ -3250,6 +3690,7 @@
                 btn.classList.toggle('active', btn.dataset.id === partnerId);
             });
             updatePartnerView();
+            updateAnalysisOverview();
         }
 
         function updateTopAndChallenge() {
@@ -4413,10 +4854,127 @@
             }
         }
 
+        // ========================================
+        // Extended Dimensions Functions
+        // ========================================
+
+        function showDimensionTooltip(type) {
+            const tooltip = dimensionTooltips[type];
+            if (!tooltip) return;
+
+            document.getElementById('dimensionTooltipTitle').textContent = tooltip.title;
+            document.getElementById('dimensionTooltipText').textContent = tooltip.text;
+            document.getElementById('dimensionTooltipOverlay').classList.add('active');
+        }
+
+        function closeDimensionTooltip() {
+            document.getElementById('dimensionTooltipOverlay').classList.remove('active');
+        }
+
+        function handleDimensionChange(person, dimension, value, element) {
+            // Update state
+            personDimensions[person][dimension] = value;
+
+            // Visual feedback - highlight animation
+            if (element) {
+                const label = element.nextElementSibling;
+                if (label) {
+                    label.classList.add('highlight-change');
+                    setTimeout(() => label.classList.remove('highlight-change'), 300);
+                }
+            }
+
+            // Update overview box
+            updateAnalysisOverview();
+        }
+
+        function getGeschlechtKurz(geschlecht) {
+            const map = {
+                'männlich': 'm',
+                'weiblich': 'w',
+                'non-binär': 'nb'
+            };
+            return map[geschlecht] || geschlecht;
+        }
+
+        function getDominanzKurz(dominanz) {
+            const map = {
+                'dominant': 'dom',
+                'submissiv': 'sub',
+                'switch': 'switch',
+                'ausgeglichen': 'ausgeglichen'
+            };
+            return map[dominanz] || dominanz;
+        }
+
+        function getOrientierungKurz(orientierung, status) {
+            const map = {
+                'heterosexuell': 'hetero',
+                'homosexuell': 'homo',
+                'bisexuell': 'bi'
+            };
+            let kurz = map[orientierung] || orientierung;
+            if (status === 'interessiert') {
+                kurz += '(?)';
+            }
+            return kurz;
+        }
+
+        function updateAnalysisOverview() {
+            const ichType = data?.archetypes[currentArchetype]?.name || currentArchetype;
+            const partnerType = data?.archetypes[selectedPartner]?.name || selectedPartner;
+
+            const ichDims = personDimensions.ich;
+            const partnerDims = personDimensions.partner;
+
+            const ichInfo = `(${getGeschlechtKurz(ichDims.geschlecht)}, ${getDominanzKurz(ichDims.dominanz)}, ${getOrientierungKurz(ichDims.orientierung, ichDims.orientierungStatus)})`;
+            const partnerInfo = `(${getGeschlechtKurz(partnerDims.geschlecht)}, ${getDominanzKurz(partnerDims.dominanz)}, ${getOrientierungKurz(partnerDims.orientierung, partnerDims.orientierungStatus)})`;
+
+            const content = document.getElementById('analysisOverviewContent');
+            if (content) {
+                content.innerHTML = `
+                    <span class="type-name">${ichType}</span> <span class="dim-info">${ichInfo}</span>
+                    <span> × </span>
+                    <span class="type-name">${partnerType}</span> <span class="dim-info">${partnerInfo}</span>
+                `;
+            }
+        }
+
+        function initDimensionListeners() {
+            // ICH dimensions
+            document.querySelectorAll('input[name="ich-geschlecht"]').forEach(radio => {
+                radio.addEventListener('change', (e) => handleDimensionChange('ich', 'geschlecht', e.target.value, e.target));
+            });
+            document.querySelectorAll('input[name="ich-dominanz"]').forEach(radio => {
+                radio.addEventListener('change', (e) => handleDimensionChange('ich', 'dominanz', e.target.value, e.target));
+            });
+            document.querySelectorAll('input[name="ich-orientierung"]').forEach(radio => {
+                radio.addEventListener('change', (e) => handleDimensionChange('ich', 'orientierung', e.target.value, e.target));
+            });
+            document.querySelectorAll('input[name="ich-status"]').forEach(radio => {
+                radio.addEventListener('change', (e) => handleDimensionChange('ich', 'orientierungStatus', e.target.value, e.target));
+            });
+
+            // PARTNER dimensions
+            document.querySelectorAll('input[name="partner-geschlecht"]').forEach(radio => {
+                radio.addEventListener('change', (e) => handleDimensionChange('partner', 'geschlecht', e.target.value, e.target));
+            });
+            document.querySelectorAll('input[name="partner-dominanz"]').forEach(radio => {
+                radio.addEventListener('change', (e) => handleDimensionChange('partner', 'dominanz', e.target.value, e.target));
+            });
+            document.querySelectorAll('input[name="partner-orientierung"]').forEach(radio => {
+                radio.addEventListener('change', (e) => handleDimensionChange('partner', 'orientierung', e.target.value, e.target));
+            });
+            document.querySelectorAll('input[name="partner-status"]').forEach(radio => {
+                radio.addEventListener('change', (e) => handleDimensionChange('partner', 'orientierungStatus', e.target.value, e.target));
+            });
+        }
+
         // Initialize
         checkAgeVerification();
         loadData();
         initFeedbackSystem();
+        initDimensionListeners();
     </script>
 </body>
 </html>
