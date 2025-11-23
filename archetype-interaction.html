@@ -2325,15 +2325,21 @@
 
             const myArch = data.archetypes[currentArchetype];
             const partnerArch = data.archetypes[partnerId];
+            const comboText = `${myArch?.name || '?'} + ${partnerArch?.name || '?'}`;
+            const contextText = `${comboText} | ${name}`;
 
             return `
+                <div class="modal-feedback-btn" onclick="openFeedbackModalWithContext('${contextText}')">
+                    💬 Feedback zu ${comboText} | ${name}
+                </div>
+
                 <div class="modal-category">
                     <div class="modal-category-header">
                         <div class="modal-category-letter">${cat}</div>
                         <div class="modal-category-name">${name}</div>
                     </div>
                     <div class="match-modal-score" style="margin: 12px 0;">
-                        <span class="match-modal-score-label">${myArch?.name || '...'} + ${partnerArch?.name || '...'}</span>
+                        <span class="match-modal-score-label">${comboText}</span>
                         <span class="match-modal-score-value" style="color: ${scoreColor}">${value}%</span>
                     </div>
                     <div class="modal-category-desc">${desc}</div>
@@ -2342,10 +2348,6 @@
                             ${subDims.map(sd => `<span class="modal-subdim-tag">${sd}</span>`).join('')}
                         </div>
                     ` : ''}
-
-                    <div class="modal-feedback-btn" onclick="openFeedbackModal()">
-                        💬 Feedback zu ${name}
-                    </div>
                 </div>
             `;
         }
@@ -2430,7 +2432,13 @@
                 </div>
             ` : '';
 
+            const comboText = `${myArch.name} + ${partnerArch.name}`;
+
             return `
+                <div class="modal-feedback-btn" onclick="openFeedbackModalWithContext('${comboText}')">
+                    💬 Feedback zu ${comboText}
+                </div>
+
                 <div class="match-modal-header">
                     <div class="match-modal-icon" style="background: ${partnerArch.color}">${icons[partnerArch.id]}</div>
                     <div class="match-modal-info">
@@ -2459,10 +2467,6 @@
                 <div class="match-modal-section contra">
                     <div class="match-modal-section-title">✗ Herausforderungen</div>
                     <ul class="match-modal-list">${contraItems}</ul>
-                </div>
-
-                <div class="modal-feedback-btn" onclick="openFeedbackModal()">
-                    💬 Feedback zu dieser Kombination
                 </div>
             `;
         }
@@ -2546,6 +2550,22 @@
             replyToId = null; // Reset reply state for new feedback
             const contextId = getModalContextId();
             document.getElementById('feedbackContextId').textContent = contextId;
+            document.getElementById('feedbackModal').classList.add('active');
+            document.body.style.overflow = 'hidden';
+
+            // Reset form
+            document.getElementById('feedbackName').value = '';
+            document.getElementById('feedbackTitle').value = '';
+            document.getElementById('feedbackComment').value = '';
+            feedbackRatings = { verstand: 0, gefuehl: 0 };
+            updateStarDisplay('ratingVerstand', 0);
+            updateStarDisplay('ratingGefuehl', 0);
+        }
+
+        // Open feedback modal with specific context
+        function openFeedbackModalWithContext(contextText) {
+            replyToId = null;
+            document.getElementById('feedbackContextId').textContent = contextText;
             document.getElementById('feedbackModal').classList.add('active');
             document.body.style.overflow = 'hidden';
 
