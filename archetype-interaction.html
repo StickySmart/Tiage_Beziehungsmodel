@@ -2055,10 +2055,32 @@
             const container = document.getElementById('legendCategories');
             const categories = ['A', 'B', 'C', 'D', 'E', 'F'];
 
-            container.innerHTML = categories.map(cat => {
+            // Get current interaction scores
+            const interactionKey = `${currentArchetype}_${selectedPartner}`;
+            const interaction = data.interactions[interactionKey] || {};
+            const scores = interaction.scores || {};
+
+            const myArch = data.archetypes[currentArchetype];
+            const partnerArch = data.archetypes[selectedPartner];
+            const myName = myArch?.name || currentArchetype;
+            const partnerName = partnerArch?.name || selectedPartner;
+
+            // Show which combination is displayed
+            const headerText = currentArchetype === selectedPartner
+                ? `${myName} (Ich) mit ${myName}`
+                : `${myName} (Ich) mit ${partnerName}`;
+
+            container.innerHTML = `
+                <div style="margin-bottom: 15px; padding: 10px; background: var(--bg-dark); border-radius: 10px; text-align: center;">
+                    <span style="color: var(--text-muted); font-size: var(--font-sm);">Aktuelle Auswahl:</span>
+                    <div style="color: var(--primary); font-weight: 600; font-size: var(--font-base);">${headerText}</div>
+                </div>
+            ` + categories.map(cat => {
                 const catData = categoryDescriptions[cat] || {};
                 const name = catData.name || categoryNames[cat] || cat;
                 const desc = catData.description || 'Beschreibung nicht verfügbar';
+                const value = scores[cat]?.value || 0;
+                const scoreColor = getScoreColor(value);
 
                 return `
                     <div class="legend-category-item" onclick="openSingleCategoryModal('${cat}')">
@@ -2067,6 +2089,7 @@
                             <div class="legend-category-name">${name}</div>
                             <div class="legend-category-desc">${desc}</div>
                         </div>
+                        <div style="font-weight: 700; font-size: var(--font-md); color: ${scoreColor}; min-width: 50px; text-align: right;">${value}%</div>
                     </div>
                 `;
             }).join('');
