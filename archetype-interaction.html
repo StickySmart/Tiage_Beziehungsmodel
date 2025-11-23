@@ -2389,11 +2389,18 @@
         function getMatchModalContent(partnerArch, interaction, scores, scoreColor, myArch) {
             const categories = ['A', 'B', 'C', 'D', 'E', 'F'];
             const overall = interaction.overall || 0;
+            const isIdenticalType = myArch.id === partnerArch.id;
 
             const categoryBars = categories.map(cat => {
                 const value = scores[cat]?.value || 0;
                 const barClass = getBarClass(value);
                 const name = categoryNames[cat] || cat;
+
+                // Special note for identical types on category A (Beziehungsphilosophie)
+                const isPhilosophyCategory = cat === 'A' && isIdenticalType;
+                const specialNote = isPhilosophyCategory
+                    ? '<div style="font-size: 10px; color: var(--success); margin-top: 2px;">Identische Grundüberzeugung</div>'
+                    : '';
 
                 return `
                     <div class="match-modal-bar-row clickable" onclick="openSingleCategoryModal('${cat}')">
@@ -2402,6 +2409,7 @@
                             <div class="match-modal-bar ${barClass}" style="width: ${value}%">
                                 <span class="match-modal-bar-value">${value}%</span>
                             </div>
+                            ${specialNote}
                         </div>
                         <span class="match-modal-bar-name">${name}</span>
                     </div>
@@ -2410,6 +2418,17 @@
 
             const proItems = (interaction.pro || []).map(p => `<li>${p}</li>`).join('') || '<li>Keine Daten</li>';
             const contraItems = (interaction.contra || []).map(c => `<li>${c}</li>`).join('') || '<li>Keine Daten</li>';
+
+            // Special banner for identical types
+            const identicalTypeBanner = isIdenticalType ? `
+                <div style="background: linear-gradient(135deg, rgba(46, 204, 113, 0.15), rgba(46, 204, 113, 0.05));
+                            border: 1px solid var(--success); border-radius: 10px; padding: 12px; margin-bottom: 15px; text-align: center;">
+                    <div style="font-weight: 600; color: var(--success); margin-bottom: 4px;">✓ Identischer Beziehungstyp</div>
+                    <div style="font-size: var(--font-sm); color: var(--text-secondary);">
+                        Ihr teilt dieselbe Grundüberzeugung über Beziehungen
+                    </div>
+                </div>
+            ` : '';
 
             return `
                 <div class="match-modal-header">
@@ -2420,8 +2439,10 @@
                     </div>
                 </div>
 
+                ${identicalTypeBanner}
+
                 <div class="match-modal-score">
-                    <span class="match-modal-score-label">Kompatibilität mit ${myArch.name}</span>
+                    <span class="match-modal-score-label">Kompatibilität ${isIdenticalType ? '(gleicher Typ)' : 'mit ' + myArch.name}</span>
                     <span class="match-modal-score-value" style="color: ${scoreColor}">${overall}%</span>
                 </div>
 
