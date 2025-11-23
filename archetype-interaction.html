@@ -158,6 +158,44 @@
             display: none;
         }
 
+        .nav-arrow {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: transparent;
+            border: 1px solid var(--border);
+            color: var(--text-secondary);
+            font-size: 1.4rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            padding: 0;
+            line-height: 1;
+        }
+
+        .nav-arrow:hover {
+            background: var(--primary);
+            border-color: var(--primary);
+            color: white;
+        }
+
+        .nav-arrow:active {
+            transform: scale(0.95);
+        }
+
+        .nav-arrow:disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+        }
+
+        .nav-arrow:disabled:hover {
+            background: transparent;
+            border-color: var(--border);
+            color: var(--text-secondary);
+        }
+
         /* Main Select in Card 1 */
         .main-select {
             margin-bottom: 20px;
@@ -1318,11 +1356,13 @@
         </div>
     </div>
 
-    <!-- Navigation Dots -->
+    <!-- Navigation Dots with Arrows -->
     <div class="nav-dots">
+        <button class="nav-arrow" onclick="navigatePrev()">‹</button>
         <div class="nav-dot active" data-card="0" onclick="scrollToCard(0)"></div>
         <div class="nav-dot" data-card="1" onclick="scrollToCard(1)"></div>
         <div class="nav-dot" data-card="2" onclick="scrollToCard(2)"></div>
+        <button class="nav-arrow" onclick="navigateNext()">›</button>
     </div>
 
     <div class="swipe-hint">← Swipe →</div>
@@ -1625,6 +1665,31 @@
             document.querySelectorAll('.nav-dot').forEach((dot, i) => {
                 dot.classList.toggle('active', i === currentCard);
             });
+
+            // Update arrow states
+            const arrows = document.querySelectorAll('.nav-arrow');
+            if (arrows.length >= 2) {
+                arrows[0].disabled = currentCard === 0;
+                arrows[1].disabled = currentCard === 2;
+            }
+        }
+
+        function navigatePrev() {
+            const carousel = document.getElementById('carousel');
+            const cardWidth = window.innerWidth;
+            const currentCard = Math.round(carousel.scrollLeft / cardWidth);
+            if (currentCard > 0) {
+                scrollToCard(currentCard - 1);
+            }
+        }
+
+        function navigateNext() {
+            const carousel = document.getElementById('carousel');
+            const cardWidth = window.innerWidth;
+            const currentCard = Math.round(carousel.scrollLeft / cardWidth);
+            if (currentCard < 2) {
+                scrollToCard(currentCard + 1);
+            }
         }
 
         // Legend Categories
