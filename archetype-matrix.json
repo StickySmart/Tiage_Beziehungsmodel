@@ -337,7 +337,7 @@
         "C": { "value": 85, "note": "Gegenseitiges Verständnis für gewählte Nähe-Distanz" },
         "D": { "value": 98, "note": "Maximale gegenseitige Autonomie-Wertschätzung" },
         "E": { "value": 92, "note": "Klare, direkte Kommunikation als geteilter Standard" },
-        "F": { "value": 75, "note": "Gesellschaftlich herausfordernd, aber gemeinsam getragen" }
+        "F": { "value": 85, "note": "Gesellschaftlich als Paar getragen, gegenseitiges Verständnis stärkt" }
       },
       "overall": 95,
       "pro": [
@@ -471,7 +471,7 @@
         "C": { "value": 85, "note": "Gegenseitiges Verständnis für intensive, situative Nähe" },
         "D": { "value": 98, "note": "Maximale gegenseitige Freiheit als geteilter Wert" },
         "E": { "value": 88, "note": "Pragmatische und ehrliche Kommunikation" },
-        "F": { "value": 75, "note": "Gesellschaftlich herausfordernd, aber gemeinsam getragen" }
+        "F": { "value": 85, "note": "Gesellschaftlich als Paar getragen, geteilte Lebensfreude verbindet" }
       },
       "overall": 95,
       "pro": [
@@ -605,7 +605,7 @@
         "C": { "value": 88, "note": "Gegenseitiges Verständnis für tiefe Mehrfachverbindungen" },
         "D": { "value": 88, "note": "Gemeinsames Verständnis für Balance Bindung/Freiheit" },
         "E": { "value": 95, "note": "Kommunikation als geteilte Kernkompetenz" },
-        "F": { "value": 78, "note": "Gesellschaftlich herausfordernd, aber als Community gestärkt" }
+        "F": { "value": 85, "note": "Gesellschaftlich als Community gestärkt, geteilte Erfahrungen verbinden" }
       },
       "overall": 96,
       "pro": [
