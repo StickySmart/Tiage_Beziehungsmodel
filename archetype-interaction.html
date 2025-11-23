@@ -2008,11 +2008,28 @@
         }
 
         .dimensions-section-title {
-            font-size: var(--font-sm);
-            color: var(--text-muted);
+            font-size: var(--font-base);
+            font-weight: 600;
+            color: var(--primary);
             text-transform: uppercase;
-            letter-spacing: 1px;
+            letter-spacing: 1.5px;
             margin-bottom: 15px;
+            padding: 10px 15px;
+            background: rgba(69, 123, 157, 0.15);
+            border-left: 3px solid var(--primary);
+            border-radius: 0 8px 8px 0;
+        }
+
+        .dimensions-section-title.ich-title {
+            color: var(--success);
+            background: rgba(46, 204, 113, 0.15);
+            border-left-color: var(--success);
+        }
+
+        .dimensions-section-title.partner-title {
+            color: var(--accent);
+            background: rgba(231, 76, 60, 0.15);
+            border-left-color: var(--accent);
         }
 
         .dimension-group {
@@ -2707,6 +2724,7 @@
 
                     <!-- Extended Dimensions: ICH -->
                     <div class="dimensions-section">
+                        <div class="dimensions-section-title ich-title">Meine Eigenschaften</div>
                         <div class="dimensions-grid">
                             <!-- Geschlecht -->
                             <div class="dimension-group needs-selection" data-dimension="ich-geschlecht">
@@ -2866,7 +2884,7 @@
 
                     <!-- Extended Dimensions: PARTNER -->
                     <div class="dimensions-section" style="margin-top: 0; padding-top: 15px; border-top: none;">
-                        <div class="dimensions-section-title">Partner-Eigenschaften</div>
+                        <div class="dimensions-section-title partner-title">Partner-Eigenschaften</div>
                         <div class="dimensions-grid">
                             <!-- Geschlecht -->
                             <div class="dimension-group needs-selection" data-dimension="partner-geschlecht">
