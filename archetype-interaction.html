@@ -1039,10 +1039,10 @@
             pointer-events: none;
         }
 
-        .tag-tooltip-container:hover .tag-tooltip {
+        .tag-tooltip.active {
             visibility: visible;
             opacity: 1;
-            transition-delay: 0.3s;
+            pointer-events: auto;
         }
 
         /* Tooltip Arrow - hidden for fixed positioning */
@@ -3553,11 +3553,24 @@
             openSingleCategoryModal(category);
         }
 
+        // Active tooltip tracking
+        let activeTooltipContainer = null;
+        let tooltipHideTimeout = null;
+
         // Position tag tooltip to ensure visibility
         function positionTagTooltip(container) {
+            // Clear any pending hide
+            if (tooltipHideTimeout) {
+                clearTimeout(tooltipHideTimeout);
+                tooltipHideTimeout = null;
+            }
+
             const tooltip = container.querySelector('.tag-tooltip');
             const tag = container.querySelector('.modal-subdim-tag');
             if (!tooltip || !tag) return;
+
+            activeTooltipContainer = container;
+            tooltip.classList.add('active');
 
             const tagRect = tag.getBoundingClientRect();
             const tooltipWidth = Math.min(320, window.innerWidth * 0.9);
@@ -3573,23 +3586,40 @@
                 left = window.innerWidth - tooltipWidth - padding;
             }
 
-            // Position above the tag
+            // Position above the tag with small gap
             const tooltipHeight = tooltip.offsetHeight || 200;
-            let top = tagRect.top - tooltipHeight - 8;
+            let top = tagRect.top - tooltipHeight - 5;
 
             // If not enough space above, show below
             if (top < padding) {
-                top = tagRect.bottom + 8;
+                top = tagRect.bottom + 5;
             }
 
             tooltip.style.left = left + 'px';
             tooltip.style.top = top + 'px';
             tooltip.style.width = tooltipWidth + 'px';
+
+            // Add hover listener to tooltip itself
+            tooltip.onmouseenter = () => {
+                if (tooltipHideTimeout) {
+                    clearTimeout(tooltipHideTimeout);
+                    tooltipHideTimeout = null;
+                }
+            };
+            tooltip.onmouseleave = () => {
+                hideTagTooltip(container);
+            };
         }
 
-        // Hide tag tooltip
+        // Hide tag tooltip with delay
         function hideTagTooltip(container) {
-            // CSS handles the hide with transition
+            tooltipHideTimeout = setTimeout(() => {
+                const tooltip = container.querySelector('.tag-tooltip');
+                if (tooltip) {
+                    tooltip.classList.remove('active');
+                }
+                activeTooltipContainer = null;
+            }, 150); // Small delay to allow moving to tooltip
         }
 
         function closeCategoryModal(event) {
