@@ -1436,6 +1436,151 @@
             padding: 40px 20px;
             color: var(--text-muted);
         }
+
+        /* Advanced Feedback Filters */
+        .feedback-search {
+            margin-bottom: 15px;
+        }
+
+        .feedback-search-input {
+            width: 100%;
+            padding: 12px 16px;
+            background: var(--bg-dark);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            color: var(--text-primary);
+            font-size: var(--font-sm);
+        }
+
+        .feedback-search-input:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        .feedback-advanced-filters {
+            background: var(--bg-dark);
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 20px;
+            border: 1px solid var(--border);
+        }
+
+        .feedback-filter-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 12px;
+            flex-wrap: wrap;
+        }
+
+        .feedback-filter-row:last-child {
+            margin-bottom: 0;
+        }
+
+        .feedback-filter-row label {
+            font-size: var(--font-sm);
+            color: var(--text-muted);
+            min-width: 90px;
+        }
+
+        .feedback-select {
+            padding: 8px 12px;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--text-primary);
+            font-size: var(--font-sm);
+            cursor: pointer;
+        }
+
+        .filter-separator {
+            color: var(--text-muted);
+            font-size: var(--font-sm);
+        }
+
+        .feedback-category-btns {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+
+        .cat-filter-btn {
+            padding: 6px 12px;
+            border: 1px solid var(--border);
+            background: transparent;
+            color: var(--text-secondary);
+            border-radius: 16px;
+            font-size: var(--font-xs);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .cat-filter-btn:hover {
+            background: var(--bg-hover);
+        }
+
+        .cat-filter-btn.active {
+            background: var(--primary);
+            border-color: var(--primary);
+            color: white;
+        }
+
+        /* Reply/Thread Styles */
+        .feedback-item-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 12px;
+            padding-top: 10px;
+            border-top: 1px solid var(--border);
+        }
+
+        .feedback-reply-btn {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            padding: 6px 12px;
+            background: transparent;
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            color: var(--text-muted);
+            font-size: var(--font-xs);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .feedback-reply-btn:hover {
+            background: var(--bg-hover);
+            color: var(--primary);
+            border-color: var(--primary);
+        }
+
+        .feedback-replies {
+            margin-left: 20px;
+            padding-left: 15px;
+            border-left: 2px solid var(--border);
+            margin-top: 12px;
+        }
+
+        .feedback-item.reply {
+            background: rgba(255,255,255,0.02);
+            padding: 12px;
+        }
+
+        .feedback-item.reply .feedback-item-context {
+            font-size: 10px;
+        }
+
+        .reply-indicator {
+            font-size: var(--font-xs);
+            color: var(--text-muted);
+            margin-bottom: 6px;
+        }
+
+        .feedback-timestamp {
+            font-size: 10px;
+            color: var(--text-muted);
+        }
     </style>
 </head>
 <body>
@@ -1629,15 +1774,45 @@
                     <span class="card-title">Feedback</span>
                 </div>
                 <div class="card-body">
-                    <!-- Filter -->
-                    <div class="feedback-filters" id="feedbackFilters">
-                        <button class="feedback-filter-btn active" data-filter="all">Alle</button>
-                        <button class="feedback-filter-btn" data-filter="S1">S1</button>
-                        <button class="feedback-filter-btn" data-filter="S2">S2</button>
-                        <button class="feedback-filter-btn" data-filter="S3">S3</button>
-                        <button class="feedback-filter-btn" data-filter="TM">TM</button>
-                        <button class="feedback-filter-btn" data-filter="CH">CH</button>
-                        <button class="feedback-filter-btn" data-filter="KAT">KAT</button>
+                    <!-- Search -->
+                    <div class="feedback-search">
+                        <input type="text" id="feedbackSearch" placeholder="🔍 Suche nach Name, Titel oder Inhalt..." class="feedback-search-input">
+                    </div>
+
+                    <!-- Advanced Filters -->
+                    <div class="feedback-advanced-filters">
+                        <div class="feedback-filter-row">
+                            <label>Kombination:</label>
+                            <select id="filterMyType" class="feedback-select">
+                                <option value="all">Alle Typen</option>
+                            </select>
+                            <span class="filter-separator">mit</span>
+                            <select id="filterPartnerType" class="feedback-select">
+                                <option value="all">Alle Partner</option>
+                            </select>
+                        </div>
+                        <div class="feedback-filter-row">
+                            <label>Kategorie:</label>
+                            <div class="feedback-category-btns" id="categoryFilterBtns">
+                                <button class="cat-filter-btn active" data-cat="all">Alle</button>
+                                <button class="cat-filter-btn" data-cat="A">A</button>
+                                <button class="cat-filter-btn" data-cat="B">B</button>
+                                <button class="cat-filter-btn" data-cat="C">C</button>
+                                <button class="cat-filter-btn" data-cat="D">D</button>
+                                <button class="cat-filter-btn" data-cat="E">E</button>
+                                <button class="cat-filter-btn" data-cat="F">F</button>
+                                <button class="cat-filter-btn" data-cat="TM">TM</button>
+                                <button class="cat-filter-btn" data-cat="CH">CH</button>
+                            </div>
+                        </div>
+                        <div class="feedback-filter-row">
+                            <label>Sortieren:</label>
+                            <select id="filterSort" class="feedback-select">
+                                <option value="newest">Neueste zuerst</option>
+                                <option value="oldest">Älteste zuerst</option>
+                                <option value="rating">Beste Bewertung</option>
+                            </select>
+                        </div>
                     </div>
 
                     <!-- Feedback List -->
@@ -2284,11 +2459,20 @@
         // ==========================================
 
         // Google Apps Script URL für Feedback
-        const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyjZxlqXyoIKJ1xzdnyz0McQmGJQoEVi4WE59SsGQHyUQAQh8g0g4q9hh4yzBctZ7UW1Q/exec';
+        const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwSpnFIsm6KNMiyZSfLzDtuPBUVxYBEEbx5pKgw37LZIFCutx4ugWau8CUWs_cB_YIl/exec';
 
         let feedbackData = [];
-        let currentFilter = 'all';
         let feedbackRatings = { verstand: 0, gefuehl: 0 };
+        let replyToId = null; // For reply functionality
+
+        // Advanced filter state
+        let feedbackFilters = {
+            search: '',
+            myType: 'all',
+            partnerType: 'all',
+            category: 'all',
+            sort: 'newest'
+        };
 
         // Get current context ID based on what's visible
         function getCurrentContextId() {
@@ -2338,6 +2522,7 @@
 
         // Open feedback modal
         function openFeedbackModal() {
+            replyToId = null; // Reset reply state for new feedback
             const contextId = getModalContextId();
             document.getElementById('feedbackContextId').textContent = contextId;
             document.getElementById('feedbackModal').classList.add('active');
@@ -2356,6 +2541,7 @@
             if (event && event.target !== event.currentTarget) return;
             document.getElementById('feedbackModal').classList.remove('active');
             document.body.style.overflow = '';
+            replyToId = null; // Reset on close
         }
 
         // Star rating functionality
@@ -2395,11 +2581,18 @@
         }
 
         // Submit feedback
+        // Generate unique ID
+        function generateFeedbackId() {
+            return 'fb_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+        }
+
         async function submitFeedback() {
             const name = document.getElementById('feedbackName').value.trim();
             const titel = document.getElementById('feedbackTitle').value.trim();
             const kommentar = document.getElementById('feedbackComment').value.trim();
-            const kontextId = document.getElementById('feedbackContextId').textContent;
+            const kontextId = replyToId
+                ? document.getElementById('feedbackContextId').textContent
+                : getModalContextId();
 
             // Validation
             if (!name) {
@@ -2412,12 +2605,14 @@
             }
 
             const feedbackEntry = {
+                id: generateFeedbackId(),
                 kontextId,
                 name,
                 titel,
                 kommentar,
                 verstand: feedbackRatings.verstand,
-                gefuehl: feedbackRatings.gefuehl
+                gefuehl: feedbackRatings.gefuehl,
+                antwortAuf: replyToId || ''
             };
 
             const submitBtn = document.getElementById('feedbackSubmitBtn');
@@ -2439,13 +2634,18 @@
                 saveLocalFeedback(feedbackEntry);
 
                 alert('Danke für dein Feedback!');
+                replyToId = null; // Reset reply state
                 closeFeedbackModal();
+
+                // Reload feedback to show the new entry
+                setTimeout(() => loadFeedback(), 500);
 
             } catch (error) {
                 console.error('Feedback error:', error);
                 // Save locally on error
                 saveLocalFeedback(feedbackEntry);
                 alert('Feedback lokal gespeichert. (Server nicht erreichbar)');
+                replyToId = null;
                 closeFeedbackModal();
             }
 
@@ -2485,17 +2685,86 @@
                 feedbackData = getLocalFeedback();
             }
 
+            // Populate type filter dropdowns
+            populateTypeFilters();
             renderFeedbackList();
+        }
+
+        // Populate type dropdowns for filters
+        function populateTypeFilters() {
+            const archetypes = Object.values(data?.archetypes || {});
+            const myTypeSelect = document.getElementById('filterMyType');
+            const partnerTypeSelect = document.getElementById('filterPartnerType');
+
+            const options = archetypes.map(a =>
+                `<option value="${a.id}">${a.name}</option>`
+            ).join('');
+
+            myTypeSelect.innerHTML = `<option value="all">Alle Typen</option>${options}`;
+            partnerTypeSelect.innerHTML = `<option value="all">Alle Partner</option>${options}`;
         }
 
         function renderFeedbackList() {
             const container = document.getElementById('feedbackList');
 
-            let filtered = feedbackData;
-            if (currentFilter !== 'all') {
-                filtered = feedbackData.filter(f =>
-                    (f.KontextID || f.kontextId || '').startsWith(currentFilter)
-                );
+            // Apply all filters
+            let filtered = feedbackData.filter(f => {
+                const kontextId = (f.KontextID || f.kontextId || '').toLowerCase();
+                const name = (f.Name || f.name || '').toLowerCase();
+                const titel = (f.Titel || f.titel || '').toLowerCase();
+                const kommentar = (f.Kommentar || f.kommentar || '').toLowerCase();
+                const antwortAuf = f.AntwortAuf || f.antwortAuf || '';
+
+                // Skip replies in main list (they'll be shown as threads)
+                if (antwortAuf) return false;
+
+                // Search filter
+                if (feedbackFilters.search) {
+                    const search = feedbackFilters.search.toLowerCase();
+                    if (!name.includes(search) && !titel.includes(search) && !kommentar.includes(search)) {
+                        return false;
+                    }
+                }
+
+                // Type filters (parse from context ID like "Single (Ich) mit Duo")
+                if (feedbackFilters.myType !== 'all' || feedbackFilters.partnerType !== 'all') {
+                    const myTypeName = data?.archetypes?.[feedbackFilters.myType]?.name?.toLowerCase();
+                    const partnerTypeName = data?.archetypes?.[feedbackFilters.partnerType]?.name?.toLowerCase();
+
+                    if (feedbackFilters.myType !== 'all' && myTypeName) {
+                        if (!kontextId.includes(myTypeName)) return false;
+                    }
+                    if (feedbackFilters.partnerType !== 'all' && partnerTypeName) {
+                        if (!kontextId.includes('mit ' + partnerTypeName)) return false;
+                    }
+                }
+
+                // Category filter
+                if (feedbackFilters.category !== 'all') {
+                    const cat = feedbackFilters.category;
+                    if (cat === 'TM') {
+                        if (!kontextId.includes('top match')) return false;
+                    } else if (cat === 'CH') {
+                        if (!kontextId.includes('challenge')) return false;
+                    } else {
+                        // Category A-F: check for category name
+                        const catName = categoryNames[cat]?.toLowerCase();
+                        if (catName && !kontextId.includes(catName)) return false;
+                    }
+                }
+
+                return true;
+            });
+
+            // Sort
+            if (feedbackFilters.sort === 'oldest') {
+                filtered = filtered.reverse();
+            } else if (feedbackFilters.sort === 'rating') {
+                filtered.sort((a, b) => {
+                    const aRating = (a.Verstand || a.verstand || 0) + (a.Gefuehl || a.gefuehl || 0);
+                    const bRating = (b.Verstand || b.verstand || 0) + (b.Gefuehl || b.gefuehl || 0);
+                    return bRating - aRating;
+                });
             }
 
             if (filtered.length === 0) {
@@ -2509,22 +2778,39 @@
                 return;
             }
 
-            container.innerHTML = filtered.map(f => {
-                const kontextId = f.KontextID || f.kontextId || '-';
-                const name = f.Name || f.name || 'Anonym';
-                const titel = f.Titel || f.titel || '';
-                const kommentar = f.Kommentar || f.kommentar || '';
-                const verstand = f.Verstand || f.verstand || 0;
-                const gefuehl = f.Gefuehl || f.gefuehl || 0;
+            container.innerHTML = filtered.map(f => renderFeedbackItem(f)).join('');
+        }
 
-                return `
-                    <div class="feedback-item">
-                        <div class="feedback-item-header">
-                            <span class="feedback-item-context">${kontextId}</span>
+        // Render single feedback item with replies
+        function renderFeedbackItem(f, isReply = false) {
+            const id = f.Id || f.id || f.timestamp || '';
+            const kontextId = f.KontextID || f.kontextId || '-';
+            const name = f.Name || f.name || 'Anonym';
+            const titel = f.Titel || f.titel || '';
+            const kommentar = f.Kommentar || f.kommentar || '';
+            const verstand = f.Verstand || f.verstand || 0;
+            const gefuehl = f.Gefuehl || f.gefuehl || 0;
+            const timestamp = f.Timestamp || f.timestamp || '';
+
+            // Find replies to this item
+            const replies = feedbackData.filter(r =>
+                (r.AntwortAuf || r.antwortAuf) === id
+            );
+
+            const timeStr = timestamp ? new Date(timestamp).toLocaleDateString('de-DE') : '';
+
+            return `
+                <div class="feedback-item ${isReply ? 'reply' : ''}" data-id="${id}">
+                    <div class="feedback-item-header">
+                        <span class="feedback-item-context">${kontextId}</span>
+                        <div style="display: flex; align-items: center; gap: 10px;">
                             <span class="feedback-item-name">${name}</span>
+                            ${timeStr ? `<span class="feedback-timestamp">${timeStr}</span>` : ''}
                         </div>
-                        <div class="feedback-item-title">${titel}</div>
-                        ${kommentar ? `<div class="feedback-item-comment">${kommentar}</div>` : ''}
+                    </div>
+                    <div class="feedback-item-title">${titel}</div>
+                    ${kommentar ? `<div class="feedback-item-comment">${kommentar}</div>` : ''}
+                    <div class="feedback-item-footer">
                         <div class="feedback-item-ratings">
                             <div class="feedback-rating">
                                 <span>Verstand:</span>
@@ -2535,29 +2821,78 @@
                                 <span class="stars">${'★'.repeat(gefuehl)}${'☆'.repeat(5-gefuehl)}</span>
                             </div>
                         </div>
+                        <button class="feedback-reply-btn" onclick="openReplyModal('${id}', '${name}')">
+                            ↩ Antworten
+                        </button>
                     </div>
-                `;
-            }).join('');
+                    ${replies.length > 0 ? `
+                        <div class="feedback-replies">
+                            ${replies.map(r => renderFeedbackItem(r, true)).join('')}
+                        </div>
+                    ` : ''}
+                </div>
+            `;
         }
 
-        // Filter buttons
-        function initFeedbackFilters() {
-            document.querySelectorAll('.feedback-filter-btn').forEach(btn => {
+        // Open reply modal
+        function openReplyModal(parentId, parentName) {
+            replyToId = parentId;
+            document.getElementById('feedbackContextId').innerHTML =
+                `<span class="reply-indicator">↩ Antwort auf ${parentName}</span>`;
+            document.getElementById('feedbackModal').classList.add('active');
+            document.body.style.overflow = 'hidden';
+
+            // Reset form
+            document.getElementById('feedbackName').value = '';
+            document.getElementById('feedbackTitle').value = '';
+            document.getElementById('feedbackComment').value = '';
+            feedbackRatings = { verstand: 0, gefuehl: 0 };
+            updateStarDisplay('ratingVerstand', 0);
+            updateStarDisplay('ratingGefuehl', 0);
+        }
+
+        // Initialize advanced filters
+        function initAdvancedFilters() {
+            // Search input
+            document.getElementById('feedbackSearch').addEventListener('input', (e) => {
+                feedbackFilters.search = e.target.value;
+                renderFeedbackList();
+            });
+
+            // Type selects
+            document.getElementById('filterMyType').addEventListener('change', (e) => {
+                feedbackFilters.myType = e.target.value;
+                renderFeedbackList();
+            });
+
+            document.getElementById('filterPartnerType').addEventListener('change', (e) => {
+                feedbackFilters.partnerType = e.target.value;
+                renderFeedbackList();
+            });
+
+            // Category buttons
+            document.querySelectorAll('.cat-filter-btn').forEach(btn => {
                 btn.addEventListener('click', () => {
-                    document.querySelectorAll('.feedback-filter-btn').forEach(b =>
+                    document.querySelectorAll('.cat-filter-btn').forEach(b =>
                         b.classList.remove('active')
                     );
                     btn.classList.add('active');
-                    currentFilter = btn.dataset.filter;
+                    feedbackFilters.category = btn.dataset.cat;
                     renderFeedbackList();
                 });
+            });
+
+            // Sort select
+            document.getElementById('filterSort').addEventListener('change', (e) => {
+                feedbackFilters.sort = e.target.value;
+                renderFeedbackList();
             });
         }
 
         // Initialize feedback system
         function initFeedbackSystem() {
             initStarRatings();
-            initFeedbackFilters();
+            initAdvancedFilters();
         }
 
         // Initialize
