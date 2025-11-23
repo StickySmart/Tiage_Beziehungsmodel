@@ -879,6 +879,23 @@
             margin-bottom: 8px;
         }
 
+        .match-modal-bar-row.clickable {
+            cursor: pointer;
+            padding: 6px;
+            margin: -6px;
+            margin-bottom: 2px;
+            border-radius: 8px;
+            transition: background 0.2s ease;
+        }
+
+        .match-modal-bar-row.clickable:hover {
+            background: rgba(255,255,255,0.08);
+        }
+
+        .match-modal-bar-row.clickable:active {
+            background: rgba(255,255,255,0.12);
+        }
+
         .match-modal-bar-label {
             width: 24px;
             font-weight: 700;
@@ -1046,7 +1063,30 @@
             line-height: 1.5;
         }
 
-        /* Responsive */
+        /* Responsive - Mobile (larger fonts for readability) */
+        @media (max-width: 599px) {
+            :root {
+                --font-xs: 0.85rem;
+                --font-sm: 0.95rem;
+                --font-base: 1.05rem;
+                --font-md: 1.15rem;
+                --font-lg: 1.4rem;
+                --font-xl: 1.8rem;
+                --bar-height: 20px;
+            }
+
+            .modal {
+                max-width: 95vw;
+                max-height: 90vh;
+            }
+
+            .match-modal-bar-name {
+                width: auto;
+                min-width: 80px;
+            }
+        }
+
+        /* Responsive - Tablet+ */
         @media (min-width: 600px) {
             .mini-cards-grid {
                 grid-template-columns: repeat(3, 1fr);
@@ -1223,20 +1263,8 @@
             </div>
         </div>
 
-        <!-- CARD 3: ALLE TYPEN -->
+        <!-- CARD 3: LEGENDE -->
         <div class="card" data-card="2">
-            <div class="card-inner">
-                <div class="card-header">
-                    <span class="card-title">Alle Typen</span>
-                </div>
-                <div class="card-body">
-                    <div class="mini-cards-grid" id="allTypesGrid"></div>
-                </div>
-            </div>
-        </div>
-
-        <!-- CARD 4: LEGENDE -->
-        <div class="card" data-card="3">
             <div class="card-inner">
                 <div class="card-header">
                     <span class="card-title">Legende</span>
@@ -1295,7 +1323,6 @@
         <div class="nav-dot active" data-card="0" onclick="scrollToCard(0)"></div>
         <div class="nav-dot" data-card="1" onclick="scrollToCard(1)"></div>
         <div class="nav-dot" data-card="2" onclick="scrollToCard(2)"></div>
-        <div class="nav-dot" data-card="3" onclick="scrollToCard(3)"></div>
     </div>
 
     <div class="swipe-hint">← Swipe →</div>
@@ -1376,7 +1403,6 @@
             updatePartnerSelector();
             updateTopAndChallenge();
             updatePartnerView();
-            updateAllTypesGrid();
             updateLegendCategories();
         }
 
@@ -1567,27 +1593,6 @@
             }).join('');
         }
 
-        function updateAllTypesGrid() {
-            const container = document.getElementById('allTypesGrid');
-            const archetypes = archetypeOrder.map(id => data.archetypes[id]).filter(arch => arch);
-
-            container.innerHTML = archetypes.map(arch => {
-                const selfKey = `${arch.id}_${arch.id}`;
-                const selfScore = data.interactions[selfKey]?.overall || '—';
-
-                return `
-                    <div class="mini-card">
-                        <div class="mini-card-header">
-                            <div class="mini-card-icon" style="background: ${arch.color}">${icons[arch.id]}</div>
-                            <div class="mini-card-name" style="color: ${arch.color}">${arch.name}</div>
-                        </div>
-                        <div class="mini-card-desc">${arch.shortDescription || ''}</div>
-                        <div class="mini-card-self-score">${arch.name} + ${arch.name}: <span>${selfScore}%</span></div>
-                    </div>
-                `;
-            }).join('');
-        }
-
         function getScoreColor(score) {
             if (score >= 78) return '#00cec9';
             if (score >= 70) return '#27ae60';
@@ -1739,7 +1744,7 @@
                 const name = categoryNames[cat] || cat;
 
                 return `
-                    <div class="match-modal-bar-row">
+                    <div class="match-modal-bar-row clickable" onclick="openSingleCategoryModal('${cat}')">
                         <span class="match-modal-bar-label">${cat}</span>
                         <div class="match-modal-bar-container">
                             <div class="match-modal-bar ${barClass}" style="width: ${value}%">
