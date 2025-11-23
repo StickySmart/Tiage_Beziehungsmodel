@@ -1651,6 +1651,8 @@
 
         // Modal Functions
         function openCategoryModal() {
+            // Reset modal context when opening directly (uses page 2 selection)
+            modalContextPartner = null;
             const categories = ['A', 'B', 'C', 'D', 'E', 'F'];
             document.getElementById('modalTitle').textContent = 'Alle Kategorien';
             document.getElementById('modalBody').innerHTML = categories.map(cat => getCategoryModalContent(cat)).join('');
@@ -1659,6 +1661,7 @@
         }
 
         function openSingleCategoryModal(category) {
+            // Don't reset modalContextPartner here - it may be set from match modal
             const catData = categoryDescriptions[category] || {};
             const name = catData.name || categoryNames[category] || category;
             document.getElementById('modalTitle').textContent = `Kategorie ${category}`;
@@ -1673,8 +1676,9 @@
             const desc = catData.description || 'Beschreibung nicht verfügbar';
             const subDims = catData.subDimensions || [];
 
-            // Get current interaction score for this category
-            const interactionKey = `${currentArchetype}_${selectedPartner}`;
+            // Use modalContextPartner if set (from match modal), otherwise use selectedPartner (from page 2)
+            const partnerId = modalContextPartner || selectedPartner;
+            const interactionKey = `${currentArchetype}_${partnerId}`;
             const interaction = data.interactions[interactionKey] || {};
             const scores = interaction.scores || {};
             const value = scores[cat]?.value || 0;
@@ -1682,7 +1686,7 @@
             const barClass = getBarClass(value);
 
             const myArch = data.archetypes[currentArchetype];
-            const partnerArch = data.archetypes[selectedPartner];
+            const partnerArch = data.archetypes[partnerId];
 
             return `
                 <div class="modal-category">
@@ -1708,16 +1712,22 @@
             if (event && event.target !== event.currentTarget) return;
             document.getElementById('categoryModal').classList.remove('active');
             document.body.style.overflow = '';
+            // Reset modal context when closing
+            modalContextPartner = null;
         }
 
         // Store current match data for modal access
         let currentTopMatch = { id: null, score: 0 };
         let currentChallenge = { id: null, score: 0 };
+        let modalContextPartner = null; // Track which partner to use in category modal
 
         // Match Modal Functions
         function openMatchModal(type) {
             const matchData = type === 'top' ? currentTopMatch : currentChallenge;
             if (!matchData.id) return;
+
+            // Set the modal context to use this match's partner
+            modalContextPartner = matchData.id;
 
             const myArch = data.archetypes[currentArchetype];
             const partnerArch = data.archetypes[matchData.id];
