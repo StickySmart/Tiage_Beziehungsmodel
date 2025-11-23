@@ -2092,6 +2092,28 @@
             100% { border-color: var(--primary); box-shadow: 0 0 0 0 rgba(69,123,157,0); }
         }
 
+        /* Blinking animation for unselected dimension groups */
+        .dimension-group.needs-selection .dimension-option,
+        .dimension-status-group.needs-selection .dimension-option {
+            animation: needsAttention 1.5s ease-in-out infinite;
+        }
+
+        .dimension-group.needs-selection .dimension-label,
+        .dimension-status-group.needs-selection .dimension-status-label {
+            color: var(--warning);
+        }
+
+        @keyframes needsAttention {
+            0%, 100% {
+                border-color: var(--border);
+                box-shadow: 0 0 0 0 rgba(243, 156, 18, 0);
+            }
+            50% {
+                border-color: var(--warning);
+                box-shadow: 0 0 8px 2px rgba(243, 156, 18, 0.3);
+            }
+        }
+
         /* Status sub-options (indented) */
         .dimension-status-group {
             margin-left: 20px;
@@ -2687,13 +2709,13 @@
                     <div class="dimensions-section">
                         <div class="dimensions-grid">
                             <!-- Geschlecht -->
-                            <div class="dimension-group">
+                            <div class="dimension-group needs-selection" data-dimension="ich-geschlecht">
                                 <div class="dimension-label">
                                     Geschlecht
                                     <span class="dimension-info-icon" onclick="showDimensionTooltip('geschlecht')">ℹ</span>
                                 </div>
                                 <div class="dimension-options">
-                                    <input type="radio" name="ich-geschlecht" id="ich-geschlecht-m" value="männlich" class="dimension-radio" checked>
+                                    <input type="radio" name="ich-geschlecht" id="ich-geschlecht-m" value="männlich" class="dimension-radio">
                                     <label for="ich-geschlecht-m" class="dimension-option">männlich</label>
 
                                     <input type="radio" name="ich-geschlecht" id="ich-geschlecht-w" value="weiblich" class="dimension-radio">
@@ -2705,7 +2727,7 @@
                             </div>
 
                             <!-- Dominanz -->
-                            <div class="dimension-group">
+                            <div class="dimension-group needs-selection" data-dimension="ich-dominanz">
                                 <div class="dimension-label">
                                     Dominanz-Präferenz
                                     <span class="dimension-info-icon" onclick="showDimensionTooltip('dominanz')">ℹ</span>
@@ -2720,19 +2742,19 @@
                                     <input type="radio" name="ich-dominanz" id="ich-dominanz-switch" value="switch" class="dimension-radio">
                                     <label for="ich-dominanz-switch" class="dimension-option">switch</label>
 
-                                    <input type="radio" name="ich-dominanz" id="ich-dominanz-ausgeglichen" value="ausgeglichen" class="dimension-radio" checked>
+                                    <input type="radio" name="ich-dominanz" id="ich-dominanz-ausgeglichen" value="ausgeglichen" class="dimension-radio">
                                     <label for="ich-dominanz-ausgeglichen" class="dimension-option">ausgeglichen</label>
                                 </div>
                             </div>
 
                             <!-- Sexuelle Orientierung -->
-                            <div class="dimension-group full-width">
+                            <div class="dimension-group full-width needs-selection" data-dimension="ich-orientierung">
                                 <div class="dimension-label">
                                     Sexuelle Orientierung
                                     <span class="dimension-info-icon" onclick="showDimensionTooltip('orientierung')">ℹ</span>
                                 </div>
                                 <div class="dimension-options">
-                                    <input type="radio" name="ich-orientierung" id="ich-orientierung-hetero" value="heterosexuell" class="dimension-radio" checked>
+                                    <input type="radio" name="ich-orientierung" id="ich-orientierung-hetero" value="heterosexuell" class="dimension-radio">
                                     <label for="ich-orientierung-hetero" class="dimension-option">heterosexuell</label>
 
                                     <input type="radio" name="ich-orientierung" id="ich-orientierung-homo" value="homosexuell" class="dimension-radio">
@@ -2743,13 +2765,13 @@
                                 </div>
 
                                 <!-- Status (indented) -->
-                                <div class="dimension-status-group">
+                                <div class="dimension-status-group needs-selection" data-dimension="ich-status">
                                     <div class="dimension-status-label">
                                         Status
                                         <span class="dimension-info-icon" onclick="showDimensionTooltip('status')">ℹ</span>
                                     </div>
                                     <div class="dimension-options">
-                                        <input type="radio" name="ich-status" id="ich-status-fakt" value="fakt" class="dimension-radio" checked>
+                                        <input type="radio" name="ich-status" id="ich-status-fakt" value="fakt" class="dimension-radio">
                                         <label for="ich-status-fakt" class="dimension-option">Fakt</label>
 
                                         <input type="radio" name="ich-status" id="ich-status-interessiert" value="interessiert" class="dimension-radio">
@@ -2847,13 +2869,13 @@
                         <div class="dimensions-section-title">Partner-Eigenschaften</div>
                         <div class="dimensions-grid">
                             <!-- Geschlecht -->
-                            <div class="dimension-group">
+                            <div class="dimension-group needs-selection" data-dimension="partner-geschlecht">
                                 <div class="dimension-label">
                                     Geschlecht
                                     <span class="dimension-info-icon" onclick="showDimensionTooltip('geschlecht')">ℹ</span>
                                 </div>
                                 <div class="dimension-options">
-                                    <input type="radio" name="partner-geschlecht" id="partner-geschlecht-m" value="männlich" class="dimension-radio" checked>
+                                    <input type="radio" name="partner-geschlecht" id="partner-geschlecht-m" value="männlich" class="dimension-radio">
                                     <label for="partner-geschlecht-m" class="dimension-option">männlich</label>
 
                                     <input type="radio" name="partner-geschlecht" id="partner-geschlecht-w" value="weiblich" class="dimension-radio">
@@ -2865,7 +2887,7 @@
                             </div>
 
                             <!-- Dominanz -->
-                            <div class="dimension-group">
+                            <div class="dimension-group needs-selection" data-dimension="partner-dominanz">
                                 <div class="dimension-label">
                                     Dominanz-Präferenz
                                     <span class="dimension-info-icon" onclick="showDimensionTooltip('dominanz')">ℹ</span>
@@ -2880,19 +2902,19 @@
                                     <input type="radio" name="partner-dominanz" id="partner-dominanz-switch" value="switch" class="dimension-radio">
                                     <label for="partner-dominanz-switch" class="dimension-option">switch</label>
 
-                                    <input type="radio" name="partner-dominanz" id="partner-dominanz-ausgeglichen" value="ausgeglichen" class="dimension-radio" checked>
+                                    <input type="radio" name="partner-dominanz" id="partner-dominanz-ausgeglichen" value="ausgeglichen" class="dimension-radio">
                                     <label for="partner-dominanz-ausgeglichen" class="dimension-option">ausgeglichen</label>
                                 </div>
                             </div>
 
                             <!-- Sexuelle Orientierung -->
-                            <div class="dimension-group full-width">
+                            <div class="dimension-group full-width needs-selection" data-dimension="partner-orientierung">
                                 <div class="dimension-label">
                                     Sexuelle Orientierung
                                     <span class="dimension-info-icon" onclick="showDimensionTooltip('orientierung')">ℹ</span>
                                 </div>
                                 <div class="dimension-options">
-                                    <input type="radio" name="partner-orientierung" id="partner-orientierung-hetero" value="heterosexuell" class="dimension-radio" checked>
+                                    <input type="radio" name="partner-orientierung" id="partner-orientierung-hetero" value="heterosexuell" class="dimension-radio">
                                     <label for="partner-orientierung-hetero" class="dimension-option">heterosexuell</label>
 
                                     <input type="radio" name="partner-orientierung" id="partner-orientierung-homo" value="homosexuell" class="dimension-radio">
@@ -2903,13 +2925,13 @@
                                 </div>
 
                                 <!-- Status (indented) -->
-                                <div class="dimension-status-group">
+                                <div class="dimension-status-group needs-selection" data-dimension="partner-status">
                                     <div class="dimension-status-label">
                                         Status
                                         <span class="dimension-info-icon" onclick="showDimensionTooltip('status')">ℹ</span>
                                     </div>
                                     <div class="dimension-options">
-                                        <input type="radio" name="partner-status" id="partner-status-fakt" value="fakt" class="dimension-radio" checked>
+                                        <input type="radio" name="partner-status" id="partner-status-fakt" value="fakt" class="dimension-radio">
                                         <label for="partner-status-fakt" class="dimension-option">Fakt</label>
 
                                         <input type="radio" name="partner-status" id="partner-status-interessiert" value="interessiert" class="dimension-radio">
@@ -2926,9 +2948,9 @@
                             <span>🔍</span> Analysiere:
                         </div>
                         <div class="analysis-overview-content" id="analysisOverviewContent">
-                            <span class="type-name">Single</span> <span class="dim-info">(m, ausgeglichen, hetero)</span>
+                            <span class="type-name">Single</span> <span class="dim-info">(?, ?, ?)</span>
                             <span> × </span>
-                            <span class="type-name">Duo</span> <span class="dim-info">(m, ausgeglichen, hetero)</span>
+                            <span class="type-name">Duo</span> <span class="dim-info">(?, ?, ?)</span>
                         </div>
                         <span class="analysis-overview-edit">Bearbeiten →</span>
                     </div>
@@ -3299,19 +3321,19 @@
         let currentArchetype = 'single';
         let selectedPartner = 'duo';
 
-        // Extended Person Dimensions
+        // Extended Person Dimensions (null = not yet selected)
         const personDimensions = {
             ich: {
-                geschlecht: 'männlich',
-                dominanz: 'ausgeglichen',
-                orientierung: 'heterosexuell',
-                orientierungStatus: 'fakt'
+                geschlecht: null,
+                dominanz: null,
+                orientierung: null,
+                orientierungStatus: null
             },
             partner: {
-                geschlecht: 'männlich',
-                dominanz: 'ausgeglichen',
-                orientierung: 'heterosexuell',
-                orientierungStatus: 'fakt'
+                geschlecht: null,
+                dominanz: null,
+                orientierung: null,
+                orientierungStatus: null
             }
         };
 
@@ -5410,6 +5432,14 @@
             // Update state
             personDimensions[person][dimension] = value;
 
+            // Remove needs-selection class from the parent group
+            if (element) {
+                const dimensionGroup = element.closest('.dimension-group, .dimension-status-group');
+                if (dimensionGroup) {
+                    dimensionGroup.classList.remove('needs-selection');
+                }
+            }
+
             // Visual feedback - highlight animation
             if (element) {
                 const label = element.nextElementSibling;
@@ -5429,6 +5459,7 @@
         }
 
         function getGeschlechtKurz(geschlecht) {
+            if (!geschlecht) return '?';
             const map = {
                 'männlich': 'm',
                 'weiblich': 'w',
@@ -5438,6 +5469,7 @@
         }
 
         function getDominanzKurz(dominanz) {
+            if (!dominanz) return '?';
             const map = {
                 'dominant': 'dom',
                 'submissiv': 'sub',
@@ -5448,6 +5480,7 @@
         }
 
         function getOrientierungKurz(orientierung, status) {
+            if (!orientierung) return '?';
             const map = {
                 'heterosexuell': 'hetero',
                 'homosexuell': 'homo',
@@ -5521,6 +5554,15 @@
             const g2 = person2.geschlecht;
             const o2 = person2.orientierung;
             const s2 = person2.orientierungStatus;
+
+            // Check for missing values - return uncertain if dimensions not yet selected
+            if (!g1 || !o1 || !s1 || !g2 || !o2 || !s2) {
+                return {
+                    result: 'unvollständig',
+                    reason: 'Dimensionen unvollständig',
+                    explanation: 'Bitte wähle alle Dimensionen (Geschlecht, Orientierung, Status) für beide Personen aus.'
+                };
+            }
 
             // Both have "Fakt" status
             if (s1 === 'fakt' && s2 === 'fakt') {
@@ -5642,8 +5684,10 @@
         }
 
         function formatPersonSummary(person) {
-            const statusSuffix = person.orientierungStatus === 'interessiert' ? ' (Interessiert)' : ' (Fakt)';
-            return `${person.geschlecht}, ${person.orientierung}${statusSuffix}`;
+            const geschlecht = person.geschlecht || '?';
+            const orientierung = person.orientierung || '?';
+            const statusSuffix = person.orientierungStatus === 'interessiert' ? ' (Interessiert)' : person.orientierungStatus === 'fakt' ? ' (Fakt)' : '';
+            return `${geschlecht}, ${orientierung}${statusSuffix}`;
         }
 
         function runCompatibilityChecks() {
@@ -5665,6 +5709,14 @@
 
             // 1. PATHOS CHECK
             const pathosCheck = checkPhysicalCompatibility(person1, person2);
+
+            if (pathosCheck.result === 'unvollständig') {
+                // Show Pathos Uncertain with incomplete message
+                document.getElementById('pathosUncertain').classList.add('active');
+                document.getElementById('pathosUncertainText').textContent =
+                    pathosCheck.explanation;
+                // Continue showing compatibility content since it's just incomplete
+            }
 
             if (pathosCheck.result === 'unmöglich') {
                 // Show Pathos Blocker, hide everything else
@@ -5840,6 +5892,9 @@
 
         // Calculate dominanz modifier
         function getDominanzModifier(dom1, dom2) {
+            // Return 0 if either is null/undefined
+            if (!dom1 || !dom2) return 0;
+
             // KOMPLEMENTÄR
             if ((dom1 === "dominant" && dom2 === "submissiv") ||
                 (dom1 === "submissiv" && dom2 === "dominant")) {
