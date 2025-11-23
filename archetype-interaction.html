@@ -809,6 +809,38 @@
             border-color: var(--primary);
         }
 
+        .category-nav-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            padding: 8px;
+            background: var(--bg-dark);
+            border-radius: 10px;
+        }
+
+        .category-nav-btn {
+            padding: 8px 16px;
+            background: transparent;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: var(--font-sm);
+        }
+
+        .category-nav-btn:hover {
+            background: var(--primary);
+            border-color: var(--primary);
+            color: white;
+        }
+
+        .category-nav-indicator {
+            color: var(--text-muted);
+            font-size: var(--font-sm);
+        }
+
         .modal-category {
             margin-bottom: 20px;
             padding-bottom: 20px;
@@ -1795,14 +1827,14 @@
                             <label>Kategorie:</label>
                             <div class="feedback-category-btns" id="categoryFilterBtns">
                                 <button class="cat-filter-btn active" data-cat="all">Alle</button>
-                                <button class="cat-filter-btn" data-cat="A">A</button>
-                                <button class="cat-filter-btn" data-cat="B">B</button>
-                                <button class="cat-filter-btn" data-cat="C">C</button>
-                                <button class="cat-filter-btn" data-cat="D">D</button>
-                                <button class="cat-filter-btn" data-cat="E">E</button>
-                                <button class="cat-filter-btn" data-cat="F">F</button>
-                                <button class="cat-filter-btn" data-cat="TM">TM</button>
-                                <button class="cat-filter-btn" data-cat="CH">CH</button>
+                                <button class="cat-filter-btn" data-cat="A" title="Beziehungsphilosophie">A Philosophie</button>
+                                <button class="cat-filter-btn" data-cat="B" title="Werte-Alignment">B Werte</button>
+                                <button class="cat-filter-btn" data-cat="C" title="Nähe-Distanz">C Nähe</button>
+                                <button class="cat-filter-btn" data-cat="D" title="Autonomie">D Autonomie</button>
+                                <button class="cat-filter-btn" data-cat="E" title="Kommunikation">E Kommunik.</button>
+                                <button class="cat-filter-btn" data-cat="F" title="Soziale Kompatibilität">F Sozial</button>
+                                <button class="cat-filter-btn" data-cat="TM" title="Top Match">Top Match</button>
+                                <button class="cat-filter-btn" data-cat="CH" title="Challenge">Challenge</button>
                             </div>
                         </div>
                         <div class="feedback-filter-row">
@@ -2298,7 +2330,10 @@
             document.body.style.overflow = 'hidden';
         }
 
+        let currentModalCategory = 'A'; // Track current category for navigation
+
         function openSingleCategoryModal(category) {
+            currentModalCategory = category;
             // Don't reset modalContextPartner here - it may be set from match modal
             const catData = categoryDescriptions[category] || {};
             const name = catData.name || categoryNames[category] || category;
@@ -2306,6 +2341,20 @@
             document.getElementById('modalBody').innerHTML = getCategoryModalContent(category);
             document.getElementById('categoryModal').classList.add('active');
             document.body.style.overflow = 'hidden';
+        }
+
+        function navigateCategoryPrev() {
+            const categories = ['A', 'B', 'C', 'D', 'E', 'F'];
+            const currentIndex = categories.indexOf(currentModalCategory);
+            const prevIndex = currentIndex > 0 ? currentIndex - 1 : categories.length - 1;
+            openSingleCategoryModal(categories[prevIndex]);
+        }
+
+        function navigateCategoryNext() {
+            const categories = ['A', 'B', 'C', 'D', 'E', 'F'];
+            const currentIndex = categories.indexOf(currentModalCategory);
+            const nextIndex = currentIndex < categories.length - 1 ? currentIndex + 1 : 0;
+            openSingleCategoryModal(categories[nextIndex]);
         }
 
         function getCategoryModalContent(cat) {
@@ -2328,7 +2377,25 @@
             const comboText = `${myArch?.name || '?'} + ${partnerArch?.name || '?'}`;
             const contextText = `${comboText} | ${name}`;
 
+            // Get category position for navigation
+            const categories = ['A', 'B', 'C', 'D', 'E', 'F'];
+            const catIndex = categories.indexOf(cat);
+            const prevCat = categories[catIndex > 0 ? catIndex - 1 : categories.length - 1];
+            const nextCat = categories[catIndex < categories.length - 1 ? catIndex + 1 : 0];
+            const prevName = categoryNames[prevCat] || prevCat;
+            const nextName = categoryNames[nextCat] || nextCat;
+
             return `
+                <div class="category-nav-row">
+                    <button class="category-nav-btn" onclick="navigateCategoryPrev()">
+                        ‹ ${prevCat}
+                    </button>
+                    <span class="category-nav-indicator">${catIndex + 1} / 6</span>
+                    <button class="category-nav-btn" onclick="navigateCategoryNext()">
+                        ${nextCat} ›
+                    </button>
+                </div>
+
                 <div class="modal-feedback-btn" onclick="openFeedbackModalWithContext('${contextText}')">
                     💬 Feedback zu ${comboText} | ${name}
                 </div>
