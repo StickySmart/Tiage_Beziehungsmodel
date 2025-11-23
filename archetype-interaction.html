@@ -1109,6 +1109,57 @@
             font-weight: 600;
         }
 
+        /* Type Switcher in Tooltip */
+        .tag-tooltip-type-switcher {
+            display: flex;
+            gap: 6px;
+            padding: 8px 12px;
+            background: rgba(255,255,255,0.03);
+            border-bottom: 1px solid var(--border);
+            overflow-x: auto;
+            flex-wrap: wrap;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .type-switch-btn {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 10px;
+            border: 1px solid var(--border);
+            background: transparent;
+            color: var(--text-secondary);
+            border-radius: 16px;
+            cursor: pointer;
+            font-size: var(--font-xs);
+            transition: all 0.2s ease;
+            pointer-events: auto;
+        }
+
+        .type-switch-btn:hover {
+            background: rgba(255,255,255,0.1);
+            border-color: var(--text-secondary);
+        }
+
+        .type-switch-btn.active {
+            border-color: currentColor;
+            background: rgba(255,255,255,0.08);
+        }
+
+        .type-switch-btn .dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+        }
+
+        .type-switch-label {
+            font-size: var(--font-xs);
+            color: var(--text-muted);
+            margin-right: auto;
+            display: flex;
+            align-items: center;
+        }
+
         /* Responsive: Position tooltip above or below based on space */
         @media (max-width: 480px) {
             .tag-tooltip {
@@ -3421,11 +3472,46 @@
             const color1 = type1?.color || 'var(--primary)';
             const color2 = type2?.color || 'var(--primary)';
 
+            // Build type switcher options
+            const allTypes = archetypeOrder.map(id => {
+                const arch = data.archetypes[id];
+                return `
+                    <button class="type-switch-btn ${id === type1Id ? 'active' : ''}"
+                            style="color: ${arch?.color || 'var(--text-secondary)'}"
+                            onclick="event.stopPropagation(); switchTooltipType('${id}', 'ich', '${category}')">
+                        <span class="dot" style="background: ${arch?.color}"></span>
+                        ${arch?.name || id}
+                    </button>
+                `;
+            }).join('');
+
+            const partnerTypes = archetypeOrder.map(id => {
+                const arch = data.archetypes[id];
+                return `
+                    <button class="type-switch-btn ${id === type2Id ? 'active' : ''}"
+                            style="color: ${arch?.color || 'var(--text-secondary)'}"
+                            onclick="event.stopPropagation(); switchTooltipType('${id}', 'partner', '${category}')">
+                        <span class="dot" style="background: ${arch?.color}"></span>
+                        ${arch?.name || id}
+                    </button>
+                `;
+            }).join('');
+
             return `
                 <span class="tag-tooltip-container" onmouseenter="positionTagTooltip(this)" onmouseleave="hideTagTooltip(this)">
                     <span class="modal-subdim-tag">${tagName}</span>
                     <div class="tag-tooltip">
                         <div class="tag-tooltip-header">${tagName}</div>
+
+                        <div class="tag-tooltip-type-switcher">
+                            <span class="type-switch-label">Ich:</span>
+                            ${allTypes}
+                        </div>
+                        <div class="tag-tooltip-type-switcher">
+                            <span class="type-switch-label">Partner:</span>
+                            ${partnerTypes}
+                        </div>
+
                         <div class="tag-tooltip-body">
                             <div class="tag-tooltip-perspective">
                                 <span class="tag-tooltip-type-name" style="color: ${color1}">${tooltip.type1Name}:</span>
@@ -3440,6 +3526,31 @@
                     </div>
                 </span>
             `;
+        }
+
+        // Switch type from tooltip and refresh modal
+        function switchTooltipType(typeId, role, category) {
+            if (role === 'ich') {
+                currentArchetype = typeId;
+                // Update main UI
+                document.getElementById('archetypeSelect').value = typeId;
+                updateTheme();
+                updateMyType();
+                updatePartnerSelector();
+                updateTopAndChallenge();
+                updatePartnerView();
+            } else {
+                selectedPartner = typeId;
+                modalContextPartner = typeId;
+                // Update partner selection buttons
+                document.querySelectorAll('.partner-btn').forEach(btn => {
+                    btn.classList.toggle('active', btn.dataset.id === typeId);
+                });
+                updatePartnerView();
+            }
+
+            // Refresh the category modal with new types
+            openSingleCategoryModal(category);
         }
 
         // Position tag tooltip to ensure visibility
