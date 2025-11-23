@@ -1026,12 +1026,10 @@
         .tag-tooltip {
             visibility: hidden;
             opacity: 0;
-            position: absolute;
+            position: fixed;
             z-index: 1000;
-            width: 320px;
-            bottom: calc(100% + 10px);
-            left: 50%;
-            transform: translateX(-50%);
+            width: min(320px, 90vw);
+            max-width: 90vw;
             background: var(--bg-dark);
             border: 1px solid var(--border);
             border-radius: 12px;
@@ -1047,25 +1045,10 @@
             transition-delay: 0.3s;
         }
 
-        /* Tooltip Arrow */
-        .tag-tooltip::after {
-            content: '';
-            position: absolute;
-            top: 100%;
-            left: 50%;
-            transform: translateX(-50%);
-            border: 8px solid transparent;
-            border-top-color: var(--bg-dark);
-        }
-
+        /* Tooltip Arrow - hidden for fixed positioning */
+        .tag-tooltip::after,
         .tag-tooltip::before {
-            content: '';
-            position: absolute;
-            top: 100%;
-            left: 50%;
-            transform: translateX(-50%);
-            border: 9px solid transparent;
-            border-top-color: var(--border);
+            display: none;
         }
 
         /* Tooltip Header */
@@ -3439,7 +3422,7 @@
             const color2 = type2?.color || 'var(--primary)';
 
             return `
-                <span class="tag-tooltip-container">
+                <span class="tag-tooltip-container" onmouseenter="positionTagTooltip(this)" onmouseleave="hideTagTooltip(this)">
                     <span class="modal-subdim-tag">${tagName}</span>
                     <div class="tag-tooltip">
                         <div class="tag-tooltip-header">${tagName}</div>
@@ -3457,6 +3440,45 @@
                     </div>
                 </span>
             `;
+        }
+
+        // Position tag tooltip to ensure visibility
+        function positionTagTooltip(container) {
+            const tooltip = container.querySelector('.tag-tooltip');
+            const tag = container.querySelector('.modal-subdim-tag');
+            if (!tooltip || !tag) return;
+
+            const tagRect = tag.getBoundingClientRect();
+            const tooltipWidth = Math.min(320, window.innerWidth * 0.9);
+            const padding = 10;
+
+            // Calculate horizontal position - center on tag, but keep within viewport
+            let left = tagRect.left + (tagRect.width / 2) - (tooltipWidth / 2);
+
+            // Ensure tooltip doesn't go off-screen
+            if (left < padding) {
+                left = padding;
+            } else if (left + tooltipWidth > window.innerWidth - padding) {
+                left = window.innerWidth - tooltipWidth - padding;
+            }
+
+            // Position above the tag
+            const tooltipHeight = tooltip.offsetHeight || 200;
+            let top = tagRect.top - tooltipHeight - 8;
+
+            // If not enough space above, show below
+            if (top < padding) {
+                top = tagRect.bottom + 8;
+            }
+
+            tooltip.style.left = left + 'px';
+            tooltip.style.top = top + 'px';
+            tooltip.style.width = tooltipWidth + 'px';
+        }
+
+        // Hide tag tooltip
+        function hideTagTooltip(container) {
+            // CSS handles the hide with transition
         }
 
         function closeCategoryModal(event) {
