@@ -841,6 +841,116 @@
             font-size: var(--font-sm);
         }
 
+        /* Definition Modal */
+        .definition-modal {
+            max-width: 500px;
+        }
+
+        .definition-section {
+            margin-bottom: 20px;
+        }
+
+        .definition-section-title {
+            font-size: var(--font-sm);
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 10px;
+            padding-bottom: 5px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .definition-long {
+            font-size: var(--font-base);
+            color: var(--text-secondary);
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .definition-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .definition-list li {
+            padding: 8px 0 8px 20px;
+            position: relative;
+            font-size: var(--font-sm);
+            color: var(--text-secondary);
+        }
+
+        .definition-list.principles li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: var(--success);
+        }
+
+        .definition-list.not-same li::before {
+            content: '✗';
+            position: absolute;
+            left: 0;
+            color: var(--danger);
+        }
+
+        .definition-list.variants li::before {
+            content: '•';
+            position: absolute;
+            left: 0;
+            color: var(--primary);
+        }
+
+        .type-info-icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 20px;
+            height: 20px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 50%;
+            font-size: 12px;
+            cursor: pointer;
+            margin-left: 8px;
+            transition: all 0.2s;
+        }
+
+        .type-info-icon:hover {
+            background: var(--primary);
+            color: white;
+        }
+
+        .type-tooltip {
+            position: relative;
+            display: inline-block;
+        }
+
+        .type-tooltip .tooltip-text {
+            visibility: hidden;
+            width: 280px;
+            background-color: var(--bg-dark);
+            color: var(--text-secondary);
+            text-align: left;
+            padding: 12px;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            position: absolute;
+            z-index: 100;
+            bottom: 125%;
+            left: 50%;
+            transform: translateX(-50%);
+            opacity: 0;
+            transition: opacity 0.3s;
+            font-size: var(--font-sm);
+            line-height: 1.4;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+        }
+
+        .type-tooltip:hover .tooltip-text {
+            visibility: visible;
+            opacity: 1;
+        }
+
         .modal-category {
             margin-bottom: 20px;
             padding-bottom: 20px;
@@ -1642,7 +1752,11 @@
 
                     <div class="my-type-header">
                         <div class="my-type-icon" id="myTypeIcon">★</div>
-                        <div class="my-type-name" id="myTypeName">Single</div>
+                        <div class="type-tooltip">
+                            <div class="my-type-name" id="myTypeName">Single</div>
+                            <span class="tooltip-text" id="myTypeTooltip"></span>
+                        </div>
+                        <span class="type-info-icon" id="myTypeInfoIcon" onclick="openDefinitionModal(currentArchetype)" title="Was bedeutet dieser Typ?">ℹ</span>
                     </div>
                     <p class="my-type-desc" id="myTypeDesc">...</p>
 
@@ -1722,7 +1836,11 @@
                     <div class="radar-section">
                         <div class="radar-header">
                             <div>
-                                <div class="radar-title"><span id="myTypeNameDisplay">...</span> mit <span id="partnerNameDisplay">...</span></div>
+                                <div class="radar-title">
+                                    <span class="type-tooltip"><span id="myTypeNameDisplay">...</span><span class="tooltip-text" id="myTypeTooltipPage3"></span></span>
+                                    mit
+                                    <span class="type-tooltip"><span id="partnerNameDisplay">...</span><span class="tooltip-text" id="partnerTooltipPage3"></span></span>
+                                </div>
                             </div>
                             <div style="text-align: right;">
                                 <div class="radar-score" id="overallScore" style="color: var(--primary);">0%</div>
@@ -1928,6 +2046,17 @@
         </div>
     </div>
 
+    <!-- Definition Modal -->
+    <div class="modal-overlay" id="definitionModal" onclick="closeDefinitionModal(event)">
+        <div class="modal definition-modal" onclick="event.stopPropagation()">
+            <div class="modal-header">
+                <span class="modal-title" id="definitionModalTitle">Typ-Definition</span>
+                <button class="modal-close" onclick="closeDefinitionModal()">&times;</button>
+            </div>
+            <div class="modal-body" id="definitionModalBody"></div>
+        </div>
+    </div>
+
     <!-- Navigation Dots with Arrows -->
     <div class="nav-dots">
         <button class="nav-arrow" onclick="navigatePrev()">‹</button>
@@ -1961,6 +2090,148 @@
             D: 'Autonomie',
             E: 'Kommunikation',
             F: 'Soziale Kompatibilität'
+        };
+
+        // Archetype definitions
+        const archetypeDefinitions = {
+            single: {
+                name: "Single",
+                shortDef: "Bewusste Entscheidung für ein autonomes Leben ohne Primärbeziehung als dauerhafte Lebensform.",
+                longDef: "Single-orientierte Menschen haben sich aktiv für ein Leben ohne dauerhafte romantische Partnerschaft entschieden. Dies ist keine Übergangsphase ('zwischen Beziehungen'), sondern eine bewusste Lebensform, die Selbstgenügsamkeit und persönliche Autonomie als zentrale Werte sieht. Soziale Kontakte, Freundschaften und gelegentliche romantische/sexuelle Begegnungen sind möglich, aber keine feste Partnerschaft wird angestrebt.",
+                keyPrinciples: [
+                    "Selbstgenügsamkeit als Wert, nicht als Mangel",
+                    "Persönliche Autonomie über Verbindlichkeit",
+                    "Beziehungen als Option, nicht als Notwendigkeit",
+                    "Erfüllung durch Selbst, Freunde, Projekte"
+                ],
+                notTheSameAs: [
+                    "'Zwischen Beziehungen' sein",
+                    "'Noch nicht den Richtigen gefunden'",
+                    "Beziehungsunfähig oder bindungsängstlich",
+                    "Einsam oder unglücklich"
+                ],
+                variants: [
+                    "Aromantisch-Single: Keine romantischen Gefühle, kein Bedürfnis danach",
+                    "Bewusst-autonom: Positive Entscheidung für Freiheit",
+                    "Beziehungs-kritisch: Bevorzugt Unabhängigkeit"
+                ]
+            },
+            duo: {
+                name: "Duo",
+                shortDef: "Traditionelle monogame Zweierbeziehung mit Exklusivität und gemeinsamer Lebensgestaltung als Kernprinzip.",
+                longDef: "Duo-orientierte Menschen leben in oder suchen eine klassische Zweierbeziehung mit romantischer und sexueller Exklusivität. Die Partnerschaft steht im Zentrum der Lebensgestaltung und wird als primäre emotionale und soziale Einheit verstanden. Gemeinsame Ziele, Alltag und Zukunftsplanung werden als Paar gestaltet.",
+                keyPrinciples: [
+                    "Exklusivität als Ausdruck von Verbindlichkeit",
+                    "'Wir' als zentrale Einheit über 'Ich'",
+                    "Tiefe durch Fokussierung auf eine Person",
+                    "Gemeinsame Lebensgestaltung und Zukunftsplanung",
+                    "Treue als emotionale und sexuelle Exklusivität"
+                ],
+                notTheSameAs: [
+                    "Besitzdenken oder Kontrolle",
+                    "Verlust der eigenen Identität",
+                    "'Alte' oder 'überholte' Beziehungsform",
+                    "Langweilig oder unerfüllt"
+                ],
+                variants: [
+                    "Traditionell-Duo: Klassisches Ehe-Modell",
+                    "Modern-Duo: Ohne Trauschein, flexiblere Rollen",
+                    "Intensiv-Duo: Sehr enge emotionale Verschmelzung"
+                ]
+            },
+            duo_flex: {
+                name: "Duo-Flex",
+                shortDef: "Primäre Zweierbeziehung mit vereinbarten Öffnungen für zusätzliche Kontakte unter klaren Regeln.",
+                longDef: "Duo-Flex-orientierte Menschen leben in einer Hauptbeziehung mit einem Primärpartner, öffnen diese aber bewusst und einvernehmlich für weitere Kontakte. Die Primärbeziehung bleibt zentral und privilegiert. Alle Öffnungen erfolgen transparent und nach gemeinsam vereinbarten Regeln.",
+                keyPrinciples: [
+                    "Primärbeziehung als Anker und Priorität",
+                    "Sexuelle/romantische Vielfalt ohne Hierarchie-Aufgabe",
+                    "Ehrlichkeit und Transparenz über alle Kontakte",
+                    "Regeln schützen die Hauptbeziehung",
+                    "Freiheit innerhalb vereinbarter Grenzen"
+                ],
+                notTheSameAs: [
+                    "Untreue oder Betrug (alles ist abgesprochen!)",
+                    "'Beziehung retten' durch Öffnung",
+                    "Fehlende Verbindlichkeit",
+                    "Übergangsphase zu Polyamorie"
+                ],
+                variants: [
+                    "Swinging/Lifestyle: Gemeinsame sexuelle Erlebnisse",
+                    "Open Relationship: Individuelle sexuelle Freiheit",
+                    "Hierarchisches Poly: Primärpartner + Nebenbeziehungen"
+                ]
+            },
+            solopoly: {
+                name: "Solopoly",
+                shortDef: "Mehrere gleichwertige Beziehungen bei bewusster Bewahrung der eigenen Autonomie - keine Primärpartner.",
+                longDef: "Solopoly-orientierte Menschen führen mehrere romantische und/oder sexuelle Beziehungen parallel, ohne eine davon als 'Hauptbeziehung' zu priorisieren. Die persönliche Autonomie steht im Zentrum: Kein Zusammenziehen, keine gemeinsame Haushaltsführung. 'Ich bin mein eigener Primärpartner'.",
+                keyPrinciples: [
+                    "Autonomie als höchster Wert - auch in Beziehungen",
+                    "Mehrere gleichwertige Beziehungen ohne Hierarchie",
+                    "Keine Verschmelzung oder gemeinsame Haushalte",
+                    "'Ich bin mein eigener Primärpartner'",
+                    "Liebe ohne Aufgabe der Unabhängigkeit"
+                ],
+                notTheSameAs: [
+                    "Bindungsangst oder Commitment-Probleme",
+                    "'Light-Version' von Polyamorie",
+                    "Egoistisch oder beziehungsunfähig",
+                    "Zwischenstufe zu 'richtiger' Partnerschaft"
+                ],
+                variants: [
+                    "Stark-autonom: Sehr klare Grenzen",
+                    "Beziehungs-balanciert: Tiefe Beziehungen, getrennte Wohnungen",
+                    "Netzwerk-orientiert: Viele gleichwertige Connections"
+                ]
+            },
+            poly_hedo: {
+                name: "Poly Hedo",
+                shortDef: "Freiheitsorientierte Poly-Orientierung mit Fokus auf Genuss, Spontaneität und lebensbereichernde Erfahrungen.",
+                longDef: "Poly-Hedo-orientierte Menschen leben multiple Beziehungen mit Betonung auf Lebensfreude, Spontaneität und genussvolle Erfahrungen. Weniger Regelwerk als bei anderen Poly-Formen, mehr Flow und Intuition. Die Freude am Moment und an vielfältigen Verbindungen steht im Vordergrund.",
+                keyPrinciples: [
+                    "Lebensfreude und Genuss als zentrale Werte",
+                    "Spontaneität über starre Regeln",
+                    "Vielfalt der Erfahrungen bereichert das Leben",
+                    "Freiheit in Verbindungen",
+                    "Intensität des Moments"
+                ],
+                notTheSameAs: [
+                    "Verantwortungslos oder rücksichtslos",
+                    "'Nur Sex ohne Gefühle'",
+                    "Oberflächlich oder bindungsunfähig",
+                    "Chaotisch oder planlos"
+                ],
+                variants: [
+                    "Erlebnis-orientiert: Fokus auf gemeinsame Abenteuer",
+                    "Genuss-zentriert: Sinnlichkeit und Lebensfreude",
+                    "Freigeist: Maximale Spontaneität und Offenheit"
+                ]
+            },
+            polyamor: {
+                name: "Polyamor",
+                shortDef: "Mehrere gleichzeitige, ethisch geführte Liebesbeziehungen mit Transparenz und emotionalem Commitment.",
+                longDef: "Polyamor-orientierte Menschen führen mehrere romantische Beziehungen parallel, die alle auf Ehrlichkeit, Einvernehmlichkeit und Transparenz basieren. Tiefe Verschmelzung, Zusammenleben und gemeinsame Zukunftsplanung mit mehreren Partnern sind möglich und erwünscht. Alle Beteiligten wissen voneinander.",
+                keyPrinciples: [
+                    "Liebe ist nicht begrenzt oder exklusiv",
+                    "Ehrlichkeit und Transparenz gegenüber allen",
+                    "Konsens und Einvernehmlichkeit als Basis",
+                    "Emotionale Tiefe zu mehreren Menschen",
+                    "Kommunikation als zentrale Kompetenz"
+                ],
+                notTheSameAs: [
+                    "Untreue oder Betrug (alle wissen Bescheid!)",
+                    "Bindungsunfähigkeit",
+                    "Nur Sex ohne Gefühle",
+                    "Chaotisch oder unkontrolliert"
+                ],
+                variants: [
+                    "Hierarchisches Poly: Primär-, Sekundärpartner",
+                    "Nicht-hierarchisches Poly: Alle gleichwertig",
+                    "Kitchen-Table-Poly: Alle Partner verstehen sich",
+                    "Parallel-Poly: Partner kennen sich, wenig Kontakt"
+                ]
+            }
         };
 
         // Category descriptions loaded from data
@@ -2032,6 +2303,7 @@
             document.getElementById('myTypeName').textContent = arch.name;
             document.getElementById('myTypeName').style.color = arch.color;
             document.getElementById('myTypeDesc').textContent = arch.shortDescription || '';
+            document.getElementById('myTypeTooltip').textContent = getShortDef(currentArchetype);
 
             const proList = document.getElementById('myTypePro');
             proList.innerHTML = (arch.pro || []).slice(0, 4).map(p => `<li>${p}</li>`).join('');
@@ -2123,6 +2395,8 @@
 
             document.getElementById('myTypeNameDisplay').textContent = myArch?.name || '...';
             document.getElementById('partnerNameDisplay').textContent = partnerArch?.name || '...';
+            document.getElementById('myTypeTooltipPage3').textContent = getShortDef(currentArchetype);
+            document.getElementById('partnerTooltipPage3').textContent = getShortDef(selectedPartner);
 
             const score = interaction.overall || 0;
             const scoreEl = document.getElementById('overallScore');
@@ -2427,6 +2701,59 @@
             modalContextPartner = null;
         }
 
+        // Definition Modal Functions
+        function openDefinitionModal(archetypeId) {
+            const def = archetypeDefinitions[archetypeId];
+            if (!def) return;
+
+            const arch = data.archetypes[archetypeId];
+            const color = arch?.color || 'var(--primary)';
+            const icon = icons[archetypeId] || '?';
+
+            document.getElementById('definitionModalTitle').innerHTML = `
+                <span style="color: ${color}">${icon}</span> ${def.name}
+            `;
+
+            document.getElementById('definitionModalBody').innerHTML = `
+                <div class="definition-long">${def.longDef}</div>
+
+                <div class="definition-section">
+                    <div class="definition-section-title">Kernprinzipien</div>
+                    <ul class="definition-list principles">
+                        ${def.keyPrinciples.map(p => `<li>${p}</li>`).join('')}
+                    </ul>
+                </div>
+
+                <div class="definition-section">
+                    <div class="definition-section-title">Das ist NICHT dasselbe wie</div>
+                    <ul class="definition-list not-same">
+                        ${def.notTheSameAs.map(n => `<li>${n}</li>`).join('')}
+                    </ul>
+                </div>
+
+                <div class="definition-section">
+                    <div class="definition-section-title">Varianten</div>
+                    <ul class="definition-list variants">
+                        ${def.variants.map(v => `<li>${v}</li>`).join('')}
+                    </ul>
+                </div>
+            `;
+
+            document.getElementById('definitionModal').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeDefinitionModal(event) {
+            if (event && event.target !== event.currentTarget) return;
+            document.getElementById('definitionModal').classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        // Get short definition for tooltip
+        function getShortDef(archetypeId) {
+            return archetypeDefinitions[archetypeId]?.shortDef || '';
+        }
+
         // Store current match data for modal access
         let currentTopMatch = { id: null, score: 0 };
         let currentChallenge = { id: null, score: 0 };
@@ -2500,6 +2827,8 @@
             ` : '';
 
             const comboText = `${myArch.name} + ${partnerArch.name}`;
+            const myDef = archetypeDefinitions[myArch.id]?.shortDef || '';
+            const partnerDef = archetypeDefinitions[partnerArch.id]?.shortDef || '';
 
             return `
                 <div class="modal-feedback-btn" onclick="openFeedbackModalWithContext('${comboText}')">
@@ -2509,12 +2838,30 @@
                 <div class="match-modal-header">
                     <div class="match-modal-icon" style="background: ${partnerArch.color}">${icons[partnerArch.id]}</div>
                     <div class="match-modal-info">
-                        <h3 style="color: ${partnerArch.color}">${partnerArch.name}</h3>
+                        <h3 style="color: ${partnerArch.color}">
+                            ${partnerArch.name}
+                            <span class="type-info-icon" onclick="openDefinitionModal('${partnerArch.id}')" title="Definition anzeigen">ℹ</span>
+                        </h3>
                         <p>${partnerArch.shortDescription || ''}</p>
                     </div>
                 </div>
 
                 ${identicalTypeBanner}
+
+                <div class="type-definitions-compact" style="background: var(--bg-dark); border-radius: 10px; padding: 12px; margin-bottom: 15px; font-size: var(--font-sm);">
+                    <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                        <div style="flex: 1; min-width: 200px;">
+                            <span style="color: ${myArch.color}; font-weight: 600;">${icons[myArch.id]} ${myArch.name}</span>
+                            <span class="type-info-icon" onclick="openDefinitionModal('${myArch.id}')" style="margin-left: 4px;">ℹ</span>
+                            <div style="color: var(--text-muted); margin-top: 4px; line-height: 1.4;">${myDef}</div>
+                        </div>
+                        <div style="flex: 1; min-width: 200px;">
+                            <span style="color: ${partnerArch.color}; font-weight: 600;">${icons[partnerArch.id]} ${partnerArch.name}</span>
+                            <span class="type-info-icon" onclick="openDefinitionModal('${partnerArch.id}')" style="margin-left: 4px;">ℹ</span>
+                            <div style="color: var(--text-muted); margin-top: 4px; line-height: 1.4;">${partnerDef}</div>
+                        </div>
+                    </div>
+                </div>
 
                 <div class="match-modal-score">
                     <span class="match-modal-score-label">Kompatibilität ${isIdenticalType ? '(gleicher Typ)' : 'mit ' + myArch.name}</span>
