@@ -1007,13 +1007,18 @@
             background: rgba(255,255,255,0.08);
             border-radius: 12px;
             color: var(--text-secondary);
-            cursor: help;
+            cursor: pointer;
             position: relative;
-            transition: background 0.2s ease;
+            transition: all 0.2s ease;
         }
 
         .modal-subdim-tag:hover {
             background: rgba(255,255,255,0.15);
+        }
+
+        .modal-subdim-tag.active {
+            background: var(--primary);
+            color: white;
         }
 
         /* Tag Tooltip Container */
@@ -1022,33 +1027,42 @@
             display: inline-block;
         }
 
-        /* Tag Tooltip */
+        /* Tag Tooltip - Click to open, stays open */
         .tag-tooltip {
-            visibility: hidden;
-            opacity: 0;
+            display: none;
             position: fixed;
-            z-index: 1000;
-            width: min(320px, 90vw);
-            max-width: 90vw;
-            background: var(--bg-dark);
-            border: 1px solid var(--border);
+            z-index: 1001;
+            width: min(360px, 92vw);
+            max-width: 92vw;
+            max-height: 85vh;
+            overflow-y: auto;
+            background: var(--bg-card);
+            border: 2px solid var(--primary);
             border-radius: 12px;
             padding: 0;
-            box-shadow: 0 8px 32px rgba(0,0,0,0.4);
-            transition: opacity 0.2s ease, visibility 0.2s ease;
-            pointer-events: none;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.6);
         }
 
-        .tag-tooltip-container:hover .tag-tooltip {
-            visibility: visible;
-            opacity: 1;
-            transition-delay: 0.3s;
+        .tag-tooltip.active {
+            display: block;
         }
 
-        /* Tooltip Arrow - hidden for fixed positioning */
-        .tag-tooltip::after,
-        .tag-tooltip::before {
-            display: none;
+        .tag-tooltip-close {
+            position: absolute;
+            top: 6px;
+            right: 8px;
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            font-size: 22px;
+            cursor: pointer;
+            padding: 4px 8px;
+            line-height: 1;
+            z-index: 10;
+        }
+
+        .tag-tooltip-close:hover {
+            color: var(--text-primary);
         }
 
         /* Tooltip Header */
@@ -1883,9 +1897,129 @@
             font-size: 10px;
             color: var(--text-muted);
         }
+
+        /* Age Verification Modal */
+        .age-verification-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.95);
+            z-index: 10000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .age-verification-overlay.hidden {
+            display: none;
+        }
+
+        .age-verification-modal {
+            background: var(--bg-card);
+            border-radius: 16px;
+            padding: 30px;
+            max-width: 400px;
+            width: 100%;
+            text-align: center;
+            border: 2px solid var(--primary);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+        }
+
+        .age-verification-icon {
+            font-size: 48px;
+            margin-bottom: 15px;
+        }
+
+        .age-verification-modal h2 {
+            color: var(--text-primary);
+            margin-bottom: 15px;
+            font-size: var(--font-lg);
+        }
+
+        .age-verification-modal p {
+            color: var(--text-secondary);
+            margin-bottom: 20px;
+            line-height: 1.5;
+            font-size: var(--font-sm);
+        }
+
+        .age-verification-question {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            color: var(--text-primary);
+        }
+
+        .age-verification-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .age-btn {
+            padding: 14px 20px;
+            border-radius: 10px;
+            font-size: var(--font-base);
+            font-weight: 600;
+            cursor: pointer;
+            border: none;
+            transition: all 0.2s ease;
+        }
+
+        .age-btn-yes {
+            background: var(--success);
+            color: white;
+        }
+
+        .age-btn-yes:hover {
+            background: #27ae60;
+            transform: scale(1.02);
+        }
+
+        .age-btn-no {
+            background: transparent;
+            color: var(--text-secondary);
+            border: 1px solid var(--border);
+        }
+
+        .age-btn-no:hover {
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .age-verification-note {
+            font-size: var(--font-xs) !important;
+            color: var(--text-muted) !important;
+            margin-top: 15px !important;
+            margin-bottom: 0 !important;
+        }
     </style>
 </head>
 <body>
+    <!-- Age Verification Modal -->
+    <div class="age-verification-overlay" id="ageVerificationModal">
+        <div class="age-verification-modal">
+            <div class="age-verification-icon">🔞</div>
+            <h2>Altersverifikation</h2>
+            <p>Diese Seite enthält Inhalte über Beziehungsmodelle und ist nur für Personen ab 18 Jahren bestimmt.</p>
+            <div class="age-verification-question">
+                <strong>Bist du mindestens 18 Jahre alt?</strong>
+            </div>
+            <div class="age-verification-buttons">
+                <button class="age-btn age-btn-yes" onclick="confirmAge(true)">
+                    Ja, ich bin 18+
+                </button>
+                <button class="age-btn age-btn-no" onclick="confirmAge(false)">
+                    Nein, ich bin unter 18
+                </button>
+            </div>
+            <p class="age-verification-note">Mit dem Klick auf "Ja" bestätigst du, dass du volljährig bist.</p>
+        </div>
+    </div>
+
     <header>
         <h1>ARCHETYPEN-KOMPATIBILITÄT</h1>
     </header>
@@ -3498,9 +3632,10 @@
             }).join('');
 
             return `
-                <span class="tag-tooltip-container" onmouseenter="positionTagTooltip(this)" onmouseleave="hideTagTooltip(this)">
-                    <span class="modal-subdim-tag">${tagName}</span>
+                <span class="tag-tooltip-container">
+                    <span class="modal-subdim-tag" onclick="openTagTooltip(this.parentElement, '${category}')">${tagName}</span>
                     <div class="tag-tooltip">
+                        <button class="tag-tooltip-close" onclick="closeTagTooltip()">&times;</button>
                         <div class="tag-tooltip-header">${tagName}</div>
 
                         <div class="tag-tooltip-type-switcher">
@@ -3553,43 +3688,54 @@
             openSingleCategoryModal(category);
         }
 
-        // Position tag tooltip to ensure visibility
-        function positionTagTooltip(container) {
+        // Active tooltip tracking
+        let activeTooltipElement = null;
+        let activeTagElement = null;
+
+        // Toggle tag tooltip on click
+        function openTagTooltip(container, category) {
             const tooltip = container.querySelector('.tag-tooltip');
             const tag = container.querySelector('.modal-subdim-tag');
             if (!tooltip || !tag) return;
 
-            const tagRect = tag.getBoundingClientRect();
-            const tooltipWidth = Math.min(320, window.innerWidth * 0.9);
-            const padding = 10;
-
-            // Calculate horizontal position - center on tag, but keep within viewport
-            let left = tagRect.left + (tagRect.width / 2) - (tooltipWidth / 2);
-
-            // Ensure tooltip doesn't go off-screen
-            if (left < padding) {
-                left = padding;
-            } else if (left + tooltipWidth > window.innerWidth - padding) {
-                left = window.innerWidth - tooltipWidth - padding;
+            // If this tooltip is already open, close it
+            if (activeTooltipElement === tooltip) {
+                closeTagTooltip();
+                return;
             }
 
-            // Position above the tag
-            const tooltipHeight = tooltip.offsetHeight || 200;
-            let top = tagRect.top - tooltipHeight - 8;
+            // Close any other open tooltip first
+            closeTagTooltip();
 
-            // If not enough space above, show below
-            if (top < padding) {
-                top = tagRect.bottom + 8;
-            }
+            // Activate this tooltip and tag
+            activeTooltipElement = tooltip;
+            activeTagElement = tag;
+            tooltip.classList.add('active');
+            tag.classList.add('active');
+
+            // Position at top of viewport so it doesn't get cut off
+            const tooltipWidth = Math.min(360, window.innerWidth * 0.92);
+            const left = (window.innerWidth - tooltipWidth) / 2;
+            const top = 60; // Fixed position near top
 
             tooltip.style.left = left + 'px';
             tooltip.style.top = top + 'px';
             tooltip.style.width = tooltipWidth + 'px';
         }
 
-        // Hide tag tooltip
-        function hideTagTooltip(container) {
-            // CSS handles the hide with transition
+        // Close tag tooltip
+        function closeTagTooltip() {
+            if (activeTooltipElement) {
+                activeTooltipElement.classList.remove('active');
+                activeTooltipElement = null;
+            }
+            if (activeTagElement) {
+                activeTagElement.classList.remove('active');
+                activeTagElement = null;
+            }
+            // Also close any other open tooltips and tags
+            document.querySelectorAll('.tag-tooltip.active').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.modal-subdim-tag.active').forEach(t => t.classList.remove('active'));
         }
 
         function closeCategoryModal(event) {
@@ -4249,7 +4395,26 @@
             initAdvancedFilters();
         }
 
+        // Age Verification
+        function checkAgeVerification() {
+            const verified = localStorage.getItem('ageVerified');
+            if (verified === 'true') {
+                document.getElementById('ageVerificationModal').classList.add('hidden');
+            }
+        }
+
+        function confirmAge(isAdult) {
+            if (isAdult) {
+                localStorage.setItem('ageVerified', 'true');
+                document.getElementById('ageVerificationModal').classList.add('hidden');
+            } else {
+                // Redirect to a safe page or show message
+                window.location.href = 'https://www.google.com';
+            }
+        }
+
         // Initialize
+        checkAgeVerification();
         loadData();
         initFeedbackSystem();
     </script>
