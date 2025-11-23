@@ -2561,6 +2561,80 @@
             color: var(--text-secondary);
             line-height: 1.4;
         }
+
+        /* Dimension Modifier Display */
+        .modifier-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: var(--font-xs);
+            font-weight: 500;
+        }
+
+        .modifier-badge.positive {
+            background: rgba(46, 204, 113, 0.15);
+            color: var(--success);
+        }
+
+        .modifier-badge.negative {
+            background: rgba(231, 76, 60, 0.15);
+            color: var(--danger);
+        }
+
+        .modifier-badge.neutral {
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--text-muted);
+        }
+
+        .modifier-summary {
+            background: var(--bg-dark);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 12px;
+            margin-bottom: 15px;
+            display: none;
+        }
+
+        .modifier-summary.active {
+            display: block;
+        }
+
+        .modifier-summary-title {
+            font-size: var(--font-xs);
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 8px;
+        }
+
+        .modifier-summary-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 0;
+            font-size: var(--font-sm);
+            color: var(--text-secondary);
+        }
+
+        .modifier-summary-item .modifier-icon {
+            width: 20px;
+            text-align: center;
+        }
+
+        .category-modifier {
+            font-size: var(--font-xs);
+            margin-left: 6px;
+        }
+
+        .category-modifier.positive {
+            color: var(--success);
+        }
+
+        .category-modifier.negative {
+            color: var(--danger);
+        }
     </style>
 </head>
 <body>
@@ -2964,6 +3038,15 @@
 
                     <!-- Compatibility Content Wrapper (hidden when pathos blocked) -->
                     <div id="compatibilityContent">
+
+                    <!-- Modifier Summary (shows dimension influences) -->
+                    <div class="modifier-summary" id="modifierSummary">
+                        <div class="modifier-summary-title">Dimensions-Einflüsse</div>
+                        <div id="modifierSummaryContent">
+                            <!-- Dynamically filled -->
+                        </div>
+                    </div>
+
                     <!-- Radar Chart -->
                     <div class="radar-section">
                         <div class="radar-header">
@@ -5634,11 +5717,35 @@
                 }
             }
 
+            // 3. DISPLAY DIMENSION MODIFIERS
+            const modifierSummaries = getModifierSummary(person1, person2);
+            const modifierSummaryEl = document.getElementById('modifierSummary');
+            const modifierContentEl = document.getElementById('modifierSummaryContent');
+
+            if (modifierSummaries.length > 0) {
+                modifierSummaryEl.classList.add('active');
+                modifierContentEl.innerHTML = modifierSummaries.map(mod => {
+                    const sign = mod.modifier > 0 ? '+' : '';
+                    const modClass = mod.modifier > 0 ? 'positive' : (mod.modifier < 0 ? 'negative' : 'neutral');
+                    const icon = mod.modifier > 0 ? '↑' : (mod.modifier < 0 ? '↓' : '→');
+                    return `
+                        <div class="modifier-summary-item">
+                            <span class="modifier-icon">${icon}</span>
+                            <span>${mod.description}</span>
+                            <span class="modifier-badge ${modClass}">${sign}${mod.modifier}%</span>
+                        </div>
+                    `;
+                }).join('');
+            } else {
+                modifierSummaryEl.classList.remove('active');
+            }
+
             return {
                 blocked: false,
                 pathosCheck,
                 logosCheck,
-                warnings: { hasLogosWarning, hasPathosUncertain }
+                warnings: { hasLogosWarning, hasPathosUncertain },
+                modifiers: modifierSummaries
             };
         }
 
@@ -5677,6 +5784,221 @@
             document.getElementById('modalTitle').textContent = title;
             document.getElementById('modalBody').innerHTML = content;
             document.getElementById('categoryModal').classList.add('active');
+        }
+
+        // ========================================
+        // Dimensions Modifiers System
+        // ========================================
+
+        // Tag dimension relevance mapping
+        const tagDimensionRelevance = {
+            // KATEGORIE A: Beziehungsphilosophie - KEINE Dimensions-Einflüsse!
+            "exklusivitaets-erwartung": [],
+            "offenheit-fuer-alternative-modelle": [],
+            "beziehung-als-lebensinhalt": [],
+            "primaerbeziehung-konzept": [],
+            "commitment-tiefe": [],
+
+            // KATEGORIE B: Werte-Alignment
+            "fuehrung-und-initiative": ["dominanz"],
+            "macht-balance": ["dominanz"],
+            "emotionale-reziprozitaet": [],
+            "eifersucht-umgang": [],
+            "konfliktloesung": ["dominanz"],
+            "emotionale-tiefe": [],
+
+            // KATEGORIE C: Nähe-Distanz
+            "entscheidungsfindung": ["dominanz"],
+            "alltags-organisation": ["dominanz"],
+            "autonomie-vs-gemeinsame-zeit": [],
+            "finanzielle-organisation": ["dominanz"],
+            "wohnform-flexibilitaet": [],
+            "zeitmanagement": ["dominanz"],
+
+            // KATEGORIE D: Autonomie
+            "koerperliche-anziehung": ["geschlecht", "orientierung", "orientierungStatus"],
+            "sexuelle-dominanz-dynamik": ["dominanz"],
+            "experimentierfreude": ["orientierungStatus"],
+            "intimitaets-frequenz": [],
+            "koerperliche-naehe": [],
+            "sexuelle-offenheit": ["orientierungStatus"],
+
+            // KATEGORIE E: Kommunikation
+            "kommunikations-stil": ["dominanz"],
+            "konflikt-kommunikation": ["dominanz"],
+            "beduerfnis-artikulation": [],
+            "feedback-kultur": [],
+
+            // KATEGORIE F: Soziale Kompatibilität
+            "philosophische-entwicklung": [],
+            "anpassungsfaehigkeit": ["dominanz"],
+            "krisenresilienz": ["dominanz"],
+            "gemeinsame-vision": [],
+            "soziales-umfeld": [],
+            "gesellschaftliche-akzeptanz": []
+        };
+
+        // Calculate dominanz modifier
+        function getDominanzModifier(dom1, dom2) {
+            // KOMPLEMENTÄR
+            if ((dom1 === "dominant" && dom2 === "submissiv") ||
+                (dom1 === "submissiv" && dom2 === "dominant")) {
+                return 8;
+            }
+            // BEIDE GLEICH
+            if (dom1 === dom2) {
+                if (dom1 === "ausgeglichen") return 5;
+                if (dom1 === "switch") return 3;
+                if (dom1 === "dominant") return -5;
+                if (dom1 === "submissiv") return -5;
+            }
+            // EINER FLEXIBEL
+            if (dom1 === "switch" || dom2 === "switch" ||
+                dom1 === "ausgeglichen" || dom2 === "ausgeglichen") {
+                return 2;
+            }
+            return 0;
+        }
+
+        // Get dominanz modifier description
+        function getDominanzDescription(dom1, dom2, modifier) {
+            if (modifier === 8) return `Komplementär (${dom1} × ${dom2}): Harmonische Rollenverteilung`;
+            if (modifier === 5) return `Beide ausgeglichen: Flexible Dynamik`;
+            if (modifier === 3) return `Beide switch: Wechselnde Dynamik`;
+            if (modifier === -5 && dom1 === "dominant") return `Beide dominant: Führungskonflikte möglich`;
+            if (modifier === -5 && dom1 === "submissiv") return `Beide submissiv: Führungsvakuum möglich`;
+            if (modifier === 2) return `Flexibilität: Ausgleichende Anpassung`;
+            return "Neutral";
+        }
+
+        // Map tag to category
+        function getTagCategory(tagId) {
+            const mapping = {
+                "exklusivitaets-erwartung": "A", "offenheit-fuer-alternative-modelle": "A",
+                "beziehung-als-lebensinhalt": "A", "primaerbeziehung-konzept": "A", "commitment-tiefe": "A",
+                "fuehrung-und-initiative": "B", "macht-balance": "B", "emotionale-reziprozitaet": "B",
+                "eifersucht-umgang": "B", "konfliktloesung": "B", "emotionale-tiefe": "B",
+                "entscheidungsfindung": "C", "alltags-organisation": "C", "autonomie-vs-gemeinsame-zeit": "C",
+                "finanzielle-organisation": "C", "wohnform-flexibilitaet": "C", "zeitmanagement": "C",
+                "koerperliche-anziehung": "D", "sexuelle-dominanz-dynamik": "D", "experimentierfreude": "D",
+                "intimitaets-frequenz": "D", "koerperliche-naehe": "D", "sexuelle-offenheit": "D",
+                "kommunikations-stil": "E", "konflikt-kommunikation": "E",
+                "beduerfnis-artikulation": "E", "feedback-kultur": "E",
+                "philosophische-entwicklung": "F", "anpassungsfaehigkeit": "F", "krisenresilienz": "F",
+                "gemeinsame-vision": "F", "soziales-umfeld": "F", "gesellschaftliche-akzeptanz": "F"
+            };
+            return mapping[tagId] || null;
+        }
+
+        // Calculate tag score with modifiers
+        function calculateTagWithModifiers(tagId, person1, person2, pathosCheck) {
+            const interactionKey = `${person1.archetyp}_${person2.archetyp}`;
+            const interaction = data?.interactions[interactionKey];
+            const tagCategory = getTagCategory(tagId);
+            let baseScore = interaction?.scores?.[tagCategory]?.value || 50;
+
+            const relevantDims = tagDimensionRelevance[tagId] || [];
+            if (relevantDims.length === 0) {
+                return { score: baseScore, baseScore, modifier: 0, dims: [], desc: "Archetyp-basiert" };
+            }
+
+            let modifier = 0;
+            let descriptions = [];
+
+            // Dominanz modifier
+            if (relevantDims.includes("dominanz")) {
+                const domMod = getDominanzModifier(person1.dominanz, person2.dominanz);
+                modifier += domMod;
+                if (domMod !== 0) descriptions.push(getDominanzDescription(person1.dominanz, person2.dominanz, domMod));
+            }
+
+            // Physical compatibility (Pathos uncertainty)
+            if (relevantDims.some(d => ["geschlecht", "orientierung", "orientierungStatus"].includes(d))) {
+                if (pathosCheck?.result === "unsicher") {
+                    modifier -= 10;
+                    descriptions.push("Pathos-Unsicherheit");
+                }
+            }
+
+            // Orientation status (exploration bonus)
+            if (relevantDims.includes("orientierungStatus")) {
+                if (person1.orientierungStatus === "interessiert" || person2.orientierungStatus === "interessiert") {
+                    if (tagId === "experimentierfreude" || tagId === "sexuelle-offenheit") {
+                        modifier += 5;
+                        descriptions.push("Explorationsbonus");
+                    }
+                }
+            }
+
+            const finalScore = Math.max(0, Math.min(100, baseScore + modifier));
+            return {
+                score: finalScore,
+                baseScore,
+                modifier,
+                dims: relevantDims,
+                desc: descriptions.length > 0 ? descriptions.join("; ") : "Keine Anpassung"
+            };
+        }
+
+        // Calculate category with modifiers
+        function calculateCategoryWithModifiers(catLetter, person1, person2, pathosCheck) {
+            const categoryTags = Object.keys(tagDimensionRelevance).filter(t => getTagCategory(t) === catLetter);
+
+            if (categoryTags.length === 0) {
+                const interactionKey = `${person1.archetyp}_${person2.archetyp}`;
+                const interaction = data?.interactions[interactionKey];
+                return { score: interaction?.scores?.[catLetter]?.value || 50, modifier: 0, tags: [] };
+            }
+
+            let totalScore = 0, totalMod = 0;
+            const tagDetails = [];
+
+            for (const tagId of categoryTags) {
+                const result = calculateTagWithModifiers(tagId, person1, person2, pathosCheck);
+                totalScore += result.score;
+                totalMod += result.modifier;
+                tagDetails.push({ id: tagId, ...result });
+            }
+
+            return {
+                score: Math.round(totalScore / categoryTags.length),
+                modifier: Math.round(totalMod / categoryTags.length),
+                tags: tagDetails
+            };
+        }
+
+        // Calculate overall with all modifiers
+        function calculateOverallWithModifiers(person1, person2, pathosCheck, logosCheck) {
+            const weights = { A: 0.25, B: 0.15, C: 0.15, D: 0.15, E: 0.15, F: 0.15 };
+            const categories = {};
+            let weightedTotal = 0;
+
+            // Category A: No dimension modifiers (logos check)
+            categories.A = { score: logosCheck.score, modifier: 0, note: "Rein archetyp-basiert" };
+            weightedTotal += logosCheck.score * weights.A;
+
+            // Other categories with modifiers
+            for (const cat of ['B', 'C', 'D', 'E', 'F']) {
+                const result = calculateCategoryWithModifiers(cat, person1, person2, pathosCheck);
+                categories[cat] = result;
+                weightedTotal += result.score * weights[cat];
+            }
+
+            return { overall: Math.round(weightedTotal), categories };
+        }
+
+        // Get modifier summary for UI
+        function getModifierSummary(person1, person2) {
+            const summaries = [];
+            const domMod = getDominanzModifier(person1.dominanz, person2.dominanz);
+            if (domMod !== 0) {
+                summaries.push({
+                    type: "Dominanz",
+                    modifier: domMod,
+                    description: getDominanzDescription(person1.dominanz, person2.dominanz, domMod)
+                });
+            }
+            return summaries;
         }
 
         // Initialize
