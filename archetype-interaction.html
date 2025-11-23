@@ -158,6 +158,44 @@
             display: none;
         }
 
+        .nav-arrow {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: transparent;
+            border: 1px solid var(--border);
+            color: var(--text-secondary);
+            font-size: 1.4rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            padding: 0;
+            line-height: 1;
+        }
+
+        .nav-arrow:hover {
+            background: var(--primary);
+            border-color: var(--primary);
+            color: white;
+        }
+
+        .nav-arrow:active {
+            transform: scale(0.95);
+        }
+
+        .nav-arrow:disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+        }
+
+        .nav-arrow:disabled:hover {
+            background: transparent;
+            border-color: var(--border);
+            color: var(--text-secondary);
+        }
+
         /* Main Select in Card 1 */
         .main-select {
             margin-bottom: 20px;
@@ -1120,6 +1158,266 @@
                 gap: 15px;
             }
         }
+
+        /* Feedback Button */
+        .feedback-btn {
+            position: fixed;
+            bottom: 80px;
+            right: 20px;
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: var(--primary);
+            border: none;
+            color: white;
+            font-size: 1.4rem;
+            cursor: pointer;
+            z-index: 99;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            transition: all 0.3s ease;
+        }
+
+        .feedback-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.4);
+        }
+
+        /* Feedback Modal */
+        .feedback-modal {
+            max-width: 420px;
+        }
+
+        .feedback-context-id {
+            display: inline-block;
+            padding: 4px 10px;
+            background: var(--bg-dark);
+            border-radius: 6px;
+            font-size: var(--font-xs);
+            color: var(--primary);
+            font-family: monospace;
+            margin-bottom: 16px;
+        }
+
+        .feedback-form-group {
+            margin-bottom: 16px;
+        }
+
+        .feedback-label {
+            display: block;
+            font-size: var(--font-sm);
+            color: var(--text-secondary);
+            margin-bottom: 6px;
+        }
+
+        .feedback-label .required {
+            color: var(--danger);
+        }
+
+        .feedback-input,
+        .feedback-textarea {
+            width: 100%;
+            background: var(--bg-dark);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 12px 14px;
+            color: var(--text-primary);
+            font-size: var(--font-base);
+            font-family: inherit;
+            transition: border-color 0.3s ease;
+        }
+
+        .feedback-input:focus,
+        .feedback-textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        .feedback-textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        /* Star Rating */
+        .star-rating-group {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .star-rating-label {
+            font-size: var(--font-sm);
+            color: var(--text-muted);
+            min-width: 80px;
+        }
+
+        .star-rating {
+            display: flex;
+            gap: 4px;
+        }
+
+        .star-rating .star {
+            font-size: 1.5rem;
+            color: var(--text-muted);
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .star-rating .star:hover,
+        .star-rating .star.active {
+            color: #f1c40f;
+            transform: scale(1.1);
+        }
+
+        .feedback-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .feedback-btn-cancel,
+        .feedback-btn-submit {
+            flex: 1;
+            padding: 14px;
+            border-radius: 10px;
+            font-size: var(--font-base);
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .feedback-btn-cancel {
+            background: transparent;
+            border: 1px solid var(--border);
+            color: var(--text-secondary);
+        }
+
+        .feedback-btn-cancel:hover {
+            background: var(--bg-hover);
+        }
+
+        .feedback-btn-submit {
+            background: var(--primary);
+            border: none;
+            color: white;
+        }
+
+        .feedback-btn-submit:hover {
+            filter: brightness(1.1);
+        }
+
+        .feedback-btn-submit:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        /* Feedback Page (Card 4) */
+        .feedback-filters {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 20px;
+        }
+
+        .feedback-filter-btn {
+            padding: 8px 14px;
+            border: 1px solid var(--border);
+            background: transparent;
+            color: var(--text-secondary);
+            border-radius: 20px;
+            font-size: var(--font-sm);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .feedback-filter-btn:hover {
+            background: var(--bg-hover);
+        }
+
+        .feedback-filter-btn.active {
+            background: var(--primary);
+            border-color: var(--primary);
+            color: white;
+        }
+
+        .feedback-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .feedback-item {
+            background: var(--bg-dark);
+            border-radius: 12px;
+            padding: 14px;
+            border: 1px solid var(--border);
+        }
+
+        .feedback-item-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 8px;
+        }
+
+        .feedback-item-context {
+            font-size: var(--font-xs);
+            color: var(--primary);
+            font-family: monospace;
+            background: rgba(255,255,255,0.05);
+            padding: 2px 8px;
+            border-radius: 4px;
+        }
+
+        .feedback-item-name {
+            font-size: var(--font-sm);
+            color: var(--text-muted);
+        }
+
+        .feedback-item-title {
+            font-size: var(--font-base);
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 6px;
+        }
+
+        .feedback-item-comment {
+            font-size: var(--font-sm);
+            color: var(--text-secondary);
+            line-height: 1.5;
+            margin-bottom: 10px;
+        }
+
+        .feedback-item-ratings {
+            display: flex;
+            gap: 20px;
+            font-size: var(--font-sm);
+        }
+
+        .feedback-rating {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            color: var(--text-muted);
+        }
+
+        .feedback-rating .stars {
+            color: #f1c40f;
+        }
+
+        .feedback-empty {
+            text-align: center;
+            padding: 40px 20px;
+            color: var(--text-muted);
+        }
+
+        .feedback-loading {
+            text-align: center;
+            padding: 40px 20px;
+            color: var(--text-muted);
+        }
     </style>
 </head>
 <body>
@@ -1305,6 +1603,32 @@
                 </div>
             </div>
         </div>
+
+        <!-- CARD 4: FEEDBACK -->
+        <div class="card" data-card="3">
+            <div class="card-inner">
+                <div class="card-header">
+                    <span class="card-title">Feedback</span>
+                </div>
+                <div class="card-body">
+                    <!-- Filter -->
+                    <div class="feedback-filters" id="feedbackFilters">
+                        <button class="feedback-filter-btn active" data-filter="all">Alle</button>
+                        <button class="feedback-filter-btn" data-filter="S1">S1</button>
+                        <button class="feedback-filter-btn" data-filter="S2">S2</button>
+                        <button class="feedback-filter-btn" data-filter="S3">S3</button>
+                        <button class="feedback-filter-btn" data-filter="TM">TM</button>
+                        <button class="feedback-filter-btn" data-filter="CH">CH</button>
+                        <button class="feedback-filter-btn" data-filter="KAT">KAT</button>
+                    </div>
+
+                    <!-- Feedback List -->
+                    <div class="feedback-list" id="feedbackList">
+                        <div class="feedback-loading">Lade Feedback...</div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
     <!-- Category Modal -->
@@ -1318,11 +1642,78 @@
         </div>
     </div>
 
-    <!-- Navigation Dots -->
+    <!-- Feedback Modal -->
+    <div class="modal-overlay" id="feedbackModal" onclick="closeFeedbackModal(event)">
+        <div class="modal feedback-modal" onclick="event.stopPropagation()">
+            <div class="modal-header">
+                <span class="modal-title">Feedback geben</span>
+                <button class="modal-close" onclick="closeFeedbackModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="feedback-context-id" id="feedbackContextId">S1-SINGLE</div>
+
+                <div class="feedback-form-group">
+                    <label class="feedback-label">Name/Kürzel <span class="required">*</span></label>
+                    <input type="text" class="feedback-input" id="feedbackName" placeholder="z.B. Max, Anna, M.S." maxlength="20">
+                </div>
+
+                <div class="feedback-form-group">
+                    <label class="feedback-label">Titel <span class="required">*</span></label>
+                    <input type="text" class="feedback-input" id="feedbackTitle" placeholder="Kurze Zusammenfassung" maxlength="50">
+                </div>
+
+                <div class="feedback-form-group">
+                    <label class="feedback-label">Kommentar</label>
+                    <textarea class="feedback-textarea" id="feedbackComment" placeholder="Dein Feedback zu dieser Ansicht..."></textarea>
+                </div>
+
+                <div class="feedback-form-group">
+                    <label class="feedback-label">Bewertung</label>
+                    <div class="star-rating-group">
+                        <span class="star-rating-label">Verstand</span>
+                        <span style="font-size: 1rem;">😕</span>
+                        <div class="star-rating" id="ratingVerstand">
+                            <span class="star" data-value="1">★</span>
+                            <span class="star" data-value="2">★</span>
+                            <span class="star" data-value="3">★</span>
+                            <span class="star" data-value="4">★</span>
+                            <span class="star" data-value="5">★</span>
+                        </div>
+                        <span style="font-size: 1rem;">🤩</span>
+                    </div>
+                    <div class="star-rating-group" style="margin-top: 10px;">
+                        <span class="star-rating-label">Gefühl</span>
+                        <span style="font-size: 1rem;">😕</span>
+                        <div class="star-rating" id="ratingGefuehl">
+                            <span class="star" data-value="1">★</span>
+                            <span class="star" data-value="2">★</span>
+                            <span class="star" data-value="3">★</span>
+                            <span class="star" data-value="4">★</span>
+                            <span class="star" data-value="5">★</span>
+                        </div>
+                        <span style="font-size: 1rem;">🤩</span>
+                    </div>
+                </div>
+
+                <div class="feedback-buttons">
+                    <button class="feedback-btn-cancel" onclick="closeFeedbackModal()">Abbrechen</button>
+                    <button class="feedback-btn-submit" id="feedbackSubmitBtn" onclick="submitFeedback()">Senden</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Feedback Button -->
+    <button class="feedback-btn" onclick="openFeedbackModal()" title="Feedback geben">💬</button>
+
+    <!-- Navigation Dots with Arrows -->
     <div class="nav-dots">
+        <button class="nav-arrow" onclick="navigatePrev()">‹</button>
         <div class="nav-dot active" data-card="0" onclick="scrollToCard(0)"></div>
         <div class="nav-dot" data-card="1" onclick="scrollToCard(1)"></div>
         <div class="nav-dot" data-card="2" onclick="scrollToCard(2)"></div>
+        <div class="nav-dot" data-card="3" onclick="scrollToCard(3)"></div>
+        <button class="nav-arrow" onclick="navigateNext()">›</button>
     </div>
 
     <div class="swipe-hint">← Swipe →</div>
@@ -1617,6 +2008,8 @@
             carousel.scrollTo({ left: cardWidth * index, behavior: 'smooth' });
         }
 
+        const TOTAL_PAGES = 4;
+
         function updateNavDots() {
             const carousel = document.getElementById('carousel');
             const cardWidth = window.innerWidth;
@@ -1625,6 +2018,36 @@
             document.querySelectorAll('.nav-dot').forEach((dot, i) => {
                 dot.classList.toggle('active', i === currentCard);
             });
+
+            // Update arrow states
+            const arrows = document.querySelectorAll('.nav-arrow');
+            if (arrows.length >= 2) {
+                arrows[0].disabled = currentCard === 0;
+                arrows[1].disabled = currentCard === TOTAL_PAGES - 1;
+            }
+
+            // Load feedback when on page 4
+            if (currentCard === 3) {
+                loadFeedback();
+            }
+        }
+
+        function navigatePrev() {
+            const carousel = document.getElementById('carousel');
+            const cardWidth = window.innerWidth;
+            const currentCard = Math.round(carousel.scrollLeft / cardWidth);
+            if (currentCard > 0) {
+                scrollToCard(currentCard - 1);
+            }
+        }
+
+        function navigateNext() {
+            const carousel = document.getElementById('carousel');
+            const cardWidth = window.innerWidth;
+            const currentCard = Math.round(carousel.scrollLeft / cardWidth);
+            if (currentCard < TOTAL_PAGES - 1) {
+                scrollToCard(currentCard + 1);
+            }
         }
 
         // Legend Categories
@@ -1632,10 +2055,32 @@
             const container = document.getElementById('legendCategories');
             const categories = ['A', 'B', 'C', 'D', 'E', 'F'];
 
-            container.innerHTML = categories.map(cat => {
+            // Get current interaction scores
+            const interactionKey = `${currentArchetype}_${selectedPartner}`;
+            const interaction = data.interactions[interactionKey] || {};
+            const scores = interaction.scores || {};
+
+            const myArch = data.archetypes[currentArchetype];
+            const partnerArch = data.archetypes[selectedPartner];
+            const myName = myArch?.name || currentArchetype;
+            const partnerName = partnerArch?.name || selectedPartner;
+
+            // Show which combination is displayed
+            const headerText = currentArchetype === selectedPartner
+                ? `${myName} (Ich) mit ${myName}`
+                : `${myName} (Ich) mit ${partnerName}`;
+
+            container.innerHTML = `
+                <div style="margin-bottom: 15px; padding: 10px; background: var(--bg-dark); border-radius: 10px; text-align: center;">
+                    <span style="color: var(--text-muted); font-size: var(--font-sm);">Aktuelle Auswahl:</span>
+                    <div style="color: var(--primary); font-weight: 600; font-size: var(--font-base);">${headerText}</div>
+                </div>
+            ` + categories.map(cat => {
                 const catData = categoryDescriptions[cat] || {};
                 const name = catData.name || categoryNames[cat] || cat;
                 const desc = catData.description || 'Beschreibung nicht verfügbar';
+                const value = scores[cat]?.value || 0;
+                const scoreColor = getScoreColor(value);
 
                 return `
                     <div class="legend-category-item" onclick="openSingleCategoryModal('${cat}')">
@@ -1644,6 +2089,7 @@
                             <div class="legend-category-name">${name}</div>
                             <div class="legend-category-desc">${desc}</div>
                         </div>
+                        <div style="font-weight: 700; font-size: var(--font-md); color: ${scoreColor}; min-width: 50px; text-align: right;">${value}%</div>
                     </div>
                 `;
             }).join('');
@@ -1651,6 +2097,8 @@
 
         // Modal Functions
         function openCategoryModal() {
+            // Reset modal context when opening directly (uses page 2 selection)
+            modalContextPartner = null;
             const categories = ['A', 'B', 'C', 'D', 'E', 'F'];
             document.getElementById('modalTitle').textContent = 'Alle Kategorien';
             document.getElementById('modalBody').innerHTML = categories.map(cat => getCategoryModalContent(cat)).join('');
@@ -1659,6 +2107,7 @@
         }
 
         function openSingleCategoryModal(category) {
+            // Don't reset modalContextPartner here - it may be set from match modal
             const catData = categoryDescriptions[category] || {};
             const name = catData.name || categoryNames[category] || category;
             document.getElementById('modalTitle').textContent = `Kategorie ${category}`;
@@ -1673,8 +2122,9 @@
             const desc = catData.description || 'Beschreibung nicht verfügbar';
             const subDims = catData.subDimensions || [];
 
-            // Get current interaction score for this category
-            const interactionKey = `${currentArchetype}_${selectedPartner}`;
+            // Use modalContextPartner if set (from match modal), otherwise use selectedPartner (from page 2)
+            const partnerId = modalContextPartner || selectedPartner;
+            const interactionKey = `${currentArchetype}_${partnerId}`;
             const interaction = data.interactions[interactionKey] || {};
             const scores = interaction.scores || {};
             const value = scores[cat]?.value || 0;
@@ -1682,7 +2132,7 @@
             const barClass = getBarClass(value);
 
             const myArch = data.archetypes[currentArchetype];
-            const partnerArch = data.archetypes[selectedPartner];
+            const partnerArch = data.archetypes[partnerId];
 
             return `
                 <div class="modal-category">
@@ -1708,16 +2158,22 @@
             if (event && event.target !== event.currentTarget) return;
             document.getElementById('categoryModal').classList.remove('active');
             document.body.style.overflow = '';
+            // Reset modal context when closing
+            modalContextPartner = null;
         }
 
         // Store current match data for modal access
         let currentTopMatch = { id: null, score: 0 };
         let currentChallenge = { id: null, score: 0 };
+        let modalContextPartner = null; // Track which partner to use in category modal
 
         // Match Modal Functions
         function openMatchModal(type) {
             const matchData = type === 'top' ? currentTopMatch : currentChallenge;
             if (!matchData.id) return;
+
+            // Set the modal context to use this match's partner
+            modalContextPartner = matchData.id;
 
             const myArch = data.archetypes[currentArchetype];
             const partnerArch = data.archetypes[matchData.id];
@@ -1794,11 +2250,294 @@
         document.addEventListener('keydown', (e) => {
             if (e.key === 'Escape') {
                 closeCategoryModal();
+                closeFeedbackModal();
             }
         });
 
+        // ==========================================
+        // FEEDBACK SYSTEM
+        // ==========================================
+
+        // Google Apps Script URL für Feedback
+        const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyjZxlqXyoIKJ1xzdnyz0McQmGJQoEVi4WE59SsGQHyUQAQh8g0g4q9hh4yzBctZ7UW1Q/exec';
+
+        let feedbackData = [];
+        let currentFilter = 'all';
+        let feedbackRatings = { verstand: 0, gefuehl: 0 };
+
+        // Get current context ID based on what's visible
+        function getCurrentContextId() {
+            const carousel = document.getElementById('carousel');
+            const cardWidth = window.innerWidth;
+            const currentCard = Math.round(carousel.scrollLeft / cardWidth);
+
+            const myType = currentArchetype.toUpperCase();
+            const partner = selectedPartner.toUpperCase();
+
+            switch(currentCard) {
+                case 0:
+                    return `S1-${myType}`;
+                case 1:
+                    return `S2-${myType}-${partner}`;
+                case 2:
+                    return `S3`;
+                case 3:
+                    return `S4`;
+                default:
+                    return `S${currentCard + 1}`;
+            }
+        }
+
+        // Get context ID for modals
+        function getModalContextId() {
+            const categoryModal = document.getElementById('categoryModal');
+            if (categoryModal.classList.contains('active')) {
+                const modalTitle = document.getElementById('modalTitle').textContent;
+                const myType = currentArchetype.toUpperCase();
+                const partner = (modalContextPartner || selectedPartner).toUpperCase();
+
+                if (modalTitle.includes('Kategorie')) {
+                    const cat = modalTitle.replace('Kategorie ', '').trim();
+                    return `KAT-${cat}-${myType}-${partner}`;
+                } else if (modalTitle.includes('+')) {
+                    // Match modal (Top Match or Challenge)
+                    if (currentTopMatch.id && modalContextPartner === currentTopMatch.id) {
+                        return `TM-${myType}-${partner}`;
+                    } else {
+                        return `CH-${myType}-${partner}`;
+                    }
+                }
+            }
+            return getCurrentContextId();
+        }
+
+        // Open feedback modal
+        function openFeedbackModal() {
+            const contextId = getModalContextId();
+            document.getElementById('feedbackContextId').textContent = contextId;
+            document.getElementById('feedbackModal').classList.add('active');
+            document.body.style.overflow = 'hidden';
+
+            // Reset form
+            document.getElementById('feedbackName').value = '';
+            document.getElementById('feedbackTitle').value = '';
+            document.getElementById('feedbackComment').value = '';
+            feedbackRatings = { verstand: 0, gefuehl: 0 };
+            updateStarDisplay('ratingVerstand', 0);
+            updateStarDisplay('ratingGefuehl', 0);
+        }
+
+        function closeFeedbackModal(event) {
+            if (event && event.target !== event.currentTarget) return;
+            document.getElementById('feedbackModal').classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        // Star rating functionality
+        function updateStarDisplay(containerId, value) {
+            const container = document.getElementById(containerId);
+            container.querySelectorAll('.star').forEach((star, i) => {
+                star.classList.toggle('active', i < value);
+            });
+        }
+
+        function initStarRatings() {
+            ['ratingVerstand', 'ratingGefuehl'].forEach(containerId => {
+                const container = document.getElementById(containerId);
+                const ratingKey = containerId === 'ratingVerstand' ? 'verstand' : 'gefuehl';
+
+                container.querySelectorAll('.star').forEach(star => {
+                    star.addEventListener('click', () => {
+                        const value = parseInt(star.dataset.value);
+                        feedbackRatings[ratingKey] = value;
+                        updateStarDisplay(containerId, value);
+                    });
+
+                    star.addEventListener('mouseenter', () => {
+                        const value = parseInt(star.dataset.value);
+                        container.querySelectorAll('.star').forEach((s, i) => {
+                            s.style.color = i < value ? '#f1c40f' : '';
+                        });
+                    });
+
+                    star.addEventListener('mouseleave', () => {
+                        container.querySelectorAll('.star').forEach((s, i) => {
+                            s.style.color = i < feedbackRatings[ratingKey] ? '#f1c40f' : '';
+                        });
+                    });
+                });
+            });
+        }
+
+        // Submit feedback
+        async function submitFeedback() {
+            const name = document.getElementById('feedbackName').value.trim();
+            const titel = document.getElementById('feedbackTitle').value.trim();
+            const kommentar = document.getElementById('feedbackComment').value.trim();
+            const kontextId = document.getElementById('feedbackContextId').textContent;
+
+            // Validation
+            if (!name) {
+                alert('Bitte gib deinen Namen/Kürzel ein.');
+                return;
+            }
+            if (!titel) {
+                alert('Bitte gib einen Titel ein.');
+                return;
+            }
+
+            const feedbackEntry = {
+                kontextId,
+                name,
+                titel,
+                kommentar,
+                verstand: feedbackRatings.verstand,
+                gefuehl: feedbackRatings.gefuehl
+            };
+
+            const submitBtn = document.getElementById('feedbackSubmitBtn');
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Sende...';
+
+            try {
+                if (GOOGLE_SCRIPT_URL) {
+                    // Send to Google Sheets
+                    await fetch(GOOGLE_SCRIPT_URL, {
+                        method: 'POST',
+                        mode: 'no-cors',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(feedbackEntry)
+                    });
+                }
+
+                // Also save locally as backup
+                saveLocalFeedback(feedbackEntry);
+
+                alert('Danke für dein Feedback!');
+                closeFeedbackModal();
+
+            } catch (error) {
+                console.error('Feedback error:', error);
+                // Save locally on error
+                saveLocalFeedback(feedbackEntry);
+                alert('Feedback lokal gespeichert. (Server nicht erreichbar)');
+                closeFeedbackModal();
+            }
+
+            submitBtn.disabled = false;
+            submitBtn.textContent = 'Senden';
+        }
+
+        // Local storage backup
+        function saveLocalFeedback(entry) {
+            const stored = JSON.parse(localStorage.getItem('tiage_feedback') || '[]');
+            entry.timestamp = new Date().toISOString();
+            stored.unshift(entry);
+            localStorage.setItem('tiage_feedback', JSON.stringify(stored));
+        }
+
+        function getLocalFeedback() {
+            return JSON.parse(localStorage.getItem('tiage_feedback') || '[]');
+        }
+
+        // Load and display feedback
+        async function loadFeedback() {
+            const container = document.getElementById('feedbackList');
+
+            try {
+                if (GOOGLE_SCRIPT_URL) {
+                    // Try to load from Google Sheets
+                    const response = await fetch(GOOGLE_SCRIPT_URL);
+                    const serverData = await response.json();
+                    feedbackData = serverData.reverse(); // Newest first
+                } else {
+                    // Use local data only
+                    feedbackData = getLocalFeedback();
+                }
+            } catch (error) {
+                console.error('Load feedback error:', error);
+                // Fallback to local
+                feedbackData = getLocalFeedback();
+            }
+
+            renderFeedbackList();
+        }
+
+        function renderFeedbackList() {
+            const container = document.getElementById('feedbackList');
+
+            let filtered = feedbackData;
+            if (currentFilter !== 'all') {
+                filtered = feedbackData.filter(f =>
+                    (f.KontextID || f.kontextId || '').startsWith(currentFilter)
+                );
+            }
+
+            if (filtered.length === 0) {
+                container.innerHTML = `
+                    <div class="feedback-empty">
+                        ${feedbackData.length === 0
+                            ? 'Noch kein Feedback vorhanden.<br>Sei der Erste!'
+                            : 'Kein Feedback für diesen Filter.'}
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = filtered.map(f => {
+                const kontextId = f.KontextID || f.kontextId || '-';
+                const name = f.Name || f.name || 'Anonym';
+                const titel = f.Titel || f.titel || '';
+                const kommentar = f.Kommentar || f.kommentar || '';
+                const verstand = f.Verstand || f.verstand || 0;
+                const gefuehl = f.Gefuehl || f.gefuehl || 0;
+
+                return `
+                    <div class="feedback-item">
+                        <div class="feedback-item-header">
+                            <span class="feedback-item-context">${kontextId}</span>
+                            <span class="feedback-item-name">${name}</span>
+                        </div>
+                        <div class="feedback-item-title">${titel}</div>
+                        ${kommentar ? `<div class="feedback-item-comment">${kommentar}</div>` : ''}
+                        <div class="feedback-item-ratings">
+                            <div class="feedback-rating">
+                                <span>Verstand:</span>
+                                <span class="stars">${'★'.repeat(verstand)}${'☆'.repeat(5-verstand)}</span>
+                            </div>
+                            <div class="feedback-rating">
+                                <span>Gefühl:</span>
+                                <span class="stars">${'★'.repeat(gefuehl)}${'☆'.repeat(5-gefuehl)}</span>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // Filter buttons
+        function initFeedbackFilters() {
+            document.querySelectorAll('.feedback-filter-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    document.querySelectorAll('.feedback-filter-btn').forEach(b =>
+                        b.classList.remove('active')
+                    );
+                    btn.classList.add('active');
+                    currentFilter = btn.dataset.filter;
+                    renderFeedbackList();
+                });
+            });
+        }
+
+        // Initialize feedback system
+        function initFeedbackSystem() {
+            initStarRatings();
+            initFeedbackFilters();
+        }
+
         // Initialize
         loadData();
+        initFeedbackSystem();
     </script>
 </body>
 </html>
