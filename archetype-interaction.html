@@ -1007,13 +1007,18 @@
             background: rgba(255,255,255,0.08);
             border-radius: 12px;
             color: var(--text-secondary);
-            cursor: help;
+            cursor: pointer;
             position: relative;
-            transition: background 0.2s ease;
+            transition: all 0.2s ease;
         }
 
         .modal-subdim-tag:hover {
             background: rgba(255,255,255,0.15);
+        }
+
+        .modal-subdim-tag.active {
+            background: var(--primary);
+            color: white;
         }
 
         /* Tag Tooltip Container */
@@ -3565,23 +3570,33 @@
 
         // Active tooltip tracking
         let activeTooltipElement = null;
+        let activeTagElement = null;
 
-        // Open tag tooltip on click
+        // Toggle tag tooltip on click
         function openTagTooltip(container, category) {
-            // Close any open tooltip first
-            closeTagTooltip();
-
             const tooltip = container.querySelector('.tag-tooltip');
             const tag = container.querySelector('.modal-subdim-tag');
             if (!tooltip || !tag) return;
 
-            activeTooltipElement = tooltip;
-            tooltip.classList.add('active');
+            // If this tooltip is already open, close it
+            if (activeTooltipElement === tooltip) {
+                closeTagTooltip();
+                return;
+            }
 
-            // Position in center of screen
+            // Close any other open tooltip first
+            closeTagTooltip();
+
+            // Activate this tooltip and tag
+            activeTooltipElement = tooltip;
+            activeTagElement = tag;
+            tooltip.classList.add('active');
+            tag.classList.add('active');
+
+            // Position at top of viewport so it doesn't get cut off
             const tooltipWidth = Math.min(360, window.innerWidth * 0.92);
             const left = (window.innerWidth - tooltipWidth) / 2;
-            const top = Math.max(20, (window.innerHeight - 400) / 2);
+            const top = 60; // Fixed position near top
 
             tooltip.style.left = left + 'px';
             tooltip.style.top = top + 'px';
@@ -3594,8 +3609,13 @@
                 activeTooltipElement.classList.remove('active');
                 activeTooltipElement = null;
             }
-            // Also close any other open tooltips
+            if (activeTagElement) {
+                activeTagElement.classList.remove('active');
+                activeTagElement = null;
+            }
+            // Also close any other open tooltips and tags
             document.querySelectorAll('.tag-tooltip.active').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.modal-subdim-tag.active').forEach(t => t.classList.remove('active'));
         }
 
         function closeCategoryModal(event) {
