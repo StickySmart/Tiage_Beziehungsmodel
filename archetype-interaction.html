@@ -791,6 +791,24 @@
             padding: 20px;
         }
 
+        .modal-feedback-btn {
+            margin-top: 20px;
+            padding: 12px 16px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--text-muted);
+            cursor: pointer;
+            text-align: center;
+            transition: all 0.2s;
+        }
+
+        .modal-feedback-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--primary);
+            border-color: var(--primary);
+        }
+
         .modal-category {
             margin-bottom: 20px;
             padding-bottom: 20px;
@@ -1703,9 +1721,6 @@
         </div>
     </div>
 
-    <!-- Feedback Button -->
-    <button class="feedback-btn" onclick="openFeedbackModal()" title="Feedback geben">💬</button>
-
     <!-- Navigation Dots with Arrows -->
     <div class="nav-dots">
         <button class="nav-arrow" onclick="navigatePrev()">‹</button>
@@ -2152,6 +2167,10 @@
                             ${subDims.map(sd => `<span class="modal-subdim-tag">${sd}</span>`).join('')}
                         </div>
                     ` : ''}
+
+                    <div class="modal-feedback-btn" onclick="openFeedbackModal()">
+                        💬 Feedback zu ${name}
+                    </div>
                 </div>
             `;
         }
@@ -2245,6 +2264,10 @@
                     <div class="match-modal-section-title">✗ Herausforderungen</div>
                     <ul class="match-modal-list">${contraItems}</ul>
                 </div>
+
+                <div class="modal-feedback-btn" onclick="openFeedbackModal()">
+                    💬 Feedback zu dieser Kombination
+                </div>
             `;
         }
 
@@ -2295,19 +2318,19 @@
             const categoryModal = document.getElementById('categoryModal');
             if (categoryModal.classList.contains('active')) {
                 const modalTitle = document.getElementById('modalTitle').textContent;
-                const myType = currentArchetype.toUpperCase();
-                const partner = (modalContextPartner || selectedPartner).toUpperCase();
+                const myArch = data.archetypes[currentArchetype];
+                const partnerId = modalContextPartner || selectedPartner;
+                const partnerArch = data.archetypes[partnerId];
+                const combo = `${myArch?.name || '?'} (Ich) mit ${partnerArch?.name || '?'}`;
 
                 if (modalTitle.includes('Kategorie')) {
                     const cat = modalTitle.replace('Kategorie ', '').trim();
-                    return `KAT-${cat}-${myType}-${partner}`;
+                    const catName = categoryNames[cat] || cat;
+                    return `${combo} | ${catName}`;
                 } else if (modalTitle.includes('+')) {
                     // Match modal (Top Match or Challenge)
-                    if (currentTopMatch.id && modalContextPartner === currentTopMatch.id) {
-                        return `TM-${myType}-${partner}`;
-                    } else {
-                        return `CH-${myType}-${partner}`;
-                    }
+                    const matchType = (currentTopMatch.id && modalContextPartner === currentTopMatch.id) ? 'Top Match' : 'Challenge';
+                    return `${combo} | ${matchType}`;
                 }
             }
             return getCurrentContextId();
