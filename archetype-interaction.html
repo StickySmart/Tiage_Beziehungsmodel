@@ -2752,6 +2752,39 @@
             color: var(--accent);
         }
 
+        .select-with-info {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .select-with-info .column-select {
+            margin-bottom: 0;
+        }
+
+        .archetype-info-btn {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.1);
+            border: 1px solid var(--border);
+            color: var(--text-muted);
+            font-size: 14px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            flex-shrink: 0;
+        }
+
+        .archetype-info-btn:hover {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
         .column-select {
             width: 100%;
             padding: 10px 12px;
@@ -3050,48 +3083,51 @@
                     <div class="column-icon">👤</div>
                     <div class="column-title">ICH</div>
                 </div>
-                <select class="column-select" id="ichSelect">
-                    <option value="single">Single</option>
-                    <option value="duo">Duo</option>
-                    <option value="duo_flex">Duo-Flex</option>
-                    <option value="solopoly">Solopoly</option>
-                    <option value="poly_hedo">Poly Hedo</option>
-                    <option value="polyamor">Polyamor</option>
-                </select>
+                <div class="select-with-info">
+                    <select class="column-select" id="ichSelect">
+                        <option value="single">Single</option>
+                        <option value="duo">Duo</option>
+                        <option value="duo_flex">Duo-Flex</option>
+                        <option value="solopoly">Solopoly</option>
+                        <option value="poly_hedo">Poly Hedo</option>
+                        <option value="polyamor">Polyamor</option>
+                    </select>
+                    <button class="archetype-info-btn" onclick="showArchetypeInfo('ich')" title="Info zum Archetyp">ℹ</button>
+                </div>
                 <div class="column-dimensions">
                     <div class="compact-dimension needs-selection" data-dimension="ich-geschlecht-new">
                         <div class="compact-dimension-label">Geschlecht</div>
                         <div class="compact-options">
                             <input type="radio" name="ich-geschlecht-new" id="ich-g-m" value="männlich" class="compact-radio">
-                            <label for="ich-g-m" class="compact-option">m</label>
+                            <label for="ich-g-m" class="compact-option">männlich</label>
                             <input type="radio" name="ich-geschlecht-new" id="ich-g-w" value="weiblich" class="compact-radio">
-                            <label for="ich-g-w" class="compact-option">w</label>
+                            <label for="ich-g-w" class="compact-option">weiblich</label>
                             <input type="radio" name="ich-geschlecht-new" id="ich-g-nb" value="non-binär" class="compact-radio">
-                            <label for="ich-g-nb" class="compact-option">nb</label>
+                            <label for="ich-g-nb" class="compact-option">non-binär</label>
                         </div>
                     </div>
                     <div class="compact-dimension needs-selection" data-dimension="ich-dominanz-new">
                         <div class="compact-dimension-label">Dominanz</div>
                         <div class="compact-options">
                             <input type="radio" name="ich-dominanz-new" id="ich-d-dom" value="dominant" class="compact-radio">
-                            <label for="ich-d-dom" class="compact-option">dom</label>
+                            <label for="ich-d-dom" class="compact-option">dominant</label>
                             <input type="radio" name="ich-dominanz-new" id="ich-d-sub" value="submissiv" class="compact-radio">
-                            <label for="ich-d-sub" class="compact-option">sub</label>
+                            <label for="ich-d-sub" class="compact-option">submissiv</label>
                             <input type="radio" name="ich-dominanz-new" id="ich-d-sw" value="switch" class="compact-radio">
-                            <label for="ich-d-sw" class="compact-option">sw</label>
+                            <label for="ich-d-sw" class="compact-option">switch</label>
                             <input type="radio" name="ich-dominanz-new" id="ich-d-aus" value="ausgeglichen" class="compact-radio">
-                            <label for="ich-d-aus" class="compact-option">aus</label>
+                            <label for="ich-d-aus" class="compact-option">ausgeglichen</label>
                         </div>
                     </div>
                     <div class="compact-dimension needs-selection" data-dimension="ich-orientierung-new">
                         <div class="compact-dimension-label">Orientierung</div>
                         <div class="compact-options">
                             <input type="radio" name="ich-orientierung-new" id="ich-o-het" value="heterosexuell" class="compact-radio">
-                            <label for="ich-o-het" class="compact-option">hetero</label>
+                            <label for="ich-o-het" class="compact-option">heterosexuell</label>
                             <input type="radio" name="ich-orientierung-new" id="ich-o-hom" value="homosexuell" class="compact-radio">
-                            <label for="ich-o-hom" class="compact-option">homo</label>
+                            <label for="ich-o-hom" class="compact-option">homosexuell</label>
                             <input type="radio" name="ich-orientierung-new" id="ich-o-bi" value="bisexuell" class="compact-radio">
-                            <label for="ich-o-bi" class="compact-option">bi</label>
+                            <label for="ich-o-bi" class="compact-option">bisexuell</label>
                         </div>
                     </div>
                     <div class="compact-dimension needs-selection" data-dimension="ich-status-new">
@@ -3100,7 +3136,7 @@
                             <input type="radio" name="ich-status-new" id="ich-s-fakt" value="fakt" class="compact-radio">
                             <label for="ich-s-fakt" class="compact-option">Fakt</label>
                             <input type="radio" name="ich-status-new" id="ich-s-int" value="interessiert" class="compact-radio">
-                            <label for="ich-s-int" class="compact-option">Int.</label>
+                            <label for="ich-s-int" class="compact-option">Interessiert</label>
                         </div>
                     </div>
                 </div>
@@ -3112,48 +3148,51 @@
                     <div class="column-icon">👥</div>
                     <div class="column-title">PARTNER</div>
                 </div>
-                <select class="column-select" id="partnerSelect">
-                    <option value="single">Single</option>
-                    <option value="duo" selected>Duo</option>
-                    <option value="duo_flex">Duo-Flex</option>
-                    <option value="solopoly">Solopoly</option>
-                    <option value="poly_hedo">Poly Hedo</option>
-                    <option value="polyamor">Polyamor</option>
-                </select>
+                <div class="select-with-info">
+                    <select class="column-select" id="partnerSelect">
+                        <option value="single">Single</option>
+                        <option value="duo" selected>Duo</option>
+                        <option value="duo_flex">Duo-Flex</option>
+                        <option value="solopoly">Solopoly</option>
+                        <option value="poly_hedo">Poly Hedo</option>
+                        <option value="polyamor">Polyamor</option>
+                    </select>
+                    <button class="archetype-info-btn" onclick="showArchetypeInfo('partner')" title="Info zum Archetyp">ℹ</button>
+                </div>
                 <div class="column-dimensions">
                     <div class="compact-dimension needs-selection" data-dimension="partner-geschlecht-new">
                         <div class="compact-dimension-label">Geschlecht</div>
                         <div class="compact-options">
                             <input type="radio" name="partner-geschlecht-new" id="partner-g-m" value="männlich" class="compact-radio">
-                            <label for="partner-g-m" class="compact-option">m</label>
+                            <label for="partner-g-m" class="compact-option">männlich</label>
                             <input type="radio" name="partner-geschlecht-new" id="partner-g-w" value="weiblich" class="compact-radio">
-                            <label for="partner-g-w" class="compact-option">w</label>
+                            <label for="partner-g-w" class="compact-option">weiblich</label>
                             <input type="radio" name="partner-geschlecht-new" id="partner-g-nb" value="non-binär" class="compact-radio">
-                            <label for="partner-g-nb" class="compact-option">nb</label>
+                            <label for="partner-g-nb" class="compact-option">non-binär</label>
                         </div>
                     </div>
                     <div class="compact-dimension needs-selection" data-dimension="partner-dominanz-new">
                         <div class="compact-dimension-label">Dominanz</div>
                         <div class="compact-options">
                             <input type="radio" name="partner-dominanz-new" id="partner-d-dom" value="dominant" class="compact-radio">
-                            <label for="partner-d-dom" class="compact-option">dom</label>
+                            <label for="partner-d-dom" class="compact-option">dominant</label>
                             <input type="radio" name="partner-dominanz-new" id="partner-d-sub" value="submissiv" class="compact-radio">
-                            <label for="partner-d-sub" class="compact-option">sub</label>
+                            <label for="partner-d-sub" class="compact-option">submissiv</label>
                             <input type="radio" name="partner-dominanz-new" id="partner-d-sw" value="switch" class="compact-radio">
-                            <label for="partner-d-sw" class="compact-option">sw</label>
+                            <label for="partner-d-sw" class="compact-option">switch</label>
                             <input type="radio" name="partner-dominanz-new" id="partner-d-aus" value="ausgeglichen" class="compact-radio">
-                            <label for="partner-d-aus" class="compact-option">aus</label>
+                            <label for="partner-d-aus" class="compact-option">ausgeglichen</label>
                         </div>
                     </div>
                     <div class="compact-dimension needs-selection" data-dimension="partner-orientierung-new">
                         <div class="compact-dimension-label">Orientierung</div>
                         <div class="compact-options">
                             <input type="radio" name="partner-orientierung-new" id="partner-o-het" value="heterosexuell" class="compact-radio">
-                            <label for="partner-o-het" class="compact-option">hetero</label>
+                            <label for="partner-o-het" class="compact-option">heterosexuell</label>
                             <input type="radio" name="partner-orientierung-new" id="partner-o-hom" value="homosexuell" class="compact-radio">
-                            <label for="partner-o-hom" class="compact-option">homo</label>
+                            <label for="partner-o-hom" class="compact-option">homosexuell</label>
                             <input type="radio" name="partner-orientierung-new" id="partner-o-bi" value="bisexuell" class="compact-radio">
-                            <label for="partner-o-bi" class="compact-option">bi</label>
+                            <label for="partner-o-bi" class="compact-option">bisexuell</label>
                         </div>
                     </div>
                     <div class="compact-dimension needs-selection" data-dimension="partner-status-new">
@@ -3162,7 +3201,7 @@
                             <input type="radio" name="partner-status-new" id="partner-s-fakt" value="fakt" class="compact-radio">
                             <label for="partner-s-fakt" class="compact-option">Fakt</label>
                             <input type="radio" name="partner-status-new" id="partner-s-int" value="interessiert" class="compact-radio">
-                            <label for="partner-s-int" class="compact-option">Int.</label>
+                            <label for="partner-s-int" class="compact-option">Interessiert</label>
                         </div>
                     </div>
                 </div>
@@ -3228,6 +3267,42 @@
                 <div class="expand-content" id="radarSection">
                     <div class="expand-content-inner">
                         <svg id="expandRadarChart" viewBox="0 0 280 260"></svg>
+                    </div>
+                </div>
+            </div>
+
+            <div class="expand-section">
+                <button class="expand-btn" onclick="toggleExpandSection('pathosLogosSection')">
+                    <span>Pathos & Logos</span>
+                    <span class="expand-icon">▼</span>
+                </button>
+                <div class="expand-content" id="pathosLogosSection">
+                    <div class="expand-content-inner">
+                        <div class="pathos-logos-comparison">
+                            <div class="pathos-logos-column">
+                                <h4 style="color: var(--primary); margin-bottom: 8px;">ICH: <span id="expandPathosIchType">Single</span></h4>
+                                <div class="pathos-section" style="margin-bottom: 12px;">
+                                    <strong style="color: var(--success);">Pathos:</strong>
+                                    <p id="expandPathosIch" style="color: var(--text-secondary); font-style: italic; margin-top: 4px;"></p>
+                                </div>
+                                <div class="logos-section">
+                                    <strong style="color: var(--warning);">Logos:</strong>
+                                    <p id="expandLogosIch" style="color: var(--text-secondary); font-style: italic; margin-top: 4px;"></p>
+                                </div>
+                            </div>
+                            <div class="pathos-logos-divider" style="border-top: 1px solid var(--border); margin: 16px 0;"></div>
+                            <div class="pathos-logos-column">
+                                <h4 style="color: var(--primary); margin-bottom: 8px;">PARTNER: <span id="expandPathosPartnerType">Duo</span></h4>
+                                <div class="pathos-section" style="margin-bottom: 12px;">
+                                    <strong style="color: var(--success);">Pathos:</strong>
+                                    <p id="expandPathosPartner" style="color: var(--text-secondary); font-style: italic; margin-top: 4px;"></p>
+                                </div>
+                                <div class="logos-section">
+                                    <strong style="color: var(--warning);">Logos:</strong>
+                                    <p id="expandLogosPartner" style="color: var(--text-secondary); font-style: italic; margin-top: 4px;"></p>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -6758,13 +6833,16 @@
 
             // Update Pro/Contra
             updateExpandableProContra();
+
+            // Update Pathos/Logos
+            updateExpandablePathosLogos();
         }
 
         function updateExpandableCategoryBars(categories) {
             const container = document.getElementById('expandCategoryBars');
             if (!container) return;
 
-            const categoryNames = {
+            const categoryNamesMap = {
                 A: 'Beziehungsphilosophie',
                 B: 'Werte-Alignment',
                 C: 'Nähe-Distanz',
@@ -6774,18 +6852,21 @@
             };
 
             let html = '';
-            for (const [cat, data] of Object.entries(categories)) {
-                const score = data.score || 0;
+            for (const [cat, catData] of Object.entries(categories)) {
+                const score = catData.score || 0;
                 let colorClass = 'low';
                 if (score >= 80) colorClass = 'excellent';
                 else if (score >= 65) colorClass = 'good';
                 else if (score >= 50) colorClass = 'moderate';
 
                 html += `
-                    <div class="category-bar-row" style="margin-bottom: 12px;">
-                        <div style="display: flex; justify-content: space-between; margin-bottom: 4px;">
-                            <span style="font-size: 12px; color: var(--text-secondary);">${cat}: ${categoryNames[cat]}</span>
-                            <span style="font-size: 12px; font-weight: 600;" class="${colorClass}">${score}%</span>
+                    <div class="category-bar-row clickable-bar" style="margin-bottom: 12px; cursor: pointer; padding: 8px; border-radius: 8px; transition: background 0.2s;" onclick="showCategoryDetails('${cat}')" onmouseover="this.style.background='rgba(255,255,255,0.05)'" onmouseout="this.style.background='transparent'">
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 4px; align-items: center;">
+                            <span style="font-size: 12px; color: var(--text-secondary);">${cat}: ${categoryNamesMap[cat]}</span>
+                            <div style="display: flex; align-items: center; gap: 8px;">
+                                <span style="font-size: 12px; font-weight: 600;" class="${colorClass}">${score}%</span>
+                                <span style="font-size: 10px; color: var(--text-muted);">ℹ</span>
+                            </div>
                         </div>
                         <div style="height: 6px; background: var(--bg-dark); border-radius: 3px; overflow: hidden;">
                             <div style="height: 100%; width: ${score}%; background: var(--${colorClass === 'excellent' ? 'success' : colorClass === 'good' ? 'primary' : colorClass === 'moderate' ? 'warning' : 'danger'}); border-radius: 3px;"></div>
@@ -6794,6 +6875,108 @@
                 `;
             }
             container.innerHTML = html;
+        }
+
+        function showArchetypeInfo(person) {
+            const archetype = person === 'ich' ? currentArchetype : selectedPartner;
+            if (!data || !data.archetypes || !data.archetypes[archetype]) return;
+
+            const arch = data.archetypes[archetype];
+            const def = archetypeDefinitions[archetype];
+
+            let modalContent = `
+                <div class="modal-category">
+                    <div class="modal-category-header">
+                        <div class="modal-category-letter" style="background: ${arch.color}; width: 40px; height: 40px; font-size: 20px;">${icons[archetype]}</div>
+                        <div class="modal-category-name">${arch.name}</div>
+                    </div>
+                    <div class="modal-category-desc">${arch.shortDescription || ''}</div>
+            `;
+
+            if (def) {
+                modalContent += `
+                    <div class="definition-long" style="margin-top: 15px;">${def.longDef || ''}</div>
+                `;
+
+                if (def.keyPrinciples && def.keyPrinciples.length > 0) {
+                    modalContent += `
+                        <div class="definition-section">
+                            <div class="definition-section-title">Kernprinzipien</div>
+                            <ul class="definition-list principles">
+                                ${def.keyPrinciples.map(p => `<li>${p}</li>`).join('')}
+                            </ul>
+                        </div>
+                    `;
+                }
+
+                if (def.notTheSameAs && def.notTheSameAs.length > 0) {
+                    modalContent += `
+                        <div class="definition-section">
+                            <div class="definition-section-title">Das ist NICHT</div>
+                            <ul class="definition-list not-same">
+                                ${def.notTheSameAs.map(n => `<li>${n}</li>`).join('')}
+                            </ul>
+                        </div>
+                    `;
+                }
+
+                if (def.variants && def.variants.length > 0) {
+                    modalContent += `
+                        <div class="definition-section">
+                            <div class="definition-section-title">Varianten</div>
+                            <ul class="definition-list variants">
+                                ${def.variants.map(v => `<li>${v}</li>`).join('')}
+                            </ul>
+                        </div>
+                    `;
+                }
+            }
+
+            modalContent += '</div>';
+
+            document.getElementById('definitionModalTitle').textContent = `${arch.name} - Definition`;
+            document.getElementById('definitionModalBody').innerHTML = modalContent;
+            document.getElementById('definitionModal').classList.add('active');
+        }
+
+        function showCategoryDetails(cat) {
+            if (!data || !data.categories || !data.categories[cat]) return;
+
+            const catInfo = data.categories[cat];
+            const catNames = {
+                A: 'Beziehungsphilosophie',
+                B: 'Werte-Alignment',
+                C: 'Nähe-Distanz',
+                D: 'Autonomie',
+                E: 'Kommunikation',
+                F: 'Soziale Kompatibilität'
+            };
+
+            let modalContent = `
+                <div class="modal-category">
+                    <div class="modal-category-header">
+                        <div class="modal-category-letter">${cat}</div>
+                        <div class="modal-category-name">${catNames[cat]}</div>
+                    </div>
+                    <div class="modal-category-desc">${catInfo.description || 'Keine Beschreibung verfügbar.'}</div>
+            `;
+
+            if (catInfo.subDimensions && catInfo.subDimensions.length > 0) {
+                modalContent += `
+                    <div class="definition-section">
+                        <div class="definition-section-title">Subdimensionen</div>
+                        <ul class="definition-list variants">
+                            ${catInfo.subDimensions.map(sub => `<li>${sub}</li>`).join('')}
+                        </ul>
+                    </div>
+                `;
+            }
+
+            modalContent += '</div>';
+
+            document.getElementById('modalTitle').textContent = `Kategorie ${cat}: ${catNames[cat]}`;
+            document.getElementById('modalBody').innerHTML = modalContent;
+            document.getElementById('categoryModal').classList.add('active');
         }
 
         function updateExpandableProContra() {
@@ -6813,6 +6996,31 @@
             if (contraList && comp?.challenges) {
                 contraList.innerHTML = comp.challenges.slice(0, 4).map(c => `<li>${c}</li>`).join('');
             }
+        }
+
+        function updateExpandablePathosLogos() {
+            if (!data) return;
+
+            const ichArch = data.archetypes[currentArchetype];
+            const partnerArch = data.archetypes[selectedPartner];
+
+            // Update ICH Pathos/Logos
+            const pathosIchType = document.getElementById('expandPathosIchType');
+            const pathosIch = document.getElementById('expandPathosIch');
+            const logosIch = document.getElementById('expandLogosIch');
+
+            if (pathosIchType) pathosIchType.textContent = ichArch?.name || currentArchetype;
+            if (pathosIch) pathosIch.textContent = ichArch?.pathos || 'Keine Daten verfügbar.';
+            if (logosIch) logosIch.textContent = ichArch?.logos || 'Keine Daten verfügbar.';
+
+            // Update Partner Pathos/Logos
+            const pathosPartnerType = document.getElementById('expandPathosPartnerType');
+            const pathosPartner = document.getElementById('expandPathosPartner');
+            const logosPartner = document.getElementById('expandLogosPartner');
+
+            if (pathosPartnerType) pathosPartnerType.textContent = partnerArch?.name || selectedPartner;
+            if (pathosPartner) pathosPartner.textContent = partnerArch?.pathos || 'Keine Daten verfügbar.';
+            if (logosPartner) logosPartner.textContent = partnerArch?.logos || 'Keine Daten verfügbar.';
         }
 
         // Initialize
