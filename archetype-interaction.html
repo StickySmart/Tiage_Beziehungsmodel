@@ -3592,7 +3592,7 @@
                         <div class="logos-warning-header">
                             <span class="logos-warning-icon">⚠️</span>
                             <div class="logos-warning-content">
-                                <div class="logos-warning-title" id="logosWarningTitle">LOGOS-WARNUNG: Fundamentale philosophische Unterschiede</div>
+                                <div class="logos-warning-title" id="logosWarningTitle">Verstandsebene-Warnung: Fundamentale philosophische Unterschiede</div>
                                 <div class="logos-warning-subtitle" id="logosWarningSubtitle">Beziehungsphilosophie: 25%</div>
                             </div>
                             <span class="logos-warning-toggle">▼</span>
@@ -6352,8 +6352,8 @@
                 if (hasLogosWarning) {
                     document.getElementById('logosWarning').classList.add('active');
                     const warningTitle = logosCheck.score < 30
-                        ? 'LOGOS-WARNUNG: Fundamentale philosophische Unterschiede'
-                        : 'LOGOS-HINWEIS: Unterschiedliche philosophische Ansätze';
+                        ? 'Verstandsebene-Warnung: Fundamentale philosophische Unterschiede'
+                        : 'Verstandsebene-Hinweis: Unterschiedliche philosophische Ansätze';
                     document.getElementById('logosWarningTitle').textContent = warningTitle;
                     document.getElementById('logosWarningSubtitle').textContent =
                         `Beziehungsphilosophie: ${logosCheck.score}%`;
@@ -7459,7 +7459,6 @@
 
         // Initialize
         checkAgeVerification();
-        loadData();
         initFeedbackSystem();
         initDimensionListeners();
         initComparisonLayout();
