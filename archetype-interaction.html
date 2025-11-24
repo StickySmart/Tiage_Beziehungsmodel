@@ -2041,6 +2041,16 @@
             margin-bottom: 0 !important;
         }
 
+        /* Hide Vercel Toolbar */
+        #vercel-live-feedback-button,
+        [data-vercel-toolbar],
+        iframe[src*="vercel.live"] {
+            display: none !important;
+            visibility: hidden !important;
+            opacity: 0 !important;
+            pointer-events: none !important;
+        }
+
         /* ========================================
            Extended Dimensions UI
            ======================================== */
@@ -6819,6 +6829,38 @@
             }
         }
 
+        // Initialize age verification buttons with event listeners
+        function initAgeVerification() {
+            const yesButton = document.querySelector('.age-btn-yes');
+            const noButton = document.querySelector('.age-btn-no');
+
+            if (yesButton) {
+                // Add click event listener
+                yesButton.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    confirmAge(true);
+                });
+
+                // Ensure button is clickable
+                yesButton.style.pointerEvents = 'auto';
+                yesButton.style.cursor = 'pointer';
+            }
+
+            if (noButton) {
+                // Add click event listener
+                noButton.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    confirmAge(false);
+                });
+
+                // Ensure button is clickable
+                noButton.style.pointerEvents = 'auto';
+                noButton.style.cursor = 'pointer';
+            }
+        }
+
         // ========================================
         // Extended Dimensions Functions
         // ========================================
@@ -8884,6 +8926,7 @@
 
         // Initialize
         checkAgeVerification();
+        initAgeVerification();
         initFeedbackSystem();
         initDimensionListeners();
         initComparisonLayout();
