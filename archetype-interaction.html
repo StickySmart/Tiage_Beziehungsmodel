@@ -2684,6 +2684,7 @@
             max-width: 900px;
             margin: 0 auto;
             padding: 15px;
+            padding-top: 70px;
         }
 
         .comparison-grid {
@@ -3248,6 +3249,18 @@
             </div>
 
             <div class="expand-section">
+                <button class="expand-btn" onclick="toggleExpandSection('pathosLogosSection')">
+                    <span>Pathos & Logos</span>
+                    <span class="expand-icon">▼</span>
+                </button>
+                <div class="expand-content" id="pathosLogosSection">
+                    <div class="expand-content-inner" id="pathosLogosContent">
+                        <!-- Will be filled dynamically -->
+                    </div>
+                </div>
+            </div>
+
+            <div class="expand-section">
                 <button class="expand-btn" onclick="toggleExpandSection('categoriesSection')">
                     <span>Kategorien A-F Details</span>
                     <span class="expand-icon">▼</span>
@@ -3260,18 +3273,6 @@
                             </div>
                             <div style="flex: 1; min-width: 200px;" id="expandCategoryBars"></div>
                         </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="expand-section">
-                <button class="expand-btn" onclick="toggleExpandSection('pathosLogosSection')">
-                    <span>Pathos & Logos</span>
-                    <span class="expand-icon">▼</span>
-                </button>
-                <div class="expand-content" id="pathosLogosSection">
-                    <div class="expand-content-inner" id="pathosLogosContent">
-                        <!-- Will be filled dynamically -->
                     </div>
                 </div>
             </div>
@@ -6967,9 +6968,9 @@
             if (catInfo.subDimensions && catInfo.subDimensions.length > 0) {
                 modalContent += `
                     <div class="definition-section">
-                        <div class="definition-section-title">Subdimensionen</div>
-                        <ul class="definition-list variants">
-                            ${catInfo.subDimensions.map(sub => `<li>${sub}</li>`).join('')}
+                        <div class="definition-section-title">Subdimensionen <span style="font-size: 10px; color: var(--text-muted);">(klicken für Details)</span></div>
+                        <ul class="definition-list variants clickable-subs">
+                            ${catInfo.subDimensions.map(sub => `<li onclick="showSubDimensionInfo('${cat}', '${sub.replace(/'/g, "\\'")}')" style="cursor: pointer; padding: 8px; border-radius: 6px; transition: background 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.1)'" onmouseout="this.style.background='transparent'">${sub} <span style="color: var(--text-muted); font-size: 10px;">→</span></li>`).join('')}
                         </ul>
                     </div>
                 `;
@@ -6982,22 +6983,88 @@
             document.getElementById('categoryModal').classList.add('active');
         }
 
+        const subDimensionDescriptions = {
+            // Kategorie A
+            "Exklusivitäts-Erwartung": "Wie stark erwartet man, der einzige romantische/sexuelle Partner zu sein? Singles haben oft keine Erwartung, Duos erwarten volle Exklusivität, Poly-Typen akzeptieren multiple Partner.",
+            "Offenheit für alternative Modelle": "Bereitschaft, von traditionellen Beziehungsformen abzuweichen. Reicht von 'nur Monogamie' bis 'alle Formen willkommen'.",
+            "Beziehung als Lebensinhalt vs. Lebensbereich": "Ist die Beziehung das Zentrum des Lebens oder einer von vielen wichtigen Bereichen?",
+            // Kategorie B
+            "Definition von Treue": "Was bedeutet 'treu sein'? Für manche nur emotionale Treue, für andere auch körperliche Exklusivität, für Poly-Typen Ehrlichkeit und Transparenz.",
+            "Ethische Grundhaltung": "Gemeinsame Werte wie Ehrlichkeit, Respekt, Consent. Wie wichtig ist ethisches Handeln in der Beziehung?",
+            "Verantwortungsbewusstsein": "Übernimmt man Verantwortung für die eigenen Handlungen und deren Auswirkungen auf Partner?",
+            // Kategorie C
+            "Emotionale Verschmelzungs-Tendenz": "Wie stark möchte man emotional mit dem Partner verschmelzen? Von 'wir sind eins' bis 'wir sind zwei eigenständige Menschen'.",
+            "Physische Nähe-Bedürfnisse": "Wie viel körperliche Nähe braucht man? Zusammenleben, täglicher Kontakt, oder reicht wöchentliches Treffen?",
+            "Fähigkeit, Raum zu geben": "Kann man dem Partner Freiraum lassen, ohne sich vernachlässigt zu fühlen?",
+            // Kategorie D
+            "Individuelle Freiheit": "Wie wichtig ist persönliche Freiheit in der Beziehung? Eigene Hobbies, Freunde, Entscheidungen.",
+            "Entscheidungsautonomie": "Wer entscheidet was? Gemeinsam oder jeder für sich? Wie viel Mitsprache hat der Partner?",
+            "Akzeptanz der Autonomie des anderen": "Kann man akzeptieren, dass der Partner eigene Entscheidungen trifft, auch wenn man nicht zustimmt?",
+            // Kategorie E
+            "Kommunikationstiefe": "Wie tief geht die Kommunikation? Oberflächlich oder tiefgehende Gespräche über Gefühle, Ängste, Träume?",
+            "Konfliktfähigkeit": "Wie geht man mit Konflikten um? Vermeidung, Eskalation, oder konstruktive Lösung?",
+            "Emotionale Transparenz": "Wie offen teilt man Gefühle mit? Alles aussprechen oder manches für sich behalten?",
+            // Kategorie F
+            "Gesellschaftliche Akzeptanz": "Wie wichtig ist es, dass die Beziehung gesellschaftlich akzeptiert wird?",
+            "Integration in soziale Kreise": "Wie wird die Beziehung in Freundeskreis, Familie, Arbeit integriert?",
+            "Umgang mit Stigma": "Wie geht man mit negativen Reaktionen auf die Beziehungsform um?"
+        };
+
+        function showSubDimensionInfo(cat, subName) {
+            const description = subDimensionDescriptions[subName] || "Keine detaillierte Beschreibung verfügbar.";
+            const catNames = {
+                A: 'Beziehungsphilosophie',
+                B: 'Werte-Alignment',
+                C: 'Nähe-Distanz',
+                D: 'Autonomie',
+                E: 'Kommunikation',
+                F: 'Soziale Kompatibilität'
+            };
+
+            const ichArch = data?.archetypes?.[currentArchetype];
+            const partnerArch = data?.archetypes?.[selectedPartner];
+
+            let modalContent = `
+                <div style="background: rgba(69,123,157,0.1); padding: 12px; border-radius: 10px; margin-bottom: 15px;">
+                    <div style="font-size: 11px; color: var(--text-muted);">Teil von Kategorie ${cat}: ${catNames[cat]}</div>
+                </div>
+                <div style="margin-bottom: 20px;">
+                    <h3 style="color: var(--primary); margin-bottom: 10px;">${subName}</h3>
+                    <p style="color: var(--text-secondary); line-height: 1.6;">${description}</p>
+                </div>
+                <div style="background: rgba(46,204,113,0.1); padding: 12px; border-radius: 10px; margin-bottom: 10px;">
+                    <div style="font-size: 12px; color: #2ecc71; font-weight: 600; margin-bottom: 5px;">Relevanz für ${ichArch?.name || 'ICH'} × ${partnerArch?.name || 'Partner'}:</div>
+                    <p style="color: var(--text-muted); font-size: 12px;">Diese Subdimension beeinflusst eure Kompatibilität in der Kategorie "${catNames[cat]}".</p>
+                </div>
+            `;
+
+            document.getElementById('modalTitle').textContent = subName;
+            document.getElementById('modalBody').innerHTML = modalContent;
+        }
+
         function updateExpandableProContra() {
             if (!data) return;
 
-            const matrix = data.compatibility_matrix;
             const key = `${currentArchetype}_${selectedPartner}`;
             const reverseKey = `${selectedPartner}_${currentArchetype}`;
-            const comp = matrix[key] || matrix[reverseKey];
+            const interaction = data.interactions?.[key] || data.interactions?.[reverseKey];
 
             const proList = document.getElementById('expandProList');
             const contraList = document.getElementById('expandContraList');
 
-            if (proList && comp?.synergies) {
-                proList.innerHTML = comp.synergies.slice(0, 4).map(s => `<li>${s}</li>`).join('');
+            if (proList) {
+                if (interaction?.pro && interaction.pro.length > 0) {
+                    proList.innerHTML = interaction.pro.slice(0, 4).map(s => `<li>${s}</li>`).join('');
+                } else {
+                    proList.innerHTML = '<li style="color: var(--text-muted);">Keine Daten verfügbar</li>';
+                }
             }
-            if (contraList && comp?.challenges) {
-                contraList.innerHTML = comp.challenges.slice(0, 4).map(c => `<li>${c}</li>`).join('');
+            if (contraList) {
+                if (interaction?.contra && interaction.contra.length > 0) {
+                    contraList.innerHTML = interaction.contra.slice(0, 4).map(c => `<li>${c}</li>`).join('');
+                } else {
+                    contraList.innerHTML = '<li style="color: var(--text-muted);">Keine Daten verfügbar</li>';
+                }
             }
         }
 
