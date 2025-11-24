@@ -3046,6 +3046,428 @@
                 font-size: 1.2rem;
             }
         }
+
+        /* ========================================
+           MULTI-PAGE MOBILE LAYOUT
+           ======================================== */
+
+        /* Mobile: Hide desktop, show multi-page */
+        @media (max-width: 768px) {
+            /* Hide desktop comparison layout on mobile */
+            .comparison-container.desktop-mode {
+                display: none !important;
+            }
+
+            /* Show mobile multi-page container */
+            .mobile-multipage {
+                display: block !important;
+            }
+
+            /* Page Container */
+            .mobile-multipage {
+                min-height: 100vh;
+                padding-top: 60px;
+                position: relative;
+            }
+
+            /* Individual Pages */
+            .mobile-page {
+                display: none;
+                min-height: calc(100vh - 60px);
+                padding: 15px;
+                padding-bottom: 80px;
+                animation: slideInPage 0.3s ease;
+            }
+
+            .mobile-page.active {
+                display: block;
+            }
+
+            @keyframes slideInPage {
+                from { transform: translateX(30px); opacity: 0; }
+                to { transform: translateX(0); opacity: 1; }
+            }
+
+            /* Page Indicator Dots */
+            .page-indicator {
+                position: fixed;
+                bottom: 20px;
+                left: 50%;
+                transform: translateX(-50%);
+                display: flex;
+                gap: 8px;
+                z-index: 100;
+                background: rgba(26,26,46,0.95);
+                padding: 10px 20px;
+                border-radius: 25px;
+                border: 1px solid var(--border);
+            }
+
+            .page-dot {
+                width: 8px;
+                height: 8px;
+                border-radius: 50%;
+                background: var(--text-muted);
+                cursor: pointer;
+                transition: all 0.3s ease;
+            }
+
+            .page-dot.active {
+                background: var(--primary);
+                width: 24px;
+                border-radius: 4px;
+            }
+
+            /* Page Headers */
+            .page-header {
+                display: flex;
+                align-items: center;
+                gap: 12px;
+                margin-bottom: 20px;
+            }
+
+            .btn-back {
+                width: 36px;
+                height: 36px;
+                border-radius: 50%;
+                background: var(--bg-card);
+                border: 1px solid var(--border);
+                color: var(--text-secondary);
+                font-size: 1.2rem;
+                cursor: pointer;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                transition: all 0.2s ease;
+            }
+
+            .btn-back:hover {
+                background: var(--primary);
+                color: white;
+                border-color: var(--primary);
+            }
+
+            .page-title {
+                font-size: var(--font-lg);
+                font-weight: 600;
+                color: var(--text-primary);
+            }
+
+            /* Score Circle (Page 2) */
+            .score-circle-container {
+                text-align: center;
+                margin: 20px 0;
+            }
+
+            .score-circle {
+                width: 140px;
+                height: 140px;
+                border-radius: 50%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 2.5rem;
+                font-weight: 700;
+                margin: 0 auto 10px;
+                background: linear-gradient(135deg, var(--primary), var(--primary-light));
+                color: white;
+                box-shadow: 0 8px 30px rgba(69, 123, 157, 0.4);
+            }
+
+            .score-label {
+                font-size: var(--font-sm);
+                color: var(--text-muted);
+                text-transform: uppercase;
+                letter-spacing: 1px;
+            }
+
+            /* Score Breakdown with Sublabels (Page 2) */
+            .score-breakdown {
+                background: var(--bg-card);
+                border-radius: 16px;
+                border: 1px solid var(--border);
+                padding: 15px;
+                margin: 20px 0;
+            }
+
+            .score-factor {
+                display: flex;
+                justify-content: space-between;
+                align-items: flex-start;
+                padding: 12px 0;
+                border-bottom: 1px solid var(--border);
+            }
+
+            .score-factor:last-child {
+                border-bottom: none;
+            }
+
+            .score-factor-label {
+                display: flex;
+                flex-direction: column;
+                gap: 2px;
+                flex: 1;
+            }
+
+            .score-factor-main {
+                font-size: var(--font-sm);
+                color: var(--text-primary);
+                font-weight: 500;
+            }
+
+            .score-factor-sub {
+                font-size: 11px;
+                color: var(--text-muted);
+                font-style: italic;
+            }
+
+            .score-factor-value {
+                font-size: var(--font-md);
+                font-weight: 700;
+                color: var(--primary);
+                min-width: 50px;
+                text-align: right;
+            }
+
+            /* Quality Quote (Pirsig-Style) */
+            .quality-quote {
+                margin: 20px 0;
+                padding: 16px;
+                background: rgba(69, 123, 157, 0.1);
+                border-left: 3px solid var(--primary);
+                border-radius: 0 12px 12px 0;
+            }
+
+            .quality-quote p {
+                font-size: var(--font-sm);
+                color: var(--text-secondary);
+                font-style: italic;
+                line-height: 1.6;
+            }
+
+            /* Primary Button (Mobile Pages) */
+            .btn-primary-mobile {
+                display: block;
+                width: 100%;
+                padding: 14px 20px;
+                background: var(--primary);
+                border: none;
+                border-radius: 12px;
+                color: white;
+                font-size: var(--font-base);
+                font-weight: 600;
+                cursor: pointer;
+                margin-top: 20px;
+                transition: all 0.3s ease;
+            }
+
+            .btn-primary-mobile:hover {
+                opacity: 0.9;
+                transform: translateY(-1px);
+            }
+
+            .btn-secondary-mobile {
+                display: block;
+                width: 100%;
+                padding: 14px 20px;
+                background: transparent;
+                border: 1px solid var(--border);
+                border-radius: 12px;
+                color: var(--text-secondary);
+                font-size: var(--font-base);
+                font-weight: 500;
+                cursor: pointer;
+                margin-top: 10px;
+                transition: all 0.3s ease;
+            }
+
+            .btn-secondary-mobile:hover {
+                border-color: var(--primary);
+                color: var(--text-primary);
+            }
+
+            /* Pro/Contra Cards (Page 3) */
+            .pro-section-mobile, .contra-section-mobile {
+                padding: 16px;
+                border-radius: 12px;
+                margin-bottom: 15px;
+            }
+
+            .pro-section-mobile {
+                background: rgba(46, 204, 113, 0.1);
+                border: 1px solid rgba(46, 204, 113, 0.3);
+            }
+
+            .contra-section-mobile {
+                background: rgba(231, 76, 60, 0.1);
+                border: 1px solid rgba(231, 76, 60, 0.3);
+            }
+
+            .pro-section-mobile h3 {
+                color: var(--success);
+                font-size: var(--font-base);
+                margin-bottom: 12px;
+            }
+
+            .contra-section-mobile h3 {
+                color: var(--danger);
+                font-size: var(--font-base);
+                margin-bottom: 12px;
+            }
+
+            .pro-list-mobile, .contra-list-mobile {
+                list-style: none;
+                font-size: var(--font-sm);
+                color: var(--text-secondary);
+            }
+
+            .pro-list-mobile li, .contra-list-mobile li {
+                padding: 6px 0 6px 18px;
+                position: relative;
+            }
+
+            .pro-list-mobile li::before {
+                content: '✓';
+                position: absolute;
+                left: 0;
+                color: var(--success);
+            }
+
+            .contra-list-mobile li::before {
+                content: '✗';
+                position: absolute;
+                left: 0;
+                color: var(--danger);
+            }
+
+            /* Categories Accordion (Page 4) */
+            .categories-accordion {
+                display: flex;
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .category-accordion-item {
+                background: var(--bg-card);
+                border: 1px solid var(--border);
+                border-radius: 12px;
+                overflow: hidden;
+            }
+
+            .category-accordion-header {
+                display: flex;
+                align-items: center;
+                gap: 12px;
+                padding: 14px 16px;
+                cursor: pointer;
+                transition: background 0.2s ease;
+            }
+
+            .category-accordion-header:hover {
+                background: var(--bg-hover);
+            }
+
+            .category-accordion-letter {
+                width: 32px;
+                height: 32px;
+                border-radius: 8px;
+                background: var(--primary);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-weight: 700;
+                font-size: var(--font-sm);
+                color: white;
+                flex-shrink: 0;
+            }
+
+            .category-accordion-name {
+                flex: 1;
+                font-size: var(--font-sm);
+                color: var(--text-primary);
+            }
+
+            .category-accordion-score {
+                font-size: var(--font-md);
+                font-weight: 700;
+                color: var(--primary);
+            }
+
+            .category-accordion-icon {
+                font-size: 0.8rem;
+                color: var(--text-muted);
+                transition: transform 0.3s ease;
+            }
+
+            .category-accordion-item.open .category-accordion-icon {
+                transform: rotate(180deg);
+            }
+
+            .category-accordion-content {
+                max-height: 0;
+                overflow: hidden;
+                transition: max-height 0.3s ease;
+            }
+
+            .category-accordion-item.open .category-accordion-content {
+                max-height: 300px;
+            }
+
+            .category-accordion-inner {
+                padding: 0 16px 16px;
+                border-top: 1px solid var(--border);
+            }
+
+            .category-accordion-desc {
+                font-size: var(--font-sm);
+                color: var(--text-secondary);
+                line-height: 1.5;
+                margin-top: 12px;
+            }
+
+            .category-tags {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 6px;
+                margin-top: 12px;
+            }
+
+            .category-tag {
+                padding: 4px 10px;
+                background: rgba(255,255,255,0.05);
+                border-radius: 12px;
+                font-size: 11px;
+                color: var(--text-muted);
+            }
+
+            /* Types Display (Page 2) */
+            .types-display {
+                text-align: center;
+                font-size: var(--font-lg);
+                font-weight: 600;
+                color: var(--text-primary);
+                margin-bottom: 10px;
+            }
+
+            .types-display .type-name {
+                color: var(--primary);
+            }
+        }
+
+        /* Desktop: Keep single-page layout, hide mobile */
+        @media (min-width: 769px) {
+            .mobile-multipage {
+                display: none !important;
+            }
+
+            .comparison-container.desktop-mode {
+                display: block !important;
+            }
+
+            .page-indicator {
+                display: none !important;
+            }
+        }
     </style>
 </head>
 <body>
@@ -3074,8 +3496,8 @@
         <h1>ARCHETYPEN-BEZIEHUNGSQUALITÄT</h1>
     </header>
 
-    <!-- NEW: Side-by-Side Comparison Layout -->
-    <div class="comparison-container" id="comparisonView">
+    <!-- NEW: Side-by-Side Comparison Layout (Desktop) -->
+    <div class="comparison-container desktop-mode" id="comparisonView">
         <!-- Two Column Grid -->
         <div class="comparison-grid">
             <!-- ICH Column -->
@@ -3223,6 +3645,38 @@
             <div class="result-progress">
                 <div class="result-progress-fill" id="resultProgressFill" style="width: 0%; background: var(--primary);"></div>
             </div>
+
+            <!-- 4-Factor Breakdown with Sublabels -->
+            <div id="desktopFactorBreakdown" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; margin-top: 15px; padding-top: 15px; border-top: 1px solid var(--border);">
+                <div style="display: flex; justify-content: space-between; align-items: flex-start; padding: 8px; background: rgba(255,255,255,0.03); border-radius: 8px;">
+                    <div style="display: flex; flex-direction: column; gap: 2px;">
+                        <span style="font-size: var(--font-sm); color: var(--text-primary);">Archetyp-Übereinstimmung</span>
+                        <span style="font-size: 10px; color: var(--text-muted); font-style: italic;">(Beziehungsphilosophie - Verstand)</span>
+                    </div>
+                    <span id="desktopFactorArchetyp" style="font-size: var(--font-base); font-weight: 700; color: var(--primary);">0%</span>
+                </div>
+                <div style="display: flex; justify-content: space-between; align-items: flex-start; padding: 8px; background: rgba(255,255,255,0.03); border-radius: 8px;">
+                    <div style="display: flex; flex-direction: column; gap: 2px;">
+                        <span style="font-size: var(--font-sm); color: var(--text-primary);">Dominanz-Harmonie</span>
+                        <span style="font-size: 10px; color: var(--text-muted); font-style: italic;">(Emotionale Dynamik - Gefühl)</span>
+                    </div>
+                    <span id="desktopFactorDominanz" style="font-size: var(--font-base); font-weight: 700; color: var(--primary);">0%</span>
+                </div>
+                <div style="display: flex; justify-content: space-between; align-items: flex-start; padding: 8px; background: rgba(255,255,255,0.03); border-radius: 8px;">
+                    <div style="display: flex; flex-direction: column; gap: 2px;">
+                        <span style="font-size: var(--font-sm); color: var(--text-primary);">Orientierungs-Kompatibilität</span>
+                        <span style="font-size: 10px; color: var(--text-muted); font-style: italic;">(Körperliche Anziehung - Gefühl)</span>
+                    </div>
+                    <span id="desktopFactorOrientierung" style="font-size: var(--font-base); font-weight: 700; color: var(--primary);">0%</span>
+                </div>
+                <div style="display: flex; justify-content: space-between; align-items: flex-start; padding: 8px; background: rgba(255,255,255,0.03); border-radius: 8px;">
+                    <div style="display: flex; flex-direction: column; gap: 2px;">
+                        <span style="font-size: var(--font-sm); color: var(--text-primary);">Geschlechts-Attraktion</span>
+                        <span style="font-size: 10px; color: var(--text-muted); font-style: italic;">(Gender-Chemie - Gefühl)</span>
+                    </div>
+                    <span id="desktopFactorGeschlecht" style="font-size: var(--font-base); font-weight: 700; color: var(--primary);">0%</span>
+                </div>
+            </div>
         </div>
 
         <!-- Expandable Sections -->
@@ -3276,6 +3730,243 @@
                     </div>
                 </div>
             </div>
+        </div>
+    </div>
+
+    <!-- MOBILE: Multi-Page Swipe Interface -->
+    <div class="mobile-multipage" id="mobileMultipage" style="display: none;">
+
+        <!-- PAGE 1: Auswahl -->
+        <div class="mobile-page active" id="mobilePage1" data-page="1">
+            <h2 style="text-align: center; color: var(--text-primary); margin-bottom: 20px; font-size: var(--font-lg);">Beziehungsqualität analysieren</h2>
+
+            <!-- ICH Auswahl -->
+            <div style="background: var(--bg-card); border-radius: 16px; border: 1px solid var(--border); border-top: 3px solid var(--success); padding: 15px; margin-bottom: 15px;">
+                <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 12px; color: var(--success); font-weight: 700; font-size: var(--font-base);">
+                    <span>👤</span> ICH
+                </div>
+                <select class="column-select" id="mobileIchSelect">
+                    <option value="single">Single</option>
+                    <option value="duo">Duo</option>
+                    <option value="duo_flex">Duo-Flex</option>
+                    <option value="solopoly">Solopoly</option>
+                    <option value="poly_hedo">Poly Hedo</option>
+                    <option value="polyamor">Polyamor</option>
+                </select>
+                <div class="column-dimensions" id="mobileIchDimensions">
+                    <div class="compact-dimension needs-selection">
+                        <div class="compact-dimension-label">Geschlecht</div>
+                        <div class="compact-options">
+                            <input type="radio" name="mobile-ich-geschlecht" id="m-ich-g-m" value="männlich" class="compact-radio">
+                            <label for="m-ich-g-m" class="compact-option">männlich</label>
+                            <input type="radio" name="mobile-ich-geschlecht" id="m-ich-g-w" value="weiblich" class="compact-radio">
+                            <label for="m-ich-g-w" class="compact-option">weiblich</label>
+                            <input type="radio" name="mobile-ich-geschlecht" id="m-ich-g-nb" value="non-binär" class="compact-radio">
+                            <label for="m-ich-g-nb" class="compact-option">non-binär</label>
+                        </div>
+                    </div>
+                    <div class="compact-dimension needs-selection">
+                        <div class="compact-dimension-label">Dominanz-Präferenz</div>
+                        <div class="compact-options">
+                            <input type="radio" name="mobile-ich-dominanz" id="m-ich-d-dom" value="dominant" class="compact-radio">
+                            <label for="m-ich-d-dom" class="compact-option">dominant</label>
+                            <input type="radio" name="mobile-ich-dominanz" id="m-ich-d-sub" value="submissiv" class="compact-radio">
+                            <label for="m-ich-d-sub" class="compact-option">submissiv</label>
+                            <input type="radio" name="mobile-ich-dominanz" id="m-ich-d-sw" value="switch" class="compact-radio">
+                            <label for="m-ich-d-sw" class="compact-option">switch</label>
+                            <input type="radio" name="mobile-ich-dominanz" id="m-ich-d-aus" value="ausgeglichen" class="compact-radio">
+                            <label for="m-ich-d-aus" class="compact-option">ausgeglichen</label>
+                        </div>
+                    </div>
+                    <div class="compact-dimension needs-selection">
+                        <div class="compact-dimension-label">Sexuelle Orientierung</div>
+                        <div class="compact-options">
+                            <input type="radio" name="mobile-ich-orientierung" id="m-ich-o-het" value="heterosexuell" class="compact-radio">
+                            <label for="m-ich-o-het" class="compact-option">heterosexuell</label>
+                            <input type="radio" name="mobile-ich-orientierung" id="m-ich-o-hom" value="homosexuell" class="compact-radio">
+                            <label for="m-ich-o-hom" class="compact-option">homosexuell</label>
+                            <input type="radio" name="mobile-ich-orientierung" id="m-ich-o-bi" value="bisexuell" class="compact-radio">
+                            <label for="m-ich-o-bi" class="compact-option">bisexuell</label>
+                        </div>
+                    </div>
+                    <div class="compact-dimension needs-selection">
+                        <div class="compact-dimension-label">Status</div>
+                        <div class="compact-options">
+                            <input type="radio" name="mobile-ich-status" id="m-ich-s-fakt" value="fakt" class="compact-radio">
+                            <label for="m-ich-s-fakt" class="compact-option">Fakt</label>
+                            <input type="radio" name="mobile-ich-status" id="m-ich-s-int" value="interessiert" class="compact-radio">
+                            <label for="m-ich-s-int" class="compact-option">Interessiert</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PARTNER Auswahl -->
+            <div style="background: var(--bg-card); border-radius: 16px; border: 1px solid var(--border); border-top: 3px solid var(--danger); padding: 15px; margin-bottom: 15px;">
+                <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 12px; color: var(--danger); font-weight: 700; font-size: var(--font-base);">
+                    <span>👥</span> PARTNER
+                </div>
+                <select class="column-select" id="mobilePartnerSelect">
+                    <option value="single">Single</option>
+                    <option value="duo" selected>Duo</option>
+                    <option value="duo_flex">Duo-Flex</option>
+                    <option value="solopoly">Solopoly</option>
+                    <option value="poly_hedo">Poly Hedo</option>
+                    <option value="polyamor">Polyamor</option>
+                </select>
+                <div class="column-dimensions" id="mobilePartnerDimensions">
+                    <div class="compact-dimension needs-selection">
+                        <div class="compact-dimension-label">Geschlecht</div>
+                        <div class="compact-options">
+                            <input type="radio" name="mobile-partner-geschlecht" id="m-partner-g-m" value="männlich" class="compact-radio">
+                            <label for="m-partner-g-m" class="compact-option">männlich</label>
+                            <input type="radio" name="mobile-partner-geschlecht" id="m-partner-g-w" value="weiblich" class="compact-radio">
+                            <label for="m-partner-g-w" class="compact-option">weiblich</label>
+                            <input type="radio" name="mobile-partner-geschlecht" id="m-partner-g-nb" value="non-binär" class="compact-radio">
+                            <label for="m-partner-g-nb" class="compact-option">non-binär</label>
+                        </div>
+                    </div>
+                    <div class="compact-dimension needs-selection">
+                        <div class="compact-dimension-label">Dominanz-Präferenz</div>
+                        <div class="compact-options">
+                            <input type="radio" name="mobile-partner-dominanz" id="m-partner-d-dom" value="dominant" class="compact-radio">
+                            <label for="m-partner-d-dom" class="compact-option">dominant</label>
+                            <input type="radio" name="mobile-partner-dominanz" id="m-partner-d-sub" value="submissiv" class="compact-radio">
+                            <label for="m-partner-d-sub" class="compact-option">submissiv</label>
+                            <input type="radio" name="mobile-partner-dominanz" id="m-partner-d-sw" value="switch" class="compact-radio">
+                            <label for="m-partner-d-sw" class="compact-option">switch</label>
+                            <input type="radio" name="mobile-partner-dominanz" id="m-partner-d-aus" value="ausgeglichen" class="compact-radio">
+                            <label for="m-partner-d-aus" class="compact-option">ausgeglichen</label>
+                        </div>
+                    </div>
+                    <div class="compact-dimension needs-selection">
+                        <div class="compact-dimension-label">Sexuelle Orientierung</div>
+                        <div class="compact-options">
+                            <input type="radio" name="mobile-partner-orientierung" id="m-partner-o-het" value="heterosexuell" class="compact-radio">
+                            <label for="m-partner-o-het" class="compact-option">heterosexuell</label>
+                            <input type="radio" name="mobile-partner-orientierung" id="m-partner-o-hom" value="homosexuell" class="compact-radio">
+                            <label for="m-partner-o-hom" class="compact-option">homosexuell</label>
+                            <input type="radio" name="mobile-partner-orientierung" id="m-partner-o-bi" value="bisexuell" class="compact-radio">
+                            <label for="m-partner-o-bi" class="compact-option">bisexuell</label>
+                        </div>
+                    </div>
+                    <div class="compact-dimension needs-selection">
+                        <div class="compact-dimension-label">Status</div>
+                        <div class="compact-options">
+                            <input type="radio" name="mobile-partner-status" id="m-partner-s-fakt" value="fakt" class="compact-radio">
+                            <label for="m-partner-s-fakt" class="compact-option">Fakt</label>
+                            <input type="radio" name="mobile-partner-status" id="m-partner-s-int" value="interessiert" class="compact-radio">
+                            <label for="m-partner-s-int" class="compact-option">Interessiert</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <button class="btn-primary-mobile" onclick="mobileGoToPage(2)">Analysieren →</button>
+        </div>
+
+        <!-- PAGE 2: Ergebnis-Übersicht -->
+        <div class="mobile-page" id="mobilePage2" data-page="2">
+            <div class="page-header">
+                <button class="btn-back" onclick="mobileGoToPage(1)">←</button>
+                <span class="page-title">Ergebnis</span>
+            </div>
+
+            <div class="types-display">
+                <span class="type-name" id="mobileResultIch">Single</span>
+                <span> × </span>
+                <span class="type-name" id="mobileResultPartner">Duo</span>
+            </div>
+
+            <div class="score-circle-container">
+                <div class="score-circle" id="mobileScoreCircle">0%</div>
+                <p class="score-label">Beziehungsqualität</p>
+            </div>
+
+            <!-- Score Breakdown with Sublabels -->
+            <div class="score-breakdown">
+                <div class="score-factor">
+                    <div class="score-factor-label">
+                        <span class="score-factor-main">Archetyp-Übereinstimmung</span>
+                        <span class="score-factor-sub">(Beziehungsphilosophie - Verstand)</span>
+                    </div>
+                    <span class="score-factor-value" id="mobileFactorArchetyp">0%</span>
+                </div>
+                <div class="score-factor">
+                    <div class="score-factor-label">
+                        <span class="score-factor-main">Dominanz-Harmonie</span>
+                        <span class="score-factor-sub">(Emotionale Dynamik - Gefühl)</span>
+                    </div>
+                    <span class="score-factor-value" id="mobileFactorDominanz">0%</span>
+                </div>
+                <div class="score-factor">
+                    <div class="score-factor-label">
+                        <span class="score-factor-main">Orientierungs-Kompatibilität</span>
+                        <span class="score-factor-sub">(Körperliche Anziehung - Gefühl)</span>
+                    </div>
+                    <span class="score-factor-value" id="mobileFactorOrientierung">0%</span>
+                </div>
+                <div class="score-factor">
+                    <div class="score-factor-label">
+                        <span class="score-factor-main">Geschlechts-Attraktion</span>
+                        <span class="score-factor-sub">(Gender-Chemie - Gefühl)</span>
+                    </div>
+                    <span class="score-factor-value" id="mobileFactorGeschlecht">0%</span>
+                </div>
+            </div>
+
+            <!-- Pirsig-Style Quote -->
+            <div class="quality-quote" id="mobileQualityQuote">
+                <p>"Diese Beziehung zeigt eine Balance zwischen statischen Mustern (Archetypen) und dynamischem Potenzial."</p>
+            </div>
+
+            <button class="btn-primary-mobile" onclick="mobileGoToPage(3)">Pro & Contra →</button>
+        </div>
+
+        <!-- PAGE 3: Pro & Contra -->
+        <div class="mobile-page" id="mobilePage3" data-page="3">
+            <div class="page-header">
+                <button class="btn-back" onclick="mobileGoToPage(2)">←</button>
+                <span class="page-title" id="mobileProContraTitle">Single × Duo</span>
+            </div>
+
+            <div class="pro-section-mobile">
+                <h3>✓ Was funktioniert</h3>
+                <ul class="pro-list-mobile" id="mobileProList">
+                    <li>Wird geladen...</li>
+                </ul>
+            </div>
+
+            <div class="contra-section-mobile">
+                <h3>✗ Herausforderungen</h3>
+                <ul class="contra-list-mobile" id="mobileContraList">
+                    <li>Wird geladen...</li>
+                </ul>
+            </div>
+
+            <button class="btn-primary-mobile" onclick="mobileGoToPage(4)">Details →</button>
+        </div>
+
+        <!-- PAGE 4: Detaillierte Kategorien -->
+        <div class="mobile-page" id="mobilePage4" data-page="4">
+            <div class="page-header">
+                <button class="btn-back" onclick="mobileGoToPage(3)">←</button>
+                <span class="page-title">Detaillierte Analyse</span>
+            </div>
+
+            <div class="categories-accordion" id="mobileCategoriesAccordion">
+                <!-- Will be populated dynamically -->
+            </div>
+
+            <button class="btn-secondary-mobile" onclick="mobileGoToPage(1)">← Neue Analyse</button>
+        </div>
+
+        <!-- Page Indicator -->
+        <div class="page-indicator">
+            <span class="page-dot active" onclick="mobileGoToPage(1)"></span>
+            <span class="page-dot" onclick="mobileGoToPage(2)"></span>
+            <span class="page-dot" onclick="mobileGoToPage(3)"></span>
+            <span class="page-dot" onclick="mobileGoToPage(4)"></span>
         </div>
     </div>
 
@@ -3592,7 +4283,7 @@
                         <div class="logos-warning-header">
                             <span class="logos-warning-icon">⚠️</span>
                             <div class="logos-warning-content">
-                                <div class="logos-warning-title" id="logosWarningTitle">LOGOS-WARNUNG: Fundamentale philosophische Unterschiede</div>
+                                <div class="logos-warning-title" id="logosWarningTitle">Verstandsebene-Warnung: Fundamentale philosophische Unterschiede</div>
                                 <div class="logos-warning-subtitle" id="logosWarningSubtitle">Beziehungsphilosophie: 25%</div>
                             </div>
                             <span class="logos-warning-toggle">▼</span>
@@ -6352,8 +7043,8 @@
                 if (hasLogosWarning) {
                     document.getElementById('logosWarning').classList.add('active');
                     const warningTitle = logosCheck.score < 30
-                        ? 'LOGOS-WARNUNG: Fundamentale philosophische Unterschiede'
-                        : 'LOGOS-HINWEIS: Unterschiedliche philosophische Ansätze';
+                        ? 'Verstandsebene-Warnung: Fundamentale philosophische Unterschiede'
+                        : 'Verstandsebene-Hinweis: Unterschiedliche philosophische Ansätze';
                     document.getElementById('logosWarningTitle').textContent = warningTitle;
                     document.getElementById('logosWarningSubtitle').textContent =
                         `Beziehungsphilosophie: ${logosCheck.score}%`;
@@ -6623,24 +7314,162 @@
             };
         }
 
-        // Calculate overall with all modifiers
+        // ========================================
+        // NEW: 4-Factor Relationship Quality Model
+        // ========================================
+
+        // Factor 1: Archetype Match (40%) - from existing matrix
+        function getArchetypeScore(type1, type2) {
+            const key = `${type1}_${type2}`;
+            const interaction = data?.interactions[key];
+            return interaction?.overall || 50;
+        }
+
+        // Factor 2: Dominance Harmony (20%)
+        function calculateDominanceHarmony(dom1, dom2) {
+            // Return default if not set
+            if (!dom1 || !dom2) return 75;
+
+            const harmonyMatrix = {
+                "dominant-submissiv": 100,
+                "submissiv-dominant": 100,
+                "ausgeglichen-ausgeglichen": 95,
+                "switch-switch": 90,
+                "dominant-ausgeglichen": 85,
+                "ausgeglichen-dominant": 85,
+                "submissiv-ausgeglichen": 85,
+                "ausgeglichen-submissiv": 85,
+                "switch-dominant": 80,
+                "dominant-switch": 80,
+                "switch-submissiv": 80,
+                "submissiv-switch": 80,
+                "switch-ausgeglichen": 88,
+                "ausgeglichen-switch": 88,
+                "dominant-dominant": 60,
+                "submissiv-submissiv": 60
+            };
+
+            const key = `${dom1}-${dom2}`;
+            return harmonyMatrix[key] || harmonyMatrix[`${dom2}-${dom1}`] || 75;
+        }
+
+        // Factor 3: Orientation Compatibility (25%) - uses existing checkPhysicalCompatibility
+        function calculateOrientationScore(person1, person2) {
+            const pathosCheck = checkPhysicalCompatibility(person1, person2);
+
+            if (pathosCheck.result === "unmöglich") {
+                return 0;  // K.O.-Kriterium!
+            }
+
+            if (pathosCheck.result === "unsicher") {
+                return 70;  // Exploration-Phase
+            }
+
+            return 100;  // Kompatibel
+        }
+
+        // Factor 4: Gender Attraction (15%)
+        function calculateGenderAttraction(p1, p2) {
+            const g1 = p1.geschlecht;
+            const o1 = p1.orientierung;
+            const g2 = p2.geschlecht;
+            const o2 = p2.orientierung;
+
+            // Return default if values missing
+            if (!g1 || !o1 || !g2 || !o2) return 75;
+
+            // Bi = immer 100%
+            if (o1 === "bisexuell" || o2 === "bisexuell") return 100;
+
+            // Hetero
+            if (o1 === "heterosexuell" && o2 === "heterosexuell") {
+                if ((g1 === "männlich" && g2 === "weiblich") ||
+                    (g1 === "weiblich" && g2 === "männlich")) return 100;
+                if (g1 === "non-binär" || g2 === "non-binär") return 80;
+                return 0;
+            }
+
+            // Homo
+            if (o1 === "homosexuell" && o2 === "homosexuell") {
+                if (g1 === g2 && g1 !== "non-binär") return 100;
+                if (g1 === "non-binär" || g2 === "non-binär") return 80;
+                return 0;
+            }
+
+            return 75;  // Gemischte Orientierungen
+        }
+
+        // Main: 4-Factor Relationship Quality Calculation
+        function calculateRelationshipQuality(person1, person2) {
+            // ═══════════════════════════════════════
+            // EBENE 1: K.O.-Check
+            // ═══════════════════════════════════════
+
+            const orientationScore = calculateOrientationScore(person1, person2);
+
+            if (orientationScore === 0) {
+                return {
+                    score: 0,
+                    blocked: true,
+                    reason: "Keine körperliche Anziehung möglich",
+                    breakdown: {
+                        archetyp: 0,
+                        dominanz: 0,
+                        orientierung: 0,
+                        geschlecht: 0
+                    }
+                };
+            }
+
+            // ═══════════════════════════════════════
+            // EBENE 2: 4-Faktoren Berechnung
+            // ═══════════════════════════════════════
+
+            const archetypeScore = getArchetypeScore(person1.archetyp, person2.archetyp);
+            const dominanceScore = calculateDominanceHarmony(person1.dominanz, person2.dominanz);
+            const genderScore = calculateGenderAttraction(person1, person2);
+
+            // Gewichtete Summe
+            const totalScore =
+                (archetypeScore * 0.40) +      // 40%
+                (dominanceScore * 0.20) +      // 20%
+                (orientationScore * 0.25) +    // 25%
+                (genderScore * 0.15);          // 15%
+
+            return {
+                score: Math.round(totalScore),
+                blocked: false,
+                breakdown: {
+                    archetyp: archetypeScore,
+                    dominanz: dominanceScore,
+                    orientierung: orientationScore,
+                    geschlecht: genderScore
+                }
+            };
+        }
+
+        // Calculate overall with 4-factor model + category details for UI
         function calculateOverallWithModifiers(person1, person2, pathosCheck, logosCheck) {
-            const weights = { A: 0.25, B: 0.15, C: 0.15, D: 0.15, E: 0.15, F: 0.15 };
+            // Use new 4-factor model for overall score
+            const qualityResult = calculateRelationshipQuality(person1, person2);
+
+            // Calculate category scores for UI display (radar chart, category bars)
             const categories = {};
-            let weightedTotal = 0;
 
-            // Category A: No dimension modifiers (logos check)
+            // Category A: Philosophy score from matrix
             categories.A = { score: logosCheck.score, modifier: 0, note: "Rein archetyp-basiert" };
-            weightedTotal += logosCheck.score * weights.A;
 
-            // Other categories with modifiers
+            // Other categories with modifiers (for UI display)
             for (const cat of ['B', 'C', 'D', 'E', 'F']) {
                 const result = calculateCategoryWithModifiers(cat, person1, person2, pathosCheck);
                 categories[cat] = result;
-                weightedTotal += result.score * weights[cat];
             }
 
-            return { overall: Math.round(weightedTotal), categories };
+            return {
+                overall: qualityResult.score,  // NEW: 4-factor score
+                categories,                     // Keep for UI
+                breakdown: qualityResult.breakdown  // NEW: factor breakdown
+            };
         }
 
         // Get modifier summary for UI
@@ -6807,13 +7636,27 @@
 
             // Calculate overall score
             let overallScore = 0;
+            let qualityBreakdown = { archetyp: 0, dominanz: 0, orientierung: 0, geschlecht: 0 };
+
             if (pathosCheck.result !== 'unmöglich') {
                 const result = calculateOverallWithModifiers(person1, person2, pathosCheck, logosCheck);
                 overallScore = result.overall;
+                qualityBreakdown = result.breakdown || qualityBreakdown;
 
                 // Update expandable category bars
                 updateExpandableCategoryBars(result.categories);
             }
+
+            // Update 4-Factor Breakdown (Desktop)
+            const factorArchetyp = document.getElementById('desktopFactorArchetyp');
+            const factorDominanz = document.getElementById('desktopFactorDominanz');
+            const factorOrientierung = document.getElementById('desktopFactorOrientierung');
+            const factorGeschlecht = document.getElementById('desktopFactorGeschlecht');
+
+            if (factorArchetyp) factorArchetyp.textContent = qualityBreakdown.archetyp + '%';
+            if (factorDominanz) factorDominanz.textContent = qualityBreakdown.dominanz + '%';
+            if (factorOrientierung) factorOrientierung.textContent = qualityBreakdown.orientierung + '%';
+            if (factorGeschlecht) factorGeschlecht.textContent = qualityBreakdown.geschlecht + '%';
 
             // Update result bar
             const percentage = document.getElementById('resultPercentage');
@@ -7457,12 +8300,386 @@
             return `${ichName} und ${partnerName} haben einige Überschneidungen in ihren rationalen Beziehungsvorstellungen (Philosophie-Score: ${philScore}%), aber auch Unterschiede, die Kommunikation erfordern.`;
         }
 
+        // ========================================
+        // MOBILE MULTI-PAGE FUNCTIONS
+        // ========================================
+
+        let currentMobilePage = 1;
+        let mobilePersonDimensions = {
+            ich: { geschlecht: null, dominanz: null, orientierung: null, orientierungStatus: null },
+            partner: { geschlecht: null, dominanz: null, orientierung: null, orientierungStatus: null }
+        };
+        let mobileIchArchetype = 'single';
+        let mobilePartnerArchetype = 'duo';
+        let mobileTouchStartX = 0;
+        let mobileTouchEndX = 0;
+
+        function mobileGoToPage(pageNumber) {
+            // Hide all pages
+            document.querySelectorAll('.mobile-page').forEach(p => {
+                p.classList.remove('active');
+            });
+
+            // Show target page
+            const targetPage = document.getElementById(`mobilePage${pageNumber}`);
+            if (targetPage) {
+                targetPage.classList.add('active');
+            }
+
+            // Update dots
+            document.querySelectorAll('.page-dot').forEach((dot, index) => {
+                dot.classList.toggle('active', index === pageNumber - 1);
+            });
+
+            currentMobilePage = pageNumber;
+
+            // Update page content when navigating
+            if (pageNumber === 2) {
+                updateMobileResultPage();
+            } else if (pageNumber === 3) {
+                updateMobileProContraPage();
+            } else if (pageNumber === 4) {
+                updateMobileCategoriesPage();
+            }
+
+            // Scroll to top
+            window.scrollTo(0, 0);
+        }
+
+        function initMobileSwipe() {
+            const mobileContainer = document.getElementById('mobileMultipage');
+            if (!mobileContainer) return;
+
+            mobileContainer.addEventListener('touchstart', (e) => {
+                mobileTouchStartX = e.changedTouches[0].screenX;
+            }, { passive: true });
+
+            mobileContainer.addEventListener('touchend', (e) => {
+                mobileTouchEndX = e.changedTouches[0].screenX;
+                handleMobileSwipe();
+            }, { passive: true });
+        }
+
+        function handleMobileSwipe() {
+            const swipeThreshold = 50;
+            const diff = mobileTouchStartX - mobileTouchEndX;
+
+            if (Math.abs(diff) > swipeThreshold) {
+                if (diff > 0 && currentMobilePage < 4) {
+                    // Swipe left -> next page
+                    mobileGoToPage(currentMobilePage + 1);
+                } else if (diff < 0 && currentMobilePage > 1) {
+                    // Swipe right -> previous page
+                    mobileGoToPage(currentMobilePage - 1);
+                }
+            }
+        }
+
+        function initMobileDimensionListeners() {
+            // ICH Select
+            const mobileIchSelect = document.getElementById('mobileIchSelect');
+            if (mobileIchSelect) {
+                mobileIchSelect.addEventListener('change', (e) => {
+                    mobileIchArchetype = e.target.value;
+                    // Sync with desktop
+                    const desktopSelect = document.getElementById('ichSelect');
+                    if (desktopSelect) desktopSelect.value = e.target.value;
+                    currentArchetype = e.target.value;
+                    updateComparisonView();
+                });
+            }
+
+            // Partner Select
+            const mobilePartnerSelect = document.getElementById('mobilePartnerSelect');
+            if (mobilePartnerSelect) {
+                mobilePartnerSelect.addEventListener('change', (e) => {
+                    mobilePartnerArchetype = e.target.value;
+                    // Sync with desktop
+                    const desktopSelect = document.getElementById('partnerSelect');
+                    if (desktopSelect) desktopSelect.value = e.target.value;
+                    selectedPartner = e.target.value;
+                    updateComparisonView();
+                });
+            }
+
+            // ICH Dimensions
+            document.querySelectorAll('input[name="mobile-ich-geschlecht"]').forEach(radio => {
+                radio.addEventListener('change', (e) => {
+                    mobilePersonDimensions.ich.geschlecht = e.target.value;
+                    personDimensions.ich.geschlecht = e.target.value;
+                    e.target.closest('.compact-dimension').classList.remove('needs-selection');
+                    syncDimensionToDesktop('ich-geschlecht-new', e.target.value);
+                    updateComparisonView();
+                });
+            });
+            document.querySelectorAll('input[name="mobile-ich-dominanz"]').forEach(radio => {
+                radio.addEventListener('change', (e) => {
+                    mobilePersonDimensions.ich.dominanz = e.target.value;
+                    personDimensions.ich.dominanz = e.target.value;
+                    e.target.closest('.compact-dimension').classList.remove('needs-selection');
+                    syncDimensionToDesktop('ich-dominanz-new', e.target.value);
+                    updateComparisonView();
+                });
+            });
+            document.querySelectorAll('input[name="mobile-ich-orientierung"]').forEach(radio => {
+                radio.addEventListener('change', (e) => {
+                    mobilePersonDimensions.ich.orientierung = e.target.value;
+                    personDimensions.ich.orientierung = e.target.value;
+                    e.target.closest('.compact-dimension').classList.remove('needs-selection');
+                    syncDimensionToDesktop('ich-orientierung-new', e.target.value);
+                    updateComparisonView();
+                });
+            });
+            document.querySelectorAll('input[name="mobile-ich-status"]').forEach(radio => {
+                radio.addEventListener('change', (e) => {
+                    mobilePersonDimensions.ich.orientierungStatus = e.target.value;
+                    personDimensions.ich.orientierungStatus = e.target.value;
+                    e.target.closest('.compact-dimension').classList.remove('needs-selection');
+                    syncDimensionToDesktop('ich-status-new', e.target.value);
+                    updateComparisonView();
+                });
+            });
+
+            // Partner Dimensions
+            document.querySelectorAll('input[name="mobile-partner-geschlecht"]').forEach(radio => {
+                radio.addEventListener('change', (e) => {
+                    mobilePersonDimensions.partner.geschlecht = e.target.value;
+                    personDimensions.partner.geschlecht = e.target.value;
+                    e.target.closest('.compact-dimension').classList.remove('needs-selection');
+                    syncDimensionToDesktop('partner-geschlecht-new', e.target.value);
+                    updateComparisonView();
+                });
+            });
+            document.querySelectorAll('input[name="mobile-partner-dominanz"]').forEach(radio => {
+                radio.addEventListener('change', (e) => {
+                    mobilePersonDimensions.partner.dominanz = e.target.value;
+                    personDimensions.partner.dominanz = e.target.value;
+                    e.target.closest('.compact-dimension').classList.remove('needs-selection');
+                    syncDimensionToDesktop('partner-dominanz-new', e.target.value);
+                    updateComparisonView();
+                });
+            });
+            document.querySelectorAll('input[name="mobile-partner-orientierung"]').forEach(radio => {
+                radio.addEventListener('change', (e) => {
+                    mobilePersonDimensions.partner.orientierung = e.target.value;
+                    personDimensions.partner.orientierung = e.target.value;
+                    e.target.closest('.compact-dimension').classList.remove('needs-selection');
+                    syncDimensionToDesktop('partner-orientierung-new', e.target.value);
+                    updateComparisonView();
+                });
+            });
+            document.querySelectorAll('input[name="mobile-partner-status"]').forEach(radio => {
+                radio.addEventListener('change', (e) => {
+                    mobilePersonDimensions.partner.orientierungStatus = e.target.value;
+                    personDimensions.partner.orientierungStatus = e.target.value;
+                    e.target.closest('.compact-dimension').classList.remove('needs-selection');
+                    syncDimensionToDesktop('partner-status-new', e.target.value);
+                    updateComparisonView();
+                });
+            });
+        }
+
+        function syncDimensionToDesktop(name, value) {
+            const desktopRadio = document.querySelector(`input[name="${name}"][value="${value}"]`);
+            if (desktopRadio) {
+                desktopRadio.checked = true;
+                const container = desktopRadio.closest('.compact-dimension');
+                if (container) container.classList.remove('needs-selection');
+            }
+        }
+
+        function updateMobileResultPage() {
+            if (!data) return;
+
+            const ichArch = data.archetypes[mobileIchArchetype || currentArchetype];
+            const partnerArch = data.archetypes[mobilePartnerArchetype || selectedPartner];
+
+            // Update type names
+            document.getElementById('mobileResultIch').textContent = ichArch?.name || mobileIchArchetype;
+            document.getElementById('mobileResultPartner').textContent = partnerArch?.name || mobilePartnerArchetype;
+
+            // Calculate scores
+            const person1 = { archetyp: mobileIchArchetype || currentArchetype, ...personDimensions.ich };
+            const person2 = { archetyp: mobilePartnerArchetype || selectedPartner, ...personDimensions.partner };
+
+            const qualityResult = calculateRelationshipQuality(person1, person2);
+
+            // Update score circle
+            const scoreCircle = document.getElementById('mobileScoreCircle');
+            scoreCircle.textContent = qualityResult.score + '%';
+
+            // Set score circle color
+            if (qualityResult.blocked) {
+                scoreCircle.style.background = 'linear-gradient(135deg, var(--danger), #c0392b)';
+            } else if (qualityResult.score >= 80) {
+                scoreCircle.style.background = 'linear-gradient(135deg, var(--success), #1e8449)';
+            } else if (qualityResult.score >= 65) {
+                scoreCircle.style.background = 'linear-gradient(135deg, var(--primary), var(--primary-light))';
+            } else if (qualityResult.score >= 50) {
+                scoreCircle.style.background = 'linear-gradient(135deg, var(--warning), #d68910)';
+            } else {
+                scoreCircle.style.background = 'linear-gradient(135deg, var(--danger), #c0392b)';
+            }
+
+            // Update factor breakdown
+            document.getElementById('mobileFactorArchetyp').textContent = qualityResult.breakdown.archetyp + '%';
+            document.getElementById('mobileFactorDominanz').textContent = qualityResult.breakdown.dominanz + '%';
+            document.getElementById('mobileFactorOrientierung').textContent = qualityResult.breakdown.orientierung + '%';
+            document.getElementById('mobileFactorGeschlecht').textContent = qualityResult.breakdown.geschlecht + '%';
+
+            // Update Pirsig quote
+            const quoteElement = document.getElementById('mobileQualityQuote');
+            if (quoteElement) {
+                let quoteText = '';
+                if (qualityResult.blocked) {
+                    quoteText = '"Keine Basis für Resonanz vorhanden – die körperliche oder emotionale Chemie fehlt grundlegend."';
+                } else if (qualityResult.score >= 80) {
+                    quoteText = `"Diese Beziehung zeigt eine Qualität von ${qualityResult.score}% – eine hohe Resonanz zwischen zwei Menschen, deren Muster sich ergänzen und verstärken."`;
+                } else if (qualityResult.score >= 65) {
+                    quoteText = `"Diese Beziehung zeigt eine Qualität von ${qualityResult.score}% – eine solide Balance zwischen statischen Mustern und dynamischem Potenzial."`;
+                } else if (qualityResult.score >= 50) {
+                    quoteText = `"Diese Beziehung zeigt eine Qualität von ${qualityResult.score}% – vorhandene Basis, aber Arbeit an der dynamischen Qualität erforderlich."`;
+                } else {
+                    quoteText = `"Diese Beziehung zeigt eine Qualität von ${qualityResult.score}% – erhebliche Herausforderungen, die bewusste Reflexion erfordern."`;
+                }
+                quoteElement.innerHTML = `<p>${quoteText}</p>`;
+            }
+        }
+
+        function updateMobileProContraPage() {
+            if (!data) return;
+
+            const ichArch = data.archetypes[mobileIchArchetype || currentArchetype];
+            const partnerArch = data.archetypes[mobilePartnerArchetype || selectedPartner];
+
+            // Update title
+            const title = document.getElementById('mobileProContraTitle');
+            if (title) {
+                title.textContent = `${ichArch?.name || 'ICH'} × ${partnerArch?.name || 'PARTNER'}`;
+            }
+
+            // Get interaction data
+            const interactionKey = `${mobileIchArchetype || currentArchetype}_${mobilePartnerArchetype || selectedPartner}`;
+            const interaction = data.interactions?.[interactionKey];
+
+            const proList = document.getElementById('mobileProList');
+            const contraList = document.getElementById('mobileContraList');
+
+            if (interaction) {
+                // Pro list
+                if (proList && interaction.pros?.length) {
+                    proList.innerHTML = interaction.pros.map(p => `<li>${p}</li>`).join('');
+                } else if (proList) {
+                    proList.innerHTML = '<li>Keine spezifischen Vorteile bekannt</li>';
+                }
+
+                // Contra list
+                if (contraList && interaction.contras?.length) {
+                    contraList.innerHTML = interaction.contras.map(c => `<li>${c}</li>`).join('');
+                } else if (contraList) {
+                    contraList.innerHTML = '<li>Keine spezifischen Herausforderungen bekannt</li>';
+                }
+            } else {
+                if (proList) proList.innerHTML = '<li>Keine Daten verfügbar</li>';
+                if (contraList) contraList.innerHTML = '<li>Keine Daten verfügbar</li>';
+            }
+        }
+
+        function updateMobileCategoriesPage() {
+            if (!data) return;
+
+            const container = document.getElementById('mobileCategoriesAccordion');
+            if (!container) return;
+
+            const person1 = { archetyp: mobileIchArchetype || currentArchetype, ...personDimensions.ich };
+            const person2 = { archetyp: mobilePartnerArchetype || selectedPartner, ...personDimensions.partner };
+
+            const pathosCheck = checkPhysicalCompatibility(person1, person2);
+            const logosCheck = calculatePhilosophyCompatibility(person1.archetyp, person2.archetyp);
+            const result = calculateOverallWithModifiers(person1, person2, pathosCheck, logosCheck);
+
+            const categoryNamesMap = {
+                A: 'Beziehungsphilosophie',
+                B: 'Werte-Alignment',
+                C: 'Nähe-Distanz',
+                D: 'Autonomie',
+                E: 'Kommunikation',
+                F: 'Soziale Kompatibilität'
+            };
+
+            const categoryDescMap = {
+                A: 'Übereinstimmung in den grundlegenden Beziehungsvorstellungen und -erwartungen.',
+                B: 'Wie gut eure moralischen und ethischen Werte übereinstimmen.',
+                C: 'Balance zwischen Bedürfnis nach Nähe und Freiraum.',
+                D: 'Respekt für individuelle Unabhängigkeit und Selbstbestimmung.',
+                E: 'Fähigkeit zur offenen und ehrlichen Kommunikation.',
+                F: 'Kompatibilität im sozialen Umfeld und gesellschaftlicher Akzeptanz.'
+            };
+
+            let html = '';
+            for (const [cat, catData] of Object.entries(result.categories)) {
+                const score = catData.score || 0;
+                const barClass = score >= 80 ? 'bar-excellent' : score >= 65 ? 'bar-good' : score >= 50 ? 'bar-medium' : 'bar-low';
+
+                html += `
+                    <div class="category-accordion-item">
+                        <div class="category-accordion-header" onclick="toggleMobileCategory(this)">
+                            <span class="category-accordion-letter">${cat}</span>
+                            <span class="category-accordion-name">${categoryNamesMap[cat] || cat}</span>
+                            <span class="category-accordion-score">${score}%</span>
+                            <span class="category-accordion-icon">▼</span>
+                        </div>
+                        <div class="category-accordion-content">
+                            <div class="category-accordion-inner">
+                                <p class="category-accordion-desc">${categoryDescMap[cat] || ''}</p>
+                                <div style="margin-top: 10px; height: 8px; background: rgba(255,255,255,0.1); border-radius: 4px; overflow: hidden;">
+                                    <div class="${barClass}" style="height: 100%; width: ${score}%; border-radius: 4px;"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+
+            container.innerHTML = html;
+        }
+
+        function toggleMobileCategory(header) {
+            const item = header.closest('.category-accordion-item');
+            if (item) {
+                item.classList.toggle('open');
+            }
+        }
+
+        function checkAndShowMobileLayout() {
+            const isMobile = window.innerWidth <= 768;
+            const desktopView = document.getElementById('comparisonView');
+            const mobileView = document.getElementById('mobileMultipage');
+
+            if (isMobile) {
+                if (desktopView) desktopView.style.display = 'none';
+                if (mobileView) mobileView.style.display = 'block';
+            } else {
+                if (desktopView) desktopView.style.display = 'block';
+                if (mobileView) mobileView.style.display = 'none';
+            }
+        }
+
+        function initMobileLayout() {
+            initMobileSwipe();
+            initMobileDimensionListeners();
+            checkAndShowMobileLayout();
+
+            // Listen for window resize
+            window.addEventListener('resize', checkAndShowMobileLayout);
+        }
+
         // Initialize
         checkAgeVerification();
-        loadData();
         initFeedbackSystem();
         initDimensionListeners();
         initComparisonLayout();
+        initMobileLayout();
 
         // Update comparison view when data is loaded
         const originalLoadData = loadData;
