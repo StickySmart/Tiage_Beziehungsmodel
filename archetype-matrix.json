@@ -3,9 +3,9 @@
     "title": "Archetypen-Interaktionsmatrix für Beziehungsmodelle",
     "version": "4.0.0",
     "created": "2025-01-22",
-    "description": "Eine 6x6 Matrix zur Bewertung der Kompatibilität verschiedener Beziehungsarchetypen",
+    "description": "Eine 6x6 Matrix zur Bewertung der Beziehungsqualität verschiedener Beziehungsarchetypen",
     "matrixType": "asymmetric",
-    "note": "Asymmetrisch, da die Perspektive die wahrgenommene Kompatibilität beeinflusst"
+    "note": "Asymmetrisch, da die Perspektive die wahrgenommene Beziehungsqualität beeinflusst"
   },
 
   "categories": {
