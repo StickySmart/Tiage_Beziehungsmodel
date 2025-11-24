@@ -6778,6 +6778,33 @@
                 warningsContainer.innerHTML += `<div class="warning-box logos-warning">⚠️ LOGOS-WARNUNG: Philosophie nur ${logosCheck.score}%</div>`;
             }
 
+            // If dimensions incomplete, show empty state and return
+            if (pathosCheck.result === 'unvollständig') {
+                // Clear all expandable sections
+                const percentage = document.getElementById('resultPercentage');
+                const progressFill = document.getElementById('resultProgressFill');
+                percentage.textContent = '–';
+                percentage.className = 'result-percentage';
+                progressFill.style.width = '0%';
+
+                // Clear sections with placeholder message
+                const proList = document.getElementById('expandProList');
+                const contraList = document.getElementById('expandContraList');
+                if (proList) proList.innerHTML = '<li style="color: var(--text-muted); font-style: italic;">Bitte alle Dimensionen auswählen</li>';
+                if (contraList) contraList.innerHTML = '<li style="color: var(--text-muted); font-style: italic;">Bitte alle Dimensionen auswählen</li>';
+
+                const pathosLogosContent = document.getElementById('pathosLogosContent');
+                if (pathosLogosContent) pathosLogosContent.innerHTML = '<p style="color: var(--text-muted); font-style: italic; text-align: center; padding: 20px;">Bitte alle Dimensionen auswählen, um die Pathos/Logos-Analyse zu sehen.</p>';
+
+                const categoryBars = document.getElementById('expandCategoryBars');
+                if (categoryBars) categoryBars.innerHTML = '<p style="color: var(--text-muted); font-style: italic; text-align: center; padding: 20px;">Bitte alle Dimensionen auswählen</p>';
+
+                const expandRadar = document.getElementById('expandRadarChart');
+                if (expandRadar) expandRadar.innerHTML = '';
+
+                return;
+            }
+
             // Calculate overall score
             let overallScore = 0;
             if (pathosCheck.result !== 'unmöglich') {
