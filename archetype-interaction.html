@@ -8928,13 +8928,15 @@
             window.addEventListener('resize', checkAndShowMobileLayout);
         }
 
-        // Initialize
-        checkAgeVerification();
-        initAgeVerification();
-        initFeedbackSystem();
-        initDimensionListeners();
-        initComparisonLayout();
-        initMobileLayout();
+        // Initialize when DOM is ready
+        document.addEventListener('DOMContentLoaded', function() {
+            checkAgeVerification();
+            initAgeVerification();
+            initFeedbackSystem();
+            initDimensionListeners();
+            initComparisonLayout();
+            initMobileLayout();
+        });
 
         // ========================================
         // FEATURE 1: Factor Detail Modal
