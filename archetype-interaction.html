@@ -3468,6 +3468,29 @@
                 display: none !important;
             }
         }
+
+        /* Validation Warning Animations */
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translate(-50%, -20px);
+            }
+            to {
+                opacity: 1;
+                transform: translate(-50%, 0);
+            }
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 1;
+                transform: translate(-50%, 0);
+            }
+            to {
+                opacity: 0;
+                transform: translate(-50%, -20px);
+            }
+        }
     </style>
 </head>
 <body>
@@ -8315,7 +8338,66 @@
         let mobileTouchStartX = 0;
         let mobileTouchEndX = 0;
 
+        function validateDimensionsComplete() {
+            // Check if we're in mobile mode
+            const isMobile = window.innerWidth <= 768;
+            const dimensions = isMobile ? mobilePersonDimensions : personDimensions;
+
+            // Check if all required dimensions are selected for both ICH and PARTNER
+            const ichComplete =
+                dimensions.ich.geschlecht !== null &&
+                dimensions.ich.dominanz !== null &&
+                dimensions.ich.orientierung !== null &&
+                dimensions.ich.orientierungStatus !== null;
+
+            const partnerComplete =
+                dimensions.partner.geschlecht !== null &&
+                dimensions.partner.dominanz !== null &&
+                dimensions.partner.orientierung !== null &&
+                dimensions.partner.orientierungStatus !== null;
+
+            return ichComplete && partnerComplete;
+        }
+
+        function showValidationWarning() {
+            // Find or create warning element
+            let warning = document.getElementById('dimensionWarning');
+            if (!warning) {
+                warning = document.createElement('div');
+                warning.id = 'dimensionWarning';
+                warning.style.cssText = `
+                    position: fixed;
+                    top: 20px;
+                    left: 50%;
+                    transform: translateX(-50%);
+                    background: rgba(231, 76, 60, 0.95);
+                    color: white;
+                    padding: 15px 25px;
+                    border-radius: 10px;
+                    font-size: 14px;
+                    font-weight: 600;
+                    z-index: 9999;
+                    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+                    animation: slideDown 0.3s ease;
+                `;
+                warning.textContent = '⚠️ Bitte fülle alle Dimensionen aus, bevor du fortsetzt!';
+                document.body.appendChild(warning);
+
+                // Auto-remove after 3 seconds
+                setTimeout(() => {
+                    warning.style.animation = 'slideUp 0.3s ease';
+                    setTimeout(() => warning.remove(), 300);
+                }, 3000);
+            }
+        }
+
         function mobileGoToPage(pageNumber) {
+            // Validate before moving from page 1 to page 2
+            if (currentMobilePage === 1 && pageNumber === 2 && !validateDimensionsComplete()) {
+                showValidationWarning();
+                return;
+            }
+
             // Hide all pages
             document.querySelectorAll('.mobile-page').forEach(p => {
                 p.classList.remove('active');
