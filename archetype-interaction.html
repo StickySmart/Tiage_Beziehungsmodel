@@ -3254,19 +3254,12 @@
                 </button>
                 <div class="expand-content" id="categoriesSection">
                     <div class="expand-content-inner">
-                        <div id="expandCategoryBars"></div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="expand-section">
-                <button class="expand-btn" onclick="toggleExpandSection('radarSection')">
-                    <span>Radar-Diagramm</span>
-                    <span class="expand-icon">▼</span>
-                </button>
-                <div class="expand-content" id="radarSection">
-                    <div class="expand-content-inner">
-                        <svg id="expandRadarChart" viewBox="0 0 280 260"></svg>
+                        <div style="display: flex; gap: 15px; align-items: flex-start; flex-wrap: wrap;">
+                            <div style="flex: 0 0 120px; max-width: 120px;">
+                                <svg id="expandRadarChart" viewBox="0 0 280 260" style="width: 100%; height: auto;"></svg>
+                            </div>
+                            <div style="flex: 1; min-width: 200px;" id="expandCategoryBars"></div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -4960,7 +4953,11 @@
                 html += `<circle cx="${x}" cy="${y}" r="4" fill="${color}"/>`;
             });
 
-            svg.innerHTML = html;
+            if (svg) svg.innerHTML = html;
+
+            // Also draw on expandRadarChart (smaller version)
+            const expandSvg = document.getElementById('expandRadarChart');
+            if (expandSvg) expandSvg.innerHTML = html;
         }
 
         function updateCategoryBars(scores) {
@@ -6806,6 +6803,11 @@
 
             percentage.className = 'result-percentage ' + colorClass;
             progressFill.style.background = color;
+
+            // Update Radar Chart
+            const interactionKey = `${currentArchetype}_${selectedPartner}`;
+            const interaction = data.interactions?.[interactionKey] || {};
+            drawRadarChart(interaction.scores || {}, partnerArch?.color || '#457B9D');
 
             // Update Pro/Contra
             updateExpandableProContra();
