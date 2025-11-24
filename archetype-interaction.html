@@ -338,9 +338,10 @@
             line-height: 1.5;
         }
 
-        /* Match Cards */
+        /* Match Cards - HIDDEN FOR NOW (can be re-enabled later) */
         .match-section {
             margin-top: 20px;
+            display: none; /* Temporarily hidden - remove this line to show again */
         }
 
         .match-card {
@@ -2008,11 +2009,28 @@
         }
 
         .dimensions-section-title {
-            font-size: var(--font-sm);
-            color: var(--text-muted);
+            font-size: var(--font-base);
+            font-weight: 600;
+            color: var(--primary);
             text-transform: uppercase;
-            letter-spacing: 1px;
+            letter-spacing: 1.5px;
             margin-bottom: 15px;
+            padding: 10px 15px;
+            background: rgba(69, 123, 157, 0.15);
+            border-left: 3px solid var(--primary);
+            border-radius: 0 8px 8px 0;
+        }
+
+        .dimensions-section-title.ich-title {
+            color: var(--success);
+            background: rgba(46, 204, 113, 0.15);
+            border-left-color: var(--success);
+        }
+
+        .dimensions-section-title.partner-title {
+            color: var(--accent);
+            background: rgba(231, 76, 60, 0.15);
+            border-left-color: var(--accent);
         }
 
         .dimension-group {
@@ -2090,6 +2108,28 @@
             0% { border-color: var(--primary); box-shadow: 0 0 0 0 rgba(69,123,157,0.4); }
             50% { border-color: var(--success); box-shadow: 0 0 0 4px rgba(46,204,113,0.3); }
             100% { border-color: var(--primary); box-shadow: 0 0 0 0 rgba(69,123,157,0); }
+        }
+
+        /* Blinking animation for unselected dimension groups */
+        .dimension-group.needs-selection .dimension-option,
+        .dimension-status-group.needs-selection .dimension-option {
+            animation: needsAttention 1.5s ease-in-out infinite;
+        }
+
+        .dimension-group.needs-selection .dimension-label,
+        .dimension-status-group.needs-selection .dimension-status-label {
+            color: var(--warning);
+        }
+
+        @keyframes needsAttention {
+            0%, 100% {
+                border-color: var(--border);
+                box-shadow: 0 0 0 0 rgba(243, 156, 18, 0);
+            }
+            50% {
+                border-color: var(--warning);
+                box-shadow: 0 0 8px 2px rgba(243, 156, 18, 0.3);
+            }
         }
 
         /* Status sub-options (indented) */
@@ -2635,6 +2675,343 @@
         .category-modifier.negative {
             color: var(--danger);
         }
+
+        /* ========================================
+           NEW: Side-by-Side Comparison Layout
+           ======================================== */
+
+        .comparison-container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 15px;
+        }
+
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .comparison-column {
+            background: var(--bg-card);
+            border-radius: 16px;
+            border: 1px solid var(--border);
+            padding: 15px;
+        }
+
+        .comparison-column.ich-column {
+            border-top: 3px solid var(--success);
+        }
+
+        .comparison-column.partner-column {
+            border-top: 3px solid var(--accent);
+        }
+
+        .column-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 12px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .column-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+        }
+
+        .ich-column .column-icon {
+            background: rgba(46, 204, 113, 0.2);
+            color: var(--success);
+        }
+
+        .partner-column .column-icon {
+            background: rgba(231, 76, 60, 0.2);
+            color: var(--accent);
+        }
+
+        .column-title {
+            font-size: var(--font-sm);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .ich-column .column-title {
+            color: var(--success);
+        }
+
+        .partner-column .column-title {
+            color: var(--accent);
+        }
+
+        .column-select {
+            width: 100%;
+            padding: 10px 12px;
+            border-radius: 10px;
+            border: 1px solid var(--border);
+            background: var(--bg-dark);
+            color: var(--text-primary);
+            font-size: var(--font-sm);
+            margin-bottom: 12px;
+            cursor: pointer;
+        }
+
+        .column-select:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        .column-dimensions {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .compact-dimension {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .compact-dimension-label {
+            font-size: 11px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .compact-options {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+        }
+
+        .compact-option {
+            padding: 4px 8px;
+            border-radius: 6px;
+            border: 1px solid var(--border);
+            background: var(--bg-dark);
+            color: var(--text-secondary);
+            font-size: 11px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .compact-option:hover {
+            border-color: var(--primary);
+            color: var(--text-primary);
+        }
+
+        .compact-radio:checked + .compact-option {
+            background: var(--primary);
+            border-color: var(--primary);
+            color: white;
+        }
+
+        .compact-radio {
+            display: none;
+        }
+
+        /* Compact dimension blinking for unselected */
+        .compact-dimension.needs-selection .compact-option {
+            animation: needsAttention 1.5s ease-in-out infinite;
+        }
+
+        .compact-dimension.needs-selection .compact-dimension-label {
+            color: var(--warning);
+        }
+
+        /* Result Bar */
+        .result-bar {
+            background: var(--bg-card);
+            border-radius: 16px;
+            border: 1px solid var(--border);
+            padding: 15px 20px;
+            margin-bottom: 15px;
+        }
+
+        .result-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+
+        .result-title {
+            font-size: var(--font-sm);
+            color: var(--text-secondary);
+        }
+
+        .result-title .type-name {
+            color: var(--text-primary);
+            font-weight: 600;
+        }
+
+        .result-percentage {
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        .result-percentage.excellent { color: var(--success); }
+        .result-percentage.good { color: var(--primary); }
+        .result-percentage.moderate { color: var(--warning); }
+        .result-percentage.low { color: var(--danger); }
+
+        .result-progress {
+            height: 8px;
+            background: var(--bg-dark);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .result-progress-fill {
+            height: 100%;
+            border-radius: 4px;
+            transition: width 0.5s ease, background 0.3s ease;
+        }
+
+        /* Expandable Sections */
+        .expandable-sections {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .expand-btn {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+            padding: 12px 16px;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            color: var(--text-secondary);
+            font-size: var(--font-sm);
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .expand-btn:hover {
+            border-color: var(--primary);
+            color: var(--text-primary);
+        }
+
+        .expand-btn.active {
+            border-color: var(--primary);
+            background: rgba(69, 123, 157, 0.1);
+        }
+
+        .expand-icon {
+            transition: transform 0.3s ease;
+        }
+
+        .expand-btn.active .expand-icon {
+            transform: rotate(180deg);
+        }
+
+        .expand-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+
+        .expand-content.active {
+            max-height: 2000px;
+        }
+
+        .expand-content-inner {
+            padding: 15px;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-top: none;
+            border-radius: 0 0 12px 12px;
+            margin-top: -12px;
+        }
+
+        /* Warnings in new layout */
+        .warning-box {
+            padding: 12px 15px;
+            border-radius: 10px;
+            margin-bottom: 10px;
+            font-size: var(--font-sm);
+        }
+
+        .warning-box.pathos-warning {
+            background: rgba(231, 76, 60, 0.15);
+            border: 1px solid var(--danger);
+            color: var(--danger);
+        }
+
+        .warning-box.logos-warning {
+            background: rgba(243, 156, 18, 0.15);
+            border: 1px solid var(--warning);
+            color: var(--warning);
+        }
+
+        .warning-box.incomplete-warning {
+            background: rgba(69, 123, 157, 0.15);
+            border: 1px solid var(--primary);
+            color: var(--text-secondary);
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 600px) {
+            .comparison-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 8px;
+            }
+
+            .comparison-column {
+                padding: 10px;
+            }
+
+            .column-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 4px;
+            }
+
+            .column-icon {
+                width: 24px;
+                height: 24px;
+                font-size: 12px;
+            }
+
+            .column-title {
+                font-size: 11px;
+            }
+
+            .column-select {
+                padding: 8px 10px;
+                font-size: 12px;
+            }
+
+            .compact-option {
+                padding: 3px 6px;
+                font-size: 10px;
+            }
+
+            .compact-dimension-label {
+                font-size: 10px;
+            }
+
+            .result-bar {
+                padding: 12px 15px;
+            }
+
+            .result-percentage {
+                font-size: 1.2rem;
+            }
+        }
     </style>
 </head>
 <body>
@@ -2663,7 +3040,202 @@
         <h1>ARCHETYPEN-KOMPATIBILITÄT</h1>
     </header>
 
-    <div class="carousel-container" id="carousel">
+    <!-- NEW: Side-by-Side Comparison Layout -->
+    <div class="comparison-container" id="comparisonView">
+        <!-- Two Column Grid -->
+        <div class="comparison-grid">
+            <!-- ICH Column -->
+            <div class="comparison-column ich-column">
+                <div class="column-header">
+                    <div class="column-icon">👤</div>
+                    <div class="column-title">ICH</div>
+                </div>
+                <select class="column-select" id="ichSelect">
+                    <option value="single">Single</option>
+                    <option value="duo">Duo</option>
+                    <option value="duo_flex">Duo-Flex</option>
+                    <option value="solopoly">Solopoly</option>
+                    <option value="poly_hedo">Poly Hedo</option>
+                    <option value="polyamor">Polyamor</option>
+                </select>
+                <div class="column-dimensions">
+                    <div class="compact-dimension needs-selection" data-dimension="ich-geschlecht-new">
+                        <div class="compact-dimension-label">Geschlecht</div>
+                        <div class="compact-options">
+                            <input type="radio" name="ich-geschlecht-new" id="ich-g-m" value="männlich" class="compact-radio">
+                            <label for="ich-g-m" class="compact-option">m</label>
+                            <input type="radio" name="ich-geschlecht-new" id="ich-g-w" value="weiblich" class="compact-radio">
+                            <label for="ich-g-w" class="compact-option">w</label>
+                            <input type="radio" name="ich-geschlecht-new" id="ich-g-nb" value="non-binär" class="compact-radio">
+                            <label for="ich-g-nb" class="compact-option">nb</label>
+                        </div>
+                    </div>
+                    <div class="compact-dimension needs-selection" data-dimension="ich-dominanz-new">
+                        <div class="compact-dimension-label">Dominanz</div>
+                        <div class="compact-options">
+                            <input type="radio" name="ich-dominanz-new" id="ich-d-dom" value="dominant" class="compact-radio">
+                            <label for="ich-d-dom" class="compact-option">dom</label>
+                            <input type="radio" name="ich-dominanz-new" id="ich-d-sub" value="submissiv" class="compact-radio">
+                            <label for="ich-d-sub" class="compact-option">sub</label>
+                            <input type="radio" name="ich-dominanz-new" id="ich-d-sw" value="switch" class="compact-radio">
+                            <label for="ich-d-sw" class="compact-option">sw</label>
+                            <input type="radio" name="ich-dominanz-new" id="ich-d-aus" value="ausgeglichen" class="compact-radio">
+                            <label for="ich-d-aus" class="compact-option">aus</label>
+                        </div>
+                    </div>
+                    <div class="compact-dimension needs-selection" data-dimension="ich-orientierung-new">
+                        <div class="compact-dimension-label">Orientierung</div>
+                        <div class="compact-options">
+                            <input type="radio" name="ich-orientierung-new" id="ich-o-het" value="heterosexuell" class="compact-radio">
+                            <label for="ich-o-het" class="compact-option">hetero</label>
+                            <input type="radio" name="ich-orientierung-new" id="ich-o-hom" value="homosexuell" class="compact-radio">
+                            <label for="ich-o-hom" class="compact-option">homo</label>
+                            <input type="radio" name="ich-orientierung-new" id="ich-o-bi" value="bisexuell" class="compact-radio">
+                            <label for="ich-o-bi" class="compact-option">bi</label>
+                        </div>
+                    </div>
+                    <div class="compact-dimension needs-selection" data-dimension="ich-status-new">
+                        <div class="compact-dimension-label">Status</div>
+                        <div class="compact-options">
+                            <input type="radio" name="ich-status-new" id="ich-s-fakt" value="fakt" class="compact-radio">
+                            <label for="ich-s-fakt" class="compact-option">Fakt</label>
+                            <input type="radio" name="ich-status-new" id="ich-s-int" value="interessiert" class="compact-radio">
+                            <label for="ich-s-int" class="compact-option">Int.</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PARTNER Column -->
+            <div class="comparison-column partner-column">
+                <div class="column-header">
+                    <div class="column-icon">👥</div>
+                    <div class="column-title">PARTNER</div>
+                </div>
+                <select class="column-select" id="partnerSelect">
+                    <option value="single">Single</option>
+                    <option value="duo" selected>Duo</option>
+                    <option value="duo_flex">Duo-Flex</option>
+                    <option value="solopoly">Solopoly</option>
+                    <option value="poly_hedo">Poly Hedo</option>
+                    <option value="polyamor">Polyamor</option>
+                </select>
+                <div class="column-dimensions">
+                    <div class="compact-dimension needs-selection" data-dimension="partner-geschlecht-new">
+                        <div class="compact-dimension-label">Geschlecht</div>
+                        <div class="compact-options">
+                            <input type="radio" name="partner-geschlecht-new" id="partner-g-m" value="männlich" class="compact-radio">
+                            <label for="partner-g-m" class="compact-option">m</label>
+                            <input type="radio" name="partner-geschlecht-new" id="partner-g-w" value="weiblich" class="compact-radio">
+                            <label for="partner-g-w" class="compact-option">w</label>
+                            <input type="radio" name="partner-geschlecht-new" id="partner-g-nb" value="non-binär" class="compact-radio">
+                            <label for="partner-g-nb" class="compact-option">nb</label>
+                        </div>
+                    </div>
+                    <div class="compact-dimension needs-selection" data-dimension="partner-dominanz-new">
+                        <div class="compact-dimension-label">Dominanz</div>
+                        <div class="compact-options">
+                            <input type="radio" name="partner-dominanz-new" id="partner-d-dom" value="dominant" class="compact-radio">
+                            <label for="partner-d-dom" class="compact-option">dom</label>
+                            <input type="radio" name="partner-dominanz-new" id="partner-d-sub" value="submissiv" class="compact-radio">
+                            <label for="partner-d-sub" class="compact-option">sub</label>
+                            <input type="radio" name="partner-dominanz-new" id="partner-d-sw" value="switch" class="compact-radio">
+                            <label for="partner-d-sw" class="compact-option">sw</label>
+                            <input type="radio" name="partner-dominanz-new" id="partner-d-aus" value="ausgeglichen" class="compact-radio">
+                            <label for="partner-d-aus" class="compact-option">aus</label>
+                        </div>
+                    </div>
+                    <div class="compact-dimension needs-selection" data-dimension="partner-orientierung-new">
+                        <div class="compact-dimension-label">Orientierung</div>
+                        <div class="compact-options">
+                            <input type="radio" name="partner-orientierung-new" id="partner-o-het" value="heterosexuell" class="compact-radio">
+                            <label for="partner-o-het" class="compact-option">hetero</label>
+                            <input type="radio" name="partner-orientierung-new" id="partner-o-hom" value="homosexuell" class="compact-radio">
+                            <label for="partner-o-hom" class="compact-option">homo</label>
+                            <input type="radio" name="partner-orientierung-new" id="partner-o-bi" value="bisexuell" class="compact-radio">
+                            <label for="partner-o-bi" class="compact-option">bi</label>
+                        </div>
+                    </div>
+                    <div class="compact-dimension needs-selection" data-dimension="partner-status-new">
+                        <div class="compact-dimension-label">Status</div>
+                        <div class="compact-options">
+                            <input type="radio" name="partner-status-new" id="partner-s-fakt" value="fakt" class="compact-radio">
+                            <label for="partner-s-fakt" class="compact-option">Fakt</label>
+                            <input type="radio" name="partner-status-new" id="partner-s-int" value="interessiert" class="compact-radio">
+                            <label for="partner-s-int" class="compact-option">Int.</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Result Bar -->
+        <div class="result-bar">
+            <div id="warningsContainer"></div>
+            <div class="result-header">
+                <div class="result-title">
+                    <span class="type-name" id="resultIchType">Single</span>
+                    <span> × </span>
+                    <span class="type-name" id="resultPartnerType">Duo</span>
+                </div>
+                <div class="result-percentage" id="resultPercentage">0%</div>
+            </div>
+            <div class="result-progress">
+                <div class="result-progress-fill" id="resultProgressFill" style="width: 0%; background: var(--primary);"></div>
+            </div>
+        </div>
+
+        <!-- Expandable Sections -->
+        <div class="expandable-sections">
+            <div class="expand-section">
+                <button class="expand-btn" onclick="toggleExpandSection('proContraSection')">
+                    <span>Pro & Contra</span>
+                    <span class="expand-icon">▼</span>
+                </button>
+                <div class="expand-content" id="proContraSection">
+                    <div class="expand-content-inner">
+                        <div class="pro-contra-grid">
+                            <div class="mini-list">
+                                <div class="mini-list-title pro">✓ Was funktioniert</div>
+                                <ul id="expandProList"></ul>
+                            </div>
+                            <div class="mini-list">
+                                <div class="mini-list-title contra">✗ Herausforderungen</div>
+                                <ul id="expandContraList"></ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="expand-section">
+                <button class="expand-btn" onclick="toggleExpandSection('categoriesSection')">
+                    <span>Kategorien A-F Details</span>
+                    <span class="expand-icon">▼</span>
+                </button>
+                <div class="expand-content" id="categoriesSection">
+                    <div class="expand-content-inner">
+                        <div id="expandCategoryBars"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="expand-section">
+                <button class="expand-btn" onclick="toggleExpandSection('radarSection')">
+                    <span>Radar-Diagramm</span>
+                    <span class="expand-icon">▼</span>
+                </button>
+                <div class="expand-content" id="radarSection">
+                    <div class="expand-content-inner">
+                        <svg id="expandRadarChart" viewBox="0 0 280 260"></svg>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- OLD Carousel (hidden) -->
+    <div class="carousel-container" id="carousel" style="display: none;">
         <!-- CARD 1: MEIN TYP -->
         <div class="card" data-card="0">
             <div class="card-inner">
@@ -2685,15 +3257,16 @@
 
                     <!-- Extended Dimensions: ICH -->
                     <div class="dimensions-section">
+                        <div class="dimensions-section-title ich-title">Meine Eigenschaften</div>
                         <div class="dimensions-grid">
                             <!-- Geschlecht -->
-                            <div class="dimension-group">
+                            <div class="dimension-group needs-selection" data-dimension="ich-geschlecht">
                                 <div class="dimension-label">
                                     Geschlecht
                                     <span class="dimension-info-icon" onclick="showDimensionTooltip('geschlecht')">ℹ</span>
                                 </div>
                                 <div class="dimension-options">
-                                    <input type="radio" name="ich-geschlecht" id="ich-geschlecht-m" value="männlich" class="dimension-radio" checked>
+                                    <input type="radio" name="ich-geschlecht" id="ich-geschlecht-m" value="männlich" class="dimension-radio">
                                     <label for="ich-geschlecht-m" class="dimension-option">männlich</label>
 
                                     <input type="radio" name="ich-geschlecht" id="ich-geschlecht-w" value="weiblich" class="dimension-radio">
@@ -2705,7 +3278,7 @@
                             </div>
 
                             <!-- Dominanz -->
-                            <div class="dimension-group">
+                            <div class="dimension-group needs-selection" data-dimension="ich-dominanz">
                                 <div class="dimension-label">
                                     Dominanz-Präferenz
                                     <span class="dimension-info-icon" onclick="showDimensionTooltip('dominanz')">ℹ</span>
@@ -2720,19 +3293,19 @@
                                     <input type="radio" name="ich-dominanz" id="ich-dominanz-switch" value="switch" class="dimension-radio">
                                     <label for="ich-dominanz-switch" class="dimension-option">switch</label>
 
-                                    <input type="radio" name="ich-dominanz" id="ich-dominanz-ausgeglichen" value="ausgeglichen" class="dimension-radio" checked>
+                                    <input type="radio" name="ich-dominanz" id="ich-dominanz-ausgeglichen" value="ausgeglichen" class="dimension-radio">
                                     <label for="ich-dominanz-ausgeglichen" class="dimension-option">ausgeglichen</label>
                                 </div>
                             </div>
 
                             <!-- Sexuelle Orientierung -->
-                            <div class="dimension-group full-width">
+                            <div class="dimension-group full-width needs-selection" data-dimension="ich-orientierung">
                                 <div class="dimension-label">
                                     Sexuelle Orientierung
                                     <span class="dimension-info-icon" onclick="showDimensionTooltip('orientierung')">ℹ</span>
                                 </div>
                                 <div class="dimension-options">
-                                    <input type="radio" name="ich-orientierung" id="ich-orientierung-hetero" value="heterosexuell" class="dimension-radio" checked>
+                                    <input type="radio" name="ich-orientierung" id="ich-orientierung-hetero" value="heterosexuell" class="dimension-radio">
                                     <label for="ich-orientierung-hetero" class="dimension-option">heterosexuell</label>
 
                                     <input type="radio" name="ich-orientierung" id="ich-orientierung-homo" value="homosexuell" class="dimension-radio">
@@ -2743,13 +3316,13 @@
                                 </div>
 
                                 <!-- Status (indented) -->
-                                <div class="dimension-status-group">
+                                <div class="dimension-status-group needs-selection" data-dimension="ich-status">
                                     <div class="dimension-status-label">
                                         Status
                                         <span class="dimension-info-icon" onclick="showDimensionTooltip('status')">ℹ</span>
                                     </div>
                                     <div class="dimension-options">
-                                        <input type="radio" name="ich-status" id="ich-status-fakt" value="fakt" class="dimension-radio" checked>
+                                        <input type="radio" name="ich-status" id="ich-status-fakt" value="fakt" class="dimension-radio">
                                         <label for="ich-status-fakt" class="dimension-option">Fakt</label>
 
                                         <input type="radio" name="ich-status" id="ich-status-interessiert" value="interessiert" class="dimension-radio">
@@ -2844,16 +3417,16 @@
 
                     <!-- Extended Dimensions: PARTNER -->
                     <div class="dimensions-section" style="margin-top: 0; padding-top: 15px; border-top: none;">
-                        <div class="dimensions-section-title">Partner-Eigenschaften</div>
+                        <div class="dimensions-section-title partner-title">Partner-Eigenschaften</div>
                         <div class="dimensions-grid">
                             <!-- Geschlecht -->
-                            <div class="dimension-group">
+                            <div class="dimension-group needs-selection" data-dimension="partner-geschlecht">
                                 <div class="dimension-label">
                                     Geschlecht
                                     <span class="dimension-info-icon" onclick="showDimensionTooltip('geschlecht')">ℹ</span>
                                 </div>
                                 <div class="dimension-options">
-                                    <input type="radio" name="partner-geschlecht" id="partner-geschlecht-m" value="männlich" class="dimension-radio" checked>
+                                    <input type="radio" name="partner-geschlecht" id="partner-geschlecht-m" value="männlich" class="dimension-radio">
                                     <label for="partner-geschlecht-m" class="dimension-option">männlich</label>
 
                                     <input type="radio" name="partner-geschlecht" id="partner-geschlecht-w" value="weiblich" class="dimension-radio">
@@ -2865,7 +3438,7 @@
                             </div>
 
                             <!-- Dominanz -->
-                            <div class="dimension-group">
+                            <div class="dimension-group needs-selection" data-dimension="partner-dominanz">
                                 <div class="dimension-label">
                                     Dominanz-Präferenz
                                     <span class="dimension-info-icon" onclick="showDimensionTooltip('dominanz')">ℹ</span>
@@ -2880,19 +3453,19 @@
                                     <input type="radio" name="partner-dominanz" id="partner-dominanz-switch" value="switch" class="dimension-radio">
                                     <label for="partner-dominanz-switch" class="dimension-option">switch</label>
 
-                                    <input type="radio" name="partner-dominanz" id="partner-dominanz-ausgeglichen" value="ausgeglichen" class="dimension-radio" checked>
+                                    <input type="radio" name="partner-dominanz" id="partner-dominanz-ausgeglichen" value="ausgeglichen" class="dimension-radio">
                                     <label for="partner-dominanz-ausgeglichen" class="dimension-option">ausgeglichen</label>
                                 </div>
                             </div>
 
                             <!-- Sexuelle Orientierung -->
-                            <div class="dimension-group full-width">
+                            <div class="dimension-group full-width needs-selection" data-dimension="partner-orientierung">
                                 <div class="dimension-label">
                                     Sexuelle Orientierung
                                     <span class="dimension-info-icon" onclick="showDimensionTooltip('orientierung')">ℹ</span>
                                 </div>
                                 <div class="dimension-options">
-                                    <input type="radio" name="partner-orientierung" id="partner-orientierung-hetero" value="heterosexuell" class="dimension-radio" checked>
+                                    <input type="radio" name="partner-orientierung" id="partner-orientierung-hetero" value="heterosexuell" class="dimension-radio">
                                     <label for="partner-orientierung-hetero" class="dimension-option">heterosexuell</label>
 
                                     <input type="radio" name="partner-orientierung" id="partner-orientierung-homo" value="homosexuell" class="dimension-radio">
@@ -2903,13 +3476,13 @@
                                 </div>
 
                                 <!-- Status (indented) -->
-                                <div class="dimension-status-group">
+                                <div class="dimension-status-group needs-selection" data-dimension="partner-status">
                                     <div class="dimension-status-label">
                                         Status
                                         <span class="dimension-info-icon" onclick="showDimensionTooltip('status')">ℹ</span>
                                     </div>
                                     <div class="dimension-options">
-                                        <input type="radio" name="partner-status" id="partner-status-fakt" value="fakt" class="dimension-radio" checked>
+                                        <input type="radio" name="partner-status" id="partner-status-fakt" value="fakt" class="dimension-radio">
                                         <label for="partner-status-fakt" class="dimension-option">Fakt</label>
 
                                         <input type="radio" name="partner-status" id="partner-status-interessiert" value="interessiert" class="dimension-radio">
@@ -2926,9 +3499,9 @@
                             <span>🔍</span> Analysiere:
                         </div>
                         <div class="analysis-overview-content" id="analysisOverviewContent">
-                            <span class="type-name">Single</span> <span class="dim-info">(m, ausgeglichen, hetero)</span>
+                            <span class="type-name">Single</span> <span class="dim-info">(?, ?, ?)</span>
                             <span> × </span>
-                            <span class="type-name">Duo</span> <span class="dim-info">(m, ausgeglichen, hetero)</span>
+                            <span class="type-name">Duo</span> <span class="dim-info">(?, ?, ?)</span>
                         </div>
                         <span class="analysis-overview-edit">Bearbeiten →</span>
                     </div>
@@ -3167,8 +3740,9 @@
                                 <button class="cat-filter-btn" data-cat="D" title="Autonomie">D Autonomie</button>
                                 <button class="cat-filter-btn" data-cat="E" title="Kommunikation">E Kommunik.</button>
                                 <button class="cat-filter-btn" data-cat="F" title="Soziale Kompatibilität">F Sozial</button>
-                                <button class="cat-filter-btn" data-cat="TM" title="Top Match">Top Match</button>
-                                <button class="cat-filter-btn" data-cat="CH" title="Challenge">Challenge</button>
+                                <!-- Hidden for now - can be re-enabled later -->
+                                <button class="cat-filter-btn" data-cat="TM" title="Top Match" style="display:none">Top Match</button>
+                                <button class="cat-filter-btn" data-cat="CH" title="Challenge" style="display:none">Challenge</button>
                             </div>
                         </div>
                         <div class="feedback-filter-row">
@@ -3282,8 +3856,8 @@
         </div>
     </div>
 
-    <!-- Navigation Dots with Arrows -->
-    <div class="nav-dots">
+    <!-- Navigation Dots with Arrows (hidden - old carousel nav) -->
+    <div class="nav-dots" style="display: none;">
         <button class="nav-arrow" onclick="navigatePrev()">‹</button>
         <div class="nav-dot active" data-card="0" onclick="scrollToCard(0)"></div>
         <div class="nav-dot" data-card="1" onclick="scrollToCard(1)"></div>
@@ -3292,26 +3866,26 @@
         <button class="nav-arrow" onclick="navigateNext()">›</button>
     </div>
 
-    <div class="swipe-hint">← Swipe →</div>
+    <div class="swipe-hint" style="display: none;">← Swipe →</div>
 
     <script>
         let data = null;
         let currentArchetype = 'single';
         let selectedPartner = 'duo';
 
-        // Extended Person Dimensions
+        // Extended Person Dimensions (null = not yet selected)
         const personDimensions = {
             ich: {
-                geschlecht: 'männlich',
-                dominanz: 'ausgeglichen',
-                orientierung: 'heterosexuell',
-                orientierungStatus: 'fakt'
+                geschlecht: null,
+                dominanz: null,
+                orientierung: null,
+                orientierungStatus: null
             },
             partner: {
-                geschlecht: 'männlich',
-                dominanz: 'ausgeglichen',
-                orientierung: 'heterosexuell',
-                orientierungStatus: 'fakt'
+                geschlecht: null,
+                dominanz: null,
+                orientierung: null,
+                orientierungStatus: null
             }
         };
 
@@ -5410,6 +5984,14 @@
             // Update state
             personDimensions[person][dimension] = value;
 
+            // Remove needs-selection class from the parent group
+            if (element) {
+                const dimensionGroup = element.closest('.dimension-group, .dimension-status-group');
+                if (dimensionGroup) {
+                    dimensionGroup.classList.remove('needs-selection');
+                }
+            }
+
             // Visual feedback - highlight animation
             if (element) {
                 const label = element.nextElementSibling;
@@ -5429,6 +6011,7 @@
         }
 
         function getGeschlechtKurz(geschlecht) {
+            if (!geschlecht) return '?';
             const map = {
                 'männlich': 'm',
                 'weiblich': 'w',
@@ -5438,6 +6021,7 @@
         }
 
         function getDominanzKurz(dominanz) {
+            if (!dominanz) return '?';
             const map = {
                 'dominant': 'dom',
                 'submissiv': 'sub',
@@ -5448,6 +6032,7 @@
         }
 
         function getOrientierungKurz(orientierung, status) {
+            if (!orientierung) return '?';
             const map = {
                 'heterosexuell': 'hetero',
                 'homosexuell': 'homo',
@@ -5521,6 +6106,15 @@
             const g2 = person2.geschlecht;
             const o2 = person2.orientierung;
             const s2 = person2.orientierungStatus;
+
+            // Check for missing values - return uncertain if dimensions not yet selected
+            if (!g1 || !o1 || !s1 || !g2 || !o2 || !s2) {
+                return {
+                    result: 'unvollständig',
+                    reason: 'Dimensionen unvollständig',
+                    explanation: 'Bitte wähle alle Dimensionen (Geschlecht, Orientierung, Status) für beide Personen aus.'
+                };
+            }
 
             // Both have "Fakt" status
             if (s1 === 'fakt' && s2 === 'fakt') {
@@ -5642,8 +6236,10 @@
         }
 
         function formatPersonSummary(person) {
-            const statusSuffix = person.orientierungStatus === 'interessiert' ? ' (Interessiert)' : ' (Fakt)';
-            return `${person.geschlecht}, ${person.orientierung}${statusSuffix}`;
+            const geschlecht = person.geschlecht || '?';
+            const orientierung = person.orientierung || '?';
+            const statusSuffix = person.orientierungStatus === 'interessiert' ? ' (Interessiert)' : person.orientierungStatus === 'fakt' ? ' (Fakt)' : '';
+            return `${geschlecht}, ${orientierung}${statusSuffix}`;
         }
 
         function runCompatibilityChecks() {
@@ -5665,6 +6261,14 @@
 
             // 1. PATHOS CHECK
             const pathosCheck = checkPhysicalCompatibility(person1, person2);
+
+            if (pathosCheck.result === 'unvollständig') {
+                // Show Pathos Uncertain with incomplete message
+                document.getElementById('pathosUncertain').classList.add('active');
+                document.getElementById('pathosUncertainText').textContent =
+                    pathosCheck.explanation;
+                // Continue showing compatibility content since it's just incomplete
+            }
 
             if (pathosCheck.result === 'unmöglich') {
                 // Show Pathos Blocker, hide everything else
@@ -5840,6 +6444,9 @@
 
         // Calculate dominanz modifier
         function getDominanzModifier(dom1, dom2) {
+            // Return 0 if either is null/undefined
+            if (!dom1 || !dom2) return 0;
+
             // KOMPLEMENTÄR
             if ((dom1 === "dominant" && dom2 === "submissiv") ||
                 (dom1 === "submissiv" && dom2 === "dominant")) {
@@ -6001,11 +6608,227 @@
             return summaries;
         }
 
+        // ========================================
+        // NEW: Side-by-Side Comparison Functions
+        // ========================================
+
+        function toggleExpandSection(sectionId) {
+            const content = document.getElementById(sectionId);
+            const btn = content.previousElementSibling;
+            content.classList.toggle('active');
+            btn.classList.toggle('active');
+        }
+
+        function initComparisonLayout() {
+            // ICH select
+            document.getElementById('ichSelect').addEventListener('change', (e) => {
+                currentArchetype = e.target.value;
+                // Sync with old select if exists
+                const oldSelect = document.getElementById('archetypeSelect');
+                if (oldSelect) oldSelect.value = e.target.value;
+                updateComparisonView();
+            });
+
+            // Partner select
+            document.getElementById('partnerSelect').addEventListener('change', (e) => {
+                selectedPartner = e.target.value;
+                updateComparisonView();
+            });
+
+            // ICH compact dimensions
+            document.querySelectorAll('input[name="ich-geschlecht-new"]').forEach(radio => {
+                radio.addEventListener('change', (e) => {
+                    personDimensions.ich.geschlecht = e.target.value;
+                    e.target.closest('.compact-dimension').classList.remove('needs-selection');
+                    updateComparisonView();
+                });
+            });
+            document.querySelectorAll('input[name="ich-dominanz-new"]').forEach(radio => {
+                radio.addEventListener('change', (e) => {
+                    personDimensions.ich.dominanz = e.target.value;
+                    e.target.closest('.compact-dimension').classList.remove('needs-selection');
+                    updateComparisonView();
+                });
+            });
+            document.querySelectorAll('input[name="ich-orientierung-new"]').forEach(radio => {
+                radio.addEventListener('change', (e) => {
+                    personDimensions.ich.orientierung = e.target.value;
+                    e.target.closest('.compact-dimension').classList.remove('needs-selection');
+                    updateComparisonView();
+                });
+            });
+            document.querySelectorAll('input[name="ich-status-new"]').forEach(radio => {
+                radio.addEventListener('change', (e) => {
+                    personDimensions.ich.orientierungStatus = e.target.value;
+                    e.target.closest('.compact-dimension').classList.remove('needs-selection');
+                    updateComparisonView();
+                });
+            });
+
+            // Partner compact dimensions
+            document.querySelectorAll('input[name="partner-geschlecht-new"]').forEach(radio => {
+                radio.addEventListener('change', (e) => {
+                    personDimensions.partner.geschlecht = e.target.value;
+                    e.target.closest('.compact-dimension').classList.remove('needs-selection');
+                    updateComparisonView();
+                });
+            });
+            document.querySelectorAll('input[name="partner-dominanz-new"]').forEach(radio => {
+                radio.addEventListener('change', (e) => {
+                    personDimensions.partner.dominanz = e.target.value;
+                    e.target.closest('.compact-dimension').classList.remove('needs-selection');
+                    updateComparisonView();
+                });
+            });
+            document.querySelectorAll('input[name="partner-orientierung-new"]').forEach(radio => {
+                radio.addEventListener('change', (e) => {
+                    personDimensions.partner.orientierung = e.target.value;
+                    e.target.closest('.compact-dimension').classList.remove('needs-selection');
+                    updateComparisonView();
+                });
+            });
+            document.querySelectorAll('input[name="partner-status-new"]').forEach(radio => {
+                radio.addEventListener('change', (e) => {
+                    personDimensions.partner.orientierungStatus = e.target.value;
+                    e.target.closest('.compact-dimension').classList.remove('needs-selection');
+                    updateComparisonView();
+                });
+            });
+        }
+
+        function updateComparisonView() {
+            if (!data) return;
+
+            const ichArch = data.archetypes[currentArchetype];
+            const partnerArch = data.archetypes[selectedPartner];
+
+            // Update type names
+            document.getElementById('resultIchType').textContent = ichArch?.name || currentArchetype;
+            document.getElementById('resultPartnerType').textContent = partnerArch?.name || selectedPartner;
+
+            // Calculate compatibility
+            const person1 = { archetyp: currentArchetype, ...personDimensions.ich };
+            const person2 = { archetyp: selectedPartner, ...personDimensions.partner };
+
+            const pathosCheck = checkPhysicalCompatibility(person1, person2);
+            const logosCheck = calculatePhilosophyCompatibility(currentArchetype, selectedPartner);
+
+            // Update warnings
+            const warningsContainer = document.getElementById('warningsContainer');
+            warningsContainer.innerHTML = '';
+
+            if (pathosCheck.result === 'unvollständig') {
+                warningsContainer.innerHTML = `<div class="warning-box incomplete-warning">⚠️ ${pathosCheck.explanation}</div>`;
+            } else if (pathosCheck.result === 'unmöglich') {
+                warningsContainer.innerHTML = `<div class="warning-box pathos-warning">🚫 PATHOS-BLOCKER: ${pathosCheck.reason}</div>`;
+            } else if (pathosCheck.result === 'unsicher') {
+                warningsContainer.innerHTML = `<div class="warning-box logos-warning">⚠️ Unsichere körperliche Anziehung (Exploration-Phase)</div>`;
+            }
+
+            if (logosCheck.score < 50) {
+                warningsContainer.innerHTML += `<div class="warning-box logos-warning">⚠️ LOGOS-WARNUNG: Philosophie nur ${logosCheck.score}%</div>`;
+            }
+
+            // Calculate overall score
+            let overallScore = 0;
+            if (pathosCheck.result !== 'unmöglich') {
+                const result = calculateOverallWithModifiers(person1, person2, pathosCheck, logosCheck);
+                overallScore = result.overall;
+
+                // Update expandable category bars
+                updateExpandableCategoryBars(result.categories);
+            }
+
+            // Update result bar
+            const percentage = document.getElementById('resultPercentage');
+            const progressFill = document.getElementById('resultProgressFill');
+
+            percentage.textContent = overallScore + '%';
+            progressFill.style.width = overallScore + '%';
+
+            // Set color based on score
+            let colorClass = 'low';
+            let color = 'var(--danger)';
+            if (overallScore >= 80) { colorClass = 'excellent'; color = 'var(--success)'; }
+            else if (overallScore >= 65) { colorClass = 'good'; color = 'var(--primary)'; }
+            else if (overallScore >= 50) { colorClass = 'moderate'; color = 'var(--warning)'; }
+
+            percentage.className = 'result-percentage ' + colorClass;
+            progressFill.style.background = color;
+
+            // Update Pro/Contra
+            updateExpandableProContra();
+        }
+
+        function updateExpandableCategoryBars(categories) {
+            const container = document.getElementById('expandCategoryBars');
+            if (!container) return;
+
+            const categoryNames = {
+                A: 'Beziehungsphilosophie',
+                B: 'Werte-Alignment',
+                C: 'Nähe-Distanz',
+                D: 'Autonomie',
+                E: 'Kommunikation',
+                F: 'Soziale Kompatibilität'
+            };
+
+            let html = '';
+            for (const [cat, data] of Object.entries(categories)) {
+                const score = data.score || 0;
+                let colorClass = 'low';
+                if (score >= 80) colorClass = 'excellent';
+                else if (score >= 65) colorClass = 'good';
+                else if (score >= 50) colorClass = 'moderate';
+
+                html += `
+                    <div class="category-bar-row" style="margin-bottom: 12px;">
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 4px;">
+                            <span style="font-size: 12px; color: var(--text-secondary);">${cat}: ${categoryNames[cat]}</span>
+                            <span style="font-size: 12px; font-weight: 600;" class="${colorClass}">${score}%</span>
+                        </div>
+                        <div style="height: 6px; background: var(--bg-dark); border-radius: 3px; overflow: hidden;">
+                            <div style="height: 100%; width: ${score}%; background: var(--${colorClass === 'excellent' ? 'success' : colorClass === 'good' ? 'primary' : colorClass === 'moderate' ? 'warning' : 'danger'}); border-radius: 3px;"></div>
+                        </div>
+                    </div>
+                `;
+            }
+            container.innerHTML = html;
+        }
+
+        function updateExpandableProContra() {
+            if (!data) return;
+
+            const matrix = data.compatibility_matrix;
+            const key = `${currentArchetype}_${selectedPartner}`;
+            const reverseKey = `${selectedPartner}_${currentArchetype}`;
+            const comp = matrix[key] || matrix[reverseKey];
+
+            const proList = document.getElementById('expandProList');
+            const contraList = document.getElementById('expandContraList');
+
+            if (proList && comp?.synergies) {
+                proList.innerHTML = comp.synergies.slice(0, 4).map(s => `<li>${s}</li>`).join('');
+            }
+            if (contraList && comp?.challenges) {
+                contraList.innerHTML = comp.challenges.slice(0, 4).map(c => `<li>${c}</li>`).join('');
+            }
+        }
+
         // Initialize
         checkAgeVerification();
         loadData();
         initFeedbackSystem();
         initDimensionListeners();
+        initComparisonLayout();
+
+        // Update comparison view when data is loaded
+        const originalLoadData = loadData;
+        async function loadDataAndUpdateComparison() {
+            await originalLoadData();
+            setTimeout(updateComparisonView, 100);
+        }
+        loadDataAndUpdateComparison();
     </script>
 </body>
 </html>
