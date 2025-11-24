@@ -2738,18 +2738,18 @@
         }
 
         .column-title {
-            font-size: var(--font-sm);
-            font-weight: 600;
+            font-size: var(--font-lg);
+            font-weight: 700;
             text-transform: uppercase;
-            letter-spacing: 1px;
+            letter-spacing: 2px;
         }
 
         .ich-column .column-title {
-            color: var(--success);
+            color: #2ecc71;
         }
 
         .partner-column .column-title {
-            color: var(--accent);
+            color: #e74c3c;
         }
 
         .select-with-info {
@@ -3277,32 +3277,8 @@
                     <span class="expand-icon">▼</span>
                 </button>
                 <div class="expand-content" id="pathosLogosSection">
-                    <div class="expand-content-inner">
-                        <div class="pathos-logos-comparison">
-                            <div class="pathos-logos-column">
-                                <h4 style="color: var(--primary); margin-bottom: 8px;">ICH: <span id="expandPathosIchType">Single</span></h4>
-                                <div class="pathos-section" style="margin-bottom: 12px;">
-                                    <strong style="color: var(--success);">Pathos:</strong>
-                                    <p id="expandPathosIch" style="color: var(--text-secondary); font-style: italic; margin-top: 4px;"></p>
-                                </div>
-                                <div class="logos-section">
-                                    <strong style="color: var(--warning);">Logos:</strong>
-                                    <p id="expandLogosIch" style="color: var(--text-secondary); font-style: italic; margin-top: 4px;"></p>
-                                </div>
-                            </div>
-                            <div class="pathos-logos-divider" style="border-top: 1px solid var(--border); margin: 16px 0;"></div>
-                            <div class="pathos-logos-column">
-                                <h4 style="color: var(--primary); margin-bottom: 8px;">PARTNER: <span id="expandPathosPartnerType">Duo</span></h4>
-                                <div class="pathos-section" style="margin-bottom: 12px;">
-                                    <strong style="color: var(--success);">Pathos:</strong>
-                                    <p id="expandPathosPartner" style="color: var(--text-secondary); font-style: italic; margin-top: 4px;"></p>
-                                </div>
-                                <div class="logos-section">
-                                    <strong style="color: var(--warning);">Logos:</strong>
-                                    <p id="expandLogosPartner" style="color: var(--text-secondary); font-style: italic; margin-top: 4px;"></p>
-                                </div>
-                            </div>
-                        </div>
+                    <div class="expand-content-inner" id="pathosLogosContent">
+                        <!-- Will be filled dynamically -->
                     </div>
                 </div>
             </div>
@@ -6952,8 +6928,33 @@
                 F: 'Soziale Kompatibilität'
             };
 
+            const ichArch = data.archetypes[currentArchetype];
+            const partnerArch = data.archetypes[selectedPartner];
+            const key = `${currentArchetype}_${selectedPartner}`;
+            const interaction = data.interactions?.[key] || {};
+            const catScore = interaction.scores?.[cat]?.value || 0;
+
+            let scoreClass = 'low';
+            let scoreText = 'Herausfordernd';
+            if (catScore >= 80) { scoreClass = 'excellent'; scoreText = 'Exzellent'; }
+            else if (catScore >= 65) { scoreClass = 'good'; scoreText = 'Gut'; }
+            else if (catScore >= 50) { scoreClass = 'moderate'; scoreText = 'Mittel'; }
+
             let modalContent = `
                 <div class="modal-category">
+                    <div style="background: rgba(69,123,157,0.1); padding: 12px; border-radius: 10px; margin-bottom: 15px;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                            <span style="color: var(--text-secondary); font-size: 12px;">Aktuelle Kombination</span>
+                            <span style="font-size: 18px; font-weight: 700; color: var(--${scoreClass === 'excellent' ? 'success' : scoreClass === 'good' ? 'primary' : scoreClass === 'moderate' ? 'warning' : 'danger'});">${catScore}%</span>
+                        </div>
+                        <div style="font-size: 14px; font-weight: 600; color: var(--text-primary);">
+                            <span style="color: #2ecc71;">${ichArch?.name || currentArchetype}</span>
+                            <span style="color: var(--text-muted);"> × </span>
+                            <span style="color: #e74c3c;">${partnerArch?.name || selectedPartner}</span>
+                        </div>
+                        <div style="font-size: 11px; color: var(--text-muted); margin-top: 4px;">${scoreText} in dieser Kategorie</div>
+                    </div>
+
                     <div class="modal-category-header">
                         <div class="modal-category-letter">${cat}</div>
                         <div class="modal-category-name">${catNames[cat]}</div>
@@ -7001,26 +7002,105 @@
         function updateExpandablePathosLogos() {
             if (!data) return;
 
+            const container = document.getElementById('pathosLogosContent');
+            if (!container) return;
+
             const ichArch = data.archetypes[currentArchetype];
             const partnerArch = data.archetypes[selectedPartner];
 
-            // Update ICH Pathos/Logos
-            const pathosIchType = document.getElementById('expandPathosIchType');
-            const pathosIch = document.getElementById('expandPathosIch');
-            const logosIch = document.getElementById('expandLogosIch');
+            const ichPathos = ichArch?.pathos || 'Keine Daten verfügbar.';
+            const ichLogos = ichArch?.logos || 'Keine Daten verfügbar.';
+            const partnerPathos = partnerArch?.pathos || 'Keine Daten verfügbar.';
+            const partnerLogos = partnerArch?.logos || 'Keine Daten verfügbar.';
 
-            if (pathosIchType) pathosIchType.textContent = ichArch?.name || currentArchetype;
-            if (pathosIch) pathosIch.textContent = ichArch?.pathos || 'Keine Daten verfügbar.';
-            if (logosIch) logosIch.textContent = ichArch?.logos || 'Keine Daten verfügbar.';
+            // Generate combined Pathos/Logos analysis
+            const combinedPathos = generateCombinedPathos(ichArch, partnerArch);
+            const combinedLogos = generateCombinedLogos(ichArch, partnerArch);
 
-            // Update Partner Pathos/Logos
-            const pathosPartnerType = document.getElementById('expandPathosPartnerType');
-            const pathosPartner = document.getElementById('expandPathosPartner');
-            const logosPartner = document.getElementById('expandLogosPartner');
+            container.innerHTML = `
+                <div style="margin-bottom: 20px; padding: 15px; background: rgba(46,204,113,0.1); border-radius: 12px; border-left: 4px solid #2ecc71;">
+                    <h4 style="color: #2ecc71; margin-bottom: 10px; font-size: 14px;">🔥 GEMEINSAMER PATHOS (Emotionale Ebene)</h4>
+                    <p style="color: var(--text-secondary); line-height: 1.6; font-size: 13px;">${combinedPathos}</p>
+                </div>
 
-            if (pathosPartnerType) pathosPartnerType.textContent = partnerArch?.name || selectedPartner;
-            if (pathosPartner) pathosPartner.textContent = partnerArch?.pathos || 'Keine Daten verfügbar.';
-            if (logosPartner) logosPartner.textContent = partnerArch?.logos || 'Keine Daten verfügbar.';
+                <div style="margin-bottom: 20px; padding: 15px; background: rgba(243,156,18,0.1); border-radius: 12px; border-left: 4px solid #f39c12;">
+                    <h4 style="color: #f39c12; margin-bottom: 10px; font-size: 14px;">🧠 GEMEINSAMER LOGOS (Rationale Ebene)</h4>
+                    <p style="color: var(--text-secondary); line-height: 1.6; font-size: 13px;">${combinedLogos}</p>
+                </div>
+
+                <div style="border-top: 1px solid var(--border); padding-top: 15px;">
+                    <h4 style="color: #2ecc71; margin-bottom: 12px; font-size: 14px;">ICH: ${ichArch?.name || currentArchetype}</h4>
+                    <div style="margin-bottom: 10px;">
+                        <strong style="color: #e74c3c; font-size: 12px;">Pathos:</strong>
+                        <p style="color: var(--text-muted); font-style: italic; margin-top: 4px; font-size: 12px; line-height: 1.5;">${ichPathos}</p>
+                    </div>
+                    <div>
+                        <strong style="color: #3498db; font-size: 12px;">Logos:</strong>
+                        <p style="color: var(--text-muted); font-style: italic; margin-top: 4px; font-size: 12px; line-height: 1.5;">${ichLogos}</p>
+                    </div>
+                </div>
+
+                <div style="border-top: 1px solid var(--border); padding-top: 15px; margin-top: 15px;">
+                    <h4 style="color: #e74c3c; margin-bottom: 12px; font-size: 14px;">PARTNER: ${partnerArch?.name || selectedPartner}</h4>
+                    <div style="margin-bottom: 10px;">
+                        <strong style="color: #e74c3c; font-size: 12px;">Pathos:</strong>
+                        <p style="color: var(--text-muted); font-style: italic; margin-top: 4px; font-size: 12px; line-height: 1.5;">${partnerPathos}</p>
+                    </div>
+                    <div>
+                        <strong style="color: #3498db; font-size: 12px;">Logos:</strong>
+                        <p style="color: var(--text-muted); font-style: italic; margin-top: 4px; font-size: 12px; line-height: 1.5;">${partnerLogos}</p>
+                    </div>
+                </div>
+            `;
+        }
+
+        function generateCombinedPathos(ichArch, partnerArch) {
+            const ichName = ichArch?.name || 'ICH';
+            const partnerName = partnerArch?.name || 'Partner';
+
+            // Check compatibility based on archetype types
+            const ichId = ichArch?.id || '';
+            const partnerId = partnerArch?.id || '';
+
+            if (ichId === partnerId) {
+                return `Beide sind ${ichName} - ihr teilt dieselbe emotionale Grundhaltung zu Beziehungen. Das kann zu tiefem Verständnis führen, aber auch zu blinden Flecken, da niemand eine andere Perspektive einbringt.`;
+            }
+
+            // Check for poly vs mono combinations
+            const polyTypes = ['solopoly', 'poly_hedo', 'polyamor'];
+            const monoTypes = ['single', 'duo'];
+            const ichIsPoly = polyTypes.includes(ichId);
+            const partnerIsPoly = polyTypes.includes(partnerId);
+
+            if (ichIsPoly !== partnerIsPoly) {
+                return `Hier treffen unterschiedliche emotionale Welten aufeinander: ${ichName} und ${partnerName} haben fundamental verschiedene Vorstellungen von Nähe und Exklusivität. Das erfordert intensive emotionale Arbeit und Kompromissbereitschaft von beiden Seiten.`;
+            }
+
+            return `${ichName} und ${partnerName} können emotional zueinander finden, auch wenn ihre Grundhaltungen sich unterscheiden. Die Herausforderung liegt darin, die emotionalen Bedürfnisse des anderen zu verstehen und zu respektieren.`;
+        }
+
+        function generateCombinedLogos(ichArch, partnerArch) {
+            const ichName = ichArch?.name || 'ICH';
+            const partnerName = partnerArch?.name || 'Partner';
+            const ichId = ichArch?.id || '';
+            const partnerId = partnerArch?.id || '';
+
+            if (ichId === partnerId) {
+                return `Strukturell seid ihr auf derselben Wellenlänge. Eure rationalen Erwartungen an eine Beziehung sind identisch, was Konflikte über Grundsätzliches minimiert.`;
+            }
+
+            // Get philosophy score from compatibility matrix if available
+            const key = `${ichId}_${partnerId}`;
+            const interaction = data?.interactions?.[key];
+            const philScore = interaction?.scores?.A?.value || 50;
+
+            if (philScore < 50) {
+                return `Achtung: ${ichName} und ${partnerName} haben sehr unterschiedliche rationale Vorstellungen von Beziehungen (Philosophie-Score: ${philScore}%). Grundlegende Gespräche über Erwartungen, Grenzen und Ziele sind essentiell.`;
+            } else if (philScore >= 80) {
+                return `${ichName} und ${partnerName} teilen viele rationale Grundüberzeugungen über Beziehungen (Philosophie-Score: ${philScore}%). Das bildet eine solide Basis für konstruktive Gespräche.`;
+            }
+
+            return `${ichName} und ${partnerName} haben einige Überschneidungen in ihren rationalen Beziehungsvorstellungen (Philosophie-Score: ${philScore}%), aber auch Unterschiede, die Kommunikation erfordern.`;
         }
 
         // Initialize
