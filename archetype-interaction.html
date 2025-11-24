@@ -792,6 +792,49 @@
             padding: 20px;
         }
 
+        .modal-subtitle {
+            color: var(--text-muted);
+            font-size: var(--font-sm);
+            font-style: italic;
+            margin-bottom: 16px;
+        }
+
+        .score-display {
+            font-size: 3rem;
+            font-weight: bold;
+            text-align: center;
+            margin: 24px 0;
+            color: var(--primary);
+        }
+
+        .explanation {
+            margin-top: 20px;
+        }
+
+        .explanation h4 {
+            margin-top: 20px;
+            margin-bottom: 10px;
+            color: var(--text-primary);
+            font-size: var(--font-base);
+        }
+
+        .explanation p {
+            color: var(--text-secondary);
+            line-height: 1.6;
+            margin-bottom: 12px;
+        }
+
+        .explanation ul {
+            margin: 12px 0;
+            padding-left: 20px;
+        }
+
+        .explanation li {
+            margin: 8px 0;
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+
         .modal-feedback-btn {
             margin-top: 20px;
             padding: 12px 16px;
@@ -3515,6 +3558,44 @@
         </div>
     </div>
 
+    <!-- Factor Detail Modal (Feature 1) -->
+    <div class="modal-overlay" id="factorModal" onclick="closeFactorModal(event)">
+        <div class="modal" onclick="event.stopPropagation()">
+            <div class="modal-header">
+                <span class="modal-title" id="factorModalTitle">Faktor-Details</span>
+                <button class="modal-close" onclick="closeFactorModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p class="modal-subtitle" id="factorModalSubtitle"></p>
+                <div class="score-display" id="factorModalScore">0%</div>
+                <div class="explanation">
+                    <h4>Warum dieser Score?</h4>
+                    <p id="factorModalExplanation"></p>
+                    <h4>Was bedeutet das?</h4>
+                    <ul id="factorModalMeaning"></ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Archetype Info Modal (Feature 4) -->
+    <div class="modal-overlay" id="archetypeInfoModal" onclick="closeArchetypeInfoModal(event)">
+        <div class="modal" onclick="event.stopPropagation()">
+            <div class="modal-header">
+                <span class="modal-title" id="archetypeInfoTitle">Archetyp-Info</span>
+                <button class="modal-close" onclick="closeArchetypeInfoModal()">&times;</button>
+            </div>
+            <div class="modal-body" id="archetypeInfoBody">
+                <h3>Definition</h3>
+                <p id="archetypeInfoDefinition"></p>
+                <h3>Merkmale</h3>
+                <ul id="archetypeInfoFeatures"></ul>
+                <h3>Passt zu dir?</h3>
+                <p id="archetypeInfoMatch"></p>
+            </div>
+        </div>
+    </div>
+
     <header>
         <h1>ARCHETYPEN-BEZIEHUNGSQUALITÄT</h1>
     </header>
@@ -3769,14 +3850,17 @@
                 <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 12px; color: var(--success); font-weight: 700; font-size: var(--font-base);">
                     <span>👤</span> ICH
                 </div>
-                <select class="column-select" id="mobileIchSelect">
-                    <option value="single">Single</option>
-                    <option value="duo">Duo</option>
-                    <option value="duo_flex">Duo-Flex</option>
-                    <option value="solopoly">Solopoly</option>
-                    <option value="poly_hedo">Poly Hedo</option>
-                    <option value="polyamor">Polyamor</option>
-                </select>
+                <div style="display: flex; gap: 8px; align-items: center; margin-bottom: 12px;">
+                    <select class="column-select" id="mobileIchSelect" style="flex: 1;">
+                        <option value="single">Single</option>
+                        <option value="duo">Duo</option>
+                        <option value="duo_flex">Duo-Flex</option>
+                        <option value="solopoly">Solopoly</option>
+                        <option value="poly_hedo">Poly Hedo</option>
+                        <option value="polyamor">Polyamor</option>
+                    </select>
+                    <button onclick="openArchetypeInfo(document.getElementById('mobileIchSelect').value)" style="padding: 10px; background: rgba(255,255,255,0.1); border: 1px solid var(--border); border-radius: 8px; color: var(--text-secondary); cursor: pointer; font-size: 18px;" title="Info zum Archetyp">ℹ</button>
+                </div>
                 <div class="column-dimensions" id="mobileIchDimensions">
                     <div class="compact-dimension needs-selection">
                         <div class="compact-dimension-label">Geschlecht</div>
@@ -3830,14 +3914,17 @@
                 <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 12px; color: var(--danger); font-weight: 700; font-size: var(--font-base);">
                     <span>👥</span> PARTNER
                 </div>
-                <select class="column-select" id="mobilePartnerSelect">
-                    <option value="single">Single</option>
-                    <option value="duo" selected>Duo</option>
-                    <option value="duo_flex">Duo-Flex</option>
-                    <option value="solopoly">Solopoly</option>
-                    <option value="poly_hedo">Poly Hedo</option>
-                    <option value="polyamor">Polyamor</option>
-                </select>
+                <div style="display: flex; gap: 8px; align-items: center; margin-bottom: 12px;">
+                    <select class="column-select" id="mobilePartnerSelect" style="flex: 1;">
+                        <option value="single">Single</option>
+                        <option value="duo" selected>Duo</option>
+                        <option value="duo_flex">Duo-Flex</option>
+                        <option value="solopoly">Solopoly</option>
+                        <option value="poly_hedo">Poly Hedo</option>
+                        <option value="polyamor">Polyamor</option>
+                    </select>
+                    <button onclick="openArchetypeInfo(document.getElementById('mobilePartnerSelect').value)" style="padding: 10px; background: rgba(255,255,255,0.1); border: 1px solid var(--border); border-radius: 8px; color: var(--text-secondary); cursor: pointer; font-size: 18px;" title="Info zum Archetyp">ℹ</button>
+                </div>
                 <div class="column-dimensions" id="mobilePartnerDimensions">
                     <div class="compact-dimension needs-selection">
                         <div class="compact-dimension-label">Geschlecht</div>
@@ -3887,6 +3974,11 @@
             </div>
 
             <button class="btn-primary-mobile" onclick="mobileGoToPage(2)">Analysieren →</button>
+
+            <!-- Reset Button -->
+            <button onclick="resetAll()" style="width: 100%; padding: 14px; margin-top: 12px; background: transparent; border: 1px solid rgba(255,255,255,0.3); border-radius: 12px; color: rgba(255,255,255,0.7); font-size: var(--font-base); cursor: pointer; transition: all 0.2s;">
+                🔄 Auswahl zurücksetzen
+            </button>
         </div>
 
         <!-- PAGE 2: Ergebnis-Übersicht -->
@@ -3909,28 +4001,28 @@
 
             <!-- Score Breakdown with Sublabels -->
             <div class="score-breakdown">
-                <div class="score-factor">
+                <div class="score-factor" onclick="openFactorModal('archetyp')" style="cursor: pointer;">
                     <div class="score-factor-label">
                         <span class="score-factor-main">Archetyp-Übereinstimmung</span>
                         <span class="score-factor-sub">(Beziehungsphilosophie - Verstand)</span>
                     </div>
                     <span class="score-factor-value" id="mobileFactorArchetyp">0%</span>
                 </div>
-                <div class="score-factor">
+                <div class="score-factor" onclick="openFactorModal('dominanz')" style="cursor: pointer;">
                     <div class="score-factor-label">
                         <span class="score-factor-main">Dominanz-Harmonie</span>
                         <span class="score-factor-sub">(Emotionale Dynamik - Gefühl)</span>
                     </div>
                     <span class="score-factor-value" id="mobileFactorDominanz">0%</span>
                 </div>
-                <div class="score-factor">
+                <div class="score-factor" onclick="openFactorModal('orientierung')" style="cursor: pointer;">
                     <div class="score-factor-label">
                         <span class="score-factor-main">Orientierungs-Kompatibilität</span>
                         <span class="score-factor-sub">(Körperliche Anziehung - Gefühl)</span>
                     </div>
                     <span class="score-factor-value" id="mobileFactorOrientierung">0%</span>
                 </div>
-                <div class="score-factor">
+                <div class="score-factor" onclick="openFactorModal('geschlecht')" style="cursor: pointer;">
                     <div class="score-factor-label">
                         <span class="score-factor-main">Geschlechts-Attraktion</span>
                         <span class="score-factor-sub">(Gender-Chemie - Gefühl)</span>
@@ -8699,10 +8791,39 @@
                 F: 'Kompatibilität im sozialen Umfeld und gesellschaftlicher Akzeptanz.'
             };
 
+            // FEATURE 2: Category explanations
+            function getCategoryExplanation(cat, score, ich, partner) {
+                const ichName = data?.archetypes?.[ich]?.name || ich;
+                const partnerName = data?.archetypes?.[partner]?.name || partner;
+
+                const explanations = {
+                    A: () => {
+                        if (ich === partner) {
+                            return `${ichName} und ${partnerName} teilen dieselbe Beziehungsphilosophie (100% Übereinstimmung). Beide haben identische Grundüberzeugungen über Beziehungsstrukturen, was eine solide Basis bietet.`;
+                        }
+                        if (score >= 80) {
+                            return `${ichName} und ${partnerName} haben sehr ähnliche Beziehungsphilosophien (${score}%). Die Grundüberzeugungen passen gut zusammen und schaffen eine harmonische Basis.`;
+                        } else if (score >= 60) {
+                            return `${ichName} (sucht ${ichName === 'Single' ? 'Freiheit' : ichName === 'Duo' ? 'Exklusivität' : 'Flexibilität'}) und ${partnerName} (sucht ${partnerName === 'Single' ? 'Freiheit' : partnerName === 'Duo' ? 'Exklusivität' : 'Flexibilität'}) haben unterschiedliche, aber vereinbare Beziehungsphilosophien (${score}%). Mit Kommunikation und Verständnis ist eine Brücke möglich.`;
+                        } else {
+                            return `${ichName} und ${partnerName} haben fundamentale philosophische Unterschiede (${score}%). Die Beziehungsvorstellungen weichen stark voneinander ab. Intensive Kommunikation und große Kompromisse sind nötig.`;
+                        }
+                    },
+                    B: () => `Diese Kategorie misst, wie gut eure moralischen Werte übereinstimmen. Ein Score von ${score}% zeigt ${score >= 70 ? 'starke' : score >= 50 ? 'moderate' : 'schwache'} Übereinstimmung in ethischen Grundfragen.`,
+                    C: () => `Nähe-Distanz bewertet das Gleichgewicht zwischen Zusammensein und Freiraum. Bei ${score}% gibt es ${score >= 70 ? 'eine harmonische Balance' : score >= 50 ? 'moderate Abstimmung nötig' : 'deutliche Unterschiede in den Bedürfnissen'}.`,
+                    D: () => `Autonomie misst den Respekt für individuelle Freiheit. ${score}% bedeutet ${score >= 70 ? 'hohe gegenseitige Wertschätzung' : score >= 50 ? 'moderate Übereinstimmung' : 'Spannungen durch unterschiedliche Autonomie-Bedürfnisse'}.`,
+                    E: () => `Kommunikation bewertet Offenheit und Ehrlichkeit. Ein Score von ${score}% zeigt ${score >= 70 ? 'exzellente Kommunikationsbasis' : score >= 50 ? 'solide, aber ausbaufähige Kommunikation' : 'Herausforderungen in der Verständigung'}.`,
+                    F: () => `Soziale Kompatibilität bewertet gesellschaftliche Akzeptanz und Umfeld-Passung. ${score}% bedeutet ${score >= 70 ? 'sehr gute soziale Harmonie' : score >= 50 ? 'akzeptable soziale Integration' : 'potenzielle soziale Herausforderungen'}.`
+                };
+
+                return explanations[cat] ? explanations[cat]() : '';
+            }
+
             let html = '';
             for (const [cat, catData] of Object.entries(result.categories)) {
                 const score = catData.score || 0;
                 const barClass = score >= 80 ? 'bar-excellent' : score >= 65 ? 'bar-good' : score >= 50 ? 'bar-medium' : 'bar-low';
+                const explanation = getCategoryExplanation(cat, score, person1.archetyp, person2.archetyp);
 
                 html += `
                     <div class="category-accordion-item">
@@ -8717,6 +8838,10 @@
                                 <p class="category-accordion-desc">${categoryDescMap[cat] || ''}</p>
                                 <div style="margin-top: 10px; height: 8px; background: rgba(255,255,255,0.1); border-radius: 4px; overflow: hidden;">
                                     <div class="${barClass}" style="height: 100%; width: ${score}%; border-radius: 4px;"></div>
+                                </div>
+                                <div style="margin-top: 15px; padding: 12px; background: rgba(255,255,255,0.05); border-radius: 8px; border-left: 3px solid var(--primary);">
+                                    <h4 style="font-size: var(--font-sm); color: var(--text-primary); margin-bottom: 8px;">Warum ${score}%?</h4>
+                                    <p style="font-size: var(--font-xs); color: var(--text-secondary); line-height: 1.5; margin: 0;">${explanation}</p>
                                 </div>
                             </div>
                         </div>
@@ -8763,6 +8888,466 @@
         initDimensionListeners();
         initComparisonLayout();
         initMobileLayout();
+
+        // ========================================
+        // FEATURE 1: Factor Detail Modal
+        // ========================================
+
+        const factorExplanations = {
+            archetyp: {
+                title: 'Archetyp-Übereinstimmung',
+                subtitle: '(Beziehungsphilosophie - Verstand)',
+                getExplanation: (ich, partner, score) => {
+                    const ichName = data?.archetypes?.[ich]?.name || ich;
+                    const partnerName = data?.archetypes?.[partner]?.name || partner;
+
+                    if (ich === partner) {
+                        return `${ichName} und ${partnerName} teilen dieselbe Beziehungsphilosophie. Beide haben identische Grundüberzeugungen über Beziehungsstrukturen.`;
+                    }
+
+                    if (score >= 80) {
+                        return `${ichName} und ${partnerName} haben sehr ähnliche Beziehungsphilosophien. Die Grundüberzeugungen passen gut zusammen und erfordern nur minimale Kompromisse.`;
+                    } else if (score >= 60) {
+                        return `${ichName} und ${partnerName} haben unterschiedliche, aber kompatible Beziehungsphilosophien. Beide Archetypen können sich mit Kommunikation und Verständnis ergänzen.`;
+                    } else {
+                        return `${ichName} und ${partnerName} haben fundamentale philosophische Unterschiede. Die Beziehungsvorstellungen weichen stark voneinander ab und erfordern intensive Kommunikation.`;
+                    }
+                },
+                getMeaning: (score) => {
+                    if (score >= 80) {
+                        return ['Hohe philosophische Übereinstimmung', 'Wenige grundsätzliche Konflikte', 'Ähnliche Erwartungen an die Beziehung'];
+                    } else if (score >= 60) {
+                        return ['Mittlere philosophische Übereinstimmung', 'Kompromisse und Kommunikation nötig', 'Unterschiedliche, aber vereinbare Bedürfnisse'];
+                    } else {
+                        return ['Niedrige philosophische Übereinstimmung', 'Intensive Kommunikation erforderlich', 'Fundamentale Kompromisse notwendig'];
+                    }
+                }
+            },
+            dominanz: {
+                title: 'Dominanz-Harmonie',
+                subtitle: '(Emotionale Dynamik - Gefühl)',
+                getExplanation: (ich, partner, score) => {
+                    const ichDom = mobilePersonDimensions.ich.dominanz;
+                    const partnerDom = mobilePersonDimensions.partner.dominanz;
+
+                    if (ichDom === partnerDom) {
+                        if (ichDom === 'ausgeglichen' || ichDom === 'switch') {
+                            return `Beide bevorzugen ${ichDom} - das ermöglicht eine flexible Dynamik, in der beide je nach Situation verschiedene Rollen einnehmen können.`;
+                        }
+                        return `Beide bevorzugen ${ichDom} - das kann zu Spannungen führen, wenn niemand die komplementäre Rolle übernimmt.`;
+                    }
+
+                    if ((ichDom === 'dominant' && partnerDom === 'submissiv') ||
+                        (ichDom === 'submissiv' && partnerDom === 'dominant')) {
+                        return `Perfekte Komplementarität: ${ichDom} und ${partnerDom} ergänzen sich ideal in der emotionalen Dynamik.`;
+                    }
+
+                    return `${ichDom} und ${partnerDom} - eine interessante Dynamik, die durch Flexibilität und Verständnis gut funktionieren kann.`;
+                },
+                getMeaning: (score) => {
+                    if (score >= 80) {
+                        return ['Harmonische emotionale Dynamik', 'Natürliche Rollenverteilung', 'Geringe Reibungspunkte'];
+                    } else if (score >= 60) {
+                        return ['Funktionale emotionale Dynamik', 'Flexible Anpassung möglich', 'Gelegentliche Abstimmung nötig'];
+                    } else {
+                        return ['Herausfordernde emotionale Dynamik', 'Bewusste Rollenklärung wichtig', 'Potenzielle Spannungen'];
+                    }
+                }
+            },
+            orientierung: {
+                title: 'Orientierungs-Kompatibilität',
+                subtitle: '(Körperliche Anziehung - Gefühl)',
+                getExplanation: (ich, partner, score) => {
+                    const ichOri = mobilePersonDimensions.ich.orientierung;
+                    const partnerOri = mobilePersonDimensions.partner.orientierung;
+
+                    if (score === 100) {
+                        return `${ichOri} und ${partnerOri} - perfekte Kompatibilität! Körperliche Anziehung ist definitiv möglich.`;
+                    } else if (score >= 50) {
+                        return `${ichOri} und ${partnerOri} - Anziehung ist möglich, besonders wenn mindestens eine Person bisexuell orientiert ist.`;
+                    } else {
+                        return `${ichOri} und ${partnerOri} - Keine körperliche Anziehung möglich aufgrund der sexuellen Orientierungen.`;
+                    }
+                },
+                getMeaning: (score) => {
+                    if (score === 100) {
+                        return ['Vollständige körperliche Kompatibilität', 'Keine Barrieren für Anziehung', 'Basis für romantische Beziehung vorhanden'];
+                    } else if (score >= 50) {
+                        return ['Mögliche körperliche Kompatibilität', 'Anziehung kann entstehen', 'Hängt von individuellen Präferenzen ab'];
+                    } else {
+                        return ['Keine körperliche Kompatibilität', 'Romantische Beziehung nicht möglich', 'Freundschaft möglich'];
+                    }
+                }
+            },
+            geschlecht: {
+                title: 'Geschlechts-Attraktion',
+                subtitle: '(Gender-Chemie - Gefühl)',
+                getExplanation: (ich, partner, score) => {
+                    const ichG = mobilePersonDimensions.ich.geschlecht;
+                    const partnerG = mobilePersonDimensions.partner.geschlecht;
+
+                    if (score === 100) {
+                        return `Die Geschlechterkonstellation ${ichG} × ${partnerG} passt perfekt zu den angegebenen Orientierungen.`;
+                    } else if (score >= 50) {
+                        return `Die Geschlechterkonstellation ${ichG} × ${partnerG} ist mit den angegebenen Orientierungen grundsätzlich kompatibel.`;
+                    } else {
+                        return `Die Geschlechterkonstellation ${ichG} × ${partnerG} passt nicht zu den angegebenen Orientierungen.`;
+                    }
+                },
+                getMeaning: (score) => {
+                    if (score === 100) {
+                        return ['Ideale Geschlechterkonstellation', 'Maximale Anziehungskraft möglich', 'Keine gender-bezogenen Barrieren'];
+                    } else if (score >= 50) {
+                        return ['Akzeptable Geschlechterkonstellation', 'Anziehung möglich', 'Individuelle Präferenzen entscheidend'];
+                    } else {
+                        return ['Inkompatible Geschlechterkonstellation', 'Anziehung unwahrscheinlich', 'Orientierung passt nicht'];
+                    }
+                }
+            }
+        };
+
+        function openFactorModal(factorType) {
+            const factor = factorExplanations[factorType];
+            if (!factor) return;
+
+            const ich = mobileIchArchetype;
+            const partner = mobilePartnerArchetype;
+
+            // Get score from display
+            let score = 0;
+            if (factorType === 'archetyp') {
+                score = parseInt(document.getElementById('mobileFactorArchetyp').textContent) || 0;
+            } else if (factorType === 'dominanz') {
+                score = parseInt(document.getElementById('mobileFactorDominanz').textContent) || 0;
+            } else if (factorType === 'orientierung') {
+                score = parseInt(document.getElementById('mobileFactorOrientierung').textContent) || 0;
+            } else if (factorType === 'geschlecht') {
+                score = parseInt(document.getElementById('mobileFactorGeschlecht').textContent) || 0;
+            }
+
+            // Update modal content
+            document.getElementById('factorModalTitle').textContent = factor.title;
+            document.getElementById('factorModalSubtitle').textContent = factor.subtitle;
+            document.getElementById('factorModalScore').textContent = score + '%';
+            document.getElementById('factorModalExplanation').textContent = factor.getExplanation(ich, partner, score);
+
+            const meaningList = document.getElementById('factorModalMeaning');
+            meaningList.innerHTML = '';
+            factor.getMeaning(score).forEach(item => {
+                const li = document.createElement('li');
+                li.textContent = item;
+                meaningList.appendChild(li);
+            });
+
+            // Show modal
+            document.getElementById('factorModal').classList.add('active');
+        }
+
+        function closeFactorModal(event) {
+            if (event && event.target !== event.currentTarget) return;
+            document.getElementById('factorModal').classList.remove('active');
+        }
+
+        // ========================================
+        // FEATURE 4: Archetype Info Modal
+        // ========================================
+
+        const archetypeDefinitions = {
+            single: {
+                title: 'Single',
+                definition: 'Menschen, die bewusst keine feste Beziehung führen möchten. Sie priorisieren persönliche Freiheit, Unabhängigkeit und Selbstbestimmung.',
+                features: [
+                    'Vollständige emotionale und sexuelle Autonomie',
+                    'Keine Verpflichtungen gegenüber einem Partner',
+                    'Fokus auf Selbstentwicklung und persönliche Ziele',
+                    'Wechselnde Kontakte oder zeitweise bewusste Abstinenz'
+                ],
+                match: 'Wenn du maximale Freiheit schätzt, keine Rechenschaft ablegen möchtest und Beziehungsstrukturen als einengend empfindest. Ideal für Menschen, die ihre Unabhängigkeit über alles stellen.'
+            },
+            duo: {
+                title: 'Duo',
+                definition: 'Traditionelle monogame Zweierbeziehung mit klaren Exklusivitätserwartungen. Beide Partner investieren emotional und körperlich ausschließlich ineinander.',
+                features: [
+                    'Emotionale und sexuelle Exklusivität',
+                    'Langfristige Verbindlichkeit als Ziel',
+                    'Gemeinsame Lebensplanung und Zukunftsvisionen',
+                    'Tiefer emotionaler Fokus auf eine Person'
+                ],
+                match: 'Wenn du eine tiefe, exklusive Bindung suchst und dich am wohlsten fühlst, wenn du deine ganze emotionale Energie einer Person widmen kannst. Ideal für Menschen, die Sicherheit und Beständigkeit schätzen.'
+            },
+            duo_flex: {
+                title: 'Duo-Flex',
+                definition: 'Primärbeziehung mit Öffnungsbereitschaft. Ein Hauptpartner steht im Zentrum, aber mit Transparenz und gemeinsamen Regeln sind weitere Kontakte möglich.',
+                features: [
+                    'Klar definierte Primärbeziehung als Anker',
+                    'Öffnung für weitere Kontakte (emotional oder körperlich)',
+                    'Transparenz und offene Kommunikation essentiell',
+                    'Regeln werden gemeinsam definiert'
+                ],
+                match: 'Wenn du eine sichere Hauptbeziehung möchtest, aber auch Freiheit für weitere Erfahrungen brauchst. Ideal für Menschen, die Struktur und Flexibilität kombinieren möchten.'
+            },
+            solopoly: {
+                title: 'Solopoly',
+                definition: 'Polyamore Orientierung ohne Hierarchien. Keine Primärbeziehung - alle Verbindungen sind gleichwertig und unabhängig voneinander.',
+                features: [
+                    'Keine Priorisierung einzelner Beziehungen',
+                    'Maximale Autonomie in allen Verbindungen',
+                    'Jede Beziehung entwickelt sich individuell',
+                    'Keine gemeinsame Lebensplanung notwendig'
+                ],
+                match: 'Wenn du mehrere tiefe Verbindungen leben möchtest, ohne eine über die andere zu stellen. Ideal für Menschen, die Hierarchien ablehnen und absolute Beziehungsfreiheit suchen.'
+            },
+            poly_hedo: {
+                title: 'Poly Hedo',
+                definition: 'Menschen mit emotionaler Poly-Orientierung, die diese im Inneren leben. Der Logos (Verstand) hält Gefühle privat, während der Pathos (Emotion) weiterarbeitet. Keine physische Umsetzung - Genuss durch Fantasie und innere Welt.',
+                features: [
+                    'Emotionale Verbindung zu mehreren Menschen möglich',
+                    'Beziehungen bleiben in Gedanken/Fantasie',
+                    '"Die Gedanken sind frei" - Schutz der inneren Welt',
+                    'Oft Primärpartner nach außen hin monogam'
+                ],
+                match: 'Wenn du tiefe Gefühle für mehrere Menschen entwickelst, diese aber bewusst nicht physisch auslebst und deine innere Gefühlswelt als wertvoll und privat empfindest.'
+            },
+            polyamor: {
+                title: 'Polyamor',
+                definition: 'Liebesbeziehungen zu mehreren Menschen gleichzeitig, mit Wissen und Einverständnis aller Beteiligten. Emotionale und körperliche Mehrfachbeziehungen werden aktiv gelebt.',
+                features: [
+                    'Mehrere emotionale und körperliche Beziehungen parallel',
+                    'Ehrlichkeit und Transparenz mit allen Beteiligten',
+                    'Eifersucht wird aktiv bearbeitet',
+                    'Kann Hierarchien haben oder gleichwertig sein'
+                ],
+                match: 'Wenn du die Fähigkeit hast, mehrere Menschen gleichzeitig zu lieben und diese Gefühle auch real ausleben möchtest. Ideal für Menschen mit hoher Kommunikationsbereitschaft und emotionaler Kapazität.'
+            }
+        };
+
+        function openArchetypeInfo(archetypeId) {
+            const def = archetypeDefinitions[archetypeId];
+            if (!def) return;
+
+            document.getElementById('archetypeInfoTitle').textContent = def.title;
+            document.getElementById('archetypeInfoDefinition').textContent = def.definition;
+
+            const featuresList = document.getElementById('archetypeInfoFeatures');
+            featuresList.innerHTML = '';
+            def.features.forEach(feature => {
+                const li = document.createElement('li');
+                li.textContent = feature;
+                featuresList.appendChild(li);
+            });
+
+            document.getElementById('archetypeInfoMatch').textContent = def.match;
+
+            document.getElementById('archetypeInfoModal').classList.add('active');
+        }
+
+        function closeArchetypeInfoModal(event) {
+            if (event && event.target !== event.currentTarget) return;
+            document.getElementById('archetypeInfoModal').classList.remove('active');
+        }
+
+        // ========================================
+        // FEATURE 5: LocalStorage Persistence
+        // ========================================
+
+        function saveSelectionToStorage() {
+            const selection = {
+                ich: {
+                    archetyp: mobileIchArchetype,
+                    geschlecht: mobilePersonDimensions.ich.geschlecht,
+                    dominanz: mobilePersonDimensions.ich.dominanz,
+                    orientierung: mobilePersonDimensions.ich.orientierung,
+                    orientierungStatus: mobilePersonDimensions.ich.orientierungStatus
+                },
+                partner: {
+                    archetyp: mobilePartnerArchetype,
+                    geschlecht: mobilePersonDimensions.partner.geschlecht,
+                    dominanz: mobilePersonDimensions.partner.dominanz,
+                    orientierung: mobilePersonDimensions.partner.orientierung,
+                    orientierungStatus: mobilePersonDimensions.partner.orientierungStatus
+                }
+            };
+
+            try {
+                localStorage.setItem('tiage-selection', JSON.stringify(selection));
+            } catch (e) {
+                console.warn('LocalStorage not available:', e);
+            }
+        }
+
+        function loadSelectionFromStorage() {
+            try {
+                const saved = localStorage.getItem('tiage-selection');
+                if (!saved) return false;
+
+                const selection = JSON.parse(saved);
+
+                // Restore ICH
+                if (selection.ich) {
+                    mobileIchArchetype = selection.ich.archetyp;
+                    document.getElementById('mobileIchSelect').value = selection.ich.archetyp;
+
+                    if (selection.ich.geschlecht) {
+                        mobilePersonDimensions.ich.geschlecht = selection.ich.geschlecht;
+                        const radio = document.querySelector(`input[name="mobile-ich-geschlecht"][value="${selection.ich.geschlecht}"]`);
+                        if (radio) {
+                            radio.checked = true;
+                            radio.closest('.compact-dimension').classList.remove('needs-selection');
+                        }
+                    }
+
+                    if (selection.ich.dominanz) {
+                        mobilePersonDimensions.ich.dominanz = selection.ich.dominanz;
+                        const radio = document.querySelector(`input[name="mobile-ich-dominanz"][value="${selection.ich.dominanz}"]`);
+                        if (radio) {
+                            radio.checked = true;
+                            radio.closest('.compact-dimension').classList.remove('needs-selection');
+                        }
+                    }
+
+                    if (selection.ich.orientierung) {
+                        mobilePersonDimensions.ich.orientierung = selection.ich.orientierung;
+                        const radio = document.querySelector(`input[name="mobile-ich-orientierung"][value="${selection.ich.orientierung}"]`);
+                        if (radio) {
+                            radio.checked = true;
+                            radio.closest('.compact-dimension').classList.remove('needs-selection');
+                        }
+                    }
+
+                    if (selection.ich.orientierungStatus) {
+                        mobilePersonDimensions.ich.orientierungStatus = selection.ich.orientierungStatus;
+                        const radio = document.querySelector(`input[name="mobile-ich-status"][value="${selection.ich.orientierungStatus}"]`);
+                        if (radio) {
+                            radio.checked = true;
+                            radio.closest('.compact-dimension').classList.remove('needs-selection');
+                        }
+                    }
+                }
+
+                // Restore PARTNER
+                if (selection.partner) {
+                    mobilePartnerArchetype = selection.partner.archetyp;
+                    document.getElementById('mobilePartnerSelect').value = selection.partner.archetyp;
+
+                    if (selection.partner.geschlecht) {
+                        mobilePersonDimensions.partner.geschlecht = selection.partner.geschlecht;
+                        const radio = document.querySelector(`input[name="mobile-partner-geschlecht"][value="${selection.partner.geschlecht}"]`);
+                        if (radio) {
+                            radio.checked = true;
+                            radio.closest('.compact-dimension').classList.remove('needs-selection');
+                        }
+                    }
+
+                    if (selection.partner.dominanz) {
+                        mobilePersonDimensions.partner.dominanz = selection.partner.dominanz;
+                        const radio = document.querySelector(`input[name="mobile-partner-dominanz"][value="${selection.partner.dominanz}"]`);
+                        if (radio) {
+                            radio.checked = true;
+                            radio.closest('.compact-dimension').classList.remove('needs-selection');
+                        }
+                    }
+
+                    if (selection.partner.orientierung) {
+                        mobilePersonDimensions.partner.orientierung = selection.partner.orientierung;
+                        const radio = document.querySelector(`input[name="mobile-partner-orientierung"][value="${selection.partner.orientierung}"]`);
+                        if (radio) {
+                            radio.checked = true;
+                            radio.closest('.compact-dimension').classList.remove('needs-selection');
+                        }
+                    }
+
+                    if (selection.partner.orientierungStatus) {
+                        mobilePersonDimensions.partner.orientierungStatus = selection.partner.orientierungStatus;
+                        const radio = document.querySelector(`input[name="mobile-partner-status"][value="${selection.partner.orientierungStatus}"]`);
+                        if (radio) {
+                            radio.checked = true;
+                            radio.closest('.compact-dimension').classList.remove('needs-selection');
+                        }
+                    }
+                }
+
+                return true;
+            } catch (e) {
+                console.warn('Failed to load from LocalStorage:', e);
+                return false;
+            }
+        }
+
+        function resetAll() {
+            if (!confirm('Möchtest du wirklich alle Eingaben zurücksetzen?')) {
+                return;
+            }
+
+            // Clear LocalStorage
+            try {
+                localStorage.removeItem('tiage-selection');
+            } catch (e) {
+                console.warn('LocalStorage not available:', e);
+            }
+
+            // Reset mobile selections
+            mobileIchArchetype = 'single';
+            mobilePartnerArchetype = 'duo';
+            mobilePersonDimensions = {
+                ich: { geschlecht: null, dominanz: null, orientierung: null, orientierungStatus: null },
+                partner: { geschlecht: null, dominanz: null, orientierung: null, orientierungStatus: null }
+            };
+
+            // Reset dropdowns
+            document.getElementById('mobileIchSelect').value = 'single';
+            document.getElementById('mobilePartnerSelect').value = 'duo';
+
+            // Reset all radio buttons
+            document.querySelectorAll('.mobile-page input[type="radio"]').forEach(radio => {
+                radio.checked = false;
+                const dimension = radio.closest('.compact-dimension');
+                if (dimension) {
+                    dimension.classList.add('needs-selection');
+                }
+            });
+
+            // Go to page 1
+            mobileGoToPage(1);
+
+            // Show confirmation
+            const warning = document.createElement('div');
+            warning.style.cssText = `
+                position: fixed;
+                top: 20px;
+                left: 50%;
+                transform: translateX(-50%);
+                background: rgba(46, 204, 113, 0.95);
+                color: white;
+                padding: 15px 25px;
+                border-radius: 10px;
+                font-size: 14px;
+                font-weight: 600;
+                z-index: 9999;
+                box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            `;
+            warning.textContent = '✓ Alle Eingaben wurden zurückgesetzt';
+            document.body.appendChild(warning);
+
+            setTimeout(() => warning.remove(), 3000);
+        }
+
+        // Auto-save on changes
+        function initAutoSave() {
+            // Save on archetype change
+            document.getElementById('mobileIchSelect')?.addEventListener('change', saveSelectionToStorage);
+            document.getElementById('mobilePartnerSelect')?.addEventListener('change', saveSelectionToStorage);
+
+            // Save on dimension change
+            document.querySelectorAll('.mobile-page input[type="radio"]').forEach(radio => {
+                radio.addEventListener('change', saveSelectionToStorage);
+            });
+        }
+
+        // Load saved data on startup
+        setTimeout(() => {
+            loadSelectionFromStorage();
+            initAutoSave();
+        }, 500);
 
         // Update comparison view when data is loaded
         const originalLoadData = loadData;
