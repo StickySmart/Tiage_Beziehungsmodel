@@ -6778,6 +6778,33 @@
                 warningsContainer.innerHTML += `<div class="warning-box logos-warning">⚠️ LOGOS-WARNUNG: Philosophie nur ${logosCheck.score}%</div>`;
             }
 
+            // If dimensions incomplete, show empty state and return
+            if (pathosCheck.result === 'unvollständig') {
+                // Clear all expandable sections
+                const percentage = document.getElementById('resultPercentage');
+                const progressFill = document.getElementById('resultProgressFill');
+                percentage.textContent = '–';
+                percentage.className = 'result-percentage';
+                progressFill.style.width = '0%';
+
+                // Clear sections with placeholder message
+                const proList = document.getElementById('expandProList');
+                const contraList = document.getElementById('expandContraList');
+                if (proList) proList.innerHTML = '<li style="color: var(--text-muted); font-style: italic;">Bitte alle Dimensionen auswählen</li>';
+                if (contraList) contraList.innerHTML = '<li style="color: var(--text-muted); font-style: italic;">Bitte alle Dimensionen auswählen</li>';
+
+                const pathosLogosContent = document.getElementById('pathosLogosContent');
+                if (pathosLogosContent) pathosLogosContent.innerHTML = '<p style="color: var(--text-muted); font-style: italic; text-align: center; padding: 20px;">Bitte alle Dimensionen auswählen, um die Pathos/Logos-Analyse zu sehen.</p>';
+
+                const categoryBars = document.getElementById('expandCategoryBars');
+                if (categoryBars) categoryBars.innerHTML = '<p style="color: var(--text-muted); font-style: italic; text-align: center; padding: 20px;">Bitte alle Dimensionen auswählen</p>';
+
+                const expandRadar = document.getElementById('expandRadarChart');
+                if (expandRadar) expandRadar.innerHTML = '';
+
+                return;
+            }
+
             // Calculate overall score
             let overallScore = 0;
             if (pathosCheck.result !== 'unmöglich') {
@@ -6983,35 +7010,245 @@
             document.getElementById('categoryModal').classList.add('active');
         }
 
-        const subDimensionDescriptions = {
-            // Kategorie A
-            "Exklusivitäts-Erwartung": "Wie stark erwartet man, der einzige romantische/sexuelle Partner zu sein? Singles haben oft keine Erwartung, Duos erwarten volle Exklusivität, Poly-Typen akzeptieren multiple Partner.",
-            "Offenheit für alternative Modelle": "Bereitschaft, von traditionellen Beziehungsformen abzuweichen. Reicht von 'nur Monogamie' bis 'alle Formen willkommen'.",
-            "Beziehung als Lebensinhalt vs. Lebensbereich": "Ist die Beziehung das Zentrum des Lebens oder einer von vielen wichtigen Bereichen?",
-            // Kategorie B
-            "Definition von Treue": "Was bedeutet 'treu sein'? Für manche nur emotionale Treue, für andere auch körperliche Exklusivität, für Poly-Typen Ehrlichkeit und Transparenz.",
-            "Ethische Grundhaltung": "Gemeinsame Werte wie Ehrlichkeit, Respekt, Consent. Wie wichtig ist ethisches Handeln in der Beziehung?",
-            "Verantwortungsbewusstsein": "Übernimmt man Verantwortung für die eigenen Handlungen und deren Auswirkungen auf Partner?",
-            // Kategorie C
-            "Emotionale Verschmelzungs-Tendenz": "Wie stark möchte man emotional mit dem Partner verschmelzen? Von 'wir sind eins' bis 'wir sind zwei eigenständige Menschen'.",
-            "Physische Nähe-Bedürfnisse": "Wie viel körperliche Nähe braucht man? Zusammenleben, täglicher Kontakt, oder reicht wöchentliches Treffen?",
-            "Fähigkeit, Raum zu geben": "Kann man dem Partner Freiraum lassen, ohne sich vernachlässigt zu fühlen?",
-            // Kategorie D
-            "Individuelle Freiheit": "Wie wichtig ist persönliche Freiheit in der Beziehung? Eigene Hobbies, Freunde, Entscheidungen.",
-            "Entscheidungsautonomie": "Wer entscheidet was? Gemeinsam oder jeder für sich? Wie viel Mitsprache hat der Partner?",
-            "Akzeptanz der Autonomie des anderen": "Kann man akzeptieren, dass der Partner eigene Entscheidungen trifft, auch wenn man nicht zustimmt?",
-            // Kategorie E
-            "Kommunikationstiefe": "Wie tief geht die Kommunikation? Oberflächlich oder tiefgehende Gespräche über Gefühle, Ängste, Träume?",
-            "Konfliktfähigkeit": "Wie geht man mit Konflikten um? Vermeidung, Eskalation, oder konstruktive Lösung?",
-            "Emotionale Transparenz": "Wie offen teilt man Gefühle mit? Alles aussprechen oder manches für sich behalten?",
-            // Kategorie F
-            "Gesellschaftliche Akzeptanz": "Wie wichtig ist es, dass die Beziehung gesellschaftlich akzeptiert wird?",
-            "Integration in soziale Kreise": "Wie wird die Beziehung in Freundeskreis, Familie, Arbeit integriert?",
-            "Umgang mit Stigma": "Wie geht man mit negativen Reaktionen auf die Beziehungsform um?"
+        const subDimensionData = {
+            "Exklusivitäts-Erwartung": {
+                was: "Die Erwartung, der einzige romantische/sexuelle Partner zu sein.",
+                warum: "Diese Dimension ist fundamental, weil unterschiedliche Erwartungen zu Enttäuschung, Eifersucht und Vertrauensbrüchen führen können.",
+                wozu: "Klare Erwartungen verhindern Missverständnisse und schaffen eine gemeinsame Basis für die Beziehungsgestaltung.",
+                archetypen: {
+                    single: "Flexibel - keine feste Erwartung, offen für verschiedene Modelle",
+                    duo: "Hohe Erwartung an vollständige Exklusivität",
+                    duo_flex: "Grundsätzlich exklusiv, aber mit Ausnahmen nach Absprache",
+                    solopoly: "Keine Exklusivitätserwartung - jede Beziehung ist eigenständig",
+                    poly_hedo: "Offenheit für multiple Partner ist Teil des Modells",
+                    polyamor: "Bewusste Nicht-Exklusivität mit klaren Strukturen"
+                }
+            },
+            "Offenheit für alternative Modelle": {
+                was: "Die Bereitschaft, nicht-traditionelle Beziehungsformen zu akzeptieren oder auszuprobieren.",
+                warum: "Unterschiedliche Offenheit kann zu Konflikten führen, wenn ein Partner expandieren möchte und der andere nicht.",
+                wozu: "Gemeinsame Offenheit ermöglicht Wachstum und Anpassung der Beziehung an veränderte Bedürfnisse.",
+                archetypen: {
+                    single: "Oft sehr offen - keine festgelegte Struktur",
+                    duo: "Tendenziell geschlossen - Monogamie als Ideal",
+                    duo_flex: "Moderat offen - bereit für situative Anpassungen",
+                    solopoly: "Sehr offen - lebt bereits alternatives Modell",
+                    poly_hedo: "Maximal offen - Experimentierfreude ist zentral",
+                    polyamor: "Strukturiert offen - klare Rahmen für Vielfalt"
+                }
+            },
+            "Beziehung als Lebensinhalt vs. Lebensbereich": {
+                was: "Wie zentral ist die Beziehung im Leben? Ist sie alles oder ein Teil von vielem?",
+                warum: "Wenn einer die Beziehung als Lebensmittelpunkt sieht und der andere als Nebensache, entstehen ungleiche Investitionen.",
+                wozu: "Ähnliche Priorisierung schafft Balance und verhindert das Gefühl von Vernachlässigung oder Überforderung.",
+                archetypen: {
+                    single: "Lebensbereich - das eigene Leben steht im Zentrum",
+                    duo: "Oft Lebensinhalt - die Beziehung ist sehr wichtig",
+                    duo_flex: "Wichtiger Lebensbereich mit hoher Priorität",
+                    solopoly: "Klar Lebensbereich - das Selbst bleibt Zentrum",
+                    poly_hedo: "Lebensbereich - Genuss und Freiheit sind zentral",
+                    polyamor: "Wichtiger Lebensbereich - aber mit mehreren Beziehungen"
+                }
+            },
+            "Definition von Treue": {
+                was: "Was bedeutet 'treu sein' konkret? Körperliche Exklusivität, emotionale Treue, oder Ehrlichkeit?",
+                warum: "Unterschiedliche Definitionen führen oft zu den schmerzhaftesten Missverständnissen in Beziehungen.",
+                wozu: "Eine gemeinsame Definition von Treue schafft Klarheit und Vertrauen - unabhängig davon, wie sie aussieht.",
+                archetypen: {
+                    single: "Flexibel - Treue ist kontextabhängig",
+                    duo: "Klassisch - körperliche UND emotionale Exklusivität",
+                    duo_flex: "Angepasst - emotionale Treue wichtiger als körperliche",
+                    solopoly: "Neu definiert - Treue = Ehrlichkeit und Transparenz",
+                    poly_hedo: "Erweitert - Treue zu Absprachen, nicht zu Exklusivität",
+                    polyamor: "Strukturiert - Treue zu vereinbarten Regeln und Grenzen"
+                }
+            },
+            "Ethische Grundhaltung": {
+                was: "Die gemeinsamen Werte wie Ehrlichkeit, Respekt, Consent und Fairness.",
+                warum: "Ethische Inkompatibilität untergräbt das Fundament jeder Beziehung und führt zu Vertrauensverlust.",
+                wozu: "Geteilte ethische Werte schaffen ein sicheres Fundament für alle anderen Aspekte der Beziehung.",
+                archetypen: {
+                    single: "Individuell geprägt - eigene ethische Standards",
+                    duo: "Traditionell - gesellschaftliche Normen als Leitfaden",
+                    duo_flex: "Reflektiert - bewusste Auseinandersetzung mit Normen",
+                    solopoly: "Progressiv - aktive ethische Reflexion",
+                    poly_hedo: "Consent-fokussiert - Einverständnis als höchster Wert",
+                    polyamor: "Strukturiert ethisch - klare Regeln für fairen Umgang"
+                }
+            },
+            "Verantwortungsbewusstsein": {
+                was: "Die Bereitschaft, Verantwortung für eigene Handlungen und deren Auswirkungen zu übernehmen.",
+                warum: "Ohne Verantwortungsbewusstsein werden Fehler wiederholt und Partner verletzt.",
+                wozu: "Verantwortung ermöglicht Wachstum, Reparatur nach Konflikten und nachhaltige Beziehungsqualität.",
+                archetypen: {
+                    single: "Primär für sich selbst verantwortlich",
+                    duo: "Hohe gegenseitige Verantwortung erwartet",
+                    duo_flex: "Balancierte Verantwortung mit Flexibilität",
+                    solopoly: "Selbstverantwortung betont, aber fair zu Partnern",
+                    poly_hedo: "Verantwortung für Consent und Absprachen",
+                    polyamor: "Komplexe Verantwortung für mehrere Beziehungen"
+                }
+            },
+            "Emotionale Verschmelzungs-Tendenz": {
+                was: "Das Bedürfnis, emotional mit dem Partner zu verschmelzen - von 'wir sind eins' bis 'wir sind zwei'.",
+                warum: "Starke Unterschiede führen dazu, dass einer sich eingeengt und der andere sich abgelehnt fühlt.",
+                wozu: "Ähnliche Verschmelzungs-Präferenzen ermöglichen eine Nähe, die sich für beide richtig anfühlt.",
+                archetypen: {
+                    single: "Niedrig - Autonomie steht vor Verschmelzung",
+                    duo: "Oft hoch - 'Wir' als zentrale Identität",
+                    duo_flex: "Moderat - Nähe mit Grenzen",
+                    solopoly: "Niedrig - bewusste Distanz zu Verschmelzung",
+                    poly_hedo: "Variabel - situationsabhängig",
+                    polyamor: "Differenziert - unterschiedlich mit verschiedenen Partnern"
+                }
+            },
+            "Physische Nähe-Bedürfnisse": {
+                was: "Wie viel körperliche Präsenz und Nähe braucht man? Zusammenleben, täglicher Kontakt, wöchentlich?",
+                warum: "Mismatches führen zu Einsamkeit (bei zu wenig) oder Erstickung (bei zu viel).",
+                wozu: "Abgestimmte Nähe-Bedürfnisse ermöglichen, dass beide sich gesehen und respektiert fühlen.",
+                archetypen: {
+                    single: "Flexibel - kein konstantes Nähe-Bedürfnis",
+                    duo: "Hoch - oft Wunsch nach Zusammenleben",
+                    duo_flex: "Moderat bis hoch mit Freiraum-Phasen",
+                    solopoly: "Bewusst niedrig - eigener Wohnraum wichtig",
+                    poly_hedo: "Situativ - Nähe nach Bedarf, nicht nach Pflicht",
+                    polyamor: "Komplex - unterschiedliche Nähe mit verschiedenen Partnern"
+                }
+            },
+            "Fähigkeit, Raum zu geben": {
+                was: "Die Fähigkeit, dem Partner Freiraum zu lassen ohne sich vernachlässigt oder unsicher zu fühlen.",
+                warum: "Ohne diese Fähigkeit entstehen Kontrolle, Eifersucht und Erstickung der Beziehung.",
+                wozu: "Raum geben können ermöglicht individuelle Entwicklung innerhalb der Beziehung.",
+                archetypen: {
+                    single: "Hoch - Raum ist selbstverständlich",
+                    duo: "Muss oft gelernt werden - Nähe ist Standard",
+                    duo_flex: "Bewusst entwickelt - wichtig für das Modell",
+                    solopoly: "Sehr hoch - Teil der Grundphilosophie",
+                    poly_hedo: "Notwendig - mehrere Beziehungen erfordern es",
+                    polyamor: "Essentiell - strukturell eingebaut"
+                }
+            },
+            "Individuelle Freiheit": {
+                was: "Der Wert, den man persönlicher Freiheit in der Beziehung beimisst - eigene Entscheidungen, Hobbies, Freunde.",
+                warum: "Unterschiedliche Freiheitsbedürfnisse führen zu Machtkämpfen oder Entfremdung.",
+                wozu: "Respektierte Freiheit ermöglicht authentisches Selbst und verhindert Resentment.",
+                archetypen: {
+                    single: "Maximale Freiheit - das Kernbedürfnis",
+                    duo: "Eingeschränkt - Kompromisse erwartet",
+                    duo_flex: "Balanciert - Freiheit mit Rücksichtnahme",
+                    solopoly: "Maximal - Autonomie ist nicht verhandelbar",
+                    poly_hedo: "Hoch - Freiheit ist Teil des Genusses",
+                    polyamor: "Hoch - aber mit Verantwortung verbunden"
+                }
+            },
+            "Entscheidungsautonomie": {
+                was: "Wer entscheidet was? Wie viel Mitsprache hat der Partner bei persönlichen Entscheidungen?",
+                warum: "Konflikte entstehen, wenn einer Kontrolle erwartet und der andere Autonomie braucht.",
+                wozu: "Klare Entscheidungsstrukturen verhindern Machtkämpfe und schaffen Klarheit.",
+                archetypen: {
+                    single: "Vollständig - alle Entscheidungen selbst",
+                    duo: "Oft geteilt - wichtige Dinge gemeinsam",
+                    duo_flex: "Hybrid - manche gemeinsam, manche allein",
+                    solopoly: "Hoch - Autonomie auch in der Beziehung",
+                    poly_hedo: "Individuell - jeder entscheidet für sich",
+                    polyamor: "Komplex - unterschiedlich je nach Beziehung"
+                }
+            },
+            "Akzeptanz der Autonomie des anderen": {
+                was: "Die Fähigkeit zu akzeptieren, dass der Partner eigene Entscheidungen trifft - auch wenn man nicht zustimmt.",
+                warum: "Fehlende Akzeptanz führt zu Kontrolle, Manipulation und Vertrauensverlust.",
+                wozu: "Akzeptanz ermöglicht echte Partnerschaft statt Abhängigkeit.",
+                archetypen: {
+                    single: "Hoch - Autonomie wird geschätzt",
+                    duo: "Muss oft gelernt werden",
+                    duo_flex: "Bewusst entwickelt",
+                    solopoly: "Sehr hoch - zentral für das Modell",
+                    poly_hedo: "Notwendig für das Funktionieren",
+                    polyamor: "Essentiell - ohne geht es nicht"
+                }
+            },
+            "Kommunikationstiefe": {
+                was: "Wie tief gehen Gespräche? Von Alltag bis zu Ängsten, Träumen und Verletzlichkeit.",
+                warum: "Unterschiedliche Tiefen-Präferenzen führen zu Frustration - einer will mehr, einer weniger.",
+                wozu: "Passende Kommunikationstiefe schafft echte Verbindung und Verständnis.",
+                archetypen: {
+                    single: "Variabel - je nach Beziehung",
+                    duo: "Oft hoch - alles teilen als Ideal",
+                    duo_flex: "Selektiv tief - wichtiges wird geteilt",
+                    solopoly: "Bewusst tief - Kommunikation ist essentiell",
+                    poly_hedo: "Situativ - Tiefe nach Bedarf",
+                    polyamor: "Hoch - Komplexität erfordert Kommunikation"
+                }
+            },
+            "Konfliktfähigkeit": {
+                was: "Wie geht man mit Konflikten um? Vermeidung, Eskalation, konstruktive Lösung?",
+                warum: "Unterschiedliche Stile führen dazu, dass Konflikte ungelöst bleiben oder eskalieren.",
+                wozu: "Kompatible Konfliktfähigkeit ermöglicht Wachstum durch Krisen statt Zerstörung.",
+                archetypen: {
+                    single: "Kann Konflikte vermeiden durch Distanz",
+                    duo: "Muss Konflikte lösen - kein Entkommen",
+                    duo_flex: "Flexibel - manchmal Distanz, manchmal Lösung",
+                    solopoly: "Klar - bei Unlösbarkeit kann man gehen",
+                    poly_hedo: "Pragmatisch - Konflikte minimieren",
+                    polyamor: "Entwickelt - Kommunikation als Lösung"
+                }
+            },
+            "Emotionale Transparenz": {
+                was: "Wie offen teilt man Gefühle? Alles aussprechen oder manches für sich behalten?",
+                warum: "Unterschiede führen zu Missverständnissen - einer fühlt sich verschlossen, der andere überfordert.",
+                wozu: "Abgestimmte Transparenz schafft Vertrauen ohne Überforderung.",
+                archetypen: {
+                    single: "Selektiv - teilt was nötig ist",
+                    duo: "Oft hohe Erwartung an Transparenz",
+                    duo_flex: "Balanciert - wichtiges wird geteilt",
+                    solopoly: "Hoch - Ehrlichkeit ist zentral",
+                    poly_hedo: "Pragmatisch - Transparenz wo nötig",
+                    polyamor: "Sehr hoch - Basis des Modells"
+                }
+            },
+            "Gesellschaftliche Akzeptanz": {
+                was: "Wie wichtig ist es, dass Familie, Freunde und Gesellschaft die Beziehung akzeptieren?",
+                warum: "Unterschiedliche Wichtigkeit führt zu Konflikten über 'Outing' und öffentliches Auftreten.",
+                wozu: "Ähnliche Wichtigkeit ermöglicht einen gemeinsamen Umgang mit dem sozialen Umfeld.",
+                archetypen: {
+                    single: "Unkompliziert - gesellschaftlich akzeptiert",
+                    duo: "Sehr wichtig - passt zur Norm",
+                    duo_flex: "Moderat - gewisse Erklärungen nötig",
+                    solopoly: "Weniger wichtig - lebt gegen die Norm",
+                    poly_hedo: "Gering - Stigma wird akzeptiert",
+                    polyamor: "Komplex - manche Offenheit, manche Diskretion"
+                }
+            },
+            "Integration in soziale Kreise": {
+                was: "Wie wird die Beziehung in Freundeskreis, Familie und Arbeit integriert und präsentiert?",
+                warum: "Unterschiede führen zu Frustration - einer will präsentieren, der andere verstecken.",
+                wozu: "Gemeinsame Strategien für soziale Integration schaffen ein einheitliches Auftreten.",
+                archetypen: {
+                    single: "Einfach - keine komplexe Integration nötig",
+                    duo: "Vollständig - Partner wird überall eingeführt",
+                    duo_flex: "Weitgehend - mit gewissen Grenzen",
+                    solopoly: "Selektiv - nicht überall erklärbar",
+                    poly_hedo: "Begrenzt - gesellschaftlich schwierig",
+                    polyamor: "Komplex - unterschiedlich je nach Umfeld"
+                }
+            },
+            "Umgang mit Stigma": {
+                was: "Wie geht man mit negativen Reaktionen auf die Beziehungsform um? Erklären, ignorieren, kämpfen?",
+                warum: "Unterschiedliche Strategien führen zu Konflikten darüber, wie man als Paar auftritt.",
+                wozu: "Gemeinsame Strategie stärkt die Beziehung gegen äußeren Druck.",
+                archetypen: {
+                    single: "Kaum Stigma - gesellschaftlich normal",
+                    duo: "Kein Stigma - das Ideal der Gesellschaft",
+                    duo_flex: "Leichtes Stigma - 'offene Beziehung'",
+                    solopoly: "Erhebliches Stigma - schwer erklärbar",
+                    poly_hedo: "Hohes Stigma - moralische Verurteilung",
+                    polyamor: "Stigma vorhanden - aber zunehmend bekannt"
+                }
+            }
         };
 
         function showSubDimensionInfo(cat, subName) {
-            const description = subDimensionDescriptions[subName] || "Keine detaillierte Beschreibung verfügbar.";
+            const subData = subDimensionData[subName] || { was: "Keine Beschreibung verfügbar.", warum: "", wozu: "", archetypen: {} };
             const catNames = {
                 A: 'Beziehungsphilosophie',
                 B: 'Werte-Alignment',
@@ -7023,23 +7260,71 @@
 
             const ichArch = data?.archetypes?.[currentArchetype];
             const partnerArch = data?.archetypes?.[selectedPartner];
+            const ichId = currentArchetype;
+            const partnerId = selectedPartner;
+
+            const ichPerspektive = subData.archetypen?.[ichId] || "Keine Daten";
+            const partnerPerspektive = subData.archetypen?.[partnerId] || "Keine Daten";
 
             let modalContent = `
                 <div style="background: rgba(69,123,157,0.1); padding: 12px; border-radius: 10px; margin-bottom: 15px;">
                     <div style="font-size: 11px; color: var(--text-muted);">Teil von Kategorie ${cat}: ${catNames[cat]}</div>
                 </div>
-                <div style="margin-bottom: 20px;">
-                    <h3 style="color: var(--primary); margin-bottom: 10px;">${subName}</h3>
-                    <p style="color: var(--text-secondary); line-height: 1.6;">${description}</p>
+
+                <div style="margin-bottom: 15px;">
+                    <div style="font-size: 11px; color: var(--text-muted); margin-bottom: 4px;">WAS?</div>
+                    <p style="color: var(--text-primary); line-height: 1.5;">${subData.was}</p>
                 </div>
+
+                <div style="margin-bottom: 15px;">
+                    <div style="font-size: 11px; color: var(--text-muted); margin-bottom: 4px;">WARUM WICHTIG?</div>
+                    <p style="color: var(--text-secondary); line-height: 1.5;">${subData.warum}</p>
+                </div>
+
+                <div style="margin-bottom: 20px;">
+                    <div style="font-size: 11px; color: var(--text-muted); margin-bottom: 4px;">WOZU?</div>
+                    <p style="color: var(--text-secondary); line-height: 1.5;">${subData.wozu}</p>
+                </div>
+
                 <div style="background: rgba(46,204,113,0.1); padding: 12px; border-radius: 10px; margin-bottom: 10px;">
-                    <div style="font-size: 12px; color: #2ecc71; font-weight: 600; margin-bottom: 5px;">Relevanz für ${ichArch?.name || 'ICH'} × ${partnerArch?.name || 'Partner'}:</div>
-                    <p style="color: var(--text-muted); font-size: 12px;">Diese Subdimension beeinflusst eure Kompatibilität in der Kategorie "${catNames[cat]}".</p>
+                    <div style="font-size: 12px; color: #2ecc71; font-weight: 600; margin-bottom: 8px;">ICH (${ichArch?.name || ichId}):</div>
+                    <p style="color: var(--text-secondary); font-size: 12px; line-height: 1.5;">${ichPerspektive}</p>
+                </div>
+
+                <div style="background: rgba(231,76,60,0.1); padding: 12px; border-radius: 10px; margin-bottom: 15px;">
+                    <div style="font-size: 12px; color: #e74c3c; font-weight: 600; margin-bottom: 8px;">PARTNER (${partnerArch?.name || partnerId}):</div>
+                    <p style="color: var(--text-secondary); font-size: 12px; line-height: 1.5;">${partnerPerspektive}</p>
+                </div>
+
+                <div style="background: rgba(155,89,182,0.1); padding: 12px; border-radius: 10px;">
+                    <div style="font-size: 12px; color: #9b59b6; font-weight: 600; margin-bottom: 8px;">BEDEUTUNG FÜR EURE KOMBINATION:</div>
+                    <p style="color: var(--text-secondary); font-size: 12px; line-height: 1.5;">${generateCombinationAnalysis(ichId, partnerId, subName, subData)}</p>
                 </div>
             `;
 
             document.getElementById('modalTitle').textContent = subName;
             document.getElementById('modalBody').innerHTML = modalContent;
+        }
+
+        function generateCombinationAnalysis(ichId, partnerId, subName, subData) {
+            if (ichId === partnerId) {
+                return `Da ihr beide denselben Archetyp habt, solltet ihr hier ähnliche Vorstellungen haben. Das reduziert Konfliktpotential in dieser Dimension erheblich.`;
+            }
+
+            const polyTypes = ['solopoly', 'poly_hedo', 'polyamor'];
+            const monoTypes = ['single', 'duo', 'duo_flex'];
+            const ichIsPoly = polyTypes.includes(ichId);
+            const partnerIsPoly = polyTypes.includes(partnerId);
+
+            if (ichIsPoly !== partnerIsPoly) {
+                return `Hier treffen fundamental unterschiedliche Weltanschauungen aufeinander. Ein Poly-Typ und ein Mono-Typ haben oft gegensätzliche Perspektiven auf "${subName}". Intensive Kommunikation und gegenseitiges Verständnis sind essentiell.`;
+            }
+
+            if (ichIsPoly && partnerIsPoly) {
+                return `Als zwei Poly-Typen teilt ihr grundsätzlich ähnliche Werte in dieser Dimension. Die Unterschiede liegen eher in der konkreten Ausgestaltung als in den Grundprinzipien.`;
+            }
+
+            return `Eure Archetypen haben unterschiedliche Schwerpunkte in dieser Dimension. Offene Gespräche darüber, was euch beiden wichtig ist, helfen, gemeinsame Lösungen zu finden.`;
         }
 
         function updateExpandableProContra() {
