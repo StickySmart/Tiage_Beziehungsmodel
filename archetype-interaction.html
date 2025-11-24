@@ -6623,24 +6623,162 @@
             };
         }
 
-        // Calculate overall with all modifiers
+        // ========================================
+        // NEW: 4-Factor Relationship Quality Model
+        // ========================================
+
+        // Factor 1: Archetype Match (40%) - from existing matrix
+        function getArchetypeScore(type1, type2) {
+            const key = `${type1}_${type2}`;
+            const interaction = data?.interactions[key];
+            return interaction?.overall || 50;
+        }
+
+        // Factor 2: Dominance Harmony (20%)
+        function calculateDominanceHarmony(dom1, dom2) {
+            // Return default if not set
+            if (!dom1 || !dom2) return 75;
+
+            const harmonyMatrix = {
+                "dominant-submissiv": 100,
+                "submissiv-dominant": 100,
+                "ausgeglichen-ausgeglichen": 95,
+                "switch-switch": 90,
+                "dominant-ausgeglichen": 85,
+                "ausgeglichen-dominant": 85,
+                "submissiv-ausgeglichen": 85,
+                "ausgeglichen-submissiv": 85,
+                "switch-dominant": 80,
+                "dominant-switch": 80,
+                "switch-submissiv": 80,
+                "submissiv-switch": 80,
+                "switch-ausgeglichen": 88,
+                "ausgeglichen-switch": 88,
+                "dominant-dominant": 60,
+                "submissiv-submissiv": 60
+            };
+
+            const key = `${dom1}-${dom2}`;
+            return harmonyMatrix[key] || harmonyMatrix[`${dom2}-${dom1}`] || 75;
+        }
+
+        // Factor 3: Orientation Compatibility (25%) - uses existing checkPhysicalCompatibility
+        function calculateOrientationScore(person1, person2) {
+            const pathosCheck = checkPhysicalCompatibility(person1, person2);
+
+            if (pathosCheck.result === "unmöglich") {
+                return 0;  // K.O.-Kriterium!
+            }
+
+            if (pathosCheck.result === "unsicher") {
+                return 70;  // Exploration-Phase
+            }
+
+            return 100;  // Kompatibel
+        }
+
+        // Factor 4: Gender Attraction (15%)
+        function calculateGenderAttraction(p1, p2) {
+            const g1 = p1.geschlecht;
+            const o1 = p1.orientierung;
+            const g2 = p2.geschlecht;
+            const o2 = p2.orientierung;
+
+            // Return default if values missing
+            if (!g1 || !o1 || !g2 || !o2) return 75;
+
+            // Bi = immer 100%
+            if (o1 === "bisexuell" || o2 === "bisexuell") return 100;
+
+            // Hetero
+            if (o1 === "heterosexuell" && o2 === "heterosexuell") {
+                if ((g1 === "männlich" && g2 === "weiblich") ||
+                    (g1 === "weiblich" && g2 === "männlich")) return 100;
+                if (g1 === "non-binär" || g2 === "non-binär") return 80;
+                return 0;
+            }
+
+            // Homo
+            if (o1 === "homosexuell" && o2 === "homosexuell") {
+                if (g1 === g2 && g1 !== "non-binär") return 100;
+                if (g1 === "non-binär" || g2 === "non-binär") return 80;
+                return 0;
+            }
+
+            return 75;  // Gemischte Orientierungen
+        }
+
+        // Main: 4-Factor Relationship Quality Calculation
+        function calculateRelationshipQuality(person1, person2) {
+            // ═══════════════════════════════════════
+            // EBENE 1: K.O.-Check
+            // ═══════════════════════════════════════
+
+            const orientationScore = calculateOrientationScore(person1, person2);
+
+            if (orientationScore === 0) {
+                return {
+                    score: 0,
+                    blocked: true,
+                    reason: "Keine körperliche Anziehung möglich",
+                    breakdown: {
+                        archetyp: 0,
+                        dominanz: 0,
+                        orientierung: 0,
+                        geschlecht: 0
+                    }
+                };
+            }
+
+            // ═══════════════════════════════════════
+            // EBENE 2: 4-Faktoren Berechnung
+            // ═══════════════════════════════════════
+
+            const archetypeScore = getArchetypeScore(person1.archetyp, person2.archetyp);
+            const dominanceScore = calculateDominanceHarmony(person1.dominanz, person2.dominanz);
+            const genderScore = calculateGenderAttraction(person1, person2);
+
+            // Gewichtete Summe
+            const totalScore =
+                (archetypeScore * 0.40) +      // 40%
+                (dominanceScore * 0.20) +      // 20%
+                (orientationScore * 0.25) +    // 25%
+                (genderScore * 0.15);          // 15%
+
+            return {
+                score: Math.round(totalScore),
+                blocked: false,
+                breakdown: {
+                    archetyp: archetypeScore,
+                    dominanz: dominanceScore,
+                    orientierung: orientationScore,
+                    geschlecht: genderScore
+                }
+            };
+        }
+
+        // Calculate overall with 4-factor model + category details for UI
         function calculateOverallWithModifiers(person1, person2, pathosCheck, logosCheck) {
-            const weights = { A: 0.25, B: 0.15, C: 0.15, D: 0.15, E: 0.15, F: 0.15 };
+            // Use new 4-factor model for overall score
+            const qualityResult = calculateRelationshipQuality(person1, person2);
+
+            // Calculate category scores for UI display (radar chart, category bars)
             const categories = {};
-            let weightedTotal = 0;
 
-            // Category A: No dimension modifiers (logos check)
+            // Category A: Philosophy score from matrix
             categories.A = { score: logosCheck.score, modifier: 0, note: "Rein archetyp-basiert" };
-            weightedTotal += logosCheck.score * weights.A;
 
-            // Other categories with modifiers
+            // Other categories with modifiers (for UI display)
             for (const cat of ['B', 'C', 'D', 'E', 'F']) {
                 const result = calculateCategoryWithModifiers(cat, person1, person2, pathosCheck);
                 categories[cat] = result;
-                weightedTotal += result.score * weights[cat];
             }
 
-            return { overall: Math.round(weightedTotal), categories };
+            return {
+                overall: qualityResult.score,  // NEW: 4-factor score
+                categories,                     // Keep for UI
+                breakdown: qualityResult.breakdown  // NEW: factor breakdown
+            };
         }
 
         // Get modifier summary for UI
