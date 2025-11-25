@@ -9350,7 +9350,7 @@
         // FEATURE 4: Archetype Info Modal
         // ========================================
 
-        const archetypeDefinitions = {
+        const archetypeInfoData = {
             single: {
                 title: 'Single',
                 definition: 'Menschen, die bewusst keine feste Beziehung führen möchten. Sie priorisieren persönliche Freiheit, Unabhängigkeit und Selbstbestimmung.',
@@ -9420,7 +9420,7 @@
         };
 
         function openArchetypeInfo(archetypeId) {
-            const def = archetypeDefinitions[archetypeId];
+            const def = archetypeInfoData[archetypeId];
             if (!def) return;
 
             document.getElementById('archetypeInfoTitle').textContent = def.title;
