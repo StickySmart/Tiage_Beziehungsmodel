@@ -3913,18 +3913,6 @@
             </div>
 
             <div class="expand-section">
-                <button class="expand-btn" onclick="toggleExpandSection('pathosLogosSection')">
-                    <span>Pathos & Logos – Dynamische Qualität</span>
-                    <span class="expand-icon">▼</span>
-                </button>
-                <div class="expand-content" id="pathosLogosSection">
-                    <div class="expand-content-inner" id="pathosLogosContent">
-                        <!-- Will be filled dynamically -->
-                    </div>
-                </div>
-            </div>
-
-            <div class="expand-section">
                 <button class="expand-btn" onclick="toggleExpandSection('categoriesSection')">
                     <span>Statische Qualitätsmuster (A-F)</span>
                     <span class="expand-icon">▼</span>
@@ -8295,6 +8283,37 @@
                         </div>
                     `;
                 }
+            }
+
+            // Add Pathos & Logos section
+            const pathos = arch.pathos || '';
+            const logos = arch.logos || '';
+
+            if (pathos || logos) {
+                modalContent += `
+                    <div class="definition-section" style="margin-top: 20px; border-top: 1px solid var(--border); padding-top: 15px;">
+                        <div class="definition-section-title" style="margin-bottom: 15px;">Pathos & Logos</div>
+                `;
+
+                if (pathos) {
+                    modalContent += `
+                        <div style="margin-bottom: 15px; padding: 12px; background: rgba(231,76,60,0.1); border-radius: 10px; border-left: 3px solid #e74c3c;">
+                            <div style="color: #e74c3c; font-weight: 600; font-size: 13px; margin-bottom: 6px;">Pathos (Emotionale Ebene)</div>
+                            <p style="color: var(--text-secondary); font-style: italic; line-height: 1.5; font-size: 12px; margin: 0;">${pathos}</p>
+                        </div>
+                    `;
+                }
+
+                if (logos) {
+                    modalContent += `
+                        <div style="padding: 12px; background: rgba(52,152,219,0.1); border-radius: 10px; border-left: 3px solid #3498db;">
+                            <div style="color: #3498db; font-weight: 600; font-size: 13px; margin-bottom: 6px;">Logos (Rationale Ebene)</div>
+                            <p style="color: var(--text-secondary); font-style: italic; line-height: 1.5; font-size: 12px; margin: 0;">${logos}</p>
+                        </div>
+                    `;
+                }
+
+                modalContent += `</div>`;
             }
 
             modalContent += '</div>';
