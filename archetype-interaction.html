@@ -3861,30 +3861,37 @@
                 <div style="display: flex; justify-content: space-between; align-items: flex-start; padding: 8px; background: rgba(255,255,255,0.03); border-radius: 8px;">
                     <div style="display: flex; flex-direction: column; gap: 2px;">
                         <span style="font-size: var(--font-sm); color: var(--text-primary);">Archetyp-Übereinstimmung</span>
-                        <span style="font-size: var(--font-xs); color: var(--text-muted); font-style: italic;">(Beziehungsphilosophie - Verstand)</span>
+                        <span style="font-size: var(--font-xs); color: var(--text-muted); font-style: italic;">(Beziehungsphilosophie - Verstand/Logos)</span>
                     </div>
                     <span id="desktopFactorArchetyp" style="font-size: var(--font-base); font-weight: 700; color: var(--primary);">0%</span>
                 </div>
                 <div style="display: flex; justify-content: space-between; align-items: flex-start; padding: 8px; background: rgba(255,255,255,0.03); border-radius: 8px;">
                     <div style="display: flex; flex-direction: column; gap: 2px;">
                         <span style="font-size: var(--font-sm); color: var(--text-primary);">Dominanz-Harmonie</span>
-                        <span style="font-size: var(--font-xs); color: var(--text-muted); font-style: italic;">(Emotionale Dynamik - Gefühl)</span>
+                        <span style="font-size: var(--font-xs); color: var(--text-muted); font-style: italic;">(Emotionale Dynamik - Gefühl/Pathos)</span>
                     </div>
                     <span id="desktopFactorDominanz" style="font-size: var(--font-base); font-weight: 700; color: var(--primary);">0%</span>
                 </div>
                 <div style="display: flex; justify-content: space-between; align-items: flex-start; padding: 8px; background: rgba(255,255,255,0.03); border-radius: 8px;">
                     <div style="display: flex; flex-direction: column; gap: 2px;">
                         <span style="font-size: var(--font-sm); color: var(--text-primary);">Orientierungs-Kompatibilität</span>
-                        <span style="font-size: var(--font-xs); color: var(--text-muted); font-style: italic;">(Körperliche Anziehung - Gefühl)</span>
+                        <span style="font-size: var(--font-xs); color: var(--text-muted); font-style: italic;">(Körperliche Anziehung - Gefühl/Pathos)</span>
                     </div>
                     <span id="desktopFactorOrientierung" style="font-size: var(--font-base); font-weight: 700; color: var(--primary);">0%</span>
                 </div>
                 <div style="display: flex; justify-content: space-between; align-items: flex-start; padding: 8px; background: rgba(255,255,255,0.03); border-radius: 8px;">
                     <div style="display: flex; flex-direction: column; gap: 2px;">
                         <span style="font-size: var(--font-sm); color: var(--text-primary);">Geschlechts-Attraktion</span>
-                        <span style="font-size: var(--font-xs); color: var(--text-muted); font-style: italic;">(Gender-Chemie - Gefühl)</span>
+                        <span style="font-size: var(--font-xs); color: var(--text-muted); font-style: italic;">(Gender-Chemie - Gefühl/Pathos)</span>
                     </div>
                     <span id="desktopFactorGeschlecht" style="font-size: var(--font-base); font-weight: 700; color: var(--primary);">0%</span>
+                </div>
+            </div>
+
+            <!-- Pathos & Logos - Always Visible -->
+            <div id="pathosLogosInline" style="margin-top: 15px; padding-top: 15px; border-top: 1px solid var(--border);">
+                <div id="pathosLogosContent">
+                    <!-- Will be filled dynamically -->
                 </div>
             </div>
         </div>
@@ -3908,18 +3915,6 @@
                                 <ul id="expandContraList"></ul>
                             </div>
                         </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="expand-section">
-                <button class="expand-btn" onclick="toggleExpandSection('pathosLogosSection')">
-                    <span>Pathos & Logos – Dynamische Qualität</span>
-                    <span class="expand-icon">▼</span>
-                </button>
-                <div class="expand-content" id="pathosLogosSection">
-                    <div class="expand-content-inner" id="pathosLogosContent">
-                        <!-- Will be filled dynamically -->
                     </div>
                 </div>
             </div>
@@ -4109,31 +4104,36 @@
                 <div class="score-factor" onclick="openFactorModal('archetyp')" style="cursor: pointer;">
                     <div class="score-factor-label">
                         <span class="score-factor-main">Archetyp-Übereinstimmung</span>
-                        <span class="score-factor-sub">(Beziehungsphilosophie - Verstand)</span>
+                        <span class="score-factor-sub">(Beziehungsphilosophie - Verstand/Logos)</span>
                     </div>
                     <span class="score-factor-value" id="mobileFactorArchetyp">0%</span>
                 </div>
                 <div class="score-factor" onclick="openFactorModal('dominanz')" style="cursor: pointer;">
                     <div class="score-factor-label">
                         <span class="score-factor-main">Dominanz-Harmonie</span>
-                        <span class="score-factor-sub">(Emotionale Dynamik - Gefühl)</span>
+                        <span class="score-factor-sub">(Emotionale Dynamik - Gefühl/Pathos)</span>
                     </div>
                     <span class="score-factor-value" id="mobileFactorDominanz">0%</span>
                 </div>
                 <div class="score-factor" onclick="openFactorModal('orientierung')" style="cursor: pointer;">
                     <div class="score-factor-label">
                         <span class="score-factor-main">Orientierungs-Kompatibilität</span>
-                        <span class="score-factor-sub">(Körperliche Anziehung - Gefühl)</span>
+                        <span class="score-factor-sub">(Körperliche Anziehung - Gefühl/Pathos)</span>
                     </div>
                     <span class="score-factor-value" id="mobileFactorOrientierung">0%</span>
                 </div>
                 <div class="score-factor" onclick="openFactorModal('geschlecht')" style="cursor: pointer;">
                     <div class="score-factor-label">
                         <span class="score-factor-main">Geschlechts-Attraktion</span>
-                        <span class="score-factor-sub">(Gender-Chemie - Gefühl)</span>
+                        <span class="score-factor-sub">(Gender-Chemie - Gefühl/Pathos)</span>
                     </div>
                     <span class="score-factor-value" id="mobileFactorGeschlecht">0%</span>
                 </div>
+            </div>
+
+            <!-- Pathos & Logos - Always Visible -->
+            <div id="mobilePathosLogosContent" style="margin-top: 15px; padding: 15px; background: var(--bg-card); border-radius: 12px;">
+                <!-- Will be filled dynamically -->
             </div>
 
             <!-- Pirsig-Style Quote -->
@@ -8721,48 +8721,19 @@
             const ichArch = data.archetypes[currentArchetype];
             const partnerArch = data.archetypes[selectedPartner];
 
-            const ichPathos = ichArch?.pathos || 'Keine Daten verfügbar.';
-            const ichLogos = ichArch?.logos || 'Keine Daten verfügbar.';
-            const partnerPathos = partnerArch?.pathos || 'Keine Daten verfügbar.';
-            const partnerLogos = partnerArch?.logos || 'Keine Daten verfügbar.';
-
             // Generate combined Pathos/Logos analysis
             const combinedPathos = generateCombinedPathos(ichArch, partnerArch);
             const combinedLogos = generateCombinedLogos(ichArch, partnerArch);
 
             container.innerHTML = `
-                <div style="margin-bottom: 20px; padding: 15px; background: rgba(46,204,113,0.1); border-radius: 12px; border-left: 4px solid #2ecc71;">
-                    <h4 style="color: #2ecc71; margin-bottom: 10px; font-size: 14px;">🔥 GEMEINSAMER PATHOS (Emotionale Ebene)</h4>
-                    <p style="color: var(--text-secondary); line-height: 1.6; font-size: 13px;">${combinedPathos}</p>
+                <div style="margin-bottom: 12px; padding: 12px; background: rgba(46,204,113,0.1); border-radius: 10px; border-left: 3px solid #2ecc71;">
+                    <h4 style="color: #2ecc71; margin-bottom: 8px; font-size: 13px;">🔥 GEMEINSAMER PATHOS (Emotionale Ebene)</h4>
+                    <p style="color: var(--text-secondary); line-height: 1.5; font-size: 12px; margin: 0;">${combinedPathos}</p>
                 </div>
 
-                <div style="margin-bottom: 20px; padding: 15px; background: rgba(243,156,18,0.1); border-radius: 12px; border-left: 4px solid #f39c12;">
-                    <h4 style="color: #f39c12; margin-bottom: 10px; font-size: 14px;">🧠 GEMEINSAMER LOGOS (Rationale Ebene)</h4>
-                    <p style="color: var(--text-secondary); line-height: 1.6; font-size: 13px;">${combinedLogos}</p>
-                </div>
-
-                <div style="border-top: 1px solid var(--border); padding-top: 15px;">
-                    <h4 style="color: #2ecc71; margin-bottom: 12px; font-size: 14px;">ICH: ${ichArch?.name || currentArchetype}</h4>
-                    <div style="margin-bottom: 10px;">
-                        <strong style="color: #e74c3c; font-size: 12px;">Pathos:</strong>
-                        <p style="color: var(--text-muted); font-style: italic; margin-top: 4px; font-size: 12px; line-height: 1.5;">${ichPathos}</p>
-                    </div>
-                    <div>
-                        <strong style="color: #3498db; font-size: 12px;">Logos:</strong>
-                        <p style="color: var(--text-muted); font-style: italic; margin-top: 4px; font-size: 12px; line-height: 1.5;">${ichLogos}</p>
-                    </div>
-                </div>
-
-                <div style="border-top: 1px solid var(--border); padding-top: 15px; margin-top: 15px;">
-                    <h4 style="color: #e74c3c; margin-bottom: 12px; font-size: 14px;">PARTNER: ${partnerArch?.name || selectedPartner}</h4>
-                    <div style="margin-bottom: 10px;">
-                        <strong style="color: #e74c3c; font-size: 12px;">Pathos:</strong>
-                        <p style="color: var(--text-muted); font-style: italic; margin-top: 4px; font-size: 12px; line-height: 1.5;">${partnerPathos}</p>
-                    </div>
-                    <div>
-                        <strong style="color: #3498db; font-size: 12px;">Logos:</strong>
-                        <p style="color: var(--text-muted); font-style: italic; margin-top: 4px; font-size: 12px; line-height: 1.5;">${partnerLogos}</p>
-                    </div>
+                <div style="padding: 12px; background: rgba(243,156,18,0.1); border-radius: 10px; border-left: 3px solid #f39c12;">
+                    <h4 style="color: #f39c12; margin-bottom: 8px; font-size: 13px;">🧠 GEMEINSAMER LOGOS (Rationale Ebene)</h4>
+                    <p style="color: var(--text-secondary); line-height: 1.5; font-size: 12px; margin: 0;">${combinedLogos}</p>
                 </div>
             `;
         }
@@ -9096,6 +9067,23 @@
             document.getElementById('mobileFactorOrientierung').textContent = qualityResult.breakdown.orientierung + '%';
             document.getElementById('mobileFactorGeschlecht').textContent = qualityResult.breakdown.geschlecht + '%';
 
+            // Update mobile Pathos & Logos
+            const mobilePathosLogos = document.getElementById('mobilePathosLogosContent');
+            if (mobilePathosLogos) {
+                const combinedPathos = generateCombinedPathos(ichArch, partnerArch);
+                const combinedLogos = generateCombinedLogos(ichArch, partnerArch);
+                mobilePathosLogos.innerHTML = `
+                    <div style="margin-bottom: 10px; padding: 10px; background: rgba(46,204,113,0.1); border-radius: 8px; border-left: 3px solid #2ecc71;">
+                        <h4 style="color: #2ecc71; margin-bottom: 6px; font-size: 12px;">🔥 GEMEINSAMER PATHOS</h4>
+                        <p style="color: var(--text-secondary); line-height: 1.4; font-size: 11px; margin: 0;">${combinedPathos}</p>
+                    </div>
+                    <div style="padding: 10px; background: rgba(243,156,18,0.1); border-radius: 8px; border-left: 3px solid #f39c12;">
+                        <h4 style="color: #f39c12; margin-bottom: 6px; font-size: 12px;">🧠 GEMEINSAMER LOGOS</h4>
+                        <p style="color: var(--text-secondary); line-height: 1.4; font-size: 11px; margin: 0;">${combinedLogos}</p>
+                    </div>
+                `;
+            }
+
             // Update Pirsig quote
             const quoteElement = document.getElementById('mobileQualityQuote');
             if (quoteElement) {
@@ -9293,7 +9281,7 @@
         const factorExplanations = {
             archetyp: {
                 title: 'Archetyp-Übereinstimmung',
-                subtitle: '(Beziehungsphilosophie - Verstand)',
+                subtitle: '(Beziehungsphilosophie - Verstand/Logos)',
                 getExplanation: (ich, partner, score) => {
                     const ichName = data?.archetypes?.[ich]?.name || ich;
                     const partnerName = data?.archetypes?.[partner]?.name || partner;
@@ -9322,7 +9310,7 @@
             },
             dominanz: {
                 title: 'Dominanz-Harmonie',
-                subtitle: '(Emotionale Dynamik - Gefühl)',
+                subtitle: '(Emotionale Dynamik - Gefühl/Pathos)',
                 getExplanation: (ich, partner, score) => {
                     const ichDom = mobilePersonDimensions.ich.dominanz;
                     const partnerDom = mobilePersonDimensions.partner.dominanz;
@@ -9353,7 +9341,7 @@
             },
             orientierung: {
                 title: 'Orientierungs-Kompatibilität',
-                subtitle: '(Körperliche Anziehung - Gefühl)',
+                subtitle: '(Körperliche Anziehung - Gefühl/Pathos)',
                 getExplanation: (ich, partner, score) => {
                     const ichOri = mobilePersonDimensions.ich.orientierung;
                     const partnerOri = mobilePersonDimensions.partner.orientierung;
@@ -9378,7 +9366,7 @@
             },
             geschlecht: {
                 title: 'Geschlechts-Attraktion',
-                subtitle: '(Gender-Chemie - Gefühl)',
+                subtitle: '(Gender-Chemie - Gefühl/Pathos)',
                 getExplanation: (ich, partner, score) => {
                     const ichG = mobilePersonDimensions.ich.geschlecht;
                     const partnerG = mobilePersonDimensions.partner.geschlecht;
