@@ -1,82 +1,64 @@
-# Tiage Beziehungsmodell
+# Tiage-Beziehungsmodell
 
-## 📊 Datengetriebene Analyse von Beziehungsmodellen
+Eine eigenständige Synthese zur Analyse von Beziehungskompatibilität, entwickelt durch Tiage's Online-Recherche und persönliche Reflexion.
 
-Dieses Repository enthält eine umfassende Analyse und Visualisierung verschiedener Beziehungsmodelle (Single, Solopoly, Tiage, Polyamor) über verschiedene Dimensionen und Beziehungsebenen.
+## Philosophische Grundlagen
 
-## 🎯 Projekt-Übersicht
+Das Modell verbindet zwei Traditionen:
 
-Das Tiage-Beziehungsmodell analysiert 6 Hauptkategorien:
-- **A** - [Noch zu definieren]
-- **B** - Moralische Gebundenheit
-- **C** - Nähe & Tiefe  
-- **D** - Rückzug & Selbstwahrung
-- **E** - Kommunikation
-- **F** - Gesellschaftliche Herausforderungen
+- **MOQ (Robert M. Pirsig):** Metaphysik der Qualität - statische vs. dynamische Qualität
+- **OSHO:** Polarität und Balance - Gegensätze als Quelle der Anziehung
 
-Jede Kategorie wird über 4 Beziehungsebenen bewertet:
-- 🟧 Freunde
-- 🟧 Partner
-- 🟧 Sexpartner
-- 🟧 Seelenverwandte
+**Tiage's Beitrag:** Die praktische Verbindung beider Philosophien zu einem Beziehungs-Rechner mit eigener Gewichtung und Archetypen-Matrix.
 
-## 📁 Projekt-Struktur
+## Kernkonzept: Logos vs. Pathos (40:60)
 
-```
-Tiage_Beziehungsmodell/
-├── README.md
-├── data/
-│   └── kategorien_b-f.json
-├── visualizations/
-│   └── beziehungsmodelle-b-f-praesentation.html
-└── docs/
-    └── analyse.md
-```
+| Dimension | Gewicht | Pirsig-Begriff | Bedeutung |
+|-----------|---------|----------------|-----------|
+| **Logos** | 40% | Statische Qualität | Verstand, Struktur |
+| **Pathos** | 60% | Dynamische Qualität | Gefühl, Anziehung |
 
-## 🚀 Quick Start
+## Die 6 Archetypen
 
-1. Klone das Repository:
+- **Single** - Autonomes Leben ohne Primärbeziehung
+- **Duo** - Monogame Zweierbeziehung mit Exklusivität
+- **Duo-Flex** - Primärbeziehung mit vereinbarten Öffnungen
+- **Solopoly** - Mehrere gleichwertige Beziehungen, Fokus Autonomie
+- **Poly-Hedo** - Polyamorie mit Fokus auf Genuss
+- **Polyamor** - Tiefe emotionale Bindungen zu mehreren Partnern
+
+## Die 4 Qualitätsfaktoren
+
+| Faktor | Gewicht | Dimension |
+|--------|---------|-----------|
+| Archetyp-Übereinstimmung | 40% | Logos |
+| Orientierungs-Kompatibilität | 25% | Pathos |
+| Dominanz-Harmonie | 20% | Pathos |
+| Geschlechts-Attraktion | 15% | Pathos |
+
+## Quick Start
+
+Öffne die Web-App:
 ```bash
-git clone https://github.com/StickySmart/Tiage_Beziehungsmodell.git
-cd Tiage_Beziehungsmodell
+open archetype-interaction.html
 ```
 
-2. Öffne die Visualisierung:
-```bash
-open visualizations/beziehungsmodelle-b-f-praesentation.html
+Oder besuche: [GitHub Pages](https://stickysmart.github.io/Tiage_Beziehungsmodel/)
+
+## Projektstruktur
+
+```
+Tiage_Beziehungsmodel/
+├── archetype-interaction.html  # Haupt-Web-App
+├── beziehungsmodell.md         # Modell-Dokumentation
+├── analyse.md                  # Analyse-Dokumentation
+└── README.md                   # Diese Datei
 ```
 
-## 📊 Datenformat
+## Autor
 
-Die Analyse verwendet eine 4-dimensionale Bewertungsmatrix:
-- **Prozentwerte** (0-100%): Intensität der jeweiligen Dimension
-- **Pro/Nutzen**: Positive Aspekte
-- **Kontra/Risiko**: Herausforderungen  
-- **Pathos**: Emotionale Dimension
-- **Logos**: Rationale/strukturelle Dimension
-
-## 🛠️ Technologien
-
-- **Visualisierung**: SVG, HTML5, CSS3
-- **Datenformat**: JSON, Markdown
-- **Geplant**: D3.js für interaktive Dashboards
-
-## 📈 Nächste Schritte
-
-- [ ] Kategorie A definieren und integrieren
-- [ ] Interaktive D3.js Visualisierungen
-- [ ] Vergleichstool zwischen Modellen
-- [ ] API für Datenabfragen
-- [ ] Responsive Design optimieren
-
-## 👤 Autor
-
-StickySmart
-
-## 📄 Lizenz
-
-[Zu definieren]
+StickySmart (Tiage)
 
 ---
 
-*Version 1.0 - Basierend auf der Tiage-Perspektive*
+*Tiage-Beziehungsmodell - Synthese aus MOQ (Pirsig) und OSHO*
