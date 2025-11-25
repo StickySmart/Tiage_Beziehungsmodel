@@ -7143,6 +7143,11 @@
 
             closeStatusPopup();
             updateComparisonView();
+
+            // Save to localStorage
+            if (typeof saveSelectionToStorage === 'function') {
+                saveSelectionToStorage();
+            }
         }
 
         function handleOrientationChange(person, orientation, isMobile = false) {
@@ -7211,6 +7216,11 @@
             }
 
             updateComparisonView();
+
+            // Save to localStorage (especially important for hetero auto-fakt)
+            if (typeof saveSelectionToStorage === 'function') {
+                saveSelectionToStorage();
+            }
         }
 
         function handleDimensionChange(person, dimension, value, element) {
