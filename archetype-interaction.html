@@ -83,11 +83,11 @@
             width: 28px;
             height: 28px;
             border-radius: 50%;
-            border: 1px solid var(--primary);
+            border: 2px solid var(--danger);
             background: transparent;
-            color: var(--primary);
+            color: var(--danger);
             font-size: 16px;
-            font-weight: 600;
+            font-weight: 700;
             cursor: pointer;
             transition: all 0.2s;
             display: flex;
@@ -96,8 +96,192 @@
         }
 
         .help-btn:hover {
+            background: var(--danger);
+            color: white;
+        }
+
+        /* Quick Guide Styles */
+        .quick-guide {
+            background: linear-gradient(135deg, rgba(76, 175, 80, 0.1), rgba(76, 175, 80, 0.05));
+            border: 1px solid var(--success);
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+
+        .quick-guide h3 {
+            color: var(--success);
+            margin: 0 0 10px 0;
+            font-size: var(--font-md);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .quick-guide ul {
+            margin: 0;
+            padding-left: 20px;
+        }
+
+        .quick-guide li {
+            margin-bottom: 6px;
+            color: var(--text-secondary);
+            font-size: var(--font-sm);
+        }
+
+        /* Comment Button Section */
+        .comment-section {
+            background: linear-gradient(135deg, rgba(74, 144, 226, 0.1), rgba(74, 144, 226, 0.05));
+            border: 1px solid var(--primary);
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .comment-section p {
+            color: var(--text-secondary);
+            font-size: var(--font-sm);
+            margin: 0 0 12px 0;
+        }
+
+        .comment-btn {
             background: var(--primary);
             color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-size: var(--font-sm);
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .comment-btn:hover {
+            background: #3a7bc8;
+            transform: translateY(-1px);
+        }
+
+        /* Documentation Section */
+        .documentation-section {
+            border-top: 2px solid var(--border);
+            padding-top: 20px;
+            margin-top: 10px;
+        }
+
+        .documentation-section > h3 {
+            color: var(--text-muted);
+            font-size: var(--font-sm);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 20px;
+        }
+
+        /* Comment Modal Styles */
+        .comment-modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.85);
+            z-index: 2100;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .comment-modal-overlay.active {
+            display: flex;
+        }
+
+        .comment-modal {
+            background: var(--bg-card);
+            border-radius: 16px;
+            max-width: 500px;
+            width: 100%;
+            border: 1px solid var(--border);
+        }
+
+        .comment-modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .comment-modal-header h3 {
+            font-size: var(--font-md);
+            color: var(--text-primary);
+            margin: 0;
+        }
+
+        .comment-modal-close {
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            font-size: 24px;
+            cursor: pointer;
+        }
+
+        .comment-modal-body {
+            padding: 20px;
+        }
+
+        .comment-form-group {
+            margin-bottom: 15px;
+        }
+
+        .comment-form-group label {
+            display: block;
+            color: var(--text-secondary);
+            font-size: var(--font-sm);
+            margin-bottom: 6px;
+        }
+
+        .comment-form-group input,
+        .comment-form-group textarea,
+        .comment-form-group select {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            background: var(--bg-dark);
+            color: var(--text-primary);
+            font-size: var(--font-sm);
+            box-sizing: border-box;
+        }
+
+        .comment-form-group textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        .comment-submit-btn {
+            width: 100%;
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 8px;
+            font-size: var(--font-sm);
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .comment-submit-btn:hover {
+            background: #3a7bc8;
+        }
+
+        .comment-submit-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
         }
 
         /* Help Modal */
@@ -3019,17 +3203,18 @@
         }
 
         .archetype-info-btn {
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
+            padding: 8px 12px;
+            border-radius: 8px;
             background: rgba(255,255,255,0.1);
             border: 1px solid var(--border);
             color: var(--text-muted);
-            font-size: 14px;
+            font-size: 11px;
+            font-weight: 600;
             cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
+            letter-spacing: 0.5px;
             transition: all 0.3s ease;
             flex-shrink: 0;
         }
@@ -3041,7 +3226,9 @@
         }
 
         .column-select {
-            width: 100%;
+            width: auto;
+            min-width: 100px;
+            max-width: 140px;
             padding: 10px 12px;
             border-radius: 10px;
             border: 1px solid var(--border);
@@ -3851,124 +4038,167 @@
                 <button class="help-modal-close" onclick="closeHelpModal()">&times;</button>
             </div>
             <div class="help-modal-content">
-                <div class="help-section">
-                    <h3>Was ist das Tiage-Beziehungsmodell?</h3>
-                    <p>Das Tiage-Beziehungsmodell ist ein Werkzeug zur Analyse der Beziehungskompatibilität zwischen zwei Personen. Es berechnet einen Qualitätsindex basierend auf vier Hauptfaktoren, die verschiedene Aspekte einer Beziehung berücksichtigen.</p>
-                </div>
 
-                <div class="help-section">
-                    <h3>Die 4 Qualitätsfaktoren</h3>
+                <!-- KURZANLEITUNG -->
+                <div class="quick-guide">
+                    <h3>Kurzanleitung</h3>
                     <ul>
-                        <li><strong>Archetyp-Übereinstimmung (25%)</strong> - Beziehungsphilosophie/Verstand: Wie gut passen die Grundüberzeugungen über Beziehungsstrukturen zusammen? (Single, Duo, Duo-Flex, Solopoly, Poly-Hedo, Polyamor)</li>
-                        <li><strong>Dominanz-Harmonie (25%)</strong> - Emotionale Dynamik/Gefühl: Wie gut harmonieren die Dominanz-Präferenzen? (Dominant, Submissiv, Switch, Ausgeglichen)</li>
-                        <li><strong>Orientierungs-Kompatibilität (25%)</strong> - Körperliche Anziehung/Gefühl: Ist basierend auf den sexuellen Orientierungen Anziehung möglich? (Hetero, Homo, Bi)</li>
-                        <li><strong>Geschlechts-Attraktion (25%)</strong> - Gender-Chemie/Gefühl: Passt die Geschlechterkonstellation zu den angegebenen Orientierungen? (Mann, Frau, Divers)</li>
+                        <li><strong>ICH</strong> = Dein Archetyp + Eigenschaften (links/oben)</li>
+                        <li><strong>PARTNER</strong> = Archetyp + Eigenschaften des Partners (rechts/unten)</li>
+                        <li><strong>INFO</strong>-Button = Details zum gewählten Archetyp</li>
+                        <li><strong>Ergebnis</strong> = Automatische Berechnung der Kompatibilität</li>
+                        <li><strong>Prozentwerte</strong> anklicken = Detaillierte Erklärung pro Faktor</li>
                     </ul>
                 </div>
 
-                <div class="help-section">
-                    <h3>Berechnung des Qualitätsindex</h3>
-                    <p>Der Gesamtwert wird als gewichteter Durchschnitt der vier Faktoren berechnet:</p>
-                    <div class="help-formula">
-                        Qualitätsindex = (Archetyp × 0.25) + (Dominanz × 0.25) + (Orientierung × 0.25) + (Geschlecht × 0.25)
-                    </div>
-                    <p>Jeder Faktor wird auf einer Skala von 0-100% bewertet.</p>
+                <!-- KOMMENTAR-SEKTION -->
+                <div class="comment-section">
+                    <p>Fragen, Feedback oder Verbesserungsvorschläge?</p>
+                    <button class="comment-btn" onclick="openCommentModal()">
+                        Kommentar senden
+                    </button>
                 </div>
 
-                <div class="help-section">
-                    <h3>Rechenbeispiel</h3>
-                    <div class="help-example">
-                        <div class="help-example-title">Beispiel: Duo × Duo-Flex</div>
-                        <p><strong>Person 1:</strong> Duo, Submissiv, Hetero, Frau<br>
-                        <strong>Person 2:</strong> Duo-Flex, Dominant, Hetero, Mann</p>
+                <!-- DOKUMENTATION -->
+                <div class="documentation-section">
+                    <h3>Dokumentation</h3>
+
+                    <div class="help-section">
+                        <h3>Das Tiage-Beziehungsmodell</h3>
+                        <p>Ein Analyse-Tool zur Berechnung der Beziehungskompatibilität. Der Qualitätsindex basiert auf vier gleichgewichteten Faktoren, die rationale (Verstand) und emotionale (Gefühl) Aspekte einer Beziehung abbilden.</p>
+                    </div>
+
+                    <div class="help-section">
+                        <h3>Die 4 Qualitätsfaktoren (je 25%)</h3>
                         <ul>
-                            <li><strong>Archetyp-Übereinstimmung:</strong> 75% (Duo und Duo-Flex sind nah verwandt)</li>
-                            <li><strong>Dominanz-Harmonie:</strong> 100% (Submissiv + Dominant = perfekte Ergänzung)</li>
-                            <li><strong>Orientierungs-Kompatibilität:</strong> 100% (Hetero + Hetero bei M/F Konstellation)</li>
-                            <li><strong>Geschlechts-Attraktion:</strong> 100% (Frau × Mann passt zu beiden Orientierungen)</li>
+                            <li><strong>Archetyp-Übereinstimmung</strong> (Verstand) - Passen die Beziehungsphilosophien zusammen?</li>
+                            <li><strong>Dominanz-Harmonie</strong> (Gefühl) - Ergänzen sich die Dominanz-Präferenzen?</li>
+                            <li><strong>Orientierungs-Kompatibilität</strong> (Gefühl) - Ist gegenseitige Anziehung möglich?</li>
+                            <li><strong>Geschlechts-Attraktion</strong> (Gefühl) - Passt die Geschlechterkonstellation?</li>
                         </ul>
+                    </div>
+
+                    <div class="help-section">
+                        <h3>Berechnung</h3>
                         <div class="help-formula">
-                            Qualitätsindex = (75 × 0.25) + (100 × 0.25) + (100 × 0.25) + (100 × 0.25) = 93.75% ≈ 94%
+                            Qualitätsindex = (Archetyp + Dominanz + Orientierung + Geschlecht) ÷ 4
+                        </div>
+                        <p>Jeder Faktor wird einzeln auf 0-100% bewertet. Der Gesamtindex ist der Durchschnitt aller vier Faktoren.</p>
+                    </div>
+
+                    <div class="help-section">
+                        <h3>Rechenbeispiel</h3>
+                        <div class="help-example">
+                            <div class="help-example-title">Duo (Frau, Submissiv, Hetero) × Duo-Flex (Mann, Dominant, Hetero)</div>
+                            <ul>
+                                <li>Archetyp: 75% (Duo ↔ Duo-Flex = nah verwandt)</li>
+                                <li>Dominanz: 100% (Submissiv + Dominant = Ergänzung)</li>
+                                <li>Orientierung: 100% (Hetero + Hetero bei M/F)</li>
+                                <li>Geschlecht: 100% (Frau × Mann passt)</li>
+                            </ul>
+                            <div class="help-formula">
+                                (75 + 100 + 100 + 100) ÷ 4 = 93.75% ≈ 94%
+                            </div>
                         </div>
                     </div>
-                </div>
 
-                <div class="help-section">
-                    <h3>Die 6 Archetypen erklärt</h3>
-                    <ul>
-                        <li><strong>Single:</strong> Bewusst keine feste Beziehung, Fokus auf Unabhängigkeit und Selbstbestimmung</li>
-                        <li><strong>Duo:</strong> Traditionelle monogame Zweierbeziehung mit emotionaler und sexueller Exklusivität</li>
-                        <li><strong>Duo-Flex:</strong> Primärbeziehung mit Öffnungsbereitschaft unter gemeinsamen Regeln</li>
-                        <li><strong>Solopoly:</strong> Solo-Polyamorie - mehrere gleichwertige Beziehungen ohne Hierarchie, mit Fokus auf Autonomie</li>
-                        <li><strong>Poly-Hedo:</strong> Hedonistische Polyamorie - Fokus auf Lust und Genuss mit mehreren Partnern</li>
-                        <li><strong>Polyamor:</strong> Romantische Polyamorie - tiefe emotionale Verbindungen zu mehreren Partnern gleichzeitig</li>
-                    </ul>
-                </div>
+                    <div class="help-section">
+                        <h3>Die 6 Archetypen</h3>
+                        <ul>
+                            <li><strong>Single</strong> - Autonomes Leben ohne Primärbeziehung</li>
+                            <li><strong>Duo</strong> - Monogame Zweierbeziehung mit Exklusivität</li>
+                            <li><strong>Duo-Flex</strong> - Primärbeziehung mit vereinbarten Öffnungen</li>
+                            <li><strong>Solopoly</strong> - Mehrere gleichwertige Beziehungen, Fokus Autonomie</li>
+                            <li><strong>Poly-Hedo</strong> - Polyamorie mit Fokus auf Genuss</li>
+                            <li><strong>Polyamor</strong> - Tiefe emotionale Bindungen zu mehreren Partnern</li>
+                        </ul>
+                    </div>
 
-                <div class="help-section">
-                    <h3>So funktioniert die App</h3>
-                    <ul>
-                        <li><strong>Desktop:</strong> Wähle links deine eigenen Eigenschaften und rechts die deines Partners</li>
-                        <li><strong>Mobile:</strong> Swipe zwischen den Karten oder nutze die Tabs oben</li>
-                        <li><strong>Archetypen:</strong> Tippe/klicke auf den Info-Button (i) neben jedem Archetyp für Details</li>
-                        <li><strong>Faktoren:</strong> Klicke auf die Prozentwerte im Ergebnis für detaillierte Erklärungen</li>
-                        <li><strong>Speichern:</strong> Deine Auswahl wird automatisch im Browser gespeichert</li>
-                    </ul>
-                </div>
+                    <div class="help-section">
+                        <h3>Ergebnis-Interpretation</h3>
+                        <ul>
+                            <li><strong>80-100%</strong> - Exzellent: Wenige Herausforderungen</li>
+                            <li><strong>60-79%</strong> - Gut: Mit Kommunikation machbar</li>
+                            <li><strong>40-59%</strong> - Moderat: Erfordert bewusste Arbeit</li>
+                            <li><strong>0-39%</strong> - Herausfordernd: Fundamentale Unterschiede</li>
+                        </ul>
+                        <p style="margin-top: 15px; font-style: italic; color: var(--text-muted);">Der Qualitätsindex ist ein Orientierungswert. Echte Beziehungen hängen von vielen weiteren Faktoren ab.</p>
+                    </div>
 
-                <div class="help-section">
-                    <h3>Interpretation der Ergebnisse</h3>
-                    <ul>
-                        <li><strong>80-100%:</strong> Exzellente Kompatibilität - wenige Herausforderungen zu erwarten</li>
-                        <li><strong>60-79%:</strong> Gute Kompatibilität - mit Kommunikation gut machbar</li>
-                        <li><strong>40-59%:</strong> Moderate Kompatibilität - erfordert bewusste Arbeit an der Beziehung</li>
-                        <li><strong>0-39%:</strong> Herausfordernd - fundamentale Unterschiede, intensive Kommunikation nötig</li>
-                    </ul>
-                    <p style="margin-top: 15px; font-style: italic; color: var(--text-muted);">Hinweis: Der Qualitätsindex ist ein Orientierungswert. Echte Beziehungen sind komplexer und hängen von vielen weiteren Faktoren ab.</p>
-                </div>
+                    <div class="help-section">
+                        <h3>Historischer Hintergrund: Die Metaphysik der Qualität</h3>
+                        <p>Das Tiage-Beziehungsmodell basiert konzeptionell auf der <strong>Metaphysik der Qualität (MOQ)</strong> des amerikanischen Philosophen und Schriftstellers <strong>Robert M. Pirsig</strong> (1928-2017).</p>
+                        <p style="margin-top: 10px;">Pirsig entwickelte in seinen Werken ein einzigartiges philosophisches System, das <strong>Qualität</strong> als fundamentale, undefinierbare Realität betrachtet – noch vor der Unterscheidung zwischen Subjekt und Objekt. Diese Philosophie unterscheidet zwischen:</p>
+                        <ul style="margin-top: 10px;">
+                            <li><strong>Statische Qualität:</strong> Die strukturierten, wiederholbaren Muster, die Stabilität schaffen (biologisch, sozial, intellektuell)</li>
+                            <li><strong>Dynamische Qualität:</strong> Die kreative, evolutionäre Kraft, die zu Wachstum und Veränderung führt</li>
+                        </ul>
+                        <p style="margin-top: 10px;">Im Tiage-Modell wird dieser Ansatz auf Beziehungen übertragen: Die vier Qualitätsfaktoren (Ethos, Pathos, Logos, Eros) repräsentieren verschiedene Dimensionen menschlicher Verbindung, deren Zusammenspiel die Gesamtqualität einer Beziehung bestimmt.</p>
+                    </div>
 
-                <div class="help-section">
-                    <h3>Historischer Hintergrund: Die Metaphysik der Qualität</h3>
-                    <p>Das Tiage-Beziehungsmodell basiert konzeptionell auf der <strong>Metaphysik der Qualität (MOQ)</strong> des amerikanischen Philosophen und Schriftstellers <strong>Robert M. Pirsig</strong> (1928-2017).</p>
-                    <p style="margin-top: 10px;">Pirsig entwickelte in seinen Werken ein einzigartiges philosophisches System, das <strong>Qualität</strong> als fundamentale, undefinierbare Realität betrachtet – noch vor der Unterscheidung zwischen Subjekt und Objekt. Diese Philosophie unterscheidet zwischen:</p>
-                    <ul style="margin-top: 10px;">
-                        <li><strong>Statische Qualität:</strong> Die strukturierten, wiederholbaren Muster, die Stabilität schaffen (biologisch, sozial, intellektuell)</li>
-                        <li><strong>Dynamische Qualität:</strong> Die kreative, evolutionäre Kraft, die zu Wachstum und Veränderung führt</li>
-                    </ul>
-                    <p style="margin-top: 10px;">Im Tiage-Modell wird dieser Ansatz auf Beziehungen übertragen: Die vier Qualitätsfaktoren (Ethos, Pathos, Logos, Eros) repräsentieren verschiedene Dimensionen menschlicher Verbindung, deren Zusammenspiel die Gesamtqualität einer Beziehung bestimmt.</p>
-                </div>
+                    <div class="help-section">
+                        <h3>Literatur von Robert M. Pirsig</h3>
+                        <ul>
+                            <li>
+                                <strong>Zen und die Kunst ein Motorrad zu warten</strong> (1974)<br>
+                                <span style="color: var(--text-muted); font-size: 0.9em;">Originaltitel: "Zen and the Art of Motorcycle Maintenance: An Inquiry into Values"</span><br>
+                                <span style="margin-top: 5px; display: inline-block;">Ein philosophischer Roman, der Pirsigs erste Erkundung der Qualität als metaphysisches Konzept darstellt. Das Buch verbindet eine Motorradreise mit tiefgreifenden philosophischen Betrachtungen über Rationalität, Romantik und die Natur der Qualität.</span>
+                            </li>
+                            <li style="margin-top: 15px;">
+                                <strong>Lila – oder ein Versuch über Moral</strong> (1991)<br>
+                                <span style="color: var(--text-muted); font-size: 0.9em;">Originaltitel: "Lila: An Inquiry into Morals"</span><br>
+                                <span style="margin-top: 5px; display: inline-block;">Die Fortsetzung und systematische Ausarbeitung der Metaphysik der Qualität. Pirsig entwickelt hier eine vollständige philosophische Theorie, die statische und dynamische Qualitätsmuster auf biologischer, sozialer und intellektueller Ebene unterscheidet.</span>
+                            </li>
+                        </ul>
+                    </div>
 
-                <div class="help-section">
-                    <h3>Literatur von Robert M. Pirsig</h3>
-                    <ul>
-                        <li>
-                            <strong>Zen und die Kunst ein Motorrad zu warten</strong> (1974)<br>
-                            <span style="color: var(--text-muted); font-size: 0.9em;">Originaltitel: "Zen and the Art of Motorcycle Maintenance: An Inquiry into Values"</span><br>
-                            <span style="margin-top: 5px; display: inline-block;">Ein philosophischer Roman, der Pirsigs erste Erkundung der Qualität als metaphysisches Konzept darstellt. Das Buch verbindet eine Motorradreise mit tiefgreifenden philosophischen Betrachtungen über Rationalität, Romantik und die Natur der Qualität.</span>
-                        </li>
-                        <li style="margin-top: 15px;">
-                            <strong>Lila – oder ein Versuch über Moral</strong> (1991)<br>
-                            <span style="color: var(--text-muted); font-size: 0.9em;">Originaltitel: "Lila: An Inquiry into Morals"</span><br>
-                            <span style="margin-top: 5px; display: inline-block;">Die Fortsetzung und systematische Ausarbeitung der Metaphysik der Qualität. Pirsig entwickelt hier eine vollständige philosophische Theorie, die statische und dynamische Qualitätsmuster auf biologischer, sozialer und intellektueller Ebene unterscheidet.</span>
-                        </li>
-                    </ul>
+                    <div class="help-section">
+                        <h3>Quellen & Weiterführende Ressourcen</h3>
+                        <ul>
+                            <li><strong>Pirsig, Robert M.</strong> (1974): <em>Zen and the Art of Motorcycle Maintenance: An Inquiry into Values.</em> William Morrow and Company, New York.</li>
+                            <li><strong>Pirsig, Robert M.</strong> (1991): <em>Lila: An Inquiry into Morals.</em> Bantam Books, New York.</li>
+                            <li><strong>McWatt, Anthony</strong> (2004): <em>An Introduction to Robert Pirsig's Metaphysics of Quality.</em> Dissertation, University of Liverpool.</li>
+                            <li style="margin-top: 10px;"><strong>Online-Ressourcen:</strong>
+                                <ul style="margin-top: 5px;">
+                                    <li><a href="https://www.moq.org" target="_blank" rel="noopener noreferrer" style="color: var(--primary);">moq.org</a> – Metaphysics of Quality Community</li>
+                                    <li><a href="https://en.wikipedia.org/wiki/Robert_M._Pirsig" target="_blank" rel="noopener noreferrer" style="color: var(--primary);">Wikipedia: Robert M. Pirsig</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                        <p style="margin-top: 15px; font-style: italic; color: var(--text-muted);">Das Tiage-Beziehungsmodell ist eine eigenständige Interpretation und Anwendung philosophischer Konzepte auf zwischenmenschliche Beziehungen und erhebt keinen Anspruch auf wissenschaftliche Validierung.</p>
+                    </div>
                 </div>
+            </div>
+        </div>
+    </div>
 
-                <div class="help-section">
-                    <h3>Quellen & Weiterführende Ressourcen</h3>
-                    <ul>
-                        <li><strong>Pirsig, Robert M.</strong> (1974): <em>Zen and the Art of Motorcycle Maintenance: An Inquiry into Values.</em> William Morrow and Company, New York.</li>
-                        <li><strong>Pirsig, Robert M.</strong> (1991): <em>Lila: An Inquiry into Morals.</em> Bantam Books, New York.</li>
-                        <li><strong>McWatt, Anthony</strong> (2004): <em>An Introduction to Robert Pirsig's Metaphysics of Quality.</em> Dissertation, University of Liverpool.</li>
-                        <li style="margin-top: 10px;"><strong>Online-Ressourcen:</strong>
-                            <ul style="margin-top: 5px;">
-                                <li><a href="https://www.moq.org" target="_blank" rel="noopener noreferrer" style="color: var(--primary);">moq.org</a> – Metaphysics of Quality Community</li>
-                                <li><a href="https://en.wikipedia.org/wiki/Robert_M._Pirsig" target="_blank" rel="noopener noreferrer" style="color: var(--primary);">Wikipedia: Robert M. Pirsig</a></li>
-                            </ul>
-                        </li>
-                    </ul>
-                    <p style="margin-top: 15px; font-style: italic; color: var(--text-muted);">Das Tiage-Beziehungsmodell ist eine eigenständige Interpretation und Anwendung philosophischer Konzepte auf zwischenmenschliche Beziehungen und erhebt keinen Anspruch auf wissenschaftliche Validierung.</p>
+    <!-- Comment Modal -->
+    <div class="comment-modal-overlay" id="commentModal" onclick="closeCommentModal(event)">
+        <div class="comment-modal" onclick="event.stopPropagation()">
+            <div class="comment-modal-header">
+                <h3>Kommentar senden</h3>
+                <button class="comment-modal-close" onclick="closeCommentModal()">&times;</button>
+            </div>
+            <div class="comment-modal-body">
+                <div class="comment-form-group">
+                    <label for="commentName">Name / Kürzel *</label>
+                    <input type="text" id="commentName" placeholder="z.B. Max oder Anonym">
                 </div>
+                <div class="comment-form-group">
+                    <label for="commentType">Art des Kommentars</label>
+                    <select id="commentType">
+                        <option value="frage">Frage zur Bedienung</option>
+                        <option value="feedback">Allgemeines Feedback</option>
+                        <option value="fehler">Fehler melden</option>
+                        <option value="verbesserung">Verbesserungsvorschlag</option>
+                        <option value="doku">Frage zur Dokumentation</option>
+                    </select>
+                </div>
+                <div class="comment-form-group">
+                    <label for="commentText">Dein Kommentar *</label>
+                    <textarea id="commentText" placeholder="Schreibe hier deine Frage oder dein Feedback..."></textarea>
+                </div>
+                <button class="comment-submit-btn" id="commentSubmitBtn" onclick="submitComment()">Absenden</button>
             </div>
         </div>
     </div>
@@ -4062,7 +4292,7 @@
                         <option value="poly_hedo" title="Freiheitsorientierte Poly-Orientierung mit Fokus auf Genuss">Poly Hedo</option>
                         <option value="polyamor" title="Mehrere gleichzeitige, ethisch geführte Liebesbeziehungen">Polyamor</option>
                     </select>
-                    <button class="archetype-info-btn" onclick="showArchetypeInfo('ich')" title="Info zum Archetyp">ℹ</button>
+                    <button class="archetype-info-btn" onclick="showArchetypeInfo('ich')" title="Info zum Archetyp">INFO</button>
                 </div>
                 <div class="column-dimensions">
                     <div class="compact-dimension needs-selection" data-dimension="ich-geschlecht-new">
@@ -4127,7 +4357,7 @@
                         <option value="poly_hedo" title="Freiheitsorientierte Poly-Orientierung mit Fokus auf Genuss">Poly Hedo</option>
                         <option value="polyamor" title="Mehrere gleichzeitige, ethisch geführte Liebesbeziehungen">Polyamor</option>
                     </select>
-                    <button class="archetype-info-btn" onclick="showArchetypeInfo('partner')" title="Info zum Archetyp">ℹ</button>
+                    <button class="archetype-info-btn" onclick="showArchetypeInfo('partner')" title="Info zum Archetyp">INFO</button>
                 </div>
                 <div class="column-dimensions">
                     <div class="compact-dimension needs-selection" data-dimension="partner-geschlecht-new">
@@ -4289,7 +4519,7 @@
                     <span>👤</span> ICH
                 </div>
                 <div style="display: flex; gap: 8px; align-items: center; margin-bottom: 12px;">
-                    <select class="column-select" id="mobileIchSelect" style="flex: 1;">
+                    <select class="column-select" id="mobileIchSelect">
                         <option value="single" title="Bewusste Entscheidung für ein autonomes Leben ohne Primärbeziehung">Single</option>
                         <option value="duo" title="Traditionelle monogame Zweierbeziehung mit Exklusivität">Duo</option>
                         <option value="duo_flex" title="Primäre Zweierbeziehung mit vereinbarten Öffnungen">Duo-Flex</option>
@@ -4297,7 +4527,7 @@
                         <option value="poly_hedo" title="Freiheitsorientierte Poly-Orientierung mit Fokus auf Genuss">Poly Hedo</option>
                         <option value="polyamor" title="Mehrere gleichzeitige, ethisch geführte Liebesbeziehungen">Polyamor</option>
                     </select>
-                    <button onclick="openArchetypeInfo(document.getElementById('mobileIchSelect').value)" style="padding: 10px; background: rgba(255,255,255,0.1); border: 1px solid var(--border); border-radius: 8px; color: var(--text-secondary); cursor: pointer; font-size: 18px;" title="Info zum Archetyp">ℹ</button>
+                    <button onclick="openArchetypeInfo(document.getElementById('mobileIchSelect').value)" style="padding: 8px 12px; background: rgba(255,255,255,0.1); border: 1px solid var(--border); border-radius: 8px; color: var(--text-secondary); cursor: pointer; font-size: 11px; font-weight: 600; letter-spacing: 0.5px;" title="Info zum Archetyp">INFO</button>
                 </div>
                 <div class="column-dimensions" id="mobileIchDimensions">
                     <div class="compact-dimension needs-selection">
@@ -4353,7 +4583,7 @@
                     <span>👥</span> PARTNER
                 </div>
                 <div style="display: flex; gap: 8px; align-items: center; margin-bottom: 12px;">
-                    <select class="column-select" id="mobilePartnerSelect" style="flex: 1;">
+                    <select class="column-select" id="mobilePartnerSelect">
                         <option value="single" title="Bewusste Entscheidung für ein autonomes Leben ohne Primärbeziehung">Single</option>
                         <option value="duo" selected title="Traditionelle monogame Zweierbeziehung mit Exklusivität">Duo</option>
                         <option value="duo_flex" title="Primäre Zweierbeziehung mit vereinbarten Öffnungen">Duo-Flex</option>
@@ -4361,7 +4591,7 @@
                         <option value="poly_hedo" title="Freiheitsorientierte Poly-Orientierung mit Fokus auf Genuss">Poly Hedo</option>
                         <option value="polyamor" title="Mehrere gleichzeitige, ethisch geführte Liebesbeziehungen">Polyamor</option>
                     </select>
-                    <button onclick="openArchetypeInfo(document.getElementById('mobilePartnerSelect').value)" style="padding: 10px; background: rgba(255,255,255,0.1); border: 1px solid var(--border); border-radius: 8px; color: var(--text-secondary); cursor: pointer; font-size: 18px;" title="Info zum Archetyp">ℹ</button>
+                    <button onclick="openArchetypeInfo(document.getElementById('mobilePartnerSelect').value)" style="padding: 8px 12px; background: rgba(255,255,255,0.1); border: 1px solid var(--border); border-radius: 8px; color: var(--text-secondary); cursor: pointer; font-size: 11px; font-weight: 600; letter-spacing: 0.5px;" title="Info zum Archetyp">INFO</button>
                 </div>
                 <div class="column-dimensions" id="mobilePartnerDimensions">
                     <div class="compact-dimension needs-selection">
@@ -9843,8 +10073,91 @@
                 if (helpModal && helpModal.classList.contains('active')) {
                     closeHelpModal();
                 }
+                const commentModal = document.getElementById('commentModal');
+                if (commentModal && commentModal.classList.contains('active')) {
+                    closeCommentModal();
+                }
             }
         });
+
+        // ========================================
+        // COMMENT MODAL FUNCTIONS
+        // ========================================
+
+        function openCommentModal() {
+            document.getElementById('commentModal').classList.add('active');
+        }
+
+        function closeCommentModal(event) {
+            if (event && event.target !== event.currentTarget) return;
+            document.getElementById('commentModal').classList.remove('active');
+            // Reset form
+            document.getElementById('commentName').value = '';
+            document.getElementById('commentType').value = 'frage';
+            document.getElementById('commentText').value = '';
+        }
+
+        async function submitComment() {
+            const name = document.getElementById('commentName').value.trim();
+            const typ = document.getElementById('commentType').value;
+            const text = document.getElementById('commentText').value.trim();
+
+            // Validation
+            if (!name) {
+                alert('Bitte gib deinen Namen/Kürzel ein.');
+                return;
+            }
+            if (!text) {
+                alert('Bitte schreibe einen Kommentar.');
+                return;
+            }
+
+            const commentEntry = {
+                type: 'comment',  // Wichtig für das Google Script
+                id: 'com_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9),
+                name: name,
+                kommentarTyp: typ,
+                kommentar: text,
+                timestamp: new Date().toISOString(),
+                userAgent: navigator.userAgent.substring(0, 100),
+                page: 'hilfe-modal'
+            };
+
+            const submitBtn = document.getElementById('commentSubmitBtn');
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Sende...';
+
+            try {
+                if (GOOGLE_SCRIPT_URL) {
+                    await fetch(GOOGLE_SCRIPT_URL, {
+                        method: 'POST',
+                        mode: 'no-cors',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(commentEntry)
+                    });
+                }
+
+                // Also save locally as backup
+                const stored = JSON.parse(localStorage.getItem('tiage_comments') || '[]');
+                stored.unshift(commentEntry);
+                localStorage.setItem('tiage_comments', JSON.stringify(stored));
+
+                alert('Danke für deinen Kommentar!');
+                closeCommentModal();
+
+            } catch (error) {
+                console.error('Comment error:', error);
+                // Save locally on error
+                const stored = JSON.parse(localStorage.getItem('tiage_comments') || '[]');
+                stored.unshift(commentEntry);
+                localStorage.setItem('tiage_comments', JSON.stringify(stored));
+                alert('Kommentar lokal gespeichert. (Server nicht erreichbar)');
+                closeCommentModal();
+            }
+
+            submitBtn.disabled = false;
+            submitBtn.textContent = 'Absenden';
+        }
 
         // ========================================
         // FEATURE 4: Archetype Info Modal
