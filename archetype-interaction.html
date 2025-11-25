@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="google-adsense-account" content="ca-pub-5524392819621163">
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5524392819621163" crossorigin="anonymous"></script>
     <title>Archetypen-Beziehungsqualität | Swipe</title>
     <style>
         :root {
@@ -2373,6 +2374,39 @@
             background: rgba(255, 255, 255, 0.05);
         }
 
+        /* Ad container around buttons */
+        .age-verification-ad-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            width: 100%;
+            margin: 10px 0;
+        }
+        .age-verification-ad-left,
+        .age-verification-ad-right {
+            flex: 0 0 120px;
+            min-height: 200px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .age-verification-buttons-center {
+            flex: 0 0 auto;
+            min-width: 200px;
+        }
+        @media (max-width: 768px) {
+            .age-verification-ad-container {
+                flex-direction: column;
+            }
+            .age-verification-ad-left,
+            .age-verification-ad-right {
+                flex: 0 0 auto;
+                width: 100%;
+                min-height: 100px;
+            }
+        }
+
         .age-verification-note {
             font-size: var(--font-xs) !important;
             color: var(--text-muted) !important;
@@ -4212,18 +4246,44 @@
             <div class="age-verification-question">
                 <strong>Bist du mindestens 18 Jahre alt?</strong>
             </div>
-            <div class="age-verification-buttons">
-                <button class="age-btn age-btn-yes" id="ageVerifyYes" type="button" onclick="window.confirmAge(true); return false;">
-                    Ja, ich bin 18+
-                </button>
-                <button class="age-btn age-btn-no" id="ageVerifyNo" type="button" onclick="window.confirmAge(false); return false;">
-                    Nein, ich bin unter 18
-                </button>
+            <!-- Ad Container with Buttons -->
+            <div class="age-verification-ad-container">
+                <!-- Left Ad -->
+                <div class="age-verification-ad-left">
+                    <ins class="adsbygoogle"
+                         style="display:block"
+                         data-ad-format="fluid"
+                         data-ad-layout-key="-6i+c6-22-4m+u9"
+                         data-ad-client="ca-pub-5524392819621163"
+                         data-ad-slot="4570877384"></ins>
+                </div>
+
+                <!-- Buttons Center -->
+                <div class="age-verification-buttons-center">
+                    <div class="age-verification-buttons">
+                        <button class="age-btn age-btn-yes" id="ageVerifyYes" type="button" onclick="window.confirmAge(true); return false;">
+                            Ja, ich bin 18+
+                        </button>
+                        <button class="age-btn age-btn-no" id="ageVerifyNo" type="button" onclick="window.confirmAge(false); return false;">
+                            Nein, ich bin unter 18
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Right Ad -->
+                <div class="age-verification-ad-right">
+                    <ins class="adsbygoogle"
+                         style="display:block"
+                         data-ad-format="fluid"
+                         data-ad-layout-key="-6i+c6-22-4m+u9"
+                         data-ad-client="ca-pub-5524392819621163"
+                         data-ad-slot="4570877384"></ins>
+                </div>
             </div>
             <p class="age-verification-note">
                 Mit dem Klick auf "Ja" bestätigst du, dass du:<br>
                 • volljährig bist (mindestens 18 Jahre alt)<br>
-                • die <a href="https://ti-age.de/datenschutz" target="_blank" style="color: #4A90E2; text-decoration: underline;">Nutzungsbedingungen und Datenschutzerklärung</a> akzeptierst<br>
+                • die <a href="datenschutz.html" target="_blank" style="color: #4A90E2; text-decoration: underline;">Nutzungsbedingungen und Datenschutzerklaerung</a> akzeptierst<br>
                 • zur Kenntnis nimmst, dass alle Inhalte urheberrechtlich geschützt sind<br>
                 • die Inhalte nur für persönliche, nicht-kommerzielle Zwecke nutzt
             </p>
@@ -5417,7 +5477,7 @@
     <footer class="app-footer">
         <a href="#" onclick="document.getElementById('impressumModal').classList.add('active'); return false;">Impressum</a>
         <span>|</span>
-        <a href="https://ti-age.de/datenschutz" target="_blank">Datenschutz</a>
+        <a href="datenschutz.html">Datenschutz</a>
     </footer>
 
     <!-- Impressum Modal -->
@@ -10467,6 +10527,14 @@
             setTimeout(updateComparisonView, 100);
         }
         loadDataAndUpdateComparison();
+
+        // Initialize AdSense ads
+        try {
+            (adsbygoogle = window.adsbygoogle || []).push({});
+            (adsbygoogle = window.adsbygoogle || []).push({});
+        } catch(e) {
+            console.log('AdSense not loaded');
+        }
     </script>
 </body>
 </html>
