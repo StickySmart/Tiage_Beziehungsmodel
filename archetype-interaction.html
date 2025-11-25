@@ -3019,17 +3019,18 @@
         }
 
         .archetype-info-btn {
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
+            padding: 8px 12px;
+            border-radius: 8px;
             background: rgba(255,255,255,0.1);
             border: 1px solid var(--border);
             color: var(--text-muted);
-            font-size: 14px;
+            font-size: 11px;
+            font-weight: 600;
             cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
+            letter-spacing: 0.5px;
             transition: all 0.3s ease;
             flex-shrink: 0;
         }
@@ -3041,7 +3042,9 @@
         }
 
         .column-select {
-            width: 100%;
+            width: auto;
+            min-width: 100px;
+            max-width: 140px;
             padding: 10px 12px;
             border-radius: 10px;
             border: 1px solid var(--border);
@@ -4019,7 +4022,7 @@
                         <option value="poly_hedo" title="Freiheitsorientierte Poly-Orientierung mit Fokus auf Genuss">Poly Hedo</option>
                         <option value="polyamor" title="Mehrere gleichzeitige, ethisch geführte Liebesbeziehungen">Polyamor</option>
                     </select>
-                    <button class="archetype-info-btn" onclick="showArchetypeInfo('ich')" title="Info zum Archetyp">ℹ</button>
+                    <button class="archetype-info-btn" onclick="showArchetypeInfo('ich')" title="Info zum Archetyp">INFO</button>
                 </div>
                 <div class="column-dimensions">
                     <div class="compact-dimension needs-selection" data-dimension="ich-geschlecht-new">
@@ -4084,7 +4087,7 @@
                         <option value="poly_hedo" title="Freiheitsorientierte Poly-Orientierung mit Fokus auf Genuss">Poly Hedo</option>
                         <option value="polyamor" title="Mehrere gleichzeitige, ethisch geführte Liebesbeziehungen">Polyamor</option>
                     </select>
-                    <button class="archetype-info-btn" onclick="showArchetypeInfo('partner')" title="Info zum Archetyp">ℹ</button>
+                    <button class="archetype-info-btn" onclick="showArchetypeInfo('partner')" title="Info zum Archetyp">INFO</button>
                 </div>
                 <div class="column-dimensions">
                     <div class="compact-dimension needs-selection" data-dimension="partner-geschlecht-new">
@@ -4246,7 +4249,7 @@
                     <span>👤</span> ICH
                 </div>
                 <div style="display: flex; gap: 8px; align-items: center; margin-bottom: 12px;">
-                    <select class="column-select" id="mobileIchSelect" style="flex: 1;">
+                    <select class="column-select" id="mobileIchSelect">
                         <option value="single" title="Bewusste Entscheidung für ein autonomes Leben ohne Primärbeziehung">Single</option>
                         <option value="duo" title="Traditionelle monogame Zweierbeziehung mit Exklusivität">Duo</option>
                         <option value="duo_flex" title="Primäre Zweierbeziehung mit vereinbarten Öffnungen">Duo-Flex</option>
@@ -4254,7 +4257,7 @@
                         <option value="poly_hedo" title="Freiheitsorientierte Poly-Orientierung mit Fokus auf Genuss">Poly Hedo</option>
                         <option value="polyamor" title="Mehrere gleichzeitige, ethisch geführte Liebesbeziehungen">Polyamor</option>
                     </select>
-                    <button onclick="openArchetypeInfo(document.getElementById('mobileIchSelect').value)" style="padding: 10px; background: rgba(255,255,255,0.1); border: 1px solid var(--border); border-radius: 8px; color: var(--text-secondary); cursor: pointer; font-size: 18px;" title="Info zum Archetyp">ℹ</button>
+                    <button onclick="openArchetypeInfo(document.getElementById('mobileIchSelect').value)" style="padding: 8px 12px; background: rgba(255,255,255,0.1); border: 1px solid var(--border); border-radius: 8px; color: var(--text-secondary); cursor: pointer; font-size: 11px; font-weight: 600; letter-spacing: 0.5px;" title="Info zum Archetyp">INFO</button>
                 </div>
                 <div class="column-dimensions" id="mobileIchDimensions">
                     <div class="compact-dimension needs-selection">
@@ -4310,7 +4313,7 @@
                     <span>👥</span> PARTNER
                 </div>
                 <div style="display: flex; gap: 8px; align-items: center; margin-bottom: 12px;">
-                    <select class="column-select" id="mobilePartnerSelect" style="flex: 1;">
+                    <select class="column-select" id="mobilePartnerSelect">
                         <option value="single" title="Bewusste Entscheidung für ein autonomes Leben ohne Primärbeziehung">Single</option>
                         <option value="duo" selected title="Traditionelle monogame Zweierbeziehung mit Exklusivität">Duo</option>
                         <option value="duo_flex" title="Primäre Zweierbeziehung mit vereinbarten Öffnungen">Duo-Flex</option>
@@ -4318,7 +4321,7 @@
                         <option value="poly_hedo" title="Freiheitsorientierte Poly-Orientierung mit Fokus auf Genuss">Poly Hedo</option>
                         <option value="polyamor" title="Mehrere gleichzeitige, ethisch geführte Liebesbeziehungen">Polyamor</option>
                     </select>
-                    <button onclick="openArchetypeInfo(document.getElementById('mobilePartnerSelect').value)" style="padding: 10px; background: rgba(255,255,255,0.1); border: 1px solid var(--border); border-radius: 8px; color: var(--text-secondary); cursor: pointer; font-size: 18px;" title="Info zum Archetyp">ℹ</button>
+                    <button onclick="openArchetypeInfo(document.getElementById('mobilePartnerSelect').value)" style="padding: 8px 12px; background: rgba(255,255,255,0.1); border: 1px solid var(--border); border-radius: 8px; color: var(--text-secondary); cursor: pointer; font-size: 11px; font-weight: 600; letter-spacing: 0.5px;" title="Info zum Archetyp">INFO</button>
                 </div>
                 <div class="column-dimensions" id="mobilePartnerDimensions">
                     <div class="compact-dimension needs-selection">
