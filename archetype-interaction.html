@@ -3608,13 +3608,14 @@
 <body>
     <!-- Age Verification - Inline Script BEFORE modal for onclick to work -->
     <script>
-        // Define confirmAge immediately so onclick handlers work (fallback)
+        // Define confirmAge immediately so onclick handlers work
+        // Modal appears on EVERY visit (no localStorage storage)
         window.confirmAge = function(isAdult) {
-            console.log('confirmAge called (inline):', isAdult);
+            console.log('confirmAge called:', isAdult);
             try {
                 var modal = document.getElementById('ageVerificationModal');
                 if (isAdult) {
-                    localStorage.setItem('ageVerified', 'true');
+                    // Just hide the modal for this session - no localStorage
                     if (modal) {
                         modal.classList.add('hidden');
                         modal.style.display = 'none';
@@ -3628,25 +3629,10 @@
                 }
             } catch(e) {
                 console.error('confirmAge error:', e);
-                // Fallback: just hide the modal
                 var m = document.getElementById('ageVerificationModal');
                 if (m) m.style.display = 'none';
             }
         };
-
-        // Check immediately if already verified - hide modal via CSS
-        (function() {
-            try {
-                if (localStorage.getItem('ageVerified') === 'true') {
-                    // Add style immediately to prevent flash
-                    var style = document.createElement('style');
-                    style.textContent = '#ageVerificationModal { display: none !important; }';
-                    document.head.appendChild(style);
-                }
-            } catch(e) {
-                console.error('Age verification check error:', e);
-            }
-        })();
     </script>
 
     <!-- Age Verification Modal -->
@@ -6958,31 +6944,24 @@
             initAdvancedFilters();
         }
 
-        // Age Verification
+        // Age Verification - Modal shows on EVERY visit (no localStorage)
         function checkAgeVerification() {
-            var isVerified = false;
-            try {
-                isVerified = localStorage.getItem('ageVerified') === 'true';
-            } catch(e) {
-                console.warn('localStorage not available');
-            }
-
+            // Modal always shows - no localStorage check
             const modal = document.getElementById('ageVerificationModal');
-            if (modal && isVerified) {
-                modal.classList.add('hidden');
-                modal.style.display = 'none';
-                modal.style.visibility = 'hidden';
-                modal.style.opacity = '0';
-                modal.style.pointerEvents = 'none';
-                document.body.style.overflow = 'auto';
+            if (modal) {
+                modal.classList.remove('hidden');
+                modal.style.display = 'flex';
+                modal.style.visibility = 'visible';
+                modal.style.opacity = '1';
+                modal.style.pointerEvents = 'auto';
+                document.body.style.overflow = 'hidden';
             }
         }
 
-        // Make confirmAge globally available
+        // Make confirmAge globally available - no localStorage storage
         window.confirmAge = function(isAdult) {
             console.log('confirmAge called with:', isAdult);
             if (isAdult) {
-                localStorage.setItem('ageVerified', 'true');
                 var modal = document.getElementById('ageVerificationModal');
                 if (modal) {
                     modal.classList.add('hidden');
@@ -7005,7 +6984,7 @@
             const yesButton = document.getElementById('ageVerifyYes');
             const noButton = document.getElementById('ageVerifyNo');
 
-            // Helper function to handle age confirmation
+            // Helper function to handle age confirmation - no localStorage
             function handleAgeConfirm(isAdult, event) {
                 if (event) {
                     event.preventDefault();
@@ -7014,11 +6993,6 @@
                 console.log('handleAgeConfirm called:', isAdult);
 
                 if (isAdult) {
-                    try {
-                        localStorage.setItem('ageVerified', 'true');
-                    } catch(e) {
-                        console.warn('localStorage not available');
-                    }
                     if (modal) {
                         modal.classList.add('hidden');
                         modal.style.display = 'none';
@@ -7076,24 +7050,14 @@
                 }, { passive: false, capture: true });
             }
 
-            // Ensure modal is visible if not verified
-            var isVerified = false;
-            try {
-                isVerified = localStorage.getItem('ageVerified') === 'true';
-            } catch(e) {
-                console.warn('localStorage not available for read');
-            }
-
-            if (modal && !isVerified) {
+            // Always show modal on page load - no localStorage check
+            if (modal) {
                 modal.classList.remove('hidden');
                 modal.style.display = 'flex';
                 modal.style.visibility = 'visible';
                 modal.style.opacity = '1';
                 modal.style.pointerEvents = 'auto';
                 document.body.style.overflow = 'hidden'; // Prevent scrolling behind modal
-            } else if (modal && isVerified) {
-                modal.classList.add('hidden');
-                modal.style.display = 'none';
             }
         }
 
