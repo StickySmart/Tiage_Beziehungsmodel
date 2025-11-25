@@ -74,6 +74,147 @@
             color: var(--text-secondary);
         }
 
+        /* Help Button */
+        .help-btn {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            border: 1px solid var(--primary);
+            background: transparent;
+            color: var(--primary);
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .help-btn:hover {
+            background: var(--primary);
+            color: white;
+        }
+
+        /* Help Modal */
+        .help-modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.85);
+            z-index: 2000;
+            display: none;
+            align-items: flex-start;
+            justify-content: center;
+            padding: 20px;
+            overflow-y: auto;
+        }
+
+        .help-modal-overlay.active {
+            display: flex;
+        }
+
+        .help-modal {
+            background: var(--bg-card);
+            border-radius: 16px;
+            max-width: 800px;
+            width: 100%;
+            margin: 40px auto;
+            max-height: none;
+            border: 1px solid var(--border);
+        }
+
+        .help-modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+            border-bottom: 1px solid var(--border);
+            position: sticky;
+            top: 0;
+            background: var(--bg-card);
+            border-radius: 16px 16px 0 0;
+        }
+
+        .help-modal-header h2 {
+            font-size: var(--font-lg);
+            color: var(--text-primary);
+            margin: 0;
+        }
+
+        .help-modal-close {
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            font-size: 24px;
+            cursor: pointer;
+            padding: 5px;
+        }
+
+        .help-modal-close:hover {
+            color: var(--text-primary);
+        }
+
+        .help-modal-content {
+            padding: 20px;
+        }
+
+        .help-section {
+            margin-bottom: 25px;
+        }
+
+        .help-section h3 {
+            font-size: var(--font-md);
+            color: var(--primary);
+            margin-bottom: 10px;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 8px;
+        }
+
+        .help-section p, .help-section li {
+            font-size: var(--font-sm);
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        .help-section ul {
+            padding-left: 20px;
+            margin: 10px 0;
+        }
+
+        .help-section li {
+            margin-bottom: 8px;
+        }
+
+        .help-formula {
+            background: rgba(255,255,255,0.05);
+            padding: 15px;
+            border-radius: 8px;
+            font-family: monospace;
+            margin: 10px 0;
+            overflow-x: auto;
+        }
+
+        .help-example {
+            background: rgba(69,123,157,0.1);
+            border-left: 3px solid var(--primary);
+            padding: 15px;
+            border-radius: 0 8px 8px 0;
+            margin: 15px 0;
+        }
+
+        .help-example-title {
+            font-weight: 600;
+            color: var(--primary);
+            margin-bottom: 10px;
+        }
+
         /* Carousel Container */
         .carousel-container {
             display: flex;
@@ -3636,6 +3777,93 @@
         };
     </script>
 
+    <!-- Help Modal -->
+    <div class="help-modal-overlay" id="helpModal" onclick="closeHelpModal(event)">
+        <div class="help-modal" onclick="event.stopPropagation()">
+            <div class="help-modal-header">
+                <h2>Hilfe & Dokumentation</h2>
+                <button class="help-modal-close" onclick="closeHelpModal()">&times;</button>
+            </div>
+            <div class="help-modal-content">
+                <div class="help-section">
+                    <h3>Was ist das Tiage-Beziehungsmodell?</h3>
+                    <p>Das Tiage-Beziehungsmodell ist ein Werkzeug zur Analyse der Beziehungskompatibilität zwischen zwei Personen. Es berechnet einen Qualitätsindex basierend auf vier Hauptfaktoren, die verschiedene Aspekte einer Beziehung berücksichtigen.</p>
+                </div>
+
+                <div class="help-section">
+                    <h3>Die 4 Qualitätsfaktoren</h3>
+                    <ul>
+                        <li><strong>Archetyp-Übereinstimmung (25%)</strong> - Beziehungsphilosophie/Verstand: Wie gut passen die Grundüberzeugungen über Beziehungsstrukturen zusammen? (Single, Duo, Duo-Flex, Solopoly, Poly-Hedo, Polyamor)</li>
+                        <li><strong>Dominanz-Harmonie (25%)</strong> - Emotionale Dynamik/Gefühl: Wie gut harmonieren die Dominanz-Präferenzen? (Dominant, Submissiv, Switch, Ausgeglichen)</li>
+                        <li><strong>Orientierungs-Kompatibilität (25%)</strong> - Körperliche Anziehung/Gefühl: Ist basierend auf den sexuellen Orientierungen Anziehung möglich? (Hetero, Homo, Bi)</li>
+                        <li><strong>Geschlechts-Attraktion (25%)</strong> - Gender-Chemie/Gefühl: Passt die Geschlechterkonstellation zu den angegebenen Orientierungen? (Mann, Frau, Divers)</li>
+                    </ul>
+                </div>
+
+                <div class="help-section">
+                    <h3>Berechnung des Qualitätsindex</h3>
+                    <p>Der Gesamtwert wird als gewichteter Durchschnitt der vier Faktoren berechnet:</p>
+                    <div class="help-formula">
+                        Qualitätsindex = (Archetyp × 0.25) + (Dominanz × 0.25) + (Orientierung × 0.25) + (Geschlecht × 0.25)
+                    </div>
+                    <p>Jeder Faktor wird auf einer Skala von 0-100% bewertet.</p>
+                </div>
+
+                <div class="help-section">
+                    <h3>Rechenbeispiel</h3>
+                    <div class="help-example">
+                        <div class="help-example-title">Beispiel: Duo × Duo-Flex</div>
+                        <p><strong>Person 1:</strong> Duo, Submissiv, Hetero, Frau<br>
+                        <strong>Person 2:</strong> Duo-Flex, Dominant, Hetero, Mann</p>
+                        <ul>
+                            <li><strong>Archetyp-Übereinstimmung:</strong> 75% (Duo und Duo-Flex sind nah verwandt)</li>
+                            <li><strong>Dominanz-Harmonie:</strong> 100% (Submissiv + Dominant = perfekte Ergänzung)</li>
+                            <li><strong>Orientierungs-Kompatibilität:</strong> 100% (Hetero + Hetero bei M/F Konstellation)</li>
+                            <li><strong>Geschlechts-Attraktion:</strong> 100% (Frau × Mann passt zu beiden Orientierungen)</li>
+                        </ul>
+                        <div class="help-formula">
+                            Qualitätsindex = (75 × 0.25) + (100 × 0.25) + (100 × 0.25) + (100 × 0.25) = 93.75% ≈ 94%
+                        </div>
+                    </div>
+                </div>
+
+                <div class="help-section">
+                    <h3>Die 6 Archetypen erklärt</h3>
+                    <ul>
+                        <li><strong>Single:</strong> Bewusst keine feste Beziehung, Fokus auf Unabhängigkeit und Selbstbestimmung</li>
+                        <li><strong>Duo:</strong> Traditionelle monogame Zweierbeziehung mit emotionaler und sexueller Exklusivität</li>
+                        <li><strong>Duo-Flex:</strong> Primärbeziehung mit Öffnungsbereitschaft unter gemeinsamen Regeln</li>
+                        <li><strong>Solopoly:</strong> Solo-Polyamorie - mehrere gleichwertige Beziehungen ohne Hierarchie, mit Fokus auf Autonomie</li>
+                        <li><strong>Poly-Hedo:</strong> Hedonistische Polyamorie - Fokus auf Lust und Genuss mit mehreren Partnern</li>
+                        <li><strong>Polyamor:</strong> Romantische Polyamorie - tiefe emotionale Verbindungen zu mehreren Partnern gleichzeitig</li>
+                    </ul>
+                </div>
+
+                <div class="help-section">
+                    <h3>So funktioniert die App</h3>
+                    <ul>
+                        <li><strong>Desktop:</strong> Wähle links deine eigenen Eigenschaften und rechts die deines Partners</li>
+                        <li><strong>Mobile:</strong> Swipe zwischen den Karten oder nutze die Tabs oben</li>
+                        <li><strong>Archetypen:</strong> Tippe/klicke auf den Info-Button (i) neben jedem Archetyp für Details</li>
+                        <li><strong>Faktoren:</strong> Klicke auf die Prozentwerte im Ergebnis für detaillierte Erklärungen</li>
+                        <li><strong>Speichern:</strong> Deine Auswahl wird automatisch im Browser gespeichert</li>
+                    </ul>
+                </div>
+
+                <div class="help-section">
+                    <h3>Interpretation der Ergebnisse</h3>
+                    <ul>
+                        <li><strong>80-100%:</strong> Exzellente Kompatibilität - wenige Herausforderungen zu erwarten</li>
+                        <li><strong>60-79%:</strong> Gute Kompatibilität - mit Kommunikation gut machbar</li>
+                        <li><strong>40-59%:</strong> Moderate Kompatibilität - erfordert bewusste Arbeit an der Beziehung</li>
+                        <li><strong>0-39%:</strong> Herausfordernd - fundamentale Unterschiede, intensive Kommunikation nötig</li>
+                    </ul>
+                    <p style="margin-top: 15px; font-style: italic; color: var(--text-muted);">Hinweis: Der Qualitätsindex ist ein Orientierungswert. Echte Beziehungen sind komplexer und hängen von vielen weiteren Faktoren ab.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Age Verification Modal -->
     <div class="age-verification-overlay" id="ageVerificationModal">
         <div class="age-verification-modal" onclick="event.stopPropagation()">
@@ -3703,6 +3931,7 @@
 
     <header>
         <h1>ARCHETYPEN-BEZIEHUNGSQUALITÄT</h1>
+        <button class="help-btn" onclick="openHelpModal()" title="Hilfe & Dokumentation">?</button>
     </header>
 
     <!-- NEW: Side-by-Side Comparison Layout (Desktop) -->
@@ -3858,28 +4087,28 @@
 
             <!-- 4-Factor Breakdown with Sublabels -->
             <div id="desktopFactorBreakdown" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; margin-top: 15px; padding-top: 15px; border-top: 1px solid var(--border);">
-                <div style="display: flex; justify-content: space-between; align-items: flex-start; padding: 8px; background: rgba(255,255,255,0.03); border-radius: 8px;">
+                <div onclick="openFactorModal('archetyp', 'desktop')" style="display: flex; justify-content: space-between; align-items: flex-start; padding: 8px; background: rgba(255,255,255,0.03); border-radius: 8px; cursor: pointer; transition: background 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.08)'" onmouseout="this.style.background='rgba(255,255,255,0.03)'">
                     <div style="display: flex; flex-direction: column; gap: 2px;">
                         <span style="font-size: var(--font-sm); color: var(--text-primary);">Archetyp-Übereinstimmung</span>
                         <span style="font-size: var(--font-xs); color: var(--text-muted); font-style: italic;">(Beziehungsphilosophie - Verstand)</span>
                     </div>
                     <span id="desktopFactorArchetyp" style="font-size: var(--font-base); font-weight: 700; color: var(--primary);">0%</span>
                 </div>
-                <div style="display: flex; justify-content: space-between; align-items: flex-start; padding: 8px; background: rgba(255,255,255,0.03); border-radius: 8px;">
+                <div onclick="openFactorModal('dominanz', 'desktop')" style="display: flex; justify-content: space-between; align-items: flex-start; padding: 8px; background: rgba(255,255,255,0.03); border-radius: 8px; cursor: pointer; transition: background 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.08)'" onmouseout="this.style.background='rgba(255,255,255,0.03)'">
                     <div style="display: flex; flex-direction: column; gap: 2px;">
                         <span style="font-size: var(--font-sm); color: var(--text-primary);">Dominanz-Harmonie</span>
                         <span style="font-size: var(--font-xs); color: var(--text-muted); font-style: italic;">(Emotionale Dynamik - Gefühl)</span>
                     </div>
                     <span id="desktopFactorDominanz" style="font-size: var(--font-base); font-weight: 700; color: var(--primary);">0%</span>
                 </div>
-                <div style="display: flex; justify-content: space-between; align-items: flex-start; padding: 8px; background: rgba(255,255,255,0.03); border-radius: 8px;">
+                <div onclick="openFactorModal('orientierung', 'desktop')" style="display: flex; justify-content: space-between; align-items: flex-start; padding: 8px; background: rgba(255,255,255,0.03); border-radius: 8px; cursor: pointer; transition: background 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.08)'" onmouseout="this.style.background='rgba(255,255,255,0.03)'">
                     <div style="display: flex; flex-direction: column; gap: 2px;">
                         <span style="font-size: var(--font-sm); color: var(--text-primary);">Orientierungs-Kompatibilität</span>
                         <span style="font-size: var(--font-xs); color: var(--text-muted); font-style: italic;">(Körperliche Anziehung - Gefühl)</span>
                     </div>
                     <span id="desktopFactorOrientierung" style="font-size: var(--font-base); font-weight: 700; color: var(--primary);">0%</span>
                 </div>
-                <div style="display: flex; justify-content: space-between; align-items: flex-start; padding: 8px; background: rgba(255,255,255,0.03); border-radius: 8px;">
+                <div onclick="openFactorModal('geschlecht', 'desktop')" style="display: flex; justify-content: space-between; align-items: flex-start; padding: 8px; background: rgba(255,255,255,0.03); border-radius: 8px; cursor: pointer; transition: background 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.08)'" onmouseout="this.style.background='rgba(255,255,255,0.03)'">
                     <div style="display: flex; flex-direction: column; gap: 2px;">
                         <span style="font-size: var(--font-sm); color: var(--text-primary);">Geschlechts-Attraktion</span>
                         <span style="font-size: var(--font-xs); color: var(--text-muted); font-style: italic;">(Gender-Chemie - Gefühl)</span>
@@ -9403,23 +9632,24 @@
             }
         };
 
-        function openFactorModal(factorType) {
+        function openFactorModal(factorType, source = 'mobile') {
             const factor = factorExplanations[factorType];
             if (!factor) return;
 
             const ich = mobileIchArchetype;
             const partner = mobilePartnerArchetype;
 
-            // Get score from display
+            // Get score from display - support both mobile and desktop
+            const prefix = source === 'desktop' ? 'desktopFactor' : 'mobileFactor';
             let score = 0;
             if (factorType === 'archetyp') {
-                score = parseInt(document.getElementById('mobileFactorArchetyp').textContent) || 0;
+                score = parseInt(document.getElementById(prefix + 'Archetyp').textContent) || 0;
             } else if (factorType === 'dominanz') {
-                score = parseInt(document.getElementById('mobileFactorDominanz').textContent) || 0;
+                score = parseInt(document.getElementById(prefix + 'Dominanz').textContent) || 0;
             } else if (factorType === 'orientierung') {
-                score = parseInt(document.getElementById('mobileFactorOrientierung').textContent) || 0;
+                score = parseInt(document.getElementById(prefix + 'Orientierung').textContent) || 0;
             } else if (factorType === 'geschlecht') {
-                score = parseInt(document.getElementById('mobileFactorGeschlecht').textContent) || 0;
+                score = parseInt(document.getElementById(prefix + 'Geschlecht').textContent) || 0;
             }
 
             // Update modal content
@@ -9444,6 +9674,31 @@
             if (event && event.target !== event.currentTarget) return;
             document.getElementById('factorModal').classList.remove('active');
         }
+
+        // ========================================
+        // HELP MODAL FUNCTIONS
+        // ========================================
+
+        function openHelpModal() {
+            document.getElementById('helpModal').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeHelpModal(event) {
+            if (event && event.target !== event.currentTarget) return;
+            document.getElementById('helpModal').classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        // Close help modal with Escape key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                const helpModal = document.getElementById('helpModal');
+                if (helpModal && helpModal.classList.contains('active')) {
+                    closeHelpModal();
+                }
+            }
+        });
 
         // ========================================
         // FEATURE 4: Archetype Info Modal
