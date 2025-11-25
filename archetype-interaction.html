@@ -3861,28 +3861,28 @@
                 <div style="display: flex; justify-content: space-between; align-items: flex-start; padding: 8px; background: rgba(255,255,255,0.03); border-radius: 8px;">
                     <div style="display: flex; flex-direction: column; gap: 2px;">
                         <span style="font-size: var(--font-sm); color: var(--text-primary);">Archetyp-Übereinstimmung</span>
-                        <span style="font-size: var(--font-xs); color: var(--text-muted); font-style: italic;">(Beziehungsphilosophie - Verstand)</span>
+                        <span style="font-size: var(--font-xs); color: var(--text-muted); font-style: italic;">(Beziehungsphilosophie - Verstand/Logos)</span>
                     </div>
                     <span id="desktopFactorArchetyp" style="font-size: var(--font-base); font-weight: 700; color: var(--primary);">0%</span>
                 </div>
                 <div style="display: flex; justify-content: space-between; align-items: flex-start; padding: 8px; background: rgba(255,255,255,0.03); border-radius: 8px;">
                     <div style="display: flex; flex-direction: column; gap: 2px;">
                         <span style="font-size: var(--font-sm); color: var(--text-primary);">Dominanz-Harmonie</span>
-                        <span style="font-size: var(--font-xs); color: var(--text-muted); font-style: italic;">(Emotionale Dynamik - Gefühl)</span>
+                        <span style="font-size: var(--font-xs); color: var(--text-muted); font-style: italic;">(Emotionale Dynamik - Gefühl/Pathos)</span>
                     </div>
                     <span id="desktopFactorDominanz" style="font-size: var(--font-base); font-weight: 700; color: var(--primary);">0%</span>
                 </div>
                 <div style="display: flex; justify-content: space-between; align-items: flex-start; padding: 8px; background: rgba(255,255,255,0.03); border-radius: 8px;">
                     <div style="display: flex; flex-direction: column; gap: 2px;">
                         <span style="font-size: var(--font-sm); color: var(--text-primary);">Orientierungs-Kompatibilität</span>
-                        <span style="font-size: var(--font-xs); color: var(--text-muted); font-style: italic;">(Körperliche Anziehung - Gefühl)</span>
+                        <span style="font-size: var(--font-xs); color: var(--text-muted); font-style: italic;">(Körperliche Anziehung - Gefühl/Pathos)</span>
                     </div>
                     <span id="desktopFactorOrientierung" style="font-size: var(--font-base); font-weight: 700; color: var(--primary);">0%</span>
                 </div>
                 <div style="display: flex; justify-content: space-between; align-items: flex-start; padding: 8px; background: rgba(255,255,255,0.03); border-radius: 8px;">
                     <div style="display: flex; flex-direction: column; gap: 2px;">
                         <span style="font-size: var(--font-sm); color: var(--text-primary);">Geschlechts-Attraktion</span>
-                        <span style="font-size: var(--font-xs); color: var(--text-muted); font-style: italic;">(Gender-Chemie - Gefühl)</span>
+                        <span style="font-size: var(--font-xs); color: var(--text-muted); font-style: italic;">(Gender-Chemie - Gefühl/Pathos)</span>
                     </div>
                     <span id="desktopFactorGeschlecht" style="font-size: var(--font-base); font-weight: 700; color: var(--primary);">0%</span>
                 </div>
@@ -4104,28 +4104,28 @@
                 <div class="score-factor" onclick="openFactorModal('archetyp')" style="cursor: pointer;">
                     <div class="score-factor-label">
                         <span class="score-factor-main">Archetyp-Übereinstimmung</span>
-                        <span class="score-factor-sub">(Beziehungsphilosophie - Verstand)</span>
+                        <span class="score-factor-sub">(Beziehungsphilosophie - Verstand/Logos)</span>
                     </div>
                     <span class="score-factor-value" id="mobileFactorArchetyp">0%</span>
                 </div>
                 <div class="score-factor" onclick="openFactorModal('dominanz')" style="cursor: pointer;">
                     <div class="score-factor-label">
                         <span class="score-factor-main">Dominanz-Harmonie</span>
-                        <span class="score-factor-sub">(Emotionale Dynamik - Gefühl)</span>
+                        <span class="score-factor-sub">(Emotionale Dynamik - Gefühl/Pathos)</span>
                     </div>
                     <span class="score-factor-value" id="mobileFactorDominanz">0%</span>
                 </div>
                 <div class="score-factor" onclick="openFactorModal('orientierung')" style="cursor: pointer;">
                     <div class="score-factor-label">
                         <span class="score-factor-main">Orientierungs-Kompatibilität</span>
-                        <span class="score-factor-sub">(Körperliche Anziehung - Gefühl)</span>
+                        <span class="score-factor-sub">(Körperliche Anziehung - Gefühl/Pathos)</span>
                     </div>
                     <span class="score-factor-value" id="mobileFactorOrientierung">0%</span>
                 </div>
                 <div class="score-factor" onclick="openFactorModal('geschlecht')" style="cursor: pointer;">
                     <div class="score-factor-label">
                         <span class="score-factor-main">Geschlechts-Attraktion</span>
-                        <span class="score-factor-sub">(Gender-Chemie - Gefühl)</span>
+                        <span class="score-factor-sub">(Gender-Chemie - Gefühl/Pathos)</span>
                     </div>
                     <span class="score-factor-value" id="mobileFactorGeschlecht">0%</span>
                 </div>
@@ -9281,7 +9281,7 @@
         const factorExplanations = {
             archetyp: {
                 title: 'Archetyp-Übereinstimmung',
-                subtitle: '(Beziehungsphilosophie - Verstand)',
+                subtitle: '(Beziehungsphilosophie - Verstand/Logos)',
                 getExplanation: (ich, partner, score) => {
                     const ichName = data?.archetypes?.[ich]?.name || ich;
                     const partnerName = data?.archetypes?.[partner]?.name || partner;
@@ -9310,7 +9310,7 @@
             },
             dominanz: {
                 title: 'Dominanz-Harmonie',
-                subtitle: '(Emotionale Dynamik - Gefühl)',
+                subtitle: '(Emotionale Dynamik - Gefühl/Pathos)',
                 getExplanation: (ich, partner, score) => {
                     const ichDom = mobilePersonDimensions.ich.dominanz;
                     const partnerDom = mobilePersonDimensions.partner.dominanz;
@@ -9341,7 +9341,7 @@
             },
             orientierung: {
                 title: 'Orientierungs-Kompatibilität',
-                subtitle: '(Körperliche Anziehung - Gefühl)',
+                subtitle: '(Körperliche Anziehung - Gefühl/Pathos)',
                 getExplanation: (ich, partner, score) => {
                     const ichOri = mobilePersonDimensions.ich.orientierung;
                     const partnerOri = mobilePersonDimensions.partner.orientierung;
@@ -9366,7 +9366,7 @@
             },
             geschlecht: {
                 title: 'Geschlechts-Attraktion',
-                subtitle: '(Gender-Chemie - Gefühl)',
+                subtitle: '(Gender-Chemie - Gefühl/Pathos)',
                 getExplanation: (ich, partner, score) => {
                     const ichG = mobilePersonDimensions.ich.geschlecht;
                     const partnerG = mobilePersonDimensions.partner.geschlecht;
