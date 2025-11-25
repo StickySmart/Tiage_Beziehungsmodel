@@ -11,12 +11,16 @@ Das Modell verbindet zwei Traditionen:
 
 **Tiage's Beitrag:** Die praktische Verbindung beider Philosophien zu einem Beziehungs-Rechner mit eigener Gewichtung und Archetypen-Matrix.
 
-## Kernkonzept: Logos vs. Pathos (40:60)
+## Kernkonzept: Logos vs. Pathos
 
-| Dimension | Gewicht | Pirsig-Begriff | Bedeutung |
-|-----------|---------|----------------|-----------|
-| **Logos** | 40% | Statische Qualität | Verstand, Struktur |
-| **Pathos** | 60% | Dynamische Qualität | Gefühl, Anziehung |
+<!-- Gewichtung: 40:60 - Tiage's Synthese -->
+
+| Dimension | Pirsig-Begriff | Bedeutung |
+|-----------|----------------|-----------|
+| **Logos** | Statische Qualität | Verstand, Struktur |
+| **Pathos** | Dynamische Qualität | Gefühl, Anziehung |
+
+*Die konkrete Gewichtung ist Teil von Tiage's eigenständiger Synthese.*
 
 ## Die 6 Archetypen
 
@@ -29,12 +33,16 @@ Das Modell verbindet zwei Traditionen:
 
 ## Die 4 Qualitätsfaktoren
 
-| Faktor | Gewicht | Dimension |
-|--------|---------|-----------|
-| Archetyp-Übereinstimmung | 40% | Logos |
-| Orientierungs-Kompatibilität | 25% | Pathos |
-| Dominanz-Harmonie | 20% | Pathos |
-| Geschlechts-Attraktion | 15% | Pathos |
+<!-- Gewichtung: 40/25/20/15 - Tiage's Synthese -->
+
+| Faktor | Dimension | Herkunft |
+|--------|-----------|----------|
+| Archetyp-Übereinstimmung | Logos | Pirsig: Fundamentale Beziehungsphilosophie |
+| Orientierungs-Kompatibilität | Pathos | OSHO: Grundlegende Anziehungsrichtung |
+| Dominanz-Harmonie | Pathos | OSHO: Polarität und Balance |
+| Geschlechts-Attraktion | Pathos | OSHO: Ergänzende Chemie |
+
+*Die konkrete Gewichtung der Faktoren ist Teil von Tiage's Synthese.*
 
 ## Quick Start
 
