@@ -67,6 +67,16 @@ Tiage_Beziehungsmodel/
 
 StickySmart (Tiage)
 
+## Lizenz
+
+**© 2025 Ti-age.de / Timo Hartfelder – Alle Rechte vorbehalten.**
+
+Dieses Werk ist urheberrechtlich geschützt. Keine Lizenz erteilt.
+
+Jegliche Nutzung, Vervielfältigung, Modifikation oder Verbreitung ohne ausdrückliche schriftliche Genehmigung des Urhebers ist untersagt. Die Nutzung ist ausschließlich für private, nicht-kommerzielle Zwecke gestattet.
+
+Siehe [Nutzungsbedingungen](nutzungsbedingungen.html) für weitere Details.
+
 ---
 
 *Tiage-Beziehungsmodell - Synthese aus MOQ (Pirsig) und OSHO*
