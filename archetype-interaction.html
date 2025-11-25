@@ -1970,6 +1970,8 @@
             text-align: center;
             border: 2px solid var(--primary);
             box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+            position: relative;
+            z-index: 10001;
         }
 
         .age-verification-icon {
@@ -2012,6 +2014,12 @@
             cursor: pointer;
             border: none;
             transition: all 0.2s ease;
+            position: relative;
+            z-index: 10001;
+            pointer-events: auto !important;
+            -webkit-tap-highlight-color: transparent;
+            touch-action: manipulation;
+            user-select: none;
         }
 
         .age-btn-yes {
@@ -3547,9 +3555,34 @@
     </style>
 </head>
 <body>
+    <!-- Age Verification - Inline Script BEFORE modal for onclick to work -->
+    <script>
+        // Define confirmAge immediately so onclick handlers work
+        window.confirmAge = function(isAdult) {
+            console.log('confirmAge called:', isAdult);
+            if (isAdult) {
+                localStorage.setItem('ageVerified', 'true');
+                var modal = document.getElementById('ageVerificationModal');
+                if (modal) modal.classList.add('hidden');
+                document.body.style.overflow = 'auto';
+            } else {
+                window.location.href = 'https://www.google.com';
+            }
+        };
+        // Check on load if already verified
+        (function() {
+            if (localStorage.getItem('ageVerified') === 'true') {
+                document.addEventListener('DOMContentLoaded', function() {
+                    var modal = document.getElementById('ageVerificationModal');
+                    if (modal) modal.classList.add('hidden');
+                });
+            }
+        })();
+    </script>
+
     <!-- Age Verification Modal -->
     <div class="age-verification-overlay" id="ageVerificationModal">
-        <div class="age-verification-modal">
+        <div class="age-verification-modal" onclick="event.stopPropagation()">
             <div class="age-verification-icon">🔞</div>
             <h2>Altersverifikation</h2>
             <p>Diese Seite enthält Inhalte über Beziehungsmodelle und ist nur für Personen ab 18 Jahren bestimmt.</p>
@@ -3557,10 +3590,10 @@
                 <strong>Bist du mindestens 18 Jahre alt?</strong>
             </div>
             <div class="age-verification-buttons">
-                <button class="age-btn age-btn-yes" type="button" onclick="confirmAge(true)">
+                <button class="age-btn age-btn-yes" id="ageVerifyYes" type="button" onclick="window.confirmAge(true); return false;">
                     Ja, ich bin 18+
                 </button>
-                <button class="age-btn age-btn-no" type="button" onclick="confirmAge(false)">
+                <button class="age-btn age-btn-no" id="ageVerifyNo" type="button" onclick="window.confirmAge(false); return false;">
                     Nein, ich bin unter 18
                 </button>
             </div>
@@ -6825,14 +6858,21 @@
             }
         }
 
-        function confirmAge(isAdult) {
+        // Make confirmAge globally available
+        window.confirmAge = function(isAdult) {
+            console.log('confirmAge called with:', isAdult);
             if (isAdult) {
                 localStorage.setItem('ageVerified', 'true');
                 document.getElementById('ageVerificationModal').classList.add('hidden');
+                document.body.style.overflow = 'auto';
             } else {
-                // Redirect to a safe page or show message
                 window.location.href = 'https://www.google.com';
             }
+        };
+
+        // Also keep the regular function reference
+        function confirmAge(isAdult) {
+            window.confirmAge(isAdult);
         }
 
         // Initialize age verification buttons with event listeners
@@ -6841,27 +6881,53 @@
             const noButton = document.querySelector('.age-btn-no');
 
             if (yesButton) {
-                // Add click event listener
-                yesButton.addEventListener('click', function(e) {
+                // Remove any existing listeners and add fresh ones
+                const newYesButton = yesButton.cloneNode(true);
+                yesButton.parentNode.replaceChild(newYesButton, yesButton);
+
+                // Add click and touch event listeners
+                newYesButton.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
                     console.log('Age verification: Yes button clicked');
-                    confirmAge(true);
-                });
+                    window.confirmAge(true);
+                }, { passive: false });
+
+                newYesButton.addEventListener('touchend', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    console.log('Age verification: Yes button touched');
+                    window.confirmAge(true);
+                }, { passive: false });
 
                 // Ensure button is clickable
-                yesButton.style.pointerEvents = 'auto';
-                yesButton.style.cursor = 'pointer';
+                newYesButton.style.pointerEvents = 'auto';
+                newYesButton.style.cursor = 'pointer';
             }
 
             if (noButton) {
-                // Add click event listener
-                noButton.addEventListener('click', function(e) {
+                // Remove any existing listeners and add fresh ones
+                const newNoButton = noButton.cloneNode(true);
+                noButton.parentNode.replaceChild(newNoButton, noButton);
+
+                // Add click and touch event listeners
+                newNoButton.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
                     console.log('Age verification: No button clicked');
-                    confirmAge(false);
-                });
+                    window.confirmAge(false);
+                }, { passive: false });
+
+                newNoButton.addEventListener('touchend', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    console.log('Age verification: No button touched');
+                    window.confirmAge(false);
+                }, { passive: false });
 
                 // Ensure button is clickable
-                noButton.style.pointerEvents = 'auto';
-                noButton.style.cursor = 'pointer';
+                newNoButton.style.pointerEvents = 'auto';
+                newNoButton.style.cursor = 'pointer';
             }
         }
 
