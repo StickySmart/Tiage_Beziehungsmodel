@@ -3064,10 +3064,12 @@
             align-items: center;
             justify-content: center;
             padding: 20px;
+            pointer-events: none;
         }
 
         .dimension-tooltip-overlay.active {
             display: flex;
+            pointer-events: auto;
         }
 
         .dimension-tooltip-content {
@@ -3879,12 +3881,14 @@
             z-index: 10000;
             opacity: 0;
             visibility: hidden;
+            pointer-events: none;
             transition: all 0.2s ease;
         }
 
         .status-popup-overlay.active {
             opacity: 1;
             visibility: visible;
+            pointer-events: auto;
         }
 
         .status-popup {
@@ -13860,39 +13864,39 @@
         console.log('All modal functions are now globally available');
     </script>
 
-    <!-- Status Selection Popup -->
-    <div id="statusPopupOverlay" class="status-popup-overlay" onclick="closeStatusPopup(event)">
+    <!-- Dominanz Status Selection Popup -->
+    <div id="dominanzStatusPopup" class="status-popup-overlay" onclick="closeDominanzStatusPopupNew(event)">
         <div class="status-popup" onclick="event.stopPropagation()">
-            <div class="status-popup-title" id="statusPopupTitle">Status wählen</div>
-            <div class="status-popup-subtitle" id="statusPopupSubtitle">Wie sicher bist du dir bei dieser Auswahl?</div>
+            <div class="status-popup-title" id="dominanzStatusPopupTitle">Status wählen</div>
+            <div class="status-popup-subtitle" id="dominanzStatusPopupSubtitle">Wie sicher bist du dir bei dieser Auswahl?</div>
             <div class="status-popup-options">
-                <div class="status-popup-option fakt-option" onclick="selectStatusFromPopup('fakt')">
+                <div class="status-popup-option fakt-option" onclick="selectDominanzStatusFromPopupNew('fakt')">
                     <div class="status-popup-option-title">Fakt</div>
                     <div class="status-popup-option-desc">Das ist eine sichere, bestätigte Eigenschaft. Du weißt, dass dies zutrifft.</div>
                 </div>
-                <div class="status-popup-option interessiert-option" onclick="selectStatusFromPopup('interessiert')">
+                <div class="status-popup-option interessiert-option" onclick="selectDominanzStatusFromPopupNew('interessiert')">
                     <div class="status-popup-option-title">Interessiert</div>
                     <div class="status-popup-option-desc">Du bist neugierig oder offen dafür, diese Seite zu erkunden. Noch nicht sicher, aber möglich.</div>
                 </div>
             </div>
             <div class="status-popup-cancel">
-                <button class="status-popup-cancel-btn" onclick="cancelStatusPopup()">Abbrechen</button>
+                <button class="status-popup-cancel-btn" onclick="cancelDominanzStatusPopupNew()">Abbrechen</button>
             </div>
         </div>
     </div>
 
     <script>
-        // Status Popup State
-        let statusPopupContext = {
+        // Dominanz Status Popup State (for the new popup)
+        let dominanzStatusPopupContext = {
             person: null,
             dominanzType: null,
             source: null // 'desktop', 'mobile', 'modal'
         };
 
         function openStatusPopup(person, dominanzType, source) {
-            statusPopupContext = { person, dominanzType, source };
-            const overlay = document.getElementById('statusPopupOverlay');
-            const title = document.getElementById('statusPopupTitle');
+            dominanzStatusPopupContext = { person, dominanzType, source };
+            const overlay = document.getElementById('dominanzStatusPopup');
+            const title = document.getElementById('dominanzStatusPopupTitle');
 
             // Update title with the selected option
             const typeLabels = {
@@ -13906,15 +13910,15 @@
             overlay.classList.add('active');
         }
 
-        function closeStatusPopup(event) {
-            if (event && event.target.id !== 'statusPopupOverlay') return;
-            const overlay = document.getElementById('statusPopupOverlay');
+        function closeDominanzStatusPopupNew(event) {
+            if (event && event.target.id !== 'dominanzStatusPopup') return;
+            const overlay = document.getElementById('dominanzStatusPopup');
             overlay.classList.remove('active');
         }
 
-        function cancelStatusPopup() {
+        function cancelDominanzStatusPopupNew() {
             // Uncheck the checkbox since user cancelled
-            const { person, dominanzType, source } = statusPopupContext;
+            const { person, dominanzType, source } = dominanzStatusPopupContext;
             if (person && dominanzType) {
                 const shortId = getShortDominanzId(dominanzType);
                 let checkboxId;
@@ -13928,11 +13932,11 @@
                 const checkbox = document.getElementById(checkboxId);
                 if (checkbox) checkbox.checked = false;
             }
-            closeStatusPopup({ target: { id: 'statusPopupOverlay' } });
+            closeDominanzStatusPopupNew({ target: { id: 'dominanzStatusPopup' } });
         }
 
-        function selectStatusFromPopup(status) {
-            const { person, dominanzType, source } = statusPopupContext;
+        function selectDominanzStatusFromPopupNew(status) {
+            const { person, dominanzType, source } = dominanzStatusPopupContext;
             if (!person || !dominanzType) return;
 
             // Set the status
@@ -13950,14 +13954,14 @@
             }
 
             // Close popup
-            closeStatusPopup({ target: { id: 'statusPopupOverlay' } });
+            closeDominanzStatusPopupNew({ target: { id: 'dominanzStatusPopup' } });
         }
 
         // Make functions globally available
         window.openStatusPopup = openStatusPopup;
-        window.closeStatusPopup = closeStatusPopup;
-        window.cancelStatusPopup = cancelStatusPopup;
-        window.selectStatusFromPopup = selectStatusFromPopup;
+        window.closeDominanzStatusPopupNew = closeDominanzStatusPopupNew;
+        window.cancelDominanzStatusPopupNew = cancelDominanzStatusPopupNew;
+        window.selectDominanzStatusFromPopupNew = selectDominanzStatusFromPopupNew;
     </script>
 </body>
 </html>
