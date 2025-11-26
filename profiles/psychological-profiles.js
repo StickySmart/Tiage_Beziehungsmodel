@@ -2552,9 +2552,18 @@ const psychologicalProfiles = {
     introExtro: "extrovertiert", familieWichtigkeit: "wichtig", freundeskreis: "getrennt",
     oeffentlichkeit: "konventionell", alleinzeit: "wenig", events: "oft", reisen: "gemeinsam",
     hobbys: "getrennt", wochenende: "gemischt", netzwerkGroesse: "groß",
-    confidence: { kinderWunsch: 0.60, eheWunsch: 0.85, wohnform: 0.95, kommunikationsstil: 0.80, emotionaleOffenheit: 0.75 },
-    pirsig: "Dynamische Qualität gefangen in statischer Form. Innere Vielfalt, äußere Konformität - der klassische innere Konflikt.",
-    osho: "Der unterdrückte Löwe - gesellschaftlich angepasst, innerlich wild. Die Spannung frisst von innen."
+    // TREUE-KONFLIKT: Das zentrale Drama des Poly-Hedo
+    treueIdeal: "hoch",                      // WILL treu sein, glaubt an Treue
+    treueVerhalten: "impulsiv-verletzlich",  // Wird schwach wenn es ihn überkommt
+    treueSelbstkenntnis: "gering",           // Weiß es vorher nicht, überrascht sich selbst
+    treueNachReue: "stark",                  // Leidet danach, Schuldgefühle
+    confidence: { kinderWunsch: 0.60, eheWunsch: 0.85, wohnform: 0.95, kommunikationsstil: 0.80, emotionaleOffenheit: 0.75, treueIdeal: 0.85, treueVerhalten: 0.75 },
+    pirsig: "Der tragische Idealist: Sein statisches Treue-Ideal kollidiert mit seiner dynamischen hedonistischen Natur. " +
+      "Der Fehltritt ist nie geplant - er überrascht sich selbst. Danach: Schuldgefühle, Selbstverurteilung, existenzielles Leid. " +
+      "Die Qualität, die er sucht (Treue), zerstört er selbst durch die Qualität, die er ist (hedonistisch).",
+    osho: "Er glaubt an Treue, weil die Gesellschaft es ihm eingepflanzt hat. Sein Körper folgt der Natur, " +
+      "sein Geist verurteilt ihn danach. Das ist die Tragödie der Konditionierung: Der Krieg im eigenen Inneren. " +
+      "Er leidet nicht am Fehltritt, sondern an der Lücke zwischen Ideal-Selbst und Real-Selbst."
   },
   "poly-hedo-männlich-dominant-homosexuell": {
     sources: ["Sexual Fantasy Research", "PAI-DOM Studies", "Gay Psychology Studies"],
@@ -2567,9 +2576,14 @@ const psychologicalProfiles = {
     introExtro: "extrovertiert", familieWichtigkeit: "weniger-wichtig", freundeskreis: "getrennt",
     oeffentlichkeit: "offen", alleinzeit: "wenig", events: "oft", reisen: "gemeinsam",
     hobbys: "getrennt", wochenende: "gemischt", netzwerkGroesse: "groß",
-    confidence: { kinderWunsch: 0.90, eheWunsch: 0.80, wohnform: 0.95, kommunikationsstil: 0.80, oeffentlichkeit: 0.75 },
-    pirsig: "Queere Identität mit innerem Polygamie-Wunsch. Doppelter Außenseiter, der nach außen konform lebt.",
-    osho: "Der queere Mann mit unterdrücktem Verlangen nach Vielfalt - bereits eine Norm gebrochen, eine beibehalten."
+    // TREUE-KONFLIKT
+    treueIdeal: "hoch", treueVerhalten: "impulsiv-verletzlich", treueSelbstkenntnis: "gering", treueNachReue: "stark",
+    confidence: { kinderWunsch: 0.90, eheWunsch: 0.80, wohnform: 0.95, kommunikationsstil: 0.80, oeffentlichkeit: 0.75, treueIdeal: 0.80, treueVerhalten: 0.70 },
+    pirsig: "Doppelte Tragik: Bereits als Queerer eine Norm gebrochen, aber am Treue-Ideal festhaltend. " +
+      "Die hedonistische Natur überrascht ihn in Momenten der Schwäche. " +
+      "Das Leid danach ist intensiv - er hat sein eigenes Wertesystem verraten.",
+    osho: "Der queere Mann, der eine gesellschaftliche Kette gesprengt hat, trägt freiwillig eine andere: das Treue-Ideal. " +
+      "Wenn sein Körper der Natur folgt, verurteilt sein konditionierter Geist. Der Selbstbetrug ist doppelt schmerzhaft."
   },
   "poly-hedo-männlich-dominant-bisexuell": {
     sources: ["Sexual Fantasy Research", "Allen et al. (2020)", "PAI-DOM Studies"],
@@ -2582,9 +2596,14 @@ const psychologicalProfiles = {
     introExtro: "extrovertiert", familieWichtigkeit: "mittel", freundeskreis: "gemischt",
     oeffentlichkeit: "mittel", alleinzeit: "wenig", events: "oft", reisen: "gemeinsam",
     hobbys: "getrennt", wochenende: "gemischt", netzwerkGroesse: "groß",
-    confidence: { kinderWunsch: 0.55, eheWunsch: 0.75, wohnform: 0.95, kommunikationsstil: 0.80, oeffentlichkeit: 0.70 },
-    pirsig: "Dreifacher innerer Drang (Bi+Poly+Dom) in monogamer Form. Maximale kognitive Dissonanz möglich.",
-    osho: "Der natürlichste Wunsch (Bi) gefangen in künstlicher Form - die Spannung ist vorprogrammiert."
+    // TREUE-KONFLIKT
+    treueIdeal: "hoch", treueVerhalten: "impulsiv-verletzlich", treueSelbstkenntnis: "gering", treueNachReue: "sehr-stark",
+    confidence: { kinderWunsch: 0.55, eheWunsch: 0.75, wohnform: 0.95, kommunikationsstil: 0.80, oeffentlichkeit: 0.70, treueIdeal: 0.80, treueVerhalten: 0.65 },
+    pirsig: "Dreifache Spannung (Bi+Poly+Dom) trifft auf starkes Treue-Ideal. Die Verlockung ist maximal, " +
+      "die Überraschung über sich selbst am größten. Nach dem Fehltritt: existenzielles Leid. " +
+      "Er versteht sich selbst nicht - warum konnte er nicht widerstehen?",
+    osho: "Sein Körper will beides, alle, alles. Sein Geist sagt: Sei treu! Der Konflikt ist vorprogrammiert. " +
+      "Er wird schwach, ohne es kommen zu sehen, und hasst sich danach. Die dreifache Natur gegen das eine Ideal."
   },
   "poly-hedo-männlich-submissiv-heterosexuell": {
     sources: ["Sexual Fantasy Research", "BDSM Submissive Studies", "Cognitive Dissonance"],
@@ -2597,9 +2616,14 @@ const psychologicalProfiles = {
     introExtro: "introvertiert", familieWichtigkeit: "sehr-wichtig", freundeskreis: "gemeinsam",
     oeffentlichkeit: "konventionell", alleinzeit: "mittel", events: "manchmal", reisen: "gemeinsam",
     hobbys: "gemeinsam", wochenende: "gemeinsam-ruhig", netzwerkGroesse: "klein",
-    confidence: { kinderWunsch: 0.65, eheWunsch: 0.85, wohnform: 0.95, kommunikationsstil: 0.80, familieWichtigkeit: 0.85 },
-    pirsig: "Doppelt atypisch (submissiver Mann + Poly-Wunsch) in konventioneller Form. Tiefe Unterdrückung.",
-    osho: "Der Mann, der folgen UND vielfältig lieben möchte - die Gesellschaft erlaubt weder das eine noch das andere."
+    // TREUE-KONFLIKT
+    treueIdeal: "sehr-hoch", treueVerhalten: "impulsiv-verletzlich", treueSelbstkenntnis: "minimal", treueNachReue: "extrem",
+    confidence: { kinderWunsch: 0.65, eheWunsch: 0.85, wohnform: 0.95, kommunikationsstil: 0.80, familieWichtigkeit: 0.85, treueIdeal: 0.90, treueVerhalten: 0.70 },
+    pirsig: "Der submissive Mann mit höchstem Treue-Ideal - er will dienen, will treu sein. " +
+      "Doch seine hedonistische Natur überrascht ihn. Das Leid ist maximal: Er hat versagt in seiner eigenen Hingabe. " +
+      "Die Scham ist tiefer als bei jedem anderen Typ.",
+    osho: "Er will gehorsam sein, treu sein - es ist sein tiefster Wunsch. Doch der Körper hat eigene Gesetze. " +
+      "Der Fehltritt erschüttert sein Selbstbild vollständig. Er versteht: Ich bin nicht der, der ich sein will."
   },
   "poly-hedo-männlich-submissiv-homosexuell": {
     sources: ["Sexual Fantasy Research", "Gay Submissive Studies", "Cognitive Dissonance"],
@@ -2612,9 +2636,14 @@ const psychologicalProfiles = {
     introExtro: "introvertiert", familieWichtigkeit: "weniger-wichtig", freundeskreis: "gemeinsam",
     oeffentlichkeit: "diskret", alleinzeit: "mittel", events: "manchmal", reisen: "gemeinsam",
     hobbys: "gemeinsam", wochenende: "gemeinsam-ruhig", netzwerkGroesse: "mittel",
-    confidence: { kinderWunsch: 0.90, eheWunsch: 0.80, wohnform: 0.95, kommunikationsstil: 0.85, emotionaleOffenheit: 0.80 },
-    pirsig: "Queere Hingabe mit innerem Poly-Wunsch. Bereits eine Freiheit erkämpft, eine weitere unterdrückt.",
-    osho: "Der hingebungsvolle queere Mann träumt von Vielfalt, lebt aber Exklusivität - innerer Zwiespalt."
+    // TREUE-KONFLIKT
+    treueIdeal: "sehr-hoch", treueVerhalten: "impulsiv-verletzlich", treueSelbstkenntnis: "gering", treueNachReue: "extrem",
+    confidence: { kinderWunsch: 0.90, eheWunsch: 0.80, wohnform: 0.95, kommunikationsstil: 0.85, emotionaleOffenheit: 0.80, treueIdeal: 0.85, treueVerhalten: 0.70 },
+    pirsig: "Der hingebungsvolle queere Mann klammert sich an Treue als letztes Ideal. " +
+      "Wenn er schwach wird, bricht seine Welt zusammen. Der Verrat ist nicht am Partner - er ist an sich selbst. " +
+      "Die Selbstverurteilung ist gnadenlos.",
+    osho: "Er hat seine Sexualität befreit, aber sein Treue-Konditionierung behalten. " +
+      "Der Körper sucht Vielfalt, der Geist verlangt Exklusivität. Nach dem Fehltritt: tiefste Scham und Verzweiflung."
   },
   "poly-hedo-männlich-submissiv-bisexuell": {
     sources: ["Sexual Fantasy Research", "Allen et al. (2020)", "BDSM Studies"],
@@ -2627,9 +2656,14 @@ const psychologicalProfiles = {
     introExtro: "introvertiert", familieWichtigkeit: "wichtig", freundeskreis: "gemischt",
     oeffentlichkeit: "diskret", alleinzeit: "mittel", events: "manchmal", reisen: "gemeinsam",
     hobbys: "gemeinsam", wochenende: "gemeinsam-ruhig", netzwerkGroesse: "mittel",
-    confidence: { kinderWunsch: 0.55, eheWunsch: 0.75, wohnform: 0.95, kommunikationsstil: 0.85, kritikAnnehmen: 0.80 },
-    pirsig: "Maximale innere Offenheit (Bi+Sub+Poly) in minimaler äußerer Form. Größte kognitive Dissonanz.",
-    osho: "Der Mann mit dem weitesten inneren Horizont und den engsten äußeren Grenzen - explosive Spannung."
+    // TREUE-KONFLIKT
+    treueIdeal: "sehr-hoch", treueVerhalten: "impulsiv-verletzlich", treueSelbstkenntnis: "minimal", treueNachReue: "extrem",
+    confidence: { kinderWunsch: 0.55, eheWunsch: 0.75, wohnform: 0.95, kommunikationsstil: 0.85, kritikAnnehmen: 0.80, treueIdeal: 0.90, treueVerhalten: 0.60 },
+    pirsig: "Maximale innere Weite (Bi+Sub+Poly) gegen maximales Treue-Ideal. Die Explosion ist unvermeidlich. " +
+      "Er wird schwach, weiß nicht warum, leidet am meisten von allen. " +
+      "Die Dissonanz zwischen Sein und Wollen ist unerträglich.",
+    osho: "Der offenste Mann mit der engsten Selbst-Erwartung. Sein Horizont ist grenzenlos, sein Ideal starr. " +
+      "Nach dem Fehltritt: Er zerbricht an sich selbst. Die Spannung war schon immer da, nun ist sie sichtbar."
   },
   "poly-hedo-männlich-switch-heterosexuell": {
     sources: ["Sexual Fantasy Research", "Switch Studies", "Cognitive Dissonance Theory"],
@@ -2642,9 +2676,13 @@ const psychologicalProfiles = {
     introExtro: "ambivertiert", familieWichtigkeit: "wichtig", freundeskreis: "gemischt",
     oeffentlichkeit: "konventionell", alleinzeit: "mittel", events: "manchmal", reisen: "gemeinsam",
     hobbys: "teilweise-gemeinsam", wochenende: "gemeinsam-gemischt", netzwerkGroesse: "mittel",
-    confidence: { kinderWunsch: 0.60, eheWunsch: 0.85, wohnform: 0.95, kommunikationsstil: 0.80, streitVerhalten: 0.75 },
-    pirsig: "Switch-Flexibilität mit Poly-Wunsch in monogamer Form. Anpassungsfähig, aber eingeschränkt.",
-    osho: "Flexibel in der Rolle, aber gefangen in der Struktur - wie ein Vogel in goldenem Käfig."
+    // TREUE-KONFLIKT
+    treueIdeal: "hoch", treueVerhalten: "impulsiv-verletzlich", treueSelbstkenntnis: "gering", treueNachReue: "stark",
+    confidence: { kinderWunsch: 0.60, eheWunsch: 0.85, wohnform: 0.95, kommunikationsstil: 0.80, streitVerhalten: 0.75, treueIdeal: 0.80, treueVerhalten: 0.70 },
+    pirsig: "Flexibel in der Rolle, aber starr im Treue-Ideal. Der Switch passt sich an - außer hier. " +
+      "Wenn der Impuls kommt, ist er überrascht. Danach: Der Anpassungskünstler kann sich nicht anpassen an seine eigene Wahrheit.",
+    osho: "Er wechselt zwischen Führen und Folgen, aber das Treue-Dogma bleibt konstant. " +
+      "Die Natur bricht durch, er versteht sich nicht. Der goldene Käfig ist sein eigenes Ideal."
   },
   "poly-hedo-männlich-switch-homosexuell": {
     sources: ["Sexual Fantasy Research", "Gay Switch Studies", "Cognitive Dissonance"],
@@ -2657,9 +2695,13 @@ const psychologicalProfiles = {
     introExtro: "ambivertiert", familieWichtigkeit: "weniger-wichtig", freundeskreis: "getrennt",
     oeffentlichkeit: "offen", alleinzeit: "wenig", events: "oft", reisen: "gemeinsam",
     hobbys: "getrennt", wochenende: "gemischt", netzwerkGroesse: "groß",
-    confidence: { kinderWunsch: 0.90, eheWunsch: 0.80, wohnform: 0.95, kommunikationsstil: 0.85, oeffentlichkeit: 0.80 },
-    pirsig: "Queere Flexibilität mit unterdrücktem Poly-Wunsch. Rollen-fluid, aber beziehungs-exklusiv.",
-    osho: "Der vielseitige queere Mann, der innerlich mehr will - eine Freiheit gewonnen, eine verweigert."
+    // TREUE-KONFLIKT
+    treueIdeal: "hoch", treueVerhalten: "impulsiv-verletzlich", treueSelbstkenntnis: "gering", treueNachReue: "stark",
+    confidence: { kinderWunsch: 0.90, eheWunsch: 0.80, wohnform: 0.95, kommunikationsstil: 0.85, oeffentlichkeit: 0.80, treueIdeal: 0.75, treueVerhalten: 0.70 },
+    pirsig: "Queere Rollen-Fluidität trifft auf starres Treue-Ideal. Er kann alles sein - außer untreu. " +
+      "Doch wenn es passiert, versteht er: Sein Ideal war Illusion. Die Selbsterkenntnis ist brutal.",
+    osho: "Eine Freiheit (Sexualität) gewonnen, eine andere (Treue-Dogma) selbst auferlegt. " +
+      "Der Körper folgt der Natur, der Geist ist entsetzt. Das Leid kommt aus dem Widerspruch."
   },
   "poly-hedo-männlich-switch-bisexuell": {
     sources: ["Sexual Fantasy Research", "Allen et al. (2020)", "Switch Studies"],
@@ -2672,9 +2714,13 @@ const psychologicalProfiles = {
     introExtro: "ambivertiert", familieWichtigkeit: "mittel", freundeskreis: "gemischt",
     oeffentlichkeit: "mittel", alleinzeit: "wenig", events: "oft", reisen: "gemeinsam",
     hobbys: "teilweise-gemeinsam", wochenende: "gemischt", netzwerkGroesse: "groß",
-    confidence: { kinderWunsch: 0.50, eheWunsch: 0.75, wohnform: 0.95, kommunikationsstil: 0.85, kritikAnnehmen: 0.80 },
-    pirsig: "Maximale Flexibilität (Bi+Switch) mit unterdrücktem Poly-Wunsch. Das flüssigste Wesen in fester Form.",
-    osho: "Drei Freiheiten ersehnt (Bi+Switch+Poly), eine gelebt, zwei unterdrückt - der komplexeste innere Konflikt."
+    // TREUE-KONFLIKT
+    treueIdeal: "hoch", treueVerhalten: "impulsiv-verletzlich", treueSelbstkenntnis: "minimal", treueNachReue: "sehr-stark",
+    confidence: { kinderWunsch: 0.50, eheWunsch: 0.75, wohnform: 0.95, kommunikationsstil: 0.85, kritikAnnehmen: 0.80, treueIdeal: 0.80, treueVerhalten: 0.60 },
+    pirsig: "Das flüssigste Wesen (Bi+Switch) mit festem Treue-Anker. Alles ist flexibel - außer das Eine. " +
+      "Wenn der Anker reißt, ist das Chaos total. Er wusste nicht, dass er so sein kann.",
+    osho: "Drei Naturen (Bi+Switch+Hedo) gegen ein Dogma (Treue). Der Kampf ist ungleich, das Ergebnis vorhersehbar. " +
+      "Nach dem Fehltritt: tiefe Verwirrung. Wer bin ich wirklich?"
   },
   "poly-hedo-männlich-ausgeglichen-heterosexuell": {
     sources: ["Sexual Fantasy Research", "Big Five: Balanced", "Cognitive Dissonance"],
@@ -2687,9 +2733,14 @@ const psychologicalProfiles = {
     introExtro: "ambivertiert", familieWichtigkeit: "sehr-wichtig", freundeskreis: "gemeinsam",
     oeffentlichkeit: "konventionell", alleinzeit: "mittel", events: "manchmal", reisen: "gemeinsam",
     hobbys: "teilweise-gemeinsam", wochenende: "gemeinsam-gemischt", netzwerkGroesse: "mittel",
-    confidence: { kinderWunsch: 0.75, eheWunsch: 0.90, wohnform: 0.95, kommunikationsstil: 0.85, familieWichtigkeit: 0.90 },
-    pirsig: "Der ausgeglichene Mann mit verstecktem Poly-Wunsch. Stabile Mitte mit innerem Geheimnis.",
-    osho: "Äußerlich der perfekte Familienvater, innerlich der Träumer von Mehr - die gesellschaftliche Norm."
+    // TREUE-KONFLIKT
+    treueIdeal: "sehr-hoch", treueVerhalten: "impulsiv-verletzlich", treueSelbstkenntnis: "gering", treueNachReue: "extrem",
+    confidence: { kinderWunsch: 0.75, eheWunsch: 0.90, wohnform: 0.95, kommunikationsstil: 0.85, familieWichtigkeit: 0.90, treueIdeal: 0.90, treueVerhalten: 0.75 },
+    pirsig: "Der ausgeglichene Familienvater mit dem höchsten Treue-Ideal - und der tiefsten Fallhöhe. " +
+      "Wenn er schwach wird, zerbricht nicht nur er, sondern sein ganzes Selbstbild. " +
+      "Die stabile Mitte war eine Illusion, gebaut auf einem Vulkan.",
+    osho: "Äußerlich der perfekte Ehemann, innerlich der Hedonist, der es nicht weiß. " +
+      "Der Fehltritt trifft ihn wie ein Blitz. Danach: Wer bin ich? War alles Lüge? Das Leid ist existenziell."
   },
   "poly-hedo-männlich-ausgeglichen-homosexuell": {
     sources: ["Sexual Fantasy Research", "Big Five: Balanced", "Gay Psychology"],
@@ -2702,9 +2753,13 @@ const psychologicalProfiles = {
     introExtro: "ambivertiert", familieWichtigkeit: "weniger-wichtig", freundeskreis: "gemeinsam",
     oeffentlichkeit: "offen", alleinzeit: "mittel", events: "manchmal", reisen: "gemeinsam",
     hobbys: "teilweise-gemeinsam", wochenende: "gemeinsam-gemischt", netzwerkGroesse: "mittel",
-    confidence: { kinderWunsch: 0.90, eheWunsch: 0.85, wohnform: 0.95, kommunikationsstil: 0.85, oeffentlichkeit: 0.80 },
-    pirsig: "Reifer queerer Mann mit innerem Poly-Wunsch. Stabil, aber mit unterdrückten Sehnsüchten.",
-    osho: "Der zentrierte schwule Mann träumt von Mehr - eine Balance zwischen Akzeptanz und Verlangen."
+    // TREUE-KONFLIKT
+    treueIdeal: "hoch", treueVerhalten: "impulsiv-verletzlich", treueSelbstkenntnis: "gering", treueNachReue: "stark",
+    confidence: { kinderWunsch: 0.90, eheWunsch: 0.85, wohnform: 0.95, kommunikationsstil: 0.85, oeffentlichkeit: 0.80, treueIdeal: 0.85, treueVerhalten: 0.70 },
+    pirsig: "Der reife queere Mann mit stabilem Treue-Ideal. Er glaubt, er kenne sich. " +
+      "Der Moment der Schwäche offenbart: Die Stabilität war Oberfläche. Darunter: die hedonistische Natur.",
+    osho: "Zentriert, reif, ausgeglichen - so sieht er sich. Bis der Körper anders entscheidet. " +
+      "Die Balance war Selbsttäuschung. Das Leid danach: die Erkenntnis der eigenen Unkenntnis."
   },
   "poly-hedo-männlich-ausgeglichen-bisexuell": {
     sources: ["Sexual Fantasy Research", "Allen et al. (2020)", "Big Five: Balanced"],
@@ -2717,9 +2772,13 @@ const psychologicalProfiles = {
     introExtro: "ambivertiert", familieWichtigkeit: "wichtig", freundeskreis: "gemischt",
     oeffentlichkeit: "mittel", alleinzeit: "mittel", events: "manchmal", reisen: "gemeinsam",
     hobbys: "teilweise-gemeinsam", wochenende: "gemeinsam-gemischt", netzwerkGroesse: "mittel",
-    confidence: { kinderWunsch: 0.55, eheWunsch: 0.80, wohnform: 0.95, kommunikationsstil: 0.85, freundeskreis: 0.75 },
-    pirsig: "Hohe Offenheit (Bi) mit stabiler Mitte in monogamer Form. Der gelassene Träumer.",
-    osho: "Offen für alle Geschlechter, aber gebunden an eines - die weiseste Form der Poly-Hedo-Spannung."
+    // TREUE-KONFLIKT
+    treueIdeal: "hoch", treueVerhalten: "impulsiv-verletzlich", treueSelbstkenntnis: "gering", treueNachReue: "stark",
+    confidence: { kinderWunsch: 0.55, eheWunsch: 0.80, wohnform: 0.95, kommunikationsstil: 0.85, freundeskreis: 0.75, treueIdeal: 0.80, treueVerhalten: 0.70 },
+    pirsig: "Hohe Offenheit (Bi) mit Treue-Anspruch. Er hält sich für gelassen und weise. " +
+      "Der Moment der Wahrheit zeigt: Die Gelassenheit war Vermeidung. Das Leid kommt mit der Erkenntnis.",
+    osho: "Er glaubt, er habe Frieden geschlossen mit seiner Natur. Bis sie ihn überrollt. " +
+      "Der weise Träumer erwacht in der Realität: Er ist nicht der, für den er sich hielt."
   },
 
   // ───────────────────────────────────────────────────────────────────────────
@@ -2736,9 +2795,14 @@ const psychologicalProfiles = {
     introExtro: "extrovertiert", familieWichtigkeit: "mittel", freundeskreis: "getrennt",
     oeffentlichkeit: "konventionell", alleinzeit: "wenig", events: "oft", reisen: "gemeinsam",
     hobbys: "getrennt", wochenende: "gemischt", netzwerkGroesse: "groß",
-    confidence: { kinderWunsch: 0.50, eheWunsch: 0.80, wohnform: 0.95, kommunikationsstil: 0.85, karrierePrioritaet: 0.85 },
-    pirsig: "Dreifach atypisch (dominant + Poly-Wunsch + Frau) in konventioneller Form. Maximale Unterdrückung.",
-    osho: "Die Löwin, die mehr will, aber weniger zeigt - die gesellschaftliche Zensur ist am stärksten."
+    // TREUE-KONFLIKT
+    treueIdeal: "hoch", treueVerhalten: "impulsiv-verletzlich", treueSelbstkenntnis: "gering", treueNachReue: "sehr-stark",
+    confidence: { kinderWunsch: 0.50, eheWunsch: 0.80, wohnform: 0.95, kommunikationsstil: 0.85, karrierePrioritaet: 0.85, treueIdeal: 0.85, treueVerhalten: 0.70 },
+    pirsig: "Dreifach atypisch (dominant + Hedo + Frau) mit hohem Treue-Ideal. Die Gesellschaft erwartet ihre Treue doppelt. " +
+      "Wenn sie schwach wird, ist die Scham dreifach: Als Frau, als Ehefrau, als die, die es besser wissen müsste. " +
+      "Sie verurteilt sich härter als jeder andere.",
+    osho: "Die Löwin mit dem Käfig im Kopf. Sie will treu sein - die Gesellschaft hat es ihr eingepflanzt. " +
+      "Der Körper folgt der Natur, der Geist zerfleischt sie danach. Das weibliche Leid am Fehltritt ist anders - tiefer, schamvoller."
   },
   "poly-hedo-weiblich-dominant-homosexuell": {
     sources: ["Sexual Fantasy Research", "PAI-DOM Studies", "Lesbian sexuality studies"],
@@ -2751,9 +2815,14 @@ const psychologicalProfiles = {
     introExtro: "extrovertiert", familieWichtigkeit: "weniger-wichtig", freundeskreis: "getrennt",
     oeffentlichkeit: "offen", alleinzeit: "wenig", events: "oft", reisen: "gemeinsam",
     hobbys: "getrennt", wochenende: "gemischt", netzwerkGroesse: "groß",
-    confidence: { kinderWunsch: 0.85, eheWunsch: 0.75, wohnform: 0.95, kommunikationsstil: 0.90, oeffentlichkeit: 0.80 },
-    pirsig: "Queere dominante Frau mit innerem Poly-Wunsch. Bereits Außenseiterin, eine weitere Sehnsucht versteckt.",
-    osho: "Die souveräne queere Frau träumt von Mehr - eine Kette gesprengt, eine andere angelegt."
+    // TREUE-KONFLIKT
+    treueIdeal: "hoch", treueVerhalten: "impulsiv-verletzlich", treueSelbstkenntnis: "gering", treueNachReue: "stark",
+    confidence: { kinderWunsch: 0.85, eheWunsch: 0.75, wohnform: 0.95, kommunikationsstil: 0.90, oeffentlichkeit: 0.80, treueIdeal: 0.80, treueVerhalten: 0.70 },
+    pirsig: "Die souveräne queere Frau hat eine Kette gesprengt, trägt aber das Treue-Ideal freiwillig. " +
+      "Wenn sie schwach wird, ist die Überraschung groß: Hatte sie nicht gelernt, authentisch zu leben? " +
+      "Der Fehltritt zeigt: Authentizität ist komplexer als gedacht.",
+    osho: "Sie hat ihre Sexualität befreit, aber die Treue-Konditionierung behalten. " +
+      "Der Körper sucht Vielfalt, der Geist verurteilt. Das Leid ist doppelt: Am Fehltritt und an der Erkenntnis, dass Befreiung nie komplett ist."
   },
   "poly-hedo-weiblich-dominant-bisexuell": {
     sources: ["Sexual Fantasy Research", "Allen et al. (2020)", "PAI-DOM Studies"],
@@ -2766,9 +2835,14 @@ const psychologicalProfiles = {
     introExtro: "extrovertiert", familieWichtigkeit: "mittel", freundeskreis: "gemischt",
     oeffentlichkeit: "mittel", alleinzeit: "wenig", events: "oft", reisen: "gemeinsam",
     hobbys: "getrennt", wochenende: "gemischt", netzwerkGroesse: "sehr-groß",
-    confidence: { kinderWunsch: 0.45, eheWunsch: 0.70, wohnform: 0.95, kommunikationsstil: 0.90, netzwerkGroesse: 0.80 },
-    pirsig: "Vierfache Abweichung (Bi+Dom+Poly+Frau) in monogamer Form. Die komplexeste weibliche Konstellation.",
-    osho: "Die freieste Frau in ihrer Fantasie, die eingeengteste in ihrer Realität - maximale Spannung."
+    // TREUE-KONFLIKT
+    treueIdeal: "hoch", treueVerhalten: "impulsiv-verletzlich", treueSelbstkenntnis: "minimal", treueNachReue: "sehr-stark",
+    confidence: { kinderWunsch: 0.45, eheWunsch: 0.70, wohnform: 0.95, kommunikationsstil: 0.90, netzwerkGroesse: 0.80, treueIdeal: 0.80, treueVerhalten: 0.60 },
+    pirsig: "Vierfache innere Freiheit (Bi+Dom+Hedo+Frau) gegen ein starres Treue-Ideal. Die Spannung ist maximal. " +
+      "Wenn sie bricht, versteht sie: Die komplexeste Konstellation braucht die komplexeste Ehrlichkeit. " +
+      "Das Leid führt zur Erkenntnis - oder zur Zerstörung.",
+    osho: "Die freieste Frau im Kopf, gefesselt an ein Ideal. Wenn die Natur durchbricht, ist das Chaos total. " +
+      "Sie hat sich selbst nicht gekannt. Jetzt beginnt die echte Arbeit: Wer bin ich wirklich?"
   },
   "poly-hedo-weiblich-submissiv-heterosexuell": {
     sources: ["Sexual Fantasy Research", "BDSM: 75% women prefer sub", "Female sexuality"],
@@ -2781,9 +2855,14 @@ const psychologicalProfiles = {
     introExtro: "introvertiert", familieWichtigkeit: "sehr-wichtig", freundeskreis: "gemeinsam",
     oeffentlichkeit: "konventionell", alleinzeit: "mittel", events: "manchmal", reisen: "gemeinsam",
     hobbys: "gemeinsam", wochenende: "gemeinsam-ruhig", netzwerkGroesse: "klein",
-    confidence: { kinderWunsch: 0.65, eheWunsch: 0.90, wohnform: 0.95, kommunikationsstil: 0.90, familieWichtigkeit: 0.90 },
-    pirsig: "Typische Rolle (submissive Frau) mit atypischem Wunsch (Poly). Konform im Verhalten, subversiv im Gedanken.",
-    osho: "Die gehorsame Träumerin - äußerlich angepasst, innerlich nach Vielfalt sehnend."
+    // TREUE-KONFLIKT
+    treueIdeal: "sehr-hoch", treueVerhalten: "impulsiv-verletzlich", treueSelbstkenntnis: "minimal", treueNachReue: "extrem",
+    confidence: { kinderWunsch: 0.65, eheWunsch: 0.90, wohnform: 0.95, kommunikationsstil: 0.90, familieWichtigkeit: 0.90, treueIdeal: 0.95, treueVerhalten: 0.70 },
+    pirsig: "Die gehorsame Frau mit höchstem Treue-Ideal - Treue ist für sie identitätsstiftend. " +
+      "Wenn sie schwach wird, zerbricht nicht nur ein Versprechen, sondern ihr Selbstbild. " +
+      "Die Scham ist am tiefsten: Sie hat versagt als das, was sie sein wollte.",
+    osho: "Sie hat sich der Hingabe verschrieben - an einen Menschen, treu, für immer. Der Körper hat andere Pläne. " +
+      "Nach dem Fehltritt: Sie versteht sich nicht. War die Hingabe Illusion? Das Leid ist existenziell."
   },
   "poly-hedo-weiblich-submissiv-homosexuell": {
     sources: ["Sexual Fantasy Research", "Lesbian Submissive Studies", "Cognitive Dissonance"],
@@ -2796,9 +2875,14 @@ const psychologicalProfiles = {
     introExtro: "introvertiert", familieWichtigkeit: "wichtig", freundeskreis: "gemeinsam",
     oeffentlichkeit: "diskret", alleinzeit: "mittel", events: "manchmal", reisen: "gemeinsam",
     hobbys: "gemeinsam", wochenende: "gemeinsam-ruhig", netzwerkGroesse: "mittel",
-    confidence: { kinderWunsch: 0.85, eheWunsch: 0.80, wohnform: 0.95, kommunikationsstil: 0.90, emotionaleOffenheit: 0.90 },
-    pirsig: "Queere Hingabe mit innerem Poly-Wunsch. Weiche Außenseite, rebellische Innenseite.",
-    osho: "Die sensible queere Frau mit verborgener Sehnsucht - Liebe ohne Grenzen im Herzen."
+    // TREUE-KONFLIKT
+    treueIdeal: "sehr-hoch", treueVerhalten: "impulsiv-verletzlich", treueSelbstkenntnis: "gering", treueNachReue: "extrem",
+    confidence: { kinderWunsch: 0.85, eheWunsch: 0.80, wohnform: 0.95, kommunikationsstil: 0.90, emotionaleOffenheit: 0.90, treueIdeal: 0.90, treueVerhalten: 0.70 },
+    pirsig: "Die hingebungsvolle queere Frau klammert sich an Treue als letzten Hafen. " +
+      "Wenn sie schwach wird, ist der Verrat total: An der Partnerin, an sich selbst, an allem was sie glaubte zu sein. " +
+      "Das Leid geht tiefer als bei den meisten.",
+    osho: "Sie liebt Frauen und hat das befreit. Aber die Treue-Konditionierung blieb. " +
+      "Der Körper sucht Vielfalt, der Geist verurteilt gnadenlos. Nach dem Fehltritt: Verzweiflung und Selbsthass."
   },
   "poly-hedo-weiblich-submissiv-bisexuell": {
     sources: ["Sexual Fantasy Research", "Allen et al. (2020)", "BDSM Studies"],
@@ -2811,9 +2895,14 @@ const psychologicalProfiles = {
     introExtro: "introvertiert", familieWichtigkeit: "wichtig", freundeskreis: "gemischt",
     oeffentlichkeit: "diskret", alleinzeit: "mittel", events: "manchmal", reisen: "gemeinsam",
     hobbys: "gemeinsam", wochenende: "gemeinsam-ruhig", netzwerkGroesse: "mittel",
-    confidence: { kinderWunsch: 0.50, eheWunsch: 0.75, wohnform: 0.95, kommunikationsstil: 0.90, kritikAnnehmen: 0.85 },
-    pirsig: "Maximale weibliche Offenheit (Bi+Sub) mit Poly-Wunsch in Monogamie. Fließendes Inneres, feste Form.",
-    osho: "Die natürlich hingebungsvolle Frau mit dem weitesten Horizont - Sehnsucht nach universeller Liebe."
+    // TREUE-KONFLIKT
+    treueIdeal: "sehr-hoch", treueVerhalten: "impulsiv-verletzlich", treueSelbstkenntnis: "minimal", treueNachReue: "extrem",
+    confidence: { kinderWunsch: 0.50, eheWunsch: 0.75, wohnform: 0.95, kommunikationsstil: 0.90, kritikAnnehmen: 0.85, treueIdeal: 0.90, treueVerhalten: 0.60 },
+    pirsig: "Maximale weibliche Offenheit (Bi+Sub+Hedo) gegen höchstes Treue-Ideal. Die Spannung ist unerträglich. " +
+      "Sie wird schwach, ohne es kommen zu sehen. Das Leid danach ist am tiefsten: " +
+      "Sie hat universelle Liebe gesucht und ihr engste Bindung verraten.",
+    osho: "Die Frau mit dem weitesten Herzen und dem engsten Ideal. Alles fließt - außer die Treue. " +
+      "Wenn sie bricht, bricht alles. Die Erkenntnis: Universelle Liebe und Exklusivität sind Gegensätze."
   },
   "poly-hedo-weiblich-switch-heterosexuell": {
     sources: ["Sexual Fantasy Research", "Switch Studies", "Female sexuality"],
@@ -2826,9 +2915,13 @@ const psychologicalProfiles = {
     introExtro: "ambivertiert", familieWichtigkeit: "wichtig", freundeskreis: "gemischt",
     oeffentlichkeit: "konventionell", alleinzeit: "mittel", events: "manchmal", reisen: "gemeinsam",
     hobbys: "teilweise-gemeinsam", wochenende: "gemeinsam-gemischt", netzwerkGroesse: "mittel",
-    confidence: { kinderWunsch: 0.55, eheWunsch: 0.85, wohnform: 0.95, kommunikationsstil: 0.85, streitVerhalten: 0.80 },
-    pirsig: "Switch-Flexibilität mit Poly-Wunsch in konventioneller Form. Anpassungsfähig im Ausdruck, limitiert in der Struktur.",
-    osho: "Die vielseitige Frau im goldenen Käfig - kann alles sein, darf aber nur eines."
+    // TREUE-KONFLIKT
+    treueIdeal: "hoch", treueVerhalten: "impulsiv-verletzlich", treueSelbstkenntnis: "gering", treueNachReue: "stark",
+    confidence: { kinderWunsch: 0.55, eheWunsch: 0.85, wohnform: 0.95, kommunikationsstil: 0.85, streitVerhalten: 0.80, treueIdeal: 0.85, treueVerhalten: 0.70 },
+    pirsig: "Flexibel in der Rolle, aber starr im Treue-Ideal. Die Switch-Frau passt sich an - außer hier. " +
+      "Wenn der Impuls kommt, ist sie überrascht. Der goldene Käfig ist ihr eigenes Ideal.",
+    osho: "Sie wechselt zwischen Führen und Folgen, aber die Treue bleibt Dogma. " +
+      "Wenn die Natur durchbricht, versteht sie sich nicht. Das Leid kommt aus dem Selbstbetrug."
   },
   "poly-hedo-weiblich-switch-homosexuell": {
     sources: ["Sexual Fantasy Research", "Lesbian Switch Studies", "Cognitive Dissonance"],
@@ -2841,9 +2934,13 @@ const psychologicalProfiles = {
     introExtro: "ambivertiert", familieWichtigkeit: "wichtig", freundeskreis: "getrennt",
     oeffentlichkeit: "offen", alleinzeit: "wenig", events: "oft", reisen: "gemeinsam",
     hobbys: "teilweise-gemeinsam", wochenende: "gemischt", netzwerkGroesse: "groß",
-    confidence: { kinderWunsch: 0.85, eheWunsch: 0.75, wohnform: 0.95, kommunikationsstil: 0.90, oeffentlichkeit: 0.85 },
-    pirsig: "Queere Switch-Flexibilität mit unterdrücktem Poly-Wunsch. Rollen-fluid, aber beziehungs-fest.",
-    osho: "Die freie queere Frau mit geheimer Sehnsucht - eine Grenze überschritten, eine respektiert."
+    // TREUE-KONFLIKT
+    treueIdeal: "hoch", treueVerhalten: "impulsiv-verletzlich", treueSelbstkenntnis: "gering", treueNachReue: "stark",
+    confidence: { kinderWunsch: 0.85, eheWunsch: 0.75, wohnform: 0.95, kommunikationsstil: 0.90, oeffentlichkeit: 0.85, treueIdeal: 0.80, treueVerhalten: 0.70 },
+    pirsig: "Queere Switch-Flexibilität mit Treue-Ideal. Eine Grenze überschritten (Sexualität), eine selbst auferlegt (Treue). " +
+      "Wenn sie schwach wird: Die Selbsterkenntnis ist brutal. Freiheit ist komplexer als gedacht.",
+    osho: "Die befreite queere Frau mit selbstgewählter Fessel. Der Körper folgt der Natur, der Geist verurteilt. " +
+      "Das Leid kommt aus dem Widerspruch zwischen gelebter und ungelebter Freiheit."
   },
   "poly-hedo-weiblich-switch-bisexuell": {
     sources: ["Sexual Fantasy Research", "Allen et al. (2020)", "Switch Studies"],
@@ -2856,9 +2953,13 @@ const psychologicalProfiles = {
     introExtro: "ambivertiert", familieWichtigkeit: "wichtig", freundeskreis: "gemischt",
     oeffentlichkeit: "mittel", alleinzeit: "wenig", events: "oft", reisen: "gemeinsam",
     hobbys: "teilweise-gemeinsam", wochenende: "gemischt", netzwerkGroesse: "groß",
-    confidence: { kinderWunsch: 0.45, eheWunsch: 0.70, wohnform: 0.95, kommunikationsstil: 0.90, kritikAnnehmen: 0.85 },
-    pirsig: "Das flüssigste weibliche Wesen (Bi+Switch) mit Poly-Wunsch in fester Form. Maximale innere Freiheit, minimale äußere.",
-    osho: "Die Frau ohne Grenzen im Kopf, mit Grenzen im Leben - der klassische moderne Konflikt."
+    // TREUE-KONFLIKT
+    treueIdeal: "hoch", treueVerhalten: "impulsiv-verletzlich", treueSelbstkenntnis: "minimal", treueNachReue: "sehr-stark",
+    confidence: { kinderWunsch: 0.45, eheWunsch: 0.70, wohnform: 0.95, kommunikationsstil: 0.90, kritikAnnehmen: 0.85, treueIdeal: 0.80, treueVerhalten: 0.60 },
+    pirsig: "Das flüssigste weibliche Wesen (Bi+Switch+Hedo) mit festem Treue-Anker. Alles fließt - außer das Eine. " +
+      "Wenn der Anker reißt, ist das Chaos total. Die Erkenntnis: Grenzen im Kopf zu haben ist auch eine Grenze.",
+    osho: "Die Frau ohne Grenzen im Kopf - außer einer. Wenn diese Grenze fällt, fällt das Selbstbild. " +
+      "Das Leid ist der Preis für die Erkenntnis: Wahre Freiheit kennt kein Dogma."
   },
   "poly-hedo-weiblich-ausgeglichen-heterosexuell": {
     sources: ["Sexual Fantasy Research", "Big Five: Balanced", "Female sexuality"],
@@ -2871,9 +2972,14 @@ const psychologicalProfiles = {
     introExtro: "ambivertiert", familieWichtigkeit: "sehr-wichtig", freundeskreis: "gemeinsam",
     oeffentlichkeit: "konventionell", alleinzeit: "mittel", events: "manchmal", reisen: "gemeinsam",
     hobbys: "teilweise-gemeinsam", wochenende: "gemeinsam-gemischt", netzwerkGroesse: "mittel",
-    confidence: { kinderWunsch: 0.80, eheWunsch: 0.95, wohnform: 0.95, kommunikationsstil: 0.90, familieWichtigkeit: 0.95 },
-    pirsig: "Die ausgeglichene Frau mit verstecktem Poly-Wunsch. Stabile Mitte, geheime Sehnsucht.",
-    osho: "Die perfekte Ehefrau mit Träumen von Mehr - die häufigste weibliche Poly-Hedo Form."
+    // TREUE-KONFLIKT
+    treueIdeal: "sehr-hoch", treueVerhalten: "impulsiv-verletzlich", treueSelbstkenntnis: "gering", treueNachReue: "extrem",
+    confidence: { kinderWunsch: 0.80, eheWunsch: 0.95, wohnform: 0.95, kommunikationsstil: 0.90, familieWichtigkeit: 0.95, treueIdeal: 0.95, treueVerhalten: 0.75 },
+    pirsig: "Die ausgeglichene Ehefrau mit höchstem Treue-Ideal - und der tiefsten Fallhöhe. " +
+      "Sie IST die Treue in ihrer Selbstwahrnehmung. Wenn sie schwach wird, existiert sie nicht mehr so wie vorher. " +
+      "Die stabile Mitte war eine Illusion, gebaut auf Vulkan.",
+    osho: "Die perfekte Ehefrau - so sieht sie sich, so sieht die Welt sie. Bis der Körper anders entscheidet. " +
+      "Das Leid ist existenziell: Wer bin ich, wenn ich nicht die bin, die ich zu sein glaubte?"
   },
   "poly-hedo-weiblich-ausgeglichen-homosexuell": {
     sources: ["Sexual Fantasy Research", "Big Five: Balanced", "Lesbian Psychology"],
@@ -2886,9 +2992,13 @@ const psychologicalProfiles = {
     introExtro: "ambivertiert", familieWichtigkeit: "wichtig", freundeskreis: "gemeinsam",
     oeffentlichkeit: "offen", alleinzeit: "mittel", events: "manchmal", reisen: "gemeinsam",
     hobbys: "teilweise-gemeinsam", wochenende: "gemeinsam-gemischt", netzwerkGroesse: "mittel",
-    confidence: { kinderWunsch: 0.85, eheWunsch: 0.85, wohnform: 0.95, kommunikationsstil: 0.90, oeffentlichkeit: 0.80 },
-    pirsig: "Reife queere Frau mit innerem Poly-Wunsch. Stabil, aber mit Sehnsüchten.",
-    osho: "Die zentrierte lesbische Frau träumt manchmal von Mehr - ein sanfter innerer Konflikt."
+    // TREUE-KONFLIKT
+    treueIdeal: "hoch", treueVerhalten: "impulsiv-verletzlich", treueSelbstkenntnis: "gering", treueNachReue: "stark",
+    confidence: { kinderWunsch: 0.85, eheWunsch: 0.85, wohnform: 0.95, kommunikationsstil: 0.90, oeffentlichkeit: 0.80, treueIdeal: 0.85, treueVerhalten: 0.70 },
+    pirsig: "Die reife queere Frau mit stabilem Treue-Ideal. Sie glaubt, sie kenne sich nach all den Jahren. " +
+      "Der Moment der Schwäche offenbart: Stabilität war Oberfläche. Die Erkenntnis ist sanft aber tief.",
+    osho: "Zentriert, reif, ausgeglichen - so war das Selbstbild. Bis der Körper anders entschied. " +
+      "Das Leid ist leiser als bei anderen, aber nicht weniger real. Sie muss sich neu kennenlernen."
   },
   "poly-hedo-weiblich-ausgeglichen-bisexuell": {
     sources: ["Sexual Fantasy Research", "Allen et al. (2020)", "Big Five: Balanced"],
@@ -2901,9 +3011,14 @@ const psychologicalProfiles = {
     introExtro: "ambivertiert", familieWichtigkeit: "wichtig", freundeskreis: "gemischt",
     oeffentlichkeit: "mittel", alleinzeit: "mittel", events: "manchmal", reisen: "gemeinsam",
     hobbys: "teilweise-gemeinsam", wochenende: "gemeinsam-gemischt", netzwerkGroesse: "mittel",
-    confidence: { kinderWunsch: 0.55, eheWunsch: 0.80, wohnform: 0.95, kommunikationsstil: 0.90, freundeskreis: 0.80 },
-    pirsig: "Hohe Offenheit (Bi) mit stabiler Mitte in monogamer Form. Der friedlichste Poly-Hedo Typ.",
-    osho: "Die weise bisexuelle Frau - akzeptiert ihre Natur, lebt in gewählter Begrenzung."
+    // TREUE-KONFLIKT
+    treueIdeal: "hoch", treueVerhalten: "impulsiv-verletzlich", treueSelbstkenntnis: "gering", treueNachReue: "stark",
+    confidence: { kinderWunsch: 0.55, eheWunsch: 0.80, wohnform: 0.95, kommunikationsstil: 0.90, freundeskreis: 0.80, treueIdeal: 0.80, treueVerhalten: 0.70 },
+    pirsig: "Hohe Offenheit (Bi) mit Treue-Anspruch. Sie hielt sich für weise und im Frieden. " +
+      "Der Moment der Wahrheit zeigt: Die gewählte Begrenzung war keine freie Wahl, sondern Vermeidung. " +
+      "Das Leid führt zu tieferer Weisheit - oder nicht.",
+    osho: "Sie glaubte, Frieden geschlossen zu haben mit ihrer Natur. Bis diese sie überrollte. " +
+      "Die weise Frau erwacht in der Realität: Akzeptanz ist nicht dasselbe wie Integration."
   },
 
   // ───────────────────────────────────────────────────────────────────────────
@@ -2920,9 +3035,14 @@ const psychologicalProfiles = {
     introExtro: "extrovertiert", familieWichtigkeit: "weniger-wichtig", freundeskreis: "getrennt",
     oeffentlichkeit: "offen", alleinzeit: "wenig", events: "oft", reisen: "gemeinsam",
     hobbys: "getrennt", wochenende: "gemischt", netzwerkGroesse: "groß",
-    confidence: { kinderWunsch: 0.80, eheWunsch: 0.70, wohnform: 0.95, kommunikationsstil: 0.85, oeffentlichkeit: 0.85 },
-    pirsig: "Non-binäre Identität mit Poly-Wunsch in monogamer Form. Dreifache Identitäts-Komplexität.",
-    osho: "Jenseits des Geschlechts, aber in konventioneller Beziehung - eine Freiheit gelebt, eine unterdrückt."
+    // TREUE-KONFLIKT
+    treueIdeal: "hoch", treueVerhalten: "impulsiv-verletzlich", treueSelbstkenntnis: "gering", treueNachReue: "stark",
+    confidence: { kinderWunsch: 0.80, eheWunsch: 0.70, wohnform: 0.95, kommunikationsstil: 0.85, oeffentlichkeit: 0.85, treueIdeal: 0.75, treueVerhalten: 0.70 },
+    pirsig: "Non-binär - das Geschlecht transzendiert, aber das Treue-Ideal beibehalten. " +
+      "Wenn der Körper der hedonistischen Natur folgt, ist die Überraschung groß. " +
+      "Das Leid zeigt: Nicht alle Konditionierungen wurden aufgelöst.",
+    osho: "Jenseits des Geschlechts, aber gefesselt ans Treue-Dogma. Eine Befreiung vollzogen, eine versäumt. " +
+      "Der Fehltritt offenbart: Die Arbeit der Befreiung ist nie abgeschlossen."
   },
   "poly-hedo-nonbinär-dominant-homosexuell": {
     sources: ["Non-binary Research", "PAI-DOM Studies", "Queer Psychology"],
@@ -2935,9 +3055,13 @@ const psychologicalProfiles = {
     introExtro: "extrovertiert", familieWichtigkeit: "weniger-wichtig", freundeskreis: "getrennt",
     oeffentlichkeit: "offen", alleinzeit: "wenig", events: "oft", reisen: "gemeinsam",
     hobbys: "getrennt", wochenende: "gemischt", netzwerkGroesse: "groß",
-    confidence: { kinderWunsch: 0.85, eheWunsch: 0.65, wohnform: 0.95, kommunikationsstil: 0.85, oeffentlichkeit: 0.90 },
-    pirsig: "Maximale queere Identität (NB + Homo) mit Poly-Wunsch in Monogamie. Vierfache Komplexität.",
-    osho: "Das transzendierte Wesen mit geheimen Sehnsüchten - zwei Grenzen überschritten, eine beibehalten."
+    // TREUE-KONFLIKT
+    treueIdeal: "hoch", treueVerhalten: "impulsiv-verletzlich", treueSelbstkenntnis: "gering", treueNachReue: "stark",
+    confidence: { kinderWunsch: 0.85, eheWunsch: 0.65, wohnform: 0.95, kommunikationsstil: 0.85, oeffentlichkeit: 0.90, treueIdeal: 0.75, treueVerhalten: 0.65 },
+    pirsig: "Maximale queere Identität (NB + Homo) mit Treue-Ideal. Zwei Normen gebrochen, eine freiwillig beibehalten. " +
+      "Der Fehltritt zeigt: Selbst die freiesten halten an versteckten Ketten fest. Das Leid ist Erkenntnis.",
+    osho: "Das transzendierte Wesen, das glaubte, frei zu sein. Der Körper beweist das Gegenteil. " +
+      "Die Treue-Konditionierung überlebte alle anderen. Jetzt beginnt die letzte Befreiung - oder nicht."
   },
   "poly-hedo-nonbinär-dominant-bisexuell": {
     sources: ["Non-binary Research", "Allen et al. (2020)", "PAI-DOM Studies"],
@@ -2950,9 +3074,13 @@ const psychologicalProfiles = {
     introExtro: "extrovertiert", familieWichtigkeit: "weniger-wichtig", freundeskreis: "gemischt",
     oeffentlichkeit: "offen", alleinzeit: "wenig", events: "oft", reisen: "gemeinsam",
     hobbys: "getrennt", wochenende: "gemischt", netzwerkGroesse: "sehr-groß",
-    confidence: { kinderWunsch: 0.80, eheWunsch: 0.60, wohnform: 0.95, kommunikationsstil: 0.85, netzwerkGroesse: 0.85 },
-    pirsig: "Fünffache Komplexität (NB+Bi+Dom+Poly in Mono). Die vielschichtigste Identität in konventioneller Form.",
-    osho: "Das freiste Wesen mit der größten inneren Spannung - alles wollen, wenig leben."
+    // TREUE-KONFLIKT
+    treueIdeal: "hoch", treueVerhalten: "impulsiv-verletzlich", treueSelbstkenntnis: "minimal", treueNachReue: "sehr-stark",
+    confidence: { kinderWunsch: 0.80, eheWunsch: 0.60, wohnform: 0.95, kommunikationsstil: 0.85, netzwerkGroesse: 0.85, treueIdeal: 0.75, treueVerhalten: 0.55 },
+    pirsig: "Fünffache Freiheit (NB+Bi+Dom+Hedo) gegen ein starres Ideal (Treue). Die Spannung ist maximal. " +
+      "Wenn das Ideal bricht, ist das Chaos vollständig. Die komplexeste Selbsterkenntnis aller Profile.",
+    osho: "Das freiste Wesen mit der letzten Kette. Wenn sie reißt, ist die Verwirrung total. " +
+      "Wer bin ich, wenn mein letzter Anker fällt? Das Leid ist der Beginn der wahren Freiheit - oder der Zerstörung."
   },
   "poly-hedo-nonbinär-submissiv-heterosexuell": {
     sources: ["Non-binary Research", "BDSM Submissive Studies", "Sexual Fantasy Research"],
@@ -2965,9 +3093,13 @@ const psychologicalProfiles = {
     introExtro: "introvertiert", familieWichtigkeit: "wichtig", freundeskreis: "gemeinsam",
     oeffentlichkeit: "diskret", alleinzeit: "mittel", events: "manchmal", reisen: "gemeinsam",
     hobbys: "gemeinsam", wochenende: "gemeinsam-ruhig", netzwerkGroesse: "klein",
-    confidence: { kinderWunsch: 0.75, eheWunsch: 0.75, wohnform: 0.95, kommunikationsstil: 0.85, emotionaleOffenheit: 0.90 },
-    pirsig: "Non-binäre Hingabe mit Poly-Wunsch in Monogamie. Jenseits der Polarität, aber dienend und eingeschränkt.",
-    osho: "Das transzendierte Wesen in Hingabe träumt von Mehr - die sanfteste Form der Spannung."
+    // TREUE-KONFLIKT
+    treueIdeal: "sehr-hoch", treueVerhalten: "impulsiv-verletzlich", treueSelbstkenntnis: "gering", treueNachReue: "extrem",
+    confidence: { kinderWunsch: 0.75, eheWunsch: 0.75, wohnform: 0.95, kommunikationsstil: 0.85, emotionaleOffenheit: 0.90, treueIdeal: 0.85, treueVerhalten: 0.70 },
+    pirsig: "Non-binäre Hingabe mit höchstem Treue-Ideal. Jenseits des Geschlechts, aber nicht jenseits des Dogmas. " +
+      "Der Fehltritt erschüttert tief: Die Hingabe war nicht vollständig, das Wesen nicht so rein wie geglaubt.",
+    osho: "Das hingebungsvolle transzendierte Wesen glaubt an Treue wie an sich selbst. " +
+      "Wenn der Körper anders entscheidet: tiefste Verwirrung. Bin ich nicht der/die, der/die ich zu sein glaubte?"
   },
   "poly-hedo-nonbinär-submissiv-homosexuell": {
     sources: ["Non-binary Research", "Queer Submissive Studies", "Sexual Fantasy Research"],
@@ -2980,9 +3112,13 @@ const psychologicalProfiles = {
     introExtro: "introvertiert", familieWichtigkeit: "wichtig", freundeskreis: "gemeinsam",
     oeffentlichkeit: "diskret", alleinzeit: "mittel", events: "manchmal", reisen: "gemeinsam",
     hobbys: "gemeinsam", wochenende: "gemeinsam-ruhig", netzwerkGroesse: "mittel",
-    confidence: { kinderWunsch: 0.85, eheWunsch: 0.70, wohnform: 0.95, kommunikationsstil: 0.85, emotionaleOffenheit: 0.90 },
-    pirsig: "Queere non-binäre Hingabe mit unterdrücktem Poly-Wunsch. Maximale Weichheit mit innerem Konflikt.",
-    osho: "Das hingebungsvolle queere Wesen träumt von grenzloser Liebe - nur im Geist möglich."
+    // TREUE-KONFLIKT
+    treueIdeal: "sehr-hoch", treueVerhalten: "impulsiv-verletzlich", treueSelbstkenntnis: "gering", treueNachReue: "extrem",
+    confidence: { kinderWunsch: 0.85, eheWunsch: 0.70, wohnform: 0.95, kommunikationsstil: 0.85, emotionaleOffenheit: 0.90, treueIdeal: 0.85, treueVerhalten: 0.65 },
+    pirsig: "Queere non-binäre Hingabe mit Treue-Ideal. Maximale Weichheit mit hartem innerem Dogma. " +
+      "Der Fehltritt zeigt die Härte unter der Weichheit: Selbstverurteilung ohne Gnade.",
+    osho: "Das hingebungsvolle queere Wesen träumt von grenzloser Liebe - und hasst sich, wenn sie sie lebt. " +
+      "Das Ideal war ein Käfig, getarnt als Schutz. Das Leid ist der Preis der Erkenntnis."
   },
   "poly-hedo-nonbinär-submissiv-bisexuell": {
     sources: ["Non-binary Research", "Allen et al. (2020)", "BDSM + Fantasy Research"],
@@ -2995,9 +3131,13 @@ const psychologicalProfiles = {
     introExtro: "introvertiert", familieWichtigkeit: "wichtig", freundeskreis: "gemischt",
     oeffentlichkeit: "diskret", alleinzeit: "mittel", events: "manchmal", reisen: "gemeinsam",
     hobbys: "gemeinsam", wochenende: "gemeinsam-ruhig", netzwerkGroesse: "mittel",
-    confidence: { kinderWunsch: 0.80, eheWunsch: 0.65, wohnform: 0.95, kommunikationsstil: 0.85, kritikAnnehmen: 0.85 },
-    pirsig: "Fünffache Offenheit (NB+Bi+Sub+Poly) in monogamer Form. Der weiteste innere Horizont, die engste Realität.",
-    osho: "Das flüssigste hingebungsvolle Wesen mit dem größten Traum - universelle Liebe im Geist."
+    // TREUE-KONFLIKT
+    treueIdeal: "sehr-hoch", treueVerhalten: "impulsiv-verletzlich", treueSelbstkenntnis: "minimal", treueNachReue: "extrem",
+    confidence: { kinderWunsch: 0.80, eheWunsch: 0.65, wohnform: 0.95, kommunikationsstil: 0.85, kritikAnnehmen: 0.85, treueIdeal: 0.90, treueVerhalten: 0.55 },
+    pirsig: "Maximale Offenheit (NB+Bi+Sub+Hedo) gegen maximales Treue-Ideal. Die Spannung ist unerträglich. " +
+      "Der weiteste Horizont mit der engsten Fessel. Das Leid ist am tiefsten, die Erkenntnis am schmerzhaftesten.",
+    osho: "Das flüssigste Wesen mit dem härtesten Ideal. Universelle Liebe im Herzen, Exklusivität im Dogma. " +
+      "Wenn es bricht, bricht alles. Die Frage bleibt: Wohin mit der Liebe, wenn nicht überall hin?"
   },
   "poly-hedo-nonbinär-switch-heterosexuell": {
     sources: ["Non-binary Research", "Switch Studies", "Sexual Fantasy Research"],
@@ -3010,9 +3150,13 @@ const psychologicalProfiles = {
     introExtro: "ambivertiert", familieWichtigkeit: "wichtig", freundeskreis: "gemischt",
     oeffentlichkeit: "mittel", alleinzeit: "mittel", events: "manchmal", reisen: "gemeinsam",
     hobbys: "teilweise-gemeinsam", wochenende: "gemeinsam-gemischt", netzwerkGroesse: "mittel",
-    confidence: { kinderWunsch: 0.50, eheWunsch: 0.70, wohnform: 0.95, kommunikationsstil: 0.90, streitVerhalten: 0.85 },
-    pirsig: "Non-binäre Switch-Flexibilität mit Poly-Wunsch in Monogamie. Dreifache Fluidität, eine Grenze.",
-    osho: "Das transzendierte Wesen - mal führend, mal folgend, immer sehnend nach Mehr."
+    // TREUE-KONFLIKT
+    treueIdeal: "hoch", treueVerhalten: "impulsiv-verletzlich", treueSelbstkenntnis: "gering", treueNachReue: "stark",
+    confidence: { kinderWunsch: 0.50, eheWunsch: 0.70, wohnform: 0.95, kommunikationsstil: 0.90, streitVerhalten: 0.85, treueIdeal: 0.75, treueVerhalten: 0.70 },
+    pirsig: "Non-binäre Switch-Flexibilität mit Treue-Grenze. Dreifach fluid, einmal starr. " +
+      "Der Fehltritt offenbart die letzte Starrheit. Das Leid ist die Tür zur vollständigen Fluidität - wenn gewollt.",
+    osho: "Das transzendierte Wesen wechselt Rollen, Energien, Ausdrucksformen - aber nicht das Treue-Dogma. " +
+      "Wenn der Körper es doch tut: Verwirrung, Leid, aber auch Chance. Die letzte Befreiung wartet."
   },
   "poly-hedo-nonbinär-switch-homosexuell": {
     sources: ["Non-binary Research", "Queer Switch Studies", "Sexual Fantasy Research"],
@@ -3025,9 +3169,13 @@ const psychologicalProfiles = {
     introExtro: "ambivertiert", familieWichtigkeit: "wichtig", freundeskreis: "getrennt",
     oeffentlichkeit: "offen", alleinzeit: "wenig", events: "oft", reisen: "gemeinsam",
     hobbys: "teilweise-gemeinsam", wochenende: "gemischt", netzwerkGroesse: "groß",
-    confidence: { kinderWunsch: 0.85, eheWunsch: 0.65, wohnform: 0.95, kommunikationsstil: 0.90, oeffentlichkeit: 0.90 },
-    pirsig: "Maximale queere Flexibilität (NB+Homo+Switch) mit Poly-Wunsch. Vierfache Freiheit, eine Einschränkung.",
-    osho: "Das vielseitigste queere Wesen mit geheimen Träumen - fast frei, aber nicht ganz."
+    // TREUE-KONFLIKT
+    treueIdeal: "hoch", treueVerhalten: "impulsiv-verletzlich", treueSelbstkenntnis: "gering", treueNachReue: "stark",
+    confidence: { kinderWunsch: 0.85, eheWunsch: 0.65, wohnform: 0.95, kommunikationsstil: 0.90, oeffentlichkeit: 0.90, treueIdeal: 0.75, treueVerhalten: 0.65 },
+    pirsig: "Vierfache Freiheit (NB+Homo+Switch+Hedo), eine Einschränkung (Treue). Fast vollständig befreit. " +
+      "Der Fehltritt ist der letzte Schritt - gewollt oder nicht. Das Leid ist kurz, die Erkenntnis tief.",
+    osho: "Das vielseitigste queere Wesen mit der letzten Fessel. Fast frei - aber 'fast' ist nicht frei. " +
+      "Wenn die Fessel reißt: kurzer Schmerz, dann Klarheit. Oder Chaos. Die Wahl liegt im Umgang mit dem Leid."
   },
   "poly-hedo-nonbinär-switch-bisexuell": {
     sources: ["Non-binary Research: Highest openness", "Allen et al. (2020)", "Switch + Fantasy"],
@@ -3040,9 +3188,13 @@ const psychologicalProfiles = {
     introExtro: "ambivertiert", familieWichtigkeit: "wichtig", freundeskreis: "gemischt",
     oeffentlichkeit: "offen", alleinzeit: "wenig", events: "oft", reisen: "gemeinsam",
     hobbys: "teilweise-gemeinsam", wochenende: "gemischt", netzwerkGroesse: "sehr-groß",
-    confidence: { kinderWunsch: 0.75, eheWunsch: 0.55, wohnform: 0.95, kommunikationsstil: 0.90, kritikAnnehmen: 0.85 },
-    pirsig: "Das flüssigste non-binäre Wesen (NB+Bi+Switch) mit Poly-Wunsch in Monogamie. Maximale innere Freiheit, eine äußere Grenze.",
-    osho: "Das vollständig fluide Wesen träumt vom letzten Schritt zur totalen Freiheit - nur im Geist."
+    // TREUE-KONFLIKT
+    treueIdeal: "hoch", treueVerhalten: "impulsiv-verletzlich", treueSelbstkenntnis: "minimal", treueNachReue: "sehr-stark",
+    confidence: { kinderWunsch: 0.75, eheWunsch: 0.55, wohnform: 0.95, kommunikationsstil: 0.90, kritikAnnehmen: 0.85, treueIdeal: 0.75, treueVerhalten: 0.55 },
+    pirsig: "Das flüssigste Wesen (NB+Bi+Switch+Hedo) mit einer Grenze. Maximale innere Freiheit, ein Dogma. " +
+      "Der Fehltritt ist nicht Versagen - er ist der letzte Schritt. Das Leid transformiert, wenn richtig verstanden.",
+    osho: "Das vollständig fluide Wesen mit dem letzten Anker. Wenn er fällt, fällt nichts - oder alles. " +
+      "Die Wahl: Im Leid versinken oder aus ihm aufsteigen. Totale Freiheit ist nur einen Schmerz entfernt."
   },
   "poly-hedo-nonbinär-ausgeglichen-heterosexuell": {
     sources: ["Non-binary Research", "Big Five: Balanced", "Sexual Fantasy Research"],
@@ -3055,9 +3207,13 @@ const psychologicalProfiles = {
     introExtro: "ambivertiert", familieWichtigkeit: "wichtig", freundeskreis: "gemischt",
     oeffentlichkeit: "mittel", alleinzeit: "mittel", events: "manchmal", reisen: "gemeinsam",
     hobbys: "teilweise-gemeinsam", wochenende: "gemeinsam-gemischt", netzwerkGroesse: "mittel",
-    confidence: { kinderWunsch: 0.50, eheWunsch: 0.75, wohnform: 0.95, kommunikationsstil: 0.85, alleinzeit: 0.75 },
-    pirsig: "Non-binäre Identität mit stabiler Mitte und Poly-Wunsch. Jenseits des Geschlechts, zentriert, sehnend.",
-    osho: "Das transzendierte Wesen in Balance träumt von Mehr - der friedlichste non-binäre Poly-Hedo."
+    // TREUE-KONFLIKT
+    treueIdeal: "hoch", treueVerhalten: "impulsiv-verletzlich", treueSelbstkenntnis: "gering", treueNachReue: "stark",
+    confidence: { kinderWunsch: 0.50, eheWunsch: 0.75, wohnform: 0.95, kommunikationsstil: 0.85, alleinzeit: 0.75, treueIdeal: 0.80, treueVerhalten: 0.70 },
+    pirsig: "Non-binäre Balance mit Treue-Ideal. Zentriert im Geschlecht, aber nicht in der Treue-Frage. " +
+      "Der Fehltritt stört die Balance sanft. Das Leid ist ruhiger, die Erkenntnis friedlicher als bei anderen.",
+    osho: "Das zentrierte transzendierte Wesen mit leisem Treue-Dogma. Wenn der Körper anders entscheidet: sanfte Erschütterung. " +
+      "Die Balance kehrt zurück - erweitert um eine Wahrheit. So geht friedliche Erkenntnis."
   },
   "poly-hedo-nonbinär-ausgeglichen-homosexuell": {
     sources: ["Non-binary Research", "Big Five: Balanced", "Queer Psychology"],
@@ -3070,9 +3226,13 @@ const psychologicalProfiles = {
     introExtro: "ambivertiert", familieWichtigkeit: "wichtig", freundeskreis: "gemeinsam",
     oeffentlichkeit: "offen", alleinzeit: "mittel", events: "manchmal", reisen: "gemeinsam",
     hobbys: "teilweise-gemeinsam", wochenende: "gemeinsam-gemischt", netzwerkGroesse: "mittel",
-    confidence: { kinderWunsch: 0.85, eheWunsch: 0.70, wohnform: 0.95, kommunikationsstil: 0.85, oeffentlichkeit: 0.80 },
-    pirsig: "Reife queere non-binäre Identität mit Poly-Wunsch. Stabil in der Komplexität.",
-    osho: "Das zentrierte queere Wesen mit sanfter Sehnsucht - akzeptiert die Begrenzung mit Weisheit."
+    // TREUE-KONFLIKT
+    treueIdeal: "hoch", treueVerhalten: "impulsiv-verletzlich", treueSelbstkenntnis: "gering", treueNachReue: "stark",
+    confidence: { kinderWunsch: 0.85, eheWunsch: 0.70, wohnform: 0.95, kommunikationsstil: 0.85, oeffentlichkeit: 0.80, treueIdeal: 0.80, treueVerhalten: 0.70 },
+    pirsig: "Reife queere non-binäre Identität mit Treue-Ideal. Stabil in der Komplexität - bis auf diesen Punkt. " +
+      "Der Fehltritt offenbart: Reife bedeutet nicht Selbsterkenntnis. Das Leid ist sanft aber lehrreich.",
+    osho: "Das zentrierte queere Wesen glaubte, die Begrenzung weise akzeptiert zu haben. " +
+      "Der Körper zeigt: Es war Vermeidung, nicht Weisheit. Die echte Weisheit kommt nach dem Leid."
   },
   "poly-hedo-nonbinär-ausgeglichen-bisexuell": {
     sources: ["Non-binary Research: Highest openness", "Allen et al. (2020)", "Big Five: Balanced"],
@@ -3085,9 +3245,13 @@ const psychologicalProfiles = {
     introExtro: "ambivertiert", familieWichtigkeit: "wichtig", freundeskreis: "gemischt",
     oeffentlichkeit: "mittel", alleinzeit: "mittel", events: "manchmal", reisen: "gemeinsam",
     hobbys: "teilweise-gemeinsam", wochenende: "gemeinsam-gemischt", netzwerkGroesse: "mittel",
-    confidence: { kinderWunsch: 0.75, eheWunsch: 0.65, wohnform: 0.95, kommunikationsstil: 0.85, freundeskreis: 0.80 },
-    pirsig: "Maximale Offenheit (NB+Bi) mit stabiler Mitte und Poly-Wunsch in Monogamie. Die weiseste Integration.",
-    osho: "Das zentrierte non-binäre bisexuelle Wesen - alle Möglichkeiten erkannt, in Frieden mit der Begrenzung."
+    // TREUE-KONFLIKT
+    treueIdeal: "hoch", treueVerhalten: "impulsiv-verletzlich", treueSelbstkenntnis: "gering", treueNachReue: "stark",
+    confidence: { kinderWunsch: 0.75, eheWunsch: 0.65, wohnform: 0.95, kommunikationsstil: 0.85, freundeskreis: 0.80, treueIdeal: 0.80, treueVerhalten: 0.70 },
+    pirsig: "Maximale Offenheit (NB+Bi+Hedo) mit Treue-Anspruch. Die weiseste Integration - mit einem blinden Fleck. " +
+      "Der Fehltritt zeigt: Kein Frieden war wirklich Frieden, solange das Dogma lebte. Jetzt beginnt echte Weisheit.",
+    osho: "Das zentrierte Wesen glaubte, alle Möglichkeiten erkannt zu haben. Der Körper zeigt die vergessene. " +
+      "Der Frieden war unvollständig. Nach dem Leid: Die Chance auf echten Frieden - mit allem, was ist."
   },
 
   // ════════════════════════════════════════════════════════════════════════════
