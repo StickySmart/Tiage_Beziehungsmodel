@@ -4946,6 +4946,15 @@
                             <label for="ich-d-aus" class="compact-option">ausgeglichen</label>
                         </div>
                     </div>
+                    <div class="compact-dimension needs-selection" data-dimension="ich-dominanz-status-new" id="ich-dominanz-status-section" style="display: none;">
+                        <div class="compact-dimension-label">Dominanz-Status <span class="dimension-info-icon" onclick="showDimensionTooltip('dominanzStatus')">ℹ</span></div>
+                        <div class="compact-options">
+                            <input type="radio" name="ich-dominanz-status-new" id="ich-ds-fakt" value="fakt" class="compact-radio">
+                            <label for="ich-ds-fakt" class="compact-option">Fakt</label>
+                            <input type="radio" name="ich-dominanz-status-new" id="ich-ds-int" value="interessiert" class="compact-radio">
+                            <label for="ich-ds-int" class="compact-option">Interessiert</label>
+                        </div>
+                    </div>
                     <div class="compact-dimension needs-selection" data-dimension="ich-orientierung-new">
                         <div class="compact-dimension-label">Orientierung <span class="dimension-info-icon" onclick="showDimensionTooltip('orientierung')">ℹ</span></div>
                         <div class="compact-options">
@@ -5009,6 +5018,15 @@
                             <label for="partner-d-sw" class="compact-option">switch</label>
                             <input type="radio" name="partner-dominanz-new" id="partner-d-aus" value="ausgeglichen" class="compact-radio">
                             <label for="partner-d-aus" class="compact-option">ausgeglichen</label>
+                        </div>
+                    </div>
+                    <div class="compact-dimension needs-selection" data-dimension="partner-dominanz-status-new" id="partner-dominanz-status-section" style="display: none;">
+                        <div class="compact-dimension-label">Dominanz-Status <span class="dimension-info-icon" onclick="showDimensionTooltip('dominanzStatus')">ℹ</span></div>
+                        <div class="compact-options">
+                            <input type="radio" name="partner-dominanz-status-new" id="partner-ds-fakt" value="fakt" class="compact-radio">
+                            <label for="partner-ds-fakt" class="compact-option">Fakt</label>
+                            <input type="radio" name="partner-dominanz-status-new" id="partner-ds-int" value="interessiert" class="compact-radio">
+                            <label for="partner-ds-int" class="compact-option">Interessiert</label>
                         </div>
                     </div>
                     <div class="compact-dimension needs-selection" data-dimension="partner-orientierung-new">
@@ -5166,6 +5184,15 @@
                             <label for="m-ich-d-aus" class="compact-option">ausgeglichen</label>
                         </div>
                     </div>
+                    <div class="compact-dimension needs-selection" id="mobile-ich-dominanz-status-section" style="display: none;">
+                        <div class="compact-dimension-label">Dominanz-Status <span class="dimension-info-icon" onclick="showDimensionTooltip('dominanzStatus')">ℹ</span></div>
+                        <div class="compact-options">
+                            <input type="radio" name="mobile-ich-dominanz-status" id="m-ich-ds-fakt" value="fakt" class="compact-radio">
+                            <label for="m-ich-ds-fakt" class="compact-option">Fakt</label>
+                            <input type="radio" name="mobile-ich-dominanz-status" id="m-ich-ds-int" value="interessiert" class="compact-radio">
+                            <label for="m-ich-ds-int" class="compact-option">Interessiert</label>
+                        </div>
+                    </div>
                     <div class="compact-dimension needs-selection">
                         <div class="compact-dimension-label">Sexuelle Orientierung <span class="dimension-info-icon" onclick="showDimensionTooltip('orientierung')">ℹ</span></div>
                         <div class="compact-options">
@@ -5228,6 +5255,15 @@
                             <label for="m-partner-d-sw" class="compact-option">switch</label>
                             <input type="radio" name="mobile-partner-dominanz" id="m-partner-d-aus" value="ausgeglichen" class="compact-radio">
                             <label for="m-partner-d-aus" class="compact-option">ausgeglichen</label>
+                        </div>
+                    </div>
+                    <div class="compact-dimension needs-selection" id="mobile-partner-dominanz-status-section" style="display: none;">
+                        <div class="compact-dimension-label">Dominanz-Status <span class="dimension-info-icon" onclick="showDimensionTooltip('dominanzStatus')">ℹ</span></div>
+                        <div class="compact-options">
+                            <input type="radio" name="mobile-partner-dominanz-status" id="m-partner-ds-fakt" value="fakt" class="compact-radio">
+                            <label for="m-partner-ds-fakt" class="compact-option">Fakt</label>
+                            <input type="radio" name="mobile-partner-dominanz-status" id="m-partner-ds-int" value="interessiert" class="compact-radio">
+                            <label for="m-partner-ds-int" class="compact-option">Interessiert</label>
                         </div>
                     </div>
                     <div class="compact-dimension needs-selection">
@@ -5420,6 +5456,21 @@
                                     <input type="radio" name="ich-dominanz" id="ich-dominanz-ausgeglichen" value="ausgeglichen" class="dimension-radio">
                                     <label for="ich-dominanz-ausgeglichen" class="dimension-option">ausgeglichen</label>
                                 </div>
+
+                                <!-- Dominanz-Status (indented) -->
+                                <div class="dimension-status-group needs-selection" data-dimension="ich-dominanz-status" id="modal-ich-dominanz-status-section" style="display: none;">
+                                    <div class="dimension-status-label">
+                                        Dominanz-Status
+                                        <span class="dimension-info-icon" onclick="showDimensionTooltip('dominanzStatus')">ℹ</span>
+                                    </div>
+                                    <div class="dimension-options">
+                                        <input type="radio" name="ich-dominanz-status" id="ich-dominanz-status-fakt" value="fakt" class="dimension-radio">
+                                        <label for="ich-dominanz-status-fakt" class="dimension-option">Fakt</label>
+
+                                        <input type="radio" name="ich-dominanz-status" id="ich-dominanz-status-interessiert" value="interessiert" class="dimension-radio">
+                                        <label for="ich-dominanz-status-interessiert" class="dimension-option">Interessiert</label>
+                                    </div>
+                                </div>
                             </div>
 
                             <!-- Sexuelle Orientierung -->
@@ -5579,6 +5630,21 @@
 
                                     <input type="radio" name="partner-dominanz" id="partner-dominanz-ausgeglichen" value="ausgeglichen" class="dimension-radio">
                                     <label for="partner-dominanz-ausgeglichen" class="dimension-option">ausgeglichen</label>
+                                </div>
+
+                                <!-- Dominanz-Status (indented) -->
+                                <div class="dimension-status-group needs-selection" data-dimension="partner-dominanz-status" id="modal-partner-dominanz-status-section" style="display: none;">
+                                    <div class="dimension-status-label">
+                                        Dominanz-Status
+                                        <span class="dimension-info-icon" onclick="showDimensionTooltip('dominanzStatus')">ℹ</span>
+                                    </div>
+                                    <div class="dimension-options">
+                                        <input type="radio" name="partner-dominanz-status" id="partner-dominanz-status-fakt" value="fakt" class="dimension-radio">
+                                        <label for="partner-dominanz-status-fakt" class="dimension-option">Fakt</label>
+
+                                        <input type="radio" name="partner-dominanz-status" id="partner-dominanz-status-interessiert" value="interessiert" class="dimension-radio">
+                                        <label for="partner-dominanz-status-interessiert" class="dimension-option">Interessiert</label>
+                                    </div>
                                 </div>
                             </div>
 
@@ -6000,6 +6066,26 @@
         </div>
     </div>
 
+    <!-- Dominanz-Status Selection Popup -->
+    <div class="dimension-tooltip-overlay" id="dominanzStatusPopupOverlay" onclick="closeDominanzStatusPopup()">
+        <div class="dimension-tooltip-content status-popup-content" onclick="event.stopPropagation()">
+            <div class="dimension-tooltip-title">Dominanz-Status</div>
+            <div class="dimension-tooltip-text" style="margin-bottom: 20px;">
+                Wie sicher bist du dir bei deiner Dominanz-Präferenz?
+            </div>
+            <div class="status-popup-options">
+                <button class="status-popup-btn" id="dominanzStatusPopupFakt" onclick="selectDominanzStatusFromPopup('fakt')">
+                    <span class="status-popup-btn-title">Fakt</span>
+                    <span class="status-popup-btn-desc">Du kennst und lebst deine Dominanz-Präferenz aktiv. Die Profilaussagen haben hohe Konfidenz.</span>
+                </button>
+                <button class="status-popup-btn interessiert" id="dominanzStatusPopupInteressiert" onclick="selectDominanzStatusFromPopup('interessiert')">
+                    <span class="status-popup-btn-title">Interessiert</span>
+                    <span class="status-popup-btn-desc">Du bist noch am Erkunden oder unsicher. Die Konfidenz der Profilaussagen ist reduziert (höhere Varianz).</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
     <!-- Navigation Dots with Arrows (hidden - old carousel nav) -->
     <div class="nav-dots" style="display: none;">
         <button class="nav-arrow" onclick="navigatePrev()">‹</button>
@@ -6050,12 +6136,14 @@
             ich: {
                 geschlecht: null,
                 dominanz: null,
+                dominanzStatus: null,
                 orientierung: null,
                 orientierungStatus: null
             },
             partner: {
                 geschlecht: null,
                 dominanz: null,
+                dominanzStatus: null,
                 orientierung: null,
                 orientierungStatus: null
             }
@@ -6078,6 +6166,10 @@
             status: {
                 title: "Orientierungs-Status",
                 text: "Fakt: Du lebst diese Orientierung und bist dir sicher.\n\nInteressiert: Du bist neugierig oder in einer Explorationsphase. Die tatsächliche Anziehung ist noch unklar."
+            },
+            dominanzStatus: {
+                title: "Dominanz-Status",
+                text: "Fakt: Du kennst deine Dominanz-Präferenz und lebst sie aktiv. Die Werte des psychologischen Profils treffen mit hoher Wahrscheinlichkeit zu.\n\nInteressiert: Du bist noch am Erkunden oder unsicher über deine Präferenz. Die Konfidenz der Profilaussagen ist reduziert (höhere Varianz in deinem Verhalten).\n\nWissenschaftliche Basis: Big Five Forschung zeigt, dass Menschen in Explorationsphasen konsistent höhere Verhaltensvarianzen aufweisen (McCrae & Costa, 1997)."
             }
         };
 
@@ -9063,6 +9155,114 @@
             }
         }
 
+        // ========================================
+        // Dominanz-Status Popup Functions
+        // ========================================
+        let currentDominanzStatusPopupPerson = null;
+
+        function showDominanzStatusPopup(person) {
+            currentDominanzStatusPopupPerson = person;
+            document.getElementById('dominanzStatusPopupOverlay').classList.add('active');
+        }
+
+        function closeDominanzStatusPopup() {
+            document.getElementById('dominanzStatusPopupOverlay').classList.remove('active');
+            currentDominanzStatusPopupPerson = null;
+        }
+
+        function selectDominanzStatusFromPopup(status) {
+            if (!currentDominanzStatusPopupPerson) return;
+
+            const person = currentDominanzStatusPopupPerson;
+            personDimensions[person].dominanzStatus = status;
+            if (typeof mobilePersonDimensions !== 'undefined') {
+                mobilePersonDimensions[person].dominanzStatus = status;
+            }
+
+            // Update the corresponding desktop radio button
+            const desktopRadioId = person === 'ich'
+                ? (status === 'fakt' ? 'ich-ds-fakt' : 'ich-ds-int')
+                : (status === 'fakt' ? 'partner-ds-fakt' : 'partner-ds-int');
+            const desktopRadio = document.getElementById(desktopRadioId);
+            if (desktopRadio) {
+                desktopRadio.checked = true;
+            }
+
+            // Update the corresponding mobile radio button
+            const mobileRadioId = person === 'ich'
+                ? (status === 'fakt' ? 'm-ich-ds-fakt' : 'm-ich-ds-int')
+                : (status === 'fakt' ? 'm-partner-ds-fakt' : 'm-partner-ds-int');
+            const mobileRadio = document.getElementById(mobileRadioId);
+            if (mobileRadio) {
+                mobileRadio.checked = true;
+            }
+
+            // Update the corresponding modal radio button
+            const modalRadioId = person + '-dominanz-status-' + (status === 'fakt' ? 'fakt' : 'interessiert');
+            const modalRadio = document.getElementById(modalRadioId);
+            if (modalRadio) {
+                modalRadio.checked = true;
+            }
+
+            // Remove needs-selection class from all sections
+            const desktopStatusSection = document.getElementById(person + '-dominanz-status-section');
+            if (desktopStatusSection) {
+                desktopStatusSection.classList.remove('needs-selection');
+            }
+            const mobileStatusSection = document.getElementById('mobile-' + person + '-dominanz-status-section');
+            if (mobileStatusSection) {
+                mobileStatusSection.classList.remove('needs-selection');
+            }
+            const modalStatusSection = document.getElementById('modal-' + person + '-dominanz-status-section');
+            if (modalStatusSection) {
+                modalStatusSection.classList.remove('needs-selection');
+            }
+
+            closeDominanzStatusPopup();
+            updateComparisonView();
+
+            // Save to localStorage
+            if (typeof saveSelectionToStorage === 'function') {
+                saveSelectionToStorage();
+            }
+        }
+
+        function handleDominanzChange(person, dominanz, isMobile = false) {
+            personDimensions[person].dominanz = dominanz;
+            if (typeof mobilePersonDimensions !== 'undefined') {
+                mobilePersonDimensions[person].dominanz = dominanz;
+            }
+
+            // Get all dominanz status sections (desktop, mobile, modal)
+            const desktopStatusSection = document.getElementById(person + '-dominanz-status-section');
+            const mobileStatusSection = document.getElementById('mobile-' + person + '-dominanz-status-section');
+            const modalStatusSection = document.getElementById('modal-' + person + '-dominanz-status-section');
+
+            // Show status section and popup for all dominanz selections
+            if (desktopStatusSection) {
+                desktopStatusSection.style.display = 'block';
+            }
+            if (mobileStatusSection) {
+                mobileStatusSection.style.display = 'block';
+            }
+            if (modalStatusSection) {
+                modalStatusSection.style.display = 'block';
+            }
+            showDominanzStatusPopup(person);
+
+            // Sync dominanz to desktop if called from mobile
+            if (isMobile) {
+                syncDimensionToDesktop(person + '-dominanz-new', dominanz);
+            }
+
+            updateComparisonView();
+
+            // Save to localStorage
+            if (typeof saveSelectionToStorage === 'function') {
+                saveSelectionToStorage();
+            }
+        }
+
         function handleDimensionChange(person, dimension, value, element) {
             // Update state
             personDimensions[person][dimension] = value;
@@ -9103,15 +9303,19 @@
             return map[geschlecht] || geschlecht;
         }
 
-        function getDominanzKurz(dominanz) {
+        function getDominanzKurz(dominanz, status) {
             if (!dominanz) return '?';
             const map = {
                 'dominant': 'dom',
                 'submissiv': 'sub',
                 'switch': 'switch',
-                'ausgeglichen': 'ausgeglichen'
+                'ausgeglichen': 'ausg'
             };
-            return map[dominanz] || dominanz;
+            let kurz = map[dominanz] || dominanz;
+            if (status === 'interessiert') {
+                kurz += '(?)';
+            }
+            return kurz;
         }
 
         function getOrientierungKurz(orientierung, status) {
@@ -9135,8 +9339,8 @@
             const ichDims = personDimensions.ich;
             const partnerDims = personDimensions.partner;
 
-            const ichInfo = `(${getGeschlechtKurz(ichDims.geschlecht)}, ${getDominanzKurz(ichDims.dominanz)}, ${getOrientierungKurz(ichDims.orientierung, ichDims.orientierungStatus)})`;
-            const partnerInfo = `(${getGeschlechtKurz(partnerDims.geschlecht)}, ${getDominanzKurz(partnerDims.dominanz)}, ${getOrientierungKurz(partnerDims.orientierung, partnerDims.orientierungStatus)})`;
+            const ichInfo = `(${getGeschlechtKurz(ichDims.geschlecht)}, ${getDominanzKurz(ichDims.dominanz, ichDims.dominanzStatus)}, ${getOrientierungKurz(ichDims.orientierung, ichDims.orientierungStatus)})`;
+            const partnerInfo = `(${getGeschlechtKurz(partnerDims.geschlecht)}, ${getDominanzKurz(partnerDims.dominanz, partnerDims.dominanzStatus)}, ${getOrientierungKurz(partnerDims.orientierung, partnerDims.orientierungStatus)})`;
 
             const content = document.getElementById('analysisOverviewContent');
             if (content) {
@@ -9154,7 +9358,14 @@
                 radio.addEventListener('change', (e) => handleDimensionChange('ich', 'geschlecht', e.target.value, e.target));
             });
             document.querySelectorAll('input[name="ich-dominanz"]').forEach(radio => {
-                radio.addEventListener('change', (e) => handleDimensionChange('ich', 'dominanz', e.target.value, e.target));
+                radio.addEventListener('change', (e) => {
+                    const dimensionGroup = e.target.closest('.dimension-group');
+                    if (dimensionGroup) dimensionGroup.classList.remove('needs-selection');
+                    handleDominanzChange('ich', e.target.value);
+                });
+            });
+            document.querySelectorAll('input[name="ich-dominanz-status"]').forEach(radio => {
+                radio.addEventListener('change', (e) => handleDimensionChange('ich', 'dominanzStatus', e.target.value, e.target));
             });
             document.querySelectorAll('input[name="ich-orientierung"]').forEach(radio => {
                 radio.addEventListener('change', (e) => {
@@ -9172,7 +9383,14 @@
                 radio.addEventListener('change', (e) => handleDimensionChange('partner', 'geschlecht', e.target.value, e.target));
             });
             document.querySelectorAll('input[name="partner-dominanz"]').forEach(radio => {
-                radio.addEventListener('change', (e) => handleDimensionChange('partner', 'dominanz', e.target.value, e.target));
+                radio.addEventListener('change', (e) => {
+                    const dimensionGroup = e.target.closest('.dimension-group');
+                    if (dimensionGroup) dimensionGroup.classList.remove('needs-selection');
+                    handleDominanzChange('partner', e.target.value);
+                });
+            });
+            document.querySelectorAll('input[name="partner-dominanz-status"]').forEach(radio => {
+                radio.addEventListener('change', (e) => handleDimensionChange('partner', 'dominanzStatus', e.target.value, e.target));
             });
             document.querySelectorAll('input[name="partner-orientierung"]').forEach(radio => {
                 radio.addEventListener('change', (e) => {
@@ -9700,7 +9918,7 @@
         // -  80%: Switch + Pol = Anpassung möglich, aber Spannung
         // -  60%: Gleiche Pole (Dom↔Dom, Sub↔Sub) = Konflikt, fehlende Spannung
         // ═══════════════════════════════════════════════════════════════════════
-        function calculateDominanceHarmony(dom1, dom2) {
+        function calculateDominanceHarmony(dom1, dom2, status1 = 'fakt', status2 = 'fakt') {
             // Default bei fehlender Auswahl: neutraler Mittelwert
             if (!dom1 || !dom2) return 75;
 
@@ -9717,6 +9935,8 @@
             // - Jozifkova (2025): D/S-Polarität in langfristigen Beziehungen
             //   zeigt, dass Rollenkompatibilität stärker mit Zufriedenheit
             //   korreliert als spezifische Aktivitäts-Übereinstimmung
+            // - McCrae & Costa (1997): Big Five - Menschen in Explorationsphasen
+            //   zeigen höhere Verhaltensvarianz (→ reduzierte Konfidenz)
             // ═══════════════════════════════════════════════════════════════════════
 
             const harmonyMatrix = {
@@ -9772,7 +9992,20 @@
             };
 
             const key = `${dom1}-${dom2}`;
-            return harmonyMatrix[key] || harmonyMatrix[`${dom2}-${dom1}`] || 75;
+            let baseScore = harmonyMatrix[key] || harmonyMatrix[`${dom2}-${dom1}`] || 75;
+
+            // ═══════════════════════════════════════════════════════════════════════
+            // STATUS-MODIFIER: Reduzierte Konfidenz bei "interessiert"
+            // ═══════════════════════════════════════════════════════════════════════
+            // Bei "interessiert" Status (Explorations-Phase) wird der Score auf 70%
+            // reduziert, da die Präferenz noch nicht gefestigt ist und das Verhalten
+            // inkonsistenter sein kann (Big Five Research: höhere Varianz).
+            // ═══════════════════════════════════════════════════════════════════════
+            if (status1 === 'interessiert' || status2 === 'interessiert') {
+                baseScore = Math.round(baseScore * 0.7);
+            }
+
+            return baseScore;
         }
 
         // Factor 3: Orientation Compatibility (25%) - uses existing checkPhysicalCompatibility
@@ -9891,7 +10124,10 @@
             // ═══════════════════════════════════════
 
             const archetypeScore = getArchetypeScore(person1.archetyp, person2.archetyp);
-            const dominanceScore = calculateDominanceHarmony(person1.dominanz, person2.dominanz);
+            const dominanceScore = calculateDominanceHarmony(
+                person1.dominanz, person2.dominanz,
+                person1.dominanzStatus || 'fakt', person2.dominanzStatus || 'fakt'
+            );
             const genderScore = calculateGenderAttraction(person1, person2);
 
             // Gewichtete Summe nach Logos/Pathos-Prinzip
@@ -9995,7 +10231,13 @@
             });
             document.querySelectorAll('input[name="ich-dominanz-new"]').forEach(radio => {
                 radio.addEventListener('change', (e) => {
-                    personDimensions.ich.dominanz = e.target.value;
+                    e.target.closest('.compact-dimension').classList.remove('needs-selection');
+                    handleDominanzChange('ich', e.target.value);
+                });
+            });
+            document.querySelectorAll('input[name="ich-dominanz-status-new"]').forEach(radio => {
+                radio.addEventListener('change', (e) => {
+                    personDimensions.ich.dominanzStatus = e.target.value;
                     e.target.closest('.compact-dimension').classList.remove('needs-selection');
                     updateAnalysisOverview();
                     updateComparisonView();
@@ -10027,7 +10269,13 @@
             });
             document.querySelectorAll('input[name="partner-dominanz-new"]').forEach(radio => {
                 radio.addEventListener('change', (e) => {
-                    personDimensions.partner.dominanz = e.target.value;
+                    e.target.closest('.compact-dimension').classList.remove('needs-selection');
+                    handleDominanzChange('partner', e.target.value);
+                });
+            });
+            document.querySelectorAll('input[name="partner-dominanz-status-new"]').forEach(radio => {
+                radio.addEventListener('change', (e) => {
+                    personDimensions.partner.dominanzStatus = e.target.value;
                     e.target.closest('.compact-dimension').classList.remove('needs-selection');
                     updateAnalysisOverview();
                     updateComparisonView();
@@ -10076,6 +10324,11 @@
                 warningsContainer.innerHTML = `<div class="warning-box pathos-warning">🚫 Keine emotionale/körperliche Anziehung: ${pathosCheck.reason}</div>`;
             } else if (pathosCheck.result === 'unsicher') {
                 warningsContainer.innerHTML = `<div class="warning-box logos-warning">⚠️ Unsichere körperliche Anziehung (Exploration-Phase)</div>`;
+            }
+
+            // Warnung bei unsicherem Dominanz-Status
+            if (person1.dominanzStatus === 'interessiert' || person2.dominanzStatus === 'interessiert') {
+                warningsContainer.innerHTML += `<div class="warning-box logos-warning">⚠️ Unsichere Dominanz-Dynamik (Exploration-Phase – reduzierte Konfidenz)</div>`;
             }
 
             if (logosCheck.score < 50) {
@@ -10786,8 +11039,8 @@
 
         let currentMobilePage = 1;
         let mobilePersonDimensions = {
-            ich: { geschlecht: null, dominanz: null, orientierung: null, orientierungStatus: null },
-            partner: { geschlecht: null, dominanz: null, orientierung: null, orientierungStatus: null }
+            ich: { geschlecht: null, dominanz: null, dominanzStatus: null, orientierung: null, orientierungStatus: null },
+            partner: { geschlecht: null, dominanz: null, dominanzStatus: null, orientierung: null, orientierungStatus: null }
         };
         let mobileIchArchetype = 'single';
         let mobilePartnerArchetype = 'duo';
@@ -10952,10 +11205,16 @@
             });
             document.querySelectorAll('input[name="mobile-ich-dominanz"]').forEach(radio => {
                 radio.addEventListener('change', (e) => {
-                    mobilePersonDimensions.ich.dominanz = e.target.value;
-                    personDimensions.ich.dominanz = e.target.value;
                     e.target.closest('.compact-dimension').classList.remove('needs-selection');
-                    syncDimensionToDesktop('ich-dominanz-new', e.target.value);
+                    handleDominanzChange('ich', e.target.value, true);
+                });
+            });
+            document.querySelectorAll('input[name="mobile-ich-dominanz-status"]').forEach(radio => {
+                radio.addEventListener('change', (e) => {
+                    mobilePersonDimensions.ich.dominanzStatus = e.target.value;
+                    personDimensions.ich.dominanzStatus = e.target.value;
+                    e.target.closest('.compact-dimension').classList.remove('needs-selection');
+                    syncDimensionToDesktop('ich-dominanz-status-new', e.target.value);
                     updateComparisonView();
                 });
             });
@@ -10987,10 +11246,16 @@
             });
             document.querySelectorAll('input[name="mobile-partner-dominanz"]').forEach(radio => {
                 radio.addEventListener('change', (e) => {
-                    mobilePersonDimensions.partner.dominanz = e.target.value;
-                    personDimensions.partner.dominanz = e.target.value;
                     e.target.closest('.compact-dimension').classList.remove('needs-selection');
-                    syncDimensionToDesktop('partner-dominanz-new', e.target.value);
+                    handleDominanzChange('partner', e.target.value, true);
+                });
+            });
+            document.querySelectorAll('input[name="mobile-partner-dominanz-status"]').forEach(radio => {
+                radio.addEventListener('change', (e) => {
+                    mobilePersonDimensions.partner.dominanzStatus = e.target.value;
+                    personDimensions.partner.dominanzStatus = e.target.value;
+                    e.target.closest('.compact-dimension').classList.remove('needs-selection');
+                    syncDimensionToDesktop('partner-dominanz-status-new', e.target.value);
                     updateComparisonView();
                 });
             });
@@ -12247,6 +12512,7 @@
                     archetyp: mobileIchArchetype,
                     geschlecht: mobilePersonDimensions.ich.geschlecht,
                     dominanz: mobilePersonDimensions.ich.dominanz,
+                    dominanzStatus: mobilePersonDimensions.ich.dominanzStatus,
                     orientierung: mobilePersonDimensions.ich.orientierung,
                     orientierungStatus: mobilePersonDimensions.ich.orientierungStatus
                 },
@@ -12254,6 +12520,7 @@
                     archetyp: mobilePartnerArchetype,
                     geschlecht: mobilePersonDimensions.partner.geschlecht,
                     dominanz: mobilePersonDimensions.partner.dominanz,
+                    dominanzStatus: mobilePersonDimensions.partner.dominanzStatus,
                     orientierung: mobilePersonDimensions.partner.orientierung,
                     orientierungStatus: mobilePersonDimensions.partner.orientierungStatus
                 }
@@ -12290,6 +12557,18 @@
                     if (selection.ich.dominanz) {
                         mobilePersonDimensions.ich.dominanz = selection.ich.dominanz;
                         const radio = document.querySelector(`input[name="mobile-ich-dominanz"][value="${selection.ich.dominanz}"]`);
+                        if (radio) {
+                            radio.checked = true;
+                            radio.closest('.compact-dimension').classList.remove('needs-selection');
+                        }
+                        // Show dominanz status section if dominanz is selected
+                        const statusSection = document.getElementById('mobile-ich-dominanz-status-section');
+                        if (statusSection) statusSection.style.display = 'block';
+                    }
+
+                    if (selection.ich.dominanzStatus) {
+                        mobilePersonDimensions.ich.dominanzStatus = selection.ich.dominanzStatus;
+                        const radio = document.querySelector(`input[name="mobile-ich-dominanz-status"][value="${selection.ich.dominanzStatus}"]`);
                         if (radio) {
                             radio.checked = true;
                             radio.closest('.compact-dimension').classList.remove('needs-selection');
@@ -12336,6 +12615,18 @@
                             radio.checked = true;
                             radio.closest('.compact-dimension').classList.remove('needs-selection');
                         }
+                        // Show dominanz status section if dominanz is selected
+                        const statusSection = document.getElementById('mobile-partner-dominanz-status-section');
+                        if (statusSection) statusSection.style.display = 'block';
+                    }
+
+                    if (selection.partner.dominanzStatus) {
+                        mobilePersonDimensions.partner.dominanzStatus = selection.partner.dominanzStatus;
+                        const radio = document.querySelector(`input[name="mobile-partner-dominanz-status"][value="${selection.partner.dominanzStatus}"]`);
+                        if (radio) {
+                            radio.checked = true;
+                            radio.closest('.compact-dimension').classList.remove('needs-selection');
+                        }
                     }
 
                     if (selection.partner.orientierung) {
@@ -12356,6 +12647,10 @@
                         }
                     }
                 }
+
+                // Sync mobilePersonDimensions to personDimensions for desktop view
+                personDimensions.ich = { ...mobilePersonDimensions.ich };
+                personDimensions.partner = { ...mobilePersonDimensions.partner };
 
                 return true;
             } catch (e) {
@@ -12380,8 +12675,8 @@
             mobileIchArchetype = 'single';
             mobilePartnerArchetype = 'duo';
             mobilePersonDimensions = {
-                ich: { geschlecht: null, dominanz: null, orientierung: null, orientierungStatus: null },
-                partner: { geschlecht: null, dominanz: null, orientierung: null, orientierungStatus: null }
+                ich: { geschlecht: null, dominanz: null, dominanzStatus: null, orientierung: null, orientierungStatus: null },
+                partner: { geschlecht: null, dominanz: null, dominanzStatus: null, orientierung: null, orientierungStatus: null }
             };
 
             // Reset dropdowns
