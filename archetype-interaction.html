@@ -12544,8 +12544,8 @@
                 getExplanation: (ich, partner, score, dimensions) => {
                     // Use passed dimensions, fallback to mobilePersonDimensions for backward compatibility
                     const dims = dimensions || mobilePersonDimensions;
-                    const ichDom = dims.ich.dominanz;
-                    const partnerDom = dims.partner.dominanz;
+                    const ichDomObj = dims.ich.dominanz;
+                    const partnerDomObj = dims.partner.dominanz;
 
                     // Translate values to German labels for display
                     const domLabels = {
@@ -12554,29 +12554,61 @@
                         'switch': 'Switch',
                         'ausgeglichen': 'ausgeglichen'
                     };
-                    const ichLabel = domLabels[ichDom] || ichDom || 'nicht gewählt';
-                    const partnerLabel = domLabels[partnerDom] || partnerDom || 'nicht gewählt';
 
-                    if (ichDom === partnerDom) {
-                        if (ichDom === 'ausgeglichen' || ichDom === 'switch') {
-                            return `Beide bevorzugen ${ichLabel} - das ermöglicht eine flexible Dynamik, in der beide je nach Situation verschiedene Rollen einnehmen können.`;
+                    // Helper to get primary (fakt) and secondary (interessiert) selections
+                    const getSelections = (domObj) => {
+                        if (!domObj || typeof domObj !== 'object') return { primary: null, secondary: [] };
+                        let primary = null;
+                        const secondary = [];
+                        for (const [type, status] of Object.entries(domObj)) {
+                            if (status === 'fakt') primary = type;
+                            else if (status === 'interessiert') secondary.push(type);
                         }
-                        if (ichDom === 'dominant') {
-                            // Forschung: Sadikaj et al. (2017) - Machtkämpfe bei zwei Dominanten
-                            return `Beide sind dominant - das kann zu Machtkämpfen führen, besonders bei wichtigen Entscheidungen. Forschung zeigt: Paare mit zwei dominanten Partnern berichten niedrigere Beziehungszufriedenheit. Funktioniert mit bewussten Kommunikationsregeln und Kompromissbereitschaft.`;
+                        return { primary, secondary };
+                    };
+
+                    const ichSel = getSelections(ichDomObj);
+                    const partnerSel = getSelections(partnerDomObj);
+
+                    // Format display labels
+                    const formatLabel = (sel) => {
+                        const parts = [];
+                        if (sel.primary) parts.push(`${domLabels[sel.primary]} (Fakt)`);
+                        if (sel.secondary.length > 0) {
+                            parts.push(sel.secondary.map(s => `${domLabels[s]} (interessiert)`).join(', '));
                         }
-                        if (ichDom === 'submissiv') {
-                            return `Beide sind submissiv - es kann ein Führungsvakuum entstehen, wenn niemand die Initiative übernimmt. Bewusste Aufgabenteilung und klare Absprachen sind wichtig.`;
-                        }
-                        return `Beide bevorzugen ${ichLabel} - das kann zu Spannungen führen, wenn niemand die komplementäre Rolle übernimmt.`;
+                        return parts.length > 0 ? parts.join(', ') : 'nicht gewählt';
+                    };
+
+                    const ichLabel = formatLabel(ichSel);
+                    const partnerLabel = formatLabel(partnerSel);
+
+                    // Use primary tendencies for comparison
+                    const ichPrimary = ichSel.primary;
+                    const partnerPrimary = partnerSel.primary;
+
+                    if (!ichPrimary || !partnerPrimary) {
+                        return `ICH: ${ichLabel} | Partner: ${partnerLabel} - Bitte wähle für beide eine primäre Dominanz-Tendenz (Fakt).`;
                     }
 
-                    if ((ichDom === 'dominant' && partnerDom === 'submissiv') ||
-                        (ichDom === 'submissiv' && partnerDom === 'dominant')) {
-                        return `Perfekte Komplementarität: ${ichLabel} und ${partnerLabel} ergänzen sich ideal in der emotionalen Dynamik.`;
+                    if (ichPrimary === partnerPrimary) {
+                        if (ichPrimary === 'ausgeglichen' || ichPrimary === 'switch') {
+                            return `Beide sind primär ${domLabels[ichPrimary]} - das ermöglicht eine flexible Dynamik, in der beide je nach Situation verschiedene Rollen einnehmen können.`;
+                        }
+                        if (ichPrimary === 'dominant') {
+                            return `Beide sind primär dominant - das kann zu Machtkämpfen führen. Funktioniert mit bewussten Kommunikationsregeln und Kompromissbereitschaft.`;
+                        }
+                        if (ichPrimary === 'submissiv') {
+                            return `Beide sind primär submissiv - es kann ein Führungsvakuum entstehen. Bewusste Aufgabenteilung und klare Absprachen sind wichtig.`;
+                        }
                     }
 
-                    return `${ichLabel} und ${partnerLabel} - eine interessante Dynamik, die durch Flexibilität und Verständnis gut funktionieren kann.`;
+                    if ((ichPrimary === 'dominant' && partnerPrimary === 'submissiv') ||
+                        (ichPrimary === 'submissiv' && partnerPrimary === 'dominant')) {
+                        return `Perfekte Komplementarität: ${domLabels[ichPrimary]} (ICH) und ${domLabels[partnerPrimary]} (Partner) ergänzen sich ideal in der emotionalen Dynamik.`;
+                    }
+
+                    return `ICH: ${ichLabel} | Partner: ${partnerLabel} - eine interessante Dynamik, die durch Flexibilität und Verständnis gut funktionieren kann.`;
                 },
                 getMeaning: (score) => {
                     if (score >= 80) {
