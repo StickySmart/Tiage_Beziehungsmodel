@@ -10836,12 +10836,14 @@
 
                 // Combine both sources with deduplication
                 // Create a unique key based on content to detect duplicates
+                // Use name + titel + text (without timestamp) to catch more duplicates
                 const seen = new Set();
                 const getUniqueKey = (item) => {
                     const name = (item.Name || item.name || '').toLowerCase().trim();
+                    const titel = (item.Titel || item.titel || '').toLowerCase().trim();
                     const text = (item.Kommentar || item.kommentar || item.text || item.comment || '').toLowerCase().trim();
-                    const timestamp = item.timestamp || item.Timestamp || item.datum || '';
-                    return `${name}|${text}|${timestamp}`;
+                    // Key ohne Timestamp - Name + Titel + Text reichen zur Deduplizierung
+                    return `${name}|${titel}|${text}`;
                 };
 
                 allCommentsData = [];
@@ -11061,13 +11063,14 @@
         function getTypeBadge(typ) {
             const types = {
                 'frage': 'Frage',
-                'feedback': 'Feedback',
+                'feedback': 'Comment',  // Feedback = Comment (vereinheitlicht)
                 'fehler': 'Fehler',
                 'verbesserung': 'Vorschlag',
                 'doku': 'Doku',
-                'antwort': 'Antwort'
+                'antwort': 'Antwort',
+                'comment': 'Comment'
             };
-            return types[typ] || typ || 'Kommentar';
+            return types[typ] || 'Comment';  // Default ist jetzt "Comment"
         }
 
         function escapeHtml(text) {
