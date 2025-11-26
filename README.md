@@ -69,7 +69,7 @@ StickySmart (Tiage)
 
 ## Lizenz
 
-**© 2025 Ti-age.de / TimoH – Alle Rechte vorbehalten.**
+**© 2025 Ti-Age – Alle Rechte vorbehalten.**
 
 Dieses Werk ist urheberrechtlich geschützt. Keine Lizenz erteilt.
 
