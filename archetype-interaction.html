@@ -10721,18 +10721,46 @@
                 // Load from localStorage (feedback)
                 const localFeedback = JSON.parse(localStorage.getItem('tiage_feedback') || '[]');
 
-                // Combine both sources
-                allCommentsData = [...localComments, ...localFeedback];
+                // Combine both sources with deduplication
+                // Create a unique key based on content to detect duplicates
+                const seen = new Set();
+                const getUniqueKey = (item) => {
+                    const name = (item.Name || item.name || '').toLowerCase().trim();
+                    const text = (item.Kommentar || item.kommentar || item.text || item.comment || '').toLowerCase().trim();
+                    const timestamp = item.timestamp || item.Timestamp || item.datum || '';
+                    return `${name}|${text}|${timestamp}`;
+                };
+
+                allCommentsData = [];
+
+                // Add comments first (they have explicit type)
+                localComments.forEach(item => {
+                    const key = getUniqueKey(item);
+                    if (!seen.has(key)) {
+                        seen.add(key);
+                        allCommentsData.push(item);
+                    }
+                });
+
+                // Add feedback only if not already present
+                localFeedback.forEach(item => {
+                    const key = getUniqueKey(item);
+                    if (!seen.has(key)) {
+                        seen.add(key);
+                        allCommentsData.push(item);
+                    }
+                });
 
                 // Try to load from server if available
                 if (typeof GOOGLE_SCRIPT_URL !== 'undefined' && GOOGLE_SCRIPT_URL) {
                     try {
                         const response = await fetch(GOOGLE_SCRIPT_URL);
                         const serverData = await response.json();
-                        // Merge server data with local data (avoiding duplicates by ID)
-                        const localIds = new Set(allCommentsData.map(c => c.id || c.ID));
+                        // Merge server data with local data (avoiding duplicates by content)
                         serverData.forEach(item => {
-                            if (!localIds.has(item.id || item.ID)) {
+                            const key = getUniqueKey(item);
+                            if (!seen.has(key)) {
+                                seen.add(key);
                                 allCommentsData.push(item);
                             }
                         });
