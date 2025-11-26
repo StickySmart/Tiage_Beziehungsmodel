@@ -4351,7 +4351,19 @@
             }
 
             .compact-options {
+                display: grid;
+                grid-template-columns: repeat(3, 1fr);
                 gap: 8px;
+            }
+
+            /* 4-button groups (Dominanz) get 2x2 grid */
+            .compact-dimension:has([value="ausgeglichen"]) .compact-options {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .compact-option {
+                text-align: center;
+                justify-content: center;
             }
 
             .compact-dimension {
@@ -4915,7 +4927,7 @@
                         </div>
                     </div>
                     <div class="compact-dimension needs-selection" data-dimension="ich-orientierung-new">
-                        <div class="compact-dimension-label">Orientierung</div>
+                        <div class="compact-dimension-label">Orientierung <span class="dimension-info-icon" onclick="showDimensionTooltip('orientierung')">ℹ</span></div>
                         <div class="compact-options">
                             <input type="radio" name="ich-orientierung-new" id="ich-o-het" value="heterosexuell" class="compact-radio">
                             <label for="ich-o-het" class="compact-option">heterosexuell</label>
@@ -4980,7 +4992,7 @@
                         </div>
                     </div>
                     <div class="compact-dimension needs-selection" data-dimension="partner-orientierung-new">
-                        <div class="compact-dimension-label">Orientierung</div>
+                        <div class="compact-dimension-label">Orientierung <span class="dimension-info-icon" onclick="showDimensionTooltip('orientierung')">ℹ</span></div>
                         <div class="compact-options">
                             <input type="radio" name="partner-orientierung-new" id="partner-o-het" value="heterosexuell" class="compact-radio">
                             <label for="partner-o-het" class="compact-option">heterosexuell</label>
@@ -5007,14 +5019,11 @@
         <div class="result-bar">
             <div id="warningsContainer"></div>
             <div class="result-header">
-                <div class="result-title" style="display: flex; flex-direction: column; align-items: flex-start; gap: 4px;">
-                    <div>
-                        <span class="type-name" id="resultIchType">Single</span>
-                        <span> × </span>
-                        <span class="type-name" id="resultPartnerType">Duo</span>
-                        <span style="font-size: var(--font-xs); color: var(--text-muted); margin-left: 8px;">Qualitätsindex</span>
-                    </div>
-                    <button onclick="openHelpModal()" style="background: transparent; border: 1px solid var(--text-muted); color: var(--text-muted); width: 18px; height: 18px; border-radius: 50%; font-size: 11px; cursor: pointer; display: flex; align-items: center; justify-content: center; margin-left: auto; margin-right: auto; transition: all 0.2s;" onmouseover="this.style.borderColor='var(--primary)'; this.style.color='var(--primary)';" onmouseout="this.style.borderColor='var(--text-muted)'; this.style.color='var(--text-muted)';" title="Hilfe zum Qualitätsindex">?</button>
+                <div class="result-title">
+                    <span class="type-name" id="resultIchType">Single</span>
+                    <span> × </span>
+                    <span class="type-name" id="resultPartnerType">Duo</span>
+                    <span style="font-size: var(--font-xs); color: var(--text-muted); margin-left: 8px;">Qualitätsindex</span>
                 </div>
                 <div class="result-percentage" id="resultPercentage">0%</div>
             </div>
@@ -5113,7 +5122,7 @@
 
             <!-- ICH Auswahl -->
             <div style="background: var(--bg-card); border-radius: 16px; border: 1px solid var(--border); border-top: 3px solid var(--success); padding: 15px; margin-bottom: 15px;">
-                <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 12px; color: var(--success); font-weight: 700; font-size: var(--font-base);">
+                <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 12px; color: var(--success); font-weight: 700; font-size: var(--font-lg);">
                     <span>👤</span> ICH
                 </div>
                 <div style="display: flex; gap: 8px; align-items: center; margin-bottom: 12px;">
@@ -5153,7 +5162,7 @@
                         </div>
                     </div>
                     <div class="compact-dimension needs-selection">
-                        <div class="compact-dimension-label">Sexuelle Orientierung</div>
+                        <div class="compact-dimension-label">Sexuelle Orientierung <span class="dimension-info-icon" onclick="showDimensionTooltip('orientierung')">ℹ</span></div>
                         <div class="compact-options">
                             <input type="radio" name="mobile-ich-orientierung" id="m-ich-o-het" value="heterosexuell" class="compact-radio">
                             <label for="m-ich-o-het" class="compact-option">heterosexuell</label>
@@ -5177,8 +5186,8 @@
 
             <!-- PARTNER Auswahl -->
             <div style="background: var(--bg-card); border-radius: 16px; border: 1px solid var(--border); border-top: 3px solid var(--danger); padding: 15px; margin-bottom: 15px;">
-                <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 12px; color: var(--danger); font-weight: 700; font-size: var(--font-base);">
-                    <span>👥</span> PARTNER
+                <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 12px; color: var(--danger); font-weight: 700; font-size: var(--font-lg);">
+                    <span>👥</span> DEIN PARTNER
                 </div>
                 <div style="display: flex; gap: 8px; align-items: center; margin-bottom: 12px;">
                     <select class="column-select" id="mobilePartnerSelect">
@@ -5217,7 +5226,7 @@
                         </div>
                     </div>
                     <div class="compact-dimension needs-selection">
-                        <div class="compact-dimension-label">Sexuelle Orientierung</div>
+                        <div class="compact-dimension-label">Sexuelle Orientierung <span class="dimension-info-icon" onclick="showDimensionTooltip('orientierung')">ℹ</span></div>
                         <div class="compact-options">
                             <input type="radio" name="mobile-partner-orientierung" id="m-partner-o-het" value="heterosexuell" class="compact-radio">
                             <label for="m-partner-o-het" class="compact-option">heterosexuell</label>
@@ -6071,7 +6080,7 @@
             },
             orientierung: {
                 title: "Sexuelle Orientierung",
-                text: "Zu welchem Geschlecht fühlst du dich romantisch/sexuell hingezogen?"
+                text: "Zu welchem Geschlecht fühlst du dich romantisch und/oder sexuell hingezogen?\n\n• Heterosexuell: Anziehung zum anderen Geschlecht\n• Homosexuell: Anziehung zum gleichen Geschlecht\n• Bisexuell: Anziehung zu beiden Geschlechtern\n\nDie sexuelle Orientierung beeinflusst, ob eine körperliche/romantische Anziehung zwischen zwei Personen möglich ist. Bei inkompatiblen Orientierungen zeigt das Modell dies als Blocker an."
             },
             status: {
                 title: "Orientierungs-Status",
