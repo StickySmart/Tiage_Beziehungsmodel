@@ -9059,8 +9059,13 @@
         }
 
         function showArchetypeInfo(person) {
+            console.log('showArchetypeInfo called with:', person);
             const archetype = person === 'ich' ? currentArchetype : selectedPartner;
-            if (!data || !data.archetypes || !data.archetypes[archetype]) return;
+            console.log('archetype:', archetype, 'data:', data);
+            if (!data || !data.archetypes || !data.archetypes[archetype]) {
+                console.error('Data not available for archetype:', archetype);
+                return;
+            }
 
             const arch = data.archetypes[archetype];
             const def = archetypeDefinitions[archetype];
@@ -10287,8 +10292,16 @@
         // ========================================
 
         function openHelpModal() {
-            document.getElementById('helpModal').classList.add('active');
-            document.body.style.overflow = 'hidden';
+            console.log('openHelpModal called');
+            const modal = document.getElementById('helpModal');
+            console.log('helpModal element:', modal);
+            if (modal) {
+                modal.classList.add('active');
+                document.body.style.overflow = 'hidden';
+                console.log('helpModal activated');
+            } else {
+                console.error('helpModal element not found!');
+            }
         }
 
         function closeHelpModal(event) {
@@ -10467,8 +10480,13 @@
         };
 
         function openArchetypeInfo(archetypeId) {
+            console.log('openArchetypeInfo called with:', archetypeId);
             const def = archetypeInfoData[archetypeId];
-            if (!def) return;
+            console.log('archetypeInfoData for', archetypeId, ':', def);
+            if (!def) {
+                console.error('No archetype info data found for:', archetypeId);
+                return;
+            }
 
             // Update current index
             currentArchetypeIndex = archetypeOrder.indexOf(archetypeId);
@@ -10755,6 +10773,23 @@
             setTimeout(updateComparisonView, 100);
         }
         loadDataAndUpdateComparison();
+
+        // Make key functions globally accessible for onclick handlers
+        window.openHelpModal = openHelpModal;
+        window.closeHelpModal = closeHelpModal;
+        window.showArchetypeInfo = showArchetypeInfo;
+        window.openArchetypeInfo = openArchetypeInfo;
+        window.closeArchetypeInfoModal = closeArchetypeInfoModal;
+        window.openFactorModal = openFactorModal;
+        window.closeFactorModal = closeFactorModal;
+        window.closeCategoryModal = closeCategoryModal;
+        window.closeDefinitionModal = closeDefinitionModal;
+        window.openCommentModal = openCommentModal;
+        window.closeCommentModal = closeCommentModal;
+        window.closeFeedbackModal = closeFeedbackModal;
+        window.navigateArchetype = navigateArchetype;
+
+        console.log('All modal functions are now globally available');
 
         // Initialize AdSense ads
         try {
