@@ -12555,60 +12555,85 @@
                         'ausgeglichen': 'ausgeglichen'
                     };
 
-                    // Helper to get primary (fakt) and secondary (interessiert) selections
-                    const getSelections = (domObj) => {
-                        if (!domObj || typeof domObj !== 'object') return { primary: null, secondary: [] };
-                        let primary = null;
-                        const secondary = [];
+                    // Harmony matrix for finding best combination
+                    const harmonyMatrix = {
+                        "dominant-submissiv": 100, "submissiv-dominant": 100,
+                        "ausgeglichen-ausgeglichen": 95, "switch-switch": 90,
+                        "switch-ausgeglichen": 88, "ausgeglichen-switch": 88,
+                        "dominant-ausgeglichen": 85, "ausgeglichen-dominant": 85,
+                        "submissiv-ausgeglichen": 85, "ausgeglichen-submissiv": 85,
+                        "switch-dominant": 80, "dominant-switch": 80,
+                        "switch-submissiv": 80, "submissiv-switch": 80,
+                        "dominant-dominant": 55, "submissiv-submissiv": 55
+                    };
+
+                    // Helper to get all selections with status
+                    const getAllSelections = (domObj) => {
+                        if (!domObj || typeof domObj !== 'object') return [];
+                        const selections = [];
                         for (const [type, status] of Object.entries(domObj)) {
-                            if (status === 'fakt') primary = type;
-                            else if (status === 'interessiert') secondary.push(type);
+                            if (status) selections.push({ type, status });
                         }
-                        return { primary, secondary };
+                        return selections;
                     };
 
-                    const ichSel = getSelections(ichDomObj);
-                    const partnerSel = getSelections(partnerDomObj);
+                    const ichSelections = getAllSelections(ichDomObj);
+                    const partnerSelections = getAllSelections(partnerDomObj);
 
-                    // Format display labels
-                    const formatLabel = (sel) => {
-                        const parts = [];
-                        if (sel.primary) parts.push(`${domLabels[sel.primary]} (Fakt)`);
-                        if (sel.secondary.length > 0) {
-                            parts.push(sel.secondary.map(s => `${domLabels[s]} (interessiert)`).join(', '));
-                        }
-                        return parts.length > 0 ? parts.join(', ') : 'nicht gewählt';
-                    };
-
-                    const ichLabel = formatLabel(ichSel);
-                    const partnerLabel = formatLabel(partnerSel);
-
-                    // Use primary tendencies for comparison
-                    const ichPrimary = ichSel.primary;
-                    const partnerPrimary = partnerSel.primary;
-
-                    if (!ichPrimary || !partnerPrimary) {
-                        return `ICH: ${ichLabel} | Partner: ${partnerLabel} - Bitte wähle für beide eine primäre Dominanz-Tendenz (Fakt).`;
+                    if (ichSelections.length === 0 || partnerSelections.length === 0) {
+                        return 'Bitte wähle für beide Personen mindestens eine Dominanz-Tendenz.';
                     }
 
-                    if (ichPrimary === partnerPrimary) {
-                        if (ichPrimary === 'ausgeglichen' || ichPrimary === 'switch') {
-                            return `Beide sind primär ${domLabels[ichPrimary]} - das ermöglicht eine flexible Dynamik, in der beide je nach Situation verschiedene Rollen einnehmen können.`;
-                        }
-                        if (ichPrimary === 'dominant') {
-                            return `Beide sind primär dominant - das kann zu Machtkämpfen führen. Funktioniert mit bewussten Kommunikationsregeln und Kompromissbereitschaft.`;
-                        }
-                        if (ichPrimary === 'submissiv') {
-                            return `Beide sind primär submissiv - es kann ein Führungsvakuum entstehen. Bewusste Aufgabenteilung und klare Absprachen sind wichtig.`;
+                    // Find best combination across ALL selections (primary + secondary)
+                    let bestCombo = null;
+                    let bestScore = 0;
+                    for (const ichSel of ichSelections) {
+                        for (const partnerSel of partnerSelections) {
+                            const key = `${ichSel.type}-${partnerSel.type}`;
+                            let baseScore = harmonyMatrix[key] || harmonyMatrix[`${partnerSel.type}-${ichSel.type}`] || 75;
+                            // Reduce score if either is "interessiert"
+                            const hasInteressiert = ichSel.status === 'interessiert' || partnerSel.status === 'interessiert';
+                            const adjustedScore = hasInteressiert ? Math.round(baseScore * 0.7) : baseScore;
+                            if (adjustedScore > bestScore) {
+                                bestScore = adjustedScore;
+                                bestCombo = { ich: ichSel, partner: partnerSel, hasInteressiert, baseScore };
+                            }
                         }
                     }
 
-                    if ((ichPrimary === 'dominant' && partnerPrimary === 'submissiv') ||
-                        (ichPrimary === 'submissiv' && partnerPrimary === 'dominant')) {
-                        return `Perfekte Komplementarität: ${domLabels[ichPrimary]} (ICH) und ${domLabels[partnerPrimary]} (Partner) ergänzen sich ideal in der emotionalen Dynamik.`;
+                    if (!bestCombo) {
+                        return 'Keine kompatible Dominanz-Kombination gefunden.';
                     }
 
-                    return `ICH: ${ichLabel} | Partner: ${partnerLabel} - eine interessante Dynamik, die durch Flexibilität und Verständnis gut funktionieren kann.`;
+                    const ichType = bestCombo.ich.type;
+                    const partnerType = bestCombo.partner.type;
+                    const ichStatusLabel = bestCombo.ich.status === 'fakt' ? 'Fakt' : 'interessiert';
+                    const partnerStatusLabel = bestCombo.partner.status === 'fakt' ? 'Fakt' : 'interessiert';
+
+                    // Build explanation based on best combination
+                    let explanation = `Beste Kombination: ${domLabels[ichType]} (${ichStatusLabel}) ↔ ${domLabels[partnerType]} (${partnerStatusLabel}). `;
+
+                    if (ichType === partnerType) {
+                        if (ichType === 'ausgeglichen' || ichType === 'switch') {
+                            explanation += `Beide bevorzugen ${domLabels[ichType]} - flexible Dynamik möglich.`;
+                        } else if (ichType === 'dominant') {
+                            explanation += `Beide dominant - Machtkampf-Risiko, aber mit Kommunikation machbar.`;
+                        } else if (ichType === 'submissiv') {
+                            explanation += `Beide submissiv - Führungsvakuum-Risiko, klare Absprachen wichtig.`;
+                        }
+                    } else if ((ichType === 'dominant' && partnerType === 'submissiv') ||
+                               (ichType === 'submissiv' && partnerType === 'dominant')) {
+                        explanation += `Perfekte Komplementarität in der emotionalen Dynamik!`;
+                    } else {
+                        explanation += `Interessante Dynamik mit Flexibilitätspotential.`;
+                    }
+
+                    // Add warning if best combo uses "interessiert"
+                    if (bestCombo.hasInteressiert) {
+                        explanation += ` ⚠️ Exploration-Phase: Reduzierte Konfidenz (${bestCombo.baseScore}% → ${bestScore}%).`;
+                    }
+
+                    return explanation;
                 },
                 getMeaning: (score) => {
                     if (score >= 80) {
