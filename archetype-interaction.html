@@ -3865,6 +3865,130 @@
             }
         }
 
+        /* Status Selection Popup */
+        .status-popup-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.7);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.2s ease;
+        }
+
+        .status-popup-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .status-popup {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 24px;
+            max-width: 360px;
+            width: 90%;
+            transform: scale(0.9);
+            transition: transform 0.2s ease;
+        }
+
+        .status-popup-overlay.active .status-popup {
+            transform: scale(1);
+        }
+
+        .status-popup-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+            text-align: center;
+        }
+
+        .status-popup-subtitle {
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .status-popup-options {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .status-popup-option {
+            display: flex;
+            flex-direction: column;
+            padding: 16px;
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            background: var(--bg-dark);
+        }
+
+        .status-popup-option:hover {
+            border-color: var(--primary);
+            background: rgba(139, 92, 246, 0.1);
+        }
+
+        .status-popup-option.fakt-option:hover {
+            border-color: var(--primary);
+        }
+
+        .status-popup-option.interessiert-option:hover {
+            border-color: #eab308;
+            background: rgba(234, 179, 8, 0.1);
+        }
+
+        .status-popup-option-title {
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 6px;
+        }
+
+        .status-popup-option.fakt-option .status-popup-option-title {
+            color: var(--primary);
+        }
+
+        .status-popup-option.interessiert-option .status-popup-option-title {
+            color: #eab308;
+        }
+
+        .status-popup-option-desc {
+            font-size: 12px;
+            color: var(--text-secondary);
+            line-height: 1.4;
+        }
+
+        .status-popup-cancel {
+            margin-top: 16px;
+            text-align: center;
+        }
+
+        .status-popup-cancel-btn {
+            background: transparent;
+            border: 1px solid var(--border);
+            color: var(--text-muted);
+            padding: 8px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 12px;
+            transition: all 0.2s;
+        }
+
+        .status-popup-cancel-btn:hover {
+            border-color: var(--text-secondary);
+            color: var(--text-secondary);
+        }
+
         /* Result Bar */
         .result-bar {
             background: var(--bg-card);
@@ -9352,17 +9476,9 @@
         // Handle checkbox change for dominanz multi-select
         function handleDominanzMultiChange(person, dominanzType, isChecked) {
             if (isChecked) {
-                // Show status toggle and default to 'fakt'
-                personDimensions[person].dominanz[dominanzType] = 'fakt';
-                if (typeof mobilePersonDimensions !== 'undefined') {
-                    mobilePersonDimensions[person].dominanz[dominanzType] = 'fakt';
-                }
-
-                // Show the status toggle group
-                const statusGroup = document.getElementById(person + '-d-' + getShortDominanzId(dominanzType) + '-status');
-                if (statusGroup) {
-                    statusGroup.style.display = 'flex';
-                }
+                // Open popup to select status
+                openStatusPopup(person, dominanzType, 'desktop');
+                return; // Don't set status yet, wait for popup selection
             } else {
                 // Remove selection
                 personDimensions[person].dominanz[dominanzType] = null;
@@ -9416,17 +9532,9 @@
         // Mobile: Handle checkbox change for multi-select dominanz
         function handleMobileDominanzMultiChange(person, dominanzType, isChecked) {
             if (isChecked) {
-                // Set default status to 'fakt'
-                if (typeof mobilePersonDimensions !== 'undefined') {
-                    mobilePersonDimensions[person].dominanz[dominanzType] = 'fakt';
-                }
-                personDimensions[person].dominanz[dominanzType] = 'fakt';
-
-                // Show the status toggle group
-                const statusGroup = document.getElementById('m-' + person + '-d-' + getShortDominanzId(dominanzType) + '-status');
-                if (statusGroup) {
-                    statusGroup.style.display = 'flex';
-                }
+                // Open popup to select status
+                openStatusPopup(person, dominanzType, 'mobile');
+                return; // Don't set status yet, wait for popup selection
             } else {
                 // Remove selection
                 if (typeof mobilePersonDimensions !== 'undefined') {
@@ -9480,17 +9588,9 @@
         // Modal: Handle checkbox change for multi-select dominanz
         function handleModalDominanzMultiChange(person, dominanzType, isChecked) {
             if (isChecked) {
-                // Set default status to 'fakt'
-                personDimensions[person].dominanz[dominanzType] = 'fakt';
-                if (typeof mobilePersonDimensions !== 'undefined') {
-                    mobilePersonDimensions[person].dominanz[dominanzType] = 'fakt';
-                }
-
-                // Show the status toggle group
-                const statusGroup = document.getElementById('modal-' + person + '-d-' + getShortDominanzId(dominanzType) + '-status');
-                if (statusGroup) {
-                    statusGroup.style.display = 'flex';
-                }
+                // Open popup to select status
+                openStatusPopup(person, dominanzType, 'modal');
+                return; // Don't set status yet, wait for popup selection
             } else {
                 // Remove selection
                 personDimensions[person].dominanz[dominanzType] = null;
@@ -13758,6 +13858,106 @@
         window.submitReply = submitReply;
 
         console.log('All modal functions are now globally available');
+    </script>
+
+    <!-- Status Selection Popup -->
+    <div id="statusPopupOverlay" class="status-popup-overlay" onclick="closeStatusPopup(event)">
+        <div class="status-popup" onclick="event.stopPropagation()">
+            <div class="status-popup-title" id="statusPopupTitle">Status wählen</div>
+            <div class="status-popup-subtitle" id="statusPopupSubtitle">Wie sicher bist du dir bei dieser Auswahl?</div>
+            <div class="status-popup-options">
+                <div class="status-popup-option fakt-option" onclick="selectStatusFromPopup('fakt')">
+                    <div class="status-popup-option-title">Fakt</div>
+                    <div class="status-popup-option-desc">Das ist eine sichere, bestätigte Eigenschaft. Du weißt, dass dies zutrifft.</div>
+                </div>
+                <div class="status-popup-option interessiert-option" onclick="selectStatusFromPopup('interessiert')">
+                    <div class="status-popup-option-title">Interessiert</div>
+                    <div class="status-popup-option-desc">Du bist neugierig oder offen dafür, diese Seite zu erkunden. Noch nicht sicher, aber möglich.</div>
+                </div>
+            </div>
+            <div class="status-popup-cancel">
+                <button class="status-popup-cancel-btn" onclick="cancelStatusPopup()">Abbrechen</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Status Popup State
+        let statusPopupContext = {
+            person: null,
+            dominanzType: null,
+            source: null // 'desktop', 'mobile', 'modal'
+        };
+
+        function openStatusPopup(person, dominanzType, source) {
+            statusPopupContext = { person, dominanzType, source };
+            const overlay = document.getElementById('statusPopupOverlay');
+            const title = document.getElementById('statusPopupTitle');
+
+            // Update title with the selected option
+            const typeLabels = {
+                'dominant': 'Dominant',
+                'submissiv': 'Submissiv',
+                'switch': 'Switch',
+                'ausgeglichen': 'Ausgeglichen'
+            };
+            title.textContent = typeLabels[dominanzType] || dominanzType;
+
+            overlay.classList.add('active');
+        }
+
+        function closeStatusPopup(event) {
+            if (event && event.target.id !== 'statusPopupOverlay') return;
+            const overlay = document.getElementById('statusPopupOverlay');
+            overlay.classList.remove('active');
+        }
+
+        function cancelStatusPopup() {
+            // Uncheck the checkbox since user cancelled
+            const { person, dominanzType, source } = statusPopupContext;
+            if (person && dominanzType) {
+                const shortId = getShortDominanzId(dominanzType);
+                let checkboxId;
+                if (source === 'mobile') {
+                    checkboxId = 'm-' + person + '-d-' + shortId;
+                } else if (source === 'modal') {
+                    checkboxId = 'modal-' + person + '-d-' + shortId;
+                } else {
+                    checkboxId = person + '-d-' + shortId;
+                }
+                const checkbox = document.getElementById(checkboxId);
+                if (checkbox) checkbox.checked = false;
+            }
+            closeStatusPopup({ target: { id: 'statusPopupOverlay' } });
+        }
+
+        function selectStatusFromPopup(status) {
+            const { person, dominanzType, source } = statusPopupContext;
+            if (!person || !dominanzType) return;
+
+            // Set the status
+            personDimensions[person].dominanz[dominanzType] = status;
+            if (typeof mobilePersonDimensions !== 'undefined') {
+                mobilePersonDimensions[person].dominanz[dominanzType] = status;
+            }
+
+            // Sync all UIs
+            syncDominanzUI(person);
+            updateComparisonView();
+
+            if (typeof saveSelectionToStorage === 'function') {
+                saveSelectionToStorage();
+            }
+
+            // Close popup
+            closeStatusPopup({ target: { id: 'statusPopupOverlay' } });
+        }
+
+        // Make functions globally available
+        window.openStatusPopup = openStatusPopup;
+        window.closeStatusPopup = closeStatusPopup;
+        window.cancelStatusPopup = cancelStatusPopup;
+        window.selectStatusFromPopup = selectStatusFromPopup;
     </script>
 </body>
 </html>
