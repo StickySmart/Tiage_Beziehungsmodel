@@ -363,6 +363,26 @@
             letter-spacing: 0.5px;
         }
 
+        .comment-type-badge.type-fehler {
+            background: #dc3545;
+        }
+
+        .comment-type-badge.type-frage {
+            background: #17a2b8;
+        }
+
+        .comment-type-badge.type-verbesserung {
+            background: #28a745;
+        }
+
+        .comment-type-badge.type-doku {
+            background: #6c757d;
+        }
+
+        .comment-type-badge.type-antwort {
+            background: #6f42c1;
+        }
+
         .comment-card-body {
             padding: 15px;
         }
@@ -11103,7 +11123,7 @@
                 const titel = comment.Titel || comment.titel || comment.type || '';
                 const text = comment.Kommentar || comment.kommentar || comment.text || comment.comment || '';
                 const kontext = comment.KontextID || comment.kontextId || comment.context || '';
-                const typ = comment.Typ || comment.typ || comment.type || 'feedback';
+                const typ = comment.Typ || comment.typ || comment.kommentarTyp || comment.type || 'comment';
                 const timestamp = comment.timestamp || comment.Timestamp || comment.datum;
                 const date = timestamp ? formatCommentDate(timestamp) : '';
 
@@ -11119,7 +11139,7 @@
                                 <span class="comment-author">${escapeHtml(name)}</span>
                                 <span class="comment-date">${date}</span>
                             </div>
-                            <span class="comment-type-badge">${getTypeBadge(typ)}</span>
+                            <span class="comment-type-badge type-${typ || 'comment'}">${getTypeBadge(typ)}</span>
                         </div>
                         <div class="comment-card-body">
                             ${titel ? `<div class="comment-title">${escapeHtml(titel)}</div>` : ''}
@@ -11188,7 +11208,7 @@
             const titel = comment.Titel || comment.titel || comment.type || '';
             const text = comment.Kommentar || comment.kommentar || comment.text || comment.comment || '';
             const kontext = comment.KontextID || comment.kontextId || comment.context || '';
-            const typ = comment.Typ || comment.typ || comment.type || '';
+            const typ = comment.Typ || comment.typ || comment.kommentarTyp || comment.type || 'comment';
             const typLabel = getTypeBadge(typ);
 
             // Check if any field matches
@@ -11279,7 +11299,7 @@
                 const titel = comment.Titel || comment.titel || comment.type || '';
                 const text = comment.Kommentar || comment.kommentar || comment.text || comment.comment || '';
                 const kontext = comment.KontextID || comment.kontextId || comment.context || '';
-                const typ = comment.Typ || comment.typ || comment.type || 'feedback';
+                const typ = comment.Typ || comment.typ || comment.kommentarTyp || comment.type || 'comment';
                 const timestamp = comment.timestamp || comment.Timestamp || comment.datum;
                 const date = timestamp ? formatCommentDate(timestamp) : '';
 
@@ -11295,7 +11315,7 @@
                                 <span class="comment-author">${highlightMatch(escapeHtml(name), currentSearchQuery)}</span>
                                 <span class="comment-date">${date}</span>
                             </div>
-                            <span class="comment-type-badge">${getTypeBadge(typ)}</span>
+                            <span class="comment-type-badge type-${typ || 'comment'}">${getTypeBadge(typ)}</span>
                         </div>
                         <div class="comment-card-body">
                             ${titel ? `<div class="comment-title">${highlightMatch(escapeHtml(titel), currentSearchQuery)}</div>` : ''}
