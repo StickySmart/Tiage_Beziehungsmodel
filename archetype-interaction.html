@@ -3874,6 +3874,44 @@
             cursor: default;
         }
 
+        /* Secondary tendency button (only "interessiert" available when a Fakt exists) */
+        .secondary-interessiert-btn {
+            display: none;
+            padding: 4px 10px;
+            font-size: 10px;
+            border: 1px solid #eab308;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s;
+            background: transparent;
+            color: #eab308;
+            margin-left: auto;
+        }
+
+        .secondary-interessiert-btn:hover {
+            background: rgba(234, 179, 8, 0.15);
+        }
+
+        .secondary-interessiert-btn.active {
+            background: rgba(234, 179, 8, 0.25);
+            animation: yellowPulse 1.5s ease-in-out infinite;
+        }
+
+        /* Disabled checkbox styling */
+        .dominanz-checkbox:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+        }
+
+        .dominanz-option-row.secondary-mode .dominanz-label {
+            opacity: 0.7;
+        }
+
+        .dominanz-option-row.secondary-mode:has(.secondary-interessiert-btn.active) {
+            background: rgba(234, 179, 8, 0.1);
+            border-color: rgba(234, 179, 8, 0.4);
+        }
+
         /* Status Selection Popup */
         .status-popup-overlay {
             position: fixed;
@@ -5169,33 +5207,37 @@
                     <div class="compact-dimension needs-selection" data-dimension="ich-dominanz-multi">
                         <div class="compact-dimension-label">Dominanz <span class="dimension-info-icon" onclick="showDimensionTooltip('dominanz')">ℹ</span> <span style="font-size: 10px; opacity: 0.7;">(Mehrfachauswahl)</span></div>
                         <div class="dominanz-multi-select">
-                            <div class="dominanz-option-row">
+                            <div class="dominanz-option-row" id="ich-d-dom-row">
                                 <input type="checkbox" id="ich-d-dom" value="dominant" class="dominanz-checkbox" onchange="handleDominanzMultiChange('ich', 'dominant', this.checked)">
                                 <label for="ich-d-dom" class="dominanz-label">dominant</label>
+                                <button type="button" id="ich-d-dom-secondary" class="secondary-interessiert-btn" onclick="handleSecondaryInteressiert('ich', 'dominant', this)">interessiert</button>
                                 <div id="ich-d-dom-status" class="status-toggle-group">
                                     <button type="button" class="status-toggle-btn active-fakt" data-status="fakt" onclick="handleDominanzStatusToggle('ich', 'dominant', 'fakt', this)">Fakt</button>
                                     <button type="button" class="status-toggle-btn" data-status="interessiert" onclick="handleDominanzStatusToggle('ich', 'dominant', 'interessiert', this)">Interessiert</button>
                                 </div>
                             </div>
-                            <div class="dominanz-option-row">
+                            <div class="dominanz-option-row" id="ich-d-sub-row">
                                 <input type="checkbox" id="ich-d-sub" value="submissiv" class="dominanz-checkbox" onchange="handleDominanzMultiChange('ich', 'submissiv', this.checked)">
                                 <label for="ich-d-sub" class="dominanz-label">submissiv</label>
+                                <button type="button" id="ich-d-sub-secondary" class="secondary-interessiert-btn" onclick="handleSecondaryInteressiert('ich', 'submissiv', this)">interessiert</button>
                                 <div id="ich-d-sub-status" class="status-toggle-group">
                                     <button type="button" class="status-toggle-btn active-fakt" data-status="fakt" onclick="handleDominanzStatusToggle('ich', 'submissiv', 'fakt', this)">Fakt</button>
                                     <button type="button" class="status-toggle-btn" data-status="interessiert" onclick="handleDominanzStatusToggle('ich', 'submissiv', 'interessiert', this)">Interessiert</button>
                                 </div>
                             </div>
-                            <div class="dominanz-option-row">
+                            <div class="dominanz-option-row" id="ich-d-sw-row">
                                 <input type="checkbox" id="ich-d-sw" value="switch" class="dominanz-checkbox" onchange="handleDominanzMultiChange('ich', 'switch', this.checked)">
                                 <label for="ich-d-sw" class="dominanz-label">switch</label>
+                                <button type="button" id="ich-d-sw-secondary" class="secondary-interessiert-btn" onclick="handleSecondaryInteressiert('ich', 'switch', this)">interessiert</button>
                                 <div id="ich-d-sw-status" class="status-toggle-group">
                                     <button type="button" class="status-toggle-btn active-fakt" data-status="fakt" onclick="handleDominanzStatusToggle('ich', 'switch', 'fakt', this)">Fakt</button>
                                     <button type="button" class="status-toggle-btn" data-status="interessiert" onclick="handleDominanzStatusToggle('ich', 'switch', 'interessiert', this)">Interessiert</button>
                                 </div>
                             </div>
-                            <div class="dominanz-option-row">
+                            <div class="dominanz-option-row" id="ich-d-aus-row">
                                 <input type="checkbox" id="ich-d-aus" value="ausgeglichen" class="dominanz-checkbox" onchange="handleDominanzMultiChange('ich', 'ausgeglichen', this.checked)">
                                 <label for="ich-d-aus" class="dominanz-label">ausgeglichen</label>
+                                <button type="button" id="ich-d-aus-secondary" class="secondary-interessiert-btn" onclick="handleSecondaryInteressiert('ich', 'ausgeglichen', this)">interessiert</button>
                                 <div id="ich-d-aus-status" class="status-toggle-group">
                                     <button type="button" class="status-toggle-btn active-fakt" data-status="fakt" onclick="handleDominanzStatusToggle('ich', 'ausgeglichen', 'fakt', this)">Fakt</button>
                                     <button type="button" class="status-toggle-btn" data-status="interessiert" onclick="handleDominanzStatusToggle('ich', 'ausgeglichen', 'interessiert', this)">Interessiert</button>
@@ -5267,33 +5309,37 @@
                     <div class="compact-dimension needs-selection" data-dimension="partner-dominanz-multi">
                         <div class="compact-dimension-label">Dominanz <span class="dimension-info-icon" onclick="showDimensionTooltip('dominanz')">ℹ</span> <span style="font-size: 10px; opacity: 0.7;">(Mehrfachauswahl)</span></div>
                         <div class="dominanz-multi-select">
-                            <div class="dominanz-option-row">
+                            <div class="dominanz-option-row" id="partner-d-dom-row">
                                 <input type="checkbox" id="partner-d-dom" value="dominant" class="dominanz-checkbox" onchange="handleDominanzMultiChange('partner', 'dominant', this.checked)">
                                 <label for="partner-d-dom" class="dominanz-label">dominant</label>
+                                <button type="button" id="partner-d-dom-secondary" class="secondary-interessiert-btn" onclick="handleSecondaryInteressiert('partner', 'dominant', this)">interessiert</button>
                                 <div id="partner-d-dom-status" class="status-toggle-group">
                                     <button type="button" class="status-toggle-btn active-fakt" data-status="fakt" onclick="handleDominanzStatusToggle('partner', 'dominant', 'fakt', this)">Fakt</button>
                                     <button type="button" class="status-toggle-btn" data-status="interessiert" onclick="handleDominanzStatusToggle('partner', 'dominant', 'interessiert', this)">Interessiert</button>
                                 </div>
                             </div>
-                            <div class="dominanz-option-row">
+                            <div class="dominanz-option-row" id="partner-d-sub-row">
                                 <input type="checkbox" id="partner-d-sub" value="submissiv" class="dominanz-checkbox" onchange="handleDominanzMultiChange('partner', 'submissiv', this.checked)">
                                 <label for="partner-d-sub" class="dominanz-label">submissiv</label>
+                                <button type="button" id="partner-d-sub-secondary" class="secondary-interessiert-btn" onclick="handleSecondaryInteressiert('partner', 'submissiv', this)">interessiert</button>
                                 <div id="partner-d-sub-status" class="status-toggle-group">
                                     <button type="button" class="status-toggle-btn active-fakt" data-status="fakt" onclick="handleDominanzStatusToggle('partner', 'submissiv', 'fakt', this)">Fakt</button>
                                     <button type="button" class="status-toggle-btn" data-status="interessiert" onclick="handleDominanzStatusToggle('partner', 'submissiv', 'interessiert', this)">Interessiert</button>
                                 </div>
                             </div>
-                            <div class="dominanz-option-row">
+                            <div class="dominanz-option-row" id="partner-d-sw-row">
                                 <input type="checkbox" id="partner-d-sw" value="switch" class="dominanz-checkbox" onchange="handleDominanzMultiChange('partner', 'switch', this.checked)">
                                 <label for="partner-d-sw" class="dominanz-label">switch</label>
+                                <button type="button" id="partner-d-sw-secondary" class="secondary-interessiert-btn" onclick="handleSecondaryInteressiert('partner', 'switch', this)">interessiert</button>
                                 <div id="partner-d-sw-status" class="status-toggle-group">
                                     <button type="button" class="status-toggle-btn active-fakt" data-status="fakt" onclick="handleDominanzStatusToggle('partner', 'switch', 'fakt', this)">Fakt</button>
                                     <button type="button" class="status-toggle-btn" data-status="interessiert" onclick="handleDominanzStatusToggle('partner', 'switch', 'interessiert', this)">Interessiert</button>
                                 </div>
                             </div>
-                            <div class="dominanz-option-row">
+                            <div class="dominanz-option-row" id="partner-d-aus-row">
                                 <input type="checkbox" id="partner-d-aus" value="ausgeglichen" class="dominanz-checkbox" onchange="handleDominanzMultiChange('partner', 'ausgeglichen', this.checked)">
                                 <label for="partner-d-aus" class="dominanz-label">ausgeglichen</label>
+                                <button type="button" id="partner-d-aus-secondary" class="secondary-interessiert-btn" onclick="handleSecondaryInteressiert('partner', 'ausgeglichen', this)">interessiert</button>
                                 <div id="partner-d-aus-status" class="status-toggle-group">
                                     <button type="button" class="status-toggle-btn active-fakt" data-status="fakt" onclick="handleDominanzStatusToggle('partner', 'ausgeglichen', 'fakt', this)">Fakt</button>
                                     <button type="button" class="status-toggle-btn" data-status="interessiert" onclick="handleDominanzStatusToggle('partner', 'ausgeglichen', 'interessiert', this)">Interessiert</button>
@@ -5455,33 +5501,37 @@
                     <div class="compact-dimension needs-selection" data-dimension="mobile-ich-dominanz-multi">
                         <div class="compact-dimension-label">Dominanz <span class="dimension-info-icon" onclick="showDimensionTooltip('dominanz')">ℹ</span> <span style="font-size: 10px; opacity: 0.7;">(Mehrfachauswahl)</span></div>
                         <div class="dominanz-multi-select">
-                            <div class="dominanz-option-row">
+                            <div class="dominanz-option-row" id="m-ich-d-dom-row">
                                 <input type="checkbox" id="m-ich-d-dom" value="dominant" class="dominanz-checkbox" onchange="handleMobileDominanzMultiChange('ich', 'dominant', this.checked)">
                                 <label for="m-ich-d-dom" class="dominanz-label">dominant</label>
+                                <button type="button" id="m-ich-d-dom-secondary" class="secondary-interessiert-btn" onclick="handleSecondaryInteressiert('ich', 'dominant', this)">interessiert</button>
                                 <div id="m-ich-d-dom-status" class="status-toggle-group">
                                     <button type="button" class="status-toggle-btn active-fakt" data-status="fakt" onclick="handleMobileDominanzStatusToggle('ich', 'dominant', 'fakt', this)">Fakt</button>
                                     <button type="button" class="status-toggle-btn" data-status="interessiert" onclick="handleMobileDominanzStatusToggle('ich', 'dominant', 'interessiert', this)">Interessiert</button>
                                 </div>
                             </div>
-                            <div class="dominanz-option-row">
+                            <div class="dominanz-option-row" id="m-ich-d-sub-row">
                                 <input type="checkbox" id="m-ich-d-sub" value="submissiv" class="dominanz-checkbox" onchange="handleMobileDominanzMultiChange('ich', 'submissiv', this.checked)">
                                 <label for="m-ich-d-sub" class="dominanz-label">submissiv</label>
+                                <button type="button" id="m-ich-d-sub-secondary" class="secondary-interessiert-btn" onclick="handleSecondaryInteressiert('ich', 'submissiv', this)">interessiert</button>
                                 <div id="m-ich-d-sub-status" class="status-toggle-group">
                                     <button type="button" class="status-toggle-btn active-fakt" data-status="fakt" onclick="handleMobileDominanzStatusToggle('ich', 'submissiv', 'fakt', this)">Fakt</button>
                                     <button type="button" class="status-toggle-btn" data-status="interessiert" onclick="handleMobileDominanzStatusToggle('ich', 'submissiv', 'interessiert', this)">Interessiert</button>
                                 </div>
                             </div>
-                            <div class="dominanz-option-row">
+                            <div class="dominanz-option-row" id="m-ich-d-sw-row">
                                 <input type="checkbox" id="m-ich-d-sw" value="switch" class="dominanz-checkbox" onchange="handleMobileDominanzMultiChange('ich', 'switch', this.checked)">
                                 <label for="m-ich-d-sw" class="dominanz-label">switch</label>
+                                <button type="button" id="m-ich-d-sw-secondary" class="secondary-interessiert-btn" onclick="handleSecondaryInteressiert('ich', 'switch', this)">interessiert</button>
                                 <div id="m-ich-d-sw-status" class="status-toggle-group">
                                     <button type="button" class="status-toggle-btn active-fakt" data-status="fakt" onclick="handleMobileDominanzStatusToggle('ich', 'switch', 'fakt', this)">Fakt</button>
                                     <button type="button" class="status-toggle-btn" data-status="interessiert" onclick="handleMobileDominanzStatusToggle('ich', 'switch', 'interessiert', this)">Interessiert</button>
                                 </div>
                             </div>
-                            <div class="dominanz-option-row">
+                            <div class="dominanz-option-row" id="m-ich-d-aus-row">
                                 <input type="checkbox" id="m-ich-d-aus" value="ausgeglichen" class="dominanz-checkbox" onchange="handleMobileDominanzMultiChange('ich', 'ausgeglichen', this.checked)">
                                 <label for="m-ich-d-aus" class="dominanz-label">ausgeglichen</label>
+                                <button type="button" id="m-ich-d-aus-secondary" class="secondary-interessiert-btn" onclick="handleSecondaryInteressiert('ich', 'ausgeglichen', this)">interessiert</button>
                                 <div id="m-ich-d-aus-status" class="status-toggle-group">
                                     <button type="button" class="status-toggle-btn active-fakt" data-status="fakt" onclick="handleMobileDominanzStatusToggle('ich', 'ausgeglichen', 'fakt', this)">Fakt</button>
                                     <button type="button" class="status-toggle-btn" data-status="interessiert" onclick="handleMobileDominanzStatusToggle('ich', 'ausgeglichen', 'interessiert', this)">Interessiert</button>
@@ -5552,33 +5602,37 @@
                     <div class="compact-dimension needs-selection" data-dimension="mobile-partner-dominanz-multi">
                         <div class="compact-dimension-label">Dominanz <span class="dimension-info-icon" onclick="showDimensionTooltip('dominanz')">ℹ</span> <span style="font-size: 10px; opacity: 0.7;">(Mehrfachauswahl)</span></div>
                         <div class="dominanz-multi-select">
-                            <div class="dominanz-option-row">
+                            <div class="dominanz-option-row" id="m-partner-d-dom-row">
                                 <input type="checkbox" id="m-partner-d-dom" value="dominant" class="dominanz-checkbox" onchange="handleMobileDominanzMultiChange('partner', 'dominant', this.checked)">
                                 <label for="m-partner-d-dom" class="dominanz-label">dominant</label>
+                                <button type="button" id="m-partner-d-dom-secondary" class="secondary-interessiert-btn" onclick="handleSecondaryInteressiert('partner', 'dominant', this)">interessiert</button>
                                 <div id="m-partner-d-dom-status" class="status-toggle-group">
                                     <button type="button" class="status-toggle-btn active-fakt" data-status="fakt" onclick="handleMobileDominanzStatusToggle('partner', 'dominant', 'fakt', this)">Fakt</button>
                                     <button type="button" class="status-toggle-btn" data-status="interessiert" onclick="handleMobileDominanzStatusToggle('partner', 'dominant', 'interessiert', this)">Interessiert</button>
                                 </div>
                             </div>
-                            <div class="dominanz-option-row">
+                            <div class="dominanz-option-row" id="m-partner-d-sub-row">
                                 <input type="checkbox" id="m-partner-d-sub" value="submissiv" class="dominanz-checkbox" onchange="handleMobileDominanzMultiChange('partner', 'submissiv', this.checked)">
                                 <label for="m-partner-d-sub" class="dominanz-label">submissiv</label>
+                                <button type="button" id="m-partner-d-sub-secondary" class="secondary-interessiert-btn" onclick="handleSecondaryInteressiert('partner', 'submissiv', this)">interessiert</button>
                                 <div id="m-partner-d-sub-status" class="status-toggle-group">
                                     <button type="button" class="status-toggle-btn active-fakt" data-status="fakt" onclick="handleMobileDominanzStatusToggle('partner', 'submissiv', 'fakt', this)">Fakt</button>
                                     <button type="button" class="status-toggle-btn" data-status="interessiert" onclick="handleMobileDominanzStatusToggle('partner', 'submissiv', 'interessiert', this)">Interessiert</button>
                                 </div>
                             </div>
-                            <div class="dominanz-option-row">
+                            <div class="dominanz-option-row" id="m-partner-d-sw-row">
                                 <input type="checkbox" id="m-partner-d-sw" value="switch" class="dominanz-checkbox" onchange="handleMobileDominanzMultiChange('partner', 'switch', this.checked)">
                                 <label for="m-partner-d-sw" class="dominanz-label">switch</label>
+                                <button type="button" id="m-partner-d-sw-secondary" class="secondary-interessiert-btn" onclick="handleSecondaryInteressiert('partner', 'switch', this)">interessiert</button>
                                 <div id="m-partner-d-sw-status" class="status-toggle-group">
                                     <button type="button" class="status-toggle-btn active-fakt" data-status="fakt" onclick="handleMobileDominanzStatusToggle('partner', 'switch', 'fakt', this)">Fakt</button>
                                     <button type="button" class="status-toggle-btn" data-status="interessiert" onclick="handleMobileDominanzStatusToggle('partner', 'switch', 'interessiert', this)">Interessiert</button>
                                 </div>
                             </div>
-                            <div class="dominanz-option-row">
+                            <div class="dominanz-option-row" id="m-partner-d-aus-row">
                                 <input type="checkbox" id="m-partner-d-aus" value="ausgeglichen" class="dominanz-checkbox" onchange="handleMobileDominanzMultiChange('partner', 'ausgeglichen', this.checked)">
                                 <label for="m-partner-d-aus" class="dominanz-label">ausgeglichen</label>
+                                <button type="button" id="m-partner-d-aus-secondary" class="secondary-interessiert-btn" onclick="handleSecondaryInteressiert('partner', 'ausgeglichen', this)">interessiert</button>
                                 <div id="m-partner-d-aus-status" class="status-toggle-group">
                                     <button type="button" class="status-toggle-btn active-fakt" data-status="fakt" onclick="handleMobileDominanzStatusToggle('partner', 'ausgeglichen', 'fakt', this)">Fakt</button>
                                     <button type="button" class="status-toggle-btn" data-status="interessiert" onclick="handleMobileDominanzStatusToggle('partner', 'ausgeglichen', 'interessiert', this)">Interessiert</button>
@@ -5774,33 +5828,37 @@
                                     <span style="font-size: 10px; opacity: 0.7;">(Mehrfachauswahl)</span>
                                 </div>
                                 <div class="dominanz-multi-select">
-                                    <div class="dominanz-option-row">
+                                    <div class="dominanz-option-row" id="modal-ich-d-dom-row">
                                         <input type="checkbox" id="modal-ich-d-dom" value="dominant" class="dominanz-checkbox" onchange="handleModalDominanzMultiChange('ich', 'dominant', this.checked)">
                                         <label for="modal-ich-d-dom" class="dominanz-label">dominant</label>
+                                        <button type="button" id="modal-ich-d-dom-secondary" class="secondary-interessiert-btn" onclick="handleSecondaryInteressiert('ich', 'dominant', this)">interessiert</button>
                                         <div id="modal-ich-d-dom-status" class="status-toggle-group">
                                             <button type="button" class="status-toggle-btn active-fakt" data-status="fakt" onclick="handleModalDominanzStatusToggle('ich', 'dominant', 'fakt', this)">Fakt</button>
                                             <button type="button" class="status-toggle-btn" data-status="interessiert" onclick="handleModalDominanzStatusToggle('ich', 'dominant', 'interessiert', this)">Interessiert</button>
                                         </div>
                                     </div>
-                                    <div class="dominanz-option-row">
+                                    <div class="dominanz-option-row" id="modal-ich-d-sub-row">
                                         <input type="checkbox" id="modal-ich-d-sub" value="submissiv" class="dominanz-checkbox" onchange="handleModalDominanzMultiChange('ich', 'submissiv', this.checked)">
                                         <label for="modal-ich-d-sub" class="dominanz-label">submissiv</label>
+                                        <button type="button" id="modal-ich-d-sub-secondary" class="secondary-interessiert-btn" onclick="handleSecondaryInteressiert('ich', 'submissiv', this)">interessiert</button>
                                         <div id="modal-ich-d-sub-status" class="status-toggle-group">
                                             <button type="button" class="status-toggle-btn active-fakt" data-status="fakt" onclick="handleModalDominanzStatusToggle('ich', 'submissiv', 'fakt', this)">Fakt</button>
                                             <button type="button" class="status-toggle-btn" data-status="interessiert" onclick="handleModalDominanzStatusToggle('ich', 'submissiv', 'interessiert', this)">Interessiert</button>
                                         </div>
                                     </div>
-                                    <div class="dominanz-option-row">
+                                    <div class="dominanz-option-row" id="modal-ich-d-sw-row">
                                         <input type="checkbox" id="modal-ich-d-sw" value="switch" class="dominanz-checkbox" onchange="handleModalDominanzMultiChange('ich', 'switch', this.checked)">
                                         <label for="modal-ich-d-sw" class="dominanz-label">switch</label>
+                                        <button type="button" id="modal-ich-d-sw-secondary" class="secondary-interessiert-btn" onclick="handleSecondaryInteressiert('ich', 'switch', this)">interessiert</button>
                                         <div id="modal-ich-d-sw-status" class="status-toggle-group">
                                             <button type="button" class="status-toggle-btn active-fakt" data-status="fakt" onclick="handleModalDominanzStatusToggle('ich', 'switch', 'fakt', this)">Fakt</button>
                                             <button type="button" class="status-toggle-btn" data-status="interessiert" onclick="handleModalDominanzStatusToggle('ich', 'switch', 'interessiert', this)">Interessiert</button>
                                         </div>
                                     </div>
-                                    <div class="dominanz-option-row">
+                                    <div class="dominanz-option-row" id="modal-ich-d-aus-row">
                                         <input type="checkbox" id="modal-ich-d-aus" value="ausgeglichen" class="dominanz-checkbox" onchange="handleModalDominanzMultiChange('ich', 'ausgeglichen', this.checked)">
                                         <label for="modal-ich-d-aus" class="dominanz-label">ausgeglichen</label>
+                                        <button type="button" id="modal-ich-d-aus-secondary" class="secondary-interessiert-btn" onclick="handleSecondaryInteressiert('ich', 'ausgeglichen', this)">interessiert</button>
                                         <div id="modal-ich-d-aus-status" class="status-toggle-group">
                                             <button type="button" class="status-toggle-btn active-fakt" data-status="fakt" onclick="handleModalDominanzStatusToggle('ich', 'ausgeglichen', 'fakt', this)">Fakt</button>
                                             <button type="button" class="status-toggle-btn" data-status="interessiert" onclick="handleModalDominanzStatusToggle('ich', 'ausgeglichen', 'interessiert', this)">Interessiert</button>
@@ -5958,33 +6016,37 @@
                                     <span style="font-size: 10px; opacity: 0.7;">(Mehrfachauswahl)</span>
                                 </div>
                                 <div class="dominanz-multi-select">
-                                    <div class="dominanz-option-row">
+                                    <div class="dominanz-option-row" id="modal-partner-d-dom-row">
                                         <input type="checkbox" id="modal-partner-d-dom" value="dominant" class="dominanz-checkbox" onchange="handleModalDominanzMultiChange('partner', 'dominant', this.checked)">
                                         <label for="modal-partner-d-dom" class="dominanz-label">dominant</label>
+                                        <button type="button" id="modal-partner-d-dom-secondary" class="secondary-interessiert-btn" onclick="handleSecondaryInteressiert('partner', 'dominant', this)">interessiert</button>
                                         <div id="modal-partner-d-dom-status" class="status-toggle-group">
                                             <button type="button" class="status-toggle-btn active-fakt" data-status="fakt" onclick="handleModalDominanzStatusToggle('partner', 'dominant', 'fakt', this)">Fakt</button>
                                             <button type="button" class="status-toggle-btn" data-status="interessiert" onclick="handleModalDominanzStatusToggle('partner', 'dominant', 'interessiert', this)">Interessiert</button>
                                         </div>
                                     </div>
-                                    <div class="dominanz-option-row">
+                                    <div class="dominanz-option-row" id="modal-partner-d-sub-row">
                                         <input type="checkbox" id="modal-partner-d-sub" value="submissiv" class="dominanz-checkbox" onchange="handleModalDominanzMultiChange('partner', 'submissiv', this.checked)">
                                         <label for="modal-partner-d-sub" class="dominanz-label">submissiv</label>
+                                        <button type="button" id="modal-partner-d-sub-secondary" class="secondary-interessiert-btn" onclick="handleSecondaryInteressiert('partner', 'submissiv', this)">interessiert</button>
                                         <div id="modal-partner-d-sub-status" class="status-toggle-group">
                                             <button type="button" class="status-toggle-btn active-fakt" data-status="fakt" onclick="handleModalDominanzStatusToggle('partner', 'submissiv', 'fakt', this)">Fakt</button>
                                             <button type="button" class="status-toggle-btn" data-status="interessiert" onclick="handleModalDominanzStatusToggle('partner', 'submissiv', 'interessiert', this)">Interessiert</button>
                                         </div>
                                     </div>
-                                    <div class="dominanz-option-row">
+                                    <div class="dominanz-option-row" id="modal-partner-d-sw-row">
                                         <input type="checkbox" id="modal-partner-d-sw" value="switch" class="dominanz-checkbox" onchange="handleModalDominanzMultiChange('partner', 'switch', this.checked)">
                                         <label for="modal-partner-d-sw" class="dominanz-label">switch</label>
+                                        <button type="button" id="modal-partner-d-sw-secondary" class="secondary-interessiert-btn" onclick="handleSecondaryInteressiert('partner', 'switch', this)">interessiert</button>
                                         <div id="modal-partner-d-sw-status" class="status-toggle-group">
                                             <button type="button" class="status-toggle-btn active-fakt" data-status="fakt" onclick="handleModalDominanzStatusToggle('partner', 'switch', 'fakt', this)">Fakt</button>
                                             <button type="button" class="status-toggle-btn" data-status="interessiert" onclick="handleModalDominanzStatusToggle('partner', 'switch', 'interessiert', this)">Interessiert</button>
                                         </div>
                                     </div>
-                                    <div class="dominanz-option-row">
+                                    <div class="dominanz-option-row" id="modal-partner-d-aus-row">
                                         <input type="checkbox" id="modal-partner-d-aus" value="ausgeglichen" class="dominanz-checkbox" onchange="handleModalDominanzMultiChange('partner', 'ausgeglichen', this.checked)">
                                         <label for="modal-partner-d-aus" class="dominanz-label">ausgeglichen</label>
+                                        <button type="button" id="modal-partner-d-aus-secondary" class="secondary-interessiert-btn" onclick="handleSecondaryInteressiert('partner', 'ausgeglichen', this)">interessiert</button>
                                         <div id="modal-partner-d-aus-status" class="status-toggle-group">
                                             <button type="button" class="status-toggle-btn active-fakt" data-status="fakt" onclick="handleModalDominanzStatusToggle('partner', 'ausgeglichen', 'fakt', this)">Fakt</button>
                                             <button type="button" class="status-toggle-btn" data-status="interessiert" onclick="handleModalDominanzStatusToggle('partner', 'ausgeglichen', 'interessiert', this)">Interessiert</button>
@@ -9671,35 +9733,78 @@
         function syncDominanzUI(person) {
             const shortIdMap = { 'dominant': 'dom', 'submissiv': 'sub', 'switch': 'sw', 'ausgeglichen': 'aus' };
             const dom = personDimensions[person].dominanz;
+            const dominanzTypes = ['dominant', 'submissiv', 'switch', 'ausgeglichen'];
+
+            // Check if there's a primary tendency (Fakt)
+            const primaryFakt = getPrimaryFaktDominanz(person);
 
             for (const [type, status] of Object.entries(dom)) {
                 const shortId = shortIdMap[type];
+                const isPrimaryFakt = status === 'fakt';
+                const isSecondaryMode = primaryFakt && primaryFakt !== type;
 
                 // Desktop
                 const desktopCheckbox = document.getElementById(person + '-d-' + shortId);
-                if (desktopCheckbox) desktopCheckbox.checked = !!status;
+                const desktopRow = document.getElementById(person + '-d-' + shortId + '-row');
+                const desktopSecondary = document.getElementById(person + '-d-' + shortId + '-secondary');
+                if (desktopCheckbox) {
+                    desktopCheckbox.checked = !!status;
+                    desktopCheckbox.disabled = isSecondaryMode;
+                }
+                if (desktopRow) {
+                    desktopRow.classList.toggle('secondary-mode', isSecondaryMode);
+                }
+                if (desktopSecondary) {
+                    desktopSecondary.style.display = isSecondaryMode ? 'block' : 'none';
+                    desktopSecondary.classList.toggle('active', status === 'interessiert');
+                }
                 const desktopStatus = document.getElementById(person + '-d-' + shortId + '-status');
                 if (desktopStatus) {
-                    desktopStatus.style.display = status ? 'flex' : 'none';
-                    if (status) updateStatusToggleButtons(desktopStatus, status);
+                    // Hide status toggle for secondary options (they can only be interessiert via button)
+                    desktopStatus.style.display = (status && !isSecondaryMode) ? 'flex' : 'none';
+                    if (status && !isSecondaryMode) updateStatusToggleButtons(desktopStatus, status);
                 }
 
                 // Mobile
                 const mobileCheckbox = document.getElementById('m-' + person + '-d-' + shortId);
-                if (mobileCheckbox) mobileCheckbox.checked = !!status;
+                const mobileRow = document.getElementById('m-' + person + '-d-' + shortId + '-row');
+                const mobileSecondary = document.getElementById('m-' + person + '-d-' + shortId + '-secondary');
+                if (mobileCheckbox) {
+                    mobileCheckbox.checked = !!status;
+                    mobileCheckbox.disabled = isSecondaryMode;
+                }
+                if (mobileRow) {
+                    mobileRow.classList.toggle('secondary-mode', isSecondaryMode);
+                }
+                if (mobileSecondary) {
+                    mobileSecondary.style.display = isSecondaryMode ? 'block' : 'none';
+                    mobileSecondary.classList.toggle('active', status === 'interessiert');
+                }
                 const mobileStatus = document.getElementById('m-' + person + '-d-' + shortId + '-status');
                 if (mobileStatus) {
-                    mobileStatus.style.display = status ? 'flex' : 'none';
-                    if (status) updateStatusToggleButtons(mobileStatus, status);
+                    mobileStatus.style.display = (status && !isSecondaryMode) ? 'flex' : 'none';
+                    if (status && !isSecondaryMode) updateStatusToggleButtons(mobileStatus, status);
                 }
 
                 // Modal
                 const modalCheckbox = document.getElementById('modal-' + person + '-d-' + shortId);
-                if (modalCheckbox) modalCheckbox.checked = !!status;
+                const modalRow = document.getElementById('modal-' + person + '-d-' + shortId + '-row');
+                const modalSecondary = document.getElementById('modal-' + person + '-d-' + shortId + '-secondary');
+                if (modalCheckbox) {
+                    modalCheckbox.checked = !!status;
+                    modalCheckbox.disabled = isSecondaryMode;
+                }
+                if (modalRow) {
+                    modalRow.classList.toggle('secondary-mode', isSecondaryMode);
+                }
+                if (modalSecondary) {
+                    modalSecondary.style.display = isSecondaryMode ? 'block' : 'none';
+                    modalSecondary.classList.toggle('active', status === 'interessiert');
+                }
                 const modalStatus = document.getElementById('modal-' + person + '-d-' + shortId + '-status');
                 if (modalStatus) {
-                    modalStatus.style.display = status ? 'flex' : 'none';
-                    if (status) updateStatusToggleButtons(modalStatus, status);
+                    modalStatus.style.display = (status && !isSecondaryMode) ? 'flex' : 'none';
+                    if (status && !isSecondaryMode) updateStatusToggleButtons(modalStatus, status);
                 }
             }
 
@@ -9712,6 +9817,42 @@
                     else dim.classList.add('needs-selection');
                 }
             });
+        }
+
+        // Get the primary Fakt dominanz type (if any)
+        function getPrimaryFaktDominanz(person) {
+            const dom = personDimensions[person].dominanz;
+            for (const [type, status] of Object.entries(dom)) {
+                if (status === 'fakt') return type;
+            }
+            return null;
+        }
+
+        // Handle secondary tendency button click (only interessiert)
+        function handleSecondaryInteressiert(person, dominanzType, btn) {
+            const currentStatus = personDimensions[person].dominanz[dominanzType];
+
+            if (currentStatus === 'interessiert') {
+                // Toggle off - remove interessiert
+                personDimensions[person].dominanz[dominanzType] = null;
+                if (typeof mobilePersonDimensions !== 'undefined') {
+                    mobilePersonDimensions[person].dominanz[dominanzType] = null;
+                }
+            } else {
+                // Toggle on - set as interessiert
+                personDimensions[person].dominanz[dominanzType] = 'interessiert';
+                if (typeof mobilePersonDimensions !== 'undefined') {
+                    mobilePersonDimensions[person].dominanz[dominanzType] = 'interessiert';
+                }
+            }
+
+            // Sync all UIs
+            syncDominanzUI(person);
+            updateComparisonView();
+
+            if (typeof saveSelectionToStorage === 'function') {
+                saveSelectionToStorage();
+            }
         }
 
         // Helper: Get short ID for dominanz type
