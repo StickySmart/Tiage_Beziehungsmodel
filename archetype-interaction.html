@@ -7538,21 +7538,35 @@
         }
 
         function confirmDefinitionSelection() {
+            console.log('confirmDefinitionSelection called');
+            console.log('currentDefinitionIndex:', currentDefinitionIndex);
+            console.log('archetypeOrder:', archetypeOrder);
+
             const selectedArchetype = archetypeOrder[currentDefinitionIndex];
+            console.log('selectedArchetype:', selectedArchetype);
+            console.log('currentDefinitionPerson:', currentDefinitionPerson);
 
             if (currentDefinitionPerson === 'ich') {
                 // Update main dropdown
                 currentArchetype = selectedArchetype;
-                document.getElementById('archetypeSelect').value = selectedArchetype;
+                const selectElement = document.getElementById('archetypeSelect');
+                if (selectElement) {
+                    selectElement.value = selectedArchetype;
+                    // Dispatch change event to ensure listeners are notified
+                    selectElement.dispatchEvent(new Event('change', { bubbles: true }));
+                }
+                console.log('Updated currentArchetype to:', currentArchetype);
                 updateAll();
             } else {
                 // Update partner selection
+                console.log('Calling selectPartner with:', selectedArchetype);
                 selectPartner(selectedArchetype);
             }
 
             // Close modal
             document.getElementById('definitionModal').classList.remove('active');
             document.body.style.overflow = '';
+            console.log('Modal closed, selection complete');
         }
 
         // Get short definition for tooltip
