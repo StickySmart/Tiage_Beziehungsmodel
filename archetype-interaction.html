@@ -7487,7 +7487,7 @@
 
             modalContent += '</div>';
 
-            // Add navigation dots
+            // Add navigation dots and confirm button
             modalContent += `
                 <div class="definition-nav-dots" style="display: flex; justify-content: center; gap: 8px; margin-top: 15px; padding-top: 15px; border-top: 1px solid var(--border);">
                     ${archetypeOrder.map((id, index) => `
@@ -7497,6 +7497,22 @@
                     `).join('')}
                 </div>
                 <div style="text-align: center; font-size: 11px; color: var(--text-muted); margin-top: 8px;">← Wischen zum Navigieren →</div>
+                <button onclick="confirmDefinitionSelection()" style="
+                    display: block;
+                    width: 100%;
+                    margin-top: 15px;
+                    padding: 12px 20px;
+                    background: var(--primary);
+                    color: white;
+                    border: none;
+                    border-radius: 8px;
+                    font-size: 14px;
+                    font-weight: 600;
+                    cursor: pointer;
+                    transition: all 0.2s;
+                " onmouseover="this.style.opacity='0.9'" onmouseout="this.style.opacity='1'">
+                    Auswahl übernehmen
+                </button>
             `;
 
             document.getElementById('definitionModalTitle').textContent = `${arch.name} - Definition`;
@@ -7506,6 +7522,24 @@
         function navigateDefinitionToIndex(index) {
             currentDefinitionIndex = index;
             showArchetypeInfoByType(archetypeOrder[index]);
+        }
+
+        function confirmDefinitionSelection() {
+            const selectedArchetype = archetypeOrder[currentDefinitionIndex];
+
+            if (currentDefinitionPerson === 'ich') {
+                // Update main dropdown
+                currentArchetype = selectedArchetype;
+                document.getElementById('archetypeSelect').value = selectedArchetype;
+                updateAll();
+            } else {
+                // Update partner selection
+                selectPartner(selectedArchetype);
+            }
+
+            // Close modal
+            document.getElementById('definitionModal').classList.remove('active');
+            document.body.style.overflow = '';
         }
 
         // Get short definition for tooltip
