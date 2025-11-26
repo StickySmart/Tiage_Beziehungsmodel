@@ -4540,6 +4540,7 @@
                             <li><strong>Pirsig, Robert M.</strong> (1974): <em>Zen and the Art of Motorcycle Maintenance: An Inquiry into Values.</em> William Morrow and Company, New York.</li>
                             <li><strong>Pirsig, Robert M.</strong> (1991): <em>Lila: An Inquiry into Morals.</em> Bantam Books, New York.</li>
                             <li><strong>McWatt, Anthony</strong> (2004): <em>An Introduction to Robert Pirsig's Metaphysics of Quality.</em> Dissertation, University of Liverpool.</li>
+                            <li style="margin-top: 10px;"><strong>Schupp, Hans</strong>: <em>Elemente der Logik.</em> <span style="color: var(--text-muted); font-size: 0.85em;">(Indirekte Quelle – als Grundlage für logische Strukturierung und formale Denkprinzipien)</span></li>
                             <li style="margin-top: 10px;"><strong>OSHO:</strong>
                                 <ul style="margin-top: 5px;">
                                     <li><a href="https://oshofriends.com/love" target="_blank" rel="noopener noreferrer" style="color: var(--primary);">OSHO on Love and Relationships</a></li>
@@ -7406,7 +7407,19 @@
             const arch = data.archetypes[archetypeId];
             const def = archetypeDefinitions[archetypeId];
 
-            let modalContent = `
+            // Top navigation dots and swipe hint
+            let topNav = `
+                <div class="definition-nav-dots" style="display: flex; justify-content: center; gap: 8px; margin-bottom: 15px; padding-bottom: 15px; border-bottom: 1px solid var(--border);">
+                    ${archetypeOrder.map((id, index) => `
+                        <span class="definition-dot${index === currentDefinitionIndex ? ' active' : ''}"
+                              onclick="navigateDefinitionToIndex(${index})"
+                              style="width: 10px; height: 10px; border-radius: 50%; background: ${index === currentDefinitionIndex ? 'var(--primary)' : 'var(--border)'}; cursor: pointer; transition: all 0.2s;"></span>
+                    `).join('')}
+                </div>
+                <div style="text-align: center; font-size: 11px; color: var(--text-muted); margin-bottom: 15px;">← Wischen zum Navigieren →</div>
+            `;
+
+            let modalContent = topNav + `
                 <div class="modal-category">
                     <div class="modal-category-header">
                         <div class="modal-category-letter" style="background: ${arch.color}; width: 40px; height: 40px; font-size: 20px;">${icons[archetypeId]}</div>
