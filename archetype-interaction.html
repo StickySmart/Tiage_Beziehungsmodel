@@ -4351,7 +4351,19 @@
             }
 
             .compact-options {
+                display: grid;
+                grid-template-columns: repeat(3, 1fr);
                 gap: 8px;
+            }
+
+            /* 4-button groups (Dominanz) get 2x2 grid */
+            .compact-dimension:has([value="ausgeglichen"]) .compact-options {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .compact-option {
+                text-align: center;
+                justify-content: center;
             }
 
             .compact-dimension {
@@ -5007,14 +5019,11 @@
         <div class="result-bar">
             <div id="warningsContainer"></div>
             <div class="result-header">
-                <div class="result-title" style="display: flex; flex-direction: column; align-items: flex-start; gap: 4px;">
-                    <div>
-                        <span class="type-name" id="resultIchType">Single</span>
-                        <span> × </span>
-                        <span class="type-name" id="resultPartnerType">Duo</span>
-                        <span style="font-size: var(--font-xs); color: var(--text-muted); margin-left: 8px;">Qualitätsindex</span>
-                    </div>
-                    <button onclick="openHelpModal()" style="background: transparent; border: 1px solid var(--text-muted); color: var(--text-muted); width: 18px; height: 18px; border-radius: 50%; font-size: 11px; cursor: pointer; display: flex; align-items: center; justify-content: center; margin-left: auto; margin-right: auto; transition: all 0.2s;" onmouseover="this.style.borderColor='var(--primary)'; this.style.color='var(--primary)';" onmouseout="this.style.borderColor='var(--text-muted)'; this.style.color='var(--text-muted)';" title="Hilfe zum Qualitätsindex">?</button>
+                <div class="result-title">
+                    <span class="type-name" id="resultIchType">Single</span>
+                    <span> × </span>
+                    <span class="type-name" id="resultPartnerType">Duo</span>
+                    <span style="font-size: var(--font-xs); color: var(--text-muted); margin-left: 8px;">Qualitätsindex</span>
                 </div>
                 <div class="result-percentage" id="resultPercentage">0%</div>
             </div>
@@ -5113,7 +5122,7 @@
 
             <!-- ICH Auswahl -->
             <div style="background: var(--bg-card); border-radius: 16px; border: 1px solid var(--border); border-top: 3px solid var(--success); padding: 15px; margin-bottom: 15px;">
-                <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 12px; color: var(--success); font-weight: 700; font-size: var(--font-base);">
+                <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 12px; color: var(--success); font-weight: 700; font-size: var(--font-lg);">
                     <span>👤</span> ICH
                 </div>
                 <div style="display: flex; gap: 8px; align-items: center; margin-bottom: 12px;">
@@ -5177,8 +5186,8 @@
 
             <!-- PARTNER Auswahl -->
             <div style="background: var(--bg-card); border-radius: 16px; border: 1px solid var(--border); border-top: 3px solid var(--danger); padding: 15px; margin-bottom: 15px;">
-                <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 12px; color: var(--danger); font-weight: 700; font-size: var(--font-base);">
-                    <span>👥</span> PARTNER
+                <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 12px; color: var(--danger); font-weight: 700; font-size: var(--font-lg);">
+                    <span>👥</span> DEIN PARTNER
                 </div>
                 <div style="display: flex; gap: 8px; align-items: center; margin-bottom: 12px;">
                     <select class="column-select" id="mobilePartnerSelect">
