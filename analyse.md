@@ -1,79 +1,70 @@
-# Analyse: Tiage Beziehungsmodell
+# Analyse: Tiage-Beziehungsmodell
 
-## Zusammenfassung der Kategorien B-F
+## Was ist das Tiage-Beziehungsmodell?
 
-### Kategorie B - Moralische Gebundenheit
-**Tiage-Charakteristik:** Höchste moralische Integrität (Durchschnitt: 81%)
-- Stärke: Maximale Ehrlichkeit und Konsequenz
-- Herausforderung: Überforderung durch eigene moralische Ansprüche
-- Pathos: Tief und gewissenhaft
-- Logos: Konsequent und bewusst-regeltreu
+Eine **eigenständige Synthese** von Tiage, entwickelt durch Online-Recherche und persönliche Reflexion. Das Modell verbindet zwei philosophische Traditionen:
 
-### Kategorie C - Nähe & Tiefe  
-**Tiage-Charakteristik:** Maximale emotionale Öffnung (Durchschnitt: 88%)
-- Stärke: Genuine Tiefe und authentische Verbindungen
-- Herausforderung: Hohe Verletzlichkeit
-- Pathos: Intensiv bis maximal
-- Logos: Bewusst und hochreflektiert
+- **MOQ (Robert M. Pirsig):** Metaphysik der Qualität - statische vs. dynamische Qualität
+- **OSHO:** Polarität und Balance - Gegensätze als Quelle der Anziehung
 
-### Kategorie D - Rückzug & Selbstwahrung
-**Tiage-Charakteristik:** Niedrigster Rückzugswert (Durchschnitt: 53%)
-- Stärke: Starke Bindungsfähigkeit
-- Herausforderung: Schwierigkeit mit Distanz
-- Pathos: Tief trotz Rückzug
-- Logos: Moralisch und anspruchsvoll
-
-### Kategorie E - Kommunikation
-**Tiage-Charakteristik:** Höchste Kommunikationstiefe (Durchschnitt: 84%)
-- Stärke: Maximale Offenheit und Präzision
-- Herausforderung: Kann überfordernd sein
-- Pathos: Intensiv bis maximal
-- Logos: Analytisch und glasklar
-
-### Kategorie F - Gesellschaftliche Herausforderungen
-**Tiage-Charakteristik:** Moderate gesellschaftliche Reibung (Durchschnitt: 65%)
-- Stärke: Authentizität und spirituelle Tiefe
-- Herausforderung: Schwer einzuordnen für Außenstehende
-- Pathos: Intensiv bis maximal
-- Logos: Reflektiert und philosophisch
-
-## Kernerkenntnisse
-
-### Tiage-Profil im Überblick:
-1. **Maximale Tiefe** in allen emotionalen und kommunikativen Bereichen
-2. **Hohe moralische Standards** mit entsprechenden inneren Konflikten
-3. **Geringe Rückzugsfähigkeit** - Bindung über Distanz priorisiert
-4. **Gesellschaftlich herausfordernd** aber authentisch
-
-### Vergleich zu anderen Modellen:
-- **Single:** Maximum an Autonomie, Minimum an Verbindung
-- **Solopoly:** Ausgewogene Balance zwischen Nähe und Freiheit
-- **Tiage:** Maximum an Tiefe und Verbindlichkeit
-- **Polyamor:** Vielfalt und Flexibilität mit strukturierten Regeln
-
-### Entwicklungspotenziale für Tiage:
-1. Gesündere Selbstwahrung entwickeln (Kategorie D stärken)
-2. Moralischen Perfektionismus reduzieren
-3. Gesellschaftliche Kommunikation vereinfachen
-4. Balance zwischen Tiefe und Selbstschutz finden
-
-## Methodologie
-
-Die Bewertungen basieren auf:
-- Skala: 0-100% für jede Dimension
-- 4 Beziehungsebenen: Freunde, Partner, Sexpartner, Seelenverwandte
-- 4 Beziehungsmodelle: Single, Solopoly, Tiage, Polyamor
-- Doppelte Perspektive: Pathos (Gefühl) und Logos (Ordnung)
-- Pro/Kontra Analyse für jede Kombination
-
-## Nächste Schritte
-
-1. **Kategorie A** definieren und integrieren
-2. **Interaktive Visualisierung** entwickeln
-3. **Persönlichkeitstest** basierend auf den Kategorien
-4. **Vergleichstool** zwischen verschiedenen Modellen
-5. **API** für dynamische Abfragen der Daten
+**Tiage's Beitrag:** Die praktische Verbindung beider Philosophien zu einem Beziehungs-Rechner mit konkreter Gewichtung und Archetypen-Matrix.
 
 ---
 
-*Dokumentation Version 1.0 - Basierend auf Tiage-Perspektive*
+## Die 6 Archetypen
+
+| Archetyp | Beschreibung |
+|----------|-------------|
+| **Single** | Autonomes Leben ohne Primärbeziehung |
+| **Duo** | Monogame Zweierbeziehung mit Exklusivität |
+| **Duo-Flex** | Primärbeziehung mit vereinbarten Öffnungen |
+| **Solopoly** | Mehrere gleichwertige Beziehungen, Fokus Autonomie |
+| **Poly-Hedo** | Polyamorie mit Fokus auf Genuss |
+| **Polyamor** | Tiefe emotionale Bindungen zu mehreren Partnern |
+
+---
+
+## Die 4 Qualitätsfaktoren
+
+| Faktor | Gewicht | Dimension | Beschreibung |
+|--------|---------|-----------|--------------|
+| **Archetyp-Übereinstimmung** | 40% | Logos | Fundamentale Beziehungsphilosophie |
+| **Orientierungs-Kompatibilität** | 25% | Pathos | Körperliche Polarität und Anziehung |
+| **Dominanz-Harmonie** | 20% | Pathos | Energetische Dynamik (Dom/Sub/Switch) |
+| **Geschlechts-Attraktion** | 15% | Pathos | Gender-Chemie als Feinabstimmung |
+
+---
+
+## Logos vs. Pathos (40:60)
+
+Die Gewichtung basiert auf philosophischen Grundlagen:
+
+**Logos (40% - Verstand)**
+- Pirsig: "Statische Qualität" - bewährte Muster, Stabilität
+- Struktur, Regeln, rationale Entscheidungen
+
+**Pathos (60% - Gefühl)**
+- Pirsig: "Dynamische Qualität" - Veränderung, Wachstum
+- OSHO: "Gefühl ist der Antrieb, Verstand gibt Struktur"
+- Emotionale Anziehung, Intuition, Resonanz
+
+---
+
+## Berechnung
+
+```
+Qualitätsindex = (Archetyp × 40%) + (Orientierung × 25%) + (Dominanz × 20%) + (Geschlecht × 15%)
+```
+
+### Ergebnis-Interpretation
+
+| Bereich | Bedeutung |
+|---------|-----------|
+| 80-100% | Exzellent - Wenige Herausforderungen |
+| 60-79% | Gut - Mit Kommunikation machbar |
+| 40-59% | Moderat - Erfordert bewusste Arbeit |
+| 0-39% | Herausfordernd - Fundamentale Unterschiede |
+
+---
+
+*Tiage-Beziehungsmodell - Eine Synthese aus MOQ (Pirsig) und OSHO*
