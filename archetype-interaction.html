@@ -237,6 +237,86 @@
             font-size: var(--font-lg);
         }
 
+        .comments-search-container {
+            padding: 15px 20px;
+            border-bottom: 1px solid var(--border);
+            background: var(--bg-secondary);
+        }
+
+        .comments-search-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .comments-search-input {
+            width: 100%;
+            padding: 10px 40px 10px 35px;
+            background: var(--bg-dark);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--text-primary);
+            font-size: 14px;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+        .comments-search-input:focus {
+            outline: none;
+            border-color: #f1c40f;
+            box-shadow: 0 0 0 3px rgba(241, 196, 15, 0.15);
+        }
+
+        .comments-search-input::placeholder {
+            color: var(--text-muted);
+        }
+
+        .comments-search-icon {
+            position: absolute;
+            left: 12px;
+            color: var(--text-muted);
+            pointer-events: none;
+        }
+
+        .comments-search-clear {
+            position: absolute;
+            right: 8px;
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            cursor: pointer;
+            padding: 5px;
+            font-size: 16px;
+            display: none;
+        }
+
+        .comments-search-clear:hover {
+            color: var(--text-primary);
+        }
+
+        .comments-search-clear.visible {
+            display: block;
+        }
+
+        .comments-search-hint {
+            font-size: 11px;
+            color: var(--text-muted);
+            margin-top: 6px;
+        }
+
+        .comments-search-results {
+            font-size: 12px;
+            color: var(--text-secondary);
+            padding: 8px 20px;
+            background: var(--bg-tertiary);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .search-highlight {
+            background: rgba(241, 196, 15, 0.3);
+            padding: 0 2px;
+            border-radius: 2px;
+        }
+
         .comments-list-body {
             padding: 20px;
             max-height: 60vh;
@@ -4599,6 +4679,19 @@
                 <h2>📋 Alle Kommentare</h2>
                 <button class="help-modal-close" onclick="closeCommentsListModal()">&times;</button>
             </div>
+            <div class="comments-search-container">
+                <div class="comments-search-wrapper">
+                    <span class="comments-search-icon">🔍</span>
+                    <input type="text"
+                           id="commentsSearchInput"
+                           class="comments-search-input"
+                           placeholder="Suche... (* als Platzhalter)"
+                           oninput="filterComments(this.value)">
+                    <button class="comments-search-clear" id="commentsSearchClear" onclick="clearCommentsSearch()">&times;</button>
+                </div>
+                <div class="comments-search-hint">Beispiel: *fehler* findet alle Kommentare mit "fehler" im Text</div>
+            </div>
+            <div class="comments-search-results" id="commentsSearchResults" style="display: none;"></div>
             <div class="comments-list-body" id="commentsListBody">
                 <div class="no-comments">
                     <div class="no-comments-icon">💬</div>
@@ -10825,11 +10918,22 @@
         // ========================================
 
         let allCommentsData = [];
+        let currentSearchQuery = '';
 
         function openCommentsListModal() {
             console.log('openCommentsListModal called');
             document.getElementById('commentsListModal').classList.add('active');
             document.body.style.overflow = 'hidden';
+
+            // Reset search field
+            const searchInput = document.getElementById('commentsSearchInput');
+            if (searchInput) searchInput.value = '';
+            currentSearchQuery = '';
+            const clearBtn = document.getElementById('commentsSearchClear');
+            if (clearBtn) clearBtn.classList.remove('visible');
+            const resultsDiv = document.getElementById('commentsSearchResults');
+            if (resultsDiv) resultsDiv.style.display = 'none';
+
             loadAllComments();
         }
 
@@ -10983,6 +11087,224 @@
                             <span class="reply-date">${date}</span>
                         </div>
                         <div class="reply-text">${escapeHtml(text)}</div>
+                    </div>
+                `;
+            });
+            html += '</div>';
+            return html;
+        }
+
+        // Convert wildcard pattern to regex
+        function wildcardToRegex(pattern) {
+            // Escape special regex characters except *
+            const escaped = pattern.replace(/[.+?^${}()|[\]\\]/g, '\\$&');
+            // Convert * to .* for wildcard matching
+            const regex = escaped.replace(/\*/g, '.*');
+            return new RegExp(regex, 'i'); // Case insensitive
+        }
+
+        // Check if a comment matches the search query
+        function commentMatchesSearch(comment, query) {
+            if (!query || query.trim() === '') return true;
+
+            const searchPattern = wildcardToRegex(query.trim());
+
+            // Get all searchable fields
+            const name = comment.Name || comment.name || '';
+            const titel = comment.Titel || comment.titel || comment.type || '';
+            const text = comment.Kommentar || comment.kommentar || comment.text || comment.comment || '';
+            const kontext = comment.KontextID || comment.kontextId || comment.context || '';
+            const typ = comment.Typ || comment.typ || comment.type || '';
+            const typLabel = getTypeBadge(typ);
+
+            // Check if any field matches
+            return searchPattern.test(name) ||
+                   searchPattern.test(titel) ||
+                   searchPattern.test(text) ||
+                   searchPattern.test(kontext) ||
+                   searchPattern.test(typ) ||
+                   searchPattern.test(typLabel);
+        }
+
+        // Filter and render comments based on search query
+        function filterComments(query) {
+            currentSearchQuery = query;
+
+            // Update clear button visibility
+            const clearBtn = document.getElementById('commentsSearchClear');
+            if (clearBtn) {
+                clearBtn.classList.toggle('visible', query.length > 0);
+            }
+
+            renderFilteredComments();
+        }
+
+        // Clear search and show all comments
+        function clearCommentsSearch() {
+            const input = document.getElementById('commentsSearchInput');
+            if (input) {
+                input.value = '';
+            }
+            currentSearchQuery = '';
+
+            const clearBtn = document.getElementById('commentsSearchClear');
+            if (clearBtn) {
+                clearBtn.classList.remove('visible');
+            }
+
+            const resultsDiv = document.getElementById('commentsSearchResults');
+            if (resultsDiv) {
+                resultsDiv.style.display = 'none';
+            }
+
+            renderCommentsList();
+        }
+
+        // Render comments with current filter applied
+        function renderFilteredComments() {
+            const container = document.getElementById('commentsListBody');
+            const resultsDiv = document.getElementById('commentsSearchResults');
+
+            if (!currentSearchQuery || currentSearchQuery.trim() === '') {
+                if (resultsDiv) resultsDiv.style.display = 'none';
+                renderCommentsList();
+                return;
+            }
+
+            // Filter comments
+            const filteredComments = allCommentsData.filter(c => commentMatchesSearch(c, currentSearchQuery));
+
+            // Show results count
+            if (resultsDiv) {
+                resultsDiv.style.display = 'block';
+                resultsDiv.innerHTML = `${filteredComments.length} von ${allCommentsData.length} Kommentare${filteredComments.length !== 1 ? 'n' : ''} gefunden`;
+            }
+
+            if (filteredComments.length === 0) {
+                container.innerHTML = `
+                    <div class="no-comments">
+                        <div class="no-comments-icon">🔍</div>
+                        <p>Keine Kommentare gefunden.</p>
+                        <p style="font-size: 12px; margin-top: 10px;">Versuche einen anderen Suchbegriff oder verwende * als Platzhalter.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            // Separate main comments from replies
+            const mainComments = filteredComments.filter(c => !(c.AntwortAuf || c.antwortAuf || c.replyTo));
+            const allReplies = allCommentsData.filter(c => (c.AntwortAuf || c.antwortAuf || c.replyTo));
+            const filteredReplies = filteredComments.filter(c => (c.AntwortAuf || c.antwortAuf || c.replyTo));
+
+            let html = '';
+
+            // Render matching main comments
+            mainComments.forEach((comment, index) => {
+                const id = comment.id || comment.ID || `comment-${index}`;
+                const name = comment.Name || comment.name || 'Anonym';
+                const titel = comment.Titel || comment.titel || comment.type || '';
+                const text = comment.Kommentar || comment.kommentar || comment.text || comment.comment || '';
+                const kontext = comment.KontextID || comment.kontextId || comment.context || '';
+                const typ = comment.Typ || comment.typ || comment.type || 'feedback';
+                const timestamp = comment.timestamp || comment.Timestamp || comment.datum;
+                const date = timestamp ? formatCommentDate(timestamp) : '';
+
+                // Find all replies to this comment (not filtered)
+                const commentReplies = allReplies.filter(r =>
+                    (r.AntwortAuf || r.antwortAuf || r.replyTo) === id
+                );
+
+                html += `
+                    <div class="comment-card" data-id="${id}">
+                        <div class="comment-card-header">
+                            <div>
+                                <span class="comment-author">${highlightMatch(escapeHtml(name), currentSearchQuery)}</span>
+                                <span class="comment-date">${date}</span>
+                            </div>
+                            <span class="comment-type-badge">${getTypeBadge(typ)}</span>
+                        </div>
+                        <div class="comment-card-body">
+                            ${titel ? `<div class="comment-title">${highlightMatch(escapeHtml(titel), currentSearchQuery)}</div>` : ''}
+                            <div class="comment-text">${highlightMatch(escapeHtml(text), currentSearchQuery)}</div>
+                            ${kontext ? `<div class="comment-context">📍 Kontext: ${highlightMatch(escapeHtml(kontext), currentSearchQuery)}</div>` : ''}
+                        </div>
+                        ${commentReplies.length > 0 ? renderRepliesWithHighlight(commentReplies, currentSearchQuery) : ''}
+                        <div class="comment-card-footer">
+                            <span style="font-size: 11px; color: var(--text-muted);">${commentReplies.length} Antwort${commentReplies.length !== 1 ? 'en' : ''}</span>
+                            <button class="reply-btn" onclick="toggleReplyForm('${id}')">↩ Antworten</button>
+                        </div>
+                        <div class="reply-form" id="reply-form-${id}">
+                            <input type="text" id="reply-name-${id}" placeholder="Dein Name" style="width: 100%; padding: 8px; margin-bottom: 10px; background: var(--bg-dark); border: 1px solid var(--border); border-radius: 6px; color: var(--text-primary);">
+                            <textarea id="reply-text-${id}" placeholder="Deine Antwort..."></textarea>
+                            <div class="reply-form-buttons">
+                                <button class="reply-cancel-btn" onclick="toggleReplyForm('${id}')">Abbrechen</button>
+                                <button class="reply-submit-btn" onclick="submitReply('${id}')">Antworten</button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+
+            // Also show replies that match but their parent doesn't
+            const orphanReplies = filteredReplies.filter(reply => {
+                const parentId = reply.AntwortAuf || reply.antwortAuf || reply.replyTo;
+                return !mainComments.some(c => (c.id || c.ID) === parentId);
+            });
+
+            if (orphanReplies.length > 0) {
+                html += `<div style="margin-top: 20px; padding-top: 15px; border-top: 1px solid var(--border);">
+                    <div style="font-size: 12px; color: var(--text-muted); margin-bottom: 10px;">Passende Antworten:</div>
+                `;
+                orphanReplies.forEach(reply => {
+                    const name = reply.Name || reply.name || 'Anonym';
+                    const text = reply.Kommentar || reply.kommentar || reply.text || '';
+                    const timestamp = reply.timestamp || reply.Timestamp;
+                    const date = timestamp ? formatCommentDate(timestamp) : '';
+
+                    html += `
+                        <div class="reply-card" style="margin-left: 0; background: var(--bg-secondary); padding: 12px; border-radius: 8px; margin-bottom: 10px;">
+                            <div class="reply-header">
+                                <span class="reply-author">${highlightMatch(escapeHtml(name), currentSearchQuery)}</span>
+                                <span class="reply-date">${date}</span>
+                            </div>
+                            <div class="reply-text">${highlightMatch(escapeHtml(text), currentSearchQuery)}</div>
+                        </div>
+                    `;
+                });
+                html += '</div>';
+            }
+
+            container.innerHTML = html;
+        }
+
+        // Highlight matching text in search results
+        function highlightMatch(text, query) {
+            if (!query || query.trim() === '') return text;
+
+            try {
+                const pattern = wildcardToRegex(query.trim());
+                return text.replace(pattern, match => `<span class="search-highlight">${match}</span>`);
+            } catch (e) {
+                return text;
+            }
+        }
+
+        // Render replies with search highlighting
+        function renderRepliesWithHighlight(replies, query) {
+            let html = '<div class="replies-section">';
+            replies.forEach(reply => {
+                const name = reply.Name || reply.name || 'Anonym';
+                const text = reply.Kommentar || reply.kommentar || reply.text || '';
+                const timestamp = reply.timestamp || reply.Timestamp;
+                const date = timestamp ? formatCommentDate(timestamp) : '';
+
+                html += `
+                    <div class="reply-card">
+                        <div class="reply-header">
+                            <span class="reply-author">${highlightMatch(escapeHtml(name), query)}</span>
+                            <span class="reply-date">${date}</span>
+                        </div>
+                        <div class="reply-text">${highlightMatch(escapeHtml(text), query)}</div>
                     </div>
                 `;
             });
