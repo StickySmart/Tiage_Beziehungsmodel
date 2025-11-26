@@ -8919,7 +8919,7 @@
         }
 
         // ========================================
-        // Status Popup Functions (for Homo/Bi only)
+        // Status Popup Functions (for all orientations)
         // ========================================
         let currentStatusPopupPerson = null;
 
@@ -9001,54 +9001,17 @@
             const mobileStatusSection = document.getElementById('mobile-' + person + '-status-section');
             const modalStatusSection = document.getElementById('modal-' + person + '-status-section');
 
-            if (orientation === 'heterosexuell') {
-                // Auto-set to 'fakt' for hetero and hide status section
-                personDimensions[person].orientierungStatus = 'fakt';
-                if (typeof mobilePersonDimensions !== 'undefined') {
-                    mobilePersonDimensions[person].orientierungStatus = 'fakt';
-                }
-
-                // Set desktop radio
-                const desktopRadioId = person === 'ich' ? 'ich-s-fakt' : 'partner-s-fakt';
-                const desktopRadio = document.getElementById(desktopRadioId);
-                if (desktopRadio) desktopRadio.checked = true;
-
-                // Set mobile radio
-                const mobileRadioId = person === 'ich' ? 'm-ich-s-fakt' : 'm-partner-s-fakt';
-                const mobileRadio = document.getElementById(mobileRadioId);
-                if (mobileRadio) mobileRadio.checked = true;
-
-                // Set modal radio
-                const modalRadioId = person + '-status-fakt';
-                const modalRadio = document.getElementById(modalRadioId);
-                if (modalRadio) modalRadio.checked = true;
-
-                // Hide all status sections
-                if (desktopStatusSection) {
-                    desktopStatusSection.style.display = 'none';
-                    desktopStatusSection.classList.remove('needs-selection');
-                }
-                if (mobileStatusSection) {
-                    mobileStatusSection.style.display = 'none';
-                    mobileStatusSection.classList.remove('needs-selection');
-                }
-                if (modalStatusSection) {
-                    modalStatusSection.style.display = 'none';
-                    modalStatusSection.classList.remove('needs-selection');
-                }
-            } else {
-                // Show status section and popup for homo/bi
-                if (desktopStatusSection) {
-                    desktopStatusSection.style.display = 'block';
-                }
-                if (mobileStatusSection) {
-                    mobileStatusSection.style.display = 'block';
-                }
-                if (modalStatusSection) {
-                    modalStatusSection.style.display = 'block';
-                }
-                showStatusPopup(person);
+            // Show status section and popup for all orientations (hetero, homo, bi)
+            if (desktopStatusSection) {
+                desktopStatusSection.style.display = 'block';
             }
+            if (mobileStatusSection) {
+                mobileStatusSection.style.display = 'block';
+            }
+            if (modalStatusSection) {
+                modalStatusSection.style.display = 'block';
+            }
+            showStatusPopup(person);
 
             // Sync orientation to desktop if called from mobile
             if (isMobile) {
@@ -9057,7 +9020,7 @@
 
             updateComparisonView();
 
-            // Save to localStorage (especially important for hetero auto-fakt)
+            // Save to localStorage
             if (typeof saveSelectionToStorage === 'function') {
                 saveSelectionToStorage();
             }
