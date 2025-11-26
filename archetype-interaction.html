@@ -1530,6 +1530,68 @@
             max-width: 500px;
         }
 
+        .definition-modal .modal-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            position: relative;
+        }
+
+        .definition-modal .modal-title {
+            flex: 1;
+            text-align: center;
+        }
+
+        .definition-nav-btn {
+            background: var(--bg-dark);
+            border: 1px solid var(--border);
+            color: var(--text-primary);
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            font-size: 24px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+            flex-shrink: 0;
+        }
+
+        .definition-nav-btn:hover {
+            background: var(--primary);
+            border-color: var(--primary);
+            transform: scale(1.1);
+        }
+
+        .definition-nav-dots {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            padding: 15px 0 5px;
+            border-top: 1px solid var(--border);
+            margin-top: 15px;
+        }
+
+        .definition-nav-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: var(--border);
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .definition-nav-dot:hover {
+            background: var(--text-muted);
+            transform: scale(1.2);
+        }
+
+        .definition-nav-dot.active {
+            background: var(--primary);
+            transform: scale(1.3);
+        }
+
         .definition-section {
             margin-bottom: 20px;
         }
@@ -5801,10 +5863,13 @@
     <div class="modal-overlay" id="definitionModal" onclick="closeDefinitionModal(event)">
         <div class="modal definition-modal" onclick="event.stopPropagation()">
             <div class="modal-header">
+                <button class="definition-nav-btn definition-nav-prev" onclick="navigateDefinition(-1)" title="Vorheriger Typ">‹</button>
                 <span class="modal-title" id="definitionModalTitle">Typ-Definition</span>
+                <button class="definition-nav-btn definition-nav-next" onclick="navigateDefinition(1)" title="Nächster Typ">›</button>
                 <button class="modal-close" onclick="closeDefinitionModal()">&times;</button>
             </div>
             <div class="modal-body" id="definitionModalBody"></div>
+            <div class="definition-nav-dots" id="definitionNavDots"></div>
         </div>
     </div>
 
@@ -7322,7 +7387,26 @@
         }
 
         // Definition Modal Functions
+        const definitionArchetypeIds = Object.keys(archetypeDefinitions);
+        let currentDefinitionIndex = 0;
+
         function openDefinitionModal(archetypeId) {
+            const def = archetypeDefinitions[archetypeId];
+            if (!def) return;
+
+            // Set current index
+            currentDefinitionIndex = definitionArchetypeIds.indexOf(archetypeId);
+            if (currentDefinitionIndex === -1) currentDefinitionIndex = 0;
+
+            renderDefinitionContent(archetypeId);
+            renderDefinitionDots();
+            setupDefinitionSwipe();
+
+            document.getElementById('definitionModal').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function renderDefinitionContent(archetypeId) {
             const def = archetypeDefinitions[archetypeId];
             if (!def) return;
 
@@ -7358,9 +7442,61 @@
                     </ul>
                 </div>
             `;
+        }
 
-            document.getElementById('definitionModal').classList.add('active');
-            document.body.style.overflow = 'hidden';
+        function renderDefinitionDots() {
+            const dotsContainer = document.getElementById('definitionNavDots');
+            dotsContainer.innerHTML = definitionArchetypeIds.map((id, index) => {
+                const def = archetypeDefinitions[id];
+                const arch = data.archetypes[id];
+                const color = arch?.color || 'var(--primary)';
+                const isActive = index === currentDefinitionIndex;
+                return `<div class="definition-nav-dot ${isActive ? 'active' : ''}"
+                             style="${isActive ? `background: ${color}` : ''}"
+                             onclick="goToDefinition(${index})"
+                             title="${def.name}"></div>`;
+            }).join('');
+        }
+
+        function navigateDefinition(direction) {
+            const newIndex = currentDefinitionIndex + direction;
+            if (newIndex >= 0 && newIndex < definitionArchetypeIds.length) {
+                currentDefinitionIndex = newIndex;
+                const archetypeId = definitionArchetypeIds[currentDefinitionIndex];
+                renderDefinitionContent(archetypeId);
+                renderDefinitionDots();
+            }
+        }
+
+        function goToDefinition(index) {
+            if (index >= 0 && index < definitionArchetypeIds.length) {
+                currentDefinitionIndex = index;
+                const archetypeId = definitionArchetypeIds[currentDefinitionIndex];
+                renderDefinitionContent(archetypeId);
+                renderDefinitionDots();
+            }
+        }
+
+        function setupDefinitionSwipe() {
+            const modal = document.querySelector('.definition-modal');
+            let touchStartX = 0;
+            let touchEndX = 0;
+
+            modal.ontouchstart = (e) => {
+                touchStartX = e.changedTouches[0].screenX;
+            };
+
+            modal.ontouchend = (e) => {
+                touchEndX = e.changedTouches[0].screenX;
+                const diff = touchStartX - touchEndX;
+                if (Math.abs(diff) > 50) {
+                    if (diff > 0) {
+                        navigateDefinition(1); // Swipe left = next
+                    } else {
+                        navigateDefinition(-1); // Swipe right = prev
+                    }
+                }
+            };
         }
 
         function closeDefinitionModal(event) {
@@ -10721,18 +10857,38 @@
                 // Load from localStorage (feedback)
                 const localFeedback = JSON.parse(localStorage.getItem('tiage_feedback') || '[]');
 
-                // Combine both sources
-                allCommentsData = [...localComments, ...localFeedback];
+                // Combine both sources with deduplication by content (name + text)
+                const seen = new Set();
+                const getContentKey = (c) => {
+                    const name = (c.Name || c.name || '').toLowerCase().trim();
+                    const text = (c.Kommentar || c.kommentar || c.text || c.comment || '').toLowerCase().trim();
+                    return `${name}::${text}`;
+                };
+
+                allCommentsData = [];
+                [...localComments, ...localFeedback].forEach(c => {
+                    const key = getContentKey(c);
+                    if (key !== '::' && !seen.has(key)) {
+                        seen.add(key);
+                        allCommentsData.push(c);
+                    } else if (key === '::') {
+                        // Keep entries without name/text (edge case)
+                        allCommentsData.push(c);
+                    }
+                });
 
                 // Try to load from server if available
                 if (typeof GOOGLE_SCRIPT_URL !== 'undefined' && GOOGLE_SCRIPT_URL) {
                     try {
                         const response = await fetch(GOOGLE_SCRIPT_URL);
                         const serverData = await response.json();
-                        // Merge server data with local data (avoiding duplicates by ID)
-                        const localIds = new Set(allCommentsData.map(c => c.id || c.ID));
+                        // Merge server data with local data (avoiding duplicates by content)
                         serverData.forEach(item => {
-                            if (!localIds.has(item.id || item.ID)) {
+                            const key = getContentKey(item);
+                            if (key !== '::' && !seen.has(key)) {
+                                seen.add(key);
+                                allCommentsData.push(item);
+                            } else if (key === '::') {
                                 allCommentsData.push(item);
                             }
                         });
