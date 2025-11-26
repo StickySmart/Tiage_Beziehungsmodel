@@ -1,5 +1,7 @@
 # Tiage-Beziehungsmodell
 
+**Version 1.3.0** | [Changelog](CHANGELOG.md)
+
 Eine eigenständige Synthese zur Analyse von Beziehungskompatibilität, entwickelt durch Tiage's Online-Recherche und persönliche Reflexion.
 
 ## Philosophische Grundlagen
