@@ -3768,6 +3768,57 @@
             color: var(--warning);
         }
 
+        /* Dominanz Multi-Select */
+        .dominanz-multi-select {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .dominanz-option-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 10px;
+            background: var(--bg-dark);
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            transition: all 0.2s;
+        }
+
+        .dominanz-option-row:has(.dominanz-checkbox:checked) {
+            background: rgba(139, 92, 246, 0.15);
+            border-color: var(--primary);
+        }
+
+        .dominanz-checkbox {
+            width: 18px;
+            height: 18px;
+            accent-color: var(--primary);
+            cursor: pointer;
+        }
+
+        .dominanz-label {
+            flex: 1;
+            font-size: var(--font-sm);
+            color: var(--text-primary);
+            cursor: pointer;
+        }
+
+        .dominanz-status-select {
+            padding: 4px 8px;
+            font-size: 11px;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            color: var(--text-primary);
+            cursor: pointer;
+        }
+
+        .dominanz-status-select option {
+            background: var(--bg-card);
+        }
+
         /* Result Bar */
         .result-bar {
             background: var(--bg-card);
@@ -4933,26 +4984,41 @@
                             <label for="ich-g-nb" class="compact-option">non-binär</label>
                         </div>
                     </div>
-                    <div class="compact-dimension needs-selection" data-dimension="ich-dominanz-new">
-                        <div class="compact-dimension-label">Dominanz <span class="dimension-info-icon" onclick="showDimensionTooltip('dominanz')">ℹ</span></div>
-                        <div class="compact-options">
-                            <input type="radio" name="ich-dominanz-new" id="ich-d-dom" value="dominant" class="compact-radio">
-                            <label for="ich-d-dom" class="compact-option">dominant</label>
-                            <input type="radio" name="ich-dominanz-new" id="ich-d-sub" value="submissiv" class="compact-radio">
-                            <label for="ich-d-sub" class="compact-option">submissiv</label>
-                            <input type="radio" name="ich-dominanz-new" id="ich-d-sw" value="switch" class="compact-radio">
-                            <label for="ich-d-sw" class="compact-option">switch</label>
-                            <input type="radio" name="ich-dominanz-new" id="ich-d-aus" value="ausgeglichen" class="compact-radio">
-                            <label for="ich-d-aus" class="compact-option">ausgeglichen</label>
-                        </div>
-                    </div>
-                    <div class="compact-dimension needs-selection" data-dimension="ich-dominanz-status-new" id="ich-dominanz-status-section" style="display: none;">
-                        <div class="compact-dimension-label">Dominanz-Status <span class="dimension-info-icon" onclick="showDimensionTooltip('dominanzStatus')">ℹ</span></div>
-                        <div class="compact-options">
-                            <input type="radio" name="ich-dominanz-status-new" id="ich-ds-fakt" value="fakt" class="compact-radio">
-                            <label for="ich-ds-fakt" class="compact-option">Fakt</label>
-                            <input type="radio" name="ich-dominanz-status-new" id="ich-ds-int" value="interessiert" class="compact-radio">
-                            <label for="ich-ds-int" class="compact-option">Interessiert</label>
+                    <div class="compact-dimension needs-selection" data-dimension="ich-dominanz-multi">
+                        <div class="compact-dimension-label">Dominanz <span class="dimension-info-icon" onclick="showDimensionTooltip('dominanz')">ℹ</span> <span style="font-size: 10px; opacity: 0.7;">(Mehrfachauswahl)</span></div>
+                        <div class="dominanz-multi-select">
+                            <div class="dominanz-option-row">
+                                <input type="checkbox" id="ich-d-dom" value="dominant" class="dominanz-checkbox" onchange="handleDominanzMultiChange('ich', 'dominant', this.checked)">
+                                <label for="ich-d-dom" class="dominanz-label">dominant</label>
+                                <select id="ich-d-dom-status" class="dominanz-status-select" style="display: none;" onchange="handleDominanzStatusChange('ich', 'dominant', this.value)">
+                                    <option value="fakt">Fakt</option>
+                                    <option value="interessiert">Interessiert</option>
+                                </select>
+                            </div>
+                            <div class="dominanz-option-row">
+                                <input type="checkbox" id="ich-d-sub" value="submissiv" class="dominanz-checkbox" onchange="handleDominanzMultiChange('ich', 'submissiv', this.checked)">
+                                <label for="ich-d-sub" class="dominanz-label">submissiv</label>
+                                <select id="ich-d-sub-status" class="dominanz-status-select" style="display: none;" onchange="handleDominanzStatusChange('ich', 'submissiv', this.value)">
+                                    <option value="fakt">Fakt</option>
+                                    <option value="interessiert">Interessiert</option>
+                                </select>
+                            </div>
+                            <div class="dominanz-option-row">
+                                <input type="checkbox" id="ich-d-sw" value="switch" class="dominanz-checkbox" onchange="handleDominanzMultiChange('ich', 'switch', this.checked)">
+                                <label for="ich-d-sw" class="dominanz-label">switch</label>
+                                <select id="ich-d-sw-status" class="dominanz-status-select" style="display: none;" onchange="handleDominanzStatusChange('ich', 'switch', this.value)">
+                                    <option value="fakt">Fakt</option>
+                                    <option value="interessiert">Interessiert</option>
+                                </select>
+                            </div>
+                            <div class="dominanz-option-row">
+                                <input type="checkbox" id="ich-d-aus" value="ausgeglichen" class="dominanz-checkbox" onchange="handleDominanzMultiChange('ich', 'ausgeglichen', this.checked)">
+                                <label for="ich-d-aus" class="dominanz-label">ausgeglichen</label>
+                                <select id="ich-d-aus-status" class="dominanz-status-select" style="display: none;" onchange="handleDominanzStatusChange('ich', 'ausgeglichen', this.value)">
+                                    <option value="fakt">Fakt</option>
+                                    <option value="interessiert">Interessiert</option>
+                                </select>
+                            </div>
                         </div>
                     </div>
                     <div class="compact-dimension needs-selection" data-dimension="ich-orientierung-new">
@@ -5007,26 +5073,41 @@
                             <label for="partner-g-nb" class="compact-option">non-binär</label>
                         </div>
                     </div>
-                    <div class="compact-dimension needs-selection" data-dimension="partner-dominanz-new">
-                        <div class="compact-dimension-label">Dominanz <span class="dimension-info-icon" onclick="showDimensionTooltip('dominanz')">ℹ</span></div>
-                        <div class="compact-options">
-                            <input type="radio" name="partner-dominanz-new" id="partner-d-dom" value="dominant" class="compact-radio">
-                            <label for="partner-d-dom" class="compact-option">dominant</label>
-                            <input type="radio" name="partner-dominanz-new" id="partner-d-sub" value="submissiv" class="compact-radio">
-                            <label for="partner-d-sub" class="compact-option">submissiv</label>
-                            <input type="radio" name="partner-dominanz-new" id="partner-d-sw" value="switch" class="compact-radio">
-                            <label for="partner-d-sw" class="compact-option">switch</label>
-                            <input type="radio" name="partner-dominanz-new" id="partner-d-aus" value="ausgeglichen" class="compact-radio">
-                            <label for="partner-d-aus" class="compact-option">ausgeglichen</label>
-                        </div>
-                    </div>
-                    <div class="compact-dimension needs-selection" data-dimension="partner-dominanz-status-new" id="partner-dominanz-status-section" style="display: none;">
-                        <div class="compact-dimension-label">Dominanz-Status <span class="dimension-info-icon" onclick="showDimensionTooltip('dominanzStatus')">ℹ</span></div>
-                        <div class="compact-options">
-                            <input type="radio" name="partner-dominanz-status-new" id="partner-ds-fakt" value="fakt" class="compact-radio">
-                            <label for="partner-ds-fakt" class="compact-option">Fakt</label>
-                            <input type="radio" name="partner-dominanz-status-new" id="partner-ds-int" value="interessiert" class="compact-radio">
-                            <label for="partner-ds-int" class="compact-option">Interessiert</label>
+                    <div class="compact-dimension needs-selection" data-dimension="partner-dominanz-multi">
+                        <div class="compact-dimension-label">Dominanz <span class="dimension-info-icon" onclick="showDimensionTooltip('dominanz')">ℹ</span> <span style="font-size: 10px; opacity: 0.7;">(Mehrfachauswahl)</span></div>
+                        <div class="dominanz-multi-select">
+                            <div class="dominanz-option-row">
+                                <input type="checkbox" id="partner-d-dom" value="dominant" class="dominanz-checkbox" onchange="handleDominanzMultiChange('partner', 'dominant', this.checked)">
+                                <label for="partner-d-dom" class="dominanz-label">dominant</label>
+                                <select id="partner-d-dom-status" class="dominanz-status-select" style="display: none;" onchange="handleDominanzStatusChange('partner', 'dominant', this.value)">
+                                    <option value="fakt">Fakt</option>
+                                    <option value="interessiert">Interessiert</option>
+                                </select>
+                            </div>
+                            <div class="dominanz-option-row">
+                                <input type="checkbox" id="partner-d-sub" value="submissiv" class="dominanz-checkbox" onchange="handleDominanzMultiChange('partner', 'submissiv', this.checked)">
+                                <label for="partner-d-sub" class="dominanz-label">submissiv</label>
+                                <select id="partner-d-sub-status" class="dominanz-status-select" style="display: none;" onchange="handleDominanzStatusChange('partner', 'submissiv', this.value)">
+                                    <option value="fakt">Fakt</option>
+                                    <option value="interessiert">Interessiert</option>
+                                </select>
+                            </div>
+                            <div class="dominanz-option-row">
+                                <input type="checkbox" id="partner-d-sw" value="switch" class="dominanz-checkbox" onchange="handleDominanzMultiChange('partner', 'switch', this.checked)">
+                                <label for="partner-d-sw" class="dominanz-label">switch</label>
+                                <select id="partner-d-sw-status" class="dominanz-status-select" style="display: none;" onchange="handleDominanzStatusChange('partner', 'switch', this.value)">
+                                    <option value="fakt">Fakt</option>
+                                    <option value="interessiert">Interessiert</option>
+                                </select>
+                            </div>
+                            <div class="dominanz-option-row">
+                                <input type="checkbox" id="partner-d-aus" value="ausgeglichen" class="dominanz-checkbox" onchange="handleDominanzMultiChange('partner', 'ausgeglichen', this.checked)">
+                                <label for="partner-d-aus" class="dominanz-label">ausgeglichen</label>
+                                <select id="partner-d-aus-status" class="dominanz-status-select" style="display: none;" onchange="handleDominanzStatusChange('partner', 'ausgeglichen', this.value)">
+                                    <option value="fakt">Fakt</option>
+                                    <option value="interessiert">Interessiert</option>
+                                </select>
+                            </div>
                         </div>
                     </div>
                     <div class="compact-dimension needs-selection" data-dimension="partner-orientierung-new">
@@ -5171,26 +5252,41 @@
                             <label for="m-ich-g-nb" class="compact-option">non-binär</label>
                         </div>
                     </div>
-                    <div class="compact-dimension needs-selection">
-                        <div class="compact-dimension-label">Dominanz-Präferenz <span class="dimension-info-icon" onclick="showDimensionTooltip('dominanz')">ℹ</span></div>
-                        <div class="compact-options">
-                            <input type="radio" name="mobile-ich-dominanz" id="m-ich-d-dom" value="dominant" class="compact-radio">
-                            <label for="m-ich-d-dom" class="compact-option">dominant</label>
-                            <input type="radio" name="mobile-ich-dominanz" id="m-ich-d-sub" value="submissiv" class="compact-radio">
-                            <label for="m-ich-d-sub" class="compact-option">submissiv</label>
-                            <input type="radio" name="mobile-ich-dominanz" id="m-ich-d-sw" value="switch" class="compact-radio">
-                            <label for="m-ich-d-sw" class="compact-option">switch</label>
-                            <input type="radio" name="mobile-ich-dominanz" id="m-ich-d-aus" value="ausgeglichen" class="compact-radio">
-                            <label for="m-ich-d-aus" class="compact-option">ausgeglichen</label>
-                        </div>
-                    </div>
-                    <div class="compact-dimension needs-selection" id="mobile-ich-dominanz-status-section" style="display: none;">
-                        <div class="compact-dimension-label">Dominanz-Status <span class="dimension-info-icon" onclick="showDimensionTooltip('dominanzStatus')">ℹ</span></div>
-                        <div class="compact-options">
-                            <input type="radio" name="mobile-ich-dominanz-status" id="m-ich-ds-fakt" value="fakt" class="compact-radio">
-                            <label for="m-ich-ds-fakt" class="compact-option">Fakt</label>
-                            <input type="radio" name="mobile-ich-dominanz-status" id="m-ich-ds-int" value="interessiert" class="compact-radio">
-                            <label for="m-ich-ds-int" class="compact-option">Interessiert</label>
+                    <div class="compact-dimension needs-selection" data-dimension="mobile-ich-dominanz-multi">
+                        <div class="compact-dimension-label">Dominanz <span class="dimension-info-icon" onclick="showDimensionTooltip('dominanz')">ℹ</span> <span style="font-size: 10px; opacity: 0.7;">(Mehrfachauswahl)</span></div>
+                        <div class="dominanz-multi-select">
+                            <div class="dominanz-option-row">
+                                <input type="checkbox" id="m-ich-d-dom" value="dominant" class="dominanz-checkbox" onchange="handleMobileDominanzMultiChange('ich', 'dominant', this.checked)">
+                                <label for="m-ich-d-dom" class="dominanz-label">dominant</label>
+                                <select id="m-ich-d-dom-status" class="dominanz-status-select" style="display: none;" onchange="handleMobileDominanzStatusChange('ich', 'dominant', this.value)">
+                                    <option value="fakt">Fakt</option>
+                                    <option value="interessiert">Interessiert</option>
+                                </select>
+                            </div>
+                            <div class="dominanz-option-row">
+                                <input type="checkbox" id="m-ich-d-sub" value="submissiv" class="dominanz-checkbox" onchange="handleMobileDominanzMultiChange('ich', 'submissiv', this.checked)">
+                                <label for="m-ich-d-sub" class="dominanz-label">submissiv</label>
+                                <select id="m-ich-d-sub-status" class="dominanz-status-select" style="display: none;" onchange="handleMobileDominanzStatusChange('ich', 'submissiv', this.value)">
+                                    <option value="fakt">Fakt</option>
+                                    <option value="interessiert">Interessiert</option>
+                                </select>
+                            </div>
+                            <div class="dominanz-option-row">
+                                <input type="checkbox" id="m-ich-d-sw" value="switch" class="dominanz-checkbox" onchange="handleMobileDominanzMultiChange('ich', 'switch', this.checked)">
+                                <label for="m-ich-d-sw" class="dominanz-label">switch</label>
+                                <select id="m-ich-d-sw-status" class="dominanz-status-select" style="display: none;" onchange="handleMobileDominanzStatusChange('ich', 'switch', this.value)">
+                                    <option value="fakt">Fakt</option>
+                                    <option value="interessiert">Interessiert</option>
+                                </select>
+                            </div>
+                            <div class="dominanz-option-row">
+                                <input type="checkbox" id="m-ich-d-aus" value="ausgeglichen" class="dominanz-checkbox" onchange="handleMobileDominanzMultiChange('ich', 'ausgeglichen', this.checked)">
+                                <label for="m-ich-d-aus" class="dominanz-label">ausgeglichen</label>
+                                <select id="m-ich-d-aus-status" class="dominanz-status-select" style="display: none;" onchange="handleMobileDominanzStatusChange('ich', 'ausgeglichen', this.value)">
+                                    <option value="fakt">Fakt</option>
+                                    <option value="interessiert">Interessiert</option>
+                                </select>
+                            </div>
                         </div>
                     </div>
                     <div class="compact-dimension needs-selection">
@@ -5244,26 +5340,41 @@
                             <label for="m-partner-g-nb" class="compact-option">non-binär</label>
                         </div>
                     </div>
-                    <div class="compact-dimension needs-selection">
-                        <div class="compact-dimension-label">Dominanz-Präferenz <span class="dimension-info-icon" onclick="showDimensionTooltip('dominanz')">ℹ</span></div>
-                        <div class="compact-options">
-                            <input type="radio" name="mobile-partner-dominanz" id="m-partner-d-dom" value="dominant" class="compact-radio">
-                            <label for="m-partner-d-dom" class="compact-option">dominant</label>
-                            <input type="radio" name="mobile-partner-dominanz" id="m-partner-d-sub" value="submissiv" class="compact-radio">
-                            <label for="m-partner-d-sub" class="compact-option">submissiv</label>
-                            <input type="radio" name="mobile-partner-dominanz" id="m-partner-d-sw" value="switch" class="compact-radio">
-                            <label for="m-partner-d-sw" class="compact-option">switch</label>
-                            <input type="radio" name="mobile-partner-dominanz" id="m-partner-d-aus" value="ausgeglichen" class="compact-radio">
-                            <label for="m-partner-d-aus" class="compact-option">ausgeglichen</label>
-                        </div>
-                    </div>
-                    <div class="compact-dimension needs-selection" id="mobile-partner-dominanz-status-section" style="display: none;">
-                        <div class="compact-dimension-label">Dominanz-Status <span class="dimension-info-icon" onclick="showDimensionTooltip('dominanzStatus')">ℹ</span></div>
-                        <div class="compact-options">
-                            <input type="radio" name="mobile-partner-dominanz-status" id="m-partner-ds-fakt" value="fakt" class="compact-radio">
-                            <label for="m-partner-ds-fakt" class="compact-option">Fakt</label>
-                            <input type="radio" name="mobile-partner-dominanz-status" id="m-partner-ds-int" value="interessiert" class="compact-radio">
-                            <label for="m-partner-ds-int" class="compact-option">Interessiert</label>
+                    <div class="compact-dimension needs-selection" data-dimension="mobile-partner-dominanz-multi">
+                        <div class="compact-dimension-label">Dominanz <span class="dimension-info-icon" onclick="showDimensionTooltip('dominanz')">ℹ</span> <span style="font-size: 10px; opacity: 0.7;">(Mehrfachauswahl)</span></div>
+                        <div class="dominanz-multi-select">
+                            <div class="dominanz-option-row">
+                                <input type="checkbox" id="m-partner-d-dom" value="dominant" class="dominanz-checkbox" onchange="handleMobileDominanzMultiChange('partner', 'dominant', this.checked)">
+                                <label for="m-partner-d-dom" class="dominanz-label">dominant</label>
+                                <select id="m-partner-d-dom-status" class="dominanz-status-select" style="display: none;" onchange="handleMobileDominanzStatusChange('partner', 'dominant', this.value)">
+                                    <option value="fakt">Fakt</option>
+                                    <option value="interessiert">Interessiert</option>
+                                </select>
+                            </div>
+                            <div class="dominanz-option-row">
+                                <input type="checkbox" id="m-partner-d-sub" value="submissiv" class="dominanz-checkbox" onchange="handleMobileDominanzMultiChange('partner', 'submissiv', this.checked)">
+                                <label for="m-partner-d-sub" class="dominanz-label">submissiv</label>
+                                <select id="m-partner-d-sub-status" class="dominanz-status-select" style="display: none;" onchange="handleMobileDominanzStatusChange('partner', 'submissiv', this.value)">
+                                    <option value="fakt">Fakt</option>
+                                    <option value="interessiert">Interessiert</option>
+                                </select>
+                            </div>
+                            <div class="dominanz-option-row">
+                                <input type="checkbox" id="m-partner-d-sw" value="switch" class="dominanz-checkbox" onchange="handleMobileDominanzMultiChange('partner', 'switch', this.checked)">
+                                <label for="m-partner-d-sw" class="dominanz-label">switch</label>
+                                <select id="m-partner-d-sw-status" class="dominanz-status-select" style="display: none;" onchange="handleMobileDominanzStatusChange('partner', 'switch', this.value)">
+                                    <option value="fakt">Fakt</option>
+                                    <option value="interessiert">Interessiert</option>
+                                </select>
+                            </div>
+                            <div class="dominanz-option-row">
+                                <input type="checkbox" id="m-partner-d-aus" value="ausgeglichen" class="dominanz-checkbox" onchange="handleMobileDominanzMultiChange('partner', 'ausgeglichen', this.checked)">
+                                <label for="m-partner-d-aus" class="dominanz-label">ausgeglichen</label>
+                                <select id="m-partner-d-aus-status" class="dominanz-status-select" style="display: none;" onchange="handleMobileDominanzStatusChange('partner', 'ausgeglichen', this.value)">
+                                    <option value="fakt">Fakt</option>
+                                    <option value="interessiert">Interessiert</option>
+                                </select>
+                            </div>
                         </div>
                     </div>
                     <div class="compact-dimension needs-selection">
@@ -5437,38 +5548,45 @@
                                 </div>
                             </div>
 
-                            <!-- Dominanz -->
-                            <div class="dimension-group needs-selection" data-dimension="ich-dominanz">
+                            <!-- Dominanz Multi-Select -->
+                            <div class="dimension-group needs-selection" data-dimension="modal-ich-dominanz-multi">
                                 <div class="dimension-label">
-                                    Dominanz-Präferenz
+                                    Dominanz
                                     <span class="dimension-info-icon" onclick="showDimensionTooltip('dominanz')">ℹ</span>
+                                    <span style="font-size: 10px; opacity: 0.7;">(Mehrfachauswahl)</span>
                                 </div>
-                                <div class="dimension-options">
-                                    <input type="radio" name="ich-dominanz" id="ich-dominanz-dom" value="dominant" class="dimension-radio">
-                                    <label for="ich-dominanz-dom" class="dimension-option">dominant</label>
-
-                                    <input type="radio" name="ich-dominanz" id="ich-dominanz-sub" value="submissiv" class="dimension-radio">
-                                    <label for="ich-dominanz-sub" class="dimension-option">submissiv</label>
-
-                                    <input type="radio" name="ich-dominanz" id="ich-dominanz-switch" value="switch" class="dimension-radio">
-                                    <label for="ich-dominanz-switch" class="dimension-option">switch</label>
-
-                                    <input type="radio" name="ich-dominanz" id="ich-dominanz-ausgeglichen" value="ausgeglichen" class="dimension-radio">
-                                    <label for="ich-dominanz-ausgeglichen" class="dimension-option">ausgeglichen</label>
-                                </div>
-
-                                <!-- Dominanz-Status (indented) -->
-                                <div class="dimension-status-group needs-selection" data-dimension="ich-dominanz-status" id="modal-ich-dominanz-status-section" style="display: none;">
-                                    <div class="dimension-status-label">
-                                        Dominanz-Status
-                                        <span class="dimension-info-icon" onclick="showDimensionTooltip('dominanzStatus')">ℹ</span>
+                                <div class="dominanz-multi-select">
+                                    <div class="dominanz-option-row">
+                                        <input type="checkbox" id="modal-ich-d-dom" value="dominant" class="dominanz-checkbox" onchange="handleModalDominanzMultiChange('ich', 'dominant', this.checked)">
+                                        <label for="modal-ich-d-dom" class="dominanz-label">dominant</label>
+                                        <select id="modal-ich-d-dom-status" class="dominanz-status-select" style="display: none;" onchange="handleModalDominanzStatusChange('ich', 'dominant', this.value)">
+                                            <option value="fakt">Fakt</option>
+                                            <option value="interessiert">Interessiert</option>
+                                        </select>
                                     </div>
-                                    <div class="dimension-options">
-                                        <input type="radio" name="ich-dominanz-status" id="ich-dominanz-status-fakt" value="fakt" class="dimension-radio">
-                                        <label for="ich-dominanz-status-fakt" class="dimension-option">Fakt</label>
-
-                                        <input type="radio" name="ich-dominanz-status" id="ich-dominanz-status-interessiert" value="interessiert" class="dimension-radio">
-                                        <label for="ich-dominanz-status-interessiert" class="dimension-option">Interessiert</label>
+                                    <div class="dominanz-option-row">
+                                        <input type="checkbox" id="modal-ich-d-sub" value="submissiv" class="dominanz-checkbox" onchange="handleModalDominanzMultiChange('ich', 'submissiv', this.checked)">
+                                        <label for="modal-ich-d-sub" class="dominanz-label">submissiv</label>
+                                        <select id="modal-ich-d-sub-status" class="dominanz-status-select" style="display: none;" onchange="handleModalDominanzStatusChange('ich', 'submissiv', this.value)">
+                                            <option value="fakt">Fakt</option>
+                                            <option value="interessiert">Interessiert</option>
+                                        </select>
+                                    </div>
+                                    <div class="dominanz-option-row">
+                                        <input type="checkbox" id="modal-ich-d-sw" value="switch" class="dominanz-checkbox" onchange="handleModalDominanzMultiChange('ich', 'switch', this.checked)">
+                                        <label for="modal-ich-d-sw" class="dominanz-label">switch</label>
+                                        <select id="modal-ich-d-sw-status" class="dominanz-status-select" style="display: none;" onchange="handleModalDominanzStatusChange('ich', 'switch', this.value)">
+                                            <option value="fakt">Fakt</option>
+                                            <option value="interessiert">Interessiert</option>
+                                        </select>
+                                    </div>
+                                    <div class="dominanz-option-row">
+                                        <input type="checkbox" id="modal-ich-d-aus" value="ausgeglichen" class="dominanz-checkbox" onchange="handleModalDominanzMultiChange('ich', 'ausgeglichen', this.checked)">
+                                        <label for="modal-ich-d-aus" class="dominanz-label">ausgeglichen</label>
+                                        <select id="modal-ich-d-aus-status" class="dominanz-status-select" style="display: none;" onchange="handleModalDominanzStatusChange('ich', 'ausgeglichen', this.value)">
+                                            <option value="fakt">Fakt</option>
+                                            <option value="interessiert">Interessiert</option>
+                                        </select>
                                     </div>
                                 </div>
                             </div>
@@ -5612,38 +5730,45 @@
                                 </div>
                             </div>
 
-                            <!-- Dominanz -->
-                            <div class="dimension-group needs-selection" data-dimension="partner-dominanz">
+                            <!-- Dominanz Multi-Select -->
+                            <div class="dimension-group needs-selection" data-dimension="modal-partner-dominanz-multi">
                                 <div class="dimension-label">
-                                    Dominanz-Präferenz
+                                    Dominanz
                                     <span class="dimension-info-icon" onclick="showDimensionTooltip('dominanz')">ℹ</span>
+                                    <span style="font-size: 10px; opacity: 0.7;">(Mehrfachauswahl)</span>
                                 </div>
-                                <div class="dimension-options">
-                                    <input type="radio" name="partner-dominanz" id="partner-dominanz-dom" value="dominant" class="dimension-radio">
-                                    <label for="partner-dominanz-dom" class="dimension-option">dominant</label>
-
-                                    <input type="radio" name="partner-dominanz" id="partner-dominanz-sub" value="submissiv" class="dimension-radio">
-                                    <label for="partner-dominanz-sub" class="dimension-option">submissiv</label>
-
-                                    <input type="radio" name="partner-dominanz" id="partner-dominanz-switch" value="switch" class="dimension-radio">
-                                    <label for="partner-dominanz-switch" class="dimension-option">switch</label>
-
-                                    <input type="radio" name="partner-dominanz" id="partner-dominanz-ausgeglichen" value="ausgeglichen" class="dimension-radio">
-                                    <label for="partner-dominanz-ausgeglichen" class="dimension-option">ausgeglichen</label>
-                                </div>
-
-                                <!-- Dominanz-Status (indented) -->
-                                <div class="dimension-status-group needs-selection" data-dimension="partner-dominanz-status" id="modal-partner-dominanz-status-section" style="display: none;">
-                                    <div class="dimension-status-label">
-                                        Dominanz-Status
-                                        <span class="dimension-info-icon" onclick="showDimensionTooltip('dominanzStatus')">ℹ</span>
+                                <div class="dominanz-multi-select">
+                                    <div class="dominanz-option-row">
+                                        <input type="checkbox" id="modal-partner-d-dom" value="dominant" class="dominanz-checkbox" onchange="handleModalDominanzMultiChange('partner', 'dominant', this.checked)">
+                                        <label for="modal-partner-d-dom" class="dominanz-label">dominant</label>
+                                        <select id="modal-partner-d-dom-status" class="dominanz-status-select" style="display: none;" onchange="handleModalDominanzStatusChange('partner', 'dominant', this.value)">
+                                            <option value="fakt">Fakt</option>
+                                            <option value="interessiert">Interessiert</option>
+                                        </select>
                                     </div>
-                                    <div class="dimension-options">
-                                        <input type="radio" name="partner-dominanz-status" id="partner-dominanz-status-fakt" value="fakt" class="dimension-radio">
-                                        <label for="partner-dominanz-status-fakt" class="dimension-option">Fakt</label>
-
-                                        <input type="radio" name="partner-dominanz-status" id="partner-dominanz-status-interessiert" value="interessiert" class="dimension-radio">
-                                        <label for="partner-dominanz-status-interessiert" class="dimension-option">Interessiert</label>
+                                    <div class="dominanz-option-row">
+                                        <input type="checkbox" id="modal-partner-d-sub" value="submissiv" class="dominanz-checkbox" onchange="handleModalDominanzMultiChange('partner', 'submissiv', this.checked)">
+                                        <label for="modal-partner-d-sub" class="dominanz-label">submissiv</label>
+                                        <select id="modal-partner-d-sub-status" class="dominanz-status-select" style="display: none;" onchange="handleModalDominanzStatusChange('partner', 'submissiv', this.value)">
+                                            <option value="fakt">Fakt</option>
+                                            <option value="interessiert">Interessiert</option>
+                                        </select>
+                                    </div>
+                                    <div class="dominanz-option-row">
+                                        <input type="checkbox" id="modal-partner-d-sw" value="switch" class="dominanz-checkbox" onchange="handleModalDominanzMultiChange('partner', 'switch', this.checked)">
+                                        <label for="modal-partner-d-sw" class="dominanz-label">switch</label>
+                                        <select id="modal-partner-d-sw-status" class="dominanz-status-select" style="display: none;" onchange="handleModalDominanzStatusChange('partner', 'switch', this.value)">
+                                            <option value="fakt">Fakt</option>
+                                            <option value="interessiert">Interessiert</option>
+                                        </select>
+                                    </div>
+                                    <div class="dominanz-option-row">
+                                        <input type="checkbox" id="modal-partner-d-aus" value="ausgeglichen" class="dominanz-checkbox" onchange="handleModalDominanzMultiChange('partner', 'ausgeglichen', this.checked)">
+                                        <label for="modal-partner-d-aus" class="dominanz-label">ausgeglichen</label>
+                                        <select id="modal-partner-d-aus-status" class="dominanz-status-select" style="display: none;" onchange="handleModalDominanzStatusChange('partner', 'ausgeglichen', this.value)">
+                                            <option value="fakt">Fakt</option>
+                                            <option value="interessiert">Interessiert</option>
+                                        </select>
                                     </div>
                                 </div>
                             </div>
@@ -6132,18 +6257,27 @@
         let selectedPartner = 'duo';
 
         // Extended Person Dimensions (null = not yet selected)
+        // dominanz is now an object with status per preference (multi-select)
         const personDimensions = {
             ich: {
                 geschlecht: null,
-                dominanz: null,
-                dominanzStatus: null,
+                dominanz: {
+                    dominant: null,      // null, 'fakt', oder 'interessiert'
+                    submissiv: null,
+                    switch: null,
+                    ausgeglichen: null
+                },
                 orientierung: null,
                 orientierungStatus: null
             },
             partner: {
                 geschlecht: null,
-                dominanz: null,
-                dominanzStatus: null,
+                dominanz: {
+                    dominant: null,
+                    submissiv: null,
+                    switch: null,
+                    ausgeglichen: null
+                },
                 orientierung: null,
                 orientierungStatus: null
             }
@@ -9156,111 +9290,264 @@
         }
 
         // ========================================
-        // Dominanz-Status Popup Functions
+        // Dominanz Multi-Select Functions
         // ========================================
-        let currentDominanzStatusPopupPerson = null;
 
-        function showDominanzStatusPopup(person) {
-            currentDominanzStatusPopupPerson = person;
-            document.getElementById('dominanzStatusPopupOverlay').classList.add('active');
-        }
+        // Handle checkbox change for dominanz multi-select
+        function handleDominanzMultiChange(person, dominanzType, isChecked) {
+            if (isChecked) {
+                // Show status select and default to 'fakt'
+                personDimensions[person].dominanz[dominanzType] = 'fakt';
+                if (typeof mobilePersonDimensions !== 'undefined') {
+                    mobilePersonDimensions[person].dominanz[dominanzType] = 'fakt';
+                }
 
-        function closeDominanzStatusPopup() {
-            document.getElementById('dominanzStatusPopupOverlay').classList.remove('active');
-            currentDominanzStatusPopupPerson = null;
-        }
+                // Show the status dropdown
+                const statusSelect = document.getElementById(person + '-d-' + getShortDominanzId(dominanzType) + '-status');
+                if (statusSelect) {
+                    statusSelect.style.display = 'inline-block';
+                    statusSelect.value = 'fakt';
+                }
+            } else {
+                // Remove selection
+                personDimensions[person].dominanz[dominanzType] = null;
+                if (typeof mobilePersonDimensions !== 'undefined') {
+                    mobilePersonDimensions[person].dominanz[dominanzType] = null;
+                }
 
-        function selectDominanzStatusFromPopup(status) {
-            if (!currentDominanzStatusPopupPerson) return;
-
-            const person = currentDominanzStatusPopupPerson;
-            personDimensions[person].dominanzStatus = status;
-            if (typeof mobilePersonDimensions !== 'undefined') {
-                mobilePersonDimensions[person].dominanzStatus = status;
+                // Hide the status dropdown
+                const statusSelect = document.getElementById(person + '-d-' + getShortDominanzId(dominanzType) + '-status');
+                if (statusSelect) {
+                    statusSelect.style.display = 'none';
+                }
             }
 
-            // Update the corresponding desktop radio button
-            const desktopRadioId = person === 'ich'
-                ? (status === 'fakt' ? 'ich-ds-fakt' : 'ich-ds-int')
-                : (status === 'fakt' ? 'partner-ds-fakt' : 'partner-ds-int');
-            const desktopRadio = document.getElementById(desktopRadioId);
-            if (desktopRadio) {
-                desktopRadio.checked = true;
+            // Sync all UIs (Desktop, Mobile, Modal)
+            if (typeof syncDominanzUI === 'function') {
+                syncDominanzUI(person);
             }
 
-            // Update the corresponding mobile radio button
-            const mobileRadioId = person === 'ich'
-                ? (status === 'fakt' ? 'm-ich-ds-fakt' : 'm-ich-ds-int')
-                : (status === 'fakt' ? 'm-partner-ds-fakt' : 'm-partner-ds-int');
-            const mobileRadio = document.getElementById(mobileRadioId);
-            if (mobileRadio) {
-                mobileRadio.checked = true;
-            }
-
-            // Update the corresponding modal radio button
-            const modalRadioId = person + '-dominanz-status-' + (status === 'fakt' ? 'fakt' : 'interessiert');
-            const modalRadio = document.getElementById(modalRadioId);
-            if (modalRadio) {
-                modalRadio.checked = true;
-            }
-
-            // Remove needs-selection class from all sections
-            const desktopStatusSection = document.getElementById(person + '-dominanz-status-section');
-            if (desktopStatusSection) {
-                desktopStatusSection.classList.remove('needs-selection');
-            }
-            const mobileStatusSection = document.getElementById('mobile-' + person + '-dominanz-status-section');
-            if (mobileStatusSection) {
-                mobileStatusSection.classList.remove('needs-selection');
-            }
-            const modalStatusSection = document.getElementById('modal-' + person + '-dominanz-status-section');
-            if (modalStatusSection) {
-                modalStatusSection.classList.remove('needs-selection');
-            }
-
-            closeDominanzStatusPopup();
             updateComparisonView();
 
-            // Save to localStorage
             if (typeof saveSelectionToStorage === 'function') {
                 saveSelectionToStorage();
             }
         }
 
-        function handleDominanzChange(person, dominanz, isMobile = false) {
-            personDimensions[person].dominanz = dominanz;
+        // Handle status change for a specific dominanz type
+        function handleDominanzStatusChange(person, dominanzType, status) {
+            personDimensions[person].dominanz[dominanzType] = status;
             if (typeof mobilePersonDimensions !== 'undefined') {
-                mobilePersonDimensions[person].dominanz = dominanz;
+                mobilePersonDimensions[person].dominanz[dominanzType] = status;
             }
 
-            // Get all dominanz status sections (desktop, mobile, modal)
-            const desktopStatusSection = document.getElementById(person + '-dominanz-status-section');
-            const mobileStatusSection = document.getElementById('mobile-' + person + '-dominanz-status-section');
-            const modalStatusSection = document.getElementById('modal-' + person + '-dominanz-status-section');
-
-            // Show status section and popup for all dominanz selections
-            if (desktopStatusSection) {
-                desktopStatusSection.style.display = 'block';
-            }
-            if (mobileStatusSection) {
-                mobileStatusSection.style.display = 'block';
-            }
-            if (modalStatusSection) {
-                modalStatusSection.style.display = 'block';
-            }
-            showDominanzStatusPopup(person);
-
-            // Sync dominanz to desktop if called from mobile
-            if (isMobile) {
-                syncDimensionToDesktop(person + '-dominanz-new', dominanz);
+            // Sync all UIs
+            if (typeof syncDominanzUI === 'function') {
+                syncDominanzUI(person);
             }
 
             updateComparisonView();
 
-            // Save to localStorage
             if (typeof saveSelectionToStorage === 'function') {
                 saveSelectionToStorage();
             }
+        }
+
+        // Mobile: Handle checkbox change for multi-select dominanz
+        function handleMobileDominanzMultiChange(person, dominanzType, isChecked) {
+            if (isChecked) {
+                // Set default status to 'fakt'
+                if (typeof mobilePersonDimensions !== 'undefined') {
+                    mobilePersonDimensions[person].dominanz[dominanzType] = 'fakt';
+                }
+                personDimensions[person].dominanz[dominanzType] = 'fakt';
+
+                // Show the status dropdown
+                const statusSelect = document.getElementById('m-' + person + '-d-' + getShortDominanzId(dominanzType) + '-status');
+                if (statusSelect) {
+                    statusSelect.style.display = 'inline-block';
+                    statusSelect.value = 'fakt';
+                }
+            } else {
+                // Remove selection
+                if (typeof mobilePersonDimensions !== 'undefined') {
+                    mobilePersonDimensions[person].dominanz[dominanzType] = null;
+                }
+                personDimensions[person].dominanz[dominanzType] = null;
+
+                // Hide the status dropdown
+                const statusSelect = document.getElementById('m-' + person + '-d-' + getShortDominanzId(dominanzType) + '-status');
+                if (statusSelect) {
+                    statusSelect.style.display = 'none';
+                }
+            }
+
+            // Sync all UIs (Desktop, Mobile, Modal)
+            if (typeof syncDominanzUI === 'function') {
+                syncDominanzUI(person);
+            }
+
+            updateComparisonView();
+
+            if (typeof saveSelectionToStorage === 'function') {
+                saveSelectionToStorage();
+            }
+        }
+
+        // Mobile: Handle status change for a specific dominanz type
+        function handleMobileDominanzStatusChange(person, dominanzType, status) {
+            if (typeof mobilePersonDimensions !== 'undefined') {
+                mobilePersonDimensions[person].dominanz[dominanzType] = status;
+            }
+            personDimensions[person].dominanz[dominanzType] = status;
+
+            // Sync all UIs
+            if (typeof syncDominanzUI === 'function') {
+                syncDominanzUI(person);
+            }
+
+            updateComparisonView();
+
+            if (typeof saveSelectionToStorage === 'function') {
+                saveSelectionToStorage();
+            }
+        }
+
+        // Modal: Handle checkbox change for multi-select dominanz
+        function handleModalDominanzMultiChange(person, dominanzType, isChecked) {
+            if (isChecked) {
+                // Set default status to 'fakt'
+                personDimensions[person].dominanz[dominanzType] = 'fakt';
+                if (typeof mobilePersonDimensions !== 'undefined') {
+                    mobilePersonDimensions[person].dominanz[dominanzType] = 'fakt';
+                }
+
+                // Show the status dropdown
+                const statusSelect = document.getElementById('modal-' + person + '-d-' + getShortDominanzId(dominanzType) + '-status');
+                if (statusSelect) {
+                    statusSelect.style.display = 'inline-block';
+                    statusSelect.value = 'fakt';
+                }
+            } else {
+                // Remove selection
+                personDimensions[person].dominanz[dominanzType] = null;
+                if (typeof mobilePersonDimensions !== 'undefined') {
+                    mobilePersonDimensions[person].dominanz[dominanzType] = null;
+                }
+
+                // Hide the status dropdown
+                const statusSelect = document.getElementById('modal-' + person + '-d-' + getShortDominanzId(dominanzType) + '-status');
+                if (statusSelect) {
+                    statusSelect.style.display = 'none';
+                }
+            }
+
+            // Remove needs-selection if at least one dominanz is selected
+            const dimensionContainer = document.querySelector(`[data-dimension="modal-${person}-dominanz-multi"]`);
+            if (dimensionContainer && hasAnyDominanzSelected(person)) {
+                dimensionContainer.classList.remove('needs-selection');
+            }
+
+            // Sync Desktop and Mobile UIs
+            syncDominanzUI(person);
+
+            updateComparisonView();
+
+            if (typeof saveSelectionToStorage === 'function') {
+                saveSelectionToStorage();
+            }
+        }
+
+        // Modal: Handle status change for a specific dominanz type
+        function handleModalDominanzStatusChange(person, dominanzType, status) {
+            personDimensions[person].dominanz[dominanzType] = status;
+            if (typeof mobilePersonDimensions !== 'undefined') {
+                mobilePersonDimensions[person].dominanz[dominanzType] = status;
+            }
+
+            // Sync Desktop and Mobile UIs
+            syncDominanzUI(person);
+
+            updateComparisonView();
+
+            if (typeof saveSelectionToStorage === 'function') {
+                saveSelectionToStorage();
+            }
+        }
+
+        // Sync all Dominanz UIs (Desktop, Mobile, Modal)
+        function syncDominanzUI(person) {
+            const shortIdMap = { 'dominant': 'dom', 'submissiv': 'sub', 'switch': 'sw', 'ausgeglichen': 'aus' };
+            const dom = personDimensions[person].dominanz;
+
+            for (const [type, status] of Object.entries(dom)) {
+                const shortId = shortIdMap[type];
+
+                // Desktop
+                const desktopCheckbox = document.getElementById(person + '-d-' + shortId);
+                if (desktopCheckbox) desktopCheckbox.checked = !!status;
+                const desktopStatus = document.getElementById(person + '-d-' + shortId + '-status');
+                if (desktopStatus) {
+                    desktopStatus.style.display = status ? 'inline-block' : 'none';
+                    if (status) desktopStatus.value = status;
+                }
+
+                // Mobile
+                const mobileCheckbox = document.getElementById('m-' + person + '-d-' + shortId);
+                if (mobileCheckbox) mobileCheckbox.checked = !!status;
+                const mobileStatus = document.getElementById('m-' + person + '-d-' + shortId + '-status');
+                if (mobileStatus) {
+                    mobileStatus.style.display = status ? 'inline-block' : 'none';
+                    if (status) mobileStatus.value = status;
+                }
+
+                // Modal
+                const modalCheckbox = document.getElementById('modal-' + person + '-d-' + shortId);
+                if (modalCheckbox) modalCheckbox.checked = !!status;
+                const modalStatus = document.getElementById('modal-' + person + '-d-' + shortId + '-status');
+                if (modalStatus) {
+                    modalStatus.style.display = status ? 'inline-block' : 'none';
+                    if (status) modalStatus.value = status;
+                }
+            }
+
+            // Update needs-selection classes
+            const hasSelection = hasAnyDominanzSelected(person);
+            ['', 'mobile-', 'modal-'].forEach(prefix => {
+                const dim = document.querySelector(`[data-dimension="${prefix}${person}-dominanz-multi"]`);
+                if (dim) {
+                    if (hasSelection) dim.classList.remove('needs-selection');
+                    else dim.classList.add('needs-selection');
+                }
+            });
+        }
+
+        // Helper: Get short ID for dominanz type
+        function getShortDominanzId(dominanzType) {
+            const map = {
+                'dominant': 'dom',
+                'submissiv': 'sub',
+                'switch': 'sw',
+                'ausgeglichen': 'aus'
+            };
+            return map[dominanzType] || dominanzType;
+        }
+
+        // Helper: Check if at least one dominanz is selected
+        function hasAnyDominanzSelected(person) {
+            const dom = personDimensions[person].dominanz;
+            return dom.dominant || dom.submissiv || dom.switch || dom.ausgeglichen;
+        }
+
+        // Helper: Get all selected dominanz preferences with status
+        function getSelectedDominanzList(person) {
+            const dom = personDimensions[person].dominanz;
+            const result = [];
+            if (dom.dominant) result.push({ type: 'dominant', status: dom.dominant });
+            if (dom.submissiv) result.push({ type: 'submissiv', status: dom.submissiv });
+            if (dom.switch) result.push({ type: 'switch', status: dom.switch });
+            if (dom.ausgeglichen) result.push({ type: 'ausgeglichen', status: dom.ausgeglichen });
+            return result;
         }
 
         function handleDimensionChange(person, dimension, value, element) {
@@ -9303,19 +9590,32 @@
             return map[geschlecht] || geschlecht;
         }
 
-        function getDominanzKurz(dominanz, status) {
+        function getDominanzKurz(dominanz) {
+            // Handle multi-select object
+            if (dominanz && typeof dominanz === 'object') {
+                const parts = [];
+                const map = { 'dominant': 'dom', 'submissiv': 'sub', 'switch': 'sw', 'ausgeglichen': 'ausg' };
+
+                for (const [type, status] of Object.entries(dominanz)) {
+                    if (status) {
+                        let kurz = map[type] || type;
+                        if (status === 'interessiert') kurz += '?';
+                        parts.push(kurz);
+                    }
+                }
+
+                return parts.length > 0 ? parts.join('+') : '?';
+            }
+
+            // Old single-value format (backwards compatibility)
             if (!dominanz) return '?';
             const map = {
                 'dominant': 'dom',
                 'submissiv': 'sub',
-                'switch': 'switch',
+                'switch': 'sw',
                 'ausgeglichen': 'ausg'
             };
-            let kurz = map[dominanz] || dominanz;
-            if (status === 'interessiert') {
-                kurz += '(?)';
-            }
-            return kurz;
+            return map[dominanz] || dominanz;
         }
 
         function getOrientierungKurz(orientierung, status) {
@@ -9339,8 +9639,8 @@
             const ichDims = personDimensions.ich;
             const partnerDims = personDimensions.partner;
 
-            const ichInfo = `(${getGeschlechtKurz(ichDims.geschlecht)}, ${getDominanzKurz(ichDims.dominanz, ichDims.dominanzStatus)}, ${getOrientierungKurz(ichDims.orientierung, ichDims.orientierungStatus)})`;
-            const partnerInfo = `(${getGeschlechtKurz(partnerDims.geschlecht)}, ${getDominanzKurz(partnerDims.dominanz, partnerDims.dominanzStatus)}, ${getOrientierungKurz(partnerDims.orientierung, partnerDims.orientierungStatus)})`;
+            const ichInfo = `(${getGeschlechtKurz(ichDims.geschlecht)}, ${getDominanzKurz(ichDims.dominanz)}, ${getOrientierungKurz(ichDims.orientierung, ichDims.orientierungStatus)})`;
+            const partnerInfo = `(${getGeschlechtKurz(partnerDims.geschlecht)}, ${getDominanzKurz(partnerDims.dominanz)}, ${getOrientierungKurz(partnerDims.orientierung, partnerDims.orientierungStatus)})`;
 
             const content = document.getElementById('analysisOverviewContent');
             if (content) {
@@ -9918,94 +10218,78 @@
         // -  80%: Switch + Pol = Anpassung möglich, aber Spannung
         // -  60%: Gleiche Pole (Dom↔Dom, Sub↔Sub) = Konflikt, fehlende Spannung
         // ═══════════════════════════════════════════════════════════════════════
-        function calculateDominanceHarmony(dom1, dom2, status1 = 'fakt', status2 = 'fakt') {
-            // Default bei fehlender Auswahl: neutraler Mittelwert
-            if (!dom1 || !dom2) return 75;
+        // ═══════════════════════════════════════════════════════════════════════
+        // DOMINANZ HARMONY MATRIX
+        // ═══════════════════════════════════════════════════════════════════════
+        const dominanzHarmonyMatrix = {
+            // KOMPLEMENTÄRE POLARITÄT (100%)
+            "dominant-submissiv": 100, "submissiv-dominant": 100,
+            // TAO-BALANCE (90-95%)
+            "ausgeglichen-ausgeglichen": 95, "switch-switch": 90,
+            "switch-ausgeglichen": 88, "ausgeglichen-switch": 88,
+            // POL + BALANCE (85%)
+            "dominant-ausgeglichen": 85, "ausgeglichen-dominant": 85,
+            "submissiv-ausgeglichen": 85, "ausgeglichen-submissiv": 85,
+            // SWITCH + POL (80%)
+            "switch-dominant": 80, "dominant-switch": 80,
+            "switch-submissiv": 80, "submissiv-switch": 80,
+            // GLEICHE POLE (55%)
+            "dominant-dominant": 55, "submissiv-submissiv": 55
+        };
 
-            // ═══════════════════════════════════════════════════════════════════════
-            // WISSENSCHAFTLICHE GRUNDLAGE: D/S-Kompatibilität
-            // ═══════════════════════════════════════════════════════════════════════
-            // Quellen:
-            // - Tiedens & Fragale (2003): "Power Moves: Complementarity in Dominant
-            //   and Submissive Nonverbal Behavior" - Komplementarität führt zu mehr
-            //   Sympathie und Wohlbefinden als Mimikry
-            // - Sadikaj et al. (2017): "Negative affective reaction to partner's
-            //   dominant behavior influences satisfaction" - Höhere Dominanz-Levels
-            //   korrelieren mit niedrigerer Beziehungszufriedenheit
-            // - Jozifkova (2025): D/S-Polarität in langfristigen Beziehungen
-            //   zeigt, dass Rollenkompatibilität stärker mit Zufriedenheit
-            //   korreliert als spezifische Aktivitäts-Übereinstimmung
-            // - McCrae & Costa (1997): Big Five - Menschen in Explorationsphasen
-            //   zeigen höhere Verhaltensvarianz (→ reduzierte Konfidenz)
-            // ═══════════════════════════════════════════════════════════════════════
+        // Calculate harmony between two single dominanz types
+        function calculateSingleDominanzHarmony(type1, status1, type2, status2) {
+            const key = `${type1}-${type2}`;
+            let baseScore = dominanzHarmonyMatrix[key] || dominanzHarmonyMatrix[`${type2}-${type1}`] || 75;
 
-            const harmonyMatrix = {
-                // ──────────────────────────────────────────────────────────────────
-                // KOMPLEMENTÄRE POLARITÄT (100%)
-                // Forschung: Tiedens & Fragale zeigten, dass komplementäre
-                // Dom/Sub-Dynamik zu höherer Sympathie und Komfort führt.
-                // "Complementarity resulted in more liking and comfort than mimicry"
-                // ──────────────────────────────────────────────────────────────────
-                "dominant-submissiv": 100,
-                "submissiv-dominant": 100,
-
-                // ──────────────────────────────────────────────────────────────────
-                // TAO-BALANCE (90-95%)
-                // Beide Partner sind flexibel und können situativ anpassen.
-                // Keine starre Polarität = geringere Reibung
-                // ──────────────────────────────────────────────────────────────────
-                "ausgeglichen-ausgeglichen": 95,
-                "switch-switch": 90,
-                "switch-ausgeglichen": 88,
-                "ausgeglichen-switch": 88,
-
-                // ──────────────────────────────────────────────────────────────────
-                // POL + BALANCE (85%)
-                // Ein Partner führt, der andere ist flexibel - stabil
-                // ──────────────────────────────────────────────────────────────────
-                "dominant-ausgeglichen": 85,
-                "ausgeglichen-dominant": 85,
-                "submissiv-ausgeglichen": 85,
-                "ausgeglichen-submissiv": 85,
-
-                // ──────────────────────────────────────────────────────────────────
-                // SWITCH + POL (80%)
-                // Switch-Partner kann situativ anpassen, aber Spannung möglich
-                // ──────────────────────────────────────────────────────────────────
-                "switch-dominant": 80,
-                "dominant-switch": 80,
-                "switch-submissiv": 80,
-                "submissiv-switch": 80,
-
-                // ──────────────────────────────────────────────────────────────────
-                // GLEICHE POLE (55%)
-                // Forschung: Sadikaj et al. zeigten, dass zwei dominante Partner
-                // zu Machtkämpfen neigen, besonders bei wichtigen Entscheidungen.
-                // "Lower relationship satisfaction among couples characterized by
-                // higher levels of dominance"
-                //
-                // Zwei Submissive: Führungsvakuum, niemand übernimmt Initiative
-                // NICHT 0% weil: Mit bewusster Kommunikation und Regeln machbar
-                // ──────────────────────────────────────────────────────────────────
-                "dominant-dominant": 55,
-                "submissiv-submissiv": 55
-            };
-
-            const key = `${dom1}-${dom2}`;
-            let baseScore = harmonyMatrix[key] || harmonyMatrix[`${dom2}-${dom1}`] || 75;
-
-            // ═══════════════════════════════════════════════════════════════════════
             // STATUS-MODIFIER: Reduzierte Konfidenz bei "interessiert"
-            // ═══════════════════════════════════════════════════════════════════════
-            // Bei "interessiert" Status (Explorations-Phase) wird der Score auf 70%
-            // reduziert, da die Präferenz noch nicht gefestigt ist und das Verhalten
-            // inkonsistenter sein kann (Big Five Research: höhere Varianz).
-            // ═══════════════════════════════════════════════════════════════════════
             if (status1 === 'interessiert' || status2 === 'interessiert') {
                 baseScore = Math.round(baseScore * 0.7);
             }
 
             return baseScore;
+        }
+
+        // Calculate best dominanz harmony for multi-select (finds best combination)
+        function calculateDominanceHarmony(domObj1, domObj2) {
+            // Handle old single-value format (backwards compatibility)
+            if (typeof domObj1 === 'string' || typeof domObj2 === 'string') {
+                return calculateSingleDominanzHarmony(domObj1, 'fakt', domObj2, 'fakt');
+            }
+
+            // Get selected dominanz preferences for each person
+            const list1 = [];
+            const list2 = [];
+
+            if (domObj1) {
+                if (domObj1.dominant) list1.push({ type: 'dominant', status: domObj1.dominant });
+                if (domObj1.submissiv) list1.push({ type: 'submissiv', status: domObj1.submissiv });
+                if (domObj1.switch) list1.push({ type: 'switch', status: domObj1.switch });
+                if (domObj1.ausgeglichen) list1.push({ type: 'ausgeglichen', status: domObj1.ausgeglichen });
+            }
+
+            if (domObj2) {
+                if (domObj2.dominant) list2.push({ type: 'dominant', status: domObj2.dominant });
+                if (domObj2.submissiv) list2.push({ type: 'submissiv', status: domObj2.submissiv });
+                if (domObj2.switch) list2.push({ type: 'switch', status: domObj2.switch });
+                if (domObj2.ausgeglichen) list2.push({ type: 'ausgeglichen', status: domObj2.ausgeglichen });
+            }
+
+            // Default if no selections
+            if (list1.length === 0 || list2.length === 0) return 75;
+
+            // Find best combination
+            let bestScore = 0;
+            for (const d1 of list1) {
+                for (const d2 of list2) {
+                    const score = calculateSingleDominanzHarmony(d1.type, d1.status, d2.type, d2.status);
+                    if (score > bestScore) {
+                        bestScore = score;
+                    }
+                }
+            }
+
+            return bestScore;
         }
 
         // Factor 3: Orientation Compatibility (25%) - uses existing checkPhysicalCompatibility
@@ -10124,10 +10408,7 @@
             // ═══════════════════════════════════════
 
             const archetypeScore = getArchetypeScore(person1.archetyp, person2.archetyp);
-            const dominanceScore = calculateDominanceHarmony(
-                person1.dominanz, person2.dominanz,
-                person1.dominanzStatus || 'fakt', person2.dominanzStatus || 'fakt'
-            );
+            const dominanceScore = calculateDominanceHarmony(person1.dominanz, person2.dominanz);
             const genderScore = calculateGenderAttraction(person1, person2);
 
             // Gewichtete Summe nach Logos/Pathos-Prinzip
@@ -10326,8 +10607,10 @@
                 warningsContainer.innerHTML = `<div class="warning-box logos-warning">⚠️ Unsichere körperliche Anziehung (Exploration-Phase)</div>`;
             }
 
-            // Warnung bei unsicherem Dominanz-Status
-            if (person1.dominanzStatus === 'interessiert' || person2.dominanzStatus === 'interessiert') {
+            // Warnung bei unsicherem Dominanz-Status (prüfe ob mindestens eine Auswahl "interessiert" ist)
+            const hasInteressiert1 = person1.dominanz && Object.values(person1.dominanz).some(s => s === 'interessiert');
+            const hasInteressiert2 = person2.dominanz && Object.values(person2.dominanz).some(s => s === 'interessiert');
+            if (hasInteressiert1 || hasInteressiert2) {
                 warningsContainer.innerHTML += `<div class="warning-box logos-warning">⚠️ Unsichere Dominanz-Dynamik (Exploration-Phase – reduzierte Konfidenz)</div>`;
             }
 
@@ -11039,8 +11322,18 @@
 
         let currentMobilePage = 1;
         let mobilePersonDimensions = {
-            ich: { geschlecht: null, dominanz: null, dominanzStatus: null, orientierung: null, orientierungStatus: null },
-            partner: { geschlecht: null, dominanz: null, dominanzStatus: null, orientierung: null, orientierungStatus: null }
+            ich: {
+                geschlecht: null,
+                dominanz: { dominant: null, submissiv: null, switch: null, ausgeglichen: null },
+                orientierung: null,
+                orientierungStatus: null
+            },
+            partner: {
+                geschlecht: null,
+                dominanz: { dominant: null, submissiv: null, switch: null, ausgeglichen: null },
+                orientierung: null,
+                orientierungStatus: null
+            }
         };
         let mobileIchArchetype = 'single';
         let mobilePartnerArchetype = 'duo';
@@ -12510,19 +12803,17 @@
             const selection = {
                 ich: {
                     archetyp: mobileIchArchetype,
-                    geschlecht: mobilePersonDimensions.ich.geschlecht,
-                    dominanz: mobilePersonDimensions.ich.dominanz,
-                    dominanzStatus: mobilePersonDimensions.ich.dominanzStatus,
-                    orientierung: mobilePersonDimensions.ich.orientierung,
-                    orientierungStatus: mobilePersonDimensions.ich.orientierungStatus
+                    geschlecht: personDimensions.ich.geschlecht,
+                    dominanz: personDimensions.ich.dominanz, // Multi-select object
+                    orientierung: personDimensions.ich.orientierung,
+                    orientierungStatus: personDimensions.ich.orientierungStatus
                 },
                 partner: {
                     archetyp: mobilePartnerArchetype,
-                    geschlecht: mobilePersonDimensions.partner.geschlecht,
-                    dominanz: mobilePersonDimensions.partner.dominanz,
-                    dominanzStatus: mobilePersonDimensions.partner.dominanzStatus,
-                    orientierung: mobilePersonDimensions.partner.orientierung,
-                    orientierungStatus: mobilePersonDimensions.partner.orientierungStatus
+                    geschlecht: personDimensions.partner.geschlecht,
+                    dominanz: personDimensions.partner.dominanz, // Multi-select object
+                    orientierung: personDimensions.partner.orientierung,
+                    orientierungStatus: personDimensions.partner.orientierungStatus
                 }
             };
 
@@ -12555,23 +12846,75 @@
                     }
 
                     if (selection.ich.dominanz) {
-                        mobilePersonDimensions.ich.dominanz = selection.ich.dominanz;
-                        const radio = document.querySelector(`input[name="mobile-ich-dominanz"][value="${selection.ich.dominanz}"]`);
-                        if (radio) {
-                            radio.checked = true;
-                            radio.closest('.compact-dimension').classList.remove('needs-selection');
-                        }
-                        // Show dominanz status section if dominanz is selected
-                        const statusSection = document.getElementById('mobile-ich-dominanz-status-section');
-                        if (statusSection) statusSection.style.display = 'block';
-                    }
+                        // Handle new multi-select object format
+                        if (typeof selection.ich.dominanz === 'object') {
+                            mobilePersonDimensions.ich.dominanz = selection.ich.dominanz;
+                            personDimensions.ich.dominanz = selection.ich.dominanz;
 
-                    if (selection.ich.dominanzStatus) {
-                        mobilePersonDimensions.ich.dominanzStatus = selection.ich.dominanzStatus;
-                        const radio = document.querySelector(`input[name="mobile-ich-dominanz-status"][value="${selection.ich.dominanzStatus}"]`);
-                        if (radio) {
-                            radio.checked = true;
-                            radio.closest('.compact-dimension').classList.remove('needs-selection');
+                            // Restore Desktop & Mobile UI checkboxes and status dropdowns
+                            const shortIdMap = { 'dominant': 'dom', 'submissiv': 'sub', 'switch': 'sw', 'ausgeglichen': 'aus' };
+                            let hasSelection = false;
+                            for (const [type, status] of Object.entries(selection.ich.dominanz)) {
+                                if (status) {
+                                    hasSelection = true;
+                                    const shortId = shortIdMap[type];
+                                    // Desktop checkbox
+                                    const checkbox = document.getElementById('ich-d-' + shortId);
+                                    if (checkbox) checkbox.checked = true;
+                                    // Desktop status dropdown
+                                    const statusSelect = document.getElementById('ich-d-' + shortId + '-status');
+                                    if (statusSelect) {
+                                        statusSelect.style.display = 'inline-block';
+                                        statusSelect.value = status;
+                                    }
+                                    // Mobile checkbox
+                                    const mobileCheckbox = document.getElementById('m-ich-d-' + shortId);
+                                    if (mobileCheckbox) mobileCheckbox.checked = true;
+                                    // Mobile status dropdown
+                                    const mobileStatusSelect = document.getElementById('m-ich-d-' + shortId + '-status');
+                                    if (mobileStatusSelect) {
+                                        mobileStatusSelect.style.display = 'inline-block';
+                                        mobileStatusSelect.value = status;
+                                    }
+                                }
+                            }
+                            if (hasSelection) {
+                                const dimension = document.querySelector('[data-dimension="ich-dominanz-multi"]');
+                                if (dimension) dimension.classList.remove('needs-selection');
+                                const mobileDimension = document.querySelector('[data-dimension="mobile-ich-dominanz-multi"]');
+                                if (mobileDimension) mobileDimension.classList.remove('needs-selection');
+                            }
+                        } else {
+                            // Legacy: string format - convert to new object format
+                            const dominanzObj = { dominant: null, submissiv: null, switch: null, ausgeglichen: null };
+                            dominanzObj[selection.ich.dominanz] = selection.ich.dominanzStatus || 'fakt';
+                            mobilePersonDimensions.ich.dominanz = dominanzObj;
+                            personDimensions.ich.dominanz = dominanzObj;
+
+                            const shortIdMap = { 'dominant': 'dom', 'submissiv': 'sub', 'switch': 'sw', 'ausgeglichen': 'aus' };
+                            const shortId = shortIdMap[selection.ich.dominanz];
+                            if (shortId) {
+                                // Desktop
+                                const checkbox = document.getElementById('ich-d-' + shortId);
+                                if (checkbox) checkbox.checked = true;
+                                const statusSelect = document.getElementById('ich-d-' + shortId + '-status');
+                                if (statusSelect) {
+                                    statusSelect.style.display = 'inline-block';
+                                    statusSelect.value = selection.ich.dominanzStatus || 'fakt';
+                                }
+                                // Mobile
+                                const mobileCheckbox = document.getElementById('m-ich-d-' + shortId);
+                                if (mobileCheckbox) mobileCheckbox.checked = true;
+                                const mobileStatusSelect = document.getElementById('m-ich-d-' + shortId + '-status');
+                                if (mobileStatusSelect) {
+                                    mobileStatusSelect.style.display = 'inline-block';
+                                    mobileStatusSelect.value = selection.ich.dominanzStatus || 'fakt';
+                                }
+                            }
+                            const dimension = document.querySelector('[data-dimension="ich-dominanz-multi"]');
+                            if (dimension) dimension.classList.remove('needs-selection');
+                            const mobileDimension = document.querySelector('[data-dimension="mobile-ich-dominanz-multi"]');
+                            if (mobileDimension) mobileDimension.classList.remove('needs-selection');
                         }
                     }
 
@@ -12609,23 +12952,75 @@
                     }
 
                     if (selection.partner.dominanz) {
-                        mobilePersonDimensions.partner.dominanz = selection.partner.dominanz;
-                        const radio = document.querySelector(`input[name="mobile-partner-dominanz"][value="${selection.partner.dominanz}"]`);
-                        if (radio) {
-                            radio.checked = true;
-                            radio.closest('.compact-dimension').classList.remove('needs-selection');
-                        }
-                        // Show dominanz status section if dominanz is selected
-                        const statusSection = document.getElementById('mobile-partner-dominanz-status-section');
-                        if (statusSection) statusSection.style.display = 'block';
-                    }
+                        // Handle new multi-select object format
+                        if (typeof selection.partner.dominanz === 'object') {
+                            mobilePersonDimensions.partner.dominanz = selection.partner.dominanz;
+                            personDimensions.partner.dominanz = selection.partner.dominanz;
 
-                    if (selection.partner.dominanzStatus) {
-                        mobilePersonDimensions.partner.dominanzStatus = selection.partner.dominanzStatus;
-                        const radio = document.querySelector(`input[name="mobile-partner-dominanz-status"][value="${selection.partner.dominanzStatus}"]`);
-                        if (radio) {
-                            radio.checked = true;
-                            radio.closest('.compact-dimension').classList.remove('needs-selection');
+                            // Restore Desktop & Mobile UI checkboxes and status dropdowns
+                            const shortIdMap = { 'dominant': 'dom', 'submissiv': 'sub', 'switch': 'sw', 'ausgeglichen': 'aus' };
+                            let hasSelection = false;
+                            for (const [type, status] of Object.entries(selection.partner.dominanz)) {
+                                if (status) {
+                                    hasSelection = true;
+                                    const shortId = shortIdMap[type];
+                                    // Desktop checkbox
+                                    const checkbox = document.getElementById('partner-d-' + shortId);
+                                    if (checkbox) checkbox.checked = true;
+                                    // Desktop status dropdown
+                                    const statusSelect = document.getElementById('partner-d-' + shortId + '-status');
+                                    if (statusSelect) {
+                                        statusSelect.style.display = 'inline-block';
+                                        statusSelect.value = status;
+                                    }
+                                    // Mobile checkbox
+                                    const mobileCheckbox = document.getElementById('m-partner-d-' + shortId);
+                                    if (mobileCheckbox) mobileCheckbox.checked = true;
+                                    // Mobile status dropdown
+                                    const mobileStatusSelect = document.getElementById('m-partner-d-' + shortId + '-status');
+                                    if (mobileStatusSelect) {
+                                        mobileStatusSelect.style.display = 'inline-block';
+                                        mobileStatusSelect.value = status;
+                                    }
+                                }
+                            }
+                            if (hasSelection) {
+                                const dimension = document.querySelector('[data-dimension="partner-dominanz-multi"]');
+                                if (dimension) dimension.classList.remove('needs-selection');
+                                const mobileDimension = document.querySelector('[data-dimension="mobile-partner-dominanz-multi"]');
+                                if (mobileDimension) mobileDimension.classList.remove('needs-selection');
+                            }
+                        } else {
+                            // Legacy: string format - convert to new object format
+                            const dominanzObj = { dominant: null, submissiv: null, switch: null, ausgeglichen: null };
+                            dominanzObj[selection.partner.dominanz] = selection.partner.dominanzStatus || 'fakt';
+                            mobilePersonDimensions.partner.dominanz = dominanzObj;
+                            personDimensions.partner.dominanz = dominanzObj;
+
+                            const shortIdMap = { 'dominant': 'dom', 'submissiv': 'sub', 'switch': 'sw', 'ausgeglichen': 'aus' };
+                            const shortId = shortIdMap[selection.partner.dominanz];
+                            if (shortId) {
+                                // Desktop
+                                const checkbox = document.getElementById('partner-d-' + shortId);
+                                if (checkbox) checkbox.checked = true;
+                                const statusSelect = document.getElementById('partner-d-' + shortId + '-status');
+                                if (statusSelect) {
+                                    statusSelect.style.display = 'inline-block';
+                                    statusSelect.value = selection.partner.dominanzStatus || 'fakt';
+                                }
+                                // Mobile
+                                const mobileCheckbox = document.getElementById('m-partner-d-' + shortId);
+                                if (mobileCheckbox) mobileCheckbox.checked = true;
+                                const mobileStatusSelect = document.getElementById('m-partner-d-' + shortId + '-status');
+                                if (mobileStatusSelect) {
+                                    mobileStatusSelect.style.display = 'inline-block';
+                                    mobileStatusSelect.value = selection.partner.dominanzStatus || 'fakt';
+                                }
+                            }
+                            const dimension = document.querySelector('[data-dimension="partner-dominanz-multi"]');
+                            if (dimension) dimension.classList.remove('needs-selection');
+                            const mobileDimension = document.querySelector('[data-dimension="mobile-partner-dominanz-multi"]');
+                            if (mobileDimension) mobileDimension.classList.remove('needs-selection');
                         }
                     }
 
@@ -12652,6 +13047,12 @@
                 personDimensions.ich = { ...mobilePersonDimensions.ich };
                 personDimensions.partner = { ...mobilePersonDimensions.partner };
 
+                // Sync all UIs (Desktop, Mobile, Modal) for dominanz
+                if (typeof syncDominanzUI === 'function') {
+                    syncDominanzUI('ich');
+                    syncDominanzUI('partner');
+                }
+
                 return true;
             } catch (e) {
                 console.warn('Failed to load from LocalStorage:', e);
@@ -12674,10 +13075,15 @@
             // Reset mobile selections
             mobileIchArchetype = 'single';
             mobilePartnerArchetype = 'duo';
+            const emptyDominanz = { dominant: null, submissiv: null, switch: null, ausgeglichen: null };
             mobilePersonDimensions = {
-                ich: { geschlecht: null, dominanz: null, dominanzStatus: null, orientierung: null, orientierungStatus: null },
-                partner: { geschlecht: null, dominanz: null, dominanzStatus: null, orientierung: null, orientierungStatus: null }
+                ich: { geschlecht: null, dominanz: { ...emptyDominanz }, orientierung: null, orientierungStatus: null },
+                partner: { geschlecht: null, dominanz: { ...emptyDominanz }, orientierung: null, orientierungStatus: null }
             };
+
+            // Reset personDimensions for desktop
+            personDimensions.ich = { geschlecht: null, dominanz: { ...emptyDominanz }, orientierung: null, orientierungStatus: null };
+            personDimensions.partner = { geschlecht: null, dominanz: { ...emptyDominanz }, orientierung: null, orientierungStatus: null };
 
             // Reset dropdowns
             document.getElementById('mobileIchSelect').value = 'single';
@@ -12690,6 +13096,44 @@
                 if (dimension) {
                     dimension.classList.add('needs-selection');
                 }
+            });
+
+            // Reset Desktop, Mobile and Modal multi-select checkboxes and status dropdowns
+            const shortIds = ['dom', 'sub', 'sw', 'aus'];
+            ['ich', 'partner'].forEach(person => {
+                shortIds.forEach(shortId => {
+                    // Desktop
+                    const checkbox = document.getElementById(person + '-d-' + shortId);
+                    if (checkbox) checkbox.checked = false;
+                    const statusSelect = document.getElementById(person + '-d-' + shortId + '-status');
+                    if (statusSelect) {
+                        statusSelect.style.display = 'none';
+                        statusSelect.value = 'fakt';
+                    }
+                    // Mobile
+                    const mobileCheckbox = document.getElementById('m-' + person + '-d-' + shortId);
+                    if (mobileCheckbox) mobileCheckbox.checked = false;
+                    const mobileStatusSelect = document.getElementById('m-' + person + '-d-' + shortId + '-status');
+                    if (mobileStatusSelect) {
+                        mobileStatusSelect.style.display = 'none';
+                        mobileStatusSelect.value = 'fakt';
+                    }
+                    // Modal
+                    const modalCheckbox = document.getElementById('modal-' + person + '-d-' + shortId);
+                    if (modalCheckbox) modalCheckbox.checked = false;
+                    const modalStatusSelect = document.getElementById('modal-' + person + '-d-' + shortId + '-status');
+                    if (modalStatusSelect) {
+                        modalStatusSelect.style.display = 'none';
+                        modalStatusSelect.value = 'fakt';
+                    }
+                });
+                // Mark dominanz as needing selection (Desktop, Mobile & Modal)
+                const dimension = document.querySelector('[data-dimension="' + person + '-dominanz-multi"]');
+                if (dimension) dimension.classList.add('needs-selection');
+                const mobileDimension = document.querySelector('[data-dimension="mobile-' + person + '-dominanz-multi"]');
+                if (mobileDimension) mobileDimension.classList.add('needs-selection');
+                const modalDimension = document.querySelector('[data-dimension="modal-' + person + '-dominanz-multi"]');
+                if (modalDimension) modalDimension.classList.add('needs-selection');
             });
 
             // Go to page 1
