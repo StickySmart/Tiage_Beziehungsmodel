@@ -5022,24 +5022,33 @@
                             </div>
                         </div>
                     </div>
-                    <div class="compact-dimension needs-selection" data-dimension="ich-orientierung-new">
-                        <div class="compact-dimension-label">Orientierung <span class="dimension-info-icon" onclick="showDimensionTooltip('orientierung')">ℹ</span></div>
-                        <div class="compact-options">
-                            <input type="radio" name="ich-orientierung-new" id="ich-o-het" value="heterosexuell" class="compact-radio">
-                            <label for="ich-o-het" class="compact-option">heterosexuell</label>
-                            <input type="radio" name="ich-orientierung-new" id="ich-o-hom" value="homosexuell" class="compact-radio">
-                            <label for="ich-o-hom" class="compact-option">homosexuell</label>
-                            <input type="radio" name="ich-orientierung-new" id="ich-o-bi" value="bisexuell" class="compact-radio">
-                            <label for="ich-o-bi" class="compact-option">bisexuell</label>
-                        </div>
-                    </div>
-                    <div class="compact-dimension needs-selection" data-dimension="ich-status-new" id="ich-status-section" style="display: none;">
-                        <div class="compact-dimension-label">Status</div>
-                        <div class="compact-options">
-                            <input type="radio" name="ich-status-new" id="ich-s-fakt" value="fakt" class="compact-radio">
-                            <label for="ich-s-fakt" class="compact-option">Fakt</label>
-                            <input type="radio" name="ich-status-new" id="ich-s-int" value="interessiert" class="compact-radio">
-                            <label for="ich-s-int" class="compact-option">Interessiert</label>
+                    <div class="compact-dimension needs-selection" data-dimension="ich-orientierung-multi">
+                        <div class="compact-dimension-label">Orientierung <span class="dimension-info-icon" onclick="showDimensionTooltip('orientierung')">ℹ</span> <span style="font-size: 10px; opacity: 0.7;">(Mehrfachauswahl)</span></div>
+                        <div class="dominanz-multi-select">
+                            <div class="dominanz-option-row">
+                                <input type="checkbox" id="ich-o-het" value="heterosexuell" class="dominanz-checkbox" onchange="handleOrientierungMultiChange('ich', 'heterosexuell', this.checked)">
+                                <label for="ich-o-het" class="dominanz-label">heterosexuell</label>
+                                <select id="ich-o-het-status" class="dominanz-status-select" style="display: none;" onchange="handleOrientierungStatusChange('ich', 'heterosexuell', this.value)">
+                                    <option value="fakt">Fakt</option>
+                                    <option value="interessiert">Interessiert</option>
+                                </select>
+                            </div>
+                            <div class="dominanz-option-row">
+                                <input type="checkbox" id="ich-o-hom" value="homosexuell" class="dominanz-checkbox" onchange="handleOrientierungMultiChange('ich', 'homosexuell', this.checked)">
+                                <label for="ich-o-hom" class="dominanz-label">homosexuell</label>
+                                <select id="ich-o-hom-status" class="dominanz-status-select" style="display: none;" onchange="handleOrientierungStatusChange('ich', 'homosexuell', this.value)">
+                                    <option value="fakt">Fakt</option>
+                                    <option value="interessiert">Interessiert</option>
+                                </select>
+                            </div>
+                            <div class="dominanz-option-row">
+                                <input type="checkbox" id="ich-o-bi" value="bisexuell" class="dominanz-checkbox" onchange="handleOrientierungMultiChange('ich', 'bisexuell', this.checked)">
+                                <label for="ich-o-bi" class="dominanz-label">bisexuell</label>
+                                <select id="ich-o-bi-status" class="dominanz-status-select" style="display: none;" onchange="handleOrientierungStatusChange('ich', 'bisexuell', this.value)">
+                                    <option value="fakt">Fakt</option>
+                                    <option value="interessiert">Interessiert</option>
+                                </select>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -5111,24 +5120,33 @@
                             </div>
                         </div>
                     </div>
-                    <div class="compact-dimension needs-selection" data-dimension="partner-orientierung-new">
-                        <div class="compact-dimension-label">Orientierung <span class="dimension-info-icon" onclick="showDimensionTooltip('orientierung')">ℹ</span></div>
-                        <div class="compact-options">
-                            <input type="radio" name="partner-orientierung-new" id="partner-o-het" value="heterosexuell" class="compact-radio">
-                            <label for="partner-o-het" class="compact-option">heterosexuell</label>
-                            <input type="radio" name="partner-orientierung-new" id="partner-o-hom" value="homosexuell" class="compact-radio">
-                            <label for="partner-o-hom" class="compact-option">homosexuell</label>
-                            <input type="radio" name="partner-orientierung-new" id="partner-o-bi" value="bisexuell" class="compact-radio">
-                            <label for="partner-o-bi" class="compact-option">bisexuell</label>
-                        </div>
-                    </div>
-                    <div class="compact-dimension needs-selection" data-dimension="partner-status-new" id="partner-status-section" style="display: none;">
-                        <div class="compact-dimension-label">Status</div>
-                        <div class="compact-options">
-                            <input type="radio" name="partner-status-new" id="partner-s-fakt" value="fakt" class="compact-radio">
-                            <label for="partner-s-fakt" class="compact-option">Fakt</label>
-                            <input type="radio" name="partner-status-new" id="partner-s-int" value="interessiert" class="compact-radio">
-                            <label for="partner-s-int" class="compact-option">Interessiert</label>
+                    <div class="compact-dimension needs-selection" data-dimension="partner-orientierung-multi">
+                        <div class="compact-dimension-label">Orientierung <span class="dimension-info-icon" onclick="showDimensionTooltip('orientierung')">ℹ</span> <span style="font-size: 10px; opacity: 0.7;">(Mehrfachauswahl)</span></div>
+                        <div class="dominanz-multi-select">
+                            <div class="dominanz-option-row">
+                                <input type="checkbox" id="partner-o-het" value="heterosexuell" class="dominanz-checkbox" onchange="handleOrientierungMultiChange('partner', 'heterosexuell', this.checked)">
+                                <label for="partner-o-het" class="dominanz-label">heterosexuell</label>
+                                <select id="partner-o-het-status" class="dominanz-status-select" style="display: none;" onchange="handleOrientierungStatusChange('partner', 'heterosexuell', this.value)">
+                                    <option value="fakt">Fakt</option>
+                                    <option value="interessiert">Interessiert</option>
+                                </select>
+                            </div>
+                            <div class="dominanz-option-row">
+                                <input type="checkbox" id="partner-o-hom" value="homosexuell" class="dominanz-checkbox" onchange="handleOrientierungMultiChange('partner', 'homosexuell', this.checked)">
+                                <label for="partner-o-hom" class="dominanz-label">homosexuell</label>
+                                <select id="partner-o-hom-status" class="dominanz-status-select" style="display: none;" onchange="handleOrientierungStatusChange('partner', 'homosexuell', this.value)">
+                                    <option value="fakt">Fakt</option>
+                                    <option value="interessiert">Interessiert</option>
+                                </select>
+                            </div>
+                            <div class="dominanz-option-row">
+                                <input type="checkbox" id="partner-o-bi" value="bisexuell" class="dominanz-checkbox" onchange="handleOrientierungMultiChange('partner', 'bisexuell', this.checked)">
+                                <label for="partner-o-bi" class="dominanz-label">bisexuell</label>
+                                <select id="partner-o-bi-status" class="dominanz-status-select" style="display: none;" onchange="handleOrientierungStatusChange('partner', 'bisexuell', this.value)">
+                                    <option value="fakt">Fakt</option>
+                                    <option value="interessiert">Interessiert</option>
+                                </select>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -5290,24 +5308,33 @@
                             </div>
                         </div>
                     </div>
-                    <div class="compact-dimension needs-selection">
-                        <div class="compact-dimension-label">Sexuelle Orientierung <span class="dimension-info-icon" onclick="showDimensionTooltip('orientierung')">ℹ</span></div>
-                        <div class="compact-options">
-                            <input type="radio" name="mobile-ich-orientierung" id="m-ich-o-het" value="heterosexuell" class="compact-radio">
-                            <label for="m-ich-o-het" class="compact-option">heterosexuell</label>
-                            <input type="radio" name="mobile-ich-orientierung" id="m-ich-o-hom" value="homosexuell" class="compact-radio">
-                            <label for="m-ich-o-hom" class="compact-option">homosexuell</label>
-                            <input type="radio" name="mobile-ich-orientierung" id="m-ich-o-bi" value="bisexuell" class="compact-radio">
-                            <label for="m-ich-o-bi" class="compact-option">bisexuell</label>
-                        </div>
-                    </div>
-                    <div class="compact-dimension needs-selection" id="mobile-ich-status-section" style="display: none;">
-                        <div class="compact-dimension-label">Status</div>
-                        <div class="compact-options">
-                            <input type="radio" name="mobile-ich-status" id="m-ich-s-fakt" value="fakt" class="compact-radio">
-                            <label for="m-ich-s-fakt" class="compact-option">Fakt</label>
-                            <input type="radio" name="mobile-ich-status" id="m-ich-s-int" value="interessiert" class="compact-radio">
-                            <label for="m-ich-s-int" class="compact-option">Interessiert</label>
+                    <div class="compact-dimension needs-selection" data-dimension="mobile-ich-orientierung-multi">
+                        <div class="compact-dimension-label">Sexuelle Orientierung <span class="dimension-info-icon" onclick="showDimensionTooltip('orientierung')">ℹ</span> <span style="font-size: 10px; opacity: 0.7;">(Mehrfachauswahl)</span></div>
+                        <div class="dominanz-multi-select">
+                            <div class="dominanz-option-row">
+                                <input type="checkbox" id="m-ich-o-het" value="heterosexuell" class="dominanz-checkbox" onchange="handleMobileOrientierungMultiChange('ich', 'heterosexuell', this.checked)">
+                                <label for="m-ich-o-het" class="dominanz-label">heterosexuell</label>
+                                <select id="m-ich-o-het-status" class="dominanz-status-select" style="display: none;" onchange="handleMobileOrientierungStatusChange('ich', 'heterosexuell', this.value)">
+                                    <option value="fakt">Fakt</option>
+                                    <option value="interessiert">Interessiert</option>
+                                </select>
+                            </div>
+                            <div class="dominanz-option-row">
+                                <input type="checkbox" id="m-ich-o-hom" value="homosexuell" class="dominanz-checkbox" onchange="handleMobileOrientierungMultiChange('ich', 'homosexuell', this.checked)">
+                                <label for="m-ich-o-hom" class="dominanz-label">homosexuell</label>
+                                <select id="m-ich-o-hom-status" class="dominanz-status-select" style="display: none;" onchange="handleMobileOrientierungStatusChange('ich', 'homosexuell', this.value)">
+                                    <option value="fakt">Fakt</option>
+                                    <option value="interessiert">Interessiert</option>
+                                </select>
+                            </div>
+                            <div class="dominanz-option-row">
+                                <input type="checkbox" id="m-ich-o-bi" value="bisexuell" class="dominanz-checkbox" onchange="handleMobileOrientierungMultiChange('ich', 'bisexuell', this.checked)">
+                                <label for="m-ich-o-bi" class="dominanz-label">bisexuell</label>
+                                <select id="m-ich-o-bi-status" class="dominanz-status-select" style="display: none;" onchange="handleMobileOrientierungStatusChange('ich', 'bisexuell', this.value)">
+                                    <option value="fakt">Fakt</option>
+                                    <option value="interessiert">Interessiert</option>
+                                </select>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -5378,24 +5405,33 @@
                             </div>
                         </div>
                     </div>
-                    <div class="compact-dimension needs-selection">
-                        <div class="compact-dimension-label">Sexuelle Orientierung <span class="dimension-info-icon" onclick="showDimensionTooltip('orientierung')">ℹ</span></div>
-                        <div class="compact-options">
-                            <input type="radio" name="mobile-partner-orientierung" id="m-partner-o-het" value="heterosexuell" class="compact-radio">
-                            <label for="m-partner-o-het" class="compact-option">heterosexuell</label>
-                            <input type="radio" name="mobile-partner-orientierung" id="m-partner-o-hom" value="homosexuell" class="compact-radio">
-                            <label for="m-partner-o-hom" class="compact-option">homosexuell</label>
-                            <input type="radio" name="mobile-partner-orientierung" id="m-partner-o-bi" value="bisexuell" class="compact-radio">
-                            <label for="m-partner-o-bi" class="compact-option">bisexuell</label>
-                        </div>
-                    </div>
-                    <div class="compact-dimension needs-selection" id="mobile-partner-status-section" style="display: none;">
-                        <div class="compact-dimension-label">Status</div>
-                        <div class="compact-options">
-                            <input type="radio" name="mobile-partner-status" id="m-partner-s-fakt" value="fakt" class="compact-radio">
-                            <label for="m-partner-s-fakt" class="compact-option">Fakt</label>
-                            <input type="radio" name="mobile-partner-status" id="m-partner-s-int" value="interessiert" class="compact-radio">
-                            <label for="m-partner-s-int" class="compact-option">Interessiert</label>
+                    <div class="compact-dimension needs-selection" data-dimension="mobile-partner-orientierung-multi">
+                        <div class="compact-dimension-label">Sexuelle Orientierung <span class="dimension-info-icon" onclick="showDimensionTooltip('orientierung')">ℹ</span> <span style="font-size: 10px; opacity: 0.7;">(Mehrfachauswahl)</span></div>
+                        <div class="dominanz-multi-select">
+                            <div class="dominanz-option-row">
+                                <input type="checkbox" id="m-partner-o-het" value="heterosexuell" class="dominanz-checkbox" onchange="handleMobileOrientierungMultiChange('partner', 'heterosexuell', this.checked)">
+                                <label for="m-partner-o-het" class="dominanz-label">heterosexuell</label>
+                                <select id="m-partner-o-het-status" class="dominanz-status-select" style="display: none;" onchange="handleMobileOrientierungStatusChange('partner', 'heterosexuell', this.value)">
+                                    <option value="fakt">Fakt</option>
+                                    <option value="interessiert">Interessiert</option>
+                                </select>
+                            </div>
+                            <div class="dominanz-option-row">
+                                <input type="checkbox" id="m-partner-o-hom" value="homosexuell" class="dominanz-checkbox" onchange="handleMobileOrientierungMultiChange('partner', 'homosexuell', this.checked)">
+                                <label for="m-partner-o-hom" class="dominanz-label">homosexuell</label>
+                                <select id="m-partner-o-hom-status" class="dominanz-status-select" style="display: none;" onchange="handleMobileOrientierungStatusChange('partner', 'homosexuell', this.value)">
+                                    <option value="fakt">Fakt</option>
+                                    <option value="interessiert">Interessiert</option>
+                                </select>
+                            </div>
+                            <div class="dominanz-option-row">
+                                <input type="checkbox" id="m-partner-o-bi" value="bisexuell" class="dominanz-checkbox" onchange="handleMobileOrientierungMultiChange('partner', 'bisexuell', this.checked)">
+                                <label for="m-partner-o-bi" class="dominanz-label">bisexuell</label>
+                                <select id="m-partner-o-bi-status" class="dominanz-status-select" style="display: none;" onchange="handleMobileOrientierungStatusChange('partner', 'bisexuell', this.value)">
+                                    <option value="fakt">Fakt</option>
+                                    <option value="interessiert">Interessiert</option>
+                                </select>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -5593,34 +5629,36 @@
                             </div>
 
                             <!-- Sexuelle Orientierung -->
-                            <div class="dimension-group full-width needs-selection" data-dimension="ich-orientierung">
+                            <div class="dimension-group full-width needs-selection" data-dimension="modal-ich-orientierung-multi">
                                 <div class="dimension-label">
                                     Sexuelle Orientierung
                                     <span class="dimension-info-icon" onclick="showDimensionTooltip('orientierung')">ℹ</span>
+                                    <span style="font-size: 10px; opacity: 0.7;">(Mehrfachauswahl)</span>
                                 </div>
-                                <div class="dimension-options">
-                                    <input type="radio" name="ich-orientierung" id="ich-orientierung-hetero" value="heterosexuell" class="dimension-radio">
-                                    <label for="ich-orientierung-hetero" class="dimension-option">heterosexuell</label>
-
-                                    <input type="radio" name="ich-orientierung" id="ich-orientierung-homo" value="homosexuell" class="dimension-radio">
-                                    <label for="ich-orientierung-homo" class="dimension-option">homosexuell</label>
-
-                                    <input type="radio" name="ich-orientierung" id="ich-orientierung-bi" value="bisexuell" class="dimension-radio">
-                                    <label for="ich-orientierung-bi" class="dimension-option">bisexuell</label>
-                                </div>
-
-                                <!-- Status (indented) -->
-                                <div class="dimension-status-group needs-selection" data-dimension="ich-status" id="modal-ich-status-section" style="display: none;">
-                                    <div class="dimension-status-label">
-                                        Status
-                                        <span class="dimension-info-icon" onclick="showDimensionTooltip('status')">ℹ</span>
+                                <div class="dominanz-multi-select">
+                                    <div class="dominanz-option-row">
+                                        <input type="checkbox" id="modal-ich-o-het" value="heterosexuell" class="dominanz-checkbox" onchange="handleModalOrientierungMultiChange('ich', 'heterosexuell', this.checked)">
+                                        <label for="modal-ich-o-het" class="dominanz-label">heterosexuell</label>
+                                        <select id="modal-ich-o-het-status" class="dominanz-status-select" style="display: none;" onchange="handleModalOrientierungStatusChange('ich', 'heterosexuell', this.value)">
+                                            <option value="fakt">Fakt</option>
+                                            <option value="interessiert">Interessiert</option>
+                                        </select>
                                     </div>
-                                    <div class="dimension-options">
-                                        <input type="radio" name="ich-status" id="ich-status-fakt" value="fakt" class="dimension-radio">
-                                        <label for="ich-status-fakt" class="dimension-option">Fakt</label>
-
-                                        <input type="radio" name="ich-status" id="ich-status-interessiert" value="interessiert" class="dimension-radio">
-                                        <label for="ich-status-interessiert" class="dimension-option">Interessiert</label>
+                                    <div class="dominanz-option-row">
+                                        <input type="checkbox" id="modal-ich-o-hom" value="homosexuell" class="dominanz-checkbox" onchange="handleModalOrientierungMultiChange('ich', 'homosexuell', this.checked)">
+                                        <label for="modal-ich-o-hom" class="dominanz-label">homosexuell</label>
+                                        <select id="modal-ich-o-hom-status" class="dominanz-status-select" style="display: none;" onchange="handleModalOrientierungStatusChange('ich', 'homosexuell', this.value)">
+                                            <option value="fakt">Fakt</option>
+                                            <option value="interessiert">Interessiert</option>
+                                        </select>
+                                    </div>
+                                    <div class="dominanz-option-row">
+                                        <input type="checkbox" id="modal-ich-o-bi" value="bisexuell" class="dominanz-checkbox" onchange="handleModalOrientierungMultiChange('ich', 'bisexuell', this.checked)">
+                                        <label for="modal-ich-o-bi" class="dominanz-label">bisexuell</label>
+                                        <select id="modal-ich-o-bi-status" class="dominanz-status-select" style="display: none;" onchange="handleModalOrientierungStatusChange('ich', 'bisexuell', this.value)">
+                                            <option value="fakt">Fakt</option>
+                                            <option value="interessiert">Interessiert</option>
+                                        </select>
                                     </div>
                                 </div>
                             </div>
@@ -5775,34 +5813,36 @@
                             </div>
 
                             <!-- Sexuelle Orientierung -->
-                            <div class="dimension-group full-width needs-selection" data-dimension="partner-orientierung">
+                            <div class="dimension-group full-width needs-selection" data-dimension="modal-partner-orientierung-multi">
                                 <div class="dimension-label">
                                     Sexuelle Orientierung
                                     <span class="dimension-info-icon" onclick="showDimensionTooltip('orientierung')">ℹ</span>
+                                    <span style="font-size: 10px; opacity: 0.7;">(Mehrfachauswahl)</span>
                                 </div>
-                                <div class="dimension-options">
-                                    <input type="radio" name="partner-orientierung" id="partner-orientierung-hetero" value="heterosexuell" class="dimension-radio">
-                                    <label for="partner-orientierung-hetero" class="dimension-option">heterosexuell</label>
-
-                                    <input type="radio" name="partner-orientierung" id="partner-orientierung-homo" value="homosexuell" class="dimension-radio">
-                                    <label for="partner-orientierung-homo" class="dimension-option">homosexuell</label>
-
-                                    <input type="radio" name="partner-orientierung" id="partner-orientierung-bi" value="bisexuell" class="dimension-radio">
-                                    <label for="partner-orientierung-bi" class="dimension-option">bisexuell</label>
-                                </div>
-
-                                <!-- Status (indented) -->
-                                <div class="dimension-status-group needs-selection" data-dimension="partner-status" id="modal-partner-status-section" style="display: none;">
-                                    <div class="dimension-status-label">
-                                        Status
-                                        <span class="dimension-info-icon" onclick="showDimensionTooltip('status')">ℹ</span>
+                                <div class="dominanz-multi-select">
+                                    <div class="dominanz-option-row">
+                                        <input type="checkbox" id="modal-partner-o-het" value="heterosexuell" class="dominanz-checkbox" onchange="handleModalOrientierungMultiChange('partner', 'heterosexuell', this.checked)">
+                                        <label for="modal-partner-o-het" class="dominanz-label">heterosexuell</label>
+                                        <select id="modal-partner-o-het-status" class="dominanz-status-select" style="display: none;" onchange="handleModalOrientierungStatusChange('partner', 'heterosexuell', this.value)">
+                                            <option value="fakt">Fakt</option>
+                                            <option value="interessiert">Interessiert</option>
+                                        </select>
                                     </div>
-                                    <div class="dimension-options">
-                                        <input type="radio" name="partner-status" id="partner-status-fakt" value="fakt" class="dimension-radio">
-                                        <label for="partner-status-fakt" class="dimension-option">Fakt</label>
-
-                                        <input type="radio" name="partner-status" id="partner-status-interessiert" value="interessiert" class="dimension-radio">
-                                        <label for="partner-status-interessiert" class="dimension-option">Interessiert</label>
+                                    <div class="dominanz-option-row">
+                                        <input type="checkbox" id="modal-partner-o-hom" value="homosexuell" class="dominanz-checkbox" onchange="handleModalOrientierungMultiChange('partner', 'homosexuell', this.checked)">
+                                        <label for="modal-partner-o-hom" class="dominanz-label">homosexuell</label>
+                                        <select id="modal-partner-o-hom-status" class="dominanz-status-select" style="display: none;" onchange="handleModalOrientierungStatusChange('partner', 'homosexuell', this.value)">
+                                            <option value="fakt">Fakt</option>
+                                            <option value="interessiert">Interessiert</option>
+                                        </select>
+                                    </div>
+                                    <div class="dominanz-option-row">
+                                        <input type="checkbox" id="modal-partner-o-bi" value="bisexuell" class="dominanz-checkbox" onchange="handleModalOrientierungMultiChange('partner', 'bisexuell', this.checked)">
+                                        <label for="modal-partner-o-bi" class="dominanz-label">bisexuell</label>
+                                        <select id="modal-partner-o-bi-status" class="dominanz-status-select" style="display: none;" onchange="handleModalOrientierungStatusChange('partner', 'bisexuell', this.value)">
+                                            <option value="fakt">Fakt</option>
+                                            <option value="interessiert">Interessiert</option>
+                                        </select>
                                     </div>
                                 </div>
                             </div>
@@ -6258,7 +6298,7 @@
         let selectedPartner = 'duo';
 
         // Extended Person Dimensions (null = not yet selected)
-        // dominanz is now an object with status per preference (multi-select)
+        // dominanz and orientierung are now objects with status per preference (multi-select)
         const personDimensions = {
             ich: {
                 geschlecht: null,
@@ -6268,8 +6308,11 @@
                     switch: null,
                     ausgeglichen: null
                 },
-                orientierung: null,
-                orientierungStatus: null
+                orientierung: {
+                    heterosexuell: null, // null, 'fakt', oder 'interessiert'
+                    homosexuell: null,
+                    bisexuell: null
+                }
             },
             partner: {
                 geschlecht: null,
@@ -6279,8 +6322,11 @@
                     switch: null,
                     ausgeglichen: null
                 },
-                orientierung: null,
-                orientierungStatus: null
+                orientierung: {
+                    heterosexuell: null,
+                    homosexuell: null,
+                    bisexuell: null
+                }
             }
         };
 
@@ -9514,6 +9560,269 @@
             return result;
         }
 
+        // ========================================
+        // Orientierung Multi-Select Functions
+        // ========================================
+
+        // Helper: Get short ID for orientierung type
+        function getShortOrientierungId(orientierungType) {
+            const map = {
+                'heterosexuell': 'het',
+                'homosexuell': 'hom',
+                'bisexuell': 'bi'
+            };
+            return map[orientierungType] || orientierungType;
+        }
+
+        // Helper: Check if at least one orientierung is selected
+        function hasAnyOrientierungSelected(person) {
+            const ori = personDimensions[person].orientierung;
+            return ori.heterosexuell || ori.homosexuell || ori.bisexuell;
+        }
+
+        // Helper: Get all selected orientierung preferences with status
+        function getSelectedOrientierungList(person) {
+            const ori = personDimensions[person].orientierung;
+            const result = [];
+            if (ori.heterosexuell) result.push({ type: 'heterosexuell', status: ori.heterosexuell });
+            if (ori.homosexuell) result.push({ type: 'homosexuell', status: ori.homosexuell });
+            if (ori.bisexuell) result.push({ type: 'bisexuell', status: ori.bisexuell });
+            return result;
+        }
+
+        // Handle checkbox change for orientierung multi-select (Desktop)
+        function handleOrientierungMultiChange(person, orientierungType, isChecked) {
+            if (isChecked) {
+                // Set default status to 'fakt'
+                personDimensions[person].orientierung[orientierungType] = 'fakt';
+                if (typeof mobilePersonDimensions !== 'undefined') {
+                    mobilePersonDimensions[person].orientierung[orientierungType] = 'fakt';
+                }
+
+                // Show the status dropdown
+                const statusSelect = document.getElementById(person + '-o-' + getShortOrientierungId(orientierungType) + '-status');
+                if (statusSelect) {
+                    statusSelect.style.display = 'inline-block';
+                    statusSelect.value = 'fakt';
+                }
+            } else {
+                // Remove selection
+                personDimensions[person].orientierung[orientierungType] = null;
+                if (typeof mobilePersonDimensions !== 'undefined') {
+                    mobilePersonDimensions[person].orientierung[orientierungType] = null;
+                }
+
+                // Hide the status dropdown
+                const statusSelect = document.getElementById(person + '-o-' + getShortOrientierungId(orientierungType) + '-status');
+                if (statusSelect) {
+                    statusSelect.style.display = 'none';
+                }
+            }
+
+            // Remove needs-selection if at least one orientierung is selected
+            const dimensionContainer = document.querySelector(`[data-dimension="${person}-orientierung-multi"]`);
+            if (dimensionContainer && hasAnyOrientierungSelected(person)) {
+                dimensionContainer.classList.remove('needs-selection');
+            }
+
+            // Sync all UIs (Desktop, Mobile, Modal)
+            syncOrientierungUI(person);
+
+            updateComparisonView();
+
+            if (typeof saveSelectionToStorage === 'function') {
+                saveSelectionToStorage();
+            }
+        }
+
+        // Handle status change for a specific orientierung type (Desktop)
+        function handleOrientierungStatusChange(person, orientierungType, status) {
+            personDimensions[person].orientierung[orientierungType] = status;
+            if (typeof mobilePersonDimensions !== 'undefined') {
+                mobilePersonDimensions[person].orientierung[orientierungType] = status;
+            }
+
+            // Sync all UIs
+            syncOrientierungUI(person);
+
+            updateComparisonView();
+
+            if (typeof saveSelectionToStorage === 'function') {
+                saveSelectionToStorage();
+            }
+        }
+
+        // Mobile: Handle checkbox change for multi-select orientierung
+        function handleMobileOrientierungMultiChange(person, orientierungType, isChecked) {
+            if (isChecked) {
+                // Set default status to 'fakt'
+                if (typeof mobilePersonDimensions !== 'undefined') {
+                    mobilePersonDimensions[person].orientierung[orientierungType] = 'fakt';
+                }
+                personDimensions[person].orientierung[orientierungType] = 'fakt';
+
+                // Show the status dropdown
+                const statusSelect = document.getElementById('m-' + person + '-o-' + getShortOrientierungId(orientierungType) + '-status');
+                if (statusSelect) {
+                    statusSelect.style.display = 'inline-block';
+                    statusSelect.value = 'fakt';
+                }
+            } else {
+                // Remove selection
+                if (typeof mobilePersonDimensions !== 'undefined') {
+                    mobilePersonDimensions[person].orientierung[orientierungType] = null;
+                }
+                personDimensions[person].orientierung[orientierungType] = null;
+
+                // Hide the status dropdown
+                const statusSelect = document.getElementById('m-' + person + '-o-' + getShortOrientierungId(orientierungType) + '-status');
+                if (statusSelect) {
+                    statusSelect.style.display = 'none';
+                }
+            }
+
+            // Remove needs-selection if at least one orientierung is selected
+            const dimensionContainer = document.querySelector(`[data-dimension="mobile-${person}-orientierung-multi"]`);
+            if (dimensionContainer && hasAnyOrientierungSelected(person)) {
+                dimensionContainer.classList.remove('needs-selection');
+            }
+
+            // Sync all UIs (Desktop, Mobile, Modal)
+            syncOrientierungUI(person);
+
+            updateComparisonView();
+
+            if (typeof saveSelectionToStorage === 'function') {
+                saveSelectionToStorage();
+            }
+        }
+
+        // Mobile: Handle status change for a specific orientierung type
+        function handleMobileOrientierungStatusChange(person, orientierungType, status) {
+            if (typeof mobilePersonDimensions !== 'undefined') {
+                mobilePersonDimensions[person].orientierung[orientierungType] = status;
+            }
+            personDimensions[person].orientierung[orientierungType] = status;
+
+            // Sync all UIs
+            syncOrientierungUI(person);
+
+            updateComparisonView();
+
+            if (typeof saveSelectionToStorage === 'function') {
+                saveSelectionToStorage();
+            }
+        }
+
+        // Modal: Handle checkbox change for multi-select orientierung
+        function handleModalOrientierungMultiChange(person, orientierungType, isChecked) {
+            if (isChecked) {
+                // Set default status to 'fakt'
+                personDimensions[person].orientierung[orientierungType] = 'fakt';
+                if (typeof mobilePersonDimensions !== 'undefined') {
+                    mobilePersonDimensions[person].orientierung[orientierungType] = 'fakt';
+                }
+
+                // Show the status dropdown
+                const statusSelect = document.getElementById('modal-' + person + '-o-' + getShortOrientierungId(orientierungType) + '-status');
+                if (statusSelect) {
+                    statusSelect.style.display = 'inline-block';
+                    statusSelect.value = 'fakt';
+                }
+            } else {
+                // Remove selection
+                personDimensions[person].orientierung[orientierungType] = null;
+                if (typeof mobilePersonDimensions !== 'undefined') {
+                    mobilePersonDimensions[person].orientierung[orientierungType] = null;
+                }
+
+                // Hide the status dropdown
+                const statusSelect = document.getElementById('modal-' + person + '-o-' + getShortOrientierungId(orientierungType) + '-status');
+                if (statusSelect) {
+                    statusSelect.style.display = 'none';
+                }
+            }
+
+            // Remove needs-selection if at least one orientierung is selected
+            const dimensionContainer = document.querySelector(`[data-dimension="modal-${person}-orientierung-multi"]`);
+            if (dimensionContainer && hasAnyOrientierungSelected(person)) {
+                dimensionContainer.classList.remove('needs-selection');
+            }
+
+            // Sync Desktop and Mobile UIs
+            syncOrientierungUI(person);
+
+            updateComparisonView();
+
+            if (typeof saveSelectionToStorage === 'function') {
+                saveSelectionToStorage();
+            }
+        }
+
+        // Modal: Handle status change for a specific orientierung type
+        function handleModalOrientierungStatusChange(person, orientierungType, status) {
+            personDimensions[person].orientierung[orientierungType] = status;
+            if (typeof mobilePersonDimensions !== 'undefined') {
+                mobilePersonDimensions[person].orientierung[orientierungType] = status;
+            }
+
+            // Sync Desktop and Mobile UIs
+            syncOrientierungUI(person);
+
+            updateComparisonView();
+
+            if (typeof saveSelectionToStorage === 'function') {
+                saveSelectionToStorage();
+            }
+        }
+
+        // Sync all Orientierung UIs (Desktop, Mobile, Modal)
+        function syncOrientierungUI(person) {
+            const shortIdMap = { 'heterosexuell': 'het', 'homosexuell': 'hom', 'bisexuell': 'bi' };
+            const ori = personDimensions[person].orientierung;
+
+            for (const [type, status] of Object.entries(ori)) {
+                const shortId = shortIdMap[type];
+
+                // Desktop
+                const desktopCheckbox = document.getElementById(person + '-o-' + shortId);
+                if (desktopCheckbox) desktopCheckbox.checked = !!status;
+                const desktopStatus = document.getElementById(person + '-o-' + shortId + '-status');
+                if (desktopStatus) {
+                    desktopStatus.style.display = status ? 'inline-block' : 'none';
+                    if (status) desktopStatus.value = status;
+                }
+
+                // Mobile
+                const mobileCheckbox = document.getElementById('m-' + person + '-o-' + shortId);
+                if (mobileCheckbox) mobileCheckbox.checked = !!status;
+                const mobileStatus = document.getElementById('m-' + person + '-o-' + shortId + '-status');
+                if (mobileStatus) {
+                    mobileStatus.style.display = status ? 'inline-block' : 'none';
+                    if (status) mobileStatus.value = status;
+                }
+
+                // Modal
+                const modalCheckbox = document.getElementById('modal-' + person + '-o-' + shortId);
+                if (modalCheckbox) modalCheckbox.checked = !!status;
+                const modalStatus = document.getElementById('modal-' + person + '-o-' + shortId + '-status');
+                if (modalStatus) {
+                    modalStatus.style.display = status ? 'inline-block' : 'none';
+                    if (status) modalStatus.value = status;
+                }
+            }
+
+            // Update needs-selection classes
+            const hasSelection = hasAnyOrientierungSelected(person);
+            ['', 'mobile-', 'modal-'].forEach(prefix => {
+                const dim = document.querySelector(`[data-dimension="${prefix}${person}-orientierung-multi"]`);
+                if (dim) {
+                    if (hasSelection) dim.classList.remove('needs-selection');
+                    else dim.classList.add('needs-selection');
+                }
+            });
+        }
+
         function handleDimensionChange(person, dimension, value, element) {
             // Update state
             personDimensions[person][dimension] = value;
@@ -9583,6 +9892,27 @@
         }
 
         function getOrientierungKurz(orientierung, status) {
+            // Handle multi-select orientierung object
+            if (orientierung && typeof orientierung === 'object') {
+                const map = {
+                    'heterosexuell': 'het',
+                    'homosexuell': 'hom',
+                    'bisexuell': 'bi'
+                };
+                const parts = [];
+                if (orientierung.heterosexuell) {
+                    parts.push(map['heterosexuell'] + (orientierung.heterosexuell === 'interessiert' ? '?' : ''));
+                }
+                if (orientierung.homosexuell) {
+                    parts.push(map['homosexuell'] + (orientierung.homosexuell === 'interessiert' ? '?' : ''));
+                }
+                if (orientierung.bisexuell) {
+                    parts.push(map['bisexuell'] + (orientierung.bisexuell === 'interessiert' ? '?' : ''));
+                }
+                return parts.length > 0 ? parts.join('/') : '?';
+            }
+
+            // Backwards compatibility for old single-value format
             if (!orientierung) return '?';
             const map = {
                 'heterosexuell': 'hetero',
@@ -9674,122 +10004,130 @@
 
         function checkPhysicalCompatibility(person1, person2) {
             const g1 = person1.geschlecht;
-            const o1 = person1.orientierung;
-            const s1 = person1.orientierungStatus;
             const g2 = person2.geschlecht;
-            const o2 = person2.orientierung;
-            const s2 = person2.orientierungStatus;
 
-            // Check for missing values - return uncertain if dimensions not yet selected
-            if (!g1 || !o1 || !s1 || !g2 || !o2 || !s2) {
+            // Get orientierung as multi-select object
+            const ori1 = person1.orientierung;
+            const ori2 = person2.orientierung;
+
+            // Check for missing values
+            if (!g1 || !g2) {
                 return {
                     result: 'unvollständig',
                     reason: 'Dimensionen unvollständig',
-                    explanation: 'Bitte wähle alle Dimensionen (Geschlecht, Orientierung, Status) für beide Personen aus.'
+                    explanation: 'Bitte wähle das Geschlecht für beide Personen aus.'
                 };
             }
 
-            // Both have "Fakt" status
-            if (s1 === 'fakt' && s2 === 'fakt') {
+            // Handle multi-select orientierung
+            const oriList1 = [];
+            const oriList2 = [];
 
-                // Bisexuell: Always compatible
-                if (o1 === 'bisexuell' || o2 === 'bisexuell') {
-                    return { result: 'möglich', confidence: 'hoch' };
-                }
+            if (ori1 && typeof ori1 === 'object') {
+                if (ori1.heterosexuell) oriList1.push({ type: 'heterosexuell', status: ori1.heterosexuell });
+                if (ori1.homosexuell) oriList1.push({ type: 'homosexuell', status: ori1.homosexuell });
+                if (ori1.bisexuell) oriList1.push({ type: 'bisexuell', status: ori1.bisexuell });
+            } else if (ori1 && typeof ori1 === 'string') {
+                // Backwards compatibility for old single-value format
+                oriList1.push({ type: ori1, status: person1.orientierungStatus || 'fakt' });
+            }
 
-                // Both heterosexuell
-                if (o1 === 'heterosexuell' && o2 === 'heterosexuell') {
-                    if (g1 !== g2) {
-                        return { result: 'möglich', confidence: 'hoch' };
-                    } else {
-                        return {
-                            result: 'unmöglich',
-                            reason: 'Beide heterosexuell, gleiches Geschlecht',
-                            explanation: 'Heterosexuelle Personen fühlen sich zu Menschen des anderen Geschlechts hingezogen.'
-                        };
-                    }
-                }
+            if (ori2 && typeof ori2 === 'object') {
+                if (ori2.heterosexuell) oriList2.push({ type: 'heterosexuell', status: ori2.heterosexuell });
+                if (ori2.homosexuell) oriList2.push({ type: 'homosexuell', status: ori2.homosexuell });
+                if (ori2.bisexuell) oriList2.push({ type: 'bisexuell', status: ori2.bisexuell });
+            } else if (ori2 && typeof ori2 === 'string') {
+                // Backwards compatibility for old single-value format
+                oriList2.push({ type: ori2, status: person2.orientierungStatus || 'fakt' });
+            }
 
-                // Both homosexuell
-                if (o1 === 'homosexuell' && o2 === 'homosexuell') {
-                    if (g1 === g2) {
-                        return { result: 'möglich', confidence: 'hoch' };
-                    } else {
-                        return {
-                            result: 'unmöglich',
-                            reason: 'Beide homosexuell, unterschiedliche Geschlechter',
-                            explanation: 'Homosexuelle Personen fühlen sich zu Menschen des gleichen Geschlechts hingezogen.'
-                        };
-                    }
-                }
+            // Check if any orientierung is selected
+            if (oriList1.length === 0 || oriList2.length === 0) {
+                return {
+                    result: 'unvollständig',
+                    reason: 'Dimensionen unvollständig',
+                    explanation: 'Bitte wähle mindestens eine Orientierung für beide Personen aus.'
+                };
+            }
 
-                // Mixed: hetero + homo
-                if ((o1 === 'heterosexuell' && o2 === 'homosexuell') ||
-                    (o1 === 'homosexuell' && o2 === 'heterosexuell')) {
-                    // Check if attraction is possible
-                    const hetero = o1 === 'heterosexuell' ? { g: g1, o: o1 } : { g: g2, o: o2 };
-                    const homo = o1 === 'homosexuell' ? { g: g1, o: o1 } : { g: g2, o: o2 };
+            // Check all combinations
+            let hasPossible = false;
+            let hasUnsicher = false;
+            let hasInteressiert = false;
 
-                    // Hetero wants opposite gender, homo wants same gender
-                    // They can be compatible if hetero wants homo's gender AND homo wants hetero's gender
-                    const heteroG = o1 === 'heterosexuell' ? g1 : g2;
-                    const homoG = o1 === 'homosexuell' ? g1 : g2;
+            for (const o1 of oriList1) {
+                for (const o2 of oriList2) {
+                    const result = checkSingleOrientationPair(o1.type, o1.status, o2.type, o2.status, g1, g2);
 
-                    // Hetero attracted to opposite of their own gender
-                    // Homo attracted to same as their own gender
-                    if (heteroG !== homoG && homoG === homoG) {
-                        // Hetero is attracted to homo's gender (opposite of hetero)
-                        // But homo is only attracted to their own gender
-                        if (homoG === heteroG) {
-                            // Homo would be attracted to hetero (same gender as homo)
-                            // But hetero wants opposite, which is homo's gender... complex
-                        }
+                    if (result === 'möglich') {
+                        hasPossible = true;
+                    } else if (result === 'unsicher') {
+                        hasUnsicher = true;
                     }
 
-                    return {
-                        result: 'unmöglich',
-                        reason: 'Inkompatible Orientierungen',
-                        explanation: 'Die sexuellen Orientierungen schließen gegenseitige Anziehung aus.'
-                    };
+                    if (o1.status === 'interessiert' || o2.status === 'interessiert') {
+                        hasInteressiert = true;
+                    }
                 }
             }
 
-            // At least one has "Interessiert" status
-            if (s1 === 'interessiert' || s2 === 'interessiert') {
+            // Return best result
+            if (hasPossible && !hasInteressiert) {
+                return { result: 'möglich', confidence: 'hoch' };
+            }
 
-                // If one is bisexuell: Always open
-                if (o1 === 'bisexuell' || o2 === 'bisexuell') {
-                    return {
-                        result: 'unsicher',
-                        confidence: 'mittel',
-                        explanation: 'Eine Person exploriert, die andere ist bisexuell und offen für alle Geschlechter.',
-                        note: 'Exploration könnte zu Anziehung führen'
-                    };
-                }
+            if (hasPossible && hasInteressiert) {
+                return {
+                    result: 'unsicher',
+                    confidence: 'mittel',
+                    explanation: 'Anziehung möglich, aber mindestens eine Person ist in der Explorationsphase.',
+                    note: 'Status "Interessiert" bedeutet Exploration'
+                };
+            }
 
-                // Check theoretical compatibility
-                const theoreticalMatch =
-                    (o1 === 'heterosexuell' && o2 === 'heterosexuell' && g1 !== g2) ||
-                    (o1 === 'homosexuell' && o2 === 'homosexuell' && g1 === g2);
+            if (hasUnsicher) {
+                return {
+                    result: 'unsicher',
+                    confidence: 'niedrig',
+                    explanation: 'Anziehung ist theoretisch möglich, aber unsicher.',
+                    note: 'Exploration-Phase'
+                };
+            }
 
-                if (theoreticalMatch) {
-                    return {
-                        result: 'unsicher',
-                        confidence: 'mittel-niedrig',
-                        explanation: 'Theoretisch kompatibel, aber Exploration ist unsicher',
-                        note: 'Ob tatsächlich Anziehung entsteht, ist offen'
-                    };
+            return {
+                result: 'unmöglich',
+                reason: 'Inkompatible Orientierungen',
+                explanation: 'Die sexuellen Orientierungen schließen gegenseitige Anziehung aus.'
+            };
+        }
+
+        // Helper: Check single pair of orientations
+        function checkSingleOrientationPair(type1, status1, type2, status2, g1, g2) {
+            // Bisexuell is always compatible
+            if (type1 === 'bisexuell' || type2 === 'bisexuell') {
+                return (status1 === 'interessiert' || status2 === 'interessiert') ? 'unsicher' : 'möglich';
+            }
+
+            // Both heterosexuell
+            if (type1 === 'heterosexuell' && type2 === 'heterosexuell') {
+                if (g1 !== g2) {
+                    return (status1 === 'interessiert' || status2 === 'interessiert') ? 'unsicher' : 'möglich';
                 } else {
-                    return {
-                        result: 'unsicher',
-                        confidence: 'sehr niedrig',
-                        explanation: 'Selbst wenn Exploration erfolgreich, geringe Wahrscheinlichkeit',
-                        note: 'Hohe Unsicherheit'
-                    };
+                    return 'unmöglich'; // Same gender, both hetero
                 }
             }
 
-            return { result: 'möglich', confidence: 'hoch' };
+            // Both homosexuell
+            if (type1 === 'homosexuell' && type2 === 'homosexuell') {
+                if (g1 === g2) {
+                    return (status1 === 'interessiert' || status2 === 'interessiert') ? 'unsicher' : 'möglich';
+                } else {
+                    return 'unmöglich'; // Different gender, both homo
+                }
+            }
+
+            // Mixed: hetero + homo - generally incompatible
+            return 'unmöglich';
         }
 
         function calculatePhilosophyCompatibility(type1, type2) {
@@ -9810,9 +10148,31 @@
 
         function formatPersonSummary(person) {
             const geschlecht = person.geschlecht || '?';
-            const orientierung = person.orientierung || '?';
-            const statusSuffix = person.orientierungStatus === 'interessiert' ? ' (Interessiert)' : person.orientierungStatus === 'fakt' ? ' (Fakt)' : '';
-            return `${geschlecht}, ${orientierung}${statusSuffix}`;
+
+            // Handle multi-select orientierung object
+            let orientierungStr = '?';
+            if (person.orientierung && typeof person.orientierung === 'object') {
+                const parts = [];
+                if (person.orientierung.heterosexuell) {
+                    const suffix = person.orientierung.heterosexuell === 'interessiert' ? ' (Interessiert)' : ' (Fakt)';
+                    parts.push('heterosexuell' + suffix);
+                }
+                if (person.orientierung.homosexuell) {
+                    const suffix = person.orientierung.homosexuell === 'interessiert' ? ' (Interessiert)' : ' (Fakt)';
+                    parts.push('homosexuell' + suffix);
+                }
+                if (person.orientierung.bisexuell) {
+                    const suffix = person.orientierung.bisexuell === 'interessiert' ? ' (Interessiert)' : ' (Fakt)';
+                    parts.push('bisexuell' + suffix);
+                }
+                orientierungStr = parts.length > 0 ? parts.join(', ') : '?';
+            } else if (person.orientierung) {
+                // Backwards compatibility for old single-value format
+                const statusSuffix = person.orientierungStatus === 'interessiert' ? ' (Interessiert)' : person.orientierungStatus === 'fakt' ? ' (Fakt)' : '';
+                orientierungStr = person.orientierung + statusSuffix;
+            }
+
+            return `${geschlecht}, ${orientierungStr}`;
         }
 
         function runCompatibilityChecks() {
@@ -10274,13 +10634,48 @@
         // Factor 4: Gender Attraction (15%)
         function calculateGenderAttraction(p1, p2) {
             const g1 = p1.geschlecht;
-            const o1 = p1.orientierung;
             const g2 = p2.geschlecht;
-            const o2 = p2.orientierung;
+
+            // Handle multi-select orientierung
+            const oriList1 = [];
+            const oriList2 = [];
+
+            if (p1.orientierung && typeof p1.orientierung === 'object') {
+                if (p1.orientierung.heterosexuell) oriList1.push('heterosexuell');
+                if (p1.orientierung.homosexuell) oriList1.push('homosexuell');
+                if (p1.orientierung.bisexuell) oriList1.push('bisexuell');
+            } else if (p1.orientierung) {
+                oriList1.push(p1.orientierung);
+            }
+
+            if (p2.orientierung && typeof p2.orientierung === 'object') {
+                if (p2.orientierung.heterosexuell) oriList2.push('heterosexuell');
+                if (p2.orientierung.homosexuell) oriList2.push('homosexuell');
+                if (p2.orientierung.bisexuell) oriList2.push('bisexuell');
+            } else if (p2.orientierung) {
+                oriList2.push(p2.orientierung);
+            }
 
             // Return default if values missing
-            if (!g1 || !o1 || !g2 || !o2) return 75;
+            if (!g1 || !g2 || oriList1.length === 0 || oriList2.length === 0) return 75;
 
+            // Check best combination
+            let bestScore = 0;
+
+            for (const o1 of oriList1) {
+                for (const o2 of oriList2) {
+                    const score = calculateSingleGenderAttraction(g1, o1, g2, o2);
+                    if (score > bestScore) {
+                        bestScore = score;
+                    }
+                }
+            }
+
+            return bestScore;
+        }
+
+        // Helper for single orientierung pair
+        function calculateSingleGenderAttraction(g1, o1, g2, o2) {
             // Bi = immer 100%
             if (o1 === "bisexuell" || o2 === "bisexuell") return 100;
 
@@ -11289,14 +11684,12 @@
             ich: {
                 geschlecht: null,
                 dominanz: { dominant: null, submissiv: null, switch: null, ausgeglichen: null },
-                orientierung: null,
-                orientierungStatus: null
+                orientierung: { heterosexuell: null, homosexuell: null, bisexuell: null }
             },
             partner: {
                 geschlecht: null,
                 dominanz: { dominant: null, submissiv: null, switch: null, ausgeglichen: null },
-                orientierung: null,
-                orientierungStatus: null
+                orientierung: { heterosexuell: null, homosexuell: null, bisexuell: null }
             }
         };
         let mobileIchArchetype = 'single';
@@ -12780,15 +13173,13 @@
                     archetyp: mobileIchArchetype,
                     geschlecht: personDimensions.ich.geschlecht,
                     dominanz: personDimensions.ich.dominanz, // Multi-select object
-                    orientierung: personDimensions.ich.orientierung,
-                    orientierungStatus: personDimensions.ich.orientierungStatus
+                    orientierung: personDimensions.ich.orientierung // Multi-select object
                 },
                 partner: {
                     archetyp: mobilePartnerArchetype,
                     geschlecht: personDimensions.partner.geschlecht,
                     dominanz: personDimensions.partner.dominanz, // Multi-select object
-                    orientierung: personDimensions.partner.orientierung,
-                    orientierungStatus: personDimensions.partner.orientierungStatus
+                    orientierung: personDimensions.partner.orientierung // Multi-select object
                 }
             };
 
@@ -12894,20 +13285,75 @@
                     }
 
                     if (selection.ich.orientierung) {
-                        mobilePersonDimensions.ich.orientierung = selection.ich.orientierung;
-                        const radio = document.querySelector(`input[name="mobile-ich-orientierung"][value="${selection.ich.orientierung}"]`);
-                        if (radio) {
-                            radio.checked = true;
-                            radio.closest('.compact-dimension').classList.remove('needs-selection');
-                        }
-                    }
+                        // Handle new multi-select object format
+                        if (typeof selection.ich.orientierung === 'object') {
+                            mobilePersonDimensions.ich.orientierung = selection.ich.orientierung;
+                            personDimensions.ich.orientierung = selection.ich.orientierung;
 
-                    if (selection.ich.orientierungStatus) {
-                        mobilePersonDimensions.ich.orientierungStatus = selection.ich.orientierungStatus;
-                        const radio = document.querySelector(`input[name="mobile-ich-status"][value="${selection.ich.orientierungStatus}"]`);
-                        if (radio) {
-                            radio.checked = true;
-                            radio.closest('.compact-dimension').classList.remove('needs-selection');
+                            // Restore Desktop & Mobile UI checkboxes and status dropdowns
+                            const shortIdMap = { 'heterosexuell': 'het', 'homosexuell': 'hom', 'bisexuell': 'bi' };
+                            let hasSelection = false;
+                            for (const [type, status] of Object.entries(selection.ich.orientierung)) {
+                                if (status) {
+                                    hasSelection = true;
+                                    const shortId = shortIdMap[type];
+                                    // Desktop checkbox
+                                    const checkbox = document.getElementById('ich-o-' + shortId);
+                                    if (checkbox) checkbox.checked = true;
+                                    // Desktop status dropdown
+                                    const statusSelect = document.getElementById('ich-o-' + shortId + '-status');
+                                    if (statusSelect) {
+                                        statusSelect.style.display = 'inline-block';
+                                        statusSelect.value = status;
+                                    }
+                                    // Mobile checkbox
+                                    const mobileCheckbox = document.getElementById('m-ich-o-' + shortId);
+                                    if (mobileCheckbox) mobileCheckbox.checked = true;
+                                    // Mobile status dropdown
+                                    const mobileStatusSelect = document.getElementById('m-ich-o-' + shortId + '-status');
+                                    if (mobileStatusSelect) {
+                                        mobileStatusSelect.style.display = 'inline-block';
+                                        mobileStatusSelect.value = status;
+                                    }
+                                }
+                            }
+                            if (hasSelection) {
+                                const dimension = document.querySelector('[data-dimension="ich-orientierung-multi"]');
+                                if (dimension) dimension.classList.remove('needs-selection');
+                                const mobileDimension = document.querySelector('[data-dimension="mobile-ich-orientierung-multi"]');
+                                if (mobileDimension) mobileDimension.classList.remove('needs-selection');
+                            }
+                        } else {
+                            // Legacy: string format - convert to new object format
+                            const orientierungObj = { heterosexuell: null, homosexuell: null, bisexuell: null };
+                            orientierungObj[selection.ich.orientierung] = selection.ich.orientierungStatus || 'fakt';
+                            mobilePersonDimensions.ich.orientierung = orientierungObj;
+                            personDimensions.ich.orientierung = orientierungObj;
+
+                            const shortIdMap = { 'heterosexuell': 'het', 'homosexuell': 'hom', 'bisexuell': 'bi' };
+                            const shortId = shortIdMap[selection.ich.orientierung];
+                            if (shortId) {
+                                // Desktop
+                                const checkbox = document.getElementById('ich-o-' + shortId);
+                                if (checkbox) checkbox.checked = true;
+                                const statusSelect = document.getElementById('ich-o-' + shortId + '-status');
+                                if (statusSelect) {
+                                    statusSelect.style.display = 'inline-block';
+                                    statusSelect.value = selection.ich.orientierungStatus || 'fakt';
+                                }
+                                // Mobile
+                                const mobileCheckbox = document.getElementById('m-ich-o-' + shortId);
+                                if (mobileCheckbox) mobileCheckbox.checked = true;
+                                const mobileStatusSelect = document.getElementById('m-ich-o-' + shortId + '-status');
+                                if (mobileStatusSelect) {
+                                    mobileStatusSelect.style.display = 'inline-block';
+                                    mobileStatusSelect.value = selection.ich.orientierungStatus || 'fakt';
+                                }
+                            }
+                            const dimension = document.querySelector('[data-dimension="ich-orientierung-multi"]');
+                            if (dimension) dimension.classList.remove('needs-selection');
+                            const mobileDimension = document.querySelector('[data-dimension="mobile-ich-orientierung-multi"]');
+                            if (mobileDimension) mobileDimension.classList.remove('needs-selection');
                         }
                     }
                 }
@@ -13000,20 +13446,75 @@
                     }
 
                     if (selection.partner.orientierung) {
-                        mobilePersonDimensions.partner.orientierung = selection.partner.orientierung;
-                        const radio = document.querySelector(`input[name="mobile-partner-orientierung"][value="${selection.partner.orientierung}"]`);
-                        if (radio) {
-                            radio.checked = true;
-                            radio.closest('.compact-dimension').classList.remove('needs-selection');
-                        }
-                    }
+                        // Handle new multi-select object format
+                        if (typeof selection.partner.orientierung === 'object') {
+                            mobilePersonDimensions.partner.orientierung = selection.partner.orientierung;
+                            personDimensions.partner.orientierung = selection.partner.orientierung;
 
-                    if (selection.partner.orientierungStatus) {
-                        mobilePersonDimensions.partner.orientierungStatus = selection.partner.orientierungStatus;
-                        const radio = document.querySelector(`input[name="mobile-partner-status"][value="${selection.partner.orientierungStatus}"]`);
-                        if (radio) {
-                            radio.checked = true;
-                            radio.closest('.compact-dimension').classList.remove('needs-selection');
+                            // Restore Desktop & Mobile UI checkboxes and status dropdowns
+                            const shortIdMap = { 'heterosexuell': 'het', 'homosexuell': 'hom', 'bisexuell': 'bi' };
+                            let hasSelection = false;
+                            for (const [type, status] of Object.entries(selection.partner.orientierung)) {
+                                if (status) {
+                                    hasSelection = true;
+                                    const shortId = shortIdMap[type];
+                                    // Desktop checkbox
+                                    const checkbox = document.getElementById('partner-o-' + shortId);
+                                    if (checkbox) checkbox.checked = true;
+                                    // Desktop status dropdown
+                                    const statusSelect = document.getElementById('partner-o-' + shortId + '-status');
+                                    if (statusSelect) {
+                                        statusSelect.style.display = 'inline-block';
+                                        statusSelect.value = status;
+                                    }
+                                    // Mobile checkbox
+                                    const mobileCheckbox = document.getElementById('m-partner-o-' + shortId);
+                                    if (mobileCheckbox) mobileCheckbox.checked = true;
+                                    // Mobile status dropdown
+                                    const mobileStatusSelect = document.getElementById('m-partner-o-' + shortId + '-status');
+                                    if (mobileStatusSelect) {
+                                        mobileStatusSelect.style.display = 'inline-block';
+                                        mobileStatusSelect.value = status;
+                                    }
+                                }
+                            }
+                            if (hasSelection) {
+                                const dimension = document.querySelector('[data-dimension="partner-orientierung-multi"]');
+                                if (dimension) dimension.classList.remove('needs-selection');
+                                const mobileDimension = document.querySelector('[data-dimension="mobile-partner-orientierung-multi"]');
+                                if (mobileDimension) mobileDimension.classList.remove('needs-selection');
+                            }
+                        } else {
+                            // Legacy: string format - convert to new object format
+                            const orientierungObj = { heterosexuell: null, homosexuell: null, bisexuell: null };
+                            orientierungObj[selection.partner.orientierung] = selection.partner.orientierungStatus || 'fakt';
+                            mobilePersonDimensions.partner.orientierung = orientierungObj;
+                            personDimensions.partner.orientierung = orientierungObj;
+
+                            const shortIdMap = { 'heterosexuell': 'het', 'homosexuell': 'hom', 'bisexuell': 'bi' };
+                            const shortId = shortIdMap[selection.partner.orientierung];
+                            if (shortId) {
+                                // Desktop
+                                const checkbox = document.getElementById('partner-o-' + shortId);
+                                if (checkbox) checkbox.checked = true;
+                                const statusSelect = document.getElementById('partner-o-' + shortId + '-status');
+                                if (statusSelect) {
+                                    statusSelect.style.display = 'inline-block';
+                                    statusSelect.value = selection.partner.orientierungStatus || 'fakt';
+                                }
+                                // Mobile
+                                const mobileCheckbox = document.getElementById('m-partner-o-' + shortId);
+                                if (mobileCheckbox) mobileCheckbox.checked = true;
+                                const mobileStatusSelect = document.getElementById('m-partner-o-' + shortId + '-status');
+                                if (mobileStatusSelect) {
+                                    mobileStatusSelect.style.display = 'inline-block';
+                                    mobileStatusSelect.value = selection.partner.orientierungStatus || 'fakt';
+                                }
+                            }
+                            const dimension = document.querySelector('[data-dimension="partner-orientierung-multi"]');
+                            if (dimension) dimension.classList.remove('needs-selection');
+                            const mobileDimension = document.querySelector('[data-dimension="mobile-partner-orientierung-multi"]');
+                            if (mobileDimension) mobileDimension.classList.remove('needs-selection');
                         }
                     }
                 }
@@ -13051,14 +13552,15 @@
             mobileIchArchetype = 'single';
             mobilePartnerArchetype = 'duo';
             const emptyDominanz = { dominant: null, submissiv: null, switch: null, ausgeglichen: null };
+            const emptyOrientierung = { heterosexuell: null, homosexuell: null, bisexuell: null };
             mobilePersonDimensions = {
-                ich: { geschlecht: null, dominanz: { ...emptyDominanz }, orientierung: null, orientierungStatus: null },
-                partner: { geschlecht: null, dominanz: { ...emptyDominanz }, orientierung: null, orientierungStatus: null }
+                ich: { geschlecht: null, dominanz: { ...emptyDominanz }, orientierung: { ...emptyOrientierung } },
+                partner: { geschlecht: null, dominanz: { ...emptyDominanz }, orientierung: { ...emptyOrientierung } }
             };
 
             // Reset personDimensions for desktop
-            personDimensions.ich = { geschlecht: null, dominanz: { ...emptyDominanz }, orientierung: null, orientierungStatus: null };
-            personDimensions.partner = { geschlecht: null, dominanz: { ...emptyDominanz }, orientierung: null, orientierungStatus: null };
+            personDimensions.ich = { geschlecht: null, dominanz: { ...emptyDominanz }, orientierung: { ...emptyOrientierung } };
+            personDimensions.partner = { geschlecht: null, dominanz: { ...emptyDominanz }, orientierung: { ...emptyOrientierung } };
 
             // Reset dropdowns
             document.getElementById('mobileIchSelect').value = 'single';
