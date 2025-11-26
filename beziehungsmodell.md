@@ -50,7 +50,20 @@ Fundamentale Beziehungsphilosophie: "Wie wollen wir Beziehung leben?"
 Körperliche Polarität und Anziehung (Hetero, Homo, Bi, Pan, Ace)
 
 ### 3. Dominanz-Harmonie (20% - Pathos)
-Energetische Dynamik: Dominant, Submissiv, Switch
+Energetische Dynamik: Dominant, Submissiv, Switch, Ausgeglichen
+
+**Wissenschaftliche Grundlage:**
+
+| Konstellation | Score | Forschungsbeleg |
+|---------------|-------|-----------------|
+| Komplementär (Dom ↔ Sub) | 100% | Tiedens & Fragale (2003): Komplementarität führt zu mehr Sympathie und Komfort |
+| Ausgeglichen ↔ Ausgeglichen | 95% | Flexible Dynamik ohne starre Hierarchie |
+| Switch ↔ Switch | 90% | Situative Rollenanpassung möglich |
+| Dom/Sub + Ausgeglichen | 85% | Stabile Ergänzung mit flexiblem Partner |
+| Switch + Dom/Sub | 80% | Anpassung möglich, aber Spannung |
+| Dom ↔ Dom | 55% | Sadikaj et al. (2017): Machtkampf-Risiko, niedrigere Zufriedenheit |
+| Sub ↔ Sub | 55% | Führungsvakuum, bewusste Aufgabenteilung nötig |
+
 OSHO: "Tao - eine Energie, zwei Ausdrucksformen"
 
 ### 4. Geschlechts-Attraktion (15% - Pathos)
@@ -83,6 +96,29 @@ Die Verbindung von Pirsigs Qualitäts-Philosophie mit OSHOs Polaritäts-Konzept 
 - 6-Archetypen-System
 - 4-Faktoren-Berechnung
 - Archetypen-Kompatibilitäts-Matrix
+
+---
+
+---
+
+## Wissenschaftliche Quellen
+
+### Dominanz-Harmonie (D/S-Kompatibilität)
+
+1. **Tiedens, L.Z. & Fragale, A.R. (2003)**
+   "Power Moves: Complementarity in Dominant and Submissive Nonverbal Behavior"
+   *Journal of Personality and Social Psychology*
+   → Komplementarität (Dom ↔ Sub) führt zu mehr Sympathie und Komfort als Mimikry
+
+2. **Sadikaj, G., Moskowitz, D.S. & Zuroff, D.C. (2017)**
+   "Negative affective reaction to partner's dominant behavior influences satisfaction with romantic relationship"
+   *Journal of Social and Personal Relationships*
+   → Paare mit zwei dominanten Partnern berichten niedrigere Beziehungszufriedenheit
+
+3. **Jozifkova, E. et al. (2025)**
+   "The Link Between Sexual Dominance Preference and Social Behavior in BDSM Sex Practitioners"
+   *Deviant Behavior*
+   → Rollenkompatibilität korreliert stärker mit Zufriedenheit als spezifische Aktivitäten
 
 ---
 
