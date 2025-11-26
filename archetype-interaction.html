@@ -2798,6 +2798,24 @@
                 width: 100%;
                 min-height: 100px;
             }
+            /* Mobile: Larger fonts for age verification */
+            .age-verification-modal h2 {
+                font-size: 22px;
+            }
+            .age-verification-modal p {
+                font-size: 16px;
+            }
+            .age-verification-question {
+                font-size: 17px;
+                padding: 18px;
+            }
+            .age-btn {
+                font-size: 17px;
+                padding: 16px 24px;
+            }
+            .age-verification-note {
+                font-size: 13px !important;
+            }
         }
 
         .age-verification-note {
@@ -3674,20 +3692,21 @@
         .column-dimensions {
             display: flex;
             flex-direction: column;
-            gap: 10px;
+            gap: 15px;
         }
 
         .compact-dimension {
             display: flex;
             flex-direction: column;
-            gap: 4px;
+            gap: 8px;
         }
 
         .compact-dimension-label {
             font-size: 11px;
-            color: var(--text-muted);
+            color: var(--warning);
             text-transform: uppercase;
             letter-spacing: 0.5px;
+            font-weight: 600;
         }
 
         .compact-options {
@@ -3898,12 +3917,13 @@
             }
 
             .compact-option {
-                padding: 4px 8px;
-                font-size: 11px;
+                padding: 10px 14px;
+                font-size: 15px;
             }
 
             .compact-dimension-label {
-                font-size: 11px;
+                font-size: 14px;
+                margin-bottom: 6px;
             }
 
             .result-bar {
@@ -4319,6 +4339,81 @@
 
             .types-display .type-name {
                 color: var(--primary);
+            }
+
+            /* Mobile: Larger fonts for better readability */
+            .compact-dimension-label {
+                font-size: 16px;
+                margin-bottom: 8px;
+            }
+
+            .compact-option {
+                padding: 12px 16px;
+                font-size: 16px;
+            }
+
+            .compact-options {
+                gap: 8px;
+            }
+
+            .compact-dimension {
+                gap: 8px;
+                margin-bottom: 12px;
+            }
+
+            /* Mobile Page 1: Fix heading overflow */
+            #mobilePage1 h2 {
+                font-size: 18px !important;
+                line-height: 1.3;
+                word-wrap: break-word;
+                padding: 0 10px;
+            }
+
+            /* Mobile Pro/Contra: Larger fonts */
+            .pro-list-mobile li, .contra-list-mobile li {
+                font-size: 15px;
+                padding: 10px 0 10px 24px;
+                line-height: 1.5;
+            }
+
+            .pro-section-mobile h3, .contra-section-mobile h3 {
+                font-size: 17px;
+            }
+
+            /* Mobile Score factors: Larger fonts */
+            .score-factor-main {
+                font-size: 15px;
+            }
+
+            .score-factor-sub {
+                font-size: 13px;
+            }
+
+            .score-factor-value {
+                font-size: 18px;
+            }
+
+            /* Mobile Page title */
+            .page-title {
+                font-size: 18px;
+            }
+
+            /* Mobile: Larger dropdown */
+            .column-select {
+                font-size: 16px;
+                padding: 12px 14px;
+                max-width: 160px;
+            }
+
+            /* Mobile: Larger INFO button */
+            .archetype-info-btn {
+                font-size: 13px;
+                padding: 10px 14px;
+            }
+
+            /* Mobile column-dimensions more spacing */
+            .column-dimensions {
+                gap: 20px;
             }
         }
 
@@ -5057,7 +5152,7 @@
                         <option value="poly_hedo" title="Freiheitsorientierte Poly-Orientierung mit Fokus auf Genuss">Poly Hedo</option>
                         <option value="polyamor" title="Mehrere gleichzeitige, ethisch geführte Liebesbeziehungen">Polyamor</option>
                     </select>
-                    <button onclick="openArchetypeInfo(document.getElementById('mobileIchSelect').value)" style="padding: 8px 12px; background: rgba(255,255,255,0.1); border: 1px solid var(--border); border-radius: 8px; color: var(--text-secondary); cursor: pointer; font-size: 11px; font-weight: 600; letter-spacing: 0.5px;" title="Info zum Archetyp">INFO</button>
+                    <button onclick="openArchetypeInfo(document.getElementById('mobileIchSelect').value)" style="padding: 12px 16px; background: rgba(255,255,255,0.1); border: 1px solid var(--border); border-radius: 8px; color: var(--text-secondary); cursor: pointer; font-size: 14px; font-weight: 600; letter-spacing: 0.5px;" title="Info zum Archetyp">INFO</button>
                 </div>
                 <div class="column-dimensions" id="mobileIchDimensions">
                     <div class="compact-dimension needs-selection">
@@ -5121,7 +5216,7 @@
                         <option value="poly_hedo" title="Freiheitsorientierte Poly-Orientierung mit Fokus auf Genuss">Poly Hedo</option>
                         <option value="polyamor" title="Mehrere gleichzeitige, ethisch geführte Liebesbeziehungen">Polyamor</option>
                     </select>
-                    <button onclick="openArchetypeInfo(document.getElementById('mobilePartnerSelect').value)" style="padding: 8px 12px; background: rgba(255,255,255,0.1); border: 1px solid var(--border); border-radius: 8px; color: var(--text-secondary); cursor: pointer; font-size: 11px; font-weight: 600; letter-spacing: 0.5px;" title="Info zum Archetyp">INFO</button>
+                    <button onclick="openArchetypeInfo(document.getElementById('mobilePartnerSelect').value)" style="padding: 12px 16px; background: rgba(255,255,255,0.1); border: 1px solid var(--border); border-radius: 8px; color: var(--text-secondary); cursor: pointer; font-size: 14px; font-weight: 600; letter-spacing: 0.5px;" title="Info zum Archetyp">INFO</button>
                 </div>
                 <div class="column-dimensions" id="mobilePartnerDimensions">
                     <div class="compact-dimension needs-selection">
