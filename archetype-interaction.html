@@ -3867,6 +3867,13 @@
             }
         }
 
+        /* Disable status toggle buttons when any popup overlay is active */
+        body:has(.dimension-tooltip-overlay.active) .status-toggle-btn,
+        body:has(.status-popup-overlay.active) .status-toggle-btn {
+            pointer-events: none;
+            cursor: default;
+        }
+
         /* Status Selection Popup */
         .status-popup-overlay {
             position: fixed;
