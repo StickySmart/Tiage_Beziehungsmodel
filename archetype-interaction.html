@@ -7914,16 +7914,17 @@
             submitBtn.textContent = 'Senden';
         }
 
-        // Local storage backup
+        // Local storage backup - alles in tiage_comments
         function saveLocalFeedback(entry) {
-            const stored = JSON.parse(localStorage.getItem('tiage_feedback') || '[]');
+            const stored = JSON.parse(localStorage.getItem('tiage_comments') || '[]');
             entry.timestamp = new Date().toISOString();
+            entry.Typ = 'comment';  // Einheitlicher Typ
             stored.unshift(entry);
-            localStorage.setItem('tiage_feedback', JSON.stringify(stored));
+            localStorage.setItem('tiage_comments', JSON.stringify(stored));
         }
 
         function getLocalFeedback() {
-            return JSON.parse(localStorage.getItem('tiage_feedback') || '[]');
+            return JSON.parse(localStorage.getItem('tiage_comments') || '[]');
         }
 
         // Load and display feedback
@@ -10829,36 +10830,22 @@
             container.innerHTML = '<div class="no-comments"><div class="no-comments-icon">⏳</div><p>Lade Kommentare...</p></div>';
 
             try {
-                // Load from localStorage (comments)
+                // Load from localStorage - nur eine Quelle: tiage_comments
                 const localComments = JSON.parse(localStorage.getItem('tiage_comments') || '[]');
-                // Load from localStorage (feedback)
-                const localFeedback = JSON.parse(localStorage.getItem('tiage_feedback') || '[]');
 
-                // Combine both sources with deduplication
-                // Create a unique key based on content to detect duplicates
-                // Use name + titel + text (without timestamp) to catch more duplicates
+                // Deduplizierung basierend auf Name + Titel + Text
                 const seen = new Set();
                 const getUniqueKey = (item) => {
                     const name = (item.Name || item.name || '').toLowerCase().trim();
                     const titel = (item.Titel || item.titel || '').toLowerCase().trim();
                     const text = (item.Kommentar || item.kommentar || item.text || item.comment || '').toLowerCase().trim();
-                    // Key ohne Timestamp - Name + Titel + Text reichen zur Deduplizierung
                     return `${name}|${titel}|${text}`;
                 };
 
                 allCommentsData = [];
 
-                // Add comments first (they have explicit type)
+                // Add local comments
                 localComments.forEach(item => {
-                    const key = getUniqueKey(item);
-                    if (!seen.has(key)) {
-                        seen.add(key);
-                        allCommentsData.push(item);
-                    }
-                });
-
-                // Add feedback only if not already present
-                localFeedback.forEach(item => {
                     const key = getUniqueKey(item);
                     if (!seen.has(key)) {
                         seen.add(key);
@@ -10871,7 +10858,7 @@
                     try {
                         const response = await fetch(GOOGLE_SCRIPT_URL);
                         const serverData = await response.json();
-                        // Merge server data with local data (avoiding duplicates by content)
+                        // Merge server data (avoiding duplicates)
                         serverData.forEach(item => {
                             const key = getUniqueKey(item);
                             if (!seen.has(key)) {
