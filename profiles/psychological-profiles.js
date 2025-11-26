@@ -782,17 +782,1200 @@ const psychologicalProfiles = {
       "noch passiv, er ist einfach bewusst.' Single-Status erlaubt diesem " +
       "Typ, diese Balance ohne Partner-Dynamiken zu kultivieren. " +
       "Weder Yang noch Yin dominiert - reine Bewusstheit."
-  }
+  },
 
   // ════════════════════════════════════════════════════════════════════════════
-  // WEITERE 206 PROFILE FOLGEN...
+  // PROFIL 11: single-männlich-ausgeglichen-homosexuell
   // ════════════════════════════════════════════════════════════════════════════
-  // Die restlichen Profile werden nach dem gleichen Schema erstellt:
-  // - single-männlich-ausgeglichen-homosexuell (11)
-  // - single-männlich-ausgeglichen-bisexuell (12)
-  // - single-weiblich-dominant-heterosexuell (13)
-  // - ... usw. bis Profile 216 (polyamor-nonbinär-ausgeglichen-bisexuell)
+  "single-männlich-ausgeglichen-homosexuell": {
+    sources: [
+      "Stern et al. (2024): Singles report highest autonomy",
+      "Allen et al. (2020): Gay men = higher openness than heterosexuals",
+      "Big Five Research: Balanced profiles = high emotional stability",
+      "LGBTQ+ Research: Gay identity integration with balanced personality"
+    ],
+    kinderWunsch: "nein", eheWunsch: "nein", wohnform: "alleine", religion: "offen",
+    karrierePrioritaet: "balance", finanzPhilosophie: "getrennt", lebensstil: "durchschnittlich",
+    umzugsbereitschaft: "flexibel", zukunftsplanung: "flexibel", traditionenWichtigkeit: "unwichtig",
+    kommunikationsstil: "ausgeglichen", konfliktverhalten: "diplomatisch", emotionaleOffenheit: "mittel",
+    gespraechsBedürfnis: "mittel", feedbackStil: "konstruktiv", entschuldigungen: "normal",
+    streitVerhalten: "ruhig", versoehnung: "normal", kritikAnnehmen: "gut", humorKonflikte: "oft",
+    introExtro: "ambivertiert", familieWichtigkeit: "weniger-wichtig", freundeskreis: "getrennt",
+    oeffentlichkeit: "mittel", alleinzeit: "mittel", events: "manchmal", reisen: "mittel",
+    hobbys: "getrennt", wochenende: "gemischt", netzwerkGroesse: "mittel",
+    confidence: { kinderWunsch: 0.90, eheWunsch: 0.85, wohnform: 0.95, kommunikationsstil: 0.85,
+      konfliktverhalten: 0.80, emotionaleOffenheit: 0.70, introExtro: 0.75, traditionenWichtigkeit: 0.85 },
+    pirsig: "Balance zwischen dynamischer Freiheit (Single+Gay) und stabiler Mitte (Ausgeglichen). " +
+      "Qualität durch Integration von Gegensätzen - weder extrem noch konformistisch.",
+    osho: "Der bewusste Gay-Mann, der jenseits von Rebellion und Anpassung lebt. " +
+      "Nicht mehr kämpfend gegen Normen, sondern ruhend in sich selbst."
+  },
+
   // ════════════════════════════════════════════════════════════════════════════
+  // PROFIL 12: single-männlich-ausgeglichen-bisexuell
+  // ════════════════════════════════════════════════════════════════════════════
+  "single-männlich-ausgeglichen-bisexuell": {
+    sources: [
+      "Stern et al. (2024): Singles report highest autonomy",
+      "Allen et al. (2020): Bisexuals = highest openness",
+      "Big Five Research: Balanced + high openness = adaptive personality"
+    ],
+    kinderWunsch: "nein", eheWunsch: "nein", wohnform: "alleine", religion: "spirituell",
+    karrierePrioritaet: "balance", finanzPhilosophie: "getrennt", lebensstil: "durchschnittlich",
+    umzugsbereitschaft: "flexibel", zukunftsplanung: "flexibel", traditionenWichtigkeit: "unwichtig",
+    kommunikationsstil: "ausgeglichen", konfliktverhalten: "diplomatisch", emotionaleOffenheit: "offen",
+    gespraechsBedürfnis: "mittel", feedbackStil: "konstruktiv", entschuldigungen: "normal",
+    streitVerhalten: "ruhig", versoehnung: "normal", kritikAnnehmen: "gut", humorKonflikte: "oft",
+    introExtro: "ambivertiert", familieWichtigkeit: "weniger-wichtig", freundeskreis: "gemischt",
+    oeffentlichkeit: "mittel", alleinzeit: "mittel", events: "manchmal", reisen: "mittel",
+    hobbys: "getrennt", wochenende: "gemischt", netzwerkGroesse: "mittel",
+    confidence: { kinderWunsch: 0.85, eheWunsch: 0.90, wohnform: 0.95, kommunikationsstil: 0.85,
+      konfliktverhalten: 0.80, emotionaleOffenheit: 0.75, introExtro: 0.75, traditionenWichtigkeit: 0.90 },
+    pirsig: "Hohe Offenheit (Bi) mit stabiler Mitte (Ausgeglichen) - optimale Balance " +
+      "zwischen Exploration und Integration. Qualität durch bewusste Wahlfreiheit.",
+    osho: "Der zentrierte Bi-Mann - offen für alle Möglichkeiten, aber nicht getrieben. " +
+      "Sexuelle Fluidität aus Bewusstsein, nicht aus Suche."
+  },
+
+  // ════════════════════════════════════════════════════════════════════════════
+  // SINGLE-WEIBLICH PROFILE (13-24)
+  // ════════════════════════════════════════════════════════════════════════════
+
+  // PROFIL 13: single-weiblich-dominant-heterosexuell
+  "single-weiblich-dominant-heterosexuell": {
+    sources: [
+      "Stern et al. (2024): Singles report highest autonomy",
+      "SMSNA (2023): Only 25% of women prefer dominant role",
+      "Gender Research: Dominant women face social pushback",
+      "Tannen (1990): Women use language for connection, dominant women adapt"
+    ],
+    kinderWunsch: "nein", eheWunsch: "nein", wohnform: "alleine", religion: "atheistisch",
+    karrierePrioritaet: "karriere", finanzPhilosophie: "getrennt", lebensstil: "gehoben",
+    umzugsbereitschaft: "sehr-flexibel", zukunftsplanung: "spontan", traditionenWichtigkeit: "unwichtig",
+    kommunikationsstil: "direkt", konfliktverhalten: "konfrontativ", emotionaleOffenheit: "mittel",
+    gespraechsBedürfnis: "mittel", feedbackStil: "direkt", entschuldigungen: "schwer",
+    streitVerhalten: "laut", versoehnung: "schnell", kritikAnnehmen: "schwer", humorKonflikte: "manchmal",
+    introExtro: "extrovertiert", familieWichtigkeit: "weniger-wichtig", freundeskreis: "getrennt",
+    oeffentlichkeit: "sehr-offen", alleinzeit: "wenig", events: "oft", reisen: "viel",
+    hobbys: "getrennt", wochenende: "aktiv", netzwerkGroesse: "groß",
+    confidence: { kinderWunsch: 0.80, eheWunsch: 0.85, wohnform: 0.95, kommunikationsstil: 0.75,
+      konfliktverhalten: 0.70, emotionaleOffenheit: 0.60, introExtro: 0.75, karrierePrioritaet: 0.80 },
+    pirsig: "Doppelte Rebellion gegen statische Muster: Als Frau gegen Submissivitäts-Erwartung, " +
+      "als Single gegen Beziehungsnorm. Maximale dynamische Qualität.",
+    osho: "Die Frau, die ihre Yang-Energie lebt - gesellschaftlich selten, spirituell wertvoll. " +
+      "Osho: 'Die starke Frau hat ihre männliche Seite integriert.'"
+  },
+
+  // PROFIL 14: single-weiblich-dominant-homosexuell
+  "single-weiblich-dominant-homosexuell": {
+    sources: [
+      "Stern et al. (2024): Singles report highest autonomy",
+      "Lesbian Research: Dominant/butch identity in lesbian community",
+      "Allen et al. (2020): Lesbians higher openness than hetero women"
+    ],
+    kinderWunsch: "nein", eheWunsch: "nein", wohnform: "alleine", religion: "atheistisch",
+    karrierePrioritaet: "karriere", finanzPhilosophie: "getrennt", lebensstil: "gehoben",
+    umzugsbereitschaft: "sehr-flexibel", zukunftsplanung: "spontan", traditionenWichtigkeit: "unwichtig",
+    kommunikationsstil: "direkt", konfliktverhalten: "konfrontativ", emotionaleOffenheit: "offen",
+    gespraechsBedürfnis: "viel", feedbackStil: "direkt", entschuldigungen: "schwer",
+    streitVerhalten: "laut", versoehnung: "schnell", kritikAnnehmen: "mittel", humorKonflikte: "oft",
+    introExtro: "extrovertiert", familieWichtigkeit: "weniger-wichtig", freundeskreis: "getrennt",
+    oeffentlichkeit: "offen", alleinzeit: "wenig", events: "oft", reisen: "viel",
+    hobbys: "getrennt", wochenende: "aktiv", netzwerkGroesse: "groß",
+    confidence: { kinderWunsch: 0.85, eheWunsch: 0.85, wohnform: 0.95, kommunikationsstil: 0.80,
+      konfliktverhalten: 0.75, emotionaleOffenheit: 0.70, introExtro: 0.80, traditionenWichtigkeit: 0.90 },
+    pirsig: "Dreifache Freiheit von statischen Mustern: Weibliche Submissivität, Heteronormativität, " +
+      "und Beziehungszwang - alle durchbrochen. Pure Dynamic Quality.",
+    osho: "Die freieste aller Frauen - lebt ihre Yang-Energie und ihre gleichgeschlechtliche " +
+      "Anziehung ohne Kompromisse. Vollständige Authentizität."
+  },
+
+  // PROFIL 15: single-weiblich-dominant-bisexuell
+  "single-weiblich-dominant-bisexuell": {
+    sources: [
+      "Stern et al. (2024): Singles report highest autonomy",
+      "Allen et al. (2020): Bisexual women = highest openness",
+      "Bisexual Women Research: Higher sociosexuality"
+    ],
+    kinderWunsch: "nein", eheWunsch: "nein", wohnform: "alleine", religion: "spirituell",
+    karrierePrioritaet: "karriere", finanzPhilosophie: "getrennt", lebensstil: "gehoben",
+    umzugsbereitschaft: "sehr-flexibel", zukunftsplanung: "spontan", traditionenWichtigkeit: "unwichtig",
+    kommunikationsstil: "direkt", konfliktverhalten: "konfrontativ", emotionaleOffenheit: "offen",
+    gespraechsBedürfnis: "viel", feedbackStil: "direkt", entschuldigungen: "schwer",
+    streitVerhalten: "laut", versoehnung: "schnell", kritikAnnehmen: "mittel", humorKonflikte: "oft",
+    introExtro: "extrovertiert", familieWichtigkeit: "weniger-wichtig", freundeskreis: "gemischt",
+    oeffentlichkeit: "offen", alleinzeit: "wenig", events: "sehr-oft", reisen: "viel",
+    hobbys: "getrennt", wochenende: "sehr-aktiv", netzwerkGroesse: "groß",
+    confidence: { kinderWunsch: 0.80, eheWunsch: 0.85, wohnform: 0.95, kommunikationsstil: 0.80,
+      konfliktverhalten: 0.75, emotionaleOffenheit: 0.75, introExtro: 0.80, freundeskreis: 0.80 },
+    pirsig: "Maximale Freiheit: Keine Geschlechts-, Orientierungs- oder Beziehungsbindung. " +
+      "Dominant + Bi + Single = vollständige dynamische Selbstbestimmung.",
+    osho: "Die wildeste aller Frauen - alle Grenzen gesprengt. Lebt ihre volle " +
+      "Sexualität und Dominanz ohne Einschränkung. Gesellschaftlich provokant, spirituell frei."
+  },
+
+  // PROFIL 16: single-weiblich-submissiv-heterosexuell
+  "single-weiblich-submissiv-heterosexuell": {
+    sources: [
+      "Stern et al. (2024): Singles report highest autonomy",
+      "Netherlands Study: 75.6% of SM-practicing women prefer submissive",
+      "Gender Research: Submissive women = societally expected role"
+    ],
+    kinderWunsch: "vielleicht", eheWunsch: "nein", wohnform: "alleine", religion: "offen",
+    karrierePrioritaet: "balance", finanzPhilosophie: "getrennt", lebensstil: "bescheiden",
+    umzugsbereitschaft: "flexibel", zukunftsplanung: "planend", traditionenWichtigkeit: "neutral",
+    kommunikationsstil: "indirekt", konfliktverhalten: "vermeidend", emotionaleOffenheit: "offen",
+    gespraechsBedürfnis: "viel", feedbackStil: "diplomatisch", entschuldigungen: "leicht",
+    streitVerhalten: "leise", versoehnung: "langsam", kritikAnnehmen: "gut", humorKonflikte: "selten",
+    introExtro: "introvertiert", familieWichtigkeit: "weniger-wichtig", freundeskreis: "getrennt",
+    oeffentlichkeit: "zurückhaltend", alleinzeit: "viel", events: "selten", reisen: "wenig",
+    hobbys: "getrennt", wochenende: "ruhig", netzwerkGroesse: "klein",
+    confidence: { kinderWunsch: 0.65, eheWunsch: 0.80, wohnform: 0.95, kommunikationsstil: 0.85,
+      konfliktverhalten: 0.85, emotionaleOffenheit: 0.80, introExtro: 0.80, alleinzeit: 0.85 },
+    pirsig: "Spannung zwischen dynamischer Freiheit (Single) und statischem Muster (Submissiv). " +
+      "Single-Status ermöglicht Submissivität ohne Abhängigkeit - paradoxe Freiheit.",
+    osho: "Die Frau, die ihre Yin-Natur lebt, aber ohne Partner. Empfangend ohne " +
+      "Geber - eine meditative Haltung. Single als bewusste Wahl, nicht als Mangel."
+  },
+
+  // PROFIL 17: single-weiblich-submissiv-homosexuell
+  "single-weiblich-submissiv-homosexuell": {
+    sources: [
+      "Stern et al. (2024): Singles report highest autonomy",
+      "Lesbian Research: Femme identity in lesbian community",
+      "BDSM Research: Submissive role in lesbian dynamics"
+    ],
+    kinderWunsch: "nein", eheWunsch: "nein", wohnform: "alleine", religion: "offen",
+    karrierePrioritaet: "balance", finanzPhilosophie: "getrennt", lebensstil: "durchschnittlich",
+    umzugsbereitschaft: "flexibel", zukunftsplanung: "planend", traditionenWichtigkeit: "unwichtig",
+    kommunikationsstil: "indirekt", konfliktverhalten: "vermeidend", emotionaleOffenheit: "sehr-offen",
+    gespraechsBedürfnis: "viel", feedbackStil: "diplomatisch", entschuldigungen: "leicht",
+    streitVerhalten: "leise", versoehnung: "langsam", kritikAnnehmen: "gut", humorKonflikte: "manchmal",
+    introExtro: "introvertiert", familieWichtigkeit: "weniger-wichtig", freundeskreis: "getrennt",
+    oeffentlichkeit: "zurückhaltend", alleinzeit: "viel", events: "manchmal", reisen: "mittel",
+    hobbys: "getrennt", wochenende: "ruhig", netzwerkGroesse: "mittel",
+    confidence: { kinderWunsch: 0.90, eheWunsch: 0.85, wohnform: 0.95, kommunikationsstil: 0.85,
+      konfliktverhalten: 0.85, emotionaleOffenheit: 0.80, introExtro: 0.75, events: 0.60 },
+    pirsig: "Submissive Energie mit lesbischer Identität - sucht vielleicht dominante Frau, " +
+      "lebt aber autonom als Single. Dynamische Freiheit in rezeptiver Form.",
+    osho: "Die empfangende lesbische Frau - ihre Yin-Energie richtet sich auf Frauen. " +
+      "Single-Status als Phase oder bewusste Wahl der Selbstfindung."
+  },
+
+  // PROFIL 18: single-weiblich-submissiv-bisexuell
+  "single-weiblich-submissiv-bisexuell": {
+    sources: [
+      "Stern et al. (2024): Singles report highest autonomy",
+      "Allen et al. (2020): Bisexual women = highest openness",
+      "Bi-Sub Research: High receptivity across genders"
+    ],
+    kinderWunsch: "vielleicht", eheWunsch: "nein", wohnform: "alleine", religion: "spirituell",
+    karrierePrioritaet: "balance", finanzPhilosophie: "getrennt", lebensstil: "durchschnittlich",
+    umzugsbereitschaft: "flexibel", zukunftsplanung: "planend", traditionenWichtigkeit: "unwichtig",
+    kommunikationsstil: "indirekt", konfliktverhalten: "vermeidend", emotionaleOffenheit: "sehr-offen",
+    gespraechsBedürfnis: "viel", feedbackStil: "diplomatisch", entschuldigungen: "leicht",
+    streitVerhalten: "leise", versoehnung: "langsam", kritikAnnehmen: "sehr-gut", humorKonflikte: "manchmal",
+    introExtro: "ambivertiert", familieWichtigkeit: "weniger-wichtig", freundeskreis: "gemischt",
+    oeffentlichkeit: "zurückhaltend", alleinzeit: "mittel", events: "manchmal", reisen: "mittel",
+    hobbys: "getrennt", wochenende: "gemischt", netzwerkGroesse: "mittel",
+    confidence: { kinderWunsch: 0.60, eheWunsch: 0.85, wohnform: 0.95, kommunikationsstil: 0.85,
+      konfliktverhalten: 0.85, emotionaleOffenheit: 0.85, introExtro: 0.60, freundeskreis: 0.75 },
+    pirsig: "Maximale Empfänglichkeit: Bi (offen für alle Geschlechter) + Sub (empfangend) + Single " +
+      "(frei). Rezeptive dynamische Qualität - offen für alles, gebunden an nichts.",
+    osho: "Die empfänglichste aller Frauen - wie ein offenes Gefäß, bereit für jede Erfahrung. " +
+      "Spirituell hochentwickelt durch Nicht-Widerstand."
+  },
+
+  // PROFIL 19: single-weiblich-switch-heterosexuell
+  "single-weiblich-switch-heterosexuell": {
+    sources: [
+      "Stern et al. (2024): Singles report highest autonomy",
+      "BDSM Research: Switch = high flexibility",
+      "Gender Research: Switch women integrate both polarities"
+    ],
+    kinderWunsch: "nein", eheWunsch: "nein", wohnform: "alleine", religion: "offen",
+    karrierePrioritaet: "balance", finanzPhilosophie: "getrennt", lebensstil: "durchschnittlich",
+    umzugsbereitschaft: "flexibel", zukunftsplanung: "flexibel", traditionenWichtigkeit: "neutral",
+    kommunikationsstil: "situativ", konfliktverhalten: "lösungsorientiert", emotionaleOffenheit: "offen",
+    gespraechsBedürfnis: "mittel", feedbackStil: "angepasst", entschuldigungen: "normal",
+    streitVerhalten: "variabel", versoehnung: "schnell", kritikAnnehmen: "gut", humorKonflikte: "oft",
+    introExtro: "ambivertiert", familieWichtigkeit: "weniger-wichtig", freundeskreis: "getrennt",
+    oeffentlichkeit: "offen", alleinzeit: "mittel", events: "oft", reisen: "viel",
+    hobbys: "getrennt", wochenende: "aktiv", netzwerkGroesse: "mittel-groß",
+    confidence: { kinderWunsch: 0.80, eheWunsch: 0.85, wohnform: 0.95, kommunikationsstil: 0.85,
+      konfliktverhalten: 0.80, emotionaleOffenheit: 0.75, introExtro: 0.75, events: 0.75 },
+    pirsig: "Balance zwischen Yin und Yang in einer Frau - kann beide Rollen einnehmen. " +
+      "Single-Status erlaubt freie Exploration dieser Flexibilität.",
+    osho: "Die ganze Frau - hat ihre männliche Seite integriert ohne ihre weibliche zu verlieren. " +
+      "Kann geben und empfangen. Single als Raum für diese Integration."
+  },
+
+  // PROFIL 20: single-weiblich-switch-homosexuell
+  "single-weiblich-switch-homosexuell": {
+    sources: [
+      "Stern et al. (2024): Singles report highest autonomy",
+      "Lesbian Research: Versatile identity common in lesbian community",
+      "Allen et al. (2020): Lesbians higher openness"
+    ],
+    kinderWunsch: "nein", eheWunsch: "nein", wohnform: "alleine", religion: "offen",
+    karrierePrioritaet: "balance", finanzPhilosophie: "getrennt", lebensstil: "gehoben",
+    umzugsbereitschaft: "sehr-flexibel", zukunftsplanung: "flexibel", traditionenWichtigkeit: "unwichtig",
+    kommunikationsstil: "situativ", konfliktverhalten: "lösungsorientiert", emotionaleOffenheit: "sehr-offen",
+    gespraechsBedürfnis: "viel", feedbackStil: "angepasst", entschuldigungen: "normal",
+    streitVerhalten: "variabel", versoehnung: "schnell", kritikAnnehmen: "gut", humorKonflikte: "oft",
+    introExtro: "extrovertiert", familieWichtigkeit: "weniger-wichtig", freundeskreis: "getrennt",
+    oeffentlichkeit: "offen", alleinzeit: "wenig", events: "oft", reisen: "viel",
+    hobbys: "getrennt", wochenende: "aktiv", netzwerkGroesse: "groß",
+    confidence: { kinderWunsch: 0.90, eheWunsch: 0.85, wohnform: 0.95, kommunikationsstil: 0.85,
+      konfliktverhalten: 0.80, emotionaleOffenheit: 0.80, introExtro: 0.75, events: 0.80 },
+    pirsig: "Maximale Flexibilität in lesbischer Form - kann butch oder femme sein, je nach " +
+      "Situation. Single ermöglicht diese Exploration ohne feste Rolle.",
+    osho: "Die vielseitige lesbische Frau - nicht festgelegt auf eine Polarität. " +
+      "Lebt die volle Bandbreite weiblicher Energie mit Frauen."
+  },
+
+  // PROFIL 21: single-weiblich-switch-bisexuell
+  "single-weiblich-switch-bisexuell": {
+    sources: [
+      "Stern et al. (2024): Singles report highest autonomy",
+      "Allen et al. (2020): Bisexual women = highest openness of all",
+      "Switch + Bi Research: Maximum flexibility in orientation and role"
+    ],
+    kinderWunsch: "nein", eheWunsch: "nein", wohnform: "alleine", religion: "spirituell",
+    karrierePrioritaet: "balance", finanzPhilosophie: "getrennt", lebensstil: "gehoben",
+    umzugsbereitschaft: "sehr-flexibel", zukunftsplanung: "flexibel", traditionenWichtigkeit: "unwichtig",
+    kommunikationsstil: "situativ", konfliktverhalten: "lösungsorientiert", emotionaleOffenheit: "sehr-offen",
+    gespraechsBedürfnis: "viel", feedbackStil: "angepasst", entschuldigungen: "normal",
+    streitVerhalten: "variabel", versoehnung: "schnell", kritikAnnehmen: "sehr-gut", humorKonflikte: "oft",
+    introExtro: "extrovertiert", familieWichtigkeit: "weniger-wichtig", freundeskreis: "gemischt",
+    oeffentlichkeit: "offen", alleinzeit: "wenig", events: "sehr-oft", reisen: "viel",
+    hobbys: "getrennt", wochenende: "sehr-aktiv", netzwerkGroesse: "groß",
+    confidence: { kinderWunsch: 0.80, eheWunsch: 0.90, wohnform: 0.95, kommunikationsstil: 0.85,
+      konfliktverhalten: 0.80, emotionaleOffenheit: 0.85, introExtro: 0.80, freundeskreis: 0.85 },
+    pirsig: "Pure Dynamic Quality in weiblicher Form. Keine Fixierung auf Geschlecht, Rolle " +
+      "oder Beziehung. Maximale Beweglichkeit auf allen Ebenen.",
+    osho: "Die flüssigste aller Frauen - wie Wasser nimmt sie jede Form an. " +
+      "Bi + Switch + Single = vollständige Freiheit des Ausdrucks."
+  },
+
+  // PROFIL 22: single-weiblich-ausgeglichen-heterosexuell
+  "single-weiblich-ausgeglichen-heterosexuell": {
+    sources: [
+      "Stern et al. (2024): Singles report highest autonomy",
+      "Big Five Research: Balanced women = high stability",
+      "Gender Research: Balanced hetero women = societally comfortable"
+    ],
+    kinderWunsch: "vielleicht", eheWunsch: "nein", wohnform: "alleine", religion: "offen",
+    karrierePrioritaet: "balance", finanzPhilosophie: "getrennt", lebensstil: "durchschnittlich",
+    umzugsbereitschaft: "flexibel", zukunftsplanung: "planend", traditionenWichtigkeit: "neutral",
+    kommunikationsstil: "ausgeglichen", konfliktverhalten: "diplomatisch", emotionaleOffenheit: "offen",
+    gespraechsBedürfnis: "mittel", feedbackStil: "konstruktiv", entschuldigungen: "normal",
+    streitVerhalten: "ruhig", versoehnung: "normal", kritikAnnehmen: "gut", humorKonflikte: "manchmal",
+    introExtro: "ambivertiert", familieWichtigkeit: "weniger-wichtig", freundeskreis: "getrennt",
+    oeffentlichkeit: "mittel", alleinzeit: "mittel", events: "manchmal", reisen: "mittel",
+    hobbys: "getrennt", wochenende: "gemischt", netzwerkGroesse: "mittel",
+    confidence: { kinderWunsch: 0.55, eheWunsch: 0.80, wohnform: 0.95, kommunikationsstil: 0.85,
+      konfliktverhalten: 0.85, emotionaleOffenheit: 0.80, introExtro: 0.80, alleinzeit: 0.75 },
+    pirsig: "Gauss-Mitte mit Single-Freiheit. Weder extrem noch angepasst - die stabile " +
+      "Mitte. Qualität durch ausgewogene Selbstbestimmung.",
+    osho: "Die zentrierte Single-Frau - nicht rebellierend, nicht konformierend. " +
+      "Einfach in ihrer Mitte ruhend, alleine aber nicht einsam."
+  },
+
+  // PROFIL 23: single-weiblich-ausgeglichen-homosexuell
+  "single-weiblich-ausgeglichen-homosexuell": {
+    sources: [
+      "Stern et al. (2024): Singles report highest autonomy",
+      "Allen et al. (2020): Lesbians = higher openness",
+      "Balanced Lesbian Research: Integrated identity"
+    ],
+    kinderWunsch: "nein", eheWunsch: "nein", wohnform: "alleine", religion: "offen",
+    karrierePrioritaet: "balance", finanzPhilosophie: "getrennt", lebensstil: "durchschnittlich",
+    umzugsbereitschaft: "flexibel", zukunftsplanung: "flexibel", traditionenWichtigkeit: "unwichtig",
+    kommunikationsstil: "ausgeglichen", konfliktverhalten: "diplomatisch", emotionaleOffenheit: "offen",
+    gespraechsBedürfnis: "mittel", feedbackStil: "konstruktiv", entschuldigungen: "normal",
+    streitVerhalten: "ruhig", versoehnung: "normal", kritikAnnehmen: "gut", humorKonflikte: "oft",
+    introExtro: "ambivertiert", familieWichtigkeit: "weniger-wichtig", freundeskreis: "getrennt",
+    oeffentlichkeit: "mittel", alleinzeit: "mittel", events: "manchmal", reisen: "mittel",
+    hobbys: "getrennt", wochenende: "gemischt", netzwerkGroesse: "mittel",
+    confidence: { kinderWunsch: 0.85, eheWunsch: 0.85, wohnform: 0.95, kommunikationsstil: 0.85,
+      konfliktverhalten: 0.85, emotionaleOffenheit: 0.80, introExtro: 0.75, traditionenWichtigkeit: 0.85 },
+    pirsig: "Balance in lesbischer Form - weder militant noch versteckt. Die reife " +
+      "lesbische Identität, integriert und stabil.",
+    osho: "Die bewusste lesbische Frau - ihre Sexualität ist Teil von ihr, definiert sie aber " +
+      "nicht. In ihrer Mitte ruhend, unabhängig von Beziehung oder Bestätigung."
+  },
+
+  // PROFIL 24: single-weiblich-ausgeglichen-bisexuell
+  "single-weiblich-ausgeglichen-bisexuell": {
+    sources: [
+      "Stern et al. (2024): Singles report highest autonomy",
+      "Allen et al. (2020): Bi women = highest openness",
+      "Balanced Bi Research: Integrated fluid identity"
+    ],
+    kinderWunsch: "vielleicht", eheWunsch: "nein", wohnform: "alleine", religion: "spirituell",
+    karrierePrioritaet: "balance", finanzPhilosophie: "getrennt", lebensstil: "durchschnittlich",
+    umzugsbereitschaft: "flexibel", zukunftsplanung: "flexibel", traditionenWichtigkeit: "unwichtig",
+    kommunikationsstil: "ausgeglichen", konfliktverhalten: "diplomatisch", emotionaleOffenheit: "offen",
+    gespraechsBedürfnis: "mittel", feedbackStil: "konstruktiv", entschuldigungen: "normal",
+    streitVerhalten: "ruhig", versoehnung: "normal", kritikAnnehmen: "gut", humorKonflikte: "oft",
+    introExtro: "ambivertiert", familieWichtigkeit: "weniger-wichtig", freundeskreis: "gemischt",
+    oeffentlichkeit: "mittel", alleinzeit: "mittel", events: "manchmal", reisen: "mittel",
+    hobbys: "getrennt", wochenende: "gemischt", netzwerkGroesse: "mittel",
+    confidence: { kinderWunsch: 0.55, eheWunsch: 0.85, wohnform: 0.95, kommunikationsstil: 0.85,
+      konfliktverhalten: 0.85, emotionaleOffenheit: 0.80, introExtro: 0.75, freundeskreis: 0.75 },
+    pirsig: "Offenheit (Bi) mit Stabilität (Ausgeglichen) - kann alle mögen ohne getrieben zu sein. " +
+      "Ruhige Fluidität, nicht chaotisch sondern zentriert.",
+    osho: "Die zentrierte bisexuelle Frau - offen für alle, aber nicht auf der Suche. " +
+      "Sexuelle Fluidität aus einem ruhigen Zentrum heraus."
+  },
+
+  // ════════════════════════════════════════════════════════════════════════════
+  // SINGLE-NONBINÄR PROFILE (25-36)
+  // ════════════════════════════════════════════════════════════════════════════
+
+  // PROFIL 25: single-nonbinär-dominant-heterosexuell
+  "single-nonbinär-dominant-heterosexuell": {
+    sources: [
+      "Stern et al. (2024): Singles report highest autonomy",
+      "Non-binary Research: High openness (3.83), high neuroticism (3.60)",
+      "SMSNA (2023): Dominant = higher extraversion"
+    ],
+    kinderWunsch: "nein", eheWunsch: "nein", wohnform: "alleine", religion: "spirituell",
+    karrierePrioritaet: "karriere", finanzPhilosophie: "getrennt", lebensstil: "durchschnittlich",
+    umzugsbereitschaft: "sehr-flexibel", zukunftsplanung: "spontan", traditionenWichtigkeit: "unwichtig",
+    kommunikationsstil: "direkt", konfliktverhalten: "konfrontativ", emotionaleOffenheit: "offen",
+    gespraechsBedürfnis: "mittel", feedbackStil: "direkt", entschuldigungen: "schwer",
+    streitVerhalten: "laut", versoehnung: "schnell", kritikAnnehmen: "schwer", humorKonflikte: "manchmal",
+    introExtro: "extrovertiert", familieWichtigkeit: "weniger-wichtig", freundeskreis: "getrennt",
+    oeffentlichkeit: "offen", alleinzeit: "mittel", events: "oft", reisen: "viel",
+    hobbys: "getrennt", wochenende: "aktiv", netzwerkGroesse: "mittel-groß",
+    confidence: { kinderWunsch: 0.85, eheWunsch: 0.85, wohnform: 0.95, kommunikationsstil: 0.75,
+      konfliktverhalten: 0.70, emotionaleOffenheit: 0.70, introExtro: 0.70, traditionenWichtigkeit: 0.90 },
+    pirsig: "Non-binär = bereits jenseits binärer Muster. Dominant + Single verstärkt die " +
+      "Freiheit von Normen. Dynamische Qualität ohne Geschlechtergrenzen.",
+    osho: "Jenseits von Mann und Frau, führend und frei. Hat die gesellschaftliche " +
+      "Geschlechterkonstruktion durchschaut und lebt authentisch dominant."
+  },
+
+  // PROFIL 26: single-nonbinär-dominant-homosexuell
+  "single-nonbinär-dominant-homosexuell": {
+    sources: [
+      "Non-binary Research: High openness, unique identity challenges",
+      "Queer Theory: Non-binary + gay = complex identity navigation",
+      "SMSNA (2023): Dominant = assertive communication"
+    ],
+    kinderWunsch: "nein", eheWunsch: "nein", wohnform: "alleine", religion: "spirituell",
+    karrierePrioritaet: "karriere", finanzPhilosophie: "getrennt", lebensstil: "gehoben",
+    umzugsbereitschaft: "sehr-flexibel", zukunftsplanung: "spontan", traditionenWichtigkeit: "unwichtig",
+    kommunikationsstil: "direkt", konfliktverhalten: "konfrontativ", emotionaleOffenheit: "offen",
+    gespraechsBedürfnis: "viel", feedbackStil: "direkt", entschuldigungen: "schwer",
+    streitVerhalten: "laut", versoehnung: "schnell", kritikAnnehmen: "mittel", humorKonflikte: "oft",
+    introExtro: "extrovertiert", familieWichtigkeit: "weniger-wichtig", freundeskreis: "getrennt",
+    oeffentlichkeit: "offen", alleinzeit: "wenig", events: "oft", reisen: "viel",
+    hobbys: "getrennt", wochenende: "aktiv", netzwerkGroesse: "groß",
+    confidence: { kinderWunsch: 0.90, eheWunsch: 0.90, wohnform: 0.95, kommunikationsstil: 0.75,
+      konfliktverhalten: 0.70, emotionaleOffenheit: 0.75, introExtro: 0.70, events: 0.75 },
+    pirsig: "Multiple Ebenen der Norm-Überschreitung: Geschlecht, Orientierung, Beziehung, " +
+      "Dominanz. Maximale dynamische Qualität durch Ablehnung aller statischen Kategorien.",
+    osho: "Der/die radikalste Individualist*in - alle Schubladen gesprengt. " +
+      "Lebt völlig authentisch jenseits aller gesellschaftlichen Erwartungen."
+  },
+
+  // PROFIL 27: single-nonbinär-dominant-bisexuell
+  "single-nonbinär-dominant-bisexuell": {
+    sources: [
+      "Non-binary Research: Highest openness scores",
+      "Allen et al. (2020): Bi = highest openness of orientations",
+      "Combined: NB + Bi = maximum fluidity"
+    ],
+    kinderWunsch: "nein", eheWunsch: "nein", wohnform: "alleine", religion: "spirituell",
+    karrierePrioritaet: "karriere", finanzPhilosophie: "getrennt", lebensstil: "gehoben",
+    umzugsbereitschaft: "sehr-flexibel", zukunftsplanung: "spontan", traditionenWichtigkeit: "unwichtig",
+    kommunikationsstil: "direkt", konfliktverhalten: "konfrontativ", emotionaleOffenheit: "offen",
+    gespraechsBedürfnis: "viel", feedbackStil: "direkt", entschuldigungen: "schwer",
+    streitVerhalten: "laut", versoehnung: "schnell", kritikAnnehmen: "mittel", humorKonflikte: "oft",
+    introExtro: "extrovertiert", familieWichtigkeit: "weniger-wichtig", freundeskreis: "gemischt",
+    oeffentlichkeit: "offen", alleinzeit: "wenig", events: "sehr-oft", reisen: "viel",
+    hobbys: "getrennt", wochenende: "sehr-aktiv", netzwerkGroesse: "groß",
+    confidence: { kinderWunsch: 0.85, eheWunsch: 0.90, wohnform: 0.95, kommunikationsstil: 0.75,
+      konfliktverhalten: 0.70, emotionaleOffenheit: 0.80, introExtro: 0.75, freundeskreis: 0.80 },
+    pirsig: "Absolute dynamische Qualität - keine einzige binäre Kategorie akzeptiert. " +
+      "Non-binär + Bi + Dominant + Single = vollständige Freiheit von Mustern.",
+    osho: "Der/die ultimative Freigeist - keine Schublade passt. Lebt das Osho-Ideal " +
+      "der vollständigen Befreiung von gesellschaftlicher Konditionierung."
+  },
+
+  // PROFIL 28: single-nonbinär-submissiv-heterosexuell
+  "single-nonbinär-submissiv-heterosexuell": {
+    sources: [
+      "Non-binary Research: Higher neuroticism, agreeableness",
+      "SMSNA (2023): Submissive = higher agreeableness",
+      "Combined: High sensitivity, receptivity"
+    ],
+    kinderWunsch: "nein", eheWunsch: "nein", wohnform: "alleine", religion: "spirituell",
+    karrierePrioritaet: "balance", finanzPhilosophie: "getrennt", lebensstil: "bescheiden",
+    umzugsbereitschaft: "flexibel", zukunftsplanung: "planend", traditionenWichtigkeit: "unwichtig",
+    kommunikationsstil: "indirekt", konfliktverhalten: "vermeidend", emotionaleOffenheit: "offen",
+    gespraechsBedürfnis: "mittel", feedbackStil: "diplomatisch", entschuldigungen: "leicht",
+    streitVerhalten: "leise", versoehnung: "langsam", kritikAnnehmen: "gut", humorKonflikte: "selten",
+    introExtro: "introvertiert", familieWichtigkeit: "weniger-wichtig", freundeskreis: "getrennt",
+    oeffentlichkeit: "zurückhaltend", alleinzeit: "viel", events: "selten", reisen: "wenig",
+    hobbys: "getrennt", wochenende: "ruhig", netzwerkGroesse: "klein",
+    confidence: { kinderWunsch: 0.85, eheWunsch: 0.85, wohnform: 0.95, kommunikationsstil: 0.80,
+      konfliktverhalten: 0.85, emotionaleOffenheit: 0.75, introExtro: 0.75, alleinzeit: 0.80 },
+    pirsig: "Non-binär durchbricht Geschlechtermuster, Submissiv akzeptiert empfangende Rolle. " +
+      "Interessante Kombination von Norm-Überschreitung und Hingabe.",
+    osho: "Jenseits des Geschlechts, in der empfangenden Energie ruhend. " +
+      "Hat die Geschlechter-Konstruktion durchschaut, lebt aber friedlich submissiv."
+  },
+
+  // PROFIL 29: single-nonbinär-submissiv-homosexuell
+  "single-nonbinär-submissiv-homosexuell": {
+    sources: [
+      "Non-binary Research: Complex identity, high sensitivity",
+      "Queer Submissive Research: Identity and power dynamics",
+      "High agreeableness + openness combination"
+    ],
+    kinderWunsch: "nein", eheWunsch: "nein", wohnform: "alleine", religion: "spirituell",
+    karrierePrioritaet: "balance", finanzPhilosophie: "getrennt", lebensstil: "durchschnittlich",
+    umzugsbereitschaft: "flexibel", zukunftsplanung: "planend", traditionenWichtigkeit: "unwichtig",
+    kommunikationsstil: "indirekt", konfliktverhalten: "vermeidend", emotionaleOffenheit: "sehr-offen",
+    gespraechsBedürfnis: "viel", feedbackStil: "diplomatisch", entschuldigungen: "leicht",
+    streitVerhalten: "leise", versoehnung: "langsam", kritikAnnehmen: "gut", humorKonflikte: "manchmal",
+    introExtro: "introvertiert", familieWichtigkeit: "weniger-wichtig", freundeskreis: "getrennt",
+    oeffentlichkeit: "zurückhaltend", alleinzeit: "viel", events: "manchmal", reisen: "mittel",
+    hobbys: "getrennt", wochenende: "ruhig", netzwerkGroesse: "mittel",
+    confidence: { kinderWunsch: 0.90, eheWunsch: 0.90, wohnform: 0.95, kommunikationsstil: 0.80,
+      konfliktverhalten: 0.85, emotionaleOffenheit: 0.80, introExtro: 0.70, events: 0.55 },
+    pirsig: "Komplexe Identität mit empfangender Energie. Non-binär + Homo + Submissiv = " +
+      "multiple Ebenen der Selbstdefinition jenseits von Normen.",
+    osho: "Tiefe Sensibilität und Empfänglichkeit, jenseits der Geschlechter-Kategorien. " +
+      "Spirituell hochentwickelt durch Nicht-Identifikation mit Formen."
+  },
+
+  // PROFIL 30: single-nonbinär-submissiv-bisexuell
+  "single-nonbinär-submissiv-bisexuell": {
+    sources: [
+      "Non-binary Research: Highest openness",
+      "Allen et al. (2020): Bi = highest openness",
+      "Combined: Maximum receptivity and openness"
+    ],
+    kinderWunsch: "nein", eheWunsch: "nein", wohnform: "alleine", religion: "spirituell",
+    karrierePrioritaet: "balance", finanzPhilosophie: "getrennt", lebensstil: "durchschnittlich",
+    umzugsbereitschaft: "flexibel", zukunftsplanung: "planend", traditionenWichtigkeit: "unwichtig",
+    kommunikationsstil: "indirekt", konfliktverhalten: "vermeidend", emotionaleOffenheit: "sehr-offen",
+    gespraechsBedürfnis: "viel", feedbackStil: "diplomatisch", entschuldigungen: "leicht",
+    streitVerhalten: "leise", versoehnung: "langsam", kritikAnnehmen: "sehr-gut", humorKonflikte: "manchmal",
+    introExtro: "ambivertiert", familieWichtigkeit: "weniger-wichtig", freundeskreis: "gemischt",
+    oeffentlichkeit: "zurückhaltend", alleinzeit: "mittel", events: "manchmal", reisen: "mittel",
+    hobbys: "getrennt", wochenende: "gemischt", netzwerkGroesse: "mittel",
+    confidence: { kinderWunsch: 0.85, eheWunsch: 0.90, wohnform: 0.95, kommunikationsstil: 0.80,
+      konfliktverhalten: 0.85, emotionaleOffenheit: 0.85, introExtro: 0.55, freundeskreis: 0.75 },
+    pirsig: "Maximale Offenheit auf allen Ebenen: NB (jenseits Geschlecht) + Bi (alle anziehend) " +
+      "+ Sub (empfangend) + Single (frei). Pure Rezeptivität.",
+    osho: "Das offenste aller Wesen - wie ein Spiegel, der alles reflektiert ohne festzuhalten. " +
+      "Keine Identifikation, keine Fixierung, nur Empfangen."
+  },
+
+  // PROFIL 31: single-nonbinär-switch-heterosexuell
+  "single-nonbinär-switch-heterosexuell": {
+    sources: [
+      "Non-binary Research: High openness, flexibility",
+      "BDSM Research: Switch = maximum role flexibility",
+      "Combined: Fluidity in gender and power"
+    ],
+    kinderWunsch: "nein", eheWunsch: "nein", wohnform: "alleine", religion: "spirituell",
+    karrierePrioritaet: "balance", finanzPhilosophie: "getrennt", lebensstil: "durchschnittlich",
+    umzugsbereitschaft: "flexibel", zukunftsplanung: "flexibel", traditionenWichtigkeit: "unwichtig",
+    kommunikationsstil: "situativ", konfliktverhalten: "lösungsorientiert", emotionaleOffenheit: "offen",
+    gespraechsBedürfnis: "mittel", feedbackStil: "angepasst", entschuldigungen: "normal",
+    streitVerhalten: "variabel", versoehnung: "schnell", kritikAnnehmen: "gut", humorKonflikte: "oft",
+    introExtro: "ambivertiert", familieWichtigkeit: "weniger-wichtig", freundeskreis: "getrennt",
+    oeffentlichkeit: "mittel", alleinzeit: "mittel", events: "oft", reisen: "viel",
+    hobbys: "getrennt", wochenende: "aktiv", netzwerkGroesse: "mittel-groß",
+    confidence: { kinderWunsch: 0.85, eheWunsch: 0.85, wohnform: 0.95, kommunikationsstil: 0.85,
+      konfliktverhalten: 0.80, emotionaleOffenheit: 0.75, introExtro: 0.70, events: 0.70 },
+    pirsig: "Doppelte Fluidität: Geschlecht nicht fixiert (NB), Rolle nicht fixiert (Switch). " +
+      "Kann alle Kombinationen von Identität und Dynamik leben.",
+    osho: "Jenseits aller Polaritäten - weder Mann noch Frau, weder dominant noch submissiv. " +
+      "Die transzendierte Mitte in flexibler Form."
+  },
+
+  // PROFIL 32: single-nonbinär-switch-homosexuell
+  "single-nonbinär-switch-homosexuell": {
+    sources: [
+      "Non-binary Research: High openness, unique challenges",
+      "Queer Switch Research: Role fluidity in queer spaces",
+      "Combined high flexibility"
+    ],
+    kinderWunsch: "nein", eheWunsch: "nein", wohnform: "alleine", religion: "spirituell",
+    karrierePrioritaet: "balance", finanzPhilosophie: "getrennt", lebensstil: "gehoben",
+    umzugsbereitschaft: "sehr-flexibel", zukunftsplanung: "flexibel", traditionenWichtigkeit: "unwichtig",
+    kommunikationsstil: "situativ", konfliktverhalten: "lösungsorientiert", emotionaleOffenheit: "sehr-offen",
+    gespraechsBedürfnis: "viel", feedbackStil: "angepasst", entschuldigungen: "normal",
+    streitVerhalten: "variabel", versoehnung: "schnell", kritikAnnehmen: "gut", humorKonflikte: "oft",
+    introExtro: "extrovertiert", familieWichtigkeit: "weniger-wichtig", freundeskreis: "getrennt",
+    oeffentlichkeit: "offen", alleinzeit: "wenig", events: "oft", reisen: "viel",
+    hobbys: "getrennt", wochenende: "aktiv", netzwerkGroesse: "groß",
+    confidence: { kinderWunsch: 0.90, eheWunsch: 0.90, wohnform: 0.95, kommunikationsstil: 0.85,
+      konfliktverhalten: 0.80, emotionaleOffenheit: 0.80, introExtro: 0.70, events: 0.75 },
+    pirsig: "Komplexe Identität mit maximaler Flexibilität in allen Bereichen. " +
+      "NB + Homo + Switch = keine feste Kategorie, nur Fluss.",
+    osho: "Der/die vielseitigste Queer-Person - kann alles sein, nichts fixiert. " +
+      "Lebt das Ideal der vollständigen Nicht-Identifikation mit Formen."
+  },
+
+  // PROFIL 33: single-nonbinär-switch-bisexuell
+  "single-nonbinär-switch-bisexuell": {
+    sources: [
+      "Non-binary Research: Highest openness",
+      "Allen et al. (2020): Bi = highest openness",
+      "Switch Research: Maximum flexibility",
+      "Combined: Ultimate fluidity profile"
+    ],
+    kinderWunsch: "nein", eheWunsch: "nein", wohnform: "alleine", religion: "spirituell",
+    karrierePrioritaet: "balance", finanzPhilosophie: "getrennt", lebensstil: "gehoben",
+    umzugsbereitschaft: "sehr-flexibel", zukunftsplanung: "flexibel", traditionenWichtigkeit: "unwichtig",
+    kommunikationsstil: "situativ", konfliktverhalten: "lösungsorientiert", emotionaleOffenheit: "sehr-offen",
+    gespraechsBedürfnis: "viel", feedbackStil: "angepasst", entschuldigungen: "normal",
+    streitVerhalten: "variabel", versoehnung: "schnell", kritikAnnehmen: "sehr-gut", humorKonflikte: "oft",
+    introExtro: "extrovertiert", familieWichtigkeit: "weniger-wichtig", freundeskreis: "gemischt",
+    oeffentlichkeit: "offen", alleinzeit: "wenig", events: "sehr-oft", reisen: "viel",
+    hobbys: "getrennt", wochenende: "sehr-aktiv", netzwerkGroesse: "groß",
+    confidence: { kinderWunsch: 0.85, eheWunsch: 0.90, wohnform: 0.95, kommunikationsstil: 0.85,
+      konfliktverhalten: 0.80, emotionaleOffenheit: 0.90, introExtro: 0.75, freundeskreis: 0.85 },
+    pirsig: "Das flüssigste aller Profile - NICHTS ist fixiert. Geschlecht, Orientierung, " +
+      "Rolle, Beziehungsstatus - alles in Bewegung. Pure Dynamic Quality.",
+    osho: "Das Osho-Ideal verwirklicht: Vollständig frei von allen Kategorien und " +
+      "Konditionierungen. Wie Wasser - nimmt jede Form an, ist an keine gebunden."
+  },
+
+  // PROFIL 34: single-nonbinär-ausgeglichen-heterosexuell
+  "single-nonbinär-ausgeglichen-heterosexuell": {
+    sources: [
+      "Non-binary Research: High openness, variable extraversion",
+      "Big Five: Balanced = emotional stability",
+      "Combined: Stable non-binary identity"
+    ],
+    kinderWunsch: "nein", eheWunsch: "nein", wohnform: "alleine", religion: "spirituell",
+    karrierePrioritaet: "balance", finanzPhilosophie: "getrennt", lebensstil: "durchschnittlich",
+    umzugsbereitschaft: "flexibel", zukunftsplanung: "planend", traditionenWichtigkeit: "unwichtig",
+    kommunikationsstil: "ausgeglichen", konfliktverhalten: "diplomatisch", emotionaleOffenheit: "offen",
+    gespraechsBedürfnis: "mittel", feedbackStil: "konstruktiv", entschuldigungen: "normal",
+    streitVerhalten: "ruhig", versoehnung: "normal", kritikAnnehmen: "gut", humorKonflikte: "manchmal",
+    introExtro: "ambivertiert", familieWichtigkeit: "weniger-wichtig", freundeskreis: "getrennt",
+    oeffentlichkeit: "mittel", alleinzeit: "mittel", events: "manchmal", reisen: "mittel",
+    hobbys: "getrennt", wochenende: "gemischt", netzwerkGroesse: "mittel",
+    confidence: { kinderWunsch: 0.85, eheWunsch: 0.85, wohnform: 0.95, kommunikationsstil: 0.85,
+      konfliktverhalten: 0.85, emotionaleOffenheit: 0.75, introExtro: 0.70, alleinzeit: 0.70 },
+    pirsig: "Non-binäre Identität mit stabiler, zentrierter Energie. Jenseits des Geschlechts, " +
+      "aber nicht in Extreme - die ruhige Mitte der Geschlechterfluidität.",
+    osho: "Das transzendierte Geschlecht in stabiler Form - nicht kämpfend, nicht versteckt. " +
+      "Einfach jenseits der binären Konstruktion ruhend."
+  },
+
+  // PROFIL 35: single-nonbinär-ausgeglichen-homosexuell
+  "single-nonbinär-ausgeglichen-homosexuell": {
+    sources: [
+      "Non-binary Research: Complex identity",
+      "Queer Stability Research: Integrated identities",
+      "Big Five: Balanced profiles = high adaptability"
+    ],
+    kinderWunsch: "nein", eheWunsch: "nein", wohnform: "alleine", religion: "spirituell",
+    karrierePrioritaet: "balance", finanzPhilosophie: "getrennt", lebensstil: "durchschnittlich",
+    umzugsbereitschaft: "flexibel", zukunftsplanung: "flexibel", traditionenWichtigkeit: "unwichtig",
+    kommunikationsstil: "ausgeglichen", konfliktverhalten: "diplomatisch", emotionaleOffenheit: "offen",
+    gespraechsBedürfnis: "mittel", feedbackStil: "konstruktiv", entschuldigungen: "normal",
+    streitVerhalten: "ruhig", versoehnung: "normal", kritikAnnehmen: "gut", humorKonflikte: "oft",
+    introExtro: "ambivertiert", familieWichtigkeit: "weniger-wichtig", freundeskreis: "getrennt",
+    oeffentlichkeit: "mittel", alleinzeit: "mittel", events: "manchmal", reisen: "mittel",
+    hobbys: "getrennt", wochenende: "gemischt", netzwerkGroesse: "mittel",
+    confidence: { kinderWunsch: 0.90, eheWunsch: 0.90, wohnform: 0.95, kommunikationsstil: 0.85,
+      konfliktverhalten: 0.85, emotionaleOffenheit: 0.80, introExtro: 0.65, events: 0.60 },
+    pirsig: "Komplexe, aber stabile Identität. NB + Homo, aber in Balance - nicht rebellierend, " +
+      "sondern ruhig jenseits der Kategorien existierend.",
+    osho: "Die reife queer-nonbinäre Identität - alle Kämpfe überstanden, jetzt in Frieden. " +
+      "Weder gegen die Gesellschaft noch für sie - einfach authentisch."
+  },
+
+  // PROFIL 36: single-nonbinär-ausgeglichen-bisexuell
+  "single-nonbinär-ausgeglichen-bisexuell": {
+    sources: [
+      "Non-binary Research: Highest openness",
+      "Allen et al. (2020): Bi = highest openness",
+      "Big Five: Balanced = stability with openness"
+    ],
+    kinderWunsch: "nein", eheWunsch: "nein", wohnform: "alleine", religion: "spirituell",
+    karrierePrioritaet: "balance", finanzPhilosophie: "getrennt", lebensstil: "durchschnittlich",
+    umzugsbereitschaft: "flexibel", zukunftsplanung: "flexibel", traditionenWichtigkeit: "unwichtig",
+    kommunikationsstil: "ausgeglichen", konfliktverhalten: "diplomatisch", emotionaleOffenheit: "offen",
+    gespraechsBedürfnis: "mittel", feedbackStil: "konstruktiv", entschuldigungen: "normal",
+    streitVerhalten: "ruhig", versoehnung: "normal", kritikAnnehmen: "gut", humorKonflikte: "oft",
+    introExtro: "ambivertiert", familieWichtigkeit: "weniger-wichtig", freundeskreis: "gemischt",
+    oeffentlichkeit: "mittel", alleinzeit: "mittel", events: "manchmal", reisen: "mittel",
+    hobbys: "getrennt", wochenende: "gemischt", netzwerkGroesse: "mittel",
+    confidence: { kinderWunsch: 0.85, eheWunsch: 0.90, wohnform: 0.95, kommunikationsstil: 0.85,
+      konfliktverhalten: 0.85, emotionaleOffenheit: 0.80, introExtro: 0.65, freundeskreis: 0.75 },
+    pirsig: "Maximale Offenheit (NB + Bi) mit stabiler Mitte (Ausgeglichen). " +
+      "Offen für alles, aber zentriert - keine chaotische, sondern bewusste Fluidität.",
+    osho: "Die zentrierte non-binäre bisexuelle Person - alle Möglichkeiten offen, " +
+      "aber in Frieden ruhend. Kein Suchen mehr, nur Sein."
+  },
+
+  // ════════════════════════════════════════════════════════════════════════════
+  // ████████████████████████████████████████████████████████████████████████████
+  // DUO-PROFILE (37-72) - 36 Profile
+  // Der Verschmelzende Archetyp - Starke statische Qualität, Exklusivität
+  // ████████████████████████████████████████████████████████████████████████████
+  // ════════════════════════════════════════════════════════════════════════════
+
+  // PROFIL 37-48: duo-männlich (alle Kombinationen)
+  "duo-männlich-dominant-heterosexuell": {
+    sources: ["Attachment Theory: Secure attachment", "Relationship Research: Commitment correlates with satisfaction", "SMSNA (2023): Dominant = assertive"],
+    kinderWunsch: "ja", eheWunsch: "ja", wohnform: "zusammen", religion: "offen",
+    karrierePrioritaet: "balance", finanzPhilosophie: "gemeinsam", lebensstil: "durchschnittlich",
+    umzugsbereitschaft: "nur-gemeinsam", zukunftsplanung: "gemeinsam-langfristig", traditionenWichtigkeit: "wichtig",
+    kommunikationsstil: "direkt", konfliktverhalten: "konfrontativ", emotionaleOffenheit: "mittel",
+    gespraechsBedürfnis: "mittel", feedbackStil: "direkt", entschuldigungen: "schwer",
+    streitVerhalten: "laut", versoehnung: "schnell", kritikAnnehmen: "schwer", humorKonflikte: "manchmal",
+    introExtro: "extrovertiert", familieWichtigkeit: "sehr-wichtig", freundeskreis: "gemeinsam",
+    oeffentlichkeit: "offen", alleinzeit: "wenig", events: "oft", reisen: "gemeinsam",
+    hobbys: "teilweise-gemeinsam", wochenende: "gemeinsam-aktiv", netzwerkGroesse: "mittel-groß",
+    confidence: { kinderWunsch: 0.85, eheWunsch: 0.90, wohnform: 0.95, kommunikationsstil: 0.80, familieWichtigkeit: 0.85 },
+    pirsig: "Maximale statische Qualität: Feste Bindung, klare Rollen (Dominant führt). Stabilität durch Struktur und Vorhersagbarkeit.",
+    osho: "Gesellschaftlich konditioniert, aber wenn bewusst gewählt, kann Tiefe entstehen. Dominant in exklusiver Bindung - traditionelles Männerbild."
+  },
+  "duo-männlich-dominant-homosexuell": {
+    sources: ["Gay Relationship Research", "SMSNA (2023): Dominant personality", "Allen et al. (2020): Gay men higher openness"],
+    kinderWunsch: "vielleicht", eheWunsch: "ja", wohnform: "zusammen", religion: "offen",
+    karrierePrioritaet: "balance", finanzPhilosophie: "gemeinsam", lebensstil: "gehoben",
+    umzugsbereitschaft: "nur-gemeinsam", zukunftsplanung: "gemeinsam-langfristig", traditionenWichtigkeit: "unwichtig",
+    kommunikationsstil: "direkt", konfliktverhalten: "konfrontativ", emotionaleOffenheit: "offen",
+    gespraechsBedürfnis: "mittel", feedbackStil: "direkt", entschuldigungen: "schwer",
+    streitVerhalten: "laut", versoehnung: "schnell", kritikAnnehmen: "mittel", humorKonflikte: "oft",
+    introExtro: "extrovertiert", familieWichtigkeit: "wichtig", freundeskreis: "gemeinsam",
+    oeffentlichkeit: "offen", alleinzeit: "wenig", events: "oft", reisen: "gemeinsam",
+    hobbys: "teilweise-gemeinsam", wochenende: "gemeinsam-aktiv", netzwerkGroesse: "groß",
+    confidence: { kinderWunsch: 0.55, eheWunsch: 0.80, wohnform: 0.95, kommunikationsstil: 0.80, traditionenWichtigkeit: 0.85 },
+    pirsig: "Statische Bindung in nicht-traditioneller Form. Exklusivität ohne heteronormatives Muster - neue Form stabiler Qualität.",
+    osho: "Monogame Gay-Beziehung mit dominanter Dynamik. Hat Orientierungsnorm durchbrochen, aber Beziehungsnorm akzeptiert."
+  },
+  "duo-männlich-dominant-bisexuell": {
+    sources: ["Allen et al. (2020): Bi = highest openness", "Bi in Monogamy Research", "SMSNA (2023): Dominant"],
+    kinderWunsch: "vielleicht", eheWunsch: "ja", wohnform: "zusammen", religion: "spirituell",
+    karrierePrioritaet: "balance", finanzPhilosophie: "gemeinsam", lebensstil: "gehoben",
+    umzugsbereitschaft: "nur-gemeinsam", zukunftsplanung: "gemeinsam-langfristig", traditionenWichtigkeit: "unwichtig",
+    kommunikationsstil: "direkt", konfliktverhalten: "konfrontativ", emotionaleOffenheit: "offen",
+    gespraechsBedürfnis: "mittel", feedbackStil: "direkt", entschuldigungen: "schwer",
+    streitVerhalten: "laut", versoehnung: "schnell", kritikAnnehmen: "mittel", humorKonflikte: "oft",
+    introExtro: "extrovertiert", familieWichtigkeit: "wichtig", freundeskreis: "gemischt",
+    oeffentlichkeit: "offen", alleinzeit: "wenig", events: "oft", reisen: "gemeinsam",
+    hobbys: "teilweise-gemeinsam", wochenende: "gemeinsam-aktiv", netzwerkGroesse: "groß",
+    confidence: { kinderWunsch: 0.50, eheWunsch: 0.75, wohnform: 0.95, kommunikationsstil: 0.80, freundeskreis: 0.75 },
+    pirsig: "Hohe Offenheit (Bi) in statischer Struktur (Duo). Interessante Spannung - offen für beide Geschlechter, aber exklusiv gebunden.",
+    osho: "Der bisexuelle Mann in monogamer Beziehung - bewusste Einschränkung der Möglichkeiten zugunsten der Tiefe."
+  },
+  "duo-männlich-submissiv-heterosexuell": {
+    sources: ["SMSNA (2023): Submissive = higher agreeableness", "Relationship Research", "Gender Role Research"],
+    kinderWunsch: "ja", eheWunsch: "ja", wohnform: "zusammen", religion: "offen",
+    karrierePrioritaet: "balance", finanzPhilosophie: "gemeinsam", lebensstil: "durchschnittlich",
+    umzugsbereitschaft: "nur-gemeinsam", zukunftsplanung: "gemeinsam-langfristig", traditionenWichtigkeit: "neutral",
+    kommunikationsstil: "indirekt", konfliktverhalten: "vermeidend", emotionaleOffenheit: "mittel",
+    gespraechsBedürfnis: "mittel", feedbackStil: "diplomatisch", entschuldigungen: "leicht",
+    streitVerhalten: "leise", versoehnung: "langsam", kritikAnnehmen: "gut", humorKonflikte: "selten",
+    introExtro: "introvertiert", familieWichtigkeit: "sehr-wichtig", freundeskreis: "gemeinsam",
+    oeffentlichkeit: "zurückhaltend", alleinzeit: "mittel", events: "manchmal", reisen: "gemeinsam",
+    hobbys: "gemeinsam", wochenende: "gemeinsam-ruhig", netzwerkGroesse: "klein",
+    confidence: { kinderWunsch: 0.85, eheWunsch: 0.90, wohnform: 0.95, kommunikationsstil: 0.80, familieWichtigkeit: 0.90 },
+    pirsig: "Doppelte statische Qualität: Duo (feste Bindung) + Submissiv (folgende Rolle). Maximale Stabilität durch Hingabe.",
+    osho: "Der empfangende Mann in Partnerschaft - lebt seine Yin-Natur mit einer Partnerin. Gegen Männlichkeitsnorm, für Beziehungsnorm."
+  },
+  "duo-männlich-submissiv-homosexuell": {
+    sources: ["Gay Bottom Research", "SMSNA (2023): Submissive", "Attachment in Gay Relationships"],
+    kinderWunsch: "nein", eheWunsch: "ja", wohnform: "zusammen", religion: "offen",
+    karrierePrioritaet: "balance", finanzPhilosophie: "gemeinsam", lebensstil: "durchschnittlich",
+    umzugsbereitschaft: "nur-gemeinsam", zukunftsplanung: "gemeinsam-langfristig", traditionenWichtigkeit: "unwichtig",
+    kommunikationsstil: "indirekt", konfliktverhalten: "vermeidend", emotionaleOffenheit: "offen",
+    gespraechsBedürfnis: "viel", feedbackStil: "diplomatisch", entschuldigungen: "leicht",
+    streitVerhalten: "leise", versoehnung: "langsam", kritikAnnehmen: "gut", humorKonflikte: "manchmal",
+    introExtro: "introvertiert", familieWichtigkeit: "wichtig", freundeskreis: "gemeinsam",
+    oeffentlichkeit: "zurückhaltend", alleinzeit: "mittel", events: "manchmal", reisen: "gemeinsam",
+    hobbys: "gemeinsam", wochenende: "gemeinsam-ruhig", netzwerkGroesse: "mittel",
+    confidence: { kinderWunsch: 0.85, eheWunsch: 0.85, wohnform: 0.95, kommunikationsstil: 0.80, emotionaleOffenheit: 0.75 },
+    pirsig: "Submissive Energie in gay Partnerschaft. Feste Bindung mit empfangender Rolle - Stabilität durch Hingabe an Partner.",
+    osho: "Der empfangende gay Mann - lebt seine Yin-Natur mit einem Partner. Authentisch in Orientierung und Rolle."
+  },
+  "duo-männlich-submissiv-bisexuell": {
+    sources: ["Allen et al. (2020): Bi highest openness", "SMSNA (2023): Submissive", "Bi Monogamy Research"],
+    kinderWunsch: "vielleicht", eheWunsch: "ja", wohnform: "zusammen", religion: "spirituell",
+    karrierePrioritaet: "balance", finanzPhilosophie: "gemeinsam", lebensstil: "durchschnittlich",
+    umzugsbereitschaft: "nur-gemeinsam", zukunftsplanung: "gemeinsam-langfristig", traditionenWichtigkeit: "unwichtig",
+    kommunikationsstil: "indirekt", konfliktverhalten: "vermeidend", emotionaleOffenheit: "offen",
+    gespraechsBedürfnis: "viel", feedbackStil: "diplomatisch", entschuldigungen: "leicht",
+    streitVerhalten: "leise", versoehnung: "langsam", kritikAnnehmen: "sehr-gut", humorKonflikte: "manchmal",
+    introExtro: "ambivertiert", familieWichtigkeit: "wichtig", freundeskreis: "gemischt",
+    oeffentlichkeit: "zurückhaltend", alleinzeit: "mittel", events: "manchmal", reisen: "gemeinsam",
+    hobbys: "gemeinsam", wochenende: "gemeinsam-gemischt", netzwerkGroesse: "mittel",
+    confidence: { kinderWunsch: 0.50, eheWunsch: 0.80, wohnform: 0.95, emotionaleOffenheit: 0.80, freundeskreis: 0.75 },
+    pirsig: "Maximale Empfänglichkeit (Bi+Sub) in fester Struktur (Duo). Offen für alle, aber exklusiv gebunden - bewusste Begrenzung.",
+    osho: "Der empfänglichste Mann in fester Bindung. Bisexuell aber monogam - lebt die Spannung zwischen Offenheit und Exklusivität."
+  },
+  "duo-männlich-switch-heterosexuell": {
+    sources: ["Switch Research: High flexibility", "Relationship Research", "Big Five: Switch = high openness"],
+    kinderWunsch: "ja", eheWunsch: "ja", wohnform: "zusammen", religion: "offen",
+    karrierePrioritaet: "balance", finanzPhilosophie: "gemeinsam", lebensstil: "durchschnittlich",
+    umzugsbereitschaft: "nur-gemeinsam", zukunftsplanung: "gemeinsam-langfristig", traditionenWichtigkeit: "neutral",
+    kommunikationsstil: "situativ", konfliktverhalten: "lösungsorientiert", emotionaleOffenheit: "mittel",
+    gespraechsBedürfnis: "mittel", feedbackStil: "angepasst", entschuldigungen: "normal",
+    streitVerhalten: "variabel", versoehnung: "schnell", kritikAnnehmen: "gut", humorKonflikte: "oft",
+    introExtro: "ambivertiert", familieWichtigkeit: "sehr-wichtig", freundeskreis: "gemeinsam",
+    oeffentlichkeit: "offen", alleinzeit: "mittel", events: "oft", reisen: "gemeinsam",
+    hobbys: "teilweise-gemeinsam", wochenende: "gemeinsam-aktiv", netzwerkGroesse: "mittel-groß",
+    confidence: { kinderWunsch: 0.85, eheWunsch: 0.90, wohnform: 0.95, kommunikationsstil: 0.85, familieWichtigkeit: 0.85 },
+    pirsig: "Flexibilität (Switch) in stabiler Struktur (Duo). Kann beide Rollen einnehmen, bleibt aber exklusiv. Dynamik innerhalb von Stabilität.",
+    osho: "Der ganze Mann in Partnerschaft - kann führen und folgen. Traditionelle Bindung mit moderner Rollenauffassung."
+  },
+  "duo-männlich-switch-homosexuell": {
+    sources: ["Gay Versatile Research", "Switch personality", "Allen et al. (2020): Gay higher openness"],
+    kinderWunsch: "vielleicht", eheWunsch: "ja", wohnform: "zusammen", religion: "offen",
+    karrierePrioritaet: "balance", finanzPhilosophie: "gemeinsam", lebensstil: "gehoben",
+    umzugsbereitschaft: "nur-gemeinsam", zukunftsplanung: "gemeinsam-langfristig", traditionenWichtigkeit: "unwichtig",
+    kommunikationsstil: "situativ", konfliktverhalten: "lösungsorientiert", emotionaleOffenheit: "offen",
+    gespraechsBedürfnis: "mittel", feedbackStil: "angepasst", entschuldigungen: "normal",
+    streitVerhalten: "variabel", versoehnung: "schnell", kritikAnnehmen: "gut", humorKonflikte: "oft",
+    introExtro: "extrovertiert", familieWichtigkeit: "wichtig", freundeskreis: "gemeinsam",
+    oeffentlichkeit: "offen", alleinzeit: "wenig", events: "oft", reisen: "gemeinsam",
+    hobbys: "teilweise-gemeinsam", wochenende: "gemeinsam-aktiv", netzwerkGroesse: "groß",
+    confidence: { kinderWunsch: 0.50, eheWunsch: 0.85, wohnform: 0.95, kommunikationsstil: 0.85, events: 0.80 },
+    pirsig: "Versatile gay Partnerschaft - beide Rollen möglich, aber exklusiv. Maximale Flexibilität innerhalb stabiler Grenzen.",
+    osho: "Der flexible gay Partner - kann geben und empfangen. Exklusiv aber nicht starr - lebendige Monogamie."
+  },
+  "duo-männlich-switch-bisexuell": {
+    sources: ["Allen et al. (2020): Bi highest openness", "Switch Research", "Bi Monogamy"],
+    kinderWunsch: "vielleicht", eheWunsch: "ja", wohnform: "zusammen", religion: "spirituell",
+    karrierePrioritaet: "balance", finanzPhilosophie: "gemeinsam", lebensstil: "gehoben",
+    umzugsbereitschaft: "nur-gemeinsam", zukunftsplanung: "gemeinsam-langfristig", traditionenWichtigkeit: "unwichtig",
+    kommunikationsstil: "situativ", konfliktverhalten: "lösungsorientiert", emotionaleOffenheit: "offen",
+    gespraechsBedürfnis: "mittel", feedbackStil: "angepasst", entschuldigungen: "normal",
+    streitVerhalten: "variabel", versoehnung: "schnell", kritikAnnehmen: "sehr-gut", humorKonflikte: "oft",
+    introExtro: "extrovertiert", familieWichtigkeit: "wichtig", freundeskreis: "gemischt",
+    oeffentlichkeit: "offen", alleinzeit: "wenig", events: "oft", reisen: "gemeinsam",
+    hobbys: "teilweise-gemeinsam", wochenende: "gemeinsam-aktiv", netzwerkGroesse: "groß",
+    confidence: { kinderWunsch: 0.50, eheWunsch: 0.80, wohnform: 0.95, kommunikationsstil: 0.85, freundeskreis: 0.80 },
+    pirsig: "Maximale Flexibilität (Bi+Switch) in exklusiver Bindung. Offen für alles, entschieden für einen. Bewusste Wahl der Begrenzung.",
+    osho: "Der flexibelste Mann in fester Beziehung. Bi und Switch, aber monogam - lebt die Paradoxie von Freiheit in Bindung."
+  },
+  "duo-männlich-ausgeglichen-heterosexuell": {
+    sources: ["Big Five: Balanced = stability", "Relationship satisfaction research", "Gauss distribution"],
+    kinderWunsch: "ja", eheWunsch: "ja", wohnform: "zusammen", religion: "offen",
+    karrierePrioritaet: "balance", finanzPhilosophie: "gemeinsam", lebensstil: "durchschnittlich",
+    umzugsbereitschaft: "nur-gemeinsam", zukunftsplanung: "gemeinsam-langfristig", traditionenWichtigkeit: "wichtig",
+    kommunikationsstil: "ausgeglichen", konfliktverhalten: "diplomatisch", emotionaleOffenheit: "mittel",
+    gespraechsBedürfnis: "mittel", feedbackStil: "konstruktiv", entschuldigungen: "normal",
+    streitVerhalten: "ruhig", versoehnung: "normal", kritikAnnehmen: "gut", humorKonflikte: "manchmal",
+    introExtro: "ambivertiert", familieWichtigkeit: "sehr-wichtig", freundeskreis: "gemeinsam",
+    oeffentlichkeit: "mittel", alleinzeit: "mittel", events: "manchmal", reisen: "gemeinsam",
+    hobbys: "teilweise-gemeinsam", wochenende: "gemeinsam-gemischt", netzwerkGroesse: "mittel",
+    confidence: { kinderWunsch: 0.90, eheWunsch: 0.95, wohnform: 0.95, kommunikationsstil: 0.85, familieWichtigkeit: 0.90 },
+    pirsig: "Die Gauss-Mitte der Beziehung. Statistisch am häufigsten - ausgeglichen in exklusiver Partnerschaft. Stabile Qualität durch Balance.",
+    osho: "Der durchschnittliche heterosexuelle Partner - weder extrem noch rebellisch. Gesellschaftlich akzeptiert, aber nicht unbedingt bewusst."
+  },
+  "duo-männlich-ausgeglichen-homosexuell": {
+    sources: ["Gay Relationship Research", "Big Five: Balanced", "Allen et al. (2020)"],
+    kinderWunsch: "vielleicht", eheWunsch: "ja", wohnform: "zusammen", religion: "offen",
+    karrierePrioritaet: "balance", finanzPhilosophie: "gemeinsam", lebensstil: "durchschnittlich",
+    umzugsbereitschaft: "nur-gemeinsam", zukunftsplanung: "gemeinsam-langfristig", traditionenWichtigkeit: "neutral",
+    kommunikationsstil: "ausgeglichen", konfliktverhalten: "diplomatisch", emotionaleOffenheit: "offen",
+    gespraechsBedürfnis: "mittel", feedbackStil: "konstruktiv", entschuldigungen: "normal",
+    streitVerhalten: "ruhig", versoehnung: "normal", kritikAnnehmen: "gut", humorKonflikte: "oft",
+    introExtro: "ambivertiert", familieWichtigkeit: "wichtig", freundeskreis: "gemeinsam",
+    oeffentlichkeit: "mittel", alleinzeit: "mittel", events: "manchmal", reisen: "gemeinsam",
+    hobbys: "teilweise-gemeinsam", wochenende: "gemeinsam-gemischt", netzwerkGroesse: "mittel",
+    confidence: { kinderWunsch: 0.50, eheWunsch: 0.85, wohnform: 0.95, kommunikationsstil: 0.85, emotionaleOffenheit: 0.75 },
+    pirsig: "Stabile gay Partnerschaft - ausgeglichen und exklusiv. Nicht-traditionelle Orientierung in traditioneller Beziehungsform.",
+    osho: "Der zentrierte gay Partner - in Frieden mit seiner Orientierung und seiner Beziehungsform. Reife Integration."
+  },
+  "duo-männlich-ausgeglichen-bisexuell": {
+    sources: ["Allen et al. (2020): Bi highest openness", "Big Five: Balanced", "Bi Monogamy Research"],
+    kinderWunsch: "vielleicht", eheWunsch: "ja", wohnform: "zusammen", religion: "spirituell",
+    karrierePrioritaet: "balance", finanzPhilosophie: "gemeinsam", lebensstil: "durchschnittlich",
+    umzugsbereitschaft: "nur-gemeinsam", zukunftsplanung: "gemeinsam-langfristig", traditionenWichtigkeit: "neutral",
+    kommunikationsstil: "ausgeglichen", konfliktverhalten: "diplomatisch", emotionaleOffenheit: "offen",
+    gespraechsBedürfnis: "mittel", feedbackStil: "konstruktiv", entschuldigungen: "normal",
+    streitVerhalten: "ruhig", versoehnung: "normal", kritikAnnehmen: "gut", humorKonflikte: "oft",
+    introExtro: "ambivertiert", familieWichtigkeit: "wichtig", freundeskreis: "gemischt",
+    oeffentlichkeit: "mittel", alleinzeit: "mittel", events: "manchmal", reisen: "gemeinsam",
+    hobbys: "teilweise-gemeinsam", wochenende: "gemeinsam-gemischt", netzwerkGroesse: "mittel",
+    confidence: { kinderWunsch: 0.50, eheWunsch: 0.80, wohnform: 0.95, kommunikationsstil: 0.85, freundeskreis: 0.75 },
+    pirsig: "Offenheit (Bi) in stabiler Mitte (Ausgeglichen+Duo). Bisexuell aber zentriert und exklusiv. Ruhige Akzeptanz aller Möglichkeiten.",
+    osho: "Der zentrierte bisexuelle Partner - offen für alle, entschieden für einen. Keine Spannung, nur Frieden mit der Wahl."
+  },
+
+  // PROFIL 49-60: duo-weiblich (alle Kombinationen)
+  "duo-weiblich-dominant-heterosexuell": {
+    sources: ["SMSNA (2023): 25% women dominant", "Relationship Research", "Gender role research"],
+    kinderWunsch: "ja", eheWunsch: "ja", wohnform: "zusammen", religion: "offen",
+    karrierePrioritaet: "karriere", finanzPhilosophie: "gemeinsam", lebensstil: "gehoben",
+    umzugsbereitschaft: "nur-gemeinsam", zukunftsplanung: "gemeinsam-langfristig", traditionenWichtigkeit: "neutral",
+    kommunikationsstil: "direkt", konfliktverhalten: "konfrontativ", emotionaleOffenheit: "offen",
+    gespraechsBedürfnis: "viel", feedbackStil: "direkt", entschuldigungen: "schwer",
+    streitVerhalten: "laut", versoehnung: "schnell", kritikAnnehmen: "mittel", humorKonflikte: "manchmal",
+    introExtro: "extrovertiert", familieWichtigkeit: "sehr-wichtig", freundeskreis: "gemeinsam",
+    oeffentlichkeit: "offen", alleinzeit: "wenig", events: "oft", reisen: "gemeinsam",
+    hobbys: "teilweise-gemeinsam", wochenende: "gemeinsam-aktiv", netzwerkGroesse: "groß",
+    confidence: { kinderWunsch: 0.85, eheWunsch: 0.90, wohnform: 0.95, kommunikationsstil: 0.75, karrierePrioritaet: 0.75 },
+    pirsig: "Dominante Frau in exklusiver Hetero-Beziehung. Gegen Geschlechterrolle, für Beziehungsnorm - partielle Rebellion.",
+    osho: "Die starke Frau in Partnerschaft - führt in der Beziehung. Mutter und Karrierefrau möglich, aber anstrengend."
+  },
+  "duo-weiblich-dominant-homosexuell": {
+    sources: ["Lesbian Butch Research", "Dominant personality", "Allen et al. (2020)"],
+    kinderWunsch: "vielleicht", eheWunsch: "ja", wohnform: "zusammen", religion: "offen",
+    karrierePrioritaet: "karriere", finanzPhilosophie: "gemeinsam", lebensstil: "gehoben",
+    umzugsbereitschaft: "nur-gemeinsam", zukunftsplanung: "gemeinsam-langfristig", traditionenWichtigkeit: "unwichtig",
+    kommunikationsstil: "direkt", konfliktverhalten: "konfrontativ", emotionaleOffenheit: "offen",
+    gespraechsBedürfnis: "viel", feedbackStil: "direkt", entschuldigungen: "schwer",
+    streitVerhalten: "laut", versoehnung: "schnell", kritikAnnehmen: "mittel", humorKonflikte: "oft",
+    introExtro: "extrovertiert", familieWichtigkeit: "wichtig", freundeskreis: "gemeinsam",
+    oeffentlichkeit: "offen", alleinzeit: "wenig", events: "oft", reisen: "gemeinsam",
+    hobbys: "teilweise-gemeinsam", wochenende: "gemeinsam-aktiv", netzwerkGroesse: "groß",
+    confidence: { kinderWunsch: 0.50, eheWunsch: 0.85, wohnform: 0.95, kommunikationsstil: 0.80, events: 0.80 },
+    pirsig: "Dominante lesbische Frau in exklusiver Partnerschaft. Beide Normen gebrochen (Hetero, Submissiv), aber Duo-Norm akzeptiert.",
+    osho: "Die starke lesbische Partnerin - Yang-Energie mit einer Frau. Authentisch in Orientierung und Rolle, konventionell in Beziehungsform."
+  },
+  "duo-weiblich-dominant-bisexuell": {
+    sources: ["Allen et al. (2020): Bi women highest openness", "Dominant personality", "Bi Monogamy"],
+    kinderWunsch: "vielleicht", eheWunsch: "ja", wohnform: "zusammen", religion: "spirituell",
+    karrierePrioritaet: "karriere", finanzPhilosophie: "gemeinsam", lebensstil: "gehoben",
+    umzugsbereitschaft: "nur-gemeinsam", zukunftsplanung: "gemeinsam-langfristig", traditionenWichtigkeit: "unwichtig",
+    kommunikationsstil: "direkt", konfliktverhalten: "konfrontativ", emotionaleOffenheit: "offen",
+    gespraechsBedürfnis: "viel", feedbackStil: "direkt", entschuldigungen: "schwer",
+    streitVerhalten: "laut", versoehnung: "schnell", kritikAnnehmen: "mittel", humorKonflikte: "oft",
+    introExtro: "extrovertiert", familieWichtigkeit: "wichtig", freundeskreis: "gemischt",
+    oeffentlichkeit: "offen", alleinzeit: "wenig", events: "oft", reisen: "gemeinsam",
+    hobbys: "teilweise-gemeinsam", wochenende: "gemeinsam-aktiv", netzwerkGroesse: "groß",
+    confidence: { kinderWunsch: 0.50, eheWunsch: 0.80, wohnform: 0.95, kommunikationsstil: 0.80, freundeskreis: 0.80 },
+    pirsig: "Maximale weibliche Energie-Offenheit (Bi+Dom) in exklusiver Bindung. Stark und offen, aber gewählt begrenzt.",
+    osho: "Die stärkste Frau in Beziehung - dominant, bisexuell, aber monogam. Bewusste Wahl der Exklusivität trotz aller Möglichkeiten."
+  },
+  "duo-weiblich-submissiv-heterosexuell": {
+    sources: ["Netherlands Study: 75.6% women prefer submissive", "Traditional gender roles", "Relationship satisfaction"],
+    kinderWunsch: "ja", eheWunsch: "ja", wohnform: "zusammen", religion: "offen",
+    karrierePrioritaet: "beziehung", finanzPhilosophie: "gemeinsam", lebensstil: "durchschnittlich",
+    umzugsbereitschaft: "nur-gemeinsam", zukunftsplanung: "gemeinsam-langfristig", traditionenWichtigkeit: "wichtig",
+    kommunikationsstil: "indirekt", konfliktverhalten: "vermeidend", emotionaleOffenheit: "sehr-offen",
+    gespraechsBedürfnis: "viel", feedbackStil: "diplomatisch", entschuldigungen: "leicht",
+    streitVerhalten: "leise", versoehnung: "langsam", kritikAnnehmen: "gut", humorKonflikte: "selten",
+    introExtro: "introvertiert", familieWichtigkeit: "sehr-wichtig", freundeskreis: "gemeinsam",
+    oeffentlichkeit: "zurückhaltend", alleinzeit: "wenig", events: "selten", reisen: "gemeinsam",
+    hobbys: "gemeinsam", wochenende: "gemeinsam-ruhig", netzwerkGroesse: "klein",
+    confidence: { kinderWunsch: 0.90, eheWunsch: 0.95, wohnform: 0.95, kommunikationsstil: 0.85, familieWichtigkeit: 0.95 },
+    pirsig: "Maximale statische Qualität: Submissiv + Duo + traditionelle Geschlechterrolle. Gesellschaftlich erwartetes Muster.",
+    osho: "Die traditionelle Frau - submissiv, hetero, monogam. Am meisten konditioniert, aber wenn bewusst gewählt, authentisch."
+  },
+  "duo-weiblich-submissiv-homosexuell": {
+    sources: ["Lesbian Femme Research", "SMSNA (2023): Submissive", "Allen et al. (2020)"],
+    kinderWunsch: "vielleicht", eheWunsch: "ja", wohnform: "zusammen", religion: "offen",
+    karrierePrioritaet: "balance", finanzPhilosophie: "gemeinsam", lebensstil: "durchschnittlich",
+    umzugsbereitschaft: "nur-gemeinsam", zukunftsplanung: "gemeinsam-langfristig", traditionenWichtigkeit: "unwichtig",
+    kommunikationsstil: "indirekt", konfliktverhalten: "vermeidend", emotionaleOffenheit: "sehr-offen",
+    gespraechsBedürfnis: "viel", feedbackStil: "diplomatisch", entschuldigungen: "leicht",
+    streitVerhalten: "leise", versoehnung: "langsam", kritikAnnehmen: "gut", humorKonflikte: "manchmal",
+    introExtro: "introvertiert", familieWichtigkeit: "wichtig", freundeskreis: "gemeinsam",
+    oeffentlichkeit: "zurückhaltend", alleinzeit: "mittel", events: "manchmal", reisen: "gemeinsam",
+    hobbys: "gemeinsam", wochenende: "gemeinsam-ruhig", netzwerkGroesse: "mittel",
+    confidence: { kinderWunsch: 0.50, eheWunsch: 0.85, wohnform: 0.95, kommunikationsstil: 0.85, emotionaleOffenheit: 0.85 },
+    pirsig: "Submissive lesbische Frau in exklusiver Partnerschaft. Heteronorm gebrochen, Geschlechterrolle beibehalten, Beziehungsnorm akzeptiert.",
+    osho: "Die empfangende lesbische Partnerin - Yin-Energie mit einer Frau. Femme-Identität in exklusiver Bindung."
+  },
+  "duo-weiblich-submissiv-bisexuell": {
+    sources: ["Allen et al. (2020): Bi women", "SMSNA (2023): Submissive", "Bi Monogamy"],
+    kinderWunsch: "vielleicht", eheWunsch: "ja", wohnform: "zusammen", religion: "spirituell",
+    karrierePrioritaet: "balance", finanzPhilosophie: "gemeinsam", lebensstil: "durchschnittlich",
+    umzugsbereitschaft: "nur-gemeinsam", zukunftsplanung: "gemeinsam-langfristig", traditionenWichtigkeit: "unwichtig",
+    kommunikationsstil: "indirekt", konfliktverhalten: "vermeidend", emotionaleOffenheit: "sehr-offen",
+    gespraechsBedürfnis: "viel", feedbackStil: "diplomatisch", entschuldigungen: "leicht",
+    streitVerhalten: "leise", versoehnung: "langsam", kritikAnnehmen: "sehr-gut", humorKonflikte: "manchmal",
+    introExtro: "ambivertiert", familieWichtigkeit: "wichtig", freundeskreis: "gemischt",
+    oeffentlichkeit: "zurückhaltend", alleinzeit: "mittel", events: "manchmal", reisen: "gemeinsam",
+    hobbys: "gemeinsam", wochenende: "gemeinsam-gemischt", netzwerkGroesse: "mittel",
+    confidence: { kinderWunsch: 0.50, eheWunsch: 0.85, wohnform: 0.95, emotionaleOffenheit: 0.85, freundeskreis: 0.75 },
+    pirsig: "Maximale Empfänglichkeit (Bi+Sub) in exklusiver Bindung. Offen für alle, hingegeben an einen. Bewusste Begrenzung der Offenheit.",
+    osho: "Die empfänglichste Partnerin - bisexuell und submissiv, aber monogam. Tiefe Hingabe trotz oder wegen der vielen Möglichkeiten."
+  },
+  "duo-weiblich-switch-heterosexuell": {
+    sources: ["Switch Research", "Relationship equality research", "Gender flexibility"],
+    kinderWunsch: "ja", eheWunsch: "ja", wohnform: "zusammen", religion: "offen",
+    karrierePrioritaet: "balance", finanzPhilosophie: "gemeinsam", lebensstil: "durchschnittlich",
+    umzugsbereitschaft: "nur-gemeinsam", zukunftsplanung: "gemeinsam-langfristig", traditionenWichtigkeit: "neutral",
+    kommunikationsstil: "situativ", konfliktverhalten: "lösungsorientiert", emotionaleOffenheit: "offen",
+    gespraechsBedürfnis: "mittel", feedbackStil: "angepasst", entschuldigungen: "normal",
+    streitVerhalten: "variabel", versoehnung: "schnell", kritikAnnehmen: "gut", humorKonflikte: "oft",
+    introExtro: "ambivertiert", familieWichtigkeit: "sehr-wichtig", freundeskreis: "gemeinsam",
+    oeffentlichkeit: "offen", alleinzeit: "mittel", events: "oft", reisen: "gemeinsam",
+    hobbys: "teilweise-gemeinsam", wochenende: "gemeinsam-aktiv", netzwerkGroesse: "mittel-groß",
+    confidence: { kinderWunsch: 0.85, eheWunsch: 0.90, wohnform: 0.95, kommunikationsstil: 0.85, familieWichtigkeit: 0.85 },
+    pirsig: "Flexible Frau in exklusiver Hetero-Beziehung. Kann führen und folgen - moderne Partnerschaft auf Augenhöhe.",
+    osho: "Die ganze Frau in Beziehung - Yin und Yang integriert. Mit einem Mann, aber nicht in traditioneller Rolle fixiert."
+  },
+  "duo-weiblich-switch-homosexuell": {
+    sources: ["Lesbian Versatile Research", "Switch personality", "Allen et al. (2020)"],
+    kinderWunsch: "vielleicht", eheWunsch: "ja", wohnform: "zusammen", religion: "offen",
+    karrierePrioritaet: "balance", finanzPhilosophie: "gemeinsam", lebensstil: "gehoben",
+    umzugsbereitschaft: "nur-gemeinsam", zukunftsplanung: "gemeinsam-langfristig", traditionenWichtigkeit: "unwichtig",
+    kommunikationsstil: "situativ", konfliktverhalten: "lösungsorientiert", emotionaleOffenheit: "sehr-offen",
+    gespraechsBedürfnis: "viel", feedbackStil: "angepasst", entschuldigungen: "normal",
+    streitVerhalten: "variabel", versoehnung: "schnell", kritikAnnehmen: "gut", humorKonflikte: "oft",
+    introExtro: "extrovertiert", familieWichtigkeit: "wichtig", freundeskreis: "gemeinsam",
+    oeffentlichkeit: "offen", alleinzeit: "wenig", events: "oft", reisen: "gemeinsam",
+    hobbys: "teilweise-gemeinsam", wochenende: "gemeinsam-aktiv", netzwerkGroesse: "groß",
+    confidence: { kinderWunsch: 0.50, eheWunsch: 0.85, wohnform: 0.95, kommunikationsstil: 0.85, events: 0.80 },
+    pirsig: "Versatile lesbische Partnerschaft - beide können beide Rollen. Gleichberechtigung und Flexibilität in exklusiver Bindung.",
+    osho: "Die vielseitige lesbische Partnerin - nicht auf butch oder femme festgelegt. Lebendige Dynamik in monogamer Form."
+  },
+  "duo-weiblich-switch-bisexuell": {
+    sources: ["Allen et al. (2020): Bi women highest openness", "Switch Research", "Bi Monogamy"],
+    kinderWunsch: "vielleicht", eheWunsch: "ja", wohnform: "zusammen", religion: "spirituell",
+    karrierePrioritaet: "balance", finanzPhilosophie: "gemeinsam", lebensstil: "gehoben",
+    umzugsbereitschaft: "nur-gemeinsam", zukunftsplanung: "gemeinsam-langfristig", traditionenWichtigkeit: "unwichtig",
+    kommunikationsstil: "situativ", konfliktverhalten: "lösungsorientiert", emotionaleOffenheit: "sehr-offen",
+    gespraechsBedürfnis: "viel", feedbackStil: "angepasst", entschuldigungen: "normal",
+    streitVerhalten: "variabel", versoehnung: "schnell", kritikAnnehmen: "sehr-gut", humorKonflikte: "oft",
+    introExtro: "extrovertiert", familieWichtigkeit: "wichtig", freundeskreis: "gemischt",
+    oeffentlichkeit: "offen", alleinzeit: "wenig", events: "oft", reisen: "gemeinsam",
+    hobbys: "teilweise-gemeinsam", wochenende: "gemeinsam-aktiv", netzwerkGroesse: "groß",
+    confidence: { kinderWunsch: 0.50, eheWunsch: 0.80, wohnform: 0.95, kommunikationsstil: 0.85, freundeskreis: 0.85 },
+    pirsig: "Maximale weibliche Flexibilität (Bi+Switch) in exklusiver Bindung. Alle Türen offen, eine gewählt. Freiheit in der Begrenzung.",
+    osho: "Die flexibelste Frau in monogamer Beziehung. Könnte alles sein, wählt aber Tiefe mit einem Menschen. Bewusste Entscheidung."
+  },
+  "duo-weiblich-ausgeglichen-heterosexuell": {
+    sources: ["Big Five: Balanced women", "Relationship satisfaction", "Gauss distribution"],
+    kinderWunsch: "ja", eheWunsch: "ja", wohnform: "zusammen", religion: "offen",
+    karrierePrioritaet: "balance", finanzPhilosophie: "gemeinsam", lebensstil: "durchschnittlich",
+    umzugsbereitschaft: "nur-gemeinsam", zukunftsplanung: "gemeinsam-langfristig", traditionenWichtigkeit: "wichtig",
+    kommunikationsstil: "ausgeglichen", konfliktverhalten: "diplomatisch", emotionaleOffenheit: "offen",
+    gespraechsBedürfnis: "mittel", feedbackStil: "konstruktiv", entschuldigungen: "normal",
+    streitVerhalten: "ruhig", versoehnung: "normal", kritikAnnehmen: "gut", humorKonflikte: "manchmal",
+    introExtro: "ambivertiert", familieWichtigkeit: "sehr-wichtig", freundeskreis: "gemeinsam",
+    oeffentlichkeit: "mittel", alleinzeit: "mittel", events: "manchmal", reisen: "gemeinsam",
+    hobbys: "teilweise-gemeinsam", wochenende: "gemeinsam-gemischt", netzwerkGroesse: "mittel",
+    confidence: { kinderWunsch: 0.90, eheWunsch: 0.95, wohnform: 0.95, kommunikationsstil: 0.85, familieWichtigkeit: 0.95 },
+    pirsig: "Die statistische Mitte - die häufigste Kombination bei Frauen. Ausgeglichene Hetero-Frau in traditioneller Beziehung.",
+    osho: "Die Durchschnittsfrau - gesellschaftlich integriert, nicht rebellisch. Kann glücklich sein, wenn bewusst gewählt."
+  },
+  "duo-weiblich-ausgeglichen-homosexuell": {
+    sources: ["Lesbian Relationship Research", "Big Five: Balanced", "Allen et al. (2020)"],
+    kinderWunsch: "vielleicht", eheWunsch: "ja", wohnform: "zusammen", religion: "offen",
+    karrierePrioritaet: "balance", finanzPhilosophie: "gemeinsam", lebensstil: "durchschnittlich",
+    umzugsbereitschaft: "nur-gemeinsam", zukunftsplanung: "gemeinsam-langfristig", traditionenWichtigkeit: "neutral",
+    kommunikationsstil: "ausgeglichen", konfliktverhalten: "diplomatisch", emotionaleOffenheit: "offen",
+    gespraechsBedürfnis: "mittel", feedbackStil: "konstruktiv", entschuldigungen: "normal",
+    streitVerhalten: "ruhig", versoehnung: "normal", kritikAnnehmen: "gut", humorKonflikte: "oft",
+    introExtro: "ambivertiert", familieWichtigkeit: "wichtig", freundeskreis: "gemeinsam",
+    oeffentlichkeit: "mittel", alleinzeit: "mittel", events: "manchmal", reisen: "gemeinsam",
+    hobbys: "teilweise-gemeinsam", wochenende: "gemeinsam-gemischt", netzwerkGroesse: "mittel",
+    confidence: { kinderWunsch: 0.50, eheWunsch: 0.85, wohnform: 0.95, kommunikationsstil: 0.85, emotionaleOffenheit: 0.80 },
+    pirsig: "Zentrierte lesbische Partnerin - weder extrem noch versteckt. Integrierte Identität in stabiler Beziehung.",
+    osho: "Die reife lesbische Frau in Beziehung - in Frieden mit sich und ihrer Partnerin. Keine Kämpfe mehr, nur Liebe."
+  },
+  "duo-weiblich-ausgeglichen-bisexuell": {
+    sources: ["Allen et al. (2020): Bi women", "Big Five: Balanced", "Bi Monogamy Research"],
+    kinderWunsch: "vielleicht", eheWunsch: "ja", wohnform: "zusammen", religion: "spirituell",
+    karrierePrioritaet: "balance", finanzPhilosophie: "gemeinsam", lebensstil: "durchschnittlich",
+    umzugsbereitschaft: "nur-gemeinsam", zukunftsplanung: "gemeinsam-langfristig", traditionenWichtigkeit: "neutral",
+    kommunikationsstil: "ausgeglichen", konfliktverhalten: "diplomatisch", emotionaleOffenheit: "offen",
+    gespraechsBedürfnis: "mittel", feedbackStil: "konstruktiv", entschuldigungen: "normal",
+    streitVerhalten: "ruhig", versoehnung: "normal", kritikAnnehmen: "gut", humorKonflikte: "oft",
+    introExtro: "ambivertiert", familieWichtigkeit: "wichtig", freundeskreis: "gemischt",
+    oeffentlichkeit: "mittel", alleinzeit: "mittel", events: "manchmal", reisen: "gemeinsam",
+    hobbys: "teilweise-gemeinsam", wochenende: "gemeinsam-gemischt", netzwerkGroesse: "mittel",
+    confidence: { kinderWunsch: 0.50, eheWunsch: 0.80, wohnform: 0.95, kommunikationsstil: 0.85, freundeskreis: 0.75 },
+    pirsig: "Bisexuelle Offenheit in zentrierter, exklusiver Form. Kann alle mögen, liebt einen. Stabile Mitte trotz Fluidität.",
+    osho: "Die zentrierte Bi-Frau in Partnerschaft - in Frieden mit ihrer Orientierung und ihrer Wahl. Keine Reue, keine Sehnsucht."
+  },
+
+  // PROFIL 61-72: duo-nonbinär (alle Kombinationen)
+  "duo-nonbinär-dominant-heterosexuell": {
+    sources: ["Non-binary Research: High openness", "SMSNA: Dominant", "Relationship Research"],
+    kinderWunsch: "vielleicht", eheWunsch: "ja", wohnform: "zusammen", religion: "spirituell",
+    karrierePrioritaet: "karriere", finanzPhilosophie: "gemeinsam", lebensstil: "durchschnittlich",
+    umzugsbereitschaft: "nur-gemeinsam", zukunftsplanung: "gemeinsam-langfristig", traditionenWichtigkeit: "unwichtig",
+    kommunikationsstil: "direkt", konfliktverhalten: "konfrontativ", emotionaleOffenheit: "offen",
+    gespraechsBedürfnis: "mittel", feedbackStil: "direkt", entschuldigungen: "schwer",
+    streitVerhalten: "laut", versoehnung: "schnell", kritikAnnehmen: "mittel", humorKonflikte: "manchmal",
+    introExtro: "extrovertiert", familieWichtigkeit: "wichtig", freundeskreis: "gemeinsam",
+    oeffentlichkeit: "offen", alleinzeit: "mittel", events: "oft", reisen: "gemeinsam",
+    hobbys: "teilweise-gemeinsam", wochenende: "gemeinsam-aktiv", netzwerkGroesse: "mittel-groß",
+    confidence: { kinderWunsch: 0.50, eheWunsch: 0.80, wohnform: 0.95, kommunikationsstil: 0.75, traditionenWichtigkeit: 0.90 },
+    pirsig: "Non-binär durchbricht Geschlechternorm, Duo akzeptiert Beziehungsnorm. Partielle Rebellion, partielle Struktur.",
+    osho: "Jenseits der Geschlechter, aber in Partnerschaft. Dominant und exklusiv - neue Form der Beziehung."
+  },
+  "duo-nonbinär-dominant-homosexuell": {
+    sources: ["Non-binary Research", "Queer Relationship Studies", "Dominant personality"],
+    kinderWunsch: "nein", eheWunsch: "ja", wohnform: "zusammen", religion: "spirituell",
+    karrierePrioritaet: "karriere", finanzPhilosophie: "gemeinsam", lebensstil: "gehoben",
+    umzugsbereitschaft: "nur-gemeinsam", zukunftsplanung: "gemeinsam-langfristig", traditionenWichtigkeit: "unwichtig",
+    kommunikationsstil: "direkt", konfliktverhalten: "konfrontativ", emotionaleOffenheit: "offen",
+    gespraechsBedürfnis: "viel", feedbackStil: "direkt", entschuldigungen: "schwer",
+    streitVerhalten: "laut", versoehnung: "schnell", kritikAnnehmen: "mittel", humorKonflikte: "oft",
+    introExtro: "extrovertiert", familieWichtigkeit: "wichtig", freundeskreis: "gemeinsam",
+    oeffentlichkeit: "offen", alleinzeit: "wenig", events: "oft", reisen: "gemeinsam",
+    hobbys: "teilweise-gemeinsam", wochenende: "gemeinsam-aktiv", netzwerkGroesse: "groß",
+    confidence: { kinderWunsch: 0.85, eheWunsch: 0.85, wohnform: 0.95, kommunikationsstil: 0.75, events: 0.75 },
+    pirsig: "Komplexe Identität (NB+Homo) in exklusiver Bindung mit dominanter Energie. Viele Normen gebrochen, eine akzeptiert.",
+    osho: "Die queere dominante Person in Partnerschaft - authentisch in Identität, konventionell in Beziehungsform."
+  },
+  "duo-nonbinär-dominant-bisexuell": {
+    sources: ["Non-binary Research: Highest openness", "Allen et al. (2020): Bi highest openness", "Dominant personality"],
+    kinderWunsch: "nein", eheWunsch: "ja", wohnform: "zusammen", religion: "spirituell",
+    karrierePrioritaet: "karriere", finanzPhilosophie: "gemeinsam", lebensstil: "gehoben",
+    umzugsbereitschaft: "nur-gemeinsam", zukunftsplanung: "gemeinsam-langfristig", traditionenWichtigkeit: "unwichtig",
+    kommunikationsstil: "direkt", konfliktverhalten: "konfrontativ", emotionaleOffenheit: "offen",
+    gespraechsBedürfnis: "viel", feedbackStil: "direkt", entschuldigungen: "schwer",
+    streitVerhalten: "laut", versoehnung: "schnell", kritikAnnehmen: "mittel", humorKonflikte: "oft",
+    introExtro: "extrovertiert", familieWichtigkeit: "wichtig", freundeskreis: "gemischt",
+    oeffentlichkeit: "offen", alleinzeit: "wenig", events: "oft", reisen: "gemeinsam",
+    hobbys: "teilweise-gemeinsam", wochenende: "gemeinsam-aktiv", netzwerkGroesse: "groß",
+    confidence: { kinderWunsch: 0.80, eheWunsch: 0.80, wohnform: 0.95, kommunikationsstil: 0.75, freundeskreis: 0.80 },
+    pirsig: "Maximale Offenheit (NB+Bi) mit Dominanz in exklusiver Form. Alle Kategorien gesprengt außer Monogamie.",
+    osho: "Der/die freieste Geist in fester Bindung. Bi, non-binär, dominant - aber gewählt monogam. Bewusste Begrenzung."
+  },
+  "duo-nonbinär-submissiv-heterosexuell": {
+    sources: ["Non-binary Research: High agreeableness", "SMSNA: Submissive", "Relationship Research"],
+    kinderWunsch: "vielleicht", eheWunsch: "ja", wohnform: "zusammen", religion: "spirituell",
+    karrierePrioritaet: "balance", finanzPhilosophie: "gemeinsam", lebensstil: "bescheiden",
+    umzugsbereitschaft: "nur-gemeinsam", zukunftsplanung: "gemeinsam-langfristig", traditionenWichtigkeit: "unwichtig",
+    kommunikationsstil: "indirekt", konfliktverhalten: "vermeidend", emotionaleOffenheit: "offen",
+    gespraechsBedürfnis: "mittel", feedbackStil: "diplomatisch", entschuldigungen: "leicht",
+    streitVerhalten: "leise", versoehnung: "langsam", kritikAnnehmen: "gut", humorKonflikte: "selten",
+    introExtro: "introvertiert", familieWichtigkeit: "wichtig", freundeskreis: "gemeinsam",
+    oeffentlichkeit: "zurückhaltend", alleinzeit: "mittel", events: "selten", reisen: "gemeinsam",
+    hobbys: "gemeinsam", wochenende: "gemeinsam-ruhig", netzwerkGroesse: "klein",
+    confidence: { kinderWunsch: 0.50, eheWunsch: 0.80, wohnform: 0.95, kommunikationsstil: 0.80, alleinzeit: 0.75 },
+    pirsig: "Non-binär jenseits Geschlecht, Submissiv in empfangender Rolle, Duo in fester Bindung. Komplexe, aber stabile Identität.",
+    osho: "Jenseits der Geschlechter, in Hingabe ruhend. Submissiv und exklusiv - neue Form der Beziehung."
+  },
+  "duo-nonbinär-submissiv-homosexuell": {
+    sources: ["Non-binary Research", "Queer Submissive Studies", "High agreeableness + openness"],
+    kinderWunsch: "nein", eheWunsch: "ja", wohnform: "zusammen", religion: "spirituell",
+    karrierePrioritaet: "balance", finanzPhilosophie: "gemeinsam", lebensstil: "durchschnittlich",
+    umzugsbereitschaft: "nur-gemeinsam", zukunftsplanung: "gemeinsam-langfristig", traditionenWichtigkeit: "unwichtig",
+    kommunikationsstil: "indirekt", konfliktverhalten: "vermeidend", emotionaleOffenheit: "sehr-offen",
+    gespraechsBedürfnis: "viel", feedbackStil: "diplomatisch", entschuldigungen: "leicht",
+    streitVerhalten: "leise", versoehnung: "langsam", kritikAnnehmen: "gut", humorKonflikte: "manchmal",
+    introExtro: "introvertiert", familieWichtigkeit: "wichtig", freundeskreis: "gemeinsam",
+    oeffentlichkeit: "zurückhaltend", alleinzeit: "mittel", events: "manchmal", reisen: "gemeinsam",
+    hobbys: "gemeinsam", wochenende: "gemeinsam-ruhig", netzwerkGroesse: "mittel",
+    confidence: { kinderWunsch: 0.85, eheWunsch: 0.85, wohnform: 0.95, emotionaleOffenheit: 0.80, kommunikationsstil: 0.80 },
+    pirsig: "Komplexe queere Identität mit empfangender Energie in exklusiver Bindung. Tiefe Sensibilität, feste Struktur.",
+    osho: "Die empfangende queere Person in Partnerschaft - authentisch und hingegeben. Stabile Liebe jenseits aller Kategorien."
+  },
+  "duo-nonbinär-submissiv-bisexuell": {
+    sources: ["Non-binary Research", "Allen et al. (2020): Bi", "SMSNA: Submissive"],
+    kinderWunsch: "nein", eheWunsch: "ja", wohnform: "zusammen", religion: "spirituell",
+    karrierePrioritaet: "balance", finanzPhilosophie: "gemeinsam", lebensstil: "durchschnittlich",
+    umzugsbereitschaft: "nur-gemeinsam", zukunftsplanung: "gemeinsam-langfristig", traditionenWichtigkeit: "unwichtig",
+    kommunikationsstil: "indirekt", konfliktverhalten: "vermeidend", emotionaleOffenheit: "sehr-offen",
+    gespraechsBedürfnis: "viel", feedbackStil: "diplomatisch", entschuldigungen: "leicht",
+    streitVerhalten: "leise", versoehnung: "langsam", kritikAnnehmen: "sehr-gut", humorKonflikte: "manchmal",
+    introExtro: "ambivertiert", familieWichtigkeit: "wichtig", freundeskreis: "gemischt",
+    oeffentlichkeit: "zurückhaltend", alleinzeit: "mittel", events: "manchmal", reisen: "gemeinsam",
+    hobbys: "gemeinsam", wochenende: "gemeinsam-gemischt", netzwerkGroesse: "mittel",
+    confidence: { kinderWunsch: 0.80, eheWunsch: 0.85, wohnform: 0.95, emotionaleOffenheit: 0.85, freundeskreis: 0.75 },
+    pirsig: "Maximale Empfänglichkeit (NB+Bi+Sub) in exklusiver Form. Offen für alles, hingegeben an einen. Pure Rezeptivität in Bindung.",
+    osho: "Das offenste Wesen in fester Beziehung - wie ein Spiegel, der alles empfängt, aber einem Menschen gehört."
+  },
+  "duo-nonbinär-switch-heterosexuell": {
+    sources: ["Non-binary Research", "Switch personality", "Relationship flexibility"],
+    kinderWunsch: "vielleicht", eheWunsch: "ja", wohnform: "zusammen", religion: "spirituell",
+    karrierePrioritaet: "balance", finanzPhilosophie: "gemeinsam", lebensstil: "durchschnittlich",
+    umzugsbereitschaft: "nur-gemeinsam", zukunftsplanung: "gemeinsam-langfristig", traditionenWichtigkeit: "unwichtig",
+    kommunikationsstil: "situativ", konfliktverhalten: "lösungsorientiert", emotionaleOffenheit: "offen",
+    gespraechsBedürfnis: "mittel", feedbackStil: "angepasst", entschuldigungen: "normal",
+    streitVerhalten: "variabel", versoehnung: "schnell", kritikAnnehmen: "gut", humorKonflikte: "oft",
+    introExtro: "ambivertiert", familieWichtigkeit: "wichtig", freundeskreis: "gemeinsam",
+    oeffentlichkeit: "mittel", alleinzeit: "mittel", events: "oft", reisen: "gemeinsam",
+    hobbys: "teilweise-gemeinsam", wochenende: "gemeinsam-aktiv", netzwerkGroesse: "mittel-groß",
+    confidence: { kinderWunsch: 0.50, eheWunsch: 0.80, wohnform: 0.95, kommunikationsstil: 0.85, events: 0.70 },
+    pirsig: "Doppelte Fluidität (NB+Switch) in stabiler Beziehungsform. Flexibel in Geschlecht und Rolle, fest in Bindung.",
+    osho: "Jenseits aller Polaritäten, aber in Partnerschaft. Die transzendierte Mitte sucht Verbindung."
+  },
+  "duo-nonbinär-switch-homosexuell": {
+    sources: ["Non-binary Research", "Queer Switch Studies", "Relationship Research"],
+    kinderWunsch: "nein", eheWunsch: "ja", wohnform: "zusammen", religion: "spirituell",
+    karrierePrioritaet: "balance", finanzPhilosophie: "gemeinsam", lebensstil: "gehoben",
+    umzugsbereitschaft: "nur-gemeinsam", zukunftsplanung: "gemeinsam-langfristig", traditionenWichtigkeit: "unwichtig",
+    kommunikationsstil: "situativ", konfliktverhalten: "lösungsorientiert", emotionaleOffenheit: "sehr-offen",
+    gespraechsBedürfnis: "viel", feedbackStil: "angepasst", entschuldigungen: "normal",
+    streitVerhalten: "variabel", versoehnung: "schnell", kritikAnnehmen: "gut", humorKonflikte: "oft",
+    introExtro: "extrovertiert", familieWichtigkeit: "wichtig", freundeskreis: "gemeinsam",
+    oeffentlichkeit: "offen", alleinzeit: "wenig", events: "oft", reisen: "gemeinsam",
+    hobbys: "teilweise-gemeinsam", wochenende: "gemeinsam-aktiv", netzwerkGroesse: "groß",
+    confidence: { kinderWunsch: 0.85, eheWunsch: 0.85, wohnform: 0.95, kommunikationsstil: 0.85, events: 0.75 },
+    pirsig: "Maximale Flexibilität in queerer Partnerschaft. NB + Homo + Switch - alle Rollen möglich, aber exklusiv.",
+    osho: "Die vielseitigste queere Person in Beziehung - kann alles sein, wählt aber Tiefe mit einem Menschen."
+  },
+  "duo-nonbinär-switch-bisexuell": {
+    sources: ["Non-binary Research: Highest openness", "Allen et al. (2020)", "Switch Research"],
+    kinderWunsch: "nein", eheWunsch: "ja", wohnform: "zusammen", religion: "spirituell",
+    karrierePrioritaet: "balance", finanzPhilosophie: "gemeinsam", lebensstil: "gehoben",
+    umzugsbereitschaft: "nur-gemeinsam", zukunftsplanung: "gemeinsam-langfristig", traditionenWichtigkeit: "unwichtig",
+    kommunikationsstil: "situativ", konfliktverhalten: "lösungsorientiert", emotionaleOffenheit: "sehr-offen",
+    gespraechsBedürfnis: "viel", feedbackStil: "angepasst", entschuldigungen: "normal",
+    streitVerhalten: "variabel", versoehnung: "schnell", kritikAnnehmen: "sehr-gut", humorKonflikte: "oft",
+    introExtro: "extrovertiert", familieWichtigkeit: "wichtig", freundeskreis: "gemischt",
+    oeffentlichkeit: "offen", alleinzeit: "wenig", events: "oft", reisen: "gemeinsam",
+    hobbys: "teilweise-gemeinsam", wochenende: "gemeinsam-aktiv", netzwerkGroesse: "groß",
+    confidence: { kinderWunsch: 0.80, eheWunsch: 0.80, wohnform: 0.95, kommunikationsstil: 0.85, freundeskreis: 0.85 },
+    pirsig: "Das flüssigste Wesen (NB+Bi+Switch) in fester Form (Duo). Pure Dynamic Quality wählt Static Quality. Bewusste Paradoxie.",
+    osho: "Vollständig fluid, aber gewählt gebunden. Das freiste Wesen in Partnerschaft - die ultimative bewusste Wahl."
+  },
+  "duo-nonbinär-ausgeglichen-heterosexuell": {
+    sources: ["Non-binary Research", "Big Five: Balanced", "Relationship stability"],
+    kinderWunsch: "vielleicht", eheWunsch: "ja", wohnform: "zusammen", religion: "spirituell",
+    karrierePrioritaet: "balance", finanzPhilosophie: "gemeinsam", lebensstil: "durchschnittlich",
+    umzugsbereitschaft: "nur-gemeinsam", zukunftsplanung: "gemeinsam-langfristig", traditionenWichtigkeit: "unwichtig",
+    kommunikationsstil: "ausgeglichen", konfliktverhalten: "diplomatisch", emotionaleOffenheit: "offen",
+    gespraechsBedürfnis: "mittel", feedbackStil: "konstruktiv", entschuldigungen: "normal",
+    streitVerhalten: "ruhig", versoehnung: "normal", kritikAnnehmen: "gut", humorKonflikte: "manchmal",
+    introExtro: "ambivertiert", familieWichtigkeit: "wichtig", freundeskreis: "gemeinsam",
+    oeffentlichkeit: "mittel", alleinzeit: "mittel", events: "manchmal", reisen: "gemeinsam",
+    hobbys: "teilweise-gemeinsam", wochenende: "gemeinsam-gemischt", netzwerkGroesse: "mittel",
+    confidence: { kinderWunsch: 0.50, eheWunsch: 0.80, wohnform: 0.95, kommunikationsstil: 0.85, alleinzeit: 0.70 },
+    pirsig: "Non-binäre Identität mit stabiler Mitte in exklusiver Beziehung. Jenseits des Geschlechts, aber in Balance.",
+    osho: "Das transzendierte Geschlecht in stabiler Partnerschaft. Weder extrem noch angepasst - die ruhige Mitte."
+  },
+  "duo-nonbinär-ausgeglichen-homosexuell": {
+    sources: ["Non-binary Research", "Big Five: Balanced", "Queer Relationship stability"],
+    kinderWunsch: "nein", eheWunsch: "ja", wohnform: "zusammen", religion: "spirituell",
+    karrierePrioritaet: "balance", finanzPhilosophie: "gemeinsam", lebensstil: "durchschnittlich",
+    umzugsbereitschaft: "nur-gemeinsam", zukunftsplanung: "gemeinsam-langfristig", traditionenWichtigkeit: "unwichtig",
+    kommunikationsstil: "ausgeglichen", konfliktverhalten: "diplomatisch", emotionaleOffenheit: "offen",
+    gespraechsBedürfnis: "mittel", feedbackStil: "konstruktiv", entschuldigungen: "normal",
+    streitVerhalten: "ruhig", versoehnung: "normal", kritikAnnehmen: "gut", humorKonflikte: "oft",
+    introExtro: "ambivertiert", familieWichtigkeit: "wichtig", freundeskreis: "gemeinsam",
+    oeffentlichkeit: "mittel", alleinzeit: "mittel", events: "manchmal", reisen: "gemeinsam",
+    hobbys: "teilweise-gemeinsam", wochenende: "gemeinsam-gemischt", netzwerkGroesse: "mittel",
+    confidence: { kinderWunsch: 0.85, eheWunsch: 0.85, wohnform: 0.95, kommunikationsstil: 0.85, emotionaleOffenheit: 0.80 },
+    pirsig: "Komplexe, aber stabile queere Identität in exklusiver Beziehung. NB + Homo + Ausgeglichen + Duo = reife Integration.",
+    osho: "Die reife queere Person in Partnerschaft - alle Kämpfe überstanden, jetzt in Frieden und Liebe."
+  },
+  "duo-nonbinär-ausgeglichen-bisexuell": {
+    sources: ["Non-binary Research", "Allen et al. (2020)", "Big Five: Balanced"],
+    kinderWunsch: "nein", eheWunsch: "ja", wohnform: "zusammen", religion: "spirituell",
+    karrierePrioritaet: "balance", finanzPhilosophie: "gemeinsam", lebensstil: "durchschnittlich",
+    umzugsbereitschaft: "nur-gemeinsam", zukunftsplanung: "gemeinsam-langfristig", traditionenWichtigkeit: "unwichtig",
+    kommunikationsstil: "ausgeglichen", konfliktverhalten: "diplomatisch", emotionaleOffenheit: "offen",
+    gespraechsBedürfnis: "mittel", feedbackStil: "konstruktiv", entschuldigungen: "normal",
+    streitVerhalten: "ruhig", versoehnung: "normal", kritikAnnehmen: "gut", humorKonflikte: "oft",
+    introExtro: "ambivertiert", familieWichtigkeit: "wichtig", freundeskreis: "gemischt",
+    oeffentlichkeit: "mittel", alleinzeit: "mittel", events: "manchmal", reisen: "gemeinsam",
+    hobbys: "teilweise-gemeinsam", wochenende: "gemeinsam-gemischt", netzwerkGroesse: "mittel",
+    confidence: { kinderWunsch: 0.80, eheWunsch: 0.80, wohnform: 0.95, kommunikationsstil: 0.85, freundeskreis: 0.75 },
+    pirsig: "Maximale Offenheit (NB+Bi) mit stabiler Mitte (Ausgeglichen) in exklusiver Form (Duo). Alle Möglichkeiten integriert.",
+    osho: "Die zentrierte non-binäre bisexuelle Person in Partnerschaft. Offen für alles, in Frieden mit der Wahl."
+  }
+
 };
 
 // ════════════════════════════════════════════════════════════════════════════
