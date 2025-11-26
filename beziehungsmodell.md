@@ -12,10 +12,10 @@ Das Modell verbindet zwei Traditionen durch Tiage's Online-Recherche und Reflexi
 - **Statische Qualität** → Logos (Struktur, Stabilität, Regeln)
 - **Dynamische Qualität** → Pathos (Veränderung, Wachstum, Gefühl)
 
-### OSHO - Polarität und Balance
-- Gegensätze ziehen sich an
-- Balance zwischen Polaritäten = Gesundheit
-- "Nur Extreme können sich wirklich anziehen"
+### OSHO - Bewusstsein durch Meditation
+- Bewusstsein über Polarität, Balance, Schwingung
+- Meditation als Weg zur Klarheit
+- Loslassen (Let Go) ermöglicht echte Verbindung
 
 ---
 

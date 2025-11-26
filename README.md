@@ -7,7 +7,7 @@ Eine eigenständige Synthese zur Analyse von Beziehungskompatibilität, entwicke
 Das Modell verbindet zwei Traditionen:
 
 - **MOQ (Robert M. Pirsig):** Metaphysik der Qualität - statische vs. dynamische Qualität
-- **OSHO:** Polarität und Balance - Gegensätze als Quelle der Anziehung
+- **OSHO:** Bewusstsein durch Meditation - Polarität, Balance, Schwingung
 
 **Tiage's Beitrag:** Die praktische Verbindung beider Philosophien zu einem Beziehungs-Rechner mit eigener Gewichtung und Archetypen-Matrix.
 

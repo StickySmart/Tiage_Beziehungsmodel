@@ -5,7 +5,7 @@
 Eine **eigenständige Synthese** von Tiage, entwickelt durch Online-Recherche und persönliche Reflexion. Das Modell verbindet zwei philosophische Traditionen:
 
 - **MOQ (Robert M. Pirsig):** Metaphysik der Qualität - statische vs. dynamische Qualität
-- **OSHO:** Polarität und Balance - Gegensätze als Quelle der Anziehung
+- **OSHO:** Bewusstsein durch Meditation - Polarität, Balance, Schwingung
 
 **Tiage's Beitrag:** Die praktische Verbindung beider Philosophien zu einem Beziehungs-Rechner mit konkreter Gewichtung und Archetypen-Matrix.
 
