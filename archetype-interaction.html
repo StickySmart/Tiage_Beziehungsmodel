@@ -1120,6 +1120,52 @@
             color: white;
         }
 
+        /* Archetype Navigation Buttons */
+        .archetype-nav-btn {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.1);
+            border: none;
+            color: var(--text-secondary);
+            font-size: 1.4rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .archetype-nav-btn:hover {
+            background: var(--primary);
+            color: white;
+        }
+
+        .archetype-dots {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            margin-bottom: 15px;
+        }
+
+        .archetype-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.2);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .archetype-dot.active {
+            background: var(--primary);
+            transform: scale(1.3);
+        }
+
+        .archetype-dot:hover {
+            background: var(--primary-light);
+        }
+
         .modal-body {
             padding: 20px;
         }
@@ -4353,12 +4399,15 @@
 
     <!-- Archetype Info Modal (Feature 4) -->
     <div class="modal-overlay" id="archetypeInfoModal" onclick="closeArchetypeInfoModal(event)">
-        <div class="modal" onclick="event.stopPropagation()">
+        <div class="modal" onclick="event.stopPropagation()" style="position: relative;">
             <div class="modal-header">
+                <button class="archetype-nav-btn" onclick="navigateArchetype(-1)" title="Vorheriger Archetyp">&#8249;</button>
                 <span class="modal-title" id="archetypeInfoTitle">Archetyp-Info</span>
+                <button class="archetype-nav-btn" onclick="navigateArchetype(1)" title="Nächster Archetyp">&#8250;</button>
                 <button class="modal-close" onclick="closeArchetypeInfoModal()">&times;</button>
             </div>
             <div class="modal-body" id="archetypeInfoBody">
+                <div class="archetype-dots" id="archetypeDots"></div>
                 <h3>Definition</h3>
                 <p id="archetypeInfoDefinition"></p>
                 <h3>Merkmale</h3>
@@ -10341,6 +10390,9 @@
         // FEATURE 4: Archetype Info Modal
         // ========================================
 
+        const archetypeOrder = ['single', 'duo', 'duo_flex', 'solopoly', 'poly_hedo', 'polyamor'];
+        let currentArchetypeIndex = 0;
+
         const archetypeInfoData = {
             single: {
                 title: 'Single',
@@ -10414,7 +10466,26 @@
             const def = archetypeInfoData[archetypeId];
             if (!def) return;
 
-            document.getElementById('archetypeInfoTitle').textContent = def.title;
+            // Update current index
+            currentArchetypeIndex = archetypeOrder.indexOf(archetypeId);
+            if (currentArchetypeIndex === -1) currentArchetypeIndex = 0;
+
+            updateArchetypeContent(archetypeId);
+            updateArchetypeDots();
+
+            document.getElementById('archetypeInfoModal').classList.add('active');
+
+            // Add touch swipe support
+            const modal = document.querySelector('#archetypeInfoModal .modal');
+            modal.ontouchstart = handleArchetypeTouchStart;
+            modal.ontouchend = handleArchetypeTouchEnd;
+        }
+
+        function updateArchetypeContent(archetypeId) {
+            const def = archetypeInfoData[archetypeId];
+            if (!def) return;
+
+            document.getElementById('archetypeInfoTitle').textContent = def.title + ' - Definition';
             document.getElementById('archetypeInfoDefinition').textContent = def.definition;
 
             const featuresList = document.getElementById('archetypeInfoFeatures');
@@ -10426,8 +10497,43 @@
             });
 
             document.getElementById('archetypeInfoMatch').textContent = def.match;
+        }
 
-            document.getElementById('archetypeInfoModal').classList.add('active');
+        function updateArchetypeDots() {
+            const dotsContainer = document.getElementById('archetypeDots');
+            dotsContainer.innerHTML = '';
+            archetypeOrder.forEach((id, index) => {
+                const dot = document.createElement('span');
+                dot.className = 'archetype-dot' + (index === currentArchetypeIndex ? ' active' : '');
+                dot.onclick = () => {
+                    currentArchetypeIndex = index;
+                    updateArchetypeContent(archetypeOrder[index]);
+                    updateArchetypeDots();
+                };
+                dotsContainer.appendChild(dot);
+            });
+        }
+
+        function navigateArchetype(direction) {
+            currentArchetypeIndex += direction;
+            if (currentArchetypeIndex < 0) currentArchetypeIndex = archetypeOrder.length - 1;
+            if (currentArchetypeIndex >= archetypeOrder.length) currentArchetypeIndex = 0;
+
+            updateArchetypeContent(archetypeOrder[currentArchetypeIndex]);
+            updateArchetypeDots();
+        }
+
+        let archetypeTouchStartX = 0;
+        function handleArchetypeTouchStart(e) {
+            archetypeTouchStartX = e.touches[0].clientX;
+        }
+
+        function handleArchetypeTouchEnd(e) {
+            const touchEndX = e.changedTouches[0].clientX;
+            const diff = archetypeTouchStartX - touchEndX;
+            if (Math.abs(diff) > 50) {
+                navigateArchetype(diff > 0 ? 1 : -1);
+            }
         }
 
         function closeArchetypeInfoModal(event) {
