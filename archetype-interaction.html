@@ -4562,11 +4562,14 @@
         <div class="result-bar">
             <div id="warningsContainer"></div>
             <div class="result-header">
-                <div class="result-title">
-                    <span class="type-name" id="resultIchType">Single</span>
-                    <span> × </span>
-                    <span class="type-name" id="resultPartnerType">Duo</span>
-                    <span style="font-size: var(--font-xs); color: var(--text-muted); margin-left: 8px;">Qualitätsindex</span>
+                <div class="result-title" style="display: flex; flex-direction: column; align-items: flex-start; gap: 4px;">
+                    <div>
+                        <span class="type-name" id="resultIchType">Single</span>
+                        <span> × </span>
+                        <span class="type-name" id="resultPartnerType">Duo</span>
+                        <span style="font-size: var(--font-xs); color: var(--text-muted); margin-left: 8px;">Qualitätsindex</span>
+                    </div>
+                    <button onclick="openHelpModal()" style="background: transparent; border: 1px solid var(--text-muted); color: var(--text-muted); width: 18px; height: 18px; border-radius: 50%; font-size: 11px; cursor: pointer; display: flex; align-items: center; justify-content: center; margin-left: auto; margin-right: auto; transition: all 0.2s;" onmouseover="this.style.borderColor='var(--primary)'; this.style.color='var(--primary)';" onmouseout="this.style.borderColor='var(--text-muted)'; this.style.color='var(--text-muted)';" title="Hilfe zum Qualitätsindex">?</button>
                 </div>
                 <div class="result-percentage" id="resultPercentage">0%</div>
             </div>
