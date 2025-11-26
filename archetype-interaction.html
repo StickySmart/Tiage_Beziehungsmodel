@@ -4863,6 +4863,7 @@
             </div>
             <div class="modal-body">
                 <p class="modal-subtitle" id="factorModalSubtitle"></p>
+                <div id="factorModalComboCode" style="font-size: 11px; color: var(--text-muted); background: rgba(255,255,255,0.05); padding: 4px 10px; border-radius: 6px; display: inline-block; margin-bottom: 10px; font-family: monospace;"></div>
                 <div class="score-display" id="factorModalScore">0%</div>
                 <div class="explanation">
                     <h4>Warum dieser Score?</h4>
@@ -11451,6 +11452,17 @@
             // Update modal content
             document.getElementById('factorModalTitle').textContent = factor.title;
             document.getElementById('factorModalSubtitle').textContent = factor.subtitle;
+
+            // Show combination code for archetyp factor
+            const comboCodeEl = document.getElementById('factorModalComboCode');
+            if (factorType === 'archetyp' && ich && partner) {
+                const comboCode = `${ich}_${partner}`;
+                comboCodeEl.textContent = `Code: ${comboCode}`;
+                comboCodeEl.style.display = 'inline-block';
+            } else {
+                comboCodeEl.style.display = 'none';
+            }
+
             document.getElementById('factorModalScore').textContent = score + '%';
             document.getElementById('factorModalExplanation').textContent = factor.getExplanation(ich, partner, score, dimensions);
 
