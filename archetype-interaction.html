@@ -9135,6 +9135,7 @@
                 radio.addEventListener('change', (e) => {
                     personDimensions.ich.geschlecht = e.target.value;
                     e.target.closest('.compact-dimension').classList.remove('needs-selection');
+                    updateAnalysisOverview();
                     updateComparisonView();
                 });
             });
@@ -9142,6 +9143,7 @@
                 radio.addEventListener('change', (e) => {
                     personDimensions.ich.dominanz = e.target.value;
                     e.target.closest('.compact-dimension').classList.remove('needs-selection');
+                    updateAnalysisOverview();
                     updateComparisonView();
                 });
             });
@@ -9155,6 +9157,7 @@
                 radio.addEventListener('change', (e) => {
                     personDimensions.ich.orientierungStatus = e.target.value;
                     e.target.closest('.compact-dimension').classList.remove('needs-selection');
+                    updateAnalysisOverview();
                     updateComparisonView();
                 });
             });
@@ -9164,6 +9167,7 @@
                 radio.addEventListener('change', (e) => {
                     personDimensions.partner.geschlecht = e.target.value;
                     e.target.closest('.compact-dimension').classList.remove('needs-selection');
+                    updateAnalysisOverview();
                     updateComparisonView();
                 });
             });
@@ -9171,6 +9175,7 @@
                 radio.addEventListener('change', (e) => {
                     personDimensions.partner.dominanz = e.target.value;
                     e.target.closest('.compact-dimension').classList.remove('needs-selection');
+                    updateAnalysisOverview();
                     updateComparisonView();
                 });
             });
@@ -9184,6 +9189,7 @@
                 radio.addEventListener('change', (e) => {
                     personDimensions.partner.orientierungStatus = e.target.value;
                     e.target.closest('.compact-dimension').classList.remove('needs-selection');
+                    updateAnalysisOverview();
                     updateComparisonView();
                 });
             });
