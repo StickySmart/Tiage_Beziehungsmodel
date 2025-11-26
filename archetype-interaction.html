@@ -171,6 +171,268 @@
             transform: translateY(-1px);
         }
 
+        /* View Comments Button (Yellow) */
+        .view-comments-btn {
+            background: linear-gradient(135deg, #f1c40f, #f39c12);
+            color: #1a1a2e;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 25px;
+            font-size: var(--font-sm);
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .view-comments-btn:hover {
+            background: linear-gradient(135deg, #f39c12, #e67e22);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 15px rgba(241, 196, 15, 0.4);
+        }
+
+        /* Comments List Modal */
+        .comments-list-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.9);
+            z-index: 2200;
+            display: none;
+            align-items: flex-start;
+            justify-content: center;
+            padding: 20px;
+            overflow-y: auto;
+        }
+
+        .comments-list-overlay.active {
+            display: flex;
+        }
+
+        .comments-list-modal {
+            background: var(--bg-card);
+            border-radius: 16px;
+            max-width: 800px;
+            width: 100%;
+            margin: 40px auto;
+            border: 1px solid var(--border);
+        }
+
+        .comments-list-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+            border-bottom: 1px solid var(--border);
+            background: linear-gradient(135deg, rgba(241, 196, 15, 0.1), rgba(243, 156, 18, 0.05));
+        }
+
+        .comments-list-header h2 {
+            color: #f1c40f;
+            margin: 0;
+            font-size: var(--font-lg);
+        }
+
+        .comments-list-body {
+            padding: 20px;
+            max-height: 60vh;
+            overflow-y: auto;
+        }
+
+        .comments-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .comment-card {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            margin-bottom: 15px;
+            overflow: hidden;
+        }
+
+        .comment-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 15px;
+            background: rgba(255,255,255,0.05);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .comment-author {
+            font-weight: 600;
+            color: var(--primary);
+        }
+
+        .comment-date {
+            font-size: 11px;
+            color: var(--text-muted);
+        }
+
+        .comment-type-badge {
+            font-size: 10px;
+            padding: 3px 8px;
+            border-radius: 10px;
+            background: var(--primary);
+            color: white;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .comment-card-body {
+            padding: 15px;
+        }
+
+        .comment-title {
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+        }
+
+        .comment-text {
+            color: var(--text-secondary);
+            line-height: 1.5;
+            font-size: var(--font-sm);
+        }
+
+        .comment-context {
+            font-size: 11px;
+            color: var(--text-muted);
+            margin-top: 10px;
+            padding-top: 10px;
+            border-top: 1px solid var(--border);
+        }
+
+        .comment-card-footer {
+            padding: 10px 15px;
+            background: rgba(255,255,255,0.02);
+            border-top: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .reply-btn {
+            background: transparent;
+            border: 1px solid var(--primary);
+            color: var(--primary);
+            padding: 6px 12px;
+            border-radius: 15px;
+            font-size: 11px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .reply-btn:hover {
+            background: var(--primary);
+            color: white;
+        }
+
+        .replies-section {
+            margin-left: 20px;
+            padding-left: 15px;
+            border-left: 2px solid var(--primary);
+            margin-top: 10px;
+        }
+
+        .reply-card {
+            background: rgba(69, 123, 157, 0.1);
+            border-radius: 8px;
+            padding: 12px;
+            margin-bottom: 10px;
+        }
+
+        .reply-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+        }
+
+        .reply-author {
+            font-weight: 600;
+            color: var(--primary);
+            font-size: 12px;
+        }
+
+        .reply-date {
+            font-size: 10px;
+            color: var(--text-muted);
+        }
+
+        .reply-text {
+            color: var(--text-secondary);
+            font-size: 12px;
+            line-height: 1.4;
+        }
+
+        .reply-form {
+            margin-top: 15px;
+            padding: 15px;
+            background: rgba(255,255,255,0.03);
+            border-radius: 10px;
+            display: none;
+        }
+
+        .reply-form.active {
+            display: block;
+        }
+
+        .reply-form textarea {
+            width: 100%;
+            min-height: 80px;
+            background: var(--bg-dark);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 10px;
+            color: var(--text-primary);
+            font-size: 13px;
+            resize: vertical;
+            margin-bottom: 10px;
+        }
+
+        .reply-form-buttons {
+            display: flex;
+            gap: 10px;
+            justify-content: flex-end;
+        }
+
+        .reply-cancel-btn {
+            background: transparent;
+            border: 1px solid var(--text-muted);
+            color: var(--text-muted);
+            padding: 8px 15px;
+            border-radius: 8px;
+            font-size: 12px;
+            cursor: pointer;
+        }
+
+        .reply-submit-btn {
+            background: var(--primary);
+            border: none;
+            color: white;
+            padding: 8px 15px;
+            border-radius: 8px;
+            font-size: 12px;
+            cursor: pointer;
+        }
+
+        .no-comments {
+            text-align: center;
+            padding: 40px;
+            color: var(--text-muted);
+        }
+
+        .no-comments-icon {
+            font-size: 48px;
+            margin-bottom: 15px;
+        }
+
         /* Documentation Section */
         .documentation-section {
             border-top: 2px solid var(--border);
@@ -4139,9 +4401,14 @@
                 <!-- KOMMENTAR-SEKTION -->
                 <div class="comment-section">
                     <p>Fragen, Feedback oder Verbesserungsvorschläge?</p>
-                    <button class="comment-btn" onclick="openCommentModal()">
-                        Kommentar senden
-                    </button>
+                    <div style="display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;">
+                        <button class="comment-btn" onclick="openCommentModal()">
+                            Kommentar senden
+                        </button>
+                        <button class="view-comments-btn" onclick="openCommentsListModal()">
+                            📋 Alle Kommentare
+                        </button>
+                    </div>
                 </div>
 
                 <!-- DOKUMENTATION -->
@@ -4320,6 +4587,22 @@
                     <textarea id="commentText" placeholder="Schreibe hier deine Frage oder dein Feedback..."></textarea>
                 </div>
                 <button class="comment-submit-btn" id="commentSubmitBtn" onclick="submitComment()">Absenden</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Comments List Modal -->
+    <div class="comments-list-overlay" id="commentsListModal" onclick="closeCommentsListModal(event)">
+        <div class="comments-list-modal" onclick="event.stopPropagation()">
+            <div class="comments-list-header">
+                <h2>📋 Alle Kommentare</h2>
+                <button class="help-modal-close" onclick="closeCommentsListModal()">&times;</button>
+            </div>
+            <div class="comments-list-body" id="commentsListBody">
+                <div class="no-comments">
+                    <div class="no-comments-icon">💬</div>
+                    <p>Lade Kommentare...</p>
+                </div>
             </div>
         </div>
     </div>
@@ -10404,6 +10687,250 @@
         }
 
         // ========================================
+        // COMMENTS LIST MODAL FUNCTIONS
+        // ========================================
+
+        let allCommentsData = [];
+
+        function openCommentsListModal() {
+            console.log('openCommentsListModal called');
+            document.getElementById('commentsListModal').classList.add('active');
+            document.body.style.overflow = 'hidden';
+            loadAllComments();
+        }
+
+        function closeCommentsListModal(event) {
+            if (event && event.target !== event.currentTarget) return;
+            document.getElementById('commentsListModal').classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        async function loadAllComments() {
+            const container = document.getElementById('commentsListBody');
+            container.innerHTML = '<div class="no-comments"><div class="no-comments-icon">⏳</div><p>Lade Kommentare...</p></div>';
+
+            try {
+                // Load from localStorage (comments)
+                const localComments = JSON.parse(localStorage.getItem('tiage_comments') || '[]');
+                // Load from localStorage (feedback)
+                const localFeedback = JSON.parse(localStorage.getItem('tiage_feedback') || '[]');
+
+                // Combine both sources
+                allCommentsData = [...localComments, ...localFeedback];
+
+                // Try to load from server if available
+                if (typeof GOOGLE_SCRIPT_URL !== 'undefined' && GOOGLE_SCRIPT_URL) {
+                    try {
+                        const response = await fetch(GOOGLE_SCRIPT_URL);
+                        const serverData = await response.json();
+                        // Merge server data with local data (avoiding duplicates by ID)
+                        const localIds = new Set(allCommentsData.map(c => c.id || c.ID));
+                        serverData.forEach(item => {
+                            if (!localIds.has(item.id || item.ID)) {
+                                allCommentsData.push(item);
+                            }
+                        });
+                    } catch (e) {
+                        console.log('Server not available, using local data only');
+                    }
+                }
+
+                // Sort by date (newest first)
+                allCommentsData.sort((a, b) => {
+                    const dateA = new Date(a.timestamp || a.Timestamp || a.datum || 0);
+                    const dateB = new Date(b.timestamp || b.Timestamp || b.datum || 0);
+                    return dateB - dateA;
+                });
+
+                renderCommentsList();
+            } catch (error) {
+                console.error('Error loading comments:', error);
+                container.innerHTML = '<div class="no-comments"><div class="no-comments-icon">❌</div><p>Fehler beim Laden der Kommentare</p></div>';
+            }
+        }
+
+        function renderCommentsList() {
+            const container = document.getElementById('commentsListBody');
+
+            if (allCommentsData.length === 0) {
+                container.innerHTML = `
+                    <div class="no-comments">
+                        <div class="no-comments-icon">💬</div>
+                        <p>Noch keine Kommentare vorhanden.</p>
+                        <p style="font-size: 12px; margin-top: 10px;">Sei der Erste, der einen Kommentar hinterlässt!</p>
+                    </div>
+                `;
+                return;
+            }
+
+            // Separate main comments from replies
+            const mainComments = allCommentsData.filter(c => !(c.AntwortAuf || c.antwortAuf || c.replyTo));
+            const replies = allCommentsData.filter(c => (c.AntwortAuf || c.antwortAuf || c.replyTo));
+
+            let html = '';
+
+            mainComments.forEach((comment, index) => {
+                const id = comment.id || comment.ID || `comment-${index}`;
+                const name = comment.Name || comment.name || 'Anonym';
+                const titel = comment.Titel || comment.titel || comment.type || '';
+                const text = comment.Kommentar || comment.kommentar || comment.text || comment.comment || '';
+                const kontext = comment.KontextID || comment.kontextId || comment.context || '';
+                const typ = comment.Typ || comment.typ || comment.type || 'feedback';
+                const timestamp = comment.timestamp || comment.Timestamp || comment.datum;
+                const date = timestamp ? formatCommentDate(timestamp) : '';
+
+                // Find replies to this comment
+                const commentReplies = replies.filter(r =>
+                    (r.AntwortAuf || r.antwortAuf || r.replyTo) === id
+                );
+
+                html += `
+                    <div class="comment-card" data-id="${id}">
+                        <div class="comment-card-header">
+                            <div>
+                                <span class="comment-author">${escapeHtml(name)}</span>
+                                <span class="comment-date">${date}</span>
+                            </div>
+                            <span class="comment-type-badge">${getTypeBadge(typ)}</span>
+                        </div>
+                        <div class="comment-card-body">
+                            ${titel ? `<div class="comment-title">${escapeHtml(titel)}</div>` : ''}
+                            <div class="comment-text">${escapeHtml(text)}</div>
+                            ${kontext ? `<div class="comment-context">📍 Kontext: ${escapeHtml(kontext)}</div>` : ''}
+                        </div>
+                        ${commentReplies.length > 0 ? renderReplies(commentReplies) : ''}
+                        <div class="comment-card-footer">
+                            <span style="font-size: 11px; color: var(--text-muted);">${commentReplies.length} Antwort${commentReplies.length !== 1 ? 'en' : ''}</span>
+                            <button class="reply-btn" onclick="toggleReplyForm('${id}')">↩ Antworten</button>
+                        </div>
+                        <div class="reply-form" id="reply-form-${id}">
+                            <input type="text" id="reply-name-${id}" placeholder="Dein Name" style="width: 100%; padding: 8px; margin-bottom: 10px; background: var(--bg-dark); border: 1px solid var(--border); border-radius: 6px; color: var(--text-primary);">
+                            <textarea id="reply-text-${id}" placeholder="Deine Antwort..."></textarea>
+                            <div class="reply-form-buttons">
+                                <button class="reply-cancel-btn" onclick="toggleReplyForm('${id}')">Abbrechen</button>
+                                <button class="reply-submit-btn" onclick="submitReply('${id}')">Antworten</button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+
+            container.innerHTML = html;
+        }
+
+        function renderReplies(replies) {
+            let html = '<div class="replies-section">';
+            replies.forEach(reply => {
+                const name = reply.Name || reply.name || 'Anonym';
+                const text = reply.Kommentar || reply.kommentar || reply.text || '';
+                const timestamp = reply.timestamp || reply.Timestamp;
+                const date = timestamp ? formatCommentDate(timestamp) : '';
+
+                html += `
+                    <div class="reply-card">
+                        <div class="reply-header">
+                            <span class="reply-author">${escapeHtml(name)}</span>
+                            <span class="reply-date">${date}</span>
+                        </div>
+                        <div class="reply-text">${escapeHtml(text)}</div>
+                    </div>
+                `;
+            });
+            html += '</div>';
+            return html;
+        }
+
+        function toggleReplyForm(commentId) {
+            const form = document.getElementById(`reply-form-${commentId}`);
+            if (form) {
+                form.classList.toggle('active');
+            }
+        }
+
+        async function submitReply(parentId) {
+            const nameInput = document.getElementById(`reply-name-${parentId}`);
+            const textInput = document.getElementById(`reply-text-${parentId}`);
+
+            const name = nameInput?.value.trim() || 'Anonym';
+            const text = textInput?.value.trim();
+
+            if (!text) {
+                alert('Bitte gib eine Antwort ein.');
+                return;
+            }
+
+            const reply = {
+                id: 'reply_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9),
+                Name: name,
+                Kommentar: text,
+                AntwortAuf: parentId,
+                timestamp: new Date().toISOString(),
+                Typ: 'antwort'
+            };
+
+            // Save locally
+            const stored = JSON.parse(localStorage.getItem('tiage_comments') || '[]');
+            stored.push(reply);
+            localStorage.setItem('tiage_comments', JSON.stringify(stored));
+
+            // Try to save to server
+            if (typeof GOOGLE_SCRIPT_URL !== 'undefined' && GOOGLE_SCRIPT_URL) {
+                try {
+                    await fetch(GOOGLE_SCRIPT_URL, {
+                        method: 'POST',
+                        mode: 'no-cors',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(reply)
+                    });
+                } catch (e) {
+                    console.log('Server save failed, reply saved locally');
+                }
+            }
+
+            // Clear form and reload
+            if (nameInput) nameInput.value = '';
+            if (textInput) textInput.value = '';
+            toggleReplyForm(parentId);
+
+            // Reload comments
+            loadAllComments();
+        }
+
+        function formatCommentDate(timestamp) {
+            try {
+                const date = new Date(timestamp);
+                return date.toLocaleDateString('de-DE', {
+                    day: '2-digit',
+                    month: '2-digit',
+                    year: 'numeric',
+                    hour: '2-digit',
+                    minute: '2-digit'
+                });
+            } catch (e) {
+                return '';
+            }
+        }
+
+        function getTypeBadge(typ) {
+            const types = {
+                'frage': 'Frage',
+                'feedback': 'Feedback',
+                'fehler': 'Fehler',
+                'verbesserung': 'Vorschlag',
+                'doku': 'Doku',
+                'antwort': 'Antwort'
+            };
+            return types[typ] || typ || 'Kommentar';
+        }
+
+        function escapeHtml(text) {
+            if (!text) return '';
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        // ========================================
         // FEATURE 4: Archetype Info Modal
         // ========================================
 
@@ -10788,6 +11315,10 @@
         window.closeCommentModal = closeCommentModal;
         window.closeFeedbackModal = closeFeedbackModal;
         window.navigateArchetype = navigateArchetype;
+        window.openCommentsListModal = openCommentsListModal;
+        window.closeCommentsListModal = closeCommentsListModal;
+        window.toggleReplyForm = toggleReplyForm;
+        window.submitReply = submitReply;
 
         console.log('All modal functions are now globally available');
 
