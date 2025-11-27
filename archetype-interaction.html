@@ -12392,7 +12392,7 @@
             }
         }
 
-        function mobileGoToPage(pageNumber) {
+        function mobileGoToPage(pageNumber, skipPushState = false) {
             // Validate before moving from page 1 to page 2
             if (currentMobilePage === 1 && pageNumber === 2 && !validateDimensionsComplete()) {
                 showValidationWarning();
@@ -12424,6 +12424,11 @@
                 updateMobileProContraPage();
             }
             // Page 4 (A-F Kategorien) entfernt - neues 4-Faktoren-Modell
+
+            // Push to browser history for back button navigation (only for forward navigation)
+            if (!skipPushState) {
+                history.pushState({ mobilePage: pageNumber }, '', `#seite${pageNumber}`);
+            }
 
             // Scroll to top
             window.scrollTo(0, 0);
@@ -12811,6 +12816,59 @@
 
             // Listen for window resize
             window.addEventListener('resize', checkAndShowMobileLayout);
+
+            // Initialize browser history for back button support
+            initBrowserHistoryNavigation();
+        }
+
+        function initBrowserHistoryNavigation() {
+            // Set initial state without adding to history
+            history.replaceState({ mobilePage: 1 }, '', '#seite1');
+
+            // Handle browser back/forward button
+            window.addEventListener('popstate', function(event) {
+                // First, close any open modals when going back
+                const factorModal = document.getElementById('factorModal');
+                const helpModal = document.getElementById('helpModal');
+                const commentModal = document.getElementById('commentModal');
+
+                // Check if we're returning FROM a modal state (current modal should close)
+                if (factorModal && factorModal.classList.contains('active')) {
+                    closeFactorModal(null, true);
+                }
+                if (helpModal && helpModal.classList.contains('active')) {
+                    closeHelpModal(null, true);
+                }
+                if (commentModal && commentModal.classList.contains('active')) {
+                    closeCommentModal(null, true);
+                }
+
+                // Navigate to the correct page
+                if (event.state && event.state.mobilePage) {
+                    // Only change page if we're not on a modal state
+                    if (!event.state.modal) {
+                        mobileGoToPage(event.state.mobilePage, true);
+                    }
+                } else {
+                    // If no state, go to page 1
+                    mobileGoToPage(1, true);
+                }
+            });
+
+            // Handle initial load with hash (e.g., direct link to #seite2)
+            const hash = window.location.hash;
+            if (hash && hash.startsWith('#seite')) {
+                const pageNum = parseInt(hash.replace('#seite', ''));
+                if (pageNum >= 1 && pageNum <= 3) {
+                    // Delay to ensure DOM is ready
+                    setTimeout(() => {
+                        // For page 2 and 3, we need valid selections - go to page 1 first
+                        if (pageNum > 1) {
+                            mobileGoToPage(1, true);
+                        }
+                    }, 100);
+                }
+            }
         }
 
         // Initialize when DOM is ready
@@ -13089,11 +13147,17 @@
 
             // Show modal
             document.getElementById('factorModal').classList.add('active');
+            // Push state for back button to close modal
+            history.pushState({ mobilePage: currentMobilePage, modal: 'factor' }, '', `#seite${currentMobilePage}-factor`);
         }
 
-        function closeFactorModal(event) {
+        function closeFactorModal(event, skipHistoryBack = false) {
             if (event && event.target !== event.currentTarget) return;
             document.getElementById('factorModal').classList.remove('active');
+            // Go back in history if not triggered by back button
+            if (!skipHistoryBack && history.state && history.state.modal === 'factor') {
+                history.back();
+            }
         }
 
         // ========================================
@@ -13108,27 +13172,40 @@
                 modal.classList.add('active');
                 document.body.style.overflow = 'hidden';
                 console.log('helpModal activated');
+                // Push state for back button to close modal
+                history.pushState({ mobilePage: currentMobilePage, modal: 'help' }, '', `#seite${currentMobilePage}-help`);
             } else {
                 console.error('helpModal element not found!');
             }
         }
 
-        function closeHelpModal(event) {
+        function closeHelpModal(event, skipHistoryBack = false) {
             if (event && event.target !== event.currentTarget) return;
             document.getElementById('helpModal').classList.remove('active');
             document.body.style.overflow = '';
+            // Go back in history if not triggered by back button
+            if (!skipHistoryBack && history.state && history.state.modal === 'help') {
+                history.back();
+            }
         }
 
-        // Close help modal with Escape key
+        // Close modals with Escape key
         document.addEventListener('keydown', function(e) {
             if (e.key === 'Escape') {
+                const factorModal = document.getElementById('factorModal');
+                if (factorModal && factorModal.classList.contains('active')) {
+                    closeFactorModal();
+                    return;
+                }
                 const helpModal = document.getElementById('helpModal');
                 if (helpModal && helpModal.classList.contains('active')) {
                     closeHelpModal();
+                    return;
                 }
                 const commentModal = document.getElementById('commentModal');
                 if (commentModal && commentModal.classList.contains('active')) {
                     closeCommentModal();
+                    return;
                 }
             }
         });
@@ -13139,15 +13216,21 @@
 
         function openCommentModal() {
             document.getElementById('commentModal').classList.add('active');
+            // Push state for back button to close modal
+            history.pushState({ mobilePage: currentMobilePage, modal: 'comment' }, '', `#seite${currentMobilePage}-comment`);
         }
 
-        function closeCommentModal(event) {
+        function closeCommentModal(event, skipHistoryBack = false) {
             if (event && event.target !== event.currentTarget) return;
             document.getElementById('commentModal').classList.remove('active');
             // Reset form
             document.getElementById('commentName').value = '';
             document.getElementById('commentType').value = 'frage';
             document.getElementById('commentText').value = '';
+            // Go back in history if not triggered by back button
+            if (!skipHistoryBack && history.state && history.state.modal === 'comment') {
+                history.back();
+            }
         }
 
         async function submitComment() {
