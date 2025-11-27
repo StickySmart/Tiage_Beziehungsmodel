@@ -5210,9 +5210,9 @@
     <div class="modal-overlay" id="archetypeInfoModal" onclick="closeArchetypeInfoModal(event)">
         <div class="modal" onclick="event.stopPropagation()" style="position: relative;">
             <div class="modal-header">
-                <button class="archetype-nav-btn" onclick="navigateArchetype(-1)" title="Vorheriger Archetyp">&#8249;</button>
+                <button class="archetype-nav-btn" onclick="navigateArchetypeModal(-1)" title="Vorheriger Archetyp">&#8249;</button>
                 <span class="modal-title" id="archetypeInfoTitle">Archetyp-Info</span>
-                <button class="archetype-nav-btn" onclick="navigateArchetype(1)" title="Nächster Archetyp">&#8250;</button>
+                <button class="archetype-nav-btn" onclick="navigateArchetypeModal(1)" title="Nächster Archetyp">&#8250;</button>
                 <button class="modal-close" onclick="closeArchetypeInfoModal()">&times;</button>
             </div>
             <div class="modal-body" id="archetypeInfoBody">
@@ -5550,6 +5550,7 @@
                     <span>👤</span> ICH
                 </div>
                 <div style="display: flex; gap: 8px; align-items: center; margin-bottom: 12px;">
+                    <button class="archetype-nav-btn" onclick="navigateArchetype('ich', -1)" title="Vorheriger Archetyp">&#9664;</button>
                     <select class="column-select" id="mobileIchSelect">
                         <option value="single" title="Bewusste Entscheidung für ein autonomes Leben ohne Primärbeziehung">Single</option>
                         <option value="duo" title="Traditionelle monogame Zweierbeziehung mit Exklusivität">Duo</option>
@@ -5558,7 +5559,8 @@
                         <option value="poly_hedo" title="Freiheitsorientierte Poly-Orientierung mit Fokus auf Genuss">Poly Hedo</option>
                         <option value="polyamor" title="Mehrere gleichzeitige, ethisch geführte Liebesbeziehungen">Polyamor</option>
                     </select>
-                    <button onclick="openArchetypeInfo(document.getElementById('mobileIchSelect').value)" style="padding: 12px 16px; background: rgba(255,255,255,0.1); border: 1px solid var(--border); border-radius: 8px; color: var(--text-secondary); cursor: pointer; font-size: 14px; font-weight: 600; letter-spacing: 0.5px;" title="Info zum Archetyp">INFO</button>
+                    <button class="archetype-nav-btn" onclick="navigateArchetype('ich', 1)" title="Nächster Archetyp">&#9654;</button>
+                    <button onclick="openArchetypeInfo(document.getElementById('mobileIchSelect').value, 'ich')" style="padding: 12px 16px; background: rgba(255,255,255,0.1); border: 1px solid var(--border); border-radius: 8px; color: var(--text-secondary); cursor: pointer; font-size: 14px; font-weight: 600; letter-spacing: 0.5px;" title="Info zum Archetyp">INFO</button>
                 </div>
                 <div class="column-dimensions" id="mobileIchDimensions">
                     <div class="compact-dimension needs-selection">
@@ -5651,6 +5653,7 @@
                     <span>👥</span> DEIN PARTNER
                 </div>
                 <div style="display: flex; gap: 8px; align-items: center; margin-bottom: 12px;">
+                    <button class="archetype-nav-btn" onclick="navigateArchetype('partner', -1)" title="Vorheriger Archetyp">&#9664;</button>
                     <select class="column-select" id="mobilePartnerSelect">
                         <option value="single" title="Bewusste Entscheidung für ein autonomes Leben ohne Primärbeziehung">Single</option>
                         <option value="duo" selected title="Traditionelle monogame Zweierbeziehung mit Exklusivität">Duo</option>
@@ -5659,7 +5662,8 @@
                         <option value="poly_hedo" title="Freiheitsorientierte Poly-Orientierung mit Fokus auf Genuss">Poly Hedo</option>
                         <option value="polyamor" title="Mehrere gleichzeitige, ethisch geführte Liebesbeziehungen">Polyamor</option>
                     </select>
-                    <button onclick="openArchetypeInfo(document.getElementById('mobilePartnerSelect').value)" style="padding: 12px 16px; background: rgba(255,255,255,0.1); border: 1px solid var(--border); border-radius: 8px; color: var(--text-secondary); cursor: pointer; font-size: 14px; font-weight: 600; letter-spacing: 0.5px;" title="Info zum Archetyp">INFO</button>
+                    <button class="archetype-nav-btn" onclick="navigateArchetype('partner', 1)" title="Nächster Archetyp">&#9654;</button>
+                    <button onclick="openArchetypeInfo(document.getElementById('mobilePartnerSelect').value, 'partner')" style="padding: 12px 16px; background: rgba(255,255,255,0.1); border: 1px solid var(--border); border-radius: 8px; color: var(--text-secondary); cursor: pointer; font-size: 14px; font-weight: 600; letter-spacing: 0.5px;" title="Info zum Archetyp">INFO</button>
                 </div>
                 <div class="column-dimensions" id="mobilePartnerDimensions">
                     <div class="compact-dimension needs-selection">
@@ -6513,7 +6517,9 @@
     <div class="modal-overlay" id="definitionModal" onclick="closeDefinitionModal(event)">
         <div class="modal definition-modal" onclick="event.stopPropagation()">
             <div class="modal-header">
+                <button class="archetype-nav-btn" onclick="navigateDefinitionModal(-1)" title="Vorheriger Archetyp">&#8249;</button>
                 <span class="modal-title" id="definitionModalTitle">Typ-Definition</span>
+                <button class="archetype-nav-btn" onclick="navigateDefinitionModal(1)" title="Nächster Archetyp">&#8250;</button>
                 <button class="modal-close" onclick="closeDefinitionModal()">&times;</button>
             </div>
             <div class="modal-body" id="definitionModalBody"></div>
@@ -8858,6 +8864,25 @@
 
             const newArchetype = archetypeOrder[currentDefinitionIndex];
             showArchetypeInfoByType(newArchetype);
+
+            // Sync the new archetype to the dropdown selection
+            if (currentDefinitionPerson === 'ich') {
+                document.getElementById('ichSelect').value = newArchetype;
+                document.getElementById('mobileIchSelect').value = newArchetype;
+                currentArchetype = newArchetype;
+                mobileIchArchetype = newArchetype;
+            } else if (currentDefinitionPerson === 'partner') {
+                document.getElementById('partnerSelect').value = newArchetype;
+                document.getElementById('mobilePartnerSelect').value = newArchetype;
+                selectedPartner = newArchetype;
+                mobilePartnerArchetype = newArchetype;
+            }
+            updateComparisonView();
+        }
+
+        // Alias for button onclick
+        function navigateDefinitionModal(direction) {
+            navigateDefinition(direction);
         }
 
         function showArchetypeInfoByType(archetypeId) {
@@ -8996,7 +9021,22 @@
 
         function navigateDefinitionToIndex(index) {
             currentDefinitionIndex = index;
-            showArchetypeInfoByType(archetypeOrder[index]);
+            const newArchetype = archetypeOrder[index];
+            showArchetypeInfoByType(newArchetype);
+
+            // Sync the new archetype to the dropdown selection
+            if (currentDefinitionPerson === 'ich') {
+                document.getElementById('ichSelect').value = newArchetype;
+                document.getElementById('mobileIchSelect').value = newArchetype;
+                currentArchetype = newArchetype;
+                mobileIchArchetype = newArchetype;
+            } else if (currentDefinitionPerson === 'partner') {
+                document.getElementById('partnerSelect').value = newArchetype;
+                document.getElementById('mobilePartnerSelect').value = newArchetype;
+                selectedPartner = newArchetype;
+                mobilePartnerArchetype = newArchetype;
+            }
+            updateComparisonView();
         }
 
         function confirmDefinitionSelection() {
@@ -11512,20 +11552,38 @@
         // Navigate through archetypes with forward/backward buttons
         function navigateArchetype(person, direction) {
             const selectId = person === 'ich' ? 'ichSelect' : 'partnerSelect';
+            const mobileSelectId = person === 'ich' ? 'mobileIchSelect' : 'mobilePartnerSelect';
             const select = document.getElementById(selectId);
-            if (!select) return;
+            const mobileSelect = document.getElementById(mobileSelectId);
 
-            const currentIndex = select.selectedIndex;
-            const optionsCount = select.options.length;
+            // Use whichever select is visible/available
+            const activeSelect = select || mobileSelect;
+            if (!activeSelect) return;
+
+            const currentIndex = activeSelect.selectedIndex;
+            const optionsCount = activeSelect.options.length;
             let newIndex = currentIndex + direction;
 
             // Wrap around
             if (newIndex < 0) newIndex = optionsCount - 1;
             if (newIndex >= optionsCount) newIndex = 0;
 
-            select.selectedIndex = newIndex;
-            // Trigger change event
-            select.dispatchEvent(new Event('change'));
+            // Update both desktop and mobile selects
+            if (select) select.selectedIndex = newIndex;
+            if (mobileSelect) mobileSelect.selectedIndex = newIndex;
+
+            // Update global state variables
+            const newValue = activeSelect.options[newIndex].value;
+            if (person === 'ich') {
+                currentArchetype = newValue;
+                mobileIchArchetype = newValue;
+            } else {
+                selectedPartner = newValue;
+                mobilePartnerArchetype = newValue;
+            }
+
+            // Trigger change event on the active select
+            activeSelect.dispatchEvent(new Event('change'));
         }
 
         function initComparisonLayout() {
@@ -14133,6 +14191,7 @@
 
         // archetypeOrder is already declared earlier in the code
         let currentArchetypeIndex = 0;
+        let currentInfoModalPerson = null; // Track which person ('ich' or 'partner') the modal is for
 
         const archetypeInfoData = {
             single: {
@@ -14203,14 +14262,17 @@
             }
         };
 
-        function openArchetypeInfo(archetypeId) {
-            console.log('openArchetypeInfo called with:', archetypeId);
+        function openArchetypeInfo(archetypeId, person = null) {
+            console.log('openArchetypeInfo called with:', archetypeId, 'person:', person);
             const def = archetypeInfoData[archetypeId];
             console.log('archetypeInfoData for', archetypeId, ':', def);
             if (!def) {
                 console.error('No archetype info data found for:', archetypeId);
                 return;
             }
+
+            // Track which person this modal is for
+            currentInfoModalPerson = person;
 
             // Update current index
             currentArchetypeIndex = archetypeOrder.indexOf(archetypeId);
@@ -14253,20 +14315,54 @@
                 dot.className = 'archetype-dot' + (index === currentArchetypeIndex ? ' active' : '');
                 dot.onclick = () => {
                     currentArchetypeIndex = index;
-                    updateArchetypeContent(archetypeOrder[index]);
+                    const newArchetype = archetypeOrder[index];
+                    updateArchetypeContent(newArchetype);
                     updateArchetypeDots();
+
+                    // Sync the new archetype to the dropdown selection
+                    if (currentInfoModalPerson) {
+                        if (currentInfoModalPerson === 'ich') {
+                            document.getElementById('ichSelect').value = newArchetype;
+                            document.getElementById('mobileIchSelect').value = newArchetype;
+                            currentArchetype = newArchetype;
+                            mobileIchArchetype = newArchetype;
+                        } else if (currentInfoModalPerson === 'partner') {
+                            document.getElementById('partnerSelect').value = newArchetype;
+                            document.getElementById('mobilePartnerSelect').value = newArchetype;
+                            selectedPartner = newArchetype;
+                            mobilePartnerArchetype = newArchetype;
+                        }
+                        updateComparisonView();
+                    }
                 };
                 dotsContainer.appendChild(dot);
             });
         }
 
-        function navigateArchetype(direction) {
+        function navigateArchetypeModal(direction) {
             currentArchetypeIndex += direction;
             if (currentArchetypeIndex < 0) currentArchetypeIndex = archetypeOrder.length - 1;
             if (currentArchetypeIndex >= archetypeOrder.length) currentArchetypeIndex = 0;
 
-            updateArchetypeContent(archetypeOrder[currentArchetypeIndex]);
+            const newArchetype = archetypeOrder[currentArchetypeIndex];
+            updateArchetypeContent(newArchetype);
             updateArchetypeDots();
+
+            // Sync the new archetype to the dropdown selection
+            if (currentInfoModalPerson) {
+                if (currentInfoModalPerson === 'ich') {
+                    document.getElementById('ichSelect').value = newArchetype;
+                    document.getElementById('mobileIchSelect').value = newArchetype;
+                    currentArchetype = newArchetype;
+                    mobileIchArchetype = newArchetype;
+                } else if (currentInfoModalPerson === 'partner') {
+                    document.getElementById('partnerSelect').value = newArchetype;
+                    document.getElementById('mobilePartnerSelect').value = newArchetype;
+                    selectedPartner = newArchetype;
+                    mobilePartnerArchetype = newArchetype;
+                }
+                updateComparisonView();
+            }
         }
 
         let archetypeTouchStartX = 0;
@@ -14278,7 +14374,7 @@
             const touchEndX = e.changedTouches[0].clientX;
             const diff = archetypeTouchStartX - touchEndX;
             if (Math.abs(diff) > 50) {
-                navigateArchetype(diff > 0 ? 1 : -1);
+                navigateArchetypeModal(diff > 0 ? 1 : -1);
             }
         }
 
