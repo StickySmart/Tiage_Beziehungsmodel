@@ -5134,6 +5134,21 @@
             </div>
             <div class="modal-body">
                 <p class="modal-subtitle" id="factorModalSubtitle"></p>
+                <!-- Archetype Selection with Navigation -->
+                <div id="factorModalArchetypeNav" style="display: flex; flex-direction: column; gap: 8px; margin-bottom: 15px;">
+                    <div style="display: flex; align-items: center; justify-content: center; gap: 8px;">
+                        <span style="font-size: 11px; color: var(--text-muted); min-width: 50px;">ICH:</span>
+                        <button class="archetype-nav-btn" onclick="navigateFactorArchetype('ich', -1)" title="Vorheriger Archetyp">&#8249;</button>
+                        <span id="factorModalIchCode" style="font-size: 12px; color: var(--text-primary); background: rgba(255,255,255,0.08); padding: 4px 12px; border-radius: 6px; min-width: 80px; text-align: center; font-weight: 600;">Single</span>
+                        <button class="archetype-nav-btn" onclick="navigateFactorArchetype('ich', 1)" title="Nächster Archetyp">&#8250;</button>
+                    </div>
+                    <div style="display: flex; align-items: center; justify-content: center; gap: 8px;">
+                        <span style="font-size: 11px; color: var(--text-muted); min-width: 50px;">Partner:</span>
+                        <button class="archetype-nav-btn" onclick="navigateFactorArchetype('partner', -1)" title="Vorheriger Archetyp">&#8249;</button>
+                        <span id="factorModalPartnerCode" style="font-size: 12px; color: var(--text-primary); background: rgba(255,255,255,0.08); padding: 4px 12px; border-radius: 6px; min-width: 80px; text-align: center; font-weight: 600;">Duo</span>
+                        <button class="archetype-nav-btn" onclick="navigateFactorArchetype('partner', 1)" title="Nächster Archetyp">&#8250;</button>
+                    </div>
+                </div>
                 <div id="factorModalComboCode" style="font-size: 11px; color: var(--text-muted); background: rgba(255,255,255,0.05); padding: 4px 10px; border-radius: 6px; display: inline-block; margin-bottom: 10px; font-family: monospace;"></div>
                 <div class="score-display" id="factorModalScore">0%</div>
                 <div class="explanation">
@@ -13043,6 +13058,10 @@
             const factor = factorExplanations[factorType];
             if (!factor) return;
 
+            // Store current factor type and source for navigation
+            currentFactorType = factorType;
+            currentFactorSource = source;
+
             const ich = mobileIchArchetype;
             const partner = mobilePartnerArchetype;
 
@@ -13065,6 +13084,9 @@
             // Update modal content
             document.getElementById('factorModalTitle').textContent = factor.title;
             document.getElementById('factorModalSubtitle').textContent = factor.subtitle;
+
+            // Update archetype navigation display
+            updateFactorModalArchetypeDisplay();
 
             // Show combination code for archetyp factor
             const comboCodeEl = document.getElementById('factorModalComboCode');
@@ -13094,6 +13116,117 @@
         function closeFactorModal(event) {
             if (event && event.target !== event.currentTarget) return;
             document.getElementById('factorModal').classList.remove('active');
+        }
+
+        // Factor Modal Archetype Navigation
+        let currentFactorType = null;
+        let currentFactorSource = 'mobile';
+
+        function navigateFactorArchetype(person, direction) {
+            // Get current archetype for the person
+            let currentArch;
+            if (person === 'ich') {
+                currentArch = mobileIchArchetype;
+            } else {
+                currentArch = mobilePartnerArchetype;
+            }
+
+            // Find current index and calculate new index
+            let currentIdx = archetypeOrder.indexOf(currentArch);
+            if (currentIdx === -1) currentIdx = 0;
+
+            let newIndex = currentIdx + direction;
+            if (newIndex < 0) newIndex = archetypeOrder.length - 1;
+            if (newIndex >= archetypeOrder.length) newIndex = 0;
+
+            const newArchetype = archetypeOrder[newIndex];
+
+            // Update the actual selections and sync both mobile and desktop
+            if (person === 'ich') {
+                mobileIchArchetype = newArchetype;
+                currentArchetype = newArchetype; // Sync desktop variable
+                // Update mobile and desktop select elements
+                const mobileSelect = document.getElementById('mobileIchSelect');
+                const desktopSelect = document.getElementById('ichSelect');
+                if (mobileSelect) mobileSelect.value = newArchetype;
+                if (desktopSelect) desktopSelect.value = newArchetype;
+            } else {
+                mobilePartnerArchetype = newArchetype;
+                selectedPartner = newArchetype; // Sync desktop variable
+                // Update mobile and desktop select elements
+                const mobileSelect = document.getElementById('mobilePartnerSelect');
+                const desktopSelect = document.getElementById('partnerSelect');
+                if (mobileSelect) mobileSelect.value = newArchetype;
+                if (desktopSelect) desktopSelect.value = newArchetype;
+            }
+
+            // Update the display in the modal
+            updateFactorModalArchetypeDisplay();
+
+            // Trigger full recalculation for both mobile and desktop views
+            if (typeof updateComparisonView === 'function') {
+                updateComparisonView();
+            }
+            if (typeof updateMobileResultPage === 'function') {
+                updateMobileResultPage();
+            }
+            if (typeof updateMobileProContraPage === 'function') {
+                updateMobileProContraPage();
+            }
+
+            // Recalculate and update the modal content after views are updated
+            if (currentFactorType) {
+                // Get updated score from display elements
+                const prefix = currentFactorSource === 'desktop' ? 'desktopFactor' : 'mobileFactor';
+                let score = 0;
+                if (currentFactorType === 'archetyp') {
+                    score = parseInt(document.getElementById(prefix + 'Archetyp')?.textContent) || 0;
+                } else if (currentFactorType === 'dominanz') {
+                    score = parseInt(document.getElementById(prefix + 'Dominanz')?.textContent) || 0;
+                } else if (currentFactorType === 'orientierung') {
+                    score = parseInt(document.getElementById(prefix + 'Orientierung')?.textContent) || 0;
+                } else if (currentFactorType === 'geschlecht') {
+                    score = parseInt(document.getElementById(prefix + 'Geschlecht')?.textContent) || 0;
+                }
+
+                const factor = factorExplanations[currentFactorType];
+                if (factor) {
+                    const ich = mobileIchArchetype;
+                    const partner = mobilePartnerArchetype;
+                    const dimensions = currentFactorSource === 'desktop' ? personDimensions : mobilePersonDimensions;
+
+                    document.getElementById('factorModalScore').textContent = score + '%';
+                    document.getElementById('factorModalExplanation').textContent = factor.getExplanation(ich, partner, score, dimensions);
+
+                    const meaningList = document.getElementById('factorModalMeaning');
+                    meaningList.innerHTML = '';
+                    factor.getMeaning(score).forEach(item => {
+                        const li = document.createElement('li');
+                        li.textContent = item;
+                        meaningList.appendChild(li);
+                    });
+                }
+            }
+        }
+
+        function updateFactorModalArchetypeDisplay() {
+            const ichCodeEl = document.getElementById('factorModalIchCode');
+            const partnerCodeEl = document.getElementById('factorModalPartnerCode');
+
+            if (ichCodeEl) {
+                const ichDef = archetypeDefinitions[mobileIchArchetype];
+                ichCodeEl.textContent = ichDef ? ichDef.name : mobileIchArchetype;
+            }
+            if (partnerCodeEl) {
+                const partnerDef = archetypeDefinitions[mobilePartnerArchetype];
+                partnerCodeEl.textContent = partnerDef ? partnerDef.name : mobilePartnerArchetype;
+            }
+
+            // Update combo code if visible
+            const comboCodeEl = document.getElementById('factorModalComboCode');
+            if (comboCodeEl && comboCodeEl.style.display !== 'none') {
+                comboCodeEl.textContent = `Code: ${mobileIchArchetype}_${mobilePartnerArchetype}`;
+            }
         }
 
         // ========================================
@@ -14371,6 +14504,7 @@
         window.closeArchetypeInfoModal = closeArchetypeInfoModal;
         window.openFactorModal = openFactorModal;
         window.closeFactorModal = closeFactorModal;
+        window.navigateFactorArchetype = navigateFactorArchetype;
         window.closeCategoryModal = closeCategoryModal;
         window.closeDefinitionModal = closeDefinitionModal;
         window.navigateDefinition = navigateDefinition;
