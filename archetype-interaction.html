@@ -10162,6 +10162,20 @@
             const currentStatus = personDimensions[person].dominanz[dominanzType];
             const newStatus = (currentStatus === status) ? null : status;
 
+            // WICHTIG: Nur ein "Gelebt" pro Kategorie erlaubt
+            // Wenn neuer Status 'gelebt' ist, alle anderen 'gelebt' entfernen
+            if (newStatus === 'gelebt') {
+                const dominanzTypes = ['dominant', 'submissiv', 'switch', 'ausgeglichen'];
+                dominanzTypes.forEach(type => {
+                    if (type !== dominanzType && personDimensions[person].dominanz[type] === 'gelebt') {
+                        personDimensions[person].dominanz[type] = null;
+                        if (typeof mobilePersonDimensions !== 'undefined') {
+                            mobilePersonDimensions[person].dominanz[type] = null;
+                        }
+                    }
+                });
+            }
+
             personDimensions[person].dominanz[dominanzType] = newStatus;
             if (typeof mobilePersonDimensions !== 'undefined') {
                 mobilePersonDimensions[person].dominanz[dominanzType] = newStatus;
@@ -10221,6 +10235,20 @@
             // Toggle logic: if same status is clicked, deselect it
             const currentStatus = personDimensions[person].dominanz[dominanzType];
             const newStatus = (currentStatus === status) ? null : status;
+
+            // WICHTIG: Nur ein "Gelebt" pro Kategorie erlaubt
+            // Wenn neuer Status 'gelebt' ist, alle anderen 'gelebt' entfernen
+            if (newStatus === 'gelebt') {
+                const dominanzTypes = ['dominant', 'submissiv', 'switch', 'ausgeglichen'];
+                dominanzTypes.forEach(type => {
+                    if (type !== dominanzType && personDimensions[person].dominanz[type] === 'gelebt') {
+                        personDimensions[person].dominanz[type] = null;
+                        if (typeof mobilePersonDimensions !== 'undefined') {
+                            mobilePersonDimensions[person].dominanz[type] = null;
+                        }
+                    }
+                });
+            }
 
             if (typeof mobilePersonDimensions !== 'undefined') {
                 mobilePersonDimensions[person].dominanz[dominanzType] = newStatus;
@@ -10285,6 +10313,20 @@
             // Toggle logic: if same status is clicked, deselect it
             const currentStatus = personDimensions[person].dominanz[dominanzType];
             const newStatus = (currentStatus === status) ? null : status;
+
+            // WICHTIG: Nur ein "Gelebt" pro Kategorie erlaubt
+            // Wenn neuer Status 'gelebt' ist, alle anderen 'gelebt' entfernen
+            if (newStatus === 'gelebt') {
+                const dominanzTypes = ['dominant', 'submissiv', 'switch', 'ausgeglichen'];
+                dominanzTypes.forEach(type => {
+                    if (type !== dominanzType && personDimensions[person].dominanz[type] === 'gelebt') {
+                        personDimensions[person].dominanz[type] = null;
+                        if (typeof mobilePersonDimensions !== 'undefined') {
+                            mobilePersonDimensions[person].dominanz[type] = null;
+                        }
+                    }
+                });
+            }
 
             personDimensions[person].dominanz[dominanzType] = newStatus;
             if (typeof mobilePersonDimensions !== 'undefined') {
@@ -15318,6 +15360,20 @@
         function selectDominanzStatusFromPopupNew(status) {
             const { person, dominanzType, source } = dominanzStatusPopupContext;
             if (!person || !dominanzType) return;
+
+            // WICHTIG: Nur ein "Gelebt" pro Kategorie erlaubt
+            // Wenn neuer Status 'gelebt' ist, alle anderen 'gelebt' entfernen
+            if (status === 'gelebt') {
+                const dominanzTypes = ['dominant', 'submissiv', 'switch', 'ausgeglichen'];
+                dominanzTypes.forEach(type => {
+                    if (type !== dominanzType && personDimensions[person].dominanz[type] === 'gelebt') {
+                        personDimensions[person].dominanz[type] = null;
+                        if (typeof mobilePersonDimensions !== 'undefined') {
+                            mobilePersonDimensions[person].dominanz[type] = null;
+                        }
+                    }
+                });
+            }
 
             // Set the status
             personDimensions[person].dominanz[dominanzType] = status;
