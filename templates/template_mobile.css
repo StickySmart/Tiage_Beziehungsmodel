@@ -1,0 +1,618 @@
+/*
+ * Template: Layout Basis Handy (Mobile)
+ * © 2025 Ti-age.de - Alle Rechte vorbehalten
+ *
+ * Dieses Template enthält das Mobile-Layout mit dem gleichen Farbschema
+ * wie die Desktop-Version für ein konsistentes Erscheinungsbild
+ *
+ * Erstellt: 2025-11-27
+ */
+
+/* ========================================
+   CSS VARIABLEN - FARB-DEFINITIONEN
+   (IDENTISCH MIT DESKTOP!)
+   ======================================== */
+
+:root {
+    /* Primärfarben - IDENTISCH MIT DESKTOP */
+    --primary: #457B9D;           /* Hauptfarbe (Standard Blau) */
+    --primary-light: #A8D5E2;     /* Helle Akzentfarbe */
+
+    /* Hintergrundfarben - IDENTISCH MIT DESKTOP */
+    --bg-dark: #0f0f1a;           /* Haupt-Hintergrund (Dunkelblau/Schwarz) */
+    --bg-card: #1a1a2e;           /* Card/Komponenten-Hintergrund */
+    --bg-hover: #252542;          /* Hover-Zustand Hintergrund */
+
+    /* Textfarben - IDENTISCH MIT DESKTOP */
+    --text-primary: #f0f0f0;      /* Haupttext (fast weiß) */
+    --text-secondary: #a0a0b0;    /* Sekundärtext */
+    --text-muted: #9a9aaa;        /* Gedämpfter Text */
+
+    /* Rahmen & Akzente - IDENTISCH MIT DESKTOP */
+    --border: rgba(255,255,255,0.1);  /* Subtile Rahmen */
+    --success: #2ecc71;           /* Erfolg/Ich-Spalte (Grün) */
+    --warning: #f39c12;           /* Warnung (Orange) */
+    --danger: #e74c3c;            /* Gefahr/Partner-Spalte (Rot) */
+
+    /* Mobile-optimierte Typografie */
+    --font-xs: 0.85rem;
+    --font-sm: 0.95rem;
+    --font-base: 1.05rem;
+    --font-md: 1.15rem;
+    --font-lg: 1.4rem;
+    --font-xl: 1.8rem;
+    --font-label: 0.9rem;
+
+    /* Responsive Bar Height */
+    --bar-height: clamp(16px, 1.5vw + 12px, 22px);
+    --bar-radius: calc(var(--bar-height) / 2);
+}
+
+/* ========================================
+   ARCHETYP-THEME FARBEN
+   (IDENTISCH MIT DESKTOP!)
+   ======================================== */
+
+body.theme-single {
+    --primary: #E63946;           /* Rot für Single */
+    --primary-light: #FFB4A2;
+}
+body.theme-duo {
+    --primary: #E84393;           /* Pink für Duo */
+    --primary-light: #FDA7DF;
+}
+body.theme-duo_flex {
+    --primary: #FF6B6B;           /* Koralle für Duo-Flex */
+    --primary-light: #FFA5A5;
+}
+body.theme-solopoly {
+    --primary: #2A9D8F;           /* Türkis für Solopoly */
+    --primary-light: #A8DADC;
+}
+body.theme-poly_hedo {
+    --primary: #9B5DE5;           /* Violett für Poly Hedo */
+    --primary-light: #D4A5FF;
+}
+body.theme-polyamor {
+    --primary: #F4A261;           /* Orange für Polyamor */
+    --primary-light: #FFE5B4;
+}
+
+/* ========================================
+   MOBILE GRUNDSTRUKTUR
+   ======================================== */
+
+body {
+    font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: var(--bg-dark);
+    color: var(--text-primary);
+    min-height: 100vh;
+    line-height: 1.5;
+    overflow-x: hidden;
+}
+
+/* ========================================
+   MOBILE MULTI-PAGE LAYOUT
+   ======================================== */
+
+@media (max-width: 768px) {
+    /* Verstecke Desktop-Layout auf Mobile */
+    .comparison-container.desktop-mode {
+        display: none !important;
+    }
+
+    /* Zeige Mobile Multi-Page Container */
+    .mobile-multipage {
+        display: block !important;
+        min-height: 100vh;
+        padding-top: 60px;
+        position: relative;
+    }
+
+    /* Einzelne Seiten */
+    .mobile-page {
+        display: none;
+        min-height: calc(100vh - 60px);
+        padding: 15px;
+        padding-bottom: 80px;
+        animation: slideInPage 0.3s ease;
+    }
+
+    .mobile-page.active {
+        display: block;
+    }
+
+    @keyframes slideInPage {
+        from { transform: translateX(30px); opacity: 0; }
+        to { transform: translateX(0); opacity: 1; }
+    }
+
+    /* ========================================
+       SEITEN-INDIKATOR (Punkte)
+       ======================================== */
+
+    .page-indicator {
+        position: fixed;
+        bottom: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        display: flex;
+        gap: 8px;
+        z-index: 100;
+        background: rgba(26,26,46,0.95);
+        padding: 10px 20px;
+        border-radius: 25px;
+        border: 1px solid var(--border);
+    }
+
+    .page-dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: var(--text-muted);
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+
+    .page-dot.active {
+        background: var(--primary);
+        width: 24px;
+        border-radius: 4px;
+    }
+
+    /* ========================================
+       SEITEN-HEADER
+       ======================================== */
+
+    .page-header {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 20px;
+    }
+
+    .btn-back {
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        background: var(--bg-card);
+        border: 1px solid var(--border);
+        color: var(--text-secondary);
+        font-size: 1.2rem;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.2s ease;
+    }
+
+    .btn-back:hover {
+        background: var(--primary);
+        color: white;
+        border-color: var(--primary);
+    }
+
+    .page-title {
+        font-size: 18px;
+        font-weight: 600;
+        color: var(--text-primary);
+    }
+
+    /* ========================================
+       SCORE-KREIS (Seite 2)
+       ======================================== */
+
+    .score-circle-container {
+        text-align: center;
+        margin: 20px 0;
+    }
+
+    .score-circle {
+        width: 140px;
+        height: 140px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 2.5rem;
+        font-weight: 700;
+        margin: 0 auto 10px;
+        /* DESKTOP FARBEN ANGEWANDT */
+        background: linear-gradient(135deg, var(--primary), var(--primary-light));
+        color: white;
+        box-shadow: 0 8px 30px rgba(69, 123, 157, 0.4);
+    }
+
+    .score-label {
+        font-size: var(--font-sm);
+        color: var(--text-muted);
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+
+    /* ========================================
+       SCORE-AUFSCHLÜSSELUNG (Seite 2)
+       ======================================== */
+
+    .score-breakdown {
+        background: var(--bg-card);
+        border-radius: 16px;
+        border: 1px solid var(--border);
+        padding: 15px;
+        margin: 20px 0;
+    }
+
+    .score-factor {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        padding: 12px 0;
+        border-bottom: 1px solid var(--border);
+    }
+
+    .score-factor:last-child {
+        border-bottom: none;
+    }
+
+    .score-factor-label {
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+        flex: 1;
+    }
+
+    .score-factor-main {
+        font-size: 15px;
+        color: var(--text-primary);
+        font-weight: 500;
+    }
+
+    .score-factor-sub {
+        font-size: 13px;
+        color: var(--text-muted);
+        font-style: italic;
+    }
+
+    .score-factor-value {
+        font-size: 18px;
+        font-weight: 700;
+        color: var(--primary);
+        min-width: 50px;
+        text-align: right;
+    }
+
+    /* ========================================
+       QUALITÄTS-ZITAT (Pirsig-Style)
+       ======================================== */
+
+    .quality-quote {
+        margin: 20px 0;
+        padding: 16px;
+        background: rgba(69, 123, 157, 0.1);
+        border-left: 3px solid var(--primary);
+        border-radius: 0 12px 12px 0;
+    }
+
+    .quality-quote p {
+        font-size: var(--font-sm);
+        color: var(--text-secondary);
+        font-style: italic;
+        line-height: 1.6;
+    }
+
+    /* ========================================
+       MOBILE BUTTONS
+       ======================================== */
+
+    .btn-primary-mobile {
+        display: block;
+        width: 100%;
+        padding: 14px 20px;
+        background: var(--primary);
+        border: none;
+        border-radius: 12px;
+        color: white;
+        font-size: var(--font-base);
+        font-weight: 600;
+        cursor: pointer;
+        margin-top: 20px;
+        transition: all 0.3s ease;
+    }
+
+    .btn-primary-mobile:hover {
+        opacity: 0.9;
+        transform: translateY(-1px);
+    }
+
+    .btn-secondary-mobile {
+        display: block;
+        width: 100%;
+        padding: 14px 20px;
+        background: transparent;
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        color: var(--text-secondary);
+        font-size: var(--font-base);
+        font-weight: 500;
+        cursor: pointer;
+        margin-top: 10px;
+        transition: all 0.3s ease;
+    }
+
+    .btn-secondary-mobile:hover {
+        border-color: var(--primary);
+        color: var(--text-primary);
+    }
+
+    /* ========================================
+       PRO & CONTRA CARDS (Seite 3)
+       ======================================== */
+
+    .pro-section-mobile, .contra-section-mobile {
+        padding: 16px;
+        border-radius: 12px;
+        margin-bottom: 15px;
+    }
+
+    .pro-section-mobile {
+        background: rgba(46, 204, 113, 0.1);
+        border: 1px solid rgba(46, 204, 113, 0.3);
+    }
+
+    .contra-section-mobile {
+        background: rgba(231, 76, 60, 0.1);
+        border: 1px solid rgba(231, 76, 60, 0.3);
+    }
+
+    .pro-section-mobile h3 {
+        color: var(--success);
+        font-size: 17px;
+        margin-bottom: 12px;
+    }
+
+    .contra-section-mobile h3 {
+        color: var(--danger);
+        font-size: 17px;
+        margin-bottom: 12px;
+    }
+
+    .pro-list-mobile, .contra-list-mobile {
+        list-style: none;
+        font-size: var(--font-sm);
+        color: var(--text-secondary);
+    }
+
+    .pro-list-mobile li, .contra-list-mobile li {
+        padding: 10px 0 10px 24px;
+        position: relative;
+        font-size: 15px;
+        line-height: 1.5;
+    }
+
+    .pro-list-mobile li::before {
+        content: '✓';
+        position: absolute;
+        left: 0;
+        color: var(--success);
+    }
+
+    .contra-list-mobile li::before {
+        content: '✗';
+        position: absolute;
+        left: 0;
+        color: var(--danger);
+    }
+
+    /* ========================================
+       MOBILE ICH/PARTNER KARTEN (Seite 1)
+       ======================================== */
+
+    /* ICH Karte */
+    .ich-card-mobile {
+        background: var(--bg-card);
+        border-radius: 16px;
+        border: 1px solid var(--border);
+        border-top: 3px solid var(--success);
+        padding: 15px;
+        margin-bottom: 15px;
+    }
+
+    .ich-header-mobile {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-bottom: 12px;
+        color: var(--success);
+        font-weight: 700;
+        font-size: var(--font-lg);
+    }
+
+    /* PARTNER Karte */
+    .partner-card-mobile {
+        background: var(--bg-card);
+        border-radius: 16px;
+        border: 1px solid var(--border);
+        border-top: 3px solid var(--danger);
+        padding: 15px;
+        margin-bottom: 15px;
+    }
+
+    .partner-header-mobile {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-bottom: 12px;
+        color: var(--danger);
+        font-weight: 700;
+        font-size: var(--font-lg);
+    }
+
+    /* ========================================
+       MOBILE DIMENSIONEN
+       ======================================== */
+
+    .column-dimensions {
+        gap: 20px;
+    }
+
+    .compact-dimension {
+        gap: 8px;
+        margin-bottom: 12px;
+    }
+
+    .compact-dimension-label {
+        font-size: 16px;
+        margin-bottom: 8px;
+    }
+
+    .compact-options {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 8px;
+    }
+
+    /* 4-Button Gruppen (Dominanz) bekommen 2x2 Grid */
+    .compact-dimension:has([value="ausgeglichen"]) .compact-options {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .compact-option {
+        padding: 12px 16px;
+        font-size: 16px;
+        text-align: center;
+        justify-content: center;
+    }
+
+    /* ========================================
+       MOBILE DROPDOWN
+       ======================================== */
+
+    .column-select {
+        font-size: 16px;
+        padding: 12px 14px;
+        max-width: 160px;
+    }
+
+    /* ========================================
+       MOBILE INFO BUTTON
+       ======================================== */
+
+    .archetype-info-btn {
+        padding: 12px 16px;
+        background: rgba(255,255,255,0.1);
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        color: var(--text-secondary);
+        cursor: pointer;
+        font-size: 14px;
+        font-weight: 600;
+        letter-spacing: 0.5px;
+    }
+
+    /* ========================================
+       MOBILE DOMINANZ MULTI-SELECT
+       ======================================== */
+
+    .dominanz-multi-select {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .dominanz-option-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 8px 12px;
+        background: rgba(255,255,255,0.03);
+        border-radius: 8px;
+        border: 1px solid var(--border);
+    }
+
+    .dominanz-label {
+        font-size: var(--font-sm);
+        color: var(--text-secondary);
+    }
+
+    .status-toggle-group {
+        display: flex;
+        gap: 6px;
+    }
+
+    .status-toggle-btn {
+        padding: 6px 12px;
+        font-size: 11px;
+        background: rgba(255,255,255,0.05);
+        border: 1px solid var(--border);
+        border-radius: 15px;
+        color: var(--text-muted);
+        cursor: pointer;
+        transition: all 0.2s ease;
+    }
+
+    .status-toggle-btn:hover {
+        background: rgba(255,255,255,0.1);
+        color: var(--text-primary);
+    }
+
+    /* Gelebt Status - Aktiv (IDENTISCH MIT DESKTOP) */
+    .status-toggle-btn.active-gelebt {
+        background: var(--success);
+        color: white;
+        border-color: var(--success);
+    }
+
+    /* Interessiert Status - Aktiv (IDENTISCH MIT DESKTOP) */
+    .status-toggle-btn.active-interessiert {
+        background: var(--warning);
+        color: #1a1a2e;
+        border-color: var(--warning);
+    }
+
+    /* ========================================
+       MOBILE SEITE 1 HEADER FIX
+       ======================================== */
+
+    #mobilePage1 h2 {
+        font-size: 18px !important;
+        line-height: 1.3;
+        word-wrap: break-word;
+        padding: 0 10px;
+    }
+
+    /* ========================================
+       TYPEN-ANZEIGE (Seite 2)
+       ======================================== */
+
+    .types-display {
+        text-align: center;
+        font-size: var(--font-lg);
+        font-weight: 600;
+        color: var(--text-primary);
+        margin-bottom: 10px;
+    }
+
+    .types-display .type-name {
+        color: var(--primary);
+    }
+}
+
+/* ========================================
+   DESKTOP-OVERRIDE (min-width: 769px)
+   Stellt sicher, dass Mobile-Styles
+   nicht auf Desktop angewandt werden
+   ======================================== */
+
+@media (min-width: 769px) {
+    .mobile-multipage {
+        display: none !important;
+    }
+
+    .comparison-container.desktop-mode {
+        display: block !important;
+    }
+
+    .page-indicator {
+        display: none !important;
+    }
+}
