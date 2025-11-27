@@ -4871,6 +4871,11 @@
             .page-indicator {
                 display: none !important;
             }
+
+            /* Hide expandable sections on desktop - use modal instead */
+            .expandable-sections {
+                display: none !important;
+            }
         }
 
         /* Validation Warning Animations */
@@ -5941,7 +5946,7 @@
             </div>
 
             <div class="score-circle-container">
-                <div class="score-circle" id="mobileScoreCircle">0%</div>
+                <div class="score-circle" id="mobileScoreCircle" onclick="openProContraModal()" style="cursor: pointer;" title="Klicken für Pro & Contra Details">0%</div>
                 <p class="score-label">Beziehungsqualität</p>
             </div>
 
@@ -5987,40 +5992,15 @@
                 <p>"Diese Beziehung zeigt eine Balance zwischen statischen Mustern (Archetypen) und dynamischem Potenzial."</p>
             </div>
 
-            <button class="btn-primary-mobile" onclick="mobileGoToPage(3)">Pro & Contra →</button>
+            <button class="btn-primary-mobile" onclick="openProContraModal()">Pro & Contra →</button>
         </div>
 
-        <!-- PAGE 3: Pro & Contra -->
-        <div class="mobile-page" id="mobilePage3" data-page="3">
-            <div class="page-header">
-                <button class="btn-back" onclick="mobileGoToPage(2)">←</button>
-                <span class="page-title" id="mobileProContraTitle">Single × Duo</span>
-            </div>
-
-            <div class="pro-section-mobile">
-                <h3>✓ Was funktioniert</h3>
-                <ul class="pro-list-mobile" id="mobileProList">
-                    <li>Wird geladen...</li>
-                </ul>
-            </div>
-
-            <div class="contra-section-mobile">
-                <h3>✗ Herausforderungen</h3>
-                <ul class="contra-list-mobile" id="mobileContraList">
-                    <li>Wird geladen...</li>
-                </ul>
-            </div>
-
-            <button class="btn-secondary-mobile" onclick="mobileGoToPage(1)">← Neue Analyse</button>
-        </div>
-
-        <!-- PAGE 4 entfernt - A-F Kategorien nicht mehr verwendet -->
+        <!-- PAGE 3 entfernt - Pro & Contra jetzt als Modal -->
 
         <!-- Page Indicator -->
         <div class="page-indicator">
             <span class="page-dot active" onclick="mobileGoToPage(1)"></span>
             <span class="page-dot" onclick="mobileGoToPage(2)"></span>
-            <span class="page-dot" onclick="mobileGoToPage(3)"></span>
         </div>
     </div>
 
