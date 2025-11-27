@@ -132,13 +132,168 @@ Grundannahme: 80% der Population hat diese Werte (zentraler Bereich der Glockenk
 
 ---
 
-## Berechnung
+## Berechnung des Qualitätsindex
 
-Die Qualitätsfaktoren-Berechnung verwendet eine **gewichtete Summierung** (keine Normalverteilung):
+### Die vollständige Formel
 
 ```
-Qualitätsindex = (Archetyp × 0.40) + (Orientierung × 0.25) + (Dominanz × 0.20) + (Geschlecht × 0.15)
+                    ┌─────────────────────────────────────────────────────────────┐
+                    │                                                             │
+                    │   Q = (A × wₐ) + (O × wₒ) + (D × wᵈ) + (G × wᵍ)             │
+                    │                                                             │
+                    │   wobei: wₐ + wₒ + wᵈ + wᵍ = 1.00                           │
+                    │                                                             │
+                    └─────────────────────────────────────────────────────────────┘
 ```
+
+### Variablen-Definition
+
+| Variable | Name | Wertebereich | Beschreibung |
+|----------|------|--------------|--------------|
+| **Q** | Qualitätsindex | 0 – 100% | Gesamtkompatibilität zwischen zwei Personen |
+| **A** | Archetyp-Score | 0 – 100% | Übereinstimmung der Beziehungsphilosophie |
+| **O** | Orientierungs-Score | 0 – 100% | Kompatibilität der sexuellen Orientierung |
+| **D** | Dominanz-Score | 0 – 100% | Harmonie der Dominanz-Dynamik |
+| **G** | Geschlechts-Score | 0 – 100% | Gender-Chemie und Anziehung |
+
+### Gewichtungen nach Pirsig (Logos/Pathos = 40/60)
+
+| Gewicht | Wert | Faktor | Pirsig-Kategorie | Begründung |
+|---------|------|--------|------------------|------------|
+| **wₐ** | 0.40 | Archetyp | **Logos** (Statisch) | Rationale Entscheidung über Beziehungsform |
+| **wₒ** | 0.25 | Orientierung | **Pathos** (Dynamisch) | Körperliche Anziehung ist fundamental |
+| **wᵈ** | 0.20 | Dominanz | **Pathos** (Dynamisch) | Energetische Spannung und Dynamik |
+| **wᵍ** | 0.15 | Geschlecht | **Pathos** (Dynamisch) | Chemie, das "gewisse Etwas" |
+
+---
+
+### Visualisierung: Die Pirsig-Balance
+
+```
+    ┌─────────────────────────────────────────────────────────────────────────┐
+    │                        QUALITÄTSINDEX (Q)                               │
+    │                              100%                                       │
+    └─────────────────────────────────────────────────────────────────────────┘
+                                     │
+              ┌──────────────────────┴──────────────────────┐
+              │                                             │
+              ▼                                             ▼
+    ┌─────────────────────┐                   ┌─────────────────────────────┐
+    │       LOGOS         │                   │          PATHOS             │
+    │   Statische Qualität│                   │    Dynamische Qualität      │
+    │        40%          │                   │           60%               │
+    └─────────────────────┘                   └─────────────────────────────┘
+              │                                             │
+              ▼                               ┌─────────────┼─────────────┐
+    ┌─────────────────────┐                   │             │             │
+    │                     │                   ▼             ▼             ▼
+    │  ╔═══════════════╗  │         ┌─────────────┐ ┌─────────────┐ ┌─────────────┐
+    │  ║   ARCHETYP    ║  │         │ ORIENTIERUNG│ │  DOMINANZ   │ │ GESCHLECHT  │
+    │  ║     40%       ║  │         │    25%      │ │    20%      │ │    15%      │
+    │  ╚═══════════════╝  │         └─────────────┘ └─────────────┘ └─────────────┘
+    │                     │                   │             │             │
+    │  "Wie wollen wir    │         "Wen begehre  "Wie fließt   "Feintuning
+    │   Beziehung leben?" │          ich?"        die Energie?"  der Chemie"
+    │                     │
+    │  → Verstand         │         → Körper       → Gefühl       → Intuition
+    │  → Struktur         │         → Anziehung    → Spannung     → Schwingung
+    │  → Regeln           │         → Polarität    → Dynamik      → Resonanz
+    │                     │
+    └─────────────────────┘
+
+```
+
+### Datenfluss: Vom Profil zum Score
+
+```
+    ┌────────────────────────────────────────────────────────────────────────────┐
+    │                              EINGABE                                       │
+    │                                                                            │
+    │   Person 1                                    Person 2                     │
+    │   ┌─────────────────────────┐                ┌─────────────────────────┐   │
+    │   │ Archetyp:    Duo        │                │ Archetyp:    Duo-Flex   │   │
+    │   │ Orientierung: Hetero    │                │ Orientierung: Hetero    │   │
+    │   │ Dominanz:    Submissiv  │                │ Dominanz:    Dominant   │   │
+    │   │ Geschlecht:  Weiblich   │                │ Geschlecht:  Männlich   │   │
+    │   └─────────────────────────┘                └─────────────────────────┘   │
+    └────────────────────────────────────────────────────────────────────────────┘
+                                         │
+                                         ▼
+    ┌────────────────────────────────────────────────────────────────────────────┐
+    │                         VERARBEITUNG                                       │
+    │                                                                            │
+    │   ┌───────────────────────────────────────────────────────────────────┐    │
+    │   │  1. ARCHETYP-MATRIX       Duo ↔ Duo-Flex = 75% Basiskompatibilität│    │
+    │   └───────────────────────────────────────────────────────────────────┘    │
+    │                                         │                                  │
+    │   ┌───────────────────────────────────────────────────────────────────┐    │
+    │   │  2. ORIENTIERUNGS-CHECK   Hetero + Hetero + M/F = 100% kompatibel │    │
+    │   └───────────────────────────────────────────────────────────────────┘    │
+    │                                         │                                  │
+    │   ┌───────────────────────────────────────────────────────────────────┐    │
+    │   │  3. DOMINANZ-STATEMENTS   Sub ↔ Dom = 100% komplementär           │    │
+    │   └───────────────────────────────────────────────────────────────────┘    │
+    │                                         │                                  │
+    │   ┌───────────────────────────────────────────────────────────────────┐    │
+    │   │  4. GESCHLECHTS-CHEMIE    W + M bei Hetero = 100% Match           │    │
+    │   └───────────────────────────────────────────────────────────────────┘    │
+    │                                                                            │
+    └────────────────────────────────────────────────────────────────────────────┘
+                                         │
+                                         ▼
+    ┌────────────────────────────────────────────────────────────────────────────┐
+    │                         BERECHNUNG                                         │
+    │                                                                            │
+    │   Q = (A × wₐ)    + (O × wₒ)    + (D × wᵈ)    + (G × wᵍ)                   │
+    │                                                                            │
+    │   Q = (75 × 0.40) + (100 × 0.25) + (100 × 0.20) + (100 × 0.15)             │
+    │                                                                            │
+    │   Q =    30       +     25       +     20       +     15                   │
+    │                                                                            │
+    │   Q = 90%                                                                  │
+    │                                                                            │
+    └────────────────────────────────────────────────────────────────────────────┘
+                                         │
+                                         ▼
+    ┌────────────────────────────────────────────────────────────────────────────┐
+    │                           AUSGABE                                          │
+    │                                                                            │
+    │   ┌─────────────────────────────────────────────────────────────────┐      │
+    │   │  QUALITÄTSINDEX: 90% (Exzellent)                                │      │
+    │   │                                                                 │      │
+    │   │  Aufschlüsselung:                                               │      │
+    │   │  ├── Archetyp (Logos):     75% × 0.40 = 30 Punkte               │      │
+    │   │  ├── Orientierung (Pathos): 100% × 0.25 = 25 Punkte             │      │
+    │   │  ├── Dominanz (Pathos):    100% × 0.20 = 20 Punkte              │      │
+    │   │  └── Geschlecht (Pathos):  100% × 0.15 = 15 Punkte              │      │
+    │   │                                        ─────────────            │      │
+    │   │                                        90 Punkte                │      │
+    │   └─────────────────────────────────────────────────────────────────┘      │
+    │                                                                            │
+    └────────────────────────────────────────────────────────────────────────────┘
+```
+
+### K.O.-Kriterium: Orientierung
+
+```
+    ┌─────────────────────────────────────────────────────────────────────────┐
+    │  WICHTIG: Ohne physische Anziehung gibt es keinen Qualitätsindex        │
+    │                                                                         │
+    │  WENN O = 0% (z.B. Hetero-Mann + Hetero-Mann)                           │
+    │  DANN Q = 0% (unabhängig von allen anderen Faktoren)                    │
+    │                                                                         │
+    │  Pirsig: "Ohne dynamische Qualität (Pathos) keine Bewegung möglich"     │
+    └─────────────────────────────────────────────────────────────────────────┘
+```
+
+---
+
+### Abgrenzung: Gewichtete Summe vs. Gauß-Verteilung
+
+| Konzept | Anwendung | Funktion |
+|---------|-----------|----------|
+| **Gewichtete Summe** | Qualitätsindex-Berechnung | Kombiniert 4 Faktoren zu einem Score |
+| **Gauß-Verteilung** | Confidence-Level der Profile | Statistische Sicherheit der 30 Attribute |
 
 **Wichtig:** Die Gaußsche Normalverteilung wird für die Confidence-Level der Profile verwendet, nicht für die Berechnung des Qualitätsindex selbst.
 
