@@ -8638,18 +8638,19 @@
             const dim = document.querySelector(`[data-dimension="${dimName}"]`);
             if (!dim || !dim.classList.contains('collapsible-dimension')) return;
 
-            let hasSelection;
+            let shouldCollapse;
             if (type === 'dominanz') {
-                hasSelection = hasAnyDominanzSelected(person);
+                // Auto-collapse only when 2 or more buttons are selected
+                shouldCollapse = getDominanzSelectionCount(person) >= 2;
             } else {
-                hasSelection = hasAnyOrientierungSelected(person);
+                shouldCollapse = hasAnyOrientierungSelected(person);
             }
 
             // Update summary
             updateDimensionSummary(person, type, prefix);
 
-            // Auto-collapse if selection is made
-            if (hasSelection && !dim.classList.contains('user-expanded')) {
+            // Auto-collapse if enough selections are made
+            if (shouldCollapse && !dim.classList.contains('user-expanded')) {
                 dim.classList.add('collapsed');
             }
         }
@@ -10488,6 +10489,17 @@
         function hasAnyDominanzSelected(person) {
             const dom = personDimensions[person].dominanz;
             return dom.dominant || dom.submissiv || dom.switch || dom.ausgeglichen;
+        }
+
+        // Count how many Dominanz buttons are selected
+        function getDominanzSelectionCount(person) {
+            const dom = personDimensions[person].dominanz;
+            let count = 0;
+            if (dom.dominant) count++;
+            if (dom.submissiv) count++;
+            if (dom.switch) count++;
+            if (dom.ausgeglichen) count++;
+            return count;
         }
 
         // Helper: Get all selected dominanz preferences with status
