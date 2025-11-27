@@ -8616,7 +8616,7 @@
             const selected = [];
             for (const t of types) {
                 if (data[t]) {
-                    const status = data[t] === 'fakt' ? '(Fakt)' : '(Interessiert)';
+                    const status = data[t] === 'gelebt' ? '(Gelebt)' : '(Interessiert)';
                     selected.push(t + ' ' + status);
                 }
             }
@@ -10431,46 +10431,6 @@
             return null;
         }
 
-        // Sync orientierung UI across all views (Desktop, Mobile, Modal)
-        function syncOrientierungUI(person) {
-            const shortIdMap = { 'heterosexuell': 'het', 'homosexuell': 'hom', 'bisexuell': 'bi' };
-            const ori = personDimensions[person].orientierung;
-
-            for (const [type, status] of Object.entries(ori)) {
-                const shortId = shortIdMap[type];
-
-                // Desktop - update status toggle buttons
-                const desktopStatus = document.getElementById(person + '-o-' + shortId + '-status');
-                if (desktopStatus) {
-                    updateStatusToggleButtons(desktopStatus, status);
-                }
-
-                // Mobile - update status toggle buttons
-                const mobileStatus = document.getElementById('m-' + person + '-o-' + shortId + '-status');
-                if (mobileStatus) {
-                    updateStatusToggleButtons(mobileStatus, status);
-                }
-
-                // Modal - update status toggle buttons
-                const modalStatus = document.getElementById('modal-' + person + '-o-' + shortId + '-status');
-                if (modalStatus) {
-                    updateStatusToggleButtons(modalStatus, status);
-                }
-            }
-
-            // Update needs-selection classes and auto-collapse
-            const hasSelection = hasAnyOrientierungSelected(person);
-            ['', 'mobile-', 'modal-'].forEach(prefix => {
-                const dim = document.querySelector(`[data-dimension="${prefix}${person}-orientierung-multi"]`);
-                if (dim) {
-                    if (hasSelection) dim.classList.remove('needs-selection');
-                    else dim.classList.add('needs-selection');
-                }
-                // Auto-collapse and update summary
-                checkAutoCollapse(person, 'orientierung', prefix);
-            });
-        }
-
         // Helper: Get short ID for dominanz type
         function getShortDominanzId(dominanzType) {
             const map = {
@@ -10750,35 +10710,26 @@
             for (const [type, status] of Object.entries(ori)) {
                 const shortId = shortIdMap[type];
 
-                // Desktop
-                const desktopCheckbox = document.getElementById(person + '-o-' + shortId);
-                if (desktopCheckbox) desktopCheckbox.checked = !!status;
+                // Desktop - update status toggle buttons (always visible)
                 const desktopStatus = document.getElementById(person + '-o-' + shortId + '-status');
                 if (desktopStatus) {
-                    desktopStatus.style.display = status ? 'flex' : 'none';
-                    if (status) updateStatusToggleButtons(desktopStatus, status);
+                    updateStatusToggleButtons(desktopStatus, status);
                 }
 
-                // Mobile
-                const mobileCheckbox = document.getElementById('m-' + person + '-o-' + shortId);
-                if (mobileCheckbox) mobileCheckbox.checked = !!status;
+                // Mobile - update status toggle buttons (always visible)
                 const mobileStatus = document.getElementById('m-' + person + '-o-' + shortId + '-status');
                 if (mobileStatus) {
-                    mobileStatus.style.display = status ? 'flex' : 'none';
-                    if (status) updateStatusToggleButtons(mobileStatus, status);
+                    updateStatusToggleButtons(mobileStatus, status);
                 }
 
-                // Modal
-                const modalCheckbox = document.getElementById('modal-' + person + '-o-' + shortId);
-                if (modalCheckbox) modalCheckbox.checked = !!status;
+                // Modal - update status toggle buttons (always visible)
                 const modalStatus = document.getElementById('modal-' + person + '-o-' + shortId + '-status');
                 if (modalStatus) {
-                    modalStatus.style.display = status ? 'flex' : 'none';
-                    if (status) updateStatusToggleButtons(modalStatus, status);
+                    updateStatusToggleButtons(modalStatus, status);
                 }
             }
 
-            // Update needs-selection classes
+            // Update needs-selection classes and auto-collapse
             const hasSelection = hasAnyOrientierungSelected(person);
             ['', 'mobile-', 'modal-'].forEach(prefix => {
                 const dim = document.querySelector(`[data-dimension="${prefix}${person}-orientierung-multi"]`);
@@ -10786,6 +10737,8 @@
                     if (hasSelection) dim.classList.remove('needs-selection');
                     else dim.classList.add('needs-selection');
                 }
+                // Auto-collapse and update summary
+                checkAutoCollapse(person, 'orientierung', prefix);
             });
         }
 
