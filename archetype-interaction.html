@@ -3846,7 +3846,7 @@
             background: var(--bg-card);
         }
 
-        /* Toggle Buttons for Status (Fakt/Interessiert) */
+        /* Toggle Buttons for Status (Gelebt/Interessiert) */
         .status-toggle-group {
             display: none;
             gap: 4px;
@@ -3868,7 +3868,7 @@
             border-color: var(--primary);
         }
 
-        .status-toggle-btn.active-fakt {
+        .status-toggle-btn.active-gelebt {
             background: rgba(231, 76, 60, 0.3);
             border-color: #e74c3c;
             color: #e74c3c;
@@ -3899,7 +3899,7 @@
             cursor: default;
         }
 
-        /* Secondary tendency button (only "interessiert" available when a Fakt exists) */
+        /* Secondary tendency button (only "interessiert" available when a Gelebt exists) */
         .secondary-interessiert-btn {
             display: none;
             padding: 4px 10px;
@@ -4013,7 +4013,7 @@
             background: rgba(108, 117, 125, 0.1);
         }
 
-        .status-popup-option.fakt-option:hover {
+        .status-popup-option.gelebt-option:hover {
             border-color: #e74c3c;
             background: rgba(231, 76, 60, 0.1);
         }
@@ -4029,7 +4029,7 @@
             margin-bottom: 6px;
         }
 
-        .status-popup-option.fakt-option .status-popup-option-title {
+        .status-popup-option.gelebt-option .status-popup-option-title {
             color: #e74c3c;
         }
 
@@ -4131,6 +4131,61 @@
             height: 100%;
             border-radius: 4px;
             transition: width 0.5s ease, background 0.3s ease;
+        }
+
+        /* Desktop Score Circle */
+        .desktop-score-circle-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 20px 0;
+        }
+
+        .desktop-score-circle {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            color: white;
+            box-shadow: 0 8px 30px rgba(69, 123, 157, 0.4);
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .desktop-score-circle:hover {
+            transform: scale(1.05);
+            box-shadow: 0 12px 40px rgba(69, 123, 157, 0.5);
+        }
+
+        .desktop-score-label {
+            font-size: var(--font-sm);
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: 8px;
+        }
+
+        /* Result bar new layout with circle */
+        .result-bar-with-circle {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            margin-bottom: 15px;
+        }
+
+        .result-types-column {
+            flex: 1;
+        }
+
+        .result-circle-column {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
 
         /* Expandable Sections */
@@ -5206,6 +5261,46 @@
         </div>
     </div>
 
+    <!-- Pro/Contra Modal (Desktop Circle Click) -->
+    <div class="modal-overlay" id="proContraModal" onclick="closeProContraModal(event)">
+        <div class="modal" onclick="event.stopPropagation()" style="max-width: 600px;">
+            <div class="modal-header">
+                <span class="modal-title">Pro & Contra</span>
+                <button class="modal-close" onclick="closeProContraModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <!-- Archetype Navigation -->
+                <div style="display: flex; flex-direction: column; gap: 8px; margin-bottom: 15px;">
+                    <div style="display: flex; align-items: center; justify-content: center; gap: 8px;">
+                        <span style="font-size: 11px; color: var(--success); min-width: 50px; font-weight: 600;">ICH:</span>
+                        <button class="archetype-nav-btn" onclick="navigateProContraArchetype('ich', -1)" title="Vorheriger Archetyp">&#8249;</button>
+                        <span id="proContraModalIch" style="font-size: 12px; color: var(--text-primary); background: rgba(255,255,255,0.08); padding: 4px 12px; border-radius: 6px; min-width: 80px; text-align: center; font-weight: 600;">Single</span>
+                        <button class="archetype-nav-btn" onclick="navigateProContraArchetype('ich', 1)" title="Nächster Archetyp">&#8250;</button>
+                    </div>
+                    <div style="display: flex; align-items: center; justify-content: center; gap: 8px;">
+                        <span style="font-size: 11px; color: var(--danger); min-width: 50px; font-weight: 600;">Partner:</span>
+                        <button class="archetype-nav-btn" onclick="navigateProContraArchetype('partner', -1)" title="Vorheriger Archetyp">&#8249;</button>
+                        <span id="proContraModalPartner" style="font-size: 12px; color: var(--text-primary); background: rgba(255,255,255,0.08); padding: 4px 12px; border-radius: 6px; min-width: 80px; text-align: center; font-weight: 600;">Duo</span>
+                        <button class="archetype-nav-btn" onclick="navigateProContraArchetype('partner', 1)" title="Nächster Archetyp">&#8250;</button>
+                    </div>
+                </div>
+                <!-- Score Display -->
+                <div class="score-display" id="proContraModalScore" style="font-size: 2.5rem; margin-bottom: 15px;">0%</div>
+                <!-- Pro/Contra Lists -->
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                    <div>
+                        <h4 style="color: var(--success); margin-bottom: 10px;">✓ Was funktioniert</h4>
+                        <ul id="proContraModalProList" style="list-style: none; padding: 0; margin: 0;"></ul>
+                    </div>
+                    <div>
+                        <h4 style="color: var(--danger); margin-bottom: 10px;">✗ Herausforderungen</h4>
+                        <ul id="proContraModalContraList" style="list-style: none; padding: 0; margin: 0;"></ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Archetype Info Modal (Feature 4) -->
     <div class="modal-overlay" id="archetypeInfoModal" onclick="closeArchetypeInfoModal(event)">
         <div class="modal" onclick="event.stopPropagation()" style="position: relative;">
@@ -5275,7 +5370,7 @@
                                 <label for="ich-d-dom" class="dominanz-label">dominant</label>
                                 <button type="button" id="ich-d-dom-secondary" class="secondary-interessiert-btn" onclick="handleSecondaryInteressiert('ich', 'dominant', this)">interessiert</button>
                                 <div id="ich-d-dom-status" class="status-toggle-group">
-                                    <button type="button" class="status-toggle-btn active-fakt" data-status="fakt" onclick="handleDominanzStatusToggle('ich', 'dominant', 'fakt', this)">Fakt</button>
+                                    <button type="button" class="status-toggle-btn active-gelebt" data-status="gelebt" onclick="handleDominanzStatusToggle('ich', 'dominant', 'gelebt', this)">Gelebt</button>
                                     <button type="button" class="status-toggle-btn" data-status="interessiert" onclick="handleDominanzStatusToggle('ich', 'dominant', 'interessiert', this)">Interessiert</button>
                                 </div>
                             </div>
@@ -5284,7 +5379,7 @@
                                 <label for="ich-d-sub" class="dominanz-label">submissiv</label>
                                 <button type="button" id="ich-d-sub-secondary" class="secondary-interessiert-btn" onclick="handleSecondaryInteressiert('ich', 'submissiv', this)">interessiert</button>
                                 <div id="ich-d-sub-status" class="status-toggle-group">
-                                    <button type="button" class="status-toggle-btn active-fakt" data-status="fakt" onclick="handleDominanzStatusToggle('ich', 'submissiv', 'fakt', this)">Fakt</button>
+                                    <button type="button" class="status-toggle-btn active-gelebt" data-status="gelebt" onclick="handleDominanzStatusToggle('ich', 'submissiv', 'gelebt', this)">Gelebt</button>
                                     <button type="button" class="status-toggle-btn" data-status="interessiert" onclick="handleDominanzStatusToggle('ich', 'submissiv', 'interessiert', this)">Interessiert</button>
                                 </div>
                             </div>
@@ -5293,7 +5388,7 @@
                                 <label for="ich-d-sw" class="dominanz-label">switch</label>
                                 <button type="button" id="ich-d-sw-secondary" class="secondary-interessiert-btn" onclick="handleSecondaryInteressiert('ich', 'switch', this)">interessiert</button>
                                 <div id="ich-d-sw-status" class="status-toggle-group">
-                                    <button type="button" class="status-toggle-btn active-fakt" data-status="fakt" onclick="handleDominanzStatusToggle('ich', 'switch', 'fakt', this)">Fakt</button>
+                                    <button type="button" class="status-toggle-btn active-gelebt" data-status="gelebt" onclick="handleDominanzStatusToggle('ich', 'switch', 'gelebt', this)">Gelebt</button>
                                     <button type="button" class="status-toggle-btn" data-status="interessiert" onclick="handleDominanzStatusToggle('ich', 'switch', 'interessiert', this)">Interessiert</button>
                                 </div>
                             </div>
@@ -5302,7 +5397,7 @@
                                 <label for="ich-d-aus" class="dominanz-label">ausgeglichen</label>
                                 <button type="button" id="ich-d-aus-secondary" class="secondary-interessiert-btn" onclick="handleSecondaryInteressiert('ich', 'ausgeglichen', this)">interessiert</button>
                                 <div id="ich-d-aus-status" class="status-toggle-group">
-                                    <button type="button" class="status-toggle-btn active-fakt" data-status="fakt" onclick="handleDominanzStatusToggle('ich', 'ausgeglichen', 'fakt', this)">Fakt</button>
+                                    <button type="button" class="status-toggle-btn active-gelebt" data-status="gelebt" onclick="handleDominanzStatusToggle('ich', 'ausgeglichen', 'gelebt', this)">Gelebt</button>
                                     <button type="button" class="status-toggle-btn" data-status="interessiert" onclick="handleDominanzStatusToggle('ich', 'ausgeglichen', 'interessiert', this)">Interessiert</button>
                                 </div>
                             </div>
@@ -5315,7 +5410,7 @@
                                 <input type="checkbox" id="ich-o-het" value="heterosexuell" class="dominanz-checkbox" onchange="handleOrientierungMultiChange('ich', 'heterosexuell', this.checked)">
                                 <label for="ich-o-het" class="dominanz-label">heterosexuell</label>
                                 <div id="ich-o-het-status" class="status-toggle-group">
-                                    <button type="button" class="status-toggle-btn active-fakt" data-status="fakt" onclick="handleOrientierungStatusToggle('ich', 'heterosexuell', 'fakt', this)">Fakt</button>
+                                    <button type="button" class="status-toggle-btn active-gelebt" data-status="gelebt" onclick="handleOrientierungStatusToggle('ich', 'heterosexuell', 'gelebt', this)">Gelebt</button>
                                     <button type="button" class="status-toggle-btn" data-status="interessiert" onclick="handleOrientierungStatusToggle('ich', 'heterosexuell', 'interessiert', this)">Interessiert</button>
                                 </div>
                             </div>
@@ -5323,7 +5418,7 @@
                                 <input type="checkbox" id="ich-o-hom" value="homosexuell" class="dominanz-checkbox" onchange="handleOrientierungMultiChange('ich', 'homosexuell', this.checked)">
                                 <label for="ich-o-hom" class="dominanz-label">homosexuell</label>
                                 <div id="ich-o-hom-status" class="status-toggle-group">
-                                    <button type="button" class="status-toggle-btn active-fakt" data-status="fakt" onclick="handleOrientierungStatusToggle('ich', 'homosexuell', 'fakt', this)">Fakt</button>
+                                    <button type="button" class="status-toggle-btn active-gelebt" data-status="gelebt" onclick="handleOrientierungStatusToggle('ich', 'homosexuell', 'gelebt', this)">Gelebt</button>
                                     <button type="button" class="status-toggle-btn" data-status="interessiert" onclick="handleOrientierungStatusToggle('ich', 'homosexuell', 'interessiert', this)">Interessiert</button>
                                 </div>
                             </div>
@@ -5331,7 +5426,7 @@
                                 <input type="checkbox" id="ich-o-bi" value="bisexuell" class="dominanz-checkbox" onchange="handleOrientierungMultiChange('ich', 'bisexuell', this.checked)">
                                 <label for="ich-o-bi" class="dominanz-label">bisexuell</label>
                                 <div id="ich-o-bi-status" class="status-toggle-group">
-                                    <button type="button" class="status-toggle-btn active-fakt" data-status="fakt" onclick="handleOrientierungStatusToggle('ich', 'bisexuell', 'fakt', this)">Fakt</button>
+                                    <button type="button" class="status-toggle-btn active-gelebt" data-status="gelebt" onclick="handleOrientierungStatusToggle('ich', 'bisexuell', 'gelebt', this)">Gelebt</button>
                                     <button type="button" class="status-toggle-btn" data-status="interessiert" onclick="handleOrientierungStatusToggle('ich', 'bisexuell', 'interessiert', this)">Interessiert</button>
                                 </div>
                             </div>
@@ -5379,7 +5474,7 @@
                                 <label for="partner-d-dom" class="dominanz-label">dominant</label>
                                 <button type="button" id="partner-d-dom-secondary" class="secondary-interessiert-btn" onclick="handleSecondaryInteressiert('partner', 'dominant', this)">interessiert</button>
                                 <div id="partner-d-dom-status" class="status-toggle-group">
-                                    <button type="button" class="status-toggle-btn active-fakt" data-status="fakt" onclick="handleDominanzStatusToggle('partner', 'dominant', 'fakt', this)">Fakt</button>
+                                    <button type="button" class="status-toggle-btn active-gelebt" data-status="gelebt" onclick="handleDominanzStatusToggle('partner', 'dominant', 'gelebt', this)">Gelebt</button>
                                     <button type="button" class="status-toggle-btn" data-status="interessiert" onclick="handleDominanzStatusToggle('partner', 'dominant', 'interessiert', this)">Interessiert</button>
                                 </div>
                             </div>
@@ -5388,7 +5483,7 @@
                                 <label for="partner-d-sub" class="dominanz-label">submissiv</label>
                                 <button type="button" id="partner-d-sub-secondary" class="secondary-interessiert-btn" onclick="handleSecondaryInteressiert('partner', 'submissiv', this)">interessiert</button>
                                 <div id="partner-d-sub-status" class="status-toggle-group">
-                                    <button type="button" class="status-toggle-btn active-fakt" data-status="fakt" onclick="handleDominanzStatusToggle('partner', 'submissiv', 'fakt', this)">Fakt</button>
+                                    <button type="button" class="status-toggle-btn active-gelebt" data-status="gelebt" onclick="handleDominanzStatusToggle('partner', 'submissiv', 'gelebt', this)">Gelebt</button>
                                     <button type="button" class="status-toggle-btn" data-status="interessiert" onclick="handleDominanzStatusToggle('partner', 'submissiv', 'interessiert', this)">Interessiert</button>
                                 </div>
                             </div>
@@ -5397,7 +5492,7 @@
                                 <label for="partner-d-sw" class="dominanz-label">switch</label>
                                 <button type="button" id="partner-d-sw-secondary" class="secondary-interessiert-btn" onclick="handleSecondaryInteressiert('partner', 'switch', this)">interessiert</button>
                                 <div id="partner-d-sw-status" class="status-toggle-group">
-                                    <button type="button" class="status-toggle-btn active-fakt" data-status="fakt" onclick="handleDominanzStatusToggle('partner', 'switch', 'fakt', this)">Fakt</button>
+                                    <button type="button" class="status-toggle-btn active-gelebt" data-status="gelebt" onclick="handleDominanzStatusToggle('partner', 'switch', 'gelebt', this)">Gelebt</button>
                                     <button type="button" class="status-toggle-btn" data-status="interessiert" onclick="handleDominanzStatusToggle('partner', 'switch', 'interessiert', this)">Interessiert</button>
                                 </div>
                             </div>
@@ -5406,7 +5501,7 @@
                                 <label for="partner-d-aus" class="dominanz-label">ausgeglichen</label>
                                 <button type="button" id="partner-d-aus-secondary" class="secondary-interessiert-btn" onclick="handleSecondaryInteressiert('partner', 'ausgeglichen', this)">interessiert</button>
                                 <div id="partner-d-aus-status" class="status-toggle-group">
-                                    <button type="button" class="status-toggle-btn active-fakt" data-status="fakt" onclick="handleDominanzStatusToggle('partner', 'ausgeglichen', 'fakt', this)">Fakt</button>
+                                    <button type="button" class="status-toggle-btn active-gelebt" data-status="gelebt" onclick="handleDominanzStatusToggle('partner', 'ausgeglichen', 'gelebt', this)">Gelebt</button>
                                     <button type="button" class="status-toggle-btn" data-status="interessiert" onclick="handleDominanzStatusToggle('partner', 'ausgeglichen', 'interessiert', this)">Interessiert</button>
                                 </div>
                             </div>
@@ -5419,7 +5514,7 @@
                                 <input type="checkbox" id="partner-o-het" value="heterosexuell" class="dominanz-checkbox" onchange="handleOrientierungMultiChange('partner', 'heterosexuell', this.checked)">
                                 <label for="partner-o-het" class="dominanz-label">heterosexuell</label>
                                 <div id="partner-o-het-status" class="status-toggle-group">
-                                    <button type="button" class="status-toggle-btn active-fakt" data-status="fakt" onclick="handleOrientierungStatusToggle('partner', 'heterosexuell', 'fakt', this)">Fakt</button>
+                                    <button type="button" class="status-toggle-btn active-gelebt" data-status="gelebt" onclick="handleOrientierungStatusToggle('partner', 'heterosexuell', 'gelebt', this)">Gelebt</button>
                                     <button type="button" class="status-toggle-btn" data-status="interessiert" onclick="handleOrientierungStatusToggle('partner', 'heterosexuell', 'interessiert', this)">Interessiert</button>
                                 </div>
                             </div>
@@ -5427,7 +5522,7 @@
                                 <input type="checkbox" id="partner-o-hom" value="homosexuell" class="dominanz-checkbox" onchange="handleOrientierungMultiChange('partner', 'homosexuell', this.checked)">
                                 <label for="partner-o-hom" class="dominanz-label">homosexuell</label>
                                 <div id="partner-o-hom-status" class="status-toggle-group">
-                                    <button type="button" class="status-toggle-btn active-fakt" data-status="fakt" onclick="handleOrientierungStatusToggle('partner', 'homosexuell', 'fakt', this)">Fakt</button>
+                                    <button type="button" class="status-toggle-btn active-gelebt" data-status="gelebt" onclick="handleOrientierungStatusToggle('partner', 'homosexuell', 'gelebt', this)">Gelebt</button>
                                     <button type="button" class="status-toggle-btn" data-status="interessiert" onclick="handleOrientierungStatusToggle('partner', 'homosexuell', 'interessiert', this)">Interessiert</button>
                                 </div>
                             </div>
@@ -5435,7 +5530,7 @@
                                 <input type="checkbox" id="partner-o-bi" value="bisexuell" class="dominanz-checkbox" onchange="handleOrientierungMultiChange('partner', 'bisexuell', this.checked)">
                                 <label for="partner-o-bi" class="dominanz-label">bisexuell</label>
                                 <div id="partner-o-bi-status" class="status-toggle-group">
-                                    <button type="button" class="status-toggle-btn active-fakt" data-status="fakt" onclick="handleOrientierungStatusToggle('partner', 'bisexuell', 'fakt', this)">Fakt</button>
+                                    <button type="button" class="status-toggle-btn active-gelebt" data-status="gelebt" onclick="handleOrientierungStatusToggle('partner', 'bisexuell', 'gelebt', this)">Gelebt</button>
                                     <button type="button" class="status-toggle-btn" data-status="interessiert" onclick="handleOrientierungStatusToggle('partner', 'bisexuell', 'interessiert', this)">Interessiert</button>
                                 </div>
                             </div>
@@ -5448,22 +5543,46 @@
         <!-- Result Bar -->
         <div class="result-bar">
             <div id="warningsContainer"></div>
-            <div class="result-header">
-                <div class="result-title">
-                    <button class="result-nav-btn" onclick="navigateArchetype('ich', -1)" title="Vorheriger ICH-Archetyp">&#9664;</button>
-                    <span class="type-name" id="resultIchType">Single</span>
-                    <button class="result-nav-btn" onclick="navigateArchetype('ich', 1)" title="Nächster ICH-Archetyp">&#9654;</button>
-                    <span> × </span>
-                    <button class="result-nav-btn" onclick="navigateArchetype('partner', -1)" title="Vorheriger Partner-Archetyp">&#9664;</button>
-                    <span class="type-name" id="resultPartnerType">Duo</span>
-                    <button class="result-nav-btn" onclick="navigateArchetype('partner', 1)" title="Nächster Partner-Archetyp">&#9654;</button>
-                    <span style="font-size: var(--font-xs); color: var(--text-muted); margin-left: 8px;">Qualitätsindex</span>
+
+            <!-- New layout with circle -->
+            <div class="result-bar-with-circle">
+                <!-- Types Column -->
+                <div class="result-types-column">
+                    <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 12px;">
+                        <div style="flex: 1;">
+                            <div style="font-size: var(--font-xs); color: var(--success); font-weight: 600; margin-bottom: 4px;">ICH</div>
+                            <div style="display: flex; align-items: center; gap: 4px;">
+                                <button class="result-nav-btn" onclick="navigateArchetype('ich', -1)" title="Vorheriger ICH-Archetyp">&#9664;</button>
+                                <span class="type-name" id="resultIchType" style="font-size: var(--font-base); font-weight: 600;">Single</span>
+                                <button class="result-nav-btn" onclick="navigateArchetype('ich', 1)" title="Nächster ICH-Archetyp">&#9654;</button>
+                            </div>
+                        </div>
+                        <span style="font-size: 1.2rem; color: var(--text-muted);">×</span>
+                        <div style="flex: 1; text-align: right;">
+                            <div style="font-size: var(--font-xs); color: var(--danger); font-weight: 600; margin-bottom: 4px;">DEIN PARTNER</div>
+                            <div style="display: flex; align-items: center; justify-content: flex-end; gap: 4px;">
+                                <button class="result-nav-btn" onclick="navigateArchetype('partner', -1)" title="Vorheriger Partner-Archetyp">&#9664;</button>
+                                <span class="type-name" id="resultPartnerType" style="font-size: var(--font-base); font-weight: 600;">Duo</span>
+                                <button class="result-nav-btn" onclick="navigateArchetype('partner', 1)" title="Nächster Partner-Archetyp">&#9654;</button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="result-percentage" id="resultPercentage">0%</div>
+
+                <!-- Circle Column -->
+                <div class="result-circle-column">
+                    <div class="desktop-score-circle" id="desktopScoreCircle" onclick="openProContraModal()" title="Klicken für Pro & Contra Details">
+                        <span id="desktopCirclePercentage">0%</span>
+                    </div>
+                    <div class="desktop-score-label">Beziehungsqualität</div>
+                </div>
             </div>
-            <div class="result-progress">
+
+            <!-- Hidden progress bar for backwards compatibility -->
+            <div class="result-progress" style="display: none;">
                 <div class="result-progress-fill" id="resultProgressFill" style="width: 0%; background: var(--primary);"></div>
             </div>
+            <div class="result-percentage" id="resultPercentage" style="display: none;">0%</div>
 
             <!-- 4-Factor Breakdown with Sublabels -->
             <div id="desktopFactorBreakdown" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; margin-top: 15px; padding-top: 15px; border-top: 1px solid var(--border);">
@@ -5582,7 +5701,7 @@
                                 <label for="m-ich-d-dom" class="dominanz-label">dominant</label>
                                 <button type="button" id="m-ich-d-dom-secondary" class="secondary-interessiert-btn" onclick="handleSecondaryInteressiert('ich', 'dominant', this)">interessiert</button>
                                 <div id="m-ich-d-dom-status" class="status-toggle-group">
-                                    <button type="button" class="status-toggle-btn active-fakt" data-status="fakt" onclick="handleMobileDominanzStatusToggle('ich', 'dominant', 'fakt', this)">Fakt</button>
+                                    <button type="button" class="status-toggle-btn active-gelebt" data-status="gelebt" onclick="handleMobileDominanzStatusToggle('ich', 'dominant', 'gelebt', this)">Gelebt</button>
                                     <button type="button" class="status-toggle-btn" data-status="interessiert" onclick="handleMobileDominanzStatusToggle('ich', 'dominant', 'interessiert', this)">Interessiert</button>
                                 </div>
                             </div>
@@ -5591,7 +5710,7 @@
                                 <label for="m-ich-d-sub" class="dominanz-label">submissiv</label>
                                 <button type="button" id="m-ich-d-sub-secondary" class="secondary-interessiert-btn" onclick="handleSecondaryInteressiert('ich', 'submissiv', this)">interessiert</button>
                                 <div id="m-ich-d-sub-status" class="status-toggle-group">
-                                    <button type="button" class="status-toggle-btn active-fakt" data-status="fakt" onclick="handleMobileDominanzStatusToggle('ich', 'submissiv', 'fakt', this)">Fakt</button>
+                                    <button type="button" class="status-toggle-btn active-gelebt" data-status="gelebt" onclick="handleMobileDominanzStatusToggle('ich', 'submissiv', 'gelebt', this)">Gelebt</button>
                                     <button type="button" class="status-toggle-btn" data-status="interessiert" onclick="handleMobileDominanzStatusToggle('ich', 'submissiv', 'interessiert', this)">Interessiert</button>
                                 </div>
                             </div>
@@ -5600,7 +5719,7 @@
                                 <label for="m-ich-d-sw" class="dominanz-label">switch</label>
                                 <button type="button" id="m-ich-d-sw-secondary" class="secondary-interessiert-btn" onclick="handleSecondaryInteressiert('ich', 'switch', this)">interessiert</button>
                                 <div id="m-ich-d-sw-status" class="status-toggle-group">
-                                    <button type="button" class="status-toggle-btn active-fakt" data-status="fakt" onclick="handleMobileDominanzStatusToggle('ich', 'switch', 'fakt', this)">Fakt</button>
+                                    <button type="button" class="status-toggle-btn active-gelebt" data-status="gelebt" onclick="handleMobileDominanzStatusToggle('ich', 'switch', 'gelebt', this)">Gelebt</button>
                                     <button type="button" class="status-toggle-btn" data-status="interessiert" onclick="handleMobileDominanzStatusToggle('ich', 'switch', 'interessiert', this)">Interessiert</button>
                                 </div>
                             </div>
@@ -5609,7 +5728,7 @@
                                 <label for="m-ich-d-aus" class="dominanz-label">ausgeglichen</label>
                                 <button type="button" id="m-ich-d-aus-secondary" class="secondary-interessiert-btn" onclick="handleSecondaryInteressiert('ich', 'ausgeglichen', this)">interessiert</button>
                                 <div id="m-ich-d-aus-status" class="status-toggle-group">
-                                    <button type="button" class="status-toggle-btn active-fakt" data-status="fakt" onclick="handleMobileDominanzStatusToggle('ich', 'ausgeglichen', 'fakt', this)">Fakt</button>
+                                    <button type="button" class="status-toggle-btn active-gelebt" data-status="gelebt" onclick="handleMobileDominanzStatusToggle('ich', 'ausgeglichen', 'gelebt', this)">Gelebt</button>
                                     <button type="button" class="status-toggle-btn" data-status="interessiert" onclick="handleMobileDominanzStatusToggle('ich', 'ausgeglichen', 'interessiert', this)">Interessiert</button>
                                 </div>
                             </div>
@@ -5622,7 +5741,7 @@
                                 <input type="checkbox" id="m-ich-o-het" value="heterosexuell" class="dominanz-checkbox" onchange="handleMobileOrientierungMultiChange('ich', 'heterosexuell', this.checked)">
                                 <label for="m-ich-o-het" class="dominanz-label">heterosexuell</label>
                                 <div id="m-ich-o-het-status" class="status-toggle-group">
-                                    <button type="button" class="status-toggle-btn active-fakt" data-status="fakt" onclick="handleMobileOrientierungStatusToggle('ich', 'heterosexuell', 'fakt', this)">Fakt</button>
+                                    <button type="button" class="status-toggle-btn active-gelebt" data-status="gelebt" onclick="handleMobileOrientierungStatusToggle('ich', 'heterosexuell', 'gelebt', this)">Gelebt</button>
                                     <button type="button" class="status-toggle-btn" data-status="interessiert" onclick="handleMobileOrientierungStatusToggle('ich', 'heterosexuell', 'interessiert', this)">Interessiert</button>
                                 </div>
                             </div>
@@ -5630,7 +5749,7 @@
                                 <input type="checkbox" id="m-ich-o-hom" value="homosexuell" class="dominanz-checkbox" onchange="handleMobileOrientierungMultiChange('ich', 'homosexuell', this.checked)">
                                 <label for="m-ich-o-hom" class="dominanz-label">homosexuell</label>
                                 <div id="m-ich-o-hom-status" class="status-toggle-group">
-                                    <button type="button" class="status-toggle-btn active-fakt" data-status="fakt" onclick="handleMobileOrientierungStatusToggle('ich', 'homosexuell', 'fakt', this)">Fakt</button>
+                                    <button type="button" class="status-toggle-btn active-gelebt" data-status="gelebt" onclick="handleMobileOrientierungStatusToggle('ich', 'homosexuell', 'gelebt', this)">Gelebt</button>
                                     <button type="button" class="status-toggle-btn" data-status="interessiert" onclick="handleMobileOrientierungStatusToggle('ich', 'homosexuell', 'interessiert', this)">Interessiert</button>
                                 </div>
                             </div>
@@ -5638,7 +5757,7 @@
                                 <input type="checkbox" id="m-ich-o-bi" value="bisexuell" class="dominanz-checkbox" onchange="handleMobileOrientierungMultiChange('ich', 'bisexuell', this.checked)">
                                 <label for="m-ich-o-bi" class="dominanz-label">bisexuell</label>
                                 <div id="m-ich-o-bi-status" class="status-toggle-group">
-                                    <button type="button" class="status-toggle-btn active-fakt" data-status="fakt" onclick="handleMobileOrientierungStatusToggle('ich', 'bisexuell', 'fakt', this)">Fakt</button>
+                                    <button type="button" class="status-toggle-btn active-gelebt" data-status="gelebt" onclick="handleMobileOrientierungStatusToggle('ich', 'bisexuell', 'gelebt', this)">Gelebt</button>
                                     <button type="button" class="status-toggle-btn" data-status="interessiert" onclick="handleMobileOrientierungStatusToggle('ich', 'bisexuell', 'interessiert', this)">Interessiert</button>
                                 </div>
                             </div>
@@ -5685,7 +5804,7 @@
                                 <label for="m-partner-d-dom" class="dominanz-label">dominant</label>
                                 <button type="button" id="m-partner-d-dom-secondary" class="secondary-interessiert-btn" onclick="handleSecondaryInteressiert('partner', 'dominant', this)">interessiert</button>
                                 <div id="m-partner-d-dom-status" class="status-toggle-group">
-                                    <button type="button" class="status-toggle-btn active-fakt" data-status="fakt" onclick="handleMobileDominanzStatusToggle('partner', 'dominant', 'fakt', this)">Fakt</button>
+                                    <button type="button" class="status-toggle-btn active-gelebt" data-status="gelebt" onclick="handleMobileDominanzStatusToggle('partner', 'dominant', 'gelebt', this)">Gelebt</button>
                                     <button type="button" class="status-toggle-btn" data-status="interessiert" onclick="handleMobileDominanzStatusToggle('partner', 'dominant', 'interessiert', this)">Interessiert</button>
                                 </div>
                             </div>
@@ -5694,7 +5813,7 @@
                                 <label for="m-partner-d-sub" class="dominanz-label">submissiv</label>
                                 <button type="button" id="m-partner-d-sub-secondary" class="secondary-interessiert-btn" onclick="handleSecondaryInteressiert('partner', 'submissiv', this)">interessiert</button>
                                 <div id="m-partner-d-sub-status" class="status-toggle-group">
-                                    <button type="button" class="status-toggle-btn active-fakt" data-status="fakt" onclick="handleMobileDominanzStatusToggle('partner', 'submissiv', 'fakt', this)">Fakt</button>
+                                    <button type="button" class="status-toggle-btn active-gelebt" data-status="gelebt" onclick="handleMobileDominanzStatusToggle('partner', 'submissiv', 'gelebt', this)">Gelebt</button>
                                     <button type="button" class="status-toggle-btn" data-status="interessiert" onclick="handleMobileDominanzStatusToggle('partner', 'submissiv', 'interessiert', this)">Interessiert</button>
                                 </div>
                             </div>
@@ -5703,7 +5822,7 @@
                                 <label for="m-partner-d-sw" class="dominanz-label">switch</label>
                                 <button type="button" id="m-partner-d-sw-secondary" class="secondary-interessiert-btn" onclick="handleSecondaryInteressiert('partner', 'switch', this)">interessiert</button>
                                 <div id="m-partner-d-sw-status" class="status-toggle-group">
-                                    <button type="button" class="status-toggle-btn active-fakt" data-status="fakt" onclick="handleMobileDominanzStatusToggle('partner', 'switch', 'fakt', this)">Fakt</button>
+                                    <button type="button" class="status-toggle-btn active-gelebt" data-status="gelebt" onclick="handleMobileDominanzStatusToggle('partner', 'switch', 'gelebt', this)">Gelebt</button>
                                     <button type="button" class="status-toggle-btn" data-status="interessiert" onclick="handleMobileDominanzStatusToggle('partner', 'switch', 'interessiert', this)">Interessiert</button>
                                 </div>
                             </div>
@@ -5712,7 +5831,7 @@
                                 <label for="m-partner-d-aus" class="dominanz-label">ausgeglichen</label>
                                 <button type="button" id="m-partner-d-aus-secondary" class="secondary-interessiert-btn" onclick="handleSecondaryInteressiert('partner', 'ausgeglichen', this)">interessiert</button>
                                 <div id="m-partner-d-aus-status" class="status-toggle-group">
-                                    <button type="button" class="status-toggle-btn active-fakt" data-status="fakt" onclick="handleMobileDominanzStatusToggle('partner', 'ausgeglichen', 'fakt', this)">Fakt</button>
+                                    <button type="button" class="status-toggle-btn active-gelebt" data-status="gelebt" onclick="handleMobileDominanzStatusToggle('partner', 'ausgeglichen', 'gelebt', this)">Gelebt</button>
                                     <button type="button" class="status-toggle-btn" data-status="interessiert" onclick="handleMobileDominanzStatusToggle('partner', 'ausgeglichen', 'interessiert', this)">Interessiert</button>
                                 </div>
                             </div>
@@ -5725,7 +5844,7 @@
                                 <input type="checkbox" id="m-partner-o-het" value="heterosexuell" class="dominanz-checkbox" onchange="handleMobileOrientierungMultiChange('partner', 'heterosexuell', this.checked)">
                                 <label for="m-partner-o-het" class="dominanz-label">heterosexuell</label>
                                 <div id="m-partner-o-het-status" class="status-toggle-group">
-                                    <button type="button" class="status-toggle-btn active-fakt" data-status="fakt" onclick="handleMobileOrientierungStatusToggle('partner', 'heterosexuell', 'fakt', this)">Fakt</button>
+                                    <button type="button" class="status-toggle-btn active-gelebt" data-status="gelebt" onclick="handleMobileOrientierungStatusToggle('partner', 'heterosexuell', 'gelebt', this)">Gelebt</button>
                                     <button type="button" class="status-toggle-btn" data-status="interessiert" onclick="handleMobileOrientierungStatusToggle('partner', 'heterosexuell', 'interessiert', this)">Interessiert</button>
                                 </div>
                             </div>
@@ -5733,7 +5852,7 @@
                                 <input type="checkbox" id="m-partner-o-hom" value="homosexuell" class="dominanz-checkbox" onchange="handleMobileOrientierungMultiChange('partner', 'homosexuell', this.checked)">
                                 <label for="m-partner-o-hom" class="dominanz-label">homosexuell</label>
                                 <div id="m-partner-o-hom-status" class="status-toggle-group">
-                                    <button type="button" class="status-toggle-btn active-fakt" data-status="fakt" onclick="handleMobileOrientierungStatusToggle('partner', 'homosexuell', 'fakt', this)">Fakt</button>
+                                    <button type="button" class="status-toggle-btn active-gelebt" data-status="gelebt" onclick="handleMobileOrientierungStatusToggle('partner', 'homosexuell', 'gelebt', this)">Gelebt</button>
                                     <button type="button" class="status-toggle-btn" data-status="interessiert" onclick="handleMobileOrientierungStatusToggle('partner', 'homosexuell', 'interessiert', this)">Interessiert</button>
                                 </div>
                             </div>
@@ -5741,7 +5860,7 @@
                                 <input type="checkbox" id="m-partner-o-bi" value="bisexuell" class="dominanz-checkbox" onchange="handleMobileOrientierungMultiChange('partner', 'bisexuell', this.checked)">
                                 <label for="m-partner-o-bi" class="dominanz-label">bisexuell</label>
                                 <div id="m-partner-o-bi-status" class="status-toggle-group">
-                                    <button type="button" class="status-toggle-btn active-fakt" data-status="fakt" onclick="handleMobileOrientierungStatusToggle('partner', 'bisexuell', 'fakt', this)">Fakt</button>
+                                    <button type="button" class="status-toggle-btn active-gelebt" data-status="gelebt" onclick="handleMobileOrientierungStatusToggle('partner', 'bisexuell', 'gelebt', this)">Gelebt</button>
                                     <button type="button" class="status-toggle-btn" data-status="interessiert" onclick="handleMobileOrientierungStatusToggle('partner', 'bisexuell', 'interessiert', this)">Interessiert</button>
                                 </div>
                             </div>
@@ -5911,7 +6030,7 @@
                                         <label for="modal-ich-d-dom" class="dominanz-label">dominant</label>
                                         <button type="button" id="modal-ich-d-dom-secondary" class="secondary-interessiert-btn" onclick="handleSecondaryInteressiert('ich', 'dominant', this)">interessiert</button>
                                         <div id="modal-ich-d-dom-status" class="status-toggle-group">
-                                            <button type="button" class="status-toggle-btn active-fakt" data-status="fakt" onclick="handleModalDominanzStatusToggle('ich', 'dominant', 'fakt', this)">Fakt</button>
+                                            <button type="button" class="status-toggle-btn active-gelebt" data-status="gelebt" onclick="handleModalDominanzStatusToggle('ich', 'dominant', 'gelebt', this)">Gelebt</button>
                                             <button type="button" class="status-toggle-btn" data-status="interessiert" onclick="handleModalDominanzStatusToggle('ich', 'dominant', 'interessiert', this)">Interessiert</button>
                                         </div>
                                     </div>
@@ -5920,7 +6039,7 @@
                                         <label for="modal-ich-d-sub" class="dominanz-label">submissiv</label>
                                         <button type="button" id="modal-ich-d-sub-secondary" class="secondary-interessiert-btn" onclick="handleSecondaryInteressiert('ich', 'submissiv', this)">interessiert</button>
                                         <div id="modal-ich-d-sub-status" class="status-toggle-group">
-                                            <button type="button" class="status-toggle-btn active-fakt" data-status="fakt" onclick="handleModalDominanzStatusToggle('ich', 'submissiv', 'fakt', this)">Fakt</button>
+                                            <button type="button" class="status-toggle-btn active-gelebt" data-status="gelebt" onclick="handleModalDominanzStatusToggle('ich', 'submissiv', 'gelebt', this)">Gelebt</button>
                                             <button type="button" class="status-toggle-btn" data-status="interessiert" onclick="handleModalDominanzStatusToggle('ich', 'submissiv', 'interessiert', this)">Interessiert</button>
                                         </div>
                                     </div>
@@ -5929,7 +6048,7 @@
                                         <label for="modal-ich-d-sw" class="dominanz-label">switch</label>
                                         <button type="button" id="modal-ich-d-sw-secondary" class="secondary-interessiert-btn" onclick="handleSecondaryInteressiert('ich', 'switch', this)">interessiert</button>
                                         <div id="modal-ich-d-sw-status" class="status-toggle-group">
-                                            <button type="button" class="status-toggle-btn active-fakt" data-status="fakt" onclick="handleModalDominanzStatusToggle('ich', 'switch', 'fakt', this)">Fakt</button>
+                                            <button type="button" class="status-toggle-btn active-gelebt" data-status="gelebt" onclick="handleModalDominanzStatusToggle('ich', 'switch', 'gelebt', this)">Gelebt</button>
                                             <button type="button" class="status-toggle-btn" data-status="interessiert" onclick="handleModalDominanzStatusToggle('ich', 'switch', 'interessiert', this)">Interessiert</button>
                                         </div>
                                     </div>
@@ -5938,7 +6057,7 @@
                                         <label for="modal-ich-d-aus" class="dominanz-label">ausgeglichen</label>
                                         <button type="button" id="modal-ich-d-aus-secondary" class="secondary-interessiert-btn" onclick="handleSecondaryInteressiert('ich', 'ausgeglichen', this)">interessiert</button>
                                         <div id="modal-ich-d-aus-status" class="status-toggle-group">
-                                            <button type="button" class="status-toggle-btn active-fakt" data-status="fakt" onclick="handleModalDominanzStatusToggle('ich', 'ausgeglichen', 'fakt', this)">Fakt</button>
+                                            <button type="button" class="status-toggle-btn active-gelebt" data-status="gelebt" onclick="handleModalDominanzStatusToggle('ich', 'ausgeglichen', 'gelebt', this)">Gelebt</button>
                                             <button type="button" class="status-toggle-btn" data-status="interessiert" onclick="handleModalDominanzStatusToggle('ich', 'ausgeglichen', 'interessiert', this)">Interessiert</button>
                                         </div>
                                     </div>
@@ -5957,7 +6076,7 @@
                                         <input type="checkbox" id="modal-ich-o-het" value="heterosexuell" class="dominanz-checkbox" onchange="handleModalOrientierungMultiChange('ich', 'heterosexuell', this.checked)">
                                         <label for="modal-ich-o-het" class="dominanz-label">heterosexuell</label>
                                         <div id="modal-ich-o-het-status" class="status-toggle-group">
-                                            <button type="button" class="status-toggle-btn active-fakt" data-status="fakt" onclick="handleModalOrientierungStatusToggle('ich', 'heterosexuell', 'fakt', this)">Fakt</button>
+                                            <button type="button" class="status-toggle-btn active-gelebt" data-status="gelebt" onclick="handleModalOrientierungStatusToggle('ich', 'heterosexuell', 'gelebt', this)">Gelebt</button>
                                             <button type="button" class="status-toggle-btn" data-status="interessiert" onclick="handleModalOrientierungStatusToggle('ich', 'heterosexuell', 'interessiert', this)">Interessiert</button>
                                         </div>
                                     </div>
@@ -5965,7 +6084,7 @@
                                         <input type="checkbox" id="modal-ich-o-hom" value="homosexuell" class="dominanz-checkbox" onchange="handleModalOrientierungMultiChange('ich', 'homosexuell', this.checked)">
                                         <label for="modal-ich-o-hom" class="dominanz-label">homosexuell</label>
                                         <div id="modal-ich-o-hom-status" class="status-toggle-group">
-                                            <button type="button" class="status-toggle-btn active-fakt" data-status="fakt" onclick="handleModalOrientierungStatusToggle('ich', 'homosexuell', 'fakt', this)">Fakt</button>
+                                            <button type="button" class="status-toggle-btn active-gelebt" data-status="gelebt" onclick="handleModalOrientierungStatusToggle('ich', 'homosexuell', 'gelebt', this)">Gelebt</button>
                                             <button type="button" class="status-toggle-btn" data-status="interessiert" onclick="handleModalOrientierungStatusToggle('ich', 'homosexuell', 'interessiert', this)">Interessiert</button>
                                         </div>
                                     </div>
@@ -5973,7 +6092,7 @@
                                         <input type="checkbox" id="modal-ich-o-bi" value="bisexuell" class="dominanz-checkbox" onchange="handleModalOrientierungMultiChange('ich', 'bisexuell', this.checked)">
                                         <label for="modal-ich-o-bi" class="dominanz-label">bisexuell</label>
                                         <div id="modal-ich-o-bi-status" class="status-toggle-group">
-                                            <button type="button" class="status-toggle-btn active-fakt" data-status="fakt" onclick="handleModalOrientierungStatusToggle('ich', 'bisexuell', 'fakt', this)">Fakt</button>
+                                            <button type="button" class="status-toggle-btn active-gelebt" data-status="gelebt" onclick="handleModalOrientierungStatusToggle('ich', 'bisexuell', 'gelebt', this)">Gelebt</button>
                                             <button type="button" class="status-toggle-btn" data-status="interessiert" onclick="handleModalOrientierungStatusToggle('ich', 'bisexuell', 'interessiert', this)">Interessiert</button>
                                         </div>
                                     </div>
@@ -6099,7 +6218,7 @@
                                         <label for="modal-partner-d-dom" class="dominanz-label">dominant</label>
                                         <button type="button" id="modal-partner-d-dom-secondary" class="secondary-interessiert-btn" onclick="handleSecondaryInteressiert('partner', 'dominant', this)">interessiert</button>
                                         <div id="modal-partner-d-dom-status" class="status-toggle-group">
-                                            <button type="button" class="status-toggle-btn active-fakt" data-status="fakt" onclick="handleModalDominanzStatusToggle('partner', 'dominant', 'fakt', this)">Fakt</button>
+                                            <button type="button" class="status-toggle-btn active-gelebt" data-status="gelebt" onclick="handleModalDominanzStatusToggle('partner', 'dominant', 'gelebt', this)">Gelebt</button>
                                             <button type="button" class="status-toggle-btn" data-status="interessiert" onclick="handleModalDominanzStatusToggle('partner', 'dominant', 'interessiert', this)">Interessiert</button>
                                         </div>
                                     </div>
@@ -6108,7 +6227,7 @@
                                         <label for="modal-partner-d-sub" class="dominanz-label">submissiv</label>
                                         <button type="button" id="modal-partner-d-sub-secondary" class="secondary-interessiert-btn" onclick="handleSecondaryInteressiert('partner', 'submissiv', this)">interessiert</button>
                                         <div id="modal-partner-d-sub-status" class="status-toggle-group">
-                                            <button type="button" class="status-toggle-btn active-fakt" data-status="fakt" onclick="handleModalDominanzStatusToggle('partner', 'submissiv', 'fakt', this)">Fakt</button>
+                                            <button type="button" class="status-toggle-btn active-gelebt" data-status="gelebt" onclick="handleModalDominanzStatusToggle('partner', 'submissiv', 'gelebt', this)">Gelebt</button>
                                             <button type="button" class="status-toggle-btn" data-status="interessiert" onclick="handleModalDominanzStatusToggle('partner', 'submissiv', 'interessiert', this)">Interessiert</button>
                                         </div>
                                     </div>
@@ -6117,7 +6236,7 @@
                                         <label for="modal-partner-d-sw" class="dominanz-label">switch</label>
                                         <button type="button" id="modal-partner-d-sw-secondary" class="secondary-interessiert-btn" onclick="handleSecondaryInteressiert('partner', 'switch', this)">interessiert</button>
                                         <div id="modal-partner-d-sw-status" class="status-toggle-group">
-                                            <button type="button" class="status-toggle-btn active-fakt" data-status="fakt" onclick="handleModalDominanzStatusToggle('partner', 'switch', 'fakt', this)">Fakt</button>
+                                            <button type="button" class="status-toggle-btn active-gelebt" data-status="gelebt" onclick="handleModalDominanzStatusToggle('partner', 'switch', 'gelebt', this)">Gelebt</button>
                                             <button type="button" class="status-toggle-btn" data-status="interessiert" onclick="handleModalDominanzStatusToggle('partner', 'switch', 'interessiert', this)">Interessiert</button>
                                         </div>
                                     </div>
@@ -6126,7 +6245,7 @@
                                         <label for="modal-partner-d-aus" class="dominanz-label">ausgeglichen</label>
                                         <button type="button" id="modal-partner-d-aus-secondary" class="secondary-interessiert-btn" onclick="handleSecondaryInteressiert('partner', 'ausgeglichen', this)">interessiert</button>
                                         <div id="modal-partner-d-aus-status" class="status-toggle-group">
-                                            <button type="button" class="status-toggle-btn active-fakt" data-status="fakt" onclick="handleModalDominanzStatusToggle('partner', 'ausgeglichen', 'fakt', this)">Fakt</button>
+                                            <button type="button" class="status-toggle-btn active-gelebt" data-status="gelebt" onclick="handleModalDominanzStatusToggle('partner', 'ausgeglichen', 'gelebt', this)">Gelebt</button>
                                             <button type="button" class="status-toggle-btn" data-status="interessiert" onclick="handleModalDominanzStatusToggle('partner', 'ausgeglichen', 'interessiert', this)">Interessiert</button>
                                         </div>
                                     </div>
@@ -6145,7 +6264,7 @@
                                         <input type="checkbox" id="modal-partner-o-het" value="heterosexuell" class="dominanz-checkbox" onchange="handleModalOrientierungMultiChange('partner', 'heterosexuell', this.checked)">
                                         <label for="modal-partner-o-het" class="dominanz-label">heterosexuell</label>
                                         <div id="modal-partner-o-het-status" class="status-toggle-group">
-                                            <button type="button" class="status-toggle-btn active-fakt" data-status="fakt" onclick="handleModalOrientierungStatusToggle('partner', 'heterosexuell', 'fakt', this)">Fakt</button>
+                                            <button type="button" class="status-toggle-btn active-gelebt" data-status="gelebt" onclick="handleModalOrientierungStatusToggle('partner', 'heterosexuell', 'gelebt', this)">Gelebt</button>
                                             <button type="button" class="status-toggle-btn" data-status="interessiert" onclick="handleModalOrientierungStatusToggle('partner', 'heterosexuell', 'interessiert', this)">Interessiert</button>
                                         </div>
                                     </div>
@@ -6153,7 +6272,7 @@
                                         <input type="checkbox" id="modal-partner-o-hom" value="homosexuell" class="dominanz-checkbox" onchange="handleModalOrientierungMultiChange('partner', 'homosexuell', this.checked)">
                                         <label for="modal-partner-o-hom" class="dominanz-label">homosexuell</label>
                                         <div id="modal-partner-o-hom-status" class="status-toggle-group">
-                                            <button type="button" class="status-toggle-btn active-fakt" data-status="fakt" onclick="handleModalOrientierungStatusToggle('partner', 'homosexuell', 'fakt', this)">Fakt</button>
+                                            <button type="button" class="status-toggle-btn active-gelebt" data-status="gelebt" onclick="handleModalOrientierungStatusToggle('partner', 'homosexuell', 'gelebt', this)">Gelebt</button>
                                             <button type="button" class="status-toggle-btn" data-status="interessiert" onclick="handleModalOrientierungStatusToggle('partner', 'homosexuell', 'interessiert', this)">Interessiert</button>
                                         </div>
                                     </div>
@@ -6161,7 +6280,7 @@
                                         <input type="checkbox" id="modal-partner-o-bi" value="bisexuell" class="dominanz-checkbox" onchange="handleModalOrientierungMultiChange('partner', 'bisexuell', this.checked)">
                                         <label for="modal-partner-o-bi" class="dominanz-label">bisexuell</label>
                                         <div id="modal-partner-o-bi-status" class="status-toggle-group">
-                                            <button type="button" class="status-toggle-btn active-fakt" data-status="fakt" onclick="handleModalOrientierungStatusToggle('partner', 'bisexuell', 'fakt', this)">Fakt</button>
+                                            <button type="button" class="status-toggle-btn active-gelebt" data-status="gelebt" onclick="handleModalOrientierungStatusToggle('partner', 'bisexuell', 'gelebt', this)">Gelebt</button>
                                             <button type="button" class="status-toggle-btn" data-status="interessiert" onclick="handleModalOrientierungStatusToggle('partner', 'bisexuell', 'interessiert', this)">Interessiert</button>
                                         </div>
                                     </div>
@@ -6195,11 +6314,11 @@
                         <div class="pathos-blocker-persons">
                             <div class="pathos-blocker-person">
                                 <span class="pathos-blocker-person-label">ICH:</span>
-                                <span id="pathosBlockerPerson1">männlich, heterosexuell (Fakt)</span>
+                                <span id="pathosBlockerPerson1">männlich, heterosexuell (Gelebt)</span>
                             </div>
                             <div class="pathos-blocker-person">
                                 <span class="pathos-blocker-person-label">PARTNER:</span>
-                                <span id="pathosBlockerPerson2">männlich, heterosexuell (Fakt)</span>
+                                <span id="pathosBlockerPerson2">männlich, heterosexuell (Gelebt)</span>
                             </div>
                         </div>
                         <div class="pathos-blocker-divider"></div>
@@ -6543,8 +6662,8 @@
                 Wie sicher bist du dir bei dieser Orientierung?
             </div>
             <div class="status-popup-options">
-                <button class="status-popup-btn" id="statusPopupFakt" onclick="selectStatusFromPopup('fakt')">
-                    <span class="status-popup-btn-title">Fakt</span>
+                <button class="status-popup-btn" id="statusPopupGelebt" onclick="selectStatusFromPopup('gelebt')">
+                    <span class="status-popup-btn-title">Gelebt</span>
                     <span class="status-popup-btn-desc">Du lebst diese Orientierung und bist dir sicher.</span>
                 </button>
                 <button class="status-popup-btn interessiert" id="statusPopupInteressiert" onclick="selectStatusFromPopup('interessiert')">
@@ -6563,8 +6682,8 @@
                 Wie sicher bist du dir bei deiner Dominanz-Präferenz?
             </div>
             <div class="status-popup-options">
-                <button class="status-popup-btn" id="dominanzStatusPopupFakt" onclick="selectDominanzStatusFromPopup('fakt')">
-                    <span class="status-popup-btn-title">Fakt</span>
+                <button class="status-popup-btn" id="dominanzStatusPopupGelebt" onclick="selectDominanzStatusFromPopup('gelebt')">
+                    <span class="status-popup-btn-title">Gelebt</span>
                     <span class="status-popup-btn-desc">Du kennst und lebst deine Dominanz-Präferenz aktiv. Die Profilaussagen haben hohe Konfidenz.</span>
                 </button>
                 <button class="status-popup-btn interessiert" id="dominanzStatusPopupInteressiert" onclick="selectDominanzStatusFromPopup('interessiert')">
@@ -6626,13 +6745,13 @@
             ich: {
                 geschlecht: null,
                 dominanz: {
-                    dominant: null,      // null, 'fakt', oder 'interessiert'
+                    dominant: null,      // null, 'gelebt', oder 'interessiert'
                     submissiv: null,
                     switch: null,
                     ausgeglichen: null
                 },
                 orientierung: {
-                    heterosexuell: null, // null, 'fakt', oder 'interessiert'
+                    heterosexuell: null, // null, 'gelebt', oder 'interessiert'
                     homosexuell: null,
                     bisexuell: null
                 }
@@ -6669,11 +6788,11 @@
             },
             status: {
                 title: "Orientierungs-Status",
-                text: "Fakt: Du lebst diese Orientierung und bist dir sicher.\n\nInteressiert: Du bist neugierig oder in einer Explorationsphase. Die tatsächliche Anziehung ist noch unklar."
+                text: "Gelebt: Du lebst diese Orientierung und bist dir sicher.\n\nInteressiert: Du bist neugierig oder in einer Explorationsphase. Die tatsächliche Anziehung ist noch unklar."
             },
             dominanzStatus: {
                 title: "Dominanz-Status",
-                text: "Fakt: Du kennst deine Dominanz-Präferenz und lebst sie aktiv. Die Werte des psychologischen Profils treffen mit hoher Wahrscheinlichkeit zu.\n\nInteressiert: Du bist noch am Erkunden oder unsicher über deine Präferenz. Die Konfidenz der Profilaussagen ist reduziert (höhere Varianz in deinem Verhalten).\n\nWissenschaftliche Basis: Big Five Forschung zeigt, dass Menschen in Explorationsphasen konsistent höhere Verhaltensvarianzen aufweisen (McCrae & Costa, 1997)."
+                text: "Gelebt: Du kennst deine Dominanz-Präferenz und lebst sie aktiv. Die Werte des psychologischen Profils treffen mit hoher Wahrscheinlichkeit zu.\n\nInteressiert: Du bist noch am Erkunden oder unsicher über deine Präferenz. Die Konfidenz der Profilaussagen ist reduziert (höhere Varianz in deinem Verhalten).\n\nWissenschaftliche Basis: Big Five Forschung zeigt, dass Menschen in Explorationsphasen konsistent höhere Verhaltensvarianzen aufweisen (McCrae & Costa, 1997)."
             }
         };
 
@@ -7205,10 +7324,10 @@
         };
 
         // Status-Statements für Pathos/Logos (Pirsig & Osho Perspektive)
-        // Berücksichtigt den Sicherheitsgrad beider Personen (fakt vs. interessiert)
+        // Berücksichtigt den Sicherheitsgrad beider Personen (gelebt vs. interessiert)
         const statusStatements = {
             // Beide wissen wer sie sind
-            "fakt_fakt": {
+            "gelebt_gelebt": {
                 pathos: [
                     "Zwei gefestigte Seelen begegnen sich – die emotionale Klarheit beider schafft Tiefe.",
                     "Die Sicherheit in der eigenen Identität ermöglicht authentische Begegnung."
@@ -7220,7 +7339,7 @@
                 modifier: 1.0  // Volle Konfidenz
             },
             // Einer führt, einer exploriert
-            "fakt_interessiert": {
+            "gelebt_interessiert": {
                 pathos: [
                     "Klarheit trifft auf Offenheit – Raum für gemeinsames Wachstum entsteht.",
                     "Der eine bietet emotionalen Anker, der andere bringt Neugier mit."
@@ -7276,9 +7395,9 @@
             const getPrimaryOrientation = (orient) => {
                 if (typeof orient === 'string') return orient;
                 if (typeof orient === 'object') {
-                    // Priorität: fakt > interessiert
+                    // Priorität: gelebt > interessiert
                     for (const key of ['heterosexuell', 'homosexuell', 'bisexuell']) {
-                        if (orient[key] === 'fakt') return key;
+                        if (orient[key] === 'gelebt') return key;
                     }
                     for (const key of ['heterosexuell', 'homosexuell', 'bisexuell']) {
                         if (orient[key] === 'interessiert') return key;
@@ -7363,7 +7482,7 @@
                 // Prüfe Dominanz
                 if (dims.dominanz && typeof dims.dominanz === 'object') {
                     for (const key of Object.keys(dims.dominanz)) {
-                        if (dims.dominanz[key] === 'fakt') hasFakt = true;
+                        if (dims.dominanz[key] === 'gelebt') hasFakt = true;
                         if (dims.dominanz[key] === 'interessiert') hasInteressiert = true;
                     }
                 }
@@ -7371,14 +7490,14 @@
                 // Prüfe Orientierung
                 if (dims.orientierung && typeof dims.orientierung === 'object') {
                     for (const key of Object.keys(dims.orientierung)) {
-                        if (dims.orientierung[key] === 'fakt') hasFakt = true;
+                        if (dims.orientierung[key] === 'gelebt') hasFakt = true;
                         if (dims.orientierung[key] === 'interessiert') hasInteressiert = true;
                     }
                 }
 
-                // Wenn sowohl fakt als auch interessiert: interessiert dominiert (Unsicherheit)
+                // Wenn sowohl gelebt als auch interessiert: interessiert dominiert (Unsicherheit)
                 if (hasInteressiert) return 'interessiert';
-                if (hasFakt) return 'fakt';
+                if (hasFakt) return 'gelebt';
                 return null;
             };
 
@@ -7388,14 +7507,14 @@
             if (!status1 || !status2) return statusStatements.default;
 
             // Symmetrische Kombinationen
-            if (status1 === 'fakt' && status2 === 'fakt') {
-                return statusStatements.fakt_fakt;
+            if (status1 === 'gelebt' && status2 === 'gelebt') {
+                return statusStatements.gelebt_gelebt;
             }
             if (status1 === 'interessiert' && status2 === 'interessiert') {
                 return statusStatements.interessiert_interessiert;
             }
             // Asymmetrische Kombination (egal welche Reihenfolge)
-            return statusStatements.fakt_interessiert;
+            return statusStatements.gelebt_interessiert;
         }
 
         // Archetype definitions
@@ -9833,8 +9952,8 @@
 
             // Update the corresponding desktop radio button
             const desktopRadioId = person === 'ich'
-                ? (status === 'fakt' ? 'ich-s-fakt' : 'ich-s-int')
-                : (status === 'fakt' ? 'partner-s-fakt' : 'partner-s-int');
+                ? (status === 'gelebt' ? 'ich-s-fakt' : 'ich-s-int')
+                : (status === 'gelebt' ? 'partner-s-fakt' : 'partner-s-int');
             const desktopRadio = document.getElementById(desktopRadioId);
             if (desktopRadio) {
                 desktopRadio.checked = true;
@@ -9842,15 +9961,15 @@
 
             // Update the corresponding mobile radio button
             const mobileRadioId = person === 'ich'
-                ? (status === 'fakt' ? 'm-ich-s-fakt' : 'm-ich-s-int')
-                : (status === 'fakt' ? 'm-partner-s-fakt' : 'm-partner-s-int');
+                ? (status === 'gelebt' ? 'm-ich-s-fakt' : 'm-ich-s-int')
+                : (status === 'gelebt' ? 'm-partner-s-fakt' : 'm-partner-s-int');
             const mobileRadio = document.getElementById(mobileRadioId);
             if (mobileRadio) {
                 mobileRadio.checked = true;
             }
 
             // Update the corresponding modal radio button
-            const modalRadioId = person + '-status-' + (status === 'fakt' ? 'fakt' : 'interessiert');
+            const modalRadioId = person + '-status-' + (status === 'gelebt' ? 'gelebt' : 'interessiert');
             const modalRadio = document.getElementById(modalRadioId);
             if (modalRadio) {
                 modalRadio.checked = true;
@@ -10095,7 +10214,7 @@
             const buttons = statusGroup.querySelectorAll('.status-toggle-btn');
             buttons.forEach(btn => {
                 const btnStatus = btn.getAttribute('data-status');
-                btn.classList.remove('active-fakt', 'active-interessiert');
+                btn.classList.remove('active-gelebt', 'active-interessiert');
                 if (btnStatus === status) {
                     btn.classList.add('active-' + status);
                 }
@@ -10108,12 +10227,12 @@
             const dom = personDimensions[person].dominanz;
             const dominanzTypes = ['dominant', 'submissiv', 'switch', 'ausgeglichen'];
 
-            // Check if there's a primary tendency (Fakt)
+            // Check if there's a primary tendency (Gelebt)
             const primaryFakt = getPrimaryFaktDominanz(person);
 
             for (const [type, status] of Object.entries(dom)) {
                 const shortId = shortIdMap[type];
-                const isPrimaryFakt = status === 'fakt';
+                const isPrimaryFakt = status === 'gelebt';
                 const isSecondaryMode = primaryFakt && primaryFakt !== type;
 
                 // Desktop
@@ -10196,7 +10315,7 @@
         function getPrimaryFaktDominanz(person) {
             const dom = personDimensions[person].dominanz;
             for (const [type, status] of Object.entries(dom)) {
-                if (status === 'fakt') return type;
+                if (status === 'gelebt') return type;
             }
             return null;
         }
@@ -10289,17 +10408,17 @@
         // Handle checkbox change for orientierung multi-select (Desktop)
         function handleOrientierungMultiChange(person, orientierungType, isChecked) {
             if (isChecked) {
-                // Set default status to 'fakt'
-                personDimensions[person].orientierung[orientierungType] = 'fakt';
+                // Set default status to 'gelebt'
+                personDimensions[person].orientierung[orientierungType] = 'gelebt';
                 if (typeof mobilePersonDimensions !== 'undefined') {
-                    mobilePersonDimensions[person].orientierung[orientierungType] = 'fakt';
+                    mobilePersonDimensions[person].orientierung[orientierungType] = 'gelebt';
                 }
 
                 // Show the status toggle group
                 const statusGroup = document.getElementById(person + '-o-' + getShortOrientierungId(orientierungType) + '-status');
                 if (statusGroup) {
                     statusGroup.style.display = 'flex';
-                    updateStatusToggleButtons(statusGroup, 'fakt');
+                    updateStatusToggleButtons(statusGroup, 'gelebt');
                 }
             } else {
                 // Remove selection
@@ -10356,17 +10475,17 @@
         // Mobile: Handle checkbox change for multi-select orientierung
         function handleMobileOrientierungMultiChange(person, orientierungType, isChecked) {
             if (isChecked) {
-                // Set default status to 'fakt'
+                // Set default status to 'gelebt'
                 if (typeof mobilePersonDimensions !== 'undefined') {
-                    mobilePersonDimensions[person].orientierung[orientierungType] = 'fakt';
+                    mobilePersonDimensions[person].orientierung[orientierungType] = 'gelebt';
                 }
-                personDimensions[person].orientierung[orientierungType] = 'fakt';
+                personDimensions[person].orientierung[orientierungType] = 'gelebt';
 
                 // Show the status toggle group
                 const statusGroup = document.getElementById('m-' + person + '-o-' + getShortOrientierungId(orientierungType) + '-status');
                 if (statusGroup) {
                     statusGroup.style.display = 'flex';
-                    updateStatusToggleButtons(statusGroup, 'fakt');
+                    updateStatusToggleButtons(statusGroup, 'gelebt');
                 }
             } else {
                 // Remove selection
@@ -10423,17 +10542,17 @@
         // Modal: Handle checkbox change for multi-select orientierung
         function handleModalOrientierungMultiChange(person, orientierungType, isChecked) {
             if (isChecked) {
-                // Set default status to 'fakt'
-                personDimensions[person].orientierung[orientierungType] = 'fakt';
+                // Set default status to 'gelebt'
+                personDimensions[person].orientierung[orientierungType] = 'gelebt';
                 if (typeof mobilePersonDimensions !== 'undefined') {
-                    mobilePersonDimensions[person].orientierung[orientierungType] = 'fakt';
+                    mobilePersonDimensions[person].orientierung[orientierungType] = 'gelebt';
                 }
 
                 // Show the status toggle group
                 const statusGroup = document.getElementById('modal-' + person + '-o-' + getShortOrientierungId(orientierungType) + '-status');
                 if (statusGroup) {
                     statusGroup.style.display = 'flex';
-                    updateStatusToggleButtons(statusGroup, 'fakt');
+                    updateStatusToggleButtons(statusGroup, 'gelebt');
                 }
             } else {
                 // Remove selection
@@ -10740,7 +10859,7 @@
                 if (ori1.bisexuell) oriList1.push({ type: 'bisexuell', status: ori1.bisexuell });
             } else if (ori1 && typeof ori1 === 'string') {
                 // Backwards compatibility for old single-value format
-                oriList1.push({ type: ori1, status: person1.orientierungStatus || 'fakt' });
+                oriList1.push({ type: ori1, status: person1.orientierungStatus || 'gelebt' });
             }
 
             if (ori2 && typeof ori2 === 'object') {
@@ -10749,7 +10868,7 @@
                 if (ori2.bisexuell) oriList2.push({ type: 'bisexuell', status: ori2.bisexuell });
             } else if (ori2 && typeof ori2 === 'string') {
                 // Backwards compatibility for old single-value format
-                oriList2.push({ type: ori2, status: person2.orientierungStatus || 'fakt' });
+                oriList2.push({ type: ori2, status: person2.orientierungStatus || 'gelebt' });
             }
 
             // Check if any orientierung is selected
@@ -10865,21 +10984,21 @@
             if (person.orientierung && typeof person.orientierung === 'object') {
                 const parts = [];
                 if (person.orientierung.heterosexuell) {
-                    const suffix = person.orientierung.heterosexuell === 'interessiert' ? ' (Interessiert)' : ' (Fakt)';
+                    const suffix = person.orientierung.heterosexuell === 'interessiert' ? ' (Interessiert)' : ' (Gelebt)';
                     parts.push('heterosexuell' + suffix);
                 }
                 if (person.orientierung.homosexuell) {
-                    const suffix = person.orientierung.homosexuell === 'interessiert' ? ' (Interessiert)' : ' (Fakt)';
+                    const suffix = person.orientierung.homosexuell === 'interessiert' ? ' (Interessiert)' : ' (Gelebt)';
                     parts.push('homosexuell' + suffix);
                 }
                 if (person.orientierung.bisexuell) {
-                    const suffix = person.orientierung.bisexuell === 'interessiert' ? ' (Interessiert)' : ' (Fakt)';
+                    const suffix = person.orientierung.bisexuell === 'interessiert' ? ' (Interessiert)' : ' (Gelebt)';
                     parts.push('bisexuell' + suffix);
                 }
                 orientierungStr = parts.length > 0 ? parts.join(', ') : '?';
             } else if (person.orientierung) {
                 // Backwards compatibility for old single-value format
-                const statusSuffix = person.orientierungStatus === 'interessiert' ? ' (Interessiert)' : person.orientierungStatus === 'fakt' ? ' (Fakt)' : '';
+                const statusSuffix = person.orientierungStatus === 'interessiert' ? ' (Interessiert)' : person.orientierungStatus === 'gelebt' ? ' (Gelebt)' : '';
                 orientierungStr = person.orientierung + statusSuffix;
             }
 
@@ -11289,7 +11408,7 @@
         function calculateDominanceHarmony(domObj1, domObj2) {
             // Handle old single-value format (backwards compatibility)
             if (typeof domObj1 === 'string' || typeof domObj2 === 'string') {
-                return calculateSingleDominanzHarmony(domObj1, 'fakt', domObj2, 'fakt');
+                return calculateSingleDominanzHarmony(domObj1, 'gelebt', domObj2, 'gelebt');
             }
 
             // Get selected dominanz preferences for each person
@@ -11734,6 +11853,12 @@
                 percentage.className = 'result-percentage';
                 progressFill.style.width = '0%';
 
+                // Update desktop circle for incomplete state
+                const desktopCircle = document.getElementById('desktopCirclePercentage');
+                if (desktopCircle) desktopCircle.textContent = '–';
+                const desktopScoreCircle = document.getElementById('desktopScoreCircle');
+                if (desktopScoreCircle) desktopScoreCircle.style.background = 'linear-gradient(135deg, var(--text-muted), #666)';
+
                 // Clear sections with placeholder message
                 const proList = document.getElementById('expandProList');
                 const contraList = document.getElementById('expandContraList');
@@ -11786,6 +11911,12 @@
             percentage.textContent = overallScore + '%';
             progressFill.style.width = overallScore + '%';
 
+            // Update desktop score circle
+            const desktopCircle = document.getElementById('desktopCirclePercentage');
+            if (desktopCircle) {
+                desktopCircle.textContent = overallScore + '%';
+            }
+
             // Set color based on score
             let colorClass = 'low';
             let color = 'var(--danger)';
@@ -11795,6 +11926,20 @@
 
             percentage.className = 'result-percentage ' + colorClass;
             progressFill.style.background = color;
+
+            // Update desktop circle color
+            const desktopScoreCircle = document.getElementById('desktopScoreCircle');
+            if (desktopScoreCircle) {
+                if (overallScore >= 80) {
+                    desktopScoreCircle.style.background = 'linear-gradient(135deg, var(--success), #6dd5a8)';
+                } else if (overallScore >= 65) {
+                    desktopScoreCircle.style.background = 'linear-gradient(135deg, var(--primary), var(--primary-light))';
+                } else if (overallScore >= 50) {
+                    desktopScoreCircle.style.background = 'linear-gradient(135deg, var(--warning), #ffc966)';
+                } else {
+                    desktopScoreCircle.style.background = 'linear-gradient(135deg, var(--danger), #ff8a8a)';
+                }
+            }
 
             // Update Desktop Pirsig quote
             const desktopQuoteElement = document.getElementById('desktopQualityQuote');
@@ -13026,6 +13171,7 @@
                 const factorModal = document.getElementById('factorModal');
                 const helpModal = document.getElementById('helpModal');
                 const commentModal = document.getElementById('commentModal');
+                const proContraModal = document.getElementById('proContraModal');
 
                 // Check if we're returning FROM a modal state (current modal should close)
                 if (factorModal && factorModal.classList.contains('active')) {
@@ -13036,6 +13182,9 @@
                 }
                 if (commentModal && commentModal.classList.contains('active')) {
                     closeCommentModal(null, true);
+                }
+                if (proContraModal && proContraModal.classList.contains('active')) {
+                    closeProContraModal(null, true);
                 }
 
                 // Navigate to the correct page
@@ -13191,8 +13340,8 @@
 
                     const ichType = bestCombo.ich.type;
                     const partnerType = bestCombo.partner.type;
-                    const ichStatusLabel = bestCombo.ich.status === 'fakt' ? 'Fakt' : 'interessiert';
-                    const partnerStatusLabel = bestCombo.partner.status === 'fakt' ? 'Fakt' : 'interessiert';
+                    const ichStatusLabel = bestCombo.ich.status === 'gelebt' ? 'Gelebt' : 'Interessiert';
+                    const partnerStatusLabel = bestCombo.partner.status === 'gelebt' ? 'Gelebt' : 'Interessiert';
 
                     // Build explanation based on best combination
                     let explanation = `Beste Kombination: ${domLabels[ichType]} (${ichStatusLabel}) ↔ ${domLabels[partnerType]} (${partnerStatusLabel}). `;
@@ -13436,6 +13585,81 @@
             if (!skipHistoryBack && history.state && history.state.modal === 'factor') {
                 history.back();
             }
+        }
+
+        // Pro/Contra Modal Functions
+        function openProContraModal() {
+            const modal = document.getElementById('proContraModal');
+            if (!modal) return;
+
+            // Update archetype display
+            updateProContraModalArchetypeDisplay();
+
+            // Update score and pro/contra lists
+            updateProContraModalContent();
+
+            modal.classList.add('active');
+            history.pushState({ mobilePage: currentMobilePage, modal: 'procontra' }, '', `#seite${currentMobilePage}-procontra`);
+        }
+
+        function closeProContraModal(event, skipHistoryBack = false) {
+            if (event && event.target !== event.currentTarget) return;
+            document.getElementById('proContraModal').classList.remove('active');
+            if (!skipHistoryBack && history.state && history.state.modal === 'procontra') {
+                history.back();
+            }
+        }
+
+        function updateProContraModalArchetypeDisplay() {
+            const ichDisplay = document.getElementById('proContraModalIch');
+            const partnerDisplay = document.getElementById('proContraModalPartner');
+            if (ichDisplay) ichDisplay.textContent = archetypeNames[currentArchetype] || currentArchetype;
+            if (partnerDisplay) partnerDisplay.textContent = archetypeNames[selectedPartner] || selectedPartner;
+        }
+
+        function updateProContraModalContent() {
+            const scoreDisplay = document.getElementById('proContraModalScore');
+            const proList = document.getElementById('proContraModalProList');
+            const contraList = document.getElementById('proContraModalContraList');
+
+            if (!scoreDisplay || !proList || !contraList) return;
+
+            // Get current score
+            const percentage = document.getElementById('resultPercentage');
+            const currentScore = percentage ? percentage.textContent : '0%';
+            scoreDisplay.textContent = currentScore;
+
+            // Set color based on score
+            const scoreValue = parseInt(currentScore) || 0;
+            if (scoreValue >= 80) {
+                scoreDisplay.style.color = 'var(--success)';
+            } else if (scoreValue >= 65) {
+                scoreDisplay.style.color = 'var(--primary)';
+            } else if (scoreValue >= 50) {
+                scoreDisplay.style.color = 'var(--warning)';
+            } else {
+                scoreDisplay.style.color = 'var(--danger)';
+            }
+
+            // Copy Pro/Contra from the expandable section
+            const expandProList = document.getElementById('expandProList');
+            const expandContraList = document.getElementById('expandContraList');
+
+            if (expandProList) {
+                proList.innerHTML = expandProList.innerHTML;
+            }
+            if (expandContraList) {
+                contraList.innerHTML = expandContraList.innerHTML;
+            }
+        }
+
+        function navigateProContraArchetype(person, direction) {
+            // Use the same logic as navigateArchetype
+            navigateArchetype(person, direction);
+
+            // Update the modal displays
+            updateProContraModalArchetypeDisplay();
+            updateProContraModalContent();
         }
 
         // Factor Modal Archetype Navigation
@@ -14473,7 +14697,7 @@
                         } else {
                             // Legacy: string format - convert to new object format
                             const dominanzObj = { dominant: null, submissiv: null, switch: null, ausgeglichen: null };
-                            dominanzObj[selection.ich.dominanz] = selection.ich.dominanzStatus || 'fakt';
+                            dominanzObj[selection.ich.dominanz] = selection.ich.dominanzStatus || 'gelebt';
                             mobilePersonDimensions.ich.dominanz = dominanzObj;
                             personDimensions.ich.dominanz = dominanzObj;
 
@@ -14486,7 +14710,7 @@
                                 const statusSelect = document.getElementById('ich-d-' + shortId + '-status');
                                 if (statusSelect) {
                                     statusSelect.style.display = 'inline-block';
-                                    statusSelect.value = selection.ich.dominanzStatus || 'fakt';
+                                    statusSelect.value = selection.ich.dominanzStatus || 'gelebt';
                                 }
                                 // Mobile
                                 const mobileCheckbox = document.getElementById('m-ich-d-' + shortId);
@@ -14494,7 +14718,7 @@
                                 const mobileStatusSelect = document.getElementById('m-ich-d-' + shortId + '-status');
                                 if (mobileStatusSelect) {
                                     mobileStatusSelect.style.display = 'inline-block';
-                                    mobileStatusSelect.value = selection.ich.dominanzStatus || 'fakt';
+                                    mobileStatusSelect.value = selection.ich.dominanzStatus || 'gelebt';
                                 }
                             }
                             const dimension = document.querySelector('[data-dimension="ich-dominanz-multi"]');
@@ -14546,7 +14770,7 @@
                         } else {
                             // Legacy: string format - convert to new object format
                             const orientierungObj = { heterosexuell: null, homosexuell: null, bisexuell: null };
-                            orientierungObj[selection.ich.orientierung] = selection.ich.orientierungStatus || 'fakt';
+                            orientierungObj[selection.ich.orientierung] = selection.ich.orientierungStatus || 'gelebt';
                             mobilePersonDimensions.ich.orientierung = orientierungObj;
                             personDimensions.ich.orientierung = orientierungObj;
 
@@ -14559,7 +14783,7 @@
                                 const statusSelect = document.getElementById('ich-o-' + shortId + '-status');
                                 if (statusSelect) {
                                     statusSelect.style.display = 'inline-block';
-                                    statusSelect.value = selection.ich.orientierungStatus || 'fakt';
+                                    statusSelect.value = selection.ich.orientierungStatus || 'gelebt';
                                 }
                                 // Mobile
                                 const mobileCheckbox = document.getElementById('m-ich-o-' + shortId);
@@ -14567,7 +14791,7 @@
                                 const mobileStatusSelect = document.getElementById('m-ich-o-' + shortId + '-status');
                                 if (mobileStatusSelect) {
                                     mobileStatusSelect.style.display = 'inline-block';
-                                    mobileStatusSelect.value = selection.ich.orientierungStatus || 'fakt';
+                                    mobileStatusSelect.value = selection.ich.orientierungStatus || 'gelebt';
                                 }
                             }
                             const dimension = document.querySelector('[data-dimension="ich-orientierung-multi"]');
@@ -14634,7 +14858,7 @@
                         } else {
                             // Legacy: string format - convert to new object format
                             const dominanzObj = { dominant: null, submissiv: null, switch: null, ausgeglichen: null };
-                            dominanzObj[selection.partner.dominanz] = selection.partner.dominanzStatus || 'fakt';
+                            dominanzObj[selection.partner.dominanz] = selection.partner.dominanzStatus || 'gelebt';
                             mobilePersonDimensions.partner.dominanz = dominanzObj;
                             personDimensions.partner.dominanz = dominanzObj;
 
@@ -14647,7 +14871,7 @@
                                 const statusSelect = document.getElementById('partner-d-' + shortId + '-status');
                                 if (statusSelect) {
                                     statusSelect.style.display = 'inline-block';
-                                    statusSelect.value = selection.partner.dominanzStatus || 'fakt';
+                                    statusSelect.value = selection.partner.dominanzStatus || 'gelebt';
                                 }
                                 // Mobile
                                 const mobileCheckbox = document.getElementById('m-partner-d-' + shortId);
@@ -14655,7 +14879,7 @@
                                 const mobileStatusSelect = document.getElementById('m-partner-d-' + shortId + '-status');
                                 if (mobileStatusSelect) {
                                     mobileStatusSelect.style.display = 'inline-block';
-                                    mobileStatusSelect.value = selection.partner.dominanzStatus || 'fakt';
+                                    mobileStatusSelect.value = selection.partner.dominanzStatus || 'gelebt';
                                 }
                             }
                             const dimension = document.querySelector('[data-dimension="partner-dominanz-multi"]');
@@ -14707,7 +14931,7 @@
                         } else {
                             // Legacy: string format - convert to new object format
                             const orientierungObj = { heterosexuell: null, homosexuell: null, bisexuell: null };
-                            orientierungObj[selection.partner.orientierung] = selection.partner.orientierungStatus || 'fakt';
+                            orientierungObj[selection.partner.orientierung] = selection.partner.orientierungStatus || 'gelebt';
                             mobilePersonDimensions.partner.orientierung = orientierungObj;
                             personDimensions.partner.orientierung = orientierungObj;
 
@@ -14720,7 +14944,7 @@
                                 const statusSelect = document.getElementById('partner-o-' + shortId + '-status');
                                 if (statusSelect) {
                                     statusSelect.style.display = 'inline-block';
-                                    statusSelect.value = selection.partner.orientierungStatus || 'fakt';
+                                    statusSelect.value = selection.partner.orientierungStatus || 'gelebt';
                                 }
                                 // Mobile
                                 const mobileCheckbox = document.getElementById('m-partner-o-' + shortId);
@@ -14728,7 +14952,7 @@
                                 const mobileStatusSelect = document.getElementById('m-partner-o-' + shortId + '-status');
                                 if (mobileStatusSelect) {
                                     mobileStatusSelect.style.display = 'inline-block';
-                                    mobileStatusSelect.value = selection.partner.orientierungStatus || 'fakt';
+                                    mobileStatusSelect.value = selection.partner.orientierungStatus || 'gelebt';
                                 }
                             }
                             const dimension = document.querySelector('[data-dimension="partner-orientierung-multi"]');
@@ -14805,7 +15029,7 @@
                     const statusSelect = document.getElementById(person + '-d-' + shortId + '-status');
                     if (statusSelect) {
                         statusSelect.style.display = 'none';
-                        statusSelect.value = 'fakt';
+                        statusSelect.value = 'gelebt';
                     }
                     // Mobile
                     const mobileCheckbox = document.getElementById('m-' + person + '-d-' + shortId);
@@ -14813,7 +15037,7 @@
                     const mobileStatusSelect = document.getElementById('m-' + person + '-d-' + shortId + '-status');
                     if (mobileStatusSelect) {
                         mobileStatusSelect.style.display = 'none';
-                        mobileStatusSelect.value = 'fakt';
+                        mobileStatusSelect.value = 'gelebt';
                     }
                     // Modal
                     const modalCheckbox = document.getElementById('modal-' + person + '-d-' + shortId);
@@ -14821,7 +15045,7 @@
                     const modalStatusSelect = document.getElementById('modal-' + person + '-d-' + shortId + '-status');
                     if (modalStatusSelect) {
                         modalStatusSelect.style.display = 'none';
-                        modalStatusSelect.value = 'fakt';
+                        modalStatusSelect.value = 'gelebt';
                     }
                 });
                 // Mark dominanz as needing selection (Desktop, Mobile & Modal)
@@ -14916,8 +15140,8 @@
             <div class="status-popup-title" id="dominanzStatusPopupTitle">Status wählen</div>
             <div class="status-popup-subtitle" id="dominanzStatusPopupSubtitle">Wie sicher bist du dir bei dieser Auswahl?</div>
             <div class="status-popup-options">
-                <div class="status-popup-option fakt-option" onclick="selectDominanzStatusFromPopupNew('fakt')">
-                    <div class="status-popup-option-title">Fakt</div>
+                <div class="status-popup-option gelebt-option" onclick="selectDominanzStatusFromPopupNew('gelebt')">
+                    <div class="status-popup-option-title">Gelebt</div>
                     <div class="status-popup-option-desc">Das ist eine sichere, bestätigte Eigenschaft. Du weißt, dass dies zutrifft.</div>
                 </div>
                 <div class="status-popup-option interessiert-option" onclick="selectDominanzStatusFromPopupNew('interessiert')">
