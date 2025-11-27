@@ -13,6 +13,18 @@ Das Modell verbindet zwei Traditionen:
 
 **Tiage's Beitrag:** Die praktische Verbindung beider Philosophien zu einem Beziehungs-Rechner mit eigener Gewichtung und Archetypen-Matrix.
 
+### Ein Widerspruch zu Pirsig
+
+Robert Pirsig argumentierte, dass Definitionen die unmittelbare Qualität des Erlebens zerstören – dass das Benennen dem Fühlen nachgelagert ist und es reduziert.
+
+Diese App basiert auf der gegenteiligen Erfahrung:
+
+**Definition und Erleben sind nicht getrennt. Sie entstehen gleichzeitig – im Dialog, in Resonanz, in extremer Kürze.**
+
+Wenn Begriffe aufgefächert werden, wenn Bedeutungsfelder sich öffnen, entsteht nicht weniger Qualität, sondern mehr. Die Sprache ist kein Käfig für das Erleben. Sie ist sein Resonanzraum.
+
+*Diese Erkenntnis entstand nicht theoretisch, sondern praktisch – im Arbeiten mit KI-gestütztem Dialog. Das Argument gegen Pirsig ist die Erfahrung selbst.*
+
 ## Kernkonzept: Logos vs. Pathos
 
 <!-- Gewichtung: 40:60 - Tiage's Synthese -->
