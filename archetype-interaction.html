@@ -8538,27 +8538,10 @@
             }
         }
 
-        // Check if all required options are selected and auto-collapse
+        // Check if all required options are selected and update summary (auto-collapse disabled)
         function checkAutoCollapse(person, type, prefix = '') {
-            const dimName = prefix + person + '-' + type + '-multi';
-            const dim = document.querySelector(`[data-dimension="${dimName}"]`);
-            if (!dim || !dim.classList.contains('collapsible-dimension')) return;
-
-            let shouldCollapse;
-            if (type === 'dominanz') {
-                // Auto-collapse only when 2 or more buttons are selected
-                shouldCollapse = getDominanzSelectionCount(person) >= 2;
-            } else {
-                shouldCollapse = hasAnyOrientierungSelected(person);
-            }
-
-            // Update summary
+            // Update summary only - auto-collapse is disabled
             updateDimensionSummary(person, type, prefix);
-
-            // Auto-collapse if enough selections are made
-            if (shouldCollapse && !dim.classList.contains('user-expanded')) {
-                dim.classList.add('collapsed');
-            }
         }
 
         function scrollToCard(index) {
