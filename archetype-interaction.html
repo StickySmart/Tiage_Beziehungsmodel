@@ -3813,16 +3813,33 @@
             transition: all 0.2s;
         }
 
-        .dominanz-option-row:has(.dominanz-checkbox:checked) {
+        /* Gelebt state: red background and border */
+        .dominanz-option-row:has(.status-toggle-btn.active-gelebt) {
             background: rgba(231, 76, 60, 0.15);
             border-color: #e74c3c;
+        }
+
+        /* Interessiert state: light yellow background and border */
+        .dominanz-option-row:has(.status-toggle-btn.active-interessiert) {
+            background: rgba(234, 179, 8, 0.1);
+            border-color: rgba(234, 179, 8, 0.4);
         }
 
         .dominanz-checkbox {
             width: 18px;
             height: 18px;
-            accent-color: #e74c3c;
+            accent-color: var(--text-muted);
             cursor: pointer;
+        }
+
+        /* Checkbox red only when Gelebt is active */
+        .dominanz-option-row:has(.status-toggle-btn.active-gelebt) .dominanz-checkbox {
+            accent-color: #e74c3c;
+        }
+
+        /* Checkbox stays gray for Interessiert */
+        .dominanz-option-row:has(.status-toggle-btn.active-interessiert) .dominanz-checkbox {
+            accent-color: var(--text-muted);
         }
 
         .dominanz-label {
@@ -13530,10 +13547,13 @@
                 comboCodeEl.textContent = `Code: ${comboCode}`;
                 comboCodeEl.style.display = 'inline-block';
             } else if (factorType === 'dominanz') {
-                // Get dominanz selections for combo code
+                // Get dominanz and orientierung selections for combo code
                 const ichDom = dimensions.ich.dominanz;
                 const partnerDom = dimensions.partner.dominanz;
+                const ichOri = dimensions.ich.orientierung;
+                const partnerOri = dimensions.partner.orientierung;
                 const domAbbrev = { 'dominant': 'Dom', 'submissiv': 'Sub', 'switch': 'Swi', 'ausgeglichen': 'Aus' };
+                const oriAbbrev = { 'heterosexuell': 'Het', 'homosexuell': 'Hom', 'bisexuell': 'Bi' };
 
                 const getSelectedDom = (domObj) => {
                     if (!domObj) return null;
@@ -13543,10 +13563,28 @@
                     return null;
                 };
 
+                const getSelectedOri = (oriObj) => {
+                    if (!oriObj) return null;
+                    for (const [type, status] of Object.entries(oriObj)) {
+                        if (status) return oriAbbrev[type] || type;
+                    }
+                    return null;
+                };
+
                 const ichDomCode = getSelectedDom(ichDom);
                 const partnerDomCode = getSelectedDom(partnerDom);
+                const ichOriCode = getSelectedOri(ichOri);
+                const partnerOriCode = getSelectedOri(partnerOri);
 
-                if (ichDomCode && partnerDomCode) {
+                // Build code: Orientierung-Dominanz for each person
+                const ichCode = [ichOriCode, ichDomCode].filter(Boolean).join('-');
+                const partnerCode = [partnerOriCode, partnerDomCode].filter(Boolean).join('-');
+
+                if (ichCode && partnerCode) {
+                    comboCodeEl.textContent = `Code: ${ichCode}_${partnerCode}`;
+                    comboCodeEl.style.display = 'inline-block';
+                } else if (ichDomCode && partnerDomCode) {
+                    // Fallback to just dominanz if orientierung not selected
                     comboCodeEl.textContent = `Code: ${ichDomCode}_${partnerDomCode}`;
                     comboCodeEl.style.display = 'inline-block';
                 } else {
