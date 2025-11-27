@@ -1,0 +1,500 @@
+/*
+ * Template: Layout Basis PC (Desktop)
+ * © 2025 Ti-age.de - Alle Rechte vorbehalten
+ *
+ * Dieses Template enthält das perfekte Desktop-Layout und Farbschema
+ * Verwendet als Referenz für konsistentes Design
+ *
+ * Erstellt: 2025-11-27
+ */
+
+/* ========================================
+   CSS VARIABLEN - FARB-DEFINITIONEN
+   ======================================== */
+
+:root {
+    /* Primärfarben */
+    --primary: #457B9D;           /* Hauptfarbe (Standard Blau) */
+    --primary-light: #A8D5E2;     /* Helle Akzentfarbe */
+
+    /* Hintergrundfarben */
+    --bg-dark: #0f0f1a;           /* Haupt-Hintergrund (Dunkelblau/Schwarz) */
+    --bg-card: #1a1a2e;           /* Card/Komponenten-Hintergrund */
+    --bg-hover: #252542;          /* Hover-Zustand Hintergrund */
+
+    /* Textfarben */
+    --text-primary: #f0f0f0;      /* Haupttext (fast weiß) */
+    --text-secondary: #a0a0b0;    /* Sekundärtext */
+    --text-muted: #9a9aaa;        /* Gedämpfter Text */
+
+    /* Rahmen & Akzente */
+    --border: rgba(255,255,255,0.1);  /* Subtile Rahmen */
+    --success: #2ecc71;           /* Erfolg/Ich-Spalte (Grün) */
+    --warning: #f39c12;           /* Warnung (Orange) */
+    --danger: #e74c3c;            /* Gefahr/Partner-Spalte (Rot) */
+
+    /* Responsive Typography mit clamp() */
+    --font-xs: clamp(0.75rem, 1.2vw + 0.5rem, 0.9rem);
+    --font-sm: clamp(0.85rem, 1.3vw + 0.5rem, 1rem);
+    --font-base: clamp(0.95rem, 1.6vw + 0.55rem, 1.15rem);
+    --font-md: clamp(1.05rem, 1.9vw + 0.55rem, 1.3rem);
+    --font-lg: clamp(1.25rem, 2.6vw + 0.55rem, 1.65rem);
+    --font-xl: clamp(1.55rem, 3.1vw + 0.55rem, 2.25rem);
+    --font-label: clamp(0.8rem, 1.1vw + 0.45rem, 0.95rem);
+
+    /* Responsive Bar Height */
+    --bar-height: clamp(16px, 1.5vw + 12px, 22px);
+    --bar-radius: calc(var(--bar-height) / 2);
+}
+
+/* ========================================
+   ARCHETYP-THEME FARBEN
+   ======================================== */
+
+body.theme-single {
+    --primary: #E63946;           /* Rot für Single */
+    --primary-light: #FFB4A2;
+}
+body.theme-duo {
+    --primary: #E84393;           /* Pink für Duo */
+    --primary-light: #FDA7DF;
+}
+body.theme-duo_flex {
+    --primary: #FF6B6B;           /* Koralle für Duo-Flex */
+    --primary-light: #FFA5A5;
+}
+body.theme-solopoly {
+    --primary: #2A9D8F;           /* Türkis für Solopoly */
+    --primary-light: #A8DADC;
+}
+body.theme-poly_hedo {
+    --primary: #9B5DE5;           /* Violett für Poly Hedo */
+    --primary-light: #D4A5FF;
+}
+body.theme-polyamor {
+    --primary: #F4A261;           /* Orange für Polyamor */
+    --primary-light: #FFE5B4;
+}
+
+/* ========================================
+   DESKTOP LAYOUT GRUNDSTRUKTUR
+   ======================================== */
+
+body {
+    font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: var(--bg-dark);
+    color: var(--text-primary);
+    min-height: 100vh;
+    line-height: 1.5;
+    overflow-x: hidden;
+}
+
+/* Header - Fixed am oberen Rand */
+header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 100;
+    text-align: center;
+    padding: 12px 15px;
+    background: rgba(15,15,26,0.95);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* ========================================
+   DESKTOP VERGLEICHS-LAYOUT
+   ======================================== */
+
+.comparison-container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 15px;
+    padding-top: 70px;
+}
+
+.comparison-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;    /* Zwei gleich breite Spalten */
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+/* ICH-Spalte (Links) */
+.comparison-column {
+    background: var(--bg-card);
+    border-radius: 16px;
+    border: 1px solid var(--border);
+    padding: 15px;
+}
+
+.comparison-column.ich-column {
+    border-top: 3px solid var(--success);   /* Grüne Obergrenze */
+}
+
+/* PARTNER-Spalte (Rechts) */
+.comparison-column.partner-column {
+    border-top: 3px solid var(--danger);    /* Rote Obergrenze */
+}
+
+/* Spalten-Header */
+.column-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 12px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--border);
+}
+
+.column-icon {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+}
+
+.column-icon.ich-icon {
+    background: rgba(46, 204, 113, 0.2);    /* Grüner Hintergrund */
+    color: var(--success);
+}
+
+.column-icon.partner-icon {
+    background: rgba(231, 76, 60, 0.2);     /* Roter Hintergrund */
+    color: var(--danger);
+}
+
+.column-title {
+    font-size: var(--font-sm);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.column-title.ich-title {
+    color: var(--success);                  /* Grün für ICH */
+}
+
+.column-title.partner-title {
+    color: var(--danger);                   /* Rot für PARTNER */
+}
+
+/* ========================================
+   DESKTOP SELECT DROPDOWNS
+   ======================================== */
+
+.column-select {
+    width: 100%;
+    padding: 12px 14px;
+    font-size: var(--font-sm);
+    background: rgba(255,255,255,0.05);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    color: var(--text-primary);
+    cursor: pointer;
+}
+
+.column-select:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 2px rgba(69, 123, 157, 0.2);
+}
+
+/* ========================================
+   DIMENSIONEN (Geschlecht, Dominanz, Orientierung)
+   ======================================== */
+
+.column-dimensions {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-top: 15px;
+}
+
+.compact-dimension {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.compact-dimension-label {
+    font-size: var(--font-sm);
+    font-weight: 600;
+    color: var(--text-secondary);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.compact-options {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+
+.compact-option {
+    padding: 8px 12px;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    color: var(--text-secondary);
+    font-size: var(--font-xs);
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.compact-option:hover {
+    background: rgba(255,255,255,0.1);
+    color: var(--text-primary);
+}
+
+/* Ausgewählte Option */
+.compact-radio:checked + .compact-option {
+    background: var(--primary);
+    color: white;
+    border-color: var(--primary);
+}
+
+/* ========================================
+   DOMINANZ MULTI-SELECT
+   ======================================== */
+
+.dominanz-multi-select {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.dominanz-option-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px 12px;
+    background: rgba(255,255,255,0.03);
+    border-radius: 8px;
+    border: 1px solid var(--border);
+}
+
+.dominanz-label {
+    font-size: var(--font-sm);
+    color: var(--text-secondary);
+}
+
+.status-toggle-group {
+    display: flex;
+    gap: 6px;
+}
+
+.status-toggle-btn {
+    padding: 6px 12px;
+    font-size: 11px;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid var(--border);
+    border-radius: 15px;
+    color: var(--text-muted);
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.status-toggle-btn:hover {
+    background: rgba(255,255,255,0.1);
+    color: var(--text-primary);
+}
+
+/* Gelebt Status - Aktiv */
+.status-toggle-btn.active-gelebt {
+    background: var(--success);
+    color: white;
+    border-color: var(--success);
+}
+
+/* Interessiert Status - Aktiv */
+.status-toggle-btn.active-interessiert {
+    background: var(--warning);
+    color: #1a1a2e;
+    border-color: var(--warning);
+}
+
+/* ========================================
+   ERGEBNIS-ANZEIGE (DESKTOP)
+   ======================================== */
+
+.result-container {
+    background: var(--bg-card);
+    border-radius: 16px;
+    border: 1px solid var(--border);
+    padding: 20px;
+    margin-top: 20px;
+}
+
+.score-display {
+    text-align: center;
+    padding: 20px;
+}
+
+.score-value {
+    font-size: 3rem;
+    font-weight: 700;
+    color: var(--primary);
+}
+
+.score-label {
+    font-size: var(--font-sm);
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+/* ========================================
+   PRO & CONTRA GRID
+   ======================================== */
+
+.pro-contra-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.pro-section {
+    background: rgba(46, 204, 113, 0.1);
+    border: 1px solid rgba(46, 204, 113, 0.3);
+    border-radius: 12px;
+    padding: 16px;
+}
+
+.pro-section h3 {
+    color: var(--success);
+    font-size: var(--font-base);
+    margin-bottom: 12px;
+}
+
+.contra-section {
+    background: rgba(231, 76, 60, 0.1);
+    border: 1px solid rgba(231, 76, 60, 0.3);
+    border-radius: 12px;
+    padding: 16px;
+}
+
+.contra-section h3 {
+    color: var(--danger);
+    font-size: var(--font-base);
+    margin-bottom: 12px;
+}
+
+/* ========================================
+   BUTTONS
+   ======================================== */
+
+.btn-primary {
+    background: var(--primary);
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 8px;
+    font-size: var(--font-sm);
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btn-primary:hover {
+    opacity: 0.9;
+    transform: translateY(-1px);
+}
+
+.btn-secondary {
+    background: transparent;
+    color: var(--text-secondary);
+    border: 1px solid var(--border);
+    padding: 12px 24px;
+    border-radius: 8px;
+    font-size: var(--font-sm);
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btn-secondary:hover {
+    border-color: var(--primary);
+    color: var(--text-primary);
+}
+
+/* ========================================
+   INFO BUTTON (gelb)
+   ======================================== */
+
+.archetype-info-btn {
+    padding: 12px 16px;
+    background: rgba(255,255,255,0.1);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    color: var(--text-secondary);
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    transition: all 0.2s ease;
+}
+
+.archetype-info-btn:hover {
+    background: rgba(255,255,255,0.15);
+    color: var(--text-primary);
+}
+
+/* ========================================
+   QUALITÄTS-ZITAT (Pirsig-Style)
+   ======================================== */
+
+.quality-quote {
+    margin: 20px 0;
+    padding: 16px;
+    background: rgba(69, 123, 157, 0.1);
+    border-left: 3px solid var(--primary);
+    border-radius: 0 12px 12px 0;
+}
+
+.quality-quote p {
+    font-size: var(--font-sm);
+    color: var(--text-secondary);
+    font-style: italic;
+    line-height: 1.6;
+}
+
+/* ========================================
+   DESKTOP MEDIA QUERY (min-width: 769px)
+   ======================================== */
+
+@media (min-width: 769px) {
+    /* Desktop: Zeige Vergleichs-Container */
+    .comparison-container.desktop-mode {
+        display: block !important;
+    }
+
+    /* Desktop: Verstecke Mobile-Layout */
+    .mobile-multipage {
+        display: none !important;
+    }
+
+    /* Desktop: Verstecke Seiten-Indikator */
+    .page-indicator {
+        display: none !important;
+    }
+}
+
+/* ========================================
+   GROSSE DESKTOPS (min-width: 900px)
+   ======================================== */
+
+@media (min-width: 900px) {
+    .card {
+        padding: 20px 10%;
+    }
+}
