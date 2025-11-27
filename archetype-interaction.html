@@ -3667,6 +3667,26 @@
             margin-bottom: 0;
         }
 
+        .archetype-nav-btn {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: #f0f0f0;
+            padding: 6px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 12px;
+            transition: all 0.2s ease;
+        }
+
+        .archetype-nav-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+            border-color: var(--primary);
+        }
+
+        .archetype-nav-btn:active {
+            transform: scale(0.95);
+        }
+
         .archetype-info-btn {
             padding: 8px 12px;
             border-radius: 8px;
@@ -5183,6 +5203,7 @@
                     <div class="column-title">ICH</div>
                 </div>
                 <div class="select-with-info">
+                    <button class="archetype-nav-btn" onclick="navigateArchetype('ich', -1)" title="Vorheriger Archetyp">&#9664;</button>
                     <select class="column-select" id="ichSelect">
                         <option value="single" title="Bewusste Entscheidung für ein autonomes Leben ohne Primärbeziehung">Single</option>
                         <option value="duo" title="Traditionelle monogame Zweierbeziehung mit Exklusivität">Duo</option>
@@ -5191,6 +5212,7 @@
                         <option value="poly_hedo" title="Freiheitsorientierte Poly-Orientierung mit Fokus auf Genuss">Poly Hedo</option>
                         <option value="polyamor" title="Mehrere gleichzeitige, ethisch geführte Liebesbeziehungen">Polyamor</option>
                     </select>
+                    <button class="archetype-nav-btn" onclick="navigateArchetype('ich', 1)" title="Nächster Archetyp">&#9654;</button>
                     <button class="archetype-info-btn" onclick="showArchetypeInfo('ich')" title="Info zum Archetyp">INFO</button>
                 </div>
                 <div class="column-dimensions">
@@ -5285,6 +5307,7 @@
                     <div class="column-title">PARTNER</div>
                 </div>
                 <div class="select-with-info">
+                    <button class="archetype-nav-btn" onclick="navigateArchetype('partner', -1)" title="Vorheriger Archetyp">&#9664;</button>
                     <select class="column-select" id="partnerSelect">
                         <option value="single" title="Bewusste Entscheidung für ein autonomes Leben ohne Primärbeziehung">Single</option>
                         <option value="duo" selected title="Traditionelle monogame Zweierbeziehung mit Exklusivität">Duo</option>
@@ -5293,6 +5316,7 @@
                         <option value="poly_hedo" title="Freiheitsorientierte Poly-Orientierung mit Fokus auf Genuss">Poly Hedo</option>
                         <option value="polyamor" title="Mehrere gleichzeitige, ethisch geführte Liebesbeziehungen">Polyamor</option>
                     </select>
+                    <button class="archetype-nav-btn" onclick="navigateArchetype('partner', 1)" title="Nächster Archetyp">&#9654;</button>
                     <button class="archetype-info-btn" onclick="showArchetypeInfo('partner')" title="Info zum Archetyp">INFO</button>
                 </div>
                 <div class="column-dimensions">
@@ -11419,6 +11443,25 @@
             const btn = content.previousElementSibling;
             content.classList.toggle('active');
             btn.classList.toggle('active');
+        }
+
+        // Navigate through archetypes with forward/backward buttons
+        function navigateArchetype(person, direction) {
+            const selectId = person === 'ich' ? 'ichSelect' : 'partnerSelect';
+            const select = document.getElementById(selectId);
+            if (!select) return;
+
+            const currentIndex = select.selectedIndex;
+            const optionsCount = select.options.length;
+            let newIndex = currentIndex + direction;
+
+            // Wrap around
+            if (newIndex < 0) newIndex = optionsCount - 1;
+            if (newIndex >= optionsCount) newIndex = 0;
+
+            select.selectedIndex = newIndex;
+            // Trigger change event
+            select.dispatchEvent(new Event('change'));
         }
 
         function initComparisonLayout() {
