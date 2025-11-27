@@ -11902,13 +11902,13 @@
 
             container.innerHTML = `
                 <div style="margin-bottom: 12px; padding: 12px; background: rgba(46,204,113,0.1); border-radius: 10px; border-left: 3px solid #2ecc71;">
-                    <h4 style="color: #2ecc71; margin-bottom: 8px; font-size: 13px;">🔥 GEMEINSAMER PATHOS (Emotionale Ebene)</h4>
-                    <p style="color: var(--text-secondary); line-height: 1.5; font-size: 12px; margin: 0;">${combinedPathos}</p>
+                    <h4 style="color: #2ecc71; margin-bottom: 8px; font-size: var(--font-base);">🔥 GEMEINSAMER PATHOS (Emotionale Ebene)</h4>
+                    <p style="color: var(--text-secondary); line-height: 1.5; font-size: var(--font-base); font-style: italic; margin: 0;">${combinedPathos}</p>
                 </div>
 
                 <div style="padding: 12px; background: rgba(243,156,18,0.1); border-radius: 10px; border-left: 3px solid #f39c12;">
-                    <h4 style="color: #f39c12; margin-bottom: 8px; font-size: 13px;">🧠 GEMEINSAMER LOGOS (Rationale Ebene)</h4>
-                    <p style="color: var(--text-secondary); line-height: 1.5; font-size: 12px; margin: 0;">${combinedLogos}</p>
+                    <h4 style="color: #f39c12; margin-bottom: 8px; font-size: var(--font-base);">🧠 GEMEINSAMER LOGOS (Rationale Ebene)</h4>
+                    <p style="color: var(--text-secondary); line-height: 1.5; font-size: var(--font-base); font-style: italic; margin: 0;">${combinedLogos}</p>
                 </div>
             `;
         }
@@ -12305,12 +12305,12 @@
                 const combinedLogos = generateCombinedLogos(ichArch, partnerArch);
                 mobilePathosLogos.innerHTML = `
                     <div style="margin-bottom: 10px; padding: 10px; background: rgba(46,204,113,0.1); border-radius: 8px; border-left: 3px solid #2ecc71;">
-                        <h4 style="color: #2ecc71; margin-bottom: 6px; font-size: 12px;">🔥 GEMEINSAMER PATHOS</h4>
-                        <p style="color: var(--text-secondary); line-height: 1.4; font-size: 11px; margin: 0;">${combinedPathos}</p>
+                        <h4 style="color: #2ecc71; margin-bottom: 6px; font-size: var(--font-base);">🔥 GEMEINSAMER PATHOS (Emotionale Ebene)</h4>
+                        <p style="color: var(--text-secondary); line-height: 1.4; font-size: var(--font-base); font-style: italic; margin: 0;">${combinedPathos}</p>
                     </div>
                     <div style="padding: 10px; background: rgba(243,156,18,0.1); border-radius: 8px; border-left: 3px solid #f39c12;">
-                        <h4 style="color: #f39c12; margin-bottom: 6px; font-size: 12px;">🧠 GEMEINSAMER LOGOS</h4>
-                        <p style="color: var(--text-secondary); line-height: 1.4; font-size: 11px; margin: 0;">${combinedLogos}</p>
+                        <h4 style="color: #f39c12; margin-bottom: 6px; font-size: var(--font-base);">🧠 GEMEINSAMER LOGOS (Rationale Ebene)</h4>
+                        <p style="color: var(--text-secondary); line-height: 1.4; font-size: var(--font-base); font-style: italic; margin: 0;">${combinedLogos}</p>
                     </div>
                 `;
             }
