@@ -7125,6 +7125,53 @@
             }
         };
 
+        // Status-Statements für Pathos/Logos (Pirsig & Osho Perspektive)
+        // Berücksichtigt den Sicherheitsgrad beider Personen (fakt vs. interessiert)
+        const statusStatements = {
+            // Beide wissen wer sie sind
+            "fakt_fakt": {
+                pathos: [
+                    "Zwei gefestigte Seelen begegnen sich – die emotionale Klarheit beider schafft Tiefe.",
+                    "Die Sicherheit in der eigenen Identität ermöglicht authentische Begegnung."
+                ],
+                logos: [
+                    "Hohe Qualität durch klare Selbstkenntnis beider Partner (Pirsig).",
+                    "Beide wissen, was sie wollen – eine solide Basis für rationale Entscheidungen."
+                ],
+                modifier: 1.0  // Volle Konfidenz
+            },
+            // Einer führt, einer exploriert
+            "fakt_interessiert": {
+                pathos: [
+                    "Klarheit trifft auf Offenheit – Raum für gemeinsames Wachstum entsteht.",
+                    "Der eine bietet emotionalen Anker, der andere bringt Neugier mit."
+                ],
+                logos: [
+                    "Qualität im Werden: Der gefestigte Partner kann Orientierung bieten.",
+                    "Asymmetrie in der Selbstkenntnis – erfordert Geduld und Kommunikation."
+                ],
+                modifier: 0.85  // Reduzierte Konfidenz
+            },
+            // Beide auf Entdeckungsreise
+            "interessiert_interessiert": {
+                pathos: [
+                    "Zwei Suchende auf gemeinsamer Reise – Verbundenheit durch geteilte Unsicherheit.",
+                    "Die Offenheit beider kann befreiend sein, aber auch destabilisierend."
+                ],
+                logos: [
+                    "Qualität noch im Fluss – viel Potential, aber unklare Grundlagen.",
+                    "Beide explorieren noch – Beziehungsbasis kann sich stark verändern."
+                ],
+                modifier: 0.7  // Deutlich reduzierte Konfidenz
+            },
+            // Default
+            "default": {
+                pathos: ["Der Sicherheitsgrad der Selbstkenntnis ist noch nicht vollständig erkennbar."],
+                logos: ["Standardwert wird verwendet bis der Status ausgewählt ist."],
+                modifier: 0.8
+            }
+        };
+
         // Hilfsfunktion: Hole Statements für Archetyp-Kombination
         function getArchetypeStatements(type1, type2) {
             const key = `${type1}_${type2}`;
@@ -7218,6 +7265,58 @@
             }
 
             return orientierungStatements.default;
+        }
+
+        // Hilfsfunktion: Hole Statements für Status-Kombination (fakt/interessiert)
+        // Bewertet den kombinierten Sicherheitsgrad beider Personen über alle Dimensionen
+        function getStatusStatements(personDims1, personDims2) {
+            if (!personDims1 || !personDims2) {
+                return statusStatements.default;
+            }
+
+            // Ermittle den dominanten Status für jede Person
+            // Eine Person gilt als "fakt" wenn mindestens eine Dimension als fakt markiert ist
+            // und keine als interessiert
+            const getPersonStatus = (dims) => {
+                let hasFakt = false;
+                let hasInteressiert = false;
+
+                // Prüfe Dominanz
+                if (dims.dominanz && typeof dims.dominanz === 'object') {
+                    for (const key of Object.keys(dims.dominanz)) {
+                        if (dims.dominanz[key] === 'fakt') hasFakt = true;
+                        if (dims.dominanz[key] === 'interessiert') hasInteressiert = true;
+                    }
+                }
+
+                // Prüfe Orientierung
+                if (dims.orientierung && typeof dims.orientierung === 'object') {
+                    for (const key of Object.keys(dims.orientierung)) {
+                        if (dims.orientierung[key] === 'fakt') hasFakt = true;
+                        if (dims.orientierung[key] === 'interessiert') hasInteressiert = true;
+                    }
+                }
+
+                // Wenn sowohl fakt als auch interessiert: interessiert dominiert (Unsicherheit)
+                if (hasInteressiert) return 'interessiert';
+                if (hasFakt) return 'fakt';
+                return null;
+            };
+
+            const status1 = getPersonStatus(personDims1);
+            const status2 = getPersonStatus(personDims2);
+
+            if (!status1 || !status2) return statusStatements.default;
+
+            // Symmetrische Kombinationen
+            if (status1 === 'fakt' && status2 === 'fakt') {
+                return statusStatements.fakt_fakt;
+            }
+            if (status1 === 'interessiert' && status2 === 'interessiert') {
+                return statusStatements.interessiert_interessiert;
+            }
+            // Asymmetrische Kombination (egal welche Reihenfolge)
+            return statusStatements.fakt_interessiert;
         }
 
         // Archetype definitions
@@ -12091,6 +12190,10 @@
                 personDimensions.ich?.geschlecht,
                 personDimensions.partner?.geschlecht
             );
+            const statusStmts = getStatusStatements(
+                personDimensions.ich,
+                personDimensions.partner
+            );
 
             const textParts = [];
 
@@ -12114,6 +12217,11 @@
                 personDimensions.ich?.orientierung && personDimensions.partner?.orientierung &&
                 personDimensions.ich?.geschlecht && personDimensions.partner?.geschlecht) {
                 textParts.push(orientStatements.pathos[0]);
+            }
+
+            // Status-basierte Pathos-Statements hinzufügen (Osho-Perspektive)
+            if (statusStmts?.pathos?.length && statusStmts !== statusStatements.default) {
+                textParts.push(statusStmts.pathos[0]);
             }
 
             // Fallback wenn keine Statements gefunden
@@ -12147,6 +12255,10 @@
                 personDimensions.ich?.geschlecht,
                 personDimensions.partner?.geschlecht
             );
+            const statusStmts = getStatusStatements(
+                personDimensions.ich,
+                personDimensions.partner
+            );
 
             const textParts = [];
 
@@ -12170,6 +12282,11 @@
                 personDimensions.ich?.orientierung && personDimensions.partner?.orientierung &&
                 personDimensions.ich?.geschlecht && personDimensions.partner?.geschlecht) {
                 textParts.push(orientStatements.logos[0]);
+            }
+
+            // Status-basierte Logos-Statements hinzufügen (Pirsig-Perspektive)
+            if (statusStmts?.logos?.length && statusStmts !== statusStatements.default) {
+                textParts.push(statusStmts.logos[0]);
             }
 
             // Fallback mit Philosophie-Score
