@@ -6582,7 +6582,7 @@
             },
             dominanz: {
                 title: "Dominanz-Präferenz",
-                text: "Welche Rolle bevorzugst du in der emotionalen und praktischen Beziehungsdynamik?\n\n• Dominant: Du übernimmst gerne Führung und Verantwortung\n• Submissiv: Du lässt dich gerne führen und vertraust auf deinen Partner\n• Switch: Du genießt beide Rollen je nach Situation\n• Ausgeglichen: Du bevorzugst eine gleichberechtigte Dynamik ohne feste Rollen\n\nDie Dominanz-Harmonie beeinflusst die energetische Dynamik einer Beziehung. Komplementäre Präferenzen (z.B. dominant + submissiv) können starke Anziehung erzeugen."
+                text: "Welche Rolle bevorzugst du in der emotionalen und praktischen Beziehungsdynamik?\n\n• <span style=\"color: #e74c3c; font-weight: bold;\">Dominant</span>: Du übernimmst gerne Führung und Verantwortung\n• <span style=\"color: #e74c3c; font-weight: bold;\">Submissiv</span>: Du lässt dich gerne führen und vertraust auf deinen Partner\n• <span style=\"color: #e74c3c; font-weight: bold;\">Switch</span>: Du genießt beide Rollen je nach Situation\n• <span style=\"color: #e74c3c; font-weight: bold;\">Ausgeglichen</span>: Du bevorzugst eine gleichberechtigte Dynamik ohne feste Rollen\n\nDie Dominanz-Harmonie beeinflusst die energetische Dynamik einer Beziehung. Komplementäre Präferenzen (z.B. dominant + submissiv) können starke Anziehung erzeugen."
             },
             orientierung: {
                 title: "Sexuelle Orientierung",
@@ -9686,7 +9686,7 @@
             if (!tooltip) return;
 
             document.getElementById('dimensionTooltipTitle').textContent = tooltip.title;
-            document.getElementById('dimensionTooltipText').textContent = tooltip.text;
+            document.getElementById('dimensionTooltipText').innerHTML = tooltip.text.replace(/\n/g, '<br>');
             document.getElementById('dimensionTooltipOverlay').classList.add('active');
         }
 
