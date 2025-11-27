@@ -7047,6 +7047,131 @@
             "default": { score: 75, pathos: ["Die Dominanz-Dynamik ist noch nicht vollständig erkennbar."], logos: ["Standardwert wird verwendet bis alle Dimensionen ausgewählt sind."], pro: ["Neutrale Ausgangssituation"], contra: ["Unvollständige Information"] }
         };
 
+        // Orientierungs-Statements für Pathos/Logos
+        // Berücksichtigt Orientierung UND Geschlecht für realistische Kompatibilität
+        const orientierungStatements = {
+            // Kompatible Kombinationen
+            "kompatibel_hetero_hetero": {
+                score: 95,
+                pathos: ["Die heterosexuelle Anziehung ist beidseitig und natürlich.", "Körperliche und emotionale Chemie kann frei fließen."],
+                logos: ["Klassische Konstellation mit klarer gegenseitiger Anziehungsbasis."],
+                pro: ["Natürliche gegenseitige Anziehung", "Gesellschaftlich etabliert"],
+                contra: ["Keine besonderen Herausforderungen durch Orientierung"]
+            },
+            "kompatibel_homo_homo": {
+                score: 95,
+                pathos: ["Die homosexuelle Anziehung verbindet auf einer tiefen Ebene.", "Gemeinsames Verständnis der eigenen Identität schafft Nähe."],
+                logos: ["Gleiche Orientierung ermöglicht authentische Verbindung."],
+                pro: ["Tiefes gegenseitiges Verständnis", "Gemeinsame Erfahrungswelt"],
+                contra: ["Gesellschaftliche Herausforderungen möglich"]
+            },
+            "kompatibel_bi_hetero": {
+                score: 85,
+                pathos: ["Anziehung ist vorhanden, auch wenn die Spektren unterschiedlich breit sind.", "Der bisexuelle Partner kann sich voll einlassen."],
+                logos: ["Funktionale Kompatibilität gegeben, aber unterschiedliche Erfahrungswelten."],
+                pro: ["Grundlegende Anziehung vorhanden", "Bisexueller bringt Offenheit mit"],
+                contra: ["Heterosexueller versteht bi-Erfahrung nicht vollständig", "Teile der bi-Identität bleiben unausgelebt"]
+            },
+            "kompatibel_bi_homo": {
+                score: 85,
+                pathos: ["Anziehung ist da, aber die Wege dorthin waren unterschiedlich.", "Gemeinsame queere Erfahrungen können verbinden."],
+                logos: ["Kompatibilität gegeben, unterschiedliche Identitätserfahrungen."],
+                pro: ["Gemeinsame queere Perspektive", "Gegenseitiges Verständnis für Nicht-Heteronormativität"],
+                contra: ["Bi-Identität wird manchmal in Frage gestellt", "Unterschiedliche Community-Erfahrungen"]
+            },
+            "kompatibel_bi_bi": {
+                score: 95,
+                pathos: ["Maximale Flexibilität trifft auf maximales Verständnis.", "Beide kennen die Komplexität fluider Anziehung."],
+                logos: ["Tiefes gegenseitiges Verständnis der bi-Erfahrung.", "Keine Teile der Identität müssen versteckt werden."],
+                pro: ["Vollständiges Verständnis der bi-Erfahrung", "Maximale Offenheit", "Keine Identitätsaspekte werden unterdrückt"],
+                contra: ["Gesellschaftliche Bi-Erasure betrifft beide"]
+            },
+            // Inkompatible Kombinationen
+            "inkompatibel_hetero_hetero": {
+                score: 15,
+                pathos: ["Keine sexuelle Anziehung möglich – beide orientieren sich zum anderen Geschlecht.", "Freundschaft ja, romantische Verbindung nein."],
+                logos: ["Strukturelle Inkompatibilität: Beide suchen das jeweils andere Geschlecht."],
+                pro: ["Tiefe Freundschaft möglich"],
+                contra: ["Keine romantische/sexuelle Basis", "Fundamentale Orientierungsdiskrepanz"]
+            },
+            "inkompatibel_homo_homo": {
+                score: 15,
+                pathos: ["Die Orientierung weist in entgegengesetzte Richtungen.", "Emotionale Nähe möglich, sexuelle Anziehung nicht."],
+                logos: ["Strukturelle Inkompatibilität durch gegenläufige Orientierung."],
+                pro: ["Verständnis füreinander als queere Menschen"],
+                contra: ["Keine romantische/sexuelle Basis", "Orientierung zeigt zu unterschiedlichen Geschlechtern"]
+            },
+            "inkompatibel_hetero_homo": {
+                score: 10,
+                pathos: ["Die Anziehungskräfte gehen aneinander vorbei.", "Was der eine sucht, kann der andere nicht bieten."],
+                logos: ["Maximale strukturelle Inkompatibilität.", "Keine gemeinsame Anziehungsbasis vorhanden."],
+                pro: ["Freundschaft auf anderen Ebenen möglich"],
+                contra: ["Keine romantische/sexuelle Kompatibilität", "Fundamentale Orientierungsdiskrepanz"]
+            },
+            "teilweise_bi_inkompatibel": {
+                score: 40,
+                pathos: ["Der bisexuelle Partner könnte angezogen sein, aber es ist nicht gegenseitig.", "Einseitige Anziehung schafft Ungleichgewicht."],
+                logos: ["Nur einseitige Anziehung möglich – strukturelles Ungleichgewicht."],
+                pro: ["Bisexueller zeigt Offenheit"],
+                contra: ["Keine gegenseitige Anziehung", "Einseitiges Interesse führt zu Frustration"]
+            },
+            // Default
+            "default": {
+                score: 50,
+                pathos: ["Die Orientierungs-Kompatibilität ist noch nicht vollständig erkennbar."],
+                logos: ["Standardwert wird verwendet bis Orientierung und Geschlecht ausgewählt sind."],
+                pro: ["Neutrale Ausgangssituation"],
+                contra: ["Unvollständige Information"]
+            }
+        };
+
+        // Status-Statements für Pathos/Logos (Pirsig & Osho Perspektive)
+        // Berücksichtigt den Sicherheitsgrad beider Personen (fakt vs. interessiert)
+        const statusStatements = {
+            // Beide wissen wer sie sind
+            "fakt_fakt": {
+                pathos: [
+                    "Zwei gefestigte Seelen begegnen sich – die emotionale Klarheit beider schafft Tiefe.",
+                    "Die Sicherheit in der eigenen Identität ermöglicht authentische Begegnung."
+                ],
+                logos: [
+                    "Hohe Qualität durch klare Selbstkenntnis beider Partner (Pirsig).",
+                    "Beide wissen, was sie wollen – eine solide Basis für rationale Entscheidungen."
+                ],
+                modifier: 1.0  // Volle Konfidenz
+            },
+            // Einer führt, einer exploriert
+            "fakt_interessiert": {
+                pathos: [
+                    "Klarheit trifft auf Offenheit – Raum für gemeinsames Wachstum entsteht.",
+                    "Der eine bietet emotionalen Anker, der andere bringt Neugier mit."
+                ],
+                logos: [
+                    "Qualität im Werden: Der gefestigte Partner kann Orientierung bieten.",
+                    "Asymmetrie in der Selbstkenntnis – erfordert Geduld und Kommunikation."
+                ],
+                modifier: 0.85  // Reduzierte Konfidenz
+            },
+            // Beide auf Entdeckungsreise
+            "interessiert_interessiert": {
+                pathos: [
+                    "Zwei Suchende auf gemeinsamer Reise – Verbundenheit durch geteilte Unsicherheit.",
+                    "Die Offenheit beider kann befreiend sein, aber auch destabilisierend."
+                ],
+                logos: [
+                    "Qualität noch im Fluss – viel Potential, aber unklare Grundlagen.",
+                    "Beide explorieren noch – Beziehungsbasis kann sich stark verändern."
+                ],
+                modifier: 0.7  // Deutlich reduzierte Konfidenz
+            },
+            // Default
+            "default": {
+                pathos: ["Der Sicherheitsgrad der Selbstkenntnis ist noch nicht vollständig erkennbar."],
+                logos: ["Standardwert wird verwendet bis der Status ausgewählt ist."],
+                modifier: 0.8
+            }
+        };
+
         // Hilfsfunktion: Hole Statements für Archetyp-Kombination
         function getArchetypeStatements(type1, type2) {
             const key = `${type1}_${type2}`;
@@ -7058,6 +7183,140 @@
             if (!dom1 || !dom2) return dominanceStatements.default;
             const key = `${dom1}_${dom2}`;
             return dominanceStatements[key] || dominanceStatements.default;
+        }
+
+        // Hilfsfunktion: Hole Statements für Orientierungs-Kombination
+        // Berücksichtigt Orientierung UND Geschlecht für korrekte Kompatibilitätsbewertung
+        function getOrientierungStatements(orient1, orient2, geschlecht1, geschlecht2) {
+            // Default wenn Daten fehlen
+            if (!orient1 || !orient2 || !geschlecht1 || !geschlecht2) {
+                return orientierungStatements.default;
+            }
+
+            // Extrahiere primäre Orientierung aus Multi-Select-Objekt
+            const getPrimaryOrientation = (orient) => {
+                if (typeof orient === 'string') return orient;
+                if (typeof orient === 'object') {
+                    // Priorität: fakt > interessiert
+                    for (const key of ['heterosexuell', 'homosexuell', 'bisexuell']) {
+                        if (orient[key] === 'fakt') return key;
+                    }
+                    for (const key of ['heterosexuell', 'homosexuell', 'bisexuell']) {
+                        if (orient[key] === 'interessiert') return key;
+                    }
+                }
+                return null;
+            };
+
+            const o1 = getPrimaryOrientation(orient1);
+            const o2 = getPrimaryOrientation(orient2);
+
+            if (!o1 || !o2) return orientierungStatements.default;
+
+            const gleichesGeschlecht = geschlecht1 === geschlecht2;
+
+            // Bisexuell ist immer grundsätzlich kompatibel
+            if (o1 === 'bisexuell' && o2 === 'bisexuell') {
+                return orientierungStatements.kompatibel_bi_bi;
+            }
+            if (o1 === 'bisexuell' || o2 === 'bisexuell') {
+                const andereOrient = o1 === 'bisexuell' ? o2 : o1;
+                // Prüfe ob der andere zur bi-Person passt
+                if (andereOrient === 'heterosexuell') {
+                    // Hetero + Bi: kompatibel wenn unterschiedliche Geschlechter
+                    if (!gleichesGeschlecht) {
+                        return orientierungStatements.kompatibel_bi_hetero;
+                    } else {
+                        return orientierungStatements.teilweise_bi_inkompatibel;
+                    }
+                }
+                if (andereOrient === 'homosexuell') {
+                    // Homo + Bi: kompatibel wenn gleiche Geschlechter
+                    if (gleichesGeschlecht) {
+                        return orientierungStatements.kompatibel_bi_homo;
+                    } else {
+                        return orientierungStatements.teilweise_bi_inkompatibel;
+                    }
+                }
+            }
+
+            // Beide heterosexuell
+            if (o1 === 'heterosexuell' && o2 === 'heterosexuell') {
+                if (!gleichesGeschlecht) {
+                    return orientierungStatements.kompatibel_hetero_hetero;
+                } else {
+                    return orientierungStatements.inkompatibel_hetero_hetero;
+                }
+            }
+
+            // Beide homosexuell
+            if (o1 === 'homosexuell' && o2 === 'homosexuell') {
+                if (gleichesGeschlecht) {
+                    return orientierungStatements.kompatibel_homo_homo;
+                } else {
+                    return orientierungStatements.inkompatibel_homo_homo;
+                }
+            }
+
+            // Hetero + Homo
+            if ((o1 === 'heterosexuell' && o2 === 'homosexuell') ||
+                (o1 === 'homosexuell' && o2 === 'heterosexuell')) {
+                return orientierungStatements.inkompatibel_hetero_homo;
+            }
+
+            return orientierungStatements.default;
+        }
+
+        // Hilfsfunktion: Hole Statements für Status-Kombination (fakt/interessiert)
+        // Bewertet den kombinierten Sicherheitsgrad beider Personen über alle Dimensionen
+        function getStatusStatements(personDims1, personDims2) {
+            if (!personDims1 || !personDims2) {
+                return statusStatements.default;
+            }
+
+            // Ermittle den dominanten Status für jede Person
+            // Eine Person gilt als "fakt" wenn mindestens eine Dimension als fakt markiert ist
+            // und keine als interessiert
+            const getPersonStatus = (dims) => {
+                let hasFakt = false;
+                let hasInteressiert = false;
+
+                // Prüfe Dominanz
+                if (dims.dominanz && typeof dims.dominanz === 'object') {
+                    for (const key of Object.keys(dims.dominanz)) {
+                        if (dims.dominanz[key] === 'fakt') hasFakt = true;
+                        if (dims.dominanz[key] === 'interessiert') hasInteressiert = true;
+                    }
+                }
+
+                // Prüfe Orientierung
+                if (dims.orientierung && typeof dims.orientierung === 'object') {
+                    for (const key of Object.keys(dims.orientierung)) {
+                        if (dims.orientierung[key] === 'fakt') hasFakt = true;
+                        if (dims.orientierung[key] === 'interessiert') hasInteressiert = true;
+                    }
+                }
+
+                // Wenn sowohl fakt als auch interessiert: interessiert dominiert (Unsicherheit)
+                if (hasInteressiert) return 'interessiert';
+                if (hasFakt) return 'fakt';
+                return null;
+            };
+
+            const status1 = getPersonStatus(personDims1);
+            const status2 = getPersonStatus(personDims2);
+
+            if (!status1 || !status2) return statusStatements.default;
+
+            // Symmetrische Kombinationen
+            if (status1 === 'fakt' && status2 === 'fakt') {
+                return statusStatements.fakt_fakt;
+            }
+            if (status1 === 'interessiert' && status2 === 'interessiert') {
+                return statusStatements.interessiert_interessiert;
+            }
+            // Asymmetrische Kombination (egal welche Reihenfolge)
+            return statusStatements.fakt_interessiert;
         }
 
         // Archetype definitions
@@ -11902,13 +12161,13 @@
 
             container.innerHTML = `
                 <div style="margin-bottom: 12px; padding: 12px; background: rgba(46,204,113,0.1); border-radius: 10px; border-left: 3px solid #2ecc71;">
-                    <h4 style="color: #2ecc71; margin-bottom: 8px; font-size: 13px;">🔥 GEMEINSAMER PATHOS (Emotionale Ebene)</h4>
-                    <p style="color: var(--text-secondary); line-height: 1.5; font-size: 12px; margin: 0;">${combinedPathos}</p>
+                    <h4 style="color: #2ecc71; margin-bottom: 8px; font-size: var(--font-base);">🔥 GEMEINSAMER PATHOS (Emotionale Ebene)</h4>
+                    <p style="color: var(--text-secondary); line-height: 1.5; font-size: var(--font-base); font-style: italic; margin: 0;">${combinedPathos}</p>
                 </div>
 
                 <div style="padding: 12px; background: rgba(243,156,18,0.1); border-radius: 10px; border-left: 3px solid #f39c12;">
-                    <h4 style="color: #f39c12; margin-bottom: 8px; font-size: 13px;">🧠 GEMEINSAMER LOGOS (Rationale Ebene)</h4>
-                    <p style="color: var(--text-secondary); line-height: 1.5; font-size: 12px; margin: 0;">${combinedLogos}</p>
+                    <h4 style="color: #f39c12; margin-bottom: 8px; font-size: var(--font-base);">🧠 GEMEINSAMER LOGOS (Rationale Ebene)</h4>
+                    <p style="color: var(--text-secondary); line-height: 1.5; font-size: var(--font-base); font-style: italic; margin: 0;">${combinedLogos}</p>
                 </div>
             `;
         }
@@ -11924,6 +12183,16 @@
             const domStatements = getDominanceStatements(
                 personDimensions.ich?.dominanz,
                 personDimensions.partner?.dominanz
+            );
+            const orientStatements = getOrientierungStatements(
+                personDimensions.ich?.orientierung,
+                personDimensions.partner?.orientierung,
+                personDimensions.ich?.geschlecht,
+                personDimensions.partner?.geschlecht
+            );
+            const statusStmts = getStatusStatements(
+                personDimensions.ich,
+                personDimensions.partner
             );
 
             const textParts = [];
@@ -11941,6 +12210,18 @@
             // Dominanz-basierte Pathos-Statements hinzufügen
             if (domStatements?.pathos?.length && personDimensions.ich?.dominanz && personDimensions.partner?.dominanz) {
                 textParts.push(domStatements.pathos[0]);
+            }
+
+            // Orientierungs-basierte Pathos-Statements hinzufügen
+            if (orientStatements?.pathos?.length &&
+                personDimensions.ich?.orientierung && personDimensions.partner?.orientierung &&
+                personDimensions.ich?.geschlecht && personDimensions.partner?.geschlecht) {
+                textParts.push(orientStatements.pathos[0]);
+            }
+
+            // Status-basierte Pathos-Statements hinzufügen (Osho-Perspektive)
+            if (statusStmts?.pathos?.length && statusStmts !== statusStatements.default) {
+                textParts.push(statusStmts.pathos[0]);
             }
 
             // Fallback wenn keine Statements gefunden
@@ -11968,6 +12249,16 @@
                 personDimensions.ich?.dominanz,
                 personDimensions.partner?.dominanz
             );
+            const orientStatements = getOrientierungStatements(
+                personDimensions.ich?.orientierung,
+                personDimensions.partner?.orientierung,
+                personDimensions.ich?.geschlecht,
+                personDimensions.partner?.geschlecht
+            );
+            const statusStmts = getStatusStatements(
+                personDimensions.ich,
+                personDimensions.partner
+            );
 
             const textParts = [];
 
@@ -11984,6 +12275,18 @@
             // Dominanz-basierte Logos-Statements
             if (domStatements?.logos?.length && personDimensions.ich?.dominanz && personDimensions.partner?.dominanz) {
                 textParts.push(domStatements.logos[0]);
+            }
+
+            // Orientierungs-basierte Logos-Statements hinzufügen
+            if (orientStatements?.logos?.length &&
+                personDimensions.ich?.orientierung && personDimensions.partner?.orientierung &&
+                personDimensions.ich?.geschlecht && personDimensions.partner?.geschlecht) {
+                textParts.push(orientStatements.logos[0]);
+            }
+
+            // Status-basierte Logos-Statements hinzufügen (Pirsig-Perspektive)
+            if (statusStmts?.logos?.length && statusStmts !== statusStatements.default) {
+                textParts.push(statusStmts.logos[0]);
             }
 
             // Fallback mit Philosophie-Score
@@ -12305,12 +12608,12 @@
                 const combinedLogos = generateCombinedLogos(ichArch, partnerArch);
                 mobilePathosLogos.innerHTML = `
                     <div style="margin-bottom: 10px; padding: 10px; background: rgba(46,204,113,0.1); border-radius: 8px; border-left: 3px solid #2ecc71;">
-                        <h4 style="color: #2ecc71; margin-bottom: 6px; font-size: 12px;">🔥 GEMEINSAMER PATHOS</h4>
-                        <p style="color: var(--text-secondary); line-height: 1.4; font-size: 11px; margin: 0;">${combinedPathos}</p>
+                        <h4 style="color: #2ecc71; margin-bottom: 6px; font-size: var(--font-base);">🔥 GEMEINSAMER PATHOS (Emotionale Ebene)</h4>
+                        <p style="color: var(--text-secondary); line-height: 1.4; font-size: var(--font-base); font-style: italic; margin: 0;">${combinedPathos}</p>
                     </div>
                     <div style="padding: 10px; background: rgba(243,156,18,0.1); border-radius: 8px; border-left: 3px solid #f39c12;">
-                        <h4 style="color: #f39c12; margin-bottom: 6px; font-size: 12px;">🧠 GEMEINSAMER LOGOS</h4>
-                        <p style="color: var(--text-secondary); line-height: 1.4; font-size: 11px; margin: 0;">${combinedLogos}</p>
+                        <h4 style="color: #f39c12; margin-bottom: 6px; font-size: var(--font-base);">🧠 GEMEINSAMER LOGOS (Rationale Ebene)</h4>
+                        <p style="color: var(--text-secondary); line-height: 1.4; font-size: var(--font-base); font-style: italic; margin: 0;">${combinedLogos}</p>
                     </div>
                 `;
             }
