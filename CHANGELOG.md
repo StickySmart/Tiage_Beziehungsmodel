@@ -5,6 +5,26 @@ Alle wichtigen Änderungen am Tiage-Beziehungsmodell werden hier dokumentiert.
 Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.0.0/),
 Versionierung folgt [Semantic Versioning](https://semver.org/lang/de/).
 
+## [1.4.0] - 2025-11-27
+
+### Neu
+- **Gelebt/Interessiert-Auswahl** - Umbenennung von "Fakt" zu "Gelebt" für intuitivere Bedienung
+- **Verbesserte Fehlermeldungen** - Fehlende Pflichtfelder werden stichwortartig aufgelistet
+- **Responsive Design Templates** - Desktop und Mobile Layout-Vorlagen für konsistentes Design
+- **Kreisförmige Score-Anzeige** - Neue visuelle Darstellung der Kompatibilitätswerte auf Desktop
+- **Navigationstasten für Mobile** - Verbesserte Modal-Navigation auf Mobilgeräten
+
+### Geändert
+- **DU statt ICH** - Umbenennung für klarere Benutzerführung ("Mein Typ")
+- **Auto-Collapse Sektionen** - Orientierung und Dominanz Sektionen schließen automatisch nach Auswahl
+- **Einzelne Gelebt-Auswahl** - Pro Kategorie nur eine "Gelebt"-Selektion erlaubt
+- Verbesserte Summary-Anzeige in kollabierten Sektionen
+
+### Behoben
+- Doppelte Gelebt-Auswahl in Orientierung und Dominanz Kategorien
+- Button-Sichtbarkeit nach Modal-Navigation
+- Farblogik bei Combo-Code für Dominanz-Modal
+
 ## [1.3.0] - 2025-11-26
 
 ### Neu
