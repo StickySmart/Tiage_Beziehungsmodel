@@ -71,11 +71,76 @@ Gender-Chemie als Feinabstimmung der Orientierung
 
 ---
 
+## Methodische Grundlagen
+
+### Die 216 Psychologischen Profile
+
+Das Modell basiert auf **216 individuellen Profilen**, die durch systematische Kombination von vier Dimensionen entstehen:
+
+| Dimension | Ausprägungen | Anzahl |
+|-----------|--------------|--------|
+| **Archetyp** | Single, Duo, Duo-Flex, Solopoly, Poly-Hedo, Polyamor | 6 |
+| **Geschlecht** | Männlich, Weiblich, Nonbinär | 3 |
+| **Dominanz** | Dominant, Submissiv, Switch, Ausgeglichen | 4 |
+| **Orientierung** | Heterosexuell, Homosexuell, Bisexuell | 3 |
+
+**Berechnung:** 6 × 3 × 4 × 3 = **216 Profile**
+
+### Profilstruktur
+
+Jedes der 216 Profile enthält:
+
+- **30 Attribute** in drei Kategorien:
+  - D: Werte & Lebensplanung (10 Attribute)
+  - E: Kommunikation & Konfliktlösung (10 Attribute)
+  - F: Soziale Kompatibilität (10 Attribute)
+- **Forschungsquellen** zur wissenschaftlichen Fundierung
+- **Pirsig-Interpretation** (Statische vs. Dynamische Qualität)
+- **Osho-Interpretation** (Natürlichkeit vs. Konditionierung)
+- **Confidence-Level** für statistische Zuverlässigkeit
+
+### Gaußsche Normalverteilung (Confidence-Level)
+
+Die Attribute jedes Profils sind mit **Confidence-Werten** versehen, die auf der Gaußschen Normalverteilung basieren:
+
+```
+Grundannahme: 80% der Population hat diese Werte (zentraler Bereich der Glockenkurve)
+```
+
+**Beispiel** (Profil: Single-Männlich-Dominant-Heterosexuell):
+
+| Attribut | Wert | Confidence | Bedeutung |
+|----------|------|------------|-----------|
+| Kinderwunsch | "nein" | 85% | 85% der Single-Männer sagen "nein" |
+| Ehewunsch | "nein" | 90% | 90% des Single-Archetyps sagen "nein" |
+| Wohnform | "alleine" | 95% | 95% der Singles leben alleine |
+| Kommunikationsstil | "direkt" | 80% | 80% der Dominanten sind "direkt" |
+
+**Zweck der Confidence-Werte:**
+- Angabe der statistischen Wahrscheinlichkeit, dass ein Attribut zutrifft
+- Basierend auf psychologischer Forschung (Big Five, BDSM-Studien, Gender-Forschung)
+- Ermöglicht differenzierte Betrachtung statt starrer Kategorien
+
+### Wissenschaftliche Quellen der Profile
+
+- Big Five Personality Model (McCrae & Costa, 1997)
+- BDSM Personality Research (Wismeijer & van Assen, 2013)
+- Sexual Orientation & Personality Meta-analysis (Allen et al., 2020)
+- Gender Communication Research (Tannen, 1990)
+- Polyamory Research (Moors et al., 2021)
+- Self-Determination Theory (Ryan & Deci)
+
+---
+
 ## Berechnung
+
+Die Qualitätsfaktoren-Berechnung verwendet eine **gewichtete Summierung** (keine Normalverteilung):
 
 ```
 Qualitätsindex = (Archetyp × 0.40) + (Orientierung × 0.25) + (Dominanz × 0.20) + (Geschlecht × 0.15)
 ```
+
+**Wichtig:** Die Gaußsche Normalverteilung wird für die Confidence-Level der Profile verwendet, nicht für die Berechnung des Qualitätsindex selbst.
 
 ### Ergebnis-Skala
 
