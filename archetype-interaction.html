@@ -3789,14 +3789,14 @@
         }
 
         .dominanz-option-row:has(.dominanz-checkbox:checked) {
-            background: rgba(139, 92, 246, 0.15);
-            border-color: var(--primary);
+            background: rgba(231, 76, 60, 0.15);
+            border-color: #e74c3c;
         }
 
         .dominanz-checkbox {
             width: 18px;
             height: 18px;
-            accent-color: var(--primary);
+            accent-color: #e74c3c;
             cursor: pointer;
         }
 
@@ -3844,9 +3844,9 @@
         }
 
         .status-toggle-btn.active-fakt {
-            background: rgba(139, 92, 246, 0.3);
-            border-color: var(--primary);
-            color: var(--text-primary);
+            background: rgba(231, 76, 60, 0.3);
+            border-color: #e74c3c;
+            color: #e74c3c;
         }
 
         .status-toggle-btn.active-interessiert {
@@ -3984,12 +3984,13 @@
         }
 
         .status-popup-option:hover {
-            border-color: var(--primary);
-            background: rgba(139, 92, 246, 0.1);
+            border-color: #6c757d;
+            background: rgba(108, 117, 125, 0.1);
         }
 
         .status-popup-option.fakt-option:hover {
-            border-color: var(--primary);
+            border-color: #e74c3c;
+            background: rgba(231, 76, 60, 0.1);
         }
 
         .status-popup-option.interessiert-option:hover {
@@ -4004,7 +4005,7 @@
         }
 
         .status-popup-option.fakt-option .status-popup-option-title {
-            color: var(--primary);
+            color: #e74c3c;
         }
 
         .status-popup-option.interessiert-option .status-popup-option-title {
@@ -11796,8 +11797,8 @@
                     <p style="color: var(--text-secondary); font-size: 12px; line-height: 1.5;">${partnerPerspektive}</p>
                 </div>
 
-                <div style="background: rgba(155,89,182,0.1); padding: 12px; border-radius: 10px;">
-                    <div style="font-size: 12px; color: #9b59b6; font-weight: 600; margin-bottom: 8px;">BEDEUTUNG FÜR EURE KOMBINATION:</div>
+                <div style="background: rgba(108, 117, 125, 0.1); padding: 12px; border-radius: 10px;">
+                    <div style="font-size: 12px; color: #6c757d; font-weight: 600; margin-bottom: 8px;">BEDEUTUNG FÜR EURE KOMBINATION:</div>
                     <p style="color: var(--text-secondary); font-size: 12px; line-height: 1.5;">${generateCombinationAnalysis(ichId, partnerId, subName, subData)}</p>
                 </div>
             `;
