@@ -13425,6 +13425,12 @@
             // Update the display in the modal
             updateFactorModalArchetypeDisplay();
 
+            // Preserve selection state: sync Dominanz and Orientierung UI with stored state
+            syncDominanzUI('ich');
+            syncDominanzUI('partner');
+            syncOrientierungUI('ich');
+            syncOrientierungUI('partner');
+
             // Trigger full recalculation for both mobile and desktop views
             if (typeof updateComparisonView === 'function') {
                 updateComparisonView();
