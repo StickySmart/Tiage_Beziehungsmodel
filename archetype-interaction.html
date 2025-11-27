@@ -5483,6 +5483,11 @@
                     <!-- Will be filled dynamically -->
                 </div>
             </div>
+
+            <!-- Pirsig-Style Quote (Desktop) -->
+            <div class="quality-quote" id="desktopQualityQuote">
+                <p>"Diese Beziehung zeigt eine Balance zwischen statischen Mustern (Archetypen) und dynamischem Potenzial."</p>
+            </div>
         </div>
 
         <!-- Expandable Sections -->
@@ -11651,6 +11656,9 @@
                 const expandRadar = document.getElementById('expandRadarChart');
                 if (expandRadar) expandRadar.innerHTML = '';
 
+                const desktopQuoteIncomplete = document.getElementById('desktopQualityQuote');
+                if (desktopQuoteIncomplete) desktopQuoteIncomplete.innerHTML = '<p style="color: var(--text-muted); font-style: italic;">"Bitte alle Dimensionen auswählen, um die Qualitätsanalyse zu sehen."</p>';
+
                 return;
             }
 
@@ -11694,6 +11702,24 @@
 
             percentage.className = 'result-percentage ' + colorClass;
             progressFill.style.background = color;
+
+            // Update Desktop Pirsig quote
+            const desktopQuoteElement = document.getElementById('desktopQualityQuote');
+            if (desktopQuoteElement) {
+                let quoteText = '';
+                if (pathosCheck.result === 'unmöglich') {
+                    quoteText = '"Keine Basis für Resonanz vorhanden – die körperliche oder emotionale Chemie fehlt grundlegend."';
+                } else if (overallScore >= 80) {
+                    quoteText = `"Diese Beziehung zeigt eine Qualität von ${overallScore}% – eine hohe Resonanz zwischen zwei Menschen, deren Muster sich ergänzen und verstärken."`;
+                } else if (overallScore >= 65) {
+                    quoteText = `"Diese Beziehung zeigt eine Qualität von ${overallScore}% – eine solide Balance zwischen statischen Mustern und dynamischem Potenzial."`;
+                } else if (overallScore >= 50) {
+                    quoteText = `"Diese Beziehung zeigt eine Qualität von ${overallScore}% – vorhandene Basis, aber Arbeit an der dynamischen Qualität erforderlich."`;
+                } else {
+                    quoteText = `"Diese Beziehung zeigt eine Qualität von ${overallScore}% – erhebliche Herausforderungen, die bewusste Reflexion erfordern."`;
+                }
+                desktopQuoteElement.innerHTML = `<p>${quoteText}</p>`;
+            }
 
             // Update Radar Chart
             const interactionKey = `${currentArchetype}_${selectedPartner}`;
