@@ -3813,14 +3813,14 @@
             transition: all 0.2s;
         }
 
-        /* Gelebt state: red background and border */
-        .dominanz-option-row:has(.status-toggle-btn.active-gelebt) {
+        /* Gelebt state: red background and border - only when checkbox is checked */
+        .dominanz-option-row:has(.dominanz-checkbox:checked):has(.status-toggle-btn.active-gelebt) {
             background: rgba(231, 76, 60, 0.15);
             border-color: #e74c3c;
         }
 
-        /* Interessiert state: light yellow background and border */
-        .dominanz-option-row:has(.status-toggle-btn.active-interessiert) {
+        /* Interessiert state: light yellow background and border - only when checkbox is checked */
+        .dominanz-option-row:has(.dominanz-checkbox:checked):has(.status-toggle-btn.active-interessiert) {
             background: rgba(234, 179, 8, 0.1);
             border-color: rgba(234, 179, 8, 0.4);
         }
@@ -3832,13 +3832,13 @@
             cursor: pointer;
         }
 
-        /* Checkbox red only when Gelebt is active */
-        .dominanz-option-row:has(.status-toggle-btn.active-gelebt) .dominanz-checkbox {
+        /* Checkbox red only when Gelebt is active and checkbox is checked */
+        .dominanz-option-row:has(.dominanz-checkbox:checked):has(.status-toggle-btn.active-gelebt) .dominanz-checkbox {
             accent-color: #e74c3c;
         }
 
         /* Checkbox stays gray for Interessiert */
-        .dominanz-option-row:has(.status-toggle-btn.active-interessiert) .dominanz-checkbox {
+        .dominanz-option-row:has(.dominanz-checkbox:checked):has(.status-toggle-btn.active-interessiert) .dominanz-checkbox {
             accent-color: var(--text-muted);
         }
 
@@ -10545,11 +10545,11 @@
             }
         }
 
-        // Get the primary Fakt orientierung type (if any)
+        // Get the primary Gelebt orientierung type (if any)
         function getPrimaryFaktOrientierung(person) {
             const ori = personDimensions[person].orientierung;
             for (const [type, status] of Object.entries(ori)) {
-                if (status === 'fakt') return type;
+                if (status === 'gelebt') return type;
             }
             return null;
         }
