@@ -13459,7 +13459,12 @@
                     meaningList.innerHTML = '';
                     factor.getMeaning(score).forEach(item => {
                         const li = document.createElement('li');
-                        li.textContent = item;
+                        // Support both old (string) and new (object with title+desc) formats
+                        if (typeof item === 'object' && item.title) {
+                            li.innerHTML = `<strong>${item.title}</strong>${item.desc ? ` – ${item.desc}` : ''}`;
+                        } else {
+                            li.textContent = item;
+                        }
                         meaningList.appendChild(li);
                     });
                 }
