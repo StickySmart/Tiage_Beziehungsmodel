@@ -3863,6 +3863,51 @@
             background: var(--bg-card);
         }
 
+        /* Collapsible multi-select sections */
+        .compact-dimension.collapsible-dimension .compact-dimension-label {
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .compact-dimension.collapsible-dimension .collapse-toggle {
+            font-size: 10px;
+            color: var(--text-muted);
+            transition: transform 0.3s ease;
+            margin-left: 8px;
+        }
+
+        .compact-dimension.collapsible-dimension.collapsed .collapse-toggle {
+            transform: rotate(-90deg);
+        }
+
+        .compact-dimension.collapsible-dimension .dominanz-multi-select {
+            max-height: 500px;
+            overflow: hidden;
+            transition: max-height 0.3s ease, opacity 0.3s ease;
+            opacity: 1;
+        }
+
+        .compact-dimension.collapsible-dimension.collapsed .dominanz-multi-select {
+            max-height: 0;
+            opacity: 0;
+        }
+
+        .compact-dimension.collapsible-dimension .collapsed-summary {
+            display: none;
+            font-size: 11px;
+            color: var(--success);
+            margin-top: 4px;
+            padding: 4px 8px;
+            background: rgba(46, 204, 113, 0.1);
+            border-radius: 6px;
+        }
+
+        .compact-dimension.collapsible-dimension.collapsed .collapsed-summary {
+            display: block;
+        }
+
         /* Toggle Buttons for Status (Gelebt/Interessiert) */
         .status-toggle-group {
             display: none;
@@ -5254,7 +5299,7 @@
                 <!-- Archetype Selection with Navigation -->
                 <div id="factorModalArchetypeNav" style="display: flex; flex-direction: column; gap: 8px; margin-bottom: 15px;">
                     <div style="display: flex; align-items: center; justify-content: center; gap: 8px;">
-                        <span style="font-size: 11px; color: var(--text-muted); min-width: 50px;">ICH:</span>
+                        <span style="font-size: 11px; color: var(--text-muted); min-width: 50px;">DU:</span>
                         <button class="archetype-nav-btn" onclick="navigateFactorArchetype('ich', -1)" title="Vorheriger Archetyp">&#8249;</button>
                         <span id="factorModalIchCode" style="font-size: 12px; color: var(--text-primary); background: rgba(255,255,255,0.08); padding: 4px 12px; border-radius: 6px; min-width: 80px; text-align: center; font-weight: 600;">Single</span>
                         <button class="archetype-nav-btn" onclick="navigateFactorArchetype('ich', 1)" title="Nächster Archetyp">&#8250;</button>
@@ -5352,7 +5397,7 @@
             <div class="comparison-column ich-column">
                 <div class="column-header">
                     <div class="column-icon">👤</div>
-                    <div class="column-title">ICH</div>
+                    <div class="column-title">DU</div>
                 </div>
                 <div class="select-with-info">
                     <button class="archetype-nav-btn" onclick="navigateArchetype('ich', -1)" title="Vorheriger Archetyp">&#9664;</button>
@@ -5379,8 +5424,12 @@
                             <label for="ich-g-nb" class="compact-option">non-binär</label>
                         </div>
                     </div>
-                    <div class="compact-dimension needs-selection" data-dimension="ich-dominanz-multi">
-                        <div class="compact-dimension-label">Dominanz <span class="dimension-info-icon" onclick="showDimensionTooltip('dominanz')">ℹ</span> <span style="font-size: 10px; opacity: 0.7;">(Mehrfachauswahl)</span></div>
+                    <div class="compact-dimension needs-selection collapsible-dimension" data-dimension="ich-dominanz-multi">
+                        <div class="compact-dimension-label" onclick="toggleDimensionCollapse(this.parentElement)">
+                            <span>Dominanz <span class="dimension-info-icon" onclick="event.stopPropagation(); showDimensionTooltip('dominanz')">ℹ</span> <span style="font-size: 10px; opacity: 0.7;">(Mehrfachauswahl)</span></span>
+                            <span class="collapse-toggle">▼</span>
+                        </div>
+                        <div class="collapsed-summary" id="ich-dominanz-summary"></div>
                         <div class="dominanz-multi-select">
                             <div class="dominanz-option-row" id="ich-d-dom-row">
                                 <input type="checkbox" id="ich-d-dom" value="dominant" class="dominanz-checkbox" onchange="handleDominanzMultiChange('ich', 'dominant', this.checked)">
@@ -5420,12 +5469,17 @@
                             </div>
                         </div>
                     </div>
-                    <div class="compact-dimension needs-selection" data-dimension="ich-orientierung-multi">
-                        <div class="compact-dimension-label">Orientierung <span class="dimension-info-icon" onclick="showDimensionTooltip('orientierung')">ℹ</span> <span style="font-size: 10px; opacity: 0.7;">(Mehrfachauswahl)</span></div>
+                    <div class="compact-dimension needs-selection collapsible-dimension" data-dimension="ich-orientierung-multi">
+                        <div class="compact-dimension-label" onclick="toggleDimensionCollapse(this.parentElement)">
+                            <span>Orientierung <span class="dimension-info-icon" onclick="event.stopPropagation(); showDimensionTooltip('orientierung')">ℹ</span> <span style="font-size: 10px; opacity: 0.7;">(Mehrfachauswahl)</span></span>
+                            <span class="collapse-toggle">▼</span>
+                        </div>
+                        <div class="collapsed-summary" id="ich-orientierung-summary"></div>
                         <div class="dominanz-multi-select">
                             <div class="dominanz-option-row" id="ich-o-het-row">
                                 <input type="checkbox" id="ich-o-het" value="heterosexuell" class="dominanz-checkbox" onchange="handleOrientierungMultiChange('ich', 'heterosexuell', this.checked)">
                                 <label for="ich-o-het" class="dominanz-label">heterosexuell</label>
+                                <button type="button" id="ich-o-het-secondary" class="secondary-interessiert-btn" onclick="handleOrientierungSecondaryInteressiert('ich', 'heterosexuell', this)">interessiert</button>
                                 <div id="ich-o-het-status" class="status-toggle-group">
                                     <button type="button" class="status-toggle-btn active-gelebt" data-status="gelebt" onclick="handleOrientierungStatusToggle('ich', 'heterosexuell', 'gelebt', this)">Gelebt</button>
                                     <button type="button" class="status-toggle-btn" data-status="interessiert" onclick="handleOrientierungStatusToggle('ich', 'heterosexuell', 'interessiert', this)">Interessiert</button>
@@ -5434,6 +5488,7 @@
                             <div class="dominanz-option-row" id="ich-o-hom-row">
                                 <input type="checkbox" id="ich-o-hom" value="homosexuell" class="dominanz-checkbox" onchange="handleOrientierungMultiChange('ich', 'homosexuell', this.checked)">
                                 <label for="ich-o-hom" class="dominanz-label">homosexuell</label>
+                                <button type="button" id="ich-o-hom-secondary" class="secondary-interessiert-btn" onclick="handleOrientierungSecondaryInteressiert('ich', 'homosexuell', this)">interessiert</button>
                                 <div id="ich-o-hom-status" class="status-toggle-group">
                                     <button type="button" class="status-toggle-btn active-gelebt" data-status="gelebt" onclick="handleOrientierungStatusToggle('ich', 'homosexuell', 'gelebt', this)">Gelebt</button>
                                     <button type="button" class="status-toggle-btn" data-status="interessiert" onclick="handleOrientierungStatusToggle('ich', 'homosexuell', 'interessiert', this)">Interessiert</button>
@@ -5442,6 +5497,7 @@
                             <div class="dominanz-option-row" id="ich-o-bi-row">
                                 <input type="checkbox" id="ich-o-bi" value="bisexuell" class="dominanz-checkbox" onchange="handleOrientierungMultiChange('ich', 'bisexuell', this.checked)">
                                 <label for="ich-o-bi" class="dominanz-label">bisexuell</label>
+                                <button type="button" id="ich-o-bi-secondary" class="secondary-interessiert-btn" onclick="handleOrientierungSecondaryInteressiert('ich', 'bisexuell', this)">interessiert</button>
                                 <div id="ich-o-bi-status" class="status-toggle-group">
                                     <button type="button" class="status-toggle-btn active-gelebt" data-status="gelebt" onclick="handleOrientierungStatusToggle('ich', 'bisexuell', 'gelebt', this)">Gelebt</button>
                                     <button type="button" class="status-toggle-btn" data-status="interessiert" onclick="handleOrientierungStatusToggle('ich', 'bisexuell', 'interessiert', this)">Interessiert</button>
@@ -5483,8 +5539,12 @@
                             <label for="partner-g-nb" class="compact-option">non-binär</label>
                         </div>
                     </div>
-                    <div class="compact-dimension needs-selection" data-dimension="partner-dominanz-multi">
-                        <div class="compact-dimension-label">Dominanz <span class="dimension-info-icon" onclick="showDimensionTooltip('dominanz')">ℹ</span> <span style="font-size: 10px; opacity: 0.7;">(Mehrfachauswahl)</span></div>
+                    <div class="compact-dimension needs-selection collapsible-dimension" data-dimension="partner-dominanz-multi">
+                        <div class="compact-dimension-label" onclick="toggleDimensionCollapse(this.parentElement)">
+                            <span>Dominanz <span class="dimension-info-icon" onclick="event.stopPropagation(); showDimensionTooltip('dominanz')">ℹ</span> <span style="font-size: 10px; opacity: 0.7;">(Mehrfachauswahl)</span></span>
+                            <span class="collapse-toggle">▼</span>
+                        </div>
+                        <div class="collapsed-summary" id="partner-dominanz-summary"></div>
                         <div class="dominanz-multi-select">
                             <div class="dominanz-option-row" id="partner-d-dom-row">
                                 <input type="checkbox" id="partner-d-dom" value="dominant" class="dominanz-checkbox" onchange="handleDominanzMultiChange('partner', 'dominant', this.checked)">
@@ -5524,12 +5584,17 @@
                             </div>
                         </div>
                     </div>
-                    <div class="compact-dimension needs-selection" data-dimension="partner-orientierung-multi">
-                        <div class="compact-dimension-label">Orientierung <span class="dimension-info-icon" onclick="showDimensionTooltip('orientierung')">ℹ</span> <span style="font-size: 10px; opacity: 0.7;">(Mehrfachauswahl)</span></div>
+                    <div class="compact-dimension needs-selection collapsible-dimension" data-dimension="partner-orientierung-multi">
+                        <div class="compact-dimension-label" onclick="toggleDimensionCollapse(this.parentElement)">
+                            <span>Orientierung <span class="dimension-info-icon" onclick="event.stopPropagation(); showDimensionTooltip('orientierung')">ℹ</span> <span style="font-size: 10px; opacity: 0.7;">(Mehrfachauswahl)</span></span>
+                            <span class="collapse-toggle">▼</span>
+                        </div>
+                        <div class="collapsed-summary" id="partner-orientierung-summary"></div>
                         <div class="dominanz-multi-select">
                             <div class="dominanz-option-row" id="partner-o-het-row">
                                 <input type="checkbox" id="partner-o-het" value="heterosexuell" class="dominanz-checkbox" onchange="handleOrientierungMultiChange('partner', 'heterosexuell', this.checked)">
                                 <label for="partner-o-het" class="dominanz-label">heterosexuell</label>
+                                <button type="button" id="partner-o-het-secondary" class="secondary-interessiert-btn" onclick="handleOrientierungSecondaryInteressiert('partner', 'heterosexuell', this)">interessiert</button>
                                 <div id="partner-o-het-status" class="status-toggle-group">
                                     <button type="button" class="status-toggle-btn active-gelebt" data-status="gelebt" onclick="handleOrientierungStatusToggle('partner', 'heterosexuell', 'gelebt', this)">Gelebt</button>
                                     <button type="button" class="status-toggle-btn" data-status="interessiert" onclick="handleOrientierungStatusToggle('partner', 'heterosexuell', 'interessiert', this)">Interessiert</button>
@@ -5538,6 +5603,7 @@
                             <div class="dominanz-option-row" id="partner-o-hom-row">
                                 <input type="checkbox" id="partner-o-hom" value="homosexuell" class="dominanz-checkbox" onchange="handleOrientierungMultiChange('partner', 'homosexuell', this.checked)">
                                 <label for="partner-o-hom" class="dominanz-label">homosexuell</label>
+                                <button type="button" id="partner-o-hom-secondary" class="secondary-interessiert-btn" onclick="handleOrientierungSecondaryInteressiert('partner', 'homosexuell', this)">interessiert</button>
                                 <div id="partner-o-hom-status" class="status-toggle-group">
                                     <button type="button" class="status-toggle-btn active-gelebt" data-status="gelebt" onclick="handleOrientierungStatusToggle('partner', 'homosexuell', 'gelebt', this)">Gelebt</button>
                                     <button type="button" class="status-toggle-btn" data-status="interessiert" onclick="handleOrientierungStatusToggle('partner', 'homosexuell', 'interessiert', this)">Interessiert</button>
@@ -5546,6 +5612,7 @@
                             <div class="dominanz-option-row" id="partner-o-bi-row">
                                 <input type="checkbox" id="partner-o-bi" value="bisexuell" class="dominanz-checkbox" onchange="handleOrientierungMultiChange('partner', 'bisexuell', this.checked)">
                                 <label for="partner-o-bi" class="dominanz-label">bisexuell</label>
+                                <button type="button" id="partner-o-bi-secondary" class="secondary-interessiert-btn" onclick="handleOrientierungSecondaryInteressiert('partner', 'bisexuell', this)">interessiert</button>
                                 <div id="partner-o-bi-status" class="status-toggle-group">
                                     <button type="button" class="status-toggle-btn active-gelebt" data-status="gelebt" onclick="handleOrientierungStatusToggle('partner', 'bisexuell', 'gelebt', this)">Gelebt</button>
                                     <button type="button" class="status-toggle-btn" data-status="interessiert" onclick="handleOrientierungStatusToggle('partner', 'bisexuell', 'interessiert', this)">Interessiert</button>
@@ -5683,7 +5750,7 @@
             <!-- ICH Auswahl -->
             <div style="background: var(--bg-card); border-radius: 16px; border: 1px solid var(--border); border-top: 3px solid var(--success); padding: 15px; margin-bottom: 15px;">
                 <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 12px; color: var(--success); font-weight: 700; font-size: var(--font-lg);">
-                    <span>👤</span> ICH
+                    <span>👤</span> DU
                 </div>
                 <div style="display: flex; gap: 8px; align-items: center; margin-bottom: 12px;">
                     <button class="archetype-nav-btn" onclick="navigateArchetype('ich', -1)" title="Vorheriger Archetyp">&#9664;</button>
@@ -5710,8 +5777,12 @@
                             <label for="m-ich-g-nb" class="compact-option">non-binär</label>
                         </div>
                     </div>
-                    <div class="compact-dimension needs-selection" data-dimension="mobile-ich-dominanz-multi">
-                        <div class="compact-dimension-label">Dominanz <span class="dimension-info-icon" onclick="showDimensionTooltip('dominanz')">ℹ</span> <span style="font-size: 10px; opacity: 0.7;">(Mehrfachauswahl)</span></div>
+                    <div class="compact-dimension needs-selection collapsible-dimension" data-dimension="mobile-ich-dominanz-multi">
+                        <div class="compact-dimension-label" onclick="toggleDimensionCollapse(this.parentElement)">
+                            <span>Dominanz <span class="dimension-info-icon" onclick="event.stopPropagation(); showDimensionTooltip('dominanz')">ℹ</span> <span style="font-size: 10px; opacity: 0.7;">(Mehrfachauswahl)</span></span>
+                            <span class="collapse-toggle">▼</span>
+                        </div>
+                        <div class="collapsed-summary" id="mobile-ich-dominanz-summary"></div>
                         <div class="dominanz-multi-select">
                             <div class="dominanz-option-row" id="m-ich-d-dom-row">
                                 <input type="checkbox" id="m-ich-d-dom" value="dominant" class="dominanz-checkbox" onchange="handleMobileDominanzMultiChange('ich', 'dominant', this.checked)">
@@ -5751,12 +5822,17 @@
                             </div>
                         </div>
                     </div>
-                    <div class="compact-dimension needs-selection" data-dimension="mobile-ich-orientierung-multi">
-                        <div class="compact-dimension-label">Sexuelle Orientierung <span class="dimension-info-icon" onclick="showDimensionTooltip('orientierung')">ℹ</span> <span style="font-size: 10px; opacity: 0.7;">(Mehrfachauswahl)</span></div>
+                    <div class="compact-dimension needs-selection collapsible-dimension" data-dimension="mobile-ich-orientierung-multi">
+                        <div class="compact-dimension-label" onclick="toggleDimensionCollapse(this.parentElement)">
+                            <span>Sexuelle Orientierung <span class="dimension-info-icon" onclick="event.stopPropagation(); showDimensionTooltip('orientierung')">ℹ</span> <span style="font-size: 10px; opacity: 0.7;">(Mehrfachauswahl)</span></span>
+                            <span class="collapse-toggle">▼</span>
+                        </div>
+                        <div class="collapsed-summary" id="mobile-ich-orientierung-summary"></div>
                         <div class="dominanz-multi-select">
                             <div class="dominanz-option-row" id="m-ich-o-het-row">
                                 <input type="checkbox" id="m-ich-o-het" value="heterosexuell" class="dominanz-checkbox" onchange="handleMobileOrientierungMultiChange('ich', 'heterosexuell', this.checked)">
                                 <label for="m-ich-o-het" class="dominanz-label">heterosexuell</label>
+                                <button type="button" id="m-ich-o-het-secondary" class="secondary-interessiert-btn" onclick="handleOrientierungSecondaryInteressiert('ich', 'heterosexuell', this)">interessiert</button>
                                 <div id="m-ich-o-het-status" class="status-toggle-group">
                                     <button type="button" class="status-toggle-btn active-gelebt" data-status="gelebt" onclick="handleMobileOrientierungStatusToggle('ich', 'heterosexuell', 'gelebt', this)">Gelebt</button>
                                     <button type="button" class="status-toggle-btn" data-status="interessiert" onclick="handleMobileOrientierungStatusToggle('ich', 'heterosexuell', 'interessiert', this)">Interessiert</button>
@@ -5765,6 +5841,7 @@
                             <div class="dominanz-option-row" id="m-ich-o-hom-row">
                                 <input type="checkbox" id="m-ich-o-hom" value="homosexuell" class="dominanz-checkbox" onchange="handleMobileOrientierungMultiChange('ich', 'homosexuell', this.checked)">
                                 <label for="m-ich-o-hom" class="dominanz-label">homosexuell</label>
+                                <button type="button" id="m-ich-o-hom-secondary" class="secondary-interessiert-btn" onclick="handleOrientierungSecondaryInteressiert('ich', 'homosexuell', this)">interessiert</button>
                                 <div id="m-ich-o-hom-status" class="status-toggle-group">
                                     <button type="button" class="status-toggle-btn active-gelebt" data-status="gelebt" onclick="handleMobileOrientierungStatusToggle('ich', 'homosexuell', 'gelebt', this)">Gelebt</button>
                                     <button type="button" class="status-toggle-btn" data-status="interessiert" onclick="handleMobileOrientierungStatusToggle('ich', 'homosexuell', 'interessiert', this)">Interessiert</button>
@@ -5773,6 +5850,7 @@
                             <div class="dominanz-option-row" id="m-ich-o-bi-row">
                                 <input type="checkbox" id="m-ich-o-bi" value="bisexuell" class="dominanz-checkbox" onchange="handleMobileOrientierungMultiChange('ich', 'bisexuell', this.checked)">
                                 <label for="m-ich-o-bi" class="dominanz-label">bisexuell</label>
+                                <button type="button" id="m-ich-o-bi-secondary" class="secondary-interessiert-btn" onclick="handleOrientierungSecondaryInteressiert('ich', 'bisexuell', this)">interessiert</button>
                                 <div id="m-ich-o-bi-status" class="status-toggle-group">
                                     <button type="button" class="status-toggle-btn active-gelebt" data-status="gelebt" onclick="handleMobileOrientierungStatusToggle('ich', 'bisexuell', 'gelebt', this)">Gelebt</button>
                                     <button type="button" class="status-toggle-btn" data-status="interessiert" onclick="handleMobileOrientierungStatusToggle('ich', 'bisexuell', 'interessiert', this)">Interessiert</button>
@@ -5813,8 +5891,12 @@
                             <label for="m-partner-g-nb" class="compact-option">non-binär</label>
                         </div>
                     </div>
-                    <div class="compact-dimension needs-selection" data-dimension="mobile-partner-dominanz-multi">
-                        <div class="compact-dimension-label">Dominanz <span class="dimension-info-icon" onclick="showDimensionTooltip('dominanz')">ℹ</span> <span style="font-size: 10px; opacity: 0.7;">(Mehrfachauswahl)</span></div>
+                    <div class="compact-dimension needs-selection collapsible-dimension" data-dimension="mobile-partner-dominanz-multi">
+                        <div class="compact-dimension-label" onclick="toggleDimensionCollapse(this.parentElement)">
+                            <span>Dominanz <span class="dimension-info-icon" onclick="event.stopPropagation(); showDimensionTooltip('dominanz')">ℹ</span> <span style="font-size: 10px; opacity: 0.7;">(Mehrfachauswahl)</span></span>
+                            <span class="collapse-toggle">▼</span>
+                        </div>
+                        <div class="collapsed-summary" id="mobile-partner-dominanz-summary"></div>
                         <div class="dominanz-multi-select">
                             <div class="dominanz-option-row" id="m-partner-d-dom-row">
                                 <input type="checkbox" id="m-partner-d-dom" value="dominant" class="dominanz-checkbox" onchange="handleMobileDominanzMultiChange('partner', 'dominant', this.checked)">
@@ -5854,12 +5936,17 @@
                             </div>
                         </div>
                     </div>
-                    <div class="compact-dimension needs-selection" data-dimension="mobile-partner-orientierung-multi">
-                        <div class="compact-dimension-label">Sexuelle Orientierung <span class="dimension-info-icon" onclick="showDimensionTooltip('orientierung')">ℹ</span> <span style="font-size: 10px; opacity: 0.7;">(Mehrfachauswahl)</span></div>
+                    <div class="compact-dimension needs-selection collapsible-dimension" data-dimension="mobile-partner-orientierung-multi">
+                        <div class="compact-dimension-label" onclick="toggleDimensionCollapse(this.parentElement)">
+                            <span>Sexuelle Orientierung <span class="dimension-info-icon" onclick="event.stopPropagation(); showDimensionTooltip('orientierung')">ℹ</span> <span style="font-size: 10px; opacity: 0.7;">(Mehrfachauswahl)</span></span>
+                            <span class="collapse-toggle">▼</span>
+                        </div>
+                        <div class="collapsed-summary" id="mobile-partner-orientierung-summary"></div>
                         <div class="dominanz-multi-select">
                             <div class="dominanz-option-row" id="m-partner-o-het-row">
                                 <input type="checkbox" id="m-partner-o-het" value="heterosexuell" class="dominanz-checkbox" onchange="handleMobileOrientierungMultiChange('partner', 'heterosexuell', this.checked)">
                                 <label for="m-partner-o-het" class="dominanz-label">heterosexuell</label>
+                                <button type="button" id="m-partner-o-het-secondary" class="secondary-interessiert-btn" onclick="handleOrientierungSecondaryInteressiert('partner', 'heterosexuell', this)">interessiert</button>
                                 <div id="m-partner-o-het-status" class="status-toggle-group">
                                     <button type="button" class="status-toggle-btn active-gelebt" data-status="gelebt" onclick="handleMobileOrientierungStatusToggle('partner', 'heterosexuell', 'gelebt', this)">Gelebt</button>
                                     <button type="button" class="status-toggle-btn" data-status="interessiert" onclick="handleMobileOrientierungStatusToggle('partner', 'heterosexuell', 'interessiert', this)">Interessiert</button>
@@ -5868,6 +5955,7 @@
                             <div class="dominanz-option-row" id="m-partner-o-hom-row">
                                 <input type="checkbox" id="m-partner-o-hom" value="homosexuell" class="dominanz-checkbox" onchange="handleMobileOrientierungMultiChange('partner', 'homosexuell', this.checked)">
                                 <label for="m-partner-o-hom" class="dominanz-label">homosexuell</label>
+                                <button type="button" id="m-partner-o-hom-secondary" class="secondary-interessiert-btn" onclick="handleOrientierungSecondaryInteressiert('partner', 'homosexuell', this)">interessiert</button>
                                 <div id="m-partner-o-hom-status" class="status-toggle-group">
                                     <button type="button" class="status-toggle-btn active-gelebt" data-status="gelebt" onclick="handleMobileOrientierungStatusToggle('partner', 'homosexuell', 'gelebt', this)">Gelebt</button>
                                     <button type="button" class="status-toggle-btn" data-status="interessiert" onclick="handleMobileOrientierungStatusToggle('partner', 'homosexuell', 'interessiert', this)">Interessiert</button>
@@ -5876,6 +5964,7 @@
                             <div class="dominanz-option-row" id="m-partner-o-bi-row">
                                 <input type="checkbox" id="m-partner-o-bi" value="bisexuell" class="dominanz-checkbox" onchange="handleMobileOrientierungMultiChange('partner', 'bisexuell', this.checked)">
                                 <label for="m-partner-o-bi" class="dominanz-label">bisexuell</label>
+                                <button type="button" id="m-partner-o-bi-secondary" class="secondary-interessiert-btn" onclick="handleOrientierungSecondaryInteressiert('partner', 'bisexuell', this)">interessiert</button>
                                 <div id="m-partner-o-bi-status" class="status-toggle-group">
                                     <button type="button" class="status-toggle-btn active-gelebt" data-status="gelebt" onclick="handleMobileOrientierungStatusToggle('partner', 'bisexuell', 'gelebt', this)">Gelebt</button>
                                     <button type="button" class="status-toggle-btn" data-status="interessiert" onclick="handleMobileOrientierungStatusToggle('partner', 'bisexuell', 'interessiert', this)">Interessiert</button>
@@ -6092,6 +6181,7 @@
                                     <div class="dominanz-option-row" id="modal-ich-o-het-row">
                                         <input type="checkbox" id="modal-ich-o-het" value="heterosexuell" class="dominanz-checkbox" onchange="handleModalOrientierungMultiChange('ich', 'heterosexuell', this.checked)">
                                         <label for="modal-ich-o-het" class="dominanz-label">heterosexuell</label>
+                                        <button type="button" id="modal-ich-o-het-secondary" class="secondary-interessiert-btn" onclick="handleOrientierungSecondaryInteressiert('ich', 'heterosexuell', this)">interessiert</button>
                                         <div id="modal-ich-o-het-status" class="status-toggle-group">
                                             <button type="button" class="status-toggle-btn active-gelebt" data-status="gelebt" onclick="handleModalOrientierungStatusToggle('ich', 'heterosexuell', 'gelebt', this)">Gelebt</button>
                                             <button type="button" class="status-toggle-btn" data-status="interessiert" onclick="handleModalOrientierungStatusToggle('ich', 'heterosexuell', 'interessiert', this)">Interessiert</button>
@@ -6100,6 +6190,7 @@
                                     <div class="dominanz-option-row" id="modal-ich-o-hom-row">
                                         <input type="checkbox" id="modal-ich-o-hom" value="homosexuell" class="dominanz-checkbox" onchange="handleModalOrientierungMultiChange('ich', 'homosexuell', this.checked)">
                                         <label for="modal-ich-o-hom" class="dominanz-label">homosexuell</label>
+                                        <button type="button" id="modal-ich-o-hom-secondary" class="secondary-interessiert-btn" onclick="handleOrientierungSecondaryInteressiert('ich', 'homosexuell', this)">interessiert</button>
                                         <div id="modal-ich-o-hom-status" class="status-toggle-group">
                                             <button type="button" class="status-toggle-btn active-gelebt" data-status="gelebt" onclick="handleModalOrientierungStatusToggle('ich', 'homosexuell', 'gelebt', this)">Gelebt</button>
                                             <button type="button" class="status-toggle-btn" data-status="interessiert" onclick="handleModalOrientierungStatusToggle('ich', 'homosexuell', 'interessiert', this)">Interessiert</button>
@@ -6108,6 +6199,7 @@
                                     <div class="dominanz-option-row" id="modal-ich-o-bi-row">
                                         <input type="checkbox" id="modal-ich-o-bi" value="bisexuell" class="dominanz-checkbox" onchange="handleModalOrientierungMultiChange('ich', 'bisexuell', this.checked)">
                                         <label for="modal-ich-o-bi" class="dominanz-label">bisexuell</label>
+                                        <button type="button" id="modal-ich-o-bi-secondary" class="secondary-interessiert-btn" onclick="handleOrientierungSecondaryInteressiert('ich', 'bisexuell', this)">interessiert</button>
                                         <div id="modal-ich-o-bi-status" class="status-toggle-group">
                                             <button type="button" class="status-toggle-btn active-gelebt" data-status="gelebt" onclick="handleModalOrientierungStatusToggle('ich', 'bisexuell', 'gelebt', this)">Gelebt</button>
                                             <button type="button" class="status-toggle-btn" data-status="interessiert" onclick="handleModalOrientierungStatusToggle('ich', 'bisexuell', 'interessiert', this)">Interessiert</button>
@@ -6280,6 +6372,7 @@
                                     <div class="dominanz-option-row" id="modal-partner-o-het-row">
                                         <input type="checkbox" id="modal-partner-o-het" value="heterosexuell" class="dominanz-checkbox" onchange="handleModalOrientierungMultiChange('partner', 'heterosexuell', this.checked)">
                                         <label for="modal-partner-o-het" class="dominanz-label">heterosexuell</label>
+                                        <button type="button" id="modal-partner-o-het-secondary" class="secondary-interessiert-btn" onclick="handleOrientierungSecondaryInteressiert('partner', 'heterosexuell', this)">interessiert</button>
                                         <div id="modal-partner-o-het-status" class="status-toggle-group">
                                             <button type="button" class="status-toggle-btn active-gelebt" data-status="gelebt" onclick="handleModalOrientierungStatusToggle('partner', 'heterosexuell', 'gelebt', this)">Gelebt</button>
                                             <button type="button" class="status-toggle-btn" data-status="interessiert" onclick="handleModalOrientierungStatusToggle('partner', 'heterosexuell', 'interessiert', this)">Interessiert</button>
@@ -6288,6 +6381,7 @@
                                     <div class="dominanz-option-row" id="modal-partner-o-hom-row">
                                         <input type="checkbox" id="modal-partner-o-hom" value="homosexuell" class="dominanz-checkbox" onchange="handleModalOrientierungMultiChange('partner', 'homosexuell', this.checked)">
                                         <label for="modal-partner-o-hom" class="dominanz-label">homosexuell</label>
+                                        <button type="button" id="modal-partner-o-hom-secondary" class="secondary-interessiert-btn" onclick="handleOrientierungSecondaryInteressiert('partner', 'homosexuell', this)">interessiert</button>
                                         <div id="modal-partner-o-hom-status" class="status-toggle-group">
                                             <button type="button" class="status-toggle-btn active-gelebt" data-status="gelebt" onclick="handleModalOrientierungStatusToggle('partner', 'homosexuell', 'gelebt', this)">Gelebt</button>
                                             <button type="button" class="status-toggle-btn" data-status="interessiert" onclick="handleModalOrientierungStatusToggle('partner', 'homosexuell', 'interessiert', this)">Interessiert</button>
@@ -6296,6 +6390,7 @@
                                     <div class="dominanz-option-row" id="modal-partner-o-bi-row">
                                         <input type="checkbox" id="modal-partner-o-bi" value="bisexuell" class="dominanz-checkbox" onchange="handleModalOrientierungMultiChange('partner', 'bisexuell', this.checked)">
                                         <label for="modal-partner-o-bi" class="dominanz-label">bisexuell</label>
+                                        <button type="button" id="modal-partner-o-bi-secondary" class="secondary-interessiert-btn" onclick="handleOrientierungSecondaryInteressiert('partner', 'bisexuell', this)">interessiert</button>
                                         <div id="modal-partner-o-bi-status" class="status-toggle-group">
                                             <button type="button" class="status-toggle-btn active-gelebt" data-status="gelebt" onclick="handleModalOrientierungStatusToggle('partner', 'bisexuell', 'gelebt', this)">Gelebt</button>
                                             <button type="button" class="status-toggle-btn" data-status="interessiert" onclick="handleModalOrientierungStatusToggle('partner', 'bisexuell', 'interessiert', this)">Interessiert</button>
@@ -6330,7 +6425,7 @@
                         </div>
                         <div class="pathos-blocker-persons">
                             <div class="pathos-blocker-person">
-                                <span class="pathos-blocker-person-label">ICH:</span>
+                                <span class="pathos-blocker-person-label">DU:</span>
                                 <span id="pathosBlockerPerson1">männlich, heterosexuell (Gelebt)</span>
                             </div>
                             <div class="pathos-blocker-person">
@@ -8585,6 +8680,63 @@
             document.getElementById(id).classList.toggle('open');
         }
 
+        // Toggle dimension collapse for Dominanz/Orientierung sections
+        function toggleDimensionCollapse(element) {
+            element.classList.toggle('collapsed');
+        }
+
+        // Get summary text for selected options
+        function getDimensionSummary(person, type) {
+            let data, types;
+            if (type === 'dominanz') {
+                data = personDimensions[person].dominanz;
+                types = ['dominant', 'submissiv', 'switch', 'ausgeglichen'];
+            } else {
+                data = personDimensions[person].orientierung;
+                types = ['heterosexuell', 'homosexuell', 'bisexuell'];
+            }
+
+            const selected = [];
+            for (const t of types) {
+                if (data[t]) {
+                    const status = data[t] === 'fakt' ? '(Fakt)' : '(Interessiert)';
+                    selected.push(t + ' ' + status);
+                }
+            }
+            return selected.length > 0 ? '✓ ' + selected.join(', ') : '';
+        }
+
+        // Update collapsed summary for a dimension
+        function updateDimensionSummary(person, type, prefix = '') {
+            const summaryId = prefix + person + '-' + type + '-summary';
+            const summary = document.getElementById(summaryId);
+            if (summary) {
+                summary.textContent = getDimensionSummary(person, type);
+            }
+        }
+
+        // Check if all required options are selected and auto-collapse
+        function checkAutoCollapse(person, type, prefix = '') {
+            const dimName = prefix + person + '-' + type + '-multi';
+            const dim = document.querySelector(`[data-dimension="${dimName}"]`);
+            if (!dim || !dim.classList.contains('collapsible-dimension')) return;
+
+            let hasSelection;
+            if (type === 'dominanz') {
+                hasSelection = hasAnyDominanzSelected(person);
+            } else {
+                hasSelection = hasAnyOrientierungSelected(person);
+            }
+
+            // Update summary
+            updateDimensionSummary(person, type, prefix);
+
+            // Auto-collapse if selection is made
+            if (hasSelection && !dim.classList.contains('user-expanded')) {
+                dim.classList.add('collapsed');
+            }
+        }
+
         function scrollToCard(index) {
             const carousel = document.getElementById('carousel');
             const cardWidth = window.innerWidth;
@@ -10317,7 +10469,7 @@
                 }
             }
 
-            // Update needs-selection classes
+            // Update needs-selection classes and auto-collapse
             const hasSelection = hasAnyDominanzSelected(person);
             ['', 'mobile-', 'modal-'].forEach(prefix => {
                 const dim = document.querySelector(`[data-dimension="${prefix}${person}-dominanz-multi"]`);
@@ -10325,6 +10477,8 @@
                     if (hasSelection) dim.classList.remove('needs-selection');
                     else dim.classList.add('needs-selection');
                 }
+                // Auto-collapse and update summary
+                checkAutoCollapse(person, 'dominanz', prefix);
             });
         }
 
@@ -10362,6 +10516,132 @@
             if (typeof saveSelectionToStorage === 'function') {
                 saveSelectionToStorage();
             }
+        }
+
+        // Handle secondary tendency button click for orientierung (only interessiert)
+        function handleOrientierungSecondaryInteressiert(person, orientierungType, btn) {
+            const currentStatus = personDimensions[person].orientierung[orientierungType];
+
+            if (currentStatus === 'interessiert') {
+                // Toggle off - remove interessiert
+                personDimensions[person].orientierung[orientierungType] = null;
+                if (typeof mobilePersonDimensions !== 'undefined') {
+                    mobilePersonDimensions[person].orientierung[orientierungType] = null;
+                }
+            } else {
+                // Toggle on - set as interessiert
+                personDimensions[person].orientierung[orientierungType] = 'interessiert';
+                if (typeof mobilePersonDimensions !== 'undefined') {
+                    mobilePersonDimensions[person].orientierung[orientierungType] = 'interessiert';
+                }
+            }
+
+            // Sync all UIs
+            syncOrientierungUI(person);
+            updateComparisonView();
+
+            if (typeof saveSelectionToStorage === 'function') {
+                saveSelectionToStorage();
+            }
+        }
+
+        // Get the primary Fakt orientierung type (if any)
+        function getPrimaryFaktOrientierung(person) {
+            const ori = personDimensions[person].orientierung;
+            for (const [type, status] of Object.entries(ori)) {
+                if (status === 'fakt') return type;
+            }
+            return null;
+        }
+
+        // Sync orientierung UI across all views (Desktop, Mobile, Modal)
+        function syncOrientierungUI(person) {
+            const shortIdMap = { 'heterosexuell': 'het', 'homosexuell': 'hom', 'bisexuell': 'bi' };
+            const ori = personDimensions[person].orientierung;
+
+            // Check if there's a primary tendency (Fakt)
+            const primaryFakt = getPrimaryFaktOrientierung(person);
+
+            for (const [type, status] of Object.entries(ori)) {
+                const shortId = shortIdMap[type];
+                const isPrimaryFakt = status === 'fakt';
+                const isSecondaryMode = primaryFakt && primaryFakt !== type;
+
+                // Desktop
+                const desktopCheckbox = document.getElementById(person + '-o-' + shortId);
+                const desktopRow = document.getElementById(person + '-o-' + shortId + '-row');
+                const desktopSecondary = document.getElementById(person + '-o-' + shortId + '-secondary');
+                if (desktopCheckbox) {
+                    desktopCheckbox.checked = !!status;
+                    desktopCheckbox.disabled = isSecondaryMode;
+                }
+                if (desktopRow) {
+                    desktopRow.classList.toggle('secondary-mode', isSecondaryMode);
+                }
+                if (desktopSecondary) {
+                    desktopSecondary.style.display = isSecondaryMode ? 'block' : 'none';
+                    desktopSecondary.classList.toggle('active', status === 'interessiert');
+                }
+                const desktopStatus = document.getElementById(person + '-o-' + shortId + '-status');
+                if (desktopStatus) {
+                    desktopStatus.style.display = (status && !isSecondaryMode) ? 'flex' : 'none';
+                    if (status && !isSecondaryMode) updateStatusToggleButtons(desktopStatus, status);
+                }
+
+                // Mobile
+                const mobileCheckbox = document.getElementById('m-' + person + '-o-' + shortId);
+                const mobileRow = document.getElementById('m-' + person + '-o-' + shortId + '-row');
+                const mobileSecondary = document.getElementById('m-' + person + '-o-' + shortId + '-secondary');
+                if (mobileCheckbox) {
+                    mobileCheckbox.checked = !!status;
+                    mobileCheckbox.disabled = isSecondaryMode;
+                }
+                if (mobileRow) {
+                    mobileRow.classList.toggle('secondary-mode', isSecondaryMode);
+                }
+                if (mobileSecondary) {
+                    mobileSecondary.style.display = isSecondaryMode ? 'block' : 'none';
+                    mobileSecondary.classList.toggle('active', status === 'interessiert');
+                }
+                const mobileStatus = document.getElementById('m-' + person + '-o-' + shortId + '-status');
+                if (mobileStatus) {
+                    mobileStatus.style.display = (status && !isSecondaryMode) ? 'flex' : 'none';
+                    if (status && !isSecondaryMode) updateStatusToggleButtons(mobileStatus, status);
+                }
+
+                // Modal
+                const modalCheckbox = document.getElementById('modal-' + person + '-o-' + shortId);
+                const modalRow = document.getElementById('modal-' + person + '-o-' + shortId + '-row');
+                const modalSecondary = document.getElementById('modal-' + person + '-o-' + shortId + '-secondary');
+                if (modalCheckbox) {
+                    modalCheckbox.checked = !!status;
+                    modalCheckbox.disabled = isSecondaryMode;
+                }
+                if (modalRow) {
+                    modalRow.classList.toggle('secondary-mode', isSecondaryMode);
+                }
+                if (modalSecondary) {
+                    modalSecondary.style.display = isSecondaryMode ? 'block' : 'none';
+                    modalSecondary.classList.toggle('active', status === 'interessiert');
+                }
+                const modalStatus = document.getElementById('modal-' + person + '-o-' + shortId + '-status');
+                if (modalStatus) {
+                    modalStatus.style.display = (status && !isSecondaryMode) ? 'flex' : 'none';
+                    if (status && !isSecondaryMode) updateStatusToggleButtons(modalStatus, status);
+                }
+            }
+
+            // Update needs-selection classes and auto-collapse
+            const hasSelection = hasAnyOrientierungSelected(person);
+            ['', 'mobile-', 'modal-'].forEach(prefix => {
+                const dim = document.querySelector(`[data-dimension="${prefix}${person}-orientierung-multi"]`);
+                if (dim) {
+                    if (hasSelection) dim.classList.remove('needs-selection');
+                    else dim.classList.add('needs-selection');
+                }
+                // Auto-collapse and update summary
+                checkAutoCollapse(person, 'orientierung', prefix);
+            });
         }
 
         // Helper: Get short ID for dominanz type
@@ -12782,7 +13062,7 @@
         }
 
         function handleMobileSwipe() {
-            const swipeThreshold = 50;
+            const swipeThreshold = 100;
             const diff = mobileTouchStartX - mobileTouchEndX;
 
             if (Math.abs(diff) > swipeThreshold) {
