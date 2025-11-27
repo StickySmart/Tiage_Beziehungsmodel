@@ -12587,34 +12587,58 @@
             document.getElementById('mobileResultIch').textContent = ichArch?.name || mobileIchArchetype;
             document.getElementById('mobileResultPartner').textContent = partnerArch?.name || mobilePartnerArchetype;
 
-            // Calculate scores
-            const person1 = { archetyp: mobileIchArchetype || currentArchetype, ...personDimensions.ich };
-            const person2 = { archetyp: mobilePartnerArchetype || selectedPartner, ...personDimensions.partner };
+            // Calculate scores - use mobilePersonDimensions for consistency with tooltips
+            const dims = mobilePersonDimensions;
+            const person1 = { archetyp: mobileIchArchetype || currentArchetype, ...dims.ich };
+            const person2 = { archetyp: mobilePartnerArchetype || selectedPartner, ...dims.partner };
 
-            const qualityResult = calculateRelationshipQuality(person1, person2);
+            // Check if both genders are selected before calculating
+            const g1 = dims.ich.geschlecht;
+            const g2 = dims.partner.geschlecht;
+
+            // Check if any orientierung is selected for both
+            const hasOri1 = dims.ich.orientierung && (dims.ich.orientierung.heterosexuell || dims.ich.orientierung.homosexuell || dims.ich.orientierung.bisexuell);
+            const hasOri2 = dims.partner.orientierung && (dims.partner.orientierung.heterosexuell || dims.partner.orientierung.homosexuell || dims.partner.orientierung.bisexuell);
+
+            // Check if any dominanz is selected for both
+            const hasDom1 = dims.ich.dominanz && Object.values(dims.ich.dominanz).some(v => v);
+            const hasDom2 = dims.partner.dominanz && Object.values(dims.partner.dominanz).some(v => v);
+
+            const isIncomplete = !g1 || !g2 || !hasOri1 || !hasOri2 || !hasDom1 || !hasDom2;
+
+            const qualityResult = isIncomplete ?
+                { score: 0, blocked: false, incomplete: true, breakdown: { archetyp: 0, dominanz: 0, orientierung: 0, geschlecht: 0 } } :
+                calculateRelationshipQuality(person1, person2);
 
             // Update score circle
             const scoreCircle = document.getElementById('mobileScoreCircle');
-            scoreCircle.textContent = qualityResult.score + '%';
 
-            // Set score circle color
-            if (qualityResult.blocked) {
+            // Set score circle color and content
+            if (qualityResult.incomplete) {
+                scoreCircle.textContent = '–';
+                scoreCircle.style.background = 'linear-gradient(135deg, var(--bg-card), var(--bg-secondary))';
+            } else if (qualityResult.blocked) {
+                scoreCircle.textContent = qualityResult.score + '%';
                 scoreCircle.style.background = 'linear-gradient(135deg, var(--danger), #c0392b)';
             } else if (qualityResult.score >= 80) {
+                scoreCircle.textContent = qualityResult.score + '%';
                 scoreCircle.style.background = 'linear-gradient(135deg, var(--success), #1e8449)';
             } else if (qualityResult.score >= 65) {
+                scoreCircle.textContent = qualityResult.score + '%';
                 scoreCircle.style.background = 'linear-gradient(135deg, var(--primary), var(--primary-light))';
             } else if (qualityResult.score >= 50) {
+                scoreCircle.textContent = qualityResult.score + '%';
                 scoreCircle.style.background = 'linear-gradient(135deg, var(--warning), #d68910)';
             } else {
+                scoreCircle.textContent = qualityResult.score + '%';
                 scoreCircle.style.background = 'linear-gradient(135deg, var(--danger), #c0392b)';
             }
 
-            // Update factor breakdown
-            document.getElementById('mobileFactorArchetyp').textContent = qualityResult.breakdown.archetyp + '%';
-            document.getElementById('mobileFactorDominanz').textContent = qualityResult.breakdown.dominanz + '%';
-            document.getElementById('mobileFactorOrientierung').textContent = qualityResult.breakdown.orientierung + '%';
-            document.getElementById('mobileFactorGeschlecht').textContent = qualityResult.breakdown.geschlecht + '%';
+            // Update factor breakdown - show 0% or actual values
+            document.getElementById('mobileFactorArchetyp').textContent = qualityResult.incomplete ? '–' : qualityResult.breakdown.archetyp + '%';
+            document.getElementById('mobileFactorDominanz').textContent = qualityResult.incomplete ? '–' : qualityResult.breakdown.dominanz + '%';
+            document.getElementById('mobileFactorOrientierung').textContent = qualityResult.incomplete ? '–' : qualityResult.breakdown.orientierung + '%';
+            document.getElementById('mobileFactorGeschlecht').textContent = qualityResult.incomplete ? '–' : qualityResult.breakdown.geschlecht + '%';
 
             // Update mobile Pathos & Logos
             const mobilePathosLogos = document.getElementById('mobilePathosLogosContent');
@@ -12849,11 +12873,23 @@
                 },
                 getMeaning: (score) => {
                     if (score >= 80) {
-                        return ['Hohe philosophische Übereinstimmung', 'Wenige grundsätzliche Konflikte', 'Ähnliche Erwartungen an die Beziehung'];
+                        return [
+                            { title: 'Hohe philosophische Übereinstimmung', desc: 'Beide teilen ähnliche Grundwerte und Beziehungsideale.' },
+                            { title: 'Wenige grundsätzliche Konflikte', desc: 'Weltanschauung und Lebensziele sind weitgehend kompatibel.' },
+                            { title: 'Ähnliche Erwartungen an die Beziehung', desc: 'Was beide von Partnerschaft erwarten, deckt sich gut.' }
+                        ];
                     } else if (score >= 60) {
-                        return ['Mittlere philosophische Übereinstimmung', 'Kompromisse und Kommunikation nötig', 'Unterschiedliche, aber vereinbare Bedürfnisse'];
+                        return [
+                            { title: 'Mittlere philosophische Übereinstimmung', desc: 'Grundwerte überlappen, aber es gibt Unterschiede.' },
+                            { title: 'Kompromisse und Kommunikation nötig', desc: 'Unterschiedliche Prioritäten erfordern regelmäßigen Austausch.' },
+                            { title: 'Unterschiedliche, aber vereinbare Bedürfnisse', desc: 'Mit Flexibilität können beide Seiten zufrieden sein.' }
+                        ];
                     } else {
-                        return ['Niedrige philosophische Übereinstimmung', 'Intensive Kommunikation erforderlich', 'Fundamentale Kompromisse notwendig'];
+                        return [
+                            { title: 'Niedrige philosophische Übereinstimmung', desc: 'Grundsätzlich verschiedene Sichtweisen auf Beziehung.' },
+                            { title: 'Intensive Kommunikation erforderlich', desc: 'Ohne bewusste Arbeit entstehen leicht Missverständnisse.' },
+                            { title: 'Fundamentale Kompromisse notwendig', desc: 'Beide müssen auf wichtige eigene Bedürfnisse verzichten können.' }
+                        ];
                     }
                 }
             },
@@ -12956,12 +12992,24 @@
                 },
                 getMeaning: (score) => {
                     if (score >= 80) {
-                        return ['Harmonische emotionale Dynamik', 'Natürliche Rollenverteilung', 'Geringe Reibungspunkte'];
+                        return [
+                            { title: 'Harmonische emotionale Dynamik', desc: 'Die Rollen (Führen/Folgen) ergänzen sich natürlich ohne Reibung.' },
+                            { title: 'Natürliche Rollenverteilung', desc: 'Entscheidungen und Verantwortung fließen organisch zwischen beiden.' },
+                            { title: 'Geringe Reibungspunkte', desc: 'Wenig Konflikte um Kontrolle oder Passivität zu erwarten.' }
+                        ];
                     } else if (score >= 60) {
-                        return ['Funktionale emotionale Dynamik', 'Flexible Anpassung möglich', 'Gelegentliche Abstimmung nötig'];
+                        return [
+                            { title: 'Funktionale emotionale Dynamik', desc: 'Die Rollen funktionieren, sind aber nicht perfekt komplementär.' },
+                            { title: 'Flexible Anpassung möglich', desc: 'Mit gegenseitigem Verständnis kann Balance gefunden werden.' },
+                            { title: 'Gelegentliche Abstimmung nötig', desc: 'Manchmal braucht es Gespräche über Erwartungen und Bedürfnisse.' }
+                        ];
                     } else {
                         // Forschungsbasiert: Sadikaj et al. (2017) - Machtkämpfe bei gleicher Polarität
-                        return ['Machtkampf- oder Führungsvakuum-Risiko', 'Bewusste Kommunikationsregeln wichtig', 'Klare Aufgabenteilung empfohlen'];
+                        return [
+                            { title: 'Machtkampf- oder Führungsvakuum-Risiko', desc: 'Beide dominant = Konkurrenzkämpfe. Beide submissiv = keiner übernimmt Führung.' },
+                            { title: 'Bewusste Kommunikationsregeln wichtig', desc: 'Klare Absprachen nötig, wer wann welche Rolle übernimmt.' },
+                            { title: 'Klare Aufgabenteilung empfohlen', desc: 'Definierte Verantwortungsbereiche reduzieren Konflikte.' }
+                        ];
                     }
                 }
             },
@@ -12993,11 +13041,23 @@
                 },
                 getMeaning: (score) => {
                     if (score === 100) {
-                        return ['Vollständige körperliche Kompatibilität', 'Keine Barrieren für Anziehung', 'Basis für romantische Beziehung vorhanden'];
+                        return [
+                            { title: 'Vollständige körperliche Kompatibilität', desc: 'Die sexuellen Orientierungen beider passen ideal zusammen.' },
+                            { title: 'Keine Barrieren für Anziehung', desc: 'Beide können sich potenziell zueinander hingezogen fühlen.' },
+                            { title: 'Basis für romantische Beziehung vorhanden', desc: 'Körperliche Anziehung kann Grundlage für mehr sein.' }
+                        ];
                     } else if (score >= 50) {
-                        return ['Mögliche körperliche Kompatibilität', 'Anziehung kann entstehen', 'Hängt von individuellen Präferenzen ab'];
+                        return [
+                            { title: 'Mögliche körperliche Kompatibilität', desc: 'Unter bestimmten Umständen ist Anziehung möglich.' },
+                            { title: 'Anziehung kann entstehen', desc: 'Nicht automatisch, aber nicht ausgeschlossen.' },
+                            { title: 'Hängt von individuellen Präferenzen ab', desc: 'Persönliche Neigungen spielen größere Rolle.' }
+                        ];
                     } else {
-                        return ['Keine körperliche Kompatibilität', 'Romantische Beziehung nicht möglich', 'Freundschaft möglich'];
+                        return [
+                            { title: 'Keine körperliche Kompatibilität', desc: 'Die Orientierungen schließen gegenseitige Anziehung aus.' },
+                            { title: 'Romantische Beziehung nicht möglich', desc: 'Keine Basis für eine intime Partnerschaft.' },
+                            { title: 'Freundschaft möglich', desc: 'Eine platonische Verbindung bleibt eine Option.' }
+                        ];
                     }
                 }
             },
@@ -13029,11 +13089,23 @@
                 },
                 getMeaning: (score) => {
                     if (score === 100) {
-                        return ['Ideale Geschlechterkonstellation', 'Maximale Anziehungskraft möglich', 'Keine gender-bezogenen Barrieren'];
+                        return [
+                            { title: 'Ideale Geschlechterkonstellation', desc: 'Die Geschlechter-Kombination passt perfekt zu beiden Orientierungen.' },
+                            { title: 'Maximale Anziehungskraft möglich', desc: 'Gender-Chemie kann voll entfaltet werden.' },
+                            { title: 'Keine gender-bezogenen Barrieren', desc: 'Die Geschlechter bilden keine Hürde für Anziehung.' }
+                        ];
                     } else if (score >= 50) {
-                        return ['Akzeptable Geschlechterkonstellation', 'Anziehung möglich', 'Individuelle Präferenzen entscheidend'];
+                        return [
+                            { title: 'Akzeptable Geschlechterkonstellation', desc: 'Nicht optimal, aber funktional für Anziehung.' },
+                            { title: 'Anziehung möglich', desc: 'Kann entstehen, ist aber nicht garantiert.' },
+                            { title: 'Individuelle Präferenzen entscheidend', desc: 'Persönliche Vorlieben bestimmen den Ausgang.' }
+                        ];
                     } else {
-                        return ['Inkompatible Geschlechterkonstellation', 'Anziehung unwahrscheinlich', 'Orientierung passt nicht'];
+                        return [
+                            { title: 'Inkompatible Geschlechterkonstellation', desc: 'Die Geschlechter-Kombination passt nicht zu den Orientierungen.' },
+                            { title: 'Anziehung unwahrscheinlich', desc: 'Körperliche Chemie wird kaum entstehen.' },
+                            { title: 'Orientierung passt nicht', desc: 'Die Präferenzen zeigen in andere Richtungen.' }
+                        ];
                     }
                 }
             }
@@ -13066,12 +13138,35 @@
             document.getElementById('factorModalTitle').textContent = factor.title;
             document.getElementById('factorModalSubtitle').textContent = factor.subtitle;
 
-            // Show combination code for archetyp factor
+            // Show combination code for archetyp and dominanz factors
             const comboCodeEl = document.getElementById('factorModalComboCode');
             if (factorType === 'archetyp' && ich && partner) {
                 const comboCode = `${ich}_${partner}`;
                 comboCodeEl.textContent = `Code: ${comboCode}`;
                 comboCodeEl.style.display = 'inline-block';
+            } else if (factorType === 'dominanz') {
+                // Get dominanz selections for combo code
+                const ichDom = dimensions.ich.dominanz;
+                const partnerDom = dimensions.partner.dominanz;
+                const domAbbrev = { 'dominant': 'Dom', 'submissiv': 'Sub', 'switch': 'Swi', 'ausgeglichen': 'Aus' };
+
+                const getSelectedDom = (domObj) => {
+                    if (!domObj) return null;
+                    for (const [type, status] of Object.entries(domObj)) {
+                        if (status) return domAbbrev[type] || type;
+                    }
+                    return null;
+                };
+
+                const ichDomCode = getSelectedDom(ichDom);
+                const partnerDomCode = getSelectedDom(partnerDom);
+
+                if (ichDomCode && partnerDomCode) {
+                    comboCodeEl.textContent = `Code: ${ichDomCode}_${partnerDomCode}`;
+                    comboCodeEl.style.display = 'inline-block';
+                } else {
+                    comboCodeEl.style.display = 'none';
+                }
             } else {
                 comboCodeEl.style.display = 'none';
             }
@@ -13083,7 +13178,12 @@
             meaningList.innerHTML = '';
             factor.getMeaning(score).forEach(item => {
                 const li = document.createElement('li');
-                li.textContent = item;
+                // Support both old (string) and new (object with title+desc) formats
+                if (typeof item === 'object' && item.title) {
+                    li.innerHTML = `<strong>${item.title}</strong>${item.desc ? ` – ${item.desc}` : ''}`;
+                } else {
+                    li.textContent = item;
+                }
                 meaningList.appendChild(li);
             });
 
