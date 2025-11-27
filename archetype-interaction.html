@@ -4228,65 +4228,6 @@
             align-items: center;
         }
 
-        /* Expandable Sections */
-        .expandable-sections {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-
-        .expand-btn {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            width: 100%;
-            padding: 12px 16px;
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            color: var(--text-secondary);
-            font-size: var(--font-sm);
-            cursor: pointer;
-            transition: all 0.2s ease;
-        }
-
-        .expand-btn:hover {
-            border-color: var(--primary);
-            color: var(--text-primary);
-        }
-
-        .expand-btn.active {
-            border-color: var(--primary);
-            background: rgba(69, 123, 157, 0.1);
-        }
-
-        .expand-icon {
-            transition: transform 0.3s ease;
-        }
-
-        .expand-btn.active .expand-icon {
-            transform: rotate(180deg);
-        }
-
-        .expand-content {
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.3s ease;
-        }
-
-        .expand-content.active {
-            max-height: 2000px;
-        }
-
-        .expand-content-inner {
-            padding: 15px;
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            border-top: none;
-            border-radius: 0 0 12px 12px;
-            margin-top: -12px;
-        }
-
         /* Warnings in new layout */
         .warning-box {
             padding: 12px 15px;
@@ -4869,11 +4810,6 @@
             }
 
             .page-indicator {
-                display: none !important;
-            }
-
-            /* Hide expandable sections on desktop - use modal instead */
-            .expandable-sections {
                 display: none !important;
             }
         }
@@ -5688,32 +5624,6 @@
             <div class="quality-quote" id="desktopQualityQuote">
                 <p>"Diese Beziehung zeigt eine Balance zwischen statischen Mustern (Archetypen) und dynamischem Potenzial."</p>
             </div>
-        </div>
-
-        <!-- Expandable Sections -->
-        <div class="expandable-sections">
-            <div class="expand-section">
-                <button class="expand-btn" onclick="toggleExpandSection('proContraSection')">
-                    <span>Pro & Contra – Qualitätsfaktoren</span>
-                    <span class="expand-icon">▼</span>
-                </button>
-                <div class="expand-content" id="proContraSection">
-                    <div class="expand-content-inner">
-                        <div class="pro-contra-grid">
-                            <div class="mini-list">
-                                <div class="mini-list-title pro">✓ Was funktioniert</div>
-                                <ul id="expandProList"></ul>
-                            </div>
-                            <div class="mini-list">
-                                <div class="mini-list-title contra">✗ Herausforderungen</div>
-                                <ul id="expandContraList"></ul>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- A-F Kategorien entfernt - neues 4-Faktoren-Modell verwendet stattdessen -->
         </div>
     </div>
 
@@ -11841,13 +11751,6 @@
         // NEW: Side-by-Side Comparison Functions
         // ========================================
 
-        function toggleExpandSection(sectionId) {
-            const content = document.getElementById(sectionId);
-            const btn = content.previousElementSibling;
-            content.classList.toggle('active');
-            btn.classList.toggle('active');
-        }
-
         // Navigate through archetypes with forward/backward buttons
         function navigateArchetype(person, direction) {
             const selectId = person === 'ich' ? 'ichSelect' : 'partnerSelect';
@@ -12048,12 +11951,6 @@
                 const desktopScoreCircle = document.getElementById('desktopScoreCircle');
                 if (desktopScoreCircle) desktopScoreCircle.style.background = 'linear-gradient(135deg, var(--text-muted), #666)';
 
-                // Clear sections with placeholder message
-                const proList = document.getElementById('expandProList');
-                const contraList = document.getElementById('expandContraList');
-                if (proList) proList.innerHTML = '<li style="color: var(--text-muted); font-style: italic;">Bitte alle Dimensionen auswählen</li>';
-                if (contraList) contraList.innerHTML = '<li style="color: var(--text-muted); font-style: italic;">Bitte alle Dimensionen auswählen</li>';
-
                 const pathosLogosContent = document.getElementById('pathosLogosContent');
                 if (pathosLogosContent) pathosLogosContent.innerHTML = '<p style="color: var(--text-muted); font-style: italic; text-align: center; padding: 20px;">Bitte alle Dimensionen auswählen, um die Pathos/Logos-Analyse zu sehen.</p>';
 
@@ -12152,9 +12049,6 @@
             const interactionKey = `${currentArchetype}_${selectedPartner}`;
             const interaction = data.interactions?.[interactionKey] || {};
             drawRadarChart(interaction.scores || {}, partnerArch?.color || '#457B9D');
-
-            // Update Pro/Contra
-            updateExpandableProContra();
 
             // Update Pathos/Logos
             updateExpandablePathosLogos();
@@ -12605,36 +12499,6 @@
             }
 
             return `Eure Archetypen haben unterschiedliche Schwerpunkte in dieser Dimension. Offene Gespräche darüber, was euch beiden wichtig ist, helfen, gemeinsame Lösungen zu finden.`;
-        }
-
-        function updateExpandableProContra() {
-            if (!data) return;
-
-            // Generiere dynamische Pro/Contra aus Micro-Statements
-            const dynamicProContra = generateDynamicProContra(
-                currentArchetype,
-                selectedPartner,
-                personDimensions.ich,
-                personDimensions.partner
-            );
-
-            const proList = document.getElementById('expandProList');
-            const contraList = document.getElementById('expandContraList');
-
-            if (proList) {
-                if (dynamicProContra.pro && dynamicProContra.pro.length > 0) {
-                    proList.innerHTML = dynamicProContra.pro.slice(0, 5).map(s => `<li>${s}</li>`).join('');
-                } else {
-                    proList.innerHTML = '<li style="color: var(--text-muted);">Keine Daten verfügbar</li>';
-                }
-            }
-            if (contraList) {
-                if (dynamicProContra.contra && dynamicProContra.contra.length > 0) {
-                    contraList.innerHTML = dynamicProContra.contra.slice(0, 5).map(c => `<li>${c}</li>`).join('');
-                } else {
-                    contraList.innerHTML = '<li style="color: var(--text-muted);">Keine Daten verfügbar</li>';
-                }
-            }
         }
 
         // NEU: Generiere dynamische Pro/Contra aus Micro-Statements
@@ -13903,15 +13767,24 @@
                 scoreDisplay.style.color = 'var(--danger)';
             }
 
-            // Copy Pro/Contra from the expandable section
-            const expandProList = document.getElementById('expandProList');
-            const expandContraList = document.getElementById('expandContraList');
+            // Generate Pro/Contra directly
+            const dynamicProContra = generateDynamicProContra(
+                currentArchetype,
+                selectedPartner,
+                personDimensions.ich,
+                personDimensions.partner
+            );
 
-            if (expandProList) {
-                proList.innerHTML = expandProList.innerHTML;
+            if (dynamicProContra.pro && dynamicProContra.pro.length > 0) {
+                proList.innerHTML = dynamicProContra.pro.slice(0, 5).map(s => `<li>${s}</li>`).join('');
+            } else {
+                proList.innerHTML = '<li style="color: var(--text-muted);">Keine Daten verfügbar</li>';
             }
-            if (expandContraList) {
-                contraList.innerHTML = expandContraList.innerHTML;
+
+            if (dynamicProContra.contra && dynamicProContra.contra.length > 0) {
+                contraList.innerHTML = dynamicProContra.contra.slice(0, 5).map(c => `<li>${c}</li>`).join('');
+            } else {
+                contraList.innerHTML = '<li style="color: var(--text-muted);">Keine Daten verfügbar</li>';
             }
         }
 
