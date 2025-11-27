@@ -1,6 +1,6 @@
 # Tiage-Beziehungsmodell
 
-**Version 1.3.0** | [Changelog](CHANGELOG.md)
+**Version 1.4.0** | [Changelog](CHANGELOG.md)
 
 Eine eigenständige Synthese zur Analyse von Beziehungskompatibilität, entwickelt durch Tiage's Online-Recherche und persönliche Reflexion.
 
@@ -71,10 +71,20 @@ Oder besuche: [GitHub Pages](https://stickysmart.github.io/Tiage_Beziehungsmodel
 
 ```
 Tiage_Beziehungsmodel/
-├── archetype-interaction.html  # Haupt-Web-App
-├── beziehungsmodell.md         # Modell-Dokumentation
-├── analyse.md                  # Analyse-Dokumentation
-└── README.md                   # Diese Datei
+├── archetype-interaction.html      # Haupt-Web-App
+├── archetype-matrix.json           # 6x6 Kompatibilitäts-Matrix
+├── beziehungsmodell.md             # Modell-Dokumentation
+├── analyse.md                      # Analyse-Dokumentation
+├── ARCHETYPE-MATRIX-README.md      # Matrix-Dokumentation
+├── CHANGELOG.md                    # Versionshistorie
+├── datenschutz.html                # Datenschutzerklärung
+├── nutzungsbedingungen.html        # Nutzungsbedingungen
+├── profiles/                       # 216 psychologische Profile
+│   └── research-sources.md         # Wissenschaftliche Quellen
+├── statements/                     # Philosophische Statements
+├── templates/                      # Design-Vorlagen
+│   └── README.md                   # Template-Dokumentation
+└── README.md                       # Diese Datei
 ```
 
 ## Autor
