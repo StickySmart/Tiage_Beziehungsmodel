@@ -11025,14 +11025,11 @@
             const ori1 = person1.orientierung;
             const ori2 = person2.orientierung;
 
-            // Check for missing values
-            if (!g1 || !g2) {
-                return {
-                    result: 'unvollständig',
-                    reason: 'Dimensionen unvollständig',
-                    explanation: 'Bitte wähle das Geschlecht für beide Personen aus.'
-                };
-            }
+            // Collect all missing items
+            const missingItems = [];
+
+            if (!g1) missingItems.push('Ich: Geschlecht');
+            if (!g2) missingItems.push('Partner: Geschlecht');
 
             // Handle multi-select orientierung
             const oriList1 = [];
@@ -11056,12 +11053,17 @@
                 oriList2.push({ type: ori2, status: person2.orientierungStatus || 'gelebt' });
             }
 
-            // Check if any orientierung is selected
-            if (oriList1.length === 0 || oriList2.length === 0) {
+            // Check if orientierung is missing
+            if (oriList1.length === 0) missingItems.push('Ich: Orientierung');
+            if (oriList2.length === 0) missingItems.push('Partner: Orientierung');
+
+            // Return incomplete if any items are missing
+            if (missingItems.length > 0) {
                 return {
                     result: 'unvollständig',
                     reason: 'Dimensionen unvollständig',
-                    explanation: 'Bitte wähle mindestens eine Orientierung für beide Personen aus.'
+                    explanation: 'Es fehlt noch: ' + missingItems.join(', '),
+                    missingItems: missingItems
                 };
             }
 
@@ -12011,7 +12013,16 @@
             warningsContainer.innerHTML = '';
 
             if (pathosCheck.result === 'unvollständig') {
-                warningsContainer.innerHTML = `<div class="warning-box incomplete-warning">⚠️ ${pathosCheck.explanation}</div>`;
+                let warningHTML = '<div class="warning-box incomplete-warning">⚠️ Es fehlt noch:';
+                if (pathosCheck.missingItems && pathosCheck.missingItems.length > 0) {
+                    warningHTML += '<ul style="margin: 5px 0 0 20px; padding: 0;">';
+                    pathosCheck.missingItems.forEach(item => {
+                        warningHTML += `<li>${item}</li>`;
+                    });
+                    warningHTML += '</ul>';
+                }
+                warningHTML += '</div>';
+                warningsContainer.innerHTML = warningHTML;
             } else if (pathosCheck.result === 'unmöglich') {
                 warningsContainer.innerHTML = `<div class="warning-box pathos-warning">🚫 Keine emotionale/körperliche Anziehung: ${pathosCheck.reason}</div>`;
             } else if (pathosCheck.result === 'unsicher') {
@@ -12840,57 +12851,92 @@
         let mobileTouchStartX = 0;
         let mobileTouchEndX = 0;
 
-        function validateDimensionsComplete() {
+        function getMissingDimensions() {
             // Check if we're in mobile mode
             const isMobile = window.innerWidth <= 768;
             const dimensions = isMobile ? mobilePersonDimensions : personDimensions;
+            const missing = [];
 
-            // Check if all required dimensions are selected for both ICH and PARTNER
-            const ichComplete =
-                dimensions.ich.geschlecht !== null &&
-                dimensions.ich.dominanz !== null &&
-                dimensions.ich.orientierung !== null &&
-                dimensions.ich.orientierungStatus !== null;
+            // Check ICH dimensions
+            if (dimensions.ich.geschlecht === null) {
+                missing.push('Ich: Geschlecht');
+            }
+            if (dimensions.ich.dominanz === null) {
+                missing.push('Ich: Dominanz');
+            }
+            if (dimensions.ich.orientierung === null) {
+                missing.push('Ich: Orientierung');
+            }
+            if (dimensions.ich.orientierungStatus === null) {
+                missing.push('Ich: Orientierung-Status');
+            }
 
-            const partnerComplete =
-                dimensions.partner.geschlecht !== null &&
-                dimensions.partner.dominanz !== null &&
-                dimensions.partner.orientierung !== null &&
-                dimensions.partner.orientierungStatus !== null;
+            // Check PARTNER dimensions
+            if (dimensions.partner.geschlecht === null) {
+                missing.push('Partner: Geschlecht');
+            }
+            if (dimensions.partner.dominanz === null) {
+                missing.push('Partner: Dominanz');
+            }
+            if (dimensions.partner.orientierung === null) {
+                missing.push('Partner: Orientierung');
+            }
+            if (dimensions.partner.orientierungStatus === null) {
+                missing.push('Partner: Orientierung-Status');
+            }
 
-            return ichComplete && partnerComplete;
+            return missing;
+        }
+
+        function validateDimensionsComplete() {
+            return getMissingDimensions().length === 0;
         }
 
         function showValidationWarning() {
             // Find or create warning element
             let warning = document.getElementById('dimensionWarning');
-            if (!warning) {
-                warning = document.createElement('div');
-                warning.id = 'dimensionWarning';
-                warning.style.cssText = `
-                    position: fixed;
-                    top: 20px;
-                    left: 50%;
-                    transform: translateX(-50%);
-                    background: rgba(231, 76, 60, 0.95);
-                    color: white;
-                    padding: 15px 25px;
-                    border-radius: 10px;
-                    font-size: 14px;
-                    font-weight: 600;
-                    z-index: 9999;
-                    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-                    animation: slideDown 0.3s ease;
-                `;
-                warning.textContent = '⚠️ Bitte fülle alle Dimensionen aus, bevor du fortsetzt!';
-                document.body.appendChild(warning);
-
-                // Auto-remove after 3 seconds
-                setTimeout(() => {
-                    warning.style.animation = 'slideUp 0.3s ease';
-                    setTimeout(() => warning.remove(), 300);
-                }, 3000);
+            if (warning) {
+                warning.remove();
             }
+
+            const missingItems = getMissingDimensions();
+
+            warning = document.createElement('div');
+            warning.id = 'dimensionWarning';
+            warning.style.cssText = `
+                position: fixed;
+                top: 20px;
+                left: 50%;
+                transform: translateX(-50%);
+                background: rgba(231, 76, 60, 0.95);
+                color: white;
+                padding: 15px 25px;
+                border-radius: 10px;
+                font-size: 14px;
+                font-weight: 600;
+                z-index: 9999;
+                box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+                animation: slideDown 0.3s ease;
+                max-width: 90%;
+                text-align: left;
+            `;
+
+            // Build message with missing items
+            let messageHTML = '<div style="margin-bottom: 8px;">⚠️ Es fehlt noch:</div>';
+            messageHTML += '<ul style="margin: 0; padding-left: 20px; font-weight: normal; font-size: 13px;">';
+            missingItems.forEach(item => {
+                messageHTML += `<li>${item}</li>`;
+            });
+            messageHTML += '</ul>';
+
+            warning.innerHTML = messageHTML;
+            document.body.appendChild(warning);
+
+            // Auto-remove after 4 seconds (slightly longer for reading)
+            setTimeout(() => {
+                warning.style.animation = 'slideUp 0.3s ease';
+                setTimeout(() => warning.remove(), 300);
+            }, 4000);
         }
 
         function mobileGoToPage(pageNumber, skipPushState = false) {
@@ -13167,7 +13213,24 @@
             const quoteElement = document.getElementById('mobileQualityQuote');
             if (quoteElement) {
                 let quoteText = '';
-                if (qualityResult.blocked) {
+                if (qualityResult.incomplete) {
+                    // Build missing items list for mobile
+                    const missingItems = [];
+                    if (!g1) missingItems.push('Ich: Geschlecht');
+                    if (!g2) missingItems.push('Partner: Geschlecht');
+                    if (!hasDom1) missingItems.push('Ich: Dominanz');
+                    if (!hasDom2) missingItems.push('Partner: Dominanz');
+                    if (!hasOri1) missingItems.push('Ich: Orientierung');
+                    if (!hasOri2) missingItems.push('Partner: Orientierung');
+
+                    let missingHTML = '<div style="text-align: left;"><strong>Es fehlt noch:</strong><ul style="margin: 5px 0 0 20px; padding: 0;">';
+                    missingItems.forEach(item => {
+                        missingHTML += `<li>${item}</li>`;
+                    });
+                    missingHTML += '</ul></div>';
+                    quoteElement.innerHTML = missingHTML;
+                    return; // Early return for incomplete state
+                } else if (qualityResult.blocked) {
                     quoteText = '"Keine Basis für Resonanz vorhanden – die körperliche oder emotionale Chemie fehlt grundlegend."';
                 } else if (qualityResult.score >= 80) {
                     quoteText = `"Diese Beziehung zeigt eine Qualität von ${qualityResult.score}% – eine hohe Resonanz zwischen zwei Menschen, deren Muster sich ergänzen und verstärken."`;
