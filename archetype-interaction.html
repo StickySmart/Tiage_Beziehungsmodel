@@ -4085,6 +4085,26 @@
             font-weight: 600;
         }
 
+        .result-nav-btn {
+            background: transparent;
+            border: none;
+            color: var(--text-muted);
+            padding: 2px 6px;
+            cursor: pointer;
+            font-size: 10px;
+            opacity: 0.6;
+            transition: all 0.2s ease;
+        }
+
+        .result-nav-btn:hover {
+            opacity: 1;
+            color: var(--primary);
+        }
+
+        .result-nav-btn:active {
+            transform: scale(0.9);
+        }
+
         .result-percentage {
             font-size: 1.5rem;
             font-weight: 700;
@@ -5410,9 +5430,13 @@
             <div id="warningsContainer"></div>
             <div class="result-header">
                 <div class="result-title">
+                    <button class="result-nav-btn" onclick="navigateArchetype('ich', -1)" title="Vorheriger ICH-Archetyp">&#9664;</button>
                     <span class="type-name" id="resultIchType">Single</span>
+                    <button class="result-nav-btn" onclick="navigateArchetype('ich', 1)" title="Nächster ICH-Archetyp">&#9654;</button>
                     <span> × </span>
+                    <button class="result-nav-btn" onclick="navigateArchetype('partner', -1)" title="Vorheriger Partner-Archetyp">&#9664;</button>
                     <span class="type-name" id="resultPartnerType">Duo</span>
+                    <button class="result-nav-btn" onclick="navigateArchetype('partner', 1)" title="Nächster Partner-Archetyp">&#9654;</button>
                     <span style="font-size: var(--font-xs); color: var(--text-muted); margin-left: 8px;">Qualitätsindex</span>
                 </div>
                 <div class="result-percentage" id="resultPercentage">0%</div>
