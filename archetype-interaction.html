@@ -10594,6 +10594,20 @@
             const currentStatus = personDimensions[person].orientierung[orientierungType];
             const newStatus = (currentStatus === status) ? null : status;
 
+            // WICHTIG: Nur ein "Gelebt" pro Kategorie erlaubt
+            // Wenn neuer Status 'gelebt' ist, alle anderen 'gelebt' entfernen
+            if (newStatus === 'gelebt') {
+                const orientierungTypes = ['heterosexuell', 'homosexuell', 'bisexuell'];
+                orientierungTypes.forEach(type => {
+                    if (type !== orientierungType && personDimensions[person].orientierung[type] === 'gelebt') {
+                        personDimensions[person].orientierung[type] = null;
+                        if (typeof mobilePersonDimensions !== 'undefined') {
+                            mobilePersonDimensions[person].orientierung[type] = null;
+                        }
+                    }
+                });
+            }
+
             personDimensions[person].orientierung[orientierungType] = newStatus;
             if (typeof mobilePersonDimensions !== 'undefined') {
                 mobilePersonDimensions[person].orientierung[orientierungType] = newStatus;
@@ -10665,6 +10679,20 @@
             const currentStatus = personDimensions[person].orientierung[orientierungType];
             const newStatus = (currentStatus === status) ? null : status;
 
+            // WICHTIG: Nur ein "Gelebt" pro Kategorie erlaubt
+            // Wenn neuer Status 'gelebt' ist, alle anderen 'gelebt' entfernen
+            if (newStatus === 'gelebt') {
+                const orientierungTypes = ['heterosexuell', 'homosexuell', 'bisexuell'];
+                orientierungTypes.forEach(type => {
+                    if (type !== orientierungType && personDimensions[person].orientierung[type] === 'gelebt') {
+                        personDimensions[person].orientierung[type] = null;
+                        if (typeof mobilePersonDimensions !== 'undefined') {
+                            mobilePersonDimensions[person].orientierung[type] = null;
+                        }
+                    }
+                });
+            }
+
             if (typeof mobilePersonDimensions !== 'undefined') {
                 mobilePersonDimensions[person].orientierung[orientierungType] = newStatus;
             }
@@ -10735,6 +10763,20 @@
             // Toggle logic: if same status is clicked, deselect it
             const currentStatus = personDimensions[person].orientierung[orientierungType];
             const newStatus = (currentStatus === status) ? null : status;
+
+            // WICHTIG: Nur ein "Gelebt" pro Kategorie erlaubt
+            // Wenn neuer Status 'gelebt' ist, alle anderen 'gelebt' entfernen
+            if (newStatus === 'gelebt') {
+                const orientierungTypes = ['heterosexuell', 'homosexuell', 'bisexuell'];
+                orientierungTypes.forEach(type => {
+                    if (type !== orientierungType && personDimensions[person].orientierung[type] === 'gelebt') {
+                        personDimensions[person].orientierung[type] = null;
+                        if (typeof mobilePersonDimensions !== 'undefined') {
+                            mobilePersonDimensions[person].orientierung[type] = null;
+                        }
+                    }
+                });
+            }
 
             personDimensions[person].orientierung[orientierungType] = newStatus;
             if (typeof mobilePersonDimensions !== 'undefined') {
