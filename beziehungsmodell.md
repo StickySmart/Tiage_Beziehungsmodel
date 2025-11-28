@@ -17,6 +17,26 @@ Das Modell verbindet zwei Traditionen durch Tiage's Online-Recherche und Reflexi
 - Meditation als Weg zur Klarheit
 - Loslassen (Let Go) ermöglicht echte Verbindung
 
+### TIAGE Resonanz-Theorie - Neurowissenschaftliche Ebene
+
+Die philosophischen Konzepte von Pirsig und OSHO werden durch neurowissenschaftliche Forschung untermauert:
+
+| Konzept | Wissenschaftler | Bedeutung für Beziehungen |
+|---------|-----------------|---------------------------|
+| **Neuronale Synchronisation** | Buzsáki, Singer | "Auf einer Wellenlänge" = Gamma-Kohärenz im Gespräch |
+| **Predictive Coding** | Friston | Kompatibilität = niedrige "Vorhersage-Fehler" |
+| **Salienz-Regulation** | Kapur | Flow vs. Hyper-Synchronität (Psychose) |
+| **Psychoakustik** | Levitin | Musik als externes Regulierungssystem |
+| **Sensory Sensitivity** | Aron | Hochsensitivität + Reizlast → Zustandsschwankungen |
+
+**Kernthesen:**
+- Resonanz = Synchronität zwischen inneren neuronalen Rhythmen und äußeren Signalen
+- Flow = optimale Synchronität
+- THC = Verstärker von Mustererkennung, nicht Auslöser
+- Zufall = unerkannte Ordnung
+
+> *Ausführliche Dokumentation: `/profiles/research-sources.md` (Abschnitt 9)*
+
 ---
 
 ## Kernkonzept: Logos vs. Pathos (40:60)
@@ -420,9 +440,10 @@ Grundannahme: 80% der Population hat diese Werte (zentraler Bereich der Glockenk
 ```
                     ┌─────────────────────────────────────────────────────────────┐
                     │                                                             │
-                    │   Q = (A × wₐ) + (O × wₒ) + (D × wᵈ) + (G × wᵍ)             │
+                    │   Q = [(A × wₐ) + (O × wₒ) + (D × wᵈ) + (G × wᵍ)] × R       │
                     │                                                             │
                     │   wobei: wₐ + wₒ + wᵈ + wᵍ = 1.00                           │
+                    │          R = Resonanz-Koeffizient (0.9 – 1.1)               │
                     │                                                             │
                     └─────────────────────────────────────────────────────────────┘
 ```
@@ -436,6 +457,126 @@ Grundannahme: 80% der Population hat diese Werte (zentraler Bereich der Glockenk
 | **O** | Orientierungs-Score | 0 – 100% | Kompatibilität der sexuellen Orientierung |
 | **D** | Dominanz-Score | 0 – 100% | Harmonie der Dominanz-Dynamik |
 | **G** | Geschlechts-Score | 0 – 100% | Gender-Chemie und Anziehung |
+| **R** | Resonanz-Koeffizient | 0.9 – 1.1 | Meta-Dimension: Wie gut schwingen Logos & Pathos zusammen? |
+
+### Resonanz als Meta-Dimension
+
+Resonanz ist kein fünfter Faktor, sondern beschreibt die **Qualität des Zusammenspiels** von Logos und Pathos:
+
+```
+┌─────────────────────────────────────────────────────────────────────────────────┐
+│                        RESONANZ ALS META-DIMENSION                              │
+│                                                                                 │
+│   Logos (Verstand)  ←────── RESONANZ ──────→  Pathos (Gefühl)                   │
+│                              │                                                  │
+│                              ▼                                                  │
+│                     Wie gut "schwingen"                                         │
+│                     beide zusammen?                                             │
+│                                                                                 │
+│   R = 0.9  →  Dissonanz: Logos und Pathos widersprechen sich                    │
+│   R = 1.0  →  Neutral: Standardberechnung ohne Resonanz-Effekt                  │
+│   R = 1.1  →  Harmonie: Logos und Pathos verstärken sich gegenseitig            │
+│                                                                                 │
+└─────────────────────────────────────────────────────────────────────────────────┘
+```
+
+**Neurowissenschaftliche Begründung:**
+- Resonanz = Synchronität zwischen kognitiven (Logos) und emotionalen (Pathos) Prozessen
+- Basiert auf Friston's Predictive Coding: Niedrige "Vorhersage-Fehler" = hohe Resonanz
+- Entspricht Buzsáki/Singer's Gamma-Kohärenz: Neuronale Synchronisation über Hirnareale
+
+### Berechnung des Resonanz-Koeffizienten (R)
+
+Der Resonanz-Koeffizient R wird aus **zwei Komponenten** berechnet:
+
+1. **Profil-Match (M):** Ähnlichkeit der 30 Profil-Attribute
+2. **Logos-Pathos-Balance (B):** Wie harmonisch sind Kopf und Herz?
+
+```
+┌─────────────────────────────────────────────────────────────────────────────────┐
+│                    RESONANZ-BERECHNUNG: ZWEI KOMPONENTEN                        │
+│                                                                                 │
+│   ═══════════════════════════════════════════════════════════════════════════   │
+│   KOMPONENTE 1: PROFIL-MATCH (M)                                                │
+│   ═══════════════════════════════════════════════════════════════════════════   │
+│                                                                                 │
+│   Jedes Profil hat 30 Attribute in 3 Kategorien:                                │
+│   • D: Werte & Lebensplanung (10 Attribute)                                     │
+│   • E: Kommunikation & Konflikt (10 Attribute)                                  │
+│   • F: Soziale Kompatibilität (10 Attribute)                                    │
+│                                                                                 │
+│         Übereinstimmende Attribute                                              │
+│   M = ─────────────────────────────── × 100    (Match-Prozent: 0-100%)          │
+│                    30                                                           │
+│                                                                                 │
+│   ═══════════════════════════════════════════════════════════════════════════   │
+│   KOMPONENTE 2: LOGOS-PATHOS-BALANCE (B)                                        │
+│   ═══════════════════════════════════════════════════════════════════════════   │
+│                                                                                 │
+│   Logos = Archetyp-Score (A)                                                    │
+│   Pathos = Durchschnitt von O, D, G = (O + D + G) / 3                           │
+│                                                                                 │
+│   Differenz = |Logos - Pathos|                                                  │
+│                                                                                 │
+│   B = (100 - Differenz) / 100              (Balance: 0.0 - 1.0)                 │
+│                                                                                 │
+│   → Differenz = 0   (perfekte Balance)    →  B = 1.0                            │
+│   → Differenz = 50  (mittlere Spannung)   →  B = 0.5                            │
+│   → Differenz = 100 (volle Dissonanz)     →  B = 0.0                            │
+│                                                                                 │
+│   ═══════════════════════════════════════════════════════════════════════════   │
+│   GESAMTFORMEL                                                                  │
+│   ═══════════════════════════════════════════════════════════════════════════   │
+│                                                                                 │
+│   R = 0.9 + [(M/100 × 0.5) + (B × 0.5)] × 0.2                                   │
+│                                                                                 │
+│   → Profil-Match und Balance tragen je 50% zur Resonanz bei                     │
+│   → Ergebnis: R zwischen 0.9 und 1.1                                            │
+│                                                                                 │
+└─────────────────────────────────────────────────────────────────────────────────┘
+```
+
+**Beispiel-Berechnung:**
+
+```
+┌─────────────────────────────────────────────────────────────────────────────────┐
+│   BEISPIEL: Zwei Profile vergleichen                                            │
+│                                                                                 │
+│   Scores:  A = 75%,  O = 100%,  D = 100%,  G = 100%                             │
+│                                                                                 │
+│   ─────────────────────────────────────────────────────────────────────────     │
+│   SCHRITT 1: Profil-Match                                                       │
+│   Übereinstimmungen: 18 von 30 Attributen = 60%                                 │
+│   M = 60%                                                                       │
+│                                                                                 │
+│   ─────────────────────────────────────────────────────────────────────────     │
+│   SCHRITT 2: Logos-Pathos-Balance                                               │
+│   Logos = A = 75%                                                               │
+│   Pathos = (100 + 100 + 100) / 3 = 100%                                         │
+│   Differenz = |75 - 100| = 25                                                   │
+│   B = (100 - 25) / 100 = 0.75                                                   │
+│                                                                                 │
+│   ─────────────────────────────────────────────────────────────────────────     │
+│   SCHRITT 3: Gesamtformel                                                       │
+│   R = 0.9 + [(0.60 × 0.5) + (0.75 × 0.5)] × 0.2                                 │
+│   R = 0.9 + [0.30 + 0.375] × 0.2                                                │
+│   R = 0.9 + 0.675 × 0.2                                                         │
+│   R = 0.9 + 0.135                                                               │
+│   R = 1.035  ≈  1.04                                                            │
+│                                                                                 │
+│   → Leichte Harmonie: Logos und Pathos schwingen gut zusammen                   │
+└─────────────────────────────────────────────────────────────────────────────────┘
+```
+
+**Wissenschaftliche Begründung:**
+
+| Komponente | Wissenschaft | Bedeutung |
+|------------|--------------|-----------|
+| **Profil-Match (M)** | Friston (Predictive Coding) | Ähnliche Profile = niedrige "prediction error" |
+| **Balance (B)** | Pirsig (MOQ) | Harmonie zwischen statischer und dynamischer Qualität |
+| **Kombination** | Buzsáki/Singer | Neuronale Kohärenz auf mehreren Ebenen |
+
+**Hinweis:** Bei Attributen mit Confidence-Level < 70% wird die Übereinstimmung mit dem Confidence gewichtet.
 
 ### Gewichtungen nach Pirsig (Logos/Pathos = 40/60)
 
@@ -448,13 +589,21 @@ Grundannahme: 80% der Population hat diese Werte (zentraler Bereich der Glockenk
 
 ---
 
-### Visualisierung: Die Pirsig-Balance
+### Visualisierung: Die Pirsig-Balance mit Resonanz
 
 ```
     ┌─────────────────────────────────────────────────────────────────────────┐
     │                        QUALITÄTSINDEX (Q)                               │
     │                              100%                                       │
     └─────────────────────────────────────────────────────────────────────────┘
+                                     │
+                                     │
+                        ╔═══════════════════════════╗
+                        ║    RESONANZ (× 0.9-1.1)   ║
+                        ║   Meta-Dimension: Wie     ║
+                        ║   gut schwingen Logos     ║
+                        ║   und Pathos zusammen?    ║
+                        ╚═══════════════════════════╝
                                      │
               ┌──────────────────────┴──────────────────────┐
               │                                             │
@@ -478,7 +627,7 @@ Grundannahme: 80% der Population hat diese Werte (zentraler Bereich der Glockenk
     │                     │
     │  → Verstand         │         → Körper       → Gefühl       → Intuition
     │  → Struktur         │         → Anziehung    → Spannung     → Schwingung
-    │  → Regeln           │         → Polarität    → Dynamik      → Resonanz
+    │  → Regeln           │         → Polarität    → Dynamik      → Chemie
     │                     │
     └─────────────────────┘
 
@@ -525,13 +674,18 @@ Grundannahme: 80% der Population hat diese Werte (zentraler Bereich der Glockenk
     ┌────────────────────────────────────────────────────────────────────────────┐
     │                         BERECHNUNG                                         │
     │                                                                            │
-    │   Q = (A × wₐ)    + (O × wₒ)    + (D × wᵈ)    + (G × wᵍ)                   │
+    │   Q_basis = (A × wₐ) + (O × wₒ) + (D × wᵈ) + (G × wᵍ)                      │
     │                                                                            │
-    │   Q = (75 × 0.40) + (100 × 0.25) + (100 × 0.20) + (100 × 0.15)             │
+    │   Q_basis = (75 × 0.40) + (100 × 0.25) + (100 × 0.20) + (100 × 0.15)       │
     │                                                                            │
-    │   Q =    30       +     25       +     20       +     15                   │
+    │   Q_basis =    30       +     25       +     20       +     15  = 90%      │
     │                                                                            │
-    │   Q = 90%                                                                  │
+    │   ┌─────────────────────────────────────────────────────────────────┐      │
+    │   │  RESONANZ-KOEFFIZIENT (R)                                       │      │
+    │   │  Angenommen: R = 1.05 (leichte Harmonie)                        │      │
+    │   └─────────────────────────────────────────────────────────────────┘      │
+    │                                                                            │
+    │   Q_final = Q_basis × R = 90% × 1.05 = 94.5% (gerundet: 95%)               │
     │                                                                            │
     └────────────────────────────────────────────────────────────────────────────┘
                                          │
@@ -540,32 +694,63 @@ Grundannahme: 80% der Population hat diese Werte (zentraler Bereich der Glockenk
     │                           AUSGABE                                          │
     │                                                                            │
     │   ┌─────────────────────────────────────────────────────────────────┐      │
-    │   │  QUALITÄTSINDEX: 90% (Exzellent)                                │      │
+    │   │  QUALITÄTSINDEX: 95% (Exzellent)                                │      │
     │   │                                                                 │      │
     │   │  Aufschlüsselung:                                               │      │
     │   │  ├── Archetyp (Logos):     75% × 0.40 = 30 Punkte               │      │
     │   │  ├── Orientierung (Pathos): 100% × 0.25 = 25 Punkte             │      │
     │   │  ├── Dominanz (Pathos):    100% × 0.20 = 20 Punkte              │      │
-    │   │  └── Geschlecht (Pathos):  100% × 0.15 = 15 Punkte              │      │
-    │   │                                        ─────────────            │      │
-    │   │                                        90 Punkte                │      │
+    │   │  ├── Geschlecht (Pathos):  100% × 0.15 = 15 Punkte              │      │
+    │   │  │                                      ─────────────           │      │
+    │   │  │                                      90 Punkte (Basis)       │      │
+    │   │  │                                                              │      │
+    │   │  └── Resonanz (Meta):      × 1.05 = +5 Punkte                   │      │
+    │   │                                      ─────────────              │      │
+    │   │                                      95 Punkte (Final)          │      │
     │   └─────────────────────────────────────────────────────────────────┘      │
     │                                                                            │
     └────────────────────────────────────────────────────────────────────────────┘
 ```
 
-### K.O.-Kriterium: Orientierung
+### K.O.-Kriterium: Orientierung (mit Resonanz-Override)
 
 ```
     ┌─────────────────────────────────────────────────────────────────────────┐
-    │  WICHTIG: Ohne physische Anziehung gibt es keinen Qualitätsindex        │
+    │  STANDARD: Ohne physische Anziehung gibt es keinen Qualitätsindex       │
     │                                                                         │
     │  WENN O = 0% (z.B. Hetero-Mann + Hetero-Mann)                           │
     │  DANN Q = 0% (unabhängig von allen anderen Faktoren)                    │
     │                                                                         │
     │  Pirsig: "Ohne dynamische Qualität (Pathos) keine Bewegung möglich"     │
     └─────────────────────────────────────────────────────────────────────────┘
+
+    ┌─────────────────────────────────────────────────────────────────────────┐
+    │  ⚡ RESONANZ-OVERRIDE (OSHO-Prinzip)                                     │
+    │                                                                         │
+    │  OSHO: "Orientierung ist Konditionierung, nicht Natur."                 │
+    │  Wenn zwei Menschen wirklich resonieren, fallen alle Labels.            │
+    │                                                                         │
+    │  WENN O = 0% ABER R ≥ 1.05:                                             │
+    │  ─────────────────────────────────────────────────────────────          │
+    │  O_effektiv = (R - 1.0) × 100                                           │
+    │                                                                         │
+    │  Beispiel: R = 1.08                                                     │
+    │  O_effektiv = (1.08 - 1.0) × 100 = 8%                                   │
+    │                                                                         │
+    │  → Statt K.O. gibt es einen kleinen Orientierungs-Score                 │
+    │  → Maximum bei R = 1.1: O_effektiv = 10%                                │
+    │                                                                         │
+    │  ⓘ Im UI wird dies als klickbarer Indikator angezeigt                   │
+    └─────────────────────────────────────────────────────────────────────────┘
 ```
+
+**Philosophische Begründung:**
+
+Nach OSHO ist sexuelle Orientierung gesellschaftliche Konditionierung, nicht die essenzielle Natur des Menschen. Der "natürliche" Zustand wäre jenseits von Labels (daher wird Bisexuell als "am natürlichsten" eingestuft).
+
+Resonanz repräsentiert die tiefere, unkonditionierte Ebene der Verbindung. Wenn R hoch ist (≥ 1.05), bedeutet das: Logos und Pathos schwingen so gut zusammen, dass konditionierte Grenzen durchlässig werden.
+
+**Wichtig:** Dies ist keine Empfehlung, sondern eine philosophische Möglichkeit, die das Modell abbildet.
 
 ---
 
