@@ -6110,75 +6110,55 @@
             <!-- 4-Factor Breakdown with Expandable Content -->
             <div id="desktopFactorBreakdown" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; margin-top: 15px; padding-top: 15px; border-top: 1px solid var(--border);">
                 <!-- Archetyp-Übereinstimmung -->
-                <div class="desktop-factor-item" data-factor="archetyp">
-                    <div class="desktop-factor-header" onclick="toggleDesktopFactor(this.parentElement)">
+                <div class="desktop-factor-item" data-factor="archetyp" onclick="openFactorModal('archetyp', 'desktop')" style="cursor: pointer;">
+                    <div class="desktop-factor-header">
                         <div class="factor-info">
                             <span class="factor-title">Archetyp-Übereinstimmung</span>
                             <span class="factor-subtitle">(Beziehungsphilosophie - Verstand&Logos)</span>
                         </div>
                         <div class="factor-score">
                             <span id="desktopFactorArchetyp">0%</span>
-                            <span class="factor-toggle">▼</span>
+                            <span class="factor-toggle">▶</span>
                         </div>
-                    </div>
-                    <div class="desktop-factor-content">
-                        <div class="factor-explanation" id="desktopFactorArchetypExplanation"></div>
-                        <div class="factor-meaning-title">Was bedeutet das?</div>
-                        <ul class="factor-meaning-list" id="desktopFactorArchetypMeaning"></ul>
                     </div>
                 </div>
                 <!-- Dominanz-Harmonie -->
-                <div class="desktop-factor-item" data-factor="dominanz">
-                    <div class="desktop-factor-header" onclick="toggleDesktopFactor(this.parentElement)">
+                <div class="desktop-factor-item" data-factor="dominanz" onclick="openFactorModal('dominanz', 'desktop')" style="cursor: pointer;">
+                    <div class="desktop-factor-header">
                         <div class="factor-info">
                             <span class="factor-title">Dominanz-Harmonie</span>
                             <span class="factor-subtitle">(Emotionale Dynamik - Gefühl&Pathos)</span>
                         </div>
                         <div class="factor-score">
                             <span id="desktopFactorDominanz">0%</span>
-                            <span class="factor-toggle">▼</span>
+                            <span class="factor-toggle">▶</span>
                         </div>
-                    </div>
-                    <div class="desktop-factor-content">
-                        <div class="factor-explanation" id="desktopFactorDominanzExplanation"></div>
-                        <div class="factor-meaning-title">Was bedeutet das?</div>
-                        <ul class="factor-meaning-list" id="desktopFactorDominanzMeaning"></ul>
                     </div>
                 </div>
                 <!-- Orientierungs-Kompatibilität -->
-                <div class="desktop-factor-item" data-factor="orientierung">
-                    <div class="desktop-factor-header" onclick="toggleDesktopFactor(this.parentElement)">
+                <div class="desktop-factor-item" data-factor="orientierung" onclick="openFactorModal('orientierung', 'desktop')" style="cursor: pointer;">
+                    <div class="desktop-factor-header">
                         <div class="factor-info">
                             <span class="factor-title">Orientierungs-Kompatibilität</span>
                             <span class="factor-subtitle">(Körperliche Anziehung - Gefühl&Pathos)</span>
                         </div>
                         <div class="factor-score">
                             <span id="desktopFactorOrientierung">0%</span>
-                            <span class="factor-toggle">▼</span>
+                            <span class="factor-toggle">▶</span>
                         </div>
-                    </div>
-                    <div class="desktop-factor-content">
-                        <div class="factor-explanation" id="desktopFactorOrientierungExplanation"></div>
-                        <div class="factor-meaning-title">Was bedeutet das?</div>
-                        <ul class="factor-meaning-list" id="desktopFactorOrientierungMeaning"></ul>
                     </div>
                 </div>
                 <!-- Geschlechts-Attraktion -->
-                <div class="desktop-factor-item" data-factor="geschlecht">
-                    <div class="desktop-factor-header" onclick="toggleDesktopFactor(this.parentElement)">
+                <div class="desktop-factor-item" data-factor="geschlecht" onclick="openFactorModal('geschlecht', 'desktop')" style="cursor: pointer;">
+                    <div class="desktop-factor-header">
                         <div class="factor-info">
                             <span class="factor-title">Geschlechts-Attraktion</span>
                             <span class="factor-subtitle">(Gender-Chemie - Gefühl&Pathos)</span>
                         </div>
                         <div class="factor-score">
                             <span id="desktopFactorGeschlecht">0%</span>
-                            <span class="factor-toggle">▼</span>
+                            <span class="factor-toggle">▶</span>
                         </div>
-                    </div>
-                    <div class="desktop-factor-content">
-                        <div class="factor-explanation" id="desktopFactorGeschlechtExplanation"></div>
-                        <div class="factor-meaning-title">Was bedeutet das?</div>
-                        <ul class="factor-meaning-list" id="desktopFactorGeschlechtMeaning"></ul>
                     </div>
                 </div>
             </div>
