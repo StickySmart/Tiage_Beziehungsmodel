@@ -4056,14 +4056,6 @@
             border-bottom: none;
         }
 
-        /* Desktop Factor Fold/Unfold Toolbar */
-        .desktop-factor-toolbar {
-            display: flex;
-            justify-content: flex-end;
-            padding: 8px 0;
-            margin-bottom: 4px;
-        }
-
         /* Toggle Buttons for Status (Gelebt/Interessiert) */
         .status-toggle-group {
             display: flex;
@@ -6032,15 +6024,9 @@
             <div class="result-percentage" id="resultPercentage" style="display: none;">0%</div>
 
             <!-- 4-Factor Breakdown with Expandable Content -->
-            <div class="desktop-factor-toolbar" style="margin-top: 15px; padding-top: 15px; border-top: 1px solid var(--border);">
-                <button class="fold-unfold-btn collapsed-state" id="desktopFactorFoldBtn" onclick="toggleAllDesktopFactors()">
-                    <span class="fold-unfold-icon">▶</span>
-                    <span class="fold-unfold-text">Unfold</span>
-                </button>
-            </div>
-            <div id="desktopFactorBreakdown" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px;">
+            <div id="desktopFactorBreakdown" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; margin-top: 15px; padding-top: 15px; border-top: 1px solid var(--border);">
                 <!-- Archetyp-Übereinstimmung -->
-                <div class="desktop-factor-item collapsed" data-factor="archetyp">
+                <div class="desktop-factor-item" data-factor="archetyp">
                     <div class="desktop-factor-header" onclick="toggleDesktopFactor(this.parentElement)">
                         <div class="factor-info">
                             <span class="factor-title">Archetyp-Übereinstimmung</span>
@@ -6058,7 +6044,7 @@
                     </div>
                 </div>
                 <!-- Dominanz-Harmonie -->
-                <div class="desktop-factor-item collapsed" data-factor="dominanz">
+                <div class="desktop-factor-item" data-factor="dominanz">
                     <div class="desktop-factor-header" onclick="toggleDesktopFactor(this.parentElement)">
                         <div class="factor-info">
                             <span class="factor-title">Dominanz-Harmonie</span>
@@ -6076,7 +6062,7 @@
                     </div>
                 </div>
                 <!-- Orientierungs-Kompatibilität -->
-                <div class="desktop-factor-item collapsed" data-factor="orientierung">
+                <div class="desktop-factor-item" data-factor="orientierung">
                     <div class="desktop-factor-header" onclick="toggleDesktopFactor(this.parentElement)">
                         <div class="factor-info">
                             <span class="factor-title">Orientierungs-Kompatibilität</span>
@@ -6094,7 +6080,7 @@
                     </div>
                 </div>
                 <!-- Geschlechts-Attraktion -->
-                <div class="desktop-factor-item collapsed" data-factor="geschlecht">
+                <div class="desktop-factor-item" data-factor="geschlecht">
                     <div class="desktop-factor-header" onclick="toggleDesktopFactor(this.parentElement)">
                         <div class="factor-info">
                             <span class="factor-title">Geschlechts-Attraktion</span>
@@ -9012,20 +8998,31 @@
         // Track global fold/unfold state
         let allDimensionsCollapsed = false;
 
-        // Toggle all dimensions collapse/expand at once
+        // Toggle all dimensions AND desktop factors collapse/expand at once
         function toggleAllDimensionsCollapse() {
             const allDimensions = document.querySelectorAll('.collapsible-dimension');
+            const allFactors = document.querySelectorAll('.desktop-factor-item');
             const btn = document.getElementById('foldUnfoldAllBtn');
             const icon = btn.querySelector('.fold-unfold-icon');
             const text = btn.querySelector('.fold-unfold-text');
 
             allDimensionsCollapsed = !allDimensionsCollapsed;
 
+            // Toggle collapsible dimensions
             allDimensions.forEach(dim => {
                 if (allDimensionsCollapsed) {
                     dim.classList.add('collapsed');
                 } else {
                     dim.classList.remove('collapsed');
+                }
+            });
+
+            // Toggle desktop factor items
+            allFactors.forEach(factor => {
+                if (allDimensionsCollapsed) {
+                    factor.classList.add('collapsed');
+                } else {
+                    factor.classList.remove('collapsed');
                 }
             });
 
@@ -9039,10 +9036,12 @@
                 text.textContent = 'Fold';
                 btn.classList.remove('collapsed-state');
             }
-        }
 
-        // Track desktop factor fold/unfold state
-        let allDesktopFactorsCollapsed = true;
+            // Update desktop factor content when expanding
+            if (!allDimensionsCollapsed) {
+                updateDesktopFactorContent();
+            }
+        }
 
         // Toggle single desktop factor expand/collapse
         function toggleDesktopFactor(element) {
@@ -9056,52 +9055,22 @@
             }
         }
 
-        // Toggle all desktop factors collapse/expand at once
-        function toggleAllDesktopFactors() {
-            const allFactors = document.querySelectorAll('.desktop-factor-item');
-            const btn = document.getElementById('desktopFactorFoldBtn');
-            const icon = btn.querySelector('.fold-unfold-icon');
-            const text = btn.querySelector('.fold-unfold-text');
-
-            allDesktopFactorsCollapsed = !allDesktopFactorsCollapsed;
-
-            allFactors.forEach(factor => {
-                if (allDesktopFactorsCollapsed) {
-                    factor.classList.add('collapsed');
-                } else {
-                    factor.classList.remove('collapsed');
-                }
-            });
-
-            // Update button appearance
-            if (allDesktopFactorsCollapsed) {
-                icon.textContent = '▶';
-                text.textContent = 'Unfold';
-                btn.classList.add('collapsed-state');
-            } else {
-                icon.textContent = '▼';
-                text.textContent = 'Fold';
-                btn.classList.remove('collapsed-state');
-            }
-
-            // Update content when expanding
-            if (!allDesktopFactorsCollapsed) {
-                updateDesktopFactorContent();
-            }
-        }
-
-        // Update fold button based on current state of factors
+        // Update fold button based on current state of all collapsible elements
         function updateDesktopFactorFoldButton() {
+            const allDimensions = document.querySelectorAll('.collapsible-dimension');
             const allFactors = document.querySelectorAll('.desktop-factor-item');
-            const btn = document.getElementById('desktopFactorFoldBtn');
+            const btn = document.getElementById('foldUnfoldAllBtn');
             if (!btn) return;
 
             const icon = btn.querySelector('.fold-unfold-icon');
             const text = btn.querySelector('.fold-unfold-text');
 
-            // Check if all are collapsed
-            const allCollapsed = Array.from(allFactors).every(f => f.classList.contains('collapsed'));
-            allDesktopFactorsCollapsed = allCollapsed;
+            // Check if all are collapsed (both dimensions and factors)
+            const allDimensionsCollapsedCheck = Array.from(allDimensions).every(d => d.classList.contains('collapsed'));
+            const allFactorsCollapsed = Array.from(allFactors).every(f => f.classList.contains('collapsed'));
+            const allCollapsed = allDimensionsCollapsedCheck && allFactorsCollapsed;
+
+            allDimensionsCollapsed = allCollapsed;
 
             if (allCollapsed) {
                 icon.textContent = '▶';
