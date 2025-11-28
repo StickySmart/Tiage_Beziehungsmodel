@@ -13343,32 +13343,36 @@
                     if (ich === partner) {
                         return [
                             rhetoricNote,
-                            { title: 'Identische Beziehungsphilosophie', desc: `In dieser Kombination teilen beide denselben Archetyp "${ichName}" – maximale philosophische Übereinstimmung.` },
+                            { title: `📌 In dieser Kombination teilen beide denselben Archetyp "${ichName}" – maximale philosophische Übereinstimmung.`, desc: '' },
                             { title: 'Gleiche Grundüberzeugungen', desc: 'Beide haben identische Vorstellungen davon, wie eine Beziehung funktionieren sollte.' },
-                            { title: 'Intuitive Verständigung', desc: 'Die gemeinsame Basis ermöglicht tiefes gegenseitiges Verstehen ohne lange Erklärungen.' }
+                            { title: 'Intuitive Verständigung', desc: 'Die gemeinsame Basis ermöglicht tiefes gegenseitiges Verstehen ohne lange Erklärungen.' },
+                            { title: 'Natürliche Harmonie', desc: 'Keine grundsätzlichen Konflikte durch unterschiedliche Beziehungsphilosophien.' }
                         ];
                     }
 
                     if (score >= 80) {
                         return [
                             rhetoricNote,
-                            { title: 'Hohe philosophische Übereinstimmung', desc: `In dieser Kombination von "${ichName}" und "${partnerName}" ergänzen sich die Beziehungsphilosophien sehr gut.` },
-                            { title: 'Wenige grundsätzliche Konflikte', desc: 'Die unterschiedlichen Archetypen teilen dennoch ähnliche Kernwerte und Beziehungsideale.' },
-                            { title: 'Ähnliche Erwartungen an die Beziehung', desc: 'Beide Archetypen haben kompatible Vorstellungen von Partnerschaft.' }
+                            { title: `📌 In dieser Kombination von "${ichName}" und "${partnerName}" ergänzen sich die Beziehungsphilosophien sehr gut.`, desc: '' },
+                            { title: 'Hohe philosophische Übereinstimmung', desc: 'Beide teilen ähnliche Grundwerte und Beziehungsideale.' },
+                            { title: 'Wenige grundsätzliche Konflikte', desc: 'Weltanschauung und Lebensziele sind weitgehend kompatibel.' },
+                            { title: 'Ähnliche Erwartungen an die Beziehung', desc: 'Was beide von Partnerschaft erwarten, deckt sich gut.' }
                         ];
                     } else if (score >= 60) {
                         return [
                             rhetoricNote,
-                            { title: 'Mittlere philosophische Übereinstimmung', desc: `In dieser Kombination von "${ichName}" und "${partnerName}" gibt es sowohl Gemeinsamkeiten als auch deutliche Unterschiede.` },
-                            { title: 'Kompromisse und Kommunikation nötig', desc: 'Die verschiedenen Beziehungsphilosophien erfordern regelmäßigen Austausch und Verständnis.' },
-                            { title: 'Unterschiedliche, aber vereinbare Bedürfnisse', desc: 'Mit gegenseitiger Flexibilität können beide Archetypen zufrieden zusammenfinden.' }
+                            { title: `📌 In dieser Kombination von "${ichName}" und "${partnerName}" gibt es sowohl Gemeinsamkeiten als auch deutliche Unterschiede.`, desc: '' },
+                            { title: 'Mittlere philosophische Übereinstimmung', desc: 'Grundwerte überlappen, aber es gibt Unterschiede.' },
+                            { title: 'Kompromisse und Kommunikation nötig', desc: 'Unterschiedliche Prioritäten erfordern regelmäßigen Austausch.' },
+                            { title: 'Unterschiedliche, aber vereinbare Bedürfnisse', desc: 'Mit Flexibilität können beide Seiten zufrieden sein.' }
                         ];
                     } else {
                         return [
                             rhetoricNote,
-                            { title: 'Niedrige philosophische Übereinstimmung', desc: `In dieser Kombination von "${ichName}" und "${partnerName}" prallen grundlegend verschiedene Beziehungsphilosophien aufeinander.` },
-                            { title: 'Intensive Kommunikation erforderlich', desc: 'Die unterschiedlichen Archetypen brauchen bewusste Arbeit, um Missverständnisse zu vermeiden.' },
-                            { title: 'Fundamentale Kompromisse notwendig', desc: 'Beide müssen bereit sein, auf wichtige eigene Bedürfnisse zu verzichten, um die Beziehung zu gestalten.' }
+                            { title: `📌 In dieser Kombination von "${ichName}" und "${partnerName}" prallen grundlegend verschiedene Beziehungsphilosophien aufeinander.`, desc: '' },
+                            { title: 'Niedrige philosophische Übereinstimmung', desc: 'Grundsätzlich verschiedene Sichtweisen auf Beziehung.' },
+                            { title: 'Intensive Kommunikation erforderlich', desc: 'Ohne bewusste Arbeit entstehen leicht Missverständnisse.' },
+                            { title: 'Fundamentale Kompromisse notwendig', desc: 'Beide müssen auf wichtige eigene Bedürfnisse verzichten können.' }
                         ];
                     }
                 }
