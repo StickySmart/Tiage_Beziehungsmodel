@@ -13318,20 +13318,24 @@
                     }
                 },
                 getMeaning: (score) => {
+                    const rhetoricNote = { title: '💡 Warum Logos (Verstand)?', desc: 'Archetypen basieren auf rationalen Beziehungsphilosophien und bewussten Überzeugungen – sie sprechen den Verstand an, nicht das Gefühl.' };
                     if (score >= 80) {
                         return [
+                            rhetoricNote,
                             { title: 'Hohe philosophische Übereinstimmung', desc: 'Beide teilen ähnliche Grundwerte und Beziehungsideale.' },
                             { title: 'Wenige grundsätzliche Konflikte', desc: 'Weltanschauung und Lebensziele sind weitgehend kompatibel.' },
                             { title: 'Ähnliche Erwartungen an die Beziehung', desc: 'Was beide von Partnerschaft erwarten, deckt sich gut.' }
                         ];
                     } else if (score >= 60) {
                         return [
+                            rhetoricNote,
                             { title: 'Mittlere philosophische Übereinstimmung', desc: 'Grundwerte überlappen, aber es gibt Unterschiede.' },
                             { title: 'Kompromisse und Kommunikation nötig', desc: 'Unterschiedliche Prioritäten erfordern regelmäßigen Austausch.' },
                             { title: 'Unterschiedliche, aber vereinbare Bedürfnisse', desc: 'Mit Flexibilität können beide Seiten zufrieden sein.' }
                         ];
                     } else {
                         return [
+                            rhetoricNote,
                             { title: 'Niedrige philosophische Übereinstimmung', desc: 'Grundsätzlich verschiedene Sichtweisen auf Beziehung.' },
                             { title: 'Intensive Kommunikation erforderlich', desc: 'Ohne bewusste Arbeit entstehen leicht Missverständnisse.' },
                             { title: 'Fundamentale Kompromisse notwendig', desc: 'Beide müssen auf wichtige eigene Bedürfnisse verzichten können.' }
@@ -13437,14 +13441,17 @@
                     return explanation;
                 },
                 getMeaning: (score) => {
+                    const rhetoricNote = { title: '💡 Warum Pathos (Gefühl)?', desc: 'Dominanz-Dynamik wirkt auf der emotionalen Ebene – wer führt, wer folgt, entsteht aus Gefühl und Instinkt, nicht aus rationaler Überlegung.' };
                     if (score >= 80) {
                         return [
+                            rhetoricNote,
                             { title: 'Harmonische emotionale Dynamik', desc: 'Die Rollen (Führen/Folgen) ergänzen sich natürlich ohne Reibung.' },
                             { title: 'Natürliche Rollenverteilung', desc: 'Entscheidungen und Verantwortung fließen organisch zwischen beiden.' },
                             { title: 'Geringe Reibungspunkte', desc: 'Wenig Konflikte um Kontrolle oder Passivität zu erwarten.' }
                         ];
                     } else if (score >= 60) {
                         return [
+                            rhetoricNote,
                             { title: 'Funktionale emotionale Dynamik', desc: 'Die Rollen funktionieren, sind aber nicht perfekt komplementär.' },
                             { title: 'Flexible Anpassung möglich', desc: 'Mit gegenseitigem Verständnis kann Balance gefunden werden.' },
                             { title: 'Gelegentliche Abstimmung nötig', desc: 'Manchmal braucht es Gespräche über Erwartungen und Bedürfnisse.' }
@@ -13452,6 +13459,7 @@
                     } else {
                         // Forschungsbasiert: Sadikaj et al. (2017) - Machtkämpfe bei gleicher Polarität
                         return [
+                            rhetoricNote,
                             { title: 'Machtkampf- oder Führungsvakuum-Risiko', desc: 'Beide dominant = Konkurrenzkämpfe. Beide submissiv = keiner übernimmt Führung.' },
                             { title: 'Bewusste Kommunikationsregeln wichtig', desc: 'Klare Absprachen nötig, wer wann welche Rolle übernimmt.' },
                             { title: 'Klare Aufgabenteilung empfohlen', desc: 'Definierte Verantwortungsbereiche reduzieren Konflikte.' }
@@ -13486,20 +13494,24 @@
                     }
                 },
                 getMeaning: (score) => {
+                    const rhetoricNote = { title: '💡 Warum Pathos (Gefühl)?', desc: 'Sexuelle Orientierung bestimmt, wen wir körperlich anziehend finden – ein tiefes, unbewusstes Gefühl, keine rationale Wahl.' };
                     if (score === 100) {
                         return [
+                            rhetoricNote,
                             { title: 'Vollständige körperliche Kompatibilität', desc: 'Die sexuellen Orientierungen beider passen ideal zusammen.' },
                             { title: 'Keine Barrieren für Anziehung', desc: 'Beide können sich potenziell zueinander hingezogen fühlen.' },
                             { title: 'Basis für romantische Beziehung vorhanden', desc: 'Körperliche Anziehung kann Grundlage für mehr sein.' }
                         ];
                     } else if (score >= 50) {
                         return [
+                            rhetoricNote,
                             { title: 'Mögliche körperliche Kompatibilität', desc: 'Unter bestimmten Umständen ist Anziehung möglich.' },
                             { title: 'Anziehung kann entstehen', desc: 'Nicht automatisch, aber nicht ausgeschlossen.' },
                             { title: 'Hängt von individuellen Präferenzen ab', desc: 'Persönliche Neigungen spielen größere Rolle.' }
                         ];
                     } else {
                         return [
+                            rhetoricNote,
                             { title: 'Keine körperliche Kompatibilität', desc: 'Die Orientierungen schließen gegenseitige Anziehung aus.' },
                             { title: 'Romantische Beziehung nicht möglich', desc: 'Keine Basis für eine intime Partnerschaft.' },
                             { title: 'Freundschaft möglich', desc: 'Eine platonische Verbindung bleibt eine Option.' }
@@ -13534,20 +13546,24 @@
                     }
                 },
                 getMeaning: (score) => {
+                    const rhetoricNote = { title: '💡 Warum Pathos (Gefühl)?', desc: 'Gender-Chemie ist die instinktive Reaktion auf das Geschlecht des anderen – ein unbewusstes Gefühl, das körperliche Anziehung auslöst oder blockiert.' };
                     if (score === 100) {
                         return [
+                            rhetoricNote,
                             { title: 'Ideale Geschlechterkonstellation', desc: 'Die Geschlechter-Kombination passt perfekt zu beiden Orientierungen.' },
                             { title: 'Maximale Anziehungskraft möglich', desc: 'Gender-Chemie kann voll entfaltet werden.' },
                             { title: 'Keine gender-bezogenen Barrieren', desc: 'Die Geschlechter bilden keine Hürde für Anziehung.' }
                         ];
                     } else if (score >= 50) {
                         return [
+                            rhetoricNote,
                             { title: 'Akzeptable Geschlechterkonstellation', desc: 'Nicht optimal, aber funktional für Anziehung.' },
                             { title: 'Anziehung möglich', desc: 'Kann entstehen, ist aber nicht garantiert.' },
                             { title: 'Individuelle Präferenzen entscheidend', desc: 'Persönliche Vorlieben bestimmen den Ausgang.' }
                         ];
                     } else {
                         return [
+                            rhetoricNote,
                             { title: 'Inkompatible Geschlechterkonstellation', desc: 'Die Geschlechter-Kombination passt nicht zu den Orientierungen.' },
                             { title: 'Anziehung unwahrscheinlich', desc: 'Körperliche Chemie wird kaum entstehen.' },
                             { title: 'Orientierung passt nicht', desc: 'Die Präferenzen zeigen in andere Richtungen.' }
