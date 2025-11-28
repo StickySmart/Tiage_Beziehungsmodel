@@ -4266,6 +4266,37 @@
             margin-top: 8px;
         }
 
+        /* Tiage's Ansatz Button in Quality Block */
+        .tiage-ansatz-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            padding: 8px 16px;
+            margin-top: 10px;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            color: var(--text-secondary);
+            font-size: 13px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .tiage-ansatz-btn:hover {
+            background: var(--bg-secondary);
+            border-color: var(--primary);
+            color: var(--text-primary);
+        }
+
+        .tiage-ansatz-icon {
+            font-size: 14px;
+        }
+
+        .tiage-ansatz-text {
+            font-weight: 500;
+        }
+
         /* Result bar new layout with circle */
         .result-bar-with-circle {
             display: flex;
@@ -5623,12 +5654,8 @@
 
     <!-- NEW: Side-by-Side Comparison Layout (Desktop) -->
     <div class="comparison-container desktop-mode" id="comparisonView">
-        <!-- Unified Fold/Unfold Button + Tiage's Ansatz Button -->
+        <!-- Unified Fold/Unfold Button -->
         <div class="fold-unfold-toolbar" style="display: flex; gap: 10px; align-items: center;">
-            <button class="fold-unfold-btn" id="tiageAnsatzBtn" onclick="openPathosLogosModal()" title="Tiage's Ansatz - Pathos & Logos">
-                <span class="fold-unfold-icon">💡</span>
-                <span class="fold-unfold-text">Tiage's Ansatz</span>
-            </button>
             <button class="fold-unfold-btn" id="foldUnfoldAllBtn" onclick="toggleAllDimensionsCollapse()" title="Fold/Unfold all fields">
                 <span class="fold-unfold-icon">▼</span>
                 <span class="fold-unfold-text">Unfold</span>
@@ -5874,6 +5901,10 @@
                         <span id="desktopCirclePercentage">0%</span>
                     </div>
                     <div class="desktop-score-label">Beziehungsqualität</div>
+                    <button class="tiage-ansatz-btn" id="desktopTiageAnsatzBtn" onclick="openPathosLogosModal('pathos')" title="Tiage's Ansatz - Pathos & Logos">
+                        <span class="tiage-ansatz-icon">💡</span>
+                        <span class="tiage-ansatz-text">Tiage's Ansatz</span>
+                    </button>
                 </div>
             </div>
 
@@ -6149,6 +6180,10 @@
             <div class="score-circle-container">
                 <div class="score-circle" id="mobileScoreCircle" onclick="openProContraModal()" style="cursor: pointer;" title="Klicken für Pro & Contra Details">0%</div>
                 <p class="score-label">Beziehungsqualität <span class="info-icon" onclick="event.stopPropagation(); openHelpModal()" title="Hilfe zur Beziehungsqualität" style="cursor: pointer; font-size: 12px; width: 18px; height: 18px; display: inline-flex; align-items: center; justify-content: center; vertical-align: middle; margin-left: 4px;">?</span></p>
+                <button class="tiage-ansatz-btn" id="mobileTiageAnsatzBtn" onclick="openPathosLogosModal('pathos')" title="Tiage's Ansatz - Pathos & Logos">
+                    <span class="tiage-ansatz-icon">💡</span>
+                    <span class="tiage-ansatz-text">Tiage's Ansatz</span>
+                </button>
                 <div id="mobileScoreNote" class="score-note" style="margin-top: 8px; font-size: 13px; color: var(--text-secondary); font-style: italic; text-align: center; max-width: 280px; line-height: 1.4; margin-left: auto; margin-right: auto;"></div>
                 <!-- Pirsig Quality Quote Blocks (Pathos/Logos summary) -->
                 <div id="mobilePirsigQuoteBlocks" style="margin-top: 10px; text-align: left; max-width: 280px; margin-left: auto; margin-right: auto;"></div>
