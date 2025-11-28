@@ -15070,6 +15070,12 @@
                     syncDominanzUI('partner');
                 }
 
+                // Sync all UIs (Desktop, Mobile, Modal) for orientierung
+                if (typeof syncOrientierungUI === 'function') {
+                    syncOrientierungUI('ich');
+                    syncOrientierungUI('partner');
+                }
+
                 return true;
             } catch (e) {
                 console.warn('Failed to load from LocalStorage:', e);
@@ -15152,6 +15158,14 @@
                 if (mobileDimension) mobileDimension.classList.add('needs-selection');
                 const modalDimension = document.querySelector('[data-dimension="modal-' + person + '-dominanz-multi"]');
                 if (modalDimension) modalDimension.classList.add('needs-selection');
+
+                // Mark orientierung as needing selection (Desktop, Mobile & Modal)
+                const orientDimension = document.querySelector('[data-dimension="' + person + '-orientierung-multi"]');
+                if (orientDimension) orientDimension.classList.add('needs-selection');
+                const mobileOrientDimension = document.querySelector('[data-dimension="mobile-' + person + '-orientierung-multi"]');
+                if (mobileOrientDimension) mobileOrientDimension.classList.add('needs-selection');
+                const modalOrientDimension = document.querySelector('[data-dimension="modal-' + person + '-orientierung-multi"]');
+                if (modalOrientDimension) modalOrientDimension.classList.add('needs-selection');
             });
 
             // Go to page 1
