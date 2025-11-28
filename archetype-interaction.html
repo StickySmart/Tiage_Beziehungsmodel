@@ -13821,8 +13821,8 @@
         function updateProContraModalArchetypeDisplay() {
             const ichDisplay = document.getElementById('proContraModalIch');
             const partnerDisplay = document.getElementById('proContraModalPartner');
-            if (ichDisplay) ichDisplay.textContent = archetypeNames[currentArchetype] || currentArchetype;
-            if (partnerDisplay) partnerDisplay.textContent = archetypeNames[selectedPartner] || selectedPartner;
+            if (ichDisplay) ichDisplay.textContent = archetypeDefinitions[currentArchetype]?.name || currentArchetype;
+            if (partnerDisplay) partnerDisplay.textContent = archetypeDefinitions[selectedPartner]?.name || selectedPartner;
         }
 
         function updateProContraModalContent() {
