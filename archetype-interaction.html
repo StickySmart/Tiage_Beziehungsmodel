@@ -5835,6 +5835,46 @@
         </div>
     </div>
 
+    <!-- Tagessynthese Modal - Gemeinsamer Pathos & Logos zusammen -->
+    <div class="modal-overlay" id="tagessynthesModal" onclick="closeTagessynthesModal(event)">
+        <div class="modal" onclick="event.stopPropagation()" style="max-width: 700px; max-height: 85vh; overflow-y: auto;">
+            <div class="modal-header">
+                <span class="modal-title">Tagessynthese</span>
+                <button class="modal-close" onclick="closeTagessynthesModal()">&times;</button>
+            </div>
+            <div class="modal-body" style="padding: 20px;">
+                <!-- Archetype context -->
+                <div id="tagessynthesArchetypeContext" style="display: flex; justify-content: center; align-items: center; gap: 15px; margin-bottom: 20px; padding: 12px; background: rgba(255,255,255,0.03); border-radius: 8px;">
+                    <div style="text-align: center;">
+                        <div style="font-size: 10px; color: var(--success); font-weight: 600; margin-bottom: 4px;">ICH</div>
+                        <div style="font-size: 14px; color: var(--text-primary);" id="tagessynthesModalIch">Duo</div>
+                    </div>
+                    <div style="font-size: 18px; color: var(--text-muted);">×</div>
+                    <div style="text-align: center;">
+                        <div style="font-size: 10px; color: var(--danger); font-weight: 600; margin-bottom: 4px;">PARTNER</div>
+                        <div style="font-size: 14px; color: var(--text-primary);" id="tagessynthesModalPartner">Poly Hedo</div>
+                    </div>
+                </div>
+                <!-- Gemeinsamer Pathos -->
+                <div id="tagessynthesPathos" style="margin-bottom: 16px; padding: 16px; background: rgba(231, 111, 81, 0.08); border-radius: 12px; border-left: 3px solid #E76F51;">
+                    <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 12px;">
+                        <span style="font-size: 18px;">🔥</span>
+                        <span style="font-size: 12px; color: var(--text-muted); font-weight: 600; text-transform: uppercase; letter-spacing: 1px;">GEMEINSAMER PATHOS</span>
+                    </div>
+                    <p id="tagessynthesPathosText" style="color: var(--text-secondary); line-height: 1.6; font-size: 14px; margin: 0;"></p>
+                </div>
+                <!-- Gemeinsamer Logos -->
+                <div id="tagessynthesLogos" style="padding: 16px; background: rgba(100, 149, 237, 0.08); border-radius: 12px; border-left: 3px solid #6495ED;">
+                    <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 12px;">
+                        <span style="font-size: 18px;">🧠</span>
+                        <span style="font-size: 12px; color: var(--text-muted); font-weight: 600; text-transform: uppercase; letter-spacing: 1px;">GEMEINSAMER LOGOS</span>
+                    </div>
+                    <p id="tagessynthesLogosText" style="color: var(--text-secondary); line-height: 1.6; font-size: 14px; margin: 0;"></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Archetype Info Modal (Feature 4) -->
     <!-- archetypeInfoModal wurde mit definitionModal zusammengeführt -->
 
