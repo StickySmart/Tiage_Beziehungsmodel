@@ -5573,6 +5573,7 @@
                         <span id="desktopCirclePercentage">0%</span>
                     </div>
                     <div class="desktop-score-label">Beziehungsqualität</div>
+                    <div id="desktopScoreNote" class="score-note" style="margin-top: 8px; font-size: 12px; color: var(--text-secondary); font-style: italic; text-align: center; max-width: 200px; line-height: 1.4;"></div>
                 </div>
             </div>
 
@@ -5621,10 +5622,6 @@
                 </div>
             </div>
 
-            <!-- Pirsig-Style Quote (Desktop) -->
-            <div class="quality-quote" id="desktopQualityQuote">
-                <p>"Diese Beziehung zeigt eine Balance zwischen statischen Mustern (Archetypen) und dynamischem Potenzial."</p>
-            </div>
         </div>
     </div>
 
@@ -5857,11 +5854,9 @@
             </div>
 
             <div class="score-circle-container">
-            <div class="score-circle-container">
                 <div class="score-circle" id="mobileScoreCircle" onclick="openProContraModal()" style="cursor: pointer;" title="Klicken für Pro & Contra Details">0%</div>
                 <p class="score-label">Beziehungsqualität <span class="info-icon" onclick="event.stopPropagation(); openHelpModal()" title="Hilfe zur Beziehungsqualität" style="cursor: pointer; font-size: 12px; width: 18px; height: 18px; display: inline-flex; align-items: center; justify-content: center; vertical-align: middle; margin-left: 4px;">?</span></p>
-            </div>
-
+                <div id="mobileScoreNote" class="score-note" style="margin-top: 8px; font-size: 11px; color: var(--text-secondary); font-style: italic; text-align: center; max-width: 280px; line-height: 1.4; margin-left: auto; margin-right: auto;"></div>
             </div>
 
             <!-- Score Breakdown with Sublabels -->
@@ -5899,11 +5894,6 @@
             <!-- Pathos & Logos - Always Visible -->
             <div id="mobilePathosLogosContent" style="margin-top: 15px; padding: 15px; background: var(--bg-card); border-radius: 12px;">
                 <!-- Will be filled dynamically -->
-            </div>
-
-            <!-- Pirsig-Style Quote -->
-            <div class="quality-quote" id="mobileQualityQuote">
-                <p>"Diese Beziehung zeigt eine Balance zwischen statischen Mustern (Archetypen) und dynamischem Potenzial."</p>
             </div>
 
             <button class="btn-primary-mobile" onclick="openProContraModal()">Pro & Contra →</button>
@@ -11947,8 +11937,8 @@
                 const expandRadar = document.getElementById('expandRadarChart');
                 if (expandRadar) expandRadar.innerHTML = '';
 
-                const desktopQuoteIncomplete = document.getElementById('desktopQualityQuote');
-                if (desktopQuoteIncomplete) desktopQuoteIncomplete.innerHTML = '<p style="color: var(--text-muted); font-style: italic;">"Bitte alle Dimensionen auswählen, um die Qualitätsanalyse zu sehen."</p>';
+                const desktopScoreNoteIncomplete = document.getElementById('desktopScoreNote');
+                if (desktopScoreNoteIncomplete) desktopScoreNoteIncomplete.textContent = 'Bitte alle Dimensionen auswählen.';
 
                 return;
             }
@@ -12014,22 +12004,22 @@
                 }
             }
 
-            // Update Desktop Pirsig quote
-            const desktopQuoteElement = document.getElementById('desktopQualityQuote');
-            if (desktopQuoteElement) {
-                let quoteText = '';
+            // Update Desktop Score Note (direkt beim Kreis)
+            const desktopScoreNote = document.getElementById('desktopScoreNote');
+            if (desktopScoreNote) {
+                let noteText = '';
                 if (pathosCheck.result === 'unmöglich') {
-                    quoteText = '"Keine Basis für Resonanz vorhanden – die körperliche oder emotionale Chemie fehlt grundlegend."';
+                    noteText = 'Keine Basis für Resonanz vorhanden.';
                 } else if (overallScore >= 80) {
-                    quoteText = `"Diese Beziehung zeigt eine Qualität von ${overallScore}% – eine hohe Resonanz zwischen zwei Menschen, deren Muster sich ergänzen und verstärken."`;
+                    noteText = 'Hohe Resonanz – Muster ergänzen sich.';
                 } else if (overallScore >= 65) {
-                    quoteText = `"Diese Beziehung zeigt eine Qualität von ${overallScore}% – eine solide Balance zwischen statischen Mustern und dynamischem Potenzial."`;
+                    noteText = 'Solide Balance mit Potenzial.';
                 } else if (overallScore >= 50) {
-                    quoteText = `"Diese Beziehung zeigt eine Qualität von ${overallScore}% – vorhandene Basis, aber Arbeit an der dynamischen Qualität erforderlich."`;
+                    noteText = 'Basis vorhanden, Arbeit erforderlich.';
                 } else {
-                    quoteText = `"Diese Beziehung zeigt eine Qualität von ${overallScore}% – erhebliche Herausforderungen, die bewusste Reflexion erfordern."`;
+                    noteText = 'Bewusste Reflexion erforderlich.';
                 }
-                desktopQuoteElement.innerHTML = `<p>${quoteText}</p>`;
+                desktopScoreNote.textContent = noteText;
             }
 
             // Update Radar Chart
@@ -13053,39 +13043,24 @@
                 `;
             }
 
-            // Update Pirsig quote
-            const quoteElement = document.getElementById('mobileQualityQuote');
-            if (quoteElement) {
-                let quoteText = '';
+            // Update Mobile Score Note (direkt beim Kreis)
+            const mobileScoreNote = document.getElementById('mobileScoreNote');
+            if (mobileScoreNote) {
+                let noteText = '';
                 if (qualityResult.incomplete) {
-                    // Build missing items list for mobile
-                    const missingItems = [];
-                    if (!g1) missingItems.push('Ich: Geschlecht');
-                    if (!g2) missingItems.push('Partner: Geschlecht');
-                    if (!hasDom1) missingItems.push('Ich: Dominanz');
-                    if (!hasDom2) missingItems.push('Partner: Dominanz');
-                    if (!hasOri1) missingItems.push('Ich: Orientierung');
-                    if (!hasOri2) missingItems.push('Partner: Orientierung');
-
-                    let missingHTML = '<div style="text-align: left;"><strong>Es fehlt noch:</strong><ul style="margin: 5px 0 0 20px; padding: 0;">';
-                    missingItems.forEach(item => {
-                        missingHTML += `<li>${item}</li>`;
-                    });
-                    missingHTML += '</ul></div>';
-                    quoteElement.innerHTML = missingHTML;
-                    return; // Early return for incomplete state
+                    noteText = 'Bitte alle Dimensionen auswählen.';
                 } else if (qualityResult.blocked) {
-                    quoteText = '"Keine Basis für Resonanz vorhanden – die körperliche oder emotionale Chemie fehlt grundlegend."';
+                    noteText = 'Keine Basis für Resonanz vorhanden.';
                 } else if (qualityResult.score >= 80) {
-                    quoteText = `"Diese Beziehung zeigt eine Qualität von ${qualityResult.score}% – eine hohe Resonanz zwischen zwei Menschen, deren Muster sich ergänzen und verstärken."`;
+                    noteText = 'Hohe Resonanz – Muster ergänzen sich.';
                 } else if (qualityResult.score >= 65) {
-                    quoteText = `"Diese Beziehung zeigt eine Qualität von ${qualityResult.score}% – eine solide Balance zwischen statischen Mustern und dynamischem Potenzial."`;
+                    noteText = 'Solide Balance mit Potenzial.';
                 } else if (qualityResult.score >= 50) {
-                    quoteText = `"Diese Beziehung zeigt eine Qualität von ${qualityResult.score}% – vorhandene Basis, aber Arbeit an der dynamischen Qualität erforderlich."`;
+                    noteText = 'Basis vorhanden, Arbeit erforderlich.';
                 } else {
-                    quoteText = `"Diese Beziehung zeigt eine Qualität von ${qualityResult.score}% – erhebliche Herausforderungen, die bewusste Reflexion erfordern."`;
+                    noteText = 'Bewusste Reflexion erforderlich.';
                 }
-                quoteElement.innerHTML = `<p>${quoteText}</p>`;
+                mobileScoreNote.textContent = noteText;
             }
         }
 
