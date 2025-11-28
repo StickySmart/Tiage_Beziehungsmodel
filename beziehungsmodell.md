@@ -440,9 +440,10 @@ Grundannahme: 80% der Population hat diese Werte (zentraler Bereich der Glockenk
 ```
                     ┌─────────────────────────────────────────────────────────────┐
                     │                                                             │
-                    │   Q = (A × wₐ) + (O × wₒ) + (D × wᵈ) + (G × wᵍ)             │
+                    │   Q = [(A × wₐ) + (O × wₒ) + (D × wᵈ) + (G × wᵍ)] × R       │
                     │                                                             │
                     │   wobei: wₐ + wₒ + wᵈ + wᵍ = 1.00                           │
+                    │          R = Resonanz-Koeffizient (0.9 – 1.1)               │
                     │                                                             │
                     └─────────────────────────────────────────────────────────────┘
 ```
@@ -456,6 +457,33 @@ Grundannahme: 80% der Population hat diese Werte (zentraler Bereich der Glockenk
 | **O** | Orientierungs-Score | 0 – 100% | Kompatibilität der sexuellen Orientierung |
 | **D** | Dominanz-Score | 0 – 100% | Harmonie der Dominanz-Dynamik |
 | **G** | Geschlechts-Score | 0 – 100% | Gender-Chemie und Anziehung |
+| **R** | Resonanz-Koeffizient | 0.9 – 1.1 | Meta-Dimension: Wie gut schwingen Logos & Pathos zusammen? |
+
+### Resonanz als Meta-Dimension
+
+Resonanz ist kein fünfter Faktor, sondern beschreibt die **Qualität des Zusammenspiels** von Logos und Pathos:
+
+```
+┌─────────────────────────────────────────────────────────────────────────────────┐
+│                        RESONANZ ALS META-DIMENSION                              │
+│                                                                                 │
+│   Logos (Verstand)  ←────── RESONANZ ──────→  Pathos (Gefühl)                   │
+│                              │                                                  │
+│                              ▼                                                  │
+│                     Wie gut "schwingen"                                         │
+│                     beide zusammen?                                             │
+│                                                                                 │
+│   R = 0.9  →  Dissonanz: Logos und Pathos widersprechen sich                    │
+│   R = 1.0  →  Neutral: Standardberechnung ohne Resonanz-Effekt                  │
+│   R = 1.1  →  Harmonie: Logos und Pathos verstärken sich gegenseitig            │
+│                                                                                 │
+└─────────────────────────────────────────────────────────────────────────────────┘
+```
+
+**Neurowissenschaftliche Begründung:**
+- Resonanz = Synchronität zwischen kognitiven (Logos) und emotionalen (Pathos) Prozessen
+- Basiert auf Friston's Predictive Coding: Niedrige "Vorhersage-Fehler" = hohe Resonanz
+- Entspricht Buzsáki/Singer's Gamma-Kohärenz: Neuronale Synchronisation über Hirnareale
 
 ### Gewichtungen nach Pirsig (Logos/Pathos = 40/60)
 
@@ -468,13 +496,21 @@ Grundannahme: 80% der Population hat diese Werte (zentraler Bereich der Glockenk
 
 ---
 
-### Visualisierung: Die Pirsig-Balance
+### Visualisierung: Die Pirsig-Balance mit Resonanz
 
 ```
     ┌─────────────────────────────────────────────────────────────────────────┐
     │                        QUALITÄTSINDEX (Q)                               │
     │                              100%                                       │
     └─────────────────────────────────────────────────────────────────────────┘
+                                     │
+                                     │
+                        ╔═══════════════════════════╗
+                        ║    RESONANZ (× 0.9-1.1)   ║
+                        ║   Meta-Dimension: Wie     ║
+                        ║   gut schwingen Logos     ║
+                        ║   und Pathos zusammen?    ║
+                        ╚═══════════════════════════╝
                                      │
               ┌──────────────────────┴──────────────────────┐
               │                                             │
@@ -498,7 +534,7 @@ Grundannahme: 80% der Population hat diese Werte (zentraler Bereich der Glockenk
     │                     │
     │  → Verstand         │         → Körper       → Gefühl       → Intuition
     │  → Struktur         │         → Anziehung    → Spannung     → Schwingung
-    │  → Regeln           │         → Polarität    → Dynamik      → Resonanz
+    │  → Regeln           │         → Polarität    → Dynamik      → Chemie
     │                     │
     └─────────────────────┘
 
@@ -545,13 +581,18 @@ Grundannahme: 80% der Population hat diese Werte (zentraler Bereich der Glockenk
     ┌────────────────────────────────────────────────────────────────────────────┐
     │                         BERECHNUNG                                         │
     │                                                                            │
-    │   Q = (A × wₐ)    + (O × wₒ)    + (D × wᵈ)    + (G × wᵍ)                   │
+    │   Q_basis = (A × wₐ) + (O × wₒ) + (D × wᵈ) + (G × wᵍ)                      │
     │                                                                            │
-    │   Q = (75 × 0.40) + (100 × 0.25) + (100 × 0.20) + (100 × 0.15)             │
+    │   Q_basis = (75 × 0.40) + (100 × 0.25) + (100 × 0.20) + (100 × 0.15)       │
     │                                                                            │
-    │   Q =    30       +     25       +     20       +     15                   │
+    │   Q_basis =    30       +     25       +     20       +     15  = 90%      │
     │                                                                            │
-    │   Q = 90%                                                                  │
+    │   ┌─────────────────────────────────────────────────────────────────┐      │
+    │   │  RESONANZ-KOEFFIZIENT (R)                                       │      │
+    │   │  Angenommen: R = 1.05 (leichte Harmonie)                        │      │
+    │   └─────────────────────────────────────────────────────────────────┘      │
+    │                                                                            │
+    │   Q_final = Q_basis × R = 90% × 1.05 = 94.5% (gerundet: 95%)               │
     │                                                                            │
     └────────────────────────────────────────────────────────────────────────────┘
                                          │
@@ -560,15 +601,19 @@ Grundannahme: 80% der Population hat diese Werte (zentraler Bereich der Glockenk
     │                           AUSGABE                                          │
     │                                                                            │
     │   ┌─────────────────────────────────────────────────────────────────┐      │
-    │   │  QUALITÄTSINDEX: 90% (Exzellent)                                │      │
+    │   │  QUALITÄTSINDEX: 95% (Exzellent)                                │      │
     │   │                                                                 │      │
     │   │  Aufschlüsselung:                                               │      │
     │   │  ├── Archetyp (Logos):     75% × 0.40 = 30 Punkte               │      │
     │   │  ├── Orientierung (Pathos): 100% × 0.25 = 25 Punkte             │      │
     │   │  ├── Dominanz (Pathos):    100% × 0.20 = 20 Punkte              │      │
-    │   │  └── Geschlecht (Pathos):  100% × 0.15 = 15 Punkte              │      │
-    │   │                                        ─────────────            │      │
-    │   │                                        90 Punkte                │      │
+    │   │  ├── Geschlecht (Pathos):  100% × 0.15 = 15 Punkte              │      │
+    │   │  │                                      ─────────────           │      │
+    │   │  │                                      90 Punkte (Basis)       │      │
+    │   │  │                                                              │      │
+    │   │  └── Resonanz (Meta):      × 1.05 = +5 Punkte                   │      │
+    │   │                                      ─────────────              │      │
+    │   │                                      95 Punkte (Final)          │      │
     │   └─────────────────────────────────────────────────────────────────┘      │
     │                                                                            │
     └────────────────────────────────────────────────────────────────────────────┘
