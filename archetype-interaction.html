@@ -2822,6 +2822,14 @@
             flex: 0 0 auto;
             min-width: 200px;
         }
+        /* Desktop: Wider modal without scrolling */
+        @media (min-width: 769px) {
+            .age-verification-modal {
+                max-width: 480px;
+                max-height: none;
+                overflow-y: visible;
+            }
+        }
         @media (max-width: 768px) {
             .age-verification-ad-container {
                 flex-direction: column;
