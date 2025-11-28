@@ -4425,6 +4425,26 @@
                 position: relative;
             }
 
+            /* Mobile Fold/Unfold Toolbar - Sticky */
+            .mobile-fold-toolbar {
+                position: sticky;
+                top: 60px;
+                z-index: 99;
+                justify-content: flex-end;
+                padding: 8px 0;
+                margin-bottom: 10px;
+                background: linear-gradient(180deg, var(--bg-primary) 0%, var(--bg-primary) 80%, transparent 100%);
+            }
+
+            .mobile-fold-toolbar .fold-unfold-btn {
+                padding: 6px 12px;
+                font-size: 12px;
+            }
+
+            .mobile-fold-toolbar .fold-unfold-icon {
+                font-size: 9px;
+            }
+
             /* Individual Pages */
             .mobile-page {
                 display: none;
@@ -5965,6 +5985,14 @@
         <!-- PAGE 1: Auswahl -->
         <div class="mobile-page active" id="mobilePage1" data-page="1">
             <h2 style="text-align: center; color: var(--text-primary); margin-bottom: 20px; font-size: var(--font-lg);">Beziehungsqualität analysieren</h2>
+
+            <!-- Mobile Fold/Unfold Button -->
+            <div class="fold-unfold-toolbar mobile-fold-toolbar" style="display: flex; gap: 10px; align-items: center;">
+                <button class="fold-unfold-btn" id="mobileFoldUnfoldBtn" onclick="toggleAllDimensionsCollapse()" title="Fold/Unfold all fields">
+                    <span class="fold-unfold-icon">▼</span>
+                    <span class="fold-unfold-text">Unfold</span>
+                </button>
+            </div>
 
             <!-- ICH Auswahl -->
             <div style="background: var(--bg-card); border-radius: 16px; border: 1px solid var(--border); border-top: 3px solid var(--success); padding: 15px; margin-bottom: 15px;">
@@ -8858,9 +8886,10 @@
         // Toggle all dimensions collapse/expand at once
         function toggleAllDimensionsCollapse() {
             const allDimensions = document.querySelectorAll('.collapsible-dimension');
-            const btn = document.getElementById('foldUnfoldAllBtn');
-            const icon = btn.querySelector('.fold-unfold-icon');
-            const text = btn.querySelector('.fold-unfold-text');
+
+            // Get both desktop and mobile buttons
+            const desktopBtn = document.getElementById('foldUnfoldAllBtn');
+            const mobileBtn = document.getElementById('mobileFoldUnfoldBtn');
 
             allDimensionsCollapsed = !allDimensionsCollapsed;
 
@@ -8872,16 +8901,22 @@
                 }
             });
 
-            // Update button appearance
-            if (allDimensionsCollapsed) {
-                icon.textContent = '▶';
-                text.textContent = 'Unfold';
-                btn.classList.add('collapsed-state');
-            } else {
-                icon.textContent = '▼';
-                text.textContent = 'Fold';
-                btn.classList.remove('collapsed-state');
-            }
+            // Update both buttons' appearance
+            const buttons = [desktopBtn, mobileBtn].filter(btn => btn !== null);
+            buttons.forEach(btn => {
+                const icon = btn.querySelector('.fold-unfold-icon');
+                const text = btn.querySelector('.fold-unfold-text');
+
+                if (allDimensionsCollapsed) {
+                    icon.textContent = '▶';
+                    text.textContent = 'Unfold';
+                    btn.classList.add('collapsed-state');
+                } else {
+                    icon.textContent = '▼';
+                    text.textContent = 'Fold';
+                    btn.classList.remove('collapsed-state');
+                }
+            });
         }
 
         // Get summary text for selected options
