@@ -4425,21 +4425,23 @@
             margin-top: 8px;
         }
 
-        /* Tiage's Ansatz Button in Quality Block */
+        /* Tiage's Synthese Button in Quality Block */
         .tiage-ansatz-btn {
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 6px;
-            padding: 8px 16px;
+            padding: 12px 20px;
             margin-top: 10px;
             background: var(--bg-card);
             border: 1px solid var(--border);
-            border-radius: 6px;
+            border-radius: 4px;
             color: var(--text-secondary);
-            font-size: 13px;
+            font-size: 14px;
             cursor: pointer;
             transition: all 0.2s ease;
+            min-width: 70px;
+            min-height: 60px;
         }
 
         .tiage-ansatz-btn:hover {
@@ -5754,11 +5756,11 @@
         </div>
     </div>
 
-    <!-- Tiage's Ansatz Modal -->
+    <!-- Tiage's Synthese Modal -->
     <div class="modal-overlay" id="pathosLogosModal" onclick="closePathosLogosModal(event)">
         <div class="modal" onclick="event.stopPropagation()" style="max-width: 700px; max-height: 85vh; overflow-y: auto;">
             <div class="modal-header">
-                <span class="modal-title" id="pathosLogosModalTitle">Tiage's Ansatz</span>
+                <span class="modal-title" id="pathosLogosModalTitle">Tiage's Synthese</span>
                 <button class="modal-close" onclick="closePathosLogosModal()">&times;</button>
             </div>
             <div class="modal-body" style="padding: 20px;">
@@ -6083,9 +6085,9 @@
                         <span id="desktopCirclePercentage">0%</span>
                     </div>
                     <div class="desktop-score-label">Beziehungsqualität</div>
-                    <button class="tiage-ansatz-btn" id="desktopTiageAnsatzBtn" onclick="openPathosLogosModal('pathos')" title="Tiage's Ansatz - Pathos & Logos">
+                    <button class="tiage-ansatz-btn" id="desktopTiageAnsatzBtn" onclick="openPathosLogosModal('pathos')" title="Tiage's Synthese - Pathos & Logos">
                         <span class="tiage-ansatz-icon">💡</span>
-                        <span class="tiage-ansatz-text">Tiage's Ansatz</span>
+                        <span class="tiage-ansatz-text">Tiage's Synthese</span>
                     </button>
                 </div>
             </div>
@@ -6414,9 +6416,9 @@
             <div class="score-circle-container">
                 <div class="score-circle" id="mobileScoreCircle" onclick="openProContraModal()" style="cursor: pointer;" title="Klicken für Pro & Contra Details">0%</div>
                 <p class="score-label">Beziehungsqualität <span class="info-icon" onclick="event.stopPropagation(); openHelpModal()" title="Hilfe zur Beziehungsqualität" style="cursor: pointer; font-size: 12px; width: 18px; height: 18px; display: inline-flex; align-items: center; justify-content: center; vertical-align: middle; margin-left: 4px;">?</span></p>
-                <button class="tiage-ansatz-btn" id="mobileTiageAnsatzBtn" onclick="openPathosLogosModal('pathos')" title="Tiage's Ansatz - Pathos & Logos">
+                <button class="tiage-ansatz-btn" id="mobileTiageAnsatzBtn" onclick="openPathosLogosModal('pathos')" title="Tiage's Synthese - Pathos & Logos">
                     <span class="tiage-ansatz-icon">💡</span>
-                    <span class="tiage-ansatz-text">Tiage's Ansatz</span>
+                    <span class="tiage-ansatz-text">Tiage's Synthese</span>
                 </button>
                 <div id="mobileScoreNote" class="score-note" style="margin-top: 8px; font-size: 13px; color: var(--text-secondary); font-style: italic; text-align: center; max-width: 280px; line-height: 1.4; margin-left: auto; margin-right: auto;"></div>
                 <!-- Pirsig Quality Quote Blocks (Pathos/Logos summary) -->
@@ -14663,7 +14665,7 @@
             });
 
             if (type === 'pathos') {
-                titleEl.textContent = "Tiage's Ansatz";
+                titleEl.textContent = "Tiage's Synthese";
                 iconEl.textContent = '🔥';
                 categoryEl.textContent = 'Dynamische Qualität (Pirsig)';
                 subtitleEl.textContent = 'Pathos – Emotionale Resonanz';
@@ -14672,7 +14674,7 @@
                 pathosBtn.style.background = 'rgba(255,255,255,0.1)';
                 pathosBtn.style.color = 'var(--text-primary)';
             } else if (type === 'logos') {
-                titleEl.textContent = "Tiage's Ansatz";
+                titleEl.textContent = "Tiage's Synthese";
                 iconEl.textContent = '🧠';
                 categoryEl.textContent = 'Statische Qualität (Pirsig)';
                 subtitleEl.textContent = 'Logos – Rationale Struktur';
