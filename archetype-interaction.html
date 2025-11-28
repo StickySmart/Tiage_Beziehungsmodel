@@ -3949,6 +3949,121 @@
             transform: rotate(-90deg);
         }
 
+        /* Desktop Expandable Factor Buttons */
+        .desktop-factor-item {
+            background: rgba(255,255,255,0.03);
+            border-radius: 8px;
+            transition: background 0.2s;
+            overflow: hidden;
+        }
+
+        .desktop-factor-item:hover {
+            background: rgba(255,255,255,0.08);
+        }
+
+        .desktop-factor-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            padding: 8px;
+            cursor: pointer;
+        }
+
+        .desktop-factor-header .factor-info {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .desktop-factor-header .factor-title {
+            font-size: var(--font-sm);
+            color: var(--text-primary);
+        }
+
+        .desktop-factor-header .factor-subtitle {
+            font-size: var(--font-xs);
+            color: var(--text-muted);
+            font-style: italic;
+        }
+
+        .desktop-factor-header .factor-score {
+            font-size: var(--font-base);
+            font-weight: 700;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .desktop-factor-header .factor-toggle {
+            font-size: 10px;
+            color: var(--text-muted);
+            transition: transform 0.3s ease;
+        }
+
+        .desktop-factor-item.collapsed .factor-toggle {
+            transform: rotate(-90deg);
+        }
+
+        .desktop-factor-content {
+            max-height: 500px;
+            overflow: hidden;
+            transition: max-height 0.3s ease, opacity 0.3s ease, padding 0.3s ease;
+            opacity: 1;
+            padding: 0 12px 12px 12px;
+            border-top: 1px solid var(--border);
+            margin-top: 4px;
+        }
+
+        .desktop-factor-item.collapsed .desktop-factor-content {
+            max-height: 0;
+            opacity: 0;
+            padding: 0 12px;
+            border-top: none;
+            margin-top: 0;
+        }
+
+        .desktop-factor-content .factor-explanation {
+            font-size: var(--font-sm);
+            color: var(--text-secondary);
+            margin-bottom: 12px;
+            line-height: 1.5;
+            padding-top: 8px;
+        }
+
+        .desktop-factor-content .factor-meaning-title {
+            font-size: var(--font-sm);
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+        }
+
+        .desktop-factor-content .factor-meaning-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            font-size: var(--font-xs);
+        }
+
+        .desktop-factor-content .factor-meaning-list li {
+            color: var(--text-secondary);
+            padding: 6px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            line-height: 1.4;
+        }
+
+        .desktop-factor-content .factor-meaning-list li:last-child {
+            border-bottom: none;
+        }
+
+        /* Desktop Factor Fold/Unfold Toolbar */
+        .desktop-factor-toolbar {
+            display: flex;
+            justify-content: flex-end;
+            padding: 8px 0;
+            margin-bottom: 4px;
+        }
+
         /* Toggle Buttons for Status (Gelebt/Interessiert) */
         .status-toggle-group {
             display: flex;
@@ -5916,35 +6031,85 @@
             </div>
             <div class="result-percentage" id="resultPercentage" style="display: none;">0%</div>
 
-            <!-- 4-Factor Breakdown with Sublabels -->
-            <div id="desktopFactorBreakdown" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; margin-top: 15px; padding-top: 15px; border-top: 1px solid var(--border);">
-                <div onclick="openFactorModal('archetyp', 'desktop')" style="display: flex; justify-content: space-between; align-items: flex-start; padding: 8px; background: rgba(255,255,255,0.03); border-radius: 8px; cursor: pointer; transition: background 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.08)'" onmouseout="this.style.background='rgba(255,255,255,0.03)'">
-                    <div style="display: flex; flex-direction: column; gap: 2px;">
-                        <span style="font-size: var(--font-sm); color: var(--text-primary);">Archetyp-Übereinstimmung</span>
-                        <span style="font-size: var(--font-xs); color: var(--text-muted); font-style: italic;">(Beziehungsphilosophie - Verstand&Logos)</span>
+            <!-- 4-Factor Breakdown with Expandable Content -->
+            <div class="desktop-factor-toolbar" style="margin-top: 15px; padding-top: 15px; border-top: 1px solid var(--border);">
+                <button class="fold-unfold-btn collapsed-state" id="desktopFactorFoldBtn" onclick="toggleAllDesktopFactors()">
+                    <span class="fold-unfold-icon">▶</span>
+                    <span class="fold-unfold-text">Unfold</span>
+                </button>
+            </div>
+            <div id="desktopFactorBreakdown" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px;">
+                <!-- Archetyp-Übereinstimmung -->
+                <div class="desktop-factor-item collapsed" data-factor="archetyp">
+                    <div class="desktop-factor-header" onclick="toggleDesktopFactor(this.parentElement)">
+                        <div class="factor-info">
+                            <span class="factor-title">Archetyp-Übereinstimmung</span>
+                            <span class="factor-subtitle">(Beziehungsphilosophie - Verstand&Logos)</span>
+                        </div>
+                        <div class="factor-score">
+                            <span id="desktopFactorArchetyp">0%</span>
+                            <span class="factor-toggle">▼</span>
+                        </div>
                     </div>
-                    <span id="desktopFactorArchetyp" style="font-size: var(--font-base); font-weight: 700; color: var(--primary);">0%</span>
+                    <div class="desktop-factor-content">
+                        <div class="factor-explanation" id="desktopFactorArchetypExplanation"></div>
+                        <div class="factor-meaning-title">Was bedeutet das?</div>
+                        <ul class="factor-meaning-list" id="desktopFactorArchetypMeaning"></ul>
+                    </div>
                 </div>
-                <div onclick="openFactorModal('dominanz', 'desktop')" style="display: flex; justify-content: space-between; align-items: flex-start; padding: 8px; background: rgba(255,255,255,0.03); border-radius: 8px; cursor: pointer; transition: background 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.08)'" onmouseout="this.style.background='rgba(255,255,255,0.03)'">
-                    <div style="display: flex; flex-direction: column; gap: 2px;">
-                        <span style="font-size: var(--font-sm); color: var(--text-primary);">Dominanz-Harmonie</span>
-                        <span style="font-size: var(--font-xs); color: var(--text-muted); font-style: italic;">(Emotionale Dynamik - Gefühl&Pathos)</span>
+                <!-- Dominanz-Harmonie -->
+                <div class="desktop-factor-item collapsed" data-factor="dominanz">
+                    <div class="desktop-factor-header" onclick="toggleDesktopFactor(this.parentElement)">
+                        <div class="factor-info">
+                            <span class="factor-title">Dominanz-Harmonie</span>
+                            <span class="factor-subtitle">(Emotionale Dynamik - Gefühl&Pathos)</span>
+                        </div>
+                        <div class="factor-score">
+                            <span id="desktopFactorDominanz">0%</span>
+                            <span class="factor-toggle">▼</span>
+                        </div>
                     </div>
-                    <span id="desktopFactorDominanz" style="font-size: var(--font-base); font-weight: 700; color: var(--primary);">0%</span>
+                    <div class="desktop-factor-content">
+                        <div class="factor-explanation" id="desktopFactorDominanzExplanation"></div>
+                        <div class="factor-meaning-title">Was bedeutet das?</div>
+                        <ul class="factor-meaning-list" id="desktopFactorDominanzMeaning"></ul>
+                    </div>
                 </div>
-                <div onclick="openFactorModal('orientierung', 'desktop')" style="display: flex; justify-content: space-between; align-items: flex-start; padding: 8px; background: rgba(255,255,255,0.03); border-radius: 8px; cursor: pointer; transition: background 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.08)'" onmouseout="this.style.background='rgba(255,255,255,0.03)'">
-                    <div style="display: flex; flex-direction: column; gap: 2px;">
-                        <span style="font-size: var(--font-sm); color: var(--text-primary);">Orientierungs-Kompatibilität</span>
-                        <span style="font-size: var(--font-xs); color: var(--text-muted); font-style: italic;">(Körperliche Anziehung - Gefühl&Pathos)</span>
+                <!-- Orientierungs-Kompatibilität -->
+                <div class="desktop-factor-item collapsed" data-factor="orientierung">
+                    <div class="desktop-factor-header" onclick="toggleDesktopFactor(this.parentElement)">
+                        <div class="factor-info">
+                            <span class="factor-title">Orientierungs-Kompatibilität</span>
+                            <span class="factor-subtitle">(Körperliche Anziehung - Gefühl&Pathos)</span>
+                        </div>
+                        <div class="factor-score">
+                            <span id="desktopFactorOrientierung">0%</span>
+                            <span class="factor-toggle">▼</span>
+                        </div>
                     </div>
-                    <span id="desktopFactorOrientierung" style="font-size: var(--font-base); font-weight: 700; color: var(--primary);">0%</span>
+                    <div class="desktop-factor-content">
+                        <div class="factor-explanation" id="desktopFactorOrientierungExplanation"></div>
+                        <div class="factor-meaning-title">Was bedeutet das?</div>
+                        <ul class="factor-meaning-list" id="desktopFactorOrientierungMeaning"></ul>
+                    </div>
                 </div>
-                <div onclick="openFactorModal('geschlecht', 'desktop')" style="display: flex; justify-content: space-between; align-items: flex-start; padding: 8px; background: rgba(255,255,255,0.03); border-radius: 8px; cursor: pointer; transition: background 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.08)'" onmouseout="this.style.background='rgba(255,255,255,0.03)'">
-                    <div style="display: flex; flex-direction: column; gap: 2px;">
-                        <span style="font-size: var(--font-sm); color: var(--text-primary);">Geschlechts-Attraktion</span>
-                        <span style="font-size: var(--font-xs); color: var(--text-muted); font-style: italic;">(Gender-Chemie - Gefühl&Pathos)</span>
+                <!-- Geschlechts-Attraktion -->
+                <div class="desktop-factor-item collapsed" data-factor="geschlecht">
+                    <div class="desktop-factor-header" onclick="toggleDesktopFactor(this.parentElement)">
+                        <div class="factor-info">
+                            <span class="factor-title">Geschlechts-Attraktion</span>
+                            <span class="factor-subtitle">(Gender-Chemie - Gefühl&Pathos)</span>
+                        </div>
+                        <div class="factor-score">
+                            <span id="desktopFactorGeschlecht">0%</span>
+                            <span class="factor-toggle">▼</span>
+                        </div>
                     </div>
-                    <span id="desktopFactorGeschlecht" style="font-size: var(--font-base); font-weight: 700; color: var(--primary);">0%</span>
+                    <div class="desktop-factor-content">
+                        <div class="factor-explanation" id="desktopFactorGeschlechtExplanation"></div>
+                        <div class="factor-meaning-title">Was bedeutet das?</div>
+                        <ul class="factor-meaning-list" id="desktopFactorGeschlechtMeaning"></ul>
+                    </div>
                 </div>
             </div>
 
@@ -8874,6 +9039,132 @@
                 text.textContent = 'Fold';
                 btn.classList.remove('collapsed-state');
             }
+        }
+
+        // Track desktop factor fold/unfold state
+        let allDesktopFactorsCollapsed = true;
+
+        // Toggle single desktop factor expand/collapse
+        function toggleDesktopFactor(element) {
+            const wasCollapsed = element.classList.contains('collapsed');
+            element.classList.toggle('collapsed');
+            // Update the fold/unfold button state based on current state
+            updateDesktopFactorFoldButton();
+            // Update content when expanding
+            if (wasCollapsed) {
+                updateDesktopFactorContent();
+            }
+        }
+
+        // Toggle all desktop factors collapse/expand at once
+        function toggleAllDesktopFactors() {
+            const allFactors = document.querySelectorAll('.desktop-factor-item');
+            const btn = document.getElementById('desktopFactorFoldBtn');
+            const icon = btn.querySelector('.fold-unfold-icon');
+            const text = btn.querySelector('.fold-unfold-text');
+
+            allDesktopFactorsCollapsed = !allDesktopFactorsCollapsed;
+
+            allFactors.forEach(factor => {
+                if (allDesktopFactorsCollapsed) {
+                    factor.classList.add('collapsed');
+                } else {
+                    factor.classList.remove('collapsed');
+                }
+            });
+
+            // Update button appearance
+            if (allDesktopFactorsCollapsed) {
+                icon.textContent = '▶';
+                text.textContent = 'Unfold';
+                btn.classList.add('collapsed-state');
+            } else {
+                icon.textContent = '▼';
+                text.textContent = 'Fold';
+                btn.classList.remove('collapsed-state');
+            }
+
+            // Update content when expanding
+            if (!allDesktopFactorsCollapsed) {
+                updateDesktopFactorContent();
+            }
+        }
+
+        // Update fold button based on current state of factors
+        function updateDesktopFactorFoldButton() {
+            const allFactors = document.querySelectorAll('.desktop-factor-item');
+            const btn = document.getElementById('desktopFactorFoldBtn');
+            if (!btn) return;
+
+            const icon = btn.querySelector('.fold-unfold-icon');
+            const text = btn.querySelector('.fold-unfold-text');
+
+            // Check if all are collapsed
+            const allCollapsed = Array.from(allFactors).every(f => f.classList.contains('collapsed'));
+            allDesktopFactorsCollapsed = allCollapsed;
+
+            if (allCollapsed) {
+                icon.textContent = '▶';
+                text.textContent = 'Unfold';
+                btn.classList.add('collapsed-state');
+            } else {
+                icon.textContent = '▼';
+                text.textContent = 'Fold';
+                btn.classList.remove('collapsed-state');
+            }
+        }
+
+        // Update all desktop factor expandable content
+        function updateDesktopFactorContent() {
+            // Check if factorExplanations is defined (it's defined later in the file)
+            if (typeof factorExplanations === 'undefined') return;
+
+            const ich = mobileIchArchetype;
+            const partner = mobilePartnerArchetype;
+            const dimensions = personDimensions;
+
+            const factorTypes = ['archetyp', 'dominanz', 'orientierung', 'geschlecht'];
+
+            factorTypes.forEach(factorType => {
+                const factor = factorExplanations[factorType];
+                if (!factor) return;
+
+                // Get score
+                const prefix = 'desktopFactor';
+                let score = 0;
+                if (factorType === 'archetyp') {
+                    score = parseInt(document.getElementById(prefix + 'Archetyp').textContent) || 0;
+                } else if (factorType === 'dominanz') {
+                    score = parseInt(document.getElementById(prefix + 'Dominanz').textContent) || 0;
+                } else if (factorType === 'orientierung') {
+                    score = parseInt(document.getElementById(prefix + 'Orientierung').textContent) || 0;
+                } else if (factorType === 'geschlecht') {
+                    score = parseInt(document.getElementById(prefix + 'Geschlecht').textContent) || 0;
+                }
+
+                // Update explanation
+                const explanationId = prefix + factorType.charAt(0).toUpperCase() + factorType.slice(1) + 'Explanation';
+                const explanationEl = document.getElementById(explanationId);
+                if (explanationEl) {
+                    explanationEl.textContent = factor.getExplanation(ich, partner, score, dimensions);
+                }
+
+                // Update meaning list
+                const meaningId = prefix + factorType.charAt(0).toUpperCase() + factorType.slice(1) + 'Meaning';
+                const meaningList = document.getElementById(meaningId);
+                if (meaningList) {
+                    meaningList.innerHTML = '';
+                    factor.getMeaning(score, ich, partner).forEach(item => {
+                        const li = document.createElement('li');
+                        if (typeof item === 'object' && item.title) {
+                            li.innerHTML = `<strong>${item.title}</strong>${item.desc ? ` – ${item.desc}` : ''}`;
+                        } else {
+                            li.textContent = item;
+                        }
+                        meaningList.appendChild(li);
+                    });
+                }
+            });
         }
 
         // Get summary text for selected options
@@ -12343,6 +12634,9 @@
             if (factorDominanz) factorDominanz.textContent = qualityBreakdown.dominanz + '%';
             if (factorOrientierung) factorOrientierung.textContent = qualityBreakdown.orientierung + '%';
             if (factorGeschlecht) factorGeschlecht.textContent = qualityBreakdown.geschlecht + '%';
+
+            // Update expandable desktop factor content
+            updateDesktopFactorContent();
 
             // Update result bar
             const percentage = document.getElementById('resultPercentage');
