@@ -5405,7 +5405,7 @@
         <div class="fold-unfold-toolbar">
             <button class="fold-unfold-btn" id="foldUnfoldAllBtn" onclick="toggleAllDimensionsCollapse()" title="Fold/Unfold all fields">
                 <span class="fold-unfold-icon">▼</span>
-                <span class="fold-unfold-text">Unfold all</span>
+                <span class="fold-unfold-text">Unfold</span>
             </button>
         </div>
         <!-- Two Column Grid -->
@@ -8604,11 +8604,11 @@
             // Update button appearance
             if (allDimensionsCollapsed) {
                 icon.textContent = '▶';
-                text.textContent = 'Unfold all';
+                text.textContent = 'Unfold';
                 btn.classList.add('collapsed-state');
             } else {
                 icon.textContent = '▼';
-                text.textContent = 'Fold all';
+                text.textContent = 'Fold';
                 btn.classList.remove('collapsed-state');
             }
         }
