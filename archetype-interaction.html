@@ -14741,14 +14741,26 @@
                 // Restore ICH
                 if (selection.ich) {
                     mobileIchArchetype = selection.ich.archetyp;
+                    currentArchetype = selection.ich.archetyp;
                     document.getElementById('mobileIchSelect').value = selection.ich.archetyp;
+                    const ichSelect = document.getElementById('ichSelect');
+                    if (ichSelect) ichSelect.value = selection.ich.archetyp;
 
                     if (selection.ich.geschlecht) {
                         mobilePersonDimensions.ich.geschlecht = selection.ich.geschlecht;
+                        personDimensions.ich.geschlecht = selection.ich.geschlecht;
+                        // Mobile radio
                         const radio = document.querySelector(`input[name="mobile-ich-geschlecht"][value="${selection.ich.geschlecht}"]`);
                         if (radio) {
                             radio.checked = true;
                             radio.closest('.compact-dimension').classList.remove('needs-selection');
+                        }
+                        // Desktop radio
+                        const desktopRadio = document.querySelector(`input[name="ich-geschlecht-new"][value="${selection.ich.geschlecht}"]`);
+                        if (desktopRadio) {
+                            desktopRadio.checked = true;
+                            const dim = desktopRadio.closest('.compact-dimension');
+                            if (dim) dim.classList.remove('needs-selection');
                         }
                     }
 
@@ -14902,14 +14914,26 @@
                 // Restore PARTNER
                 if (selection.partner) {
                     mobilePartnerArchetype = selection.partner.archetyp;
+                    selectedPartner = selection.partner.archetyp;
                     document.getElementById('mobilePartnerSelect').value = selection.partner.archetyp;
+                    const partnerSelect = document.getElementById('partnerSelect');
+                    if (partnerSelect) partnerSelect.value = selection.partner.archetyp;
 
                     if (selection.partner.geschlecht) {
                         mobilePersonDimensions.partner.geschlecht = selection.partner.geschlecht;
+                        personDimensions.partner.geschlecht = selection.partner.geschlecht;
+                        // Mobile radio
                         const radio = document.querySelector(`input[name="mobile-partner-geschlecht"][value="${selection.partner.geschlecht}"]`);
                         if (radio) {
                             radio.checked = true;
                             radio.closest('.compact-dimension').classList.remove('needs-selection');
+                        }
+                        // Desktop radio
+                        const desktopRadio = document.querySelector(`input[name="partner-geschlecht-new"][value="${selection.partner.geschlecht}"]`);
+                        if (desktopRadio) {
+                            desktopRadio.checked = true;
+                            const dim = desktopRadio.closest('.compact-dimension');
+                            if (dim) dim.classList.remove('needs-selection');
                         }
                     }
 
@@ -15074,6 +15098,11 @@
                 if (typeof syncOrientierungUI === 'function') {
                     syncOrientierungUI('ich');
                     syncOrientierungUI('partner');
+                }
+
+                // Update comparison view with loaded data
+                if (typeof updateComparisonView === 'function') {
+                    updateComparisonView();
                 }
 
                 return true;
