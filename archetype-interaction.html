@@ -25,14 +25,14 @@
             --warning: #f39c12;
             --danger: #e74c3c;
 
-            /* Responsive Typography with clamp() */
-            --font-xs: clamp(0.75rem, 1.2vw + 0.5rem, 0.9rem);
-            --font-sm: clamp(0.85rem, 1.3vw + 0.5rem, 1rem);
-            --font-base: clamp(0.95rem, 1.6vw + 0.55rem, 1.15rem);
-            --font-md: clamp(1.05rem, 1.9vw + 0.55rem, 1.3rem);
-            --font-lg: clamp(1.25rem, 2.6vw + 0.55rem, 1.65rem);
-            --font-xl: clamp(1.55rem, 3.1vw + 0.55rem, 2.25rem);
-            --font-label: clamp(0.8rem, 1.1vw + 0.45rem, 0.95rem);
+            /* Responsive Typography with clamp() - Desktop optimiert */
+            --font-xs: clamp(0.75rem, 1.2vw + 0.5rem, 1.05rem);
+            --font-sm: clamp(0.85rem, 1.3vw + 0.5rem, 1.15rem);
+            --font-base: clamp(0.95rem, 1.6vw + 0.55rem, 1.35rem);
+            --font-md: clamp(1.05rem, 1.9vw + 0.55rem, 1.5rem);
+            --font-lg: clamp(1.25rem, 2.6vw + 0.55rem, 1.9rem);
+            --font-xl: clamp(1.55rem, 3.1vw + 0.55rem, 2.6rem);
+            --font-label: clamp(0.8rem, 1.1vw + 0.45rem, 1.1rem);
 
             /* Responsive Bar Height */
             --bar-height: clamp(16px, 1.5vw + 12px, 22px);
@@ -2822,6 +2822,18 @@
             flex: 0 0 auto;
             min-width: 200px;
         }
+        /* Desktop: Wider modal without scrolling, ensure red border is fully visible */
+        @media (min-width: 769px) {
+            .age-verification-overlay {
+                padding: 40px;
+            }
+            .age-verification-modal {
+                max-width: 480px;
+                max-height: calc(100vh - 80px);
+                overflow-y: auto;
+                margin: auto;
+            }
+        }
         @media (max-width: 768px) {
             .age-verification-ad-container {
                 flex-direction: column;
@@ -3907,6 +3919,23 @@
             display: block;
         }
 
+        /* Blinking header when collapsed AND incomplete selection */
+        @keyframes needsAttentionHeader {
+            0%, 100% {
+                opacity: 1;
+                text-shadow: 0 0 0 transparent;
+            }
+            50% {
+                opacity: 0.6;
+                text-shadow: 0 0 8px rgba(243, 156, 18, 0.5);
+            }
+        }
+
+        .compact-dimension.collapsible-dimension.collapsed.needs-selection .compact-dimension-label {
+            animation: needsAttentionHeader 1.5s ease-in-out infinite;
+            color: var(--warning);
+        }
+
         /* Unified Fold/Unfold Toolbar - Sticky */
         .fold-unfold-toolbar {
             position: sticky;
@@ -4054,6 +4083,27 @@
 
         .desktop-factor-content .factor-meaning-list li:last-child {
             border-bottom: none;
+
+        /* Desktop Selection Info Message */
+        .selection-info-message {
+            color: #ff4444;
+            font-size: 14px;
+            font-weight: 500;
+            text-align: center;
+            padding: 8px 16px;
+            margin: 0;
+            display: none;
+        }
+
+        .selection-info-message.visible {
+            display: block;
+        }
+
+        /* Only show on desktop */
+        @media (max-width: 600px) {
+            .selection-info-message {
+                display: none !important;
+            }
         }
 
         /* Toggle Buttons for Status (Gelebt/Interessiert) */
@@ -4522,6 +4572,26 @@
                 min-height: 100vh;
                 padding-top: 60px;
                 position: relative;
+            }
+
+            /* Mobile Fold/Unfold Toolbar - Sticky */
+            .mobile-fold-toolbar {
+                position: sticky;
+                top: 60px;
+                z-index: 99;
+                justify-content: flex-end;
+                padding: 8px 0;
+                margin-bottom: 10px;
+                background: linear-gradient(180deg, var(--bg-primary) 0%, var(--bg-primary) 80%, transparent 100%);
+            }
+
+            .mobile-fold-toolbar .fold-unfold-btn {
+                padding: 6px 12px;
+                font-size: 12px;
+            }
+
+            .mobile-fold-toolbar .fold-unfold-icon {
+                font-size: 9px;
             }
 
             /* Individual Pages */
@@ -5761,6 +5831,9 @@
         <button class="help-btn" onclick="openHelpModal()" title="Hilfe & Dokumentation">?</button>
     </header>
 
+    <!-- Desktop Selection Info Message -->
+    <div class="selection-info-message" id="desktopSelectionInfo"></div>
+
     <!-- NEW: Side-by-Side Comparison Layout (Desktop) -->
     <div class="comparison-container desktop-mode" id="comparisonView">
         <!-- Unified Fold/Unfold Button -->
@@ -6108,6 +6181,14 @@
         <!-- PAGE 1: Auswahl -->
         <div class="mobile-page active" id="mobilePage1" data-page="1">
             <h2 style="text-align: center; color: var(--text-primary); margin-bottom: 20px; font-size: var(--font-lg);">Beziehungsqualität analysieren</h2>
+
+            <!-- Mobile Fold/Unfold Button -->
+            <div class="fold-unfold-toolbar mobile-fold-toolbar" style="display: flex; gap: 10px; align-items: center;">
+                <button class="fold-unfold-btn" id="mobileFoldUnfoldBtn" onclick="toggleAllDimensionsCollapse()" title="Fold/Unfold all fields">
+                    <span class="fold-unfold-icon">▼</span>
+                    <span class="fold-unfold-text">Unfold</span>
+                </button>
+            </div>
 
             <!-- ICH Auswahl -->
             <div style="background: var(--bg-card); border-radius: 16px; border: 1px solid var(--border); border-top: 3px solid var(--success); padding: 15px; margin-bottom: 15px;">
@@ -9002,9 +9083,10 @@
         function toggleAllDimensionsCollapse() {
             const allDimensions = document.querySelectorAll('.collapsible-dimension');
             const allFactors = document.querySelectorAll('.desktop-factor-item');
-            const btn = document.getElementById('foldUnfoldAllBtn');
-            const icon = btn.querySelector('.fold-unfold-icon');
-            const text = btn.querySelector('.fold-unfold-text');
+            
+            // Get both desktop and mobile buttons
+            const desktopBtn = document.getElementById('foldUnfoldAllBtn');
+            const mobileBtn = document.getElementById('mobileFoldUnfoldBtn');
 
             allDimensionsCollapsed = !allDimensionsCollapsed;
 
@@ -9026,16 +9108,22 @@
                 }
             });
 
-            // Update button appearance
-            if (allDimensionsCollapsed) {
-                icon.textContent = '▶';
-                text.textContent = 'Unfold';
-                btn.classList.add('collapsed-state');
-            } else {
-                icon.textContent = '▼';
-                text.textContent = 'Fold';
-                btn.classList.remove('collapsed-state');
-            }
+            // Update both buttons' appearance
+            const buttons = [desktopBtn, mobileBtn].filter(btn => btn !== null);
+            buttons.forEach(btn => {
+                const icon = btn.querySelector('.fold-unfold-icon');
+                const text = btn.querySelector('.fold-unfold-text');
+
+                if (allDimensionsCollapsed) {
+                    icon.textContent = '▶';
+                    text.textContent = 'Unfold';
+                    btn.classList.add('collapsed-state');
+                } else {
+                    icon.textContent = '▼';
+                    text.textContent = 'Fold';
+                    btn.classList.remove('collapsed-state');
+                }
+            });
 
             // Update desktop factor content when expanding
             if (!allDimensionsCollapsed) {
@@ -9059,11 +9147,8 @@
         function updateDesktopFactorFoldButton() {
             const allDimensions = document.querySelectorAll('.collapsible-dimension');
             const allFactors = document.querySelectorAll('.desktop-factor-item');
-            const btn = document.getElementById('foldUnfoldAllBtn');
-            if (!btn) return;
-
-            const icon = btn.querySelector('.fold-unfold-icon');
-            const text = btn.querySelector('.fold-unfold-text');
+            const desktopBtn = document.getElementById('foldUnfoldAllBtn');
+            const mobileBtn = document.getElementById('mobileFoldUnfoldBtn');
 
             // Check if all are collapsed (both dimensions and factors)
             const allDimensionsCollapsedCheck = Array.from(allDimensions).every(d => d.classList.contains('collapsed'));
@@ -9072,15 +9157,22 @@
 
             allDimensionsCollapsed = allCollapsed;
 
-            if (allCollapsed) {
-                icon.textContent = '▶';
-                text.textContent = 'Unfold';
-                btn.classList.add('collapsed-state');
-            } else {
-                icon.textContent = '▼';
-                text.textContent = 'Fold';
-                btn.classList.remove('collapsed-state');
-            }
+            // Update both buttons
+            const buttons = [desktopBtn, mobileBtn].filter(btn => btn !== null);
+            buttons.forEach(btn => {
+                const icon = btn.querySelector('.fold-unfold-icon');
+                const text = btn.querySelector('.fold-unfold-text');
+
+                if (allCollapsed) {
+                    icon.textContent = '▶';
+                    text.textContent = 'Unfold';
+                    btn.classList.add('collapsed-state');
+                } else {
+                    icon.textContent = '▼';
+                    text.textContent = 'Fold';
+                    btn.classList.remove('collapsed-state');
+                }
+            });
         }
 
         // Update all desktop factor expandable content
@@ -11060,6 +11152,43 @@
             return result;
         }
 
+        // ========================================
+        // Desktop Selection Info Message
+        // ========================================
+        function updateSelectionInfoMessage() {
+            const infoElement = document.getElementById('desktopSelectionInfo');
+            if (!infoElement) return;
+
+            const missing = [];
+
+            // Check ICH
+            const ichMissing = [];
+            if (!personDimensions.ich.geschlecht) ichMissing.push('Geschlecht');
+            if (!hasAnyDominanzSelected('ich')) ichMissing.push('Dominanz');
+            if (!hasAnyOrientierungSelected('ich')) ichMissing.push('Orientierung');
+            if (ichMissing.length > 0) {
+                missing.push('DU: ' + ichMissing.join(', '));
+            }
+
+            // Check Partner
+            const partnerMissing = [];
+            if (!personDimensions.partner.geschlecht) partnerMissing.push('Geschlecht');
+            if (!hasAnyDominanzSelected('partner')) partnerMissing.push('Dominanz');
+            if (!hasAnyOrientierungSelected('partner')) partnerMissing.push('Orientierung');
+            if (partnerMissing.length > 0) {
+                missing.push('PARTNER: ' + partnerMissing.join(', '));
+            }
+
+            // Update display
+            if (missing.length > 0) {
+                infoElement.textContent = 'Fehlende Auswahl - ' + missing.join(' | ');
+                infoElement.classList.add('visible');
+            } else {
+                infoElement.textContent = '';
+                infoElement.classList.remove('visible');
+            }
+        }
+
         // Handle checkbox change for orientierung multi-select (Desktop)
         function handleOrientierungMultiChange(person, orientierungType, isChecked) {
             if (isChecked) {
@@ -12702,6 +12831,8 @@
             const interaction = data.interactions?.[interactionKey] || {};
             drawRadarChart(interaction.scores || {}, partnerArch?.color || '#457B9D');
 
+            // Update Desktop Selection Info Message
+            updateSelectionInfoMessage();
         }
 
         function updateExpandableCategoryBars(categories) {
