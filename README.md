@@ -89,7 +89,7 @@ Tiage_Beziehungsmodel/
 
 ## Autor
 
-Ti-Age
+StickySmart (Tiage)
 
 ## Lizenz
 
