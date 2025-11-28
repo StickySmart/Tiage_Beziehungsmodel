@@ -5566,7 +5566,7 @@
                         </div>
                     </div>
                     <!-- Quality Note moved here for more space -->
-                    <div id="desktopScoreNote" class="score-note" style="font-size: 14px; color: var(--text-secondary); font-style: italic; text-align: center; line-height: 1.5; margin-top: 8px;"></div>
+                    <div id="desktopScoreNote" class="score-note" style="font-size: 16px; color: var(--text-secondary); font-style: italic; text-align: center; line-height: 1.5; margin-top: 8px;"></div>
                     <!-- Pirsig Quality Quote Blocks (Pathos/Logos summary) -->
                     <div id="desktopPirsigQuoteBlocks" style="margin-top: 12px; text-align: left;"></div>
                 </div>
@@ -5615,13 +5615,6 @@
                         <span style="font-size: var(--font-xs); color: var(--text-muted); font-style: italic;">(Gender-Chemie - Gefühl/Pathos)</span>
                     </div>
                     <span id="desktopFactorGeschlecht" style="font-size: var(--font-base); font-weight: 700; color: var(--primary);">0%</span>
-                </div>
-            </div>
-
-            <!-- Pathos & Logos - Always Visible -->
-            <div id="pathosLogosInline" style="margin-top: 15px; padding-top: 15px; border-top: 1px solid var(--border);">
-                <div id="pathosLogosContent">
-                    <!-- Will be filled dynamically -->
                 </div>
             </div>
 
@@ -5859,7 +5852,7 @@
             <div class="score-circle-container">
                 <div class="score-circle" id="mobileScoreCircle" onclick="openProContraModal()" style="cursor: pointer;" title="Klicken für Pro & Contra Details">0%</div>
                 <p class="score-label">Beziehungsqualität <span class="info-icon" onclick="event.stopPropagation(); openHelpModal()" title="Hilfe zur Beziehungsqualität" style="cursor: pointer; font-size: 12px; width: 18px; height: 18px; display: inline-flex; align-items: center; justify-content: center; vertical-align: middle; margin-left: 4px;">?</span></p>
-                <div id="mobileScoreNote" class="score-note" style="margin-top: 8px; font-size: 11px; color: var(--text-secondary); font-style: italic; text-align: center; max-width: 280px; line-height: 1.4; margin-left: auto; margin-right: auto;"></div>
+                <div id="mobileScoreNote" class="score-note" style="margin-top: 8px; font-size: 13px; color: var(--text-secondary); font-style: italic; text-align: center; max-width: 280px; line-height: 1.4; margin-left: auto; margin-right: auto;"></div>
                 <!-- Pirsig Quality Quote Blocks (Pathos/Logos summary) -->
                 <div id="mobilePirsigQuoteBlocks" style="margin-top: 10px; text-align: left; max-width: 280px; margin-left: auto; margin-right: auto;"></div>
             </div>
@@ -5894,11 +5887,6 @@
                     </div>
                     <span class="score-factor-value" id="mobileFactorGeschlecht">0%</span>
                 </div>
-            </div>
-
-            <!-- Pathos & Logos - Always Visible -->
-            <div id="mobilePathosLogosContent" style="margin-top: 15px; padding: 15px; background: var(--bg-card); border-radius: 12px;">
-                <!-- Will be filled dynamically -->
             </div>
 
             <button class="btn-primary-mobile" onclick="openProContraModal()">Pro & Contra →</button>
@@ -11936,9 +11924,6 @@
                 const desktopScoreCircle = document.getElementById('desktopScoreCircle');
                 if (desktopScoreCircle) desktopScoreCircle.style.background = 'linear-gradient(135deg, var(--text-muted), #666)';
 
-                const pathosLogosContent = document.getElementById('pathosLogosContent');
-                if (pathosLogosContent) pathosLogosContent.innerHTML = '<p style="color: var(--text-muted); font-style: italic; text-align: center; padding: 20px;">Bitte alle Dimensionen auswählen, um die Pathos/Logos-Analyse zu sehen.</p>';
-
                 const categoryBars = document.getElementById('expandCategoryBars');
                 if (categoryBars) categoryBars.innerHTML = '<p style="color: var(--text-muted); font-style: italic; text-align: center; padding: 20px;">Bitte alle Dimensionen auswählen</p>';
 
@@ -12068,8 +12053,6 @@
             const interaction = data.interactions?.[interactionKey] || {};
             drawRadarChart(interaction.scores || {}, partnerArch?.color || '#457B9D');
 
-            // Update Pathos/Logos
-            updateExpandablePathosLogos();
         }
 
         function updateExpandableCategoryBars(categories) {
@@ -12546,32 +12529,6 @@
             }
 
             return { pro, contra };
-        }
-
-        function updateExpandablePathosLogos() {
-            if (!data) return;
-
-            const container = document.getElementById('pathosLogosContent');
-            if (!container) return;
-
-            const ichArch = data.archetypes[currentArchetype];
-            const partnerArch = data.archetypes[selectedPartner];
-
-            // Generate combined Pathos/Logos analysis
-            const combinedPathos = generateCombinedPathos(ichArch, partnerArch);
-            const combinedLogos = generateCombinedLogos(ichArch, partnerArch);
-
-            container.innerHTML = `
-                <div style="margin-bottom: 12px; padding: 12px; background: rgba(46,204,113,0.1); border-radius: 10px; border-left: 3px solid #2ecc71;">
-                    <h4 style="color: #2ecc71; margin-bottom: 8px; font-size: var(--font-base);">🔥 GEMEINSAMER PATHOS (Emotionale Ebene)</h4>
-                    <p style="color: var(--text-secondary); line-height: 1.5; font-size: var(--font-base); font-style: italic; margin: 0;">${combinedPathos}</p>
-                </div>
-
-                <div style="padding: 12px; background: rgba(243,156,18,0.1); border-radius: 10px; border-left: 3px solid #f39c12;">
-                    <h4 style="color: #f39c12; margin-bottom: 8px; font-size: var(--font-base);">🧠 GEMEINSAMER LOGOS (Rationale Ebene)</h4>
-                    <p style="color: var(--text-secondary); line-height: 1.5; font-size: var(--font-base); font-style: italic; margin: 0;">${combinedLogos}</p>
-                </div>
-            `;
         }
 
         function generateCombinedPathos(ichArch, partnerArch) {
@@ -13066,23 +13023,6 @@
             document.getElementById('mobileFactorDominanz').textContent = qualityResult.incomplete ? '–' : qualityResult.breakdown.dominanz + '%';
             document.getElementById('mobileFactorOrientierung').textContent = qualityResult.incomplete ? '–' : qualityResult.breakdown.orientierung + '%';
             document.getElementById('mobileFactorGeschlecht').textContent = qualityResult.incomplete ? '–' : qualityResult.breakdown.geschlecht + '%';
-
-            // Update mobile Pathos & Logos
-            const mobilePathosLogos = document.getElementById('mobilePathosLogosContent');
-            if (mobilePathosLogos) {
-                const combinedPathos = generateCombinedPathos(ichArch, partnerArch);
-                const combinedLogos = generateCombinedLogos(ichArch, partnerArch);
-                mobilePathosLogos.innerHTML = `
-                    <div style="margin-bottom: 10px; padding: 10px; background: rgba(46,204,113,0.1); border-radius: 8px; border-left: 3px solid #2ecc71;">
-                        <h4 style="color: #2ecc71; margin-bottom: 6px; font-size: var(--font-base);">🔥 GEMEINSAMER PATHOS (Emotionale Ebene)</h4>
-                        <p style="color: var(--text-secondary); line-height: 1.4; font-size: var(--font-base); font-style: italic; margin: 0;">${combinedPathos}</p>
-                    </div>
-                    <div style="padding: 10px; background: rgba(243,156,18,0.1); border-radius: 8px; border-left: 3px solid #f39c12;">
-                        <h4 style="color: #f39c12; margin-bottom: 6px; font-size: var(--font-base);">🧠 GEMEINSAMER LOGOS (Rationale Ebene)</h4>
-                        <p style="color: var(--text-secondary); line-height: 1.4; font-size: var(--font-base); font-style: italic; margin: 0;">${combinedLogos}</p>
-                    </div>
-                `;
-            }
 
             // Update Mobile Score Note (direkt beim Kreis)
             const mobileScoreNote = document.getElementById('mobileScoreNote');
