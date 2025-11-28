@@ -11028,7 +11028,10 @@
                 }
             }
 
-            // Mixed: hetero + homo - generally incompatible
+            // Mixed: hetero + homo - check if exploring
+            if (status1 === 'interessiert' || status2 === 'interessiert') {
+                return 'unsicher'; // Exploration could change things
+            }
             return 'unmöglich';
         }
 
