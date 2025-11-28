@@ -32,7 +32,6 @@ Die philosophischen Konzepte von Pirsig und OSHO werden durch neurowissenschaftl
 **Kernthesen:**
 - Resonanz = Synchronität zwischen inneren neuronalen Rhythmen und äußeren Signalen
 - Flow = optimale Synchronität
-- THC = Verstärker von Mustererkennung, nicht Auslöser
 - Zufall = unerkannte Ordnung
 
 > *Ausführliche Dokumentation: `/profiles/research-sources.md` (Abschnitt 9)*
