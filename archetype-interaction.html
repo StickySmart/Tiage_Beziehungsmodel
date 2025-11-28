@@ -5543,11 +5543,11 @@
         </div>
     </div>
 
-    <!-- Pathos/Logos/Tiage Detail Modal -->
+    <!-- Tiage's Ansatz Modal -->
     <div class="modal-overlay" id="pathosLogosModal" onclick="closePathosLogosModal(event)">
         <div class="modal" onclick="event.stopPropagation()" style="max-width: 700px; max-height: 85vh; overflow-y: auto;">
             <div class="modal-header">
-                <span class="modal-title" id="pathosLogosModalTitle">Gemeinsamer Pathos</span>
+                <span class="modal-title" id="pathosLogosModalTitle">Tiage's Ansatz</span>
                 <button class="modal-close" onclick="closePathosLogosModal()">&times;</button>
             </div>
             <div class="modal-body" style="padding: 20px;">
@@ -5575,11 +5575,10 @@
                 <div id="pathosLogosModalContent" style="font-size: 15px; line-height: 1.7; color: var(--text-secondary);">
                     <!-- Content will be injected here -->
                 </div>
-                <!-- Toggle buttons for Pathos, Logos, and Tiage's Ansatz -->
-                <div style="display: flex; justify-content: center; gap: 8px; margin-top: 20px; padding-top: 15px; border-top: 1px solid var(--border); flex-wrap: wrap;">
-                    <button id="pathosLogosTogglePathos" onclick="showPathosLogosContent('pathos')" style="padding: 8px 14px; border-radius: 6px; border: 1px solid var(--border); background: rgba(255,255,255,0.1); color: var(--text-primary); cursor: pointer; font-size: 13px; transition: all 0.2s;">🔥 Pathos</button>
-                    <button id="pathosLogosToggleLogos" onclick="showPathosLogosContent('logos')" style="padding: 8px 14px; border-radius: 6px; border: 1px solid var(--border); background: transparent; color: var(--text-muted); cursor: pointer; font-size: 13px; transition: all 0.2s;">🧠 Logos</button>
-                    <button id="pathosLogosToggleTiage" onclick="showPathosLogosContent('tiage')" style="padding: 8px 14px; border-radius: 6px; border: 1px solid var(--border); background: transparent; color: var(--text-muted); cursor: pointer; font-size: 13px; transition: all 0.2s;">💡 Tiage's Ansatz</button>
+                <!-- Toggle buttons for Pathos and Logos -->
+                <div style="display: flex; justify-content: center; gap: 12px; margin-top: 20px; padding-top: 15px; border-top: 1px solid var(--border);">
+                    <button id="pathosLogosTogglePathos" onclick="showPathosLogosContent('pathos')" style="padding: 10px 20px; border-radius: 6px; border: 1px solid var(--border); background: rgba(255,255,255,0.1); color: var(--text-primary); cursor: pointer; font-size: 13px; transition: all 0.2s;">🔥 Pathos</button>
+                    <button id="pathosLogosToggleLogos" onclick="showPathosLogosContent('logos')" style="padding: 10px 20px; border-radius: 6px; border: 1px solid var(--border); background: transparent; color: var(--text-muted); cursor: pointer; font-size: 13px; transition: all 0.2s;">🧠 Logos</button>
                 </div>
             </div>
         </div>
@@ -5615,7 +5614,7 @@
     <div class="comparison-container desktop-mode" id="comparisonView">
         <!-- Unified Fold/Unfold Button + Tiage's Ansatz Button -->
         <div class="fold-unfold-toolbar" style="display: flex; gap: 10px; align-items: center;">
-            <button class="fold-unfold-btn" id="tiageAnsatzBtn" onclick="openPathosLogosModal('tiage')" title="Tiage's Ansatz - Philosophische Grundlagen">
+            <button class="fold-unfold-btn" id="tiageAnsatzBtn" onclick="openPathosLogosModal('pathos')" title="Tiage's Ansatz - Pathos & Logos">
                 <span class="fold-unfold-icon">💡</span>
                 <span class="fold-unfold-text">Tiage's Ansatz</span>
             </button>
@@ -14206,42 +14205,96 @@
             const archetypeContextEl = document.getElementById('pathosLogosArchetypeContext');
             const pathosBtn = document.getElementById('pathosLogosTogglePathos');
             const logosBtn = document.getElementById('pathosLogosToggleLogos');
-            const tiageBtn = document.getElementById('pathosLogosToggleTiage');
 
             // Reset all button styles
-            [pathosBtn, logosBtn, tiageBtn].forEach(btn => {
-                btn.style.background = 'transparent';
-                btn.style.color = 'var(--text-muted)';
+            [pathosBtn, logosBtn].forEach(btn => {
+                if (btn) {
+                    btn.style.background = 'transparent';
+                    btn.style.color = 'var(--text-muted)';
+                }
             });
 
             if (type === 'pathos') {
-                titleEl.textContent = 'Gemeinsamer Pathos';
+                titleEl.textContent = "Tiage's Ansatz";
                 iconEl.textContent = '🔥';
-                categoryEl.textContent = 'Dynamische Qualität';
-                subtitleEl.textContent = 'Emotionale Verbindung';
+                categoryEl.textContent = 'Dynamische Qualität (Pirsig)';
+                subtitleEl.textContent = 'Pathos – Emotionale Resonanz';
                 archetypeContextEl.style.display = 'flex';
-                contentEl.innerHTML = `<p style="font-style: italic;">${currentPathosLogosContent.pathos}</p>`;
+                contentEl.innerHTML = getPathosContent();
                 pathosBtn.style.background = 'rgba(255,255,255,0.1)';
                 pathosBtn.style.color = 'var(--text-primary)';
             } else if (type === 'logos') {
-                titleEl.textContent = 'Gemeinsamer Logos';
+                titleEl.textContent = "Tiage's Ansatz";
                 iconEl.textContent = '🧠';
-                categoryEl.textContent = 'Statische Qualität';
-                subtitleEl.textContent = 'Rationale Struktur';
+                categoryEl.textContent = 'Statische Qualität (Pirsig)';
+                subtitleEl.textContent = 'Logos – Rationale Struktur';
                 archetypeContextEl.style.display = 'flex';
-                contentEl.innerHTML = `<p style="font-style: italic;">${currentPathosLogosContent.logos}</p>`;
+                contentEl.innerHTML = getLogosContent();
                 logosBtn.style.background = 'rgba(255,255,255,0.1)';
                 logosBtn.style.color = 'var(--text-primary)';
-            } else if (type === 'tiage') {
-                titleEl.textContent = "Tiage's Ansatz";
-                iconEl.textContent = '💡';
-                categoryEl.textContent = 'Philosophische Synthese';
-                subtitleEl.textContent = 'Verbindung der Theorien';
-                archetypeContextEl.style.display = 'none';
-                contentEl.innerHTML = getTiageTheoryContent();
-                tiageBtn.style.background = 'rgba(255,255,255,0.1)';
-                tiageBtn.style.color = 'var(--text-primary)';
             }
+        }
+
+        function getPathosContent() {
+            return `
+                <div style="margin-bottom: 20px;">
+                    <div style="padding: 15px; background: linear-gradient(135deg, rgba(231,111,81,0.1), rgba(231,111,81,0.05)); border-radius: 10px; border-left: 3px solid #E76F51; margin-bottom: 15px;">
+                        <p style="font-style: italic; font-size: 15px; margin: 0;">${currentPathosLogosContent.pathos}</p>
+                    </div>
+                </div>
+
+                <div style="margin-bottom: 20px;">
+                    <h4 style="color: #E76F51; margin-bottom: 10px; font-size: 14px; display: flex; align-items: center; gap: 8px;">
+                        <span>🌊</span> Pirsig: Dynamische Qualität
+                    </h4>
+                    <p style="margin-bottom: 10px; font-size: 13px;">Pathos entspricht Pirsigs "dynamischer Qualität" – die lebendige Kraft, die Veränderung antreibt und nicht in Worte gefasst werden kann, bevor sie erlebt wird.</p>
+                    <p style="font-size: 12px; color: var(--text-muted); font-style: italic;">"Qualität ist das Ereignis, bei dem das Subjekt sich des Objekts bewusst wird."</p>
+                </div>
+
+                <div style="margin-bottom: 20px;">
+                    <h4 style="color: #E76F51; margin-bottom: 10px; font-size: 14px; display: flex; align-items: center; gap: 8px;">
+                        <span>🔮</span> OSHO: Bewusste Präsenz
+                    </h4>
+                    <p style="margin-bottom: 10px; font-size: 13px;">OSHO lehrt, dass wahre emotionale Verbindung nur im Moment der totalen Präsenz entsteht. Pathos ist keine Sentimentalität, sondern bewusstes Fühlen.</p>
+                    <p style="font-size: 12px; color: var(--text-muted); font-style: italic;">"Liebe ist nicht etwas, das du tust. Liebe ist etwas, das du bist."</p>
+                </div>
+
+                <div style="padding: 12px; background: rgba(255,255,255,0.03); border-radius: 8px;">
+                    <h4 style="color: var(--primary); margin-bottom: 8px; font-size: 13px;">⚡ Resonanztheorie</h4>
+                    <p style="font-size: 12px; margin: 0;">Pathos erzeugt <strong>emotionale Resonanz</strong> (R) zwischen zwei Menschen. Je höher der gemeinsame Pathos-Score, desto stärker die intuitive Anziehung – unabhängig von rationaler Kompatibilität. Diese Schwingung ist spürbar, bevor sie verstanden wird.</p>
+                </div>
+            `;
+        }
+
+        function getLogosContent() {
+            return `
+                <div style="margin-bottom: 20px;">
+                    <div style="padding: 15px; background: linear-gradient(135deg, rgba(69,123,157,0.1), rgba(69,123,157,0.05)); border-radius: 10px; border-left: 3px solid #457B9D; margin-bottom: 15px;">
+                        <p style="font-style: italic; font-size: 15px; margin: 0;">${currentPathosLogosContent.logos}</p>
+                    </div>
+                </div>
+
+                <div style="margin-bottom: 20px;">
+                    <h4 style="color: #457B9D; margin-bottom: 10px; font-size: 14px; display: flex; align-items: center; gap: 8px;">
+                        <span>🏛️</span> Pirsig: Statische Qualität
+                    </h4>
+                    <p style="margin-bottom: 10px; font-size: 13px;">Logos entspricht Pirsigs "statischer Qualität" – bewährte Muster und Strukturen, die Stabilität und Verständnis ermöglichen. Sie sind die Bausteine des gemeinsamen Fundaments.</p>
+                    <p style="font-size: 12px; color: var(--text-muted); font-style: italic;">"Statische Qualität-Muster sind das, was die Welt zusammenhält."</p>
+                </div>
+
+                <div style="margin-bottom: 20px;">
+                    <h4 style="color: #457B9D; margin-bottom: 10px; font-size: 14px; display: flex; align-items: center; gap: 8px;">
+                        <span>🧘</span> OSHO: Bewusste Klarheit
+                    </h4>
+                    <p style="margin-bottom: 10px; font-size: 13px;">OSHO betont, dass Klarheit des Geistes die Basis für echte Kommunikation ist. Logos ist nicht kalte Rationalität, sondern bewusste Struktur im Dialog.</p>
+                    <p style="font-size: 12px; color: var(--text-muted); font-style: italic;">"Verstehen entsteht nicht durch Denken, sondern durch Klarheit."</p>
+                </div>
+
+                <div style="padding: 12px; background: rgba(255,255,255,0.03); border-radius: 8px;">
+                    <h4 style="color: var(--primary); margin-bottom: 8px; font-size: 13px;">🔗 Resonanztheorie</h4>
+                    <p style="font-size: 12px; margin: 0;">Logos bildet die <strong>strukturelle Resonanz</strong> – das gemeinsame Verständnis von Werten, Grenzen und Lebensmodellen. Ein hoher Logos-Score zeigt, dass beide auf derselben "Frequenz" kommunizieren können, ohne ständige Missverständnisse.</p>
+                </div>
+            `;
         }
 
         function getTiageTheoryContent() {
