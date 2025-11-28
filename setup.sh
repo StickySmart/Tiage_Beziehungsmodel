@@ -75,7 +75,7 @@ cat > package.json << 'EOF'
     "visualisierung",
     "datenanalyse"
   ],
-  "author": "StickySmart",
+  "author": "Ti-Age",
   "license": "MIT"
 }
 EOF

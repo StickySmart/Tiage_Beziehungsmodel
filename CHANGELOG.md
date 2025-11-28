@@ -98,5 +98,5 @@ Versionierung folgt [Semantic Versioning](https://semver.org/lang/de/).
 
 ---
 
-**Autor:** StickySmart (Tiage)
+**Autor:** Ti-Age
 **Lizenz:** © 2025 Ti-Age – Alle Rechte vorbehalten.
