@@ -3904,12 +3904,17 @@
             display: block;
         }
 
-        /* Unified Fold/Unfold Toolbar */
+        /* Unified Fold/Unfold Toolbar - Sticky */
         .fold-unfold-toolbar {
+            position: sticky;
+            top: 60px;
+            z-index: 100;
             display: flex;
             justify-content: flex-end;
             padding: 8px 16px;
             margin-bottom: 8px;
+            background: linear-gradient(180deg, var(--bg-primary) 0%, var(--bg-primary) 80%, transparent 100%);
+            backdrop-filter: blur(8px);
         }
 
         .fold-unfold-btn {
@@ -5398,9 +5403,9 @@
     <div class="comparison-container desktop-mode" id="comparisonView">
         <!-- Unified Fold/Unfold Button -->
         <div class="fold-unfold-toolbar">
-            <button class="fold-unfold-btn" id="foldUnfoldAllBtn" onclick="toggleAllDimensionsCollapse()" title="Alle Felder auf-/zuklappen">
+            <button class="fold-unfold-btn" id="foldUnfoldAllBtn" onclick="toggleAllDimensionsCollapse()" title="Fold/Unfold all fields">
                 <span class="fold-unfold-icon">▼</span>
-                <span class="fold-unfold-text">Alle aufklappen</span>
+                <span class="fold-unfold-text">Unfold all</span>
             </button>
         </div>
         <!-- Two Column Grid -->
@@ -8599,11 +8604,11 @@
             // Update button appearance
             if (allDimensionsCollapsed) {
                 icon.textContent = '▶';
-                text.textContent = 'Alle aufklappen';
+                text.textContent = 'Unfold all';
                 btn.classList.add('collapsed-state');
             } else {
                 icon.textContent = '▼';
-                text.textContent = 'Alle zuklappen';
+                text.textContent = 'Fold all';
                 btn.classList.remove('collapsed-state');
             }
         }
