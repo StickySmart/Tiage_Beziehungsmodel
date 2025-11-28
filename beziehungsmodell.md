@@ -17,6 +17,26 @@ Das Modell verbindet zwei Traditionen durch Tiage's Online-Recherche und Reflexi
 - Meditation als Weg zur Klarheit
 - Loslassen (Let Go) ermöglicht echte Verbindung
 
+### TIAGE Resonanz-Theorie - Neurowissenschaftliche Ebene
+
+Die philosophischen Konzepte von Pirsig und OSHO werden durch neurowissenschaftliche Forschung untermauert:
+
+| Konzept | Wissenschaftler | Bedeutung für Beziehungen |
+|---------|-----------------|---------------------------|
+| **Neuronale Synchronisation** | Buzsáki, Singer | "Auf einer Wellenlänge" = Gamma-Kohärenz im Gespräch |
+| **Predictive Coding** | Friston | Kompatibilität = niedrige "Vorhersage-Fehler" |
+| **Salienz-Regulation** | Kapur | Flow vs. Hyper-Synchronität (Psychose) |
+| **Psychoakustik** | Levitin | Musik als externes Regulierungssystem |
+| **Sensory Sensitivity** | Aron | Hochsensitivität + Reizlast → Zustandsschwankungen |
+
+**Kernthesen:**
+- Resonanz = Synchronität zwischen inneren neuronalen Rhythmen und äußeren Signalen
+- Flow = optimale Synchronität
+- THC = Verstärker von Mustererkennung, nicht Auslöser
+- Zufall = unerkannte Ordnung
+
+> *Ausführliche Dokumentation: `/profiles/research-sources.md` (Abschnitt 9)*
+
 ---
 
 ## Kernkonzept: Logos vs. Pathos (40:60)
