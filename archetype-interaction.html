@@ -1420,7 +1420,7 @@
             right: 0;
             bottom: 0;
             background: rgba(0,0,0,0.85);
-            z-index: 200;
+            z-index: 2000;
             display: none;
             align-items: center;
             justify-content: center;
@@ -5566,7 +5566,7 @@
                         </div>
                     </div>
                     <!-- Quality Note moved here for more space -->
-                    <div id="desktopScoreNote" class="score-note" style="font-size: 12px; color: var(--text-secondary); font-style: italic; text-align: left; line-height: 1.4; margin-top: 4px;"></div>
+                    <div id="desktopScoreNote" class="score-note" style="font-size: 14px; color: var(--text-secondary); font-style: italic; text-align: center; line-height: 1.5; margin-top: 8px;"></div>
                 </div>
 
                 <!-- Circle Column -->
@@ -15271,6 +15271,10 @@
         window.closeCommentsListModal = closeCommentsListModal;
         window.toggleReplyForm = toggleReplyForm;
         window.submitReply = submitReply;
+        // Pro/Contra Modal functions
+        window.openProContraModal = openProContraModal;
+        window.closeProContraModal = closeProContraModal;
+        window.navigateProContraArchetype = navigateProContraArchetype;
 
         console.log('All modal functions are now globally available');
     </script>
