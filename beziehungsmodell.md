@@ -86,6 +86,164 @@ Das Modell basiert auf **216 individuellen Profilen**, die durch systematische K
 
 **Berechnung:** 6 × 3 × 4 × 3 = **216 Profile**
 
+### Visualisierung: Profil-Generierung (Die "Fütterung")
+
+```
+┌─────────────────────────────────────────────────────────────────────────────────┐
+│                        SCHRITT 1: KOMBINATION                                   │
+│                     (4 Dimensionen → 216 Profile)                               │
+└─────────────────────────────────────────────────────────────────────────────────┘
+
+    ARCHETYP (6)         GESCHLECHT (3)       DOMINANZ (4)        ORIENTIERUNG (3)
+    ┌──────────┐         ┌──────────┐         ┌──────────┐        ┌──────────┐
+    │ Single   │         │ Männlich │         │ Dominant │        │ Hetero   │
+    │ Duo      │    ×    │ Weiblich │    ×    │ Submissiv│   ×    │ Homo     │
+    │ Duo-Flex │         │ Nonbinär │         │ Switch   │        │ Bi       │
+    │ Solopoly │         └──────────┘         │Ausgeglichen       └──────────┘
+    │ Poly-Hedo│                              └──────────┘
+    │ Polyamor │
+    └──────────┘
+         │                    │                    │                   │
+         └────────────────────┴────────────────────┴───────────────────┘
+                                        │
+                                        ▼
+                              ┌──────────────────┐
+                              │   216 PROFILE    │
+                              │  (alle Kombis)   │
+                              └──────────────────┘
+
+┌─────────────────────────────────────────────────────────────────────────────────┐
+│                      SCHRITT 2: RECHERCHE                                       │
+│              (Wissenschaftliche Studien → Attribut-Werte)                       │
+└─────────────────────────────────────────────────────────────────────────────────┘
+
+    ┌─────────────────────────────────────────────────────────────────────────┐
+    │                    WISSENSCHAFTLICHE QUELLEN                            │
+    │                                                                         │
+    │  ┌─────────────┐  ┌─────────────┐  ┌─────────────┐  ┌─────────────┐     │
+    │  │  Big Five   │  │    BDSM     │  │   Gender    │  │  Polyamory  │     │
+    │  │ Personality │  │  Research   │  │Communication│  │  Research   │     │
+    │  │   Model     │  │  (2013)     │  │   (1990)    │  │   (2021)    │     │
+    │  └──────┬──────┘  └──────┬──────┘  └──────┬──────┘  └──────┬──────┘     │
+    │         │                │                │                │            │
+    │         └────────────────┴────────────────┴────────────────┘            │
+    │                                   │                                     │
+    └───────────────────────────────────┼─────────────────────────────────────┘
+                                        │
+                                        ▼
+    ┌─────────────────────────────────────────────────────────────────────────┐
+    │                        ERKENNTNISSE                                     │
+    │                                                                         │
+    │  "Dominante Persönlichkeiten kommunizieren direkter" (Tiedens, 2003)    │
+    │  "Singles priorisieren Autonomie und Karriere" (DePaulo, 2006)          │
+    │  "Polyamore haben höhere emotionale Offenheit" (Moors, 2021)            │
+    │  "Submissive zeigen höhere Agreeableness" (Wismeijer, 2013)             │
+    │                                                                         │
+    └───────────────────────────────────┬─────────────────────────────────────┘
+                                        │
+                                        ▼
+
+┌─────────────────────────────────────────────────────────────────────────────────┐
+│                      SCHRITT 3: GAUSS-VERTEILUNG                                │
+│                (Erkenntnisse → Confidence-Level pro Attribut)                   │
+└─────────────────────────────────────────────────────────────────────────────────┘
+
+                           Normalverteilung (Glockenkurve)
+
+                                    ▲
+                                   /│\
+                                  / │ \
+                                 /  │  \
+                                /   │   \         ← 80% der Population
+                               / ┌──┴──┐ \           im zentralen Bereich
+                              /  │     │  \
+                             /   │     │   \
+                            /    │     │    \
+                           ──────┴─────┴──────
+                          -2σ   -1σ   +1σ   +2σ
+
+                                        │
+                                        ▼
+    ┌─────────────────────────────────────────────────────────────────────────┐
+    │                    CONFIDENCE-ZUWEISUNG                                 │
+    │                                                                         │
+    │   Studie sagt: "80% der Dominanten sind direkt"                         │
+    │                          ↓                                              │
+    │   Profil bekommt: kommunikationsstil: "direkt", confidence: 0.80        │
+    │                                                                         │
+    │   Studie sagt: "95% der Singles leben alleine"                          │
+    │                          ↓                                              │
+    │   Profil bekommt: wohnform: "alleine", confidence: 0.95                 │
+    │                                                                         │
+    └─────────────────────────────────────────────────────────────────────────┘
+                                        │
+                                        ▼
+
+┌─────────────────────────────────────────────────────────────────────────────────┐
+│                      SCHRITT 4: PROFIL-STRUKTUR                                 │
+│                    (30 Attribute + Confidence = 1 Profil)                       │
+└─────────────────────────────────────────────────────────────────────────────────┘
+
+    ┌─────────────────────────────────────────────────────────────────────────┐
+    │  PROFIL: single-männlich-dominant-heterosexuell                         │
+    │                                                                         │
+    │  ┌───────────────────────────────────────────────────────────────────┐  │
+    │  │ D: WERTE & LEBENSPLANUNG (10 Attribute)                           │  │
+    │  │ ─────────────────────────────────────────                         │  │
+    │  │ kinderWunsch:        "nein"        │ conf: 0.85                   │  │
+    │  │ eheWunsch:           "nein"        │ conf: 0.90                   │  │
+    │  │ wohnform:            "alleine"     │ conf: 0.95                   │  │
+    │  │ karrierePrioritaet:  "hoch"        │ conf: 0.80                   │  │
+    │  │ finanzPhilosophie:   "unabhängig"  │ conf: 0.85                   │  │
+    │  │ ...                                                               │  │
+    │  └───────────────────────────────────────────────────────────────────┘  │
+    │                                                                         │
+    │  ┌───────────────────────────────────────────────────────────────────┐  │
+    │  │ E: KOMMUNIKATION & KONFLIKT (10 Attribute)                        │  │
+    │  │ ─────────────────────────────────────────                         │  │
+    │  │ kommunikationsstil:  "direkt"      │ conf: 0.80                   │  │
+    │  │ konfliktverhalten:   "konfrontativ"│ conf: 0.75                   │  │
+    │  │ emotionaleOffenheit: "reserviert"  │ conf: 0.70                   │  │
+    │  │ feedbackStil:        "sachlich"    │ conf: 0.80                   │  │
+    │  │ ...                                                               │  │
+    │  └───────────────────────────────────────────────────────────────────┘  │
+    │                                                                         │
+    │  ┌───────────────────────────────────────────────────────────────────┐  │
+    │  │ F: SOZIALE KOMPATIBILITÄT (10 Attribute)                          │  │
+    │  │ ─────────────────────────────────────────                         │  │
+    │  │ introExtro:          "extrovertiert"│ conf: 0.75                  │  │
+    │  │ oeffentlichkeit:     "offen"        │ conf: 0.80                  │  │
+    │  │ umzugsbereitschaft:  "flexibel"     │ conf: 0.85                  │  │
+    │  │ netzwerkGroesse:     "gross"        │ conf: 0.70                  │  │
+    │  │ ...                                                               │  │
+    │  └───────────────────────────────────────────────────────────────────┘  │
+    │                                                                         │
+    │  ┌───────────────────────────────────────────────────────────────────┐  │
+    │  │ META-INFORMATIONEN                                                │  │
+    │  │ ─────────────────────                                             │  │
+    │  │ research:  ["DePaulo 2006", "Wismeijer 2013", "Tiedens 2003"]     │  │
+    │  │ pirsig:    "Hohe statische Qualität durch Autonomie-Fokus"        │  │
+    │  │ osho:      "Natürlicher Zustand: Selbstbestimmt, nicht reaktiv"   │  │
+    │  └───────────────────────────────────────────────────────────────────┘  │
+    │                                                                         │
+    └─────────────────────────────────────────────────────────────────────────┘
+```
+
+### Der komplette Prozess im Überblick
+
+```
+┌─────────────┐    ┌─────────────┐    ┌─────────────┐    ┌─────────────┐
+│ 4 DIMENS-   │───▶│ WISSEN-     │───▶│   GAUSS     │───▶│ 216 FERTIGE │
+│ IONEN       │    │ SCHAFTLICHE │    │ CONFIDENCE  │    │ PROFILE     │
+│ kombinieren │    │ RECHERCHE   │    │ zuweisen    │    │ (je 30 Attr)│
+└─────────────┘    └─────────────┘    └─────────────┘    └─────────────┘
+      │                  │                  │                   │
+      │                  │                  │                   │
+   6×3×4×3           Studien zu         "Wie sicher          Vollständig
+   = 216            Persönlich-         gilt das?"           annotierte
+   Kombis           keitstypen                               Profile
+```
+
 ### Profilstruktur
 
 Jedes der 216 Profile enthält:
