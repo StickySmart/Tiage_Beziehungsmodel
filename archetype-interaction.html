@@ -2822,12 +2822,16 @@
             flex: 0 0 auto;
             min-width: 200px;
         }
-        /* Desktop: Wider modal without scrolling */
+        /* Desktop: Wider modal without scrolling, ensure red border is fully visible */
         @media (min-width: 769px) {
+            .age-verification-overlay {
+                padding: 40px;
+            }
             .age-verification-modal {
                 max-width: 480px;
-                max-height: none;
-                overflow-y: visible;
+                max-height: calc(100vh - 80px);
+                overflow-y: auto;
+                margin: auto;
             }
         }
         @media (max-width: 768px) {
