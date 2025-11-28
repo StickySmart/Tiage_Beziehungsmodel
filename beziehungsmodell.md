@@ -244,6 +244,129 @@ Das Modell basiert auf **216 individuellen Profilen**, die durch systematische K
    Kombis           keitstypen                               Profile
 ```
 
+---
+
+### Die Formel für die Profil-Generierung
+
+#### Attribut-Zuweisung (Überlagerungsprinzip)
+
+```
+┌─────────────────────────────────────────────────────────────────────────────────┐
+│                                                                                 │
+│   P[attr] = f( A[attr], D[mod], G[mod], O[mod] )                                │
+│                                                                                 │
+│   wobei:                                                                        │
+│   • P[attr] = Finaler Attribut-Wert im Profil                                   │
+│   • A[attr] = Archetyp-Basiswert (dominanter Faktor)                            │
+│   • D[mod]  = Dominanz-Modifikator                                              │
+│   • G[mod]  = Geschlechts-Modifikator                                           │
+│   • O[mod]  = Orientierungs-Modifikator                                         │
+│                                                                                 │
+└─────────────────────────────────────────────────────────────────────────────────┘
+```
+
+#### Variablen-Definition
+
+| Variable | Beschreibung | Beispiel |
+|----------|--------------|----------|
+| **A[attr]** | Archetyp-Basiswert | Single → `wohnform: "alleine"` |
+| **D[mod]** | Dominanz-Modifikator | Dominant → `kommunikation: "direkt"` |
+| **G[mod]** | Geschlechts-Modifikator | Männlich → `emotionaleOffenheit: -1` |
+| **O[mod]** | Orientierungs-Modifikator | Homosexuell → `emotionaleOffenheit: +1` |
+
+#### Überlagerungs-Logik (Priorität)
+
+```
+┌─────────────────────────────────────────────────────────────────────────────────┐
+│                     PRIORITÄTS-HIERARCHIE                                       │
+│                                                                                 │
+│                        ┌─────────────────┐                                      │
+│                        │   ARCHETYP (A)  │  ← Höchste Priorität                 │
+│                        │   Basiswerte    │    (definiert Grundstruktur)         │
+│                        └────────┬────────┘                                      │
+│                                 │                                               │
+│                                 ▼                                               │
+│                        ┌─────────────────┐                                      │
+│                        │  DOMINANZ (D)   │  ← Zweite Priorität                  │
+│                        │  Modifikation   │    (überschreibt bei Konflikt)       │
+│                        └────────┬────────┘                                      │
+│                                 │                                               │
+│                                 ▼                                               │
+│                        ┌─────────────────┐                                      │
+│                        │ GESCHLECHT (G)  │  ← Dritte Priorität                  │
+│                        │  Modifikation   │    (Feintuning)                      │
+│                        └────────┬────────┘                                      │
+│                                 │                                               │
+│                                 ▼                                               │
+│                        ┌─────────────────┐                                      │
+│                        │ORIENTIERUNG (O) │  ← Vierte Priorität                  │
+│                        │  Modifikation   │    (zusätzliche Anpassung)           │
+│                        └─────────────────┘                                      │
+│                                                                                 │
+└─────────────────────────────────────────────────────────────────────────────────┘
+```
+
+#### Confidence-Berechnung (Gauß-basiert)
+
+```
+┌─────────────────────────────────────────────────────────────────────────────────┐
+│                                                                                 │
+│                      Σ (Studien_Prozent × Relevanz)                             │
+│   conf[attr] =  ────────────────────────────────────                            │
+│                              n (Anzahl Studien)                                 │
+│                                                                                 │
+│   Ergebnis: 0.0 – 1.0 (Wahrscheinlichkeit dass Attribut zutrifft)               │
+│                                                                                 │
+└─────────────────────────────────────────────────────────────────────────────────┘
+```
+
+#### Rechenbeispiel: Profil-Generierung
+
+```
+┌─────────────────────────────────────────────────────────────────────────────────┐
+│  PROFIL: single-männlich-dominant-heterosexuell                                 │
+│                                                                                 │
+│  ┌───────────────────────────────────────────────────────────────────────────┐  │
+│  │ Attribut: kommunikationsstil                                              │  │
+│  │                                                                           │  │
+│  │ SCHRITT 1: Archetyp-Basis                                                 │  │
+│  │ ───────────────────────────                                               │  │
+│  │ Single → keine spezifische Vorgabe → "mittel" (Gauss-Default)             │  │
+│  │                                                                           │  │
+│  │ SCHRITT 2: Dominanz-Modifikator (überschreibt)                            │  │
+│  │ ──────────────────────────────────────────────                            │  │
+│  │ Dominant → kommunikation: "direkt" (aus Forschung: Tiedens 2003)          │  │
+│  │                                                                           │  │
+│  │ SCHRITT 3: Geschlechts-Modifikator (bestätigt)                            │  │
+│  │ ──────────────────────────────────────────────                            │  │
+│  │ Männlich → bestätigt "direkt" (Tannen 1990: Männer = Status-Sprache)      │  │
+│  │                                                                           │  │
+│  │ SCHRITT 4: Orientierungs-Modifikator (keine Änderung)                     │  │
+│  │ ───────────────────────────────────────────────────                       │  │
+│  │ Heterosexuell → kein spezifischer Einfluss auf Kommunikation              │  │
+│  │                                                                           │  │
+│  │ ERGEBNIS:                                                                 │  │
+│  │ ─────────                                                                 │  │
+│  │ kommunikationsstil: "direkt"                                              │  │
+│  │ confidence: 0.80 (80% der Dominant+Männlich sind "direkt" lt. Studien)    │  │
+│  │                                                                           │  │
+│  └───────────────────────────────────────────────────────────────────────────┘  │
+│                                                                                 │
+│  ┌───────────────────────────────────────────────────────────────────────────┐  │
+│  │ Attribut: emotionaleOffenheit                                             │  │
+│  │                                                                           │  │
+│  │ A: Single       → "variabel"     (keine Vorgabe)                          │  │
+│  │ D: Dominant     → "zurückhaltend" (niedrige Agreeableness)                │  │
+│  │ G: Männlich     → "zurückhaltend" (bestätigt, Gender-Forschung)           │  │
+│  │ O: Heterosexuell→ "zurückhaltend" (niedriger als Homo, Allen 2020)        │  │
+│  │                                                                           │  │
+│  │ ERGEBNIS: emotionaleOffenheit: "zurückhaltend", conf: 0.70                │  │
+│  │                                                                           │  │
+│  └───────────────────────────────────────────────────────────────────────────┘  │
+│                                                                                 │
+└─────────────────────────────────────────────────────────────────────────────────┘
+```
+
 ### Profilstruktur
 
 Jedes der 216 Profile enthält:
