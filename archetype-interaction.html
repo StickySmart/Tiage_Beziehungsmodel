@@ -6481,10 +6481,20 @@
                 <span class="page-title">Kategorien</span>
             </div>
 
-            <div class="types-display" style="margin-bottom: 15px;">
-                <span class="type-name" id="mobileResultIch3">Single</span>
-                <span> × </span>
-                <span class="type-name" id="mobileResultPartner3">Duo</span>
+            <div class="types-display" style="flex-direction: column; gap: 8px; margin-bottom: 15px;">
+                <div style="display: flex; align-items: center; justify-content: center; gap: 6px;">
+                    <span style="font-size: 11px; color: var(--text-muted); min-width: 35px;">DU:</span>
+                    <button class="archetype-nav-btn" onclick="navigateArchetypeOnPage3('ich', -1)" title="Vorheriger">&#9664;</button>
+                    <span class="type-name" id="mobileResultIch3" style="min-width: 80px; text-align: center;">Single</span>
+                    <button class="archetype-nav-btn" onclick="navigateArchetypeOnPage3('ich', 1)" title="Nächster">&#9654;</button>
+                </div>
+                <span style="font-size: 14px; color: var(--text-muted);">×</span>
+                <div style="display: flex; align-items: center; justify-content: center; gap: 6px;">
+                    <span style="font-size: 11px; color: var(--text-muted); min-width: 35px;">Partner:</span>
+                    <button class="archetype-nav-btn" onclick="navigateArchetypeOnPage3('partner', -1)" title="Vorheriger">&#9664;</button>
+                    <span class="type-name" id="mobileResultPartner3" style="min-width: 80px; text-align: center;">Duo</span>
+                    <button class="archetype-nav-btn" onclick="navigateArchetypeOnPage3('partner', 1)" title="Nächster">&#9654;</button>
+                </div>
             </div>
 
             <!-- 6 Kategorien-Balken -->
@@ -7080,7 +7090,9 @@
     <div class="modal-overlay" id="categoryModal" onclick="closeCategoryModal(event)">
         <div class="modal" onclick="event.stopPropagation()">
             <div class="modal-header">
+                <button class="archetype-nav-btn" onclick="navigateCategoryArchetype(-1)" title="Vorheriger Archetyp">&#8249;</button>
                 <span class="modal-title" id="modalTitle">Kategorie-Details</span>
+                <button class="archetype-nav-btn" onclick="navigateCategoryArchetype(1)" title="Nächster Archetyp">&#8250;</button>
                 <button class="modal-close" onclick="closeCategoryModal()">&times;</button>
             </div>
             <div class="modal-body" id="modalBody"></div>
@@ -12398,6 +12410,44 @@
             updateMobileResultPage();
         }
 
+        // Navigation auf Seite 3 (Kategorien) - ruft navigateArchetype auf und aktualisiert Seite 3
+        function navigateArchetypeOnPage3(person, direction) {
+            navigateArchetype(person, direction);
+            // Seite 3 explizit aktualisieren
+            updateMobilePage3();
+        }
+
+        // Aktualisiert die Anzeige auf Mobile Seite 3
+        function updateMobilePage3() {
+            const ichArch = data.archetypes[currentArchetype];
+            const partnerArch = data.archetypes[selectedPartner];
+
+            const ichEl = document.getElementById('mobileResultIch3');
+            const partnerEl = document.getElementById('mobileResultPartner3');
+
+            if (ichEl) ichEl.textContent = ichArch?.name || currentArchetype;
+            if (partnerEl) partnerEl.textContent = partnerArch?.name || selectedPartner;
+
+            // Kategorien-Balken aktualisieren
+            const key = `${currentArchetype}_${selectedPartner}`;
+            const interaction = data.interactions?.[key] || {};
+            if (interaction.scores) {
+                renderCategoryBars('mobileCategoryBars', interaction.scores);
+            }
+        }
+
+        // Variable für aktuelle Kategorie im Modal
+        let currentDisplayedCategory = 'A';
+
+        // Navigation für CategoryModal - wechselt beide Archetypen (ICH)
+        function navigateCategoryArchetype(direction) {
+            navigateArchetype('ich', direction);
+            // CategoryModal neu laden mit aktueller Kategorie
+            showCategoryDetails(currentDisplayedCategory);
+            // Alle Ansichten aktualisieren
+            updateComparisonView();
+        }
+
         function initComparisonLayout() {
             // ICH select
             const ichSelect = document.getElementById('ichSelect');
@@ -12791,6 +12841,9 @@
 
         function showCategoryDetails(cat) {
             if (!data || !data.categories || !data.categories[cat]) return;
+
+            // Aktuelle Kategorie speichern für Navigation
+            currentDisplayedCategory = cat;
 
             const catInfo = data.categories[cat];
             const catNames = {
