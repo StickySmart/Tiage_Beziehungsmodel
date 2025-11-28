@@ -485,6 +485,99 @@ Resonanz ist kein fünfter Faktor, sondern beschreibt die **Qualität des Zusamm
 - Basiert auf Friston's Predictive Coding: Niedrige "Vorhersage-Fehler" = hohe Resonanz
 - Entspricht Buzsáki/Singer's Gamma-Kohärenz: Neuronale Synchronisation über Hirnareale
 
+### Berechnung des Resonanz-Koeffizienten (R)
+
+Der Resonanz-Koeffizient R wird aus **zwei Komponenten** berechnet:
+
+1. **Profil-Match (M):** Ähnlichkeit der 30 Profil-Attribute
+2. **Logos-Pathos-Balance (B):** Wie harmonisch sind Kopf und Herz?
+
+```
+┌─────────────────────────────────────────────────────────────────────────────────┐
+│                    RESONANZ-BERECHNUNG: ZWEI KOMPONENTEN                        │
+│                                                                                 │
+│   ═══════════════════════════════════════════════════════════════════════════   │
+│   KOMPONENTE 1: PROFIL-MATCH (M)                                                │
+│   ═══════════════════════════════════════════════════════════════════════════   │
+│                                                                                 │
+│   Jedes Profil hat 30 Attribute in 3 Kategorien:                                │
+│   • D: Werte & Lebensplanung (10 Attribute)                                     │
+│   • E: Kommunikation & Konflikt (10 Attribute)                                  │
+│   • F: Soziale Kompatibilität (10 Attribute)                                    │
+│                                                                                 │
+│         Übereinstimmende Attribute                                              │
+│   M = ─────────────────────────────── × 100    (Match-Prozent: 0-100%)          │
+│                    30                                                           │
+│                                                                                 │
+│   ═══════════════════════════════════════════════════════════════════════════   │
+│   KOMPONENTE 2: LOGOS-PATHOS-BALANCE (B)                                        │
+│   ═══════════════════════════════════════════════════════════════════════════   │
+│                                                                                 │
+│   Logos = Archetyp-Score (A)                                                    │
+│   Pathos = Durchschnitt von O, D, G = (O + D + G) / 3                           │
+│                                                                                 │
+│   Differenz = |Logos - Pathos|                                                  │
+│                                                                                 │
+│   B = (100 - Differenz) / 100              (Balance: 0.0 - 1.0)                 │
+│                                                                                 │
+│   → Differenz = 0   (perfekte Balance)    →  B = 1.0                            │
+│   → Differenz = 50  (mittlere Spannung)   →  B = 0.5                            │
+│   → Differenz = 100 (volle Dissonanz)     →  B = 0.0                            │
+│                                                                                 │
+│   ═══════════════════════════════════════════════════════════════════════════   │
+│   GESAMTFORMEL                                                                  │
+│   ═══════════════════════════════════════════════════════════════════════════   │
+│                                                                                 │
+│   R = 0.9 + [(M/100 × 0.5) + (B × 0.5)] × 0.2                                   │
+│                                                                                 │
+│   → Profil-Match und Balance tragen je 50% zur Resonanz bei                     │
+│   → Ergebnis: R zwischen 0.9 und 1.1                                            │
+│                                                                                 │
+└─────────────────────────────────────────────────────────────────────────────────┘
+```
+
+**Beispiel-Berechnung:**
+
+```
+┌─────────────────────────────────────────────────────────────────────────────────┐
+│   BEISPIEL: Zwei Profile vergleichen                                            │
+│                                                                                 │
+│   Scores:  A = 75%,  O = 100%,  D = 100%,  G = 100%                             │
+│                                                                                 │
+│   ─────────────────────────────────────────────────────────────────────────     │
+│   SCHRITT 1: Profil-Match                                                       │
+│   Übereinstimmungen: 18 von 30 Attributen = 60%                                 │
+│   M = 60%                                                                       │
+│                                                                                 │
+│   ─────────────────────────────────────────────────────────────────────────     │
+│   SCHRITT 2: Logos-Pathos-Balance                                               │
+│   Logos = A = 75%                                                               │
+│   Pathos = (100 + 100 + 100) / 3 = 100%                                         │
+│   Differenz = |75 - 100| = 25                                                   │
+│   B = (100 - 25) / 100 = 0.75                                                   │
+│                                                                                 │
+│   ─────────────────────────────────────────────────────────────────────────     │
+│   SCHRITT 3: Gesamtformel                                                       │
+│   R = 0.9 + [(0.60 × 0.5) + (0.75 × 0.5)] × 0.2                                 │
+│   R = 0.9 + [0.30 + 0.375] × 0.2                                                │
+│   R = 0.9 + 0.675 × 0.2                                                         │
+│   R = 0.9 + 0.135                                                               │
+│   R = 1.035  ≈  1.04                                                            │
+│                                                                                 │
+│   → Leichte Harmonie: Logos und Pathos schwingen gut zusammen                   │
+└─────────────────────────────────────────────────────────────────────────────────┘
+```
+
+**Wissenschaftliche Begründung:**
+
+| Komponente | Wissenschaft | Bedeutung |
+|------------|--------------|-----------|
+| **Profil-Match (M)** | Friston (Predictive Coding) | Ähnliche Profile = niedrige "prediction error" |
+| **Balance (B)** | Pirsig (MOQ) | Harmonie zwischen statischer und dynamischer Qualität |
+| **Kombination** | Buzsáki/Singer | Neuronale Kohärenz auf mehreren Ebenen |
+
+**Hinweis:** Bei Attributen mit Confidence-Level < 70% wird die Übereinstimmung mit dem Confidence gewichtet.
+
 ### Gewichtungen nach Pirsig (Logos/Pathos = 40/60)
 
 | Gewicht | Wert | Faktor | Pirsig-Kategorie | Begründung |

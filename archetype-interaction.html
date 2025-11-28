@@ -5282,6 +5282,63 @@
                     </div>
 
                     <div class="help-section">
+                        <h3>🔬 R-Berechnung: Die zwei Komponenten</h3>
+                        <p>Der Resonanzfaktor R wird aus zwei gleichgewichteten Komponenten berechnet:</p>
+
+                        <h4 style="margin-top: 15px;">Komponente 1: Profil-Match (M)</h4>
+                        <p>Ähnlichkeit der 30 Persönlichkeitsattribute zwischen zwei Profilen.</p>
+                        <p style="background: var(--bg-secondary); padding: 10px; border-radius: 5px; font-family: monospace;">
+                            M = Übereinstimmende Attribute / 30 × 100
+                        </p>
+                        <p style="margin-top: 5px; font-size: 0.9em; color: var(--text-muted);">Bei 24 von 30 übereinstimmenden Attributen: M = 80</p>
+
+                        <h4 style="margin-top: 15px;">Komponente 2: Logos-Pathos-Balance (B)</h4>
+                        <p>Das Verhältnis zwischen rationaler Struktur und emotionaler Dynamik – basierend auf Pirsigs MOQ.</p>
+                        <table style="width: 100%; margin-top: 10px; border-collapse: collapse; font-size: 0.9em;">
+                            <tr style="background: var(--bg-secondary);">
+                                <th style="padding: 8px; text-align: left; border: 1px solid var(--border);">Konzept</th>
+                                <th style="padding: 8px; text-align: left; border: 1px solid var(--border);">Definition</th>
+                                <th style="padding: 8px; text-align: left; border: 1px solid var(--border);">TIAGE-Zuordnung</th>
+                            </tr>
+                            <tr>
+                                <td style="padding: 8px; border: 1px solid var(--border);"><strong>Logos</strong></td>
+                                <td style="padding: 8px; border: 1px solid var(--border);">Statische Qualität</td>
+                                <td style="padding: 8px; border: 1px solid var(--border);">A (Attraction)</td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 8px; border: 1px solid var(--border);"><strong>Pathos</strong></td>
+                                <td style="padding: 8px; border: 1px solid var(--border);">Dynamische Qualität</td>
+                                <td style="padding: 8px; border: 1px solid var(--border);">(O + D + G) / 3</td>
+                            </tr>
+                        </table>
+                        <p style="background: var(--bg-secondary); padding: 10px; border-radius: 5px; font-family: monospace; margin-top: 10px;">
+                            B = (100 - |Logos - Pathos|) / 100
+                        </p>
+                        <p style="margin-top: 5px; font-size: 0.9em; color: var(--text-muted);">Bei A=72% und avg(O,D,G)=65%: B = (100 - 7) / 100 = 0.93</p>
+
+                        <h4 style="margin-top: 15px;">Die R-Formel</h4>
+                        <p style="background: linear-gradient(90deg, rgba(147,112,219,0.1), rgba(255,215,0,0.1)); padding: 15px; border-radius: 5px; font-family: monospace; font-size: 1.1em; text-align: center; border: 1px solid var(--border);">
+                            R = 0.9 + [(M/100 × 0.5) + (B × 0.5)] × 0.2
+                        </p>
+                        <p style="margin-top: 10px;"><strong>Wertebereich:</strong> R variiert zwischen 0.9 (minimale Resonanz) und 1.1 (maximale Resonanz).</p>
+
+                        <h4 style="margin-top: 15px;">Beispielrechnung</h4>
+                        <div style="background: var(--bg-secondary); padding: 15px; border-radius: 5px; font-size: 0.9em;">
+                            <p><strong>Gegeben:</strong> M = 80 (80% Profil-Match), B = 0.93 (7% Logos-Pathos-Differenz)</p>
+                            <p style="margin-top: 8px; font-family: monospace;">
+                                R = 0.9 + [(80/100 × 0.5) + (0.93 × 0.5)] × 0.2<br>
+                                R = 0.9 + [0.4 + 0.465] × 0.2<br>
+                                R = 0.9 + 0.173<br>
+                                R = <strong>1.073</strong> → Override aktiv!
+                            </p>
+                        </div>
+
+                        <p style="margin-top: 15px; font-style: italic; color: var(--text-muted);">
+                            Die Balance zwischen Profil-Match und Logos-Pathos-Verhältnis erfasst sowohl die äußere Kompatibilität (ähnliche Eigenschaften) als auch die innere Dynamik (Verhältnis von Struktur und Emotion).
+                        </p>
+                    </div>
+
+                    <div class="help-section">
                         <h3>Quellen & Weiterführende Ressourcen</h3>
                         <ul>
                             <li><strong>Pirsig, Robert M.</strong> (1974): <em>Zen and the Art of Motorcycle Maintenance: An Inquiry into Values.</em> William Morrow and Company, New York.</li>
