@@ -7059,66 +7059,7 @@
         </div>
     </div>
 
-    <!-- Feedback Modal -->
-    <div class="modal-overlay" id="feedbackModal" onclick="closeFeedbackModal(event)">
-        <div class="modal feedback-modal" onclick="event.stopPropagation()">
-            <div class="modal-header">
-                <span class="modal-title">Feedback geben</span>
-                <button class="modal-close" onclick="closeFeedbackModal()">&times;</button>
-            </div>
-            <div class="modal-body">
-                <div class="feedback-context-id" id="feedbackContextId">S1-SINGLE</div>
-
-                <div class="feedback-form-group">
-                    <label class="feedback-label">Name/Kürzel <span class="required">*</span></label>
-                    <input type="text" class="feedback-input" id="feedbackName" placeholder="z.B. Max, Anna, M.S." maxlength="20">
-                </div>
-
-                <div class="feedback-form-group">
-                    <label class="feedback-label">Titel <span class="required">*</span></label>
-                    <input type="text" class="feedback-input" id="feedbackTitle" placeholder="Kurze Zusammenfassung" maxlength="50">
-                </div>
-
-                <div class="feedback-form-group">
-                    <label class="feedback-label">Kommentar</label>
-                    <textarea class="feedback-textarea" id="feedbackComment" placeholder="Dein Feedback zu dieser Ansicht..."></textarea>
-                </div>
-
-                <div class="feedback-form-group">
-                    <label class="feedback-label">Bewertung</label>
-                    <div class="star-rating-group">
-                        <span class="star-rating-label">Verstand</span>
-                        <span style="font-size: 1rem;">😕</span>
-                        <div class="star-rating" id="ratingVerstand">
-                            <span class="star" data-value="1">★</span>
-                            <span class="star" data-value="2">★</span>
-                            <span class="star" data-value="3">★</span>
-                            <span class="star" data-value="4">★</span>
-                            <span class="star" data-value="5">★</span>
-                        </div>
-                        <span style="font-size: 1rem;">🤩</span>
-                    </div>
-                    <div class="star-rating-group" style="margin-top: 10px;">
-                        <span class="star-rating-label">Gefühl</span>
-                        <span style="font-size: 1rem;">😕</span>
-                        <div class="star-rating" id="ratingGefuehl">
-                            <span class="star" data-value="1">★</span>
-                            <span class="star" data-value="2">★</span>
-                            <span class="star" data-value="3">★</span>
-                            <span class="star" data-value="4">★</span>
-                            <span class="star" data-value="5">★</span>
-                        </div>
-                        <span style="font-size: 1rem;">🤩</span>
-                    </div>
-                </div>
-
-                <div class="feedback-buttons">
-                    <button class="feedback-btn-cancel" onclick="closeFeedbackModal()">Abbrechen</button>
-                    <button class="feedback-btn-submit" id="feedbackSubmitBtn" onclick="submitFeedback()">Senden</button>
-                </div>
-            </div>
-        </div>
-    </div>
+    <!-- feedbackModal entfernt - commentModal wird verwendet -->
 
     <!-- Definition Modal -->
     <div class="modal-overlay" id="definitionModal" onclick="closeDefinitionModal(event)">
@@ -9465,10 +9406,6 @@
                     </button>
                 </div>
 
-                <div class="modal-feedback-btn" onclick="openFeedbackModalWithContext('${contextText}')">
-                    💬 Feedback zu ${comboText} | ${name}
-                </div>
-
                 <div class="modal-category">
                     <div class="modal-category-header">
                         <div class="modal-category-letter">${cat}</div>
@@ -10057,158 +9994,19 @@
         document.addEventListener('keydown', (e) => {
             if (e.key === 'Escape') {
                 closeCategoryModal();
-                closeFeedbackModal();
             }
         });
 
         // ==========================================
-        // FEEDBACK SYSTEM
+        // FEEDBACK SYSTEM (entfernt - commentModal wird verwendet)
         // ==========================================
+        // Leere Stubs um JavaScript-Fehler zu vermeiden
+        function openFeedbackModal() { console.log('feedbackModal entfernt - bitte commentModal verwenden'); }
+        function openFeedbackModalWithContext(ctx) { console.log('feedbackModal entfernt - bitte commentModal verwenden'); }
+        function closeFeedbackModal(event) { }
+        function initStarRatings() { }
 
-        // Google Apps Script URL für Feedback
-        const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzVTunE4KlRRmxtjgUU-MoT-Xpz6TuyYKoNmWEnDpO0KsL2S2R00DQcX3USFCA3W07m/exec';
-
-        let feedbackData = [];
-        let feedbackRatings = { verstand: 0, gefuehl: 0 };
-        let replyToId = null; // For reply functionality
-
-        // Advanced filter state
-        let feedbackFilters = {
-            search: '',
-            myType: 'all',
-            partnerType: 'all',
-            category: 'all',
-            sort: 'newest'
-        };
-
-        // Get current context ID based on what's visible
-        function getCurrentContextId() {
-            const carousel = document.getElementById('carousel');
-            const cardWidth = window.innerWidth;
-            const currentCard = Math.round(carousel.scrollLeft / cardWidth);
-
-            const myType = currentArchetype.toUpperCase();
-            const partner = selectedPartner.toUpperCase();
-
-            switch(currentCard) {
-                case 0:
-                    return `S1-${myType}`;
-                case 1:
-                    return `S2-${myType}-${partner}`;
-                case 2:
-                    return `S3`;
-                case 3:
-                    return `S4`;
-                default:
-                    return `S${currentCard + 1}`;
-            }
-        }
-
-        // Get context ID for modals
-        function getModalContextId() {
-            const categoryModal = document.getElementById('categoryModal');
-            if (categoryModal.classList.contains('active')) {
-                const modalTitle = document.getElementById('modalTitle').textContent;
-                const myArch = data.archetypes[currentArchetype];
-                const partnerId = modalContextPartner || selectedPartner;
-                const partnerArch = data.archetypes[partnerId];
-                const combo = `${myArch?.name || '?'} (Ich) mit ${partnerArch?.name || '?'}`;
-
-                if (modalTitle.includes('Kategorie')) {
-                    const cat = modalTitle.replace('Kategorie ', '').trim();
-                    const catName = categoryNames[cat] || cat;
-                    return `${combo} | ${catName}`;
-                } else if (modalTitle.includes('+')) {
-                    // Match modal (Top Match or Challenge)
-                    const matchType = (currentTopMatch.id && modalContextPartner === currentTopMatch.id) ? 'Top Match' : 'Challenge';
-                    return `${combo} | ${matchType}`;
-                }
-            }
-            return getCurrentContextId();
-        }
-
-        // Open feedback modal
-        function openFeedbackModal() {
-            replyToId = null; // Reset reply state for new feedback
-            const contextId = getModalContextId();
-            document.getElementById('feedbackContextId').textContent = contextId;
-            document.getElementById('feedbackModal').classList.add('active');
-            document.body.style.overflow = 'hidden';
-
-            // Reset form
-            document.getElementById('feedbackName').value = '';
-            document.getElementById('feedbackTitle').value = '';
-            document.getElementById('feedbackComment').value = '';
-            feedbackRatings = { verstand: 0, gefuehl: 0 };
-            updateStarDisplay('ratingVerstand', 0);
-            updateStarDisplay('ratingGefuehl', 0);
-        }
-
-        // Open feedback modal with specific context
-        function openFeedbackModalWithContext(contextText) {
-            replyToId = null;
-            document.getElementById('feedbackContextId').textContent = contextText;
-            document.getElementById('feedbackModal').classList.add('active');
-            document.body.style.overflow = 'hidden';
-
-            // Reset form
-            document.getElementById('feedbackName').value = '';
-            document.getElementById('feedbackTitle').value = '';
-            document.getElementById('feedbackComment').value = '';
-            feedbackRatings = { verstand: 0, gefuehl: 0 };
-            updateStarDisplay('ratingVerstand', 0);
-            updateStarDisplay('ratingGefuehl', 0);
-        }
-
-        function closeFeedbackModal(event) {
-            if (event && event.target !== event.currentTarget) return;
-            document.getElementById('feedbackModal').classList.remove('active');
-            document.body.style.overflow = '';
-            replyToId = null; // Reset on close
-        }
-
-        // Star rating functionality
-        function updateStarDisplay(containerId, value) {
-            const container = document.getElementById(containerId);
-            container.querySelectorAll('.star').forEach((star, i) => {
-                star.classList.toggle('active', i < value);
-            });
-        }
-
-        function initStarRatings() {
-            ['ratingVerstand', 'ratingGefuehl'].forEach(containerId => {
-                const container = document.getElementById(containerId);
-                const ratingKey = containerId === 'ratingVerstand' ? 'verstand' : 'gefuehl';
-
-                container.querySelectorAll('.star').forEach(star => {
-                    star.addEventListener('click', () => {
-                        const value = parseInt(star.dataset.value);
-                        feedbackRatings[ratingKey] = value;
-                        updateStarDisplay(containerId, value);
-                    });
-
-                    star.addEventListener('mouseenter', () => {
-                        const value = parseInt(star.dataset.value);
-                        container.querySelectorAll('.star').forEach((s, i) => {
-                            s.style.color = i < value ? '#f1c40f' : '';
-                        });
-                    });
-
-                    star.addEventListener('mouseleave', () => {
-                        container.querySelectorAll('.star').forEach((s, i) => {
-                            s.style.color = i < feedbackRatings[ratingKey] ? '#f1c40f' : '';
-                        });
-                    });
-                });
-            });
-        }
-
-        // Submit feedback
-        // Generate unique ID
-        function generateFeedbackId() {
-            return 'fb_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
-        }
-
+        // Legacy function stub
         async function submitFeedback() {
             const name = document.getElementById('feedbackName').value.trim();
             const titel = document.getElementById('feedbackTitle').value.trim();
