@@ -86,6 +86,287 @@ Das Modell basiert auf **216 individuellen Profilen**, die durch systematische K
 
 **Berechnung:** 6 × 3 × 4 × 3 = **216 Profile**
 
+### Visualisierung: Profil-Generierung (Die "Fütterung")
+
+```
+┌─────────────────────────────────────────────────────────────────────────────────┐
+│                        SCHRITT 1: KOMBINATION                                   │
+│                     (4 Dimensionen → 216 Profile)                               │
+└─────────────────────────────────────────────────────────────────────────────────┘
+
+    ARCHETYP (6)         GESCHLECHT (3)       DOMINANZ (4)        ORIENTIERUNG (3)
+    ┌──────────┐         ┌──────────┐         ┌──────────┐        ┌──────────┐
+    │ Single   │         │ Männlich │         │ Dominant │        │ Hetero   │
+    │ Duo      │    ×    │ Weiblich │    ×    │ Submissiv│   ×    │ Homo     │
+    │ Duo-Flex │         │ Nonbinär │         │ Switch   │        │ Bi       │
+    │ Solopoly │         └──────────┘         │Ausgeglichen       └──────────┘
+    │ Poly-Hedo│                              └──────────┘
+    │ Polyamor │
+    └──────────┘
+         │                    │                    │                   │
+         └────────────────────┴────────────────────┴───────────────────┘
+                                        │
+                                        ▼
+                              ┌──────────────────┐
+                              │   216 PROFILE    │
+                              │  (alle Kombis)   │
+                              └──────────────────┘
+
+┌─────────────────────────────────────────────────────────────────────────────────┐
+│                      SCHRITT 2: RECHERCHE                                       │
+│              (Wissenschaftliche Studien → Attribut-Werte)                       │
+└─────────────────────────────────────────────────────────────────────────────────┘
+
+    ┌─────────────────────────────────────────────────────────────────────────┐
+    │                    WISSENSCHAFTLICHE QUELLEN                            │
+    │                                                                         │
+    │  ┌─────────────┐  ┌─────────────┐  ┌─────────────┐  ┌─────────────┐     │
+    │  │  Big Five   │  │    BDSM     │  │   Gender    │  │  Polyamory  │     │
+    │  │ Personality │  │  Research   │  │Communication│  │  Research   │     │
+    │  │   Model     │  │  (2013)     │  │   (1990)    │  │   (2021)    │     │
+    │  └──────┬──────┘  └──────┬──────┘  └──────┬──────┘  └──────┬──────┘     │
+    │         │                │                │                │            │
+    │         └────────────────┴────────────────┴────────────────┘            │
+    │                                   │                                     │
+    └───────────────────────────────────┼─────────────────────────────────────┘
+                                        │
+                                        ▼
+    ┌─────────────────────────────────────────────────────────────────────────┐
+    │                        ERKENNTNISSE                                     │
+    │                                                                         │
+    │  "Dominante Persönlichkeiten kommunizieren direkter" (Tiedens, 2003)    │
+    │  "Singles priorisieren Autonomie und Karriere" (DePaulo, 2006)          │
+    │  "Polyamore haben höhere emotionale Offenheit" (Moors, 2021)            │
+    │  "Submissive zeigen höhere Agreeableness" (Wismeijer, 2013)             │
+    │                                                                         │
+    └───────────────────────────────────┬─────────────────────────────────────┘
+                                        │
+                                        ▼
+
+┌─────────────────────────────────────────────────────────────────────────────────┐
+│                      SCHRITT 3: GAUSS-VERTEILUNG                                │
+│                (Erkenntnisse → Confidence-Level pro Attribut)                   │
+└─────────────────────────────────────────────────────────────────────────────────┘
+
+                           Normalverteilung (Glockenkurve)
+
+                                    ▲
+                                   /│\
+                                  / │ \
+                                 /  │  \
+                                /   │   \         ← 80% der Population
+                               / ┌──┴──┐ \           im zentralen Bereich
+                              /  │     │  \
+                             /   │     │   \
+                            /    │     │    \
+                           ──────┴─────┴──────
+                          -2σ   -1σ   +1σ   +2σ
+
+                                        │
+                                        ▼
+    ┌─────────────────────────────────────────────────────────────────────────┐
+    │                    CONFIDENCE-ZUWEISUNG                                 │
+    │                                                                         │
+    │   Studie sagt: "80% der Dominanten sind direkt"                         │
+    │                          ↓                                              │
+    │   Profil bekommt: kommunikationsstil: "direkt", confidence: 0.80        │
+    │                                                                         │
+    │   Studie sagt: "95% der Singles leben alleine"                          │
+    │                          ↓                                              │
+    │   Profil bekommt: wohnform: "alleine", confidence: 0.95                 │
+    │                                                                         │
+    └─────────────────────────────────────────────────────────────────────────┘
+                                        │
+                                        ▼
+
+┌─────────────────────────────────────────────────────────────────────────────────┐
+│                      SCHRITT 4: PROFIL-STRUKTUR                                 │
+│                    (30 Attribute + Confidence = 1 Profil)                       │
+└─────────────────────────────────────────────────────────────────────────────────┘
+
+    ┌─────────────────────────────────────────────────────────────────────────┐
+    │  PROFIL: single-männlich-dominant-heterosexuell                         │
+    │                                                                         │
+    │  ┌───────────────────────────────────────────────────────────────────┐  │
+    │  │ D: WERTE & LEBENSPLANUNG (10 Attribute)                           │  │
+    │  │ ─────────────────────────────────────────                         │  │
+    │  │ kinderWunsch:        "nein"        │ conf: 0.85                   │  │
+    │  │ eheWunsch:           "nein"        │ conf: 0.90                   │  │
+    │  │ wohnform:            "alleine"     │ conf: 0.95                   │  │
+    │  │ karrierePrioritaet:  "hoch"        │ conf: 0.80                   │  │
+    │  │ finanzPhilosophie:   "unabhängig"  │ conf: 0.85                   │  │
+    │  │ ...                                                               │  │
+    │  └───────────────────────────────────────────────────────────────────┘  │
+    │                                                                         │
+    │  ┌───────────────────────────────────────────────────────────────────┐  │
+    │  │ E: KOMMUNIKATION & KONFLIKT (10 Attribute)                        │  │
+    │  │ ─────────────────────────────────────────                         │  │
+    │  │ kommunikationsstil:  "direkt"      │ conf: 0.80                   │  │
+    │  │ konfliktverhalten:   "konfrontativ"│ conf: 0.75                   │  │
+    │  │ emotionaleOffenheit: "reserviert"  │ conf: 0.70                   │  │
+    │  │ feedbackStil:        "sachlich"    │ conf: 0.80                   │  │
+    │  │ ...                                                               │  │
+    │  └───────────────────────────────────────────────────────────────────┘  │
+    │                                                                         │
+    │  ┌───────────────────────────────────────────────────────────────────┐  │
+    │  │ F: SOZIALE KOMPATIBILITÄT (10 Attribute)                          │  │
+    │  │ ─────────────────────────────────────────                         │  │
+    │  │ introExtro:          "extrovertiert"│ conf: 0.75                  │  │
+    │  │ oeffentlichkeit:     "offen"        │ conf: 0.80                  │  │
+    │  │ umzugsbereitschaft:  "flexibel"     │ conf: 0.85                  │  │
+    │  │ netzwerkGroesse:     "gross"        │ conf: 0.70                  │  │
+    │  │ ...                                                               │  │
+    │  └───────────────────────────────────────────────────────────────────┘  │
+    │                                                                         │
+    │  ┌───────────────────────────────────────────────────────────────────┐  │
+    │  │ META-INFORMATIONEN                                                │  │
+    │  │ ─────────────────────                                             │  │
+    │  │ research:  ["DePaulo 2006", "Wismeijer 2013", "Tiedens 2003"]     │  │
+    │  │ pirsig:    "Hohe statische Qualität durch Autonomie-Fokus"        │  │
+    │  │ osho:      "Natürlicher Zustand: Selbstbestimmt, nicht reaktiv"   │  │
+    │  └───────────────────────────────────────────────────────────────────┘  │
+    │                                                                         │
+    └─────────────────────────────────────────────────────────────────────────┘
+```
+
+### Der komplette Prozess im Überblick
+
+```
+┌─────────────┐    ┌─────────────┐    ┌─────────────┐    ┌─────────────┐
+│ 4 DIMENS-   │───▶│ WISSEN-     │───▶│   GAUSS     │───▶│ 216 FERTIGE │
+│ IONEN       │    │ SCHAFTLICHE │    │ CONFIDENCE  │    │ PROFILE     │
+│ kombinieren │    │ RECHERCHE   │    │ zuweisen    │    │ (je 30 Attr)│
+└─────────────┘    └─────────────┘    └─────────────┘    └─────────────┘
+      │                  │                  │                   │
+      │                  │                  │                   │
+   6×3×4×3           Studien zu         "Wie sicher          Vollständig
+   = 216            Persönlich-         gilt das?"           annotierte
+   Kombis           keitstypen                               Profile
+```
+
+---
+
+### Die Formel für die Profil-Generierung
+
+#### Attribut-Zuweisung (Überlagerungsprinzip)
+
+```
+┌─────────────────────────────────────────────────────────────────────────────────┐
+│                                                                                 │
+│   P[attr] = f( A[attr], D[mod], G[mod], O[mod] )                                │
+│                                                                                 │
+│   wobei:                                                                        │
+│   • P[attr] = Finaler Attribut-Wert im Profil                                   │
+│   • A[attr] = Archetyp-Basiswert (dominanter Faktor)                            │
+│   • D[mod]  = Dominanz-Modifikator                                              │
+│   • G[mod]  = Geschlechts-Modifikator                                           │
+│   • O[mod]  = Orientierungs-Modifikator                                         │
+│                                                                                 │
+└─────────────────────────────────────────────────────────────────────────────────┘
+```
+
+#### Variablen-Definition
+
+| Variable | Beschreibung | Beispiel |
+|----------|--------------|----------|
+| **A[attr]** | Archetyp-Basiswert | Single → `wohnform: "alleine"` |
+| **D[mod]** | Dominanz-Modifikator | Dominant → `kommunikation: "direkt"` |
+| **G[mod]** | Geschlechts-Modifikator | Männlich → `emotionaleOffenheit: -1` |
+| **O[mod]** | Orientierungs-Modifikator | Homosexuell → `emotionaleOffenheit: +1` |
+
+#### Überlagerungs-Logik (Priorität)
+
+```
+┌─────────────────────────────────────────────────────────────────────────────────┐
+│                     PRIORITÄTS-HIERARCHIE                                       │
+│                                                                                 │
+│                        ┌─────────────────┐                                      │
+│                        │   ARCHETYP (A)  │  ← Höchste Priorität                 │
+│                        │   Basiswerte    │    (definiert Grundstruktur)         │
+│                        └────────┬────────┘                                      │
+│                                 │                                               │
+│                                 ▼                                               │
+│                        ┌─────────────────┐                                      │
+│                        │  DOMINANZ (D)   │  ← Zweite Priorität                  │
+│                        │  Modifikation   │    (überschreibt bei Konflikt)       │
+│                        └────────┬────────┘                                      │
+│                                 │                                               │
+│                                 ▼                                               │
+│                        ┌─────────────────┐                                      │
+│                        │ GESCHLECHT (G)  │  ← Dritte Priorität                  │
+│                        │  Modifikation   │    (Feintuning)                      │
+│                        └────────┬────────┘                                      │
+│                                 │                                               │
+│                                 ▼                                               │
+│                        ┌─────────────────┐                                      │
+│                        │ORIENTIERUNG (O) │  ← Vierte Priorität                  │
+│                        │  Modifikation   │    (zusätzliche Anpassung)           │
+│                        └─────────────────┘                                      │
+│                                                                                 │
+└─────────────────────────────────────────────────────────────────────────────────┘
+```
+
+#### Confidence-Berechnung (Gauß-basiert)
+
+```
+┌─────────────────────────────────────────────────────────────────────────────────┐
+│                                                                                 │
+│                      Σ (Studien_Prozent × Relevanz)                             │
+│   conf[attr] =  ────────────────────────────────────                            │
+│                              n (Anzahl Studien)                                 │
+│                                                                                 │
+│   Ergebnis: 0.0 – 1.0 (Wahrscheinlichkeit dass Attribut zutrifft)               │
+│                                                                                 │
+└─────────────────────────────────────────────────────────────────────────────────┘
+```
+
+#### Rechenbeispiel: Profil-Generierung
+
+```
+┌─────────────────────────────────────────────────────────────────────────────────┐
+│  PROFIL: single-männlich-dominant-heterosexuell                                 │
+│                                                                                 │
+│  ┌───────────────────────────────────────────────────────────────────────────┐  │
+│  │ Attribut: kommunikationsstil                                              │  │
+│  │                                                                           │  │
+│  │ SCHRITT 1: Archetyp-Basis                                                 │  │
+│  │ ───────────────────────────                                               │  │
+│  │ Single → keine spezifische Vorgabe → "mittel" (Gauss-Default)             │  │
+│  │                                                                           │  │
+│  │ SCHRITT 2: Dominanz-Modifikator (überschreibt)                            │  │
+│  │ ──────────────────────────────────────────────                            │  │
+│  │ Dominant → kommunikation: "direkt" (aus Forschung: Tiedens 2003)          │  │
+│  │                                                                           │  │
+│  │ SCHRITT 3: Geschlechts-Modifikator (bestätigt)                            │  │
+│  │ ──────────────────────────────────────────────                            │  │
+│  │ Männlich → bestätigt "direkt" (Tannen 1990: Männer = Status-Sprache)      │  │
+│  │                                                                           │  │
+│  │ SCHRITT 4: Orientierungs-Modifikator (keine Änderung)                     │  │
+│  │ ───────────────────────────────────────────────────                       │  │
+│  │ Heterosexuell → kein spezifischer Einfluss auf Kommunikation              │  │
+│  │                                                                           │  │
+│  │ ERGEBNIS:                                                                 │  │
+│  │ ─────────                                                                 │  │
+│  │ kommunikationsstil: "direkt"                                              │  │
+│  │ confidence: 0.80 (80% der Dominant+Männlich sind "direkt" lt. Studien)    │  │
+│  │                                                                           │  │
+│  └───────────────────────────────────────────────────────────────────────────┘  │
+│                                                                                 │
+│  ┌───────────────────────────────────────────────────────────────────────────┐  │
+│  │ Attribut: emotionaleOffenheit                                             │  │
+│  │                                                                           │  │
+│  │ A: Single       → "variabel"     (keine Vorgabe)                          │  │
+│  │ D: Dominant     → "zurückhaltend" (niedrige Agreeableness)                │  │
+│  │ G: Männlich     → "zurückhaltend" (bestätigt, Gender-Forschung)           │  │
+│  │ O: Heterosexuell→ "zurückhaltend" (niedriger als Homo, Allen 2020)        │  │
+│  │                                                                           │  │
+│  │ ERGEBNIS: emotionaleOffenheit: "zurückhaltend", conf: 0.70                │  │
+│  │                                                                           │  │
+│  └───────────────────────────────────────────────────────────────────────────┘  │
+│                                                                                 │
+└─────────────────────────────────────────────────────────────────────────────────┘
+```
+
 ### Profilstruktur
 
 Jedes der 216 Profile enthält:
@@ -132,13 +413,168 @@ Grundannahme: 80% der Population hat diese Werte (zentraler Bereich der Glockenk
 
 ---
 
-## Berechnung
+## Berechnung des Qualitätsindex
 
-Die Qualitätsfaktoren-Berechnung verwendet eine **gewichtete Summierung** (keine Normalverteilung):
+### Die vollständige Formel
 
 ```
-Qualitätsindex = (Archetyp × 0.40) + (Orientierung × 0.25) + (Dominanz × 0.20) + (Geschlecht × 0.15)
+                    ┌─────────────────────────────────────────────────────────────┐
+                    │                                                             │
+                    │   Q = (A × wₐ) + (O × wₒ) + (D × wᵈ) + (G × wᵍ)             │
+                    │                                                             │
+                    │   wobei: wₐ + wₒ + wᵈ + wᵍ = 1.00                           │
+                    │                                                             │
+                    └─────────────────────────────────────────────────────────────┘
 ```
+
+### Variablen-Definition
+
+| Variable | Name | Wertebereich | Beschreibung |
+|----------|------|--------------|--------------|
+| **Q** | Qualitätsindex | 0 – 100% | Gesamtkompatibilität zwischen zwei Personen |
+| **A** | Archetyp-Score | 0 – 100% | Übereinstimmung der Beziehungsphilosophie |
+| **O** | Orientierungs-Score | 0 – 100% | Kompatibilität der sexuellen Orientierung |
+| **D** | Dominanz-Score | 0 – 100% | Harmonie der Dominanz-Dynamik |
+| **G** | Geschlechts-Score | 0 – 100% | Gender-Chemie und Anziehung |
+
+### Gewichtungen nach Pirsig (Logos/Pathos = 40/60)
+
+| Gewicht | Wert | Faktor | Pirsig-Kategorie | Begründung |
+|---------|------|--------|------------------|------------|
+| **wₐ** | 0.40 | Archetyp | **Logos** (Statisch) | Rationale Entscheidung über Beziehungsform |
+| **wₒ** | 0.25 | Orientierung | **Pathos** (Dynamisch) | Körperliche Anziehung ist fundamental |
+| **wᵈ** | 0.20 | Dominanz | **Pathos** (Dynamisch) | Energetische Spannung und Dynamik |
+| **wᵍ** | 0.15 | Geschlecht | **Pathos** (Dynamisch) | Chemie, das "gewisse Etwas" |
+
+---
+
+### Visualisierung: Die Pirsig-Balance
+
+```
+    ┌─────────────────────────────────────────────────────────────────────────┐
+    │                        QUALITÄTSINDEX (Q)                               │
+    │                              100%                                       │
+    └─────────────────────────────────────────────────────────────────────────┘
+                                     │
+              ┌──────────────────────┴──────────────────────┐
+              │                                             │
+              ▼                                             ▼
+    ┌─────────────────────┐                   ┌─────────────────────────────┐
+    │       LOGOS         │                   │          PATHOS             │
+    │   Statische Qualität│                   │    Dynamische Qualität      │
+    │        40%          │                   │           60%               │
+    └─────────────────────┘                   └─────────────────────────────┘
+              │                                             │
+              ▼                               ┌─────────────┼─────────────┐
+    ┌─────────────────────┐                   │             │             │
+    │                     │                   ▼             ▼             ▼
+    │  ╔═══════════════╗  │         ┌─────────────┐ ┌─────────────┐ ┌─────────────┐
+    │  ║   ARCHETYP    ║  │         │ ORIENTIERUNG│ │  DOMINANZ   │ │ GESCHLECHT  │
+    │  ║     40%       ║  │         │    25%      │ │    20%      │ │    15%      │
+    │  ╚═══════════════╝  │         └─────────────┘ └─────────────┘ └─────────────┘
+    │                     │                   │             │             │
+    │  "Wie wollen wir    │         "Wen begehre  "Wie fließt   "Feintuning
+    │   Beziehung leben?" │          ich?"        die Energie?"  der Chemie"
+    │                     │
+    │  → Verstand         │         → Körper       → Gefühl       → Intuition
+    │  → Struktur         │         → Anziehung    → Spannung     → Schwingung
+    │  → Regeln           │         → Polarität    → Dynamik      → Resonanz
+    │                     │
+    └─────────────────────┘
+
+```
+
+### Datenfluss: Vom Profil zum Score
+
+```
+    ┌────────────────────────────────────────────────────────────────────────────┐
+    │                              EINGABE                                       │
+    │                                                                            │
+    │   Person 1                                    Person 2                     │
+    │   ┌─────────────────────────┐                ┌─────────────────────────┐   │
+    │   │ Archetyp:    Duo        │                │ Archetyp:    Duo-Flex   │   │
+    │   │ Orientierung: Hetero    │                │ Orientierung: Hetero    │   │
+    │   │ Dominanz:    Submissiv  │                │ Dominanz:    Dominant   │   │
+    │   │ Geschlecht:  Weiblich   │                │ Geschlecht:  Männlich   │   │
+    │   └─────────────────────────┘                └─────────────────────────┘   │
+    └────────────────────────────────────────────────────────────────────────────┘
+                                         │
+                                         ▼
+    ┌────────────────────────────────────────────────────────────────────────────┐
+    │                         VERARBEITUNG                                       │
+    │                                                                            │
+    │   ┌───────────────────────────────────────────────────────────────────┐    │
+    │   │  1. ARCHETYP-MATRIX       Duo ↔ Duo-Flex = 75% Basiskompatibilität│    │
+    │   └───────────────────────────────────────────────────────────────────┘    │
+    │                                         │                                  │
+    │   ┌───────────────────────────────────────────────────────────────────┐    │
+    │   │  2. ORIENTIERUNGS-CHECK   Hetero + Hetero + M/F = 100% kompatibel │    │
+    │   └───────────────────────────────────────────────────────────────────┘    │
+    │                                         │                                  │
+    │   ┌───────────────────────────────────────────────────────────────────┐    │
+    │   │  3. DOMINANZ-STATEMENTS   Sub ↔ Dom = 100% komplementär           │    │
+    │   └───────────────────────────────────────────────────────────────────┘    │
+    │                                         │                                  │
+    │   ┌───────────────────────────────────────────────────────────────────┐    │
+    │   │  4. GESCHLECHTS-CHEMIE    W + M bei Hetero = 100% Match           │    │
+    │   └───────────────────────────────────────────────────────────────────┘    │
+    │                                                                            │
+    └────────────────────────────────────────────────────────────────────────────┘
+                                         │
+                                         ▼
+    ┌────────────────────────────────────────────────────────────────────────────┐
+    │                         BERECHNUNG                                         │
+    │                                                                            │
+    │   Q = (A × wₐ)    + (O × wₒ)    + (D × wᵈ)    + (G × wᵍ)                   │
+    │                                                                            │
+    │   Q = (75 × 0.40) + (100 × 0.25) + (100 × 0.20) + (100 × 0.15)             │
+    │                                                                            │
+    │   Q =    30       +     25       +     20       +     15                   │
+    │                                                                            │
+    │   Q = 90%                                                                  │
+    │                                                                            │
+    └────────────────────────────────────────────────────────────────────────────┘
+                                         │
+                                         ▼
+    ┌────────────────────────────────────────────────────────────────────────────┐
+    │                           AUSGABE                                          │
+    │                                                                            │
+    │   ┌─────────────────────────────────────────────────────────────────┐      │
+    │   │  QUALITÄTSINDEX: 90% (Exzellent)                                │      │
+    │   │                                                                 │      │
+    │   │  Aufschlüsselung:                                               │      │
+    │   │  ├── Archetyp (Logos):     75% × 0.40 = 30 Punkte               │      │
+    │   │  ├── Orientierung (Pathos): 100% × 0.25 = 25 Punkte             │      │
+    │   │  ├── Dominanz (Pathos):    100% × 0.20 = 20 Punkte              │      │
+    │   │  └── Geschlecht (Pathos):  100% × 0.15 = 15 Punkte              │      │
+    │   │                                        ─────────────            │      │
+    │   │                                        90 Punkte                │      │
+    │   └─────────────────────────────────────────────────────────────────┘      │
+    │                                                                            │
+    └────────────────────────────────────────────────────────────────────────────┘
+```
+
+### K.O.-Kriterium: Orientierung
+
+```
+    ┌─────────────────────────────────────────────────────────────────────────┐
+    │  WICHTIG: Ohne physische Anziehung gibt es keinen Qualitätsindex        │
+    │                                                                         │
+    │  WENN O = 0% (z.B. Hetero-Mann + Hetero-Mann)                           │
+    │  DANN Q = 0% (unabhängig von allen anderen Faktoren)                    │
+    │                                                                         │
+    │  Pirsig: "Ohne dynamische Qualität (Pathos) keine Bewegung möglich"     │
+    └─────────────────────────────────────────────────────────────────────────┘
+```
+
+---
+
+### Abgrenzung: Gewichtete Summe vs. Gauß-Verteilung
+
+| Konzept | Anwendung | Funktion |
+|---------|-----------|----------|
+| **Gewichtete Summe** | Qualitätsindex-Berechnung | Kombiniert 4 Faktoren zu einem Score |
+| **Gauß-Verteilung** | Confidence-Level der Profile | Statistische Sicherheit der 30 Attribute |
 
 **Wichtig:** Die Gaußsche Normalverteilung wird für die Confidence-Level der Profile verwendet, nicht für die Berechnung des Qualitätsindex selbst.
 
