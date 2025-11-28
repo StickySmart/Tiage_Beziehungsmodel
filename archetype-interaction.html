@@ -12009,18 +12009,24 @@
             const desktopScoreNote = document.getElementById('desktopScoreNote');
             if (desktopScoreNote) {
                 let noteText = '';
+                let quoteText = '';
                 if (pathosCheck.result === 'unmöglich') {
                     noteText = 'Keine Basis für Resonanz vorhanden.';
+                    quoteText = 'Diese Beziehung zeigt eine Qualität von ' + overallScore + '% – keine kompatible Basis vorhanden, deren Muster sich ausschließen.';
                 } else if (overallScore >= 80) {
                     noteText = 'Hohe Resonanz – Muster ergänzen sich.';
+                    quoteText = 'Diese Beziehung zeigt eine Qualität von ' + overallScore + '% – eine hohe Resonanz zwischen zwei Menschen, deren Muster sich ergänzen und verstärken.';
                 } else if (overallScore >= 65) {
                     noteText = 'Solide Balance mit Potenzial.';
+                    quoteText = 'Diese Beziehung zeigt eine Qualität von ' + overallScore + '% – eine solide Balance mit Entwicklungspotenzial für beide Partner.';
                 } else if (overallScore >= 50) {
                     noteText = 'Basis vorhanden, Arbeit erforderlich.';
+                    quoteText = 'Diese Beziehung zeigt eine Qualität von ' + overallScore + '% – eine Basis ist vorhanden, erfordert aber bewusste Arbeit und Kommunikation.';
                 } else {
                     noteText = 'Bewusste Reflexion erforderlich.';
+                    quoteText = 'Diese Beziehung zeigt eine Qualität von ' + overallScore + '% – bewusste Reflexion und offene Kommunikation sind erforderlich.';
                 }
-                desktopScoreNote.textContent = noteText;
+                desktopScoreNote.innerHTML = '<strong>' + noteText + '</strong><br><span style="font-style: italic; opacity: 0.85; font-size: 0.9em;">"' + quoteText + '"</span>';
             }
 
             // Update Radar Chart
@@ -13048,20 +13054,32 @@
             const mobileScoreNote = document.getElementById('mobileScoreNote');
             if (mobileScoreNote) {
                 let noteText = '';
+                let quoteText = '';
+                const score = qualityResult.score;
                 if (qualityResult.incomplete) {
                     noteText = 'Bitte alle Dimensionen auswählen.';
+                    mobileScoreNote.textContent = noteText;
                 } else if (qualityResult.blocked) {
                     noteText = 'Keine Basis für Resonanz vorhanden.';
-                } else if (qualityResult.score >= 80) {
+                    quoteText = 'Diese Beziehung zeigt eine Qualität von ' + score + '% – keine kompatible Basis vorhanden, deren Muster sich ausschließen.';
+                    mobileScoreNote.innerHTML = '<strong>' + noteText + '</strong><br><span style="font-style: italic; opacity: 0.85; font-size: 0.9em;">"' + quoteText + '"</span>';
+                } else if (score >= 80) {
                     noteText = 'Hohe Resonanz – Muster ergänzen sich.';
-                } else if (qualityResult.score >= 65) {
+                    quoteText = 'Diese Beziehung zeigt eine Qualität von ' + score + '% – eine hohe Resonanz zwischen zwei Menschen, deren Muster sich ergänzen und verstärken.';
+                    mobileScoreNote.innerHTML = '<strong>' + noteText + '</strong><br><span style="font-style: italic; opacity: 0.85; font-size: 0.9em;">"' + quoteText + '"</span>';
+                } else if (score >= 65) {
                     noteText = 'Solide Balance mit Potenzial.';
-                } else if (qualityResult.score >= 50) {
+                    quoteText = 'Diese Beziehung zeigt eine Qualität von ' + score + '% – eine solide Balance mit Entwicklungspotenzial für beide Partner.';
+                    mobileScoreNote.innerHTML = '<strong>' + noteText + '</strong><br><span style="font-style: italic; opacity: 0.85; font-size: 0.9em;">"' + quoteText + '"</span>';
+                } else if (score >= 50) {
                     noteText = 'Basis vorhanden, Arbeit erforderlich.';
+                    quoteText = 'Diese Beziehung zeigt eine Qualität von ' + score + '% – eine Basis ist vorhanden, erfordert aber bewusste Arbeit und Kommunikation.';
+                    mobileScoreNote.innerHTML = '<strong>' + noteText + '</strong><br><span style="font-style: italic; opacity: 0.85; font-size: 0.9em;">"' + quoteText + '"</span>';
                 } else {
                     noteText = 'Bewusste Reflexion erforderlich.';
+                    quoteText = 'Diese Beziehung zeigt eine Qualität von ' + score + '% – bewusste Reflexion und offene Kommunikation sind erforderlich.';
+                    mobileScoreNote.innerHTML = '<strong>' + noteText + '</strong><br><span style="font-style: italic; opacity: 0.85; font-size: 0.9em;">"' + quoteText + '"</span>';
                 }
-                mobileScoreNote.textContent = noteText;
             }
         }
 
