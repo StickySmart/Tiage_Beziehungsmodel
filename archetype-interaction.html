@@ -5834,25 +5834,7 @@
     </div>
 
     <!-- Archetype Info Modal (Feature 4) -->
-    <div class="modal-overlay" id="archetypeInfoModal" onclick="closeArchetypeInfoModal(event)">
-        <div class="modal" onclick="event.stopPropagation()" style="position: relative;">
-            <div class="modal-header">
-                <button class="archetype-nav-btn" onclick="navigateArchetypeModal(-1)" title="Vorheriger Archetyp">&#8249;</button>
-                <span class="modal-title" id="archetypeInfoTitle">Archetyp-Info</span>
-                <button class="archetype-nav-btn" onclick="navigateArchetypeModal(1)" title="Nächster Archetyp">&#8250;</button>
-                <button class="modal-close" onclick="closeArchetypeInfoModal()">&times;</button>
-            </div>
-            <div class="modal-body" id="archetypeInfoBody">
-                <div class="archetype-dots" id="archetypeDots"></div>
-                <h3>Definition</h3>
-                <p id="archetypeInfoDefinition"></p>
-                <h3>Merkmale</h3>
-                <ul id="archetypeInfoFeatures"></ul>
-                <h3>Passt zu dir?</h3>
-                <p id="archetypeInfoMatch"></p>
-            </div>
-        </div>
-    </div>
+    <!-- archetypeInfoModal wurde mit definitionModal zusammengeführt -->
 
     <header>
         <h1>ARCHETYPEN-BEZIEHUNGSQUALITÄT</h1>
@@ -15707,30 +15689,26 @@
         };
 
         function openArchetypeInfo(archetypeId, person = null) {
+            // Redirect to definitionModal (zusammengeführt)
             console.log('openArchetypeInfo called with:', archetypeId, 'person:', person);
-            const def = archetypeInfoData[archetypeId];
-            console.log('archetypeInfoData for', archetypeId, ':', def);
-            if (!def) {
-                console.error('No archetype info data found for:', archetypeId);
-                return;
-            }
 
             // Track which person this modal is for
-            currentInfoModalPerson = person;
+            currentDefinitionPerson = person;
 
             // Update current index
-            currentArchetypeIndex = archetypeOrder.indexOf(archetypeId);
-            if (currentArchetypeIndex === -1) currentArchetypeIndex = 0;
+            currentDefinitionIndex = archetypeOrder.indexOf(archetypeId);
+            if (currentDefinitionIndex === -1) currentDefinitionIndex = 0;
 
-            updateArchetypeContent(archetypeId);
-            updateArchetypeDots();
+            // Use the detailed definition modal
+            showArchetypeInfoByType(archetypeId);
 
-            document.getElementById('archetypeInfoModal').classList.add('active');
+            document.getElementById('definitionModal').classList.add('active');
+            document.body.style.overflow = 'hidden';
 
             // Add touch swipe support
-            const modal = document.querySelector('#archetypeInfoModal .modal');
-            modal.ontouchstart = handleArchetypeTouchStart;
-            modal.ontouchend = handleArchetypeTouchEnd;
+            const modal = document.querySelector('#definitionModal .modal');
+            modal.ontouchstart = handleDefinitionTouchStart;
+            modal.ontouchend = handleDefinitionTouchEnd;
         }
 
         function updateArchetypeContent(archetypeId) {
