@@ -1,4 +1,4 @@
-# Archetypen-Interaktionsmatrix v4.0
+# Archetypen-Interaktionsmatrix
 
 Eine interaktive 6x6 Matrix zur Bewertung der Kompatibilität verschiedener Beziehungsarchetypen.
 
@@ -71,10 +71,9 @@ Wähle "Ich bin..." und sieh nur die für dich relevanten Kompatibilitäten.
 
 | Bereich | Bedeutung | Farbe |
 |---------|-----------|-------|
-| < 60% | Herausfordernd | Rot |
-| 60-69% | Moderat | Orange |
-| 70-77% | Gut | Grün |
-| > 77% | Excellent | Türkis |
+| 70-100% | Gut | Blau |
+| 50-69% | Mittel | Orange |
+| < 50% | Herausfordernd | Rot |
 
 ## Asymmetrische Matrix
 
