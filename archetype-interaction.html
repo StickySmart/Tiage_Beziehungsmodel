@@ -13791,8 +13791,13 @@
 
         // Pro/Contra Modal Functions
         function openProContraModal() {
+            console.log('openProContraModal called');
             const modal = document.getElementById('proContraModal');
-            if (!modal) return;
+            console.log('proContraModal element:', modal);
+            if (!modal) {
+                console.error('proContraModal not found!');
+                return;
+            }
 
             // Update archetype display
             updateProContraModalArchetypeDisplay();
@@ -13801,6 +13806,7 @@
             updateProContraModalContent();
 
             modal.classList.add('active');
+            console.log('proContraModal activated, classList:', modal.classList.toString());
             history.pushState({ mobilePage: currentMobilePage, modal: 'procontra' }, '', `#seite${currentMobilePage}-procontra`);
         }
 
