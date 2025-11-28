@@ -6463,15 +6463,36 @@
                 </div>
             </div>
 
-            <button class="btn-primary-mobile" onclick="openProContraModal()">Pro & Contra →</button>
+            <button class="btn-primary-mobile" onclick="mobileGoToPage(3)">Kategorien →</button>
+            <button class="btn-secondary-mobile" onclick="openProContraModal()" style="margin-top: 8px; background: transparent; border: 1px solid var(--border);">Pro & Contra</button>
         </div>
 
-        <!-- PAGE 3 entfernt - Pro & Contra jetzt als Modal -->
+        <!-- PAGE 3: Kategorien-Übersicht -->
+        <div class="mobile-page" id="mobilePage3" data-page="3">
+            <div class="page-header">
+                <button class="btn-back" onclick="mobileGoToPage(2)">←</button>
+                <span class="page-title">Kategorien</span>
+            </div>
+
+            <div class="types-display" style="margin-bottom: 15px;">
+                <span class="type-name" id="mobileResultIch3">Single</span>
+                <span> × </span>
+                <span class="type-name" id="mobileResultPartner3">Duo</span>
+            </div>
+
+            <!-- 6 Kategorien-Balken -->
+            <div class="category-bars-container" id="mobileCategoryBars">
+                <!-- Wird dynamisch gefüllt von renderCategoryBars() -->
+            </div>
+
+            <button class="btn-primary-mobile" onclick="mobileGoToPage(1)" style="margin-top: 20px;">← Zurück zur Auswahl</button>
+        </div>
 
         <!-- Page Indicator -->
         <div class="page-indicator">
             <span class="page-dot active" onclick="mobileGoToPage(1)"></span>
             <span class="page-dot" onclick="mobileGoToPage(2)"></span>
+            <span class="page-dot" onclick="mobileGoToPage(3)"></span>
         </div>
     </div>
 
@@ -12658,18 +12679,19 @@
             updateSelectionInfoMessage();
         }
 
-        function updateExpandableCategoryBars(categories) {
-            const container = document.getElementById('expandCategoryBars');
-            if (!container) return;
+        // Universelle Funktion für Kategorien-Balken (Mobile & Desktop)
+        const categoryNamesMap = {
+            A: 'Beziehungsphilosophie',
+            B: 'Werte-Alignment',
+            C: 'Nähe-Distanz',
+            D: 'Autonomie',
+            E: 'Kommunikation',
+            F: 'Soziale Kompatibilität'
+        };
 
-            const categoryNamesMap = {
-                A: 'Beziehungsphilosophie',
-                B: 'Werte-Alignment',
-                C: 'Nähe-Distanz',
-                D: 'Autonomie',
-                E: 'Kommunikation',
-                F: 'Soziale Kompatibilität'
-            };
+        function renderCategoryBars(containerId, categories) {
+            const container = document.getElementById(containerId);
+            if (!container) return;
 
             let html = '';
             for (const [cat, catData] of Object.entries(categories)) {
@@ -12694,6 +12716,37 @@
                 `;
             }
             container.innerHTML = html;
+        }
+
+        // Desktop: Wrapper für Kompatibilität
+        function updateExpandableCategoryBars(categories) {
+            renderCategoryBars('expandCategoryBars', categories);
+            // Auch Mobile aktualisieren wenn vorhanden
+            renderCategoryBars('mobileCategoryBars', categories);
+        }
+
+        // Mobile Seite 3: Kategorien-Übersicht
+        function updateMobileCategoriesPage() {
+            // Typen-Anzeige aktualisieren
+            const myArch = data?.archetypes?.[currentArchetype];
+            const partnerArch = data?.archetypes?.[selectedPartner];
+
+            const ich3 = document.getElementById('mobileResultIch3');
+            const partner3 = document.getElementById('mobileResultPartner3');
+            if (ich3) ich3.textContent = myArch?.name || currentArchetype;
+            if (partner3) partner3.textContent = partnerArch?.name || selectedPartner;
+
+            // Kategorien berechnen und rendern
+            const interactionKey = `${currentArchetype}_${selectedPartner}`;
+            const interaction = data?.interactions?.[interactionKey];
+
+            if (interaction?.categories) {
+                renderCategoryBars('mobileCategoryBars', interaction.categories);
+            } else {
+                // Fallback: Berechne Kategorien
+                const categories = calculateCategoryScores(currentArchetype, selectedPartner);
+                renderCategoryBars('mobileCategoryBars', categories);
+            }
         }
 
         function showArchetypeInfo(person) {
@@ -13397,9 +13450,8 @@
             if (pageNumber === 2) {
                 updateMobileResultPage();
             } else if (pageNumber === 3) {
-                updateMobileProContraPage();
+                updateMobileCategoriesPage();
             }
-            // Page 4 (A-F Kategorien) entfernt - neues 4-Faktoren-Modell
 
             // Push to browser history for back button navigation (only for forward navigation)
             if (!skipPushState) {
