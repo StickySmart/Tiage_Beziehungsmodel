@@ -3974,6 +3974,28 @@
             transform: rotate(-90deg);
         }
 
+        /* Desktop Selection Info Message */
+        .selection-info-message {
+            color: #ff4444;
+            font-size: 14px;
+            font-weight: 500;
+            text-align: center;
+            padding: 8px 16px;
+            margin: 0;
+            display: none;
+        }
+
+        .selection-info-message.visible {
+            display: block;
+        }
+
+        /* Only show on desktop */
+        @media (max-width: 600px) {
+            .selection-info-message {
+                display: none !important;
+            }
+        }
+
         /* Toggle Buttons for Status (Gelebt/Interessiert) */
         .status-toggle-group {
             display: flex;
@@ -5698,6 +5720,9 @@
         <h1>ARCHETYPEN-BEZIEHUNGSQUALITÄT</h1>
         <button class="help-btn" onclick="openHelpModal()" title="Hilfe & Dokumentation">?</button>
     </header>
+
+    <!-- Desktop Selection Info Message -->
+    <div class="selection-info-message" id="desktopSelectionInfo"></div>
 
     <!-- NEW: Side-by-Side Comparison Layout (Desktop) -->
     <div class="comparison-container desktop-mode" id="comparisonView">
@@ -10860,6 +10885,43 @@
             return result;
         }
 
+        // ========================================
+        // Desktop Selection Info Message
+        // ========================================
+        function updateSelectionInfoMessage() {
+            const infoElement = document.getElementById('desktopSelectionInfo');
+            if (!infoElement) return;
+
+            const missing = [];
+
+            // Check ICH
+            const ichMissing = [];
+            if (!personDimensions.ich.geschlecht) ichMissing.push('Geschlecht');
+            if (!hasAnyDominanzSelected('ich')) ichMissing.push('Dominanz');
+            if (!hasAnyOrientierungSelected('ich')) ichMissing.push('Orientierung');
+            if (ichMissing.length > 0) {
+                missing.push('DU: ' + ichMissing.join(', '));
+            }
+
+            // Check Partner
+            const partnerMissing = [];
+            if (!personDimensions.partner.geschlecht) partnerMissing.push('Geschlecht');
+            if (!hasAnyDominanzSelected('partner')) partnerMissing.push('Dominanz');
+            if (!hasAnyOrientierungSelected('partner')) partnerMissing.push('Orientierung');
+            if (partnerMissing.length > 0) {
+                missing.push('PARTNER: ' + partnerMissing.join(', '));
+            }
+
+            // Update display
+            if (missing.length > 0) {
+                infoElement.textContent = 'Fehlende Auswahl - ' + missing.join(' | ');
+                infoElement.classList.add('visible');
+            } else {
+                infoElement.textContent = '';
+                infoElement.classList.remove('visible');
+            }
+        }
+
         // Handle checkbox change for orientierung multi-select (Desktop)
         function handleOrientierungMultiChange(person, orientierungType, isChecked) {
             if (isChecked) {
@@ -12499,6 +12561,8 @@
             const interaction = data.interactions?.[interactionKey] || {};
             drawRadarChart(interaction.scores || {}, partnerArch?.color || '#457B9D');
 
+            // Update Desktop Selection Info Message
+            updateSelectionInfoMessage();
         }
 
         function updateExpandableCategoryBars(categories) {
