@@ -6415,10 +6415,20 @@
                 <span class="page-title">Ergebnis</span>
             </div>
 
-            <div class="types-display">
-                <span class="type-name" id="mobileResultIch">Single</span>
-                <span> × </span>
-                <span class="type-name" id="mobileResultPartner">Duo</span>
+            <div class="types-display" style="flex-direction: column; gap: 8px;">
+                <div style="display: flex; align-items: center; justify-content: center; gap: 6px;">
+                    <span style="font-size: 11px; color: var(--text-muted); min-width: 35px;">DU:</span>
+                    <button class="archetype-nav-btn" onclick="navigateArchetypeOnPage2('ich', -1)" title="Vorheriger">&#9664;</button>
+                    <span class="type-name" id="mobileResultIch" style="min-width: 80px; text-align: center;">Single</span>
+                    <button class="archetype-nav-btn" onclick="navigateArchetypeOnPage2('ich', 1)" title="Nächster">&#9654;</button>
+                </div>
+                <span style="font-size: 14px; color: var(--text-muted);">×</span>
+                <div style="display: flex; align-items: center; justify-content: center; gap: 6px;">
+                    <span style="font-size: 11px; color: var(--text-muted); min-width: 35px;">Partner:</span>
+                    <button class="archetype-nav-btn" onclick="navigateArchetypeOnPage2('partner', -1)" title="Vorheriger">&#9664;</button>
+                    <span class="type-name" id="mobileResultPartner" style="min-width: 80px; text-align: center;">Duo</span>
+                    <button class="archetype-nav-btn" onclick="navigateArchetypeOnPage2('partner', 1)" title="Nächster">&#9654;</button>
+                </div>
             </div>
 
             <div class="score-circle-container">
@@ -12381,6 +12391,13 @@
 
             // Trigger change event on the active select
             activeSelect.dispatchEvent(new Event('change'));
+        }
+
+        // Navigation auf Seite 2 (Ergebnis) - ruft navigateArchetype auf und aktualisiert Seite 2
+        function navigateArchetypeOnPage2(person, direction) {
+            navigateArchetype(person, direction);
+            // Seite 2 explizit aktualisieren
+            updateMobileResultPage();
         }
 
         function initComparisonLayout() {
