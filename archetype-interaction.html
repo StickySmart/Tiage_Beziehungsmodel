@@ -5168,6 +5168,35 @@
             cursor: pointer;
             font-size: 14px;
         }
+
+        /* Pathos/Logos Sticky Toggle Buttons */
+        #pathosLogosStickyToggle {
+            transition: opacity 0.3s ease;
+        }
+        #pathosLogosStickyToggle button:hover {
+            transform: scale(1.1);
+            box-shadow: 0 4px 16px rgba(0,0,0,0.5);
+        }
+        @media (max-width: 850px) {
+            #pathosLogosStickyToggle {
+                left: auto !important;
+                right: 10px !important;
+            }
+        }
+        @media (max-width: 480px) {
+            #pathosLogosStickyToggle {
+                top: auto !important;
+                bottom: 20px !important;
+                left: auto !important;
+                right: 15px !important;
+                transform: none !important;
+                flex-direction: row !important;
+            }
+            #pathosLogosStickyToggle button {
+                padding: 10px 12px !important;
+                font-size: 14px !important;
+            }
+        }
     </style>
 </head>
 <body>
@@ -5756,7 +5785,12 @@
 
     <!-- Tiage's Ansatz Modal -->
     <div class="modal-overlay" id="pathosLogosModal" onclick="closePathosLogosModal(event)">
-        <div class="modal" onclick="event.stopPropagation()" style="max-width: 700px; max-height: 85vh; overflow-y: auto;">
+        <!-- Sticky side toggle buttons for Pathos and Logos - positioned in overlay, right side of modal -->
+        <div id="pathosLogosStickyToggle" onclick="event.stopPropagation()" style="position: fixed; left: min(calc(50% + 360px), calc(100% - 60px)); top: 50%; transform: translateY(-50%); display: flex; flex-direction: column; gap: 8px; z-index: 1002;">
+            <button id="pathosLogosTogglePathos" onclick="showPathosLogosContent('pathos')" style="padding: 12px 14px; border-radius: 8px; border: 1px solid var(--border); background: rgba(30,30,35,0.95); color: var(--text-primary); cursor: pointer; font-size: 16px; transition: all 0.2s; backdrop-filter: blur(10px); box-shadow: 0 2px 12px rgba(0,0,0,0.4);" title="Pathos - Emotionale Resonanz">🔥</button>
+            <button id="pathosLogosToggleLogos" onclick="showPathosLogosContent('logos')" style="padding: 12px 14px; border-radius: 8px; border: 1px solid var(--border); background: rgba(30,30,35,0.95); color: var(--text-muted); cursor: pointer; font-size: 16px; transition: all 0.2s; backdrop-filter: blur(10px); box-shadow: 0 2px 12px rgba(0,0,0,0.4);" title="Logos - Rationale Struktur">🧠</button>
+        </div>
+        <div class="modal" onclick="event.stopPropagation()" style="max-width: 700px; max-height: 85vh; overflow-y: auto; position: relative;">
             <div class="modal-header">
                 <span class="modal-title" id="pathosLogosModalTitle">Tiage's Ansatz</span>
                 <button class="modal-close" onclick="closePathosLogosModal()">&times;</button>
@@ -5795,11 +5829,6 @@
                 <!-- Main content -->
                 <div id="pathosLogosModalContent" style="font-size: 15px; line-height: 1.7; color: var(--text-secondary);">
                     <!-- Content will be injected here -->
-                </div>
-                <!-- Toggle buttons for Pathos and Logos -->
-                <div style="display: flex; justify-content: center; gap: 12px; margin-top: 20px; padding-top: 15px; border-top: 1px solid var(--border);">
-                    <button id="pathosLogosTogglePathos" onclick="showPathosLogosContent('pathos')" style="padding: 10px 20px; border-radius: 6px; border: 1px solid var(--border); background: rgba(255,255,255,0.1); color: var(--text-primary); cursor: pointer; font-size: 13px; transition: all 0.2s;">🔥 Pathos</button>
-                    <button id="pathosLogosToggleLogos" onclick="showPathosLogosContent('logos')" style="padding: 10px 20px; border-radius: 6px; border: 1px solid var(--border); background: transparent; color: var(--text-muted); cursor: pointer; font-size: 13px; transition: all 0.2s;">🧠 Logos</button>
                 </div>
             </div>
         </div>
@@ -14654,11 +14683,12 @@
             const pathosBtn = document.getElementById('pathosLogosTogglePathos');
             const logosBtn = document.getElementById('pathosLogosToggleLogos');
 
-            // Reset all button styles
+            // Reset all button styles (for sticky side buttons)
             [pathosBtn, logosBtn].forEach(btn => {
                 if (btn) {
-                    btn.style.background = 'transparent';
+                    btn.style.background = 'rgba(30,30,35,0.95)';
                     btn.style.color = 'var(--text-muted)';
+                    btn.style.border = '1px solid var(--border)';
                 }
             });
 
@@ -14669,8 +14699,9 @@
                 subtitleEl.textContent = 'Pathos – Emotionale Resonanz';
                 archetypeContextEl.style.display = 'flex';
                 contentEl.innerHTML = getPathosContent();
-                pathosBtn.style.background = 'rgba(255,255,255,0.1)';
+                pathosBtn.style.background = 'rgba(231,111,81,0.3)';
                 pathosBtn.style.color = 'var(--text-primary)';
+                pathosBtn.style.border = '1px solid #E76F51';
             } else if (type === 'logos') {
                 titleEl.textContent = "Tiage's Ansatz";
                 iconEl.textContent = '🧠';
@@ -14678,8 +14709,9 @@
                 subtitleEl.textContent = 'Logos – Rationale Struktur';
                 archetypeContextEl.style.display = 'flex';
                 contentEl.innerHTML = getLogosContent();
-                logosBtn.style.background = 'rgba(255,255,255,0.1)';
+                logosBtn.style.background = 'rgba(100,149,237,0.3)';
                 logosBtn.style.color = 'var(--text-primary)';
+                logosBtn.style.border = '1px solid #6495ED';
             }
         }
 
