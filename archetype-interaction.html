@@ -49,6 +49,19 @@
             overflow-x: hidden;
         }
 
+        /* Pirsig Collapsible Blocks */
+        .pirsig-collapsible.collapsed .pirsig-content {
+            max-height: 0 !important;
+            opacity: 0 !important;
+            margin-top: 0 !important;
+        }
+        .pirsig-collapsible.collapsed .pirsig-chevron {
+            transform: rotate(-90deg);
+        }
+        .pirsig-header:hover {
+            opacity: 0.8;
+        }
+
         /* Theme Colors */
         body.theme-single { --primary: #E63946; --primary-light: #FFB4A2; }
         body.theme-duo { --primary: #E84393; --primary-light: #FDA7DF; }
@@ -12027,22 +12040,24 @@
                 const combinedPathos = generateCombinedPathos(ichArch, partnerArch);
                 const combinedLogos = generateCombinedLogos(ichArch, partnerArch);
                 desktopPirsigBlocks.innerHTML = `
-                    <div style="margin-bottom: 8px; padding: 10px; background: rgba(255,255,255,0.03); border-radius: 8px; border-left: 2px solid var(--text-muted);">
-                        <div style="display: flex; align-items: flex-start; gap: 8px;">
+                    <div class="pirsig-collapsible" style="margin-bottom: 8px; padding: 10px; background: rgba(255,255,255,0.03); border-radius: 8px; border-left: 2px solid var(--text-muted);">
+                        <div class="pirsig-header" onclick="this.parentElement.classList.toggle('collapsed')" style="display: flex; align-items: center; gap: 8px; cursor: pointer; user-select: none;">
                             <span style="font-size: 14px; flex-shrink: 0;">🔥</span>
-                            <div>
-                                <span style="font-size: 12px; color: var(--text-muted); font-weight: 600;">GEMEINSAMER PATHOS</span>
-                                <p style="color: var(--text-secondary); line-height: 1.4; font-size: 12px; font-style: italic; margin: 4px 0 0 0;">${combinedPathos}</p>
-                            </div>
+                            <span style="font-size: 12px; color: var(--text-muted); font-weight: 600; flex-grow: 1;">GEMEINSAMER PATHOS</span>
+                            <span class="pirsig-chevron" style="font-size: 10px; color: var(--text-muted); transition: transform 0.3s ease;">▼</span>
+                        </div>
+                        <div class="pirsig-content" style="overflow: hidden; transition: max-height 0.3s ease, opacity 0.3s ease; max-height: 200px; opacity: 1;">
+                            <p style="color: var(--text-secondary); line-height: 1.4; font-size: 12px; font-style: italic; margin: 8px 0 0 22px;">${combinedPathos}</p>
                         </div>
                     </div>
-                    <div style="padding: 10px; background: rgba(255,255,255,0.03); border-radius: 8px; border-left: 2px solid var(--text-muted);">
-                        <div style="display: flex; align-items: flex-start; gap: 8px;">
+                    <div class="pirsig-collapsible" style="padding: 10px; background: rgba(255,255,255,0.03); border-radius: 8px; border-left: 2px solid var(--text-muted);">
+                        <div class="pirsig-header" onclick="this.parentElement.classList.toggle('collapsed')" style="display: flex; align-items: center; gap: 8px; cursor: pointer; user-select: none;">
                             <span style="font-size: 14px; flex-shrink: 0;">🧠</span>
-                            <div>
-                                <span style="font-size: 12px; color: var(--text-muted); font-weight: 600;">GEMEINSAMER LOGOS</span>
-                                <p style="color: var(--text-secondary); line-height: 1.4; font-size: 12px; font-style: italic; margin: 4px 0 0 0;">${combinedLogos}</p>
-                            </div>
+                            <span style="font-size: 12px; color: var(--text-muted); font-weight: 600; flex-grow: 1;">GEMEINSAMER LOGOS</span>
+                            <span class="pirsig-chevron" style="font-size: 10px; color: var(--text-muted); transition: transform 0.3s ease;">▼</span>
+                        </div>
+                        <div class="pirsig-content" style="overflow: hidden; transition: max-height 0.3s ease, opacity 0.3s ease; max-height: 200px; opacity: 1;">
+                            <p style="color: var(--text-secondary); line-height: 1.4; font-size: 12px; font-style: italic; margin: 8px 0 0 22px;">${combinedLogos}</p>
                         </div>
                     </div>
                 `;
@@ -13062,22 +13077,24 @@
                 const combinedPathos = generateCombinedPathos(ichArch, partnerArch);
                 const combinedLogos = generateCombinedLogos(ichArch, partnerArch);
                 mobilePirsigBlocks.innerHTML = `
-                    <div style="margin-bottom: 6px; padding: 8px; background: rgba(255,255,255,0.03); border-radius: 6px; border-left: 2px solid var(--text-muted);">
-                        <div style="display: flex; align-items: flex-start; gap: 6px;">
+                    <div class="pirsig-collapsible" style="margin-bottom: 6px; padding: 8px; background: rgba(255,255,255,0.03); border-radius: 6px; border-left: 2px solid var(--text-muted);">
+                        <div class="pirsig-header" onclick="this.parentElement.classList.toggle('collapsed')" style="display: flex; align-items: center; gap: 6px; cursor: pointer; user-select: none;">
                             <span style="font-size: 12px; flex-shrink: 0;">🔥</span>
-                            <div>
-                                <span style="font-size: 10px; color: var(--text-muted); font-weight: 600;">GEMEINSAMER PATHOS</span>
-                                <p style="color: var(--text-secondary); line-height: 1.3; font-size: 10px; font-style: italic; margin: 3px 0 0 0;">${combinedPathos}</p>
-                            </div>
+                            <span style="font-size: 10px; color: var(--text-muted); font-weight: 600; flex-grow: 1;">GEMEINSAMER PATHOS</span>
+                            <span class="pirsig-chevron" style="font-size: 8px; color: var(--text-muted); transition: transform 0.3s ease;">▼</span>
+                        </div>
+                        <div class="pirsig-content" style="overflow: hidden; transition: max-height 0.3s ease, opacity 0.3s ease; max-height: 150px; opacity: 1;">
+                            <p style="color: var(--text-secondary); line-height: 1.3; font-size: 10px; font-style: italic; margin: 6px 0 0 18px;">${combinedPathos}</p>
                         </div>
                     </div>
-                    <div style="padding: 8px; background: rgba(255,255,255,0.03); border-radius: 6px; border-left: 2px solid var(--text-muted);">
-                        <div style="display: flex; align-items: flex-start; gap: 6px;">
+                    <div class="pirsig-collapsible" style="padding: 8px; background: rgba(255,255,255,0.03); border-radius: 6px; border-left: 2px solid var(--text-muted);">
+                        <div class="pirsig-header" onclick="this.parentElement.classList.toggle('collapsed')" style="display: flex; align-items: center; gap: 6px; cursor: pointer; user-select: none;">
                             <span style="font-size: 12px; flex-shrink: 0;">🧠</span>
-                            <div>
-                                <span style="font-size: 10px; color: var(--text-muted); font-weight: 600;">GEMEINSAMER LOGOS</span>
-                                <p style="color: var(--text-secondary); line-height: 1.3; font-size: 10px; font-style: italic; margin: 3px 0 0 0;">${combinedLogos}</p>
-                            </div>
+                            <span style="font-size: 10px; color: var(--text-muted); font-weight: 600; flex-grow: 1;">GEMEINSAMER LOGOS</span>
+                            <span class="pirsig-chevron" style="font-size: 8px; color: var(--text-muted); transition: transform 0.3s ease;">▼</span>
+                        </div>
+                        <div class="pirsig-content" style="overflow: hidden; transition: max-height 0.3s ease, opacity 0.3s ease; max-height: 150px; opacity: 1;">
+                            <p style="color: var(--text-secondary); line-height: 1.3; font-size: 10px; font-style: italic; margin: 6px 0 0 18px;">${combinedLogos}</p>
                         </div>
                     </div>
                 `;
