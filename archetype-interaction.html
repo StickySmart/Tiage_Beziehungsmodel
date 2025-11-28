@@ -13315,30 +13315,30 @@
             const tonalityIntro = selectStatementByHash(tonalityTemplates[tonality].pathos, hash);
             if (tonalityIntro) textParts.push(tonalityIntro);
 
-            // 2. Archetyp-Statement (variiert durch Hash)
+            // 2. Archetyp-Statement (variiert durch Hash mit Primzahl-Multiplikator)
             if (archStatements?.pathos) {
                 const gemeinsam = archStatements.pathos.gemeinsam || [];
                 const spannung = archStatements.pathos.spannung || [];
                 const allPathos = [...gemeinsam, ...spannung];
-                const selected = selectStatementByHash(allPathos, hash);
+                const selected = selectStatementByHash(allPathos, Math.floor(hash / 7));
                 if (selected) textParts.push(selected);
             }
 
-            // 3. Dominanz-Statement (wenn relevant, variiert durch Hash)
+            // 3. Dominanz-Statement (wenn relevant, variiert durch Hash mit Primzahl-Multiplikator)
             if (domStatements?.pathos?.length && domStatements !== dominanceStatements?.default) {
-                const selected = selectStatementByHash(domStatements.pathos, hash + 1);
+                const selected = selectStatementByHash(domStatements.pathos, Math.floor(hash / 13));
                 if (selected) textParts.push(selected);
             }
 
             // 4. Orientierungs-Statement (wenn relevant)
             if (orientStatements?.pathos?.length) {
-                const selected = selectStatementByHash(orientStatements.pathos, hash + 2);
+                const selected = selectStatementByHash(orientStatements.pathos, Math.floor(hash / 17));
                 if (selected) textParts.push(selected);
             }
 
             // 5. Status-Statement (wenn relevant)
             if (statusStmts?.pathos?.length && statusStmts !== statusStatements?.default) {
-                const selected = selectStatementByHash(statusStmts.pathos, hash + 3);
+                const selected = selectStatementByHash(statusStmts.pathos, Math.floor(hash / 23));
                 if (selected) textParts.push(selected);
             }
 
@@ -13401,13 +13401,13 @@
             const tonalityIntro = selectStatementByHash(tonalityTemplates[tonality].logos, hash);
             if (tonalityIntro) textParts.push(tonalityIntro);
 
-            // 2. Archetyp-Statement (variiert durch Hash)
+            // 2. Archetyp-Statement (variiert durch Hash mit Primzahl-Multiplikator)
             if (archStatements?.logos) {
                 const gemeinsam = archStatements.logos.gemeinsam || [];
                 const unterschied = archStatements.logos.unterschied || [];
                 // Bei niedrigem Score auch Unterschiede einbeziehen
                 const allLogos = tonality === 'kritisch' ? [...gemeinsam, ...unterschied] : gemeinsam;
-                const selected = selectStatementByHash(allLogos.length > 0 ? allLogos : unterschied, hash);
+                const selected = selectStatementByHash(allLogos.length > 0 ? allLogos : unterschied, Math.floor(hash / 7));
                 if (selected) textParts.push(selected);
             }
 
@@ -13422,21 +13422,21 @@
                     categoryInsights.push(catTemplate[catTonality]);
                 }
             }
-            // Wähle eine Kategorie-Einsicht basierend auf Hash
+            // Wähle eine Kategorie-Einsicht basierend auf Hash mit Primzahl-Multiplikator
             if (categoryInsights.length > 0) {
-                const selectedInsight = selectStatementByHash(categoryInsights, hash + 4);
+                const selectedInsight = selectStatementByHash(categoryInsights, Math.floor(hash / 11));
                 if (selectedInsight) textParts.push(selectedInsight);
             }
 
             // 4. Dominanz-Statement (wenn relevant)
             if (domStatements?.logos?.length && domStatements !== dominanceStatements?.default) {
-                const selected = selectStatementByHash(domStatements.logos, hash + 5);
+                const selected = selectStatementByHash(domStatements.logos, Math.floor(hash / 13));
                 if (selected) textParts.push(selected);
             }
 
             // 5. Status-Statement (wenn relevant)
             if (statusStmts?.logos?.length && statusStmts !== statusStatements?.default) {
-                const selected = selectStatementByHash(statusStmts.logos, hash + 6);
+                const selected = selectStatementByHash(statusStmts.logos, Math.floor(hash / 23));
                 if (selected) textParts.push(selected);
             }
 
