@@ -10,6 +10,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <title>Archetypen-Beziehungsqualität | Swipe</title>
     <link rel="canonical" href="https://ti-age.de/archetype-interaction.html">
+    <!-- Zentrale CSS-Variablen - EINZIGE QUELLE -->
+    <link rel="stylesheet" href="templates/variables.css">
     <style>
         :root {
             --primary: #457B9D;
@@ -3953,19 +3955,20 @@
             align-items: center;
             gap: 8px;
             padding: 8px 16px;
-            background: var(--bg-card);
-            border: 1px solid var(--border);
+            background: var(--warning);
+            border: 1px solid var(--warning);
             border-radius: 8px;
-            color: var(--text-secondary);
+            color: #1a1a2e;
             font-size: 13px;
+            font-weight: 600;
             cursor: pointer;
             transition: all 0.2s ease;
         }
 
         .fold-unfold-btn:hover {
-            background: var(--bg-secondary);
-            border-color: var(--primary);
-            color: var(--text-primary);
+            background: #d68910;
+            border-color: #d68910;
+            color: #1a1a2e;
         }
 
         .fold-unfold-icon {
@@ -4128,16 +4131,15 @@
         }
 
         .status-toggle-btn.active-gelebt {
-            background: rgba(231, 76, 60, 0.3);
-            border-color: #e74c3c;
-            color: #e74c3c;
+            background: var(--success);
+            border-color: var(--success);
+            color: white;
         }
 
         .status-toggle-btn.active-interessiert {
-            background: rgba(234, 179, 8, 0.25);
-            border-color: #eab308;
-            color: #eab308;
-            animation: yellowPulse 1.5s ease-in-out infinite;
+            background: var(--warning);
+            border-color: var(--warning);
+            color: #1a1a2e;
         }
 
         @keyframes yellowPulse {
@@ -13619,8 +13621,8 @@
             const diff = mobileTouchStartX - mobileTouchEndX;
 
             if (Math.abs(diff) > swipeThreshold) {
-                if (diff > 0 && currentMobilePage < 3) {
-                    // Swipe left -> next page (max 3 pages now)
+                if (diff > 0 && currentMobilePage < 2) {
+                    // Swipe left -> next page (max 2 pages)
                     mobileGoToPage(currentMobilePage + 1);
                 } else if (diff < 0 && currentMobilePage > 1) {
                     // Swipe right -> previous page

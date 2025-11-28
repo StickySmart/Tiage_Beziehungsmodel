@@ -1,0 +1,77 @@
+/*
+ * CSS Variablen - Zentrale Definition
+ * © 2025 Ti-age.de - Alle Rechte vorbehalten
+ *
+ * EINZIGE QUELLE für alle Farb-Variablen
+ * Font-Sizes werden separat in Desktop/Mobile Templates definiert
+ * Wird von allen Seiten und Templates importiert
+ *
+ * Erstellt: 2025-11-28
+ */
+
+/* ========================================
+   FARB-DEFINITIONEN
+   ======================================== */
+
+:root {
+    /* Primärfarben */
+    --primary: #457B9D;           /* Hauptfarbe (Standard Blau) */
+    --primary-light: #A8D5E2;     /* Helle Akzentfarbe */
+
+    /* Hintergrundfarben */
+    --bg-dark: #0f0f1a;           /* Haupt-Hintergrund (Dunkelblau/Schwarz) */
+    --bg-card: #1a1a2e;           /* Card/Komponenten-Hintergrund */
+    --bg-hover: #252542;          /* Hover-Zustand Hintergrund */
+    --bg-primary: #0f0f1a;        /* Alias für bg-dark */
+    --bg-secondary: #252542;      /* Alias für bg-hover */
+
+    /* Textfarben */
+    --text-primary: #f0f0f0;      /* Haupttext (fast weiß) */
+    --text-secondary: #a0a0b0;    /* Sekundärtext */
+    --text-muted: #9a9aaa;        /* Gedämpfter Text */
+
+    /* Rahmen & Akzente */
+    --border: rgba(255,255,255,0.1);  /* Subtile Rahmen */
+    --success: #2ecc71;           /* Erfolg/Ich-Spalte (Grün) - GELEBT */
+    --warning: #f39c12;           /* Warnung (Orange) - INTERESSIERT */
+    --danger: #e74c3c;            /* Gefahr/Partner-Spalte (Rot) */
+
+    /* Font-Sizes: Definiert in template_desktop.css / template_mobile.css */
+    /* Bar-Heights: Definiert in template_desktop.css / template_mobile.css */
+}
+
+/* ========================================
+   ARCHETYP-THEME FARBEN
+   Überschreiben --primary und --primary-light
+   basierend auf dem gewählten Archetyp
+   ======================================== */
+
+body.theme-single {
+    --primary: #E63946;           /* Rot für Single */
+    --primary-light: #FFB4A2;
+}
+
+body.theme-duo {
+    --primary: #E84393;           /* Pink für Duo */
+    --primary-light: #FDA7DF;
+}
+
+body.theme-duo_flex {
+    --primary: #FF6B6B;           /* Koralle für Duo-Flex */
+    --primary-light: #FFA5A5;
+}
+
+body.theme-solopoly {
+    --primary: #2A9D8F;           /* Türkis für Solopoly */
+    --primary-light: #A8DADC;
+}
+
+body.theme-poly_hedo {
+    --primary: #9B5DE5;           /* Violett für Poly Hedo */
+    --primary-light: #D4A5FF;
+}
+
+body.theme-polyamor {
+    --primary: #F4A261;           /* Orange für Polyamor */
+    --primary-light: #FFE5B4;
+}
