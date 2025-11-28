@@ -5567,6 +5567,8 @@
                     </div>
                     <!-- Quality Note moved here for more space -->
                     <div id="desktopScoreNote" class="score-note" style="font-size: 14px; color: var(--text-secondary); font-style: italic; text-align: center; line-height: 1.5; margin-top: 8px;"></div>
+                    <!-- Pirsig Quality Quote Blocks (Pathos/Logos summary) -->
+                    <div id="desktopPirsigQuoteBlocks" style="margin-top: 12px; text-align: left;"></div>
                 </div>
 
                 <!-- Circle Column -->
@@ -5858,6 +5860,8 @@
                 <div class="score-circle" id="mobileScoreCircle" onclick="openProContraModal()" style="cursor: pointer;" title="Klicken für Pro & Contra Details">0%</div>
                 <p class="score-label">Beziehungsqualität <span class="info-icon" onclick="event.stopPropagation(); openHelpModal()" title="Hilfe zur Beziehungsqualität" style="cursor: pointer; font-size: 12px; width: 18px; height: 18px; display: inline-flex; align-items: center; justify-content: center; vertical-align: middle; margin-left: 4px;">?</span></p>
                 <div id="mobileScoreNote" class="score-note" style="margin-top: 8px; font-size: 11px; color: var(--text-secondary); font-style: italic; text-align: center; max-width: 280px; line-height: 1.4; margin-left: auto; margin-right: auto;"></div>
+                <!-- Pirsig Quality Quote Blocks (Pathos/Logos summary) -->
+                <div id="mobilePirsigQuoteBlocks" style="margin-top: 10px; text-align: left; max-width: 280px; margin-left: auto; margin-right: auto;"></div>
             </div>
 
             <!-- Score Breakdown with Sublabels -->
@@ -12029,6 +12033,33 @@
                 desktopScoreNote.innerHTML = '<strong>' + noteText + '</strong><br><span style="font-style: italic; opacity: 0.85; font-size: 0.9em;">"' + quoteText + '"</span>';
             }
 
+            // Update Desktop Pirsig Quality Quote Blocks
+            const desktopPirsigBlocks = document.getElementById('desktopPirsigQuoteBlocks');
+            if (desktopPirsigBlocks && ichArch && partnerArch) {
+                const combinedPathos = generateCombinedPathos(ichArch, partnerArch);
+                const combinedLogos = generateCombinedLogos(ichArch, partnerArch);
+                desktopPirsigBlocks.innerHTML = `
+                    <div style="margin-bottom: 8px; padding: 10px; background: rgba(255,255,255,0.03); border-radius: 8px; border-left: 2px solid var(--text-muted);">
+                        <div style="display: flex; align-items: flex-start; gap: 8px;">
+                            <span style="font-size: 14px; flex-shrink: 0;">🔥</span>
+                            <div>
+                                <span style="font-size: 12px; color: var(--text-muted); font-weight: 600;">GEMEINSAMER PATHOS</span>
+                                <p style="color: var(--text-secondary); line-height: 1.4; font-size: 12px; font-style: italic; margin: 4px 0 0 0;">${combinedPathos}</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="padding: 10px; background: rgba(255,255,255,0.03); border-radius: 8px; border-left: 2px solid var(--text-muted);">
+                        <div style="display: flex; align-items: flex-start; gap: 8px;">
+                            <span style="font-size: 14px; flex-shrink: 0;">🧠</span>
+                            <div>
+                                <span style="font-size: 12px; color: var(--text-muted); font-weight: 600;">GEMEINSAMER LOGOS</span>
+                                <p style="color: var(--text-secondary); line-height: 1.4; font-size: 12px; font-style: italic; margin: 4px 0 0 0;">${combinedLogos}</p>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+
             // Update Radar Chart
             const interactionKey = `${currentArchetype}_${selectedPartner}`;
             const interaction = data.interactions?.[interactionKey] || {};
@@ -13080,6 +13111,35 @@
                     quoteText = 'Diese Beziehung zeigt eine Qualität von ' + score + '% – bewusste Reflexion und offene Kommunikation sind erforderlich.';
                     mobileScoreNote.innerHTML = '<strong>' + noteText + '</strong><br><span style="font-style: italic; opacity: 0.85; font-size: 0.9em;">"' + quoteText + '"</span>';
                 }
+            }
+
+            // Update Mobile Pirsig Quality Quote Blocks
+            const mobilePirsigBlocks = document.getElementById('mobilePirsigQuoteBlocks');
+            if (mobilePirsigBlocks && ichArch && partnerArch && !qualityResult.incomplete) {
+                const combinedPathos = generateCombinedPathos(ichArch, partnerArch);
+                const combinedLogos = generateCombinedLogos(ichArch, partnerArch);
+                mobilePirsigBlocks.innerHTML = `
+                    <div style="margin-bottom: 6px; padding: 8px; background: rgba(255,255,255,0.03); border-radius: 6px; border-left: 2px solid var(--text-muted);">
+                        <div style="display: flex; align-items: flex-start; gap: 6px;">
+                            <span style="font-size: 12px; flex-shrink: 0;">🔥</span>
+                            <div>
+                                <span style="font-size: 10px; color: var(--text-muted); font-weight: 600;">GEMEINSAMER PATHOS</span>
+                                <p style="color: var(--text-secondary); line-height: 1.3; font-size: 10px; font-style: italic; margin: 3px 0 0 0;">${combinedPathos}</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="padding: 8px; background: rgba(255,255,255,0.03); border-radius: 6px; border-left: 2px solid var(--text-muted);">
+                        <div style="display: flex; align-items: flex-start; gap: 6px;">
+                            <span style="font-size: 12px; flex-shrink: 0;">🧠</span>
+                            <div>
+                                <span style="font-size: 10px; color: var(--text-muted); font-weight: 600;">GEMEINSAMER LOGOS</span>
+                                <p style="color: var(--text-secondary); line-height: 1.3; font-size: 10px; font-style: italic; margin: 3px 0 0 0;">${combinedLogos}</p>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            } else if (mobilePirsigBlocks) {
+                mobilePirsigBlocks.innerHTML = '';
             }
         }
 
