@@ -3849,7 +3849,6 @@
 
         /* Collapsible multi-select sections */
         .compact-dimension.collapsible-dimension .compact-dimension-label {
-            cursor: pointer;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -3890,6 +3889,43 @@
 
         .compact-dimension.collapsible-dimension.collapsed .collapsed-summary {
             display: block;
+        }
+
+        /* Unified Fold/Unfold Toolbar */
+        .fold-unfold-toolbar {
+            display: flex;
+            justify-content: flex-end;
+            padding: 8px 16px;
+            margin-bottom: 8px;
+        }
+
+        .fold-unfold-btn {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--text-secondary);
+            font-size: 13px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .fold-unfold-btn:hover {
+            background: var(--bg-secondary);
+            border-color: var(--primary);
+            color: var(--text-primary);
+        }
+
+        .fold-unfold-icon {
+            font-size: 10px;
+            transition: transform 0.3s ease;
+        }
+
+        .fold-unfold-btn.collapsed-state .fold-unfold-icon {
+            transform: rotate(-90deg);
         }
 
         /* Toggle Buttons for Status (Gelebt/Interessiert) */
@@ -5333,6 +5369,13 @@
 
     <!-- NEW: Side-by-Side Comparison Layout (Desktop) -->
     <div class="comparison-container desktop-mode" id="comparisonView">
+        <!-- Unified Fold/Unfold Button -->
+        <div class="fold-unfold-toolbar">
+            <button class="fold-unfold-btn" id="foldUnfoldAllBtn" onclick="toggleAllDimensionsCollapse()" title="Alle Felder auf-/zuklappen">
+                <span class="fold-unfold-icon">▼</span>
+                <span class="fold-unfold-text">Alle aufklappen</span>
+            </button>
+        </div>
         <!-- Two Column Grid -->
         <div class="comparison-grid">
             <!-- ICH Column -->
@@ -5367,9 +5410,8 @@
                         </div>
                     </div>
                     <div class="compact-dimension needs-selection collapsible-dimension" data-dimension="ich-dominanz-multi">
-                        <div class="compact-dimension-label" onclick="toggleDimensionCollapse(this.parentElement)">
-                            <span>Dominanz <span class="dimension-info-icon" onclick="event.stopPropagation(); showDimensionTooltip('dominanz')">ℹ</span> <span style="font-size: 10px; opacity: 0.7;">(Mehrfachauswahl)</span></span>
-                            <span class="collapse-toggle">▼</span>
+                        <div class="compact-dimension-label">
+                            <span>Dominanz <span class="dimension-info-icon" onclick="showDimensionTooltip('dominanz')">ℹ</span> <span style="font-size: 10px; opacity: 0.7;">(Mehrfachauswahl)</span></span>
                         </div>
                         <div class="collapsed-summary" id="ich-dominanz-summary"></div>
                         <div class="dominanz-multi-select">
@@ -5404,9 +5446,8 @@
                         </div>
                     </div>
                     <div class="compact-dimension needs-selection collapsible-dimension" data-dimension="ich-orientierung-multi">
-                        <div class="compact-dimension-label" onclick="toggleDimensionCollapse(this.parentElement)">
-                            <span>Orientierung <span class="dimension-info-icon" onclick="event.stopPropagation(); showDimensionTooltip('orientierung')">ℹ</span> <span style="font-size: 10px; opacity: 0.7;">(Mehrfachauswahl)</span></span>
-                            <span class="collapse-toggle">▼</span>
+                        <div class="compact-dimension-label">
+                            <span>Orientierung <span class="dimension-info-icon" onclick="showDimensionTooltip('orientierung')">ℹ</span> <span style="font-size: 10px; opacity: 0.7;">(Mehrfachauswahl)</span></span>
                         </div>
                         <div class="collapsed-summary" id="ich-orientierung-summary"></div>
                         <div class="dominanz-multi-select">
@@ -5468,9 +5509,8 @@
                         </div>
                     </div>
                     <div class="compact-dimension needs-selection collapsible-dimension" data-dimension="partner-dominanz-multi">
-                        <div class="compact-dimension-label" onclick="toggleDimensionCollapse(this.parentElement)">
-                            <span>Dominanz <span class="dimension-info-icon" onclick="event.stopPropagation(); showDimensionTooltip('dominanz')">ℹ</span> <span style="font-size: 10px; opacity: 0.7;">(Mehrfachauswahl)</span></span>
-                            <span class="collapse-toggle">▼</span>
+                        <div class="compact-dimension-label">
+                            <span>Dominanz <span class="dimension-info-icon" onclick="showDimensionTooltip('dominanz')">ℹ</span> <span style="font-size: 10px; opacity: 0.7;">(Mehrfachauswahl)</span></span>
                         </div>
                         <div class="collapsed-summary" id="partner-dominanz-summary"></div>
                         <div class="dominanz-multi-select">
@@ -5505,9 +5545,8 @@
                         </div>
                     </div>
                     <div class="compact-dimension needs-selection collapsible-dimension" data-dimension="partner-orientierung-multi">
-                        <div class="compact-dimension-label" onclick="toggleDimensionCollapse(this.parentElement)">
-                            <span>Orientierung <span class="dimension-info-icon" onclick="event.stopPropagation(); showDimensionTooltip('orientierung')">ℹ</span> <span style="font-size: 10px; opacity: 0.7;">(Mehrfachauswahl)</span></span>
-                            <span class="collapse-toggle">▼</span>
+                        <div class="compact-dimension-label">
+                            <span>Orientierung <span class="dimension-info-icon" onclick="showDimensionTooltip('orientierung')">ℹ</span> <span style="font-size: 10px; opacity: 0.7;">(Mehrfachauswahl)</span></span>
                         </div>
                         <div class="collapsed-summary" id="partner-orientierung-summary"></div>
                         <div class="dominanz-multi-select">
@@ -8490,6 +8529,38 @@
         // Toggle dimension collapse for Dominanz/Orientierung sections
         function toggleDimensionCollapse(element) {
             element.classList.toggle('collapsed');
+        }
+
+        // Track global fold/unfold state
+        let allDimensionsCollapsed = false;
+
+        // Toggle all dimensions collapse/expand at once
+        function toggleAllDimensionsCollapse() {
+            const allDimensions = document.querySelectorAll('.collapsible-dimension');
+            const btn = document.getElementById('foldUnfoldAllBtn');
+            const icon = btn.querySelector('.fold-unfold-icon');
+            const text = btn.querySelector('.fold-unfold-text');
+
+            allDimensionsCollapsed = !allDimensionsCollapsed;
+
+            allDimensions.forEach(dim => {
+                if (allDimensionsCollapsed) {
+                    dim.classList.add('collapsed');
+                } else {
+                    dim.classList.remove('collapsed');
+                }
+            });
+
+            // Update button appearance
+            if (allDimensionsCollapsed) {
+                icon.textContent = '▶';
+                text.textContent = 'Alle aufklappen';
+                btn.classList.add('collapsed-state');
+            } else {
+                icon.textContent = '▼';
+                text.textContent = 'Alle zuklappen';
+                btn.classList.remove('collapsed-state');
+            }
         }
 
         // Get summary text for selected options
