@@ -234,6 +234,27 @@ Im einsamen Erleben mag Pirsig recht haben. Im dialogischen Resonanzraum gilt ei
 - Dominant/Submissiv = Yang/Yin Polarität
 - Switch = Yin-Yang Balance
 
+### OSHOs Sicht auf Orientierung als Konditionierung
+
+OSHO argumentierte, dass sexuelle Orientierung keine "Natur" ist, sondern gesellschaftliche Konditionierung:
+
+> "Die Gesellschaft hat euch beigebracht, wen ihr begehren sollt. Aber Liebe ist jenseits von Kategorien. Wenn zwei Seelen wirklich resonieren, fallen alle Labels."
+
+**Implikation für das Tiage-Modell:**
+- Orientierung (Hetero/Homo/Bi) ist ein "konditionierter Filter"
+- Bisexuell = am wenigsten konditioniert (daher "am natürlichsten")
+- Bei hoher Resonanz kann dieser Filter durchlässig werden
+
+**Resonanz-Override (Technische Umsetzung):**
+
+| Bedingung | Effekt |
+|-----------|--------|
+| O = 0% und R < 1.05 | K.O. bleibt (Standard) |
+| O = 0% und R ≥ 1.05 | O_effektiv = (R - 1.0) × 100 |
+| Maximum | Bei R = 1.1: O_effektiv = 10% |
+
+Dies ist keine Empfehlung, sondern eine philosophische Möglichkeit: Tiefe Resonanz kann konditionierte Grenzen transzendieren.
+
 ---
 
 ## 9. TIAGE Resonanz-Theorie: Neurowissenschaftliche Grundlagen

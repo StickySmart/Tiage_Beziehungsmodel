@@ -619,18 +619,45 @@ Resonanz ist kein fünfter Faktor, sondern beschreibt die **Qualität des Zusamm
     └────────────────────────────────────────────────────────────────────────────┘
 ```
 
-### K.O.-Kriterium: Orientierung
+### K.O.-Kriterium: Orientierung (mit Resonanz-Override)
 
 ```
     ┌─────────────────────────────────────────────────────────────────────────┐
-    │  WICHTIG: Ohne physische Anziehung gibt es keinen Qualitätsindex        │
+    │  STANDARD: Ohne physische Anziehung gibt es keinen Qualitätsindex       │
     │                                                                         │
     │  WENN O = 0% (z.B. Hetero-Mann + Hetero-Mann)                           │
     │  DANN Q = 0% (unabhängig von allen anderen Faktoren)                    │
     │                                                                         │
     │  Pirsig: "Ohne dynamische Qualität (Pathos) keine Bewegung möglich"     │
     └─────────────────────────────────────────────────────────────────────────┘
+
+    ┌─────────────────────────────────────────────────────────────────────────┐
+    │  ⚡ RESONANZ-OVERRIDE (OSHO-Prinzip)                                     │
+    │                                                                         │
+    │  OSHO: "Orientierung ist Konditionierung, nicht Natur."                 │
+    │  Wenn zwei Menschen wirklich resonieren, fallen alle Labels.            │
+    │                                                                         │
+    │  WENN O = 0% ABER R ≥ 1.05:                                             │
+    │  ─────────────────────────────────────────────────────────────          │
+    │  O_effektiv = (R - 1.0) × 100                                           │
+    │                                                                         │
+    │  Beispiel: R = 1.08                                                     │
+    │  O_effektiv = (1.08 - 1.0) × 100 = 8%                                   │
+    │                                                                         │
+    │  → Statt K.O. gibt es einen kleinen Orientierungs-Score                 │
+    │  → Maximum bei R = 1.1: O_effektiv = 10%                                │
+    │                                                                         │
+    │  ⓘ Im UI wird dies als klickbarer Indikator angezeigt                   │
+    └─────────────────────────────────────────────────────────────────────────┘
 ```
+
+**Philosophische Begründung:**
+
+Nach OSHO ist sexuelle Orientierung gesellschaftliche Konditionierung, nicht die essenzielle Natur des Menschen. Der "natürliche" Zustand wäre jenseits von Labels (daher wird Bisexuell als "am natürlichsten" eingestuft).
+
+Resonanz repräsentiert die tiefere, unkonditionierte Ebene der Verbindung. Wenn R hoch ist (≥ 1.05), bedeutet das: Logos und Pathos schwingen so gut zusammen, dass konditionierte Grenzen durchlässig werden.
+
+**Wichtig:** Dies ist keine Empfehlung, sondern eine philosophische Möglichkeit, die das Modell abbildet.
 
 ---
 
