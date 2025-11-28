@@ -58,12 +58,11 @@ Qualitätsindex = (Archetyp × 40%) + (Orientierung × 25%) + (Dominanz × 20%) 
 
 ### Ergebnis-Interpretation
 
-| Bereich | Bedeutung |
-|---------|-----------|
-| 80-100% | Exzellent - Wenige Herausforderungen |
-| 60-79% | Gut - Mit Kommunikation machbar |
-| 40-59% | Moderat - Erfordert bewusste Arbeit |
-| 0-39% | Herausfordernd - Fundamentale Unterschiede |
+| Bereich | Bedeutung | Farbe |
+|---------|-----------|-------|
+| 70-100% | Gut - Solide Basis vorhanden | Blau |
+| 50-69% | Mittel - Erfordert bewusste Arbeit | Orange |
+| 0-49% | Herausfordernd - Fundamentale Unterschiede | Rot |
 
 ---
 

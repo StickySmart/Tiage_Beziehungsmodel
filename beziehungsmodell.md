@@ -52,12 +52,12 @@ Die philosophischen Konzepte von Pirsig und OSHO werden durch neurowissenschaftl
 
 | Archetyp | Beschreibung | Farbe |
 |----------|-------------|-------|
-| **Single** | Autonomes Leben ohne Primärbeziehung | Rot |
-| **Duo** | Monogame Zweierbeziehung mit Exklusivität | Blau |
-| **Duo-Flex** | Primärbeziehung mit vereinbarten Öffnungen | Cyan |
-| **Solopoly** | Mehrere gleichwertige Beziehungen, Fokus Autonomie | Grün |
-| **Poly-Hedo** | Polyamorie mit Fokus auf Genuss | Orange |
-| **Polyamor** | Tiefe emotionale Bindungen zu mehreren Partnern | Magenta |
+| **Single** | Autonomes Leben ohne Primärbeziehung | Rot (#E63946) |
+| **Duo** | Monogame Zweierbeziehung mit Exklusivität | Pink (#E84393) |
+| **Duo-Flex** | Primärbeziehung mit vereinbarten Öffnungen | Koralle (#FF6B6B) |
+| **Solopoly** | Mehrere gleichwertige Beziehungen, Fokus Autonomie | Grün (#2A9D8F) |
+| **Poly-Hedo** | Polyamorie mit Fokus auf Genuss | Lila (#9B5DE5) |
+| **Polyamor** | Tiefe emotionale Bindungen zu mehreren Partnern | Orange (#F4A261) |
 
 ---
 
@@ -765,12 +765,11 @@ Resonanz repräsentiert die tiefere, unkonditionierte Ebene der Verbindung. Wenn
 
 ### Ergebnis-Skala
 
-| Index | Bewertung | Bedeutung |
-|-------|-----------|-----------|
-| 80-100% | Exzellent | Wenige Herausforderungen |
-| 60-79% | Gut | Mit Kommunikation machbar |
-| 40-59% | Moderat | Erfordert bewusste Arbeit |
-| 0-39% | Herausfordernd | Fundamentale Unterschiede |
+| Index | Bewertung | Farbe | Bedeutung |
+|-------|-----------|-------|-----------|
+| 70-100% | Gut | Blau | Solide Basis vorhanden |
+| 50-69% | Mittel | Orange | Erfordert bewusste Arbeit |
+| 0-49% | Herausfordernd | Rot | Fundamentale Unterschiede |
 
 ---
 
