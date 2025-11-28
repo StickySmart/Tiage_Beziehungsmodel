@@ -7297,8 +7297,26 @@
 
         // Hilfsfunktion: Hole Statements für Dominanz-Kombination
         function getDominanceStatements(dom1, dom2) {
-            if (!dom1 || !dom2) return dominanceStatements.default;
-            const key = `${dom1}_${dom2}`;
+            // Extrahiere primäre Dominanz aus Multi-Select-Objekt
+            const getPrimaryDominance = (dom) => {
+                if (typeof dom === 'string') return dom;
+                if (typeof dom === 'object' && dom !== null) {
+                    // Priorität: gelebt > interessiert
+                    for (const key of ['dominant', 'submissiv', 'switch', 'ausgeglichen']) {
+                        if (dom[key] === 'gelebt') return key;
+                    }
+                    for (const key of ['dominant', 'submissiv', 'switch', 'ausgeglichen']) {
+                        if (dom[key] === 'interessiert') return key;
+                    }
+                }
+                return null;
+            };
+
+            const d1 = getPrimaryDominance(dom1);
+            const d2 = getPrimaryDominance(dom2);
+
+            if (!d1 || !d2) return dominanceStatements.default;
+            const key = `${d1}_${d2}`;
             return dominanceStatements[key] || dominanceStatements.default;
         }
 
@@ -12566,15 +12584,13 @@
                 }
             }
 
-            // Dominanz-basierte Pathos-Statements hinzufügen
-            if (domStatements?.pathos?.length && personDimensions.ich?.dominanz && personDimensions.partner?.dominanz) {
+            // Dominanz-basierte Pathos-Statements hinzufügen (nur wenn nicht default)
+            if (domStatements?.pathos?.length && domStatements !== dominanceStatements.default) {
                 textParts.push(domStatements.pathos[0]);
             }
 
-            // Orientierungs-basierte Pathos-Statements hinzufügen
-            if (orientStatements?.pathos?.length &&
-                personDimensions.ich?.orientierung && personDimensions.partner?.orientierung &&
-                personDimensions.ich?.geschlecht && personDimensions.partner?.geschlecht) {
+            // Orientierungs-basierte Pathos-Statements hinzufügen (nur wenn nicht default)
+            if (orientStatements?.pathos?.length && orientStatements !== orientierungStatements.default) {
                 textParts.push(orientStatements.pathos[0]);
             }
 
@@ -12631,15 +12647,13 @@
                 }
             }
 
-            // Dominanz-basierte Logos-Statements
-            if (domStatements?.logos?.length && personDimensions.ich?.dominanz && personDimensions.partner?.dominanz) {
+            // Dominanz-basierte Logos-Statements (nur wenn nicht default)
+            if (domStatements?.logos?.length && domStatements !== dominanceStatements.default) {
                 textParts.push(domStatements.logos[0]);
             }
 
-            // Orientierungs-basierte Logos-Statements hinzufügen
-            if (orientStatements?.logos?.length &&
-                personDimensions.ich?.orientierung && personDimensions.partner?.orientierung &&
-                personDimensions.ich?.geschlecht && personDimensions.partner?.geschlecht) {
+            // Orientierungs-basierte Logos-Statements hinzufügen (nur wenn nicht default)
+            if (orientStatements?.logos?.length && orientStatements !== orientierungStatements.default) {
                 textParts.push(orientStatements.logos[0]);
             }
 
