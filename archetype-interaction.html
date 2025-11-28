@@ -13148,57 +13148,201 @@
             return { pro, contra };
         }
 
+        // ═══════════════════════════════════════════════════════════════════════
+        // KOMBINIERTES SYNTHESE-SYSTEM (A+B+C)
+        // A) Score → Tonalität (positiv/neutral/kritisch)
+        // B) Hash aus 4 Faktoren → deterministische Variation
+        // C) 6 Kategorien + Templates → Zusammenführung
+        // ═══════════════════════════════════════════════════════════════════════
+
+        /**
+         * Berechnet einen deterministischen Hash aus den 4 Faktoren
+         * Gibt einen Index zurück, der für Statement-Auswahl verwendet wird
+         */
+        function getFactorHash(archetypScore, dominanzScore, orientierungScore, geschlechtScore) {
+            // Einfacher aber deterministischer Hash basierend auf allen 4 Faktoren
+            const combined = (archetypScore * 1000000) + (dominanzScore * 10000) + (orientierungScore * 100) + geschlechtScore;
+            // Verwende Modulo um einen Index zu bekommen
+            return combined;
+        }
+
+        /**
+         * Wählt ein Statement deterministisch aus einem Array basierend auf Hash
+         */
+        function selectStatementByHash(statements, hash) {
+            if (!statements || statements.length === 0) return null;
+            const index = hash % statements.length;
+            return statements[index];
+        }
+
+        /**
+         * Bestimmt die Tonalität basierend auf dem Gesamtscore
+         * @returns 'positiv' | 'neutral' | 'kritisch'
+         */
+        function getTonality(score) {
+            if (score >= 70) return 'positiv';
+            if (score >= 50) return 'neutral';
+            return 'kritisch';
+        }
+
+        /**
+         * Tonalitäts-Templates für die Synthese-Einleitungen
+         */
+        const tonalityTemplates = {
+            positiv: {
+                pathos: [
+                    "Eine vielversprechende Resonanz entsteht zwischen euch.",
+                    "Die emotionale Chemie deutet auf tiefes Potenzial hin.",
+                    "Eure Energien harmonieren auf einer fundamentalen Ebene."
+                ],
+                logos: [
+                    "Die strukturelle Kompatibilität bildet eine solide Basis.",
+                    "Eure Beziehungsphilosophien ergänzen sich konstruktiv.",
+                    "Das rationale Fundament ermöglicht fruchtbare Kommunikation."
+                ]
+            },
+            neutral: {
+                pathos: [
+                    "Eine interessante Dynamik entfaltet sich zwischen euch.",
+                    "Die emotionale Landschaft bietet sowohl Chancen als auch Herausforderungen.",
+                    "Eure Energien begegnen sich – was daraus wird, liegt in euren Händen."
+                ],
+                logos: [
+                    "Die strukturellen Unterschiede erfordern bewusste Navigation.",
+                    "Eure Beziehungsvorstellungen haben Überschneidungen, aber auch Differenzen.",
+                    "Dialog und Klärung werden wichtig sein für das gegenseitige Verständnis."
+                ]
+            },
+            kritisch: {
+                pathos: [
+                    "Die emotionalen Welten prallen aufeinander.",
+                    "Spannungen auf der Gefühlsebene sind zu erwarten.",
+                    "Die unterschiedlichen emotionalen Bedürfnisse erfordern besondere Achtsamkeit."
+                ],
+                logos: [
+                    "Fundamentale Unterschiede in den Beziehungsvorstellungen werden sichtbar.",
+                    "Die strukturellen Differenzen stellen eine erhebliche Herausforderung dar.",
+                    "Grundlegende Gespräche über Erwartungen sind unerlässlich."
+                ]
+            }
+        };
+
+        /**
+         * Kategorie-spezifische Synthese-Bausteine für die 6 Bereiche
+         */
+        const categorySynthesisTemplates = {
+            A: { // Beziehungsphilosophie
+                name: "Beziehungsphilosophie",
+                positiv: "Eure Grundhaltungen zu Beziehungen harmonieren.",
+                neutral: "Eure Beziehungsphilosophien haben gemeinsame Punkte, aber auch Unterschiede.",
+                kritisch: "Fundamentale Differenzen in der Beziehungsphilosophie erfordern Klärung."
+            },
+            B: { // Werte-Alignment
+                name: "Werte-Alignment",
+                positiv: "Geteilte Werte bilden ein stabiles Fundament.",
+                neutral: "Manche Werte teilt ihr, andere unterscheiden sich.",
+                kritisch: "Unterschiedliche Wertevorstellungen können zu Konflikten führen."
+            },
+            C: { // Nähe-Distanz
+                name: "Nähe-Distanz",
+                positiv: "Eure Bedürfnisse nach Nähe und Raum passen gut zusammen.",
+                neutral: "Die Balance zwischen Nähe und Distanz wird Kommunikation erfordern.",
+                kritisch: "Unterschiedliche Nähe-Distanz-Bedürfnisse können Spannung erzeugen."
+            },
+            D: { // Autonomie
+                name: "Autonomie",
+                positiv: "Ihr respektiert gegenseitig eure Unabhängigkeit.",
+                neutral: "Das Autonomie-Verständnis bedarf weiterer Abstimmung.",
+                kritisch: "Konfliktpotenzial bei unterschiedlichen Autonomie-Erwartungen."
+            },
+            E: { // Kommunikation
+                name: "Kommunikation",
+                positiv: "Die Basis für fruchtbaren Dialog ist gegeben.",
+                neutral: "Kommunikationsstile unterscheiden sich – Anpassung möglich.",
+                kritisch: "Unterschiedliche Kommunikationsweisen können Missverständnisse erzeugen."
+            },
+            F: { // Soziale Kompatibilität
+                name: "Soziale Kompatibilität",
+                positiv: "Soziale Vorstellungen und Umfelder harmonieren.",
+                neutral: "Soziale Kompatibilität ist teilweise gegeben.",
+                kritisch: "Unterschiedliche soziale Erwartungen können belasten."
+            }
+        };
+
         function generateCombinedPathos(ichArch, partnerArch) {
             const ichName = ichArch?.name || 'ICH';
             const partnerName = partnerArch?.name || 'Partner';
             const ichId = ichArch?.id || '';
             const partnerId = partnerArch?.id || '';
 
-            // Hole Statements aus der Datenbank
-            const archStatements = getArchetypeStatements(ichId, partnerId);
-            const domStatements = getDominanceStatements(
-                personDimensions.ich?.dominanz,
-                personDimensions.partner?.dominanz
-            );
-            const orientStatements = getOrientierungStatements(
-                personDimensions.ich?.orientierung,
-                personDimensions.partner?.orientierung,
-                personDimensions.ich?.geschlecht,
-                personDimensions.partner?.geschlecht
-            );
-            const statusStmts = getStatusStatements(
-                personDimensions.ich,
-                personDimensions.partner
-            );
+            // Berechne die 4 Faktor-Scores
+            const person1 = {
+                archetyp: ichId,
+                dominanz: personDimensions.ich?.dominanz,
+                orientierung: personDimensions.ich?.orientierung,
+                geschlecht: personDimensions.ich?.geschlecht,
+                orientierungStatus: personDimensions.ich?.orientierungStatus
+            };
+            const person2 = {
+                archetyp: partnerId,
+                dominanz: personDimensions.partner?.dominanz,
+                orientierung: personDimensions.partner?.orientierung,
+                geschlecht: personDimensions.partner?.geschlecht,
+                orientierungStatus: personDimensions.partner?.orientierungStatus
+            };
 
+            // Hole Score-Breakdown
+            const qualityResult = calculateRelationshipQuality(person1, person2);
+            const breakdown = qualityResult.breakdown || { archetyp: 50, dominanz: 75, orientierung: 100, geschlecht: 100 };
+            const overallScore = qualityResult.score || 50;
+
+            // A) Bestimme Tonalität basierend auf Score
+            const tonality = getTonality(overallScore);
+
+            // B) Berechne Hash für deterministische Variation
+            const hash = getFactorHash(breakdown.archetyp, breakdown.dominanz, breakdown.orientierung, breakdown.geschlecht);
+
+            // Hole alle Statement-Quellen
+            const archStatements = getArchetypeStatements(ichId, partnerId);
+            const domStatements = getDominanceStatements(person1.dominanz, person2.dominanz);
+            const orientStatements = getOrientierungStatements(person1.orientierung, person2.orientierung, person1.geschlecht, person2.geschlecht);
+            const statusStmts = getStatusStatements(personDimensions.ich, personDimensions.partner);
+
+            // C) Baue Synthese mit Templates
             const textParts = [];
 
-            // Archetyp-basierte Pathos-Statements
+            // 1. Tonalitäts-Einleitung
+            const tonalityIntro = selectStatementByHash(tonalityTemplates[tonality].pathos, hash);
+            if (tonalityIntro) textParts.push(tonalityIntro);
+
+            // 2. Archetyp-Statement (variiert durch Hash)
             if (archStatements?.pathos) {
-                if (archStatements.pathos.gemeinsam?.length) {
-                    textParts.push(archStatements.pathos.gemeinsam[0]);
-                }
-                if (archStatements.pathos.spannung?.length) {
-                    textParts.push(archStatements.pathos.spannung[0]);
-                }
+                const gemeinsam = archStatements.pathos.gemeinsam || [];
+                const spannung = archStatements.pathos.spannung || [];
+                const allPathos = [...gemeinsam, ...spannung];
+                const selected = selectStatementByHash(allPathos, hash);
+                if (selected) textParts.push(selected);
             }
 
-            // Dominanz-basierte Pathos-Statements hinzufügen (nur wenn nicht default)
-            if (domStatements?.pathos?.length && domStatements !== dominanceStatements.default) {
-                textParts.push(domStatements.pathos[0]);
+            // 3. Dominanz-Statement (wenn relevant, variiert durch Hash)
+            if (domStatements?.pathos?.length && domStatements !== dominanceStatements?.default) {
+                const selected = selectStatementByHash(domStatements.pathos, hash + 1);
+                if (selected) textParts.push(selected);
             }
 
-            // Orientierungs-basierte Pathos-Statements hinzufügen (nur wenn nicht default)
-            if (orientStatements?.pathos?.length && orientStatements !== orientierungStatements.default) {
-                textParts.push(orientStatements.pathos[0]);
+            // 4. Orientierungs-Statement (wenn relevant)
+            if (orientStatements?.pathos?.length) {
+                const selected = selectStatementByHash(orientStatements.pathos, hash + 2);
+                if (selected) textParts.push(selected);
             }
 
-            // Status-basierte Pathos-Statements hinzufügen (Osho-Perspektive)
-            if (statusStmts?.pathos?.length && statusStmts !== statusStatements.default) {
-                textParts.push(statusStmts.pathos[0]);
+            // 5. Status-Statement (wenn relevant)
+            if (statusStmts?.pathos?.length && statusStmts !== statusStatements?.default) {
+                const selected = selectStatementByHash(statusStmts.pathos, hash + 3);
+                if (selected) textParts.push(selected);
             }
 
-            // Fallback wenn keine Statements gefunden
+            // Fallback
             if (textParts.length === 0) {
                 return `${ichName} und ${partnerName} können emotional zueinander finden, auch wenn ihre Grundhaltungen sich unterscheiden. Die Herausforderung liegt darin, die emotionalen Bedürfnisse des anderen zu verstehen und zu respektieren.`;
             }
@@ -13207,6 +13351,110 @@
         }
 
         function generateCombinedLogos(ichArch, partnerArch) {
+            const ichName = ichArch?.name || 'ICH';
+            const partnerName = partnerArch?.name || 'Partner';
+            const ichId = ichArch?.id || '';
+            const partnerId = partnerArch?.id || '';
+
+            // Berechne die 4 Faktor-Scores
+            const person1 = {
+                archetyp: ichId,
+                dominanz: personDimensions.ich?.dominanz,
+                orientierung: personDimensions.ich?.orientierung,
+                geschlecht: personDimensions.ich?.geschlecht,
+                orientierungStatus: personDimensions.ich?.orientierungStatus
+            };
+            const person2 = {
+                archetyp: partnerId,
+                dominanz: personDimensions.partner?.dominanz,
+                orientierung: personDimensions.partner?.orientierung,
+                geschlecht: personDimensions.partner?.geschlecht,
+                orientierungStatus: personDimensions.partner?.orientierungStatus
+            };
+
+            // Hole Score-Breakdown
+            const qualityResult = calculateRelationshipQuality(person1, person2);
+            const breakdown = qualityResult.breakdown || { archetyp: 50, dominanz: 75, orientierung: 100, geschlecht: 100 };
+            const overallScore = qualityResult.score || 50;
+
+            // Get category scores
+            const key = `${ichId}_${partnerId}`;
+            const interaction = data?.interactions?.[key];
+            const categoryScores = interaction?.scores || {};
+
+            // A) Bestimme Tonalität basierend auf Score
+            const tonality = getTonality(overallScore);
+
+            // B) Berechne Hash für deterministische Variation
+            const hash = getFactorHash(breakdown.archetyp, breakdown.dominanz, breakdown.orientierung, breakdown.geschlecht);
+
+            // Hole alle Statement-Quellen
+            const archStatements = getArchetypeStatements(ichId, partnerId);
+            const domStatements = getDominanceStatements(person1.dominanz, person2.dominanz);
+            const orientStatements = getOrientierungStatements(person1.orientierung, person2.orientierung, person1.geschlecht, person2.geschlecht);
+            const statusStmts = getStatusStatements(personDimensions.ich, personDimensions.partner);
+
+            // C) Baue Synthese mit Templates
+            const textParts = [];
+
+            // 1. Tonalitäts-Einleitung
+            const tonalityIntro = selectStatementByHash(tonalityTemplates[tonality].logos, hash);
+            if (tonalityIntro) textParts.push(tonalityIntro);
+
+            // 2. Archetyp-Statement (variiert durch Hash)
+            if (archStatements?.logos) {
+                const gemeinsam = archStatements.logos.gemeinsam || [];
+                const unterschied = archStatements.logos.unterschied || [];
+                // Bei niedrigem Score auch Unterschiede einbeziehen
+                const allLogos = tonality === 'kritisch' ? [...gemeinsam, ...unterschied] : gemeinsam;
+                const selected = selectStatementByHash(allLogos.length > 0 ? allLogos : unterschied, hash);
+                if (selected) textParts.push(selected);
+            }
+
+            // 3. Kategorie-basierte Synthese (C: 6 Kategorien einbeziehen)
+            const relevantCategories = ['A', 'B', 'C']; // Fokus auf die wichtigsten
+            const categoryInsights = [];
+            for (const cat of relevantCategories) {
+                const catScore = categoryScores[cat]?.value || 50;
+                const catTonality = getTonality(catScore);
+                const catTemplate = categorySynthesisTemplates[cat];
+                if (catTemplate && catTonality !== 'neutral') { // Nur nicht-neutrale Kategorien erwähnen
+                    categoryInsights.push(catTemplate[catTonality]);
+                }
+            }
+            // Wähle eine Kategorie-Einsicht basierend auf Hash
+            if (categoryInsights.length > 0) {
+                const selectedInsight = selectStatementByHash(categoryInsights, hash + 4);
+                if (selectedInsight) textParts.push(selectedInsight);
+            }
+
+            // 4. Dominanz-Statement (wenn relevant)
+            if (domStatements?.logos?.length && domStatements !== dominanceStatements?.default) {
+                const selected = selectStatementByHash(domStatements.logos, hash + 5);
+                if (selected) textParts.push(selected);
+            }
+
+            // 5. Status-Statement (wenn relevant)
+            if (statusStmts?.logos?.length && statusStmts !== statusStatements?.default) {
+                const selected = selectStatementByHash(statusStmts.logos, hash + 6);
+                if (selected) textParts.push(selected);
+            }
+
+            // Fallback mit Score-basierter Aussage
+            if (textParts.length === 0) {
+                if (overallScore >= 70) {
+                    return `${ichName} und ${partnerName} teilen viele rationale Grundüberzeugungen über Beziehungen (Score: ${overallScore}%). Das bildet eine solide Basis für konstruktive Gespräche.`;
+                } else if (overallScore < 50) {
+                    return `${ichName} und ${partnerName} haben unterschiedliche rationale Vorstellungen von Beziehungen (Score: ${overallScore}%). Grundlegende Gespräche über Erwartungen sind wichtig.`;
+                }
+                return `${ichName} und ${partnerName} haben einige Überschneidungen in ihren rationalen Beziehungsvorstellungen (Score: ${overallScore}%), aber auch Unterschiede, die Kommunikation erfordern.`;
+            }
+
+            return textParts.join(' ');
+        }
+
+        // Legacy-Funktion für Kompatibilität (wird nicht mehr verwendet)
+        function generateCombinedLogos_legacy(ichArch, partnerArch) {
             const ichName = ichArch?.name || 'ICH';
             const partnerName = partnerArch?.name || 'Partner';
             const ichId = ichArch?.id || '';
