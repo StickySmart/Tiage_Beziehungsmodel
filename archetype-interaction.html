@@ -5618,13 +5618,6 @@
                 </div>
             </div>
 
-            <!-- Pathos & Logos - Always Visible -->
-            <div id="pathosLogosInline" style="margin-top: 15px; padding-top: 15px; border-top: 1px solid var(--border);">
-                <div id="pathosLogosContent">
-                    <!-- Will be filled dynamically -->
-                </div>
-            </div>
-
         </div>
     </div>
 
@@ -5894,11 +5887,6 @@
                     </div>
                     <span class="score-factor-value" id="mobileFactorGeschlecht">0%</span>
                 </div>
-            </div>
-
-            <!-- Pathos & Logos - Always Visible -->
-            <div id="mobilePathosLogosContent" style="margin-top: 15px; padding: 15px; background: var(--bg-card); border-radius: 12px;">
-                <!-- Will be filled dynamically -->
             </div>
 
             <button class="btn-primary-mobile" onclick="openProContraModal()">Pro & Contra →</button>
@@ -11933,9 +11921,6 @@
                 const desktopScoreCircle = document.getElementById('desktopScoreCircle');
                 if (desktopScoreCircle) desktopScoreCircle.style.background = 'linear-gradient(135deg, var(--text-muted), #666)';
 
-                const pathosLogosContent = document.getElementById('pathosLogosContent');
-                if (pathosLogosContent) pathosLogosContent.innerHTML = '<p style="color: var(--text-muted); font-style: italic; text-align: center; padding: 20px;">Bitte alle Dimensionen auswählen, um die Pathos/Logos-Analyse zu sehen.</p>';
-
                 const categoryBars = document.getElementById('expandCategoryBars');
                 if (categoryBars) categoryBars.innerHTML = '<p style="color: var(--text-muted); font-style: italic; text-align: center; padding: 20px;">Bitte alle Dimensionen auswählen</p>';
 
@@ -12065,8 +12050,6 @@
             const interaction = data.interactions?.[interactionKey] || {};
             drawRadarChart(interaction.scores || {}, partnerArch?.color || '#457B9D');
 
-            // Update Pathos/Logos
-            updateExpandablePathosLogos();
         }
 
         function updateExpandableCategoryBars(categories) {
@@ -12543,40 +12526,6 @@
             }
 
             return { pro, contra };
-        }
-
-        function updateExpandablePathosLogos() {
-            if (!data) return;
-
-            const container = document.getElementById('pathosLogosContent');
-            const mobileContainer = document.getElementById('mobilePathosLogosContent');
-            const ichArch = data.archetypes[currentArchetype];
-            const partnerArch = data.archetypes[selectedPartner];
-
-            // Hide lower Pathos/Logos blocks when they're shown in the quality note (Pirsig blocks)
-            // This avoids duplicate display of the same content
-            if (ichArch && partnerArch) {
-                // Pirsig blocks are shown in quality note, hide the lower blocks
-                if (container) {
-                    container.innerHTML = '';
-                    container.parentElement.style.display = 'none';
-                }
-                if (mobileContainer) {
-                    mobileContainer.innerHTML = '';
-                    mobileContainer.style.display = 'none';
-                }
-                return;
-            }
-
-            // Show placeholder when archetypes not selected
-            if (container) {
-                container.parentElement.style.display = 'block';
-                container.innerHTML = '<p style="color: var(--text-muted); font-style: italic; text-align: center; padding: 20px;">Bitte beide Archetypen auswählen.</p>';
-            }
-            if (mobileContainer) {
-                mobileContainer.style.display = 'block';
-                mobileContainer.innerHTML = '<p style="color: var(--text-muted); font-style: italic; text-align: center; padding: 20px;">Bitte beide Archetypen auswählen.</p>';
-            }
         }
 
         function generateCombinedPathos(ichArch, partnerArch) {
@@ -13071,23 +13020,6 @@
             document.getElementById('mobileFactorDominanz').textContent = qualityResult.incomplete ? '–' : qualityResult.breakdown.dominanz + '%';
             document.getElementById('mobileFactorOrientierung').textContent = qualityResult.incomplete ? '–' : qualityResult.breakdown.orientierung + '%';
             document.getElementById('mobileFactorGeschlecht').textContent = qualityResult.incomplete ? '–' : qualityResult.breakdown.geschlecht + '%';
-
-            // Update mobile Pathos & Logos
-            const mobilePathosLogos = document.getElementById('mobilePathosLogosContent');
-            if (mobilePathosLogos) {
-                const combinedPathos = generateCombinedPathos(ichArch, partnerArch);
-                const combinedLogos = generateCombinedLogos(ichArch, partnerArch);
-                mobilePathosLogos.innerHTML = `
-                    <div style="margin-bottom: 10px; padding: 10px; background: rgba(46,204,113,0.1); border-radius: 8px; border-left: 3px solid #2ecc71;">
-                        <h4 style="color: #2ecc71; margin-bottom: 6px; font-size: var(--font-base);">🔥 GEMEINSAMER PATHOS (Emotionale Ebene)</h4>
-                        <p style="color: var(--text-secondary); line-height: 1.4; font-size: var(--font-base); font-style: italic; margin: 0;">${combinedPathos}</p>
-                    </div>
-                    <div style="padding: 10px; background: rgba(243,156,18,0.1); border-radius: 8px; border-left: 3px solid #f39c12;">
-                        <h4 style="color: #f39c12; margin-bottom: 6px; font-size: var(--font-base);">🧠 GEMEINSAMER LOGOS (Rationale Ebene)</h4>
-                        <p style="color: var(--text-secondary); line-height: 1.4; font-size: var(--font-base); font-style: italic; margin: 0;">${combinedLogos}</p>
-                    </div>
-                `;
-            }
 
             // Update Mobile Score Note (direkt beim Kreis)
             const mobileScoreNote = document.getElementById('mobileScoreNote');
