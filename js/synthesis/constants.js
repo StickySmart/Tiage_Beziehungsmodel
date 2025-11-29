@@ -79,13 +79,33 @@ TiageSynthesis.Constants = {
     // ═══════════════════════════════════════════════════════════════════════
     // ORIENTIERUNGS-KOMPATIBILITÄT
     // ═══════════════════════════════════════════════════════════════════════
-    // Kein harter K.O. mehr - sanfte Abstufung
+    // Hard-KO bei geometrisch unmöglichen Kombinationen
 
     ORIENTATION: {
         COMPATIBLE: 100,     // Volle Kompatibilität
         EXPLORING: 70,       // Exploration-Phase (interessiert)
         UNLIKELY: 30,        // Unwahrscheinlich aber nicht unmöglich
-        INCOMPATIBLE: 10     // Sehr unwahrscheinlich (früher K.O. = 0)
+        INCOMPATIBLE: 10,    // Sehr unwahrscheinlich (soft K.O.)
+        HARD_KO: 0           // Geometrisch unmöglich (echtes K.O.)
+    },
+
+    // ═══════════════════════════════════════════════════════════════════════
+    // HARD-KO KRITERIEN (Geometrische Unmöglichkeiten)
+    // ═══════════════════════════════════════════════════════════════════════
+    // Diese Kombinationen sind logisch unmöglich, nicht nur kulturell bedingt.
+    // Resonanz kann hier NICHT überschreiben - es fehlt die neurologische Basis.
+
+    HARD_KO: {
+        // Aktiviert Hard-KO Logik
+        ENABLED: true,
+
+        // Hard-KO Fälle:
+        // 1. Hetero + Hetero + gleiches Geschlecht = beide suchen jemand anderen
+        // 2. Homo + Homo + verschiedenes Geschlecht = beide suchen jemand anderen
+        // 3. Hetero + Homo (bestimmte Konstellationen) = keine gegenseitige Anziehung
+
+        // Freundlicher Text (kein aggressives "WARNUNG!")
+        MESSAGE_KEY: 'hardKO'  // Referenz auf Locale-Texte
     },
 
     // ═══════════════════════════════════════════════════════════════════════

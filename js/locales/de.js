@@ -382,6 +382,31 @@ const TiageLocale_DE = {
     },
 
     // ═══════════════════════════════════════════════════════════════════════
+    // HARD-KO TEXTE (Freundlich, nicht aggressiv)
+    // ═══════════════════════════════════════════════════════════════════════
+
+    hardKO: {
+        title: 'Passt nicht zusammen',
+        subtitle: 'Diese Kombination hat keine romantische Basis',
+
+        // Freundliche Erklärungen je nach Grund
+        reasons: {
+            hetero_same_gender: 'Beide suchen jemand vom anderen Geschlecht',
+            homo_different_gender: 'Beide suchen jemand vom gleichen Geschlecht',
+            hetero_male_lesbian_female: 'Er sucht Frauen, sie sucht Frauen',
+            lesbian_female_hetero_male: 'Sie sucht Frauen, er sucht Frauen',
+            hetero_female_homo_male: 'Sie sucht Männer, er sucht Männer',
+            homo_male_hetero_female: 'Er sucht Männer, sie sucht Männer'
+        },
+
+        // Positive Alternative
+        friendship: 'Aber eine tiefe Freundschaft ist möglich!',
+
+        // Philosophischer Hinweis
+        philosophy: 'Körperliche Anziehung braucht eine gemeinsame Richtung.'
+    },
+
+    // ═══════════════════════════════════════════════════════════════════════
     // DIMENSION-LABELS
     // ═══════════════════════════════════════════════════════════════════════
 
