@@ -1,6 +1,24 @@
 # Forschungsquellen für Psychologische Profile
 
+> *Wissenschaftliche Grundlagen des Tiage-Beziehungsmodells*
+
 Dieses Dokument listet alle wissenschaftlichen Quellen auf, die zur Erstellung der 216 psychologischen Profile verwendet wurden.
+
+---
+
+## Inhaltsverzeichnis
+
+1. [Big Five Persönlichkeitsmodell](#1-big-five-persoenlichkeitsmodell)
+2. [Dominanz & BDSM-Forschung](#2-dominanz-bdsm-forschung)
+3. [Sexuelle Orientierung & Persönlichkeit](#3-sexuelle-orientierung-persoenlichkeit)
+4. [Polyamorie & Konsensuelle Nicht-Monogamie](#4-polyamorie-konsensuelle-nicht-monogamie)
+5. [Single-Lebensstil & Autonomie](#5-single-lebensstil-autonomie)
+6. [Geschlechterunterschiede in Kommunikation](#6-geschlechterunterschiede-in-kommunikation)
+7. [Non-binäre Identität & Persönlichkeit](#7-non-binaere-identitaet-persoenlichkeit)
+8. [Philosophische Grundlagen](#8-philosophische-grundlagen)
+9. [TIAGE Resonanz-Theorie](#9-tiage-resonanz-theorie-neurowissenschaftliche-grundlagen)
+
+---
 
 ## 1. Big Five Persönlichkeitsmodell
 

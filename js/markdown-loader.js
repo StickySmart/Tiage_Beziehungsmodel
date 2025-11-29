@@ -98,11 +98,23 @@ const MarkdownLoader = {
         // Inline Code (`...`)
         html = html.replace(/`([^`]+)`/g, '<code class="md-inline-code">$1</code>');
 
-        // Headers
-        html = html.replace(/^#### (.+)$/gm, '<h4 class="md-h4">$1</h4>');
-        html = html.replace(/^### (.+)$/gm, '<h3 class="md-h3">$1</h3>');
-        html = html.replace(/^## (.+)$/gm, '<h2 class="md-h2">$1</h2>');
-        html = html.replace(/^# (.+)$/gm, '<h1 class="md-h1">$1</h1>');
+        // Headers with auto-generated IDs for anchor links
+        html = html.replace(/^#### (.+)$/gm, (match, title) => {
+            const id = this.generateId(title);
+            return `<h4 class="md-h4" id="${id}">${title}</h4>`;
+        });
+        html = html.replace(/^### (.+)$/gm, (match, title) => {
+            const id = this.generateId(title);
+            return `<h3 class="md-h3" id="${id}">${title}</h3>`;
+        });
+        html = html.replace(/^## (.+)$/gm, (match, title) => {
+            const id = this.generateId(title);
+            return `<h2 class="md-h2" id="${id}">${title}</h2>`;
+        });
+        html = html.replace(/^# (.+)$/gm, (match, title) => {
+            const id = this.generateId(title);
+            return `<h1 class="md-h1" id="${id}">${title}</h1>`;
+        });
 
         // Blockquotes
         html = html.replace(/^> \*(.+)\*$/gm, '<blockquote class="md-quote"><em>$1</em></blockquote>');
@@ -229,6 +241,23 @@ const MarkdownLoader = {
     },
 
     /**
+     * Generiert eine URL-freundliche ID aus einem Text
+     * @param {string} text - Der Text für die ID
+     * @returns {string} - URL-freundliche ID
+     */
+    generateId(text) {
+        return text
+            .toLowerCase()
+            .replace(/[äÄ]/g, 'ae')
+            .replace(/[öÖ]/g, 'oe')
+            .replace(/[üÜ]/g, 'ue')
+            .replace(/ß/g, 'ss')
+            .replace(/[^a-z0-9]+/g, '-')
+            .replace(/^-+|-+$/g, '')
+            .substring(0, 50);
+    },
+
+    /**
      * Lädt Content in ein DOM-Element
      * @param {string} path - Pfad zur MD-Datei
      * @param {string|HTMLElement} target - Ziel-Element oder Selektor
@@ -340,8 +369,49 @@ const markdownStyles = `
 .md-link {
     color: var(--primary);
     text-decoration: none;
+    border-bottom: 1px dotted var(--primary);
+    transition: all 0.2s ease;
 }
-.md-link:hover { text-decoration: underline; }
+.md-link:hover {
+    text-decoration: none;
+    border-bottom-style: solid;
+    color: var(--primary-light);
+}
+.md-link[href^="http"]::after,
+.md-link[href^="https"]::after {
+    content: " ↗";
+    font-size: 0.8em;
+    opacity: 0.7;
+}
+
+/* Research/Documentation specific styles */
+.md-h1, .md-h2, .md-h3, .md-h4 {
+    scroll-margin-top: 20px;
+}
+.md-h2 {
+    margin-top: 40px;
+    padding-top: 20px;
+}
+.md-h3 {
+    color: var(--primary-light);
+}
+
+/* Source cards for research links */
+.md-list li {
+    padding: 8px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+.md-list li:last-child {
+    border-bottom: none;
+}
+
+/* Better blockquote styling */
+.md-quote {
+    border-radius: 0 8px 8px 0;
+    padding: 15px 20px;
+    margin: 20px 0;
+    background: linear-gradient(90deg, rgba(var(--primary-rgb, 100, 100, 100), 0.15), transparent);
+}
 
 .md-hr {
     border: none;
