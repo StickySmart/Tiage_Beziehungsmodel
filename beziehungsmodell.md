@@ -47,7 +47,7 @@ Die philosophischen Konzepte von Pirsig und OSHO werden durch neurowissenschaftl
 
 ---
 
-## Die 6 Archetypen
+## Die 8 Archetypen
 
 | Archetyp | Beschreibung | Farbe |
 |----------|-------------|-------|
@@ -55,8 +55,10 @@ Die philosophischen Konzepte von Pirsig und OSHO werden durch neurowissenschaftl
 | **Duo** | Monogame Zweierbeziehung mit Exklusivität | Pink (#E84393) |
 | **Duo-Flex** | Primärbeziehung mit vereinbarten Öffnungen | Koralle (#FF6B6B) |
 | **Solopoly** | Mehrere gleichwertige Beziehungen, Fokus Autonomie | Grün (#2A9D8F) |
-| **Poly-Hedo** | Polyamorie mit Fokus auf Genuss | Lila (#9B5DE5) |
 | **Polyamor** | Tiefe emotionale Bindungen zu mehreren Partnern | Orange (#F4A261) |
+| **RA** | Relationship Anarchist - Ablehnung aller Beziehungs-Hierarchien | Lila (#9B5DE5) |
+| **LAT** | Living Apart Together - Feste Partnerschaft ohne Zusammenleben | Türkis (#40E0D0) |
+| **Aromantisch** | Fokus auf platonische Verbindungen ohne romantische Komponente | Grau (#708090) |
 
 ---
 
@@ -175,42 +177,44 @@ Gender-Chemie als Feinabstimmung der Orientierung
 
 ## Methodische Grundlagen
 
-### Die 216 Psychologischen Profile
+### Die 288 Psychologischen Profile
 
-Das Modell basiert auf **216 individuellen Profilen**, die durch systematische Kombination von vier Dimensionen entstehen:
+Das Modell basiert auf **288 individuellen Profilen**, die durch systematische Kombination von vier Dimensionen entstehen:
 
 | Dimension | Ausprägungen | Anzahl |
 |-----------|--------------|--------|
-| **Archetyp** | Single, Duo, Duo-Flex, Solopoly, Poly-Hedo, Polyamor | 6 |
+| **Archetyp** | Single, Duo, Duo-Flex, Solopoly, Polyamor, RA, LAT, Aromantisch | 8 |
 | **Geschlecht** | Männlich, Weiblich, Nonbinär | 3 |
 | **Dominanz** | Dominant, Submissiv, Switch, Ausgeglichen | 4 |
 | **Orientierung** | Heterosexuell, Homosexuell, Bisexuell | 3 |
 
-**Berechnung:** 6 × 3 × 4 × 3 = **216 Profile**
+**Berechnung:** 8 × 3 × 4 × 3 = **288 Profile**
 
 ### Visualisierung: Profil-Generierung (Die "Fütterung")
 
 ```
 ┌─────────────────────────────────────────────────────────────────────────────────┐
 │                        SCHRITT 1: KOMBINATION                                   │
-│                     (4 Dimensionen → 216 Profile)                               │
+│                     (4 Dimensionen → 288 Profile)                               │
 └─────────────────────────────────────────────────────────────────────────────────┘
 
-    ARCHETYP (6)         GESCHLECHT (3)       DOMINANZ (4)        ORIENTIERUNG (3)
+    ARCHETYP (8)         GESCHLECHT (3)       DOMINANZ (4)        ORIENTIERUNG (3)
     ┌──────────┐         ┌──────────┐         ┌──────────┐        ┌──────────┐
     │ Single   │         │ Männlich │         │ Dominant │        │ Hetero   │
     │ Duo      │    ×    │ Weiblich │    ×    │ Submissiv│   ×    │ Homo     │
     │ Duo-Flex │         │ Nonbinär │         │ Switch   │        │ Bi       │
     │ Solopoly │         └──────────┘         │Ausgeglichen       └──────────┘
-    │ Poly-Hedo│                              └──────────┘
-    │ Polyamor │
+    │ Polyamor │                              └──────────┘
+    │ RA       │
+    │ LAT      │
+    │Aromantisch│
     └──────────┘
          │                    │                    │                   │
          └────────────────────┴────────────────────┴───────────────────┘
                                         │
                                         ▼
                               ┌──────────────────┐
-                              │   216 PROFILE    │
+                              │   288 PROFILE    │
                               │  (alle Kombis)   │
                               └──────────────────┘
 
@@ -341,8 +345,8 @@ Das Modell basiert auf **216 individuellen Profilen**, die durch systematische K
 └─────────────┘    └─────────────┘    └─────────────┘    └─────────────┘
       │                  │                  │                   │
       │                  │                  │                   │
-   6×3×4×3           Studien zu         "Wie sicher          Vollständig
-   = 216            Persönlich-         gilt das?"           annotierte
+   8×3×4×3           Studien zu         "Wie sicher          Vollständig
+   = 288            Persönlich-         gilt das?"           annotierte
    Kombis           keitstypen                               Profile
 ```
 
@@ -860,7 +864,7 @@ Resonanz repräsentiert die tiefere, unkonditionierte Ebene der Verbindung. Wenn
 Die Verbindung von Pirsigs Qualitäts-Philosophie mit OSHOs Polaritäts-Konzept zu einem praktischen Beziehungs-Rechner:
 
 - Eigene Gewichtung (40:60 Logos:Pathos)
-- 6-Archetypen-System
+- 8-Archetypen-System
 - 4-Faktoren-Berechnung
 - Archetypen-Kompatibilitäts-Matrix
 

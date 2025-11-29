@@ -11,7 +11,7 @@ Eine **eigenständige Synthese** von Tiage, entwickelt durch Online-Recherche un
 
 ---
 
-## Die 6 Archetypen
+## Die 8 Archetypen
 
 | Archetyp | Beschreibung |
 |----------|-------------|
@@ -19,8 +19,10 @@ Eine **eigenständige Synthese** von Tiage, entwickelt durch Online-Recherche un
 | **Duo** | Monogame Zweierbeziehung mit Exklusivität |
 | **Duo-Flex** | Primärbeziehung mit vereinbarten Öffnungen |
 | **Solopoly** | Mehrere gleichwertige Beziehungen, Fokus Autonomie |
-| **Poly-Hedo** | Polyamorie mit Fokus auf Genuss |
 | **Polyamor** | Tiefe emotionale Bindungen zu mehreren Partnern |
+| **RA** | Relationship Anarchist - Ablehnung aller Beziehungs-Hierarchien |
+| **LAT** | Living Apart Together - Feste Partnerschaft ohne Zusammenleben |
+| **Aromantisch** | Fokus auf platonische Verbindungen ohne romantische Komponente |
 
 ---
 
