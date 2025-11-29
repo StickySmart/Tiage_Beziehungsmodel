@@ -3785,10 +3785,10 @@
             gap: 4px;
         }
 
-        /* Geschlechtsidentität: Grid-Layout für 7 Optionen */
+        /* Geschlechtsidentität: Grid-Layout für 9 Optionen */
         .geschlecht-grid {
             display: grid;
-            grid-template-columns: repeat(4, 1fr);
+            grid-template-columns: repeat(3, 1fr);
             gap: 4px;
         }
 
@@ -5014,9 +5014,9 @@
                 grid-template-columns: repeat(2, 1fr);
             }
 
-            /* Geschlechtsidentität: 7 buttons in besseres Layout */
+            /* Geschlechtsidentität: 9 buttons in besseres Layout */
             .geschlecht-grid {
-                grid-template-columns: repeat(2, 1fr) !important;
+                grid-template-columns: repeat(3, 1fr) !important;
             }
 
             .compact-option {
@@ -5926,6 +5926,10 @@
                             <label for="ich-g-gf" class="compact-option">Genderfluid</label>
                             <input type="radio" name="ich-geschlecht-new" id="ich-g-ag" value="agender" class="compact-radio">
                             <label for="ich-g-ag" class="compact-option">Agender</label>
+                            <input type="radio" name="ich-geschlecht-new" id="ich-g-is" value="intersex" class="compact-radio">
+                            <label for="ich-g-is" class="compact-option">Intersex</label>
+                            <input type="radio" name="ich-geschlecht-new" id="ich-g-di" value="divers" class="compact-radio">
+                            <label for="ich-g-di" class="compact-option">Divers</label>
                         </div>
                     </div>
                     <div class="compact-dimension needs-selection collapsible-dimension" data-dimension="ich-dominanz-multi">
@@ -6033,6 +6037,10 @@
                             <label for="partner-g-gf" class="compact-option">Genderfluid</label>
                             <input type="radio" name="partner-geschlecht-new" id="partner-g-ag" value="agender" class="compact-radio">
                             <label for="partner-g-ag" class="compact-option">Agender</label>
+                            <input type="radio" name="partner-geschlecht-new" id="partner-g-is" value="intersex" class="compact-radio">
+                            <label for="partner-g-is" class="compact-option">Intersex</label>
+                            <input type="radio" name="partner-geschlecht-new" id="partner-g-di" value="divers" class="compact-radio">
+                            <label for="partner-g-di" class="compact-option">Divers</label>
                         </div>
                     </div>
                     <div class="compact-dimension needs-selection collapsible-dimension" data-dimension="partner-dominanz-multi">
@@ -6208,6 +6216,10 @@
                             <label for="m-ich-g-gf" class="compact-option">Genderfluid</label>
                             <input type="radio" name="mobile-ich-geschlecht" id="m-ich-g-ag" value="agender" class="compact-radio">
                             <label for="m-ich-g-ag" class="compact-option">Agender</label>
+                            <input type="radio" name="mobile-ich-geschlecht" id="m-ich-g-is" value="intersex" class="compact-radio">
+                            <label for="m-ich-g-is" class="compact-option">Intersex</label>
+                            <input type="radio" name="mobile-ich-geschlecht" id="m-ich-g-di" value="divers" class="compact-radio">
+                            <label for="m-ich-g-di" class="compact-option">Divers</label>
                         </div>
                     </div>
                     <div class="compact-dimension needs-selection collapsible-dimension" data-dimension="mobile-ich-dominanz-multi">
@@ -6316,6 +6328,10 @@
                             <label for="m-partner-g-gf" class="compact-option">Genderfluid</label>
                             <input type="radio" name="mobile-partner-geschlecht" id="m-partner-g-ag" value="agender" class="compact-radio">
                             <label for="m-partner-g-ag" class="compact-option">Agender</label>
+                            <input type="radio" name="mobile-partner-geschlecht" id="m-partner-g-is" value="intersex" class="compact-radio">
+                            <label for="m-partner-g-is" class="compact-option">Intersex</label>
+                            <input type="radio" name="mobile-partner-geschlecht" id="m-partner-g-di" value="divers" class="compact-radio">
+                            <label for="m-partner-g-di" class="compact-option">Divers</label>
                         </div>
                     </div>
                     <div class="compact-dimension needs-selection collapsible-dimension" data-dimension="mobile-partner-dominanz-multi">
@@ -6547,6 +6563,10 @@
                                     <label for="ich-geschlecht-gf" class="dimension-option">Genderfluid</label>
                                     <input type="radio" name="ich-geschlecht" id="ich-geschlecht-ag" value="agender" class="dimension-radio">
                                     <label for="ich-geschlecht-ag" class="dimension-option">Agender</label>
+                                    <input type="radio" name="ich-geschlecht" id="ich-geschlecht-is" value="intersex" class="dimension-radio">
+                                    <label for="ich-geschlecht-is" class="dimension-option">Intersex</label>
+                                    <input type="radio" name="ich-geschlecht" id="ich-geschlecht-di" value="divers" class="dimension-radio">
+                                    <label for="ich-geschlecht-di" class="dimension-option">Divers</label>
                                 </div>
                             </div>
 
@@ -6730,6 +6750,10 @@
                                     <label for="partner-geschlecht-gf" class="dimension-option">Genderfluid</label>
                                     <input type="radio" name="partner-geschlecht" id="partner-geschlecht-ag" value="agender" class="dimension-radio">
                                     <label for="partner-geschlecht-ag" class="dimension-option">Agender</label>
+                                    <input type="radio" name="partner-geschlecht" id="partner-geschlecht-is" value="intersex" class="dimension-radio">
+                                    <label for="partner-geschlecht-is" class="dimension-option">Intersex</label>
+                                    <input type="radio" name="partner-geschlecht" id="partner-geschlecht-di" value="divers" class="dimension-radio">
+                                    <label for="partner-geschlecht-di" class="dimension-option">Divers</label>
                                 </div>
                             </div>
 

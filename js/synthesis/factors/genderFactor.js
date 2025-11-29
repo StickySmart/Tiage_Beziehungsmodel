@@ -93,7 +93,7 @@ TiageSynthesis.Factors.Geschlecht = {
 
     /**
      * Konvertiert Geschlecht zu Kategorie für Orientierungslogik
-     * Unterstützt neue erweiterte Geschlechter: cis_mann, cis_frau, trans_mann, trans_frau, nonbinaer, genderfluid, agender
+     * Unterstützt 9 Geschlechter: cis_mann, cis_frau, trans_mann, trans_frau, nonbinaer, genderfluid, agender, intersex, divers
      */
     _getGeschlechtCategory: function(geschlecht) {
         var categoryMap = {
@@ -105,6 +105,8 @@ TiageSynthesis.Factors.Geschlecht = {
             'nonbinaer': 'nonbinaer',
             'genderfluid': 'fluid',
             'agender': 'agender',
+            'intersex': 'inter',
+            'divers': 'nonbinaer',
             // Legacy-Support
             'männlich': 'maennlich',
             'weiblich': 'weiblich',
@@ -137,9 +139,10 @@ TiageSynthesis.Factors.Geschlecht = {
                 (cat1 === 'weiblich' && cat2 === 'maennlich')) {
                 return { score: gender.FULL_MATCH, matchType: 'hetero-klassisch' };
             }
-            // Nonbinär/Fluid beteiligt
+            // Nonbinär/Fluid/Inter beteiligt
             if (cat1 === 'nonbinaer' || cat2 === 'nonbinaer' ||
-                cat1 === 'fluid' || cat2 === 'fluid') {
+                cat1 === 'fluid' || cat2 === 'fluid' ||
+                cat1 === 'inter' || cat2 === 'inter') {
                 return { score: gender.NON_BINARY_INVOLVED, matchType: 'hetero-nonbinary' };
             }
             // Agender beteiligt
@@ -153,17 +156,19 @@ TiageSynthesis.Factors.Geschlecht = {
         // Homosexuell + Homosexuell
         if (o1 === 'homosexuell' && o2 === 'homosexuell') {
             // Gleiche binäre Kategorie = perfekt
-            if (cat1 === cat2 && cat1 !== 'nonbinaer' && cat1 !== 'fluid' && cat1 !== 'agender') {
+            if (cat1 === cat2 && cat1 !== 'nonbinaer' && cat1 !== 'fluid' && cat1 !== 'agender' && cat1 !== 'inter') {
                 return { score: gender.FULL_MATCH, matchType: 'homo-klassisch' };
             }
-            // Nonbinär mit Nonbinär
+            // Nonbinär/Inter mit Nonbinär/Inter
             if ((cat1 === 'nonbinaer' && cat2 === 'nonbinaer') ||
-                (cat1 === 'fluid' && cat2 === 'fluid')) {
+                (cat1 === 'fluid' && cat2 === 'fluid') ||
+                (cat1 === 'inter' && cat2 === 'inter')) {
                 return { score: 90, matchType: 'homo-nonbinary-match' };
             }
-            // Nonbinär/Fluid beteiligt
+            // Nonbinär/Fluid/Inter beteiligt
             if (cat1 === 'nonbinaer' || cat2 === 'nonbinaer' ||
-                cat1 === 'fluid' || cat2 === 'fluid') {
+                cat1 === 'fluid' || cat2 === 'fluid' ||
+                cat1 === 'inter' || cat2 === 'inter') {
                 return { score: gender.NON_BINARY_INVOLVED, matchType: 'homo-nonbinary' };
             }
             // Agender beteiligt
