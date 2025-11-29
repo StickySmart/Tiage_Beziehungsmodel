@@ -1,0 +1,72 @@
+# Tiage-Synthese: Die Verbindung von Pirsig und OSHO
+
+> *Das Tiage-Beziehungsmodell als eigenständige philosophische Synthese*
+
+## Das Tiage-Beziehungsmodell
+
+Eine **eigenständige Synthese** von Tiage, entwickelt durch Online-Recherche und persönliche Reflexion. Das Modell verbindet zwei philosophische Traditionen zu einem praktischen Analyse-Tool:
+
+| Tradition | Vertreter | Beitrag zum Modell |
+|-----------|-----------|-------------------|
+| **MOQ** | Robert M. Pirsig | Metaphysik der Qualität - statische vs. dynamische Qualität als Grundstruktur |
+| **Bewusstseinsphilosophie** | OSHO | Bewusstsein durch Meditation - Polarität, Balance, Schwingung |
+
+## Tiages Beitrag
+
+Die Verbindung beider Philosophien zu einem konkreten Beziehungs-Rechner mit:
+
+- Eigener Gewichtung (40:60 Logos:Pathos)
+- Archetypen-Matrix (6 Beziehungstypen)
+- Resonanz als Meta-Dimension
+- Praktischer Anwendbarkeit
+
+## Die 40:60 Gewichtung
+
+### Logos (40% - Verstand)
+
+Die rationale, strukturgebende Dimension. Pirsig nennt dies "statische Qualität" - bewährte Muster, die Stabilität schaffen.
+
+**Manifestation:** Archetyp-Übereinstimmung
+
+### Pathos (60% - Gefühl)
+
+Die emotionale, anziehende Dimension. Pirsig nennt dies "dynamische Qualität" - die Kraft, die Veränderung und Wachstum antreibt.
+
+**Manifestation:**
+- Orientierungs-Kompatibilität (25%)
+- Dominanz-Harmonie (20%)
+- Geschlechts-Attraktion (15%)
+
+### Warum 60% Pathos?
+
+> *OSHO: "Bewusstsein durch Meditation - Loslassen (Let Go) ermöglicht echte Verbindung."*
+
+Das Modell gewichtet emotionale Resonanz höher als rationale Struktur, weil:
+
+1. Beziehungen primär über Gefühle funktionieren
+2. Strukturelle Kompatibilität allein keine Anziehung garantiert
+3. Die "dynamische Qualität" (Pirsig) der Motor für Entwicklung ist
+
+## Die 6 Archetypen
+
+| Archetyp | Kurzbeschreibung |
+|----------|------------------|
+| **Single** | Autonomes Leben ohne Primärbeziehung |
+| **Duo** | Monogame Zweierbeziehung mit Exklusivität |
+| **Duo-Flex** | Primärbeziehung mit vereinbarten Öffnungen |
+| **Solopoly** | Mehrere gleichwertige Beziehungen, Fokus Autonomie |
+| **Poly-Hedo** | Polyamorie mit Fokus auf Genuss |
+| **Polyamor** | Tiefe emotionale Bindungen zu mehreren Partnern |
+
+## Philosophische Einordnung
+
+Das Tiage-Beziehungsmodell ist eine eigenständige Interpretation und Anwendung philosophischer Konzepte auf zwischenmenschliche Beziehungen und erhebt keinen Anspruch auf wissenschaftliche Validierung.
+
+Es ist ein **Orientierungswerkzeug**, kein Bewertungssystem für Menschen.
+
+## Weiterführende Dokumentation
+
+- [Pirsig-Philosophie](pirsig.md) - Statische und dynamische Qualität
+- [OSHO-Philosophie](osho.md) - Bewusstsein und Beziehung
+- [Pathos/Logos Details](pathos-logos.md) - Die Gewichtung im Detail
+- [Resonanz-Theorie](resonance.md) - Der Meta-Faktor

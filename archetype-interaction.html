@@ -7372,6 +7372,7 @@
 
     <!-- State Management - Single Source of Truth -->
     <script src="js/state.js"></script>
+    <script src="js/markdown-loader.js"></script>
 
     <script>
         let data = null;
@@ -15706,7 +15707,10 @@
         // HELP MODAL FUNCTIONS
         // ========================================
 
-        function openHelpModal() {
+        // Flag to track if help content has been loaded
+        let helpContentLoaded = false;
+
+        async function openHelpModal() {
             console.log('openHelpModal called');
             const modal = document.getElementById('helpModal');
             console.log('helpModal element:', modal);
@@ -15716,6 +15720,22 @@
                 console.log('helpModal activated');
                 // Push state for back button to close modal
                 history.pushState({ mobilePage: currentMobilePage, modal: 'help' }, '', `#seite${currentMobilePage}-help`);
+
+                // Load Markdown content dynamically on first open
+                if (!helpContentLoaded && typeof MarkdownLoader !== 'undefined') {
+                    const contentContainer = modal.querySelector('.help-modal-content');
+                    if (contentContainer) {
+                        try {
+                            // Load help guide from Markdown
+                            await MarkdownLoader.loadInto('docs/help-guide.md', contentContainer, true);
+                            helpContentLoaded = true;
+                            console.log('Help content loaded from Markdown');
+                        } catch (error) {
+                            console.error('Failed to load help content:', error);
+                            // Keep static content as fallback
+                        }
+                    }
+                }
             } else {
                 console.error('helpModal element not found!');
             }
