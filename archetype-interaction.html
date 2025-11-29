@@ -106,21 +106,7 @@
             margin-top: 8px;
         }
 
-        /* Title with Pathos/Logos Buttons */
-        .title-with-pathos-logos {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            flex-wrap: wrap;
-            justify-content: center;
-        }
-
-        .header-pathos-logos-buttons {
-            display: flex;
-            gap: 8px;
-            align-items: center;
-        }
-
+        /* Pathos/Logos toggle buttons in modal header */
         .header-pathos-btn,
         .header-logos-btn {
             padding: 8px 12px;
@@ -141,11 +127,11 @@
             border-color: var(--primary);
         }
 
-        /* Hide header pathos/logos buttons on mobile - use sticky ones there */
-        @media (max-width: 768px) {
-            .header-pathos-logos-buttons {
-                display: none;
-            }
+        .header-pathos-btn.active,
+        .header-logos-btn.active {
+            color: var(--text-primary);
+            border-color: var(--primary);
+            box-shadow: 0 2px 8px rgba(139, 92, 246, 0.3);
         }
 
         h1 {
@@ -6412,8 +6398,8 @@
         </div>
     </div>
 
-    <!-- Pro/Contra Modal (Desktop Circle Click) -->
-    <div class="modal-overlay" id="proContraModal" onclick="closeProContraModal(event)">
+    <!-- Pro/Contra Modal (Desktop Circle Click) - higher z-index to appear above Synthese Modal -->
+    <div class="modal-overlay" id="proContraModal" onclick="closeProContraModal(event)" style="z-index: 2100;">
         <div class="modal" onclick="event.stopPropagation()" style="max-width: 600px;">
             <div class="modal-header">
                 <span class="modal-title">Pro & Contra</span>
@@ -6462,7 +6448,11 @@
         <div class="modal" onclick="event.stopPropagation()" style="max-width: 700px; max-height: 85vh; overflow-y: auto; position: relative;">
             <div class="modal-header">
                 <span class="modal-title" id="pathosLogosModalTitle">Tiage's Synthese</span>
-                <button class="modal-close" onclick="closePathosLogosModal()">&times;</button>
+                <div style="display: flex; align-items: center; gap: 8px;">
+                    <button class="header-pathos-btn" id="modalPathosBtn" onclick="showPathosLogosContent('pathos')" title="Pathos - Emotionale Resonanz">🔥</button>
+                    <button class="header-logos-btn" id="modalLogosBtn" onclick="showPathosLogosContent('logos')" title="Logos - Rationale Struktur">🧠</button>
+                    <button class="modal-close" onclick="closePathosLogosModal()">&times;</button>
+                </div>
             </div>
             <div class="modal-body" style="padding: 20px;">
                 <!-- Type indicator -->
@@ -6519,13 +6509,7 @@
 
     <header>
         <div class="header-content">
-            <div class="title-with-pathos-logos">
-                <h1 data-i18n="ui.title">DAS ANARCHISCHE TI-AGE PRINZIP DER PAARUNG</h1>
-                <div class="header-pathos-logos-buttons">
-                    <button class="header-pathos-btn" onclick="openPathosLogosModal('pathos')" title="Pathos - Emotionale Resonanz">🔥</button>
-                    <button class="header-logos-btn" onclick="openPathosLogosModal('logos')" title="Logos - Rationale Struktur">🧠</button>
-                </div>
-            </div>
+            <h1 data-i18n="ui.title">DAS ANARCHISCHE TI-AGE PRINZIP DER PAARUNG</h1>
             <div class="header-buttons">
                 <button class="lang-btn" onclick="TiageI18n.toggle(); updateAllTranslations();" title="Switch Language / Sprache wechseln">
                     <span class="lang-icon">🌐</span>
@@ -16834,6 +16818,8 @@
             const archetypeContextEl = document.getElementById('pathosLogosArchetypeContext');
             const pathosBtn = document.getElementById('pathosLogosTogglePathos');
             const logosBtn = document.getElementById('pathosLogosToggleLogos');
+            const modalPathosBtn = document.getElementById('modalPathosBtn');
+            const modalLogosBtn = document.getElementById('modalLogosBtn');
 
             // Reset all button styles (for sticky side buttons)
             [pathosBtn, logosBtn].forEach(btn => {
@@ -16842,6 +16828,11 @@
                     btn.style.color = 'var(--text-muted)';
                     btn.style.border = '1px solid var(--border)';
                 }
+            });
+
+            // Reset modal header button styles
+            [modalPathosBtn, modalLogosBtn].forEach(btn => {
+                if (btn) btn.classList.remove('active');
             });
 
             if (type === 'pathos') {
@@ -16854,6 +16845,7 @@
                 pathosBtn.style.background = 'rgba(231,111,81,0.3)';
                 pathosBtn.style.color = 'var(--text-primary)';
                 pathosBtn.style.border = '1px solid #E76F51';
+                if (modalPathosBtn) modalPathosBtn.classList.add('active');
             } else if (type === 'logos') {
                 titleEl.textContent = "Tiage's Synthese";
                 iconEl.textContent = '🧠';
@@ -16864,6 +16856,7 @@
                 logosBtn.style.background = 'rgba(100,149,237,0.3)';
                 logosBtn.style.color = 'var(--text-primary)';
                 logosBtn.style.border = '1px solid #6495ED';
+                if (modalLogosBtn) modalLogosBtn.classList.add('active');
             }
         }
 
