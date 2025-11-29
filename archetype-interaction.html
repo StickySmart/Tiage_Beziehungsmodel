@@ -12491,8 +12491,8 @@
 
             const content = document.getElementById('analysisOverviewContent');
             if (content) {
-                // Nutze i18n für "Du ein" / "You a"
-                const youALabel = typeof TiageI18n !== 'undefined' ? TiageI18n.t('analysisOverview.youA', 'Du ein') : 'Du ein';
+                // Nutze i18n für "Du:" / "You:"
+                const youALabel = typeof TiageI18n !== 'undefined' ? TiageI18n.t('analysisOverview.youA', 'Du:') : 'Du:';
                 const ichGeschlechtHtml = ichGeschlecht ? `<span class="geschlecht-info">${youALabel} ${ichGeschlecht}</span>` : '';
                 const partnerGeschlechtHtml = partnerGeschlecht ? `<span class="geschlecht-info">${partnerGeschlecht}</span>` : '';
 
