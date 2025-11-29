@@ -7611,8 +7611,8 @@
             updateAgeVerificationModal();
 
             // Update analysis overview (Du ein / You a + Geschlecht)
-            if (typeof updateAnalysisOverview === 'function') {
-                updateAnalysisOverview();
+            if (typeof window.updateAnalysisOverview === 'function') {
+                window.updateAnalysisOverview();
             }
 
             // Trigger custom event for other scripts to react
@@ -12503,6 +12503,9 @@
                 `;
             }
         }
+
+        // Make function globally available for i18n updates
+        window.updateAnalysisOverview = updateAnalysisOverview;
 
         function initDimensionListeners() {
             // ICH dimensions
