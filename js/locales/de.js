@@ -15,7 +15,7 @@ const TiageLocale_DE = {
     // ═══════════════════════════════════════════════════════════════════════
 
     ui: {
-        title: 'Archetypen-Beziehungsqualität',
+        title: 'Das anarchische Ti-Age Prinzip der Paarung',
         subtitle: 'Swipe',
         help: 'Hilfe',
         close: 'Schließen',

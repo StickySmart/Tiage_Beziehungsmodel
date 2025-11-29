@@ -15,7 +15,7 @@ const TiageLocale_EN = {
     // ═══════════════════════════════════════════════════════════════════════
 
     ui: {
-        title: 'Archetype Relationship Quality',
+        title: 'The Anarchic Ti-Age Principle of Pairing',
         subtitle: 'Swipe',
         help: 'Help',
         close: 'Close',
