@@ -379,6 +379,103 @@ const TiageLocale_DE = {
         recommendations: 'Empfehlungen',
         overall: 'Gesamtbewertung',
         details: 'Details anzeigen'
+    },
+
+    // ═══════════════════════════════════════════════════════════════════════
+    // DIMENSION-LABELS
+    // ═══════════════════════════════════════════════════════════════════════
+
+    dimensions: {
+        geschlechtLabel: 'Geschlechtsidentität',
+        dominanzLabel: 'Dominanz',
+        orientierungLabel: 'Orientierung',
+        multiSelect: '(Mehrfachauswahl)',
+        legend: {
+            identity: 'I',
+            secondary: 'G',
+            identityFull: 'Identität',
+            secondaryFull: 'Sekundär'
+        }
+    },
+
+    // ═══════════════════════════════════════════════════════════════════════
+    // COLUMN HEADERS
+    // ═══════════════════════════════════════════════════════════════════════
+
+    columns: {
+        you: 'DU',
+        partner: 'PARTNER',
+        previousArchetype: 'Vorheriger Archetyp',
+        nextArchetype: 'Nächster Archetyp',
+        info: 'INFO',
+        archetypeInfo: 'Info zum Archetyp'
+    },
+
+    // ═══════════════════════════════════════════════════════════════════════
+    // FOLD/UNFOLD
+    // ═══════════════════════════════════════════════════════════════════════
+
+    foldUnfold: {
+        fold: 'Einklappen',
+        unfold: 'Ausklappen',
+        foldAll: 'Alle einklappen',
+        unfoldAll: 'Alle ausklappen'
+    },
+
+    // ═══════════════════════════════════════════════════════════════════════
+    // IMPRESSUM
+    // ═══════════════════════════════════════════════════════════════════════
+
+    impressum: {
+        title: 'Impressum',
+        operator: 'Betreiber',
+        project: 'Projekt',
+        contact: 'Kontakt'
+    },
+
+    // ═══════════════════════════════════════════════════════════════════════
+    // GESCHLECHTS-INFO-MODAL
+    // ═══════════════════════════════════════════════════════════════════════
+
+    genderInfoModal: {
+        title: 'Geschlechtsidentitäten',
+        howItWorks: 'So funktioniert die Auswahl:',
+        firstClick: '1. Klick',
+        primaryIdentity: 'Primäre Identität (I)',
+        secondClick: '2. Klick',
+        secondaryIdentity: 'Sekundäre Identität (G)',
+        thirdClick: '3. Klick',
+        deselect: 'Auswahl aufheben',
+        understood: 'Verstanden'
+    },
+
+    // ═══════════════════════════════════════════════════════════════════════
+    // HILFE-MODAL ERWEITERT
+    // ═══════════════════════════════════════════════════════════════════════
+
+    helpModal: {
+        title: 'Hilfe & Dokumentation',
+        quickGuideTitle: 'Kurzanleitung',
+        quickGuideItems: [
+            '<strong>Mein Typ</strong> = Dein Archetyp + Eigenschaften (Orientierung, Dominanz, Geschlecht)',
+            '<strong>Beziehungsqualität</strong> = Partner-Archetyp + Eigenschaften und Kompatibilitätsberechnung',
+            '<strong>Gelebt</strong> = Was du aktiv lebst / <strong>Interessiert</strong> = Wofür du offen bist',
+            '<strong>INFO</strong>-Button = Details zum gewählten Archetyp',
+            '<strong>Ergebnis</strong> = Automatische Berechnung der Kompatibilität (4 Faktoren)',
+            '<strong>Prozentwerte</strong> anklicken = Detaillierte Erklärung pro Faktor'
+        ],
+        newInVersion: 'Neu in Version 1.4',
+        newFeatures: [
+            '<strong>Gelebt/Interessiert:</strong> Wähle für jede Eigenschaft, ob du sie aktiv lebst oder nur Interesse hast',
+            '<strong>Auto-Collapse:</strong> Orientierung und Dominanz Sektionen schließen automatisch nach Auswahl',
+            '<strong>Verbesserte Fehlermeldungen:</strong> Fehlende Felder werden übersichtlich aufgelistet',
+            '<strong>Mobile Navigation:</strong> Neue Navigationstasten in Modals für bessere Bedienung',
+            '<strong>Kreisförmige Score-Anzeige:</strong> Kompatibilitätswerte werden visuell ansprechender dargestellt'
+        ],
+        feedbackPrompt: 'Fragen, Feedback oder Verbesserungsvorschläge?',
+        sendComment: 'Kommentar senden',
+        viewAllComments: 'Alle Kommentare',
+        documentation: 'Dokumentation'
     }
 };
 

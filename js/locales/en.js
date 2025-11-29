@@ -379,6 +379,103 @@ const TiageLocale_EN = {
         recommendations: 'Recommendations',
         overall: 'Overall Rating',
         details: 'Show Details'
+    },
+
+    // ═══════════════════════════════════════════════════════════════════════
+    // DIMENSION LABELS
+    // ═══════════════════════════════════════════════════════════════════════
+
+    dimensions: {
+        geschlechtLabel: 'Gender Identity',
+        dominanzLabel: 'Dominance',
+        orientierungLabel: 'Orientation',
+        multiSelect: '(Multi-select)',
+        legend: {
+            identity: 'I',
+            secondary: 'S',
+            identityFull: 'Identity',
+            secondaryFull: 'Secondary'
+        }
+    },
+
+    // ═══════════════════════════════════════════════════════════════════════
+    // COLUMN HEADERS
+    // ═══════════════════════════════════════════════════════════════════════
+
+    columns: {
+        you: 'YOU',
+        partner: 'PARTNER',
+        previousArchetype: 'Previous archetype',
+        nextArchetype: 'Next archetype',
+        info: 'INFO',
+        archetypeInfo: 'Archetype info'
+    },
+
+    // ═══════════════════════════════════════════════════════════════════════
+    // FOLD/UNFOLD
+    // ═══════════════════════════════════════════════════════════════════════
+
+    foldUnfold: {
+        fold: 'Fold',
+        unfold: 'Unfold',
+        foldAll: 'Fold all',
+        unfoldAll: 'Unfold all'
+    },
+
+    // ═══════════════════════════════════════════════════════════════════════
+    // IMPRESSUM
+    // ═══════════════════════════════════════════════════════════════════════
+
+    impressum: {
+        title: 'Legal Notice',
+        operator: 'Operator',
+        project: 'Project',
+        contact: 'Contact'
+    },
+
+    // ═══════════════════════════════════════════════════════════════════════
+    // GENDER INFO MODAL
+    // ═══════════════════════════════════════════════════════════════════════
+
+    genderInfoModal: {
+        title: 'Gender Identities',
+        howItWorks: 'How selection works:',
+        firstClick: '1st click',
+        primaryIdentity: 'Primary Identity (I)',
+        secondClick: '2nd click',
+        secondaryIdentity: 'Secondary Identity (S)',
+        thirdClick: '3rd click',
+        deselect: 'Deselect',
+        understood: 'Got it'
+    },
+
+    // ═══════════════════════════════════════════════════════════════════════
+    // HELP MODAL EXTENDED
+    // ═══════════════════════════════════════════════════════════════════════
+
+    helpModal: {
+        title: 'Help & Documentation',
+        quickGuideTitle: 'Quick Guide',
+        quickGuideItems: [
+            '<strong>My Type</strong> = Your archetype + properties (orientation, dominance, gender)',
+            '<strong>Relationship Quality</strong> = Partner archetype + properties and compatibility calculation',
+            '<strong>Living</strong> = What you actively live / <strong>Interested</strong> = What you are open to',
+            '<strong>INFO</strong> button = Details about the selected archetype',
+            '<strong>Result</strong> = Automatic calculation of compatibility (4 factors)',
+            'Click <strong>percentages</strong> = Detailed explanation per factor'
+        ],
+        newInVersion: 'New in Version 1.4',
+        newFeatures: [
+            '<strong>Living/Interested:</strong> Choose for each property whether you actively live it or just have interest',
+            '<strong>Auto-Collapse:</strong> Orientation and dominance sections close automatically after selection',
+            '<strong>Improved error messages:</strong> Missing fields are listed clearly',
+            '<strong>Mobile Navigation:</strong> New navigation buttons in modals for better usability',
+            '<strong>Circular Score Display:</strong> Compatibility values are displayed more visually appealing'
+        ],
+        feedbackPrompt: 'Questions, feedback or suggestions?',
+        sendComment: 'Send Comment',
+        viewAllComments: 'All Comments',
+        documentation: 'Documentation'
     }
 };
 
