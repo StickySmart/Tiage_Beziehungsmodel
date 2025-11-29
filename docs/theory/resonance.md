@@ -11,7 +11,7 @@ Resonanz (R) ist ein **Meta-Faktor** (0.9-1.1), der moduliert, wie gut Kopf (Log
 ## Die R-Formel
 
 ```
-R = 0.9 + [(M/100 × 0.5) + (B × 0.5)] × 0.2
+R = 0.9 + [(M/100 × 0.35) + (B × 0.35) + (K × 0.30)] × 0.2
 ```
 
 **Wertebereich:** R variiert zwischen 0.9 (minimale Resonanz) und 1.1 (maximale Resonanz).
@@ -41,15 +41,37 @@ B = (100 - |Logos - Pathos|) / 100
 
 *Beispiel: Bei A=72% und avg(O,D,G)=65%: B = (100 - 7) / 100 = 0.93*
 
+### Komponente 3: GFK-Kommunikationsfaktor (K)
+
+Die **Gewaltfreie Kommunikation** (GFK) nach Marshall Rosenberg als Schlüssel zur Resonanz.
+
+> *"Wahre Verbindung entsteht durch empathisches Zuhören und ehrliches Ausdrücken von Bedürfnissen."* – Marshall Rosenberg
+
+| ICH / Partner | hoch | mittel | niedrig |
+|---------------|------|--------|---------|
+| **hoch**      | 1.0  | 0.75   | 0.35    |
+| **mittel**    | 0.75 | 0.5    | 0.2     |
+| **niedrig**   | 0.35 | 0.2    | 0.0     |
+
+**Warum 30% Gewichtung?**
+
+Kommunikation ist fundamental für nachhaltige Resonanz:
+- **Hohe GFK beider Partner:** Konflikte werden zu Wachstumschancen
+- **Niedrige GFK beider Partner:** Destruktive Muster, Eskalation wahrscheinlich
+- **Asymmetrie:** Der GFK-kompetentere Partner trägt mehr Last
+
 ### Beispielrechnung
 
-**Gegeben:** M = 80 (80% Profil-Match), B = 0.93 (7% Logos-Pathos-Differenz)
+**Gegeben:**
+- M = 80 (80% Profil-Match)
+- B = 0.93 (7% Logos-Pathos-Differenz)
+- K = 0.75 (hoch + mittel GFK)
 
 ```
-R = 0.9 + [(80/100 × 0.5) + (0.93 × 0.5)] × 0.2
-R = 0.9 + [0.4 + 0.465] × 0.2
-R = 0.9 + 0.173
-R = 1.073 → Override aktiv!
+R = 0.9 + [(80/100 × 0.35) + (0.93 × 0.35) + (0.75 × 0.30)] × 0.2
+R = 0.9 + [0.28 + 0.326 + 0.225] × 0.2
+R = 0.9 + 0.166
+R = 1.066 → Override aktiv!
 ```
 
 ## Anwendung im Qualitätsindex

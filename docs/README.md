@@ -59,11 +59,33 @@ docs/
 Q = [(A × 0.40) + (O × 0.25) + (D × 0.20) + (G × 0.15)] × R
 ```
 
+Wobei:
+- **A** = Archetyp-Score (0-100) - Beziehungsphilosophie
+- **O** = Orientierungs-Score (0-100) - Sexuelle Kompatibilität
+- **D** = Dominanz-Score (0-100) - Energetische Dynamik
+- **G** = Geschlechts-Score (0-100) - Gender-Chemie
+- **R** = Resonanz-Faktor (0.9-1.1) - Meta-Modulator
+
 ### Resonanz-Faktor
 
 ```
-R = 0.9 + [(M/100 × 0.5) + (B × 0.5)] × 0.2
+R = 0.9 + [(M/100 × 0.35) + (B × 0.35) + (K × 0.30)] × 0.2
 ```
+
+Wobei:
+- **M** = Profil-Match (0-100) - Übereinstimmung der Präferenzen
+- **B** = Balance (0-1) - Logos-Pathos-Harmonie
+- **K** = Kommunikation (0-1) - GFK-Kompetenz beider Partner
+
+### GFK-Faktor (K)
+
+| ICH / Partner | hoch | mittel | niedrig |
+|---------------|------|--------|---------|
+| **hoch**      | 1.0  | 0.75   | 0.35    |
+| **mittel**    | 0.75 | 0.5    | 0.2     |
+| **niedrig**   | 0.35 | 0.2    | 0.0     |
+
+GFK = Gewaltfreie Kommunikation nach Marshall Rosenberg
 
 ## Verwandte Dokumentation
 
