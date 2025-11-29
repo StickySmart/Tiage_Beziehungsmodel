@@ -7610,6 +7610,11 @@
             // Update age verification modal
             updateAgeVerificationModal();
 
+            // Update analysis overview (Du ein / You a + Geschlecht)
+            if (typeof updateAnalysisOverview === 'function') {
+                updateAnalysisOverview();
+            }
+
             // Trigger custom event for other scripts to react
             document.dispatchEvent(new CustomEvent('languageChanged', {
                 detail: { language: lang, locale: TiageI18n.getLocale() }
@@ -12356,24 +12361,32 @@
 
             if (!primary) return null;
 
-            const map = {
-                'cis_mann': 'Cis Mann',
-                'cis_frau': 'Cis Frau',
-                'trans_mann': 'Trans Mann',
-                'trans_frau': 'Trans Frau',
-                'nonbinaer': 'Nonbinär',
-                'genderfluid': 'Genderfluid',
-                'agender': 'Agender',
-                'intersex': 'Intersex',
-                'divers': 'Divers',
-                'männlich': 'Mann',
-                'weiblich': 'Frau',
-                'non-binär': 'Nonbinär'
+            // Nutze i18n wenn verfügbar, sonst Fallback-Map
+            const getName = (g) => {
+                if (typeof TiageI18n !== 'undefined') {
+                    return TiageI18n.t(`geschlecht.types.${g}`, g);
+                }
+                // Fallback-Map
+                const map = {
+                    'cis_mann': 'Cis Mann',
+                    'cis_frau': 'Cis Frau',
+                    'trans_mann': 'Trans Mann',
+                    'trans_frau': 'Trans Frau',
+                    'nonbinaer': 'Nonbinär',
+                    'genderfluid': 'Genderfluid',
+                    'agender': 'Agender',
+                    'intersex': 'Intersex',
+                    'divers': 'Divers',
+                    'männlich': 'Mann',
+                    'weiblich': 'Frau',
+                    'non-binär': 'Nonbinär'
+                };
+                return map[g] || g;
             };
 
-            let result = map[primary] || primary;
+            let result = getName(primary);
             if (secondary) {
-                result += ' (' + (map[secondary] || secondary) + ')';
+                result += ' (' + getName(secondary) + ')';
             }
             return result;
         }
@@ -12478,7 +12491,9 @@
 
             const content = document.getElementById('analysisOverviewContent');
             if (content) {
-                const ichGeschlechtHtml = ichGeschlecht ? `<span class="geschlecht-info">Du ein ${ichGeschlecht}</span>` : '';
+                // Nutze i18n für "Du ein" / "You a"
+                const youALabel = typeof TiageI18n !== 'undefined' ? TiageI18n.t('analysisOverview.youA', 'Du ein') : 'Du ein';
+                const ichGeschlechtHtml = ichGeschlecht ? `<span class="geschlecht-info">${youALabel} ${ichGeschlecht}</span>` : '';
                 const partnerGeschlechtHtml = partnerGeschlecht ? `<span class="geschlecht-info">${partnerGeschlecht}</span>` : '';
 
                 content.innerHTML = `
