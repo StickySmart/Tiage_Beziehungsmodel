@@ -6387,37 +6387,25 @@
             </div>
         </div>
 
-        <!-- Result Bar - Simplified Grid -->
-        <div class="result-bar">
-            <div id="warningsContainer" style="display: none;"></div>
+        <!-- Tiage's Synthese Button -->
+        <div style="display: flex; justify-content: flex-end; margin-bottom: 15px;">
+            <button class="tiage-ansatz-btn" id="desktopTiageAnsatzBtn" onclick="openPathosLogosModal('pathos')" title="Tiage's Synthese - Pathos & Logos">
+                <span class="tiage-ansatz-icon">💡</span>
+                <span class="tiage-ansatz-text">Tiage's Synthese</span>
+            </button>
+        </div>
 
-            <!-- Simplified Grid with Score Circle and Tiage's Synthese -->
-            <div class="result-score-grid" style="display: grid; grid-template-columns: 1fr auto; gap: 20px; align-items: center; padding: 15px;">
-                <!-- Score Circle -->
-                <div class="result-circle-column" style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
-                    <div class="desktop-score-circle" id="desktopScoreCircle" onclick="openProContraModal()" title="Klicken für Pro & Contra Details">
-                        <span id="desktopCirclePercentage">0%</span>
-                    </div>
-                </div>
-
-                <!-- Tiage's Synthese Button -->
-                <div style="display: flex; align-items: center;">
-                    <button class="tiage-ansatz-btn" id="desktopTiageAnsatzBtn" onclick="openPathosLogosModal('pathos')" title="Tiage's Synthese - Pathos & Logos">
-                        <span class="tiage-ansatz-icon">💡</span>
-                        <span class="tiage-ansatz-text">Tiage's Synthese</span>
-                    </button>
-                </div>
-            </div>
-
-            <!-- Hidden elements for backwards compatibility -->
-            <div id="desktopScoreNote" class="score-note" style="display: none;"></div>
-            <span id="resultIchType" style="display: none;">Single</span>
-            <span id="resultPartnerType" style="display: none;">Duo</span>
-            <div class="result-progress" style="display: none;">
-                <div class="result-progress-fill" id="resultProgressFill" style="width: 0%; background: var(--primary);"></div>
-            </div>
-            <div class="result-percentage" id="resultPercentage" style="display: none;">0%</div>
-
+        <!-- Hidden elements for backwards compatibility -->
+        <div id="warningsContainer" style="display: none;"></div>
+        <div id="desktopScoreNote" class="score-note" style="display: none;"></div>
+        <span id="resultIchType" style="display: none;">Single</span>
+        <span id="resultPartnerType" style="display: none;">Duo</span>
+        <div class="result-progress" style="display: none;">
+            <div class="result-progress-fill" id="resultProgressFill" style="width: 0%; background: var(--primary);"></div>
+        </div>
+        <div class="result-percentage" id="resultPercentage" style="display: none;">0%</div>
+        <div class="desktop-score-circle" id="desktopScoreCircle" style="display: none;">
+            <span id="desktopCirclePercentage">0%</span>
         </div>
     </div>
 
