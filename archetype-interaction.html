@@ -4131,15 +4131,19 @@
         }
 
         .status-toggle-btn.active-gelebt {
-            background: var(--success);
-            border-color: var(--success);
-            color: white;
+            background: #2ecc71 !important;
+            border-color: #2ecc71 !important;
+            color: white !important;
+            box-shadow: 0 0 8px rgba(46, 204, 113, 0.5);
+            font-weight: 600;
         }
 
         .status-toggle-btn.active-interessiert {
-            background: var(--warning);
-            border-color: var(--warning);
-            color: #1a1a2e;
+            background: #f39c12 !important;
+            border-color: #f39c12 !important;
+            color: #1a1a2e !important;
+            box-shadow: 0 0 8px rgba(243, 156, 18, 0.5);
+            font-weight: 600;
         }
 
         @keyframes yellowPulse {
@@ -13272,8 +13276,9 @@
         function generateCombinedPathos(ichArch, partnerArch) {
             const ichName = ichArch?.name || 'ICH';
             const partnerName = partnerArch?.name || 'Partner';
-            const ichId = ichArch?.id || '';
-            const partnerId = partnerArch?.id || '';
+            // Use global archetype keys as IDs since archetypeDefinitions doesn't have id property
+            const ichId = ichArch?.id || currentArchetype || '';
+            const partnerId = partnerArch?.id || selectedPartner || '';
 
             // Berechne die 4 Faktor-Scores
             const person1 = {
@@ -13353,8 +13358,9 @@
         function generateCombinedLogos(ichArch, partnerArch) {
             const ichName = ichArch?.name || 'ICH';
             const partnerName = partnerArch?.name || 'Partner';
-            const ichId = ichArch?.id || '';
-            const partnerId = partnerArch?.id || '';
+            // Use global archetype keys as IDs since archetypeDefinitions doesn't have id property
+            const ichId = ichArch?.id || currentArchetype || '';
+            const partnerId = partnerArch?.id || selectedPartner || '';
 
             // Berechne die 4 Faktor-Scores
             const person1 = {
@@ -13457,8 +13463,9 @@
         function generateCombinedLogos_legacy(ichArch, partnerArch) {
             const ichName = ichArch?.name || 'ICH';
             const partnerName = partnerArch?.name || 'Partner';
-            const ichId = ichArch?.id || '';
-            const partnerId = partnerArch?.id || '';
+            // Use global archetype keys as IDs since archetypeDefinitions doesn't have id property
+            const ichId = ichArch?.id || currentArchetype || '';
+            const partnerId = partnerArch?.id || selectedPartner || '';
 
             // Get philosophy score from compatibility matrix
             const key = `${ichId}_${partnerId}`;

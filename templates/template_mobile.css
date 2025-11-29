@@ -557,16 +557,20 @@ body {
 
     /* Gelebt Status - Aktiv (IDENTISCH MIT DESKTOP) */
     .status-toggle-btn.active-gelebt {
-        background: var(--success);
-        color: white;
-        border-color: var(--success);
+        background: #2ecc71 !important;
+        color: white !important;
+        border-color: #2ecc71 !important;
+        box-shadow: 0 0 8px rgba(46, 204, 113, 0.5);
+        font-weight: 600;
     }
 
     /* Interessiert Status - Aktiv (IDENTISCH MIT DESKTOP) */
     .status-toggle-btn.active-interessiert {
-        background: var(--warning);
-        color: #1a1a2e;
-        border-color: var(--warning);
+        background: #f39c12 !important;
+        color: #1a1a2e !important;
+        border-color: #f39c12 !important;
+        box-shadow: 0 0 8px rgba(243, 156, 18, 0.5);
+        font-weight: 600;
     }
 
     /* ========================================
