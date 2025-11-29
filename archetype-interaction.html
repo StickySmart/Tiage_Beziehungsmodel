@@ -6375,43 +6375,22 @@
             </div>
         </div>
 
-        <!-- Result Bar -->
+        <!-- Result Bar - Simplified Grid -->
         <div class="result-bar">
-            <div id="warningsContainer"></div>
+            <div id="warningsContainer" style="display: none;"></div>
 
-            <!-- New layout with circle -->
-            <div class="result-bar-with-circle">
-                <!-- Types Column -->
-                <div class="result-types-column">
-                    <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 12px;">
-                        <div style="flex: 1;">
-                            <div style="font-size: var(--font-xs); color: var(--success); font-weight: 600; margin-bottom: 4px;">ICH</div>
-                            <div style="display: flex; align-items: center; gap: 4px;">
-                                <button class="result-nav-btn" onclick="navigateArchetype('ich', -1)" title="Vorheriger ICH-Archetyp">&#9664;</button>
-                                <span class="type-name" id="resultIchType" style="font-size: var(--font-base); font-weight: 600;">Single</span>
-                                <button class="result-nav-btn" onclick="navigateArchetype('ich', 1)" title="Nächster ICH-Archetyp">&#9654;</button>
-                            </div>
-                        </div>
-                        <span style="font-size: 1.2rem; color: var(--text-muted);">×</span>
-                        <div style="flex: 1; text-align: right;">
-                            <div style="font-size: var(--font-xs); color: var(--danger); font-weight: 600; margin-bottom: 4px;">DEIN PARTNER</div>
-                            <div style="display: flex; align-items: center; justify-content: flex-end; gap: 4px;">
-                                <button class="result-nav-btn" onclick="navigateArchetype('partner', -1)" title="Vorheriger Partner-Archetyp">&#9664;</button>
-                                <span class="type-name" id="resultPartnerType" style="font-size: var(--font-base); font-weight: 600;">Duo</span>
-                                <button class="result-nav-btn" onclick="navigateArchetype('partner', 1)" title="Nächster Partner-Archetyp">&#9654;</button>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Quality Note moved here for more space -->
-                    <div id="desktopScoreNote" class="score-note" style="font-size: 16px; color: var(--text-secondary); font-style: italic; text-align: center; line-height: 1.5; margin-top: 8px;"></div>
-                </div>
-
-                <!-- Circle Column -->
-                <div class="result-circle-column">
+            <!-- Simplified Grid with Score Circle and Tiage's Synthese -->
+            <div class="result-score-grid" style="display: grid; grid-template-columns: 1fr auto; gap: 20px; align-items: center; padding: 15px;">
+                <!-- Score Circle -->
+                <div class="result-circle-column" style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
                     <div class="desktop-score-circle" id="desktopScoreCircle" onclick="openProContraModal()" title="Klicken für Pro & Contra Details">
                         <span id="desktopCirclePercentage">0%</span>
                     </div>
                     <div class="desktop-score-label">Beziehungsqualität</div>
+                </div>
+
+                <!-- Tiage's Synthese Button -->
+                <div style="display: flex; align-items: center;">
                     <button class="tiage-ansatz-btn" id="desktopTiageAnsatzBtn" onclick="openPathosLogosModal('pathos')" title="Tiage's Synthese - Pathos & Logos">
                         <span class="tiage-ansatz-icon">💡</span>
                         <span class="tiage-ansatz-text">Tiage's Synthese</span>
@@ -6419,7 +6398,10 @@
                 </div>
             </div>
 
-            <!-- Hidden progress bar for backwards compatibility -->
+            <!-- Hidden elements for backwards compatibility -->
+            <div id="desktopScoreNote" class="score-note" style="display: none;"></div>
+            <span id="resultIchType" style="display: none;">Single</span>
+            <span id="resultPartnerType" style="display: none;">Duo</span>
             <div class="result-progress" style="display: none;">
                 <div class="result-progress-fill" id="resultProgressFill" style="width: 0%; background: var(--primary);"></div>
             </div>
