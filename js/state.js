@@ -18,7 +18,10 @@ const TiageState = (function() {
         // Person Dimensions - SINGLE SOURCE OF TRUTH
         personDimensions: {
             ich: {
-                geschlecht: null,
+                geschlecht: {
+                    primary: null,    // Primäre Geschlechtsidentität (I)
+                    secondary: null   // Sekundäre Geschlechtsidentität (G) - optional
+                },
                 dominanz: {
                     dominant: null,      // null, 'gelebt', oder 'interessiert'
                     submissiv: null,
@@ -34,7 +37,10 @@ const TiageState = (function() {
                 orientierungStatus: null
             },
             partner: {
-                geschlecht: null,
+                geschlecht: {
+                    primary: null,
+                    secondary: null
+                },
                 dominanz: {
                     dominant: null,
                     submissiv: null,
@@ -271,10 +277,63 @@ const TiageState = (function() {
         },
 
         /**
-         * Set geschlecht
+         * Set primary geschlecht
+         * @param {string} person - 'ich' or 'partner'
+         * @param {string|null} value - The geschlecht value
          */
         setGeschlecht(person, value) {
-            this.set(`personDimensions.${person}.geschlecht`, value);
+            // Für Rückwärtskompatibilität: setze als primary
+            this.set(`personDimensions.${person}.geschlecht.primary`, value);
+        },
+
+        /**
+         * Set secondary geschlecht
+         * @param {string} person - 'ich' or 'partner'
+         * @param {string|null} value - The geschlecht value
+         */
+        setSecondaryGeschlecht(person, value) {
+            // Secondary kann nicht gleich primary sein
+            const primary = this.get(`personDimensions.${person}.geschlecht.primary`);
+            if (value === primary) {
+                console.warn('[TiageState] Secondary geschlecht cannot be same as primary');
+                return;
+            }
+            this.set(`personDimensions.${person}.geschlecht.secondary`, value);
+        },
+
+        /**
+         * Get primary geschlecht
+         * @param {string} person - 'ich' or 'partner'
+         * @returns {string|null} The primary geschlecht
+         */
+        getPrimaryGeschlecht(person) {
+            return this.get(`personDimensions.${person}.geschlecht.primary`);
+        },
+
+        /**
+         * Get secondary geschlecht
+         * @param {string} person - 'ich' or 'partner'
+         * @returns {string|null} The secondary geschlecht
+         */
+        getSecondaryGeschlecht(person) {
+            return this.get(`personDimensions.${person}.geschlecht.secondary`);
+        },
+
+        /**
+         * Get both geschlechter
+         * @param {string} person - 'ich' or 'partner'
+         * @returns {Object} { primary: string|null, secondary: string|null }
+         */
+        getGeschlechter(person) {
+            return this.get(`personDimensions.${person}.geschlecht`);
+        },
+
+        /**
+         * Clear secondary geschlecht
+         * @param {string} person - 'ich' or 'partner'
+         */
+        clearSecondaryGeschlecht(person) {
+            this.set(`personDimensions.${person}.geschlecht.secondary`, null);
         },
 
         /**
@@ -342,7 +401,9 @@ const TiageState = (function() {
          */
         isPersonComplete(person) {
             const dims = this.get(`personDimensions.${person}`);
-            return dims.geschlecht !== null &&
+            // Geschlecht hat jetzt primary/secondary - nur primary ist erforderlich
+            const hasPrimaryGeschlecht = dims.geschlecht && dims.geschlecht.primary !== null;
+            return hasPrimaryGeschlecht &&
                    this.getPrimaryDominanz(person) !== null &&
                    this.getPrimaryOrientierung(person) !== null;
         },
@@ -357,7 +418,9 @@ const TiageState = (function() {
                 const label = person === 'ich' ? 'Ich' : 'Partner';
                 const dims = this.get(`personDimensions.${person}`);
 
-                if (!dims.geschlecht) missing.push(`${label}: Geschlecht`);
+                // Geschlecht primary ist erforderlich
+                const hasPrimaryGeschlecht = dims.geschlecht && dims.geschlecht.primary !== null;
+                if (!hasPrimaryGeschlecht) missing.push(`${label}: Geschlecht`);
                 if (!this.getPrimaryDominanz(person)) missing.push(`${label}: Dominanz`);
                 if (!this.getPrimaryOrientierung(person)) missing.push(`${label}: Orientierung`);
             });
@@ -458,14 +521,14 @@ const TiageState = (function() {
         reset() {
             this.set('personDimensions', {
                 ich: {
-                    geschlecht: null,
+                    geschlecht: { primary: null, secondary: null },
                     dominanz: { dominant: null, submissiv: null, switch: null, ausgeglichen: null },
                     orientierung: { heterosexuell: null, homosexuell: null, bisexuell: null },
                     dominanzStatus: null,
                     orientierungStatus: null
                 },
                 partner: {
-                    geschlecht: null,
+                    geschlecht: { primary: null, secondary: null },
                     dominanz: { dominant: null, submissiv: null, switch: null, ausgeglichen: null },
                     orientierung: { heterosexuell: null, homosexuell: null, bisexuell: null },
                     dominanzStatus: null,
