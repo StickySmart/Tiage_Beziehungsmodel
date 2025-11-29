@@ -13,10 +13,11 @@
  *   R = Resonanz-Koeffizient (0.9 - 1.1)
  *
  * Resonanz-Formel:
- *   R = 0.9 + [(M/100 × 0.5) + (B × 0.5)] × 0.2
+ *   R = 0.9 + [(M/100 × 0.35) + (B × 0.35) + (K × 0.30)] × 0.2
  *
  *   M = Profil-Match (0-100%) - Platzhalter bis implementiert
  *   B = Logos-Pathos-Balance = (100 - |Logos - Pathos|) / 100
+ *   K = GFK-Kommunikationsfaktor (0-1) - Gewaltfreie Kommunikation
  */
 
 var TiageSynthesis = TiageSynthesis || {};
@@ -169,7 +170,7 @@ TiageSynthesis.Calculator = {
     /**
      * Berechnet den Resonanz-Koeffizienten
      *
-     * R = 0.9 + [(M/100 × 0.5) + (B × 0.5)] × 0.2
+     * R = 0.9 + [(M/100 × 0.35) + (B × 0.35) + (K × 0.30)] × 0.2
      *
      * @param {number} logos - Logos-Score (0-100)
      * @param {number} pathos - Pathos-Durchschnitt (0-100)
@@ -184,7 +185,7 @@ TiageSynthesis.Calculator = {
         var differenz = Math.abs(logos - pathos);
         var balance = (100 - differenz) / 100;
 
-        // R = 0.9 + [(M/100 × 0.5) + (B × 0.5)] × 0.2
+        // R = 0.9 + [(M/100 × 0.35) + (B × 0.35) + (K × 0.30)] × 0.2
         var coefficient = cfg.BASE +
             (((profilMatch / 100) * cfg.PROFILE_WEIGHT) + (balance * cfg.BALANCE_WEIGHT)) *
             cfg.MAX_BOOST;

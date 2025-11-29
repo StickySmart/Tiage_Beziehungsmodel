@@ -31,13 +31,15 @@ TiageSynthesis.Constants = {
     // ═══════════════════════════════════════════════════════════════════════
     // RESONANZ-KONFIGURATION
     // ═══════════════════════════════════════════════════════════════════════
-    // R = 0.9 + [(M/100 × 0.5) + (B × 0.5)] × 0.2
+    // R = 0.9 + [(M/100 × 0.35) + (B × 0.35) + (K × 0.30)] × 0.2
+    // K = GFK-Kommunikationsfaktor (Gewaltfreie Kommunikation)
 
     RESONANCE: {
         BASE: 0.9,           // Minimum Resonanz
         MAX_BOOST: 0.2,      // Maximum zusätzliche Resonanz
-        PROFILE_WEIGHT: 0.5, // Gewicht Profil-Match
-        BALANCE_WEIGHT: 0.5, // Gewicht Logos-Pathos-Balance
+        PROFILE_WEIGHT: 0.35, // Gewicht Profil-Match (M)
+        BALANCE_WEIGHT: 0.35, // Gewicht Logos-Pathos-Balance (B)
+        GFK_WEIGHT: 0.30,     // Gewicht GFK-Kommunikationsfaktor (K)
 
         // Platzhalter bis Profil-Attribute implementiert
         DEFAULT_PROFILE_MATCH: 50
