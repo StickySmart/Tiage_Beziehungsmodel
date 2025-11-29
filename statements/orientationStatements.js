@@ -86,32 +86,61 @@ const orientationStatements = {
     },
 
     // ═══════════════════════════════════════════════════════════════════════
-    // INKOMPATIBEL (0%) - K.O.-Kriterium
+    // HARD-KO (0%) - Geometrisch unmöglich
     // ═══════════════════════════════════════════════════════════════════════
+    // Beide suchen aktiv jemand anderen - keine gegenseitige Anziehung möglich
 
-    "incompatible": {
+    "hardKO": {
         score: 0,
         pathos: [
-            "Die Orientierungen passen nicht zusammen – keine körperliche Basis.",
-            "Ohne körperliche Anziehung fehlt eine fundamentale Dimension.",
-            "OSHO: Ohne Polarität keine magnetische Kraft.",
-            "Die Körper sprechen verschiedene Sprachen.",
+            "Beide suchen jemand anderen – keine gemeinsame Richtung.",
+            "Die Orientierungen zeigen in entgegengesetzte Richtungen.",
+            "Körperliche Anziehung braucht eine gemeinsame Basis.",
             "Freundschaft ist möglich, romantische Beziehung nicht."
         ],
         logos: [
-            "K.O.-Kriterium: Keine körperliche Anziehungsmöglichkeit.",
-            "Orientierungen sind nicht veränderbar – dies ist keine Wahl.",
-            "Im Gegensatz zu philosophischen Differenzen ist dies fundamental.",
+            "Geometrisch unmöglich: Beide suchen jemand komplett anderen.",
+            "Dies ist keine kulturelle Konditionierung, sondern neurologische Realität.",
+            "Resonanz kann Interesse nicht ersetzen.",
             "Die Basis für romantische/sexuelle Beziehung fehlt."
         ],
         pro: [
-            "Klarheit über die Grenzen",
+            "Klarheit über die Situation",
+            "Potenzial für tiefe Freundschaft",
+            "Ehrlichkeit spart Zeit und Energie"
+        ],
+        contra: [
+            "Keine gegenseitige körperliche Anziehung möglich",
+            "Romantische Beziehung ausgeschlossen"
+        ]
+    },
+
+    // ═══════════════════════════════════════════════════════════════════════
+    // SOFT-KO (10%) - Unwahrscheinlich aber nicht unmöglich
+    // ═══════════════════════════════════════════════════════════════════════
+    // Mindestens einer könnte sich angezogen fühlen
+
+    "incompatible": {
+        score: 10,
+        pathos: [
+            "Die Orientierungen passen nicht optimal zusammen.",
+            "Eine Seite könnte Interesse haben, die andere nicht.",
+            "OSHO: Ohne beidseitige Polarität fehlt die magnetische Kraft.",
+            "Die Körper sprechen verschiedene Sprachen."
+        ],
+        logos: [
+            "Soft-KO: Geringe Wahrscheinlichkeit für beidseitige Anziehung.",
+            "Nicht völlig ausgeschlossen, aber sehr unwahrscheinlich.",
+            "Tiefe Resonanz könnte theoretisch überbrücken."
+        ],
+        pro: [
+            "Nicht völlig ausgeschlossen",
             "Potenzial für tiefe Freundschaft"
         ],
         contra: [
-            "Keine körperliche Anziehung möglich",
-            "Romantische Beziehung ausgeschlossen",
-            "Fundamentale Inkompatibilität"
+            "Geringe Wahrscheinlichkeit für beidseitige Anziehung",
+            "Romantische Beziehung sehr unwahrscheinlich",
+            "Einseitige Gefühle möglich"
         ]
     },
 

@@ -382,6 +382,31 @@ const TiageLocale_EN = {
     },
 
     // ═══════════════════════════════════════════════════════════════════════
+    // HARD-KO TEXTS (Friendly, not aggressive)
+    // ═══════════════════════════════════════════════════════════════════════
+
+    hardKO: {
+        title: 'Not a match',
+        subtitle: 'This combination has no romantic basis',
+
+        // Friendly explanations by reason
+        reasons: {
+            hetero_same_gender: 'Both are looking for someone of the opposite gender',
+            homo_different_gender: 'Both are looking for someone of the same gender',
+            hetero_male_lesbian_female: 'He is looking for women, she is looking for women',
+            lesbian_female_hetero_male: 'She is looking for women, he is looking for women',
+            hetero_female_homo_male: 'She is looking for men, he is looking for men',
+            homo_male_hetero_female: 'He is looking for men, she is looking for men'
+        },
+
+        // Positive alternative
+        friendship: 'But a deep friendship is possible!',
+
+        // Philosophical note
+        philosophy: 'Physical attraction needs a shared direction.'
+    },
+
+    // ═══════════════════════════════════════════════════════════════════════
     // DIMENSION LABELS
     // ═══════════════════════════════════════════════════════════════════════
 

@@ -157,7 +157,11 @@ TiageSynthesis.Calculator = {
                 hasExploration: orientierungResult.details.hasExploration ||
                                 dominanzResult.details.hasExploration,
                 profilMatchUsed: profilMatch,
-                profilMatchImplemented: profilMatch !== constants.RESONANCE.DEFAULT_PROFILE_MATCH
+                profilMatchImplemented: profilMatch !== constants.RESONANCE.DEFAULT_PROFILE_MATCH,
+
+                // Hard-KO: Geometrisch unmöglich (z.B. Hetero♂ + Hetero♂)
+                isHardKO: orientierungResult.details.isHardKO || false,
+                hardKOReason: orientierungResult.details.hardKOReason || null
             }
         };
     },

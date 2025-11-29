@@ -7,9 +7,12 @@
  *
  * OSHO: "Polarität ist Voraussetzung für Anziehung"
  *
- * WICHTIG: Kein harter K.O. mehr!
- * - "unmöglich" → niedriger Score (10%), nicht 0
- * - Dies ermöglicht Resonanz-Berechnung auch bei schwieriger Kompatibilität
+ * HARD-KO vs SOFT-KO:
+ * - Hard-KO (0%): Geometrisch unmöglich - beide suchen jemand anderen
+ *   → Hetero♂ + Hetero♂, Hetero♀ + Hetero♀, Homo♂ + Lesbe♀
+ *   → Resonanz kann das NICHT überschreiben (neurologische Realität)
+ * - Soft-KO (10%): Unwahrscheinlich aber nicht unmöglich
+ *   → Hetero + Homo gemischt (einer könnte sich angezogen fühlen)
  */
 
 var TiageSynthesis = TiageSynthesis || {};
@@ -47,7 +50,7 @@ TiageSynthesis.Factors.Orientierung = {
         // Prüfe alle Kombinationen
         var bestResult = this._findBestCompatibility(oriList1, oriList2, g1, g2);
 
-        // Score basierend auf Ergebnis (sanft, kein K.O.)
+        // Score basierend auf Ergebnis
         var score = this._resultToScore(bestResult.result, constants);
 
         return {
@@ -56,6 +59,8 @@ TiageSynthesis.Factors.Orientierung = {
                 result: bestResult.result,
                 confidence: bestResult.confidence,
                 hasExploration: bestResult.hasExploration,
+                isHardKO: bestResult.isHardKO || false,
+                hardKOReason: bestResult.hardKOReason || null,
                 bestCombination: bestResult.bestCombination,
                 allOptions1: oriList1,
                 allOptions2: oriList2
@@ -100,6 +105,8 @@ TiageSynthesis.Factors.Orientierung = {
         var hasMoeglich = false;
         var hasUnsicher = false;
         var hasInteressiert = false;
+        var hasHardKO = false;
+        var hardKOReason = null;
         var bestCombination = null;
 
         for (var i = 0; i < oriList1.length; i++) {
@@ -107,7 +114,8 @@ TiageSynthesis.Factors.Orientierung = {
                 var o1 = oriList1[i];
                 var o2 = oriList2[j];
 
-                var result = this._checkSinglePair(o1.type, o1.status, o2.type, o2.status, g1, g2);
+                var checkResult = this._checkSinglePair(o1.type, o1.status, o2.type, o2.status, g1, g2);
+                var result = checkResult.result;
 
                 if (result === 'moeglich') {
                     hasMoeglich = true;
@@ -117,6 +125,9 @@ TiageSynthesis.Factors.Orientierung = {
                     if (!bestCombination) {
                         bestCombination = { ori1: o1, ori2: o2 };
                     }
+                } else if (checkResult.isHardKO) {
+                    hasHardKO = true;
+                    hardKOReason = checkResult.reason;
                 }
 
                 if (o1.status === 'interessiert' || o2.status === 'interessiert') {
@@ -131,6 +142,7 @@ TiageSynthesis.Factors.Orientierung = {
                 result: 'moeglich',
                 confidence: 'hoch',
                 hasExploration: false,
+                isHardKO: false,
                 bestCombination: bestCombination
             };
         }
@@ -140,6 +152,7 @@ TiageSynthesis.Factors.Orientierung = {
                 result: 'unsicher',
                 confidence: 'mittel',
                 hasExploration: true,
+                isHardKO: false,
                 bestCombination: bestCombination
             };
         }
@@ -149,54 +162,196 @@ TiageSynthesis.Factors.Orientierung = {
                 result: 'unsicher',
                 confidence: 'niedrig',
                 hasExploration: true,
+                isHardKO: false,
                 bestCombination: bestCombination
             };
         }
 
+        // Hard-KO: Geometrisch unmöglich
+        if (hasHardKO) {
+            return {
+                result: 'hardKO',
+                confidence: 'sicher',
+                hasExploration: false,
+                isHardKO: true,
+                hardKOReason: hardKOReason,
+                bestCombination: null
+            };
+        }
+
+        // Soft-KO: Unwahrscheinlich aber nicht unmöglich
         return {
             result: 'unwahrscheinlich',
             confidence: 'sehr-niedrig',
             hasExploration: false,
+            isHardKO: false,
             bestCombination: null
         };
     },
 
     /**
      * Prüft einzelnes Orientierungs-Paar
+     *
+     * Returns: { result: string, isHardKO: boolean }
      */
     _checkSinglePair: function(type1, status1, type2, status2, g1, g2) {
         var isExploring = (status1 === 'interessiert' || status2 === 'interessiert');
 
         // Bisexuell ist immer kompatibel
         if (type1 === 'bisexuell' || type2 === 'bisexuell') {
-            return isExploring ? 'unsicher' : 'moeglich';
+            return {
+                result: isExploring ? 'unsicher' : 'moeglich',
+                isHardKO: false
+            };
         }
 
         // Beide heterosexuell
         if (type1 === 'heterosexuell' && type2 === 'heterosexuell') {
             if (g1 !== g2) {
-                return isExploring ? 'unsicher' : 'moeglich';
+                return {
+                    result: isExploring ? 'unsicher' : 'moeglich',
+                    isHardKO: false
+                };
             }
-            return 'unmoeglich'; // Gleiches Geschlecht, beide hetero
+            // HARD-KO: Gleiches Geschlecht, beide hetero → beide suchen jemand anderen
+            return {
+                result: 'hardKO',
+                isHardKO: true,
+                reason: 'hetero_same_gender'
+            };
         }
 
         // Beide homosexuell
         if (type1 === 'homosexuell' && type2 === 'homosexuell') {
             if (g1 === g2) {
-                return isExploring ? 'unsicher' : 'moeglich';
+                return {
+                    result: isExploring ? 'unsicher' : 'moeglich',
+                    isHardKO: false
+                };
             }
-            return 'unmoeglich'; // Verschiedenes Geschlecht, beide homo
+            // HARD-KO: Verschiedenes Geschlecht, beide homo → beide suchen jemand anderen
+            return {
+                result: 'hardKO',
+                isHardKO: true,
+                reason: 'homo_different_gender'
+            };
         }
 
         // Gemischt: hetero + homo
-        if (isExploring) {
-            return 'unsicher'; // Exploration könnte Dinge ändern
+        // Prüfe ob es ein Hard-KO ist (BEIDE suchen jemand anderen)
+        var hardKOCheck = this._checkHeteroHomoHardKO(type1, type2, g1, g2);
+        if (hardKOCheck.isHardKO) {
+            return hardKOCheck;
         }
-        return 'unmoeglich';
+
+        // Soft-KO: Mindestens einer könnte sich angezogen fühlen
+        if (isExploring) {
+            return { result: 'unsicher', isHardKO: false };
+        }
+        return { result: 'unmoeglich', isHardKO: false };
     },
 
     /**
-     * Wandelt Ergebnis in Score um (SANFT, kein K.O.!)
+     * Prüft Hetero+Homo Kombinationen auf Hard-KO
+     *
+     * Hard-KO wenn BEIDE jemand anderen suchen:
+     * - Hetero♂ + Homo♂ = Er sucht ♀, der andere sucht andere ♂ → Soft-KO (einer sucht ihn)
+     * - Hetero♀ + Lesbe = Sie sucht ♂, die andere sucht ♀ → Soft-KO (eine sucht sie)
+     * - Homo♂ + Hetero♀ = Er sucht ♂, sie sucht ♂ (aber nicht ihn) → Soft-KO
+     * - Lesbe + Hetero♂ = Sie sucht ♀, er sucht ♀ (aber nicht sie) → Soft-KO
+     */
+    _checkHeteroHomoHardKO: function(type1, type2, g1, g2) {
+        // Bei Hetero+Homo Kombinationen ist es technisch ein Soft-KO,
+        // weil zumindest einer den anderen attraktiv finden KÖNNTE
+        // (auch wenn es nicht gegenseitig ist)
+
+        // Echtes Hard-KO nur wenn BEIDE definitiv jemand komplett anderen suchen
+        // Das passiert nur bei:
+        // - Hetero♂ + Lesbe♀ → Er sucht Frauen (sie nicht), sie sucht Frauen (nicht ihn)
+        // - Hetero♀ + Homo♂ → Sie sucht Männer (er nicht), er sucht Männer (nicht sie)
+
+        var isHetero1 = (type1 === 'heterosexuell');
+        var isHomo1 = (type1 === 'homosexuell');
+        var isHetero2 = (type2 === 'heterosexuell');
+        var isHomo2 = (type2 === 'homosexuell');
+
+        // Normalisiere Geschlecht für Vergleich
+        var isMale1 = this._isMaleGender(g1);
+        var isFemale1 = this._isFemaleGender(g1);
+        var isMale2 = this._isMaleGender(g2);
+        var isFemale2 = this._isFemaleGender(g2);
+
+        // Fall 1: Hetero♂ + Lesbe♀
+        // Er sucht Frauen, aber nicht Lesben (die ihn nicht wollen)
+        // Sie sucht Frauen, nicht Männer
+        // → KEINE gegenseitige Anziehung möglich
+        if (isHetero1 && isMale1 && isHomo2 && isFemale2) {
+            return {
+                result: 'hardKO',
+                isHardKO: true,
+                reason: 'hetero_male_lesbian_female'
+            };
+        }
+
+        // Fall 2: Lesbe♀ + Hetero♂ (umgekehrt)
+        if (isHomo1 && isFemale1 && isHetero2 && isMale2) {
+            return {
+                result: 'hardKO',
+                isHardKO: true,
+                reason: 'lesbian_female_hetero_male'
+            };
+        }
+
+        // Fall 3: Hetero♀ + Homo♂
+        // Sie sucht Männer, aber nicht schwule (die sie nicht wollen)
+        // Er sucht Männer, nicht Frauen
+        // → KEINE gegenseitige Anziehung möglich
+        if (isHetero1 && isFemale1 && isHomo2 && isMale2) {
+            return {
+                result: 'hardKO',
+                isHardKO: true,
+                reason: 'hetero_female_homo_male'
+            };
+        }
+
+        // Fall 4: Homo♂ + Hetero♀ (umgekehrt)
+        if (isHomo1 && isMale1 && isHetero2 && isFemale2) {
+            return {
+                result: 'hardKO',
+                isHardKO: true,
+                reason: 'homo_male_hetero_female'
+            };
+        }
+
+        // Alle anderen Hetero+Homo Kombinationen: Soft-KO
+        return { result: 'unmoeglich', isHardKO: false };
+    },
+
+    /**
+     * Prüft ob Geschlecht männlich ist (inkl. Trans)
+     */
+    _isMaleGender: function(gender) {
+        if (!gender) return false;
+        var g = gender.toLowerCase();
+        return g === 'männlich' || g === 'cis_mann' || g === 'trans_mann' ||
+               g === 'mann' || g === 'male' || g === 'm';
+    },
+
+    /**
+     * Prüft ob Geschlecht weiblich ist (inkl. Trans)
+     */
+    _isFemaleGender: function(gender) {
+        if (!gender) return false;
+        var g = gender.toLowerCase();
+        return g === 'weiblich' || g === 'cis_frau' || g === 'trans_frau' ||
+               g === 'frau' || g === 'female' || g === 'w' || g === 'f';
+    },
+
+    /**
+     * Wandelt Ergebnis in Score um
+     *
+     * HARD-KO: 0% (geometrisch unmöglich)
+     * SOFT-KO: 10% (unwahrscheinlich aber nicht unmöglich)
      */
     _resultToScore: function(result, constants) {
         var scores = constants.ORIENTATION;
@@ -209,7 +364,9 @@ TiageSynthesis.Factors.Orientierung = {
             case 'unwahrscheinlich':
                 return scores.UNLIKELY;        // 30
             case 'unmoeglich':
-                return scores.INCOMPATIBLE;    // 10 (nicht 0!)
+                return scores.INCOMPATIBLE;    // 10 (Soft-KO)
+            case 'hardKO':
+                return scores.HARD_KO;         // 0 (Hard-KO)
             default:
                 return 50;
         }
