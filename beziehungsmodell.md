@@ -60,6 +60,89 @@ Die philosophischen Konzepte von Pirsig und OSHO werden durch neurowissenschaftl
 
 ---
 
+## Die 8 Beziehungstypen
+
+Jeder Archetyp kann verschiedene Arten von Beziehungen eingehen. Das Modell unterscheidet 8 Beziehungstypen:
+
+| Typ | Name | Beschreibung |
+|-----|------|-------------|
+| **Bekanntschaft** | Bekanntschaft | Unverbindliche soziale Kontakte, breites Netzwerk |
+| **Freunde** | Freunde | Vertraute Verbindungen ohne romantische Komponente |
+| **FwB** | Friends with Benefits | Freundschaft mit körperlicher Intimität |
+| **Casual** | Casual | Spontane Begegnungen ohne Commitment |
+| **Romantisch** | Romantisch | Emotionale Tiefe, romantische Verbindung |
+| **Partner** | Partner | Vollständige Beziehung auf allen Ebenen |
+| **Nesting** | Nesting Partner | Zusammenlebende Partner, geteilter Alltag |
+| **Seelenverwandt** | Seelenverwandt | Tiefste Verbindung, transzendente Resonanz |
+
+### Beziehungstyp-Formel
+
+Die Kompatibilität für jede Archetyp-Beziehungstyp-Kombination wird berechnet:
+
+```
+Wert = Archetyp-Basis × Beziehungstyp-Gewichtung
+```
+
+**Erklärung:**
+- **Archetyp-Basis:** Durchschnitt aller Interaktionswerte aus der Archetypen-Matrix (6 Kategorien A-F)
+- **Beziehungstyp-Gewichtung:** Spezifische Faktoren für jeden Beziehungstyp (0.3 - 1.15)
+
+### Die 6 Kompatibilitäts-Kategorien (A-F)
+
+| Kategorie | Name | Beschreibung |
+|-----------|------|-------------|
+| **A** | Beziehungsphilosophie | Fundamentale Haltung zu Beziehungen |
+| **B** | Werte-Alignment | Übereinstimmung bei Kernwerten |
+| **C** | Nähe-Distanz-Präferenzen | Bedürfnis nach Nähe vs. Raum |
+| **D** | Autonomie-Bedürfnisse | Selbstständigkeit vs. Verschmelzung |
+| **E** | Kommunikations-Matching | Kommunikationsstile und Tiefe |
+| **F** | Soziale Kompatibilität | Gesellschaftliche Integration |
+
+### Gewichtungsmatrix der Beziehungstypen
+
+Jeder Beziehungstyp gewichtet die 6 Kategorien unterschiedlich:
+
+```
+                   A     B     C     D     E     F
+──────────────────────────────────────────────────────
+bekanntschaft:    0.5   0.4   0.3   0.9   0.4   0.9
+freunde:          0.7   0.7   0.6   0.8   0.8   0.8
+fwb:              0.6   0.5   0.8   0.8   0.6   0.5
+casual:           0.4   0.3   0.7   0.95  0.4   0.4
+romantisch:       0.9   0.9   0.85  0.6   0.9   0.7
+partner:          1.0   1.0   1.0   1.0   1.0   1.0
+nesting:          1.0   1.0   1.1   0.7   1.0   0.9
+seelenverwandt:   1.0   1.0   1.15  0.5   1.1   0.6
+```
+
+**Interpretation der Gewichtungen:**
+- **< 1.0:** Diese Kategorie ist weniger wichtig für diesen Beziehungstyp
+- **= 1.0:** Volle Relevanz (Standard bei Partner)
+- **> 1.0:** Überdurchschnittlich wichtig (z.B. Nähe bei Seelenverwandten)
+
+### Rechenbeispiel
+
+```
+Archetyp: Duo-Flex
+Beziehungstyp: Romantisch
+
+Archetyp-Basis (aus Matrix):
+A = 73.7, B = 73.8, C = 69.5, D = 71.5, E = 72.7, F = 66.5
+
+Gewichtung (Romantisch):
+A = 0.9, B = 0.9, C = 0.85, D = 0.6, E = 0.9, F = 0.7
+
+Berechnung:
+A: 73.7 × 0.9  = 66.3
+B: 73.8 × 0.9  = 66.4
+C: 69.5 × 0.85 = 59.1
+D: 71.5 × 0.6  = 42.9
+E: 72.7 × 0.9  = 65.4
+F: 66.5 × 0.7  = 46.6
+```
+
+---
+
 ## Die 4 Qualitätsfaktoren
 
 ### 1. Archetyp-Übereinstimmung (40% - Logos)

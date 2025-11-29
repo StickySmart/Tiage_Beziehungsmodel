@@ -92,10 +92,38 @@ TiageSynthesis.Factors.Geschlecht = {
     },
 
     /**
+     * Konvertiert Geschlecht zu Kategorie für Orientierungslogik
+     * Unterstützt neue erweiterte Geschlechter: cis_mann, cis_frau, trans_mann, trans_frau, nonbinaer, genderfluid, agender
+     */
+    _getGeschlechtCategory: function(geschlecht) {
+        var categoryMap = {
+            // Neue Geschlechter
+            'cis_mann': 'maennlich',
+            'cis_frau': 'weiblich',
+            'trans_mann': 'maennlich',
+            'trans_frau': 'weiblich',
+            'nonbinaer': 'nonbinaer',
+            'genderfluid': 'fluid',
+            'agender': 'agender',
+            // Legacy-Support
+            'männlich': 'maennlich',
+            'weiblich': 'weiblich',
+            'non-binär': 'nonbinaer',
+            'nonbinär': 'nonbinaer'
+        };
+        return categoryMap[geschlecht] || 'andere';
+    },
+
+    /**
      * Berechnet Attraktion für einzelne Kombination
+     * Nutzt Geschlechts-Kategorien für erweiterte Gender-Unterstützung
      */
     _calculateSingleAttraction: function(g1, o1, g2, o2, constants) {
         var gender = constants.GENDER;
+
+        // Konvertiere zu Kategorien
+        var cat1 = this._getGeschlechtCategory(g1);
+        var cat2 = this._getGeschlechtCategory(g2);
 
         // Bisexuell = immer volle Kompatibilität
         if (o1 === 'bisexuell' || o2 === 'bisexuell') {
@@ -104,14 +132,19 @@ TiageSynthesis.Factors.Geschlecht = {
 
         // Heterosexuell + Heterosexuell
         if (o1 === 'heterosexuell' && o2 === 'heterosexuell') {
-            // Mann ↔ Frau = perfekt
-            if ((g1 === 'männlich' && g2 === 'weiblich') ||
-                (g1 === 'weiblich' && g2 === 'männlich')) {
+            // männlich ↔ weiblich = perfekt
+            if ((cat1 === 'maennlich' && cat2 === 'weiblich') ||
+                (cat1 === 'weiblich' && cat2 === 'maennlich')) {
                 return { score: gender.FULL_MATCH, matchType: 'hetero-klassisch' };
             }
-            // Non-binär beteiligt
-            if (g1 === 'non-binär' || g2 === 'non-binär') {
+            // Nonbinär/Fluid beteiligt
+            if (cat1 === 'nonbinaer' || cat2 === 'nonbinaer' ||
+                cat1 === 'fluid' || cat2 === 'fluid') {
                 return { score: gender.NON_BINARY_INVOLVED, matchType: 'hetero-nonbinary' };
+            }
+            // Agender beteiligt
+            if (cat1 === 'agender' || cat2 === 'agender') {
+                return { score: 60, matchType: 'hetero-agender' };
             }
             // Gleiches Geschlecht, beide hetero → niedrig aber nicht 0
             return { score: 20, matchType: 'hetero-mismatch' };
@@ -119,15 +152,25 @@ TiageSynthesis.Factors.Geschlecht = {
 
         // Homosexuell + Homosexuell
         if (o1 === 'homosexuell' && o2 === 'homosexuell') {
-            // Gleiches binäres Geschlecht = perfekt
-            if (g1 === g2 && g1 !== 'non-binär') {
+            // Gleiche binäre Kategorie = perfekt
+            if (cat1 === cat2 && cat1 !== 'nonbinaer' && cat1 !== 'fluid' && cat1 !== 'agender') {
                 return { score: gender.FULL_MATCH, matchType: 'homo-klassisch' };
             }
-            // Non-binär beteiligt
-            if (g1 === 'non-binär' || g2 === 'non-binär') {
+            // Nonbinär mit Nonbinär
+            if ((cat1 === 'nonbinaer' && cat2 === 'nonbinaer') ||
+                (cat1 === 'fluid' && cat2 === 'fluid')) {
+                return { score: 90, matchType: 'homo-nonbinary-match' };
+            }
+            // Nonbinär/Fluid beteiligt
+            if (cat1 === 'nonbinaer' || cat2 === 'nonbinaer' ||
+                cat1 === 'fluid' || cat2 === 'fluid') {
                 return { score: gender.NON_BINARY_INVOLVED, matchType: 'homo-nonbinary' };
             }
-            // Verschiedenes Geschlecht, beide homo → niedrig
+            // Agender beteiligt
+            if (cat1 === 'agender' || cat2 === 'agender') {
+                return { score: 60, matchType: 'homo-agender' };
+            }
+            // Verschiedene binäre Kategorien, beide homo → niedrig
             return { score: 20, matchType: 'homo-mismatch' };
         }
 

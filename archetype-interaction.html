@@ -3785,6 +3785,13 @@
             gap: 4px;
         }
 
+        /* Geschlechtsidentität: Grid-Layout für 7 Optionen */
+        .geschlecht-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 4px;
+        }
+
         .compact-option {
             padding: 4px 8px;
             border-radius: 6px;
@@ -5007,6 +5014,11 @@
                 grid-template-columns: repeat(2, 1fr);
             }
 
+            /* Geschlechtsidentität: 7 buttons in besseres Layout */
+            .geschlecht-grid {
+                grid-template-columns: repeat(2, 1fr) !important;
+            }
+
             .compact-option {
                 text-align: center;
                 justify-content: center;
@@ -5326,23 +5338,30 @@
                     <div class="help-section">
                         <h3>Berechnung</h3>
                         <div class="help-formula">
-                            Qualitätsindex = (Archetyp × 40%) + (Orientierung × 25%) + (Dominanz × 20%) + (Geschlecht × 15%)
+                            Qualitätsindex = [(Archetyp × 40%) + (Orientierung × 25%) + (Dominanz × 20%) + (Geschlecht × 15%)] × Resonanz
                         </div>
-                        <p>Jeder Faktor wird einzeln auf 0-100% bewertet. Der Gesamtindex ist die gewichtete Summe aller vier Faktoren.</p>
+                        <p>Jeder Faktor wird einzeln auf 0-100% bewertet. Die <strong>Resonanz (R)</strong> ist ein Meta-Faktor (0.9-1.1), der moduliert, wie gut Kopf (Logos) und Herz (Pathos) zusammenschwingen.</p>
+                        <div style="margin-top: 10px; padding: 8px; background: rgba(255,255,255,0.05); border-radius: 6px;">
+                            <strong>Resonanz-Formel:</strong> R = 0.9 + [(M/100 × 0.5) + (B × 0.5)] × 0.2<br>
+                            <small style="opacity: 0.7;">M = Profil-Match (30 Attribute) | B = Logos-Pathos-Balance</small>
+                        </div>
                     </div>
 
                     <div class="help-section">
                         <h3>Rechenbeispiel</h3>
                         <div class="help-example">
-                            <div class="help-example-title">Duo (Frau, Submissiv, Hetero) × Duo-Flex (Mann, Dominant, Hetero)</div>
+                            <div class="help-example-title">Duo (Cis Frau, Submissiv, Hetero) × Duo-Flex (Cis Mann, Dominant, Hetero)</div>
                             <ul>
                                 <li>Archetyp: 75% × 0.40 = 30 (Duo ↔ Duo-Flex = nah verwandt)</li>
                                 <li>Orientierung: 100% × 0.25 = 25 (Hetero + Hetero bei M/F)</li>
                                 <li>Dominanz: 100% × 0.20 = 20 (Submissiv + Dominant = Ergänzung)</li>
-                                <li>Geschlecht: 100% × 0.15 = 15 (Frau × Mann passt)</li>
+                                <li>Geschlecht: 100% × 0.15 = 15 (Cis Frau × Cis Mann passt)</li>
+                                <li><strong>Basis-Score: 90</strong></li>
+                                <li>Resonanz: R = 1.05 (Leichte Harmonie)</li>
+                                <li><strong>Final: 90 × 1.05 = 94.5 ≈ 95</strong></li>
                             </ul>
                             <div class="help-formula">
-                                30 + 25 + 20 + 15 = 90%
+                                (30 + 25 + 20 + 15) × 1.05 = 94.5 ≈ 95%
                             </div>
                         </div>
                     </div>
@@ -5891,14 +5910,22 @@
                 </div>
                 <div class="column-dimensions">
                     <div class="compact-dimension needs-selection" data-dimension="ich-geschlecht-new">
-                        <div class="compact-dimension-label">Geschlecht</div>
-                        <div class="compact-options">
-                            <input type="radio" name="ich-geschlecht-new" id="ich-g-m" value="männlich" class="compact-radio">
-                            <label for="ich-g-m" class="compact-option">männlich</label>
-                            <input type="radio" name="ich-geschlecht-new" id="ich-g-w" value="weiblich" class="compact-radio">
-                            <label for="ich-g-w" class="compact-option">weiblich</label>
-                            <input type="radio" name="ich-geschlecht-new" id="ich-g-nb" value="non-binär" class="compact-radio">
-                            <label for="ich-g-nb" class="compact-option">non-binär</label>
+                        <div class="compact-dimension-label">Geschlechtsidentität <span class="dimension-info-icon" onclick="showDimensionTooltip('geschlecht')">ℹ</span></div>
+                        <div class="compact-options geschlecht-grid">
+                            <input type="radio" name="ich-geschlecht-new" id="ich-g-cm" value="cis_mann" class="compact-radio">
+                            <label for="ich-g-cm" class="compact-option">Cis Mann</label>
+                            <input type="radio" name="ich-geschlecht-new" id="ich-g-cf" value="cis_frau" class="compact-radio">
+                            <label for="ich-g-cf" class="compact-option">Cis Frau</label>
+                            <input type="radio" name="ich-geschlecht-new" id="ich-g-tm" value="trans_mann" class="compact-radio">
+                            <label for="ich-g-tm" class="compact-option">Trans Mann</label>
+                            <input type="radio" name="ich-geschlecht-new" id="ich-g-tf" value="trans_frau" class="compact-radio">
+                            <label for="ich-g-tf" class="compact-option">Trans Frau</label>
+                            <input type="radio" name="ich-geschlecht-new" id="ich-g-nb" value="nonbinaer" class="compact-radio">
+                            <label for="ich-g-nb" class="compact-option">Nonbinär</label>
+                            <input type="radio" name="ich-geschlecht-new" id="ich-g-gf" value="genderfluid" class="compact-radio">
+                            <label for="ich-g-gf" class="compact-option">Genderfluid</label>
+                            <input type="radio" name="ich-geschlecht-new" id="ich-g-ag" value="agender" class="compact-radio">
+                            <label for="ich-g-ag" class="compact-option">Agender</label>
                         </div>
                     </div>
                     <div class="compact-dimension needs-selection collapsible-dimension" data-dimension="ich-dominanz-multi">
@@ -5990,14 +6017,22 @@
                 </div>
                 <div class="column-dimensions">
                     <div class="compact-dimension needs-selection" data-dimension="partner-geschlecht-new">
-                        <div class="compact-dimension-label">Geschlecht</div>
-                        <div class="compact-options">
-                            <input type="radio" name="partner-geschlecht-new" id="partner-g-m" value="männlich" class="compact-radio">
-                            <label for="partner-g-m" class="compact-option">männlich</label>
-                            <input type="radio" name="partner-geschlecht-new" id="partner-g-w" value="weiblich" class="compact-radio">
-                            <label for="partner-g-w" class="compact-option">weiblich</label>
-                            <input type="radio" name="partner-geschlecht-new" id="partner-g-nb" value="non-binär" class="compact-radio">
-                            <label for="partner-g-nb" class="compact-option">non-binär</label>
+                        <div class="compact-dimension-label">Geschlechtsidentität <span class="dimension-info-icon" onclick="showDimensionTooltip('geschlecht')">ℹ</span></div>
+                        <div class="compact-options geschlecht-grid">
+                            <input type="radio" name="partner-geschlecht-new" id="partner-g-cm" value="cis_mann" class="compact-radio">
+                            <label for="partner-g-cm" class="compact-option">Cis Mann</label>
+                            <input type="radio" name="partner-geschlecht-new" id="partner-g-cf" value="cis_frau" class="compact-radio">
+                            <label for="partner-g-cf" class="compact-option">Cis Frau</label>
+                            <input type="radio" name="partner-geschlecht-new" id="partner-g-tm" value="trans_mann" class="compact-radio">
+                            <label for="partner-g-tm" class="compact-option">Trans Mann</label>
+                            <input type="radio" name="partner-geschlecht-new" id="partner-g-tf" value="trans_frau" class="compact-radio">
+                            <label for="partner-g-tf" class="compact-option">Trans Frau</label>
+                            <input type="radio" name="partner-geschlecht-new" id="partner-g-nb" value="nonbinaer" class="compact-radio">
+                            <label for="partner-g-nb" class="compact-option">Nonbinär</label>
+                            <input type="radio" name="partner-geschlecht-new" id="partner-g-gf" value="genderfluid" class="compact-radio">
+                            <label for="partner-g-gf" class="compact-option">Genderfluid</label>
+                            <input type="radio" name="partner-geschlecht-new" id="partner-g-ag" value="agender" class="compact-radio">
+                            <label for="partner-g-ag" class="compact-option">Agender</label>
                         </div>
                     </div>
                     <div class="compact-dimension needs-selection collapsible-dimension" data-dimension="partner-dominanz-multi">
@@ -6157,14 +6192,22 @@
                 </div>
                 <div class="column-dimensions" id="mobileIchDimensions">
                     <div class="compact-dimension needs-selection">
-                        <div class="compact-dimension-label">Geschlecht</div>
-                        <div class="compact-options">
-                            <input type="radio" name="mobile-ich-geschlecht" id="m-ich-g-m" value="männlich" class="compact-radio">
-                            <label for="m-ich-g-m" class="compact-option">männlich</label>
-                            <input type="radio" name="mobile-ich-geschlecht" id="m-ich-g-w" value="weiblich" class="compact-radio">
-                            <label for="m-ich-g-w" class="compact-option">weiblich</label>
-                            <input type="radio" name="mobile-ich-geschlecht" id="m-ich-g-nb" value="non-binär" class="compact-radio">
-                            <label for="m-ich-g-nb" class="compact-option">non-binär</label>
+                        <div class="compact-dimension-label">Geschlechtsidentität <span class="dimension-info-icon" onclick="showDimensionTooltip('geschlecht')">ℹ</span></div>
+                        <div class="compact-options geschlecht-grid">
+                            <input type="radio" name="mobile-ich-geschlecht" id="m-ich-g-cm" value="cis_mann" class="compact-radio">
+                            <label for="m-ich-g-cm" class="compact-option">Cis Mann</label>
+                            <input type="radio" name="mobile-ich-geschlecht" id="m-ich-g-cf" value="cis_frau" class="compact-radio">
+                            <label for="m-ich-g-cf" class="compact-option">Cis Frau</label>
+                            <input type="radio" name="mobile-ich-geschlecht" id="m-ich-g-tm" value="trans_mann" class="compact-radio">
+                            <label for="m-ich-g-tm" class="compact-option">Trans Mann</label>
+                            <input type="radio" name="mobile-ich-geschlecht" id="m-ich-g-tf" value="trans_frau" class="compact-radio">
+                            <label for="m-ich-g-tf" class="compact-option">Trans Frau</label>
+                            <input type="radio" name="mobile-ich-geschlecht" id="m-ich-g-nb" value="nonbinaer" class="compact-radio">
+                            <label for="m-ich-g-nb" class="compact-option">Nonbinär</label>
+                            <input type="radio" name="mobile-ich-geschlecht" id="m-ich-g-gf" value="genderfluid" class="compact-radio">
+                            <label for="m-ich-g-gf" class="compact-option">Genderfluid</label>
+                            <input type="radio" name="mobile-ich-geschlecht" id="m-ich-g-ag" value="agender" class="compact-radio">
+                            <label for="m-ich-g-ag" class="compact-option">Agender</label>
                         </div>
                     </div>
                     <div class="compact-dimension needs-selection collapsible-dimension" data-dimension="mobile-ich-dominanz-multi">
@@ -6257,14 +6300,22 @@
                 </div>
                 <div class="column-dimensions" id="mobilePartnerDimensions">
                     <div class="compact-dimension needs-selection">
-                        <div class="compact-dimension-label">Geschlecht</div>
-                        <div class="compact-options">
-                            <input type="radio" name="mobile-partner-geschlecht" id="m-partner-g-m" value="männlich" class="compact-radio">
-                            <label for="m-partner-g-m" class="compact-option">männlich</label>
-                            <input type="radio" name="mobile-partner-geschlecht" id="m-partner-g-w" value="weiblich" class="compact-radio">
-                            <label for="m-partner-g-w" class="compact-option">weiblich</label>
-                            <input type="radio" name="mobile-partner-geschlecht" id="m-partner-g-nb" value="non-binär" class="compact-radio">
-                            <label for="m-partner-g-nb" class="compact-option">non-binär</label>
+                        <div class="compact-dimension-label">Geschlechtsidentität <span class="dimension-info-icon" onclick="showDimensionTooltip('geschlecht')">ℹ</span></div>
+                        <div class="compact-options geschlecht-grid">
+                            <input type="radio" name="mobile-partner-geschlecht" id="m-partner-g-cm" value="cis_mann" class="compact-radio">
+                            <label for="m-partner-g-cm" class="compact-option">Cis Mann</label>
+                            <input type="radio" name="mobile-partner-geschlecht" id="m-partner-g-cf" value="cis_frau" class="compact-radio">
+                            <label for="m-partner-g-cf" class="compact-option">Cis Frau</label>
+                            <input type="radio" name="mobile-partner-geschlecht" id="m-partner-g-tm" value="trans_mann" class="compact-radio">
+                            <label for="m-partner-g-tm" class="compact-option">Trans Mann</label>
+                            <input type="radio" name="mobile-partner-geschlecht" id="m-partner-g-tf" value="trans_frau" class="compact-radio">
+                            <label for="m-partner-g-tf" class="compact-option">Trans Frau</label>
+                            <input type="radio" name="mobile-partner-geschlecht" id="m-partner-g-nb" value="nonbinaer" class="compact-radio">
+                            <label for="m-partner-g-nb" class="compact-option">Nonbinär</label>
+                            <input type="radio" name="mobile-partner-geschlecht" id="m-partner-g-gf" value="genderfluid" class="compact-radio">
+                            <label for="m-partner-g-gf" class="compact-option">Genderfluid</label>
+                            <input type="radio" name="mobile-partner-geschlecht" id="m-partner-g-ag" value="agender" class="compact-radio">
+                            <label for="m-partner-g-ag" class="compact-option">Agender</label>
                         </div>
                     </div>
                     <div class="compact-dimension needs-selection collapsible-dimension" data-dimension="mobile-partner-dominanz-multi">
@@ -6475,21 +6526,27 @@
                     <div class="dimensions-section">
                         <div class="dimensions-section-title ich-title">Meine Eigenschaften</div>
                         <div class="dimensions-grid">
-                            <!-- Geschlecht -->
+                            <!-- Geschlechtsidentität -->
                             <div class="dimension-group needs-selection" data-dimension="ich-geschlecht">
                                 <div class="dimension-label">
-                                    Geschlecht
+                                    Geschlechtsidentität
                                     <span class="dimension-info-icon" onclick="showDimensionTooltip('geschlecht')">ℹ</span>
                                 </div>
-                                <div class="dimension-options">
-                                    <input type="radio" name="ich-geschlecht" id="ich-geschlecht-m" value="männlich" class="dimension-radio">
-                                    <label for="ich-geschlecht-m" class="dimension-option">männlich</label>
-
-                                    <input type="radio" name="ich-geschlecht" id="ich-geschlecht-w" value="weiblich" class="dimension-radio">
-                                    <label for="ich-geschlecht-w" class="dimension-option">weiblich</label>
-
-                                    <input type="radio" name="ich-geschlecht" id="ich-geschlecht-nb" value="non-binär" class="dimension-radio">
-                                    <label for="ich-geschlecht-nb" class="dimension-option">non-binär</label>
+                                <div class="dimension-options geschlecht-grid">
+                                    <input type="radio" name="ich-geschlecht" id="ich-geschlecht-cm" value="cis_mann" class="dimension-radio">
+                                    <label for="ich-geschlecht-cm" class="dimension-option">Cis Mann</label>
+                                    <input type="radio" name="ich-geschlecht" id="ich-geschlecht-cf" value="cis_frau" class="dimension-radio">
+                                    <label for="ich-geschlecht-cf" class="dimension-option">Cis Frau</label>
+                                    <input type="radio" name="ich-geschlecht" id="ich-geschlecht-tm" value="trans_mann" class="dimension-radio">
+                                    <label for="ich-geschlecht-tm" class="dimension-option">Trans Mann</label>
+                                    <input type="radio" name="ich-geschlecht" id="ich-geschlecht-tf" value="trans_frau" class="dimension-radio">
+                                    <label for="ich-geschlecht-tf" class="dimension-option">Trans Frau</label>
+                                    <input type="radio" name="ich-geschlecht" id="ich-geschlecht-nb" value="nonbinaer" class="dimension-radio">
+                                    <label for="ich-geschlecht-nb" class="dimension-option">Nonbinär</label>
+                                    <input type="radio" name="ich-geschlecht" id="ich-geschlecht-gf" value="genderfluid" class="dimension-radio">
+                                    <label for="ich-geschlecht-gf" class="dimension-option">Genderfluid</label>
+                                    <input type="radio" name="ich-geschlecht" id="ich-geschlecht-ag" value="agender" class="dimension-radio">
+                                    <label for="ich-geschlecht-ag" class="dimension-option">Agender</label>
                                 </div>
                             </div>
 
@@ -6655,18 +6712,24 @@
                             <!-- Geschlecht -->
                             <div class="dimension-group needs-selection" data-dimension="partner-geschlecht">
                                 <div class="dimension-label">
-                                    Geschlecht
+                                    Geschlechtsidentität
                                     <span class="dimension-info-icon" onclick="showDimensionTooltip('geschlecht')">ℹ</span>
                                 </div>
-                                <div class="dimension-options">
-                                    <input type="radio" name="partner-geschlecht" id="partner-geschlecht-m" value="männlich" class="dimension-radio">
-                                    <label for="partner-geschlecht-m" class="dimension-option">männlich</label>
-
-                                    <input type="radio" name="partner-geschlecht" id="partner-geschlecht-w" value="weiblich" class="dimension-radio">
-                                    <label for="partner-geschlecht-w" class="dimension-option">weiblich</label>
-
-                                    <input type="radio" name="partner-geschlecht" id="partner-geschlecht-nb" value="non-binär" class="dimension-radio">
-                                    <label for="partner-geschlecht-nb" class="dimension-option">non-binär</label>
+                                <div class="dimension-options geschlecht-grid">
+                                    <input type="radio" name="partner-geschlecht" id="partner-geschlecht-cm" value="cis_mann" class="dimension-radio">
+                                    <label for="partner-geschlecht-cm" class="dimension-option">Cis Mann</label>
+                                    <input type="radio" name="partner-geschlecht" id="partner-geschlecht-cf" value="cis_frau" class="dimension-radio">
+                                    <label for="partner-geschlecht-cf" class="dimension-option">Cis Frau</label>
+                                    <input type="radio" name="partner-geschlecht" id="partner-geschlecht-tm" value="trans_mann" class="dimension-radio">
+                                    <label for="partner-geschlecht-tm" class="dimension-option">Trans Mann</label>
+                                    <input type="radio" name="partner-geschlecht" id="partner-geschlecht-tf" value="trans_frau" class="dimension-radio">
+                                    <label for="partner-geschlecht-tf" class="dimension-option">Trans Frau</label>
+                                    <input type="radio" name="partner-geschlecht" id="partner-geschlecht-nb" value="nonbinaer" class="dimension-radio">
+                                    <label for="partner-geschlecht-nb" class="dimension-option">Nonbinär</label>
+                                    <input type="radio" name="partner-geschlecht" id="partner-geschlecht-gf" value="genderfluid" class="dimension-radio">
+                                    <label for="partner-geschlecht-gf" class="dimension-option">Genderfluid</label>
+                                    <input type="radio" name="partner-geschlecht" id="partner-geschlecht-ag" value="agender" class="dimension-radio">
+                                    <label for="partner-geschlecht-ag" class="dimension-option">Agender</label>
                                 </div>
                             </div>
 
@@ -7140,13 +7203,16 @@
         </div>
     </div>
 
+    <!-- State Management - Single Source of Truth -->
+    <script src="js/state.js"></script>
+
     <script>
         let data = null;
         let currentArchetype = 'single';
         let selectedPartner = 'duo';
 
-        // Extended Person Dimensions (null = not yet selected)
-        // dominanz and orientierung are now objects with status per preference (multi-select)
+        // Legacy personDimensions - now a reference to TiageState for backward compatibility
+        // TODO: Remove after full migration to TiageState
         const personDimensions = {
             ich: {
                 geschlecht: null,
@@ -11318,12 +11384,46 @@
 
         function getGeschlechtKurz(geschlecht) {
             if (!geschlecht) return '?';
+            // Nutze TiageConfig wenn verfügbar
+            if (typeof TiageConfig !== 'undefined' && TiageConfig.GESCHLECHT_SHORT) {
+                return TiageConfig.GESCHLECHT_SHORT[geschlecht] || geschlecht;
+            }
+            // Fallback für ältere Werte
             const map = {
-                'männlich': 'm',
-                'weiblich': 'w',
-                'non-binär': 'nb'
+                'cis_mann': 'CM',
+                'cis_frau': 'CF',
+                'trans_mann': 'TM',
+                'trans_frau': 'TF',
+                'nonbinaer': 'NB',
+                'genderfluid': 'GF',
+                'agender': 'AG',
+                // Legacy-Support
+                'männlich': 'M',
+                'weiblich': 'W',
+                'non-binär': 'NB'
             };
             return map[geschlecht] || geschlecht;
+        }
+
+        function getGeschlechtCategory(geschlecht) {
+            // Gibt die Kategorie für Orientierungslogik zurück
+            if (typeof TiageConfig !== 'undefined' && TiageConfig.GESCHLECHT_CATEGORY) {
+                return TiageConfig.GESCHLECHT_CATEGORY[geschlecht] || 'andere';
+            }
+            const map = {
+                'cis_mann': 'maennlich',
+                'cis_frau': 'weiblich',
+                'trans_mann': 'maennlich',
+                'trans_frau': 'weiblich',
+                'nonbinaer': 'nonbinaer',
+                'genderfluid': 'fluid',
+                'agender': 'agender',
+                // Legacy-Support
+                'männlich': 'maennlich',
+                'weiblich': 'weiblich',
+                'non-binär': 'nonbinaer'
+            };
+            return map[geschlecht] || 'andere';
         }
 
         function getDominanzKurz(dominanz) {
@@ -12145,23 +12245,35 @@
             return bestScore;
         }
 
-        // Helper for single orientierung pair
+        // Helper for single orientierung pair - nutzt Geschlechts-Kategorien
         function calculateSingleGenderAttraction(g1, o1, g2, o2) {
-            // Bi = immer 100%
+            // Konvertiere Geschlechter zu Kategorien für die Logik
+            const cat1 = getGeschlechtCategory(g1);
+            const cat2 = getGeschlechtCategory(g2);
+
+            // Bi = immer 100% (angezogen von männlich und weiblich)
             if (o1 === "bisexuell" || o2 === "bisexuell") return 100;
 
-            // Hetero
+            // Hetero: Angezogen vom "anderen" Geschlecht
             if (o1 === "heterosexuell" && o2 === "heterosexuell") {
-                if ((g1 === "männlich" && g2 === "weiblich") ||
-                    (g1 === "weiblich" && g2 === "männlich")) return 100;
-                if (g1 === "non-binär" || g2 === "non-binär") return 80;
+                if ((cat1 === "maennlich" && cat2 === "weiblich") ||
+                    (cat1 === "weiblich" && cat2 === "maennlich")) return 100;
+                // Nonbinär, Fluid, Agender - partielle Kompatibilität
+                if (cat1 === "nonbinaer" || cat2 === "nonbinaer" ||
+                    cat1 === "fluid" || cat2 === "fluid") return 80;
+                if (cat1 === "agender" || cat2 === "agender") return 60;
                 return 0;
             }
 
-            // Homo
+            // Homo: Angezogen vom "gleichen" Geschlecht
             if (o1 === "homosexuell" && o2 === "homosexuell") {
-                if (g1 === g2 && g1 !== "non-binär") return 100;
-                if (g1 === "non-binär" || g2 === "non-binär") return 80;
+                if (cat1 === cat2 && cat1 !== "nonbinaer" && cat1 !== "fluid" && cat1 !== "agender") return 100;
+                // Nonbinär mit Homo - angezogen von ähnlichen
+                if ((cat1 === "nonbinaer" && cat2 === "nonbinaer") ||
+                    (cat1 === "fluid" && cat2 === "fluid")) return 90;
+                if (cat1 === "nonbinaer" || cat2 === "nonbinaer" ||
+                    cat1 === "fluid" || cat2 === "fluid") return 75;
+                if (cat1 === "agender" || cat2 === "agender") return 60;
                 return 0;
             }
 
@@ -12169,7 +12281,236 @@
         }
 
         // ═══════════════════════════════════════════════════════════════════════
-        // HAUPTBERECHNUNG: 4-Faktoren Beziehungsqualität
+        // RESONANZ-BERECHNUNG (Meta-Dimension)
+        // ═══════════════════════════════════════════════════════════════════════
+        // R = 0.9 + [(M/100 × 0.5) + (B × 0.5)] × 0.2
+        // wobei:
+        //   M = Profil-Match (0-100%): Übereinstimmung der 30 Attribute
+        //   B = Balance (0-1): Harmonie zwischen Logos und Pathos
+        // Ergebnis: R zwischen 0.9 und 1.1
+        // ═══════════════════════════════════════════════════════════════════════
+
+        // Die 30 Profil-Attribute in 3 Kategorien
+        const PROFILE_ATTRIBUTES = {
+            D: ['kinderWunsch', 'eheWunsch', 'wohnform', 'religion', 'karrierePrioritaet',
+                'finanzPhilosophie', 'lebensstil', 'umzugsbereitschaft', 'zukunftsplanung', 'traditionenWichtigkeit'],
+            E: ['kommunikationsstil', 'konfliktverhalten', 'emotionaleOffenheit', 'gespraechsBedürfnis', 'feedbackStil',
+                'entschuldigungen', 'streitVerhalten', 'versoehnung', 'kritikAnnehmen', 'humorKonflikte'],
+            F: ['introExtro', 'familieWichtigkeit', 'freundeskreis', 'oeffentlichkeit', 'alleinzeit',
+                'events', 'reisen', 'hobbys', 'wochenende', 'netzwerkGroesse']
+        };
+
+        /**
+         * Berechnet den Profil-Match-Score (M)
+         * Vergleicht die 30 Attribute zweier psychologischer Profile
+         * @returns {number} Match-Prozent 0-100
+         */
+        function calculateProfilMatch(person1, person2) {
+            // Profile-Key generieren basierend auf Archetyp-Geschlecht-Dominanz-Orientierung
+            const profile1Key = getProfileKey(person1);
+            const profile2Key = getProfileKey(person2);
+
+            // Profile aus psychologicalProfiles laden (falls verfügbar)
+            if (typeof psychologicalProfiles === 'undefined') {
+                // Fallback: Schätze Match basierend auf Archetyp-Ähnlichkeit
+                return estimateProfilMatch(person1, person2);
+            }
+
+            const profile1 = psychologicalProfiles[profile1Key];
+            const profile2 = psychologicalProfiles[profile2Key];
+
+            if (!profile1 || !profile2) {
+                return estimateProfilMatch(person1, person2);
+            }
+
+            // Zähle übereinstimmende Attribute
+            let matches = 0;
+            const allAttributes = [...PROFILE_ATTRIBUTES.D, ...PROFILE_ATTRIBUTES.E, ...PROFILE_ATTRIBUTES.F];
+
+            for (const attr of allAttributes) {
+                if (profile1[attr] && profile2[attr]) {
+                    if (profile1[attr] === profile2[attr]) {
+                        matches++;
+                    } else if (areAttributesCompatible(attr, profile1[attr], profile2[attr])) {
+                        matches += 0.5; // Partielle Übereinstimmung
+                    }
+                }
+            }
+
+            return Math.round((matches / 30) * 100);
+        }
+
+        /**
+         * Generiert den Profile-Key für eine Person
+         */
+        function getProfileKey(person) {
+            const geschlecht = getGeschlechtCategory(person.geschlecht);
+            const geschlechtLabel = geschlecht === 'maennlich' ? 'männlich' :
+                                   geschlecht === 'weiblich' ? 'weiblich' : 'nonbinär';
+
+            // Primäre Dominanz ermitteln
+            let dominanz = 'ausgeglichen';
+            if (person.dominanz && typeof person.dominanz === 'object') {
+                for (const [type, status] of Object.entries(person.dominanz)) {
+                    if (status === 'gelebt') {
+                        dominanz = type;
+                        break;
+                    }
+                }
+            } else if (person.dominanz) {
+                dominanz = person.dominanz;
+            }
+
+            // Primäre Orientierung ermitteln
+            let orientierung = 'heterosexuell';
+            if (person.orientierung && typeof person.orientierung === 'object') {
+                for (const [type, status] of Object.entries(person.orientierung)) {
+                    if (status === 'gelebt') {
+                        orientierung = type;
+                        break;
+                    }
+                }
+            } else if (person.orientierung) {
+                orientierung = person.orientierung;
+            }
+
+            return `${person.archetyp}-${geschlechtLabel}-${dominanz}-${orientierung}`;
+        }
+
+        /**
+         * Schätzt den Profil-Match wenn keine exakten Profile verfügbar
+         * Basiert auf Archetyp-Ähnlichkeit und Dimension-Übereinstimmungen
+         */
+        function estimateProfilMatch(person1, person2) {
+            let score = 50; // Basis
+
+            // Gleicher Archetyp = +30
+            if (person1.archetyp === person2.archetyp) {
+                score += 30;
+            } else {
+                // Ähnliche Archetypen (aus Matrix ableitbar)
+                const archetypeScore = getArchetypeScore(person1.archetyp, person2.archetyp);
+                score += Math.round((archetypeScore - 50) * 0.3);
+            }
+
+            // Gleiche Dominanz-Orientierung = +10
+            const dom1 = getPrimaryDominanz(person1.dominanz);
+            const dom2 = getPrimaryDominanz(person2.dominanz);
+            if (dom1 === dom2) score += 10;
+
+            // Ähnliche Orientierung = +10
+            const ori1 = getPrimaryOrientierung(person1.orientierung);
+            const ori2 = getPrimaryOrientierung(person2.orientierung);
+            if (ori1 === ori2) score += 10;
+
+            return Math.min(100, Math.max(0, score));
+        }
+
+        /**
+         * Prüft ob zwei Attribut-Werte kompatibel sind (partielle Übereinstimmung)
+         */
+        function areAttributesCompatible(attr, val1, val2) {
+            // Kompatibilitäts-Gruppen für bestimmte Attribute
+            const compatGroups = {
+                'wohnform': [['alleine', 'zusammen'], ['getrennt', 'zusammen']],
+                'lebensstil': [['durchschnittlich', 'bescheiden'], ['durchschnittlich', 'luxuriös']],
+                'kommunikationsstil': [['direkt', 'ausgewogen'], ['indirekt', 'ausgewogen']],
+                'introExtro': [['ambivert', 'introvertiert'], ['ambivert', 'extrovertiert']]
+            };
+
+            if (compatGroups[attr]) {
+                for (const group of compatGroups[attr]) {
+                    if (group.includes(val1) && group.includes(val2)) {
+                        return true;
+                    }
+                }
+            }
+
+            return false;
+        }
+
+        /**
+         * Helper: Primäre Dominanz aus Objekt ermitteln
+         */
+        function getPrimaryDominanz(dominanz) {
+            if (!dominanz || typeof dominanz !== 'object') return dominanz || 'ausgeglichen';
+            for (const [type, status] of Object.entries(dominanz)) {
+                if (status === 'gelebt') return type;
+            }
+            return 'ausgeglichen';
+        }
+
+        /**
+         * Helper: Primäre Orientierung aus Objekt ermitteln
+         */
+        function getPrimaryOrientierung(orientierung) {
+            if (!orientierung || typeof orientierung !== 'object') return orientierung || 'heterosexuell';
+            for (const [type, status] of Object.entries(orientierung)) {
+                if (status === 'gelebt') return type;
+            }
+            return 'heterosexuell';
+        }
+
+        /**
+         * Berechnet die Logos-Pathos-Balance (B)
+         * B = (100 - |Logos - Pathos|) / 100
+         * @returns {number} Balance 0.0-1.0
+         */
+        function calculateLogosPathosBalance(archetypeScore, orientationScore, dominanceScore, genderScore) {
+            // Logos = Archetyp-Score
+            const logos = archetypeScore;
+
+            // Pathos = Durchschnitt der drei Pathos-Faktoren
+            const pathos = (orientationScore + dominanceScore + genderScore) / 3;
+
+            // Differenz
+            const differenz = Math.abs(logos - pathos);
+
+            // Balance: Je geringer die Differenz, desto höher die Balance
+            const balance = (100 - differenz) / 100;
+
+            return Math.max(0, Math.min(1, balance));
+        }
+
+        /**
+         * Berechnet den Resonanz-Koeffizienten (R)
+         * R = 0.9 + [(M/100 × 0.5) + (B × 0.5)] × 0.2
+         * @returns {object} { R: 0.9-1.1, M: 0-100, B: 0-1, interpretation: string }
+         */
+        function calculateResonanz(person1, person2, archetypeScore, orientationScore, dominanceScore, genderScore) {
+            // Komponente 1: Profil-Match (M)
+            const M = calculateProfilMatch(person1, person2);
+
+            // Komponente 2: Logos-Pathos-Balance (B)
+            const B = calculateLogosPathosBalance(archetypeScore, orientationScore, dominanceScore, genderScore);
+
+            // Gesamtformel: R = 0.9 + [(M/100 × 0.5) + (B × 0.5)] × 0.2
+            const R = 0.9 + ((M / 100 * 0.5) + (B * 0.5)) * 0.2;
+
+            // Interpretation
+            let interpretation;
+            if (R >= 1.08) {
+                interpretation = 'Starke Harmonie';
+            } else if (R >= 1.03) {
+                interpretation = 'Leichte Harmonie';
+            } else if (R >= 0.97) {
+                interpretation = 'Neutral';
+            } else if (R >= 0.93) {
+                interpretation = 'Leichte Dissonanz';
+            } else {
+                interpretation = 'Starke Dissonanz';
+            }
+
+            return {
+                R: Math.round(R * 100) / 100,
+                M: M,
+                B: Math.round(B * 100) / 100,
+                interpretation: interpretation
+            };
+        }
+
+        // ═══════════════════════════════════════════════════════════════════════
+        // HAUPTBERECHNUNG: 5-Faktoren Beziehungsqualität (inkl. Resonanz)
         // ═══════════════════════════════════════════════════════════════════════
         // Philosophische Grundlage: Tiage-Modell + MOQ (Pirsig) + OSHO
         //
@@ -12219,25 +12560,69 @@
             // R = Resonanz-Koeffizient (0.9 - 1.1)
             // Kein harter K.O. mehr - sanfte Abstufung durch Resonanz
 
-            // Nutze zentralen Calculator
-            const result = TiageSynthesis.Calculator.calculate(person1, person2, data);
+            const orientationScore = calculateOrientationScore(person1, person2);
 
-            // Rückgabe im alten Format für Kompatibilität
+            if (orientationScore === 0) {
+                return {
+                    score: 0,
+                    blocked: true,
+                    reason: "Keine körperliche Anziehung möglich",
+                    breakdown: {
+                        archetyp: 0,
+                        dominanz: 0,
+                        orientierung: 0,
+                        geschlecht: 0
+                    },
+                    resonanz: { R: 0.9, M: 0, B: 0, interpretation: 'Blockiert' }
+                };
+            }
+
+            // ═══════════════════════════════════════
+            // EBENE 2: 4-Faktoren Qualitätsberechnung
+            // ═══════════════════════════════════════
+
+            const archetypeScore = getArchetypeScore(person1.archetyp, person2.archetyp);
+            const dominanceScore = calculateDominanceHarmony(person1.dominanz, person2.dominanz);
+            const genderScore = calculateGenderAttraction(person1, person2);
+
+            // Gewichtete Basis-Summe nach Logos/Pathos-Prinzip
+            const baseScore =
+                (archetypeScore * 0.40) +      // 40% Logos - Beziehungsphilosophie
+                (orientationScore * 0.25) +    // 25% Pathos - Körperliche Polarität
+                (dominanceScore * 0.20) +      // 20% Pathos - Energetische Dynamik
+                (genderScore * 0.15);          // 15% Pathos - Gender-Chemie
+
+            // ═══════════════════════════════════════
+            // EBENE 3: Resonanz als Meta-Dimension
+            // ═══════════════════════════════════════
+            // R moduliert das Gesamtergebnis (0.9 - 1.1)
+            // Formel: Q = baseScore × R
+
+            const resonanzResult = calculateResonanz(
+                person1, person2,
+                archetypeScore, orientationScore, dominanceScore, genderScore
+            );
+
+            // Finale Qualität mit Resonanz-Modulation
+            const totalScore = baseScore * resonanzResult.R;
+
+            // Logos/Pathos Breakdown für UI
+            const logos = archetypeScore;
+            const pathos = (orientationScore + dominanceScore + genderScore) / 3;
+
             return {
-                score: result.score,
-                blocked: false,  // Kein harter K.O. mehr!
+                score: Math.round(totalScore),
+                baseScore: Math.round(baseScore),
+                blocked: false,
                 breakdown: {
-                    archetyp: result.breakdown.archetyp.score,
-                    dominanz: result.breakdown.dominanz.score,
-                    orientierung: result.breakdown.orientierung.score,
-                    geschlecht: result.breakdown.geschlecht.score
+                    archetyp: archetypeScore,
+                    dominanz: dominanceScore,
+                    orientierung: orientationScore,
+                    geschlecht: genderScore
                 },
-                // Neue Felder für erweiterte Darstellung
-                resonanz: result.resonanz,
-                logos: result.logos,
-                pathos: result.pathos,
-                baseScore: result.baseScore,
-                fullResult: result  // Vollständiges Ergebnis für Details
+                resonanz: resonanzResult,
+                logos: logos,
+                pathos: pathos
             };
         }
 
