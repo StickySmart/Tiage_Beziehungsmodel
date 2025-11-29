@@ -7,6 +7,43 @@
 
 const MarkdownLoader = {
     cache: new Map(),
+    currentBasePath: '',
+
+    /**
+     * Extrahiert den Verzeichnispfad aus einem Dateipfad
+     * @param {string} path - Dateipfad
+     * @returns {string} - Verzeichnispfad
+     */
+    getBasePath(path) {
+        const lastSlash = path.lastIndexOf('/');
+        return lastSlash >= 0 ? path.substring(0, lastSlash + 1) : '';
+    },
+
+    /**
+     * Löst einen relativen Pfad relativ zum Basispfad auf
+     * @param {string} relativePath - Relativer Pfad
+     * @param {string} basePath - Basispfad
+     * @returns {string} - Aufgelöster Pfad
+     */
+    resolvePath(relativePath, basePath) {
+        // Wenn es ein absoluter Pfad oder eine URL ist, nicht ändern
+        if (relativePath.startsWith('/') || relativePath.startsWith('http://') || relativePath.startsWith('https://') || relativePath.startsWith('mailto:')) {
+            return relativePath;
+        }
+
+        // Pfade zusammenführen
+        let resolved = basePath + relativePath;
+
+        // ../ Pfade auflösen
+        while (resolved.includes('../')) {
+            resolved = resolved.replace(/[^/]+\/\.\.\//g, '');
+        }
+
+        // ./ entfernen
+        resolved = resolved.replace(/\.\//g, '');
+
+        return resolved;
+    },
 
     /**
      * Lädt eine Markdown-Datei und konvertiert sie zu HTML
@@ -26,7 +63,8 @@ const MarkdownLoader = {
             }
 
             const markdown = await response.text();
-            const html = this.toHTML(markdown);
+            const basePath = this.getBasePath(path);
+            const html = this.toHTML(markdown, basePath);
 
             // Im Cache speichern
             this.cache.set(path, html);
@@ -41,10 +79,12 @@ const MarkdownLoader = {
     /**
      * Konvertiert Markdown zu HTML (lightweight Parser)
      * @param {string} markdown - Markdown-String
+     * @param {string} basePath - Basispfad für relative Links
      * @returns {string} - HTML-String
      */
-    toHTML(markdown) {
+    toHTML(markdown, basePath = '') {
         let html = markdown;
+        const self = this;
 
         // Escape HTML entities first (aber nicht in Code-Blöcken)
         // Wir machen das später für Code-Blöcke separat
@@ -79,8 +119,11 @@ const MarkdownLoader = {
         html = html.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
         html = html.replace(/\*(.+?)\*/g, '<em>$1</em>');
 
-        // Links
-        html = html.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" class="md-link" target="_blank" rel="noopener">$1</a>');
+        // Links - resolve relative paths
+        html = html.replace(/\[([^\]]+)\]\(([^)]+)\)/g, (match, text, href) => {
+            const resolvedHref = self.resolvePath(href, basePath);
+            return `<a href="${resolvedHref}" class="md-link" target="_blank" rel="noopener">${text}</a>`;
+        });
 
         // Unordered Lists
         html = this.parseLists(html);
