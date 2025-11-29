@@ -3770,6 +3770,7 @@
             display: flex;
             align-items: center;
             gap: 8px;
+            margin-top: 40px;
             margin-bottom: 12px;
             padding-bottom: 10px;
             border-bottom: 1px solid var(--border);
@@ -4287,9 +4288,9 @@
             display: block;
         }
 
-        /* Show grid summary in green when selection exists (even when not collapsed) */
+        /* Hide grid summary even when selection exists - keep only 'fehlt' messages */
         .compact-dimension.collapsible-dimension .collapsed-summary.has-selection {
-            display: block;
+            display: none;
         }
 
         /* Blinking header when collapsed AND incomplete selection */
@@ -4312,7 +4313,7 @@
         /* Unified Fold/Unfold Toolbar - Sticky */
         .fold-unfold-toolbar {
             position: sticky;
-            top: 200px;
+            top: 160px;
             z-index: 100;
             display: flex;
             justify-content: flex-end;
