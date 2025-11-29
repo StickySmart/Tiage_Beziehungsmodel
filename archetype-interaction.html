@@ -10310,6 +10310,14 @@
                 mainScoreProgressEl.style.stroke = color;
                 mainScoreValueEl.style.color = color;
             }
+
+            // Update Mobile Score Circle
+            const mobileScoreEl = document.getElementById('mobileScoreCircle');
+            if (mobileScoreEl) {
+                mobileScoreEl.textContent = currentScore + '%';
+                mobileScoreEl.style.borderColor = color;
+                mobileScoreEl.style.color = color;
+            }
         }
 
         function getBarClass(value) {
@@ -14478,6 +14486,9 @@
 
             // Update Desktop Selection Info Message
             updateSelectionInfoMessage();
+
+            // Update Score-Circle auf der Hauptseite
+            updateSyntheseScoreCycle();
         }
 
         // Universelle Funktion für Kategorien-Balken (Mobile & Desktop)
