@@ -3821,6 +3821,19 @@
             margin-bottom: 0;
         }
 
+        /* Geschlechtsidentität Info im Header-Bereich */
+        .header-geschlecht-info {
+            font-size: 11px;
+            color: var(--success);
+            padding: 4px 8px;
+            margin-bottom: 8px;
+            text-align: right;
+        }
+
+        .header-geschlecht-info.missing {
+            color: var(--warning, #f39c12);
+        }
+
         .archetype-nav-btn {
             background: var(--bg-dark);
             border: 1px solid var(--border);
@@ -6200,6 +6213,7 @@
                     <button class="archetype-nav-btn" onclick="navigateArchetype('ich', 1)" title="Nächster Archetyp">&#9654;</button>
                     <button class="archetype-info-btn" onclick="showArchetypeInfo('ich')" title="Info zum Archetyp">INFO</button>
                 </div>
+                <div class="header-geschlecht-info" id="ich-header-geschlecht"></div>
                 <div class="column-dimensions">
                     <div class="compact-dimension needs-selection collapsible-dimension" data-dimension="ich-geschlecht-new">
                         <div class="compact-dimension-label"><span class="geschlecht-info-link" onclick="showGeschlechtInfoModal()">Geschlechtsidentität</span> <span class="dimension-info-icon" onclick="showGeschlechtInfoModal()">ℹ</span> <span id="ich-geschlecht-legend" class="geschlecht-legend" style="font-size: 10px; opacity: 0.7;">(<span class="legend-i">I</span>=Identität, <span class="legend-g">G</span>=Sekundär)</span></div>
@@ -6305,6 +6319,7 @@
                     <button class="archetype-nav-btn" onclick="navigateArchetype('partner', 1)" title="Nächster Archetyp">&#9654;</button>
                     <button class="archetype-info-btn" onclick="showArchetypeInfo('partner')" title="Info zum Archetyp">INFO</button>
                 </div>
+                <div class="header-geschlecht-info" id="partner-header-geschlecht"></div>
                 <div class="column-dimensions">
                     <div class="compact-dimension needs-selection collapsible-dimension" data-dimension="partner-geschlecht-new">
                         <div class="compact-dimension-label"><span class="geschlecht-info-link" onclick="showGeschlechtInfoModal()">Geschlechtsidentität</span> <span class="dimension-info-icon" onclick="showGeschlechtInfoModal()">ℹ</span> <span id="partner-geschlecht-legend" class="geschlecht-legend" style="font-size: 10px; opacity: 0.7;">(<span class="legend-i">I</span>=Identität, <span class="legend-g">G</span>=Sekundär)</span></div>
@@ -11587,7 +11602,9 @@
             const primary = personDimensions[person].geschlecht.primary;
             const secondary = personDimensions[person].geschlecht.secondary;
 
-            if (!primary) return '';
+            if (!primary) {
+                return 'fehlt: Identität';
+            }
 
             const parts = [];
             const primaryLabel = TiageI18n.t(`geschlecht.types.${primary}`, primary);
@@ -11606,17 +11623,23 @@
          */
         function updateGeschlechtSummary(person) {
             const summaryText = getGeschlechtSummary(person);
+            const isMissing = !personDimensions[person].geschlecht.primary;
 
             // Update all summary elements for this person
             const summaryIds = [
                 `${person}-geschlecht-summary`,
-                `mobile-${person}-geschlecht-summary`
+                `mobile-${person}-geschlecht-summary`,
+                `${person}-header-geschlecht`
             ];
 
             summaryIds.forEach(id => {
                 const summary = document.getElementById(id);
                 if (summary) {
                     summary.textContent = summaryText;
+                    // Add/remove missing class for header elements
+                    if (id.includes('header')) {
+                        summary.classList.toggle('missing', isMissing);
+                    }
                 }
             });
         }
@@ -15773,6 +15796,9 @@
             initComparisonLayout();
             initMobileLayout();
             initGeschlechtHoverEvents();
+            // Initialize geschlecht summary display
+            updateGeschlechtSummary('ich');
+            updateGeschlechtSummary('partner');
         });
 
         // ========================================
