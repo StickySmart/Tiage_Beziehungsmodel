@@ -3862,6 +3862,23 @@
             gap: 4px;
         }
 
+        /* Klickbarer Geschlechtsidentität-Link mit Hover-Effekt */
+        .geschlecht-info-link {
+            cursor: pointer;
+            text-decoration: underline;
+            text-decoration-style: dotted;
+            transition: all 0.2s ease;
+            padding: 2px 4px;
+            border-radius: 4px;
+            margin: -2px -4px;
+        }
+
+        .geschlecht-info-link:hover {
+            color: var(--primary);
+            background: rgba(69, 123, 157, 0.15);
+            text-decoration-color: var(--primary);
+        }
+
         /* Geschlechtsidentität: Grid-Layout für 9 Optionen */
         .geschlecht-grid {
             display: grid;
@@ -5171,6 +5188,13 @@
             /* Geschlechtsidentität: 9 buttons in besseres Layout */
             .geschlecht-grid {
                 grid-template-columns: repeat(3, 1fr) !important;
+                gap: 8px;
+            }
+
+            /* Mobile: Größere Geschlecht-Buttons */
+            .geschlecht-btn {
+                padding: 10px 12px;
+                font-size: 14px;
             }
 
             .compact-option {
@@ -5236,6 +5260,46 @@
             /* Mobile column-dimensions more spacing */
             .column-dimensions {
                 gap: 20px;
+            }
+
+            /* Mobile: Größere Dominanz-Labels und Toggle-Buttons */
+            .dominanz-label {
+                font-size: 15px;
+            }
+
+            .status-toggle-btn {
+                padding: 8px 14px;
+                font-size: 13px;
+            }
+
+            .dominanz-option-row {
+                padding: 10px 14px;
+            }
+
+            /* Mobile: Größere Orientierung-Buttons */
+            .orientierung-option-row {
+                padding: 10px 14px;
+            }
+
+            .orientierung-label {
+                font-size: 15px;
+            }
+
+            /* Mobile: Größere Geschlechtsidentität Info-Link */
+            .geschlecht-info-link {
+                font-size: 16px;
+            }
+
+            /* Mobile: Größere dimension-info-icon */
+            .dimension-info-icon {
+                width: 20px;
+                height: 20px;
+                font-size: 12px;
+            }
+
+            /* Mobile: Größere geschlecht-legend */
+            .geschlecht-legend {
+                font-size: 12px !important;
             }
         }
 
@@ -6066,7 +6130,7 @@
                 </div>
                 <div class="column-dimensions">
                     <div class="compact-dimension needs-selection" data-dimension="ich-geschlecht-new">
-                        <div class="compact-dimension-label"><span onclick="showGeschlechtInfoModal()" style="cursor: pointer; text-decoration: underline; text-decoration-style: dotted;">Geschlechtsidentität</span> <span class="dimension-info-icon" onclick="showGeschlechtInfoModal()">ℹ</span> <span id="ich-geschlecht-legend" class="geschlecht-legend" style="font-size: 10px; opacity: 0.7;">(<span class="legend-i">I</span>=Identität, <span class="legend-g">G</span>=Sekundär)</span></div>
+                        <div class="compact-dimension-label"><span class="geschlecht-info-link" onclick="showGeschlechtInfoModal()">Geschlechtsidentität</span> <span class="dimension-info-icon" onclick="showGeschlechtInfoModal()">ℹ</span> <span id="ich-geschlecht-legend" class="geschlecht-legend" style="font-size: 10px; opacity: 0.7;">(<span class="legend-i">I</span>=Identität, <span class="legend-g">G</span>=Sekundär)</span></div>
                         <div class="geschlecht-grid" id="ich-geschlecht-grid" data-person="ich">
                             <button type="button" class="geschlecht-btn" data-value="cis_mann" onclick="handleGeschlechtClick('ich', 'cis_mann', this)">Cis Mann</button>
                             <button type="button" class="geschlecht-btn" data-value="cis_frau" onclick="handleGeschlechtClick('ich', 'cis_frau', this)">Cis Frau</button>
@@ -6170,7 +6234,7 @@
                 </div>
                 <div class="column-dimensions">
                     <div class="compact-dimension needs-selection" data-dimension="partner-geschlecht-new">
-                        <div class="compact-dimension-label"><span onclick="showGeschlechtInfoModal()" style="cursor: pointer; text-decoration: underline; text-decoration-style: dotted;">Geschlechtsidentität</span> <span class="dimension-info-icon" onclick="showGeschlechtInfoModal()">ℹ</span> <span id="partner-geschlecht-legend" class="geschlecht-legend" style="font-size: 10px; opacity: 0.7;">(<span class="legend-i">I</span>=Identität, <span class="legend-g">G</span>=Sekundär)</span></div>
+                        <div class="compact-dimension-label"><span class="geschlecht-info-link" onclick="showGeschlechtInfoModal()">Geschlechtsidentität</span> <span class="dimension-info-icon" onclick="showGeschlechtInfoModal()">ℹ</span> <span id="partner-geschlecht-legend" class="geschlecht-legend" style="font-size: 10px; opacity: 0.7;">(<span class="legend-i">I</span>=Identität, <span class="legend-g">G</span>=Sekundär)</span></div>
                         <div class="geschlecht-grid" id="partner-geschlecht-grid" data-person="partner">
                             <button type="button" class="geschlecht-btn" data-value="cis_mann" onclick="handleGeschlechtClick('partner', 'cis_mann', this)">Cis Mann</button>
                             <button type="button" class="geschlecht-btn" data-value="cis_frau" onclick="handleGeschlechtClick('partner', 'cis_frau', this)">Cis Frau</button>
@@ -6342,7 +6406,7 @@
                 </div>
                 <div class="column-dimensions" id="mobileIchDimensions">
                     <div class="compact-dimension needs-selection" data-dimension="mobile-ich-geschlecht">
-                        <div class="compact-dimension-label"><span onclick="showGeschlechtInfoModal()" style="cursor: pointer; text-decoration: underline; text-decoration-style: dotted;">Geschlechtsidentität</span> <span class="dimension-info-icon" onclick="showGeschlechtInfoModal()">ℹ</span> <span id="mobile-ich-geschlecht-legend" class="geschlecht-legend" style="font-size: 10px; opacity: 0.7;">(<span class="legend-i">I</span>=Identität, <span class="legend-g">G</span>=Sekundär)</span></div>
+                        <div class="compact-dimension-label"><span class="geschlecht-info-link" onclick="showGeschlechtInfoModal()">Geschlechtsidentität</span> <span class="dimension-info-icon" onclick="showGeschlechtInfoModal()">ℹ</span> <span id="mobile-ich-geschlecht-legend" class="geschlecht-legend" style="font-size: 10px; opacity: 0.7;">(<span class="legend-i">I</span>=Identität, <span class="legend-g">G</span>=Sekundär)</span></div>
                         <div class="geschlecht-grid" id="mobile-ich-geschlecht-grid" data-person="ich">
                             <button type="button" class="geschlecht-btn" data-value="cis_mann" onclick="handleGeschlechtClick('ich', 'cis_mann', this)">Cis Mann</button>
                             <button type="button" class="geschlecht-btn" data-value="cis_frau" onclick="handleGeschlechtClick('ich', 'cis_frau', this)">Cis Frau</button>
@@ -6447,7 +6511,7 @@
                 </div>
                 <div class="column-dimensions" id="mobilePartnerDimensions">
                     <div class="compact-dimension needs-selection" data-dimension="mobile-partner-geschlecht">
-                        <div class="compact-dimension-label"><span onclick="showGeschlechtInfoModal()" style="cursor: pointer; text-decoration: underline; text-decoration-style: dotted;">Geschlechtsidentität</span> <span class="dimension-info-icon" onclick="showGeschlechtInfoModal()">ℹ</span> <span id="mobile-partner-geschlecht-legend" class="geschlecht-legend" style="font-size: 10px; opacity: 0.7;">(<span class="legend-i">I</span>=Identität, <span class="legend-g">G</span>=Sekundär)</span></div>
+                        <div class="compact-dimension-label"><span class="geschlecht-info-link" onclick="showGeschlechtInfoModal()">Geschlechtsidentität</span> <span class="dimension-info-icon" onclick="showGeschlechtInfoModal()">ℹ</span> <span id="mobile-partner-geschlecht-legend" class="geschlecht-legend" style="font-size: 10px; opacity: 0.7;">(<span class="legend-i">I</span>=Identität, <span class="legend-g">G</span>=Sekundär)</span></div>
                         <div class="geschlecht-grid" id="mobile-partner-geschlecht-grid" data-person="partner">
                             <button type="button" class="geschlecht-btn" data-value="cis_mann" onclick="handleGeschlechtClick('partner', 'cis_mann', this)">Cis Mann</button>
                             <button type="button" class="geschlecht-btn" data-value="cis_frau" onclick="handleGeschlechtClick('partner', 'cis_frau', this)">Cis Frau</button>
