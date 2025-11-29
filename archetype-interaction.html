@@ -6453,12 +6453,12 @@
                         <div class="geschlecht-grid" id="ich-geschlecht-grid" data-person="ich"></div>
                     </div>
                     <div class="compact-dimension needs-selection collapsible-dimension" data-dimension="ich-dominanz-multi">
-                        <div class="compact-dimension-label"><span class="geschlecht-info-link" onclick="showDominanzInfoModal()">Dominanz</span> <span class="dimension-info-icon" onclick="showDimensionTooltip('dominanzStatus')">ℹ</span> <span id="ich-dominanz-legend" class="geschlecht-legend" style="font-size: 10px; opacity: 0.7;">(<span class="legend-i">I</span>=Identität, <span class="legend-g">G</span>=Sekundär)</span></div>
+                        <div class="compact-dimension-label"><span class="geschlecht-info-link" onclick="showDominanzInfoModal()">Dominanz</span> <span id="ich-dominanz-legend" class="geschlecht-legend" style="font-size: 10px; text-decoration: underline; cursor: pointer;" onclick="showDimensionTooltip('dominanzStatus')">(<span class="legend-i">I</span>=Identität, <span class="legend-g">G</span>=Sekundär)</span></div>
                         <div class="collapsed-summary" id="ich-dominanz-summary"></div>
                         <div class="dominanz-grid" id="ich-dominanz-grid" data-person="ich"></div>
                     </div>
                     <div class="compact-dimension needs-selection collapsible-dimension" data-dimension="ich-orientierung-multi">
-                        <div class="compact-dimension-label"><span class="geschlecht-info-link" onclick="showOrientierungInfoModal()">Orientierung</span> <span class="dimension-info-icon" onclick="showDimensionTooltip('status')">ℹ</span> <span id="ich-orientierung-legend" class="geschlecht-legend" style="font-size: 10px; opacity: 0.7;">(<span class="legend-i">I</span>=Identität, <span class="legend-g">G</span>=Sekundär)</span></div>
+                        <div class="compact-dimension-label"><span class="geschlecht-info-link" onclick="showOrientierungInfoModal()">Orientierung</span> <span id="ich-orientierung-legend" class="geschlecht-legend" style="font-size: 10px; text-decoration: underline; cursor: pointer;" onclick="showDimensionTooltip('status')">(<span class="legend-i">I</span>=Identität, <span class="legend-g">G</span>=Sekundär)</span></div>
                         <div class="collapsed-summary" id="ich-orientierung-summary"></div>
                         <div class="orientierung-grid" id="ich-orientierung-grid" data-person="ich"></div>
                     </div>
@@ -6531,12 +6531,12 @@
                         <div class="geschlecht-grid" id="partner-geschlecht-grid" data-person="partner"></div>
                     </div>
                     <div class="compact-dimension needs-selection collapsible-dimension" data-dimension="partner-dominanz-multi">
-                        <div class="compact-dimension-label"><span class="geschlecht-info-link" onclick="showDominanzInfoModal()">Dominanz</span> <span class="dimension-info-icon" onclick="showDimensionTooltip('dominanzStatus')">ℹ</span> <span id="partner-dominanz-legend" class="geschlecht-legend" style="font-size: 10px; opacity: 0.7;">(<span class="legend-i">I</span>=Identität, <span class="legend-g">G</span>=Sekundär)</span></div>
+                        <div class="compact-dimension-label"><span class="geschlecht-info-link" onclick="showDominanzInfoModal()">Dominanz</span> <span id="partner-dominanz-legend" class="geschlecht-legend" style="font-size: 10px; text-decoration: underline; cursor: pointer;" onclick="showDimensionTooltip('dominanzStatus')">(<span class="legend-i">I</span>=Identität, <span class="legend-g">G</span>=Sekundär)</span></div>
                         <div class="collapsed-summary" id="partner-dominanz-summary"></div>
                         <div class="dominanz-grid" id="partner-dominanz-grid" data-person="partner"></div>
                     </div>
                     <div class="compact-dimension needs-selection collapsible-dimension" data-dimension="partner-orientierung-multi">
-                        <div class="compact-dimension-label"><span class="geschlecht-info-link" onclick="showOrientierungInfoModal()">Orientierung</span> <span class="dimension-info-icon" onclick="showDimensionTooltip('status')">ℹ</span> <span id="partner-orientierung-legend" class="geschlecht-legend" style="font-size: 10px; opacity: 0.7;">(<span class="legend-i">I</span>=Identität, <span class="legend-g">G</span>=Sekundär)</span></div>
+                        <div class="compact-dimension-label"><span class="geschlecht-info-link" onclick="showOrientierungInfoModal()">Orientierung</span> <span id="partner-orientierung-legend" class="geschlecht-legend" style="font-size: 10px; text-decoration: underline; cursor: pointer;" onclick="showDimensionTooltip('status')">(<span class="legend-i">I</span>=Identität, <span class="legend-g">G</span>=Sekundär)</span></div>
                         <div class="collapsed-summary" id="partner-orientierung-summary"></div>
                         <div class="orientierung-grid" id="partner-orientierung-grid" data-person="partner"></div>
                     </div>
@@ -6622,7 +6622,7 @@
                     </div>
                     <div class="compact-dimension needs-selection collapsible-dimension" data-dimension="mobile-ich-dominanz-multi">
                         <div class="compact-dimension-label" onclick="toggleDimensionCollapse(this.parentElement)">
-                            <span><span class="geschlecht-info-link" onclick="event.stopPropagation(); showDominanzInfoModal()">Dominanz</span> <span class="dimension-info-icon" onclick="event.stopPropagation(); showDimensionTooltip('dominanzStatus')">ℹ</span> <span style="font-size: 10px; opacity: 0.7;">(Mehrfachauswahl)</span></span>
+                            <span><span class="geschlecht-info-link" onclick="event.stopPropagation(); showDominanzInfoModal()">Dominanz</span> <span style="font-size: 10px; text-decoration: underline; cursor: pointer;" onclick="event.stopPropagation(); showDimensionTooltip('dominanzStatus')">(I=Identität, G=Sekundär)</span></span>
                             <span class="collapse-toggle">▼</span>
                         </div>
                         <div class="collapsed-summary" id="mobile-ich-dominanz-summary"></div>
@@ -6659,7 +6659,7 @@
                     </div>
                     <div class="compact-dimension needs-selection collapsible-dimension" data-dimension="mobile-ich-orientierung-multi">
                         <div class="compact-dimension-label" onclick="toggleDimensionCollapse(this.parentElement)">
-                            <span><span class="geschlecht-info-link" onclick="event.stopPropagation(); showOrientierungInfoModal()">Orientierung</span> <span class="dimension-info-icon" onclick="event.stopPropagation(); showDimensionTooltip('status')">ℹ</span> <span style="font-size: 10px; opacity: 0.7;">(Mehrfachauswahl)</span></span>
+                            <span><span class="geschlecht-info-link" onclick="event.stopPropagation(); showOrientierungInfoModal()">Orientierung</span> <span style="font-size: 10px; text-decoration: underline; cursor: pointer;" onclick="event.stopPropagation(); showDimensionTooltip('status')">(I=Identität, G=Sekundär)</span></span>
                             <span class="collapse-toggle">▼</span>
                         </div>
                         <div class="collapsed-summary" id="mobile-ich-orientierung-summary"></div>
@@ -6718,7 +6718,7 @@
                     </div>
                     <div class="compact-dimension needs-selection collapsible-dimension" data-dimension="mobile-partner-dominanz-multi">
                         <div class="compact-dimension-label" onclick="toggleDimensionCollapse(this.parentElement)">
-                            <span><span class="geschlecht-info-link" onclick="event.stopPropagation(); showDominanzInfoModal()">Dominanz</span> <span class="dimension-info-icon" onclick="event.stopPropagation(); showDimensionTooltip('dominanzStatus')">ℹ</span> <span style="font-size: 10px; opacity: 0.7;">(Mehrfachauswahl)</span></span>
+                            <span><span class="geschlecht-info-link" onclick="event.stopPropagation(); showDominanzInfoModal()">Dominanz</span> <span style="font-size: 10px; text-decoration: underline; cursor: pointer;" onclick="event.stopPropagation(); showDimensionTooltip('dominanzStatus')">(I=Identität, G=Sekundär)</span></span>
                             <span class="collapse-toggle">▼</span>
                         </div>
                         <div class="collapsed-summary" id="mobile-partner-dominanz-summary"></div>
@@ -6755,7 +6755,7 @@
                     </div>
                     <div class="compact-dimension needs-selection collapsible-dimension" data-dimension="mobile-partner-orientierung-multi">
                         <div class="compact-dimension-label" onclick="toggleDimensionCollapse(this.parentElement)">
-                            <span><span class="geschlecht-info-link" onclick="event.stopPropagation(); showOrientierungInfoModal()">Orientierung</span> <span class="dimension-info-icon" onclick="event.stopPropagation(); showDimensionTooltip('status')">ℹ</span> <span style="font-size: 10px; opacity: 0.7;">(Mehrfachauswahl)</span></span>
+                            <span><span class="geschlecht-info-link" onclick="event.stopPropagation(); showOrientierungInfoModal()">Orientierung</span> <span style="font-size: 10px; text-decoration: underline; cursor: pointer;" onclick="event.stopPropagation(); showDimensionTooltip('status')">(I=Identität, G=Sekundär)</span></span>
                             <span class="collapse-toggle">▼</span>
                         </div>
                         <div class="collapsed-summary" id="mobile-partner-orientierung-summary"></div>
@@ -6939,8 +6939,7 @@
                             <div class="dimension-group needs-selection" data-dimension="modal-ich-dominanz-multi">
                                 <div class="dimension-label">
                                     Dominanz
-                                    <span class="dimension-info-icon" onclick="showDimensionTooltip('dominanz')">ℹ</span>
-                                    <span style="font-size: 10px; opacity: 0.7;">(Mehrfachauswahl)</span>
+                                    <span style="font-size: 10px; text-decoration: underline; cursor: pointer;" onclick="showDimensionTooltip('dominanzStatus')">(I=Identität, G=Sekundär)</span>
                                 </div>
                                 <div class="dominanz-multi-select">
                                     <div class="dominanz-option-row" id="modal-ich-d-dom-row">
@@ -6978,8 +6977,7 @@
                             <div class="dimension-group full-width needs-selection" data-dimension="modal-ich-orientierung-multi">
                                 <div class="dimension-label">
                                     Sexuelle Orientierung
-                                    <span class="dimension-info-icon" onclick="showDimensionTooltip('orientierung')">ℹ</span>
-                                    <span style="font-size: 10px; opacity: 0.7;">(Mehrfachauswahl)</span>
+                                    <span style="font-size: 10px; text-decoration: underline; cursor: pointer;" onclick="showDimensionTooltip('status')">(I=Identität, G=Sekundär)</span>
                                 </div>
                                 <div class="dominanz-multi-select">
                                     <div class="dominanz-option-row" id="modal-ich-o-het-row">
@@ -7107,8 +7105,7 @@
                             <div class="dimension-group needs-selection" data-dimension="modal-partner-dominanz-multi">
                                 <div class="dimension-label">
                                     Dominanz
-                                    <span class="dimension-info-icon" onclick="showDimensionTooltip('dominanz')">ℹ</span>
-                                    <span style="font-size: 10px; opacity: 0.7;">(Mehrfachauswahl)</span>
+                                    <span style="font-size: 10px; text-decoration: underline; cursor: pointer;" onclick="showDimensionTooltip('dominanzStatus')">(I=Identität, G=Sekundär)</span>
                                 </div>
                                 <div class="dominanz-multi-select">
                                     <div class="dominanz-option-row" id="modal-partner-d-dom-row">
@@ -7154,8 +7151,7 @@
                             <div class="dimension-group full-width needs-selection" data-dimension="modal-partner-orientierung-multi">
                                 <div class="dimension-label">
                                     Sexuelle Orientierung
-                                    <span class="dimension-info-icon" onclick="showDimensionTooltip('orientierung')">ℹ</span>
-                                    <span style="font-size: 10px; opacity: 0.7;">(Mehrfachauswahl)</span>
+                                    <span style="font-size: 10px; text-decoration: underline; cursor: pointer;" onclick="showDimensionTooltip('status')">(I=Identität, G=Sekundär)</span>
                                 </div>
                                 <div class="dominanz-multi-select">
                                     <div class="dominanz-option-row" id="modal-partner-o-het-row">
@@ -7867,23 +7863,27 @@
 
             // Update Dominanz section labels
             document.querySelectorAll('[data-dimension$="-dominanz-multi"] > .compact-dimension-label > span:first-child').forEach(el => {
-                const infoIcon = el.querySelector('.dimension-info-icon');
                 const hint = el.querySelector('span');
-                if (infoIcon && hint) {
+                if (hint) {
+                    const i = TiageI18n.t('dimensions.legend.identity', 'I');
+                    const g = TiageI18n.t('dimensions.legend.secondary', 'G');
+                    const iFull = TiageI18n.t('dimensions.legend.identityFull', 'Identität');
+                    const gFull = TiageI18n.t('dimensions.legend.secondaryFull', 'Sekundär');
                     el.innerHTML = TiageI18n.t('dimensions.dominanzLabel', 'Dominanz') +
-                        ' <span class="dimension-info-icon" onclick="showDimensionTooltip(\'dominanz\')">ℹ</span> ' +
-                        '<span style="font-size: 10px; opacity: 0.7;">' + TiageI18n.t('dimensions.multiSelect', '(Mehrfachauswahl)') + '</span>';
+                        ` <span style="font-size: 10px; text-decoration: underline; cursor: pointer;" onclick="showDimensionTooltip('dominanzStatus')">(${i}=${iFull}, ${g}=${gFull})</span>`;
                 }
             });
 
             // Update Orientierung section labels
             document.querySelectorAll('[data-dimension$="-orientierung-multi"] > .compact-dimension-label > span:first-child').forEach(el => {
-                const infoIcon = el.querySelector('.dimension-info-icon');
                 const hint = el.querySelector('span');
-                if (infoIcon && hint) {
+                if (hint) {
+                    const i = TiageI18n.t('dimensions.legend.identity', 'I');
+                    const g = TiageI18n.t('dimensions.legend.secondary', 'G');
+                    const iFull = TiageI18n.t('dimensions.legend.identityFull', 'Identität');
+                    const gFull = TiageI18n.t('dimensions.legend.secondaryFull', 'Sekundär');
                     el.innerHTML = TiageI18n.t('dimensions.orientierungLabel', 'Orientierung') +
-                        ' <span class="dimension-info-icon" onclick="showDimensionTooltip(\'orientierung\')">ℹ</span> ' +
-                        '<span style="font-size: 10px; opacity: 0.7;">' + TiageI18n.t('dimensions.multiSelect', '(Mehrfachauswahl)') + '</span>';
+                        ` <span style="font-size: 10px; text-decoration: underline; cursor: pointer;" onclick="showDimensionTooltip('status')">(${i}=${iFull}, ${g}=${gFull})</span>`;
                 }
             });
 
