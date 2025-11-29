@@ -5621,13 +5621,16 @@
             color: rgba(255, 255, 255, 0.5);
         }
         .app-footer a {
-            color: rgba(255, 255, 255, 0.6);
+            color: #eab308;
             text-decoration: none;
             margin: 0 10px;
         }
         .app-footer a:hover {
-            color: #4A90E2;
+            color: #facc15;
             text-decoration: underline;
+        }
+        .app-footer span {
+            color: #eab308;
         }
         .impressum-modal {
             display: none;
@@ -5664,7 +5667,7 @@
             font-size: 14px;
         }
         .impressum-content a {
-            color: #4A90E2;
+            color: #eab308;
         }
         .impressum-close {
             margin-top: 20px;
@@ -7628,6 +7631,7 @@
             <p><strong>Betreiber:</strong> Ti-Age</p>
             <p><strong>Projekt:</strong> Tiage_Beziehungsmodel</p>
             <p><strong>Kontakt:</strong> <a href="mailto:nerd@ti-age.de">nerd@ti-age.de</a></p>
+            <button class="impressum-close" onclick="document.getElementById('impressumModal').classList.remove('active')">Schließen</button>
         </div>
     </div>
 
