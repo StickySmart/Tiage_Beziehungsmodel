@@ -36,14 +36,16 @@ Wenn Begriffe aufgefächert werden, wenn Bedeutungsfelder sich öffnen, entsteht
 
 *Die konkrete Gewichtung ist Teil von Tiage's eigenständiger Synthese.*
 
-## Die 6 Archetypen
+## Die 8 Archetypen
 
 - **Single** - Autonomes Leben ohne Primärbeziehung
 - **Duo** - Monogame Zweierbeziehung mit Exklusivität
 - **Duo-Flex** - Primärbeziehung mit vereinbarten Öffnungen
 - **Solopoly** - Mehrere gleichwertige Beziehungen, Fokus Autonomie
-- **Poly-Hedo** - Polyamorie mit Fokus auf Genuss
 - **Polyamor** - Tiefe emotionale Bindungen zu mehreren Partnern
+- **RA** - Relationship Anarchist - Ablehnung aller Beziehungs-Hierarchien
+- **LAT** - Living Apart Together - Feste Partnerschaft ohne Zusammenleben
+- **Aromantisch** - Fokus auf platonische Verbindungen ohne romantische Komponente
 
 ## Die 4 Qualitätsfaktoren
 
@@ -72,7 +74,7 @@ Oder besuche: [GitHub Pages](https://stickysmart.github.io/Tiage_Beziehungsmodel
 ```
 Tiage_Beziehungsmodel/
 ├── archetype-interaction.html      # Haupt-Web-App
-├── archetype-matrix.json           # 6x6 Kompatibilitäts-Matrix
+├── archetype-matrix.json           # 8x8 Kompatibilitäts-Matrix
 ├── beziehungsmodell.md             # Modell-Dokumentation
 ├── analyse.md                      # Analyse-Dokumentation
 ├── ARCHETYPE-MATRIX-README.md      # Matrix-Dokumentation

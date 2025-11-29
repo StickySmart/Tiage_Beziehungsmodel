@@ -16,7 +16,7 @@ Eine **eigenständige Synthese** von Tiage, entwickelt durch Online-Recherche un
 Die Verbindung beider Philosophien zu einem konkreten Beziehungs-Rechner mit:
 
 - Eigener Gewichtung (40:60 Logos:Pathos)
-- Archetypen-Matrix (6 Beziehungstypen)
+- Archetypen-Matrix (8 Beziehungstypen)
 - Resonanz als Meta-Dimension
 - Praktischer Anwendbarkeit
 
@@ -47,7 +47,7 @@ Das Modell gewichtet emotionale Resonanz höher als rationale Struktur, weil:
 2. Strukturelle Kompatibilität allein keine Anziehung garantiert
 3. Die "dynamische Qualität" (Pirsig) der Motor für Entwicklung ist
 
-## Die 6 Archetypen
+## Die 8 Archetypen
 
 | Archetyp | Kurzbeschreibung |
 |----------|------------------|
@@ -55,8 +55,10 @@ Das Modell gewichtet emotionale Resonanz höher als rationale Struktur, weil:
 | **Duo** | Monogame Zweierbeziehung mit Exklusivität |
 | **Duo-Flex** | Primärbeziehung mit vereinbarten Öffnungen |
 | **Solopoly** | Mehrere gleichwertige Beziehungen, Fokus Autonomie |
-| **Poly-Hedo** | Polyamorie mit Fokus auf Genuss |
 | **Polyamor** | Tiefe emotionale Bindungen zu mehreren Partnern |
+| **RA** | Relationship Anarchist - Ablehnung aller Beziehungs-Hierarchien |
+| **LAT** | Living Apart Together - Feste Partnerschaft ohne Zusammenleben |
+| **Aromantisch** | Fokus auf platonische Verbindungen ohne romantische Komponente |
 
 ## Philosophische Einordnung
 
