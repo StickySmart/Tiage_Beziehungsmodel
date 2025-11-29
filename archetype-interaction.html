@@ -4261,6 +4261,11 @@
             display: block;
         }
 
+        /* Show grid summary in green when selection exists (even when not collapsed) */
+        .compact-dimension.collapsible-dimension .collapsed-summary.has-selection {
+            display: block;
+        }
+
         /* Blinking header when collapsed AND incomplete selection */
         @keyframes needsAttentionHeader {
             0%, 100% {
@@ -11422,7 +11427,31 @@
             const secondary = personDimensions[person].geschlecht.secondary;
 
             if (!primary) {
-                return 'fehlt: Identität';
+                return 'Geschlecht fehlt';
+            }
+
+            const parts = [];
+            const primaryLabel = TiageI18n.t(`geschlecht.types.${primary}`, primary);
+            parts.push(primaryLabel + ' (I)');
+
+            if (secondary) {
+                const secondaryLabel = TiageI18n.t(`geschlecht.types.${secondary}`, secondary);
+                parts.push(secondaryLabel + ' (G)');
+            }
+
+            return '✓ ' + parts.join(', ');
+        }
+
+        /**
+         * Get summary text for geschlecht selection in grid (without 'fehlt' text)
+         * Returns selected values in green, or empty string if nothing selected
+         */
+        function getGeschlechtGridSummary(person) {
+            const primary = personDimensions[person].geschlecht.primary;
+            const secondary = personDimensions[person].geschlecht.secondary;
+
+            if (!primary) {
+                return ''; // No 'fehlt' text for grid - only show selections
             }
 
             const parts = [];
@@ -11442,15 +11471,26 @@
          */
         function updateGeschlechtSummary(person) {
             const summaryText = getGeschlechtSummary(person);
+            const gridSummaryText = getGeschlechtGridSummary(person);
             const isMissing = !personDimensions[person].geschlecht.primary;
 
-            // Only update header element (not collapsed-summary inside dimension)
+            // Update header element (shows 'fehlt' if nothing selected)
             const headerId = `${person}-header-geschlecht`;
             const header = document.getElementById(headerId);
             if (header) {
                 header.textContent = summaryText;
                 header.classList.toggle('missing', isMissing);
             }
+
+            // Update grid collapsed-summary (only shows selections in green, no 'fehlt')
+            ['', 'mobile-'].forEach(prefix => {
+                const summaryId = `${prefix}${person}-geschlecht-summary`;
+                const summary = document.getElementById(summaryId);
+                if (summary) {
+                    summary.textContent = gridSummaryText;
+                    summary.classList.toggle('has-selection', !isMissing);
+                }
+            });
         }
 
         /**
@@ -11652,7 +11692,29 @@
             const secondary = personDimensions[person].dominanz.secondary;
 
             if (!primary) {
-                return 'fehlt: Identität';
+                return 'Dominanz fehlt';
+            }
+
+            const parts = [];
+            parts.push(primary + ' (I)');
+
+            if (secondary) {
+                parts.push(secondary + ' (G)');
+            }
+
+            return '✓ ' + parts.join(', ');
+        }
+
+        /**
+         * Get summary text for dominanz selection in grid (without 'fehlt' text)
+         * Returns selected values in green, or empty string if nothing selected
+         */
+        function getDominanzGridSummary(person) {
+            const primary = personDimensions[person].dominanz.primary;
+            const secondary = personDimensions[person].dominanz.secondary;
+
+            if (!primary) {
+                return ''; // No 'fehlt' text for grid - only show selections
             }
 
             const parts = [];
@@ -11670,15 +11732,26 @@
          */
         function updateDominanzSummary(person) {
             const summaryText = getDominanzSummary(person);
+            const gridSummaryText = getDominanzGridSummary(person);
             const isMissing = !personDimensions[person].dominanz.primary;
 
-            // Only update header element (not collapsed-summary inside dimension)
+            // Update header element (shows 'fehlt' if nothing selected)
             const headerId = `${person}-header-dominanz`;
             const header = document.getElementById(headerId);
             if (header) {
                 header.textContent = summaryText;
                 header.classList.toggle('missing', isMissing);
             }
+
+            // Update grid collapsed-summary (only shows selections in green, no 'fehlt')
+            ['', 'mobile-'].forEach(prefix => {
+                const summaryId = `${prefix}${person}-dominanz-summary`;
+                const summary = document.getElementById(summaryId);
+                if (summary) {
+                    summary.textContent = gridSummaryText;
+                    summary.classList.toggle('has-selection', !isMissing);
+                }
+            });
 
             // Update needs-selection classes
             ['', 'mobile-', 'modal-'].forEach(prefix => {
@@ -11687,8 +11760,6 @@
                     if (!isMissing) dim.classList.remove('needs-selection');
                     else dim.classList.add('needs-selection');
                 }
-                // Auto-collapse and update summary
-                checkAutoCollapse(person, 'dominanz', prefix);
             });
         }
 
@@ -11827,14 +11898,36 @@
         }
 
         /**
-         * Get summary text for orientierung selection
+         * Get summary text for orientierung selection (for header - shows 'fehlt' if nothing selected)
          */
         function getOrientierungSummary(person) {
             const primary = personDimensions[person].orientierung.primary;
             const secondary = personDimensions[person].orientierung.secondary;
 
             if (!primary) {
-                return 'fehlt: Identität';
+                return 'Orientierung fehlt';
+            }
+
+            const parts = [];
+            parts.push(primary + ' (I)');
+
+            if (secondary) {
+                parts.push(secondary + ' (G)');
+            }
+
+            return '✓ ' + parts.join(', ');
+        }
+
+        /**
+         * Get summary text for orientierung selection in grid (without 'fehlt' text)
+         * Returns selected values in green, or empty string if nothing selected
+         */
+        function getOrientierungGridSummary(person) {
+            const primary = personDimensions[person].orientierung.primary;
+            const secondary = personDimensions[person].orientierung.secondary;
+
+            if (!primary) {
+                return ''; // No 'fehlt' text for grid - only show selections
             }
 
             const parts = [];
@@ -11852,15 +11945,26 @@
          */
         function updateOrientierungSummary(person) {
             const summaryText = getOrientierungSummary(person);
+            const gridSummaryText = getOrientierungGridSummary(person);
             const isMissing = !personDimensions[person].orientierung.primary;
 
-            // Only update header element (not collapsed-summary inside dimension)
+            // Update header element (shows 'fehlt' if nothing selected)
             const headerId = `${person}-header-orientierung`;
             const header = document.getElementById(headerId);
             if (header) {
                 header.textContent = summaryText;
                 header.classList.toggle('missing', isMissing);
             }
+
+            // Update grid collapsed-summary (only shows selections in green, no 'fehlt')
+            ['', 'mobile-'].forEach(prefix => {
+                const summaryId = `${prefix}${person}-orientierung-summary`;
+                const summary = document.getElementById(summaryId);
+                if (summary) {
+                    summary.textContent = gridSummaryText;
+                    summary.classList.toggle('has-selection', !isMissing);
+                }
+            });
 
             // Update needs-selection classes
             ['', 'mobile-', 'modal-'].forEach(prefix => {
@@ -11869,8 +11973,6 @@
                     if (!isMissing) dim.classList.remove('needs-selection');
                     else dim.classList.add('needs-selection');
                 }
-                // Auto-collapse and update summary
-                checkAutoCollapse(person, 'orientierung', prefix);
             });
         }
 
