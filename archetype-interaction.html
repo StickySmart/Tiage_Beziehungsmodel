@@ -6305,6 +6305,8 @@
                     <button class="archetype-info-btn" onclick="showArchetypeInfo('ich')" title="Info zum Archetyp">INFO</button>
                 </div>
                 <div class="header-geschlecht-info" id="ich-header-geschlecht"></div>
+                <div class="header-geschlecht-info" id="ich-header-dominanz"></div>
+                <div class="header-geschlecht-info" id="ich-header-orientierung"></div>
                 <div class="column-dimensions">
                     <div class="compact-dimension needs-selection collapsible-dimension" data-dimension="ich-geschlecht-new">
                         <div class="compact-dimension-label"><span class="geschlecht-info-link" onclick="showGeschlechtInfoModal()">Geschlechtsidentität</span> <span class="dimension-info-icon" onclick="showGeschlechtInfoModal()">ℹ</span> <span id="ich-geschlecht-legend" class="geschlecht-legend" style="font-size: 10px; opacity: 0.7;">(<span class="legend-i">I</span>=Identität, <span class="legend-g">G</span>=Sekundär)</span></div>
@@ -6365,6 +6367,8 @@
                     <button class="archetype-info-btn" onclick="showArchetypeInfo('partner')" title="Info zum Archetyp">INFO</button>
                 </div>
                 <div class="header-geschlecht-info" id="partner-header-geschlecht"></div>
+                <div class="header-geschlecht-info" id="partner-header-dominanz"></div>
+                <div class="header-geschlecht-info" id="partner-header-orientierung"></div>
                 <div class="column-dimensions">
                     <div class="compact-dimension needs-selection collapsible-dimension" data-dimension="partner-geschlecht-new">
                         <div class="compact-dimension-label"><span class="geschlecht-info-link" onclick="showGeschlechtInfoModal()">Geschlechtsidentität</span> <span class="dimension-info-icon" onclick="showGeschlechtInfoModal()">ℹ</span> <span id="partner-geschlecht-legend" class="geschlecht-legend" style="font-size: 10px; opacity: 0.7;">(<span class="legend-i">I</span>=Identität, <span class="legend-g">G</span>=Sekundär)</span></div>
@@ -11434,29 +11438,19 @@
         }
 
         /**
-         * Update collapsed summary for geschlecht in all views
+         * Update header summary for geschlecht (only in header area, not in collapsed-summary)
          */
         function updateGeschlechtSummary(person) {
             const summaryText = getGeschlechtSummary(person);
             const isMissing = !personDimensions[person].geschlecht.primary;
 
-            // Update all summary elements for this person
-            const summaryIds = [
-                `${person}-geschlecht-summary`,
-                `mobile-${person}-geschlecht-summary`,
-                `${person}-header-geschlecht`
-            ];
-
-            summaryIds.forEach(id => {
-                const summary = document.getElementById(id);
-                if (summary) {
-                    summary.textContent = summaryText;
-                    // Add/remove missing class for header elements
-                    if (id.includes('header')) {
-                        summary.classList.toggle('missing', isMissing);
-                    }
-                }
-            });
+            // Only update header element (not collapsed-summary inside dimension)
+            const headerId = `${person}-header-geschlecht`;
+            const header = document.getElementById(headerId);
+            if (header) {
+                header.textContent = summaryText;
+                header.classList.toggle('missing', isMissing);
+            }
         }
 
         /**
@@ -11672,24 +11666,19 @@
         }
 
         /**
-         * Update collapsed summary for dominanz in all views
+         * Update header summary for dominanz (only in header area, not in collapsed-summary)
          */
         function updateDominanzSummary(person) {
             const summaryText = getDominanzSummary(person);
             const isMissing = !personDimensions[person].dominanz.primary;
 
-            // Update all summary elements for this person
-            const summaryIds = [
-                `${person}-dominanz-summary`,
-                `mobile-${person}-dominanz-summary`
-            ];
-
-            summaryIds.forEach(id => {
-                const summary = document.getElementById(id);
-                if (summary) {
-                    summary.textContent = summaryText;
-                }
-            });
+            // Only update header element (not collapsed-summary inside dimension)
+            const headerId = `${person}-header-dominanz`;
+            const header = document.getElementById(headerId);
+            if (header) {
+                header.textContent = summaryText;
+                header.classList.toggle('missing', isMissing);
+            }
 
             // Update needs-selection classes
             ['', 'mobile-', 'modal-'].forEach(prefix => {
@@ -11859,24 +11848,19 @@
         }
 
         /**
-         * Update collapsed summary for orientierung in all views
+         * Update header summary for orientierung (only in header area, not in collapsed-summary)
          */
         function updateOrientierungSummary(person) {
             const summaryText = getOrientierungSummary(person);
             const isMissing = !personDimensions[person].orientierung.primary;
 
-            // Update all summary elements for this person
-            const summaryIds = [
-                `${person}-orientierung-summary`,
-                `mobile-${person}-orientierung-summary`
-            ];
-
-            summaryIds.forEach(id => {
-                const summary = document.getElementById(id);
-                if (summary) {
-                    summary.textContent = summaryText;
-                }
-            });
+            // Only update header element (not collapsed-summary inside dimension)
+            const headerId = `${person}-header-orientierung`;
+            const header = document.getElementById(headerId);
+            if (header) {
+                header.textContent = summaryText;
+                header.classList.toggle('missing', isMissing);
+            }
 
             // Update needs-selection classes
             ['', 'mobile-', 'modal-'].forEach(prefix => {
@@ -15127,9 +15111,13 @@
             initComparisonLayout();
             initMobileLayout();
             initGeschlechtHoverEvents();
-            // Initialize geschlecht summary display
+            // Initialize all summary displays in header
             updateGeschlechtSummary('ich');
             updateGeschlechtSummary('partner');
+            updateDominanzSummary('ich');
+            updateDominanzSummary('partner');
+            updateOrientierungSummary('ich');
+            updateOrientierungSummary('partner');
         });
 
         // ========================================
