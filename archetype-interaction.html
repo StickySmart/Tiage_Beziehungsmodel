@@ -4954,6 +4954,60 @@
             margin-top: 8px;
         }
 
+        /* Score Cycle für Synthese Modal */
+        .synthese-score-cycle {
+            position: relative;
+            width: 100px;
+            height: 100px;
+            cursor: pointer;
+            transition: transform 0.2s ease;
+        }
+
+        .synthese-score-cycle:hover {
+            transform: scale(1.08);
+        }
+
+        .synthese-score-cycle svg {
+            width: 100%;
+            height: 100%;
+            transform: rotate(-90deg);
+        }
+
+        .synthese-score-cycle .score-bg {
+            fill: none;
+            stroke: rgba(255,255,255,0.1);
+            stroke-width: 8;
+        }
+
+        .synthese-score-cycle .score-progress {
+            fill: none;
+            stroke-width: 8;
+            stroke-linecap: round;
+            transition: stroke-dashoffset 0.5s ease, stroke 0.3s ease;
+        }
+
+        .synthese-score-cycle .score-value {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .synthese-score-cycle .score-label {
+            position: absolute;
+            bottom: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 10px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            white-space: nowrap;
+        }
+
         /* Tiage's Synthese Button in Quality Block - styled like partner-btn */
         .tiage-ansatz-btn {
             display: flex;
@@ -6406,6 +6460,17 @@
                     <div>
                         <div style="font-size: 11px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px;" id="pathosLogosCategory">Dynamische Qualität</div>
                         <div style="font-size: 14px; color: var(--text-primary); font-weight: 600;" id="pathosLogosSubtitle">Emotionale Verbindung</div>
+                    </div>
+                </div>
+                <!-- Score Cycle - klickbar für Pro/Contra Modal -->
+                <div style="display: flex; justify-content: center; margin-bottom: 20px;">
+                    <div class="synthese-score-cycle" id="syntheseScoreCycle" onclick="openProContraModal()" title="Klicken für Pro & Contra Details">
+                        <svg viewBox="0 0 100 100">
+                            <circle class="score-bg" cx="50" cy="50" r="42"></circle>
+                            <circle class="score-progress" id="syntheseScoreProgress" cx="50" cy="50" r="42" stroke-dasharray="264" stroke-dashoffset="264"></circle>
+                        </svg>
+                        <div class="score-value" id="syntheseScoreValue">0%</div>
+                        <div class="score-label">Score</div>
                     </div>
                 </div>
                 <!-- Archetype context with navigation -->
@@ -10115,6 +10180,57 @@
             if (score >= 70) return '#457B9D';  // Blau - Gut
             if (score >= 50) return '#f39c12';  // Orange - Mittel
             return '#e74c3c';                   // Rot - Herausfordernd
+        }
+
+        // Farbverlauf für Score Cycle: rot (0%) → gelb (50%) → grün (100%)
+        function getScoreGradientColor(score) {
+            // Clamp score between 0 and 100
+            score = Math.max(0, Math.min(100, score));
+
+            let r, g, b;
+
+            if (score <= 50) {
+                // Rot (0%) → Gelb (50%)
+                // Rot: rgb(231, 76, 60) → Gelb: rgb(241, 196, 15)
+                const t = score / 50;
+                r = Math.round(231 + (241 - 231) * t);
+                g = Math.round(76 + (196 - 76) * t);
+                b = Math.round(60 + (15 - 60) * t);
+            } else {
+                // Gelb (50%) → Grün (100%)
+                // Gelb: rgb(241, 196, 15) → Grün: rgb(46, 204, 113)
+                const t = (score - 50) / 50;
+                r = Math.round(241 + (46 - 241) * t);
+                g = Math.round(196 + (204 - 196) * t);
+                b = Math.round(15 + (113 - 15) * t);
+            }
+
+            return `rgb(${r}, ${g}, ${b})`;
+        }
+
+        // Update Score Cycle im Synthese Modal
+        function updateSyntheseScoreCycle() {
+            const scoreValueEl = document.getElementById('syntheseScoreValue');
+            const scoreProgressEl = document.getElementById('syntheseScoreProgress');
+
+            if (!scoreValueEl || !scoreProgressEl) return;
+
+            // Get current score from resultPercentage
+            const percentage = document.getElementById('resultPercentage');
+            const currentScore = percentage ? parseInt(percentage.textContent) || 0 : 0;
+
+            // Update value display
+            scoreValueEl.textContent = currentScore + '%';
+
+            // Update circle progress (circumference = 2 * PI * r = 2 * 3.14159 * 42 ≈ 264)
+            const circumference = 264;
+            const offset = circumference - (currentScore / 100) * circumference;
+            scoreProgressEl.style.strokeDashoffset = offset;
+
+            // Update color based on score (rot → gelb → grün)
+            const color = getScoreGradientColor(currentScore);
+            scoreProgressEl.style.stroke = color;
+            scoreValueEl.style.color = color;
         }
 
         function getBarClass(value) {
@@ -16679,6 +16795,9 @@
             // Show the selected type
             showPathosLogosContent(type);
 
+            // Update Score Cycle
+            updateSyntheseScoreCycle();
+
             modal.classList.add('active');
             history.pushState({ mobilePage: currentMobilePage, modal: 'pathoslogos' }, '', `#seite${currentMobilePage}-pathoslogos`);
         }
@@ -16898,6 +17017,9 @@
             saveSelectionToStorage();
             if (typeof updateComparisonView === 'function') updateComparisonView();
             if (typeof updateMobileCardsContent === 'function') updateMobileCardsContent();
+
+            // Update Score Cycle with new score
+            updateSyntheseScoreCycle();
         }
 
         function getTiageTheoryContent() {
