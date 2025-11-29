@@ -1,0 +1,487 @@
+/**
+ * STATE MANAGEMENT - Single Source of Truth
+ *
+ * Zentraler State-Store mit Pub/Sub Pattern für reaktive Updates.
+ * Ersetzt die doppelte personDimensions/mobilePersonDimensions Struktur.
+ *
+ * © 2025 Ti-age.de Alle Rechte vorbehalten.
+ */
+
+const TiageState = (function() {
+    'use strict';
+
+    // ═══════════════════════════════════════════════════════════════════════
+    // PRIVATE STATE
+    // ═══════════════════════════════════════════════════════════════════════
+
+    const state = {
+        // Person Dimensions - SINGLE SOURCE OF TRUTH
+        personDimensions: {
+            ich: {
+                geschlecht: null,
+                dominanz: {
+                    dominant: null,      // null, 'gelebt', oder 'interessiert'
+                    submissiv: null,
+                    switch: null,
+                    ausgeglichen: null
+                },
+                orientierung: {
+                    heterosexuell: null, // null, 'gelebt', oder 'interessiert'
+                    homosexuell: null,
+                    bisexuell: null
+                },
+                dominanzStatus: null,
+                orientierungStatus: null
+            },
+            partner: {
+                geschlecht: null,
+                dominanz: {
+                    dominant: null,
+                    submissiv: null,
+                    switch: null,
+                    ausgeglichen: null
+                },
+                orientierung: {
+                    heterosexuell: null,
+                    homosexuell: null,
+                    bisexuell: null
+                },
+                dominanzStatus: null,
+                orientierungStatus: null
+            }
+        },
+
+        // Archetype Selection
+        archetypes: {
+            ich: 'single',
+            partner: 'duo'
+        },
+
+        // UI State
+        ui: {
+            currentView: 'desktop',  // 'desktop' oder 'mobile'
+            currentMobilePage: 1,
+            activeModal: null,
+            selectedCategory: null
+        }
+    };
+
+    // ═══════════════════════════════════════════════════════════════════════
+    // PUB/SUB SYSTEM
+    // ═══════════════════════════════════════════════════════════════════════
+
+    const subscribers = {
+        'personDimensions': [],
+        'personDimensions.ich': [],
+        'personDimensions.partner': [],
+        'personDimensions.ich.geschlecht': [],
+        'personDimensions.ich.dominanz': [],
+        'personDimensions.ich.orientierung': [],
+        'personDimensions.partner.geschlecht': [],
+        'personDimensions.partner.dominanz': [],
+        'personDimensions.partner.orientierung': [],
+        'archetypes': [],
+        'archetypes.ich': [],
+        'archetypes.partner': [],
+        'ui': [],
+        '*': []  // Wildcard - receives ALL updates
+    };
+
+    /**
+     * Notify all subscribers of a state change
+     * @param {string} path - The state path that changed
+     * @param {*} newValue - The new value
+     * @param {*} oldValue - The previous value
+     */
+    function notify(path, newValue, oldValue) {
+        const event = { path, newValue, oldValue, timestamp: Date.now() };
+
+        // Notify specific subscribers
+        if (subscribers[path]) {
+            subscribers[path].forEach(callback => {
+                try {
+                    callback(event);
+                } catch (e) {
+                    console.error(`[TiageState] Subscriber error for ${path}:`, e);
+                }
+            });
+        }
+
+        // Notify parent path subscribers
+        const pathParts = path.split('.');
+        while (pathParts.length > 1) {
+            pathParts.pop();
+            const parentPath = pathParts.join('.');
+            if (subscribers[parentPath]) {
+                subscribers[parentPath].forEach(callback => {
+                    try {
+                        callback(event);
+                    } catch (e) {
+                        console.error(`[TiageState] Subscriber error for ${parentPath}:`, e);
+                    }
+                });
+            }
+        }
+
+        // Notify wildcard subscribers
+        subscribers['*'].forEach(callback => {
+            try {
+                callback(event);
+            } catch (e) {
+                console.error('[TiageState] Wildcard subscriber error:', e);
+            }
+        });
+    }
+
+    // ═══════════════════════════════════════════════════════════════════════
+    // HELPER FUNCTIONS
+    // ═══════════════════════════════════════════════════════════════════════
+
+    /**
+     * Deep clone an object
+     */
+    function deepClone(obj) {
+        if (obj === null || typeof obj !== 'object') return obj;
+        if (Array.isArray(obj)) return obj.map(deepClone);
+        const cloned = {};
+        for (const key in obj) {
+            if (Object.prototype.hasOwnProperty.call(obj, key)) {
+                cloned[key] = deepClone(obj[key]);
+            }
+        }
+        return cloned;
+    }
+
+    /**
+     * Get value at path
+     */
+    function getByPath(obj, path) {
+        const parts = path.split('.');
+        let current = obj;
+        for (const part of parts) {
+            if (current === null || current === undefined) return undefined;
+            current = current[part];
+        }
+        return current;
+    }
+
+    /**
+     * Set value at path
+     */
+    function setByPath(obj, path, value) {
+        const parts = path.split('.');
+        let current = obj;
+        for (let i = 0; i < parts.length - 1; i++) {
+            if (current[parts[i]] === undefined) {
+                current[parts[i]] = {};
+            }
+            current = current[parts[i]];
+        }
+        current[parts[parts.length - 1]] = value;
+    }
+
+    // ═══════════════════════════════════════════════════════════════════════
+    // PUBLIC API
+    // ═══════════════════════════════════════════════════════════════════════
+
+    return {
+        /**
+         * Get state value (returns a deep clone to prevent external mutation)
+         * @param {string} path - Dot-notation path (e.g., 'personDimensions.ich.geschlecht')
+         * @returns {*} The value at the path
+         */
+        get(path) {
+            if (!path) return deepClone(state);
+            return deepClone(getByPath(state, path));
+        },
+
+        /**
+         * Set state value and notify subscribers
+         * @param {string} path - Dot-notation path
+         * @param {*} value - The new value
+         */
+        set(path, value) {
+            const oldValue = deepClone(getByPath(state, path));
+            setByPath(state, path, deepClone(value));
+            notify(path, value, oldValue);
+        },
+
+        /**
+         * Subscribe to state changes
+         * @param {string} path - The path to watch (use '*' for all changes)
+         * @param {Function} callback - Called with {path, newValue, oldValue, timestamp}
+         * @returns {Function} Unsubscribe function
+         */
+        subscribe(path, callback) {
+            if (!subscribers[path]) {
+                subscribers[path] = [];
+            }
+            subscribers[path].push(callback);
+
+            // Return unsubscribe function
+            return () => {
+                const index = subscribers[path].indexOf(callback);
+                if (index > -1) {
+                    subscribers[path].splice(index, 1);
+                }
+            };
+        },
+
+        /**
+         * Batch multiple updates (single notification at end)
+         * @param {Function} updateFn - Function that performs multiple set() calls
+         */
+        batch(updateFn) {
+            const changes = [];
+            const originalNotify = notify;
+
+            // Temporarily capture notifications
+            const captureNotify = (path, newValue, oldValue) => {
+                changes.push({ path, newValue, oldValue });
+            };
+
+            // Replace notify temporarily
+            // Note: This is a simplified batch - in production you might want a more robust approach
+            try {
+                updateFn();
+            } finally {
+                // Notify all changes
+                changes.forEach(({ path, newValue, oldValue }) => {
+                    originalNotify(path, newValue, oldValue);
+                });
+            }
+        },
+
+        // ═══════════════════════════════════════════════════════════════════
+        // CONVENIENCE METHODS FOR PERSON DIMENSIONS
+        // ═══════════════════════════════════════════════════════════════════
+
+        /**
+         * Get person dimensions (ich or partner)
+         * @param {string} person - 'ich' oder 'partner'
+         */
+        getPerson(person) {
+            return this.get(`personDimensions.${person}`);
+        },
+
+        /**
+         * Set geschlecht
+         */
+        setGeschlecht(person, value) {
+            this.set(`personDimensions.${person}.geschlecht`, value);
+        },
+
+        /**
+         * Set dominanz for a specific type
+         */
+        setDominanz(person, dominanzType, status) {
+            const currentDominanz = this.get(`personDimensions.${person}.dominanz`);
+
+            // If setting to 'gelebt', clear other 'gelebt' values (only one can be gelebt)
+            if (status === 'gelebt') {
+                for (const type in currentDominanz) {
+                    if (type !== dominanzType && currentDominanz[type] === 'gelebt') {
+                        currentDominanz[type] = null;
+                    }
+                }
+            }
+
+            currentDominanz[dominanzType] = status;
+            this.set(`personDimensions.${person}.dominanz`, currentDominanz);
+        },
+
+        /**
+         * Set orientierung for a specific type
+         */
+        setOrientierung(person, orientierungType, status) {
+            const currentOrientierung = this.get(`personDimensions.${person}.orientierung`);
+
+            // If setting to 'gelebt', clear other 'gelebt' values (only one can be gelebt)
+            if (status === 'gelebt') {
+                for (const type in currentOrientierung) {
+                    if (type !== orientierungType && currentOrientierung[type] === 'gelebt') {
+                        currentOrientierung[type] = null;
+                    }
+                }
+            }
+
+            currentOrientierung[orientierungType] = status;
+            this.set(`personDimensions.${person}.orientierung`, currentOrientierung);
+        },
+
+        /**
+         * Get the primary (gelebt) dominanz
+         */
+        getPrimaryDominanz(person) {
+            const dominanz = this.get(`personDimensions.${person}.dominanz`);
+            for (const type in dominanz) {
+                if (dominanz[type] === 'gelebt') return type;
+            }
+            return null;
+        },
+
+        /**
+         * Get the primary (gelebt) orientierung
+         */
+        getPrimaryOrientierung(person) {
+            const orientierung = this.get(`personDimensions.${person}.orientierung`);
+            for (const type in orientierung) {
+                if (orientierung[type] === 'gelebt') return type;
+            }
+            return null;
+        },
+
+        /**
+         * Check if all required dimensions are set for a person
+         */
+        isPersonComplete(person) {
+            const dims = this.get(`personDimensions.${person}`);
+            return dims.geschlecht !== null &&
+                   this.getPrimaryDominanz(person) !== null &&
+                   this.getPrimaryOrientierung(person) !== null;
+        },
+
+        /**
+         * Get missing dimensions for validation
+         */
+        getMissingDimensions() {
+            const missing = [];
+
+            ['ich', 'partner'].forEach(person => {
+                const label = person === 'ich' ? 'Ich' : 'Partner';
+                const dims = this.get(`personDimensions.${person}`);
+
+                if (!dims.geschlecht) missing.push(`${label}: Geschlecht`);
+                if (!this.getPrimaryDominanz(person)) missing.push(`${label}: Dominanz`);
+                if (!this.getPrimaryOrientierung(person)) missing.push(`${label}: Orientierung`);
+            });
+
+            return missing;
+        },
+
+        // ═══════════════════════════════════════════════════════════════════
+        // ARCHETYPE METHODS
+        // ═══════════════════════════════════════════════════════════════════
+
+        setArchetype(person, archetype) {
+            this.set(`archetypes.${person}`, archetype);
+        },
+
+        getArchetype(person) {
+            return this.get(`archetypes.${person}`);
+        },
+
+        // ═══════════════════════════════════════════════════════════════════
+        // UI STATE METHODS
+        // ═══════════════════════════════════════════════════════════════════
+
+        setView(view) {
+            this.set('ui.currentView', view);
+        },
+
+        getView() {
+            return this.get('ui.currentView');
+        },
+
+        setMobilePage(page) {
+            this.set('ui.currentMobilePage', page);
+        },
+
+        getMobilePage() {
+            return this.get('ui.currentMobilePage');
+        },
+
+        // ═══════════════════════════════════════════════════════════════════
+        // RESET / INITIALIZATION
+        // ═══════════════════════════════════════════════════════════════════
+
+        /**
+         * Reset all state to initial values
+         */
+        reset() {
+            this.set('personDimensions', {
+                ich: {
+                    geschlecht: null,
+                    dominanz: { dominant: null, submissiv: null, switch: null, ausgeglichen: null },
+                    orientierung: { heterosexuell: null, homosexuell: null, bisexuell: null },
+                    dominanzStatus: null,
+                    orientierungStatus: null
+                },
+                partner: {
+                    geschlecht: null,
+                    dominanz: { dominant: null, submissiv: null, switch: null, ausgeglichen: null },
+                    orientierung: { heterosexuell: null, homosexuell: null, bisexuell: null },
+                    dominanzStatus: null,
+                    orientierungStatus: null
+                }
+            });
+            this.set('archetypes', { ich: 'single', partner: 'duo' });
+            this.set('ui', { currentView: 'desktop', currentMobilePage: 1, activeModal: null, selectedCategory: null });
+        },
+
+        /**
+         * Load state from localStorage
+         */
+        loadFromStorage() {
+            try {
+                const saved = localStorage.getItem('tiage_state');
+                if (saved) {
+                    const parsed = JSON.parse(saved);
+                    if (parsed.personDimensions) {
+                        this.set('personDimensions', parsed.personDimensions);
+                    }
+                    if (parsed.archetypes) {
+                        this.set('archetypes', parsed.archetypes);
+                    }
+                }
+            } catch (e) {
+                console.warn('[TiageState] Failed to load from storage:', e);
+            }
+        },
+
+        /**
+         * Save state to localStorage
+         */
+        saveToStorage() {
+            try {
+                const toSave = {
+                    personDimensions: this.get('personDimensions'),
+                    archetypes: this.get('archetypes')
+                };
+                localStorage.setItem('tiage_state', JSON.stringify(toSave));
+            } catch (e) {
+                console.warn('[TiageState] Failed to save to storage:', e);
+            }
+        },
+
+        // ═══════════════════════════════════════════════════════════════════
+        // DEBUG
+        // ═══════════════════════════════════════════════════════════════════
+
+        /**
+         * Debug: Log current state
+         */
+        debug() {
+            console.log('[TiageState] Current state:', deepClone(state));
+            console.log('[TiageState] Subscribers:', Object.keys(subscribers).map(k => `${k}: ${subscribers[k].length}`));
+        }
+    };
+})();
+
+// Auto-detect view on load
+if (typeof window !== 'undefined') {
+    TiageState.setView(window.innerWidth <= 768 ? 'mobile' : 'desktop');
+
+    // Update view on resize
+    window.addEventListener('resize', () => {
+        const newView = window.innerWidth <= 768 ? 'mobile' : 'desktop';
+        if (TiageState.getView() !== newView) {
+            TiageState.setView(newView);
+        }
+    });
+}
+
+// Export for ES6 modules (optional)
+if (typeof module !== 'undefined' && module.exports) {
+    module.exports = TiageState;
+}

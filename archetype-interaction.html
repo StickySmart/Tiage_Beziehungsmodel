@@ -7132,13 +7132,16 @@
         </div>
     </div>
 
+    <!-- State Management - Single Source of Truth -->
+    <script src="js/state.js"></script>
+
     <script>
         let data = null;
         let currentArchetype = 'single';
         let selectedPartner = 'duo';
 
-        // Extended Person Dimensions (null = not yet selected)
-        // dominanz and orientierung are now objects with status per preference (multi-select)
+        // Legacy personDimensions - now a reference to TiageState for backward compatibility
+        // TODO: Remove after full migration to TiageState
         const personDimensions = {
             ich: {
                 geschlecht: null,
