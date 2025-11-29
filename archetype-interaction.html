@@ -11538,6 +11538,12 @@
          * - Click on Secondary = Clear only secondary
          */
         function handleDominanzClick(person, dominanzValue, btn) {
+            // Ensure dominanz has correct structure (migration from old format)
+            if (!personDimensions[person].dominanz ||
+                !('primary' in personDimensions[person].dominanz)) {
+                personDimensions[person].dominanz = { primary: null, secondary: null };
+            }
+
             const currentPrimary = personDimensions[person].dominanz.primary;
             const currentSecondary = personDimensions[person].dominanz.secondary;
 
@@ -11548,8 +11554,8 @@
             } else if (dominanzValue === currentSecondary) {
                 // Click on Secondary: Clear only secondary
                 personDimensions[person].dominanz.secondary = null;
-            } else if (currentPrimary === null) {
-                // No primary yet: Set as primary
+            } else if (!currentPrimary) {
+                // No primary yet: Set as primary (handles both null and undefined)
                 personDimensions[person].dominanz.primary = dominanzValue;
             } else {
                 // Primary exists, different value clicked: Set as secondary
@@ -11719,6 +11725,12 @@
          * - Click on Secondary = Clear only secondary
          */
         function handleOrientierungClick(person, orientierungValue, btn) {
+            // Ensure orientierung has correct structure (migration from old format)
+            if (!personDimensions[person].orientierung ||
+                !('primary' in personDimensions[person].orientierung)) {
+                personDimensions[person].orientierung = { primary: null, secondary: null };
+            }
+
             const currentPrimary = personDimensions[person].orientierung.primary;
             const currentSecondary = personDimensions[person].orientierung.secondary;
 
@@ -11729,8 +11741,8 @@
             } else if (orientierungValue === currentSecondary) {
                 // Click on Secondary: Clear only secondary
                 personDimensions[person].orientierung.secondary = null;
-            } else if (currentPrimary === null) {
-                // No primary yet: Set as primary
+            } else if (!currentPrimary) {
+                // No primary yet: Set as primary (handles both null and undefined)
                 personDimensions[person].orientierung.primary = orientierungValue;
             } else {
                 // Primary exists, different value clicked: Set as secondary
@@ -16914,148 +16926,112 @@
                     }
 
                     if (selection.ich.dominanz) {
-                        // Handle new multi-select object format
-                        if (typeof selection.ich.dominanz === 'object') {
-                            mobilePersonDimensions.ich.dominanz = selection.ich.dominanz;
+                        // Handle new primary/secondary format
+                        if (typeof selection.ich.dominanz === 'object' && 'primary' in selection.ich.dominanz) {
+                            // New format: { primary: 'dominant', secondary: null }
                             personDimensions.ich.dominanz = selection.ich.dominanz;
-
-                            // Restore Desktop & Mobile UI checkboxes and status dropdowns
-                            const shortIdMap = { 'dominant': 'dom', 'submissiv': 'sub', 'switch': 'sw', 'ausgeglichen': 'aus' };
-                            let hasSelection = false;
-                            for (const [type, status] of Object.entries(selection.ich.dominanz)) {
-                                if (status) {
-                                    hasSelection = true;
-                                    const shortId = shortIdMap[type];
-                                    // Desktop checkbox
-                                    const checkbox = document.getElementById('ich-d-' + shortId);
-                                    if (checkbox) checkbox.checked = true;
-                                    // Desktop status dropdown
-                                    const statusSelect = document.getElementById('ich-d-' + shortId + '-status');
-                                    if (statusSelect) {
-                                        statusSelect.style.display = 'inline-block';
-                                        statusSelect.value = status;
-                                    }
-                                    // Mobile checkbox
-                                    const mobileCheckbox = document.getElementById('m-ich-d-' + shortId);
-                                    if (mobileCheckbox) mobileCheckbox.checked = true;
-                                    // Mobile status dropdown
-                                    const mobileStatusSelect = document.getElementById('m-ich-d-' + shortId + '-status');
-                                    if (mobileStatusSelect) {
-                                        mobileStatusSelect.style.display = 'inline-block';
-                                        mobileStatusSelect.value = status;
-                                    }
-                                }
+                            if (typeof mobilePersonDimensions !== 'undefined') {
+                                mobilePersonDimensions.ich.dominanz = selection.ich.dominanz;
                             }
-                            if (hasSelection) {
+                            // Sync UI
+                            if (typeof syncDominanzUI === 'function') {
+                                syncDominanzUI('ich');
+                            }
+                            if (selection.ich.dominanz.primary) {
                                 const dimension = document.querySelector('[data-dimension="ich-dominanz-multi"]');
                                 if (dimension) dimension.classList.remove('needs-selection');
-                                const mobileDimension = document.querySelector('[data-dimension="mobile-ich-dominanz-multi"]');
-                                if (mobileDimension) mobileDimension.classList.remove('needs-selection');
+                            }
+                        } else if (typeof selection.ich.dominanz === 'object') {
+                            // Old format: { dominant: 'gelebt', submissiv: null, ... }
+                            // Convert to new format
+                            let primary = null;
+                            let secondary = null;
+                            for (const [type, status] of Object.entries(selection.ich.dominanz)) {
+                                if (status === 'gelebt' && !primary) {
+                                    primary = type;
+                                } else if (status === 'interessiert' && !secondary) {
+                                    secondary = type;
+                                }
+                            }
+                            personDimensions.ich.dominanz = { primary, secondary };
+                            if (typeof mobilePersonDimensions !== 'undefined') {
+                                mobilePersonDimensions.ich.dominanz = { primary, secondary };
+                            }
+                            // Sync UI
+                            if (typeof syncDominanzUI === 'function') {
+                                syncDominanzUI('ich');
+                            }
+                            if (primary) {
+                                const dimension = document.querySelector('[data-dimension="ich-dominanz-multi"]');
+                                if (dimension) dimension.classList.remove('needs-selection');
                             }
                         } else {
-                            // Legacy: string format - convert to new object format
-                            const dominanzObj = { dominant: null, submissiv: null, switch: null, ausgeglichen: null };
-                            dominanzObj[selection.ich.dominanz] = selection.ich.dominanzStatus || 'gelebt';
-                            mobilePersonDimensions.ich.dominanz = dominanzObj;
-                            personDimensions.ich.dominanz = dominanzObj;
-
-                            const shortIdMap = { 'dominant': 'dom', 'submissiv': 'sub', 'switch': 'sw', 'ausgeglichen': 'aus' };
-                            const shortId = shortIdMap[selection.ich.dominanz];
-                            if (shortId) {
-                                // Desktop
-                                const checkbox = document.getElementById('ich-d-' + shortId);
-                                if (checkbox) checkbox.checked = true;
-                                const statusSelect = document.getElementById('ich-d-' + shortId + '-status');
-                                if (statusSelect) {
-                                    statusSelect.style.display = 'inline-block';
-                                    statusSelect.value = selection.ich.dominanzStatus || 'gelebt';
-                                }
-                                // Mobile
-                                const mobileCheckbox = document.getElementById('m-ich-d-' + shortId);
-                                if (mobileCheckbox) mobileCheckbox.checked = true;
-                                const mobileStatusSelect = document.getElementById('m-ich-d-' + shortId + '-status');
-                                if (mobileStatusSelect) {
-                                    mobileStatusSelect.style.display = 'inline-block';
-                                    mobileStatusSelect.value = selection.ich.dominanzStatus || 'gelebt';
-                                }
+                            // Legacy: string format - convert to new primary/secondary format
+                            personDimensions.ich.dominanz = { primary: selection.ich.dominanz, secondary: null };
+                            if (typeof mobilePersonDimensions !== 'undefined') {
+                                mobilePersonDimensions.ich.dominanz = { primary: selection.ich.dominanz, secondary: null };
+                            }
+                            // Sync UI
+                            if (typeof syncDominanzUI === 'function') {
+                                syncDominanzUI('ich');
                             }
                             const dimension = document.querySelector('[data-dimension="ich-dominanz-multi"]');
                             if (dimension) dimension.classList.remove('needs-selection');
-                            const mobileDimension = document.querySelector('[data-dimension="mobile-ich-dominanz-multi"]');
-                            if (mobileDimension) mobileDimension.classList.remove('needs-selection');
                         }
                     }
 
                     if (selection.ich.orientierung) {
-                        // Handle new multi-select object format
-                        if (typeof selection.ich.orientierung === 'object') {
-                            mobilePersonDimensions.ich.orientierung = selection.ich.orientierung;
+                        // Handle new primary/secondary format
+                        if (typeof selection.ich.orientierung === 'object' && 'primary' in selection.ich.orientierung) {
+                            // New format: { primary: 'heterosexuell', secondary: null }
                             personDimensions.ich.orientierung = selection.ich.orientierung;
-
-                            // Restore Desktop & Mobile UI checkboxes and status dropdowns
-                            const shortIdMap = { 'heterosexuell': 'het', 'homosexuell': 'hom', 'bisexuell': 'bi' };
-                            let hasSelection = false;
-                            for (const [type, status] of Object.entries(selection.ich.orientierung)) {
-                                if (status) {
-                                    hasSelection = true;
-                                    const shortId = shortIdMap[type];
-                                    // Desktop checkbox
-                                    const checkbox = document.getElementById('ich-o-' + shortId);
-                                    if (checkbox) checkbox.checked = true;
-                                    // Desktop status dropdown
-                                    const statusSelect = document.getElementById('ich-o-' + shortId + '-status');
-                                    if (statusSelect) {
-                                        statusSelect.style.display = 'inline-block';
-                                        statusSelect.value = status;
-                                    }
-                                    // Mobile checkbox
-                                    const mobileCheckbox = document.getElementById('m-ich-o-' + shortId);
-                                    if (mobileCheckbox) mobileCheckbox.checked = true;
-                                    // Mobile status dropdown
-                                    const mobileStatusSelect = document.getElementById('m-ich-o-' + shortId + '-status');
-                                    if (mobileStatusSelect) {
-                                        mobileStatusSelect.style.display = 'inline-block';
-                                        mobileStatusSelect.value = status;
-                                    }
-                                }
+                            if (typeof mobilePersonDimensions !== 'undefined') {
+                                mobilePersonDimensions.ich.orientierung = selection.ich.orientierung;
                             }
-                            if (hasSelection) {
+                            // Sync UI
+                            if (typeof syncOrientierungUI === 'function') {
+                                syncOrientierungUI('ich');
+                            }
+                            if (selection.ich.orientierung.primary) {
                                 const dimension = document.querySelector('[data-dimension="ich-orientierung-multi"]');
                                 if (dimension) dimension.classList.remove('needs-selection');
-                                const mobileDimension = document.querySelector('[data-dimension="mobile-ich-orientierung-multi"]');
-                                if (mobileDimension) mobileDimension.classList.remove('needs-selection');
+                            }
+                        } else if (typeof selection.ich.orientierung === 'object') {
+                            // Old format: { heterosexuell: 'gelebt', homosexuell: null, ... }
+                            // Convert to new format
+                            let primary = null;
+                            let secondary = null;
+                            for (const [type, status] of Object.entries(selection.ich.orientierung)) {
+                                if (status === 'gelebt' && !primary) {
+                                    primary = type;
+                                } else if (status === 'interessiert' && !secondary) {
+                                    secondary = type;
+                                }
+                            }
+                            personDimensions.ich.orientierung = { primary, secondary };
+                            if (typeof mobilePersonDimensions !== 'undefined') {
+                                mobilePersonDimensions.ich.orientierung = { primary, secondary };
+                            }
+                            // Sync UI
+                            if (typeof syncOrientierungUI === 'function') {
+                                syncOrientierungUI('ich');
+                            }
+                            if (primary) {
+                                const dimension = document.querySelector('[data-dimension="ich-orientierung-multi"]');
+                                if (dimension) dimension.classList.remove('needs-selection');
                             }
                         } else {
-                            // Legacy: string format - convert to new object format
-                            const orientierungObj = { heterosexuell: null, homosexuell: null, bisexuell: null };
-                            orientierungObj[selection.ich.orientierung] = selection.ich.orientierungStatus || 'gelebt';
-                            mobilePersonDimensions.ich.orientierung = orientierungObj;
-                            personDimensions.ich.orientierung = orientierungObj;
-
-                            const shortIdMap = { 'heterosexuell': 'het', 'homosexuell': 'hom', 'bisexuell': 'bi' };
-                            const shortId = shortIdMap[selection.ich.orientierung];
-                            if (shortId) {
-                                // Desktop
-                                const checkbox = document.getElementById('ich-o-' + shortId);
-                                if (checkbox) checkbox.checked = true;
-                                const statusSelect = document.getElementById('ich-o-' + shortId + '-status');
-                                if (statusSelect) {
-                                    statusSelect.style.display = 'inline-block';
-                                    statusSelect.value = selection.ich.orientierungStatus || 'gelebt';
-                                }
-                                // Mobile
-                                const mobileCheckbox = document.getElementById('m-ich-o-' + shortId);
-                                if (mobileCheckbox) mobileCheckbox.checked = true;
-                                const mobileStatusSelect = document.getElementById('m-ich-o-' + shortId + '-status');
-                                if (mobileStatusSelect) {
-                                    mobileStatusSelect.style.display = 'inline-block';
-                                    mobileStatusSelect.value = selection.ich.orientierungStatus || 'gelebt';
-                                }
+                            // Legacy: string format - convert to new primary/secondary format
+                            personDimensions.ich.orientierung = { primary: selection.ich.orientierung, secondary: null };
+                            if (typeof mobilePersonDimensions !== 'undefined') {
+                                mobilePersonDimensions.ich.orientierung = { primary: selection.ich.orientierung, secondary: null };
+                            }
+                            // Sync UI
+                            if (typeof syncOrientierungUI === 'function') {
+                                syncOrientierungUI('ich');
                             }
                             const dimension = document.querySelector('[data-dimension="ich-orientierung-multi"]');
                             if (dimension) dimension.classList.remove('needs-selection');
-                            const mobileDimension = document.querySelector('[data-dimension="mobile-ich-orientierung-multi"]');
-                            if (mobileDimension) mobileDimension.classList.remove('needs-selection');
                         }
                     }
                 }
@@ -17087,148 +17063,112 @@
                     }
 
                     if (selection.partner.dominanz) {
-                        // Handle new multi-select object format
-                        if (typeof selection.partner.dominanz === 'object') {
-                            mobilePersonDimensions.partner.dominanz = selection.partner.dominanz;
+                        // Handle new primary/secondary format
+                        if (typeof selection.partner.dominanz === 'object' && 'primary' in selection.partner.dominanz) {
+                            // New format: { primary: 'dominant', secondary: null }
                             personDimensions.partner.dominanz = selection.partner.dominanz;
-
-                            // Restore Desktop & Mobile UI checkboxes and status dropdowns
-                            const shortIdMap = { 'dominant': 'dom', 'submissiv': 'sub', 'switch': 'sw', 'ausgeglichen': 'aus' };
-                            let hasSelection = false;
-                            for (const [type, status] of Object.entries(selection.partner.dominanz)) {
-                                if (status) {
-                                    hasSelection = true;
-                                    const shortId = shortIdMap[type];
-                                    // Desktop checkbox
-                                    const checkbox = document.getElementById('partner-d-' + shortId);
-                                    if (checkbox) checkbox.checked = true;
-                                    // Desktop status dropdown
-                                    const statusSelect = document.getElementById('partner-d-' + shortId + '-status');
-                                    if (statusSelect) {
-                                        statusSelect.style.display = 'inline-block';
-                                        statusSelect.value = status;
-                                    }
-                                    // Mobile checkbox
-                                    const mobileCheckbox = document.getElementById('m-partner-d-' + shortId);
-                                    if (mobileCheckbox) mobileCheckbox.checked = true;
-                                    // Mobile status dropdown
-                                    const mobileStatusSelect = document.getElementById('m-partner-d-' + shortId + '-status');
-                                    if (mobileStatusSelect) {
-                                        mobileStatusSelect.style.display = 'inline-block';
-                                        mobileStatusSelect.value = status;
-                                    }
-                                }
+                            if (typeof mobilePersonDimensions !== 'undefined') {
+                                mobilePersonDimensions.partner.dominanz = selection.partner.dominanz;
                             }
-                            if (hasSelection) {
+                            // Sync UI
+                            if (typeof syncDominanzUI === 'function') {
+                                syncDominanzUI('partner');
+                            }
+                            if (selection.partner.dominanz.primary) {
                                 const dimension = document.querySelector('[data-dimension="partner-dominanz-multi"]');
                                 if (dimension) dimension.classList.remove('needs-selection');
-                                const mobileDimension = document.querySelector('[data-dimension="mobile-partner-dominanz-multi"]');
-                                if (mobileDimension) mobileDimension.classList.remove('needs-selection');
+                            }
+                        } else if (typeof selection.partner.dominanz === 'object') {
+                            // Old format: { dominant: 'gelebt', submissiv: null, ... }
+                            // Convert to new format
+                            let primary = null;
+                            let secondary = null;
+                            for (const [type, status] of Object.entries(selection.partner.dominanz)) {
+                                if (status === 'gelebt' && !primary) {
+                                    primary = type;
+                                } else if (status === 'interessiert' && !secondary) {
+                                    secondary = type;
+                                }
+                            }
+                            personDimensions.partner.dominanz = { primary, secondary };
+                            if (typeof mobilePersonDimensions !== 'undefined') {
+                                mobilePersonDimensions.partner.dominanz = { primary, secondary };
+                            }
+                            // Sync UI
+                            if (typeof syncDominanzUI === 'function') {
+                                syncDominanzUI('partner');
+                            }
+                            if (primary) {
+                                const dimension = document.querySelector('[data-dimension="partner-dominanz-multi"]');
+                                if (dimension) dimension.classList.remove('needs-selection');
                             }
                         } else {
-                            // Legacy: string format - convert to new object format
-                            const dominanzObj = { dominant: null, submissiv: null, switch: null, ausgeglichen: null };
-                            dominanzObj[selection.partner.dominanz] = selection.partner.dominanzStatus || 'gelebt';
-                            mobilePersonDimensions.partner.dominanz = dominanzObj;
-                            personDimensions.partner.dominanz = dominanzObj;
-
-                            const shortIdMap = { 'dominant': 'dom', 'submissiv': 'sub', 'switch': 'sw', 'ausgeglichen': 'aus' };
-                            const shortId = shortIdMap[selection.partner.dominanz];
-                            if (shortId) {
-                                // Desktop
-                                const checkbox = document.getElementById('partner-d-' + shortId);
-                                if (checkbox) checkbox.checked = true;
-                                const statusSelect = document.getElementById('partner-d-' + shortId + '-status');
-                                if (statusSelect) {
-                                    statusSelect.style.display = 'inline-block';
-                                    statusSelect.value = selection.partner.dominanzStatus || 'gelebt';
-                                }
-                                // Mobile
-                                const mobileCheckbox = document.getElementById('m-partner-d-' + shortId);
-                                if (mobileCheckbox) mobileCheckbox.checked = true;
-                                const mobileStatusSelect = document.getElementById('m-partner-d-' + shortId + '-status');
-                                if (mobileStatusSelect) {
-                                    mobileStatusSelect.style.display = 'inline-block';
-                                    mobileStatusSelect.value = selection.partner.dominanzStatus || 'gelebt';
-                                }
+                            // Legacy: string format - convert to new primary/secondary format
+                            personDimensions.partner.dominanz = { primary: selection.partner.dominanz, secondary: null };
+                            if (typeof mobilePersonDimensions !== 'undefined') {
+                                mobilePersonDimensions.partner.dominanz = { primary: selection.partner.dominanz, secondary: null };
+                            }
+                            // Sync UI
+                            if (typeof syncDominanzUI === 'function') {
+                                syncDominanzUI('partner');
                             }
                             const dimension = document.querySelector('[data-dimension="partner-dominanz-multi"]');
                             if (dimension) dimension.classList.remove('needs-selection');
-                            const mobileDimension = document.querySelector('[data-dimension="mobile-partner-dominanz-multi"]');
-                            if (mobileDimension) mobileDimension.classList.remove('needs-selection');
                         }
                     }
 
                     if (selection.partner.orientierung) {
-                        // Handle new multi-select object format
-                        if (typeof selection.partner.orientierung === 'object') {
-                            mobilePersonDimensions.partner.orientierung = selection.partner.orientierung;
+                        // Handle new primary/secondary format
+                        if (typeof selection.partner.orientierung === 'object' && 'primary' in selection.partner.orientierung) {
+                            // New format: { primary: 'heterosexuell', secondary: null }
                             personDimensions.partner.orientierung = selection.partner.orientierung;
-
-                            // Restore Desktop & Mobile UI checkboxes and status dropdowns
-                            const shortIdMap = { 'heterosexuell': 'het', 'homosexuell': 'hom', 'bisexuell': 'bi' };
-                            let hasSelection = false;
-                            for (const [type, status] of Object.entries(selection.partner.orientierung)) {
-                                if (status) {
-                                    hasSelection = true;
-                                    const shortId = shortIdMap[type];
-                                    // Desktop checkbox
-                                    const checkbox = document.getElementById('partner-o-' + shortId);
-                                    if (checkbox) checkbox.checked = true;
-                                    // Desktop status dropdown
-                                    const statusSelect = document.getElementById('partner-o-' + shortId + '-status');
-                                    if (statusSelect) {
-                                        statusSelect.style.display = 'inline-block';
-                                        statusSelect.value = status;
-                                    }
-                                    // Mobile checkbox
-                                    const mobileCheckbox = document.getElementById('m-partner-o-' + shortId);
-                                    if (mobileCheckbox) mobileCheckbox.checked = true;
-                                    // Mobile status dropdown
-                                    const mobileStatusSelect = document.getElementById('m-partner-o-' + shortId + '-status');
-                                    if (mobileStatusSelect) {
-                                        mobileStatusSelect.style.display = 'inline-block';
-                                        mobileStatusSelect.value = status;
-                                    }
-                                }
+                            if (typeof mobilePersonDimensions !== 'undefined') {
+                                mobilePersonDimensions.partner.orientierung = selection.partner.orientierung;
                             }
-                            if (hasSelection) {
+                            // Sync UI
+                            if (typeof syncOrientierungUI === 'function') {
+                                syncOrientierungUI('partner');
+                            }
+                            if (selection.partner.orientierung.primary) {
                                 const dimension = document.querySelector('[data-dimension="partner-orientierung-multi"]');
                                 if (dimension) dimension.classList.remove('needs-selection');
-                                const mobileDimension = document.querySelector('[data-dimension="mobile-partner-orientierung-multi"]');
-                                if (mobileDimension) mobileDimension.classList.remove('needs-selection');
+                            }
+                        } else if (typeof selection.partner.orientierung === 'object') {
+                            // Old format: { heterosexuell: 'gelebt', homosexuell: null, ... }
+                            // Convert to new format
+                            let primary = null;
+                            let secondary = null;
+                            for (const [type, status] of Object.entries(selection.partner.orientierung)) {
+                                if (status === 'gelebt' && !primary) {
+                                    primary = type;
+                                } else if (status === 'interessiert' && !secondary) {
+                                    secondary = type;
+                                }
+                            }
+                            personDimensions.partner.orientierung = { primary, secondary };
+                            if (typeof mobilePersonDimensions !== 'undefined') {
+                                mobilePersonDimensions.partner.orientierung = { primary, secondary };
+                            }
+                            // Sync UI
+                            if (typeof syncOrientierungUI === 'function') {
+                                syncOrientierungUI('partner');
+                            }
+                            if (primary) {
+                                const dimension = document.querySelector('[data-dimension="partner-orientierung-multi"]');
+                                if (dimension) dimension.classList.remove('needs-selection');
                             }
                         } else {
-                            // Legacy: string format - convert to new object format
-                            const orientierungObj = { heterosexuell: null, homosexuell: null, bisexuell: null };
-                            orientierungObj[selection.partner.orientierung] = selection.partner.orientierungStatus || 'gelebt';
-                            mobilePersonDimensions.partner.orientierung = orientierungObj;
-                            personDimensions.partner.orientierung = orientierungObj;
-
-                            const shortIdMap = { 'heterosexuell': 'het', 'homosexuell': 'hom', 'bisexuell': 'bi' };
-                            const shortId = shortIdMap[selection.partner.orientierung];
-                            if (shortId) {
-                                // Desktop
-                                const checkbox = document.getElementById('partner-o-' + shortId);
-                                if (checkbox) checkbox.checked = true;
-                                const statusSelect = document.getElementById('partner-o-' + shortId + '-status');
-                                if (statusSelect) {
-                                    statusSelect.style.display = 'inline-block';
-                                    statusSelect.value = selection.partner.orientierungStatus || 'gelebt';
-                                }
-                                // Mobile
-                                const mobileCheckbox = document.getElementById('m-partner-o-' + shortId);
-                                if (mobileCheckbox) mobileCheckbox.checked = true;
-                                const mobileStatusSelect = document.getElementById('m-partner-o-' + shortId + '-status');
-                                if (mobileStatusSelect) {
-                                    mobileStatusSelect.style.display = 'inline-block';
-                                    mobileStatusSelect.value = selection.partner.orientierungStatus || 'gelebt';
-                                }
+                            // Legacy: string format - convert to new primary/secondary format
+                            personDimensions.partner.orientierung = { primary: selection.partner.orientierung, secondary: null };
+                            if (typeof mobilePersonDimensions !== 'undefined') {
+                                mobilePersonDimensions.partner.orientierung = { primary: selection.partner.orientierung, secondary: null };
+                            }
+                            // Sync UI
+                            if (typeof syncOrientierungUI === 'function') {
+                                syncOrientierungUI('partner');
                             }
                             const dimension = document.querySelector('[data-dimension="partner-orientierung-multi"]');
                             if (dimension) dimension.classList.remove('needs-selection');
-                            const mobileDimension = document.querySelector('[data-dimension="mobile-partner-orientierung-multi"]');
-                            if (mobileDimension) mobileDimension.classList.remove('needs-selection');
                         }
                     }
                 }
