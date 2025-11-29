@@ -3954,6 +3954,24 @@
             border: 1px solid rgba(0,0,0,0.2);
         }
 
+        /* Geschlecht Legend Hover Highlights */
+        .geschlecht-legend .legend-i,
+        .geschlecht-legend .legend-g {
+            transition: all 0.2s ease;
+        }
+
+        .geschlecht-legend.highlight-i .legend-i {
+            color: var(--primary);
+            font-weight: 700;
+            text-shadow: 0 0 8px var(--primary);
+        }
+
+        .geschlecht-legend.highlight-g .legend-g {
+            color: #eab308;
+            font-weight: 700;
+            text-shadow: 0 0 8px #eab308;
+        }
+
         /* Compact dimension blinking for unselected */
         .compact-dimension.needs-selection .compact-option {
             animation: needsAttention 1.5s ease-in-out infinite;
@@ -6048,7 +6066,7 @@
                 </div>
                 <div class="column-dimensions">
                     <div class="compact-dimension needs-selection" data-dimension="ich-geschlecht-new">
-                        <div class="compact-dimension-label"><span title="Dein Geschlecht. Dies beeinflusst die körperliche Anziehung zusammen mit der sexuellen Orientierung." style="cursor: help;">Geschlechtsidentität</span> <span class="dimension-info-icon" onclick="showGeschlechtInfoModal()">ℹ</span> <span style="font-size: 10px; opacity: 0.7;">(I=Identität, G=Sekundär)</span></div>
+                        <div class="compact-dimension-label"><span onclick="showGeschlechtInfoModal()" style="cursor: pointer; text-decoration: underline; text-decoration-style: dotted;">Geschlechtsidentität</span> <span class="dimension-info-icon" onclick="showGeschlechtInfoModal()">ℹ</span> <span id="ich-geschlecht-legend" class="geschlecht-legend" style="font-size: 10px; opacity: 0.7;">(<span class="legend-i">I</span>=Identität, <span class="legend-g">G</span>=Sekundär)</span></div>
                         <div class="geschlecht-grid" id="ich-geschlecht-grid" data-person="ich">
                             <button type="button" class="geschlecht-btn" data-value="cis_mann" onclick="handleGeschlechtClick('ich', 'cis_mann', this)">Cis Mann</button>
                             <button type="button" class="geschlecht-btn" data-value="cis_frau" onclick="handleGeschlechtClick('ich', 'cis_frau', this)">Cis Frau</button>
@@ -6152,7 +6170,7 @@
                 </div>
                 <div class="column-dimensions">
                     <div class="compact-dimension needs-selection" data-dimension="partner-geschlecht-new">
-                        <div class="compact-dimension-label"><span title="Dein Geschlecht. Dies beeinflusst die körperliche Anziehung zusammen mit der sexuellen Orientierung." style="cursor: help;">Geschlechtsidentität</span> <span class="dimension-info-icon" onclick="showGeschlechtInfoModal()">ℹ</span> <span style="font-size: 10px; opacity: 0.7;">(I=Identität, G=Sekundär)</span></div>
+                        <div class="compact-dimension-label"><span onclick="showGeschlechtInfoModal()" style="cursor: pointer; text-decoration: underline; text-decoration-style: dotted;">Geschlechtsidentität</span> <span class="dimension-info-icon" onclick="showGeschlechtInfoModal()">ℹ</span> <span id="partner-geschlecht-legend" class="geschlecht-legend" style="font-size: 10px; opacity: 0.7;">(<span class="legend-i">I</span>=Identität, <span class="legend-g">G</span>=Sekundär)</span></div>
                         <div class="geschlecht-grid" id="partner-geschlecht-grid" data-person="partner">
                             <button type="button" class="geschlecht-btn" data-value="cis_mann" onclick="handleGeschlechtClick('partner', 'cis_mann', this)">Cis Mann</button>
                             <button type="button" class="geschlecht-btn" data-value="cis_frau" onclick="handleGeschlechtClick('partner', 'cis_frau', this)">Cis Frau</button>
@@ -6324,7 +6342,7 @@
                 </div>
                 <div class="column-dimensions" id="mobileIchDimensions">
                     <div class="compact-dimension needs-selection" data-dimension="mobile-ich-geschlecht">
-                        <div class="compact-dimension-label">Geschlechtsidentität <span class="dimension-info-icon" onclick="showDimensionTooltip('geschlecht')">ℹ</span> <span style="font-size: 10px; opacity: 0.7;">(I=Identität, G=Sekundär)</span></div>
+                        <div class="compact-dimension-label"><span onclick="showGeschlechtInfoModal()" style="cursor: pointer; text-decoration: underline; text-decoration-style: dotted;">Geschlechtsidentität</span> <span class="dimension-info-icon" onclick="showGeschlechtInfoModal()">ℹ</span> <span id="mobile-ich-geschlecht-legend" class="geschlecht-legend" style="font-size: 10px; opacity: 0.7;">(<span class="legend-i">I</span>=Identität, <span class="legend-g">G</span>=Sekundär)</span></div>
                         <div class="geschlecht-grid" id="mobile-ich-geschlecht-grid" data-person="ich">
                             <button type="button" class="geschlecht-btn" data-value="cis_mann" onclick="handleGeschlechtClick('ich', 'cis_mann', this)">Cis Mann</button>
                             <button type="button" class="geschlecht-btn" data-value="cis_frau" onclick="handleGeschlechtClick('ich', 'cis_frau', this)">Cis Frau</button>
@@ -6429,7 +6447,7 @@
                 </div>
                 <div class="column-dimensions" id="mobilePartnerDimensions">
                     <div class="compact-dimension needs-selection" data-dimension="mobile-partner-geschlecht">
-                        <div class="compact-dimension-label">Geschlechtsidentität <span class="dimension-info-icon" onclick="showDimensionTooltip('geschlecht')">ℹ</span> <span style="font-size: 10px; opacity: 0.7;">(I=Identität, G=Sekundär)</span></div>
+                        <div class="compact-dimension-label"><span onclick="showGeschlechtInfoModal()" style="cursor: pointer; text-decoration: underline; text-decoration-style: dotted;">Geschlechtsidentität</span> <span class="dimension-info-icon" onclick="showGeschlechtInfoModal()">ℹ</span> <span id="mobile-partner-geschlecht-legend" class="geschlecht-legend" style="font-size: 10px; opacity: 0.7;">(<span class="legend-i">I</span>=Identität, <span class="legend-g">G</span>=Sekundär)</span></div>
                         <div class="geschlecht-grid" id="mobile-partner-geschlecht-grid" data-person="partner">
                             <button type="button" class="geschlecht-btn" data-value="cis_mann" onclick="handleGeschlechtClick('partner', 'cis_mann', this)">Cis Mann</button>
                             <button type="button" class="geschlecht-btn" data-value="cis_frau" onclick="handleGeschlechtClick('partner', 'cis_frau', this)">Cis Frau</button>
@@ -10871,6 +10889,71 @@
             return personDimensions[person].geschlecht.primary !== null;
         }
 
+        /**
+         * Handle hover on geschlecht button - highlight I or G in legend
+         * Based on click logic: if no primary -> next click sets I, if primary exists -> next click sets G
+         */
+        function handleGeschlechtHover(person, geschlechtValue, isEntering) {
+            const legendSelectors = [
+                `#${person}-geschlecht-legend`,
+                `#mobile-${person}-geschlecht-legend`
+            ];
+
+            legendSelectors.forEach(selector => {
+                const legend = document.querySelector(selector);
+                if (!legend) return;
+
+                if (!isEntering) {
+                    // Mouse left - remove all highlights
+                    legend.classList.remove('highlight-i', 'highlight-g');
+                    return;
+                }
+
+                // Mouse entered - determine which to highlight based on click logic
+                const currentPrimary = personDimensions[person].geschlecht.primary;
+                const currentSecondary = personDimensions[person].geschlecht.secondary;
+
+                legend.classList.remove('highlight-i', 'highlight-g');
+
+                if (geschlechtValue === currentPrimary || geschlechtValue === currentSecondary) {
+                    // Hovering over already selected - highlight what would be affected
+                    if (geschlechtValue === currentPrimary) {
+                        legend.classList.add('highlight-i');
+                    } else {
+                        legend.classList.add('highlight-g');
+                    }
+                } else if (currentPrimary === null) {
+                    // No primary yet: next click sets primary (I)
+                    legend.classList.add('highlight-i');
+                } else {
+                    // Primary exists, different value: next click sets secondary (G)
+                    legend.classList.add('highlight-g');
+                }
+            });
+        }
+
+        /**
+         * Initialize geschlecht hover events for all grids
+         */
+        function initGeschlechtHoverEvents() {
+            document.querySelectorAll('.geschlecht-grid').forEach(grid => {
+                const person = grid.dataset.person;
+                if (!person) return;
+
+                grid.querySelectorAll('.geschlecht-btn').forEach(btn => {
+                    const value = btn.dataset.value;
+
+                    btn.addEventListener('mouseenter', () => {
+                        handleGeschlechtHover(person, value, true);
+                    });
+
+                    btn.addEventListener('mouseleave', () => {
+                        handleGeschlechtHover(person, value, false);
+                    });
+                });
+            });
+        }
+
         // Handle status toggle button click for dominanz
         function handleDominanzStatusToggle(person, dominanzType, status, btn) {
             // Toggle logic: if same status is clicked, deselect it
@@ -14822,6 +14905,7 @@
             initDimensionListeners();
             initComparisonLayout();
             initMobileLayout();
+            initGeschlechtHoverEvents();
         });
 
         // ========================================
