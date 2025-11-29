@@ -7517,46 +7517,6 @@
         </div>
     </div>
 
-    <!-- Status Selection Popup for Homo/Bi -->
-    <div class="dimension-tooltip-overlay" id="statusPopupOverlay" onclick="closeStatusPopup()">
-        <div class="dimension-tooltip-content status-popup-content" onclick="event.stopPropagation()">
-            <div class="dimension-tooltip-title">Orientierungs-Status</div>
-            <div class="dimension-tooltip-text" style="margin-bottom: 20px;">
-                Wie sicher bist du dir bei dieser Orientierung?
-            </div>
-            <div class="status-popup-options">
-                <button class="status-popup-btn" id="statusPopupGelebt" onclick="selectStatusFromPopup('gelebt')">
-                    <span class="status-popup-btn-title">Gelebt</span>
-                    <span class="status-popup-btn-desc">Du lebst diese Orientierung und bist dir sicher.</span>
-                </button>
-                <button class="status-popup-btn interessiert" id="statusPopupInteressiert" onclick="selectStatusFromPopup('interessiert')">
-                    <span class="status-popup-btn-title">Interessiert</span>
-                    <span class="status-popup-btn-desc">Du bist neugierig oder in einer Explorationsphase. Die tatsächliche Anziehung ist noch unklar.</span>
-                </button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Dominanz-Status Selection Popup -->
-    <div class="dimension-tooltip-overlay" id="dominanzStatusPopupOverlay" onclick="closeDominanzStatusPopup()">
-        <div class="dimension-tooltip-content status-popup-content" onclick="event.stopPropagation()">
-            <div class="dimension-tooltip-title">Dominanz-Status</div>
-            <div class="dimension-tooltip-text" style="margin-bottom: 20px;">
-                Wie sicher bist du dir bei deiner Dominanz-Präferenz?
-            </div>
-            <div class="status-popup-options">
-                <button class="status-popup-btn" id="dominanzStatusPopupGelebt" onclick="selectDominanzStatusFromPopup('gelebt')">
-                    <span class="status-popup-btn-title">Gelebt</span>
-                    <span class="status-popup-btn-desc">Du kennst und lebst deine Dominanz-Präferenz aktiv. Die Profilaussagen haben hohe Konfidenz.</span>
-                </button>
-                <button class="status-popup-btn interessiert" id="dominanzStatusPopupInteressiert" onclick="selectDominanzStatusFromPopup('interessiert')">
-                    <span class="status-popup-btn-title">Interessiert</span>
-                    <span class="status-popup-btn-desc">Du bist noch am Erkunden oder unsicher. Die Konfidenz der Profilaussagen ist reduziert (höhere Varianz).</span>
-                </button>
-            </div>
-        </div>
-    </div>
-
     <!-- Navigation Dots with Arrows (hidden - old carousel nav) -->
     <div class="nav-dots" style="display: none;">
         <button class="nav-arrow" onclick="navigatePrev()">‹</button>
@@ -11327,150 +11287,6 @@
             document.getElementById('orientierungInfoModal').classList.remove('active');
         }
 
-        // ========================================
-        // Status Popup Functions (for all orientations)
-        // ========================================
-        let currentStatusPopupPerson = null;
-
-        function showStatusPopup(person) {
-            currentStatusPopupPerson = person;
-            document.getElementById('statusPopupOverlay').classList.add('active');
-        }
-
-        function closeStatusPopup() {
-            document.getElementById('statusPopupOverlay').classList.remove('active');
-            currentStatusPopupPerson = null;
-        }
-
-        function selectStatusFromPopup(status) {
-            if (!currentStatusPopupPerson) return;
-
-            const person = currentStatusPopupPerson;
-            personDimensions[person].orientierungStatus = status;
-            if (typeof mobilePersonDimensions !== 'undefined') {
-                mobilePersonDimensions[person].orientierungStatus = status;
-            }
-
-            // Update the corresponding desktop radio button
-            const desktopRadioId = person === 'ich'
-                ? (status === 'gelebt' ? 'ich-s-fakt' : 'ich-s-int')
-                : (status === 'gelebt' ? 'partner-s-fakt' : 'partner-s-int');
-            const desktopRadio = document.getElementById(desktopRadioId);
-            if (desktopRadio) {
-                desktopRadio.checked = true;
-            }
-
-            // Update the corresponding mobile radio button
-            const mobileRadioId = person === 'ich'
-                ? (status === 'gelebt' ? 'm-ich-s-fakt' : 'm-ich-s-int')
-                : (status === 'gelebt' ? 'm-partner-s-fakt' : 'm-partner-s-int');
-            const mobileRadio = document.getElementById(mobileRadioId);
-            if (mobileRadio) {
-                mobileRadio.checked = true;
-            }
-
-            // Update the corresponding modal radio button
-            const modalRadioId = person + '-status-' + (status === 'gelebt' ? 'gelebt' : 'interessiert');
-            const modalRadio = document.getElementById(modalRadioId);
-            if (modalRadio) {
-                modalRadio.checked = true;
-            }
-
-            // Remove needs-selection class from all sections
-            const desktopStatusSection = document.getElementById(person + '-status-section');
-            if (desktopStatusSection) {
-                desktopStatusSection.classList.remove('needs-selection');
-            }
-            const mobileStatusSection = document.getElementById('mobile-' + person + '-status-section');
-            if (mobileStatusSection) {
-                mobileStatusSection.classList.remove('needs-selection');
-            }
-            const modalStatusSection = document.getElementById('modal-' + person + '-status-section');
-            if (modalStatusSection) {
-                modalStatusSection.classList.remove('needs-selection');
-            }
-
-            closeStatusPopup();
-            updateComparisonView();
-
-            // Save to localStorage
-            if (typeof saveSelectionToStorage === 'function') {
-                saveSelectionToStorage();
-            }
-        }
-
-        function handleOrientationChange(person, orientation, isMobile = false) {
-            personDimensions[person].orientierung = orientation;
-            if (typeof mobilePersonDimensions !== 'undefined') {
-                mobilePersonDimensions[person].orientierung = orientation;
-            }
-
-            // Get all status sections (desktop, mobile, modal)
-            const desktopStatusSection = document.getElementById(person + '-status-section');
-            const mobileStatusSection = document.getElementById('mobile-' + person + '-status-section');
-            const modalStatusSection = document.getElementById('modal-' + person + '-status-section');
-
-            // Show status section and popup for all orientations (hetero, homo, bi)
-            if (desktopStatusSection) {
-                desktopStatusSection.style.display = 'block';
-            }
-            if (mobileStatusSection) {
-                mobileStatusSection.style.display = 'block';
-            }
-            if (modalStatusSection) {
-                modalStatusSection.style.display = 'block';
-            }
-            showStatusPopup(person);
-
-            // Sync orientation to desktop if called from mobile
-            if (isMobile) {
-                syncDimensionToDesktop(person + '-orientierung-new', orientation);
-            }
-
-            updateComparisonView();
-
-            // Save to localStorage
-            if (typeof saveSelectionToStorage === 'function') {
-                saveSelectionToStorage();
-            }
-        }
-
-        // ========================================
-        // Dominanz Multi-Select Functions
-        // ========================================
-
-        // Handle checkbox change for dominanz multi-select
-        function handleDominanzMultiChange(person, dominanzType, isChecked) {
-            if (isChecked) {
-                // Open popup to select status
-                openStatusPopup(person, dominanzType, 'desktop');
-                return; // Don't set status yet, wait for popup selection
-            } else {
-                // Remove selection
-                personDimensions[person].dominanz[dominanzType] = null;
-                if (typeof mobilePersonDimensions !== 'undefined') {
-                    mobilePersonDimensions[person].dominanz[dominanzType] = null;
-                }
-
-                // Hide the status toggle group
-                const statusGroup = document.getElementById(person + '-d-' + getShortDominanzId(dominanzType) + '-status');
-                if (statusGroup) {
-                    statusGroup.style.display = 'none';
-                }
-            }
-
-            // Sync all UIs (Desktop, Mobile, Modal)
-            if (typeof syncDominanzUI === 'function') {
-                syncDominanzUI(person);
-            }
-
-            updateComparisonView();
-
-            if (typeof saveSelectionToStorage === 'function') {
-                saveSelectionToStorage();
-            }
-        }
-
         // ═══════════════════════════════════════════════════════════════════════
         // GESCHLECHT PRIMARY/SECONDARY SYSTEM
         // ═══════════════════════════════════════════════════════════════════════
@@ -11771,9 +11587,9 @@
         // Mobile: Handle checkbox change for multi-select dominanz
         function handleMobileDominanzMultiChange(person, dominanzType, isChecked) {
             if (isChecked) {
-                // Open popup to select status
-                openStatusPopup(person, dominanzType, 'mobile');
-                return; // Don't set status yet, wait for popup selection
+                // Set default status to 'gelebt' (no popup needed)
+                handleMobileDominanzStatusToggle(person, dominanzType, 'gelebt', null);
+                return;
             } else {
                 // Remove selection
                 if (typeof mobilePersonDimensions !== 'undefined') {
@@ -11855,9 +11671,9 @@
         // Modal: Handle checkbox change for multi-select dominanz
         function handleModalDominanzMultiChange(person, dominanzType, isChecked) {
             if (isChecked) {
-                // Open popup to select status
-                openStatusPopup(person, dominanzType, 'modal');
-                return; // Don't set status yet, wait for popup selection
+                // Set default status to 'gelebt' (no popup needed)
+                handleModalDominanzStatusToggle(person, dominanzType, 'gelebt', null);
+                return;
             } else {
                 // Remove selection
                 personDimensions[person].dominanz[dominanzType] = null;
@@ -12756,16 +12572,6 @@
             document.querySelectorAll('input[name="ich-dominanz-status"]').forEach(radio => {
                 radio.addEventListener('change', (e) => handleDimensionChange('ich', 'dominanzStatus', e.target.value, e.target));
             });
-            document.querySelectorAll('input[name="ich-orientierung"]').forEach(radio => {
-                radio.addEventListener('change', (e) => {
-                    const dimensionGroup = e.target.closest('.dimension-group');
-                    if (dimensionGroup) dimensionGroup.classList.remove('needs-selection');
-                    handleOrientationChange('ich', e.target.value);
-                });
-            });
-            document.querySelectorAll('input[name="ich-status"]').forEach(radio => {
-                radio.addEventListener('change', (e) => handleDimensionChange('ich', 'orientierungStatus', e.target.value, e.target));
-            });
 
             // PARTNER dimensions
             document.querySelectorAll('input[name="partner-geschlecht"]').forEach(radio => {
@@ -12780,16 +12586,6 @@
             });
             document.querySelectorAll('input[name="partner-dominanz-status"]').forEach(radio => {
                 radio.addEventListener('change', (e) => handleDimensionChange('partner', 'dominanzStatus', e.target.value, e.target));
-            });
-            document.querySelectorAll('input[name="partner-orientierung"]').forEach(radio => {
-                radio.addEventListener('change', (e) => {
-                    const dimensionGroup = e.target.closest('.dimension-group');
-                    if (dimensionGroup) dimensionGroup.classList.remove('needs-selection');
-                    handleOrientationChange('partner', e.target.value);
-                });
-            });
-            document.querySelectorAll('input[name="partner-status"]').forEach(radio => {
-                radio.addEventListener('change', (e) => handleDimensionChange('partner', 'orientierungStatus', e.target.value, e.target));
             });
         }
 
@@ -14027,20 +13823,6 @@
                     updateComparisonView();
                 });
             });
-            document.querySelectorAll('input[name="ich-orientierung-new"]').forEach(radio => {
-                radio.addEventListener('change', (e) => {
-                    e.target.closest('.compact-dimension').classList.remove('needs-selection');
-                    handleOrientationChange('ich', e.target.value);
-                });
-            });
-            document.querySelectorAll('input[name="ich-status-new"]').forEach(radio => {
-                radio.addEventListener('change', (e) => {
-                    personDimensions.ich.orientierungStatus = e.target.value;
-                    e.target.closest('.compact-dimension').classList.remove('needs-selection');
-                    updateAnalysisOverview();
-                    updateComparisonView();
-                });
-            });
 
             // Partner compact dimensions
             document.querySelectorAll('input[name="partner-geschlecht-new"]').forEach(radio => {
@@ -14060,20 +13842,6 @@
             document.querySelectorAll('input[name="partner-dominanz-status-new"]').forEach(radio => {
                 radio.addEventListener('change', (e) => {
                     personDimensions.partner.dominanzStatus = e.target.value;
-                    e.target.closest('.compact-dimension').classList.remove('needs-selection');
-                    updateAnalysisOverview();
-                    updateComparisonView();
-                });
-            });
-            document.querySelectorAll('input[name="partner-orientierung-new"]').forEach(radio => {
-                radio.addEventListener('change', (e) => {
-                    e.target.closest('.compact-dimension').classList.remove('needs-selection');
-                    handleOrientationChange('partner', e.target.value);
-                });
-            });
-            document.querySelectorAll('input[name="partner-status-new"]').forEach(radio => {
-                radio.addEventListener('change', (e) => {
-                    personDimensions.partner.orientierungStatus = e.target.value;
                     e.target.closest('.compact-dimension').classList.remove('needs-selection');
                     updateAnalysisOverview();
                     updateComparisonView();
@@ -15403,21 +15171,6 @@
                     updateComparisonView();
                 });
             });
-            document.querySelectorAll('input[name="mobile-ich-orientierung"]').forEach(radio => {
-                radio.addEventListener('change', (e) => {
-                    e.target.closest('.compact-dimension').classList.remove('needs-selection');
-                    handleOrientationChange('ich', e.target.value, true);
-                });
-            });
-            document.querySelectorAll('input[name="mobile-ich-status"]').forEach(radio => {
-                radio.addEventListener('change', (e) => {
-                    mobilePersonDimensions.ich.orientierungStatus = e.target.value;
-                    personDimensions.ich.orientierungStatus = e.target.value;
-                    e.target.closest('.compact-dimension').classList.remove('needs-selection');
-                    syncDimensionToDesktop('ich-status-new', e.target.value);
-                    updateComparisonView();
-                });
-            });
 
             // Partner Dimensions
             document.querySelectorAll('input[name="mobile-partner-geschlecht"]').forEach(radio => {
@@ -15441,21 +15194,6 @@
                     personDimensions.partner.dominanzStatus = e.target.value;
                     e.target.closest('.compact-dimension').classList.remove('needs-selection');
                     syncDimensionToDesktop('partner-dominanz-status-new', e.target.value);
-                    updateComparisonView();
-                });
-            });
-            document.querySelectorAll('input[name="mobile-partner-orientierung"]').forEach(radio => {
-                radio.addEventListener('change', (e) => {
-                    e.target.closest('.compact-dimension').classList.remove('needs-selection');
-                    handleOrientationChange('partner', e.target.value, true);
-                });
-            });
-            document.querySelectorAll('input[name="mobile-partner-status"]').forEach(radio => {
-                radio.addEventListener('change', (e) => {
-                    mobilePersonDimensions.partner.orientierungStatus = e.target.value;
-                    personDimensions.partner.orientierungStatus = e.target.value;
-                    e.target.closest('.compact-dimension').classList.remove('needs-selection');
-                    syncDimensionToDesktop('partner-status-new', e.target.value);
                     updateComparisonView();
                 });
             });
@@ -18112,120 +17850,6 @@
         window.navigateProContraArchetype = navigateProContraArchetype;
 
         console.log('All modal functions are now globally available');
-    </script>
-
-    <!-- Dominanz Status Selection Popup -->
-    <div id="dominanzStatusPopup" class="status-popup-overlay" onclick="closeDominanzStatusPopupNew(event)">
-        <div class="status-popup" onclick="event.stopPropagation()">
-            <div class="status-popup-title" id="dominanzStatusPopupTitle">Status wählen</div>
-            <div class="status-popup-subtitle" id="dominanzStatusPopupSubtitle">Wie sicher bist du dir bei dieser Auswahl?</div>
-            <div class="status-popup-options">
-                <div class="status-popup-option gelebt-option" onclick="selectDominanzStatusFromPopupNew('gelebt')">
-                    <div class="status-popup-option-title">Gelebt</div>
-                    <div class="status-popup-option-desc">Das ist eine sichere, bestätigte Eigenschaft. Du weißt, dass dies zutrifft.</div>
-                </div>
-                <div class="status-popup-option interessiert-option" onclick="selectDominanzStatusFromPopupNew('interessiert')">
-                    <div class="status-popup-option-title">Interessiert</div>
-                    <div class="status-popup-option-desc">Du bist neugierig oder offen dafür, diese Seite zu erkunden. Noch nicht sicher, aber möglich.</div>
-                </div>
-            </div>
-            <div class="status-popup-cancel">
-                <button class="status-popup-cancel-btn" onclick="cancelDominanzStatusPopupNew()">Abbrechen</button>
-            </div>
-        </div>
-    </div>
-
-    <script>
-        // Dominanz Status Popup State (for the new popup)
-        let dominanzStatusPopupContext = {
-            person: null,
-            dominanzType: null,
-            source: null // 'desktop', 'mobile', 'modal'
-        };
-
-        function openStatusPopup(person, dominanzType, source) {
-            dominanzStatusPopupContext = { person, dominanzType, source };
-            const overlay = document.getElementById('dominanzStatusPopup');
-            const title = document.getElementById('dominanzStatusPopupTitle');
-
-            // Update title with the selected option
-            const typeLabels = {
-                'dominant': 'Dominant',
-                'submissiv': 'Submissiv',
-                'switch': 'Switch',
-                'ausgeglichen': 'Ausgeglichen'
-            };
-            title.textContent = typeLabels[dominanzType] || dominanzType;
-
-            overlay.classList.add('active');
-        }
-
-        function closeDominanzStatusPopupNew(event) {
-            if (event && event.target.id !== 'dominanzStatusPopup') return;
-            const overlay = document.getElementById('dominanzStatusPopup');
-            overlay.classList.remove('active');
-        }
-
-        function cancelDominanzStatusPopupNew() {
-            // Uncheck the checkbox since user cancelled
-            const { person, dominanzType, source } = dominanzStatusPopupContext;
-            if (person && dominanzType) {
-                const shortId = getShortDominanzId(dominanzType);
-                let checkboxId;
-                if (source === 'mobile') {
-                    checkboxId = 'm-' + person + '-d-' + shortId;
-                } else if (source === 'modal') {
-                    checkboxId = 'modal-' + person + '-d-' + shortId;
-                } else {
-                    checkboxId = person + '-d-' + shortId;
-                }
-                const checkbox = document.getElementById(checkboxId);
-                if (checkbox) checkbox.checked = false;
-            }
-            closeDominanzStatusPopupNew({ target: { id: 'dominanzStatusPopup' } });
-        }
-
-        function selectDominanzStatusFromPopupNew(status) {
-            const { person, dominanzType, source } = dominanzStatusPopupContext;
-            if (!person || !dominanzType) return;
-
-            // WICHTIG: Nur ein "Gelebt" pro Kategorie erlaubt
-            // Wenn neuer Status 'gelebt' ist, alle anderen 'gelebt' entfernen
-            if (status === 'gelebt') {
-                const dominanzTypes = ['dominant', 'submissiv', 'switch', 'ausgeglichen'];
-                dominanzTypes.forEach(type => {
-                    if (type !== dominanzType && personDimensions[person].dominanz[type] === 'gelebt') {
-                        personDimensions[person].dominanz[type] = null;
-                        if (typeof mobilePersonDimensions !== 'undefined') {
-                            mobilePersonDimensions[person].dominanz[type] = null;
-                        }
-                    }
-                });
-            }
-
-            // Set the status
-            personDimensions[person].dominanz[dominanzType] = status;
-            if (typeof mobilePersonDimensions !== 'undefined') {
-                mobilePersonDimensions[person].dominanz[dominanzType] = status;
-            }
-
-            // Sync all UIs
-            syncDominanzUI(person);
-            updateComparisonView();
-
-            if (typeof saveSelectionToStorage === 'function') {
-                saveSelectionToStorage();
-            }
-
-            // Close popup
-            closeDominanzStatusPopupNew({ target: { id: 'dominanzStatusPopup' } });
-        }
-
-        // Make functions globally available
-        window.openStatusPopup = openStatusPopup;
-        window.closeDominanzStatusPopupNew = closeDominanzStatusPopupNew;
-        window.cancelDominanzStatusPopupNew = cancelDominanzStatusPopupNew;
-        window.selectDominanzStatusFromPopupNew = selectDominanzStatusFromPopupNew;
     </script>
 </body>
 </html>
