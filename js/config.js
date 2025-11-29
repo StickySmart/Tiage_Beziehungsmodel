@@ -71,7 +71,9 @@ const TiageConfig = (function() {
         'trans_frau',
         'nonbinaer',
         'genderfluid',
-        'agender'
+        'agender',
+        'intersex',
+        'divers'
     ];
 
     const GESCHLECHT_SHORT = {
@@ -81,7 +83,9 @@ const TiageConfig = (function() {
         'trans_frau': 'TF',
         'nonbinaer': 'NB',
         'genderfluid': 'GF',
-        'agender': 'AG'
+        'agender': 'AG',
+        'intersex': 'IS',
+        'divers': 'DI'
     };
 
     const GESCHLECHT_LABELS = {
@@ -91,7 +95,9 @@ const TiageConfig = (function() {
         'trans_frau': 'Trans Frau',
         'nonbinaer': 'Nonbinär',
         'genderfluid': 'Genderfluid',
-        'agender': 'Agender'
+        'agender': 'Agender',
+        'intersex': 'Intersex',
+        'divers': 'Divers'
     };
 
     // Mapping für Orientierungslogik: Welches "wahrgenommene Geschlecht" hat jemand?
@@ -102,7 +108,9 @@ const TiageConfig = (function() {
         'trans_frau': 'weiblich',
         'nonbinaer': 'nonbinaer',
         'genderfluid': 'fluid',
-        'agender': 'agender'
+        'agender': 'agender',
+        'intersex': 'inter',
+        'divers': 'nonbinaer'
     };
 
     // ═══════════════════════════════════════════════════════════════════════
@@ -153,6 +161,14 @@ const TiageConfig = (function() {
         agender: {
             title: "Agender",
             text: "Person, die sich mit keinem Geschlecht identifiziert oder geschlechtslos fühlt."
+        },
+        intersex: {
+            title: "Intersex",
+            text: "Person mit angeborenen körperlichen Geschlechtsmerkmalen, die nicht eindeutig männlich oder weiblich sind."
+        },
+        divers: {
+            title: "Divers",
+            text: "Offizieller dritter Geschlechtseintrag in Deutschland für Menschen, die sich nicht als männlich oder weiblich identifizieren."
         },
         dominanz: {
             title: "Dominanz-Präferenz",
