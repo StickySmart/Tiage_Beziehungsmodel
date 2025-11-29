@@ -106,6 +106,48 @@
             margin-top: 8px;
         }
 
+        /* Title with Pathos/Logos Buttons */
+        .title-with-pathos-logos {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .header-pathos-logos-buttons {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .header-pathos-btn,
+        .header-logos-btn {
+            padding: 8px 12px;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            background: rgba(30,30,35,0.95);
+            color: var(--text-muted);
+            cursor: pointer;
+            font-size: 16px;
+            transition: all 0.2s;
+            backdrop-filter: blur(10px);
+        }
+
+        .header-pathos-btn:hover,
+        .header-logos-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            border-color: var(--primary);
+        }
+
+        /* Hide header pathos/logos buttons on mobile - use sticky ones there */
+        @media (max-width: 768px) {
+            .header-pathos-logos-buttons {
+                display: none;
+            }
+        }
+
         h1 {
             font-size: var(--font-base);
             font-weight: 400;
@@ -5675,16 +5717,19 @@
             font-size: 14px;
         }
 
-        /* Pathos/Logos Sticky Toggle Buttons */
+        /* Pathos/Logos Sticky Toggle Buttons - nur auf Mobile sichtbar */
         #pathosLogosStickyToggle {
             transition: opacity 0.3s ease;
+            display: none; /* Standardmäßig versteckt auf Desktop */
         }
         #pathosLogosStickyToggle button:hover {
             transform: scale(1.1);
             box-shadow: 0 4px 16px rgba(0,0,0,0.5);
         }
-        @media (max-width: 850px) {
+        /* Nur auf Mobile anzeigen */
+        @media (max-width: 768px) {
             #pathosLogosStickyToggle {
+                display: flex !important;
                 left: auto !important;
                 right: 10px !important;
             }
@@ -6363,7 +6408,13 @@
 
     <header>
         <div class="header-content">
-            <h1 data-i18n="ui.title">DAS ANARCHISCHE TI-AGE PRINZIP DER PAARUNG</h1>
+            <div class="title-with-pathos-logos">
+                <h1 data-i18n="ui.title">DAS ANARCHISCHE TI-AGE PRINZIP DER PAARUNG</h1>
+                <div class="header-pathos-logos-buttons">
+                    <button class="header-pathos-btn" onclick="openPathosLogosModal('pathos')" title="Pathos - Emotionale Resonanz">🔥</button>
+                    <button class="header-logos-btn" onclick="openPathosLogosModal('logos')" title="Logos - Rationale Struktur">🧠</button>
+                </div>
+            </div>
             <div class="header-buttons">
                 <button class="lang-btn" onclick="TiageI18n.toggle(); updateAllTranslations();" title="Switch Language / Sprache wechseln">
                     <span class="lang-icon">🌐</span>
