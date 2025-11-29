@@ -11732,12 +11732,12 @@
                 }
             }
 
-            // WICHTIG: Nur ein "Gelebt" pro Kategorie erlaubt
-            // Wenn neuer Status 'gelebt' ist, alle anderen 'gelebt' entfernen
-            if (newStatus === 'gelebt') {
+            // WICHTIG: Nur ein "Gelebt" UND nur ein "Interessiert" pro Kategorie erlaubt
+            // (Gleiche Logik wie bei Geschlechtsidentität Primary/Secondary)
+            if (newStatus === 'gelebt' || newStatus === 'interessiert') {
                 const dominanzTypes = ['dominant', 'submissiv', 'switch', 'ausgeglichen'];
                 dominanzTypes.forEach(type => {
-                    if (type !== dominanzType && personDimensions[person].dominanz[type] === 'gelebt') {
+                    if (type !== dominanzType && personDimensions[person].dominanz[type] === newStatus) {
                         personDimensions[person].dominanz[type] = null;
                         if (typeof mobilePersonDimensions !== 'undefined') {
                             mobilePersonDimensions[person].dominanz[type] = null;
@@ -11816,12 +11816,12 @@
                 }
             }
 
-            // WICHTIG: Nur ein "Gelebt" pro Kategorie erlaubt
-            // Wenn neuer Status 'gelebt' ist, alle anderen 'gelebt' entfernen
-            if (newStatus === 'gelebt') {
+            // WICHTIG: Nur ein "Gelebt" UND nur ein "Interessiert" pro Kategorie erlaubt
+            // (Gleiche Logik wie bei Geschlechtsidentität Primary/Secondary)
+            if (newStatus === 'gelebt' || newStatus === 'interessiert') {
                 const dominanzTypes = ['dominant', 'submissiv', 'switch', 'ausgeglichen'];
                 dominanzTypes.forEach(type => {
-                    if (type !== dominanzType && personDimensions[person].dominanz[type] === 'gelebt') {
+                    if (type !== dominanzType && personDimensions[person].dominanz[type] === newStatus) {
                         personDimensions[person].dominanz[type] = null;
                         if (typeof mobilePersonDimensions !== 'undefined') {
                             mobilePersonDimensions[person].dominanz[type] = null;
@@ -11904,12 +11904,12 @@
                 }
             }
 
-            // WICHTIG: Nur ein "Gelebt" pro Kategorie erlaubt
-            // Wenn neuer Status 'gelebt' ist, alle anderen 'gelebt' entfernen
-            if (newStatus === 'gelebt') {
+            // WICHTIG: Nur ein "Gelebt" UND nur ein "Interessiert" pro Kategorie erlaubt
+            // (Gleiche Logik wie bei Geschlechtsidentität Primary/Secondary)
+            if (newStatus === 'gelebt' || newStatus === 'interessiert') {
                 const dominanzTypes = ['dominant', 'submissiv', 'switch', 'ausgeglichen'];
                 dominanzTypes.forEach(type => {
-                    if (type !== dominanzType && personDimensions[person].dominanz[type] === 'gelebt') {
+                    if (type !== dominanzType && personDimensions[person].dominanz[type] === newStatus) {
                         personDimensions[person].dominanz[type] = null;
                         if (typeof mobilePersonDimensions !== 'undefined') {
                             mobilePersonDimensions[person].dominanz[type] = null;
@@ -12244,12 +12244,12 @@
                 }
             }
 
-            // WICHTIG: Nur ein "Gelebt" pro Kategorie erlaubt
-            // Wenn neuer Status 'gelebt' ist, alle anderen 'gelebt' entfernen
-            if (newStatus === 'gelebt') {
+            // WICHTIG: Nur ein "Gelebt" UND nur ein "Interessiert" pro Kategorie erlaubt
+            // (Gleiche Logik wie bei Geschlechtsidentität Primary/Secondary)
+            if (newStatus === 'gelebt' || newStatus === 'interessiert') {
                 const orientierungTypes = ['heterosexuell', 'homosexuell', 'bisexuell'];
                 orientierungTypes.forEach(type => {
-                    if (type !== orientierungType && personDimensions[person].orientierung[type] === 'gelebt') {
+                    if (type !== orientierungType && personDimensions[person].orientierung[type] === newStatus) {
                         personDimensions[person].orientierung[type] = null;
                         if (typeof mobilePersonDimensions !== 'undefined') {
                             mobilePersonDimensions[person].orientierung[type] = null;
@@ -12339,12 +12339,12 @@
                 }
             }
 
-            // WICHTIG: Nur ein "Gelebt" pro Kategorie erlaubt
-            // Wenn neuer Status 'gelebt' ist, alle anderen 'gelebt' entfernen
-            if (newStatus === 'gelebt') {
+            // WICHTIG: Nur ein "Gelebt" UND nur ein "Interessiert" pro Kategorie erlaubt
+            // (Gleiche Logik wie bei Geschlechtsidentität Primary/Secondary)
+            if (newStatus === 'gelebt' || newStatus === 'interessiert') {
                 const orientierungTypes = ['heterosexuell', 'homosexuell', 'bisexuell'];
                 orientierungTypes.forEach(type => {
-                    if (type !== orientierungType && personDimensions[person].orientierung[type] === 'gelebt') {
+                    if (type !== orientierungType && personDimensions[person].orientierung[type] === newStatus) {
                         personDimensions[person].orientierung[type] = null;
                         if (typeof mobilePersonDimensions !== 'undefined') {
                             mobilePersonDimensions[person].orientierung[type] = null;
@@ -12434,12 +12434,12 @@
                 }
             }
 
-            // WICHTIG: Nur ein "Gelebt" pro Kategorie erlaubt
-            // Wenn neuer Status 'gelebt' ist, alle anderen 'gelebt' entfernen
-            if (newStatus === 'gelebt') {
+            // WICHTIG: Nur ein "Gelebt" UND nur ein "Interessiert" pro Kategorie erlaubt
+            // (Gleiche Logik wie bei Geschlechtsidentität Primary/Secondary)
+            if (newStatus === 'gelebt' || newStatus === 'interessiert') {
                 const orientierungTypes = ['heterosexuell', 'homosexuell', 'bisexuell'];
                 orientierungTypes.forEach(type => {
-                    if (type !== orientierungType && personDimensions[person].orientierung[type] === 'gelebt') {
+                    if (type !== orientierungType && personDimensions[person].orientierung[type] === newStatus) {
                         personDimensions[person].orientierung[type] = null;
                         if (typeof mobilePersonDimensions !== 'undefined') {
                             mobilePersonDimensions[person].orientierung[type] = null;
