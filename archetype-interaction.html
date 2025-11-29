@@ -9973,6 +9973,10 @@
             updatePartnerView();
             updateLegendCategories();
             updateAnalysisOverview();
+            // GFK automatisch aus Archetypen-Matching ableiten
+            if (typeof updateGfkFromArchetypes === 'function') {
+                updateGfkFromArchetypes();
+            }
         }
 
         function updateTheme() {
@@ -10874,6 +10878,8 @@
                 mobilePartnerArchetype = newArchetype;
             }
             updateComparisonView();
+            // GFK automatisch aus Archetypen-Matching ableiten
+            updateGfkFromArchetypes();
         }
 
         // Alias for button onclick
@@ -11033,6 +11039,8 @@
                 mobilePartnerArchetype = newArchetype;
             }
             updateComparisonView();
+            // GFK automatisch aus Archetypen-Matching ableiten
+            updateGfkFromArchetypes();
         }
 
         function confirmDefinitionSelection() {
@@ -12580,6 +12588,97 @@
         // Helper: Check if GFK is selected
         function hasGfkSelected(person) {
             return personDimensions[person].gfk !== null;
+        }
+
+        // ========================================
+        // Automatische GFK-Ableitung aus Archetypen
+        // ========================================
+
+        /**
+         * Leitet den GFK-Level aus dem E-Score (Kommunikations-Matching)
+         * der ausgewählten Archetypen-Kombination ab.
+         *
+         * E-Score Mapping:
+         * - E >= 80: "hoch" (optimale Kommunikationsbasis)
+         * - E >= 60: "mittel" (gute Grundlage)
+         * - E < 60: "niedrig" (Herausforderung)
+         */
+        function getGfkLevelFromEScore(eScore) {
+            if (eScore >= 80) return 'hoch';
+            if (eScore >= 60) return 'mittel';
+            return 'niedrig';
+        }
+
+        /**
+         * Aktualisiert die GFK-Level für beide Personen basierend auf
+         * der Kommunikations-Matching-Kategorie (E) ihrer Archetypen.
+         *
+         * Der E-Score repräsentiert:
+         * - Kommunikationstiefe
+         * - Konfliktfähigkeit
+         * - Emotionale Transparenz
+         *
+         * Beide Partner erhalten denselben GFK-Level, da die Kommunikationsqualität
+         * aus der Beziehungskonstellation abgeleitet wird.
+         */
+        function updateGfkFromArchetypes() {
+            if (!data || !data.interactions) return;
+
+            const ichArchetype = currentArchetype;
+            const partnerArchetype = selectedPartner;
+
+            if (!ichArchetype || !partnerArchetype) return;
+
+            // Hole die Interaktionsdaten für die aktuelle Archetypen-Kombination
+            const interactionKey = `${ichArchetype}_${partnerArchetype}`;
+            const interaction = data.interactions[interactionKey];
+
+            if (!interaction || !interaction.scores || !interaction.scores.E) {
+                console.log('GFK Auto: Keine E-Score-Daten für', interactionKey);
+                return;
+            }
+
+            // E-Score (Kommunikations-Matching) extrahieren
+            const eScore = interaction.scores.E.value;
+            const gfkLevel = getGfkLevelFromEScore(eScore);
+
+            console.log(`GFK Auto: ${ichArchetype} + ${partnerArchetype} → E=${eScore} → GFK="${gfkLevel}"`);
+
+            // Beide Personen erhalten den gleichen GFK-Level
+            // (basierend auf ihrer Beziehungskonstellation)
+            personDimensions.ich.gfk = gfkLevel;
+            personDimensions.partner.gfk = gfkLevel;
+
+            // UI synchronisieren
+            syncGfkUI('ich');
+            syncGfkUI('partner');
+
+            // Optional: Visuellen Hinweis geben, dass GFK automatisch gesetzt wurde
+            markGfkAsAutomatic();
+        }
+
+        /**
+         * Markiert die GFK-Buttons als automatisch gesetzt
+         * mit einem visuellen Indikator
+         */
+        function markGfkAsAutomatic() {
+            // Alle GFK-Grid Container finden
+            const gfkGrids = document.querySelectorAll('.gfk-grid[data-person]');
+
+            gfkGrids.forEach(grid => {
+                // Prüfen ob bereits ein Auto-Indikator existiert
+                let indicator = grid.parentElement?.querySelector('.gfk-auto-indicator');
+
+                if (!indicator) {
+                    // Auto-Indikator erstellen
+                    indicator = document.createElement('div');
+                    indicator.className = 'gfk-auto-indicator';
+                    indicator.innerHTML = '<small style="color: #8B5CF6; font-size: 0.75rem;">✨ automatisch aus Archetypen-Matching</small>';
+                    indicator.style.marginTop = '4px';
+                    indicator.style.textAlign = 'center';
+                    grid.parentElement?.appendChild(indicator);
+                }
+            });
         }
 
         // ========================================
@@ -14185,6 +14284,8 @@
                     if (oldSelect) oldSelect.value = e.target.value;
                     updateArchetypeGrid('ich', e.target.value);
                     updateComparisonView();
+                    // GFK automatisch aus Archetypen-Matching ableiten
+                    updateGfkFromArchetypes();
                 });
             }
 
@@ -14195,6 +14296,8 @@
                     selectedPartner = e.target.value;
                     updateArchetypeGrid('partner', e.target.value);
                     updateComparisonView();
+                    // GFK automatisch aus Archetypen-Matching ableiten
+                    updateGfkFromArchetypes();
                 });
             }
 
@@ -15858,6 +15961,8 @@
                     if (desktopSelect) desktopSelect.value = e.target.value;
                     currentArchetype = e.target.value;
                     updateComparisonView();
+                    // GFK automatisch aus Archetypen-Matching ableiten
+                    updateGfkFromArchetypes();
                 });
             }
 
@@ -15871,6 +15976,8 @@
                     if (desktopSelect) desktopSelect.value = e.target.value;
                     selectedPartner = e.target.value;
                     updateComparisonView();
+                    // GFK automatisch aus Archetypen-Matching ableiten
+                    updateGfkFromArchetypes();
                 });
             }
 
@@ -16270,6 +16377,8 @@
             updateDominanzSummary('partner');
             updateOrientierungSummary('ich');
             updateOrientierungSummary('partner');
+            // GFK automatisch aus Archetypen-Matching setzen
+            updateGfkFromArchetypes();
         });
 
         // ========================================
