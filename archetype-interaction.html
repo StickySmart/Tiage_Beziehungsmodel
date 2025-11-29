@@ -3834,6 +3834,88 @@
             color: var(--warning, #f39c12);
         }
 
+        /* Archetypen-Symbol-Grid */
+        .archetype-symbols-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 8px;
+            padding: 12px;
+            margin: 12px 0;
+            background: var(--bg-dark);
+            border-radius: 12px;
+            border: 1px solid var(--border);
+        }
+
+        .archetype-symbol-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 8px 4px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: 2px solid transparent;
+            background: rgba(255, 255, 255, 0.03);
+        }
+
+        .archetype-symbol-item:hover {
+            background: rgba(255, 255, 255, 0.08);
+            transform: scale(1.05);
+        }
+
+        .archetype-symbol-item.active {
+            border-color: var(--primary);
+            background: rgba(69, 123, 157, 0.2);
+            box-shadow: 0 0 12px rgba(69, 123, 157, 0.3);
+        }
+
+        .archetype-symbol-icon {
+            font-size: 24px;
+            margin-bottom: 4px;
+            transition: transform 0.2s ease;
+        }
+
+        .archetype-symbol-item:hover .archetype-symbol-icon {
+            transform: scale(1.1);
+        }
+
+        .archetype-symbol-name {
+            font-size: 9px;
+            color: var(--text-muted);
+            text-align: center;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 100%;
+        }
+
+        .archetype-symbol-item.active .archetype-symbol-name {
+            color: var(--text-primary);
+            font-weight: 600;
+        }
+
+        /* Colors for each archetype symbol */
+        .archetype-symbol-item[data-archetype="single"] .archetype-symbol-icon { color: #E63946; }
+        .archetype-symbol-item[data-archetype="duo"] .archetype-symbol-icon { color: #E84393; }
+        .archetype-symbol-item[data-archetype="duo_flex"] .archetype-symbol-icon { color: #FF6B6B; }
+        .archetype-symbol-item[data-archetype="solopoly"] .archetype-symbol-icon { color: #2A9D8F; }
+        .archetype-symbol-item[data-archetype="polyamor"] .archetype-symbol-icon { color: #F4A261; }
+        .archetype-symbol-item[data-archetype="ra"] .archetype-symbol-icon { color: #9B5DE5; }
+        .archetype-symbol-item[data-archetype="lat"] .archetype-symbol-icon { color: #00B4D8; }
+        .archetype-symbol-item[data-archetype="aromantisch"] .archetype-symbol-icon { color: #A8DADC; }
+
+        .archetype-symbol-item.active[data-archetype="single"] { border-color: #E63946; background: rgba(230, 57, 70, 0.2); }
+        .archetype-symbol-item.active[data-archetype="duo"] { border-color: #E84393; background: rgba(232, 67, 147, 0.2); }
+        .archetype-symbol-item.active[data-archetype="duo_flex"] { border-color: #FF6B6B; background: rgba(255, 107, 107, 0.2); }
+        .archetype-symbol-item.active[data-archetype="solopoly"] { border-color: #2A9D8F; background: rgba(42, 157, 143, 0.2); }
+        .archetype-symbol-item.active[data-archetype="polyamor"] { border-color: #F4A261; background: rgba(244, 162, 97, 0.2); }
+        .archetype-symbol-item.active[data-archetype="ra"] { border-color: #9B5DE5; background: rgba(155, 93, 229, 0.2); }
+        .archetype-symbol-item.active[data-archetype="lat"] { border-color: #00B4D8; background: rgba(0, 180, 216, 0.2); }
+        .archetype-symbol-item.active[data-archetype="aromantisch"] { border-color: #A8DADC; background: rgba(168, 218, 220, 0.2); }
+
         .archetype-nav-btn {
             background: var(--bg-dark);
             border: 1px solid var(--border);
@@ -6309,6 +6391,41 @@
                     <button class="archetype-nav-btn" onclick="navigateArchetype('ich', 1)" title="Nächster Archetyp">&#9654;</button>
                     <button class="archetype-info-btn" onclick="showArchetypeInfo('ich')" title="Info zum Archetyp">INFO</button>
                 </div>
+                <!-- Archetypen-Symbol-Grid für ICH -->
+                <div class="archetype-symbols-grid" id="ich-archetype-grid">
+                    <div class="archetype-symbol-item active" data-archetype="single" onclick="selectArchetypeFromGrid('ich', 'single')">
+                        <span class="archetype-symbol-icon">★</span>
+                        <span class="archetype-symbol-name">Single</span>
+                    </div>
+                    <div class="archetype-symbol-item" data-archetype="duo" onclick="selectArchetypeFromGrid('ich', 'duo')">
+                        <span class="archetype-symbol-icon">♡</span>
+                        <span class="archetype-symbol-name">Duo</span>
+                    </div>
+                    <div class="archetype-symbol-item" data-archetype="duo_flex" onclick="selectArchetypeFromGrid('ich', 'duo_flex')">
+                        <span class="archetype-symbol-icon">⚡</span>
+                        <span class="archetype-symbol-name">Duo-Flex</span>
+                    </div>
+                    <div class="archetype-symbol-item" data-archetype="solopoly" onclick="selectArchetypeFromGrid('ich', 'solopoly')">
+                        <span class="archetype-symbol-icon">◆</span>
+                        <span class="archetype-symbol-name">Solopoly</span>
+                    </div>
+                    <div class="archetype-symbol-item" data-archetype="polyamor" onclick="selectArchetypeFromGrid('ich', 'polyamor')">
+                        <span class="archetype-symbol-icon">♥</span>
+                        <span class="archetype-symbol-name">Polyamor</span>
+                    </div>
+                    <div class="archetype-symbol-item" data-archetype="ra" onclick="selectArchetypeFromGrid('ich', 'ra')">
+                        <span class="archetype-symbol-icon">∞</span>
+                        <span class="archetype-symbol-name">RA</span>
+                    </div>
+                    <div class="archetype-symbol-item" data-archetype="lat" onclick="selectArchetypeFromGrid('ich', 'lat')">
+                        <span class="archetype-symbol-icon">⌂</span>
+                        <span class="archetype-symbol-name">LAT</span>
+                    </div>
+                    <div class="archetype-symbol-item" data-archetype="aromantisch" onclick="selectArchetypeFromGrid('ich', 'aromantisch')">
+                        <span class="archetype-symbol-icon">◇</span>
+                        <span class="archetype-symbol-name">Aromantisch</span>
+                    </div>
+                </div>
                 <div class="header-geschlecht-info" id="ich-header-geschlecht"></div>
                 <div class="header-geschlecht-info" id="ich-header-dominanz"></div>
                 <div class="header-geschlecht-info" id="ich-header-orientierung"></div>
@@ -6351,6 +6468,41 @@
                     </select>
                     <button class="archetype-nav-btn" onclick="navigateArchetype('partner', 1)" title="Nächster Archetyp">&#9654;</button>
                     <button class="archetype-info-btn" onclick="showArchetypeInfo('partner')" title="Info zum Archetyp">INFO</button>
+                </div>
+                <!-- Archetypen-Symbol-Grid für PARTNER -->
+                <div class="archetype-symbols-grid" id="partner-archetype-grid">
+                    <div class="archetype-symbol-item" data-archetype="single" onclick="selectArchetypeFromGrid('partner', 'single')">
+                        <span class="archetype-symbol-icon">★</span>
+                        <span class="archetype-symbol-name">Single</span>
+                    </div>
+                    <div class="archetype-symbol-item active" data-archetype="duo" onclick="selectArchetypeFromGrid('partner', 'duo')">
+                        <span class="archetype-symbol-icon">♡</span>
+                        <span class="archetype-symbol-name">Duo</span>
+                    </div>
+                    <div class="archetype-symbol-item" data-archetype="duo_flex" onclick="selectArchetypeFromGrid('partner', 'duo_flex')">
+                        <span class="archetype-symbol-icon">⚡</span>
+                        <span class="archetype-symbol-name">Duo-Flex</span>
+                    </div>
+                    <div class="archetype-symbol-item" data-archetype="solopoly" onclick="selectArchetypeFromGrid('partner', 'solopoly')">
+                        <span class="archetype-symbol-icon">◆</span>
+                        <span class="archetype-symbol-name">Solopoly</span>
+                    </div>
+                    <div class="archetype-symbol-item" data-archetype="polyamor" onclick="selectArchetypeFromGrid('partner', 'polyamor')">
+                        <span class="archetype-symbol-icon">♥</span>
+                        <span class="archetype-symbol-name">Polyamor</span>
+                    </div>
+                    <div class="archetype-symbol-item" data-archetype="ra" onclick="selectArchetypeFromGrid('partner', 'ra')">
+                        <span class="archetype-symbol-icon">∞</span>
+                        <span class="archetype-symbol-name">RA</span>
+                    </div>
+                    <div class="archetype-symbol-item" data-archetype="lat" onclick="selectArchetypeFromGrid('partner', 'lat')">
+                        <span class="archetype-symbol-icon">⌂</span>
+                        <span class="archetype-symbol-name">LAT</span>
+                    </div>
+                    <div class="archetype-symbol-item" data-archetype="aromantisch" onclick="selectArchetypeFromGrid('partner', 'aromantisch')">
+                        <span class="archetype-symbol-icon">◇</span>
+                        <span class="archetype-symbol-name">Aromantisch</span>
+                    </div>
                 </div>
                 <div class="header-geschlecht-info" id="partner-header-geschlecht"></div>
                 <div class="header-geschlecht-info" id="partner-header-dominanz"></div>
@@ -13402,6 +13554,71 @@
 
             // Trigger change event on the active select
             activeSelect.dispatchEvent(new Event('change'));
+
+            // Update archetype grid
+            updateArchetypeGrid(person, newValue);
+        }
+
+        // Function to select archetype from grid click
+        function selectArchetypeFromGrid(person, archetype) {
+            const selectId = person === 'ich' ? 'ichSelect' : 'partnerSelect';
+            const mobileSelectId = person === 'ich' ? 'mobileIchSelect' : 'mobilePartnerSelect';
+            const select = document.getElementById(selectId);
+            const mobileSelect = document.getElementById(mobileSelectId);
+
+            // Update select elements
+            if (select) {
+                for (let i = 0; i < select.options.length; i++) {
+                    if (select.options[i].value === archetype) {
+                        select.selectedIndex = i;
+                        break;
+                    }
+                }
+            }
+            if (mobileSelect) {
+                for (let i = 0; i < mobileSelect.options.length; i++) {
+                    if (mobileSelect.options[i].value === archetype) {
+                        mobileSelect.selectedIndex = i;
+                        break;
+                    }
+                }
+            }
+
+            // Update global state variables
+            if (person === 'ich') {
+                currentArchetype = archetype;
+                mobileIchArchetype = archetype;
+            } else {
+                selectedPartner = archetype;
+                mobilePartnerArchetype = archetype;
+            }
+
+            // Update archetype grid highlighting
+            updateArchetypeGrid(person, archetype);
+
+            // Trigger change event
+            const activeSelect = select || mobileSelect;
+            if (activeSelect) {
+                activeSelect.dispatchEvent(new Event('change'));
+            }
+        }
+
+        // Function to update archetype grid highlighting
+        function updateArchetypeGrid(person, archetype) {
+            const gridId = person === 'ich' ? 'ich-archetype-grid' : 'partner-archetype-grid';
+            const grid = document.getElementById(gridId);
+            if (!grid) return;
+
+            // Remove active class from all items
+            grid.querySelectorAll('.archetype-symbol-item').forEach(item => {
+                item.classList.remove('active');
+            });
+
+            // Add active class to selected item
+            const selectedItem = grid.querySelector(`.archetype-symbol-item[data-archetype="${archetype}"]`);
+            if (selectedItem) {
+                selectedItem.classList.add('active');
+            }
         }
 
         // Navigation auf Seite 2 (Ergebnis) - ruft navigateArchetype auf und aktualisiert Seite 2
@@ -13458,6 +13675,7 @@
                     // Sync with old select if exists
                     const oldSelect = document.getElementById('archetypeSelect');
                     if (oldSelect) oldSelect.value = e.target.value;
+                    updateArchetypeGrid('ich', e.target.value);
                     updateComparisonView();
                 });
             }
@@ -13467,6 +13685,7 @@
             if (partnerSelect) {
                 partnerSelect.addEventListener('change', (e) => {
                     selectedPartner = e.target.value;
+                    updateArchetypeGrid('partner', e.target.value);
                     updateComparisonView();
                 });
             }
