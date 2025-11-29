@@ -1,11 +1,13 @@
 {
   "meta": {
     "title": "Archetypen-Interaktionsmatrix für Beziehungsmodelle",
-    "version": "4.0.0",
+    "version": "5.0.0",
     "created": "2025-01-22",
-    "description": "Eine 6x6 Matrix zur Bewertung der Beziehungsqualität verschiedener Beziehungsarchetypen",
+    "updated": "2025-01-29",
+    "description": "Eine 8x8 Matrix zur Bewertung der Beziehungsqualität verschiedener Beziehungsarchetypen mit Primär/Sekundär-System",
     "matrixType": "asymmetric",
-    "note": "Asymmetrisch, da die Perspektive die wahrgenommene Beziehungsqualität beeinflusst"
+    "note": "Asymmetrisch, da die Perspektive die wahrgenommene Beziehungsqualität beeinflusst",
+    "changes": "v5.0: Poly-Hedo entfernt, RA/LAT/Aromantisch hinzugefügt, Primär/Sekundär-System"
   },
 
   "categories": {
@@ -48,99 +50,8 @@
       "color": "#E63946",
       "colorLight": "#FFB4A2",
       "colorDark": "#9D2933",
-      "shortDescription": "Fokus auf Selbstentwicklung, temporär oder bewusst ungebunden. Maximale persönliche Freiheit mit Offenheit für verschiedene Beziehungsformen.",
-      "fullDescription": "Der Single-Archetyp lebt primär für sich selbst und eigene Projekte. Dies kann eine bewusste Lebensphase oder eine dauerhafte Entscheidung sein. Singles sind oft besonders reflektiert über ihre Bedürfnisse und können sowohl monogam als auch poly orientiert sein.",
-      "pro": [
-        "Volle Kontrolle über Zeit und Energie",
-        "Ungestörte Selbstentwicklung möglich",
-        "Flexibilität bei Lebensentscheidungen",
-        "Keine Kompromisse bei Grundwerten nötig",
-        "Freiheit, verschiedene Beziehungsformen zu explorieren"
-      ],
-      "contra": [
-        "Risiko der Isolation und Einsamkeit",
-        "Keine geteilte emotionale Last",
-        "Gesellschaftlicher Druck ('Wann heiratest du?')",
-        "Fehlende Intimität und körperliche Nähe",
-        "Mangelnde Übung in Beziehungsskills"
-      ],
-      "pathos": "Eine Mischung aus Freiheitsgefühl und gelegentlicher Sehnsucht. Der Single spürt die Weite der Möglichkeiten, aber manchmal auch die Leere eines unbewohnten Raums. Stolz auf Unabhängigkeit, aber offen für Verbindung.",
-      "logos": "Strukturell optimiert für Selbstverwirklichung. Alle Ressourcen (Zeit, Geld, Aufmerksamkeit) fließen in eigene Projekte. Beziehungen werden als Option, nicht als Notwendigkeit betrachtet. Rationalität in der Partnersuche möglich."
-    },
-    "solopoly": {
-      "id": "solopoly",
-      "name": "Solopoly",
-      "color": "#2A9D8F",
-      "colorLight": "#A8DADC",
-      "colorDark": "#1D7069",
-      "shortDescription": "Polyamor mit maximaler Autonomie. Keine Primärbeziehung, kein Zusammenleben - jede Verbindung ist eigenständig und gleichwertig.",
-      "fullDescription": "Solopoly vereint polyamore Offenheit mit konsequenter Autonomie. Der Fokus liegt auf dem 'Solo' - kein Nesting Partner, keine Verschmelzung. Mehrere tiefe Beziehungen sind möglich, aber jede Person bleibt primär bei sich selbst verankert.",
-      "pro": [
-        "Maximale Autonomie bei gleichzeitiger Verbundenheit",
-        "Keine Hierarchie zwischen Partnern schafft Gleichwertigkeit",
-        "Eigenes Zuhause als sicherer Rückzugsort",
-        "Beziehungen entstehen aus Wahl, nicht aus Gewohnheit",
-        "Hohe Selbstkenntnis durch bewusste Lebensgestaltung"
-      ],
-      "contra": [
-        "Gesellschaftlich schwer zu erklären und zu leben",
-        "Risiko der emotionalen Distanzierung",
-        "Kein Zusammenleben bedeutet getrennte Lebensrealitäten",
-        "Partner können sich als 'nicht wichtig genug' fühlen",
-        "Hoher Organisationsaufwand für multiple Beziehungen"
-      ],
-      "pathos": "Tiefe Wertschätzung für Freiheit und Selbstbestimmung. Ein Gefühl von 'Ich gehöre mir selbst' durchzieht alle Beziehungen. Liebe wird als Geschenk gegeben, nicht als Anspruch erhoben. Manchmal Sehnsucht nach Verschmelzung, die bewusst zurückgehalten wird.",
-      "logos": "Klare Struktur: Jede Beziehung hat ihren eigenen Kontext, keine überlappenden Erwartungen. Zeit wird bewusst verteilt, nicht automatisch geteilt. Das eigene Leben ist die Basis, Beziehungen sind Bereicherungen, keine Fundamente."
-    },
-    "poly_hedo": {
-      "id": "poly_hedo",
-      "name": "Poly Hedo",
-      "color": "#9B5DE5",
-      "colorLight": "#D4A5FF",
-      "colorDark": "#7340B0",
-      "shortDescription": "Lustorientierte, spontane Mehrfachbeziehungen. Fokus auf Genuss, Erfahrung und Lebensfreude - weniger auf Struktur und Regeln.",
-      "fullDescription": "Poly Hedo (hedonistisch-polyamor) feiert die Sinnlichkeit und Spontaneität von Beziehungen. Weniger interessiert an Regelwerken und Kalendern, mehr an authentischen Momenten und intensiven Erfahrungen. Genuss steht im Vordergrund, ohne dabei unethisch zu werden.",
-      "pro": [
-        "Maximale Lebensfreude und Genuss",
-        "Spontaneität und Abenteuerlust",
-        "Wenig Drama durch geringe Erwartungen",
-        "Intensive, unvergessliche Momente",
-        "Freiheit von starren Beziehungsregeln"
-      ],
-      "contra": [
-        "Gesellschaftlich am stärksten stigmatisiert",
-        "Risiko der Oberflächlichkeit",
-        "Schwierig, tiefe emotionale Bindungen aufzubauen",
-        "Kann als verantwortungslos wahrgenommen werden",
-        "Fehlende Struktur kann zu Chaos führen"
-      ],
-      "pathos": "Feier des Augenblicks, Ekstase und Lebendigkeit. Ein tiefes 'Ja' zum Leben in allen seinen Facetten. Verbindung entsteht durch geteilte Intensität, nicht durch Versprechen. Manchmal Sehnsucht nach Ankern in der Flut der Erfahrungen.",
-      "logos": "Wenig strukturiert, aber nicht regellos. Ethik basiert auf Ehrlichkeit und Consent, nicht auf Zeitplänen. Beziehungen sind Flows, keine Verträge. Flexibilität als höchstes Gut. Energie folgt der Lust, nicht dem Kalender."
-    },
-    "polyamor": {
-      "id": "polyamor",
-      "name": "Polyamor",
-      "color": "#F4A261",
-      "colorLight": "#FFE5B4",
-      "colorDark": "#C07B3E",
-      "shortDescription": "Strukturierte, ethische Mehrfachbeziehungen. Klare Kommunikation, oft hierarchisch organisiert, mit Fokus auf tiefe romantische Bindungen.",
-      "fullDescription": "Klassisches Polyamory mit Betonung auf Ethik, Kommunikation und oft einer hierarchischen Struktur (Primary/Secondary). Der Fokus liegt auf mehreren romantischen Liebesbeziehungen, nicht primär auf Sexualität. Community und gegenseitige Unterstützung sind wichtig.",
-      "pro": [
-        "Tiefe Liebesbeziehungen mit mehreren Menschen möglich",
-        "Starke Community und Unterstützungsnetzwerk",
-        "Klare Regeln schaffen Sicherheit",
-        "Hohe Kommunikationskompetenz",
-        "Compersion - Mitfreude am Glück der Partner"
-      ],
-      "contra": [
-        "Hoher Zeit- und Kommunikationsaufwand",
-        "Gesellschaftliche Stigmatisierung",
-        "Komplexe Kalenderverwaltung nötig",
-        "Hierarchien können verletzen",
-        "Eifersucht und Unsicherheiten als ständige Arbeit"
-      ],
-      "pathos": "Tiefe Liebe zu mehreren Menschen gleichzeitig. Ein Gefühl von 'Das Herz wird größer, nicht geteilt'. Freude an der Komplexität menschlicher Verbindungen. Manchmal Überforderung durch die vielen emotionalen Fäden.",
-      "logos": "Hochstrukturiert mit klaren Regeln, Verhandlungen und Agreements. Kalendermanagement als Kernkompetenz. Hierarchien (Primary/Secondary) oder bewusste Nicht-Hierarchie. Kommunikation ist das Fundament aller Beziehungen."
+      "shortDescription": "Fokus auf Selbstentwicklung, temporär oder bewusst ungebunden. Maximale persönliche Freiheit.",
+      "fullDescription": "Der Single-Archetyp lebt primär für sich selbst und eigene Projekte. Dies kann eine bewusste Lebensphase oder eine dauerhafte Entscheidung sein."
     },
     "duo": {
       "id": "duo",
@@ -149,23 +60,7 @@
       "colorLight": "#FDA7DF",
       "colorDark": "#B53471",
       "shortDescription": "Klassische monogame Zweierbeziehung. Exklusivität, Tiefe und Verbindlichkeit mit einer Person.",
-      "fullDescription": "Das Duo-Modell repräsentiert die traditionelle monogame Partnerschaft: Eine tiefe, exklusive Verbindung zwischen zwei Menschen. Fokus liegt auf gemeinsamer Lebensgestaltung, emotionaler Verschmelzung und langfristiger Verbindlichkeit. Gesellschaftlich das am meisten akzeptierte Modell.",
-      "pro": [
-        "Maximale gesellschaftliche Akzeptanz und Unterstützung",
-        "Klare Erwartungen und Strukturen",
-        "Volle emotionale Verfügbarkeit für eine Person",
-        "Tiefe Intimität durch exklusive Fokussierung",
-        "Rechtliche und institutionelle Absicherung möglich"
-      ],
-      "contra": [
-        "Hohe Erwartungen können zu Druck führen",
-        "Eine Person muss alle Bedürfnisse erfüllen",
-        "Risiko der emotionalen Abhängigkeit",
-        "Wenig Spielraum für Individualität außerhalb der Beziehung",
-        "Trennung gesellschaftlich als Scheitern wahrgenommen"
-      ],
-      "pathos": "Das Gefühl von 'Du bist mein Zuhause'. Tiefe Geborgenheit in der Exklusivität. Die romantische Vorstellung von der einen Person, die alles versteht. Aber auch die Last, alles füreinander sein zu müssen.",
-      "logos": "Strukturell einfach und klar: Eine Beziehung, klare Rollen, gesellschaftlich definierte Erwartungen. Ressourcen (Zeit, Energie, Geld) fließen in eine Partnerschaft. Entscheidungen werden gemeinsam getroffen."
+      "fullDescription": "Das Duo-Modell repräsentiert die traditionelle monogame Partnerschaft: Eine tiefe, exklusive Verbindung zwischen zwei Menschen."
     },
     "duo_flex": {
       "id": "duo_flex",
@@ -174,1001 +69,526 @@
       "colorLight": "#FFA5A5",
       "colorDark": "#CC5555",
       "shortDescription": "Primär Zweierbeziehung mit situativer Öffnung. Monogamisch mit Flexibilität nach Absprache.",
-      "fullDescription": "Das Duo-Flex-Modell vereint die Stabilität einer Hauptbeziehung mit situativer Offenheit. Die Primärpartnerschaft hat klare Priorität, aber für bestimmte Situationen oder Bedürfnisse kann die Beziehung nach Absprache geöffnet werden. Typische Formen: Swingen, gelegentliche Dreier, Hall Pass, oder 'Don't Ask Don't Tell'-Arrangements.",
-      "pro": [
-        "Stabilität einer Hauptbeziehung mit Flexibilität",
-        "Offenheit für neue Erfahrungen ohne Beziehung zu gefährden",
-        "Klare Priorität und Sicherheit der Primärbeziehung",
-        "Gesellschaftlich akzeptabler als volle Polyamorie",
-        "Ermöglicht sexuelle Exploration als Paar oder einzeln"
-      ],
-      "contra": [
-        "Grenzen müssen ständig neu verhandelt werden",
-        "Eifersucht kann trotz Absprachen auftreten",
-        "Gesellschaftlich immer noch erklärungsbedürftig",
-        "Risiko der ungleichen Erwartungen zwischen Partnern",
-        "'Öffnung' kann zu Spannungen führen wenn unterschiedlich genutzt"
-      ],
-      "pathos": "Die Suche nach dem Besten aus beiden Welten: Die Geborgenheit einer festen Partnerschaft mit der Freiheit für besondere Momente. Manchmal die Unsicherheit: 'Ist das genug? Ist das zu viel?' Die Balance zwischen Sicherheit und Abenteuer.",
-      "logos": "Strukturell komplex: Klare Primärbeziehung mit definierten Ausnahmen. Regeln sind kontextabhängig (Urlaub, bestimmte Situationen, spezifische Personen). Kommunikation über Grenzen ist zentral. Flexibilität erfordert Vertrauen und klare Agreements."
+      "fullDescription": "Das Duo-Flex-Modell vereint die Stabilität einer Hauptbeziehung mit situativer Offenheit."
+    },
+    "solopoly": {
+      "id": "solopoly",
+      "name": "Solopoly",
+      "color": "#2A9D8F",
+      "colorLight": "#A8DADC",
+      "colorDark": "#1D7069",
+      "shortDescription": "Polyamor mit maximaler Autonomie. Keine Primärbeziehung, kein Zusammenleben.",
+      "fullDescription": "Solopoly vereint polyamore Offenheit mit konsequenter Autonomie. Der Fokus liegt auf dem 'Solo'."
+    },
+    "polyamor": {
+      "id": "polyamor",
+      "name": "Polyamor",
+      "color": "#F4A261",
+      "colorLight": "#FFE5B4",
+      "colorDark": "#C07B3E",
+      "shortDescription": "Strukturierte, ethische Mehrfachbeziehungen mit Fokus auf tiefe romantische Bindungen.",
+      "fullDescription": "Klassisches Polyamory mit Betonung auf Ethik, Kommunikation und oft einer hierarchischen Struktur."
+    },
+    "ra": {
+      "id": "ra",
+      "name": "RA",
+      "color": "#9B5DE5",
+      "colorLight": "#D4A5FF",
+      "colorDark": "#7340B0",
+      "shortDescription": "Relationship Anarchist - Ablehnung aller Beziehungs-Hierarchien und Labels.",
+      "fullDescription": "Relationship Anarchy lehnt gesellschaftliche Beziehungsnormen ab. Jede Verbindung wird individuell definiert ohne vorgegebene Kategorien."
+    },
+    "lat": {
+      "id": "lat",
+      "name": "LAT",
+      "color": "#06D6A0",
+      "colorLight": "#B5EAD7",
+      "colorDark": "#048A65",
+      "shortDescription": "Living Apart Together - Feste Partnerschaft ohne Zusammenleben.",
+      "fullDescription": "LAT beschreibt eine verbindliche Beziehung, bei der beide Partner bewusst getrennte Wohnungen behalten."
+    },
+    "aromantisch": {
+      "id": "aromantisch",
+      "name": "Aromantisch",
+      "color": "#118AB2",
+      "colorLight": "#83C5D8",
+      "colorDark": "#0C5F7A",
+      "shortDescription": "Fokus auf platonische Verbindungen ohne romantische Komponente.",
+      "fullDescription": "Aromantische Menschen erleben keine oder wenig romantische Anziehung, können aber tiefe platonische Bindungen haben."
     }
   },
 
   "interactions": {
     "single_single": {
       "from": "single", "to": "single",
-      "scores": {
-        "A": { "value": 100, "note": "Identische Grundüberzeugung: Freiheit und Ungebundenheit als Wert" },
-        "B": { "value": 88, "note": "Geteilte Werte bezüglich Flexibilität und Eigenständigkeit" },
-        "C": { "value": 85, "note": "Gegenseitiges Verständnis für Nähe-Distanz-Balance" },
-        "D": { "value": 95, "note": "Perfektes Verständnis für Autonomie-Bedürfnisse" },
-        "E": { "value": 88, "note": "Kommunikation auf Augenhöhe ohne Erwartungsdruck" },
-        "F": { "value": 95, "note": "Gesellschaftlich völlig akzeptiert und unkompliziert" }
-      },
+      "scores": { "A": { "value": 100 }, "B": { "value": 88 }, "C": { "value": 85 }, "D": { "value": 95 }, "E": { "value": 88 }, "F": { "value": 95 } },
       "overall": 95,
-      "pro": [
-        "Identische Beziehungsphilosophie - vollständiges Verständnis",
-        "Keine Erwartungshaltung schafft Leichtigkeit",
-        "Beide verstehen das Bedürfnis nach Freiraum",
-        "Gesellschaftlich unkompliziert"
-      ],
-      "contra": [
-        "Individuelle Unterschiede bleiben trotz gleichem Typ möglich",
-        "Risiko dass beide zu passiv bleiben",
-        "Timing für Entwicklung der Beziehung muss passen"
-      ],
-      "pathos": "Zwei Seelen, die dieselbe Sprache sprechen. Die Freiheit, die der andere braucht, ist dieselbe, die man selbst schätzt. Vollständiges Verstehen ohne Worte.",
-      "logos": "Strukturell ideal: Gleiche Grundüberzeugungen eliminieren Konflikte auf philosophischer Ebene. Individuelle Unterschiede betreffen Details, nicht das Fundament."
+      "pro": ["Identische Beziehungsphilosophie", "Gegenseitiger Respekt für Autonomie", "Keine Erwartungshaltung"],
+      "contra": ["Fehlende Polarität", "Keiner gibt Impuls zur Vertiefung"]
     },
-
-    "single_solopoly": {
-      "from": "single", "to": "solopoly",
-      "scores": {
-        "A": { "value": 55, "note": "Single könnte Exklusivität wünschen, Solopoly bietet das nicht" },
-        "B": { "value": 60, "note": "Ethische Basis kann unterschiedlich interpretiert werden" },
-        "C": { "value": 50, "note": "Single könnte mehr Nähe wünschen als Solopoly bereit ist" },
-        "D": { "value": 85, "note": "Beide schätzen Freiheit, aber aus unterschiedlichen Gründen" },
-        "E": { "value": 68, "note": "Solopoly kommuniziert klar, Single muss sich darauf einlassen" },
-        "F": { "value": 45, "note": "Sozial erklärungsbedürftig, wenn es über Dating hinausgeht" }
-      },
-      "overall": 61,
-      "pro": [
-        "Solopoly bietet klare Kommunikation über Grenzen",
-        "Single behält volle Freiheit ohne Beziehungsdruck",
-        "Gute Einstiegsoption für Poly-Neugierige",
-        "Keine Verschmelzungserwartung auf beiden Seiten"
-      ],
-      "contra": [
-        "Single könnte sich als 'einer von vielen' fühlen",
-        "Exklusivitätswunsch wird nie erfüllt",
-        "Gesellschaftlich schwer zu erklären",
-        "Single muss Poly-Grundlagen verstehen lernen"
-      ],
-      "pathos": "Der Single spürt die Anziehung zur Klarheit des Solopoly, aber vielleicht auch Frustration: 'Warum kann ich nicht genug sein?' Gleichzeitig Faszination für diese selbstbestimmte Lebensform.",
-      "logos": "Strukturell herausfordernd: Single's möglicher Exklusivitätswunsch vs. Solopoly's definierte Nicht-Exklusivität. Funktioniert wenn Single das Modell akzeptiert, scheitert bei heimlichen Hoffnungen."
-    },
-
-    "single_poly_hedo": {
-      "from": "single", "to": "poly_hedo",
-      "scores": {
-        "A": { "value": 62, "note": "Beide können unverbindlichen Spaß teilen" },
-        "B": { "value": 52, "note": "Werte-Unterschiede möglich aber nicht zwingend störend" },
-        "C": { "value": 58, "note": "Nähe ist intensiv aber situativ" },
-        "D": { "value": 88, "note": "Maximale Freiheit auf beiden Seiten" },
-        "E": { "value": 55, "note": "Kommunikation pragmatisch, nicht immer tief" },
-        "F": { "value": 42, "note": "Kann als 'nur Spaß' sozial akzeptiert sein" }
-      },
-      "overall": 60,
-      "pro": [
-        "Spaß und Genuss ohne Verpflichtung",
-        "Keine Erwartungen = wenig Enttäuschungspotenzial",
-        "Ideal für Erfahrungssammlung",
-        "Intensive Momente ohne Langzeitverpflichtung"
-      ],
-      "contra": [
-        "Risiko der Oberflächlichkeit",
-        "Single könnte mehr Tiefe wünschen",
-        "Gesellschaftlich heikel wenn es öffentlich wird",
-        "Fehlende emotionale Kontinuität"
-      ],
-      "pathos": "Funken und Feuerwerk - aufregend, aber flüchtig. Der Single genießt die Intensität, fragt sich aber vielleicht: 'Ist das alles?' Gleichzeitig Befreiung vom Beziehungsdruck.",
-      "logos": "Strukturell einfach: Niedrige Erwartungen, klarer Fokus auf Genuss. Keine Verhandlungen über Zukunft nötig. Risiko: Wenn Single mehr will, entsteht Asymmetrie."
-    },
-
-    "single_polyamor": {
-      "from": "single", "to": "polyamor",
-      "scores": {
-        "A": { "value": 48, "note": "Grundsätzlich unterschiedliche Beziehungsphilosophien" },
-        "B": { "value": 58, "note": "Werte-Clash bei Exklusivitätserwartungen möglich" },
-        "C": { "value": 55, "note": "Nähe möglich, aber Single konkurriert um Aufmerksamkeit" },
-        "D": { "value": 72, "note": "Single hat Freiheit, aber nicht die gewünschte Exklusivität" },
-        "E": { "value": 70, "note": "Poly-Kommunikation erfordert Einarbeitung" },
-        "F": { "value": 38, "note": "Gesellschaftlich herausfordernd zu erklären" }
-      },
-      "overall": 57,
-      "pro": [
-        "Zugang zu Poly-Community und Erfahrungen",
-        "Klare Kommunikationskultur des Polyamors",
-        "Single kann Poly 'testen' ohne Commitment",
-        "Tiefe Verbindung ist möglich"
-      ],
-      "contra": [
-        "Single muss geteilte Zeit akzeptieren",
-        "Komplexe Regeln und Hierarchien verstehen",
-        "Gefühl 'Sekundär' zu sein kann verletzen",
-        "Gesellschaftlich erklärungsbedürftig"
-      ],
-      "pathos": "Der Single betritt eine neue Welt mit eigenen Regeln. Faszination und Überforderung mischen sich. Die Frage 'Wo ist mein Platz hier?' begleitet die Erfahrung. Potenzial für Wachstum oder Frustration.",
-      "logos": "Strukturelle Lernkurve: Single muss Poly-Vokabular und Regelwerke verstehen. Kalendermanagement und Hierarchien sind fremd. Funktioniert bei Offenheit, scheitert bei heimlichem Exklusivitätswunsch."
-    },
-
-    "solopoly_single": {
-      "from": "solopoly", "to": "single",
-      "scores": {
-        "A": { "value": 62, "note": "Solopoly schätzt Single's Unabhängigkeit" },
-        "B": { "value": 65, "note": "Werte kompatibel wenn Single nicht exklusiv sucht" },
-        "C": { "value": 55, "note": "Solopoly hält natürliche Distanz, Single könnte mehr wollen" },
-        "D": { "value": 92, "note": "Perfektes Match bei Autonomie" },
-        "E": { "value": 70, "note": "Solopoly kommuniziert Bedürfnisse klar" },
-        "F": { "value": 52, "note": "Sozial einfacher als mit anderen Poly-Varianten" }
-      },
-      "overall": 66,
-      "pro": [
-        "Single bringt keine Verschmelzungserwartungen",
-        "Unkomplizierte Dynamik ohne Poly-Erklärungsbedarf",
-        "Autonomie wird von beiden geschätzt",
-        "Leichter Einstieg in Beziehung"
-      ],
-      "contra": [
-        "Single könnte heimlich mehr wollen",
-        "Risiko der Enttäuschung wenn Erwartungen divergieren",
-        "Single versteht Poly-Kontext möglicherweise nicht",
-        "Langfristig nur stabil wenn Single das Modell akzeptiert"
-      ],
-      "pathos": "Aus Solopoly-Sicht: Ein angenehmer, unproblematischer Partner. Keine Kämpfe um Hierarchien, keine Poly-Dramen. Aber vielleicht unterschätzt der Single die Tiefe, die Solopoly bieten kann.",
-      "logos": "Strukturell komfortabel für Solopoly. Single's Unabhängigkeit passt zum Modell. Risiko: Asymmetrie wenn Single Exklusivität entwickelt. Klare Kommunikation von Anfang an essenziell."
-    },
-
-    "solopoly_solopoly": {
-      "from": "solopoly", "to": "solopoly",
-      "scores": {
-        "A": { "value": 100, "note": "Identische Grundüberzeugung: Autonomie mit bewussten Verbindungen" },
-        "B": { "value": 92, "note": "Geteilte Ethik der Autonomie und radikalen Ehrlichkeit" },
-        "C": { "value": 85, "note": "Gegenseitiges Verständnis für gewählte Nähe-Distanz" },
-        "D": { "value": 98, "note": "Maximale gegenseitige Autonomie-Wertschätzung" },
-        "E": { "value": 92, "note": "Klare, direkte Kommunikation als geteilter Standard" },
-        "F": { "value": 85, "note": "Gesellschaftlich als Paar getragen, gegenseitiges Verständnis stärkt" }
-      },
-      "overall": 95,
-      "pro": [
-        "Identische Beziehungsphilosophie - vollständiges Verständnis",
-        "Keine Erklärungen nötig, geteilte Sprache",
-        "Tiefe Verbindung ohne Besitzanspruch als geteilter Wert",
-        "Maximale gegenseitige Autonomie-Akzeptanz"
-      ],
-      "contra": [
-        "Individuelle Unterschiede bleiben trotz gleichem Typ möglich",
-        "Gesellschaftlich gemeinsam erklärungsbedürftig",
-        "Balance zwischen Solo und Poly individuell verschieden"
-      ],
-      "pathos": "Zwei Seelen, die dieselbe Sprache der Freiheit sprechen. Tiefes Verstehen der Schönheit bewusster Distanz. Die Erleichterung: Keine Erklärungen nötig.",
-      "logos": "Strukturell ideal: Gleiche Grundüberzeugungen, keine Asymmetrien. Perfekte Autonomie-Kompatibilität. Individuelle Unterschiede betreffen Details, nicht das Fundament."
-    },
-
-    "solopoly_poly_hedo": {
-      "from": "solopoly", "to": "poly_hedo",
-      "scores": {
-        "A": { "value": 82, "note": "Starke Übereinstimmung bei Freiheit und Erfahrung" },
-        "B": { "value": 68, "note": "Solopoly möglicherweise strukturierter in der Ethik" },
-        "C": { "value": 62, "note": "Beide genießen ohne Verschmelzungsanspruch" },
-        "D": { "value": 92, "note": "Perfekte Autonomie-Harmonie" },
-        "E": { "value": 70, "note": "Funktionale, ehrliche Kommunikation" },
-        "F": { "value": 35, "note": "Gesellschaftlich beide Außenseiter" }
-      },
-      "overall": 68,
-      "pro": [
-        "Gemeinsame Wertschätzung von Freiheit",
-        "Wenig Drama durch klare Erwartungen",
-        "Genuss ohne Verpflichtung",
-        "Ähnliche Lebensentwürfe"
-      ],
-      "contra": [
-        "Poly Hedo könnte Solopoly's Struktur als rigid empfinden",
-        "Solopoly könnte Poly Hedo als zu chaotisch sehen",
-        "Gesellschaftlich besonders herausfordernd",
-        "Langfristig unterschiedliche Tiefen-Bedürfnisse"
-      ],
-      "pathos": "Natürliche Verbindung von Freiheitsliebenden. Leichtigkeit und Genuss ohne schwere Diskussionen. Aber vielleicht fragt Solopoly: 'Ist da auch Tiefe möglich?'",
-      "logos": "Strukturell kompatibel bei Autonomie, unterschiedlich bei Organisation. Solopoly plant, Poly Hedo fließt. Funktioniert bei gegenseitiger Akzeptanz der Unterschiede."
-    },
-
-    "solopoly_polyamor": {
-      "from": "solopoly", "to": "polyamor",
-      "scores": {
-        "A": { "value": 78, "note": "Gemeinsame Poly-Basis, unterschiedliche Strukturpräferenzen" },
-        "B": { "value": 82, "note": "Ethische Nicht-Monogamie als gemeinsamer Nenner" },
-        "C": { "value": 58, "note": "Polyamor könnte mehr Nähe wollen als Solopoly bietet" },
-        "D": { "value": 70, "note": "Solopoly braucht mehr Autonomie als hierarchisches Poly bietet" },
-        "E": { "value": 85, "note": "Beide kommunikationsstark" },
-        "F": { "value": 45, "note": "Beide kämpfen mit gesellschaftlicher Akzeptanz" }
-      },
-      "overall": 70,
-      "pro": [
-        "Geteilte Poly-Community und Sprache",
-        "Gegenseitiges Verständnis der Lebensform",
-        "Starke Kommunikationsbasis",
-        "Ethische Übereinstimmung"
-      ],
-      "contra": [
-        "Hierarchie-Konflikt: Solopoly passt nicht als 'Primary'",
-        "Polyamor könnte mehr Nähe/Verschmelzung wollen",
-        "Unterschiedliche Strukturpräferenzen",
-        "Kalenderkonflikte möglich"
-      ],
-      "pathos": "Zwei Dialekte derselben Sprache. Verstehen, aber mit Nuancen-Unterschieden. Solopoly schätzt die Tiefe des Polyamors, zögert aber bei der Nähe. Respekt und leichte Distanz.",
-      "logos": "Strukturell kompatibel auf Poly-Ebene, unterschiedlich bei Hierarchie. Solopoly akzeptiert keine Primary-Rolle, Polyamor muss das integrieren. Klärung der Struktur essenziell."
-    },
-
-    "poly_hedo_single": {
-      "from": "poly_hedo", "to": "single",
-      "scores": {
-        "A": { "value": 65, "note": "Beide können unverbindlichen Spaß genießen" },
-        "B": { "value": 55, "note": "Werte-Unterschiede möglich aber nicht zentral" },
-        "C": { "value": 62, "note": "Situative Intensität funktioniert gut" },
-        "D": { "value": 90, "note": "Maximale gegenseitige Freiheit" },
-        "E": { "value": 58, "note": "Kommunikation pragmatisch" },
-        "F": { "value": 52, "note": "Sozial als 'Dating' oder 'FWB' akzeptierbar" }
-      },
-      "overall": 64,
-      "pro": [
-        "Unkomplizierter Spaß ohne Erwartungen",
-        "Single akzeptiert die Unverbindlichkeit",
-        "Intensive Momente ohne Langzeitdruck",
-        "Gegenseitige Freiheit"
-      ],
-      "contra": [
-        "Single könnte mehr entwickeln wollen",
-        "Fehlende emotionale Tiefe langfristig",
-        "Risiko der Oberflächlichkeit",
-        "Unterschiedliche Langzeit-Vorstellungen"
-      ],
-      "pathos": "Aus Poly-Hedo-Sicht: Ein angenehmer Spielpartner. Keine Dramen, keine schweren Gespräche. Aber vielleicht auch die Frage, ob der Single wirklich versteht, was hier passiert.",
-      "logos": "Strukturell einfach: Klare Erwartungen (wenig bis keine). Single's Status passt zum unverbindlichen Modus. Risiko bei einseitiger Entwicklung von Gefühlen."
-    },
-
-    "poly_hedo_solopoly": {
-      "from": "poly_hedo", "to": "solopoly",
-      "scores": {
-        "A": { "value": 80, "note": "Beide schätzen Freiheit und Erfahrung" },
-        "B": { "value": 65, "note": "Unterschiedliche ethische Strukturiertheit" },
-        "C": { "value": 60, "note": "Situative Nähe ohne Erwartung passt beiden" },
-        "D": { "value": 90, "note": "Excellente Autonomie-Kompatibilität" },
-        "E": { "value": 68, "note": "Funktionale Kommunikation, nicht immer tief" },
-        "F": { "value": 38, "note": "Gesellschaftlich beide herausfordernd" }
-      },
-      "overall": 67,
-      "pro": [
-        "Gemeinsame Freiheitsliebe",
-        "Wenig Erwartungsdruck",
-        "Natürliche Verbindung",
-        "Leichtigkeit im Umgang"
-      ],
-      "contra": [
-        "Solopoly könnte als 'zu regelhaft' empfunden werden",
-        "Unterschiedliche Tiefen-Kapazitäten",
-        "Gesellschaftlich schwer zu navigieren",
-        "Langfristig möglicherweise divergierende Bedürfnisse"
-      ],
-      "pathos": "Aus Poly-Hedo-Sicht: Ein Partner, der die Freiheit versteht. Vielleicht etwas zu strukturiert, aber zuverlässig. Genuss ist möglich, Tiefe überraschend erreichbar.",
-      "logos": "Poly Hedo schätzt die Klarheit des Solopoly, auch wenn die Struktur manchmal einengend wirkt. Funktioniert wenn beide ihre Unterschiede akzeptieren."
-    },
-
-    "poly_hedo_poly_hedo": {
-      "from": "poly_hedo", "to": "poly_hedo",
-      "scores": {
-        "A": { "value": 100, "note": "Identische Grundüberzeugung: Genuss und Lebensfreude als Wert" },
-        "B": { "value": 88, "note": "Geteilte hedonistische Ethik und Lebensphilosophie" },
-        "C": { "value": 85, "note": "Gegenseitiges Verständnis für intensive, situative Nähe" },
-        "D": { "value": 98, "note": "Maximale gegenseitige Freiheit als geteilter Wert" },
-        "E": { "value": 88, "note": "Pragmatische und ehrliche Kommunikation" },
-        "F": { "value": 85, "note": "Gesellschaftlich als Paar getragen, geteilte Lebensfreude verbindet" }
-      },
-      "overall": 95,
-      "pro": [
-        "Identische Beziehungsphilosophie - vollständiges Verständnis",
-        "Maximaler Genuss ohne Erklärungsbedarf",
-        "Spontaneität und Abenteuer als geteilte Werte",
-        "Keine Kompromisse bei Freiheit nötig"
-      ],
-      "contra": [
-        "Individuelle Unterschiede bleiben trotz gleichem Typ möglich",
-        "Gesellschaftlich gemeinsam herausfordernd",
-        "Tiefe vs. Intensität individuell verschieden"
-      ],
-      "pathos": "Zwei Flammen, die denselben Tanz tanzen. Vollständiges Verstehen der Lebensfreude. Die Erleichterung: Jemand, der das Feuer teilt, ohne es löschen zu wollen.",
-      "logos": "Strukturell ideal: Gleiche Grundüberzeugungen, gleiche Spielregeln. Beide verstehen den Wert von Intensität und Freiheit. Individuelle Unterschiede betreffen Details, nicht das Fundament."
-    },
-
-    "poly_hedo_polyamor": {
-      "from": "poly_hedo", "to": "polyamor",
-      "scores": {
-        "A": { "value": 72, "note": "Gemeinsame Poly-Basis, unterschiedlicher Fokus" },
-        "B": { "value": 62, "note": "Polyamor's Romantik vs. Hedo's Pragmatik" },
-        "C": { "value": 62, "note": "Polyamor will mehr kontinuierliche Tiefe" },
-        "D": { "value": 78, "note": "Freiheit funktioniert für beide" },
-        "E": { "value": 68, "note": "Unterschiedliche Kommunikationsprioritäten" },
-        "F": { "value": 40, "note": "Beide sozial herausgefordert" }
-      },
-      "overall": 64,
-      "pro": [
-        "Geteilte Poly-Grundlage",
-        "Polyamor bringt Struktur, Hedo bringt Leichtigkeit",
-        "Gegenseitige Bereicherung möglich",
-        "Gemeinsame Community"
-      ],
-      "contra": [
-        "Unterschiedliche Prioritäten: Romantik vs. Genuss",
-        "Polyamor könnte Hedo als oberflächlich sehen",
-        "Hedo könnte Polyamor als zu ernst empfinden",
-        "Regelkonflikte möglich"
-      ],
-      "pathos": "Aus Poly-Hedo-Sicht: Der Polyamor ist wie ein älterer Geschwister - respektabel, aber manchmal zu ernst. Faszination für die Tiefe, Unbehagen bei den Regeln.",
-      "logos": "Strukturkollision: Polyamor's Regelwerk vs. Hedo's Flow. Kann funktionieren in einem diversen Polycule, schwieriger als exklusive Dyade. Kompromissbereitschaft nötig."
-    },
-
-    "polyamor_single": {
-      "from": "polyamor", "to": "single",
-      "scores": {
-        "A": { "value": 52, "note": "Polyamor sieht Potenzial, Single muss sich öffnen" },
-        "B": { "value": 60, "note": "Werte-Alignment erfordert Einführung in Poly-Ethik" },
-        "C": { "value": 60, "note": "Nähe möglich wenn Single sich einlässt" },
-        "D": { "value": 75, "note": "Single's Freiheit wird respektiert" },
-        "E": { "value": 72, "note": "Polyamor bringt Kommunikationskompetenz" },
-        "F": { "value": 42, "note": "Single muss öffentlichen Umgang lernen" }
-      },
-      "overall": 60,
-      "pro": [
-        "Potenzial für neuen Partner im Polycule",
-        "Single kann Poly-Welt kennenlernen",
-        "Keine sofortige Commitment-Erwartung",
-        "Kommunikationskultur bereichert Single"
-      ],
-      "contra": [
-        "Einarbeitungsaufwand in Poly-Grundlagen",
-        "Single muss Hierarchie verstehen und akzeptieren",
-        "Gesellschaftliche Herausforderung für Single",
-        "Risiko der Überforderung"
-      ],
-      "pathos": "Aus Polyamor-Sicht: Ein potenzieller neuer Stern im Netzwerk. Hoffnung auf Bereicherung, aber auch Vorsicht. Wird der Single die Komplexität verstehen und schätzen?",
-      "logos": "Strukturelle Asymmetrie: Polyamor hat etabliertes System, Single tritt neu ein. Onboarding nötig. Funktioniert bei Single's Offenheit und Lernbereitschaft."
-    },
-
-    "polyamor_solopoly": {
-      "from": "polyamor", "to": "solopoly",
-      "scores": {
-        "A": { "value": 80, "note": "Gemeinsame Poly-Basis mit unterschiedlicher Struktur" },
-        "B": { "value": 85, "note": "Ethische Nicht-Monogamie verbindet" },
-        "C": { "value": 55, "note": "Polyamor könnte mehr Nähe wünschen" },
-        "D": { "value": 72, "note": "Solopoly's Autonomie muss respektiert werden" },
-        "E": { "value": 88, "note": "Excellente Kommunikationsbasis" },
-        "F": { "value": 45, "note": "Beide kennen gesellschaftliche Herausforderungen" }
-      },
-      "overall": 71,
-      "pro": [
-        "Geteilte Poly-Sprache und Ethik",
-        "Gegenseitiges Verständnis",
-        "Starke Kommunikation",
-        "Respekt vor unterschiedlichen Modellen"
-      ],
-      "contra": [
-        "Solopoly wird nie Primary sein",
-        "Nähe-Distanz-Konflikt möglich",
-        "Strukturelle Inkompatibilität bei Zusammenleben",
-        "Unterschiedliche Bindungsintensitäten"
-      ],
-      "pathos": "Aus Polyamor-Sicht: Der Solopoly ist ein geschätzter Partner, aber mit eingebauter Grenze. Respekt für die Autonomie, manchmal Sehnsucht nach mehr Verschmelzung.",
-      "logos": "Strukturell kompatibel auf Poly-Ebene, inkompatibel bei Nesting. Polyamor muss akzeptieren: Solopoly bleibt 'solo'. Funktioniert als Teil eines größeren Netzwerks."
-    },
-
-    "polyamor_poly_hedo": {
-      "from": "polyamor", "to": "poly_hedo",
-      "scores": {
-        "A": { "value": 75, "note": "Gemeinsame Offenheit, unterschiedlicher Fokus" },
-        "B": { "value": 65, "note": "Hedonismus könnte romantischen Poly irritieren" },
-        "C": { "value": 65, "note": "Hedo weniger auf kontinuierliche Tiefe aus" },
-        "D": { "value": 80, "note": "Freiheit funktioniert für beide" },
-        "E": { "value": 72, "note": "Kommunikation funktional, unterschiedliche Prioritäten" },
-        "F": { "value": 40, "note": "Gesellschaftlich besonders herausfordernd" }
-      },
-      "overall": 66,
-      "pro": [
-        "Poly Hedo bringt Leichtigkeit ins System",
-        "Gemeinsame Poly-Grundlage",
-        "Gegenseitige Bereicherung durch unterschiedliche Fokus",
-        "Flexibilität in der Beziehungsgestaltung"
-      ],
-      "contra": [
-        "Poly Hedo könnte als 'nicht ernst genug' wahrgenommen werden",
-        "Romantik vs. Hedonismus Spannung",
-        "Unterschiedliche Regel-Erwartungen",
-        "Eifersucht-Trigger möglich"
-      ],
-      "pathos": "Aus Polyamor-Sicht: Der Poly Hedo ist erfrischend und herausfordernd. Leichtigkeit, die manchmal oberflächlich wirkt. Aber vielleicht auch ein Spiegel: Nehmen wir uns zu ernst?",
-      "logos": "Strukturelle Spannung: Polyamor's Regelwerk vs. Hedo's Flow. Integration in Polycule möglich wenn Erwartungen geklärt. Beide müssen Kompromisse finden."
-    },
-
-    "polyamor_polyamor": {
-      "from": "polyamor", "to": "polyamor",
-      "scores": {
-        "A": { "value": 100, "note": "Identische Grundüberzeugung: Ethische Mehrfachliebe als Wert" },
-        "B": { "value": 95, "note": "Geteilte Ethik, Community-Verständnis und Compersion" },
-        "C": { "value": 88, "note": "Gegenseitiges Verständnis für tiefe Mehrfachverbindungen" },
-        "D": { "value": 88, "note": "Gemeinsames Verständnis für Balance Bindung/Freiheit" },
-        "E": { "value": 95, "note": "Kommunikation als geteilte Kernkompetenz" },
-        "F": { "value": 85, "note": "Gesellschaftlich als Community gestärkt, geteilte Erfahrungen verbinden" }
-      },
-      "overall": 96,
-      "pro": [
-        "Identische Beziehungsphilosophie - vollständiges Verständnis",
-        "Geteilte Sprache, Ethik und Community",
-        "Compersion als verbindendes Element",
-        "Starke Kommunikationsbasis als gemeinsamer Wert"
-      ],
-      "contra": [
-        "Individuelle Unterschiede bleiben trotz gleichem Typ möglich",
-        "Kalender-Koordination bei zwei Netzwerken komplex",
-        "Integration etablierter Beziehungen erfordert Arbeit"
-      ],
-      "pathos": "Zwei Herzen, die dieselbe erweiterte Sprache der Liebe sprechen. Tiefes Verständnis für Compersion und die Schönheit geteilter Liebe. Die Erleichterung: Keine Rechtfertigung nötig.",
-      "logos": "Strukturell ideal: Gleiche Grundüberzeugungen, gleiche ethische Basis. Herausforderungen betreffen Logistik und Integration, nicht das philosophische Fundament."
-    },
-
     "single_duo": {
       "from": "single", "to": "duo",
-      "scores": {
-        "A": { "value": 70, "note": "Single könnte klassische Beziehung anstreben" },
-        "B": { "value": 75, "note": "Monogame Werte oft kompatibel" },
-        "C": { "value": 65, "note": "Single muss sich auf mehr Nähe einlassen" },
-        "D": { "value": 55, "note": "Duo erwartet mehr Verschmelzung als Single gewohnt" },
-        "E": { "value": 65, "note": "Kommunikation muss sich entwickeln" },
-        "F": { "value": 95, "note": "Gesellschaftlich ideal - 'endlich in einer Beziehung'" }
-      },
+      "scores": { "A": { "value": 70 }, "B": { "value": 75 }, "C": { "value": 65 }, "D": { "value": 55 }, "E": { "value": 65 }, "F": { "value": 95 } },
       "overall": 71,
-      "pro": [
-        "Gesellschaftlich voll akzeptiert",
-        "Klare Erwartungen an die Beziehung",
-        "Single kann in feste Struktur hineinwachsen",
-        "Traditioneller Beziehungspfad"
-      ],
-      "contra": [
-        "Single muss Freiheit aufgeben",
-        "Anpassungsdruck an Duo-Erwartungen",
-        "Single's Unabhängigkeit könnte als Distanz wahrgenommen werden",
-        "Risiko der Überforderung durch Verschmelzungserwartung"
-      ],
-      "pathos": "Die romantische Hoffnung des Singles: Endlich ankommen, endlich dazugehören. Aber auch die Angst: Verliere ich mich selbst in dieser Zweisamkeit?",
-      "logos": "Struktureller Übergang von Unabhängigkeit zu Partnerschaft. Single muss lernen, Raum zu teilen. Funktioniert wenn Single bereit für Verbindlichkeit ist."
+      "pro": ["Gesellschaftlich voll akzeptiert", "Klare Erwartungen", "Potenzial für Transformation"],
+      "contra": ["Single muss Freiheit aufgeben", "Anpassungsdruck", "Verschmelzungserwartung"]
     },
-
-    "solopoly_duo": {
-      "from": "solopoly", "to": "duo",
-      "scores": {
-        "A": { "value": 25, "note": "Fundamentaler philosophischer Konflikt" },
-        "B": { "value": 45, "note": "Unterschiedliche Treue-Definitionen" },
-        "C": { "value": 40, "note": "Duo will Verschmelzung, Solopoly will Distanz" },
-        "D": { "value": 30, "note": "Solopoly's Autonomie ist inkompatibel mit Duo" },
-        "E": { "value": 55, "note": "Kommunikation über unvereinbare Bedürfnisse" },
-        "F": { "value": 35, "note": "Gesellschaftlich nicht als 'echte Beziehung' akzeptiert" }
-      },
-      "overall": 38,
-      "pro": [
-        "Duo bietet Stabilität und Tiefe",
-        "Klare Kommunikation von beiden Seiten",
-        "Kann funktionieren wenn Duo sich öffnet"
-      ],
-      "contra": [
-        "Fundamentale Inkompatibilität bei Exklusivität",
-        "Solopoly kann nie 'alles' für Duo sein",
-        "Duo fühlt sich wahrscheinlich betrogen oder vernachlässigt",
-        "Gesellschaftlicher Druck auf Duo, Solopoly zu 'heilen'"
-      ],
-      "pathos": "Ein fast unmöglicher Brückenschlag. Solopoly spürt die Anziehung zur Tiefe des Duos, aber weiß: 'Ich kann dir nicht geben, was du brauchst.' Schmerz und Respekt.",
-      "logos": "Strukturell inkompatibel. Duo erwartet Exklusivität, Solopoly kann sie nicht bieten. Nur möglich wenn Duo sein Modell fundamental überdenkt."
+    "single_duo_flex": {
+      "from": "single", "to": "duo_flex",
+      "scores": { "A": { "value": 65 }, "B": { "value": 68 }, "C": { "value": 60 }, "D": { "value": 70 }, "E": { "value": 62 }, "F": { "value": 68 } },
+      "overall": 65,
+      "pro": ["Flexibilität passt zum Single-Lebensstil", "Weniger Verschmelzungsdruck"],
+      "contra": ["Single muss sich einlassen", "Unklare Position im System"]
     },
-
-    "poly_hedo_duo": {
-      "from": "poly_hedo", "to": "duo",
-      "scores": {
-        "A": { "value": 28, "note": "Hedonismus vs. Exklusivität - Grundkonflikt" },
-        "B": { "value": 35, "note": "Völlig unterschiedliche Werte bei Treue" },
-        "C": { "value": 50, "note": "Intensität ist möglich, aber nicht exklusiv" },
-        "D": { "value": 35, "note": "Poly Hedo braucht Freiheit, die Duo nicht bietet" },
-        "E": { "value": 45, "note": "Schwierige Kommunikation über unterschiedliche Welten" },
-        "F": { "value": 30, "note": "Gesellschaftlich als 'Betrug' wahrgenommen" }
-      },
-      "overall": 37,
-      "pro": [
-        "Duo bietet Anker und Stabilität",
-        "Intensive Momente sind möglich",
-        "Kann Poly Hedo zur Reflexion über Tiefe bringen"
-      ],
-      "contra": [
-        "Duo fühlt sich wahrscheinlich hintergangen",
-        "Poly Hedo kann Exklusivität nicht leben",
-        "Gesellschaftlich als Affäre oder Betrug gesehen",
-        "Hohe Verletzungswahrscheinlichkeit für Duo"
-      ],
-      "pathos": "Ein Zusammenprall von Welten. Poly Hedo fühlt sich eingesperrt, Duo fühlt sich betrogen. Nur die Intensität der Momente verbindet - aber reicht das?",
-      "logos": "Strukturell nahezu unmöglich. Duo's Kernbedürfnis (Exklusivität) steht gegen Poly Hedo's Kernbedürfnis (Freiheit). Funktioniert nur bei fundamentaler Neuverhandlung."
+    "single_solopoly": {
+      "from": "single", "to": "solopoly",
+      "scores": { "A": { "value": 55 }, "B": { "value": 60 }, "C": { "value": 50 }, "D": { "value": 85 }, "E": { "value": 68 }, "F": { "value": 45 } },
+      "overall": 61,
+      "pro": ["Solopoly bietet klare Kommunikation", "Single behält Freiheit"],
+      "contra": ["Single könnte sich als 'einer von vielen' fühlen", "Exklusivitätswunsch unerfüllt"]
     },
-
-    "polyamor_duo": {
-      "from": "polyamor", "to": "duo",
-      "scores": {
-        "A": { "value": 35, "note": "Poly vs. Mono - Grundsatzkonflikt" },
-        "B": { "value": 55, "note": "Ethische Basis unterschiedlich, aber beide haben eine" },
-        "C": { "value": 60, "note": "Tiefe ist beidseitig möglich" },
-        "D": { "value": 45, "note": "Duo's Exklusivitätswunsch vs. Poly's Netzwerk" },
-        "E": { "value": 70, "note": "Beide kommunikationsstark, aber über unterschiedliche Ziele" },
-        "F": { "value": 40, "note": "Gesellschaftlich als 'Betrug' oder 'offene Ehe' gesehen" }
-      },
-      "overall": 51,
-      "pro": [
-        "Tiefe romantische Verbindung ist möglich",
-        "Polyamor bringt starke Kommunikationsskills",
-        "Duo kann Primary werden wenn Hierarchie akzeptiert wird",
-        "Beide suchen bedeutungsvolle Beziehungen"
-      ],
-      "contra": [
-        "Duo muss geteilte Zeit akzeptieren",
-        "Gesellschaftlicher Druck auf Duo",
-        "Eifersucht als ständige Herausforderung",
-        "Duo's Exklusivitätswunsch wird nie erfüllt"
-      ],
-      "pathos": "Eine Brücke zwischen zwei Welten. Der Polyamor liebt das Duo tief - aber nicht exklusiv. Die Frage bleibt: Kann Duo damit leben, geliebt aber geteilt zu sein?",
-      "logos": "Strukturell herausfordernd aber nicht unmöglich. Wenn Duo als Primary akzeptiert wird und andere Beziehungen tolerieren kann. Erfordert massive Anpassung von Duo."
+    "single_polyamor": {
+      "from": "single", "to": "polyamor",
+      "scores": { "A": { "value": 48 }, "B": { "value": 58 }, "C": { "value": 55 }, "D": { "value": 72 }, "E": { "value": 70 }, "F": { "value": 38 } },
+      "overall": 57,
+      "pro": ["Zugang zu Poly-Community", "Tiefe Verbindung möglich"],
+      "contra": ["Single muss geteilte Zeit akzeptieren", "Komplexe Regeln verstehen"]
+    },
+    "single_ra": {
+      "from": "single", "to": "ra",
+      "scores": { "A": { "value": 78 }, "B": { "value": 72 }, "C": { "value": 65 }, "D": { "value": 92 }, "E": { "value": 70 }, "F": { "value": 40 } },
+      "overall": 70,
+      "pro": ["Maximale Freiheit beidseitig", "Keine Labels oder Erwartungen", "Individuelle Vereinbarungen"],
+      "contra": ["Kann verwirrend sein ohne klare Strukturen", "Gesellschaftlich schwer erklärbar"]
+    },
+    "single_lat": {
+      "from": "single", "to": "lat",
+      "scores": { "A": { "value": 75 }, "B": { "value": 78 }, "C": { "value": 70 }, "D": { "value": 80 }, "E": { "value": 72 }, "F": { "value": 75 } },
+      "overall": 75,
+      "pro": ["Eigener Raum bleibt erhalten", "Verbindung ohne Verschmelzung", "Guter Übergang"],
+      "contra": ["LAT erwartet mehr Verbindlichkeit als Single gewohnt"]
+    },
+    "single_aromantisch": {
+      "from": "single", "to": "aromantisch",
+      "scores": { "A": { "value": 82 }, "B": { "value": 80 }, "C": { "value": 75 }, "D": { "value": 88 }, "E": { "value": 78 }, "F": { "value": 60 } },
+      "overall": 77,
+      "pro": ["Keine romantischen Erwartungen", "Platonische Tiefe möglich", "Autonomie wird respektiert"],
+      "contra": ["Single könnte Romantik suchen", "Unterschiedliche Beziehungsziele"]
     },
 
     "duo_single": {
       "from": "duo", "to": "single",
-      "scores": {
-        "A": { "value": 65, "note": "Duo hofft auf Entwicklung zur Partnerschaft" },
-        "B": { "value": 70, "note": "Werte können kompatibel sein" },
-        "C": { "value": 70, "note": "Duo bietet die Nähe, die Single vielleicht sucht" },
-        "D": { "value": 50, "note": "Duo erwartet mehr Verschmelzung als Single bietet" },
-        "E": { "value": 65, "note": "Kommunikation über Erwartungen nötig" },
-        "F": { "value": 90, "note": "Gesellschaftlich perfekter Start in Beziehung" }
-      },
+      "scores": { "A": { "value": 65 }, "B": { "value": 70 }, "C": { "value": 70 }, "D": { "value": 50 }, "E": { "value": 65 }, "F": { "value": 90 } },
       "overall": 68,
-      "pro": [
-        "Single ist offen für verschiedene Entwicklungen",
-        "Gesellschaftlich idealer Beziehungsstart",
-        "Klare Struktur kann Single Orientierung geben",
-        "Duo bringt Beziehungserfahrung mit"
-      ],
-      "contra": [
-        "Single könnte zögern bei Verbindlichkeit",
-        "Duo könnte zu schnell zu viel wollen",
-        "Risiko der Enttäuschung wenn Single ungebunden bleiben will",
-        "Tempo-Unterschiede bei Beziehungsentwicklung"
-      ],
-      "pathos": "Aus Duo-Sicht: Die Hoffnung auf ein 'Wir'. Der Single ist wie ein unbeschriebenes Blatt - alles ist möglich. Aber auch die Angst: Will er/sie wirklich das Gleiche wie ich?",
-      "logos": "Strukturell klassischer Beziehungsstart. Duo bringt Template mit, Single muss sich entscheiden ob es passt. Funktioniert bei geteilten Langzeitzielen."
+      "pro": ["Single ist offen für Entwicklung", "Gesellschaftlich idealer Start"],
+      "contra": ["Single könnte zögern", "Duo könnte zu schnell zu viel wollen"]
     },
-
-    "duo_solopoly": {
-      "from": "duo", "to": "solopoly",
-      "scores": {
-        "A": { "value": 20, "note": "Fundamentaler Weltanschauungs-Konflikt" },
-        "B": { "value": 40, "note": "Unterschiedliche Ethik bei Treue und Bindung" },
-        "C": { "value": 45, "note": "Duo will mehr als Solopoly geben kann" },
-        "D": { "value": 25, "note": "Duo's Verschmelzungswunsch vs. Solopoly's Autonomie" },
-        "E": { "value": 55, "note": "Kommunikation über unvereinbare Erwartungen" },
-        "F": { "value": 30, "note": "Gesellschaftlich nicht als Beziehung anerkannt" }
-      },
-      "overall": 36,
-      "pro": [
-        "Solopoly ist ehrlich über seine Grenzen",
-        "Intensität der Begegnungen kann hoch sein",
-        "Kann Duo zu Selbstreflexion anregen"
-      ],
-      "contra": [
-        "Duo fühlt sich nie 'genug'",
-        "Exklusivität ist unmöglich",
-        "Gesellschaftlicher Druck auf Duo",
-        "Hohes Verletzungsrisiko für Duo"
-      ],
-      "pathos": "Aus Duo-Sicht: Die schmerzhafte Erkenntnis, dass Liebe nicht genug ist. 'Ich liebe dich, aber du kannst mir nicht geben, was ich brauche.' Trauer und Loslassen.",
-      "logos": "Strukturell fast unmöglich. Duo's Grundbedürfnisse werden nicht erfüllt. Nur möglich wenn Duo sein Modell komplett verändert - was es dann kein Duo mehr wäre."
-    },
-
-    "duo_poly_hedo": {
-      "from": "duo", "to": "poly_hedo",
-      "scores": {
-        "A": { "value": 35, "note": "Exklusivität vs. Hedonismus - Grundkonflikt, aber Kompromisse möglich" },
-        "B": { "value": 45, "note": "Unterschiedliche Wertesysteme, aber Ehrlichkeit verbindet" },
-        "C": { "value": 60, "note": "Intensität möglich, Duo könnte sich öffnen lernen" },
-        "D": { "value": 40, "note": "Duo könnte von Poly Hedo's Leichtigkeit lernen" },
-        "E": { "value": 50, "note": "Kommunikation herausfordernd aber möglich" },
-        "F": { "value": 50, "note": "Gesellschaftlich als 'offene Beziehung' erklärbar" }
-      },
-      "overall": 47,
-      "pro": [
-        "Intensive, leidenschaftliche Momente",
-        "Poly Hedo bringt Leichtigkeit",
-        "Kann Duo's Horizont erweitern"
-      ],
-      "contra": [
-        "Duo fühlt sich höchstwahrscheinlich betrogen",
-        "Exklusivität ist unmöglich",
-        "Gesellschaftlich als Erniedrigung wahrgenommen",
-        "Maximales Verletzungsrisiko für Duo"
-      ],
-      "pathos": "Aus Duo-Sicht: Faszination und Schmerz. Die Intensität des Poly Hedo zieht an, aber die fehlende Exklusivität zerreißt. 'Bin ich nicht genug?'",
-      "logos": "Strukturell nahezu unmöglich ohne fundamentale Transformation des Duo. Die Kernbedürfnisse sind diametral entgegengesetzt."
-    },
-
-    "duo_polyamor": {
-      "from": "duo", "to": "polyamor",
-      "scores": {
-        "A": { "value": 38, "note": "Mono vs. Poly Grundkonflikt, aber beide suchen Tiefe" },
-        "B": { "value": 58, "note": "Beide haben ethische Grundlagen" },
-        "C": { "value": 65, "note": "Tiefe Nähe ist beidseitig möglich" },
-        "D": { "value": 40, "note": "Duo muss Teilen akzeptieren lernen" },
-        "E": { "value": 68, "note": "Beide kommunikationsfähig" },
-        "F": { "value": 35, "note": "Gesellschaftlich schwer zu erklären" }
-      },
-      "overall": 51,
-      "pro": [
-        "Tiefe romantische Verbindung möglich",
-        "Polyamor kommuniziert klar und ethisch",
-        "Duo könnte Primary werden",
-        "Beide schätzen bedeutungsvolle Beziehungen"
-      ],
-      "contra": [
-        "Duo muss Exklusivität aufgeben",
-        "Eifersucht als ständige Herausforderung",
-        "Gesellschaftlicher Druck auf Duo",
-        "Duo's Selbstwert könnte leiden"
-      ],
-      "pathos": "Aus Duo-Sicht: Die Zerrissenheit zwischen Liebe und Prinzip. 'Ich liebe diesen Menschen, aber kann ich teilen?' Die Frage, ob Liebe stärker ist als Besitzanspruch.",
-      "logos": "Strukturell möglich wenn Duo bereit ist, sein Modell zu erweitern. Erfordert massive persönliche Entwicklung. Kann zur Öffnung oder zum Bruch führen."
-    },
-
     "duo_duo": {
       "from": "duo", "to": "duo",
-      "scores": {
-        "A": { "value": 100, "note": "Identische Grundüberzeugung: Exklusive Zweisamkeit als Ideal" },
-        "B": { "value": 95, "note": "Geteilte traditionelle Werte und Treue-Verständnis" },
-        "C": { "value": 92, "note": "Beide wollen und verstehen tiefe Verschmelzung" },
-        "D": { "value": 85, "note": "Gemeinsames Verständnis für Balance Wir/Ich" },
-        "E": { "value": 90, "note": "Kommunikation über geteilte Erwartungen und Sprache" },
-        "F": { "value": 98, "note": "Maximale gesellschaftliche Akzeptanz und Unterstützung" }
-      },
+      "scores": { "A": { "value": 100 }, "B": { "value": 95 }, "C": { "value": 92 }, "D": { "value": 85 }, "E": { "value": 90 }, "F": { "value": 98 } },
       "overall": 97,
-      "pro": [
-        "Identische Beziehungsphilosophie - vollständiges Verständnis",
-        "Maximale gesellschaftliche Unterstützung",
-        "Klare gemeinsame Vision und Erwartungen",
-        "Tiefe exklusive Intimität als geteilter Wert"
-      ],
-      "contra": [
-        "Individuelle Unterschiede bleiben trotz gleichem Typ möglich",
-        "Hohe gemeinsame Erwartungen erfordern Pflege",
-        "Balance zwischen Verschmelzung und Individualität"
-      ],
-      "pathos": "Zwei Herzen, die denselben Traum träumen. Die klassische Liebesgeschichte in ihrer reinsten Form. Vollständiges Verstehen der Sehnsucht nach dem Einen.",
-      "logos": "Strukturell ideal: Gleiche Grundüberzeugungen, gleiche Erwartungen, gleiche gesellschaftliche Einbettung. Konflikte betreffen Alltag, nicht das Fundament."
+      "pro": ["Identische Beziehungsphilosophie", "Maximale gesellschaftliche Unterstützung", "Klare gemeinsame Vision"],
+      "contra": ["Hohe Erwartungen können zu Druck führen"]
     },
-
-    "single_duo_flex": {
-      "from": "single", "to": "duo_flex",
-      "scores": {
-        "A": { "value": 65, "note": "Single könnte Flexibilität schätzen" },
-        "B": { "value": 68, "note": "Offenheit für verschiedene Modelle" },
-        "C": { "value": 60, "note": "Nähe möglich, aber nicht erzwungen" },
-        "D": { "value": 70, "note": "Duo-Flex respektiert Autonomie mehr als Duo" },
-        "E": { "value": 62, "note": "Kommunikation über Grenzen nötig" },
-        "F": { "value": 68, "note": "Gesellschaftlich als moderne Beziehung erklärbar" }
-      },
-      "overall": 65,
-      "pro": [
-        "Flexibilität passt zum Single-Lebensstil",
-        "Weniger Verschmelzungsdruck als bei reinem Duo",
-        "Offenheit für Exploration wird verstanden",
-        "Moderner Beziehungsansatz"
-      ],
-      "contra": [
-        "Single muss sich auf Primärbeziehung einlassen",
-        "Regeln und Grenzen können verwirrend sein",
-        "Unklare Position: Teil des Paares oder Außenkontakt?",
-        "Komplexe Dynamiken möglich"
-      ],
-      "pathos": "Der Single spürt die Anziehung eines offenen, aber verbundenen Paares. Neugier mischt sich mit der Frage: 'Wo ist mein Platz in diesem System?'",
-      "logos": "Strukturell flexibler als Duo. Single kann verschiedene Rollen einnehmen. Klarheit über die eigene Position im System ist essenziell."
-    },
-
-    "solopoly_duo_flex": {
-      "from": "solopoly", "to": "duo_flex",
-      "scores": {
-        "A": { "value": 58, "note": "Duo-Flex akzeptiert Nicht-Exklusivität situativ" },
-        "B": { "value": 62, "note": "Beide verstehen Offenheit, unterschiedlich strukturiert" },
-        "C": { "value": 52, "note": "Duo-Flex will mehr Nähe als Solopoly bietet" },
-        "D": { "value": 65, "note": "Solopoly's Autonomie teilweise kompatibel" },
-        "E": { "value": 68, "note": "Kommunikation über Grenzen funktioniert" },
-        "F": { "value": 48, "note": "Gesellschaftlich komplex zu erklären" }
-      },
-      "overall": 59,
-      "pro": [
-        "Duo-Flex versteht Nicht-Exklusivität",
-        "Situative Öffnung kann Solopoly integrieren",
-        "Weniger Druck als bei reinem Duo",
-        "Ehrliche Kommunikation von beiden Seiten"
-      ],
-      "contra": [
-        "Solopoly passt nicht in Primär-Struktur",
-        "Duo-Flex erwartet mehr Verbindlichkeit",
-        "Statusfragen: Hauptpartner vs. Außenkontakt",
-        "Unterschiedliche Tiefenerwartungen"
-      ],
-      "pathos": "Solopoly sieht in Duo-Flex einen Kompromiss - näher als Duo, aber immer noch mit Verschmelzungswunsch. Respekt für den Versuch der Öffnung.",
-      "logos": "Strukturell möglich als Außenkontakt, nicht als Primärpartner. Solopoly muss klären: Will ich Teil dieses Systems sein oder eigenständig bleiben?"
-    },
-
-    "poly_hedo_duo_flex": {
-      "from": "poly_hedo", "to": "duo_flex",
-      "scores": {
-        "A": { "value": 72, "note": "Beide schätzen Offenheit und Erfahrung" },
-        "B": { "value": 68, "note": "Gemeinsames Verständnis für situative Öffnung" },
-        "C": { "value": 70, "note": "Intensität ohne permanente Verpflichtung" },
-        "D": { "value": 78, "note": "Freiheit wird von Duo-Flex respektiert" },
-        "E": { "value": 65, "note": "Pragmatische Kommunikation funktioniert" },
-        "F": { "value": 55, "note": "Gesellschaftlich als 'offene Beziehung' erklärbar" }
-      },
-      "overall": 68,
-      "pro": [
-        "Duo-Flex kann stabiler Anker für Poly Hedo sein",
-        "Offenheit wird verstanden und akzeptiert",
-        "Intensive Momente ohne Beziehungsdruck",
-        "Win-Win: Stabilität + Freiheit"
-      ],
-      "contra": [
-        "Poly Hedo könnte zu viel Freiheit wollen",
-        "Duo-Flex Grenzen könnten einschränken",
-        "Unterschiedliche Intensitäts-Erwartungen",
-        "Risiko wenn Poly Hedo 'mehr' wird als geplant"
-      ],
-      "pathos": "Poly Hedo findet in Duo-Flex einen interessanten Kompromiss: Menschen, die Spaß verstehen, aber auch Wurzeln haben. Leichtigkeit trifft auf Stabilität.",
-      "logos": "Strukturell kompatibel für situative Begegnungen. Poly Hedo als 'Bereicherung' für Duo-Flex, nicht als Bedrohung. Klare Grenzen schützen alle."
-    },
-
-    "polyamor_duo_flex": {
-      "from": "polyamor", "to": "duo_flex",
-      "scores": {
-        "A": { "value": 68, "note": "Beide verstehen nicht-exklusive Beziehungen" },
-        "B": { "value": 72, "note": "Ethische Grundlagen ähnlich" },
-        "C": { "value": 65, "note": "Tiefe Verbindung möglich" },
-        "D": { "value": 62, "note": "Polyamor braucht mehr als situative Öffnung" },
-        "E": { "value": 75, "note": "Beide kommunikationsstark" },
-        "F": { "value": 52, "note": "Gesellschaftlich herausfordernd" }
-      },
-      "overall": 65,
-      "pro": [
-        "Duo-Flex versteht Poly-Konzepte",
-        "Tiefe Verbindung als sekundärer Partner möglich",
-        "Kommunikation funktioniert auf ähnlicher Ebene",
-        "Respekt vor verschiedenen Beziehungsmodellen"
-      ],
-      "contra": [
-        "Polyamor will mehr als situative Öffnung",
-        "Hierarchie-Konflikte möglich",
-        "Polyamor fühlt sich möglicherweise als 'Bonus'",
-        "Unterschiedliche Tiefen-Erwartungen langfristig"
-      ],
-      "pathos": "Polyamor sieht in Duo-Flex einen Kompromiss-Partner: offen genug für Verbindung, aber mit eingebauten Grenzen. Respekt und leichte Frustration mischen sich.",
-      "logos": "Strukturell möglich wenn Polyamor die sekundäre Rolle akzeptiert. Duo-Flex bietet Stabilität, Polyamor bringt Poly-Erfahrung. Klare Hierarchie-Absprachen nötig."
-    },
-
     "duo_duo_flex": {
       "from": "duo", "to": "duo_flex",
-      "scores": {
-        "A": { "value": 72, "note": "Ähnliche Grundwerte mit Offenheits-Unterschied" },
-        "B": { "value": 78, "note": "Beide schätzen Primärbeziehung" },
-        "C": { "value": 80, "note": "Tiefe Nähe ist beidseitig möglich" },
-        "D": { "value": 58, "note": "Duo-Flex's Öffnung könnte Duo verunsichern" },
-        "E": { "value": 70, "note": "Kommunikation über unterschiedliche Grenzen" },
-        "F": { "value": 70, "note": "Gesellschaftlich ähnlich akzeptiert" }
-      },
+      "scores": { "A": { "value": 72 }, "B": { "value": 78 }, "C": { "value": 80 }, "D": { "value": 58 }, "E": { "value": 70 }, "F": { "value": 70 } },
       "overall": 75,
-      "pro": [
-        "Ähnliche Grundwerte bei Partnerschaft",
-        "Duo-Flex könnte Duo zur Öffnung inspirieren",
-        "Tiefe Verbindung möglich",
-        "Verständnis für Primärbeziehungs-Fokus"
-      ],
-      "contra": [
-        "Duo könnte Öffnung als Bedrohung sehen",
-        "Unterschiedliche Treue-Definitionen",
-        "Duo fürchtet 'nicht genug' zu sein",
-        "Kann Duo in Identitätskrise stürzen"
-      ],
-      "pathos": "Duo sieht in Duo-Flex eine Variante von sich selbst - ähnlich, aber mit einer Tür nach draußen. Faszination und Angst: 'Könnte ich das auch? Will ich das?'",
-      "logos": "Strukturell kompatibel bei Primärbeziehung, unterschiedlich bei Grenzen. Funktioniert wenn Duo die situative Öffnung toleriert oder übernimmt."
+      "pro": ["Ähnliche Grundwerte", "Duo-Flex könnte exklusiver werden"],
+      "contra": ["Duo erlebt Flex-Anteil als Bedrohung", "Unterschiedliche Treue-Definitionen"]
+    },
+    "duo_solopoly": {
+      "from": "duo", "to": "solopoly",
+      "scores": { "A": { "value": 20 }, "B": { "value": 40 }, "C": { "value": 45 }, "D": { "value": 25 }, "E": { "value": 55 }, "F": { "value": 30 } },
+      "overall": 36,
+      "pro": ["Solopoly ist ehrlich über Grenzen"],
+      "contra": ["Duo fühlt sich nie 'genug'", "Exklusivität unmöglich", "Kein Zusammenleben"]
+    },
+    "duo_polyamor": {
+      "from": "duo", "to": "polyamor",
+      "scores": { "A": { "value": 38 }, "B": { "value": 58 }, "C": { "value": 65 }, "D": { "value": 40 }, "E": { "value": 68 }, "F": { "value": 35 } },
+      "overall": 51,
+      "pro": ["Tiefe Verbindung möglich", "Duo könnte Primary werden"],
+      "contra": ["Duo muss Exklusivität aufgeben", "Eifersucht als ständige Herausforderung"]
+    },
+    "duo_ra": {
+      "from": "duo", "to": "ra",
+      "scores": { "A": { "value": 15 }, "B": { "value": 35 }, "C": { "value": 40 }, "D": { "value": 20 }, "E": { "value": 45 }, "F": { "value": 25 } },
+      "overall": 30,
+      "pro": ["RA ist authentisch und ehrlich"],
+      "contra": ["Fundamentaler Weltanschauungs-Konflikt", "RA lehnt Labels ab, Duo braucht sie"]
+    },
+    "duo_lat": {
+      "from": "duo", "to": "lat",
+      "scores": { "A": { "value": 68 }, "B": { "value": 75 }, "C": { "value": 55 }, "D": { "value": 45 }, "E": { "value": 70 }, "F": { "value": 65 } },
+      "overall": 63,
+      "pro": ["LAT kann exklusiv sein", "Tiefe Verbindung möglich"],
+      "contra": ["Duo will zusammenleben", "Unterschiedliche Nähe-Bedürfnisse"]
+    },
+    "duo_aromantisch": {
+      "from": "duo", "to": "aromantisch",
+      "scores": { "A": { "value": 25 }, "B": { "value": 45 }, "C": { "value": 50 }, "D": { "value": 55 }, "E": { "value": 55 }, "F": { "value": 35 } },
+      "overall": 44,
+      "pro": ["Aromantisch kann tiefe Bindung bieten"],
+      "contra": ["Duo sucht Romantik", "Fundamentaler Unterschied in Beziehungsdefinition"]
     },
 
     "duo_flex_single": {
       "from": "duo_flex", "to": "single",
-      "scores": {
-        "A": { "value": 62, "note": "Single als Bereicherung oder neuer Partner möglich" },
-        "B": { "value": 65, "note": "Offenheit für verschiedene Entwicklungen" },
-        "C": { "value": 58, "note": "Situative Nähe passt" },
-        "D": { "value": 72, "note": "Single's Unabhängigkeit ist kompatibel" },
-        "E": { "value": 60, "note": "Kommunikation über Erwartungen nötig" },
-        "F": { "value": 75, "note": "Gesellschaftlich als Dating oder mehr erklärbar" }
-      },
+      "scores": { "A": { "value": 62 }, "B": { "value": 65 }, "C": { "value": 58 }, "D": { "value": 72 }, "E": { "value": 60 }, "F": { "value": 75 } },
       "overall": 65,
-      "pro": [
-        "Single kann verschiedene Rollen einnehmen",
-        "Flexibilität passt zu Duo-Flex Modell",
-        "Keine Poly-Vorkenntnisse nötig",
-        "Gesellschaftlich unkompliziert"
-      ],
-      "contra": [
-        "Single könnte mehr wollen (Primärposition)",
-        "Unklare Erwartungen möglich",
-        "Single versteht Paar-Dynamik möglicherweise nicht",
-        "Risiko der Enttäuschung bei einseitiger Entwicklung"
-      ],
-      "pathos": "Duo-Flex sieht im Single eine angenehme Ergänzung: unkompliziert, offen, ohne die Komplexität etablierter Poly-Menschen. Aber auch die Frage: Was will der Single wirklich?",
-      "logos": "Strukturell einfach: Single als Bereicherung ohne System-Integration. Klarheit über Rolle und Erwartungen von Anfang an wichtig."
+      "pro": ["Single kann verschiedene Rollen einnehmen", "Gesellschaftlich unkompliziert"],
+      "contra": ["Single könnte mehr wollen", "Unklare Erwartungen"]
     },
-
-    "duo_flex_solopoly": {
-      "from": "duo_flex", "to": "solopoly",
-      "scores": {
-        "A": { "value": 65, "note": "Beide verstehen nicht-exklusive Modelle" },
-        "B": { "value": 68, "note": "Ethische Offenheit verbindet" },
-        "C": { "value": 55, "note": "Duo-Flex will mehr Nähe als Solopoly bietet" },
-        "D": { "value": 78, "note": "Solopoly's Autonomie funktioniert im Flex-Modell" },
-        "E": { "value": 72, "note": "Starke Kommunikation beidseitig" },
-        "F": { "value": 48, "note": "Gesellschaftlich komplex" }
-      },
-      "overall": 64,
-      "pro": [
-        "Solopoly passt als Außenkontakt perfekt",
-        "Keine Konkurrenz um Primärposition",
-        "Klare Grenzen beidseitig",
-        "Ehrliche, erwachsene Kommunikation"
-      ],
-      "contra": [
-        "Solopoly bietet nie 'mehr'",
-        "Duo-Flex könnte tiefere Verbindung wünschen",
-        "Strukturelle Grenzen fest",
-        "Kann emotional unbefriedigend werden"
-      ],
-      "pathos": "Duo-Flex schätzt die Klarheit des Solopoly: keine versteckten Agenden, keine Primär-Ansprüche. Aber manchmal die Sehnsucht nach mehr Tiefe.",
-      "logos": "Strukturell ideal als Außenkontakt. Solopoly bringt keine Bedrohung für Primärbeziehung. Win-Win wenn Erwartungen klar sind."
-    },
-
-    "duo_flex_poly_hedo": {
-      "from": "duo_flex", "to": "poly_hedo",
-      "scores": {
-        "A": { "value": 75, "note": "Beide schätzen Offenheit und Erfahrung" },
-        "B": { "value": 70, "note": "Gemeinsames Verständnis für Genuss" },
-        "C": { "value": 72, "note": "Intensive Momente ohne Verpflichtung" },
-        "D": { "value": 82, "note": "Perfekte Freiheits-Kompatibilität" },
-        "E": { "value": 68, "note": "Pragmatische, ehrliche Kommunikation" },
-        "F": { "value": 58, "note": "Gesellschaftlich als 'offene Beziehung' erklärbar" }
-      },
-      "overall": 75,
-      "pro": [
-        "Poly Hedo als perfekter Außenkontakt",
-        "Keine Primär-Ansprüche, nur Genuss",
-        "Leichtigkeit und Spaß",
-        "Bereichert ohne zu bedrohen"
-      ],
-      "contra": [
-        "Poly Hedo könnte zu chaotisch sein",
-        "Grenzen müssen klar kommuniziert werden",
-        "Risiko der emotionalen Verstrickung",
-        "Kann Primärbeziehung belasten wenn zu intensiv"
-      ],
-      "pathos": "Duo-Flex sieht in Poly Hedo die perfekte Bereicherung: Spaß, Leichtigkeit, keine schweren Gespräche. Aber die Frage bleibt: Wo ziehen wir die Linie?",
-      "logos": "Strukturell sehr kompatibel. Poly Hedo bringt Würze ohne System-Komplexität. Klare Grenzen schützen die Primärbeziehung. Win-Win für alle."
-    },
-
-    "duo_flex_polyamor": {
-      "from": "duo_flex", "to": "polyamor",
-      "scores": {
-        "A": { "value": 62, "note": "Beide offen, aber unterschiedlich strukturiert" },
-        "B": { "value": 68, "note": "Ethische Grundlagen ähnlich" },
-        "C": { "value": 60, "note": "Polyamor will mehr kontinuierliche Tiefe" },
-        "D": { "value": 55, "note": "Polyamor's Bedürfnisse übersteigen Duo-Flex Rahmen" },
-        "E": { "value": 72, "note": "Beide kommunikationsstark" },
-        "F": { "value": 48, "note": "Gesellschaftlich komplex" }
-      },
-      "overall": 61,
-      "pro": [
-        "Polyamor bringt Poly-Erfahrung",
-        "Tiefe Verbindung möglich",
-        "Kommunikation auf hohem Niveau",
-        "Gegenseitiger Respekt für Beziehungsmodelle"
-      ],
-      "contra": [
-        "Polyamor will mehr als situative Öffnung bietet",
-        "Regelkonflikte möglich",
-        "Polyamor fühlt sich eingeschränkt",
-        "Langfristig unterschiedliche Bedürfnisse"
-      ],
-      "pathos": "Duo-Flex sieht in Polyamor einen erfahrenen Partner, aber mit komplexen Bedürfnissen. Respekt, aber auch Vorsicht: 'Kann ich dir genug geben?'",
-      "logos": "Strukturell herausfordernd. Polyamor's Bedürfnisse passen nicht immer in Duo-Flex Rahmen. Funktioniert wenn Polyamor die Grenzen akzeptiert."
-    },
-
     "duo_flex_duo": {
       "from": "duo_flex", "to": "duo",
-      "scores": {
-        "A": { "value": 78, "note": "Ähnliche Primär-Werte" },
-        "B": { "value": 80, "note": "Beide schätzen tiefe Partnerschaft" },
-        "C": { "value": 82, "note": "Tiefe Nähe beidseitig möglich" },
-        "D": { "value": 52, "note": "Duo-Flex's Öffnung muss erklärt werden" },
-        "E": { "value": 72, "note": "Kommunikation über Grenzen funktioniert" },
-        "F": { "value": 85, "note": "Gesellschaftlich sehr akzeptiert" }
-      },
+      "scores": { "A": { "value": 78 }, "B": { "value": 80 }, "C": { "value": 82 }, "D": { "value": 52 }, "E": { "value": 72 }, "F": { "value": 85 } },
       "overall": 75,
-      "pro": [
-        "Geteilte Werte bei Primärbeziehung",
-        "Duo könnte sich öffnen",
-        "Tiefe Verbindung ist Kernziel beider",
-        "Gesellschaftlich voll akzeptiert"
-      ],
-      "contra": [
-        "Duo muss Öffnung verstehen/akzeptieren",
-        "Potenzielle Eifersucht bei Duo",
-        "Unterschiedliche Erwartungen an Exklusivität",
-        "Duo-Flex muss Geduld haben"
-      ],
-      "pathos": "Duo-Flex sieht in Duo die tiefe Verbindung, die beide suchen. Die Öffnungs-Frage kann Brücke oder Mauer sein. Hoffnung auf gemeinsames Wachstum.",
-      "logos": "Strukturell sehr kompatibel bei Primär-Fokus. Die Öffnungs-Frage muss geklärt werden. Funktioniert wenn Duo sich entwickelt oder Duo-Flex anpasst."
+      "pro": ["Geteilte Werte bei Primärbeziehung", "Duo könnte sich öffnen"],
+      "contra": ["Duo muss Öffnung akzeptieren", "Potenzielle Eifersucht"]
     },
-
     "duo_flex_duo_flex": {
       "from": "duo_flex", "to": "duo_flex",
-      "scores": {
-        "A": { "value": 100, "note": "Identische Grundüberzeugung: Primärbeziehung mit Flexibilität" },
-        "B": { "value": 92, "note": "Geteilte Werte bei Treue-Definition und Offenheit" },
-        "C": { "value": 90, "note": "Tiefe Nähe mit gegenseitigem Verständnis für Raum" },
-        "D": { "value": 90, "note": "Beide verstehen und teilen Flexibilitäts-Bedürfnisse" },
-        "E": { "value": 92, "note": "Starke Kommunikationsbasis über Grenzen und Wünsche" },
-        "F": { "value": 85, "note": "Gesellschaftlich als moderne Partnerschaft akzeptiert" }
-      },
+      "scores": { "A": { "value": 100 }, "B": { "value": 92 }, "C": { "value": 90 }, "D": { "value": 90 }, "E": { "value": 92 }, "F": { "value": 85 } },
       "overall": 96,
-      "pro": [
-        "Identische Beziehungsphilosophie - vollständiges Verständnis",
-        "Geteilte Sprache und Erwartungen",
-        "Stabilität + Flexibilität als gemeinsamer Wert",
-        "Gemeinsame Abenteuer und Entwicklung möglich"
-      ],
-      "contra": [
-        "Individuelle Unterschiede bleiben trotz gleichem Typ möglich",
-        "Grenzen müssen individuell abgestimmt werden",
-        "Eifersucht bei unterschiedlicher Nutzung möglich"
-      ],
-      "pathos": "Zwei Seelen, die dieselbe Balance suchen und verstehen. Die Erleichterung: 'Endlich jemand, der meine Sprache spricht.' Tiefe Verbundenheit mit Raum für Wachstum.",
-      "logos": "Strukturell ideal: Gleiche Grundüberzeugungen eliminieren philosophische Konflikte. Herausforderungen betreffen individuelle Feinabstimmung, nicht das Fundament."
+      "pro": ["Identische Beziehungsphilosophie", "Geteilte Sprache und Erwartungen"],
+      "contra": ["Grenzen müssen individuell abgestimmt werden"]
+    },
+    "duo_flex_solopoly": {
+      "from": "duo_flex", "to": "solopoly",
+      "scores": { "A": { "value": 65 }, "B": { "value": 68 }, "C": { "value": 55 }, "D": { "value": 78 }, "E": { "value": 72 }, "F": { "value": 48 } },
+      "overall": 64,
+      "pro": ["Solopoly passt als Außenkontakt", "Keine Konkurrenz um Primärposition"],
+      "contra": ["Solopoly bietet nie 'mehr'", "Duo-Flex könnte tiefere Verbindung wünschen"]
+    },
+    "duo_flex_polyamor": {
+      "from": "duo_flex", "to": "polyamor",
+      "scores": { "A": { "value": 62 }, "B": { "value": 68 }, "C": { "value": 60 }, "D": { "value": 55 }, "E": { "value": 72 }, "F": { "value": 48 } },
+      "overall": 61,
+      "pro": ["Polyamor bringt Poly-Erfahrung", "Kommunikation auf hohem Niveau"],
+      "contra": ["Polyamor will mehr als situative Öffnung", "Regelkonflikte möglich"]
+    },
+    "duo_flex_ra": {
+      "from": "duo_flex", "to": "ra",
+      "scores": { "A": { "value": 55 }, "B": { "value": 58 }, "C": { "value": 52 }, "D": { "value": 75 }, "E": { "value": 62 }, "F": { "value": 40 } },
+      "overall": 57,
+      "pro": ["Beide verstehen Offenheit", "Flexible Vereinbarungen möglich"],
+      "contra": ["RA lehnt Primärbeziehungs-Konzept ab", "Strukturkonflikt"]
+    },
+    "duo_flex_lat": {
+      "from": "duo_flex", "to": "lat",
+      "scores": { "A": { "value": 72 }, "B": { "value": 75 }, "C": { "value": 65 }, "D": { "value": 78 }, "E": { "value": 75 }, "F": { "value": 70 } },
+      "overall": 73,
+      "pro": ["LAT versteht bewusste Distanz", "Gute Balance möglich"],
+      "contra": ["Unterschiedliche Erwartungen an Öffnung"]
+    },
+    "duo_flex_aromantisch": {
+      "from": "duo_flex", "to": "aromantisch",
+      "scores": { "A": { "value": 50 }, "B": { "value": 55 }, "C": { "value": 55 }, "D": { "value": 70 }, "E": { "value": 60 }, "F": { "value": 45 } },
+      "overall": 56,
+      "pro": ["Aromantisch könnte als Flex-Partner passen"],
+      "contra": ["Romantische Erwartungen werden nicht erfüllt"]
+    },
+
+    "solopoly_single": {
+      "from": "solopoly", "to": "single",
+      "scores": { "A": { "value": 62 }, "B": { "value": 65 }, "C": { "value": 55 }, "D": { "value": 92 }, "E": { "value": 70 }, "F": { "value": 52 } },
+      "overall": 66,
+      "pro": ["Single bringt keine Verschmelzungserwartungen", "Autonomie wird geschätzt"],
+      "contra": ["Single könnte heimlich mehr wollen", "Asymmetrische Beziehungsbereitschaft"]
+    },
+    "solopoly_duo": {
+      "from": "solopoly", "to": "duo",
+      "scores": { "A": { "value": 25 }, "B": { "value": 45 }, "C": { "value": 40 }, "D": { "value": 30 }, "E": { "value": 55 }, "F": { "value": 35 } },
+      "overall": 38,
+      "pro": ["Duo bietet Stabilität"],
+      "contra": ["Fundamentale Inkompatibilität", "Solopoly kann nie 'alles' sein"]
+    },
+    "solopoly_duo_flex": {
+      "from": "solopoly", "to": "duo_flex",
+      "scores": { "A": { "value": 58 }, "B": { "value": 62 }, "C": { "value": 52 }, "D": { "value": 65 }, "E": { "value": 68 }, "F": { "value": 48 } },
+      "overall": 59,
+      "pro": ["Duo-Flex versteht Nicht-Exklusivität", "Weniger Druck als Duo"],
+      "contra": ["Solopoly passt nicht in Primär-Struktur", "Statusfragen"]
+    },
+    "solopoly_solopoly": {
+      "from": "solopoly", "to": "solopoly",
+      "scores": { "A": { "value": 100 }, "B": { "value": 92 }, "C": { "value": 85 }, "D": { "value": 98 }, "E": { "value": 92 }, "F": { "value": 85 } },
+      "overall": 95,
+      "pro": ["Identische Beziehungsphilosophie", "Maximale Autonomie-Akzeptanz"],
+      "contra": ["Balance zwischen Solo und Poly individuell verschieden"]
+    },
+    "solopoly_polyamor": {
+      "from": "solopoly", "to": "polyamor",
+      "scores": { "A": { "value": 78 }, "B": { "value": 82 }, "C": { "value": 58 }, "D": { "value": 70 }, "E": { "value": 85 }, "F": { "value": 45 } },
+      "overall": 70,
+      "pro": ["Geteilte Poly-Community und Sprache", "Ethische Übereinstimmung"],
+      "contra": ["Hierarchie-Konflikt", "Polyamor könnte mehr Nähe wollen"]
+    },
+    "solopoly_ra": {
+      "from": "solopoly", "to": "ra",
+      "scores": { "A": { "value": 88 }, "B": { "value": 85 }, "C": { "value": 75 }, "D": { "value": 95 }, "E": { "value": 82 }, "F": { "value": 55 } },
+      "overall": 80,
+      "pro": ["Beide schätzen Autonomie maximal", "Keine Hierarchie-Erwartungen"],
+      "contra": ["RA noch weniger strukturiert als Solopoly"]
+    },
+    "solopoly_lat": {
+      "from": "solopoly", "to": "lat",
+      "scores": { "A": { "value": 68 }, "B": { "value": 72 }, "C": { "value": 70 }, "D": { "value": 82 }, "E": { "value": 75 }, "F": { "value": 60 } },
+      "overall": 71,
+      "pro": ["LAT versteht getrenntes Wohnen", "Autonomie-Kompatibilität"],
+      "contra": ["LAT könnte mehr Exklusivität wollen"]
+    },
+    "solopoly_aromantisch": {
+      "from": "solopoly", "to": "aromantisch",
+      "scores": { "A": { "value": 72 }, "B": { "value": 75 }, "C": { "value": 68 }, "D": { "value": 85 }, "E": { "value": 78 }, "F": { "value": 55 } },
+      "overall": 72,
+      "pro": ["Beide haben unkonventionelle Beziehungsmodelle", "Autonomie wird respektiert"],
+      "contra": ["Solopoly sucht romantische Verbindungen"]
+    },
+
+    "polyamor_single": {
+      "from": "polyamor", "to": "single",
+      "scores": { "A": { "value": 52 }, "B": { "value": 60 }, "C": { "value": 60 }, "D": { "value": 75 }, "E": { "value": 72 }, "F": { "value": 42 } },
+      "overall": 60,
+      "pro": ["Potenzial für neuen Partner im Polycule", "Single kann Poly kennenlernen"],
+      "contra": ["Einarbeitungsaufwand", "Single muss Hierarchie verstehen"]
+    },
+    "polyamor_duo": {
+      "from": "polyamor", "to": "duo",
+      "scores": { "A": { "value": 35 }, "B": { "value": 55 }, "C": { "value": 60 }, "D": { "value": 45 }, "E": { "value": 70 }, "F": { "value": 40 } },
+      "overall": 51,
+      "pro": ["Tiefe romantische Verbindung möglich", "Duo könnte Primary werden"],
+      "contra": ["Duo muss geteilte Zeit akzeptieren", "Eifersucht unvermeidlich"]
+    },
+    "polyamor_duo_flex": {
+      "from": "polyamor", "to": "duo_flex",
+      "scores": { "A": { "value": 68 }, "B": { "value": 72 }, "C": { "value": 65 }, "D": { "value": 62 }, "E": { "value": 75 }, "F": { "value": 52 } },
+      "overall": 65,
+      "pro": ["Duo-Flex versteht Poly-Konzepte", "Respekt für verschiedene Modelle"],
+      "contra": ["Polyamor will mehr als situative Öffnung"]
+    },
+    "polyamor_solopoly": {
+      "from": "polyamor", "to": "solopoly",
+      "scores": { "A": { "value": 80 }, "B": { "value": 85 }, "C": { "value": 55 }, "D": { "value": 72 }, "E": { "value": 88 }, "F": { "value": 45 } },
+      "overall": 71,
+      "pro": ["Geteilte Poly-Sprache und Ethik", "Starke Kommunikation"],
+      "contra": ["Solopoly wird nie Primary", "Nähe-Distanz-Konflikt"]
+    },
+    "polyamor_polyamor": {
+      "from": "polyamor", "to": "polyamor",
+      "scores": { "A": { "value": 100 }, "B": { "value": 95 }, "C": { "value": 88 }, "D": { "value": 88 }, "E": { "value": 95 }, "F": { "value": 85 } },
+      "overall": 96,
+      "pro": ["Identische Beziehungsphilosophie", "Compersion als verbindendes Element"],
+      "contra": ["Kalender-Koordination komplex"]
+    },
+    "polyamor_ra": {
+      "from": "polyamor", "to": "ra",
+      "scores": { "A": { "value": 72 }, "B": { "value": 75 }, "C": { "value": 60 }, "D": { "value": 78 }, "E": { "value": 75 }, "F": { "value": 50 } },
+      "overall": 68,
+      "pro": ["Beide verstehen nicht-monogame Lebensweisen"],
+      "contra": ["RA lehnt Hierarchien ab, Polyamor hat oft welche"]
+    },
+    "polyamor_lat": {
+      "from": "polyamor", "to": "lat",
+      "scores": { "A": { "value": 65 }, "B": { "value": 70 }, "C": { "value": 62 }, "D": { "value": 72 }, "E": { "value": 75 }, "F": { "value": 55 } },
+      "overall": 67,
+      "pro": ["LAT versteht bewusste Distanz", "Kann als Partner im Netzwerk funktionieren"],
+      "contra": ["LAT könnte mehr Exklusivität erwarten"]
+    },
+    "polyamor_aromantisch": {
+      "from": "polyamor", "to": "aromantisch",
+      "scores": { "A": { "value": 45 }, "B": { "value": 55 }, "C": { "value": 55 }, "D": { "value": 70 }, "E": { "value": 65 }, "F": { "value": 45 } },
+      "overall": 56,
+      "pro": ["Aromantisch könnte platonischer Partner sein"],
+      "contra": ["Polyamor sucht romantische Liebe"]
+    },
+
+    "ra_single": {
+      "from": "ra", "to": "single",
+      "scores": { "A": { "value": 80 }, "B": { "value": 75 }, "C": { "value": 68 }, "D": { "value": 95 }, "E": { "value": 72 }, "F": { "value": 45 } },
+      "overall": 72,
+      "pro": ["Single ist offen und ungebunden", "Keine Label-Erwartungen"],
+      "contra": ["Single könnte mehr Struktur wollen"]
+    },
+    "ra_duo": {
+      "from": "ra", "to": "duo",
+      "scores": { "A": { "value": 18 }, "B": { "value": 38 }, "C": { "value": 42 }, "D": { "value": 22 }, "E": { "value": 48 }, "F": { "value": 28 } },
+      "overall": 33,
+      "pro": ["Duo bietet Stabilität und Tiefe"],
+      "contra": ["Fundamentaler Weltanschauungs-Konflikt", "Duo braucht Labels, RA lehnt sie ab"]
+    },
+    "ra_duo_flex": {
+      "from": "ra", "to": "duo_flex",
+      "scores": { "A": { "value": 52 }, "B": { "value": 55 }, "C": { "value": 50 }, "D": { "value": 72 }, "E": { "value": 60 }, "F": { "value": 42 } },
+      "overall": 55,
+      "pro": ["Duo-Flex zeigt Offenheit"],
+      "contra": ["Primärbeziehungs-Konzept widerspricht RA"]
+    },
+    "ra_solopoly": {
+      "from": "ra", "to": "solopoly",
+      "scores": { "A": { "value": 85 }, "B": { "value": 82 }, "C": { "value": 72 }, "D": { "value": 92 }, "E": { "value": 80 }, "F": { "value": 52 } },
+      "overall": 77,
+      "pro": ["Beide maximieren Autonomie", "Ähnliche Werte"],
+      "contra": ["Solopoly strukturierter als RA"]
+    },
+    "ra_polyamor": {
+      "from": "ra", "to": "polyamor",
+      "scores": { "A": { "value": 68 }, "B": { "value": 72 }, "C": { "value": 58 }, "D": { "value": 75 }, "E": { "value": 72 }, "F": { "value": 48 } },
+      "overall": 66,
+      "pro": ["Beide verstehen nicht-monogame Lebensweisen"],
+      "contra": ["RA lehnt Hierarchien ab", "Polyamor's Struktur kann einengend wirken"]
+    },
+    "ra_ra": {
+      "from": "ra", "to": "ra",
+      "scores": { "A": { "value": 100 }, "B": { "value": 95 }, "C": { "value": 85 }, "D": { "value": 100 }, "E": { "value": 90 }, "F": { "value": 75 } },
+      "overall": 94,
+      "pro": ["Identische Philosophie", "Maximale gegenseitige Freiheit", "Keine vorgegebenen Erwartungen"],
+      "contra": ["Kann zu wenig Struktur für manche sein"]
+    },
+    "ra_lat": {
+      "from": "ra", "to": "lat",
+      "scores": { "A": { "value": 72 }, "B": { "value": 75 }, "C": { "value": 70 }, "D": { "value": 85 }, "E": { "value": 75 }, "F": { "value": 62 } },
+      "overall": 73,
+      "pro": ["LAT respektiert Autonomie", "Getrenntes Wohnen passt zu RA"],
+      "contra": ["LAT hat mehr Beziehungserwartungen"]
+    },
+    "ra_aromantisch": {
+      "from": "ra", "to": "aromantisch",
+      "scores": { "A": { "value": 82 }, "B": { "value": 80 }, "C": { "value": 75 }, "D": { "value": 90 }, "E": { "value": 78 }, "F": { "value": 58 } },
+      "overall": 77,
+      "pro": ["Beide lehnen traditionelle Erwartungen ab", "Individuelle Vereinbarungen"],
+      "contra": ["Unterschiedliche Motivationen"]
+    },
+
+    "lat_single": {
+      "from": "lat", "to": "single",
+      "scores": { "A": { "value": 72 }, "B": { "value": 75 }, "C": { "value": 68 }, "D": { "value": 78 }, "E": { "value": 70 }, "F": { "value": 72 } },
+      "overall": 72,
+      "pro": ["Single versteht eigenen Raum", "Guter Übergang zur Beziehung"],
+      "contra": ["Single könnte nicht bereit für Verbindlichkeit sein"]
+    },
+    "lat_duo": {
+      "from": "lat", "to": "duo",
+      "scores": { "A": { "value": 65 }, "B": { "value": 72 }, "C": { "value": 52 }, "D": { "value": 48 }, "E": { "value": 68 }, "F": { "value": 68 } },
+      "overall": 62,
+      "pro": ["Beide wollen tiefe Verbindung", "Exklusivität möglich"],
+      "contra": ["Duo will zusammenleben", "Fundamentaler Wohnform-Konflikt"]
+    },
+    "lat_duo_flex": {
+      "from": "lat", "to": "duo_flex",
+      "scores": { "A": { "value": 70 }, "B": { "value": 73 }, "C": { "value": 62 }, "D": { "value": 75 }, "E": { "value": 72 }, "F": { "value": 68 } },
+      "overall": 70,
+      "pro": ["Beide verstehen Flexibilität", "Gute Balance möglich"],
+      "contra": ["Unterschiedliche Prioritäten"]
+    },
+    "lat_solopoly": {
+      "from": "lat", "to": "solopoly",
+      "scores": { "A": { "value": 65 }, "B": { "value": 70 }, "C": { "value": 68 }, "D": { "value": 80 }, "E": { "value": 72 }, "F": { "value": 55 } },
+      "overall": 68,
+      "pro": ["Beide leben getrennt", "Autonomie-Verständnis"],
+      "contra": ["LAT könnte mehr Exklusivität wollen"]
+    },
+    "lat_polyamor": {
+      "from": "lat", "to": "polyamor",
+      "scores": { "A": { "value": 62 }, "B": { "value": 68 }, "C": { "value": 60 }, "D": { "value": 70 }, "E": { "value": 72 }, "F": { "value": 52 } },
+      "overall": 64,
+      "pro": ["LAT kann Teil eines Netzwerks sein"],
+      "contra": ["LAT könnte von Komplexität überfordert sein"]
+    },
+    "lat_ra": {
+      "from": "lat", "to": "ra",
+      "scores": { "A": { "value": 70 }, "B": { "value": 72 }, "C": { "value": 68 }, "D": { "value": 82 }, "E": { "value": 72 }, "F": { "value": 58 } },
+      "overall": 70,
+      "pro": ["RA respektiert LAT's Autonomie"],
+      "contra": ["RA's Label-Ablehnung kann verwirrend sein"]
+    },
+    "lat_lat": {
+      "from": "lat", "to": "lat",
+      "scores": { "A": { "value": 100 }, "B": { "value": 95 }, "C": { "value": 95 }, "D": { "value": 92 }, "E": { "value": 90 }, "F": { "value": 85 } },
+      "overall": 95,
+      "pro": ["Identische Beziehungsphilosophie", "Geteiltes Verständnis für eigenen Raum"],
+      "contra": ["Beide könnten zu distanziert sein"]
+    },
+    "lat_aromantisch": {
+      "from": "lat", "to": "aromantisch",
+      "scores": { "A": { "value": 68 }, "B": { "value": 72 }, "C": { "value": 70 }, "D": { "value": 78 }, "E": { "value": 72 }, "F": { "value": 58 } },
+      "overall": 70,
+      "pro": ["Beide schätzen Distanz", "Platonische LAT-Beziehung möglich"],
+      "contra": ["LAT könnte Romantik erwarten"]
+    },
+
+    "aromantisch_single": {
+      "from": "aromantisch", "to": "single",
+      "scores": { "A": { "value": 80 }, "B": { "value": 78 }, "C": { "value": 72 }, "D": { "value": 85 }, "E": { "value": 75 }, "F": { "value": 58 } },
+      "overall": 75,
+      "pro": ["Single hat keine romantischen Erwartungen", "Tiefe Freundschaft möglich"],
+      "contra": ["Single könnte Romantik suchen"]
+    },
+    "aromantisch_duo": {
+      "from": "aromantisch", "to": "duo",
+      "scores": { "A": { "value": 28 }, "B": { "value": 48 }, "C": { "value": 52 }, "D": { "value": 58 }, "E": { "value": 58 }, "F": { "value": 38 } },
+      "overall": 47,
+      "pro": ["Duo kann tiefe Verbindung bieten"],
+      "contra": ["Fundamentaler Unterschied", "Duo erwartet Romantik"]
+    },
+    "aromantisch_duo_flex": {
+      "from": "aromantisch", "to": "duo_flex",
+      "scores": { "A": { "value": 48 }, "B": { "value": 55 }, "C": { "value": 55 }, "D": { "value": 68 }, "E": { "value": 60 }, "F": { "value": 45 } },
+      "overall": 55,
+      "pro": ["Duo-Flex ist flexibler"],
+      "contra": ["Romantische Erwartungen bestehen"]
+    },
+    "aromantisch_solopoly": {
+      "from": "aromantisch", "to": "solopoly",
+      "scores": { "A": { "value": 70 }, "B": { "value": 72 }, "C": { "value": 65 }, "D": { "value": 82 }, "E": { "value": 75 }, "F": { "value": 52 } },
+      "overall": 69,
+      "pro": ["Solopoly versteht alternative Beziehungsformen"],
+      "contra": ["Solopoly sucht romantische Verbindungen"]
+    },
+    "aromantisch_polyamor": {
+      "from": "aromantisch", "to": "polyamor",
+      "scores": { "A": { "value": 48 }, "B": { "value": 58 }, "C": { "value": 55 }, "D": { "value": 72 }, "E": { "value": 68 }, "F": { "value": 48 } },
+      "overall": 58,
+      "pro": ["Polyamor ist offen für verschiedene Verbindungsarten"],
+      "contra": ["Polyamor fokussiert auf romantische Liebe"]
+    },
+    "aromantisch_ra": {
+      "from": "aromantisch", "to": "ra",
+      "scores": { "A": { "value": 80 }, "B": { "value": 78 }, "C": { "value": 72 }, "D": { "value": 88 }, "E": { "value": 75 }, "F": { "value": 55 } },
+      "overall": 75,
+      "pro": ["RA lehnt Beziehungs-Labels ab", "Individuelle Definitionen möglich"],
+      "contra": ["Unterschiedliche Motivationen"]
+    },
+    "aromantisch_lat": {
+      "from": "aromantisch", "to": "lat",
+      "scores": { "A": { "value": 65 }, "B": { "value": 70 }, "C": { "value": 68 }, "D": { "value": 75 }, "E": { "value": 70 }, "F": { "value": 55 } },
+      "overall": 67,
+      "pro": ["LAT kann platonisch funktionieren", "Eigener Raum wird respektiert"],
+      "contra": ["LAT könnte Romantik erwarten"]
+    },
+    "aromantisch_aromantisch": {
+      "from": "aromantisch", "to": "aromantisch",
+      "scores": { "A": { "value": 100 }, "B": { "value": 95 }, "C": { "value": 90 }, "D": { "value": 88 }, "E": { "value": 92 }, "F": { "value": 78 } },
+      "overall": 94,
+      "pro": ["Identisches Verständnis", "Tiefe platonische Verbindung möglich", "Keine romantischen Erwartungen"],
+      "contra": ["Gesellschaftlich wenig verstanden"]
     }
   },
 
   "aggregatedMatrix": {
-    "description": "6x6 Übersichtsmatrix mit Gesamtwerten (Zeile = VON, Spalte = ZU)",
-    "rows": ["single", "duo", "duo_flex", "solopoly", "poly_hedo", "polyamor"],
-    "cols": ["single", "duo", "duo_flex", "solopoly", "poly_hedo", "polyamor"],
+    "description": "8x8 Übersichtsmatrix mit Gesamtwerten (Zeile = VON, Spalte = ZU)",
+    "rows": ["single", "duo", "duo_flex", "solopoly", "polyamor", "ra", "lat", "aromantisch"],
+    "cols": ["single", "duo", "duo_flex", "solopoly", "polyamor", "ra", "lat", "aromantisch"],
     "values": [
-      [95, 71, 65, 61, 60, 57],
-      [68, 97, 75, 36, 47, 51],
-      [65, 75, 96, 64, 75, 61],
-      [66, 38, 59, 95, 68, 70],
-      [64, 37, 68, 67, 95, 64],
-      [60, 51, 65, 71, 66, 96]
+      [95, 71, 65, 61, 57, 70, 75, 77],
+      [68, 97, 75, 36, 51, 30, 63, 44],
+      [65, 75, 96, 64, 61, 57, 73, 56],
+      [66, 38, 59, 95, 70, 80, 71, 72],
+      [60, 51, 65, 71, 96, 68, 67, 56],
+      [72, 33, 55, 77, 66, 94, 73, 77],
+      [72, 62, 70, 68, 64, 70, 95, 70],
+      [75, 47, 55, 69, 58, 75, 67, 94]
     ]
   }
 }

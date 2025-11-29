@@ -59,33 +59,89 @@
       "pathos": "Tiefe Wertschätzung für Freiheit und Selbstbestimmung. Ein Gefühl von 'Ich gehöre mir selbst' durchzieht alle Beziehungen. Liebe wird als Geschenk gegeben, nicht als Anspruch erhoben. Manchmal Sehnsucht nach Verschmelzung, die bewusst zurückgehalten wird.",
       "logos": "Klare Struktur: Jede Beziehung hat ihren eigenen Kontext, keine überlappenden Erwartungen. Zeit wird bewusst verteilt, nicht automatisch geteilt. Das eigene Leben ist die Basis, Beziehungen sind Bereicherungen, keine Fundamente."
     },
-    "poly_hedo": {
-      "name": "Poly Hedo",
+    "ra": {
+      "name": "RA",
       "color": "#9B5DE5",
       "scores": {
-        "A": 69.5,
-        "B": 62.2,
-        "C": 64.8,
-        "D": 78.2,
-        "E": 65.3,
-        "F": 50
+        "A": 72,
+        "B": 68,
+        "C": 62,
+        "D": 85,
+        "E": 72,
+        "F": 42
       },
       "pro": [
-        "Maximale Lebensfreude und Genuss",
-        "Spontaneität und Abenteuerlust",
-        "Wenig Drama durch geringe Erwartungen",
-        "Intensive, unvergessliche Momente",
-        "Freiheit von starren Beziehungsregeln"
+        "Maximale Freiheit und Selbstbestimmung",
+        "Keine vorgegebenen Beziehungsskripte",
+        "Individuelle Vereinbarungen für jede Verbindung",
+        "Gleichwertigkeit aller Beziehungen",
+        "Radikale Authentizität"
       ],
       "kontra": [
-        "Gesellschaftlich am stärksten stigmatisiert",
-        "Risiko der Oberflächlichkeit",
-        "Schwierig, tiefe emotionale Bindungen aufzubauen",
-        "Kann als verantwortungslos wahrgenommen werden",
-        "Fehlende Struktur kann zu Chaos führen"
+        "Gesellschaftlich schwer zu erklären",
+        "Kann verwirrend sein für Partner",
+        "Wenig externe Struktur und Orientierung",
+        "Potenzial für Missverständnisse",
+        "Keine klaren Labels zur Kommunikation"
       ],
-      "pathos": "Feier des Augenblicks, Ekstase und Lebendigkeit. Ein tiefes 'Ja' zum Leben in allen seinen Facetten. Verbindung entsteht durch geteilte Intensität, nicht durch Versprechen. Manchmal Sehnsucht nach Ankern in der Flut der Erfahrungen.",
-      "logos": "Wenig strukturiert, aber nicht regellos. Ethik basiert auf Ehrlichkeit und Consent, nicht auf Zeitplänen. Beziehungen sind Flows, keine Verträge. Flexibilität als höchstes Gut. Energie folgt der Lust, nicht dem Kalender."
+      "pathos": "Radikale Freiheit: Jede Verbindung ist einzigartig und wird individuell definiert. Keine Labels, keine Hierarchien – nur authentische menschliche Verbindungen. Befreiung von gesellschaftlichen Beziehungsnormen.",
+      "logos": "Bewusste Ablehnung aller vorgegebenen Beziehungskategorien. Jede Verbindung wird individuell verhandelt. Keine Annahmen, nur explizite Vereinbarungen. Maximale Autonomie bei gleichzeitiger Verbundenheit."
+    },
+    "lat": {
+      "name": "LAT",
+      "color": "#06D6A0",
+      "scores": {
+        "A": 68,
+        "B": 72,
+        "C": 65,
+        "D": 78,
+        "E": 72,
+        "F": 68
+      },
+      "pro": [
+        "Eigener Raum bleibt erhalten",
+        "Verbindlichkeit ohne Verschmelzung",
+        "Qualitätszeit statt Quantität",
+        "Keine Alltags-Routine-Probleme",
+        "Beziehung als bewusste Wahl"
+      ],
+      "kontra": [
+        "Gesellschaftlich als 'nicht ernst' wahrgenommen",
+        "Logistische Herausforderungen",
+        "Fehlende spontane Nähe",
+        "Kann als Distanzierung missverstanden werden",
+        "Kein geteilter Alltag"
+      ],
+      "pathos": "Heimat im eigenen Raum, Verbundenheit über Distanz. Die bewusste Entscheidung für Nähe macht jedes Treffen besonders. Liebe, die nicht durch Alltag verwässert wird.",
+      "logos": "Klare Trennung von Wohnraum bei emotionaler Verbindung. Getrennte Haushalte, geteilte Herzen. Organisierte Qualitätszeit. Jedes Treffen ist eine aktive Wahl."
+    },
+    "aromantisch": {
+      "name": "Aromantisch",
+      "color": "#118AB2",
+      "scores": {
+        "A": 65,
+        "B": 68,
+        "C": 62,
+        "D": 78,
+        "E": 68,
+        "F": 48
+      },
+      "pro": [
+        "Authentisches Leben ohne romantischen Druck",
+        "Tiefe platonische Verbindungen",
+        "Keine romantischen Erwartungen zu erfüllen",
+        "Selbstakzeptanz jenseits der Norm",
+        "Freundschaften als vollwertige Beziehungen"
+      ],
+      "kontra": [
+        "Gesellschaftlich wenig verstanden",
+        "Erklärungsbedürftig",
+        "Wenig Vorbilder und Unterstützung",
+        "Druck zur 'normalen' Romantik",
+        "Kann als 'defizitär' missverstanden werden"
+      ],
+      "pathos": "Tiefe Verbundenheit jenseits romantischer Normen. Liebe in ihrer platonischen Form ist nicht weniger wertvoll. Authentizität bedeutet, die eigene Natur zu leben.",
+      "logos": "Beziehungen basieren auf Freundschaft, nicht auf Romantik. Keine romantischen Skripte zu erfüllen. Tiefe emotionale Verbindungen sind möglich, aber nicht romantisch kodiert."
     },
     "polyamor": {
       "name": "Polyamor",
@@ -506,70 +562,202 @@
         "F": 30
       }
     },
-    "poly_hedo": {
+    "ra": {
       "bekanntschaft": {
-        "A": 34.8,
-        "B": 24.9,
-        "C": 19.4,
-        "D": 70.4,
-        "E": 26.1,
-        "F": 45
+        "A": 36,
+        "B": 27.2,
+        "C": 18.6,
+        "D": 76.5,
+        "E": 28.8,
+        "F": 37.8
       },
       "freunde": {
-        "A": 48.7,
-        "B": 43.5,
-        "C": 38.9,
-        "D": 62.6,
-        "E": 52.2,
-        "F": 40
+        "A": 50.4,
+        "B": 47.6,
+        "C": 37.2,
+        "D": 68,
+        "E": 57.6,
+        "F": 33.6
       },
       "fwb": {
-        "A": 41.7,
-        "B": 31.1,
-        "C": 51.8,
-        "D": 62.6,
-        "E": 39.2,
-        "F": 25
+        "A": 43.2,
+        "B": 34,
+        "C": 49.6,
+        "D": 68,
+        "E": 43.2,
+        "F": 21
       },
       "casual": {
-        "A": 27.8,
-        "B": 18.7,
-        "C": 45.4,
-        "D": 74.3,
-        "E": 26.1,
-        "F": 20
+        "A": 28.8,
+        "B": 20.4,
+        "C": 43.4,
+        "D": 80.8,
+        "E": 28.8,
+        "F": 16.8
       },
       "romantisch": {
-        "A": 62.6,
-        "B": 56,
-        "C": 55.1,
-        "D": 46.9,
-        "E": 58.8,
-        "F": 35
+        "A": 64.8,
+        "B": 61.2,
+        "C": 52.7,
+        "D": 51,
+        "E": 64.8,
+        "F": 29.4
       },
       "partner": {
-        "A": 69.5,
-        "B": 62.2,
-        "C": 64.8,
-        "D": 78.2,
-        "E": 65.3,
-        "F": 50
+        "A": 72,
+        "B": 68,
+        "C": 62,
+        "D": 85,
+        "E": 72,
+        "F": 42
       },
       "nesting": {
-        "A": 69.5,
-        "B": 62.2,
-        "C": 71.3,
-        "D": 54.7,
-        "E": 65.3,
-        "F": 45
+        "A": 72,
+        "B": 68,
+        "C": 68.2,
+        "D": 59.5,
+        "E": 72,
+        "F": 37.8
       },
       "seelenverwandt": {
-        "A": 69.5,
-        "B": 62.2,
-        "C": 74.5,
-        "D": 39.1,
-        "E": 71.8,
-        "F": 30
+        "A": 72,
+        "B": 68,
+        "C": 71.3,
+        "D": 42.5,
+        "E": 79.2,
+        "F": 25.2
+      }
+    },
+    "lat": {
+      "bekanntschaft": {
+        "A": 34,
+        "B": 28.8,
+        "C": 19.5,
+        "D": 70.2,
+        "E": 28.8,
+        "F": 61.2
+      },
+      "freunde": {
+        "A": 47.6,
+        "B": 50.4,
+        "C": 39,
+        "D": 62.4,
+        "E": 57.6,
+        "F": 54.4
+      },
+      "fwb": {
+        "A": 40.8,
+        "B": 36,
+        "C": 52,
+        "D": 62.4,
+        "E": 43.2,
+        "F": 34
+      },
+      "casual": {
+        "A": 27.2,
+        "B": 21.6,
+        "C": 45.5,
+        "D": 74.1,
+        "E": 28.8,
+        "F": 27.2
+      },
+      "romantisch": {
+        "A": 61.2,
+        "B": 64.8,
+        "C": 55.3,
+        "D": 46.8,
+        "E": 64.8,
+        "F": 47.6
+      },
+      "partner": {
+        "A": 68,
+        "B": 72,
+        "C": 65,
+        "D": 78,
+        "E": 72,
+        "F": 68
+      },
+      "nesting": {
+        "A": 68,
+        "B": 72,
+        "C": 71.5,
+        "D": 54.6,
+        "E": 72,
+        "F": 61.2
+      },
+      "seelenverwandt": {
+        "A": 68,
+        "B": 72,
+        "C": 74.8,
+        "D": 39,
+        "E": 79.2,
+        "F": 40.8
+      }
+    },
+    "aromantisch": {
+      "bekanntschaft": {
+        "A": 32.5,
+        "B": 27.2,
+        "C": 18.6,
+        "D": 70.2,
+        "E": 27.2,
+        "F": 43.2
+      },
+      "freunde": {
+        "A": 45.5,
+        "B": 47.6,
+        "C": 37.2,
+        "D": 62.4,
+        "E": 54.4,
+        "F": 38.4
+      },
+      "fwb": {
+        "A": 39,
+        "B": 34,
+        "C": 49.6,
+        "D": 62.4,
+        "E": 40.8,
+        "F": 24
+      },
+      "casual": {
+        "A": 26,
+        "B": 20.4,
+        "C": 43.4,
+        "D": 74.1,
+        "E": 27.2,
+        "F": 19.2
+      },
+      "romantisch": {
+        "A": 58.5,
+        "B": 61.2,
+        "C": 52.7,
+        "D": 46.8,
+        "E": 61.2,
+        "F": 33.6
+      },
+      "partner": {
+        "A": 65,
+        "B": 68,
+        "C": 62,
+        "D": 78,
+        "E": 68,
+        "F": 48
+      },
+      "nesting": {
+        "A": 65,
+        "B": 68,
+        "C": 68.2,
+        "D": 54.6,
+        "E": 68,
+        "F": 43.2
+      },
+      "seelenverwandt": {
+        "A": 65,
+        "B": 68,
+        "C": 71.3,
+        "D": 39,
+        "E": 74.8,
+        "F": 28.8
       }
     },
     "polyamor": {

@@ -210,66 +210,194 @@ const archetypeDefinitions = {
   },
 
   // ════════════════════════════════════════════════════════════════════════════
-  // POLY-HEDO - Der Innere Polygame
+  // RA - Relationship Anarchist
   // ════════════════════════════════════════════════════════════════════════════
-  "poly-hedo": {
-    id: "poly-hedo",
-    name: "Poly-Hedo",
+  ra: {
+    id: "ra",
+    name: "Relationship Anarchist",
 
     coreValues: [
-      "Innere Freiheit",
-      "Loyalität",
-      "Fantasie",
-      "Authentizität",
-      "Selbstakzeptanz"
+      "Autonomie",
+      "Gleichwertigkeit aller Beziehungen",
+      "Ablehnung von Labels",
+      "Individuelle Vereinbarungen",
+      "Radikale Freiheit"
     ],
 
     avoids: [
-      "Äußere Umsetzung",
-      "Schuldgefühle",
-      "Gesellschaftliches Urteil",
-      "Selbstverleugnung",
-      "Konflikte"
+      "Hierarchien",
+      "Gesellschaftliche Beziehungsnormen",
+      "Kategorisierung",
+      "Besitzdenken",
+      "Vorgegebene Regeln"
     ],
 
     pirsig: {
-      staticQuality: 0.6,  // Mittel-hoch - äußere Konformität
-      dynamicQuality: 0.4, // Mittel - innere Freiheit
-      interpretation: "Dynamische Qualität gefangen in statischer Form. " +
-        "Der Poly-Hedo lebt die Spannung zwischen innerem Begehren und " +
-        "äußerer Konformität. Pirsig: 'Static patterns can trap Dynamic Quality.'"
+      staticQuality: 0.1,  // Sehr niedrig - lehnt feste Muster ab
+      dynamicQuality: 0.9, // Sehr hoch - maximale Beweglichkeit
+      interpretation: "Radikale dynamische Qualität - RA lehnt alle statischen " +
+        "Beziehungsmuster ab. Jede Verbindung ist einzigartig und wird individuell " +
+        "definiert. Pirsig würde die totale Freiheit von vorgegebenen Mustern schätzen."
     },
 
     osho: {
-      naturalness: 0.5,      // Mittel - halb unterdrückt
-      conditioning: 0.5,      // Mittel - im Konflikt
-      interpretation: "Der Tänzer, der nur in Gedanken tanzt - innerer Konflikt. " +
-        "Osho: 'Ein unterdrücktes Begehren wird zum Gift.' Poly-Hedo erkennt " +
-        "seine Natur, lebt sie aber nicht aus gesellschaftlichen Gründen."
+      naturalness: 0.95,     // Sehr hoch - am nächsten am natürlichen Zustand
+      conditioning: 0.05,     // Sehr niedrig - lehnt alle Konditionierung ab
+      interpretation: "Die radikalste Form der Befreiung von gesellschaftlicher " +
+        "Konditionierung. Osho: 'Liebe ist ein Verb, kein Substantiv.' RA lebt " +
+        "dies konsequent - keine festen Kategorien, nur gelebte Verbindungen."
     },
 
     research: {
       sources: [
-        "Sexual Fantasy Research: Fantasy ≠ Behavior",
-        "Cognitive Dissonance Theory: Inner conflict creates stress",
-        "Self-Concept Studies: Authentic vs. Presented Self"
+        "Nordgren (2006): The Short Instructional Manifesto for Relationship Anarchy",
+        "Anarchist relationship theory: Rejection of hierarchies",
+        "Autonomy-focused relationship research"
       ],
       traits: {
-        autonomy: "mittel-niedrig",
+        autonomy: "maximal",
         extraversion: "variabel",
-        conscientiousness: "höher",
-        openness: "hoch-intern",
-        neuroticism: "höher"
+        conscientiousness: "niedriger",
+        openness: "sehr-hoch",
+        neuroticism: "niedriger"
+      }
+    },
+
+    defaultInferences: {
+      kinderWunsch: "individuell",
+      eheWunsch: "nein",
+      wohnform: "variabel",
+      exklusivitaet: "nicht-definiert",
+      zukunftsplanung: "emergent",
+      umzugsbereitschaft: "sehr-flexibel"
+    }
+  },
+
+  // ════════════════════════════════════════════════════════════════════════════
+  // LAT - Living Apart Together
+  // ════════════════════════════════════════════════════════════════════════════
+  lat: {
+    id: "lat",
+    name: "LAT",
+
+    coreValues: [
+      "Verbundenheit mit Distanz",
+      "Eigener Raum",
+      "Bewusste Nähe",
+      "Unabhängigkeit im Alltag",
+      "Qualitätszeit"
+    ],
+
+    avoids: [
+      "Zusammenleben",
+      "Verschmelzung",
+      "Alltags-Routine zu zweit",
+      "Verlust des eigenen Raums",
+      "Ständige Präsenz"
+    ],
+
+    pirsig: {
+      staticQuality: 0.5,  // Mittel - klare Beziehung, aber räumlich getrennt
+      dynamicQuality: 0.5, // Mittel - Balance zwischen Struktur und Freiheit
+      interpretation: "Balance zwischen statischer Bindung und dynamischer " +
+        "Unabhängigkeit. LAT wahrt die Qualität der Beziehung durch bewusste " +
+        "Distanz. Pirsig: Qualität entsteht durch die richtige Balance."
+    },
+
+    osho: {
+      naturalness: 0.7,      // Hoch - respektiert individuelle Bedürfnisse
+      conditioning: 0.3,      // Niedrig - widerspricht der Zusammenlebens-Norm
+      interpretation: "LAT ehrt die Individualität innerhalb der Beziehung. " +
+        "Osho: 'Zwei Menschen sollten wie zwei Säulen sein, die das gleiche Dach " +
+        "tragen, aber getrennt stehen.' LAT lebt dieses Prinzip wörtlich."
+    },
+
+    research: {
+      sources: [
+        "Levin (2004): Living Apart Together - A New Family Form",
+        "LAT Research: Increasing trend in Western societies",
+        "Relationship satisfaction studies: LAT reports high satisfaction"
+      ],
+      traits: {
+        autonomy: "hoch",
+        extraversion: "variabel",
+        conscientiousness: "mittel",
+        openness: "mittel-hoch",
+        neuroticism: "niedriger"
       }
     },
 
     defaultInferences: {
       kinderWunsch: "vielleicht",
-      eheWunsch: "ja",
-      wohnform: "zusammen",
-      exklusivitaet: "offiziell-monogam",
-      zukunftsplanung: "konventionell",
-      umzugsbereitschaft: "nur-gemeinsam"
+      eheWunsch: "offen",
+      wohnform: "getrennt",
+      exklusivitaet: "variabel",
+      zukunftsplanung: "gemeinsam-aber-getrennt",
+      umzugsbereitschaft: "flexibel"
+    }
+  },
+
+  // ════════════════════════════════════════════════════════════════════════════
+  // AROMANTISCH - Der Platonische
+  // ════════════════════════════════════════════════════════════════════════════
+  aromantisch: {
+    id: "aromantisch",
+    name: "Aromantisch",
+
+    coreValues: [
+      "Platonische Verbindungen",
+      "Freundschaft als Fundament",
+      "Authentizität",
+      "Emotionale Tiefe ohne Romantik",
+      "Selbstakzeptanz"
+    ],
+
+    avoids: [
+      "Romantische Erwartungen",
+      "Traditionelle Beziehungsskripte",
+      "Gesellschaftlicher Druck zu Romantik",
+      "Amatonormativität",
+      "Romantische Gesten"
+    ],
+
+    pirsig: {
+      staticQuality: 0.4,  // Mittel-niedrig - eigene Definition von Beziehung
+      dynamicQuality: 0.6, // Mittel-hoch - befreit von romantischen Normen
+      interpretation: "Befreiung von der statischen Qualität romantischer Normen. " +
+        "Aromantische Menschen definieren Beziehungsqualität jenseits der " +
+        "gesellschaftlich vorgegebenen romantischen Muster."
+    },
+
+    osho: {
+      naturalness: 0.75,     // Hoch - lebt eigene Natur
+      conditioning: 0.25,     // Niedrig - hat romantische Konditionierung überwunden
+      interpretation: "Authentisches Leben jenseits romantischer Konditionierung. " +
+        "Nicht jeder Mensch ist für Romantik gemacht, und das ist vollkommen " +
+        "natürlich. Aromantische Menschen leben ihre wahre Natur."
+    },
+
+    research: {
+      sources: [
+        "AVEN & Aromantic Spectrum Research",
+        "Bogaert (2015): Asexuality and Aromanticism Research",
+        "Amatonormativity Studies: Brake (2012)"
+      ],
+      traits: {
+        autonomy: "hoch",
+        extraversion: "variabel",
+        conscientiousness: "variabel",
+        openness: "mittel-hoch",
+        neuroticism: "variabel"
+      }
+    },
+
+    defaultInferences: {
+      kinderWunsch: "variabel",
+      eheWunsch: "nein-oder-qpr",
+      wohnform: "variabel",
+      exklusivitaet: "nicht-romantisch-relevant",
+      zukunftsplanung: "individuell",
+      umzugsbereitschaft: "flexibel"
     }
   },
 

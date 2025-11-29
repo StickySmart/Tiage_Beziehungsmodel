@@ -70,8 +70,10 @@
         body.theme-duo { --primary: #E84393; --primary-light: #FDA7DF; }
         body.theme-duo_flex { --primary: #FF6B6B; --primary-light: #FFA5A5; }
         body.theme-solopoly { --primary: #2A9D8F; --primary-light: #A8DADC; }
-        body.theme-poly_hedo { --primary: #9B5DE5; --primary-light: #D4A5FF; }
         body.theme-polyamor { --primary: #F4A261; --primary-light: #FFE5B4; }
+        body.theme-ra { --primary: #9B5DE5; --primary-light: #D4A5FF; }
+        body.theme-lat { --primary: #06D6A0; --primary-light: #B5EAD7; }
+        body.theme-aromantisch { --primary: #118AB2; --primary-light: #83C5D8; }
 
         /* Header */
         header {
@@ -5902,8 +5904,10 @@
                         <option value="duo" title="Traditionelle monogame Zweierbeziehung mit Exklusivität">Duo</option>
                         <option value="duo_flex" title="Primäre Zweierbeziehung mit vereinbarten Öffnungen">Duo-Flex</option>
                         <option value="solopoly" title="Mehrere gleichwertige Beziehungen bei Bewahrung der Autonomie">Solopoly</option>
-                        <option value="poly_hedo" title="Freiheitsorientierte Poly-Orientierung mit Fokus auf Genuss">Poly Hedo</option>
                         <option value="polyamor" title="Mehrere gleichzeitige, ethisch geführte Liebesbeziehungen">Polyamor</option>
+                        <option value="ra" title="Relationship Anarchist - Ablehnung aller Beziehungs-Hierarchien und Labels">RA</option>
+                        <option value="lat" title="Living Apart Together - Feste Partnerschaft ohne Zusammenleben">LAT</option>
+                        <option value="aromantisch" title="Fokus auf platonische Verbindungen ohne romantische Komponente">Aromantisch</option>
                     </select>
                     <button class="archetype-nav-btn" onclick="navigateArchetype('ich', 1)" title="Nächster Archetyp">&#9654;</button>
                     <button class="archetype-info-btn" onclick="showArchetypeInfo('ich')" title="Info zum Archetyp">INFO</button>
@@ -6013,8 +6017,10 @@
                         <option value="duo" selected title="Traditionelle monogame Zweierbeziehung mit Exklusivität">Duo</option>
                         <option value="duo_flex" title="Primäre Zweierbeziehung mit vereinbarten Öffnungen">Duo-Flex</option>
                         <option value="solopoly" title="Mehrere gleichwertige Beziehungen bei Bewahrung der Autonomie">Solopoly</option>
-                        <option value="poly_hedo" title="Freiheitsorientierte Poly-Orientierung mit Fokus auf Genuss">Poly Hedo</option>
                         <option value="polyamor" title="Mehrere gleichzeitige, ethisch geführte Liebesbeziehungen">Polyamor</option>
+                        <option value="ra" title="Relationship Anarchist - Ablehnung aller Beziehungs-Hierarchien und Labels">RA</option>
+                        <option value="lat" title="Living Apart Together - Feste Partnerschaft ohne Zusammenleben">LAT</option>
+                        <option value="aromantisch" title="Fokus auf platonische Verbindungen ohne romantische Komponente">Aromantisch</option>
                     </select>
                     <button class="archetype-nav-btn" onclick="navigateArchetype('partner', 1)" title="Nächster Archetyp">&#9654;</button>
                     <button class="archetype-info-btn" onclick="showArchetypeInfo('partner')" title="Info zum Archetyp">INFO</button>
@@ -6192,8 +6198,10 @@
                         <option value="duo" title="Traditionelle monogame Zweierbeziehung mit Exklusivität">Duo</option>
                         <option value="duo_flex" title="Primäre Zweierbeziehung mit vereinbarten Öffnungen">Duo-Flex</option>
                         <option value="solopoly" title="Mehrere gleichwertige Beziehungen bei Bewahrung der Autonomie">Solopoly</option>
-                        <option value="poly_hedo" title="Freiheitsorientierte Poly-Orientierung mit Fokus auf Genuss">Poly Hedo</option>
                         <option value="polyamor" title="Mehrere gleichzeitige, ethisch geführte Liebesbeziehungen">Polyamor</option>
+                        <option value="ra" title="Relationship Anarchist - Ablehnung aller Beziehungs-Hierarchien und Labels">RA</option>
+                        <option value="lat" title="Living Apart Together - Feste Partnerschaft ohne Zusammenleben">LAT</option>
+                        <option value="aromantisch" title="Fokus auf platonische Verbindungen ohne romantische Komponente">Aromantisch</option>
                     </select>
                     <button class="archetype-nav-btn" onclick="navigateArchetype('ich', 1)" title="Nächster Archetyp">&#9654;</button>
                     <button onclick="openArchetypeInfo(document.getElementById('mobileIchSelect').value, 'ich')" style="padding: 12px 16px; background: rgba(255,255,255,0.1); border: 1px solid var(--border); border-radius: 8px; color: var(--text-secondary); cursor: pointer; font-size: 14px; font-weight: 600; letter-spacing: 0.5px;" title="Info zum Archetyp">INFO</button>
@@ -6304,8 +6312,10 @@
                         <option value="duo" selected title="Traditionelle monogame Zweierbeziehung mit Exklusivität">Duo</option>
                         <option value="duo_flex" title="Primäre Zweierbeziehung mit vereinbarten Öffnungen">Duo-Flex</option>
                         <option value="solopoly" title="Mehrere gleichwertige Beziehungen bei Bewahrung der Autonomie">Solopoly</option>
-                        <option value="poly_hedo" title="Freiheitsorientierte Poly-Orientierung mit Fokus auf Genuss">Poly Hedo</option>
                         <option value="polyamor" title="Mehrere gleichzeitige, ethisch geführte Liebesbeziehungen">Polyamor</option>
+                        <option value="ra" title="Relationship Anarchist - Ablehnung aller Beziehungs-Hierarchien und Labels">RA</option>
+                        <option value="lat" title="Living Apart Together - Feste Partnerschaft ohne Zusammenleben">LAT</option>
+                        <option value="aromantisch" title="Fokus auf platonische Verbindungen ohne romantische Komponente">Aromantisch</option>
                     </select>
                     <button class="archetype-nav-btn" onclick="navigateArchetype('partner', 1)" title="Nächster Archetyp">&#9654;</button>
                     <button onclick="openArchetypeInfo(document.getElementById('mobilePartnerSelect').value, 'partner')" style="padding: 12px 16px; background: rgba(255,255,255,0.1); border: 1px solid var(--border); border-radius: 8px; color: var(--text-secondary); cursor: pointer; font-size: 14px; font-weight: 600; letter-spacing: 0.5px;" title="Info zum Archetyp">INFO</button>
@@ -6533,8 +6543,10 @@
                             <option value="duo" title="Traditionelle monogame Zweierbeziehung mit Exklusivität">Duo</option>
                             <option value="duo_flex" title="Primäre Zweierbeziehung mit vereinbarten Öffnungen">Duo-Flex</option>
                             <option value="solopoly" title="Mehrere gleichwertige Beziehungen bei Bewahrung der Autonomie">Solopoly</option>
-                            <option value="poly_hedo" title="Freiheitsorientierte Poly-Orientierung mit Fokus auf Genuss">Poly Hedo</option>
                             <option value="polyamor" title="Mehrere gleichzeitige, ethisch geführte Liebesbeziehungen">Polyamor</option>
+                            <option value="ra" title="Relationship Anarchist - Ablehnung aller Beziehungs-Hierarchien und Labels">RA</option>
+                            <option value="lat" title="Living Apart Together - Feste Partnerschaft ohne Zusammenleben">LAT</option>
+                            <option value="aromantisch" title="Fokus auf platonische Verbindungen ohne romantische Komponente">Aromantisch</option>
                         </select>
                     </div>
 
@@ -7327,8 +7339,10 @@
             duo: '♡',
             duo_flex: '⚡',
             solopoly: '◆',
-            poly_hedo: '☀',
-            polyamor: '♥'
+            polyamor: '♥',
+            ra: '∞',
+            lat: '⌂',
+            aromantisch: '◇'
         };
 
         const categoryNames = {
@@ -8839,8 +8853,10 @@
                     duo: { id: "duo", name: "Duo", color: "#E84393", shortDescription: "Klassische monogame Zweierbeziehung", pro: [], contra: [], pathos: "", logos: "" },
                     duo_flex: { id: "duo_flex", name: "Duo-Flex", color: "#FF6B6B", shortDescription: "Primär Zweierbeziehung mit situativer Öffnung", pro: [], contra: [], pathos: "", logos: "" },
                     solopoly: { id: "solopoly", name: "Solopoly", color: "#2A9D8F", shortDescription: "Polyamor mit Autonomie", pro: [], contra: [], pathos: "", logos: "" },
-                    poly_hedo: { id: "poly_hedo", name: "Poly Hedo", color: "#9B5DE5", shortDescription: "Lustorientierte Mehrfachbeziehungen", pro: [], contra: [], pathos: "", logos: "" },
-                    polyamor: { id: "polyamor", name: "Polyamor", color: "#F4A261", shortDescription: "Strukturierte Mehrfachbeziehungen", pro: [], contra: [], pathos: "", logos: "" }
+                    polyamor: { id: "polyamor", name: "Polyamor", color: "#F4A261", shortDescription: "Strukturierte Mehrfachbeziehungen", pro: [], contra: [], pathos: "", logos: "" },
+                    ra: { id: "ra", name: "RA", color: "#9B5DE5", shortDescription: "Relationship Anarchist - Ablehnung von Labels", pro: [], contra: [], pathos: "", logos: "" },
+                    lat: { id: "lat", name: "LAT", color: "#06D6A0", shortDescription: "Living Apart Together", pro: [], contra: [], pathos: "", logos: "" },
+                    aromantisch: { id: "aromantisch", name: "Aromantisch", color: "#118AB2", shortDescription: "Platonische Verbindungen", pro: [], contra: [], pathos: "", logos: "" }
                 },
                 categories: {},
                 interactions: {},
@@ -8916,7 +8932,7 @@
         }
 
         // Fixed archetype order to ensure all types are shown
-        const archetypeOrder = ['single', 'duo', 'duo_flex', 'solopoly', 'poly_hedo', 'polyamor'];
+        const archetypeOrder = ['single', 'duo', 'duo_flex', 'solopoly', 'polyamor', 'ra', 'lat', 'aromantisch'];
 
         function updatePartnerSelector() {
             const container = document.getElementById('partnerSelector');
