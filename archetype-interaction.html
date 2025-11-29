@@ -7577,6 +7577,36 @@
             // Update category names
             updateCategoryNames();
 
+            // Update column headers (DU/YOU, PARTNER)
+            updateColumnHeaders();
+
+            // Update dimension section labels
+            updateDimensionSectionLabels();
+
+            // Update geschlecht button labels
+            updateGeschlechtButtons();
+
+            // Update dominanz labels
+            updateDominanzLabels();
+
+            // Update orientierung labels
+            updateOrientierungLabels();
+
+            // Update fold/unfold button
+            updateFoldUnfoldButton();
+
+            // Update help modal
+            updateHelpModal();
+
+            // Update gender info modal
+            updateGenderInfoModal();
+
+            // Update impressum modal
+            updateImpressumModal();
+
+            // Update age verification modal
+            updateAgeVerificationModal();
+
             // Trigger custom event for other scripts to react
             document.dispatchEvent(new CustomEvent('languageChanged', {
                 detail: { language: lang, locale: TiageI18n.getLocale() }
@@ -7672,6 +7702,247 @@
         }
 
         /**
+         * Update column headers (DU/YOU, PARTNER)
+         */
+        function updateColumnHeaders() {
+            // Update ICH/YOU column title
+            document.querySelectorAll('.ich-column .column-title').forEach(el => {
+                el.textContent = TiageI18n.t('columns.you', 'DU');
+            });
+            // Update PARTNER column title
+            document.querySelectorAll('.partner-column .column-title').forEach(el => {
+                el.textContent = TiageI18n.t('columns.partner', 'PARTNER');
+            });
+            // Update navigation button titles
+            document.querySelectorAll('.archetype-nav-btn').forEach(btn => {
+                const direction = btn.innerHTML.includes('9664') ? 'previous' : 'next';
+                btn.title = TiageI18n.t(`columns.${direction}Archetype`, direction === 'previous' ? 'Vorheriger Archetyp' : 'Nächster Archetyp');
+            });
+            // Update INFO buttons
+            document.querySelectorAll('.archetype-info-btn').forEach(btn => {
+                btn.title = TiageI18n.t('columns.archetypeInfo', 'Info zum Archetyp');
+            });
+        }
+
+        /**
+         * Update dimension section labels (Geschlechtsidentität, Dominanz, Orientierung)
+         */
+        function updateDimensionSectionLabels() {
+            // Update Geschlechtsidentität labels
+            document.querySelectorAll('.geschlecht-info-link').forEach(el => {
+                el.textContent = TiageI18n.t('dimensions.geschlechtLabel', 'Geschlechtsidentität');
+            });
+
+            // Update Dominanz section labels
+            document.querySelectorAll('[data-dimension$="-dominanz-multi"] > .compact-dimension-label > span:first-child').forEach(el => {
+                const infoIcon = el.querySelector('.dimension-info-icon');
+                const hint = el.querySelector('span');
+                if (infoIcon && hint) {
+                    el.innerHTML = TiageI18n.t('dimensions.dominanzLabel', 'Dominanz') +
+                        ' <span class="dimension-info-icon" onclick="showDimensionTooltip(\'dominanz\')">ℹ</span> ' +
+                        '<span style="font-size: 10px; opacity: 0.7;">' + TiageI18n.t('dimensions.multiSelect', '(Mehrfachauswahl)') + '</span>';
+                }
+            });
+
+            // Update Orientierung section labels
+            document.querySelectorAll('[data-dimension$="-orientierung-multi"] > .compact-dimension-label > span:first-child').forEach(el => {
+                const infoIcon = el.querySelector('.dimension-info-icon');
+                const hint = el.querySelector('span');
+                if (infoIcon && hint) {
+                    el.innerHTML = TiageI18n.t('dimensions.orientierungLabel', 'Orientierung') +
+                        ' <span class="dimension-info-icon" onclick="showDimensionTooltip(\'orientierung\')">ℹ</span> ' +
+                        '<span style="font-size: 10px; opacity: 0.7;">' + TiageI18n.t('dimensions.multiSelect', '(Mehrfachauswahl)') + '</span>';
+                }
+            });
+
+            // Update legend (I=Identität, G=Sekundär)
+            document.querySelectorAll('.geschlecht-legend').forEach(el => {
+                const i = TiageI18n.t('dimensions.legend.identity', 'I');
+                const g = TiageI18n.t('dimensions.legend.secondary', 'G');
+                const iFull = TiageI18n.t('dimensions.legend.identityFull', 'Identität');
+                const gFull = TiageI18n.t('dimensions.legend.secondaryFull', 'Sekundär');
+                el.innerHTML = `(<span class="legend-i">${i}</span>=${iFull}, <span class="legend-g">${g}</span>=${gFull})`;
+            });
+        }
+
+        /**
+         * Update geschlecht button labels
+         */
+        function updateGeschlechtButtons() {
+            const geschlechtTypes = ['cis_mann', 'cis_frau', 'trans_mann', 'trans_frau', 'nonbinaer', 'genderfluid', 'agender', 'intersex', 'divers'];
+            geschlechtTypes.forEach(type => {
+                document.querySelectorAll(`.geschlecht-btn[data-value="${type}"]`).forEach(btn => {
+                    // Preserve indicators if present
+                    const indicator = btn.querySelector('.geschlecht-indicator');
+                    const indicatorHtml = indicator ? indicator.outerHTML : '';
+                    btn.innerHTML = TiageI18n.t(`geschlecht.types.${type}`, type) + indicatorHtml;
+                });
+            });
+        }
+
+        /**
+         * Update dominanz labels in the multi-select rows
+         */
+        function updateDominanzLabels() {
+            const dominanzTypes = ['dominant', 'submissiv', 'switch', 'ausgeglichen'];
+            dominanzTypes.forEach(type => {
+                document.querySelectorAll(`.dominanz-label`).forEach(el => {
+                    if (el.textContent.toLowerCase().trim() === type ||
+                        el.getAttribute('onclick')?.includes(`'${type}'`)) {
+                        el.textContent = TiageI18n.t(`dominanz.types.${type}`, type).toLowerCase();
+                    }
+                });
+            });
+        }
+
+        /**
+         * Update orientierung labels in the multi-select rows
+         */
+        function updateOrientierungLabels() {
+            const orientierungTypes = ['heterosexuell', 'homosexuell', 'bisexuell'];
+            orientierungTypes.forEach(type => {
+                document.querySelectorAll(`.dominanz-label`).forEach(el => {
+                    if (el.textContent.toLowerCase().trim() === type ||
+                        el.getAttribute('onclick')?.includes(`'${type}'`)) {
+                        el.textContent = TiageI18n.t(`orientierung.types.${type}`, type).toLowerCase();
+                    }
+                });
+            });
+        }
+
+        /**
+         * Update fold/unfold button text
+         */
+        function updateFoldUnfoldButton() {
+            const btn = document.getElementById('foldUnfoldAllBtn');
+            if (btn) {
+                const textEl = btn.querySelector('.fold-unfold-text');
+                if (textEl) {
+                    const isUnfolded = !btn.classList.contains('folded');
+                    textEl.textContent = isUnfolded ?
+                        TiageI18n.t('foldUnfold.fold', 'Einklappen') :
+                        TiageI18n.t('foldUnfold.unfold', 'Ausklappen');
+                }
+            }
+        }
+
+        /**
+         * Update help modal content
+         */
+        function updateHelpModal() {
+            // Update title
+            const helpTitle = document.querySelector('#helpModal .help-modal-header h2');
+            if (helpTitle) {
+                helpTitle.textContent = TiageI18n.t('helpModal.title', 'Hilfe & Dokumentation');
+            }
+
+            // Update quick guide title
+            const quickGuideTitle = document.querySelector('#helpModal .quick-guide h3');
+            if (quickGuideTitle) {
+                quickGuideTitle.textContent = TiageI18n.t('helpModal.quickGuideTitle', 'Kurzanleitung');
+            }
+
+            // Update feedback prompt
+            const feedbackPrompt = document.querySelector('#helpModal .comment-section p');
+            if (feedbackPrompt) {
+                feedbackPrompt.textContent = TiageI18n.t('helpModal.feedbackPrompt', 'Fragen, Feedback oder Verbesserungsvorschläge?');
+            }
+
+            // Update comment button
+            const commentBtn = document.querySelector('#helpModal .comment-btn');
+            if (commentBtn) {
+                commentBtn.innerHTML = TiageI18n.t('helpModal.sendComment', 'Kommentar senden');
+            }
+
+            // Update view comments button
+            const viewCommentsBtn = document.querySelector('#helpModal .view-comments-btn');
+            if (viewCommentsBtn) {
+                viewCommentsBtn.innerHTML = '📋 ' + TiageI18n.t('helpModal.viewAllComments', 'Alle Kommentare');
+            }
+        }
+
+        /**
+         * Update gender info modal content
+         */
+        function updateGenderInfoModal() {
+            // Update title
+            const title = document.querySelector('#geschlechtInfoModal .dimension-tooltip-title');
+            if (title) {
+                title.textContent = TiageI18n.t('genderInfoModal.title', 'Geschlechtsidentitäten');
+            }
+
+            // Update "Verstanden" button
+            const understoodBtn = document.querySelector('#geschlechtInfoModal .dimension-tooltip-close');
+            if (understoodBtn) {
+                understoodBtn.textContent = TiageI18n.t('genderInfoModal.understood', 'Verstanden');
+            }
+
+            // Update gender identity items
+            const genderTypes = ['cis_mann', 'cis_frau', 'trans_mann', 'trans_frau', 'nonbinaer', 'genderfluid', 'agender', 'intersex', 'divers'];
+            const items = document.querySelectorAll('#geschlechtInfoModal .geschlecht-info-item');
+            items.forEach((item, index) => {
+                if (index < genderTypes.length) {
+                    const type = genderTypes[index];
+                    const nameEl = item.querySelector('.geschlecht-info-name');
+                    const descEl = item.querySelector('.geschlecht-info-desc');
+                    const tooltip = TiageI18n.t(`tooltips.${type}`);
+                    if (nameEl && tooltip && tooltip.title) {
+                        nameEl.textContent = tooltip.title;
+                    }
+                    if (descEl && tooltip && tooltip.text) {
+                        descEl.textContent = tooltip.text;
+                    }
+                }
+            });
+        }
+
+        /**
+         * Update impressum modal content
+         */
+        function updateImpressumModal() {
+            const modal = document.getElementById('impressumModal');
+            if (!modal) return;
+
+            const title = modal.querySelector('h3');
+            if (title) {
+                title.textContent = TiageI18n.t('impressum.title', 'Impressum');
+            }
+
+            const closeBtn = modal.querySelector('.impressum-close');
+            if (closeBtn) {
+                closeBtn.textContent = TiageI18n.t('ui.close', 'Schließen');
+            }
+        }
+
+        /**
+         * Update age verification modal content
+         */
+        function updateAgeVerificationModal() {
+            const modal = document.getElementById('ageVerificationModal');
+            if (!modal) return;
+
+            const title = modal.querySelector('h2');
+            if (title) {
+                title.textContent = TiageI18n.t('ageVerification.title', 'Altersverifikation');
+            }
+
+            const question = modal.querySelector('.age-verification-question strong');
+            if (question) {
+                question.textContent = TiageI18n.t('ageVerification.question', 'Bist du mindestens 18 Jahre alt?');
+            }
+
+            const yesBtn = modal.querySelector('.age-btn-yes');
+            if (yesBtn) {
+                yesBtn.textContent = TiageI18n.t('ageVerification.confirm', 'Ja, ich bin 18+');
+            }
+
+            const noBtn = modal.querySelector('.age-btn-no');
+            if (noBtn) {
+                noBtn.textContent = TiageI18n.t('ageVerification.deny', 'Nein');
+            }
+        }
+
+        /**
          * Get translated tooltip content
          * @param {string} key - The tooltip key (e.g., 'geschlecht', 'dominant')
          * @returns {Object} { title, text }
@@ -7697,6 +7968,10 @@
             const langCodeEl = document.getElementById('currentLangCode');
             if (langCodeEl && typeof TiageI18n !== 'undefined') {
                 langCodeEl.textContent = TiageI18n.getLanguage().toUpperCase();
+            }
+            // Run initial translation update (in case browser language was auto-detected to English)
+            if (typeof TiageI18n !== 'undefined' && TiageI18n.getLanguage() !== 'de') {
+                setTimeout(updateAllTranslations, 100);
             }
         });
     </script>
@@ -10909,7 +11184,11 @@
         // ========================================
 
         function showDimensionTooltip(type) {
-            const tooltip = dimensionTooltips[type];
+            // Try to get translated tooltip first, fall back to hardcoded
+            let tooltip = TiageI18n.t(`tooltips.${type}`);
+            if (!tooltip || typeof tooltip !== 'object' || !tooltip.title) {
+                tooltip = dimensionTooltips[type];
+            }
             if (!tooltip) return;
 
             document.getElementById('dimensionTooltipTitle').textContent = tooltip.title;
