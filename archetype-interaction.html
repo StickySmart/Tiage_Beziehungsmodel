@@ -11638,6 +11638,16 @@
             const currentStatus = personDimensions[person].dominanz[dominanzType];
             const newStatus = (currentStatus === status) ? null : status;
 
+            // WICHTIG: Maximale Auswahl prüfen
+            // Wenn dieser Typ noch nicht ausgewählt ist und wir schon MAX erreicht haben, abbrechen
+            if (newStatus !== null && currentStatus === null) {
+                const currentCount = getDominanzSelectionCount(person);
+                if (currentCount >= MAX_DOMINANZ_SELECTION) {
+                    console.log(`[Dominanz] Max ${MAX_DOMINANZ_SELECTION} Auswahlen erreicht für ${person}`);
+                    return; // Nicht mehr als MAX_DOMINANZ_SELECTION erlaubt
+                }
+            }
+
             // WICHTIG: Nur ein "Gelebt" pro Kategorie erlaubt
             // Wenn neuer Status 'gelebt' ist, alle anderen 'gelebt' entfernen
             if (newStatus === 'gelebt') {
@@ -11711,6 +11721,16 @@
             // Toggle logic: if same status is clicked, deselect it
             const currentStatus = personDimensions[person].dominanz[dominanzType];
             const newStatus = (currentStatus === status) ? null : status;
+
+            // WICHTIG: Maximale Auswahl prüfen
+            // Wenn dieser Typ noch nicht ausgewählt ist und wir schon MAX erreicht haben, abbrechen
+            if (newStatus !== null && currentStatus === null) {
+                const currentCount = getDominanzSelectionCount(person);
+                if (currentCount >= MAX_DOMINANZ_SELECTION) {
+                    console.log(`[Dominanz] Max ${MAX_DOMINANZ_SELECTION} Auswahlen erreicht für ${person}`);
+                    return; // Nicht mehr als MAX_DOMINANZ_SELECTION erlaubt
+                }
+            }
 
             // WICHTIG: Nur ein "Gelebt" pro Kategorie erlaubt
             // Wenn neuer Status 'gelebt' ist, alle anderen 'gelebt' entfernen
@@ -11789,6 +11809,16 @@
             // Toggle logic: if same status is clicked, deselect it
             const currentStatus = personDimensions[person].dominanz[dominanzType];
             const newStatus = (currentStatus === status) ? null : status;
+
+            // WICHTIG: Maximale Auswahl prüfen
+            // Wenn dieser Typ noch nicht ausgewählt ist und wir schon MAX erreicht haben, abbrechen
+            if (newStatus !== null && currentStatus === null) {
+                const currentCount = getDominanzSelectionCount(person);
+                if (currentCount >= MAX_DOMINANZ_SELECTION) {
+                    console.log(`[Dominanz] Max ${MAX_DOMINANZ_SELECTION} Auswahlen erreicht für ${person}`);
+                    return; // Nicht mehr als MAX_DOMINANZ_SELECTION erlaubt
+                }
+            }
 
             // WICHTIG: Nur ein "Gelebt" pro Kategorie erlaubt
             // Wenn neuer Status 'gelebt' ist, alle anderen 'gelebt' entfernen
@@ -12008,6 +12038,20 @@
             return ori.heterosexuell || ori.homosexuell || ori.bisexuell;
         }
 
+        // Count how many Orientierung buttons are selected
+        function getOrientierungSelectionCount(person) {
+            const ori = personDimensions[person].orientierung;
+            let count = 0;
+            if (ori.heterosexuell) count++;
+            if (ori.homosexuell) count++;
+            if (ori.bisexuell) count++;
+            return count;
+        }
+
+        // Maximum selection limits
+        const MAX_DOMINANZ_SELECTION = 2;
+        const MAX_ORIENTIERUNG_SELECTION = 2;
+
         // Helper: Get all selected orientierung preferences with status
         function getSelectedOrientierungList(person) {
             const ori = personDimensions[person].orientierung;
@@ -12106,6 +12150,16 @@
             const currentStatus = personDimensions[person].orientierung[orientierungType];
             const newStatus = (currentStatus === status) ? null : status;
 
+            // WICHTIG: Maximale Auswahl prüfen
+            // Wenn dieser Typ noch nicht ausgewählt ist und wir schon MAX erreicht haben, abbrechen
+            if (newStatus !== null && currentStatus === null) {
+                const currentCount = getOrientierungSelectionCount(person);
+                if (currentCount >= MAX_ORIENTIERUNG_SELECTION) {
+                    console.log(`[Orientierung] Max ${MAX_ORIENTIERUNG_SELECTION} Auswahlen erreicht für ${person}`);
+                    return; // Nicht mehr als MAX_ORIENTIERUNG_SELECTION erlaubt
+                }
+            }
+
             // WICHTIG: Nur ein "Gelebt" pro Kategorie erlaubt
             // Wenn neuer Status 'gelebt' ist, alle anderen 'gelebt' entfernen
             if (newStatus === 'gelebt') {
@@ -12191,6 +12245,16 @@
             const currentStatus = personDimensions[person].orientierung[orientierungType];
             const newStatus = (currentStatus === status) ? null : status;
 
+            // WICHTIG: Maximale Auswahl prüfen
+            // Wenn dieser Typ noch nicht ausgewählt ist und wir schon MAX erreicht haben, abbrechen
+            if (newStatus !== null && currentStatus === null) {
+                const currentCount = getOrientierungSelectionCount(person);
+                if (currentCount >= MAX_ORIENTIERUNG_SELECTION) {
+                    console.log(`[Orientierung] Max ${MAX_ORIENTIERUNG_SELECTION} Auswahlen erreicht für ${person}`);
+                    return; // Nicht mehr als MAX_ORIENTIERUNG_SELECTION erlaubt
+                }
+            }
+
             // WICHTIG: Nur ein "Gelebt" pro Kategorie erlaubt
             // Wenn neuer Status 'gelebt' ist, alle anderen 'gelebt' entfernen
             if (newStatus === 'gelebt') {
@@ -12275,6 +12339,16 @@
             // Toggle logic: if same status is clicked, deselect it
             const currentStatus = personDimensions[person].orientierung[orientierungType];
             const newStatus = (currentStatus === status) ? null : status;
+
+            // WICHTIG: Maximale Auswahl prüfen
+            // Wenn dieser Typ noch nicht ausgewählt ist und wir schon MAX erreicht haben, abbrechen
+            if (newStatus !== null && currentStatus === null) {
+                const currentCount = getOrientierungSelectionCount(person);
+                if (currentCount >= MAX_ORIENTIERUNG_SELECTION) {
+                    console.log(`[Orientierung] Max ${MAX_ORIENTIERUNG_SELECTION} Auswahlen erreicht für ${person}`);
+                    return; // Nicht mehr als MAX_ORIENTIERUNG_SELECTION erlaubt
+                }
+            }
 
             // WICHTIG: Nur ein "Gelebt" pro Kategorie erlaubt
             // Wenn neuer Status 'gelebt' ist, alle anderen 'gelebt' entfernen
