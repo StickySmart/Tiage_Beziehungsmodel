@@ -4193,6 +4193,39 @@
             color: var(--text-primary);
         }
 
+        /* GFK (Gewaltfreie Kommunikation) Buttons */
+        .gfk-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-top: 6px;
+        }
+
+        .gfk-btn {
+            padding: 6px 12px;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            background: rgba(30, 30, 35, 0.9);
+            color: var(--text-muted);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-size: 12px;
+            position: relative;
+        }
+
+        .gfk-btn:hover {
+            background: rgba(139, 92, 246, 0.15);
+            border-color: rgba(139, 92, 246, 0.4);
+            color: var(--text-primary);
+        }
+
+        .gfk-btn.selected,
+        .gfk-btn.primary-selected {
+            background: rgba(139, 92, 246, 0.3);
+            border-color: #8B5CF6;
+            color: white;
+        }
+
         /* Indikatoren für Dominanz/Orientierung (gleiche wie Geschlecht) */
         .dominanz-btn .geschlecht-indicator,
         .orientierung-btn .geschlecht-indicator {
@@ -6460,6 +6493,11 @@
                         <div class="collapsed-summary" id="ich-orientierung-summary"></div>
                         <div class="orientierung-grid" id="ich-orientierung-grid" data-person="ich"></div>
                     </div>
+                    <div class="compact-dimension collapsible-dimension" data-dimension="ich-gfk">
+                        <div class="compact-dimension-label"><span class="geschlecht-info-link" onclick="showDimensionTooltip('gfk')">GFK-Kompetenz</span></div>
+                        <div class="collapsed-summary" id="ich-gfk-summary"></div>
+                        <div class="gfk-grid" id="ich-gfk-grid" data-person="ich"></div>
+                    </div>
                 </div>
             </div>
 
@@ -6537,6 +6575,11 @@
                         <div class="compact-dimension-label"><span class="geschlecht-info-link" onclick="showOrientierungInfoModal()">Orientierung</span> <span id="partner-orientierung-legend" class="geschlecht-legend" style="font-size: 10px; text-decoration: underline; cursor: pointer;" onclick="showDimensionTooltip('status')">(<span class="legend-i">I</span>=Identität, <span class="legend-g">G</span>=Sekundär)</span></div>
                         <div class="collapsed-summary" id="partner-orientierung-summary"></div>
                         <div class="orientierung-grid" id="partner-orientierung-grid" data-person="partner"></div>
+                    </div>
+                    <div class="compact-dimension collapsible-dimension" data-dimension="partner-gfk">
+                        <div class="compact-dimension-label"><span class="geschlecht-info-link" onclick="showDimensionTooltip('gfk')">GFK-Kompetenz</span></div>
+                        <div class="collapsed-summary" id="partner-gfk-summary"></div>
+                        <div class="gfk-grid" id="partner-gfk-grid" data-person="partner"></div>
                     </div>
                 </div>
             </div>
@@ -8108,7 +8151,8 @@
                 orientierung: {
                     primary: null,    // Primäre Orientierung (I)
                     secondary: null   // Sekundäre Orientierung (G)
-                }
+                },
+                gfk: null             // GFK-Kompetenz: niedrig, mittel, hoch
             },
             partner: {
                 geschlecht: {
@@ -8122,7 +8166,8 @@
                 orientierung: {
                     primary: null,
                     secondary: null
-                }
+                },
+                gfk: null             // GFK-Kompetenz: niedrig, mittel, hoch
             }
         };
 
@@ -8164,6 +8209,23 @@
             ausgeglichen: {
                 title: "Ausgeglichen",
                 text: "<strong>Der Zentrierte</strong>\n\nDu bevorzugst eine gleichberechtigte Dynamik ohne feste Rollen.\n\n<strong>Merkmale:</strong> Balanciert, harmonisch, stabil, ruhig, besonnen, gemäßigt\n\n<strong>Kommunikation:</strong> Ruhig und konstruktiv. Feedback ist ausgewogen zwischen direkt und diplomatisch.\n\n<strong>Energie:</strong> Mittel und stabil – weder übermäßig spontan noch übermäßig planend.\n\n<em>Pirsig:</em> Wahre Balance zwischen statisch und dynamisch.\n<em>OSHO:</em> Jenseits von Yin und Yang – die transzendierte Mitte."
+            },
+            // GFK (Gewaltfreie Kommunikation)
+            gfk: {
+                title: "GFK-Kompetenz",
+                text: "<strong>Gewaltfreie Kommunikation nach Marshall Rosenberg</strong>\n\nWie gut beherrschst du die Prinzipien der Gewaltfreien Kommunikation?\n\n• <strong>Niedrig:</strong> Tendenz zu Vorwürfen, Urteilen, Schuldzuweisungen. Schwierigkeiten, Bedürfnisse klar zu benennen.\n\n• <strong>Mittel:</strong> Grundkenntnisse vorhanden. Kann in ruhigen Momenten GFK anwenden, fällt unter Stress in alte Muster zurück.\n\n• <strong>Hoch:</strong> Konsequente Anwendung der 4 Schritte: Beobachtung, Gefühl, Bedürfnis, Bitte. Empathisches Zuhören auch in Konflikten.\n\n<em>Pirsig:</em> GFK als dynamische Qualität – die Fähigkeit, im Moment präsent zu kommunizieren.\n<em>OSHO:</em> Wahre Kommunikation entsteht ohne Ego – GFK ist ein Werkzeug dafür."
+            },
+            gfk_niedrig: {
+                title: "GFK: Niedrig",
+                text: "<strong>Geringe GFK-Kompetenz</strong>\n\nKommunikation basiert oft auf:\n• Vorwürfen und Schuldzuweisungen\n• Urteilen und Bewertungen\n• Forderungen statt Bitten\n• Schwierigkeiten, eigene Bedürfnisse zu erkennen\n\n<strong>In Beziehungen:</strong> Konflikte eskalieren häufiger. Missverständnisse sind alltäglich. Verletzungen entstehen unbeabsichtigt.\n\n<strong>Potenzial:</strong> GFK kann gelernt werden. Bewusstsein ist der erste Schritt."
+            },
+            gfk_mittel: {
+                title: "GFK: Mittel",
+                text: "<strong>Mittlere GFK-Kompetenz</strong>\n\nKommunikation zeigt:\n• Grundverständnis der 4 Schritte (Beobachtung, Gefühl, Bedürfnis, Bitte)\n• Fähigkeit zur Selbstreflexion\n• In ruhigen Momenten empathisches Zuhören\n• Unter Stress Rückfall in alte Muster\n\n<strong>In Beziehungen:</strong> Gute Basis für konstruktive Gespräche. Konflikte können gelöst werden, wenn beide bereit sind.\n\n<strong>Wachstum:</strong> Übung unter Druck vertieft die Kompetenz."
+            },
+            gfk_hoch: {
+                title: "GFK: Hoch",
+                text: "<strong>Hohe GFK-Kompetenz</strong>\n\nKommunikation geprägt von:\n• Konsequente Anwendung der 4 Schritte\n• Empathisches Zuhören auch in Konflikten\n• Fähigkeit, hinter Vorwürfe zu hören\n• Klare Unterscheidung: Beobachtung vs. Bewertung\n• Verbindung zu eigenen und fremden Bedürfnissen\n\n<strong>In Beziehungen:</strong> Tiefe Verbindung durch echtes Verstehen. Konflikte werden zu Wachstumschancen.\n\n<em>OSHO:</em> Kommunikation ohne Ego ist Meditation in Aktion."
             },
             // Einzelne Orientierungen
             heterosexuell: {
@@ -8635,6 +8697,124 @@
                 modifier: 0.8
             }
         };
+
+        // ═══════════════════════════════════════════════════════════════════════
+        // GFK-STATEMENTS (Gewaltfreie Kommunikation nach Marshall Rosenberg)
+        // ═══════════════════════════════════════════════════════════════════════
+        const gfkStatements = {
+            // Beide hohe GFK-Kompetenz
+            "hoch_hoch": {
+                pathos: [
+                    "Zwei Menschen, die empathisch zuhören können – Konflikte werden zu Wachstumschancen.",
+                    "Die Fähigkeit, hinter Vorwürfe zu hören, schafft tiefe emotionale Sicherheit.",
+                    "Bedürfnisse werden gehört, nicht gefordert – eine Basis für echte Intimität."
+                ],
+                logos: [
+                    "Exzellente Voraussetzungen für konstruktive Kommunikation.",
+                    "Beide beherrschen die 4 Schritte: Beobachtung, Gefühl, Bedürfnis, Bitte.",
+                    "Konfliktlösung auf Augenhöhe ist selbstverständlich."
+                ],
+                resonanzModifier: 1.1,  // Erhöht die Resonanz
+                konfliktPotenzial: "niedrig"
+            },
+            // Einer hoch, einer mittel
+            "hoch_mittel": {
+                pathos: [
+                    "Der GFK-erfahrene Partner kann als Brücke dienen – Geduld ist gefragt.",
+                    "Unter Stress zeigt sich der Unterschied, aber Wachstum ist möglich."
+                ],
+                logos: [
+                    "Solide Basis mit Entwicklungspotenzial.",
+                    "Der erfahrenere Partner kann unterstützen, ohne zu dominieren."
+                ],
+                resonanzModifier: 1.05,
+                konfliktPotenzial: "mittel-niedrig"
+            },
+            // Einer hoch, einer niedrig
+            "hoch_niedrig": {
+                pathos: [
+                    "Eine Herausforderung: Empathie trifft auf Reaktivität.",
+                    "Der GFK-erfahrene Partner muss viel tragen – Gefahr der Erschöpfung.",
+                    "Potenzial für Transformation, wenn der Lernwille da ist."
+                ],
+                logos: [
+                    "Asymmetrie erfordert bewusste Arbeit.",
+                    "Ohne Bereitschaft zum Lernen kann Frustration entstehen.",
+                    "Klare Grenzen und Selbstfürsorge sind essenziell."
+                ],
+                resonanzModifier: 0.95,
+                konfliktPotenzial: "mittel-hoch"
+            },
+            // Beide mittel
+            "mittel_mittel": {
+                pathos: [
+                    "Zwei auf dem Weg – gemeinsames Wachstum ist möglich.",
+                    "In ruhigen Zeiten funktioniert die Kommunikation gut.",
+                    "Stress kann alte Muster aktivieren – Bewusstsein hilft."
+                ],
+                logos: [
+                    "Gute Grundlage mit Entwicklungspotenzial.",
+                    "Beide kennen die Prinzipien, üben noch die Anwendung.",
+                    "Gemeinsames Üben kann die Beziehung stärken."
+                ],
+                resonanzModifier: 1.0,
+                konfliktPotenzial: "mittel"
+            },
+            // Einer mittel, einer niedrig
+            "mittel_niedrig": {
+                pathos: [
+                    "Unterschiedliche Kommunikationsebenen können frustrieren.",
+                    "Der mittlere Partner fällt selbst unter Druck zurück – keine stabile Brücke."
+                ],
+                logos: [
+                    "Kommunikationsprobleme sind wahrscheinlich.",
+                    "Externe Unterstützung (Paartherapie, Kurse) kann helfen."
+                ],
+                resonanzModifier: 0.9,
+                konfliktPotenzial: "hoch"
+            },
+            // Beide niedrig
+            "niedrig_niedrig": {
+                pathos: [
+                    "Kommunikation geprägt von Vorwürfen und Missverständnissen.",
+                    "Eskalation ist wahrscheinlich – ohne Werkzeuge fehlt der Ausweg.",
+                    "Verletzungen entstehen oft unbeabsichtigt, heilen langsam."
+                ],
+                logos: [
+                    "Hohe Wahrscheinlichkeit für destruktive Konfliktmuster.",
+                    "Beide brauchen Unterstützung – GFK-Kurse dringend empfohlen.",
+                    "Ohne Intervention kann die Beziehung leiden."
+                ],
+                resonanzModifier: 0.8,
+                konfliktPotenzial: "sehr hoch"
+            },
+            // Default
+            "default": {
+                pathos: ["Die GFK-Kompetenz ist noch nicht bekannt."],
+                logos: ["Kommunikationsstil wird nicht bewertet."],
+                resonanzModifier: 1.0,
+                konfliktPotenzial: "unbekannt"
+            }
+        };
+
+        // Hilfsfunktion: Hole GFK-Statements basierend auf beiden Kompetenzen
+        function getGfkStatements(gfk1, gfk2) {
+            if (!gfk1 || !gfk2) return gfkStatements.default;
+
+            // Normalisiere auf Key-Format (hoch, mittel, niedrig)
+            const normalize = (g) => g?.toLowerCase() || null;
+            const g1 = normalize(gfk1);
+            const g2 = normalize(gfk2);
+
+            if (!g1 || !g2) return gfkStatements.default;
+
+            // Sortiere für konsistente Keys (hoch vor mittel vor niedrig)
+            const order = { 'hoch': 0, 'mittel': 1, 'niedrig': 2 };
+            const sorted = [g1, g2].sort((a, b) => (order[a] || 99) - (order[b] || 99));
+            const key = `${sorted[0]}_${sorted[1]}`;
+
+            return gfkStatements[key] || gfkStatements.default;
+        }
 
         // Hilfsfunktion: Hole Statements für Archetyp-Kombination
         function getArchetypeStatements(type1, type2) {
@@ -11630,6 +11810,13 @@
                 { value: 'bisexuell', label: 'bisexuell' }
             ];
 
+            // GFK Optionen (Gewaltfreie Kommunikation)
+            const gfkOptions = [
+                { value: 'niedrig', label: 'niedrig' },
+                { value: 'mittel', label: 'mittel' },
+                { value: 'hoch', label: 'hoch' }
+            ];
+
             // Geschlecht-Grids befüllen
             document.querySelectorAll('.geschlecht-grid').forEach(grid => {
                 const person = grid.dataset.person;
@@ -11657,11 +11844,21 @@
                 ).join('');
             });
 
+            // GFK-Grids befüllen
+            document.querySelectorAll('.gfk-grid[data-person]').forEach(grid => {
+                const person = grid.dataset.person;
+                if (!person) return;
+                grid.innerHTML = gfkOptions.map(opt =>
+                    `<button type="button" class="gfk-btn" data-value="${opt.value}" onclick="handleGfkClick('${person}', '${opt.value}', this)">${opt.label}</button>`
+                ).join('');
+            });
+
             // UI mit gespeichertem State synchronisieren
             ['ich', 'partner'].forEach(person => {
                 syncGeschlechtUI(person);
                 syncDominanzUI(person);
                 syncOrientierungUI(person);
+                syncGfkUI(person);
             });
         }
 
@@ -12101,6 +12298,106 @@
         // Helper: Check if any orientierung is selected (for backwards compatibility)
         function hasAnyOrientierungSelected(person) {
             return personDimensions[person].orientierung.primary !== null;
+        }
+
+        // ═══════════════════════════════════════════════════════════════════════
+        // GFK (Gewaltfreie Kommunikation) HANDLER
+        // ═══════════════════════════════════════════════════════════════════════
+
+        /**
+         * Handle click on a GFK button
+         * Simple single-select: clicking toggles selection
+         */
+        function handleGfkClick(person, gfkValue, btn) {
+            const currentGfk = personDimensions[person].gfk;
+
+            if (gfkValue === currentGfk) {
+                // Click on already selected = deselect
+                personDimensions[person].gfk = null;
+            } else {
+                // Select new value
+                personDimensions[person].gfk = gfkValue;
+            }
+
+            // Sync UI across all views
+            syncGfkUI(person);
+
+            // Save and recalculate
+            saveSelectionToStorage();
+            if (typeof recalculateEverything === 'function') {
+                recalculateEverything();
+            }
+        }
+
+        /**
+         * Sync GFK UI across all views
+         */
+        function syncGfkUI(person) {
+            const selected = personDimensions[person].gfk;
+
+            // All GFK button selectors for this person
+            const selectors = [
+                `.gfk-grid[data-person="${person}"] .gfk-btn`,
+                `#${person}-gfk-grid .gfk-btn`,
+                `#mobile-${person}-gfk-grid .gfk-btn`
+            ];
+
+            selectors.forEach(selector => {
+                document.querySelectorAll(selector).forEach(btn => {
+                    const value = btn.dataset.value;
+
+                    // Remove selection state
+                    btn.classList.remove('selected', 'primary-selected');
+
+                    // Add selected state if this is the chosen value
+                    if (value === selected) {
+                        btn.classList.add('selected', 'primary-selected');
+                    }
+                });
+            });
+
+            // Update summary text
+            updateGfkSummary(person);
+        }
+
+        /**
+         * Get GFK summary text
+         */
+        function getGfkSummary(person) {
+            const gfk = personDimensions[person].gfk;
+            if (!gfk) return 'GFK fehlt';
+            return `GFK: ${gfk}`;
+        }
+
+        /**
+         * Update GFK summary display
+         */
+        function updateGfkSummary(person) {
+            const gfk = personDimensions[person].gfk;
+            const isMissing = !gfk;
+
+            // Update header element
+            const headerId = `${person}-header-gfk`;
+            const header = document.getElementById(headerId);
+            if (header) {
+                header.textContent = getGfkSummary(person);
+                header.classList.toggle('missing', isMissing);
+            }
+
+            // Update grid collapsed-summary
+            ['', 'mobile-'].forEach(prefix => {
+                const summaryId = `${prefix}${person}-gfk-summary`;
+                const summary = document.getElementById(summaryId);
+                if (summary) {
+                    summary.textContent = gfk ? `✓ ${gfk}` : '';
+                    summary.classList.toggle('has-selection', !isMissing);
+                }
+            });
+        }
+
+        // Helper: Check if GFK is selected
+        function hasGfkSelected(person) {
+            return personDimensions[person].gfk !== null;
         }
 
         // ========================================
@@ -14636,6 +14933,17 @@
                 ichParts.push(`Kernwerte wie ${emotionalValues} prägen das emotionale Erleben.`);
             }
 
+            // GFK-Kompetenz (ICH)
+            const ichGfk = personDimensions.ich?.gfk;
+            if (ichGfk) {
+                const gfkText = {
+                    'hoch': `${ichName} kommuniziert gewaltfrei – empathisches Zuhören und klare Bedürfnisäußerung sind selbstverständlich.`,
+                    'mittel': `${ichName} kennt GFK-Prinzipien, wendet sie aber unter Stress nicht immer konsequent an.`,
+                    'niedrig': `${ichName} neigt zu reaktiver Kommunikation – Vorwürfe und Urteile können Konflikte eskalieren.`
+                };
+                if (gfkText[ichGfk]) ichParts.push(gfkText[ichGfk]);
+            }
+
             // ═══════════════════════════════════════════════════════════════
             // PARTNER BRINGT MIT
             // ═══════════════════════════════════════════════════════════════
@@ -14681,6 +14989,17 @@
                 partnerParts.push(`Kernwerte wie ${emotionalValues} prägen das emotionale Erleben.`);
             }
 
+            // GFK-Kompetenz (Partner)
+            const partnerGfk = personDimensions.partner?.gfk;
+            if (partnerGfk) {
+                const gfkText = {
+                    'hoch': `${partnerName} kommuniziert gewaltfrei – empathisches Zuhören und klare Bedürfnisäußerung sind selbstverständlich.`,
+                    'mittel': `${partnerName} kennt GFK-Prinzipien, wendet sie aber unter Stress nicht immer konsequent an.`,
+                    'niedrig': `${partnerName} neigt zu reaktiver Kommunikation – Vorwürfe und Urteile können Konflikte eskalieren.`
+                };
+                if (gfkText[partnerGfk]) partnerParts.push(gfkText[partnerGfk]);
+            }
+
             // ═══════════════════════════════════════════════════════════════
             // DARAUS ENTSTEHT (Synthese)
             // ═══════════════════════════════════════════════════════════════
@@ -14723,6 +15042,19 @@
                     syntheseParts.push(`Die unterschiedlichen emotionalen Energien können sich ergänzen und bereichern.`);
                 } else {
                     syntheseParts.push(`Die verschiedenen emotionalen Tempi erfordern bewusste Abstimmung.`);
+                }
+            }
+
+            // GFK-Synthese (Kommunikationsdynamik)
+            if (ichGfk && partnerGfk) {
+                const gfkStmts = getGfkStatements(ichGfk, partnerGfk);
+                if (gfkStmts?.pathos?.length) {
+                    const selected = selectStatementByHash(gfkStmts.pathos, hash + 29);
+                    if (selected) syntheseParts.push(selected);
+                }
+                // Konfliktpotenzial hinzufügen
+                if (gfkStmts.konfliktPotenzial && gfkStmts.konfliktPotenzial !== 'unbekannt') {
+                    syntheseParts.push(`Konfliktpotenzial: ${gfkStmts.konfliktPotenzial}.`);
                 }
             }
 
@@ -14858,6 +15190,17 @@
                 }
             }
 
+            // GFK-Kompetenz (ICH) - Logos-Perspektive
+            const ichGfk = personDimensions.ich?.gfk;
+            if (ichGfk) {
+                const gfkText = {
+                    'hoch': `GFK-Kompetenz hoch: ${ichName} nutzt die 4 Schritte (Beobachtung, Gefühl, Bedürfnis, Bitte) konsequent.`,
+                    'mittel': `GFK-Kompetenz mittel: ${ichName} kennt die Grundlagen, wendet sie aber nicht immer an.`,
+                    'niedrig': `GFK-Kompetenz niedrig: ${ichName} kommuniziert reaktiv – strukturierte Konfliktlösung fällt schwer.`
+                };
+                if (gfkText[ichGfk]) ichParts.push(gfkText[ichGfk]);
+            }
+
             // ═══════════════════════════════════════════════════════════════
             // PARTNER BRINGT MIT
             // ═══════════════════════════════════════════════════════════════
@@ -14904,6 +15247,17 @@
                 if (prefs.length > 0) {
                     partnerParts.push(`Präferenzen: ${prefs.join(', ')}.`);
                 }
+            }
+
+            // GFK-Kompetenz (Partner) - Logos-Perspektive
+            const partnerGfk = personDimensions.partner?.gfk;
+            if (partnerGfk) {
+                const gfkText = {
+                    'hoch': `GFK-Kompetenz hoch: ${partnerName} nutzt die 4 Schritte (Beobachtung, Gefühl, Bedürfnis, Bitte) konsequent.`,
+                    'mittel': `GFK-Kompetenz mittel: ${partnerName} kennt die Grundlagen, wendet sie aber nicht immer an.`,
+                    'niedrig': `GFK-Kompetenz niedrig: ${partnerName} kommuniziert reaktiv – strukturierte Konfliktlösung fällt schwer.`
+                };
+                if (gfkText[partnerGfk]) partnerParts.push(gfkText[partnerGfk]);
             }
 
             // ═══════════════════════════════════════════════════════════════
@@ -14959,6 +15313,15 @@
                 const conflicts = ichArch.coreValues.filter(v => partnerArch.avoids?.includes(v));
                 if (conflicts.length > 0) {
                     syntheseParts.push(`Potenzielle Spannung: ${ichName}'s Wert "${conflicts[0]}" wird von ${partnerName} eher gemieden.`);
+                }
+            }
+
+            // GFK-Synthese (Kommunikationsstruktur)
+            if (ichGfk && partnerGfk) {
+                const gfkStmts = getGfkStatements(ichGfk, partnerGfk);
+                if (gfkStmts?.logos?.length) {
+                    const selected = selectStatementByHash(gfkStmts.logos, hash + 29);
+                    if (selected) syntheseParts.push(selected);
                 }
             }
 
