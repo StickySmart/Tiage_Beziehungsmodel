@@ -92,11 +92,55 @@
             align-items: center;
         }
 
+        .header-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+        }
+
+        .header-buttons {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            margin-top: 8px;
+        }
+
         h1 {
             font-size: var(--font-base);
             font-weight: 400;
             letter-spacing: 2px;
             color: var(--text-secondary);
+        }
+
+        /* Language Button */
+        .lang-btn {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            padding: 4px 10px;
+            border-radius: 15px;
+            border: 2px solid var(--primary);
+            background: transparent;
+            color: var(--primary);
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .lang-btn:hover {
+            background: var(--primary);
+            color: white;
+        }
+
+        .lang-icon {
+            font-size: 14px;
+        }
+
+        .lang-code {
+            font-weight: 700;
+            text-transform: uppercase;
         }
 
         /* Help Button */
@@ -114,7 +158,6 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            margin: 8px auto 0 auto;
         }
 
         .help-btn:hover {
@@ -5437,6 +5480,11 @@
         }
     </style>
 
+    <!-- TIAGE i18n - Internationalisierung -->
+    <script src="js/locales/de.js"></script>
+    <script src="js/locales/en.js"></script>
+    <script src="js/i18n.js"></script>
+
     <!-- TIAGE SYNTHESE - Zentralisierte Berechnungslogik -->
     <script src="js/synthesis/constants.js"></script>
     <script src="js/synthesis/factors/archetypeFactor.js"></script>
@@ -6089,8 +6137,16 @@
     <!-- archetypeInfoModal wurde mit definitionModal zusammengeführt -->
 
     <header>
-        <h1>ARCHETYPEN-BEZIEHUNGSQUALITÄT</h1>
-        <button class="help-btn" onclick="openHelpModal()" title="Hilfe & Dokumentation">?</button>
+        <div class="header-content">
+            <h1 data-i18n="ui.title">ARCHETYPEN-BEZIEHUNGSQUALITÄT</h1>
+            <div class="header-buttons">
+                <button class="lang-btn" onclick="TiageI18n.toggle(); updateAllTranslations();" title="Switch Language / Sprache wechseln">
+                    <span class="lang-icon">🌐</span>
+                    <span class="lang-code" id="currentLangCode">DE</span>
+                </button>
+                <button class="help-btn" onclick="openHelpModal()" title="Hilfe & Dokumentation">?</button>
+            </div>
+        </div>
     </header>
 
     <!-- Desktop Selection Info Message -->
@@ -7455,6 +7511,195 @@
     <!-- State Management - Single Source of Truth -->
     <script src="js/state.js"></script>
     <script src="js/markdown-loader.js"></script>
+
+    <!-- i18n Update Functions -->
+    <script>
+        /**
+         * Update all translatable elements on the page
+         * Called when language is changed
+         */
+        function updateAllTranslations() {
+            const lang = TiageI18n.getLanguage();
+
+            // Update language code display
+            const langCodeEl = document.getElementById('currentLangCode');
+            if (langCodeEl) {
+                langCodeEl.textContent = lang.toUpperCase();
+            }
+
+            // Update HTML lang attribute
+            document.documentElement.lang = lang;
+
+            // Update page title
+            const h1 = document.querySelector('h1[data-i18n]');
+            if (h1) {
+                const titleKey = h1.getAttribute('data-i18n');
+                const translated = TiageI18n.t(titleKey);
+                if (translated && translated !== titleKey) {
+                    h1.textContent = translated.toUpperCase();
+                }
+            }
+
+            // Update all elements with data-i18n attribute
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                const translated = TiageI18n.t(key);
+                if (translated && translated !== key) {
+                    if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') {
+                        el.placeholder = translated;
+                    } else {
+                        el.textContent = translated;
+                    }
+                }
+            });
+
+            // Update all elements with data-i18n-title attribute (for tooltips)
+            document.querySelectorAll('[data-i18n-title]').forEach(el => {
+                const key = el.getAttribute('data-i18n-title');
+                const translated = TiageI18n.t(key);
+                if (translated && translated !== key) {
+                    el.title = translated;
+                }
+            });
+
+            // Update person labels (ICH/PARTNER -> ME/PARTNER)
+            updatePersonLabels();
+
+            // Update status buttons (Gelebt/Interessiert)
+            updateStatusButtons();
+
+            // Update dimension labels and tooltips
+            updateDimensionLabels();
+
+            // Update archetype names if displayed
+            updateArchetypeNames();
+
+            // Update category names
+            updateCategoryNames();
+
+            // Trigger custom event for other scripts to react
+            document.dispatchEvent(new CustomEvent('languageChanged', {
+                detail: { language: lang, locale: TiageI18n.getLocale() }
+            }));
+
+            console.log('[i18n] All translations updated to:', lang);
+        }
+
+        /**
+         * Update person labels (ICH/ME, PARTNER)
+         */
+        function updatePersonLabels() {
+            // Desktop ICH/PARTNER labels
+            document.querySelectorAll('.person-label-ich, [data-person="ich"] .person-label').forEach(el => {
+                el.textContent = TiageI18n.t('ui.ich', 'ICH');
+            });
+            document.querySelectorAll('.person-label-partner, [data-person="partner"] .person-label').forEach(el => {
+                el.textContent = TiageI18n.t('ui.partner', 'PARTNER');
+            });
+
+            // Update any elements with explicit data-i18n-person
+            document.querySelectorAll('[data-i18n-person="ich"]').forEach(el => {
+                el.textContent = TiageI18n.t('ui.ich', 'ICH');
+            });
+            document.querySelectorAll('[data-i18n-person="partner"]').forEach(el => {
+                el.textContent = TiageI18n.t('ui.partner', 'PARTNER');
+            });
+        }
+
+        /**
+         * Update status button labels (Gelebt/Interessiert)
+         */
+        function updateStatusButtons() {
+            document.querySelectorAll('[data-status="gelebt"]').forEach(el => {
+                el.textContent = TiageI18n.t('ui.gelebt', 'Gelebt');
+            });
+            document.querySelectorAll('[data-status="interessiert"]').forEach(el => {
+                el.textContent = TiageI18n.t('ui.interessiert', 'Interessiert');
+            });
+        }
+
+        /**
+         * Update dimension labels (Geschlecht, Dominanz, Orientierung)
+         */
+        function updateDimensionLabels() {
+            // Update geschlecht type labels
+            const geschlechtTypes = ['cis_mann', 'cis_frau', 'trans_mann', 'trans_frau', 'nonbinaer', 'genderfluid', 'agender', 'intersex', 'divers'];
+            geschlechtTypes.forEach(type => {
+                document.querySelectorAll(`[data-geschlecht="${type}"]`).forEach(el => {
+                    el.textContent = TiageI18n.t(`geschlecht.types.${type}`, type);
+                });
+            });
+
+            // Update dominanz type labels
+            const dominanzTypes = ['dominant', 'submissiv', 'switch', 'ausgeglichen'];
+            dominanzTypes.forEach(type => {
+                document.querySelectorAll(`[data-dominanz="${type}"]`).forEach(el => {
+                    el.textContent = TiageI18n.t(`dominanz.types.${type}`, type);
+                });
+            });
+
+            // Update orientierung type labels
+            const orientierungTypes = ['heterosexuell', 'homosexuell', 'bisexuell'];
+            orientierungTypes.forEach(type => {
+                document.querySelectorAll(`[data-orientierung="${type}"]`).forEach(el => {
+                    el.textContent = TiageI18n.t(`orientierung.types.${type}`, type);
+                });
+            });
+        }
+
+        /**
+         * Update archetype names
+         */
+        function updateArchetypeNames() {
+            const archetypes = ['single', 'duo', 'duo_flex', 'solopoly', 'polyamor', 'ra', 'lat', 'aromantisch'];
+            archetypes.forEach(type => {
+                document.querySelectorAll(`[data-archetype-name="${type}"]`).forEach(el => {
+                    el.textContent = TiageI18n.t(`archetypes.${type}.name`, type);
+                });
+            });
+        }
+
+        /**
+         * Update category names (A-F)
+         */
+        function updateCategoryNames() {
+            const categories = ['A', 'B', 'C', 'D', 'E', 'F'];
+            categories.forEach(cat => {
+                document.querySelectorAll(`[data-category-name="${cat}"]`).forEach(el => {
+                    el.textContent = TiageI18n.t(`categories.${cat}`, cat);
+                });
+            });
+        }
+
+        /**
+         * Get translated tooltip content
+         * @param {string} key - The tooltip key (e.g., 'geschlecht', 'dominant')
+         * @returns {Object} { title, text }
+         */
+        function getTranslatedTooltip(key) {
+            const tooltip = TiageI18n.t(`tooltips.${key}`);
+            if (tooltip && typeof tooltip === 'object') {
+                return tooltip;
+            }
+            return { title: key, text: '' };
+        }
+
+        // Subscribe to language changes for automatic updates
+        if (typeof TiageI18n !== 'undefined') {
+            TiageI18n.subscribe(function(event) {
+                updateAllTranslations();
+            });
+        }
+
+        // Initialize translations on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            // Update language code display on load
+            const langCodeEl = document.getElementById('currentLangCode');
+            if (langCodeEl && typeof TiageI18n !== 'undefined') {
+                langCodeEl.textContent = TiageI18n.getLanguage().toUpperCase();
+            }
+        });
+    </script>
 
     <script>
         let data = null;

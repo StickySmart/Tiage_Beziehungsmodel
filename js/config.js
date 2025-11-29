@@ -306,6 +306,26 @@ const TiageConfig = (function() {
     };
 
     // ═══════════════════════════════════════════════════════════════════════
+    // HELPER: i18n Integration
+    // ═══════════════════════════════════════════════════════════════════════
+
+    /**
+     * Get translated value from i18n if available, otherwise return fallback
+     * @param {string} path - i18n path (e.g., 'archetypes.single.name')
+     * @param {*} fallback - Fallback value if i18n not available
+     * @returns {*} Translated value or fallback
+     */
+    function i18n(path, fallback) {
+        if (typeof TiageI18n !== 'undefined' && TiageI18n.t) {
+            const translated = TiageI18n.t(path);
+            if (translated && translated !== path) {
+                return translated;
+            }
+        }
+        return fallback;
+    }
+
+    // ═══════════════════════════════════════════════════════════════════════
     // PUBLIC API
     // ═══════════════════════════════════════════════════════════════════════
 
@@ -341,9 +361,21 @@ const TiageConfig = (function() {
             return window.innerWidth <= MOBILE_BREAKPOINT;
         },
 
-        // Helper: Archetyp-Name
+        // Helper: Archetyp-Name (i18n aware)
         getArchetypeName(id) {
-            return ARCHETYPE_DEFINITIONS[id]?.name || id;
+            return i18n(`archetypes.${id}.name`, ARCHETYPE_DEFINITIONS[id]?.name || id);
+        },
+
+        // Helper: Archetyp-Definition (i18n aware)
+        getArchetypeDefinition(id) {
+            const def = ARCHETYPE_DEFINITIONS[id];
+            if (!def) return null;
+
+            return {
+                name: i18n(`archetypes.${id}.name`, def.name),
+                shortDef: i18n(`archetypes.${id}.shortDef`, def.shortDef),
+                keyPrinciples: i18n(`archetypes.${id}.keyPrinciples`, def.keyPrinciples)
+            };
         },
 
         // Helper: Archetyp-Icon
@@ -351,19 +383,63 @@ const TiageConfig = (function() {
             return ARCHETYPE_ICONS[id] || '?';
         },
 
-        // Helper: Kategorie-Name
+        // Helper: Kategorie-Name (i18n aware)
         getCategoryName(letter) {
-            return CATEGORY_NAMES[letter] || letter;
+            return i18n(`categories.${letter}`, CATEGORY_NAMES[letter] || letter);
         },
 
-        // Helper: Geschlecht-Label
+        // Helper: Geschlecht-Label (i18n aware)
         getGeschlechtLabel(id) {
-            return GESCHLECHT_LABELS[id] || id;
+            return i18n(`geschlecht.types.${id}`, GESCHLECHT_LABELS[id] || id);
+        },
+
+        // Helper: Geschlecht-Short (i18n aware)
+        getGeschlechtShort(id) {
+            return i18n(`geschlecht.short.${id}`, GESCHLECHT_SHORT[id] || id);
         },
 
         // Helper: Geschlecht-Kategorie für Orientierungslogik
         getGeschlechtCategory(id) {
             return GESCHLECHT_CATEGORY[id] || 'andere';
+        },
+
+        // Helper: Dominanz-Label (i18n aware)
+        getDominanzLabel(type) {
+            return i18n(`dominanz.types.${type}`, type);
+        },
+
+        // Helper: Dominanz-Short (i18n aware)
+        getDominanzShort(type) {
+            return i18n(`dominanz.short.${type}`, DOMINANZ_SHORT[type] || type);
+        },
+
+        // Helper: Orientierung-Label (i18n aware)
+        getOrientierungLabel(type) {
+            return i18n(`orientierung.types.${type}`, type);
+        },
+
+        // Helper: Orientierung-Short (i18n aware)
+        getOrientierungShort(type) {
+            return i18n(`orientierung.short.${type}`, ORIENTIERUNG_SHORT[type] || type);
+        },
+
+        // Helper: Status-Label (i18n aware)
+        getStatusLabel(status) {
+            return i18n(`ui.${status}`, status);
+        },
+
+        // Helper: Tooltip (i18n aware)
+        getTooltip(key) {
+            const i18nTooltip = i18n(`tooltips.${key}`, null);
+            if (i18nTooltip && typeof i18nTooltip === 'object') {
+                return i18nTooltip;
+            }
+            return DIMENSION_TOOLTIPS[key] || { title: key, text: '' };
+        },
+
+        // Helper: Person-Label (i18n aware) - ICH/ME, PARTNER
+        getPersonLabel(person) {
+            return i18n(`ui.${person}`, person === 'ich' ? 'ICH' : 'PARTNER');
         }
     };
 })();
