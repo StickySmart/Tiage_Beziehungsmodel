@@ -1636,9 +1636,9 @@
         .modal-feedback-btn {
             margin-top: 20px;
             padding: 12px 16px;
-            background: rgba(255, 255, 255, 0.05);
+            background: var(--bg-dark);
             border: 1px solid var(--border);
-            border-radius: 8px;
+            border-radius: 6px;
             color: var(--text-muted);
             cursor: pointer;
             text-align: center;
@@ -1646,9 +1646,8 @@
         }
 
         .modal-feedback-btn:hover {
-            background: rgba(255, 255, 255, 0.1);
-            color: var(--primary);
             border-color: var(--primary);
+            box-shadow: 0 0 8px rgba(69, 123, 157, 0.3);
         }
 
         .category-nav-row {
@@ -1663,19 +1662,18 @@
 
         .category-nav-btn {
             padding: 8px 16px;
-            background: transparent;
+            background: var(--bg-dark);
             border: 1px solid var(--border);
-            border-radius: 8px;
-            color: var(--text-secondary);
+            border-radius: 6px;
+            color: var(--text-muted);
             cursor: pointer;
             transition: all 0.2s;
             font-size: var(--font-sm);
         }
 
         .category-nav-btn:hover {
-            background: var(--primary);
             border-color: var(--primary);
-            color: white;
+            box-shadow: 0 0 8px rgba(69, 123, 157, 0.3);
         }
 
         .category-nav-indicator {
@@ -3119,6 +3117,12 @@
             font-size: var(--font-xs);
         }
 
+        .analysis-overview-content .geschlecht-info {
+            color: var(--warning);
+            font-size: var(--font-xs);
+            font-weight: 500;
+        }
+
         .analysis-overview-edit {
             font-size: var(--font-xs);
             color: var(--primary);
@@ -3818,19 +3822,19 @@
         }
 
         .archetype-nav-btn {
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            color: #f0f0f0;
+            background: var(--bg-dark);
+            border: 1px solid var(--border);
+            color: var(--text-muted);
             padding: 6px 10px;
-            border-radius: 4px;
+            border-radius: 6px;
             cursor: pointer;
             font-size: 12px;
             transition: all 0.2s ease;
         }
 
         .archetype-nav-btn:hover {
-            background: rgba(255, 255, 255, 0.2);
             border-color: var(--primary);
+            box-shadow: 0 0 8px rgba(69, 123, 157, 0.3);
         }
 
         .archetype-nav-btn:active {
@@ -3839,8 +3843,8 @@
 
         .archetype-info-btn {
             padding: 8px 12px;
-            border-radius: 8px;
-            background: rgba(255,255,255,0.1);
+            border-radius: 6px;
+            background: var(--bg-dark);
             border: 1px solid var(--border);
             color: var(--text-muted);
             font-size: 11px;
@@ -3850,14 +3854,13 @@
             align-items: center;
             justify-content: center;
             letter-spacing: 0.5px;
-            transition: all 0.3s ease;
+            transition: all 0.2s ease;
             flex-shrink: 0;
         }
 
         .archetype-info-btn:hover {
-            background: var(--primary);
-            color: white;
             border-color: var(--primary);
+            box-shadow: 0 0 8px rgba(69, 123, 157, 0.3);
         }
 
         .column-select {
@@ -7606,6 +7609,11 @@
 
             // Update age verification modal
             updateAgeVerificationModal();
+
+            // Update analysis overview (Du ein / You a + Geschlecht)
+            if (typeof updateAnalysisOverview === 'function') {
+                updateAnalysisOverview();
+            }
 
             // Trigger custom event for other scripts to react
             document.dispatchEvent(new CustomEvent('languageChanged', {
@@ -12341,6 +12349,48 @@
             return result;
         }
 
+        function getGeschlechtVoll(geschlecht) {
+            if (!geschlecht) return null;
+
+            let primary = geschlecht;
+            let secondary = null;
+            if (typeof geschlecht === 'object') {
+                primary = geschlecht.primary;
+                secondary = geschlecht.secondary;
+            }
+
+            if (!primary) return null;
+
+            // Nutze i18n wenn verfügbar, sonst Fallback-Map
+            const getName = (g) => {
+                if (typeof TiageI18n !== 'undefined') {
+                    return TiageI18n.t(`geschlecht.types.${g}`, g);
+                }
+                // Fallback-Map
+                const map = {
+                    'cis_mann': 'Cis Mann',
+                    'cis_frau': 'Cis Frau',
+                    'trans_mann': 'Trans Mann',
+                    'trans_frau': 'Trans Frau',
+                    'nonbinaer': 'Nonbinär',
+                    'genderfluid': 'Genderfluid',
+                    'agender': 'Agender',
+                    'intersex': 'Intersex',
+                    'divers': 'Divers',
+                    'männlich': 'Mann',
+                    'weiblich': 'Frau',
+                    'non-binär': 'Nonbinär'
+                };
+                return map[g] || g;
+            };
+
+            let result = getName(primary);
+            if (secondary) {
+                result += ' (' + getName(secondary) + ')';
+            }
+            return result;
+        }
+
         function getGeschlechtCategory(geschlecht) {
             // Gibt die Kategorie für Orientierungslogik zurück
             if (typeof TiageConfig !== 'undefined' && TiageConfig.GESCHLECHT_CATEGORY) {
@@ -12432,15 +12482,24 @@
             const ichDims = personDimensions.ich;
             const partnerDims = personDimensions.partner;
 
-            const ichInfo = `(${getGeschlechtKurz(ichDims.geschlecht)}, ${getDominanzKurz(ichDims.dominanz)}, ${getOrientierungKurz(ichDims.orientierung, ichDims.orientierungStatus)})`;
-            const partnerInfo = `(${getGeschlechtKurz(partnerDims.geschlecht)}, ${getDominanzKurz(partnerDims.dominanz)}, ${getOrientierungKurz(partnerDims.orientierung, partnerDims.orientierungStatus)})`;
+            // Voller Geschlechtsname mit sekundärem in Klammern
+            const ichGeschlecht = getGeschlechtVoll(ichDims.geschlecht);
+            const partnerGeschlecht = getGeschlechtVoll(partnerDims.geschlecht);
+
+            const ichInfo = `(${getDominanzKurz(ichDims.dominanz)}, ${getOrientierungKurz(ichDims.orientierung, ichDims.orientierungStatus)})`;
+            const partnerInfo = `(${getDominanzKurz(partnerDims.dominanz)}, ${getOrientierungKurz(partnerDims.orientierung, partnerDims.orientierungStatus)})`;
 
             const content = document.getElementById('analysisOverviewContent');
             if (content) {
+                // Nutze i18n für "Du ein" / "You a"
+                const youALabel = typeof TiageI18n !== 'undefined' ? TiageI18n.t('analysisOverview.youA', 'Du ein') : 'Du ein';
+                const ichGeschlechtHtml = ichGeschlecht ? `<span class="geschlecht-info">${youALabel} ${ichGeschlecht}</span>` : '';
+                const partnerGeschlechtHtml = partnerGeschlecht ? `<span class="geschlecht-info">${partnerGeschlecht}</span>` : '';
+
                 content.innerHTML = `
-                    <span class="type-name">${ichType}</span> <span class="dim-info">${ichInfo}</span>
+                    <span class="type-name">${ichType}</span> ${ichGeschlechtHtml} <span class="dim-info">${ichInfo}</span>
                     <span> × </span>
-                    <span class="type-name">${partnerType}</span> <span class="dim-info">${partnerInfo}</span>
+                    <span class="type-name">${partnerType}</span> ${partnerGeschlechtHtml} <span class="dim-info">${partnerInfo}</span>
                 `;
             }
         }
