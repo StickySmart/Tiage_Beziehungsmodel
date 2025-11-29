@@ -31,14 +31,25 @@ TiageSynthesis.Calculator = {
      * @param {object} person2 - Profil Person 2
      * @param {object} matrixData - archetype-matrix.json Daten
      * @param {number} profilMatch - Profil-Match 0-100 (optional, default 50)
+     * @param {object} options - Zusätzliche Optionen (optional)
+     * @param {string} options.gfkPerson1 - GFK-Kompetenz Person 1 ("niedrig"|"mittel"|"hoch")
+     * @param {string} options.gfkPerson2 - GFK-Kompetenz Person 2 ("niedrig"|"mittel"|"hoch")
      * @returns {object} Vollständiges Ergebnis mit Score, Resonanz und Details
      */
-    calculate: function(person1, person2, matrixData, profilMatch) {
+    calculate: function(person1, person2, matrixData, profilMatch, options) {
         var constants = TiageSynthesis.Constants;
         var factors = TiageSynthesis.Factors;
 
         // Profil-Match (Platzhalter bis Kategorien D,E,F implementiert)
         profilMatch = profilMatch || constants.RESONANCE.DEFAULT_PROFILE_MATCH;
+
+        // GFK-Kompetenz aus Optionen extrahieren
+        options = options || {};
+        var gfkFaktor = this._calculateGfkFactor(
+            options.gfkPerson1 || 'mittel',
+            options.gfkPerson2 || 'mittel',
+            constants
+        );
 
         // ═══════════════════════════════════════════════════════════════════
         // SCHRITT 1: Alle 4 Faktoren berechnen
@@ -76,10 +87,10 @@ TiageSynthesis.Calculator = {
         var pathos = (scores.orientierung + scores.dominanz + scores.geschlecht) / 3;
 
         // ═══════════════════════════════════════════════════════════════════
-        // SCHRITT 3: Resonanz berechnen
+        // SCHRITT 3: Resonanz berechnen (inkl. GFK-Faktor K)
         // ═══════════════════════════════════════════════════════════════════
 
-        var resonanz = this._calculateResonance(logos, pathos, profilMatch, constants);
+        var resonanz = this._calculateResonance(logos, pathos, profilMatch, gfkFaktor, constants);
 
         // ═══════════════════════════════════════════════════════════════════
         // SCHRITT 4: Gewichtete Summe × Resonanz
@@ -168,6 +179,51 @@ TiageSynthesis.Calculator = {
     },
 
     /**
+     * Berechnet den GFK-Faktor (K) aus der Matrix
+     *
+     * @param {string} gfk1 - GFK-Kompetenz Person 1 ("niedrig"|"mittel"|"hoch")
+     * @param {string} gfk2 - GFK-Kompetenz Person 2 ("niedrig"|"mittel"|"hoch")
+     * @param {object} constants - TiageSynthesis.Constants
+     * @returns {object} { value, level1, level2, interpretation }
+     */
+    _calculateGfkFactor: function(gfk1, gfk2, constants) {
+        // Normalisieren (lowercase)
+        gfk1 = (gfk1 || 'mittel').toLowerCase();
+        gfk2 = (gfk2 || 'mittel').toLowerCase();
+
+        // Matrix-Key erstellen
+        var key = gfk1 + '-' + gfk2;
+
+        // Wert aus Matrix holen (oder Default)
+        var value = constants.GFK_MATRIX[key];
+        if (value === undefined) {
+            value = 0.5; // Default: mittel-mittel
+        }
+
+        // Interpretation bestimmen
+        var interpretation;
+        if (value >= 0.9) {
+            interpretation = { level: 'optimal', text: 'Exzellente Kommunikationsbasis' };
+        } else if (value >= 0.6) {
+            interpretation = { level: 'gut', text: 'Solide Kommunikationsgrundlage' };
+        } else if (value >= 0.4) {
+            interpretation = { level: 'mittel', text: 'Entwicklungspotenzial vorhanden' };
+        } else if (value >= 0.2) {
+            interpretation = { level: 'schwach', text: 'Kommunikationsarbeit nötig' };
+        } else {
+            interpretation = { level: 'kritisch', text: 'Destruktive Muster wahrscheinlich' };
+        }
+
+        return {
+            value: value,
+            level1: gfk1,
+            level2: gfk2,
+            matrixKey: key,
+            interpretation: interpretation
+        };
+    },
+
+    /**
      * Berechnet den Resonanz-Koeffizienten
      *
      * R = 0.9 + [(M/100 × 0.35) + (B × 0.35) + (K × 0.30)] × 0.2
@@ -175,20 +231,27 @@ TiageSynthesis.Calculator = {
      * @param {number} logos - Logos-Score (0-100)
      * @param {number} pathos - Pathos-Durchschnitt (0-100)
      * @param {number} profilMatch - Profil-Match (0-100)
+     * @param {object} gfkFaktor - GFK-Faktor Objekt mit .value
      * @param {object} constants - TiageSynthesis.Constants
-     * @returns {object} { coefficient, balance, profilMatch, interpretation }
+     * @returns {object} { coefficient, balance, profilMatch, gfk, interpretation }
      */
-    _calculateResonance: function(logos, pathos, profilMatch, constants) {
+    _calculateResonance: function(logos, pathos, profilMatch, gfkFaktor, constants) {
         var cfg = constants.RESONANCE;
 
         // Logos-Pathos-Balance: B = (100 - |Logos - Pathos|) / 100
         var differenz = Math.abs(logos - pathos);
         var balance = (100 - differenz) / 100;
 
+        // GFK-Wert extrahieren (K)
+        var gfkValue = gfkFaktor.value;
+
         // R = 0.9 + [(M/100 × 0.35) + (B × 0.35) + (K × 0.30)] × 0.2
         var coefficient = cfg.BASE +
-            (((profilMatch / 100) * cfg.PROFILE_WEIGHT) + (balance * cfg.BALANCE_WEIGHT)) *
-            cfg.MAX_BOOST;
+            (
+                ((profilMatch / 100) * cfg.PROFILE_WEIGHT) +
+                (balance * cfg.BALANCE_WEIGHT) +
+                (gfkValue * cfg.GFK_WEIGHT)
+            ) * cfg.MAX_BOOST;
 
         // Auf 3 Dezimalstellen runden
         coefficient = Math.round(coefficient * 1000) / 1000;
@@ -198,6 +261,7 @@ TiageSynthesis.Calculator = {
             balance: Math.round(balance * 100) / 100,
             differenz: Math.round(differenz),
             profilMatch: profilMatch,
+            gfk: gfkFaktor,
             interpretation: this._interpretResonance(coefficient)
         };
     },
@@ -228,9 +292,28 @@ TiageSynthesis.Calculator = {
 
     /**
      * Berechnet nur die Resonanz (für UI-Updates)
+     *
+     * @param {number} logos - Logos-Score (0-100)
+     * @param {number} pathos - Pathos-Durchschnitt (0-100)
+     * @param {number} profilMatch - Profil-Match (0-100, optional)
+     * @param {string} gfk1 - GFK-Kompetenz Person 1 (optional)
+     * @param {string} gfk2 - GFK-Kompetenz Person 2 (optional)
      */
-    calculateResonanceOnly: function(logos, pathos, profilMatch) {
+    calculateResonanceOnly: function(logos, pathos, profilMatch, gfk1, gfk2) {
         var constants = TiageSynthesis.Constants;
-        return this._calculateResonance(logos, pathos, profilMatch || 50, constants);
+        var gfkFaktor = this._calculateGfkFactor(gfk1 || 'mittel', gfk2 || 'mittel', constants);
+        return this._calculateResonance(logos, pathos, profilMatch || 50, gfkFaktor, constants);
+    },
+
+    /**
+     * Berechnet nur den GFK-Faktor (für UI-Anzeige)
+     *
+     * @param {string} gfk1 - GFK-Kompetenz Person 1 ("niedrig"|"mittel"|"hoch")
+     * @param {string} gfk2 - GFK-Kompetenz Person 2 ("niedrig"|"mittel"|"hoch")
+     * @returns {object} GFK-Faktor mit Wert und Interpretation
+     */
+    calculateGfkOnly: function(gfk1, gfk2) {
+        var constants = TiageSynthesis.Constants;
+        return this._calculateGfkFactor(gfk1, gfk2, constants);
     }
 };
