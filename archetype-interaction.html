@@ -3139,6 +3139,81 @@
             width: 100%;
         }
 
+        /* Geschlecht Info Modal (scrollable) */
+        .geschlecht-info-modal-content {
+            background: var(--bg-card);
+            border: 1px solid var(--primary);
+            border-radius: 12px;
+            padding: 0;
+            max-width: 400px;
+            width: 100%;
+            max-height: 80vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .geschlecht-info-modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 20px;
+            border-bottom: 1px solid var(--border);
+            flex-shrink: 0;
+        }
+
+        .geschlecht-info-modal-header .dimension-tooltip-title {
+            margin-bottom: 0;
+        }
+
+        .geschlecht-info-close-btn {
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            font-size: 24px;
+            cursor: pointer;
+            padding: 0;
+            line-height: 1;
+            transition: color 0.2s ease;
+        }
+
+        .geschlecht-info-close-btn:hover {
+            color: var(--text-primary);
+        }
+
+        .geschlecht-info-scroll-container {
+            overflow-y: auto;
+            padding: 12px 20px;
+            flex: 1;
+            max-height: 50vh;
+        }
+
+        .geschlecht-info-item {
+            padding: 12px 0;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .geschlecht-info-item:last-child {
+            border-bottom: none;
+        }
+
+        .geschlecht-info-name {
+            font-size: var(--font-base);
+            font-weight: 600;
+            color: var(--primary);
+            margin-bottom: 6px;
+        }
+
+        .geschlecht-info-desc {
+            font-size: var(--font-sm);
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+
+        .geschlecht-info-modal-content .dimension-tooltip-close {
+            margin: 16px 20px;
+            flex-shrink: 0;
+        }
+
         /* Status Popup Styles */
         .status-popup-content {
             max-width: 380px;
@@ -3818,6 +3893,65 @@
 
         .compact-radio {
             display: none;
+        }
+
+        /* Geschlechts-Button mit Indikatoren (I = Identität/Primär, G = Sekundär) */
+        .geschlecht-btn {
+            position: relative;
+            padding: 4px 8px;
+            border-radius: 6px;
+            border: 1px solid var(--border);
+            background: var(--bg-dark);
+            color: var(--text-secondary);
+            font-size: 11px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-align: center;
+        }
+
+        .geschlecht-btn:hover {
+            border-color: var(--primary);
+            color: var(--text-primary);
+        }
+
+        .geschlecht-btn.primary-selected {
+            background: var(--primary);
+            border-color: var(--primary);
+            color: white;
+        }
+
+        .geschlecht-btn.secondary-selected {
+            background: rgba(234, 179, 8, 0.25);
+            border-color: rgba(234, 179, 8, 0.6);
+            color: var(--text-primary);
+        }
+
+        /* Kleine Kreis-Indikatoren für Primary (I) und Secondary (G) */
+        .geschlecht-indicator {
+            position: absolute;
+            top: -4px;
+            right: -4px;
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 9px;
+            font-weight: 700;
+            line-height: 1;
+        }
+
+        .geschlecht-indicator.indicator-primary {
+            background: var(--primary);
+            color: white;
+            border: 1px solid rgba(255,255,255,0.3);
+        }
+
+        .geschlecht-indicator.indicator-secondary {
+            background: #eab308;
+            color: #1a1a2e;
+            border: 1px solid rgba(0,0,0,0.2);
         }
 
         /* Compact dimension blinking for unselected */
@@ -5914,26 +6048,17 @@
                 </div>
                 <div class="column-dimensions">
                     <div class="compact-dimension needs-selection" data-dimension="ich-geschlecht-new">
-                        <div class="compact-dimension-label">Geschlechtsidentität <span class="dimension-info-icon" onclick="showDimensionTooltip('geschlecht')">ℹ</span></div>
-                        <div class="compact-options geschlecht-grid">
-                            <input type="radio" name="ich-geschlecht-new" id="ich-g-cm" value="cis_mann" class="compact-radio">
-                            <label for="ich-g-cm" class="compact-option">Cis Mann</label>
-                            <input type="radio" name="ich-geschlecht-new" id="ich-g-cf" value="cis_frau" class="compact-radio">
-                            <label for="ich-g-cf" class="compact-option">Cis Frau</label>
-                            <input type="radio" name="ich-geschlecht-new" id="ich-g-tm" value="trans_mann" class="compact-radio">
-                            <label for="ich-g-tm" class="compact-option">Trans Mann</label>
-                            <input type="radio" name="ich-geschlecht-new" id="ich-g-tf" value="trans_frau" class="compact-radio">
-                            <label for="ich-g-tf" class="compact-option">Trans Frau</label>
-                            <input type="radio" name="ich-geschlecht-new" id="ich-g-nb" value="nonbinaer" class="compact-radio">
-                            <label for="ich-g-nb" class="compact-option">Nonbinär</label>
-                            <input type="radio" name="ich-geschlecht-new" id="ich-g-gf" value="genderfluid" class="compact-radio">
-                            <label for="ich-g-gf" class="compact-option">Genderfluid</label>
-                            <input type="radio" name="ich-geschlecht-new" id="ich-g-ag" value="agender" class="compact-radio">
-                            <label for="ich-g-ag" class="compact-option">Agender</label>
-                            <input type="radio" name="ich-geschlecht-new" id="ich-g-is" value="intersex" class="compact-radio">
-                            <label for="ich-g-is" class="compact-option">Intersex</label>
-                            <input type="radio" name="ich-geschlecht-new" id="ich-g-di" value="divers" class="compact-radio">
-                            <label for="ich-g-di" class="compact-option">Divers</label>
+                        <div class="compact-dimension-label"><span title="Dein Geschlecht. Dies beeinflusst die körperliche Anziehung zusammen mit der sexuellen Orientierung." style="cursor: help;">Geschlechtsidentität</span> <span class="dimension-info-icon" onclick="showGeschlechtInfoModal()">ℹ</span> <span style="font-size: 10px; opacity: 0.7;">(I=Identität, G=Sekundär)</span></div>
+                        <div class="geschlecht-grid" id="ich-geschlecht-grid" data-person="ich">
+                            <button type="button" class="geschlecht-btn" data-value="cis_mann" onclick="handleGeschlechtClick('ich', 'cis_mann', this)">Cis Mann</button>
+                            <button type="button" class="geschlecht-btn" data-value="cis_frau" onclick="handleGeschlechtClick('ich', 'cis_frau', this)">Cis Frau</button>
+                            <button type="button" class="geschlecht-btn" data-value="trans_mann" onclick="handleGeschlechtClick('ich', 'trans_mann', this)">Trans Mann</button>
+                            <button type="button" class="geschlecht-btn" data-value="trans_frau" onclick="handleGeschlechtClick('ich', 'trans_frau', this)">Trans Frau</button>
+                            <button type="button" class="geschlecht-btn" data-value="nonbinaer" onclick="handleGeschlechtClick('ich', 'nonbinaer', this)">Nonbinär</button>
+                            <button type="button" class="geschlecht-btn" data-value="genderfluid" onclick="handleGeschlechtClick('ich', 'genderfluid', this)">Genderfluid</button>
+                            <button type="button" class="geschlecht-btn" data-value="agender" onclick="handleGeschlechtClick('ich', 'agender', this)">Agender</button>
+                            <button type="button" class="geschlecht-btn" data-value="intersex" onclick="handleGeschlechtClick('ich', 'intersex', this)">Intersex</button>
+                            <button type="button" class="geschlecht-btn" data-value="divers" onclick="handleGeschlechtClick('ich', 'divers', this)">Divers</button>
                         </div>
                     </div>
                     <div class="compact-dimension needs-selection collapsible-dimension" data-dimension="ich-dominanz-multi">
@@ -6027,26 +6152,17 @@
                 </div>
                 <div class="column-dimensions">
                     <div class="compact-dimension needs-selection" data-dimension="partner-geschlecht-new">
-                        <div class="compact-dimension-label">Geschlechtsidentität <span class="dimension-info-icon" onclick="showDimensionTooltip('geschlecht')">ℹ</span></div>
-                        <div class="compact-options geschlecht-grid">
-                            <input type="radio" name="partner-geschlecht-new" id="partner-g-cm" value="cis_mann" class="compact-radio">
-                            <label for="partner-g-cm" class="compact-option">Cis Mann</label>
-                            <input type="radio" name="partner-geschlecht-new" id="partner-g-cf" value="cis_frau" class="compact-radio">
-                            <label for="partner-g-cf" class="compact-option">Cis Frau</label>
-                            <input type="radio" name="partner-geschlecht-new" id="partner-g-tm" value="trans_mann" class="compact-radio">
-                            <label for="partner-g-tm" class="compact-option">Trans Mann</label>
-                            <input type="radio" name="partner-geschlecht-new" id="partner-g-tf" value="trans_frau" class="compact-radio">
-                            <label for="partner-g-tf" class="compact-option">Trans Frau</label>
-                            <input type="radio" name="partner-geschlecht-new" id="partner-g-nb" value="nonbinaer" class="compact-radio">
-                            <label for="partner-g-nb" class="compact-option">Nonbinär</label>
-                            <input type="radio" name="partner-geschlecht-new" id="partner-g-gf" value="genderfluid" class="compact-radio">
-                            <label for="partner-g-gf" class="compact-option">Genderfluid</label>
-                            <input type="radio" name="partner-geschlecht-new" id="partner-g-ag" value="agender" class="compact-radio">
-                            <label for="partner-g-ag" class="compact-option">Agender</label>
-                            <input type="radio" name="partner-geschlecht-new" id="partner-g-is" value="intersex" class="compact-radio">
-                            <label for="partner-g-is" class="compact-option">Intersex</label>
-                            <input type="radio" name="partner-geschlecht-new" id="partner-g-di" value="divers" class="compact-radio">
-                            <label for="partner-g-di" class="compact-option">Divers</label>
+                        <div class="compact-dimension-label"><span title="Dein Geschlecht. Dies beeinflusst die körperliche Anziehung zusammen mit der sexuellen Orientierung." style="cursor: help;">Geschlechtsidentität</span> <span class="dimension-info-icon" onclick="showGeschlechtInfoModal()">ℹ</span> <span style="font-size: 10px; opacity: 0.7;">(I=Identität, G=Sekundär)</span></div>
+                        <div class="geschlecht-grid" id="partner-geschlecht-grid" data-person="partner">
+                            <button type="button" class="geschlecht-btn" data-value="cis_mann" onclick="handleGeschlechtClick('partner', 'cis_mann', this)">Cis Mann</button>
+                            <button type="button" class="geschlecht-btn" data-value="cis_frau" onclick="handleGeschlechtClick('partner', 'cis_frau', this)">Cis Frau</button>
+                            <button type="button" class="geschlecht-btn" data-value="trans_mann" onclick="handleGeschlechtClick('partner', 'trans_mann', this)">Trans Mann</button>
+                            <button type="button" class="geschlecht-btn" data-value="trans_frau" onclick="handleGeschlechtClick('partner', 'trans_frau', this)">Trans Frau</button>
+                            <button type="button" class="geschlecht-btn" data-value="nonbinaer" onclick="handleGeschlechtClick('partner', 'nonbinaer', this)">Nonbinär</button>
+                            <button type="button" class="geschlecht-btn" data-value="genderfluid" onclick="handleGeschlechtClick('partner', 'genderfluid', this)">Genderfluid</button>
+                            <button type="button" class="geschlecht-btn" data-value="agender" onclick="handleGeschlechtClick('partner', 'agender', this)">Agender</button>
+                            <button type="button" class="geschlecht-btn" data-value="intersex" onclick="handleGeschlechtClick('partner', 'intersex', this)">Intersex</button>
+                            <button type="button" class="geschlecht-btn" data-value="divers" onclick="handleGeschlechtClick('partner', 'divers', this)">Divers</button>
                         </div>
                     </div>
                     <div class="compact-dimension needs-selection collapsible-dimension" data-dimension="partner-dominanz-multi">
@@ -6207,27 +6323,18 @@
                     <button onclick="openArchetypeInfo(document.getElementById('mobileIchSelect').value, 'ich')" style="padding: 12px 16px; background: rgba(255,255,255,0.1); border: 1px solid var(--border); border-radius: 8px; color: var(--text-secondary); cursor: pointer; font-size: 14px; font-weight: 600; letter-spacing: 0.5px;" title="Info zum Archetyp">INFO</button>
                 </div>
                 <div class="column-dimensions" id="mobileIchDimensions">
-                    <div class="compact-dimension needs-selection">
-                        <div class="compact-dimension-label">Geschlechtsidentität <span class="dimension-info-icon" onclick="showDimensionTooltip('geschlecht')">ℹ</span></div>
-                        <div class="compact-options geschlecht-grid">
-                            <input type="radio" name="mobile-ich-geschlecht" id="m-ich-g-cm" value="cis_mann" class="compact-radio">
-                            <label for="m-ich-g-cm" class="compact-option">Cis Mann</label>
-                            <input type="radio" name="mobile-ich-geschlecht" id="m-ich-g-cf" value="cis_frau" class="compact-radio">
-                            <label for="m-ich-g-cf" class="compact-option">Cis Frau</label>
-                            <input type="radio" name="mobile-ich-geschlecht" id="m-ich-g-tm" value="trans_mann" class="compact-radio">
-                            <label for="m-ich-g-tm" class="compact-option">Trans Mann</label>
-                            <input type="radio" name="mobile-ich-geschlecht" id="m-ich-g-tf" value="trans_frau" class="compact-radio">
-                            <label for="m-ich-g-tf" class="compact-option">Trans Frau</label>
-                            <input type="radio" name="mobile-ich-geschlecht" id="m-ich-g-nb" value="nonbinaer" class="compact-radio">
-                            <label for="m-ich-g-nb" class="compact-option">Nonbinär</label>
-                            <input type="radio" name="mobile-ich-geschlecht" id="m-ich-g-gf" value="genderfluid" class="compact-radio">
-                            <label for="m-ich-g-gf" class="compact-option">Genderfluid</label>
-                            <input type="radio" name="mobile-ich-geschlecht" id="m-ich-g-ag" value="agender" class="compact-radio">
-                            <label for="m-ich-g-ag" class="compact-option">Agender</label>
-                            <input type="radio" name="mobile-ich-geschlecht" id="m-ich-g-is" value="intersex" class="compact-radio">
-                            <label for="m-ich-g-is" class="compact-option">Intersex</label>
-                            <input type="radio" name="mobile-ich-geschlecht" id="m-ich-g-di" value="divers" class="compact-radio">
-                            <label for="m-ich-g-di" class="compact-option">Divers</label>
+                    <div class="compact-dimension needs-selection" data-dimension="mobile-ich-geschlecht">
+                        <div class="compact-dimension-label">Geschlechtsidentität <span class="dimension-info-icon" onclick="showDimensionTooltip('geschlecht')">ℹ</span> <span style="font-size: 10px; opacity: 0.7;">(I=Identität, G=Sekundär)</span></div>
+                        <div class="geschlecht-grid" id="mobile-ich-geschlecht-grid" data-person="ich">
+                            <button type="button" class="geschlecht-btn" data-value="cis_mann" onclick="handleGeschlechtClick('ich', 'cis_mann', this)">Cis Mann</button>
+                            <button type="button" class="geschlecht-btn" data-value="cis_frau" onclick="handleGeschlechtClick('ich', 'cis_frau', this)">Cis Frau</button>
+                            <button type="button" class="geschlecht-btn" data-value="trans_mann" onclick="handleGeschlechtClick('ich', 'trans_mann', this)">Trans Mann</button>
+                            <button type="button" class="geschlecht-btn" data-value="trans_frau" onclick="handleGeschlechtClick('ich', 'trans_frau', this)">Trans Frau</button>
+                            <button type="button" class="geschlecht-btn" data-value="nonbinaer" onclick="handleGeschlechtClick('ich', 'nonbinaer', this)">Nonbinär</button>
+                            <button type="button" class="geschlecht-btn" data-value="genderfluid" onclick="handleGeschlechtClick('ich', 'genderfluid', this)">Genderfluid</button>
+                            <button type="button" class="geschlecht-btn" data-value="agender" onclick="handleGeschlechtClick('ich', 'agender', this)">Agender</button>
+                            <button type="button" class="geschlecht-btn" data-value="intersex" onclick="handleGeschlechtClick('ich', 'intersex', this)">Intersex</button>
+                            <button type="button" class="geschlecht-btn" data-value="divers" onclick="handleGeschlechtClick('ich', 'divers', this)">Divers</button>
                         </div>
                     </div>
                     <div class="compact-dimension needs-selection collapsible-dimension" data-dimension="mobile-ich-dominanz-multi">
@@ -6321,27 +6428,18 @@
                     <button onclick="openArchetypeInfo(document.getElementById('mobilePartnerSelect').value, 'partner')" style="padding: 12px 16px; background: rgba(255,255,255,0.1); border: 1px solid var(--border); border-radius: 8px; color: var(--text-secondary); cursor: pointer; font-size: 14px; font-weight: 600; letter-spacing: 0.5px;" title="Info zum Archetyp">INFO</button>
                 </div>
                 <div class="column-dimensions" id="mobilePartnerDimensions">
-                    <div class="compact-dimension needs-selection">
-                        <div class="compact-dimension-label">Geschlechtsidentität <span class="dimension-info-icon" onclick="showDimensionTooltip('geschlecht')">ℹ</span></div>
-                        <div class="compact-options geschlecht-grid">
-                            <input type="radio" name="mobile-partner-geschlecht" id="m-partner-g-cm" value="cis_mann" class="compact-radio">
-                            <label for="m-partner-g-cm" class="compact-option">Cis Mann</label>
-                            <input type="radio" name="mobile-partner-geschlecht" id="m-partner-g-cf" value="cis_frau" class="compact-radio">
-                            <label for="m-partner-g-cf" class="compact-option">Cis Frau</label>
-                            <input type="radio" name="mobile-partner-geschlecht" id="m-partner-g-tm" value="trans_mann" class="compact-radio">
-                            <label for="m-partner-g-tm" class="compact-option">Trans Mann</label>
-                            <input type="radio" name="mobile-partner-geschlecht" id="m-partner-g-tf" value="trans_frau" class="compact-radio">
-                            <label for="m-partner-g-tf" class="compact-option">Trans Frau</label>
-                            <input type="radio" name="mobile-partner-geschlecht" id="m-partner-g-nb" value="nonbinaer" class="compact-radio">
-                            <label for="m-partner-g-nb" class="compact-option">Nonbinär</label>
-                            <input type="radio" name="mobile-partner-geschlecht" id="m-partner-g-gf" value="genderfluid" class="compact-radio">
-                            <label for="m-partner-g-gf" class="compact-option">Genderfluid</label>
-                            <input type="radio" name="mobile-partner-geschlecht" id="m-partner-g-ag" value="agender" class="compact-radio">
-                            <label for="m-partner-g-ag" class="compact-option">Agender</label>
-                            <input type="radio" name="mobile-partner-geschlecht" id="m-partner-g-is" value="intersex" class="compact-radio">
-                            <label for="m-partner-g-is" class="compact-option">Intersex</label>
-                            <input type="radio" name="mobile-partner-geschlecht" id="m-partner-g-di" value="divers" class="compact-radio">
-                            <label for="m-partner-g-di" class="compact-option">Divers</label>
+                    <div class="compact-dimension needs-selection" data-dimension="mobile-partner-geschlecht">
+                        <div class="compact-dimension-label">Geschlechtsidentität <span class="dimension-info-icon" onclick="showDimensionTooltip('geschlecht')">ℹ</span> <span style="font-size: 10px; opacity: 0.7;">(I=Identität, G=Sekundär)</span></div>
+                        <div class="geschlecht-grid" id="mobile-partner-geschlecht-grid" data-person="partner">
+                            <button type="button" class="geschlecht-btn" data-value="cis_mann" onclick="handleGeschlechtClick('partner', 'cis_mann', this)">Cis Mann</button>
+                            <button type="button" class="geschlecht-btn" data-value="cis_frau" onclick="handleGeschlechtClick('partner', 'cis_frau', this)">Cis Frau</button>
+                            <button type="button" class="geschlecht-btn" data-value="trans_mann" onclick="handleGeschlechtClick('partner', 'trans_mann', this)">Trans Mann</button>
+                            <button type="button" class="geschlecht-btn" data-value="trans_frau" onclick="handleGeschlechtClick('partner', 'trans_frau', this)">Trans Frau</button>
+                            <button type="button" class="geschlecht-btn" data-value="nonbinaer" onclick="handleGeschlechtClick('partner', 'nonbinaer', this)">Nonbinär</button>
+                            <button type="button" class="geschlecht-btn" data-value="genderfluid" onclick="handleGeschlechtClick('partner', 'genderfluid', this)">Genderfluid</button>
+                            <button type="button" class="geschlecht-btn" data-value="agender" onclick="handleGeschlechtClick('partner', 'agender', this)">Agender</button>
+                            <button type="button" class="geschlecht-btn" data-value="intersex" onclick="handleGeschlechtClick('partner', 'intersex', this)">Intersex</button>
+                            <button type="button" class="geschlecht-btn" data-value="divers" onclick="handleGeschlechtClick('partner', 'divers', this)">Divers</button>
                         </div>
                     </div>
                     <div class="compact-dimension needs-selection collapsible-dimension" data-dimension="mobile-partner-dominanz-multi">
@@ -6559,26 +6657,18 @@
                                 <div class="dimension-label">
                                     Geschlechtsidentität
                                     <span class="dimension-info-icon" onclick="showDimensionTooltip('geschlecht')">ℹ</span>
+                                    <span style="font-size: 10px; opacity: 0.7;">(I=Identität, G=Sekundär)</span>
                                 </div>
-                                <div class="dimension-options geschlecht-grid">
-                                    <input type="radio" name="ich-geschlecht" id="ich-geschlecht-cm" value="cis_mann" class="dimension-radio">
-                                    <label for="ich-geschlecht-cm" class="dimension-option">Cis Mann</label>
-                                    <input type="radio" name="ich-geschlecht" id="ich-geschlecht-cf" value="cis_frau" class="dimension-radio">
-                                    <label for="ich-geschlecht-cf" class="dimension-option">Cis Frau</label>
-                                    <input type="radio" name="ich-geschlecht" id="ich-geschlecht-tm" value="trans_mann" class="dimension-radio">
-                                    <label for="ich-geschlecht-tm" class="dimension-option">Trans Mann</label>
-                                    <input type="radio" name="ich-geschlecht" id="ich-geschlecht-tf" value="trans_frau" class="dimension-radio">
-                                    <label for="ich-geschlecht-tf" class="dimension-option">Trans Frau</label>
-                                    <input type="radio" name="ich-geschlecht" id="ich-geschlecht-nb" value="nonbinaer" class="dimension-radio">
-                                    <label for="ich-geschlecht-nb" class="dimension-option">Nonbinär</label>
-                                    <input type="radio" name="ich-geschlecht" id="ich-geschlecht-gf" value="genderfluid" class="dimension-radio">
-                                    <label for="ich-geschlecht-gf" class="dimension-option">Genderfluid</label>
-                                    <input type="radio" name="ich-geschlecht" id="ich-geschlecht-ag" value="agender" class="dimension-radio">
-                                    <label for="ich-geschlecht-ag" class="dimension-option">Agender</label>
-                                    <input type="radio" name="ich-geschlecht" id="ich-geschlecht-is" value="intersex" class="dimension-radio">
-                                    <label for="ich-geschlecht-is" class="dimension-option">Intersex</label>
-                                    <input type="radio" name="ich-geschlecht" id="ich-geschlecht-di" value="divers" class="dimension-radio">
-                                    <label for="ich-geschlecht-di" class="dimension-option">Divers</label>
+                                <div class="geschlecht-grid" id="modal-ich-geschlecht-grid" data-person="ich">
+                                    <button type="button" class="geschlecht-btn" data-value="cis_mann" onclick="handleGeschlechtClick('ich', 'cis_mann', this)">Cis Mann</button>
+                                    <button type="button" class="geschlecht-btn" data-value="cis_frau" onclick="handleGeschlechtClick('ich', 'cis_frau', this)">Cis Frau</button>
+                                    <button type="button" class="geschlecht-btn" data-value="trans_mann" onclick="handleGeschlechtClick('ich', 'trans_mann', this)">Trans Mann</button>
+                                    <button type="button" class="geschlecht-btn" data-value="trans_frau" onclick="handleGeschlechtClick('ich', 'trans_frau', this)">Trans Frau</button>
+                                    <button type="button" class="geschlecht-btn" data-value="nonbinaer" onclick="handleGeschlechtClick('ich', 'nonbinaer', this)">Nonbinär</button>
+                                    <button type="button" class="geschlecht-btn" data-value="genderfluid" onclick="handleGeschlechtClick('ich', 'genderfluid', this)">Genderfluid</button>
+                                    <button type="button" class="geschlecht-btn" data-value="agender" onclick="handleGeschlechtClick('ich', 'agender', this)">Agender</button>
+                                    <button type="button" class="geschlecht-btn" data-value="intersex" onclick="handleGeschlechtClick('ich', 'intersex', this)">Intersex</button>
+                                    <button type="button" class="geschlecht-btn" data-value="divers" onclick="handleGeschlechtClick('ich', 'divers', this)">Divers</button>
                                 </div>
                             </div>
 
@@ -6746,26 +6836,18 @@
                                 <div class="dimension-label">
                                     Geschlechtsidentität
                                     <span class="dimension-info-icon" onclick="showDimensionTooltip('geschlecht')">ℹ</span>
+                                    <span style="font-size: 10px; opacity: 0.7;">(I=Identität, G=Sekundär)</span>
                                 </div>
-                                <div class="dimension-options geschlecht-grid">
-                                    <input type="radio" name="partner-geschlecht" id="partner-geschlecht-cm" value="cis_mann" class="dimension-radio">
-                                    <label for="partner-geschlecht-cm" class="dimension-option">Cis Mann</label>
-                                    <input type="radio" name="partner-geschlecht" id="partner-geschlecht-cf" value="cis_frau" class="dimension-radio">
-                                    <label for="partner-geschlecht-cf" class="dimension-option">Cis Frau</label>
-                                    <input type="radio" name="partner-geschlecht" id="partner-geschlecht-tm" value="trans_mann" class="dimension-radio">
-                                    <label for="partner-geschlecht-tm" class="dimension-option">Trans Mann</label>
-                                    <input type="radio" name="partner-geschlecht" id="partner-geschlecht-tf" value="trans_frau" class="dimension-radio">
-                                    <label for="partner-geschlecht-tf" class="dimension-option">Trans Frau</label>
-                                    <input type="radio" name="partner-geschlecht" id="partner-geschlecht-nb" value="nonbinaer" class="dimension-radio">
-                                    <label for="partner-geschlecht-nb" class="dimension-option">Nonbinär</label>
-                                    <input type="radio" name="partner-geschlecht" id="partner-geschlecht-gf" value="genderfluid" class="dimension-radio">
-                                    <label for="partner-geschlecht-gf" class="dimension-option">Genderfluid</label>
-                                    <input type="radio" name="partner-geschlecht" id="partner-geschlecht-ag" value="agender" class="dimension-radio">
-                                    <label for="partner-geschlecht-ag" class="dimension-option">Agender</label>
-                                    <input type="radio" name="partner-geschlecht" id="partner-geschlecht-is" value="intersex" class="dimension-radio">
-                                    <label for="partner-geschlecht-is" class="dimension-option">Intersex</label>
-                                    <input type="radio" name="partner-geschlecht" id="partner-geschlecht-di" value="divers" class="dimension-radio">
-                                    <label for="partner-geschlecht-di" class="dimension-option">Divers</label>
+                                <div class="geschlecht-grid" id="modal-partner-geschlecht-grid" data-person="partner">
+                                    <button type="button" class="geschlecht-btn" data-value="cis_mann" onclick="handleGeschlechtClick('partner', 'cis_mann', this)">Cis Mann</button>
+                                    <button type="button" class="geschlecht-btn" data-value="cis_frau" onclick="handleGeschlechtClick('partner', 'cis_frau', this)">Cis Frau</button>
+                                    <button type="button" class="geschlecht-btn" data-value="trans_mann" onclick="handleGeschlechtClick('partner', 'trans_mann', this)">Trans Mann</button>
+                                    <button type="button" class="geschlecht-btn" data-value="trans_frau" onclick="handleGeschlechtClick('partner', 'trans_frau', this)">Trans Frau</button>
+                                    <button type="button" class="geschlecht-btn" data-value="nonbinaer" onclick="handleGeschlechtClick('partner', 'nonbinaer', this)">Nonbinär</button>
+                                    <button type="button" class="geschlecht-btn" data-value="genderfluid" onclick="handleGeschlechtClick('partner', 'genderfluid', this)">Genderfluid</button>
+                                    <button type="button" class="geschlecht-btn" data-value="agender" onclick="handleGeschlechtClick('partner', 'agender', this)">Agender</button>
+                                    <button type="button" class="geschlecht-btn" data-value="intersex" onclick="handleGeschlechtClick('partner', 'intersex', this)">Intersex</button>
+                                    <button type="button" class="geschlecht-btn" data-value="divers" onclick="handleGeschlechtClick('partner', 'divers', this)">Divers</button>
                                 </div>
                             </div>
 
@@ -7159,6 +7241,55 @@
         </div>
     </div>
 
+    <!-- Geschlecht Info Modal (scrollable) -->
+    <div class="dimension-tooltip-overlay" id="geschlechtInfoModal" onclick="closeGeschlechtInfoModal()">
+        <div class="geschlecht-info-modal-content" onclick="event.stopPropagation()">
+            <div class="geschlecht-info-modal-header">
+                <div class="dimension-tooltip-title">Geschlechtsidentitäten</div>
+                <button class="geschlecht-info-close-btn" onclick="closeGeschlechtInfoModal()">&times;</button>
+            </div>
+            <div class="geschlecht-info-scroll-container">
+                <div class="geschlecht-info-item">
+                    <div class="geschlecht-info-name">Cis Mann</div>
+                    <div class="geschlecht-info-desc">Person, die bei Geburt männlich zugewiesen wurde und sich als Mann identifiziert.</div>
+                </div>
+                <div class="geschlecht-info-item">
+                    <div class="geschlecht-info-name">Cis Frau</div>
+                    <div class="geschlecht-info-desc">Person, die bei Geburt weiblich zugewiesen wurde und sich als Frau identifiziert.</div>
+                </div>
+                <div class="geschlecht-info-item">
+                    <div class="geschlecht-info-name">Trans Mann</div>
+                    <div class="geschlecht-info-desc">Person, die sich als Mann identifiziert, aber bei Geburt nicht männlich zugewiesen wurde.</div>
+                </div>
+                <div class="geschlecht-info-item">
+                    <div class="geschlecht-info-name">Trans Frau</div>
+                    <div class="geschlecht-info-desc">Person, die sich als Frau identifiziert, aber bei Geburt nicht weiblich zugewiesen wurde.</div>
+                </div>
+                <div class="geschlecht-info-item">
+                    <div class="geschlecht-info-name">Nonbinär</div>
+                    <div class="geschlecht-info-desc">Person, die sich weder ausschließlich als Mann noch als Frau identifiziert.</div>
+                </div>
+                <div class="geschlecht-info-item">
+                    <div class="geschlecht-info-name">Genderfluid</div>
+                    <div class="geschlecht-info-desc">Person, deren Geschlechtsidentität sich über Zeit verändert oder zwischen verschiedenen Identitäten wechselt.</div>
+                </div>
+                <div class="geschlecht-info-item">
+                    <div class="geschlecht-info-name">Agender</div>
+                    <div class="geschlecht-info-desc">Person, die sich mit keinem Geschlecht identifiziert oder geschlechtslos fühlt.</div>
+                </div>
+                <div class="geschlecht-info-item">
+                    <div class="geschlecht-info-name">Intersex</div>
+                    <div class="geschlecht-info-desc">Person mit angeborenen körperlichen Geschlechtsmerkmalen, die nicht eindeutig männlich oder weiblich sind.</div>
+                </div>
+                <div class="geschlecht-info-item">
+                    <div class="geschlecht-info-name">Divers</div>
+                    <div class="geschlecht-info-desc">Offizieller dritter Geschlechtseintrag in Deutschland für Menschen, die sich nicht als männlich oder weiblich identifizieren.</div>
+                </div>
+            </div>
+            <button class="dimension-tooltip-close" onclick="closeGeschlechtInfoModal()">Schließen</button>
+        </div>
+    </div>
+
     <!-- Status Selection Popup for Homo/Bi -->
     <div class="dimension-tooltip-overlay" id="statusPopupOverlay" onclick="closeStatusPopup()">
         <div class="dimension-tooltip-content status-popup-content" onclick="event.stopPropagation()">
@@ -7251,7 +7382,10 @@
         // TODO: Remove after full migration to TiageState
         const personDimensions = {
             ich: {
-                geschlecht: null,
+                geschlecht: {
+                    primary: null,    // Primäre Geschlechtsidentität (I)
+                    secondary: null   // Sekundäre Geschlechtsidentität (G)
+                },
                 dominanz: {
                     dominant: null,      // null, 'gelebt', oder 'interessiert'
                     submissiv: null,
@@ -7265,7 +7399,10 @@
                 }
             },
             partner: {
-                geschlecht: null,
+                geschlecht: {
+                    primary: null,
+                    secondary: null
+                },
                 dominanz: {
                     dominant: null,
                     submissiv: null,
@@ -10457,6 +10594,17 @@
         }
 
         // ========================================
+        // Geschlecht Info Modal Functions
+        // ========================================
+        function showGeschlechtInfoModal() {
+            document.getElementById('geschlechtInfoModal').classList.add('active');
+        }
+
+        function closeGeschlechtInfoModal() {
+            document.getElementById('geschlechtInfoModal').classList.remove('active');
+        }
+
+        // ========================================
         // Status Popup Functions (for all orientations)
         // ========================================
         let currentStatusPopupPerson = null;
@@ -10598,6 +10746,128 @@
             if (typeof saveSelectionToStorage === 'function') {
                 saveSelectionToStorage();
             }
+        }
+
+        // ═══════════════════════════════════════════════════════════════════════
+        // GESCHLECHT PRIMARY/SECONDARY SYSTEM
+        // ═══════════════════════════════════════════════════════════════════════
+
+        /**
+         * Handle click on a Geschlecht button
+         * Logic:
+         * - First click = Primary (I indicator)
+         * - Second click on different = Secondary (G indicator)
+         * - Click on Primary = Clear both (primary and secondary)
+         * - Click on Secondary = Clear only secondary
+         */
+        function handleGeschlechtClick(person, geschlechtValue, btn) {
+            const currentPrimary = personDimensions[person].geschlecht.primary;
+            const currentSecondary = personDimensions[person].geschlecht.secondary;
+
+            if (geschlechtValue === currentPrimary) {
+                // Click on Primary: Clear both
+                personDimensions[person].geschlecht.primary = null;
+                personDimensions[person].geschlecht.secondary = null;
+            } else if (geschlechtValue === currentSecondary) {
+                // Click on Secondary: Clear only secondary
+                personDimensions[person].geschlecht.secondary = null;
+            } else if (currentPrimary === null) {
+                // No primary yet: Set as primary
+                personDimensions[person].geschlecht.primary = geschlechtValue;
+            } else {
+                // Primary exists, different value clicked: Set as secondary
+                personDimensions[person].geschlecht.secondary = geschlechtValue;
+            }
+
+            // Sync with TiageState if available
+            if (typeof TiageState !== 'undefined') {
+                TiageState.set(`personDimensions.${person}.geschlecht`, personDimensions[person].geschlecht);
+            }
+
+            // Sync all UIs
+            syncGeschlechtUI(person);
+
+            // Remove needs-selection if primary is set
+            const hasPrimary = personDimensions[person].geschlecht.primary !== null;
+            document.querySelectorAll(`[data-dimension="${person}-geschlecht-new"], [data-dimension="mobile-${person}-geschlecht"], [data-dimension="${person}-geschlecht"]`).forEach(dim => {
+                if (hasPrimary) {
+                    dim.classList.remove('needs-selection');
+                } else {
+                    dim.classList.add('needs-selection');
+                }
+            });
+
+            updateComparisonView();
+
+            if (typeof saveSelectionToStorage === 'function') {
+                saveSelectionToStorage();
+            }
+        }
+
+        /**
+         * Sync Geschlecht UI across all views (Desktop, Mobile, Modal)
+         */
+        function syncGeschlechtUI(person) {
+            const primary = personDimensions[person].geschlecht.primary;
+            const secondary = personDimensions[person].geschlecht.secondary;
+
+            // All geschlecht button selectors for this person
+            const selectors = [
+                `.geschlecht-grid[data-person="${person}"] .geschlecht-btn`,
+                `#${person}-geschlecht-grid .geschlecht-btn`,
+                `#mobile-${person}-geschlecht-grid .geschlecht-btn`,
+                `#modal-${person}-geschlecht-grid .geschlecht-btn`
+            ];
+
+            selectors.forEach(selector => {
+                document.querySelectorAll(selector).forEach(btn => {
+                    const value = btn.dataset.value;
+
+                    // Remove all states
+                    btn.classList.remove('primary-selected', 'secondary-selected');
+
+                    // Remove existing indicators
+                    const existingIndicator = btn.querySelector('.geschlecht-indicator');
+                    if (existingIndicator) {
+                        existingIndicator.remove();
+                    }
+
+                    // Add appropriate state and indicator
+                    if (value === primary) {
+                        btn.classList.add('primary-selected');
+                        const indicator = document.createElement('span');
+                        indicator.className = 'geschlecht-indicator indicator-primary';
+                        indicator.textContent = 'I';
+                        indicator.title = 'Identität (Primär)';
+                        btn.appendChild(indicator);
+                    } else if (value === secondary) {
+                        btn.classList.add('secondary-selected');
+                        const indicator = document.createElement('span');
+                        indicator.className = 'geschlecht-indicator indicator-secondary';
+                        indicator.textContent = 'G';
+                        indicator.title = 'Geschlecht (Sekundär)';
+                        btn.appendChild(indicator);
+                    }
+                });
+            });
+
+            // Also sync legacy radio buttons if they exist
+            document.querySelectorAll(`input[name="${person}-geschlecht"]`).forEach(radio => {
+                radio.checked = (radio.value === primary);
+            });
+            document.querySelectorAll(`input[name="${person}-geschlecht-new"]`).forEach(radio => {
+                radio.checked = (radio.value === primary);
+            });
+            document.querySelectorAll(`input[name="mobile-${person}-geschlecht"]`).forEach(radio => {
+                radio.checked = (radio.value === primary);
+            });
+        }
+
+        /**
+         * Check if geschlecht has any selection (primary)
+         */
+        function hasGeschlechtSelected(person) {
+            return personDimensions[person].geschlecht.primary !== null;
         }
 
         // Handle status toggle button click for dominanz
@@ -10997,7 +11267,7 @@
 
             // Check ICH
             const ichMissing = [];
-            if (!personDimensions.ich.geschlecht) ichMissing.push('Geschlecht');
+            if (!personDimensions.ich.geschlecht.primary) ichMissing.push('Geschlecht');
             if (!hasAnyDominanzSelected('ich')) ichMissing.push('Dominanz');
             if (!hasAnyOrientierungSelected('ich')) ichMissing.push('Orientierung');
             if (ichMissing.length > 0) {
@@ -11006,7 +11276,7 @@
 
             // Check Partner
             const partnerMissing = [];
-            if (!personDimensions.partner.geschlecht) partnerMissing.push('Geschlecht');
+            if (!personDimensions.partner.geschlecht.primary) partnerMissing.push('Geschlecht');
             if (!hasAnyDominanzSelected('partner')) partnerMissing.push('Dominanz');
             if (!hasAnyOrientierungSelected('partner')) partnerMissing.push('Orientierung');
             if (partnerMissing.length > 0) {
@@ -11350,25 +11620,47 @@
 
         function getGeschlechtKurz(geschlecht) {
             if (!geschlecht) return '?';
-            // Nutze TiageConfig wenn verfügbar
-            if (typeof TiageConfig !== 'undefined' && TiageConfig.GESCHLECHT_SHORT) {
-                return TiageConfig.GESCHLECHT_SHORT[geschlecht] || geschlecht;
+
+            // Neues Format: { primary, secondary }
+            let primary = geschlecht;
+            let secondary = null;
+            if (typeof geschlecht === 'object') {
+                primary = geschlecht.primary;
+                secondary = geschlecht.secondary;
             }
-            // Fallback für ältere Werte
-            const map = {
-                'cis_mann': 'CM',
-                'cis_frau': 'CF',
-                'trans_mann': 'TM',
-                'trans_frau': 'TF',
-                'nonbinaer': 'NB',
-                'genderfluid': 'GF',
-                'agender': 'AG',
-                // Legacy-Support
-                'männlich': 'M',
-                'weiblich': 'W',
-                'non-binär': 'NB'
+
+            if (!primary) return '?';
+
+            // Nutze TiageConfig wenn verfügbar
+            const getShort = (g) => {
+                if (typeof TiageConfig !== 'undefined' && TiageConfig.GESCHLECHT_SHORT) {
+                    return TiageConfig.GESCHLECHT_SHORT[g] || g;
+                }
+                // Fallback-Map
+                const map = {
+                    'cis_mann': 'CM',
+                    'cis_frau': 'CF',
+                    'trans_mann': 'TM',
+                    'trans_frau': 'TF',
+                    'nonbinaer': 'NB',
+                    'genderfluid': 'GF',
+                    'agender': 'AG',
+                    'intersex': 'IS',
+                    'divers': 'DI',
+                    // Legacy-Support
+                    'männlich': 'M',
+                    'weiblich': 'W',
+                    'non-binär': 'NB'
+                };
+                return map[g] || g;
             };
-            return map[geschlecht] || geschlecht;
+
+            // Primär + optional Sekundär anzeigen
+            let result = getShort(primary);
+            if (secondary) {
+                result += '/' + getShort(secondary);
+            }
+            return result;
         }
 
         function getGeschlechtCategory(geschlecht) {
@@ -13911,12 +14203,12 @@
         let currentMobilePage = 1;
         let mobilePersonDimensions = {
             ich: {
-                geschlecht: null,
+                geschlecht: { primary: null, secondary: null },
                 dominanz: { dominant: null, submissiv: null, switch: null, ausgeglichen: null },
                 orientierung: { heterosexuell: null, homosexuell: null, bisexuell: null }
             },
             partner: {
-                geschlecht: null,
+                geschlecht: { primary: null, secondary: null },
                 dominanz: { dominant: null, submissiv: null, switch: null, ausgeglichen: null },
                 orientierung: { heterosexuell: null, homosexuell: null, bisexuell: null }
             }
@@ -13933,7 +14225,8 @@
             const missing = [];
 
             // Check ICH dimensions
-            if (dimensions.ich.geschlecht === null) {
+            // Geschlecht ist jetzt { primary, secondary } - nur primary ist erforderlich
+            if (!dimensions.ich.geschlecht || !dimensions.ich.geschlecht.primary) {
                 missing.push('Ich: Geschlecht');
             }
             if (dimensions.ich.dominanz === null) {
@@ -13947,7 +14240,7 @@
             }
 
             // Check PARTNER dimensions
-            if (dimensions.partner.geschlecht === null) {
+            if (!dimensions.partner.geschlecht || !dimensions.partner.geschlecht.primary) {
                 missing.push('Partner: Geschlecht');
             }
             if (dimensions.partner.dominanz === null) {
@@ -16676,13 +16969,13 @@
             const emptyDominanz = { dominant: null, submissiv: null, switch: null, ausgeglichen: null };
             const emptyOrientierung = { heterosexuell: null, homosexuell: null, bisexuell: null };
             mobilePersonDimensions = {
-                ich: { geschlecht: null, dominanz: { ...emptyDominanz }, orientierung: { ...emptyOrientierung } },
-                partner: { geschlecht: null, dominanz: { ...emptyDominanz }, orientierung: { ...emptyOrientierung } }
+                ich: { geschlecht: { primary: null, secondary: null }, dominanz: { ...emptyDominanz }, orientierung: { ...emptyOrientierung } },
+                partner: { geschlecht: { primary: null, secondary: null }, dominanz: { ...emptyDominanz }, orientierung: { ...emptyOrientierung } }
             };
 
             // Reset personDimensions for desktop
-            personDimensions.ich = { geschlecht: null, dominanz: { ...emptyDominanz }, orientierung: { ...emptyOrientierung } };
-            personDimensions.partner = { geschlecht: null, dominanz: { ...emptyDominanz }, orientierung: { ...emptyOrientierung } };
+            personDimensions.ich = { geschlecht: { primary: null, secondary: null }, dominanz: { ...emptyDominanz }, orientierung: { ...emptyOrientierung } };
+            personDimensions.partner = { geschlecht: { primary: null, secondary: null }, dominanz: { ...emptyDominanz }, orientierung: { ...emptyOrientierung } };
 
             // Reset dropdowns
             document.getElementById('mobileIchSelect').value = 'single';

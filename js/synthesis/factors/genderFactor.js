@@ -16,14 +16,20 @@ TiageSynthesis.Factors.Geschlecht = {
     /**
      * Berechnet die Gender-Attraktion
      *
-     * @param {object} person1 - { geschlecht, orientierung }
-     * @param {object} person2 - { geschlecht, orientierung }
+     * @param {object} person1 - { geschlecht: { primary, secondary }, orientierung }
+     * @param {object} person2 - { geschlecht: { primary, secondary }, orientierung }
      * @returns {object} { score: 0-100, details: {...} }
      */
     calculate: function(person1, person2) {
         var constants = TiageSynthesis.Constants;
-        var g1 = person1.geschlecht;
-        var g2 = person2.geschlecht;
+
+        // Extrahiere primäres Geschlecht (unterstützt altes und neues Format)
+        var g1 = this._extractPrimaryGeschlecht(person1.geschlecht);
+        var g2 = this._extractPrimaryGeschlecht(person2.geschlecht);
+
+        // Sekundäre Geschlechter für zusätzliche Kompatibilitätslogik
+        var g1Secondary = this._extractSecondaryGeschlecht(person1.geschlecht);
+        var g2Secondary = this._extractSecondaryGeschlecht(person2.geschlecht);
 
         // Orientierungen extrahieren
         var oriList1 = this._extractOrientations(person1);
@@ -40,7 +46,7 @@ TiageSynthesis.Factors.Geschlecht = {
             };
         }
 
-        // Finde beste Kombination
+        // Finde beste Kombination mit Primary-Geschlechtern
         var bestScore = 0;
         var bestCombination = null;
 
@@ -61,14 +67,84 @@ TiageSynthesis.Factors.Geschlecht = {
             }
         }
 
+        // Bonus für kompatible sekundäre Geschlechter (max +5 Punkte)
+        var secondaryBonus = this._calculateSecondaryBonus(g1, g1Secondary, g2, g2Secondary, oriList1, oriList2, constants);
+
         return {
-            score: bestScore,
+            score: Math.min(100, bestScore + secondaryBonus),
             details: {
                 bestCombination: bestCombination,
                 genderCombo: g1 + '-' + g2,
-                attractionLevel: this._getAttractionLevel(bestScore)
+                attractionLevel: this._getAttractionLevel(bestScore),
+                hasSecondary: !!(g1Secondary || g2Secondary),
+                secondaryBonus: secondaryBonus
             }
         };
+    },
+
+    /**
+     * Extrahiert primäres Geschlecht (unterstützt altes String-Format und neues Object-Format)
+     */
+    _extractPrimaryGeschlecht: function(geschlecht) {
+        if (!geschlecht) return null;
+        // Neues Format: { primary, secondary }
+        if (typeof geschlecht === 'object' && geschlecht.primary !== undefined) {
+            return geschlecht.primary;
+        }
+        // Altes Format: String direkt
+        if (typeof geschlecht === 'string') {
+            return geschlecht;
+        }
+        return null;
+    },
+
+    /**
+     * Extrahiert sekundäres Geschlecht
+     */
+    _extractSecondaryGeschlecht: function(geschlecht) {
+        if (!geschlecht) return null;
+        if (typeof geschlecht === 'object' && geschlecht.secondary !== undefined) {
+            return geschlecht.secondary;
+        }
+        return null;
+    },
+
+    /**
+     * Berechnet Bonus wenn sekundäre Geschlechter zusätzliche Kompatibilität bieten
+     */
+    _calculateSecondaryBonus: function(g1, g1Sec, g2, g2Sec, oriList1, oriList2, constants) {
+        if (!g1Sec && !g2Sec) return 0;
+
+        var bonus = 0;
+
+        // Wenn eine Person sekundäres Geschlecht hat, das zur anderen Person passt
+        if (g1Sec) {
+            for (var i = 0; i < oriList2.length; i++) {
+                var testResult = this._calculateSingleAttraction(g1Sec, oriList1[0], g2, oriList2[i], constants);
+                if (testResult.score >= 80) {
+                    bonus = Math.max(bonus, 3);
+                }
+            }
+        }
+
+        if (g2Sec) {
+            for (var j = 0; j < oriList1.length; j++) {
+                var testResult = this._calculateSingleAttraction(g1, oriList1[j], g2Sec, oriList2[0], constants);
+                if (testResult.score >= 80) {
+                    bonus = Math.max(bonus, 3);
+                }
+            }
+        }
+
+        // Beide haben sekundäre Geschlechter und diese passen zusammen
+        if (g1Sec && g2Sec) {
+            var secResult = this._calculateSingleAttraction(g1Sec, oriList1[0], g2Sec, oriList2[0], constants);
+            if (secResult.score >= 80) {
+                bonus = Math.max(bonus, 5);
+            }
+        }
+
+        return bonus;
     },
 
     /**
