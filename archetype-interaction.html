@@ -10798,6 +10798,12 @@
                 personDimensions[person].geschlecht.secondary = geschlechtValue;
             }
 
+            // Sync with mobilePersonDimensions for mobile view consistency
+            if (typeof mobilePersonDimensions !== 'undefined') {
+                mobilePersonDimensions[person].geschlecht.primary = personDimensions[person].geschlecht.primary;
+                mobilePersonDimensions[person].geschlecht.secondary = personDimensions[person].geschlecht.secondary;
+            }
+
             // Sync with TiageState if available
             if (typeof TiageState !== 'undefined') {
                 TiageState.set(`personDimensions.${person}.geschlecht`, personDimensions[person].geschlecht);
