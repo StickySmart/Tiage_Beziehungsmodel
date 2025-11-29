@@ -14550,10 +14550,13 @@
             }
         };
 
-        function generateCombinedPathos(ichArch, partnerArch) {
+        /**
+         * Generiert detaillierte Pathos-Inhalte mit ICH/Partner/Synthese Struktur
+         * @returns {Object} { ich, partner, synthese, resonanz }
+         */
+        function generateDetailedPathos(ichArch, partnerArch) {
             const ichName = ichArch?.name || 'ICH';
             const partnerName = partnerArch?.name || 'Partner';
-            // Use global archetype keys as IDs since archetypeDefinitions doesn't have id property
             const ichId = ichArch?.id || currentArchetype || '';
             const partnerId = partnerArch?.id || selectedPartner || '';
 
@@ -14577,65 +14580,197 @@
             const qualityResult = calculateRelationshipQuality(person1, person2);
             const breakdown = qualityResult.breakdown || { archetyp: 50, dominanz: 75, orientierung: 100, geschlecht: 100 };
             const overallScore = qualityResult.score || 50;
+            const resonanzData = qualityResult.resonanz;
 
-            // A) Bestimme Tonalität basierend auf Score
+            // Tonalität und Hash
             const tonality = getTonality(overallScore);
-
-            // B) Berechne Hash für deterministische Variation
             const hash = getFactorHash(breakdown.archetyp, breakdown.dominanz, breakdown.orientierung, breakdown.geschlecht);
 
-            // Hole alle Statement-Quellen
+            // Hole Statement-Quellen
             const archStatements = getArchetypeStatements(ichId, partnerId);
             const domStatements = getDominanceStatements(person1.dominanz, person2.dominanz);
             const orientStatements = getOrientierungStatements(person1.orientierung, person2.orientierung, person1.geschlecht, person2.geschlecht);
-            const statusStmts = getStatusStatements(personDimensions.ich, personDimensions.partner);
 
-            // C) Baue Synthese mit Templates
-            const textParts = [];
+            // ═══════════════════════════════════════════════════════════════
+            // ICH BRINGT MIT (Pathos-Perspektive: Emotionale Energie)
+            // ═══════════════════════════════════════════════════════════════
+            const ichParts = [];
 
-            // 1. Tonalitäts-Einleitung
+            // Dynamische Qualität (Pirsig)
+            if (ichArch?.pirsig?.dynamicQuality !== undefined) {
+                const dynQual = ichArch.pirsig.dynamicQuality;
+                if (dynQual >= 0.7) {
+                    ichParts.push(`${ichName} bringt eine hohe dynamische Energie mit – offen für Veränderung und spontane Verbindung.`);
+                } else if (dynQual >= 0.4) {
+                    ichParts.push(`${ichName} balanciert zwischen Stabilität und Beweglichkeit in der emotionalen Welt.`);
+                } else {
+                    ichParts.push(`${ichName} sucht emotionale Tiefe durch Beständigkeit und vertraute Muster.`);
+                }
+            }
+
+            // Natürlichkeit (Osho)
+            if (ichArch?.osho?.naturalness !== undefined) {
+                const nat = ichArch.osho.naturalness;
+                if (nat >= 0.7) {
+                    ichParts.push(`Emotionale Authentizität steht im Vordergrund – ${ichName} folgt dem natürlichen Fluss der Gefühle.`);
+                } else if (nat >= 0.4) {
+                    ichParts.push(`${ichName} verbindet emotionale Intuition mit bewusster Reflexion.`);
+                }
+            }
+
+            // Dominanz-Energie
+            const ichDom = person1.dominanz;
+            if (ichDom) {
+                const domText = {
+                    'dominant': `Als Führende/r trägt ${ichName} eine aktive emotionale Energie.`,
+                    'submissiv': `${ichName} bringt eine empfängliche, hingebungsvolle Qualität mit.`,
+                    'switch': `${ichName} ist flexibel in der emotionalen Dynamik – mal führend, mal folgend.`,
+                    'ausgeglichen': `${ichName} strebt nach emotionalem Gleichgewicht in der Verbindung.`
+                };
+                if (domText[ichDom]) ichParts.push(domText[ichDom]);
+            }
+
+            // Kernwerte (emotional relevant)
+            if (ichArch?.coreValues?.length) {
+                const emotionalValues = ichArch.coreValues.slice(0, 2).join(' und ');
+                ichParts.push(`Kernwerte wie ${emotionalValues} prägen das emotionale Erleben.`);
+            }
+
+            // ═══════════════════════════════════════════════════════════════
+            // PARTNER BRINGT MIT
+            // ═══════════════════════════════════════════════════════════════
+            const partnerParts = [];
+
+            // Dynamische Qualität (Pirsig)
+            if (partnerArch?.pirsig?.dynamicQuality !== undefined) {
+                const dynQual = partnerArch.pirsig.dynamicQuality;
+                if (dynQual >= 0.7) {
+                    partnerParts.push(`${partnerName} bringt eine hohe dynamische Energie mit – offen für Veränderung und spontane Verbindung.`);
+                } else if (dynQual >= 0.4) {
+                    partnerParts.push(`${partnerName} balanciert zwischen Stabilität und Beweglichkeit in der emotionalen Welt.`);
+                } else {
+                    partnerParts.push(`${partnerName} sucht emotionale Tiefe durch Beständigkeit und vertraute Muster.`);
+                }
+            }
+
+            // Natürlichkeit (Osho)
+            if (partnerArch?.osho?.naturalness !== undefined) {
+                const nat = partnerArch.osho.naturalness;
+                if (nat >= 0.7) {
+                    partnerParts.push(`Emotionale Authentizität steht im Vordergrund – ${partnerName} folgt dem natürlichen Fluss der Gefühle.`);
+                } else if (nat >= 0.4) {
+                    partnerParts.push(`${partnerName} verbindet emotionale Intuition mit bewusster Reflexion.`);
+                }
+            }
+
+            // Dominanz-Energie
+            const partnerDom = person2.dominanz;
+            if (partnerDom) {
+                const domText = {
+                    'dominant': `Als Führende/r trägt ${partnerName} eine aktive emotionale Energie.`,
+                    'submissiv': `${partnerName} bringt eine empfängliche, hingebungsvolle Qualität mit.`,
+                    'switch': `${partnerName} ist flexibel in der emotionalen Dynamik – mal führend, mal folgend.`,
+                    'ausgeglichen': `${partnerName} strebt nach emotionalem Gleichgewicht in der Verbindung.`
+                };
+                if (domText[partnerDom]) partnerParts.push(domText[partnerDom]);
+            }
+
+            // Kernwerte
+            if (partnerArch?.coreValues?.length) {
+                const emotionalValues = partnerArch.coreValues.slice(0, 2).join(' und ');
+                partnerParts.push(`Kernwerte wie ${emotionalValues} prägen das emotionale Erleben.`);
+            }
+
+            // ═══════════════════════════════════════════════════════════════
+            // DARAUS ENTSTEHT (Synthese)
+            // ═══════════════════════════════════════════════════════════════
+            const syntheseParts = [];
+
+            // Tonalitäts-Einleitung
             const tonalityIntro = selectStatementByHash(tonalityTemplates[tonality].pathos, hash);
-            if (tonalityIntro) textParts.push(tonalityIntro);
+            if (tonalityIntro) syntheseParts.push(tonalityIntro);
 
-            // 2. Archetyp-Statement (Primzahl-Offset für unabhängigen Index)
+            // Archetyp-Kombination
             if (archStatements?.pathos) {
                 const gemeinsam = archStatements.pathos.gemeinsam || [];
                 const spannung = archStatements.pathos.spannung || [];
                 const allPathos = [...gemeinsam, ...spannung];
                 const selected = selectStatementByHash(allPathos, hash + 7);
-                if (selected) textParts.push(selected);
+                if (selected) syntheseParts.push(selected);
             }
 
-            // 3. Dominanz-Statement (Primzahl-Offset für unabhängigen Index)
+            // Dominanz-Dynamik
             if (domStatements?.pathos?.length && domStatements !== dominanceStatements?.default) {
                 const selected = selectStatementByHash(domStatements.pathos, hash + 11);
-                if (selected) textParts.push(selected);
+                if (selected) syntheseParts.push(selected);
             }
 
-            // 4. Orientierungs-Statement (Primzahl-Offset für unabhängigen Index)
+            // Orientierungs-Aspekt
             if (orientStatements?.pathos?.length) {
                 const selected = selectStatementByHash(orientStatements.pathos, hash + 17);
-                if (selected) textParts.push(selected);
+                if (selected) syntheseParts.push(selected);
             }
 
-            // 5. Status-Statement (Primzahl-Offset für unabhängigen Index)
-            if (statusStmts?.pathos?.length && statusStmts !== statusStatements?.default) {
-                const selected = selectStatementByHash(statusStmts.pathos, hash + 23);
-                if (selected) textParts.push(selected);
+            // Dynamische Qualitäts-Interaktion
+            const ichDyn = ichArch?.pirsig?.dynamicQuality || 0.5;
+            const partnerDyn = partnerArch?.pirsig?.dynamicQuality || 0.5;
+            const dynDiff = Math.abs(ichDyn - partnerDyn);
+
+            if (dynDiff < 0.2) {
+                syntheseParts.push(`Beide schwingen auf einer ähnlichen emotionalen Frequenz – das schafft natürliche Resonanz.`);
+            } else if (dynDiff > 0.5) {
+                if (tonality === 'positiv') {
+                    syntheseParts.push(`Die unterschiedlichen emotionalen Energien können sich ergänzen und bereichern.`);
+                } else {
+                    syntheseParts.push(`Die verschiedenen emotionalen Tempi erfordern bewusste Abstimmung.`);
+                }
             }
 
             // Fallback
-            if (textParts.length === 0) {
-                return `${ichName} und ${partnerName} können emotional zueinander finden, auch wenn ihre Grundhaltungen sich unterscheiden. Die Herausforderung liegt darin, die emotionalen Bedürfnisse des anderen zu verstehen und zu respektieren.`;
+            if (syntheseParts.length === 0) {
+                syntheseParts.push(`${ichName} und ${partnerName} können emotional zueinander finden, auch wenn ihre Grundhaltungen sich unterscheiden.`);
             }
 
-            return textParts.join(' ');
+            // ═══════════════════════════════════════════════════════════════
+            // RESONANZ (falls vorhanden)
+            // ═══════════════════════════════════════════════════════════════
+            let resonanzText = null;
+            if (resonanzData && resonanzData.R !== undefined) {
+                const R = resonanzData.R;
+                if (R >= 1.05) {
+                    resonanzText = `Hohe emotionale Resonanz (R=${R.toFixed(2)}): Die Verbindung schwingt auf einer tiefen Ebene – Pathos und Logos harmonieren.`;
+                } else if (R >= 0.95) {
+                    resonanzText = `Gute Resonanz (R=${R.toFixed(2)}): Die emotionale und rationale Ebene sind im Gleichgewicht.`;
+                } else if (R >= 0.9) {
+                    resonanzText = `Moderate Resonanz (R=${R.toFixed(2)}): Es gibt Potenzial, aber die Wellenlängen sind noch nicht vollständig abgestimmt.`;
+                } else {
+                    resonanzText = `Niedrige Resonanz (R=${R.toFixed(2)}): Die emotionale Verbindung ist herausfordernd – bewusste Arbeit ist nötig.`;
+                }
+            }
+
+            return {
+                ich: ichParts.join(' '),
+                partner: partnerParts.join(' '),
+                synthese: syntheseParts.join(' '),
+                resonanz: resonanzText,
+                score: overallScore,
+                tonality: tonality
+            };
         }
 
-        function generateCombinedLogos(ichArch, partnerArch) {
+        // Legacy-Wrapper für Kompatibilität
+        function generateCombinedPathos(ichArch, partnerArch) {
+            const detailed = generateDetailedPathos(ichArch, partnerArch);
+            return detailed.synthese;
+        }
+
+        /**
+         * Generiert detaillierte Logos-Inhalte mit ICH/Partner/Synthese Struktur
+         * @returns {Object} { ich, partner, synthese, resonanz }
+         */
+        function generateDetailedLogos(ichArch, partnerArch) {
             const ichName = ichArch?.name || 'ICH';
             const partnerName = partnerArch?.name || 'Partner';
-            // Use global archetype keys as IDs since archetypeDefinitions doesn't have id property
             const ichId = ichArch?.id || currentArchetype || '';
             const partnerId = partnerArch?.id || selectedPartner || '';
 
@@ -14659,81 +14794,210 @@
             const qualityResult = calculateRelationshipQuality(person1, person2);
             const breakdown = qualityResult.breakdown || { archetyp: 50, dominanz: 75, orientierung: 100, geschlecht: 100 };
             const overallScore = qualityResult.score || 50;
+            const resonanzData = qualityResult.resonanz;
 
             // Get category scores
             const key = `${ichId}_${partnerId}`;
             const interaction = data?.interactions?.[key];
             const categoryScores = interaction?.scores || {};
 
-            // A) Bestimme Tonalität basierend auf Score
+            // Tonalität und Hash
             const tonality = getTonality(overallScore);
-
-            // B) Berechne Hash für deterministische Variation
             const hash = getFactorHash(breakdown.archetyp, breakdown.dominanz, breakdown.orientierung, breakdown.geschlecht);
 
-            // Hole alle Statement-Quellen
+            // Hole Statement-Quellen
             const archStatements = getArchetypeStatements(ichId, partnerId);
             const domStatements = getDominanceStatements(person1.dominanz, person2.dominanz);
-            const orientStatements = getOrientierungStatements(person1.orientierung, person2.orientierung, person1.geschlecht, person2.geschlecht);
             const statusStmts = getStatusStatements(personDimensions.ich, personDimensions.partner);
 
-            // C) Baue Synthese mit Templates
-            const textParts = [];
+            // ═══════════════════════════════════════════════════════════════
+            // ICH BRINGT MIT (Logos-Perspektive: Rationale Struktur)
+            // ═══════════════════════════════════════════════════════════════
+            const ichParts = [];
 
-            // 1. Tonalitäts-Einleitung
+            // Statische Qualität (Pirsig)
+            if (ichArch?.pirsig?.staticQuality !== undefined) {
+                const statQual = ichArch.pirsig.staticQuality;
+                if (statQual >= 0.7) {
+                    ichParts.push(`${ichName} bringt klare Strukturen und feste Werte mit – Verlässlichkeit ist ein Grundpfeiler.`);
+                } else if (statQual >= 0.4) {
+                    ichParts.push(`${ichName} balanciert zwischen festen Überzeugungen und Offenheit für neue Perspektiven.`);
+                } else {
+                    ichParts.push(`${ichName} bevorzugt Flexibilität über starre Regeln – Strukturen werden situativ angepasst.`);
+                }
+            }
+
+            // Beziehungsphilosophie
+            if (ichArch?.pirsig?.interpretation) {
+                const interp = ichArch.pirsig.interpretation;
+                if (interp.length > 50) {
+                    ichParts.push(interp.split('.')[0] + '.');
+                }
+            }
+
+            // Kernwerte (strukturell relevant)
+            if (ichArch?.coreValues?.length) {
+                const structuralValues = ichArch.coreValues.slice(0, 3).join(', ');
+                ichParts.push(`Kernwerte: ${structuralValues}.`);
+            }
+
+            // Was wird vermieden
+            if (ichArch?.avoids?.length) {
+                const avoidList = ichArch.avoids.slice(0, 2).join(' und ');
+                ichParts.push(`Vermeidet: ${avoidList}.`);
+            }
+
+            // Default-Präferenzen
+            if (ichArch?.defaultInferences) {
+                const inf = ichArch.defaultInferences;
+                const prefs = [];
+                if (inf.wohnform) prefs.push(`Wohnform: ${inf.wohnform}`);
+                if (inf.exklusivitaet && inf.exklusivitaet !== 'nicht-relevant') prefs.push(`Exklusivität: ${inf.exklusivitaet}`);
+                if (prefs.length > 0) {
+                    ichParts.push(`Präferenzen: ${prefs.join(', ')}.`);
+                }
+            }
+
+            // ═══════════════════════════════════════════════════════════════
+            // PARTNER BRINGT MIT
+            // ═══════════════════════════════════════════════════════════════
+            const partnerParts = [];
+
+            // Statische Qualität (Pirsig)
+            if (partnerArch?.pirsig?.staticQuality !== undefined) {
+                const statQual = partnerArch.pirsig.staticQuality;
+                if (statQual >= 0.7) {
+                    partnerParts.push(`${partnerName} bringt klare Strukturen und feste Werte mit – Verlässlichkeit ist ein Grundpfeiler.`);
+                } else if (statQual >= 0.4) {
+                    partnerParts.push(`${partnerName} balanciert zwischen festen Überzeugungen und Offenheit für neue Perspektiven.`);
+                } else {
+                    partnerParts.push(`${partnerName} bevorzugt Flexibilität über starre Regeln – Strukturen werden situativ angepasst.`);
+                }
+            }
+
+            // Beziehungsphilosophie
+            if (partnerArch?.pirsig?.interpretation) {
+                const interp = partnerArch.pirsig.interpretation;
+                if (interp.length > 50) {
+                    partnerParts.push(interp.split('.')[0] + '.');
+                }
+            }
+
+            // Kernwerte
+            if (partnerArch?.coreValues?.length) {
+                const structuralValues = partnerArch.coreValues.slice(0, 3).join(', ');
+                partnerParts.push(`Kernwerte: ${structuralValues}.`);
+            }
+
+            // Was wird vermieden
+            if (partnerArch?.avoids?.length) {
+                const avoidList = partnerArch.avoids.slice(0, 2).join(' und ');
+                partnerParts.push(`Vermeidet: ${avoidList}.`);
+            }
+
+            // Default-Präferenzen
+            if (partnerArch?.defaultInferences) {
+                const inf = partnerArch.defaultInferences;
+                const prefs = [];
+                if (inf.wohnform) prefs.push(`Wohnform: ${inf.wohnform}`);
+                if (inf.exklusivitaet && inf.exklusivitaet !== 'nicht-relevant') prefs.push(`Exklusivität: ${inf.exklusivitaet}`);
+                if (prefs.length > 0) {
+                    partnerParts.push(`Präferenzen: ${prefs.join(', ')}.`);
+                }
+            }
+
+            // ═══════════════════════════════════════════════════════════════
+            // DARAUS ENTSTEHT (Synthese)
+            // ═══════════════════════════════════════════════════════════════
+            const syntheseParts = [];
+
+            // Tonalitäts-Einleitung
             const tonalityIntro = selectStatementByHash(tonalityTemplates[tonality].logos, hash);
-            if (tonalityIntro) textParts.push(tonalityIntro);
+            if (tonalityIntro) syntheseParts.push(tonalityIntro);
 
-            // 2. Archetyp-Statement (Primzahl-Offset für unabhängigen Index)
+            // Archetyp-Kombination
             if (archStatements?.logos) {
                 const gemeinsam = archStatements.logos.gemeinsam || [];
                 const unterschied = archStatements.logos.unterschied || [];
-                // Bei niedrigem Score auch Unterschiede einbeziehen
                 const allLogos = tonality === 'kritisch' ? [...gemeinsam, ...unterschied] : gemeinsam;
                 const selected = selectStatementByHash(allLogos.length > 0 ? allLogos : unterschied, hash + 7);
-                if (selected) textParts.push(selected);
+                if (selected) syntheseParts.push(selected);
             }
 
-            // 3. Kategorie-basierte Synthese (C: 6 Kategorien einbeziehen)
-            const relevantCategories = ['A', 'B', 'C']; // Fokus auf die wichtigsten
-            const categoryInsights = [];
+            // Kategorie-basierte Synthese
+            const relevantCategories = ['A', 'B', 'C'];
             for (const cat of relevantCategories) {
                 const catScore = categoryScores[cat]?.value || 50;
                 const catTonality = getTonality(catScore);
                 const catTemplate = categorySynthesisTemplates[cat];
-                if (catTemplate && catTonality !== 'neutral') { // Nur nicht-neutrale Kategorien erwähnen
-                    categoryInsights.push(catTemplate[catTonality]);
+                if (catTemplate && catTonality !== 'neutral') {
+                    syntheseParts.push(catTemplate[catTonality]);
                 }
             }
-            // Wähle eine Kategorie-Einsicht basierend auf Primzahl-Offset
-            if (categoryInsights.length > 0) {
-                const selectedInsight = selectStatementByHash(categoryInsights, hash + 13);
-                if (selectedInsight) textParts.push(selectedInsight);
-            }
 
-            // 4. Dominanz-Statement (Primzahl-Offset für unabhängigen Index)
-            if (domStatements?.logos?.length && domStatements !== dominanceStatements?.default) {
-                const selected = selectStatementByHash(domStatements.logos, hash + 11);
-                if (selected) textParts.push(selected);
-            }
+            // Statische Qualitäts-Interaktion
+            const ichStat = ichArch?.pirsig?.staticQuality || 0.5;
+            const partnerStat = partnerArch?.pirsig?.staticQuality || 0.5;
+            const statDiff = Math.abs(ichStat - partnerStat);
 
-            // 5. Status-Statement (Primzahl-Offset für unabhängigen Index)
-            if (statusStmts?.logos?.length && statusStmts !== statusStatements?.default) {
-                const selected = selectStatementByHash(statusStmts.logos, hash + 23);
-                if (selected) textParts.push(selected);
-            }
-
-            // Fallback mit Score-basierter Aussage
-            if (textParts.length === 0) {
-                if (overallScore >= 70) {
-                    return `${ichName} und ${partnerName} teilen viele rationale Grundüberzeugungen über Beziehungen (Score: ${overallScore}%). Das bildet eine solide Basis für konstruktive Gespräche.`;
-                } else if (overallScore < 50) {
-                    return `${ichName} und ${partnerName} haben unterschiedliche rationale Vorstellungen von Beziehungen (Score: ${overallScore}%). Grundlegende Gespräche über Erwartungen sind wichtig.`;
+            if (statDiff < 0.2) {
+                syntheseParts.push(`Beide teilen ein ähnliches Bedürfnis nach Struktur – das erleichtert die Abstimmung.`);
+            } else if (statDiff > 0.5) {
+                if (tonality === 'positiv') {
+                    syntheseParts.push(`Unterschiedliche Strukturbedürfnisse können zur gegenseitigen Bereicherung führen.`);
+                } else {
+                    syntheseParts.push(`Die verschiedenen Vorstellungen von Ordnung erfordern klare Kommunikation.`);
                 }
-                return `${ichName} und ${partnerName} haben einige Überschneidungen in ihren rationalen Beziehungsvorstellungen (Score: ${overallScore}%), aber auch Unterschiede, die Kommunikation erfordern.`;
             }
 
-            return textParts.join(' ');
+            // Werte-Überschneidung
+            if (ichArch?.coreValues && partnerArch?.coreValues) {
+                const sharedValues = ichArch.coreValues.filter(v => partnerArch.coreValues.includes(v));
+                if (sharedValues.length > 0) {
+                    syntheseParts.push(`Geteilte Werte wie ${sharedValues.slice(0, 2).join(' und ')} bilden ein stabiles Fundament.`);
+                }
+                const conflicts = ichArch.coreValues.filter(v => partnerArch.avoids?.includes(v));
+                if (conflicts.length > 0) {
+                    syntheseParts.push(`Potenzielle Spannung: ${ichName}'s Wert "${conflicts[0]}" wird von ${partnerName} eher gemieden.`);
+                }
+            }
+
+            // Fallback
+            if (syntheseParts.length === 0) {
+                syntheseParts.push(`${ichName} und ${partnerName} haben Potenzial für eine tragfähige rationale Basis, auch wenn Gespräche wichtig sind.`);
+            }
+
+            // ═══════════════════════════════════════════════════════════════
+            // RESONANZ (falls vorhanden)
+            // ═══════════════════════════════════════════════════════════════
+            let resonanzText = null;
+            if (resonanzData && resonanzData.R !== undefined) {
+                const R = resonanzData.R;
+                if (R >= 1.05) {
+                    resonanzText = `Hohe strukturelle Resonanz (R=${R.toFixed(2)}): Logos und Pathos sind im Einklang – eine starke Basis für Verständnis.`;
+                } else if (R >= 0.95) {
+                    resonanzText = `Gute Resonanz (R=${R.toFixed(2)}): Die rationalen und emotionalen Ebenen ergänzen sich gut.`;
+                } else if (R >= 0.9) {
+                    resonanzText = `Moderate Resonanz (R=${R.toFixed(2)}): Verständigung ist möglich, erfordert aber bewussten Einsatz.`;
+                } else {
+                    resonanzText = `Niedrige Resonanz (R=${R.toFixed(2)}): Grundlegende Gespräche über Erwartungen sind essenziell.`;
+                }
+            }
+
+            return {
+                ich: ichParts.join(' '),
+                partner: partnerParts.join(' '),
+                synthese: syntheseParts.join(' '),
+                resonanz: resonanzText,
+                score: overallScore,
+                tonality: tonality
+            };
+        }
+
+        // Legacy-Wrapper für Kompatibilität
+        function generateCombinedLogos(ichArch, partnerArch) {
+            const detailed = generateDetailedLogos(ichArch, partnerArch);
+            return detailed.synthese;
         }
 
         // Legacy-Funktion für Kompatibilität (wird nicht mehr verwendet)
@@ -16007,73 +16271,115 @@
         }
 
         function getPathosContent() {
-            return `
-                <div style="margin-bottom: 20px;">
-                    <div style="padding: 15px; background: linear-gradient(135deg, rgba(231,111,81,0.1), rgba(231,111,81,0.05)); border-radius: 10px; border-left: 3px solid #E76F51; margin-bottom: 15px;">
-                        <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 12px;">
-                            <span style="font-size: 18px;">🔥</span>
-                            <span style="font-size: 12px; color: var(--text-muted); font-weight: 600; text-transform: uppercase; letter-spacing: 1px;">GEMEINSAMER PATHOS</span>
+            const ichArch = archetypeDefinitions[currentArchetype];
+            const partnerArch = archetypeDefinitions[selectedPartner];
+            const detailed = generateDetailedPathos(ichArch, partnerArch);
+            const ichName = ichArch?.name || 'ICH';
+            const partnerName = partnerArch?.name || 'Partner';
+
+            let html = `
+                <!-- ICH BRINGT MIT -->
+                <div style="margin-bottom: 16px;">
+                    <div style="padding: 14px; background: linear-gradient(135deg, rgba(231,111,81,0.15), rgba(231,111,81,0.05)); border-radius: 10px; border-left: 3px solid #E76F51;">
+                        <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 10px;">
+                            <span style="font-size: 14px;">👤</span>
+                            <span style="font-size: 11px; color: #E76F51; font-weight: 600; text-transform: uppercase; letter-spacing: 1px;">${ichName} BRINGT MIT</span>
                         </div>
-                        <p style="font-style: italic; font-size: 15px; margin: 0;">${currentPathosLogosContent.pathos}</p>
+                        <p style="font-size: 13px; margin: 0; line-height: 1.5;">${detailed.ich || 'Keine spezifischen emotionalen Eigenschaften definiert.'}</p>
                     </div>
                 </div>
 
-                <div style="margin-bottom: 20px;">
-                    <h4 style="color: #E76F51; margin-bottom: 10px; font-size: 14px; display: flex; align-items: center; gap: 8px;">
-                        <span>🌊</span> Pirsig: Dynamische Qualität
-                    </h4>
-                    <p style="margin-bottom: 10px; font-size: 13px;">Pathos entspricht Pirsigs "dynamischer Qualität" – die lebendige Kraft, die Veränderung antreibt und nicht in Worte gefasst werden kann, bevor sie erlebt wird.</p>
-                    <p style="font-size: 12px; color: var(--text-muted); font-style: italic;">"Qualität ist das Ereignis, bei dem das Subjekt sich des Objekts bewusst wird."</p>
+                <!-- PARTNER BRINGT MIT -->
+                <div style="margin-bottom: 16px;">
+                    <div style="padding: 14px; background: linear-gradient(135deg, rgba(231,111,81,0.15), rgba(231,111,81,0.05)); border-radius: 10px; border-left: 3px solid #E76F51;">
+                        <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 10px;">
+                            <span style="font-size: 14px;">👥</span>
+                            <span style="font-size: 11px; color: #E76F51; font-weight: 600; text-transform: uppercase; letter-spacing: 1px;">${partnerName} BRINGT MIT</span>
+                        </div>
+                        <p style="font-size: 13px; margin: 0; line-height: 1.5;">${detailed.partner || 'Keine spezifischen emotionalen Eigenschaften definiert.'}</p>
+                    </div>
                 </div>
 
-                <div style="margin-bottom: 20px;">
-                    <h4 style="color: #E76F51; margin-bottom: 10px; font-size: 14px; display: flex; align-items: center; gap: 8px;">
-                        <span>🔮</span> OSHO: Bewusste Präsenz
-                    </h4>
-                    <p style="margin-bottom: 10px; font-size: 13px;">OSHO lehrt, dass wahre emotionale Verbindung nur im Moment der totalen Präsenz entsteht. Pathos ist keine Sentimentalität, sondern bewusstes Fühlen.</p>
-                    <p style="font-size: 12px; color: var(--text-muted); font-style: italic;">"Liebe ist nicht etwas, das du tust. Liebe ist etwas, das du bist."</p>
-                </div>
+                <!-- DARAUS ENTSTEHT -->
+                <div style="margin-bottom: 16px;">
+                    <div style="padding: 14px; background: linear-gradient(135deg, rgba(255,215,0,0.1), rgba(231,111,81,0.08)); border-radius: 10px; border: 1px solid rgba(231,111,81,0.3);">
+                        <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 10px;">
+                            <span style="font-size: 14px;">🔥</span>
+                            <span style="font-size: 11px; color: #FFD700; font-weight: 600; text-transform: uppercase; letter-spacing: 1px;">DARAUS ENTSTEHT</span>
+                        </div>
+                        <p style="font-size: 14px; margin: 0; line-height: 1.6; font-style: italic;">${detailed.synthese}</p>
+                    </div>
+                </div>`;
 
-                <div style="padding: 12px; background: rgba(255,255,255,0.03); border-radius: 8px;">
-                    <h4 style="color: var(--primary); margin-bottom: 8px; font-size: 13px;">⚡ Resonanztheorie</h4>
-                    <p style="font-size: 12px; margin: 0;">Pathos erzeugt <strong>emotionale Resonanz</strong> (R) zwischen zwei Menschen. Je höher der gemeinsame Pathos-Score, desto stärker die intuitive Anziehung – unabhängig von rationaler Kompatibilität. Diese Schwingung ist spürbar, bevor sie verstanden wird.</p>
-                </div>
-            `;
+            // RESONANZ (falls vorhanden)
+            if (detailed.resonanz) {
+                html += `
+                <div style="padding: 12px; background: rgba(231,111,81,0.08); border-radius: 8px; border: 1px dashed rgba(231,111,81,0.3);">
+                    <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
+                        <span style="font-size: 13px;">⚡</span>
+                        <span style="font-size: 11px; color: var(--text-muted); font-weight: 600; text-transform: uppercase; letter-spacing: 1px;">RESONANZ</span>
+                    </div>
+                    <p style="font-size: 12px; margin: 0;">${detailed.resonanz}</p>
+                </div>`;
+            }
+
+            return html;
         }
 
         function getLogosContent() {
-            return `
-                <div style="margin-bottom: 20px;">
-                    <div style="padding: 15px; background: linear-gradient(135deg, rgba(69,123,157,0.1), rgba(69,123,157,0.05)); border-radius: 10px; border-left: 3px solid #457B9D; margin-bottom: 15px;">
-                        <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 12px;">
-                            <span style="font-size: 18px;">🧠</span>
-                            <span style="font-size: 12px; color: var(--text-muted); font-weight: 600; text-transform: uppercase; letter-spacing: 1px;">GEMEINSAMER LOGOS</span>
+            const ichArch = archetypeDefinitions[currentArchetype];
+            const partnerArch = archetypeDefinitions[selectedPartner];
+            const detailed = generateDetailedLogos(ichArch, partnerArch);
+            const ichName = ichArch?.name || 'ICH';
+            const partnerName = partnerArch?.name || 'Partner';
+
+            let html = `
+                <!-- ICH BRINGT MIT -->
+                <div style="margin-bottom: 16px;">
+                    <div style="padding: 14px; background: linear-gradient(135deg, rgba(69,123,157,0.15), rgba(69,123,157,0.05)); border-radius: 10px; border-left: 3px solid #457B9D;">
+                        <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 10px;">
+                            <span style="font-size: 14px;">👤</span>
+                            <span style="font-size: 11px; color: #457B9D; font-weight: 600; text-transform: uppercase; letter-spacing: 1px;">${ichName} BRINGT MIT</span>
                         </div>
-                        <p style="font-style: italic; font-size: 15px; margin: 0;">${currentPathosLogosContent.logos}</p>
+                        <p style="font-size: 13px; margin: 0; line-height: 1.5;">${detailed.ich || 'Keine spezifischen strukturellen Eigenschaften definiert.'}</p>
                     </div>
                 </div>
 
-                <div style="margin-bottom: 20px;">
-                    <h4 style="color: #457B9D; margin-bottom: 10px; font-size: 14px; display: flex; align-items: center; gap: 8px;">
-                        <span>🏛️</span> Pirsig: Statische Qualität
-                    </h4>
-                    <p style="margin-bottom: 10px; font-size: 13px;">Logos entspricht Pirsigs "statischer Qualität" – bewährte Muster und Strukturen, die Stabilität und Verständnis ermöglichen. Sie sind die Bausteine des gemeinsamen Fundaments.</p>
-                    <p style="font-size: 12px; color: var(--text-muted); font-style: italic;">"Statische Qualität-Muster sind das, was die Welt zusammenhält."</p>
+                <!-- PARTNER BRINGT MIT -->
+                <div style="margin-bottom: 16px;">
+                    <div style="padding: 14px; background: linear-gradient(135deg, rgba(69,123,157,0.15), rgba(69,123,157,0.05)); border-radius: 10px; border-left: 3px solid #457B9D;">
+                        <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 10px;">
+                            <span style="font-size: 14px;">👥</span>
+                            <span style="font-size: 11px; color: #457B9D; font-weight: 600; text-transform: uppercase; letter-spacing: 1px;">${partnerName} BRINGT MIT</span>
+                        </div>
+                        <p style="font-size: 13px; margin: 0; line-height: 1.5;">${detailed.partner || 'Keine spezifischen strukturellen Eigenschaften definiert.'}</p>
+                    </div>
                 </div>
 
-                <div style="margin-bottom: 20px;">
-                    <h4 style="color: #457B9D; margin-bottom: 10px; font-size: 14px; display: flex; align-items: center; gap: 8px;">
-                        <span>🧘</span> OSHO: Bewusste Klarheit
-                    </h4>
-                    <p style="margin-bottom: 10px; font-size: 13px;">OSHO betont, dass Klarheit des Geistes die Basis für echte Kommunikation ist. Logos ist nicht kalte Rationalität, sondern bewusste Struktur im Dialog.</p>
-                    <p style="font-size: 12px; color: var(--text-muted); font-style: italic;">"Verstehen entsteht nicht durch Denken, sondern durch Klarheit."</p>
-                </div>
+                <!-- DARAUS ENTSTEHT -->
+                <div style="margin-bottom: 16px;">
+                    <div style="padding: 14px; background: linear-gradient(135deg, rgba(100,149,237,0.1), rgba(69,123,157,0.08)); border-radius: 10px; border: 1px solid rgba(69,123,157,0.3);">
+                        <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 10px;">
+                            <span style="font-size: 14px;">🧠</span>
+                            <span style="font-size: 11px; color: #6495ED; font-weight: 600; text-transform: uppercase; letter-spacing: 1px;">DARAUS ENTSTEHT</span>
+                        </div>
+                        <p style="font-size: 14px; margin: 0; line-height: 1.6; font-style: italic;">${detailed.synthese}</p>
+                    </div>
+                </div>`;
 
-                <div style="padding: 12px; background: rgba(255,255,255,0.03); border-radius: 8px;">
-                    <h4 style="color: var(--primary); margin-bottom: 8px; font-size: 13px;">🔗 Resonanztheorie</h4>
-                    <p style="font-size: 12px; margin: 0;">Logos bildet die <strong>strukturelle Resonanz</strong> – das gemeinsame Verständnis von Werten, Grenzen und Lebensmodellen. Ein hoher Logos-Score zeigt, dass beide auf derselben "Frequenz" kommunizieren können, ohne ständige Missverständnisse.</p>
-                </div>
-            `;
+            // RESONANZ (falls vorhanden)
+            if (detailed.resonanz) {
+                html += `
+                <div style="padding: 12px; background: rgba(69,123,157,0.08); border-radius: 8px; border: 1px dashed rgba(69,123,157,0.3);">
+                    <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
+                        <span style="font-size: 13px;">🔗</span>
+                        <span style="font-size: 11px; color: var(--text-muted); font-weight: 600; text-transform: uppercase; letter-spacing: 1px;">RESONANZ</span>
+                    </div>
+                    <p style="font-size: 12px; margin: 0;">${detailed.resonanz}</p>
+                </div>`;
+            }
+
+            return html;
         }
 
         // Navigate archetypes within Pathos/Logos Modal
