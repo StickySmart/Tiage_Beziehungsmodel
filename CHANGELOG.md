@@ -5,6 +5,23 @@ Alle wichtigen Änderungen am Tiage-Beziehungsmodell werden hier dokumentiert.
 Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.0.0/),
 Versionierung folgt [Semantic Versioning](https://semver.org/lang/de/).
 
+## [1.5.0] - 2025-11-29
+
+### Neu
+- **Sprachumschaltung Deutsch/Englisch (i18n)** - Vollständige Internationalisierung der Anwendung
+- **Geschlechtsidentität-Modal** - Ersetzt Tooltip durch scrollbares Info-Modal
+- **Primär/Sekundär-System für Geschlechtsidentität** - Erweiterte Auswahlmöglichkeiten
+- **Markdown-Loader** - Dynamisches Content-Loading aus strukturierten Markdown-Dokumenten
+
+### Geändert
+- **Neuer Titel** - "Das anarchische Ti-Age Prinzip der Paarung"
+- **Einheitliche Label/Info-Icon Logik** - Konsistente Darstellung für Dominanz und Orientierung
+- Verbesserte Hover-Effekte und Mobile-Schriftgrößen
+
+### Behoben
+- Click-Logik für Geschlechtsauswahl auf Mobile korrigiert
+- Info-Button für Geschlechtsidentität im Modal repariert
+
 ## [1.4.0] - 2025-11-27
 
 ### Neu
