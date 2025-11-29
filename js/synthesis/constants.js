@@ -46,6 +46,48 @@ TiageSynthesis.Constants = {
     },
 
     // ═══════════════════════════════════════════════════════════════════════
+    // GFK-KOMPETENZ-MATRIX (Gewaltfreie Kommunikation)
+    // ═══════════════════════════════════════════════════════════════════════
+    // Marshall Rosenberg's 4-Schritte: Beobachtung, Gefühl, Bedürfnis, Bitte
+    //
+    // Matrix-Werte (ICH × Partner):
+    //                ICH / Partner | hoch | mittel | niedrig
+    // ──────────────────────────────────────────────────────────
+    // hoch            (K = 1.0)    | 1.0  | 0.75   | 0.35
+    // mittel          (K = 0.75)   | 0.75 | 0.5    | 0.2
+    // niedrig         (K = 0.35)   | 0.35 | 0.2    | 0.0
+
+    GFK_MATRIX: {
+        // Beide hohe GFK-Kompetenz: Optimale Kommunikation
+        "hoch-hoch": 1.0,
+
+        // Asymmetrie hoch-mittel: Erfahrener Partner als Brücke
+        "hoch-mittel": 0.75,
+        "mittel-hoch": 0.75,
+
+        // Starke Asymmetrie hoch-niedrig: Herausforderung
+        "hoch-niedrig": 0.35,
+        "niedrig-hoch": 0.35,
+
+        // Beide mittlere Kompetenz: Gute Basis
+        "mittel-mittel": 0.5,
+
+        // Asymmetrie mittel-niedrig: Schwierig
+        "mittel-niedrig": 0.2,
+        "niedrig-mittel": 0.2,
+
+        // Beide niedrig: Destruktive Muster wahrscheinlich
+        "niedrig-niedrig": 0.0
+    },
+
+    // GFK-Level zu nummerischen Werten (für Berechnung wenn nur ein Level bekannt)
+    GFK_LEVELS: {
+        "hoch": 1.0,
+        "mittel": 0.75,
+        "niedrig": 0.35
+    },
+
+    // ═══════════════════════════════════════════════════════════════════════
     // DOMINANZ-HARMONIE-MATRIX
     // ═══════════════════════════════════════════════════════════════════════
     // Basiert auf OSHO's Tao-Prinzip: Komplementäre Polarität = höchste Harmonie
