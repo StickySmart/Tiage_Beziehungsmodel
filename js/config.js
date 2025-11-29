@@ -61,15 +61,48 @@ const TiageConfig = (function() {
     };
 
     // ═══════════════════════════════════════════════════════════════════════
-    // GESCHLECHT
+    // GESCHLECHT (Gender Identity)
     // ═══════════════════════════════════════════════════════════════════════
 
-    const GESCHLECHT_TYPES = ['männlich', 'weiblich', 'nonbinär'];
+    const GESCHLECHT_TYPES = [
+        'cis_mann',
+        'cis_frau',
+        'trans_mann',
+        'trans_frau',
+        'nonbinaer',
+        'genderfluid',
+        'agender'
+    ];
 
     const GESCHLECHT_SHORT = {
-        'männlich': 'M',
-        'weiblich': 'W',
-        'nonbinär': 'NB'
+        'cis_mann': 'CM',
+        'cis_frau': 'CF',
+        'trans_mann': 'TM',
+        'trans_frau': 'TF',
+        'nonbinaer': 'NB',
+        'genderfluid': 'GF',
+        'agender': 'AG'
+    };
+
+    const GESCHLECHT_LABELS = {
+        'cis_mann': 'Cis Mann',
+        'cis_frau': 'Cis Frau',
+        'trans_mann': 'Trans Mann',
+        'trans_frau': 'Trans Frau',
+        'nonbinaer': 'Nonbinär',
+        'genderfluid': 'Genderfluid',
+        'agender': 'Agender'
+    };
+
+    // Mapping für Orientierungslogik: Welches "wahrgenommene Geschlecht" hat jemand?
+    const GESCHLECHT_CATEGORY = {
+        'cis_mann': 'maennlich',
+        'cis_frau': 'weiblich',
+        'trans_mann': 'maennlich',
+        'trans_frau': 'weiblich',
+        'nonbinaer': 'nonbinaer',
+        'genderfluid': 'fluid',
+        'agender': 'agender'
     };
 
     // ═══════════════════════════════════════════════════════════════════════
@@ -90,8 +123,36 @@ const TiageConfig = (function() {
 
     const DIMENSION_TOOLTIPS = {
         geschlecht: {
-            title: "Geschlecht",
-            text: "Dein Geschlecht. Dies beeinflusst die körperliche Anziehung zusammen mit der sexuellen Orientierung."
+            title: "Geschlechtsidentität",
+            text: "Deine Geschlechtsidentität. Dies beeinflusst die Kompatibilität zusammen mit der sexuellen Orientierung."
+        },
+        cis_mann: {
+            title: "Cis Mann",
+            text: "Person, die bei Geburt männlich zugewiesen wurde und sich als Mann identifiziert."
+        },
+        cis_frau: {
+            title: "Cis Frau",
+            text: "Person, die bei Geburt weiblich zugewiesen wurde und sich als Frau identifiziert."
+        },
+        trans_mann: {
+            title: "Trans Mann",
+            text: "Person, die sich als Mann identifiziert, aber bei Geburt nicht männlich zugewiesen wurde."
+        },
+        trans_frau: {
+            title: "Trans Frau",
+            text: "Person, die sich als Frau identifiziert, aber bei Geburt nicht weiblich zugewiesen wurde."
+        },
+        nonbinaer: {
+            title: "Nonbinär",
+            text: "Person, die sich weder ausschließlich als Mann noch als Frau identifiziert."
+        },
+        genderfluid: {
+            title: "Genderfluid",
+            text: "Person, deren Geschlechtsidentität sich über Zeit verändert oder zwischen verschiedenen Identitäten wechselt."
+        },
+        agender: {
+            title: "Agender",
+            text: "Person, die sich mit keinem Geschlecht identifiziert oder geschlechtslos fühlt."
         },
         dominanz: {
             title: "Dominanz-Präferenz",
@@ -227,6 +288,8 @@ const TiageConfig = (function() {
         ORIENTIERUNG_SHORT,
         GESCHLECHT_TYPES,
         GESCHLECHT_SHORT,
+        GESCHLECHT_LABELS,
+        GESCHLECHT_CATEGORY,
         STATUS_TYPES,
 
         // Tooltips
@@ -253,6 +316,16 @@ const TiageConfig = (function() {
         // Helper: Kategorie-Name
         getCategoryName(letter) {
             return CATEGORY_NAMES[letter] || letter;
+        },
+
+        // Helper: Geschlecht-Label
+        getGeschlechtLabel(id) {
+            return GESCHLECHT_LABELS[id] || id;
+        },
+
+        // Helper: Geschlecht-Kategorie für Orientierungslogik
+        getGeschlechtCategory(id) {
+            return GESCHLECHT_CATEGORY[id] || 'andere';
         }
     };
 })();

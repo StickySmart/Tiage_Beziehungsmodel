@@ -11,15 +11,107 @@ const TiageHelpers = (function() {
 
     return {
         /**
-         * Geschlecht kurz
+         * Geschlecht kurz - nutzt TiageConfig wenn verfügbar
          */
         getGeschlechtKurz(geschlecht) {
-            const map = {
+            if (typeof TiageConfig !== 'undefined' && TiageConfig.GESCHLECHT_SHORT) {
+                return TiageConfig.GESCHLECHT_SHORT[geschlecht] || '?';
+            }
+            // Fallback für ältere Werte
+            const fallbackMap = {
                 'männlich': 'M',
                 'weiblich': 'W',
                 'nonbinär': 'NB'
             };
-            return map[geschlecht] || '?';
+            return fallbackMap[geschlecht] || '?';
+        },
+
+        /**
+         * Geschlecht Label (vollständiger Name)
+         */
+        getGeschlechtLabel(geschlecht) {
+            if (typeof TiageConfig !== 'undefined' && TiageConfig.GESCHLECHT_LABELS) {
+                return TiageConfig.GESCHLECHT_LABELS[geschlecht] || geschlecht;
+            }
+            return geschlecht || '?';
+        },
+
+        /**
+         * Geschlecht-Kategorie für Orientierungslogik
+         * Gibt 'maennlich', 'weiblich', 'nonbinaer', 'fluid', oder 'agender' zurück
+         */
+        getGeschlechtCategory(geschlecht) {
+            if (typeof TiageConfig !== 'undefined' && TiageConfig.GESCHLECHT_CATEGORY) {
+                return TiageConfig.GESCHLECHT_CATEGORY[geschlecht] || 'andere';
+            }
+            // Fallback
+            const fallbackMap = {
+                'männlich': 'maennlich',
+                'weiblich': 'weiblich',
+                'nonbinär': 'nonbinaer'
+            };
+            return fallbackMap[geschlecht] || 'andere';
+        },
+
+        /**
+         * Prüft ob zwei Personen orientierungskompatibel sind
+         * @param {string} geschlecht1 - Geschlecht Person 1
+         * @param {string} orientierung1 - Orientierung Person 1 (heterosexuell, homosexuell, bisexuell)
+         * @param {string} geschlecht2 - Geschlecht Person 2
+         * @param {string} orientierung2 - Orientierung Person 2
+         * @returns {object} { compatible: boolean, score: 0-100, reason: string }
+         */
+        checkOrientierungKompatibilitaet(geschlecht1, orientierung1, geschlecht2, orientierung2) {
+            const cat1 = this.getGeschlechtCategory(geschlecht1);
+            const cat2 = this.getGeschlechtCategory(geschlecht2);
+
+            // Prüfe ob Person 1 von Person 2 angezogen wird
+            const p1AttractedToP2 = this.isAttractedTo(orientierung1, cat1, cat2);
+            // Prüfe ob Person 2 von Person 1 angezogen wird
+            const p2AttractedToP1 = this.isAttractedTo(orientierung2, cat2, cat1);
+
+            if (p1AttractedToP2 && p2AttractedToP1) {
+                return { compatible: true, score: 100, reason: 'Gegenseitige Anziehung' };
+            } else if (p1AttractedToP2 || p2AttractedToP1) {
+                return { compatible: false, score: 30, reason: 'Einseitige Anziehung' };
+            } else {
+                return { compatible: false, score: 0, reason: 'Keine Anziehung' };
+            }
+        },
+
+        /**
+         * Prüft ob jemand mit einer bestimmten Orientierung von einer Geschlechtskategorie angezogen wird
+         */
+        isAttractedTo(orientierung, ownCategory, targetCategory) {
+            // Bisexuell: Angezogen von männlich und weiblich
+            if (orientierung === 'bisexuell') {
+                return targetCategory === 'maennlich' || targetCategory === 'weiblich' ||
+                       targetCategory === 'fluid' || targetCategory === 'nonbinaer';
+            }
+
+            // Heterosexuell: Angezogen vom "anderen" Geschlecht
+            if (orientierung === 'heterosexuell') {
+                if (ownCategory === 'maennlich') {
+                    return targetCategory === 'weiblich';
+                } else if (ownCategory === 'weiblich') {
+                    return targetCategory === 'maennlich';
+                }
+                // Nonbinär/Fluid/Agender mit hetero - komplex, als partiell kompatibel behandeln
+                return targetCategory !== ownCategory && targetCategory !== 'agender';
+            }
+
+            // Homosexuell: Angezogen vom "gleichen" Geschlecht
+            if (orientierung === 'homosexuell') {
+                if (ownCategory === 'maennlich') {
+                    return targetCategory === 'maennlich';
+                } else if (ownCategory === 'weiblich') {
+                    return targetCategory === 'weiblich';
+                }
+                // Nonbinär mit homo - angezogen von nonbinär
+                return targetCategory === ownCategory || targetCategory === 'nonbinaer';
+            }
+
+            return false;
         },
 
         /**
