@@ -4879,29 +4879,24 @@
             margin-top: 8px;
         }
 
-        /* Tiage's Synthese Button in Quality Block */
+        /* Tiage's Synthese Button in Quality Block - styled like partner-btn */
         .tiage-ansatz-btn {
             display: flex;
             align-items: center;
-            justify-content: center;
             gap: 6px;
-            padding: 12px 20px;
-            margin-top: 10px;
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            border-radius: 4px;
+            padding: 12px 16px;
+            border: 2px solid var(--border);
+            background: transparent;
             color: var(--text-secondary);
-            font-size: 14px;
+            border-radius: 20px;
             cursor: pointer;
-            transition: all 0.2s ease;
-            min-width: 70px;
-            min-height: 60px;
+            font-size: var(--font-base);
+            transition: all 0.3s ease;
         }
 
         .tiage-ansatz-btn:hover {
-            background: var(--bg-secondary);
-            border-color: var(--primary);
-            color: var(--text-primary);
+            border-color: var(--text-muted);
+            background: var(--bg-hover);
         }
 
         .tiage-ansatz-icon {
@@ -6547,38 +6542,25 @@
             </div>
         </div>
 
-        <!-- Result Bar - Simplified Grid -->
-        <div class="result-bar">
-            <div id="warningsContainer" style="display: none;"></div>
+        <!-- Tiage's Synthese Button -->
+        <div style="display: flex; justify-content: flex-end; margin-bottom: 15px;">
+            <button class="tiage-ansatz-btn" id="desktopTiageAnsatzBtn" onclick="openPathosLogosModal('pathos')" title="Tiage's Synthese - Pathos & Logos">
+                <span class="tiage-ansatz-icon">💡</span>
+                <span class="tiage-ansatz-text">Tiage's Synthese</span>
+            </button>
+        </div>
 
-            <!-- Simplified Grid with Score Circle and Tiage's Synthese -->
-            <div class="result-score-grid" style="display: grid; grid-template-columns: 1fr auto; gap: 20px; align-items: center; padding: 15px;">
-                <!-- Score Circle -->
-                <div class="result-circle-column" style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
-                    <div class="desktop-score-circle" id="desktopScoreCircle" onclick="openProContraModal()" title="Klicken für Pro & Contra Details">
-                        <span id="desktopCirclePercentage">0%</span>
-                    </div>
-                    <div class="desktop-score-label">Beziehungsqualität</div>
-                </div>
-
-                <!-- Tiage's Synthese Button -->
-                <div style="display: flex; align-items: center;">
-                    <button class="tiage-ansatz-btn" id="desktopTiageAnsatzBtn" onclick="openPathosLogosModal('pathos')" title="Tiage's Synthese - Pathos & Logos">
-                        <span class="tiage-ansatz-icon">💡</span>
-                        <span class="tiage-ansatz-text">Tiage's Synthese</span>
-                    </button>
-                </div>
-            </div>
-
-            <!-- Hidden elements for backwards compatibility -->
-            <div id="desktopScoreNote" class="score-note" style="display: none;"></div>
-            <span id="resultIchType" style="display: none;">Single</span>
-            <span id="resultPartnerType" style="display: none;">Duo</span>
-            <div class="result-progress" style="display: none;">
-                <div class="result-progress-fill" id="resultProgressFill" style="width: 0%; background: var(--primary);"></div>
-            </div>
-            <div class="result-percentage" id="resultPercentage" style="display: none;">0%</div>
-
+        <!-- Hidden elements for backwards compatibility -->
+        <div id="warningsContainer" style="display: none;"></div>
+        <div id="desktopScoreNote" class="score-note" style="display: none;"></div>
+        <span id="resultIchType" style="display: none;">Single</span>
+        <span id="resultPartnerType" style="display: none;">Duo</span>
+        <div class="result-progress" style="display: none;">
+            <div class="result-progress-fill" id="resultProgressFill" style="width: 0%; background: var(--primary);"></div>
+        </div>
+        <div class="result-percentage" id="resultPercentage" style="display: none;">0%</div>
+        <div class="desktop-score-circle" id="desktopScoreCircle" style="display: none;">
+            <span id="desktopCirclePercentage">0%</span>
         </div>
     </div>
 
@@ -6822,7 +6804,6 @@
 
             <div class="score-circle-container">
                 <div class="score-circle" id="mobileScoreCircle" onclick="openProContraModal()" style="cursor: pointer;" title="Klicken für Pro & Contra Details">0%</div>
-                <p class="score-label">Beziehungsqualität <span class="info-icon" onclick="event.stopPropagation(); openHelpModal()" title="Hilfe zur Beziehungsqualität" style="cursor: pointer; font-size: 12px; width: 18px; height: 18px; display: inline-flex; align-items: center; justify-content: center; vertical-align: middle; margin-left: 4px;">?</span></p>
                 <button class="tiage-ansatz-btn" id="mobileTiageAnsatzBtn" onclick="openPathosLogosModal('pathos')" title="Tiage's Synthese - Pathos & Logos" style="margin-left: auto; margin-right: auto;">
                     <span class="tiage-ansatz-icon">💡</span>
                     <span class="tiage-ansatz-text">Tiage's Synthese</span>
