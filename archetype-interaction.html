@@ -3830,8 +3830,8 @@
             text-align: right;
         }
 
-        .header-geschlecht-info:empty {
-            display: none;
+        .header-geschlecht-info.missing {
+            color: var(--warning, #f39c12);
         }
 
         .archetype-nav-btn {
@@ -11602,7 +11602,9 @@
             const primary = personDimensions[person].geschlecht.primary;
             const secondary = personDimensions[person].geschlecht.secondary;
 
-            if (!primary) return '';
+            if (!primary) {
+                return 'fehlt: Identität';
+            }
 
             const parts = [];
             const primaryLabel = TiageI18n.t(`geschlecht.types.${primary}`, primary);
@@ -11621,6 +11623,7 @@
          */
         function updateGeschlechtSummary(person) {
             const summaryText = getGeschlechtSummary(person);
+            const isMissing = !personDimensions[person].geschlecht.primary;
 
             // Update all summary elements for this person
             const summaryIds = [
@@ -11633,6 +11636,10 @@
                 const summary = document.getElementById(id);
                 if (summary) {
                     summary.textContent = summaryText;
+                    // Add/remove missing class for header elements
+                    if (id.includes('header')) {
+                        summary.classList.toggle('missing', isMissing);
+                    }
                 }
             });
         }
@@ -15789,6 +15796,9 @@
             initComparisonLayout();
             initMobileLayout();
             initGeschlechtHoverEvents();
+            // Initialize geschlecht summary display
+            updateGeschlechtSummary('ich');
+            updateGeschlechtSummary('partner');
         });
 
         // ========================================
