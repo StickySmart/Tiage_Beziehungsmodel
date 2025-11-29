@@ -5218,6 +5218,14 @@
             }
         }
     </style>
+
+    <!-- TIAGE SYNTHESE - Zentralisierte Berechnungslogik -->
+    <script src="js/synthesis/constants.js"></script>
+    <script src="js/synthesis/factors/archetypeFactor.js"></script>
+    <script src="js/synthesis/factors/dominanceFactor.js"></script>
+    <script src="js/synthesis/factors/orientationFactor.js"></script>
+    <script src="js/synthesis/factors/genderFactor.js"></script>
+    <script src="js/synthesis/synthesisCalculator.js"></script>
 </head>
 <body>
     <!-- Age Verification - Inline Script BEFORE modal for onclick to work -->
@@ -7176,7 +7184,7 @@
             </a>
         </div>
         <div style="margin-bottom: 10px;">© 2025 Ti-Age – Alle Rechte vorbehalten</div>
-        <div style="margin-bottom: 10px; font-size: 11px; opacity: 0.7;">Version 1.3.0</div>
+        <div style="margin-bottom: 10px; font-size: 11px; opacity: 0.7;">Version 1.4.0</div>
         <a href="#" onclick="document.getElementById('impressumModal').classList.add('active'); return false;">Impressum</a>
         <span>|</span>
         <a href="datenschutz.html">Datenschutz</a>
@@ -8962,12 +8970,8 @@
             const interactionKey = `${currentArchetype}_${selectedPartner}`;
             const interaction = data.interactions[interactionKey] || {};
 
-            // Run Pathos/Logos checks first
-            const checkResult = runCompatibilityChecks();
-            if (checkResult && checkResult.blocked) {
-                // Pathos blocked - don't render the rest
-                return;
-            }
+            // Run Pathos/Logos checks (keine Blockierung mehr - zeigt nur Warnungen)
+            runCompatibilityChecks();
 
             document.getElementById('myTypeNameDisplay').textContent = myArch?.name || '...';
             document.getElementById('partnerNameDisplay').textContent = partnerArch?.name || '...';
@@ -11768,18 +11772,21 @@
             }
 
             if (pathosCheck.result === 'unmöglich') {
-                // Show Pathos Blocker, hide everything else
+                // SANFTER HINWEIS statt K.O.-Blocker
+                // Zeige Warnung, aber blockiere nicht mehr
                 document.getElementById('pathosBlocker').classList.add('active');
-                document.getElementById('compatibilityContent').style.display = 'none';
+                // Content wird NICHT mehr versteckt - zeige den (niedrigen) Score
+                // document.getElementById('compatibilityContent').style.display = 'none';
 
                 document.getElementById('pathosBlockerReason').textContent =
-                    `Grund: ${pathosCheck.reason}`;
+                    `Hinweis: ${pathosCheck.reason} – Resonanz ist sehr niedrig, aber nicht unmöglich.`;
                 document.getElementById('pathosBlockerPerson1').textContent =
                     formatPersonSummary(person1);
                 document.getElementById('pathosBlockerPerson2').textContent =
                     formatPersonSummary(person2);
 
-                return { blocked: true, reason: 'pathos' };
+                // Kein return mehr - weitermachen mit niedriger Resonanz!
+                // return { blocked: true, reason: 'pathos' };
             }
 
             // 2. LOGOS CHECK
@@ -12545,11 +12552,13 @@
         // → Gefühl als Antrieb, Verstand als Fundament
         // ═══════════════════════════════════════════════════════════════════════
         function calculateRelationshipQuality(person1, person2) {
-            // ═══════════════════════════════════════
-            // EBENE 1: K.O.-Check (Pathos-Blocker)
-            // ═══════════════════════════════════════
-            // Ohne körperliche Anziehungsmöglichkeit keine Beziehungsqualität
-            // OSHO: "Polarität ist Voraussetzung für Anziehung"
+            // ═══════════════════════════════════════════════════════════════════
+            // NEUE ZENTRALE BERECHNUNG mit Resonanz
+            // ═══════════════════════════════════════════════════════════════════
+            // Formel: Q = [(A × wₐ) + (O × wₒ) + (D × wᵈ) + (G × wᵍ)] × R
+            //
+            // R = Resonanz-Koeffizient (0.9 - 1.1)
+            // Kein harter K.O. mehr - sanfte Abstufung durch Resonanz
 
             const orientationScore = calculateOrientationScore(person1, person2);
 
@@ -12597,6 +12606,10 @@
             // Finale Qualität mit Resonanz-Modulation
             const totalScore = baseScore * resonanzResult.R;
 
+            // Logos/Pathos Breakdown für UI
+            const logos = archetypeScore;
+            const pathos = (orientationScore + dominanceScore + genderScore) / 3;
+
             return {
                 score: Math.round(totalScore),
                 baseScore: Math.round(baseScore),
@@ -12607,7 +12620,9 @@
                     orientierung: orientationScore,
                     geschlecht: genderScore
                 },
-                resonanz: resonanzResult
+                resonanz: resonanzResult,
+                logos: logos,
+                pathos: pathos
             };
         }
 
@@ -14223,10 +14238,12 @@
             const scoreCircle = document.getElementById('mobileScoreCircle');
 
             // Set score circle color and content
+            // Kein harter K.O. mehr - sanfte Abstufung durch Resonanz
             if (qualityResult.incomplete) {
                 scoreCircle.textContent = '–';
                 scoreCircle.style.background = 'linear-gradient(135deg, var(--bg-card), var(--bg-secondary))';
-            } else if (qualityResult.blocked) {
+            } else if (qualityResult.score < 30) {
+                // Sehr niedrige Resonanz (früher: blocked)
                 scoreCircle.textContent = qualityResult.score + '%';
                 scoreCircle.style.background = 'linear-gradient(135deg, var(--danger), #c0392b)';
             } else if (qualityResult.score >= 80) {
@@ -14258,9 +14275,10 @@
                 if (qualityResult.incomplete) {
                     noteText = 'Bitte alle Dimensionen auswählen.';
                     mobileScoreNote.textContent = noteText;
-                } else if (qualityResult.blocked) {
-                    noteText = 'Keine Basis für Resonanz vorhanden.';
-                    quoteText = 'Diese Beziehung zeigt eine Qualität von ' + score + '% – keine kompatible Basis vorhanden, deren Muster sich ausschließen.';
+                } else if (score < 30) {
+                    // Sehr niedrige Resonanz - sanfter Hinweis statt K.O.
+                    noteText = 'Sehr niedrige Resonanz – große Unterschiede.';
+                    quoteText = 'Diese Beziehung zeigt eine Qualität von ' + score + '% – die Muster unterscheiden sich stark, was intensive Kommunikation erfordert.';
                     mobileScoreNote.innerHTML = '<strong>' + noteText + '</strong><br><span style="font-style: italic; opacity: 0.85; font-size: 0.9em;">"' + quoteText + '"</span>';
                 } else if (score >= 80) {
                     noteText = 'Hohe Resonanz – Muster ergänzen sich.';
