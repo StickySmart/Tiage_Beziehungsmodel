@@ -4270,6 +4270,75 @@
             box-shadow: 0 0 8px rgba(139, 92, 246, 0.5);
         }
 
+        /* GFK Bedürfnis-Anzeige */
+        .gfk-beduerfnis-display {
+            background: rgba(30, 30, 35, 0.8);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 16px;
+            margin: 16px 0;
+        }
+
+        .gfk-matching-header {
+            text-align: center;
+            margin-bottom: 16px;
+        }
+
+        .gfk-score-display {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .gfk-score {
+            font-size: 2rem;
+            font-weight: 700;
+        }
+
+        .gfk-level-label {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        .gfk-section {
+            margin-top: 12px;
+        }
+
+        .gfk-section-title {
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .gfk-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+
+        .gfk-tag {
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+
+        .gfk-tag-match {
+            background: rgba(34, 197, 94, 0.2);
+            border: 1px solid rgba(34, 197, 94, 0.4);
+            color: #22c55e;
+        }
+
+        .gfk-tag-conflict {
+            background: rgba(239, 68, 68, 0.15);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            color: #f87171;
+            cursor: help;
+        }
+
         /* Indikatoren für Dominanz/Orientierung (gleiche wie Geschlecht) */
         .dominanz-btn .geschlecht-indicator,
         .orientierung-btn .geschlecht-indicator {
@@ -5851,6 +5920,7 @@
     <script src="js/synthesis/factors/orientationFactor.js"></script>
     <script src="js/synthesis/factors/genderFactor.js"></script>
     <script src="js/synthesis/synthesisCalculator.js"></script>
+    <script src="profiles/gfk-beduerfnisse.js"></script>
 </head>
 <body>
     <!-- Age Verification - Inline Script BEFORE modal for onclick to work -->
@@ -6714,6 +6784,11 @@
                     </div>
                 </div>
             </div>
+        </div>
+
+        <!-- GFK Bedürfnis-Matching Anzeige -->
+        <div id="gfk-beduerfnis-display" class="gfk-beduerfnis-display" style="display: none;">
+            <!-- Wird dynamisch durch updateGfkBeduerfnisDisplay() gefüllt -->
         </div>
 
         <!-- Tiage's Synthese Button -->
@@ -12591,94 +12666,119 @@
         }
 
         // ========================================
-        // Automatische GFK-Ableitung aus Archetypen
+        // GFK-Bedürfnis-Matching (nach Marshall Rosenberg)
         // ========================================
 
-        /**
-         * Leitet den GFK-Level aus dem E-Score (Kommunikations-Matching)
-         * der ausgewählten Archetypen-Kombination ab.
-         *
-         * E-Score Mapping:
-         * - E >= 80: "hoch" (optimale Kommunikationsbasis)
-         * - E >= 60: "mittel" (gute Grundlage)
-         * - E < 60: "niedrig" (Herausforderung)
-         */
-        function getGfkLevelFromEScore(eScore) {
-            if (eScore >= 80) return 'hoch';
-            if (eScore >= 60) return 'mittel';
-            return 'niedrig';
-        }
+        // Globale Variable für das letzte GFK-Matching-Ergebnis
+        let lastGfkMatchingResult = null;
 
         /**
-         * Aktualisiert die GFK-Level für beide Personen basierend auf
-         * der Kommunikations-Matching-Kategorie (E) ihrer Archetypen.
+         * Berechnet das GFK-Bedürfnis-Matching zwischen den ausgewählten Archetypen.
+         * Basiert auf der vollständigen GFK-Bedürfnisliste nach Marshall Rosenberg.
          *
-         * Der E-Score repräsentiert:
-         * - Kommunikationstiefe
-         * - Konfliktfähigkeit
-         * - Emotionale Transparenz
-         *
-         * Beide Partner erhalten denselben GFK-Level, da die Kommunikationsqualität
-         * aus der Beziehungskonstellation abgeleitet wird.
+         * Statt E-Score Proxy: Direkter Vergleich der Bedürfnis-Profile
          */
         function updateGfkFromArchetypes() {
-            if (!data || !data.interactions) return;
+            if (typeof GfkBeduerfnisse === 'undefined') {
+                console.warn('GFK: GfkBeduerfnisse nicht geladen');
+                return;
+            }
 
             const ichArchetype = currentArchetype;
             const partnerArchetype = selectedPartner;
 
             if (!ichArchetype || !partnerArchetype) return;
 
-            // Hole die Interaktionsdaten für die aktuelle Archetypen-Kombination
-            const interactionKey = `${ichArchetype}_${partnerArchetype}`;
-            const interaction = data.interactions[interactionKey];
+            // Archetyp-IDs normalisieren (duo_flex → duo-flex)
+            const ichNormalized = ichArchetype.replace('_', '-');
+            const partnerNormalized = partnerArchetype.replace('_', '-');
 
-            if (!interaction || !interaction.scores || !interaction.scores.E) {
-                console.log('GFK Auto: Keine E-Score-Daten für', interactionKey);
+            // Bedürfnis-Matching berechnen
+            const matching = GfkBeduerfnisse.berechneMatching(ichNormalized, partnerNormalized);
+
+            if (matching.fehler) {
+                console.warn('GFK Matching Fehler:', matching.fehler);
                 return;
             }
 
-            // E-Score (Kommunikations-Matching) extrahieren
-            const eScore = interaction.scores.E.value;
-            const gfkLevel = getGfkLevelFromEScore(eScore);
+            lastGfkMatchingResult = matching;
 
-            console.log(`GFK Auto: ${ichArchetype} + ${partnerArchetype} → E=${eScore} → GFK="${gfkLevel}"`);
+            console.log(`GFK Bedürfnis-Matching: ${matching.archetyp1} + ${matching.archetyp2} → Score=${matching.score} (${matching.level})`);
 
-            // Beide Personen erhalten den gleichen GFK-Level
-            // (basierend auf ihrer Beziehungskonstellation)
-            personDimensions.ich.gfk = gfkLevel;
-            personDimensions.partner.gfk = gfkLevel;
+            // GFK-Level setzen (basierend auf Bedürfnis-Übereinstimmung)
+            personDimensions.ich.gfk = matching.level;
+            personDimensions.partner.gfk = matching.level;
 
             // UI synchronisieren
             syncGfkUI('ich');
             syncGfkUI('partner');
 
-            // Optional: Visuellen Hinweis geben, dass GFK automatisch gesetzt wurde
-            markGfkAsAutomatic();
+            // Bedürfnis-Details anzeigen
+            updateGfkBeduerfnisDisplay(matching);
         }
 
         /**
-         * Markiert die GFK-Buttons als automatisch gesetzt
-         * mit einem visuellen Indikator
+         * Zeigt die Bedürfnis-Matching-Details in der UI an
          */
-        function markGfkAsAutomatic() {
-            // Alle GFK-Grid Container finden
-            const gfkGrids = document.querySelectorAll('.gfk-grid[data-person]');
+        function updateGfkBeduerfnisDisplay(matching) {
+            const container = document.getElementById('gfk-beduerfnis-display');
+            if (!container) return;
 
-            gfkGrids.forEach(grid => {
-                // Prüfen ob bereits ein Auto-Indikator existiert
-                let indicator = grid.parentElement?.querySelector('.gfk-auto-indicator');
+            // Container sichtbar machen
+            container.style.display = 'block';
 
-                if (!indicator) {
-                    // Auto-Indikator erstellen
-                    indicator = document.createElement('div');
-                    indicator.className = 'gfk-auto-indicator';
-                    indicator.innerHTML = '<small style="color: #8B5CF6; font-size: 0.75rem;">✨ automatisch aus Archetypen-Matching</small>';
-                    indicator.style.marginTop = '4px';
-                    indicator.style.textAlign = 'center';
-                    grid.parentElement?.appendChild(indicator);
-                }
-            });
+            // Score-Farbe basierend auf Level
+            const scoreColor = matching.level === 'hoch' ? '#22c55e' :
+                              matching.level === 'mittel' ? '#eab308' : '#ef4444';
+
+            // HTML generieren
+            let html = `
+                <div class="gfk-matching-header">
+                    <div class="gfk-score-display">
+                        <span class="gfk-score" style="color: ${scoreColor}">${matching.score}%</span>
+                        <span class="gfk-level-label">Bedürfnis-Übereinstimmung</span>
+                    </div>
+                </div>
+            `;
+
+            // Top Übereinstimmungen
+            if (matching.topUebereinstimmungen && matching.topUebereinstimmungen.length > 0) {
+                html += `
+                    <div class="gfk-section gfk-matches">
+                        <div class="gfk-section-title" style="color: #22c55e;">Gemeinsame Bedürfnisse</div>
+                        <div class="gfk-tags">
+                            ${matching.topUebereinstimmungen.map(b =>
+                                `<span class="gfk-tag gfk-tag-match">${b.label}</span>`
+                            ).join('')}
+                        </div>
+                    </div>
+                `;
+            }
+
+            // Konflikte
+            if (matching.topKonflikte && matching.topKonflikte.length > 0) {
+                html += `
+                    <div class="gfk-section gfk-conflicts">
+                        <div class="gfk-section-title" style="color: #ef4444;">Unterschiedliche Prioritäten</div>
+                        <div class="gfk-tags">
+                            ${matching.topKonflikte.map(b =>
+                                `<span class="gfk-tag gfk-tag-conflict" title="${matching.archetyp1}: ${b.wert1}% | ${matching.archetyp2}: ${b.wert2}%">${b.label}</span>`
+                            ).join('')}
+                        </div>
+                    </div>
+                `;
+            }
+
+            container.innerHTML = html;
+        }
+
+        /**
+         * Gibt die Top-Bedürfnisse für einen Archetyp zurück
+         */
+        function getArchetypBeduerfnisse(archetyp) {
+            if (typeof GfkBeduerfnisse === 'undefined') return [];
+            const normalized = archetyp.replace('_', '-');
+            return GfkBeduerfnisse.getTopBeduerfnisse(normalized, 5);
         }
 
         // ========================================
