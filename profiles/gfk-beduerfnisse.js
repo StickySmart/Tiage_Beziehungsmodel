@@ -756,6 +756,233 @@ const GfkBeduerfnisse = {
         });
 
         return scores;
+    },
+
+    // ═══════════════════════════════════════════════════════════════════════════
+    // PATHOS / LOGOS ZUORDNUNG
+    // ═══════════════════════════════════════════════════════════════════════════
+    // Logos = Verstand, Philosophie, Werte
+    // Pathos = Gefühl, Körper, Energie
+
+    pathosLogosMapping: {
+        // LOGOS-Kategorien (Verstand, Philosophie)
+        logos: {
+            kategorien: ['identitaet', 'erschaffen', 'teilnahme'],
+            beschreibung: "Werte, Sinn, Kommunikation"
+        },
+        // PATHOS-Kategorien (Gefühl, Körper, Energie)
+        pathos: {
+            kategorien: ['zuneigung', 'sicherheit', 'freiheit', 'verstaendnis', 'verbundenheit', 'musse', 'existenz'],
+            beschreibung: "Gefühle, Nähe, Sicherheit"
+        }
+    },
+
+    /**
+     * Gibt zurück, ob ein Bedürfnis zu Pathos oder Logos gehört
+     */
+    getPathosLogos: function(beduerfnisId) {
+        const def = this.definitionen[beduerfnisId];
+        if (!def) return null;
+
+        const kategorie = def.kategorie;
+        if (this.pathosLogosMapping.logos.kategorien.includes(kategorie)) {
+            return 'logos';
+        }
+        return 'pathos';
+    },
+
+    // ═══════════════════════════════════════════════════════════════════════════
+    // "WER BRINGT WAS MIT" - ANALYSE
+    // ═══════════════════════════════════════════════════════════════════════════
+
+    /**
+     * Analysiert was jeder Partner in die Beziehung einbringt
+     * @param {string} archetyp1 - ICH Archetyp
+     * @param {string} archetyp2 - Partner Archetyp
+     * @returns {Object} Detaillierte Analyse für Pathos/Logos Ansicht
+     */
+    analysiereWerBringtWasMit: function(archetyp1, archetyp2) {
+        const profil1 = this.archetypProfile[archetyp1];
+        const profil2 = this.archetypProfile[archetyp2];
+
+        if (!profil1 || !profil2) {
+            return { fehler: "Unbekannter Archetyp" };
+        }
+
+        const result = {
+            ich: {
+                name: profil1.name,
+                archetyp: archetyp1,
+                staerken: { pathos: [], logos: [] },
+                beduerfnisse: { pathos: [], logos: [] }
+            },
+            partner: {
+                name: profil2.name,
+                archetyp: archetyp2,
+                staerken: { pathos: [], logos: [] },
+                beduerfnisse: { pathos: [], logos: [] }
+            },
+            gemeinsam: {
+                pathos: [],
+                logos: []
+            },
+            wachstumspotential: {
+                pathos: [],
+                logos: []
+            }
+        };
+
+        const bed1 = profil1.kernbeduerfnisse;
+        const bed2 = profil2.kernbeduerfnisse;
+        const alleBed = new Set([...Object.keys(bed1), ...Object.keys(bed2)]);
+
+        alleBed.forEach(bed => {
+            const wert1 = bed1[bed] || 0;
+            const wert2 = bed2[bed] || 0;
+            const pathosLogos = this.getPathosLogos(bed);
+
+            if (!pathosLogos) return;
+
+            const bedInfo = {
+                id: bed,
+                label: this.definitionen[bed]?.label || bed,
+                kategorie: this.definitionen[bed]?.kategorie,
+                wertIch: wert1,
+                wertPartner: wert2
+            };
+
+            // Stärken: Was jemand stark mitbringt (> 75)
+            if (wert1 >= 75) {
+                result.ich.staerken[pathosLogos].push({ ...bedInfo, wert: wert1 });
+            }
+            if (wert2 >= 75) {
+                result.partner.staerken[pathosLogos].push({ ...bedInfo, wert: wert2 });
+            }
+
+            // Bedürfnisse: Was jemand braucht (> 70)
+            if (wert1 >= 70) {
+                result.ich.beduerfnisse[pathosLogos].push({ ...bedInfo, wert: wert1 });
+            }
+            if (wert2 >= 70) {
+                result.partner.beduerfnisse[pathosLogos].push({ ...bedInfo, wert: wert2 });
+            }
+
+            // Gemeinsam: Beide hoch (beide > 70)
+            if (wert1 >= 70 && wert2 >= 70) {
+                result.gemeinsam[pathosLogos].push(bedInfo);
+            }
+
+            // Wachstumspotential: Einer stark, anderer schwach (Diff > 40)
+            const diff = Math.abs(wert1 - wert2);
+            if (diff >= 40 && (wert1 >= 70 || wert2 >= 70)) {
+                result.wachstumspotential[pathosLogos].push({
+                    ...bedInfo,
+                    staerkerBei: wert1 > wert2 ? 'ich' : 'partner',
+                    diff: diff
+                });
+            }
+        });
+
+        // Sortieren nach Wichtigkeit
+        ['ich', 'partner'].forEach(person => {
+            ['pathos', 'logos'].forEach(pl => {
+                result[person].staerken[pl].sort((a, b) => b.wert - a.wert);
+                result[person].beduerfnisse[pl].sort((a, b) => b.wert - a.wert);
+            });
+        });
+
+        ['pathos', 'logos'].forEach(pl => {
+            result.gemeinsam[pl].sort((a, b) => (b.wertIch + b.wertPartner) - (a.wertIch + a.wertPartner));
+            result.wachstumspotential[pl].sort((a, b) => b.diff - a.diff);
+        });
+
+        // Summary-Texte generieren
+        result.summary = this.generiereSummary(result);
+
+        return result;
+    },
+
+    /**
+     * Generiert lesbare Summary-Texte für die Analyse
+     */
+    generiereSummary: function(analyse) {
+        const summary = {
+            ich: { pathos: '', logos: '' },
+            partner: { pathos: '', logos: '' }
+        };
+
+        // ICH - Pathos
+        const ichPathosTop = analyse.ich.staerken.pathos.slice(0, 3).map(b => b.label);
+        if (ichPathosTop.length > 0) {
+            summary.ich.pathos = `Bringt ${ichPathosTop.join(', ')} mit`;
+        }
+
+        // ICH - Logos
+        const ichLogosTop = analyse.ich.staerken.logos.slice(0, 3).map(b => b.label);
+        if (ichLogosTop.length > 0) {
+            summary.ich.logos = `Bringt ${ichLogosTop.join(', ')} mit`;
+        }
+
+        // Partner - Pathos
+        const partnerPathosTop = analyse.partner.staerken.pathos.slice(0, 3).map(b => b.label);
+        if (partnerPathosTop.length > 0) {
+            summary.partner.pathos = `Bringt ${partnerPathosTop.join(', ')} mit`;
+        }
+
+        // Partner - Logos
+        const partnerLogosTop = analyse.partner.staerken.logos.slice(0, 3).map(b => b.label);
+        if (partnerLogosTop.length > 0) {
+            summary.partner.logos = `Bringt ${partnerLogosTop.join(', ')} mit`;
+        }
+
+        return summary;
+    },
+
+    /**
+     * Berechnet Pathos- und Logos-Scores für ein Archetyp-Paar
+     */
+    berechnePathosLogosScores: function(archetyp1, archetyp2) {
+        const profil1 = this.archetypProfile[archetyp1];
+        const profil2 = this.archetypProfile[archetyp2];
+
+        if (!profil1 || !profil2) {
+            return { pathos: 0, logos: 0 };
+        }
+
+        const bed1 = profil1.kernbeduerfnisse;
+        const bed2 = profil2.kernbeduerfnisse;
+
+        let pathosSum = 0, pathosCount = 0;
+        let logosSum = 0, logosCount = 0;
+
+        const alleBed = new Set([...Object.keys(bed1), ...Object.keys(bed2)]);
+
+        alleBed.forEach(bed => {
+            const wert1 = bed1[bed] || 0;
+            const wert2 = bed2[bed] || 0;
+            const pathosLogos = this.getPathosLogos(bed);
+
+            if (!pathosLogos) return;
+
+            const gewicht = (wert1 + wert2) / 2;
+            if (gewicht < 30) return;
+
+            const diff = Math.abs(wert1 - wert2);
+            const uebereinstimmung = Math.max(0, 100 - diff);
+
+            if (pathosLogos === 'pathos') {
+                pathosSum += uebereinstimmung * gewicht;
+                pathosCount += gewicht;
+            } else {
+                logosSum += uebereinstimmung * gewicht;
+                logosCount += gewicht;
+            }
+        });
+
+        return {
+            pathos: pathosCount > 0 ? Math.round(pathosSum / pathosCount) : 0,
+            logos: logosCount > 0 ? Math.round(logosSum / logosCount) : 0
+        };
     }
 };
 
@@ -765,3 +992,4 @@ const GfkBeduerfnisse = {
 if (typeof module !== 'undefined' && module.exports) {
     module.exports = { GfkBeduerfnisse };
 }
+
