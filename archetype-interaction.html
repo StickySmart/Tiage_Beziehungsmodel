@@ -3117,6 +3117,12 @@
             font-size: var(--font-xs);
         }
 
+        .analysis-overview-content .geschlecht-info {
+            color: var(--warning);
+            font-size: var(--font-xs);
+            font-weight: 500;
+        }
+
         .analysis-overview-edit {
             font-size: var(--font-xs);
             color: var(--primary);
@@ -12338,6 +12344,40 @@
             return result;
         }
 
+        function getGeschlechtVoll(geschlecht) {
+            if (!geschlecht) return null;
+
+            let primary = geschlecht;
+            let secondary = null;
+            if (typeof geschlecht === 'object') {
+                primary = geschlecht.primary;
+                secondary = geschlecht.secondary;
+            }
+
+            if (!primary) return null;
+
+            const map = {
+                'cis_mann': 'Cis Mann',
+                'cis_frau': 'Cis Frau',
+                'trans_mann': 'Trans Mann',
+                'trans_frau': 'Trans Frau',
+                'nonbinaer': 'Nonbinär',
+                'genderfluid': 'Genderfluid',
+                'agender': 'Agender',
+                'intersex': 'Intersex',
+                'divers': 'Divers',
+                'männlich': 'Mann',
+                'weiblich': 'Frau',
+                'non-binär': 'Nonbinär'
+            };
+
+            let result = map[primary] || primary;
+            if (secondary) {
+                result += ' (' + (map[secondary] || secondary) + ')';
+            }
+            return result;
+        }
+
         function getGeschlechtCategory(geschlecht) {
             // Gibt die Kategorie für Orientierungslogik zurück
             if (typeof TiageConfig !== 'undefined' && TiageConfig.GESCHLECHT_CATEGORY) {
@@ -12429,15 +12469,22 @@
             const ichDims = personDimensions.ich;
             const partnerDims = personDimensions.partner;
 
-            const ichInfo = `(${getGeschlechtKurz(ichDims.geschlecht)}, ${getDominanzKurz(ichDims.dominanz)}, ${getOrientierungKurz(ichDims.orientierung, ichDims.orientierungStatus)})`;
-            const partnerInfo = `(${getGeschlechtKurz(partnerDims.geschlecht)}, ${getDominanzKurz(partnerDims.dominanz)}, ${getOrientierungKurz(partnerDims.orientierung, partnerDims.orientierungStatus)})`;
+            // Voller Geschlechtsname mit sekundärem in Klammern
+            const ichGeschlecht = getGeschlechtVoll(ichDims.geschlecht);
+            const partnerGeschlecht = getGeschlechtVoll(partnerDims.geschlecht);
+
+            const ichInfo = `(${getDominanzKurz(ichDims.dominanz)}, ${getOrientierungKurz(ichDims.orientierung, ichDims.orientierungStatus)})`;
+            const partnerInfo = `(${getDominanzKurz(partnerDims.dominanz)}, ${getOrientierungKurz(partnerDims.orientierung, partnerDims.orientierungStatus)})`;
 
             const content = document.getElementById('analysisOverviewContent');
             if (content) {
+                const ichGeschlechtHtml = ichGeschlecht ? `<span class="geschlecht-info">Du ein ${ichGeschlecht}</span>` : '';
+                const partnerGeschlechtHtml = partnerGeschlecht ? `<span class="geschlecht-info">${partnerGeschlecht}</span>` : '';
+
                 content.innerHTML = `
-                    <span class="type-name">${ichType}</span> <span class="dim-info">${ichInfo}</span>
+                    <span class="type-name">${ichType}</span> ${ichGeschlechtHtml} <span class="dim-info">${ichInfo}</span>
                     <span> × </span>
-                    <span class="type-name">${partnerType}</span> <span class="dim-info">${partnerInfo}</span>
+                    <span class="type-name">${partnerType}</span> ${partnerGeschlechtHtml} <span class="dim-info">${partnerInfo}</span>
                 `;
             }
         }
