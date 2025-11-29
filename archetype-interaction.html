@@ -3139,6 +3139,81 @@
             width: 100%;
         }
 
+        /* Geschlecht Info Modal (scrollable) */
+        .geschlecht-info-modal-content {
+            background: var(--bg-card);
+            border: 1px solid var(--primary);
+            border-radius: 12px;
+            padding: 0;
+            max-width: 400px;
+            width: 100%;
+            max-height: 80vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .geschlecht-info-modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 20px;
+            border-bottom: 1px solid var(--border);
+            flex-shrink: 0;
+        }
+
+        .geschlecht-info-modal-header .dimension-tooltip-title {
+            margin-bottom: 0;
+        }
+
+        .geschlecht-info-close-btn {
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            font-size: 24px;
+            cursor: pointer;
+            padding: 0;
+            line-height: 1;
+            transition: color 0.2s ease;
+        }
+
+        .geschlecht-info-close-btn:hover {
+            color: var(--text-primary);
+        }
+
+        .geschlecht-info-scroll-container {
+            overflow-y: auto;
+            padding: 12px 20px;
+            flex: 1;
+            max-height: 50vh;
+        }
+
+        .geschlecht-info-item {
+            padding: 12px 0;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .geschlecht-info-item:last-child {
+            border-bottom: none;
+        }
+
+        .geschlecht-info-name {
+            font-size: var(--font-base);
+            font-weight: 600;
+            color: var(--primary);
+            margin-bottom: 6px;
+        }
+
+        .geschlecht-info-desc {
+            font-size: var(--font-sm);
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+
+        .geschlecht-info-modal-content .dimension-tooltip-close {
+            margin: 16px 20px;
+            flex-shrink: 0;
+        }
+
         /* Status Popup Styles */
         .status-popup-content {
             max-width: 380px;
@@ -5973,7 +6048,7 @@
                 </div>
                 <div class="column-dimensions">
                     <div class="compact-dimension needs-selection" data-dimension="ich-geschlecht-new">
-                        <div class="compact-dimension-label">Geschlechtsidentität <span class="dimension-info-icon" onclick="showDimensionTooltip('geschlecht')">ℹ</span> <span style="font-size: 10px; opacity: 0.7;">(I=Identität, G=Sekundär)</span></div>
+                        <div class="compact-dimension-label"><span title="Dein Geschlecht. Dies beeinflusst die körperliche Anziehung zusammen mit der sexuellen Orientierung." style="cursor: help;">Geschlechtsidentität</span> <span class="dimension-info-icon" onclick="showGeschlechtInfoModal()">ℹ</span> <span style="font-size: 10px; opacity: 0.7;">(I=Identität, G=Sekundär)</span></div>
                         <div class="geschlecht-grid" id="ich-geschlecht-grid" data-person="ich">
                             <button type="button" class="geschlecht-btn" data-value="cis_mann" onclick="handleGeschlechtClick('ich', 'cis_mann', this)">Cis Mann</button>
                             <button type="button" class="geschlecht-btn" data-value="cis_frau" onclick="handleGeschlechtClick('ich', 'cis_frau', this)">Cis Frau</button>
@@ -6077,7 +6152,7 @@
                 </div>
                 <div class="column-dimensions">
                     <div class="compact-dimension needs-selection" data-dimension="partner-geschlecht-new">
-                        <div class="compact-dimension-label">Geschlechtsidentität <span class="dimension-info-icon" onclick="showDimensionTooltip('geschlecht')">ℹ</span> <span style="font-size: 10px; opacity: 0.7;">(I=Identität, G=Sekundär)</span></div>
+                        <div class="compact-dimension-label"><span title="Dein Geschlecht. Dies beeinflusst die körperliche Anziehung zusammen mit der sexuellen Orientierung." style="cursor: help;">Geschlechtsidentität</span> <span class="dimension-info-icon" onclick="showGeschlechtInfoModal()">ℹ</span> <span style="font-size: 10px; opacity: 0.7;">(I=Identität, G=Sekundär)</span></div>
                         <div class="geschlecht-grid" id="partner-geschlecht-grid" data-person="partner">
                             <button type="button" class="geschlecht-btn" data-value="cis_mann" onclick="handleGeschlechtClick('partner', 'cis_mann', this)">Cis Mann</button>
                             <button type="button" class="geschlecht-btn" data-value="cis_frau" onclick="handleGeschlechtClick('partner', 'cis_frau', this)">Cis Frau</button>
@@ -7163,6 +7238,55 @@
             <div class="dimension-tooltip-title" id="dimensionTooltipTitle">Info</div>
             <div class="dimension-tooltip-text" id="dimensionTooltipText">...</div>
             <button class="dimension-tooltip-close" onclick="closeDimensionTooltip()">Verstanden</button>
+        </div>
+    </div>
+
+    <!-- Geschlecht Info Modal (scrollable) -->
+    <div class="dimension-tooltip-overlay" id="geschlechtInfoModal" onclick="closeGeschlechtInfoModal()">
+        <div class="geschlecht-info-modal-content" onclick="event.stopPropagation()">
+            <div class="geschlecht-info-modal-header">
+                <div class="dimension-tooltip-title">Geschlechtsidentitäten</div>
+                <button class="geschlecht-info-close-btn" onclick="closeGeschlechtInfoModal()">&times;</button>
+            </div>
+            <div class="geschlecht-info-scroll-container">
+                <div class="geschlecht-info-item">
+                    <div class="geschlecht-info-name">Cis Mann</div>
+                    <div class="geschlecht-info-desc">Person, die bei Geburt männlich zugewiesen wurde und sich als Mann identifiziert.</div>
+                </div>
+                <div class="geschlecht-info-item">
+                    <div class="geschlecht-info-name">Cis Frau</div>
+                    <div class="geschlecht-info-desc">Person, die bei Geburt weiblich zugewiesen wurde und sich als Frau identifiziert.</div>
+                </div>
+                <div class="geschlecht-info-item">
+                    <div class="geschlecht-info-name">Trans Mann</div>
+                    <div class="geschlecht-info-desc">Person, die sich als Mann identifiziert, aber bei Geburt nicht männlich zugewiesen wurde.</div>
+                </div>
+                <div class="geschlecht-info-item">
+                    <div class="geschlecht-info-name">Trans Frau</div>
+                    <div class="geschlecht-info-desc">Person, die sich als Frau identifiziert, aber bei Geburt nicht weiblich zugewiesen wurde.</div>
+                </div>
+                <div class="geschlecht-info-item">
+                    <div class="geschlecht-info-name">Nonbinär</div>
+                    <div class="geschlecht-info-desc">Person, die sich weder ausschließlich als Mann noch als Frau identifiziert.</div>
+                </div>
+                <div class="geschlecht-info-item">
+                    <div class="geschlecht-info-name">Genderfluid</div>
+                    <div class="geschlecht-info-desc">Person, deren Geschlechtsidentität sich über Zeit verändert oder zwischen verschiedenen Identitäten wechselt.</div>
+                </div>
+                <div class="geschlecht-info-item">
+                    <div class="geschlecht-info-name">Agender</div>
+                    <div class="geschlecht-info-desc">Person, die sich mit keinem Geschlecht identifiziert oder geschlechtslos fühlt.</div>
+                </div>
+                <div class="geschlecht-info-item">
+                    <div class="geschlecht-info-name">Intersex</div>
+                    <div class="geschlecht-info-desc">Person mit angeborenen körperlichen Geschlechtsmerkmalen, die nicht eindeutig männlich oder weiblich sind.</div>
+                </div>
+                <div class="geschlecht-info-item">
+                    <div class="geschlecht-info-name">Divers</div>
+                    <div class="geschlecht-info-desc">Offizieller dritter Geschlechtseintrag in Deutschland für Menschen, die sich nicht als männlich oder weiblich identifizieren.</div>
+                </div>
+            </div>
+            <button class="dimension-tooltip-close" onclick="closeGeschlechtInfoModal()">Schließen</button>
         </div>
     </div>
 
@@ -10467,6 +10591,17 @@
 
         function closeDimensionTooltip() {
             document.getElementById('dimensionTooltipOverlay').classList.remove('active');
+        }
+
+        // ========================================
+        // Geschlecht Info Modal Functions
+        // ========================================
+        function showGeschlechtInfoModal() {
+            document.getElementById('geschlechtInfoModal').classList.add('active');
+        }
+
+        function closeGeschlechtInfoModal() {
+            document.getElementById('geschlechtInfoModal').classList.remove('active');
         }
 
         // ========================================
