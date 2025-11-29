@@ -165,6 +165,13 @@
             color: white;
         }
 
+        /* Header Fold Button */
+        .header-fold-btn {
+            padding: 4px 12px;
+            font-size: 12px;
+            height: 28px;
+        }
+
         /* Quick Guide Styles */
         .quick-guide {
             background: linear-gradient(135deg, rgba(76, 175, 80, 0.1), rgba(76, 175, 80, 0.05));
@@ -4369,9 +4376,9 @@
             display: block;
         }
 
-        /* Show grid summary in green when selection exists (even when not collapsed) */
+        /* Hide grid summary even when selection exists - keep only 'fehlt' messages */
         .compact-dimension.collapsible-dimension .collapsed-summary.has-selection {
-            display: block;
+            display: none;
         }
 
         /* Blinking header when collapsed AND incomplete selection */
@@ -4389,19 +4396,6 @@
         .compact-dimension.collapsible-dimension.collapsed.needs-selection .compact-dimension-label {
             animation: needsAttentionHeader 1.5s ease-in-out infinite;
             color: var(--warning);
-        }
-
-        /* Unified Fold/Unfold Toolbar - Sticky */
-        .fold-unfold-toolbar {
-            position: sticky;
-            top: 120px;
-            z-index: 100;
-            display: flex;
-            justify-content: flex-end;
-            padding: 8px 16px;
-            margin-bottom: 8px;
-            background: linear-gradient(180deg, var(--bg-primary) 0%, var(--bg-primary) 80%, transparent 100%);
-            backdrop-filter: blur(8px);
         }
 
         .fold-unfold-btn {
@@ -6377,6 +6371,10 @@
                     <span class="lang-icon">🌐</span>
                     <span class="lang-code" id="currentLangCode">DE</span>
                 </button>
+                <button class="fold-unfold-btn header-fold-btn" id="foldUnfoldAllBtn" onclick="toggleAllDimensionsCollapse()" title="Fold/Unfold all fields">
+                    <span class="fold-unfold-icon">▼</span>
+                    <span class="fold-unfold-text">Fold</span>
+                </button>
                 <button class="help-btn" onclick="openHelpModal()" title="Hilfe & Dokumentation">?</button>
             </div>
         </div>
@@ -6387,13 +6385,6 @@
 
     <!-- NEW: Side-by-Side Comparison Layout (Desktop) -->
     <div class="comparison-container desktop-mode" id="comparisonView">
-        <!-- Unified Fold/Unfold Button -->
-        <div class="fold-unfold-toolbar" style="display: flex; gap: 10px; align-items: center;">
-            <button class="fold-unfold-btn" id="foldUnfoldAllBtn" onclick="toggleAllDimensionsCollapse()" title="Fold/Unfold all fields">
-                <span class="fold-unfold-icon">▼</span>
-                <span class="fold-unfold-text">Unfold</span>
-            </button>
-        </div>
         <!-- Two Column Grid -->
         <div class="comparison-grid">
             <!-- ICH Column -->
