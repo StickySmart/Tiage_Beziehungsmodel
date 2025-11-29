@@ -1,16 +1,16 @@
 {
-  "version": "1.0",
-  "perspective": "Tiage",
+  "version": "2.0",
+  "description": "Kategorien-Bewertung aller 6 Beziehungsarchetypen - angepasst an archetype-matrix.json",
   "categories": {
     "A": {
-      "name": "Emotionale Gebundenheit",
-      "description": "Wie stark emotionale Bindung möglich und gewollt ist",
+      "name": "Beziehungsphilosophie",
+      "description": "Die fundamentale Einstellung zu Beziehungen: Exklusivität, Offenheit, Tiefe und Freiheit",
       "scale": "0-100%",
       "data": {
         "freunde": {
           "single": {
             "value": 40,
-            "pro": "überschaubare Nähe",
+            "pro": "überschaubare Nähe, volle Freiheit",
             "kontra": "emotionale Mauern",
             "pathos": "zurückhaltend",
             "logos": "abgrenzend"
@@ -22,26 +22,40 @@
             "pathos": "situativ",
             "logos": "autonom"
           },
-          "tiage": {
+          "poly_hedo": {
+            "value": 55,
+            "pro": "Leichtigkeit, keine Erwartungen",
+            "kontra": "oberflächlich wirkend",
+            "pathos": "spielerisch",
+            "logos": "spontan"
+          },
+          "polyamor": {
+            "value": 85,
+            "pro": "viele emotionale Anker, Community",
+            "kontra": "komplexe Verflechtung",
+            "pathos": "verbindend",
+            "logos": "koordiniert"
+          },
+          "duo": {
             "value": 75,
             "pro": "echte Wärme, genuine Tiefe",
             "kontra": "Verletzlichkeit",
             "pathos": "intensiv",
             "logos": "bewusst"
           },
-          "polyamor": {
-            "value": 85,
-            "pro": "viele emotionale Anker",
-            "kontra": "komplexe Verflechtung",
-            "pathos": "verbindend",
-            "logos": "koordiniert"
+          "duo_flex": {
+            "value": 70,
+            "pro": "Tiefe mit Offenheit kombiniert",
+            "kontra": "Grenzen müssen definiert werden",
+            "pathos": "warm",
+            "logos": "flexibel"
           }
         },
         "partner": {
           "single": {
             "value": 10,
-            "pro": "klare Distanz",
-            "kontra": "kaum Tiefe",
+            "pro": "klare Distanz, volle Autonomie",
+            "kontra": "kaum Tiefe möglich",
             "pathos": "reserviert",
             "logos": "distanziert"
           },
@@ -52,25 +66,39 @@
             "pathos": "tief",
             "logos": "reflektiert"
           },
-          "tiage": {
-            "value": 65,
-            "pro": "intensive Bindungsmomente",
-            "kontra": "emotionale Überlastung möglich",
-            "pathos": "stark",
-            "logos": "strukturiert"
+          "poly_hedo": {
+            "value": 35,
+            "pro": "Intensität im Moment",
+            "kontra": "wenig Kontinuität",
+            "pathos": "leidenschaftlich",
+            "logos": "situativ"
           },
           "polyamor": {
             "value": 90,
-            "pro": "starke Bindungen",
+            "pro": "starke Bindungen, Compersion",
             "kontra": "Tiefe verteilt sich",
             "pathos": "plural tief",
             "logos": "harmonisierend"
+          },
+          "duo": {
+            "value": 95,
+            "pro": "maximale exklusive Tiefe",
+            "kontra": "hohe Erwartungen",
+            "pathos": "maximal",
+            "logos": "strukturiert"
+          },
+          "duo_flex": {
+            "value": 85,
+            "pro": "Primärtiefe mit Freiheit",
+            "kontra": "Grenzen verhandeln",
+            "pathos": "tief",
+            "logos": "adaptiv"
           }
         },
         "sexpartner": {
           "single": {
             "value": 30,
-            "pro": "unkompliziert",
+            "pro": "unkompliziert, frei",
             "kontra": "wenig Resonanz",
             "pathos": "niedrig",
             "logos": "nüchtern"
@@ -82,12 +110,12 @@
             "pathos": "flexibel",
             "logos": "situativ"
           },
-          "tiage": {
-            "value": 50,
-            "pro": "Verbindung durch Präsenz",
-            "kontra": "moralischer Konflikt",
-            "pathos": "stark",
-            "logos": "prüfend"
+          "poly_hedo": {
+            "value": 80,
+            "pro": "maximaler Genuss, Freiheit",
+            "kontra": "wenig emotionale Tiefe",
+            "pathos": "intensiv",
+            "logos": "hedonistisch"
           },
           "polyamor": {
             "value": 75,
@@ -95,29 +123,43 @@
             "kontra": "wechselnde Dynamiken",
             "pathos": "warm",
             "logos": "regelbasiert"
+          },
+          "duo": {
+            "value": 50,
+            "pro": "Verbindung durch Exklusivität",
+            "kontra": "moralischer Konflikt bei Außenkontakten",
+            "pathos": "stark",
+            "logos": "prüfend"
+          },
+          "duo_flex": {
+            "value": 70,
+            "pro": "Exploration mit sicherem Hafen",
+            "kontra": "Grenzen müssen klar sein",
+            "pathos": "offen",
+            "logos": "regelbasiert"
           }
         },
         "seelenverwandte": {
           "single": {
             "value": 5,
             "pro": "Selbstschutz",
-            "kontra": "kaum Öffnung",
+            "kontra": "kaum Öffnung möglich",
             "pathos": "blockiert",
             "logos": "starr"
           },
           "solopoly": {
             "value": 35,
             "pro": "tiefe Resonanz möglich",
-            "kontra": "Unsicherheit",
+            "kontra": "Unsicherheit, keine Verschmelzung",
             "pathos": "tief",
             "logos": "vorsichtig"
           },
-          "tiage": {
-            "value": 80,
-            "pro": "stärkste Bindungsfähigkeit",
-            "kontra": "extrem verletzlich",
-            "pathos": "maximal",
-            "logos": "hochreflektiert"
+          "poly_hedo": {
+            "value": 25,
+            "pro": "intensive Momente",
+            "kontra": "Tiefe nicht im Fokus",
+            "pathos": "flüchtig",
+            "logos": "oberflächlich"
           },
           "polyamor": {
             "value": 60,
@@ -125,13 +167,27 @@
             "kontra": "Balance und Prioritäten komplex",
             "pathos": "offen",
             "logos": "flexibel"
+          },
+          "duo": {
+            "value": 80,
+            "pro": "stärkste Bindungsfähigkeit",
+            "kontra": "extrem verletzlich",
+            "pathos": "maximal",
+            "logos": "hochreflektiert"
+          },
+          "duo_flex": {
+            "value": 70,
+            "pro": "tiefe Bindung mit Raum",
+            "kontra": "Öffnung kann verunsichern",
+            "pathos": "tief",
+            "logos": "balanciert"
           }
         }
       }
     },
     "B": {
-      "name": "Moralische Gebundenheit",
-      "description": "Wie stark Moral, Werte, Gewissen und Prinzipien Verhalten & Bindung prägen",
+      "name": "Werte-Alignment",
+      "description": "Übereinstimmung in Kernwerten wie Ehrlichkeit, Treue-Definition und ethischem Umgang",
       "scale": "0-100%",
       "data": {
         "freunde": {
@@ -149,12 +205,12 @@
             "pathos": "warm, verantwortungsvoll",
             "logos": "ethisch präzise"
           },
-          "tiage": {
-            "value": 80,
-            "pro": "starke moralische Stabilität, hohe Integrität",
-            "kontra": "innerer Druck, moralische Härte gegenüber sich selbst",
-            "pathos": "tief und gewissenhaft",
-            "logos": "konsequent, bewusst"
+          "poly_hedo": {
+            "value": 55,
+            "pro": "Ehrlichkeit über Absichten",
+            "kontra": "weniger Regelwerk",
+            "pathos": "direkt",
+            "logos": "pragmatisch"
           },
           "polyamor": {
             "value": 65,
@@ -162,6 +218,20 @@
             "kontra": "Gruppendruck, Rollenverhandlungen",
             "pathos": "offen, empathisch",
             "logos": "kollaborativ, regelorientiert"
+          },
+          "duo": {
+            "value": 80,
+            "pro": "starke moralische Stabilität, hohe Integrität",
+            "kontra": "innerer Druck, moralische Härte",
+            "pathos": "tief und gewissenhaft",
+            "logos": "konsequent, bewusst"
+          },
+          "duo_flex": {
+            "value": 75,
+            "pro": "Kernwerte + Offenheit",
+            "kontra": "Werte müssen neu definiert werden",
+            "pathos": "reflektiert",
+            "logos": "adaptiv"
           }
         },
         "partner": {
@@ -179,12 +249,12 @@
             "pathos": "warm, reflektiert",
             "logos": "strukturiert"
           },
-          "tiage": {
-            "value": 90,
-            "pro": "höchste Ehrlichkeit, moralische Konsequenz",
-            "kontra": "Überforderung durch eigenen moralischen Anspruch",
-            "pathos": "maximal tief",
-            "logos": "streng, bewusst-regeltreu"
+          "poly_hedo": {
+            "value": 50,
+            "pro": "klare Absichten, keine falschen Versprechen",
+            "kontra": "traditionelle Werte nicht erfüllt",
+            "pathos": "ehrlich",
+            "logos": "minimalistisch"
           },
           "polyamor": {
             "value": 80,
@@ -192,6 +262,20 @@
             "kontra": "komplexe moralische Mehrfachbeziehungen",
             "pathos": "pluraloffen",
             "logos": "harmonisierend-komplex"
+          },
+          "duo": {
+            "value": 90,
+            "pro": "höchste Ehrlichkeit, moralische Konsequenz",
+            "kontra": "Überforderung durch eigenen Anspruch",
+            "pathos": "maximal tief",
+            "logos": "streng, bewusst-regeltreu"
+          },
+          "duo_flex": {
+            "value": 82,
+            "pro": "Treue neu definiert, aber ehrlich",
+            "kontra": "Werte-Verhandlung nötig",
+            "pathos": "offen",
+            "logos": "flexibel-ethisch"
           }
         },
         "sexpartner": {
@@ -209,12 +293,12 @@
             "pathos": "flexibel",
             "logos": "klärend"
           },
-          "tiage": {
-            "value": 70,
-            "pro": "klare Ethik trotz Lust",
-            "kontra": "moralische Reibung (Monogamie vs. Bedürfnis)",
-            "pathos": "stark, sensibel",
-            "logos": "kritisch prüfend"
+          "poly_hedo": {
+            "value": 65,
+            "pro": "Consent und Ehrlichkeit zentral",
+            "kontra": "wenig langfristige Verpflichtung",
+            "pathos": "direkt",
+            "logos": "pragmatisch"
           },
           "polyamor": {
             "value": 75,
@@ -222,6 +306,20 @@
             "kontra": "Grenz-Management anspruchsvoll",
             "pathos": "warm, intensiv",
             "logos": "regelbasiert"
+          },
+          "duo": {
+            "value": 70,
+            "pro": "klare Ethik trotz Lust",
+            "kontra": "moralische Reibung",
+            "pathos": "stark, sensibel",
+            "logos": "kritisch prüfend"
+          },
+          "duo_flex": {
+            "value": 72,
+            "pro": "Ethik mit Spielraum",
+            "kontra": "Grenzen testen",
+            "pathos": "offen",
+            "logos": "verhandelnd"
           }
         },
         "seelenverwandte": {
@@ -239,26 +337,40 @@
             "pathos": "tief, respektvoll",
             "logos": "präzise"
           },
-          "tiage": {
+          "poly_hedo": {
+            "value": 40,
+            "pro": "authentisch im Moment",
+            "kontra": "wenig Langzeit-Ethik",
+            "pathos": "flüchtig",
+            "logos": "situativ"
+          },
+          "polyamor": {
+            "value": 70,
+            "pro": "tiefes Vertrauen, geteilte Ethik",
+            "kontra": "moralische Erwartungsballung",
+            "pathos": "offen",
+            "logos": "flexibel"
+          },
+          "duo": {
             "value": 85,
             "pro": "volle moralische Kohärenz",
             "kontra": "Schmerz bei Disharmonie",
             "pathos": "intensiv",
             "logos": "idealistisch"
           },
-          "polyamor": {
-            "value": 70,
-            "pro": "tiefes Vertrauen",
-            "kontra": "moralische Erwartungsballung",
-            "pathos": "offen",
-            "logos": "flexibel"
+          "duo_flex": {
+            "value": 78,
+            "pro": "Werte-Tiefe mit Raum",
+            "kontra": "Öffnung kann Werte herausfordern",
+            "pathos": "reflektiert",
+            "logos": "balanciert"
           }
         }
       }
     },
     "C": {
-      "name": "Nähe & Tiefe",
-      "description": "Wie stark emotionale Nähe, Öffnung, Resonanz & Verbindung möglich sind",
+      "name": "Nähe-Distanz-Präferenzen",
+      "description": "Gewünschte emotionale und physische Nähe, Fähigkeit Raum zu geben",
       "data": {
         "freunde": {
           "single": {
@@ -275,12 +387,12 @@
             "pathos": "warm",
             "logos": "autonom"
           },
-          "tiage": {
-            "value": 90,
-            "pro": "genuine Tiefe, echte Wärme",
-            "kontra": "Verletzlichkeit",
-            "pathos": "intensiv",
-            "logos": "bewusst"
+          "poly_hedo": {
+            "value": 55,
+            "pro": "situative Nähe, keine Last",
+            "kontra": "keine Kontinuität",
+            "pathos": "leicht",
+            "logos": "spontan"
           },
           "polyamor": {
             "value": 75,
@@ -288,6 +400,20 @@
             "kontra": "komplexe Verflechtung",
             "pathos": "verbindend",
             "logos": "koordiniert"
+          },
+          "duo": {
+            "value": 90,
+            "pro": "genuine Tiefe, echte Wärme",
+            "kontra": "Verletzlichkeit",
+            "pathos": "intensiv",
+            "logos": "bewusst"
+          },
+          "duo_flex": {
+            "value": 80,
+            "pro": "Tiefe + Freiraum",
+            "kontra": "Balance finden",
+            "pathos": "warm",
+            "logos": "flexibel"
           }
         },
         "partner": {
@@ -305,12 +431,12 @@
             "pathos": "tief",
             "logos": "reflektiert"
           },
-          "tiage": {
-            "value": 95,
-            "pro": "maximale emotionale Öffnung",
-            "kontra": "emotionale Überlastung",
-            "pathos": "maximal",
-            "logos": "strukturiert"
+          "poly_hedo": {
+            "value": 50,
+            "pro": "intensive Momente",
+            "kontra": "wenig konstante Nähe",
+            "pathos": "leidenschaftlich",
+            "logos": "situativ"
           },
           "polyamor": {
             "value": 85,
@@ -318,6 +444,20 @@
             "kontra": "Tiefe verteilt sich",
             "pathos": "plural tief",
             "logos": "harmonisierend"
+          },
+          "duo": {
+            "value": 95,
+            "pro": "maximale emotionale Öffnung",
+            "kontra": "emotionale Überlastung möglich",
+            "pathos": "maximal",
+            "logos": "strukturiert"
+          },
+          "duo_flex": {
+            "value": 88,
+            "pro": "Primär-Nähe mit Raum",
+            "kontra": "Nähe kann durch Öffnung irritiert werden",
+            "pathos": "tief",
+            "logos": "balanciert"
           }
         },
         "sexpartner": {
@@ -335,12 +475,12 @@
             "pathos": "flexibel",
             "logos": "situativ"
           },
-          "tiage": {
-            "value": 70,
-            "pro": "Verbindung durch Präsenz",
-            "kontra": "moralischer Konflikt",
-            "pathos": "stark",
-            "logos": "prüfend"
+          "poly_hedo": {
+            "value": 75,
+            "pro": "maximale körperliche Präsenz",
+            "kontra": "wenig emotionale Tiefe",
+            "pathos": "intensiv",
+            "logos": "körperbetont"
           },
           "polyamor": {
             "value": 65,
@@ -348,6 +488,20 @@
             "kontra": "wechselnde Dynamiken",
             "pathos": "warm",
             "logos": "regelbasiert"
+          },
+          "duo": {
+            "value": 70,
+            "pro": "Verbindung durch Präsenz",
+            "kontra": "moralischer Konflikt",
+            "pathos": "stark",
+            "logos": "prüfend"
+          },
+          "duo_flex": {
+            "value": 72,
+            "pro": "Intensität + Exploration",
+            "kontra": "Nähe-Konflikte möglich",
+            "pathos": "offen",
+            "logos": "verhandelnd"
           }
         },
         "seelenverwandte": {
@@ -365,12 +519,12 @@
             "pathos": "tief",
             "logos": "vorsichtig"
           },
-          "tiage": {
-            "value": 98,
-            "pro": "maximale Tiefe",
-            "kontra": "maximale Verletzung",
-            "pathos": "sehr tief",
-            "logos": "hochreflektiert"
+          "poly_hedo": {
+            "value": 35,
+            "pro": "intensive Momente",
+            "kontra": "Tiefe nicht Fokus",
+            "pathos": "flüchtig",
+            "logos": "oberflächlich"
           },
           "polyamor": {
             "value": 80,
@@ -378,95 +532,137 @@
             "kontra": "mehrere Tiefe-Ebenen gleichzeitig",
             "pathos": "offen",
             "logos": "flexibel"
+          },
+          "duo": {
+            "value": 98,
+            "pro": "maximale Tiefe",
+            "kontra": "maximale Verletzlichkeit",
+            "pathos": "sehr tief",
+            "logos": "hochreflektiert"
+          },
+          "duo_flex": {
+            "value": 85,
+            "pro": "tiefe Verbindung mit Raum",
+            "kontra": "Öffnung kann Tiefe stören",
+            "pathos": "tief",
+            "logos": "balanciert"
           }
         }
       }
     },
     "D": {
-      "name": "Rückzug & Selbstwahrung",
-      "description": "Wie gut Distanz ohne Trennung funktioniert",
+      "name": "Autonomie-Bedürfnisse",
+      "description": "Bedürfnis nach Unabhängigkeit, eigenen Projekten und Freiheit",
       "data": {
         "freunde": {
           "single": {
-            "value": 85,
-            "pro": "stabiler Selbstschutz",
+            "value": 95,
+            "pro": "maximale Unabhängigkeit",
             "kontra": "Isolation",
             "pathos": "kühl",
             "logos": "rückzugsorientiert"
           },
           "solopoly": {
-            "value": 70,
-            "pro": "gesunde Distanz",
+            "value": 85,
+            "pro": "gesunde Distanz, eigene Projekte",
             "kontra": "Missverständnisse",
             "pathos": "ruhig",
             "logos": "autonom"
           },
-          "tiage": {
-            "value": 55,
-            "pro": "reflektierter Rückzug",
-            "kontra": "Schuldgefühl",
-            "pathos": "tief",
-            "logos": "moralisch"
+          "poly_hedo": {
+            "value": 90,
+            "pro": "volle Freiheit, keine Erwartungen",
+            "kontra": "keine Stabilität",
+            "pathos": "frei",
+            "logos": "ungebunden"
           },
           "polyamor": {
             "value": 70,
-            "pro": "akzeptierte Pausen",
-            "kontra": "Timingprobleme",
+            "pro": "akzeptierte Pausen, eigene Zeit",
+            "kontra": "Timingprobleme, Kalender",
             "pathos": "offen",
             "logos": "organisiert"
+          },
+          "duo": {
+            "value": 55,
+            "pro": "reflektierter Rückzug möglich",
+            "kontra": "Schuldgefühl bei Distanz",
+            "pathos": "tief",
+            "logos": "moralisch"
+          },
+          "duo_flex": {
+            "value": 65,
+            "pro": "Autonomie akzeptiert",
+            "kontra": "Grenzen verhandeln",
+            "pathos": "warm",
+            "logos": "flexibel"
           }
         },
         "partner": {
           "single": {
-            "value": 90,
+            "value": 98,
             "pro": "totale Unabhängigkeit",
             "kontra": "Bindung kaum haltbar",
             "pathos": "minimal",
             "logos": "hart"
           },
           "solopoly": {
-            "value": 75,
+            "value": 80,
             "pro": "Rückzug ohne Trennung",
-            "kontra": "Überkommunikation",
+            "kontra": "Überkommunikation nötig",
             "pathos": "offen",
             "logos": "klar"
           },
-          "tiage": {
+          "poly_hedo": {
+            "value": 88,
+            "pro": "maximale Freiheit",
+            "kontra": "keine Verbindlichkeit",
+            "pathos": "leicht",
+            "logos": "spontan"
+          },
+          "polyamor": {
             "value": 65,
+            "pro": "Pausen kulturell normal",
+            "kontra": "Konfliktpotenzial bei Hierarchien",
+            "pathos": "plural tief",
+            "logos": "flexibel"
+          },
+          "duo": {
+            "value": 45,
             "pro": "reflektierte Selbstwahrung",
-            "kontra": "emotionaler Konflikt",
+            "kontra": "emotionaler Konflikt bei Distanz",
             "pathos": "tief",
             "logos": "ordnend"
           },
-          "polyamor": {
-            "value": 75,
-            "pro": "Pausen kulturell normal",
-            "kontra": "Konfliktpotenzial",
-            "pathos": "plural tief",
-            "logos": "flexibel"
+          "duo_flex": {
+            "value": 60,
+            "pro": "Freiheit innerhalb der Beziehung",
+            "kontra": "Grenzen müssen geklärt sein",
+            "pathos": "warm",
+            "logos": "verhandelnd"
           }
         },
         "sexpartner": {
           "single": {
-            "value": 75,
+            "value": 85,
             "pro": "Rückzug einfach",
             "kontra": "instabil",
             "pathos": "gering",
             "logos": "praktisch"
           },
           "solopoly": {
-            "value": 65,
-            "pro": "flexibel",
+            "value": 75,
+            "pro": "flexibel, eigenständig",
             "kontra": "unsicher",
             "pathos": "variabel",
             "logos": "situativ"
           },
-          "tiage": {
-            "value": 50,
-            "pro": "ehrlich kommuniziert",
-            "kontra": "moralischer Druck",
-            "pathos": "intensiv",
-            "logos": "prüfend"
+          "poly_hedo": {
+            "value": 92,
+            "pro": "volle Freiheit, keine Verpflichtung",
+            "kontra": "keine Kontinuität",
+            "pathos": "frei",
+            "logos": "hedonistisch"
           },
           "polyamor": {
             "value": 60,
@@ -474,29 +670,43 @@
             "kontra": "wechselnde Bedürfnisse",
             "pathos": "ruhig",
             "logos": "regelorientiert"
+          },
+          "duo": {
+            "value": 50,
+            "pro": "ehrlich kommuniziert",
+            "kontra": "moralischer Druck",
+            "pathos": "intensiv",
+            "logos": "prüfend"
+          },
+          "duo_flex": {
+            "value": 68,
+            "pro": "Exploration erlaubt",
+            "kontra": "Regeln beachten",
+            "pathos": "offen",
+            "logos": "strukturiert"
           }
         },
         "seelenverwandte": {
           "single": {
             "value": 95,
-            "pro": "Selbstschutz",
-            "kontra": "Blockade",
+            "pro": "Selbstschutz, volle Autonomie",
+            "kontra": "Blockade jeder Tiefe",
             "pathos": "geschlossen",
             "logos": "rigide"
           },
           "solopoly": {
-            "value": 60,
-            "pro": "regulierte Nähe",
+            "value": 70,
+            "pro": "regulierte Nähe, eigener Raum",
             "kontra": "Ambivalenz",
             "pathos": "warm",
             "logos": "regulierend"
           },
-          "tiage": {
-            "value": 40,
-            "pro": "starke Bindung",
-            "kontra": "emotionale Überflutung",
-            "pathos": "maximal",
-            "logos": "anspruchsvoll"
+          "poly_hedo": {
+            "value": 85,
+            "pro": "Freiheit trotz Intensität",
+            "kontra": "keine tiefe Bindung",
+            "pathos": "flüchtig",
+            "logos": "unverbindlich"
           },
           "polyamor": {
             "value": 55,
@@ -504,35 +714,49 @@
             "kontra": "Verletzung möglich",
             "pathos": "offen",
             "logos": "anpassungsfähig"
+          },
+          "duo": {
+            "value": 40,
+            "pro": "starke Bindung akzeptiert",
+            "kontra": "emotionale Überflutung",
+            "pathos": "maximal",
+            "logos": "anspruchsvoll"
+          },
+          "duo_flex": {
+            "value": 55,
+            "pro": "Tiefe mit vereinbartem Raum",
+            "kontra": "Autonomie kann Nähe stören",
+            "pathos": "tief",
+            "logos": "verhandelnd"
           }
         }
       }
     },
     "E": {
-      "name": "Kommunikation",
-      "description": "Offenheit, Klarheit, Tiefe & Konfliktfähigkeit",
+      "name": "Kommunikations-Matching",
+      "description": "Passung der Kommunikationsstile: Tiefe, Direktheit, Konfliktfähigkeit",
       "data": {
         "freunde": {
           "single": {
             "value": 40,
-            "pro": "klare Grenzen",
+            "pro": "klare Grenzen, wenig Drama",
             "kontra": "Nähe wird nicht sprachlich bearbeitet",
             "pathos": "vorsichtig",
             "logos": "knapp"
           },
           "solopoly": {
             "value": 75,
-            "pro": "reflektiert",
+            "pro": "reflektiert, klar",
             "kontra": "hoher Aufwand",
             "pathos": "warm",
             "logos": "strukturiert"
           },
-          "tiage": {
-            "value": 85,
-            "pro": "tief & präzise",
-            "kontra": "zu viel Tiefe für manche",
-            "pathos": "intensiv",
-            "logos": "analytisch"
+          "poly_hedo": {
+            "value": 55,
+            "pro": "direkt, pragmatisch",
+            "kontra": "wenig Tiefe",
+            "pathos": "leicht",
+            "logos": "funktional"
           },
           "polyamor": {
             "value": 70,
@@ -540,6 +764,20 @@
             "kontra": "Informationslast",
             "pathos": "offen",
             "logos": "koordiniert"
+          },
+          "duo": {
+            "value": 85,
+            "pro": "tief & präzise",
+            "kontra": "zu viel Tiefe für manche",
+            "pathos": "intensiv",
+            "logos": "analytisch"
+          },
+          "duo_flex": {
+            "value": 80,
+            "pro": "Tiefe + Klarheit über Grenzen",
+            "kontra": "viel Verhandlung",
+            "pathos": "offen",
+            "logos": "strukturiert"
           }
         },
         "partner": {
@@ -557,19 +795,33 @@
             "pathos": "offen",
             "logos": "präzise"
           },
-          "tiage": {
+          "poly_hedo": {
+            "value": 50,
+            "pro": "ehrlich über Absichten",
+            "kontra": "wenig Beziehungsgespräche",
+            "pathos": "direkt",
+            "logos": "minimalistisch"
+          },
+          "polyamor": {
+            "value": 85,
+            "pro": "klare Regeln, hohe Transparenz",
+            "kontra": "Redebedarf sehr hoch",
+            "pathos": "tief",
+            "logos": "strukturiert"
+          },
+          "duo": {
             "value": 90,
             "pro": "maximale Ehrlichkeit",
             "kontra": "Konfrontation möglich",
             "pathos": "tief",
             "logos": "konsequent"
           },
-          "polyamor": {
-            "value": 85,
-            "pro": "klare Regeln",
-            "kontra": "Redebedarf hoch",
-            "pathos": "tief",
-            "logos": "strukturiert"
+          "duo_flex": {
+            "value": 88,
+            "pro": "Ehrlichkeit + Grenzen-Kommunikation",
+            "kontra": "viel Abstimmung nötig",
+            "pathos": "offen",
+            "logos": "verhandelnd"
           }
         },
         "sexpartner": {
@@ -587,19 +839,33 @@
             "pathos": "flexibel",
             "logos": "situativ"
           },
-          "tiage": {
+          "poly_hedo": {
+            "value": 65,
+            "pro": "direkt, Consent-fokussiert",
+            "kontra": "wenig emotionaler Austausch",
+            "pathos": "pragmatisch",
+            "logos": "funktional"
+          },
+          "polyamor": {
+            "value": 60,
+            "pro": "klar, regelbasiert",
+            "kontra": "Dynamik schwankt",
+            "pathos": "variabel",
+            "logos": "regelgebunden"
+          },
+          "duo": {
             "value": 65,
             "pro": "direkt",
             "kontra": "moralische Reflexion",
             "pathos": "stark",
             "logos": "kritisch"
           },
-          "polyamor": {
-            "value": 60,
-            "pro": "klar",
-            "kontra": "Dynamik schwankt",
-            "pathos": "variabel",
-            "logos": "regelgebunden"
+          "duo_flex": {
+            "value": 72,
+            "pro": "klare Absprachen",
+            "kontra": "Grenzen kommunizieren",
+            "pathos": "offen",
+            "logos": "strukturiert"
           }
         },
         "seelenverwandte": {
@@ -617,12 +883,12 @@
             "pathos": "tief",
             "logos": "ausgewogen"
           },
-          "tiage": {
-            "value": 95,
-            "pro": "maximale Offenheit",
-            "kontra": "Verletzlichkeit",
-            "pathos": "maximal",
-            "logos": "glasklar"
+          "poly_hedo": {
+            "value": 40,
+            "pro": "ehrlich im Moment",
+            "kontra": "keine Tiefengespräche",
+            "pathos": "flüchtig",
+            "logos": "oberflächlich"
           },
           "polyamor": {
             "value": 75,
@@ -630,132 +896,202 @@
             "kontra": "zeitintensiv",
             "pathos": "tief",
             "logos": "harmonisch"
+          },
+          "duo": {
+            "value": 95,
+            "pro": "maximale Offenheit",
+            "kontra": "Verletzlichkeit",
+            "pathos": "maximal",
+            "logos": "glasklar"
+          },
+          "duo_flex": {
+            "value": 85,
+            "pro": "Tiefe + Transparenz über Öffnung",
+            "kontra": "komplexe Gespräche",
+            "pathos": "tief",
+            "logos": "reflektiert"
           }
         }
       }
     },
     "F": {
-      "name": "Gesellschaftliche Herausforderungen",
-      "description": "Akzeptanz, Normabweichung, Missverständnisse, gesellschaftlicher Druck",
+      "name": "Soziale Kompatibilität",
+      "description": "Funktion der Beziehung im sozialen Kontext, Umgang mit Normen und gesellschaftliche Akzeptanz",
       "data": {
         "freunde": {
           "single": {
-            "value": 20,
+            "value": 80,
             "pro": "kaum Erklärungsbedarf",
             "kontra": "Einsamkeitslabel",
             "pathos": "neutral",
             "logos": "unauffällig"
           },
           "solopoly": {
-            "value": 55,
+            "value": 45,
             "pro": "modernes Bild",
             "kontra": "Verwirrung im Umfeld",
             "pathos": "offen",
             "logos": "erklärungsintensiv"
           },
-          "tiage": {
-            "value": 65,
-            "pro": "authentisch",
-            "kontra": "schwer einzuordnen",
-            "pathos": "intensiv",
-            "logos": "reflektiert"
+          "poly_hedo": {
+            "value": 35,
+            "pro": "Freiheit als Wert",
+            "kontra": "stark stigmatisiert",
+            "pathos": "provokant",
+            "logos": "außen stehend"
           },
           "polyamor": {
-            "value": 80,
+            "value": 50,
             "pro": "steigende Akzeptanz",
             "kontra": "Vorurteile",
             "pathos": "warm",
             "logos": "argumentativ"
+          },
+          "duo": {
+            "value": 95,
+            "pro": "gesellschaftlich voll akzeptiert",
+            "kontra": "hohe Erwartungen von außen",
+            "pathos": "anerkannt",
+            "logos": "normkonform"
+          },
+          "duo_flex": {
+            "value": 70,
+            "pro": "als 'modernes Paar' akzeptierbar",
+            "kontra": "Details erklärungsbedürftig",
+            "pathos": "offen",
+            "logos": "erklärend"
           }
         },
         "partner": {
           "single": {
-            "value": 10,
-            "pro": "gesellschaftlich normal",
+            "value": 90,
+            "pro": "gesellschaftlich normal als Phase",
             "kontra": "Stigma 'beziehungsunfähig'",
             "pathos": "zurückhaltend",
             "logos": "angepasst"
           },
           "solopoly": {
-            "value": 60,
+            "value": 40,
             "pro": "fortschrittlich",
-            "kontra": "Missverständnisse",
+            "kontra": "Missverständnisse, nicht als 'echte Beziehung' gesehen",
             "pathos": "warm",
             "logos": "klar"
           },
-          "tiage": {
-            "value": 70,
-            "pro": "ehrlich",
-            "kontra": "moralische Komplexität",
-            "pathos": "tief",
-            "logos": "bewusst"
+          "poly_hedo": {
+            "value": 30,
+            "pro": "authentisch",
+            "kontra": "als 'Affäre' oder 'nicht ernst' abgetan",
+            "pathos": "provokant",
+            "logos": "außen stehend"
           },
           "polyamor": {
-            "value": 85,
+            "value": 45,
             "pro": "wachsende Sichtbarkeit",
-            "kontra": "Reibung & Kritik",
+            "kontra": "Reibung & Kritik, gesellschaftlicher Druck",
             "pathos": "tief",
             "logos": "organisiert"
+          },
+          "duo": {
+            "value": 98,
+            "pro": "maximale gesellschaftliche Unterstützung",
+            "kontra": "Trennung als 'Scheitern' gesehen",
+            "pathos": "anerkannt",
+            "logos": "institutionell gestützt"
+          },
+          "duo_flex": {
+            "value": 75,
+            "pro": "als 'offene Ehe' bekannt",
+            "kontra": "immer noch erklärungsbedürftig",
+            "pathos": "modern",
+            "logos": "verhandelnd"
           }
         },
         "sexpartner": {
           "single": {
-            "value": 15,
-            "pro": "akzeptiert",
-            "kontra": "moralische Bewertung",
+            "value": 85,
+            "pro": "akzeptiert als 'Dating'",
+            "kontra": "moralische Bewertung möglich",
             "pathos": "kühl",
             "logos": "distanziert"
           },
           "solopoly": {
-            "value": 45,
+            "value": 40,
             "pro": "klar mit Kommunikation",
             "kontra": "Vorurteile",
             "pathos": "flexibel",
             "logos": "argumentativ"
           },
-          "tiage": {
-            "value": 50,
-            "pro": "verständlich",
-            "kontra": "Selbstkritik",
-            "pathos": "stark",
-            "logos": "prüfend"
+          "poly_hedo": {
+            "value": 25,
+            "pro": "ehrlich",
+            "kontra": "stark stigmatisiert, moralische Angriffe",
+            "pathos": "provokant",
+            "logos": "außen stehend"
           },
           "polyamor": {
-            "value": 70,
+            "value": 40,
             "pro": "bekanntes Konzept",
             "kontra": "moralische Angriffe",
             "pathos": "offen",
             "logos": "regelorientiert"
+          },
+          "duo": {
+            "value": 50,
+            "pro": "verständlich bei Exklusivität",
+            "kontra": "Außenkontakte = 'Betrug'-Verdacht",
+            "pathos": "stark",
+            "logos": "prüfend"
+          },
+          "duo_flex": {
+            "value": 55,
+            "pro": "als 'offenes Arrangement' erklärbar",
+            "kontra": "immer noch stigmatisiert",
+            "pathos": "offen",
+            "logos": "erklärend"
           }
         },
         "seelenverwandte": {
           "single": {
-            "value": 5,
-            "pro": "wenige Erwartungen",
-            "kontra": "wenig Verständnis",
+            "value": 75,
+            "pro": "wenige Erwartungen von außen",
+            "kontra": "wenig Verständnis für Tiefe ohne Beziehung",
             "pathos": "niedrig",
             "logos": "außenorientiert"
           },
           "solopoly": {
-            "value": 50,
+            "value": 35,
             "pro": "alternative Beziehungskultur",
             "kontra": "schwer erklärbar",
             "pathos": "tief",
             "logos": "erklärungsbedürftig"
           },
-          "tiage": {
-            "value": 75,
-            "pro": "spirituelle Tiefe",
-            "kontra": "'zu viel' für Außenstehende",
+          "poly_hedo": {
+            "value": 20,
+            "pro": "authentisch",
+            "kontra": "'Seelenverwandtschaft' passt nicht ins Bild",
+            "pathos": "widersprüchlich",
+            "logos": "außen stehend"
+          },
+          "polyamor": {
+            "value": 45,
+            "pro": "vielfältige Modelle",
+            "kontra": "Modelle oft unbekannt",
+            "pathos": "offen",
+            "logos": "flexibel"
+          },
+          "duo": {
+            "value": 90,
+            "pro": "gesellschaftlich als Ideal anerkannt",
+            "kontra": "'zu intensiv' für Außenstehende",
             "pathos": "maximal",
             "logos": "philosophisch"
           },
-          "polyamor": {
+          "duo_flex": {
             "value": 65,
-            "pro": "vielfältige Modelle",
-            "kontra": "Modelle unbekannt",
-            "pathos": "offen",
-            "logos": "flexibel"
+            "pro": "tiefe Verbindung anerkannt",
+            "kontra": "Öffnung schwer zu erklären",
+            "pathos": "tief",
+            "logos": "komplex"
           }
         }
       }
