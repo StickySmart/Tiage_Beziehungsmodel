@@ -3781,9 +3781,31 @@
 
         .comparison-grid {
             display: grid;
-            grid-template-columns: 1fr 1fr;
+            grid-template-columns: 1fr auto 1fr;
             gap: 15px;
             margin-bottom: 20px;
+        }
+
+        /* Center Column for Tiage's Synthese Button */
+        .center-column {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 0 10px;
+        }
+
+        .center-column .tiage-ansatz-btn {
+            writing-mode: vertical-rl;
+            text-orientation: mixed;
+            transform: rotate(180deg);
+            padding: 16px 12px;
+            white-space: nowrap;
+        }
+
+        .center-column .tiage-ansatz-btn .tiage-ansatz-icon,
+        .center-column .tiage-ansatz-btn .tiage-ansatz-text {
+            writing-mode: vertical-rl;
         }
 
         .comparison-column {
@@ -3804,6 +3826,7 @@
         .column-header {
             display: flex;
             align-items: center;
+            justify-content: flex-start;
             gap: 8px;
             margin-bottom: 12px;
             padding-bottom: 10px;
@@ -6614,6 +6637,14 @@
                 </div>
             </div>
 
+            <!-- Center Column - Tiage's Synthese Button -->
+            <div class="center-column">
+                <button class="tiage-ansatz-btn" id="desktopTiageAnsatzBtn" onclick="openPathosLogosModal('pathos')" title="Tiage's Synthese - Pathos & Logos">
+                    <span class="tiage-ansatz-icon">💡</span>
+                    <span class="tiage-ansatz-text">Tiage's Synthese</span>
+                </button>
+            </div>
+
             <!-- PARTNER Column -->
             <div class="comparison-column partner-column">
                 <div class="column-header">
@@ -6696,14 +6727,6 @@
                     </div>
                 </div>
             </div>
-        </div>
-
-        <!-- Tiage's Synthese Button -->
-        <div style="display: flex; justify-content: flex-end; margin-bottom: 15px;">
-            <button class="tiage-ansatz-btn" id="desktopTiageAnsatzBtn" onclick="openPathosLogosModal('pathos')" title="Tiage's Synthese - Pathos & Logos">
-                <span class="tiage-ansatz-icon">💡</span>
-                <span class="tiage-ansatz-text">Tiage's Synthese</span>
-            </button>
         </div>
 
         <!-- Hidden elements for backwards compatibility -->
