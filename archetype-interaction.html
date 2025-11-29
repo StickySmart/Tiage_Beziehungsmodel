@@ -7487,9 +7487,8 @@
         <div class="impressum-content" onclick="event.stopPropagation()">
             <h3>Impressum</h3>
             <p><strong>Betreiber:</strong> Ti-Age</p>
-            <p><strong>Projekt:</strong> Ti-age</p>
+            <p><strong>Projekt:</strong> Tiage_Beziehungsmodel</p>
             <p><strong>Kontakt:</strong> <a href="mailto:nerd@ti-age.de">nerd@ti-age.de</a></p>
-            <button class="impressum-close" onclick="document.getElementById('impressumModal').classList.remove('active')">Schließen</button>
         </div>
     </div>
 
@@ -7896,11 +7895,6 @@
             const title = modal.querySelector('h3');
             if (title) {
                 title.textContent = TiageI18n.t('impressum.title', 'Impressum');
-            }
-
-            const closeBtn = modal.querySelector('.impressum-close');
-            if (closeBtn) {
-                closeBtn.textContent = TiageI18n.t('ui.close', 'Schließen');
             }
         }
 
