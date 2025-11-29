@@ -13,15 +13,17 @@ const TiageConfig = (function() {
     // ARCHETYPEN
     // ═══════════════════════════════════════════════════════════════════════
 
-    const ARCHETYPE_ORDER = ['single', 'duo', 'duo_flex', 'solopoly', 'poly_hedo', 'polyamor'];
+    const ARCHETYPE_ORDER = ['single', 'duo', 'duo_flex', 'solopoly', 'polyamor', 'ra', 'lat', 'aromantisch'];
 
     const ARCHETYPE_ICONS = {
         single: '★',
         duo: '♡',
         duo_flex: '⚡',
         solopoly: '◆',
-        poly_hedo: '☀',
-        polyamor: '♥'
+        polyamor: '♥',
+        ra: '∞',
+        lat: '⌂',
+        aromantisch: '◇'
     };
 
     const CATEGORY_NAMES = {
@@ -261,16 +263,6 @@ const TiageConfig = (function() {
                 "'Ich bin mein eigener Primärpartner'"
             ]
         },
-        poly_hedo: {
-            name: "Poly Hedo",
-            shortDef: "Freiheitsorientierte Poly-Orientierung mit Fokus auf Genuss und Spontaneität.",
-            keyPrinciples: [
-                "Lebensfreude und Genuss als zentrale Werte",
-                "Spontaneität über starre Regeln",
-                "Vielfalt der Erfahrungen bereichert das Leben",
-                "Intensität des Moments"
-            ]
-        },
         polyamor: {
             name: "Polyamor",
             shortDef: "Mehrere gleichzeitige, ethisch geführte Liebesbeziehungen mit Transparenz.",
@@ -279,6 +271,36 @@ const TiageConfig = (function() {
                 "Ehrlichkeit und Transparenz gegenüber allen",
                 "Konsens und Einvernehmlichkeit als Basis",
                 "Kommunikation als zentrale Kompetenz"
+            ]
+        },
+        ra: {
+            name: "RA",
+            shortDef: "Relationship Anarchist - Ablehnung aller Beziehungs-Hierarchien und Labels.",
+            keyPrinciples: [
+                "Jede Beziehung wird individuell definiert",
+                "Keine vorgegebenen Kategorien oder Labels",
+                "Gleichwertigkeit aller Verbindungen",
+                "Radikale Autonomie und Freiheit"
+            ]
+        },
+        lat: {
+            name: "LAT",
+            shortDef: "Living Apart Together - Feste Partnerschaft ohne Zusammenleben.",
+            keyPrinciples: [
+                "Verbindlichkeit ohne Zusammenleben",
+                "Eigener Raum als Wert",
+                "Qualitätszeit statt Quantität",
+                "Bewusste Nähe durch gewählte Distanz"
+            ]
+        },
+        aromantisch: {
+            name: "Aromantisch",
+            shortDef: "Fokus auf platonische Verbindungen ohne romantische Komponente.",
+            keyPrinciples: [
+                "Tiefe Verbindungen ohne Romantik",
+                "Freundschaft als gleichwertiges Beziehungsmodell",
+                "Authentizität jenseits romantischer Normen",
+                "Platonische Liebe als vollwertige Verbindung"
             ]
         }
     };

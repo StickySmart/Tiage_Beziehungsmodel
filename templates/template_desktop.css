@@ -67,13 +67,21 @@ body.theme-solopoly {
     --primary: #2A9D8F;           /* Türkis für Solopoly */
     --primary-light: #A8DADC;
 }
-body.theme-poly_hedo {
-    --primary: #9B5DE5;           /* Violett für Poly Hedo */
-    --primary-light: #D4A5FF;
-}
 body.theme-polyamor {
     --primary: #F4A261;           /* Orange für Polyamor */
     --primary-light: #FFE5B4;
+}
+body.theme-ra {
+    --primary: #9B5DE5;           /* Violett für RA */
+    --primary-light: #D4A5FF;
+}
+body.theme-lat {
+    --primary: #06D6A0;           /* Mint-Grün für LAT */
+    --primary-light: #B5EAD7;
+}
+body.theme-aromantisch {
+    --primary: #118AB2;           /* Blau für Aromantisch */
+    --primary-light: #83C5D8;
 }
 
 /* ========================================

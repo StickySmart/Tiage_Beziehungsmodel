@@ -51,10 +51,16 @@ const TiageState = (function() {
             }
         },
 
-        // Archetype Selection
+        // Archetype Selection - Primary/Secondary System
         archetypes: {
-            ich: 'single',
-            partner: 'duo'
+            ich: {
+                primary: 'single',
+                secondary: null  // Optional secondary archetype
+            },
+            partner: {
+                primary: 'duo',
+                secondary: null  // Optional secondary archetype
+            }
         },
 
         // UI State
@@ -360,15 +366,66 @@ const TiageState = (function() {
         },
 
         // ═══════════════════════════════════════════════════════════════════
-        // ARCHETYPE METHODS
+        // ARCHETYPE METHODS (Primary/Secondary System)
         // ═══════════════════════════════════════════════════════════════════
 
+        /**
+         * Set primary archetype for a person
+         * @param {string} person - 'ich' or 'partner'
+         * @param {string} archetype - The archetype ID
+         */
         setArchetype(person, archetype) {
-            this.set(`archetypes.${person}`, archetype);
+            this.set(`archetypes.${person}.primary`, archetype);
         },
 
+        /**
+         * Set secondary archetype for a person (optional)
+         * @param {string} person - 'ich' or 'partner'
+         * @param {string|null} archetype - The archetype ID or null
+         */
+        setSecondaryArchetype(person, archetype) {
+            // Secondary cannot be the same as primary
+            const primary = this.get(`archetypes.${person}.primary`);
+            if (archetype === primary) {
+                console.warn('[TiageState] Secondary cannot be same as primary');
+                return;
+            }
+            this.set(`archetypes.${person}.secondary`, archetype);
+        },
+
+        /**
+         * Get primary archetype for a person
+         * @param {string} person - 'ich' or 'partner'
+         * @returns {string} The primary archetype ID
+         */
         getArchetype(person) {
+            return this.get(`archetypes.${person}.primary`);
+        },
+
+        /**
+         * Get secondary archetype for a person
+         * @param {string} person - 'ich' or 'partner'
+         * @returns {string|null} The secondary archetype ID or null
+         */
+        getSecondaryArchetype(person) {
+            return this.get(`archetypes.${person}.secondary`);
+        },
+
+        /**
+         * Get both archetypes for a person
+         * @param {string} person - 'ich' or 'partner'
+         * @returns {Object} { primary: string, secondary: string|null }
+         */
+        getArchetypes(person) {
             return this.get(`archetypes.${person}`);
+        },
+
+        /**
+         * Clear secondary archetype
+         * @param {string} person - 'ich' or 'partner'
+         */
+        clearSecondaryArchetype(person) {
+            this.set(`archetypes.${person}.secondary`, null);
         },
 
         // ═══════════════════════════════════════════════════════════════════
@@ -415,7 +472,10 @@ const TiageState = (function() {
                     orientierungStatus: null
                 }
             });
-            this.set('archetypes', { ich: 'single', partner: 'duo' });
+            this.set('archetypes', {
+                ich: { primary: 'single', secondary: null },
+                partner: { primary: 'duo', secondary: null }
+            });
             this.set('ui', { currentView: 'desktop', currentMobilePage: 1, activeModal: null, selectedCategory: null });
         },
 

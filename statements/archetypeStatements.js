@@ -189,42 +189,91 @@ const archetypeStatements = {
         ]
     },
 
-    "single_poly_hedo": {
+    "single_ra": {
         pathos: {
             gemeinsam: [
-                "Beide feiern den Moment, nicht die Ewigkeit.",
-                "Freiheit und Spontaneität verbinden sie.",
-                "Keine schweren Verpflichtungen belasten die Begegnung."
+                "Beide schätzen Freiheit und lehnen vorgegebene Labels ab.",
+                "Keine gesellschaftlichen Erwartungen belasten die Begegnung."
             ],
             spannung: [
-                "Poly Hedo's Intensität kann den Single überfordern.",
-                "Der hedonistische Fokus kollidiert mit Single's Ruhe-Bedürfnis.",
-                "Zu viel Stimulation für den, der Stille sucht."
+                "RA's radikale Label-Ablehnung kann Single verwirren.",
+                "Single könnte klare Kategorien bevorzugen."
             ]
         },
         logos: {
             gemeinsam: [
-                "Beide lehnen starre Strukturen ab.",
-                "Spontaneität als gemeinsamer Wert."
+                "Beide sind autonom und selbstbestimmt."
             ],
             unterschied: [
-                "Poly Hedo ist aktiv suchend, Single oft passiv wartend.",
-                "Unterschiedliche Energielevel in sozialen Situationen."
+                "RA hat eine bewusste Philosophie, Single ist pragmatisch ungebunden."
             ]
         },
         pro: [
-            "Gemeinsame Wertschätzung von Freiheit und Spontaneität",
-            "Keine schweren Erwartungen",
-            "Potenzial für intensive, unverbindliche Begegnungen",
-            "Beiderseits geringe Eifersucht-Problematik",
-            "Lebensfreude kann ansteckend sein"
+            "Maximale Freiheit beidseitig",
+            "Keine Labels oder Erwartungen",
+            "Individuelle Vereinbarungen möglich"
         ],
         contra: [
-            "Unterschiedliche Energielevel können erschöpfen",
-            "Single sucht oft Ruhe, Poly Hedo sucht Stimulation",
-            "Langfristige Tiefe ist für Poly Hedo weniger relevant",
-            "Single könnte als 'langweilig' wahrgenommen werden",
-            "Poly Hedo's Lifestyle kann überfordernd sein"
+            "Kann verwirrend sein ohne klare Strukturen",
+            "Gesellschaftlich schwer erklärbar"
+        ]
+    },
+
+    "single_lat": {
+        pathos: {
+            gemeinsam: [
+                "Beide schätzen eigenen Raum und Unabhängigkeit.",
+                "Kein Zusammenlebens-Druck."
+            ],
+            spannung: [
+                "LAT erwartet mehr Verbindlichkeit als Single gewohnt ist."
+            ]
+        },
+        logos: {
+            gemeinsam: [
+                "Beide leben allein und schätzen das."
+            ],
+            unterschied: [
+                "LAT ist in einer Beziehung, Single nicht."
+            ]
+        },
+        pro: [
+            "Eigener Raum bleibt erhalten",
+            "Guter Übergang zur Beziehung",
+            "Keine Verschmelzungserwartung"
+        ],
+        contra: [
+            "LAT erwartet Commitment",
+            "Single könnte nicht bereit sein"
+        ]
+    },
+
+    "single_aromantisch": {
+        pathos: {
+            gemeinsam: [
+                "Beide haben keine romantischen Erwartungen.",
+                "Tiefe platonische Verbindung ist möglich."
+            ],
+            spannung: [
+                "Single könnte Romantik suchen."
+            ]
+        },
+        logos: {
+            gemeinsam: [
+                "Beide sind autonom."
+            ],
+            unterschied: [
+                "Single ist offen für Romantik, Aromantisch nicht."
+            ]
+        },
+        pro: [
+            "Keine romantischen Erwartungen",
+            "Platonische Tiefe möglich",
+            "Autonomie wird respektiert"
+        ],
+        contra: [
+            "Single könnte Romantik suchen",
+            "Unterschiedliche Beziehungsziele"
         ]
     },
 
@@ -416,32 +465,77 @@ const archetypeStatements = {
         ]
     },
 
-    "duo_poly_hedo": {
+    "duo_ra": {
         pathos: {
             spannung: [
-                "Das Duo fühlt sich unsichtbar im hedonistischen Wirbel.",
-                "Keine emotionale Tiefe dort, wo das Duo sie sucht.",
-                "Die Spontaneität des Poly Hedo wirkt auf das Duo chaotisch und beängstigend."
+                "RA lehnt die Labels ab, die für Duo existenziell sind.",
+                "Duo braucht Sicherheit durch Kategorien, RA flieht sie.",
+                "Fundamentaler Weltanschauungs-Konflikt."
             ]
         },
         logos: {
             unterschied: [
-                "Maximal unterschiedliche Beziehungsphilosophien.",
-                "Duo sucht Struktur, Poly Hedo flieht sie.",
-                "Langfristigkeit vs. Momentorientierung."
+                "Maximale Inkompatibilität der Beziehungsphilosophien.",
+                "RA kann keine Exklusivität versprechen, die Duo braucht."
             ]
         },
         pro: [
-            "Potenzial für gegenseitige Horizonterweiterung"
+            "RA ist ehrlich und authentisch"
         ],
         contra: [
             "Fundamentale Unvereinbarkeit",
-            "Duo sucht Tiefe, Poly Hedo sucht Breite",
-            "Keine gemeinsame Basis für langfristige Planung",
-            "Duo fühlt sich nicht ernst genommen",
-            "Poly Hedo's Spontaneität ist für Duo Chaos",
-            "Gesellschaftlich inkompatible Umfelder",
-            "Völlig unterschiedliche Lebensrhythmen"
+            "Duo braucht Labels, RA lehnt sie ab",
+            "Keine gemeinsame Sprache für Beziehung"
+        ]
+    },
+
+    "duo_lat": {
+        pathos: {
+            gemeinsam: [
+                "Beide wollen tiefe, verbindliche Beziehung."
+            ],
+            spannung: [
+                "Duo will zusammenleben, LAT nicht.",
+                "Die Wohnform ist ein Grundkonflikt."
+            ]
+        },
+        logos: {
+            unterschied: [
+                "Fundamentaler Unterschied bei Wohnform.",
+                "Duo sieht Zusammenleben als Ausdruck von Liebe."
+            ]
+        },
+        pro: [
+            "Beide wollen Tiefe und Verbindlichkeit",
+            "Exklusivität ist möglich"
+        ],
+        contra: [
+            "Wohnform-Konflikt ist fundamental",
+            "Duo könnte sich abgelehnt fühlen"
+        ]
+    },
+
+    "duo_aromantisch": {
+        pathos: {
+            spannung: [
+                "Duo sucht romantische Liebe – genau das, was Aromantisch nicht bieten kann.",
+                "Fundamentaler Unterschied in der Liebessprache.",
+                "Duo fühlt sich möglicherweise ungeliebt."
+            ]
+        },
+        logos: {
+            unterschied: [
+                "Maximale Inkompatibilität bei romantischen Erwartungen.",
+                "Aromantisch kann keine romantische Sprache sprechen."
+            ]
+        },
+        pro: [
+            "Tiefe Verbindung auf anderer Ebene möglich"
+        ],
+        contra: [
+            "Duo erwartet Romantik",
+            "Fundamentaler Unterschied",
+            "Duo fühlt sich nicht 'richtig' geliebt"
         ]
     },
 
@@ -613,33 +707,74 @@ const archetypeStatements = {
         ]
     },
 
-    "duo_flex_poly_hedo": {
+    "duo_flex_ra": {
         pathos: {
             gemeinsam: [
-                "Beide genießen Vielfalt in Beziehungen.",
-                "Spontaneität und Offenheit sind Gemeinsamkeiten."
+                "Beide verstehen Offenheit und alternative Beziehungsformen."
             ],
             spannung: [
-                "Poly Hedo's Spontaneität überfordert Duo-Flex's Regelwerk.",
-                "Die Struktur des Duo-Flex wirkt auf Poly Hedo einengend."
+                "RA lehnt Primärbeziehungs-Konzept ab, das für Duo-Flex zentral ist.",
+                "Strukturkonflikt zwischen Regeln und radikaler Freiheit."
             ]
         },
         logos: {
             unterschied: [
-                "Strukturierte Öffnung vs. spontane Freiheit.",
-                "Duo-Flex braucht Absprachen, Poly Hedo flieht sie."
+                "Duo-Flex hat Primärbeziehung, RA lehnt Hierarchien ab.",
+                "Unterschiedliche Definitionen von Freiheit."
             ]
         },
         pro: [
-            "Gemeinsame Wertschätzung von Vielfalt",
-            "Potenzial für intensive Erlebnisse",
-            "Beide sind offen für Experimente"
+            "Beide verstehen nicht-monogame Lebensweisen",
+            "Flexible Vereinbarungen möglich"
         ],
         contra: [
-            "Poly Hedo's Spontaneität passt nicht zu Duo-Flex's Regeln",
-            "Strukturkonflikt ist fundamental",
-            "Duo-Flex braucht Planung, Poly Hedo hasst sie",
-            "Unterschiedliche Erwartungen an Verbindlichkeit"
+            "RA lehnt Primärbeziehungs-Konzept ab",
+            "Strukturkonflikt ist fundamental"
+        ]
+    },
+
+    "duo_flex_lat": {
+        pathos: {
+            gemeinsam: [
+                "Beide verstehen bewusste Distanz und Flexibilität."
+            ],
+            spannung: [
+                "Unterschiedliche Erwartungen an Zusammenleben."
+            ]
+        },
+        logos: {
+            gemeinsam: [
+                "Beide schätzen Balance zwischen Nähe und Distanz."
+            ]
+        },
+        pro: [
+            "LAT versteht bewusste Distanz",
+            "Gute Balance möglich"
+        ],
+        contra: [
+            "Unterschiedliche Erwartungen an Öffnung",
+            "LAT könnte Exklusivität erwarten"
+        ]
+    },
+
+    "duo_flex_aromantisch": {
+        pathos: {
+            spannung: [
+                "Duo-Flex erwartet romantische Primärbeziehung.",
+                "Aromantisch kann diese Erwartung nicht erfüllen."
+            ]
+        },
+        logos: {
+            unterschied: [
+                "Romantische Erwartungen werden nicht erfüllt."
+            ]
+        },
+        pro: [
+            "Aromantisch könnte als Flex-Partner passen"
+        ],
+        contra: [
+            "Romantische Erwartungen an Primärpartner bestehen",
+            "Fundamentale Unterschiede bei Romantik"
         ]
     },
 
@@ -814,33 +949,85 @@ const archetypeStatements = {
         ]
     },
 
-    "solopoly_poly_hedo": {
+    "solopoly_ra": {
         pathos: {
             gemeinsam: [
-                "Beide feiern Vielfalt und Freiheit.",
-                "Keine Exklusivitätserwartungen belasten die Verbindung."
+                "Beide maximieren Autonomie und lehnen Hierarchien ab.",
+                "Keine Primärbeziehungs-Erwartungen."
             ],
             spannung: [
-                "Solopoly's bewusste Struktur vs. Poly Hedo's Spontaneität.",
-                "Solopoly plant, Poly Hedo lebt im Moment."
+                "RA ist noch weniger strukturiert als Solopoly."
+            ]
+        },
+        logos: {
+            gemeinsam: [
+                "Beide schätzen Autonomie als höchsten Wert."
+            ],
+            unterschied: [
+                "Solopoly ist strukturierter als RA."
+            ]
+        },
+        pro: [
+            "Beide schätzen Autonomie maximal",
+            "Keine Hierarchie-Erwartungen",
+            "Philosophische Verwandtschaft"
+        ],
+        contra: [
+            "RA noch weniger strukturiert als Solopoly",
+            "Kann zu formlos werden"
+        ]
+    },
+
+    "solopoly_lat": {
+        pathos: {
+            gemeinsam: [
+                "Beide leben getrennt und schätzen Autonomie.",
+                "Kein Zusammenlebens-Konflikt."
+            ],
+            spannung: [
+                "LAT könnte mehr Exklusivität erwarten."
+            ]
+        },
+        logos: {
+            gemeinsam: [
+                "Beide verstehen getrenntes Wohnen als Wert."
+            ],
+            unterschied: [
+                "Solopoly hat mehrere Partner, LAT oft nur einen."
+            ]
+        },
+        pro: [
+            "LAT versteht getrenntes Wohnen",
+            "Autonomie-Kompatibilität"
+        ],
+        contra: [
+            "LAT könnte mehr Exklusivität wollen",
+            "Unterschiedliche Erwartungen an Partneranzahl"
+        ]
+    },
+
+    "solopoly_aromantisch": {
+        pathos: {
+            gemeinsam: [
+                "Beide haben unkonventionelle Beziehungsmodelle.",
+                "Autonomie wird respektiert."
+            ],
+            spannung: [
+                "Solopoly sucht romantische Verbindungen, Aromantisch nicht."
             ]
         },
         logos: {
             unterschied: [
-                "Unterschiedliche Tiefe der Reflexion über Beziehungsmodelle.",
-                "Solopoly ist philosophisch fundiert, Poly Hedo ist intuitiv."
+                "Unterschiedliche Erwartungen an Romantik."
             ]
         },
         pro: [
-            "Gemeinsame Wertschätzung von Freiheit und Vielfalt",
-            "Keine Eifersuchtsprobleme erwartet",
-            "Beide sind offen für multiple Verbindungen"
+            "Beide verstehen alternative Beziehungsformen",
+            "Autonomie wird respektiert"
         ],
         contra: [
-            "Unterschiedliche Tiefe der Beziehungen",
-            "Poly Hedo's Spontaneität passt nicht zu Solopoly's Planung",
-            "Solopoly könnte Poly Hedo als oberflächlich empfinden",
-            "Unterschiedliche Erwartungen an Kommunikation"
+            "Solopoly sucht romantische Verbindungen",
+            "Unterschiedliche Beziehungsziele"
         ]
     },
 
@@ -880,187 +1067,268 @@ const archetypeStatements = {
     },
 
     // ═══════════════════════════════════════════════════════════════════════
-    // POLY HEDO (von) - 6 Kombinationen
+    // RA - RELATIONSHIP ANARCHIST (von) - 8 Kombinationen
     // ═══════════════════════════════════════════════════════════════════════
 
-    "poly_hedo_single": {
+    "ra_single": {
         pathos: {
             gemeinsam: [
-                "Beide feiern die Freiheit des Moments.",
-                "Keine schweren Erwartungen belasten die Begegnung."
+                "Beide schätzen maximale Freiheit und Selbstbestimmung.",
+                "Keine Labels oder vordefinierten Erwartungen belasten die Begegnung."
             ],
             spannung: [
-                "Single sucht oft Ruhe, Poly Hedo sucht Stimulation.",
-                "Die Intensität von Poly Hedo kann überwältigen."
+                "Single könnte mehr Struktur und Klarheit wünschen.",
+                "RA's Ablehnung von Labels kann verwirrend sein."
             ]
         },
         logos: {
             gemeinsam: [
-                "Beide lehnen starre Strukturen ab."
+                "Beide priorisieren Autonomie über gesellschaftliche Normen.",
+                "Keine Hierarchie-Konflikte zu erwarten."
             ],
             unterschied: [
-                "Unterschiedliche Energielevel und Aktivität."
+                "RA hat eine bewusste Philosophie, Single ist einfach ungebunden."
             ]
         },
         pro: [
-            "Gemeinsame Wertschätzung von Freiheit",
-            "Potenzial für unverbindliche, intensive Begegnungen",
-            "Keine Erwartungen an Langfristigkeit"
+            "Maximale Freiheit beidseitig",
+            "Keine vorgegebenen Erwartungen",
+            "Individuelle Vereinbarungen möglich"
         ],
         contra: [
-            "Energielevel-Unterschiede können ermüden",
-            "Single könnte als 'langweilig' wahrgenommen werden",
-            "Keine tiefe Verbindung erwartet"
+            "Kann verwirrend sein ohne klare Strukturen",
+            "Single könnte mehr Orientierung brauchen"
         ]
     },
 
-    "poly_hedo_duo": {
+    "ra_duo": {
         pathos: {
             spannung: [
-                "Duo's Erwartungen an Tiefe und Exklusivität sind für Poly Hedo einengend.",
-                "Die Struktur des Duos widerspricht Poly Hedo's Spontaneität.",
-                "Duo wird als 'zu ernst' empfunden."
-            ]
-        },
-        logos: {
-            unterschied: [
-                "Fundamentale Inkompatibilität.",
-                "Poly Hedo flieht Struktur, Duo braucht sie."
-            ]
-        },
-        pro: [
-            "Potenzial für Horizonterweiterung auf beiden Seiten"
-        ],
-        contra: [
-            "Fundamentale Lebensphilosophie-Konflikte",
-            "Duo's Exklusivität ist für Poly Hedo ein Käfig",
-            "Poly Hedo kann Duo's Tiefenwunsch nicht erfüllen",
-            "Keine gemeinsame Basis",
-            "Gesellschaftlich völlig unterschiedliche Welten"
-        ]
-    },
-
-    "poly_hedo_duo_flex": {
-        pathos: {
-            gemeinsam: [
-                "Gemeinsame Offenheit für Vielfalt."
-            ],
-            spannung: [
-                "Duo-Flex's Regeln sind für Poly Hedo einengend.",
-                "Die Primärbeziehung des Duo-Flex wird als Einschränkung erlebt."
+                "RA lehnt die Labels ab, die für Duo existenziell sind.",
+                "Duo braucht Sicherheit durch Kategorien, RA flieht sie.",
+                "Fundamentaler Weltanschauungs-Konflikt."
             ]
         },
         logos: {
             unterschied: [
-                "Struktur vs. Spontaneität.",
-                "Duo-Flex's Regeln vs. Poly Hedo's Freiheit."
+                "Maximale Inkompatibilität der Beziehungsphilosophien.",
+                "RA kann keine Exklusivität versprechen, die Duo braucht."
             ]
         },
         pro: [
-            "Gemeinsame Offenheit für nicht-exklusive Begegnungen",
-            "Potenzial für bereichernde Erlebnisse"
+            "RA ist ehrlich und authentisch"
         ],
         contra: [
-            "Poly Hedo hasst Duo-Flex's Regelwerk",
-            "Spontaneität wird durch Absprachen gebremst",
-            "Unterschiedliche Erwartungen an Verbindlichkeit"
+            "Fundamentale Unvereinbarkeit",
+            "Duo braucht Labels und Struktur",
+            "RA wird nie 'Partner' im Duo-Sinne sein"
         ]
     },
 
-    "poly_hedo_solopoly": {
+    "ra_ra": {
         pathos: {
             gemeinsam: [
-                "Beide feiern Freiheit und Vielfalt.",
-                "Keine Exklusivitätskonflikte."
+                "Perfekte Resonanz: Beide leben radikale Beziehungsfreiheit.",
+                "Keine Labels, keine Hierarchien – nur authentische Verbindung.",
+                "Die Freiheit des anderen ist selbstverständlich."
             ],
             spannung: [
-                "Solopoly's reflektierte Planung vs. Poly Hedo's intuitive Spontaneität."
-            ]
-        },
-        logos: {
-            unterschied: [
-                "Unterschiedliche Reflexionstiefe.",
-                "Solopoly ist strukturierter als Poly Hedo."
-            ]
-        },
-        pro: [
-            "Gemeinsame Wertschätzung von Freiheit",
-            "Beide sind offen für multiple Verbindungen",
-            "Potenzial für lebendige Verbindung"
-        ],
-        contra: [
-            "Tiefe der Beziehung kann unterschiedlich sein",
-            "Solopoly's Kommunikationsbedürfnis kann Poly Hedo überfordern",
-            "Unterschiedliche Erwartungen an Planung"
-        ]
-    },
-
-    "poly_hedo_poly_hedo": {
-        pathos: {
-            gemeinsam: [
-                "Perfekte Resonanz: Beide leben im Moment.",
-                "Spontaneität trifft auf Spontaneität.",
-                "Ekstase und Lebensfreude werden geteilt.",
-                "Keine schweren Erwartungen – nur der Augenblick zählt."
-            ],
-            spannung: [
-                "Manchmal fehlt die Tiefe für langfristige Bindung.",
-                "Im Rausch der Erfahrungen kann die Richtung verloren gehen."
+                "Manchmal kann zu viel Freiheit Orientierungslosigkeit schaffen."
             ]
         },
         logos: {
             gemeinsam: [
-                "Identische Lebensphilosophie: Genuss und Freiheit.",
-                "Beide lehnen starre Strukturen ab."
+                "Identische Philosophie: Jede Beziehung ist individuell.",
+                "Keine externen Erwartungen belasten die Verbindung."
             ]
         },
         pro: [
             "Maximale philosophische Übereinstimmung",
-            "Gemeinsame Lebensfreude",
-            "Keine Struktur-Konflikte",
-            "Spontane, intensive Erlebnisse",
-            "Gegenseitige Bereicherung durch Vielfalt"
+            "Keine Label-Konflikte",
+            "Authentische Verbindung ohne Schablonen"
         ],
         contra: [
-            "Langfristige Tiefe kann fehlen",
-            "Keine Anker in der Spontaneität",
-            "Potenzial für Oberflächlichkeit",
-            "Gesellschaftlich gemeinsam stigmatisiert"
-        ]
-    },
-
-    "poly_hedo_polyamor": {
-        pathos: {
-            gemeinsam: [
-                "Beide teilen die Offenheit für multiple Verbindungen."
-            ],
-            spannung: [
-                "Polyamor's Struktur wirkt auf Poly Hedo wie ein Gefängnis.",
-                "Die Kalenderverwaltung ist für Poly Hedo unerträglich.",
-                "Polyamor's Tiefe vs. Poly Hedo's Breite."
-            ]
-        },
-        logos: {
-            unterschied: [
-                "Strukturiert vs. spontan.",
-                "Polyamor braucht Regeln, Poly Hedo flieht sie."
-            ]
-        },
-        pro: [
-            "Gemeinsame Offenheit für Polyamorie",
-            "Beide sind gewohnt, mehrere Verbindungen zu haben"
-        ],
-        contra: [
-            "Strukturkonflikt ist fundamental",
-            "Poly Hedo erlebt Polyamor als zu ernst",
-            "Polyamor erlebt Poly Hedo als zu oberflächlich",
-            "Kalendermanagement ist für Poly Hedo unmöglich",
-            "Unterschiedliche Erwartungen an emotionale Tiefe"
+            "Kann zu wenig Struktur für manche bieten",
+            "Gesellschaftlich schwer erklärbar"
         ]
     },
 
     // ═══════════════════════════════════════════════════════════════════════
-    // POLYAMOR (von) - 6 Kombinationen
+    // LAT - LIVING APART TOGETHER (von) - 8 Kombinationen
+    // ═══════════════════════════════════════════════════════════════════════
+
+    "lat_single": {
+        pathos: {
+            gemeinsam: [
+                "Beide schätzen eigenen Raum und Unabhängigkeit.",
+                "LAT versteht das Bedürfnis nach Rückzug."
+            ],
+            spannung: [
+                "LAT erwartet mehr Verbindlichkeit als Single gewohnt ist."
+            ]
+        },
+        logos: {
+            gemeinsam: [
+                "Beide leben allein – das verbindet.",
+                "Kein Zusammenlebens-Druck."
+            ],
+            unterschied: [
+                "LAT ist gebunden, Single ist frei."
+            ]
+        },
+        pro: [
+            "Eigener Raum bleibt erhalten",
+            "Guter Übergang zur Beziehung",
+            "Keine Verschmelzungserwartung"
+        ],
+        contra: [
+            "LAT erwartet Commitment",
+            "Single könnte zögern bei Verbindlichkeit"
+        ]
+    },
+
+    "lat_duo": {
+        pathos: {
+            gemeinsam: [
+                "Beide wollen tiefe, verbindliche Beziehung."
+            ],
+            spannung: [
+                "Duo will zusammenleben – LAT nicht.",
+                "Das Wohnform-Thema ist ein Grundkonflikt."
+            ]
+        },
+        logos: {
+            unterschied: [
+                "Fundamentaler Unterschied bei Wohnform.",
+                "Duo sieht Zusammenleben als Zeichen der Liebe."
+            ]
+        },
+        pro: [
+            "Beide wollen Tiefe und Verbindlichkeit",
+            "Exklusivität ist möglich"
+        ],
+        contra: [
+            "Wohnform-Konflikt ist fundamental",
+            "Duo fühlt sich möglicherweise abgelehnt"
+        ]
+    },
+
+    "lat_lat": {
+        pathos: {
+            gemeinsam: [
+                "Perfekte Resonanz: Beide verstehen den Wert des eigenen Raums.",
+                "Qualitätszeit statt Quantität.",
+                "Die bewusste Distanz ist gegenseitig verstanden."
+            ],
+            spannung: [
+                "Manchmal könnten beide zu distanziert sein."
+            ]
+        },
+        logos: {
+            gemeinsam: [
+                "Identische Wohnphilosophie.",
+                "Beide schätzen die Balance von Nähe und Distanz."
+            ]
+        },
+        pro: [
+            "Maximale Übereinstimmung bei Wohnform",
+            "Gegenseitiges Verständnis für eigenen Raum",
+            "Keine Zusammenlebens-Konflikte"
+        ],
+        contra: [
+            "Beide könnten zu distanziert sein",
+            "Gesellschaftlich als 'nicht ernst' wahrgenommen"
+        ]
+    },
+
+    // ═══════════════════════════════════════════════════════════════════════
+    // AROMANTISCH (von) - 8 Kombinationen
+    // ═══════════════════════════════════════════════════════════════════════
+
+    "aromantisch_single": {
+        pathos: {
+            gemeinsam: [
+                "Beide haben keine romantischen Erwartungen aneinander.",
+                "Tiefe Freundschaft ist das Fundament."
+            ],
+            spannung: [
+                "Single könnte Romantik suchen, die Aromantisch nicht bieten kann."
+            ]
+        },
+        logos: {
+            gemeinsam: [
+                "Beide sind autonom und unabhängig.",
+                "Keine romantischen Skripte zu erfüllen."
+            ],
+            unterschied: [
+                "Single ist offen für Romantik, Aromantisch nicht."
+            ]
+        },
+        pro: [
+            "Tiefe platonische Verbindung möglich",
+            "Keine romantischen Erwartungen",
+            "Autonomie wird respektiert"
+        ],
+        contra: [
+            "Single könnte Romantik vermissen",
+            "Unterschiedliche Beziehungsziele möglich"
+        ]
+    },
+
+    "aromantisch_duo": {
+        pathos: {
+            spannung: [
+                "Duo sucht romantische Liebe – genau das, was Aromantisch nicht bieten kann.",
+                "Fundamentaler Unterschied in der Beziehungsdefinition.",
+                "Duo fühlt sich möglicherweise ungeliebt."
+            ]
+        },
+        logos: {
+            unterschied: [
+                "Maximale Inkompatibilität bei romantischen Erwartungen.",
+                "Aromantisch kann die romantische Sprache nicht sprechen."
+            ]
+        },
+        pro: [
+            "Tiefe Verbindung auf anderer Ebene möglich"
+        ],
+        contra: [
+            "Duo erwartet Romantik",
+            "Fundamentaler Unterschied",
+            "Duo fühlt sich nicht 'richtig' geliebt"
+        ]
+    },
+
+    "aromantisch_aromantisch": {
+        pathos: {
+            gemeinsam: [
+                "Perfekte Resonanz: Beide verstehen das Fehlen romantischer Anziehung.",
+                "Tiefe platonische Liebe ist die gemeinsame Sprache.",
+                "Keine gesellschaftlichen Erwartungen an Romantik."
+            ],
+            spannung: [
+                "Gesellschaftlich wenig verstanden und unterstützt."
+            ]
+        },
+        logos: {
+            gemeinsam: [
+                "Identisches Verständnis von Beziehung.",
+                "Keine romantischen Skripte zu erfüllen."
+            ]
+        },
+        pro: [
+            "Maximale Übereinstimmung",
+            "Tiefe platonische Verbindung",
+            "Gegenseitiges Verstehen ohne Erklärungen"
+        ],
+        contra: [
+            "Gesellschaftlich wenig verstanden",
+            "Wenig Vorbilder und Unterstützung"
+        ]
+    },
+
+    // ═══════════════════════════════════════════════════════════════════════
+    // POLYAMOR (von) - 8 Kombinationen
     // ═══════════════════════════════════════════════════════════════════════
 
     "polyamor_single": {
@@ -1184,29 +1452,78 @@ const archetypeStatements = {
         ]
     },
 
-    "polyamor_poly_hedo": {
+    "polyamor_ra": {
         pathos: {
+            gemeinsam: [
+                "Beide verstehen nicht-monogame Lebensweisen."
+            ],
             spannung: [
-                "Polyamor erlebt Poly Hedo als zu oberflächlich.",
-                "Die fehlende Struktur von Poly Hedo ist für Polyamor chaotisch.",
-                "Polyamor braucht Tiefe, Poly Hedo flieht sie."
+                "RA lehnt Hierarchien ab, Polyamor hat oft welche.",
+                "Polyamor's Struktur kann für RA einengend wirken."
             ]
         },
         logos: {
             unterschied: [
-                "Maximaler Strukturkonflikt.",
-                "Polyamor ist hochorganisiert, Poly Hedo ist spontan."
+                "Polyamor ist strukturiert, RA lehnt alle Strukturen ab.",
+                "Hierarchie-Differenzen sind fundamental."
             ]
         },
         pro: [
-            "Gemeinsame Offenheit für multiple Verbindungen"
+            "Beide verstehen nicht-monogame Lebensweisen",
+            "Offenheit für multiple Verbindungen"
         ],
         contra: [
-            "Fundamentaler Strukturkonflikt",
-            "Polyamor braucht Planung und Kommunikation, Poly Hedo meidet beides",
-            "Unterschiedliche Erwartungen an Tiefe",
-            "Polyamor erlebt Poly Hedo als verantwortungslos",
-            "Poly Hedo erlebt Polyamor als zu ernst"
+            "RA lehnt Hierarchien ab",
+            "Polyamor's Struktur kann einengend wirken",
+            "Unterschiedliche Erwartungen an Organisation"
+        ]
+    },
+
+    "polyamor_lat": {
+        pathos: {
+            gemeinsam: [
+                "Beide schätzen bewusste Beziehungsgestaltung."
+            ],
+            spannung: [
+                "LAT könnte mehr Exklusivität erwarten.",
+                "Komplexität von Polyamor könnte LAT überfordern."
+            ]
+        },
+        logos: {
+            unterschied: [
+                "LAT lebt oft exklusiv, Polyamor nicht."
+            ]
+        },
+        pro: [
+            "LAT versteht bewusste Distanz",
+            "Kann als Partner im Netzwerk funktionieren"
+        ],
+        contra: [
+            "LAT könnte mehr Exklusivität erwarten",
+            "Komplexität kann überfordern"
+        ]
+    },
+
+    "polyamor_aromantisch": {
+        pathos: {
+            spannung: [
+                "Polyamor sucht romantische Liebe, Aromantisch bietet sie nicht.",
+                "Fundamentaler Unterschied in der Beziehungsdefinition."
+            ]
+        },
+        logos: {
+            unterschied: [
+                "Polyamor fokussiert auf romantische Liebe.",
+                "Aromantisch kann nur platonische Verbindungen bieten."
+            ]
+        },
+        pro: [
+            "Aromantisch könnte platonischer Partner sein",
+            "Polyamor ist offen für verschiedene Verbindungsarten"
+        ],
+        contra: [
+            "Polyamor sucht romantische Liebe",
+            "Fundamentaler Unterschied in Erwartungen"
         ]
     },
 
