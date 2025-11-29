@@ -5330,23 +5330,30 @@
                     <div class="help-section">
                         <h3>Berechnung</h3>
                         <div class="help-formula">
-                            Qualitätsindex = (Archetyp × 40%) + (Orientierung × 25%) + (Dominanz × 20%) + (Geschlecht × 15%)
+                            Qualitätsindex = [(Archetyp × 40%) + (Orientierung × 25%) + (Dominanz × 20%) + (Geschlecht × 15%)] × Resonanz
                         </div>
-                        <p>Jeder Faktor wird einzeln auf 0-100% bewertet. Der Gesamtindex ist die gewichtete Summe aller vier Faktoren.</p>
+                        <p>Jeder Faktor wird einzeln auf 0-100% bewertet. Die <strong>Resonanz (R)</strong> ist ein Meta-Faktor (0.9-1.1), der moduliert, wie gut Kopf (Logos) und Herz (Pathos) zusammenschwingen.</p>
+                        <div style="margin-top: 10px; padding: 8px; background: rgba(255,255,255,0.05); border-radius: 6px;">
+                            <strong>Resonanz-Formel:</strong> R = 0.9 + [(M/100 × 0.5) + (B × 0.5)] × 0.2<br>
+                            <small style="opacity: 0.7;">M = Profil-Match (30 Attribute) | B = Logos-Pathos-Balance</small>
+                        </div>
                     </div>
 
                     <div class="help-section">
                         <h3>Rechenbeispiel</h3>
                         <div class="help-example">
-                            <div class="help-example-title">Duo (Frau, Submissiv, Hetero) × Duo-Flex (Mann, Dominant, Hetero)</div>
+                            <div class="help-example-title">Duo (Cis Frau, Submissiv, Hetero) × Duo-Flex (Cis Mann, Dominant, Hetero)</div>
                             <ul>
                                 <li>Archetyp: 75% × 0.40 = 30 (Duo ↔ Duo-Flex = nah verwandt)</li>
                                 <li>Orientierung: 100% × 0.25 = 25 (Hetero + Hetero bei M/F)</li>
                                 <li>Dominanz: 100% × 0.20 = 20 (Submissiv + Dominant = Ergänzung)</li>
-                                <li>Geschlecht: 100% × 0.15 = 15 (Frau × Mann passt)</li>
+                                <li>Geschlecht: 100% × 0.15 = 15 (Cis Frau × Cis Mann passt)</li>
+                                <li><strong>Basis-Score: 90</strong></li>
+                                <li>Resonanz: R = 1.05 (Leichte Harmonie)</li>
+                                <li><strong>Final: 90 × 1.05 = 94.5 ≈ 95</strong></li>
                             </ul>
                             <div class="help-formula">
-                                30 + 25 + 20 + 15 = 90%
+                                (30 + 25 + 20 + 15) × 1.05 = 94.5 ≈ 95%
                             </div>
                         </div>
                     </div>
@@ -12267,7 +12274,236 @@
         }
 
         // ═══════════════════════════════════════════════════════════════════════
-        // HAUPTBERECHNUNG: 4-Faktoren Beziehungsqualität
+        // RESONANZ-BERECHNUNG (Meta-Dimension)
+        // ═══════════════════════════════════════════════════════════════════════
+        // R = 0.9 + [(M/100 × 0.5) + (B × 0.5)] × 0.2
+        // wobei:
+        //   M = Profil-Match (0-100%): Übereinstimmung der 30 Attribute
+        //   B = Balance (0-1): Harmonie zwischen Logos und Pathos
+        // Ergebnis: R zwischen 0.9 und 1.1
+        // ═══════════════════════════════════════════════════════════════════════
+
+        // Die 30 Profil-Attribute in 3 Kategorien
+        const PROFILE_ATTRIBUTES = {
+            D: ['kinderWunsch', 'eheWunsch', 'wohnform', 'religion', 'karrierePrioritaet',
+                'finanzPhilosophie', 'lebensstil', 'umzugsbereitschaft', 'zukunftsplanung', 'traditionenWichtigkeit'],
+            E: ['kommunikationsstil', 'konfliktverhalten', 'emotionaleOffenheit', 'gespraechsBedürfnis', 'feedbackStil',
+                'entschuldigungen', 'streitVerhalten', 'versoehnung', 'kritikAnnehmen', 'humorKonflikte'],
+            F: ['introExtro', 'familieWichtigkeit', 'freundeskreis', 'oeffentlichkeit', 'alleinzeit',
+                'events', 'reisen', 'hobbys', 'wochenende', 'netzwerkGroesse']
+        };
+
+        /**
+         * Berechnet den Profil-Match-Score (M)
+         * Vergleicht die 30 Attribute zweier psychologischer Profile
+         * @returns {number} Match-Prozent 0-100
+         */
+        function calculateProfilMatch(person1, person2) {
+            // Profile-Key generieren basierend auf Archetyp-Geschlecht-Dominanz-Orientierung
+            const profile1Key = getProfileKey(person1);
+            const profile2Key = getProfileKey(person2);
+
+            // Profile aus psychologicalProfiles laden (falls verfügbar)
+            if (typeof psychologicalProfiles === 'undefined') {
+                // Fallback: Schätze Match basierend auf Archetyp-Ähnlichkeit
+                return estimateProfilMatch(person1, person2);
+            }
+
+            const profile1 = psychologicalProfiles[profile1Key];
+            const profile2 = psychologicalProfiles[profile2Key];
+
+            if (!profile1 || !profile2) {
+                return estimateProfilMatch(person1, person2);
+            }
+
+            // Zähle übereinstimmende Attribute
+            let matches = 0;
+            const allAttributes = [...PROFILE_ATTRIBUTES.D, ...PROFILE_ATTRIBUTES.E, ...PROFILE_ATTRIBUTES.F];
+
+            for (const attr of allAttributes) {
+                if (profile1[attr] && profile2[attr]) {
+                    if (profile1[attr] === profile2[attr]) {
+                        matches++;
+                    } else if (areAttributesCompatible(attr, profile1[attr], profile2[attr])) {
+                        matches += 0.5; // Partielle Übereinstimmung
+                    }
+                }
+            }
+
+            return Math.round((matches / 30) * 100);
+        }
+
+        /**
+         * Generiert den Profile-Key für eine Person
+         */
+        function getProfileKey(person) {
+            const geschlecht = getGeschlechtCategory(person.geschlecht);
+            const geschlechtLabel = geschlecht === 'maennlich' ? 'männlich' :
+                                   geschlecht === 'weiblich' ? 'weiblich' : 'nonbinär';
+
+            // Primäre Dominanz ermitteln
+            let dominanz = 'ausgeglichen';
+            if (person.dominanz && typeof person.dominanz === 'object') {
+                for (const [type, status] of Object.entries(person.dominanz)) {
+                    if (status === 'gelebt') {
+                        dominanz = type;
+                        break;
+                    }
+                }
+            } else if (person.dominanz) {
+                dominanz = person.dominanz;
+            }
+
+            // Primäre Orientierung ermitteln
+            let orientierung = 'heterosexuell';
+            if (person.orientierung && typeof person.orientierung === 'object') {
+                for (const [type, status] of Object.entries(person.orientierung)) {
+                    if (status === 'gelebt') {
+                        orientierung = type;
+                        break;
+                    }
+                }
+            } else if (person.orientierung) {
+                orientierung = person.orientierung;
+            }
+
+            return `${person.archetyp}-${geschlechtLabel}-${dominanz}-${orientierung}`;
+        }
+
+        /**
+         * Schätzt den Profil-Match wenn keine exakten Profile verfügbar
+         * Basiert auf Archetyp-Ähnlichkeit und Dimension-Übereinstimmungen
+         */
+        function estimateProfilMatch(person1, person2) {
+            let score = 50; // Basis
+
+            // Gleicher Archetyp = +30
+            if (person1.archetyp === person2.archetyp) {
+                score += 30;
+            } else {
+                // Ähnliche Archetypen (aus Matrix ableitbar)
+                const archetypeScore = getArchetypeScore(person1.archetyp, person2.archetyp);
+                score += Math.round((archetypeScore - 50) * 0.3);
+            }
+
+            // Gleiche Dominanz-Orientierung = +10
+            const dom1 = getPrimaryDominanz(person1.dominanz);
+            const dom2 = getPrimaryDominanz(person2.dominanz);
+            if (dom1 === dom2) score += 10;
+
+            // Ähnliche Orientierung = +10
+            const ori1 = getPrimaryOrientierung(person1.orientierung);
+            const ori2 = getPrimaryOrientierung(person2.orientierung);
+            if (ori1 === ori2) score += 10;
+
+            return Math.min(100, Math.max(0, score));
+        }
+
+        /**
+         * Prüft ob zwei Attribut-Werte kompatibel sind (partielle Übereinstimmung)
+         */
+        function areAttributesCompatible(attr, val1, val2) {
+            // Kompatibilitäts-Gruppen für bestimmte Attribute
+            const compatGroups = {
+                'wohnform': [['alleine', 'zusammen'], ['getrennt', 'zusammen']],
+                'lebensstil': [['durchschnittlich', 'bescheiden'], ['durchschnittlich', 'luxuriös']],
+                'kommunikationsstil': [['direkt', 'ausgewogen'], ['indirekt', 'ausgewogen']],
+                'introExtro': [['ambivert', 'introvertiert'], ['ambivert', 'extrovertiert']]
+            };
+
+            if (compatGroups[attr]) {
+                for (const group of compatGroups[attr]) {
+                    if (group.includes(val1) && group.includes(val2)) {
+                        return true;
+                    }
+                }
+            }
+
+            return false;
+        }
+
+        /**
+         * Helper: Primäre Dominanz aus Objekt ermitteln
+         */
+        function getPrimaryDominanz(dominanz) {
+            if (!dominanz || typeof dominanz !== 'object') return dominanz || 'ausgeglichen';
+            for (const [type, status] of Object.entries(dominanz)) {
+                if (status === 'gelebt') return type;
+            }
+            return 'ausgeglichen';
+        }
+
+        /**
+         * Helper: Primäre Orientierung aus Objekt ermitteln
+         */
+        function getPrimaryOrientierung(orientierung) {
+            if (!orientierung || typeof orientierung !== 'object') return orientierung || 'heterosexuell';
+            for (const [type, status] of Object.entries(orientierung)) {
+                if (status === 'gelebt') return type;
+            }
+            return 'heterosexuell';
+        }
+
+        /**
+         * Berechnet die Logos-Pathos-Balance (B)
+         * B = (100 - |Logos - Pathos|) / 100
+         * @returns {number} Balance 0.0-1.0
+         */
+        function calculateLogosPathosBalance(archetypeScore, orientationScore, dominanceScore, genderScore) {
+            // Logos = Archetyp-Score
+            const logos = archetypeScore;
+
+            // Pathos = Durchschnitt der drei Pathos-Faktoren
+            const pathos = (orientationScore + dominanceScore + genderScore) / 3;
+
+            // Differenz
+            const differenz = Math.abs(logos - pathos);
+
+            // Balance: Je geringer die Differenz, desto höher die Balance
+            const balance = (100 - differenz) / 100;
+
+            return Math.max(0, Math.min(1, balance));
+        }
+
+        /**
+         * Berechnet den Resonanz-Koeffizienten (R)
+         * R = 0.9 + [(M/100 × 0.5) + (B × 0.5)] × 0.2
+         * @returns {object} { R: 0.9-1.1, M: 0-100, B: 0-1, interpretation: string }
+         */
+        function calculateResonanz(person1, person2, archetypeScore, orientationScore, dominanceScore, genderScore) {
+            // Komponente 1: Profil-Match (M)
+            const M = calculateProfilMatch(person1, person2);
+
+            // Komponente 2: Logos-Pathos-Balance (B)
+            const B = calculateLogosPathosBalance(archetypeScore, orientationScore, dominanceScore, genderScore);
+
+            // Gesamtformel: R = 0.9 + [(M/100 × 0.5) + (B × 0.5)] × 0.2
+            const R = 0.9 + ((M / 100 * 0.5) + (B * 0.5)) * 0.2;
+
+            // Interpretation
+            let interpretation;
+            if (R >= 1.08) {
+                interpretation = 'Starke Harmonie';
+            } else if (R >= 1.03) {
+                interpretation = 'Leichte Harmonie';
+            } else if (R >= 0.97) {
+                interpretation = 'Neutral';
+            } else if (R >= 0.93) {
+                interpretation = 'Leichte Dissonanz';
+            } else {
+                interpretation = 'Starke Dissonanz';
+            }
+
+            return {
+                R: Math.round(R * 100) / 100,
+                M: M,
+                B: Math.round(B * 100) / 100,
+                interpretation: interpretation
+            };
+        }
+
+        // ═══════════════════════════════════════════════════════════════════════
+        // HAUPTBERECHNUNG: 5-Faktoren Beziehungsqualität (inkl. Resonanz)
         // ═══════════════════════════════════════════════════════════════════════
         // Philosophische Grundlage: Tiage-Modell + MOQ (Pirsig) + OSHO
         //
@@ -12327,7 +12563,8 @@
                         dominanz: 0,
                         orientierung: 0,
                         geschlecht: 0
-                    }
+                    },
+                    resonanz: { R: 0.9, M: 0, B: 0, interpretation: 'Blockiert' }
                 };
             }
 
@@ -12339,22 +12576,38 @@
             const dominanceScore = calculateDominanceHarmony(person1.dominanz, person2.dominanz);
             const genderScore = calculateGenderAttraction(person1, person2);
 
-            // Gewichtete Summe nach Logos/Pathos-Prinzip
-            const totalScore =
+            // Gewichtete Basis-Summe nach Logos/Pathos-Prinzip
+            const baseScore =
                 (archetypeScore * 0.40) +      // 40% Logos - Beziehungsphilosophie
                 (orientationScore * 0.25) +    // 25% Pathos - Körperliche Polarität
                 (dominanceScore * 0.20) +      // 20% Pathos - Energetische Dynamik
                 (genderScore * 0.15);          // 15% Pathos - Gender-Chemie
 
+            // ═══════════════════════════════════════
+            // EBENE 3: Resonanz als Meta-Dimension
+            // ═══════════════════════════════════════
+            // R moduliert das Gesamtergebnis (0.9 - 1.1)
+            // Formel: Q = baseScore × R
+
+            const resonanzResult = calculateResonanz(
+                person1, person2,
+                archetypeScore, orientationScore, dominanceScore, genderScore
+            );
+
+            // Finale Qualität mit Resonanz-Modulation
+            const totalScore = baseScore * resonanzResult.R;
+
             return {
                 score: Math.round(totalScore),
+                baseScore: Math.round(baseScore),
                 blocked: false,
                 breakdown: {
                     archetyp: archetypeScore,
                     dominanz: dominanceScore,
                     orientierung: orientationScore,
                     geschlecht: genderScore
-                }
+                },
+                resonanz: resonanzResult
             };
         }
 
