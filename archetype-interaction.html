@@ -13600,8 +13600,16 @@
 
         /**
          * Berechnet den Resonanz-Koeffizienten (R)
-         * R = 0.9 + [(M/100 × 0.5) + (B × 0.5)] × 0.2
-         * @returns {object} { R: 0.9-1.1, M: 0-100, B: 0-1, interpretation: string }
+         * R = 0.9 + [(M/100 × 0.35) + (B × 0.35) + (K × 0.30)] × 0.2
+         *
+         * K = GFK-Kommunikationsfaktor (0-1)
+         *     - Beide hoch: 1.0
+         *     - Hoch+Mittel: 0.75
+         *     - Beide mittel: 0.5
+         *     - Asymmetrisch: 0.25
+         *     - Beide niedrig: 0.0
+         *
+         * @returns {object} { R: 0.9-1.1, M: 0-100, B: 0-1, K: 0-1, interpretation: string }
          */
         function calculateResonanz(person1, person2, archetypeScore, orientationScore, dominanceScore, genderScore) {
             // Komponente 1: Profil-Match (M)
@@ -13610,8 +13618,12 @@
             // Komponente 2: Logos-Pathos-Balance (B)
             const B = calculateLogosPathosBalance(archetypeScore, orientationScore, dominanceScore, genderScore);
 
-            // Gesamtformel: R = 0.9 + [(M/100 × 0.5) + (B × 0.5)] × 0.2
-            const R = 0.9 + ((M / 100 * 0.5) + (B * 0.5)) * 0.2;
+            // Komponente 3: GFK-Kommunikationsfaktor (K)
+            const K = calculateGfkFactor();
+
+            // Gesamtformel: R = 0.9 + [(M/100 × 0.35) + (B × 0.35) + (K × 0.30)] × 0.2
+            // GFK bekommt 30% weil Kommunikation fundamental für Resonanz ist
+            const R = 0.9 + ((M / 100 * 0.35) + (B * 0.35) + (K * 0.30)) * 0.2;
 
             // Interpretation
             let interpretation;
@@ -13631,8 +13643,47 @@
                 R: Math.round(R * 100) / 100,
                 M: M,
                 B: Math.round(B * 100) / 100,
+                K: Math.round(K * 100) / 100,
                 interpretation: interpretation
             };
+        }
+
+        /**
+         * Berechnet den GFK-Kommunikationsfaktor (K)
+         * Basiert auf der GFK-Kompetenz beider Partner
+         * @returns {number} 0-1, wobei 1 = optimale Kommunikationsbasis
+         */
+        function calculateGfkFactor() {
+            const ichGfk = personDimensions.ich?.gfk;
+            const partnerGfk = personDimensions.partner?.gfk;
+
+            // Wenn einer nicht ausgewählt: neutral (0.5)
+            if (!ichGfk || !partnerGfk) {
+                return 0.5;
+            }
+
+            // GFK-Werte in numerische Werte umwandeln
+            const gfkValues = { 'hoch': 3, 'mittel': 2, 'niedrig': 1 };
+            const v1 = gfkValues[ichGfk] || 2;
+            const v2 = gfkValues[partnerGfk] || 2;
+
+            // Kombinationswerte (Summe: 2-6)
+            const sum = v1 + v2;
+            const min = Math.min(v1, v2);
+
+            // Faktor-Mapping:
+            // 6 (hoch+hoch): 1.0
+            // 5 (hoch+mittel): 0.75
+            // 4 (mittel+mittel oder hoch+niedrig): 0.5 oder 0.4
+            // 3 (mittel+niedrig): 0.25
+            // 2 (niedrig+niedrig): 0.0
+
+            if (sum === 6) return 1.0;              // hoch + hoch
+            if (sum === 5) return 0.75;             // hoch + mittel
+            if (sum === 4 && min === 2) return 0.5; // mittel + mittel
+            if (sum === 4 && min === 1) return 0.35; // hoch + niedrig (asymmetrisch)
+            if (sum === 3) return 0.2;              // mittel + niedrig
+            return 0.0;                             // niedrig + niedrig
         }
 
         // ═══════════════════════════════════════════════════════════════════════
