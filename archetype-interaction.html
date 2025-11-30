@@ -6109,6 +6109,7 @@
     <script src="js/synthesis/factors/orientationFactor.js"></script>
     <script src="js/synthesis/factors/genderFactor.js"></script>
     <script src="js/synthesis/synthesisCalculator.js"></script>
+    <script src="js/synthesis/pathosTextGenerator.js"></script>
     <script src="profiles/gfk-beduerfnisse.js"></script>
     <script src="profiles/beduerfnis-modifikatoren.js"></script>
 </head>
@@ -15917,6 +15918,7 @@
 
         /**
          * Generiert detaillierte Pathos-Inhalte mit ICH/Partner/Synthese Struktur
+         * Nutzt PathosTextGenerator für fließende, poetische Texte
          * @returns {Object} { ich, partner, synthese, resonanz }
          */
         function generateDetailedPathos(ichArch, partnerArch) {
@@ -15946,10 +15948,7 @@
             const breakdown = qualityResult.breakdown || { archetyp: 50, dominanz: 75, orientierung: 100, geschlecht: 100 };
             const overallScore = qualityResult.score || 50;
             const resonanzData = qualityResult.resonanz;
-
-            // Tonalität und Hash
             const tonality = getTonality(overallScore);
-            const hash = getFactorHash(breakdown.archetyp, breakdown.dominanz, breakdown.orientierung, breakdown.geschlecht);
 
             // Hole Statement-Quellen
             const archStatements = getArchetypeStatements(ichId, partnerId);
@@ -15957,11 +15956,74 @@
             const orientStatements = getOrientierungStatements(person1.orientierung, person2.orientierung, person1.geschlecht, person2.geschlecht);
 
             // ═══════════════════════════════════════════════════════════════
-            // ICH BRINGT MIT (Pathos-Perspektive: Emotionale Energie)
+            // NUTZE PATHOS TEXT GENERATOR (wenn verfügbar)
             // ═══════════════════════════════════════════════════════════════
-            const ichParts = [];
+            if (typeof PathosTextGenerator !== 'undefined') {
+                // Generiere deterministischen Hash für Varianz
+                const seed = PathosTextGenerator.generateHash(
+                    ichId, partnerId,
+                    person1.dominanz || 'none',
+                    person2.dominanz || 'none',
+                    overallScore
+                );
 
-            // Dynamische Qualität (Pirsig)
+                // ICH BRINGT MIT - Poetischer Fließtext
+                const ichText = PathosTextGenerator.generatePersonText(
+                    ichArch,
+                    personDimensions.ich,
+                    ichName,
+                    seed
+                );
+
+                // PARTNER BRINGT MIT - Poetischer Fließtext
+                const partnerText = PathosTextGenerator.generatePersonText(
+                    partnerArch,
+                    personDimensions.partner,
+                    partnerName,
+                    seed + 100
+                );
+
+                // DARAUS ENTSTEHT - Poetische Synthese
+                const syntheseText = PathosTextGenerator.generateSyntheseText({
+                    ichArch,
+                    partnerArch,
+                    ichName,
+                    partnerName,
+                    ichDimensions: personDimensions.ich,
+                    partnerDimensions: personDimensions.partner,
+                    overallScore,
+                    archStatements,
+                    domStatements,
+                    orientStatements,
+                    seed
+                });
+
+                // RESONANZ - Poetische Interpretation
+                let resonanzText = null;
+                if (resonanzData && resonanzData.R !== undefined) {
+                    resonanzText = PathosTextGenerator.generateResonanzText(
+                        resonanzData.R,
+                        seed + 200
+                    );
+                }
+
+                return {
+                    ich: ichText,
+                    partner: partnerText,
+                    synthese: syntheseText,
+                    resonanz: resonanzText,
+                    score: overallScore,
+                    tonality: tonality
+                };
+            }
+
+            // ═══════════════════════════════════════════════════════════════
+            // FALLBACK: Original-Logik (wenn PathosTextGenerator nicht geladen)
+            // ═══════════════════════════════════════════════════════════════
+            const hash = getFactorHash(breakdown.archetyp, breakdown.dominanz, breakdown.orientierung, breakdown.geschlecht);
+
+            // ICH BRINGT MIT
+            const ichParts = [];
             if (ichArch?.pirsig?.dynamicQuality !== undefined) {
                 const dynQual = ichArch.pirsig.dynamicQuality;
                 if (dynQual >= 0.7) {
@@ -15972,18 +16034,9 @@
                     ichParts.push(`${ichName} sucht emotionale Tiefe durch Beständigkeit und vertraute Muster.`);
                 }
             }
-
-            // Natürlichkeit (Osho)
-            if (ichArch?.osho?.naturalness !== undefined) {
-                const nat = ichArch.osho.naturalness;
-                if (nat >= 0.7) {
-                    ichParts.push(`Emotionale Authentizität steht im Vordergrund – ${ichName} folgt dem natürlichen Fluss der Gefühle.`);
-                } else if (nat >= 0.4) {
-                    ichParts.push(`${ichName} verbindet emotionale Intuition mit bewusster Reflexion.`);
-                }
+            if (ichArch?.osho?.naturalness >= 0.7) {
+                ichParts.push(`Emotionale Authentizität steht im Vordergrund – ${ichName} folgt dem natürlichen Fluss der Gefühle.`);
             }
-
-            // Dominanz-Energie
             const ichDom = person1.dominanz;
             if (ichDom) {
                 const domText = {
@@ -15994,30 +16047,12 @@
                 };
                 if (domText[ichDom]) ichParts.push(domText[ichDom]);
             }
-
-            // Kernwerte (emotional relevant)
             if (ichArch?.coreValues?.length) {
-                const emotionalValues = ichArch.coreValues.slice(0, 2).join(' und ');
-                ichParts.push(`Kernwerte wie ${emotionalValues} prägen das emotionale Erleben.`);
+                ichParts.push(`Kernwerte wie ${ichArch.coreValues.slice(0, 2).join(' und ')} prägen das emotionale Erleben.`);
             }
 
-            // GFK-Kompetenz (ICH)
-            const ichGfk = personDimensions.ich?.gfk;
-            if (ichGfk) {
-                const gfkText = {
-                    'hoch': `${ichName} kommuniziert gewaltfrei – empathisches Zuhören und klare Bedürfnisäußerung sind selbstverständlich.`,
-                    'mittel': `${ichName} kennt GFK-Prinzipien, wendet sie aber unter Stress nicht immer konsequent an.`,
-                    'niedrig': `${ichName} neigt zu reaktiver Kommunikation – Vorwürfe und Urteile können Konflikte eskalieren.`
-                };
-                if (gfkText[ichGfk]) ichParts.push(gfkText[ichGfk]);
-            }
-
-            // ═══════════════════════════════════════════════════════════════
             // PARTNER BRINGT MIT
-            // ═══════════════════════════════════════════════════════════════
             const partnerParts = [];
-
-            // Dynamische Qualität (Pirsig)
             if (partnerArch?.pirsig?.dynamicQuality !== undefined) {
                 const dynQual = partnerArch.pirsig.dynamicQuality;
                 if (dynQual >= 0.7) {
@@ -16028,18 +16063,9 @@
                     partnerParts.push(`${partnerName} sucht emotionale Tiefe durch Beständigkeit und vertraute Muster.`);
                 }
             }
-
-            // Natürlichkeit (Osho)
-            if (partnerArch?.osho?.naturalness !== undefined) {
-                const nat = partnerArch.osho.naturalness;
-                if (nat >= 0.7) {
-                    partnerParts.push(`Emotionale Authentizität steht im Vordergrund – ${partnerName} folgt dem natürlichen Fluss der Gefühle.`);
-                } else if (nat >= 0.4) {
-                    partnerParts.push(`${partnerName} verbindet emotionale Intuition mit bewusster Reflexion.`);
-                }
+            if (partnerArch?.osho?.naturalness >= 0.7) {
+                partnerParts.push(`Emotionale Authentizität steht im Vordergrund – ${partnerName} folgt dem natürlichen Fluss der Gefühle.`);
             }
-
-            // Dominanz-Energie
             const partnerDom = person2.dominanz;
             if (partnerDom) {
                 const domText = {
@@ -16050,102 +16076,38 @@
                 };
                 if (domText[partnerDom]) partnerParts.push(domText[partnerDom]);
             }
-
-            // Kernwerte
             if (partnerArch?.coreValues?.length) {
-                const emotionalValues = partnerArch.coreValues.slice(0, 2).join(' und ');
-                partnerParts.push(`Kernwerte wie ${emotionalValues} prägen das emotionale Erleben.`);
+                partnerParts.push(`Kernwerte wie ${partnerArch.coreValues.slice(0, 2).join(' und ')} prägen das emotionale Erleben.`);
             }
 
-            // GFK-Kompetenz (Partner)
-            const partnerGfk = personDimensions.partner?.gfk;
-            if (partnerGfk) {
-                const gfkText = {
-                    'hoch': `${partnerName} kommuniziert gewaltfrei – empathisches Zuhören und klare Bedürfnisäußerung sind selbstverständlich.`,
-                    'mittel': `${partnerName} kennt GFK-Prinzipien, wendet sie aber unter Stress nicht immer konsequent an.`,
-                    'niedrig': `${partnerName} neigt zu reaktiver Kommunikation – Vorwürfe und Urteile können Konflikte eskalieren.`
-                };
-                if (gfkText[partnerGfk]) partnerParts.push(gfkText[partnerGfk]);
-            }
-
-            // ═══════════════════════════════════════════════════════════════
-            // DARAUS ENTSTEHT (Synthese)
-            // ═══════════════════════════════════════════════════════════════
+            // SYNTHESE
             const syntheseParts = [];
-
-            // Tonalitäts-Einleitung
             const tonalityIntro = selectStatementByHash(tonalityTemplates[tonality].pathos, hash);
             if (tonalityIntro) syntheseParts.push(tonalityIntro);
-
-            // Archetyp-Kombination
             if (archStatements?.pathos) {
-                const gemeinsam = archStatements.pathos.gemeinsam || [];
-                const spannung = archStatements.pathos.spannung || [];
-                const allPathos = [...gemeinsam, ...spannung];
+                const allPathos = [...(archStatements.pathos.gemeinsam || []), ...(archStatements.pathos.spannung || [])];
                 const selected = selectStatementByHash(allPathos, hash + 7);
                 if (selected) syntheseParts.push(selected);
             }
-
-            // Dominanz-Dynamik
-            if (domStatements?.pathos?.length && domStatements !== dominanceStatements?.default) {
-                const selected = selectStatementByHash(domStatements.pathos, hash + 11);
-                if (selected) syntheseParts.push(selected);
+            if (domStatements?.pathos?.length) {
+                syntheseParts.push(selectStatementByHash(domStatements.pathos, hash + 11));
             }
-
-            // Orientierungs-Aspekt
-            if (orientStatements?.pathos?.length) {
-                const selected = selectStatementByHash(orientStatements.pathos, hash + 17);
-                if (selected) syntheseParts.push(selected);
-            }
-
-            // Dynamische Qualitäts-Interaktion
             const ichDyn = ichArch?.pirsig?.dynamicQuality || 0.5;
             const partnerDyn = partnerArch?.pirsig?.dynamicQuality || 0.5;
-            const dynDiff = Math.abs(ichDyn - partnerDyn);
-
-            if (dynDiff < 0.2) {
-                syntheseParts.push(`Beide schwingen auf einer ähnlichen emotionalen Frequenz – das schafft natürliche Resonanz.`);
-            } else if (dynDiff > 0.5) {
-                if (tonality === 'positiv') {
-                    syntheseParts.push(`Die unterschiedlichen emotionalen Energien können sich ergänzen und bereichern.`);
-                } else {
-                    syntheseParts.push(`Die verschiedenen emotionalen Tempi erfordern bewusste Abstimmung.`);
-                }
+            if (Math.abs(ichDyn - partnerDyn) < 0.2) {
+                syntheseParts.push(`Beide schwingen auf einer ähnlichen emotionalen Frequenz.`);
             }
-
-            // GFK-Synthese (Kommunikationsdynamik)
-            if (ichGfk && partnerGfk) {
-                const gfkStmts = getGfkStatements(ichGfk, partnerGfk);
-                if (gfkStmts?.pathos?.length) {
-                    const selected = selectStatementByHash(gfkStmts.pathos, hash + 29);
-                    if (selected) syntheseParts.push(selected);
-                }
-                // Konfliktpotenzial hinzufügen
-                if (gfkStmts.konfliktPotenzial && gfkStmts.konfliktPotenzial !== 'unbekannt') {
-                    syntheseParts.push(`Konfliktpotenzial: ${gfkStmts.konfliktPotenzial}.`);
-                }
-            }
-
-            // Fallback
             if (syntheseParts.length === 0) {
-                syntheseParts.push(`${ichName} und ${partnerName} können emotional zueinander finden, auch wenn ihre Grundhaltungen sich unterscheiden.`);
+                syntheseParts.push(`${ichName} und ${partnerName} können emotional zueinander finden.`);
             }
 
-            // ═══════════════════════════════════════════════════════════════
-            // RESONANZ (falls vorhanden)
-            // ═══════════════════════════════════════════════════════════════
+            // RESONANZ
             let resonanzText = null;
-            if (resonanzData && resonanzData.R !== undefined) {
+            if (resonanzData?.R !== undefined) {
                 const R = resonanzData.R;
-                if (R >= 1.05) {
-                    resonanzText = `Hohe emotionale Resonanz (R=${R.toFixed(2)}): Die Verbindung schwingt auf einer tiefen Ebene – Pathos und Logos harmonieren.`;
-                } else if (R >= 0.95) {
-                    resonanzText = `Gute Resonanz (R=${R.toFixed(2)}): Die emotionale und rationale Ebene sind im Gleichgewicht.`;
-                } else if (R >= 0.9) {
-                    resonanzText = `Moderate Resonanz (R=${R.toFixed(2)}): Es gibt Potenzial, aber die Wellenlängen sind noch nicht vollständig abgestimmt.`;
-                } else {
-                    resonanzText = `Niedrige Resonanz (R=${R.toFixed(2)}): Die emotionale Verbindung ist herausfordernd – bewusste Arbeit ist nötig.`;
-                }
+                if (R >= 1.05) resonanzText = `Hohe emotionale Resonanz (R=${R.toFixed(2)}): Pathos und Logos harmonieren.`;
+                else if (R >= 0.95) resonanzText = `Gute Resonanz (R=${R.toFixed(2)}): Emotionale und rationale Ebene im Gleichgewicht.`;
+                else resonanzText = `Resonanz R=${R.toFixed(2)}: Die Wellenlängen sind noch nicht vollständig abgestimmt.`;
             }
 
             return {
