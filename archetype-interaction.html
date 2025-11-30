@@ -4343,10 +4343,26 @@
             margin: -2px -4px;
         }
 
-        .geschlecht-info-link:hover {
+        .geschlecht-info-link:hover,
+        .dominanz-info-link:hover,
+        .orientierung-info-link:hover,
+        .gfk-info-link:hover {
             color: var(--primary);
             background: rgba(69, 123, 157, 0.15);
             text-decoration-color: var(--primary);
+        }
+
+        /* Spezifische Link-Klassen für Dimensionen (erben Basis-Styling) */
+        .dominanz-info-link,
+        .orientierung-info-link,
+        .gfk-info-link {
+            cursor: pointer;
+            text-decoration: underline;
+            text-decoration-style: dotted;
+            transition: all 0.2s ease;
+            padding: 2px 4px;
+            border-radius: 4px;
+            margin: -2px -4px;
         }
 
         /* Geschlechtsidentität: Grid-Layout für 9 Optionen */
@@ -6004,8 +6020,11 @@
                 font-size: 15px;
             }
 
-            /* Mobile: Größere Geschlechtsidentität Info-Link */
-            .geschlecht-info-link {
+            /* Mobile: Größere Dimensions-Info-Links */
+            .geschlecht-info-link,
+            .dominanz-info-link,
+            .orientierung-info-link,
+            .gfk-info-link {
                 font-size: 16px;
             }
 
@@ -6965,22 +6984,22 @@
                 <div class="header-geschlecht-info" id="ich-header-orientierung"></div>
                 <div class="column-dimensions">
                     <div class="compact-dimension needs-selection collapsible-dimension" data-dimension="ich-geschlecht-new">
-                        <div class="compact-dimension-label"><span class="geschlecht-info-link" onclick="showGeschlechtInfoModal()">Geschlechtsidentität</span> <span id="ich-geschlecht-legend" class="geschlecht-legend" style="font-size: 10px; opacity: 0.7;">(<span class="legend-i">I</span>=Identität, <span class="legend-g">G</span>=Sekundär)</span></div>
+                        <div class="compact-dimension-label"><span class="geschlecht-info-link">Geschlechtsidentität</span> <span id="ich-geschlecht-legend" class="geschlecht-legend" style="font-size: 10px; opacity: 0.7;">(<span class="legend-i">I</span>=Identität, <span class="legend-g">G</span>=Sekundär)</span></div>
                         <div class="collapsed-summary" id="ich-geschlecht-summary"></div>
                         <div class="geschlecht-grid" id="ich-geschlecht-grid" data-person="ich"></div>
                     </div>
                     <div class="compact-dimension needs-selection collapsible-dimension" data-dimension="ich-dominanz-multi">
-                        <div class="compact-dimension-label"><span class="geschlecht-info-link" onclick="showDominanzInfoModal()">Dominanz</span> <span id="ich-dominanz-legend" class="geschlecht-legend" style="font-size: 10px; text-decoration: underline; cursor: pointer;" onclick="showDimensionTooltip('dominanzStatus')">(<span class="legend-i">I</span>=Identität, <span class="legend-g">G</span>=Sekundär)</span></div>
+                        <div class="compact-dimension-label"><span class="dominanz-info-link">Dominanz</span> <span id="ich-dominanz-legend" class="geschlecht-legend" style="font-size: 10px; text-decoration: underline; cursor: pointer;" onclick="showDimensionTooltip('dominanzStatus')">(<span class="legend-i">I</span>=Identität, <span class="legend-g">G</span>=Sekundär)</span></div>
                         <div class="collapsed-summary" id="ich-dominanz-summary"></div>
                         <div class="dominanz-grid" id="ich-dominanz-grid" data-person="ich"></div>
                     </div>
                     <div class="compact-dimension needs-selection collapsible-dimension" data-dimension="ich-orientierung-multi">
-                        <div class="compact-dimension-label"><span class="geschlecht-info-link" onclick="showOrientierungInfoModal()">Orientierung</span> <span id="ich-orientierung-legend" class="geschlecht-legend" style="font-size: 10px; text-decoration: underline; cursor: pointer;" onclick="showDimensionTooltip('status')">(<span class="legend-i">I</span>=Identität, <span class="legend-g">G</span>=Sekundär)</span></div>
+                        <div class="compact-dimension-label"><span class="orientierung-info-link">Orientierung</span> <span id="ich-orientierung-legend" class="geschlecht-legend" style="font-size: 10px; text-decoration: underline; cursor: pointer;" onclick="showDimensionTooltip('status')">(<span class="legend-i">I</span>=Identität, <span class="legend-g">G</span>=Sekundär)</span></div>
                         <div class="collapsed-summary" id="ich-orientierung-summary"></div>
                         <div class="orientierung-grid" id="ich-orientierung-grid" data-person="ich"></div>
                     </div>
                     <div class="compact-dimension collapsible-dimension" data-dimension="ich-gfk">
-                        <div class="compact-dimension-label"><span class="geschlecht-info-link" onclick="showDimensionTooltip('gfk')">GFK-Kompetenz</span></div>
+                        <div class="compact-dimension-label"><span class="gfk-info-link">GFK-Kompetenz</span></div>
                         <div class="collapsed-summary" id="ich-gfk-summary"></div>
                         <div class="gfk-grid" id="ich-gfk-grid" data-person="ich"></div>
                     </div>
@@ -7065,22 +7084,22 @@
                 <div class="header-geschlecht-info" id="partner-header-orientierung"></div>
                 <div class="column-dimensions">
                     <div class="compact-dimension needs-selection collapsible-dimension" data-dimension="partner-geschlecht-new">
-                        <div class="compact-dimension-label"><span class="geschlecht-info-link" onclick="showGeschlechtInfoModal()">Geschlechtsidentität</span> <span id="partner-geschlecht-legend" class="geschlecht-legend" style="font-size: 10px; opacity: 0.7;">(<span class="legend-i">I</span>=Identität, <span class="legend-g">G</span>=Sekundär)</span></div>
+                        <div class="compact-dimension-label"><span class="geschlecht-info-link">Geschlechtsidentität</span> <span id="partner-geschlecht-legend" class="geschlecht-legend" style="font-size: 10px; opacity: 0.7;">(<span class="legend-i">I</span>=Identität, <span class="legend-g">G</span>=Sekundär)</span></div>
                         <div class="collapsed-summary" id="partner-geschlecht-summary"></div>
                         <div class="geschlecht-grid" id="partner-geschlecht-grid" data-person="partner"></div>
                     </div>
                     <div class="compact-dimension needs-selection collapsible-dimension" data-dimension="partner-dominanz-multi">
-                        <div class="compact-dimension-label"><span class="geschlecht-info-link" onclick="showDominanzInfoModal()">Dominanz</span> <span id="partner-dominanz-legend" class="geschlecht-legend" style="font-size: 10px; text-decoration: underline; cursor: pointer;" onclick="showDimensionTooltip('dominanzStatus')">(<span class="legend-i">I</span>=Identität, <span class="legend-g">G</span>=Sekundär)</span></div>
+                        <div class="compact-dimension-label"><span class="dominanz-info-link">Dominanz</span> <span id="partner-dominanz-legend" class="geschlecht-legend" style="font-size: 10px; text-decoration: underline; cursor: pointer;" onclick="showDimensionTooltip('dominanzStatus')">(<span class="legend-i">I</span>=Identität, <span class="legend-g">G</span>=Sekundär)</span></div>
                         <div class="collapsed-summary" id="partner-dominanz-summary"></div>
                         <div class="dominanz-grid" id="partner-dominanz-grid" data-person="partner"></div>
                     </div>
                     <div class="compact-dimension needs-selection collapsible-dimension" data-dimension="partner-orientierung-multi">
-                        <div class="compact-dimension-label"><span class="geschlecht-info-link" onclick="showOrientierungInfoModal()">Orientierung</span> <span id="partner-orientierung-legend" class="geschlecht-legend" style="font-size: 10px; text-decoration: underline; cursor: pointer;" onclick="showDimensionTooltip('status')">(<span class="legend-i">I</span>=Identität, <span class="legend-g">G</span>=Sekundär)</span></div>
+                        <div class="compact-dimension-label"><span class="orientierung-info-link">Orientierung</span> <span id="partner-orientierung-legend" class="geschlecht-legend" style="font-size: 10px; text-decoration: underline; cursor: pointer;" onclick="showDimensionTooltip('status')">(<span class="legend-i">I</span>=Identität, <span class="legend-g">G</span>=Sekundär)</span></div>
                         <div class="collapsed-summary" id="partner-orientierung-summary"></div>
                         <div class="orientierung-grid" id="partner-orientierung-grid" data-person="partner"></div>
                     </div>
                     <div class="compact-dimension collapsible-dimension" data-dimension="partner-gfk">
-                        <div class="compact-dimension-label"><span class="geschlecht-info-link" onclick="showDimensionTooltip('gfk')">GFK-Kompetenz</span></div>
+                        <div class="compact-dimension-label"><span class="gfk-info-link">GFK-Kompetenz</span></div>
                         <div class="collapsed-summary" id="partner-gfk-summary"></div>
                         <div class="gfk-grid" id="partner-gfk-grid" data-person="partner"></div>
                     </div>
@@ -7144,13 +7163,13 @@
                 </div>
                 <div class="column-dimensions" id="mobileIchDimensions">
                     <div class="compact-dimension needs-selection collapsible-dimension" data-dimension="mobile-ich-geschlecht">
-                        <div class="compact-dimension-label"><span class="geschlecht-info-link" onclick="showGeschlechtInfoModal()">Geschlechtsidentität</span> <span id="mobile-ich-geschlecht-legend" class="geschlecht-legend" style="font-size: 10px; opacity: 0.7;">(<span class="legend-i">I</span>=Identität, <span class="legend-g">G</span>=Sekundär)</span></div>
+                        <div class="compact-dimension-label"><span class="geschlecht-info-link">Geschlechtsidentität</span> <span id="mobile-ich-geschlecht-legend" class="geschlecht-legend" style="font-size: 10px; opacity: 0.7;">(<span class="legend-i">I</span>=Identität, <span class="legend-g">G</span>=Sekundär)</span></div>
                         <div class="collapsed-summary" id="mobile-ich-geschlecht-summary"></div>
                         <div class="geschlecht-grid" id="mobile-ich-geschlecht-grid" data-person="ich"></div>
                     </div>
                     <div class="compact-dimension needs-selection collapsible-dimension" data-dimension="mobile-ich-dominanz-multi">
                         <div class="compact-dimension-label" onclick="toggleDimensionCollapse(this.parentElement)">
-                            <span><span class="geschlecht-info-link" onclick="event.stopPropagation(); showDominanzInfoModal()">Dominanz</span> <span style="font-size: 10px; text-decoration: underline; cursor: pointer;" onclick="event.stopPropagation(); showDimensionTooltip('dominanzStatus')">(I=Identität, G=Sekundär)</span></span>
+                            <span><span class="dominanz-info-link" onclick="event.stopPropagation()">Dominanz</span> <span style="font-size: 10px; text-decoration: underline; cursor: pointer;" onclick="event.stopPropagation(); showDimensionTooltip('dominanzStatus')">(I=Identität, G=Sekundär)</span></span>
                             <span class="collapse-toggle">▼</span>
                         </div>
                         <div class="collapsed-summary" id="mobile-ich-dominanz-summary"></div>
@@ -7187,7 +7206,7 @@
                     </div>
                     <div class="compact-dimension needs-selection collapsible-dimension" data-dimension="mobile-ich-orientierung-multi">
                         <div class="compact-dimension-label" onclick="toggleDimensionCollapse(this.parentElement)">
-                            <span><span class="geschlecht-info-link" onclick="event.stopPropagation(); showOrientierungInfoModal()">Orientierung</span> <span style="font-size: 10px; text-decoration: underline; cursor: pointer;" onclick="event.stopPropagation(); showDimensionTooltip('status')">(I=Identität, G=Sekundär)</span></span>
+                            <span><span class="orientierung-info-link" onclick="event.stopPropagation()">Orientierung</span> <span style="font-size: 10px; text-decoration: underline; cursor: pointer;" onclick="event.stopPropagation(); showDimensionTooltip('status')">(I=Identität, G=Sekundär)</span></span>
                             <span class="collapse-toggle">▼</span>
                         </div>
                         <div class="collapsed-summary" id="mobile-ich-orientierung-summary"></div>
@@ -7240,13 +7259,13 @@
                 </div>
                 <div class="column-dimensions" id="mobilePartnerDimensions">
                     <div class="compact-dimension needs-selection collapsible-dimension" data-dimension="mobile-partner-geschlecht">
-                        <div class="compact-dimension-label"><span class="geschlecht-info-link" onclick="showGeschlechtInfoModal()">Geschlechtsidentität</span> <span id="mobile-partner-geschlecht-legend" class="geschlecht-legend" style="font-size: 10px; opacity: 0.7;">(<span class="legend-i">I</span>=Identität, <span class="legend-g">G</span>=Sekundär)</span></div>
+                        <div class="compact-dimension-label"><span class="geschlecht-info-link">Geschlechtsidentität</span> <span id="mobile-partner-geschlecht-legend" class="geschlecht-legend" style="font-size: 10px; opacity: 0.7;">(<span class="legend-i">I</span>=Identität, <span class="legend-g">G</span>=Sekundär)</span></div>
                         <div class="collapsed-summary" id="mobile-partner-geschlecht-summary"></div>
                         <div class="geschlecht-grid" id="mobile-partner-geschlecht-grid" data-person="partner"></div>
                     </div>
                     <div class="compact-dimension needs-selection collapsible-dimension" data-dimension="mobile-partner-dominanz-multi">
                         <div class="compact-dimension-label" onclick="toggleDimensionCollapse(this.parentElement)">
-                            <span><span class="geschlecht-info-link" onclick="event.stopPropagation(); showDominanzInfoModal()">Dominanz</span> <span style="font-size: 10px; text-decoration: underline; cursor: pointer;" onclick="event.stopPropagation(); showDimensionTooltip('dominanzStatus')">(I=Identität, G=Sekundär)</span></span>
+                            <span><span class="dominanz-info-link" onclick="event.stopPropagation()">Dominanz</span> <span style="font-size: 10px; text-decoration: underline; cursor: pointer;" onclick="event.stopPropagation(); showDimensionTooltip('dominanzStatus')">(I=Identität, G=Sekundär)</span></span>
                             <span class="collapse-toggle">▼</span>
                         </div>
                         <div class="collapsed-summary" id="mobile-partner-dominanz-summary"></div>
@@ -7283,7 +7302,7 @@
                     </div>
                     <div class="compact-dimension needs-selection collapsible-dimension" data-dimension="mobile-partner-orientierung-multi">
                         <div class="compact-dimension-label" onclick="toggleDimensionCollapse(this.parentElement)">
-                            <span><span class="geschlecht-info-link" onclick="event.stopPropagation(); showOrientierungInfoModal()">Orientierung</span> <span style="font-size: 10px; text-decoration: underline; cursor: pointer;" onclick="event.stopPropagation(); showDimensionTooltip('status')">(I=Identität, G=Sekundär)</span></span>
+                            <span><span class="orientierung-info-link" onclick="event.stopPropagation()">Orientierung</span> <span style="font-size: 10px; text-decoration: underline; cursor: pointer;" onclick="event.stopPropagation(); showDimensionTooltip('status')">(I=Identität, G=Sekundär)</span></span>
                             <span class="collapse-toggle">▼</span>
                         </div>
                         <div class="collapsed-summary" id="mobile-partner-orientierung-summary"></div>
@@ -7464,7 +7483,7 @@
                             <!-- Geschlechtsidentität -->
                             <div class="dimension-group needs-selection" data-dimension="ich-geschlecht">
                                 <div class="dimension-label">
-                                    <span class="geschlecht-info-link" onclick="showGeschlechtInfoModal()">Geschlechtsidentität</span>
+                                    <span class="geschlecht-info-link">Geschlechtsidentität</span>
                                     <span style="font-size: 10px; opacity: 0.7;">(I=Identität, G=Sekundär)</span>
                                 </div>
                                 <div class="geschlecht-grid" id="modal-ich-geschlecht-grid" data-person="ich"></div>
@@ -7630,7 +7649,7 @@
                             <!-- Geschlecht -->
                             <div class="dimension-group needs-selection" data-dimension="partner-geschlecht">
                                 <div class="dimension-label">
-                                    <span class="geschlecht-info-link" onclick="showGeschlechtInfoModal()">Geschlechtsidentität</span>
+                                    <span class="geschlecht-info-link">Geschlechtsidentität</span>
                                     <span style="font-size: 10px; opacity: 0.7;">(I=Identität, G=Sekundär)</span>
                                 </div>
                                 <div class="geschlecht-grid" id="modal-partner-geschlecht-grid" data-person="partner"></div>
@@ -8393,53 +8412,54 @@
 
         /**
          * Update dimension section labels (Geschlechtsidentität, Dominanz, Orientierung, GFK)
+         * Uses specific CSS classes for each dimension type
          */
         function updateDimensionSectionLabels() {
-            // Update Geschlechtsidentität labels - only elements that call showGeschlechtInfoModal
-            document.querySelectorAll('.geschlecht-info-link[onclick*="showGeschlechtInfoModal"]').forEach(el => {
+            // Update Geschlechtsidentität labels
+            document.querySelectorAll('.geschlecht-info-link').forEach(el => {
                 el.textContent = TiageI18n.t('dimensions.geschlechtLabel', 'Geschlechtsidentität');
             });
 
-            // Update Dominanz labels - only elements that call showDominanzInfoModal
-            document.querySelectorAll('.geschlecht-info-link[onclick*="showDominanzInfoModal"]').forEach(el => {
+            // Update Dominanz labels
+            document.querySelectorAll('.dominanz-info-link').forEach(el => {
                 el.textContent = TiageI18n.t('dimensions.dominanzLabel', 'Dominanz');
             });
 
-            // Update Orientierung labels - only elements that call showOrientierungInfoModal
-            document.querySelectorAll('.geschlecht-info-link[onclick*="showOrientierungInfoModal"]').forEach(el => {
+            // Update Orientierung labels
+            document.querySelectorAll('.orientierung-info-link').forEach(el => {
                 el.textContent = TiageI18n.t('dimensions.orientierungLabel', 'Orientierung');
             });
 
-            // Update GFK labels - only elements that call showDimensionTooltip('gfk')
-            document.querySelectorAll('.geschlecht-info-link[onclick*="showDimensionTooltip"]').forEach(el => {
-                if (el.getAttribute('onclick')?.includes("'gfk'")) {
-                    el.textContent = TiageI18n.t('dimensions.gfkLabel', 'GFK-Kompetenz');
-                }
+            // Update GFK labels
+            document.querySelectorAll('.gfk-info-link').forEach(el => {
+                el.textContent = TiageI18n.t('dimensions.gfkLabel', 'GFK-Kompetenz');
             });
 
-            // Update Dominanz section labels
+            // Update Dominanz section labels (preserving CSS classes)
             document.querySelectorAll('[data-dimension$="-dominanz-multi"] > .compact-dimension-label > span:first-child').forEach(el => {
-                const hint = el.querySelector('span');
-                if (hint) {
+                const dominanzLink = el.querySelector('.dominanz-info-link');
+                const legendSpan = el.querySelector('span:not(.dominanz-info-link)');
+                if (dominanzLink && legendSpan) {
                     const i = TiageI18n.t('dimensions.legend.identity', 'I');
                     const g = TiageI18n.t('dimensions.legend.secondary', 'G');
                     const iFull = TiageI18n.t('dimensions.legend.identityFull', 'Identität');
                     const gFull = TiageI18n.t('dimensions.legend.secondaryFull', 'Sekundär');
-                    el.innerHTML = TiageI18n.t('dimensions.dominanzLabel', 'Dominanz') +
-                        ` <span style="font-size: 10px; text-decoration: underline; cursor: pointer;" onclick="showDimensionTooltip('dominanzStatus')">(${i}=${iFull}, ${g}=${gFull})</span>`;
+                    dominanzLink.textContent = TiageI18n.t('dimensions.dominanzLabel', 'Dominanz');
+                    legendSpan.innerHTML = `(${i}=${iFull}, ${g}=${gFull})`;
                 }
             });
 
-            // Update Orientierung section labels
+            // Update Orientierung section labels (preserving CSS classes)
             document.querySelectorAll('[data-dimension$="-orientierung-multi"] > .compact-dimension-label > span:first-child').forEach(el => {
-                const hint = el.querySelector('span');
-                if (hint) {
+                const orientierungLink = el.querySelector('.orientierung-info-link');
+                const legendSpan = el.querySelector('span:not(.orientierung-info-link)');
+                if (orientierungLink && legendSpan) {
                     const i = TiageI18n.t('dimensions.legend.identity', 'I');
                     const g = TiageI18n.t('dimensions.legend.secondary', 'G');
                     const iFull = TiageI18n.t('dimensions.legend.identityFull', 'Identität');
                     const gFull = TiageI18n.t('dimensions.legend.secondaryFull', 'Sekundär');
-                    el.innerHTML = TiageI18n.t('dimensions.orientierungLabel', 'Orientierung') +
-                        ` <span style="font-size: 10px; text-decoration: underline; cursor: pointer;" onclick="showDimensionTooltip('status')">(${i}=${iFull}, ${g}=${gFull})</span>`;
+                    orientierungLink.textContent = TiageI18n.t('dimensions.orientierungLabel', 'Orientierung');
+                    legendSpan.innerHTML = `(${i}=${iFull}, ${g}=${gFull})`;
                 }
             });
 
@@ -8804,9 +8824,11 @@
         // archetypeStatements_EN wird aus externer Datei geladen (statements/archetypeStatements_EN.js)
 
         // Fallback-Definition falls externe Datei nicht geladen wurde
-        if (typeof archetypeStatements === 'undefined') {
+        // Note: archetypeStatements wird in statements/archetypeStatements.js definiert
+        // Dieser Check ist nur für den Fall dass die Datei nicht geladen wurde
+        if (typeof window.archetypeStatements === 'undefined') {
             console.warn('archetypeStatements nicht geladen - verwende leeres Objekt');
-            var archetypeStatements = {};
+            window.archetypeStatements = {};
         }
 
         // dominanceStatements ist inline definiert (da vollständig und korrekt)
@@ -10137,7 +10159,48 @@
                 carousel.addEventListener('scroll', updateNavDots);
             }
 
+            // Initialize dimension info link event listeners
+            initDimensionInfoLinks();
+
             updateAll();
+        }
+
+        /**
+         * Initialize event listeners for dimension info links
+         * Uses CSS classes instead of onclick attributes for cleaner code
+         */
+        function initDimensionInfoLinks() {
+            // Geschlechtsidentität links
+            document.querySelectorAll('.geschlecht-info-link').forEach(el => {
+                el.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    showGeschlechtInfoModal();
+                });
+            });
+
+            // Dominanz links
+            document.querySelectorAll('.dominanz-info-link').forEach(el => {
+                el.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    showDominanzInfoModal();
+                });
+            });
+
+            // Orientierung links
+            document.querySelectorAll('.orientierung-info-link').forEach(el => {
+                el.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    showOrientierungInfoModal();
+                });
+            });
+
+            // GFK links
+            document.querySelectorAll('.gfk-info-link').forEach(el => {
+                el.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    showDimensionTooltip('gfk');
+                });
+            });
         }
 
         function updateAll() {
@@ -10614,42 +10677,6 @@
                     });
                 }
             });
-        }
-
-        // Get summary text for selected options
-        function getDimensionSummary(person, type) {
-            let data, types;
-            if (type === 'dominanz') {
-                data = personDimensions[person].dominanz;
-                types = ['dominant', 'submissiv', 'switch', 'ausgeglichen'];
-            } else {
-                data = personDimensions[person].orientierung;
-                types = ['heterosexuell', 'homosexuell', 'bisexuell'];
-            }
-
-            const selected = [];
-            for (const t of types) {
-                if (data[t]) {
-                    const status = data[t] === 'gelebt' ? '(Gelebt)' : '(Interessiert)';
-                    selected.push(t + ' ' + status);
-                }
-            }
-            return selected.length > 0 ? '✓ ' + selected.join(', ') : '';
-        }
-
-        // Update collapsed summary for a dimension
-        function updateDimensionSummary(person, type, prefix = '') {
-            const summaryId = prefix + person + '-' + type + '-summary';
-            const summary = document.getElementById(summaryId);
-            if (summary) {
-                summary.textContent = getDimensionSummary(person, type);
-            }
-        }
-
-        // Check if all required options are selected and update summary (auto-collapse disabled)
-        function checkAutoCollapse(person, type, prefix = '') {
-            // Update summary only - auto-collapse is disabled
-            updateDimensionSummary(person, type, prefix);
         }
 
         function scrollToCard(index) {
@@ -11739,74 +11766,7 @@
         function openFeedbackModalWithContext(ctx) { console.log('feedbackModal entfernt - bitte commentModal verwenden'); }
         function closeFeedbackModal(event) { }
         function initStarRatings() { }
-
-        // Legacy function stub
-        async function submitFeedback() {
-            const name = document.getElementById('feedbackName').value.trim();
-            const titel = document.getElementById('feedbackTitle').value.trim();
-            const kommentar = document.getElementById('feedbackComment').value.trim();
-            const kontextId = replyToId
-                ? document.getElementById('feedbackContextId').textContent
-                : getModalContextId();
-
-            // Validation
-            if (!name) {
-                alert('Bitte gib deinen Namen/Kürzel ein.');
-                return;
-            }
-            if (!titel) {
-                alert('Bitte gib einen Titel ein.');
-                return;
-            }
-
-            const feedbackEntry = {
-                id: generateFeedbackId(),
-                kontextId,
-                name,
-                titel,
-                kommentar,
-                verstand: feedbackRatings.verstand,
-                gefuehl: feedbackRatings.gefuehl,
-                antwortAuf: replyToId || ''
-            };
-
-            const submitBtn = document.getElementById('feedbackSubmitBtn');
-            submitBtn.disabled = true;
-            submitBtn.textContent = 'Sende...';
-
-            try {
-                if (GOOGLE_SCRIPT_URL) {
-                    // Send to Google Sheets
-                    await fetch(GOOGLE_SCRIPT_URL, {
-                        method: 'POST',
-                        mode: 'no-cors',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify(feedbackEntry)
-                    });
-                }
-
-                // Also save locally as backup
-                saveLocalFeedback(feedbackEntry);
-
-                alert('Danke für dein Feedback!');
-                replyToId = null; // Reset reply state
-                closeFeedbackModal();
-
-                // Reload feedback to show the new entry
-                setTimeout(() => loadFeedback(), 500);
-
-            } catch (error) {
-                console.error('Feedback error:', error);
-                // Save locally on error
-                saveLocalFeedback(feedbackEntry);
-                alert('Feedback lokal gespeichert. (Server nicht erreichbar)');
-                replyToId = null;
-                closeFeedbackModal();
-            }
-
-            submitBtn.disabled = false;
-            submitBtn.textContent = 'Senden';
-        }
+        // submitFeedback entfernt - wird nicht mehr verwendet
 
         // Local storage backup - alles in tiage_comments
         function saveLocalFeedback(entry) {
@@ -11826,7 +11786,7 @@
             const container = document.getElementById('feedbackList');
 
             try {
-                if (GOOGLE_SCRIPT_URL) {
+                if (typeof GOOGLE_SCRIPT_URL !== 'undefined' && GOOGLE_SCRIPT_URL) {
                     // Try to load from Google Sheets
                     const response = await fetch(GOOGLE_SCRIPT_URL);
                     const serverData = await response.json();
@@ -11990,21 +11950,24 @@
             `;
         }
 
-        // Open reply modal
+        // Open reply modal - uses commentModal (feedbackModal was removed)
         function openReplyModal(parentId, parentName) {
             replyToId = parentId;
-            document.getElementById('feedbackContextId').innerHTML =
-                `<span class="reply-indicator">↩ Antwort auf ${parentName}</span>`;
-            document.getElementById('feedbackModal').classList.add('active');
-            document.body.style.overflow = 'hidden';
+            // Open comment modal for replies
+            const modal = document.getElementById('commentModal');
+            if (modal) {
+                modal.classList.add('active');
+                document.body.style.overflow = 'hidden';
 
-            // Reset form
-            document.getElementById('feedbackName').value = '';
-            document.getElementById('feedbackTitle').value = '';
-            document.getElementById('feedbackComment').value = '';
-            feedbackRatings = { verstand: 0, gefuehl: 0 };
-            updateStarDisplay('ratingVerstand', 0);
-            updateStarDisplay('ratingGefuehl', 0);
+                // Reset form
+                const nameInput = document.getElementById('commentName');
+                const textInput = document.getElementById('commentText');
+                if (nameInput) nameInput.value = '';
+                if (textInput) {
+                    textInput.value = '';
+                    textInput.placeholder = `Antwort auf ${parentName}...`;
+                }
+            }
         }
 
         // Initialize advanced filters
@@ -12656,34 +12619,41 @@
         }
 
         /**
-         * Sync Dominanz UI across all views (Desktop, Mobile, Modal)
+         * GEMEINSAME Funktion: Sync UI für Dominanz oder Orientierung
+         * Aktualisiert Buttons in Desktop, Mobile und Modal
+         *
+         * @param {string} person - 'ich' oder 'partner'
+         * @param {string} dimension - 'dominanz' oder 'orientierung'
          */
-        function syncDominanzUI(person) {
-            const primary = personDimensions[person].dominanz.primary;
-            const secondary = personDimensions[person].dominanz.secondary;
+        function syncDimensionUI(person, dimension) {
+            const data = personDimensions[person][dimension];
+            if (!data) return;
 
-            // All dominanz button selectors for this person
+            const primary = data.primary;
+            const secondary = data.secondary;
+
+            // Button-Selektoren für diese Dimension
             const selectors = [
-                `.dominanz-grid[data-person="${person}"] .dominanz-btn`,
-                `#${person}-dominanz-grid .dominanz-btn`,
-                `#mobile-${person}-dominanz-grid .dominanz-btn`,
-                `#modal-${person}-dominanz-grid .dominanz-btn`
+                `.${dimension}-grid[data-person="${person}"] .${dimension}-btn`,
+                `#${person}-${dimension}-grid .${dimension}-btn`,
+                `#mobile-${person}-${dimension}-grid .${dimension}-btn`,
+                `#modal-${person}-${dimension}-grid .${dimension}-btn`
             ];
 
             selectors.forEach(selector => {
                 document.querySelectorAll(selector).forEach(btn => {
                     const value = btn.dataset.value;
 
-                    // Remove all states
+                    // Alle States entfernen
                     btn.classList.remove('primary-selected', 'secondary-selected');
 
-                    // Remove existing indicators
+                    // Bestehende Indikatoren entfernen
                     const existingIndicator = btn.querySelector('.geschlecht-indicator');
                     if (existingIndicator) {
                         existingIndicator.remove();
                     }
 
-                    // Add appropriate state and indicator
+                    // Passenden State und Indikator hinzufügen
                     if (value === primary) {
                         btn.classList.add('primary-selected');
                         const indicator = document.createElement('span');
@@ -12702,51 +12672,54 @@
                 });
             });
 
-            // Update collapsed summary for dominanz
-            updateDominanzSummary(person);
+            // Summary aktualisieren
+            if (dimension === 'dominanz') {
+                updateDominanzSummary(person);
+            } else if (dimension === 'orientierung') {
+                updateOrientierungSummary(person);
+            }
+        }
+
+        // Wrapper für Rückwärtskompatibilität
+        function syncDominanzUI(person) {
+            syncDimensionUI(person, 'dominanz');
         }
 
         /**
-         * Get summary text for dominanz selection
+         * GEMEINSAME Funktion: Summary-Text für eine Dimension erstellen
+         *
+         * @param {string} person - 'ich' oder 'partner'
+         * @param {string} dimension - 'dominanz' oder 'orientierung'
+         * @param {boolean} showMissing - true = zeigt "fehlt", false = zeigt ""
          */
+        function getDimensionSummary(person, dimension, showMissing = true) {
+            const data = personDimensions[person][dimension];
+            if (!data) return showMissing ? `${dimension} fehlt` : '';
+
+            const primary = data.primary;
+            const secondary = data.secondary;
+
+            if (!primary) {
+                // Dimension-Name mit Großbuchstabe für "fehlt" Text
+                const label = dimension.charAt(0).toUpperCase() + dimension.slice(1);
+                return showMissing ? `${label} fehlt` : '';
+            }
+
+            const parts = [primary + ' (I)'];
+            if (secondary) {
+                parts.push(secondary + ' (G)');
+            }
+
+            return '✓ ' + parts.join(', ');
+        }
+
+        // Wrapper für Rückwärtskompatibilität
         function getDominanzSummary(person) {
-            const primary = personDimensions[person].dominanz.primary;
-            const secondary = personDimensions[person].dominanz.secondary;
-
-            if (!primary) {
-                return 'Dominanz fehlt';
-            }
-
-            const parts = [];
-            parts.push(primary + ' (I)');
-
-            if (secondary) {
-                parts.push(secondary + ' (G)');
-            }
-
-            return '✓ ' + parts.join(', ');
+            return getDimensionSummary(person, 'dominanz', true);
         }
 
-        /**
-         * Get summary text for dominanz selection in grid (without 'fehlt' text)
-         * Returns selected values in green, or empty string if nothing selected
-         */
         function getDominanzGridSummary(person) {
-            const primary = personDimensions[person].dominanz.primary;
-            const secondary = personDimensions[person].dominanz.secondary;
-
-            if (!primary) {
-                return ''; // No 'fehlt' text for grid - only show selections
-            }
-
-            const parts = [];
-            parts.push(primary + ' (I)');
-
-            if (secondary) {
-                parts.push(secondary + ' (G)');
-            }
-
-            return '✓ ' + parts.join(', ');
+            return getDimensionSummary(person, 'dominanz', false);
         }
 
         /**
@@ -12868,98 +12841,18 @@
             }
         }
 
-        /**
-         * Sync Orientierung UI across all views (Desktop, Mobile, Modal)
-         */
+        // Wrapper für Rückwärtskompatibilität
         function syncOrientierungUI(person) {
-            const primary = personDimensions[person].orientierung.primary;
-            const secondary = personDimensions[person].orientierung.secondary;
-
-            // All orientierung button selectors for this person
-            const selectors = [
-                `.orientierung-grid[data-person="${person}"] .orientierung-btn`,
-                `#${person}-orientierung-grid .orientierung-btn`,
-                `#mobile-${person}-orientierung-grid .orientierung-btn`,
-                `#modal-${person}-orientierung-grid .orientierung-btn`
-            ];
-
-            selectors.forEach(selector => {
-                document.querySelectorAll(selector).forEach(btn => {
-                    const value = btn.dataset.value;
-
-                    // Remove all states
-                    btn.classList.remove('primary-selected', 'secondary-selected');
-
-                    // Remove existing indicators
-                    const existingIndicator = btn.querySelector('.geschlecht-indicator');
-                    if (existingIndicator) {
-                        existingIndicator.remove();
-                    }
-
-                    // Add appropriate state and indicator
-                    if (value === primary) {
-                        btn.classList.add('primary-selected');
-                        const indicator = document.createElement('span');
-                        indicator.className = 'geschlecht-indicator indicator-primary';
-                        indicator.textContent = 'I';
-                        indicator.title = 'Identität (Primär)';
-                        btn.appendChild(indicator);
-                    } else if (value === secondary) {
-                        btn.classList.add('secondary-selected');
-                        const indicator = document.createElement('span');
-                        indicator.className = 'geschlecht-indicator indicator-secondary';
-                        indicator.textContent = 'G';
-                        indicator.title = 'Sekundär';
-                        btn.appendChild(indicator);
-                    }
-                });
-            });
-
-            // Update collapsed summary for orientierung
-            updateOrientierungSummary(person);
+            syncDimensionUI(person, 'orientierung');
         }
 
-        /**
-         * Get summary text for orientierung selection (for header - shows 'fehlt' if nothing selected)
-         */
+        // Wrapper für Rückwärtskompatibilität (nutzen getDimensionSummary)
         function getOrientierungSummary(person) {
-            const primary = personDimensions[person].orientierung.primary;
-            const secondary = personDimensions[person].orientierung.secondary;
-
-            if (!primary) {
-                return 'Orientierung fehlt';
-            }
-
-            const parts = [];
-            parts.push(primary + ' (I)');
-
-            if (secondary) {
-                parts.push(secondary + ' (G)');
-            }
-
-            return '✓ ' + parts.join(', ');
+            return getDimensionSummary(person, 'orientierung', true);
         }
 
-        /**
-         * Get summary text for orientierung selection in grid (without 'fehlt' text)
-         * Returns selected values in green, or empty string if nothing selected
-         */
         function getOrientierungGridSummary(person) {
-            const primary = personDimensions[person].orientierung.primary;
-            const secondary = personDimensions[person].orientierung.secondary;
-
-            if (!primary) {
-                return ''; // No 'fehlt' text for grid - only show selections
-            }
-
-            const parts = [];
-            parts.push(primary + ' (I)');
-
-            if (secondary) {
-                parts.push(secondary + ' (G)');
-            }
-
-            return '✓ ' + parts.join(', ');
+            return getDimensionSummary(person, 'orientierung', false);
         }
 
         /**
@@ -13008,201 +12901,154 @@
         // ═══════════════════════════════════════════════════════════════════════
 
         /**
-         * Handle Dominanz status toggle from mobile interface (Gelebt/Interessiert buttons)
-         * Maps: Gelebt → primary, Interessiert → secondary
-         * @param {string} person - 'ich' or 'partner'
-         * @param {string} dominanzType - 'dominant', 'submissiv', 'switch', 'ausgeglichen'
-         * @param {string} status - 'gelebt' or 'interessiert'
-         * @param {HTMLElement} btn - The clicked button
+         * GEMEINSAME Funktion für Dominanz und Orientierung Status-Toggle
+         * Reduziert Code-Duplizierung erheblich!
+         *
+         * @param {string} person - 'ich' oder 'partner'
+         * @param {string} dimension - 'dominanz' oder 'orientierung'
+         * @param {string} type - z.B. 'dominant', 'heterosexuell', etc.
+         * @param {string} status - 'gelebt' (primary) oder 'interessiert' (secondary)
+         */
+        function handleStatusToggle(person, dimension, type, status) {
+            // Sicherstellen, dass die Datenstruktur existiert
+            if (!personDimensions[person][dimension] ||
+                !('primary' in personDimensions[person][dimension])) {
+                personDimensions[person][dimension] = { primary: null, secondary: null };
+            }
+
+            const data = personDimensions[person][dimension];
+            const currentPrimary = data.primary;
+            const currentSecondary = data.secondary;
+
+            if (status === 'gelebt') {
+                // Toggle primary (Gelebt)
+                if (currentPrimary === type) {
+                    // Schon primary → entfernen
+                    data.primary = null;
+                    if (currentSecondary === type) {
+                        data.secondary = null;
+                    }
+                } else {
+                    // Als primary setzen
+                    data.primary = type;
+                    if (currentSecondary === type) {
+                        data.secondary = null;
+                    }
+                }
+            } else if (status === 'interessiert') {
+                // Toggle secondary (Interessiert)
+                if (currentSecondary === type) {
+                    // Schon secondary → entfernen
+                    data.secondary = null;
+                } else {
+                    // Als secondary setzen (nur wenn nicht schon primary)
+                    if (currentPrimary !== type) {
+                        data.secondary = type;
+                    }
+                }
+            }
+
+            // Mit mobilePersonDimensions synchronisieren
+            if (typeof mobilePersonDimensions !== 'undefined' &&
+                mobilePersonDimensions[person]?.[dimension]) {
+                mobilePersonDimensions[person][dimension].primary = data.primary;
+                mobilePersonDimensions[person][dimension].secondary = data.secondary;
+            }
+
+            // Mit TiageState synchronisieren
+            if (typeof TiageState !== 'undefined') {
+                TiageState.set(`personDimensions.${person}.${dimension}`, data);
+            }
+
+            // UI synchronisieren (je nach Dimension)
+            if (dimension === 'dominanz') {
+                syncDominanzUI(person);
+                syncMobileDominanzStatusButtons(person);
+            } else if (dimension === 'orientierung') {
+                syncOrientierungUI(person);
+                syncMobileOrientierungStatusButtons(person);
+            }
+
+            // needs-selection aktualisieren
+            const hasPrimary = data.primary !== null;
+            document.querySelectorAll(`[data-dimension*="${person}-${dimension}"]`).forEach(dim => {
+                dim.classList.toggle('needs-selection', !hasPrimary);
+            });
+
+            updateComparisonView();
+
+            if (typeof saveSelectionToStorage === 'function') {
+                saveSelectionToStorage();
+            }
+        }
+
+        /**
+         * Wrapper für Dominanz (behält alte onclick-Aufrufe funktionsfähig)
          */
         function handleDominanzStatusToggle(person, dominanzType, status, btn) {
-            // Ensure dominanz has correct structure
-            if (!personDimensions[person].dominanz ||
-                !('primary' in personDimensions[person].dominanz)) {
-                personDimensions[person].dominanz = { primary: null, secondary: null };
-            }
-
-            const currentPrimary = personDimensions[person].dominanz.primary;
-            const currentSecondary = personDimensions[person].dominanz.secondary;
-
-            if (status === 'gelebt') {
-                // Toggle primary
-                if (currentPrimary === dominanzType) {
-                    // Already primary, clear it
-                    personDimensions[person].dominanz.primary = null;
-                    // If this was also secondary, clear secondary too
-                    if (currentSecondary === dominanzType) {
-                        personDimensions[person].dominanz.secondary = null;
-                    }
-                } else {
-                    // Set as primary
-                    personDimensions[person].dominanz.primary = dominanzType;
-                    // If this was secondary, remove from secondary
-                    if (currentSecondary === dominanzType) {
-                        personDimensions[person].dominanz.secondary = null;
-                    }
-                }
-            } else if (status === 'interessiert') {
-                // Toggle secondary
-                if (currentSecondary === dominanzType) {
-                    // Already secondary, clear it
-                    personDimensions[person].dominanz.secondary = null;
-                } else {
-                    // Set as secondary (only if it's not already primary)
-                    if (currentPrimary !== dominanzType) {
-                        personDimensions[person].dominanz.secondary = dominanzType;
-                    }
-                }
-            }
-
-            // Sync with mobilePersonDimensions
-            if (typeof mobilePersonDimensions !== 'undefined') {
-                mobilePersonDimensions[person].dominanz.primary = personDimensions[person].dominanz.primary;
-                mobilePersonDimensions[person].dominanz.secondary = personDimensions[person].dominanz.secondary;
-            }
-
-            // Sync with TiageState
-            if (typeof TiageState !== 'undefined') {
-                TiageState.set(`personDimensions.${person}.dominanz`, personDimensions[person].dominanz);
-            }
-
-            // Sync all UIs
-            syncDominanzUI(person);
-            syncMobileDominanzStatusButtons(person);
-
-            // Update needs-selection
-            const hasPrimary = personDimensions[person].dominanz.primary !== null;
-            document.querySelectorAll(`[data-dimension*="${person}-dominanz"]`).forEach(dim => {
-                dim.classList.toggle('needs-selection', !hasPrimary);
-            });
-
-            updateComparisonView();
-
-            if (typeof saveSelectionToStorage === 'function') {
-                saveSelectionToStorage();
-            }
+            handleStatusToggle(person, 'dominanz', dominanzType, status);
         }
 
         /**
-         * Handle Orientierung status toggle from mobile interface (Gelebt/Interessiert buttons)
-         * Maps: Gelebt → primary, Interessiert → secondary
+         * Wrapper für Orientierung (behält alte onclick-Aufrufe funktionsfähig)
          */
         function handleOrientierungStatusToggle(person, orientierungType, status, btn) {
-            // Ensure orientierung has correct structure
-            if (!personDimensions[person].orientierung ||
-                !('primary' in personDimensions[person].orientierung)) {
-                personDimensions[person].orientierung = { primary: null, secondary: null };
-            }
-
-            const currentPrimary = personDimensions[person].orientierung.primary;
-            const currentSecondary = personDimensions[person].orientierung.secondary;
-
-            if (status === 'gelebt') {
-                // Toggle primary
-                if (currentPrimary === orientierungType) {
-                    personDimensions[person].orientierung.primary = null;
-                    if (currentSecondary === orientierungType) {
-                        personDimensions[person].orientierung.secondary = null;
-                    }
-                } else {
-                    personDimensions[person].orientierung.primary = orientierungType;
-                    if (currentSecondary === orientierungType) {
-                        personDimensions[person].orientierung.secondary = null;
-                    }
-                }
-            } else if (status === 'interessiert') {
-                // Toggle secondary
-                if (currentSecondary === orientierungType) {
-                    personDimensions[person].orientierung.secondary = null;
-                } else {
-                    if (currentPrimary !== orientierungType) {
-                        personDimensions[person].orientierung.secondary = orientierungType;
-                    }
-                }
-            }
-
-            // Sync with mobilePersonDimensions
-            if (typeof mobilePersonDimensions !== 'undefined') {
-                mobilePersonDimensions[person].orientierung.primary = personDimensions[person].orientierung.primary;
-                mobilePersonDimensions[person].orientierung.secondary = personDimensions[person].orientierung.secondary;
-            }
-
-            // Sync with TiageState
-            if (typeof TiageState !== 'undefined') {
-                TiageState.set(`personDimensions.${person}.orientierung`, personDimensions[person].orientierung);
-            }
-
-            // Sync all UIs
-            syncOrientierungUI(person);
-            syncMobileOrientierungStatusButtons(person);
-
-            // Update needs-selection
-            const hasPrimary = personDimensions[person].orientierung.primary !== null;
-            document.querySelectorAll(`[data-dimension*="${person}-orientierung"]`).forEach(dim => {
-                dim.classList.toggle('needs-selection', !hasPrimary);
-            });
-
-            updateComparisonView();
-
-            if (typeof saveSelectionToStorage === 'function') {
-                saveSelectionToStorage();
-            }
+            handleStatusToggle(person, 'orientierung', orientierungType, status);
         }
 
         /**
-         * Sync mobile dominanz status buttons to reflect current state
+         * GEMEINSAME Funktion: Sync mobile status buttons für eine Dimension
+         *
+         * @param {string} person - 'ich' oder 'partner'
+         * @param {string} dimension - 'dominanz' oder 'orientierung'
          */
+        function syncMobileStatusButtons(person, dimension) {
+            const data = personDimensions[person][dimension];
+            if (!data) return;
+
+            const primary = data.primary;
+            const secondary = data.secondary;
+
+            // Konfiguration für jede Dimension
+            const config = {
+                dominanz: {
+                    types: ['dominant', 'submissiv', 'switch', 'ausgeglichen'],
+                    abbrevs: ['dom', 'sub', 'sw', 'aus'],
+                    letter: 'd'
+                },
+                orientierung: {
+                    types: ['heterosexuell', 'homosexuell', 'bisexuell'],
+                    abbrevs: ['het', 'hom', 'bi'],
+                    letter: 'o'
+                }
+            };
+
+            const { types, abbrevs, letter } = config[dimension];
+            const prefix = person === 'ich' ? 'm-ich' : 'm-partner';
+
+            types.forEach((type, i) => {
+                const statusGroup = document.getElementById(`${prefix}-${letter}-${abbrevs[i]}-status`);
+                if (!statusGroup) return;
+
+                const gelebtBtn = statusGroup.querySelector('[data-status="gelebt"]');
+                const interessiertBtn = statusGroup.querySelector('[data-status="interessiert"]');
+
+                if (gelebtBtn) {
+                    gelebtBtn.classList.toggle('active-gelebt', primary === type);
+                }
+                if (interessiertBtn) {
+                    interessiertBtn.classList.toggle('active-interessiert', secondary === type);
+                }
+            });
+        }
+
+        // Wrapper für Rückwärtskompatibilität
         function syncMobileDominanzStatusButtons(person) {
-            const primary = personDimensions[person].dominanz.primary;
-            const secondary = personDimensions[person].dominanz.secondary;
-
-            const types = ['dominant', 'submissiv', 'switch', 'ausgeglichen'];
-            const abbrevs = ['dom', 'sub', 'sw', 'aus'];
-
-            types.forEach((type, i) => {
-                const abbrev = abbrevs[i];
-                const prefix = person === 'ich' ? 'm-ich' : 'm-partner';
-                const statusGroup = document.getElementById(`${prefix}-d-${abbrev}-status`);
-                if (!statusGroup) return;
-
-                const gelebtBtn = statusGroup.querySelector('[data-status="gelebt"]');
-                const interessiertBtn = statusGroup.querySelector('[data-status="interessiert"]');
-
-                if (gelebtBtn) {
-                    gelebtBtn.classList.toggle('active-gelebt', primary === type);
-                }
-                if (interessiertBtn) {
-                    interessiertBtn.classList.toggle('active-interessiert', secondary === type);
-                }
-            });
+            syncMobileStatusButtons(person, 'dominanz');
         }
 
-        /**
-         * Sync mobile orientierung status buttons to reflect current state
-         */
         function syncMobileOrientierungStatusButtons(person) {
-            const primary = personDimensions[person].orientierung.primary;
-            const secondary = personDimensions[person].orientierung.secondary;
-
-            const types = ['heterosexuell', 'homosexuell', 'bisexuell'];
-            const abbrevs = ['het', 'hom', 'bi'];
-
-            types.forEach((type, i) => {
-                const abbrev = abbrevs[i];
-                const prefix = person === 'ich' ? 'm-ich' : 'm-partner';
-                const statusGroup = document.getElementById(`${prefix}-o-${abbrev}-status`);
-                if (!statusGroup) return;
-
-                const gelebtBtn = statusGroup.querySelector('[data-status="gelebt"]');
-                const interessiertBtn = statusGroup.querySelector('[data-status="interessiert"]');
-
-                if (gelebtBtn) {
-                    gelebtBtn.classList.toggle('active-gelebt', primary === type);
-                }
-                if (interessiertBtn) {
-                    interessiertBtn.classList.toggle('active-interessiert', secondary === type);
-                }
-            });
+            syncMobileStatusButtons(person, 'orientierung');
         }
 
         // ═══════════════════════════════════════════════════════════════════════
@@ -15636,30 +15482,6 @@
             renderCategoryBars('expandCategoryBars', categories);
             // Auch Mobile aktualisieren wenn vorhanden
             renderCategoryBars('mobileCategoryBars', categories);
-        }
-
-        // Mobile Seite 3: Kategorien-Übersicht
-        function updateMobileCategoriesPage() {
-            // Typen-Anzeige aktualisieren
-            const myArch = data?.archetypes?.[currentArchetype];
-            const partnerArch = data?.archetypes?.[selectedPartner];
-
-            const ich3 = document.getElementById('mobileResultIch3');
-            const partner3 = document.getElementById('mobileResultPartner3');
-            if (ich3) ich3.textContent = myArch?.name || currentArchetype;
-            if (partner3) partner3.textContent = partnerArch?.name || selectedPartner;
-
-            // Kategorien berechnen und rendern
-            const interactionKey = `${currentArchetype}_${selectedPartner}`;
-            const interaction = data?.interactions?.[interactionKey];
-
-            if (interaction?.categories) {
-                renderCategoryBars('mobileCategoryBars', interaction.categories);
-            } else {
-                // Fallback: Berechne Kategorien
-                const categories = calculateCategoryScores(currentArchetype, selectedPartner);
-                renderCategoryBars('mobileCategoryBars', categories);
-            }
         }
 
         function showArchetypeInfo(person) {
@@ -18544,7 +18366,7 @@
             submitBtn.textContent = 'Sende...';
 
             try {
-                if (GOOGLE_SCRIPT_URL) {
+                if (typeof GOOGLE_SCRIPT_URL !== 'undefined' && GOOGLE_SCRIPT_URL) {
                     await fetch(GOOGLE_SCRIPT_URL, {
                         method: 'POST',
                         mode: 'no-cors',
@@ -19066,103 +18888,8 @@
         }
 
         // ========================================
-        // FEATURE 4: Archetype Info Modal
+        // FEATURE 4: Archetype Info Modal (merged with definitionModal)
         // ========================================
-
-        // archetypeOrder is already declared earlier in the code
-        let currentArchetypeIndex = 0;
-        let currentInfoModalPerson = null; // Track which person ('ich' or 'partner') the modal is for
-
-        const archetypeInfoData = {
-            single: {
-                title: 'Single',
-                definition: 'Menschen, die bewusst keine feste Beziehung führen möchten. Sie priorisieren persönliche Freiheit, Unabhängigkeit und Selbstbestimmung.',
-                features: [
-                    'Vollständige emotionale und sexuelle Autonomie',
-                    'Keine Verpflichtungen gegenüber einem Partner',
-                    'Fokus auf Selbstentwicklung und persönliche Ziele',
-                    'Wechselnde Kontakte oder zeitweise bewusste Abstinenz'
-                ],
-                match: 'Wenn du maximale Freiheit schätzt, keine Rechenschaft ablegen möchtest und Beziehungsstrukturen als einengend empfindest. Ideal für Menschen, die ihre Unabhängigkeit über alles stellen.'
-            },
-            duo: {
-                title: 'Duo',
-                definition: 'Traditionelle monogame Zweierbeziehung mit klaren Exklusivitätserwartungen. Beide Partner investieren emotional und körperlich ausschließlich ineinander.',
-                features: [
-                    'Emotionale und sexuelle Exklusivität',
-                    'Langfristige Verbindlichkeit als Ziel',
-                    'Gemeinsame Lebensplanung und Zukunftsvisionen',
-                    'Tiefer emotionaler Fokus auf eine Person'
-                ],
-                match: 'Wenn du eine tiefe, exklusive Bindung suchst und dich am wohlsten fühlst, wenn du deine ganze emotionale Energie einer Person widmen kannst. Ideal für Menschen, die Sicherheit und Beständigkeit schätzen.'
-            },
-            duo_flex: {
-                title: 'Duo-Flex',
-                definition: 'Primärbeziehung mit Öffnungsbereitschaft. Ein Hauptpartner steht im Zentrum, aber mit Transparenz und gemeinsamen Regeln sind weitere Kontakte möglich.',
-                features: [
-                    'Klar definierte Primärbeziehung als Anker',
-                    'Öffnung für weitere Kontakte (emotional oder körperlich)',
-                    'Transparenz und offene Kommunikation essentiell',
-                    'Regeln werden gemeinsam definiert'
-                ],
-                match: 'Wenn du eine sichere Hauptbeziehung möchtest, aber auch Freiheit für weitere Erfahrungen brauchst. Ideal für Menschen, die Struktur und Flexibilität kombinieren möchten.'
-            },
-            solopoly: {
-                title: 'Solopoly',
-                definition: 'Polyamore Orientierung ohne Hierarchien. Keine Primärbeziehung - alle Verbindungen sind gleichwertig und unabhängig voneinander.',
-                features: [
-                    'Keine Priorisierung einzelner Beziehungen',
-                    'Maximale Autonomie in allen Verbindungen',
-                    'Jede Beziehung entwickelt sich individuell',
-                    'Keine gemeinsame Lebensplanung notwendig'
-                ],
-                match: 'Wenn du mehrere tiefe Verbindungen leben möchtest, ohne eine über die andere zu stellen. Ideal für Menschen, die Hierarchien ablehnen und absolute Beziehungsfreiheit suchen.'
-            },
-            ra: {
-                title: 'RA (Relationship Anarchist)',
-                definition: 'Vollständige Ablehnung von Beziehungshierarchien und gesellschaftlichen Normen. Jede Verbindung wird individuell definiert, ohne externe Vorlagen oder Erwartungen.',
-                features: [
-                    'Keine Hierarchien zwischen Beziehungstypen',
-                    'Jede Beziehung wird individuell ausgehandelt',
-                    'Freundschaften können genauso wichtig sein wie romantische Beziehungen',
-                    'Keine Besitzansprüche an andere Menschen'
-                ],
-                match: 'Wenn du alle gesellschaftlichen Beziehungsnormen hinterfragst und jede Verbindung nach eigenen Regeln gestalten möchtest. Ideal für Menschen mit starkem Autonomiebedürfnis.'
-            },
-            lat: {
-                title: 'LAT (Living Apart Together)',
-                definition: 'Feste Partnerschaft mit bewusst getrennten Wohnungen und Alltagsleben. Die eigenen vier Wände sind kein Zeichen von Distanz, sondern von gesunder Selbstfürsorge.',
-                features: [
-                    'Tiefe, verbindliche Beziehung ohne Zusammenleben',
-                    'Eigener Rückzugsraum ist essentiell',
-                    'Qualitätszeit über Quantität',
-                    'Bewusste Entscheidung für Nähe'
-                ],
-                match: 'Wenn du eine feste Beziehung möchtest, aber deinen eigenen Raum brauchst. Ideal für Menschen, die Nähe und Autonomie im Alltag kombinieren wollen.'
-            },
-            aromantisch: {
-                title: 'Aromantisch',
-                definition: 'Wenig oder keine romantische Anziehung, aber tiefe Verbindungen auf anderen Ebenen. Freundschaften, queerplatonische Beziehungen und andere Formen von Nähe sind möglich und wertvoll.',
-                features: [
-                    'Romantische Liebe ist nicht die einzige Tiefe',
-                    'Freundschaften können primäre Beziehungen sein',
-                    'Ehrlichkeit über eigene Grenzen',
-                    'Alternative Beziehungsformen werden wertgeschätzt'
-                ],
-                match: 'Wenn du wenig oder keine romantische Anziehung erlebst, aber tiefe Verbindungen auf anderen Ebenen suchst. Ideal für Menschen, die nicht-romantische Beziehungen priorisieren.'
-            },
-            polyamor: {
-                title: 'Polyamor',
-                definition: 'Liebesbeziehungen zu mehreren Menschen gleichzeitig, mit Wissen und Einverständnis aller Beteiligten. Emotionale und körperliche Mehrfachbeziehungen werden aktiv gelebt.',
-                features: [
-                    'Mehrere emotionale und körperliche Beziehungen parallel',
-                    'Ehrlichkeit und Transparenz mit allen Beteiligten',
-                    'Eifersucht wird aktiv bearbeitet',
-                    'Kann Hierarchien haben oder gleichwertig sein'
-                ],
-                match: 'Wenn du die Fähigkeit hast, mehrere Menschen gleichzeitig zu lieben und diese Gefühle auch real ausleben möchtest. Ideal für Menschen mit hoher Kommunikationsbereitschaft und emotionaler Kapazität.'
-            }
-        };
 
         function openArchetypeInfo(archetypeId, person = null) {
             // Redirect to definitionModal (zusammengeführt)
@@ -19185,100 +18912,6 @@
             const modal = document.querySelector('#definitionModal .modal');
             modal.ontouchstart = handleDefinitionTouchStart;
             modal.ontouchend = handleDefinitionTouchEnd;
-        }
-
-        function updateArchetypeContent(archetypeId) {
-            const def = archetypeInfoData[archetypeId];
-            if (!def) return;
-
-            document.getElementById('archetypeInfoTitle').textContent = def.title + ' - Definition';
-            document.getElementById('archetypeInfoDefinition').textContent = def.definition;
-
-            const featuresList = document.getElementById('archetypeInfoFeatures');
-            featuresList.innerHTML = '';
-            def.features.forEach(feature => {
-                const li = document.createElement('li');
-                li.textContent = feature;
-                featuresList.appendChild(li);
-            });
-
-            document.getElementById('archetypeInfoMatch').textContent = def.match;
-        }
-
-        function updateArchetypeDots() {
-            const dotsContainer = document.getElementById('archetypeDots');
-            dotsContainer.innerHTML = '';
-            archetypeOrder.forEach((id, index) => {
-                const dot = document.createElement('span');
-                dot.className = 'archetype-dot' + (index === currentArchetypeIndex ? ' active' : '');
-                dot.onclick = () => {
-                    currentArchetypeIndex = index;
-                    const newArchetype = archetypeOrder[index];
-                    updateArchetypeContent(newArchetype);
-                    updateArchetypeDots();
-
-                    // Sync the new archetype to the dropdown selection
-                    if (currentInfoModalPerson) {
-                        if (currentInfoModalPerson === 'ich') {
-                            document.getElementById('ichSelect').value = newArchetype;
-                            document.getElementById('mobileIchSelect').value = newArchetype;
-                            currentArchetype = newArchetype;
-                            mobileIchArchetype = newArchetype;
-                        } else if (currentInfoModalPerson === 'partner') {
-                            document.getElementById('partnerSelect').value = newArchetype;
-                            document.getElementById('mobilePartnerSelect').value = newArchetype;
-                            selectedPartner = newArchetype;
-                            mobilePartnerArchetype = newArchetype;
-                        }
-                        updateComparisonView();
-                    }
-                };
-                dotsContainer.appendChild(dot);
-            });
-        }
-
-        function navigateArchetypeModal(direction) {
-            currentArchetypeIndex += direction;
-            if (currentArchetypeIndex < 0) currentArchetypeIndex = archetypeOrder.length - 1;
-            if (currentArchetypeIndex >= archetypeOrder.length) currentArchetypeIndex = 0;
-
-            const newArchetype = archetypeOrder[currentArchetypeIndex];
-            updateArchetypeContent(newArchetype);
-            updateArchetypeDots();
-
-            // Sync the new archetype to the dropdown selection
-            if (currentInfoModalPerson) {
-                if (currentInfoModalPerson === 'ich') {
-                    document.getElementById('ichSelect').value = newArchetype;
-                    document.getElementById('mobileIchSelect').value = newArchetype;
-                    currentArchetype = newArchetype;
-                    mobileIchArchetype = newArchetype;
-                } else if (currentInfoModalPerson === 'partner') {
-                    document.getElementById('partnerSelect').value = newArchetype;
-                    document.getElementById('mobilePartnerSelect').value = newArchetype;
-                    selectedPartner = newArchetype;
-                    mobilePartnerArchetype = newArchetype;
-                }
-                updateComparisonView();
-            }
-        }
-
-        let archetypeTouchStartX = 0;
-        function handleArchetypeTouchStart(e) {
-            archetypeTouchStartX = e.touches[0].clientX;
-        }
-
-        function handleArchetypeTouchEnd(e) {
-            const touchEndX = e.changedTouches[0].clientX;
-            const diff = archetypeTouchStartX - touchEndX;
-            if (Math.abs(diff) > 50) {
-                navigateArchetypeModal(diff > 0 ? 1 : -1);
-            }
-        }
-
-        function closeArchetypeInfoModal(event) {
-            if (event && event.target !== event.currentTarget) return;
-            document.getElementById('archetypeInfoModal').classList.remove('active');
         }
 
         // ========================================
@@ -19774,7 +19407,6 @@
         window.closeHelpModal = closeHelpModal;
         window.showArchetypeInfo = showArchetypeInfo;
         window.openArchetypeInfo = openArchetypeInfo;
-        window.closeArchetypeInfoModal = closeArchetypeInfoModal;
         window.openFactorModal = openFactorModal;
         window.closeFactorModal = closeFactorModal;
         window.navigateFactorArchetype = navigateFactorArchetype;
