@@ -106,21 +106,7 @@
             margin-top: 8px;
         }
 
-        /* Title with Pathos/Logos Buttons */
-        .title-with-pathos-logos {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            flex-wrap: wrap;
-            justify-content: center;
-        }
-
-        .header-pathos-logos-buttons {
-            display: flex;
-            gap: 8px;
-            align-items: center;
-        }
-
+        /* Pathos/Logos toggle buttons in modal header */
         .header-pathos-btn,
         .header-logos-btn {
             padding: 8px 12px;
@@ -141,11 +127,11 @@
             border-color: var(--primary);
         }
 
-        /* Hide header pathos/logos buttons on mobile - use sticky ones there */
-        @media (max-width: 768px) {
-            .header-pathos-logos-buttons {
-                display: none;
-            }
+        .header-pathos-btn.active,
+        .header-logos-btn.active {
+            color: var(--text-primary);
+            border-color: var(--primary);
+            box-shadow: 0 2px 8px rgba(139, 92, 246, 0.3);
         }
 
         h1 {
@@ -3795,9 +3781,73 @@
 
         .comparison-grid {
             display: grid;
-            grid-template-columns: 1fr 1fr;
+            grid-template-columns: 1fr auto 1fr;
             gap: 15px;
             margin-bottom: 20px;
+        }
+
+        /* Center Column for Tiage's Synthese Button */
+        .center-column {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 0 10px;
+        }
+
+        .center-column .tiage-ansatz-btn {
+            writing-mode: horizontal-tb;
+            text-orientation: mixed;
+            padding: 12px 16px;
+            white-space: nowrap;
+        }
+
+        .center-column .tiage-ansatz-btn .tiage-ansatz-icon,
+        .center-column .tiage-ansatz-btn .tiage-ansatz-text {
+            writing-mode: horizontal-tb;
+        }
+
+        /* Main Score Circle in Center Column */
+        .main-score-circle {
+            position: relative;
+            width: 90px;
+            height: 90px;
+            cursor: pointer;
+            margin-bottom: 15px;
+            transition: transform 0.2s ease;
+        }
+
+        .main-score-circle:hover {
+            transform: scale(1.08);
+        }
+
+        .main-score-circle svg {
+            width: 100%;
+            height: 100%;
+            transform: rotate(-90deg);
+        }
+
+        .main-score-circle .score-bg {
+            fill: none;
+            stroke: rgba(255,255,255,0.1);
+            stroke-width: 8;
+        }
+
+        .main-score-circle .score-progress {
+            fill: none;
+            stroke-width: 8;
+            stroke-linecap: round;
+            transition: stroke-dashoffset 0.5s ease, stroke 0.3s ease;
+        }
+
+        .main-score-circle .score-value {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: var(--text-primary);
         }
 
         .comparison-column {
@@ -3818,6 +3868,7 @@
         .column-header {
             display: flex;
             align-items: center;
+            justify-content: flex-start;
             gap: 8px;
             margin-bottom: 12px;
             padding-bottom: 10px;
@@ -6484,8 +6535,8 @@
         </div>
     </div>
 
-    <!-- Pro/Contra Modal (Desktop Circle Click) -->
-    <div class="modal-overlay" id="proContraModal" onclick="closeProContraModal(event)">
+    <!-- Pro/Contra Modal (Desktop Circle Click) - higher z-index to appear above Synthese Modal -->
+    <div class="modal-overlay" id="proContraModal" onclick="closeProContraModal(event)" style="z-index: 2100;">
         <div class="modal" onclick="event.stopPropagation()" style="max-width: 600px;">
             <div class="modal-header">
                 <span class="modal-title">Pro & Contra</span>
@@ -6534,7 +6585,11 @@
         <div class="modal" onclick="event.stopPropagation()" style="max-width: 700px; max-height: 85vh; overflow-y: auto; position: relative;">
             <div class="modal-header">
                 <span class="modal-title" id="pathosLogosModalTitle">Tiage's Synthese</span>
-                <button class="modal-close" onclick="closePathosLogosModal()">&times;</button>
+                <div style="display: flex; align-items: center; gap: 8px;">
+                    <button class="header-pathos-btn" id="modalPathosBtn" onclick="showPathosLogosContent('pathos')" title="Pathos - Emotionale Resonanz">🔥</button>
+                    <button class="header-logos-btn" id="modalLogosBtn" onclick="showPathosLogosContent('logos')" title="Logos - Rationale Struktur">🧠</button>
+                    <button class="modal-close" onclick="closePathosLogosModal()">&times;</button>
+                </div>
             </div>
             <div class="modal-body" style="padding: 20px;">
                 <!-- Type indicator -->
@@ -6591,13 +6646,7 @@
 
     <header>
         <div class="header-content">
-            <div class="title-with-pathos-logos">
-                <h1 data-i18n="ui.title">DAS ANARCHISCHE TI-AGE PRINZIP DER PAARUNG</h1>
-                <div class="header-pathos-logos-buttons">
-                    <button class="header-pathos-btn" onclick="openPathosLogosModal('pathos')" title="Pathos - Emotionale Resonanz">🔥</button>
-                    <button class="header-logos-btn" onclick="openPathosLogosModal('logos')" title="Logos - Rationale Struktur">🧠</button>
-                </div>
-            </div>
+            <h1 data-i18n="ui.title">DAS ANARCHISCHE TI-AGE PRINZIP DER PAARUNG</h1>
             <div class="header-buttons">
                 <button class="lang-btn" onclick="TiageI18n.toggle(); updateAllTranslations();" title="Switch Language / Sprache wechseln">
                     <span class="lang-icon">🌐</span>
@@ -6700,6 +6749,21 @@
                         <div class="gfk-grid" id="ich-gfk-grid" data-person="ich"></div>
                     </div>
                 </div>
+            </div>
+
+            <!-- Center Column - Score Circle & Tiage's Synthese Button -->
+            <div class="center-column">
+                <div class="main-score-circle" id="mainScoreCircle" onclick="openProContraModal()" title="Klicken für Pro & Contra Details">
+                    <svg viewBox="0 0 100 100">
+                        <circle class="score-bg" cx="50" cy="50" r="42"></circle>
+                        <circle class="score-progress" id="mainScoreProgress" cx="50" cy="50" r="42" stroke-dasharray="264" stroke-dashoffset="264"></circle>
+                    </svg>
+                    <div class="score-value" id="mainScoreValue">0%</div>
+                </div>
+                <button class="tiage-ansatz-btn" id="desktopTiageAnsatzBtn" onclick="openPathosLogosModal('pathos')" title="Tiage's Synthese - Pathos & Logos">
+                    <span class="tiage-ansatz-icon">💡</span>
+                    <span class="tiage-ansatz-text">Tiage's Synthese</span>
+                </button>
             </div>
 
             <!-- PARTNER Column -->
@@ -10300,29 +10364,47 @@
             return `rgb(${r}, ${g}, ${b})`;
         }
 
-        // Update Score Cycle im Synthese Modal
+        // Update Score Cycle im Synthese Modal und auf der Hauptseite
         function updateSyntheseScoreCycle() {
             const scoreValueEl = document.getElementById('syntheseScoreValue');
             const scoreProgressEl = document.getElementById('syntheseScoreProgress');
-
-            if (!scoreValueEl || !scoreProgressEl) return;
+            const mainScoreValueEl = document.getElementById('mainScoreValue');
+            const mainScoreProgressEl = document.getElementById('mainScoreProgress');
 
             // Get current score from resultPercentage
             const percentage = document.getElementById('resultPercentage');
             const currentScore = percentage ? parseInt(percentage.textContent) || 0 : 0;
 
-            // Update value display
-            scoreValueEl.textContent = currentScore + '%';
-
             // Update circle progress (circumference = 2 * PI * r = 2 * 3.14159 * 42 ≈ 264)
             const circumference = 264;
             const offset = circumference - (currentScore / 100) * circumference;
-            scoreProgressEl.style.strokeDashoffset = offset;
 
             // Update color based on score (rot → gelb → grün)
             const color = getScoreGradientColor(currentScore);
-            scoreProgressEl.style.stroke = color;
-            scoreValueEl.style.color = color;
+
+            // Update Modal Score Circle
+            if (scoreValueEl && scoreProgressEl) {
+                scoreValueEl.textContent = currentScore + '%';
+                scoreProgressEl.style.strokeDashoffset = offset;
+                scoreProgressEl.style.stroke = color;
+                scoreValueEl.style.color = color;
+            }
+
+            // Update Main Page Score Circle
+            if (mainScoreValueEl && mainScoreProgressEl) {
+                mainScoreValueEl.textContent = currentScore + '%';
+                mainScoreProgressEl.style.strokeDashoffset = offset;
+                mainScoreProgressEl.style.stroke = color;
+                mainScoreValueEl.style.color = color;
+            }
+
+            // Update Mobile Score Circle
+            const mobileScoreEl = document.getElementById('mobileScoreCircle');
+            if (mobileScoreEl) {
+                mobileScoreEl.textContent = currentScore + '%';
+                mobileScoreEl.style.borderColor = color;
+                mobileScoreEl.style.color = color;
+            }
         }
 
         function getBarClass(value) {
@@ -14615,6 +14697,9 @@
 
             // Update Desktop Selection Info Message
             updateSelectionInfoMessage();
+
+            // Update Score-Circle auf der Hauptseite
+            updateSyntheseScoreCycle();
         }
 
         // Universelle Funktion für Kategorien-Balken (Mobile & Desktop)
@@ -17045,6 +17130,8 @@
             const archetypeContextEl = document.getElementById('pathosLogosArchetypeContext');
             const pathosBtn = document.getElementById('pathosLogosTogglePathos');
             const logosBtn = document.getElementById('pathosLogosToggleLogos');
+            const modalPathosBtn = document.getElementById('modalPathosBtn');
+            const modalLogosBtn = document.getElementById('modalLogosBtn');
 
             // Reset all button styles (for sticky side buttons)
             [pathosBtn, logosBtn].forEach(btn => {
@@ -17053,6 +17140,11 @@
                     btn.style.color = 'var(--text-muted)';
                     btn.style.border = '1px solid var(--border)';
                 }
+            });
+
+            // Reset modal header button styles
+            [modalPathosBtn, modalLogosBtn].forEach(btn => {
+                if (btn) btn.classList.remove('active');
             });
 
             if (type === 'pathos') {
@@ -17065,6 +17157,7 @@
                 pathosBtn.style.background = 'rgba(231,111,81,0.3)';
                 pathosBtn.style.color = 'var(--text-primary)';
                 pathosBtn.style.border = '1px solid #E76F51';
+                if (modalPathosBtn) modalPathosBtn.classList.add('active');
             } else if (type === 'logos') {
                 titleEl.textContent = "Tiage's Synthese";
                 iconEl.textContent = '🧠';
@@ -17075,6 +17168,7 @@
                 logosBtn.style.background = 'rgba(100,149,237,0.3)';
                 logosBtn.style.color = 'var(--text-primary)';
                 logosBtn.style.border = '1px solid #6495ED';
+                if (modalLogosBtn) modalLogosBtn.classList.add('active');
             }
         }
 
