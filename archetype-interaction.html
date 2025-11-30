@@ -4321,6 +4321,75 @@
             box-shadow: 0 0 8px rgba(139, 92, 246, 0.5);
         }
 
+        /* GFK Bedürfnis-Anzeige */
+        .gfk-beduerfnis-display {
+            background: rgba(30, 30, 35, 0.8);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 16px;
+            margin: 16px 0;
+        }
+
+        .gfk-matching-header {
+            text-align: center;
+            margin-bottom: 16px;
+        }
+
+        .gfk-score-display {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .gfk-score {
+            font-size: 2rem;
+            font-weight: 700;
+        }
+
+        .gfk-level-label {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        .gfk-section {
+            margin-top: 12px;
+        }
+
+        .gfk-section-title {
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .gfk-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+
+        .gfk-tag {
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+
+        .gfk-tag-match {
+            background: rgba(34, 197, 94, 0.2);
+            border: 1px solid rgba(34, 197, 94, 0.4);
+            color: #22c55e;
+        }
+
+        .gfk-tag-conflict {
+            background: rgba(239, 68, 68, 0.15);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            color: #f87171;
+            cursor: help;
+        }
+
         /* Indikatoren für Dominanz/Orientierung (gleiche wie Geschlecht) */
         .dominanz-btn .geschlecht-indicator,
         .orientierung-btn .geschlecht-indicator {
@@ -5902,6 +5971,7 @@
     <script src="js/synthesis/factors/orientationFactor.js"></script>
     <script src="js/synthesis/factors/genderFactor.js"></script>
     <script src="js/synthesis/synthesisCalculator.js"></script>
+    <script src="profiles/gfk-beduerfnisse.js"></script>
 </head>
 <body>
     <!-- Age Verification - Inline Script BEFORE modal for onclick to work -->
@@ -6778,6 +6848,19 @@
                     </div>
                 </div>
             </div>
+        </div>
+
+        <!-- GFK Bedürfnis-Matching Anzeige -->
+        <div id="gfk-beduerfnis-display" class="gfk-beduerfnis-display" style="display: none;">
+            <!-- Wird dynamisch durch updateGfkBeduerfnisDisplay() gefüllt -->
+        </div>
+
+        <!-- Tiage's Synthese Button -->
+        <div style="display: flex; justify-content: flex-end; margin-bottom: 15px;">
+            <button class="tiage-ansatz-btn" id="desktopTiageAnsatzBtn" onclick="openPathosLogosModal('pathos')" title="Tiage's Synthese - Pathos & Logos">
+                <span class="tiage-ansatz-icon">💡</span>
+                <span class="tiage-ansatz-text">Tiage's Synthese</span>
+            </button>
         </div>
 
         <!-- Hidden elements for backwards compatibility -->
@@ -10029,6 +10112,10 @@
             updatePartnerView();
             updateLegendCategories();
             updateAnalysisOverview();
+            // GFK automatisch aus Archetypen-Matching ableiten
+            if (typeof updateGfkFromArchetypes === 'function') {
+                updateGfkFromArchetypes();
+            }
         }
 
         function updateTheme() {
@@ -10948,6 +11035,8 @@
                 mobilePartnerArchetype = newArchetype;
             }
             updateComparisonView();
+            // GFK automatisch aus Archetypen-Matching ableiten
+            updateGfkFromArchetypes();
         }
 
         // Alias for button onclick
@@ -11107,6 +11196,8 @@
                 mobilePartnerArchetype = newArchetype;
             }
             updateComparisonView();
+            // GFK automatisch aus Archetypen-Matching ableiten
+            updateGfkFromArchetypes();
         }
 
         function confirmDefinitionSelection() {
@@ -12654,6 +12745,122 @@
         // Helper: Check if GFK is selected
         function hasGfkSelected(person) {
             return personDimensions[person].gfk !== null;
+        }
+
+        // ========================================
+        // GFK-Bedürfnis-Matching (nach Marshall Rosenberg)
+        // ========================================
+
+        // Globale Variable für das letzte GFK-Matching-Ergebnis
+        let lastGfkMatchingResult = null;
+
+        /**
+         * Berechnet das GFK-Bedürfnis-Matching zwischen den ausgewählten Archetypen.
+         * Basiert auf der vollständigen GFK-Bedürfnisliste nach Marshall Rosenberg.
+         *
+         * Statt E-Score Proxy: Direkter Vergleich der Bedürfnis-Profile
+         */
+        function updateGfkFromArchetypes() {
+            if (typeof GfkBeduerfnisse === 'undefined') {
+                console.warn('GFK: GfkBeduerfnisse nicht geladen');
+                return;
+            }
+
+            const ichArchetype = currentArchetype;
+            const partnerArchetype = selectedPartner;
+
+            if (!ichArchetype || !partnerArchetype) return;
+
+            // Archetyp-IDs normalisieren (duo_flex → duo-flex)
+            const ichNormalized = ichArchetype.replace('_', '-');
+            const partnerNormalized = partnerArchetype.replace('_', '-');
+
+            // Bedürfnis-Matching berechnen
+            const matching = GfkBeduerfnisse.berechneMatching(ichNormalized, partnerNormalized);
+
+            if (matching.fehler) {
+                console.warn('GFK Matching Fehler:', matching.fehler);
+                return;
+            }
+
+            lastGfkMatchingResult = matching;
+
+            console.log(`GFK Bedürfnis-Matching: ${matching.archetyp1} + ${matching.archetyp2} → Score=${matching.score} (${matching.level})`);
+
+            // GFK-Level setzen (basierend auf Bedürfnis-Übereinstimmung)
+            personDimensions.ich.gfk = matching.level;
+            personDimensions.partner.gfk = matching.level;
+
+            // UI synchronisieren
+            syncGfkUI('ich');
+            syncGfkUI('partner');
+
+            // Bedürfnis-Details anzeigen
+            updateGfkBeduerfnisDisplay(matching);
+        }
+
+        /**
+         * Zeigt die Bedürfnis-Matching-Details in der UI an
+         */
+        function updateGfkBeduerfnisDisplay(matching) {
+            const container = document.getElementById('gfk-beduerfnis-display');
+            if (!container) return;
+
+            // Container sichtbar machen
+            container.style.display = 'block';
+
+            // Score-Farbe basierend auf Level
+            const scoreColor = matching.level === 'hoch' ? '#22c55e' :
+                              matching.level === 'mittel' ? '#eab308' : '#ef4444';
+
+            // HTML generieren
+            let html = `
+                <div class="gfk-matching-header">
+                    <div class="gfk-score-display">
+                        <span class="gfk-score" style="color: ${scoreColor}">${matching.score}%</span>
+                        <span class="gfk-level-label">Bedürfnis-Übereinstimmung</span>
+                    </div>
+                </div>
+            `;
+
+            // Top Übereinstimmungen
+            if (matching.topUebereinstimmungen && matching.topUebereinstimmungen.length > 0) {
+                html += `
+                    <div class="gfk-section gfk-matches">
+                        <div class="gfk-section-title" style="color: #22c55e;">Gemeinsame Bedürfnisse</div>
+                        <div class="gfk-tags">
+                            ${matching.topUebereinstimmungen.map(b =>
+                                `<span class="gfk-tag gfk-tag-match">${b.label}</span>`
+                            ).join('')}
+                        </div>
+                    </div>
+                `;
+            }
+
+            // Konflikte
+            if (matching.topKonflikte && matching.topKonflikte.length > 0) {
+                html += `
+                    <div class="gfk-section gfk-conflicts">
+                        <div class="gfk-section-title" style="color: #ef4444;">Unterschiedliche Prioritäten</div>
+                        <div class="gfk-tags">
+                            ${matching.topKonflikte.map(b =>
+                                `<span class="gfk-tag gfk-tag-conflict" title="${matching.archetyp1}: ${b.wert1}% | ${matching.archetyp2}: ${b.wert2}%">${b.label}</span>`
+                            ).join('')}
+                        </div>
+                    </div>
+                `;
+            }
+
+            container.innerHTML = html;
+        }
+
+        /**
+         * Gibt die Top-Bedürfnisse für einen Archetyp zurück
+         */
+        function getArchetypBeduerfnisse(archetyp) {
+            if (typeof GfkBeduerfnisse === 'undefined') return [];
+            const normalized = archetyp.replace('_', '-');
+            return GfkBeduerfnisse.getTopBeduerfnisse(normalized, 5);
         }
 
         // ========================================
@@ -14259,6 +14466,8 @@
                     if (oldSelect) oldSelect.value = e.target.value;
                     updateArchetypeGrid('ich', e.target.value);
                     updateComparisonView();
+                    // GFK automatisch aus Archetypen-Matching ableiten
+                    updateGfkFromArchetypes();
                 });
             }
 
@@ -14269,6 +14478,8 @@
                     selectedPartner = e.target.value;
                     updateArchetypeGrid('partner', e.target.value);
                     updateComparisonView();
+                    // GFK automatisch aus Archetypen-Matching ableiten
+                    updateGfkFromArchetypes();
                 });
             }
 
@@ -15935,6 +16146,8 @@
                     if (desktopSelect) desktopSelect.value = e.target.value;
                     currentArchetype = e.target.value;
                     updateComparisonView();
+                    // GFK automatisch aus Archetypen-Matching ableiten
+                    updateGfkFromArchetypes();
                 });
             }
 
@@ -15948,6 +16161,8 @@
                     if (desktopSelect) desktopSelect.value = e.target.value;
                     selectedPartner = e.target.value;
                     updateComparisonView();
+                    // GFK automatisch aus Archetypen-Matching ableiten
+                    updateGfkFromArchetypes();
                 });
             }
 
@@ -16347,6 +16562,8 @@
             updateDominanzSummary('partner');
             updateOrientierungSummary('ich');
             updateOrientierungSummary('partner');
+            // GFK automatisch aus Archetypen-Matching setzen
+            updateGfkFromArchetypes();
         });
 
         // ========================================
@@ -16955,12 +17172,112 @@
             }
         }
 
+        /**
+         * Generiert HTML für GFK-Bedürfnis-Tags im Pathos/Logos Modal
+         * @param {string} type - 'pathos' oder 'logos'
+         * @returns {Object} HTML-Strings für ichTags, partnerTags, gemeinsamSection, wachstumSection
+         */
+        function getGfkBeduerfnisAnalyse(type) {
+            const result = {
+                ichTags: '',
+                partnerTags: '',
+                gemeinsamSection: '',
+                wachstumSection: ''
+            };
+
+            // Prüfen ob GfkBeduerfnisse verfügbar ist
+            if (typeof GfkBeduerfnisse === 'undefined') {
+                return result;
+            }
+
+            // Archetyp-IDs normalisieren
+            const ichArchetyp = (currentArchetype || '').replace('_', '-');
+            const partnerArchetyp = (selectedPartner || '').replace('_', '-');
+
+            if (!ichArchetyp || !partnerArchetyp) return result;
+
+            // Analyse durchführen
+            const analyse = GfkBeduerfnisse.analysiereWerBringtWasMit(ichArchetyp, partnerArchetyp);
+            if (analyse.fehler) return result;
+
+            // Farben basierend auf Type
+            const colors = type === 'pathos'
+                ? { primary: '#E76F51', secondary: '#FFD700', bg: 'rgba(231,111,81,0.15)' }
+                : { primary: '#457B9D', secondary: '#6495ED', bg: 'rgba(69,123,157,0.15)' };
+
+            // Tag-Style
+            const tagStyle = `display: inline-block; padding: 3px 8px; margin: 2px; border-radius: 10px; font-size: 11px; font-weight: 500;`;
+            const tagStylePrimary = `${tagStyle} background: ${colors.bg}; border: 1px solid ${colors.primary}; color: ${colors.primary};`;
+            const tagStyleMatch = `${tagStyle} background: rgba(34,197,94,0.15); border: 1px solid rgba(34,197,94,0.5); color: #22c55e;`;
+            const tagStyleGrowth = `${tagStyle} background: rgba(168,85,247,0.15); border: 1px solid rgba(168,85,247,0.5); color: #a855f7;`;
+
+            // ICH Tags
+            const ichStaerken = analyse.ich.staerken[type] || [];
+            if (ichStaerken.length > 0) {
+                const tags = ichStaerken.slice(0, 4).map(b =>
+                    `<span style="${tagStylePrimary}">${b.label}</span>`
+                ).join('');
+                result.ichTags = `<div style="margin-top: 8px;">${tags}</div>`;
+            }
+
+            // Partner Tags
+            const partnerStaerken = analyse.partner.staerken[type] || [];
+            if (partnerStaerken.length > 0) {
+                const tags = partnerStaerken.slice(0, 4).map(b =>
+                    `<span style="${tagStylePrimary}">${b.label}</span>`
+                ).join('');
+                result.partnerTags = `<div style="margin-top: 8px;">${tags}</div>`;
+            }
+
+            // Gemeinsame Bedürfnisse Section
+            const gemeinsam = analyse.gemeinsam[type] || [];
+            if (gemeinsam.length > 0) {
+                const tags = gemeinsam.slice(0, 5).map(b =>
+                    `<span style="${tagStyleMatch}">${b.label}</span>`
+                ).join('');
+                const sectionTitle = type === 'pathos' ? 'GEMEINSAME BEDÜRFNISSE' : 'GEMEINSAME WERTE';
+                result.gemeinsamSection = `
+                <div style="margin-bottom: 16px;">
+                    <div style="padding: 12px; background: rgba(34,197,94,0.08); border-radius: 10px; border: 1px solid rgba(34,197,94,0.25);">
+                        <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
+                            <span style="font-size: 14px;">🤝</span>
+                            <span style="font-size: 11px; color: #22c55e; font-weight: 600; text-transform: uppercase; letter-spacing: 1px;">${sectionTitle}</span>
+                        </div>
+                        <div>${tags}</div>
+                    </div>
+                </div>`;
+            }
+
+            // Wachstumspotential Section
+            const wachstum = analyse.wachstumspotential[type] || [];
+            if (wachstum.length > 0) {
+                const items = wachstum.slice(0, 3).map(b => {
+                    const wer = b.staerkerBei === 'ich' ? analyse.ich.name : analyse.partner.name;
+                    return `<span style="${tagStyleGrowth}" title="${wer} kann hier einbringen">${b.label}</span>`;
+                }).join('');
+                result.wachstumSection = `
+                <div style="margin-top: 12px; padding: 12px; background: rgba(168,85,247,0.08); border-radius: 8px; border: 1px dashed rgba(168,85,247,0.3);">
+                    <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
+                        <span style="font-size: 13px;">🌱</span>
+                        <span style="font-size: 11px; color: #a855f7; font-weight: 600; text-transform: uppercase; letter-spacing: 1px;">WACHSTUMSPOTENTIAL</span>
+                    </div>
+                    <div>${items}</div>
+                    <p style="font-size: 11px; color: var(--text-muted); margin: 8px 0 0 0; font-style: italic;">Unterschiedliche Stärken können sich ergänzen</p>
+                </div>`;
+            }
+
+            return result;
+        }
+
         function getPathosContent() {
             const ichArch = archetypeDefinitions[currentArchetype];
             const partnerArch = archetypeDefinitions[selectedPartner];
             const detailed = generateDetailedPathos(ichArch, partnerArch);
             const ichName = ichArch?.name || 'ICH';
             const partnerName = partnerArch?.name || 'Partner';
+
+            // GFK-Bedürfnis-Analyse holen
+            const gfkAnalyse = getGfkBeduerfnisAnalyse('pathos');
 
             let html = `
                 <!-- ICH BRINGT MIT -->
@@ -16970,7 +17287,8 @@
                             <span style="font-size: 14px;">👤</span>
                             <span style="font-size: 11px; color: #E76F51; font-weight: 600; text-transform: uppercase; letter-spacing: 1px;">${ichName} BRINGT MIT</span>
                         </div>
-                        <p style="font-size: 13px; margin: 0; line-height: 1.5;">${detailed.ich || 'Keine spezifischen emotionalen Eigenschaften definiert.'}</p>
+                        <p style="font-size: 13px; margin: 0 0 10px 0; line-height: 1.5;">${detailed.ich || 'Keine spezifischen emotionalen Eigenschaften definiert.'}</p>
+                        ${gfkAnalyse.ichTags}
                     </div>
                 </div>
 
@@ -16981,9 +17299,13 @@
                             <span style="font-size: 14px;">👥</span>
                             <span style="font-size: 11px; color: #E76F51; font-weight: 600; text-transform: uppercase; letter-spacing: 1px;">${partnerName} BRINGT MIT</span>
                         </div>
-                        <p style="font-size: 13px; margin: 0; line-height: 1.5;">${detailed.partner || 'Keine spezifischen emotionalen Eigenschaften definiert.'}</p>
+                        <p style="font-size: 13px; margin: 0 0 10px 0; line-height: 1.5;">${detailed.partner || 'Keine spezifischen emotionalen Eigenschaften definiert.'}</p>
+                        ${gfkAnalyse.partnerTags}
                     </div>
                 </div>
+
+                <!-- GEMEINSAME BEDÜRFNISSE -->
+                ${gfkAnalyse.gemeinsamSection}
 
                 <!-- DARAUS ENTSTEHT -->
                 <div style="margin-bottom: 16px;">
@@ -16995,6 +17317,11 @@
                         <p style="font-size: 14px; margin: 0; line-height: 1.6; font-style: italic;">${detailed.synthese}</p>
                     </div>
                 </div>`;
+
+            // WACHSTUMSPOTENTIAL (falls vorhanden)
+            if (gfkAnalyse.wachstumSection) {
+                html += gfkAnalyse.wachstumSection;
+            }
 
             // RESONANZ (falls vorhanden)
             if (detailed.resonanz) {
@@ -17018,6 +17345,9 @@
             const ichName = ichArch?.name || 'ICH';
             const partnerName = partnerArch?.name || 'Partner';
 
+            // GFK-Bedürfnis-Analyse holen
+            const gfkAnalyse = getGfkBeduerfnisAnalyse('logos');
+
             let html = `
                 <!-- ICH BRINGT MIT -->
                 <div style="margin-bottom: 16px;">
@@ -17026,7 +17356,8 @@
                             <span style="font-size: 14px;">👤</span>
                             <span style="font-size: 11px; color: #457B9D; font-weight: 600; text-transform: uppercase; letter-spacing: 1px;">${ichName} BRINGT MIT</span>
                         </div>
-                        <p style="font-size: 13px; margin: 0; line-height: 1.5;">${detailed.ich || 'Keine spezifischen strukturellen Eigenschaften definiert.'}</p>
+                        <p style="font-size: 13px; margin: 0 0 10px 0; line-height: 1.5;">${detailed.ich || 'Keine spezifischen strukturellen Eigenschaften definiert.'}</p>
+                        ${gfkAnalyse.ichTags}
                     </div>
                 </div>
 
@@ -17037,9 +17368,13 @@
                             <span style="font-size: 14px;">👥</span>
                             <span style="font-size: 11px; color: #457B9D; font-weight: 600; text-transform: uppercase; letter-spacing: 1px;">${partnerName} BRINGT MIT</span>
                         </div>
-                        <p style="font-size: 13px; margin: 0; line-height: 1.5;">${detailed.partner || 'Keine spezifischen strukturellen Eigenschaften definiert.'}</p>
+                        <p style="font-size: 13px; margin: 0 0 10px 0; line-height: 1.5;">${detailed.partner || 'Keine spezifischen strukturellen Eigenschaften definiert.'}</p>
+                        ${gfkAnalyse.partnerTags}
                     </div>
                 </div>
+
+                <!-- GEMEINSAME WERTE -->
+                ${gfkAnalyse.gemeinsamSection}
 
                 <!-- DARAUS ENTSTEHT -->
                 <div style="margin-bottom: 16px;">
@@ -17051,6 +17386,11 @@
                         <p style="font-size: 14px; margin: 0; line-height: 1.6; font-style: italic;">${detailed.synthese}</p>
                     </div>
                 </div>`;
+
+            // WACHSTUMSPOTENTIAL (falls vorhanden)
+            if (gfkAnalyse.wachstumSection) {
+                html += gfkAnalyse.wachstumSection;
+            }
 
             // RESONANZ (falls vorhanden)
             if (detailed.resonanz) {
