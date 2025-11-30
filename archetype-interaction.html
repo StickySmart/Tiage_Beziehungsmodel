@@ -10677,42 +10677,6 @@
             });
         }
 
-        // Get summary text for selected options
-        function getDimensionSummary(person, type) {
-            let data, types;
-            if (type === 'dominanz') {
-                data = personDimensions[person].dominanz;
-                types = ['dominant', 'submissiv', 'switch', 'ausgeglichen'];
-            } else {
-                data = personDimensions[person].orientierung;
-                types = ['heterosexuell', 'homosexuell', 'bisexuell'];
-            }
-
-            const selected = [];
-            for (const t of types) {
-                if (data[t]) {
-                    const status = data[t] === 'gelebt' ? '(Gelebt)' : '(Interessiert)';
-                    selected.push(t + ' ' + status);
-                }
-            }
-            return selected.length > 0 ? '✓ ' + selected.join(', ') : '';
-        }
-
-        // Update collapsed summary for a dimension
-        function updateDimensionSummary(person, type, prefix = '') {
-            const summaryId = prefix + person + '-' + type + '-summary';
-            const summary = document.getElementById(summaryId);
-            if (summary) {
-                summary.textContent = getDimensionSummary(person, type);
-            }
-        }
-
-        // Check if all required options are selected and update summary (auto-collapse disabled)
-        function checkAutoCollapse(person, type, prefix = '') {
-            // Update summary only - auto-collapse is disabled
-            updateDimensionSummary(person, type, prefix);
-        }
-
         function scrollToCard(index) {
             const carousel = document.getElementById('carousel');
             const cardWidth = window.innerWidth;
@@ -15580,30 +15544,6 @@
             renderCategoryBars('expandCategoryBars', categories);
             // Auch Mobile aktualisieren wenn vorhanden
             renderCategoryBars('mobileCategoryBars', categories);
-        }
-
-        // Mobile Seite 3: Kategorien-Übersicht
-        function updateMobileCategoriesPage() {
-            // Typen-Anzeige aktualisieren
-            const myArch = data?.archetypes?.[currentArchetype];
-            const partnerArch = data?.archetypes?.[selectedPartner];
-
-            const ich3 = document.getElementById('mobileResultIch3');
-            const partner3 = document.getElementById('mobileResultPartner3');
-            if (ich3) ich3.textContent = myArch?.name || currentArchetype;
-            if (partner3) partner3.textContent = partnerArch?.name || selectedPartner;
-
-            // Kategorien berechnen und rendern
-            const interactionKey = `${currentArchetype}_${selectedPartner}`;
-            const interaction = data?.interactions?.[interactionKey];
-
-            if (interaction?.categories) {
-                renderCategoryBars('mobileCategoryBars', interaction.categories);
-            } else {
-                // Fallback: Berechne Kategorien
-                const categories = calculateCategoryScores(currentArchetype, selectedPartner);
-                renderCategoryBars('mobileCategoryBars', categories);
-            }
         }
 
         function showArchetypeInfo(person) {
