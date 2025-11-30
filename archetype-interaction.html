@@ -2346,6 +2346,71 @@
             left: 0;
         }
 
+        /* Match Modal Toggle Buttons */
+        .match-toggle-btn {
+            padding: 6px 10px;
+            border-radius: 6px;
+            border: 1px solid var(--border);
+            background: rgba(30, 30, 35, 0.9);
+            color: var(--text-muted);
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.2s ease;
+        }
+
+        .match-toggle-btn:hover {
+            background: rgba(50, 50, 55, 0.9);
+            transform: scale(1.05);
+        }
+
+        .match-toggle-btn.active {
+            background: rgba(74, 144, 226, 0.2);
+            border-color: var(--primary);
+            color: var(--text-primary);
+            box-shadow: 0 0 8px rgba(74, 144, 226, 0.3);
+        }
+
+        /* Match Modal Synthese Section */
+        .match-modal-section.synthese {
+            background: linear-gradient(135deg, rgba(155, 89, 182, 0.1), rgba(74, 144, 226, 0.1));
+            border: 1px solid rgba(155, 89, 182, 0.3);
+        }
+
+        .match-modal-section.synthese .match-modal-section-title {
+            color: #9b59b6;
+        }
+
+        .match-modal-perspective {
+            font-size: 11px;
+            color: var(--text-muted);
+            padding: 4px 8px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 4px;
+            display: inline-block;
+            margin-bottom: 8px;
+        }
+
+        .match-modal-inner-conflict {
+            background: rgba(255, 193, 7, 0.08);
+            border: 1px solid rgba(255, 193, 7, 0.3);
+            border-radius: 8px;
+            padding: 12px;
+            margin-top: 8px;
+        }
+
+        .match-modal-inner-conflict-title {
+            font-weight: 600;
+            color: #f39c12;
+            font-size: var(--font-sm);
+            margin-bottom: 6px;
+        }
+
+        .match-modal-inner-conflict-text {
+            font-size: var(--font-xs);
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+
         /* Legend Page */
         .legend-section {
             margin-bottom: 25px;
@@ -7924,6 +7989,10 @@
                 <button class="archetype-nav-btn" onclick="navigateCategoryArchetype(-1)" title="Vorheriger Archetyp">&#8249;</button>
                 <span class="modal-title" id="modalTitle">Kategorie-Details</span>
                 <button class="archetype-nav-btn" onclick="navigateCategoryArchetype(1)" title="Nächster Archetyp">&#8250;</button>
+                <div class="match-modal-toggle" style="display: flex; gap: 4px; margin-left: 8px;">
+                    <button class="match-toggle-btn active" id="matchTogglePathos" onclick="toggleMatchModalView('pathos')" title="Pathos - Emotionale Resonanz">🔥</button>
+                    <button class="match-toggle-btn" id="matchToggleLogos" onclick="toggleMatchModalView('logos')" title="Logos - Rationale Struktur">🧠</button>
+                </div>
                 <button class="modal-close" onclick="closeCategoryModal()">&times;</button>
             </div>
             <div class="modal-body" id="modalBody"></div>
@@ -11459,6 +11528,184 @@
         let currentTopMatch = { id: null, score: 0 };
         let currentChallenge = { id: null, score: 0 };
         let modalContextPartner = null; // Track which partner to use in category modal
+        let currentMatchModalView = localStorage.getItem('matchModalView') || 'pathos'; // pathos or logos
+        let currentMatchModalData = null; // Store current modal data for toggle refresh
+
+        // Match Modal Toggle Function
+        function toggleMatchModalView(view) {
+            currentMatchModalView = view;
+            localStorage.setItem('matchModalView', view);
+
+            // Update toggle button styles
+            document.getElementById('matchTogglePathos').classList.toggle('active', view === 'pathos');
+            document.getElementById('matchToggleLogos').classList.toggle('active', view === 'logos');
+
+            // Refresh modal content if data is available
+            if (currentMatchModalData) {
+                const content = getMatchModalContent(
+                    currentMatchModalData.partnerArch,
+                    currentMatchModalData.interaction,
+                    currentMatchModalData.scores,
+                    currentMatchModalData.scoreColor,
+                    currentMatchModalData.myArch
+                );
+                document.getElementById('modalBody').innerHTML = content;
+            }
+        }
+
+        // Generate dynamic Pro items based on current view (Pathos/Logos)
+        function generateDynamicPro(myArch, partnerArch, view) {
+            const items = [];
+            const ichId = myArch.id;
+            const partnerId = partnerArch.id;
+
+            if (view === 'pathos') {
+                // Emotional/Pathos perspective - use PathosTextGenerator if available
+                if (typeof PathosTextGenerator !== 'undefined') {
+                    const resonance = PathosTextGenerator.calculateResonance?.(myArch, partnerArch) || {};
+                    if (resonance.emotional > 0.6) items.push('Starke emotionale Resonanz zwischen euren Energien');
+                    if (resonance.intuitive > 0.5) items.push('Intuitives Verständnis füreinander');
+                }
+                // Fallback emotional pros
+                if (ichId === partnerId) {
+                    items.push('Tiefes Gefühl des Verstandenwerdens');
+                    items.push('Geteilte emotionale Sprache');
+                }
+                if (items.length === 0) {
+                    items.push('Potenzial für emotionale Verbindung');
+                    items.push('Raum für gegenseitiges Wachstum');
+                }
+            } else {
+                // Rational/Logos perspective - use LogosTextGenerator if available
+                if (typeof LogosTextGenerator !== 'undefined') {
+                    const analysis = LogosTextGenerator.analyzeCompatibility?.(myArch, partnerArch) || {};
+                    if (analysis.structuralMatch > 0.6) items.push('Kompatible Beziehungsstrukturen');
+                    if (analysis.valueAlignment > 0.5) items.push('Übereinstimmende Grundwerte');
+                }
+                // Fallback structural pros
+                if (ichId === partnerId) {
+                    items.push('Identische Beziehungsphilosophie');
+                    items.push('Gleiche Erwartungen an Verbindlichkeit');
+                }
+                if (items.length === 0) {
+                    items.push('Klare Kommunikationsbasis möglich');
+                    items.push('Strukturelle Anpassung machbar');
+                }
+            }
+            return items;
+        }
+
+        // Generate dynamic Contra items based on current view (Pathos/Logos)
+        function generateDynamicContra(myArch, partnerArch, view) {
+            const items = [];
+            const ichId = myArch.id;
+            const partnerId = partnerArch.id;
+
+            // Use IntegratedSynthesisTextGenerator for conflicts if available
+            if (typeof IntegratedSynthesisTextGenerator !== 'undefined') {
+                const conflicts = IntegratedSynthesisTextGenerator.identifyPartnerConflicts(
+                    ichId, partnerId, null, null
+                );
+
+                if (view === 'pathos') {
+                    // Emotional perspective on conflicts
+                    conflicts.forEach(conflict => {
+                        if (conflict.dynamics?.core_wound) {
+                            items.push(conflict.dynamics.core_wound);
+                        }
+                    });
+                    // Inner conflicts
+                    const innerData = IntegratedSynthesisTextGenerator.data?.innerConflicts;
+                    if (innerData?.[ichId]?.shadow) {
+                        items.push(`Dein Schatten: ${innerData[ichId].shadow.substring(0, 80)}...`);
+                    }
+                } else {
+                    // Rational perspective on conflicts
+                    conflicts.forEach(conflict => {
+                        items.push(`${conflict.title}: ${conflict.dynamics?.pattern || ''}`);
+                    });
+                }
+            }
+
+            // Fallback contras
+            if (items.length === 0) {
+                if (view === 'pathos') {
+                    items.push('Emotionale Frequenzen können divergieren');
+                    items.push('Risiko von Missverständnissen auf Gefühlsebene');
+                } else {
+                    items.push('Unterschiedliche Erwartungen möglich');
+                    items.push('Kommunikationsarbeit erforderlich');
+                }
+            }
+
+            return items;
+        }
+
+        // Generate synthesis section with psychological depth
+        function generateSynthesisSection(myArch, partnerArch) {
+            if (typeof IntegratedSynthesisTextGenerator === 'undefined') {
+                return '';
+            }
+
+            const ichId = myArch.id;
+            const partnerId = partnerArch.id;
+
+            // Get inner conflicts
+            const innerData = IntegratedSynthesisTextGenerator.data?.innerConflicts || {};
+            const ichConflict = innerData[ichId];
+            const partnerConflict = innerData[partnerId];
+
+            let conflictHtml = '';
+
+            if (ichConflict) {
+                conflictHtml += `
+                    <div class="match-modal-inner-conflict">
+                        <div class="match-modal-inner-conflict-title">🔮 Dein innerer Konflikt: ${ichConflict.core}</div>
+                        <div class="match-modal-inner-conflict-text">${ichConflict.description}</div>
+                    </div>
+                `;
+            }
+
+            if (partnerConflict && ichId !== partnerId) {
+                conflictHtml += `
+                    <div class="match-modal-inner-conflict" style="margin-top: 8px;">
+                        <div class="match-modal-inner-conflict-title">🔮 Partner-Konflikt: ${partnerConflict.core}</div>
+                        <div class="match-modal-inner-conflict-text">${partnerConflict.description}</div>
+                    </div>
+                `;
+            }
+
+            // Get partner conflicts
+            const partnerConflicts = IntegratedSynthesisTextGenerator.identifyPartnerConflicts(
+                ichId, partnerId, null, null
+            );
+
+            let partnerConflictHtml = '';
+            if (partnerConflicts.length > 0) {
+                const mainConflict = partnerConflicts[0];
+                partnerConflictHtml = `
+                    <div style="margin-top: 12px; padding: 10px; background: rgba(231, 76, 60, 0.08); border-radius: 8px; border: 1px solid rgba(231, 76, 60, 0.2);">
+                        <div style="font-weight: 600; color: var(--danger); font-size: var(--font-sm); margin-bottom: 6px;">
+                            ⚡ Hauptspannungsfeld: ${mainConflict.title}
+                        </div>
+                        <div style="font-size: var(--font-xs); color: var(--text-secondary); line-height: 1.5;">
+                            ${mainConflict.dynamics?.pattern || ''}
+                        </div>
+                        <div style="font-size: var(--font-xs); color: var(--success); margin-top: 8px; padding-top: 8px; border-top: 1px solid rgba(255,255,255,0.1);">
+                            <strong>💡 Lösung:</strong> ${mainConflict.resolution?.growth || ''}
+                        </div>
+                    </div>
+                `;
+            }
+
+            return `
+                <div class="match-modal-section synthese">
+                    <div class="match-modal-section-title">🎯 Psychologische Tiefe</div>
+                    ${conflictHtml}
+                    ${partnerConflictHtml}
+                </div>
+            `;
+        }
 
         // Match Modal Functions
         function openMatchModal(type) {
@@ -11476,6 +11723,25 @@
 
             const title = type === 'top' ? 'Top Match' : 'Challenge';
             const scoreColor = getScoreColor(matchData.score);
+
+            // Store data for toggle refresh
+            currentMatchModalData = {
+                myArch,
+                partnerArch,
+                interaction,
+                scores,
+                scoreColor
+            };
+
+            // Initialize toggle buttons to current view state
+            setTimeout(() => {
+                const pathosBtn = document.getElementById('matchTogglePathos');
+                const logosBtn = document.getElementById('matchToggleLogos');
+                if (pathosBtn && logosBtn) {
+                    pathosBtn.classList.toggle('active', currentMatchModalView === 'pathos');
+                    logosBtn.classList.toggle('active', currentMatchModalView === 'logos');
+                }
+            }, 0);
 
             document.getElementById('modalTitle').textContent = `${myArch.name} + ${partnerArch.name}`;
             document.getElementById('modalBody').innerHTML = getMatchModalContent(partnerArch, interaction, scores, scoreColor, myArch);
@@ -11513,8 +11779,39 @@
                 `;
             }).join('');
 
-            const proItems = (interaction.pro || []).map(p => `<li>${p}</li>`).join('') || '<li>Keine Daten</li>';
-            const contraItems = (interaction.contra || []).map(c => `<li>${c}</li>`).join('') || '<li>Keine Daten</li>';
+            // Generate dynamic Pro/Contra based on current view (Pathos/Logos)
+            const dynamicPro = generateDynamicPro(myArch, partnerArch, currentMatchModalView);
+            const dynamicContra = generateDynamicContra(myArch, partnerArch, currentMatchModalView);
+
+            // Combine static (from JSON) and dynamic items
+            const staticPro = interaction.pro || [];
+            const staticContra = interaction.contra || [];
+
+            // Use dynamic items first, then add unique static items
+            const combinedPro = [...dynamicPro];
+            staticPro.forEach(p => {
+                if (!combinedPro.some(dp => dp.toLowerCase().includes(p.toLowerCase().substring(0, 20)))) {
+                    combinedPro.push(p);
+                }
+            });
+
+            const combinedContra = [...dynamicContra];
+            staticContra.forEach(c => {
+                if (!combinedContra.some(dc => dc.toLowerCase().includes(c.toLowerCase().substring(0, 20)))) {
+                    combinedContra.push(c);
+                }
+            });
+
+            const proItems = combinedPro.map(p => `<li>${p}</li>`).join('') || '<li>Keine Daten</li>';
+            const contraItems = combinedContra.map(c => `<li>${c}</li>`).join('') || '<li>Keine Daten</li>';
+
+            // Perspective indicator
+            const perspectiveLabel = currentMatchModalView === 'pathos'
+                ? '🔥 Pathos-Perspektive (emotional)'
+                : '🧠 Logos-Perspektive (rational)';
+
+            // Generate synthesis section
+            const synthesisSection = generateSynthesisSection(myArch, partnerArch);
 
             // Special banner for identical types
             const identicalTypeBanner = isIdenticalType ? `
@@ -11574,6 +11871,8 @@
                     ${categoryBars}
                 </div>
 
+                <div class="match-modal-perspective">${perspectiveLabel}</div>
+
                 <div class="match-modal-section pro">
                     <div class="match-modal-section-title">✓ Was funktioniert</div>
                     <ul class="match-modal-list">${proItems}</ul>
@@ -11583,6 +11882,8 @@
                     <div class="match-modal-section-title">✗ Herausforderungen</div>
                     <ul class="match-modal-list">${contraItems}</ul>
                 </div>
+
+                ${synthesisSection}
             `;
         }
 
