@@ -3921,8 +3921,6 @@
         .center-column .tiage-ansatz-btn {
             writing-mode: horizontal-tb;
             text-orientation: mixed;
-            padding: 12px 16px;
-            white-space: nowrap;
         }
 
         .center-column .tiage-ansatz-btn .tiage-ansatz-icon,
@@ -5252,32 +5250,39 @@
             white-space: nowrap;
         }
 
-        /* Tiage's Synthese Button in Quality Block - styled like partner-btn */
+        /* Tiage's Synthese - Large Lightbulb Display */
         .tiage-ansatz-btn {
             display: flex;
+            flex-direction: column;
             align-items: center;
-            gap: 6px;
-            padding: 12px 16px;
-            border: 2px solid var(--border);
+            justify-content: center;
+            gap: 8px;
+            padding: 15px 20px;
+            border: none;
             background: transparent;
-            color: var(--text-secondary);
-            border-radius: 20px;
             cursor: pointer;
-            font-size: var(--font-base);
             transition: all 0.3s ease;
         }
 
         .tiage-ansatz-btn:hover {
-            border-color: var(--text-muted);
-            background: var(--bg-hover);
+            transform: scale(1.05);
+        }
+
+        .tiage-ansatz-btn:hover .tiage-ansatz-icon {
+            filter: brightness(1.2);
         }
 
         .tiage-ansatz-icon {
-            font-size: 14px;
+            font-size: 48px;
+            line-height: 1;
         }
 
         .tiage-ansatz-text {
             font-weight: 500;
+            font-size: 12px;
+            color: #ffffff;
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
 
         /* Result bar new layout with circle */
@@ -5503,6 +5508,9 @@
 
             /* Score Circle (Page 2) */
             .score-circle-container {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
                 text-align: center;
                 margin: 20px 0;
             }
@@ -7246,7 +7254,7 @@
 
             <div class="score-circle-container">
                 <div class="score-circle" id="mobileScoreCircle" onclick="openProContraModal()" style="cursor: pointer;" title="Klicken für Pro & Contra Details">0%</div>
-                <button class="tiage-ansatz-btn" id="mobileTiageAnsatzBtn" onclick="openPathosLogosModal('pathos')" title="Tiage's Synthese - Pathos & Logos" style="margin-left: auto; margin-right: auto;">
+                <button class="tiage-ansatz-btn" id="mobileTiageAnsatzBtn" onclick="openPathosLogosModal('pathos')" title="Tiage's Synthese - Pathos & Logos">
                     <span class="tiage-ansatz-icon">💡</span>
                     <span class="tiage-ansatz-text">Tiage's Synthese</span>
                 </button>
