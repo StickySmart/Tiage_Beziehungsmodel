@@ -10318,6 +10318,7 @@
             updatePartnerView();
             updateLegendCategories();
             updateAnalysisOverview();
+            updateComparisonView(); // Trigger score calculation and UI update
             // GFK automatisch aus Archetypen-Matching ableiten
             if (typeof updateGfkFromArchetypes === 'function') {
                 updateGfkFromArchetypes();
@@ -10394,6 +10395,7 @@
             });
             updatePartnerView();
             updateAnalysisOverview();
+            updateComparisonView(); // Trigger score calculation and UI update
         }
 
         function updateTopAndChallenge() {
@@ -11094,6 +11096,9 @@
                 });
                 updatePartnerView();
             }
+
+            // Update score display
+            updateComparisonView();
 
             // Refresh the category modal with new types
             openSingleCategoryModal(category);
