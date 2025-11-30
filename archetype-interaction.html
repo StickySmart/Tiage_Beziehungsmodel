@@ -11764,74 +11764,7 @@
         function openFeedbackModalWithContext(ctx) { console.log('feedbackModal entfernt - bitte commentModal verwenden'); }
         function closeFeedbackModal(event) { }
         function initStarRatings() { }
-
-        // Legacy function stub
-        async function submitFeedback() {
-            const name = document.getElementById('feedbackName').value.trim();
-            const titel = document.getElementById('feedbackTitle').value.trim();
-            const kommentar = document.getElementById('feedbackComment').value.trim();
-            const kontextId = replyToId
-                ? document.getElementById('feedbackContextId').textContent
-                : getModalContextId();
-
-            // Validation
-            if (!name) {
-                alert('Bitte gib deinen Namen/Kürzel ein.');
-                return;
-            }
-            if (!titel) {
-                alert('Bitte gib einen Titel ein.');
-                return;
-            }
-
-            const feedbackEntry = {
-                id: generateFeedbackId(),
-                kontextId,
-                name,
-                titel,
-                kommentar,
-                verstand: feedbackRatings.verstand,
-                gefuehl: feedbackRatings.gefuehl,
-                antwortAuf: replyToId || ''
-            };
-
-            const submitBtn = document.getElementById('feedbackSubmitBtn');
-            submitBtn.disabled = true;
-            submitBtn.textContent = 'Sende...';
-
-            try {
-                if (GOOGLE_SCRIPT_URL) {
-                    // Send to Google Sheets
-                    await fetch(GOOGLE_SCRIPT_URL, {
-                        method: 'POST',
-                        mode: 'no-cors',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify(feedbackEntry)
-                    });
-                }
-
-                // Also save locally as backup
-                saveLocalFeedback(feedbackEntry);
-
-                alert('Danke für dein Feedback!');
-                replyToId = null; // Reset reply state
-                closeFeedbackModal();
-
-                // Reload feedback to show the new entry
-                setTimeout(() => loadFeedback(), 500);
-
-            } catch (error) {
-                console.error('Feedback error:', error);
-                // Save locally on error
-                saveLocalFeedback(feedbackEntry);
-                alert('Feedback lokal gespeichert. (Server nicht erreichbar)');
-                replyToId = null;
-                closeFeedbackModal();
-            }
-
-            submitBtn.disabled = false;
-            submitBtn.textContent = 'Senden';
-        }
+        // submitFeedback entfernt - wird nicht mehr verwendet
 
         // Local storage backup - alles in tiage_comments
         function saveLocalFeedback(entry) {
@@ -12015,21 +11948,24 @@
             `;
         }
 
-        // Open reply modal
+        // Open reply modal - uses commentModal (feedbackModal was removed)
         function openReplyModal(parentId, parentName) {
             replyToId = parentId;
-            document.getElementById('feedbackContextId').innerHTML =
-                `<span class="reply-indicator">↩ Antwort auf ${parentName}</span>`;
-            document.getElementById('feedbackModal').classList.add('active');
-            document.body.style.overflow = 'hidden';
+            // Open comment modal for replies
+            const modal = document.getElementById('commentModal');
+            if (modal) {
+                modal.classList.add('active');
+                document.body.style.overflow = 'hidden';
 
-            // Reset form
-            document.getElementById('feedbackName').value = '';
-            document.getElementById('feedbackTitle').value = '';
-            document.getElementById('feedbackComment').value = '';
-            feedbackRatings = { verstand: 0, gefuehl: 0 };
-            updateStarDisplay('ratingVerstand', 0);
-            updateStarDisplay('ratingGefuehl', 0);
+                // Reset form
+                const nameInput = document.getElementById('commentName');
+                const textInput = document.getElementById('commentText');
+                if (nameInput) nameInput.value = '';
+                if (textInput) {
+                    textInput.value = '';
+                    textInput.placeholder = `Antwort auf ${parentName}...`;
+                }
+            }
         }
 
         // Initialize advanced filters
@@ -18950,103 +18886,8 @@
         }
 
         // ========================================
-        // FEATURE 4: Archetype Info Modal
+        // FEATURE 4: Archetype Info Modal (merged with definitionModal)
         // ========================================
-
-        // archetypeOrder is already declared earlier in the code
-        let currentArchetypeIndex = 0;
-        let currentInfoModalPerson = null; // Track which person ('ich' or 'partner') the modal is for
-
-        const archetypeInfoData = {
-            single: {
-                title: 'Single',
-                definition: 'Menschen, die bewusst keine feste Beziehung führen möchten. Sie priorisieren persönliche Freiheit, Unabhängigkeit und Selbstbestimmung.',
-                features: [
-                    'Vollständige emotionale und sexuelle Autonomie',
-                    'Keine Verpflichtungen gegenüber einem Partner',
-                    'Fokus auf Selbstentwicklung und persönliche Ziele',
-                    'Wechselnde Kontakte oder zeitweise bewusste Abstinenz'
-                ],
-                match: 'Wenn du maximale Freiheit schätzt, keine Rechenschaft ablegen möchtest und Beziehungsstrukturen als einengend empfindest. Ideal für Menschen, die ihre Unabhängigkeit über alles stellen.'
-            },
-            duo: {
-                title: 'Duo',
-                definition: 'Traditionelle monogame Zweierbeziehung mit klaren Exklusivitätserwartungen. Beide Partner investieren emotional und körperlich ausschließlich ineinander.',
-                features: [
-                    'Emotionale und sexuelle Exklusivität',
-                    'Langfristige Verbindlichkeit als Ziel',
-                    'Gemeinsame Lebensplanung und Zukunftsvisionen',
-                    'Tiefer emotionaler Fokus auf eine Person'
-                ],
-                match: 'Wenn du eine tiefe, exklusive Bindung suchst und dich am wohlsten fühlst, wenn du deine ganze emotionale Energie einer Person widmen kannst. Ideal für Menschen, die Sicherheit und Beständigkeit schätzen.'
-            },
-            duo_flex: {
-                title: 'Duo-Flex',
-                definition: 'Primärbeziehung mit Öffnungsbereitschaft. Ein Hauptpartner steht im Zentrum, aber mit Transparenz und gemeinsamen Regeln sind weitere Kontakte möglich.',
-                features: [
-                    'Klar definierte Primärbeziehung als Anker',
-                    'Öffnung für weitere Kontakte (emotional oder körperlich)',
-                    'Transparenz und offene Kommunikation essentiell',
-                    'Regeln werden gemeinsam definiert'
-                ],
-                match: 'Wenn du eine sichere Hauptbeziehung möchtest, aber auch Freiheit für weitere Erfahrungen brauchst. Ideal für Menschen, die Struktur und Flexibilität kombinieren möchten.'
-            },
-            solopoly: {
-                title: 'Solopoly',
-                definition: 'Polyamore Orientierung ohne Hierarchien. Keine Primärbeziehung - alle Verbindungen sind gleichwertig und unabhängig voneinander.',
-                features: [
-                    'Keine Priorisierung einzelner Beziehungen',
-                    'Maximale Autonomie in allen Verbindungen',
-                    'Jede Beziehung entwickelt sich individuell',
-                    'Keine gemeinsame Lebensplanung notwendig'
-                ],
-                match: 'Wenn du mehrere tiefe Verbindungen leben möchtest, ohne eine über die andere zu stellen. Ideal für Menschen, die Hierarchien ablehnen und absolute Beziehungsfreiheit suchen.'
-            },
-            ra: {
-                title: 'RA (Relationship Anarchist)',
-                definition: 'Vollständige Ablehnung von Beziehungshierarchien und gesellschaftlichen Normen. Jede Verbindung wird individuell definiert, ohne externe Vorlagen oder Erwartungen.',
-                features: [
-                    'Keine Hierarchien zwischen Beziehungstypen',
-                    'Jede Beziehung wird individuell ausgehandelt',
-                    'Freundschaften können genauso wichtig sein wie romantische Beziehungen',
-                    'Keine Besitzansprüche an andere Menschen'
-                ],
-                match: 'Wenn du alle gesellschaftlichen Beziehungsnormen hinterfragst und jede Verbindung nach eigenen Regeln gestalten möchtest. Ideal für Menschen mit starkem Autonomiebedürfnis.'
-            },
-            lat: {
-                title: 'LAT (Living Apart Together)',
-                definition: 'Feste Partnerschaft mit bewusst getrennten Wohnungen und Alltagsleben. Die eigenen vier Wände sind kein Zeichen von Distanz, sondern von gesunder Selbstfürsorge.',
-                features: [
-                    'Tiefe, verbindliche Beziehung ohne Zusammenleben',
-                    'Eigener Rückzugsraum ist essentiell',
-                    'Qualitätszeit über Quantität',
-                    'Bewusste Entscheidung für Nähe'
-                ],
-                match: 'Wenn du eine feste Beziehung möchtest, aber deinen eigenen Raum brauchst. Ideal für Menschen, die Nähe und Autonomie im Alltag kombinieren wollen.'
-            },
-            aromantisch: {
-                title: 'Aromantisch',
-                definition: 'Wenig oder keine romantische Anziehung, aber tiefe Verbindungen auf anderen Ebenen. Freundschaften, queerplatonische Beziehungen und andere Formen von Nähe sind möglich und wertvoll.',
-                features: [
-                    'Romantische Liebe ist nicht die einzige Tiefe',
-                    'Freundschaften können primäre Beziehungen sein',
-                    'Ehrlichkeit über eigene Grenzen',
-                    'Alternative Beziehungsformen werden wertgeschätzt'
-                ],
-                match: 'Wenn du wenig oder keine romantische Anziehung erlebst, aber tiefe Verbindungen auf anderen Ebenen suchst. Ideal für Menschen, die nicht-romantische Beziehungen priorisieren.'
-            },
-            polyamor: {
-                title: 'Polyamor',
-                definition: 'Liebesbeziehungen zu mehreren Menschen gleichzeitig, mit Wissen und Einverständnis aller Beteiligten. Emotionale und körperliche Mehrfachbeziehungen werden aktiv gelebt.',
-                features: [
-                    'Mehrere emotionale und körperliche Beziehungen parallel',
-                    'Ehrlichkeit und Transparenz mit allen Beteiligten',
-                    'Eifersucht wird aktiv bearbeitet',
-                    'Kann Hierarchien haben oder gleichwertig sein'
-                ],
-                match: 'Wenn du die Fähigkeit hast, mehrere Menschen gleichzeitig zu lieben und diese Gefühle auch real ausleben möchtest. Ideal für Menschen mit hoher Kommunikationsbereitschaft und emotionaler Kapazität.'
-            }
-        };
 
         function openArchetypeInfo(archetypeId, person = null) {
             // Redirect to definitionModal (zusammengeführt)
@@ -19069,100 +18910,6 @@
             const modal = document.querySelector('#definitionModal .modal');
             modal.ontouchstart = handleDefinitionTouchStart;
             modal.ontouchend = handleDefinitionTouchEnd;
-        }
-
-        function updateArchetypeContent(archetypeId) {
-            const def = archetypeInfoData[archetypeId];
-            if (!def) return;
-
-            document.getElementById('archetypeInfoTitle').textContent = def.title + ' - Definition';
-            document.getElementById('archetypeInfoDefinition').textContent = def.definition;
-
-            const featuresList = document.getElementById('archetypeInfoFeatures');
-            featuresList.innerHTML = '';
-            def.features.forEach(feature => {
-                const li = document.createElement('li');
-                li.textContent = feature;
-                featuresList.appendChild(li);
-            });
-
-            document.getElementById('archetypeInfoMatch').textContent = def.match;
-        }
-
-        function updateArchetypeDots() {
-            const dotsContainer = document.getElementById('archetypeDots');
-            dotsContainer.innerHTML = '';
-            archetypeOrder.forEach((id, index) => {
-                const dot = document.createElement('span');
-                dot.className = 'archetype-dot' + (index === currentArchetypeIndex ? ' active' : '');
-                dot.onclick = () => {
-                    currentArchetypeIndex = index;
-                    const newArchetype = archetypeOrder[index];
-                    updateArchetypeContent(newArchetype);
-                    updateArchetypeDots();
-
-                    // Sync the new archetype to the dropdown selection
-                    if (currentInfoModalPerson) {
-                        if (currentInfoModalPerson === 'ich') {
-                            document.getElementById('ichSelect').value = newArchetype;
-                            document.getElementById('mobileIchSelect').value = newArchetype;
-                            currentArchetype = newArchetype;
-                            mobileIchArchetype = newArchetype;
-                        } else if (currentInfoModalPerson === 'partner') {
-                            document.getElementById('partnerSelect').value = newArchetype;
-                            document.getElementById('mobilePartnerSelect').value = newArchetype;
-                            selectedPartner = newArchetype;
-                            mobilePartnerArchetype = newArchetype;
-                        }
-                        updateComparisonView();
-                    }
-                };
-                dotsContainer.appendChild(dot);
-            });
-        }
-
-        function navigateArchetypeModal(direction) {
-            currentArchetypeIndex += direction;
-            if (currentArchetypeIndex < 0) currentArchetypeIndex = archetypeOrder.length - 1;
-            if (currentArchetypeIndex >= archetypeOrder.length) currentArchetypeIndex = 0;
-
-            const newArchetype = archetypeOrder[currentArchetypeIndex];
-            updateArchetypeContent(newArchetype);
-            updateArchetypeDots();
-
-            // Sync the new archetype to the dropdown selection
-            if (currentInfoModalPerson) {
-                if (currentInfoModalPerson === 'ich') {
-                    document.getElementById('ichSelect').value = newArchetype;
-                    document.getElementById('mobileIchSelect').value = newArchetype;
-                    currentArchetype = newArchetype;
-                    mobileIchArchetype = newArchetype;
-                } else if (currentInfoModalPerson === 'partner') {
-                    document.getElementById('partnerSelect').value = newArchetype;
-                    document.getElementById('mobilePartnerSelect').value = newArchetype;
-                    selectedPartner = newArchetype;
-                    mobilePartnerArchetype = newArchetype;
-                }
-                updateComparisonView();
-            }
-        }
-
-        let archetypeTouchStartX = 0;
-        function handleArchetypeTouchStart(e) {
-            archetypeTouchStartX = e.touches[0].clientX;
-        }
-
-        function handleArchetypeTouchEnd(e) {
-            const touchEndX = e.changedTouches[0].clientX;
-            const diff = archetypeTouchStartX - touchEndX;
-            if (Math.abs(diff) > 50) {
-                navigateArchetypeModal(diff > 0 ? 1 : -1);
-            }
-        }
-
-        function closeArchetypeInfoModal(event) {
-            if (event && event.target !== event.currentTarget) return;
-            document.getElementById('archetypeInfoModal').classList.remove('active');
         }
 
         // ========================================
@@ -19658,7 +19405,6 @@
         window.closeHelpModal = closeHelpModal;
         window.showArchetypeInfo = showArchetypeInfo;
         window.openArchetypeInfo = openArchetypeInfo;
-        window.closeArchetypeInfoModal = closeArchetypeInfoModal;
         window.openFactorModal = openFactorModal;
         window.closeFactorModal = closeFactorModal;
         window.navigateFactorArchetype = navigateFactorArchetype;
