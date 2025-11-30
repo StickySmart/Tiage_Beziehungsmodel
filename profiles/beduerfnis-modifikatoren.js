@@ -1,5 +1,5 @@
 /**
- * BEDÜRFNIS-MODIFIKATOREN v2.0
+ * BEDÜRFNIS-MODIFIKATOREN v2.1
  *
  * Modifiziert die Basis-Bedürfnisse der 8 Archetypen basierend auf:
  * - Dominanz (4 Stufen)
@@ -9,6 +9,27 @@
  * Ergebnis wird auf 0-100 begrenzt
  *
  * NUR bestehende GFK-Bedürfnisse werden verwendet!
+ *
+ * ═══════════════════════════════════════════════════════════════════════════════
+ * PHILOSOPHISCHE GRUNDLAGEN
+ * ═══════════════════════════════════════════════════════════════════════════════
+ *
+ * PIRSIG (Metaphysics of Quality):
+ * - Statische Qualität: Stabilität, Bewahrung, feste Muster
+ * - Dynamische Qualität: Beweglichkeit, Veränderung, Wachstum
+ * - Dominanz = dynamic-leaning (gestaltet, verändert)
+ * - Submissivität = static-leaning (bewahrt, stabilisiert)
+ *
+ * OSHO (Tantra/Polarität):
+ * - Yang: Aktiv, gebend, führend (Dominant)
+ * - Yin: Rezeptiv, empfangend, folgend (Submissiv)
+ * - Natürlichkeit: Authentischer Ausdruck ohne Konditionierung
+ * - Polarität erzeugt Anziehung: Dom+Sub = 100% Kompatibilität
+ *
+ * BEDÜRFNIS-MAPPING nach Pirsig/Osho:
+ * - Dynamisch (Yang): entdecken, wachstum, herausforderung, kreativitaet
+ * - Statisch (Yin): stabilitaet, bestaendigkeit, geborgenheit, harmonie
+ * - Polaritäts-Anziehung: gegenseitige Bedürfnisse ergänzen sich
  */
 
 const BeduerfnisModifikatoren = {
@@ -20,11 +41,27 @@ const BeduerfnisModifikatoren = {
     // Basiert auf: BDSM Personality Research (Wismeijer & van Assen, 2013)
     // + Self-Determination Theory (Ryan & Deci)
     // + OSHO's Polaritäts-Philosophie
+    // + Pirsig's Metaphysics of Quality
+    //
+    // PIRSIG-MAPPING:
+    //   Dominant  → dynamisch (verändert, gestaltet, bricht Muster)
+    //   Submissiv → statisch (bewahrt, stabilisiert, erhält Muster)
+    //   Switch    → oszillierend (wechselt zwischen statisch/dynamisch)
+    //   Ausgegl.  → balanciert (Tao-Harmonie zwischen beiden)
+    //
+    // OSHO-MAPPING:
+    //   Dominant  → Yang (aktiv, gebend, Solar)
+    //   Submissiv → Yin (rezeptiv, empfangend, Lunar)
+    //   Switch    → Yin-Yang-Wechsel (fließend)
+    //   Ausgegl.  → Tao (integriert beide Polaritäten)
 
     dominanz: {
 
         // ─────────────────────────────────────────────────────────────────────────
         // DOMINANT - Der Führende
+        // ─────────────────────────────────────────────────────────────────────────
+        // PIRSIG: Dynamic Quality - Agent der Veränderung
+        // OSHO: Yang-Energie - aktiv, gebend, führend
         // ─────────────────────────────────────────────────────────────────────────
         dominant: {
             // FREIHEIT - Stark erhöht (will selbst bestimmen)
@@ -98,6 +135,9 @@ const BeduerfnisModifikatoren = {
         // ─────────────────────────────────────────────────────────────────────────
         // SUBMISSIV - Der Hingebungsvolle
         // ─────────────────────────────────────────────────────────────────────────
+        // PIRSIG: Static Quality - Bewahrt Stabilität und Muster
+        // OSHO: Yin-Energie - rezeptiv, empfangend, vertrauend
+        // ─────────────────────────────────────────────────────────────────────────
         submissiv: {
             // FREIHEIT - Reduziert
             selbstbestimmung: -20,
@@ -170,6 +210,9 @@ const BeduerfnisModifikatoren = {
         // ─────────────────────────────────────────────────────────────────────────
         // SWITCH - Der Wandelbare
         // ─────────────────────────────────────────────────────────────────────────
+        // PIRSIG: Oszillierend - wechselt zwischen Static/Dynamic Quality
+        // OSHO: Yin-Yang-Wechsel - kann beide Polaritäten authentisch leben
+        // ─────────────────────────────────────────────────────────────────────────
         switch: {
             // FREIHEIT - Erhöht (braucht Flexibilität)
             selbstbestimmung: +5,
@@ -241,6 +284,9 @@ const BeduerfnisModifikatoren = {
 
         // ─────────────────────────────────────────────────────────────────────────
         // AUSGEGLICHEN - Der Zentrierte
+        // ─────────────────────────────────────────────────────────────────────────
+        // PIRSIG: Balancierte Quality - Harmonie zwischen Static und Dynamic
+        // OSHO: Tao - Integration beider Polaritäten, weder Yang noch Yin dominant
         // ─────────────────────────────────────────────────────────────────────────
         ausgeglichen: {
             // FREIHEIT
@@ -319,6 +365,16 @@ const BeduerfnisModifikatoren = {
     // Basiert auf: Gender Communication Research (Tannen, 1990)
     // + Sozialpsychologische Forschung zu Geschlechterrollen
     // + LGBTQ+ Forschung zu Identität und Akzeptanz
+    //
+    // OSHO-PERSPEKTIVE auf Geschlecht:
+    // - Cis-Geschlechter: Höhere Konditionierung durch gesellschaftliche Normen
+    // - Trans/Nonbinär: Höhere Natürlichkeit durch Überwindung der Konditionierung
+    // - "Die Gesellschaft hat euch zu Männern und Frauen gemacht. Die Natur hat
+    //    euch als Menschen erschaffen." - Osho
+    //
+    // PIRSIG-PERSPEKTIVE:
+    // - Cis: Statische Muster (gesellschaftlich etabliert)
+    // - Trans/Diverse: Dynamische Qualität (bricht Muster, schafft Neues)
     //
     // WICHTIG: Statistische Tendenzen, keine Absolutwerte!
 
