@@ -15,9 +15,14 @@
  * Resonanz-Formel:
  *   R = 0.9 + [(M/100 × 0.35) + (B × 0.35) + (K × 0.30)] × 0.2
  *
- *   M = Profil-Match (0-100%) - Platzhalter bis implementiert
+ *   M = Bedürfnis-Match (0-100%) - JETZT IMPLEMENTIERT via BeduerfnisModifikatoren
  *   B = Logos-Pathos-Balance = (100 - |Logos - Pathos|) / 100
  *   K = GFK-Kommunikationsfaktor (0-1) - Gewaltfreie Kommunikation
+ *
+ * NEU v2.0: Dynamische Bedürfnis-Berechnung
+ * - Bedürfnisse werden pro Person individuell berechnet
+ * - Faktoren: Archetyp + Dominanz + Geschlecht + Orientierung + Status
+ * - Übereinstimmung kategorisiert: gemeinsam, komplementär, unterschiedlich
  */
 
 var TiageSynthesis = TiageSynthesis || {};
@@ -30,18 +35,26 @@ TiageSynthesis.Calculator = {
      * @param {object} person1 - Profil Person 1
      * @param {object} person2 - Profil Person 2
      * @param {object} matrixData - archetype-matrix.json Daten
-     * @param {number} profilMatch - Profil-Match 0-100 (optional, default 50)
+     * @param {number} profilMatch - Profil-Match 0-100 (optional, wird automatisch berechnet wenn nicht angegeben)
      * @param {object} options - Zusätzliche Optionen (optional)
      * @param {string} options.gfkPerson1 - GFK-Kompetenz Person 1 ("niedrig"|"mittel"|"hoch")
      * @param {string} options.gfkPerson2 - GFK-Kompetenz Person 2 ("niedrig"|"mittel"|"hoch")
+     * @param {object} options.archetypProfile - Archetyp-Basis-Profile (aus gfk-beduerfnisse.js)
      * @returns {object} Vollständiges Ergebnis mit Score, Resonanz und Details
      */
     calculate: function(person1, person2, matrixData, profilMatch, options) {
         var constants = TiageSynthesis.Constants;
         var factors = TiageSynthesis.Factors;
 
-        // Profil-Match (Platzhalter bis Kategorien D,E,F implementiert)
-        profilMatch = profilMatch || constants.RESONANCE.DEFAULT_PROFILE_MATCH;
+        // Optionen extrahieren
+        options = options || {};
+
+        // Bedürfnis-Match berechnen wenn nicht explizit angegeben
+        var beduerfnisResult = null;
+        if (profilMatch === undefined || profilMatch === null) {
+            beduerfnisResult = this._calculateBedürfnisMatch(person1, person2, options.archetypProfile);
+            profilMatch = beduerfnisResult ? beduerfnisResult.score : constants.RESONANCE.DEFAULT_PROFILE_MATCH;
+        }
 
         // GFK-Kompetenz aus Optionen extrahieren
         options = options || {};
@@ -169,13 +182,194 @@ TiageSynthesis.Calculator = {
                 hasExploration: orientierungResult.details.hasExploration ||
                                 dominanzResult.details.hasExploration,
                 profilMatchUsed: profilMatch,
-                profilMatchImplemented: profilMatch !== constants.RESONANCE.DEFAULT_PROFILE_MATCH,
+                profilMatchImplemented: beduerfnisResult !== null,
 
                 // Hard-KO: Geometrisch unmöglich (z.B. Hetero♂ + Hetero♂)
                 isHardKO: orientierungResult.details.isHardKO || false,
                 hardKOReason: orientierungResult.details.hardKOReason || null
-            }
+            },
+
+            // NEU: Bedürfnis-Übereinstimmung (wenn berechnet)
+            beduerfnisse: beduerfnisResult
         };
+    },
+
+    /**
+     * Berechnet die Bedürfnis-Übereinstimmung zwischen zwei Personen
+     *
+     * Verwendet BeduerfnisModifikatoren um individuelle Bedürfnis-Profile
+     * zu berechnen und dann die Übereinstimmung zu ermitteln.
+     *
+     * @param {object} person1 - Profil Person 1
+     * @param {object} person2 - Profil Person 2
+     * @param {object} archetypProfile - Basis-Archetyp-Profile (optional)
+     * @returns {object|null} { score, gemeinsam, unterschiedlich, komplementaer, profile }
+     */
+    _calculateBedürfnisMatch: function(person1, person2, archetypProfile) {
+        // Prüfen ob BeduerfnisModifikatoren verfügbar
+        if (typeof BeduerfnisModifikatoren === 'undefined') {
+            console.warn('BeduerfnisModifikatoren nicht geladen - verwende Default');
+            return null;
+        }
+
+        // Prüfen ob Archetyp-Profile verfügbar
+        if (!archetypProfile) {
+            // Versuche GfkBeduerfnisse zu nutzen
+            if (typeof GfkBeduerfnisse !== 'undefined' && GfkBeduerfnisse.archetypProfile) {
+                archetypProfile = GfkBeduerfnisse.archetypProfile;
+            } else {
+                console.warn('Archetyp-Profile nicht verfügbar - verwende Default');
+                return null;
+            }
+        }
+
+        // Basis-Bedürfnisse für beide Personen holen
+        var basis1 = archetypProfile[person1.archetyp];
+        var basis2 = archetypProfile[person2.archetyp];
+
+        if (!basis1 || !basis1.kernbeduerfnisse || !basis2 || !basis2.kernbeduerfnisse) {
+            console.warn('Archetyp nicht gefunden:', person1.archetyp, person2.archetyp);
+            return null;
+        }
+
+        // Vollständige Bedürfnis-Profile berechnen
+        var profil1 = BeduerfnisModifikatoren.berechneVollständigesBedürfnisProfil({
+            basisBedürfnisse: basis1.kernbeduerfnisse,
+            dominanz: this._extractDominanz(person1.dominanz),
+            dominanzStatus: this._extractStatus(person1.dominanz),
+            geschlechtPrimary: this._extractGeschlechtPrimary(person1.geschlecht),
+            geschlechtPrimaryStatus: this._extractGeschlechtStatus(person1.geschlecht, 'primary'),
+            geschlechtSecondary: this._extractGeschlechtSecondary(person1.geschlecht),
+            geschlechtSecondaryStatus: this._extractGeschlechtStatus(person1.geschlecht, 'secondary'),
+            orientierung: this._extractOrientierung(person1.orientierung),
+            orientierungStatus: this._extractOrientierungStatus(person1.orientierung)
+        });
+
+        var profil2 = BeduerfnisModifikatoren.berechneVollständigesBedürfnisProfil({
+            basisBedürfnisse: basis2.kernbeduerfnisse,
+            dominanz: this._extractDominanz(person2.dominanz),
+            dominanzStatus: this._extractStatus(person2.dominanz),
+            geschlechtPrimary: this._extractGeschlechtPrimary(person2.geschlecht),
+            geschlechtPrimaryStatus: this._extractGeschlechtStatus(person2.geschlecht, 'primary'),
+            geschlechtSecondary: this._extractGeschlechtSecondary(person2.geschlecht),
+            geschlechtSecondaryStatus: this._extractGeschlechtStatus(person2.geschlecht, 'secondary'),
+            orientierung: this._extractOrientierung(person2.orientierung),
+            orientierungStatus: this._extractOrientierungStatus(person2.orientierung)
+        });
+
+        // Übereinstimmung berechnen
+        var result = BeduerfnisModifikatoren.berechneÜbereinstimmung(profil1, profil2);
+
+        // Profile zum Ergebnis hinzufügen
+        result.profile = {
+            person1: profil1,
+            person2: profil2
+        };
+
+        return result;
+    },
+
+    // ═══════════════════════════════════════════════════════════════════════════
+    // HELPER-FUNKTIONEN für Daten-Extraktion
+    // ═══════════════════════════════════════════════════════════════════════════
+
+    /**
+     * Extrahiert Dominanz-Typ aus verschiedenen Datenformaten
+     */
+    _extractDominanz: function(dominanz) {
+        if (!dominanz) return 'ausgeglichen';
+        if (typeof dominanz === 'string') return dominanz;
+        // Object-Format: { dominant: 'gelebt', submissiv: 'interessiert' }
+        if (typeof dominanz === 'object') {
+            if (dominanz.dominant) return 'dominant';
+            if (dominanz.submissiv) return 'submissiv';
+            if (dominanz.switch) return 'switch';
+            return 'ausgeglichen';
+        }
+        return 'ausgeglichen';
+    },
+
+    /**
+     * Extrahiert Status (gelebt/interessiert) aus Dominanz-Objekt
+     */
+    _extractStatus: function(dominanz) {
+        if (!dominanz) return 'gelebt';
+        if (typeof dominanz === 'string') return 'gelebt';
+        if (typeof dominanz === 'object') {
+            // Ersten gesetzten Wert finden
+            var types = ['dominant', 'submissiv', 'switch', 'ausgeglichen'];
+            for (var i = 0; i < types.length; i++) {
+                if (dominanz[types[i]]) {
+                    return dominanz[types[i]]; // 'gelebt' oder 'interessiert'
+                }
+            }
+        }
+        return 'gelebt';
+    },
+
+    /**
+     * Extrahiert primäres Geschlecht
+     */
+    _extractGeschlechtPrimary: function(geschlecht) {
+        if (!geschlecht) return 'divers';
+        if (typeof geschlecht === 'string') return geschlecht;
+        if (typeof geschlecht === 'object') {
+            return geschlecht.primary || 'divers';
+        }
+        return 'divers';
+    },
+
+    /**
+     * Extrahiert sekundäres Geschlecht
+     */
+    _extractGeschlechtSecondary: function(geschlecht) {
+        if (!geschlecht || typeof geschlecht !== 'object') return null;
+        return geschlecht.secondary || null;
+    },
+
+    /**
+     * Extrahiert Geschlecht-Status
+     */
+    _extractGeschlechtStatus: function(geschlecht, which) {
+        if (!geschlecht || typeof geschlecht !== 'object') return 'gelebt';
+        if (which === 'primary') {
+            return geschlecht.primaryStatus || 'gelebt';
+        }
+        if (which === 'secondary') {
+            return geschlecht.secondaryStatus || 'gelebt';
+        }
+        return 'gelebt';
+    },
+
+    /**
+     * Extrahiert Orientierung aus verschiedenen Formaten
+     */
+    _extractOrientierung: function(orientierung) {
+        if (!orientierung) return 'heterosexuell';
+        if (typeof orientierung === 'string') return orientierung;
+        if (typeof orientierung === 'object') {
+            if (orientierung.bisexuell) return 'bisexuell';
+            if (orientierung.homosexuell) return 'homosexuell';
+            if (orientierung.heterosexuell) return 'heterosexuell';
+        }
+        return 'heterosexuell';
+    },
+
+    /**
+     * Extrahiert Orientierung-Status
+     */
+    _extractOrientierungStatus: function(orientierung) {
+        if (!orientierung) return 'gelebt';
+        if (typeof orientierung === 'string') return 'gelebt';
+        if (typeof orientierung === 'object') {
+            var types = ['bisexuell', 'homosexuell', 'heterosexuell'];
+            for (var i = 0; i < types.length; i++) {
+                if (orientierung[types[i]]) {
+                    return orientierung[types[i]]; // 'gelebt' oder 'interessiert'
+                }
+            }
+        }
+        return 'gelebt';
     },
 
     /**
