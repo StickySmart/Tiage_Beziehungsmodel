@@ -9157,7 +9157,19 @@
 
             if (!o1 || !o2) return orientierungStatements.default;
 
-            const gleichesGeschlecht = g1 === g2;
+            // Use category comparison instead of direct string comparison
+            // cis_mann and trans_mann are both male, cis_frau and trans_frau are both female
+            const isMaleG = (g) => {
+                if (!g) return false;
+                const gl = g.toLowerCase();
+                return gl === 'männlich' || gl === 'cis_mann' || gl === 'trans_mann' || gl === 'mann' || gl === 'male' || gl === 'm';
+            };
+            const isFemaleG = (g) => {
+                if (!g) return false;
+                const gl = g.toLowerCase();
+                return gl === 'weiblich' || gl === 'cis_frau' || gl === 'trans_frau' || gl === 'frau' || gl === 'female' || gl === 'w' || gl === 'f';
+            };
+            const gleichesGeschlecht = (isMaleG(g1) && isMaleG(g2)) || (isFemaleG(g1) && isFemaleG(g2)) || (g1 === g2);
 
             // Bisexuell ist immer grundsätzlich kompatibel
             if (o1 === 'bisexuell' && o2 === 'bisexuell') {
@@ -13488,6 +13500,36 @@
             };
         }
 
+        // Helper: Check if gender is male category (includes cis and trans)
+        function isMaleGender(gender) {
+            if (!gender) return false;
+            const g = gender.toLowerCase();
+            return g === 'männlich' || g === 'cis_mann' || g === 'trans_mann' ||
+                   g === 'mann' || g === 'male' || g === 'm';
+        }
+
+        // Helper: Check if gender is female category (includes cis and trans)
+        function isFemaleGender(gender) {
+            if (!gender) return false;
+            const g = gender.toLowerCase();
+            return g === 'weiblich' || g === 'cis_frau' || g === 'trans_frau' ||
+                   g === 'frau' || g === 'female' || g === 'w' || g === 'f';
+        }
+
+        // Helper: Check if two genders are in the same category
+        function isSameGenderCategory(g1, g2) {
+            if (isMaleGender(g1) && isMaleGender(g2)) return true;
+            if (isFemaleGender(g1) && isFemaleGender(g2)) return true;
+            // Non-binary/other: compare directly
+            return g1 === g2;
+        }
+
+        // Helper: Check if two genders are in different binary categories (male vs female)
+        function isDifferentBinaryGender(g1, g2) {
+            return (isMaleGender(g1) && isFemaleGender(g2)) ||
+                   (isFemaleGender(g1) && isMaleGender(g2));
+        }
+
         // Helper: Check single pair of orientations
         function checkSingleOrientationPair(type1, status1, type2, status2, g1, g2) {
             // Bisexuell is always compatible
@@ -13495,21 +13537,21 @@
                 return (status1 === 'interessiert' || status2 === 'interessiert') ? 'unsicher' : 'möglich';
             }
 
-            // Both heterosexuell
+            // Both heterosexuell - need different gender categories (male + female)
             if (type1 === 'heterosexuell' && type2 === 'heterosexuell') {
-                if (g1 !== g2) {
+                if (isDifferentBinaryGender(g1, g2)) {
                     return (status1 === 'interessiert' || status2 === 'interessiert') ? 'unsicher' : 'möglich';
                 } else {
-                    return 'unmöglich'; // Same gender, both hetero
+                    return 'unmöglich'; // Same gender category, both hetero
                 }
             }
 
-            // Both homosexuell
+            // Both homosexuell - need same gender category
             if (type1 === 'homosexuell' && type2 === 'homosexuell') {
-                if (g1 === g2) {
+                if (isSameGenderCategory(g1, g2)) {
                     return (status1 === 'interessiert' || status2 === 'interessiert') ? 'unsicher' : 'möglich';
                 } else {
-                    return 'unmöglich'; // Different gender, both homo
+                    return 'unmöglich'; // Different gender category, both homo
                 }
             }
 
