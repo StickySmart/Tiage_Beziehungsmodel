@@ -1,5 +1,5 @@
 /**
- * BEDÜRFNIS-MODIFIKATOREN
+ * BEDÜRFNIS-MODIFIKATOREN v2.0
  *
  * Modifiziert die Basis-Bedürfnisse der 8 Archetypen basierend auf:
  * - Dominanz (4 Stufen)
@@ -8,7 +8,7 @@
  * Formel: finalerWert = basisWert + dominanzMod + geschlechtMod
  * Ergebnis wird auf 0-100 begrenzt
  *
- * ENTWURF v1.0 - Zur Diskussion
+ * NUR bestehende GFK-Bedürfnisse werden verwendet!
  */
 
 const BeduerfnisModifikatoren = {
@@ -20,637 +20,896 @@ const BeduerfnisModifikatoren = {
     // Basiert auf: BDSM Personality Research (Wismeijer & van Assen, 2013)
     // + Self-Determination Theory (Ryan & Deci)
     // + OSHO's Polaritäts-Philosophie
-    //
-    // Werte: Positive = erhöht das Bedürfnis, Negative = reduziert es
 
     dominanz: {
 
         // ─────────────────────────────────────────────────────────────────────────
         // DOMINANT - Der Führende
         // ─────────────────────────────────────────────────────────────────────────
-        // Charakteristik: Assertiv, kontrollierend, verantwortungsbewusst
-        // Forschung: Höhere Extraversion, niedrigere Verträglichkeit (Big Five)
-
         dominant: {
             // FREIHEIT - Stark erhöht (will selbst bestimmen)
-            selbstbestimmung: +15,
+            selbstbestimmung: +20,
             waehlen_koennen: +15,
-            unabhaengigkeit: +10,
-            raum_haben: +5,
+            unabhaengigkeit: +15,
+            raum_haben: +10,
             spontaneitaet: +5,
 
-            // SICHERHEIT - Moderat (gibt Sicherheit, braucht sie weniger)
-            geborgenheit: -10,
-            stabilitaet: +5,          // Will stabile Strukturen die er/sie führt
-            sich_sicher_fuehlen: -5,
-            schutz: -15,              // Bietet Schutz, braucht ihn nicht
+            // SICHERHEIT - Reduziert (gibt Sicherheit, braucht sie weniger)
+            geborgenheit: -15,
+            stabilitaet: +5,
+            sich_sicher_fuehlen: -10,
+            schutz: -20,
+            bestaendigkeit: +5,
+            leichtigkeit: -5,
 
             // ZUNEIGUNG - Differenziert
-            naehe: -5,
-            intimitaet: +5,           // Intime Kontrolle
+            naehe: -10,
+            intimitaet: +5,
             liebe: 0,
-            fuersorge: +10,           // Will für andere sorgen
-            waerme: -5,
-            wertschaetzung: +10,      // Braucht Anerkennung
+            fuersorge: +15,           // Will für andere sorgen
+            waerme: -10,
+            wertschaetzung: +15,      // Braucht Anerkennung
+            unterstuetzung: -10,
+            fuereinander_da_sein: -5,
 
-            // VERSTÄNDNIS - Niedrig (weniger Bedürfnis verstanden zu werden)
+            // VERSTÄNDNIS
             akzeptanz: -5,
-            empathie: -10,            // Weniger empathisch orientiert
-            vertrauen: -5,            // Vertraut auf sich selbst
-            verstanden_werden: -10,
-            harmonie: -15,            // Nimmt Konflikte in Kauf
+            empathie: -15,
+            vertrauen: -10,
+            verstanden_werden: -15,
+            harmonie: -20,
+            gesehen_werden: +10,
+            beachtung: +15,
+            mitgefuehl: -10,
 
-            // TEILNAHME - Führungsrolle
+            // TEILNAHME
             kommunikation: +5,
-            respekt: +15,             // Braucht Respekt
-            gegenseitigkeit: -10,     // Asymmetrische Dynamik bevorzugt
-            bedeutung_haben: +15,
+            respekt: +20,
+            gegenseitigkeit: -15,
+            bedeutung_haben: +20,
+            zusammenarbeit: -10,
+            gemeinschaft: -5,
+            zugehoerigkeit: 0,
 
-            // IDENTITÄT - Stark
+            // IDENTITÄT
             authentizitaet: +10,
-            kompetenz: +15,
-            wirksamkeit: +20,         // Will wirksam sein
+            kompetenz: +20,
+            wirksamkeit: +25,
             herausforderung: +15,
+            sinn: +5,
+            wachstum: +5,
+            beitrag_leisten: +15,
+            integritaet: +10,
+            effizienz: +15,
 
-            // NEUE BEDÜRFNISSE (spezifisch für Dominanz)
-            fuehrung: +40,            // NEU: Bedürfnis zu führen
-            kontrolle: +35,           // NEU: Bedürfnis nach Kontrolle
-            verantwortung: +25,       // NEU: Verantwortung übernehmen
-            hingabe: -30,             // NEU: Kein Bedürfnis sich hinzugeben
-            dienen: -35              // NEU: Kein Bedürfnis zu dienen
+            // MUSSE
+            freude: 0,
+            freizeit: -5,
+
+            // ERSCHAFFEN
+            kreativitaet: +5,
+            entdecken: +5,
+
+            // VERBUNDENHEIT
+            leben_feiern: -5,
+            inspiration: +5
         },
 
         // ─────────────────────────────────────────────────────────────────────────
         // SUBMISSIV - Der Hingebungsvolle
         // ─────────────────────────────────────────────────────────────────────────
-        // Charakteristik: Anpassungsfähig, harmonieorientiert, vertrauensvoll
-        // Forschung: Höhere Verträglichkeit, emotionale Stabilität (Big Five)
-
         submissiv: {
-            // FREIHEIT - Reduziert (gibt Kontrolle gerne ab)
-            selbstbestimmung: -15,
-            waehlen_koennen: -10,
-            unabhaengigkeit: -20,
-            raum_haben: -10,
-            spontaneitaet: -5,
+            // FREIHEIT - Reduziert
+            selbstbestimmung: -20,
+            waehlen_koennen: -15,
+            unabhaengigkeit: -25,
+            raum_haben: -15,
+            spontaneitaet: -10,
 
-            // SICHERHEIT - Stark erhöht (braucht sichere Führung)
-            geborgenheit: +25,
-            stabilitaet: +15,
-            sich_sicher_fuehlen: +20,
-            schutz: +25,              // Sucht Schutz
+            // SICHERHEIT - Stark erhöht
+            geborgenheit: +30,
+            stabilitaet: +20,
+            sich_sicher_fuehlen: +25,
+            schutz: +30,
+            bestaendigkeit: +20,
+            leichtigkeit: +10,
 
             // ZUNEIGUNG - Stark erhöht
-            naehe: +15,
-            intimitaet: +15,
-            liebe: +10,
-            fuersorge: -5,            // Wird umsorgt
-            waerme: +20,
-            wertschaetzung: +15,
+            naehe: +20,
+            intimitaet: +20,
+            liebe: +15,
+            fuersorge: -10,
+            waerme: +25,
+            wertschaetzung: +20,
+            unterstuetzung: +20,
+            fuereinander_da_sein: +25,
 
             // VERSTÄNDNIS - Stark erhöht
-            akzeptanz: +20,
-            empathie: +15,
-            vertrauen: +25,           // Muss dem Dom vertrauen
-            verstanden_werden: +15,
-            harmonie: +20,            // Harmonie ist wichtig
+            akzeptanz: +25,
+            empathie: +20,
+            vertrauen: +30,
+            verstanden_werden: +20,
+            harmonie: +25,
+            gesehen_werden: +15,
+            beachtung: +10,
+            mitgefuehl: +15,
 
-            // TEILNAHME - Dienend
+            // TEILNAHME
             kommunikation: +10,
             respekt: +5,
-            gegenseitigkeit: -5,      // Asymmetrie akzeptiert
+            gegenseitigkeit: -10,
             bedeutung_haben: +5,
+            zusammenarbeit: +10,
+            gemeinschaft: +5,
+            zugehoerigkeit: +15,
 
-            // IDENTITÄT - Anders orientiert
+            // IDENTITÄT
             authentizitaet: +5,
-            kompetenz: -5,
-            wirksamkeit: -10,
-            herausforderung: -10,
+            kompetenz: -10,
+            wirksamkeit: -15,
+            herausforderung: -15,
+            sinn: +5,
+            wachstum: 0,
+            beitrag_leisten: +10,
+            integritaet: +5,
+            effizienz: -10,
 
-            // NEUE BEDÜRFNISSE
-            fuehrung: -30,            // Will nicht führen
-            kontrolle: -35,           // Gibt Kontrolle ab
-            verantwortung: -20,       // Weniger Verantwortungslast
-            hingabe: +40,             // NEU: Starkes Bedürfnis sich hinzugeben
-            dienen: +35              // NEU: Bedürfnis zu dienen
+            // MUSSE
+            freude: +10,
+            freizeit: +5,
+
+            // ERSCHAFFEN
+            kreativitaet: -5,
+            entdecken: -5,
+
+            // VERBUNDENHEIT
+            leben_feiern: +10,
+            inspiration: +5
         },
 
         // ─────────────────────────────────────────────────────────────────────────
         // SWITCH - Der Wandelbare
         // ─────────────────────────────────────────────────────────────────────────
-        // Charakteristik: Flexibel, situativ, erfahrungsorientiert
-        // Beide Seiten werden geschätzt und gelebt
-
         switch: {
             // FREIHEIT - Erhöht (braucht Flexibilität)
             selbstbestimmung: +5,
-            waehlen_koennen: +15,     // Wichtig: Kann wählen welche Rolle
+            waehlen_koennen: +20,
             unabhaengigkeit: 0,
             raum_haben: +5,
-            spontaneitaet: +15,       // Situativ reagieren
+            spontaneitaet: +20,
 
-            // SICHERHEIT - Moderat
+            // SICHERHEIT
             geborgenheit: +5,
-            stabilitaet: -5,          // Weniger statisch
+            stabilitaet: -5,
             sich_sicher_fuehlen: +5,
             schutz: 0,
+            bestaendigkeit: -5,
+            leichtigkeit: +10,
 
-            // ZUNEIGUNG - Erhöht
+            // ZUNEIGUNG
             naehe: +10,
-            intimitaet: +15,          // Beide Intimitäts-Formen
+            intimitaet: +15,
             liebe: +5,
             fuersorge: +5,
             waerme: +10,
             wertschaetzung: +10,
+            unterstuetzung: +5,
+            fuereinander_da_sein: +10,
 
-            // VERSTÄNDNIS - Erhöht (muss Partner lesen können)
+            // VERSTÄNDNIS - Erhöht (muss Partner lesen)
             akzeptanz: +10,
-            empathie: +15,            // Muss empathisch sein für Rollenwechsel
+            empathie: +20,
             vertrauen: +15,
             verstanden_werden: +10,
             harmonie: +5,
+            gesehen_werden: +10,
+            beachtung: +5,
+            mitgefuehl: +10,
 
-            // TEILNAHME - Flexibel
-            kommunikation: +15,       // Wichtig für Aushandlung
+            // TEILNAHME
+            kommunikation: +20,
             respekt: +10,
-            gegenseitigkeit: +10,     // Wechselseitigkeit
+            gegenseitigkeit: +15,
             bedeutung_haben: +10,
+            zusammenarbeit: +10,
+            gemeinschaft: +5,
+            zugehoerigkeit: +5,
 
-            // IDENTITÄT - Vielfältig
+            // IDENTITÄT
             authentizitaet: +10,
             kompetenz: +5,
             wirksamkeit: +5,
             herausforderung: +10,
+            sinn: +5,
+            wachstum: +10,
+            beitrag_leisten: +5,
+            integritaet: +5,
+            effizienz: 0,
 
-            // NEUE BEDÜRFNISSE
-            fuehrung: +10,
-            kontrolle: +5,
-            verantwortung: +5,
-            hingabe: +15,
-            dienen: +10
+            // MUSSE
+            freude: +10,
+            freizeit: +5,
+
+            // ERSCHAFFEN
+            kreativitaet: +10,
+            entdecken: +10,
+
+            // VERBUNDENHEIT
+            leben_feiern: +10,
+            inspiration: +10
         },
 
         // ─────────────────────────────────────────────────────────────────────────
         // AUSGEGLICHEN - Der Zentrierte
         // ─────────────────────────────────────────────────────────────────────────
-        // Charakteristik: Balanciert, partnerschaftlich, egalitär
-        // Weder führen noch folgen - gleichberechtigt
-
         ausgeglichen: {
-            // FREIHEIT - Moderat
+            // FREIHEIT
             selbstbestimmung: +5,
             waehlen_koennen: +5,
             unabhaengigkeit: +5,
             raum_haben: +5,
             spontaneitaet: 0,
 
-            // SICHERHEIT - Moderat
+            // SICHERHEIT
             geborgenheit: +5,
             stabilitaet: +10,
             sich_sicher_fuehlen: +5,
             schutz: 0,
+            bestaendigkeit: +10,
+            leichtigkeit: +5,
 
-            // ZUNEIGUNG - Erhöht
+            // ZUNEIGUNG
             naehe: +10,
             intimitaet: +5,
             liebe: +10,
             fuersorge: +5,
             waerme: +10,
             wertschaetzung: +5,
+            unterstuetzung: +5,
+            fuereinander_da_sein: +10,
 
-            // VERSTÄNDNIS - Stark (Basis für Gleichberechtigung)
+            // VERSTÄNDNIS
             akzeptanz: +10,
             empathie: +10,
             vertrauen: +10,
             verstanden_werden: +10,
-            harmonie: +15,            // Harmonie wichtig
+            harmonie: +15,
+            gesehen_werden: +5,
+            beachtung: +5,
+            mitgefuehl: +10,
 
-            // TEILNAHME - Partnerschaftlich
+            // TEILNAHME
             kommunikation: +10,
             respekt: +10,
-            gegenseitigkeit: +20,     // Stark: Gleichberechtigung
+            gegenseitigkeit: +25,
             bedeutung_haben: +5,
+            zusammenarbeit: +15,
+            gemeinschaft: +10,
+            zugehoerigkeit: +10,
 
-            // IDENTITÄT - Balanciert
+            // IDENTITÄT
             authentizitaet: +5,
             kompetenz: 0,
             wirksamkeit: 0,
             herausforderung: 0,
+            sinn: +5,
+            wachstum: +5,
+            beitrag_leisten: +5,
+            integritaet: +10,
+            effizienz: 0,
 
-            // NEUE BEDÜRFNISSE
-            fuehrung: 0,
-            kontrolle: 0,
-            verantwortung: +5,
-            hingabe: 0,
-            dienen: 0
+            // MUSSE
+            freude: +5,
+            freizeit: +5,
+
+            // ERSCHAFFEN
+            kreativitaet: +5,
+            entdecken: +5,
+
+            // VERBUNDENHEIT
+            leben_feiern: +5,
+            inspiration: +5
         }
     },
 
     // ═══════════════════════════════════════════════════════════════════════════
-    // GESCHLECHTS-MODIFIKATOREN
+    // GESCHLECHTS-MODIFIKATOREN (Kulturelle Prägung)
     // ═══════════════════════════════════════════════════════════════════════════
     //
     // Basiert auf: Gender Communication Research (Tannen, 1990)
     // + Sozialpsychologische Forschung zu Geschlechterrollen
     // + LGBTQ+ Forschung zu Identität und Akzeptanz
     //
-    // WICHTIG: Dies sind statistische Tendenzen, keine Absolutwerte!
-    // Kulturelle Prägung ≠ biologischer Determinismus
+    // WICHTIG: Statistische Tendenzen, keine Absolutwerte!
 
     geschlecht: {
 
         // ─────────────────────────────────────────────────────────────────────────
         // CIS MANN - Männlich sozialisiert
         // ─────────────────────────────────────────────────────────────────────────
-        // Kulturelle Prägung: Stärke zeigen, Versorger-Rolle, emotionale Zurückhaltung
-
         cis_mann: {
-            // FREIHEIT - Erhöht (Autonomie-Fokus)
+            // FREIHEIT - Erhöht
             selbstbestimmung: +10,
             unabhaengigkeit: +15,
             raum_haben: +10,
+            waehlen_koennen: +5,
+            spontaneitaet: 0,
 
-            // SICHERHEIT - Reduziert (soll keine Schwäche zeigen)
-            geborgenheit: -15,
-            sich_sicher_fuehlen: -10,
-            schutz: -20,              // Soll Schutz geben, nicht brauchen
+            // SICHERHEIT - Reduziert
+            geborgenheit: -20,
+            sich_sicher_fuehlen: -15,
+            schutz: -25,
+            stabilitaet: 0,
+            bestaendigkeit: 0,
+            leichtigkeit: -5,
 
-            // ZUNEIGUNG - Reduziert (emotionale Distanz kultiviert)
-            naehe: -10,
-            waerme: -15,
-            fuersorge: +5,            // Versorger-Rolle
+            // ZUNEIGUNG - Reduziert
+            naehe: -15,
+            waerme: -20,
+            intimitaet: -5,
+            fuersorge: +10,
+            liebe: -5,
+            wertschaetzung: +10,
+            unterstuetzung: -10,
+            fuereinander_da_sein: -10,
 
             // VERSTÄNDNIS - Reduziert
-            empathie: -10,
-            verstanden_werden: -15,
-            harmonie: -10,
+            empathie: -15,
+            verstanden_werden: -20,
+            harmonie: -15,
+            akzeptanz: -5,
+            gesehen_werden: +5,
+            beachtung: +10,
+            vertrauen: -5,
+            mitgefuehl: -15,
 
             // TEILNAHME
-            respekt: +15,             // Status wichtig
-            kommunikation: -10,
+            respekt: +15,
+            kommunikation: -15,
+            bedeutung_haben: +15,
+            gegenseitigkeit: -5,
+            zusammenarbeit: -5,
+            gemeinschaft: -5,
+            zugehoerigkeit: -5,
 
             // IDENTITÄT
-            kompetenz: +15,
-            wirksamkeit: +15,
+            kompetenz: +20,
+            wirksamkeit: +20,
+            authentizitaet: 0,
+            herausforderung: +10,
+            effizienz: +15,
+            beitrag_leisten: +10,
+            sinn: 0,
+            wachstum: +5,
 
-            // NEUE BEDÜRFNISSE
-            anerkennung: +20,         // Braucht Anerkennung für Leistung
-            status: +15               // Status in Gruppe wichtig
+            // MUSSE
+            freude: -5,
+            freizeit: 0,
+
+            // ERSCHAFFEN
+            kreativitaet: 0,
+            entdecken: +5
         },
 
         // ─────────────────────────────────────────────────────────────────────────
         // CIS FRAU - Weiblich sozialisiert
         // ─────────────────────────────────────────────────────────────────────────
-        // Kulturelle Prägung: Beziehungsorientiert, emotional offen, fürsorglich
-
         cis_frau: {
             // FREIHEIT - Moderat reduziert
             selbstbestimmung: -5,
             unabhaengigkeit: -10,
             raum_haben: -5,
+            waehlen_koennen: 0,
+            spontaneitaet: 0,
 
             // SICHERHEIT - Erhöht
-            geborgenheit: +15,
+            geborgenheit: +20,
             sich_sicher_fuehlen: +15,
-            schutz: +10,
+            schutz: +15,
+            stabilitaet: +10,
+            bestaendigkeit: +10,
+            leichtigkeit: +5,
 
             // ZUNEIGUNG - Stark erhöht
-            naehe: +15,
-            waerme: +15,
-            intimitaet: +10,
-            fuersorge: +10,
+            naehe: +20,
+            waerme: +20,
+            intimitaet: +15,
+            fuersorge: +15,
+            liebe: +10,
+            wertschaetzung: +10,
+            unterstuetzung: +10,
+            fuereinander_da_sein: +15,
 
             // VERSTÄNDNIS - Stark erhöht
-            empathie: +15,
-            verstanden_werden: +15,
-            harmonie: +15,
-            akzeptanz: +10,
+            empathie: +20,
+            verstanden_werden: +20,
+            harmonie: +20,
+            akzeptanz: +15,
+            gesehen_werden: +10,
+            beachtung: +5,
+            vertrauen: +10,
+            mitgefuehl: +15,
 
             // TEILNAHME
-            kommunikation: +15,
-            gemeinschaft: +10,
-            zugehoerigkeit: +10,
+            kommunikation: +20,
+            gemeinschaft: +15,
+            zugehoerigkeit: +15,
+            respekt: +5,
+            gegenseitigkeit: +10,
+            bedeutung_haben: +5,
+            zusammenarbeit: +10,
 
             // IDENTITÄT
             authentizitaet: +5,
+            kompetenz: -5,
+            wirksamkeit: -5,
+            herausforderung: -5,
+            effizienz: -5,
+            beitrag_leisten: +5,
+            sinn: +5,
+            wachstum: +5,
 
-            // NEUE BEDÜRFNISSE
-            anerkennung: +10,
-            verbindung: +20           // Emotionale Verbindung wichtiger
+            // MUSSE
+            freude: +10,
+            freizeit: +5,
+
+            // VERBUNDENHEIT
+            leben_feiern: +10,
+            inspiration: +10
         },
 
         // ─────────────────────────────────────────────────────────────────────────
-        // TRANS MANN - Männliche Identität, einzigartige Erfahrung
+        // TRANS MANN
         // ─────────────────────────────────────────────────────────────────────────
-        // Erfahrung: Selbstfindung, Akzeptanz-Kämpfe, Authentizitäts-Fokus
-
         trans_mann: {
-            // FREIHEIT - Stark erhöht (hart erkämpfte Autonomie)
-            selbstbestimmung: +20,
+            // FREIHEIT - Stark erhöht (hart erkämpft)
+            selbstbestimmung: +25,
             unabhaengigkeit: +15,
             raum_haben: +10,
+            waehlen_koennen: +15,
+            spontaneitaet: +5,
 
-            // SICHERHEIT - Erhöht (Vulnerabilität erfahren)
+            // SICHERHEIT - Erhöht
             geborgenheit: +5,
             sich_sicher_fuehlen: +10,
-            schutz: +5,
+            schutz: +10,
+            stabilitaet: +5,
+            bestaendigkeit: +5,
+            leichtigkeit: +5,
 
             // ZUNEIGUNG
             naehe: 0,
             waerme: 0,
+            intimitaet: +5,
+            fuersorge: +5,
+            liebe: +5,
+            wertschaetzung: +15,
+            unterstuetzung: +10,
+            fuereinander_da_sein: +5,
 
             // VERSTÄNDNIS - Stark erhöht
-            akzeptanz: +25,           // Akzeptanz ist zentral
-            verstanden_werden: +20,
-            empathie: +15,
-
-            // IDENTITÄT - Sehr stark
-            authentizitaet: +25,      // Authentizität hart erkämpft
-            integritaet: +20,
-            wachstum: +15,
-
-            // TEILNAHME
-            zugehoerigkeit: +15,
-            gemeinschaft: +10,
-
-            // NEUE BEDÜRFNISSE
-            anerkennung: +20,         // Als Mann anerkannt werden
-            sichtbarkeit: +15         // Gesehen werden wie man ist
-        },
-
-        // ─────────────────────────────────────────────────────────────────────────
-        // TRANS FRAU - Weibliche Identität, einzigartige Erfahrung
-        // ─────────────────────────────────────────────────────────────────────────
-
-        trans_frau: {
-            // FREIHEIT - Erhöht
-            selbstbestimmung: +20,
-            unabhaengigkeit: +10,
-            raum_haben: +5,
-
-            // SICHERHEIT - Stark erhöht (höhere Vulnerabilität)
-            geborgenheit: +15,
-            sich_sicher_fuehlen: +20,
-            schutz: +20,              // Sicherheitsbedenken real
-
-            // ZUNEIGUNG - Erhöht
-            naehe: +10,
-            waerme: +15,
-            fuersorge: +5,
-
-            // VERSTÄNDNIS - Sehr stark
-            akzeptanz: +30,           // Noch höher wegen mehr Diskriminierung
+            akzeptanz: +30,
             verstanden_werden: +25,
             empathie: +15,
-
-            // IDENTITÄT - Sehr stark
-            authentizitaet: +25,
-            integritaet: +20,
-            wachstum: +15,
+            gesehen_werden: +25,
+            beachtung: +15,
+            vertrauen: +10,
+            harmonie: +5,
+            mitgefuehl: +10,
 
             // TEILNAHME
             zugehoerigkeit: +20,
             gemeinschaft: +15,
+            kommunikation: +5,
+            respekt: +15,
+            bedeutung_haben: +10,
+            gegenseitigkeit: +5,
+            zusammenarbeit: +5,
 
-            // NEUE BEDÜRFNISSE
-            anerkennung: +25,
-            sichtbarkeit: +20
+            // IDENTITÄT - Sehr stark
+            authentizitaet: +30,
+            integritaet: +25,
+            wachstum: +20,
+            sinn: +15,
+            kompetenz: +5,
+            wirksamkeit: +5,
+            beitrag_leisten: +10,
+
+            // VERBUNDENHEIT
+            leben_feiern: +10,
+            inspiration: +15
         },
 
         // ─────────────────────────────────────────────────────────────────────────
-        // NONBINÄR - Jenseits des Binären
+        // TRANS FRAU
         // ─────────────────────────────────────────────────────────────────────────
-
-        nonbinaer: {
-            // FREIHEIT - Sehr stark (Befreiung von Normen)
+        trans_frau: {
+            // FREIHEIT - Erhöht
             selbstbestimmung: +25,
-            waehlen_koennen: +20,
-            unabhaengigkeit: +15,
-            raum_haben: +15,
+            unabhaengigkeit: +10,
+            raum_haben: +5,
+            waehlen_koennen: +15,
+            spontaneitaet: +5,
 
-            // SICHERHEIT - Erhöht
-            geborgenheit: +10,
-            sich_sicher_fuehlen: +15,
+            // SICHERHEIT - Stark erhöht (höhere Vulnerabilität)
+            geborgenheit: +20,
+            sich_sicher_fuehlen: +25,
+            schutz: +25,
+            stabilitaet: +10,
+            bestaendigkeit: +10,
+            leichtigkeit: +5,
 
-            // ZUNEIGUNG
-            naehe: +5,
-            waerme: +5,
+            // ZUNEIGUNG - Erhöht
+            naehe: +15,
+            waerme: +20,
+            intimitaet: +10,
+            fuersorge: +10,
+            liebe: +10,
+            wertschaetzung: +20,
+            unterstuetzung: +15,
+            fuereinander_da_sein: +10,
 
             // VERSTÄNDNIS - Sehr stark
-            akzeptanz: +30,
-            verstanden_werden: +25,
+            akzeptanz: +35,
+            verstanden_werden: +30,
             empathie: +15,
-
-            // IDENTITÄT - Maximal
-            authentizitaet: +30,
-            integritaet: +25,
-            selbst_ausdruck: +25,
+            gesehen_werden: +30,
+            beachtung: +15,
+            vertrauen: +15,
+            harmonie: +10,
+            mitgefuehl: +15,
 
             // TEILNAHME
-            zugehoerigkeit: +20,
+            zugehoerigkeit: +25,
+            gemeinschaft: +20,
+            kommunikation: +10,
+            respekt: +15,
+            bedeutung_haben: +10,
+            gegenseitigkeit: +10,
+            zusammenarbeit: +10,
 
-            // NEUE BEDÜRFNISSE
-            anerkennung: +20,
-            sichtbarkeit: +25,
-            flexibilitaet: +20        // Nicht in Schubladen gesteckt werden
-        },
-
-        // ─────────────────────────────────────────────────────────────────────────
-        // GENDERFLUID - Fließende Identität
-        // ─────────────────────────────────────────────────────────────────────────
-
-        genderfluid: {
-            // FREIHEIT - Maximal
-            selbstbestimmung: +25,
-            waehlen_koennen: +25,
-            spontaneitaet: +20,
-            raum_haben: +15,
-
-            // SICHERHEIT - Moderat
-            geborgenheit: +10,
-            sich_sicher_fuehlen: +10,
-
-            // VERSTÄNDNIS - Sehr stark
-            akzeptanz: +30,
-            verstanden_werden: +25,
-            empathie: +15,
-
-            // IDENTITÄT - Stark, aber flexibel
-            authentizitaet: +25,
-            selbst_ausdruck: +30,
-            wachstum: +15,
-
-            // NEUE BEDÜRFNISSE
-            flexibilitaet: +30,       // Zentral für Genderfluid
-            wandel: +25               // Veränderung ist Teil der Identität
-        },
-
-        // ─────────────────────────────────────────────────────────────────────────
-        // AGENDER - Ohne Geschlechtsidentität
-        // ─────────────────────────────────────────────────────────────────────────
-
-        agender: {
-            // FREIHEIT - Sehr stark
-            selbstbestimmung: +25,
-            unabhaengigkeit: +25,
-            raum_haben: +20,
-
-            // SICHERHEIT - Moderat
-            geborgenheit: +5,
-            sich_sicher_fuehlen: +10,
-
-            // ZUNEIGUNG - Individuell (nicht geschlechtlich geprägt)
-            naehe: 0,
-            waerme: 0,
-
-            // VERSTÄNDNIS - Stark
-            akzeptanz: +25,
-            verstanden_werden: +20,
-
-            // IDENTITÄT - Stark
+            // IDENTITÄT - Sehr stark
             authentizitaet: +30,
             integritaet: +25,
+            wachstum: +20,
+            sinn: +15,
+            kompetenz: +5,
+            wirksamkeit: +5,
+            beitrag_leisten: +10,
 
-            // NEUE BEDÜRFNISSE
-            neutralitaet: +30,        // Nicht geschlechtlich kategorisiert werden
-            anerkennung: +15
+            // VERBUNDENHEIT
+            leben_feiern: +15,
+            inspiration: +15
         },
 
         // ─────────────────────────────────────────────────────────────────────────
-        // INTERSEX - Biologische Vielfalt
+        // NONBINÄR
         // ─────────────────────────────────────────────────────────────────────────
-
-        intersex: {
-            // FREIHEIT - Sehr stark (körperliche Selbstbestimmung)
-            selbstbestimmung: +30,    // Besonders wichtig wegen medizinischer Geschichte
+        nonbinaer: {
+            // FREIHEIT - Sehr stark
+            selbstbestimmung: +30,
+            waehlen_koennen: +25,
             unabhaengigkeit: +20,
-            raum_haben: +15,
-
-            // SICHERHEIT - Erhöht
-            geborgenheit: +15,
-            sich_sicher_fuehlen: +20,
-            schutz: +15,
-
-            // VERSTÄNDNIS - Sehr stark
-            akzeptanz: +30,
-            verstanden_werden: +25,
-            empathie: +15,
-
-            // IDENTITÄT - Stark
-            authentizitaet: +25,
-            integritaet: +25,
-
-            // NEUE BEDÜRFNISSE
-            koerperliche_autonomie: +35,  // Sehr wichtig
-            anerkennung: +25,
-            sichtbarkeit: +20
-        },
-
-        // ─────────────────────────────────────────────────────────────────────────
-        // DIVERS - Andere/Vielfältig
-        // ─────────────────────────────────────────────────────────────────────────
-
-        divers: {
-            // FREIHEIT - Stark
-            selbstbestimmung: +20,
-            waehlen_koennen: +20,
-            unabhaengigkeit: +15,
-            raum_haben: +15,
+            raum_haben: +20,
+            spontaneitaet: +15,
 
             // SICHERHEIT
             geborgenheit: +10,
             sich_sicher_fuehlen: +15,
+            schutz: +10,
+            stabilitaet: +5,
+            bestaendigkeit: +5,
+            leichtigkeit: +10,
+
+            // ZUNEIGUNG
+            naehe: +5,
+            waerme: +5,
+            intimitaet: +10,
+            fuersorge: +5,
+            liebe: +5,
+            wertschaetzung: +15,
+            unterstuetzung: +10,
+            fuereinander_da_sein: +5,
+
+            // VERSTÄNDNIS - Sehr stark
+            akzeptanz: +35,
+            verstanden_werden: +30,
+            empathie: +15,
+            gesehen_werden: +30,
+            beachtung: +15,
+            vertrauen: +10,
+            harmonie: +5,
+            mitgefuehl: +10,
+
+            // TEILNAHME
+            zugehoerigkeit: +25,
+            gemeinschaft: +15,
+            kommunikation: +10,
+            respekt: +15,
+            bedeutung_haben: +15,
+            gegenseitigkeit: +10,
+            zusammenarbeit: +5,
+
+            // IDENTITÄT - Maximal
+            authentizitaet: +35,
+            integritaet: +30,
+            selbst_ausdruck: +30,
+            wachstum: +20,
+            sinn: +15,
+            kompetenz: +5,
+            wirksamkeit: +5,
+            beitrag_leisten: +10,
+
+            // ERSCHAFFEN
+            kreativitaet: +15,
+            entdecken: +15,
+
+            // VERBUNDENHEIT
+            leben_feiern: +10,
+            inspiration: +15
+        },
+
+        // ─────────────────────────────────────────────────────────────────────────
+        // GENDERFLUID
+        // ─────────────────────────────────────────────────────────────────────────
+        genderfluid: {
+            // FREIHEIT - Maximal
+            selbstbestimmung: +30,
+            waehlen_koennen: +30,
+            spontaneitaet: +25,
+            raum_haben: +20,
+            unabhaengigkeit: +15,
+
+            // SICHERHEIT
+            geborgenheit: +10,
+            sich_sicher_fuehlen: +10,
+            schutz: +10,
+            stabilitaet: 0,
+            bestaendigkeit: -5,
+            leichtigkeit: +15,
+
+            // ZUNEIGUNG
+            naehe: +10,
+            waerme: +10,
+            intimitaet: +10,
+            fuersorge: +5,
+            liebe: +5,
+            wertschaetzung: +15,
+            unterstuetzung: +10,
+            fuereinander_da_sein: +5,
+
+            // VERSTÄNDNIS - Sehr stark
+            akzeptanz: +35,
+            verstanden_werden: +30,
+            empathie: +15,
+            gesehen_werden: +25,
+            beachtung: +15,
+            vertrauen: +10,
+            harmonie: +5,
+            mitgefuehl: +10,
+
+            // TEILNAHME
+            zugehoerigkeit: +20,
+            gemeinschaft: +15,
+            kommunikation: +10,
+            respekt: +15,
+            bedeutung_haben: +15,
+            gegenseitigkeit: +10,
+            zusammenarbeit: +5,
+
+            // IDENTITÄT
+            authentizitaet: +30,
+            selbst_ausdruck: +35,
+            wachstum: +25,
+            sinn: +15,
+            integritaet: +20,
+            kompetenz: +5,
+            wirksamkeit: +5,
+            beitrag_leisten: +10,
+
+            // ERSCHAFFEN
+            kreativitaet: +20,
+            entdecken: +20,
+
+            // VERBUNDENHEIT
+            leben_feiern: +15,
+            inspiration: +20
+        },
+
+        // ─────────────────────────────────────────────────────────────────────────
+        // AGENDER
+        // ─────────────────────────────────────────────────────────────────────────
+        agender: {
+            // FREIHEIT - Sehr stark
+            selbstbestimmung: +30,
+            unabhaengigkeit: +30,
+            raum_haben: +25,
+            waehlen_koennen: +20,
+            spontaneitaet: +10,
+
+            // SICHERHEIT
+            geborgenheit: +5,
+            sich_sicher_fuehlen: +10,
+            schutz: +5,
+            stabilitaet: +5,
+            bestaendigkeit: +5,
+            leichtigkeit: +10,
+
+            // ZUNEIGUNG - Neutral
+            naehe: 0,
+            waerme: 0,
+            intimitaet: +5,
+            fuersorge: 0,
+            liebe: 0,
+            wertschaetzung: +10,
+            unterstuetzung: +5,
+            fuereinander_da_sein: 0,
 
             // VERSTÄNDNIS - Stark
-            akzeptanz: +25,
-            verstanden_werden: +20,
-            empathie: +15,
+            akzeptanz: +30,
+            verstanden_werden: +25,
+            empathie: +10,
+            gesehen_werden: +20,
+            beachtung: +10,
+            vertrauen: +10,
+            harmonie: +5,
+            mitgefuehl: +5,
+
+            // TEILNAHME
+            zugehoerigkeit: +15,
+            gemeinschaft: +10,
+            kommunikation: +5,
+            respekt: +15,
+            bedeutung_haben: +10,
+            gegenseitigkeit: +5,
+            zusammenarbeit: +5,
 
             // IDENTITÄT - Stark
-            authentizitaet: +25,
+            authentizitaet: +35,
+            integritaet: +30,
             selbst_ausdruck: +20,
+            wachstum: +15,
+            sinn: +15,
+            kompetenz: +5,
+            wirksamkeit: +5,
+            beitrag_leisten: +5,
 
-            // NEUE BEDÜRFNISSE
-            anerkennung: +20,
-            sichtbarkeit: +20,
-            flexibilitaet: +20
-        }
-    },
+            // ERSCHAFFEN
+            kreativitaet: +10,
+            entdecken: +10,
 
-    // ═══════════════════════════════════════════════════════════════════════════
-    // NEUE BEDÜRFNISSE (Ergänzung zum GFK-Katalog)
-    // ═══════════════════════════════════════════════════════════════════════════
-    // Diese Bedürfnisse sind spezifisch für Dominanz/Geschlecht relevant
-    // und sollten zum Haupt-Katalog hinzugefügt werden
-
-    neueBedürfnisse: {
-        // Dominanz-spezifisch
-        fuehrung: {
-            name: "Führung",
-            description: "Das Bedürfnis, zu führen und Richtung zu geben",
-            kategorie: "identitaet"
-        },
-        kontrolle: {
-            name: "Kontrolle",
-            description: "Das Bedürfnis nach Kontrolle über Situationen",
-            kategorie: "sicherheit"
-        },
-        hingabe: {
-            name: "Hingabe",
-            description: "Das Bedürfnis, sich hinzugeben und loszulassen",
-            kategorie: "verbundenheit"
-        },
-        dienen: {
-            name: "Dienen",
-            description: "Das Bedürfnis, anderen zu dienen und zu gefallen",
-            kategorie: "zuneigung"
-        },
-        verantwortung: {
-            name: "Verantwortung",
-            description: "Das Bedürfnis, Verantwortung zu übernehmen",
-            kategorie: "identitaet"
+            // VERBUNDENHEIT
+            leben_feiern: +5,
+            inspiration: +10
         },
 
-        // Geschlecht-spezifisch
-        anerkennung: {
-            name: "Anerkennung",
-            description: "Das Bedürfnis, für die eigene Identität anerkannt zu werden",
-            kategorie: "verstaendnis"
+        // ─────────────────────────────────────────────────────────────────────────
+        // INTERSEX
+        // ─────────────────────────────────────────────────────────────────────────
+        intersex: {
+            // FREIHEIT - Sehr stark (körperliche Selbstbestimmung)
+            selbstbestimmung: +35,
+            unabhaengigkeit: +25,
+            raum_haben: +20,
+            waehlen_koennen: +20,
+            spontaneitaet: +10,
+
+            // SICHERHEIT - Erhöht
+            geborgenheit: +15,
+            sich_sicher_fuehlen: +20,
+            schutz: +20,
+            stabilitaet: +10,
+            bestaendigkeit: +10,
+            leichtigkeit: +5,
+
+            // ZUNEIGUNG
+            naehe: +10,
+            waerme: +10,
+            intimitaet: +10,
+            fuersorge: +5,
+            liebe: +5,
+            wertschaetzung: +20,
+            unterstuetzung: +15,
+            fuereinander_da_sein: +10,
+
+            // VERSTÄNDNIS - Sehr stark
+            akzeptanz: +35,
+            verstanden_werden: +30,
+            empathie: +15,
+            gesehen_werden: +25,
+            beachtung: +15,
+            vertrauen: +15,
+            harmonie: +10,
+            mitgefuehl: +15,
+
+            // TEILNAHME
+            zugehoerigkeit: +20,
+            gemeinschaft: +15,
+            kommunikation: +10,
+            respekt: +20,
+            bedeutung_haben: +15,
+            gegenseitigkeit: +10,
+            zusammenarbeit: +10,
+
+            // IDENTITÄT - Stark
+            authentizitaet: +30,
+            integritaet: +30,
+            wachstum: +20,
+            sinn: +15,
+            kompetenz: +5,
+            wirksamkeit: +5,
+            beitrag_leisten: +10,
+
+            // VERBUNDENHEIT
+            leben_feiern: +10,
+            inspiration: +15
         },
-        sichtbarkeit: {
-            name: "Sichtbarkeit",
-            description: "Das Bedürfnis, gesehen zu werden wie man ist",
-            kategorie: "verstaendnis"
-        },
-        status: {
-            name: "Status",
-            description: "Das Bedürfnis nach sozialem Status und Position",
-            kategorie: "teilnahme"
-        },
-        verbindung: {
-            name: "Tiefe Verbindung",
-            description: "Das Bedürfnis nach emotionaler Tiefe in Beziehungen",
-            kategorie: "verbundenheit"
-        },
-        flexibilitaet: {
-            name: "Flexibilität",
-            description: "Das Bedürfnis, nicht kategorisiert zu werden",
-            kategorie: "freiheit"
-        },
-        wandel: {
-            name: "Wandel",
-            description: "Das Bedürfnis nach Veränderung und Entwicklung",
-            kategorie: "erschaffen"
-        },
-        neutralitaet: {
-            name: "Neutralität",
-            description: "Das Bedürfnis, geschlechtsneutral wahrgenommen zu werden",
-            kategorie: "freiheit"
-        },
-        koerperliche_autonomie: {
-            name: "Körperliche Autonomie",
-            description: "Das Bedürfnis nach Selbstbestimmung über den eigenen Körper",
-            kategorie: "freiheit"
+
+        // ─────────────────────────────────────────────────────────────────────────
+        // DIVERS
+        // ─────────────────────────────────────────────────────────────────────────
+        divers: {
+            // FREIHEIT - Stark
+            selbstbestimmung: +25,
+            waehlen_koennen: +25,
+            unabhaengigkeit: +20,
+            raum_haben: +20,
+            spontaneitaet: +15,
+
+            // SICHERHEIT
+            geborgenheit: +10,
+            sich_sicher_fuehlen: +15,
+            schutz: +10,
+            stabilitaet: +5,
+            bestaendigkeit: +5,
+            leichtigkeit: +10,
+
+            // ZUNEIGUNG
+            naehe: +5,
+            waerme: +5,
+            intimitaet: +10,
+            fuersorge: +5,
+            liebe: +5,
+            wertschaetzung: +15,
+            unterstuetzung: +10,
+            fuereinander_da_sein: +5,
+
+            // VERSTÄNDNIS - Stark
+            akzeptanz: +30,
+            verstanden_werden: +25,
+            empathie: +15,
+            gesehen_werden: +25,
+            beachtung: +15,
+            vertrauen: +10,
+            harmonie: +5,
+            mitgefuehl: +10,
+
+            // TEILNAHME
+            zugehoerigkeit: +20,
+            gemeinschaft: +15,
+            kommunikation: +10,
+            respekt: +15,
+            bedeutung_haben: +15,
+            gegenseitigkeit: +10,
+            zusammenarbeit: +5,
+
+            // IDENTITÄT - Stark
+            authentizitaet: +30,
+            selbst_ausdruck: +25,
+            wachstum: +20,
+            sinn: +15,
+            integritaet: +25,
+            kompetenz: +5,
+            wirksamkeit: +5,
+            beitrag_leisten: +10,
+
+            // ERSCHAFFEN
+            kreativitaet: +15,
+            entdecken: +15,
+
+            // VERBUNDENHEIT
+            leben_feiern: +10,
+            inspiration: +15
         }
     },
 
@@ -680,20 +939,6 @@ const BeduerfnisModifikatoren = {
             // Berechne finalen Wert (0-100 begrenzt)
             var final = Math.max(0, Math.min(100, basis + domDelta + geschDelta));
             ergebnis[bed] = Math.round(final);
-        }
-
-        // Neue Bedürfnisse hinzufügen (die nur durch Modifikatoren kommen)
-        var alleMods = Object.assign({}, domMod, geschMod);
-        for (var neuBed in alleMods) {
-            if (!ergebnis[neuBed] && alleMods[neuBed] !== 0) {
-                // Basis 50 + Modifikatoren
-                var domVal = domMod[neuBed] || 0;
-                var geschVal = geschMod[neuBed] || 0;
-                var neuWert = Math.max(0, Math.min(100, 50 + domVal + geschVal));
-                if (neuWert !== 50) {  // Nur wenn tatsächlich modifiziert
-                    ergebnis[neuBed] = Math.round(neuWert);
-                }
-            }
         }
 
         return ergebnis;
