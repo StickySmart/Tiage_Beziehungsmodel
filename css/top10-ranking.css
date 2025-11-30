@@ -1,0 +1,473 @@
+/**
+ * TOP 10 RANKING STYLES
+ * =====================
+ * Styling für die Top 10 Kompatibilitäts-Ansicht
+ * mit psychologischer Tiefe, inneren Konflikten und Paarkonflikten
+ */
+
+/* Container */
+.top10-ranking {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 20px;
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+    border-radius: 16px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+}
+
+.top10-title {
+    text-align: center;
+    color: #fff;
+    font-size: 1.8rem;
+    margin-bottom: 30px;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    border-bottom: 2px solid #e94560;
+    padding-bottom: 15px;
+}
+
+/* Liste */
+.top10-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+/* Einzelnes Item */
+.top10-item {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    gap: 15px;
+    align-items: start;
+    padding: 20px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 12px;
+    border-left: 4px solid #e94560;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.top10-item:hover {
+    transform: translateX(5px);
+    box-shadow: 0 5px 20px rgba(233, 69, 96, 0.2);
+}
+
+/* Rang-Badge */
+.rank-badge {
+    width: 50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    font-weight: bold;
+    font-size: 1.2rem;
+    color: #fff;
+}
+
+.rank-1 .rank-badge {
+    background: linear-gradient(135deg, #ffd700 0%, #ffb300 100%);
+    box-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
+}
+
+.rank-2 .rank-badge {
+    background: linear-gradient(135deg, #c0c0c0 0%, #a8a8a8 100%);
+    box-shadow: 0 0 15px rgba(192, 192, 192, 0.4);
+}
+
+.rank-3 .rank-badge {
+    background: linear-gradient(135deg, #cd7f32 0%, #b87333 100%);
+    box-shadow: 0 0 15px rgba(205, 127, 50, 0.4);
+}
+
+.rank-4 .rank-badge,
+.rank-5 .rank-badge {
+    background: linear-gradient(135deg, #4a9c6d 0%, #3d8b5f 100%);
+}
+
+.rank-6 .rank-badge,
+.rank-7 .rank-badge {
+    background: linear-gradient(135deg, #5a7fa8 0%, #4a6f98 100%);
+}
+
+.rank-8 .rank-badge,
+.rank-9 .rank-badge,
+.rank-10 .rank-badge {
+    background: linear-gradient(135deg, #6b6b6b 0%, #5a5a5a 100%);
+}
+
+/* Selbst-Markierung */
+.is-self {
+    border-left-color: #00d9ff;
+    background: rgba(0, 217, 255, 0.1);
+}
+
+.is-self .rank-badge::after {
+    content: '★';
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    font-size: 0.8rem;
+}
+
+/* Tonalität */
+.tonality-positiv {
+    border-left-color: #4ade80;
+}
+
+.tonality-neutral {
+    border-left-color: #fbbf24;
+}
+
+.tonality-negativ {
+    border-left-color: #f87171;
+}
+
+/* Combo Info */
+.combo-info {
+    flex: 1;
+}
+
+.archetype-name {
+    color: #fff;
+    font-size: 1.3rem;
+    margin: 0 0 10px 0;
+}
+
+/* Scores */
+.scores {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 12px;
+}
+
+.scores span {
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 500;
+}
+
+.score-overall {
+    background: linear-gradient(135deg, #e94560 0%, #d63851 100%);
+    color: #fff;
+    font-size: 1rem !important;
+    font-weight: bold !important;
+}
+
+.score-pathos {
+    background: rgba(255, 105, 135, 0.2);
+    color: #ff6987;
+}
+
+.score-logos {
+    background: rgba(100, 149, 237, 0.2);
+    color: #6495ed;
+}
+
+.score-resonance {
+    background: rgba(138, 43, 226, 0.2);
+    color: #ba55d3;
+}
+
+/* Synthese Text */
+.synthesis-opening {
+    color: #b0b0c0;
+    font-size: 0.95rem;
+    line-height: 1.5;
+    margin: 0;
+    font-style: italic;
+}
+
+/* Konflikt-Indikatoren */
+.conflict-indicators {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.conflict-icon {
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    font-size: 1.2rem;
+    cursor: help;
+}
+
+.conflict-icon.inner {
+    background: rgba(255, 193, 7, 0.2);
+}
+
+.conflict-icon.partner {
+    background: rgba(244, 67, 54, 0.2);
+}
+
+/* Summary */
+.top10-summary {
+    margin-top: 30px;
+    padding: 20px;
+    background: rgba(255, 255, 255, 0.08);
+    border-radius: 12px;
+    text-align: center;
+}
+
+.top10-summary p {
+    color: #e0e0e0;
+    margin: 8px 0;
+    font-size: 1rem;
+}
+
+.top10-summary strong {
+    color: #e94560;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   DETAIL-ANSICHT: Psychologische Tiefe
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.psychological-depth {
+    margin-top: 30px;
+    padding: 25px;
+    background: rgba(138, 43, 226, 0.1);
+    border-radius: 12px;
+    border: 1px solid rgba(138, 43, 226, 0.3);
+}
+
+.depth-title {
+    color: #ba55d3;
+    font-size: 1.3rem;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.depth-section {
+    margin-bottom: 20px;
+    padding: 15px;
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 8px;
+}
+
+.depth-section h4 {
+    color: #fff;
+    font-size: 1.1rem;
+    margin: 0 0 10px 0;
+}
+
+.depth-section p {
+    color: #c0c0d0;
+    line-height: 1.6;
+    margin: 8px 0;
+}
+
+.depth-source {
+    display: inline-block;
+    padding: 3px 10px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    font-size: 0.8rem;
+    color: #a0a0b0;
+    margin-bottom: 10px;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   INNERE KONFLIKTE
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.inner-conflicts {
+    margin-top: 20px;
+}
+
+.inner-conflict-card {
+    padding: 20px;
+    background: rgba(255, 193, 7, 0.1);
+    border-radius: 12px;
+    border-left: 4px solid #ffc107;
+    margin-bottom: 15px;
+}
+
+.inner-conflict-card h4 {
+    color: #ffc107;
+    font-size: 1.1rem;
+    margin: 0 0 5px 0;
+}
+
+.inner-conflict-card .core {
+    color: #fff;
+    font-weight: bold;
+    font-size: 1rem;
+    margin-bottom: 12px;
+}
+
+.inner-conflict-card .description {
+    color: #d0d0e0;
+    line-height: 1.6;
+}
+
+.inner-conflict-card .shadow {
+    margin-top: 12px;
+    padding: 10px;
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 6px;
+}
+
+.inner-conflict-card .shadow-label {
+    color: #ff8a80;
+    font-weight: bold;
+    font-size: 0.85rem;
+}
+
+.inner-conflict-card .growth {
+    margin-top: 12px;
+    padding: 10px;
+    background: rgba(76, 175, 80, 0.2);
+    border-radius: 6px;
+}
+
+.inner-conflict-card .growth-label {
+    color: #81c784;
+    font-weight: bold;
+    font-size: 0.85rem;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   PAARKONFLIKTE
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.partner-conflicts {
+    margin-top: 20px;
+}
+
+.partner-conflict-card {
+    padding: 20px;
+    background: rgba(244, 67, 54, 0.1);
+    border-radius: 12px;
+    border-left: 4px solid #f44336;
+    margin-bottom: 15px;
+}
+
+.partner-conflict-card h4 {
+    color: #f44336;
+    font-size: 1.2rem;
+    margin: 0 0 15px 0;
+}
+
+.conflict-dynamics {
+    margin-bottom: 15px;
+}
+
+.dynamics-item {
+    margin-bottom: 10px;
+}
+
+.dynamics-item .label {
+    color: #ff8a80;
+    font-weight: bold;
+    font-size: 0.85rem;
+    display: block;
+    margin-bottom: 3px;
+}
+
+.dynamics-item .content {
+    color: #d0d0e0;
+    line-height: 1.5;
+}
+
+.conflict-resolution {
+    padding: 15px;
+    background: rgba(76, 175, 80, 0.15);
+    border-radius: 8px;
+}
+
+.resolution-title {
+    color: #81c784;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.resolution-item {
+    margin-bottom: 10px;
+}
+
+.resolution-item .label {
+    color: #a5d6a7;
+    font-weight: bold;
+    font-size: 0.85rem;
+}
+
+.resolution-item .content {
+    color: #d0d0e0;
+    line-height: 1.5;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   RESPONSIVE
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+@media (max-width: 768px) {
+    .top10-item {
+        grid-template-columns: 1fr;
+        text-align: center;
+    }
+
+    .rank-badge {
+        margin: 0 auto;
+    }
+
+    .scores {
+        justify-content: center;
+    }
+
+    .conflict-indicators {
+        flex-direction: row;
+        justify-content: center;
+    }
+
+    .top10-title {
+        font-size: 1.4rem;
+    }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   ANIMATIONS
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.top10-item {
+    animation: fadeInUp 0.4s ease forwards;
+}
+
+.top10-item:nth-child(1) { animation-delay: 0.1s; }
+.top10-item:nth-child(2) { animation-delay: 0.15s; }
+.top10-item:nth-child(3) { animation-delay: 0.2s; }
+.top10-item:nth-child(4) { animation-delay: 0.25s; }
+.top10-item:nth-child(5) { animation-delay: 0.3s; }
+.top10-item:nth-child(6) { animation-delay: 0.35s; }
+.top10-item:nth-child(7) { animation-delay: 0.4s; }
+.top10-item:nth-child(8) { animation-delay: 0.45s; }
+.top10-item:nth-child(9) { animation-delay: 0.5s; }
+.top10-item:nth-child(10) { animation-delay: 0.55s; }
+
+/* Pulse Animation für Top 3 */
+@keyframes goldPulse {
+    0%, 100% { box-shadow: 0 0 20px rgba(255, 215, 0, 0.5); }
+    50% { box-shadow: 0 0 30px rgba(255, 215, 0, 0.8); }
+}
+
+.rank-1 .rank-badge {
+    animation: goldPulse 2s infinite;
+}
