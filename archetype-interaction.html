@@ -6044,14 +6044,24 @@
             margin: 0 0 20px 0;
             color: #fff;
             font-size: 20px;
+            text-align: center;
         }
         .impressum-content p {
             margin: 10px 0;
             color: rgba(255, 255, 255, 0.8);
             font-size: 14px;
+            text-align: center;
         }
         .impressum-content a {
             color: #eab308;
+        }
+
+        /* Print Styles - Modal beim Drucken ausblenden */
+        @media print {
+            .impressum-modal,
+            .impressum-content {
+                display: none !important;
+            }
         }
 
         /* Pathos/Logos Sticky Toggle Buttons - nur auf Mobile sichtbar */
