@@ -6167,6 +6167,10 @@
     <script src="js/locales/en.js"></script>
     <script src="js/i18n.js"></script>
 
+    <!-- TIAGE Archetype Statements - DE/EN -->
+    <script src="statements/archetypeStatements.js"></script>
+    <script src="statements/archetypeStatements_EN.js"></script>
+
     <!-- TIAGE SYNTHESE - Zentralisierte Berechnungslogik -->
     <script src="js/synthesis/constants.js"></script>
     <script src="js/synthesis/factors/archetypeFactor.js"></script>
@@ -8772,294 +8776,23 @@
         // ═══════════════════════════════════════════════════════════════════════
         // MICRO-STATEMENTS DATABASE für dynamische Text-Generierung
         // Philosophische Grundlage: Pirsig (MOQ) + OSHO
+        //
+        // HINWEIS: Die vollständigen Archetyp-Statements (64 Kombinationen) werden
+        // aus den externen Dateien geladen:
+        // - statements/archetypeStatements.js (Deutsch)
+        // - statements/archetypeStatements_EN.js (Englisch)
         // ═══════════════════════════════════════════════════════════════════════
 
-        const archetypeStatements = {
-            "single_single": {
-                pathos: {
-                    gemeinsam: ["Zwei Seelen, die dieselbe Sprache der Freiheit sprechen.", "Die gegenseitige Anerkennung der Unabhängigkeit schafft Respekt."],
-                    spannung: ["Ohne Polarität fehlt die magnetische Kraft der Anziehung.", "Die Freiheit wird zum Gefängnis, wenn niemand sie herausfordert."]
-                },
-                logos: {
-                    gemeinsam: ["Strukturell identisch: Beide priorisieren Autonomie über Bindung.", "Keine fundamentalen Konflikte, da keine fundamentalen Erwartungen."],
-                    unterschied: ["Individuelle Unterschiede in Lebensphasen können variieren."]
-                },
-                pro: ["Identische Beziehungsphilosophie", "Gegenseitiger Respekt für Autonomie", "Keine unerfüllbaren Erwartungen", "Freiheit bleibt erhalten"],
-                contra: ["Fehlende Polarität", "Keiner gibt Impuls zur Vertiefung", "Risiko der Unverbindlichkeit"]
-            },
-            "single_duo": {
-                pathos: {
-                    gemeinsam: ["Der Single spürt die Wärme der Geborgenheit, die das Duo bietet."],
-                    spannung: ["Die Angst vor Vereinnahmung trifft auf das Bedürfnis nach Verschmelzung.", "Freiheitsdrang kollidiert mit Exklusivitätserwartung."]
-                },
-                logos: {
-                    unterschied: ["Fundamentaler Konflikt: Unabhängigkeit vs. Exklusivität", "Single sieht Beziehung als Option, Duo als Notwendigkeit."]
-                },
-                pro: ["Duo bietet Stabilität", "Potenzial für transformative Erfahrung"],
-                contra: ["Fundamentaler Konflikt: Freiheit vs. Exklusivität", "Single fühlt sich eingeengt", "Duo fühlt sich nicht priorisiert", "Keine gemeinsame Beziehungsvision"]
-            },
-            "single_duo_flex": {
-                pathos: {
-                    gemeinsam: ["Duo-Flex versteht die Sehnsucht nach Freiheit – zumindest teilweise."],
-                    spannung: ["Die 'Flex'-Komponente reicht dem Single oft nicht aus.", "Single kann sich als 'der Außenseiter' fühlen."]
-                },
-                logos: {
-                    gemeinsam: ["Duo-Flex zeigt Offenheit für alternative Modelle."],
-                    unterschied: ["Single will keine Hierarchie, Duo-Flex hat eine eingebaute."]
-                },
-                pro: ["Situative Nähe möglich", "Keine Erwartung an vollständige Bindung"],
-                contra: ["Single ist strukturell 'zweite Wahl'", "Primärbeziehung hat immer Vorrang", "Emotionale Asymmetrie"]
-            },
-            "single_solopoly": {
-                pathos: {
-                    gemeinsam: ["Tiefe Resonanz auf der Ebene der Autonomie.", "Beide schätzen Freiheit als höchsten Wert."],
-                    spannung: ["Solopoly erwartet Beziehungsarbeit, die der Single meidet."]
-                },
-                logos: {
-                    gemeinsam: ["Beide lehnen traditionelle Beziehungsmodelle ab.", "Autonomie ist das gemeinsame Fundament."],
-                    unterschied: ["Solopoly hat multiple Beziehungen, Single oft keine."]
-                },
-                pro: ["Maximale Übereinstimmung in Autonomie", "Keine Hierarchie-Problematik", "Beziehung als Bereicherung"],
-                contra: ["Single könnte von Aktivität überfordert sein", "Asymmetrische Beziehungsbereitschaft"]
-            },
-            "single_polyamor": {
-                pathos: {
-                    gemeinsam: ["Single spürt die Wärme der polyamoren Community."],
-                    spannung: ["Die strukturierte Komplexität überfordert den Single."]
-                },
-                logos: {
-                    unterschied: ["Polyamor ist hochstrukturiert, Single sucht Einfachheit.", "Kommunikationsintensität radikal unterschiedlich."]
-                },
-                pro: ["Keine Exklusivitätserwartung", "Community kann bereichernd sein"],
-                contra: ["Hoher Kommunikationsaufwand überfordert", "Kalendermanagement unattraktiv"]
-            },
-            "duo_single": {
-                pathos: {
-                    spannung: ["Die Angst, nicht genug zu sein für jemanden, der alles haben kann.", "Der Wunsch nach Exklusivität trifft auf Mauern."]
-                },
-                logos: {
-                    unterschied: ["Fundamentale Inkompatibilität der Beziehungsmodelle.", "Duo braucht Commitment, Single meidet es."]
-                },
-                pro: ["Potenzial für transformative Erfahrung"],
-                contra: ["Duo investiert mehr als zurückkommt", "Single erwidert Exklusivität nicht", "Herzschmerz vorprogrammiert"]
-            },
-            "duo_duo": {
-                pathos: {
-                    gemeinsam: ["Zwei Seelen, die dasselbe suchen: Ankommen, Verschmelzen, Heimat.", "Exklusivität als gemeinsame Sprache der Liebe."],
-                    spannung: ["Hohe Erwartungen können zu hohem Druck führen."]
-                },
-                logos: {
-                    gemeinsam: ["Strukturell perfekt abgestimmt.", "Gesellschaftlich maximal unterstützt.", "Gemeinsame Lebensplanung ist selbstverständlich."]
-                },
-                pro: ["Identische Beziehungsphilosophie", "Maximale gesellschaftliche Akzeptanz", "Klare, geteilte Erwartungen", "Rechtliche Absicherung möglich"],
-                contra: ["Hohe Erwartungen können zu Druck führen", "Eine Person muss alle Bedürfnisse erfüllen"]
-            },
-            "duo_duo_flex": {
-                pathos: {
-                    gemeinsam: ["Das Duo erkennt im Duo-Flex einen nahen Verwandten."],
-                    spannung: ["Die 'Flex'-Komponente verunsichert das Duo.", "Duo fürchtet: 'Bin ich nicht genug?'"]
-                },
-                logos: {
-                    gemeinsam: ["Beide priorisieren eine Primärbeziehung."],
-                    unterschied: ["Die 'Flex'-Option ist für das Duo ein No-Go."]
-                },
-                pro: ["Grundverständnis für Primärbeziehungs-Priorität", "Ähnliche Vorstellungen von Stabilität"],
-                contra: ["Duo erlebt Flex-Öffnung als Vertrauensbruch", "Unterschiedliche Treue-Definitionen", "Eifersucht vorprogrammiert"]
-            },
-            "duo_solopoly": {
-                pathos: {
-                    spannung: ["Das Duo fühlt sich als Option, nicht als Priorität.", "Tiefe Verunsicherung durch Gleichwertigkeit anderer Beziehungen."]
-                },
-                logos: {
-                    unterschied: ["Fundamentale Inkompatibilität: Exklusivität vs. Gleichwertigkeit.", "Zusammenleben ist für Solopoly ausgeschlossen."]
-                },
-                pro: ["Solopoly bietet klare Kommunikation"],
-                contra: ["Duo fühlt sich als 'einer von vielen'", "Keine Sonderstellung möglich", "Kein Zusammenleben möglich"]
-            },
-            "duo_polyamor": {
-                pathos: {
-                    gemeinsam: ["Beide schätzen tiefe emotionale Verbindungen."],
-                    spannung: ["Das Duo kann die geteilte Aufmerksamkeit nicht ertragen."]
-                },
-                logos: {
-                    gemeinsam: ["Beide schätzen Kommunikation und Verbindlichkeit."],
-                    unterschied: ["Exklusivität vs. ethische Nicht-Exklusivität."]
-                },
-                pro: ["Beide schätzen emotionale Tiefe", "Kommunikation ist beiden wichtig"],
-                contra: ["Duo erlebt geteilte Aufmerksamkeit als Verrat", "Eifersucht unvermeidlich"]
-            },
-            "duo_flex_single": {
-                pathos: {
-                    gemeinsam: ["Duo-Flex erkennt im Single den Freiheitsdrang."],
-                    spannung: ["Single könnte die Primärbeziehung bedrohen."]
-                },
-                logos: {
-                    gemeinsam: ["Beide haben ein gewisses Maß an Flexibilität."],
-                    unterschied: ["Single will keine zweite Wahl sein."]
-                },
-                pro: ["Gemeinsames Verständnis für Flexibilität", "Single kann bereichernde Begegnungen bieten"],
-                contra: ["Single könnte mehr wollen", "Hierarchie-Problem", "Single fühlt sich als 'Spielzeug'"]
-            },
-            "duo_flex_duo": {
-                pathos: {
-                    gemeinsam: ["Grundverständnis für die Wichtigkeit einer Primärbeziehung."],
-                    spannung: ["Duo kann die Flex-Öffnung nicht akzeptieren."]
-                },
-                logos: {
-                    gemeinsam: ["Ähnliche Strukturen mit einer Hauptbeziehung."],
-                    unterschied: ["Was für Duo-Flex 'Flexibilität' ist, ist für Duo 'Betrug'."]
-                },
-                pro: ["Gemeinsame Wertschätzung von Primärbeziehungen", "Duo-Flex könnte exklusiver werden"],
-                contra: ["Duo erlebt Flex-Anteil als Vertrauensbruch", "Konstantes Konfliktpotenzial"]
-            },
-            "duo_flex_duo_flex": {
-                pathos: {
-                    gemeinsam: ["Perfekte Resonanz: Beide verstehen den Balanceakt.", "Die Suche nach dem Besten aus beiden Welten verbindet."],
-                    spannung: ["Konkurrenz um Flex-Partner kann entstehen."]
-                },
-                logos: {
-                    gemeinsam: ["Identische Struktur: Primärbeziehung + situative Öffnung.", "Gemeinsames Regelwerk ist verhandelbar."]
-                },
-                pro: ["Identische Beziehungsphilosophie", "Gegenseitiges Verständnis für Öffnungen", "Symmetrische Freiheiten"],
-                contra: ["Eifersucht kann trotzdem auftreten", "Flex-Regeln müssen ständig verhandelt werden"]
-            },
-            "duo_flex_solopoly": {
-                pathos: {
-                    gemeinsam: ["Beide schätzen Flexibilität und Offenheit."],
-                    spannung: ["Solopoly lehnt Hierarchien ab, Duo-Flex basiert darauf."]
-                },
-                logos: {
-                    unterschied: ["Hierarchie vs. Gleichwertigkeit ist der Kernkonflikt."]
-                },
-                pro: ["Gemeinsame Offenheit für nicht-exklusive Beziehungen", "Kommunikation über Grenzen ist beiden vertraut"],
-                contra: ["Solopoly gibt keinen Primary-Status", "Duo-Flex will mehr Sicherheit als Solopoly bietet"]
-            },
-            "duo_flex_polyamor": {
-                pathos: {
-                    gemeinsam: ["Beide kennen die Komplexität von Mehrfachbeziehungen."],
-                    spannung: ["Unterschiedliche Tiefe der Nicht-Primär-Beziehungen."]
-                },
-                logos: {
-                    gemeinsam: ["Beide arbeiten mit Regeln und Absprachen."],
-                    unterschied: ["Polyamor's Secondary-Beziehungen sind tiefer als Duo-Flex's Flex-Kontakte."]
-                },
-                pro: ["Gemeinsame Wertschätzung von Kommunikation und Struktur", "Regeln und Grenzen sind beiden vertraut"],
-                contra: ["Unterschiedliche Tiefe der Nebenbeziehungen", "Zeitmanagement ist herausfordernd"]
-            },
-            "solopoly_single": {
-                pathos: {
-                    gemeinsam: ["Tiefe Verwandtschaft im Autonomie-Bedürfnis.", "Beide verstehen: 'Ich gehöre mir selbst.'"],
-                    spannung: ["Solopoly erwartet Beziehungsarbeit, die der Single meidet."]
-                },
-                logos: {
-                    gemeinsam: ["Beide priorisieren Selbstständigkeit über Verschmelzung."],
-                    unterschied: ["Solopoly führt aktiv Beziehungen, Single nicht unbedingt."]
-                },
-                pro: ["Maximale Übereinstimmung bei Autonomie", "Keine Verschmelzungserwartung"],
-                contra: ["Single könnte Aktivität nicht erwidern", "Asymmetrische Beziehungsbereitschaft"]
-            },
-            "solopoly_duo": {
-                pathos: {
-                    spannung: ["Duo's Exklusivitätsbedürfnis kollidiert mit Solopoly's Lebensmodell.", "Das Duo wird immer mehr wollen."]
-                },
-                logos: {
-                    unterschied: ["Fundamentale Inkompatibilität der Beziehungsmodelle.", "Zusammenleben ist für Solopoly ausgeschlossen."]
-                },
-                pro: ["Duo könnte von Solopoly's Klarheit lernen"],
-                contra: ["Strukturelle Inkompatibilität", "Duo erwartet Exklusivität", "Herzschmerz wahrscheinlich"]
-            },
-            "solopoly_duo_flex": {
-                pathos: {
-                    gemeinsam: ["Beide kennen nicht-exklusive Beziehungen."],
-                    spannung: ["Duo-Flex erwartet Hierarchie, Solopoly gibt keine."]
-                },
-                logos: {
-                    unterschied: ["Hierarchie vs. Gleichwertigkeit."]
-                },
-                pro: ["Gemeinsame Erfahrung mit nicht-exklusiven Beziehungen", "Potenzial für bereichernde Verbindung"],
-                contra: ["Duo-Flex erwartet Sonderstellung, die Solopoly nicht gibt"]
-            },
-            "solopoly_solopoly": {
-                pathos: {
-                    gemeinsam: ["Perfekte Spiegelung: Beide verstehen zutiefst, was der andere braucht.", "Freiheit als höchster Wert – geteilt und respektiert.", "Liebe als Geschenk, nicht als Forderung."],
-                    spannung: ["Beide sind so autonom, dass manchmal niemand Initiative ergreift."]
-                },
-                logos: {
-                    gemeinsam: ["Identische Beziehungsphilosophie.", "Keine Hierarchie-Diskussionen nötig."]
-                },
-                pro: ["Maximale philosophische Übereinstimmung", "Gegenseitiger Respekt für Autonomie", "Keine Hierarchie-Konflikte"],
-                contra: ["Manchmal fehlt Initiative für Vertiefung", "Zu viel Distanz möglich"]
-            },
-            "solopoly_polyamor": {
-                pathos: {
-                    gemeinsam: ["Beide teilen polyamore Werte: Ehrlichkeit, Kommunikation, Consent."],
-                    spannung: ["Hierarchie-Differenzen können belasten."]
-                },
-                logos: {
-                    gemeinsam: ["Beide reflektieren bewusst über ihre Beziehungsform."],
-                    unterschied: ["Solopoly lehnt Hierarchien ab, Polyamor hat oft Primary/Secondary."]
-                },
-                pro: ["Gemeinsame polyamore Grundwerte", "Hohe Kommunikationskompetenz beiderseits"],
-                contra: ["Hierarchie-Diskussionen unvermeidlich", "Solopoly will keine Primary-Position"]
-            },
-            "polyamor_single": {
-                pathos: {
-                    gemeinsam: ["Polyamor kann dem Single Wärme bieten ohne Exklusivitätsdruck."],
-                    spannung: ["Single meidet die Komplexität, die Polyamor mitbringt."]
-                },
-                logos: {
-                    unterschied: ["Polyamor ist hochstrukturiert, Single sucht Einfachheit."]
-                },
-                pro: ["Keine Exklusivitätserwartung", "Community kann unterstützend sein"],
-                contra: ["Single wird von Kommunikationsintensität überfordert", "Polyamor's Struktur ist zu viel"]
-            },
-            "polyamor_duo": {
-                pathos: {
-                    gemeinsam: ["Beide schätzen tiefe emotionale Verbindungen."],
-                    spannung: ["Duo's Eifersucht ist für Polyamor frustrierend."]
-                },
-                logos: {
-                    unterschied: ["Exklusivität vs. ethische Mehrfachbeziehungen."]
-                },
-                pro: ["Beide schätzen emotionale Tiefe", "Duo könnte als Primary Sicherheit finden"],
-                contra: ["Duo kann Nicht-Exklusivität nicht akzeptieren", "Eifersucht unvermeidlich"]
-            },
-            "polyamor_duo_flex": {
-                pathos: {
-                    gemeinsam: ["Beide kennen die Komplexität von Mehrfachbeziehungen."],
-                    spannung: ["Tiefe der Nebenbeziehungen unterscheidet sich."]
-                },
-                logos: {
-                    gemeinsam: ["Beide arbeiten mit Regeln und Strukturen."]
-                },
-                pro: ["Gemeinsames Verständnis für strukturierte Offenheit", "Potenzial für komplementäre Verbindung"],
-                contra: ["Tiefe-Unterschiede der Nebenbeziehungen", "Unterschiedliche Zeit-Investments"]
-            },
-            "polyamor_solopoly": {
-                pathos: {
-                    gemeinsam: ["Tiefe Verwandtschaft in polyamoren Werten."],
-                    spannung: ["Solopoly lehnt ab, was Polyamor praktiziert: Primary/Secondary."]
-                },
-                logos: {
-                    gemeinsam: ["Beide reflektieren bewusst über Beziehungsformen."],
-                    unterschied: ["Hierarchie vs. Gleichwertigkeit."]
-                },
-                pro: ["Gemeinsame polyamore Grundwerte", "Ethische Grundlage ist identisch"],
-                contra: ["Hierarchie-Diskussionen unvermeidlich", "Strukturkonflikte möglich"]
-            },
-            "polyamor_polyamor": {
-                pathos: {
-                    gemeinsam: ["Perfekte Resonanz: Beide sprechen dieselbe Sprache der Liebe.", "Tiefe Liebe zu Mehreren ist natürlich und verstanden.", "Compersion ist beidseitig möglich."],
-                    spannung: ["Manchmal Überforderung durch die vielen emotionalen Fäden."]
-                },
-                logos: {
-                    gemeinsam: ["Identische Beziehungsphilosophie.", "Beide verstehen Hierarchien, Agreements, Kommunikationsstrukturen."]
-                },
-                pro: ["Maximale philosophische Übereinstimmung", "Identisches Beziehungsmodell", "Compersion beiderseits möglich", "Keine Erklärungen nötig"],
-                contra: ["Hoher Koordinationsaufwand", "Kalenderkomplexität verdoppelt sich", "Viele emotionale Fäden"]
-            }
-        };
+        // archetypeStatements wird aus externer Datei geladen (statements/archetypeStatements.js)
+        // archetypeStatements_EN wird aus externer Datei geladen (statements/archetypeStatements_EN.js)
 
+        // Fallback-Definition falls externe Datei nicht geladen wurde
+        if (typeof archetypeStatements === 'undefined') {
+            console.warn('archetypeStatements nicht geladen - verwende leeres Objekt');
+            var archetypeStatements = {};
+        }
+
+        // dominanceStatements ist inline definiert (da vollständig und korrekt)
         const dominanceStatements = {
             "dominant_submissiv": { score: 100, pathos: ["Die perfekte Polarität: Führung trifft auf Hingabe.", "OSHO's Weisheit manifestiert sich hier – Extreme ziehen sich an.", "Eine magnetische Kraft entsteht aus der Gegensätzlichkeit."], logos: ["Komplementarität führt zu höherer Sympathie (Tiedens & Fragale, 2003).", "Klare Rollenverteilung minimiert Entscheidungskonflikte."], pro: ["Optimale Rollenverteilung", "Natürliche Dynamik", "Hohe gegenseitige Anziehung", "Wissenschaftlich belegte höhere Zufriedenheit"], contra: ["Balance muss bewusst gehalten werden"] },
             "submissiv_dominant": { score: 100, pathos: ["Hingabe trifft auf Führung – eine tiefe Resonanz.", "Das Vertrauen, sich führen zu lassen, schafft Intimität."], logos: ["Komplementäre Dynamik ist strukturell am stabilsten."], pro: ["Natürliche Harmonie", "Klare Rollenverteilung", "Tiefes Vertrauen möglich"], contra: ["Abhängigkeitsdynamiken müssen reflektiert werden"] },
@@ -9324,8 +9057,15 @@
         }
 
         // Hilfsfunktion: Hole Statements für Archetyp-Kombination
+        // Verwendet je nach Sprache die deutsche oder englische Version
         function getArchetypeStatements(type1, type2) {
             const key = `${type1}_${type2}`;
+            const lang = typeof TiageI18n !== 'undefined' ? TiageI18n.getLanguage() : 'de';
+
+            // Wähle die richtige Statement-Quelle basierend auf der Sprache
+            if (lang === 'en' && typeof archetypeStatements_EN !== 'undefined') {
+                return archetypeStatements_EN[key] || archetypeStatements[key] || null;
+            }
             return archetypeStatements[key] || null;
         }
 
