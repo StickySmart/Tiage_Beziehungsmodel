@@ -9253,10 +9253,21 @@
                 return orientierungStatements.default;
             }
 
+            // Extract primary gender from object format { primary: 'cis_mann', secondary: null }
+            let g1 = geschlecht1;
+            let g2 = geschlecht2;
+            if (g1 && typeof g1 === 'object' && 'primary' in g1) g1 = g1.primary;
+            if (g2 && typeof g2 === 'object' && 'primary' in g2) g2 = g2.primary;
+
             // Extrahiere primäre Orientierung aus Multi-Select-Objekt
             const getPrimaryOrientation = (orient) => {
                 if (typeof orient === 'string') return orient;
                 if (typeof orient === 'object') {
+                    // New format: { primary: 'homosexuell', secondary: 'heterosexuell' }
+                    if ('primary' in orient) {
+                        return orient.primary;
+                    }
+                    // Old format: { heterosexuell: 'gelebt', homosexuell: 'interessiert' }
                     // Priorität: gelebt > interessiert
                     for (const key of ['heterosexuell', 'homosexuell', 'bisexuell']) {
                         if (orient[key] === 'gelebt') return key;
@@ -9273,7 +9284,7 @@
 
             if (!o1 || !o2) return orientierungStatements.default;
 
-            const gleichesGeschlecht = geschlecht1 === geschlecht2;
+            const gleichesGeschlecht = g1 === g2;
 
             // Bisexuell ist immer grundsätzlich kompatibel
             if (o1 === 'bisexuell' && o2 === 'bisexuell') {
@@ -9351,9 +9362,16 @@
 
                 // Prüfe Orientierung
                 if (dims.orientierung && typeof dims.orientierung === 'object') {
-                    for (const key of Object.keys(dims.orientierung)) {
-                        if (dims.orientierung[key] === 'gelebt') hasFakt = true;
-                        if (dims.orientierung[key] === 'interessiert') hasInteressiert = true;
+                    // New format: { primary: 'homosexuell', secondary: 'heterosexuell' }
+                    if ('primary' in dims.orientierung) {
+                        if (dims.orientierung.primary) hasFakt = true;
+                        if (dims.orientierung.secondary) hasInteressiert = true;
+                    } else {
+                        // Old format: { heterosexuell: 'gelebt', homosexuell: 'interessiert' }
+                        for (const key of Object.keys(dims.orientierung)) {
+                            if (dims.orientierung[key] === 'gelebt') hasFakt = true;
+                            if (dims.orientierung[key] === 'interessiert') hasInteressiert = true;
+                        }
                     }
                 }
 
@@ -13370,6 +13388,10 @@
         }
 
         function getGeschlechtCategory(geschlecht) {
+            // Extract primary gender from object format { primary: 'cis_mann', secondary: null }
+            if (geschlecht && typeof geschlecht === 'object' && 'primary' in geschlecht) {
+                geschlecht = geschlecht.primary;
+            }
             // Gibt die Kategorie für Orientierungslogik zurück
             if (typeof TiageConfig !== 'undefined' && TiageConfig.GESCHLECHT_CATEGORY) {
                 return TiageConfig.GESCHLECHT_CATEGORY[geschlecht] || 'andere';
@@ -13520,8 +13542,16 @@
         // ========================================
 
         function checkPhysicalCompatibility(person1, person2) {
-            const g1 = person1.geschlecht;
-            const g2 = person2.geschlecht;
+            // Extract primary gender from object format { primary: 'cis_mann', secondary: null }
+            let g1 = person1.geschlecht;
+            let g2 = person2.geschlecht;
+
+            if (g1 && typeof g1 === 'object' && 'primary' in g1) {
+                g1 = g1.primary;
+            }
+            if (g2 && typeof g2 === 'object' && 'primary' in g2) {
+                g2 = g2.primary;
+            }
 
             // Get orientierung as multi-select object
             const ori1 = person1.orientierung;
@@ -13538,18 +13568,32 @@
             const oriList2 = [];
 
             if (ori1 && typeof ori1 === 'object') {
-                if (ori1.heterosexuell) oriList1.push({ type: 'heterosexuell', status: ori1.heterosexuell });
-                if (ori1.homosexuell) oriList1.push({ type: 'homosexuell', status: ori1.homosexuell });
-                if (ori1.bisexuell) oriList1.push({ type: 'bisexuell', status: ori1.bisexuell });
+                // New format: { primary: 'homosexuell', secondary: 'heterosexuell' }
+                if ('primary' in ori1) {
+                    if (ori1.primary) oriList1.push({ type: ori1.primary, status: 'gelebt' });
+                    if (ori1.secondary) oriList1.push({ type: ori1.secondary, status: 'interessiert' });
+                } else {
+                    // Old format: { heterosexuell: 'gelebt', homosexuell: 'interessiert' }
+                    if (ori1.heterosexuell) oriList1.push({ type: 'heterosexuell', status: ori1.heterosexuell });
+                    if (ori1.homosexuell) oriList1.push({ type: 'homosexuell', status: ori1.homosexuell });
+                    if (ori1.bisexuell) oriList1.push({ type: 'bisexuell', status: ori1.bisexuell });
+                }
             } else if (ori1 && typeof ori1 === 'string') {
                 // Backwards compatibility for old single-value format
                 oriList1.push({ type: ori1, status: person1.orientierungStatus || 'gelebt' });
             }
 
             if (ori2 && typeof ori2 === 'object') {
-                if (ori2.heterosexuell) oriList2.push({ type: 'heterosexuell', status: ori2.heterosexuell });
-                if (ori2.homosexuell) oriList2.push({ type: 'homosexuell', status: ori2.homosexuell });
-                if (ori2.bisexuell) oriList2.push({ type: 'bisexuell', status: ori2.bisexuell });
+                // New format: { primary: 'homosexuell', secondary: 'heterosexuell' }
+                if ('primary' in ori2) {
+                    if (ori2.primary) oriList2.push({ type: ori2.primary, status: 'gelebt' });
+                    if (ori2.secondary) oriList2.push({ type: ori2.secondary, status: 'interessiert' });
+                } else {
+                    // Old format: { heterosexuell: 'gelebt', homosexuell: 'interessiert' }
+                    if (ori2.heterosexuell) oriList2.push({ type: 'heterosexuell', status: ori2.heterosexuell });
+                    if (ori2.homosexuell) oriList2.push({ type: 'homosexuell', status: ori2.homosexuell });
+                    if (ori2.bisexuell) oriList2.push({ type: 'bisexuell', status: ori2.bisexuell });
+                }
             } else if (ori2 && typeof ori2 === 'string') {
                 // Backwards compatibility for old single-value format
                 oriList2.push({ type: ori2, status: person2.orientierungStatus || 'gelebt' });
@@ -13669,7 +13713,11 @@
         }
 
         function formatPersonSummary(person) {
-            const geschlecht = person.geschlecht || '?';
+            // Extract primary gender from object format { primary: 'cis_mann', secondary: null }
+            let geschlecht = person.geschlecht || '?';
+            if (geschlecht && typeof geschlecht === 'object' && 'primary' in geschlecht) {
+                geschlecht = geschlecht.primary || '?';
+            }
 
             // Handle Primary/Secondary orientierung structure
             let orientierungStr = '?';
@@ -14147,8 +14195,11 @@
 
         // Factor 4: Gender Attraction (15%)
         function calculateGenderAttraction(p1, p2) {
-            const g1 = p1.geschlecht;
-            const g2 = p2.geschlecht;
+            // Extract primary gender from object format { primary: 'cis_mann', secondary: null }
+            let g1 = p1.geschlecht;
+            let g2 = p2.geschlecht;
+            if (g1 && typeof g1 === 'object' && 'primary' in g1) g1 = g1.primary;
+            if (g2 && typeof g2 === 'object' && 'primary' in g2) g2 = g2.primary;
 
             // Handle Primary/Secondary orientierung structure
             const oriList1 = [];
@@ -14305,10 +14356,16 @@
             // Primäre Orientierung ermitteln
             let orientierung = 'heterosexuell';
             if (person.orientierung && typeof person.orientierung === 'object') {
-                for (const [type, status] of Object.entries(person.orientierung)) {
-                    if (status === 'gelebt') {
-                        orientierung = type;
-                        break;
+                // New format: { primary: 'homosexuell', secondary: 'heterosexuell' }
+                if ('primary' in person.orientierung) {
+                    orientierung = person.orientierung.primary || 'heterosexuell';
+                } else {
+                    // Old format: { heterosexuell: 'gelebt', homosexuell: 'interessiert' }
+                    for (const [type, status] of Object.entries(person.orientierung)) {
+                        if (status === 'gelebt') {
+                            orientierung = type;
+                            break;
+                        }
                     }
                 }
             } else if (person.orientierung) {
