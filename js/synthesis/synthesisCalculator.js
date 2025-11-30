@@ -296,7 +296,14 @@ TiageSynthesis.Calculator = {
         if (!dominanz) return 'gelebt';
         if (typeof dominanz === 'string') return 'gelebt';
         if (typeof dominanz === 'object') {
-            // Ersten gesetzten Wert finden
+            // New format: { primary: 'dominant', secondary: 'submissiv' }
+            if ('primary' in dominanz) {
+                // If secondary is set, it means 'interessiert' state
+                if (dominanz.secondary) return 'interessiert';
+                if (dominanz.primary) return 'gelebt';
+                return 'gelebt';
+            }
+            // Old format: { dominant: 'gelebt', submissiv: 'interessiert' }
             var types = ['dominant', 'submissiv', 'switch', 'ausgeglichen'];
             for (var i = 0; i < types.length; i++) {
                 if (dominanz[types[i]]) {

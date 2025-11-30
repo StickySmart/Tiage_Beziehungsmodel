@@ -169,6 +169,11 @@ const TiageHelpers = (function() {
          */
         getPrimaryDominanz(dominanz) {
             if (!dominanz || typeof dominanz !== 'object') return null;
+            // New format: { primary: 'dominant', secondary: 'submissiv' }
+            if ('primary' in dominanz) {
+                return dominanz.primary || null;
+            }
+            // Old format: { dominant: 'gelebt', submissiv: 'interessiert' }
             for (const [type, status] of Object.entries(dominanz)) {
                 if (status === 'gelebt') return type;
             }
@@ -180,6 +185,11 @@ const TiageHelpers = (function() {
          */
         getPrimaryOrientierung(orientierung) {
             if (!orientierung || typeof orientierung !== 'object') return null;
+            // New format: { primary: 'homosexuell', secondary: 'heterosexuell' }
+            if ('primary' in orientierung) {
+                return orientierung.primary || null;
+            }
+            // Old format: { heterosexuell: 'gelebt', homosexuell: 'interessiert' }
             for (const [type, status] of Object.entries(orientierung)) {
                 if (status === 'gelebt') return type;
             }
