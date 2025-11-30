@@ -9262,6 +9262,11 @@
             const getPrimaryDominance = (dom) => {
                 if (typeof dom === 'string') return dom;
                 if (typeof dom === 'object' && dom !== null) {
+                    // New format: { primary: 'dominant', secondary: 'submissiv' }
+                    if ('primary' in dom) {
+                        return dom.primary || null;
+                    }
+                    // Old format: { dominant: 'gelebt', submissiv: 'interessiert' }
                     // Priorität: gelebt > interessiert
                     for (const key of ['dominant', 'submissiv', 'switch', 'ausgeglichen']) {
                         if (dom[key] === 'gelebt') return key;

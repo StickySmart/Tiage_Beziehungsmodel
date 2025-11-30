@@ -279,8 +279,12 @@ TiageSynthesis.Calculator = {
     _extractDominanz: function(dominanz) {
         if (!dominanz) return 'ausgeglichen';
         if (typeof dominanz === 'string') return dominanz;
-        // Object-Format: { dominant: 'gelebt', submissiv: 'interessiert' }
         if (typeof dominanz === 'object') {
+            // New format: { primary: 'dominant', secondary: 'submissiv' }
+            if ('primary' in dominanz) {
+                return dominanz.primary || 'ausgeglichen';
+            }
+            // Old format: { dominant: 'gelebt', submissiv: 'interessiert' }
             if (dominanz.dominant) return 'dominant';
             if (dominanz.submissiv) return 'submissiv';
             if (dominanz.switch) return 'switch';
@@ -355,6 +359,11 @@ TiageSynthesis.Calculator = {
         if (!orientierung) return 'heterosexuell';
         if (typeof orientierung === 'string') return orientierung;
         if (typeof orientierung === 'object') {
+            // New format: { primary: 'homosexuell', secondary: 'heterosexuell' }
+            if ('primary' in orientierung) {
+                return orientierung.primary || 'heterosexuell';
+            }
+            // Old format: { bisexuell: 'gelebt', homosexuell: 'interessiert' }
             if (orientierung.bisexuell) return 'bisexuell';
             if (orientierung.homosexuell) return 'homosexuell';
             if (orientierung.heterosexuell) return 'heterosexuell';
@@ -369,6 +378,14 @@ TiageSynthesis.Calculator = {
         if (!orientierung) return 'gelebt';
         if (typeof orientierung === 'string') return 'gelebt';
         if (typeof orientierung === 'object') {
+            // New format: { primary: 'homosexuell', secondary: 'heterosexuell' }
+            if ('primary' in orientierung) {
+                // If secondary is set, it means 'interessiert' state
+                if (orientierung.secondary) return 'interessiert';
+                if (orientierung.primary) return 'gelebt';
+                return 'gelebt';
+            }
+            // Old format: { bisexuell: 'gelebt', homosexuell: 'interessiert' }
             var types = ['bisexuell', 'homosexuell', 'heterosexuell'];
             for (var i = 0; i < types.length; i++) {
                 if (orientierung[types[i]]) {
