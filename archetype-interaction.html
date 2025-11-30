@@ -746,6 +746,129 @@
             cursor: not-allowed;
         }
 
+        /* GFK Explanation Modal */
+        .gfk-modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.8);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 10000;
+            padding: 20px;
+        }
+
+        .gfk-modal-overlay.active {
+            display: flex;
+        }
+
+        .gfk-modal {
+            background: var(--bg-card);
+            border-radius: 16px;
+            max-width: 500px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            border: 1px solid var(--border);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        }
+
+        .gfk-modal-header {
+            padding: 20px 24px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .gfk-modal-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .gfk-modal-close {
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            cursor: pointer;
+            padding: 8px;
+            border-radius: 8px;
+            transition: all 0.2s;
+        }
+
+        .gfk-modal-close:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--text-primary);
+        }
+
+        .gfk-modal-content {
+            padding: 24px;
+        }
+
+        .gfk-level-indicator {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .gfk-level-niedrig {
+            background: rgba(239, 68, 68, 0.2);
+            color: #ef4444;
+            border: 1px solid rgba(239, 68, 68, 0.4);
+        }
+
+        .gfk-level-mittel {
+            background: rgba(234, 179, 8, 0.2);
+            color: #eab308;
+            border: 1px solid rgba(234, 179, 8, 0.4);
+        }
+
+        .gfk-level-hoch {
+            background: rgba(34, 197, 94, 0.2);
+            color: #22c55e;
+            border: 1px solid rgba(34, 197, 94, 0.4);
+        }
+
+        .gfk-explanation-text {
+            color: var(--text-secondary);
+            line-height: 1.7;
+            margin-bottom: 16px;
+        }
+
+        .gfk-explanation-text p {
+            margin-bottom: 12px;
+        }
+
+        .gfk-info-box {
+            background: rgba(139, 92, 246, 0.1);
+            border: 1px solid rgba(139, 92, 246, 0.3);
+            border-radius: 12px;
+            padding: 16px;
+            margin-top: 16px;
+        }
+
+        .gfk-info-box-title {
+            font-weight: 600;
+            color: #a78bfa;
+            margin-bottom: 8px;
+            font-size: 0.9rem;
+        }
+
+        .gfk-info-box-text {
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            line-height: 1.6;
+        }
+
         /* Help Modal */
         .help-modal-overlay {
             position: fixed;
@@ -4300,16 +4423,15 @@
             border-radius: 6px;
             background: rgba(30, 30, 35, 0.9);
             color: var(--text-muted);
-            cursor: pointer;
+            cursor: help;
             transition: all 0.2s ease;
             font-size: 12px;
             position: relative;
         }
 
         .gfk-btn:hover {
-            background: rgba(139, 92, 246, 0.15);
-            border-color: rgba(139, 92, 246, 0.4);
-            color: var(--text-primary);
+            background: rgba(139, 92, 246, 0.1);
+            border-color: rgba(139, 92, 246, 0.3);
         }
 
         .gfk-btn.selected,
@@ -6002,6 +6124,30 @@
             }
         };
     </script>
+
+    <!-- GFK Explanation Modal -->
+    <div class="gfk-modal-overlay" id="gfkExplanationModal" onclick="closeGfkExplanationModal(event)">
+        <div class="gfk-modal" onclick="event.stopPropagation()">
+            <div class="gfk-modal-header">
+                <div class="gfk-modal-title">
+                    <span>GFK-Kompetenz</span>
+                    <span id="gfkModalLevelBadge" class="gfk-level-indicator"></span>
+                </div>
+                <button class="gfk-modal-close" onclick="closeGfkExplanationModal()">&times;</button>
+            </div>
+            <div class="gfk-modal-content">
+                <div class="gfk-explanation-text" id="gfkModalExplanation">
+                </div>
+                <div class="gfk-info-box">
+                    <div class="gfk-info-box-title">Automatische Berechnung</div>
+                    <div class="gfk-info-box-text">
+                        Die GFK-Kompetenz wird automatisch basierend auf den gewählten Beziehungsarchetypen berechnet.
+                        Sie zeigt die Übereinstimmung der Kernbedürfnisse nach Marshall Rosenbergs Gewaltfreier Kommunikation.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <!-- Help Modal -->
     <div class="help-modal-overlay" id="helpModal" onclick="closeHelpModal(event)">
@@ -12653,26 +12799,83 @@
 
         /**
          * Handle click on a GFK button
-         * Simple single-select: clicking toggles selection
+         * GFK-Wert wird durch die App basierend auf Archetypen berechnet - nicht manuell umschaltbar.
+         * Bei Klick wird ein erklärendes Modal angezeigt.
          */
         function handleGfkClick(person, gfkValue, btn) {
-            const currentGfk = personDimensions[person].gfk;
+            // GFK-Wert ist nicht manuell umschaltbar - zeige Erklärungsmodal
+            showGfkExplanationModal(gfkValue);
+        }
 
-            if (gfkValue === currentGfk) {
-                // Click on already selected = deselect
-                personDimensions[person].gfk = null;
-            } else {
-                // Select new value
-                personDimensions[person].gfk = gfkValue;
+        /**
+         * GFK-Erklärungen für die verschiedenen Level
+         */
+        const gfkLevelExplanations = {
+            niedrig: {
+                title: 'Niedrig',
+                description: `
+                    <p><strong>Niedrige Bedürfnis-Übereinstimmung</strong> bedeutet, dass die Kernbedürfnisse der beiden Archetypen stark voneinander abweichen.</p>
+                    <p>Dies kann zu Herausforderungen in der Kommunikation führen, da beide Partner unterschiedliche Prioritäten haben. Eine bewusste Auseinandersetzung mit den Bedürfnissen des anderen ist hier besonders wichtig.</p>
+                    <p>Typische Unterschiede betreffen oft:</p>
+                    <ul style="margin-left: 20px; margin-top: 8px;">
+                        <li>Freiheit vs. Sicherheit</li>
+                        <li>Autonomie vs. Nähe</li>
+                        <li>Stabilität vs. Spontaneität</li>
+                    </ul>
+                `
+            },
+            mittel: {
+                title: 'Mittel',
+                description: `
+                    <p><strong>Mittlere Bedürfnis-Übereinstimmung</strong> zeigt eine teilweise Schnittmenge der Kernbedürfnisse.</p>
+                    <p>Es gibt sowohl gemeinsame Grundlagen als auch Bereiche, die Kompromissbereitschaft erfordern. Mit guter Kommunikation können diese Unterschiede als bereichernd erlebt werden.</p>
+                    <p>Empfehlung: Fokussiert euch auf die gemeinsamen Bedürfnisse und entwickelt Strategien für die unterschiedlichen Prioritäten.</p>
+                `
+            },
+            hoch: {
+                title: 'Hoch',
+                description: `
+                    <p><strong>Hohe Bedürfnis-Übereinstimmung</strong> bedeutet, dass beide Archetypen ähnliche Kernbedürfnisse priorisieren.</p>
+                    <p>Dies schafft eine natürliche Basis für Verständnis und kann die Kommunikation erleichtern. Beide Partner sprechen oft intuitiv die gleiche "Bedürfnis-Sprache".</p>
+                    <p>Dies ist ein guter Ausgangspunkt - dennoch bleibt achtsame Kommunikation wichtig, da auch bei hoher Übereinstimmung individuelle Unterschiede bestehen.</p>
+                `
             }
+        };
 
-            // Sync UI across all views
-            syncGfkUI(person);
+        /**
+         * Zeigt das GFK-Erklärungsmodal an
+         */
+        function showGfkExplanationModal(level) {
+            const modal = document.getElementById('gfkExplanationModal');
+            const badge = document.getElementById('gfkModalLevelBadge');
+            const explanation = document.getElementById('gfkModalExplanation');
 
-            // Save and recalculate
-            saveSelectionToStorage();
-            if (typeof recalculateEverything === 'function') {
-                recalculateEverything();
+            if (!modal || !level) return;
+
+            // Level-spezifische Daten
+            const data = gfkLevelExplanations[level] || gfkLevelExplanations.niedrig;
+
+            // Badge aktualisieren
+            badge.textContent = data.title;
+            badge.className = 'gfk-level-indicator gfk-level-' + level;
+
+            // Erklärung aktualisieren
+            explanation.innerHTML = data.description;
+
+            // Modal öffnen
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        /**
+         * Schließt das GFK-Erklärungsmodal
+         */
+        function closeGfkExplanationModal(event) {
+            if (event && event.target !== event.currentTarget) return;
+            const modal = document.getElementById('gfkExplanationModal');
+            if (modal) {
+                modal.classList.remove('active');
+                document.body.style.overflow = '';
             }
         }
 
