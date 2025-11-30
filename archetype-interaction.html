@@ -13069,71 +13069,77 @@
         // ═══════════════════════════════════════════════════════════════════════
 
         /**
-         * Handle Dominanz status toggle from mobile interface (Gelebt/Interessiert buttons)
-         * Maps: Gelebt → primary, Interessiert → secondary
-         * @param {string} person - 'ich' or 'partner'
-         * @param {string} dominanzType - 'dominant', 'submissiv', 'switch', 'ausgeglichen'
-         * @param {string} status - 'gelebt' or 'interessiert'
-         * @param {HTMLElement} btn - The clicked button
+         * GEMEINSAME Funktion für Dominanz und Orientierung Status-Toggle
+         * Reduziert Code-Duplizierung erheblich!
+         *
+         * @param {string} person - 'ich' oder 'partner'
+         * @param {string} dimension - 'dominanz' oder 'orientierung'
+         * @param {string} type - z.B. 'dominant', 'heterosexuell', etc.
+         * @param {string} status - 'gelebt' (primary) oder 'interessiert' (secondary)
          */
-        function handleDominanzStatusToggle(person, dominanzType, status, btn) {
-            // Ensure dominanz has correct structure
-            if (!personDimensions[person].dominanz ||
-                !('primary' in personDimensions[person].dominanz)) {
-                personDimensions[person].dominanz = { primary: null, secondary: null };
+        function handleStatusToggle(person, dimension, type, status) {
+            // Sicherstellen, dass die Datenstruktur existiert
+            if (!personDimensions[person][dimension] ||
+                !('primary' in personDimensions[person][dimension])) {
+                personDimensions[person][dimension] = { primary: null, secondary: null };
             }
 
-            const currentPrimary = personDimensions[person].dominanz.primary;
-            const currentSecondary = personDimensions[person].dominanz.secondary;
+            const data = personDimensions[person][dimension];
+            const currentPrimary = data.primary;
+            const currentSecondary = data.secondary;
 
             if (status === 'gelebt') {
-                // Toggle primary
-                if (currentPrimary === dominanzType) {
-                    // Already primary, clear it
-                    personDimensions[person].dominanz.primary = null;
-                    // If this was also secondary, clear secondary too
-                    if (currentSecondary === dominanzType) {
-                        personDimensions[person].dominanz.secondary = null;
+                // Toggle primary (Gelebt)
+                if (currentPrimary === type) {
+                    // Schon primary → entfernen
+                    data.primary = null;
+                    if (currentSecondary === type) {
+                        data.secondary = null;
                     }
                 } else {
-                    // Set as primary
-                    personDimensions[person].dominanz.primary = dominanzType;
-                    // If this was secondary, remove from secondary
-                    if (currentSecondary === dominanzType) {
-                        personDimensions[person].dominanz.secondary = null;
+                    // Als primary setzen
+                    data.primary = type;
+                    if (currentSecondary === type) {
+                        data.secondary = null;
                     }
                 }
             } else if (status === 'interessiert') {
-                // Toggle secondary
-                if (currentSecondary === dominanzType) {
-                    // Already secondary, clear it
-                    personDimensions[person].dominanz.secondary = null;
+                // Toggle secondary (Interessiert)
+                if (currentSecondary === type) {
+                    // Schon secondary → entfernen
+                    data.secondary = null;
                 } else {
-                    // Set as secondary (only if it's not already primary)
-                    if (currentPrimary !== dominanzType) {
-                        personDimensions[person].dominanz.secondary = dominanzType;
+                    // Als secondary setzen (nur wenn nicht schon primary)
+                    if (currentPrimary !== type) {
+                        data.secondary = type;
                     }
                 }
             }
 
-            // Sync with mobilePersonDimensions
-            if (typeof mobilePersonDimensions !== 'undefined') {
-                mobilePersonDimensions[person].dominanz.primary = personDimensions[person].dominanz.primary;
-                mobilePersonDimensions[person].dominanz.secondary = personDimensions[person].dominanz.secondary;
+            // Mit mobilePersonDimensions synchronisieren
+            if (typeof mobilePersonDimensions !== 'undefined' &&
+                mobilePersonDimensions[person]?.[dimension]) {
+                mobilePersonDimensions[person][dimension].primary = data.primary;
+                mobilePersonDimensions[person][dimension].secondary = data.secondary;
             }
 
-            // Sync with TiageState
+            // Mit TiageState synchronisieren
             if (typeof TiageState !== 'undefined') {
-                TiageState.set(`personDimensions.${person}.dominanz`, personDimensions[person].dominanz);
+                TiageState.set(`personDimensions.${person}.${dimension}`, data);
             }
 
-            // Sync all UIs
-            syncDominanzUI(person);
-            syncMobileDominanzStatusButtons(person);
+            // UI synchronisieren (je nach Dimension)
+            if (dimension === 'dominanz') {
+                syncDominanzUI(person);
+                syncMobileDominanzStatusButtons(person);
+            } else if (dimension === 'orientierung') {
+                syncOrientierungUI(person);
+                syncMobileOrientierungStatusButtons(person);
+            }
 
-            // Update needs-selection
-            const hasPrimary = personDimensions[person].dominanz.primary !== null;
-            document.querySelectorAll(`[data-dimension*="${person}-dominanz"]`).forEach(dim => {
+            // needs-selection aktualisieren
+            const hasPrimary = data.primary !== null;
+            document.querySelectorAll(`[data-dimension*="${person}-${dimension}"]`).forEach(dim => {
                 dim.classList.toggle('needs-selection', !hasPrimary);
             });
 
@@ -13145,69 +13151,17 @@
         }
 
         /**
-         * Handle Orientierung status toggle from mobile interface (Gelebt/Interessiert buttons)
-         * Maps: Gelebt → primary, Interessiert → secondary
+         * Wrapper für Dominanz (behält alte onclick-Aufrufe funktionsfähig)
+         */
+        function handleDominanzStatusToggle(person, dominanzType, status, btn) {
+            handleStatusToggle(person, 'dominanz', dominanzType, status);
+        }
+
+        /**
+         * Wrapper für Orientierung (behält alte onclick-Aufrufe funktionsfähig)
          */
         function handleOrientierungStatusToggle(person, orientierungType, status, btn) {
-            // Ensure orientierung has correct structure
-            if (!personDimensions[person].orientierung ||
-                !('primary' in personDimensions[person].orientierung)) {
-                personDimensions[person].orientierung = { primary: null, secondary: null };
-            }
-
-            const currentPrimary = personDimensions[person].orientierung.primary;
-            const currentSecondary = personDimensions[person].orientierung.secondary;
-
-            if (status === 'gelebt') {
-                // Toggle primary
-                if (currentPrimary === orientierungType) {
-                    personDimensions[person].orientierung.primary = null;
-                    if (currentSecondary === orientierungType) {
-                        personDimensions[person].orientierung.secondary = null;
-                    }
-                } else {
-                    personDimensions[person].orientierung.primary = orientierungType;
-                    if (currentSecondary === orientierungType) {
-                        personDimensions[person].orientierung.secondary = null;
-                    }
-                }
-            } else if (status === 'interessiert') {
-                // Toggle secondary
-                if (currentSecondary === orientierungType) {
-                    personDimensions[person].orientierung.secondary = null;
-                } else {
-                    if (currentPrimary !== orientierungType) {
-                        personDimensions[person].orientierung.secondary = orientierungType;
-                    }
-                }
-            }
-
-            // Sync with mobilePersonDimensions
-            if (typeof mobilePersonDimensions !== 'undefined') {
-                mobilePersonDimensions[person].orientierung.primary = personDimensions[person].orientierung.primary;
-                mobilePersonDimensions[person].orientierung.secondary = personDimensions[person].orientierung.secondary;
-            }
-
-            // Sync with TiageState
-            if (typeof TiageState !== 'undefined') {
-                TiageState.set(`personDimensions.${person}.orientierung`, personDimensions[person].orientierung);
-            }
-
-            // Sync all UIs
-            syncOrientierungUI(person);
-            syncMobileOrientierungStatusButtons(person);
-
-            // Update needs-selection
-            const hasPrimary = personDimensions[person].orientierung.primary !== null;
-            document.querySelectorAll(`[data-dimension*="${person}-orientierung"]`).forEach(dim => {
-                dim.classList.toggle('needs-selection', !hasPrimary);
-            });
-
-            updateComparisonView();
-
-            if (typeof saveSelectionToStorage === 'function') {
-                saveSelectionToStorage();
-            }
+            handleStatusToggle(person, 'orientierung', orientierungType, status);
         }
 
         /**
