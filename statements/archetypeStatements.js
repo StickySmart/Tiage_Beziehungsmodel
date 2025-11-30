@@ -1153,6 +1153,166 @@ const archetypeStatements = {
         ]
     },
 
+    "ra_duo_flex": {
+        pathos: {
+            gemeinsam: [
+                "Beide verstehen Offenheit für alternative Beziehungsformen.",
+                "Die Flexibilität des Duo-Flex zeigt Offenheit."
+            ],
+            spannung: [
+                "RA lehnt das Primärbeziehungs-Konzept ab, das für Duo-Flex zentral ist.",
+                "Strukturkonflikt zwischen radikaler Freiheit und Regeln."
+            ]
+        },
+        logos: {
+            gemeinsam: [
+                "Beide praktizieren Offenheit in Beziehungen."
+            ],
+            unterschied: [
+                "Duo-Flex hat Primärbeziehung, RA lehnt Hierarchien ab.",
+                "Unterschiedliche Definitionen von Freiheit und Struktur."
+            ]
+        },
+        pro: [
+            "Duo-Flex zeigt Offenheit für alternative Modelle",
+            "Beide verstehen nicht-monogame Lebensweisen",
+            "Flexible Vereinbarungen möglich"
+        ],
+        contra: [
+            "Primärbeziehungs-Konzept widerspricht RA-Philosophie",
+            "RA wird nie Teil einer Hierarchie sein",
+            "Strukturkonflikt ist fundamental"
+        ]
+    },
+
+    "ra_solopoly": {
+        pathos: {
+            gemeinsam: [
+                "Tiefe philosophische Verwandtschaft im Autonomie-Bedürfnis.",
+                "Beide lehnen traditionelle Beziehungshierarchien ab.",
+                "Maximale Freiheit ist beiden heilig."
+            ],
+            spannung: [
+                "Solopoly ist strukturierter als RA – hat das Konzept 'Poly'.",
+                "RA geht noch weiter in der Ablehnung von Kategorien."
+            ]
+        },
+        logos: {
+            gemeinsam: [
+                "Beide priorisieren Autonomie über Verschmelzung.",
+                "Keine Primärbeziehungs-Erwartungen.",
+                "Ähnliche Werte bei Freiheit und Selbstbestimmung."
+            ],
+            unterschied: [
+                "Solopoly arbeitet mit dem Poly-Framework, RA lehnt alle Frameworks ab."
+            ]
+        },
+        pro: [
+            "Beide maximieren Autonomie",
+            "Keine Hierarchie-Erwartungen",
+            "Ähnliche Werte und Philosophie",
+            "Gegenseitiger Respekt für radikale Selbstbestimmung"
+        ],
+        contra: [
+            "Solopoly ist strukturierter als RA bevorzugt",
+            "RA's radikale Label-Ablehnung kann auch Solopoly irritieren"
+        ]
+    },
+
+    "ra_polyamor": {
+        pathos: {
+            gemeinsam: [
+                "Beide verstehen nicht-monogame Lebensweisen.",
+                "Offenheit für multiple Verbindungen ist beiden vertraut."
+            ],
+            spannung: [
+                "RA lehnt Hierarchien ab, die Polyamor oft hat.",
+                "Polyamor's Struktur kann für RA einengend wirken.",
+                "Die Primary/Secondary-Unterscheidung ist für RA inakzeptabel."
+            ]
+        },
+        logos: {
+            gemeinsam: [
+                "Beide reflektieren bewusst über Beziehungsformen."
+            ],
+            unterschied: [
+                "Polyamor ist strukturiert, RA lehnt alle Strukturen ab.",
+                "Hierarchie-Differenzen sind fundamental."
+            ]
+        },
+        pro: [
+            "Beide verstehen nicht-monogame Lebensweisen",
+            "Offenheit für multiple Verbindungen"
+        ],
+        contra: [
+            "RA lehnt Hierarchien ab, Polyamor hat oft welche",
+            "Polyamor's Struktur kann einengend wirken",
+            "Unterschiedliche Erwartungen an Organisation"
+        ]
+    },
+
+    "ra_lat": {
+        pathos: {
+            gemeinsam: [
+                "Beide schätzen eigenen Raum und Autonomie.",
+                "Getrenntes Wohnen passt zu RA's Philosophie."
+            ],
+            spannung: [
+                "LAT hat mehr traditionelle Beziehungserwartungen.",
+                "RA's Label-Ablehnung kann LAT verunsichern."
+            ]
+        },
+        logos: {
+            gemeinsam: [
+                "Beide verstehen den Wert des eigenen Raums.",
+                "Keine Zusammenlebens-Erwartung."
+            ],
+            unterschied: [
+                "LAT ist in einer definierten Beziehung, RA lehnt Definitionen ab."
+            ]
+        },
+        pro: [
+            "LAT respektiert Autonomie",
+            "Getrenntes Wohnen passt zu RA",
+            "Beide schätzen eigenen Raum"
+        ],
+        contra: [
+            "LAT hat mehr Beziehungserwartungen als RA erfüllen will",
+            "RA's Label-Ablehnung kann verwirrend sein für LAT"
+        ]
+    },
+
+    "ra_aromantisch": {
+        pathos: {
+            gemeinsam: [
+                "Beide lehnen traditionelle Beziehungserwartungen ab.",
+                "Keine vorgegebenen Skripte bestimmen die Verbindung.",
+                "Individuelle Vereinbarungen sind selbstverständlich."
+            ],
+            spannung: [
+                "Unterschiedliche Motivationen: RA philosophisch, Aromantisch orientierungsbasiert."
+            ]
+        },
+        logos: {
+            gemeinsam: [
+                "Beide definieren Beziehungen individuell.",
+                "Keine romantischen Erwartungen belasten die Verbindung."
+            ],
+            unterschied: [
+                "RA ist offen für alle Verbindungsformen, Aromantisch schließt Romantik aus."
+            ]
+        },
+        pro: [
+            "Beide lehnen traditionelle Erwartungen ab",
+            "Individuelle Definitionen möglich",
+            "Keine gesellschaftlichen Normen bestimmen die Verbindung"
+        ],
+        contra: [
+            "Unterschiedliche Motivationen für ihre Haltungen",
+            "Gesellschaftlich wenig verstanden"
+        ]
+    },
+
     // ═══════════════════════════════════════════════════════════════════════
     // LAT - LIVING APART TOGETHER (von) - 8 Kombinationen
     // ═══════════════════════════════════════════════════════════════════════
@@ -1210,6 +1370,158 @@ const archetypeStatements = {
         contra: [
             "Wohnform-Konflikt ist fundamental",
             "Duo fühlt sich möglicherweise abgelehnt"
+        ]
+    },
+
+    "lat_duo_flex": {
+        pathos: {
+            gemeinsam: [
+                "Beide verstehen bewusste Distanz und Flexibilität.",
+                "Balance zwischen Nähe und eigenem Raum ist beiden wichtig."
+            ],
+            spannung: [
+                "Unterschiedliche Erwartungen an Öffnung der Beziehung.",
+                "LAT könnte mehr Exklusivität erwarten."
+            ]
+        },
+        logos: {
+            gemeinsam: [
+                "Beide schätzen die Balance von Nähe und Distanz.",
+                "Flexibilität ist beiden vertraut."
+            ],
+            unterschied: [
+                "Duo-Flex's Öffnung für andere vs. LAT's Fokus auf Wohnform."
+            ]
+        },
+        pro: [
+            "Beide verstehen Flexibilität in Beziehungen",
+            "Gute Balance zwischen Nähe und Distanz möglich",
+            "Keine Zusammenlebens-Erwartung"
+        ],
+        contra: [
+            "Unterschiedliche Prioritäten bei Öffnung",
+            "LAT könnte Exklusivität erwarten, die Duo-Flex nicht bietet"
+        ]
+    },
+
+    "lat_solopoly": {
+        pathos: {
+            gemeinsam: [
+                "Beide leben getrennt und schätzen Autonomie.",
+                "Kein Zusammenlebens-Konflikt – beide wohnen allein."
+            ],
+            spannung: [
+                "LAT könnte mehr Exklusivität erwarten als Solopoly bieten kann."
+            ]
+        },
+        logos: {
+            gemeinsam: [
+                "Beide verstehen getrenntes Wohnen als bewusste Wahl.",
+                "Autonomie ist beiden wichtig."
+            ],
+            unterschied: [
+                "Solopoly hat mehrere Partner, LAT oft nur einen."
+            ]
+        },
+        pro: [
+            "Beide leben getrennt – kein Wohnkonflikt",
+            "Autonomie-Verständnis auf beiden Seiten",
+            "Gegenseitiger Respekt für eigenen Raum"
+        ],
+        contra: [
+            "LAT könnte mehr Exklusivität erwarten",
+            "Solopoly's multiple Partner können LAT irritieren"
+        ]
+    },
+
+    "lat_polyamor": {
+        pathos: {
+            gemeinsam: [
+                "Beide schätzen bewusste Beziehungsgestaltung."
+            ],
+            spannung: [
+                "LAT könnte von der Komplexität des Polyamor überfordert sein.",
+                "Die vielen Beziehungen des Polyamor können LAT verunsichern."
+            ]
+        },
+        logos: {
+            gemeinsam: [
+                "Beide reflektieren über ihre Beziehungsform."
+            ],
+            unterschied: [
+                "LAT lebt oft exklusiv, Polyamor per Definition nicht.",
+                "Unterschiedliche Komplexitätsstufen."
+            ]
+        },
+        pro: [
+            "LAT kann als Partner im Netzwerk funktionieren",
+            "Beide verstehen nicht-traditionelle Modelle"
+        ],
+        contra: [
+            "LAT könnte mehr Exklusivität erwarten",
+            "Polyamor's Komplexität kann LAT überfordern"
+        ]
+    },
+
+    "lat_ra": {
+        pathos: {
+            gemeinsam: [
+                "Beide schätzen eigenen Raum und Unabhängigkeit.",
+                "Keine Zusammenlebens-Erwartung."
+            ],
+            spannung: [
+                "RA's Label-Ablehnung kann LAT verunsichern.",
+                "LAT braucht mehr Definition als RA geben will."
+            ]
+        },
+        logos: {
+            gemeinsam: [
+                "Beide verstehen den Wert von Autonomie.",
+                "Getrenntes Wohnen ist selbstverständlich."
+            ],
+            unterschied: [
+                "LAT hat klare Beziehungsdefinition, RA lehnt Definitionen ab."
+            ]
+        },
+        pro: [
+            "RA respektiert LAT's Autonomie",
+            "Beide schätzen eigenen Raum",
+            "Keine Zusammenlebens-Konflikte"
+        ],
+        contra: [
+            "RA's Label-Ablehnung kann verwirrend sein",
+            "LAT braucht mehr Struktur als RA bietet"
+        ]
+    },
+
+    "lat_aromantisch": {
+        pathos: {
+            gemeinsam: [
+                "Beide schätzen Distanz und eigenen Raum.",
+                "Platonische LAT-Beziehung ist denkbar."
+            ],
+            spannung: [
+                "LAT könnte Romantik erwarten, die Aromantisch nicht bieten kann."
+            ]
+        },
+        logos: {
+            gemeinsam: [
+                "Beide können mit getrenntem Wohnen umgehen.",
+                "Keine Verschmelzungserwartung."
+            ],
+            unterschied: [
+                "LAT erwartet oft romantische Beziehung.",
+                "Aromantisch kann nur platonische Verbindungen bieten."
+            ]
+        },
+        pro: [
+            "Beide schätzen Distanz und eigenen Raum",
+            "Platonische LAT-Beziehung ist möglich",
+            "Keine Zusammenlebens-Erwartung"
+        ],
+        contra: [
+            "LAT könnte Romantik erwarten",
+            "Unterschiedliche Beziehungsziele"
         ]
     },
 
@@ -1296,6 +1608,164 @@ const archetypeStatements = {
             "Duo erwartet Romantik",
             "Fundamentaler Unterschied",
             "Duo fühlt sich nicht 'richtig' geliebt"
+        ]
+    },
+
+    "aromantisch_duo_flex": {
+        pathos: {
+            gemeinsam: [
+                "Duo-Flex zeigt Flexibilität, die Aromantisch entgegenkommt."
+            ],
+            spannung: [
+                "Duo-Flex erwartet romantische Primärbeziehung.",
+                "Aromantisch kann diese Erwartung nicht erfüllen."
+            ]
+        },
+        logos: {
+            gemeinsam: [
+                "Beide haben unkonventionelle Beziehungsansätze."
+            ],
+            unterschied: [
+                "Romantische Erwartungen an Primärpartner bestehen bei Duo-Flex.",
+                "Aromantisch kann nur platonische Verbindungen bieten."
+            ]
+        },
+        pro: [
+            "Duo-Flex ist flexibler als Duo",
+            "Aromantisch könnte als Flex-Partner passen",
+            "Beide verstehen nicht-traditionelle Beziehungsformen"
+        ],
+        contra: [
+            "Romantische Erwartungen an Primärpartner bestehen",
+            "Fundamentale Unterschiede bei Romantik",
+            "Aromantisch wird nie romantischer Partner sein"
+        ]
+    },
+
+    "aromantisch_solopoly": {
+        pathos: {
+            gemeinsam: [
+                "Beide haben unkonventionelle Beziehungsmodelle.",
+                "Autonomie wird beidseitig respektiert."
+            ],
+            spannung: [
+                "Solopoly sucht romantische Verbindungen.",
+                "Aromantisch kann nur platonische Tiefe bieten."
+            ]
+        },
+        logos: {
+            gemeinsam: [
+                "Beide leben autonom und selbstbestimmt.",
+                "Keine traditionellen Erwartungen."
+            ],
+            unterschied: [
+                "Solopoly ist auf romantische Beziehungen ausgerichtet.",
+                "Aromantisch schließt Romantik aus."
+            ]
+        },
+        pro: [
+            "Solopoly versteht alternative Beziehungsformen",
+            "Autonomie wird respektiert",
+            "Tiefe platonische Verbindung ist möglich"
+        ],
+        contra: [
+            "Solopoly sucht romantische Verbindungen",
+            "Unterschiedliche Beziehungsziele",
+            "Aromantisch kann romantische Erwartungen nicht erfüllen"
+        ]
+    },
+
+    "aromantisch_polyamor": {
+        pathos: {
+            gemeinsam: [
+                "Polyamor ist offen für verschiedene Verbindungsarten."
+            ],
+            spannung: [
+                "Polyamor fokussiert auf romantische Liebe.",
+                "Aromantisch kann nur platonische Verbindungen bieten.",
+                "Fundamentaler Unterschied in der Beziehungsdefinition."
+            ]
+        },
+        logos: {
+            gemeinsam: [
+                "Beide reflektieren über Beziehungsformen."
+            ],
+            unterschied: [
+                "Polyamor definiert sich über romantische Mehrfachliebe.",
+                "Aromantisch kann diese Basis nicht teilen."
+            ]
+        },
+        pro: [
+            "Polyamor ist offen für verschiedene Verbindungsarten",
+            "Aromantisch könnte platonischer Partner sein",
+            "Community-Aspekt kann bereichernd sein"
+        ],
+        contra: [
+            "Polyamor fokussiert auf romantische Liebe",
+            "Fundamentaler Unterschied in Erwartungen",
+            "Aromantisch wird immer 'anders' sein im Netzwerk"
+        ]
+    },
+
+    "aromantisch_ra": {
+        pathos: {
+            gemeinsam: [
+                "Beide lehnen traditionelle Beziehungserwartungen ab.",
+                "Keine vorgegebenen Skripte bestimmen die Verbindung.",
+                "Individuelle Vereinbarungen sind selbstverständlich."
+            ],
+            spannung: [
+                "Unterschiedliche Motivationen für ihre Haltungen."
+            ]
+        },
+        logos: {
+            gemeinsam: [
+                "Beide definieren Beziehungen individuell.",
+                "Keine romantischen Erwartungen als Pflicht."
+            ],
+            unterschied: [
+                "RA ist offen für alle Verbindungsformen, Aromantisch schließt Romantik aus."
+            ]
+        },
+        pro: [
+            "RA lehnt Beziehungs-Labels ab – passt zu Aromantisch",
+            "Individuelle Definitionen möglich",
+            "Beide lehnen traditionelle Erwartungen ab"
+        ],
+        contra: [
+            "Unterschiedliche Motivationen",
+            "Gesellschaftlich wenig verstanden"
+        ]
+    },
+
+    "aromantisch_lat": {
+        pathos: {
+            gemeinsam: [
+                "Beide schätzen eigenen Raum und Distanz.",
+                "Platonische LAT-Beziehung ist denkbar."
+            ],
+            spannung: [
+                "LAT erwartet oft romantische Beziehung.",
+                "Aromantisch kann diese Erwartung nicht erfüllen."
+            ]
+        },
+        logos: {
+            gemeinsam: [
+                "Beide leben getrennt und schätzen das.",
+                "Keine Verschmelzungserwartung."
+            ],
+            unterschied: [
+                "LAT ist oft auf romantische Beziehung ausgerichtet."
+            ]
+        },
+        pro: [
+            "LAT kann platonisch funktionieren",
+            "Eigener Raum wird respektiert",
+            "Beide schätzen Distanz"
+        ],
+        contra: [
+            "LAT könnte Romantik erwarten",
+            "Unterschiedliche Beziehungsziele"
         ]
     },
 
