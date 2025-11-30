@@ -19842,6 +19842,61 @@
         // Partner selection
         window.selectPartner = selectPartner;
 
+        // Navigation functions (for nav dots and carousel)
+        window.navigatePrev = navigatePrev;
+        window.navigateNext = navigateNext;
+        window.scrollToCard = scrollToCard;
+
+        // i18n translation update function (for language toggle button)
+        window.updateAllTranslations = updateAllTranslations;
+
+        // Additional modal functions
+        window.openCategoryModal = openCategoryModal;
+        window.openDefinitionModal = openDefinitionModal;
+        window.openMatchModal = openMatchModal;
+
+        // Category and tag related functions
+        window.openSingleCategoryModal = openSingleCategoryModal;
+        window.navigateCategoryPrev = navigateCategoryPrev;
+        window.navigateCategoryNext = navigateCategoryNext;
+        window.navigateCategoryArchetype = navigateCategoryArchetype;
+        window.showCategoryDetails = showCategoryDetails;
+        window.openTagTooltip = openTagTooltip;
+        window.closeTagTooltip = closeTagTooltip;
+
+        // Definition modal functions
+        window.navigateDefinitionModal = navigateDefinitionModal;
+        window.confirmDefinitionSelection = confirmDefinitionSelection;
+
+        // Match modal functions
+        window.toggleMatchModalView = toggleMatchModalView;
+
+        // Feedback and reply functions
+        window.openFeedbackModalWithContext = openFeedbackModalWithContext;
+        window.openReplyModal = openReplyModal;
+
+        // Pathos/Logos info functions
+        window.toggleLogosWarning = toggleLogosWarning;
+        window.showPathosLogosInfo = showPathosLogosInfo;
+        window.showSubDimensionInfo = showSubDimensionInfo;
+
+        // Mobile navigation functions
+        window.mobileGoToPage = mobileGoToPage;
+        window.toggleMobileCategory = toggleMobileCategory;
+
+        // Utility functions
+        window.toggleCollapsible = toggleCollapsible;
+        window.resetAll = resetAll;
+
+        // Wrapper functions for secondary interessiert buttons (used in modal)
+        // These call the status toggle with 'interessiert' as the status
+        window.handleSecondaryInteressiert = function(person, dominanzType, btn) {
+            handleDominanzStatusToggle(person, dominanzType, 'interessiert', btn);
+        };
+        window.handleOrientierungSecondaryInteressiert = function(person, orientierungType, btn) {
+            handleOrientierungStatusToggle(person, orientierungType, 'interessiert', btn);
+        };
+
         console.log('All modal functions are now globally available');
     </script>
 </body>
