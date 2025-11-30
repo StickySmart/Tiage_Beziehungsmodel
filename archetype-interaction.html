@@ -4343,10 +4343,26 @@
             margin: -2px -4px;
         }
 
-        .geschlecht-info-link:hover {
+        .geschlecht-info-link:hover,
+        .dominanz-info-link:hover,
+        .orientierung-info-link:hover,
+        .gfk-info-link:hover {
             color: var(--primary);
             background: rgba(69, 123, 157, 0.15);
             text-decoration-color: var(--primary);
+        }
+
+        /* Spezifische Link-Klassen für Dimensionen (erben Basis-Styling) */
+        .dominanz-info-link,
+        .orientierung-info-link,
+        .gfk-info-link {
+            cursor: pointer;
+            text-decoration: underline;
+            text-decoration-style: dotted;
+            transition: all 0.2s ease;
+            padding: 2px 4px;
+            border-radius: 4px;
+            margin: -2px -4px;
         }
 
         /* Geschlechtsidentität: Grid-Layout für 9 Optionen */
@@ -6004,8 +6020,11 @@
                 font-size: 15px;
             }
 
-            /* Mobile: Größere Geschlechtsidentität Info-Link */
-            .geschlecht-info-link {
+            /* Mobile: Größere Dimensions-Info-Links */
+            .geschlecht-info-link,
+            .dominanz-info-link,
+            .orientierung-info-link,
+            .gfk-info-link {
                 font-size: 16px;
             }
 
@@ -6965,22 +6984,22 @@
                 <div class="header-geschlecht-info" id="ich-header-orientierung"></div>
                 <div class="column-dimensions">
                     <div class="compact-dimension needs-selection collapsible-dimension" data-dimension="ich-geschlecht-new">
-                        <div class="compact-dimension-label"><span class="geschlecht-info-link" onclick="showGeschlechtInfoModal()">Geschlechtsidentität</span> <span id="ich-geschlecht-legend" class="geschlecht-legend" style="font-size: 10px; opacity: 0.7;">(<span class="legend-i">I</span>=Identität, <span class="legend-g">G</span>=Sekundär)</span></div>
+                        <div class="compact-dimension-label"><span class="geschlecht-info-link">Geschlechtsidentität</span> <span id="ich-geschlecht-legend" class="geschlecht-legend" style="font-size: 10px; opacity: 0.7;">(<span class="legend-i">I</span>=Identität, <span class="legend-g">G</span>=Sekundär)</span></div>
                         <div class="collapsed-summary" id="ich-geschlecht-summary"></div>
                         <div class="geschlecht-grid" id="ich-geschlecht-grid" data-person="ich"></div>
                     </div>
                     <div class="compact-dimension needs-selection collapsible-dimension" data-dimension="ich-dominanz-multi">
-                        <div class="compact-dimension-label"><span class="geschlecht-info-link" onclick="showDominanzInfoModal()">Dominanz</span> <span id="ich-dominanz-legend" class="geschlecht-legend" style="font-size: 10px; text-decoration: underline; cursor: pointer;" onclick="showDimensionTooltip('dominanzStatus')">(<span class="legend-i">I</span>=Identität, <span class="legend-g">G</span>=Sekundär)</span></div>
+                        <div class="compact-dimension-label"><span class="dominanz-info-link">Dominanz</span> <span id="ich-dominanz-legend" class="geschlecht-legend" style="font-size: 10px; text-decoration: underline; cursor: pointer;" onclick="showDimensionTooltip('dominanzStatus')">(<span class="legend-i">I</span>=Identität, <span class="legend-g">G</span>=Sekundär)</span></div>
                         <div class="collapsed-summary" id="ich-dominanz-summary"></div>
                         <div class="dominanz-grid" id="ich-dominanz-grid" data-person="ich"></div>
                     </div>
                     <div class="compact-dimension needs-selection collapsible-dimension" data-dimension="ich-orientierung-multi">
-                        <div class="compact-dimension-label"><span class="geschlecht-info-link" onclick="showOrientierungInfoModal()">Orientierung</span> <span id="ich-orientierung-legend" class="geschlecht-legend" style="font-size: 10px; text-decoration: underline; cursor: pointer;" onclick="showDimensionTooltip('status')">(<span class="legend-i">I</span>=Identität, <span class="legend-g">G</span>=Sekundär)</span></div>
+                        <div class="compact-dimension-label"><span class="orientierung-info-link">Orientierung</span> <span id="ich-orientierung-legend" class="geschlecht-legend" style="font-size: 10px; text-decoration: underline; cursor: pointer;" onclick="showDimensionTooltip('status')">(<span class="legend-i">I</span>=Identität, <span class="legend-g">G</span>=Sekundär)</span></div>
                         <div class="collapsed-summary" id="ich-orientierung-summary"></div>
                         <div class="orientierung-grid" id="ich-orientierung-grid" data-person="ich"></div>
                     </div>
                     <div class="compact-dimension collapsible-dimension" data-dimension="ich-gfk">
-                        <div class="compact-dimension-label"><span class="geschlecht-info-link" onclick="showDimensionTooltip('gfk')">GFK-Kompetenz</span></div>
+                        <div class="compact-dimension-label"><span class="gfk-info-link">GFK-Kompetenz</span></div>
                         <div class="collapsed-summary" id="ich-gfk-summary"></div>
                         <div class="gfk-grid" id="ich-gfk-grid" data-person="ich"></div>
                     </div>
@@ -7065,22 +7084,22 @@
                 <div class="header-geschlecht-info" id="partner-header-orientierung"></div>
                 <div class="column-dimensions">
                     <div class="compact-dimension needs-selection collapsible-dimension" data-dimension="partner-geschlecht-new">
-                        <div class="compact-dimension-label"><span class="geschlecht-info-link" onclick="showGeschlechtInfoModal()">Geschlechtsidentität</span> <span id="partner-geschlecht-legend" class="geschlecht-legend" style="font-size: 10px; opacity: 0.7;">(<span class="legend-i">I</span>=Identität, <span class="legend-g">G</span>=Sekundär)</span></div>
+                        <div class="compact-dimension-label"><span class="geschlecht-info-link">Geschlechtsidentität</span> <span id="partner-geschlecht-legend" class="geschlecht-legend" style="font-size: 10px; opacity: 0.7;">(<span class="legend-i">I</span>=Identität, <span class="legend-g">G</span>=Sekundär)</span></div>
                         <div class="collapsed-summary" id="partner-geschlecht-summary"></div>
                         <div class="geschlecht-grid" id="partner-geschlecht-grid" data-person="partner"></div>
                     </div>
                     <div class="compact-dimension needs-selection collapsible-dimension" data-dimension="partner-dominanz-multi">
-                        <div class="compact-dimension-label"><span class="geschlecht-info-link" onclick="showDominanzInfoModal()">Dominanz</span> <span id="partner-dominanz-legend" class="geschlecht-legend" style="font-size: 10px; text-decoration: underline; cursor: pointer;" onclick="showDimensionTooltip('dominanzStatus')">(<span class="legend-i">I</span>=Identität, <span class="legend-g">G</span>=Sekundär)</span></div>
+                        <div class="compact-dimension-label"><span class="dominanz-info-link">Dominanz</span> <span id="partner-dominanz-legend" class="geschlecht-legend" style="font-size: 10px; text-decoration: underline; cursor: pointer;" onclick="showDimensionTooltip('dominanzStatus')">(<span class="legend-i">I</span>=Identität, <span class="legend-g">G</span>=Sekundär)</span></div>
                         <div class="collapsed-summary" id="partner-dominanz-summary"></div>
                         <div class="dominanz-grid" id="partner-dominanz-grid" data-person="partner"></div>
                     </div>
                     <div class="compact-dimension needs-selection collapsible-dimension" data-dimension="partner-orientierung-multi">
-                        <div class="compact-dimension-label"><span class="geschlecht-info-link" onclick="showOrientierungInfoModal()">Orientierung</span> <span id="partner-orientierung-legend" class="geschlecht-legend" style="font-size: 10px; text-decoration: underline; cursor: pointer;" onclick="showDimensionTooltip('status')">(<span class="legend-i">I</span>=Identität, <span class="legend-g">G</span>=Sekundär)</span></div>
+                        <div class="compact-dimension-label"><span class="orientierung-info-link">Orientierung</span> <span id="partner-orientierung-legend" class="geschlecht-legend" style="font-size: 10px; text-decoration: underline; cursor: pointer;" onclick="showDimensionTooltip('status')">(<span class="legend-i">I</span>=Identität, <span class="legend-g">G</span>=Sekundär)</span></div>
                         <div class="collapsed-summary" id="partner-orientierung-summary"></div>
                         <div class="orientierung-grid" id="partner-orientierung-grid" data-person="partner"></div>
                     </div>
                     <div class="compact-dimension collapsible-dimension" data-dimension="partner-gfk">
-                        <div class="compact-dimension-label"><span class="geschlecht-info-link" onclick="showDimensionTooltip('gfk')">GFK-Kompetenz</span></div>
+                        <div class="compact-dimension-label"><span class="gfk-info-link">GFK-Kompetenz</span></div>
                         <div class="collapsed-summary" id="partner-gfk-summary"></div>
                         <div class="gfk-grid" id="partner-gfk-grid" data-person="partner"></div>
                     </div>
@@ -7144,13 +7163,13 @@
                 </div>
                 <div class="column-dimensions" id="mobileIchDimensions">
                     <div class="compact-dimension needs-selection collapsible-dimension" data-dimension="mobile-ich-geschlecht">
-                        <div class="compact-dimension-label"><span class="geschlecht-info-link" onclick="showGeschlechtInfoModal()">Geschlechtsidentität</span> <span id="mobile-ich-geschlecht-legend" class="geschlecht-legend" style="font-size: 10px; opacity: 0.7;">(<span class="legend-i">I</span>=Identität, <span class="legend-g">G</span>=Sekundär)</span></div>
+                        <div class="compact-dimension-label"><span class="geschlecht-info-link">Geschlechtsidentität</span> <span id="mobile-ich-geschlecht-legend" class="geschlecht-legend" style="font-size: 10px; opacity: 0.7;">(<span class="legend-i">I</span>=Identität, <span class="legend-g">G</span>=Sekundär)</span></div>
                         <div class="collapsed-summary" id="mobile-ich-geschlecht-summary"></div>
                         <div class="geschlecht-grid" id="mobile-ich-geschlecht-grid" data-person="ich"></div>
                     </div>
                     <div class="compact-dimension needs-selection collapsible-dimension" data-dimension="mobile-ich-dominanz-multi">
                         <div class="compact-dimension-label" onclick="toggleDimensionCollapse(this.parentElement)">
-                            <span><span class="geschlecht-info-link" onclick="event.stopPropagation(); showDominanzInfoModal()">Dominanz</span> <span style="font-size: 10px; text-decoration: underline; cursor: pointer;" onclick="event.stopPropagation(); showDimensionTooltip('dominanzStatus')">(I=Identität, G=Sekundär)</span></span>
+                            <span><span class="dominanz-info-link" onclick="event.stopPropagation()">Dominanz</span> <span style="font-size: 10px; text-decoration: underline; cursor: pointer;" onclick="event.stopPropagation(); showDimensionTooltip('dominanzStatus')">(I=Identität, G=Sekundär)</span></span>
                             <span class="collapse-toggle">▼</span>
                         </div>
                         <div class="collapsed-summary" id="mobile-ich-dominanz-summary"></div>
@@ -7187,7 +7206,7 @@
                     </div>
                     <div class="compact-dimension needs-selection collapsible-dimension" data-dimension="mobile-ich-orientierung-multi">
                         <div class="compact-dimension-label" onclick="toggleDimensionCollapse(this.parentElement)">
-                            <span><span class="geschlecht-info-link" onclick="event.stopPropagation(); showOrientierungInfoModal()">Orientierung</span> <span style="font-size: 10px; text-decoration: underline; cursor: pointer;" onclick="event.stopPropagation(); showDimensionTooltip('status')">(I=Identität, G=Sekundär)</span></span>
+                            <span><span class="orientierung-info-link" onclick="event.stopPropagation()">Orientierung</span> <span style="font-size: 10px; text-decoration: underline; cursor: pointer;" onclick="event.stopPropagation(); showDimensionTooltip('status')">(I=Identität, G=Sekundär)</span></span>
                             <span class="collapse-toggle">▼</span>
                         </div>
                         <div class="collapsed-summary" id="mobile-ich-orientierung-summary"></div>
@@ -7240,13 +7259,13 @@
                 </div>
                 <div class="column-dimensions" id="mobilePartnerDimensions">
                     <div class="compact-dimension needs-selection collapsible-dimension" data-dimension="mobile-partner-geschlecht">
-                        <div class="compact-dimension-label"><span class="geschlecht-info-link" onclick="showGeschlechtInfoModal()">Geschlechtsidentität</span> <span id="mobile-partner-geschlecht-legend" class="geschlecht-legend" style="font-size: 10px; opacity: 0.7;">(<span class="legend-i">I</span>=Identität, <span class="legend-g">G</span>=Sekundär)</span></div>
+                        <div class="compact-dimension-label"><span class="geschlecht-info-link">Geschlechtsidentität</span> <span id="mobile-partner-geschlecht-legend" class="geschlecht-legend" style="font-size: 10px; opacity: 0.7;">(<span class="legend-i">I</span>=Identität, <span class="legend-g">G</span>=Sekundär)</span></div>
                         <div class="collapsed-summary" id="mobile-partner-geschlecht-summary"></div>
                         <div class="geschlecht-grid" id="mobile-partner-geschlecht-grid" data-person="partner"></div>
                     </div>
                     <div class="compact-dimension needs-selection collapsible-dimension" data-dimension="mobile-partner-dominanz-multi">
                         <div class="compact-dimension-label" onclick="toggleDimensionCollapse(this.parentElement)">
-                            <span><span class="geschlecht-info-link" onclick="event.stopPropagation(); showDominanzInfoModal()">Dominanz</span> <span style="font-size: 10px; text-decoration: underline; cursor: pointer;" onclick="event.stopPropagation(); showDimensionTooltip('dominanzStatus')">(I=Identität, G=Sekundär)</span></span>
+                            <span><span class="dominanz-info-link" onclick="event.stopPropagation()">Dominanz</span> <span style="font-size: 10px; text-decoration: underline; cursor: pointer;" onclick="event.stopPropagation(); showDimensionTooltip('dominanzStatus')">(I=Identität, G=Sekundär)</span></span>
                             <span class="collapse-toggle">▼</span>
                         </div>
                         <div class="collapsed-summary" id="mobile-partner-dominanz-summary"></div>
@@ -7283,7 +7302,7 @@
                     </div>
                     <div class="compact-dimension needs-selection collapsible-dimension" data-dimension="mobile-partner-orientierung-multi">
                         <div class="compact-dimension-label" onclick="toggleDimensionCollapse(this.parentElement)">
-                            <span><span class="geschlecht-info-link" onclick="event.stopPropagation(); showOrientierungInfoModal()">Orientierung</span> <span style="font-size: 10px; text-decoration: underline; cursor: pointer;" onclick="event.stopPropagation(); showDimensionTooltip('status')">(I=Identität, G=Sekundär)</span></span>
+                            <span><span class="orientierung-info-link" onclick="event.stopPropagation()">Orientierung</span> <span style="font-size: 10px; text-decoration: underline; cursor: pointer;" onclick="event.stopPropagation(); showDimensionTooltip('status')">(I=Identität, G=Sekundär)</span></span>
                             <span class="collapse-toggle">▼</span>
                         </div>
                         <div class="collapsed-summary" id="mobile-partner-orientierung-summary"></div>
@@ -7464,7 +7483,7 @@
                             <!-- Geschlechtsidentität -->
                             <div class="dimension-group needs-selection" data-dimension="ich-geschlecht">
                                 <div class="dimension-label">
-                                    <span class="geschlecht-info-link" onclick="showGeschlechtInfoModal()">Geschlechtsidentität</span>
+                                    <span class="geschlecht-info-link">Geschlechtsidentität</span>
                                     <span style="font-size: 10px; opacity: 0.7;">(I=Identität, G=Sekundär)</span>
                                 </div>
                                 <div class="geschlecht-grid" id="modal-ich-geschlecht-grid" data-person="ich"></div>
@@ -7630,7 +7649,7 @@
                             <!-- Geschlecht -->
                             <div class="dimension-group needs-selection" data-dimension="partner-geschlecht">
                                 <div class="dimension-label">
-                                    <span class="geschlecht-info-link" onclick="showGeschlechtInfoModal()">Geschlechtsidentität</span>
+                                    <span class="geschlecht-info-link">Geschlechtsidentität</span>
                                     <span style="font-size: 10px; opacity: 0.7;">(I=Identität, G=Sekundär)</span>
                                 </div>
                                 <div class="geschlecht-grid" id="modal-partner-geschlecht-grid" data-person="partner"></div>
@@ -8393,53 +8412,54 @@
 
         /**
          * Update dimension section labels (Geschlechtsidentität, Dominanz, Orientierung, GFK)
+         * Uses specific CSS classes for each dimension type
          */
         function updateDimensionSectionLabels() {
-            // Update Geschlechtsidentität labels - only elements that call showGeschlechtInfoModal
-            document.querySelectorAll('.geschlecht-info-link[onclick*="showGeschlechtInfoModal"]').forEach(el => {
+            // Update Geschlechtsidentität labels
+            document.querySelectorAll('.geschlecht-info-link').forEach(el => {
                 el.textContent = TiageI18n.t('dimensions.geschlechtLabel', 'Geschlechtsidentität');
             });
 
-            // Update Dominanz labels - only elements that call showDominanzInfoModal
-            document.querySelectorAll('.geschlecht-info-link[onclick*="showDominanzInfoModal"]').forEach(el => {
+            // Update Dominanz labels
+            document.querySelectorAll('.dominanz-info-link').forEach(el => {
                 el.textContent = TiageI18n.t('dimensions.dominanzLabel', 'Dominanz');
             });
 
-            // Update Orientierung labels - only elements that call showOrientierungInfoModal
-            document.querySelectorAll('.geschlecht-info-link[onclick*="showOrientierungInfoModal"]').forEach(el => {
+            // Update Orientierung labels
+            document.querySelectorAll('.orientierung-info-link').forEach(el => {
                 el.textContent = TiageI18n.t('dimensions.orientierungLabel', 'Orientierung');
             });
 
-            // Update GFK labels - only elements that call showDimensionTooltip('gfk')
-            document.querySelectorAll('.geschlecht-info-link[onclick*="showDimensionTooltip"]').forEach(el => {
-                if (el.getAttribute('onclick')?.includes("'gfk'")) {
-                    el.textContent = TiageI18n.t('dimensions.gfkLabel', 'GFK-Kompetenz');
-                }
+            // Update GFK labels
+            document.querySelectorAll('.gfk-info-link').forEach(el => {
+                el.textContent = TiageI18n.t('dimensions.gfkLabel', 'GFK-Kompetenz');
             });
 
-            // Update Dominanz section labels
+            // Update Dominanz section labels (preserving CSS classes)
             document.querySelectorAll('[data-dimension$="-dominanz-multi"] > .compact-dimension-label > span:first-child').forEach(el => {
-                const hint = el.querySelector('span');
-                if (hint) {
+                const dominanzLink = el.querySelector('.dominanz-info-link');
+                const legendSpan = el.querySelector('span:not(.dominanz-info-link)');
+                if (dominanzLink && legendSpan) {
                     const i = TiageI18n.t('dimensions.legend.identity', 'I');
                     const g = TiageI18n.t('dimensions.legend.secondary', 'G');
                     const iFull = TiageI18n.t('dimensions.legend.identityFull', 'Identität');
                     const gFull = TiageI18n.t('dimensions.legend.secondaryFull', 'Sekundär');
-                    el.innerHTML = TiageI18n.t('dimensions.dominanzLabel', 'Dominanz') +
-                        ` <span style="font-size: 10px; text-decoration: underline; cursor: pointer;" onclick="showDimensionTooltip('dominanzStatus')">(${i}=${iFull}, ${g}=${gFull})</span>`;
+                    dominanzLink.textContent = TiageI18n.t('dimensions.dominanzLabel', 'Dominanz');
+                    legendSpan.innerHTML = `(${i}=${iFull}, ${g}=${gFull})`;
                 }
             });
 
-            // Update Orientierung section labels
+            // Update Orientierung section labels (preserving CSS classes)
             document.querySelectorAll('[data-dimension$="-orientierung-multi"] > .compact-dimension-label > span:first-child').forEach(el => {
-                const hint = el.querySelector('span');
-                if (hint) {
+                const orientierungLink = el.querySelector('.orientierung-info-link');
+                const legendSpan = el.querySelector('span:not(.orientierung-info-link)');
+                if (orientierungLink && legendSpan) {
                     const i = TiageI18n.t('dimensions.legend.identity', 'I');
                     const g = TiageI18n.t('dimensions.legend.secondary', 'G');
                     const iFull = TiageI18n.t('dimensions.legend.identityFull', 'Identität');
                     const gFull = TiageI18n.t('dimensions.legend.secondaryFull', 'Sekundär');
-                    el.innerHTML = TiageI18n.t('dimensions.orientierungLabel', 'Orientierung') +
-                        ` <span style="font-size: 10px; text-decoration: underline; cursor: pointer;" onclick="showDimensionTooltip('status')">(${i}=${iFull}, ${g}=${gFull})</span>`;
+                    orientierungLink.textContent = TiageI18n.t('dimensions.orientierungLabel', 'Orientierung');
+                    legendSpan.innerHTML = `(${i}=${iFull}, ${g}=${gFull})`;
                 }
             });
 
@@ -10137,7 +10157,48 @@
                 carousel.addEventListener('scroll', updateNavDots);
             }
 
+            // Initialize dimension info link event listeners
+            initDimensionInfoLinks();
+
             updateAll();
+        }
+
+        /**
+         * Initialize event listeners for dimension info links
+         * Uses CSS classes instead of onclick attributes for cleaner code
+         */
+        function initDimensionInfoLinks() {
+            // Geschlechtsidentität links
+            document.querySelectorAll('.geschlecht-info-link').forEach(el => {
+                el.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    showGeschlechtInfoModal();
+                });
+            });
+
+            // Dominanz links
+            document.querySelectorAll('.dominanz-info-link').forEach(el => {
+                el.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    showDominanzInfoModal();
+                });
+            });
+
+            // Orientierung links
+            document.querySelectorAll('.orientierung-info-link').forEach(el => {
+                el.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    showOrientierungInfoModal();
+                });
+            });
+
+            // GFK links
+            document.querySelectorAll('.gfk-info-link').forEach(el => {
+                el.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    showDimensionTooltip('gfk');
+                });
+            });
         }
 
         function updateAll() {
