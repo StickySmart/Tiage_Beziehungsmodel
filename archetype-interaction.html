@@ -6017,7 +6017,7 @@
             color: #eab308;
         }
         .impressum-modal {
-            display: none;
+            display: none !important;
             position: fixed;
             top: 0;
             left: 0;
@@ -6029,7 +6029,7 @@
             align-items: center;
         }
         .impressum-modal.active {
-            display: flex;
+            display: flex !important;
         }
         .impressum-content {
             background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
@@ -8076,7 +8076,7 @@
         </div>
         <div style="margin-bottom: 10px;">© 2025 Ti-Age – Alle Rechte vorbehalten</div>
         <div style="margin-bottom: 10px; font-size: 11px; opacity: 0.7;">Version 1.4.0</div>
-        <a href="#" onclick="document.getElementById('impressumModal').classList.add('active'); return false;">Impressum</a>
+        <a href="#" onclick="var m=document.getElementById('impressumModal'); m.style.display='flex'; m.classList.add('active'); return false;">Impressum</a>
         <span>|</span>
         <a href="datenschutz.html">Datenschutz</a>
         <span>|</span>
@@ -8084,7 +8084,7 @@
     </footer>
 
     <!-- Impressum Modal -->
-    <div class="impressum-modal" id="impressumModal" onclick="this.classList.remove('active')">
+    <div class="impressum-modal" id="impressumModal" style="display:none" onclick="this.style.display='none'; this.classList.remove('active')">
         <div class="impressum-content" onclick="event.stopPropagation()">
             <h3>Impressum</h3>
             <p><strong>Betreiber:</strong> Ti-Age</p>
