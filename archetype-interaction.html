@@ -13244,6 +13244,14 @@
         // ========================================
         // Desktop Selection Info Message
         // ========================================
+        // Helper function to get geschlecht value from both string and object formats
+        function getGeschlechtValue(g) {
+            if (!g) return null;
+            if (typeof g === 'string') return g;
+            if (typeof g === 'object' && g.primary) return g.primary;
+            return null;
+        }
+
         function updateSelectionInfoMessage() {
             const infoElement = document.getElementById('desktopSelectionInfo');
             if (!infoElement) return;
@@ -13252,7 +13260,7 @@
 
             // Check ICH
             const ichMissing = [];
-            if (!personDimensions.ich.geschlecht.primary) ichMissing.push('Geschlecht');
+            if (!getGeschlechtValue(personDimensions.ich.geschlecht)) ichMissing.push('Geschlecht');
             if (!hasAnyDominanzSelected('ich')) ichMissing.push('Dominanz');
             if (!hasAnyOrientierungSelected('ich')) ichMissing.push('Orientierung');
             if (ichMissing.length > 0) {
@@ -13261,7 +13269,7 @@
 
             // Check Partner
             const partnerMissing = [];
-            if (!personDimensions.partner.geschlecht.primary) partnerMissing.push('Geschlecht');
+            if (!getGeschlechtValue(personDimensions.partner.geschlecht)) partnerMissing.push('Geschlecht');
             if (!hasAnyDominanzSelected('partner')) partnerMissing.push('Dominanz');
             if (!hasAnyOrientierungSelected('partner')) partnerMissing.push('Orientierung');
             if (partnerMissing.length > 0) {
@@ -13522,7 +13530,7 @@
                 radio.addEventListener('change', (e) => {
                     const dimensionGroup = e.target.closest('.dimension-group');
                     if (dimensionGroup) dimensionGroup.classList.remove('needs-selection');
-                    handleDominanzChange('ich', e.target.value);
+                    handleDominanzClick('ich', e.target.value);
                 });
             });
             document.querySelectorAll('input[name="ich-dominanz-status"]').forEach(radio => {
@@ -13537,7 +13545,7 @@
                 radio.addEventListener('change', (e) => {
                     const dimensionGroup = e.target.closest('.dimension-group');
                     if (dimensionGroup) dimensionGroup.classList.remove('needs-selection');
-                    handleDominanzChange('partner', e.target.value);
+                    handleDominanzClick('partner', e.target.value);
                 });
             });
             document.querySelectorAll('input[name="partner-dominanz-status"]').forEach(radio => {
@@ -14903,16 +14911,15 @@
             // ICH compact dimensions
             document.querySelectorAll('input[name="ich-geschlecht-new"]').forEach(radio => {
                 radio.addEventListener('change', (e) => {
-                    personDimensions.ich.geschlecht = e.target.value;
                     e.target.closest('.compact-dimension').classList.remove('needs-selection');
-                    updateAnalysisOverview();
-                    updateComparisonView();
+                    // Use handleGeschlechtClick to maintain consistent object format
+                    handleGeschlechtClick('ich', e.target.value, e.target);
                 });
             });
             document.querySelectorAll('input[name="ich-dominanz-new"]').forEach(radio => {
                 radio.addEventListener('change', (e) => {
                     e.target.closest('.compact-dimension').classList.remove('needs-selection');
-                    handleDominanzChange('ich', e.target.value);
+                    handleDominanzClick('ich', e.target.value);
                 });
             });
             document.querySelectorAll('input[name="ich-dominanz-status-new"]').forEach(radio => {
@@ -14927,16 +14934,15 @@
             // Partner compact dimensions
             document.querySelectorAll('input[name="partner-geschlecht-new"]').forEach(radio => {
                 radio.addEventListener('change', (e) => {
-                    personDimensions.partner.geschlecht = e.target.value;
                     e.target.closest('.compact-dimension').classList.remove('needs-selection');
-                    updateAnalysisOverview();
-                    updateComparisonView();
+                    // Use handleGeschlechtClick to maintain consistent object format
+                    handleGeschlechtClick('partner', e.target.value, e.target);
                 });
             });
             document.querySelectorAll('input[name="partner-dominanz-new"]').forEach(radio => {
                 radio.addEventListener('change', (e) => {
                     e.target.closest('.compact-dimension').classList.remove('needs-selection');
-                    handleDominanzChange('partner', e.target.value);
+                    handleDominanzClick('partner', e.target.value);
                 });
             });
             document.querySelectorAll('input[name="partner-dominanz-status-new"]').forEach(radio => {
@@ -16387,13 +16393,13 @@
         let mobilePersonDimensions = {
             ich: {
                 geschlecht: { primary: null, secondary: null },
-                dominanz: { dominant: null, submissiv: null, switch: null, ausgeglichen: null },
-                orientierung: { heterosexuell: null, homosexuell: null, bisexuell: null }
+                dominanz: { primary: null, secondary: null },
+                orientierung: { primary: null, secondary: null }
             },
             partner: {
                 geschlecht: { primary: null, secondary: null },
-                dominanz: { dominant: null, submissiv: null, switch: null, ausgeglichen: null },
-                orientierung: { heterosexuell: null, homosexuell: null, bisexuell: null }
+                dominanz: { primary: null, secondary: null },
+                orientierung: { primary: null, secondary: null }
             }
         };
         let mobileIchArchetype = 'single';
@@ -16594,17 +16600,15 @@
             // ICH Dimensions
             document.querySelectorAll('input[name="mobile-ich-geschlecht"]').forEach(radio => {
                 radio.addEventListener('change', (e) => {
-                    mobilePersonDimensions.ich.geschlecht = e.target.value;
-                    personDimensions.ich.geschlecht = e.target.value;
                     e.target.closest('.compact-dimension').classList.remove('needs-selection');
-                    syncDimensionToDesktop('ich-geschlecht-new', e.target.value);
-                    updateComparisonView();
+                    // Use handleGeschlechtClick to maintain consistent object format
+                    handleGeschlechtClick('ich', e.target.value, e.target);
                 });
             });
             document.querySelectorAll('input[name="mobile-ich-dominanz"]').forEach(radio => {
                 radio.addEventListener('change', (e) => {
                     e.target.closest('.compact-dimension').classList.remove('needs-selection');
-                    handleDominanzChange('ich', e.target.value, true);
+                    handleDominanzClick('ich', e.target.value, true);
                 });
             });
             document.querySelectorAll('input[name="mobile-ich-dominanz-status"]').forEach(radio => {
@@ -16620,17 +16624,15 @@
             // Partner Dimensions
             document.querySelectorAll('input[name="mobile-partner-geschlecht"]').forEach(radio => {
                 radio.addEventListener('change', (e) => {
-                    mobilePersonDimensions.partner.geschlecht = e.target.value;
-                    personDimensions.partner.geschlecht = e.target.value;
                     e.target.closest('.compact-dimension').classList.remove('needs-selection');
-                    syncDimensionToDesktop('partner-geschlecht-new', e.target.value);
-                    updateComparisonView();
+                    // Use handleGeschlechtClick to maintain consistent object format
+                    handleGeschlechtClick('partner', e.target.value, e.target);
                 });
             });
             document.querySelectorAll('input[name="mobile-partner-dominanz"]').forEach(radio => {
                 radio.addEventListener('change', (e) => {
                     e.target.closest('.compact-dimension').classList.remove('needs-selection');
-                    handleDominanzChange('partner', e.target.value, true);
+                    handleDominanzClick('partner', e.target.value, true);
                 });
             });
             document.querySelectorAll('input[name="mobile-partner-dominanz-status"]').forEach(radio => {
@@ -16669,8 +16671,11 @@
             const person2 = { archetyp: mobilePartnerArchetype || selectedPartner, ...dims.partner };
 
             // Check if both genders are selected before calculating
-            const g1 = dims.ich.geschlecht;
-            const g2 = dims.partner.geschlecht;
+            // Support both string format ('cis_mann') and object format ({ primary: 'cis_mann' })
+            const g1Raw = dims.ich.geschlecht;
+            const g2Raw = dims.partner.geschlecht;
+            const g1 = (typeof g1Raw === 'string') ? g1Raw : (g1Raw && g1Raw.primary);
+            const g2 = (typeof g2Raw === 'string') ? g2Raw : (g2Raw && g2Raw.primary);
 
             // Check if any orientierung is selected for both (Primary/Secondary structure)
             const hasOri1 = dims.ich.orientierung && dims.ich.orientierung.primary;
@@ -19275,16 +19280,15 @@
             // Reset mobile selections
             mobileIchArchetype = 'single';
             mobilePartnerArchetype = 'duo';
-            const emptyDominanz = { dominant: null, submissiv: null, switch: null, ausgeglichen: null };
-            const emptyOrientierung = { heterosexuell: null, homosexuell: null, bisexuell: null };
+            const emptyDimension = { primary: null, secondary: null };
             mobilePersonDimensions = {
-                ich: { geschlecht: { primary: null, secondary: null }, dominanz: { ...emptyDominanz }, orientierung: { ...emptyOrientierung } },
-                partner: { geschlecht: { primary: null, secondary: null }, dominanz: { ...emptyDominanz }, orientierung: { ...emptyOrientierung } }
+                ich: { geschlecht: { ...emptyDimension }, dominanz: { ...emptyDimension }, orientierung: { ...emptyDimension } },
+                partner: { geschlecht: { ...emptyDimension }, dominanz: { ...emptyDimension }, orientierung: { ...emptyDimension } }
             };
 
             // Reset personDimensions for desktop
-            personDimensions.ich = { geschlecht: { primary: null, secondary: null }, dominanz: { ...emptyDominanz }, orientierung: { ...emptyOrientierung } };
-            personDimensions.partner = { geschlecht: { primary: null, secondary: null }, dominanz: { ...emptyDominanz }, orientierung: { ...emptyOrientierung } };
+            personDimensions.ich = { geschlecht: { ...emptyDimension }, dominanz: { ...emptyDimension }, orientierung: { ...emptyDimension } };
+            personDimensions.partner = { geschlecht: { ...emptyDimension }, dominanz: { ...emptyDimension }, orientierung: { ...emptyDimension } };
 
             // Reset dropdowns
             document.getElementById('mobileIchSelect').value = 'single';
