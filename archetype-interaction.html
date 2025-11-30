@@ -6040,6 +6040,13 @@
             color: #eab308;
         }
 
+        /* Print Styles - Modal beim Drucken ausblenden */
+        @media print {
+            .impressum-modal {
+                display: none !important;
+            }
+        }
+
         /* Pathos/Logos Sticky Toggle Buttons - nur auf Mobile sichtbar */
         #pathosLogosStickyToggle {
             transition: opacity 0.3s ease;
