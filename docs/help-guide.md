@@ -14,13 +14,13 @@
 | **Ergebnis** | Automatische Berechnung der Kompatibilität (4 Faktoren) |
 | **Prozentwerte** | Anklicken = Detaillierte Erklärung pro Faktor |
 
-## Neu in Version 1.4
+## Neu in Version 6.0
 
-- **Gelebt/Interessiert:** Wähle für jede Eigenschaft, ob du sie aktiv lebst oder nur Interesse hast
-- **Auto-Collapse:** Orientierung und Dominanz Sektionen schließen automatisch nach Auswahl
-- **Verbesserte Fehlermeldungen:** Fehlende Felder werden übersichtlich aufgelistet
-- **Mobile Navigation:** Neue Navigationstasten in Modals für bessere Bedienung
-- **Kreisförmige Score-Anzeige:** Kompatibilitätswerte werden visuell ansprechender dargestellt
+- **GFK-Kommunikationsfaktor:** Neuer Resonanz-Faktor basierend auf Gewaltfreier Kommunikation (Marshall Rosenberg)
+- **Dynamische Bedürfnis-Berechnung:** Individuelle Bedürfnis-Profile basierend auf Archetyp, Dominanz, Geschlecht und Orientierung
+- **Erweiterte Resonanz-Formel:** Drei Faktoren (Bedürfnis-Match, Balance, GFK) statt zwei
+- **8 Archetypen:** RA, LAT und Aromantisch hinzugefügt, Poly-Hedo entfernt
+- **Primär/Sekundär-System:** Mehrere Eigenschaften gleichzeitig wählbar
 
 ## Die 4 Qualitätsfaktoren
 
@@ -42,11 +42,12 @@ Jeder Faktor wird einzeln auf 0-100% bewertet. Die **Resonanz (R)** ist ein Meta
 ### Resonanz-Formel
 
 ```
-R = 0.9 + [(M/100 × 0.5) + (B × 0.5)] × 0.2
+R = 0.9 + [(M/100 × 0.35) + (B × 0.35) + (K × 0.30)] × 0.2
 ```
 
-- **M** = Profil-Match (30 Attribute)
-- **B** = Logos-Pathos-Balance
+- **M** = Bedürfnis-Match (dynamisch berechnet aus Archetyp + Dominanz + Geschlecht + Orientierung)
+- **B** = Logos-Pathos-Balance = (100 - |Logos - Pathos|) / 100
+- **K** = GFK-Kommunikationsfaktor (0-1, basierend auf beider Partner GFK-Kompetenz)
 
 ## Rechenbeispiel
 
