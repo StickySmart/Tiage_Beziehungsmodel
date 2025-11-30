@@ -11398,42 +11398,121 @@
 
             let conflictHtml = '';
 
+            // ═══════════════════════════════════════════════════════════════════
+            // DEIN INNERER KONFLIKT - Mit voller Tiefe
+            // ═══════════════════════════════════════════════════════════════════
             if (ichConflict) {
                 conflictHtml += `
                     <div class="match-modal-inner-conflict">
                         <div class="match-modal-inner-conflict-title">🔮 Dein innerer Konflikt: ${ichConflict.core}</div>
                         <div class="match-modal-inner-conflict-text">${ichConflict.description}</div>
+                        ${ichConflict.psychological ? `
+                            <div style="margin-top: 10px; padding: 8px; background: rgba(255, 193, 7, 0.05); border-radius: 6px;">
+                                <div style="font-size: 11px; color: #f39c12; font-weight: 600; margin-bottom: 4px;">🧠 Psychologisch</div>
+                                <div style="font-size: var(--font-xs); color: var(--text-secondary); line-height: 1.5;">${ichConflict.psychological}</div>
+                            </div>
+                        ` : ''}
+                        ${ichConflict.shadow ? `
+                            <div style="margin-top: 8px; padding: 8px; background: rgba(128, 0, 128, 0.08); border-radius: 6px;">
+                                <div style="font-size: 11px; color: #9b59b6; font-weight: 600; margin-bottom: 4px;">🌑 Schattenseite</div>
+                                <div style="font-size: var(--font-xs); color: var(--text-secondary); line-height: 1.5;">${ichConflict.shadow}</div>
+                            </div>
+                        ` : ''}
+                        ${ichConflict.growth ? `
+                            <div style="margin-top: 8px; padding: 8px; background: rgba(39, 174, 96, 0.08); border-radius: 6px;">
+                                <div style="font-size: 11px; color: #27ae60; font-weight: 600; margin-bottom: 4px;">🌱 Wachstumspotenzial</div>
+                                <div style="font-size: var(--font-xs); color: var(--text-secondary); line-height: 1.5;">${ichConflict.growth}</div>
+                            </div>
+                        ` : ''}
                     </div>
                 `;
             }
 
+            // ═══════════════════════════════════════════════════════════════════
+            // PARTNER-KONFLIKT - Mit voller Tiefe
+            // ═══════════════════════════════════════════════════════════════════
             if (partnerConflict && ichId !== partnerId) {
                 conflictHtml += `
-                    <div class="match-modal-inner-conflict" style="margin-top: 8px;">
+                    <div class="match-modal-inner-conflict" style="margin-top: 12px;">
                         <div class="match-modal-inner-conflict-title">🔮 Partner-Konflikt: ${partnerConflict.core}</div>
                         <div class="match-modal-inner-conflict-text">${partnerConflict.description}</div>
+                        ${partnerConflict.psychological ? `
+                            <div style="margin-top: 10px; padding: 8px; background: rgba(255, 193, 7, 0.05); border-radius: 6px;">
+                                <div style="font-size: 11px; color: #f39c12; font-weight: 600; margin-bottom: 4px;">🧠 Psychologisch</div>
+                                <div style="font-size: var(--font-xs); color: var(--text-secondary); line-height: 1.5;">${partnerConflict.psychological}</div>
+                            </div>
+                        ` : ''}
+                        ${partnerConflict.shadow ? `
+                            <div style="margin-top: 8px; padding: 8px; background: rgba(128, 0, 128, 0.08); border-radius: 6px;">
+                                <div style="font-size: 11px; color: #9b59b6; font-weight: 600; margin-bottom: 4px;">🌑 Schattenseite</div>
+                                <div style="font-size: var(--font-xs); color: var(--text-secondary); line-height: 1.5;">${partnerConflict.shadow}</div>
+                            </div>
+                        ` : ''}
+                        ${partnerConflict.growth ? `
+                            <div style="margin-top: 8px; padding: 8px; background: rgba(39, 174, 96, 0.08); border-radius: 6px;">
+                                <div style="font-size: 11px; color: #27ae60; font-weight: 600; margin-bottom: 4px;">🌱 Wachstumspotenzial</div>
+                                <div style="font-size: var(--font-xs); color: var(--text-secondary); line-height: 1.5;">${partnerConflict.growth}</div>
+                            </div>
+                        ` : ''}
                     </div>
                 `;
             }
 
-            // Get partner conflicts
+            // Get partner conflicts (interpersonelle Spannungen)
             const partnerConflicts = IntegratedSynthesisTextGenerator.identifyPartnerConflicts(
                 ichId, partnerId, null, null
             );
 
+            // ═══════════════════════════════════════════════════════════════════
+            // HAUPTSPANNUNGSFELD - Mit voller Tiefe
+            // ═══════════════════════════════════════════════════════════════════
             let partnerConflictHtml = '';
             if (partnerConflicts.length > 0) {
                 const mainConflict = partnerConflicts[0];
                 partnerConflictHtml = `
-                    <div style="margin-top: 12px; padding: 10px; background: rgba(231, 76, 60, 0.08); border-radius: 8px; border: 1px solid rgba(231, 76, 60, 0.2);">
-                        <div style="font-weight: 600; color: var(--danger); font-size: var(--font-sm); margin-bottom: 6px;">
+                    <div style="margin-top: 16px; padding: 12px; background: rgba(231, 76, 60, 0.08); border-radius: 8px; border: 1px solid rgba(231, 76, 60, 0.2);">
+                        <div style="font-weight: 600; color: var(--danger); font-size: var(--font-sm); margin-bottom: 8px;">
                             ⚡ Hauptspannungsfeld: ${mainConflict.title}
                         </div>
-                        <div style="font-size: var(--font-xs); color: var(--text-secondary); line-height: 1.5;">
-                            ${mainConflict.dynamics?.pattern || ''}
+
+                        <!-- Dynamik-Sektion -->
+                        <div style="margin-bottom: 12px;">
+                            <div style="font-size: 11px; color: #e74c3c; font-weight: 600; margin-bottom: 6px;">📊 Dynamik</div>
+                            ${mainConflict.dynamics?.pattern ? `
+                                <div style="font-size: var(--font-xs); color: var(--text-secondary); line-height: 1.5; margin-bottom: 6px;">
+                                    <strong>Muster:</strong> ${mainConflict.dynamics.pattern}
+                                </div>
+                            ` : ''}
+                            ${mainConflict.dynamics?.escalation ? `
+                                <div style="font-size: var(--font-xs); color: var(--text-secondary); line-height: 1.5; margin-bottom: 6px;">
+                                    <strong>Eskalation:</strong> ${mainConflict.dynamics.escalation}
+                                </div>
+                            ` : ''}
+                            ${mainConflict.dynamics?.core_wound ? `
+                                <div style="font-size: var(--font-xs); color: #e74c3c; line-height: 1.5; padding: 6px; background: rgba(231,76,60,0.1); border-radius: 4px;">
+                                    <strong>💔 Kernwunde:</strong> ${mainConflict.dynamics.core_wound}
+                                </div>
+                            ` : ''}
                         </div>
-                        <div style="font-size: var(--font-xs); color: var(--success); margin-top: 8px; padding-top: 8px; border-top: 1px solid rgba(255,255,255,0.1);">
-                            <strong>💡 Lösung:</strong> ${mainConflict.resolution?.growth || ''}
+
+                        <!-- Lösungs-Sektion -->
+                        <div style="padding-top: 12px; border-top: 1px solid rgba(255,255,255,0.1);">
+                            <div style="font-size: 11px; color: var(--success); font-weight: 600; margin-bottom: 6px;">💡 Lösungsweg</div>
+                            ${mainConflict.resolution?.understanding ? `
+                                <div style="font-size: var(--font-xs); color: var(--text-secondary); line-height: 1.5; margin-bottom: 6px;">
+                                    <strong>Verständnis:</strong> ${mainConflict.resolution.understanding}
+                                </div>
+                            ` : ''}
+                            ${mainConflict.resolution?.practical ? `
+                                <div style="font-size: var(--font-xs); color: var(--text-secondary); line-height: 1.5; margin-bottom: 6px;">
+                                    <strong>Praktisch:</strong> ${mainConflict.resolution.practical}
+                                </div>
+                            ` : ''}
+                            ${mainConflict.resolution?.growth ? `
+                                <div style="font-size: var(--font-xs); color: var(--success); line-height: 1.5; padding: 6px; background: rgba(39,174,96,0.1); border-radius: 4px;">
+                                    <strong>🌱 Wachstum:</strong> ${mainConflict.resolution.growth}
+                                </div>
+                            ` : ''}
                         </div>
                     </div>
                 `;
