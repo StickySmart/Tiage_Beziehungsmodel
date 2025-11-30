@@ -16562,6 +16562,12 @@
                 scoreCircle.style.background = 'linear-gradient(135deg, var(--danger), #c0392b)';
             }
 
+            // Sync score to resultPercentage for Tiage's Synthese modal
+            const resultPercentageEl = document.getElementById('resultPercentage');
+            if (resultPercentageEl) {
+                resultPercentageEl.textContent = qualityResult.incomplete ? '–' : qualityResult.score + '%';
+            }
+
             // Update factor breakdown - show 0% or actual values
             document.getElementById('mobileFactorArchetyp').textContent = qualityResult.incomplete ? '–' : qualityResult.breakdown.archetyp + '%';
             document.getElementById('mobileFactorDominanz').textContent = qualityResult.incomplete ? '–' : qualityResult.breakdown.dominanz + '%';
