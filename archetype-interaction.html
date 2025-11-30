@@ -6094,6 +6094,7 @@
     <script src="js/synthesis/factors/genderFactor.js"></script>
     <script src="js/synthesis/synthesisCalculator.js"></script>
     <script src="profiles/gfk-beduerfnisse.js"></script>
+    <script src="profiles/beduerfnis-modifikatoren.js"></script>
 </head>
 <body>
     <!-- Age Verification - Inline Script BEFORE modal for onclick to work -->
@@ -10377,6 +10378,9 @@
             // Run Pathos/Logos checks (keine Blockierung mehr - zeigt nur Warnungen)
             runCompatibilityChecks();
 
+            // NEU: GFK-Bedürfnis-Matching mit allen Dimensionen neu berechnen
+            updateGfkFromArchetypes();
+
             document.getElementById('myTypeNameDisplay').textContent = myArch?.name || '...';
             document.getElementById('partnerNameDisplay').textContent = partnerArch?.name || '...';
             document.getElementById('myTypeTooltipPage3').textContent = getShortDef(currentArchetype);
@@ -12950,10 +12954,10 @@
         let lastGfkMatchingResult = null;
 
         /**
-         * Berechnet das GFK-Bedürfnis-Matching zwischen den ausgewählten Archetypen.
-         * Basiert auf der vollständigen GFK-Bedürfnisliste nach Marshall Rosenberg.
+         * Berechnet das GFK-Bedürfnis-Matching zwischen den ausgewählten Profilen.
+         * NEU v2.0: Berücksichtigt Archetyp + Dominanz + Geschlecht + Orientierung + Status
          *
-         * Statt E-Score Proxy: Direkter Vergleich der Bedürfnis-Profile
+         * Verwendet BeduerfnisModifikatoren für dynamische Profil-Berechnung
          */
         function updateGfkFromArchetypes() {
             if (typeof GfkBeduerfnisse === 'undefined') {
@@ -12970,7 +12974,30 @@
             const ichNormalized = ichArchetype.replace('_', '-');
             const partnerNormalized = partnerArchetype.replace('_', '-');
 
-            // Bedürfnis-Matching berechnen
+            // Prüfen ob BeduerfnisModifikatoren verfügbar ist
+            if (typeof BeduerfnisModifikatoren !== 'undefined' && GfkBeduerfnisse.archetypProfile) {
+                // NEU: Dynamische Berechnung mit allen Dimensionen
+                const matching = calculateDynamicBeduerfnisMatch(ichNormalized, partnerNormalized);
+                if (matching) {
+                    lastGfkMatchingResult = matching;
+                    console.log(`GFK Bedürfnis-Matching (dynamisch): ${ichNormalized} + ${partnerNormalized} → Score=${matching.score}`);
+                    console.log(`  Faktoren: Dominanz, Geschlecht, Orientierung berücksichtigt`);
+
+                    // GFK-Level setzen (basierend auf Bedürfnis-Übereinstimmung)
+                    personDimensions.ich.gfk = matching.level;
+                    personDimensions.partner.gfk = matching.level;
+
+                    // UI synchronisieren
+                    syncGfkUI('ich');
+                    syncGfkUI('partner');
+
+                    // Bedürfnis-Details anzeigen
+                    updateGfkBeduerfnisDisplay(matching);
+                    return;
+                }
+            }
+
+            // Fallback: Altes System (nur Archetyp)
             const matching = GfkBeduerfnisse.berechneMatching(ichNormalized, partnerNormalized);
 
             if (matching.fehler) {
@@ -12980,7 +13007,7 @@
 
             lastGfkMatchingResult = matching;
 
-            console.log(`GFK Bedürfnis-Matching: ${matching.archetyp1} + ${matching.archetyp2} → Score=${matching.score} (${matching.level})`);
+            console.log(`GFK Bedürfnis-Matching (statisch): ${matching.archetyp1} + ${matching.archetyp2} → Score=${matching.score} (${matching.level})`);
 
             // GFK-Level setzen (basierend auf Bedürfnis-Übereinstimmung)
             personDimensions.ich.gfk = matching.level;
@@ -12992,6 +13019,147 @@
 
             // Bedürfnis-Details anzeigen
             updateGfkBeduerfnisDisplay(matching);
+        }
+
+        /**
+         * Berechnet dynamisches Bedürfnis-Matching unter Berücksichtigung aller Dimensionen
+         * @param {string} ichArchetyp - Normalisierter Archetyp-ID für "ich"
+         * @param {string} partnerArchetyp - Normalisierter Archetyp-ID für "partner"
+         * @returns {object|null} Matching-Ergebnis oder null bei Fehler
+         */
+        function calculateDynamicBeduerfnisMatch(ichArchetyp, partnerArchetyp) {
+            // Basis-Bedürfnisse laden
+            const ichBasis = GfkBeduerfnisse.archetypProfile[ichArchetyp];
+            const partnerBasis = GfkBeduerfnisse.archetypProfile[partnerArchetyp];
+
+            if (!ichBasis || !ichBasis.kernbeduerfnisse || !partnerBasis || !partnerBasis.kernbeduerfnisse) {
+                console.warn('Archetyp-Basis nicht gefunden:', ichArchetyp, partnerArchetyp);
+                return null;
+            }
+
+            // Helper: Geschlecht extrahieren (primary)
+            const extractGeschlecht = (g) => {
+                if (!g) return 'divers';
+                if (typeof g === 'string') return g;
+                if (typeof g === 'object') return g.primary || 'divers';
+                return 'divers';
+            };
+
+            // Helper: Geschlecht Secondary extrahieren
+            const extractGeschlechtSecondary = (g) => {
+                if (!g || typeof g !== 'object') return null;
+                return g.secondary || null;
+            };
+
+            // Helper: Dominanz extrahieren
+            const extractDominanz = (d) => {
+                if (!d) return 'ausgeglichen';
+                if (typeof d === 'string') return d;
+                if (typeof d === 'object') return d.primary || 'ausgeglichen';
+                return 'ausgeglichen';
+            };
+
+            // Helper: Orientierung extrahieren
+            const extractOrientierung = (o) => {
+                if (!o) return 'heterosexuell';
+                if (typeof o === 'string') return o;
+                if (typeof o === 'object') return o.primary || 'heterosexuell';
+                return 'heterosexuell';
+            };
+
+            // Dimensionen für "ich" sammeln
+            const ichDims = personDimensions.ich;
+            const ichParams = {
+                basisBedürfnisse: ichBasis.kernbeduerfnisse,
+                dominanz: extractDominanz(ichDims.dominanz),
+                dominanzStatus: ichDims.dominanzStatus || 'gelebt',
+                geschlechtPrimary: extractGeschlecht(ichDims.geschlecht),
+                geschlechtPrimaryStatus: 'gelebt',
+                geschlechtSecondary: extractGeschlechtSecondary(ichDims.geschlecht),
+                geschlechtSecondaryStatus: 'gelebt',
+                orientierung: extractOrientierung(ichDims.orientierung),
+                orientierungStatus: ichDims.orientierungStatus || 'gelebt'
+            };
+
+            // Dimensionen für "partner" sammeln
+            const partnerDims = personDimensions.partner;
+            const partnerParams = {
+                basisBedürfnisse: partnerBasis.kernbeduerfnisse,
+                dominanz: extractDominanz(partnerDims.dominanz),
+                dominanzStatus: partnerDims.dominanzStatus || 'gelebt',
+                geschlechtPrimary: extractGeschlecht(partnerDims.geschlecht),
+                geschlechtPrimaryStatus: 'gelebt',
+                geschlechtSecondary: extractGeschlechtSecondary(partnerDims.geschlecht),
+                geschlechtSecondaryStatus: 'gelebt',
+                orientierung: extractOrientierung(partnerDims.orientierung),
+                orientierungStatus: partnerDims.orientierungStatus || 'gelebt'
+            };
+
+            // Debug-Log
+            console.log('Bedürfnis-Berechnung mit Dimensionen:', {
+                ich: { archetyp: ichArchetyp, dominanz: ichParams.dominanz, geschlecht: ichParams.geschlechtPrimary, orientierung: ichParams.orientierung },
+                partner: { archetyp: partnerArchetyp, dominanz: partnerParams.dominanz, geschlecht: partnerParams.geschlechtPrimary, orientierung: partnerParams.orientierung }
+            });
+
+            // Vollständige Bedürfnis-Profile berechnen
+            const ichProfil = BeduerfnisModifikatoren.berechneVollständigesBedürfnisProfil(ichParams);
+            const partnerProfil = BeduerfnisModifikatoren.berechneVollständigesBedürfnisProfil(partnerParams);
+
+            // Übereinstimmung berechnen
+            const result = BeduerfnisModifikatoren.berechneÜbereinstimmung(ichProfil, partnerProfil);
+
+            // Level basierend auf Score bestimmen
+            let level = 'niedrig';
+            if (result.score >= 70) level = 'hoch';
+            else if (result.score >= 40) level = 'mittel';
+
+            // Ergebnis im erwarteten Format zurückgeben
+            return {
+                score: result.score,
+                level: level,
+                archetyp1: ichArchetyp,
+                archetyp2: partnerArchetyp,
+                // Konvertiere zu erwarteten Strukturen für updateGfkBeduerfnisDisplay
+                topUebereinstimmungen: result.gemeinsam.slice(0, 5).map(b => ({
+                    label: formatBeduerfnisLabel(b.bedürfnis),
+                    key: b.bedürfnis,
+                    wert1: b.wert1,
+                    wert2: b.wert2
+                })),
+                topKonflikte: result.unterschiedlich.slice(0, 5).map(b => ({
+                    label: formatBeduerfnisLabel(b.bedürfnis),
+                    key: b.bedürfnis,
+                    wert1: b.wert1,
+                    wert2: b.wert2
+                })),
+                komplementaer: result.komplementaer.slice(0, 5).map(b => ({
+                    label: formatBeduerfnisLabel(b.bedürfnis),
+                    key: b.bedürfnis,
+                    wert1: b.wert1,
+                    wert2: b.wert2
+                })),
+                // Zusätzliche Details
+                profile: {
+                    ich: ichProfil,
+                    partner: partnerProfil
+                },
+                dynamisch: true
+            };
+        }
+
+        /**
+         * Formatiert Bedürfnis-Keys in lesbare Labels
+         */
+        function formatBeduerfnisLabel(key) {
+            if (!key) return '';
+            // Underscore zu Leerzeichen, erster Buchstabe groß
+            return key.replace(/_/g, ' ')
+                      .replace(/ae/g, 'ä')
+                      .replace(/oe/g, 'ö')
+                      .replace(/ue/g, 'ü')
+                      .split(' ')
+                      .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+                      .join(' ');
         }
 
         /**
@@ -14735,6 +14903,9 @@
 
             const ichArch = data.archetypes[currentArchetype];
             const partnerArch = data.archetypes[selectedPartner];
+
+            // NEU: GFK-Bedürfnis-Matching mit allen Dimensionen neu berechnen
+            updateGfkFromArchetypes();
 
             // Update type names
             document.getElementById('resultIchType').textContent = ichArch?.name || currentArchetype;
