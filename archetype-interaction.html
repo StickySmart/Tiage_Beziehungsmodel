@@ -12717,34 +12717,41 @@
         }
 
         /**
-         * Sync Dominanz UI across all views (Desktop, Mobile, Modal)
+         * GEMEINSAME Funktion: Sync UI für Dominanz oder Orientierung
+         * Aktualisiert Buttons in Desktop, Mobile und Modal
+         *
+         * @param {string} person - 'ich' oder 'partner'
+         * @param {string} dimension - 'dominanz' oder 'orientierung'
          */
-        function syncDominanzUI(person) {
-            const primary = personDimensions[person].dominanz.primary;
-            const secondary = personDimensions[person].dominanz.secondary;
+        function syncDimensionUI(person, dimension) {
+            const data = personDimensions[person][dimension];
+            if (!data) return;
 
-            // All dominanz button selectors for this person
+            const primary = data.primary;
+            const secondary = data.secondary;
+
+            // Button-Selektoren für diese Dimension
             const selectors = [
-                `.dominanz-grid[data-person="${person}"] .dominanz-btn`,
-                `#${person}-dominanz-grid .dominanz-btn`,
-                `#mobile-${person}-dominanz-grid .dominanz-btn`,
-                `#modal-${person}-dominanz-grid .dominanz-btn`
+                `.${dimension}-grid[data-person="${person}"] .${dimension}-btn`,
+                `#${person}-${dimension}-grid .${dimension}-btn`,
+                `#mobile-${person}-${dimension}-grid .${dimension}-btn`,
+                `#modal-${person}-${dimension}-grid .${dimension}-btn`
             ];
 
             selectors.forEach(selector => {
                 document.querySelectorAll(selector).forEach(btn => {
                     const value = btn.dataset.value;
 
-                    // Remove all states
+                    // Alle States entfernen
                     btn.classList.remove('primary-selected', 'secondary-selected');
 
-                    // Remove existing indicators
+                    // Bestehende Indikatoren entfernen
                     const existingIndicator = btn.querySelector('.geschlecht-indicator');
                     if (existingIndicator) {
                         existingIndicator.remove();
                     }
 
-                    // Add appropriate state and indicator
+                    // Passenden State und Indikator hinzufügen
                     if (value === primary) {
                         btn.classList.add('primary-selected');
                         const indicator = document.createElement('span');
@@ -12763,51 +12770,54 @@
                 });
             });
 
-            // Update collapsed summary for dominanz
-            updateDominanzSummary(person);
+            // Summary aktualisieren
+            if (dimension === 'dominanz') {
+                updateDominanzSummary(person);
+            } else if (dimension === 'orientierung') {
+                updateOrientierungSummary(person);
+            }
+        }
+
+        // Wrapper für Rückwärtskompatibilität
+        function syncDominanzUI(person) {
+            syncDimensionUI(person, 'dominanz');
         }
 
         /**
-         * Get summary text for dominanz selection
+         * GEMEINSAME Funktion: Summary-Text für eine Dimension erstellen
+         *
+         * @param {string} person - 'ich' oder 'partner'
+         * @param {string} dimension - 'dominanz' oder 'orientierung'
+         * @param {boolean} showMissing - true = zeigt "fehlt", false = zeigt ""
          */
+        function getDimensionSummary(person, dimension, showMissing = true) {
+            const data = personDimensions[person][dimension];
+            if (!data) return showMissing ? `${dimension} fehlt` : '';
+
+            const primary = data.primary;
+            const secondary = data.secondary;
+
+            if (!primary) {
+                // Dimension-Name mit Großbuchstabe für "fehlt" Text
+                const label = dimension.charAt(0).toUpperCase() + dimension.slice(1);
+                return showMissing ? `${label} fehlt` : '';
+            }
+
+            const parts = [primary + ' (I)'];
+            if (secondary) {
+                parts.push(secondary + ' (G)');
+            }
+
+            return '✓ ' + parts.join(', ');
+        }
+
+        // Wrapper für Rückwärtskompatibilität
         function getDominanzSummary(person) {
-            const primary = personDimensions[person].dominanz.primary;
-            const secondary = personDimensions[person].dominanz.secondary;
-
-            if (!primary) {
-                return 'Dominanz fehlt';
-            }
-
-            const parts = [];
-            parts.push(primary + ' (I)');
-
-            if (secondary) {
-                parts.push(secondary + ' (G)');
-            }
-
-            return '✓ ' + parts.join(', ');
+            return getDimensionSummary(person, 'dominanz', true);
         }
 
-        /**
-         * Get summary text for dominanz selection in grid (without 'fehlt' text)
-         * Returns selected values in green, or empty string if nothing selected
-         */
         function getDominanzGridSummary(person) {
-            const primary = personDimensions[person].dominanz.primary;
-            const secondary = personDimensions[person].dominanz.secondary;
-
-            if (!primary) {
-                return ''; // No 'fehlt' text for grid - only show selections
-            }
-
-            const parts = [];
-            parts.push(primary + ' (I)');
-
-            if (secondary) {
-                parts.push(secondary + ' (G)');
-            }
-
-            return '✓ ' + parts.join(', ');
+            return getDimensionSummary(person, 'dominanz', false);
         }
 
         /**
@@ -12929,98 +12939,18 @@
             }
         }
 
-        /**
-         * Sync Orientierung UI across all views (Desktop, Mobile, Modal)
-         */
+        // Wrapper für Rückwärtskompatibilität
         function syncOrientierungUI(person) {
-            const primary = personDimensions[person].orientierung.primary;
-            const secondary = personDimensions[person].orientierung.secondary;
-
-            // All orientierung button selectors for this person
-            const selectors = [
-                `.orientierung-grid[data-person="${person}"] .orientierung-btn`,
-                `#${person}-orientierung-grid .orientierung-btn`,
-                `#mobile-${person}-orientierung-grid .orientierung-btn`,
-                `#modal-${person}-orientierung-grid .orientierung-btn`
-            ];
-
-            selectors.forEach(selector => {
-                document.querySelectorAll(selector).forEach(btn => {
-                    const value = btn.dataset.value;
-
-                    // Remove all states
-                    btn.classList.remove('primary-selected', 'secondary-selected');
-
-                    // Remove existing indicators
-                    const existingIndicator = btn.querySelector('.geschlecht-indicator');
-                    if (existingIndicator) {
-                        existingIndicator.remove();
-                    }
-
-                    // Add appropriate state and indicator
-                    if (value === primary) {
-                        btn.classList.add('primary-selected');
-                        const indicator = document.createElement('span');
-                        indicator.className = 'geschlecht-indicator indicator-primary';
-                        indicator.textContent = 'I';
-                        indicator.title = 'Identität (Primär)';
-                        btn.appendChild(indicator);
-                    } else if (value === secondary) {
-                        btn.classList.add('secondary-selected');
-                        const indicator = document.createElement('span');
-                        indicator.className = 'geschlecht-indicator indicator-secondary';
-                        indicator.textContent = 'G';
-                        indicator.title = 'Sekundär';
-                        btn.appendChild(indicator);
-                    }
-                });
-            });
-
-            // Update collapsed summary for orientierung
-            updateOrientierungSummary(person);
+            syncDimensionUI(person, 'orientierung');
         }
 
-        /**
-         * Get summary text for orientierung selection (for header - shows 'fehlt' if nothing selected)
-         */
+        // Wrapper für Rückwärtskompatibilität (nutzen getDimensionSummary)
         function getOrientierungSummary(person) {
-            const primary = personDimensions[person].orientierung.primary;
-            const secondary = personDimensions[person].orientierung.secondary;
-
-            if (!primary) {
-                return 'Orientierung fehlt';
-            }
-
-            const parts = [];
-            parts.push(primary + ' (I)');
-
-            if (secondary) {
-                parts.push(secondary + ' (G)');
-            }
-
-            return '✓ ' + parts.join(', ');
+            return getDimensionSummary(person, 'orientierung', true);
         }
 
-        /**
-         * Get summary text for orientierung selection in grid (without 'fehlt' text)
-         * Returns selected values in green, or empty string if nothing selected
-         */
         function getOrientierungGridSummary(person) {
-            const primary = personDimensions[person].orientierung.primary;
-            const secondary = personDimensions[person].orientierung.secondary;
-
-            if (!primary) {
-                return ''; // No 'fehlt' text for grid - only show selections
-            }
-
-            const parts = [];
-            parts.push(primary + ' (I)');
-
-            if (secondary) {
-                parts.push(secondary + ' (G)');
-            }
-
-            return '✓ ' + parts.join(', ');
+            return getDimensionSummary(person, 'orientierung', false);
         }
 
         /**
@@ -13165,19 +13095,37 @@
         }
 
         /**
-         * Sync mobile dominanz status buttons to reflect current state
+         * GEMEINSAME Funktion: Sync mobile status buttons für eine Dimension
+         *
+         * @param {string} person - 'ich' oder 'partner'
+         * @param {string} dimension - 'dominanz' oder 'orientierung'
          */
-        function syncMobileDominanzStatusButtons(person) {
-            const primary = personDimensions[person].dominanz.primary;
-            const secondary = personDimensions[person].dominanz.secondary;
+        function syncMobileStatusButtons(person, dimension) {
+            const data = personDimensions[person][dimension];
+            if (!data) return;
 
-            const types = ['dominant', 'submissiv', 'switch', 'ausgeglichen'];
-            const abbrevs = ['dom', 'sub', 'sw', 'aus'];
+            const primary = data.primary;
+            const secondary = data.secondary;
+
+            // Konfiguration für jede Dimension
+            const config = {
+                dominanz: {
+                    types: ['dominant', 'submissiv', 'switch', 'ausgeglichen'],
+                    abbrevs: ['dom', 'sub', 'sw', 'aus'],
+                    letter: 'd'
+                },
+                orientierung: {
+                    types: ['heterosexuell', 'homosexuell', 'bisexuell'],
+                    abbrevs: ['het', 'hom', 'bi'],
+                    letter: 'o'
+                }
+            };
+
+            const { types, abbrevs, letter } = config[dimension];
+            const prefix = person === 'ich' ? 'm-ich' : 'm-partner';
 
             types.forEach((type, i) => {
-                const abbrev = abbrevs[i];
-                const prefix = person === 'ich' ? 'm-ich' : 'm-partner';
-                const statusGroup = document.getElementById(`${prefix}-d-${abbrev}-status`);
+                const statusGroup = document.getElementById(`${prefix}-${letter}-${abbrevs[i]}-status`);
                 if (!statusGroup) return;
 
                 const gelebtBtn = statusGroup.querySelector('[data-status="gelebt"]');
@@ -13192,32 +13140,13 @@
             });
         }
 
-        /**
-         * Sync mobile orientierung status buttons to reflect current state
-         */
+        // Wrapper für Rückwärtskompatibilität
+        function syncMobileDominanzStatusButtons(person) {
+            syncMobileStatusButtons(person, 'dominanz');
+        }
+
         function syncMobileOrientierungStatusButtons(person) {
-            const primary = personDimensions[person].orientierung.primary;
-            const secondary = personDimensions[person].orientierung.secondary;
-
-            const types = ['heterosexuell', 'homosexuell', 'bisexuell'];
-            const abbrevs = ['het', 'hom', 'bi'];
-
-            types.forEach((type, i) => {
-                const abbrev = abbrevs[i];
-                const prefix = person === 'ich' ? 'm-ich' : 'm-partner';
-                const statusGroup = document.getElementById(`${prefix}-o-${abbrev}-status`);
-                if (!statusGroup) return;
-
-                const gelebtBtn = statusGroup.querySelector('[data-status="gelebt"]');
-                const interessiertBtn = statusGroup.querySelector('[data-status="interessiert"]');
-
-                if (gelebtBtn) {
-                    gelebtBtn.classList.toggle('active-gelebt', primary === type);
-                }
-                if (interessiertBtn) {
-                    interessiertBtn.classList.toggle('active-interessiert', secondary === type);
-                }
-            });
+            syncMobileStatusButtons(person, 'orientierung');
         }
 
         // ═══════════════════════════════════════════════════════════════════════
