@@ -6102,6 +6102,10 @@
     <script src="js/locales/en.js"></script>
     <script src="js/i18n.js"></script>
 
+    <!-- TIAGE Archetype Statements - DE/EN -->
+    <script src="statements/archetypeStatements.js"></script>
+    <script src="statements/archetypeStatements_EN.js"></script>
+
     <!-- TIAGE SYNTHESE - Zentralisierte Berechnungslogik -->
     <script src="js/synthesis/constants.js"></script>
     <script src="js/synthesis/factors/archetypeFactor.js"></script>
@@ -9251,8 +9255,15 @@
         }
 
         // Hilfsfunktion: Hole Statements für Archetyp-Kombination
+        // Verwendet je nach Sprache die deutsche oder englische Version
         function getArchetypeStatements(type1, type2) {
             const key = `${type1}_${type2}`;
+            const lang = typeof TiageI18n !== 'undefined' ? TiageI18n.getLanguage() : 'de';
+
+            // Wähle die richtige Statement-Quelle basierend auf der Sprache
+            if (lang === 'en' && typeof archetypeStatements_EN !== 'undefined') {
+                return archetypeStatements_EN[key] || archetypeStatements[key] || null;
+            }
             return archetypeStatements[key] || null;
         }
 

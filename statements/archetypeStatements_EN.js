@@ -20,26 +20,26 @@ const archetypeStatements_EN = {
 
     "single_single": {
         pathos: {
-            shared: [
+            gemeinsam: [
                 "Two souls speaking the same language of freedom.",
                 "Mutual recognition of independence creates respect, but no natural attraction.",
                 "Both understand the need for space – perhaps too well.",
                 "The emptiness between them is not distance, but shared understanding."
             ],
-            tension: [
+            spannung: [
                 "Without polarity, the magnetic force of attraction is missing.",
                 "Two equals can respect each other, but rarely truly yearn for one another.",
                 "Freedom becomes a prison when no one is there to challenge it."
             ]
         },
         logos: {
-            shared: [
+            gemeinsam: [
                 "Structurally identical: Both prioritize autonomy over connection.",
                 "No fundamental conflicts, as there are no fundamental expectations.",
                 "Rationality meets rationality – little friction, little fire.",
                 "The relationship philosophies are congruent."
             ],
-            differences: [
+            unterschied: [
                 "Individual differences in life phases may vary.",
                 "Individual needs determine whether closeness is sought or avoided."
             ]
@@ -64,12 +64,12 @@ const archetypeStatements_EN = {
 
     "single_duo": {
         pathos: {
-            shared: [
+            gemeinsam: [
                 "The Single feels the warmth of security that the Duo offers.",
                 "A deep longing can arise – for what one consciously avoids.",
                 "The Duo embodies what the Single sometimes misses: arriving."
             ],
-            tension: [
+            spannung: [
                 "The fear of being consumed meets the need for merging.",
                 "The Single feels confined where the Duo seeks closeness.",
                 "The drive for freedom collides with the expectation of exclusivity.",
@@ -77,11 +77,11 @@ const archetypeStatements_EN = {
             ]
         },
         logos: {
-            shared: [
+            gemeinsam: [
                 "Both know clear relationship models – even if they are opposite.",
                 "Structure meets structure, just with different content."
             ],
-            differences: [
+            unterschied: [
                 "Fundamental conflict: Independence vs. Exclusivity",
                 "Single sees relationship as an option, Duo as a necessity",
                 "Time allocation is radically differently conceived",
@@ -108,23 +108,23 @@ const archetypeStatements_EN = {
 
     "single_duo_flex": {
         pathos: {
-            shared: [
+            gemeinsam: [
                 "Duo-Flex understands the longing for freedom – at least partially.",
                 "The Single recognizes in Duo-Flex a compromise that could build bridges.",
                 "Both share the feeling that relationships don't have to be everything."
             ],
-            tension: [
+            spannung: [
                 "The 'Flex' component is often not enough for the Single.",
                 "Single can feel like 'the outsider' of the primary relationship.",
                 "The implicit hierarchy violates the sense of equality."
             ]
         },
         logos: {
-            shared: [
+            gemeinsam: [
                 "Duo-Flex shows openness to alternative models.",
                 "Structurally there are connection points through flexibility."
             ],
-            differences: [
+            unterschied: [
                 "Single doesn't want hierarchy, Duo-Flex has one built in.",
                 "The 'primary relationship' of Duo-Flex always comes first.",
                 "Single is a guest, not an equal partner."
@@ -149,25 +149,25 @@ const archetypeStatements_EN = {
 
     "single_solopoly": {
         pathos: {
-            shared: [
+            gemeinsam: [
                 "A deep resonance on the level of autonomy.",
                 "Both value freedom as the highest value – this connects.",
                 "The Single recognizes in Solopoly a kindred spirit of independence.",
                 "Respect for one's own space is self-evident."
             ],
-            tension: [
+            spannung: [
                 "Solopoly is actively connected, Single often is not.",
                 "Solopoly's activity can overwhelm the Single.",
                 "Single can lose themselves in non-exclusivity."
             ]
         },
         logos: {
-            shared: [
+            gemeinsam: [
                 "Both reject traditional relationship models.",
                 "Autonomy is the common foundation.",
                 "No expectation of merging or living together."
             ],
-            differences: [
+            unterschied: [
                 "Solopoly has multiple relationships, Single often none.",
                 "The capacity for relationship work differs.",
                 "Solopoly expects relationship, Single not necessarily."
@@ -191,21 +191,21 @@ const archetypeStatements_EN = {
 
     "single_polyamor": {
         pathos: {
-            shared: [
+            gemeinsam: [
                 "Single feels the warmth of the polyamorous community.",
                 "Polyamor's openness can seem inviting."
             ],
-            tension: [
+            spannung: [
                 "The structured complexity overwhelms the Single.",
                 "Polyamor expects active participation, Single wants peace.",
                 "Polyamor's calendar marathon contradicts Single's rhythm."
             ]
         },
         logos: {
-            shared: [
+            gemeinsam: [
                 "Both reflect on relationship models."
             ],
-            differences: [
+            unterschied: [
                 "Polyamor is highly structured, Single seeks simplicity.",
                 "Communication intensity is radically different.",
                 "Polyamor needs active relationship work, Single avoids it."
@@ -228,20 +228,20 @@ const archetypeStatements_EN = {
 
     "single_ra": {
         pathos: {
-            shared: [
+            gemeinsam: [
                 "Both value freedom and reject predetermined labels.",
                 "No societal expectations burden the encounter."
             ],
-            tension: [
+            spannung: [
                 "RA's radical label rejection can confuse Single.",
                 "Single might prefer clear categories."
             ]
         },
         logos: {
-            shared: [
+            gemeinsam: [
                 "Both are autonomous and self-determined."
             ],
-            differences: [
+            unterschied: [
                 "RA has a conscious philosophy, Single is pragmatically unattached."
             ]
         },
@@ -258,19 +258,19 @@ const archetypeStatements_EN = {
 
     "single_lat": {
         pathos: {
-            shared: [
+            gemeinsam: [
                 "Both value their own space and independence.",
                 "No pressure to live together."
             ],
-            tension: [
+            spannung: [
                 "LAT expects more commitment than Single is used to."
             ]
         },
         logos: {
-            shared: [
+            gemeinsam: [
                 "Both live alone and appreciate it."
             ],
-            differences: [
+            unterschied: [
                 "LAT is in a relationship, Single is not."
             ]
         },
@@ -287,19 +287,19 @@ const archetypeStatements_EN = {
 
     "single_aromantisch": {
         pathos: {
-            shared: [
+            gemeinsam: [
                 "Both have no romantic expectations.",
                 "Deep platonic connection is possible."
             ],
-            tension: [
+            spannung: [
                 "Single might be seeking romance."
             ]
         },
         logos: {
-            shared: [
+            gemeinsam: [
                 "Both are autonomous."
             ],
-            differences: [
+            unterschied: [
                 "Single is open to romance, Aromantic is not."
             ]
         },
@@ -320,11 +320,11 @@ const archetypeStatements_EN = {
 
     "duo_single": {
         pathos: {
-            shared: [
+            gemeinsam: [
                 "The Duo longs for the freedom that the Single embodies.",
                 "A secret fascination with the untamed."
             ],
-            tension: [
+            spannung: [
                 "The fear of not being enough for someone who can have everything.",
                 "Duo feels inferior to Single's freedom.",
                 "The desire for exclusivity meets walls.",
@@ -332,7 +332,7 @@ const archetypeStatements_EN = {
             ]
         },
         logos: {
-            differences: [
+            unterschied: [
                 "Fundamental incompatibility of relationship models.",
                 "Duo needs commitment, Single avoids it.",
                 "Future planning is one-sided – Duo plans, Single evades."
@@ -356,25 +356,25 @@ const archetypeStatements_EN = {
 
     "duo_duo": {
         pathos: {
-            shared: [
+            gemeinsam: [
                 "Two souls seeking the same thing: arriving, merging, home.",
                 "Mutual devotion creates deep resonance.",
                 "Exclusivity as a shared language of love.",
                 "The feeling: 'You are my home' – mutual."
             ],
-            tension: [
+            spannung: [
                 "High expectations can lead to high pressure.",
                 "When both expect everything from each other, one can never be enough."
             ]
         },
         logos: {
-            shared: [
+            gemeinsam: [
                 "Structurally perfectly aligned: Clear roles, clear expectations.",
                 "Maximally supported by society.",
                 "Legal and institutional security possible.",
                 "Shared life planning is self-evident."
             ],
-            differences: [
+            unterschied: [
                 "Individual differences in closeness-distance may vary."
             ]
         },
@@ -398,11 +398,11 @@ const archetypeStatements_EN = {
 
     "duo_duo_flex": {
         pathos: {
-            shared: [
+            gemeinsam: [
                 "The Duo recognizes in Duo-Flex a close relative.",
                 "The basic values of stability and primary relationship are similar."
             ],
-            tension: [
+            spannung: [
                 "The 'Flex' component unsettles the Duo.",
                 "Duo fears: 'Am I not enough?'",
                 "The opening is perceived as a threat.",
@@ -410,11 +410,11 @@ const archetypeStatements_EN = {
             ]
         },
         logos: {
-            shared: [
+            gemeinsam: [
                 "Both prioritize a primary relationship.",
                 "Structure and stability are shared values."
             ],
-            differences: [
+            unterschied: [
                 "The 'Flex' option is a no-go for Duo.",
                 "Definition of fidelity differs fundamentally."
             ]
@@ -436,7 +436,7 @@ const archetypeStatements_EN = {
 
     "duo_solopoly": {
         pathos: {
-            tension: [
+            spannung: [
                 "The Duo feels like an option, not a priority.",
                 "The non-hierarchy violates the need for special status.",
                 "Duo doesn't understand why they can't be 'the one'.",
@@ -444,7 +444,7 @@ const archetypeStatements_EN = {
             ]
         },
         logos: {
-            differences: [
+            unterschied: [
                 "Fundamental incompatibility: Exclusivity vs. Equality.",
                 "Duo wants to merge, Solopoly wants to maintain distance.",
                 "Living together is excluded for Solopoly – essential for Duo."
@@ -467,20 +467,20 @@ const archetypeStatements_EN = {
 
     "duo_polyamor": {
         pathos: {
-            shared: [
+            gemeinsam: [
                 "Both value deep emotional connections."
             ],
-            tension: [
+            spannung: [
                 "Duo cannot bear the shared attention.",
                 "Jealousy is inevitable.",
                 "The feeling of never being enough is dominant."
             ]
         },
         logos: {
-            shared: [
+            gemeinsam: [
                 "Both value communication and commitment."
             ],
-            differences: [
+            unterschied: [
                 "Exclusivity vs. ethical non-exclusivity.",
                 "Duo wants one relationship, Polyamor has several."
             ]
@@ -501,14 +501,14 @@ const archetypeStatements_EN = {
 
     "duo_ra": {
         pathos: {
-            tension: [
+            spannung: [
                 "RA rejects the labels that are existential for Duo.",
                 "Duo needs security through categories, RA flees them.",
                 "Fundamental worldview conflict."
             ]
         },
         logos: {
-            differences: [
+            unterschied: [
                 "Maximum incompatibility of relationship philosophies.",
                 "RA cannot promise the exclusivity that Duo needs."
             ]
@@ -525,16 +525,16 @@ const archetypeStatements_EN = {
 
     "duo_lat": {
         pathos: {
-            shared: [
+            gemeinsam: [
                 "Both want deep, committed relationship."
             ],
-            tension: [
+            spannung: [
                 "Duo wants to live together, LAT doesn't.",
                 "The living arrangement is a fundamental conflict."
             ]
         },
         logos: {
-            differences: [
+            unterschied: [
                 "Fundamental difference in living arrangement.",
                 "Duo sees living together as an expression of love."
             ]
@@ -551,14 +551,14 @@ const archetypeStatements_EN = {
 
     "duo_aromantisch": {
         pathos: {
-            tension: [
+            spannung: [
                 "Duo seeks romantic love – exactly what Aromantic cannot offer.",
                 "Fundamental difference in the language of love.",
                 "Duo might feel unloved."
             ]
         },
         logos: {
-            differences: [
+            unterschied: [
                 "Maximum incompatibility in romantic expectations.",
                 "Aromantic cannot speak the romantic language."
             ]
@@ -579,20 +579,20 @@ const archetypeStatements_EN = {
 
     "duo_flex_single": {
         pathos: {
-            shared: [
+            gemeinsam: [
                 "Duo-Flex recognizes in Single the drive for freedom that it knows itself.",
                 "The situational opening creates connection points."
             ],
-            tension: [
+            spannung: [
                 "Single might threaten Duo-Flex's primary relationship.",
                 "Uncertainty: Is the Single only interested in the Flex part?"
             ]
         },
         logos: {
-            shared: [
+            gemeinsam: [
                 "Both have a certain degree of flexibility."
             ],
-            differences: [
+            unterschied: [
                 "Single doesn't want to be second choice.",
                 "Duo-Flex must navigate boundaries that Single doesn't understand."
             ]
@@ -612,20 +612,20 @@ const archetypeStatements_EN = {
 
     "duo_flex_duo": {
         pathos: {
-            shared: [
+            gemeinsam: [
                 "Basic understanding for the importance of a primary relationship.",
                 "Both know the value of stability."
             ],
-            tension: [
+            spannung: [
                 "Duo cannot accept the Flex opening.",
                 "The opening is perceived as infidelity."
             ]
         },
         logos: {
-            shared: [
+            gemeinsam: [
                 "Similar structures with one main relationship."
             ],
-            differences: [
+            unterschied: [
                 "Definition of fidelity is different.",
                 "What is 'flexibility' for Duo-Flex is 'cheating' for Duo."
             ]
@@ -644,19 +644,19 @@ const archetypeStatements_EN = {
 
     "duo_flex_duo_flex": {
         pathos: {
-            shared: [
+            gemeinsam: [
                 "Perfect resonance: Both understand the balancing act.",
                 "The search for the best of both worlds connects.",
                 "Mutual understanding for the model's complexity.",
                 "Both know the feeling: 'Enough? Too much?'"
             ],
-            tension: [
+            spannung: [
                 "Competition for Flex partners can arise.",
                 "Accepting one's own opening is easier than the partner's."
             ]
         },
         logos: {
-            shared: [
+            gemeinsam: [
                 "Identical structure: Primary relationship + situational opening.",
                 "Common rulebook is negotiable.",
                 "Both understand the concept of Primary and Flex."
@@ -679,17 +679,17 @@ const archetypeStatements_EN = {
 
     "duo_flex_solopoly": {
         pathos: {
-            shared: [
+            gemeinsam: [
                 "Both value flexibility and openness.",
                 "Non-exclusivity is familiar to both."
             ],
-            tension: [
+            spannung: [
                 "Solopoly rejects hierarchies, Duo-Flex is based on them.",
                 "Duo-Flex wants primary status, Solopoly doesn't give it."
             ]
         },
         logos: {
-            differences: [
+            unterschied: [
                 "Hierarchy vs. Equality is the core conflict.",
                 "Duo-Flex's primary relationship has no equivalent in Solopoly model."
             ]
@@ -709,21 +709,21 @@ const archetypeStatements_EN = {
 
     "duo_flex_polyamor": {
         pathos: {
-            shared: [
+            gemeinsam: [
                 "Both know the complexity of multiple relationships.",
                 "Communication and boundaries are important to both."
             ],
-            tension: [
+            spannung: [
                 "Polyamor's multiple deep relationships vs. Duo-Flex's situational opening.",
                 "Different depth of non-primary relationships."
             ]
         },
         logos: {
-            shared: [
+            gemeinsam: [
                 "Both work with rules and agreements.",
                 "Structure is important to both."
             ],
-            differences: [
+            unterschied: [
                 "Polyamor's secondary relationships are deeper than Duo-Flex's flex contacts.",
                 "Different expectations for non-primary connections."
             ]
@@ -743,16 +743,16 @@ const archetypeStatements_EN = {
 
     "duo_flex_ra": {
         pathos: {
-            shared: [
+            gemeinsam: [
                 "Both understand openness and alternative relationship forms."
             ],
-            tension: [
+            spannung: [
                 "RA rejects the primary relationship concept that is central for Duo-Flex.",
                 "Structural conflict between rules and radical freedom."
             ]
         },
         logos: {
-            differences: [
+            unterschied: [
                 "Duo-Flex has primary relationship, RA rejects hierarchies.",
                 "Different definitions of freedom."
             ]
@@ -769,15 +769,15 @@ const archetypeStatements_EN = {
 
     "duo_flex_lat": {
         pathos: {
-            shared: [
+            gemeinsam: [
                 "Both understand conscious distance and flexibility."
             ],
-            tension: [
+            spannung: [
                 "Different expectations about living together."
             ]
         },
         logos: {
-            shared: [
+            gemeinsam: [
                 "Both value balance between closeness and distance."
             ]
         },
@@ -793,13 +793,13 @@ const archetypeStatements_EN = {
 
     "duo_flex_aromantisch": {
         pathos: {
-            tension: [
+            spannung: [
                 "Duo-Flex expects romantic primary relationship.",
                 "Aromantic cannot fulfill this expectation."
             ]
         },
         logos: {
-            differences: [
+            unterschied: [
                 "Romantic expectations are not fulfilled."
             ]
         },
@@ -818,23 +818,23 @@ const archetypeStatements_EN = {
 
     "solopoly_single": {
         pathos: {
-            shared: [
+            gemeinsam: [
                 "Deep kinship in autonomy needs.",
                 "Both understand: 'I belong to myself.'",
                 "Respect for boundaries is self-evident.",
                 "The other's freedom is not questioned."
             ],
-            tension: [
+            spannung: [
                 "Solopoly is connection-oriented, Single often is not.",
                 "Solopoly expects relationship work that Single avoids."
             ]
         },
         logos: {
-            shared: [
+            gemeinsam: [
                 "Both prioritize independence over merging.",
                 "No expectation of living together."
             ],
-            differences: [
+            unterschied: [
                 "Solopoly actively maintains relationships, Single not necessarily.",
                 "Activity level differs."
             ]
@@ -856,14 +856,14 @@ const archetypeStatements_EN = {
 
     "solopoly_duo": {
         pathos: {
-            tension: [
+            spannung: [
                 "Duo's exclusivity need collides with Solopoly's life model.",
                 "Solopoly cannot give what Duo needs: exclusivity.",
                 "Duo will always want more – more than Solopoly can structurally offer."
             ]
         },
         logos: {
-            differences: [
+            unterschied: [
                 "Fundamental incompatibility of relationship models.",
                 "Solopoly rejects hierarchy, Duo needs it.",
                 "Living together is excluded for Solopoly."
@@ -885,17 +885,17 @@ const archetypeStatements_EN = {
 
     "solopoly_duo_flex": {
         pathos: {
-            shared: [
+            gemeinsam: [
                 "Both know non-exclusive relationships.",
                 "Openness connects."
             ],
-            tension: [
+            spannung: [
                 "Duo-Flex expects hierarchy, Solopoly doesn't give one.",
                 "Duo-Flex's primary relationship has no equivalent in Solopoly."
             ]
         },
         logos: {
-            differences: [
+            unterschied: [
                 "Hierarchy vs. Equality.",
                 "Solopoly's egalitarianism vs. Duo-Flex's primary focus."
             ]
@@ -914,19 +914,19 @@ const archetypeStatements_EN = {
 
     "solopoly_solopoly": {
         pathos: {
-            shared: [
+            gemeinsam: [
                 "Perfect mirroring: Both deeply understand what the other needs.",
                 "Freedom as the highest value – shared and respected.",
                 "Love as a gift, not a demand.",
                 "Deep connection without merging pressure."
             ],
-            tension: [
+            spannung: [
                 "Both are so autonomous that sometimes no one takes initiative.",
                 "The balance between connection and distance must be consciously maintained."
             ]
         },
         logos: {
-            shared: [
+            gemeinsam: [
                 "Identical relationship philosophy.",
                 "Both live in separate apartments – no conflict.",
                 "No hierarchy discussions needed.",
@@ -951,21 +951,21 @@ const archetypeStatements_EN = {
 
     "solopoly_polyamor": {
         pathos: {
-            shared: [
+            gemeinsam: [
                 "Both share polyamorous values: Honesty, communication, consent.",
                 "Deep connections with multiple people are familiar to both."
             ],
-            tension: [
+            spannung: [
                 "Solopoly rejects merging, Polyamor sometimes practices it.",
                 "The intensity of Polyamor's primary relationships can irritate Solopoly."
             ]
         },
         logos: {
-            shared: [
+            gemeinsam: [
                 "Both consciously reflect on their relationship form.",
                 "Communication is central."
             ],
-            differences: [
+            unterschied: [
                 "Solopoly rejects hierarchies, Polyamor often has Primary/Secondary.",
                 "Different structures despite similar values."
             ]
@@ -986,19 +986,19 @@ const archetypeStatements_EN = {
 
     "solopoly_ra": {
         pathos: {
-            shared: [
+            gemeinsam: [
                 "Both maximize autonomy and reject hierarchies.",
                 "No primary relationship expectations."
             ],
-            tension: [
+            spannung: [
                 "RA is even less structured than Solopoly."
             ]
         },
         logos: {
-            shared: [
+            gemeinsam: [
                 "Both value autonomy as the highest value."
             ],
-            differences: [
+            unterschied: [
                 "Solopoly is more structured than RA."
             ]
         },
@@ -1015,19 +1015,19 @@ const archetypeStatements_EN = {
 
     "solopoly_lat": {
         pathos: {
-            shared: [
+            gemeinsam: [
                 "Both live separately and value autonomy.",
                 "No living-together conflict."
             ],
-            tension: [
+            spannung: [
                 "LAT might expect more exclusivity."
             ]
         },
         logos: {
-            shared: [
+            gemeinsam: [
                 "Both understand separate living as a value."
             ],
-            differences: [
+            unterschied: [
                 "Solopoly has multiple partners, LAT often only one."
             ]
         },
@@ -1043,16 +1043,16 @@ const archetypeStatements_EN = {
 
     "solopoly_aromantisch": {
         pathos: {
-            shared: [
+            gemeinsam: [
                 "Both have unconventional relationship models.",
                 "Autonomy is respected."
             ],
-            tension: [
+            spannung: [
                 "Solopoly seeks romantic connections, Aromantic doesn't."
             ]
         },
         logos: {
-            differences: [
+            unterschied: [
                 "Different expectations about romance."
             ]
         },
@@ -1072,16 +1072,16 @@ const archetypeStatements_EN = {
 
     "polyamor_single": {
         pathos: {
-            shared: [
+            gemeinsam: [
                 "Polyamor can offer Single warmth without exclusivity pressure."
             ],
-            tension: [
+            spannung: [
                 "Single avoids the complexity that Polyamor brings.",
                 "Polyamor's many relationships can be intimidating."
             ]
         },
         logos: {
-            differences: [
+            unterschied: [
                 "Polyamor is highly structured, Single seeks simplicity.",
                 "Communication intensity is radically different."
             ]
@@ -1101,16 +1101,16 @@ const archetypeStatements_EN = {
 
     "polyamor_duo": {
         pathos: {
-            shared: [
+            gemeinsam: [
                 "Both value deep emotional connections."
             ],
-            tension: [
+            spannung: [
                 "Duo's jealousy is frustrating for Polyamor.",
                 "Non-exclusivity is unbearable for Duo."
             ]
         },
         logos: {
-            differences: [
+            unterschied: [
                 "Exclusivity vs. ethical multiple relationships.",
                 "Fundamental model conflict."
             ]
@@ -1130,20 +1130,20 @@ const archetypeStatements_EN = {
 
     "polyamor_duo_flex": {
         pathos: {
-            shared: [
+            gemeinsam: [
                 "Both know the complexity of multiple relationships.",
                 "Communication is important to both."
             ],
-            tension: [
+            spannung: [
                 "Depth of secondary relationships differs.",
                 "Polyamor's secondaries are deeper than Duo-Flex's flex contacts."
             ]
         },
         logos: {
-            shared: [
+            gemeinsam: [
                 "Both work with rules and structures."
             ],
-            differences: [
+            unterschied: [
                 "Different expectations for non-primary connections."
             ]
         },
@@ -1161,21 +1161,21 @@ const archetypeStatements_EN = {
 
     "polyamor_solopoly": {
         pathos: {
-            shared: [
+            gemeinsam: [
                 "Deep kinship in polyamorous values.",
                 "Honesty, communication, consent connect."
             ],
-            tension: [
+            spannung: [
                 "Hierarchy differences can burden.",
                 "Solopoly rejects what Polyamor practices: Primary/Secondary."
             ]
         },
         logos: {
-            shared: [
+            gemeinsam: [
                 "Both consciously reflect on relationship forms.",
                 "Communication is central."
             ],
-            differences: [
+            unterschied: [
                 "Hierarchy vs. Equality."
             ]
         },
@@ -1193,20 +1193,20 @@ const archetypeStatements_EN = {
 
     "polyamor_polyamor": {
         pathos: {
-            shared: [
+            gemeinsam: [
                 "Perfect resonance: Both speak the same language of love.",
                 "Deep love for multiple people is natural and understood.",
                 "'The heart grows, it's not divided' – shared and lived.",
                 "Compersion is possible on both sides.",
                 "Complexity is experienced as enrichment."
             ],
-            tension: [
+            spannung: [
                 "Sometimes overwhelm from the many emotional threads.",
                 "Calendar management can be stressful."
             ]
         },
         logos: {
-            shared: [
+            gemeinsam: [
                 "Identical relationship philosophy.",
                 "Both understand hierarchies, agreements, communication structures.",
                 "Rules are negotiable and understood.",
@@ -1233,16 +1233,16 @@ const archetypeStatements_EN = {
 
     "polyamor_ra": {
         pathos: {
-            shared: [
+            gemeinsam: [
                 "Both understand non-monogamous lifestyles."
             ],
-            tension: [
+            spannung: [
                 "RA rejects hierarchies that Polyamor often has.",
                 "Polyamor's structure can feel confining for RA."
             ]
         },
         logos: {
-            differences: [
+            unterschied: [
                 "Polyamor is structured, RA rejects all structures.",
                 "Hierarchy differences are fundamental."
             ]
@@ -1260,16 +1260,16 @@ const archetypeStatements_EN = {
 
     "polyamor_lat": {
         pathos: {
-            shared: [
+            gemeinsam: [
                 "Both value conscious relationship design."
             ],
-            tension: [
+            spannung: [
                 "LAT might expect more exclusivity.",
                 "Polyamor's complexity might overwhelm LAT."
             ]
         },
         logos: {
-            differences: [
+            unterschied: [
                 "LAT often lives exclusively, Polyamor by definition doesn't."
             ]
         },
@@ -1285,13 +1285,13 @@ const archetypeStatements_EN = {
 
     "polyamor_aromantisch": {
         pathos: {
-            tension: [
+            spannung: [
                 "Polyamor seeks romantic love, Aromantic doesn't offer it.",
                 "Fundamental difference in relationship definition."
             ]
         },
         logos: {
-            differences: [
+            unterschied: [
                 "Polyamor focuses on romantic love.",
                 "Aromantic can only offer platonic connections."
             ]
@@ -1312,21 +1312,21 @@ const archetypeStatements_EN = {
 
     "ra_single": {
         pathos: {
-            shared: [
+            gemeinsam: [
                 "Both value maximum freedom and self-determination.",
                 "No labels or predefined expectations burden the encounter."
             ],
-            tension: [
+            spannung: [
                 "Single might want more structure and clarity.",
                 "RA's rejection of labels can be confusing."
             ]
         },
         logos: {
-            shared: [
+            gemeinsam: [
                 "Both prioritize autonomy over social norms.",
                 "No hierarchy conflicts expected."
             ],
-            differences: [
+            unterschied: [
                 "RA has a conscious philosophy, Single is simply unattached."
             ]
         },
@@ -1343,14 +1343,14 @@ const archetypeStatements_EN = {
 
     "ra_duo": {
         pathos: {
-            tension: [
+            spannung: [
                 "RA rejects the labels that are existential for Duo.",
                 "Duo needs security through categories, RA flees them.",
                 "Fundamental worldview conflict."
             ]
         },
         logos: {
-            differences: [
+            unterschied: [
                 "Maximum incompatibility of relationship philosophies.",
                 "RA cannot promise the exclusivity that Duo needs."
             ]
@@ -1367,20 +1367,20 @@ const archetypeStatements_EN = {
 
     "ra_duo_flex": {
         pathos: {
-            shared: [
+            gemeinsam: [
                 "Both understand openness for alternative relationship forms.",
                 "Duo-Flex's flexibility shows openness."
             ],
-            tension: [
+            spannung: [
                 "RA rejects the primary relationship concept that is central for Duo-Flex.",
                 "Structural conflict between radical freedom and rules."
             ]
         },
         logos: {
-            shared: [
+            gemeinsam: [
                 "Both practice openness in relationships."
             ],
-            differences: [
+            unterschied: [
                 "Duo-Flex has primary relationship, RA rejects hierarchies.",
                 "Different definitions of freedom and structure."
             ]
@@ -1399,23 +1399,23 @@ const archetypeStatements_EN = {
 
     "ra_solopoly": {
         pathos: {
-            shared: [
+            gemeinsam: [
                 "Deep philosophical kinship in autonomy needs.",
                 "Both reject traditional relationship hierarchies.",
                 "Maximum freedom is sacred to both."
             ],
-            tension: [
+            spannung: [
                 "Solopoly is more structured than RA – has the 'Poly' concept.",
                 "RA goes further in rejecting categories."
             ]
         },
         logos: {
-            shared: [
+            gemeinsam: [
                 "Both prioritize autonomy over merging.",
                 "No primary relationship expectations.",
                 "Similar values in freedom and self-determination."
             ],
-            differences: [
+            unterschied: [
                 "Solopoly works with the Poly framework, RA rejects all frameworks."
             ]
         },
@@ -1433,21 +1433,21 @@ const archetypeStatements_EN = {
 
     "ra_polyamor": {
         pathos: {
-            shared: [
+            gemeinsam: [
                 "Both understand non-monogamous lifestyles.",
                 "Openness for multiple connections is familiar to both."
             ],
-            tension: [
+            spannung: [
                 "RA rejects hierarchies that Polyamor often has.",
                 "Polyamor's structure can feel confining for RA.",
                 "The Primary/Secondary distinction is unacceptable for RA."
             ]
         },
         logos: {
-            shared: [
+            gemeinsam: [
                 "Both consciously reflect on relationship forms."
             ],
-            differences: [
+            unterschied: [
                 "Polyamor is structured, RA rejects all structures.",
                 "Hierarchy differences are fundamental."
             ]
@@ -1465,17 +1465,17 @@ const archetypeStatements_EN = {
 
     "ra_ra": {
         pathos: {
-            shared: [
+            gemeinsam: [
                 "Perfect resonance: Both live radical relationship freedom.",
                 "No labels, no hierarchies – only authentic connection.",
                 "The other's freedom is self-evident."
             ],
-            tension: [
+            spannung: [
                 "Sometimes too much freedom can create disorientation."
             ]
         },
         logos: {
-            shared: [
+            gemeinsam: [
                 "Identical philosophy: Each relationship is individual.",
                 "No external expectations burden the connection."
             ]
@@ -1493,21 +1493,21 @@ const archetypeStatements_EN = {
 
     "ra_lat": {
         pathos: {
-            shared: [
+            gemeinsam: [
                 "Both value their own space and autonomy.",
                 "Separate living fits RA's philosophy."
             ],
-            tension: [
+            spannung: [
                 "LAT has more traditional relationship expectations.",
                 "RA's label rejection can unsettle LAT."
             ]
         },
         logos: {
-            shared: [
+            gemeinsam: [
                 "Both understand the value of one's own space.",
                 "No living-together expectation."
             ],
-            differences: [
+            unterschied: [
                 "LAT is in a defined relationship, RA rejects definitions."
             ]
         },
@@ -1524,21 +1524,21 @@ const archetypeStatements_EN = {
 
     "ra_aromantisch": {
         pathos: {
-            shared: [
+            gemeinsam: [
                 "Both reject traditional relationship expectations.",
                 "No predetermined scripts determine the connection.",
                 "Individual agreements are self-evident."
             ],
-            tension: [
+            spannung: [
                 "Different motivations: RA philosophical, Aromantic orientation-based."
             ]
         },
         logos: {
-            shared: [
+            gemeinsam: [
                 "Both define relationships individually.",
                 "No romantic expectations burden the connection."
             ],
-            differences: [
+            unterschied: [
                 "RA is open to all connection forms, Aromantic excludes romance."
             ]
         },
@@ -1559,20 +1559,20 @@ const archetypeStatements_EN = {
 
     "lat_single": {
         pathos: {
-            shared: [
+            gemeinsam: [
                 "Both value their own space and independence.",
                 "LAT understands the need for retreat."
             ],
-            tension: [
+            spannung: [
                 "LAT expects more commitment than Single is used to."
             ]
         },
         logos: {
-            shared: [
+            gemeinsam: [
                 "Both live alone – this connects.",
                 "No pressure to live together."
             ],
-            differences: [
+            unterschied: [
                 "LAT is committed, Single is free."
             ]
         },
@@ -1589,16 +1589,16 @@ const archetypeStatements_EN = {
 
     "lat_duo": {
         pathos: {
-            shared: [
+            gemeinsam: [
                 "Both want deep, committed relationship."
             ],
-            tension: [
+            spannung: [
                 "Duo wants to live together – LAT doesn't.",
                 "The living arrangement is a fundamental conflict."
             ]
         },
         logos: {
-            differences: [
+            unterschied: [
                 "Fundamental difference in living arrangement.",
                 "Duo sees living together as a sign of love."
             ]
@@ -1615,21 +1615,21 @@ const archetypeStatements_EN = {
 
     "lat_duo_flex": {
         pathos: {
-            shared: [
+            gemeinsam: [
                 "Both understand conscious distance and flexibility.",
                 "Balance between closeness and own space is important to both."
             ],
-            tension: [
+            spannung: [
                 "Different expectations about opening the relationship.",
                 "LAT might expect more exclusivity."
             ]
         },
         logos: {
-            shared: [
+            gemeinsam: [
                 "Both value the balance of closeness and distance.",
                 "Flexibility is familiar to both."
             ],
-            differences: [
+            unterschied: [
                 "Duo-Flex's opening for others vs. LAT's focus on living arrangement."
             ]
         },
@@ -1646,20 +1646,20 @@ const archetypeStatements_EN = {
 
     "lat_solopoly": {
         pathos: {
-            shared: [
+            gemeinsam: [
                 "Both live separately and value autonomy.",
                 "No living-together conflict – both live alone."
             ],
-            tension: [
+            spannung: [
                 "LAT might expect more exclusivity than Solopoly can offer."
             ]
         },
         logos: {
-            shared: [
+            gemeinsam: [
                 "Both understand separate living as a conscious choice.",
                 "Autonomy is important to both."
             ],
-            differences: [
+            unterschied: [
                 "Solopoly has multiple partners, LAT often only one."
             ]
         },
@@ -1676,19 +1676,19 @@ const archetypeStatements_EN = {
 
     "lat_polyamor": {
         pathos: {
-            shared: [
+            gemeinsam: [
                 "Both value conscious relationship design."
             ],
-            tension: [
+            spannung: [
                 "LAT might be overwhelmed by Polyamor's complexity.",
                 "Polyamor's many relationships can unsettle LAT."
             ]
         },
         logos: {
-            shared: [
+            gemeinsam: [
                 "Both reflect on their relationship form."
             ],
-            differences: [
+            unterschied: [
                 "LAT often lives exclusively, Polyamor by definition doesn't.",
                 "Different levels of complexity."
             ]
@@ -1705,21 +1705,21 @@ const archetypeStatements_EN = {
 
     "lat_ra": {
         pathos: {
-            shared: [
+            gemeinsam: [
                 "Both value their own space and independence.",
                 "No living-together expectation."
             ],
-            tension: [
+            spannung: [
                 "RA's label rejection can unsettle LAT.",
                 "LAT needs more definition than RA wants to give."
             ]
         },
         logos: {
-            shared: [
+            gemeinsam: [
                 "Both understand the value of autonomy.",
                 "Separate living is self-evident."
             ],
-            differences: [
+            unterschied: [
                 "LAT has clear relationship definition, RA rejects definitions."
             ]
         },
@@ -1736,17 +1736,17 @@ const archetypeStatements_EN = {
 
     "lat_lat": {
         pathos: {
-            shared: [
+            gemeinsam: [
                 "Perfect resonance: Both understand the value of one's own space.",
                 "Quality time over quantity.",
                 "The conscious distance is mutually understood."
             ],
-            tension: [
+            spannung: [
                 "Sometimes both might be too distanced."
             ]
         },
         logos: {
-            shared: [
+            gemeinsam: [
                 "Identical living philosophy.",
                 "Both value the balance of closeness and distance."
             ]
@@ -1764,20 +1764,20 @@ const archetypeStatements_EN = {
 
     "lat_aromantisch": {
         pathos: {
-            shared: [
+            gemeinsam: [
                 "Both value distance and own space.",
                 "Platonic LAT relationship is conceivable."
             ],
-            tension: [
+            spannung: [
                 "LAT might expect romance that Aromantic cannot offer."
             ]
         },
         logos: {
-            shared: [
+            gemeinsam: [
                 "Both can handle separate living.",
                 "No merging expectation."
             ],
-            differences: [
+            unterschied: [
                 "LAT often expects romantic relationship.",
                 "Aromantic can only offer platonic connections."
             ]
@@ -1799,20 +1799,20 @@ const archetypeStatements_EN = {
 
     "aromantisch_single": {
         pathos: {
-            shared: [
+            gemeinsam: [
                 "Both have no romantic expectations of each other.",
                 "Deep friendship is the foundation."
             ],
-            tension: [
+            spannung: [
                 "Single might seek romance that Aromantic cannot offer."
             ]
         },
         logos: {
-            shared: [
+            gemeinsam: [
                 "Both are autonomous and independent.",
                 "No romantic scripts to fulfill."
             ],
-            differences: [
+            unterschied: [
                 "Single is open to romance, Aromantic is not."
             ]
         },
@@ -1829,14 +1829,14 @@ const archetypeStatements_EN = {
 
     "aromantisch_duo": {
         pathos: {
-            tension: [
+            spannung: [
                 "Duo seeks romantic love – exactly what Aromantic cannot offer.",
                 "Fundamental difference in relationship definition.",
                 "Duo might feel unloved."
             ]
         },
         logos: {
-            differences: [
+            unterschied: [
                 "Maximum incompatibility in romantic expectations.",
                 "Aromantic cannot speak the romantic language."
             ]
@@ -1853,19 +1853,19 @@ const archetypeStatements_EN = {
 
     "aromantisch_duo_flex": {
         pathos: {
-            shared: [
+            gemeinsam: [
                 "Duo-Flex shows flexibility that accommodates Aromantic."
             ],
-            tension: [
+            spannung: [
                 "Duo-Flex expects romantic primary relationship.",
                 "Aromantic cannot fulfill this expectation."
             ]
         },
         logos: {
-            shared: [
+            gemeinsam: [
                 "Both have unconventional relationship approaches."
             ],
-            differences: [
+            unterschied: [
                 "Romantic expectations for primary partner exist with Duo-Flex.",
                 "Aromantic can only offer platonic connections."
             ]
@@ -1884,21 +1884,21 @@ const archetypeStatements_EN = {
 
     "aromantisch_solopoly": {
         pathos: {
-            shared: [
+            gemeinsam: [
                 "Both have unconventional relationship models.",
                 "Autonomy is respected on both sides."
             ],
-            tension: [
+            spannung: [
                 "Solopoly seeks romantic connections.",
                 "Aromantic can only offer platonic depth."
             ]
         },
         logos: {
-            shared: [
+            gemeinsam: [
                 "Both live autonomously and self-determined.",
                 "No traditional expectations."
             ],
-            differences: [
+            unterschied: [
                 "Solopoly is oriented toward romantic relationships.",
                 "Aromantic excludes romance."
             ]
@@ -1917,20 +1917,20 @@ const archetypeStatements_EN = {
 
     "aromantisch_polyamor": {
         pathos: {
-            shared: [
+            gemeinsam: [
                 "Polyamor is open to different connection types."
             ],
-            tension: [
+            spannung: [
                 "Polyamor focuses on romantic love.",
                 "Aromantic can only offer platonic connections.",
                 "Fundamental difference in relationship definition."
             ]
         },
         logos: {
-            shared: [
+            gemeinsam: [
                 "Both reflect on relationship forms."
             ],
-            differences: [
+            unterschied: [
                 "Polyamor defines itself through romantic multiple love.",
                 "Aromantic cannot share this basis."
             ]
@@ -1949,21 +1949,21 @@ const archetypeStatements_EN = {
 
     "aromantisch_ra": {
         pathos: {
-            shared: [
+            gemeinsam: [
                 "Both reject traditional relationship expectations.",
                 "No predetermined scripts determine the connection.",
                 "Individual agreements are self-evident."
             ],
-            tension: [
+            spannung: [
                 "Different motivations for their attitudes."
             ]
         },
         logos: {
-            shared: [
+            gemeinsam: [
                 "Both define relationships individually.",
                 "No romantic expectations as obligation."
             ],
-            differences: [
+            unterschied: [
                 "RA is open to all connection forms, Aromantic excludes romance."
             ]
         },
@@ -1980,21 +1980,21 @@ const archetypeStatements_EN = {
 
     "aromantisch_lat": {
         pathos: {
-            shared: [
+            gemeinsam: [
                 "Both value own space and distance.",
                 "Platonic LAT relationship is conceivable."
             ],
-            tension: [
+            spannung: [
                 "LAT often expects romantic relationship.",
                 "Aromantic cannot fulfill this expectation."
             ]
         },
         logos: {
-            shared: [
+            gemeinsam: [
                 "Both live separately and value it.",
                 "No merging expectation."
             ],
-            differences: [
+            unterschied: [
                 "LAT is often oriented toward romantic relationship."
             ]
         },
@@ -2011,17 +2011,17 @@ const archetypeStatements_EN = {
 
     "aromantisch_aromantisch": {
         pathos: {
-            shared: [
+            gemeinsam: [
                 "Perfect resonance: Both understand the lack of romantic attraction.",
                 "Deep platonic love is the shared language.",
                 "No societal expectations of romance."
             ],
-            tension: [
+            spannung: [
                 "Socially little understood and supported."
             ]
         },
         logos: {
-            shared: [
+            gemeinsam: [
                 "Identical understanding of relationship.",
                 "No romantic scripts to fulfill."
             ]
