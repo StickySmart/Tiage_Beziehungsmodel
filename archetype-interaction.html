@@ -3921,64 +3921,40 @@
             border: 1px solid var(--border);
         }
 
-        /* Large Lightbulb Display */
-        .lightbulb-display {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
+        /* Score Circle Display */
+        .score-circle-display {
+            position: relative;
+            width: 100px;
+            height: 100px;
             cursor: pointer;
-            transition: transform 0.3s ease;
+            margin-bottom: 15px;
+            transition: transform 0.2s ease;
         }
 
-        .lightbulb-display:hover {
-            transform: scale(1.05);
+        .score-circle-display:hover {
+            transform: scale(1.08);
         }
 
-        .lightbulb-glass {
-            position: relative;
-            width: 120px;
-            height: 120px;
-            background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.15) 0%, rgba(255,255,255,0.05) 50%, transparent 70%);
-            border-radius: 50%;
-            border: 3px solid rgba(255,255,255,0.2);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.5s ease;
-            box-shadow: 0 0 20px rgba(255,255,255,0.1);
-        }
-
-        .lightbulb-glass.glowing {
-            box-shadow: 0 0 40px var(--glow-color, rgba(231, 76, 60, 0.5));
-            border-color: var(--glow-color, rgba(231, 76, 60, 0.5));
-        }
-
-        .lightbulb-score-circle {
-            position: relative;
-            width: 90px;
-            height: 90px;
-        }
-
-        .lightbulb-score-circle svg {
+        .score-circle-display svg {
             width: 100%;
             height: 100%;
             transform: rotate(-90deg);
         }
 
-        .lightbulb-score-circle .score-bg {
+        .score-circle-display .score-bg {
             fill: none;
-            stroke: rgba(255,255,255,0.15);
-            stroke-width: 6;
+            stroke: rgba(255,255,255,0.1);
+            stroke-width: 8;
         }
 
-        .lightbulb-score-circle .score-progress {
+        .score-circle-display .score-progress {
             fill: none;
-            stroke-width: 6;
+            stroke-width: 8;
             stroke-linecap: round;
             transition: stroke-dashoffset 0.5s ease, stroke 0.3s ease;
         }
 
-        .lightbulb-score-value {
+        .score-circle-value {
             position: absolute;
             top: 50%;
             left: 50%;
@@ -3989,81 +3965,52 @@
             transition: color 0.3s ease;
         }
 
-        .lightbulb-base {
-            width: 50px;
-            height: 25px;
-            background: linear-gradient(180deg, #6b6b6b 0%, #4a4a4a 50%, #3a3a3a 100%);
-            border-radius: 0 0 8px 8px;
-            margin-top: -5px;
-            position: relative;
+        /* Lightbulb Button */
+        .lightbulb-button {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+            padding: 10px 15px;
+            cursor: pointer;
+            transition: transform 0.2s ease;
+            border-radius: 10px;
         }
 
-        .lightbulb-base::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 60px;
-            height: 8px;
-            background: linear-gradient(180deg, #7a7a7a 0%, #5a5a5a 100%);
-            border-radius: 4px 4px 0 0;
+        .lightbulb-button:hover {
+            transform: scale(1.05);
+            background: rgba(255,255,255,0.05);
         }
 
-        .lightbulb-base::after {
-            content: '';
-            position: absolute;
-            bottom: 5px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 30px;
-            height: 4px;
-            background: #2a2a2a;
-            border-radius: 2px;
+        .lightbulb-icon {
+            font-size: 36px;
+            line-height: 1;
         }
 
-        .lightbulb-label {
-            margin-top: 15px;
+        .lightbulb-text {
             font-size: 11px;
             font-weight: 600;
             color: var(--text-secondary);
             text-transform: uppercase;
-            letter-spacing: 1.5px;
-            text-align: center;
+            letter-spacing: 1px;
         }
 
-        /* Mobile Lightbulb - smaller version */
-        .lightbulb-mobile .lightbulb-glass {
-            width: 100px;
-            height: 100px;
+        /* Mobile versions */
+        .mobile-score-circle-display {
+            width: 80px;
+            height: 80px;
+            margin-bottom: 10px;
         }
 
-        .lightbulb-mobile .lightbulb-score-circle {
-            width: 75px;
-            height: 75px;
-        }
-
-        .lightbulb-mobile .lightbulb-score-value {
+        .mobile-score-circle-display .score-circle-value {
             font-size: 1.3rem;
         }
 
-        .lightbulb-mobile .lightbulb-base {
-            width: 42px;
-            height: 20px;
+        .mobile-lightbulb-button .lightbulb-icon {
+            font-size: 28px;
         }
 
-        .lightbulb-mobile .lightbulb-base::before {
-            width: 50px;
-            height: 6px;
-        }
-
-        .lightbulb-mobile .lightbulb-base::after {
-            width: 24px;
-            height: 3px;
-        }
-
-        .lightbulb-mobile .lightbulb-label {
-            margin-top: 12px;
+        .mobile-lightbulb-button .lightbulb-text {
             font-size: 10px;
         }
 
@@ -6957,20 +6904,20 @@
                 </div>
             </div>
 
-            <!-- Center Column - Large Lightbulb Display -->
+            <!-- Center Column - Score Circle & Lightbulb Button -->
             <div class="center-column">
-                <div class="lightbulb-display" id="lightbulbDisplay">
-                    <div class="lightbulb-glass" id="lightbulbGlass" onclick="openPathosLogosModal('pathos')" title="Tiage's Synthese - Pathos & Logos" style="cursor: pointer;">
-                        <div class="lightbulb-score-circle" onclick="event.stopPropagation(); openProContraModal();" title="Klicken für Pro & Contra Details" style="cursor: pointer;">
-                            <svg viewBox="0 0 100 100">
-                                <circle class="score-bg" cx="50" cy="50" r="42"></circle>
-                                <circle class="score-progress" id="mainScoreProgress" cx="50" cy="50" r="42" stroke-dasharray="264" stroke-dashoffset="264"></circle>
-                            </svg>
-                            <div class="lightbulb-score-value" id="mainScoreValue">0%</div>
-                        </div>
-                    </div>
-                    <div class="lightbulb-base" onclick="openPathosLogosModal('pathos')" style="cursor: pointer;" title="Tiage's Synthese"></div>
-                    <div class="lightbulb-label" onclick="openPathosLogosModal('pathos')" style="cursor: pointer;" title="Tiage's Synthese">Tiage's Synthese</div>
+                <!-- Score Circle -->
+                <div class="score-circle-display" id="mainScoreCircle" onclick="openProContraModal()" title="Klicken für Pro & Contra Details">
+                    <svg viewBox="0 0 100 100">
+                        <circle class="score-bg" cx="50" cy="50" r="42"></circle>
+                        <circle class="score-progress" id="mainScoreProgress" cx="50" cy="50" r="42" stroke-dasharray="264" stroke-dashoffset="264"></circle>
+                    </svg>
+                    <div class="score-circle-value" id="mainScoreValue">0%</div>
+                </div>
+                <!-- Lightbulb Button -->
+                <div class="lightbulb-button" onclick="openPathosLogosModal('pathos')" title="Tiage's Synthese - Pathos & Logos">
+                    <span class="lightbulb-icon">💡</span>
+                    <span class="lightbulb-text">Tiage's Synthese</span>
                 </div>
             </div>
 
@@ -7316,18 +7263,18 @@
             </div>
 
             <div class="score-circle-container">
-                <div class="lightbulb-display lightbulb-mobile" id="mobileLightbulbDisplay">
-                    <div class="lightbulb-glass" id="mobileLightbulbGlass" onclick="openPathosLogosModal('pathos')" title="Tiage's Synthese - Pathos & Logos" style="cursor: pointer;">
-                        <div class="lightbulb-score-circle" onclick="event.stopPropagation(); openProContraModal();" title="Klicken für Pro & Contra Details" style="cursor: pointer;">
-                            <svg viewBox="0 0 100 100">
-                                <circle class="score-bg" cx="50" cy="50" r="42"></circle>
-                                <circle class="score-progress" id="mobileScoreProgress" cx="50" cy="50" r="42" stroke-dasharray="264" stroke-dashoffset="264"></circle>
-                            </svg>
-                            <div class="lightbulb-score-value" id="mobileScoreCircle">0%</div>
-                        </div>
-                    </div>
-                    <div class="lightbulb-base" onclick="openPathosLogosModal('pathos')" style="cursor: pointer;" title="Tiage's Synthese"></div>
-                    <div class="lightbulb-label" onclick="openPathosLogosModal('pathos')" style="cursor: pointer;" title="Tiage's Synthese">Tiage's Synthese</div>
+                <!-- Mobile Score Circle -->
+                <div class="score-circle-display mobile-score-circle-display" id="mobileScoreCircleDisplay" onclick="openProContraModal()" title="Klicken für Pro & Contra Details">
+                    <svg viewBox="0 0 100 100">
+                        <circle class="score-bg" cx="50" cy="50" r="42"></circle>
+                        <circle class="score-progress" id="mobileScoreProgress" cx="50" cy="50" r="42" stroke-dasharray="264" stroke-dashoffset="264"></circle>
+                    </svg>
+                    <div class="score-circle-value" id="mobileScoreCircle">0%</div>
+                </div>
+                <!-- Mobile Lightbulb Button -->
+                <div class="lightbulb-button mobile-lightbulb-button" onclick="openPathosLogosModal('pathos')" title="Tiage's Synthese - Pathos & Logos">
+                    <span class="lightbulb-icon">💡</span>
+                    <span class="lightbulb-text">Tiage's Synthese</span>
                 </div>
                 <div id="mobileScoreNote" class="score-note" style="margin-top: 8px; font-size: 13px; color: var(--text-secondary); font-style: italic; text-align: center; max-width: 280px; line-height: 1.4; margin-left: auto; margin-right: auto;"></div>
             </div>
@@ -10598,7 +10545,6 @@
             const scoreProgressEl = document.getElementById('syntheseScoreProgress');
             const mainScoreValueEl = document.getElementById('mainScoreValue');
             const mainScoreProgressEl = document.getElementById('mainScoreProgress');
-            const lightbulbGlass = document.getElementById('lightbulbGlass');
 
             // Get current score from resultPercentage
             const percentage = document.getElementById('resultPercentage');
@@ -10619,7 +10565,7 @@
                 scoreValueEl.style.color = color;
             }
 
-            // Update Main Page Lightbulb Display
+            // Update Main Page Score Circle
             if (mainScoreValueEl && mainScoreProgressEl) {
                 mainScoreValueEl.textContent = currentScore + '%';
                 mainScoreProgressEl.style.strokeDashoffset = offset;
@@ -10627,28 +10573,9 @@
                 mainScoreValueEl.style.color = color;
             }
 
-            // Update Lightbulb Glow Effect
-            if (lightbulbGlass) {
-                if (currentScore > 0) {
-                    lightbulbGlass.classList.add('glowing');
-                    lightbulbGlass.style.setProperty('--glow-color', color);
-                    // Increase glow intensity based on score
-                    const glowIntensity = 20 + (currentScore / 100) * 40;
-                    lightbulbGlass.style.boxShadow = `0 0 ${glowIntensity}px ${color}, inset 0 0 ${glowIntensity/2}px ${color}`;
-                    lightbulbGlass.style.borderColor = color;
-                    lightbulbGlass.style.background = `radial-gradient(circle at 30% 30%, ${color}33 0%, ${color}15 30%, transparent 70%)`;
-                } else {
-                    lightbulbGlass.classList.remove('glowing');
-                    lightbulbGlass.style.boxShadow = '0 0 20px rgba(255,255,255,0.1)';
-                    lightbulbGlass.style.borderColor = 'rgba(255,255,255,0.2)';
-                    lightbulbGlass.style.background = 'radial-gradient(circle at 30% 30%, rgba(255,255,255,0.15) 0%, rgba(255,255,255,0.05) 50%, transparent 70%)';
-                }
-            }
-
-            // Update Mobile Lightbulb Display
+            // Update Mobile Score Circle
             const mobileScoreEl = document.getElementById('mobileScoreCircle');
             const mobileScoreProgressEl = document.getElementById('mobileScoreProgress');
-            const mobileLightbulbGlass = document.getElementById('mobileLightbulbGlass');
 
             if (mobileScoreEl) {
                 mobileScoreEl.textContent = currentScore + '%';
@@ -10658,23 +10585,6 @@
             if (mobileScoreProgressEl) {
                 mobileScoreProgressEl.style.strokeDashoffset = offset;
                 mobileScoreProgressEl.style.stroke = color;
-            }
-
-            // Update Mobile Lightbulb Glow Effect
-            if (mobileLightbulbGlass) {
-                if (currentScore > 0) {
-                    mobileLightbulbGlass.classList.add('glowing');
-                    mobileLightbulbGlass.style.setProperty('--glow-color', color);
-                    const glowIntensity = 15 + (currentScore / 100) * 35;
-                    mobileLightbulbGlass.style.boxShadow = `0 0 ${glowIntensity}px ${color}, inset 0 0 ${glowIntensity/2}px ${color}`;
-                    mobileLightbulbGlass.style.borderColor = color;
-                    mobileLightbulbGlass.style.background = `radial-gradient(circle at 30% 30%, ${color}33 0%, ${color}15 30%, transparent 70%)`;
-                } else {
-                    mobileLightbulbGlass.classList.remove('glowing');
-                    mobileLightbulbGlass.style.boxShadow = '0 0 20px rgba(255,255,255,0.1)';
-                    mobileLightbulbGlass.style.borderColor = 'rgba(255,255,255,0.2)';
-                    mobileLightbulbGlass.style.background = 'radial-gradient(circle at 30% 30%, rgba(255,255,255,0.15) 0%, rgba(255,255,255,0.05) 50%, transparent 70%)';
-                }
             }
         }
 
