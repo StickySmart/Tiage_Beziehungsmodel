@@ -8824,9 +8824,11 @@
         // archetypeStatements_EN wird aus externer Datei geladen (statements/archetypeStatements_EN.js)
 
         // Fallback-Definition falls externe Datei nicht geladen wurde
-        if (typeof archetypeStatements === 'undefined') {
+        // Note: archetypeStatements wird in statements/archetypeStatements.js definiert
+        // Dieser Check ist nur für den Fall dass die Datei nicht geladen wurde
+        if (typeof window.archetypeStatements === 'undefined') {
             console.warn('archetypeStatements nicht geladen - verwende leeres Objekt');
-            var archetypeStatements = {};
+            window.archetypeStatements = {};
         }
 
         // dominanceStatements ist inline definiert (da vollständig und korrekt)
