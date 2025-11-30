@@ -8392,12 +8392,29 @@
         }
 
         /**
-         * Update dimension section labels (Geschlechtsidentität, Dominanz, Orientierung)
+         * Update dimension section labels (Geschlechtsidentität, Dominanz, Orientierung, GFK)
          */
         function updateDimensionSectionLabels() {
-            // Update Geschlechtsidentität labels
-            document.querySelectorAll('.geschlecht-info-link').forEach(el => {
+            // Update Geschlechtsidentität labels - only elements that call showGeschlechtInfoModal
+            document.querySelectorAll('.geschlecht-info-link[onclick*="showGeschlechtInfoModal"]').forEach(el => {
                 el.textContent = TiageI18n.t('dimensions.geschlechtLabel', 'Geschlechtsidentität');
+            });
+
+            // Update Dominanz labels - only elements that call showDominanzInfoModal
+            document.querySelectorAll('.geschlecht-info-link[onclick*="showDominanzInfoModal"]').forEach(el => {
+                el.textContent = TiageI18n.t('dimensions.dominanzLabel', 'Dominanz');
+            });
+
+            // Update Orientierung labels - only elements that call showOrientierungInfoModal
+            document.querySelectorAll('.geschlecht-info-link[onclick*="showOrientierungInfoModal"]').forEach(el => {
+                el.textContent = TiageI18n.t('dimensions.orientierungLabel', 'Orientierung');
+            });
+
+            // Update GFK labels - only elements that call showDimensionTooltip('gfk')
+            document.querySelectorAll('.geschlecht-info-link[onclick*="showDimensionTooltip"]').forEach(el => {
+                if (el.getAttribute('onclick')?.includes("'gfk'")) {
+                    el.textContent = TiageI18n.t('dimensions.gfkLabel', 'GFK-Kompetenz');
+                }
             });
 
             // Update Dominanz section labels
@@ -12984,6 +13001,208 @@
         // Helper: Check if any orientierung is selected (for backwards compatibility)
         function hasAnyOrientierungSelected(person) {
             return personDimensions[person].orientierung.primary !== null;
+        }
+
+        // ═══════════════════════════════════════════════════════════════════════
+        // MOBILE STATUS TOGGLE HANDLERS (Gelebt/Interessiert buttons)
+        // ═══════════════════════════════════════════════════════════════════════
+
+        /**
+         * Handle Dominanz status toggle from mobile interface (Gelebt/Interessiert buttons)
+         * Maps: Gelebt → primary, Interessiert → secondary
+         * @param {string} person - 'ich' or 'partner'
+         * @param {string} dominanzType - 'dominant', 'submissiv', 'switch', 'ausgeglichen'
+         * @param {string} status - 'gelebt' or 'interessiert'
+         * @param {HTMLElement} btn - The clicked button
+         */
+        function handleDominanzStatusToggle(person, dominanzType, status, btn) {
+            // Ensure dominanz has correct structure
+            if (!personDimensions[person].dominanz ||
+                !('primary' in personDimensions[person].dominanz)) {
+                personDimensions[person].dominanz = { primary: null, secondary: null };
+            }
+
+            const currentPrimary = personDimensions[person].dominanz.primary;
+            const currentSecondary = personDimensions[person].dominanz.secondary;
+
+            if (status === 'gelebt') {
+                // Toggle primary
+                if (currentPrimary === dominanzType) {
+                    // Already primary, clear it
+                    personDimensions[person].dominanz.primary = null;
+                    // If this was also secondary, clear secondary too
+                    if (currentSecondary === dominanzType) {
+                        personDimensions[person].dominanz.secondary = null;
+                    }
+                } else {
+                    // Set as primary
+                    personDimensions[person].dominanz.primary = dominanzType;
+                    // If this was secondary, remove from secondary
+                    if (currentSecondary === dominanzType) {
+                        personDimensions[person].dominanz.secondary = null;
+                    }
+                }
+            } else if (status === 'interessiert') {
+                // Toggle secondary
+                if (currentSecondary === dominanzType) {
+                    // Already secondary, clear it
+                    personDimensions[person].dominanz.secondary = null;
+                } else {
+                    // Set as secondary (only if it's not already primary)
+                    if (currentPrimary !== dominanzType) {
+                        personDimensions[person].dominanz.secondary = dominanzType;
+                    }
+                }
+            }
+
+            // Sync with mobilePersonDimensions
+            if (typeof mobilePersonDimensions !== 'undefined') {
+                mobilePersonDimensions[person].dominanz.primary = personDimensions[person].dominanz.primary;
+                mobilePersonDimensions[person].dominanz.secondary = personDimensions[person].dominanz.secondary;
+            }
+
+            // Sync with TiageState
+            if (typeof TiageState !== 'undefined') {
+                TiageState.set(`personDimensions.${person}.dominanz`, personDimensions[person].dominanz);
+            }
+
+            // Sync all UIs
+            syncDominanzUI(person);
+            syncMobileDominanzStatusButtons(person);
+
+            // Update needs-selection
+            const hasPrimary = personDimensions[person].dominanz.primary !== null;
+            document.querySelectorAll(`[data-dimension*="${person}-dominanz"]`).forEach(dim => {
+                dim.classList.toggle('needs-selection', !hasPrimary);
+            });
+
+            updateComparisonView();
+
+            if (typeof saveSelectionToStorage === 'function') {
+                saveSelectionToStorage();
+            }
+        }
+
+        /**
+         * Handle Orientierung status toggle from mobile interface (Gelebt/Interessiert buttons)
+         * Maps: Gelebt → primary, Interessiert → secondary
+         */
+        function handleOrientierungStatusToggle(person, orientierungType, status, btn) {
+            // Ensure orientierung has correct structure
+            if (!personDimensions[person].orientierung ||
+                !('primary' in personDimensions[person].orientierung)) {
+                personDimensions[person].orientierung = { primary: null, secondary: null };
+            }
+
+            const currentPrimary = personDimensions[person].orientierung.primary;
+            const currentSecondary = personDimensions[person].orientierung.secondary;
+
+            if (status === 'gelebt') {
+                // Toggle primary
+                if (currentPrimary === orientierungType) {
+                    personDimensions[person].orientierung.primary = null;
+                    if (currentSecondary === orientierungType) {
+                        personDimensions[person].orientierung.secondary = null;
+                    }
+                } else {
+                    personDimensions[person].orientierung.primary = orientierungType;
+                    if (currentSecondary === orientierungType) {
+                        personDimensions[person].orientierung.secondary = null;
+                    }
+                }
+            } else if (status === 'interessiert') {
+                // Toggle secondary
+                if (currentSecondary === orientierungType) {
+                    personDimensions[person].orientierung.secondary = null;
+                } else {
+                    if (currentPrimary !== orientierungType) {
+                        personDimensions[person].orientierung.secondary = orientierungType;
+                    }
+                }
+            }
+
+            // Sync with mobilePersonDimensions
+            if (typeof mobilePersonDimensions !== 'undefined') {
+                mobilePersonDimensions[person].orientierung.primary = personDimensions[person].orientierung.primary;
+                mobilePersonDimensions[person].orientierung.secondary = personDimensions[person].orientierung.secondary;
+            }
+
+            // Sync with TiageState
+            if (typeof TiageState !== 'undefined') {
+                TiageState.set(`personDimensions.${person}.orientierung`, personDimensions[person].orientierung);
+            }
+
+            // Sync all UIs
+            syncOrientierungUI(person);
+            syncMobileOrientierungStatusButtons(person);
+
+            // Update needs-selection
+            const hasPrimary = personDimensions[person].orientierung.primary !== null;
+            document.querySelectorAll(`[data-dimension*="${person}-orientierung"]`).forEach(dim => {
+                dim.classList.toggle('needs-selection', !hasPrimary);
+            });
+
+            updateComparisonView();
+
+            if (typeof saveSelectionToStorage === 'function') {
+                saveSelectionToStorage();
+            }
+        }
+
+        /**
+         * Sync mobile dominanz status buttons to reflect current state
+         */
+        function syncMobileDominanzStatusButtons(person) {
+            const primary = personDimensions[person].dominanz.primary;
+            const secondary = personDimensions[person].dominanz.secondary;
+
+            const types = ['dominant', 'submissiv', 'switch', 'ausgeglichen'];
+            const abbrevs = ['dom', 'sub', 'sw', 'aus'];
+
+            types.forEach((type, i) => {
+                const abbrev = abbrevs[i];
+                const prefix = person === 'ich' ? 'm-ich' : 'm-partner';
+                const statusGroup = document.getElementById(`${prefix}-d-${abbrev}-status`);
+                if (!statusGroup) return;
+
+                const gelebtBtn = statusGroup.querySelector('[data-status="gelebt"]');
+                const interessiertBtn = statusGroup.querySelector('[data-status="interessiert"]');
+
+                if (gelebtBtn) {
+                    gelebtBtn.classList.toggle('active-gelebt', primary === type);
+                }
+                if (interessiertBtn) {
+                    interessiertBtn.classList.toggle('active-interessiert', secondary === type);
+                }
+            });
+        }
+
+        /**
+         * Sync mobile orientierung status buttons to reflect current state
+         */
+        function syncMobileOrientierungStatusButtons(person) {
+            const primary = personDimensions[person].orientierung.primary;
+            const secondary = personDimensions[person].orientierung.secondary;
+
+            const types = ['heterosexuell', 'homosexuell', 'bisexuell'];
+            const abbrevs = ['het', 'hom', 'bi'];
+
+            types.forEach((type, i) => {
+                const abbrev = abbrevs[i];
+                const prefix = person === 'ich' ? 'm-ich' : 'm-partner';
+                const statusGroup = document.getElementById(`${prefix}-o-${abbrev}-status`);
+                if (!statusGroup) return;
+
+                const gelebtBtn = statusGroup.querySelector('[data-status="gelebt"]');
+                const interessiertBtn = statusGroup.querySelector('[data-status="interessiert"]');
+
+                if (gelebtBtn) {
+                    gelebtBtn.classList.toggle('active-gelebt', primary === type);
+                }
+                if (interessiertBtn) {
+                    interessiertBtn.classList.toggle('active-interessiert', secondary === type);
+                }
+            });
         }
 
         // ═══════════════════════════════════════════════════════════════════════
@@ -19590,10 +19809,31 @@
 
         // Dimension toggle and collapse functions
         window.toggleAllDimensionsCollapse = toggleAllDimensionsCollapse;
+        window.toggleDimensionCollapse = toggleDimensionCollapse;
         window.showDimensionTooltip = showDimensionTooltip;
+        window.closeDimensionTooltip = closeDimensionTooltip;
         window.showGeschlechtInfoModal = showGeschlechtInfoModal;
+        window.closeGeschlechtInfoModal = closeGeschlechtInfoModal;
         window.showDominanzInfoModal = showDominanzInfoModal;
+        window.closeDominanzInfoModal = closeDominanzInfoModal;
+        window.showOrientierungInfoModal = showOrientierungInfoModal;
+        window.closeOrientierungInfoModal = closeOrientierungInfoModal;
         window.closeGfkExplanationModal = closeGfkExplanationModal;
+
+        // Dimension click handlers
+        window.handleGeschlechtClick = handleGeschlechtClick;
+        window.handleDominanzClick = handleDominanzClick;
+        window.handleOrientierungClick = handleOrientierungClick;
+        window.handleGfkClick = handleGfkClick;
+
+        // Mobile status toggle handlers (Gelebt/Interessiert buttons)
+        window.handleDominanzStatusToggle = handleDominanzStatusToggle;
+        window.handleOrientierungStatusToggle = handleOrientierungStatusToggle;
+        window.syncMobileDominanzStatusButtons = syncMobileDominanzStatusButtons;
+        window.syncMobileOrientierungStatusButtons = syncMobileOrientierungStatusButtons;
+
+        // Pathos/Logos Modal open function
+        window.openPathosLogosModal = openPathosLogosModal;
 
         // Comment and feedback functions
         window.submitComment = submitComment;
