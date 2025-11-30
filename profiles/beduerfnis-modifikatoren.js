@@ -970,79 +970,287 @@ const BeduerfnisModifikatoren = {
     },
 
     // ═══════════════════════════════════════════════════════════════════════════
+    // ORIENTIERUNGS-MODIFIKATOREN
+    // ═══════════════════════════════════════════════════════════════════════════
+    //
+    // Basiert auf: LGBTQ+ Forschung zu Identität und psychologischen Bedürfnissen
+    // + Allen et al. (2020): Sexual Orientation & Personality Meta-analysis
+    //
+    // OSHO-PERSPEKTIVE:
+    // - Alle Orientierungen sind natürlich, wenn authentisch gelebt
+    // - Homosexualität: "Eine natürliche Variation, keine Abweichung"
+    // - Bisexualität: "Die Fähigkeit, Schönheit in allen zu sehen"
+    //
+    // PIRSIG-PERSPEKTIVE:
+    // - Heterosexualität: Statisches Muster (gesellschaftlich normiert)
+    // - Homosexualität/Bisexualität: Dynamische Qualität (bricht Normen)
+
+    orientierung: {
+
+        // ─────────────────────────────────────────────────────────────────────────
+        // HETEROSEXUELL
+        // ─────────────────────────────────────────────────────────────────────────
+        // PIRSIG: Statisches Muster - gesellschaftlich etablierte Norm
+        // OSHO: Kann natürlich sein, oft aber konditioniert
+        // ─────────────────────────────────────────────────────────────────────────
+        heterosexuell: {
+            // Niedrigere Modifikatoren da "Default" in der Gesellschaft
+            // Weniger Bedürfnis nach Akzeptanz/Sichtbarkeit (wird vorausgesetzt)
+            akzeptanz: -10,
+            verstanden_werden: -5,
+            gesehen_werden: -5,
+            zugehoerigkeit: 0,
+
+            // Traditionellere Muster möglich
+            stabilitaet: +5,
+            bestaendigkeit: +5,
+            geborgenheit: +5,
+
+            // Weniger Bedürfnis nach Selbstausdruck bzgl. Orientierung
+            selbst_ausdruck: -5,
+            authentizitaet: -5
+        },
+
+        // ─────────────────────────────────────────────────────────────────────────
+        // HOMOSEXUELL
+        // ─────────────────────────────────────────────────────────────────────────
+        // PIRSIG: Dynamische Qualität - bricht gesellschaftliche Muster
+        // OSHO: Natürlicher Ausdruck, wenn authentisch gewählt
+        // ─────────────────────────────────────────────────────────────────────────
+        homosexuell: {
+            // Erhöhtes Bedürfnis nach Akzeptanz (historische Diskriminierung)
+            akzeptanz: +20,
+            verstanden_werden: +15,
+            gesehen_werden: +15,
+            respekt: +10,
+
+            // Community/Zugehörigkeit wichtig
+            zugehoerigkeit: +20,
+            gemeinschaft: +15,
+
+            // Authentizität hart erkämpft
+            authentizitaet: +20,
+            integritaet: +15,
+            selbst_ausdruck: +15,
+
+            // Selbstbestimmung wichtig
+            selbstbestimmung: +10,
+            waehlen_koennen: +10,
+
+            // Sicherheitsbedürfnis (je nach Umfeld)
+            sich_sicher_fuehlen: +10,
+            schutz: +10
+        },
+
+        // ─────────────────────────────────────────────────────────────────────────
+        // BISEXUELL
+        // ─────────────────────────────────────────────────────────────────────────
+        // PIRSIG: Maximale Dynamische Qualität - flexibel, offen
+        // OSHO: "Die Fähigkeit, Schönheit in allen zu sehen" - höchste Offenheit
+        // ─────────────────────────────────────────────────────────────────────────
+        bisexuell: {
+            // Sehr hohes Bedürfnis nach Akzeptanz (oft von beiden "Seiten" hinterfragt)
+            akzeptanz: +25,
+            verstanden_werden: +20,
+            gesehen_werden: +20,
+            respekt: +15,
+
+            // Flexibilität und Offenheit zentral
+            waehlen_koennen: +20,
+            spontaneitaet: +10,
+            selbstbestimmung: +15,
+
+            // Community kann komplizierter sein
+            zugehoerigkeit: +15,
+            gemeinschaft: +10,
+
+            // Starke Authentizität
+            authentizitaet: +25,
+            integritaet: +20,
+            selbst_ausdruck: +20,
+
+            // Offenheit für Erfahrungen
+            entdecken: +15,
+            kreativitaet: +10,
+            wachstum: +15
+        }
+    },
+
+    // ═══════════════════════════════════════════════════════════════════════════
+    // STATUS-FAKTOREN
+    // ═══════════════════════════════════════════════════════════════════════════
+    //
+    // "gelebt" = Aktiv praktiziert, integriert in Identität
+    // "interessiert" = Exploration, noch nicht gefestigt
+    //
+    // PIRSIG: "interessiert" = höhere dynamische Qualität (im Wandel)
+    // OSHO: Exploration ist natürlich und wertvoll
+
+    status: {
+        gelebt: 1.0,        // Volle Gewichtung
+        interessiert: 0.7   // 70% Gewichtung (noch im Wandel)
+    },
+
+    // ═══════════════════════════════════════════════════════════════════════════
     // HILFSFUNKTIONEN
     // ═══════════════════════════════════════════════════════════════════════════
 
     /**
-     * Berechnet finale Bedürfnisse für ein Profil
+     * Berechnet finale Bedürfnisse für ein vollständiges Profil
      *
-     * @param {object} basisBedürfnisse - Archetyp-Basis (z.B. single.kernbeduerfnisse)
-     * @param {string} dominanzTyp - 'dominant', 'submissiv', 'switch', 'ausgeglichen'
-     * @param {string} geschlecht - 'cis_mann', 'cis_frau', etc.
+     * FORMEL:
+     * finalerWert = (basis + domMod×domStatus + gesch1Mod×g1Status +
+     *                gesch2Mod×0.5×g2Status + oriMod×oriStatus)
+     *
+     * @param {object} params - Alle Parameter
+     * @param {object} params.basisBedürfnisse - Archetyp-Basis
+     * @param {string} params.dominanz - 'dominant', 'submissiv', 'switch', 'ausgeglichen'
+     * @param {string} params.dominanzStatus - 'gelebt' oder 'interessiert'
+     * @param {string} params.geschlechtPrimary - Primäres Geschlecht
+     * @param {string} params.geschlechtPrimaryStatus - 'gelebt' oder 'interessiert'
+     * @param {string} params.geschlechtSecondary - Sekundäres Geschlecht (optional)
+     * @param {string} params.geschlechtSecondaryStatus - 'gelebt' oder 'interessiert'
+     * @param {string} params.orientierung - 'heterosexuell', 'homosexuell', 'bisexuell'
+     * @param {string} params.orientierungStatus - 'gelebt' oder 'interessiert'
      * @returns {object} Modifizierte Bedürfnisse
      */
-    berechneProfilBedürfnisse: function(basisBedürfnisse, dominanzTyp, geschlecht) {
+    berechneVollständigesBedürfnisProfil: function(params) {
         var ergebnis = {};
-        var domMod = this.dominanz[dominanzTyp] || {};
-        var geschMod = this.geschlecht[geschlecht] || {};
+        var self = this;
+
+        // Modifikatoren laden
+        var domMod = this.dominanz[params.dominanz] || {};
+        var gesch1Mod = this.geschlecht[params.geschlechtPrimary] || {};
+        var gesch2Mod = params.geschlechtSecondary ?
+            (this.geschlecht[params.geschlechtSecondary] || {}) : {};
+        var oriMod = this.orientierung[params.orientierung] || {};
+
+        // Status-Faktoren
+        var domStatus = this.status[params.dominanzStatus] || 1.0;
+        var g1Status = this.status[params.geschlechtPrimaryStatus] || 1.0;
+        var g2Status = this.status[params.geschlechtSecondaryStatus] || 1.0;
+        var oriStatus = this.status[params.orientierungStatus] || 1.0;
+
+        // Sekundäres Geschlecht hat 50% Gewichtung
+        var g2Weight = 0.5;
 
         // Alle Basis-Bedürfnisse durchgehen
-        for (var bed in basisBedürfnisse) {
-            var basis = basisBedürfnisse[bed];
-            var domDelta = domMod[bed] || 0;
-            var geschDelta = geschMod[bed] || 0;
+        for (var bed in params.basisBedürfnisse) {
+            var basis = params.basisBedürfnisse[bed];
+
+            // Modifikatoren mit Status-Gewichtung anwenden
+            var domDelta = (domMod[bed] || 0) * domStatus;
+            var g1Delta = (gesch1Mod[bed] || 0) * g1Status;
+            var g2Delta = (gesch2Mod[bed] || 0) * g2Weight * g2Status;
+            var oriDelta = (oriMod[bed] || 0) * oriStatus;
 
             // Berechne finalen Wert (0-100 begrenzt)
-            var final = Math.max(0, Math.min(100, basis + domDelta + geschDelta));
-            ergebnis[bed] = Math.round(final);
+            var final = basis + domDelta + g1Delta + g2Delta + oriDelta;
+            ergebnis[bed] = Math.round(Math.max(0, Math.min(100, final)));
         }
+
+        // Neue Bedürfnisse hinzufügen die nur durch Modifikatoren kommen
+        var alleMods = [domMod, gesch1Mod, gesch2Mod, oriMod];
+        var alleKeys = new Set();
+
+        alleMods.forEach(function(mod) {
+            Object.keys(mod).forEach(function(key) {
+                alleKeys.add(key);
+            });
+        });
+
+        alleKeys.forEach(function(bed) {
+            if (!ergebnis[bed]) {
+                // Basis 50 + gewichtete Modifikatoren
+                var domDelta = (domMod[bed] || 0) * domStatus;
+                var g1Delta = (gesch1Mod[bed] || 0) * g1Status;
+                var g2Delta = (gesch2Mod[bed] || 0) * g2Weight * g2Status;
+                var oriDelta = (oriMod[bed] || 0) * oriStatus;
+
+                var neuWert = 50 + domDelta + g1Delta + g2Delta + oriDelta;
+                if (Math.abs(neuWert - 50) > 5) {  // Nur wenn signifikant modifiziert
+                    ergebnis[bed] = Math.round(Math.max(0, Math.min(100, neuWert)));
+                }
+            }
+        });
 
         return ergebnis;
     },
 
     /**
-     * Generiert alle 288 Profile (8 Archetypen × 9 Geschlechter × 4 Dominanz)
-     *
-     * @param {object} archetypProfile - Die Basis-Archetyp-Profile aus gfk-beduerfnisse.js
-     * @returns {object} Alle 288 Profile mit Schlüssel "archetyp-geschlecht-dominanz"
+     * Vereinfachte Funktion für Basis-Berechnung (Rückwärtskompatibilität)
      */
-    generiereAlleProfile: function(archetypProfile) {
-        var profile = {};
-        var archetypen = ['single', 'duo', 'duo-flex', 'solopoly', 'polyamor', 'ra', 'lat', 'aromantisch'];
-        var geschlechter = ['cis_mann', 'cis_frau', 'trans_mann', 'trans_frau',
-                           'nonbinaer', 'genderfluid', 'agender', 'intersex', 'divers'];
-        var dominanzTypen = ['dominant', 'submissiv', 'switch', 'ausgeglichen'];
+    berechneProfilBedürfnisse: function(basisBedürfnisse, dominanzTyp, geschlecht) {
+        return this.berechneVollständigesBedürfnisProfil({
+            basisBedürfnisse: basisBedürfnisse,
+            dominanz: dominanzTyp,
+            dominanzStatus: 'gelebt',
+            geschlechtPrimary: geschlecht,
+            geschlechtPrimaryStatus: 'gelebt',
+            geschlechtSecondary: null,
+            geschlechtSecondaryStatus: null,
+            orientierung: 'heterosexuell',  // Default
+            orientierungStatus: 'gelebt'
+        });
+    },
 
-        for (var a = 0; a < archetypen.length; a++) {
-            var archetyp = archetypen[a];
-            var basisProfil = archetypProfile[archetyp];
+    /**
+     * Berechnet Bedürfnis-Übereinstimmung zwischen zwei Profilen
+     *
+     * @param {object} profil1 - Kernbedürfnisse Person 1
+     * @param {object} profil2 - Kernbedürfnisse Person 2
+     * @returns {object} { score, gemeinsam, unterschiedlich, komplementaer }
+     */
+    berechneÜbereinstimmung: function(profil1, profil2) {
+        var gemeinsam = [];
+        var unterschiedlich = [];
+        var komplementaer = [];
 
-            if (!basisProfil || !basisProfil.kernbeduerfnisse) {
-                console.warn('Fehlendes Archetyp-Profil: ' + archetyp);
-                continue;
+        var summeÜbereinstimmung = 0;
+        var summeGewicht = 0;
+
+        // Alle Bedürfnisse sammeln
+        var alleBedürfnisse = new Set([
+            ...Object.keys(profil1),
+            ...Object.keys(profil2)
+        ]);
+
+        alleBedürfnisse.forEach(function(bed) {
+            var wert1 = profil1[bed] || 50;
+            var wert2 = profil2[bed] || 50;
+
+            // Nur relevante Bedürfnisse (> 30)
+            if (wert1 <= 30 && wert2 <= 30) return;
+
+            var gewicht = (wert1 + wert2) / 2;
+            var diff = Math.abs(wert1 - wert2);
+
+            // Kategorisierung
+            if (diff <= 15) {
+                // Übereinstimmung: Beide wollen ähnliches
+                gemeinsam.push({ bedürfnis: bed, wert1: wert1, wert2: wert2 });
+                summeÜbereinstimmung += (100 - diff) * gewicht;
+            } else if (diff <= 35) {
+                // Komplementär: Können sich ergänzen
+                komplementaer.push({ bedürfnis: bed, wert1: wert1, wert2: wert2 });
+                summeÜbereinstimmung += (100 - diff) * gewicht * 0.7;
+            } else {
+                // Unterschiedlich: Potentieller Konflikt
+                unterschiedlich.push({ bedürfnis: bed, wert1: wert1, wert2: wert2 });
+                summeÜbereinstimmung += (100 - diff) * gewicht * 0.3;
             }
 
-            for (var g = 0; g < geschlechter.length; g++) {
-                for (var d = 0; d < dominanzTypen.length; d++) {
-                    var geschlecht = geschlechter[g];
-                    var dominanz = dominanzTypen[d];
-                    var key = archetyp + '-' + geschlecht + '-' + dominanz;
+            summeGewicht += gewicht;
+        });
 
-                    profile[key] = {
-                        archetyp: archetyp,
-                        geschlecht: geschlecht,
-                        dominanz: dominanz,
-                        kernbeduerfnisse: this.berechneProfilBedürfnisse(
-                            basisProfil.kernbeduerfnisse,
-                            dominanz,
-                            geschlecht
-                        )
-                    };
-                }
-            }
-        }
+        var score = summeGewicht > 0 ? Math.round(summeÜbereinstimmung / summeGewicht) : 50;
 
-        return profile;
+        return {
+            score: score,
+            gemeinsam: gemeinsam,
+            unterschiedlich: unterschiedlich,
+            komplementaer: komplementaer
+        };
     }
 };
 
