@@ -19257,6 +19257,16 @@
                     updateComparisonView();
                 }
 
+                // Sync archetype grid highlighting with loaded selections
+                if (typeof updateArchetypeGrid === 'function') {
+                    if (selection.ich && selection.ich.archetyp) {
+                        updateArchetypeGrid('ich', selection.ich.archetyp);
+                    }
+                    if (selection.partner && selection.partner.archetyp) {
+                        updateArchetypeGrid('partner', selection.partner.archetyp);
+                    }
+                }
+
                 return true;
             } catch (e) {
                 console.warn('Failed to load from LocalStorage:', e);
