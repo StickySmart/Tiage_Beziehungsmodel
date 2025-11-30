@@ -14766,12 +14766,21 @@
             const dominanceScore = calculateDominanceHarmony(person1.dominanz, person2.dominanz);
             const genderScore = calculateGenderAttraction(person1, person2);
 
+            // DEBUG: Log all factor scores
+            console.log('=== FACTOR SCORES ===');
+            console.log('archetypeScore (A):', archetypeScore);
+            console.log('orientationScore (O):', orientationScore);
+            console.log('dominanceScore (D):', dominanceScore);
+            console.log('genderScore (G):', genderScore);
+
             // Gewichtete Basis-Summe nach Logos/Pathos-Prinzip
             const baseScore =
                 (archetypeScore * 0.40) +      // 40% Logos - Beziehungsphilosophie
                 (orientationScore * 0.25) +    // 25% Pathos - Körperliche Polarität
                 (dominanceScore * 0.20) +      // 20% Pathos - Energetische Dynamik
                 (genderScore * 0.15);          // 15% Pathos - Gender-Chemie
+
+            console.log('baseScore:', baseScore);
 
             // ═══════════════════════════════════════
             // EBENE 3: Resonanz als Meta-Dimension
@@ -15091,7 +15100,13 @@
             const person1 = { archetyp: currentArchetype, ...personDimensions.ich };
             const person2 = { archetyp: selectedPartner, ...personDimensions.partner };
 
+            // DEBUG: Log person objects for troubleshooting
+            console.log('=== SCORE DEBUG ===');
+            console.log('person1:', JSON.stringify(person1, null, 2));
+            console.log('person2:', JSON.stringify(person2, null, 2));
+
             const pathosCheck = checkPhysicalCompatibility(person1, person2);
+            console.log('pathosCheck:', pathosCheck);
             const logosCheck = calculatePhilosophyCompatibility(currentArchetype, selectedPartner);
 
             // Update warnings
