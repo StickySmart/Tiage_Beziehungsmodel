@@ -9402,9 +9402,16 @@
 
                 // Prüfe Dominanz
                 if (dims.dominanz && typeof dims.dominanz === 'object') {
-                    for (const key of Object.keys(dims.dominanz)) {
-                        if (dims.dominanz[key] === 'gelebt') hasFakt = true;
-                        if (dims.dominanz[key] === 'interessiert') hasInteressiert = true;
+                    // New format: { primary: 'dominant', secondary: 'submissiv' }
+                    if ('primary' in dims.dominanz) {
+                        if (dims.dominanz.primary) hasFakt = true;
+                        if (dims.dominanz.secondary) hasInteressiert = true;
+                    } else {
+                        // Old format: { dominant: 'gelebt', submissiv: 'interessiert' }
+                        for (const key of Object.keys(dims.dominanz)) {
+                            if (dims.dominanz[key] === 'gelebt') hasFakt = true;
+                            if (dims.dominanz[key] === 'interessiert') hasInteressiert = true;
+                        }
                     }
                 }
 
@@ -13480,6 +13487,18 @@
                 const parts = [];
                 const map = { 'dominant': 'dom', 'submissiv': 'sub', 'switch': 'sw', 'ausgeglichen': 'ausg' };
 
+                // New Primary/Secondary structure
+                if ('primary' in dominanz) {
+                    if (dominanz.primary) {
+                        parts.push(map[dominanz.primary] || dominanz.primary);
+                    }
+                    if (dominanz.secondary) {
+                        parts.push((map[dominanz.secondary] || dominanz.secondary) + '?');
+                    }
+                    return parts.length > 0 ? parts.join('+') : '?';
+                }
+
+                // Old format: { dominant: 'gelebt', submissiv: 'interessiert' }
                 for (const [type, status] of Object.entries(dominanz)) {
                     if (status) {
                         let kurz = map[type] || type;
@@ -14435,10 +14454,16 @@
             // Primäre Dominanz ermitteln
             let dominanz = 'ausgeglichen';
             if (person.dominanz && typeof person.dominanz === 'object') {
-                for (const [type, status] of Object.entries(person.dominanz)) {
-                    if (status === 'gelebt') {
-                        dominanz = type;
-                        break;
+                // New format: { primary: 'dominant', secondary: 'submissiv' }
+                if ('primary' in person.dominanz) {
+                    dominanz = person.dominanz.primary || 'ausgeglichen';
+                } else {
+                    // Old format: { dominant: 'gelebt', submissiv: 'interessiert' }
+                    for (const [type, status] of Object.entries(person.dominanz)) {
+                        if (status === 'gelebt') {
+                            dominanz = type;
+                            break;
+                        }
                     }
                 }
             } else if (person.dominanz) {
@@ -14524,6 +14549,11 @@
          */
         function getPrimaryDominanz(dominanz) {
             if (!dominanz || typeof dominanz !== 'object') return dominanz || 'ausgeglichen';
+            // New format: { primary: 'dominant', secondary: 'submissiv' }
+            if ('primary' in dominanz) {
+                return dominanz.primary || 'ausgeglichen';
+            }
+            // Old format: { dominant: 'gelebt', submissiv: 'interessiert' }
             for (const [type, status] of Object.entries(dominanz)) {
                 if (status === 'gelebt') return type;
             }
@@ -14535,6 +14565,11 @@
          */
         function getPrimaryOrientierung(orientierung) {
             if (!orientierung || typeof orientierung !== 'object') return orientierung || 'heterosexuell';
+            // New format: { primary: 'homosexuell', secondary: 'heterosexuell' }
+            if ('primary' in orientierung) {
+                return orientierung.primary || 'heterosexuell';
+            }
+            // Old format: { heterosexuell: 'gelebt', homosexuell: 'interessiert' }
             for (const [type, status] of Object.entries(orientierung)) {
                 if (status === 'gelebt') return type;
             }

@@ -379,6 +379,12 @@ const TiageState = (function() {
          */
         getPrimaryDominanz(person) {
             const dominanz = this.get(`personDimensions.${person}.dominanz`);
+            if (!dominanz) return null;
+            // New format: { primary: 'dominant', secondary: 'submissiv' }
+            if ('primary' in dominanz) {
+                return dominanz.primary || null;
+            }
+            // Old format: { dominant: 'gelebt', submissiv: 'interessiert' }
             for (const type in dominanz) {
                 if (dominanz[type] === 'gelebt') return type;
             }
@@ -390,6 +396,12 @@ const TiageState = (function() {
          */
         getPrimaryOrientierung(person) {
             const orientierung = this.get(`personDimensions.${person}.orientierung`);
+            if (!orientierung) return null;
+            // New format: { primary: 'homosexuell', secondary: 'heterosexuell' }
+            if ('primary' in orientierung) {
+                return orientierung.primary || null;
+            }
+            // Old format: { heterosexuell: 'gelebt', homosexuell: 'interessiert' }
             for (const type in orientierung) {
                 if (orientierung[type] === 'gelebt') return type;
             }
