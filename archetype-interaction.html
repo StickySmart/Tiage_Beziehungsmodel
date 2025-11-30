@@ -14725,6 +14725,9 @@
                     updateComparisonView();
                 });
             });
+
+            // Initial Score-Circle Update beim Start
+            updateComparisonView();
         }
 
         function updateComparisonView() {
@@ -14800,6 +14803,8 @@
                 const desktopScoreNoteIncomplete = document.getElementById('desktopScoreNote');
                 if (desktopScoreNoteIncomplete) desktopScoreNoteIncomplete.textContent = 'Bitte alle Dimensionen auswählen.';
 
+                // Update Score-Circle auch bei unvollständigen Dimensionen
+                updateSyntheseScoreCycle();
                 return;
             }
 
@@ -19162,7 +19167,10 @@
         const originalLoadData = loadData;
         async function loadDataAndUpdateComparison() {
             await originalLoadData();
-            setTimeout(updateComparisonView, 100);
+            setTimeout(() => {
+                updateComparisonView();
+                updateSyntheseScoreCycle();
+            }, 100);
         }
         loadDataAndUpdateComparison();
 
