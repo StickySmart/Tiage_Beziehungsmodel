@@ -6110,6 +6110,7 @@
     <script src="js/synthesis/factors/genderFactor.js"></script>
     <script src="js/synthesis/synthesisCalculator.js"></script>
     <script src="js/synthesis/pathosTextGenerator.js"></script>
+    <script src="js/synthesis/logosTextGenerator.js"></script>
     <script src="profiles/gfk-beduerfnisse.js"></script>
     <script src="profiles/beduerfnis-modifikatoren.js"></script>
 </head>
@@ -16128,6 +16129,7 @@
 
         /**
          * Generiert detaillierte Logos-Inhalte mit ICH/Partner/Synthese Struktur
+         * Nutzt LogosTextGenerator für fließende, analytische Texte
          * @returns {Object} { ich, partner, synthese, resonanz }
          */
         function generateDetailedLogos(ichArch, partnerArch) {
@@ -16157,27 +16159,84 @@
             const breakdown = qualityResult.breakdown || { archetyp: 50, dominanz: 75, orientierung: 100, geschlecht: 100 };
             const overallScore = qualityResult.score || 50;
             const resonanzData = qualityResult.resonanz;
+            const tonality = getTonality(overallScore);
 
             // Get category scores
             const key = `${ichId}_${partnerId}`;
             const interaction = data?.interactions?.[key];
             const categoryScores = interaction?.scores || {};
 
-            // Tonalität und Hash
-            const tonality = getTonality(overallScore);
-            const hash = getFactorHash(breakdown.archetyp, breakdown.dominanz, breakdown.orientierung, breakdown.geschlecht);
-
             // Hole Statement-Quellen
             const archStatements = getArchetypeStatements(ichId, partnerId);
-            const domStatements = getDominanceStatements(person1.dominanz, person2.dominanz);
-            const statusStmts = getStatusStatements(personDimensions.ich, personDimensions.partner);
 
             // ═══════════════════════════════════════════════════════════════
-            // ICH BRINGT MIT (Logos-Perspektive: Rationale Struktur)
+            // NUTZE LOGOS TEXT GENERATOR (wenn verfügbar)
             // ═══════════════════════════════════════════════════════════════
+            if (typeof LogosTextGenerator !== 'undefined') {
+                // Generiere deterministischen Hash für Varianz
+                const seed = LogosTextGenerator.generateHash(
+                    ichId, partnerId,
+                    person1.dominanz || 'none',
+                    person2.dominanz || 'none',
+                    overallScore
+                );
+
+                // ICH BRINGT MIT - Analytischer Fließtext
+                const ichText = LogosTextGenerator.generatePersonText(
+                    ichArch,
+                    personDimensions.ich,
+                    ichName,
+                    seed
+                );
+
+                // PARTNER BRINGT MIT - Analytischer Fließtext
+                const partnerText = LogosTextGenerator.generatePersonText(
+                    partnerArch,
+                    personDimensions.partner,
+                    partnerName,
+                    seed + 100
+                );
+
+                // DARAUS ENTSTEHT - Analytische Synthese
+                const syntheseText = LogosTextGenerator.generateSyntheseText({
+                    ichArch,
+                    partnerArch,
+                    ichName,
+                    partnerName,
+                    ichDimensions: personDimensions.ich,
+                    partnerDimensions: personDimensions.partner,
+                    overallScore,
+                    archStatements,
+                    categoryScores,
+                    seed
+                });
+
+                // RESONANZ - Analytische Interpretation
+                let resonanzText = null;
+                if (resonanzData && resonanzData.R !== undefined) {
+                    resonanzText = LogosTextGenerator.generateResonanzText(
+                        resonanzData.R,
+                        seed + 200
+                    );
+                }
+
+                return {
+                    ich: ichText,
+                    partner: partnerText,
+                    synthese: syntheseText,
+                    resonanz: resonanzText,
+                    score: overallScore,
+                    tonality: tonality
+                };
+            }
+
+            // ═══════════════════════════════════════════════════════════════
+            // FALLBACK: Original-Logik (wenn LogosTextGenerator nicht geladen)
+            // ═══════════════════════════════════════════════════════════════
+            const hash = getFactorHash(breakdown.archetyp, breakdown.dominanz, breakdown.orientierung, breakdown.geschlecht);
+
+            // ICH BRINGT MIT
             const ichParts = [];
-
-            // Statische Qualität (Pirsig)
             if (ichArch?.pirsig?.staticQuality !== undefined) {
                 const statQual = ichArch.pirsig.staticQuality;
                 if (statQual >= 0.7) {
@@ -16185,196 +16244,78 @@
                 } else if (statQual >= 0.4) {
                     ichParts.push(`${ichName} balanciert zwischen festen Überzeugungen und Offenheit für neue Perspektiven.`);
                 } else {
-                    ichParts.push(`${ichName} bevorzugt Flexibilität über starre Regeln – Strukturen werden situativ angepasst.`);
+                    ichParts.push(`${ichName} bevorzugt Flexibilität über starre Regeln.`);
                 }
             }
-
-            // Beziehungsphilosophie
-            if (ichArch?.pirsig?.interpretation) {
-                const interp = ichArch.pirsig.interpretation;
-                if (interp.length > 50) {
-                    ichParts.push(interp.split('.')[0] + '.');
-                }
-            }
-
-            // Kernwerte (strukturell relevant)
             if (ichArch?.coreValues?.length) {
-                const structuralValues = ichArch.coreValues.slice(0, 3).join(', ');
-                ichParts.push(`Kernwerte: ${structuralValues}.`);
+                ichParts.push(`Kernwerte: ${ichArch.coreValues.slice(0, 3).join(', ')}.`);
             }
-
-            // Was wird vermieden
             if (ichArch?.avoids?.length) {
-                const avoidList = ichArch.avoids.slice(0, 2).join(' und ');
-                ichParts.push(`Vermeidet: ${avoidList}.`);
+                ichParts.push(`Vermeidet: ${ichArch.avoids.slice(0, 2).join(' und ')}.`);
             }
-
-            // Default-Präferenzen
-            if (ichArch?.defaultInferences) {
-                const inf = ichArch.defaultInferences;
-                const prefs = [];
-                if (inf.wohnform) prefs.push(`Wohnform: ${inf.wohnform}`);
-                if (inf.exklusivitaet && inf.exklusivitaet !== 'nicht-relevant') prefs.push(`Exklusivität: ${inf.exklusivitaet}`);
-                if (prefs.length > 0) {
-                    ichParts.push(`Präferenzen: ${prefs.join(', ')}.`);
-                }
-            }
-
-            // GFK-Kompetenz (ICH) - Logos-Perspektive
             const ichGfk = personDimensions.ich?.gfk;
             if (ichGfk) {
                 const gfkText = {
-                    'hoch': `GFK-Kompetenz hoch: ${ichName} nutzt die 4 Schritte (Beobachtung, Gefühl, Bedürfnis, Bitte) konsequent.`,
-                    'mittel': `GFK-Kompetenz mittel: ${ichName} kennt die Grundlagen, wendet sie aber nicht immer an.`,
-                    'niedrig': `GFK-Kompetenz niedrig: ${ichName} kommuniziert reaktiv – strukturierte Konfliktlösung fällt schwer.`
+                    'hoch': `GFK-Kompetenz: hoch.`,
+                    'mittel': `GFK-Kompetenz: mittel.`,
+                    'niedrig': `GFK-Kompetenz: niedrig.`
                 };
                 if (gfkText[ichGfk]) ichParts.push(gfkText[ichGfk]);
             }
 
-            // ═══════════════════════════════════════════════════════════════
             // PARTNER BRINGT MIT
-            // ═══════════════════════════════════════════════════════════════
             const partnerParts = [];
-
-            // Statische Qualität (Pirsig)
             if (partnerArch?.pirsig?.staticQuality !== undefined) {
                 const statQual = partnerArch.pirsig.staticQuality;
                 if (statQual >= 0.7) {
-                    partnerParts.push(`${partnerName} bringt klare Strukturen und feste Werte mit – Verlässlichkeit ist ein Grundpfeiler.`);
+                    partnerParts.push(`${partnerName} bringt klare Strukturen und feste Werte mit.`);
                 } else if (statQual >= 0.4) {
-                    partnerParts.push(`${partnerName} balanciert zwischen festen Überzeugungen und Offenheit für neue Perspektiven.`);
+                    partnerParts.push(`${partnerName} balanciert zwischen Struktur und Flexibilität.`);
                 } else {
-                    partnerParts.push(`${partnerName} bevorzugt Flexibilität über starre Regeln – Strukturen werden situativ angepasst.`);
+                    partnerParts.push(`${partnerName} bevorzugt adaptive Strukturen.`);
                 }
             }
-
-            // Beziehungsphilosophie
-            if (partnerArch?.pirsig?.interpretation) {
-                const interp = partnerArch.pirsig.interpretation;
-                if (interp.length > 50) {
-                    partnerParts.push(interp.split('.')[0] + '.');
-                }
-            }
-
-            // Kernwerte
             if (partnerArch?.coreValues?.length) {
-                const structuralValues = partnerArch.coreValues.slice(0, 3).join(', ');
-                partnerParts.push(`Kernwerte: ${structuralValues}.`);
+                partnerParts.push(`Kernwerte: ${partnerArch.coreValues.slice(0, 3).join(', ')}.`);
             }
-
-            // Was wird vermieden
             if (partnerArch?.avoids?.length) {
-                const avoidList = partnerArch.avoids.slice(0, 2).join(' und ');
-                partnerParts.push(`Vermeidet: ${avoidList}.`);
+                partnerParts.push(`Vermeidet: ${partnerArch.avoids.slice(0, 2).join(' und ')}.`);
             }
-
-            // Default-Präferenzen
-            if (partnerArch?.defaultInferences) {
-                const inf = partnerArch.defaultInferences;
-                const prefs = [];
-                if (inf.wohnform) prefs.push(`Wohnform: ${inf.wohnform}`);
-                if (inf.exklusivitaet && inf.exklusivitaet !== 'nicht-relevant') prefs.push(`Exklusivität: ${inf.exklusivitaet}`);
-                if (prefs.length > 0) {
-                    partnerParts.push(`Präferenzen: ${prefs.join(', ')}.`);
-                }
-            }
-
-            // GFK-Kompetenz (Partner) - Logos-Perspektive
             const partnerGfk = personDimensions.partner?.gfk;
             if (partnerGfk) {
                 const gfkText = {
-                    'hoch': `GFK-Kompetenz hoch: ${partnerName} nutzt die 4 Schritte (Beobachtung, Gefühl, Bedürfnis, Bitte) konsequent.`,
-                    'mittel': `GFK-Kompetenz mittel: ${partnerName} kennt die Grundlagen, wendet sie aber nicht immer an.`,
-                    'niedrig': `GFK-Kompetenz niedrig: ${partnerName} kommuniziert reaktiv – strukturierte Konfliktlösung fällt schwer.`
+                    'hoch': `GFK-Kompetenz: hoch.`,
+                    'mittel': `GFK-Kompetenz: mittel.`,
+                    'niedrig': `GFK-Kompetenz: niedrig.`
                 };
                 if (gfkText[partnerGfk]) partnerParts.push(gfkText[partnerGfk]);
             }
 
-            // ═══════════════════════════════════════════════════════════════
-            // DARAUS ENTSTEHT (Synthese)
-            // ═══════════════════════════════════════════════════════════════
+            // SYNTHESE
             const syntheseParts = [];
-
-            // Tonalitäts-Einleitung
             const tonalityIntro = selectStatementByHash(tonalityTemplates[tonality].logos, hash);
             if (tonalityIntro) syntheseParts.push(tonalityIntro);
-
-            // Archetyp-Kombination
             if (archStatements?.logos) {
-                const gemeinsam = archStatements.logos.gemeinsam || [];
-                const unterschied = archStatements.logos.unterschied || [];
-                const allLogos = tonality === 'kritisch' ? [...gemeinsam, ...unterschied] : gemeinsam;
-                const selected = selectStatementByHash(allLogos.length > 0 ? allLogos : unterschied, hash + 7);
+                const allLogos = [...(archStatements.logos.gemeinsam || []), ...(archStatements.logos.unterschied || [])];
+                const selected = selectStatementByHash(allLogos, hash + 7);
                 if (selected) syntheseParts.push(selected);
             }
-
-            // Kategorie-basierte Synthese
-            const relevantCategories = ['A', 'B', 'C'];
-            for (const cat of relevantCategories) {
-                const catScore = categoryScores[cat]?.value || 50;
-                const catTonality = getTonality(catScore);
-                const catTemplate = categorySynthesisTemplates[cat];
-                if (catTemplate && catTonality !== 'neutral') {
-                    syntheseParts.push(catTemplate[catTonality]);
-                }
-            }
-
-            // Statische Qualitäts-Interaktion
             const ichStat = ichArch?.pirsig?.staticQuality || 0.5;
             const partnerStat = partnerArch?.pirsig?.staticQuality || 0.5;
-            const statDiff = Math.abs(ichStat - partnerStat);
-
-            if (statDiff < 0.2) {
-                syntheseParts.push(`Beide teilen ein ähnliches Bedürfnis nach Struktur – das erleichtert die Abstimmung.`);
-            } else if (statDiff > 0.5) {
-                if (tonality === 'positiv') {
-                    syntheseParts.push(`Unterschiedliche Strukturbedürfnisse können zur gegenseitigen Bereicherung führen.`);
-                } else {
-                    syntheseParts.push(`Die verschiedenen Vorstellungen von Ordnung erfordern klare Kommunikation.`);
-                }
+            if (Math.abs(ichStat - partnerStat) < 0.2) {
+                syntheseParts.push(`Ähnliches Strukturbedürfnis erleichtert die Abstimmung.`);
             }
-
-            // Werte-Überschneidung
-            if (ichArch?.coreValues && partnerArch?.coreValues) {
-                const sharedValues = ichArch.coreValues.filter(v => partnerArch.coreValues.includes(v));
-                if (sharedValues.length > 0) {
-                    syntheseParts.push(`Geteilte Werte wie ${sharedValues.slice(0, 2).join(' und ')} bilden ein stabiles Fundament.`);
-                }
-                const conflicts = ichArch.coreValues.filter(v => partnerArch.avoids?.includes(v));
-                if (conflicts.length > 0) {
-                    syntheseParts.push(`Potenzielle Spannung: ${ichName}'s Wert "${conflicts[0]}" wird von ${partnerName} eher gemieden.`);
-                }
-            }
-
-            // GFK-Synthese (Kommunikationsstruktur)
-            if (ichGfk && partnerGfk) {
-                const gfkStmts = getGfkStatements(ichGfk, partnerGfk);
-                if (gfkStmts?.logos?.length) {
-                    const selected = selectStatementByHash(gfkStmts.logos, hash + 29);
-                    if (selected) syntheseParts.push(selected);
-                }
-            }
-
-            // Fallback
             if (syntheseParts.length === 0) {
-                syntheseParts.push(`${ichName} und ${partnerName} haben Potenzial für eine tragfähige rationale Basis, auch wenn Gespräche wichtig sind.`);
+                syntheseParts.push(`${ichName} und ${partnerName} haben Potenzial für eine tragfähige Basis.`);
             }
 
-            // ═══════════════════════════════════════════════════════════════
-            // RESONANZ (falls vorhanden)
-            // ═══════════════════════════════════════════════════════════════
+            // RESONANZ
             let resonanzText = null;
-            if (resonanzData && resonanzData.R !== undefined) {
+            if (resonanzData?.R !== undefined) {
                 const R = resonanzData.R;
-                if (R >= 1.05) {
-                    resonanzText = `Hohe strukturelle Resonanz (R=${R.toFixed(2)}): Logos und Pathos sind im Einklang – eine starke Basis für Verständnis.`;
-                } else if (R >= 0.95) {
-                    resonanzText = `Gute Resonanz (R=${R.toFixed(2)}): Die rationalen und emotionalen Ebenen ergänzen sich gut.`;
-                } else if (R >= 0.9) {
-                    resonanzText = `Moderate Resonanz (R=${R.toFixed(2)}): Verständigung ist möglich, erfordert aber bewussten Einsatz.`;
-                } else {
-                    resonanzText = `Niedrige Resonanz (R=${R.toFixed(2)}): Grundlegende Gespräche über Erwartungen sind essenziell.`;
-                }
+                if (R >= 1.05) resonanzText = `Resonanz R=${R.toFixed(2)}: Hohe strukturelle Übereinstimmung.`;
+                else if (R >= 0.95) resonanzText = `Resonanz R=${R.toFixed(2)}: Gute Kompatibilität.`;
+                else resonanzText = `Resonanz R=${R.toFixed(2)}: Erfordert bewusste Abstimmung.`;
             }
 
             return {
