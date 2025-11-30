@@ -11784,7 +11784,7 @@
             const container = document.getElementById('feedbackList');
 
             try {
-                if (GOOGLE_SCRIPT_URL) {
+                if (typeof GOOGLE_SCRIPT_URL !== 'undefined' && GOOGLE_SCRIPT_URL) {
                     // Try to load from Google Sheets
                     const response = await fetch(GOOGLE_SCRIPT_URL);
                     const serverData = await response.json();
@@ -18364,7 +18364,7 @@
             submitBtn.textContent = 'Sende...';
 
             try {
-                if (GOOGLE_SCRIPT_URL) {
+                if (typeof GOOGLE_SCRIPT_URL !== 'undefined' && GOOGLE_SCRIPT_URL) {
                     await fetch(GOOGLE_SCRIPT_URL, {
                         method: 'POST',
                         mode: 'no-cors',
