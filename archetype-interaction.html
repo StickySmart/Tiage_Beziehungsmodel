@@ -7001,14 +7001,6 @@
             <!-- Wird dynamisch durch updateGfkBeduerfnisDisplay() gefüllt -->
         </div>
 
-        <!-- Tiage's Synthese Button -->
-        <div style="display: flex; justify-content: flex-end; margin-bottom: 15px;">
-            <button class="tiage-ansatz-btn" id="desktopTiageAnsatzBtn" onclick="openPathosLogosModal('pathos')" title="Tiage's Synthese - Pathos & Logos">
-                <span class="tiage-ansatz-icon">💡</span>
-                <span class="tiage-ansatz-text">Tiage's Synthese</span>
-            </button>
-        </div>
-
         <!-- Hidden elements for backwards compatibility -->
         <div id="warningsContainer" style="display: none;"></div>
         <div id="desktopScoreNote" class="score-note" style="display: none;"></div>
@@ -14733,6 +14725,9 @@
                     updateComparisonView();
                 });
             });
+
+            // Initial Score-Circle Update beim Start
+            updateComparisonView();
         }
 
         function updateComparisonView() {
@@ -14808,6 +14803,8 @@
                 const desktopScoreNoteIncomplete = document.getElementById('desktopScoreNote');
                 if (desktopScoreNoteIncomplete) desktopScoreNoteIncomplete.textContent = 'Bitte alle Dimensionen auswählen.';
 
+                // Update Score-Circle auch bei unvollständigen Dimensionen
+                updateSyntheseScoreCycle();
                 return;
             }
 
@@ -19170,7 +19167,10 @@
         const originalLoadData = loadData;
         async function loadDataAndUpdateComparison() {
             await originalLoadData();
-            setTimeout(updateComparisonView, 100);
+            setTimeout(() => {
+                updateComparisonView();
+                updateSyntheseScoreCycle();
+            }, 100);
         }
         loadDataAndUpdateComparison();
 
