@@ -6100,6 +6100,19 @@
         .app-footer span {
             color: #eab308;
         }
+        /* Footer Documentation Links */
+        .app-footer ul a {
+            color: #e57373;
+            margin: 0;
+            transition: color 0.2s ease;
+        }
+        .app-footer ul a:hover {
+            color: #ef9a9a;
+            text-decoration: underline;
+        }
+        .app-footer h4 {
+            color: #fff;
+        }
         .impressum-modal {
             display: none !important;
             position: fixed;
@@ -8162,21 +8175,55 @@
 
     <div class="swipe-hint" style="display: none;">← Swipe →</div>
 
-    <!-- Footer with Impressum -->
-    <footer class="app-footer" style="text-align: center; padding: 20px 15px; margin-top: 40px; border-top: 1px solid rgba(255,255,255,0.1); font-size: 12px; color: rgba(255,255,255,0.5);">
+    <!-- Footer with Documentation Links -->
+    <footer class="app-footer" style="text-align: center; padding: 30px 20px; margin-top: 40px; border-top: 1px solid rgba(255,255,255,0.1); font-size: 13px; color: rgba(255,255,255,0.5);">
         <!-- JOYclub Siegel -->
-        <div style="margin-bottom: 15px; display: flex; justify-content: center;">
+        <div style="margin-bottom: 25px; display: flex; justify-content: center;">
             <a href="https://www.joyclub.de/" target="_blank" rel="noopener">
-                <img src="//cfnimg.joyclub.de/partner/joyclub_backlink_mitglied_120x120.png" width="120" height="120" alt="Lebe deine Lust!" style="border-radius: 50%;" />
+                <img src="//cfnimg.joyclub.de/partner/joyclub_backlink_mitglied_120x120.png" width="100" height="100" alt="Lebe deine Lust!" style="border-radius: 50%;" />
             </a>
         </div>
-        <div style="margin-bottom: 10px;">© 2025 Ti-Age – Alle Rechte vorbehalten</div>
-        <div style="margin-bottom: 10px; font-size: 11px; opacity: 0.7;">Version 1.4.0</div>
-        <a href="#" style="color: #eab308; text-decoration: none; margin: 0 10px;" onclick="document.getElementById('impressumModal').style.display='flex'; return false;">Impressum</a>
-        <span style="color: #eab308;">|</span>
-        <a href="datenschutz.html" style="color: #eab308; text-decoration: none; margin: 0 10px;">Datenschutz</a>
-        <span style="color: #eab308;">|</span>
-        <a href="nutzungsbedingungen.html" style="color: #eab308; text-decoration: none; margin: 0 10px;">Nutzungsbedingungen</a>
+
+        <!-- Footer Links Grid -->
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 25px; max-width: 900px; margin: 0 auto 25px auto; text-align: left;">
+            <!-- Philosophische Grundlagen -->
+            <div>
+                <h4 style="color: #fff; font-size: 14px; margin-bottom: 12px; font-weight: 600;">Philosophische Grundlagen</h4>
+                <ul style="list-style: none; padding: 0; margin: 0;">
+                    <li style="margin: 8px 0;"><a href="docs.html?doc=docs/theory/tiage-synthesis.md" style="color: #e57373; text-decoration: none;">Tiage-Synthese</a> <span style="color: rgba(255,255,255,0.4);">- Das Gesamtkonzept</span></li>
+                    <li style="margin: 8px 0;"><a href="docs.html?doc=docs/theory/pirsig.md" style="color: #e57373; text-decoration: none;">Pirsig-Philosophie</a> <span style="color: rgba(255,255,255,0.4);">- Metaphysik der Qualitaet</span></li>
+                    <li style="margin: 8px 0;"><a href="docs.html?doc=docs/theory/osho.md" style="color: #e57373; text-decoration: none;">OSHO-Philosophie</a> <span style="color: rgba(255,255,255,0.4);">- Bewusstsein und Beziehung</span></li>
+                    <li style="margin: 8px 0;"><a href="docs.html?doc=docs/theory/pathos-logos.md" style="color: #e57373; text-decoration: none;">Pathos/Logos</a> <span style="color: rgba(255,255,255,0.4);">- Die 40:60 Gewichtung</span></li>
+                    <li style="margin: 8px 0;"><a href="docs.html?doc=docs/theory/resonance.md" style="color: #e57373; text-decoration: none;">Resonanz-Theorie</a> <span style="color: rgba(255,255,255,0.4);">- Der Meta-Faktor</span></li>
+                </ul>
+            </div>
+
+            <!-- Rechtliches -->
+            <div>
+                <h4 style="color: #fff; font-size: 14px; margin-bottom: 12px; font-weight: 600;">Rechtliches</h4>
+                <ul style="list-style: none; padding: 0; margin: 0;">
+                    <li style="margin: 8px 0;"><a href="datenschutz.html" style="color: #e57373; text-decoration: none;">Datenschutz</a></li>
+                    <li style="margin: 8px 0;"><a href="nutzungsbedingungen.html" style="color: #e57373; text-decoration: none;">Nutzungsbedingungen</a></li>
+                </ul>
+            </div>
+
+            <!-- Wissenschaftliche Quellen -->
+            <div>
+                <h4 style="color: #fff; font-size: 14px; margin-bottom: 12px; font-weight: 600;">Wissenschaftliche Quellen</h4>
+                <ul style="list-style: none; padding: 0; margin: 0;">
+                    <li style="margin: 8px 0;"><a href="docs.html?doc=profiles/research-sources.md" style="color: #e57373; text-decoration: none;">Research Sources</a> <span style="color: rgba(255,255,255,0.4);">- Vollstaendige Quellensammlung</span></li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Copyright & Version -->
+        <div style="padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.1);">
+            <div style="margin-bottom: 8px;">&copy; 2025 Ti-Age - Alle Rechte vorbehalten</div>
+            <div style="margin-bottom: 12px; font-size: 11px; opacity: 0.7;">Version 1.4.0</div>
+            <a href="#" style="color: #eab308; text-decoration: none; margin: 0 10px;" onclick="document.getElementById('impressumModal').style.display='flex'; return false;">Impressum</a>
+            <span style="color: #eab308;">|</span>
+            <a href="docs.html?doc=docs/help-guide.md" style="color: #eab308; text-decoration: none; margin: 0 10px;">Hilfe</a>
+        </div>
     </footer>
 
     <!-- Impressum Modal -->
