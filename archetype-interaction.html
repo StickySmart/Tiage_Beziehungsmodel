@@ -13737,13 +13737,13 @@
         document.addEventListener('DOMContentLoaded', function() {
             console.log('DevView: Klone Desktop-Elemente in Mobile-Seiten...');
 
-            // Hilfsfunktion: Alle alten Inhalte einer Seite verstecken (außer Header und geklonte)
-            function hideOldContent(page) {
+            // Hilfsfunktion: Alle alten Inhalte einer Seite LÖSCHEN (außer Header und geklonte)
+            function removeOldContent(page) {
                 Array.from(page.children).forEach(function(child) {
                     if (!child.classList.contains('page-header') &&
                         !child.classList.contains('devview-cloned') &&
                         child.tagName !== 'H2') {
-                        child.style.display = 'none';
+                        child.remove();
                     }
                 });
             }
@@ -13764,7 +13764,7 @@
                 });
 
                 // Alten Inhalt verstecken
-                hideOldContent(mobilePage1);
+                removeOldContent(mobilePage1);
 
                 // Nach dem Titel einfügen
                 var title = mobilePage1.querySelector('h2');
@@ -13791,7 +13791,7 @@
                 });
 
                 // Alten Inhalt verstecken
-                hideOldContent(mobilePage2);
+                removeOldContent(mobilePage2);
 
                 // Nach dem Header einfügen
                 var header = mobilePage2.querySelector('.page-header');
@@ -13816,7 +13816,7 @@
                 });
 
                 // Alten Inhalt verstecken
-                hideOldContent(mobilePage3);
+                removeOldContent(mobilePage3);
 
                 var header3 = mobilePage3.querySelector('.page-header');
                 if (header3) {
@@ -13833,7 +13833,7 @@
 
             if (mobilePage4) {
                 // Alten Inhalt verstecken
-                hideOldContent(mobilePage4);
+                removeOldContent(mobilePage4);
 
                 // Kategorie-Section klonen
                 if (desktopCategorySection) {
