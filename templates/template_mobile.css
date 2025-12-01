@@ -582,6 +582,15 @@ body {
     }
 
     /* ========================================
+       BLINKEN DEAKTIVIEREN (Mobile)
+       ======================================== */
+    .compact-dimension.needs-selection .compact-option,
+    .compact-dimension.needs-selection .dominanz-option-row,
+    .needs-selection {
+        animation: none !important;
+    }
+
+    /* ========================================
        MOBILE SEITE 1 HEADER FIX
        ======================================== */
 
