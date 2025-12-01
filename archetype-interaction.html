@@ -11261,6 +11261,9 @@
                     // Handle both old format (string) and new format (object with primary/secondary)
                     if (typeof savedDims.geschlecht === 'object' && 'primary' in savedDims.geschlecht) {
                         personDimensions[person].geschlecht = savedDims.geschlecht;
+                    } else if (typeof savedDims.geschlecht === 'string') {
+                        // Old format: string like "cis_frau" - convert to new format as primary
+                        personDimensions[person].geschlecht = { primary: savedDims.geschlecht, secondary: null };
                     }
                 }
 
