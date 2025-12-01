@@ -3972,6 +3972,17 @@
             border: 1px solid var(--border);
         }
 
+        /* Score Label */
+        .score-label {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
         /* Score Circle Display */
         .score-circle-display {
             position: relative;

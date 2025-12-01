@@ -232,10 +232,12 @@ body {
     }
 
     .score-label {
-        font-size: var(--font-sm);
-        color: var(--text-muted);
+        font-size: 1.3rem;
+        font-weight: 700;
+        color: var(--text-primary);
         text-transform: uppercase;
-        letter-spacing: 1px;
+        letter-spacing: 0.15em;
+        margin-bottom: 10px;
     }
 
     /* ========================================
