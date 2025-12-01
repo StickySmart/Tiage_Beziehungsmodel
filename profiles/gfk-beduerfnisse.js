@@ -1,10 +1,27 @@
 /**
- * GFK-BEDÜRFNIS-KATALOG
+ * TIAGE BEDÜRFNIS-KATALOG
  *
- * Basiert auf Marshall Rosenbergs Gewaltfreier Kommunikation (GFK)
- * Vollständige Bedürfnisliste für Beziehungsqualitäts-Matching
+ * Erweiterte Bedürfnisliste für Beziehungsqualitäts-Matching
  *
- * Quelle: Marshall B. Rosenberg - Gewaltfreie Kommunikation
+ * QUELLEN:
+ * ─────────────────────────────────────────────────────────────────────────────
+ * 1. GFK (Gewaltfreie Kommunikation)
+ *    - Marshall B. Rosenberg: "Gewaltfreie Kommunikation" (2001)
+ *    - Kategorien: Existenz, Sicherheit, Zuneigung, Verständnis, Freiheit,
+ *      Teilnahme, Muße, Identität, Erschaffen, Verbundenheit
+ *
+ * 2. BDSM/Kink-Dynamik
+ *    - Dossie Easton & Janet Hardy: "The New Topping Book" (2003)
+ *    - Dossie Easton & Janet Hardy: "The New Bottoming Book" (2001)
+ *    - Jay Wiseman: "SM 101: A Realistic Introduction" (1996)
+ *    - Kategorie: Dynamik & Austausch (Kontrolle, Hingabe, Nachsorge, etc.)
+ *
+ * 3. Philosophische Grundlagen
+ *    - Robert M. Pirsig: "Zen und die Kunst ein Motorrad zu warten" (1974)
+ *      → Static vs. Dynamic Quality
+ *    - Osho: Vorträge über Polarität und Yin-Yang-Dynamik
+ *      → Komplementäre Energien in Beziehungen
+ * ─────────────────────────────────────────────────────────────────────────────
  */
 
 const GfkBeduerfnisse = {
@@ -165,6 +182,29 @@ const GfkBeduerfnisse = {
                 "einsehen",
                 "anfang_ende"
             ]
+        },
+
+        dynamik: {
+            name: "Dynamik & Austausch",
+            description: "Machtdynamik, Kontrolle und bewusster Austausch",
+            color: "#8B5CF6",
+            beduerfnisse: [
+                "kontrolle_ausueben",
+                "hingabe",
+                "fuehrung_geben",
+                "gefuehrt_werden",
+                "ritual",
+                "nachsorge",
+                "grenzen_setzen",
+                "grenzen_respektieren",
+                "intensitaet",
+                "vertrauen_schenken",
+                "verantwortung_uebernehmen",
+                "sich_fallenlassen",
+                "machtaustausch",
+                "dienend_sein",
+                "beschuetzen"
+            ]
         }
     },
 
@@ -264,7 +304,24 @@ const GfkBeduerfnisse = {
         inspiration: { label: "Inspiration", kategorie: "verbundenheit" },
         trauer_ausdruecken: { label: "Trauer ausdrücken", kategorie: "verbundenheit" },
         einsehen: { label: "Einsehen", kategorie: "verbundenheit" },
-        anfang_ende: { label: "Anfang & Ende", kategorie: "verbundenheit" }
+        anfang_ende: { label: "Anfang & Ende", kategorie: "verbundenheit" },
+
+        // DYNAMIK & AUSTAUSCH (BDSM/Kink)
+        kontrolle_ausueben: { label: "Kontrolle ausüben", kategorie: "dynamik" },
+        hingabe: { label: "Hingabe", kategorie: "dynamik" },
+        fuehrung_geben: { label: "Führung geben", kategorie: "dynamik" },
+        gefuehrt_werden: { label: "Geführt werden", kategorie: "dynamik" },
+        ritual: { label: "Rituale & Struktur", kategorie: "dynamik" },
+        nachsorge: { label: "Nachsorge/Aftercare", kategorie: "dynamik" },
+        grenzen_setzen: { label: "Grenzen setzen", kategorie: "dynamik" },
+        grenzen_respektieren: { label: "Grenzen respektieren", kategorie: "dynamik" },
+        intensitaet: { label: "Intensität erleben", kategorie: "dynamik" },
+        vertrauen_schenken: { label: "Vertrauen schenken", kategorie: "dynamik" },
+        verantwortung_uebernehmen: { label: "Verantwortung übernehmen", kategorie: "dynamik" },
+        sich_fallenlassen: { label: "Sich fallenlassen", kategorie: "dynamik" },
+        machtaustausch: { label: "Machtaustausch", kategorie: "dynamik" },
+        dienend_sein: { label: "Dienend sein", kategorie: "dynamik" },
+        beschuetzen: { label: "Beschützen", kategorie: "dynamik" }
     },
 
     // ═══════════════════════════════════════════════════════════════════════════
