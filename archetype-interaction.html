@@ -10983,12 +10983,6 @@
                 resultPercentageEl.textContent = qualityResult.incomplete ? '–' : qualityResult.score + '%';
             }
 
-            // Update factor breakdown - show 0% or actual values
-            document.getElementById('mobileFactorArchetyp').textContent = qualityResult.incomplete ? '–' : qualityResult.breakdown.archetyp + '%';
-            document.getElementById('mobileFactorDominanz').textContent = qualityResult.incomplete ? '–' : qualityResult.breakdown.dominanz + '%';
-            document.getElementById('mobileFactorOrientierung').textContent = qualityResult.incomplete ? '–' : qualityResult.breakdown.orientierung + '%';
-            document.getElementById('mobileFactorGeschlecht').textContent = qualityResult.incomplete ? '–' : qualityResult.breakdown.geschlecht + '%';
-
             // Update Mobile Score Note (direkt beim Kreis)
             const mobileScoreNote = document.getElementById('mobileScoreNote');
             if (mobileScoreNote) {
