@@ -15,27 +15,6 @@
     <link rel="stylesheet" href="templates/template_desktop.css">
     <link rel="stylesheet" href="templates/template_mobile.css" media="(max-width: 768px)">
 
-    <!-- MOBILE DEVVIEW - Klont Desktop-Elemente in Mobile-Seiten -->
-    <script>
-        (function() {
-            if (new URLSearchParams(window.location.search).get('devview') !== 'true') return;
-            if (!('ontouchstart' in window || /Android|iPhone|iPad|iPod/i.test(navigator.userAgent))) return;
-
-            // Markiere DevView aktiv
-            window.DEVVIEW_ACTIVE = true;
-
-            // Styles für DevView Mobile
-            document.write('<style id="devview-styles">' +
-                '.mobile-multipage { display: block !important; }' +
-                '.mobile-page { display: block !important; margin-bottom: 30px; border: 3px solid var(--primary); border-radius: 16px; }' +
-                '.comparison-container { display: none !important; }' +
-                '.page-indicator { display: none !important; }' +
-                '.devview-cloned { margin-top: 15px; }' +
-                '.devview-label { background: var(--primary); color: white; padding: 5px 10px; border-radius: 8px; font-weight: bold; margin-bottom: 10px; display: inline-block; }' +
-            '</style>');
-        })();
-    </script>
-
     <!-- TIAGE i18n - Internationalisierung -->
     <script src="js/locales/de.js"></script>
     <script src="js/locales/en.js"></script>
@@ -1023,6 +1002,41 @@
                     <button class="archetype-nav-btn" onclick="navigateArchetype('ich', 1)" title="Nächster Archetyp">&#9654;</button>
                     <button onclick="openArchetypeInfo(document.getElementById('mobileIchSelect').value, 'ich')" style="padding: 12px 16px; background: rgba(255,255,255,0.1); border: 1px solid var(--border); border-radius: 8px; color: var(--text-secondary); cursor: pointer; font-size: 14px; font-weight: 600; letter-spacing: 0.5px;" title="Info zum Archetyp">INFO</button>
                 </div>
+                <!-- Archetypen-Symbol-Grid für ICH (Mobile) -->
+                <div class="archetype-symbols-grid" id="mobile-ich-archetype-grid">
+                    <div class="archetype-symbol-item active" data-archetype="single" onclick="selectArchetypeFromGrid('ich', 'single')">
+                        <span class="archetype-symbol-icon">★</span>
+                        <span class="archetype-symbol-name">Single</span>
+                    </div>
+                    <div class="archetype-symbol-item" data-archetype="duo" onclick="selectArchetypeFromGrid('ich', 'duo')">
+                        <span class="archetype-symbol-icon">♡</span>
+                        <span class="archetype-symbol-name">Duo</span>
+                    </div>
+                    <div class="archetype-symbol-item" data-archetype="duo_flex" onclick="selectArchetypeFromGrid('ich', 'duo_flex')">
+                        <span class="archetype-symbol-icon">⚡</span>
+                        <span class="archetype-symbol-name">Duo-Flex</span>
+                    </div>
+                    <div class="archetype-symbol-item" data-archetype="solopoly" onclick="selectArchetypeFromGrid('ich', 'solopoly')">
+                        <span class="archetype-symbol-icon">◆</span>
+                        <span class="archetype-symbol-name">Solopoly</span>
+                    </div>
+                    <div class="archetype-symbol-item" data-archetype="polyamor" onclick="selectArchetypeFromGrid('ich', 'polyamor')">
+                        <span class="archetype-symbol-icon">♥</span>
+                        <span class="archetype-symbol-name">Polyamor</span>
+                    </div>
+                    <div class="archetype-symbol-item" data-archetype="ra" onclick="selectArchetypeFromGrid('ich', 'ra')">
+                        <span class="archetype-symbol-icon">∞</span>
+                        <span class="archetype-symbol-name">RA</span>
+                    </div>
+                    <div class="archetype-symbol-item" data-archetype="lat" onclick="selectArchetypeFromGrid('ich', 'lat')">
+                        <span class="archetype-symbol-icon">⌂</span>
+                        <span class="archetype-symbol-name">LAT</span>
+                    </div>
+                    <div class="archetype-symbol-item" data-archetype="aromantisch" onclick="selectArchetypeFromGrid('ich', 'aromantisch')">
+                        <span class="archetype-symbol-icon">◇</span>
+                        <span class="archetype-symbol-name">Aromantisch</span>
+                    </div>
+                </div>
                 <div class="column-dimensions" id="mobileIchDimensions">
                     <div class="compact-dimension needs-selection collapsible-dimension" data-dimension="mobile-ich-geschlecht">
                         <div class="compact-dimension-label"><span class="geschlecht-info-link">Geschlechtsidentität</span> <span id="mobile-ich-geschlecht-legend" class="geschlecht-legend" style="font-size: 10px; opacity: 0.7;">(<span class="legend-i">I</span>=Identität, <span class="legend-g">G</span>=Sekundär)</span></div>
@@ -1096,6 +1110,12 @@
                             </div>
                         </div>
                     </div>
+                    <!-- GFK-Kompetenz Grid für ICH (Mobile) -->
+                    <div class="compact-dimension collapsible-dimension" data-dimension="mobile-ich-gfk">
+                        <div class="compact-dimension-label"><span class="gfk-info-link">GFK-Kompetenz</span></div>
+                        <div class="collapsed-summary" id="mobile-ich-gfk-summary"></div>
+                        <div class="gfk-grid" id="mobile-ich-gfk-grid" data-person="ich"></div>
+                    </div>
                 </div>
             </div>
 
@@ -1133,6 +1153,41 @@
                     </select>
                     <button class="archetype-nav-btn" onclick="navigateArchetype('partner', 1)" title="Nächster Archetyp">&#9654;</button>
                     <button onclick="openArchetypeInfo(document.getElementById('mobilePartnerSelect').value, 'partner')" style="padding: 12px 16px; background: rgba(255,255,255,0.1); border: 1px solid var(--border); border-radius: 8px; color: var(--text-secondary); cursor: pointer; font-size: 14px; font-weight: 600; letter-spacing: 0.5px;" title="Info zum Archetyp">INFO</button>
+                </div>
+                <!-- Archetypen-Symbol-Grid für PARTNER (Mobile) -->
+                <div class="archetype-symbols-grid" id="mobile-partner-archetype-grid">
+                    <div class="archetype-symbol-item" data-archetype="single" onclick="selectArchetypeFromGrid('partner', 'single')">
+                        <span class="archetype-symbol-icon">★</span>
+                        <span class="archetype-symbol-name">Single</span>
+                    </div>
+                    <div class="archetype-symbol-item active" data-archetype="duo" onclick="selectArchetypeFromGrid('partner', 'duo')">
+                        <span class="archetype-symbol-icon">♡</span>
+                        <span class="archetype-symbol-name">Duo</span>
+                    </div>
+                    <div class="archetype-symbol-item" data-archetype="duo_flex" onclick="selectArchetypeFromGrid('partner', 'duo_flex')">
+                        <span class="archetype-symbol-icon">⚡</span>
+                        <span class="archetype-symbol-name">Duo-Flex</span>
+                    </div>
+                    <div class="archetype-symbol-item" data-archetype="solopoly" onclick="selectArchetypeFromGrid('partner', 'solopoly')">
+                        <span class="archetype-symbol-icon">◆</span>
+                        <span class="archetype-symbol-name">Solopoly</span>
+                    </div>
+                    <div class="archetype-symbol-item" data-archetype="polyamor" onclick="selectArchetypeFromGrid('partner', 'polyamor')">
+                        <span class="archetype-symbol-icon">♥</span>
+                        <span class="archetype-symbol-name">Polyamor</span>
+                    </div>
+                    <div class="archetype-symbol-item" data-archetype="ra" onclick="selectArchetypeFromGrid('partner', 'ra')">
+                        <span class="archetype-symbol-icon">∞</span>
+                        <span class="archetype-symbol-name">RA</span>
+                    </div>
+                    <div class="archetype-symbol-item" data-archetype="lat" onclick="selectArchetypeFromGrid('partner', 'lat')">
+                        <span class="archetype-symbol-icon">⌂</span>
+                        <span class="archetype-symbol-name">LAT</span>
+                    </div>
+                    <div class="archetype-symbol-item" data-archetype="aromantisch" onclick="selectArchetypeFromGrid('partner', 'aromantisch')">
+                        <span class="archetype-symbol-icon">◇</span>
+                        <span class="archetype-symbol-name">Aromantisch</span>
+                    </div>
                 </div>
                 <div class="column-dimensions" id="mobilePartnerDimensions">
                     <div class="compact-dimension needs-selection collapsible-dimension" data-dimension="mobile-partner-geschlecht">
@@ -1206,6 +1261,12 @@
                                 </div>
                             </div>
                         </div>
+                    </div>
+                    <!-- GFK-Kompetenz Grid für PARTNER (Mobile) -->
+                    <div class="compact-dimension collapsible-dimension" data-dimension="mobile-partner-gfk">
+                        <div class="compact-dimension-label"><span class="gfk-info-link">GFK-Kompetenz</span></div>
+                        <div class="collapsed-summary" id="mobile-partner-gfk-summary"></div>
+                        <div class="gfk-grid" id="mobile-partner-gfk-grid" data-person="partner"></div>
                     </div>
                 </div>
             </div>
@@ -1309,9 +1370,15 @@
                 </div>
             </div>
 
-            <!-- 6 Kategorien-Balken -->
-            <div class="category-bars-container" id="mobileCategoryBars">
-                <!-- Wird dynamisch gefüllt von renderCategoryBars() -->
+            <!-- Kategorie-Details Section (wie Desktop) -->
+            <div class="category-section mobile-category-section">
+                <div class="section-title-row" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+                    <div class="section-title" style="margin-bottom: 0; font-size: var(--font-lg); color: var(--text-primary);">Kategorie-Details</div>
+                    <div class="info-icon" onclick="openCategoryModal()" style="cursor: pointer; font-size: 18px;">ℹ</div>
+                </div>
+                <div class="category-bars-container" id="mobileCategoryBars">
+                    <!-- Wird dynamisch gefüllt von renderCategoryBars() -->
+                </div>
             </div>
 
             <button class="btn-primary-mobile" onclick="mobileGoToPage(1)" style="margin-top: 20px;">← Zurück zur Auswahl</button>
@@ -13727,154 +13794,6 @@
         };
 
         console.log('All modal functions are now globally available');
-    </script>
-
-    <!-- DEVVIEW: Klont Desktop-Elemente in Mobile-Seiten -->
-    <script>
-    (function() {
-        if (!window.DEVVIEW_ACTIVE) return;
-
-        document.addEventListener('DOMContentLoaded', function() {
-            console.log('DevView: Klone Desktop-Elemente in Mobile-Seiten...');
-
-            // Hilfsfunktion: Alle alten Inhalte einer Seite LÖSCHEN (außer Header und geklonte)
-            function removeOldContent(page) {
-                Array.from(page.children).forEach(function(child) {
-                    if (!child.classList.contains('page-header') &&
-                        !child.classList.contains('devview-cloned') &&
-                        child.tagName !== 'H2') {
-                        child.remove();
-                    }
-                });
-            }
-
-            // === SEITE 1: DU ===
-            var mobilePage1 = document.getElementById('mobilePage1');
-            var desktopIchColumn = document.querySelector('.ich-column');
-
-            if (mobilePage1 && desktopIchColumn) {
-                // Desktop ICH-Column klonen
-                var clonedIch = desktopIchColumn.cloneNode(true);
-                clonedIch.className = 'devview-cloned ich-column-mobile';
-                clonedIch.style.cssText = 'background: var(--bg-card); border-radius: 16px; padding: 20px; margin: 15px 0; border-top: 3px solid var(--success);';
-
-                // IDs ändern um Konflikte zu vermeiden
-                clonedIch.querySelectorAll('[id]').forEach(function(el) {
-                    el.id = 'devview-' + el.id;
-                });
-
-                // Alten Inhalt verstecken
-                removeOldContent(mobilePage1);
-
-                // Nach dem Titel einfügen
-                var title = mobilePage1.querySelector('h2');
-                if (title) {
-                    title.insertAdjacentElement('afterend', clonedIch);
-                }
-
-                console.log('DevView: ICH-Column geklont');
-            }
-
-            // === SEITE 2: PARTNER ===
-            var mobilePage2 = document.getElementById('mobilePage2');
-            var desktopPartnerColumn = document.querySelector('.partner-column');
-
-            if (mobilePage2 && desktopPartnerColumn) {
-                // Desktop Partner-Column klonen
-                var clonedPartner = desktopPartnerColumn.cloneNode(true);
-                clonedPartner.className = 'devview-cloned partner-column-mobile';
-                clonedPartner.style.cssText = 'background: var(--bg-card); border-radius: 16px; padding: 20px; margin: 15px 0; border-top: 3px solid var(--danger);';
-
-                // IDs ändern
-                clonedPartner.querySelectorAll('[id]').forEach(function(el) {
-                    el.id = 'devview-' + el.id;
-                });
-
-                // Alten Inhalt verstecken
-                removeOldContent(mobilePage2);
-
-                // Nach dem Header einfügen
-                var header = mobilePage2.querySelector('.page-header');
-                if (header) {
-                    header.insertAdjacentElement('afterend', clonedPartner);
-                }
-
-                console.log('DevView: Partner-Column geklont');
-            }
-
-            // === SEITE 3: ERGEBNIS (Score Circle) ===
-            var mobilePage3 = document.getElementById('mobilePage3');
-            var desktopCenter = document.querySelector('.center-column');
-
-            if (mobilePage3 && desktopCenter) {
-                var clonedCenter = desktopCenter.cloneNode(true);
-                clonedCenter.className = 'devview-cloned center-column-mobile';
-                clonedCenter.style.cssText = 'background: var(--bg-card); border-radius: 16px; padding: 20px; margin: 15px 0; text-align: center;';
-
-                clonedCenter.querySelectorAll('[id]').forEach(function(el) {
-                    el.id = 'devview-' + el.id;
-                });
-
-                // Alten Inhalt verstecken
-                removeOldContent(mobilePage3);
-
-                var header3 = mobilePage3.querySelector('.page-header');
-                if (header3) {
-                    header3.insertAdjacentElement('afterend', clonedCenter);
-                }
-
-                console.log('DevView: Center-Column geklont');
-            }
-
-            // === SEITE 4: BEDÜRFNISSE/KATEGORIEN ===
-            var mobilePage4 = document.getElementById('mobilePage4');
-            var desktopCategorySection = document.querySelector('.category-section');
-            var desktopAnalysisGrid = document.querySelector('.analysis-grid');
-
-            if (mobilePage4) {
-                // Alten Inhalt verstecken
-                removeOldContent(mobilePage4);
-
-                // Kategorie-Section klonen
-                if (desktopCategorySection) {
-                    var clonedCategory = desktopCategorySection.cloneNode(true);
-                    clonedCategory.className = 'devview-cloned category-section-mobile';
-                    clonedCategory.style.cssText = 'background: var(--bg-card); border-radius: 16px; padding: 20px; margin: 15px 0;';
-
-                    clonedCategory.querySelectorAll('[id]').forEach(function(el) {
-                        el.id = 'devview-' + el.id;
-                    });
-
-                    var header4 = mobilePage4.querySelector('.page-header');
-                    if (header4) {
-                        header4.insertAdjacentElement('afterend', clonedCategory);
-                    }
-
-                    console.log('DevView: Category-Section geklont');
-                }
-
-                // Pro/Contra Analysis klonen
-                if (desktopAnalysisGrid) {
-                    var clonedAnalysis = desktopAnalysisGrid.cloneNode(true);
-                    clonedAnalysis.className = 'devview-cloned analysis-grid-mobile';
-                    clonedAnalysis.style.cssText = 'background: var(--bg-card); border-radius: 16px; padding: 20px; margin: 15px 0;';
-
-                    clonedAnalysis.querySelectorAll('[id]').forEach(function(el) {
-                        el.id = 'devview-' + el.id;
-                    });
-
-                    var lastCloned = mobilePage4.querySelector('.devview-cloned');
-                    if (lastCloned) {
-                        lastCloned.insertAdjacentElement('afterend', clonedAnalysis);
-                    }
-
-                    console.log('DevView: Analysis-Grid geklont');
-                }
-            }
-
-            console.log('DevView: Alle Desktop-Elemente wurden in Mobile-Seiten geklont!');
-        });
-    })();
     </script>
 </body>
 </html>
