@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dokumentation | Ti-age</title>
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <style>
+        :root {
+            --bg-main: #0d0d1a;
+            --bg-card: #1a1a2e;
+            --bg-card-hover: #252542;
+            --border: rgba(255, 255, 255, 0.1);
+            --primary: #eab308;
+            --primary-light: #facc15;
+            --primary-rgb: 234, 179, 8;
+            --text-primary: #fff;
+            --text-secondary: rgba(255, 255, 255, 0.8);
+            --text-muted: rgba(255, 255, 255, 0.5);
+            --success: #22c55e;
+            --danger: #ef4444;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            background: var(--bg-main);
+            color: var(--text-secondary);
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+
+        /* Header */
+        .doc-header {
+            background: linear-gradient(135deg, var(--bg-card) 0%, #16213e 100%);
+            border-bottom: 1px solid var(--border);
+            padding: 15px 20px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .doc-header-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 15px;
+        }
+
+        .doc-back-btn {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--text-primary);
+            text-decoration: none;
+            font-size: 14px;
+            transition: all 0.2s;
+        }
+
+        .doc-back-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: var(--primary);
+        }
+
+        .doc-logo {
+            color: var(--primary);
+            font-weight: 700;
+            font-size: 18px;
+            text-decoration: none;
+        }
+
+        .doc-nav {
+            display: flex;
+            gap: 10px;
+        }
+
+        .doc-nav a {
+            color: var(--text-muted);
+            text-decoration: none;
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 13px;
+            transition: all 0.2s;
+        }
+
+        .doc-nav a:hover {
+            color: var(--primary);
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        /* Main Layout */
+        .doc-layout {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 300px;
+            gap: 30px;
+            padding: 30px 20px;
+        }
+
+        @media (max-width: 900px) {
+            .doc-layout {
+                grid-template-columns: 1fr;
+            }
+            .doc-sidebar {
+                order: -1;
+            }
+        }
+
+        /* Content Area */
+        .doc-content {
+            background: var(--bg-card);
+            border-radius: 12px;
+            padding: 30px;
+            border: 1px solid var(--border);
+        }
+
+        .doc-breadcrumb {
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .doc-breadcrumb a {
+            color: var(--primary);
+            text-decoration: none;
+        }
+
+        .doc-breadcrumb a:hover {
+            text-decoration: underline;
+        }
+
+        /* Sidebar */
+        .doc-sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .sidebar-card {
+            background: var(--bg-card);
+            border-radius: 12px;
+            padding: 20px;
+            border: 1px solid var(--border);
+        }
+
+        .sidebar-card h3 {
+            color: var(--text-primary);
+            font-size: 14px;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .sidebar-links {
+            list-style: none;
+        }
+
+        .sidebar-links li {
+            margin: 8px 0;
+        }
+
+        .sidebar-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 13px;
+            display: block;
+            padding: 6px 10px;
+            border-radius: 6px;
+            transition: all 0.2s;
+        }
+
+        .sidebar-links a:hover {
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--primary);
+        }
+
+        .sidebar-links a.active {
+            background: rgba(234, 179, 8, 0.1);
+            color: var(--primary);
+            border-left: 2px solid var(--primary);
+        }
+
+        /* Ad Space */
+        .ad-space {
+            background: linear-gradient(135deg, rgba(234, 179, 8, 0.05) 0%, rgba(234, 179, 8, 0.02) 100%);
+            border: 1px dashed rgba(234, 179, 8, 0.3);
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            min-height: 250px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .ad-space-label {
+            font-size: 11px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 10px;
+        }
+
+        .ad-space-placeholder {
+            color: var(--text-muted);
+            font-size: 13px;
+        }
+
+        /* JOYclub Widget */
+        .joyclub-widget {
+            text-align: center;
+        }
+
+        .joyclub-widget img {
+            border-radius: 50%;
+            margin-bottom: 10px;
+        }
+
+        .joyclub-widget p {
+            font-size: 11px;
+            color: var(--text-muted);
+        }
+
+        /* Footer */
+        .doc-footer {
+            text-align: center;
+            padding: 30px 20px;
+            border-top: 1px solid var(--border);
+            margin-top: 40px;
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        .doc-footer a {
+            color: var(--primary);
+            text-decoration: none;
+            margin: 0 10px;
+        }
+
+        .doc-footer a:hover {
+            text-decoration: underline;
+        }
+
+        /* Print Styles */
+        @media print {
+            .doc-header, .doc-sidebar, .doc-footer {
+                display: none;
+            }
+            .doc-layout {
+                display: block;
+            }
+            .doc-content {
+                background: white;
+                color: black;
+                border: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="doc-header">
+        <div class="doc-header-inner">
+            <a href="archetype-interaction.html" class="doc-back-btn">
+                <span>&larr;</span>
+                <span>Zurueck zum Rechner</span>
+            </a>
+            <a href="archetype-interaction.html" class="doc-logo">Ti-Age</a>
+            <nav class="doc-nav">
+                <a href="docs.html?doc=docs/help-guide.md">Hilfe</a>
+                <a href="docs.html?doc=docs/theory/tiage-synthesis.md">Theorie</a>
+                <a href="docs.html?doc=profiles/research-sources.md">Quellen</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Layout -->
+    <div class="doc-layout">
+        <!-- Content Area -->
+        <main class="doc-content">
+            <div class="doc-breadcrumb" id="breadcrumb">
+                <a href="archetype-interaction.html">Startseite</a> &rsaquo;
+                <span id="currentPage">Dokumentation</span>
+            </div>
+            <div id="docBody">
+                <div class="md-loading">
+                    <span class="md-spinner"></span> Lade Dokumentation...
+                </div>
+            </div>
+        </main>
+
+        <!-- Sidebar -->
+        <aside class="doc-sidebar">
+            <!-- Navigation -->
+            <div class="sidebar-card">
+                <h3>Philosophische Grundlagen</h3>
+                <ul class="sidebar-links">
+                    <li><a href="docs.html?doc=docs/theory/tiage-synthesis.md">Tiage-Synthese</a></li>
+                    <li><a href="docs.html?doc=docs/theory/pirsig.md">Pirsig-Philosophie</a></li>
+                    <li><a href="docs.html?doc=docs/theory/osho.md">OSHO-Philosophie</a></li>
+                    <li><a href="docs.html?doc=docs/theory/pathos-logos.md">Pathos/Logos</a></li>
+                    <li><a href="docs.html?doc=docs/theory/resonance.md">Resonanz-Theorie</a></li>
+                </ul>
+            </div>
+
+            <div class="sidebar-card">
+                <h3>Rechtliches</h3>
+                <ul class="sidebar-links">
+                    <li><a href="datenschutz.html">Datenschutz</a></li>
+                    <li><a href="nutzungsbedingungen.html">Nutzungsbedingungen</a></li>
+                </ul>
+            </div>
+
+            <div class="sidebar-card">
+                <h3>Wissenschaftliche Quellen</h3>
+                <ul class="sidebar-links">
+                    <li><a href="docs.html?doc=profiles/research-sources.md">Research Sources</a></li>
+                </ul>
+            </div>
+
+            <!-- Ad Space -->
+            <div class="ad-space">
+                <div class="ad-space-label">Werbung</div>
+                <div class="ad-space-placeholder">
+                    <!-- Hier kann Werbung eingefuegt werden -->
+                    <!-- Beispiel: Google AdSense, eigene Banner, etc. -->
+                    <p style="font-size: 12px; opacity: 0.7;">Werbeplatz verfuegbar</p>
+                </div>
+            </div>
+
+            <!-- JOYclub Widget -->
+            <div class="sidebar-card joyclub-widget">
+                <a href="https://www.joyclub.de/" target="_blank" rel="noopener">
+                    <img src="//cfnimg.joyclub.de/partner/joyclub_backlink_mitglied_120x120.png"
+                         width="100" height="100" alt="Lebe deine Lust!" />
+                </a>
+                <p>Partner: JOYclub</p>
+            </div>
+        </aside>
+    </div>
+
+    <!-- Footer -->
+    <footer class="doc-footer">
+        <div>&copy; 2025 Ti-Age - Alle Rechte vorbehalten</div>
+        <div style="margin-top: 10px;">
+            <a href="archetype-interaction.html">Zurueck zum Rechner</a>
+            <span style="color: var(--primary);">|</span>
+            <a href="datenschutz.html">Datenschutz</a>
+            <span style="color: var(--primary);">|</span>
+            <a href="nutzungsbedingungen.html">Nutzungsbedingungen</a>
+        </div>
+    </footer>
+
+    <!-- Markdown Loader -->
+    <script src="js/markdown-loader.js"></script>
+    <script>
+        // Document titles mapping
+        const docTitles = {
+            'docs/help-guide.md': 'Hilfe & Dokumentation',
+            'docs/theory/tiage-synthesis.md': 'Tiage-Synthese',
+            'docs/theory/pirsig.md': 'Pirsig-Philosophie',
+            'docs/theory/osho.md': 'OSHO-Philosophie',
+            'docs/theory/pathos-logos.md': 'Pathos/Logos Gewichtung',
+            'docs/theory/resonance.md': 'Resonanz-Theorie',
+            'docs/legal/datenschutz.md': 'Datenschutz',
+            'docs/legal/nutzungsbedingungen.md': 'Nutzungsbedingungen',
+            'profiles/research-sources.md': 'Research Sources'
+        };
+
+        // Get document path from URL
+        function getDocPath() {
+            const params = new URLSearchParams(window.location.search);
+            return params.get('doc') || 'docs/help-guide.md';
+        }
+
+        // Update active link in sidebar
+        function updateActiveLink(docPath) {
+            document.querySelectorAll('.sidebar-links a').forEach(link => {
+                const linkDoc = new URL(link.href).searchParams.get('doc');
+                if (linkDoc === docPath) {
+                    link.classList.add('active');
+                } else {
+                    link.classList.remove('active');
+                }
+            });
+        }
+
+        // Update breadcrumb
+        function updateBreadcrumb(docPath) {
+            const title = docTitles[docPath] || docPath.split('/').pop().replace('.md', '');
+            document.getElementById('currentPage').textContent = title;
+            document.title = title + ' | Ti-age';
+        }
+
+        // Handle internal markdown links
+        function handleInternalLinks() {
+            document.querySelectorAll('#docBody a.md-link').forEach(link => {
+                const href = link.getAttribute('href');
+
+                // Skip external links and mailto
+                if (href.startsWith('http') || href.startsWith('mailto:') || href.startsWith('#')) {
+                    return;
+                }
+
+                // Convert .md links to docs.html?doc= links
+                if (href.endsWith('.md')) {
+                    link.href = 'docs.html?doc=' + href;
+                    link.removeAttribute('target');
+                    link.removeAttribute('rel');
+
+                    // Handle click to load without page reload (SPA-like)
+                    link.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        const newDoc = new URL(this.href).searchParams.get('doc');
+                        loadDocument(newDoc);
+                        history.pushState({doc: newDoc}, '', this.href);
+                    });
+                }
+            });
+        }
+
+        // Load document
+        async function loadDocument(docPath) {
+            updateActiveLink(docPath);
+            updateBreadcrumb(docPath);
+
+            const docBody = document.getElementById('docBody');
+            docBody.innerHTML = '<div class="md-loading"><span class="md-spinner"></span> Lade Dokumentation...</div>';
+
+            try {
+                const html = await MarkdownLoader.load(docPath);
+                docBody.innerHTML = html;
+                handleInternalLinks();
+
+                // Scroll to top
+                window.scrollTo(0, 0);
+
+                // Handle anchor links if present
+                const hash = window.location.hash;
+                if (hash) {
+                    const target = document.querySelector(hash);
+                    if (target) {
+                        target.scrollIntoView({ behavior: 'smooth' });
+                    }
+                }
+            } catch (error) {
+                docBody.innerHTML = `
+                    <div class="md-error">
+                        <h2>Fehler beim Laden</h2>
+                        <p>Die angeforderte Dokumentation konnte nicht geladen werden.</p>
+                        <p style="margin-top: 10px; font-size: 12px; opacity: 0.7;">${error.message}</p>
+                        <p style="margin-top: 15px;"><a href="docs.html" style="color: var(--primary);">Zurueck zur Uebersicht</a></p>
+                    </div>
+                `;
+            }
+        }
+
+        // Handle browser back/forward
+        window.addEventListener('popstate', function(e) {
+            const docPath = e.state?.doc || getDocPath();
+            loadDocument(docPath);
+        });
+
+        // Initial load
+        document.addEventListener('DOMContentLoaded', function() {
+            const docPath = getDocPath();
+            loadDocument(docPath);
+
+            // Set initial history state
+            history.replaceState({doc: docPath}, '', window.location.href);
+        });
+    </script>
+</body>
+</html>
