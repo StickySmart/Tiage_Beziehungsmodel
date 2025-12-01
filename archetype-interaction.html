@@ -9253,13 +9253,6 @@
 
             if (ichEl) ichEl.textContent = ichArch?.name || currentArchetype;
             if (partnerEl) partnerEl.textContent = partnerArch?.name || selectedPartner;
-
-            // Kategorien-Balken aktualisieren
-            const key = `${currentArchetype}_${selectedPartner}`;
-            const interaction = data.interactions?.[key] || {};
-            if (interaction.scores) {
-                renderCategoryBars('mobileCategoryBars', interaction.scores);
-            }
         }
 
         // Variable für aktuelle Kategorie im Modal
@@ -9569,8 +9562,6 @@
         // Desktop: Wrapper für Kompatibilität
         function updateExpandableCategoryBars(categories) {
             renderCategoryBars('expandCategoryBars', categories);
-            // Auch Mobile aktualisieren wenn vorhanden
-            renderCategoryBars('mobileCategoryBars', categories);
         }
 
         function showArchetypeInfo(person) {
