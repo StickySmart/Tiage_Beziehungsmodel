@@ -556,9 +556,9 @@ const TiageLocale_EN = {
         gfkLabel: 'NVC Competence',
         multiSelect: '(Multi-select)',
         legend: {
-            identity: 'I',
+            identity: 'P',
             secondary: 'S',
-            identityFull: 'Identity',
+            identityFull: 'Primary',
             secondaryFull: 'Secondary'
         },
         gfkLevels: {

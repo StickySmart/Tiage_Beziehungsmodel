@@ -4649,18 +4649,18 @@
         }
 
         /* Geschlecht Legend Hover Highlights */
-        .geschlecht-legend .legend-i,
-        .geschlecht-legend .legend-g {
+        .geschlecht-legend .legend-p,
+        .geschlecht-legend .legend-s {
             transition: all 0.2s ease;
         }
 
-        .geschlecht-legend.highlight-i .legend-i {
+        .geschlecht-legend.highlight-p .legend-p {
             color: var(--primary);
             font-weight: 700;
             text-shadow: 0 0 8px var(--primary);
         }
 
-        .geschlecht-legend.highlight-g .legend-g {
+        .geschlecht-legend.highlight-s .legend-s {
             color: #eab308;
             font-weight: 700;
             text-shadow: 0 0 8px #eab308;
