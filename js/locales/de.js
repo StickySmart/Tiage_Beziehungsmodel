@@ -443,6 +443,39 @@ const TiageLocale_DE = {
     },
 
     // ═══════════════════════════════════════════════════════════════════════
+    // SOFT-KO TEXTE (Bedürfnis-Konflikte)
+    // ═══════════════════════════════════════════════════════════════════════
+
+    softKO: {
+        title: 'Herausfordernde Kombination',
+        subtitle: 'Starke Unterschiede in Kernbedürfnissen',
+
+        // Erklärungen
+        reasons: {
+            needs_conflict: 'Eure Kernbedürfnisse unterscheiden sich deutlich',
+            dynamic_mismatch: 'Die Dynamik-Präferenzen passen nicht optimal',
+            values_gap: 'Unterschiedliche Prioritäten bei wichtigen Werten'
+        },
+
+        // Konstruktiver Hinweis
+        growth: 'Mit bewusster Kommunikation kann das funktionieren.',
+
+        // Bedürfnis-spezifisch
+        conflictLabel: 'Konfliktpotenzial',
+        needsLabel: 'Unterschiedliche Bedürfnisse'
+    },
+
+    // ═══════════════════════════════════════════════════════════════════════
+    // P↔S VALIDIERUNG (Primär-Sekundär)
+    // ═══════════════════════════════════════════════════════════════════════
+
+    psValidation: {
+        complementary: 'Primär und Sekundär ergänzen sich gut',
+        conflicting: 'Primär und Sekundär stehen in Spannung',
+        bonusApplied: 'Bonus für komplementäre P↔S Kombination'
+    },
+
+    // ═══════════════════════════════════════════════════════════════════════
     // DIMENSION-LABELS
     // ═══════════════════════════════════════════════════════════════════════
 
