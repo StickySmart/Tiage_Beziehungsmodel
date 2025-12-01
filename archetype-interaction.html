@@ -8379,10 +8379,32 @@
          */
         function updateArchetypeNames() {
             const archetypes = ['single', 'duo', 'duo_flex', 'solopoly', 'polyamor', 'ra', 'lat', 'aromantisch'];
+
+            // Update elements with data-archetype-name attribute
             archetypes.forEach(type => {
                 document.querySelectorAll(`[data-archetype-name="${type}"]`).forEach(el => {
                     el.textContent = TiageI18n.t(`archetypes.${type}.name`, type);
                 });
+            });
+
+            // Update select options (ichSelect, partnerSelect, mobile selects)
+            document.querySelectorAll('#ichSelect option, #partnerSelect option, #mobile-ich-select option, #mobile-partner-select option').forEach(option => {
+                const value = option.value;
+                if (archetypes.includes(value)) {
+                    option.textContent = TiageI18n.t(`archetypes.${value}.name`, option.textContent);
+                    option.title = TiageI18n.t(`archetypes.${value}.shortDef`, option.title);
+                }
+            });
+
+            // Update archetype symbol names in grids
+            document.querySelectorAll('.archetype-symbol-name').forEach(el => {
+                const parent = el.closest('[data-archetype]');
+                if (parent) {
+                    const type = parent.dataset.archetype;
+                    if (archetypes.includes(type)) {
+                        el.textContent = TiageI18n.t(`archetypes.${type}.name`, el.textContent);
+                    }
+                }
             });
         }
 
