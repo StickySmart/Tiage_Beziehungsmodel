@@ -672,6 +672,7 @@ const TiageLocale_EN = {
     // ═══════════════════════════════════════════════════════════════════════
 
     synthesisSection: {
+        creativity: 'CREATIVITY',
         bringtMit: 'BRINGS',
         darausEntsteht: 'CREATES',
         gemeinsameBeduerfnisse: 'Shared Needs',

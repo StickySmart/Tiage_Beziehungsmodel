@@ -153,6 +153,47 @@ TiageSynthesis.Constants = {
     },
 
     // ═══════════════════════════════════════════════════════════════════════
+    // SOFT-KO KRITERIEN (Bedürfnis-basiert)
+    // ═══════════════════════════════════════════════════════════════════════
+    // Nicht unmöglich, aber sehr unwahrscheinlich aufgrund starker Bedürfnis-Differenzen
+
+    SOFT_KO: {
+        ENABLED: true,
+
+        // Schwellenwerte für Bedürfnis-Differenzen
+        THRESHOLDS: {
+            CRITICAL: 50,      // Differenz > 50 = kritischer Konflikt
+            HIGH: 35,          // Differenz > 35 = hoher Konflikt
+            MODERATE: 20       // Differenz > 20 = moderater Konflikt
+        },
+
+        // Anzahl kritischer Konflikte für Soft-KO
+        MIN_CRITICAL_CONFLICTS: 3,  // Mind. 3 Bedürfnisse mit Diff > 50
+
+        // Score-Reduktion bei Soft-KO
+        SCORE_PENALTY: 0.3,   // Reduziert Score auf 30%
+
+        MESSAGE_KEY: 'softKO'
+    },
+
+    // ═══════════════════════════════════════════════════════════════════════
+    // P↔S VALIDIERUNG (Primär-Sekundär Konsistenz)
+    // ═══════════════════════════════════════════════════════════════════════
+    // Prüft ob P und S einer Person sinnvoll kombinierbar sind
+
+    PS_VALIDATION: {
+        ENABLED: true,
+
+        // Bonus wenn S die Lücke von P füllt
+        COMPLEMENTARY_BONUS: 10,
+
+        // Gewichtung von S relativ zu P
+        SECONDARY_WEIGHT: 0.5,  // S hat 50% Einfluss von P
+
+        MESSAGE_KEY: 'psValidation'
+    },
+
+    // ═══════════════════════════════════════════════════════════════════════
     // GESCHLECHTS-ATTRAKTION
     // ═══════════════════════════════════════════════════════════════════════
 

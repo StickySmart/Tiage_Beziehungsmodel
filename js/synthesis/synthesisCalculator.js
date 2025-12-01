@@ -183,11 +183,105 @@ TiageSynthesis.Calculator = {
 
                 // Hard-KO: Geometrisch unmöglich (z.B. Hetero♂ + Hetero♂)
                 isHardKO: orientierungResult.details.isHardKO || false,
-                hardKOReason: orientierungResult.details.hardKOReason || null
+                hardKOReason: orientierungResult.details.hardKOReason || null,
+
+                // Soft-KO: Starke Bedürfnis-Konflikte
+                isSoftKO: this._checkSoftKO(beduerfnisResult, constants),
+                softKODetails: this._getSoftKODetails(beduerfnisResult, constants),
+
+                // P↔S Bonus
+                psBonus: this._calculatePSBonus(person1, person2, constants)
             },
 
             // NEU: Bedürfnis-Übereinstimmung (wenn berechnet)
             beduerfnisse: beduerfnisResult
+        };
+    },
+
+    /**
+     * Prüft ob Soft-KO vorliegt (zu viele kritische Bedürfnis-Konflikte)
+     */
+    _checkSoftKO: function(beduerfnisResult, constants) {
+        if (!beduerfnisResult || !constants.SOFT_KO || !constants.SOFT_KO.ENABLED) {
+            return false;
+        }
+
+        var unterschiedlich = beduerfnisResult.unterschiedlich || [];
+        var criticalThreshold = constants.SOFT_KO.THRESHOLDS.CRITICAL;
+        var minConflicts = constants.SOFT_KO.MIN_CRITICAL_CONFLICTS;
+
+        // Zähle kritische Konflikte (Differenz > 50)
+        var criticalCount = 0;
+        for (var i = 0; i < unterschiedlich.length; i++) {
+            if (unterschiedlich[i].differenz > criticalThreshold) {
+                criticalCount++;
+            }
+        }
+
+        return criticalCount >= minConflicts;
+    },
+
+    /**
+     * Gibt Details zu Soft-KO zurück
+     */
+    _getSoftKODetails: function(beduerfnisResult, constants) {
+        if (!beduerfnisResult) return null;
+
+        var unterschiedlich = beduerfnisResult.unterschiedlich || [];
+        var thresholds = constants.SOFT_KO ? constants.SOFT_KO.THRESHOLDS : { CRITICAL: 50, HIGH: 35 };
+
+        var criticalConflicts = [];
+        var highConflicts = [];
+
+        for (var i = 0; i < unterschiedlich.length; i++) {
+            var item = unterschiedlich[i];
+            if (item.differenz > thresholds.CRITICAL) {
+                criticalConflicts.push(item);
+            } else if (item.differenz > thresholds.HIGH) {
+                highConflicts.push(item);
+            }
+        }
+
+        return {
+            criticalCount: criticalConflicts.length,
+            highCount: highConflicts.length,
+            criticalNeeds: criticalConflicts.slice(0, 3), // Top 3
+            highNeeds: highConflicts.slice(0, 3)
+        };
+    },
+
+    /**
+     * Berechnet P↔S Bonus wenn Sekundär-Dimensionen komplementär sind
+     */
+    _calculatePSBonus: function(person1, person2, constants) {
+        if (!constants.PS_VALIDATION || !constants.PS_VALIDATION.ENABLED) {
+            return { applied: false, value: 0 };
+        }
+
+        var bonus = 0;
+        var reasons = [];
+
+        // Dominanz P↔S Check
+        var dom1 = this._extractDominanz(person1.dominanz);
+        var dom2 = this._extractDominanz(person2.dominanz);
+
+        // Wenn P1=dominant und P2=submissiv (oder umgekehrt) = komplementär
+        if ((dom1 === 'dominant' && dom2 === 'submissiv') ||
+            (dom1 === 'submissiv' && dom2 === 'dominant')) {
+            bonus += constants.PS_VALIDATION.COMPLEMENTARY_BONUS;
+            reasons.push('dominanz_komplementaer');
+        }
+
+        // Switch passt zu allem
+        if (dom1 === 'switch' || dom2 === 'switch') {
+            bonus += Math.round(constants.PS_VALIDATION.COMPLEMENTARY_BONUS / 2);
+            reasons.push('switch_flexibel');
+        }
+
+        return {
+            applied: bonus > 0,
+            value: bonus,
+            reasons: reasons
         };
     },
 
