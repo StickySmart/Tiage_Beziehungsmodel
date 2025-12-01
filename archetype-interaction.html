@@ -620,7 +620,7 @@
                     </div>
                 </div>
                 <div id="factorModalComboCode" style="font-size: 11px; color: var(--text-muted); background: rgba(255,255,255,0.05); padding: 4px 10px; border-radius: 6px; display: inline-block; margin-bottom: 10px; font-family: monospace;"></div>
-                <div class="score-display" id="factorModalScore">0%</div>
+                <div class="score-display" id="factorModalScore">0</div>
                 <div class="explanation">
                     <h4>Warum dieser Score?</h4>
                     <p id="factorModalExplanation"></p>
@@ -655,7 +655,7 @@
                     </div>
                 </div>
                 <!-- Score Display -->
-                <div class="score-display" id="proContraModalScore" style="font-size: 2.5rem; margin-bottom: 15px;">0%</div>
+                <div class="score-display" id="proContraModalScore" style="font-size: 2.5rem; margin-bottom: 15px;">0</div>
                 <!-- Pro/Contra Lists -->
                 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
                     <div>
@@ -703,7 +703,7 @@
                             <circle class="score-bg" cx="50" cy="50" r="42"></circle>
                             <circle class="score-progress" id="syntheseScoreProgress" cx="50" cy="50" r="42" stroke-dasharray="264" stroke-dashoffset="264"></circle>
                         </svg>
-                        <div class="score-value" id="syntheseScoreValue">0%</div>
+                        <div class="score-value" id="syntheseScoreValue">0</div>
                         <div class="score-label">Score</div>
                     </div>
                 </div>
@@ -855,7 +855,7 @@
                         <circle class="score-bg" cx="50" cy="50" r="42"></circle>
                         <circle class="score-progress" id="mainScoreProgress" cx="50" cy="50" r="42" stroke-dasharray="264" stroke-dashoffset="264"></circle>
                     </svg>
-                    <div class="score-circle-value" id="mainScoreValue">0%</div>
+                    <div class="score-circle-value" id="mainScoreValue">0</div>
                 </div>
                 <!-- Lightbulb Button -->
                 <div class="lightbulb-button" onclick="openPathosLogosModal('pathos')" title="Tiage's Synthese - Pathos & Logos">
@@ -1296,7 +1296,7 @@
                         <circle class="score-bg" cx="50" cy="50" r="42"></circle>
                         <circle class="score-progress" id="mobileScoreProgress" cx="50" cy="50" r="42" stroke-dasharray="264" stroke-dashoffset="264"></circle>
                     </svg>
-                    <div class="score-circle-value" id="mobileScoreCircle">0%</div>
+                    <div class="score-circle-value" id="mobileScoreCircle">0</div>
                 </div>
                 <!-- Mobile Lightbulb Button -->
                 <div class="lightbulb-button mobile-lightbulb-button" onclick="openPathosLogosModal('pathos')" title="Tiage's Synthese - Pathos & Logos">
@@ -1481,7 +1481,7 @@
                                     <div class="match-name" id="topMatchName">...</div>
                                 </div>
                             </div>
-                            <div class="match-score excellent" id="topMatchScore">0%</div>
+                            <div class="match-score excellent" id="topMatchScore">0</div>
                         </div>
 
                         <div class="match-card challenge" id="challengeCard" onclick="openMatchModal('challenge')">
@@ -1492,7 +1492,7 @@
                                     <div class="match-name" id="challengeName">...</div>
                                 </div>
                             </div>
-                            <div class="match-score low" id="challengeScore">0%</div>
+                            <div class="match-score low" id="challengeScore">0</div>
                         </div>
                     </div>
                 </div>
@@ -1670,7 +1670,7 @@
                             <div class="logos-warning-details-inner">
                                 <div class="logos-warning-score">
                                     <span class="logos-warning-score-label">Philosophie-Qualität:</span>
-                                    <span class="logos-warning-score-value" id="logosWarningScore">25%</span>
+                                    <span class="logos-warning-score-value" id="logosWarningScore">25</span>
                                 </div>
                                 <p class="logos-warning-text" id="logosWarningText">
                                     Eure Grundüberzeugungen über Beziehungen sind sehr unterschiedlich. Dies erfordert intensive Kommunikation und Kompromissbereitschaft.
@@ -1745,7 +1745,7 @@
                                 </div>
                             </div>
                             <div style="text-align: right;">
-                                <div class="radar-score" id="overallScore" style="color: var(--primary);">0%</div>
+                                <div class="radar-score" id="overallScore" style="color: var(--primary);">0</div>
                                 <div class="radar-score-label">Gesamt</div>
                             </div>
                         </div>
@@ -4153,13 +4153,13 @@
             // Generate context-aware fallback
             let dynamicText = '';
             if (catScore >= 85) {
-                dynamicText = `Hohe Übereinstimmung (${catScore}%) in diesem Bereich - beide Typen haben ähnliche Ansätze.`;
+                dynamicText = `Hohe Übereinstimmung (${catScore}) in diesem Bereich - beide Typen haben ähnliche Ansätze.`;
             } else if (catScore >= 70) {
-                dynamicText = `Moderate Übereinstimmung (${catScore}%) - einige gemeinsame Grundlagen, aber auch Unterschiede.`;
+                dynamicText = `Moderate Übereinstimmung (${catScore}) - einige gemeinsame Grundlagen, aber auch Unterschiede.`;
             } else if (catScore >= 50) {
-                dynamicText = `Mittlere Beziehungsqualität (${catScore}%) - deutliche Unterschiede, die Kompromisse erfordern.`;
+                dynamicText = `Mittlere Beziehungsqualität (${catScore}) - deutliche Unterschiede, die Kompromisse erfordern.`;
             } else {
-                dynamicText = `Herausfordernde Konstellation (${catScore}%) - grundlegend verschiedene Ansätze in diesem Bereich.`;
+                dynamicText = `Herausfordernde Konstellation (${catScore}) - grundlegend verschiedene Ansätze in diesem Bereich.`;
             }
 
             return {
@@ -4383,14 +4383,14 @@
                 const arch = data.archetypes[topMatch.id];
                 document.getElementById('topMatchDot').style.background = arch.color;
                 document.getElementById('topMatchName').textContent = `${myArch.name} (Ich) mit ${arch.name}`;
-                document.getElementById('topMatchScore').textContent = topMatch.score + '%';
+                document.getElementById('topMatchScore').textContent = topMatch.score;
             }
 
             if (challenge.id) {
                 const arch = data.archetypes[challenge.id];
                 document.getElementById('challengeDot').style.background = arch.color;
                 document.getElementById('challengeName').textContent = `${myArch.name} (Ich) mit ${arch.name}`;
-                document.getElementById('challengeScore').textContent = challenge.score + '%';
+                document.getElementById('challengeScore').textContent = challenge.score;
             }
         }
 
@@ -4413,7 +4413,7 @@
 
             const score = interaction.overall || 0;
             const scoreEl = document.getElementById('overallScore');
-            scoreEl.textContent = score + '%';
+            scoreEl.textContent = score;
             scoreEl.style.color = getScoreColor(score);
 
             drawRadarChart(interaction.scores || {}, partnerArch?.color || '#457B9D');
@@ -4551,7 +4551,7 @@
 
             // Update Modal Score Circle
             if (scoreValueEl && scoreProgressEl) {
-                scoreValueEl.textContent = currentScore + '%';
+                scoreValueEl.textContent = currentScore;
                 scoreProgressEl.style.strokeDashoffset = offset;
                 scoreProgressEl.style.stroke = color;
                 scoreValueEl.style.color = color;
@@ -4559,7 +4559,7 @@
 
             // Update Main Page Score Circle
             if (mainScoreValueEl && mainScoreProgressEl) {
-                mainScoreValueEl.textContent = currentScore + '%';
+                mainScoreValueEl.textContent = currentScore;
                 mainScoreProgressEl.style.strokeDashoffset = offset;
                 mainScoreProgressEl.style.stroke = color;
                 mainScoreValueEl.style.color = color;
@@ -4570,7 +4570,7 @@
             const mobileScoreProgressEl = document.getElementById('mobileScoreProgress');
 
             if (mobileScoreEl) {
-                mobileScoreEl.textContent = currentScore + '%';
+                mobileScoreEl.textContent = currentScore;
                 mobileScoreEl.style.color = color;
             }
 
@@ -4829,7 +4829,7 @@
                             <div class="legend-category-name">${name}</div>
                             <div class="legend-category-desc">${desc}</div>
                         </div>
-                        <div style="font-weight: 700; font-size: var(--font-md); color: ${scoreColor}; min-width: 50px; text-align: right;">${value}%</div>
+                        <div style="font-weight: 700; font-size: var(--font-md); color: ${scoreColor}; min-width: 50px; text-align: right;">${value}</div>
                     </div>
                 `;
             }).join('');
@@ -4919,7 +4919,7 @@
                     </div>
                     <div class="match-modal-score" style="margin: 12px 0;">
                         <span class="match-modal-score-label">${comboText}</span>
-                        <span class="match-modal-score-value" style="color: ${scoreColor}">${value}%</span>
+                        <span class="match-modal-score-value" style="color: ${scoreColor}">${value}</span>
                     </div>
                     <div class="modal-category-desc">${desc}</div>
                     ${subDims.length > 0 ? `
@@ -5805,7 +5805,7 @@
 
                 <div class="match-modal-score">
                     <span class="match-modal-score-label">Beziehungsqualität ${isIdenticalType ? '(gleicher Typ)' : 'mit ' + myArch.name}</span>
-                    <span class="match-modal-score-value" style="color: ${scoreColor}">${overall}%</span>
+                    <span class="match-modal-score-value" style="color: ${scoreColor}">${overall}</span>
                 </div>
 
                 <div class="match-modal-categories">
@@ -7525,7 +7525,7 @@
             let html = `
                 <div class="gfk-matching-header">
                     <div class="gfk-score-display">
-                        <span class="gfk-score" style="color: ${scoreColor}">${matching.score}%</span>
+                        <span class="gfk-score" style="color: ${scoreColor}">${matching.score}</span>
                         <span class="gfk-level-label">${beduerfnisLabel}</span>
                     </div>
                 </div>
@@ -8190,7 +8190,7 @@
                 document.getElementById('doubleWarningPathos').textContent =
                     `${person2.orientierung} (${person2.orientierungStatus}) → Exploration-Phase`;
                 document.getElementById('doubleWarningLogos').textContent =
-                    `Beziehungsphilosophie: ${logosCheck.score}% → ${data?.archetypes[person1.archetyp]?.name || person1.archetyp} vs. ${data?.archetypes[person2.archetyp]?.name || person2.archetyp}`;
+                    `Beziehungsphilosophie: ${logosCheck.score} → ${data?.archetypes[person1.archetyp]?.name || person1.archetyp} vs. ${data?.archetypes[person2.archetyp]?.name || person2.archetyp}`;
             } else {
                 // Single warnings
                 if (hasLogosWarning) {
@@ -8200,8 +8200,8 @@
                         : 'Verstandsebene-Hinweis: Unterschiedliche philosophische Ansätze';
                     document.getElementById('logosWarningTitle').textContent = warningTitle;
                     document.getElementById('logosWarningSubtitle').textContent =
-                        `Beziehungsphilosophie: ${logosCheck.score}%`;
-                    document.getElementById('logosWarningScore').textContent = `${logosCheck.score}%`;
+                        `Beziehungsphilosophie: ${logosCheck.score}`;
+                    document.getElementById('logosWarningScore').textContent = `${logosCheck.score}`;
                     document.getElementById('logosWarningText').textContent = logosCheck.score < 30
                         ? 'Eure Grundüberzeugungen über Beziehungen sind sehr unterschiedlich. Dies erfordert intensive Kommunikation und Kompromissbereitschaft.'
                         : 'Ihr habt verschiedene Vorstellungen von Beziehungen. Offene Kommunikation ist wichtig.';
@@ -8431,7 +8431,7 @@
                 }
             }
 
-            const finalScore = Math.max(0, Math.min(100, baseScore + modifier));
+            const finalScore = Math.round(baseScore + modifier);
             return {
                 score: finalScore,
                 baseScore,
@@ -9394,7 +9394,7 @@
             }
 
             if (logosCheck.score < 50) {
-                warningsContainer.innerHTML += `<div class="warning-box logos-warning">⚠️ Verstandsebene-Warnung: Philosophie nur ${logosCheck.score}%</div>`;
+                warningsContainer.innerHTML += `<div class="warning-box logos-warning">⚠️ Verstandsebene-Warnung: Philosophie nur ${logosCheck.score}</div>`;
             }
 
             // If dimensions incomplete, show empty state and return
@@ -9445,10 +9445,10 @@
             const factorOrientierung = document.getElementById('desktopFactorOrientierung');
             const factorGeschlecht = document.getElementById('desktopFactorGeschlecht');
 
-            if (factorArchetyp) factorArchetyp.textContent = qualityBreakdown.archetyp + '%';
-            if (factorDominanz) factorDominanz.textContent = qualityBreakdown.dominanz + '%';
-            if (factorOrientierung) factorOrientierung.textContent = qualityBreakdown.orientierung + '%';
-            if (factorGeschlecht) factorGeschlecht.textContent = qualityBreakdown.geschlecht + '%';
+            if (factorArchetyp) factorArchetyp.textContent = qualityBreakdown.archetyp;
+            if (factorDominanz) factorDominanz.textContent = qualityBreakdown.dominanz;
+            if (factorOrientierung) factorOrientierung.textContent = qualityBreakdown.orientierung;
+            if (factorGeschlecht) factorGeschlecht.textContent = qualityBreakdown.geschlecht;
 
             // Update expandable desktop factor content
             updateDesktopFactorContent();
@@ -9457,13 +9457,13 @@
             const percentage = document.getElementById('resultPercentage');
             const progressFill = document.getElementById('resultProgressFill');
 
-            percentage.textContent = overallScore + '%';
-            progressFill.style.width = overallScore + '%';
+            percentage.textContent = overallScore;
+            progressFill.style.width = Math.min(100, overallScore) + '%';
 
             // Update desktop score circle
             const desktopCircle = document.getElementById('desktopCirclePercentage');
             if (desktopCircle) {
-                desktopCircle.textContent = overallScore + '%';
+                desktopCircle.textContent = overallScore;
             }
 
             // Set color based on score (3-Stufen-Skala: 70/50)
@@ -9494,16 +9494,16 @@
                 let quoteText = '';
                 if (pathosCheck.result === 'unmöglich') {
                     noteText = 'Keine Basis für Resonanz vorhanden.';
-                    quoteText = 'Diese Beziehung zeigt eine Qualität von ' + overallScore + '% – keine kompatible Basis vorhanden, deren Muster sich ausschließen.';
+                    quoteText = 'Diese Beziehung zeigt eine Qualität von ' + overallScore + ' – keine kompatible Basis vorhanden, deren Muster sich ausschließen.';
                 } else if (overallScore >= 70) {
                     noteText = 'Gute Resonanz – Muster ergänzen sich.';
-                    quoteText = 'Diese Beziehung zeigt eine Qualität von ' + overallScore + '% – eine gute Resonanz zwischen zwei Menschen, deren Muster sich ergänzen.';
+                    quoteText = 'Diese Beziehung zeigt eine Qualität von ' + overallScore + ' – eine gute Resonanz zwischen zwei Menschen, deren Muster sich ergänzen.';
                 } else if (overallScore >= 50) {
                     noteText = 'Basis vorhanden, Arbeit erforderlich.';
-                    quoteText = 'Diese Beziehung zeigt eine Qualität von ' + overallScore + '% – eine Basis ist vorhanden, erfordert aber bewusste Arbeit und Kommunikation.';
+                    quoteText = 'Diese Beziehung zeigt eine Qualität von ' + overallScore + ' – eine Basis ist vorhanden, erfordert aber bewusste Arbeit und Kommunikation.';
                 } else {
                     noteText = 'Bewusste Reflexion erforderlich.';
-                    quoteText = 'Diese Beziehung zeigt eine Qualität von ' + overallScore + '% – bewusste Reflexion und offene Kommunikation sind erforderlich.';
+                    quoteText = 'Diese Beziehung zeigt eine Qualität von ' + overallScore + ' – bewusste Reflexion und offene Kommunikation sind erforderlich.';
                 }
                 desktopScoreNote.innerHTML = '<strong>' + noteText + '</strong><br><span style="font-style: italic; opacity: 0.85; font-size: 0.9em;">"' + quoteText + '"</span>';
             }
@@ -10961,26 +10961,26 @@
                 scoreCircle.style.background = 'linear-gradient(135deg, var(--bg-card), var(--bg-secondary))';
             } else if (qualityResult.score < 30) {
                 // Sehr niedrige Resonanz (früher: blocked)
-                scoreCircle.textContent = qualityResult.score + '%';
+                scoreCircle.textContent = qualityResult.score;
                 scoreCircle.style.background = 'linear-gradient(135deg, var(--danger), #c0392b)';
             } else if (qualityResult.score >= 80) {
-                scoreCircle.textContent = qualityResult.score + '%';
+                scoreCircle.textContent = qualityResult.score;
                 scoreCircle.style.background = 'linear-gradient(135deg, var(--success), #1e8449)';
             } else if (qualityResult.score >= 65) {
-                scoreCircle.textContent = qualityResult.score + '%';
+                scoreCircle.textContent = qualityResult.score;
                 scoreCircle.style.background = 'linear-gradient(135deg, var(--primary), var(--primary-light))';
             } else if (qualityResult.score >= 50) {
-                scoreCircle.textContent = qualityResult.score + '%';
+                scoreCircle.textContent = qualityResult.score;
                 scoreCircle.style.background = 'linear-gradient(135deg, var(--warning), #d68910)';
             } else {
-                scoreCircle.textContent = qualityResult.score + '%';
+                scoreCircle.textContent = qualityResult.score;
                 scoreCircle.style.background = 'linear-gradient(135deg, var(--danger), #c0392b)';
             }
 
             // Sync score to resultPercentage for Tiage's Synthese modal
             const resultPercentageEl = document.getElementById('resultPercentage');
             if (resultPercentageEl) {
-                resultPercentageEl.textContent = qualityResult.incomplete ? '–' : qualityResult.score + '%';
+                resultPercentageEl.textContent = qualityResult.incomplete ? '–' : qualityResult.score;
             }
 
             // Update Mobile Score Note (direkt beim Kreis)
@@ -11717,7 +11717,7 @@
                 comboCodeEl.style.display = 'none';
             }
 
-            document.getElementById('factorModalScore').textContent = score + '%';
+            document.getElementById('factorModalScore').textContent = score;
             document.getElementById('factorModalExplanation').textContent = factor.getExplanation(ich, partner, score, dimensions);
 
             const meaningList = document.getElementById('factorModalMeaning');
@@ -12451,7 +12451,7 @@
                     const partner = mobilePartnerArchetype;
                     const dimensions = currentFactorSource === 'desktop' ? personDimensions : mobilePersonDimensions;
 
-                    document.getElementById('factorModalScore').textContent = score + '%';
+                    document.getElementById('factorModalScore').textContent = score;
                     document.getElementById('factorModalExplanation').textContent = factor.getExplanation(ich, partner, score, dimensions);
 
                     const meaningList = document.getElementById('factorModalMeaning');

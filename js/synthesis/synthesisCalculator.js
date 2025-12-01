@@ -119,9 +119,6 @@ TiageSynthesis.Calculator = {
 
         var finalScore = Math.round(baseScore * resonanz.coefficient);
 
-        // Score begrenzen auf 0-100
-        finalScore = Math.max(0, Math.min(100, finalScore));
-
         // ═══════════════════════════════════════════════════════════════════
         // ERGEBNIS
         // ═══════════════════════════════════════════════════════════════════
