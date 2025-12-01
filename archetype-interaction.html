@@ -9213,20 +9213,27 @@
 
         // Function to update archetype grid highlighting
         function updateArchetypeGrid(person, archetype) {
+            // Desktop grid IDs
             const gridId = person === 'ich' ? 'ich-archetype-grid' : 'partner-archetype-grid';
-            const grid = document.getElementById(gridId);
-            if (!grid) return;
+            // Mobile grid IDs
+            const mobileGridId = person === 'ich' ? 'mobile-ich-archetype-grid' : 'mobile-partner-archetype-grid';
 
-            // Remove active class from all items
-            grid.querySelectorAll('.archetype-symbol-item').forEach(item => {
-                item.classList.remove('active');
+            // Update all grids (desktop and mobile)
+            [gridId, mobileGridId].forEach(id => {
+                const grid = document.getElementById(id);
+                if (!grid) return;
+
+                // Remove active class from all items
+                grid.querySelectorAll('.archetype-symbol-item').forEach(item => {
+                    item.classList.remove('active');
+                });
+
+                // Add active class to selected item
+                const selectedItem = grid.querySelector(`.archetype-symbol-item[data-archetype="${archetype}"]`);
+                if (selectedItem) {
+                    selectedItem.classList.add('active');
+                }
             });
-
-            // Add active class to selected item
-            const selectedItem = grid.querySelector(`.archetype-symbol-item[data-archetype="${archetype}"]`);
-            if (selectedItem) {
-                selectedItem.classList.add('active');
-            }
         }
 
         // Navigation auf Seite 2 (Ergebnis) - ruft navigateArchetype auf und aktualisiert Seite 2
