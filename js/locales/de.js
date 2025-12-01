@@ -453,9 +453,9 @@ const TiageLocale_DE = {
         gfkLabel: 'GFK-Kompetenz',
         multiSelect: '(Mehrfachauswahl)',
         legend: {
-            identity: 'P',
+            primary: 'P',
             secondary: 'S',
-            identityFull: 'Primär',
+            primaryFull: 'Primär',
             secondaryFull: 'Sekundär'
         },
         gfkLevels: {

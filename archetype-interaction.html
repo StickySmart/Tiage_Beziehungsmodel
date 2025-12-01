@@ -2384,9 +2384,9 @@
                 const dominanzLink = el.querySelector('.dominanz-info-link');
                 const legendSpan = el.querySelector('span:not(.dominanz-info-link)');
                 if (dominanzLink && legendSpan) {
-                    const p = TiageI18n.t('dimensions.legend.identity', 'P');
+                    const p = TiageI18n.t('dimensions.legend.primary', 'P');
                     const s = TiageI18n.t('dimensions.legend.secondary', 'S');
-                    const pFull = TiageI18n.t('dimensions.legend.identityFull', 'Primär');
+                    const pFull = TiageI18n.t('dimensions.legend.primaryFull', 'Primär');
                     const sFull = TiageI18n.t('dimensions.legend.secondaryFull', 'Sekundär');
                     dominanzLink.textContent = TiageI18n.t('dimensions.dominanzLabel', 'Dominanz');
                     legendSpan.innerHTML = `(${p}=${pFull}, ${s}=${sFull})`;
@@ -2398,9 +2398,9 @@
                 const orientierungLink = el.querySelector('.orientierung-info-link');
                 const legendSpan = el.querySelector('span:not(.orientierung-info-link)');
                 if (orientierungLink && legendSpan) {
-                    const p = TiageI18n.t('dimensions.legend.identity', 'P');
+                    const p = TiageI18n.t('dimensions.legend.primary', 'P');
                     const s = TiageI18n.t('dimensions.legend.secondary', 'S');
-                    const pFull = TiageI18n.t('dimensions.legend.identityFull', 'Primär');
+                    const pFull = TiageI18n.t('dimensions.legend.primaryFull', 'Primär');
                     const sFull = TiageI18n.t('dimensions.legend.secondaryFull', 'Sekundär');
                     orientierungLink.textContent = TiageI18n.t('dimensions.orientierungLabel', 'Orientierung');
                     legendSpan.innerHTML = `(${p}=${pFull}, ${s}=${sFull})`;
@@ -2409,9 +2409,9 @@
 
             // Update legend (P=Primär, S=Sekundär)
             document.querySelectorAll('.geschlecht-legend').forEach(el => {
-                const p = TiageI18n.t('dimensions.legend.identity', 'P');
+                const p = TiageI18n.t('dimensions.legend.primary', 'P');
                 const s = TiageI18n.t('dimensions.legend.secondary', 'S');
-                const pFull = TiageI18n.t('dimensions.legend.identityFull', 'Primär');
+                const pFull = TiageI18n.t('dimensions.legend.primaryFull', 'Primär');
                 const sFull = TiageI18n.t('dimensions.legend.secondaryFull', 'Sekundär');
                 el.innerHTML = `(<span class="legend-p">${p}</span>=${pFull}, <span class="legend-s">${s}</span>=${sFull})`;
             });
