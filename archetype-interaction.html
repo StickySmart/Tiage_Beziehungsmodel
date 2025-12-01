@@ -15,20 +15,26 @@
     <link rel="stylesheet" href="templates/template_desktop.css">
     <link rel="stylesheet" href="templates/template_mobile.css" media="(max-width: 768px)">
 
-    <!-- MOBILE DEVVIEW - Zeigt alle mobilen Seiten für Screenshots -->
+    <!-- MOBILE DEVVIEW - Zeigt Desktop-Elemente auf Handy zum Testen -->
     <script>
         (function() {
             if (new URLSearchParams(window.location.search).get('devview') !== 'true') return;
             if (!('ontouchstart' in window || /Android|iPhone|iPad|iPod/i.test(navigator.userAgent))) return;
 
-            // Mobile CSS laden
-            document.write('<link rel="stylesheet" href="templates/template_mobile.css">');
-            // Einfache Styles: Desktop weg, alle Mobile-Seiten sichtbar
+            // DevView: Zeige Desktop-Container auf Handy (verkleinert)
             document.write('<style>' +
-                '.comparison-container { display: none; }' +
-                '.mobile-multipage { display: block; transform: scale(0.3); transform-origin: top center; width: 333%; margin-left: -116%; }' +
-                '.mobile-page { display: block; margin-bottom: 40px; border: 4px solid var(--primary); border-radius: 16px; }' +
-                '.page-indicator { display: none; }' +
+                '/* Mobile Container verstecken */' +
+                '.mobile-multipage { display: none !important; }' +
+                '.page-indicator { display: none !important; }' +
+                '/* Desktop Container auf Handy anzeigen und skalieren */' +
+                '.comparison-container.desktop-mode {' +
+                '  display: block !important;' +
+                '  transform: scale(0.4);' +
+                '  transform-origin: top left;' +
+                '  width: 250%;' +
+                '  margin: 0;' +
+                '  padding: 10px;' +
+                '}' +
             '</style>');
         })();
     </script>
