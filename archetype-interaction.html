@@ -2981,9 +2981,11 @@
         }
 
         .age-verification-modal {
+            position: relative;
             background: var(--bg-card);
             border-radius: 16px;
             padding: 30px;
+            padding-top: 50px;
             max-width: 400px;
             width: 100%;
             max-height: 90vh;
@@ -2991,7 +2993,6 @@
             text-align: center;
             border: 2px solid var(--primary);
             box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
-            position: relative;
             z-index: 10001;
         }
 
@@ -6728,26 +6729,33 @@
     <!-- Age Verification Modal -->
     <div class="age-verification-overlay" id="ageVerificationModal">
         <div class="age-verification-modal" onclick="event.stopPropagation()">
+            <!-- Language Toggle in Age Check -->
+            <div class="age-verification-lang" style="position: absolute; top: 15px; right: 15px;">
+                <button class="lang-btn" onclick="TiageI18n.toggle(); updateAllTranslations(); updateAgeVerificationTexts();" title="Switch Language / Sprache wechseln">
+                    <span class="lang-icon">🌐</span>
+                    <span class="lang-code" id="ageVerifyLangCode">DE</span>
+                </button>
+            </div>
             <div class="age-verification-icon">🔞</div>
-            <h2>Altersverifikation</h2>
-            <p>Diese Seite enthält Inhalte über Beziehungsmodelle und ist nur für Personen ab 18 Jahren bestimmt.</p>
+            <h2 data-i18n="ageVerification.title">Altersverifikation</h2>
+            <p data-i18n="ageVerification.description">Diese Seite enthält Inhalte über Beziehungsmodelle und ist nur für Personen ab 18 Jahren bestimmt.</p>
             <!-- Terms BEFORE buttons for GDPR/TTDSG compliance - users must see terms before clicking -->
-            <p class="age-verification-note" style="margin-top: 0; margin-bottom: 15px;">
+            <p class="age-verification-note" style="margin-top: 0; margin-bottom: 15px;" id="ageVerificationTerms">
                 Mit dem Klick auf "Ja" bestätigst du, dass du:<br>
                 • volljährig bist (mindestens 18 Jahre alt)<br>
-                • die <a href="datenschutz.html" target="_blank" style="color: #4A90E2; text-decoration: underline;">Nutzungsbedingungen und Datenschutzerklaerung</a> akzeptierst<br>
+                • die <a href="nutzungsbedingungen.html" target="_blank" style="color: #4A90E2; text-decoration: underline;">Nutzungsbedingungen</a> und <a href="datenschutz.html" target="_blank" style="color: #4A90E2; text-decoration: underline;">Datenschutzerklärung</a> akzeptierst<br>
                 • zur Kenntnis nimmst, dass alle Inhalte urheberrechtlich geschützt sind<br>
                 • die Inhalte nur für persönliche, nicht-kommerzielle Zwecke nutzt
             </p>
             <div class="age-verification-question">
-                <strong>Bist du mindestens 18 Jahre alt?</strong>
+                <strong data-i18n="ageVerification.question">Bist du mindestens 18 Jahre alt?</strong>
             </div>
             <!-- Buttons -->
             <div class="age-verification-buttons">
-                <button class="age-btn age-btn-yes" id="ageVerifyYes" type="button" onclick="window.confirmAge(true); return false;">
+                <button class="age-btn age-btn-yes" id="ageVerifyYes" type="button" onclick="window.confirmAge(true); return false;" data-i18n="ageVerification.confirm">
                     Ja, ich bin 18+
                 </button>
-                <button class="age-btn age-btn-no" id="ageVerifyNo" type="button" onclick="window.confirmAge(false); return false;">
+                <button class="age-btn age-btn-no" id="ageVerifyNo" type="button" onclick="window.confirmAge(false); return false;" data-i18n="ageVerification.deny">
                     Nein, ich bin unter 18
                 </button>
             </div>
@@ -8624,9 +8632,41 @@
             const modal = document.getElementById('ageVerificationModal');
             if (!modal) return;
 
+            const lang = TiageI18n.getLanguage();
+
+            // Update language code display in age verification
+            const langCodeEl = document.getElementById('ageVerifyLangCode');
+            if (langCodeEl) {
+                langCodeEl.textContent = lang.toUpperCase();
+            }
+
             const title = modal.querySelector('h2');
             if (title) {
                 title.textContent = TiageI18n.t('ageVerification.title', 'Altersverifikation');
+            }
+
+            // Update description
+            const description = modal.querySelector('p[data-i18n="ageVerification.description"]');
+            if (description) {
+                description.textContent = TiageI18n.t('ageVerification.description', 'Diese Seite enthält Inhalte über Beziehungsmodelle und ist nur für Personen ab 18 Jahren bestimmt.');
+            }
+
+            // Update terms text with HTML content
+            const termsEl = document.getElementById('ageVerificationTerms');
+            if (termsEl) {
+                if (lang === 'en') {
+                    termsEl.innerHTML = `By clicking "Yes" you confirm that you:<br>
+                        • are of legal age (at least 18 years old)<br>
+                        • accept the <a href="terms-of-use.html" target="_blank" style="color: #4A90E2; text-decoration: underline;">Terms of Use</a> and <a href="privacy-policy.html" target="_blank" style="color: #4A90E2; text-decoration: underline;">Privacy Policy</a><br>
+                        • acknowledge that all content is protected by copyright<br>
+                        • will use the content only for personal, non-commercial purposes`;
+                } else {
+                    termsEl.innerHTML = `Mit dem Klick auf "Ja" bestätigst du, dass du:<br>
+                        • volljährig bist (mindestens 18 Jahre alt)<br>
+                        • die <a href="nutzungsbedingungen.html" target="_blank" style="color: #4A90E2; text-decoration: underline;">Nutzungsbedingungen</a> und <a href="datenschutz.html" target="_blank" style="color: #4A90E2; text-decoration: underline;">Datenschutzerklärung</a> akzeptierst<br>
+                        • zur Kenntnis nimmst, dass alle Inhalte urheberrechtlich geschützt sind<br>
+                        • die Inhalte nur für persönliche, nicht-kommerzielle Zwecke nutzt`;
+                }
             }
 
             const question = modal.querySelector('.age-verification-question strong');
@@ -8643,6 +8683,11 @@
             if (noBtn) {
                 noBtn.textContent = TiageI18n.t('ageVerification.deny', 'Nein');
             }
+        }
+
+        // Alias for age verification button onclick
+        function updateAgeVerificationTexts() {
+            updateAgeVerificationModal();
         }
 
         /**
