@@ -13737,15 +13737,22 @@
         document.addEventListener('DOMContentLoaded', function() {
             console.log('DevView: Klone Desktop-Elemente in Mobile-Seiten...');
 
+            // Hilfsfunktion: Alle alten Inhalte einer Seite verstecken (außer Header und geklonte)
+            function hideOldContent(page) {
+                Array.from(page.children).forEach(function(child) {
+                    if (!child.classList.contains('page-header') &&
+                        !child.classList.contains('devview-cloned') &&
+                        child.tagName !== 'H2') {
+                        child.style.display = 'none';
+                    }
+                });
+            }
+
             // === SEITE 1: DU ===
             var mobilePage1 = document.getElementById('mobilePage1');
             var desktopIchColumn = document.querySelector('.ich-column');
 
             if (mobilePage1 && desktopIchColumn) {
-                // Alten Inhalt verstecken
-                var oldContent = mobilePage1.querySelector('div[style*="background: var(--bg-card)"]');
-                if (oldContent) oldContent.style.display = 'none';
-
                 // Desktop ICH-Column klonen
                 var clonedIch = desktopIchColumn.cloneNode(true);
                 clonedIch.className = 'devview-cloned ich-column-mobile';
@@ -13755,6 +13762,9 @@
                 clonedIch.querySelectorAll('[id]').forEach(function(el) {
                     el.id = 'devview-' + el.id;
                 });
+
+                // Alten Inhalt verstecken
+                hideOldContent(mobilePage1);
 
                 // Nach dem Titel einfügen
                 var title = mobilePage1.querySelector('h2');
@@ -13770,10 +13780,6 @@
             var desktopPartnerColumn = document.querySelector('.partner-column');
 
             if (mobilePage2 && desktopPartnerColumn) {
-                // Alten Inhalt verstecken
-                var oldPartnerContent = mobilePage2.querySelector('div[style*="background: var(--bg-card)"]');
-                if (oldPartnerContent) oldPartnerContent.style.display = 'none';
-
                 // Desktop Partner-Column klonen
                 var clonedPartner = desktopPartnerColumn.cloneNode(true);
                 clonedPartner.className = 'devview-cloned partner-column-mobile';
@@ -13783,6 +13789,9 @@
                 clonedPartner.querySelectorAll('[id]').forEach(function(el) {
                     el.id = 'devview-' + el.id;
                 });
+
+                // Alten Inhalt verstecken
+                hideOldContent(mobilePage2);
 
                 // Nach dem Header einfügen
                 var header = mobilePage2.querySelector('.page-header');
@@ -13806,6 +13815,9 @@
                     el.id = 'devview-' + el.id;
                 });
 
+                // Alten Inhalt verstecken
+                hideOldContent(mobilePage3);
+
                 var header3 = mobilePage3.querySelector('.page-header');
                 if (header3) {
                     header3.insertAdjacentElement('afterend', clonedCenter);
@@ -13821,8 +13833,7 @@
 
             if (mobilePage4) {
                 // Alten Inhalt verstecken
-                var oldCategoryContent = mobilePage4.querySelector('.category-bars-container');
-                if (oldCategoryContent) oldCategoryContent.style.display = 'none';
+                hideOldContent(mobilePage4);
 
                 // Kategorie-Section klonen
                 if (desktopCategorySection) {
