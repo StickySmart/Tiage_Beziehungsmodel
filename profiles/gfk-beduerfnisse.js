@@ -325,6 +325,373 @@ const GfkBeduerfnisse = {
     },
 
     // ═══════════════════════════════════════════════════════════════════════════
+    // CROSS-CATEGORY BDSM-GFK MAPPING (Rosenberg-Integration)
+    // ═══════════════════════════════════════════════════════════════════════════
+    // Zeigt, welche universellen GFK-Bedürfnisse durch BDSM/Kink-Praktiken
+    // gleichzeitig erfüllt werden. Basiert auf:
+    // - Marshall Rosenberg's 9 Bedürfnis-Kategorien (GFK)
+    // - Manfred Max-Neef's Human Scale Development
+    // - BDSM-Forschung (Wismeijer & van Assen 2013, SMSNA 2023)
+    //
+    // Jedes BDSM-Bedürfnis erfüllt MEHRERE universelle Kategorien gleichzeitig.
+    // Dies erklärt, warum BDSM/Kink tiefe psychologische Bedürfnisse befriedigt.
+    // ═══════════════════════════════════════════════════════════════════════════
+
+    bdsmGfkMapping: {
+
+        // ─────────────────────────────────────────────────────────────────────
+        // KONTROLLE & FÜHRUNG (Dominant-orientiert)
+        // ─────────────────────────────────────────────────────────────────────
+
+        kontrolle_ausueben: {
+            label: "Kontrolle ausüben",
+            erfuellteKategorien: {
+                freiheit: {
+                    beduerfnisse: ["selbstbestimmung", "waehlen_koennen"],
+                    erklaerung: "Aktive Entscheidungsgewalt und Autonomie"
+                },
+                identitaet: {
+                    beduerfnisse: ["wirksamkeit", "kompetenz", "authentizitaet"],
+                    erklaerung: "Selbstwirksamkeit und Kompetenzerleben"
+                },
+                teilnahme: {
+                    beduerfnisse: ["bedeutung_haben"],
+                    erklaerung: "Bedeutungsvolle Rolle in der Beziehung"
+                }
+            },
+            rosenbergKategorien: ["Autonomy", "Meaning"]
+        },
+
+        fuehrung_geben: {
+            label: "Führung geben",
+            erfuellteKategorien: {
+                freiheit: {
+                    beduerfnisse: ["selbstbestimmung"],
+                    erklaerung: "Richtung vorgeben und gestalten"
+                },
+                identitaet: {
+                    beduerfnisse: ["wirksamkeit", "kompetenz", "beitrag_leisten"],
+                    erklaerung: "Verantwortung und Einfluss"
+                },
+                teilnahme: {
+                    beduerfnisse: ["zusammenarbeit", "bedeutung_haben"],
+                    erklaerung: "Gemeinsame Dynamik gestalten"
+                },
+                zuneigung: {
+                    beduerfnisse: ["fuersorge"],
+                    erklaerung: "Fürsorge durch Struktur geben"
+                }
+            },
+            rosenbergKategorien: ["Autonomy", "Meaning", "Love"]
+        },
+
+        beschuetzen: {
+            label: "Beschützen",
+            erfuellteKategorien: {
+                zuneigung: {
+                    beduerfnisse: ["fuersorge", "unterstuetzung", "fuereinander_da_sein"],
+                    erklaerung: "Tiefe Fürsorge und Schutz bieten"
+                },
+                identitaet: {
+                    beduerfnisse: ["wirksamkeit", "sinn", "beitrag_leisten"],
+                    erklaerung: "Sinnvolle Rolle als Beschützer"
+                },
+                verstaendnis: {
+                    beduerfnisse: ["empathie", "beruecksichtigung"],
+                    erklaerung: "Bedürfnisse des Partners erkennen"
+                }
+            },
+            rosenbergKategorien: ["Love", "Meaning", "Understanding"]
+        },
+
+        verantwortung_uebernehmen: {
+            label: "Verantwortung übernehmen",
+            erfuellteKategorien: {
+                identitaet: {
+                    beduerfnisse: ["kompetenz", "wirksamkeit", "integritaet", "sinn"],
+                    erklaerung: "Moralische und praktische Verantwortung"
+                },
+                teilnahme: {
+                    beduerfnisse: ["zusammenarbeit", "bedeutung_haben"],
+                    erklaerung: "Aktive Rolle in der Dynamik"
+                },
+                zuneigung: {
+                    beduerfnisse: ["fuersorge"],
+                    erklaerung: "Caring durch Verantwortung zeigen"
+                }
+            },
+            rosenbergKategorien: ["Meaning", "Love"]
+        },
+
+        // ─────────────────────────────────────────────────────────────────────
+        // HINGABE & VERTRAUEN (Submissiv-orientiert)
+        // ─────────────────────────────────────────────────────────────────────
+
+        hingabe: {
+            label: "Hingabe",
+            erfuellteKategorien: {
+                verstaendnis: {
+                    beduerfnisse: ["vertrauen", "akzeptanz", "gesehen_werden"],
+                    erklaerung: "Tiefes Vertrauen und Akzeptanz erfahren"
+                },
+                zuneigung: {
+                    beduerfnisse: ["intimitaet", "naehe", "liebe"],
+                    erklaerung: "Maximale emotionale Nähe"
+                },
+                verbundenheit: {
+                    beduerfnisse: ["leben_feiern", "inspiration"],
+                    erklaerung: "Transzendente Verbundenheit"
+                },
+                sicherheit: {
+                    beduerfnisse: ["geborgenheit"],
+                    erklaerung: "Geborgenheit durch Struktur"
+                }
+            },
+            rosenbergKategorien: ["Love", "Understanding", "Safety"]
+        },
+
+        gefuehrt_werden: {
+            label: "Geführt werden",
+            erfuellteKategorien: {
+                sicherheit: {
+                    beduerfnisse: ["geborgenheit", "schutz", "stabilitaet"],
+                    erklaerung: "Sicherheit durch klare Führung"
+                },
+                verstaendnis: {
+                    beduerfnisse: ["vertrauen", "akzeptanz"],
+                    erklaerung: "Vertrauen in den Führenden"
+                },
+                musse: {
+                    beduerfnisse: ["freude", "freizeit"],
+                    erklaerung: "Entlastung von Entscheidungslast"
+                }
+            },
+            rosenbergKategorien: ["Safety", "Understanding", "Recreation"]
+        },
+
+        sich_fallenlassen: {
+            label: "Sich fallenlassen",
+            erfuellteKategorien: {
+                sicherheit: {
+                    beduerfnisse: ["geborgenheit", "sich_sicher_fuehlen"],
+                    erklaerung: "Paradox: Kontrolle abgeben = Sicherheit finden"
+                },
+                verstaendnis: {
+                    beduerfnisse: ["vertrauen", "akzeptanz", "gesehen_werden"],
+                    erklaerung: "Vollständige Akzeptanz erfahren"
+                },
+                musse: {
+                    beduerfnisse: ["freude"],
+                    erklaerung: "Loslassen und Genießen"
+                },
+                verbundenheit: {
+                    beduerfnisse: ["leben_feiern"],
+                    erklaerung: "Intensive Präsenz im Moment"
+                }
+            },
+            rosenbergKategorien: ["Safety", "Understanding", "Recreation"]
+        },
+
+        dienend_sein: {
+            label: "Dienend sein",
+            erfuellteKategorien: {
+                identitaet: {
+                    beduerfnisse: ["sinn", "beitrag_leisten", "authentizitaet"],
+                    erklaerung: "Sinn durch Hingabe und Service"
+                },
+                zuneigung: {
+                    beduerfnisse: ["fuersorge", "fuereinander_da_sein"],
+                    erklaerung: "Liebe durch Handlung ausdrücken"
+                },
+                teilnahme: {
+                    beduerfnisse: ["bedeutung_haben", "zusammenarbeit"],
+                    erklaerung: "Wertvolle Rolle in der Dynamik"
+                }
+            },
+            rosenbergKategorien: ["Meaning", "Love", "Belonging"]
+        },
+
+        vertrauen_schenken: {
+            label: "Vertrauen schenken",
+            erfuellteKategorien: {
+                verstaendnis: {
+                    beduerfnisse: ["vertrauen", "akzeptanz"],
+                    erklaerung: "Aktives Vertrauen als Geschenk"
+                },
+                zuneigung: {
+                    beduerfnisse: ["intimitaet", "naehe", "liebe"],
+                    erklaerung: "Tiefste Form der Intimität"
+                },
+                verbundenheit: {
+                    beduerfnisse: ["inspiration"],
+                    erklaerung: "Spirituelle Verbindung"
+                }
+            },
+            rosenbergKategorien: ["Understanding", "Love"]
+        },
+
+        // ─────────────────────────────────────────────────────────────────────
+        // GRENZEN & CONSENT (Universal)
+        // ─────────────────────────────────────────────────────────────────────
+
+        grenzen_setzen: {
+            label: "Grenzen setzen",
+            erfuellteKategorien: {
+                freiheit: {
+                    beduerfnisse: ["selbstbestimmung", "waehlen_koennen", "raum_haben"],
+                    erklaerung: "Kernprinzip von Consent - jederzeit Nein sagen"
+                },
+                identitaet: {
+                    beduerfnisse: ["authentizitaet", "integritaet", "klarheit"],
+                    erklaerung: "Eigene Grenzen kennen und kommunizieren"
+                },
+                sicherheit: {
+                    beduerfnisse: ["sich_sicher_fuehlen", "schutz"],
+                    erklaerung: "Safewords als Sicherheitsnetz"
+                }
+            },
+            rosenbergKategorien: ["Autonomy", "Safety"]
+        },
+
+        grenzen_respektieren: {
+            label: "Grenzen respektieren",
+            erfuellteKategorien: {
+                verstaendnis: {
+                    beduerfnisse: ["empathie", "akzeptanz", "beruecksichtigung"],
+                    erklaerung: "Aktives Zuhören und Respektieren"
+                },
+                teilnahme: {
+                    beduerfnisse: ["respekt", "gegenseitigkeit"],
+                    erklaerung: "Gegenseitiger Respekt als Basis"
+                },
+                zuneigung: {
+                    beduerfnisse: ["fuersorge"],
+                    erklaerung: "Caring durch Grenzen achten"
+                }
+            },
+            rosenbergKategorien: ["Understanding", "Belonging", "Love"]
+        },
+
+        // ─────────────────────────────────────────────────────────────────────
+        // AUSTAUSCH & INTENSITÄT (Bidirektional)
+        // ─────────────────────────────────────────────────────────────────────
+
+        machtaustausch: {
+            label: "Machtaustausch",
+            erfuellteKategorien: {
+                verbundenheit: {
+                    beduerfnisse: ["leben_feiern", "inspiration", "anfang_ende"],
+                    erklaerung: "Tiefste Form der Verbindung - Power Exchange"
+                },
+                musse: {
+                    beduerfnisse: ["freude"],
+                    erklaerung: "Spielerische Exploration"
+                },
+                erschaffen: {
+                    beduerfnisse: ["kreativitaet", "entdecken", "selbst_ausdruck"],
+                    erklaerung: "Kreative Gestaltung der Dynamik"
+                },
+                zuneigung: {
+                    beduerfnisse: ["intimitaet", "naehe"],
+                    erklaerung: "Maximale emotionale Intimität"
+                }
+            },
+            rosenbergKategorien: ["Love", "Recreation", "Creativity"]
+        },
+
+        intensitaet: {
+            label: "Intensität erleben",
+            erfuellteKategorien: {
+                musse: {
+                    beduerfnisse: ["freude"],
+                    erklaerung: "Tiefe Freude und Ekstase"
+                },
+                existenz: {
+                    beduerfnisse: ["beruehrung", "sexueller_ausdruck"],
+                    erklaerung: "Körperliche Intensität"
+                },
+                verbundenheit: {
+                    beduerfnisse: ["leben_feiern"],
+                    erklaerung: "Lebendigkeit spüren"
+                },
+                erschaffen: {
+                    beduerfnisse: ["anreize_bekommen"],
+                    erklaerung: "Stimulation und Neuheit"
+                }
+            },
+            rosenbergKategorien: ["Recreation", "Sustenance"]
+        },
+
+        ritual: {
+            label: "Rituale & Struktur",
+            erfuellteKategorien: {
+                sicherheit: {
+                    beduerfnisse: ["stabilitaet", "bestaendigkeit"],
+                    erklaerung: "Vorhersehbarkeit und Struktur"
+                },
+                identitaet: {
+                    beduerfnisse: ["ordnung", "klarheit", "praesenz"],
+                    erklaerung: "Bedeutungsvolle Struktur"
+                },
+                verbundenheit: {
+                    beduerfnisse: ["leben_feiern"],
+                    erklaerung: "Rituale als Feier der Verbindung"
+                },
+                teilnahme: {
+                    beduerfnisse: ["zugehoerigkeit"],
+                    erklaerung: "Gemeinsame Rituale stärken Bindung"
+                }
+            },
+            rosenbergKategorien: ["Safety", "Meaning", "Belonging"]
+        },
+
+        nachsorge: {
+            label: "Nachsorge/Aftercare",
+            erfuellteKategorien: {
+                zuneigung: {
+                    beduerfnisse: ["fuersorge", "waerme", "unterstuetzung", "naehe"],
+                    erklaerung: "Tiefe Fürsorge nach intensiver Erfahrung"
+                },
+                sicherheit: {
+                    beduerfnisse: ["geborgenheit", "sich_sicher_fuehlen"],
+                    erklaerung: "Emotionale Sicherheit wiederherstellen"
+                },
+                verstaendnis: {
+                    beduerfnisse: ["empathie", "gesehen_werden", "verstanden_werden"],
+                    erklaerung: "Emotionale Verarbeitung gemeinsam"
+                },
+                verbundenheit: {
+                    beduerfnisse: ["fuereinander_da_sein"],
+                    erklaerung: "Tiefe Verbundenheit nach dem Spiel"
+                }
+            },
+            rosenbergKategorien: ["Love", "Safety", "Understanding"]
+        }
+    },
+
+    // ═══════════════════════════════════════════════════════════════════════════
+    // ROSENBERG 9-KATEGORIEN MAPPING
+    // ═══════════════════════════════════════════════════════════════════════════
+    // Explizites Mapping zwischen Rosenbergs 9 Original-Kategorien und TIAGE's 11
+    // ═══════════════════════════════════════════════════════════════════════════
+
+    rosenbergMapping: {
+        // Rosenberg Original → TIAGE Kategorien
+        "Sustenance": ["existenz"],
+        "Safety": ["sicherheit"],
+        "Love": ["zuneigung"],
+        "Understanding": ["verstaendnis"],
+        "Creativity": ["erschaffen"],
+        "Recreation": ["musse"],
+        "Belonging": ["teilnahme"],
+        "Autonomy": ["freiheit"],
+        "Meaning": ["identitaet", "verbundenheit"],
+
+        // TIAGE-Erweiterung (nicht in Rosenberg's Original)
+        "PowerDynamics": ["dynamik"]  // BDSM/Kink-spezifisch
+    },
+
+    // ═══════════════════════════════════════════════════════════════════════════
     // ARCHETYPEN-BEDÜRFNIS-PROFILE
     // ═══════════════════════════════════════════════════════════════════════════
     // Gewichtung 0-100: Wie wichtig ist dieses Bedürfnis für den Archetyp?
@@ -1040,6 +1407,149 @@ const GfkBeduerfnisse = {
             pathos: pathosCount > 0 ? Math.round(pathosSum / pathosCount) : 0,
             logos: logosCount > 0 ? Math.round(logosSum / logosCount) : 0
         };
+    },
+
+    // ═══════════════════════════════════════════════════════════════════════════
+    // BDSM-GFK CROSS-CATEGORY HELPER FUNKTIONEN
+    // ═══════════════════════════════════════════════════════════════════════════
+
+    /**
+     * Gibt alle GFK-Kategorien zurück, die ein BDSM-Bedürfnis erfüllt
+     * @param {string} bdsmBeduerfnis - ID des BDSM-Bedürfnisses (z.B. "nachsorge")
+     * @returns {Object} Erfüllte Kategorien mit Erklärungen
+     */
+    getBdsmGfkKategorien: function(bdsmBeduerfnis) {
+        const mapping = this.bdsmGfkMapping[bdsmBeduerfnis];
+        if (!mapping) return null;
+
+        return {
+            label: mapping.label,
+            erfuellteKategorien: mapping.erfuellteKategorien,
+            rosenbergKategorien: mapping.rosenbergKategorien,
+            anzahlKategorien: Object.keys(mapping.erfuellteKategorien).length
+        };
+    },
+
+    /**
+     * Findet alle BDSM-Bedürfnisse die eine bestimmte GFK-Kategorie erfüllen
+     * @param {string} gfkKategorie - ID der GFK-Kategorie (z.B. "zuneigung")
+     * @returns {Array} Liste von BDSM-Bedürfnissen
+     */
+    findBdsmByGfkKategorie: function(gfkKategorie) {
+        const result = [];
+
+        Object.entries(this.bdsmGfkMapping).forEach(([bdsmId, mapping]) => {
+            if (mapping.erfuellteKategorien[gfkKategorie]) {
+                result.push({
+                    id: bdsmId,
+                    label: mapping.label,
+                    beduerfnisse: mapping.erfuellteKategorien[gfkKategorie].beduerfnisse,
+                    erklaerung: mapping.erfuellteKategorien[gfkKategorie].erklaerung
+                });
+            }
+        });
+
+        return result;
+    },
+
+    /**
+     * Findet alle BDSM-Bedürfnisse die eine Rosenberg-Kategorie erfüllen
+     * @param {string} rosenbergKategorie - Rosenberg-Kategorie (z.B. "Autonomy", "Love")
+     * @returns {Array} Liste von BDSM-Bedürfnissen
+     */
+    findBdsmByRosenberg: function(rosenbergKategorie) {
+        const result = [];
+
+        Object.entries(this.bdsmGfkMapping).forEach(([bdsmId, mapping]) => {
+            if (mapping.rosenbergKategorien.includes(rosenbergKategorie)) {
+                result.push({
+                    id: bdsmId,
+                    label: mapping.label,
+                    alleRosenberg: mapping.rosenbergKategorien
+                });
+            }
+        });
+
+        return result;
+    },
+
+    /**
+     * Berechnet wie viele universelle Bedürfnisse durch BDSM-Praktiken erfüllt werden
+     * @returns {Object} Statistik über BDSM-GFK-Verbindungen
+     */
+    getBdsmGfkStatistik: function() {
+        const stats = {
+            totalBdsmBeduerfnisse: Object.keys(this.bdsmGfkMapping).length,
+            kategorieAbdeckung: {},
+            rosenbergAbdeckung: {},
+            durchschnittKategorienProBdsm: 0
+        };
+
+        let summeKategorien = 0;
+
+        // Zähle Kategorien pro BDSM-Bedürfnis
+        Object.values(this.bdsmGfkMapping).forEach(mapping => {
+            summeKategorien += Object.keys(mapping.erfuellteKategorien).length;
+
+            // GFK-Kategorien zählen
+            Object.keys(mapping.erfuellteKategorien).forEach(kat => {
+                stats.kategorieAbdeckung[kat] = (stats.kategorieAbdeckung[kat] || 0) + 1;
+            });
+
+            // Rosenberg-Kategorien zählen
+            mapping.rosenbergKategorien.forEach(ros => {
+                stats.rosenbergAbdeckung[ros] = (stats.rosenbergAbdeckung[ros] || 0) + 1;
+            });
+        });
+
+        stats.durchschnittKategorienProBdsm = Math.round(
+            (summeKategorien / stats.totalBdsmBeduerfnisse) * 10
+        ) / 10;
+
+        return stats;
+    },
+
+    /**
+     * Generiert einen lesbaren Report über BDSM-GFK-Verbindungen
+     * @param {string} bdsmBeduerfnis - ID des BDSM-Bedürfnisses
+     * @returns {string} Formatierter Report
+     */
+    generateBdsmGfkReport: function(bdsmBeduerfnis) {
+        const mapping = this.bdsmGfkMapping[bdsmBeduerfnis];
+        if (!mapping) return `Unbekanntes BDSM-Bedürfnis: ${bdsmBeduerfnis}`;
+
+        let report = `\n═══ ${mapping.label.toUpperCase()} ═══\n\n`;
+        report += `Erfüllt ${Object.keys(mapping.erfuellteKategorien).length} GFK-Kategorien:\n\n`;
+
+        Object.entries(mapping.erfuellteKategorien).forEach(([katId, details]) => {
+            const kategorie = this.kategorien[katId];
+            report += `● ${kategorie?.name || katId}\n`;
+            report += `  Bedürfnisse: ${details.beduerfnisse.map(b =>
+                this.definitionen[b]?.label || b
+            ).join(', ')}\n`;
+            report += `  → ${details.erklaerung}\n\n`;
+        });
+
+        report += `Rosenberg-Kategorien: ${mapping.rosenbergKategorien.join(', ')}\n`;
+
+        return report;
+    },
+
+    /**
+     * Analysiert welche BDSM-Praktiken am meisten universelle Bedürfnisse erfüllen
+     * @returns {Array} Sortierte Liste nach Anzahl erfüllter Kategorien
+     */
+    getBdsmByUniversalitaet: function() {
+        return Object.entries(this.bdsmGfkMapping)
+            .map(([id, mapping]) => ({
+                id: id,
+                label: mapping.label,
+                kategorienAnzahl: Object.keys(mapping.erfuellteKategorien).length,
+                rosenbergAnzahl: mapping.rosenbergKategorien.length,
+                kategorien: Object.keys(mapping.erfuellteKategorien),
+                rosenberg: mapping.rosenbergKategorien
+            }))
+            .sort((a, b) => b.kategorienAnzahl - a.kategorienAnzahl);
     }
 };
 
