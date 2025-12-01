@@ -744,13 +744,13 @@
         <div class="header-content">
             <h1 data-i18n="ui.title">DAS ANARCHISCHE TI-AGE PRINZIP DER PAARUNG</h1>
             <div class="header-buttons">
-                <button class="lang-btn" onclick="TiageI18n.toggle(); updateAllTranslations();" title="Switch Language / Sprache wechseln">
-                    <span class="lang-icon">🌐</span>
-                    <span class="lang-code" id="currentLangCode">DE</span>
-                </button>
                 <button class="fold-unfold-btn header-fold-btn" id="foldUnfoldAllBtn" onclick="toggleAllDimensionsCollapse()" title="Fold/Unfold all fields">
                     <span class="fold-unfold-icon">▼</span>
                     <span class="fold-unfold-text">Fold</span>
+                </button>
+                <button class="lang-btn" onclick="TiageI18n.toggle(); updateAllTranslations();" title="Switch Language / Sprache wechseln">
+                    <span class="lang-icon">🌐</span>
+                    <span class="lang-code" id="currentLangCode">DE</span>
                 </button>
                 <button class="help-btn" onclick="openHelpModal()" title="Hilfe & Dokumentation">?</button>
             </div>
@@ -973,14 +973,6 @@
         <!-- PAGE 1: Auswahl -->
         <div class="mobile-page active" id="mobilePage1" data-page="1" data-page-label="Seite 1: ICH">
             <h2 style="text-align: center; color: var(--text-primary); margin-bottom: 20px; font-size: var(--font-lg);">Beziehungsqualität analysieren</h2>
-
-            <!-- Mobile Fold/Unfold Button -->
-            <div class="fold-unfold-toolbar mobile-fold-toolbar" style="display: flex; gap: 10px; align-items: center;">
-                <button class="fold-unfold-btn" id="mobileFoldUnfoldBtn" onclick="toggleAllDimensionsCollapse()" title="Fold/Unfold all fields">
-                    <span class="fold-unfold-icon">▼</span>
-                    <span class="fold-unfold-text">Unfold</span>
-                </button>
-            </div>
 
             <!-- ICH Auswahl -->
             <div style="background: var(--bg-card); border-radius: 16px; border: 1px solid var(--border); border-top: 3px solid var(--success); padding: 15px; margin-bottom: 15px;">
@@ -1314,82 +1306,17 @@
                 <div id="mobileScoreNote" class="score-note" style="margin-top: 8px; font-size: 13px; color: var(--text-secondary); font-style: italic; text-align: center; max-width: 280px; line-height: 1.4; margin-left: auto; margin-right: auto;"></div>
             </div>
 
-            <!-- Score Breakdown with Sublabels -->
-            <div class="score-breakdown">
-                <div class="score-factor" onclick="openFactorModal('archetyp')" style="cursor: pointer;">
-                    <div class="score-factor-label">
-                        <span class="score-factor-main">Archetyp-Übereinstimmung</span>
-                        <span class="score-factor-sub">(Beziehungsphilosophie - Verstand&Logos)</span>
-                    </div>
-                    <span class="score-factor-value" id="mobileFactorArchetyp">0%</span>
-                </div>
-                <div class="score-factor" onclick="openFactorModal('dominanz')" style="cursor: pointer;">
-                    <div class="score-factor-label">
-                        <span class="score-factor-main">Dominanz-Harmonie</span>
-                        <span class="score-factor-sub">(Emotionale Dynamik - Gefühl&Pathos)</span>
-                    </div>
-                    <span class="score-factor-value" id="mobileFactorDominanz">0%</span>
-                </div>
-                <div class="score-factor" onclick="openFactorModal('orientierung')" style="cursor: pointer;">
-                    <div class="score-factor-label">
-                        <span class="score-factor-main">Orientierungs-Kompatibilität</span>
-                        <span class="score-factor-sub">(Körperliche Anziehung - Gefühl&Pathos)</span>
-                    </div>
-                    <span class="score-factor-value" id="mobileFactorOrientierung">0%</span>
-                </div>
-                <div class="score-factor" onclick="openFactorModal('geschlecht')" style="cursor: pointer;">
-                    <div class="score-factor-label">
-                        <span class="score-factor-main">Geschlechts-Attraktion</span>
-                        <span class="score-factor-sub">(Gender-Chemie - Gefühl&Pathos)</span>
-                    </div>
-                    <span class="score-factor-value" id="mobileFactorGeschlecht">0%</span>
-                </div>
+            <!-- GFK Bedürfnis-Matching Anzeige (Mobile) -->
+            <div id="mobile-gfk-beduerfnis-display" class="gfk-beduerfnis-display" style="display: none;">
+                <!-- Wird dynamisch durch updateGfkBeduerfnisDisplay() gefüllt -->
             </div>
         </div>
 
-        <!-- PAGE 4: Bedürfnisse/Kategorien (vorher PAGE 3) -->
-        <div class="mobile-page" id="mobilePage4" data-page="4" data-page-label="Seite 4: DETAILS">
-            <div class="page-header">
-                <button class="btn-back" onclick="mobileGoToPage(3)">←</button>
-                <span class="page-title">Bedürfnisse</span>
-            </div>
-
-            <div class="types-display" style="flex-direction: column; gap: 8px; margin-bottom: 15px;">
-                <div style="display: flex; align-items: center; justify-content: center; gap: 6px;">
-                    <span style="font-size: 11px; color: var(--text-muted); min-width: 35px;">DU:</span>
-                    <button class="archetype-nav-btn" onclick="navigateArchetypeOnPage3('ich', -1)" title="Vorheriger">&#9664;</button>
-                    <span class="type-name" id="mobileResultIch3" style="min-width: 80px; text-align: center;">Single</span>
-                    <button class="archetype-nav-btn" onclick="navigateArchetypeOnPage3('ich', 1)" title="Nächster">&#9654;</button>
-                </div>
-                <span style="font-size: 14px; color: var(--text-muted);">×</span>
-                <div style="display: flex; align-items: center; justify-content: center; gap: 6px;">
-                    <span style="font-size: 11px; color: var(--text-muted); min-width: 35px;">Partner:</span>
-                    <button class="archetype-nav-btn" onclick="navigateArchetypeOnPage3('partner', -1)" title="Vorheriger">&#9664;</button>
-                    <span class="type-name" id="mobileResultPartner3" style="min-width: 80px; text-align: center;">Duo</span>
-                    <button class="archetype-nav-btn" onclick="navigateArchetypeOnPage3('partner', 1)" title="Nächster">&#9654;</button>
-                </div>
-            </div>
-
-            <!-- Kategorie-Details Section (wie Desktop) -->
-            <div class="category-section mobile-category-section">
-                <div class="section-title-row" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
-                    <div class="section-title" style="margin-bottom: 0; font-size: var(--font-lg); color: var(--text-primary);">Kategorie-Details</div>
-                    <div class="info-icon" onclick="openCategoryModal()" style="cursor: pointer; font-size: 18px;">ℹ</div>
-                </div>
-                <div class="category-bars-container" id="mobileCategoryBars">
-                    <!-- Wird dynamisch gefüllt von renderCategoryBars() -->
-                </div>
-            </div>
-
-            <button class="btn-primary-mobile" onclick="mobileGoToPage(1)" style="margin-top: 20px;">← Zurück zur Auswahl</button>
-        </div>
-
-        <!-- Page Indicator -->
+        <!-- Page Indicator (nur 3 Seiten) -->
         <div class="page-indicator">
             <span class="page-dot active" onclick="mobileGoToPage(1)"></span>
             <span class="page-dot" onclick="mobileGoToPage(2)"></span>
             <span class="page-dot" onclick="mobileGoToPage(3)"></span>
-            <span class="page-dot" onclick="mobileGoToPage(4)"></span>
         </div>
     </div>
 
@@ -7580,10 +7507,14 @@
          */
         function updateGfkBeduerfnisDisplay(matching) {
             const container = document.getElementById('gfk-beduerfnis-display');
-            if (!container) return;
+            const mobileContainer = document.getElementById('mobile-gfk-beduerfnis-display');
+
+            // Mindestens ein Container muss existieren
+            if (!container && !mobileContainer) return;
 
             // Container sichtbar machen
-            container.style.display = 'block';
+            if (container) container.style.display = 'block';
+            if (mobileContainer) mobileContainer.style.display = 'block';
 
             // Score-Farbe basierend auf Level
             const scoreColor = matching.level === 'hoch' ? '#22c55e' :
@@ -7632,7 +7563,9 @@
                 `;
             }
 
-            container.innerHTML = html;
+            // Desktop und Mobile Container aktualisieren
+            if (container) container.innerHTML = html;
+            if (mobileContainer) mobileContainer.innerHTML = html;
         }
 
         /**
@@ -9320,13 +9253,6 @@
 
             if (ichEl) ichEl.textContent = ichArch?.name || currentArchetype;
             if (partnerEl) partnerEl.textContent = partnerArch?.name || selectedPartner;
-
-            // Kategorien-Balken aktualisieren
-            const key = `${currentArchetype}_${selectedPartner}`;
-            const interaction = data.interactions?.[key] || {};
-            if (interaction.scores) {
-                renderCategoryBars('mobileCategoryBars', interaction.scores);
-            }
         }
 
         // Variable für aktuelle Kategorie im Modal
@@ -9636,8 +9562,6 @@
         // Desktop: Wrapper für Kompatibilität
         function updateExpandableCategoryBars(categories) {
             renderCategoryBars('expandCategoryBars', categories);
-            // Auch Mobile aktualisieren wenn vorhanden
-            renderCategoryBars('mobileCategoryBars', categories);
         }
 
         function showArchetypeInfo(person) {
@@ -10862,8 +10786,6 @@
             // Update page content when navigating
             if (pageNumber === 3) {
                 updateMobileResultPage();
-            } else if (pageNumber === 4) {
-                updateMobileCategoriesPage();
             }
 
             // Push to browser history for back button navigation (only for forward navigation)
@@ -10894,8 +10816,8 @@
             const diff = mobileTouchStartX - mobileTouchEndX;
 
             if (Math.abs(diff) > swipeThreshold) {
-                if (diff > 0 && currentMobilePage < 4) {
-                    // Swipe left -> next page (max 4 pages)
+                if (diff > 0 && currentMobilePage < 3) {
+                    // Swipe left -> next page (max 3 pages)
                     mobileGoToPage(currentMobilePage + 1);
                 } else if (diff < 0 && currentMobilePage > 1) {
                     // Swipe right -> previous page
@@ -11060,12 +10982,6 @@
             if (resultPercentageEl) {
                 resultPercentageEl.textContent = qualityResult.incomplete ? '–' : qualityResult.score + '%';
             }
-
-            // Update factor breakdown - show 0% or actual values
-            document.getElementById('mobileFactorArchetyp').textContent = qualityResult.incomplete ? '–' : qualityResult.breakdown.archetyp + '%';
-            document.getElementById('mobileFactorDominanz').textContent = qualityResult.incomplete ? '–' : qualityResult.breakdown.dominanz + '%';
-            document.getElementById('mobileFactorOrientierung').textContent = qualityResult.incomplete ? '–' : qualityResult.breakdown.orientierung + '%';
-            document.getElementById('mobileFactorGeschlecht').textContent = qualityResult.incomplete ? '–' : qualityResult.breakdown.geschlecht + '%';
 
             // Update Mobile Score Note (direkt beim Kreis)
             const mobileScoreNote = document.getElementById('mobileScoreNote');
