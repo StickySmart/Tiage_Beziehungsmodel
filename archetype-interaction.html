@@ -38,25 +38,23 @@
     <script src="profiles/beduerfnis-modifikatoren.js"></script>
 </head>
 <body>
-    <!-- Dev View Mode Detection - MUST be first, NUR MOBILE -->
+    <!-- Dev View Mode - ERZWINGT Mobile Ansicht für Screenshots -->
     <script>
         (function() {
             // Check for ?devview=true URL parameter
             const urlParams = new URLSearchParams(window.location.search);
-            // SICHERHEIT: NUR auf Mobile aktivieren (max-width: 768px)
-            // Auf Desktop passiert NICHTS, auch mit ?devview=true
-            const isMobile = window.innerWidth <= 768;
-            if (urlParams.get('devview') === 'true' && isMobile) {
+            // ERZWINGT mobile Ansicht - funktioniert auf ALLEN Geräten
+            if (urlParams.get('devview') === 'true') {
                 document.body.classList.add('devview-active');
-                // Update viewport for full page view
+                // Update viewport for zoomed out full page view
                 const viewport = document.querySelector('meta[name="viewport"]');
                 if (viewport) {
-                    viewport.content = 'width=device-width, initial-scale=0.35, user-scalable=yes';
+                    viewport.content = 'width=device-width, initial-scale=0.32, user-scalable=yes, minimum-scale=0.1, maximum-scale=3';
                 }
             }
         })();
     </script>
-    <div class="devview-banner">DEV VIEW - Alle Seiten sichtbar (URL: ?devview=true)</div>
+    <div class="devview-banner">DEV VIEW - Mobile Ansicht erzwungen</div>
 
     <!-- Age Verification - Inline Script BEFORE modal for onclick to work -->
     <script>
