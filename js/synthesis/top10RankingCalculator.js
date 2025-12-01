@@ -241,7 +241,7 @@ const Top10RankingCalculator = (function() {
         score += gfkScore;
         factors++;
 
-        return Math.round(Math.max(0, Math.min(100, score / factors)));
+        return Math.round(score / factors);
     }
 
     /**
@@ -415,7 +415,7 @@ const Top10RankingCalculator = (function() {
         top10Data.top10.forEach((combo, idx) => {
             const rankStr = `#${combo.rank}`.padEnd(3);
             const nameStr = combo.displayName.padEnd(25);
-            const scoreStr = `${combo.overallScore}%`.padStart(4);
+            const scoreStr = `${combo.overallScore}`.padStart(4);
             const selfMarker = combo.isSelf ? ' (SELBST)' : '';
 
             lines.push(`║ ${rankStr} ${nameStr} │ Score: ${scoreStr}${selfMarker.padEnd(10)}║`);
@@ -429,8 +429,8 @@ const Top10RankingCalculator = (function() {
         });
 
         lines.push("╠══════════════════════════════════════════════════════════════════╣");
-        lines.push(`║  Bester Match: ${top10Data.summary.bestMatch.displayName} (${top10Data.summary.bestMatch.overallScore}%)`.padEnd(67) + "║");
-        lines.push(`║  Durchschnitt: ${top10Data.summary.averageScore}%`.padEnd(67) + "║");
+        lines.push(`║  Bester Match: ${top10Data.summary.bestMatch.displayName} (${top10Data.summary.bestMatch.overallScore})`.padEnd(67) + "║");
+        lines.push(`║  Durchschnitt: ${top10Data.summary.averageScore}`.padEnd(67) + "║");
         lines.push("╚══════════════════════════════════════════════════════════════════╝");
 
         return lines.join('\n');
@@ -455,7 +455,7 @@ const Top10RankingCalculator = (function() {
             <div class="combo-info">
                 <h3 class="archetype-name">${combo.displayName}</h3>
                 <div class="scores">
-                    <span class="score-overall" title="Gesamtscore">${combo.overallScore}%</span>
+                    <span class="score-overall" title="Gesamtscore">${combo.overallScore}</span>
                     <span class="score-pathos" title="Pathos (Emotional)">❤️ ${combo.pathosScore}</span>
                     <span class="score-logos" title="Logos (Rational)">🧠 ${combo.logosScore}</span>
                     <span class="score-resonance" title="Resonanz">🔗 ${combo.resonance.toFixed(2)}</span>
@@ -483,8 +483,8 @@ const Top10RankingCalculator = (function() {
         html += `
     </div>
     <div class="top10-summary">
-        <p><strong>Bester Match:</strong> ${top10Data.summary.bestMatch.displayName} (${top10Data.summary.bestMatch.overallScore}%)</p>
-        <p><strong>Durchschnittliche Kompatibilität:</strong> ${top10Data.summary.averageScore}%</p>
+        <p><strong>Bester Match:</strong> ${top10Data.summary.bestMatch.displayName} (${top10Data.summary.bestMatch.overallScore})</p>
+        <p><strong>Durchschnittliche Kompatibilität:</strong> ${top10Data.summary.averageScore}</p>
     </div>
 </div>`;
 
