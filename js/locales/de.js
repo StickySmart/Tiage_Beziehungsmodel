@@ -421,6 +421,7 @@ const TiageLocale_DE = {
         geschlechtLabel: 'Geschlechtsidentität',
         dominanzLabel: 'Dominanz',
         orientierungLabel: 'Orientierung',
+        gfkLabel: 'GFK-Kompetenz',
         multiSelect: '(Mehrfachauswahl)',
         legend: {
             identity: 'I',
