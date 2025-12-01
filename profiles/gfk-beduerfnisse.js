@@ -1,10 +1,27 @@
 /**
- * GFK-BEDÜRFNIS-KATALOG
+ * TIAGE BEDÜRFNIS-KATALOG
  *
- * Basiert auf Marshall Rosenbergs Gewaltfreier Kommunikation (GFK)
- * Vollständige Bedürfnisliste für Beziehungsqualitäts-Matching
+ * Erweiterte Bedürfnisliste für Beziehungsqualitäts-Matching
  *
- * Quelle: Marshall B. Rosenberg - Gewaltfreie Kommunikation
+ * QUELLEN:
+ * ─────────────────────────────────────────────────────────────────────────────
+ * 1. GFK (Gewaltfreie Kommunikation)
+ *    - Marshall B. Rosenberg: "Gewaltfreie Kommunikation" (2001)
+ *    - Kategorien: Existenz, Sicherheit, Zuneigung, Verständnis, Freiheit,
+ *      Teilnahme, Muße, Identität, Erschaffen, Verbundenheit
+ *
+ * 2. BDSM/Kink-Dynamik
+ *    - Dossie Easton & Janet Hardy: "The New Topping Book" (2003)
+ *    - Dossie Easton & Janet Hardy: "The New Bottoming Book" (2001)
+ *    - Jay Wiseman: "SM 101: A Realistic Introduction" (1996)
+ *    - Kategorie: Dynamik & Austausch (Kontrolle, Hingabe, Nachsorge, etc.)
+ *
+ * 3. Philosophische Grundlagen
+ *    - Robert M. Pirsig: "Zen und die Kunst ein Motorrad zu warten" (1974)
+ *      → Static vs. Dynamic Quality
+ *    - Osho: Vorträge über Polarität und Yin-Yang-Dynamik
+ *      → Komplementäre Energien in Beziehungen
+ * ─────────────────────────────────────────────────────────────────────────────
  */
 
 const GfkBeduerfnisse = {

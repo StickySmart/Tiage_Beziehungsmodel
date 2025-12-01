@@ -1,14 +1,15 @@
 /**
- * BEDÜRFNIS-MODIFIKATOREN v2.1
+ * BEDÜRFNIS-MODIFIKATOREN v2.2
  *
  * Modifiziert die Basis-Bedürfnisse der 8 Archetypen basierend auf:
  * - Dominanz (4 Stufen)
  * - Geschlecht (9 Optionen)
+ * - Orientierung (3 Optionen)
  *
- * Formel: finalerWert = basisWert + dominanzMod + geschlechtMod
+ * Formel: finalerWert = basisWert + dominanzMod + geschlechtMod + orientierungMod
  * Ergebnis wird auf 0-100 begrenzt
  *
- * NUR bestehende GFK-Bedürfnisse werden verwendet!
+ * Bedürfnis-Katalog: GFK (Rosenberg) + Dynamik/BDSM (Easton/Hardy, Wiseman)
  *
  * ═══════════════════════════════════════════════════════════════════════════════
  * PHILOSOPHISCHE GRUNDLAGEN
