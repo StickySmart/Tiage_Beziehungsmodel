@@ -14,6 +14,34 @@ const LogosTextGenerator = (function() {
     'use strict';
 
     // ═══════════════════════════════════════════════════════════════════════════
+    // LANGUAGE HELPER - Ermittelt aktuelle Sprache und wählt lokalisierte Phrasen
+    // ═══════════════════════════════════════════════════════════════════════════
+
+    /**
+     * Ermittelt die aktuelle Sprache aus dem i18n-System
+     * @returns {string} 'de' oder 'en'
+     */
+    function getLang() {
+        if (typeof TiageI18n !== 'undefined' && TiageI18n.getLanguage) {
+            return TiageI18n.getLanguage();
+        }
+        return 'de'; // Fallback zu Deutsch
+    }
+
+    /**
+     * Wählt die lokalisierten Phrasen basierend auf der aktuellen Sprache
+     * @param {Object|Array} phrases - Objekt mit de/en Arrays oder einfaches Array
+     * @returns {Array} Die Phrasen für die aktuelle Sprache
+     */
+    function getLocalizedPhrases(phrases) {
+        if (Array.isArray(phrases)) {
+            return phrases; // Bereits ein einfaches Array (alte Struktur)
+        }
+        const lang = getLang();
+        return phrases[lang] || phrases.de || []; // Fallback zu Deutsch
+    }
+
+    // ═══════════════════════════════════════════════════════════════════════════
     // ÜBERGANGSPHRASEN - Verbinden analytische Aussagen
     // ═══════════════════════════════════════════════════════════════════════════
 
@@ -108,21 +136,42 @@ const LogosTextGenerator = (function() {
 
         // GFK-Kompetenz (Logos-Perspektive: messbar, strukturiert)
         gfk: {
-            hoch: [
-                "{name} verfügt über hohe GFK-Kompetenz: Die vier Schritte (Beobachtung, Gefühl, Bedürfnis, Bitte) werden konsequent angewandt.",
-                "Kommunikationsstruktur bei {name}: GFK-Niveau hoch – klare Trennung von Beobachtung und Bewertung.",
-                "{name} kommuniziert nach GFK-Standard: Bedürfnisse werden benannt, nicht als Vorwürfe formuliert."
-            ],
-            mittel: [
-                "{name} besitzt GFK-Grundkenntnisse, die unter Belastung nicht immer abrufbar sind.",
-                "Kommunikationsstruktur bei {name}: GFK-Niveau mittel – Theorie bekannt, Praxis variabel.",
-                "Die GFK-Kompetenz von {name} schwankt situationsabhängig."
-            ],
-            niedrig: [
-                "{name} zeigt Entwicklungspotenzial in der Kommunikationsstruktur – reaktive Muster überwiegen.",
-                "Kommunikationsstruktur bei {name}: GFK-Niveau niedrig – Urteile und Vorwürfe dominieren.",
-                "Die Konfliktlösung bei {name} folgt eher reaktiven als strukturierten Mustern."
-            ]
+            hoch: {
+                de: [
+                    "{name} verfügt über hohe GFK-Kompetenz: Die vier Schritte (Beobachtung, Gefühl, Bedürfnis, Bitte) werden konsequent angewandt.",
+                    "Kommunikationsstruktur bei {name}: GFK-Niveau hoch – klare Trennung von Beobachtung und Bewertung.",
+                    "{name} kommuniziert nach GFK-Standard: Bedürfnisse werden benannt, nicht als Vorwürfe formuliert."
+                ],
+                en: [
+                    "{name} has high NVC competence: The four steps (Observation, Feeling, Need, Request) are consistently applied.",
+                    "Communication structure of {name}: NVC level high – clear separation of observation and judgment.",
+                    "{name} communicates according to NVC standards: Needs are expressed, not formulated as accusations."
+                ]
+            },
+            mittel: {
+                de: [
+                    "{name} besitzt GFK-Grundkenntnisse, die unter Belastung nicht immer abrufbar sind.",
+                    "Kommunikationsstruktur bei {name}: GFK-Niveau mittel – Theorie bekannt, Praxis variabel.",
+                    "Die GFK-Kompetenz von {name} schwankt situationsabhängig."
+                ],
+                en: [
+                    "{name} has basic NVC knowledge, which is not always accessible under stress.",
+                    "Communication structure of {name}: NVC level medium – theory known, practice variable.",
+                    "The NVC competence of {name} fluctuates depending on the situation."
+                ]
+            },
+            niedrig: {
+                de: [
+                    "{name} zeigt Entwicklungspotenzial in der Kommunikationsstruktur – reaktive Muster überwiegen.",
+                    "Kommunikationsstruktur bei {name}: GFK-Niveau niedrig – Urteile und Vorwürfe dominieren.",
+                    "Die Konfliktlösung bei {name} folgt eher reaktiven als strukturierten Mustern."
+                ],
+                en: [
+                    "{name} shows development potential in communication structure – reactive patterns predominate.",
+                    "Communication structure of {name}: NVC level low – judgments and accusations dominate.",
+                    "Conflict resolution by {name} follows reactive rather than structured patterns."
+                ]
+            }
         },
 
         // Dominanz (strukturelle Rolle)
@@ -241,21 +290,42 @@ const LogosTextGenerator = (function() {
 
         // GFK-Synthese (Kommunikationsstruktur)
         gfkInteraction: {
-            beide_hoch: [
-                "Die beidseitig hohe GFK-Kompetenz ermöglicht strukturierte Konfliktlösung.",
-                "Kommunikationsstruktur: Beide können Bedürfnisse klar artikulieren – gute Prognose.",
-                "Das kommunikative Werkzeug ist auf beiden Seiten vorhanden."
-            ],
-            gemischt: [
-                "Die unterschiedlichen GFK-Niveaus erfordern Geduld des kompetenteren Parts.",
-                "Kommunikations-Asymmetrie: Der GFK-Versierte kann Brücken bauen.",
-                "Das Gefälle in der Kommunikationsstruktur ist ein Lernfeld."
-            ],
-            beide_niedrig: [
-                "Beidseitig niedrige GFK-Kompetenz erhöht das Eskalationsrisiko.",
-                "Kommunikationsstruktur: Entwicklungsfeld für beide Seiten.",
-                "Ohne Investment in Kommunikationsfähigkeiten sind Konflikte schwer zu lösen."
-            ]
+            beide_hoch: {
+                de: [
+                    "Die beidseitig hohe GFK-Kompetenz ermöglicht strukturierte Konfliktlösung.",
+                    "Kommunikationsstruktur: Beide können Bedürfnisse klar artikulieren – gute Prognose.",
+                    "Das kommunikative Werkzeug ist auf beiden Seiten vorhanden."
+                ],
+                en: [
+                    "The mutually high NVC competence enables structured conflict resolution.",
+                    "Communication structure: Both can articulate needs clearly – good prognosis.",
+                    "The communicative tools are present on both sides."
+                ]
+            },
+            gemischt: {
+                de: [
+                    "Die unterschiedlichen GFK-Niveaus erfordern Geduld des kompetenteren Parts.",
+                    "Kommunikations-Asymmetrie: Der GFK-Versierte kann Brücken bauen.",
+                    "Das Gefälle in der Kommunikationsstruktur ist ein Lernfeld."
+                ],
+                en: [
+                    "The different NVC levels require patience from the more competent partner.",
+                    "Communication asymmetry: The NVC-skilled partner can build bridges.",
+                    "The gap in communication structure is a learning field."
+                ]
+            },
+            beide_niedrig: {
+                de: [
+                    "Beidseitig niedrige GFK-Kompetenz erhöht das Eskalationsrisiko.",
+                    "Kommunikationsstruktur: Entwicklungsfeld für beide Seiten.",
+                    "Ohne Investment in Kommunikationsfähigkeiten sind Konflikte schwer zu lösen."
+                ],
+                en: [
+                    "Mutually low NVC competence increases the risk of escalation.",
+                    "Communication structure: A development field for both sides.",
+                    "Without investment in communication skills, conflicts are difficult to resolve."
+                ]
+            }
         },
 
         // Kategorie-basierte Aussagen
@@ -464,7 +534,7 @@ const LogosTextGenerator = (function() {
         // 6. GFK-Kompetenz
         const gfk = dimensions?.gfk;
         if (gfk && personPhrases.gfk[gfk]) {
-            parts.push(fillVariables(selectPhrase(personPhrases.gfk[gfk], seed + 11), vars));
+            parts.push(fillVariables(selectPhrase(getLocalizedPhrases(personPhrases.gfk[gfk]), seed + 11), vars));
         }
 
         // Verbinde mit analytischen Übergängen (max 4 Sätze)
@@ -563,11 +633,11 @@ const LogosTextGenerator = (function() {
         if (ichGfk && partnerGfk) {
             let gfkPhrases;
             if (ichGfk === 'hoch' && partnerGfk === 'hoch') {
-                gfkPhrases = synthesePhrases.gfkInteraction.beide_hoch;
+                gfkPhrases = getLocalizedPhrases(synthesePhrases.gfkInteraction.beide_hoch);
             } else if (ichGfk === 'niedrig' && partnerGfk === 'niedrig') {
-                gfkPhrases = synthesePhrases.gfkInteraction.beide_niedrig;
+                gfkPhrases = getLocalizedPhrases(synthesePhrases.gfkInteraction.beide_niedrig);
             } else {
-                gfkPhrases = synthesePhrases.gfkInteraction.gemischt;
+                gfkPhrases = getLocalizedPhrases(synthesePhrases.gfkInteraction.gemischt);
             }
             parts.push(selectPhrase(gfkPhrases, seed + 29));
         }

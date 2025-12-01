@@ -20,6 +20,34 @@ const IntegratedSynthesisTextGenerator = (function() {
     'use strict';
 
     // ═══════════════════════════════════════════════════════════════════════════
+    // LANGUAGE HELPER - Ermittelt aktuelle Sprache und wählt lokalisierte Texte
+    // ═══════════════════════════════════════════════════════════════════════════
+
+    /**
+     * Ermittelt die aktuelle Sprache aus dem i18n-System
+     * @returns {string} 'de' oder 'en'
+     */
+    function getLang() {
+        if (typeof TiageI18n !== 'undefined' && TiageI18n.getLanguage) {
+            return TiageI18n.getLanguage();
+        }
+        return 'de'; // Fallback zu Deutsch
+    }
+
+    /**
+     * Wählt den lokalisierten Text basierend auf der aktuellen Sprache
+     * @param {Object|string} text - Objekt mit de/en Strings oder einfacher String
+     * @returns {string} Der Text für die aktuelle Sprache
+     */
+    function getLocalizedText(text) {
+        if (typeof text === 'string') {
+            return text; // Bereits ein einfacher String (alte Struktur)
+        }
+        const lang = getLang();
+        return text[lang] || text.de || ''; // Fallback zu Deutsch
+    }
+
+    // ═══════════════════════════════════════════════════════════════════════════
     // INNERE KONFLIKTE (INTRAPSYCHISCHE SPANNUNGEN)
     // ═══════════════════════════════════════════════════════════════════════════
 
@@ -159,19 +187,40 @@ const IntegratedSynthesisTextGenerator = (function() {
             }
         },
 
-        // Kommunikationsstil-Konflikt
+        // Kommunikationsstil-Konflikt / Communication Style Conflict
         "kommunikationsstil": {
             archetypes: ["alle"],
-            title: "Der Dialog der Missverständnisse",
+            title: {
+                de: "Der Dialog der Missverständnisse",
+                en: "The Dialogue of Misunderstandings"
+            },
             dynamics: {
-                pattern: "Unterschiedliche GFK-Kompetenzen führen zu Eskalationsspiralen. Einer spricht Gefühle, der andere hört Vorwürfe.",
-                escalation: "Bedürfnisäußerung wird als Kritik interpretiert. Rückzug wird als Desinteresse gelesen.",
-                core_wound: "Nicht gehört werden – das Gefühl, die eigene Wahrheit nicht vermitteln zu können."
+                pattern: {
+                    de: "Unterschiedliche GFK-Kompetenzen führen zu Eskalationsspiralen. Einer spricht Gefühle, der andere hört Vorwürfe.",
+                    en: "Different NVC competencies lead to escalation spirals. One speaks feelings, the other hears accusations."
+                },
+                escalation: {
+                    de: "Bedürfnisäußerung wird als Kritik interpretiert. Rückzug wird als Desinteresse gelesen.",
+                    en: "Expression of needs is interpreted as criticism. Withdrawal is read as disinterest."
+                },
+                core_wound: {
+                    de: "Nicht gehört werden – das Gefühl, die eigene Wahrheit nicht vermitteln zu können.",
+                    en: "Not being heard – the feeling of not being able to convey one's own truth."
+                }
             },
             resolution: {
-                understanding: "Kommunikation ist Übersetzungsarbeit. Beide sprechen verschiedene emotionale Sprachen.",
-                practical: "GFK-Grundregeln gemeinsam lernen. 'Ich'-Aussagen. Bedürfnisse statt Vorwürfe.",
-                growth: "Beide lernen: Zuhören ist wichtiger als verstanden werden. Empathie vor Rechtfertigung."
+                understanding: {
+                    de: "Kommunikation ist Übersetzungsarbeit. Beide sprechen verschiedene emotionale Sprachen.",
+                    en: "Communication is translation work. Both speak different emotional languages."
+                },
+                practical: {
+                    de: "GFK-Grundregeln gemeinsam lernen. 'Ich'-Aussagen. Bedürfnisse statt Vorwürfe.",
+                    en: "Learn NVC basics together. 'I'-statements. Needs instead of accusations."
+                },
+                growth: {
+                    de: "Beide lernen: Zuhören ist wichtiger als verstanden werden. Empathie vor Rechtfertigung.",
+                    en: "Both learn: Listening is more important than being understood. Empathy before justification."
+                }
             }
         },
 
@@ -235,25 +284,61 @@ const IntegratedSynthesisTextGenerator = (function() {
             }
         },
 
-        // GFK-basierte Erklärungen
+        // GFK-basierte Erklärungen / NVC-based explanations
         gfk: {
             needs: {
-                title: "Universelle Bedürfnisse",
-                explanation: "Rosenbergs GFK basiert auf der Annahme: Hinter jedem Verhalten steckt ein unerfülltes Bedürfnis. Konflikte entstehen nicht aus 'schlechtem Charakter', sondern aus ungehörten Bedürfnissen.",
-                application: "Wenn dein Partner etwas tut, das dich verletzt, frage: Welches Bedürfnis versucht er/sie zu erfüllen? Diese Frage verändert alles.",
-                practice: "Anstatt: 'Du bist so egoistisch!' → 'Ich habe das Bedürfnis nach Zugehörigkeit. Wie können wir das gemeinsam erfüllen?'"
+                title: {
+                    de: "Universelle Bedürfnisse",
+                    en: "Universal Needs"
+                },
+                explanation: {
+                    de: "Rosenbergs GFK basiert auf der Annahme: Hinter jedem Verhalten steckt ein unerfülltes Bedürfnis. Konflikte entstehen nicht aus 'schlechtem Charakter', sondern aus ungehörten Bedürfnissen.",
+                    en: "Rosenberg's NVC is based on the assumption: Behind every behavior lies an unmet need. Conflicts don't arise from 'bad character', but from unheard needs."
+                },
+                application: {
+                    de: "Wenn dein Partner etwas tut, das dich verletzt, frage: Welches Bedürfnis versucht er/sie zu erfüllen? Diese Frage verändert alles.",
+                    en: "When your partner does something that hurts you, ask: What need is he/she trying to fulfill? This question changes everything."
+                },
+                practice: {
+                    de: "Anstatt: 'Du bist so egoistisch!' → 'Ich habe das Bedürfnis nach Zugehörigkeit. Wie können wir das gemeinsam erfüllen?'",
+                    en: "Instead of: 'You're so selfish!' → 'I have a need for belonging. How can we fulfill this together?'"
+                }
             },
             empathy: {
-                title: "Empathie vor Lösung",
-                explanation: "GFK lehrt: Die meisten Menschen brauchen zunächst Empathie, nicht Lösungen. Gehört werden ist oft wichtiger als Recht haben.",
-                application: "Bevor du versuchst, den Konflikt zu lösen, stelle sicher, dass beide sich gehört fühlen. Das allein löst oft schon viel.",
-                practice: "Wiederhole, was du gehört hast, bevor du antwortest: 'Ich höre, dass du...' Diese simple Technik verändert Gespräche fundamental."
+                title: {
+                    de: "Empathie vor Lösung",
+                    en: "Empathy Before Solutions"
+                },
+                explanation: {
+                    de: "GFK lehrt: Die meisten Menschen brauchen zunächst Empathie, nicht Lösungen. Gehört werden ist oft wichtiger als Recht haben.",
+                    en: "NVC teaches: Most people need empathy first, not solutions. Being heard is often more important than being right."
+                },
+                application: {
+                    de: "Bevor du versuchst, den Konflikt zu lösen, stelle sicher, dass beide sich gehört fühlen. Das allein löst oft schon viel.",
+                    en: "Before trying to solve the conflict, make sure both feel heard. That alone often resolves much."
+                },
+                practice: {
+                    de: "Wiederhole, was du gehört hast, bevor du antwortest: 'Ich höre, dass du...' Diese simple Technik verändert Gespräche fundamental.",
+                    en: "Repeat what you heard before responding: 'I hear that you...' This simple technique fundamentally changes conversations."
+                }
             },
             conflict_transformation: {
-                title: "Konflikt als Transformation",
-                explanation: "GFK sieht Konflikte nicht als Probleme, sondern als Chancen zur Vertiefung. Jeder Konflikt zeigt unerfüllte Bedürfnisse auf.",
-                application: "Die tiefsten Beziehungen sind nicht konfliktfrei, sondern konfliktfähig. Sie wissen, wie man durch Stürme navigiert.",
-                growth: "Frage bei jedem Konflikt: Was will hier wachsen? Welches Bedürfnis will gehört werden?"
+                title: {
+                    de: "Konflikt als Transformation",
+                    en: "Conflict as Transformation"
+                },
+                explanation: {
+                    de: "GFK sieht Konflikte nicht als Probleme, sondern als Chancen zur Vertiefung. Jeder Konflikt zeigt unerfüllte Bedürfnisse auf.",
+                    en: "NVC sees conflicts not as problems, but as opportunities for deepening. Every conflict reveals unmet needs."
+                },
+                application: {
+                    de: "Die tiefsten Beziehungen sind nicht konfliktfrei, sondern konfliktfähig. Sie wissen, wie man durch Stürme navigiert.",
+                    en: "The deepest relationships are not conflict-free, but conflict-capable. They know how to navigate through storms."
+                },
+                growth: {
+                    de: "Frage bei jedem Konflikt: Was will hier wachsen? Welches Bedürfnis will gehört werden?",
+                    en: "Ask in every conflict: What wants to grow here? What need wants to be heard?"
+                }
             }
         },
 
@@ -651,14 +736,14 @@ const IntegratedSynthesisTextGenerator = (function() {
             }
         }
 
-        // GFK-Analyse
+        // GFK-Analyse (NVC Analysis)
         const ichGfk = ichDim?.gfk;
         const partnerGfk = partnerDim?.gfk;
         if (ichGfk && partnerGfk && ichGfk !== partnerGfk) {
             texts.push({
-                source: "GFK",
-                title: psychologicalDepth.gfk.needs.title,
-                content: psychologicalDepth.gfk.empathy.application + " " + psychologicalDepth.gfk.empathy.practice
+                source: getLang() === 'en' ? "NVC" : "GFK",
+                title: getLocalizedText(psychologicalDepth.gfk.needs.title),
+                content: getLocalizedText(psychologicalDepth.gfk.empathy.application) + " " + getLocalizedText(psychologicalDepth.gfk.empathy.practice)
             });
         }
 
