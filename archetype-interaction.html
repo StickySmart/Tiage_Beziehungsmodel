@@ -11304,6 +11304,81 @@
             }
         }
 
+        /**
+         * Load saved dimensions from TiageState into local personDimensions variable
+         * This ensures the UI reflects any previously saved selections
+         */
+        function loadDimensionsFromState() {
+            if (typeof TiageState === 'undefined') return;
+
+            // Load from TiageState
+            TiageState.loadFromStorage();
+
+            ['ich', 'partner'].forEach(person => {
+                const savedDims = TiageState.get(`personDimensions.${person}`);
+                if (!savedDims) return;
+
+                // Sync geschlecht
+                if (savedDims.geschlecht) {
+                    // Handle both old format (string) and new format (object with primary/secondary)
+                    if (typeof savedDims.geschlecht === 'object' && 'primary' in savedDims.geschlecht) {
+                        personDimensions[person].geschlecht = savedDims.geschlecht;
+                    }
+                }
+
+                // Sync dominanz - handle both formats
+                if (savedDims.dominanz) {
+                    if (typeof savedDims.dominanz === 'object') {
+                        // New format: { primary: 'dominant', secondary: null }
+                        if ('primary' in savedDims.dominanz) {
+                            personDimensions[person].dominanz = savedDims.dominanz;
+                        } else {
+                            // Old format: { dominant: 'gelebt', submissiv: null, ... }
+                            // Convert to new format
+                            let primary = null;
+                            let secondary = null;
+                            for (const [type, status] of Object.entries(savedDims.dominanz)) {
+                                if (status === 'gelebt' && !primary) {
+                                    primary = type;
+                                } else if (status === 'interessiert' && !secondary) {
+                                    secondary = type;
+                                }
+                            }
+                            personDimensions[person].dominanz = { primary, secondary };
+                        }
+                    }
+                }
+
+                // Sync orientierung - handle both formats
+                if (savedDims.orientierung) {
+                    if (typeof savedDims.orientierung === 'object') {
+                        // New format: { primary: 'heterosexuell', secondary: null }
+                        if ('primary' in savedDims.orientierung) {
+                            personDimensions[person].orientierung = savedDims.orientierung;
+                        } else {
+                            // Old format: { heterosexuell: 'gelebt', homosexuell: null, ... }
+                            // Convert to new format
+                            let primary = null;
+                            let secondary = null;
+                            for (const [type, status] of Object.entries(savedDims.orientierung)) {
+                                if (status === 'gelebt' && !primary) {
+                                    primary = type;
+                                } else if (status === 'interessiert' && !secondary) {
+                                    secondary = type;
+                                }
+                            }
+                            personDimensions[person].orientierung = { primary, secondary };
+                        }
+                    }
+                }
+
+                // Sync GFK if present
+                if (savedDims.gfk) {
+                    personDimensions[person].gfk = savedDims.gfk;
+                }
+            });
+        }
+
         // Initialize when DOM is ready
         document.addEventListener('DOMContentLoaded', function() {
             checkAgeVerification();
@@ -11312,6 +11387,8 @@
             initDimensionListeners();
             initComparisonLayout();
             initMobileLayout();
+            // Load saved dimensions from TiageState BEFORE initializing buttons
+            loadDimensionsFromState();
             initDimensionButtons();
             initGeschlechtHoverEvents();
             // Initialize all summary displays in header
