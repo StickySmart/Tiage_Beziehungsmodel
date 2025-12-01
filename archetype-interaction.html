@@ -15,60 +15,6 @@
     <link rel="stylesheet" href="templates/template_desktop.css">
     <link rel="stylesheet" href="templates/template_mobile.css" media="(max-width: 768px)">
 
-    <!-- DEV VIEW STYLES - Nur für Entwicklung/Screenshots -->
-    <style id="devview-styles">
-        /* Dev View Banner - standardmäßig versteckt */
-        .devview-banner { display: none; }
-
-        /* DEVVIEW ERZWINGT MOBILE ANSICHT */
-        body.devview-active { overflow: auto !important; }
-        body.devview-active .comparison-container.desktop-mode { display: none !important; }
-
-        /* Mobile-Layout SICHTBAR MACHEN */
-        body.devview-active .mobile-multipage {
-            display: block !important;
-            padding-top: 50px !important;
-            transform: scale(0.28);
-            transform-origin: top center;
-            width: 357%;
-            margin-left: -128%;
-        }
-        body.devview-active .mobile-page {
-            display: block !important;
-            min-height: auto !important;
-            padding: 20px !important;
-            margin-bottom: 50px !important;
-            border: 5px solid var(--primary) !important;
-            border-radius: 20px !important;
-            position: relative;
-            background: var(--bg-card) !important;
-        }
-        body.devview-active .mobile-page::before {
-            content: attr(data-page-label);
-            position: absolute;
-            top: -35px;
-            left: 20px;
-            background: var(--primary);
-            color: white;
-            padding: 8px 20px;
-            border-radius: 10px;
-            font-size: 22px;
-            font-weight: bold;
-        }
-        body.devview-active .page-indicator { display: none !important; }
-        body.devview-active .devview-banner {
-            display: block;
-            position: fixed;
-            top: 0; left: 0; right: 0;
-            background: linear-gradient(90deg, #ff6b6b, #f4a261);
-            color: white;
-            text-align: center;
-            padding: 12px;
-            font-weight: bold;
-            font-size: 16px;
-            z-index: 10000;
-        }
-    </style>
 
     <!-- TIAGE i18n - Internationalisierung -->
     <script src="js/locales/de.js"></script>
@@ -93,23 +39,93 @@
     <script src="profiles/beduerfnis-modifikatoren.js"></script>
 </head>
 <body>
-    <!-- Dev View Mode - ERZWINGT Mobile Ansicht für Screenshots -->
+    <!-- Dev View Mode - NUR FÜR MOBILE GERÄTE -->
     <script>
         (function() {
-            // Check for ?devview=true URL parameter
             const urlParams = new URLSearchParams(window.location.search);
-            // ERZWINGT mobile Ansicht - funktioniert auf ALLEN Geräten
-            if (urlParams.get('devview') === 'true') {
-                document.body.classList.add('devview-active');
-                // Update viewport for zoomed out full page view
-                const viewport = document.querySelector('meta[name="viewport"]');
-                if (viewport) {
-                    viewport.content = 'width=device-width, initial-scale=0.32, user-scalable=yes, minimum-scale=0.1, maximum-scale=3';
+            if (urlParams.get('devview') !== 'true') return;
+
+            // Erkennung: Ist es ein mobiles Gerät?
+            const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+            const isMobileUA = /Android|iPhone|iPad|iPod|webOS|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+            const isMobile = isTouchDevice || isMobileUA;
+
+            if (!isMobile) {
+                // Auf PC: Nichts tun, normale Desktop-Ansicht
+                console.log('DevView: Desktop erkannt - keine Änderung');
+                return;
+            }
+
+            // Auf HANDY: Mobile DevView aktivieren
+            console.log('DevView: Mobiles Gerät erkannt - aktiviere Full Page View');
+
+            // 1. Mobile CSS OHNE media query laden (erzwingt mobile Styles)
+            const mobileCSS = document.createElement('link');
+            mobileCSS.rel = 'stylesheet';
+            mobileCSS.href = 'templates/template_mobile.css';
+            document.head.appendChild(mobileCSS);
+
+            // 2. DevView Styles einfügen
+            const devStyles = document.createElement('style');
+            devStyles.id = 'devview-mobile-styles';
+            devStyles.textContent = `
+                .devview-banner { display: none; }
+                body.devview-active { overflow: auto !important; }
+                body.devview-active .comparison-container.desktop-mode { display: none !important; }
+                body.devview-active .mobile-multipage {
+                    display: block !important;
+                    padding-top: 50px !important;
+                    transform: scale(0.28);
+                    transform-origin: top center;
+                    width: 357%;
+                    margin-left: -128%;
                 }
+                body.devview-active .mobile-page {
+                    display: block !important;
+                    min-height: auto !important;
+                    padding: 20px !important;
+                    margin-bottom: 50px !important;
+                    border: 5px solid var(--primary) !important;
+                    border-radius: 20px !important;
+                    position: relative;
+                    background: var(--bg-card) !important;
+                }
+                body.devview-active .mobile-page::before {
+                    content: attr(data-page-label);
+                    position: absolute;
+                    top: -35px; left: 20px;
+                    background: var(--primary);
+                    color: white;
+                    padding: 8px 20px;
+                    border-radius: 10px;
+                    font-size: 22px;
+                    font-weight: bold;
+                }
+                body.devview-active .page-indicator { display: none !important; }
+                body.devview-active .devview-banner {
+                    display: block;
+                    position: fixed;
+                    top: 0; left: 0; right: 0;
+                    background: linear-gradient(90deg, #ff6b6b, #f4a261);
+                    color: white;
+                    text-align: center;
+                    padding: 12px;
+                    font-weight: bold;
+                    font-size: 16px;
+                    z-index: 10000;
+                }
+            `;
+            document.head.appendChild(devStyles);
+
+            // 3. Body-Klasse und Viewport setzen
+            document.body.classList.add('devview-active');
+            const viewport = document.querySelector('meta[name="viewport"]');
+            if (viewport) {
+                viewport.content = 'width=device-width, initial-scale=0.28, user-scalable=yes, minimum-scale=0.1, maximum-scale=3';
             }
         })();
     </script>
-    <div class="devview-banner">DEV VIEW - Mobile Ansicht erzwungen</div>
+    <div class="devview-banner">MOBILE DEV VIEW - Alle Seiten sichtbar</div>
 
     <!-- Age Verification - Inline Script BEFORE modal for onclick to work -->
     <script>
