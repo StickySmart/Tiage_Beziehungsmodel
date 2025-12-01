@@ -517,6 +517,150 @@ const TiageLocale_DE = {
         sendComment: 'Kommentar senden',
         viewAllComments: 'Alle Kommentare',
         documentation: 'Dokumentation'
+    },
+
+    // ═══════════════════════════════════════════════════════════════════════
+    // SYNTHESE-BEREICH
+    // ═══════════════════════════════════════════════════════════════════════
+
+    synthesisSection: {
+        bringtMit: 'BRINGT MIT',
+        darausEntsteht: 'DARAUS ENTSTEHT',
+        gemeinsameBeduerfnisse: 'Gemeinsame Bedürfnisse',
+        philosophischeGrundlagen: 'Philosophische Grundlagen',
+        pathos: 'Pathos',
+        logos: 'Logos',
+        staerken: 'Stärken',
+        herausforderungen: 'Herausforderungen',
+        wachstumspotential: 'Wachstumspotential'
+    },
+
+    // ═══════════════════════════════════════════════════════════════════════
+    // FOOTER
+    // ═══════════════════════════════════════════════════════════════════════
+
+    footer: {
+        datenschutz: 'Datenschutz',
+        nutzungsbedingungen: 'Nutzungsbedingungen',
+        impressum: 'Impressum',
+        copyright: 'Alle Rechte vorbehalten',
+        rechtliches: 'Rechtliches'
+    },
+
+    // ═══════════════════════════════════════════════════════════════════════
+    // GFK-BEDÜRFNISSE (Gewaltfreie Kommunikation)
+    // ═══════════════════════════════════════════════════════════════════════
+
+    needs: {
+        // Kategorien
+        categories: {
+            existenz: 'Existenz',
+            sicherheit: 'Sicherheit',
+            zuneigung: 'Zuneigung',
+            verstaendnis: 'Verständnis',
+            freiheit: 'Freiheit',
+            teilnahme: 'Teilnahme',
+            musse: 'Muße',
+            identitaet: 'Identität & Bedeutung',
+            erschaffen: 'Etwas erschaffen',
+            verbundenheit: 'Verbunden sein'
+        },
+
+        // Einzelne Bedürfnisse
+        items: {
+            // EXISTENZ
+            luft: 'Luft',
+            wasser: 'Wasser',
+            nahrung: 'Nahrung',
+            bewegung: 'Bewegung/Betätigung',
+            beruehrung: 'Berührung/Körperkontakt',
+            erholung: 'Erholung/Schlaf',
+            sexueller_ausdruck: 'Sexueller Ausdruck',
+            sicherheit_physisch: 'Physische Sicherheit',
+            unterschlupf: 'Unterschlupf',
+
+            // SICHERHEIT
+            bestaendigkeit: 'Beständigkeit',
+            sich_sicher_fuehlen: 'Sich sicher fühlen',
+            schutz: 'Schutz',
+            stabilitaet: 'Stabilität',
+            leichtigkeit: 'Leichtigkeit',
+            geborgenheit: 'Geborgenheit',
+
+            // ZUNEIGUNG
+            waerme: 'Wärme',
+            wertschaetzung: 'Wertschätzung',
+            naehe: 'Nähe',
+            gesellschaft: 'Gesellschaft',
+            intimitaet: 'Intimität',
+            liebe: 'Liebe',
+            fuersorge: 'Fürsorge',
+            unterstuetzung: 'Unterstützung',
+            fuereinander_da_sein: 'Füreinander da sein',
+
+            // VERSTÄNDNIS
+            akzeptanz: 'Akzeptanz',
+            mitgefuehl: 'Mitgefühl',
+            beruecksichtigung: 'Berücksichtigung',
+            empathie: 'Empathie',
+            vertrauen: 'Vertrauen',
+            beachtung: 'Beachtung',
+            gesehen_werden: 'Gesehen werden',
+            verstanden_werden: 'Verstanden werden',
+            harmonie: 'Harmonie',
+
+            // FREIHEIT
+            selbstbestimmung: 'Selbstbestimmung',
+            waehlen_koennen: 'Wählen können',
+            unabhaengigkeit: 'Unabhängigkeit',
+            raum_haben: 'Raum haben',
+            spontaneitaet: 'Spontaneität',
+
+            // TEILNAHME
+            zusammenarbeit: 'Zusammenarbeit',
+            kommunikation: 'Kommunikation',
+            gemeinschaft: 'Gemeinschaft',
+            zugehoerigkeit: 'Zugehörigkeit',
+            gegenseitigkeit: 'Gegenseitigkeit',
+            respekt: 'Respekt',
+            bedeutung_haben: 'Bedeutung haben',
+
+            // MUSSE
+            schoenheit: 'Schönheit',
+            freizeit: 'Freizeit',
+            freude: 'Freude',
+            humor: 'Humor',
+
+            // IDENTITÄT
+            authentizitaet: 'Authentizität',
+            echtheit: 'Echtheit',
+            integritaet: 'Integrität',
+            praesenz: 'Präsenz',
+            ordnung: 'Ordnung',
+            bewusstheit: 'Bewusstheit',
+            herausforderung: 'Herausforderung',
+            klarheit: 'Klarheit',
+            kompetenz: 'Kompetenz',
+            effizienz: 'Effizienz',
+            wirksamkeit: 'Wirksamkeit',
+            wachstum: 'Wachstum',
+            sinn: 'Sinn',
+            beitrag_leisten: 'Einen Beitrag leisten',
+
+            // ERSCHAFFEN
+            kreativitaet: 'Kreativität',
+            entdecken: 'Entdecken',
+            lernen: 'Lernen',
+            selbst_ausdruck: 'Selbst-Ausdruck',
+            anreize_bekommen: 'Anreize bekommen',
+
+            // VERBUNDENHEIT
+            leben_feiern: 'Das Leben feiern',
+            inspiration: 'Inspiration',
+            trauer_ausdruecken: 'Trauer ausdrücken',
+            einsehen: 'Einsehen',
+            anfang_ende: 'Anfang & Ende'
+        }
     }
 };
 

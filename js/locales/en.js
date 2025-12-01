@@ -517,6 +517,150 @@ const TiageLocale_EN = {
         sendComment: 'Send Comment',
         viewAllComments: 'All Comments',
         documentation: 'Documentation'
+    },
+
+    // ═══════════════════════════════════════════════════════════════════════
+    // SYNTHESIS SECTION
+    // ═══════════════════════════════════════════════════════════════════════
+
+    synthesisSection: {
+        bringtMit: 'BRINGS',
+        darausEntsteht: 'CREATES',
+        gemeinsameBeduerfnisse: 'Shared Needs',
+        philosophischeGrundlagen: 'Philosophical Foundations',
+        pathos: 'Pathos',
+        logos: 'Logos',
+        staerken: 'Strengths',
+        herausforderungen: 'Challenges',
+        wachstumspotential: 'Growth Potential'
+    },
+
+    // ═══════════════════════════════════════════════════════════════════════
+    // FOOTER
+    // ═══════════════════════════════════════════════════════════════════════
+
+    footer: {
+        datenschutz: 'Privacy Policy',
+        nutzungsbedingungen: 'Terms of Use',
+        impressum: 'Legal Notice',
+        copyright: 'All rights reserved',
+        rechtliches: 'Legal'
+    },
+
+    // ═══════════════════════════════════════════════════════════════════════
+    // GFK NEEDS (Nonviolent Communication)
+    // ═══════════════════════════════════════════════════════════════════════
+
+    needs: {
+        // Categories
+        categories: {
+            existenz: 'Existence',
+            sicherheit: 'Safety',
+            zuneigung: 'Affection',
+            verstaendnis: 'Understanding',
+            freiheit: 'Freedom',
+            teilnahme: 'Participation',
+            musse: 'Leisure',
+            identitaet: 'Identity & Meaning',
+            erschaffen: 'Creation',
+            verbundenheit: 'Connection'
+        },
+
+        // Individual needs
+        items: {
+            // EXISTENCE
+            luft: 'Air',
+            wasser: 'Water',
+            nahrung: 'Food',
+            bewegung: 'Movement/Activity',
+            beruehrung: 'Touch/Physical Contact',
+            erholung: 'Rest/Sleep',
+            sexueller_ausdruck: 'Sexual Expression',
+            sicherheit_physisch: 'Physical Safety',
+            unterschlupf: 'Shelter',
+
+            // SAFETY
+            bestaendigkeit: 'Consistency',
+            sich_sicher_fuehlen: 'Feeling Safe',
+            schutz: 'Protection',
+            stabilitaet: 'Stability',
+            leichtigkeit: 'Ease',
+            geborgenheit: 'Security',
+
+            // AFFECTION
+            waerme: 'Warmth',
+            wertschaetzung: 'Appreciation',
+            naehe: 'Closeness',
+            gesellschaft: 'Companionship',
+            intimitaet: 'Intimacy',
+            liebe: 'Love',
+            fuersorge: 'Care',
+            unterstuetzung: 'Support',
+            fuereinander_da_sein: 'Being There for Each Other',
+
+            // UNDERSTANDING
+            akzeptanz: 'Acceptance',
+            mitgefuehl: 'Compassion',
+            beruecksichtigung: 'Consideration',
+            empathie: 'Empathy',
+            vertrauen: 'Trust',
+            beachtung: 'Attention',
+            gesehen_werden: 'Being Seen',
+            verstanden_werden: 'Being Understood',
+            harmonie: 'Harmony',
+
+            // FREEDOM
+            selbstbestimmung: 'Self-Determination',
+            waehlen_koennen: 'Choice',
+            unabhaengigkeit: 'Independence',
+            raum_haben: 'Having Space',
+            spontaneitaet: 'Spontaneity',
+
+            // PARTICIPATION
+            zusammenarbeit: 'Collaboration',
+            kommunikation: 'Communication',
+            gemeinschaft: 'Community',
+            zugehoerigkeit: 'Belonging',
+            gegenseitigkeit: 'Mutuality',
+            respekt: 'Respect',
+            bedeutung_haben: 'Significance',
+
+            // LEISURE
+            schoenheit: 'Beauty',
+            freizeit: 'Leisure Time',
+            freude: 'Joy',
+            humor: 'Humor',
+
+            // IDENTITY
+            authentizitaet: 'Authenticity',
+            echtheit: 'Genuineness',
+            integritaet: 'Integrity',
+            praesenz: 'Presence',
+            ordnung: 'Order',
+            bewusstheit: 'Awareness',
+            herausforderung: 'Challenge',
+            klarheit: 'Clarity',
+            kompetenz: 'Competence',
+            effizienz: 'Efficiency',
+            wirksamkeit: 'Effectiveness',
+            wachstum: 'Growth',
+            sinn: 'Meaning',
+            beitrag_leisten: 'Contributing',
+
+            // CREATION
+            kreativitaet: 'Creativity',
+            entdecken: 'Discovery',
+            lernen: 'Learning',
+            selbst_ausdruck: 'Self-Expression',
+            anreize_bekommen: 'Stimulation',
+
+            // CONNECTION
+            leben_feiern: 'Celebrating Life',
+            inspiration: 'Inspiration',
+            trauer_ausdruecken: 'Expressing Grief',
+            einsehen: 'Insight',
+            anfang_ende: 'Beginning & End'
+        }
     }
 };
 

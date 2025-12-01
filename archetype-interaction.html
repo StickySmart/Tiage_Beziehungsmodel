@@ -2027,7 +2027,7 @@
         <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 25px; max-width: 900px; margin: 0 auto 25px auto; text-align: left;">
             <!-- Philosophische Grundlagen -->
             <div>
-                <h4 style="color: #fff; font-size: 14px; margin-bottom: 12px; font-weight: 600;">Philosophische Grundlagen</h4>
+                <h4 id="footer-philosophy-title" style="color: #fff; font-size: 14px; margin-bottom: 12px; font-weight: 600;" data-i18n="synthesisSection.philosophischeGrundlagen">Philosophische Grundlagen</h4>
                 <ul style="list-style: none; padding: 0; margin: 0;">
                     <li style="margin: 8px 0;"><a href="docs.html?doc=docs/theory/tiage-synthesis.md" style="color: #e57373; text-decoration: none;">Tiage-Synthese</a> <span style="color: rgba(255,255,255,0.4);">- Das Gesamtkonzept</span></li>
                     <li style="margin: 8px 0;"><a href="docs.html?doc=docs/theory/pirsig.md" style="color: #e57373; text-decoration: none;">Pirsig-Philosophie</a> <span style="color: rgba(255,255,255,0.4);">- Metaphysik der Qualitaet</span></li>
@@ -2039,10 +2039,10 @@
 
             <!-- Rechtliches -->
             <div>
-                <h4 style="color: #fff; font-size: 14px; margin-bottom: 12px; font-weight: 600;">Rechtliches</h4>
+                <h4 id="footer-legal-title" style="color: #fff; font-size: 14px; margin-bottom: 12px; font-weight: 600;" data-i18n="footer.rechtliches">Rechtliches</h4>
                 <ul style="list-style: none; padding: 0; margin: 0;">
-                    <li style="margin: 8px 0;"><a href="datenschutz.html" style="color: #e57373; text-decoration: none;">Datenschutz</a></li>
-                    <li style="margin: 8px 0;"><a href="nutzungsbedingungen.html" style="color: #e57373; text-decoration: none;">Nutzungsbedingungen</a></li>
+                    <li style="margin: 8px 0;"><a href="datenschutz.html" style="color: #e57373; text-decoration: none;" data-i18n="footer.datenschutz">Datenschutz</a></li>
+                    <li style="margin: 8px 0;"><a href="nutzungsbedingungen.html" style="color: #e57373; text-decoration: none;" data-i18n="footer.nutzungsbedingungen">Nutzungsbedingungen</a></li>
                 </ul>
             </div>
 
@@ -2170,6 +2170,9 @@
 
             // Update impressum modal
             updateImpressumModal();
+
+            // Update footer
+            updateFooter();
 
             // Update age verification modal
             updateAgeVerificationModal();
@@ -2500,6 +2503,46 @@
             const title = modal.querySelector('h3');
             if (title) {
                 title.textContent = TiageI18n.t('impressum.title', 'Impressum');
+            }
+        }
+
+        /**
+         * Update footer translations
+         */
+        function updateFooter() {
+            const footer = document.querySelector('footer');
+            if (!footer) return;
+
+            // Update Datenschutz link
+            const datenschutzLink = footer.querySelector('a[href="datenschutz.html"]');
+            if (datenschutzLink) {
+                datenschutzLink.textContent = TiageI18n.t('footer.datenschutz', 'Datenschutz');
+            }
+
+            // Update Nutzungsbedingungen link
+            const nutzungsLink = footer.querySelector('a[href="nutzungsbedingungen.html"]');
+            if (nutzungsLink) {
+                nutzungsLink.textContent = TiageI18n.t('footer.nutzungsbedingungen', 'Nutzungsbedingungen');
+            }
+
+            // Update Impressum link
+            const impressumLink = footer.querySelector('a[onclick*="impressumModal"]');
+            if (impressumLink) {
+                impressumLink.textContent = TiageI18n.t('footer.impressum', 'Impressum');
+            }
+
+            // Update copyright text
+            const copyrightEl = footer.querySelector('div[style*="border-top"] > div:first-child');
+            if (copyrightEl) {
+                const year = new Date().getFullYear();
+                const copyright = TiageI18n.t('footer.copyright', 'Alle Rechte vorbehalten');
+                copyrightEl.innerHTML = `&copy; ${year} Ti-Age - ${copyright}`;
+            }
+
+            // Update Hilfe/Help link
+            const hilfeLink = footer.querySelector('a[href*="help-guide"]');
+            if (hilfeLink) {
+                hilfeLink.textContent = TiageI18n.t('helpModal.title', 'Hilfe').split(' ')[0]; // Just "Hilfe" or "Help"
             }
         }
 
@@ -7373,13 +7416,15 @@
 
             // Top Übereinstimmungen
             if (matching.topUebereinstimmungen && matching.topUebereinstimmungen.length > 0) {
+                const gemeinsameLabel = TiageI18n.t('synthesisSection.gemeinsameBeduerfnisse', 'Gemeinsame Bedürfnisse');
                 html += `
                     <div class="gfk-section gfk-matches">
-                        <div class="gfk-section-title" style="color: #22c55e;">Gemeinsame Bedürfnisse</div>
+                        <div class="gfk-section-title" style="color: #22c55e;">${gemeinsameLabel}</div>
                         <div class="gfk-tags">
-                            ${matching.topUebereinstimmungen.map(b =>
-                                `<span class="gfk-tag gfk-tag-match">${b.label}</span>`
-                            ).join('')}
+                            ${matching.topUebereinstimmungen.map(b => {
+                                const translatedLabel = TiageI18n.t(`needs.items.${b.id}`, b.label);
+                                return `<span class="gfk-tag gfk-tag-match">${translatedLabel}</span>`;
+                            }).join('')}
                         </div>
                     </div>
                 `;
@@ -7387,13 +7432,15 @@
 
             // Konflikte
             if (matching.topKonflikte && matching.topKonflikte.length > 0) {
+                const unterschiedlicheLabel = TiageI18n.t('synthesisSection.herausforderungen', 'Herausforderungen');
                 html += `
                     <div class="gfk-section gfk-conflicts">
-                        <div class="gfk-section-title" style="color: #ef4444;">Unterschiedliche Prioritäten</div>
+                        <div class="gfk-section-title" style="color: #ef4444;">${unterschiedlicheLabel}</div>
                         <div class="gfk-tags">
-                            ${matching.topKonflikte.map(b =>
-                                `<span class="gfk-tag gfk-tag-conflict" title="${matching.archetyp1}: ${b.wert1}% | ${matching.archetyp2}: ${b.wert2}%">${b.label}</span>`
-                            ).join('')}
+                            ${matching.topKonflikte.map(b => {
+                                const translatedLabel = TiageI18n.t(`needs.items.${b.id}`, b.label);
+                                return `<span class="gfk-tag gfk-tag-conflict" title="${matching.archetyp1}: ${b.wert1}% | ${matching.archetyp2}: ${b.wert2}%">${translatedLabel}</span>`;
+                            }).join('')}
                         </div>
                     </div>
                 `;
@@ -11752,31 +11799,36 @@
             const tagStyleMatch = `${tagStyle} background: rgba(34,197,94,0.15); border: 1px solid rgba(34,197,94,0.5); color: #22c55e;`;
             const tagStyleGrowth = `${tagStyle} background: rgba(168,85,247,0.15); border: 1px solid rgba(168,85,247,0.5); color: #a855f7;`;
 
-            // ICH Tags
+            // ICH Tags - translate need labels
             const ichStaerken = analyse.ich.staerken[type] || [];
             if (ichStaerken.length > 0) {
-                const tags = ichStaerken.slice(0, 4).map(b =>
-                    `<span style="${tagStylePrimary}">${b.label}</span>`
-                ).join('');
+                const tags = ichStaerken.slice(0, 4).map(b => {
+                    const translatedLabel = TiageI18n.t(`needs.items.${b.id}`, b.label);
+                    return `<span style="${tagStylePrimary}">${translatedLabel}</span>`;
+                }).join('');
                 result.ichTags = `<div style="margin-top: 8px;">${tags}</div>`;
             }
 
-            // Partner Tags
+            // Partner Tags - translate need labels
             const partnerStaerken = analyse.partner.staerken[type] || [];
             if (partnerStaerken.length > 0) {
-                const tags = partnerStaerken.slice(0, 4).map(b =>
-                    `<span style="${tagStylePrimary}">${b.label}</span>`
-                ).join('');
+                const tags = partnerStaerken.slice(0, 4).map(b => {
+                    const translatedLabel = TiageI18n.t(`needs.items.${b.id}`, b.label);
+                    return `<span style="${tagStylePrimary}">${translatedLabel}</span>`;
+                }).join('');
                 result.partnerTags = `<div style="margin-top: 8px;">${tags}</div>`;
             }
 
             // Gemeinsame Bedürfnisse Section
             const gemeinsam = analyse.gemeinsam[type] || [];
             if (gemeinsam.length > 0) {
-                const tags = gemeinsam.slice(0, 5).map(b =>
-                    `<span style="${tagStyleMatch}">${b.label}</span>`
-                ).join('');
-                const sectionTitle = type === 'pathos' ? 'GEMEINSAME BEDÜRFNISSE' : 'GEMEINSAME WERTE';
+                // Translate need labels
+                const tags = gemeinsam.slice(0, 5).map(b => {
+                    const translatedLabel = TiageI18n.t(`needs.items.${b.id}`, b.label);
+                    return `<span style="${tagStyleMatch}">${translatedLabel}</span>`;
+                }).join('');
+                const gemeinsameBeduerfnisseLabel = TiageI18n.t('synthesisSection.gemeinsameBeduerfnisse', 'Gemeinsame Bedürfnisse');
+                const sectionTitle = type === 'pathos' ? gemeinsameBeduerfnisseLabel.toUpperCase() : gemeinsameBeduerfnisseLabel.toUpperCase();
                 result.gemeinsamSection = `
                 <div style="margin-bottom: 16px;">
                     <div style="padding: 12px; background: rgba(34,197,94,0.08); border-radius: 10px; border: 1px solid rgba(34,197,94,0.25);">
@@ -11792,18 +11844,19 @@
             // Wachstumspotential Section
             const wachstum = analyse.wachstumspotential[type] || [];
             if (wachstum.length > 0) {
+                const wachstumLabel = TiageI18n.t('synthesisSection.wachstumspotential', 'Wachstumspotential');
                 const items = wachstum.slice(0, 3).map(b => {
                     const wer = b.staerkerBei === 'ich' ? analyse.ich.name : analyse.partner.name;
-                    return `<span style="${tagStyleGrowth}" title="${wer} kann hier einbringen">${b.label}</span>`;
+                    const translatedLabel = TiageI18n.t(`needs.items.${b.id}`, b.label);
+                    return `<span style="${tagStyleGrowth}" title="${wer}">${translatedLabel}</span>`;
                 }).join('');
                 result.wachstumSection = `
                 <div style="margin-top: 12px; padding: 12px; background: rgba(168,85,247,0.08); border-radius: 8px; border: 1px dashed rgba(168,85,247,0.3);">
                     <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
                         <span style="font-size: 13px;">🌱</span>
-                        <span style="font-size: 11px; color: #a855f7; font-weight: 600; text-transform: uppercase; letter-spacing: 1px;">WACHSTUMSPOTENTIAL</span>
+                        <span style="font-size: 11px; color: #a855f7; font-weight: 600; text-transform: uppercase; letter-spacing: 1px;">${wachstumLabel.toUpperCase()}</span>
                     </div>
                     <div>${items}</div>
-                    <p style="font-size: 11px; color: var(--text-muted); margin: 8px 0 0 0; font-style: italic;">Unterschiedliche Stärken können sich ergänzen</p>
                 </div>`;
             }
 
@@ -11899,13 +11952,16 @@
             // GFK-Bedürfnis-Analyse holen
             const gfkAnalyse = getGfkBeduerfnisAnalyse('pathos');
 
+            const bringtMitLabel = TiageI18n.t('synthesisSection.bringtMit', 'BRINGT MIT');
+            const darausEntstehtLabel = TiageI18n.t('synthesisSection.darausEntsteht', 'DARAUS ENTSTEHT');
+
             let html = `
                 <!-- ICH BRINGT MIT -->
                 <div style="margin-bottom: 16px;">
                     <div style="padding: 14px; background: linear-gradient(135deg, rgba(231,111,81,0.15), rgba(231,111,81,0.05)); border-radius: 10px; border-left: 3px solid #E76F51;">
                         <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 10px;">
                             <span style="font-size: 14px;">👤</span>
-                            <span style="font-size: 11px; color: #E76F51; font-weight: 600; text-transform: uppercase; letter-spacing: 1px;">${ichName} BRINGT MIT</span>
+                            <span style="font-size: 11px; color: #E76F51; font-weight: 600; text-transform: uppercase; letter-spacing: 1px;">${ichName} ${bringtMitLabel}</span>
                         </div>
                         <p style="font-size: 13px; margin: 0 0 10px 0; line-height: 1.5;">${detailed.ich || 'Keine spezifischen emotionalen Eigenschaften definiert.'}</p>
                         ${gfkAnalyse.ichTags}
@@ -11917,7 +11973,7 @@
                     <div style="padding: 14px; background: linear-gradient(135deg, rgba(231,111,81,0.15), rgba(231,111,81,0.05)); border-radius: 10px; border-left: 3px solid #E76F51;">
                         <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 10px;">
                             <span style="font-size: 14px;">👥</span>
-                            <span style="font-size: 11px; color: #E76F51; font-weight: 600; text-transform: uppercase; letter-spacing: 1px;">${partnerName} BRINGT MIT</span>
+                            <span style="font-size: 11px; color: #E76F51; font-weight: 600; text-transform: uppercase; letter-spacing: 1px;">${partnerName} ${bringtMitLabel}</span>
                         </div>
                         <p style="font-size: 13px; margin: 0 0 10px 0; line-height: 1.5;">${detailed.partner || 'Keine spezifischen emotionalen Eigenschaften definiert.'}</p>
                         ${gfkAnalyse.partnerTags}
@@ -11932,7 +11988,7 @@
                     <div style="padding: 14px; background: linear-gradient(135deg, rgba(255,215,0,0.1), rgba(231,111,81,0.08)); border-radius: 10px; border: 1px solid rgba(231,111,81,0.3);">
                         <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 10px;">
                             <span style="font-size: 14px;">🔥</span>
-                            <span style="font-size: 11px; color: #FFD700; font-weight: 600; text-transform: uppercase; letter-spacing: 1px;">DARAUS ENTSTEHT</span>
+                            <span style="font-size: 11px; color: #FFD700; font-weight: 600; text-transform: uppercase; letter-spacing: 1px;">${darausEntstehtLabel}</span>
                         </div>
                         <p style="font-size: 14px; margin: 0; line-height: 1.6; font-style: italic;">${detailed.synthese}</p>
                     </div>
@@ -11971,13 +12027,16 @@
             // GFK-Bedürfnis-Analyse holen
             const gfkAnalyse = getGfkBeduerfnisAnalyse('logos');
 
+            const bringtMitLabel = TiageI18n.t('synthesisSection.bringtMit', 'BRINGT MIT');
+            const darausEntstehtLabel = TiageI18n.t('synthesisSection.darausEntsteht', 'DARAUS ENTSTEHT');
+
             let html = `
                 <!-- ICH BRINGT MIT -->
                 <div style="margin-bottom: 16px;">
                     <div style="padding: 14px; background: linear-gradient(135deg, rgba(69,123,157,0.15), rgba(69,123,157,0.05)); border-radius: 10px; border-left: 3px solid #457B9D;">
                         <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 10px;">
                             <span style="font-size: 14px;">👤</span>
-                            <span style="font-size: 11px; color: #457B9D; font-weight: 600; text-transform: uppercase; letter-spacing: 1px;">${ichName} BRINGT MIT</span>
+                            <span style="font-size: 11px; color: #457B9D; font-weight: 600; text-transform: uppercase; letter-spacing: 1px;">${ichName} ${bringtMitLabel}</span>
                         </div>
                         <p style="font-size: 13px; margin: 0 0 10px 0; line-height: 1.5;">${detailed.ich || 'Keine spezifischen strukturellen Eigenschaften definiert.'}</p>
                         ${gfkAnalyse.ichTags}
@@ -11989,7 +12048,7 @@
                     <div style="padding: 14px; background: linear-gradient(135deg, rgba(69,123,157,0.15), rgba(69,123,157,0.05)); border-radius: 10px; border-left: 3px solid #457B9D;">
                         <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 10px;">
                             <span style="font-size: 14px;">👥</span>
-                            <span style="font-size: 11px; color: #457B9D; font-weight: 600; text-transform: uppercase; letter-spacing: 1px;">${partnerName} BRINGT MIT</span>
+                            <span style="font-size: 11px; color: #457B9D; font-weight: 600; text-transform: uppercase; letter-spacing: 1px;">${partnerName} ${bringtMitLabel}</span>
                         </div>
                         <p style="font-size: 13px; margin: 0 0 10px 0; line-height: 1.5;">${detailed.partner || 'Keine spezifischen strukturellen Eigenschaften definiert.'}</p>
                         ${gfkAnalyse.partnerTags}
@@ -12004,7 +12063,7 @@
                     <div style="padding: 14px; background: linear-gradient(135deg, rgba(100,149,237,0.1), rgba(69,123,157,0.08)); border-radius: 10px; border: 1px solid rgba(69,123,157,0.3);">
                         <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 10px;">
                             <span style="font-size: 14px;">🧠</span>
-                            <span style="font-size: 11px; color: #6495ED; font-weight: 600; text-transform: uppercase; letter-spacing: 1px;">DARAUS ENTSTEHT</span>
+                            <span style="font-size: 11px; color: #6495ED; font-weight: 600; text-transform: uppercase; letter-spacing: 1px;">${darausEntstehtLabel}</span>
                         </div>
                         <p style="font-size: 14px; margin: 0; line-height: 1.6; font-style: italic;">${detailed.synthese}</p>
                     </div>
