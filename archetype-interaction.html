@@ -1078,6 +1078,21 @@
                 </div>
             </div>
 
+            <button class="btn-primary-mobile" onclick="mobileGoToPage(2)">Weiter zum Partner →</button>
+
+            <!-- Reset Button -->
+            <button onclick="resetAll()" style="width: 100%; padding: 14px; margin-top: 12px; background: transparent; border: 1px solid rgba(255,255,255,0.3); border-radius: 12px; color: rgba(255,255,255,0.7); font-size: var(--font-base); cursor: pointer; transition: all 0.2s;">
+                🔄 Auswahl zurücksetzen
+            </button>
+        </div>
+
+        <!-- PAGE 2: Partner-Auswahl (NEU) -->
+        <div class="mobile-page" id="mobilePage2" data-page="2">
+            <div class="page-header">
+                <button class="btn-back" onclick="mobileGoToPage(1)">←</button>
+                <span class="page-title">Dein Partner</span>
+            </div>
+
             <!-- PARTNER Auswahl -->
             <div style="background: var(--bg-card); border-radius: 16px; border: 1px solid var(--border); border-top: 3px solid var(--danger); padding: 15px; margin-bottom: 15px;">
                 <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 12px; color: var(--danger); font-weight: 700; font-size: var(--font-lg);">
@@ -1174,19 +1189,14 @@
                 </div>
             </div>
 
-            <button class="btn-primary-mobile" onclick="mobileGoToPage(2)">Analysieren →</button>
-
-            <!-- Reset Button -->
-            <button onclick="resetAll()" style="width: 100%; padding: 14px; margin-top: 12px; background: transparent; border: 1px solid rgba(255,255,255,0.3); border-radius: 12px; color: rgba(255,255,255,0.7); font-size: var(--font-base); cursor: pointer; transition: all 0.2s;">
-                🔄 Auswahl zurücksetzen
-            </button>
+            <button class="btn-primary-mobile" onclick="mobileGoToPage(3)">Analysieren →</button>
         </div>
 
-        <!-- PAGE 2: Ergebnis-Übersicht -->
-        <div class="mobile-page" id="mobilePage2" data-page="2">
+        <!-- PAGE 3: Ergebnis/Synthese (vorher PAGE 2) -->
+        <div class="mobile-page" id="mobilePage3" data-page="3">
             <div class="page-header">
-                <button class="btn-back" onclick="mobileGoToPage(1)">←</button>
-                <span class="page-title">Ergebnis</span>
+                <button class="btn-back" onclick="mobileGoToPage(2)">←</button>
+                <span class="page-title">Synthese</span>
             </div>
 
             <div class="types-display" style="flex-direction: column; gap: 8px;">
@@ -1255,11 +1265,11 @@
             </div>
         </div>
 
-        <!-- PAGE 3: Kategorien-Übersicht -->
-        <div class="mobile-page" id="mobilePage3" data-page="3">
+        <!-- PAGE 4: Bedürfnisse/Kategorien (vorher PAGE 3) -->
+        <div class="mobile-page" id="mobilePage4" data-page="4">
             <div class="page-header">
-                <button class="btn-back" onclick="mobileGoToPage(2)">←</button>
-                <span class="page-title">Kategorien</span>
+                <button class="btn-back" onclick="mobileGoToPage(3)">←</button>
+                <span class="page-title">Bedürfnisse</span>
             </div>
 
             <div class="types-display" style="flex-direction: column; gap: 8px; margin-bottom: 15px;">
@@ -1291,6 +1301,7 @@
             <span class="page-dot active" onclick="mobileGoToPage(1)"></span>
             <span class="page-dot" onclick="mobileGoToPage(2)"></span>
             <span class="page-dot" onclick="mobileGoToPage(3)"></span>
+            <span class="page-dot" onclick="mobileGoToPage(4)"></span>
         </div>
     </div>
 
@@ -10591,8 +10602,8 @@
         }
 
         function mobileGoToPage(pageNumber, skipPushState = false) {
-            // Validate before moving from page 1 to page 2
-            if (currentMobilePage === 1 && pageNumber === 2 && !validateDimensionsComplete()) {
+            // Validate before moving to page 3 (Synthese) - ensure all dimensions are complete
+            if (currentMobilePage === 2 && pageNumber === 3 && !validateDimensionsComplete()) {
                 showValidationWarning();
                 return;
             }
@@ -10616,9 +10627,9 @@
             currentMobilePage = pageNumber;
 
             // Update page content when navigating
-            if (pageNumber === 2) {
+            if (pageNumber === 3) {
                 updateMobileResultPage();
-            } else if (pageNumber === 3) {
+            } else if (pageNumber === 4) {
                 updateMobileCategoriesPage();
             }
 
@@ -10650,8 +10661,8 @@
             const diff = mobileTouchStartX - mobileTouchEndX;
 
             if (Math.abs(diff) > swipeThreshold) {
-                if (diff > 0 && currentMobilePage < 2) {
-                    // Swipe left -> next page (max 2 pages)
+                if (diff > 0 && currentMobilePage < 4) {
+                    // Swipe left -> next page (max 4 pages)
                     mobileGoToPage(currentMobilePage + 1);
                 } else if (diff < 0 && currentMobilePage > 1) {
                     // Swipe right -> previous page
