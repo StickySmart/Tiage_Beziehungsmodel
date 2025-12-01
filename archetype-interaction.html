@@ -24,19 +24,26 @@
             if (!isMobile) return;
             // Mobile CSS OHNE media query laden
             document.write('<link rel="stylesheet" href="templates/template_mobile.css">');
-            // DevView Styles
-            document.write('<style>' +
-                'body.devview-active .comparison-container.desktop-mode { display: none !important; }' +
-                'body.devview-active .mobile-multipage { display: block !important; padding-top: 50px !important; transform: scale(0.28); transform-origin: top center; width: 357%; margin-left: -128%; }' +
-                'body.devview-active .mobile-page { display: block !important; min-height: auto !important; margin-bottom: 50px !important; border: 5px solid var(--primary) !important; border-radius: 20px !important; }' +
-                'body.devview-active .mobile-page::before { content: attr(data-page-label); position: absolute; top: -35px; left: 20px; background: var(--primary); color: white; padding: 8px 20px; border-radius: 10px; font-size: 22px; font-weight: bold; }' +
-                'body.devview-active .page-indicator { display: none !important; }' +
-                'body.devview-active .devview-banner { display: block !important; position: fixed; top: 0; left: 0; right: 0; background: linear-gradient(90deg, #ff6b6b, #f4a261); color: white; text-align: center; padding: 12px; font-weight: bold; z-index: 10000; }' +
+            // DevView Styles - SEHR STARK um Desktop zu überschreiben
+            document.write('<style id="devview-override">' +
+                '/* Desktop komplett verstecken */' +
+                'html body .comparison-container { display: none !important; visibility: hidden !important; }' +
+                'html body .comparison-container.desktop-mode { display: none !important; visibility: hidden !important; }' +
+                'html body .desktop-mode { display: none !important; }' +
+                '/* Mobile komplett anzeigen */' +
+                'html body .mobile-multipage { display: block !important; visibility: visible !important; padding-top: 50px !important; transform: scale(0.28); transform-origin: top center; width: 357%; margin-left: -128%; }' +
+                'html body .mobile-page { display: block !important; visibility: visible !important; min-height: auto !important; margin-bottom: 50px !important; border: 5px solid var(--primary) !important; border-radius: 20px !important; position: relative !important; }' +
+                'html body .mobile-page.active { display: block !important; }' +
+                'html body .mobile-page::before { content: attr(data-page-label); position: absolute; top: -35px; left: 20px; background: var(--primary); color: white; padding: 8px 20px; border-radius: 10px; font-size: 22px; font-weight: bold; z-index: 100; }' +
+                'html body .page-indicator { display: none !important; }' +
+                'html body .devview-banner { display: block !important; position: fixed; top: 0; left: 0; right: 0; background: linear-gradient(90deg, #ff6b6b, #f4a261); color: white; text-align: center; padding: 12px; font-weight: bold; z-index: 10000; }' +
                 '.devview-banner { display: none; }' +
             '</style>');
             // Viewport anpassen
             var vp = document.querySelector('meta[name="viewport"]');
             if (vp) vp.content = 'width=device-width, initial-scale=0.28, user-scalable=yes, minimum-scale=0.1';
+            // Hash-Jump verhindern
+            if (window.location.hash) history.replaceState(null, '', window.location.pathname + window.location.search);
         })();
     </script>
 
