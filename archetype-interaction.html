@@ -15,20 +15,23 @@
     <link rel="stylesheet" href="templates/template_desktop.css">
     <link rel="stylesheet" href="templates/template_mobile.css" media="(max-width: 768px)">
 
-    <!-- MOBILE DEVVIEW - Zeigt alle mobilen Seiten für Screenshots -->
+    <!-- MOBILE DEVVIEW - Klont Desktop-Elemente in Mobile-Seiten -->
     <script>
         (function() {
             if (new URLSearchParams(window.location.search).get('devview') !== 'true') return;
             if (!('ontouchstart' in window || /Android|iPhone|iPad|iPod/i.test(navigator.userAgent))) return;
 
-            // Mobile CSS laden
-            document.write('<link rel="stylesheet" href="templates/template_mobile.css">');
-            // Einfache Styles: Desktop weg, alle Mobile-Seiten sichtbar
-            document.write('<style>' +
-                '.comparison-container { display: none; }' +
-                '.mobile-multipage { display: block; transform: scale(0.3); transform-origin: top center; width: 333%; margin-left: -116%; }' +
-                '.mobile-page { display: block; margin-bottom: 40px; border: 4px solid var(--primary); border-radius: 16px; }' +
-                '.page-indicator { display: none; }' +
+            // Markiere DevView aktiv
+            window.DEVVIEW_ACTIVE = true;
+
+            // Styles für DevView Mobile
+            document.write('<style id="devview-styles">' +
+                '.mobile-multipage { display: block !important; }' +
+                '.mobile-page { display: block !important; margin-bottom: 30px; border: 3px solid var(--primary); border-radius: 16px; }' +
+                '.comparison-container { display: none !important; }' +
+                '.page-indicator { display: none !important; }' +
+                '.devview-cloned { margin-top: 15px; }' +
+                '.devview-label { background: var(--primary); color: white; padding: 5px 10px; border-radius: 8px; font-weight: bold; margin-bottom: 10px; display: inline-block; }' +
             '</style>');
         })();
     </script>
@@ -13801,6 +13804,143 @@
         };
 
         console.log('All modal functions are now globally available');
+    </script>
+
+    <!-- DEVVIEW: Klont Desktop-Elemente in Mobile-Seiten -->
+    <script>
+    (function() {
+        if (!window.DEVVIEW_ACTIVE) return;
+
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('DevView: Klone Desktop-Elemente in Mobile-Seiten...');
+
+            // === SEITE 1: DU ===
+            var mobilePage1 = document.getElementById('mobilePage1');
+            var desktopIchColumn = document.querySelector('.ich-column');
+
+            if (mobilePage1 && desktopIchColumn) {
+                // Alten Inhalt verstecken
+                var oldContent = mobilePage1.querySelector('div[style*="background: var(--bg-card)"]');
+                if (oldContent) oldContent.style.display = 'none';
+
+                // Desktop ICH-Column klonen
+                var clonedIch = desktopIchColumn.cloneNode(true);
+                clonedIch.className = 'devview-cloned ich-column-mobile';
+                clonedIch.style.cssText = 'background: var(--bg-card); border-radius: 16px; padding: 20px; margin: 15px 0; border-top: 3px solid var(--success);';
+
+                // IDs ändern um Konflikte zu vermeiden
+                clonedIch.querySelectorAll('[id]').forEach(function(el) {
+                    el.id = 'devview-' + el.id;
+                });
+
+                // Nach dem Titel einfügen
+                var title = mobilePage1.querySelector('h2');
+                if (title) {
+                    title.insertAdjacentElement('afterend', clonedIch);
+                }
+
+                console.log('DevView: ICH-Column geklont');
+            }
+
+            // === SEITE 2: PARTNER ===
+            var mobilePage2 = document.getElementById('mobilePage2');
+            var desktopPartnerColumn = document.querySelector('.partner-column');
+
+            if (mobilePage2 && desktopPartnerColumn) {
+                // Alten Inhalt verstecken
+                var oldPartnerContent = mobilePage2.querySelector('div[style*="background: var(--bg-card)"]');
+                if (oldPartnerContent) oldPartnerContent.style.display = 'none';
+
+                // Desktop Partner-Column klonen
+                var clonedPartner = desktopPartnerColumn.cloneNode(true);
+                clonedPartner.className = 'devview-cloned partner-column-mobile';
+                clonedPartner.style.cssText = 'background: var(--bg-card); border-radius: 16px; padding: 20px; margin: 15px 0; border-top: 3px solid var(--danger);';
+
+                // IDs ändern
+                clonedPartner.querySelectorAll('[id]').forEach(function(el) {
+                    el.id = 'devview-' + el.id;
+                });
+
+                // Nach dem Header einfügen
+                var header = mobilePage2.querySelector('.page-header');
+                if (header) {
+                    header.insertAdjacentElement('afterend', clonedPartner);
+                }
+
+                console.log('DevView: Partner-Column geklont');
+            }
+
+            // === SEITE 3: ERGEBNIS (Score Circle) ===
+            var mobilePage3 = document.getElementById('mobilePage3');
+            var desktopCenter = document.querySelector('.center-column');
+
+            if (mobilePage3 && desktopCenter) {
+                var clonedCenter = desktopCenter.cloneNode(true);
+                clonedCenter.className = 'devview-cloned center-column-mobile';
+                clonedCenter.style.cssText = 'background: var(--bg-card); border-radius: 16px; padding: 20px; margin: 15px 0; text-align: center;';
+
+                clonedCenter.querySelectorAll('[id]').forEach(function(el) {
+                    el.id = 'devview-' + el.id;
+                });
+
+                var header3 = mobilePage3.querySelector('.page-header');
+                if (header3) {
+                    header3.insertAdjacentElement('afterend', clonedCenter);
+                }
+
+                console.log('DevView: Center-Column geklont');
+            }
+
+            // === SEITE 4: BEDÜRFNISSE/KATEGORIEN ===
+            var mobilePage4 = document.getElementById('mobilePage4');
+            var desktopCategorySection = document.querySelector('.category-section');
+            var desktopAnalysisGrid = document.querySelector('.analysis-grid');
+
+            if (mobilePage4) {
+                // Alten Inhalt verstecken
+                var oldCategoryContent = mobilePage4.querySelector('.category-bars-container');
+                if (oldCategoryContent) oldCategoryContent.style.display = 'none';
+
+                // Kategorie-Section klonen
+                if (desktopCategorySection) {
+                    var clonedCategory = desktopCategorySection.cloneNode(true);
+                    clonedCategory.className = 'devview-cloned category-section-mobile';
+                    clonedCategory.style.cssText = 'background: var(--bg-card); border-radius: 16px; padding: 20px; margin: 15px 0;';
+
+                    clonedCategory.querySelectorAll('[id]').forEach(function(el) {
+                        el.id = 'devview-' + el.id;
+                    });
+
+                    var header4 = mobilePage4.querySelector('.page-header');
+                    if (header4) {
+                        header4.insertAdjacentElement('afterend', clonedCategory);
+                    }
+
+                    console.log('DevView: Category-Section geklont');
+                }
+
+                // Pro/Contra Analysis klonen
+                if (desktopAnalysisGrid) {
+                    var clonedAnalysis = desktopAnalysisGrid.cloneNode(true);
+                    clonedAnalysis.className = 'devview-cloned analysis-grid-mobile';
+                    clonedAnalysis.style.cssText = 'background: var(--bg-card); border-radius: 16px; padding: 20px; margin: 15px 0;';
+
+                    clonedAnalysis.querySelectorAll('[id]').forEach(function(el) {
+                        el.id = 'devview-' + el.id;
+                    });
+
+                    var lastCloned = mobilePage4.querySelector('.devview-cloned');
+                    if (lastCloned) {
+                        lastCloned.insertAdjacentElement('afterend', clonedAnalysis);
+                    }
+
+                    console.log('DevView: Analysis-Grid geklont');
+                }
+            }
+
+            console.log('DevView: Alle Desktop-Elemente wurden in Mobile-Seiten geklont!');
+        });
+    })();
     </script>
 </body>
 </html>
