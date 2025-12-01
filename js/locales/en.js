@@ -361,10 +361,17 @@ const TiageLocale_EN = {
 
     ageVerification: {
         title: 'Age Verification',
+        description: 'This site contains content about relationship models and is intended only for persons aged 18 and over.',
         question: 'Are you at least 18 years old?',
         confirm: 'Yes, I am 18+',
-        deny: 'No',
-        required: 'This site is only accessible to adults (18+).'
+        deny: 'No, I am under 18',
+        required: 'This site is only accessible to adults (18+).',
+        termsIntro: 'By clicking "Yes" you confirm that you:',
+        termsAge: 'are of legal age (at least 18 years old)',
+        termsAccept: 'accept the',
+        termsLinkText: 'Terms of Use and Privacy Policy',
+        termsCopyright: 'acknowledge that all content is protected by copyright',
+        termsPersonal: 'will use the content only for personal, non-commercial purposes'
     },
 
     // ═══════════════════════════════════════════════════════════════════════
