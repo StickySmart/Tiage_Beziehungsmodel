@@ -6291,6 +6291,8 @@
                 geschlechtValue,
                 currentPrimary,
                 currentSecondary,
+                typeOfPrimary: typeof currentPrimary,
+                geschlechtObject: JSON.stringify(personDimensions[person].geschlecht),
                 willSetAs: !currentPrimary ? 'PRIMARY' : (geschlechtValue === currentPrimary ? 'CLEAR' : 'SECONDARY')
             });
 
