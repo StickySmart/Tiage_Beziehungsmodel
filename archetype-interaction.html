@@ -2159,7 +2159,8 @@
             // Update orientierung labels
             updateOrientierungLabels();
 
-            // Update GFK/NVC competence labels
+            // Update GFK/NVC button labels
+            updateGfkButtonLabels();
             updateGfkLabels();
 
             // Update fold/unfold button
@@ -2260,10 +2261,32 @@
          */
         function updateArchetypeNames() {
             const archetypes = ['single', 'duo', 'duo_flex', 'solopoly', 'polyamor', 'ra', 'lat', 'aromantisch'];
+
+            // Update elements with data-archetype-name attribute
             archetypes.forEach(type => {
                 document.querySelectorAll(`[data-archetype-name="${type}"]`).forEach(el => {
                     el.textContent = TiageI18n.t(`archetypes.${type}.name`, type);
                 });
+            });
+
+            // Update select options (ichSelect, partnerSelect, mobile selects)
+            document.querySelectorAll('#ichSelect option, #partnerSelect option, #mobile-ich-select option, #mobile-partner-select option').forEach(option => {
+                const value = option.value;
+                if (archetypes.includes(value)) {
+                    option.textContent = TiageI18n.t(`archetypes.${value}.name`, option.textContent);
+                    option.title = TiageI18n.t(`archetypes.${value}.shortDef`, option.title);
+                }
+            });
+
+            // Update archetype symbol names in grids
+            document.querySelectorAll('.archetype-symbol-name').forEach(el => {
+                const parent = el.closest('[data-archetype]');
+                if (parent) {
+                    const type = parent.dataset.archetype;
+                    if (archetypes.includes(type)) {
+                        el.textContent = TiageI18n.t(`archetypes.${type}.name`, el.textContent);
+                    }
+                }
             });
         }
 
@@ -2440,6 +2463,29 @@
                 if (value && gfkLevels.includes(value)) {
                     btn.textContent = TiageI18n.t(`gfk.levels.${value}`, value);
                 }
+            });
+        }
+
+        /**
+         * Update GFK/NVC button labels
+         */
+        function updateGfkButtonLabels() {
+            const gfkLevels = ['niedrig', 'mittel', 'hoch'];
+            document.querySelectorAll('.gfk-btn').forEach(btn => {
+                const value = btn.dataset.value;
+                if (value && gfkLevels.includes(value)) {
+                    btn.textContent = TiageI18n.t(`dimensions.gfkLevels.${value}`, value);
+                }
+            });
+
+            // Update GFK labels in info links
+            document.querySelectorAll('.gfk-info-link').forEach(el => {
+                el.textContent = TiageI18n.t('dimensions.gfkLabel', 'GFK-Kompetenz');
+            });
+
+            // Update Bedürfnis-Übereinstimmung label
+            document.querySelectorAll('.gfk-level-label').forEach(el => {
+                el.textContent = TiageI18n.t('needs.matchLabel', 'Bedürfnis-Übereinstimmung');
             });
         }
 
@@ -5127,7 +5173,18 @@
             const arch = data.archetypes[archetypeId];
             const def = archetypeDefinitions[archetypeId];
 
+            // Get localized archetype data from i18n (with fallback to hardcoded def)
+            const localizedArch = {
+                name: TiageI18n.t(`archetypes.${archetypeId}.name`, arch.name),
+                shortDef: TiageI18n.t(`archetypes.${archetypeId}.shortDef`, def?.shortDef || ''),
+                longDef: TiageI18n.t(`archetypes.${archetypeId}.longDef`, def?.longDef || ''),
+                keyPrinciples: TiageI18n.t(`archetypes.${archetypeId}.keyPrinciples`, def?.keyPrinciples || []),
+                notTheSameAs: TiageI18n.t(`archetypes.${archetypeId}.notTheSameAs`, def?.notTheSameAs || []),
+                variants: TiageI18n.t(`archetypes.${archetypeId}.variants`, def?.variants || [])
+            };
+
             // Top navigation dots and swipe hint
+            const swipeHint = TiageI18n.t('archetypeModal.swipeHint', '← Wischen zum Navigieren →');
             let topNav = `
                 <div class="definition-nav-dots" style="display: flex; justify-content: center; gap: 8px; margin-bottom: 15px; padding-bottom: 15px; border-bottom: 1px solid var(--border);">
                     ${archetypeOrder.map((id, index) => `
@@ -5136,51 +5193,54 @@
                               style="width: 10px; height: 10px; border-radius: 50%; background: ${index === currentDefinitionIndex ? 'var(--primary)' : 'var(--border)'}; cursor: pointer; transition: all 0.2s;"></span>
                     `).join('')}
                 </div>
-                <div style="text-align: center; font-size: 11px; color: var(--text-muted); margin-bottom: 15px;">← Wischen zum Navigieren →</div>
+                <div style="text-align: center; font-size: 11px; color: var(--text-muted); margin-bottom: 15px;">${swipeHint}</div>
             `;
 
             let modalContent = topNav + `
                 <div class="modal-category">
                     <div class="modal-category-header">
                         <div class="modal-category-letter" style="background: ${arch.color}; width: 40px; height: 40px; font-size: 20px;">${icons[archetypeId]}</div>
-                        <div class="modal-category-name">${arch.name}</div>
+                        <div class="modal-category-name">${localizedArch.name}</div>
                     </div>
-                    <div class="modal-category-desc">${arch.shortDescription || ''}</div>
+                    <div class="modal-category-desc">${localizedArch.shortDef || ''}</div>
             `;
 
-            if (def) {
+            if (def || localizedArch.longDef) {
                 modalContent += `
-                    <div class="definition-long" style="margin-top: 15px;">${def.longDef || ''}</div>
+                    <div class="definition-long" style="margin-top: 15px;">${localizedArch.longDef || ''}</div>
                 `;
 
-                if (def.keyPrinciples && def.keyPrinciples.length > 0) {
+                const keyPrinciples = localizedArch.keyPrinciples;
+                if (keyPrinciples && keyPrinciples.length > 0) {
                     modalContent += `
                         <div class="definition-section">
-                            <div class="definition-section-title">Kernprinzipien</div>
+                            <div class="definition-section-title">${TiageI18n.t('archetypeModal.keyPrinciples', 'Kernprinzipien')}</div>
                             <ul class="definition-list principles">
-                                ${def.keyPrinciples.map(p => `<li>${p}</li>`).join('')}
+                                ${keyPrinciples.map(p => `<li>${p}</li>`).join('')}
                             </ul>
                         </div>
                     `;
                 }
 
-                if (def.notTheSameAs && def.notTheSameAs.length > 0) {
+                const notTheSameAs = localizedArch.notTheSameAs;
+                if (notTheSameAs && notTheSameAs.length > 0) {
                     modalContent += `
                         <div class="definition-section">
-                            <div class="definition-section-title">Das ist NICHT</div>
+                            <div class="definition-section-title">${TiageI18n.t('archetypeModal.notTheSameAs', 'Das ist NICHT')}</div>
                             <ul class="definition-list not-same">
-                                ${def.notTheSameAs.map(n => `<li>${n}</li>`).join('')}
+                                ${notTheSameAs.map(n => `<li>${n}</li>`).join('')}
                             </ul>
                         </div>
                     `;
                 }
 
-                if (def.variants && def.variants.length > 0) {
+                const variants = localizedArch.variants;
+                if (variants && variants.length > 0) {
                     modalContent += `
                         <div class="definition-section">
-                            <div class="definition-section-title">Varianten</div>
+                            <div class="definition-section-title">${TiageI18n.t('archetypeModal.variants', 'Varianten')}</div>
                             <ul class="definition-list variants">
-                                ${def.variants.map(v => `<li>${v}</li>`).join('')}
+                                ${variants.map(v => `<li>${v}</li>`).join('')}
                             </ul>
                         </div>
                     `;
@@ -5194,13 +5254,13 @@
             if (pathos || logos) {
                 modalContent += `
                     <div class="definition-section" style="margin-top: 20px; border-top: 1px solid var(--border); padding-top: 15px;">
-                        <div class="definition-section-title" style="margin-bottom: 15px;">Pathos & Logos</div>
+                        <div class="definition-section-title" style="margin-bottom: 15px;">${TiageI18n.t('archetypeModal.pathosLogos', 'Pathos & Logos')}</div>
                 `;
 
                 if (pathos) {
                     modalContent += `
                         <div style="margin-bottom: 15px; padding: 12px; background: rgba(231,76,60,0.1); border-radius: 10px; border-left: 3px solid #e74c3c;">
-                            <div style="color: #e74c3c; font-weight: 600; font-size: 13px; margin-bottom: 6px;">Pathos (Emotionale Ebene)</div>
+                            <div style="color: #e74c3c; font-weight: 600; font-size: 13px; margin-bottom: 6px;">${TiageI18n.t('archetypeModal.pathosLabel', 'Pathos (Emotionale Ebene)')}</div>
                             <p style="color: var(--text-secondary); font-style: italic; line-height: 1.5; font-size: 12px; margin: 0;">${pathos}</p>
                         </div>
                     `;
@@ -5209,7 +5269,7 @@
                 if (logos) {
                     modalContent += `
                         <div style="padding: 12px; background: rgba(52,152,219,0.1); border-radius: 10px; border-left: 3px solid #3498db;">
-                            <div style="color: #3498db; font-weight: 600; font-size: 13px; margin-bottom: 6px;">Logos (Rationale Ebene)</div>
+                            <div style="color: #3498db; font-weight: 600; font-size: 13px; margin-bottom: 6px;">${TiageI18n.t('archetypeModal.logosLabel', 'Logos (Rationale Ebene)')}</div>
                             <p style="color: var(--text-secondary); font-style: italic; line-height: 1.5; font-size: 12px; margin: 0;">${logos}</p>
                         </div>
                     `;
@@ -5229,7 +5289,7 @@
                               style="width: 10px; height: 10px; border-radius: 50%; background: ${index === currentDefinitionIndex ? 'var(--primary)' : 'var(--border)'}; cursor: pointer; transition: all 0.2s;"></span>
                     `).join('')}
                 </div>
-                <div style="text-align: center; font-size: 11px; color: var(--text-muted); margin-top: 8px;">← Wischen zum Navigieren →</div>
+                <div style="text-align: center; font-size: 11px; color: var(--text-muted); margin-top: 8px;">${swipeHint}</div>
                 <button onclick="confirmDefinitionSelection()" style="
                     display: block;
                     width: 100%;
@@ -5244,11 +5304,12 @@
                     cursor: pointer;
                     transition: all 0.2s;
                 " onmouseover="this.style.opacity='0.9'" onmouseout="this.style.opacity='1'">
-                    Auswahl übernehmen
+                    ${TiageI18n.t('archetypeModal.confirmSelection', 'Auswahl übernehmen')}
                 </button>
             `;
 
-            document.getElementById('definitionModalTitle').textContent = `${arch.name} - Definition`;
+            const definitionLabel = TiageI18n.t('archetypeModal.definition', 'Definition');
+            document.getElementById('definitionModalTitle').textContent = `${localizedArch.name} - ${definitionLabel}`;
             document.getElementById('definitionModalBody').innerHTML = modalContent;
         }
 
@@ -6478,11 +6539,11 @@
                 { value: 'bisexuell', label: 'bisexuell' }
             ];
 
-            // GFK Optionen (Gewaltfreie Kommunikation)
+            // GFK Optionen (Gewaltfreie Kommunikation / NVC)
             const gfkOptions = [
-                { value: 'niedrig', label: 'niedrig' },
-                { value: 'mittel', label: 'mittel' },
-                { value: 'hoch', label: 'hoch' }
+                { value: 'niedrig', label: TiageI18n.t('dimensions.gfkLevels.niedrig', 'niedrig') },
+                { value: 'mittel', label: TiageI18n.t('dimensions.gfkLevels.mittel', 'mittel') },
+                { value: 'hoch', label: TiageI18n.t('dimensions.gfkLevels.hoch', 'hoch') }
             ];
 
             // Geschlecht-Grids befüllen
@@ -7456,7 +7517,7 @@
                 const gemeinsameLabel = TiageI18n.t('synthesisSection.gemeinsameBeduerfnisse', 'Gemeinsame Bedürfnisse');
                 html += `
                     <div class="gfk-section gfk-matches">
-                        <div class="gfk-section-title" style="color: #22c55e;">${gemeinsameLabel}</div>
+                        <div class="gfk-section-title" style="color: #22c55e;">${TiageI18n.t('needs.sharedTitle', 'GEMEINSAME BEDÜRFNISSE')}</div>
                         <div class="gfk-tags">
                             ${matching.topUebereinstimmungen.map(b => {
                                 const translatedLabel = TiageI18n.t(`needs.items.${b.id}`, b.label);
@@ -7472,7 +7533,7 @@
                 const unterschiedlicheLabel = TiageI18n.t('synthesisSection.unterschiedlichePrioritaeten', 'Unterschiedliche Prioritäten');
                 html += `
                     <div class="gfk-section gfk-conflicts">
-                        <div class="gfk-section-title" style="color: #ef4444;">${unterschiedlicheLabel}</div>
+                        <div class="gfk-section-title" style="color: #ef4444;">${TiageI18n.t('needs.differentTitle', 'UNTERSCHIEDLICHE PRIORITÄTEN')}</div>
                         <div class="gfk-tags">
                             ${matching.topKonflikte.map(b => {
                                 const translatedLabel = TiageI18n.t(`needs.items.${b.id}`, b.label);
@@ -11864,8 +11925,9 @@
                     const translatedLabel = TiageI18n.t(`needs.items.${b.id}`, b.label);
                     return `<span style="${tagStyleMatch}">${translatedLabel}</span>`;
                 }).join('');
-                const gemeinsameBeduerfnisseLabel = TiageI18n.t('synthesisSection.gemeinsameBeduerfnisse', 'Gemeinsame Bedürfnisse');
-                const sectionTitle = type === 'pathos' ? gemeinsameBeduerfnisseLabel.toUpperCase() : gemeinsameBeduerfnisseLabel.toUpperCase();
+                const sectionTitle = type === 'pathos'
+                    ? TiageI18n.t('needs.sharedTitle', 'GEMEINSAME BEDÜRFNISSE')
+                    : TiageI18n.t('needs.valuesTitle', 'GEMEINSAME WERTE');
                 result.gemeinsamSection = `
                 <div style="margin-bottom: 16px;">
                     <div style="padding: 12px; background: rgba(34,197,94,0.08); border-radius: 10px; border: 1px solid rgba(34,197,94,0.25);">

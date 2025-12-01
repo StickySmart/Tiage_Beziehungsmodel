@@ -388,6 +388,22 @@ const TiageLocale_DE = {
     },
 
     // ═══════════════════════════════════════════════════════════════════════
+    // ARCHETYP-INFO-MODAL
+    // ═══════════════════════════════════════════════════════════════════════
+
+    archetypeModal: {
+        swipeHint: '← Wischen zum Navigieren →',
+        keyPrinciples: 'Kernprinzipien',
+        notTheSameAs: 'Das ist NICHT',
+        variants: 'Varianten',
+        pathosLogos: 'Pathos & Logos',
+        pathosLabel: 'Pathos (Emotionale Ebene)',
+        logosLabel: 'Logos (Rationale Ebene)',
+        confirmSelection: 'Auswahl übernehmen',
+        definition: 'Definition'
+    },
+
+    // ═══════════════════════════════════════════════════════════════════════
     // SYNTHESE / ERGEBNISSE
     // ═══════════════════════════════════════════════════════════════════════
 
@@ -441,7 +457,23 @@ const TiageLocale_DE = {
             secondary: 'G',
             identityFull: 'Identität',
             secondaryFull: 'Sekundär'
+        },
+        gfkLevels: {
+            niedrig: 'niedrig',
+            mittel: 'mittel',
+            hoch: 'hoch'
         }
+    },
+
+    // ═══════════════════════════════════════════════════════════════════════
+    // BEDÜRFNISSE
+    // ═══════════════════════════════════════════════════════════════════════
+
+    needs: {
+        matchLabel: 'Bedürfnis-Übereinstimmung',
+        sharedTitle: 'GEMEINSAME BEDÜRFNISSE',
+        differentTitle: 'UNTERSCHIEDLICHE PRIORITÄTEN',
+        valuesTitle: 'GEMEINSAME WERTE'
     },
 
     // ═══════════════════════════════════════════════════════════════════════
