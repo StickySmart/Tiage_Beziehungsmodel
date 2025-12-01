@@ -38,6 +38,23 @@
     <script src="profiles/beduerfnis-modifikatoren.js"></script>
 </head>
 <body>
+    <!-- Dev View Mode Detection - MUST be first -->
+    <script>
+        (function() {
+            // Check for ?devview=true URL parameter
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.get('devview') === 'true') {
+                document.body.classList.add('devview-active');
+                // Update viewport for full page view
+                const viewport = document.querySelector('meta[name="viewport"]');
+                if (viewport) {
+                    viewport.content = 'width=device-width, initial-scale=0.35, user-scalable=yes';
+                }
+            }
+        })();
+    </script>
+    <div class="devview-banner">DEV VIEW - Alle Seiten sichtbar (URL: ?devview=true)</div>
+
     <!-- Age Verification - Inline Script BEFORE modal for onclick to work -->
     <script>
         // Define confirmAge immediately so onclick handlers work
@@ -971,7 +988,7 @@
     <div class="mobile-multipage" id="mobileMultipage" style="display: none;">
 
         <!-- PAGE 1: Auswahl -->
-        <div class="mobile-page active" id="mobilePage1" data-page="1">
+        <div class="mobile-page active" id="mobilePage1" data-page="1" data-page-label="Seite 1: ICH">
             <h2 style="text-align: center; color: var(--text-primary); margin-bottom: 20px; font-size: var(--font-lg);">Beziehungsqualität analysieren</h2>
 
             <!-- Mobile Fold/Unfold Button -->
@@ -1087,7 +1104,7 @@
         </div>
 
         <!-- PAGE 2: Partner-Auswahl (NEU) -->
-        <div class="mobile-page" id="mobilePage2" data-page="2">
+        <div class="mobile-page" id="mobilePage2" data-page="2" data-page-label="Seite 2: PARTNER">
             <div class="page-header">
                 <button class="btn-back" onclick="mobileGoToPage(1)">←</button>
                 <span class="page-title">Dein Partner</span>
@@ -1193,7 +1210,7 @@
         </div>
 
         <!-- PAGE 3: Ergebnis/Synthese (vorher PAGE 2) -->
-        <div class="mobile-page" id="mobilePage3" data-page="3">
+        <div class="mobile-page" id="mobilePage3" data-page="3" data-page-label="Seite 3: ERGEBNIS">
             <div class="page-header">
                 <button class="btn-back" onclick="mobileGoToPage(2)">←</button>
                 <span class="page-title">Synthese</span>
@@ -1266,7 +1283,7 @@
         </div>
 
         <!-- PAGE 4: Bedürfnisse/Kategorien (vorher PAGE 3) -->
-        <div class="mobile-page" id="mobilePage4" data-page="4">
+        <div class="mobile-page" id="mobilePage4" data-page="4" data-page-label="Seite 4: DETAILS">
             <div class="page-header">
                 <button class="btn-back" onclick="mobileGoToPage(3)">←</button>
                 <span class="page-title">Bedürfnisse</span>

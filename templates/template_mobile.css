@@ -628,3 +628,73 @@ body {
         display: none !important;
     }
 }
+
+/* ========================================
+   FULL PAGE DEV VIEW
+   Aktivieren mit URL-Parameter: ?devview=true
+   Zeigt alle Seiten auf einmal für Screenshots
+   ======================================== */
+
+body.devview-active {
+    overflow: auto !important;
+}
+
+body.devview-active .mobile-multipage {
+    display: block !important;
+    padding-top: 10px !important;
+    transform: scale(0.35);
+    transform-origin: top center;
+    width: 285%;
+    margin-left: -92.5%;
+}
+
+body.devview-active .mobile-page {
+    display: block !important;
+    min-height: auto !important;
+    padding-bottom: 20px !important;
+    margin-bottom: 30px !important;
+    border: 3px solid var(--primary) !important;
+    border-radius: 12px !important;
+    position: relative;
+}
+
+body.devview-active .mobile-page::before {
+    content: attr(data-page-label);
+    position: absolute;
+    top: -25px;
+    left: 10px;
+    background: var(--primary);
+    color: white;
+    padding: 4px 12px;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+body.devview-active .page-indicator {
+    display: none !important;
+}
+
+body.devview-active .comparison-container.desktop-mode {
+    display: none !important;
+}
+
+/* Dev View Banner */
+.devview-banner {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    background: linear-gradient(90deg, #ff6b6b, #f4a261);
+    color: white;
+    text-align: center;
+    padding: 8px;
+    font-weight: bold;
+    font-size: 12px;
+    z-index: 10000;
+}
+
+body.devview-active .devview-banner {
+    display: block;
+}
