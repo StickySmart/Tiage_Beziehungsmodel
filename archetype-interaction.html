@@ -12081,20 +12081,36 @@
                 index === self.findIndex(t => t.id === b.id)
             );
 
-            if (uniqueDynamik.length > 0) {
-                const dynamikLabel = TiageI18n.t('synthesisSection.dynamik', 'DYNAMIK');
-                const dynamikTags = uniqueDynamik.slice(0, 5).map(b => {
-                    const translatedLabel = TiageI18n.t(`needs.items.${b.id}`, b.label);
-                    return `<span style="${tagStyleDynamik}">${translatedLabel}</span>`;
-                }).join('');
-                result.dynamikSection = `
-                <div style="margin-top: 12px;">
-                    <div style="display: flex; align-items: center; gap: 6px; margin-bottom: 6px;">
-                        <span style="font-size: 12px;">⚡</span>
-                        <span style="font-size: 10px; color: #8B5CF6; font-weight: 600; text-transform: uppercase; letter-spacing: 1px;">${dynamikLabel}</span>
-                    </div>
-                    <div>${dynamikTags}</div>
-                </div>`;
+            // Dynamik + Wachstum als kombinierter Fließtext (SexPositiv-Ansatz)
+            if (uniqueDynamik.length > 0 || wachstum.length > 0) {
+                // Dynamik-Bedürfnisse als farbige Inline-Spans
+                const dynamikNames = uniqueDynamik.slice(0, 2).map(b => {
+                    const label = TiageI18n.t(`needs.items.${b.id}`, b.label);
+                    return `<span style="color: #8B5CF6; font-weight: 500;">${label}</span>`;
+                });
+
+                // Wachstums-Bedürfnisse als farbige Inline-Spans
+                const wachstumNames = wachstum.slice(0, 2).map(b => {
+                    const label = TiageI18n.t(`needs.items.${b.id}`, b.label);
+                    return `<span style="color: #a855f7; font-weight: 500;">${label}</span>`;
+                });
+
+                let sentence = '';
+                if (dynamikNames.length > 0 && wachstumNames.length > 0) {
+                    const dynamikPart = dynamikNames.length > 1 ? `${dynamikNames[0]} und ${dynamikNames[1]}` : dynamikNames[0];
+                    const wachstumPart = wachstumNames.length > 1 ? `${wachstumNames[0]} und ${wachstumNames[1]}` : wachstumNames[0];
+                    sentence = `Eure Dynamik lebt von ${dynamikPart} – hier liegt Wachstumspotential in ${wachstumPart}.`;
+                } else if (dynamikNames.length > 0) {
+                    const dynamikPart = dynamikNames.length > 1 ? `${dynamikNames[0]} und ${dynamikNames[1]}` : dynamikNames[0];
+                    sentence = `Eure Dynamik entfaltet sich durch ${dynamikPart}.`;
+                } else if (wachstumNames.length > 0) {
+                    const wachstumPart = wachstumNames.length > 1 ? `${wachstumNames[0]} und ${wachstumNames[1]}` : wachstumNames[0];
+                    sentence = `Wachstumspotential zeigt sich in ${wachstumPart}.`;
+                }
+
+                if (sentence) {
+                    result.dynamikSection = `<p style="margin-top: 12px; font-size: 13px; line-height: 1.6; color: var(--text-secondary);">${sentence}</p>`;
+                }
             }
 
             return result;
@@ -12191,9 +12207,8 @@
 
             const creativityLabel = TiageI18n.t('synthesisSection.creativity', 'CREATIVITY');
 
-            // Wachstum- und Dynamik-Tags für Integration in Creativity extrahieren
-            const wachstumTags = gfkAnalyse.wachstumSection ? gfkAnalyse.wachstumSection : '';
-            const dynamikTags = gfkAnalyse.dynamikSection ? gfkAnalyse.dynamikSection : '';
+            // Dynamik+Wachstum kombiniert als Fließtext
+            const dynamikWachstumText = gfkAnalyse.dynamikSection || '';
 
             let html = `
                 <!-- GEMEINSAME BEDÜRFNISSE -->
@@ -12207,8 +12222,7 @@
                             <span style="font-size: 11px; color: #FFD700; font-weight: 600; text-transform: uppercase; letter-spacing: 1px;">${creativityLabel}</span>
                         </div>
                         <p style="font-size: 14px; margin: 0; line-height: 1.6; font-style: italic;">${detailed.synthese}</p>
-                        ${dynamikTags}
-                        ${wachstumTags}
+                        ${dynamikWachstumText}
                     </div>
                 </div>`;
 
@@ -12230,9 +12244,8 @@
 
             const creativityLabel = TiageI18n.t('synthesisSection.creativity', 'CREATIVITY');
 
-            // Wachstum- und Dynamik-Tags für Integration in Creativity extrahieren
-            const wachstumTags = gfkAnalyse.wachstumSection ? gfkAnalyse.wachstumSection : '';
-            const dynamikTags = gfkAnalyse.dynamikSection ? gfkAnalyse.dynamikSection : '';
+            // Dynamik+Wachstum kombiniert als Fließtext
+            const dynamikWachstumText = gfkAnalyse.dynamikSection || '';
 
             let html = `
                 <!-- GEMEINSAME WERTE -->
@@ -12246,8 +12259,7 @@
                             <span style="font-size: 11px; color: #6495ED; font-weight: 600; text-transform: uppercase; letter-spacing: 1px;">${creativityLabel}</span>
                         </div>
                         <p style="font-size: 14px; margin: 0; line-height: 1.6; font-style: italic;">${detailed.synthese}</p>
-                        ${dynamikTags}
-                        ${wachstumTags}
+                        ${dynamikWachstumText}
                     </div>
                 </div>`;
 
