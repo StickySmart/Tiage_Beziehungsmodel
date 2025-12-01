@@ -11218,7 +11218,18 @@
             const arch = data.archetypes[archetypeId];
             const def = archetypeDefinitions[archetypeId];
 
+            // Get localized archetype data from i18n (with fallback to hardcoded def)
+            const localizedArch = {
+                name: TiageI18n.t(`archetypes.${archetypeId}.name`, arch.name),
+                shortDef: TiageI18n.t(`archetypes.${archetypeId}.shortDef`, def?.shortDef || ''),
+                longDef: TiageI18n.t(`archetypes.${archetypeId}.longDef`, def?.longDef || ''),
+                keyPrinciples: TiageI18n.t(`archetypes.${archetypeId}.keyPrinciples`, def?.keyPrinciples || []),
+                notTheSameAs: TiageI18n.t(`archetypes.${archetypeId}.notTheSameAs`, def?.notTheSameAs || []),
+                variants: TiageI18n.t(`archetypes.${archetypeId}.variants`, def?.variants || [])
+            };
+
             // Top navigation dots and swipe hint
+            const swipeHint = TiageI18n.t('archetypeModal.swipeHint', '← Wischen zum Navigieren →');
             let topNav = `
                 <div class="definition-nav-dots" style="display: flex; justify-content: center; gap: 8px; margin-bottom: 15px; padding-bottom: 15px; border-bottom: 1px solid var(--border);">
                     ${archetypeOrder.map((id, index) => `
@@ -11227,51 +11238,54 @@
                               style="width: 10px; height: 10px; border-radius: 50%; background: ${index === currentDefinitionIndex ? 'var(--primary)' : 'var(--border)'}; cursor: pointer; transition: all 0.2s;"></span>
                     `).join('')}
                 </div>
-                <div style="text-align: center; font-size: 11px; color: var(--text-muted); margin-bottom: 15px;">← Wischen zum Navigieren →</div>
+                <div style="text-align: center; font-size: 11px; color: var(--text-muted); margin-bottom: 15px;">${swipeHint}</div>
             `;
 
             let modalContent = topNav + `
                 <div class="modal-category">
                     <div class="modal-category-header">
                         <div class="modal-category-letter" style="background: ${arch.color}; width: 40px; height: 40px; font-size: 20px;">${icons[archetypeId]}</div>
-                        <div class="modal-category-name">${arch.name}</div>
+                        <div class="modal-category-name">${localizedArch.name}</div>
                     </div>
-                    <div class="modal-category-desc">${arch.shortDescription || ''}</div>
+                    <div class="modal-category-desc">${localizedArch.shortDef || ''}</div>
             `;
 
-            if (def) {
+            if (def || localizedArch.longDef) {
                 modalContent += `
-                    <div class="definition-long" style="margin-top: 15px;">${def.longDef || ''}</div>
+                    <div class="definition-long" style="margin-top: 15px;">${localizedArch.longDef || ''}</div>
                 `;
 
-                if (def.keyPrinciples && def.keyPrinciples.length > 0) {
+                const keyPrinciples = localizedArch.keyPrinciples;
+                if (keyPrinciples && keyPrinciples.length > 0) {
                     modalContent += `
                         <div class="definition-section">
-                            <div class="definition-section-title">Kernprinzipien</div>
+                            <div class="definition-section-title">${TiageI18n.t('archetypeModal.keyPrinciples', 'Kernprinzipien')}</div>
                             <ul class="definition-list principles">
-                                ${def.keyPrinciples.map(p => `<li>${p}</li>`).join('')}
+                                ${keyPrinciples.map(p => `<li>${p}</li>`).join('')}
                             </ul>
                         </div>
                     `;
                 }
 
-                if (def.notTheSameAs && def.notTheSameAs.length > 0) {
+                const notTheSameAs = localizedArch.notTheSameAs;
+                if (notTheSameAs && notTheSameAs.length > 0) {
                     modalContent += `
                         <div class="definition-section">
-                            <div class="definition-section-title">Das ist NICHT</div>
+                            <div class="definition-section-title">${TiageI18n.t('archetypeModal.notTheSameAs', 'Das ist NICHT')}</div>
                             <ul class="definition-list not-same">
-                                ${def.notTheSameAs.map(n => `<li>${n}</li>`).join('')}
+                                ${notTheSameAs.map(n => `<li>${n}</li>`).join('')}
                             </ul>
                         </div>
                     `;
                 }
 
-                if (def.variants && def.variants.length > 0) {
+                const variants = localizedArch.variants;
+                if (variants && variants.length > 0) {
                     modalContent += `
                         <div class="definition-section">
-                            <div class="definition-section-title">Varianten</div>
+                            <div class="definition-section-title">${TiageI18n.t('archetypeModal.variants', 'Varianten')}</div>
                             <ul class="definition-list variants">
-                                ${def.variants.map(v => `<li>${v}</li>`).join('')}
+                                ${variants.map(v => `<li>${v}</li>`).join('')}
                             </ul>
                         </div>
                     `;
@@ -11285,13 +11299,13 @@
             if (pathos || logos) {
                 modalContent += `
                     <div class="definition-section" style="margin-top: 20px; border-top: 1px solid var(--border); padding-top: 15px;">
-                        <div class="definition-section-title" style="margin-bottom: 15px;">Pathos & Logos</div>
+                        <div class="definition-section-title" style="margin-bottom: 15px;">${TiageI18n.t('archetypeModal.pathosLogos', 'Pathos & Logos')}</div>
                 `;
 
                 if (pathos) {
                     modalContent += `
                         <div style="margin-bottom: 15px; padding: 12px; background: rgba(231,76,60,0.1); border-radius: 10px; border-left: 3px solid #e74c3c;">
-                            <div style="color: #e74c3c; font-weight: 600; font-size: 13px; margin-bottom: 6px;">Pathos (Emotionale Ebene)</div>
+                            <div style="color: #e74c3c; font-weight: 600; font-size: 13px; margin-bottom: 6px;">${TiageI18n.t('archetypeModal.pathosLabel', 'Pathos (Emotionale Ebene)')}</div>
                             <p style="color: var(--text-secondary); font-style: italic; line-height: 1.5; font-size: 12px; margin: 0;">${pathos}</p>
                         </div>
                     `;
@@ -11300,7 +11314,7 @@
                 if (logos) {
                     modalContent += `
                         <div style="padding: 12px; background: rgba(52,152,219,0.1); border-radius: 10px; border-left: 3px solid #3498db;">
-                            <div style="color: #3498db; font-weight: 600; font-size: 13px; margin-bottom: 6px;">Logos (Rationale Ebene)</div>
+                            <div style="color: #3498db; font-weight: 600; font-size: 13px; margin-bottom: 6px;">${TiageI18n.t('archetypeModal.logosLabel', 'Logos (Rationale Ebene)')}</div>
                             <p style="color: var(--text-secondary); font-style: italic; line-height: 1.5; font-size: 12px; margin: 0;">${logos}</p>
                         </div>
                     `;
@@ -11320,7 +11334,7 @@
                               style="width: 10px; height: 10px; border-radius: 50%; background: ${index === currentDefinitionIndex ? 'var(--primary)' : 'var(--border)'}; cursor: pointer; transition: all 0.2s;"></span>
                     `).join('')}
                 </div>
-                <div style="text-align: center; font-size: 11px; color: var(--text-muted); margin-top: 8px;">← Wischen zum Navigieren →</div>
+                <div style="text-align: center; font-size: 11px; color: var(--text-muted); margin-top: 8px;">${swipeHint}</div>
                 <button onclick="confirmDefinitionSelection()" style="
                     display: block;
                     width: 100%;
@@ -11335,11 +11349,12 @@
                     cursor: pointer;
                     transition: all 0.2s;
                 " onmouseover="this.style.opacity='0.9'" onmouseout="this.style.opacity='1'">
-                    Auswahl übernehmen
+                    ${TiageI18n.t('archetypeModal.confirmSelection', 'Auswahl übernehmen')}
                 </button>
             `;
 
-            document.getElementById('definitionModalTitle').textContent = `${arch.name} - Definition`;
+            const definitionLabel = TiageI18n.t('archetypeModal.definition', 'Definition');
+            document.getElementById('definitionModalTitle').textContent = `${localizedArch.name} - ${definitionLabel}`;
             document.getElementById('definitionModalBody').innerHTML = modalContent;
         }
 

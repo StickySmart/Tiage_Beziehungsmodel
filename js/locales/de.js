@@ -375,6 +375,22 @@ const TiageLocale_DE = {
     },
 
     // ═══════════════════════════════════════════════════════════════════════
+    // ARCHETYP-INFO-MODAL
+    // ═══════════════════════════════════════════════════════════════════════
+
+    archetypeModal: {
+        swipeHint: '← Wischen zum Navigieren →',
+        keyPrinciples: 'Kernprinzipien',
+        notTheSameAs: 'Das ist NICHT',
+        variants: 'Varianten',
+        pathosLogos: 'Pathos & Logos',
+        pathosLabel: 'Pathos (Emotionale Ebene)',
+        logosLabel: 'Logos (Rationale Ebene)',
+        confirmSelection: 'Auswahl übernehmen',
+        definition: 'Definition'
+    },
+
+    // ═══════════════════════════════════════════════════════════════════════
     // SYNTHESE / ERGEBNISSE
     // ═══════════════════════════════════════════════════════════════════════
 

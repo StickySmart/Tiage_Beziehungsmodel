@@ -221,81 +221,184 @@ const TiageLocale_EN = {
         single: {
             name: 'Single',
             shortDef: 'Conscious choice for an autonomous life without a primary relationship as a permanent lifestyle.',
+            longDef: 'Single-oriented people have actively chosen a life without a permanent romantic partnership. This is not a transitional phase ("between relationships"), but a conscious lifestyle that sees self-sufficiency and personal autonomy as central values. Social contacts, friendships, and occasional romantic/sexual encounters are possible, but no permanent partnership is sought.',
             keyPrinciples: [
                 'Self-sufficiency as a value, not a lack',
                 'Personal autonomy over commitment',
                 'Relationships as an option, not a necessity',
                 'Fulfillment through self, friends, projects'
+            ],
+            notTheSameAs: [
+                '"Between relationships"',
+                '"Haven\'t found the right one yet"',
+                'Unable to commit or fear of attachment',
+                'Lonely or unhappy'
+            ],
+            variants: [
+                'Aromantic-Single: No romantic feelings, no need for them',
+                'Consciously-autonomous: Positive choice for freedom',
+                'Relationship-critical: Prefers independence'
             ]
         },
         duo: {
             name: 'Duo',
             shortDef: 'Traditional monogamous partnership with exclusivity and shared life design.',
+            longDef: 'Duo-oriented people live in or seek a classic two-person relationship with romantic and sexual exclusivity. The partnership is at the center of life design and is understood as the primary emotional and social unit. Common goals, everyday life, and future planning are designed as a couple.',
             keyPrinciples: [
                 'Exclusivity as an expression of commitment',
                 "'We' as the central unit over 'I'",
                 'Depth through focus on one person',
-                'Shared life design and future planning'
+                'Shared life design and future planning',
+                'Fidelity as emotional and sexual exclusivity'
+            ],
+            notTheSameAs: [
+                'Possessiveness or control',
+                'Loss of own identity',
+                '"Old" or "outdated" relationship form',
+                'Boring or unfulfilling'
+            ],
+            variants: [
+                'Traditional-Duo: Classic marriage model',
+                'Modern-Duo: Without marriage certificate, more flexible roles',
+                'Intensive-Duo: Very close emotional merging'
             ]
         },
         duo_flex: {
             name: 'Duo-Flex',
             shortDef: 'Primary partnership with agreed openings for additional contacts.',
+            longDef: 'Duo-Flex-oriented people live in a main relationship with a primary partner, but consciously and consensually open it for additional contacts. The primary relationship remains central and privileged. All openings are transparent and according to jointly agreed rules.',
             keyPrinciples: [
                 'Primary relationship as anchor and priority',
                 'Sexual/romantic variety without giving up hierarchy',
                 'Honesty and transparency about all contacts',
+                'Rules protect the main relationship',
                 'Freedom within agreed boundaries'
+            ],
+            notTheSameAs: [
+                'Infidelity or cheating (everything is agreed!)',
+                '"Saving relationship" through opening',
+                'Lack of commitment',
+                'Transition phase to polyamory'
+            ],
+            variants: [
+                'Swinging/Lifestyle: Shared sexual experiences',
+                'Open Relationship: Individual sexual freedom',
+                'Hierarchical Poly: Primary partner + secondary relationships'
             ]
         },
         solopoly: {
             name: 'Solopoly',
             shortDef: 'Multiple equal relationships while consciously preserving own autonomy.',
+            longDef: 'Solopoly-oriented people have multiple romantic and/or sexual relationships in parallel, without prioritizing any of them as a "main relationship". Personal autonomy is at the center: No moving in together, no shared household management. "I am my own primary partner".',
             keyPrinciples: [
                 'Autonomy as the highest value - even in relationships',
                 'Multiple equal relationships without hierarchy',
                 'No merging or shared households',
-                "'I am my own primary partner'"
+                "'I am my own primary partner'",
+                'Love without giving up independence'
+            ],
+            notTheSameAs: [
+                'Fear of commitment or commitment problems',
+                '"Light version" of polyamory',
+                'Selfish or unable to have relationships',
+                'Intermediate stage to "real" partnership'
+            ],
+            variants: [
+                'Strongly-autonomous: Very clear boundaries',
+                'Relationship-balanced: Deep relationships, separate homes',
+                'Network-oriented: Many equal connections'
             ]
         },
         polyamor: {
             name: 'Polyamorous',
             shortDef: 'Multiple simultaneous, ethically conducted love relationships with transparency.',
+            longDef: 'Polyamorous people live multiple romantic relationships simultaneously, all with the knowledge and consent of everyone involved. Unlike Duo-Flex, there is often no clear hierarchy - all relationships can be equally important.',
             keyPrinciples: [
                 'Love is not limited or exclusive',
                 'Honesty and transparency towards everyone',
                 'Consent and agreement as the basis',
-                'Communication as a central skill'
+                'Communication as a central skill',
+                'Each relationship has its own value'
+            ],
+            notTheSameAs: [
+                'Cheating or secrecy',
+                '"Wanting to have everything"',
+                'Unable to commit',
+                'Just about sex'
+            ],
+            variants: [
+                'Kitchen-Table-Poly: All partners know and like each other',
+                'Parallel-Poly: Relationships exist separately',
+                'Polycule: Network of interconnected relationships'
             ]
         },
         ra: {
-            name: 'RA',
+            name: 'RA (Relationship Anarchist)',
             shortDef: 'Relationship Anarchist - Rejection of all relationship hierarchies and labels.',
+            longDef: 'Relationship Anarchists radically question all societal relationship norms. No relationship is "higher" than another - friendships can be just as important as romantic relationships. Each connection is individually defined, without external templates.',
             keyPrinciples: [
+                'No hierarchies between relationship types',
                 'Each relationship is individually defined',
-                'No predetermined categories or labels',
-                'Equal value of all connections',
-                'Radical autonomy and freedom'
+                'Rejection of societal relationship norms',
+                'Autonomy as the highest value',
+                'No ownership claims on other people'
+            ],
+            notTheSameAs: [
+                'Unable to have relationships or fear of attachment',
+                'Chaotic or without rules',
+                'Irresponsible',
+                'Against commitment in general'
+            ],
+            variants: [
+                'Anarchically-networked: Many equal connections',
+                'Philosophically-RA: Deep reflection on norms',
+                'Pragmatically-RA: Flexible application of principles'
             ]
         },
         lat: {
             name: 'LAT',
             shortDef: 'Living Apart Together - Committed partnership without living together.',
+            longDef: 'LAT-oriented people desire deep, committed relationships, but with clear spatial and everyday autonomy. Their own four walls are not a sign of distance, but of healthy self-care.',
             keyPrinciples: [
-                'Commitment without cohabitation',
-                'Own space as a value',
+                'Love needs no shared roof',
+                'Own retreat space is essential',
                 'Quality time over quantity',
-                'Conscious closeness through chosen distance'
+                'Autonomy in everyday life',
+                'Conscious choice for closeness'
+            ],
+            notTheSameAs: [
+                'Long-distance relationship (unwanted distance)',
+                'Transitional phase before moving in together',
+                'Fear of commitment',
+                '"Not taking the relationship seriously"'
+            ],
+            variants: [
+                'Nearby-LAT: Living close by, but separate',
+                'Weekend-LAT: Together on weekends, separate during the week',
+                'Flexible-LAT: Varying amounts of time together'
             ]
         },
         aromantisch: {
             name: 'Aromantic',
             shortDef: 'Focus on platonic connections without romantic component.',
+            longDef: 'Aromantic people feel little or no romantic attraction. They can still have deep, meaningful relationships - just without the romantic component. Friendship, family, and other connections are just as valuable.',
             keyPrinciples: [
                 'Deep connections without romance',
                 'Friendship as an equal relationship model',
                 'Authenticity beyond romantic norms',
-                'Platonic love as a complete connection'
+                'Platonic love as a complete connection',
+                'Self-worth independent of romantic relationships'
+            ],
+            notTheSameAs: [
+                'Cold or emotionless',
+                'Unable to love',
+                'Asexual (that\'s a different spectrum)',
+                'Just haven\'t found the right person'
+            ],
+            variants: [
+                'Fully-Aromantic: No romantic attraction at all',
+                'Grayromantic: Rarely romantic attraction',
+                'Queerplatonic: Deep, committed non-romantic partnerships'
             ]
         }
     },
@@ -372,6 +475,22 @@ const TiageLocale_EN = {
         termsLinkText: 'Terms of Use and Privacy Policy',
         termsCopyright: 'acknowledge that all content is protected by copyright',
         termsPersonal: 'will use the content only for personal, non-commercial purposes'
+    },
+
+    // ═══════════════════════════════════════════════════════════════════════
+    // ARCHETYPE INFO MODAL
+    // ═══════════════════════════════════════════════════════════════════════
+
+    archetypeModal: {
+        swipeHint: '← Swipe to navigate →',
+        keyPrinciples: 'Key Principles',
+        notTheSameAs: 'This is NOT',
+        variants: 'Variants',
+        pathosLogos: 'Pathos & Logos',
+        pathosLabel: 'Pathos (Emotional Level)',
+        logosLabel: 'Logos (Rational Level)',
+        confirmSelection: 'Confirm Selection',
+        definition: 'Definition'
     },
 
     // ═══════════════════════════════════════════════════════════════════════
