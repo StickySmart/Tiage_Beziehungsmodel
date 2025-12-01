@@ -11966,8 +11966,9 @@
 
         /**
          * Generiert HTML für GFK-Bedürfnis-Tags im Pathos/Logos Modal
+         * VEREINHEITLICHT: Nutzt berechneMatching (diff <= 15) statt analysiereWerBringtWasMit
          * @param {string} type - 'pathos' oder 'logos'
-         * @returns {Object} HTML-Strings für ichTags, partnerTags, gemeinsamSection, wachstumSection
+         * @returns {Object} HTML-Strings für gemeinsamSection, dynamikSection
          */
         function getGfkBeduerfnisAnalyse(type) {
             const result = {
@@ -11989,45 +11990,21 @@
 
             if (!ichArchetyp || !partnerArchetyp) return result;
 
-            // Analyse durchführen
-            const analyse = GfkBeduerfnisse.analysiereWerBringtWasMit(ichArchetyp, partnerArchetyp);
-            if (analyse.fehler) return result;
-
-            // Farben basierend auf Type
-            const colors = type === 'pathos'
-                ? { primary: '#E76F51', secondary: '#FFD700', bg: 'rgba(231,111,81,0.15)' }
-                : { primary: '#457B9D', secondary: '#6495ED', bg: 'rgba(69,123,157,0.15)' };
+            // VEREINHEITLICHT: berechneMatching verwenden (gleiche Logik wie GFK-Matching oben)
+            const matching = GfkBeduerfnisse.berechneMatching(ichArchetyp, partnerArchetyp);
+            if (matching.fehler) return result;
 
             // Tag-Style
             const tagStyle = `display: inline-block; padding: 3px 8px; margin: 2px; border-radius: 10px; font-size: 11px; font-weight: 500;`;
-            const tagStylePrimary = `${tagStyle} background: ${colors.bg}; border: 1px solid ${colors.primary}; color: ${colors.primary};`;
             const tagStyleMatch = `${tagStyle} background: rgba(34,197,94,0.15); border: 1px solid rgba(34,197,94,0.5); color: #22c55e;`;
-            const tagStyleGrowth = `${tagStyle} background: rgba(168,85,247,0.15); border: 1px solid rgba(168,85,247,0.5); color: #a855f7;`;
 
-            // ICH Tags - translate need labels
-            const ichStaerken = analyse.ich.staerken[type] || [];
-            if (ichStaerken.length > 0) {
-                const tags = ichStaerken.slice(0, 4).map(b => {
-                    const translatedLabel = TiageI18n.t(`needs.items.${b.id}`, b.label);
-                    return `<span style="${tagStylePrimary}">${translatedLabel}</span>`;
-                }).join('');
-                result.ichTags = `<div style="margin-top: 8px;">${tags}</div>`;
-            }
+            // Gemeinsame Bedürfnisse Section - gefiltert nach pathos/logos
+            const gemeinsam = (matching.topUebereinstimmungen || []).filter(b => {
+                const pl = GfkBeduerfnisse.getPathosLogos ? GfkBeduerfnisse.getPathosLogos(b.id) : null;
+                return !pl || pl === type; // Wenn keine Zuordnung, zeige in beiden
+            });
 
-            // Partner Tags - translate need labels
-            const partnerStaerken = analyse.partner.staerken[type] || [];
-            if (partnerStaerken.length > 0) {
-                const tags = partnerStaerken.slice(0, 4).map(b => {
-                    const translatedLabel = TiageI18n.t(`needs.items.${b.id}`, b.label);
-                    return `<span style="${tagStylePrimary}">${translatedLabel}</span>`;
-                }).join('');
-                result.partnerTags = `<div style="margin-top: 8px;">${tags}</div>`;
-            }
-
-            // Gemeinsame Bedürfnisse Section
-            const gemeinsam = analyse.gemeinsam[type] || [];
             if (gemeinsam.length > 0) {
-                // Translate need labels
                 const tags = gemeinsam.slice(0, 5).map(b => {
                     const translatedLabel = TiageI18n.t(`needs.items.${b.id}`, b.label);
                     return `<span style="${tagStyleMatch}">${translatedLabel}</span>`;
@@ -12047,49 +12024,22 @@
                 </div>`;
             }
 
-            // Wachstumspotential Section
-            const wachstum = analyse.wachstumspotential[type] || [];
-            if (wachstum.length > 0) {
-                const wachstumLabel = TiageI18n.t('synthesisSection.wachstumspotential', 'Wachstumspotential');
-                const items = wachstum.slice(0, 3).map(b => {
-                    const wer = b.staerkerBei === 'ich' ? analyse.ich.name : analyse.partner.name;
-                    const translatedLabel = TiageI18n.t(`needs.items.${b.id}`, b.label);
-                    return `<span style="${tagStyleGrowth}" title="${wer}">${translatedLabel}</span>`;
-                }).join('');
-                result.wachstumSection = `
-                <div style="margin-top: 12px; padding: 12px; background: rgba(168,85,247,0.08); border-radius: 8px; border: 1px dashed rgba(168,85,247,0.3);">
-                    <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
-                        <span style="font-size: 13px;">🌱</span>
-                        <span style="font-size: 11px; color: #a855f7; font-weight: 600; text-transform: uppercase; letter-spacing: 1px;">${wachstumLabel.toUpperCase()}</span>
-                    </div>
-                    <div>${items}</div>
-                </div>`;
-            }
+            // Dynamik + Wachstum als kombinierter Fließtext
+            // Dynamik: Aus gemeinsam mit Kategorie 'dynamik'
+            const dynamikNeeds = (matching.details?.uebereinstimmend || []).filter(b => {
+                const def = GfkBeduerfnisse.definitionen?.[b.id];
+                return def?.kategorie === 'dynamik';
+            });
 
-            // Dynamik Section - BDSM/Kink Bedürfnisse aus gemeinsamen extrahieren
-            const tagStyleDynamik = `${tagStyle} background: rgba(139,92,246,0.15); border: 1px solid rgba(139,92,246,0.5); color: #8B5CF6;`;
-            const allGemeinsam = [...(analyse.gemeinsam.pathos || []), ...(analyse.gemeinsam.logos || [])];
-            const dynamikNeeds = allGemeinsam.filter(b => b.kategorie === 'dynamik');
+            // Wachstum: Aus Konflikten (einer stark, anderer schwach)
+            const wachstum = (matching.topKonflikte || []).slice(0, 3);
 
-            // Auch aus Wachstumspotential Dynamik-Bedürfnisse extrahieren
-            const allWachstum = [...(analyse.wachstumspotential.pathos || []), ...(analyse.wachstumspotential.logos || [])];
-            const dynamikWachstum = allWachstum.filter(b => b.kategorie === 'dynamik');
-
-            const combinedDynamik = [...dynamikNeeds, ...dynamikWachstum];
-            // Duplikate entfernen
-            const uniqueDynamik = combinedDynamik.filter((b, index, self) =>
-                index === self.findIndex(t => t.id === b.id)
-            );
-
-            // Dynamik + Wachstum als kombinierter Fließtext (SexPositiv-Ansatz)
-            if (uniqueDynamik.length > 0 || wachstum.length > 0) {
-                // Dynamik-Bedürfnisse als farbige Inline-Spans
-                const dynamikNames = uniqueDynamik.slice(0, 2).map(b => {
+            if (dynamikNeeds.length > 0 || wachstum.length > 0) {
+                const dynamikNames = dynamikNeeds.slice(0, 2).map(b => {
                     const label = TiageI18n.t(`needs.items.${b.id}`, b.label);
                     return `<span style="color: #8B5CF6; font-weight: 500;">${label}</span>`;
                 });
 
-                // Wachstums-Bedürfnisse als farbige Inline-Spans
                 const wachstumNames = wachstum.slice(0, 2).map(b => {
                     const label = TiageI18n.t(`needs.items.${b.id}`, b.label);
                     return `<span style="color: #a855f7; font-weight: 500;">${label}</span>`;
