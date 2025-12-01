@@ -15,6 +15,61 @@
     <link rel="stylesheet" href="templates/template_desktop.css">
     <link rel="stylesheet" href="templates/template_mobile.css" media="(max-width: 768px)">
 
+    <!-- DEV VIEW STYLES - Nur für Entwicklung/Screenshots -->
+    <style id="devview-styles">
+        /* Dev View Banner - standardmäßig versteckt */
+        .devview-banner { display: none; }
+
+        /* DEVVIEW ERZWINGT MOBILE ANSICHT */
+        body.devview-active { overflow: auto !important; }
+        body.devview-active .comparison-container.desktop-mode { display: none !important; }
+
+        /* Mobile-Layout SICHTBAR MACHEN */
+        body.devview-active .mobile-multipage {
+            display: block !important;
+            padding-top: 50px !important;
+            transform: scale(0.28);
+            transform-origin: top center;
+            width: 357%;
+            margin-left: -128%;
+        }
+        body.devview-active .mobile-page {
+            display: block !important;
+            min-height: auto !important;
+            padding: 20px !important;
+            margin-bottom: 50px !important;
+            border: 5px solid var(--primary) !important;
+            border-radius: 20px !important;
+            position: relative;
+            background: var(--bg-card) !important;
+        }
+        body.devview-active .mobile-page::before {
+            content: attr(data-page-label);
+            position: absolute;
+            top: -35px;
+            left: 20px;
+            background: var(--primary);
+            color: white;
+            padding: 8px 20px;
+            border-radius: 10px;
+            font-size: 22px;
+            font-weight: bold;
+        }
+        body.devview-active .page-indicator { display: none !important; }
+        body.devview-active .devview-banner {
+            display: block;
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            background: linear-gradient(90deg, #ff6b6b, #f4a261);
+            color: white;
+            text-align: center;
+            padding: 12px;
+            font-weight: bold;
+            font-size: 16px;
+            z-index: 10000;
+        }
+    </style>
+
     <!-- TIAGE i18n - Internationalisierung -->
     <script src="js/locales/de.js"></script>
     <script src="js/locales/en.js"></script>
