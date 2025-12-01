@@ -38,12 +38,15 @@
     <script src="profiles/beduerfnis-modifikatoren.js"></script>
 </head>
 <body>
-    <!-- Dev View Mode Detection - MUST be first -->
+    <!-- Dev View Mode Detection - MUST be first, NUR MOBILE -->
     <script>
         (function() {
             // Check for ?devview=true URL parameter
             const urlParams = new URLSearchParams(window.location.search);
-            if (urlParams.get('devview') === 'true') {
+            // SICHERHEIT: NUR auf Mobile aktivieren (max-width: 768px)
+            // Auf Desktop passiert NICHTS, auch mit ?devview=true
+            const isMobile = window.innerWidth <= 768;
+            if (urlParams.get('devview') === 'true' && isMobile) {
                 document.body.classList.add('devview-active');
                 // Update viewport for full page view
                 const viewport = document.querySelector('meta[name="viewport"]');
