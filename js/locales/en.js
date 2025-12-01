@@ -428,7 +428,23 @@ const TiageLocale_EN = {
             secondary: 'S',
             identityFull: 'Identity',
             secondaryFull: 'Secondary'
+        },
+        gfkLevels: {
+            niedrig: 'low',
+            mittel: 'medium',
+            hoch: 'high'
         }
+    },
+
+    // ═══════════════════════════════════════════════════════════════════════
+    // NEEDS / BEDÜRFNISSE
+    // ═══════════════════════════════════════════════════════════════════════
+
+    needs: {
+        matchLabel: 'Needs Match',
+        sharedTitle: 'SHARED NEEDS',
+        differentTitle: 'DIFFERENT PRIORITIES',
+        valuesTitle: 'SHARED VALUES'
     },
 
     // ═══════════════════════════════════════════════════════════════════════

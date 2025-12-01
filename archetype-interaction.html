@@ -8281,6 +8281,9 @@
             // Update orientierung labels
             updateOrientierungLabels();
 
+            // Update GFK/NVC button labels
+            updateGfkButtonLabels();
+
             // Update fold/unfold button
             updateFoldUnfoldButton();
 
@@ -8523,6 +8526,29 @@
                         el.textContent = TiageI18n.t(`orientierung.types.${type}`, type).toLowerCase();
                     }
                 });
+            });
+        }
+
+        /**
+         * Update GFK/NVC button labels
+         */
+        function updateGfkButtonLabels() {
+            const gfkLevels = ['niedrig', 'mittel', 'hoch'];
+            document.querySelectorAll('.gfk-btn').forEach(btn => {
+                const value = btn.dataset.value;
+                if (value && gfkLevels.includes(value)) {
+                    btn.textContent = TiageI18n.t(`dimensions.gfkLevels.${value}`, value);
+                }
+            });
+
+            // Update GFK labels in info links
+            document.querySelectorAll('.gfk-info-link').forEach(el => {
+                el.textContent = TiageI18n.t('dimensions.gfkLabel', 'GFK-Kompetenz');
+            });
+
+            // Update Bedürfnis-Übereinstimmung label
+            document.querySelectorAll('.gfk-level-label').forEach(el => {
+                el.textContent = TiageI18n.t('needs.matchLabel', 'Bedürfnis-Übereinstimmung');
             });
         }
 
@@ -12521,11 +12547,11 @@
                 { value: 'bisexuell', label: 'bisexuell' }
             ];
 
-            // GFK Optionen (Gewaltfreie Kommunikation)
+            // GFK Optionen (Gewaltfreie Kommunikation / NVC)
             const gfkOptions = [
-                { value: 'niedrig', label: 'niedrig' },
-                { value: 'mittel', label: 'mittel' },
-                { value: 'hoch', label: 'hoch' }
+                { value: 'niedrig', label: TiageI18n.t('dimensions.gfkLevels.niedrig', 'niedrig') },
+                { value: 'mittel', label: TiageI18n.t('dimensions.gfkLevels.mittel', 'mittel') },
+                { value: 'hoch', label: TiageI18n.t('dimensions.gfkLevels.hoch', 'hoch') }
             ];
 
             // Geschlecht-Grids befüllen
@@ -13497,7 +13523,7 @@
             if (matching.topUebereinstimmungen && matching.topUebereinstimmungen.length > 0) {
                 html += `
                     <div class="gfk-section gfk-matches">
-                        <div class="gfk-section-title" style="color: #22c55e;">Gemeinsame Bedürfnisse</div>
+                        <div class="gfk-section-title" style="color: #22c55e;">${TiageI18n.t('needs.sharedTitle', 'GEMEINSAME BEDÜRFNISSE')}</div>
                         <div class="gfk-tags">
                             ${matching.topUebereinstimmungen.map(b =>
                                 `<span class="gfk-tag gfk-tag-match">${b.label}</span>`
@@ -13511,7 +13537,7 @@
             if (matching.topKonflikte && matching.topKonflikte.length > 0) {
                 html += `
                     <div class="gfk-section gfk-conflicts">
-                        <div class="gfk-section-title" style="color: #ef4444;">Unterschiedliche Prioritäten</div>
+                        <div class="gfk-section-title" style="color: #ef4444;">${TiageI18n.t('needs.differentTitle', 'UNTERSCHIEDLICHE PRIORITÄTEN')}</div>
                         <div class="gfk-tags">
                             ${matching.topKonflikte.map(b =>
                                 `<span class="gfk-tag gfk-tag-conflict" title="${matching.archetyp1}: ${b.wert1}% | ${matching.archetyp2}: ${b.wert2}%">${b.label}</span>`
@@ -17898,7 +17924,9 @@
                 const tags = gemeinsam.slice(0, 5).map(b =>
                     `<span style="${tagStyleMatch}">${b.label}</span>`
                 ).join('');
-                const sectionTitle = type === 'pathos' ? 'GEMEINSAME BEDÜRFNISSE' : 'GEMEINSAME WERTE';
+                const sectionTitle = type === 'pathos'
+                    ? TiageI18n.t('needs.sharedTitle', 'GEMEINSAME BEDÜRFNISSE')
+                    : TiageI18n.t('needs.valuesTitle', 'GEMEINSAME WERTE');
                 result.gemeinsamSection = `
                 <div style="margin-bottom: 16px;">
                     <div style="padding: 12px; background: rgba(34,197,94,0.08); border-radius: 10px; border: 1px solid rgba(34,197,94,0.25);">
