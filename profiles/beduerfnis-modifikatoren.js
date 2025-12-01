@@ -129,7 +129,24 @@ const BeduerfnisModifikatoren = {
 
             // VERBUNDENHEIT
             leben_feiern: -5,
-            inspiration: +5
+            inspiration: +5,
+
+            // DYNAMIK - Stark ausgeprägt für Führende
+            kontrolle_ausueben: +35,
+            hingabe: -30,
+            fuehrung_geben: +35,
+            gefuehrt_werden: -30,
+            ritual: +15,
+            nachsorge: +25,
+            grenzen_setzen: +20,
+            grenzen_respektieren: +15,
+            intensitaet: +20,
+            vertrauen_schenken: -10,
+            verantwortung_uebernehmen: +30,
+            sich_fallenlassen: -25,
+            machtaustausch: +25,
+            dienend_sein: -25,
+            beschuetzen: +30
         },
 
         // ─────────────────────────────────────────────────────────────────────────
@@ -204,7 +221,24 @@ const BeduerfnisModifikatoren = {
 
             // VERBUNDENHEIT
             leben_feiern: +10,
-            inspiration: +5
+            inspiration: +5,
+
+            // DYNAMIK - Stark ausgeprägt für Hingebungsvolle
+            kontrolle_ausueben: -30,
+            hingabe: +35,
+            fuehrung_geben: -30,
+            gefuehrt_werden: +35,
+            ritual: +20,
+            nachsorge: +30,
+            grenzen_setzen: +10,
+            grenzen_respektieren: +25,
+            intensitaet: +25,
+            vertrauen_schenken: +30,
+            verantwortung_uebernehmen: -20,
+            sich_fallenlassen: +35,
+            machtaustausch: +25,
+            dienend_sein: +30,
+            beschuetzen: -20
         },
 
         // ─────────────────────────────────────────────────────────────────────────
@@ -279,7 +313,24 @@ const BeduerfnisModifikatoren = {
 
             // VERBUNDENHEIT
             leben_feiern: +10,
-            inspiration: +10
+            inspiration: +10,
+
+            // DYNAMIK - Flexibel, kann beides
+            kontrolle_ausueben: +10,
+            hingabe: +10,
+            fuehrung_geben: +10,
+            gefuehrt_werden: +10,
+            ritual: +15,
+            nachsorge: +20,
+            grenzen_setzen: +15,
+            grenzen_respektieren: +20,
+            intensitaet: +25,
+            vertrauen_schenken: +15,
+            verantwortung_uebernehmen: +10,
+            sich_fallenlassen: +10,
+            machtaustausch: +30,
+            dienend_sein: +5,
+            beschuetzen: +5
         },
 
         // ─────────────────────────────────────────────────────────────────────────
@@ -354,7 +405,24 @@ const BeduerfnisModifikatoren = {
 
             // VERBUNDENHEIT
             leben_feiern: +5,
-            inspiration: +5
+            inspiration: +5,
+
+            // DYNAMIK - Neutral, offen für alle Formen
+            kontrolle_ausueben: 0,
+            hingabe: 0,
+            fuehrung_geben: 0,
+            gefuehrt_werden: 0,
+            ritual: +5,
+            nachsorge: +10,
+            grenzen_setzen: +10,
+            grenzen_respektieren: +15,
+            intensitaet: 0,
+            vertrauen_schenken: +10,
+            verantwortung_uebernehmen: +5,
+            sich_fallenlassen: 0,
+            machtaustausch: 0,
+            dienend_sein: 0,
+            beschuetzen: +5
         }
     },
 

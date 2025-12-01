@@ -165,6 +165,29 @@ const GfkBeduerfnisse = {
                 "einsehen",
                 "anfang_ende"
             ]
+        },
+
+        dynamik: {
+            name: "Dynamik & Austausch",
+            description: "Machtdynamik, Kontrolle und bewusster Austausch",
+            color: "#8B5CF6",
+            beduerfnisse: [
+                "kontrolle_ausueben",
+                "hingabe",
+                "fuehrung_geben",
+                "gefuehrt_werden",
+                "ritual",
+                "nachsorge",
+                "grenzen_setzen",
+                "grenzen_respektieren",
+                "intensitaet",
+                "vertrauen_schenken",
+                "verantwortung_uebernehmen",
+                "sich_fallenlassen",
+                "machtaustausch",
+                "dienend_sein",
+                "beschuetzen"
+            ]
         }
     },
 
@@ -264,7 +287,24 @@ const GfkBeduerfnisse = {
         inspiration: { label: "Inspiration", kategorie: "verbundenheit" },
         trauer_ausdruecken: { label: "Trauer ausdrücken", kategorie: "verbundenheit" },
         einsehen: { label: "Einsehen", kategorie: "verbundenheit" },
-        anfang_ende: { label: "Anfang & Ende", kategorie: "verbundenheit" }
+        anfang_ende: { label: "Anfang & Ende", kategorie: "verbundenheit" },
+
+        // DYNAMIK & AUSTAUSCH (BDSM/Kink)
+        kontrolle_ausueben: { label: "Kontrolle ausüben", kategorie: "dynamik" },
+        hingabe: { label: "Hingabe", kategorie: "dynamik" },
+        fuehrung_geben: { label: "Führung geben", kategorie: "dynamik" },
+        gefuehrt_werden: { label: "Geführt werden", kategorie: "dynamik" },
+        ritual: { label: "Rituale & Struktur", kategorie: "dynamik" },
+        nachsorge: { label: "Nachsorge/Aftercare", kategorie: "dynamik" },
+        grenzen_setzen: { label: "Grenzen setzen", kategorie: "dynamik" },
+        grenzen_respektieren: { label: "Grenzen respektieren", kategorie: "dynamik" },
+        intensitaet: { label: "Intensität erleben", kategorie: "dynamik" },
+        vertrauen_schenken: { label: "Vertrauen schenken", kategorie: "dynamik" },
+        verantwortung_uebernehmen: { label: "Verantwortung übernehmen", kategorie: "dynamik" },
+        sich_fallenlassen: { label: "Sich fallenlassen", kategorie: "dynamik" },
+        machtaustausch: { label: "Machtaustausch", kategorie: "dynamik" },
+        dienend_sein: { label: "Dienend sein", kategorie: "dynamik" },
+        beschuetzen: { label: "Beschützen", kategorie: "dynamik" }
     },
 
     // ═══════════════════════════════════════════════════════════════════════════
