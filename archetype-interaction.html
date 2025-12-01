@@ -6280,10 +6280,25 @@
          * - Click on Secondary = Clear only secondary
          */
         function handleGeschlechtClick(person, geschlechtValue, btn) {
+            // Valid geschlecht values
+            const validGeschlechtValues = ['cis_mann', 'cis_frau', 'trans_mann', 'trans_frau', 'nonbinaer', 'genderfluid', 'agender', 'intersex', 'divers'];
+
             // Ensure geschlecht has correct structure (migration from old format)
             if (!personDimensions[person].geschlecht ||
                 !('primary' in personDimensions[person].geschlecht)) {
                 personDimensions[person].geschlecht = { primary: null, secondary: null };
+            }
+
+            // Clean up invalid old values (e.g., 'männlich', 'weiblich' from old format)
+            if (personDimensions[person].geschlecht.primary &&
+                !validGeschlechtValues.includes(personDimensions[person].geschlecht.primary)) {
+                console.log('[FIX] Clearing invalid primary value:', personDimensions[person].geschlecht.primary);
+                personDimensions[person].geschlecht.primary = null;
+            }
+            if (personDimensions[person].geschlecht.secondary &&
+                !validGeschlechtValues.includes(personDimensions[person].geschlecht.secondary)) {
+                console.log('[FIX] Clearing invalid secondary value:', personDimensions[person].geschlecht.secondary);
+                personDimensions[person].geschlecht.secondary = null;
             }
 
             const currentPrimary = personDimensions[person].geschlecht.primary;
