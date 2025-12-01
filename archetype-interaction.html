@@ -12157,64 +12157,26 @@
             // GFK-Bedürfnis-Analyse holen
             const gfkAnalyse = getGfkBeduerfnisAnalyse('pathos');
 
-            const bringtMitLabel = TiageI18n.t('synthesisSection.bringtMit', 'BRINGT MIT');
-            const darausEntstehtLabel = TiageI18n.t('synthesisSection.darausEntsteht', 'DARAUS ENTSTEHT');
+            const creativityLabel = TiageI18n.t('synthesisSection.creativity', 'CREATIVITY');
+
+            // Wachstum-Tags für Integration in Creativity extrahieren
+            const wachstumTags = gfkAnalyse.wachstumSection ? gfkAnalyse.wachstumSection : '';
 
             let html = `
-                <!-- ICH BRINGT MIT -->
-                <div style="margin-bottom: 16px;">
-                    <div style="padding: 14px; background: linear-gradient(135deg, rgba(231,111,81,0.15), rgba(231,111,81,0.05)); border-radius: 10px; border-left: 3px solid #E76F51;">
-                        <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 10px;">
-                            <span style="font-size: 14px;">👤</span>
-                            <span style="font-size: 11px; color: #E76F51; font-weight: 600; text-transform: uppercase; letter-spacing: 1px;">${ichName} ${bringtMitLabel}</span>
-                        </div>
-                        <p style="font-size: 13px; margin: 0 0 10px 0; line-height: 1.5;">${detailed.ich || 'Keine spezifischen emotionalen Eigenschaften definiert.'}</p>
-                        ${gfkAnalyse.ichTags}
-                    </div>
-                </div>
-
-                <!-- PARTNER BRINGT MIT -->
-                <div style="margin-bottom: 16px;">
-                    <div style="padding: 14px; background: linear-gradient(135deg, rgba(231,111,81,0.15), rgba(231,111,81,0.05)); border-radius: 10px; border-left: 3px solid #E76F51;">
-                        <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 10px;">
-                            <span style="font-size: 14px;">👥</span>
-                            <span style="font-size: 11px; color: #E76F51; font-weight: 600; text-transform: uppercase; letter-spacing: 1px;">${partnerName} ${bringtMitLabel}</span>
-                        </div>
-                        <p style="font-size: 13px; margin: 0 0 10px 0; line-height: 1.5;">${detailed.partner || 'Keine spezifischen emotionalen Eigenschaften definiert.'}</p>
-                        ${gfkAnalyse.partnerTags}
-                    </div>
-                </div>
-
                 <!-- GEMEINSAME BEDÜRFNISSE -->
                 ${gfkAnalyse.gemeinsamSection}
 
-                <!-- DARAUS ENTSTEHT -->
+                <!-- CREATIVITY -->
                 <div style="margin-bottom: 16px;">
                     <div style="padding: 14px; background: linear-gradient(135deg, rgba(255,215,0,0.1), rgba(231,111,81,0.08)); border-radius: 10px; border: 1px solid rgba(231,111,81,0.3);">
                         <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 10px;">
                             <span style="font-size: 14px;">🔥</span>
-                            <span style="font-size: 11px; color: #FFD700; font-weight: 600; text-transform: uppercase; letter-spacing: 1px;">${darausEntstehtLabel}</span>
+                            <span style="font-size: 11px; color: #FFD700; font-weight: 600; text-transform: uppercase; letter-spacing: 1px;">${creativityLabel}</span>
                         </div>
                         <p style="font-size: 14px; margin: 0; line-height: 1.6; font-style: italic;">${detailed.synthese}</p>
+                        ${wachstumTags}
                     </div>
                 </div>`;
-
-            // WACHSTUMSPOTENTIAL (falls vorhanden)
-            if (gfkAnalyse.wachstumSection) {
-                html += gfkAnalyse.wachstumSection;
-            }
-
-            // RESONANZ (falls vorhanden)
-            if (detailed.resonanz) {
-                html += `
-                <div style="padding: 12px; background: rgba(231,111,81,0.08); border-radius: 8px; border: 1px dashed rgba(231,111,81,0.3);">
-                    <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
-                        <span style="font-size: 13px;">⚡</span>
-                        <span style="font-size: 11px; color: var(--text-muted); font-weight: 600; text-transform: uppercase; letter-spacing: 1px;">RESONANZ</span>
-                    </div>
-                    <p style="font-size: 12px; margin: 0;">${detailed.resonanz}</p>
-                </div>`;
-            }
 
             // PSYCHOLOGISCHE EINORDNUNG (Jung + GFK)
             html += generateJungGfkStatement();
@@ -12232,64 +12194,26 @@
             // GFK-Bedürfnis-Analyse holen
             const gfkAnalyse = getGfkBeduerfnisAnalyse('logos');
 
-            const bringtMitLabel = TiageI18n.t('synthesisSection.bringtMit', 'BRINGT MIT');
-            const darausEntstehtLabel = TiageI18n.t('synthesisSection.darausEntsteht', 'DARAUS ENTSTEHT');
+            const creativityLabel = TiageI18n.t('synthesisSection.creativity', 'CREATIVITY');
+
+            // Wachstum-Tags für Integration in Creativity extrahieren
+            const wachstumTags = gfkAnalyse.wachstumSection ? gfkAnalyse.wachstumSection : '';
 
             let html = `
-                <!-- ICH BRINGT MIT -->
-                <div style="margin-bottom: 16px;">
-                    <div style="padding: 14px; background: linear-gradient(135deg, rgba(69,123,157,0.15), rgba(69,123,157,0.05)); border-radius: 10px; border-left: 3px solid #457B9D;">
-                        <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 10px;">
-                            <span style="font-size: 14px;">👤</span>
-                            <span style="font-size: 11px; color: #457B9D; font-weight: 600; text-transform: uppercase; letter-spacing: 1px;">${ichName} ${bringtMitLabel}</span>
-                        </div>
-                        <p style="font-size: 13px; margin: 0 0 10px 0; line-height: 1.5;">${detailed.ich || 'Keine spezifischen strukturellen Eigenschaften definiert.'}</p>
-                        ${gfkAnalyse.ichTags}
-                    </div>
-                </div>
-
-                <!-- PARTNER BRINGT MIT -->
-                <div style="margin-bottom: 16px;">
-                    <div style="padding: 14px; background: linear-gradient(135deg, rgba(69,123,157,0.15), rgba(69,123,157,0.05)); border-radius: 10px; border-left: 3px solid #457B9D;">
-                        <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 10px;">
-                            <span style="font-size: 14px;">👥</span>
-                            <span style="font-size: 11px; color: #457B9D; font-weight: 600; text-transform: uppercase; letter-spacing: 1px;">${partnerName} ${bringtMitLabel}</span>
-                        </div>
-                        <p style="font-size: 13px; margin: 0 0 10px 0; line-height: 1.5;">${detailed.partner || 'Keine spezifischen strukturellen Eigenschaften definiert.'}</p>
-                        ${gfkAnalyse.partnerTags}
-                    </div>
-                </div>
-
                 <!-- GEMEINSAME WERTE -->
                 ${gfkAnalyse.gemeinsamSection}
 
-                <!-- DARAUS ENTSTEHT -->
+                <!-- CREATIVITY -->
                 <div style="margin-bottom: 16px;">
                     <div style="padding: 14px; background: linear-gradient(135deg, rgba(100,149,237,0.1), rgba(69,123,157,0.08)); border-radius: 10px; border: 1px solid rgba(69,123,157,0.3);">
                         <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 10px;">
                             <span style="font-size: 14px;">🧠</span>
-                            <span style="font-size: 11px; color: #6495ED; font-weight: 600; text-transform: uppercase; letter-spacing: 1px;">${darausEntstehtLabel}</span>
+                            <span style="font-size: 11px; color: #6495ED; font-weight: 600; text-transform: uppercase; letter-spacing: 1px;">${creativityLabel}</span>
                         </div>
                         <p style="font-size: 14px; margin: 0; line-height: 1.6; font-style: italic;">${detailed.synthese}</p>
+                        ${wachstumTags}
                     </div>
                 </div>`;
-
-            // WACHSTUMSPOTENTIAL (falls vorhanden)
-            if (gfkAnalyse.wachstumSection) {
-                html += gfkAnalyse.wachstumSection;
-            }
-
-            // RESONANZ (falls vorhanden)
-            if (detailed.resonanz) {
-                html += `
-                <div style="padding: 12px; background: rgba(69,123,157,0.08); border-radius: 8px; border: 1px dashed rgba(69,123,157,0.3);">
-                    <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
-                        <span style="font-size: 13px;">🔗</span>
-                        <span style="font-size: 11px; color: var(--text-muted); font-weight: 600; text-transform: uppercase; letter-spacing: 1px;">RESONANZ</span>
-                    </div>
-                    <p style="font-size: 12px; margin: 0;">${detailed.resonanz}</p>
-                </div>`;
-            }
 
             // PSYCHOLOGISCHE EINORDNUNG (Jung + GFK)
             html += generateJungGfkStatement();
