@@ -10795,8 +10795,6 @@
             // Update page content when navigating
             if (pageNumber === 3) {
                 updateMobileResultPage();
-            } else if (pageNumber === 4) {
-                updateMobileCategoriesPage();
             }
 
             // Push to browser history for back button navigation (only for forward navigation)
@@ -10827,8 +10825,8 @@
             const diff = mobileTouchStartX - mobileTouchEndX;
 
             if (Math.abs(diff) > swipeThreshold) {
-                if (diff > 0 && currentMobilePage < 4) {
-                    // Swipe left -> next page (max 4 pages)
+                if (diff > 0 && currentMobilePage < 3) {
+                    // Swipe left -> next page (max 3 pages)
                     mobileGoToPage(currentMobilePage + 1);
                 } else if (diff < 0 && currentMobilePage > 1) {
                     // Swipe right -> previous page
