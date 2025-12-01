@@ -9463,7 +9463,7 @@
                 const desktopCircle = document.getElementById('desktopCirclePercentage');
                 if (desktopCircle) desktopCircle.textContent = '–';
                 const desktopScoreCircle = document.getElementById('desktopScoreCircle');
-                if (desktopScoreCircle) desktopScoreCircle.style.background = 'linear-gradient(135deg, var(--text-muted), #666)';
+                if (desktopScoreCircle) desktopScoreCircle.style.background = 'transparent';
 
                 const categoryBars = document.getElementById('expandCategoryBars');
                 if (categoryBars) categoryBars.innerHTML = '<p style="color: var(--text-muted); font-style: italic; text-align: center; padding: 20px;">Bitte alle Dimensionen auswählen</p>';
@@ -9528,16 +9528,10 @@
             percentage.className = 'result-percentage ' + colorClass;
             progressFill.style.background = color;
 
-            // Update desktop circle color (3-Stufen-Skala: 70/50)
+            // Update desktop circle color
             const desktopScoreCircle = document.getElementById('desktopScoreCircle');
             if (desktopScoreCircle) {
-                if (overallScore >= 70) {
-                    desktopScoreCircle.style.background = 'linear-gradient(135deg, var(--primary), var(--primary-light))';
-                } else if (overallScore >= 50) {
-                    desktopScoreCircle.style.background = 'linear-gradient(135deg, var(--warning), #ffc966)';
-                } else {
-                    desktopScoreCircle.style.background = 'linear-gradient(135deg, var(--danger), #ff8a8a)';
-                }
+                desktopScoreCircle.style.background = 'transparent';
             }
 
             // Update Desktop Score Note (direkt beim Kreis) - 3-Stufen-Skala
@@ -11011,24 +11005,10 @@
             // Kein harter K.O. mehr - sanfte Abstufung durch Resonanz
             if (qualityResult.incomplete) {
                 scoreCircle.textContent = '–';
-                scoreCircle.style.background = 'linear-gradient(135deg, var(--bg-card), var(--bg-secondary))';
-            } else if (qualityResult.score < 30) {
-                // Sehr niedrige Resonanz (früher: blocked)
-                scoreCircle.textContent = qualityResult.score;
-                scoreCircle.style.background = 'linear-gradient(135deg, var(--danger), #c0392b)';
-            } else if (qualityResult.score >= 80) {
-                scoreCircle.textContent = qualityResult.score;
-                scoreCircle.style.background = 'linear-gradient(135deg, var(--success), #1e8449)';
-            } else if (qualityResult.score >= 65) {
-                scoreCircle.textContent = qualityResult.score;
-                scoreCircle.style.background = 'linear-gradient(135deg, var(--primary), var(--primary-light))';
-            } else if (qualityResult.score >= 50) {
-                scoreCircle.textContent = qualityResult.score;
-                scoreCircle.style.background = 'linear-gradient(135deg, var(--warning), #d68910)';
             } else {
                 scoreCircle.textContent = qualityResult.score;
-                scoreCircle.style.background = 'linear-gradient(135deg, var(--danger), #c0392b)';
             }
+            scoreCircle.style.background = 'transparent';
 
             // Sync score to resultPercentage for Tiage's Synthese modal
             const resultPercentageEl = document.getElementById('resultPercentage');
