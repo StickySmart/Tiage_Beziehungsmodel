@@ -11974,7 +11974,8 @@
                 ichTags: '',
                 partnerTags: '',
                 gemeinsamSection: '',
-                wachstumSection: ''
+                wachstumSection: '',
+                dynamikSection: ''
             };
 
             // Prüfen ob GfkBeduerfnisse verfügbar ist
@@ -12062,6 +12063,37 @@
                         <span style="font-size: 11px; color: #a855f7; font-weight: 600; text-transform: uppercase; letter-spacing: 1px;">${wachstumLabel.toUpperCase()}</span>
                     </div>
                     <div>${items}</div>
+                </div>`;
+            }
+
+            // Dynamik Section - BDSM/Kink Bedürfnisse aus gemeinsamen extrahieren
+            const tagStyleDynamik = `${tagStyle} background: rgba(139,92,246,0.15); border: 1px solid rgba(139,92,246,0.5); color: #8B5CF6;`;
+            const allGemeinsam = [...(analyse.gemeinsam.pathos || []), ...(analyse.gemeinsam.logos || [])];
+            const dynamikNeeds = allGemeinsam.filter(b => b.kategorie === 'dynamik');
+
+            // Auch aus Wachstumspotential Dynamik-Bedürfnisse extrahieren
+            const allWachstum = [...(analyse.wachstumspotential.pathos || []), ...(analyse.wachstumspotential.logos || [])];
+            const dynamikWachstum = allWachstum.filter(b => b.kategorie === 'dynamik');
+
+            const combinedDynamik = [...dynamikNeeds, ...dynamikWachstum];
+            // Duplikate entfernen
+            const uniqueDynamik = combinedDynamik.filter((b, index, self) =>
+                index === self.findIndex(t => t.id === b.id)
+            );
+
+            if (uniqueDynamik.length > 0) {
+                const dynamikLabel = TiageI18n.t('synthesisSection.dynamik', 'DYNAMIK');
+                const dynamikTags = uniqueDynamik.slice(0, 5).map(b => {
+                    const translatedLabel = TiageI18n.t(`needs.items.${b.id}`, b.label);
+                    return `<span style="${tagStyleDynamik}">${translatedLabel}</span>`;
+                }).join('');
+                result.dynamikSection = `
+                <div style="margin-top: 12px;">
+                    <div style="display: flex; align-items: center; gap: 6px; margin-bottom: 6px;">
+                        <span style="font-size: 12px;">⚡</span>
+                        <span style="font-size: 10px; color: #8B5CF6; font-weight: 600; text-transform: uppercase; letter-spacing: 1px;">${dynamikLabel}</span>
+                    </div>
+                    <div>${dynamikTags}</div>
                 </div>`;
             }
 
@@ -12159,8 +12191,9 @@
 
             const creativityLabel = TiageI18n.t('synthesisSection.creativity', 'CREATIVITY');
 
-            // Wachstum-Tags für Integration in Creativity extrahieren
+            // Wachstum- und Dynamik-Tags für Integration in Creativity extrahieren
             const wachstumTags = gfkAnalyse.wachstumSection ? gfkAnalyse.wachstumSection : '';
+            const dynamikTags = gfkAnalyse.dynamikSection ? gfkAnalyse.dynamikSection : '';
 
             let html = `
                 <!-- GEMEINSAME BEDÜRFNISSE -->
@@ -12174,6 +12207,7 @@
                             <span style="font-size: 11px; color: #FFD700; font-weight: 600; text-transform: uppercase; letter-spacing: 1px;">${creativityLabel}</span>
                         </div>
                         <p style="font-size: 14px; margin: 0; line-height: 1.6; font-style: italic;">${detailed.synthese}</p>
+                        ${dynamikTags}
                         ${wachstumTags}
                     </div>
                 </div>`;
@@ -12196,8 +12230,9 @@
 
             const creativityLabel = TiageI18n.t('synthesisSection.creativity', 'CREATIVITY');
 
-            // Wachstum-Tags für Integration in Creativity extrahieren
+            // Wachstum- und Dynamik-Tags für Integration in Creativity extrahieren
             const wachstumTags = gfkAnalyse.wachstumSection ? gfkAnalyse.wachstumSection : '';
+            const dynamikTags = gfkAnalyse.dynamikSection ? gfkAnalyse.dynamikSection : '';
 
             let html = `
                 <!-- GEMEINSAME WERTE -->
@@ -12211,6 +12246,7 @@
                             <span style="font-size: 11px; color: #6495ED; font-weight: 600; text-transform: uppercase; letter-spacing: 1px;">${creativityLabel}</span>
                         </div>
                         <p style="font-size: 14px; margin: 0; line-height: 1.6; font-style: italic;">${detailed.synthese}</p>
+                        ${dynamikTags}
                         ${wachstumTags}
                     </div>
                 </div>`;

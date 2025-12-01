@@ -603,6 +603,7 @@ const TiageLocale_DE = {
 
     synthesisSection: {
         creativity: 'CREATIVITY',
+        dynamik: 'DYNAMIK',
         bringtMit: 'BRINGT MIT',
         darausEntsteht: 'DARAUS ENTSTEHT',
         gemeinsameBeduerfnisse: 'Gemeinsame Bedürfnisse',
