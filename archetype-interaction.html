@@ -15,6 +15,30 @@
     <link rel="stylesheet" href="templates/template_desktop.css">
     <link rel="stylesheet" href="templates/template_mobile.css" media="(max-width: 768px)">
 
+    <!-- MOBILE DEVVIEW - Lädt mobile CSS für Screenshots auf Handy -->
+    <script>
+        (function() {
+            if (new URLSearchParams(window.location.search).get('devview') !== 'true') return;
+            // Prüfe ob mobiles Gerät
+            var isMobile = 'ontouchstart' in window || /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+            if (!isMobile) return;
+            // Mobile CSS OHNE media query laden
+            document.write('<link rel="stylesheet" href="templates/template_mobile.css">');
+            // DevView Styles
+            document.write('<style>' +
+                'body.devview-active .comparison-container.desktop-mode { display: none !important; }' +
+                'body.devview-active .mobile-multipage { display: block !important; padding-top: 50px !important; transform: scale(0.28); transform-origin: top center; width: 357%; margin-left: -128%; }' +
+                'body.devview-active .mobile-page { display: block !important; min-height: auto !important; margin-bottom: 50px !important; border: 5px solid var(--primary) !important; border-radius: 20px !important; }' +
+                'body.devview-active .mobile-page::before { content: attr(data-page-label); position: absolute; top: -35px; left: 20px; background: var(--primary); color: white; padding: 8px 20px; border-radius: 10px; font-size: 22px; font-weight: bold; }' +
+                'body.devview-active .page-indicator { display: none !important; }' +
+                'body.devview-active .devview-banner { display: block !important; position: fixed; top: 0; left: 0; right: 0; background: linear-gradient(90deg, #ff6b6b, #f4a261); color: white; text-align: center; padding: 12px; font-weight: bold; z-index: 10000; }' +
+                '.devview-banner { display: none; }' +
+            '</style>');
+            // Viewport anpassen
+            var vp = document.querySelector('meta[name="viewport"]');
+            if (vp) vp.content = 'width=device-width, initial-scale=0.28, user-scalable=yes, minimum-scale=0.1';
+        })();
+    </script>
 
     <!-- TIAGE i18n - Internationalisierung -->
     <script src="js/locales/de.js"></script>
@@ -39,90 +63,12 @@
     <script src="profiles/beduerfnis-modifikatoren.js"></script>
 </head>
 <body>
-    <!-- Dev View Mode - NUR FÜR MOBILE GERÄTE -->
+    <!-- DevView: Body-Klasse setzen (CSS wurde bereits im Head geladen) -->
     <script>
         (function() {
-            const urlParams = new URLSearchParams(window.location.search);
-            if (urlParams.get('devview') !== 'true') return;
-
-            // Erkennung: Ist es ein mobiles Gerät?
-            const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
-            const isMobileUA = /Android|iPhone|iPad|iPod|webOS|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-            const isMobile = isTouchDevice || isMobileUA;
-
-            if (!isMobile) {
-                // Auf PC: Nichts tun, normale Desktop-Ansicht
-                console.log('DevView: Desktop erkannt - keine Änderung');
-                return;
-            }
-
-            // Auf HANDY: Mobile DevView aktivieren
-            console.log('DevView: Mobiles Gerät erkannt - aktiviere Full Page View');
-
-            // 1. Mobile CSS OHNE media query laden (erzwingt mobile Styles)
-            const mobileCSS = document.createElement('link');
-            mobileCSS.rel = 'stylesheet';
-            mobileCSS.href = 'templates/template_mobile.css';
-            document.head.appendChild(mobileCSS);
-
-            // 2. DevView Styles einfügen
-            const devStyles = document.createElement('style');
-            devStyles.id = 'devview-mobile-styles';
-            devStyles.textContent = `
-                .devview-banner { display: none; }
-                body.devview-active { overflow: auto !important; }
-                body.devview-active .comparison-container.desktop-mode { display: none !important; }
-                body.devview-active .mobile-multipage {
-                    display: block !important;
-                    padding-top: 50px !important;
-                    transform: scale(0.28);
-                    transform-origin: top center;
-                    width: 357%;
-                    margin-left: -128%;
-                }
-                body.devview-active .mobile-page {
-                    display: block !important;
-                    min-height: auto !important;
-                    padding: 20px !important;
-                    margin-bottom: 50px !important;
-                    border: 5px solid var(--primary) !important;
-                    border-radius: 20px !important;
-                    position: relative;
-                    background: var(--bg-card) !important;
-                }
-                body.devview-active .mobile-page::before {
-                    content: attr(data-page-label);
-                    position: absolute;
-                    top: -35px; left: 20px;
-                    background: var(--primary);
-                    color: white;
-                    padding: 8px 20px;
-                    border-radius: 10px;
-                    font-size: 22px;
-                    font-weight: bold;
-                }
-                body.devview-active .page-indicator { display: none !important; }
-                body.devview-active .devview-banner {
-                    display: block;
-                    position: fixed;
-                    top: 0; left: 0; right: 0;
-                    background: linear-gradient(90deg, #ff6b6b, #f4a261);
-                    color: white;
-                    text-align: center;
-                    padding: 12px;
-                    font-weight: bold;
-                    font-size: 16px;
-                    z-index: 10000;
-                }
-            `;
-            document.head.appendChild(devStyles);
-
-            // 3. Body-Klasse und Viewport setzen
-            document.body.classList.add('devview-active');
-            const viewport = document.querySelector('meta[name="viewport"]');
-            if (viewport) {
-                viewport.content = 'width=device-width, initial-scale=0.28, user-scalable=yes, minimum-scale=0.1, maximum-scale=3';
-            }
+            if (new URLSearchParams(window.location.search).get('devview') !== 'true') return;
+            var isMobile = 'ontouchstart' in window || /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+            if (isMobile) document.body.classList.add('devview-active');
         })();
     </script>
     <div class="devview-banner">MOBILE DEV VIEW - Alle Seiten sichtbar</div>
