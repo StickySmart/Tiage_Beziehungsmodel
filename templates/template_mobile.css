@@ -591,6 +591,43 @@ body {
     }
 
     /* ========================================
+       ARCHETYPEN SYMBOL GRID (Mobile)
+       ======================================== */
+    .archetype-symbol-item {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 8px 4px;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        border: 2px solid transparent;
+        background: rgba(255, 255, 255, 0.03);
+    }
+
+    .archetype-symbol-item.active {
+        border-color: var(--primary);
+        background: rgba(69, 123, 157, 0.2);
+        box-shadow: 0 0 12px rgba(69, 123, 157, 0.3);
+    }
+
+    .archetype-symbol-item.active .archetype-symbol-name {
+        color: var(--text-primary);
+        font-weight: 600;
+    }
+
+    /* Active colors per archetype */
+    .archetype-symbol-item.active[data-archetype="single"] { border-color: #E63946; background: rgba(230, 57, 70, 0.2); }
+    .archetype-symbol-item.active[data-archetype="duo"] { border-color: #E84393; background: rgba(232, 67, 147, 0.2); }
+    .archetype-symbol-item.active[data-archetype="duo_flex"] { border-color: #FF6B6B; background: rgba(255, 107, 107, 0.2); }
+    .archetype-symbol-item.active[data-archetype="solopoly"] { border-color: #2A9D8F; background: rgba(42, 157, 143, 0.2); }
+    .archetype-symbol-item.active[data-archetype="polyamor"] { border-color: #F4A261; background: rgba(244, 162, 97, 0.2); }
+    .archetype-symbol-item.active[data-archetype="ra"] { border-color: #9B5DE5; background: rgba(155, 93, 229, 0.2); }
+    .archetype-symbol-item.active[data-archetype="lat"] { border-color: #00B4D8; background: rgba(0, 180, 216, 0.2); }
+    .archetype-symbol-item.active[data-archetype="aromantisch"] { border-color: #A8DADC; background: rgba(168, 218, 220, 0.2); }
+
+    /* ========================================
        MOBILE SEITE 1 HEADER FIX
        ======================================== */
 
@@ -602,19 +639,53 @@ body {
     }
 
     /* ========================================
-       TYPEN-ANZEIGE (Seite 2)
+       TYPEN-ANZEIGE (Seite 3 - Synthese)
        ======================================== */
 
     .types-display {
         text-align: center;
-        font-size: var(--font-lg);
+        font-size: 18px;
         font-weight: 600;
         color: var(--text-primary);
-        margin-bottom: 10px;
+        margin-bottom: 15px;
     }
 
     .types-display .type-name {
         color: var(--primary);
+        font-size: 22px;
+        font-weight: 700;
+    }
+
+    /* ========================================
+       SCORE CIRCLE (Seite 3 - zentriert)
+       ======================================== */
+    .score-circle-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        margin: 20px auto;
+    }
+
+    .mobile-score-circle-display {
+        margin: 0 auto;
+    }
+
+    /* ========================================
+       LIGHTBULB BUTTON (Seite 3 - größer)
+       ======================================== */
+    .mobile-lightbulb-button {
+        margin: 15px auto;
+    }
+
+    .mobile-lightbulb-button .lightbulb-icon {
+        font-size: 42px !important;
+    }
+
+    .mobile-lightbulb-button .lightbulb-text {
+        font-size: 14px !important;
+        font-weight: 600;
     }
 }
 
