@@ -210,11 +210,11 @@ const archetypeDefinitions = {
   },
 
   // ════════════════════════════════════════════════════════════════════════════
-  // RA - Relationship Anarchist
+  // RA
   // ════════════════════════════════════════════════════════════════════════════
   ra: {
     id: "ra",
-    name: "Relationship Anarchist",
+    name: "RA",
 
     coreValues: [
       "Autonomie",

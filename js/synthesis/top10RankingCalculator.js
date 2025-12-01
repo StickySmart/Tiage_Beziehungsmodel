@@ -24,7 +24,7 @@ const Top10RankingCalculator = (function() {
         'single': 'Single',
         'duo': 'Duo',
         'duo-flex': 'Duo-Flex',
-        'ra': 'Relationship Anarchist',
+        'ra': 'RA',
         'lat': 'LAT',
         'aromantisch': 'Aromantisch',
         'solopoly': 'Solopoly',

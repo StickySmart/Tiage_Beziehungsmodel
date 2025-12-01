@@ -543,10 +543,10 @@ const GfkBeduerfnisse = {
         },
 
         // ─────────────────────────────────────────────────────────────────────
-        // RA - Relationship Anarchist
+        // RA
         // ─────────────────────────────────────────────────────────────────────
         ra: {
-            name: "Relationship Anarchist",
+            name: "RA",
             kernbeduerfnisse: {
                 // FREIHEIT (maximal)
                 selbstbestimmung: 100,
