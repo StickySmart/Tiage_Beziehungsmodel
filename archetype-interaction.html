@@ -15,35 +15,21 @@
     <link rel="stylesheet" href="templates/template_desktop.css">
     <link rel="stylesheet" href="templates/template_mobile.css" media="(max-width: 768px)">
 
-    <!-- MOBILE DEVVIEW - Lädt mobile CSS für Screenshots auf Handy -->
+    <!-- MOBILE DEVVIEW - Zeigt alle mobilen Seiten für Screenshots -->
     <script>
         (function() {
             if (new URLSearchParams(window.location.search).get('devview') !== 'true') return;
-            // Prüfe ob mobiles Gerät
-            var isMobile = 'ontouchstart' in window || /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
-            if (!isMobile) return;
-            // Mobile CSS OHNE media query laden
+            if (!('ontouchstart' in window || /Android|iPhone|iPad|iPod/i.test(navigator.userAgent))) return;
+
+            // Mobile CSS laden
             document.write('<link rel="stylesheet" href="templates/template_mobile.css">');
-            // DevView Styles - SEHR STARK um Desktop zu überschreiben
-            document.write('<style id="devview-override">' +
-                '/* Desktop komplett verstecken */' +
-                'html body .comparison-container { display: none !important; visibility: hidden !important; }' +
-                'html body .comparison-container.desktop-mode { display: none !important; visibility: hidden !important; }' +
-                'html body .desktop-mode { display: none !important; }' +
-                '/* Mobile komplett anzeigen */' +
-                'html body .mobile-multipage { display: block !important; visibility: visible !important; padding-top: 50px !important; transform: scale(0.28); transform-origin: top center; width: 357%; margin-left: -128%; }' +
-                'html body .mobile-page { display: block !important; visibility: visible !important; min-height: auto !important; margin-bottom: 50px !important; border: 5px solid var(--primary) !important; border-radius: 20px !important; position: relative !important; }' +
-                'html body .mobile-page.active { display: block !important; }' +
-                'html body .mobile-page::before { content: attr(data-page-label); position: absolute; top: -35px; left: 20px; background: var(--primary); color: white; padding: 8px 20px; border-radius: 10px; font-size: 22px; font-weight: bold; z-index: 100; }' +
-                'html body .page-indicator { display: none !important; }' +
-                'html body .devview-banner { display: block !important; position: fixed; top: 0; left: 0; right: 0; background: linear-gradient(90deg, #ff6b6b, #f4a261); color: white; text-align: center; padding: 12px; font-weight: bold; z-index: 10000; }' +
-                '.devview-banner { display: none; }' +
+            // Einfache Styles: Desktop weg, alle Mobile-Seiten sichtbar
+            document.write('<style>' +
+                '.comparison-container { display: none; }' +
+                '.mobile-multipage { display: block; transform: scale(0.3); transform-origin: top center; width: 333%; margin-left: -116%; }' +
+                '.mobile-page { display: block; margin-bottom: 40px; border: 4px solid var(--primary); border-radius: 16px; }' +
+                '.page-indicator { display: none; }' +
             '</style>');
-            // Viewport anpassen
-            var vp = document.querySelector('meta[name="viewport"]');
-            if (vp) vp.content = 'width=device-width, initial-scale=0.28, user-scalable=yes, minimum-scale=0.1';
-            // Hash-Jump verhindern
-            if (window.location.hash) history.replaceState(null, '', window.location.pathname + window.location.search);
         })();
     </script>
 
@@ -70,16 +56,6 @@
     <script src="profiles/beduerfnis-modifikatoren.js"></script>
 </head>
 <body>
-    <!-- DevView: Body-Klasse setzen (CSS wurde bereits im Head geladen) -->
-    <script>
-        (function() {
-            if (new URLSearchParams(window.location.search).get('devview') !== 'true') return;
-            var isMobile = 'ontouchstart' in window || /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
-            if (isMobile) document.body.classList.add('devview-active');
-        })();
-    </script>
-    <div class="devview-banner">MOBILE DEV VIEW - Alle Seiten sichtbar</div>
-
     <!-- Age Verification - Inline Script BEFORE modal for onclick to work -->
     <script>
         // Define confirmAge immediately so onclick handlers work
