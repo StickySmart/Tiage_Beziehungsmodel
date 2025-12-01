@@ -630,10 +630,10 @@ body {
 }
 
 /* ========================================
-   FULL PAGE DEV VIEW (NUR MOBILE!)
+   FULL PAGE DEV VIEW - ERZWINGT MOBILE ANSICHT
    Aktivieren mit URL-Parameter: ?devview=true
-   Zeigt alle Seiten auf einmal für Screenshots
-   WICHTIG: Nur innerhalb max-width: 768px aktiv!
+   Zeigt alle mobilen Seiten auf einmal für Screenshots
+   FUNKTIONIERT AUF ALLEN GERÄTEN (auch wenn Browser Desktop meldet)
    ======================================== */
 
 /* Dev View Banner - standardmäßig versteckt */
@@ -641,61 +641,68 @@ body {
     display: none;
 }
 
-/* ALLES NUR AUF MOBILE GERÄTEN */
-@media (max-width: 768px) {
-    body.devview-active {
-        overflow: auto !important;
-    }
+/* DEVVIEW ERZWINGT MOBILE ANSICHT - OHNE MEDIA QUERY! */
+body.devview-active {
+    overflow: auto !important;
+}
 
-    body.devview-active .mobile-multipage {
-        display: block !important;
-        padding-top: 10px !important;
-        transform: scale(0.35);
-        transform-origin: top center;
-        width: 285%;
-        margin-left: -92.5%;
-    }
+/* Desktop-Layout VERSTECKEN wenn devview aktiv */
+body.devview-active .comparison-container.desktop-mode {
+    display: none !important;
+}
 
-    body.devview-active .mobile-page {
-        display: block !important;
-        min-height: auto !important;
-        padding-bottom: 20px !important;
-        margin-bottom: 30px !important;
-        border: 3px solid var(--primary) !important;
-        border-radius: 12px !important;
-        position: relative;
-    }
+/* Mobile-Layout ERZWINGEN wenn devview aktiv */
+body.devview-active .mobile-multipage {
+    display: block !important;
+    padding-top: 40px !important;
+    transform: scale(0.32);
+    transform-origin: top center;
+    width: 312%;
+    margin-left: -106%;
+}
 
-    body.devview-active .mobile-page::before {
-        content: attr(data-page-label);
-        position: absolute;
-        top: -25px;
-        left: 10px;
-        background: var(--primary);
-        color: white;
-        padding: 4px 12px;
-        border-radius: 6px;
-        font-size: 14px;
-        font-weight: bold;
-    }
+body.devview-active .mobile-page {
+    display: block !important;
+    min-height: auto !important;
+    padding: 15px !important;
+    padding-bottom: 20px !important;
+    margin-bottom: 40px !important;
+    border: 4px solid var(--primary) !important;
+    border-radius: 16px !important;
+    position: relative;
+    background: var(--bg-card) !important;
+}
 
-    body.devview-active .page-indicator {
-        display: none !important;
-    }
+body.devview-active .mobile-page::before {
+    content: attr(data-page-label);
+    position: absolute;
+    top: -30px;
+    left: 15px;
+    background: var(--primary);
+    color: white;
+    padding: 6px 16px;
+    border-radius: 8px;
+    font-size: 18px;
+    font-weight: bold;
+    z-index: 10;
+}
 
-    /* Dev View Banner - nur auf Mobile sichtbar */
-    body.devview-active .devview-banner {
-        display: block;
-        position: fixed;
-        top: 0;
-        left: 0;
-        right: 0;
-        background: linear-gradient(90deg, #ff6b6b, #f4a261);
-        color: white;
-        text-align: center;
-        padding: 8px;
-        font-weight: bold;
-        font-size: 12px;
-        z-index: 10000;
-    }
+body.devview-active .page-indicator {
+    display: none !important;
+}
+
+/* Dev View Banner */
+body.devview-active .devview-banner {
+    display: block;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    background: linear-gradient(90deg, #ff6b6b, #f4a261);
+    color: white;
+    text-align: center;
+    padding: 10px;
+    font-weight: bold;
+    font-size: 14px;
+    z-index: 10000;
 }
