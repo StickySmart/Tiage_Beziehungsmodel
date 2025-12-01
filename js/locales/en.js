@@ -93,6 +93,19 @@ const TiageLocale_EN = {
     },
 
     // ═══════════════════════════════════════════════════════════════════════
+    // NVC COMPETENCE (Nonviolent Communication)
+    // ═══════════════════════════════════════════════════════════════════════
+
+    gfk: {
+        label: 'NVC Competence',
+        levels: {
+            niedrig: 'Low',
+            mittel: 'Medium',
+            hoch: 'High'
+        }
+    },
+
+    // ═══════════════════════════════════════════════════════════════════════
     // GENDER
     // ═══════════════════════════════════════════════════════════════════════
 
@@ -532,7 +545,9 @@ const TiageLocale_EN = {
         logos: 'Logos',
         staerken: 'Strengths',
         herausforderungen: 'Challenges',
-        wachstumspotential: 'Growth Potential'
+        wachstumspotential: 'Growth Potential',
+        beduerfnisUebereinstimmung: 'Need Compatibility',
+        unterschiedlichePrioritaeten: 'Different Priorities'
     },
 
     // ═══════════════════════════════════════════════════════════════════════

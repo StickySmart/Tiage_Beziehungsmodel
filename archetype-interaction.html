@@ -2159,6 +2159,9 @@
             // Update orientierung labels
             updateOrientierungLabels();
 
+            // Update GFK/NVC competence labels
+            updateGfkLabels();
+
             // Update fold/unfold button
             updateFoldUnfoldButton();
 
@@ -2378,32 +2381,65 @@
         }
 
         /**
-         * Update dominanz labels in the multi-select rows
+         * Update dominanz labels in the multi-select rows and grid buttons
          */
         function updateDominanzLabels() {
             const dominanzTypes = ['dominant', 'submissiv', 'switch', 'ausgeglichen'];
+
+            // Update multi-select row labels
             dominanzTypes.forEach(type => {
                 document.querySelectorAll(`.dominanz-label`).forEach(el => {
-                    if (el.textContent.toLowerCase().trim() === type ||
-                        el.getAttribute('onclick')?.includes(`'${type}'`)) {
+                    if (el.getAttribute('onclick')?.includes(`'${type}'`)) {
                         el.textContent = TiageI18n.t(`dominanz.types.${type}`, type).toLowerCase();
                     }
                 });
             });
+
+            // Update grid buttons
+            document.querySelectorAll('.dominanz-btn').forEach(btn => {
+                const value = btn.getAttribute('data-value');
+                if (value && dominanzTypes.includes(value)) {
+                    btn.textContent = TiageI18n.t(`dominanz.types.${value}`, value);
+                }
+            });
         }
 
         /**
-         * Update orientierung labels in the multi-select rows
+         * Update orientierung labels in the multi-select rows and grid buttons
          */
         function updateOrientierungLabels() {
             const orientierungTypes = ['heterosexuell', 'homosexuell', 'bisexuell'];
+
+            // Update multi-select row labels
             orientierungTypes.forEach(type => {
                 document.querySelectorAll(`.dominanz-label`).forEach(el => {
-                    if (el.textContent.toLowerCase().trim() === type ||
-                        el.getAttribute('onclick')?.includes(`'${type}'`)) {
+                    if (el.getAttribute('onclick')?.includes(`'${type}'`)) {
                         el.textContent = TiageI18n.t(`orientierung.types.${type}`, type).toLowerCase();
                     }
                 });
+            });
+
+            // Update grid buttons
+            document.querySelectorAll('.orientierung-btn').forEach(btn => {
+                const value = btn.getAttribute('data-value');
+                if (value && orientierungTypes.includes(value)) {
+                    btn.textContent = TiageI18n.t(`orientierung.types.${value}`, value);
+                }
+            });
+        }
+
+        /**
+         * Update GFK/NVC competence labels
+         */
+        function updateGfkLabels() {
+            const gfkLevels = ['niedrig', 'mittel', 'hoch'];
+
+            // Update GFK grid buttons
+            document.querySelectorAll('.gfk-btn').forEach(btn => {
+                const value = btn.getAttribute('data-value');
+                if (value && gfkLevels.includes(value)) {
+                    btn.textContent = TiageI18n.t(`gfk.levels.${value}`, value);
+                }
             });
         }
 
@@ -7405,11 +7441,12 @@
                               matching.level === 'mittel' ? '#eab308' : '#ef4444';
 
             // HTML generieren
+            const beduerfnisLabel = TiageI18n.t('synthesisSection.beduerfnisUebereinstimmung', 'Bedürfnis-Übereinstimmung');
             let html = `
                 <div class="gfk-matching-header">
                     <div class="gfk-score-display">
                         <span class="gfk-score" style="color: ${scoreColor}">${matching.score}%</span>
-                        <span class="gfk-level-label">Bedürfnis-Übereinstimmung</span>
+                        <span class="gfk-level-label">${beduerfnisLabel}</span>
                     </div>
                 </div>
             `;
@@ -7432,7 +7469,7 @@
 
             // Konflikte
             if (matching.topKonflikte && matching.topKonflikte.length > 0) {
-                const unterschiedlicheLabel = TiageI18n.t('synthesisSection.herausforderungen', 'Herausforderungen');
+                const unterschiedlicheLabel = TiageI18n.t('synthesisSection.unterschiedlichePrioritaeten', 'Unterschiedliche Prioritäten');
                 html += `
                     <div class="gfk-section gfk-conflicts">
                         <div class="gfk-section-title" style="color: #ef4444;">${unterschiedlicheLabel}</div>

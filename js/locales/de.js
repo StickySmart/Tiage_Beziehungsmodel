@@ -93,6 +93,19 @@ const TiageLocale_DE = {
     },
 
     // ═══════════════════════════════════════════════════════════════════════
+    // GFK-KOMPETENZ (Gewaltfreie Kommunikation)
+    // ═══════════════════════════════════════════════════════════════════════
+
+    gfk: {
+        label: 'GFK-Kompetenz',
+        levels: {
+            niedrig: 'niedrig',
+            mittel: 'mittel',
+            hoch: 'hoch'
+        }
+    },
+
+    // ═══════════════════════════════════════════════════════════════════════
     // GESCHLECHT
     // ═══════════════════════════════════════════════════════════════════════
 
@@ -532,7 +545,9 @@ const TiageLocale_DE = {
         logos: 'Logos',
         staerken: 'Stärken',
         herausforderungen: 'Herausforderungen',
-        wachstumspotential: 'Wachstumspotential'
+        wachstumspotential: 'Wachstumspotential',
+        beduerfnisUebereinstimmung: 'Bedürfnis-Übereinstimmung',
+        unterschiedlichePrioritaeten: 'Unterschiedliche Prioritäten'
     },
 
     // ═══════════════════════════════════════════════════════════════════════
