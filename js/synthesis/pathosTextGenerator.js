@@ -14,6 +14,34 @@ const PathosTextGenerator = (function() {
     'use strict';
 
     // ═══════════════════════════════════════════════════════════════════════════
+    // LANGUAGE HELPER - Ermittelt aktuelle Sprache und wählt lokalisierte Phrasen
+    // ═══════════════════════════════════════════════════════════════════════════
+
+    /**
+     * Ermittelt die aktuelle Sprache aus dem i18n-System
+     * @returns {string} 'de' oder 'en'
+     */
+    function getLang() {
+        if (typeof TiageI18n !== 'undefined' && TiageI18n.getLanguage) {
+            return TiageI18n.getLanguage();
+        }
+        return 'de'; // Fallback zu Deutsch
+    }
+
+    /**
+     * Wählt die lokalisierten Phrasen basierend auf der aktuellen Sprache
+     * @param {Object|Array} phrases - Objekt mit de/en Arrays oder einfaches Array
+     * @returns {Array} Die Phrasen für die aktuelle Sprache
+     */
+    function getLocalizedPhrases(phrases) {
+        if (Array.isArray(phrases)) {
+            return phrases; // Bereits ein einfaches Array (alte Struktur)
+        }
+        const lang = getLang();
+        return phrases[lang] || phrases.de || []; // Fallback zu Deutsch
+    }
+
+    // ═══════════════════════════════════════════════════════════════════════════
     // ÜBERGANGSPHRASEN - Verbinden Sätze organisch
     // ═══════════════════════════════════════════════════════════════════════════
 
@@ -165,23 +193,44 @@ const PathosTextGenerator = (function() {
             "Die Seele von {name} wird genährt von {values}."
         ],
 
-        // GFK-Kompetenz
+        // GFK-Kompetenz (NVC - Nonviolent Communication)
         gfk: {
-            hoch: [
-                "{name} spricht die Sprache des Herzens fließend – empathisches Zuhören und klare Bedürfnisäußerung sind selbstverständlich.",
-                "Konflikte werden von {name} als Einladung zur Vertiefung verstanden, nicht als Bedrohung.",
-                "Die kommunikative Reife von {name} schafft einen sicheren Raum für verletzliche Wahrheiten."
-            ],
-            mittel: [
-                "{name} kennt die Prinzipien gewaltfreier Kommunikation, doch unter Druck siegt manchmal alte Prägung.",
-                "Das Herz von {name} ist offen, auch wenn die Worte nicht immer den Weg dorthin finden.",
-                "In ruhigen Momenten kommuniziert {name} mit Klarheit – emotionaler Stress kann dies trüben."
-            ],
-            niedrig: [
-                "{name} kommuniziert noch aus dem Muster von Reaktion und Verteidigung.",
-                "Hier liegt Wachstumspotenzial: {name} darf lernen, Bedürfnisse statt Urteile zu äußern.",
-                "Die Worte von {name} können schärfer wirken als das Herz es meint."
-            ]
+            hoch: {
+                de: [
+                    "{name} spricht die Sprache des Herzens fließend – empathisches Zuhören und klare Bedürfnisäußerung sind selbstverständlich.",
+                    "Konflikte werden von {name} als Einladung zur Vertiefung verstanden, nicht als Bedrohung.",
+                    "Die kommunikative Reife von {name} schafft einen sicheren Raum für verletzliche Wahrheiten."
+                ],
+                en: [
+                    "{name} speaks the language of the heart fluently – empathic listening and clear expression of needs come naturally.",
+                    "Conflicts are understood by {name} as invitations to deepen connection, not as threats.",
+                    "The communicative maturity of {name} creates a safe space for vulnerable truths."
+                ]
+            },
+            mittel: {
+                de: [
+                    "{name} kennt die Prinzipien gewaltfreier Kommunikation, doch unter Druck siegt manchmal alte Prägung.",
+                    "Das Herz von {name} ist offen, auch wenn die Worte nicht immer den Weg dorthin finden.",
+                    "In ruhigen Momenten kommuniziert {name} mit Klarheit – emotionaler Stress kann dies trüben."
+                ],
+                en: [
+                    "{name} knows the principles of nonviolent communication, but under pressure old patterns sometimes prevail.",
+                    "The heart of {name} is open, even if words don't always find their way there.",
+                    "In calm moments {name} communicates with clarity – emotional stress can cloud this."
+                ]
+            },
+            niedrig: {
+                de: [
+                    "{name} kommuniziert noch aus dem Muster von Reaktion und Verteidigung.",
+                    "Hier liegt Wachstumspotenzial: {name} darf lernen, Bedürfnisse statt Urteile zu äußern.",
+                    "Die Worte von {name} können schärfer wirken als das Herz es meint."
+                ],
+                en: [
+                    "{name} still communicates from patterns of reaction and defense.",
+                    "Here lies growth potential: {name} may learn to express needs instead of judgments.",
+                    "The words of {name} can cut sharper than the heart intends."
+                ]
+            }
         },
 
         // Bedürfnis-Integration (für Tags)
@@ -263,23 +312,44 @@ const PathosTextGenerator = (function() {
             ]
         },
 
-        // GFK-Synthese (Kommunikationsdynamik)
+        // GFK-Synthese (Kommunikationsdynamik) / NVC Synthesis
         gfkInteraction: {
-            beide_hoch: [
-                "Eure kommunikative Reife schafft einen sicheren Raum für alles, was ist – auch das Schwierige.",
-                "Konflikte werden hier zu Türen, nicht zu Mauern.",
-                "Die Fähigkeit, Bedürfnisse klar zu benennen, macht diese Verbindung widerstandsfähig."
-            ],
-            gemischt: [
-                "Der kommunikativ Reifere darf hier Brücken bauen – mit Geduld und ohne Überheblichkeit.",
-                "Die unterschiedlichen GFK-Kompetenzen können zum Wachstumsfeld werden.",
-                "Hier liegt eine Einladung: Voneinander lernen, wie Herz und Mund zusammenfinden."
-            ],
-            beide_niedrig: [
-                "Die kommunikative Ebene ist das größte Wachstumsfeld dieser Verbindung.",
-                "Beide dürfen lernen, Bedürfnisse statt Vorwürfe zu äußern – das ist die Arbeit.",
-                "Ohne bewusste Kommunikationsarbeit kann der Alltag zur Kampfzone werden."
-            ]
+            beide_hoch: {
+                de: [
+                    "Eure kommunikative Reife schafft einen sicheren Raum für alles, was ist – auch das Schwierige.",
+                    "Konflikte werden hier zu Türen, nicht zu Mauern.",
+                    "Die Fähigkeit, Bedürfnisse klar zu benennen, macht diese Verbindung widerstandsfähig."
+                ],
+                en: [
+                    "Your communicative maturity creates a safe space for everything that is – including the difficult.",
+                    "Conflicts become doors here, not walls.",
+                    "The ability to clearly name needs makes this connection resilient."
+                ]
+            },
+            gemischt: {
+                de: [
+                    "Der kommunikativ Reifere darf hier Brücken bauen – mit Geduld und ohne Überheblichkeit.",
+                    "Die unterschiedlichen GFK-Kompetenzen können zum Wachstumsfeld werden.",
+                    "Hier liegt eine Einladung: Voneinander lernen, wie Herz und Mund zusammenfinden."
+                ],
+                en: [
+                    "The more communicatively mature partner may build bridges here – with patience and without condescension.",
+                    "The different NVC competencies can become a field for growth.",
+                    "Here lies an invitation: Learning from each other how heart and mouth find their way together."
+                ]
+            },
+            beide_niedrig: {
+                de: [
+                    "Die kommunikative Ebene ist das größte Wachstumsfeld dieser Verbindung.",
+                    "Beide dürfen lernen, Bedürfnisse statt Vorwürfe zu äußern – das ist die Arbeit.",
+                    "Ohne bewusste Kommunikationsarbeit kann der Alltag zur Kampfzone werden."
+                ],
+                en: [
+                    "The communicative level is the greatest growth area of this connection.",
+                    "Both may learn to express needs instead of accusations – that is the work.",
+                    "Without conscious communication work, everyday life can become a battlefield."
+                ]
+            }
         },
 
         // Konfliktpotenzial (poetisch formuliert)
@@ -499,10 +569,10 @@ const PathosTextGenerator = (function() {
             parts.push(fillVariables(selectPhrase(personPhrases.coreValuesIntro, seed + 7), vars));
         }
 
-        // 5. GFK-Kompetenz
+        // 5. GFK-Kompetenz (NVC)
         const gfk = dimensions?.gfk;
         if (gfk && personPhrases.gfk[gfk]) {
-            parts.push(fillVariables(selectPhrase(personPhrases.gfk[gfk], seed + 11), vars));
+            parts.push(fillVariables(selectPhrase(getLocalizedPhrases(personPhrases.gfk[gfk]), seed + 11), vars));
         }
 
         // Verbinde mit fließenden Übergängen (aber nicht zu viele)
@@ -587,11 +657,11 @@ const PathosTextGenerator = (function() {
         if (ichGfk && partnerGfk) {
             let gfkPhrases;
             if (ichGfk === 'hoch' && partnerGfk === 'hoch') {
-                gfkPhrases = synthesePhrases.gfkInteraction.beide_hoch;
+                gfkPhrases = getLocalizedPhrases(synthesePhrases.gfkInteraction.beide_hoch);
             } else if (ichGfk === 'niedrig' && partnerGfk === 'niedrig') {
-                gfkPhrases = synthesePhrases.gfkInteraction.beide_niedrig;
+                gfkPhrases = getLocalizedPhrases(synthesePhrases.gfkInteraction.beide_niedrig);
             } else {
-                gfkPhrases = synthesePhrases.gfkInteraction.gemischt;
+                gfkPhrases = getLocalizedPhrases(synthesePhrases.gfkInteraction.gemischt);
             }
             parts.push(selectPhrase(gfkPhrases, seed + 23));
         }
