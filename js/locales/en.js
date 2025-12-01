@@ -346,9 +346,9 @@ const TiageLocale_EN = {
             ]
         },
         ra: {
-            name: 'RA (Relationship Anarchist)',
-            shortDef: 'Relationship Anarchist - Rejection of all relationship hierarchies and labels.',
-            longDef: 'Relationship Anarchists radically question all societal relationship norms. No relationship is "higher" than another - friendships can be just as important as romantic relationships. Each connection is individually defined, without external templates.',
+            name: 'RA',
+            shortDef: 'RA - Rejection of all relationship hierarchies and labels.',
+            longDef: 'RAs radically question all societal relationship norms. No relationship is "higher" than another - friendships can be just as important as romantic relationships. Each connection is individually defined, without external templates.',
             keyPrinciples: [
                 'No hierarchies between relationship types',
                 'Each relationship is individually defined',

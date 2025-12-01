@@ -275,7 +275,7 @@ const TiageConfig = (function() {
         },
         ra: {
             name: "RA",
-            shortDef: "Relationship Anarchist - Ablehnung aller Beziehungs-Hierarchien und Labels.",
+            shortDef: "RA - Ablehnung aller Beziehungs-Hierarchien und Labels.",
             keyPrinciples: [
                 "Jede Beziehung wird individuell definiert",
                 "Keine vorgegebenen Kategorien oder Labels",
