@@ -630,6 +630,34 @@ body {
     .archetype-symbol-item.active[data-archetype="aromantisch"] { border-color: #A8DADC; background: rgba(168, 218, 220, 0.2); }
 
     /* ========================================
+       MOBILE HEADER INFO - "Was fehlt" Anzeige
+       ======================================== */
+
+    .mobile-header-info-container {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+        padding: 8px 12px;
+        margin: 8px 0;
+        background: rgba(0, 0, 0, 0.2);
+        border-radius: 8px;
+    }
+
+    .mobile-header-info-container .header-geschlecht-info {
+        font-size: 11px;
+        color: var(--success);
+        padding: 4px 8px;
+        margin: 0;
+        background: rgba(0, 0, 0, 0.3);
+        border-radius: 4px;
+        text-align: center;
+    }
+
+    .mobile-header-info-container .header-geschlecht-info.missing {
+        color: var(--warning, #f39c12);
+    }
+
+    /* ========================================
        MOBILE SEITE 1 HEADER FIX
        ======================================== */
 
