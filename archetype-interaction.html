@@ -17979,6 +17979,85 @@
             return result;
         }
 
+        /**
+         * Generiert das Jung+GFK kombinierte Statement für die psychologische Einordnung
+         * C.G. Jung: Logos → "Denken", Pathos → "Fühlen"
+         * GFK (Rosenberg): Logos → Klarheit, Ordnung, Kompetenz; Pathos → Harmonie, Empathie, Verbundenheit
+         */
+        function generateJungGfkStatement() {
+            // Prüfen ob GfkBeduerfnisse verfügbar ist
+            if (typeof GfkBeduerfnisse === 'undefined') {
+                return '';
+            }
+
+            // Archetyp-IDs und Namen holen
+            const ichArchetyp = (currentArchetype || '').replace('_', '-');
+            const partnerArchetyp = (selectedPartner || '').replace('_', '-');
+            const ichArch = archetypeDefinitions[currentArchetype];
+            const partnerArch = archetypeDefinitions[selectedPartner];
+            const ichName = ichArch?.name || 'ICH';
+            const partnerName = partnerArch?.name || 'Partner';
+
+            if (!ichArchetyp || !partnerArchetyp) return '';
+
+            // Pathos/Logos Scores berechnen
+            const scores = GfkBeduerfnisse.berechnePathosLogosScores(ichArchetyp, partnerArchetyp);
+            const pathosScore = scores.pathos || 50;
+            const logosScore = scores.logos || 50;
+
+            // Jung-Funktion ableiten (wer tendiert wohin?)
+            // Person A: Vergleiche individuelle Stärken
+            const analyseA = GfkBeduerfnisse.analysiereWerBringtWasMit(ichArchetyp, ichArchetyp);
+            const analyseB = GfkBeduerfnisse.analysiereWerBringtWasMit(partnerArchetyp, partnerArchetyp);
+
+            // Logos-Stärke = Anzahl starker Logos-Bedürfnisse
+            const ichLogosStaerke = (analyseA.ich?.staerken?.logos?.length || 0);
+            const ichPathosStaerke = (analyseA.ich?.staerken?.pathos?.length || 0);
+            const partnerLogosStaerke = (analyseB.ich?.staerken?.logos?.length || 0);
+            const partnerPathosStaerke = (analyseB.ich?.staerken?.pathos?.length || 0);
+
+            // Jung-Funktion bestimmen
+            const jungFunktionA = ichLogosStaerke >= ichPathosStaerke ? 'Denken' : 'Fühlen';
+            const jungFunktionB = partnerLogosStaerke >= partnerPathosStaerke ? 'Denken' : 'Fühlen';
+
+            // GFK-Bedürfnisse sammeln
+            const gfkAnalyse = GfkBeduerfnisse.analysiereWerBringtWasMit(ichArchetyp, partnerArchetyp);
+            if (gfkAnalyse.fehler) return '';
+
+            // Top-Bedürfnisse für die Liste (kombiniert Pathos + Logos)
+            const gemeinsamPathos = (gfkAnalyse.gemeinsam?.pathos || []).slice(0, 2);
+            const gemeinsamLogos = (gfkAnalyse.gemeinsam?.logos || []).slice(0, 2);
+            const allGemeinsam = [...gemeinsamPathos, ...gemeinsamLogos];
+            const beduerfnisListe = allGemeinsam.map(b => b.label).join(', ') || 'Wertschätzung, Vertrauen';
+
+            // Jung-Dynamik-Text generieren
+            let jungDynamikText = '';
+            if (jungFunktionA === jungFunktionB) {
+                if (jungFunktionA === 'Denken') {
+                    jungDynamikText = 'Beide operieren primär aus der rationalen Funktion – eine analytische Partnerschaft mit klarem Fokus auf Struktur und Werte.';
+                } else {
+                    jungDynamikText = 'Beide operieren primär aus der Gefühlsfunktion – eine empathische Verbindung mit starkem emotionalem Fundament.';
+                }
+            } else {
+                jungDynamikText = 'Diese komplementäre Konstellation vereint Ratio und Emotion – eine fruchtbare Spannung, die beide Seiten bereichern kann.';
+            }
+
+            // HTML generieren
+            return `
+            <div style="margin-top: 20px; padding: 16px; background: linear-gradient(135deg, rgba(139,92,246,0.08), rgba(59,130,246,0.05)); border-radius: 12px; border: 1px solid rgba(139,92,246,0.25);">
+                <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 12px;">
+                    <span style="font-size: 16px;">🧬</span>
+                    <span style="font-size: 12px; color: #8B5CF6; font-weight: 600; text-transform: uppercase; letter-spacing: 1px;">PSYCHOLOGISCHE EINORDNUNG</span>
+                </div>
+                <p style="font-size: 13px; line-height: 1.7; margin: 0; color: var(--text-secondary);">
+                    Aus Sicht der Tiefenpsychologie (C.G. Jung): <strong style="color: var(--text-primary);">${ichName}</strong> tendiert zur <em style="color: #8B5CF6;">${jungFunktionA}</em>-Funktion, <strong style="color: var(--text-primary);">${partnerName}</strong> zur <em style="color: #8B5CF6;">${jungFunktionB}</em>-Funktion. ${jungDynamikText}
+                </p>
+                <p style="font-size: 13px; line-height: 1.7; margin: 12px 0 0 0; color: var(--text-secondary);">
+                    Die damit verbundenen Grundbedürfnisse (nach Rosenberg) – <span style="color: #22c55e; font-weight: 500;">${beduerfnisListe}</span> – bilden das emotionale Fundament dieser Verbindung.
+                </p>
+            </div>`;
+        }
+
         function getPathosContent() {
             const ichArch = archetypeDefinitions[currentArchetype];
             const partnerArch = archetypeDefinitions[selectedPartner];
@@ -18044,6 +18123,9 @@
                     <p style="font-size: 12px; margin: 0;">${detailed.resonanz}</p>
                 </div>`;
             }
+
+            // PSYCHOLOGISCHE EINORDNUNG (Jung + GFK)
+            html += generateJungGfkStatement();
 
             return html;
         }
@@ -18113,6 +18195,9 @@
                     <p style="font-size: 12px; margin: 0;">${detailed.resonanz}</p>
                 </div>`;
             }
+
+            // PSYCHOLOGISCHE EINORDNUNG (Jung + GFK)
+            html += generateJungGfkStatement();
 
             return html;
         }
