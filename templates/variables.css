@@ -85,3 +85,25 @@ body.theme-aromantisch {
     --primary: #118AB2;           /* Blau für Aromantisch */
     --primary-light: #83C5D8;
 }
+
+/* ========================================
+   VERSION DISPLAY
+   ======================================== */
+
+.app-version {
+    font-size: 0.5em;
+    font-weight: normal;
+    color: var(--text-secondary);
+    opacity: 0.8;
+    margin-left: 0.5em;
+    white-space: nowrap;
+}
+
+@media (max-width: 768px) {
+    .app-version {
+        display: block;
+        font-size: 0.45em;
+        margin-left: 0;
+        margin-top: 0.25em;
+    }
+}
