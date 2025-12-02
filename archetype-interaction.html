@@ -104,6 +104,19 @@
         </div>
     </div>
 
+    <!-- Bedürfnis-Definition Modal -->
+    <div class="modal-overlay" id="needDefinitionModal" onclick="closeNeedDefinitionModal(event)" style="z-index: 2300;">
+        <div class="modal" onclick="event.stopPropagation()" style="max-width: 420px;">
+            <div class="modal-header">
+                <span class="modal-title" id="needDefinitionModalTitle">Definition</span>
+                <button class="modal-close" onclick="closeNeedDefinitionModal()">&times;</button>
+            </div>
+            <div class="modal-body" id="needDefinitionModalBody" style="padding: 20px;">
+                <!-- Content wird dynamisch gefüllt -->
+            </div>
+        </div>
+    </div>
+
     <!-- Help Modal -->
     <div class="help-modal-overlay" id="helpModal" onclick="closeHelpModal(event)">
         <div class="help-modal" onclick="event.stopPropagation()">
@@ -7556,7 +7569,7 @@
                     html += `
                         <div style="background: rgba(255,255,255,0.05); border-radius: 8px; padding: 12px; border-left: 3px solid ${statusColor};">
                             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
-                                <span style="font-weight: 500; color: var(--text-primary);">${label}</span>
+                                <span onclick="openNeedDefinitionModal('${item.id}')" style="font-weight: 500; color: var(--text-primary); cursor: pointer; display: inline-flex; align-items: center; gap: 4px; transition: color 0.2s;" onmouseover="this.style.color='var(--primary)'" onmouseout="this.style.color='var(--text-primary)'">${label} <span style="font-size: 10px; opacity: 0.5;">ⓘ</span></span>
                                 <span style="color: ${statusColor}; font-size: 11px; font-weight: 600;">${statusIcon} ${statusText}</span>
                             </div>
                             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
@@ -7606,6 +7619,625 @@
             if (modal) {
                 modal.classList.remove('active');
                 document.body.style.overflow = '';
+            }
+        }
+
+        // ═══════════════════════════════════════════════════════════════════════════
+        // BEDÜRFNIS-DEFINITIONEN MODAL
+        // ═══════════════════════════════════════════════════════════════════════════
+
+        /**
+         * Detaillierte Definitionen für alle Bedürfnisse
+         * Basierend auf GFK (Gewaltfreie Kommunikation) nach Marshall Rosenberg
+         */
+        const needDefinitions = {
+            // EXISTENZ
+            luft: {
+                label: "Luft",
+                kategorie: "Existenz",
+                kategorieColor: "#E63946",
+                definition: "Das grundlegende Bedürfnis nach frischer Luft und freiem Atmen – sowohl physisch als auch metaphorisch als Raum zum Durchatmen."
+            },
+            wasser: {
+                label: "Wasser",
+                kategorie: "Existenz",
+                kategorieColor: "#E63946",
+                definition: "Das Bedürfnis nach Flüssigkeit und Erfrischung – die Basis körperlicher Vitalität."
+            },
+            nahrung: {
+                label: "Nahrung",
+                kategorie: "Existenz",
+                kategorieColor: "#E63946",
+                definition: "Das Bedürfnis nach Nährung – körperlich durch Essen, aber auch emotional durch nährende Beziehungen."
+            },
+            bewegung: {
+                label: "Bewegung/Betätigung",
+                kategorie: "Existenz",
+                kategorieColor: "#E63946",
+                definition: "Das Bedürfnis nach körperlicher Aktivität, Bewegung und dem Ausdruck von Lebensenergie durch den Körper."
+            },
+            beruehrung: {
+                label: "Berührung/Körperkontakt",
+                kategorie: "Existenz",
+                kategorieColor: "#E63946",
+                definition: "Das tiefe menschliche Bedürfnis nach physischem Kontakt, Hautnähe und der Wärme eines anderen Körpers."
+            },
+            erholung: {
+                label: "Erholung/Schlaf",
+                kategorie: "Existenz",
+                kategorieColor: "#E63946",
+                definition: "Das Bedürfnis nach Ruhe, Regeneration und ausreichend Schlaf zur Wiederherstellung von Körper und Geist."
+            },
+            sexueller_ausdruck: {
+                label: "Sexueller Ausdruck",
+                kategorie: "Existenz",
+                kategorieColor: "#E63946",
+                definition: "Das Bedürfnis nach sexueller Entfaltung, körperlicher Lust und dem intimen Ausdruck von Begehren und Verbindung."
+            },
+            sicherheit_physisch: {
+                label: "Physische Sicherheit",
+                kategorie: "Existenz",
+                kategorieColor: "#E63946",
+                definition: "Das grundlegende Bedürfnis nach körperlicher Unversehrtheit und Schutz vor physischen Bedrohungen."
+            },
+            unterschlupf: {
+                label: "Unterschlupf",
+                kategorie: "Existenz",
+                kategorieColor: "#E63946",
+                definition: "Das Bedürfnis nach einem geschützten Raum, einem Zuhause und einem sicheren Ort zum Sein."
+            },
+
+            // SICHERHEIT
+            bestaendigkeit: {
+                label: "Beständigkeit",
+                kategorie: "Sicherheit",
+                kategorieColor: "#F4A261",
+                definition: "Das Bedürfnis nach Kontinuität, Verlässlichkeit und der Gewissheit, dass Dinge bleiben und nicht plötzlich verschwinden."
+            },
+            sich_sicher_fuehlen: {
+                label: "Sich sicher fühlen",
+                kategorie: "Sicherheit",
+                kategorieColor: "#F4A261",
+                definition: "Das emotionale Bedürfnis nach innerer Sicherheit – zu wissen, dass man in der Beziehung gehalten wird."
+            },
+            schutz: {
+                label: "Schutz",
+                kategorie: "Sicherheit",
+                kategorieColor: "#F4A261",
+                definition: "Das Bedürfnis, beschützt zu werden oder andere zu beschützen – ein Gefühl von Fürsorge und Wachsamkeit."
+            },
+            stabilitaet: {
+                label: "Stabilität",
+                kategorie: "Sicherheit",
+                kategorieColor: "#F4A261",
+                definition: "Das Bedürfnis nach einem festen Grund unter den Füßen – emotionale und praktische Beständigkeit in der Beziehung."
+            },
+            leichtigkeit: {
+                label: "Leichtigkeit",
+                kategorie: "Sicherheit",
+                kategorieColor: "#F4A261",
+                definition: "Das Bedürfnis, sich entspannt und unbeschwert fühlen zu können, ohne ständige Sorgen oder Anspannung."
+            },
+            geborgenheit: {
+                label: "Geborgenheit",
+                kategorie: "Sicherheit",
+                kategorieColor: "#F4A261",
+                definition: "Das tiefe Bedürfnis nach Wärme, Schutz und dem Gefühl, in der Beziehung vollständig aufgefangen zu sein."
+            },
+
+            // ZUNEIGUNG
+            waerme: {
+                label: "Wärme",
+                kategorie: "Zuneigung",
+                kategorieColor: "#E84393",
+                definition: "Das Bedürfnis nach emotionaler Wärme – Herzlichkeit, Zugewandtheit und liebevoller Präsenz."
+            },
+            wertschaetzung: {
+                label: "Wertschätzung",
+                kategorie: "Zuneigung",
+                kategorieColor: "#E84393",
+                definition: "Das Bedürfnis, in seinem Wert erkannt und geschätzt zu werden – für das, was man ist und beiträgt."
+            },
+            naehe: {
+                label: "Nähe",
+                kategorie: "Zuneigung",
+                kategorieColor: "#E84393",
+                definition: "Das Bedürfnis nach emotionaler und körperlicher Nähe – die Verbindung, die entsteht, wenn man sich einander öffnet."
+            },
+            gesellschaft: {
+                label: "Gesellschaft",
+                kategorie: "Zuneigung",
+                kategorieColor: "#E84393",
+                definition: "Das Bedürfnis nach Gemeinschaft und Zusammensein – nicht allein zu sein, sondern Zeit miteinander zu verbringen."
+            },
+            intimitaet: {
+                label: "Intimität",
+                kategorie: "Zuneigung",
+                kategorieColor: "#E84393",
+                definition: "Das Bedürfnis nach tiefer, ungeschützter Verbindung – das Teilen von Innerem ohne Masken."
+            },
+            liebe: {
+                label: "Liebe",
+                kategorie: "Zuneigung",
+                kategorieColor: "#E84393",
+                definition: "Das universelle Bedürfnis, zu lieben und geliebt zu werden – die kraftvollste Form menschlicher Verbindung."
+            },
+            fuersorge: {
+                label: "Fürsorge",
+                kategorie: "Zuneigung",
+                kategorieColor: "#E84393",
+                definition: "Das Bedürfnis, für jemanden zu sorgen oder umsorgt zu werden – aktive Zuwendung und Kümmern."
+            },
+            unterstuetzung: {
+                label: "Unterstützung",
+                kategorie: "Zuneigung",
+                kategorieColor: "#E84393",
+                definition: "Das Bedürfnis nach Hilfe und Beistand – zu wissen, dass jemand da ist, wenn man Unterstützung braucht."
+            },
+            fuereinander_da_sein: {
+                label: "Füreinander da sein",
+                kategorie: "Zuneigung",
+                kategorieColor: "#E84393",
+                definition: "Das Bedürfnis nach gegenseitiger Präsenz und Verfügbarkeit – füreinander Zeit und Raum zu haben."
+            },
+
+            // VERSTÄNDNIS
+            akzeptanz: {
+                label: "Akzeptanz",
+                kategorie: "Verständnis",
+                kategorieColor: "#9B5DE5",
+                definition: "Das Bedürfnis, so angenommen zu werden, wie man ist – ohne Bedingungen oder den Druck, sich ändern zu müssen."
+            },
+            mitgefuehl: {
+                label: "Mitgefühl",
+                kategorie: "Verständnis",
+                kategorieColor: "#9B5DE5",
+                definition: "Das Bedürfnis nach einfühlsamer Anteilnahme – dass jemand mit einem fühlt, nicht nur versteht."
+            },
+            beruecksichtigung: {
+                label: "Berücksichtigung",
+                kategorie: "Verständnis",
+                kategorieColor: "#9B5DE5",
+                definition: "Das Bedürfnis, dass die eigenen Bedürfnisse, Wünsche und Grenzen in Betracht gezogen werden."
+            },
+            empathie: {
+                label: "Empathie",
+                kategorie: "Verständnis",
+                kategorieColor: "#9B5DE5",
+                definition: "Das Bedürfnis nach tiefem Verstanden-Werden – dass jemand sich in die eigene Welt einfühlt."
+            },
+            vertrauen: {
+                label: "Vertrauen",
+                kategorie: "Verständnis",
+                kategorieColor: "#9B5DE5",
+                definition: "Das fundamentale Bedürfnis nach Vertrauen – die Gewissheit, dass man sich auf den anderen verlassen kann."
+            },
+            beachtung: {
+                label: "Beachtung",
+                kategorie: "Verständnis",
+                kategorieColor: "#9B5DE5",
+                definition: "Das Bedürfnis nach Aufmerksamkeit – wahrgenommen und nicht übersehen zu werden."
+            },
+            gesehen_werden: {
+                label: "Gesehen werden",
+                kategorie: "Verständnis",
+                kategorieColor: "#9B5DE5",
+                definition: "Das tiefe Bedürfnis, in seiner Essenz erkannt zu werden – wirklich gesehen, nicht nur oberflächlich."
+            },
+            verstanden_werden: {
+                label: "Verstanden werden",
+                kategorie: "Verständnis",
+                kategorieColor: "#9B5DE5",
+                definition: "Das Bedürfnis, dass die eigene Perspektive, Gefühle und Beweggründe wirklich nachvollzogen werden."
+            },
+            harmonie: {
+                label: "Harmonie",
+                kategorie: "Verständnis",
+                kategorieColor: "#9B5DE5",
+                definition: "Das Bedürfnis nach Einklang und Frieden – ein konfliktfreies, ausgeglichenes Miteinander."
+            },
+
+            // FREIHEIT
+            selbstbestimmung: {
+                label: "Selbstbestimmung",
+                kategorie: "Freiheit",
+                kategorieColor: "#2A9D8F",
+                definition: "Das Bedürfnis, das eigene Leben und die eigenen Entscheidungen selbst zu gestalten – Autonomie über das eigene Sein."
+            },
+            waehlen_koennen: {
+                label: "Wählen können",
+                kategorie: "Freiheit",
+                kategorieColor: "#2A9D8F",
+                definition: "Das Bedürfnis nach Wahlfreiheit – Optionen zu haben und frei entscheiden zu können."
+            },
+            unabhaengigkeit: {
+                label: "Unabhängigkeit",
+                kategorie: "Freiheit",
+                kategorieColor: "#2A9D8F",
+                definition: "Das Bedürfnis nach Eigenständigkeit – nicht von anderen abhängig oder kontrolliert zu sein."
+            },
+            raum_haben: {
+                label: "Raum haben",
+                kategorie: "Freiheit",
+                kategorieColor: "#2A9D8F",
+                definition: "Das Bedürfnis nach persönlichem Freiraum – Zeit und Raum für sich selbst, ohne Erwartungen."
+            },
+            spontaneitaet: {
+                label: "Spontaneität",
+                kategorie: "Freiheit",
+                kategorieColor: "#2A9D8F",
+                definition: "Das Bedürfnis nach Freiheit von Planung – impulsiv handeln können, dem Moment folgen."
+            },
+
+            // TEILNAHME
+            zusammenarbeit: {
+                label: "Zusammenarbeit",
+                kategorie: "Teilnahme",
+                kategorieColor: "#06D6A0",
+                definition: "Das Bedürfnis, gemeinsam an etwas zu arbeiten – als Team zu agieren und gemeinsame Ziele zu verfolgen."
+            },
+            kommunikation: {
+                label: "Kommunikation",
+                kategorie: "Teilnahme",
+                kategorieColor: "#06D6A0",
+                definition: "Das Bedürfnis nach Austausch und Dialog – Gedanken, Gefühle und Ideen miteinander zu teilen."
+            },
+            gemeinschaft: {
+                label: "Gemeinschaft",
+                kategorie: "Teilnahme",
+                kategorieColor: "#06D6A0",
+                definition: "Das Bedürfnis nach Zugehörigkeit zu einer Gruppe – Teil von etwas Größerem zu sein."
+            },
+            zugehoerigkeit: {
+                label: "Zugehörigkeit",
+                kategorie: "Teilnahme",
+                kategorieColor: "#06D6A0",
+                definition: "Das tiefe Bedürfnis, dazuzugehören – ein Gefühl von 'Hier bin ich richtig, hier gehöre ich hin'."
+            },
+            gegenseitigkeit: {
+                label: "Gegenseitigkeit",
+                kategorie: "Teilnahme",
+                kategorieColor: "#06D6A0",
+                definition: "Das Bedürfnis nach balanciertem Geben und Nehmen – ein ausgewogener Austausch, bei dem beide Seiten beitragen und empfangen."
+            },
+            respekt: {
+                label: "Respekt",
+                kategorie: "Teilnahme",
+                kategorieColor: "#06D6A0",
+                definition: "Das Bedürfnis nach Achtung und Würdigung – als Mensch respektiert und ernst genommen zu werden."
+            },
+            bedeutung_haben: {
+                label: "Bedeutung haben",
+                kategorie: "Teilnahme",
+                kategorieColor: "#06D6A0",
+                definition: "Das Bedürfnis, für andere wichtig zu sein – einen Unterschied zu machen und eine bedeutungsvolle Rolle zu haben."
+            },
+
+            // MUSSE
+            schoenheit: {
+                label: "Schönheit",
+                kategorie: "Muße",
+                kategorieColor: "#118AB2",
+                definition: "Das Bedürfnis nach ästhetischem Erleben – Schönheit wahrzunehmen und sich davon berühren zu lassen."
+            },
+            freizeit: {
+                label: "Freizeit",
+                kategorie: "Muße",
+                kategorieColor: "#118AB2",
+                definition: "Das Bedürfnis nach freier, ungeplanter Zeit – Raum für Erholung, Spiel und Nichtstun."
+            },
+            freude: {
+                label: "Freude",
+                kategorie: "Muße",
+                kategorieColor: "#118AB2",
+                definition: "Das Bedürfnis nach Freude und Vergnügen – Momente der Leichtigkeit und des Glücks."
+            },
+            humor: {
+                label: "Humor",
+                kategorie: "Muße",
+                kategorieColor: "#118AB2",
+                definition: "Das Bedürfnis nach Lachen und Leichtigkeit – das Leben nicht immer ernst zu nehmen."
+            },
+
+            // IDENTITÄT
+            authentizitaet: {
+                label: "Authentizität",
+                kategorie: "Identität & Bedeutung",
+                kategorieColor: "#FFD166",
+                definition: "Das Bedürfnis, echt und wahrhaftig zu sein – sich selbst treu zu bleiben und nicht zu verstellen."
+            },
+            echtheit: {
+                label: "Echtheit",
+                kategorie: "Identität & Bedeutung",
+                kategorieColor: "#FFD166",
+                definition: "Das Bedürfnis nach Aufrichtigkeit und Wahrhaftigkeit – in echten, unverfälschten Begegnungen."
+            },
+            integritaet: {
+                label: "Integrität",
+                kategorie: "Identität & Bedeutung",
+                kategorieColor: "#FFD166",
+                definition: "Das Bedürfnis, im Einklang mit den eigenen Werten zu handeln – innere Stimmigkeit und Konsequenz."
+            },
+            praesenz: {
+                label: "Präsenz",
+                kategorie: "Identität & Bedeutung",
+                kategorieColor: "#FFD166",
+                definition: "Das Bedürfnis, vollständig im Moment zu sein – ganz da, wach und aufmerksam."
+            },
+            ordnung: {
+                label: "Ordnung",
+                kategorie: "Identität & Bedeutung",
+                kategorieColor: "#FFD166",
+                definition: "Das Bedürfnis nach Struktur und Klarheit – ein geordnetes Umfeld, das Orientierung gibt."
+            },
+            bewusstheit: {
+                label: "Bewusstheit",
+                kategorie: "Identität & Bedeutung",
+                kategorieColor: "#FFD166",
+                definition: "Das Bedürfnis nach Selbsterkenntnis und Achtsamkeit – sich seiner selbst und der Welt bewusst zu sein."
+            },
+            herausforderung: {
+                label: "Herausforderung",
+                kategorie: "Identität & Bedeutung",
+                kategorieColor: "#FFD166",
+                definition: "Das Bedürfnis, gefordert zu werden – an Aufgaben zu wachsen und sich zu beweisen."
+            },
+            klarheit: {
+                label: "Klarheit",
+                kategorie: "Identität & Bedeutung",
+                kategorieColor: "#FFD166",
+                definition: "Das Bedürfnis nach Durchblick und Verständnis – zu wissen, woran man ist."
+            },
+            kompetenz: {
+                label: "Kompetenz",
+                kategorie: "Identität & Bedeutung",
+                kategorieColor: "#FFD166",
+                definition: "Das Bedürfnis nach Fähigkeit und Können – etwas gut zu beherrschen und wirksam zu sein."
+            },
+            effizienz: {
+                label: "Effizienz",
+                kategorie: "Identität & Bedeutung",
+                kategorieColor: "#FFD166",
+                definition: "Das Bedürfnis, Dinge effektiv und ohne Verschwendung zu tun – optimales Handeln."
+            },
+            wirksamkeit: {
+                label: "Wirksamkeit",
+                kategorie: "Identität & Bedeutung",
+                kategorieColor: "#FFD166",
+                definition: "Das Bedürfnis, etwas zu bewirken – Einfluss zu haben und Veränderung hervorzurufen."
+            },
+            wachstum: {
+                label: "Wachstum",
+                kategorie: "Identität & Bedeutung",
+                kategorieColor: "#FFD166",
+                definition: "Das Bedürfnis nach persönlicher Entwicklung – zu lernen, zu reifen und das eigene Potenzial zu entfalten."
+            },
+            sinn: {
+                label: "Sinn",
+                kategorie: "Identität & Bedeutung",
+                kategorieColor: "#FFD166",
+                definition: "Das tiefe Bedürfnis nach Bedeutung und Zweck – dass das Leben und Handeln einen Sinn hat."
+            },
+            beitrag_leisten: {
+                label: "Einen Beitrag leisten",
+                kategorie: "Identität & Bedeutung",
+                kategorieColor: "#FFD166",
+                definition: "Das Bedürfnis, etwas beizutragen – zum Wohlergehen anderer oder zum großen Ganzen."
+            },
+
+            // ERSCHAFFEN
+            kreativitaet: {
+                label: "Kreativität",
+                kategorie: "Etwas erschaffen",
+                kategorieColor: "#FF6B6B",
+                definition: "Das Bedürfnis, schöpferisch tätig zu sein – Neues zu erschaffen und kreativ Ausdruck zu finden."
+            },
+            entdecken: {
+                label: "Entdecken",
+                kategorie: "Etwas erschaffen",
+                kategorieColor: "#FF6B6B",
+                definition: "Das Bedürfnis nach Neugier und Exploration – neue Dinge, Orte und Ideen zu entdecken."
+            },
+            lernen: {
+                label: "Lernen",
+                kategorie: "Etwas erschaffen",
+                kategorieColor: "#FF6B6B",
+                definition: "Das Bedürfnis nach Wissen und Verständnis – sich weiterzubilden und Neues zu verstehen."
+            },
+            selbst_ausdruck: {
+                label: "Selbst-Ausdruck",
+                kategorie: "Etwas erschaffen",
+                kategorieColor: "#FF6B6B",
+                definition: "Das Bedürfnis, sich auszudrücken – die eigene Persönlichkeit, Gefühle und Ideen sichtbar zu machen."
+            },
+            anreize_bekommen: {
+                label: "Anreize bekommen",
+                kategorie: "Etwas erschaffen",
+                kategorieColor: "#FF6B6B",
+                definition: "Das Bedürfnis nach Stimulation und Inspiration – neue Impulse, die motivieren und anregen."
+            },
+
+            // VERBUNDENHEIT
+            leben_feiern: {
+                label: "Das Leben feiern",
+                kategorie: "Verbunden sein",
+                kategorieColor: "#A8DADC",
+                definition: "Das Bedürfnis, die Schönheit und Fülle des Lebens zu würdigen – Dankbarkeit und Freude am Sein."
+            },
+            inspiration: {
+                label: "Inspiration",
+                kategorie: "Verbunden sein",
+                kategorieColor: "#A8DADC",
+                definition: "Das Bedürfnis, inspiriert zu werden – berührt, bewegt und zu Höherem angeregt."
+            },
+            trauer_ausdruecken: {
+                label: "Trauer ausdrücken",
+                kategorie: "Verbunden sein",
+                kategorieColor: "#A8DADC",
+                definition: "Das Bedürfnis, Verlust und Schmerz ausdrücken zu dürfen – Trauer als Teil des Lebens zu ehren."
+            },
+            einsehen: {
+                label: "Einsehen",
+                kategorie: "Verbunden sein",
+                kategorieColor: "#A8DADC",
+                definition: "Das Bedürfnis nach tieferer Erkenntnis – Zusammenhänge zu verstehen und Einsicht zu gewinnen."
+            },
+            anfang_ende: {
+                label: "Anfang & Ende",
+                kategorie: "Verbunden sein",
+                kategorieColor: "#A8DADC",
+                definition: "Das Bedürfnis, Übergänge zu würdigen – Anfänge zu feiern und Enden zu betrauern als Teil des Lebenskreislaufs."
+            },
+
+            // DYNAMIK & AUSTAUSCH
+            kontrolle_ausueben: {
+                label: "Kontrolle ausüben",
+                kategorie: "Dynamik & Austausch",
+                kategorieColor: "#8B5CF6",
+                definition: "Das Bedürfnis, in einer Beziehung Verantwortung und Führung zu übernehmen – Entscheidungen zu treffen und Struktur zu geben."
+            },
+            hingabe: {
+                label: "Hingabe",
+                kategorie: "Dynamik & Austausch",
+                kategorieColor: "#8B5CF6",
+                definition: "Das Bedürfnis, sich vertrauensvoll hinzugeben – Kontrolle abzugeben und sich ganz auf den Partner einzulassen."
+            },
+            fuehrung_geben: {
+                label: "Führung geben",
+                kategorie: "Dynamik & Austausch",
+                kategorieColor: "#8B5CF6",
+                definition: "Das Bedürfnis, Richtung und Orientierung zu geben – den Partner zu leiten und zu führen."
+            },
+            gefuehrt_werden: {
+                label: "Geführt werden",
+                kategorie: "Dynamik & Austausch",
+                kategorieColor: "#8B5CF6",
+                definition: "Das Bedürfnis, sich führen zu lassen – Vertrauen in die Führung des Partners zu haben und Entlastung zu erfahren."
+            },
+            ritual: {
+                label: "Rituale & Struktur",
+                kategorie: "Dynamik & Austausch",
+                kategorieColor: "#8B5CF6",
+                definition: "Das Bedürfnis nach wiederkehrenden Praktiken und Strukturen – Rituale, die Verbindung und Bedeutung schaffen."
+            },
+            nachsorge: {
+                label: "Nachsorge/Aftercare",
+                kategorie: "Dynamik & Austausch",
+                kategorieColor: "#8B5CF6",
+                definition: "Das Bedürfnis nach Fürsorge und Geborgenheit nach intensiven Erlebnissen – sanftes Zurückkommen und Aufgefangen-Werden."
+            },
+            grenzen_setzen: {
+                label: "Grenzen setzen",
+                kategorie: "Dynamik & Austausch",
+                kategorieColor: "#8B5CF6",
+                definition: "Das Bedürfnis, eigene Grenzen zu kennen und zu kommunizieren – Selbstschutz und klare Kommunikation."
+            },
+            grenzen_respektieren: {
+                label: "Grenzen respektieren",
+                kategorie: "Dynamik & Austausch",
+                kategorieColor: "#8B5CF6",
+                definition: "Das Bedürfnis, dass die eigenen Grenzen geachtet werden – und selbst die Grenzen anderer zu respektieren."
+            },
+            intensitaet: {
+                label: "Intensität erleben",
+                kategorie: "Dynamik & Austausch",
+                kategorieColor: "#8B5CF6",
+                definition: "Das Bedürfnis nach starken, tiefgehenden Erfahrungen – Momente hoher emotionaler oder körperlicher Intensität."
+            },
+            vertrauen_schenken: {
+                label: "Vertrauen schenken",
+                kategorie: "Dynamik & Austausch",
+                kategorieColor: "#8B5CF6",
+                definition: "Das Bedürfnis, Vertrauen aktiv zu geben – sich verletzlich zu zeigen und dem Partner zu vertrauen."
+            },
+            verantwortung_uebernehmen: {
+                label: "Verantwortung übernehmen",
+                kategorie: "Dynamik & Austausch",
+                kategorieColor: "#8B5CF6",
+                definition: "Das Bedürfnis, Verantwortung für sich, den Partner oder die Dynamik zu tragen – verlässlich und achtsam zu sein."
+            },
+            sich_fallenlassen: {
+                label: "Sich fallenlassen",
+                kategorie: "Dynamik & Austausch",
+                kategorieColor: "#8B5CF6",
+                definition: "Das Bedürfnis, loszulassen und sich ganz einzulassen – in Vertrauen die Kontrolle abzugeben."
+            },
+            machtaustausch: {
+                label: "Machtaustausch",
+                kategorie: "Dynamik & Austausch",
+                kategorieColor: "#8B5CF6",
+                definition: "Das Bedürfnis nach bewusstem Geben und Nehmen von Macht – eine einvernehmliche Dynamik, die beide erfüllt."
+            },
+            dienend_sein: {
+                label: "Dienend sein",
+                kategorie: "Dynamik & Austausch",
+                kategorieColor: "#8B5CF6",
+                definition: "Das Bedürfnis, dem Partner zu dienen – Freude und Erfüllung darin zu finden, für den anderen da zu sein."
+            },
+            beschuetzen: {
+                label: "Beschützen",
+                kategorie: "Dynamik & Austausch",
+                kategorieColor: "#8B5CF6",
+                definition: "Das Bedürfnis, den Partner zu beschützen – Sicherheit zu geben und über sein Wohlergehen zu wachen."
+            }
+        };
+
+        /**
+         * Öffnet das Bedürfnis-Definition Modal
+         * @param {string} needId - Die ID des Bedürfnisses
+         */
+        function openNeedDefinitionModal(needId) {
+            const modal = document.getElementById('needDefinitionModal');
+            const body = document.getElementById('needDefinitionModalBody');
+            const title = document.getElementById('needDefinitionModalTitle');
+
+            if (!modal || !body) return;
+
+            // Definition suchen
+            const def = needDefinitions[needId];
+            if (!def) {
+                body.innerHTML = '<p style="color: var(--text-muted);">Keine Definition verfügbar.</p>';
+                modal.classList.add('active');
+                return;
+            }
+
+            // Titel setzen
+            title.textContent = def.label;
+
+            // Inhalt erstellen
+            body.innerHTML = `
+                <div style="display: flex; flex-direction: column; gap: 16px;">
+                    <!-- Kategorie-Badge -->
+                    <div style="display: flex; align-items: center; gap: 8px;">
+                        <span style="width: 12px; height: 12px; border-radius: 50%; background: ${def.kategorieColor};"></span>
+                        <span style="font-size: 12px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px;">${def.kategorie}</span>
+                    </div>
+
+                    <!-- Definition -->
+                    <div style="background: rgba(255,255,255,0.03); border-radius: 12px; padding: 16px; border-left: 3px solid ${def.kategorieColor};">
+                        <p style="font-size: 14px; line-height: 1.7; color: var(--text-primary); margin: 0;">${def.definition}</p>
+                    </div>
+
+                    <!-- GFK-Hinweis -->
+                    <div style="padding: 12px; background: rgba(139,92,246,0.08); border-radius: 8px; border: 1px solid rgba(139,92,246,0.2);">
+                        <p style="font-size: 11px; color: var(--text-secondary); margin: 0; line-height: 1.5;">
+                            <strong>Gewaltfreie Kommunikation (GFK):</strong> Nach Marshall Rosenberg sind Bedürfnisse universell und frei von Bewertung. Sie beschreiben, was wir zum Leben brauchen.
+                        </p>
+                    </div>
+                </div>
+            `;
+
+            modal.classList.add('active');
+        }
+
+        /**
+         * Schließt das Bedürfnis-Definition Modal
+         */
+        function closeNeedDefinitionModal(event) {
+            if (event && event.target !== event.currentTarget) return;
+            const modal = document.getElementById('needDefinitionModal');
+            if (modal) {
+                modal.classList.remove('active');
             }
         }
 
@@ -7710,7 +8342,10 @@
 
                     listHtml += `
                         <div style="background: rgba(255,255,255,0.03); border-radius: 6px; padding: 10px 12px; border-left: 3px solid ${statusColor};">
-                            <div style="font-weight: 500; color: var(--text-primary); font-size: 13px; margin-bottom: 6px;">${label}</div>
+                            <div onclick="openNeedDefinitionModal('${item.id}')" style="font-weight: 500; color: var(--text-primary); font-size: 13px; margin-bottom: 6px; cursor: pointer; display: flex; align-items: center; gap: 6px; transition: color 0.2s;" onmouseover="this.style.color='var(--primary)'" onmouseout="this.style.color='var(--text-primary)'">
+                                ${label}
+                                <span style="font-size: 10px; opacity: 0.5;">ⓘ</span>
+                            </div>
                             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
                                 <div style="display: flex; align-items: center; gap: 6px;">
                                     <div style="flex: 1; height: 5px; background: rgba(255,255,255,0.1); border-radius: 3px; overflow: hidden;">
