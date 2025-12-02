@@ -83,12 +83,12 @@ const TiageLocale_DE = {
         types: {
             heterosexuell: 'Heterosexuell',
             homosexuell: 'Homosexuell',
-            bisexuell: 'Bisexuell'
+            bisexuell: 'Bi-/Pansexuell'
         },
         short: {
             heterosexuell: 'Hetero',
             homosexuell: 'Homo',
-            bisexuell: 'Bi'
+            bisexuell: 'Bi/Pan'
         }
     },
 
@@ -221,8 +221,8 @@ const TiageLocale_DE = {
             text: 'Anziehung zum gleichen Geschlecht.'
         },
         bisexuell: {
-            title: 'Bisexuell',
-            text: 'Anziehung zu beiden Geschlechtern.'
+            title: 'Bi-/Pansexuell',
+            text: 'Anziehung zu mehreren oder allen Geschlechtern, unabhängig von Geschlechtsidentität.'
         }
     },
 

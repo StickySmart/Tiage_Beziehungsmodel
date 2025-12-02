@@ -1115,7 +1115,7 @@
                                 </div>
                             </div>
                             <div class="dominanz-option-row" id="m-ich-o-bi-row">
-                                <span class="dominanz-label" onclick="showDimensionTooltip('bisexuell')" style="cursor: pointer;">bisexuell</span>
+                                <span class="dominanz-label" onclick="showDimensionTooltip('bisexuell')" style="cursor: pointer;">Bi-/Pan</span>
                                 <div id="m-ich-o-bi-status" class="status-toggle-group">
                                     <button type="button" class="status-toggle-btn" data-status="gelebt" onclick="handleOrientierungStatusToggle('ich', 'bisexuell', 'gelebt', this)">Gelebt</button>
                                     <button type="button" class="status-toggle-btn" data-status="interessiert" onclick="handleOrientierungStatusToggle('ich', 'bisexuell', 'interessiert', this)">Interessiert</button>
@@ -1272,7 +1272,7 @@
                                 </div>
                             </div>
                             <div class="dominanz-option-row" id="m-partner-o-bi-row">
-                                <span class="dominanz-label" onclick="showDimensionTooltip('bisexuell')" style="cursor: pointer;">bisexuell</span>
+                                <span class="dominanz-label" onclick="showDimensionTooltip('bisexuell')" style="cursor: pointer;">Bi-/Pan</span>
                                 <div id="m-partner-o-bi-status" class="status-toggle-group">
                                     <button type="button" class="status-toggle-btn" data-status="gelebt" onclick="handleOrientierungStatusToggle('partner', 'bisexuell', 'gelebt', this)">Gelebt</button>
                                     <button type="button" class="status-toggle-btn" data-status="interessiert" onclick="handleOrientierungStatusToggle('partner', 'bisexuell', 'interessiert', this)">Interessiert</button>
@@ -1444,7 +1444,7 @@
                                         </div>
                                     </div>
                                     <div class="dominanz-option-row" id="modal-ich-o-bi-row">
-                                        <span class="dominanz-label" onclick="showDimensionTooltip('bisexuell')" style="cursor: pointer;">bisexuell</span>
+                                        <span class="dominanz-label" onclick="showDimensionTooltip('bisexuell')" style="cursor: pointer;">Bi-/Pan</span>
                                         <div id="modal-ich-o-bi-status" class="status-toggle-group">
                                             <button type="button" class="status-toggle-btn" data-status="gelebt" onclick="handleOrientierungStatusToggle('ich', 'bisexuell', 'gelebt', this)">Gelebt</button>
                                             <button type="button" class="status-toggle-btn" data-status="interessiert" onclick="handleOrientierungStatusToggle('ich', 'bisexuell', 'interessiert', this)">Interessiert</button>
@@ -1623,7 +1623,7 @@
                                     </div>
                                     <div class="dominanz-option-row" id="modal-partner-o-bi-row">
                                         <input type="checkbox" id="modal-partner-o-bi" value="bisexuell" class="dominanz-checkbox" onchange="handleModalOrientierungMultiChange('partner', 'bisexuell', this.checked)">
-                                        <label for="modal-partner-o-bi" class="dominanz-label" onclick="event.preventDefault(); showDimensionTooltip('bisexuell')" style="cursor: pointer;">bisexuell</label>
+                                        <label for="modal-partner-o-bi" class="dominanz-label" onclick="event.preventDefault(); showDimensionTooltip('bisexuell')" style="cursor: pointer;">Bi-/Pan</label>
                                         <button type="button" id="modal-partner-o-bi-secondary" class="secondary-interessiert-btn" onclick="handleOrientierungSecondaryInteressiert('partner', 'bisexuell', this)">interessiert</button>
                                         <div id="modal-partner-o-bi-status" class="status-toggle-group">
                                             <button type="button" class="status-toggle-btn active-gelebt" data-status="gelebt" onclick="handleOrientierungStatusToggle('partner', 'bisexuell', 'gelebt', this)">Gelebt</button>
@@ -2037,8 +2037,8 @@
                     <div class="geschlecht-info-desc"><strong>Anziehung zum gleichen Geschlecht</strong> – Du fühlst dich romantisch und/oder sexuell zu Menschen des gleichen Geschlechts hingezogen.</div>
                 </div>
                 <div class="geschlecht-info-item">
-                    <div class="geschlecht-info-name">Bisexuell</div>
-                    <div class="geschlecht-info-desc"><strong>Anziehung zu beiden Geschlechtern</strong> – Du fühlst dich romantisch und/oder sexuell zu Menschen beider Geschlechter hingezogen.</div>
+                    <div class="geschlecht-info-name">Bi-/Pansexuell</div>
+                    <div class="geschlecht-info-desc"><strong>Anziehung zu mehreren oder allen Geschlechtern</strong> – Du fühlst dich romantisch und/oder sexuell zu Menschen verschiedener Geschlechter hingezogen, unabhängig von deren Geschlechtsidentität.</div>
                 </div>
             </div>
             <button class="dimension-tooltip-close" onclick="closeOrientierungInfoModal()">Verstanden</button>
@@ -2822,7 +2822,7 @@
             },
             orientierung: {
                 title: "Sexuelle Orientierung",
-                text: "Zu welchem Geschlecht fühlst du dich romantisch und/oder sexuell hingezogen?\n\n• Heterosexuell: Anziehung zum anderen Geschlecht\n• Homosexuell: Anziehung zum gleichen Geschlecht\n• Bisexuell: Anziehung zu beiden Geschlechtern\n\nDie sexuelle Orientierung beeinflusst, ob eine körperliche/romantische Anziehung zwischen zwei Personen möglich ist. Bei inkompatiblen Orientierungen zeigt das Modell dies als Blocker an."
+                text: "Zu welchem Geschlecht fühlst du dich romantisch und/oder sexuell hingezogen?\n\n• Heterosexuell: Anziehung zum anderen Geschlecht\n• Homosexuell: Anziehung zum gleichen Geschlecht\n• Bi-/Pansexuell: Anziehung zu mehreren oder allen Geschlechtern\n\nDie sexuelle Orientierung beeinflusst, ob eine körperliche/romantische Anziehung zwischen zwei Personen möglich ist. Bei inkompatiblen Orientierungen zeigt das Modell dies als Blocker an."
             },
             status: {
                 title: "Orientierungs-Status",
