@@ -1306,7 +1306,8 @@
                     <span class="lightbulb-icon">💡</span>
                     <span class="lightbulb-text">Tiage's Synthese</span>
                 </div>
-                <div id="mobileScoreNote" class="score-note" style="margin-top: 8px; font-size: 13px; color: var(--text-secondary); font-style: italic; text-align: center; max-width: 280px; line-height: 1.4; margin-left: auto; margin-right: auto;"></div>
+                <!-- Synthese-Text wurde in das CREATIVITY-Modal verschoben -->
+                <div id="mobileScoreNote" class="score-note" style="display: none;"></div>
             </div>
 
             <!-- GFK Bedürfnis-Matching Anzeige (Mobile) -->
@@ -12145,6 +12146,39 @@
             </div>`;
         }
 
+        /**
+         * Generiert den Synthese-Quote-Text basierend auf dem aktuellen Score
+         * Wird im CREATIVITY-Abschnitt des Modals angezeigt
+         */
+        function getSyntheseQuoteText() {
+            // Hole den aktuellen Score aus dem Display
+            const scoreEl = document.getElementById('mainScoreValue') || document.getElementById('mobileScoreCircle');
+            const scoreText = scoreEl?.textContent || '0';
+            const score = parseInt(scoreText, 10) || 0;
+
+            let noteText = '';
+            let quoteText = '';
+
+            if (score < 30) {
+                noteText = 'Sehr niedrige Resonanz – große Unterschiede.';
+                quoteText = `Diese Beziehung zeigt eine Qualität von ${score}% – die Muster unterscheiden sich stark, was intensive Kommunikation erfordert.`;
+            } else if (score >= 80) {
+                noteText = 'Hohe Resonanz – Muster ergänzen sich.';
+                quoteText = `Diese Beziehung zeigt eine Qualität von ${score}% – eine hohe Resonanz zwischen zwei Menschen, deren Muster sich ergänzen und verstärken.`;
+            } else if (score >= 65) {
+                noteText = 'Solide Balance mit Potenzial.';
+                quoteText = `Diese Beziehung zeigt eine Qualität von ${score}% – eine solide Balance mit Entwicklungspotenzial für beide Partner.`;
+            } else if (score >= 50) {
+                noteText = 'Basis vorhanden, Arbeit erforderlich.';
+                quoteText = `Diese Beziehung zeigt eine Qualität von ${score}% – eine Basis ist vorhanden, erfordert aber bewusste Arbeit und Kommunikation.`;
+            } else {
+                noteText = 'Bewusste Reflexion erforderlich.';
+                quoteText = `Diese Beziehung zeigt eine Qualität von ${score}% – bewusste Reflexion und offene Kommunikation sind erforderlich.`;
+            }
+
+            return { noteText, quoteText };
+        }
+
         function getPathosContent() {
             const ichArch = archetypeDefinitions[currentArchetype];
             const partnerArch = archetypeDefinitions[selectedPartner];
@@ -12160,6 +12194,9 @@
             // Dynamik+Wachstum kombiniert als Fließtext
             const dynamikWachstumText = gfkAnalyse.dynamikSection || '';
 
+            // Synthese-Quote-Text für CREATIVITY-Abschnitt
+            const syntheseQuote = getSyntheseQuoteText();
+
             let html = `
                 <!-- GEMEINSAME BEDÜRFNISSE -->
                 ${gfkAnalyse.gemeinsamSection}
@@ -12171,6 +12208,8 @@
                             <span style="font-size: 14px;">🔥</span>
                             <span style="font-size: 11px; color: #FFD700; font-weight: 600; text-transform: uppercase; letter-spacing: 1px;">${creativityLabel}</span>
                         </div>
+                        <p style="font-size: 13px; margin: 0 0 10px 0; line-height: 1.5;"><strong style="color: var(--text-primary);">${syntheseQuote.noteText}</strong></p>
+                        <p style="font-size: 13px; margin: 0 0 12px 0; line-height: 1.5; font-style: italic; color: var(--text-secondary); opacity: 0.9;">"${syntheseQuote.quoteText}"</p>
                         <p style="font-size: 14px; margin: 0; line-height: 1.6; font-style: italic;">${detailed.synthese}</p>
                         ${dynamikWachstumText}
                     </div>
@@ -12197,6 +12236,9 @@
             // Dynamik+Wachstum kombiniert als Fließtext
             const dynamikWachstumText = gfkAnalyse.dynamikSection || '';
 
+            // Synthese-Quote-Text für CREATIVITY-Abschnitt
+            const syntheseQuote = getSyntheseQuoteText();
+
             let html = `
                 <!-- GEMEINSAME WERTE -->
                 ${gfkAnalyse.gemeinsamSection}
@@ -12208,6 +12250,8 @@
                             <span style="font-size: 14px;">🧠</span>
                             <span style="font-size: 11px; color: #6495ED; font-weight: 600; text-transform: uppercase; letter-spacing: 1px;">${creativityLabel}</span>
                         </div>
+                        <p style="font-size: 13px; margin: 0 0 10px 0; line-height: 1.5;"><strong style="color: var(--text-primary);">${syntheseQuote.noteText}</strong></p>
+                        <p style="font-size: 13px; margin: 0 0 12px 0; line-height: 1.5; font-style: italic; color: var(--text-secondary); opacity: 0.9;">"${syntheseQuote.quoteText}"</p>
                         <p style="font-size: 14px; margin: 0; line-height: 1.6; font-style: italic;">${detailed.synthese}</p>
                         ${dynamikWachstumText}
                     </div>
