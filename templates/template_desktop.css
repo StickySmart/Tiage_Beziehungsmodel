@@ -4426,7 +4426,7 @@
             color: var(--text-primary);
         }
 
-        /* Kleine Kreis-Indikatoren für Primary (I) und Secondary (G) */
+        /* Kleine Kreis-Indikatoren für Primary (P) und Secondary (S) */
         .geschlecht-indicator {
             position: absolute;
             top: -4px;

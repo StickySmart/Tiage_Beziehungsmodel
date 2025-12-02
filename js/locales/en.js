@@ -569,15 +569,8 @@ const TiageLocale_EN = {
     },
 
     // ═══════════════════════════════════════════════════════════════════════
-    // NEEDS / BEDÜRFNISSE
+    // NEEDS - see GFK NEEDS section below for complete list
     // ═══════════════════════════════════════════════════════════════════════
-
-    needs: {
-        matchLabel: 'Needs Match',
-        sharedTitle: 'SHARED NEEDS',
-        differentTitle: 'DIFFERENT PRIORITIES',
-        valuesTitle: 'SHARED VALUES'
-    },
 
     // ═══════════════════════════════════════════════════════════════════════
     // COLUMN HEADERS
@@ -630,7 +623,7 @@ const TiageLocale_EN = {
         title: 'Gender Identities',
         howItWorks: 'How selection works:',
         firstClick: '1st click',
-        primaryIdentity: 'Primary Identity (I)',
+        primaryIdentity: 'Primary Identity (P)',
         secondClick: '2nd click',
         secondaryIdentity: 'Secondary Identity (S)',
         thirdClick: '3rd click',
@@ -704,6 +697,12 @@ const TiageLocale_EN = {
     // ═══════════════════════════════════════════════════════════════════════
 
     needs: {
+        // Base labels
+        matchLabel: 'Needs Match',
+        sharedTitle: 'SHARED NEEDS',
+        differentTitle: 'DIFFERENT PRIORITIES',
+        valuesTitle: 'SHARED VALUES',
+
         // Categories
         categories: {
             existenz: 'Existence',
