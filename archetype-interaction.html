@@ -24,6 +24,7 @@
     <script src="js/locales/de.js"></script>
     <script src="js/locales/en.js"></script>
     <script src="js/i18n.js"></script>
+    <script src="js/utils/tts.js"></script>
     <script src="js/version.js"></script>
 
     <!-- TIAGE Archetype Statements - DE/EN -->
@@ -13495,6 +13496,8 @@
 
         function closePathosLogosModal(event, skipHistoryBack = false) {
             if (event && event.target !== event.currentTarget) return;
+            // Stop TTS when modal is closed
+            stopTTSOnModalClose();
             document.getElementById('pathosLogosModal').classList.remove('active');
             if (!skipHistoryBack && history.state && history.state.modal === 'pathoslogos') {
                 history.back();
@@ -13503,6 +13506,8 @@
 
         function showPathosLogosContent(type) {
             currentPathosLogosType = type;
+            // Stop TTS when switching between Pathos/Logos
+            stopTTSOnModalClose();
             // Save to localStorage for sticky behavior
             localStorage.setItem('pathosLogosType', type);
 
@@ -13770,6 +13775,99 @@
             return { noteText, quoteText };
         }
 
+        // ═══════════════════════════════════════════════════════════════════════
+        // TEXT-TO-SPEECH (TTS) für CREATIVITY-Bereich
+        // ═══════════════════════════════════════════════════════════════════════
+
+        // Track which section is currently being read
+        let currentTTSSection = null;
+
+        /**
+         * Toggle Text-to-Speech for the CREATIVITY section
+         * @param {string} section - 'pathos' or 'logos'
+         */
+        function toggleCreativityTTS(section) {
+            // Check if TTS is supported
+            if (!TiageTTS || !TiageTTS.isSupported()) {
+                const notSupportedMsg = TiageI18n.t('tts.notSupported', 'Vorlesen wird in diesem Browser nicht unterstützt');
+                alert(notSupportedMsg);
+                return;
+            }
+
+            const iconEl = document.getElementById(`ttsIcon${section.charAt(0).toUpperCase() + section.slice(1)}`);
+            const buttonEl = document.getElementById(`ttsButton${section.charAt(0).toUpperCase() + section.slice(1)}`);
+            const textEl = document.getElementById(`creativityText${section.charAt(0).toUpperCase() + section.slice(1)}`);
+
+            if (!textEl || !iconEl) return;
+
+            // If currently speaking the same section
+            if (currentTTSSection === section && TiageTTS.isSpeaking()) {
+                if (TiageTTS.isPaused()) {
+                    // Resume
+                    TiageTTS.resume();
+                    iconEl.textContent = '⏸️';
+                    buttonEl.title = TiageI18n.t('tts.pause', 'Pausieren');
+                } else {
+                    // Pause
+                    TiageTTS.pause();
+                    iconEl.textContent = '▶️';
+                    buttonEl.title = TiageI18n.t('tts.resume', 'Fortsetzen');
+                }
+                return;
+            }
+
+            // If speaking a different section, stop first
+            if (TiageTTS.isSpeaking()) {
+                TiageTTS.stop();
+                resetTTSButtons();
+            }
+
+            // Get text content and start speaking
+            const text = textEl.textContent || textEl.innerText;
+            if (!text.trim()) return;
+
+            currentTTSSection = section;
+            TiageTTS.speak(text);
+
+            // Update button
+            iconEl.textContent = '⏸️';
+            buttonEl.title = TiageI18n.t('tts.pause', 'Pausieren');
+
+            // Subscribe to TTS events for this speech
+            const unsubscribe = TiageTTS.subscribe((event) => {
+                if (event.type === 'end' || event.type === 'stop' || event.type === 'error') {
+                    resetTTSButtons();
+                    currentTTSSection = null;
+                    unsubscribe();
+                }
+            });
+        }
+
+        /**
+         * Reset all TTS buttons to their default state
+         */
+        function resetTTSButtons() {
+            const playLabel = TiageI18n.t('tts.play', 'Vorlesen');
+
+            ['Pathos', 'Logos'].forEach(section => {
+                const iconEl = document.getElementById(`ttsIcon${section}`);
+                const buttonEl = document.getElementById(`ttsButton${section}`);
+                if (iconEl) iconEl.textContent = '🔊';
+                if (buttonEl) buttonEl.title = playLabel;
+            });
+        }
+
+        /**
+         * Stop TTS when modal is closed
+         */
+        function stopTTSOnModalClose() {
+            if (TiageTTS && TiageTTS.isSpeaking()) {
+                TiageTTS.stop();
+                resetTTSButtons();
+                currentTTSSection = null;
+            }
+        }
+
         function getPathosContent() {
             const ichArch = archetypeDescriptions[currentArchetype];
             const partnerArch = archetypeDescriptions[selectedPartner];
@@ -13788,6 +13886,9 @@
             // Synthese-Quote-Text für CREATIVITY-Abschnitt
             const syntheseQuote = getSyntheseQuoteText();
 
+            // TTS Button Label
+            const ttsPlayLabel = TiageI18n.t('tts.play', 'Vorlesen');
+
             let html = `
                 <!-- GEMEINSAME BEDÜRFNISSE -->
                 ${gfkAnalyse.gemeinsamSection}
@@ -13795,13 +13896,20 @@
                 <!-- CREATIVITY -->
                 <div style="margin-bottom: 16px;">
                     <div style="padding: 14px; background: linear-gradient(135deg, rgba(255,215,0,0.1), rgba(231,111,81,0.08)); border-radius: 10px; border: 1px solid rgba(231,111,81,0.3);">
-                        <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 10px;">
-                            <span style="font-size: 14px;">🔥</span>
-                            <span style="font-size: 11px; color: #FFD700; font-weight: 600; text-transform: uppercase; letter-spacing: 1px;">${creativityLabel}</span>
+                        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px;">
+                            <div style="display: flex; align-items: center; gap: 8px;">
+                                <span style="font-size: 14px;">🔥</span>
+                                <span style="font-size: 11px; color: #FFD700; font-weight: 600; text-transform: uppercase; letter-spacing: 1px;">${creativityLabel}</span>
+                            </div>
+                            <button id="ttsButtonPathos" onclick="toggleCreativityTTS('pathos')" title="${ttsPlayLabel}" style="background: rgba(255,215,0,0.2); border: 1px solid rgba(255,215,0,0.4); border-radius: 6px; padding: 4px 8px; cursor: pointer; display: flex; align-items: center; gap: 4px; transition: all 0.2s ease;">
+                                <span id="ttsIconPathos" style="font-size: 14px;">🔊</span>
+                            </button>
                         </div>
-                        <p style="font-size: 13px; margin: 0 0 10px 0; line-height: 1.5;"><strong style="color: var(--text-primary);">${syntheseQuote.noteText}</strong></p>
-                        <p style="font-size: 13px; margin: 0 0 12px 0; line-height: 1.5; font-style: italic; color: var(--text-secondary); opacity: 0.9;">"${syntheseQuote.quoteText}"</p>
-                        <p style="font-size: 14px; margin: 0; line-height: 1.6; font-style: italic;">${detailed.synthese}</p>
+                        <div id="creativityTextPathos">
+                            <p style="font-size: 13px; margin: 0 0 10px 0; line-height: 1.5;"><strong style="color: var(--text-primary);">${syntheseQuote.noteText}</strong></p>
+                            <p style="font-size: 13px; margin: 0 0 12px 0; line-height: 1.5; font-style: italic; color: var(--text-secondary); opacity: 0.9;">"${syntheseQuote.quoteText}"</p>
+                            <p style="font-size: 14px; margin: 0; line-height: 1.6; font-style: italic;">${detailed.synthese}</p>
+                        </div>
                         ${dynamikWachstumText}
                     </div>
                 </div>`;
@@ -13830,6 +13938,9 @@
             // Synthese-Quote-Text für CREATIVITY-Abschnitt
             const syntheseQuote = getSyntheseQuoteText();
 
+            // TTS Button Label
+            const ttsPlayLabel = TiageI18n.t('tts.play', 'Vorlesen');
+
             let html = `
                 <!-- GEMEINSAME WERTE -->
                 ${gfkAnalyse.gemeinsamSection}
@@ -13837,13 +13948,20 @@
                 <!-- CREATIVITY -->
                 <div style="margin-bottom: 16px;">
                     <div style="padding: 14px; background: linear-gradient(135deg, rgba(100,149,237,0.1), rgba(69,123,157,0.08)); border-radius: 10px; border: 1px solid rgba(69,123,157,0.3);">
-                        <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 10px;">
-                            <span style="font-size: 14px;">🧠</span>
-                            <span style="font-size: 11px; color: #6495ED; font-weight: 600; text-transform: uppercase; letter-spacing: 1px;">${creativityLabel}</span>
+                        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px;">
+                            <div style="display: flex; align-items: center; gap: 8px;">
+                                <span style="font-size: 14px;">🧠</span>
+                                <span style="font-size: 11px; color: #6495ED; font-weight: 600; text-transform: uppercase; letter-spacing: 1px;">${creativityLabel}</span>
+                            </div>
+                            <button id="ttsButtonLogos" onclick="toggleCreativityTTS('logos')" title="${ttsPlayLabel}" style="background: rgba(100,149,237,0.2); border: 1px solid rgba(100,149,237,0.4); border-radius: 6px; padding: 4px 8px; cursor: pointer; display: flex; align-items: center; gap: 4px; transition: all 0.2s ease;">
+                                <span id="ttsIconLogos" style="font-size: 14px;">🔊</span>
+                            </button>
                         </div>
-                        <p style="font-size: 13px; margin: 0 0 10px 0; line-height: 1.5;"><strong style="color: var(--text-primary);">${syntheseQuote.noteText}</strong></p>
-                        <p style="font-size: 13px; margin: 0 0 12px 0; line-height: 1.5; font-style: italic; color: var(--text-secondary); opacity: 0.9;">"${syntheseQuote.quoteText}"</p>
-                        <p style="font-size: 14px; margin: 0; line-height: 1.6; font-style: italic;">${detailed.synthese}</p>
+                        <div id="creativityTextLogos">
+                            <p style="font-size: 13px; margin: 0 0 10px 0; line-height: 1.5;"><strong style="color: var(--text-primary);">${syntheseQuote.noteText}</strong></p>
+                            <p style="font-size: 13px; margin: 0 0 12px 0; line-height: 1.5; font-style: italic; color: var(--text-secondary); opacity: 0.9;">"${syntheseQuote.quoteText}"</p>
+                            <p style="font-size: 14px; margin: 0; line-height: 1.6; font-style: italic;">${detailed.synthese}</p>
+                        </div>
                         ${dynamikWachstumText}
                     </div>
                 </div>`;
