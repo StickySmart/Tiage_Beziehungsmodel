@@ -6775,10 +6775,13 @@
                 ];
             }
 
-            // Populate S grid
-            sGrid.innerHTML = sOptions.map(opt =>
-                `<button type="button" class="geschlecht-btn geschlecht-s-btn" data-value="${opt.value}" onclick="handleGeschlechtSClick('${person}', '${opt.value}', this)">${opt.label}</button>`
-            ).join('');
+            // Populate S grid (include secondary-selected class if already selected)
+            const currentSecondary = personDimensions[person].geschlecht?.secondary;
+            sGrid.innerHTML = sOptions.map(opt => {
+                const isSelected = opt.value === currentSecondary;
+                const selectedClass = isSelected ? ' secondary-selected' : '';
+                return `<button type="button" class="geschlecht-btn geschlecht-s-btn${selectedClass}" data-value="${opt.value}" onclick="handleGeschlechtSClick('${person}', '${opt.value}', this)">${opt.label}${isSelected ? '<span class="geschlecht-indicator indicator-secondary" title="Identität (Sekundär)">S</span>' : ''}</button>`;
+            }).join('');
         }
 
         /**
