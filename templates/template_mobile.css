@@ -737,5 +737,49 @@ body {
     }
 }
 
+/* Geschlecht Grid und Button Styles für Mobile */
+.geschlecht-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 4px;
+}
+
+.geschlecht-secondary-row {
+    margin-top: 4px;
+    padding-top: 4px;
+    border-top: 1px dashed var(--border-light, rgba(255,255,255,0.1));
+}
+
+.geschlecht-btn {
+    position: relative;
+    padding: 4px 8px;
+    border-radius: 6px;
+    border: 1px solid var(--border);
+    background: var(--bg-dark);
+    color: var(--text-secondary);
+    font-size: 11px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    min-width: 50px;
+    text-align: center;
+}
+
+.geschlecht-btn:hover {
+    border-color: var(--primary);
+    color: var(--text-primary);
+}
+
+.geschlecht-btn.primary-selected {
+    background: var(--primary);
+    border-color: var(--primary);
+    color: white;
+}
+
+.geschlecht-btn.secondary-selected {
+    background: rgba(234, 179, 8, 0.8);
+    border-color: #EAB308;
+    color: #0f0f1a;
+}
+
 /* DevView Styles wurden nach template_desktop.css verschoben,
    damit sie IMMER geladen werden (auch wenn Browser Desktop meldet) */
