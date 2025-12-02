@@ -3470,6 +3470,68 @@
             flex-shrink: 0;
         }
 
+        /* ═══════════════════════════════════════════════════════════════════════
+           NEUES GESCHLECHTS-SYSTEM (Zwei-Dimensionales: Körper + Identität)
+           ═══════════════════════════════════════════════════════════════════════ */
+
+        .geschlecht-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 8px;
+        }
+
+        .geschlecht-row:last-child {
+            margin-bottom: 0;
+        }
+
+        .geschlecht-row-label {
+            font-size: var(--font-xs);
+            color: var(--text-secondary);
+            min-width: 65px;
+            flex-shrink: 0;
+        }
+
+        .geschlecht-primary-grid,
+        .geschlecht-secondary-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            flex: 1;
+        }
+
+        .geschlecht-primary-grid .geschlecht-btn,
+        .geschlecht-secondary-grid .geschlecht-btn {
+            padding: 6px 12px;
+            font-size: var(--font-xs);
+            border-radius: 6px;
+            border: 1px solid var(--border);
+            background: var(--bg-darker);
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .geschlecht-primary-grid .geschlecht-btn:hover,
+        .geschlecht-secondary-grid .geschlecht-btn:hover {
+            background: var(--bg-hover);
+            border-color: var(--primary-light);
+        }
+
+        .geschlecht-primary-grid .geschlecht-btn.selected,
+        .geschlecht-primary-grid .geschlecht-btn.primary-selected {
+            background: var(--primary);
+            border-color: var(--primary);
+            color: white;
+        }
+
+        .geschlecht-secondary-grid .geschlecht-btn.selected,
+        .geschlecht-secondary-grid .geschlecht-btn.secondary-selected {
+            background: var(--warning);
+            border-color: var(--warning);
+            color: white;
+        }
+
         /* Status Popup Styles */
         .status-popup-content {
             max-width: 380px;
