@@ -177,44 +177,45 @@ Gender-Chemie als Feinabstimmung der Orientierung
 
 ## Methodische Grundlagen
 
-### Die 288 Psychologischen Profile
+### Die 864 Psychologischen Profile
 
-Das Modell basiert auf **288 individuellen Profilen**, die durch systematische Kombination von vier Dimensionen entstehen:
+Das Modell basiert auf **864 individuellen Profilen**, die durch systematische Kombination von vier Dimensionen entstehen:
 
 | Dimension | Ausprägungen | Anzahl |
 |-----------|--------------|--------|
 | **Archetyp** | Single, Duo, Duo-Flex, Solopoly, Polyamor, RA, LAT, Aromantisch | 8 |
-| **Geschlecht** | Männlich, Weiblich, Nonbinär | 3 |
+| **Geschlecht** | Cis Mann, Cis Frau, Trans Mann, Trans Frau, Nonbinär, Genderfluid, Agender, Intersex, Divers | 9 |
 | **Dominanz** | Dominant, Submissiv, Switch, Ausgeglichen | 4 |
 | **Orientierung** | Heterosexuell, Homosexuell, Bisexuell | 3 |
 
-**Berechnung:** 8 × 3 × 4 × 3 = **288 Profile**
+**Berechnung:** 8 × 9 × 4 × 3 = **864 Profile**
 
 ### Visualisierung: Profil-Generierung (Die "Fütterung")
 
 ```
 ┌─────────────────────────────────────────────────────────────────────────────────┐
 │                        SCHRITT 1: KOMBINATION                                   │
-│                     (4 Dimensionen → 288 Profile)                               │
+│                     (4 Dimensionen → 864 Profile)                               │
 └─────────────────────────────────────────────────────────────────────────────────┘
 
-    ARCHETYP (8)         GESCHLECHT (3)       DOMINANZ (4)        ORIENTIERUNG (3)
-    ┌──────────┐         ┌──────────┐         ┌──────────┐        ┌──────────┐
-    │ Single   │         │ Männlich │         │ Dominant │        │ Hetero   │
-    │ Duo      │    ×    │ Weiblich │    ×    │ Submissiv│   ×    │ Homo     │
-    │ Duo-Flex │         │ Nonbinär │         │ Switch   │        │ Bi       │
-    │ Solopoly │         └──────────┘         │Ausgeglichen       └──────────┘
-    │ Polyamor │                              └──────────┘
-    │ RA       │
-    │ LAT      │
-    │Aromantisch│
-    └──────────┘
+    ARCHETYP (8)         GESCHLECHT (9)       DOMINANZ (4)        ORIENTIERUNG (3)
+    ┌──────────┐         ┌───────────┐        ┌──────────┐        ┌──────────┐
+    │ Single   │         │ Cis Mann  │        │ Dominant │        │ Hetero   │
+    │ Duo      │         │ Cis Frau  │        │ Submissiv│        │ Homo     │
+    │ Duo-Flex │         │ Trans Mann│        │ Switch   │        │ Bi       │
+    │ Solopoly │    ×    │ Trans Frau│   ×    │Ausgeglichen  ×    └──────────┘
+    │ Polyamor │         │ Nonbinär  │        └──────────┘
+    │ RA       │         │Genderfluid│
+    │ LAT      │         │ Agender   │
+    │Aromantisch│        │ Intersex  │
+    └──────────┘         │ Divers    │
+                         └───────────┘
          │                    │                    │                   │
          └────────────────────┴────────────────────┴───────────────────┘
                                         │
                                         ▼
                               ┌──────────────────┐
-                              │   288 PROFILE    │
+                              │   864 PROFILE    │
                               │  (alle Kombis)   │
                               └──────────────────┘
 
@@ -339,14 +340,14 @@ Das Modell basiert auf **288 individuellen Profilen**, die durch systematische K
 
 ```
 ┌─────────────┐    ┌─────────────┐    ┌─────────────┐    ┌─────────────┐
-│ 4 DIMENS-   │───▶│ WISSEN-     │───▶│   GAUSS     │───▶│ 216 FERTIGE │
+│ 4 DIMENS-   │───▶│ WISSEN-     │───▶│   GAUSS     │───▶│ 864 FERTIGE │
 │ IONEN       │    │ SCHAFTLICHE │    │ CONFIDENCE  │    │ PROFILE     │
 │ kombinieren │    │ RECHERCHE   │    │ zuweisen    │    │ (je 30 Attr)│
 └─────────────┘    └─────────────┘    └─────────────┘    └─────────────┘
       │                  │                  │                   │
       │                  │                  │                   │
-   8×3×4×3           Studien zu         "Wie sicher          Vollständig
-   = 288            Persönlich-         gilt das?"           annotierte
+   8×9×4×3           Studien zu         "Wie sicher          Vollständig
+   = 864            Persönlich-         gilt das?"           annotierte
    Kombis           keitstypen                               Profile
 ```
 
@@ -377,7 +378,7 @@ Das Modell basiert auf **288 individuellen Profilen**, die durch systematische K
 |----------|--------------|----------|
 | **A[attr]** | Archetyp-Basiswert | Single → `wohnform: "alleine"` |
 | **D[mod]** | Dominanz-Modifikator | Dominant → `kommunikation: "direkt"` |
-| **G[mod]** | Geschlechts-Modifikator | Männlich → `emotionaleOffenheit: -1` |
+| **G[mod]** | Geschlechts-Modifikator | Cis Mann → `emotionaleOffenheit: -1` |
 | **O[mod]** | Orientierungs-Modifikator | Homosexuell → `emotionaleOffenheit: +1` |
 
 #### Überlagerungs-Logik (Priorität)
@@ -445,7 +446,7 @@ Das Modell basiert auf **288 individuellen Profilen**, die durch systematische K
 │  │                                                                           │  │
 │  │ SCHRITT 3: Geschlechts-Modifikator (bestätigt)                            │  │
 │  │ ──────────────────────────────────────────────                            │  │
-│  │ Männlich → bestätigt "direkt" (Tannen 1990: Männer = Status-Sprache)      │  │
+│  │ Cis Mann → bestätigt "direkt" (Tannen 1990: Männer = Status-Sprache)      │  │
 │  │                                                                           │  │
 │  │ SCHRITT 4: Orientierungs-Modifikator (keine Änderung)                     │  │
 │  │ ───────────────────────────────────────────────────                       │  │
@@ -454,7 +455,7 @@ Das Modell basiert auf **288 individuellen Profilen**, die durch systematische K
 │  │ ERGEBNIS:                                                                 │  │
 │  │ ─────────                                                                 │  │
 │  │ kommunikationsstil: "direkt"                                              │  │
-│  │ confidence: 0.80 (80% der Dominant+Männlich sind "direkt" lt. Studien)    │  │
+│  │ confidence: 0.80 (80% der Dominant+Cis Mann sind "direkt" lt. Studien)    │  │
 │  │                                                                           │  │
 │  └───────────────────────────────────────────────────────────────────────────┘  │
 │                                                                                 │
@@ -463,7 +464,7 @@ Das Modell basiert auf **288 individuellen Profilen**, die durch systematische K
 │  │                                                                           │  │
 │  │ A: Single       → "variabel"     (keine Vorgabe)                          │  │
 │  │ D: Dominant     → "zurückhaltend" (niedrige Agreeableness)                │  │
-│  │ G: Männlich     → "zurückhaltend" (bestätigt, Gender-Forschung)           │  │
+│  │ G: Cis Mann     → "zurückhaltend" (bestätigt, Gender-Forschung)           │  │
 │  │ O: Heterosexuell→ "zurückhaltend" (niedriger als Homo, Allen 2020)        │  │
 │  │                                                                           │  │
 │  │ ERGEBNIS: emotionaleOffenheit: "zurückhaltend", conf: 0.70                │  │
@@ -475,7 +476,7 @@ Das Modell basiert auf **288 individuellen Profilen**, die durch systematische K
 
 ### Profilstruktur
 
-Jedes der 216 Profile enthält:
+Jedes der 864 Profile enthält:
 
 - **30 Attribute** in drei Kategorien:
   - D: Werte & Lebensplanung (10 Attribute)
@@ -494,11 +495,11 @@ Die Attribute jedes Profils sind mit **Confidence-Werten** versehen, die auf der
 Grundannahme: 80% der Population hat diese Werte (zentraler Bereich der Glockenkurve)
 ```
 
-**Beispiel** (Profil: Single-Männlich-Dominant-Heterosexuell):
+**Beispiel** (Profil: Single-Cis Mann-Dominant-Heterosexuell):
 
 | Attribut | Wert | Confidence | Bedeutung |
 |----------|------|------------|-----------|
-| Kinderwunsch | "nein" | 85% | 85% der Single-Männer sagen "nein" |
+| Kinderwunsch | "nein" | 85% | 85% der Single-Cis Männer sagen "nein" |
 | Ehewunsch | "nein" | 90% | 90% des Single-Archetyps sagen "nein" |
 | Wohnform | "alleine" | 95% | 95% der Singles leben alleine |
 | Kommunikationsstil | "direkt" | 80% | 80% der Dominanten sind "direkt" |
@@ -730,7 +731,7 @@ Der Resonanz-Koeffizient R wird aus **zwei Komponenten** berechnet:
     │   │ Archetyp:    Duo        │                │ Archetyp:    Duo-Flex   │   │
     │   │ Orientierung: Hetero    │                │ Orientierung: Hetero    │   │
     │   │ Dominanz:    Submissiv  │                │ Dominanz:    Dominant   │   │
-    │   │ Geschlecht:  Weiblich   │                │ Geschlecht:  Männlich   │   │
+    │   │ Geschlecht:  Cis Frau   │                │ Geschlecht:  Cis Mann   │   │
     │   └─────────────────────────┘                └─────────────────────────┘   │
     └────────────────────────────────────────────────────────────────────────────┘
                                          │
