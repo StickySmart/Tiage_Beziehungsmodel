@@ -560,9 +560,9 @@ const TiageLocale_DE = {
         title: 'Geschlechtsidentitäten',
         howItWorks: 'So funktioniert die Auswahl:',
         firstClick: '1. Klick',
-        primaryIdentity: 'Primäre Identität (I)',
+        primaryIdentity: 'Primäre Identität (P)',
         secondClick: '2. Klick',
-        secondaryIdentity: 'Sekundäre Identität (G)',
+        secondaryIdentity: 'Sekundäre Identität (S)',
         thirdClick: '3. Klick',
         deselect: 'Auswahl aufheben',
         understood: 'Verstanden'

@@ -19,8 +19,8 @@ const TiageState = (function() {
         personDimensions: {
             ich: {
                 geschlecht: {
-                    primary: null,    // Primäre Geschlechtsidentität (I)
-                    secondary: null   // Sekundäre Geschlechtsidentität (G) - optional
+                    primary: null,    // Primäre Geschlechtsidentität (P)
+                    secondary: null   // Sekundäre Geschlechtsidentität (S) - optional
                 },
                 dominanz: {
                     dominant: null,      // null, 'gelebt', oder 'interessiert'

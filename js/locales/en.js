@@ -630,7 +630,7 @@ const TiageLocale_EN = {
         title: 'Gender Identities',
         howItWorks: 'How selection works:',
         firstClick: '1st click',
-        primaryIdentity: 'Primary Identity (I)',
+        primaryIdentity: 'Primary Identity (P)',
         secondClick: '2nd click',
         secondaryIdentity: 'Secondary Identity (S)',
         thirdClick: '3rd click',

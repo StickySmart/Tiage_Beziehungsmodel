@@ -2755,16 +2755,16 @@
         const personDimensions = {
             ich: {
                 geschlecht: {
-                    primary: null,    // Primäre Geschlechtsidentität (I)
-                    secondary: null   // Sekundäre Geschlechtsidentität (G)
+                    primary: null,    // Primäre Geschlechtsidentität (P)
+                    secondary: null   // Sekundäre Geschlechtsidentität (S)
                 },
                 dominanz: {
-                    primary: null,    // Primäre Dominanz (I)
-                    secondary: null   // Sekundäre Dominanz (G)
+                    primary: null,    // Primäre Dominanz (P)
+                    secondary: null   // Sekundäre Dominanz (S)
                 },
                 orientierung: {
-                    primary: null,    // Primäre Orientierung (I)
-                    secondary: null   // Sekundäre Orientierung (G)
+                    primary: null,    // Primäre Orientierung (P)
+                    secondary: null   // Sekundäre Orientierung (S)
                 },
                 gfk: null             // GFK-Kompetenz: niedrig, mittel, hoch
             },
@@ -6435,11 +6435,11 @@
 
             const parts = [];
             const primaryLabel = TiageI18n.t(`geschlecht.types.${primary}`, primary);
-            parts.push(primaryLabel + ' (I)');
+            parts.push(primaryLabel + ' (P)');
 
             if (secondary) {
                 const secondaryLabel = TiageI18n.t(`geschlecht.types.${secondary}`, secondary);
-                parts.push(secondaryLabel + ' (G)');
+                parts.push(secondaryLabel + ' (S)');
             }
 
             return '✓ ' + parts.join(', ');
@@ -6459,11 +6459,11 @@
 
             const parts = [];
             const primaryLabel = TiageI18n.t(`geschlecht.types.${primary}`, primary);
-            parts.push(primaryLabel + ' (I)');
+            parts.push(primaryLabel + ' (P)');
 
             if (secondary) {
                 const secondaryLabel = TiageI18n.t(`geschlecht.types.${secondary}`, secondary);
-                parts.push(secondaryLabel + ' (G)');
+                parts.push(secondaryLabel + ' (S)');
             }
 
             return '✓ ' + parts.join(', ');
@@ -6814,9 +6814,9 @@
                 return showMissing ? `${label} fehlt` : '';
             }
 
-            const parts = [primary + ' (I)'];
+            const parts = [primary + ' (P)'];
             if (secondary) {
-                parts.push(secondary + ' (G)');
+                parts.push(secondary + ' (S)');
             }
 
             return '✓ ' + parts.join(', ');
@@ -8153,10 +8153,10 @@
             if (person.orientierung && typeof person.orientierung === 'object') {
                 const parts = [];
                 if (person.orientierung.primary) {
-                    parts.push(person.orientierung.primary + ' (I)');
+                    parts.push(person.orientierung.primary + ' (P)');
                 }
                 if (person.orientierung.secondary) {
-                    parts.push(person.orientierung.secondary + ' (G)');
+                    parts.push(person.orientierung.secondary + ' (S)');
                 }
                 orientierungStr = parts.length > 0 ? parts.join(', ') : '?';
             } else if (person.orientierung) {
