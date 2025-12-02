@@ -651,6 +651,18 @@ const TiageLocale_DE = {
     // SYNTHESE-BEREICH
     // ═══════════════════════════════════════════════════════════════════════
 
+    // ═══════════════════════════════════════════════════════════════════════
+    // TEXT-TO-SPEECH
+    // ═══════════════════════════════════════════════════════════════════════
+
+    tts: {
+        play: 'Vorlesen',
+        pause: 'Pausieren',
+        stop: 'Stoppen',
+        resume: 'Fortsetzen',
+        notSupported: 'Vorlesen wird in diesem Browser nicht unterstützt'
+    },
+
     synthesisSection: {
         creativity: 'CREATIVITY',
         dynamik: 'DYNAMIK',

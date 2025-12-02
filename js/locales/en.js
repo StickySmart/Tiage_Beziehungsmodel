@@ -721,6 +721,18 @@ const TiageLocale_EN = {
     // SYNTHESIS SECTION
     // ═══════════════════════════════════════════════════════════════════════
 
+    // ═══════════════════════════════════════════════════════════════════════
+    // TEXT-TO-SPEECH
+    // ═══════════════════════════════════════════════════════════════════════
+
+    tts: {
+        play: 'Read aloud',
+        pause: 'Pause',
+        stop: 'Stop',
+        resume: 'Resume',
+        notSupported: 'Text-to-speech is not supported in this browser'
+    },
+
     synthesisSection: {
         creativity: 'CREATIVITY',
         dynamik: 'DYNAMICS',
