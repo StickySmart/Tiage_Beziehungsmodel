@@ -7611,12 +7611,17 @@
 
         // Aktueller Tab für das vollständige Modal
         let needsFullModalCurrentTab = 'gemeinsam';
+        // Sortierung: 'duo' oder 'ra', und Richtung: 'asc' oder 'desc'
+        let needsFullModalSortBy = null;
+        let needsFullModalSortDir = 'desc';
 
         /**
          * Öffnet das vollständige Bedürfnis-Modal mit Toggle
          */
         function openNeedsFullModal() {
             needsFullModalCurrentTab = 'gemeinsam';
+            needsFullModalSortBy = null;
+            needsFullModalSortDir = 'desc';
             renderNeedsFullModal();
         }
 
@@ -7625,6 +7630,24 @@
          */
         function switchNeedsFullModalTab(tab) {
             needsFullModalCurrentTab = tab;
+            needsFullModalSortBy = null;
+            needsFullModalSortDir = 'desc';
+            renderNeedsFullModal();
+        }
+
+        /**
+         * Sortiert die Bedürfnis-Liste nach DUO oder RA Werten
+         * @param {string} column - 'duo' oder 'ra'
+         */
+        function sortNeedsFullModal(column) {
+            if (needsFullModalSortBy === column) {
+                // Toggle direction if same column
+                needsFullModalSortDir = needsFullModalSortDir === 'desc' ? 'asc' : 'desc';
+            } else {
+                // New column, start with descending
+                needsFullModalSortBy = column;
+                needsFullModalSortDir = 'desc';
+            }
             renderNeedsFullModal();
         }
 
@@ -7658,9 +7681,18 @@
 
             // Vollständige Listen aus details holen
             const type = needsFullModalCurrentTab;
-            const items = type === 'gemeinsam'
+            let items = type === 'gemeinsam'
                 ? (matching.details?.uebereinstimmend || matching.topUebereinstimmungen || [])
                 : (matching.details?.konflikt || matching.topKonflikte || []);
+
+            // Sortieren falls aktiv
+            if (needsFullModalSortBy && items.length > 0) {
+                items = [...items].sort((a, b) => {
+                    const valA = needsFullModalSortBy === 'duo' ? (a.wert1 || 0) : (a.wert2 || 0);
+                    const valB = needsFullModalSortBy === 'duo' ? (b.wert1 || 0) : (b.wert2 || 0);
+                    return needsFullModalSortDir === 'desc' ? valB - valA : valA - valB;
+                });
+            }
 
             // Toggle-Button HTML
             const toggleHtml = `
@@ -7674,15 +7706,27 @@
                 </div>
             `;
 
-            // Header mit Namen
+            // Sort-Icons
+            const duoSortIcon = needsFullModalSortBy === 'duo'
+                ? (needsFullModalSortDir === 'desc' ? '▼' : '▲')
+                : '⇅';
+            const raSortIcon = needsFullModalSortBy === 'ra'
+                ? (needsFullModalSortDir === 'desc' ? '▼' : '▲')
+                : '⇅';
+            const duoActive = needsFullModalSortBy === 'duo';
+            const raActive = needsFullModalSortBy === 'ra';
+
+            // Header mit Namen und Sortier-Buttons
             const headerHtml = `
                 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 12px; padding-bottom: 8px; border-bottom: 1px solid rgba(255,255,255,0.1);">
-                    <div style="text-align: center; font-weight: 600; color: var(--success); font-size: 11px; text-transform: uppercase; letter-spacing: 1px;">
-                        ${ichName}
-                    </div>
-                    <div style="text-align: center; font-weight: 600; color: var(--danger); font-size: 11px; text-transform: uppercase; letter-spacing: 1px;">
-                        ${partnerName}
-                    </div>
+                    <button onclick="sortNeedsFullModal('duo')" style="display: flex; align-items: center; justify-content: center; gap: 6px; background: ${duoActive ? 'rgba(34, 197, 94, 0.15)' : 'transparent'}; border: 1px solid ${duoActive ? 'rgba(34, 197, 94, 0.4)' : 'transparent'}; border-radius: 6px; padding: 6px 8px; cursor: pointer; transition: all 0.2s;">
+                        <span style="font-weight: 600; color: var(--success); font-size: 11px; text-transform: uppercase; letter-spacing: 1px;">${ichName}</span>
+                        <span style="color: ${duoActive ? 'var(--success)' : 'var(--text-muted)'}; font-size: 10px;">${duoSortIcon}</span>
+                    </button>
+                    <button onclick="sortNeedsFullModal('ra')" style="display: flex; align-items: center; justify-content: center; gap: 6px; background: ${raActive ? 'rgba(239, 68, 68, 0.15)' : 'transparent'}; border: 1px solid ${raActive ? 'rgba(239, 68, 68, 0.4)' : 'transparent'}; border-radius: 6px; padding: 6px 8px; cursor: pointer; transition: all 0.2s;">
+                        <span style="font-weight: 600; color: var(--danger); font-size: 11px; text-transform: uppercase; letter-spacing: 1px;">${partnerName}</span>
+                        <span style="color: ${raActive ? 'var(--danger)' : 'var(--text-muted)'}; font-size: 10px;">${raSortIcon}</span>
+                    </button>
                 </div>
             `;
 
