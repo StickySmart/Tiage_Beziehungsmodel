@@ -7045,6 +7045,8 @@
          * Ersetzt statische HTML-Buttons durch dynamisch generierte
          */
         function initDimensionButtons() {
+            console.log('[TIAGE DEBUG] initDimensionButtons called');
+
             // Geschlecht: P-Optionen (Körper) - immer sichtbar
             const geschlechtPOptions = [
                 { value: 'mann', label: TiageI18n.t('geschlecht.primary.mann', 'Mann') },
@@ -7089,8 +7091,11 @@
             ];
 
             // Geschlecht P-Grids befüllen (Körper: Mann, Frau, Inter)
-            document.querySelectorAll('.geschlecht-p-grid').forEach(grid => {
+            const pGrids = document.querySelectorAll('.geschlecht-p-grid');
+            console.log('[TIAGE DEBUG] Found geschlecht-p-grids:', pGrids.length);
+            pGrids.forEach(grid => {
                 const person = grid.dataset.person;
+                console.log('[TIAGE DEBUG] Processing p-grid for person:', person);
                 if (!person) return;
                 grid.innerHTML = geschlechtPOptions.map(opt =>
                     `<button type="button" class="geschlecht-btn geschlecht-p-btn" data-value="${opt.value}" onclick="handleGeschlechtPClick('${person}', '${opt.value}', this)">${opt.label}</button>`
@@ -7101,7 +7106,9 @@
             // (kontextabhängig von P-Auswahl)
 
             // Dominanz-Grids befüllen (nur Desktop mit data-person)
-            document.querySelectorAll('.dominanz-grid[data-person]').forEach(grid => {
+            const dGrids = document.querySelectorAll('.dominanz-grid[data-person]');
+            console.log('[TIAGE DEBUG] Found dominanz-grids:', dGrids.length);
+            dGrids.forEach(grid => {
                 const person = grid.dataset.person;
                 if (!person) return;
                 grid.innerHTML = dominanzOptions.map(opt =>
@@ -7110,7 +7117,9 @@
             });
 
             // Orientierung-Grids befüllen (nur Desktop mit data-person)
-            document.querySelectorAll('.orientierung-grid[data-person]').forEach(grid => {
+            const oGrids = document.querySelectorAll('.orientierung-grid[data-person]');
+            console.log('[TIAGE DEBUG] Found orientierung-grids:', oGrids.length);
+            oGrids.forEach(grid => {
                 const person = grid.dataset.person;
                 if (!person) return;
                 grid.innerHTML = orientierungOptions.map(opt =>
@@ -7119,7 +7128,9 @@
             });
 
             // GFK-Grids befüllen
-            document.querySelectorAll('.gfk-grid[data-person]').forEach(grid => {
+            const gfkGrids = document.querySelectorAll('.gfk-grid[data-person]');
+            console.log('[TIAGE DEBUG] Found gfk-grids:', gfkGrids.length);
+            gfkGrids.forEach(grid => {
                 const person = grid.dataset.person;
                 if (!person) return;
                 grid.innerHTML = gfkOptions.map(opt =>
@@ -7134,6 +7145,8 @@
                 syncOrientierungUI(person);
                 syncGfkUI(person);
             });
+
+            console.log('[TIAGE DEBUG] initDimensionButtons completed');
         }
 
         /**
@@ -12776,25 +12789,37 @@
 
         // Initialize when DOM is ready
         document.addEventListener('DOMContentLoaded', function() {
-            checkAgeVerification();
-            initAgeVerification();
-            initFeedbackSystem();
-            initDimensionListeners();
-            initComparisonLayout();
-            initMobileLayout();
-            // Load saved dimensions from TiageState BEFORE initializing buttons
-            loadDimensionsFromState();
-            initDimensionButtons();
-            initGeschlechtHoverEvents();
-            // Initialize all summary displays in header
-            updateGeschlechtSummary('ich');
-            updateGeschlechtSummary('partner');
-            updateDominanzSummary('ich');
-            updateDominanzSummary('partner');
-            updateOrientierungSummary('ich');
-            updateOrientierungSummary('partner');
-            // GFK automatisch aus Archetypen-Matching setzen
-            updateGfkFromArchetypes();
+            console.log('[TIAGE DEBUG] DOMContentLoaded fired');
+            try {
+                checkAgeVerification();
+                initAgeVerification();
+                initFeedbackSystem();
+                console.log('[TIAGE DEBUG] Before initDimensionListeners');
+                initDimensionListeners();
+                console.log('[TIAGE DEBUG] Before initComparisonLayout');
+                initComparisonLayout();
+                console.log('[TIAGE DEBUG] Before initMobileLayout');
+                initMobileLayout();
+                console.log('[TIAGE DEBUG] Before loadDimensionsFromState');
+                // Load saved dimensions from TiageState BEFORE initializing buttons
+                loadDimensionsFromState();
+                console.log('[TIAGE DEBUG] Before initDimensionButtons');
+                initDimensionButtons();
+                console.log('[TIAGE DEBUG] After initDimensionButtons');
+                initGeschlechtHoverEvents();
+                // Initialize all summary displays in header
+                updateGeschlechtSummary('ich');
+                updateGeschlechtSummary('partner');
+                updateDominanzSummary('ich');
+                updateDominanzSummary('partner');
+                updateOrientierungSummary('ich');
+                updateOrientierungSummary('partner');
+                // GFK automatisch aus Archetypen-Matching setzen
+                updateGfkFromArchetypes();
+                console.log('[TIAGE DEBUG] DOMContentLoaded completed successfully');
+            } catch (e) {
+                console.error('[TIAGE ERROR] DOMContentLoaded failed:', e);
+            }
         });
 
         // ========================================
