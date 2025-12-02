@@ -729,6 +729,50 @@
     <!-- Archetype Info Modal (Feature 4) -->
     <!-- archetypeInfoModal wurde mit definitionModal zusammengeführt -->
 
+    <!-- Expert Mode Dialog - Trigger with Ctrl+Shift+E -->
+    <div class="modal-overlay" id="expertModeModal" onclick="closeExpertModeModal(event)" style="z-index: 9999;">
+        <div class="modal" onclick="event.stopPropagation()" style="max-width: 400px;">
+            <div class="modal-header">
+                <span class="modal-title">Experten-Modus</span>
+                <button class="modal-close" onclick="closeExpertModeModal()">&times;</button>
+            </div>
+            <div class="modal-body" style="padding: 20px;">
+                <div id="expertModeLoginForm">
+                    <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 15px;">
+                        Gib das Entwickler-Passwort ein, um erweiterte Funktionen freizuschalten.
+                    </p>
+                    <input type="password" id="expertModePassword" placeholder="Passwort"
+                        style="width: 100%; padding: 12px; border-radius: 8px; border: 1px solid var(--border); background: var(--bg-secondary); color: var(--text-primary); font-size: 14px; margin-bottom: 10px;"
+                        onkeypress="if(event.key === 'Enter') verifyExpertPassword()">
+                    <div id="expertModeError" style="color: var(--danger); font-size: 12px; margin-bottom: 10px; display: none;">
+                        Falsches Passwort
+                    </div>
+                    <button onclick="verifyExpertPassword()"
+                        style="width: 100%; padding: 12px; border-radius: 8px; border: none; background: var(--primary); color: white; font-size: 14px; cursor: pointer; font-weight: 600;">
+                        Freischalten
+                    </button>
+                </div>
+                <div id="expertModeSettings" style="display: none;">
+                    <p style="font-size: 13px; color: var(--success); margin-bottom: 20px; display: flex; align-items: center; gap: 8px;">
+                        <span style="font-size: 18px;">✓</span> Experten-Modus aktiv
+                    </p>
+                    <div style="display: flex; flex-direction: column; gap: 12px;">
+                        <label style="display: flex; align-items: center; gap: 10px; cursor: pointer; padding: 10px; background: rgba(255,255,255,0.03); border-radius: 8px;">
+                            <input type="checkbox" id="expertShowArchetypeNav" onchange="toggleExpertFeature('archetypeNav', this.checked)"
+                                style="width: 18px; height: 18px; cursor: pointer;">
+                            <span style="font-size: 13px; color: var(--text-primary);">Archetypen-Navigation im Synthese-Modal</span>
+                        </label>
+                        <!-- Weitere Experten-Optionen können hier hinzugefügt werden -->
+                    </div>
+                    <button onclick="deactivateExpertMode()"
+                        style="width: 100%; margin-top: 20px; padding: 10px; border-radius: 8px; border: 1px solid var(--border); background: transparent; color: var(--text-muted); font-size: 13px; cursor: pointer;">
+                        Experten-Modus deaktivieren
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <header>
         <div class="header-content">
             <h1 data-i18n="ui.title">DAS ANARCHISCHE TI-AGE PRINZIP DER PAARUNG</h1>
@@ -2746,6 +2790,146 @@
     </script>
 
     <script>
+        // ========================================
+        // EXPERT MODE SYSTEM
+        // ========================================
+
+        // Expert mode password (simple hash - not for security, just to prevent accidental access)
+        const EXPERT_MODE_HASH = 'tiage2024';
+
+        // Expert mode state
+        let expertModeActive = false;
+        const expertFeatures = {
+            archetypeNav: false
+        };
+
+        // Initialize expert mode from localStorage
+        function initExpertMode() {
+            const stored = localStorage.getItem('tiageExpertMode');
+            if (stored) {
+                try {
+                    const data = JSON.parse(stored);
+                    expertModeActive = data.active || false;
+                    Object.assign(expertFeatures, data.features || {});
+                    applyExpertFeatures();
+                } catch (e) {
+                    console.log('Expert mode init failed:', e);
+                }
+            }
+        }
+
+        // Open expert mode modal
+        function openExpertModeModal() {
+            const modal = document.getElementById('expertModeModal');
+            if (modal) {
+                // Reset UI based on current state
+                const loginForm = document.getElementById('expertModeLoginForm');
+                const settings = document.getElementById('expertModeSettings');
+                const passwordInput = document.getElementById('expertModePassword');
+                const errorDiv = document.getElementById('expertModeError');
+
+                if (expertModeActive) {
+                    loginForm.style.display = 'none';
+                    settings.style.display = 'block';
+                    // Update checkboxes
+                    document.getElementById('expertShowArchetypeNav').checked = expertFeatures.archetypeNav;
+                } else {
+                    loginForm.style.display = 'block';
+                    settings.style.display = 'none';
+                    if (passwordInput) passwordInput.value = '';
+                    if (errorDiv) errorDiv.style.display = 'none';
+                }
+
+                modal.classList.add('active');
+                if (!expertModeActive && passwordInput) {
+                    setTimeout(() => passwordInput.focus(), 100);
+                }
+            }
+        }
+
+        // Close expert mode modal
+        function closeExpertModeModal(event) {
+            if (event && event.target !== event.currentTarget) return;
+            const modal = document.getElementById('expertModeModal');
+            if (modal) modal.classList.remove('active');
+        }
+
+        // Verify password
+        function verifyExpertPassword() {
+            const passwordInput = document.getElementById('expertModePassword');
+            const errorDiv = document.getElementById('expertModeError');
+            const password = passwordInput ? passwordInput.value : '';
+
+            if (password === EXPERT_MODE_HASH) {
+                expertModeActive = true;
+                saveExpertMode();
+
+                // Switch to settings view
+                document.getElementById('expertModeLoginForm').style.display = 'none';
+                document.getElementById('expertModeSettings').style.display = 'block';
+                document.getElementById('expertShowArchetypeNav').checked = expertFeatures.archetypeNav;
+            } else {
+                if (errorDiv) {
+                    errorDiv.style.display = 'block';
+                    errorDiv.textContent = 'Falsches Passwort';
+                }
+                if (passwordInput) {
+                    passwordInput.value = '';
+                    passwordInput.focus();
+                }
+            }
+        }
+
+        // Toggle expert feature
+        function toggleExpertFeature(feature, enabled) {
+            expertFeatures[feature] = enabled;
+            saveExpertMode();
+            applyExpertFeatures();
+        }
+
+        // Apply expert features to UI
+        function applyExpertFeatures() {
+            // Archetype navigation in Synthese modal
+            const archetypeNav = document.getElementById('pathosLogosArchetypeContext');
+            if (archetypeNav) {
+                archetypeNav.style.display = expertFeatures.archetypeNav ? 'flex' : 'none';
+            }
+        }
+
+        // Save expert mode to localStorage
+        function saveExpertMode() {
+            localStorage.setItem('tiageExpertMode', JSON.stringify({
+                active: expertModeActive,
+                features: expertFeatures
+            }));
+        }
+
+        // Deactivate expert mode
+        function deactivateExpertMode() {
+            expertModeActive = false;
+            Object.keys(expertFeatures).forEach(key => expertFeatures[key] = false);
+            saveExpertMode();
+            applyExpertFeatures();
+            closeExpertModeModal();
+        }
+
+        // Keyboard shortcut: Ctrl+Shift+E to open expert mode
+        document.addEventListener('keydown', function(e) {
+            if (e.ctrlKey && e.shiftKey && e.key === 'E') {
+                e.preventDefault();
+                openExpertModeModal();
+            }
+        });
+
+        // Initialize expert mode on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            initExpertMode();
+        });
+
+        // ========================================
+        // MAIN APPLICATION
+        // ========================================
+
         let data = null;
         let currentArchetype = 'single';
         let selectedPartner = 'duo';
