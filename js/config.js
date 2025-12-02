@@ -63,56 +63,58 @@ const TiageConfig = (function() {
     };
 
     // ═══════════════════════════════════════════════════════════════════════
-    // GESCHLECHT (Gender Identity)
+    // GESCHLECHT (Zwei-Dimensionales System: Körper + Identität)
     // ═══════════════════════════════════════════════════════════════════════
 
-    const GESCHLECHT_TYPES = [
-        'cis_mann',
-        'cis_frau',
-        'trans_mann',
-        'trans_frau',
-        'nonbinaer',
-        'genderfluid',
-        'agender',
-        'intersex',
-        'divers'
-    ];
+    // PRIMÄR = Körper/Geburt (biologisches Geschlecht)
+    const GESCHLECHT_PRIMARY_TYPES = ['mann', 'frau', 'inter'];
 
-    const GESCHLECHT_SHORT = {
-        'cis_mann': 'CM',
-        'cis_frau': 'CF',
-        'trans_mann': 'TM',
-        'trans_frau': 'TF',
+    const GESCHLECHT_PRIMARY_SHORT = {
+        'mann': 'M',
+        'frau': 'F',
+        'inter': 'I'
+    };
+
+    const GESCHLECHT_PRIMARY_LABELS = {
+        'mann': 'Mann',
+        'frau': 'Frau',
+        'inter': 'Inter'
+    };
+
+    // SEKUNDÄR = Geist/Identität (wie man sich fühlt)
+    const GESCHLECHT_SECONDARY_TYPES = ['mann', 'frau', 'nonbinaer', 'fluid', 'unsicher'];
+
+    const GESCHLECHT_SECONDARY_SHORT = {
+        'mann': 'M',
+        'frau': 'F',
         'nonbinaer': 'NB',
-        'genderfluid': 'GF',
-        'agender': 'AG',
-        'intersex': 'IS',
-        'divers': 'DI'
+        'fluid': 'FL',
+        'unsicher': '?'
     };
 
-    const GESCHLECHT_LABELS = {
-        'cis_mann': 'Cis Mann',
-        'cis_frau': 'Cis Frau',
-        'trans_mann': 'Trans Mann',
-        'trans_frau': 'Trans Frau',
+    const GESCHLECHT_SECONDARY_LABELS = {
+        'mann': 'Mann',
+        'frau': 'Frau',
         'nonbinaer': 'Nonbinär',
-        'genderfluid': 'Genderfluid',
-        'agender': 'Agender',
-        'intersex': 'Intersex',
-        'divers': 'Divers'
+        'fluid': 'Fluid',
+        'unsicher': 'Unsicher'
     };
 
-    // Mapping für Orientierungslogik: Welches "wahrgenommene Geschlecht" hat jemand?
+    // LEGACY: Alte GESCHLECHT_TYPES für Rückwärtskompatibilität (deprecated)
+    const GESCHLECHT_TYPES = GESCHLECHT_PRIMARY_TYPES;
+    const GESCHLECHT_SHORT = GESCHLECHT_PRIMARY_SHORT;
+    const GESCHLECHT_LABELS = GESCHLECHT_PRIMARY_LABELS;
+
+    // Mapping für Orientierungslogik: Sekundär (Identität) bestimmt die Kategorie
     const GESCHLECHT_CATEGORY = {
-        'cis_mann': 'maennlich',
-        'cis_frau': 'weiblich',
-        'trans_mann': 'maennlich',
-        'trans_frau': 'weiblich',
+        // Sekundär-Werte -> Orientierungskategorie
+        'mann': 'maennlich',
+        'frau': 'weiblich',
         'nonbinaer': 'nonbinaer',
-        'genderfluid': 'fluid',
-        'agender': 'agender',
-        'intersex': 'inter',
-        'divers': 'nonbinaer'
+        'fluid': 'fluid',
+        'unsicher': 'nonbinaer',  // Unsicher wird wie nonbinär behandelt für Orientierung
+        // Primär-Werte (Fallback)
+        'inter': 'inter'
     };
 
     // ═══════════════════════════════════════════════════════════════════════
@@ -133,44 +135,50 @@ const TiageConfig = (function() {
 
     const DIMENSION_TOOLTIPS = {
         geschlecht: {
-            title: "Geschlechtsidentität",
-            text: "Deine Geschlechtsidentität. Dies beeinflusst die Kompatibilität zusammen mit der sexuellen Orientierung."
+            title: "Geschlecht",
+            text: "Zwei Dimensionen: Körper (biologisch) und Identität (wie du dich fühlst). Dies beeinflusst die Kompatibilität zusammen mit der sexuellen Orientierung."
         },
-        cis_mann: {
-            title: "Cis Mann",
-            text: "Person, die bei Geburt männlich zugewiesen wurde und sich als Mann identifiziert."
+        geschlecht_primary: {
+            title: "Körper (Primär)",
+            text: "Dein biologisches/bei Geburt zugewiesenes Geschlecht."
         },
-        cis_frau: {
-            title: "Cis Frau",
-            text: "Person, die bei Geburt weiblich zugewiesen wurde und sich als Frau identifiziert."
+        geschlecht_secondary: {
+            title: "Identität (Sekundär)",
+            text: "Wie du dich innerlich fühlst und identifizierst."
         },
-        trans_mann: {
-            title: "Trans Mann",
-            text: "Person, die sich als Mann identifiziert, aber bei Geburt nicht männlich zugewiesen wurde."
+        // Primär-Werte (Körper)
+        primary_mann: {
+            title: "Mann (Körper)",
+            text: "Bei Geburt männlich zugewiesen."
         },
-        trans_frau: {
-            title: "Trans Frau",
-            text: "Person, die sich als Frau identifiziert, aber bei Geburt nicht weiblich zugewiesen wurde."
+        primary_frau: {
+            title: "Frau (Körper)",
+            text: "Bei Geburt weiblich zugewiesen."
         },
-        nonbinaer: {
-            title: "Nonbinär",
-            text: "Person, die sich weder ausschließlich als Mann noch als Frau identifiziert."
+        primary_inter: {
+            title: "Inter (Körper)",
+            text: "Angeborene körperliche Geschlechtsmerkmale, die nicht eindeutig männlich oder weiblich sind."
         },
-        genderfluid: {
-            title: "Genderfluid",
-            text: "Person, deren Geschlechtsidentität sich über Zeit verändert oder zwischen verschiedenen Identitäten wechselt."
+        // Sekundär-Werte (Identität)
+        secondary_mann: {
+            title: "Mann (Identität)",
+            text: "Du identifizierst dich als Mann."
         },
-        agender: {
-            title: "Agender",
-            text: "Person, die sich mit keinem Geschlecht identifiziert oder geschlechtslos fühlt."
+        secondary_frau: {
+            title: "Frau (Identität)",
+            text: "Du identifizierst dich als Frau."
         },
-        intersex: {
-            title: "Intersex",
-            text: "Person mit angeborenen körperlichen Geschlechtsmerkmalen, die nicht eindeutig männlich oder weiblich sind."
+        secondary_nonbinaer: {
+            title: "Nonbinär (Identität)",
+            text: "Du identifizierst dich weder ausschließlich als Mann noch als Frau."
         },
-        divers: {
-            title: "Divers",
-            text: "Offizieller dritter Geschlechtseintrag in Deutschland für Menschen, die sich nicht als männlich oder weiblich identifizieren."
+        secondary_fluid: {
+            title: "Fluid (Identität)",
+            text: "Deine Geschlechtsidentität verändert sich über Zeit oder wechselt zwischen verschiedenen Identitäten."
+        },
+        secondary_unsicher: {
+            title: "Unsicher (Identität)",
+            text: "Du bist dir über deine Geschlechtsidentität noch nicht sicher oder befindest dich in einer Explorationsphase."
         },
         dominanz: {
             title: "Dominanz-Präferenz",
@@ -344,6 +352,14 @@ const TiageConfig = (function() {
         DOMINANZ_SHORT,
         ORIENTIERUNG_TYPES,
         ORIENTIERUNG_SHORT,
+        // Neues Geschlechts-System (Primär/Sekundär)
+        GESCHLECHT_PRIMARY_TYPES,
+        GESCHLECHT_PRIMARY_SHORT,
+        GESCHLECHT_PRIMARY_LABELS,
+        GESCHLECHT_SECONDARY_TYPES,
+        GESCHLECHT_SECONDARY_SHORT,
+        GESCHLECHT_SECONDARY_LABELS,
+        // Legacy (deprecated, für Rückwärtskompatibilität)
         GESCHLECHT_TYPES,
         GESCHLECHT_SHORT,
         GESCHLECHT_LABELS,
@@ -388,19 +404,60 @@ const TiageConfig = (function() {
             return i18n(`categories.${letter}`, CATEGORY_NAMES[letter] || letter);
         },
 
-        // Helper: Geschlecht-Label (i18n aware)
+        // Helper: Geschlecht Primary Label (i18n aware)
+        getGeschlechtPrimaryLabel(id) {
+            return i18n(`geschlecht.primary.${id}`, GESCHLECHT_PRIMARY_LABELS[id] || id);
+        },
+
+        // Helper: Geschlecht Primary Short (i18n aware)
+        getGeschlechtPrimaryShort(id) {
+            return i18n(`geschlecht.primaryShort.${id}`, GESCHLECHT_PRIMARY_SHORT[id] || id);
+        },
+
+        // Helper: Geschlecht Secondary Label (i18n aware)
+        getGeschlechtSecondaryLabel(id) {
+            return i18n(`geschlecht.secondary.${id}`, GESCHLECHT_SECONDARY_LABELS[id] || id);
+        },
+
+        // Helper: Geschlecht Secondary Short (i18n aware)
+        getGeschlechtSecondaryShort(id) {
+            return i18n(`geschlecht.secondaryShort.${id}`, GESCHLECHT_SECONDARY_SHORT[id] || id);
+        },
+
+        // Helper: Kombiniertes Label (z.B. "Mann → Frau" für trans)
+        getGeschlechtKombiLabel(primary, secondary) {
+            const pLabel = this.getGeschlechtPrimaryLabel(primary);
+            const sLabel = this.getGeschlechtSecondaryLabel(secondary);
+            if (primary === secondary) {
+                return pLabel;  // Cis: nur ein Label
+            }
+            return `${pLabel} → ${sLabel}`;
+        },
+
+        // Helper: Kombiniertes Short (z.B. "M→F")
+        getGeschlechtKombiShort(primary, secondary) {
+            const pShort = GESCHLECHT_PRIMARY_SHORT[primary] || '?';
+            const sShort = GESCHLECHT_SECONDARY_SHORT[secondary] || '?';
+            if (primary === secondary) {
+                return pShort;
+            }
+            return `${pShort}→${sShort}`;
+        },
+
+        // Helper: Geschlecht-Kategorie für Orientierungslogik
+        // Nutzt SEKUNDÄR (Identität) als primäre Kategorie für Orientierung
+        getGeschlechtCategory(id) {
+            return GESCHLECHT_CATEGORY[id] || 'andere';
+        },
+
+        // Legacy Helper (deprecated)
         getGeschlechtLabel(id) {
             return i18n(`geschlecht.types.${id}`, GESCHLECHT_LABELS[id] || id);
         },
 
-        // Helper: Geschlecht-Short (i18n aware)
+        // Legacy Helper (deprecated)
         getGeschlechtShort(id) {
             return i18n(`geschlecht.short.${id}`, GESCHLECHT_SHORT[id] || id);
-        },
-
-        // Helper: Geschlecht-Kategorie für Orientierungslogik
-        getGeschlechtCategory(id) {
-            return GESCHLECHT_CATEGORY[id] || 'andere';
         },
 
         // Helper: Dominanz-Label (i18n aware)

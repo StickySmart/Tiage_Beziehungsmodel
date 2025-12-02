@@ -83,13 +83,24 @@ TiageSynthesis.Factors.Geschlecht = {
     },
 
     /**
-     * Extrahiert primäres Geschlecht (unterstützt altes String-Format und neues Object-Format)
+     * Extrahiert das Geschlecht für Orientierungslogik
+     *
+     * NEUES SYSTEM: Für die Orientierungslogik wird die SEKUNDÄRE Identität verwendet,
+     * da diese bestimmt, als was sich die Person identifiziert.
+     * Falls keine sekundäre Identität gesetzt ist, wird die primäre verwendet.
      */
     _extractPrimaryGeschlecht: function(geschlecht) {
         if (!geschlecht) return null;
         // Neues Format: { primary, secondary }
-        if (typeof geschlecht === 'object' && geschlecht.primary !== undefined) {
-            return geschlecht.primary;
+        if (typeof geschlecht === 'object') {
+            // Für Orientierungslogik: Sekundär (Identität) hat Vorrang
+            if (geschlecht.secondary !== undefined && geschlecht.secondary !== null) {
+                return geschlecht.secondary;
+            }
+            // Fallback auf Primär (Körper)
+            if (geschlecht.primary !== undefined) {
+                return geschlecht.primary;
+            }
         }
         // Altes Format: String direkt
         if (typeof geschlecht === 'string') {
@@ -99,7 +110,21 @@ TiageSynthesis.Factors.Geschlecht = {
     },
 
     /**
-     * Extrahiert sekundäres Geschlecht
+     * Extrahiert das biologische/körperliche Geschlecht (Primär)
+     */
+    _extractBodyGeschlecht: function(geschlecht) {
+        if (!geschlecht) return null;
+        if (typeof geschlecht === 'object' && geschlecht.primary !== undefined) {
+            return geschlecht.primary;
+        }
+        if (typeof geschlecht === 'string') {
+            return geschlecht;
+        }
+        return null;
+    },
+
+    /**
+     * Extrahiert sekundäres Geschlecht (Identität)
      */
     _extractSecondaryGeschlecht: function(geschlecht) {
         if (!geschlecht) return null;
@@ -169,21 +194,33 @@ TiageSynthesis.Factors.Geschlecht = {
 
     /**
      * Konvertiert Geschlecht zu Kategorie für Orientierungslogik
-     * Unterstützt 9 Geschlechter: cis_mann, cis_frau, trans_mann, trans_frau, nonbinaer, genderfluid, agender, intersex, divers
+     *
+     * NEUES SYSTEM: Primär (Körper) + Sekundär (Identität)
+     * Für Orientierungslogik wird die SEKUNDÄRE Identität verwendet,
+     * da diese bestimmt, als was sich die Person identifiziert.
+     *
+     * Primär-Werte: mann, frau, inter
+     * Sekundär-Werte: mann, frau, nonbinaer, fluid, unsicher
      */
     _getGeschlechtCategory: function(geschlecht) {
         var categoryMap = {
-            // Neue Geschlechter
+            // Sekundär-Werte (Identität) - primär für Orientierungslogik
+            'mann': 'maennlich',
+            'frau': 'weiblich',
+            'nonbinaer': 'nonbinaer',
+            'fluid': 'fluid',
+            'unsicher': 'nonbinaer',  // Unsicher wird wie nonbinär behandelt
+            // Primär-Werte (Körper) - Fallback
+            'inter': 'inter',
+            // Legacy-Support für alte Daten
             'cis_mann': 'maennlich',
             'cis_frau': 'weiblich',
             'trans_mann': 'maennlich',
             'trans_frau': 'weiblich',
-            'nonbinaer': 'nonbinaer',
             'genderfluid': 'fluid',
-            'agender': 'agender',
+            'agender': 'nonbinaer',
             'intersex': 'inter',
             'divers': 'nonbinaer',
-            // Legacy-Support
             'männlich': 'maennlich',
             'weiblich': 'weiblich',
             'non-binär': 'nonbinaer',
