@@ -85,23 +85,52 @@ TiageSynthesis.Factors.Geschlecht = {
     /**
      * Extrahiert das Geschlecht für Orientierungslogik
      *
-     * NEUES SYSTEM: Für die Orientierungslogik wird die SEKUNDÄRE Identität verwendet,
-     * da diese bestimmt, als was sich die Person identifiziert.
-     * Falls keine sekundäre Identität gesetzt ist, wird die primäre verwendet.
+     * NEUES SYSTEM mit P/S:
+     * - P = Körper (mann, frau, inter)
+     * - S = Identität (cis, trans, unsicher für mann/frau; nonbinaer, fluid, unsicher für inter)
+     *
+     * Logik für Orientierung:
+     * - P=Mann + S=Cis → mann (identifiziert als Mann)
+     * - P=Mann + S=Trans → frau (identifiziert als Frau)
+     * - P=Frau + S=Cis → frau (identifiziert als Frau)
+     * - P=Frau + S=Trans → mann (identifiziert als Mann)
+     * - P=Inter + S=Nonbinär/Fluid/Unsicher → nonbinaer/fluid/unsicher
+     * - P=* + S=Unsicher → unsicher
      */
     _extractPrimaryGeschlecht: function(geschlecht) {
         if (!geschlecht) return null;
+
         // Neues Format: { primary, secondary }
         if (typeof geschlecht === 'object') {
-            // Für Orientierungslogik: Sekundär (Identität) hat Vorrang
-            if (geschlecht.secondary !== undefined && geschlecht.secondary !== null) {
-                return geschlecht.secondary;
+            var primary = geschlecht.primary;   // Körper: mann, frau, inter
+            var secondary = geschlecht.secondary; // Identität: cis, trans, unsicher, nonbinaer, fluid
+
+            // Wenn S gesetzt ist, berechne effektive Identität
+            if (secondary !== undefined && secondary !== null) {
+                // Cis: Identität = Körper
+                if (secondary === 'cis') {
+                    return primary; // mann → mann, frau → frau
+                }
+                // Trans: Identität = Gegenteil des Körpers
+                if (secondary === 'trans') {
+                    if (primary === 'mann') return 'frau';
+                    if (primary === 'frau') return 'mann';
+                    return primary; // inter bleibt inter
+                }
+                // Nonbinär, Fluid, Unsicher: direkt verwenden
+                if (secondary === 'nonbinaer' || secondary === 'fluid' || secondary === 'unsicher') {
+                    return secondary;
+                }
+                // Fallback: S-Wert direkt (für Legacy-Kompatibilität)
+                return secondary;
             }
-            // Fallback auf Primär (Körper)
-            if (geschlecht.primary !== undefined) {
-                return geschlecht.primary;
+
+            // Kein S gesetzt: Fallback auf P (Körper)
+            if (primary !== undefined) {
+                return primary;
             }
         }
+
         // Altes Format: String direkt
         if (typeof geschlecht === 'string') {
             return geschlecht;
@@ -193,24 +222,21 @@ TiageSynthesis.Factors.Geschlecht = {
     },
 
     /**
-     * Konvertiert Geschlecht zu Kategorie für Orientierungslogik
+     * Konvertiert extrahiertes Geschlecht zu Kategorie für Orientierungslogik
      *
-     * NEUES SYSTEM: Primär (Körper) + Sekundär (Identität)
-     * Für Orientierungslogik wird die SEKUNDÄRE Identität verwendet,
-     * da diese bestimmt, als was sich die Person identifiziert.
+     * Die Werte kommen aus _extractPrimaryGeschlecht, das bereits
+     * die P/S-Logik (cis/trans) aufgelöst hat.
      *
-     * Primär-Werte: mann, frau, inter
-     * Sekundär-Werte: mann, frau, nonbinaer, fluid, unsicher
+     * Ergebnis-Werte: maennlich, weiblich, nonbinaer, fluid, inter, andere
      */
     _getGeschlechtCategory: function(geschlecht) {
         var categoryMap = {
-            // Sekundär-Werte (Identität) - primär für Orientierungslogik
+            // Aufgelöste Identitäts-Werte
             'mann': 'maennlich',
             'frau': 'weiblich',
             'nonbinaer': 'nonbinaer',
             'fluid': 'fluid',
             'unsicher': 'nonbinaer',  // Unsicher wird wie nonbinär behandelt
-            // Primär-Werte (Körper) - Fallback
             'inter': 'inter',
             // Legacy-Support für alte Daten
             'cis_mann': 'maennlich',

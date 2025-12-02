@@ -126,20 +126,28 @@ const TiageLocale_EN = {
             frau: 'F',
             inter: 'I'
         },
-        // Secondary (Identity)
+        // Secondary (Identity) - context-dependent on Primary
         secondary: {
-            mann: 'Man',
-            frau: 'Woman',
+            // For P = Male/Female
+            cis: 'Cis',
+            trans: 'Trans',
+            // For P = Inter
             nonbinaer: 'Non-binary',
             fluid: 'Fluid',
-            unsicher: 'Uncertain'
+            // Common
+            unsicher: 'Uncertain',
+            // Legacy
+            mann: 'Man',
+            frau: 'Woman'
         },
         secondaryShort: {
-            mann: 'M',
-            frau: 'W',
+            cis: 'C',
+            trans: 'T',
             nonbinaer: 'NB',
             fluid: 'FL',
-            unsicher: '?'
+            unsicher: '?',
+            mann: 'M',
+            frau: 'W'
         },
         // Expert mode: Detailed options
         detailed: {
