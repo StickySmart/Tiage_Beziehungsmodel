@@ -105,6 +105,36 @@ const TiageConfig = (function() {
     const GESCHLECHT_SHORT = GESCHLECHT_PRIMARY_SHORT;
     const GESCHLECHT_LABELS = GESCHLECHT_PRIMARY_LABELS;
 
+    // EXPERTEN-MODUS: Detaillierte Geschlechtsidentitäten (alte 9-Optionen-Liste)
+    const GESCHLECHT_DETAILED_TYPES = [
+        'cis_mann', 'cis_frau', 'trans_mann', 'trans_frau',
+        'nonbinaer', 'genderfluid', 'agender', 'intersex', 'divers'
+    ];
+
+    const GESCHLECHT_DETAILED_SHORT = {
+        'cis_mann': 'CM',
+        'cis_frau': 'CF',
+        'trans_mann': 'TM',
+        'trans_frau': 'TF',
+        'nonbinaer': 'NB',
+        'genderfluid': 'GF',
+        'agender': 'AG',
+        'intersex': 'IX',
+        'divers': 'DI'
+    };
+
+    const GESCHLECHT_DETAILED_LABELS = {
+        'cis_mann': 'Cis Mann',
+        'cis_frau': 'Cis Frau',
+        'trans_mann': 'Trans Mann',
+        'trans_frau': 'Trans Frau',
+        'nonbinaer': 'Nonbinär',
+        'genderfluid': 'Genderfluid',
+        'agender': 'Agender',
+        'intersex': 'Intersex',
+        'divers': 'Divers'
+    };
+
     // Mapping für Orientierungslogik: Sekundär (Identität) bestimmt die Kategorie
     const GESCHLECHT_CATEGORY = {
         // Sekundär-Werte -> Orientierungskategorie
@@ -364,6 +394,10 @@ const TiageConfig = (function() {
         GESCHLECHT_SHORT,
         GESCHLECHT_LABELS,
         GESCHLECHT_CATEGORY,
+        // Experten-Modus: Detaillierte Geschlechtsidentitäten
+        GESCHLECHT_DETAILED_TYPES,
+        GESCHLECHT_DETAILED_SHORT,
+        GESCHLECHT_DETAILED_LABELS,
         STATUS_TYPES,
 
         // Tooltips

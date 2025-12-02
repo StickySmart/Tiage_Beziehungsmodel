@@ -141,6 +141,29 @@ const TiageLocale_DE = {
             fluid: 'FL',
             unsicher: '?'
         },
+        // Experten-Modus: Detaillierte Optionen
+        detailed: {
+            cis_mann: 'Cis Mann',
+            cis_frau: 'Cis Frau',
+            trans_mann: 'Trans Mann',
+            trans_frau: 'Trans Frau',
+            nonbinaer: 'Nonbinär',
+            genderfluid: 'Genderfluid',
+            agender: 'Agender',
+            intersex: 'Intersex',
+            divers: 'Divers'
+        },
+        detailedShort: {
+            cis_mann: 'CM',
+            cis_frau: 'CF',
+            trans_mann: 'TM',
+            trans_frau: 'TF',
+            nonbinaer: 'NB',
+            genderfluid: 'GF',
+            agender: 'AG',
+            intersex: 'IX',
+            divers: 'DI'
+        },
         // Legacy (deprecated)
         types: {
             mann: 'Mann',

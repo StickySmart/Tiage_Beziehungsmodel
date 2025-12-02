@@ -3532,6 +3532,48 @@
             color: white;
         }
 
+        /* Expert Mode: Detailed Gender Grid */
+        .geschlecht-detailed-container {
+            margin-top: 8px;
+            padding-top: 8px;
+            border-top: 1px dashed var(--border);
+        }
+
+        .geschlecht-detailed-row {
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+        }
+
+        .geschlecht-detailed-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            flex: 1;
+        }
+
+        .geschlecht-detailed-grid .geschlecht-btn {
+            padding: 5px 10px;
+            font-size: var(--font-xs);
+            border-radius: 6px;
+            border: 1px solid var(--border);
+            background: var(--bg-darker);
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .geschlecht-detailed-grid .geschlecht-btn:hover {
+            background: var(--bg-hover);
+            border-color: var(--info);
+        }
+
+        .geschlecht-detailed-grid .geschlecht-btn.selected {
+            background: var(--info);
+            border-color: var(--info);
+            color: white;
+        }
+
         /* Status Popup Styles */
         .status-popup-content {
             max-width: 380px;
