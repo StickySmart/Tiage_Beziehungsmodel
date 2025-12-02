@@ -48,8 +48,8 @@ docs/
 
 | Säule | Vertreter | Beitrag | Anteil |
 |-------|-----------|---------|--------|
-| **Logos** | Robert M. Pirsig | Statische Qualität, Struktur | 40% |
-| **Pathos** | OSHO | Dynamische Qualität, Emotion | 60% |
+| **Pathos** | OSHO | Dynamische Qualität, Emotion | 75% |
+| **Logos** | Robert M. Pirsig | Statische Qualität, Struktur | 25% |
 
 ## Kern-Formeln
 

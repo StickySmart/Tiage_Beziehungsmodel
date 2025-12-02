@@ -100,7 +100,7 @@ R = 1.066 → Override aktiv!
 ## Anwendung im Qualitätsindex
 
 ```
-Qualitätsindex = [(Archetyp × 40%) + (Orientierung × 25%) + (Dominanz × 20%) + (Geschlecht × 15%)] × R
+Qualitätsindex = [(Orientierung × 40%) + (Archetyp × 25%) + (Dominanz × 20%) + (Geschlecht × 15%)] × R
 ```
 
 ## Die Zustands-Skala

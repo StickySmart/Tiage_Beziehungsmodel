@@ -10,7 +10,7 @@
  * Structure:
  * - Each combination has pathos (emotional level) and logos (rational level) statements
  * - Pro/Contra are based on the combination of archetypes
- * - Weighting: Logos 40%, Pathos 60%
+ * - Weighting: Pathos 75%, Logos 25%
  */
 
 const archetypeStatements_EN = {

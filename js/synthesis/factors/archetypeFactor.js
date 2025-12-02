@@ -1,11 +1,12 @@
 /**
  * TIAGE SYNTHESE - Archetyp-Faktor
  *
- * LOGOS (Verstand) - 40% Gewichtung
+ * LOGOS (Verstand) - 25% Gewichtung
  *
  * Philosophische Grundlage: Pirsig's "Statische Qualität"
  * - Strukturelle Fundamente der Beziehungsphilosophie
  * - Wie wollen beide Partner zusammenleben?
+ * - Die Archetyp-Frage stellt sich NACH den initialen Pathos-Faktoren
  *
  * Datenquelle: archetype-matrix.json (6x6 Matrix)
  */

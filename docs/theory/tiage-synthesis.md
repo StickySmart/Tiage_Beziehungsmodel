@@ -15,37 +15,37 @@ Eine **eigenständige Synthese** von Tiage, entwickelt durch Online-Recherche un
 
 Die Verbindung beider Philosophien zu einem konkreten Beziehungs-Rechner mit:
 
-- Eigener Gewichtung (40:60 Logos:Pathos)
+- Eigener Gewichtung (25:75 Logos:Pathos)
 - Archetypen-Matrix (8 Beziehungstypen)
 - Resonanz als Meta-Dimension
 - Praktischer Anwendbarkeit
 
-## Die 40:60 Gewichtung
+## Die 25:75 Gewichtung
 
-### Logos (40% - Verstand)
+### Pathos (75% - Gefühl)
+
+Die emotionale, anziehende Dimension. Pirsig nennt dies "dynamische Qualität" - die Kraft, die Veränderung und Wachstum antreibt.
+
+**Manifestation:**
+- Orientierungs-Kompatibilität (40%)
+- Dominanz-Harmonie (20%)
+- Geschlechts-Attraktion (15%)
+
+### Logos (25% - Verstand)
 
 Die rationale, strukturgebende Dimension. Pirsig nennt dies "statische Qualität" - bewährte Muster, die Stabilität schaffen.
 
 **Manifestation:** Archetyp-Übereinstimmung
 
-### Pathos (60% - Gefühl)
+### Warum 75% Pathos?
 
-Die emotionale, anziehende Dimension. Pirsig nennt dies "dynamische Qualität" - die Kraft, die Veränderung und Wachstum antreibt.
-
-**Manifestation:**
-- Orientierungs-Kompatibilität (25%)
-- Dominanz-Harmonie (20%)
-- Geschlechts-Attraktion (15%)
-
-### Warum 60% Pathos?
-
-> *OSHO: "Bewusstsein durch Meditation - Loslassen (Let Go) ermöglicht echte Verbindung."*
+> *"Pathos vor Logos" - Das Leben/Erleben kommt vor der Interpretation.*
 
 Das Modell gewichtet emotionale Resonanz höher als rationale Struktur, weil:
 
-1. Beziehungen primär über Gefühle funktionieren
-2. Strukturelle Kompatibilität allein keine Anziehung garantiert
-3. Die "dynamische Qualität" (Pirsig) der Motor für Entwicklung ist
+1. Menschen Beziehung zuerst emotional/körperlich erleben (Chemie, Anziehung)
+2. Die Archetyp-Frage "Wie wollen wir Beziehung leben?" stellt sich erst nach den initialen Pathos-Faktoren
+3. Zen/Osho-Perspektive: Akzeptiere was IST (die gefühlte Anziehung), dann folgt die bewusste Wahl
 
 ## Die 8 Archetypen
 

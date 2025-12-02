@@ -2,16 +2,16 @@
 
 > *Die duale Struktur der Beziehungsqualität*
 
-## Grundkonzept: 40:60 Gewichtung
+## Grundkonzept: 25:75 Gewichtung
 
 Das Tiage-Modell teilt Beziehungsqualität in zwei fundamentale Dimensionen:
 
 | Dimension | Anteil | Ursprung | Pirsig-Begriff |
 |-----------|--------|----------|----------------|
-| **Logos** | 40% | Verstand | Statische Qualität |
-| **Pathos** | 60% | Gefühl | Dynamische Qualität |
+| **Pathos** | 75% | Gefühl | Dynamische Qualität |
+| **Logos** | 25% | Verstand | Statische Qualität |
 
-## Logos (40% - Verstand)
+## Logos (25% - Verstand)
 
 Die rationale, strukturgebende Dimension.
 
@@ -24,14 +24,14 @@ Die rationale, strukturgebende Dimension.
 
 ### Manifestation im Modell
 
-**Archetyp-Übereinstimmung (40% des Gesamtscores)**
+**Archetyp-Übereinstimmung (25% des Gesamtscores)**
 
 Die fundamentale Beziehungsphilosophie: *"Wie wollen wir Beziehung leben?"*
 
 - Single ↔ Polyamor = niedrige Übereinstimmung
 - Duo ↔ Duo-Flex = hohe Übereinstimmung
 
-## Pathos (60% - Gefühl)
+## Pathos (75% - Gefühl)
 
 Die emotionale, anziehende Dimension.
 
@@ -46,7 +46,7 @@ Die emotionale, anziehende Dimension.
 
 | Faktor | Anteil | Beschreibung |
 |--------|--------|--------------|
-| **Orientierungs-Kompatibilität** | 25% | Körperliche Polarität und Anziehung |
+| **Orientierungs-Kompatibilität** | 40% | Körperliche Polarität und Anziehung |
 | **Dominanz-Harmonie** | 20% | Energetische Dynamik (Tao) |
 | **Geschlechts-Attraktion** | 15% | Gender-Chemie als Feinabstimmung |
 
@@ -83,13 +83,14 @@ Balance (B) = (100 - |Logos - Pathos|) / 100
 
 Eine hohe Balance (nahe 1.0) bedeutet: Kopf und Herz sind im Einklang.
 
-## Warum 60% Pathos?
+## Warum 75% Pathos?
 
 Das Modell gewichtet emotionale Faktoren höher, weil:
 
-1. **Beziehungen primär über Gefühle funktionieren** - Logik allein schafft keine Anziehung
-2. **Strukturelle Kompatibilität keine Garantie ist** - "Auf dem Papier perfekt" reicht nicht
-3. **Dynamische Qualität Entwicklung ermöglicht** - Beziehungen müssen wachsen können
+1. **"Pathos vor Logos"** - Menschen erleben Beziehung zuerst emotional/körperlich (Chemie, Anziehung)
+2. **Die Archetyp-Frage kommt später** - "Wie wollen wir Beziehung leben?" stellt sich erst nach den initialen Pathos-Faktoren
+3. **Zen/Osho-Perspektive** - Akzeptiere was IST (die gefühlte Anziehung), dann folgt die bewusste Wahl
+4. **Beziehungen primär über Gefühle funktionieren** - Logik allein schafft keine Anziehung
 
 ## Weiterführende Dokumentation
 
