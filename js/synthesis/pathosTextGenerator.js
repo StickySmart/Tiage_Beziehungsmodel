@@ -46,31 +46,31 @@ const PathosTextGenerator = (function() {
     // ═══════════════════════════════════════════════════════════════════════════
 
     const transitions = {
-        // Verstärkend/Ergänzend
+        // Verstärkend/Ergänzend (Satzadverbien, die vor vollständigen Sätzen stehen können)
         additive: [
             "Dabei",
             "Zugleich",
             "Und so",
-            "In diesem Fluss",
-            "Mit dieser Energie",
-            "Daraus erwächst",
-            "Dies verbindet sich mit"
+            "Zudem",
+            "Darüber hinaus",
+            "Außerdem",
+            "Ebenso"
         ],
-        // Kontrastierend
+        // Kontrastierend (Satzadverbien für Kontraste)
         contrast: [
             "Gleichzeitig",
             "Doch auch",
-            "Im Wechselspiel damit",
-            "Neben dieser Kraft",
-            "Anders als erwartet"
+            "Dennoch",
+            "Andererseits",
+            "Jedoch"
         ],
-        // Resultierend
+        // Resultierend (Satzadverbien für Schlussfolgerungen)
         resulting: [
-            "So entsteht",
-            "Daraus formt sich",
-            "Dies ermöglicht",
-            "Hier zeigt sich",
-            "Das öffnet den Raum für"
+            "Damit",
+            "Dadurch",
+            "Folglich",
+            "Entsprechend",
+            "Letztlich"
         ],
         // Verbindend (für Synthese-Sektion)
         connecting: [
@@ -330,7 +330,7 @@ const PathosTextGenerator = (function() {
                 de: [
                     "Der kommunikativ Reifere darf hier Brücken bauen – mit Geduld und ohne Überheblichkeit.",
                     "Die unterschiedlichen GFK-Kompetenzen können zum Wachstumsfeld werden.",
-                    "Hier liegt eine Einladung: Voneinander lernen, wie Herz und Mund zusammenfinden."
+                    "Hier liegt eine Einladung: voneinander zu lernen, wie Herz und Mund zusammenfinden."
                 ],
                 en: [
                     "The more communicatively mature partner may build bridges here – with patience and without condescension.",
