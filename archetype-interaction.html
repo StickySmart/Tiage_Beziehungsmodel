@@ -904,7 +904,7 @@
                 <div class="header-geschlecht-info" id="ich-header-orientierung"></div>
                 <div class="column-dimensions">
                     <div class="compact-dimension needs-selection collapsible-dimension" data-dimension="ich-geschlecht-multi">
-                        <div class="compact-dimension-label"><span class="geschlecht-info-link">Geschlecht</span> <span id="ich-geschlecht-legend" class="geschlecht-legend" style="font-size: 10px; text-decoration: underline; cursor: pointer;" onclick="showDimensionTooltip('geschlechtStatus')">(<span class="legend-p">P</span>=Körper, <span class="legend-s">S</span>=Identität)</span></div>
+                        <div class="compact-dimension-label"><span class="geschlecht-info-link">Geschlecht</span> <span id="ich-geschlecht-legend" class="geschlecht-legend" style="font-size: 10px; text-decoration: underline; cursor: pointer;" onclick="showBodySoulModal()">(<span class="legend-p">B</span>=BODY/BIOLOGIE, <span class="legend-s">S</span>=SOUL/IDENTITÄT)</span></div>
                         <div class="collapsed-summary" id="ich-geschlecht-summary"></div>
                         <div class="geschlecht-primary-row">
                             <div class="geschlecht-grid geschlecht-p-grid" id="ich-geschlecht-p-grid" data-person="ich"></div>
@@ -1011,7 +1011,7 @@
                 <div class="header-geschlecht-info" id="partner-header-orientierung"></div>
                 <div class="column-dimensions">
                     <div class="compact-dimension needs-selection collapsible-dimension" data-dimension="partner-geschlecht-multi">
-                        <div class="compact-dimension-label"><span class="geschlecht-info-link">Geschlecht</span> <span id="partner-geschlecht-legend" class="geschlecht-legend" style="font-size: 10px; text-decoration: underline; cursor: pointer;" onclick="showDimensionTooltip('geschlechtStatus')">(<span class="legend-p">P</span>=Körper, <span class="legend-s">S</span>=Identität)</span></div>
+                        <div class="compact-dimension-label"><span class="geschlecht-info-link">Geschlecht</span> <span id="partner-geschlecht-legend" class="geschlecht-legend" style="font-size: 10px; text-decoration: underline; cursor: pointer;" onclick="showBodySoulModal()">(<span class="legend-p">B</span>=BODY/BIOLOGIE, <span class="legend-s">S</span>=SOUL/IDENTITÄT)</span></div>
                         <div class="collapsed-summary" id="partner-geschlecht-summary"></div>
                         <div class="geschlecht-primary-row">
                             <div class="geschlecht-grid geschlecht-p-grid" id="partner-geschlecht-p-grid" data-person="partner"></div>
@@ -1127,7 +1127,7 @@
                 </div>
                 <div class="column-dimensions" id="mobileIchDimensions">
                     <div class="compact-dimension needs-selection collapsible-dimension" data-dimension="mobile-ich-geschlecht">
-                        <div class="compact-dimension-label"><span class="geschlecht-info-link">Geschlechtsidentität</span> <span id="mobile-ich-geschlecht-legend" class="geschlecht-legend" style="font-size: 10px; opacity: 0.7;">(<span class="legend-p">P</span>=Primär, <span class="legend-s">S</span>=Sekundär)</span></div>
+                        <div class="compact-dimension-label"><span class="geschlecht-info-link">Geschlechtsidentität</span> <span id="mobile-ich-geschlecht-legend" class="geschlecht-legend" style="font-size: 10px; text-decoration: underline; cursor: pointer;" onclick="showBodySoulModal()">(<span class="legend-p">B</span>=BODY/BIOLOGIE, <span class="legend-s">S</span>=SOUL/IDENTITÄT)</span></div>
                         <div class="collapsed-summary" id="mobile-ich-geschlecht-summary"></div>
                         <div class="geschlecht-grid" id="mobile-ich-geschlecht-grid" data-person="ich"></div>
                     </div>
@@ -1284,7 +1284,7 @@
                 </div>
                 <div class="column-dimensions" id="mobilePartnerDimensions">
                     <div class="compact-dimension needs-selection collapsible-dimension" data-dimension="mobile-partner-geschlecht">
-                        <div class="compact-dimension-label"><span class="geschlecht-info-link">Geschlechtsidentität</span> <span id="mobile-partner-geschlecht-legend" class="geschlecht-legend" style="font-size: 10px; opacity: 0.7;">(<span class="legend-p">P</span>=Primär, <span class="legend-s">S</span>=Sekundär)</span></div>
+                        <div class="compact-dimension-label"><span class="geschlecht-info-link">Geschlechtsidentität</span> <span id="mobile-partner-geschlecht-legend" class="geschlecht-legend" style="font-size: 10px; text-decoration: underline; cursor: pointer;" onclick="showBodySoulModal()">(<span class="legend-p">B</span>=BODY/BIOLOGIE, <span class="legend-s">S</span>=SOUL/IDENTITÄT)</span></div>
                         <div class="collapsed-summary" id="mobile-partner-geschlecht-summary"></div>
                         <div class="geschlecht-grid" id="mobile-partner-geschlecht-grid" data-person="partner"></div>
                     </div>
@@ -1455,7 +1455,7 @@
                             <div class="dimension-group needs-selection" data-dimension="ich-geschlecht">
                                 <div class="dimension-label">
                                     <span class="geschlecht-info-link">Geschlechtsidentität</span>
-                                    <span style="font-size: 10px; opacity: 0.7;">(P=Primär, S=Sekundär)</span>
+                                    <span style="font-size: 10px; text-decoration: underline; cursor: pointer;" onclick="showBodySoulModal()">(<span class="legend-p">B</span>=BODY/BIOLOGIE, <span class="legend-s">S</span>=SOUL/IDENTITÄT)</span>
                                 </div>
                                 <div class="geschlecht-grid" id="modal-ich-geschlecht-grid" data-person="ich"></div>
                             </div>
@@ -1621,7 +1621,7 @@
                             <div class="dimension-group needs-selection" data-dimension="partner-geschlecht">
                                 <div class="dimension-label">
                                     <span class="geschlecht-info-link">Geschlechtsidentität</span>
-                                    <span style="font-size: 10px; opacity: 0.7;">(P=Primär, S=Sekundär)</span>
+                                    <span style="font-size: 10px; text-decoration: underline; cursor: pointer;" onclick="showBodySoulModal()">(<span class="legend-p">B</span>=BODY/BIOLOGIE, <span class="legend-s">S</span>=SOUL/IDENTITÄT)</span>
                                 </div>
                                 <div class="geschlecht-grid" id="modal-partner-geschlecht-grid" data-person="partner"></div>
                             </div>
@@ -2137,6 +2137,27 @@
                 </div>
             </div>
             <button class="dimension-tooltip-close" onclick="closeOrientierungInfoModal()">Verstanden</button>
+        </div>
+    </div>
+
+    <!-- Body & Soul Info Modal (kurz und bündig) -->
+    <div class="dimension-tooltip-overlay" id="bodySoulModal" onclick="closeBodySoulModal()">
+        <div class="geschlecht-info-modal-content" onclick="event.stopPropagation()" style="max-width: 400px;">
+            <div class="geschlecht-info-modal-header">
+                <div class="dimension-tooltip-title">Body & Soul</div>
+                <button class="geschlecht-info-close-btn" onclick="closeBodySoulModal()">&times;</button>
+            </div>
+            <div class="geschlecht-info-scroll-container" style="padding: 16px;">
+                <div class="geschlecht-info-item" style="margin-bottom: 12px;">
+                    <div class="geschlecht-info-name" style="color: var(--primary); font-weight: bold;"><span class="legend-p">B</span> (Body/Biologie)</div>
+                    <div class="geschlecht-info-desc">Deine körperliche Dimension</div>
+                </div>
+                <div class="geschlecht-info-item">
+                    <div class="geschlecht-info-name" style="color: var(--secondary); font-weight: bold;"><span class="legend-s">S</span> (Soul/Identität)</div>
+                    <div class="geschlecht-info-desc">Deine seelische/psychologische Dimension</div>
+                </div>
+            </div>
+            <button class="dimension-tooltip-close" onclick="closeBodySoulModal()">Verstanden</button>
         </div>
     </div>
 
@@ -6573,6 +6594,17 @@
 
         function closeOrientierungInfoModal() {
             document.getElementById('orientierungInfoModal').classList.remove('active');
+        }
+
+        // ========================================
+        // Body & Soul Info Modal Functions
+        // ========================================
+        function showBodySoulModal() {
+            document.getElementById('bodySoulModal').classList.add('active');
+        }
+
+        function closeBodySoulModal() {
+            document.getElementById('bodySoulModal').classList.remove('active');
         }
 
         // ═══════════════════════════════════════════════════════════════════════
@@ -15166,6 +15198,8 @@
         window.closeDominanzInfoModal = closeDominanzInfoModal;
         window.showOrientierungInfoModal = showOrientierungInfoModal;
         window.closeOrientierungInfoModal = closeOrientierungInfoModal;
+        window.showBodySoulModal = showBodySoulModal;
+        window.closeBodySoulModal = closeBodySoulModal;
         window.closeGfkExplanationModal = closeGfkExplanationModal;
 
         // Dimension click handlers
