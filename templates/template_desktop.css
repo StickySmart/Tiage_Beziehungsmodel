@@ -3472,8 +3472,26 @@
 
         /* ═══════════════════════════════════════════════════════════════════════
            GESCHLECHTS-SYSTEM (P/S: P=Körper, S=Identität)
-           Nutzt das gleiche .geschlecht-grid System wie Dominanz/Orientierung
+           P-Zeile: Mann, Frau, Inter (immer sichtbar)
+           S-Zeile: kontextabhängig (Cis/Trans/Unsicher oder Nonbinär/Fluid/Unsicher)
            ═══════════════════════════════════════════════════════════════════════ */
+
+        .geschlecht-primary-row {
+            margin-bottom: 6px;
+        }
+
+        .geschlecht-secondary-row {
+            margin-top: 4px;
+            padding-top: 4px;
+            border-top: 1px dashed var(--border-light, rgba(255,255,255,0.1));
+        }
+
+        .geschlecht-p-grid,
+        .geschlecht-s-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
 
         /* Status Popup Styles */
         .status-popup-content {
