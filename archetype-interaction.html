@@ -696,8 +696,8 @@
                         <div style="font-size: 14px; color: var(--text-primary); font-weight: 600;" id="pathosLogosSubtitle">Emotionale Verbindung</div>
                     </div>
                 </div>
-                <!-- Archetype context with navigation -->
-                <div id="pathosLogosArchetypeContext" style="display: flex; justify-content: center; align-items: center; gap: 10px; margin-bottom: 20px; padding: 12px; background: rgba(255,255,255,0.03); border-radius: 8px;">
+                <!-- Archetype context with navigation - hidden for production, enable via console: document.getElementById('pathosLogosArchetypeContext').style.display = 'flex' -->
+                <div id="pathosLogosArchetypeContext" style="display: none; justify-content: center; align-items: center; gap: 10px; margin-bottom: 20px; padding: 12px; background: rgba(255,255,255,0.03); border-radius: 8px;">
                     <!-- ICH Navigation -->
                     <div style="display: flex; align-items: center; gap: 6px;">
                         <button onclick="navigatePathosLogosArchetype('ich', -1)" style="background: transparent; border: 1px solid var(--border); color: var(--text-muted); width: 24px; height: 24px; border-radius: 4px; cursor: pointer; font-size: 14px; line-height: 1;" title="Vorheriger Archetyp">‹</button>
