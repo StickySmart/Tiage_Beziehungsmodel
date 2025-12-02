@@ -33,8 +33,8 @@ const TiageLocale_DE = {
         partner: 'PARTNER',
 
         // Status
-        gelebt: 'Gelebt',
-        interessiert: 'Interessiert',
+        gelebt: 'Primär',
+        interessiert: 'Sekundär',
 
         // Navigation
         page: 'Seite',
@@ -244,11 +244,11 @@ const TiageLocale_DE = {
         },
         status: {
             title: 'Orientierungs-Status',
-            text: 'Gelebt: Du lebst diese Orientierung und bist dir sicher.\n\nInteressiert: Du bist neugierig oder in einer Explorationsphase.'
+            text: 'Primär: Du lebst diese Orientierung und bist dir sicher.\n\nSekundär: Du bist neugierig oder in einer Explorationsphase.'
         },
         dominanzStatus: {
             title: 'Dominanz-Status',
-            text: 'Gelebt: Du kennst deine Dominanz-Präferenz und lebst sie aktiv.\n\nInteressiert: Du bist noch am Erkunden.'
+            text: 'Primär: Du kennst deine Dominanz-Präferenz und lebst sie aktiv.\n\nSekundär: Du bist noch am Erkunden.'
         },
         dominant: {
             title: 'Dominant',
@@ -628,14 +628,14 @@ const TiageLocale_DE = {
         quickGuideItems: [
             '<strong>Mein Typ</strong> = Dein Archetyp + Eigenschaften (Orientierung, Dominanz, Geschlecht)',
             '<strong>Beziehungsqualität</strong> = Partner-Archetyp + Eigenschaften und Kompatibilitätsberechnung',
-            '<strong>Gelebt</strong> = Was du aktiv lebst / <strong>Interessiert</strong> = Wofür du offen bist',
+            '<strong>Primär</strong> = Was du aktiv lebst / <strong>Sekundär</strong> = Wofür du offen bist',
             '<strong>INFO</strong>-Button = Details zum gewählten Archetyp',
             '<strong>Ergebnis</strong> = Automatische Berechnung der Kompatibilität (4 Faktoren)',
             '<strong>Prozentwerte</strong> anklicken = Detaillierte Erklärung pro Faktor'
         ],
         newInVersion: 'Neu in Version 1.4',
         newFeatures: [
-            '<strong>Gelebt/Interessiert:</strong> Wähle für jede Eigenschaft, ob du sie aktiv lebst oder nur Interesse hast',
+            '<strong>Primär/Sekundär:</strong> Wähle für jede Eigenschaft, ob du sie aktiv lebst oder nur Interesse hast',
             '<strong>Auto-Collapse:</strong> Orientierung und Dominanz Sektionen schließen automatisch nach Auswahl',
             '<strong>Verbesserte Fehlermeldungen:</strong> Fehlende Felder werden übersichtlich aufgelistet',
             '<strong>Mobile Navigation:</strong> Neue Navigationstasten in Modals für bessere Bedienung',
