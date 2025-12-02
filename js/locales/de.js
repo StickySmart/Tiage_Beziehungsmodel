@@ -499,15 +499,8 @@ const TiageLocale_DE = {
     },
 
     // ═══════════════════════════════════════════════════════════════════════
-    // BEDÜRFNISSE
+    // BEDÜRFNISSE - siehe unten bei GFK-BEDÜRFNISSE für vollständige Liste
     // ═══════════════════════════════════════════════════════════════════════
-
-    needs: {
-        matchLabel: 'Bedürfnis-Übereinstimmung',
-        sharedTitle: 'GEMEINSAME BEDÜRFNISSE',
-        differentTitle: 'UNTERSCHIEDLICHE PRIORITÄTEN',
-        valuesTitle: 'GEMEINSAME WERTE'
-    },
 
     // ═══════════════════════════════════════════════════════════════════════
     // COLUMN HEADERS
@@ -634,6 +627,12 @@ const TiageLocale_DE = {
     // ═══════════════════════════════════════════════════════════════════════
 
     needs: {
+        // Basis-Labels
+        matchLabel: 'Bedürfnis-Übereinstimmung',
+        sharedTitle: 'GEMEINSAME BEDÜRFNISSE',
+        differentTitle: 'UNTERSCHIEDLICHE PRIORITÄTEN',
+        valuesTitle: 'GEMEINSAME WERTE',
+
         // Kategorien
         categories: {
             existenz: 'Existenz',

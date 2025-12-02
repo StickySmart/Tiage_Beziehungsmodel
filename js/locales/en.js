@@ -569,15 +569,8 @@ const TiageLocale_EN = {
     },
 
     // ═══════════════════════════════════════════════════════════════════════
-    // NEEDS / BEDÜRFNISSE
+    // NEEDS - see GFK NEEDS section below for complete list
     // ═══════════════════════════════════════════════════════════════════════
-
-    needs: {
-        matchLabel: 'Needs Match',
-        sharedTitle: 'SHARED NEEDS',
-        differentTitle: 'DIFFERENT PRIORITIES',
-        valuesTitle: 'SHARED VALUES'
-    },
 
     // ═══════════════════════════════════════════════════════════════════════
     // COLUMN HEADERS
@@ -704,6 +697,12 @@ const TiageLocale_EN = {
     // ═══════════════════════════════════════════════════════════════════════
 
     needs: {
+        // Base labels
+        matchLabel: 'Needs Match',
+        sharedTitle: 'SHARED NEEDS',
+        differentTitle: 'DIFFERENT PRIORITIES',
+        valuesTitle: 'SHARED VALUES',
+
         // Categories
         categories: {
             existenz: 'Existence',
