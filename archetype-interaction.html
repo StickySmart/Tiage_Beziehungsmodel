@@ -91,6 +91,19 @@
         </div>
     </div>
 
+    <!-- Bedürfnis-Vergleich Modal -->
+    <div class="modal-overlay" id="needsCompareModal" onclick="closeNeedsCompareModal(event)" style="z-index: 2200;">
+        <div class="modal" onclick="event.stopPropagation()" style="max-width: 500px;">
+            <div class="modal-header">
+                <span class="modal-title" id="needsCompareModalTitle">Bedürfnis-Vergleich</span>
+                <button class="modal-close" onclick="closeNeedsCompareModal()">&times;</button>
+            </div>
+            <div class="modal-body" id="needsCompareModalBody" style="padding: 20px;">
+                <!-- Content wird dynamisch gefüllt -->
+            </div>
+        </div>
+    </div>
+
     <!-- Help Modal -->
     <div class="help-modal-overlay" id="helpModal" onclick="closeHelpModal(event)">
         <div class="help-modal" onclick="event.stopPropagation()">
@@ -7251,6 +7264,137 @@
         }
 
         /**
+         * Öffnet das Bedürfnis-Vergleich Modal
+         * @param {string} type - 'gemeinsam' oder 'unterschiedlich'
+         */
+        function openNeedsCompareModal(type) {
+            const modal = document.getElementById('needsCompareModal');
+            const body = document.getElementById('needsCompareModalBody');
+            const title = document.getElementById('needsCompareModalTitle');
+
+            if (!modal || !body) return;
+
+            // Matching-Daten holen
+            const ichArchetyp = (currentArchetype || '').replace('_', '-');
+            const partnerArchetyp = (selectedPartner || '').replace('_', '-');
+
+            if (!ichArchetyp || !partnerArchetyp || typeof GfkBeduerfnisse === 'undefined') {
+                body.innerHTML = '<p style="color: var(--text-muted);">Keine Daten verfügbar.</p>';
+                modal.classList.add('active');
+                document.body.style.overflow = 'hidden';
+                return;
+            }
+
+            const matching = GfkBeduerfnisse.berechneMatching(ichArchetyp, partnerArchetyp);
+            const ichName = archetypeDefinitions[currentArchetype]?.name || 'ICH';
+            const partnerName = archetypeDefinitions[selectedPartner]?.name || 'Partner';
+
+            // Titel setzen
+            if (type === 'gemeinsam') {
+                title.textContent = 'Gemeinsame Bedürfnisse';
+            } else {
+                title.textContent = 'Unterschiedliche Prioritäten';
+            }
+
+            // Daten für Anzeige vorbereiten
+            const items = type === 'gemeinsam'
+                ? (matching.topUebereinstimmungen || [])
+                : (matching.topKonflikte || []);
+
+            if (items.length === 0) {
+                body.innerHTML = '<p style="color: var(--text-muted);">Keine Einträge vorhanden.</p>';
+            } else {
+                let html = `
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 16px;">
+                        <div style="text-align: center; font-weight: 600; color: var(--success); font-size: 12px; text-transform: uppercase; letter-spacing: 1px;">
+                            ${ichName}
+                        </div>
+                        <div style="text-align: center; font-weight: 600; color: var(--danger); font-size: 12px; text-transform: uppercase; letter-spacing: 1px;">
+                            ${partnerName}
+                        </div>
+                    </div>
+                    <div style="display: flex; flex-direction: column; gap: 8px;">
+                `;
+
+                items.forEach(item => {
+                    const label = TiageI18n.t(`needs.items.${item.id}`, item.label);
+                    const wert1 = item.wert1 || 0;
+                    const wert2 = item.wert2 || 0;
+                    const diff = Math.abs(wert1 - wert2);
+
+                    // Status-Icon und Farbe
+                    let statusIcon, statusColor, statusText;
+                    if (diff <= 15) {
+                        statusIcon = '✓';
+                        statusColor = '#22c55e';
+                        statusText = 'Übereinstimmung';
+                    } else if (diff <= 35) {
+                        statusIcon = '~';
+                        statusColor = '#eab308';
+                        statusText = 'Komplementär';
+                    } else {
+                        statusIcon = '✗';
+                        statusColor = '#ef4444';
+                        statusText = 'Unterschied';
+                    }
+
+                    html += `
+                        <div style="background: rgba(255,255,255,0.05); border-radius: 8px; padding: 12px; border-left: 3px solid ${statusColor};">
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+                                <span style="font-weight: 500; color: var(--text-primary);">${label}</span>
+                                <span style="color: ${statusColor}; font-size: 11px; font-weight: 600;">${statusIcon} ${statusText}</span>
+                            </div>
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                                <div style="display: flex; align-items: center; gap: 8px;">
+                                    <div style="flex: 1; height: 6px; background: rgba(255,255,255,0.1); border-radius: 3px; overflow: hidden;">
+                                        <div style="width: ${wert1}%; height: 100%; background: var(--success); border-radius: 3px;"></div>
+                                    </div>
+                                    <span style="font-size: 11px; color: var(--text-muted); min-width: 35px; text-align: right;">${wert1}%</span>
+                                </div>
+                                <div style="display: flex; align-items: center; gap: 8px;">
+                                    <div style="flex: 1; height: 6px; background: rgba(255,255,255,0.1); border-radius: 3px; overflow: hidden;">
+                                        <div style="width: ${wert2}%; height: 100%; background: var(--danger); border-radius: 3px;"></div>
+                                    </div>
+                                    <span style="font-size: 11px; color: var(--text-muted); min-width: 35px; text-align: right;">${wert2}%</span>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                });
+
+                html += '</div>';
+
+                // Info-Box hinzufügen
+                const infoText = type === 'gemeinsam'
+                    ? 'Gemeinsame Bedürfnisse bilden das Fundament eurer Verbindung. Hier könnt ihr euch gegenseitig stärken.'
+                    : 'Unterschiedliche Prioritäten zeigen Wachstumspotential. Diese Bereiche erfordern bewusste Kommunikation.';
+
+                html += `
+                    <div style="margin-top: 16px; padding: 12px; background: rgba(139,92,246,0.08); border-radius: 8px; border: 1px solid rgba(139,92,246,0.2);">
+                        <p style="font-size: 12px; color: var(--text-secondary); margin: 0; line-height: 1.5;">${infoText}</p>
+                    </div>
+                `;
+
+                body.innerHTML = html;
+            }
+
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        /**
+         * Schließt das Bedürfnis-Vergleich Modal
+         */
+        function closeNeedsCompareModal(event) {
+            if (event && event.target !== event.currentTarget) return;
+            const modal = document.getElementById('needsCompareModal');
+            if (modal) {
+                modal.classList.remove('active');
+                document.body.style.overflow = '';
+            }
+        }
+
+        /**
          * Sync GFK UI across all views
          */
         function syncGfkUI(person) {
@@ -7570,8 +7714,8 @@
             if (matching.topUebereinstimmungen && matching.topUebereinstimmungen.length > 0) {
                 const gemeinsameLabel = TiageI18n.t('synthesisSection.gemeinsameBeduerfnisse', 'Gemeinsame Bedürfnisse');
                 html += `
-                    <div class="gfk-section gfk-matches">
-                        <div class="gfk-section-title" style="color: #22c55e;">${TiageI18n.t('needs.sharedTitle', 'GEMEINSAME BEDÜRFNISSE')}</div>
+                    <div class="gfk-section gfk-matches" onclick="openNeedsCompareModal('gemeinsam')" style="cursor: pointer;" title="Klicken für Details">
+                        <div class="gfk-section-title" style="color: #22c55e;">${TiageI18n.t('needs.sharedTitle', 'GEMEINSAME BEDÜRFNISSE')} <span style="font-size: 10px; opacity: 0.7;">▸</span></div>
                         <div class="gfk-tags">
                             ${matching.topUebereinstimmungen.map(b => {
                                 const translatedLabel = TiageI18n.t(`needs.items.${b.id}`, b.label);
@@ -7586,8 +7730,8 @@
             if (matching.topKonflikte && matching.topKonflikte.length > 0) {
                 const unterschiedlicheLabel = TiageI18n.t('synthesisSection.unterschiedlichePrioritaeten', 'Unterschiedliche Prioritäten');
                 html += `
-                    <div class="gfk-section gfk-conflicts">
-                        <div class="gfk-section-title" style="color: #ef4444;">${TiageI18n.t('needs.differentTitle', 'UNTERSCHIEDLICHE PRIORITÄTEN')}</div>
+                    <div class="gfk-section gfk-conflicts" onclick="openNeedsCompareModal('unterschiedlich')" style="cursor: pointer;" title="Klicken für Details">
+                        <div class="gfk-section-title" style="color: #ef4444;">${TiageI18n.t('needs.differentTitle', 'UNTERSCHIEDLICHE PRIORITÄTEN')} <span style="font-size: 10px; opacity: 0.7;">▸</span></div>
                         <div class="gfk-tags">
                             ${matching.topKonflikte.map(b => {
                                 const translatedLabel = TiageI18n.t(`needs.items.${b.id}`, b.label);
