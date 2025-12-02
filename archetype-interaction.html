@@ -125,6 +125,42 @@
         </div>
     </div>
 
+    <!-- GFK Begriffserklärung Modal -->
+    <div class="modal-overlay" id="gfkExplanationModal" onclick="closeGfkExplanationModal(event)" style="z-index: 2400;">
+        <div class="modal" onclick="event.stopPropagation()" style="max-width: 400px;">
+            <div class="modal-header" style="border-bottom: 2px solid rgba(139,92,246,0.3);">
+                <span class="modal-title" style="color: #8B5CF6;">Gewaltfreie Kommunikation (GFK)</span>
+                <button class="modal-close" onclick="closeGfkExplanationModal()">&times;</button>
+            </div>
+            <div class="modal-body" style="padding: 20px;">
+                <p style="font-size: 14px; line-height: 1.7; color: var(--text-primary); margin: 0 0 16px 0;">
+                    Nach <strong>Marshall Rosenberg</strong> sind Bedürfnisse universell und frei von Bewertung. Sie beschreiben, was wir zum Leben brauchen.
+                </p>
+                <p style="font-size: 13px; line-height: 1.6; color: var(--text-secondary); margin: 0;">
+                    Die GFK unterscheidet klar zwischen Bedürfnissen (was wir brauchen) und Strategien (wie wir es erfüllen). Diese Unterscheidung hilft uns, authentisch zu kommunizieren und echte Verbindung zu schaffen.
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Paarung Begriffserklärung Modal -->
+    <div class="modal-overlay" id="paarungExplanationModal" onclick="closePaarungExplanationModal(event)" style="z-index: 2400;">
+        <div class="modal" onclick="event.stopPropagation()" style="max-width: 400px;">
+            <div class="modal-header" style="border-bottom: 2px solid rgba(232,67,147,0.3);">
+                <span class="modal-title" style="color: #E84393;">Paarung</span>
+                <button class="modal-close" onclick="closePaarungExplanationModal()">&times;</button>
+            </div>
+            <div class="modal-body" style="padding: 20px;">
+                <p style="font-size: 14px; line-height: 1.7; color: var(--text-primary); margin: 0 0 16px 0;">
+                    In Beziehungen ist das gegenseitige Verstehen von Bedürfnissen essenziell. Wenn beide Partner ihre Bedürfnisse kennen und kommunizieren, entsteht Raum für echte Verbindung und gemeinsames Wachstum.
+                </p>
+                <p style="font-size: 13px; line-height: 1.6; color: var(--text-secondary); margin: 0;">
+                    Die Paarung zeigt, wie gut die Bedürfnisse beider Partner zueinander passen und wo Potenzial für gegenseitige Erfüllung besteht.
+                </p>
+            </div>
+        </div>
+    </div>
+
     <!-- Help Modal -->
     <div class="help-modal-overlay" id="helpModal" onclick="closeHelpModal(event)">
         <div class="help-modal" onclick="event.stopPropagation()">
@@ -8494,15 +8530,23 @@
 
                     <!-- GFK-Hinweis -->
                     <div style="padding: 12px; background: rgba(139,92,246,0.08); border-radius: 8px; border: 1px solid rgba(139,92,246,0.2);">
+                        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px;">
+                            <strong style="font-size: 12px; color: #8B5CF6;">Gewaltfreie Kommunikation (GFK)</strong>
+                            <button onclick="openGfkExplanationModal(event)" style="background: none; border: none; cursor: pointer; color: #8B5CF6; font-size: 14px; padding: 2px 6px; border-radius: 4px; transition: background 0.2s;" title="Was ist GFK?">ⓘ</button>
+                        </div>
                         <p style="font-size: 11px; color: var(--text-secondary); margin: 0; line-height: 1.5;">
-                            <strong>Gewaltfreie Kommunikation (GFK):</strong> Nach Marshall Rosenberg sind Bedürfnisse universell und frei von Bewertung. Sie beschreiben, was wir zum Leben brauchen.
+                            Das Bedürfnis nach <strong>${def.label}</strong> ist universell und frei von Bewertung – es beschreibt, was du zum Leben brauchst.
                         </p>
                     </div>
 
                     <!-- Paarung-Bezug -->
                     <div style="padding: 12px; background: rgba(232,67,147,0.08); border-radius: 8px; border: 1px solid rgba(232,67,147,0.2);">
+                        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px;">
+                            <strong style="font-size: 12px; color: #E84393;">Paarung</strong>
+                            <button onclick="openPaarungExplanationModal(event)" style="background: none; border: none; cursor: pointer; color: #E84393; font-size: 14px; padding: 2px 6px; border-radius: 4px; transition: background 0.2s;" title="Was bedeutet Paarung?">ⓘ</button>
+                        </div>
                         <p style="font-size: 11px; color: var(--text-secondary); margin: 0; line-height: 1.5;">
-                            <strong>Paarung:</strong> In Beziehungen ist das gegenseitige Verstehen von Bedürfnissen essenziell. Wenn beide Partner ihre Bedürfnisse kennen und kommunizieren, entsteht Raum für echte Verbindung und gemeinsames Wachstum.
+                            Wenn beide Partner ihr Bedürfnis nach <strong>${def.label}</strong> kennen und kommunizieren, entsteht Raum für echte Verbindung.
                         </p>
                     </div>
                 </div>
@@ -8517,6 +8561,50 @@
         function closeNeedDefinitionModal(event) {
             if (event && event.target !== event.currentTarget) return;
             const modal = document.getElementById('needDefinitionModal');
+            if (modal) {
+                modal.classList.remove('active');
+            }
+        }
+
+        /**
+         * Öffnet das GFK-Begriffserklärung Modal
+         */
+        function openGfkExplanationModal(event) {
+            if (event) event.stopPropagation();
+            const modal = document.getElementById('gfkExplanationModal');
+            if (modal) {
+                modal.classList.add('active');
+            }
+        }
+
+        /**
+         * Schließt das GFK-Begriffserklärung Modal
+         */
+        function closeGfkExplanationModal(event) {
+            if (event && event.target !== event.currentTarget) return;
+            const modal = document.getElementById('gfkExplanationModal');
+            if (modal) {
+                modal.classList.remove('active');
+            }
+        }
+
+        /**
+         * Öffnet das Paarung-Begriffserklärung Modal
+         */
+        function openPaarungExplanationModal(event) {
+            if (event) event.stopPropagation();
+            const modal = document.getElementById('paarungExplanationModal');
+            if (modal) {
+                modal.classList.add('active');
+            }
+        }
+
+        /**
+         * Schließt das Paarung-Begriffserklärung Modal
+         */
+        function closePaarungExplanationModal(event) {
+            if (event && event.target !== event.currentTarget) return;
+            const modal = document.getElementById('paarungExplanationModal');
             if (modal) {
                 modal.classList.remove('active');
             }
