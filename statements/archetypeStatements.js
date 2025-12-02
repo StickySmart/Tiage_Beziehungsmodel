@@ -10,7 +10,7 @@
  * Struktur:
  * - Jede Kombination hat pathos (Gefühlsebene) und logos (Verstandsebene) Statements
  * - Pro/Contra basieren auf der Kombination der Archetypen
- * - Gewichtung: Logos 40%, Pathos 60%
+ * - Gewichtung: Pathos 75%, Logos 25%
  */
 
 const archetypeStatements = {

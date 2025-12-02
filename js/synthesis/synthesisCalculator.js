@@ -6,8 +6,8 @@
  *   Q = [(A × wₐ) + (O × wₒ) + (D × wᵈ) + (G × wᵍ)] × R
  *
  * Wobei:
- *   A = Archetyp-Score (40% - LOGOS)
- *   O = Orientierungs-Score (25% - PATHOS)
+ *   A = Archetyp-Score (25% - LOGOS)
+ *   O = Orientierungs-Score (40% - PATHOS)
  *   D = Dominanz-Score (20% - PATHOS)
  *   G = Geschlechts-Score (15% - PATHOS)
  *   R = Resonanz-Koeffizient (0.9 - 1.1)

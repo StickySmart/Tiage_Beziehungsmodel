@@ -14,11 +14,12 @@ TiageSynthesis.Constants = {
     // ═══════════════════════════════════════════════════════════════════════
     // FAKTOR-GEWICHTE
     // ═══════════════════════════════════════════════════════════════════════
-    // Logos (Verstand): 40% | Pathos (Gefühl): 60%
+    // Logos (Verstand): 25% | Pathos (Gefühl): 75%
+    // "Pathos vor Logos" - Das Leben/Erleben kommt vor der Interpretation
 
     WEIGHTS: {
-        archetyp: 0.40,      // LOGOS - Beziehungsphilosophie
-        orientierung: 0.25,  // PATHOS - Körperliche Polarität
+        archetyp: 0.25,      // LOGOS - Beziehungsphilosophie
+        orientierung: 0.40,  // PATHOS - Körperliche Polarität
         dominanz: 0.20,      // PATHOS - Energetische Dynamik
         geschlecht: 0.15     // PATHOS - Gender-Chemie
     },

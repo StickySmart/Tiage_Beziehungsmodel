@@ -38,12 +38,12 @@ Die philosophischen Konzepte von Pirsig und OSHO werden durch neurowissenschaftl
 
 ---
 
-## Kernkonzept: Logos vs. Pathos (40:60)
+## Kernkonzept: Logos vs. Pathos (25:75)
 
 | Dimension | Gewicht | Pirsig-Begriff | Bedeutung |
 |-----------|---------|----------------|-----------|
-| **Logos** | 40% | Statische Qualität | Verstand, Struktur, Regeln |
-| **Pathos** | 60% | Dynamische Qualität | Gefühl, Anziehung, Intuition |
+| **Pathos** | 75% | Dynamische Qualität | Gefühl, Anziehung, Intuition |
+| **Logos** | 25% | Statische Qualität | Verstand, Struktur, Regeln |
 
 ---
 
@@ -147,11 +147,12 @@ F: 66.5 × 0.7  = 46.6
 
 ## Die 4 Qualitätsfaktoren
 
-### 1. Archetyp-Übereinstimmung (40% - Logos)
-Fundamentale Beziehungsphilosophie: "Wie wollen wir Beziehung leben?"
-
-### 2. Orientierungs-Kompatibilität (25% - Pathos)
+### 1. Orientierungs-Kompatibilität (40% - Pathos)
 Körperliche Polarität und Anziehung (Hetero, Homo, Bi, Pan, Ace)
+"Pathos vor Logos" - Menschen erleben Beziehung zuerst körperlich
+
+### 2. Archetyp-Übereinstimmung (25% - Logos)
+Fundamentale Beziehungsphilosophie: "Wie wollen wir Beziehung leben?"
 
 ### 3. Dominanz-Harmonie (20% - Pathos)
 Energetische Dynamik: Dominant, Submissiv, Switch, Ausgeglichen
@@ -697,7 +698,7 @@ Der Resonanz-Koeffizient R wird aus **zwei Komponenten** berechnet:
     ┌─────────────────────┐                   ┌─────────────────────────────┐
     │       LOGOS         │                   │          PATHOS             │
     │   Statische Qualität│                   │    Dynamische Qualität      │
-    │        40%          │                   │           60%               │
+    │        25%          │                   │           75%               │
     └─────────────────────┘                   └─────────────────────────────┘
               │                                             │
               ▼                               ┌─────────────┼─────────────┐
@@ -705,7 +706,7 @@ Der Resonanz-Koeffizient R wird aus **zwei Komponenten** berechnet:
     │                     │                   ▼             ▼             ▼
     │  ╔═══════════════╗  │         ┌─────────────┐ ┌─────────────┐ ┌─────────────┐
     │  ║   ARCHETYP    ║  │         │ ORIENTIERUNG│ │  DOMINANZ   │ │ GESCHLECHT  │
-    │  ║     40%       ║  │         │    25%      │ │    20%      │ │    15%      │
+    │  ║     25%       ║  │         │    40%      │ │    20%      │ │    15%      │
     │  ╚═══════════════╝  │         └─────────────┘ └─────────────┘ └─────────────┘
     │                     │                   │             │             │
     │  "Wie wollen wir    │         "Wen begehre  "Wie fließt   "Feintuning

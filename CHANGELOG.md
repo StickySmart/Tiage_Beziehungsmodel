@@ -5,6 +5,24 @@ Alle wichtigen Änderungen am Tiage-Beziehungsmodell werden hier dokumentiert.
 Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.0.0/),
 Versionierung folgt [Semantic Versioning](https://semver.org/lang/de/).
 
+## [1.6.0] - 2025-12-02
+
+### Geändert
+
+**CHANGED: Gewichtung der Qualitätsfaktoren (75% Pathos / 25% Logos)**
+
+**Beweggründe:**
+Die Gewichtung wurde an die reale menschliche Kennenlernreihenfolge angepasst. Menschen erleben Beziehung zuerst emotional/körperlich (Chemie, Anziehung, energetische Passung) bevor sie rational über Beziehungsmodelle sprechen. Die Archetyp-Frage "Wie wollen wir Beziehung leben?" stellt sich erst nach den initialen Pathos-Faktoren.
+
+**Philosophische Grundlage:**
+"Pathos vor Logos" - Das Leben/Erleben kommt vor der Interpretation. Diese Reihenfolge entspricht der Zen/Osho-Perspektive: Akzeptiere was IST (die gefühlte Anziehung), dann folgt die bewusste Wahl innerhalb dessen (Archetyp-Kompatibilität).
+
+**Technische Änderung:**
+- Orientierungs-Kompatibilität: 25% → 40% (Pathos)
+- Archetyp-Übereinstimmung: 40% → 25% (Logos)
+- Dominanz-Harmonie: 20% (Pathos, unverändert)
+- Geschlechts-Attraktion: 15% (Pathos, unverändert)
+
 ## [1.5.0] - 2025-11-29
 
 ### Neu
@@ -54,7 +72,7 @@ Versionierung folgt [Semantic Versioning](https://semver.org/lang/de/).
 ### Neu
 - **Neues 4-Faktoren-Berechnungsmodell** mit wissenschaftlicher Fundierung
 - Philosophische Statements basierend auf Pirsig (MOQ) und OSHO
-- Gewichtung: Archetyp (40%), Orientierung (25%), Dominanz (20%), Geschlecht (15%)
+- Gewichtung: Archetyp (40%), Orientierung (25%), Dominanz (20%), Geschlecht (15%) *[aktualisiert in v1.6.0]*
 
 ### Geändert
 - Logos/Pathos-Verhältnis auf 40:60 angepasst

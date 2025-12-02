@@ -1,7 +1,7 @@
 /**
  * TIAGE SYNTHESE - Orientierungs-Faktor
  *
- * PATHOS (Gefühl) - 25% Gewichtung
+ * PATHOS (Gefühl) - 40% Gewichtung
  *
  * Philosophische Grundlage: OSHO's Polarität + Pirsig's Dynamische Qualität
  *

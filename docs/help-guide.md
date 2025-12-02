@@ -26,15 +26,15 @@
 
 | Faktor | Gewicht | Dimension | Beschreibung |
 |--------|---------|-----------|--------------|
-| **Archetyp-Übereinstimmung** | 40% | Logos | Fundamentale Beziehungsphilosophie: "Wie wollen wir Beziehung leben?" |
-| **Orientierungs-Kompatibilität** | 25% | Pathos | Körperliche Polarität und Anziehung. OSHO: "Nur Extreme können sich wirklich anziehen." |
+| **Orientierungs-Kompatibilität** | 40% | Pathos | Körperliche Polarität und Anziehung. OSHO: "Nur Extreme können sich wirklich anziehen." |
+| **Archetyp-Übereinstimmung** | 25% | Logos | Fundamentale Beziehungsphilosophie: "Wie wollen wir Beziehung leben?" |
 | **Dominanz-Harmonie** | 20% | Pathos | Energetische Dynamik. OSHO: "Tao - eine Energie, zwei Ausdrucksformen." |
 | **Geschlechts-Attraktion** | 15% | Pathos | Gender-Chemie als Feinabstimmung der Orientierung |
 
 ## Berechnung
 
 ```
-Qualitätsindex = [(Archetyp × 40%) + (Orientierung × 25%) + (Dominanz × 20%) + (Geschlecht × 15%)] × Resonanz
+Qualitätsindex = [(Orientierung × 40%) + (Archetyp × 25%) + (Dominanz × 20%) + (Geschlecht × 15%)] × Resonanz
 ```
 
 Jeder Faktor wird einzeln auf 0-100% bewertet. Die **Resonanz (R)** ist ein Meta-Faktor (0.9-1.1), der moduliert, wie gut Kopf (Logos) und Herz (Pathos) zusammenschwingen.

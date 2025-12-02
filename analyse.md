@@ -30,32 +30,34 @@ Eine **eigenständige Synthese** von Tiage, entwickelt durch Online-Recherche un
 
 | Faktor | Gewicht | Dimension | Beschreibung |
 |--------|---------|-----------|--------------|
-| **Archetyp-Übereinstimmung** | 40% | Logos | Fundamentale Beziehungsphilosophie |
-| **Orientierungs-Kompatibilität** | 25% | Pathos | Körperliche Polarität und Anziehung |
+| **Orientierungs-Kompatibilität** | 40% | Pathos | Körperliche Polarität und Anziehung |
+| **Archetyp-Übereinstimmung** | 25% | Logos | Fundamentale Beziehungsphilosophie |
 | **Dominanz-Harmonie** | 20% | Pathos | Energetische Dynamik (Dom/Sub/Switch) |
 | **Geschlechts-Attraktion** | 15% | Pathos | Gender-Chemie als Feinabstimmung |
 
 ---
 
-## Logos vs. Pathos (40:60)
+## Logos vs. Pathos (25:75)
 
 Die Gewichtung basiert auf philosophischen Grundlagen:
 
-**Logos (40% - Verstand)**
-- Pirsig: "Statische Qualität" - bewährte Muster, Stabilität
-- Struktur, Regeln, rationale Entscheidungen
-
-**Pathos (60% - Gefühl)**
+**Pathos (75% - Gefühl)**
 - Pirsig: "Dynamische Qualität" - Veränderung, Wachstum
-- OSHO: "Gefühl ist der Antrieb, Verstand gibt Struktur"
+- OSHO: "Akzeptiere was IST" - das Erleben kommt zuerst
 - Emotionale Anziehung, Intuition, Resonanz
+- "Pathos vor Logos" - Menschen erleben Beziehung zuerst körperlich
+
+**Logos (25% - Verstand)**
+- Pirsig: "Statische Qualität" - bewährte Muster, Stabilität
+- Die Archetyp-Frage stellt sich NACH den Pathos-Faktoren
+- Struktur, Regeln, rationale Entscheidungen
 
 ---
 
 ## Berechnung
 
 ```
-Qualitätsindex = (Archetyp × 40%) + (Orientierung × 25%) + (Dominanz × 20%) + (Geschlecht × 15%)
+Qualitätsindex = (Orientierung × 40%) + (Archetyp × 25%) + (Dominanz × 20%) + (Geschlecht × 15%)
 ```
 
 ### Ergebnis-Interpretation
