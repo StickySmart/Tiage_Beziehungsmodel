@@ -12,8 +12,31 @@ const TiageHelpers = (function() {
     return {
         /**
          * Geschlecht kurz - nutzt TiageConfig wenn verfügbar
+         * Unterstützt das neue Primär/Sekundär System
+         *
+         * @param {string|object} geschlecht - String oder { primary, secondary }
+         * @returns {string} Kurzform wie "M→F" oder "M"
          */
         getGeschlechtKurz(geschlecht) {
+            // Neues Format: { primary, secondary }
+            if (geschlecht && typeof geschlecht === 'object') {
+                const primary = geschlecht.primary;
+                const secondary = geschlecht.secondary;
+
+                if (typeof TiageConfig !== 'undefined' && TiageConfig.getGeschlechtKombiShort) {
+                    return TiageConfig.getGeschlechtKombiShort(primary, secondary || primary);
+                }
+
+                const pShort = TiageConfig?.GESCHLECHT_PRIMARY_SHORT?.[primary] || primary?.[0]?.toUpperCase() || '?';
+                const sShort = TiageConfig?.GESCHLECHT_SECONDARY_SHORT?.[secondary] || secondary?.[0]?.toUpperCase() || '?';
+
+                if (!secondary || primary === secondary) {
+                    return pShort;
+                }
+                return `${pShort}→${sShort}`;
+            }
+
+            // Legacy: String-Format
             if (typeof TiageConfig !== 'undefined' && TiageConfig.GESCHLECHT_SHORT) {
                 return TiageConfig.GESCHLECHT_SHORT[geschlecht] || '?';
             }
@@ -21,15 +44,41 @@ const TiageHelpers = (function() {
             const fallbackMap = {
                 'männlich': 'M',
                 'weiblich': 'W',
-                'nonbinär': 'NB'
+                'nonbinär': 'NB',
+                'mann': 'M',
+                'frau': 'F',
+                'inter': 'I'
             };
             return fallbackMap[geschlecht] || '?';
         },
 
         /**
          * Geschlecht Label (vollständiger Name)
+         * Unterstützt das neue Primär/Sekundär System
+         *
+         * @param {string|object} geschlecht - String oder { primary, secondary }
+         * @returns {string} Label wie "Mann → Frau" oder "Mann"
          */
         getGeschlechtLabel(geschlecht) {
+            // Neues Format: { primary, secondary }
+            if (geschlecht && typeof geschlecht === 'object') {
+                const primary = geschlecht.primary;
+                const secondary = geschlecht.secondary;
+
+                if (typeof TiageConfig !== 'undefined' && TiageConfig.getGeschlechtKombiLabel) {
+                    return TiageConfig.getGeschlechtKombiLabel(primary, secondary || primary);
+                }
+
+                const pLabel = TiageConfig?.GESCHLECHT_PRIMARY_LABELS?.[primary] || primary || '?';
+                const sLabel = TiageConfig?.GESCHLECHT_SECONDARY_LABELS?.[secondary] || secondary || '?';
+
+                if (!secondary || primary === secondary) {
+                    return pLabel;
+                }
+                return `${pLabel} → ${sLabel}`;
+            }
+
+            // Legacy: String-Format
             if (typeof TiageConfig !== 'undefined' && TiageConfig.GESCHLECHT_LABELS) {
                 return TiageConfig.GESCHLECHT_LABELS[geschlecht] || geschlecht;
             }
@@ -38,9 +87,22 @@ const TiageHelpers = (function() {
 
         /**
          * Geschlecht-Kategorie für Orientierungslogik
-         * Gibt 'maennlich', 'weiblich', 'nonbinaer', 'fluid', oder 'agender' zurück
+         * Nutzt die SEKUNDÄRE Identität wenn verfügbar, sonst Primär
+         *
+         * @param {string|object} geschlecht - String oder { primary, secondary }
+         * @returns {string} Kategorie: 'maennlich', 'weiblich', 'nonbinaer', 'fluid', 'inter', oder 'andere'
          */
         getGeschlechtCategory(geschlecht) {
+            // Neues Format: { primary, secondary }
+            // Für Orientierungslogik ist SEKUNDÄR (Identität) entscheidend
+            if (geschlecht && typeof geschlecht === 'object') {
+                const valueForCategory = geschlecht.secondary || geschlecht.primary;
+                if (typeof TiageConfig !== 'undefined' && TiageConfig.GESCHLECHT_CATEGORY) {
+                    return TiageConfig.GESCHLECHT_CATEGORY[valueForCategory] || 'andere';
+                }
+            }
+
+            // Legacy: String-Format
             if (typeof TiageConfig !== 'undefined' && TiageConfig.GESCHLECHT_CATEGORY) {
                 return TiageConfig.GESCHLECHT_CATEGORY[geschlecht] || 'andere';
             }
@@ -48,7 +110,13 @@ const TiageHelpers = (function() {
             const fallbackMap = {
                 'männlich': 'maennlich',
                 'weiblich': 'weiblich',
-                'nonbinär': 'nonbinaer'
+                'nonbinär': 'nonbinaer',
+                'mann': 'maennlich',
+                'frau': 'weiblich',
+                'nonbinaer': 'nonbinaer',
+                'fluid': 'fluid',
+                'unsicher': 'nonbinaer',
+                'inter': 'inter'
             };
             return fallbackMap[geschlecht] || 'andere';
         },

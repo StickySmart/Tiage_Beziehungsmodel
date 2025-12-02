@@ -106,32 +106,51 @@ const TiageLocale_EN = {
     },
 
     // ═══════════════════════════════════════════════════════════════════════
-    // GENDER
+    // GENDER (Two-Dimensional System)
     // ═══════════════════════════════════════════════════════════════════════
 
     geschlecht: {
-        label: 'Gender Identity',
-        types: {
-            cis_mann: 'Cis Man',
-            cis_frau: 'Cis Woman',
-            trans_mann: 'Trans Man',
-            trans_frau: 'Trans Woman',
+        label: 'Gender',
+        primaryLabel: 'Body',
+        secondaryLabel: 'Identity',
+        primaryHint: 'Biological / assigned at birth',
+        secondaryHint: 'How you feel',
+        // Primary (Body)
+        primary: {
+            mann: 'Male',
+            frau: 'Female',
+            inter: 'Inter'
+        },
+        primaryShort: {
+            mann: 'M',
+            frau: 'F',
+            inter: 'I'
+        },
+        // Secondary (Identity)
+        secondary: {
+            mann: 'Man',
+            frau: 'Woman',
             nonbinaer: 'Non-binary',
-            genderfluid: 'Genderfluid',
-            agender: 'Agender',
-            intersex: 'Intersex',
-            divers: 'Diverse'
+            fluid: 'Fluid',
+            unsicher: 'Uncertain'
+        },
+        secondaryShort: {
+            mann: 'M',
+            frau: 'W',
+            nonbinaer: 'NB',
+            fluid: 'FL',
+            unsicher: '?'
+        },
+        // Legacy (deprecated)
+        types: {
+            mann: 'Male',
+            frau: 'Female',
+            inter: 'Inter'
         },
         short: {
-            cis_mann: 'CM',
-            cis_frau: 'CW',
-            trans_mann: 'TM',
-            trans_frau: 'TW',
-            nonbinaer: 'NB',
-            genderfluid: 'GF',
-            agender: 'AG',
-            intersex: 'IS',
-            divers: 'DI'
+            mann: 'M',
+            frau: 'F',
+            inter: 'I'
         }
     },
 
@@ -141,44 +160,48 @@ const TiageLocale_EN = {
 
     tooltips: {
         geschlecht: {
-            title: 'Gender Identity',
-            text: 'Your gender identity. This affects compatibility together with sexual orientation.'
+            title: 'Gender',
+            text: 'Two dimensions: Body (biological) and Identity (how you feel). This affects compatibility together with sexual orientation.'
         },
-        cis_mann: {
-            title: 'Cis Man',
-            text: 'Person who was assigned male at birth and identifies as a man.'
+        geschlecht_primary: {
+            title: 'Body (Primary)',
+            text: 'Your biological/assigned at birth sex.'
         },
-        cis_frau: {
-            title: 'Cis Woman',
-            text: 'Person who was assigned female at birth and identifies as a woman.'
+        geschlecht_secondary: {
+            title: 'Identity (Secondary)',
+            text: 'How you feel inside and identify.'
         },
-        trans_mann: {
-            title: 'Trans Man',
-            text: 'Person who identifies as a man but was not assigned male at birth.'
+        primary_mann: {
+            title: 'Male (Body)',
+            text: 'Assigned male at birth.'
         },
-        trans_frau: {
-            title: 'Trans Woman',
-            text: 'Person who identifies as a woman but was not assigned female at birth.'
+        primary_frau: {
+            title: 'Female (Body)',
+            text: 'Assigned female at birth.'
         },
-        nonbinaer: {
-            title: 'Non-binary',
-            text: 'Person who does not identify exclusively as a man or a woman.'
+        primary_inter: {
+            title: 'Inter (Body)',
+            text: 'Innate physical sex characteristics that are not clearly male or female.'
         },
-        genderfluid: {
-            title: 'Genderfluid',
-            text: 'Person whose gender identity changes over time or shifts between different identities.'
+        secondary_mann: {
+            title: 'Man (Identity)',
+            text: 'You identify as a man.'
         },
-        agender: {
-            title: 'Agender',
-            text: 'Person who does not identify with any gender or feels genderless.'
+        secondary_frau: {
+            title: 'Woman (Identity)',
+            text: 'You identify as a woman.'
         },
-        intersex: {
-            title: 'Intersex',
-            text: 'Person with innate physical sex characteristics that are not clearly male or female.'
+        secondary_nonbinaer: {
+            title: 'Non-binary (Identity)',
+            text: 'You do not identify exclusively as a man or a woman.'
         },
-        divers: {
-            title: 'Diverse',
-            text: 'Official third gender entry in Germany for people who do not identify as male or female.'
+        secondary_fluid: {
+            title: 'Fluid (Identity)',
+            text: 'Your gender identity changes over time or shifts between different identities.'
+        },
+        secondary_unsicher: {
+            title: 'Uncertain (Identity)',
+            text: 'You are not yet sure about your gender identity or are in an exploration phase.'
         },
         dominanz: {
             title: 'Dominance Preference',
@@ -620,14 +643,17 @@ const TiageLocale_EN = {
     // ═══════════════════════════════════════════════════════════════════════
 
     genderInfoModal: {
-        title: 'Gender Identities',
-        howItWorks: 'How selection works:',
-        firstClick: '1st click',
-        primaryIdentity: 'Primary Identity (P)',
-        secondClick: '2nd click',
-        secondaryIdentity: 'Secondary Identity (S)',
-        thirdClick: '3rd click',
-        deselect: 'Deselect',
+        title: 'Gender',
+        howItWorks: 'Two-Dimensional System:',
+        bodyLabel: 'Body',
+        bodyHint: 'Biological sex / assigned at birth',
+        identityLabel: 'Identity',
+        identityHint: 'How you feel inside',
+        examples: 'Examples:',
+        exampleCis: 'Male + Man = Cis Man',
+        exampleTrans: 'Male + Woman = Trans Woman',
+        exampleNonbinary: 'Female + Non-binary = Non-binary (AFAB)',
+        exampleUnsicher: 'Male + Uncertain = In Exploration',
         understood: 'Got it'
     },
 
