@@ -1867,7 +1867,7 @@ const archetypeStatements = {
             ],
             spannung: [
                 "Tiefe der Nebenbeziehungen unterscheidet sich.",
-                "Polyamor's Secondaries sind tiefer als Duo-Flex's Flex-Kontakte."
+                "Polyamors Secondaries sind tiefer als Duo-Flex' Flex-Kontakte."
             ]
         },
         logos: {

@@ -46,35 +46,35 @@ const LogosTextGenerator = (function() {
     // ═══════════════════════════════════════════════════════════════════════════
 
     const transitions = {
-        // Ergänzend/Aufzählend
+        // Ergänzend/Aufzählend (Satzadverbien, die vor vollständigen Sätzen stehen können)
         additive: [
             "Darüber hinaus",
             "Ergänzend dazu",
-            "In diesem Zusammenhang",
-            "Hinzu kommt",
+            "Zudem",
+            "Ferner",
             "Des Weiteren"
         ],
-        // Folgernd/Kausal
+        // Folgernd/Kausal (Satzadverbien für Schlussfolgerungen)
         causal: [
-            "Daraus ergibt sich",
-            "Dies führt dazu, dass",
+            "Somit",
+            "Daher",
             "Entsprechend",
             "Folglich",
             "Dementsprechend"
         ],
-        // Kontrastierend
+        // Kontrastierend (Satzadverbien für Kontraste)
         contrast: [
             "Andererseits",
-            "Im Gegensatz dazu",
+            "Dennoch",
             "Gleichwohl",
             "Dessen ungeachtet",
-            "Bei näherer Betrachtung"
+            "Allerdings"
         ],
-        // Strukturierend
+        // Strukturierend (Satzadverbien für Strukturierung)
         structuring: [
             "Strukturell betrachtet",
-            "Auf dieser Grundlage",
-            "Im Rahmen dieser Dynamik",
+            "Insgesamt",
+            "Grundsätzlich",
             "Aus analytischer Sicht"
         ]
     };
