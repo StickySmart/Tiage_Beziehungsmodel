@@ -12,11 +12,18 @@
 var TiageProfileStore = (function() {
     'use strict';
 
-    // LocalForage Instanz für Profile
-    var profileDB = localforage.createInstance({
-        name: 'TiageProfiles',
-        storeName: 'profiles'
-    });
+    // LocalForage Instanz für Profile (lazy initialization)
+    var profileDB = null;
+
+    function getProfileDB() {
+        if (!profileDB && typeof localforage !== 'undefined') {
+            profileDB = localforage.createInstance({
+                name: 'TiageProfiles',
+                storeName: 'profiles'
+            });
+        }
+        return profileDB;
+    }
 
     // ════════════════════════════════════════════════════════════════════════
     // GENDER-MODIFIKATOREN (9 P/S-Kombinationen)
@@ -417,9 +424,16 @@ var TiageProfileStore = (function() {
         getProfile: function(archetyp, pGender, sGender, dominanz, orientierung) {
             var genderKey = pGender + '-' + sGender;
             var profileKey = [archetyp, genderKey, dominanz, orientierung].join('-');
+            var db = getProfileDB();
+
+            // Fallback wenn LocalForage nicht verfügbar
+            if (!db) {
+                var profile = composeProfile(archetyp, genderKey, dominanz, orientierung);
+                return Promise.resolve(profile);
+            }
 
             // Zuerst Cache prüfen
-            return profileDB.getItem(profileKey).then(function(cached) {
+            return db.getItem(profileKey).then(function(cached) {
                 if (cached) {
                     return cached;
                 }
@@ -429,7 +443,7 @@ var TiageProfileStore = (function() {
 
                 if (profile) {
                     // In Cache speichern
-                    return profileDB.setItem(profileKey, profile).then(function() {
+                    return db.setItem(profileKey, profile).then(function() {
                         return profile;
                     });
                 }
@@ -484,17 +498,28 @@ var TiageProfileStore = (function() {
          * Löscht den gesamten Profil-Cache
          */
         clearCache: function() {
-            return profileDB.clear();
+            var db = getProfileDB();
+            if (!db) return Promise.resolve();
+            return db.clear();
         },
 
         /**
          * Gibt Cache-Statistiken zurück
          */
         getCacheStats: function() {
-            return profileDB.length().then(function(count) {
+            var db = getProfileDB();
+            if (!db) {
+                return Promise.resolve({
+                    cachedProfiles: 0,
+                    maxProfiles: 8 * 9 * 4 * 3,
+                    localforageAvailable: false
+                });
+            }
+            return db.length().then(function(count) {
                 return {
                     cachedProfiles: count,
-                    maxProfiles: 8 * 9 * 4 * 3  // 864
+                    maxProfiles: 8 * 9 * 4 * 3,  // 864
+                    localforageAvailable: true
                 };
             });
         }

@@ -2554,30 +2554,19 @@
          * Update geschlecht button labels
          */
         function updateGeschlechtButtons() {
-            // NEUES SYSTEM: Primary (Körper) Buttons
+            // P/S SYSTEM: Primary (Körper) Buttons - P-Grid
             const geschlechtPrimaryTypes = ['mann', 'frau', 'inter'];
             geschlechtPrimaryTypes.forEach(type => {
-                document.querySelectorAll(`.geschlecht-primary-grid .geschlecht-btn[data-value="${type}"]`).forEach(btn => {
+                document.querySelectorAll(`.geschlecht-p-grid .geschlecht-btn[data-value="${type}"]`).forEach(btn => {
                     btn.textContent = TiageI18n.t(`geschlecht.primary.${type}`, type);
                 });
             });
 
-            // NEUES SYSTEM: Secondary (Identität) Buttons
-            const geschlechtSecondaryTypes = ['mann', 'frau', 'nonbinaer', 'fluid', 'unsicher'];
+            // P/S SYSTEM: Secondary (Identität) Buttons - S-Grid
+            const geschlechtSecondaryTypes = ['cis', 'trans', 'nonbinaer', 'fluid', 'unsicher'];
             geschlechtSecondaryTypes.forEach(type => {
-                document.querySelectorAll(`.geschlecht-secondary-grid .geschlecht-btn[data-value="${type}"]`).forEach(btn => {
+                document.querySelectorAll(`.geschlecht-s-grid .geschlecht-btn[data-value="${type}"]`).forEach(btn => {
                     btn.textContent = TiageI18n.t(`geschlecht.secondary.${type}`, type);
-                });
-            });
-
-            // Legacy: Alte combined Buttons (für Rückwärtskompatibilität)
-            const geschlechtLegacyTypes = ['cis_mann', 'cis_frau', 'trans_mann', 'trans_frau', 'nonbinaer', 'genderfluid', 'agender', 'intersex', 'divers'];
-            geschlechtLegacyTypes.forEach(type => {
-                document.querySelectorAll(`.geschlecht-grid .geschlecht-btn[data-value="${type}"]`).forEach(btn => {
-                    // Preserve indicators if present
-                    const indicator = btn.querySelector('.geschlecht-indicator');
-                    const indicatorHtml = indicator ? indicator.outerHTML : '';
-                    btn.innerHTML = TiageI18n.t(`geschlecht.types.${type}`, type) + indicatorHtml;
                 });
             });
         }
