@@ -776,9 +776,9 @@ body {
 }
 
 .geschlecht-btn.secondary-selected {
-    background: rgba(234, 179, 8, 0.8);
-    border-color: #EAB308;
-    color: #0f0f1a;
+    background: rgba(234, 179, 8, 0.25);
+    border-color: rgba(234, 179, 8, 0.6);
+    color: var(--text-primary);
 }
 
 /* DevView Styles wurden nach template_desktop.css verschoben,
