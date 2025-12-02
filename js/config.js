@@ -59,7 +59,7 @@ const TiageConfig = (function() {
     const ORIENTIERUNG_SHORT = {
         heterosexuell: 'Hetero',
         homosexuell: 'Homo',
-        bisexuell: 'Bi'
+        bisexuell: 'Bi/Pan'
     };
 
     // ═══════════════════════════════════════════════════════════════════════
@@ -213,8 +213,8 @@ const TiageConfig = (function() {
             text: "Anziehung zum gleichen Geschlecht."
         },
         bisexuell: {
-            title: "Bisexuell",
-            text: "Anziehung zu beiden Geschlechtern."
+            title: "Bi-/Pansexuell",
+            text: "Anziehung zu mehreren oder allen Geschlechtern, unabhängig von Geschlechtsidentität."
         }
     };
 
