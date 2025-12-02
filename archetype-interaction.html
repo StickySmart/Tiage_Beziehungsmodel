@@ -3663,8 +3663,8 @@
             return statusStatements.gelebt_interessiert;
         }
 
-        // Archetype definitions
-        const archetypeDefinitions = {
+        // Archetype UI descriptions (separate from profiles/archetyp-definitions.js)
+        const archetypeDescriptions = {
             single: {
                 name: "Single",
                 shortDef: "Bewusste Entscheidung für ein autonomes Leben ohne Primärbeziehung als dauerhafte Lebensform.",
@@ -4433,8 +4433,8 @@
         function generateFallbackTooltip(type1Id, type2Id, category, tagName) {
             const type1 = data.archetypes[type1Id];
             const type2 = data.archetypes[type2Id];
-            const type1Def = archetypeDefinitions[type1Id];
-            const type2Def = archetypeDefinitions[type2Id];
+            const type1Def = archetypeDescriptions[type1Id];
+            const type2Def = archetypeDescriptions[type2Id];
 
             const interactionKey = `${type1Id}_${type2Id}`;
             const interaction = data.interactions[interactionKey] || {};
@@ -5393,7 +5393,7 @@
 
         // Definition Modal Functions
         function openDefinitionModal(archetypeId) {
-            const def = archetypeDefinitions[archetypeId];
+            const def = archetypeDescriptions[archetypeId];
             if (!def) return;
 
             const arch = data.archetypes[archetypeId];
@@ -5495,7 +5495,7 @@
             }
 
             const arch = data.archetypes[archetypeId];
-            const def = archetypeDefinitions[archetypeId];
+            const def = archetypeDescriptions[archetypeId];
 
             // Get localized archetype data from i18n (with fallback to hardcoded def)
             const localizedArch = {
@@ -5693,7 +5693,7 @@
 
         // Get short definition for tooltip
         function getShortDef(archetypeId) {
-            return archetypeDefinitions[archetypeId]?.shortDef || '';
+            return archetypeDescriptions[archetypeId]?.shortDef || '';
         }
 
         // Store current match data for modal access
@@ -6076,8 +6076,8 @@
             ` : '';
 
             const comboText = `${myArch.name} + ${partnerArch.name}`;
-            const myDef = archetypeDefinitions[myArch.id]?.shortDef || '';
-            const partnerDef = archetypeDefinitions[partnerArch.id]?.shortDef || '';
+            const myDef = archetypeDescriptions[myArch.id]?.shortDef || '';
+            const partnerDef = archetypeDescriptions[partnerArch.id]?.shortDef || '';
 
             return `
                 <div class="modal-feedback-btn" onclick="openFeedbackModalWithContext('${comboText}')">
@@ -7785,8 +7785,8 @@
             }
 
             const matching = GfkBeduerfnisse.berechneMatching(ichArchetyp, partnerArchetyp);
-            const ichName = archetypeDefinitions[currentArchetype]?.name || 'ICH';
-            const partnerName = archetypeDefinitions[selectedPartner]?.name || 'Partner';
+            const ichName = archetypeDescriptions[currentArchetype]?.name || 'ICH';
+            const partnerName = archetypeDescriptions[selectedPartner]?.name || 'Partner';
 
             // Titel setzen
             if (type === 'gemeinsam') {
@@ -8583,8 +8583,8 @@
             }
 
             const matching = GfkBeduerfnisse.berechneMatching(ichArchetyp, partnerArchetyp);
-            const ichName = archetypeDefinitions[currentArchetype]?.name || 'ICH';
-            const partnerName = archetypeDefinitions[selectedPartner]?.name || 'Partner';
+            const ichName = archetypeDescriptions[currentArchetype]?.name || 'ICH';
+            const partnerName = archetypeDescriptions[selectedPartner]?.name || 'Partner';
 
             // Titel setzen
             title.textContent = 'Bedürfnis-Vergleich';
@@ -13269,8 +13269,8 @@
         function updateProContraModalArchetypeDisplay() {
             const ichDisplay = document.getElementById('proContraModalIch');
             const partnerDisplay = document.getElementById('proContraModalPartner');
-            if (ichDisplay) ichDisplay.textContent = archetypeDefinitions[currentArchetype]?.name || currentArchetype;
-            if (partnerDisplay) partnerDisplay.textContent = archetypeDefinitions[selectedPartner]?.name || selectedPartner;
+            if (ichDisplay) ichDisplay.textContent = archetypeDescriptions[currentArchetype]?.name || currentArchetype;
+            if (partnerDisplay) partnerDisplay.textContent = archetypeDescriptions[selectedPartner]?.name || selectedPartner;
         }
 
         function updateProContraModalContent() {
@@ -13342,8 +13342,8 @@
             currentPathosLogosType = type;
 
             // Get current archetypes
-            const ichArch = archetypeDefinitions[currentArchetype];
-            const partnerArch = archetypeDefinitions[selectedPartner];
+            const ichArch = archetypeDescriptions[currentArchetype];
+            const partnerArch = archetypeDescriptions[selectedPartner];
 
             // Update archetype display
             const ichDisplay = document.getElementById('pathosLogosModalIch');
@@ -13544,8 +13544,8 @@
             // Archetyp-IDs und Namen holen
             const ichArchetyp = (currentArchetype || '').replace('_', '-');
             const partnerArchetyp = (selectedPartner || '').replace('_', '-');
-            const ichArch = archetypeDefinitions[currentArchetype];
-            const partnerArch = archetypeDefinitions[selectedPartner];
+            const ichArch = archetypeDescriptions[currentArchetype];
+            const partnerArch = archetypeDescriptions[selectedPartner];
             const ichName = ichArch?.name || 'ICH';
             const partnerName = partnerArch?.name || 'Partner';
 
@@ -13643,8 +13643,8 @@
         }
 
         function getPathosContent() {
-            const ichArch = archetypeDefinitions[currentArchetype];
-            const partnerArch = archetypeDefinitions[selectedPartner];
+            const ichArch = archetypeDescriptions[currentArchetype];
+            const partnerArch = archetypeDescriptions[selectedPartner];
             const detailed = generateDetailedPathos(ichArch, partnerArch);
             const ichName = ichArch?.name || 'ICH';
             const partnerName = partnerArch?.name || 'Partner';
@@ -13685,8 +13685,8 @@
         }
 
         function getLogosContent() {
-            const ichArch = archetypeDefinitions[currentArchetype];
-            const partnerArch = archetypeDefinitions[selectedPartner];
+            const ichArch = archetypeDescriptions[currentArchetype];
+            const partnerArch = archetypeDescriptions[selectedPartner];
             const detailed = generateDetailedLogos(ichArch, partnerArch);
             const ichName = ichArch?.name || 'ICH';
             const partnerName = partnerArch?.name || 'Partner';
@@ -13756,8 +13756,8 @@
             }
 
             // Update the modal display
-            const ichArch = archetypeDefinitions[currentArchetype];
-            const partnerArch = archetypeDefinitions[selectedPartner];
+            const ichArch = archetypeDescriptions[currentArchetype];
+            const partnerArch = archetypeDescriptions[selectedPartner];
 
             const ichDisplay = document.getElementById('pathosLogosModalIch');
             const partnerDisplay = document.getElementById('pathosLogosModalPartner');
@@ -13929,11 +13929,11 @@
             const partnerCodeEl = document.getElementById('factorModalPartnerCode');
 
             if (ichCodeEl) {
-                const ichDef = archetypeDefinitions[mobileIchArchetype];
+                const ichDef = archetypeDescriptions[mobileIchArchetype];
                 ichCodeEl.textContent = ichDef ? ichDef.name : mobileIchArchetype;
             }
             if (partnerCodeEl) {
-                const partnerDef = archetypeDefinitions[mobilePartnerArchetype];
+                const partnerDef = archetypeDescriptions[mobilePartnerArchetype];
                 partnerCodeEl.textContent = partnerDef ? partnerDef.name : mobilePartnerArchetype;
             }
 
