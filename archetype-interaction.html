@@ -10174,21 +10174,19 @@
         /**
          * Berechnet den Profil-Match-Score (M)
          * Vergleicht die 30 Attribute zweier psychologischer Profile
+         * Nutzt TiageProfileStore für 648 P/S-basierte Profile
          * @returns {number} Match-Prozent 0-100
          */
         function calculateProfilMatch(person1, person2) {
-            // Profile-Key generieren basierend auf Archetyp-Geschlecht-Dominanz-Orientierung
-            const profile1Key = getProfileKey(person1);
-            const profile2Key = getProfileKey(person2);
-
-            // Profile aus psychologicalProfiles laden (falls verfügbar)
-            if (typeof psychologicalProfiles === 'undefined') {
+            // TiageProfileStore verfügbar?
+            if (typeof TiageProfileStore === 'undefined') {
                 // Fallback: Schätze Match basierend auf Archetyp-Ähnlichkeit
                 return estimateProfilMatch(person1, person2);
             }
 
-            const profile1 = psychologicalProfiles[profile1Key];
-            const profile2 = psychologicalProfiles[profile2Key];
+            // Profile aus TiageProfileStore laden (synchron)
+            const profile1 = getProfileFromStore(person1);
+            const profile2 = getProfileFromStore(person2);
 
             if (!profile1 || !profile2) {
                 return estimateProfilMatch(person1, person2);
@@ -10197,12 +10195,14 @@
             // Zähle übereinstimmende Attribute
             let matches = 0;
             const allAttributes = [...PROFILE_ATTRIBUTES.D, ...PROFILE_ATTRIBUTES.E, ...PROFILE_ATTRIBUTES.F];
+            const attrs1 = profile1.attributes || profile1;
+            const attrs2 = profile2.attributes || profile2;
 
             for (const attr of allAttributes) {
-                if (profile1[attr] && profile2[attr]) {
-                    if (profile1[attr] === profile2[attr]) {
+                if (attrs1[attr] && attrs2[attr]) {
+                    if (attrs1[attr] === attrs2[attr]) {
                         matches++;
-                    } else if (areAttributesCompatible(attr, profile1[attr], profile2[attr])) {
+                    } else if (areAttributesCompatible(attr, attrs1[attr], attrs2[attr])) {
                         matches += 0.5; // Partielle Übereinstimmung
                     }
                 }
@@ -10212,52 +10212,53 @@
         }
 
         /**
-         * Generiert den Profile-Key für eine Person
+         * Lädt ein Profil aus TiageProfileStore basierend auf Person-Daten
          */
-        function getProfileKey(person) {
-            const geschlecht = getGeschlechtCategory(person.geschlecht);
-            const geschlechtLabel = geschlecht === 'maennlich' ? 'männlich' :
-                                   geschlecht === 'weiblich' ? 'weiblich' : 'nonbinär';
+        function getProfileFromStore(person) {
+            // P/S-Geschlecht extrahieren
+            let pGender = null;
+            let sGender = null;
 
-            // Primäre Dominanz ermitteln
+            if (person.geschlecht && typeof person.geschlecht === 'object') {
+                pGender = person.geschlecht.primary;
+                sGender = person.geschlecht.secondary;
+            } else if (typeof person.geschlecht === 'string') {
+                // Legacy: String direkt als P, kein S
+                pGender = person.geschlecht;
+            }
+
+            // Dominanz extrahieren
             let dominanz = 'ausgeglichen';
             if (person.dominanz && typeof person.dominanz === 'object') {
-                // New format: { primary: 'dominant', secondary: 'submissiv' }
                 if ('primary' in person.dominanz) {
                     dominanz = person.dominanz.primary || 'ausgeglichen';
-                } else {
-                    // Old format: { dominant: 'gelebt', submissiv: 'interessiert' }
-                    for (const [type, status] of Object.entries(person.dominanz)) {
-                        if (status === 'gelebt') {
-                            dominanz = type;
-                            break;
-                        }
-                    }
                 }
             } else if (person.dominanz) {
                 dominanz = person.dominanz;
             }
 
-            // Primäre Orientierung ermitteln
+            // Orientierung extrahieren
             let orientierung = 'heterosexuell';
             if (person.orientierung && typeof person.orientierung === 'object') {
-                // New format: { primary: 'homosexuell', secondary: 'heterosexuell' }
                 if ('primary' in person.orientierung) {
                     orientierung = person.orientierung.primary || 'heterosexuell';
-                } else {
-                    // Old format: { heterosexuell: 'gelebt', homosexuell: 'interessiert' }
-                    for (const [type, status] of Object.entries(person.orientierung)) {
-                        if (status === 'gelebt') {
-                            orientierung = type;
-                            break;
-                        }
-                    }
                 }
             } else if (person.orientierung) {
                 orientierung = person.orientierung;
             }
 
-            return `${person.archetyp}-${geschlechtLabel}-${dominanz}-${orientierung}`;
+            // Profil aus Store holen (synchron)
+            if (pGender && sGender) {
+                return TiageProfileStore.getProfileSync(
+                    person.archetyp,
+                    pGender,
+                    sGender,
+                    dominanz,
+                    orientierung
+                );
+            }
+
+            return null;
         }
 
         /**
