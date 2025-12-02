@@ -16,6 +16,22 @@ R = 0.9 + [(M/100 × 0.35) + (B × 0.35) + (K × 0.30)] × 0.2
 
 **Wertebereich:** R variiert zwischen 0.9 (minimale Resonanz) und 1.1 (maximale Resonanz).
 
+## Die drei Dimensionen der Kompatibilität
+
+Die Resonanz-Formel erfasst Beziehungskompatibilität auf **drei unabhängigen Dimensionen**:
+
+| Dimension | Faktor | Frage | Beschreibung |
+|-----------|--------|-------|--------------|
+| **Inhalt** | M | *Was brauchen sie?* | Substanz der Bedürfnisse |
+| **Stil** | B | *Wie ticken sie?* | Denken vs. Fühlen |
+| **Prozess** | K | *Können sie sich verstehen?* | Qualität der Kommunikation |
+
+Diese Dimensionen sind **orthogonal** – sie messen verschiedene, voneinander unabhängige Aspekte:
+
+- **Hoher Inhalt-Match (M)** bedeutet nicht automatisch gute Kommunikation (K)
+- **Ähnlicher Stil (B)** garantiert keine übereinstimmenden Bedürfnisse (M)
+- **Gute Kommunikation (K)** kann Unterschiede in M und B ausgleichen
+
 ### Komponente 1: Profil-Match (M)
 
 Ähnlichkeit der 30 Persönlichkeitsattribute zwischen zwei Profilen.
@@ -55,9 +71,16 @@ Die **Gewaltfreie Kommunikation** (GFK) nach Marshall Rosenberg als Schlüssel z
 
 **Warum 30% Gewichtung?**
 
-Kommunikation ist fundamental für nachhaltige Resonanz:
-- **Hohe GFK beider Partner:** Konflikte werden zu Wachstumschancen
-- **Niedrige GFK beider Partner:** Destruktive Muster, Eskalation wahrscheinlich
+Kommunikation ist fundamental für nachhaltige Resonanz – nicht nur bei Konflikten, sondern im gesamten Beziehungsprozess:
+
+- **Kennenlernen:** Offenheit, authentisch von sich erzählen
+- **Verstehen:** Empathisches Zuhören, Bedürfnisse des anderen erkennen
+- **Ausdrücken:** Eigene Gefühle und Bedürfnisse klar formulieren
+- **Verhandeln:** Kompromisse finden wenn Bedürfnisse divergieren
+
+**GFK-Kombinationen:**
+- **Hohe GFK beider Partner:** Tiefe Verbindung von Anfang an möglich
+- **Niedrige GFK beider Partner:** Missverständnisse und destruktive Muster
 - **Asymmetrie:** Der GFK-kompetentere Partner trägt mehr Last
 
 ### Beispielrechnung
