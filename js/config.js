@@ -166,14 +166,14 @@ const TiageConfig = (function() {
     const DIMENSION_TOOLTIPS = {
         geschlecht: {
             title: "Geschlecht",
-            text: "Zwei Dimensionen: Körper (biologisch) und Identität (wie du dich fühlst). Dies beeinflusst die Kompatibilität zusammen mit der sexuellen Orientierung."
+            text: "Zwei Dimensionen: Körper (biologisch) und Identität / Psychologische Seele (wie du dich fühlst). Dies beeinflusst die Kompatibilität zusammen mit der sexuellen Orientierung."
         },
         geschlecht_primary: {
             title: "Körper (Primär)",
             text: "Dein biologisches/bei Geburt zugewiesenes Geschlecht."
         },
         geschlecht_secondary: {
-            title: "Identität (Sekundär)",
+            title: "Identität / Psychologische Seele (Sekundär)",
             text: "Wie du dich innerlich fühlst und identifizierst."
         },
         // Primär-Werte (Körper)

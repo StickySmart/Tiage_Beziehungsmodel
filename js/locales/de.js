@@ -112,7 +112,7 @@ const TiageLocale_DE = {
     geschlecht: {
         label: 'Geschlecht',
         primaryLabel: 'Körper',
-        secondaryLabel: 'Identität',
+        secondaryLabel: 'Identität / Psychologische Seele',
         primaryHint: 'Biologisch / bei Geburt',
         secondaryHint: 'Wie du dich fühlst',
         // Primär (Körper)
@@ -192,14 +192,14 @@ const TiageLocale_DE = {
     tooltips: {
         geschlecht: {
             title: 'Geschlecht',
-            text: 'Zwei Dimensionen: Körper (biologisch) und Identität (wie du dich fühlst). Dies beeinflusst die Kompatibilität zusammen mit der sexuellen Orientierung.'
+            text: 'Zwei Dimensionen: Körper (biologisch) und Identität / Psychologische Seele (wie du dich fühlst). Dies beeinflusst die Kompatibilität zusammen mit der sexuellen Orientierung.'
         },
         geschlecht_primary: {
             title: 'Körper (Primär)',
             text: 'Dein biologisches/bei Geburt zugewiesenes Geschlecht.'
         },
         geschlecht_secondary: {
-            title: 'Identität (Sekundär)',
+            title: 'Identität / Psychologische Seele (Sekundär)',
             text: 'Wie du dich innerlich fühlst und identifizierst.'
         },
         primary_mann: {
