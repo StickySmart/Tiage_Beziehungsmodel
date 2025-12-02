@@ -800,6 +800,11 @@
                                 style="width: 18px; height: 18px; cursor: pointer;">
                             <span style="font-size: 13px; color: var(--text-primary);">Archetypen-Navigation im Synthese-Modal</span>
                         </label>
+                        <label style="display: flex; align-items: center; gap: 10px; cursor: pointer; padding: 10px; background: rgba(255,255,255,0.03); border-radius: 8px;">
+                            <input type="checkbox" id="expertDetailedGender" onchange="toggleExpertFeature('detailedGender', this.checked)"
+                                style="width: 18px; height: 18px; cursor: pointer;">
+                            <span style="font-size: 13px; color: var(--text-primary);">Detaillierte Geschlechtsidentitäten (9 Optionen)</span>
+                        </label>
                         <!-- Weitere Experten-Optionen können hier hinzugefügt werden -->
                     </div>
                     <button onclick="deactivateExpertMode()"
@@ -896,9 +901,23 @@
                 <div class="header-geschlecht-info" id="ich-header-orientierung"></div>
                 <div class="column-dimensions">
                     <div class="compact-dimension needs-selection collapsible-dimension" data-dimension="ich-geschlecht-new">
-                        <div class="compact-dimension-label"><span class="geschlecht-info-link">Geschlechtsidentität</span> <span id="ich-geschlecht-legend" class="geschlecht-legend" style="font-size: 10px; opacity: 0.7;">(<span class="legend-p">P</span>=Primär, <span class="legend-s">S</span>=Sekundär)</span></div>
+                        <div class="compact-dimension-label"><span class="geschlecht-info-link">Geschlecht</span></div>
                         <div class="collapsed-summary" id="ich-geschlecht-summary"></div>
-                        <div class="geschlecht-grid" id="ich-geschlecht-grid" data-person="ich"></div>
+                        <div class="geschlecht-row">
+                            <span class="geschlecht-row-label">Körper:</span>
+                            <div class="geschlecht-primary-grid" id="ich-geschlecht-primary-grid" data-person="ich"></div>
+                        </div>
+                        <div class="geschlecht-row">
+                            <span class="geschlecht-row-label">Identität:</span>
+                            <div class="geschlecht-secondary-grid" id="ich-geschlecht-secondary-grid" data-person="ich"></div>
+                        </div>
+                        <!-- Expert Mode: Detailed Gender Grid (hidden by default) -->
+                        <div class="geschlecht-detailed-container" id="ich-geschlecht-detailed-container" style="display: none;">
+                            <div class="geschlecht-detailed-row">
+                                <span class="geschlecht-row-label">Detailliert:</span>
+                                <div class="geschlecht-detailed-grid" id="ich-geschlecht-detailed-grid" data-person="ich"></div>
+                            </div>
+                        </div>
                     </div>
                     <div class="compact-dimension needs-selection collapsible-dimension" data-dimension="ich-dominanz-multi">
                         <div class="compact-dimension-label"><span class="dominanz-info-link">Dominanz</span> <span id="ich-dominanz-legend" class="geschlecht-legend" style="font-size: 10px; text-decoration: underline; cursor: pointer;" onclick="showDimensionTooltip('dominanzStatus')">(<span class="legend-p">P</span>=Primär, <span class="legend-s">S</span>=Sekundär)</span></div>
@@ -998,9 +1017,23 @@
                 <div class="header-geschlecht-info" id="partner-header-orientierung"></div>
                 <div class="column-dimensions">
                     <div class="compact-dimension needs-selection collapsible-dimension" data-dimension="partner-geschlecht-new">
-                        <div class="compact-dimension-label"><span class="geschlecht-info-link">Geschlechtsidentität</span> <span id="partner-geschlecht-legend" class="geschlecht-legend" style="font-size: 10px; opacity: 0.7;">(<span class="legend-p">P</span>=Primär, <span class="legend-s">S</span>=Sekundär)</span></div>
+                        <div class="compact-dimension-label"><span class="geschlecht-info-link">Geschlecht</span></div>
                         <div class="collapsed-summary" id="partner-geschlecht-summary"></div>
-                        <div class="geschlecht-grid" id="partner-geschlecht-grid" data-person="partner"></div>
+                        <div class="geschlecht-row">
+                            <span class="geschlecht-row-label">Körper:</span>
+                            <div class="geschlecht-primary-grid" id="partner-geschlecht-primary-grid" data-person="partner"></div>
+                        </div>
+                        <div class="geschlecht-row">
+                            <span class="geschlecht-row-label">Identität:</span>
+                            <div class="geschlecht-secondary-grid" id="partner-geschlecht-secondary-grid" data-person="partner"></div>
+                        </div>
+                        <!-- Expert Mode: Detailed Gender Grid (hidden by default) -->
+                        <div class="geschlecht-detailed-container" id="partner-geschlecht-detailed-container" style="display: none;">
+                            <div class="geschlecht-detailed-row">
+                                <span class="geschlecht-row-label">Detailliert:</span>
+                                <div class="geschlecht-detailed-grid" id="partner-geschlecht-detailed-grid" data-person="partner"></div>
+                            </div>
+                        </div>
                     </div>
                     <div class="compact-dimension needs-selection collapsible-dimension" data-dimension="partner-dominanz-multi">
                         <div class="compact-dimension-label"><span class="dominanz-info-link">Dominanz</span> <span id="partner-dominanz-legend" class="geschlecht-legend" style="font-size: 10px; text-decoration: underline; cursor: pointer;" onclick="showDimensionTooltip('dominanzStatus')">(<span class="legend-p">P</span>=Primär, <span class="legend-s">S</span>=Sekundär)</span></div>
@@ -2000,52 +2033,71 @@
         </div>
     </div>
 
-    <!-- Geschlecht Info Modal (scrollable) -->
+    <!-- Geschlecht Info Modal (scrollable) - NEUES 2-DIMENSIONALES SYSTEM -->
     <div class="dimension-tooltip-overlay" id="geschlechtInfoModal" onclick="closeGeschlechtInfoModal()">
         <div class="geschlecht-info-modal-content" onclick="event.stopPropagation()">
             <div class="geschlecht-info-modal-header">
-                <div class="dimension-tooltip-title">Geschlechtsidentitäten</div>
+                <div class="dimension-tooltip-title">Geschlecht</div>
                 <button class="geschlecht-info-close-btn" onclick="closeGeschlechtInfoModal()">&times;</button>
             </div>
             <div class="geschlecht-info-scroll-container">
+                <div class="geschlecht-info-item" style="background: rgba(69, 123, 157, 0.1); border-radius: 8px; padding: 12px; margin-bottom: 16px;">
+                    <div class="geschlecht-info-name" style="color: var(--primary);">Zwei-Dimensionales System</div>
+                    <div class="geschlecht-info-desc">Wähle sowohl deinen <strong>Körper</strong> (biologisch/bei Geburt) als auch deine <strong>Identität</strong> (wie du dich fühlst).</div>
+                </div>
+
                 <div class="geschlecht-info-item">
-                    <div class="geschlecht-info-name">Cis Mann</div>
-                    <div class="geschlecht-info-desc">Person, die bei Geburt männlich zugewiesen wurde und sich als Mann identifiziert.</div>
+                    <div class="geschlecht-info-name" style="font-size: 0.9em; color: var(--text-muted);">KÖRPER (Biologisch)</div>
                 </div>
                 <div class="geschlecht-info-item">
-                    <div class="geschlecht-info-name">Cis Frau</div>
-                    <div class="geschlecht-info-desc">Person, die bei Geburt weiblich zugewiesen wurde und sich als Frau identifiziert.</div>
+                    <div class="geschlecht-info-name">Mann</div>
+                    <div class="geschlecht-info-desc">Bei Geburt männlich zugewiesen.</div>
                 </div>
                 <div class="geschlecht-info-item">
-                    <div class="geschlecht-info-name">Trans Mann</div>
-                    <div class="geschlecht-info-desc">Person, die sich als Mann identifiziert, aber bei Geburt nicht männlich zugewiesen wurde.</div>
+                    <div class="geschlecht-info-name">Frau</div>
+                    <div class="geschlecht-info-desc">Bei Geburt weiblich zugewiesen.</div>
                 </div>
                 <div class="geschlecht-info-item">
-                    <div class="geschlecht-info-name">Trans Frau</div>
-                    <div class="geschlecht-info-desc">Person, die sich als Frau identifiziert, aber bei Geburt nicht weiblich zugewiesen wurde.</div>
+                    <div class="geschlecht-info-name">Inter</div>
+                    <div class="geschlecht-info-desc">Angeborene körperliche Geschlechtsmerkmale, die nicht eindeutig männlich oder weiblich sind.</div>
+                </div>
+
+                <div class="geschlecht-info-item" style="margin-top: 16px;">
+                    <div class="geschlecht-info-name" style="font-size: 0.9em; color: var(--text-muted);">IDENTITÄT (Wie du dich fühlst)</div>
+                </div>
+                <div class="geschlecht-info-item">
+                    <div class="geschlecht-info-name">Mann</div>
+                    <div class="geschlecht-info-desc">Du identifizierst dich als Mann.</div>
+                </div>
+                <div class="geschlecht-info-item">
+                    <div class="geschlecht-info-name">Frau</div>
+                    <div class="geschlecht-info-desc">Du identifizierst dich als Frau.</div>
                 </div>
                 <div class="geschlecht-info-item">
                     <div class="geschlecht-info-name">Nonbinär</div>
-                    <div class="geschlecht-info-desc">Person, die sich weder ausschließlich als Mann noch als Frau identifiziert.</div>
+                    <div class="geschlecht-info-desc">Du identifizierst dich weder ausschließlich als Mann noch als Frau.</div>
                 </div>
                 <div class="geschlecht-info-item">
-                    <div class="geschlecht-info-name">Genderfluid</div>
-                    <div class="geschlecht-info-desc">Person, deren Geschlechtsidentität sich über Zeit verändert oder zwischen verschiedenen Identitäten wechselt.</div>
+                    <div class="geschlecht-info-name">Fluid</div>
+                    <div class="geschlecht-info-desc">Deine Geschlechtsidentität verändert sich über Zeit oder wechselt zwischen verschiedenen Identitäten.</div>
                 </div>
                 <div class="geschlecht-info-item">
-                    <div class="geschlecht-info-name">Agender</div>
-                    <div class="geschlecht-info-desc">Person, die sich mit keinem Geschlecht identifiziert oder geschlechtslos fühlt.</div>
+                    <div class="geschlecht-info-name">Unsicher</div>
+                    <div class="geschlecht-info-desc">Du bist dir über deine Geschlechtsidentität noch nicht sicher oder befindest dich in einer Explorationsphase.</div>
                 </div>
-                <div class="geschlecht-info-item">
-                    <div class="geschlecht-info-name">Intersex</div>
-                    <div class="geschlecht-info-desc">Person mit angeborenen körperlichen Geschlechtsmerkmalen, die nicht eindeutig männlich oder weiblich sind.</div>
-                </div>
-                <div class="geschlecht-info-item">
-                    <div class="geschlecht-info-name">Divers</div>
-                    <div class="geschlecht-info-desc">Offizieller dritter Geschlechtseintrag in Deutschland für Menschen, die sich nicht als männlich oder weiblich identifizieren.</div>
+
+                <div class="geschlecht-info-item" style="margin-top: 16px; background: rgba(243, 156, 18, 0.1); border-radius: 8px; padding: 12px;">
+                    <div class="geschlecht-info-name" style="font-size: 0.9em; color: var(--warning);">BEISPIELE</div>
+                    <div class="geschlecht-info-desc">
+                        <strong>Mann + Mann</strong> = Cis Mann<br>
+                        <strong>Mann + Frau</strong> = Trans Frau<br>
+                        <strong>Frau + Mann</strong> = Trans Mann<br>
+                        <strong>Frau + Nonbinär</strong> = Nonbinär (AFAB)<br>
+                        <strong>Mann + Unsicher</strong> = In Exploration
+                    </div>
                 </div>
             </div>
-            <button class="dimension-tooltip-close" onclick="closeGeschlechtInfoModal()">Schließen</button>
+            <button class="dimension-tooltip-close" onclick="closeGeschlechtInfoModal()">Verstanden</button>
         </div>
     </div>
 
@@ -2332,9 +2384,34 @@
          * Update dimension labels (Geschlecht, Dominanz, Orientierung)
          */
         function updateDimensionLabels() {
-            // Update geschlecht type labels
-            const geschlechtTypes = ['cis_mann', 'cis_frau', 'trans_mann', 'trans_frau', 'nonbinaer', 'genderfluid', 'agender', 'intersex', 'divers'];
-            geschlechtTypes.forEach(type => {
+            // Update geschlecht primary (Körper) type labels
+            const geschlechtPrimaryTypes = ['mann', 'frau', 'inter'];
+            geschlechtPrimaryTypes.forEach(type => {
+                document.querySelectorAll(`[data-geschlecht-primary="${type}"]`).forEach(el => {
+                    el.textContent = TiageI18n.t(`geschlecht.primary.${type}`, type);
+                });
+            });
+
+            // Update geschlecht secondary (Identität) type labels
+            const geschlechtSecondaryTypes = ['mann', 'frau', 'nonbinaer', 'fluid', 'unsicher'];
+            geschlechtSecondaryTypes.forEach(type => {
+                document.querySelectorAll(`[data-geschlecht-secondary="${type}"]`).forEach(el => {
+                    el.textContent = TiageI18n.t(`geschlecht.secondary.${type}`, type);
+                });
+            });
+
+            // Update geschlecht row labels
+            document.querySelectorAll('.geschlecht-row-label').forEach(el => {
+                if (el.textContent.includes('Körper')) {
+                    el.textContent = TiageI18n.t('geschlecht.primaryLabel', 'Körper') + ':';
+                } else if (el.textContent.includes('Identität')) {
+                    el.textContent = TiageI18n.t('geschlecht.secondaryLabel', 'Identität') + ':';
+                }
+            });
+
+            // Legacy: Update old geschlecht type labels (für Rückwärtskompatibilität)
+            const geschlechtLegacyTypes = ['cis_mann', 'cis_frau', 'trans_mann', 'trans_frau', 'nonbinaer', 'genderfluid', 'agender', 'intersex', 'divers'];
+            geschlechtLegacyTypes.forEach(type => {
                 document.querySelectorAll(`[data-geschlecht="${type}"]`).forEach(el => {
                     el.textContent = TiageI18n.t(`geschlecht.types.${type}`, type);
                 });
@@ -2493,9 +2570,26 @@
          * Update geschlecht button labels
          */
         function updateGeschlechtButtons() {
-            const geschlechtTypes = ['cis_mann', 'cis_frau', 'trans_mann', 'trans_frau', 'nonbinaer', 'genderfluid', 'agender', 'intersex', 'divers'];
-            geschlechtTypes.forEach(type => {
-                document.querySelectorAll(`.geschlecht-btn[data-value="${type}"]`).forEach(btn => {
+            // NEUES SYSTEM: Primary (Körper) Buttons
+            const geschlechtPrimaryTypes = ['mann', 'frau', 'inter'];
+            geschlechtPrimaryTypes.forEach(type => {
+                document.querySelectorAll(`.geschlecht-primary-grid .geschlecht-btn[data-value="${type}"]`).forEach(btn => {
+                    btn.textContent = TiageI18n.t(`geschlecht.primary.${type}`, type);
+                });
+            });
+
+            // NEUES SYSTEM: Secondary (Identität) Buttons
+            const geschlechtSecondaryTypes = ['mann', 'frau', 'nonbinaer', 'fluid', 'unsicher'];
+            geschlechtSecondaryTypes.forEach(type => {
+                document.querySelectorAll(`.geschlecht-secondary-grid .geschlecht-btn[data-value="${type}"]`).forEach(btn => {
+                    btn.textContent = TiageI18n.t(`geschlecht.secondary.${type}`, type);
+                });
+            });
+
+            // Legacy: Alte combined Buttons (für Rückwärtskompatibilität)
+            const geschlechtLegacyTypes = ['cis_mann', 'cis_frau', 'trans_mann', 'trans_frau', 'nonbinaer', 'genderfluid', 'agender', 'intersex', 'divers'];
+            geschlechtLegacyTypes.forEach(type => {
+                document.querySelectorAll(`.geschlecht-grid .geschlecht-btn[data-value="${type}"]`).forEach(btn => {
                     // Preserve indicators if present
                     const indicator = btn.querySelector('.geschlecht-indicator');
                     const indicatorHtml = indicator ? indicator.outerHTML : '';
@@ -2839,7 +2933,8 @@
         // Expert mode state
         let expertModeActive = false;
         const expertFeatures = {
-            archetypeNav: false
+            archetypeNav: false,
+            detailedGender: false
         };
 
         // Initialize expert mode from localStorage
@@ -2872,6 +2967,7 @@
                     settings.style.display = 'block';
                     // Update checkboxes
                     document.getElementById('expertShowArchetypeNav').checked = expertFeatures.archetypeNav;
+                    document.getElementById('expertDetailedGender').checked = expertFeatures.detailedGender;
                 } else {
                     loginForm.style.display = 'block';
                     settings.style.display = 'none';
@@ -2907,6 +3003,7 @@
                 document.getElementById('expertModeLoginForm').style.display = 'none';
                 document.getElementById('expertModeSettings').style.display = 'block';
                 document.getElementById('expertShowArchetypeNav').checked = expertFeatures.archetypeNav;
+                document.getElementById('expertDetailedGender').checked = expertFeatures.detailedGender;
             } else {
                 if (errorDiv) {
                     errorDiv.style.display = 'block';
@@ -2932,6 +3029,19 @@
             const archetypeNav = document.getElementById('pathosLogosArchetypeContext');
             if (archetypeNav) {
                 archetypeNav.style.display = expertFeatures.archetypeNav ? 'flex' : 'none';
+            }
+
+            // Detailed gender UI
+            ['ich', 'partner'].forEach(person => {
+                const detailedContainer = document.getElementById(`${person}-geschlecht-detailed-container`);
+                if (detailedContainer) {
+                    detailedContainer.style.display = expertFeatures.detailedGender ? 'block' : 'none';
+                }
+            });
+
+            // Initialize detailed gender buttons if becoming visible
+            if (expertFeatures.detailedGender && typeof initDetailedGenderButtons === 'function') {
+                initDetailedGenderButtons();
             }
         }
 
@@ -6602,21 +6712,137 @@
         }
 
         /**
+         * Handle click on Primary (Körper) geschlecht button
+         * NEUES SYSTEM: Separate Auswahl für Körper
+         */
+        function handleGeschlechtPrimaryClick(person, value, btn) {
+            // Ensure geschlecht has correct structure
+            if (!personDimensions[person].geschlecht ||
+                !('primary' in personDimensions[person].geschlecht)) {
+                personDimensions[person].geschlecht = { primary: null, secondary: null };
+            }
+
+            const current = personDimensions[person].geschlecht.primary;
+
+            if (value === current) {
+                // Deselect
+                personDimensions[person].geschlecht.primary = null;
+            } else {
+                // Select
+                personDimensions[person].geschlecht.primary = value;
+            }
+
+            // Sync with mobilePersonDimensions
+            if (typeof mobilePersonDimensions !== 'undefined') {
+                mobilePersonDimensions[person].geschlecht.primary = personDimensions[person].geschlecht.primary;
+            }
+
+            // Sync with TiageState
+            if (typeof TiageState !== 'undefined') {
+                TiageState.set(`personDimensions.${person}.geschlecht`, personDimensions[person].geschlecht);
+            }
+
+            syncGeschlechtUI(person);
+            updateGeschlechtNeedsSelection(person);
+            updateComparisonView();
+
+            if (typeof saveSelectionToStorage === 'function') {
+                saveSelectionToStorage();
+            }
+        }
+
+        /**
+         * Handle click on Secondary (Identität) geschlecht button
+         * NEUES SYSTEM: Separate Auswahl für Identität
+         */
+        function handleGeschlechtSecondaryClick(person, value, btn) {
+            // Ensure geschlecht has correct structure
+            if (!personDimensions[person].geschlecht ||
+                !('secondary' in personDimensions[person].geschlecht)) {
+                personDimensions[person].geschlecht = { primary: null, secondary: null };
+            }
+
+            const current = personDimensions[person].geschlecht.secondary;
+
+            if (value === current) {
+                // Deselect
+                personDimensions[person].geschlecht.secondary = null;
+            } else {
+                // Select
+                personDimensions[person].geschlecht.secondary = value;
+            }
+
+            // Sync with mobilePersonDimensions
+            if (typeof mobilePersonDimensions !== 'undefined') {
+                mobilePersonDimensions[person].geschlecht.secondary = personDimensions[person].geschlecht.secondary;
+            }
+
+            // Sync with TiageState
+            if (typeof TiageState !== 'undefined') {
+                TiageState.set(`personDimensions.${person}.geschlecht`, personDimensions[person].geschlecht);
+            }
+
+            syncGeschlechtUI(person);
+            updateGeschlechtNeedsSelection(person);
+            updateComparisonView();
+
+            if (typeof saveSelectionToStorage === 'function') {
+                saveSelectionToStorage();
+            }
+        }
+
+        /**
+         * Update needs-selection class for geschlecht dimension
+         */
+        function updateGeschlechtNeedsSelection(person) {
+            const hasPrimary = personDimensions[person].geschlecht?.primary !== null;
+            const hasSecondary = personDimensions[person].geschlecht?.secondary !== null;
+            const isComplete = hasPrimary && hasSecondary;
+
+            document.querySelectorAll(`[data-dimension="${person}-geschlecht-new"], [data-dimension="mobile-${person}-geschlecht"], [data-dimension="${person}-geschlecht"]`).forEach(dim => {
+                if (isComplete) {
+                    dim.classList.remove('needs-selection');
+                } else {
+                    dim.classList.add('needs-selection');
+                }
+            });
+        }
+
+        /**
          * Sync Geschlecht UI across all views (Desktop, Mobile, Modal)
+         * NEUES SYSTEM: Unterstützt separate Primary/Secondary Grids
          */
         function syncGeschlechtUI(person) {
-            const primary = personDimensions[person].geschlecht.primary;
-            const secondary = personDimensions[person].geschlecht.secondary;
+            const primary = personDimensions[person].geschlecht?.primary;
+            const secondary = personDimensions[person].geschlecht?.secondary;
 
-            // All geschlecht button selectors for this person
-            const selectors = [
+            // NEUES SYSTEM: Primary Grid (Körper) Buttons
+            document.querySelectorAll(`.geschlecht-primary-grid[data-person="${person}"] .geschlecht-btn, #${person}-geschlecht-primary-grid .geschlecht-btn`).forEach(btn => {
+                const value = btn.dataset.value;
+                btn.classList.remove('selected', 'primary-selected');
+                if (value === primary) {
+                    btn.classList.add('selected', 'primary-selected');
+                }
+            });
+
+            // NEUES SYSTEM: Secondary Grid (Identität) Buttons
+            document.querySelectorAll(`.geschlecht-secondary-grid[data-person="${person}"] .geschlecht-btn, #${person}-geschlecht-secondary-grid .geschlecht-btn`).forEach(btn => {
+                const value = btn.dataset.value;
+                btn.classList.remove('selected', 'secondary-selected');
+                if (value === secondary) {
+                    btn.classList.add('selected', 'secondary-selected');
+                }
+            });
+
+            // LEGACY: Old combined grid selectors (für Rückwärtskompatibilität)
+            const legacySelectors = [
                 `.geschlecht-grid[data-person="${person}"] .geschlecht-btn`,
                 `#${person}-geschlecht-grid .geschlecht-btn`,
                 `#mobile-${person}-geschlecht-grid .geschlecht-btn`,
                 `#modal-${person}-geschlecht-grid .geschlecht-btn`
             ];
 
-            selectors.forEach(selector => {
+            legacySelectors.forEach(selector => {
                 document.querySelectorAll(selector).forEach(btn => {
                     const value = btn.dataset.value;
 
@@ -6798,18 +7024,24 @@
          * Ersetzt statische HTML-Buttons durch dynamisch generierte
          */
         function initDimensionButtons() {
-            // Geschlechtsidentität Optionen
-            const geschlechtOptions = [
-                { value: 'cis_mann', label: 'Cis Mann' },
-                { value: 'cis_frau', label: 'Cis Frau' },
-                { value: 'trans_mann', label: 'Trans Mann' },
-                { value: 'trans_frau', label: 'Trans Frau' },
-                { value: 'nonbinaer', label: 'Nonbinär' },
-                { value: 'genderfluid', label: 'Genderfluid' },
-                { value: 'agender', label: 'Agender' },
-                { value: 'intersex', label: 'Intersex' },
-                { value: 'divers', label: 'Divers' }
+            // Geschlecht: Primär (Körper) Optionen
+            const geschlechtPrimaryOptions = [
+                { value: 'mann', label: TiageI18n.t('geschlecht.primary.mann', 'Mann') },
+                { value: 'frau', label: TiageI18n.t('geschlecht.primary.frau', 'Frau') },
+                { value: 'inter', label: TiageI18n.t('geschlecht.primary.inter', 'Inter') }
             ];
+
+            // Geschlecht: Sekundär (Identität) Optionen
+            const geschlechtSecondaryOptions = [
+                { value: 'mann', label: TiageI18n.t('geschlecht.secondary.mann', 'Mann') },
+                { value: 'frau', label: TiageI18n.t('geschlecht.secondary.frau', 'Frau') },
+                { value: 'nonbinaer', label: TiageI18n.t('geschlecht.secondary.nonbinaer', 'Nonbinär') },
+                { value: 'fluid', label: TiageI18n.t('geschlecht.secondary.fluid', 'Fluid') },
+                { value: 'unsicher', label: TiageI18n.t('geschlecht.secondary.unsicher', 'Unsicher') }
+            ];
+
+            // Legacy: Alte Optionen für Rückwärtskompatibilität (nicht mehr im UI genutzt)
+            const geschlechtOptions = geschlechtPrimaryOptions;
 
             // Dominanz Optionen
             const dominanzOptions = [
@@ -6833,11 +7065,31 @@
                 { value: 'hoch', label: TiageI18n.t('dimensions.gfkLevels.hoch', 'hoch') }
             ];
 
-            // Geschlecht-Grids befüllen
+            // Geschlecht Primary-Grids (Körper) befüllen
+            document.querySelectorAll('.geschlecht-primary-grid').forEach(grid => {
+                const person = grid.dataset.person;
+                if (!person) return;
+                grid.innerHTML = geschlechtPrimaryOptions.map(opt =>
+                    `<button type="button" class="geschlecht-btn geschlecht-primary-btn" data-value="${opt.value}" data-type="primary" onclick="handleGeschlechtPrimaryClick('${person}', '${opt.value}', this)">${opt.label}</button>`
+                ).join('');
+            });
+
+            // Geschlecht Secondary-Grids (Identität) befüllen
+            document.querySelectorAll('.geschlecht-secondary-grid').forEach(grid => {
+                const person = grid.dataset.person;
+                if (!person) return;
+                grid.innerHTML = geschlechtSecondaryOptions.map(opt =>
+                    `<button type="button" class="geschlecht-btn geschlecht-secondary-btn" data-value="${opt.value}" data-type="secondary" onclick="handleGeschlechtSecondaryClick('${person}', '${opt.value}', this)">${opt.label}</button>`
+                ).join('');
+            });
+
+            // Legacy: Alte Geschlecht-Grids (für evtl. noch vorhandene Elemente)
             document.querySelectorAll('.geschlecht-grid').forEach(grid => {
                 const person = grid.dataset.person;
                 if (!person) return;
-                grid.innerHTML = geschlechtOptions.map(opt =>
+                // Ignoriere alte Grids wenn neue vorhanden
+                if (document.querySelector(`#${person}-geschlecht-primary-grid`)) return;
+                grid.innerHTML = geschlechtPrimaryOptions.map(opt =>
                     `<button type="button" class="geschlecht-btn" data-value="${opt.value}" onclick="handleGeschlechtClick('${person}', '${opt.value}', this)">${opt.label}</button>`
                 ).join('');
             });
@@ -6875,6 +7127,87 @@
                 syncDominanzUI(person);
                 syncOrientierungUI(person);
                 syncGfkUI(person);
+            });
+
+            // Initialisiere auch detailed gender buttons falls expert mode aktiv
+            if (typeof expertFeatures !== 'undefined' && expertFeatures.detailedGender) {
+                initDetailedGenderButtons();
+            }
+        }
+
+        /**
+         * Initialize detailed gender buttons for expert mode
+         * These are the full 9-option gender identity buttons
+         */
+        function initDetailedGenderButtons() {
+            const detailedOptions = [
+                { value: 'cis_mann', label: TiageI18n.t('geschlecht.detailed.cis_mann', 'Cis Mann') },
+                { value: 'cis_frau', label: TiageI18n.t('geschlecht.detailed.cis_frau', 'Cis Frau') },
+                { value: 'trans_mann', label: TiageI18n.t('geschlecht.detailed.trans_mann', 'Trans Mann') },
+                { value: 'trans_frau', label: TiageI18n.t('geschlecht.detailed.trans_frau', 'Trans Frau') },
+                { value: 'nonbinaer', label: TiageI18n.t('geschlecht.detailed.nonbinaer', 'Nonbinär') },
+                { value: 'genderfluid', label: TiageI18n.t('geschlecht.detailed.genderfluid', 'Genderfluid') },
+                { value: 'agender', label: TiageI18n.t('geschlecht.detailed.agender', 'Agender') },
+                { value: 'intersex', label: TiageI18n.t('geschlecht.detailed.intersex', 'Intersex') },
+                { value: 'divers', label: TiageI18n.t('geschlecht.detailed.divers', 'Divers') }
+            ];
+
+            document.querySelectorAll('.geschlecht-detailed-grid').forEach(grid => {
+                const person = grid.dataset.person;
+                if (!person) return;
+                // Only populate if empty
+                if (grid.innerHTML.trim()) return;
+                grid.innerHTML = detailedOptions.map(opt =>
+                    `<button type="button" class="geschlecht-btn geschlecht-detailed-btn" data-value="${opt.value}" data-type="detailed" onclick="handleGeschlechtDetailedClick('${person}', '${opt.value}', this)">${opt.label}</button>`
+                ).join('');
+            });
+
+            // Sync UI state for detailed buttons
+            ['ich', 'partner'].forEach(person => {
+                syncDetailedGenderUI(person);
+            });
+        }
+
+        /**
+         * Handle click on detailed gender button (expert mode)
+         * This sets a single detailed gender identity
+         */
+        function handleGeschlechtDetailedClick(person, value, btn) {
+            const geschlecht = personDimensions[person].geschlecht;
+            const currentDetailed = geschlecht?.detailed;
+
+            // Toggle: if same value clicked, deselect
+            if (currentDetailed === value) {
+                personDimensions[person].geschlecht = {
+                    ...geschlecht,
+                    detailed: null
+                };
+            } else {
+                personDimensions[person].geschlecht = {
+                    ...geschlecht,
+                    detailed: value
+                };
+            }
+
+            saveToLocalStorage();
+            syncDetailedGenderUI(person);
+            updateGeschlechtSummary(person);
+            checkNeedsSelection();
+        }
+
+        /**
+         * Sync detailed gender UI with state
+         */
+        function syncDetailedGenderUI(person) {
+            const grid = document.getElementById(`${person}-geschlecht-detailed-grid`);
+            if (!grid) return;
+
+            const geschlecht = personDimensions[person].geschlecht;
+            const selectedValue = geschlecht?.detailed;
+
+            grid.querySelectorAll('.geschlecht-detailed-btn').forEach(btn => {
+                const val = btn.dataset.value;
+                btn.classList.toggle('selected', val === selectedValue);
             });
         }
 
