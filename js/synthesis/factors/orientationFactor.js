@@ -29,8 +29,8 @@ TiageSynthesis.Factors.Orientierung = {
      */
     calculate: function(person1, person2) {
         var constants = TiageSynthesis.Constants;
-        var g1 = person1.geschlecht;
-        var g2 = person2.geschlecht;
+        var g1 = this._extractGeschlecht(person1.geschlecht);
+        var g2 = this._extractGeschlecht(person2.geschlecht);
 
         // Orientierungen extrahieren
         var oriList1 = this._extractOrientations(person1);
@@ -69,6 +69,30 @@ TiageSynthesis.Factors.Orientierung = {
     },
 
     /**
+     * Extrahiert Geschlecht aus P/S-Format oder String
+     * Für Orientierungslogik wird sekundär (Identität) bevorzugt
+     */
+    _extractGeschlecht: function(geschlecht) {
+        if (!geschlecht) return null;
+        // Neues P/S-Format: { primary, secondary }
+        if (typeof geschlecht === 'object') {
+            // Sekundär (Identität) hat Vorrang für Orientierungslogik
+            if (geschlecht.secondary !== undefined && geschlecht.secondary !== null) {
+                return geschlecht.secondary;
+            }
+            // Fallback auf Primär (Körper)
+            if (geschlecht.primary !== undefined) {
+                return geschlecht.primary;
+            }
+        }
+        // Altes Format: String direkt
+        if (typeof geschlecht === 'string') {
+            return geschlecht;
+        }
+        return null;
+    },
+
+    /**
      * Extrahiert Orientierungen aus Person-Objekt
      */
     _extractOrientations: function(person) {
@@ -77,13 +101,24 @@ TiageSynthesis.Factors.Orientierung = {
 
         if (!ori) return list;
 
-        // Multi-Select Format
         if (typeof ori === 'object') {
-            var types = ['heterosexuell', 'homosexuell', 'bisexuell'];
-            for (var i = 0; i < types.length; i++) {
-                var type = types[i];
-                if (ori[type]) {
-                    list.push({ type: type, status: ori[type] });
+            // Neues P/S-Format: { primary: 'heterosexuell', secondary: 'bisexuell' }
+            if ('primary' in ori) {
+                if (ori.primary) {
+                    list.push({ type: ori.primary, status: 'gelebt' });
+                }
+                if (ori.secondary) {
+                    list.push({ type: ori.secondary, status: 'interessiert' });
+                }
+            }
+            // Altes Multi-Select Format: { heterosexuell: 'gelebt', ... }
+            else {
+                var types = ['heterosexuell', 'homosexuell', 'bisexuell'];
+                for (var i = 0; i < types.length; i++) {
+                    var type = types[i];
+                    if (ori[type]) {
+                        list.push({ type: type, status: ori[type] });
+                    }
                 }
             }
         }
@@ -332,9 +367,10 @@ TiageSynthesis.Factors.Orientierung = {
      */
     _isMaleGender: function(gender) {
         if (!gender) return false;
+        if (typeof gender !== 'string') return false;
         var g = gender.toLowerCase();
         return g === 'männlich' || g === 'cis_mann' || g === 'trans_mann' ||
-               g === 'mann' || g === 'male' || g === 'm';
+               g === 'mann' || g === 'male' || g === 'm' || g === 'maennlich';
     },
 
     /**
@@ -342,9 +378,23 @@ TiageSynthesis.Factors.Orientierung = {
      */
     _isFemaleGender: function(gender) {
         if (!gender) return false;
+        if (typeof gender !== 'string') return false;
         var g = gender.toLowerCase();
         return g === 'weiblich' || g === 'cis_frau' || g === 'trans_frau' ||
                g === 'frau' || g === 'female' || g === 'w' || g === 'f';
+    },
+
+    /**
+     * Prüft ob Geschlecht nonbinär/inter/fluid ist
+     */
+    _isNonBinaryGender: function(gender) {
+        if (!gender) return false;
+        if (typeof gender !== 'string') return false;
+        var g = gender.toLowerCase();
+        return g === 'nonbinaer' || g === 'nonbinär' || g === 'non-binär' ||
+               g === 'inter' || g === 'intersex' || g === 'fluid' ||
+               g === 'genderfluid' || g === 'divers' || g === 'agender' ||
+               g === 'unsicher';
     },
 
     /**
