@@ -5613,6 +5613,7 @@
         }
 
         function showArchetypeInfoByType(archetypeId) {
+            console.log('[DEBUG] showArchetypeInfoByType called with:', archetypeId);
             if (!data || !data.archetypes || !data.archetypes[archetypeId]) {
                 console.error('Data not available for archetype:', archetypeId);
                 return;
@@ -5620,6 +5621,7 @@
 
             const arch = data.archetypes[archetypeId];
             const def = archetypeDescriptions[archetypeId];
+            console.log('[DEBUG] arch:', arch?.name, 'def:', def?.name);
 
             // Get localized archetype data from i18n (with fallback to hardcoded def)
             const localizedArch = {
@@ -5757,13 +5759,19 @@
             `;
 
             const definitionLabel = TiageI18n.t('archetypeModal.definition', 'Definition');
+            console.log('[DEBUG] Updating modal title to:', `${localizedArch.name} - ${definitionLabel}`);
             document.getElementById('definitionModalTitle').textContent = `${localizedArch.name} - ${definitionLabel}`;
             document.getElementById('definitionModalBody').innerHTML = modalContent;
+            // Scroll modal body to top when content changes
+            document.getElementById('definitionModalBody').scrollTop = 0;
+            console.log('[DEBUG] Modal content updated for:', archetypeId);
         }
 
         function navigateDefinitionToIndex(index) {
+            console.log('[DEBUG] navigateDefinitionToIndex called with index:', index);
             currentDefinitionIndex = index;
             const newArchetype = archetypeOrder[index];
+            console.log('[DEBUG] newArchetype:', newArchetype, 'archetypeOrder:', archetypeOrder);
             showArchetypeInfoByType(newArchetype);
 
             // Sync the new archetype to the dropdown selection
