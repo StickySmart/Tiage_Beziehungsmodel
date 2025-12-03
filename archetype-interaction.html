@@ -49,6 +49,13 @@
 <body>
     <!-- Age Verification - Inline Script BEFORE modal for onclick to work -->
     <script>
+        // ========================================
+        // GOOGLE SHEETS CONFIGURATION
+        // ========================================
+        // Nach dem Deployen des Google Apps Scripts, füge hier die URL ein:
+        // const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/DEINE_SCRIPT_ID/exec';
+        const GOOGLE_SCRIPT_URL = ''; // <- Deine Google Apps Script URL hier einfügen
+
         // Define confirmAge immediately so onclick handlers work
         // Modal appears on EVERY visit (no localStorage storage)
         window.confirmAge = function(isAdult) {
