@@ -12954,6 +12954,17 @@
                 updateOrientierungSummary('partner');
                 // GFK automatisch aus Archetypen-Matching setzen
                 updateGfkFromArchetypes();
+
+                // Check URL parameter to open comments modal
+                const urlParams = new URLSearchParams(window.location.search);
+                if (urlParams.get('openComments') === '1') {
+                    setTimeout(() => {
+                        if (typeof openCommentsListModal === 'function') {
+                            openCommentsListModal();
+                        }
+                    }, 500);
+                }
+
                 console.log('[TIAGE DEBUG] DOMContentLoaded completed successfully');
             } catch (e) {
                 console.error('[TIAGE ERROR] DOMContentLoaded failed:', e);
