@@ -15022,13 +15022,11 @@
             let visitorId = localStorage.getItem('tiage_visitor_id');
             if (visitorId) return visitorId;
 
-            // Try to get from server
+            // Try to get from server (using GET to avoid CORS preflight)
             if (typeof GOOGLE_SCRIPT_URL !== 'undefined' && GOOGLE_SCRIPT_URL) {
                 try {
-                    const response = await fetch(GOOGLE_SCRIPT_URL, {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ action: 'getVisitorId' })
+                    const response = await fetch(GOOGLE_SCRIPT_URL + '?action=getVisitorId', {
+                        method: 'GET'
                     });
                     const data = await response.json();
                     if (data.visitorId) {
