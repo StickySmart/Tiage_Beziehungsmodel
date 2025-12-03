@@ -6582,6 +6582,16 @@
                         modal.style.pointerEvents = 'none';
                     }
                     document.body.style.overflow = 'auto';
+
+                    // Check for pending openComments navigation after age verification
+                    const urlParams = new URLSearchParams(window.location.search);
+                    if (urlParams.get('openComments') === '1') {
+                        setTimeout(() => {
+                            if (typeof openCommentsListModal === 'function') {
+                                openCommentsListModal();
+                            }
+                        }, 100);
+                    }
                 } else {
                     window.location.href = 'https://www.google.com';
                 }
@@ -13052,15 +13062,8 @@
                 // GFK automatisch aus Archetypen-Matching setzen
                 updateGfkFromArchetypes();
 
-                // Check URL parameter to open comments modal
-                const urlParams = new URLSearchParams(window.location.search);
-                if (urlParams.get('openComments') === '1') {
-                    setTimeout(() => {
-                        if (typeof openCommentsListModal === 'function') {
-                            openCommentsListModal();
-                        }
-                    }, 500);
-                }
+                // Note: openComments=1 parameter is now handled in handleAgeConfirm()
+                // to ensure age verification is completed before opening comments modal
 
                 console.log('[TIAGE DEBUG] DOMContentLoaded completed successfully');
             } catch (e) {
