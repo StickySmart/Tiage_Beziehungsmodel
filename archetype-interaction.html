@@ -5582,6 +5582,43 @@
             }
         }
 
+        // Helper function to sync dropdown selection with dispatched change event
+        function syncDropdownSelection(newArchetype) {
+            console.log('[DEBUG] syncDropdownSelection called with:', newArchetype, 'person:', currentDefinitionPerson);
+            if (currentDefinitionPerson === 'ich') {
+                const ichSelect = document.getElementById('ichSelect');
+                const mobileIchSelect = document.getElementById('mobileIchSelect');
+                currentArchetype = newArchetype;
+                mobileIchArchetype = newArchetype;
+                if (ichSelect) {
+                    ichSelect.value = newArchetype;
+                    // Dispatch change event to trigger all UI updates
+                    ichSelect.dispatchEvent(new Event('change', { bubbles: true }));
+                }
+                if (mobileIchSelect) {
+                    mobileIchSelect.value = newArchetype;
+                }
+            } else if (currentDefinitionPerson === 'partner') {
+                const partnerSelect = document.getElementById('partnerSelect');
+                const mobilePartnerSelect = document.getElementById('mobilePartnerSelect');
+                selectedPartner = newArchetype;
+                mobilePartnerArchetype = newArchetype;
+                if (partnerSelect) {
+                    partnerSelect.value = newArchetype;
+                    // Dispatch change event to trigger all UI updates
+                    partnerSelect.dispatchEvent(new Event('change', { bubbles: true }));
+                }
+                if (mobilePartnerSelect) {
+                    mobilePartnerSelect.value = newArchetype;
+                }
+            } else {
+                // Fallback: if no person specified, still update the view
+                console.log('[DEBUG] No valid currentDefinitionPerson, updating view directly');
+                updateComparisonView();
+                updateGfkFromArchetypes();
+            }
+        }
+
         function navigateDefinition(direction) {
             currentDefinitionIndex += direction;
             if (currentDefinitionIndex < 0) currentDefinitionIndex = archetypeOrder.length - 1;
@@ -5589,22 +5626,7 @@
 
             const newArchetype = archetypeOrder[currentDefinitionIndex];
             showArchetypeInfoByType(newArchetype);
-
-            // Sync the new archetype to the dropdown selection
-            if (currentDefinitionPerson === 'ich') {
-                document.getElementById('ichSelect').value = newArchetype;
-                document.getElementById('mobileIchSelect').value = newArchetype;
-                currentArchetype = newArchetype;
-                mobileIchArchetype = newArchetype;
-            } else if (currentDefinitionPerson === 'partner') {
-                document.getElementById('partnerSelect').value = newArchetype;
-                document.getElementById('mobilePartnerSelect').value = newArchetype;
-                selectedPartner = newArchetype;
-                mobilePartnerArchetype = newArchetype;
-            }
-            updateComparisonView();
-            // GFK automatisch aus Archetypen-Matching ableiten
-            updateGfkFromArchetypes();
+            syncDropdownSelection(newArchetype);
         }
 
         // Alias for button onclick
@@ -5775,20 +5797,7 @@
             showArchetypeInfoByType(newArchetype);
 
             // Sync the new archetype to the dropdown selection
-            if (currentDefinitionPerson === 'ich') {
-                document.getElementById('ichSelect').value = newArchetype;
-                document.getElementById('mobileIchSelect').value = newArchetype;
-                currentArchetype = newArchetype;
-                mobileIchArchetype = newArchetype;
-            } else if (currentDefinitionPerson === 'partner') {
-                document.getElementById('partnerSelect').value = newArchetype;
-                document.getElementById('mobilePartnerSelect').value = newArchetype;
-                selectedPartner = newArchetype;
-                mobilePartnerArchetype = newArchetype;
-            }
-            updateComparisonView();
-            // GFK automatisch aus Archetypen-Matching ableiten
-            updateGfkFromArchetypes();
+            syncDropdownSelection(newArchetype);
         }
 
         function confirmDefinitionSelection() {
