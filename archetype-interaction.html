@@ -7179,6 +7179,18 @@
                 ).join('');
             });
 
+            // Mobile und Modal Geschlecht-Grids befüllen (kombiniertes P/S Grid)
+            const mobileModalGrids = document.querySelectorAll('#mobile-ich-geschlecht-grid, #mobile-partner-geschlecht-grid, #modal-ich-geschlecht-grid, #modal-partner-geschlecht-grid');
+            console.log('[TIAGE DEBUG] Found mobile/modal geschlecht-grids:', mobileModalGrids.length);
+            mobileModalGrids.forEach(grid => {
+                const person = grid.dataset.person;
+                if (!person) return;
+                // Mobile/Modal uses combined P options with handleGeschlechtClick
+                grid.innerHTML = geschlechtPOptions.map(opt =>
+                    `<button type="button" class="geschlecht-btn" data-value="${opt.value}" onclick="handleGeschlechtClick('${person}', '${opt.value}', this)">${opt.label}</button>`
+                ).join('');
+            });
+
             // Geschlecht S-Grids werden dynamisch in handleGeschlechtPClick befüllt
             // (kontextabhängig von P-Auswahl)
 
@@ -12932,6 +12944,11 @@
                 }
                 if (typeof syncOrientierungUI === 'function') {
                     syncOrientierungUI(person);
+                }
+                // Sync mobile status-toggle buttons
+                if (typeof syncMobileStatusButtons === 'function') {
+                    syncMobileStatusButtons(person, 'dominanz');
+                    syncMobileStatusButtons(person, 'orientierung');
                 }
             });
 
