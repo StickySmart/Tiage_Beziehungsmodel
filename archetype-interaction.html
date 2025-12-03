@@ -6586,6 +6586,13 @@
                     // Check for pending openComments navigation after age verification
                     const urlParams = new URLSearchParams(window.location.search);
                     if (urlParams.get('openComments') === '1') {
+                        // Remove openComments parameter from URL to prevent loop on back-navigation
+                        urlParams.delete('openComments');
+                        const cleanUrl = urlParams.toString()
+                            ? `${window.location.pathname}?${urlParams.toString()}${window.location.hash}`
+                            : `${window.location.pathname}${window.location.hash}`;
+                        history.replaceState(null, '', cleanUrl);
+
                         setTimeout(() => {
                             if (typeof openCommentsListModal === 'function') {
                                 openCommentsListModal();
