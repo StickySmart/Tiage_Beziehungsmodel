@@ -46,7 +46,7 @@ function initializeSheets() {
   if (!configSheet) {
     configSheet = ss.insertSheet(CONFIG_SHEET);
     configSheet.appendRow(['Key', 'Value']);
-    configSheet.appendRow(['visitorCounter', '1000']); // Start bei 1000
+    configSheet.appendRow(['visitorCounter', '1']); // Start bei 1
     configSheet.getRange(1, 1, 1, 2).setFontWeight('bold');
   }
 
@@ -68,19 +68,19 @@ function getNextVisitorId() {
   // Finde die Zeile mit visitorCounter
   const data = configSheet.getDataRange().getValues();
   let counterRow = -1;
-  let currentValue = 1000;
+  let currentValue = 1;
 
   for (let i = 0; i < data.length; i++) {
     if (data[i][0] === 'visitorCounter') {
       counterRow = i + 1;
-      currentValue = parseInt(data[i][1]) || 1000;
+      currentValue = parseInt(data[i][1]) || 1;
       break;
     }
   }
 
   if (counterRow === -1) {
-    configSheet.appendRow(['visitorCounter', '1001']);
-    return '1000';
+    configSheet.appendRow(['visitorCounter', '2']);
+    return '1';
   }
 
   // Erhöhe den Zähler
