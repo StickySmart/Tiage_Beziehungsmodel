@@ -7388,6 +7388,11 @@
             } else if (dimension === 'orientierung') {
                 updateOrientierungSummary(person);
             }
+
+            // Mobile Status-Toggle-Buttons synchronisieren (einheitlich für Desktop und Mobile)
+            if (typeof syncMobileStatusButtons === 'function') {
+                syncMobileStatusButtons(person, dimension);
+            }
         }
 
         // Wrapper für Rückwärtskompatibilität
@@ -12935,20 +12940,15 @@
                     mobilePersonDimensions[person].orientierung = personDimensions[person].orientierung;
                 }
 
-                // Sync UI elements after loading
+                // Sync UI elements after loading (Desktop + Mobile einheitlich)
                 if (typeof syncGeschlechtUI === 'function') {
                     syncGeschlechtUI(person);
                 }
                 if (typeof syncDominanzUI === 'function') {
-                    syncDominanzUI(person);
+                    syncDominanzUI(person);  // Enthält jetzt auch syncMobileStatusButtons
                 }
                 if (typeof syncOrientierungUI === 'function') {
-                    syncOrientierungUI(person);
-                }
-                // Sync mobile status-toggle buttons
-                if (typeof syncMobileStatusButtons === 'function') {
-                    syncMobileStatusButtons(person, 'dominanz');
-                    syncMobileStatusButtons(person, 'orientierung');
+                    syncOrientierungUI(person);  // Enthält jetzt auch syncMobileStatusButtons
                 }
             });
 
