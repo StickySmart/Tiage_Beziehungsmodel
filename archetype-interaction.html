@@ -6807,7 +6807,7 @@
 
         /**
          * Update S-Grid options based on P selection
-         * P = Mann/Frau → S = Cis, Trans, Unsicher
+         * P = Mann/Frau → S = Cis, Trans, Nonbinär, Fluid, Unsicher
          * P = Inter → S = Nonbinär, Fluid, Unsicher
          */
         function updateGeschlechtSGrid(person) {
@@ -6836,10 +6836,12 @@
                     { value: 'unsicher', label: TiageI18n.t('geschlecht.secondary.unsicher', 'Unsicher') }
                 ];
             } else {
-                // Mann or Frau
+                // Mann or Frau - alle Identitäts-Optionen verfügbar
                 sOptions = [
                     { value: 'cis', label: TiageI18n.t('geschlecht.secondary.cis', 'Cis') },
                     { value: 'trans', label: TiageI18n.t('geschlecht.secondary.trans', 'Trans') },
+                    { value: 'nonbinaer', label: TiageI18n.t('geschlecht.secondary.nonbinaer', 'Nonbinär') },
+                    { value: 'fluid', label: TiageI18n.t('geschlecht.secondary.fluid', 'Fluid') },
                     { value: 'unsicher', label: TiageI18n.t('geschlecht.secondary.unsicher', 'Unsicher') }
                 ];
             }
