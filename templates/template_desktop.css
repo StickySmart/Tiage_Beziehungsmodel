@@ -91,6 +91,49 @@
             margin-top: 8px;
         }
 
+        /* Visitor Info Bar */
+        .visitor-info-bar {
+            position: fixed;
+            top: 85px;
+            left: 0;
+            right: 0;
+            z-index: 199;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            padding: 6px 15px;
+            background: rgba(20, 20, 30, 0.9);
+            border-bottom: 1px solid var(--border);
+            font-size: 12px;
+        }
+
+        .visitor-id-badge {
+            color: var(--primary);
+            font-weight: 500;
+        }
+
+        .visitor-id-badge span {
+            font-weight: 700;
+        }
+
+        .privacy-notice {
+            color: var(--text-muted);
+            font-size: 11px;
+        }
+
+        @media (max-width: 768px) {
+            .visitor-info-bar {
+                top: 75px;
+                font-size: 11px;
+                gap: 12px;
+                padding: 5px 10px;
+            }
+            .privacy-notice {
+                font-size: 10px;
+            }
+        }
+
         /* Pathos/Logos toggle buttons in modal header */
         .header-pathos-btn,
         .header-logos-btn {
@@ -4003,7 +4046,7 @@
             max-width: 900px;
             margin: 0 auto;
             padding: 15px;
-            padding-top: 70px;
+            padding-top: 100px; /* Adjusted for visitor info bar */
         }
 
         .comparison-grid {

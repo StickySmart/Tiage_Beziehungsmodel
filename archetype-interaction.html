@@ -941,6 +941,12 @@
         </div>
     </header>
 
+    <!-- Visitor Info Bar -->
+    <div class="visitor-info-bar" id="visitorInfoBar">
+        <span class="visitor-id-badge">👤 Besucher <span id="headerVisitorId">#----</span></span>
+        <span class="privacy-notice" title="Es werden keine personenbezogenen Daten gespeichert">🔒 Anonym – keine personenbezogenen Daten</span>
+    </div>
+
     <!-- Desktop Selection Info Message -->
     <div class="selection-info-message" id="desktopSelectionInfo"></div>
 
@@ -15023,9 +15029,15 @@
         // Initialize visitor ID display
         function initVisitorId() {
             const visitorId = getOrCreateVisitorId();
+            // Update comment form display
             const display = document.getElementById('visitorIdDisplay');
             if (display) {
                 display.textContent = '#' + visitorId;
+            }
+            // Update header display
+            const headerDisplay = document.getElementById('headerVisitorId');
+            if (headerDisplay) {
+                headerDisplay.textContent = '#' + visitorId;
             }
         }
 
