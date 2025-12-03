@@ -12922,7 +12922,30 @@
                 if (savedDims.gfk) {
                     personDimensions[person].gfk = savedDims.gfk;
                 }
+
+                // Sync mobilePersonDimensions if it exists
+                if (typeof mobilePersonDimensions !== 'undefined') {
+                    mobilePersonDimensions[person].geschlecht = personDimensions[person].geschlecht;
+                    mobilePersonDimensions[person].dominanz = personDimensions[person].dominanz;
+                    mobilePersonDimensions[person].orientierung = personDimensions[person].orientierung;
+                }
+
+                // Sync UI elements after loading
+                if (typeof syncGeschlechtUI === 'function') {
+                    syncGeschlechtUI(person);
+                }
+                if (typeof syncDominanzUI === 'function') {
+                    syncDominanzUI(person);
+                }
+                if (typeof syncOrientierungUI === 'function') {
+                    syncOrientierungUI(person);
+                }
             });
+
+            // Update comparison view after loading all dimensions
+            if (typeof updateComparisonView === 'function') {
+                updateComparisonView();
+            }
         }
 
         // Initialize when DOM is ready
@@ -12938,13 +12961,14 @@
                 initComparisonLayout();
                 console.log('[TIAGE DEBUG] Before initMobileLayout');
                 initMobileLayout();
-                console.log('[TIAGE DEBUG] Before loadDimensionsFromState');
-                // Load saved dimensions from TiageState BEFORE initializing buttons
-                loadDimensionsFromState();
                 console.log('[TIAGE DEBUG] Before initDimensionButtons');
                 initDimensionButtons();
                 console.log('[TIAGE DEBUG] After initDimensionButtons');
                 initGeschlechtHoverEvents();
+                console.log('[TIAGE DEBUG] Before loadDimensionsFromState');
+                // Load saved dimensions from TiageState AFTER initializing buttons
+                // so that UI sync functions can update the buttons
+                loadDimensionsFromState();
                 // Initialize all summary displays in header
                 updateGeschlechtSummary('ich');
                 updateGeschlechtSummary('partner');
@@ -14892,6 +14916,13 @@
 
             try {
                 localStorage.setItem('tiage-selection', JSON.stringify(selection));
+
+                // Also sync to TiageState storage for consistency
+                if (typeof TiageState !== 'undefined') {
+                    TiageState.set('personDimensions.ich', personDimensions.ich);
+                    TiageState.set('personDimensions.partner', personDimensions.partner);
+                    TiageState.saveToStorage();
+                }
             } catch (e) {
                 console.warn('LocalStorage not available:', e);
             }
@@ -15351,11 +15382,21 @@
             });
         }
 
-        // Load saved data on startup
+        // Load saved data on startup - fallback for legacy data
+        // TiageState is now loaded in DOMContentLoaded, so we only need
+        // to check for legacy 'tiage-selection' data if TiageState is empty
         setTimeout(() => {
-            loadSelectionFromStorage();
+            // Check if TiageState already has data (loaded in DOMContentLoaded)
+            const hasStateData = typeof TiageState !== 'undefined' &&
+                (TiageState.get('personDimensions.ich.geschlecht.primary') ||
+                 TiageState.get('personDimensions.partner.geschlecht.primary'));
+
+            // Only load from legacy storage if TiageState is empty
+            if (!hasStateData) {
+                loadSelectionFromStorage();
+            }
             initAutoSave();
-        }, 500);
+        }, 100); // Reduced timeout since DOMContentLoaded already loads TiageState
 
         // Update comparison view when data is loaded
         const originalLoadData = loadData;
