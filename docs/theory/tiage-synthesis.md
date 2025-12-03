@@ -60,6 +60,36 @@ Das Modell gewichtet emotionale Resonanz höher als rationale Struktur, weil:
 | **LAT** | Living Apart Together - Feste Partnerschaft ohne Zusammenleben |
 | **Aromantisch** | Fokus auf platonische Verbindungen ohne romantische Komponente |
 
+## Die drei Feedback-Ebenen (OSHO-Dynamik)
+
+Eine wichtige Komponente der Tiage-Synthese ist die Integration der **OSHO-Dynamik** in das Feedback-System:
+
+### Die drei Ebenen
+
+| Ebene | Konzept | Bedeutung |
+|-------|---------|-----------|
+| **🧠 Verstand** | Logos | Hat es intellektuell geholfen? |
+| **❤️ Gefühl** | Pathos | Hat es emotional berührt? |
+| **✨ Intuition** | Bewusstheit | Hat es etwas geweckt? |
+
+### Warum drei Ebenen?
+
+OSHO lehrte, dass vollständiges Verstehen alle drei Dimensionen integriert:
+
+- Verstand allein = trockene Analyse
+- Gefühl allein = Chaos ohne Orientierung
+- Intuition = die Verbindung beider Ebenen
+
+### Die persönliche Bedeutung (ICH-DU-WIR)
+
+Die drei Ebenen laden zur Selbstreflexion ein:
+
+- **ICH:** Wie erlebe ich diese Erkenntnis?
+- **DU:** Wie wirkt sie auf meine Beziehungen?
+- **WIR:** Wie trägt sie zum größeren Ganzen bei?
+
+Diese "verteilte" Betrachtung ist der Kern der OSHO-Dynamik im Tiage-Modell.
+
 ## Philosophische Einordnung
 
 Das Tiage-Beziehungsmodell ist eine eigenständige Interpretation und Anwendung philosophischer Konzepte auf zwischenmenschliche Beziehungen und erhebt keinen Anspruch auf wissenschaftliche Validierung.
