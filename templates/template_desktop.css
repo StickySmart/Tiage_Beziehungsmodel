@@ -430,6 +430,12 @@
             color: var(--primary);
         }
 
+        .comment-visitor-id {
+            font-size: 11px;
+            color: var(--text-muted);
+            margin-left: 6px;
+        }
+
         .comment-date {
             font-size: 11px;
             color: var(--text-muted);
@@ -708,6 +714,29 @@
         .comment-form-group textarea {
             min-height: 100px;
             resize: vertical;
+        }
+
+        .comment-form-group .input-hint {
+            display: block;
+            color: var(--text-secondary, #888);
+            font-size: 11px;
+            margin-top: 4px;
+        }
+
+        .comment-form-group.visitor-info {
+            text-align: center;
+            padding: 8px 0;
+            border-top: 1px solid var(--border, #333);
+            margin-top: 8px;
+        }
+
+        .comment-form-group.visitor-info small {
+            color: var(--text-secondary, #888);
+        }
+
+        #visitorIdDisplay {
+            font-weight: 600;
+            color: var(--primary, #4a90d9);
         }
 
         .comment-submit-btn {
