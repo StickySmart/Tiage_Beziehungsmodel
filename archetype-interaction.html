@@ -54,7 +54,7 @@
         // ========================================
         // Nach dem Deployen des Google Apps Scripts, füge hier die URL ein:
         // const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/DEINE_SCRIPT_ID/exec';
-        const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzVTunE4KlRRmxtjgUU-MoT-Xpz6TuyYKoNmWEnDpO0KsL2S2R00DQcX3USFCA3W07m/exec';
+        const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzuHUlgKBXl_HCoTdddpYo97qo3sTf26ahkC-h04EPzKJJV-7bT3-h3qBkiXm30qk1HRg/exec';
 
         // Define confirmAge immediately so onclick handlers work
         // Modal appears on EVERY visit (no localStorage storage)
@@ -15010,25 +15010,44 @@
 
         // Get or create a unique visitor ID
         function getOrCreateVisitorId() {
-            let visitorId = localStorage.getItem('tiage_visitor_id');
-            if (!visitorId) {
-                // Generate new visitor number (6 digits)
-                const timestamp = Date.now().toString().slice(-4);
-                const random = Math.floor(Math.random() * 100).toString().padStart(2, '0');
-                visitorId = timestamp + random;
-                localStorage.setItem('tiage_visitor_id', visitorId);
+            return localStorage.getItem('tiage_visitor_id') || null;
+        }
 
-                // Track visitor count
-                let visitorCount = parseInt(localStorage.getItem('tiage_visitor_count') || '0');
-                visitorCount++;
-                localStorage.setItem('tiage_visitor_count', visitorCount.toString());
+        // Fetch visitor ID from server or generate local fallback
+        async function fetchOrCreateVisitorId() {
+            let visitorId = localStorage.getItem('tiage_visitor_id');
+            if (visitorId) return visitorId;
+
+            // Try to get from server
+            if (typeof GOOGLE_SCRIPT_URL !== 'undefined' && GOOGLE_SCRIPT_URL) {
+                try {
+                    const response = await fetch(GOOGLE_SCRIPT_URL, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ action: 'getVisitorId' })
+                    });
+                    const data = await response.json();
+                    if (data.visitorId) {
+                        visitorId = data.visitorId;
+                        localStorage.setItem('tiage_visitor_id', visitorId);
+                        return visitorId;
+                    }
+                } catch (e) {
+                    console.log('Server not available, using local ID');
+                }
             }
+
+            // Fallback: local generation
+            const timestamp = Date.now().toString().slice(-4);
+            const random = Math.floor(Math.random() * 100).toString().padStart(2, '0');
+            visitorId = 'L' + timestamp + random; // L prefix = local
+            localStorage.setItem('tiage_visitor_id', visitorId);
             return visitorId;
         }
 
         // Initialize visitor ID display
-        function initVisitorId() {
-            const visitorId = getOrCreateVisitorId();
+        async function initVisitorId() {
+            const visitorId = await fetchOrCreateVisitorId();
             // Update comment form display
             const display = document.getElementById('visitorIdDisplay');
             if (display) {
