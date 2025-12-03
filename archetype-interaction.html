@@ -49,6 +49,13 @@
 <body>
     <!-- Age Verification - Inline Script BEFORE modal for onclick to work -->
     <script>
+        // ========================================
+        // GOOGLE SHEETS CONFIGURATION
+        // ========================================
+        // Nach dem Deployen des Google Apps Scripts, füge hier die URL ein:
+        // const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/DEINE_SCRIPT_ID/exec';
+        const GOOGLE_SCRIPT_URL = ''; // <- Deine Google Apps Script URL hier einfügen
+
         // Define confirmAge immediately so onclick handlers work
         // Modal appears on EVERY visit (no localStorage storage)
         window.confirmAge = function(isAdult) {
@@ -629,7 +636,8 @@
             <div class="comment-modal-body">
                 <div class="comment-form-group">
                     <label for="commentName">Name / Kürzel *</label>
-                    <input type="text" id="commentName" placeholder="z.B. Max oder Anonym">
+                    <input type="text" id="commentName" placeholder="z.B. Max oder Anonym" maxlength="50" required>
+                    <small class="input-hint">Max. 50 Zeichen</small>
                 </div>
                 <div class="comment-form-group">
                     <label for="commentType">Art des Kommentars</label>
@@ -643,7 +651,11 @@
                 </div>
                 <div class="comment-form-group">
                     <label for="commentText">Dein Kommentar *</label>
-                    <textarea id="commentText" placeholder="Schreibe hier deine Frage oder dein Feedback..."></textarea>
+                    <textarea id="commentText" placeholder="Schreibe hier deine Frage oder dein Feedback..." maxlength="2000" required></textarea>
+                    <small class="input-hint">Max. 2000 Zeichen</small>
+                </div>
+                <div class="comment-form-group visitor-info">
+                    <small>Deine Besucher-Nr: <span id="visitorIdDisplay">wird geladen...</span></small>
                 </div>
                 <button class="comment-submit-btn" id="commentSubmitBtn" onclick="submitComment()">Absenden</button>
             </div>
@@ -928,6 +940,12 @@
             </div>
         </div>
     </header>
+
+    <!-- Visitor Info Bar -->
+    <div class="visitor-info-bar" id="visitorInfoBar">
+        <span class="visitor-id-badge">👤 Besucher <span id="headerVisitorId">#----</span></span>
+        <span class="privacy-notice" title="Es werden keine personenbezogenen Daten gespeichert">🔒 Anonym – keine personenbezogenen Daten</span>
+    </div>
 
     <!-- Desktop Selection Info Message -->
     <div class="selection-info-message" id="desktopSelectionInfo"></div>
@@ -6585,6 +6603,13 @@
                     // Check for pending openComments navigation after age verification
                     const urlParams = new URLSearchParams(window.location.search);
                     if (urlParams.get('openComments') === '1') {
+                        // Remove openComments parameter from URL to prevent loop on back-navigation
+                        urlParams.delete('openComments');
+                        const cleanUrl = urlParams.toString()
+                            ? `${window.location.pathname}?${urlParams.toString()}${window.location.hash}`
+                            : `${window.location.pathname}${window.location.hash}`;
+                        history.replaceState(null, '', cleanUrl);
+
                         setTimeout(() => {
                             if (typeof openCommentsListModal === 'function') {
                                 openCommentsListModal();
@@ -13037,6 +13062,7 @@
                 checkAgeVerification();
                 initAgeVerification();
                 initFeedbackSystem();
+                initVisitorId();
                 console.log('[TIAGE DEBUG] Before initDimensionListeners');
                 initDimensionListeners();
                 console.log('[TIAGE DEBUG] Before initComparisonLayout');
@@ -14406,24 +14432,42 @@
             const typ = document.getElementById('commentType').value;
             const text = document.getElementById('commentText').value.trim();
 
+            // Rate limiting check
+            const rateCheck = canSubmitComment();
+            if (!rateCheck.allowed) {
+                alert(`Bitte warte noch ${rateCheck.secondsRemaining} Sekunden bevor du einen weiteren Kommentar sendest.`);
+                return;
+            }
+
             // Validation
             if (!name) {
                 alert('Bitte gib deinen Namen/Kürzel ein.');
+                return;
+            }
+            if (name.length > 50) {
+                alert('Name darf maximal 50 Zeichen haben.');
                 return;
             }
             if (!text) {
                 alert('Bitte schreibe einen Kommentar.');
                 return;
             }
+            if (text.length > 2000) {
+                alert('Kommentar darf maximal 2000 Zeichen haben.');
+                return;
+            }
+
+            // Get visitor ID
+            const visitorId = getOrCreateVisitorId();
 
             const commentEntry = {
                 type: 'comment',  // Wichtig für das Google Script
                 id: 'com_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9),
+                visitorId: visitorId,
                 name: name,
                 kommentarTyp: typ,
                 kommentar: text,
                 timestamp: new Date().toISOString(),
-                userAgent: navigator.userAgent.substring(0, 100),
                 page: 'hilfe-modal'
             };
 
@@ -14446,6 +14490,9 @@
                 stored.unshift(commentEntry);
                 localStorage.setItem('tiage_comments', JSON.stringify(stored));
 
+                // Record submission time for rate limiting
+                recordCommentSubmission();
+
                 alert('Danke für deinen Kommentar!');
                 closeCommentModal();
 
@@ -14455,6 +14502,7 @@
                 const stored = JSON.parse(localStorage.getItem('tiage_comments') || '[]');
                 stored.unshift(commentEntry);
                 localStorage.setItem('tiage_comments', JSON.stringify(stored));
+                recordCommentSubmission();
                 alert('Kommentar lokal gespeichert. (Server nicht erreichbar)');
                 closeCommentModal();
             }
@@ -14576,6 +14624,7 @@
             mainComments.forEach((comment, index) => {
                 const id = comment.id || comment.ID || `comment-${index}`;
                 const name = comment.Name || comment.name || 'Anonym';
+                const visitorId = comment.visitorId || comment.VisitorId || '';
                 const titel = comment.Titel || comment.titel || comment.type || '';
                 const text = comment.Kommentar || comment.kommentar || comment.text || comment.comment || '';
                 const kontext = comment.KontextID || comment.kontextId || comment.context || '';
@@ -14593,6 +14642,7 @@
                         <div class="comment-card-header">
                             <div>
                                 <span class="comment-author">${escapeHtml(name)}</span>
+                                ${visitorId ? `<span class="comment-visitor-id">#${escapeHtml(visitorId)}</span>` : ''}
                                 <span class="comment-date">${date}</span>
                             </div>
                             <span class="comment-type-badge type-${typ || 'comment'}">${getTypeBadge(typ)}</span>
@@ -14951,6 +15001,63 @@
             const div = document.createElement('div');
             div.textContent = text;
             return div.innerHTML;
+        }
+
+        // ========================================
+        // VISITOR ID & RATE LIMITING
+        // ========================================
+
+        // Get or create a unique visitor ID
+        function getOrCreateVisitorId() {
+            let visitorId = localStorage.getItem('tiage_visitor_id');
+            if (!visitorId) {
+                // Generate new visitor number (6 digits)
+                const timestamp = Date.now().toString().slice(-4);
+                const random = Math.floor(Math.random() * 100).toString().padStart(2, '0');
+                visitorId = timestamp + random;
+                localStorage.setItem('tiage_visitor_id', visitorId);
+
+                // Track visitor count
+                let visitorCount = parseInt(localStorage.getItem('tiage_visitor_count') || '0');
+                visitorCount++;
+                localStorage.setItem('tiage_visitor_count', visitorCount.toString());
+            }
+            return visitorId;
+        }
+
+        // Initialize visitor ID display
+        function initVisitorId() {
+            const visitorId = getOrCreateVisitorId();
+            // Update comment form display
+            const display = document.getElementById('visitorIdDisplay');
+            if (display) {
+                display.textContent = '#' + visitorId;
+            }
+            // Update header display
+            const headerDisplay = document.getElementById('headerVisitorId');
+            if (headerDisplay) {
+                headerDisplay.textContent = '#' + visitorId;
+            }
+        }
+
+        // Rate limiting for comments (1 per minute)
+        const COMMENT_COOLDOWN_MS = 60000; // 60 seconds
+
+        function canSubmitComment() {
+            const lastSubmit = localStorage.getItem('tiage_last_comment_time');
+            if (!lastSubmit) return { allowed: true };
+
+            const elapsed = Date.now() - parseInt(lastSubmit);
+            if (elapsed >= COMMENT_COOLDOWN_MS) {
+                return { allowed: true };
+            }
+
+            const remaining = Math.ceil((COMMENT_COOLDOWN_MS - elapsed) / 1000);
+            return { allowed: false, secondsRemaining: remaining };
+        }
+
+        function recordCommentSubmission() {
+            localStorage.setItem('tiage_last_comment_time', Date.now().toString());
         }
 
         // ========================================
