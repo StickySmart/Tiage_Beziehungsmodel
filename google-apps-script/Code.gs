@@ -91,6 +91,27 @@ function getNextVisitorId() {
 }
 
 /**
+ * Holt die aktuelle Gesamtzahl der Besucher (ohne zu erhöhen)
+ */
+function getTotalVisitors() {
+  const ss = SpreadsheetApp.getActiveSpreadsheet();
+  let configSheet = ss.getSheetByName(CONFIG_SHEET);
+
+  if (!configSheet) {
+    return 0;
+  }
+
+  const data = configSheet.getDataRange().getValues();
+  for (let i = 0; i < data.length; i++) {
+    if (data[i][0] === 'visitorCounter') {
+      // Counter zeigt auf nächste ID, also -1 für vergebene IDs
+      return (parseInt(data[i][1]) || 1) - 1;
+    }
+  }
+  return 0;
+}
+
+/**
  * Registriert einen neuen Besucher oder aktualisiert den letzten Besuch
  */
 function registerVisitor(visitorId) {
@@ -252,7 +273,14 @@ function doGet(e) {
 
     if (action === 'getVisitorId') {
       const newId = getNextVisitorId();
-      return ContentService.createTextOutput(JSON.stringify({ visitorId: newId }))
+      const total = getTotalVisitors();
+      return ContentService.createTextOutput(JSON.stringify({ visitorId: newId, totalVisitors: total }))
+        .setMimeType(ContentService.MimeType.JSON);
+    }
+
+    if (action === 'getStats') {
+      const total = getTotalVisitors();
+      return ContentService.createTextOutput(JSON.stringify({ totalVisitors: total }))
         .setMimeType(ContentService.MimeType.JSON);
     }
 

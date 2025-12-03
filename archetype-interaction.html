@@ -15017,12 +15017,33 @@
             return localStorage.getItem('tiage_visitor_id') || null;
         }
 
+        // Fetch total visitors count from server
+        async function fetchTotalVisitors() {
+            if (typeof GOOGLE_SCRIPT_URL !== 'undefined' && GOOGLE_SCRIPT_URL) {
+                try {
+                    const response = await fetch(GOOGLE_SCRIPT_URL + '?action=getStats', {
+                        method: 'GET'
+                    });
+                    const data = await response.json();
+                    return data.totalVisitors || null;
+                } catch (e) {
+                    console.log('Could not fetch stats');
+                }
+            }
+            return null;
+        }
+
         // Fetch visitor ID from server or generate local fallback
         async function fetchOrCreateVisitorId() {
             let visitorId = localStorage.getItem('tiage_visitor_id');
-            if (visitorId) return visitorId;
 
-            // Try to get from server (using GET to avoid CORS preflight)
+            // Existing visitor - just fetch stats
+            if (visitorId) {
+                const total = await fetchTotalVisitors();
+                return { visitorId, totalVisitors: total };
+            }
+
+            // Try to get new ID from server (using GET to avoid CORS preflight)
             if (typeof GOOGLE_SCRIPT_URL !== 'undefined' && GOOGLE_SCRIPT_URL) {
                 try {
                     const response = await fetch(GOOGLE_SCRIPT_URL + '?action=getVisitorId', {
@@ -15032,7 +15053,7 @@
                     if (data.visitorId) {
                         visitorId = data.visitorId;
                         localStorage.setItem('tiage_visitor_id', visitorId);
-                        return visitorId;
+                        return { visitorId, totalVisitors: data.totalVisitors || null };
                     }
                 } catch (e) {
                     console.log('Server not available, using local ID');
@@ -15044,21 +15065,31 @@
             const random = Math.floor(Math.random() * 100).toString().padStart(2, '0');
             visitorId = 'L' + timestamp + random; // L prefix = local
             localStorage.setItem('tiage_visitor_id', visitorId);
-            return visitorId;
+            return { visitorId, totalVisitors: null };
+        }
+
+        // Format visitor display text
+        function formatVisitorDisplay(visitorId, totalVisitors) {
+            if (totalVisitors && !visitorId.startsWith('L')) {
+                return '#' + visitorId + ' von ' + totalVisitors;
+            }
+            return '#' + visitorId;
         }
 
         // Initialize visitor ID display
         async function initVisitorId() {
-            const visitorId = await fetchOrCreateVisitorId();
+            const { visitorId, totalVisitors } = await fetchOrCreateVisitorId();
+            const displayText = formatVisitorDisplay(visitorId, totalVisitors);
+
             // Update comment form display
             const display = document.getElementById('visitorIdDisplay');
             if (display) {
-                display.textContent = '#' + visitorId;
+                display.textContent = displayText;
             }
             // Update header display
             const headerDisplay = document.getElementById('headerVisitorId');
             if (headerDisplay) {
-                headerDisplay.textContent = '#' + visitorId;
+                headerDisplay.textContent = displayText;
             }
         }
 
