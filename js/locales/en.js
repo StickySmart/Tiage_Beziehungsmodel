@@ -600,6 +600,39 @@ const TiageLocale_EN = {
     },
 
     // ═══════════════════════════════════════════════════════════════════════
+    // SOFT-KO TEXTS (Needs Conflicts)
+    // ═══════════════════════════════════════════════════════════════════════
+
+    softKO: {
+        title: 'Challenging Combination',
+        subtitle: 'Strong differences in core needs',
+
+        // Explanations
+        reasons: {
+            needs_conflict: 'Your core needs differ significantly',
+            dynamic_mismatch: 'The dynamic preferences are not optimal',
+            values_gap: 'Different priorities in important values'
+        },
+
+        // Constructive note
+        growth: 'With conscious communication, this can work.',
+
+        // Need-specific
+        conflictLabel: 'Conflict Potential',
+        needsLabel: 'Different Needs'
+    },
+
+    // ═══════════════════════════════════════════════════════════════════════
+    // P↔S VALIDATION (Primary-Secondary)
+    // ═══════════════════════════════════════════════════════════════════════
+
+    psValidation: {
+        complementary: 'Primary and Secondary complement each other well',
+        conflicting: 'Primary and Secondary are in tension',
+        bonusApplied: 'Bonus for complementary P↔S combination'
+    },
+
+    // ═══════════════════════════════════════════════════════════════════════
     // DIMENSION LABELS
     // ═══════════════════════════════════════════════════════════════════════
 
