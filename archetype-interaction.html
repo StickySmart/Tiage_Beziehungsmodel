@@ -5590,21 +5590,20 @@
             const newArchetype = archetypeOrder[currentDefinitionIndex];
             showArchetypeInfoByType(newArchetype);
 
-            // Sync the new archetype to the dropdown selection
+            // Sync dropdown and dispatch change event to trigger UI updates
             if (currentDefinitionPerson === 'ich') {
-                document.getElementById('ichSelect').value = newArchetype;
-                document.getElementById('mobileIchSelect').value = newArchetype;
-                currentArchetype = newArchetype;
-                mobileIchArchetype = newArchetype;
+                const ichSelect = document.getElementById('ichSelect');
+                if (ichSelect) {
+                    ichSelect.value = newArchetype;
+                    ichSelect.dispatchEvent(new Event('change', { bubbles: true }));
+                }
             } else if (currentDefinitionPerson === 'partner') {
-                document.getElementById('partnerSelect').value = newArchetype;
-                document.getElementById('mobilePartnerSelect').value = newArchetype;
-                selectedPartner = newArchetype;
-                mobilePartnerArchetype = newArchetype;
+                const partnerSelect = document.getElementById('partnerSelect');
+                if (partnerSelect) {
+                    partnerSelect.value = newArchetype;
+                    partnerSelect.dispatchEvent(new Event('change', { bubbles: true }));
+                }
             }
-            updateComparisonView();
-            // GFK automatisch aus Archetypen-Matching ableiten
-            updateGfkFromArchetypes();
         }
 
         // Alias for button onclick
@@ -5759,6 +5758,7 @@
             const definitionLabel = TiageI18n.t('archetypeModal.definition', 'Definition');
             document.getElementById('definitionModalTitle').textContent = `${localizedArch.name} - ${definitionLabel}`;
             document.getElementById('definitionModalBody').innerHTML = modalContent;
+            document.getElementById('definitionModalBody').scrollTop = 0;
         }
 
         function navigateDefinitionToIndex(index) {
@@ -5766,21 +5766,20 @@
             const newArchetype = archetypeOrder[index];
             showArchetypeInfoByType(newArchetype);
 
-            // Sync the new archetype to the dropdown selection
+            // Sync dropdown and dispatch change event to trigger UI updates
             if (currentDefinitionPerson === 'ich') {
-                document.getElementById('ichSelect').value = newArchetype;
-                document.getElementById('mobileIchSelect').value = newArchetype;
-                currentArchetype = newArchetype;
-                mobileIchArchetype = newArchetype;
+                const ichSelect = document.getElementById('ichSelect');
+                if (ichSelect) {
+                    ichSelect.value = newArchetype;
+                    ichSelect.dispatchEvent(new Event('change', { bubbles: true }));
+                }
             } else if (currentDefinitionPerson === 'partner') {
-                document.getElementById('partnerSelect').value = newArchetype;
-                document.getElementById('mobilePartnerSelect').value = newArchetype;
-                selectedPartner = newArchetype;
-                mobilePartnerArchetype = newArchetype;
+                const partnerSelect = document.getElementById('partnerSelect');
+                if (partnerSelect) {
+                    partnerSelect.value = newArchetype;
+                    partnerSelect.dispatchEvent(new Event('change', { bubbles: true }));
+                }
             }
-            updateComparisonView();
-            // GFK automatisch aus Archetypen-Matching ableiten
-            updateGfkFromArchetypes();
         }
 
         function confirmDefinitionSelection() {
