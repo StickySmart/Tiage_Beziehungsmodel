@@ -5582,43 +5582,6 @@
             }
         }
 
-        // Helper function to sync dropdown selection with dispatched change event
-        function syncDropdownSelection(newArchetype) {
-            console.log('[DEBUG] syncDropdownSelection called with:', newArchetype, 'person:', currentDefinitionPerson);
-            if (currentDefinitionPerson === 'ich') {
-                const ichSelect = document.getElementById('ichSelect');
-                const mobileIchSelect = document.getElementById('mobileIchSelect');
-                currentArchetype = newArchetype;
-                mobileIchArchetype = newArchetype;
-                if (ichSelect) {
-                    ichSelect.value = newArchetype;
-                    // Dispatch change event to trigger all UI updates
-                    ichSelect.dispatchEvent(new Event('change', { bubbles: true }));
-                }
-                if (mobileIchSelect) {
-                    mobileIchSelect.value = newArchetype;
-                }
-            } else if (currentDefinitionPerson === 'partner') {
-                const partnerSelect = document.getElementById('partnerSelect');
-                const mobilePartnerSelect = document.getElementById('mobilePartnerSelect');
-                selectedPartner = newArchetype;
-                mobilePartnerArchetype = newArchetype;
-                if (partnerSelect) {
-                    partnerSelect.value = newArchetype;
-                    // Dispatch change event to trigger all UI updates
-                    partnerSelect.dispatchEvent(new Event('change', { bubbles: true }));
-                }
-                if (mobilePartnerSelect) {
-                    mobilePartnerSelect.value = newArchetype;
-                }
-            } else {
-                // Fallback: if no person specified, still update the view
-                console.log('[DEBUG] No valid currentDefinitionPerson, updating view directly');
-                updateComparisonView();
-                updateGfkFromArchetypes();
-            }
-        }
-
         function navigateDefinition(direction) {
             currentDefinitionIndex += direction;
             if (currentDefinitionIndex < 0) currentDefinitionIndex = archetypeOrder.length - 1;
@@ -5626,7 +5589,21 @@
 
             const newArchetype = archetypeOrder[currentDefinitionIndex];
             showArchetypeInfoByType(newArchetype);
-            syncDropdownSelection(newArchetype);
+
+            // Sync dropdown and dispatch change event to trigger UI updates
+            if (currentDefinitionPerson === 'ich') {
+                const ichSelect = document.getElementById('ichSelect');
+                if (ichSelect) {
+                    ichSelect.value = newArchetype;
+                    ichSelect.dispatchEvent(new Event('change', { bubbles: true }));
+                }
+            } else if (currentDefinitionPerson === 'partner') {
+                const partnerSelect = document.getElementById('partnerSelect');
+                if (partnerSelect) {
+                    partnerSelect.value = newArchetype;
+                    partnerSelect.dispatchEvent(new Event('change', { bubbles: true }));
+                }
+            }
         }
 
         // Alias for button onclick
@@ -5635,7 +5612,6 @@
         }
 
         function showArchetypeInfoByType(archetypeId) {
-            console.log('[DEBUG] showArchetypeInfoByType called with:', archetypeId);
             if (!data || !data.archetypes || !data.archetypes[archetypeId]) {
                 console.error('Data not available for archetype:', archetypeId);
                 return;
@@ -5643,7 +5619,6 @@
 
             const arch = data.archetypes[archetypeId];
             const def = archetypeDescriptions[archetypeId];
-            console.log('[DEBUG] arch:', arch?.name, 'def:', def?.name);
 
             // Get localized archetype data from i18n (with fallback to hardcoded def)
             const localizedArch = {
@@ -5781,23 +5756,30 @@
             `;
 
             const definitionLabel = TiageI18n.t('archetypeModal.definition', 'Definition');
-            console.log('[DEBUG] Updating modal title to:', `${localizedArch.name} - ${definitionLabel}`);
             document.getElementById('definitionModalTitle').textContent = `${localizedArch.name} - ${definitionLabel}`;
             document.getElementById('definitionModalBody').innerHTML = modalContent;
-            // Scroll modal body to top when content changes
             document.getElementById('definitionModalBody').scrollTop = 0;
-            console.log('[DEBUG] Modal content updated for:', archetypeId);
         }
 
         function navigateDefinitionToIndex(index) {
-            console.log('[DEBUG] navigateDefinitionToIndex called with index:', index);
             currentDefinitionIndex = index;
             const newArchetype = archetypeOrder[index];
-            console.log('[DEBUG] newArchetype:', newArchetype, 'archetypeOrder:', archetypeOrder);
             showArchetypeInfoByType(newArchetype);
 
-            // Sync the new archetype to the dropdown selection
-            syncDropdownSelection(newArchetype);
+            // Sync dropdown and dispatch change event to trigger UI updates
+            if (currentDefinitionPerson === 'ich') {
+                const ichSelect = document.getElementById('ichSelect');
+                if (ichSelect) {
+                    ichSelect.value = newArchetype;
+                    ichSelect.dispatchEvent(new Event('change', { bubbles: true }));
+                }
+            } else if (currentDefinitionPerson === 'partner') {
+                const partnerSelect = document.getElementById('partnerSelect');
+                if (partnerSelect) {
+                    partnerSelect.value = newArchetype;
+                    partnerSelect.dispatchEvent(new Event('change', { bubbles: true }));
+                }
+            }
         }
 
         function confirmDefinitionSelection() {
