@@ -360,6 +360,30 @@
             font-size: var(--font-lg);
         }
 
+        .comments-actions-bar {
+            padding: 12px 20px;
+            background: var(--bg-secondary);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .new-comment-btn {
+            width: 100%;
+            padding: 12px 20px;
+            background: linear-gradient(135deg, var(--primary), #3a7bc8);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: var(--font-sm);
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .new-comment-btn:hover {
+            background: linear-gradient(135deg, #3a7bc8, var(--primary));
+            transform: translateY(-1px);
+        }
+
         .comments-search-container {
             padding: 15px 20px;
             border-bottom: 1px solid var(--border);
