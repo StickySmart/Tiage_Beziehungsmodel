@@ -2,10 +2,15 @@
  * TIAGE PROFILE STORE
  *
  * Kompositions-basiertes Profil-System mit LocalForage-Caching.
- * Generiert 648 Profile aus Basis-Komponenten:
- * - 8 Archetypen × 9 P/S-Gender × 4 Dominanz × 3 Orientierung
+ * Generiert 1248 Profile aus Basis-Komponenten:
+ * - 8 Archetypen × 13 P/S-Gender × 4 Dominanz × 3 Orientierung
  *
- * Statt 648 vollständige Profile im DOM zu laden, werden Profile
+ * P/S-Gender Kombinationen (13):
+ * - Mann: cis, trans, nonbinaer, fluid, unsicher (5)
+ * - Frau: cis, trans, nonbinaer, fluid, unsicher (5)
+ * - Inter: nonbinaer, fluid, unsicher (3)
+ *
+ * Statt 1248 vollständige Profile im DOM zu laden, werden Profile
  * bei Bedarf komponiert und in IndexedDB gecacht.
  */
 
@@ -100,6 +105,49 @@ var TiageProfileStore = (function() {
             osho: 'Ehrliche Selbsterforschung. Der Mut zu sagen "Ich weiß es noch nicht".'
         },
 
+        'mann-nonbinaer': {
+            key: 'mann-nonbinaer',
+            label: 'Nonbinär (AMAB)',
+            effectiveIdentity: 'nonbinaer',
+            body: 'mann',
+            identity: 'nonbinaer',
+            description: 'Männlicher Körper (AMAB), nonbinäre Identität',
+
+            modifiers: {
+                emotionaleOffenheit: 0.1,       // Offener
+                kommunikationsstil: 0,          // Neutral
+                konfliktverhalten: 0,           // Neutral
+                familieWichtigkeit: -0.05,      // Etwas niedriger
+                traditionenWichtigkeit: -0.2,   // Weniger traditionell
+                openness: 0.25                  // Hohe Offenheit
+            },
+
+            pirsig: 'Jenseits binärer statischer Muster - dynamische Qualität mit männlichem Körper.',
+            osho: 'Die natürliche Vielfalt des Lebens. Authentizität jenseits der Körperform.'
+        },
+
+        'mann-fluid': {
+            key: 'mann-fluid',
+            label: 'Fluid (AMAB)',
+            effectiveIdentity: 'fluid',
+            body: 'mann',
+            identity: 'fluid',
+            description: 'Männlicher Körper (AMAB), fluide Identität',
+
+            modifiers: {
+                emotionaleOffenheit: 0.15,      // Offener
+                kommunikationsstil: 0,          // Neutral
+                konfliktverhalten: 0,           // Neutral
+                familieWichtigkeit: -0.05,      // Etwas niedriger
+                traditionenWichtigkeit: -0.25,  // Deutlich weniger traditionell
+                openness: 0.3,                  // Sehr hohe Offenheit
+                flexibility: 0.2                // Hohe Flexibilität
+            },
+
+            pirsig: 'Maximale dynamische Qualität - Identität als Prozess, nicht Zustand.',
+            osho: 'Wie der Fluss - nie zweimal dasselbe, immer authentisch.'
+        },
+
         // ─────────────────────────────────────────────────────────────────────
         // FRAU (P) Kombinationen
         // ─────────────────────────────────────────────────────────────────────
@@ -165,6 +213,49 @@ var TiageProfileStore = (function() {
 
             pirsig: 'Im Übergang zwischen statischer und dynamischer Qualität.',
             osho: 'Ehrliche Selbsterforschung. Der Mut zu sagen "Ich weiß es noch nicht".'
+        },
+
+        'frau-nonbinaer': {
+            key: 'frau-nonbinaer',
+            label: 'Nonbinär (AFAB)',
+            effectiveIdentity: 'nonbinaer',
+            body: 'frau',
+            identity: 'nonbinaer',
+            description: 'Weiblicher Körper (AFAB), nonbinäre Identität',
+
+            modifiers: {
+                emotionaleOffenheit: 0.1,       // Offener
+                kommunikationsstil: 0,          // Neutral
+                konfliktverhalten: 0,           // Neutral
+                familieWichtigkeit: -0.05,      // Etwas niedriger
+                traditionenWichtigkeit: -0.2,   // Weniger traditionell
+                openness: 0.25                  // Hohe Offenheit
+            },
+
+            pirsig: 'Jenseits binärer statischer Muster - dynamische Qualität mit weiblichem Körper.',
+            osho: 'Die natürliche Vielfalt des Lebens. Authentizität jenseits der Körperform.'
+        },
+
+        'frau-fluid': {
+            key: 'frau-fluid',
+            label: 'Fluid (AFAB)',
+            effectiveIdentity: 'fluid',
+            body: 'frau',
+            identity: 'fluid',
+            description: 'Weiblicher Körper (AFAB), fluide Identität',
+
+            modifiers: {
+                emotionaleOffenheit: 0.15,      // Offener
+                kommunikationsstil: 0,          // Neutral
+                konfliktverhalten: 0,           // Neutral
+                familieWichtigkeit: -0.05,      // Etwas niedriger
+                traditionenWichtigkeit: -0.25,  // Deutlich weniger traditionell
+                openness: 0.3,                  // Sehr hohe Offenheit
+                flexibility: 0.2                // Hohe Flexibilität
+            },
+
+            pirsig: 'Maximale dynamische Qualität - Identität als Prozess, nicht Zustand.',
+            osho: 'Wie der Fluss - nie zweimal dasselbe, immer authentisch.'
         },
 
         // ─────────────────────────────────────────────────────────────────────
@@ -486,7 +577,7 @@ var TiageProfileStore = (function() {
          */
         getSecondaryOptionsForPrimary: function(pGender) {
             if (pGender === 'mann' || pGender === 'frau') {
-                return ['cis', 'trans', 'unsicher'];
+                return ['cis', 'trans', 'nonbinaer', 'fluid', 'unsicher'];
             }
             if (pGender === 'inter') {
                 return ['nonbinaer', 'fluid', 'unsicher'];
@@ -511,14 +602,14 @@ var TiageProfileStore = (function() {
             if (!db) {
                 return Promise.resolve({
                     cachedProfiles: 0,
-                    maxProfiles: 8 * 9 * 4 * 3,
+                    maxProfiles: 8 * 13 * 4 * 3,
                     localforageAvailable: false
                 });
             }
             return db.length().then(function(count) {
                 return {
                     cachedProfiles: count,
-                    maxProfiles: 8 * 9 * 4 * 3,  // 864
+                    maxProfiles: 8 * 13 * 4 * 3,  // 1248
                     localforageAvailable: true
                 };
             });
