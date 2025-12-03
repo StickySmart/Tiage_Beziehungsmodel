@@ -2,7 +2,7 @@
  * TIAGE PROFILE STORE
  *
  * Kompositions-basiertes Profil-System mit LocalForage-Caching.
- * Generiert 1248 Profile aus Basis-Komponenten:
+ * Generiert 1248 einzigartige Profile aus Basis-Komponenten:
  * - 8 Archetypen × 13 P/S-Gender × 4 Dominanz × 3 Orientierung
  *
  * P/S-Gender Kombinationen (13):
@@ -12,6 +12,13 @@
  *
  * Statt 1248 vollständige Profile im DOM zu laden, werden Profile
  * bei Bedarf komponiert und in IndexedDB gecacht.
+ *
+ * KOMPOSITION beinhaltet:
+ * - Basis-Attribute (defaultInferences aus Archetyp)
+ * - Attribut-Modifikatoren (Gender + Dominanz + Orientierung)
+ * - Kategorie-Scores A-F (Basis + categoryModifiers)
+ *   A: Beziehungsphilosophie, B: Werte-Alignment, C: Nähe-Distanz
+ *   D: Autonomie, E: Kommunikation, F: Soziale Kompatibilität
  */
 
 var TiageProfileStore = (function() {
@@ -57,6 +64,18 @@ var TiageProfileStore = (function() {
                 traditionenWichtigkeit: 0.05    // Etwas traditioneller
             },
 
+            // Kategorie-Score-Modifikatoren (A-F, Werte 0-100)
+            // A: Beziehungsphilosophie, B: Werte-Alignment, C: Nähe-Distanz
+            // D: Autonomie, E: Kommunikation, F: Soziale Kompatibilität
+            categoryModifiers: {
+                A: 0,       // Neutral
+                B: +2,      // Etwas traditioneller in Werten
+                C: -2,      // Tendenz zu mehr Distanz
+                D: +3,      // Höhere Autonomie (sozialisiert)
+                E: -4,      // Weniger emotionale Offenheit
+                F: +3       // Gesellschaftlich normativ
+            },
+
             // Pirsig/Osho Interpretation
             pirsig: 'Statische Gender-Identität im Einklang mit biologischem Körper.',
             osho: 'Traditionelle Yang-Energie ohne inneren Konflikt zwischen Körper und Identität.'
@@ -77,6 +96,15 @@ var TiageProfileStore = (function() {
                 familieWichtigkeit: 0,          // Neutral
                 traditionenWichtigkeit: -0.15,  // Weniger traditionell
                 openness: 0.2                   // Höhere Offenheit (Big Five)
+            },
+
+            categoryModifiers: {
+                A: +2,      // Reflektierter über Beziehungsformen
+                B: -3,      // Weniger traditionelle Werte
+                C: +2,      // Offener für Nähe
+                D: +5,      // Hohe Autonomie durch Transition
+                E: +6,      // Hohe emotionale Intelligenz durch Selbstreflexion
+                F: -5       // Gesellschaftlich komplexer
             },
 
             pirsig: 'Dynamische Qualität - Überwindung statischer Geschlechternormen.',
@@ -101,6 +129,15 @@ var TiageProfileStore = (function() {
                 neuroticism: 0.1                // Etwas höher (Identitäts-Exploration)
             },
 
+            categoryModifiers: {
+                A: +1,      // In Exploration
+                B: -2,      // Weniger sicher in Werten
+                C: 0,       // Variabel
+                D: +2,      // Entwickelt Autonomie
+                E: +3,      // Reflektiert
+                F: -2       // Unsicher im sozialen Kontext
+            },
+
             pirsig: 'Im Übergang zwischen statischer und dynamischer Qualität.',
             osho: 'Ehrliche Selbsterforschung. Der Mut zu sagen "Ich weiß es noch nicht".'
         },
@@ -120,6 +157,15 @@ var TiageProfileStore = (function() {
                 familieWichtigkeit: -0.05,      // Etwas niedriger
                 traditionenWichtigkeit: -0.2,   // Weniger traditionell
                 openness: 0.25                  // Hohe Offenheit
+            },
+
+            categoryModifiers: {
+                A: +3,      // Offener für verschiedene Beziehungsformen
+                B: -4,      // Weniger traditionell
+                C: 0,       // Neutral
+                D: +4,      // Autonom durch Selbstfindung
+                E: +4,      // Reflektierter
+                F: -4       // Gesellschaftlich weniger normativ
             },
 
             pirsig: 'Jenseits binärer statischer Muster - dynamische Qualität mit männlichem Körper.',
@@ -142,6 +188,15 @@ var TiageProfileStore = (function() {
                 traditionenWichtigkeit: -0.25,  // Deutlich weniger traditionell
                 openness: 0.3,                  // Sehr hohe Offenheit
                 flexibility: 0.2                // Hohe Flexibilität
+            },
+
+            categoryModifiers: {
+                A: +4,      // Sehr offen für Beziehungsformen
+                B: -5,      // Sehr wenig traditionell
+                C: +1,      // Flexibel
+                D: +5,      // Hohe Autonomie
+                E: +5,      // Sehr reflektiert
+                F: -5       // Gesellschaftlich komplex
             },
 
             pirsig: 'Maximale dynamische Qualität - Identität als Prozess, nicht Zustand.',
@@ -168,6 +223,15 @@ var TiageProfileStore = (function() {
                 traditionenWichtigkeit: 0.05    // Etwas traditioneller
             },
 
+            categoryModifiers: {
+                A: 0,       // Neutral
+                B: +2,      // Etwas traditioneller in Werten
+                C: +3,      // Näher/beziehungsorientierter
+                D: -2,      // Oft weniger autonomie-sozialisiert
+                E: +4,      // Emotionaler, kommunikativer
+                F: +3       // Gesellschaftlich normativ
+            },
+
             pirsig: 'Statische Gender-Identität im Einklang mit biologischem Körper.',
             osho: 'Traditionelle Yin-Energie ohne inneren Konflikt zwischen Körper und Identität.'
         },
@@ -187,6 +251,15 @@ var TiageProfileStore = (function() {
                 familieWichtigkeit: 0,          // Neutral
                 traditionenWichtigkeit: -0.15,  // Weniger traditionell
                 openness: 0.2                   // Höhere Offenheit
+            },
+
+            categoryModifiers: {
+                A: +2,      // Reflektierter über Beziehungsformen
+                B: -3,      // Weniger traditionelle Werte
+                C: -1,      // Etwas distanzierter
+                D: +5,      // Hohe Autonomie durch Transition
+                E: +3,      // Durch Selbstreflexion
+                F: -5       // Gesellschaftlich komplexer
             },
 
             pirsig: 'Dynamische Qualität - Überwindung statischer Geschlechternormen.',
@@ -211,6 +284,15 @@ var TiageProfileStore = (function() {
                 neuroticism: 0.1                // Etwas höher
             },
 
+            categoryModifiers: {
+                A: +1,      // In Exploration
+                B: -2,      // Weniger sicher in Werten
+                C: +1,      // Tendiert zu Nähe
+                D: +2,      // Entwickelt Autonomie
+                E: +4,      // Reflektiert, kommunikativ
+                F: -2       // Unsicher im sozialen Kontext
+            },
+
             pirsig: 'Im Übergang zwischen statischer und dynamischer Qualität.',
             osho: 'Ehrliche Selbsterforschung. Der Mut zu sagen "Ich weiß es noch nicht".'
         },
@@ -230,6 +312,15 @@ var TiageProfileStore = (function() {
                 familieWichtigkeit: -0.05,      // Etwas niedriger
                 traditionenWichtigkeit: -0.2,   // Weniger traditionell
                 openness: 0.25                  // Hohe Offenheit
+            },
+
+            categoryModifiers: {
+                A: +3,      // Offener für verschiedene Beziehungsformen
+                B: -4,      // Weniger traditionell
+                C: 0,       // Neutral
+                D: +4,      // Autonom durch Selbstfindung
+                E: +4,      // Reflektierter
+                F: -4       // Gesellschaftlich weniger normativ
             },
 
             pirsig: 'Jenseits binärer statischer Muster - dynamische Qualität mit weiblichem Körper.',
@@ -252,6 +343,15 @@ var TiageProfileStore = (function() {
                 traditionenWichtigkeit: -0.25,  // Deutlich weniger traditionell
                 openness: 0.3,                  // Sehr hohe Offenheit
                 flexibility: 0.2                // Hohe Flexibilität
+            },
+
+            categoryModifiers: {
+                A: +4,      // Sehr offen für Beziehungsformen
+                B: -5,      // Sehr wenig traditionell
+                C: +1,      // Flexibel
+                D: +5,      // Hohe Autonomie
+                E: +5,      // Sehr reflektiert
+                F: -5       // Gesellschaftlich komplex
             },
 
             pirsig: 'Maximale dynamische Qualität - Identität als Prozess, nicht Zustand.',
@@ -279,6 +379,15 @@ var TiageProfileStore = (function() {
                 openness: 0.25                  // Hohe Offenheit
             },
 
+            categoryModifiers: {
+                A: +4,      // Sehr offen für alternative Modelle
+                B: -5,      // Außerhalb traditioneller Normen
+                C: 0,       // Neutral
+                D: +5,      // Hohe Selbstbestimmung nötig
+                E: +4,      // Reflektiert
+                F: -6       // Gesellschaftlich am komplexesten
+            },
+
             pirsig: 'Jenseits binärer statischer Muster - reine dynamische Qualität.',
             osho: 'Die natürliche Vielfalt des Lebens. Keine Kategorie kann die Essenz erfassen.'
         },
@@ -299,6 +408,15 @@ var TiageProfileStore = (function() {
                 traditionenWichtigkeit: -0.25,  // Deutlich weniger traditionell
                 openness: 0.3,                  // Sehr hohe Offenheit
                 flexibility: 0.2                // Hohe Flexibilität
+            },
+
+            categoryModifiers: {
+                A: +5,      // Maximale Offenheit
+                B: -6,      // Maximale Distanz zu Traditionen
+                C: +1,      // Flexibel
+                D: +6,      // Höchste Autonomie
+                E: +5,      // Sehr reflektiert
+                F: -7       // Gesellschaftlich am komplexesten
             },
 
             pirsig: 'Maximale dynamische Qualität - Identität als Prozess, nicht Zustand.',
@@ -323,6 +441,15 @@ var TiageProfileStore = (function() {
                 neuroticism: 0.1                // Etwas höher
             },
 
+            categoryModifiers: {
+                A: +3,      // In Exploration
+                B: -4,      // Wenig traditionell
+                C: 0,       // Neutral
+                D: +4,      // Entwickelt Autonomie
+                E: +3,      // Reflektiert
+                F: -5       // Gesellschaftlich komplex
+            },
+
             pirsig: 'Offene Frage als Stärke - nicht jede Qualität muss kategorisiert werden.',
             osho: 'Ehrliche Selbsterforschung in einem Körper, der selbst die Binarität transzendiert.'
         }
@@ -343,6 +470,14 @@ var TiageProfileStore = (function() {
                 kritikAnnehmen: -0.1,           // Schwerer
                 introExtro: 0.1,                // Extrovertierter
                 karrierePrioritaet: 0.1         // Karriere-orientierter
+            },
+            categoryModifiers: {
+                A: +1,      // Tendenziell klarer in Beziehungsphilosophie
+                B: +2,      // Wertebewusster
+                C: -2,      // Mehr Distanz/Kontrolle
+                D: +5,      // Höhere Autonomie
+                E: -3,      // Direkter, weniger empathisch
+                F: +2       // Sozial oft erfolgreicher
             }
         },
         'submissiv': {
@@ -355,6 +490,14 @@ var TiageProfileStore = (function() {
                 kritikAnnehmen: 0.1,            // Leichter
                 introExtro: -0.1,               // Introvertierter
                 karrierePrioritaet: -0.1        // Weniger Karriere-fokus
+            },
+            categoryModifiers: {
+                A: -1,      // Anpassungsfähiger
+                B: -2,      // Flexibler bei Werten
+                C: +3,      // Mehr Nähe suchend
+                D: -5,      // Niedrigere Autonomie
+                E: +4,      // Empathischer, offener
+                F: +1       // Sozial angepasster
             }
         },
         'switch': {
@@ -365,6 +508,14 @@ var TiageProfileStore = (function() {
                 emotionaleOffenheit: 0.05,      // Leicht offener
                 flexibility: 0.15,              // Flexibler
                 openness: 0.1                   // Offener für Erfahrungen
+            },
+            categoryModifiers: {
+                A: +2,      // Flexibel in Beziehungsform
+                B: 0,       // Neutral
+                C: 0,       // Neutral
+                D: +2,      // Moderate Autonomie
+                E: +3,      // Kommunikativ über Rollenwechsel
+                F: +1       // Sozial flexibel
             }
         },
         'ausgeglichen': {
@@ -375,6 +526,14 @@ var TiageProfileStore = (function() {
                 emotionaleOffenheit: 0,         // Neutral
                 flexibility: 0,                 // Neutral
                 openness: 0                     // Neutral
+            },
+            categoryModifiers: {
+                A: 0,       // Neutral
+                B: 0,       // Neutral
+                C: 0,       // Neutral
+                D: 0,       // Neutral
+                E: 0,       // Neutral
+                F: 0        // Neutral
             }
         }
     };
@@ -389,6 +548,14 @@ var TiageProfileStore = (function() {
             modifiers: {
                 traditionenWichtigkeit: 0.1,    // Etwas traditioneller
                 openness: -0.05                 // Etwas weniger offen (statistisch)
+            },
+            categoryModifiers: {
+                A: -2,      // Traditioneller in Beziehungsphilosophie
+                B: +3,      // Traditionellere Werte
+                C: 0,       // Neutral
+                D: -2,      // Weniger Selbstfindung nötig
+                E: -1,      // Weniger reflektiert
+                F: +4       // Gesellschaftlich normativ
             }
         },
         'homosexuell': {
@@ -397,6 +564,14 @@ var TiageProfileStore = (function() {
                 traditionenWichtigkeit: -0.1,   // Weniger traditionell
                 openness: 0.1,                  // Offener
                 familieWichtigkeit: -0.05       // Familie etwas weniger wichtig
+            },
+            categoryModifiers: {
+                A: +3,      // Offener für alternative Modelle
+                B: -3,      // Weniger traditionelle Werte
+                C: +1,      // Oft näher/community-orientiert
+                D: +4,      // Coming-out erfordert Autonomie
+                E: +3,      // Reflektierter
+                F: -3       // Gesellschaftlich komplexer
             }
         },
         'bisexuell': {
@@ -405,13 +580,56 @@ var TiageProfileStore = (function() {
                 traditionenWichtigkeit: -0.1,   // Weniger traditionell
                 openness: 0.15,                 // Am offensten
                 flexibility: 0.1                // Flexibler
+            },
+            categoryModifiers: {
+                A: +4,      // Am offensten für Beziehungsformen
+                B: -4,      // Am wenigsten traditionelle Werte
+                C: 0,       // Neutral
+                D: +5,      // Höchste Selbstfindung
+                E: +4,      // Sehr reflektiert
+                F: -2       // Gesellschaftlich etwas komplex
             }
         }
     };
 
     // ════════════════════════════════════════════════════════════════════════
+    // BASIS-KATEGORIE-SCORES (aus kategorien.json)
+    // A: Beziehungsphilosophie, B: Werte-Alignment, C: Nähe-Distanz
+    // D: Autonomie, E: Kommunikation, F: Soziale Kompatibilität
+    // ════════════════════════════════════════════════════════════════════════
+
+    var baseScores = {
+        'single': { A: 66.7, B: 66.8, C: 62.2, D: 77.5, E: 68.0, F: 63.8 },
+        'duo': { A: 55.0, B: 64.3, C: 68.7, D: 49.7, E: 66.3, F: 62.2 },
+        'duo_flex': { A: 73.7, B: 73.8, C: 69.5, D: 71.5, E: 72.7, F: 66.5 },
+        'solopoly': { A: 67.5, B: 69.0, C: 58.7, D: 74.5, E: 73.3, F: 50.0 },
+        'polyamor': { A: 68.3, B: 72.0, C: 65.5, D: 70.3, E: 78.7, F: 50.7 },
+        'ra': { A: 72.0, B: 68.0, C: 62.0, D: 85.0, E: 72.0, F: 42.0 },
+        'lat': { A: 68.0, B: 72.0, C: 65.0, D: 78.0, E: 72.0, F: 68.0 },
+        'aromantisch': { A: 65.0, B: 68.0, C: 62.0, D: 78.0, E: 68.0, F: 48.0 }
+    };
+
+    // ════════════════════════════════════════════════════════════════════════
     // PROFIL-KOMPOSITION
     // ════════════════════════════════════════════════════════════════════════
+
+    /**
+     * Wendet Kategorie-Score-Modifikatoren auf Basis-Scores an
+     * @param {object} scores - Die Basis-Scores { A, B, C, D, E, F }
+     * @param {object} categoryMods - Die Modifikatoren { A, B, C, D, E, F }
+     */
+    function applyScoreModifiers(scores, categoryMods) {
+        if (!categoryMods) return;
+
+        var categories = ['A', 'B', 'C', 'D', 'E', 'F'];
+        for (var i = 0; i < categories.length; i++) {
+            var cat = categories[i];
+            if (typeof categoryMods[cat] === 'number') {
+                // Scores auf 0-100 begrenzen
+                scores[cat] = Math.max(0, Math.min(100, scores[cat] + categoryMods[cat]));
+            }
+        }
+    }
 
     /**
      * Komponiert ein vollständiges Profil aus Basis + Modifikatoren
@@ -435,6 +653,33 @@ var TiageProfileStore = (function() {
         // Profil-Schlüssel
         var profileKey = [archetypeKey, genderKey, dominanceKey, orientationKey].join('-');
 
+        // Kategorie-Scores komponieren (A-F)
+        var archetypeScores = baseScores[archetypeKey];
+        var composedScores = null;
+
+        if (archetypeScores) {
+            // Basis-Scores kopieren
+            composedScores = {
+                A: archetypeScores.A,
+                B: archetypeScores.B,
+                C: archetypeScores.C,
+                D: archetypeScores.D,
+                E: archetypeScores.E,
+                F: archetypeScores.F
+            };
+
+            // Score-Modifikatoren anwenden (Gender + Dominanz + Orientierung)
+            applyScoreModifiers(composedScores, genderMod.categoryModifiers);
+            applyScoreModifiers(composedScores, dominanceMod.categoryModifiers);
+            applyScoreModifiers(composedScores, orientationMod.categoryModifiers);
+
+            // Auf eine Dezimalstelle runden
+            var cats = ['A', 'B', 'C', 'D', 'E', 'F'];
+            for (var i = 0; i < cats.length; i++) {
+                composedScores[cats[i]] = Math.round(composedScores[cats[i]] * 10) / 10;
+            }
+        }
+
         // Basis-Attribute aus Archetyp
         var profile = {
             key: profileKey,
@@ -448,6 +693,9 @@ var TiageProfileStore = (function() {
             body: genderMod.body || null,
             identity: genderMod.identity || null,
 
+            // Komponierte Kategorie-Scores (A-F)
+            scores: composedScores,
+
             // Attribute aus Archetyp-Defaults übernehmen
             attributes: Object.assign({}, baseArchetype.defaultInferences || {}),
 
@@ -456,7 +704,7 @@ var TiageProfileStore = (function() {
             osho: combinePhilosophy(baseArchetype.osho, orientationMod.osho)
         };
 
-        // Modifikatoren anwenden
+        // Attribut-Modifikatoren anwenden
         applyModifiers(profile.attributes, genderMod.modifiers);
         applyModifiers(profile.attributes, dominanceMod.modifiers);
         applyModifiers(profile.attributes, orientationMod.modifiers);
@@ -613,6 +861,35 @@ var TiageProfileStore = (function() {
                     localforageAvailable: true
                 };
             });
+        },
+
+        /**
+         * Gibt die Basis-Kategorie-Scores für einen Archetyp zurück
+         * @param {string} archetypeKey - z.B. 'single', 'duo'
+         * @returns {object|null} Die Basis-Scores { A, B, C, D, E, F }
+         */
+        getBaseScores: function(archetypeKey) {
+            return baseScores[archetypeKey] || null;
+        },
+
+        /**
+         * Gibt alle Basis-Scores für alle Archetypen zurück
+         * @returns {object} Alle Basis-Scores
+         */
+        getAllBaseScores: function() {
+            return baseScores;
+        },
+
+        /**
+         * Gibt alle Modifikatoren für Debugging/Inspection zurück
+         * @returns {object} { gender, dominance, orientation }
+         */
+        getAllModifiers: function() {
+            return {
+                gender: genderModifiers,
+                dominance: dominanceModifiers,
+                orientation: orientationModifiers
+            };
         }
     };
 
