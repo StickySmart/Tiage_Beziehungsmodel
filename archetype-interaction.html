@@ -16418,20 +16418,17 @@
         window.closeProfileReviewInfoModal = closeProfileReviewInfoModal;
 
         // Get Current State (Toggle-Buttons statt Checkboxen)
+        // Nur die 16 wichtigsten Attribute werden gespeichert
         function getProfileReviewState() {
             return {
-                // LEBENSPLANUNG
+                // LEBENSPLANUNG (ohne: zusammen, haustiere, umzug)
                 kinder: document.getElementById('pr-kinder')?.classList.contains('active'),
                 ehe: document.getElementById('pr-ehe')?.classList.contains('active'),
-                zusammen: document.getElementById('pr-zusammen')?.classList.contains('active'),
-                haustiere: document.getElementById('pr-haustiere')?.classList.contains('active'),
-                umzug: document.getElementById('pr-umzug')?.value,
                 familie: document.getElementById('pr-familie')?.value,
                 // FINANZEN & KARRIERE
                 finanzen: document.getElementById('pr-finanzen')?.value,
                 karriere: document.getElementById('pr-karriere')?.value,
-                // KOMMUNIKATION
-                gespraech: document.getElementById('pr-gespraech')?.value,
+                // KOMMUNIKATION (ohne: gespraech)
                 emotional: document.getElementById('pr-emotional')?.value,
                 konflikt: document.getElementById('pr-konflikt')?.value,
                 // SOZIALES
@@ -16445,32 +16442,25 @@
                 // WERTE
                 religion: document.getElementById('pr-religion')?.value,
                 tradition: document.getElementById('pr-tradition')?.value,
-                umwelt: document.getElementById('pr-umwelt')?.value,
-                // PRAKTISCHES
-                ordnung: document.getElementById('pr-ordnung')?.value,
-                reise: document.getElementById('pr-reise')?.value
+                umwelt: document.getElementById('pr-umwelt')?.value
+                // PRAKTISCHES - nicht verdrahtet (ordnung, reise)
             };
         }
 
-        // Reset Profile Review
+        // Reset Profile Review - nur die 16 wichtigsten Attribute
         function resetProfileReview() {
             if (confirm('Alle Änderungen zurücksetzen und Standard-Werte wiederherstellen?')) {
-                // Reload from initial state (Toggle-Buttons)
+                // Reload from initial state (Toggle-Buttons - nur kinder, ehe)
                 if (profileReviewInitialState.kinder !== undefined) {
-                    // LEBENSPLANUNG - Toggle-Buttons
                     setProfileBtnState('pr-kinder', profileReviewInitialState.kinder);
                     setProfileBtnState('pr-ehe', profileReviewInitialState.ehe);
-                    setProfileBtnState('pr-zusammen', profileReviewInitialState.zusammen);
-                    setProfileBtnState('pr-haustiere', profileReviewInitialState.haustiere);
                 }
 
-                // Alle Slider zurücksetzen
+                // Verdrahtete Slider zurücksetzen (ohne: umzug, gespraech, ordnung, reise)
                 var sliders = [
-                    {id: 'pr-umzug', valueId: 'pr-umzug-value', key: 'umzug'},
                     {id: 'pr-familie', valueId: 'pr-familie-value', key: 'familie'},
                     {id: 'pr-finanzen', valueId: 'pr-finanzen-value', key: 'finanzen'},
                     {id: 'pr-karriere', valueId: 'pr-karriere-value', key: 'karriere'},
-                    {id: 'pr-gespraech', valueId: 'pr-gespraech-value', key: 'gespraech'},
                     {id: 'pr-emotional', valueId: 'pr-emotional-value', key: 'emotional'},
                     {id: 'pr-konflikt', valueId: 'pr-konflikt-value', key: 'konflikt'},
                     {id: 'pr-introextro', valueId: 'pr-introextro-value', key: 'introextro'},
@@ -16481,9 +16471,7 @@
                     {id: 'pr-sex', valueId: 'pr-sex-value', key: 'sex'},
                     {id: 'pr-religion', valueId: 'pr-religion-value', key: 'religion'},
                     {id: 'pr-tradition', valueId: 'pr-tradition-value', key: 'tradition'},
-                    {id: 'pr-umwelt', valueId: 'pr-umwelt-value', key: 'umwelt'},
-                    {id: 'pr-ordnung', valueId: 'pr-ordnung-value', key: 'ordnung'},
-                    {id: 'pr-reise', valueId: 'pr-reise-value', key: 'reise'}
+                    {id: 'pr-umwelt', valueId: 'pr-umwelt-value', key: 'umwelt'}
                 ];
 
                 sliders.forEach(function(s) {
