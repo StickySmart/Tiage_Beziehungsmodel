@@ -17,7 +17,7 @@ docs/
 │   ├── pirsig.md          ← Robert M. Pirsig (Logos)
 │   ├── osho.md            ← OSHO (Pathos)
 │   ├── tiage-synthesis.md ← Tiages Verbindung beider
-│   ├── pathos-logos.md    ← Die 40:60 Gewichtung
+│   ├── pathos-logos.md    ← Die 75:25 Gewichtung
 │   └── resonance.md       ← Resonanz als Meta-Dimension
 │
 └── legal/                 ← Rechtliche Dokumente
@@ -56,12 +56,12 @@ docs/
 ### Qualitätsindex
 
 ```
-Q = [(A × 0.40) + (O × 0.25) + (D × 0.20) + (G × 0.15)] × R
+Q = [(O × 0.40) + (A × 0.25) + (D × 0.20) + (G × 0.15)] × R
 ```
 
 Wobei:
-- **A** = Archetyp-Score (0-100) - Beziehungsphilosophie
 - **O** = Orientierungs-Score (0-100) - Sexuelle Kompatibilität
+- **A** = Archetyp-Score (0-100) - Beziehungsphilosophie
 - **D** = Dominanz-Score (0-100) - Energetische Dynamik
 - **G** = Geschlechts-Score (0-100) - Gender-Chemie
 - **R** = Resonanz-Faktor (0.9-1.1) - Meta-Modulator
