@@ -5933,82 +5933,59 @@
     color: white;
 }
 
-/* Slider Attribute */
-.profile-review-slider-attribute {
+/* 3er Toggle-Button Attribut */
+.profile-review-triple-attribute {
     background: var(--bg-dark);
     border-radius: 8px;
     padding: 12px;
     margin-bottom: 8px;
 }
 
-.profile-review-slider-header {
+.profile-review-triple-header {
     display: flex;
     align-items: center;
     gap: 8px;
     margin-bottom: 10px;
 }
 
-.profile-review-slider-title {
+.profile-review-triple-title {
     font-size: 13px;
     color: var(--text-primary);
     font-weight: 500;
     flex: 1;
 }
 
-/* Slider Labels - Links und Rechts */
-.profile-review-slider-labels {
-    display: flex;
-    justify-content: space-between;
-    font-size: 10px;
-    color: var(--text-muted);
-    margin-bottom: 4px;
+/* 3er Button Gruppe */
+.profile-review-triple-buttons {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 6px;
 }
 
-/* Zahlenwert Badge */
-.profile-review-slider-value {
-    font-weight: 700;
-    color: white;
-    min-width: 28px;
-    text-align: center;
-    font-size: 12px;
-    background: var(--primary);
-    padding: 3px 8px;
-    border-radius: 10px;
-}
-
-.profile-review-range {
-    width: 100%;
-    height: 6px;
-    background: var(--bg-card);
-    outline: none;
-    border-radius: 3px;
-    -webkit-appearance: none;
+.profile-review-triple-btn {
+    padding: 8px 4px;
+    border-radius: 6px;
     border: 1px solid var(--border);
-}
-
-.profile-review-range::-webkit-slider-thumb {
-    -webkit-appearance: none;
-    width: 16px;
-    height: 16px;
-    background: var(--primary);
-    border-radius: 50%;
+    background: var(--bg-card);
+    color: var(--text-muted);
+    font-size: 11px;
+    font-weight: 500;
     cursor: pointer;
-    transition: transform 0.2s;
-    border: 2px solid white;
-    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+    transition: all 0.2s ease;
+    text-align: center;
 }
 
-.profile-review-range::-webkit-slider-thumb:hover {
-    transform: scale(1.15);
+.profile-review-triple-btn:hover {
+    border-color: var(--primary);
+    color: var(--text-primary);
+    background: rgba(69, 123, 157, 0.1);
 }
 
-.profile-review-range::-moz-range-thumb {
-    width: 16px;
-    height: 16px;
+.profile-review-triple-btn.active {
     background: var(--primary);
-    border-radius: 50%;
-    cursor: pointer;
-    border: 2px solid white;
+    color: white;
+    border-color: var(--primary);
+    box-shadow: 0 2px 6px rgba(69, 123, 157, 0.4);
 }
 
 /* Actions Footer - Grid Style */
