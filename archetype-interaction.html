@@ -667,54 +667,53 @@
                 <div class="profile-review-category" data-category="lebensplanung">
                     <div class="profile-review-category-header">
                         <span class="profile-review-category-icon">📋</span>
-                        <span data-i18n="profileReview.categories.lebensplanung">LEBENSPLANUNG</span>
+                        <span>LEBENSPLANUNG</span>
                     </div>
-
-                    <!-- Checkbox Grid 2x2 -->
                     <div class="profile-review-checkbox-grid">
-                        <!-- Kinder -->
-                        <div class="profile-review-attribute" data-attribute="kinderWunsch" onclick="toggleCheckbox('pr-kinder')">
+                        <div class="profile-review-attribute" onclick="toggleCheckbox('pr-kinder')">
                             <input type="checkbox" class="profile-review-checkbox" id="pr-kinder" onchange="trackProfileReviewChange(); updateAttributeStyle(this)">
-                            <label for="pr-kinder" class="profile-review-label" data-i18n="profileReview.attributes.kinderWunsch">Kinder</label>
-                            <button class="profile-review-info-btn" onclick="event.stopPropagation(); showProfileReviewInfo('kinderWunsch')" title="Mehr Informationen">?</button>
+                            <label for="pr-kinder" class="profile-review-label">Kinder</label>
+                            <button class="profile-review-info-btn" onclick="event.stopPropagation(); showProfileReviewInfo('kinderWunsch')">?</button>
                         </div>
-
-                        <!-- Ehe -->
-                        <div class="profile-review-attribute" data-attribute="eheWunsch" onclick="toggleCheckbox('pr-ehe')">
+                        <div class="profile-review-attribute" onclick="toggleCheckbox('pr-ehe')">
                             <input type="checkbox" class="profile-review-checkbox" id="pr-ehe" onchange="trackProfileReviewChange(); updateAttributeStyle(this)">
-                            <label for="pr-ehe" class="profile-review-label" data-i18n="profileReview.attributes.eheWunsch">Ehe</label>
-                            <button class="profile-review-info-btn" onclick="event.stopPropagation(); showProfileReviewInfo('eheWunsch')" title="Mehr Informationen">?</button>
+                            <label for="pr-ehe" class="profile-review-label">Ehe</label>
+                            <button class="profile-review-info-btn" onclick="event.stopPropagation(); showProfileReviewInfo('eheWunsch')">?</button>
                         </div>
-
-                        <!-- Zusammenleben -->
-                        <div class="profile-review-attribute" data-attribute="wohnform" onclick="toggleCheckbox('pr-zusammen')">
+                        <div class="profile-review-attribute" onclick="toggleCheckbox('pr-zusammen')">
                             <input type="checkbox" class="profile-review-checkbox" id="pr-zusammen" onchange="trackProfileReviewChange(); updateAttributeStyle(this)">
-                            <label for="pr-zusammen" class="profile-review-label" data-i18n="profileReview.attributes.wohnform">Zusammen wohnen</label>
-                            <button class="profile-review-info-btn" onclick="event.stopPropagation(); showProfileReviewInfo('wohnform')" title="Mehr Informationen">?</button>
+                            <label for="pr-zusammen" class="profile-review-label">Zusammen wohnen</label>
+                            <button class="profile-review-info-btn" onclick="event.stopPropagation(); showProfileReviewInfo('wohnform')">?</button>
                         </div>
-
-                        <!-- Haustiere -->
-                        <div class="profile-review-attribute" data-attribute="haustiere" onclick="toggleCheckbox('pr-haustiere')">
+                        <div class="profile-review-attribute" onclick="toggleCheckbox('pr-haustiere')">
                             <input type="checkbox" class="profile-review-checkbox" id="pr-haustiere" onchange="trackProfileReviewChange(); updateAttributeStyle(this)">
-                            <label for="pr-haustiere" class="profile-review-label" data-i18n="profileReview.attributes.haustiere">Haustiere</label>
-                            <button class="profile-review-info-btn" onclick="event.stopPropagation(); showProfileReviewInfo('haustiere')" title="Mehr Informationen">?</button>
+                            <label for="pr-haustiere" class="profile-review-label">Haustiere</label>
+                            <button class="profile-review-info-btn" onclick="event.stopPropagation(); showProfileReviewInfo('haustiere')">?</button>
                         </div>
                     </div>
-
-                    <!-- Umzugsbereitschaft (Slider) -->
-                    <div class="profile-review-slider-attribute" data-attribute="umzugsbereitschaft">
+                    <div class="profile-review-slider-attribute">
                         <div class="profile-review-slider-header">
-                            <span class="profile-review-slider-title" data-i18n="profileReview.attributes.umzugsbereitschaft">Umzugsbereitschaft</span>
-                            <button class="profile-review-info-btn" onclick="showProfileReviewInfo('umzugsbereitschaft')" title="Mehr Informationen">?</button>
+                            <span class="profile-review-slider-title">Umzugsbereitschaft</span>
+                            <span class="profile-review-slider-value" id="pr-umzug-value">5</span>
+                            <button class="profile-review-info-btn" onclick="showProfileReviewInfo('umzugsbereitschaft')">?</button>
                         </div>
                         <div class="profile-review-slider-labels">
-                            <span data-i18n="profileReview.slider.niedrig">Niedrig</span>
-                            <span class="profile-review-slider-value" id="pr-umzug-value">Mittel</span>
-                            <span data-i18n="profileReview.slider.hoch">Hoch</span>
+                            <span>Sesshaft</span>
+                            <span>Flexibel</span>
                         </div>
-                        <input type="range" class="profile-review-range" id="pr-umzug" min="0" max="100" value="50"
-                               oninput="updateProfileReviewSlider(this, 'pr-umzug-value', ['Niedrig', 'Mittel', 'Hoch'])"
-                               onchange="trackProfileReviewChange()">
+                        <input type="range" class="profile-review-range" id="pr-umzug" min="0" max="100" value="50" oninput="updateProfileReviewSlider(this, 'pr-umzug-value')" onchange="trackProfileReviewChange()">
+                    </div>
+                    <div class="profile-review-slider-attribute">
+                        <div class="profile-review-slider-header">
+                            <span class="profile-review-slider-title">Familie-Wichtigkeit</span>
+                            <span class="profile-review-slider-value" id="pr-familie-value">5</span>
+                            <button class="profile-review-info-btn" onclick="showProfileReviewInfo('familieWichtigkeit')">?</button>
+                        </div>
+                        <div class="profile-review-slider-labels">
+                            <span>Unwichtig</span>
+                            <span>Sehr wichtig</span>
+                        </div>
+                        <input type="range" class="profile-review-range" id="pr-familie" min="0" max="100" value="50" oninput="updateProfileReviewSlider(this, 'pr-familie-value')" onchange="trackProfileReviewChange()">
                     </div>
                 </div>
 
@@ -722,39 +721,75 @@
                 <div class="profile-review-category" data-category="finanzen">
                     <div class="profile-review-category-header">
                         <span class="profile-review-category-icon">💰</span>
-                        <span data-i18n="profileReview.categories.finanzen">FINANZEN & KARRIERE</span>
+                        <span>FINANZEN & KARRIERE</span>
                     </div>
-
-                    <!-- Finanzen (Slider) -->
-                    <div class="profile-review-slider-attribute" data-attribute="finanzen">
+                    <div class="profile-review-slider-attribute">
                         <div class="profile-review-slider-header">
-                            <span class="profile-review-slider-title" data-i18n="profileReview.attributes.finanzen">Finanzen</span>
-                            <button class="profile-review-info-btn" onclick="showProfileReviewInfo('finanzen')" title="Mehr Informationen">?</button>
+                            <span class="profile-review-slider-title">Finanzen</span>
+                            <span class="profile-review-slider-value" id="pr-finanzen-value">5</span>
+                            <button class="profile-review-info-btn" onclick="showProfileReviewInfo('finanzen')">?</button>
                         </div>
                         <div class="profile-review-slider-labels">
-                            <span data-i18n="profileReview.slider.getrennt">Getrennt</span>
-                            <span class="profile-review-slider-value" id="pr-finanzen-value">Hybrid</span>
-                            <span data-i18n="profileReview.slider.gemeinsam">Gemeinsam</span>
+                            <span>Getrennt</span>
+                            <span>Gemeinsam</span>
                         </div>
-                        <input type="range" class="profile-review-range" id="pr-finanzen" min="0" max="100" value="50"
-                               oninput="updateProfileReviewSlider(this, 'pr-finanzen-value', ['Getrennt', 'Hybrid', 'Gemeinsam'])"
-                               onchange="trackProfileReviewChange()">
+                        <input type="range" class="profile-review-range" id="pr-finanzen" min="0" max="100" value="50" oninput="updateProfileReviewSlider(this, 'pr-finanzen-value')" onchange="trackProfileReviewChange()">
                     </div>
-
-                    <!-- Karriere vs. Familie (Slider) -->
-                    <div class="profile-review-slider-attribute" data-attribute="karrierePrioritaet">
+                    <div class="profile-review-slider-attribute">
                         <div class="profile-review-slider-header">
-                            <span class="profile-review-slider-title" data-i18n="profileReview.attributes.karrierePrioritaet">Karriere vs. Familie</span>
-                            <button class="profile-review-info-btn" onclick="showProfileReviewInfo('karrierePrioritaet')" title="Mehr Informationen">?</button>
+                            <span class="profile-review-slider-title">Karriere-Priorität</span>
+                            <span class="profile-review-slider-value" id="pr-karriere-value">5</span>
+                            <button class="profile-review-info-btn" onclick="showProfileReviewInfo('karrierePrioritaet')">?</button>
                         </div>
                         <div class="profile-review-slider-labels">
-                            <span data-i18n="profileReview.slider.familie">Familie</span>
-                            <span class="profile-review-slider-value" id="pr-karriere-value">Balance</span>
-                            <span data-i18n="profileReview.slider.karriere">Karriere</span>
+                            <span>Familie</span>
+                            <span>Karriere</span>
                         </div>
-                        <input type="range" class="profile-review-range" id="pr-karriere" min="0" max="100" value="50"
-                               oninput="updateProfileReviewSlider(this, 'pr-karriere-value', ['Familie', 'Balance', 'Karriere'])"
-                               onchange="trackProfileReviewChange()">
+                        <input type="range" class="profile-review-range" id="pr-karriere" min="0" max="100" value="50" oninput="updateProfileReviewSlider(this, 'pr-karriere-value')" onchange="trackProfileReviewChange()">
+                    </div>
+                </div>
+
+                <!-- KOMMUNIKATION -->
+                <div class="profile-review-category" data-category="kommunikation">
+                    <div class="profile-review-category-header">
+                        <span class="profile-review-category-icon">💬</span>
+                        <span>KOMMUNIKATION</span>
+                    </div>
+                    <div class="profile-review-slider-attribute">
+                        <div class="profile-review-slider-header">
+                            <span class="profile-review-slider-title">Gesprächsbedürfnis</span>
+                            <span class="profile-review-slider-value" id="pr-gespraech-value">5</span>
+                            <button class="profile-review-info-btn" onclick="showProfileReviewInfo('gespraechsBeduernis')">?</button>
+                        </div>
+                        <div class="profile-review-slider-labels">
+                            <span>Wenig</span>
+                            <span>Viel</span>
+                        </div>
+                        <input type="range" class="profile-review-range" id="pr-gespraech" min="0" max="100" value="50" oninput="updateProfileReviewSlider(this, 'pr-gespraech-value')" onchange="trackProfileReviewChange()">
+                    </div>
+                    <div class="profile-review-slider-attribute">
+                        <div class="profile-review-slider-header">
+                            <span class="profile-review-slider-title">Emotionale Offenheit</span>
+                            <span class="profile-review-slider-value" id="pr-emotional-value">5</span>
+                            <button class="profile-review-info-btn" onclick="showProfileReviewInfo('emotionaleOffenheit')">?</button>
+                        </div>
+                        <div class="profile-review-slider-labels">
+                            <span>Zurückhaltend</span>
+                            <span>Sehr offen</span>
+                        </div>
+                        <input type="range" class="profile-review-range" id="pr-emotional" min="0" max="100" value="50" oninput="updateProfileReviewSlider(this, 'pr-emotional-value')" onchange="trackProfileReviewChange()">
+                    </div>
+                    <div class="profile-review-slider-attribute">
+                        <div class="profile-review-slider-header">
+                            <span class="profile-review-slider-title">Konfliktverhalten</span>
+                            <span class="profile-review-slider-value" id="pr-konflikt-value">5</span>
+                            <button class="profile-review-info-btn" onclick="showProfileReviewInfo('konfliktverhalten')">?</button>
+                        </div>
+                        <div class="profile-review-slider-labels">
+                            <span>Vermeidend</span>
+                            <span>Konfrontativ</span>
+                        </div>
+                        <input type="range" class="profile-review-range" id="pr-konflikt" min="0" max="100" value="50" oninput="updateProfileReviewSlider(this, 'pr-konflikt-value')" onchange="trackProfileReviewChange()">
                     </div>
                 </div>
 
@@ -762,23 +797,163 @@
                 <div class="profile-review-category" data-category="soziales">
                     <div class="profile-review-category-header">
                         <span class="profile-review-category-icon">👥</span>
-                        <span data-i18n="profileReview.categories.soziales">SOZIALES</span>
+                        <span>SOZIALES</span>
                     </div>
-
-                    <!-- Familie-Wichtigkeit (Slider) -->
-                    <div class="profile-review-slider-attribute" data-attribute="familieWichtigkeit">
+                    <div class="profile-review-slider-attribute">
                         <div class="profile-review-slider-header">
-                            <span class="profile-review-slider-title" data-i18n="profileReview.attributes.familieWichtigkeit">Familie-Wichtigkeit</span>
-                            <button class="profile-review-info-btn" onclick="showProfileReviewInfo('familieWichtigkeit')" title="Mehr Informationen">?</button>
+                            <span class="profile-review-slider-title">Intro/Extrovertiert</span>
+                            <span class="profile-review-slider-value" id="pr-introextro-value">5</span>
+                            <button class="profile-review-info-btn" onclick="showProfileReviewInfo('introExtro')">?</button>
                         </div>
                         <div class="profile-review-slider-labels">
-                            <span data-i18n="profileReview.slider.unwichtig">Unwichtig</span>
-                            <span class="profile-review-slider-value" id="pr-familie-value">Wichtig</span>
-                            <span data-i18n="profileReview.slider.sehrWichtig">Sehr wichtig</span>
+                            <span>Introvertiert</span>
+                            <span>Extrovertiert</span>
                         </div>
-                        <input type="range" class="profile-review-range" id="pr-familie" min="0" max="100" value="70"
-                               oninput="updateProfileReviewSlider(this, 'pr-familie-value', ['Unwichtig', 'Wichtig', 'Sehr wichtig'])"
-                               onchange="trackProfileReviewChange()">
+                        <input type="range" class="profile-review-range" id="pr-introextro" min="0" max="100" value="50" oninput="updateProfileReviewSlider(this, 'pr-introextro-value')" onchange="trackProfileReviewChange()">
+                    </div>
+                    <div class="profile-review-slider-attribute">
+                        <div class="profile-review-slider-header">
+                            <span class="profile-review-slider-title">Alleinzeit-Bedürfnis</span>
+                            <span class="profile-review-slider-value" id="pr-alleinzeit-value">5</span>
+                            <button class="profile-review-info-btn" onclick="showProfileReviewInfo('alleinZeitBeduernis')">?</button>
+                        </div>
+                        <div class="profile-review-slider-labels">
+                            <span>Wenig</span>
+                            <span>Viel</span>
+                        </div>
+                        <input type="range" class="profile-review-range" id="pr-alleinzeit" min="0" max="100" value="50" oninput="updateProfileReviewSlider(this, 'pr-alleinzeit-value')" onchange="trackProfileReviewChange()">
+                    </div>
+                    <div class="profile-review-slider-attribute">
+                        <div class="profile-review-slider-header">
+                            <span class="profile-review-slider-title">Freundeskreis</span>
+                            <span class="profile-review-slider-value" id="pr-freunde-value">5</span>
+                            <button class="profile-review-info-btn" onclick="showProfileReviewInfo('freundeskreis')">?</button>
+                        </div>
+                        <div class="profile-review-slider-labels">
+                            <span>Getrennt</span>
+                            <span>Gemeinsam</span>
+                        </div>
+                        <input type="range" class="profile-review-range" id="pr-freunde" min="0" max="100" value="50" oninput="updateProfileReviewSlider(this, 'pr-freunde-value')" onchange="trackProfileReviewChange()">
+                    </div>
+                </div>
+
+                <!-- INTIMITÄT -->
+                <div class="profile-review-category" data-category="intimitaet">
+                    <div class="profile-review-category-header">
+                        <span class="profile-review-category-icon">💕</span>
+                        <span>INTIMITÄT</span>
+                    </div>
+                    <div class="profile-review-slider-attribute">
+                        <div class="profile-review-slider-header">
+                            <span class="profile-review-slider-title">Körperliche Nähe</span>
+                            <span class="profile-review-slider-value" id="pr-naehe-value">5</span>
+                            <button class="profile-review-info-btn" onclick="showProfileReviewInfo('koerperlicheNaehe')">?</button>
+                        </div>
+                        <div class="profile-review-slider-labels">
+                            <span>Wenig</span>
+                            <span>Viel</span>
+                        </div>
+                        <input type="range" class="profile-review-range" id="pr-naehe" min="0" max="100" value="50" oninput="updateProfileReviewSlider(this, 'pr-naehe-value')" onchange="trackProfileReviewChange()">
+                    </div>
+                    <div class="profile-review-slider-attribute">
+                        <div class="profile-review-slider-header">
+                            <span class="profile-review-slider-title">Romantik-Bedürfnis</span>
+                            <span class="profile-review-slider-value" id="pr-romantik-value">5</span>
+                            <button class="profile-review-info-btn" onclick="showProfileReviewInfo('romantikBeduernis')">?</button>
+                        </div>
+                        <div class="profile-review-slider-labels">
+                            <span>Wenig</span>
+                            <span>Viel</span>
+                        </div>
+                        <input type="range" class="profile-review-range" id="pr-romantik" min="0" max="100" value="50" oninput="updateProfileReviewSlider(this, 'pr-romantik-value')" onchange="trackProfileReviewChange()">
+                    </div>
+                    <div class="profile-review-slider-attribute">
+                        <div class="profile-review-slider-header">
+                            <span class="profile-review-slider-title">Sexuelle Frequenz</span>
+                            <span class="profile-review-slider-value" id="pr-sex-value">5</span>
+                            <button class="profile-review-info-btn" onclick="showProfileReviewInfo('sexFrequenz')">?</button>
+                        </div>
+                        <div class="profile-review-slider-labels">
+                            <span>Selten</span>
+                            <span>Häufig</span>
+                        </div>
+                        <input type="range" class="profile-review-range" id="pr-sex" min="0" max="100" value="50" oninput="updateProfileReviewSlider(this, 'pr-sex-value')" onchange="trackProfileReviewChange()">
+                    </div>
+                </div>
+
+                <!-- WERTE -->
+                <div class="profile-review-category" data-category="werte">
+                    <div class="profile-review-category-header">
+                        <span class="profile-review-category-icon">⚖️</span>
+                        <span>WERTE</span>
+                    </div>
+                    <div class="profile-review-slider-attribute">
+                        <div class="profile-review-slider-header">
+                            <span class="profile-review-slider-title">Religiosität</span>
+                            <span class="profile-review-slider-value" id="pr-religion-value">5</span>
+                            <button class="profile-review-info-btn" onclick="showProfileReviewInfo('religiositaet')">?</button>
+                        </div>
+                        <div class="profile-review-slider-labels">
+                            <span>Keine</span>
+                            <span>Stark</span>
+                        </div>
+                        <input type="range" class="profile-review-range" id="pr-religion" min="0" max="100" value="50" oninput="updateProfileReviewSlider(this, 'pr-religion-value')" onchange="trackProfileReviewChange()">
+                    </div>
+                    <div class="profile-review-slider-attribute">
+                        <div class="profile-review-slider-header">
+                            <span class="profile-review-slider-title">Tradition vs. Modern</span>
+                            <span class="profile-review-slider-value" id="pr-tradition-value">5</span>
+                            <button class="profile-review-info-btn" onclick="showProfileReviewInfo('traditionVsModern')">?</button>
+                        </div>
+                        <div class="profile-review-slider-labels">
+                            <span>Traditionell</span>
+                            <span>Modern</span>
+                        </div>
+                        <input type="range" class="profile-review-range" id="pr-tradition" min="0" max="100" value="50" oninput="updateProfileReviewSlider(this, 'pr-tradition-value')" onchange="trackProfileReviewChange()">
+                    </div>
+                    <div class="profile-review-slider-attribute">
+                        <div class="profile-review-slider-header">
+                            <span class="profile-review-slider-title">Umweltbewusstsein</span>
+                            <span class="profile-review-slider-value" id="pr-umwelt-value">5</span>
+                            <button class="profile-review-info-btn" onclick="showProfileReviewInfo('umweltbewusstsein')">?</button>
+                        </div>
+                        <div class="profile-review-slider-labels">
+                            <span>Gering</span>
+                            <span>Hoch</span>
+                        </div>
+                        <input type="range" class="profile-review-range" id="pr-umwelt" min="0" max="100" value="50" oninput="updateProfileReviewSlider(this, 'pr-umwelt-value')" onchange="trackProfileReviewChange()">
+                    </div>
+                </div>
+
+                <!-- PRAKTISCHES -->
+                <div class="profile-review-category" data-category="praktisches">
+                    <div class="profile-review-category-header">
+                        <span class="profile-review-category-icon">🏠</span>
+                        <span>PRAKTISCHES</span>
+                    </div>
+                    <div class="profile-review-slider-attribute">
+                        <div class="profile-review-slider-header">
+                            <span class="profile-review-slider-title">Ordnung</span>
+                            <span class="profile-review-slider-value" id="pr-ordnung-value">5</span>
+                            <button class="profile-review-info-btn" onclick="showProfileReviewInfo('ordnung')">?</button>
+                        </div>
+                        <div class="profile-review-slider-labels">
+                            <span>Chaotisch</span>
+                            <span>Ordentlich</span>
+                        </div>
+                        <input type="range" class="profile-review-range" id="pr-ordnung" min="0" max="100" value="50" oninput="updateProfileReviewSlider(this, 'pr-ordnung-value')" onchange="trackProfileReviewChange()">
+                    </div>
+                    <div class="profile-review-slider-attribute">
+                        <div class="profile-review-slider-header">
+                            <span class="profile-review-slider-title">Reise-Frequenz</span>
+                            <span class="profile-review-slider-value" id="pr-reise-value">5</span>
+                            <button class="profile-review-info-btn" onclick="showProfileReviewInfo('reiseFrequenz')">?</button>
+                        </div>
+                        <div class="profile-review-slider-labels">
+                            <span>Selten</span>
+                            <span>Häufig</span>
+                        </div>
+                        <input type="range" class="profile-review-range" id="pr-reise" min="0" max="100" value="50" oninput="updateProfileReviewSlider(this, 'pr-reise-value')" onchange="trackProfileReviewChange()">
                     </div>
                 </div>
 
@@ -16153,19 +16328,18 @@
         }
         window.closeProfileReviewModal = closeProfileReviewModal;
 
-        // Update Slider Value Display
-        function updateProfileReviewSlider(slider, valueId, labels) {
+        // Update Slider Value Display - Zeigt Zahl 1-10
+        function updateProfileReviewSlider(slider, valueId) {
             var value = parseInt(slider.value);
             var valueSpan = document.getElementById(valueId);
             if (!valueSpan) return;
 
-            if (value < 33) {
-                valueSpan.textContent = labels[0];
-            } else if (value < 66) {
-                valueSpan.textContent = labels[1];
-            } else {
-                valueSpan.textContent = labels[2];
-            }
+            // Map 0-100 to 1-10
+            var displayValue = Math.round(value / 10);
+            if (displayValue < 1) displayValue = 1;
+            if (displayValue > 10) displayValue = 10;
+
+            valueSpan.textContent = displayValue;
         }
         window.updateProfileReviewSlider = updateProfileReviewSlider;
 
