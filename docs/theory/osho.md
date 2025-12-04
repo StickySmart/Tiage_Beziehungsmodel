@@ -79,6 +79,10 @@ Resonanz ist keine mystische Formel, sondern das Spürbare: Passen zwei Menschen
 
 Esoterisch, aber nicht zu hoch fliegen. Das Tiage-Modell bleibt praktisch: konkrete Faktoren, nachvollziehbare Berechnung. Die Philosophie ist der Boden, nicht die Wolke.
 
+### Meditation als Weg
+
+Meditation ist der Weg zum Bewusstsein. Nicht als Flucht, sondern als Ankommen bei sich selbst. Wer sich selbst kennt, kann auch andere verstehen.
+
 ---
 
 ## Weiterführende Ressourcen
