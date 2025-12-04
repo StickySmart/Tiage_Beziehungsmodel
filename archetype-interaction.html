@@ -660,7 +660,7 @@
             </div>
 
             <!-- Scrollable Content -->
-            <div class="modal-body profile-review-body" id="profileReviewBody" style="flex: 1; overflow-y: auto; padding: 20px;">
+            <div class="modal-body profile-review-body" id="profileReviewBody" style="flex: 1; overflow-y: auto;">
 
                 <!-- LEBENSPLANUNG -->
                 <div class="profile-review-category" data-category="lebensplanung">
@@ -669,32 +669,35 @@
                         <span data-i18n="profileReview.categories.lebensplanung">LEBENSPLANUNG</span>
                     </div>
 
-                    <!-- Kinder -->
-                    <div class="profile-review-attribute" data-attribute="kinderWunsch">
-                        <input type="checkbox" class="profile-review-checkbox" id="pr-kinder" onchange="trackProfileReviewChange()">
-                        <label for="pr-kinder" class="profile-review-label" data-i18n="profileReview.attributes.kinderWunsch">Kinder erwünscht</label>
-                        <button class="profile-review-info-btn" onclick="showProfileReviewInfo('kinderWunsch')" title="Mehr Informationen">?</button>
-                    </div>
+                    <!-- Checkbox Grid 2x2 -->
+                    <div class="profile-review-checkbox-grid">
+                        <!-- Kinder -->
+                        <div class="profile-review-attribute" data-attribute="kinderWunsch" onclick="toggleCheckbox('pr-kinder')">
+                            <input type="checkbox" class="profile-review-checkbox" id="pr-kinder" onchange="trackProfileReviewChange(); updateAttributeStyle(this)">
+                            <label for="pr-kinder" class="profile-review-label" data-i18n="profileReview.attributes.kinderWunsch">Kinder</label>
+                            <button class="profile-review-info-btn" onclick="event.stopPropagation(); showProfileReviewInfo('kinderWunsch')" title="Mehr Informationen">?</button>
+                        </div>
 
-                    <!-- Ehe -->
-                    <div class="profile-review-attribute" data-attribute="eheWunsch">
-                        <input type="checkbox" class="profile-review-checkbox" id="pr-ehe" onchange="trackProfileReviewChange()">
-                        <label for="pr-ehe" class="profile-review-label" data-i18n="profileReview.attributes.eheWunsch">Ehe erwünscht</label>
-                        <button class="profile-review-info-btn" onclick="showProfileReviewInfo('eheWunsch')" title="Mehr Informationen">?</button>
-                    </div>
+                        <!-- Ehe -->
+                        <div class="profile-review-attribute" data-attribute="eheWunsch" onclick="toggleCheckbox('pr-ehe')">
+                            <input type="checkbox" class="profile-review-checkbox" id="pr-ehe" onchange="trackProfileReviewChange(); updateAttributeStyle(this)">
+                            <label for="pr-ehe" class="profile-review-label" data-i18n="profileReview.attributes.eheWunsch">Ehe</label>
+                            <button class="profile-review-info-btn" onclick="event.stopPropagation(); showProfileReviewInfo('eheWunsch')" title="Mehr Informationen">?</button>
+                        </div>
 
-                    <!-- Zusammenleben -->
-                    <div class="profile-review-attribute" data-attribute="wohnform">
-                        <input type="checkbox" class="profile-review-checkbox" id="pr-zusammen" onchange="trackProfileReviewChange()">
-                        <label for="pr-zusammen" class="profile-review-label" data-i18n="profileReview.attributes.wohnform">Zusammenleben</label>
-                        <button class="profile-review-info-btn" onclick="showProfileReviewInfo('wohnform')" title="Mehr Informationen">?</button>
-                    </div>
+                        <!-- Zusammenleben -->
+                        <div class="profile-review-attribute" data-attribute="wohnform" onclick="toggleCheckbox('pr-zusammen')">
+                            <input type="checkbox" class="profile-review-checkbox" id="pr-zusammen" onchange="trackProfileReviewChange(); updateAttributeStyle(this)">
+                            <label for="pr-zusammen" class="profile-review-label" data-i18n="profileReview.attributes.wohnform">Zusammen wohnen</label>
+                            <button class="profile-review-info-btn" onclick="event.stopPropagation(); showProfileReviewInfo('wohnform')" title="Mehr Informationen">?</button>
+                        </div>
 
-                    <!-- Haustiere -->
-                    <div class="profile-review-attribute" data-attribute="haustiere">
-                        <input type="checkbox" class="profile-review-checkbox" id="pr-haustiere" onchange="trackProfileReviewChange()">
-                        <label for="pr-haustiere" class="profile-review-label" data-i18n="profileReview.attributes.haustiere">Haustiere wichtig</label>
-                        <button class="profile-review-info-btn" onclick="showProfileReviewInfo('haustiere')" title="Mehr Informationen">?</button>
+                        <!-- Haustiere -->
+                        <div class="profile-review-attribute" data-attribute="haustiere" onclick="toggleCheckbox('pr-haustiere')">
+                            <input type="checkbox" class="profile-review-checkbox" id="pr-haustiere" onchange="trackProfileReviewChange(); updateAttributeStyle(this)">
+                            <label for="pr-haustiere" class="profile-review-label" data-i18n="profileReview.attributes.haustiere">Haustiere</label>
+                            <button class="profile-review-info-btn" onclick="event.stopPropagation(); showProfileReviewInfo('haustiere')" title="Mehr Informationen">?</button>
+                        </div>
                     </div>
 
                     <!-- Umzugsbereitschaft (Slider) -->
@@ -16127,6 +16130,11 @@
             // Save initial state
             profileReviewInitialState = getProfileReviewState();
 
+            // Initialize checkbox card styles
+            document.querySelectorAll('.profile-review-checkbox').forEach(function(checkbox) {
+                updateAttributeStyle(checkbox);
+            });
+
             // Show modal
             modal.style.display = 'flex';
             modal.classList.add('active');
@@ -16170,6 +16178,29 @@
             }
         }
         window.trackProfileReviewChange = trackProfileReviewChange;
+
+        // Toggle checkbox when clicking on attribute card
+        function toggleCheckbox(checkboxId) {
+            var checkbox = document.getElementById(checkboxId);
+            if (checkbox) {
+                checkbox.checked = !checkbox.checked;
+                checkbox.dispatchEvent(new Event('change'));
+            }
+        }
+        window.toggleCheckbox = toggleCheckbox;
+
+        // Update attribute card style based on checkbox state
+        function updateAttributeStyle(checkbox) {
+            var card = checkbox.closest('.profile-review-attribute');
+            if (card) {
+                if (checkbox.checked) {
+                    card.classList.add('checked');
+                } else {
+                    card.classList.remove('checked');
+                }
+            }
+        }
+        window.updateAttributeStyle = updateAttributeStyle;
 
         // Filter Attributes by Search
         function filterProfileReviewAttributes(query) {

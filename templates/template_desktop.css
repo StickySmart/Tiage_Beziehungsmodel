@@ -5775,15 +5775,17 @@
 .profile-review-modal {
     background: var(--bg-card);
     border: 1px solid var(--border);
+    border-radius: 16px;
 }
 
 .profile-review-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 16px 20px;
+    padding: 20px;
     border-bottom: 1px solid var(--border);
     background: var(--bg-card);
+    border-radius: 16px 16px 0 0;
 }
 
 .profile-review-header-left {
@@ -5795,11 +5797,11 @@
 .profile-review-badge {
     font-size: 12px;
     padding: 4px 12px;
-    background: rgba(46, 125, 50, 0.2);
-    color: #4caf50;
+    background: rgba(69, 123, 157, 0.2);
+    color: var(--primary);
     border-radius: 12px;
     font-weight: 500;
-    border: 1px solid rgba(46, 125, 50, 0.3);
+    border: 1px solid rgba(69, 123, 157, 0.3);
 }
 
 /* Search Bar */
@@ -5826,7 +5828,7 @@
 .profile-review-search input:focus {
     outline: none;
     border-color: var(--primary);
-    box-shadow: 0 0 0 3px rgba(var(--primary-rgb, 102, 126, 234), 0.2);
+    box-shadow: 0 0 0 3px rgba(69, 123, 157, 0.2);
 }
 
 .profile-review-search input::placeholder {
@@ -5841,50 +5843,64 @@
 /* Body */
 .profile-review-body {
     background: var(--bg-dark);
+    padding: 20px;
 }
 
-/* Category */
+/* Category - Hilfe-Modal Style */
 .profile-review-category {
     margin-bottom: 24px;
 }
 
 .profile-review-category-header {
-    font-size: 12px;
+    font-size: 14px;
     font-weight: 600;
-    color: var(--text-muted);
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
+    color: var(--primary);
     margin-bottom: 12px;
     display: flex;
     align-items: center;
     gap: 8px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--border);
 }
 
 .profile-review-category-icon {
     font-size: 16px;
 }
 
+/* Checkbox Grid - 2x2 Layout */
+.profile-review-checkbox-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    margin-bottom: 16px;
+}
+
 /* Checkbox Attribute */
 .profile-review-attribute {
     background: var(--bg-card);
     border: 1px solid var(--border);
-    border-radius: 8px;
-    padding: 14px;
-    margin-bottom: 10px;
+    border-radius: 10px;
+    padding: 12px 14px;
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: 10px;
     transition: all 0.2s;
+    cursor: pointer;
 }
 
 .profile-review-attribute:hover {
     border-color: var(--primary);
-    box-shadow: 0 2px 8px rgba(var(--primary-rgb, 102, 126, 234), 0.15);
+    background: rgba(69, 123, 157, 0.1);
+}
+
+.profile-review-attribute.checked {
+    border-color: var(--primary);
+    background: rgba(69, 123, 157, 0.15);
 }
 
 .profile-review-checkbox {
-    width: 22px;
-    height: 22px;
+    width: 20px;
+    height: 20px;
     cursor: pointer;
     accent-color: var(--primary);
     flex-shrink: 0;
@@ -5892,21 +5908,21 @@
 
 .profile-review-label {
     flex: 1;
-    font-size: 15px;
+    font-size: 14px;
     color: var(--text-primary);
     font-weight: 500;
     cursor: pointer;
 }
 
 .profile-review-info-btn {
-    width: 32px;
-    height: 32px;
+    width: 24px;
+    height: 24px;
     border-radius: 50%;
-    background: var(--bg-dark);
+    background: transparent;
     border: 1px solid var(--border);
     color: var(--text-muted);
     cursor: pointer;
-    font-size: 16px;
+    font-size: 12px;
     font-weight: bold;
     flex-shrink: 0;
     display: flex;
@@ -5919,107 +5935,124 @@
     background: var(--primary);
     color: white;
     border-color: var(--primary);
-    transform: scale(1.1);
 }
 
-/* Slider Attribute */
+/* Slider Attribute - Verbessert */
 .profile-review-slider-attribute {
     background: var(--bg-card);
     border: 1px solid var(--border);
-    border-radius: 8px;
-    padding: 14px;
+    border-radius: 10px;
+    padding: 14px 16px;
     margin-bottom: 10px;
     transition: all 0.2s;
 }
 
 .profile-review-slider-attribute:hover {
     border-color: var(--primary);
-    box-shadow: 0 2px 8px rgba(var(--primary-rgb, 102, 126, 234), 0.15);
 }
 
 .profile-review-slider-header {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin-bottom: 12px;
+    margin-bottom: 14px;
 }
 
 .profile-review-slider-title {
-    font-size: 15px;
+    font-size: 14px;
     color: var(--text-primary);
     font-weight: 500;
+}
+
+/* Slider mit Wert-Anzeige inline */
+.profile-review-slider-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
 }
 
 .profile-review-slider-labels {
     display: flex;
     justify-content: space-between;
-    font-size: 12px;
+    font-size: 11px;
     color: var(--text-muted);
-    margin-bottom: 8px;
+    margin-bottom: 6px;
+}
+
+.profile-review-slider-labels span:first-child,
+.profile-review-slider-labels span:last-child {
+    opacity: 0.7;
 }
 
 .profile-review-slider-value {
     font-weight: 600;
     color: var(--primary);
+    min-width: 70px;
+    text-align: center;
+    font-size: 12px;
+    background: rgba(69, 123, 157, 0.15);
+    padding: 4px 8px;
+    border-radius: 6px;
 }
 
 .profile-review-range {
     width: 100%;
-    height: 6px;
-    background: var(--bg-dark);
+    height: 8px;
+    background: linear-gradient(to right, var(--bg-dark), rgba(69, 123, 157, 0.3));
     outline: none;
-    border-radius: 3px;
+    border-radius: 4px;
     -webkit-appearance: none;
     border: 1px solid var(--border);
 }
 
 .profile-review-range::-webkit-slider-thumb {
     -webkit-appearance: none;
-    width: 20px;
-    height: 20px;
-    background: var(--primary);
+    width: 18px;
+    height: 18px;
+    background: linear-gradient(135deg, var(--primary), #5a9cbf);
     border-radius: 50%;
     cursor: pointer;
     transition: transform 0.2s;
-    border: 2px solid var(--bg-card);
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+    border: 2px solid white;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
 }
 
 .profile-review-range::-webkit-slider-thumb:hover {
-    transform: scale(1.15);
+    transform: scale(1.2);
 }
 
 .profile-review-range::-moz-range-thumb {
-    width: 20px;
-    height: 20px;
+    width: 18px;
+    height: 18px;
     background: var(--primary);
     border-radius: 50%;
     cursor: pointer;
-    border: 2px solid var(--bg-card);
+    border: 2px solid white;
 }
 
-/* Actions Footer */
+/* Actions Footer - Grid Style */
 .profile-review-actions {
     background: var(--bg-card);
     border-top: 1px solid var(--border);
     padding: 16px 20px;
-    display: flex;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
     gap: 12px;
+    border-radius: 0 0 16px 16px;
 }
 
 .profile-review-btn {
-    flex: 1;
-    padding: 14px;
+    padding: 12px 16px;
     border: none;
-    border-radius: 8px;
-    font-size: 15px;
+    border-radius: 10px;
+    font-size: 14px;
     font-weight: 600;
     cursor: pointer;
     transition: all 0.2s;
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 6px;
+    gap: 8px;
 }
 
 .profile-review-btn-secondary {
@@ -6029,27 +6062,27 @@
 }
 
 .profile-review-btn-secondary:hover {
-    background: var(--bg-card);
+    background: rgba(255, 255, 255, 0.05);
     border-color: var(--text-muted);
 }
 
 .profile-review-btn-primary {
-    background: var(--primary);
+    background: linear-gradient(135deg, var(--primary), #5a9cbf);
     color: white;
+    box-shadow: 0 2px 8px rgba(69, 123, 157, 0.3);
 }
 
 .profile-review-btn-primary:hover {
-    filter: brightness(1.1);
     transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(var(--primary-rgb, 102, 126, 234), 0.4);
+    box-shadow: 0 4px 16px rgba(69, 123, 157, 0.4);
 }
 
 .profile-review-changes-badge {
-    background: #ff6b6b;
+    background: #e74c3c;
     color: white;
     font-size: 11px;
     padding: 2px 8px;
-    border-radius: 12px;
+    border-radius: 10px;
     font-weight: 600;
     margin-left: 4px;
 }
