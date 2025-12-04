@@ -5877,18 +5877,22 @@
     grid-template-columns: repeat(2, 1fr);
     gap: 4px;
     margin-bottom: 6px;
-    background: rgba(255, 255, 255, 0.03);
-    border-radius: 6px;
-    padding: 10px 12px;
-    border-left: 3px solid #22c55e;
+    background: rgba(255, 255, 255, 0.03) !important;
+    border-radius: 6px !important;
+    padding: 10px 12px !important;
+    border-left: 3px solid #22c55e !important;
+    border-right: none !important;
+    border-top: none !important;
+    border-bottom: none !important;
 }
 
 /* Toggle Button - Card Style */
 .profile-review-toggle-btn {
-    padding: 8px 10px;
-    border-radius: 4px;
-    border: none;
-    background: rgba(255, 255, 255, 0.05);
+    padding: 8px 10px !important;
+    border-radius: 4px !important;
+    border: none !important;
+    outline: none !important;
+    background: rgba(255, 255, 255, 0.05) !important;
     color: var(--text-muted);
     font-size: 12px;
     font-weight: 500;
@@ -5902,13 +5906,13 @@
 }
 
 .profile-review-toggle-btn:hover {
-    background: rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.1) !important;
     color: var(--text-primary);
 }
 
 .profile-review-toggle-btn.active {
-    background: var(--primary);
-    color: white;
+    background: var(--primary) !important;
+    color: white !important;
     box-shadow: 0 2px 4px rgba(69, 123, 157, 0.3);
 }
 
@@ -5937,11 +5941,14 @@
 
 /* 3er Toggle-Button Attribut - Card Style wie Bedürfnis-Modal */
 .profile-review-triple-attribute {
-    background: rgba(255, 255, 255, 0.03);
-    border-radius: 6px;
-    padding: 10px 12px;
+    background: rgba(255, 255, 255, 0.03) !important;
+    border-radius: 6px !important;
+    padding: 10px 12px !important;
     margin-bottom: 6px;
-    border-left: 3px solid var(--primary);
+    border-left: 3px solid var(--primary) !important;
+    border-right: none !important;
+    border-top: none !important;
+    border-bottom: none !important;
 }
 
 .profile-review-triple-header {
@@ -5966,10 +5973,11 @@
 }
 
 .profile-review-triple-btn {
-    padding: 6px 4px;
-    border-radius: 4px;
-    border: none;
-    background: rgba(255, 255, 255, 0.05);
+    padding: 6px 4px !important;
+    border-radius: 4px !important;
+    border: none !important;
+    outline: none !important;
+    background: rgba(255, 255, 255, 0.05) !important;
     color: var(--text-muted);
     font-size: 11px;
     font-weight: 500;
@@ -5979,13 +5987,13 @@
 }
 
 .profile-review-triple-btn:hover {
-    background: rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.1) !important;
     color: var(--text-primary);
 }
 
 .profile-review-triple-btn.active {
-    background: var(--primary);
-    color: white;
+    background: var(--primary) !important;
+    color: white !important;
     box-shadow: 0 2px 4px rgba(69, 123, 157, 0.3);
 }
 
