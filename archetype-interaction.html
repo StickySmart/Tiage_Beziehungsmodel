@@ -16420,14 +16420,35 @@
         // Get Current State (Toggle-Buttons statt Checkboxen)
         function getProfileReviewState() {
             return {
+                // LEBENSPLANUNG
                 kinder: document.getElementById('pr-kinder')?.classList.contains('active'),
                 ehe: document.getElementById('pr-ehe')?.classList.contains('active'),
                 zusammen: document.getElementById('pr-zusammen')?.classList.contains('active'),
                 haustiere: document.getElementById('pr-haustiere')?.classList.contains('active'),
                 umzug: document.getElementById('pr-umzug')?.value,
+                familie: document.getElementById('pr-familie')?.value,
+                // FINANZEN & KARRIERE
                 finanzen: document.getElementById('pr-finanzen')?.value,
                 karriere: document.getElementById('pr-karriere')?.value,
-                familie: document.getElementById('pr-familie')?.value
+                // KOMMUNIKATION
+                gespraech: document.getElementById('pr-gespraech')?.value,
+                emotional: document.getElementById('pr-emotional')?.value,
+                konflikt: document.getElementById('pr-konflikt')?.value,
+                // SOZIALES
+                introextro: document.getElementById('pr-introextro')?.value,
+                alleinzeit: document.getElementById('pr-alleinzeit')?.value,
+                freunde: document.getElementById('pr-freunde')?.value,
+                // INTIMITÄT
+                naehe: document.getElementById('pr-naehe')?.value,
+                romantik: document.getElementById('pr-romantik')?.value,
+                sex: document.getElementById('pr-sex')?.value,
+                // WERTE
+                religion: document.getElementById('pr-religion')?.value,
+                tradition: document.getElementById('pr-tradition')?.value,
+                umwelt: document.getElementById('pr-umwelt')?.value,
+                // PRAKTISCHES
+                ordnung: document.getElementById('pr-ordnung')?.value,
+                reise: document.getElementById('pr-reise')?.value
             };
         }
 
@@ -16436,22 +16457,42 @@
             if (confirm('Alle Änderungen zurücksetzen und Standard-Werte wiederherstellen?')) {
                 // Reload from initial state (Toggle-Buttons)
                 if (profileReviewInitialState.kinder !== undefined) {
+                    // LEBENSPLANUNG - Toggle-Buttons
                     setProfileBtnState('pr-kinder', profileReviewInitialState.kinder);
                     setProfileBtnState('pr-ehe', profileReviewInitialState.ehe);
                     setProfileBtnState('pr-zusammen', profileReviewInitialState.zusammen);
                     setProfileBtnState('pr-haustiere', profileReviewInitialState.haustiere);
-
-                    document.getElementById('pr-umzug').value = profileReviewInitialState.umzug;
-                    document.getElementById('pr-finanzen').value = profileReviewInitialState.finanzen;
-                    document.getElementById('pr-karriere').value = profileReviewInitialState.karriere;
-                    document.getElementById('pr-familie').value = profileReviewInitialState.familie;
-
-                    // Update slider displays
-                    updateProfileReviewSlider(document.getElementById('pr-umzug'), 'pr-umzug-value');
-                    updateProfileReviewSlider(document.getElementById('pr-finanzen'), 'pr-finanzen-value');
-                    updateProfileReviewSlider(document.getElementById('pr-karriere'), 'pr-karriere-value');
-                    updateProfileReviewSlider(document.getElementById('pr-familie'), 'pr-familie-value');
                 }
+
+                // Alle Slider zurücksetzen
+                var sliders = [
+                    {id: 'pr-umzug', valueId: 'pr-umzug-value', key: 'umzug'},
+                    {id: 'pr-familie', valueId: 'pr-familie-value', key: 'familie'},
+                    {id: 'pr-finanzen', valueId: 'pr-finanzen-value', key: 'finanzen'},
+                    {id: 'pr-karriere', valueId: 'pr-karriere-value', key: 'karriere'},
+                    {id: 'pr-gespraech', valueId: 'pr-gespraech-value', key: 'gespraech'},
+                    {id: 'pr-emotional', valueId: 'pr-emotional-value', key: 'emotional'},
+                    {id: 'pr-konflikt', valueId: 'pr-konflikt-value', key: 'konflikt'},
+                    {id: 'pr-introextro', valueId: 'pr-introextro-value', key: 'introextro'},
+                    {id: 'pr-alleinzeit', valueId: 'pr-alleinzeit-value', key: 'alleinzeit'},
+                    {id: 'pr-freunde', valueId: 'pr-freunde-value', key: 'freunde'},
+                    {id: 'pr-naehe', valueId: 'pr-naehe-value', key: 'naehe'},
+                    {id: 'pr-romantik', valueId: 'pr-romantik-value', key: 'romantik'},
+                    {id: 'pr-sex', valueId: 'pr-sex-value', key: 'sex'},
+                    {id: 'pr-religion', valueId: 'pr-religion-value', key: 'religion'},
+                    {id: 'pr-tradition', valueId: 'pr-tradition-value', key: 'tradition'},
+                    {id: 'pr-umwelt', valueId: 'pr-umwelt-value', key: 'umwelt'},
+                    {id: 'pr-ordnung', valueId: 'pr-ordnung-value', key: 'ordnung'},
+                    {id: 'pr-reise', valueId: 'pr-reise-value', key: 'reise'}
+                ];
+
+                sliders.forEach(function(s) {
+                    var slider = document.getElementById(s.id);
+                    if (slider && profileReviewInitialState[s.key] !== undefined) {
+                        slider.value = profileReviewInitialState[s.key];
+                        updateProfileReviewSlider(slider, s.valueId);
+                    }
+                });
 
                 // Reset counter
                 profileReviewChangesCount = 0;
