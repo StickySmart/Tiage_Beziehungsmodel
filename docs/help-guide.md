@@ -14,7 +14,7 @@
 | **Ergebnis** | Automatische Berechnung der Kompatibilität (4 Faktoren) |
 | **Prozentwerte** | Anklicken = Detaillierte Erklärung pro Faktor |
 
-## Neu in Version 6.0
+## Neu in Version 1.6
 
 - **GFK-Kommunikationsfaktor:** Neuer Resonanz-Faktor basierend auf Gewaltfreier Kommunikation (Marshall Rosenberg)
 - **Dynamische Bedürfnis-Berechnung:** Individuelle Bedürfnis-Profile basierend auf Archetyp, Dominanz, Geschlecht und Orientierung
