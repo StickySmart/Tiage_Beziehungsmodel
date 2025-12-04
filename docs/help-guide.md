@@ -99,6 +99,7 @@ R = 0.9 + [(M/100 × 0.35) + (B × 0.35) + (K × 0.30)] × 0.2
 - [OSHO-Philosophie](theory/osho.md) - Bewusstsein und Beziehung
 - [Pathos/Logos](theory/pathos-logos.md) - Die 40:60 Gewichtung
 - [Resonanz-Theorie](theory/resonance.md) - Der Meta-Faktor
+- [Die 4 Faktoren](theory/factors.md) - Alle Qualitätsfaktoren im Detail
 
 ### Rechtliches
 
