@@ -40,6 +40,7 @@ TiageSynthesis.Calculator = {
      * @param {string} options.gfkPerson1 - GFK-Kompetenz Person 1 ("niedrig"|"mittel"|"hoch")
      * @param {string} options.gfkPerson2 - GFK-Kompetenz Person 2 ("niedrig"|"mittel"|"hoch")
      * @param {object} options.archetypProfile - Archetyp-Basis-Profile (aus gfk-beduerfnisse.js)
+     * @param {object} options.archetypeDefinitions - Archetyp-Definitionen mit baseAttributes
      * @returns {object} Vollständiges Ergebnis mit Score, Resonanz und Details
      */
     calculate: function(person1, person2, matrixData, profilMatch, options) {
@@ -48,6 +49,21 @@ TiageSynthesis.Calculator = {
 
         // Optionen extrahieren
         options = options || {};
+
+        // ═══════════════════════════════════════════════════════════════════
+        // SCHRITT 0: Lifestyle-Filter (K.O.-Kriterien)
+        // ═══════════════════════════════════════════════════════════════════
+
+        var lifestyleResult = this._checkLifestyleFilter(
+            person1.archetyp,
+            person2.archetyp,
+            options.archetypeDefinitions
+        );
+
+        // Bei K.O. früh abbrechen
+        if (lifestyleResult && lifestyleResult.isKO) {
+            return this._buildKOResult(person1, person2, lifestyleResult, matrixData);
+        }
 
         // Bedürfnis-Match berechnen wenn nicht explizit angegeben
         var beduerfnisResult = null;
@@ -188,6 +204,10 @@ TiageSynthesis.Calculator = {
                 // Soft-KO: Starke Bedürfnis-Konflikte
                 isSoftKO: this._checkSoftKO(beduerfnisResult, constants),
                 softKODetails: this._getSoftKODetails(beduerfnisResult, constants),
+
+                // Lifestyle-Warnungen (aus baseAttributes)
+                lifestyleWarnings: lifestyleResult ? lifestyleResult.warnings : [],
+                hasLifestyleWarnings: lifestyleResult && lifestyleResult.warnings.length > 0,
 
                 // P↔S Bonus
                 psBonus: this._calculatePSBonus(person1, person2, constants)
@@ -624,5 +644,113 @@ TiageSynthesis.Calculator = {
     calculateGfkOnly: function(gfk1, gfk2) {
         var constants = TiageSynthesis.Constants;
         return this._calculateGfkFactor(gfk1, gfk2, constants);
+    },
+
+    // ═══════════════════════════════════════════════════════════════════════════
+    // LIFESTYLE-FILTER INTEGRATION
+    // ═══════════════════════════════════════════════════════════════════════════
+
+    /**
+     * Prüft Lifestyle-Kompatibilität über LifestyleFilter
+     *
+     * @param {string} archetyp1 - Archetyp Person 1
+     * @param {string} archetyp2 - Archetyp Person 2
+     * @param {object} archetypeDefinitions - Archetyp-Definitionen mit baseAttributes
+     * @returns {object|null} LifestyleFilter-Ergebnis oder null
+     */
+    _checkLifestyleFilter: function(archetyp1, archetyp2, archetypeDefinitions) {
+        // Prüfen ob LifestyleFilter verfügbar
+        if (!TiageSynthesis.LifestyleFilter) {
+            return null;
+        }
+
+        // Prüfen ob archetypeDefinitions verfügbar
+        if (!archetypeDefinitions) {
+            // Versuche globale Variable
+            if (typeof archetypeDefinitions !== 'undefined') {
+                archetypeDefinitions = window.archetypeDefinitions;
+            }
+            if (!archetypeDefinitions) {
+                return null;
+            }
+        }
+
+        return TiageSynthesis.LifestyleFilter.checkArchetypes(
+            archetyp1,
+            archetyp2,
+            archetypeDefinitions
+        );
+    },
+
+    /**
+     * Baut ein K.O.-Ergebnis für Lifestyle-Inkompatibilität
+     *
+     * @param {object} person1 - Profil Person 1
+     * @param {object} person2 - Profil Person 2
+     * @param {object} lifestyleResult - Ergebnis vom LifestyleFilter
+     * @param {object} matrixData - archetype-matrix.json Daten
+     * @returns {object} Vollständiges K.O.-Ergebnis
+     */
+    _buildKOResult: function(person1, person2, lifestyleResult, matrixData) {
+        var factors = TiageSynthesis.Factors;
+
+        // Archetyp-Score trotzdem berechnen für Info
+        var archetypResult = factors.Archetyp.calculate(
+            person1.archetyp,
+            person2.archetyp,
+            matrixData
+        );
+
+        return {
+            score: 0,
+            baseScore: 0,
+
+            // K.O.-Flag
+            isLifestyleKO: true,
+
+            // Resonanz bei K.O. = 0
+            resonanz: {
+                coefficient: 0,
+                balance: 0,
+                differenz: 0,
+                profilMatch: 0,
+                gfk: null,
+                interpretation: { level: 'ko', text: 'Lifestyle-K.O.' }
+            },
+
+            // Logos/Pathos nicht relevant bei K.O.
+            logos: { score: 0, weight: 0, contribution: 0 },
+            pathos: { score: 0, weight: 0, contribution: 0 },
+
+            // Breakdown nur Archetyp (für Info)
+            breakdown: {
+                archetyp: {
+                    score: archetypResult.score,
+                    weight: 0,
+                    category: 'logos',
+                    details: archetypResult.details
+                }
+            },
+
+            // Meta mit K.O.-Details
+            meta: {
+                isLifestyleKO: true,
+                lifestyleKOReasons: lifestyleResult.koReasons,
+                lifestyleKOMessages: lifestyleResult.koReasons.map(function(r) {
+                    return r.message;
+                }),
+
+                // UI-formatierte Version
+                lifestyleUI: TiageSynthesis.LifestyleFilter.formatForUI(lifestyleResult),
+
+                // Keine anderen Flags relevant
+                isHardKO: false,
+                isSoftKO: false,
+                hasExploration: false
+            },
+
+            // Keine Bedürfnisse berechnet
+            beduerfnisse: null
+        };
     }
 };
