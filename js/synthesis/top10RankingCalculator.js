@@ -274,6 +274,20 @@ const Top10RankingCalculator = (function() {
     }
 
     /**
+     * Prüft Lifestyle-Kompatibilität über LifestyleFilter
+     * @param {string} arch1 - Archetyp 1
+     * @param {string} arch2 - Archetyp 2
+     * @param {Object} archDefs - Archetyp-Definitionen mit baseAttributes
+     * @returns {Object|null} LifestyleFilter-Ergebnis oder null
+     */
+    function checkLifestyleFilter(arch1, arch2, archDefs) {
+        if (typeof TiageSynthesis === 'undefined' || !TiageSynthesis.LifestyleFilter) {
+            return null;
+        }
+        return TiageSynthesis.LifestyleFilter.checkArchetypes(arch1, arch2, archDefs);
+    }
+
+    /**
      * Berechnet alle Kombinationen für einen gegebenen Archetyp
      * @param {string} baseArchetype - Der Basis-Archetyp
      * @param {Object} baseDimensions - Dimensionen der Person (dominanz, gfk, etc.)
@@ -288,6 +302,9 @@ const Top10RankingCalculator = (function() {
         };
 
         const combinations = ALL_ARCHETYPES.map(targetArch => {
+            // Lifestyle-Filter prüfen
+            const lifestyleResult = checkLifestyleFilter(baseArchetype, targetArch, archDefs);
+
             const pathosScore = calculatePathosScore(
                 baseArchetype, targetArch,
                 baseDimensions, defaultPartnerDim,
@@ -305,7 +322,9 @@ const Top10RankingCalculator = (function() {
                 baseDimensions?.gfk, defaultPartnerDim?.gfk
             );
 
-            const overallScore = calculateOverallScore(pathosScore, logosScore, resonance);
+            // Bei Lifestyle-K.O. → Score = 0
+            const isLifestyleKO = lifestyleResult?.isKO || false;
+            const overallScore = isLifestyleKO ? 0 : calculateOverallScore(pathosScore, logosScore, resonance);
 
             return {
                 archetype: targetArch,
@@ -314,7 +333,14 @@ const Top10RankingCalculator = (function() {
                 logosScore,
                 resonance,
                 overallScore,
-                isSelf: baseArchetype === targetArch
+                isSelf: baseArchetype === targetArch,
+                // Lifestyle-Filter Ergebnis
+                lifestyle: {
+                    isKO: isLifestyleKO,
+                    koReasons: lifestyleResult?.koReasons || [],
+                    warnings: lifestyleResult?.warnings || [],
+                    hasWarnings: (lifestyleResult?.warnings?.length || 0) > 0
+                }
             };
         });
 
@@ -464,6 +490,18 @@ const Top10RankingCalculator = (function() {
             </div>
             <div class="conflict-indicators">`;
 
+            // Lifestyle K.O. Icon
+            if (combo.lifestyle?.isKO) {
+                const koReasons = combo.lifestyle.koReasons.map(r => r.message).join(', ');
+                html += `<span class="conflict-icon lifestyle-ko" title="Lifestyle K.O.: ${koReasons}">🚫</span>`;
+            }
+
+            // Lifestyle Warnungen Icon
+            if (combo.lifestyle?.hasWarnings) {
+                const warnings = combo.lifestyle.warnings.map(w => w.message).join(', ');
+                html += `<span class="conflict-icon lifestyle-warning" title="Gesprächsbedarf: ${warnings}">⚠️</span>`;
+            }
+
             // Innere Konflikte Icons
             if (combo.innerConflicts?.ich?.core) {
                 html += `<span class="conflict-icon inner" title="Innerer Konflikt: ${combo.innerConflicts.ich.core}">⚡</span>`;
@@ -507,6 +545,7 @@ const Top10RankingCalculator = (function() {
         calculateLogosScore,
         calculateResonance,
         calculateOverallScore,
+        checkLifestyleFilter,
 
         // Konstanten
         ALL_ARCHETYPES,
