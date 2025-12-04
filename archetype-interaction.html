@@ -16282,9 +16282,7 @@
 
             // Store in TiageState if available
             if (typeof TiageState !== 'undefined') {
-                TiageState.setState({
-                    profileReview: state
-                });
+                TiageState.set('profileReview', state);
             }
 
             // Close modal
