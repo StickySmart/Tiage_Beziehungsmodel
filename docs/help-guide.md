@@ -14,6 +14,13 @@
 | **Ergebnis** | Automatische Berechnung der Kompatibilität (4 Faktoren) |
 | **Prozentwerte** | Anklicken = Detaillierte Erklärung pro Faktor |
 
+## Neu in Version 1.7
+
+- **Dynamische Kategorie-Scores (A-F):** Jedes Profil erhält individuelle Scores für 6 Dimensionen
+- **Score-Komposition:** Basis-Werte werden durch Archetyp, Gender, Dominanz und Orientierung modifiziert
+- **Neue Dimensionen:** Beziehungsphilosophie (A), Werte-Alignment (B), Nähe-Distanz (C), Autonomie (D), Kommunikation (E), Soziale Kompatibilität (F)
+- **Erweiterte API:** `getBaseScores()`, `getAllBaseScores()`, `getAllModifiers()`
+
 ## Neu in Version 1.6
 
 - **GFK-Kommunikationsfaktor:** Neuer Resonanz-Faktor basierend auf Gewaltfreier Kommunikation (Marshall Rosenberg)
