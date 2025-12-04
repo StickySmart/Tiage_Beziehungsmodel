@@ -259,42 +259,98 @@
                     </div>
 
                     <div class="help-section">
-                        <h3>Berechnung</h3>
+                        <h3>Berechnung (v2.0)</h3>
                         <div class="help-formula">
-                            Qualitätsindex = [(Orientierung × 40%) + (Archetyp × 25%) + (Dominanz × 20%) + (Geschlecht × 15%)] × Resonanz
+                            Score = (O × 0.40 × R1) + (A × 0.25 × R2) + (D × 0.20 × R3) + (G × 0.15 × R4)
                         </div>
-                        <p>Jeder Faktor wird einzeln auf 0-100% bewertet. Die <strong>Resonanz (R)</strong> ist ein Meta-Faktor (0.9-1.1), der moduliert, wie gut Kopf (Logos) und Herz (Pathos) zusammenschwingen.</p>
+                        <p>Jeder Faktor wird einzeln auf 0-100 bewertet. Die <strong>Resonanz-Faktoren R1-R4</strong> (0.5-1.5) verstärken oder schwächen basierend auf 88 Bedürfnis-Übereinstimmungen.</p>
                         <div style="margin-top: 10px; padding: 8px; background: rgba(255,255,255,0.05); border-radius: 6px;">
-                            <strong>Resonanz-Formel:</strong> R = 0.9 + [(M/100 × 0.35) + (B × 0.35) + (K × 0.30)] × 0.2<br>
-                            <small style="opacity: 0.7;">M = Profil-Match (30 Attribute) | B = Logos-Pathos-Balance | K = GFK-Kommunikationsfaktor</small>
+                            <strong>Resonanz-Skalierung:</strong> Ri = 0.5 + Bedürfnis-Match-i<br>
+                            <small style="opacity: 0.7;">0% Match → R=0.5 (schwächt) | 50% Match → R=1.0 (neutral) | 100% Match → R=1.5 (verstärkt)</small>
+                        </div>
+                        <div style="margin-top: 10px; padding: 8px; background: rgba(255,255,255,0.05); border-radius: 6px;">
+                            <strong>R1-R4 Bedürfnis-Zuordnung (88 total):</strong><br>
+                            <small style="opacity: 0.7;">R1 = Orientierung (22: existenz, zuneigung, musse) | R2 = Archetyp (26: freiheit, teilnahme, identitaet)</small><br>
+                            <small style="opacity: 0.7;">R3 = Dominanz (21: dynamik, sicherheit) | R4 = Geschlecht (19: verstaendnis, erschaffen, verbundenheit)</small>
+                        </div>
+                        <div style="margin-top: 10px; padding: 8px; background: rgba(255,255,255,0.05); border-radius: 6px;">
+                            <strong>GFK-Kompetenz:</strong> GFK = (R1 + R2 + R3 + R4) / 4<br>
+                            <small style="opacity: 0.7;">Meta-Info: M = Profil-Match (30 Attribute) | B = Logos-Pathos-Balance</small>
                         </div>
                     </div>
 
                     <div class="help-section">
                         <h3>Rechenbeispiel</h3>
                         <div class="help-example">
-                            <div class="help-example-title">Duo (Cis Frau, Submissiv, Hetero) × Duo-Flex (Cis Mann, Dominant, Hetero)</div>
-                            <p style="margin: 8px 0 4px 0; font-size: 12px; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.5px;">1. Basis-Score (4 Faktoren)</p>
-                            <ul>
-                                <li>Orientierung: 100% × 0.40 = 40 (Hetero + Hetero bei M/F)</li>
-                                <li>Archetyp: 75% × 0.25 = 19 (Duo ↔ Duo-Flex = nah verwandt)</li>
-                                <li>Dominanz: 100% × 0.20 = 20 (Submissiv + Dominant = Ergänzung)</li>
-                                <li>Geschlecht: 100% × 0.15 = 15 (Cis Frau × Cis Mann passt)</li>
-                                <li><strong>Basis-Score: 40 + 19 + 20 + 15 = 94</strong></li>
-                            </ul>
-                            <p style="margin: 12px 0 4px 0; font-size: 12px; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.5px;">2. Resonanz (Meta-Dimension)</p>
-                            <ul>
-                                <li>M = 70 (Profil-Match: 21/30 Attribute übereinstimmend)</li>
-                                <li>B = 0.80 (Logos-Pathos-Balance: gut ausgewogen)</li>
-                                <li>K = 0.75 (GFK: hoch + mittel)</li>
-                                <li>R = 0.9 + [(70/100 × 0.35) + (0.80 × 0.35) + (0.75 × 0.30)] × 0.2</li>
-                                <li>R = 0.9 + [0.245 + 0.28 + 0.225] × 0.2 = 0.9 + 0.15 = <strong>1.05</strong></li>
-                            </ul>
-                            <p style="margin: 12px 0 4px 0; font-size: 12px; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.5px;">3. Finales Ergebnis</p>
-                            <div class="help-formula">
-                                94 × 1.05 = 98.7 ≈ <strong>99%</strong>
+                            <div class="help-example-title">Duo × Duo-Flex</div>
+                            <div style="margin: 8px 0 12px 0; padding: 10px; background: rgba(255,255,255,0.03); border-radius: 6px; font-size: 0.9em;">
+                                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+                                    <div>
+                                        <div style="color: var(--success); font-weight: 600; margin-bottom: 6px;">👤 Person A (Duo)</div>
+                                        <div>Geschlecht: <strong>Cis Frau</strong> (P) / Trans Frau (S)</div>
+                                        <div>Dominanz: <strong>Submissiv</strong> (P) / Switch (S)</div>
+                                        <div>Orientierung: <strong>Hetero</strong> (P) / Bi (S)</div>
+                                    </div>
+                                    <div>
+                                        <div style="color: var(--danger); font-weight: 600; margin-bottom: 6px;">👤 Person B (Duo-Flex)</div>
+                                        <div>Geschlecht: <strong>Cis Mann</strong> (P) / –</div>
+                                        <div>Dominanz: <strong>Dominant</strong> (P) / Switch (S)</div>
+                                        <div>Orientierung: <strong>Hetero</strong> (P) / –</div>
+                                    </div>
+                                </div>
+                                <div style="margin-top: 8px; font-size: 0.85em; color: var(--text-muted);">P = Primär (Ich bin) | S = Sekundär (Ich könnte)</div>
                             </div>
+                            <p style="margin: 8px 0 4px 0; font-size: 12px; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.5px;">1. Basis-Faktoren (0-100)</p>
+                            <ul>
+                                <li>O = 100 (Orientierung: Hetero + Hetero bei M/F)</li>
+                                <li>A = 75 (Archetyp: Duo ↔ Duo-Flex = nah verwandt)</li>
+                                <li>D = 100 (Dominanz: Submissiv + Dominant = Ergänzung)</li>
+                                <li>G = 100 (Geschlecht: Cis Frau × Cis Mann passt)</li>
+                            </ul>
+                            <p style="margin: 12px 0 4px 0; font-size: 12px; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.5px;">2. Resonanz-Faktoren (0.5-1.5)</p>
+                            <ul>
+                                <li><strong>R1 = 1.32</strong> (0.5 + 0.82) → 18/22 Orientierung-Bedürfnisse
+                                    <ul style="margin-top: 2px; font-size: 0.85em; opacity: 0.7;"><li>existenz, zuneigung, musse</li></ul>
+                                </li>
+                                <li><strong>R2 = 1.35</strong> (0.5 + 0.85) → 22/26 Archetyp-Bedürfnisse
+                                    <ul style="margin-top: 2px; font-size: 0.85em; opacity: 0.7;"><li>freiheit, teilnahme, identitaet</li></ul>
+                                </li>
+                                <li><strong>R3 = 1.40</strong> (0.5 + 0.90) → 19/21 Dominanz-Bedürfnisse
+                                    <ul style="margin-top: 2px; font-size: 0.85em; opacity: 0.7;"><li>dynamik, sicherheit</li></ul>
+                                </li>
+                                <li><strong>R4 = 1.29</strong> (0.5 + 0.79) → 15/19 Geschlecht-Bedürfnisse
+                                    <ul style="margin-top: 2px; font-size: 0.85em; opacity: 0.7;"><li>verstaendnis, erschaffen, verbundenheit</li></ul>
+                                </li>
+                            </ul>
+                            <p style="margin: 12px 0 4px 0; font-size: 12px; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.5px;">3. Score-Berechnung</p>
+                            <ul>
+                                <li>O × 0.40 × R1 = 100 × 0.40 × 1.32 = <strong>52.8</strong></li>
+                                <li>A × 0.25 × R2 = 75 × 0.25 × 1.35 = <strong>25.3</strong></li>
+                                <li>D × 0.20 × R3 = 100 × 0.20 × 1.40 = <strong>28.0</strong></li>
+                                <li>G × 0.15 × R4 = 100 × 0.15 × 1.29 = <strong>19.4</strong></li>
+                            </ul>
+                            <div class="help-formula" style="margin-top: 12px;">
+                                Score = 52.8 + 25.3 + 28.0 + 19.4 = <strong>125.5</strong>
+                            </div>
+                            <p style="margin: 12px 0 4px 0; font-size: 12px; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.5px;">4. Meta-Info</p>
+                            <ul>
+                                <li>GFK = (1.32 + 1.35 + 1.40 + 1.29) / 4 = <strong>1.34</strong></li>
+                                <li>M = 70 (Profil-Match: 21/30 Attribute)</li>
+                                <li>B = 0.80 (Logos-Pathos-Balance)</li>
+                            </ul>
                         </div>
+                    </div>
+
+                    <div class="help-section">
+                        <h3>Score-Interpretation</h3>
+                        <ul>
+                            <li><strong>&gt; 120</strong> - Außergewöhnliche Resonanz</li>
+                            <li><strong>100-120</strong> - Starke Harmonie</li>
+                            <li><strong>80-100</strong> - Gute Basis</li>
+                            <li><strong>60-80</strong> - Arbeit erforderlich</li>
+                            <li><strong>&lt; 60</strong> - Herausfordernd</li>
+                        </ul>
+                        <p style="margin-top: 15px; font-style: italic; color: var(--text-muted);">Der Score ist kein Prozent-Wert, sondern ein Qualitätsindex. Höhere Werte zeigen stärkere Bedürfnis-Resonanz.</p>
                     </div>
 
                     <div class="help-section">
@@ -309,16 +365,6 @@
                             <li><strong>LAT</strong> - Living Apart Together - Feste Partnerschaft ohne Zusammenleben</li>
                             <li><strong>Aromantisch</strong> - Fokus auf platonische Verbindungen ohne romantische Komponente</li>
                         </ul>
-                    </div>
-
-                    <div class="help-section">
-                        <h3>Ergebnis-Interpretation</h3>
-                        <ul>
-                            <li><strong>70-100%</strong> - Gut: Solide Basis vorhanden</li>
-                            <li><strong>50-69%</strong> - Mittel: Erfordert bewusste Arbeit</li>
-                            <li><strong>0-49%</strong> - Herausfordernd: Fundamentale Unterschiede</li>
-                        </ul>
-                        <p style="margin-top: 15px; font-style: italic; color: var(--text-muted);">Der Qualitätsindex ist ein Orientierungswert. Echte Beziehungen hängen von vielen weiteren Faktoren ab.</p>
                     </div>
 
                     <div class="help-section">
@@ -10992,8 +11038,9 @@
             // Komponente 2: Logos-Pathos-Balance (B)
             const B = calculateLogosPathosBalance(archetypeScore, orientationScore, dominanceScore, genderScore);
 
-            // Komponente 3: GFK-Kommunikationsfaktor (K)
-            const K = calculateGfkFactor();
+            // Komponente 3: GFK-Kommunikationsfaktor (K) mit K1-K4 Subfaktoren
+            const kResult = calculateGfkFactor();
+            const K = kResult.K;  // Gesamt-K für Formel
 
             // Gesamtformel: R = 0.9 + [(M/100 × 0.35) + (B × 0.35) + (K × 0.30)] × 0.2
             // GFK bekommt 30% weil Kommunikation fundamental für Resonanz ist
@@ -11017,47 +11064,142 @@
                 R: Math.round(R * 100) / 100,
                 M: M,
                 B: Math.round(B * 100) / 100,
-                K: Math.round(K * 100) / 100,
+                K: K,
+                K1: kResult.K1,  // Orientierung-Bedürfnisse
+                K2: kResult.K2,  // Archetyp-Bedürfnisse
+                K3: kResult.K3,  // Dominanz-Bedürfnisse
+                K4: kResult.K4,  // Geschlecht-Bedürfnisse
+                kompetenz: kResult.kompetenz,
+                kompetenzLabel: kResult.kompetenzLabel,
                 interpretation: interpretation
             };
         }
 
         /**
-         * Berechnet den GFK-Kommunikationsfaktor (K)
-         * Basiert auf der GFK-Kompetenz beider Partner
-         * @returns {number} 0-1, wobei 1 = optimale Kommunikationsbasis
+         * K-FAKTOR ZUORDNUNG: GFK-Kategorien zu den 4 Hauptfaktoren
+         * ═══════════════════════════════════════════════════════════════════════
+         * Basiert auf Tiage-Modell (Pathos/Logos) + GFK (Rosenberg)
+         */
+        const K_FAKTOR_KATEGORIEN = {
+            // K1: Orientierung (Pathos) - Körperliche Anziehung, Sexualität
+            K1: ['existenz', 'zuneigung', 'musse'],  // 22 Bedürfnisse
+
+            // K2: Archetyp (Logos) - Beziehungsphilosophie
+            K2: ['freiheit', 'teilnahme', 'identitaet'],  // 26 Bedürfnisse
+
+            // K3: Dominanz (Pathos) - Energetische Dynamik
+            K3: ['dynamik', 'sicherheit'],  // 21 Bedürfnisse
+
+            // K4: Geschlecht (Pathos) - Gender-Chemie, Identität
+            K4: ['verstaendnis', 'erschaffen', 'verbundenheit']  // 19 Bedürfnisse
+        };
+
+        /**
+         * Berechnet den Bedürfnis-Match für eine K-Kategorie
+         * @param {string} kKey - 'K1', 'K2', 'K3' oder 'K4'
+         * @param {object} matching - Das Matching-Ergebnis von GfkBeduerfnisse.berechneMatching
+         * @returns {number} 0-1, wobei 1 = perfekte Übereinstimmung
+         */
+        function calculateKSubfaktor(kKey, matching) {
+            if (!matching || !matching.details) return 0.5;  // Fallback
+
+            const kategorien = K_FAKTOR_KATEGORIEN[kKey];
+            if (!kategorien) return 0.5;
+
+            let gemeinsam = 0;
+            let total = 0;
+
+            // Zähle gemeinsame und unterschiedliche Bedürfnisse pro Kategorie
+            const uebereinstimmend = matching.details.uebereinstimmend || [];
+            const konflikt = matching.details.konflikt || [];
+
+            for (const kat of kategorien) {
+                const gemeinsamInKat = uebereinstimmend.filter(b => {
+                    const def = GfkBeduerfnisse?.definitionen?.[b.id];
+                    return def?.kategorie === kat;
+                }).length;
+
+                const konfliktInKat = konflikt.filter(b => {
+                    const def = GfkBeduerfnisse?.definitionen?.[b.id];
+                    return def?.kategorie === kat;
+                }).length;
+
+                gemeinsam += gemeinsamInKat;
+                total += gemeinsamInKat + konfliktInKat;
+            }
+
+            // Wenn keine Bedürfnisse in dieser Kategorie: neutral
+            if (total === 0) return 0.5;
+
+            return gemeinsam / total;
+        }
+
+        /**
+         * Berechnet den GFK-Kommunikationsfaktor (K) mit K1-K4 Subfaktoren
+         * K = (K1 + K2 + K3 + K4) / 4
+         *
+         * Jeder Ki basiert auf dem Bedürfnis-Match der relevanten GFK-Kategorien:
+         * - K1 (Orientierung): existenz, zuneigung, musse
+         * - K2 (Archetyp): freiheit, teilnahme, identitaet
+         * - K3 (Dominanz): dynamik, sicherheit
+         * - K4 (Geschlecht): verstaendnis, erschaffen, verbundenheit
+         *
+         * @returns {object} { K: 0-1, K1, K2, K3, K4, details }
          */
         function calculateGfkFactor() {
             const ichGfk = personDimensions.ich?.gfk;
             const partnerGfk = personDimensions.partner?.gfk;
 
-            // Wenn einer nicht ausgewählt: neutral (0.5)
-            if (!ichGfk || !partnerGfk) {
-                return 0.5;
+            // Basis-Kompetenz-Faktor (alte Logik als Fallback/Gewichtung)
+            let kompetenzFaktor = 0.5;
+            if (ichGfk && partnerGfk) {
+                const gfkValues = { 'hoch': 3, 'mittel': 2, 'niedrig': 1 };
+                const v1 = gfkValues[ichGfk] || 2;
+                const v2 = gfkValues[partnerGfk] || 2;
+                const sum = v1 + v2;
+                const min = Math.min(v1, v2);
+
+                if (sum === 6) kompetenzFaktor = 1.0;
+                else if (sum === 5) kompetenzFaktor = 0.75;
+                else if (sum === 4 && min === 2) kompetenzFaktor = 0.5;
+                else if (sum === 4 && min === 1) kompetenzFaktor = 0.35;
+                else if (sum === 3) kompetenzFaktor = 0.2;
+                else kompetenzFaktor = 0.0;
             }
 
-            // GFK-Werte in numerische Werte umwandeln
-            const gfkValues = { 'hoch': 3, 'mittel': 2, 'niedrig': 1 };
-            const v1 = gfkValues[ichGfk] || 2;
-            const v2 = gfkValues[partnerGfk] || 2;
+            // Bedürfnis-Matching berechnen
+            const ichArchetyp = (currentArchetype || '').replace('_', '-');
+            const partnerArchetyp = (selectedPartner || '').replace('_', '-');
 
-            // Kombinationswerte (Summe: 2-6)
-            const sum = v1 + v2;
-            const min = Math.min(v1, v2);
+            let K1 = 0.5, K2 = 0.5, K3 = 0.5, K4 = 0.5;
+            let matching = null;
 
-            // Faktor-Mapping:
-            // 6 (hoch+hoch): 1.0
-            // 5 (hoch+mittel): 0.75
-            // 4 (mittel+mittel oder hoch+niedrig): 0.5 oder 0.4
-            // 3 (mittel+niedrig): 0.25
-            // 2 (niedrig+niedrig): 0.0
+            if (typeof GfkBeduerfnisse !== 'undefined' && ichArchetyp && partnerArchetyp) {
+                matching = GfkBeduerfnisse.berechneMatching(ichArchetyp, partnerArchetyp);
 
-            if (sum === 6) return 1.0;              // hoch + hoch
-            if (sum === 5) return 0.75;             // hoch + mittel
-            if (sum === 4 && min === 2) return 0.5; // mittel + mittel
-            if (sum === 4 && min === 1) return 0.35; // hoch + niedrig (asymmetrisch)
-            if (sum === 3) return 0.2;              // mittel + niedrig
-            return 0.0;                             // niedrig + niedrig
+                if (matching && !matching.fehler) {
+                    K1 = calculateKSubfaktor('K1', matching);
+                    K2 = calculateKSubfaktor('K2', matching);
+                    K3 = calculateKSubfaktor('K3', matching);
+                    K4 = calculateKSubfaktor('K4', matching);
+                }
+            }
+
+            // Gesamt-K: Durchschnitt der 4 Subfaktoren, gewichtet mit Kompetenz
+            // K = Bedürfnis-Match × Kompetenz-Multiplikator
+            const beduerfnisMatch = (K1 + K2 + K3 + K4) / 4;
+            const K = beduerfnisMatch * (0.5 + kompetenzFaktor * 0.5);  // Kompetenz skaliert 0.5-1.0
+
+            return {
+                K: Math.round(K * 100) / 100,
+                K1: Math.round(K1 * 100) / 100,
+                K2: Math.round(K2 * 100) / 100,
+                K3: Math.round(K3 * 100) / 100,
+                K4: Math.round(K4 * 100) / 100,
+                kompetenz: kompetenzFaktor,
+                kompetenzLabel: ichGfk && partnerGfk ? `${ichGfk} + ${partnerGfk}` : 'nicht gesetzt',
+                beduerfnisMatch: Math.round(beduerfnisMatch * 100) / 100
+            };
         }
 
         // ═══════════════════════════════════════════════════════════════════════
@@ -11105,12 +11247,14 @@
         // ═══════════════════════════════════════════════════════════════════════
         function calculateRelationshipQuality(person1, person2) {
             // ═══════════════════════════════════════════════════════════════════
-            // NEUE ZENTRALE BERECHNUNG mit Resonanz
+            // TIAGE RECHENMODELL v2.0 - Direkte Resonanz-Modulation
             // ═══════════════════════════════════════════════════════════════════
-            // Formel: Q = [(A × wₐ) + (O × wₒ) + (D × wᵈ) + (G × wᵍ)] × R
+            // Formel: Score = (O × 0.40 × R1) + (A × 0.25 × R2) + (D × 0.20 × R3) + (G × 0.15 × R4)
             //
-            // R = Resonanz-Koeffizient (0.9 - 1.1)
-            // Kein harter K.O. mehr - sanfte Abstufung durch Resonanz
+            // Ri = 0.5 + Bedürfnis-Match-i (Range: 0.5 - 1.5)
+            // → 0% Match  = 0.5 (schwächt ab)
+            // → 50% Match = 1.0 (neutral)
+            // → 100% Match = 1.5 (verstärkt)
 
             const orientationScore = calculateOrientationScore(person1, person2);
 
@@ -11125,46 +11269,73 @@
                         orientierung: 0,
                         geschlecht: 0
                     },
-                    resonanz: { R: 0.9, M: 0, B: 0, interpretation: 'Blockiert' }
+                    resonanz: { R1: 0.5, R2: 0.5, R3: 0.5, R4: 0.5, GFK: 0.5 }
                 };
             }
 
             // ═══════════════════════════════════════
-            // EBENE 2: 4-Faktoren Qualitätsberechnung
+            // SCHRITT 1: Basis-Faktoren (0-100)
             // ═══════════════════════════════════════
-
             const archetypeScore = getArchetypeScore(person1.archetyp, person2.archetyp);
             const dominanceScore = calculateDominanceHarmony(person1.dominanz, person2.dominanz);
             const genderScore = calculateGenderAttraction(person1, person2);
 
-            // Gewichtete Basis-Summe nach Pathos-vor-Logos-Prinzip
-            const baseScore =
-                (orientationScore * 0.40) +    // 40% Pathos - Körperliche Polarität
-                (archetypeScore * 0.25) +      // 25% Logos - Beziehungsphilosophie
-                (dominanceScore * 0.20) +      // 20% Pathos - Energetische Dynamik
-                (genderScore * 0.15);          // 15% Pathos - Gender-Chemie
+            // ═══════════════════════════════════════
+            // SCHRITT 2: Resonanz-Faktoren R1-R4 (0.5-1.5)
+            // ═══════════════════════════════════════
+            // Basierend auf 88 Bedürfnissen, aufgeteilt nach Faktor
+
+            const ichArchetyp = (currentArchetype || '').replace('_', '-');
+            const partnerArchetyp = (selectedPartner || '').replace('_', '-');
+
+            let R1 = 1.0, R2 = 1.0, R3 = 1.0, R4 = 1.0;  // Default: neutral
+            let matching = null;
+
+            if (typeof GfkBeduerfnisse !== 'undefined' && ichArchetyp && partnerArchetyp) {
+                matching = GfkBeduerfnisse.berechneMatching(ichArchetyp, partnerArchetyp);
+
+                if (matching && !matching.fehler) {
+                    // Berechne Bedürfnis-Match pro Kategorie (0-1)
+                    const match1 = calculateKSubfaktor('K1', matching);  // Orientierung
+                    const match2 = calculateKSubfaktor('K2', matching);  // Archetyp
+                    const match3 = calculateKSubfaktor('K3', matching);  // Dominanz
+                    const match4 = calculateKSubfaktor('K4', matching);  // Geschlecht
+
+                    // Skaliere auf 0.5-1.5
+                    R1 = 0.5 + match1;
+                    R2 = 0.5 + match2;
+                    R3 = 0.5 + match3;
+                    R4 = 0.5 + match4;
+                }
+            }
 
             // ═══════════════════════════════════════
-            // EBENE 3: Resonanz als Meta-Dimension
+            // SCHRITT 3: Score-Berechnung mit Resonanz
             // ═══════════════════════════════════════
-            // R moduliert das Gesamtergebnis (0.9 - 1.1)
-            // Formel: Q = baseScore × R
+            // Score = (O × 0.40 × R1) + (A × 0.25 × R2) + (D × 0.20 × R3) + (G × 0.15 × R4)
 
-            const resonanzResult = calculateResonanz(
-                person1, person2,
-                archetypeScore, orientationScore, dominanceScore, genderScore
-            );
+            const scoreO = orientationScore * 0.40 * R1;
+            const scoreA = archetypeScore * 0.25 * R2;
+            const scoreD = dominanceScore * 0.20 * R3;
+            const scoreG = genderScore * 0.15 * R4;
 
-            // Finale Qualität mit Resonanz-Modulation
-            const totalScore = baseScore * resonanzResult.R;
+            const totalScore = scoreO + scoreA + scoreD + scoreG;
+
+            // GFK-Kompetenz = Durchschnitt R1-R4
+            const GFK = (R1 + R2 + R3 + R4) / 4;
+
+            // ═══════════════════════════════════════
+            // SCHRITT 4: Meta-Faktoren (für UI)
+            // ═══════════════════════════════════════
+            const M = calculateProfilMatch(person1, person2);
+            const B = calculateLogosPathosBalance(archetypeScore, orientationScore, dominanceScore, genderScore);
 
             // Logos/Pathos Breakdown für UI
             const logos = archetypeScore;
             const pathos = (orientationScore + dominanceScore + genderScore) / 3;
 
             return {
-                score: Math.round(totalScore),
-                baseScore: Math.round(baseScore),
+                score: Math.round(totalScore * 10) / 10,  // Eine Dezimalstelle
                 blocked: false,
                 breakdown: {
                     archetyp: archetypeScore,
@@ -11172,7 +11343,21 @@
                     orientierung: orientationScore,
                     geschlecht: genderScore
                 },
-                resonanz: resonanzResult,
+                resonanz: {
+                    R1: Math.round(R1 * 100) / 100,
+                    R2: Math.round(R2 * 100) / 100,
+                    R3: Math.round(R3 * 100) / 100,
+                    R4: Math.round(R4 * 100) / 100,
+                    GFK: Math.round(GFK * 100) / 100,
+                    M: M,
+                    B: Math.round(B * 100) / 100
+                },
+                scoreDetails: {
+                    O: Math.round(scoreO * 10) / 10,
+                    A: Math.round(scoreA * 10) / 10,
+                    D: Math.round(scoreD * 10) / 10,
+                    G: Math.round(scoreG * 10) / 10
+                },
                 logos: logos,
                 pathos: pathos
             };
