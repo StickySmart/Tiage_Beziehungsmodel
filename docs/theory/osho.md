@@ -61,45 +61,27 @@ OSHO lehrte: **Sexuelle Orientierung ist Konditionierung, nicht Natur.** Der nat
 
 Dies bildet die philosophische Grundlage für den **Resonanz-Override** im Tiage-Modell (siehe [resonance.md](resonance.md)).
 
-## Die drei Feedback-Ebenen nach OSHO
+## Tiages gelebter Kern
 
-OSHO lehrte, dass echte Bewusstheit sich in **drei Ebenen** manifestiert. Diese Dreiteilung spiegelt sich im Feedback-System des Tiage-Modells wider:
+Was bleibt von OSHO im Tiage-Modell? Nicht abstrakte Konzepte, sondern gelebte Erfahrung:
 
-### Die drei Ebenen
+> **Das Leben akzeptieren für das was es ist. Die Schönheit und Schwingung erkennen. Geerdet bleiben.**
 
-| Ebene | OSHO-Konzept | Feedback-Frage |
-|-------|--------------|----------------|
-| **🧠 Verstand** | Logos – rationales Verstehen | "Hat es mir intellektuell geholfen?" |
-| **❤️ Gefühl** | Pathos – emotionale Resonanz | "Hat es mich emotional berührt?" |
-| **✨ Intuition** | Bewusstheit – tieferes Wissen | "Hat es etwas in mir geweckt?" |
+### Akzeptanz
 
-### Philosophische Bedeutung
+Das Modell misst nicht, um zu urteilen oder zu "reparieren". Es macht die Schwingung zwischen zwei Menschen sichtbar – ohne Wertung, ob jemand "richtig" oder "falsch" ist.
 
-OSHO betonte, dass **vollständiges Verstehen** alle drei Ebenen integriert:
+### Schwingung erkennen
 
-- **Verstand allein** führt zu trockener Analyse ohne Lebendigkeit
-- **Gefühl allein** führt zu Chaos ohne Orientierung
-- **Intuition** verbindet beides – sie entsteht, wenn Verstand und Gefühl in Harmonie schwingen
+Resonanz ist keine mystische Formel, sondern das Spürbare: Passen zwei Menschen zusammen? Schwingt etwas? Das Modell versucht, dieses Gefühl in Zahlen zu übersetzen – als Orientierung, nicht als Urteil.
 
-> *"Wahre Intelligenz ist nicht nur im Kopf. Sie ist im ganzen Körper verteilt, in jeder Zelle."*
+### Geerdet bleiben
 
-### Was bedeutet das für MICH?
+Esoterisch, aber nicht zu hoch fliegen. Das Tiage-Modell bleibt praktisch: konkrete Faktoren, nachvollziehbare Berechnung. Die Philosophie ist der Boden, nicht die Wolke.
 
-Die drei Feedback-Ebenen laden zur **Selbstreflexion** ein:
+### Meditation als Weg
 
-- **ICH-Ebene:** Wie erlebe ich diese Erkenntnis? Was löst sie in mir aus?
-- **DU-Ebene:** Wie wirkt dieses Wissen auf meine Beziehungen? Was verändert sich im Miteinander?
-- **WIR-Ebene:** Wie trägt diese Erfahrung zum größeren Ganzen bei? Was bleibt?
-
-### Die Einladung
-
-Wenn du Feedback gibst, beachte alle drei Ebenen:
-
-1. Nicht nur "War es nützlich?" (Verstand)
-2. Sondern auch "Hat es mich berührt?" (Gefühl)
-3. Und "Hat es etwas verändert?" (Intuition)
-
-**Verteilt** auf diese drei Dimensionen entsteht ein vollständiges Bild – das ist die OSHO-Dynamik des bewussten Feedbacks.
+Meditation ist der Weg zum Bewusstsein. Nicht als Flucht, sondern als Ankommen bei sich selbst. Wer sich selbst kennt, kann auch andere verstehen.
 
 ---
 

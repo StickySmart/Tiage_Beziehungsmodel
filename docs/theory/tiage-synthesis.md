@@ -60,35 +60,27 @@ Das Modell gewichtet emotionale Resonanz höher als rationale Struktur, weil:
 | **LAT** | Living Apart Together - Feste Partnerschaft ohne Zusammenleben |
 | **Aromantisch** | Fokus auf platonische Verbindungen ohne romantische Komponente |
 
-## Die drei Feedback-Ebenen (OSHO-Dynamik)
+## Tiages gelebter Kern
 
-Eine wichtige Komponente der Tiage-Synthese ist die Integration der **OSHO-Dynamik** in das Feedback-System:
+Was bleibt von OSHO im Tiage-Modell? Nicht abstrakte Konzepte, sondern **gelebte Erfahrung**:
 
-### Die drei Ebenen
+> *Das Leben akzeptieren für das was es ist. Die Schönheit und Schwingung erkennen. Geerdet bleiben.*
 
-| Ebene | Konzept | Bedeutung |
-|-------|---------|-----------|
-| **🧠 Verstand** | Logos | Hat es intellektuell geholfen? |
-| **❤️ Gefühl** | Pathos | Hat es emotional berührt? |
-| **✨ Intuition** | Bewusstheit | Hat es etwas geweckt? |
+### Akzeptanz
 
-### Warum drei Ebenen?
+Das Modell misst nicht, um zu urteilen oder zu "reparieren". Es macht die Schwingung zwischen zwei Menschen sichtbar – ohne Wertung, ob jemand "richtig" oder "falsch" ist.
 
-OSHO lehrte, dass vollständiges Verstehen alle drei Dimensionen integriert:
+### Schwingung erkennen
 
-- Verstand allein = trockene Analyse
-- Gefühl allein = Chaos ohne Orientierung
-- Intuition = die Verbindung beider Ebenen
+Resonanz ist keine mystische Formel, sondern das Spürbare: Passen zwei Menschen zusammen? Schwingt etwas? Das Modell versucht, dieses Gefühl in Zahlen zu übersetzen – als Orientierung, nicht als Urteil.
 
-### Die persönliche Bedeutung (ICH-DU-WIR)
+### Geerdet bleiben
 
-Die drei Ebenen laden zur Selbstreflexion ein:
+Esoterisch, aber nicht zu hoch fliegen. Das Tiage-Modell bleibt praktisch: konkrete Faktoren, nachvollziehbare Berechnung. Die Philosophie ist der Boden, nicht die Wolke.
 
-- **ICH:** Wie erlebe ich diese Erkenntnis?
-- **DU:** Wie wirkt sie auf meine Beziehungen?
-- **WIR:** Wie trägt sie zum größeren Ganzen bei?
+### Meditation als Weg
 
-Diese "verteilte" Betrachtung ist der Kern der OSHO-Dynamik im Tiage-Modell.
+Meditation ist der Weg zum Bewusstsein. Nicht als Flucht, sondern als Ankommen bei sich selbst. Wer sich selbst kennt, kann auch andere verstehen.
 
 ## Philosophische Einordnung
 
