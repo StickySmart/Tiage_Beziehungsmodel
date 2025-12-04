@@ -268,6 +268,10 @@
                             <strong>Resonanz-Formel:</strong> R = 0.9 + [(M/100 × 0.35) + (B × 0.35) + (K × 0.30)] × 0.2<br>
                             <small style="opacity: 0.7;">M = Profil-Match (30 Attribute) | B = Logos-Pathos-Balance | K = GFK-Kommunikationsfaktor</small>
                         </div>
+                        <div style="margin-top: 10px; padding: 8px; background: rgba(255,255,255,0.05); border-radius: 6px;">
+                            <strong>K-Faktor (88 Bedürfnisse):</strong> K = [(K1 + K2 + K3 + K4) / 4] × Kompetenz<br>
+                            <small style="opacity: 0.7;">K1 = Orientierung (22) | K2 = Archetyp (26) | K3 = Dominanz (21) | K4 = Geschlecht (19)</small>
+                        </div>
                     </div>
 
                     <div class="help-section">
@@ -309,18 +313,23 @@
                                     </ul>
                                 </li>
                                 <li><strong>B = 0.80</strong> (Logos-Pathos-Balance: gut ausgewogen)</li>
-                                <li><strong>K = 0.75</strong> (GFK-Kompetenz: Person A hoch + Person B mittel)</li>
+                                <li><strong>K = 0.75</strong> (GFK-Kommunikationsfaktor)
+                                    <ul style="margin-top: 4px; font-size: 0.9em; opacity: 0.85;">
+                                        <li>Kompetenz: hoch + mittel → Multiplikator 0.875</li>
+                                        <li>K1 = 0.82 (Orientierung: 18/22 existenz, zuneigung, musse)</li>
+                                        <li>K2 = 0.85 (Archetyp: 22/26 freiheit, teilnahme, identitaet)</li>
+                                        <li>K3 = 0.90 (Dominanz: 19/21 dynamik, sicherheit)</li>
+                                        <li>K4 = 0.79 (Geschlecht: 15/19 verstaendnis, erschaffen, verbundenheit)</li>
+                                        <li>Bedürfnis-Match: (0.82 + 0.85 + 0.90 + 0.79) / 4 = 0.84</li>
+                                        <li>K = 0.84 × 0.875 = <strong>0.74 ≈ 0.75</strong></li>
+                                    </ul>
+                                </li>
                                 <li>R = 0.9 + [(70/100 × 0.35) + (0.80 × 0.35) + (0.75 × 0.30)] × 0.2</li>
                                 <li>R = 0.9 + [0.245 + 0.28 + 0.225] × 0.2 = 0.9 + 0.15 = <strong>1.05</strong></li>
                             </ul>
                             <p style="margin: 12px 0 4px 0; font-size: 12px; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.5px;">3. Finales Ergebnis</p>
                             <div class="help-formula">
                                 94 × 1.05 = 98.7 ≈ <strong>99%</strong>
-                            </div>
-                            <p style="margin: 12px 0 4px 0; font-size: 12px; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.5px;">📊 Zusätzlich: Bedürfnis-Vergleich (UI)</p>
-                            <div style="font-size: 0.9em; opacity: 0.85; padding: 8px; background: rgba(255,255,255,0.03); border-radius: 6px;">
-                                <div>72/88 gemeinsame Prioritäten | 16 unterschiedliche</div>
-                                <div style="margin-top: 4px; color: var(--text-muted);">→ Nicht in Score-Formel, aber wichtig für Gesprächsthemen</div>
                             </div>
                         </div>
                     </div>
@@ -11020,8 +11029,9 @@
             // Komponente 2: Logos-Pathos-Balance (B)
             const B = calculateLogosPathosBalance(archetypeScore, orientationScore, dominanceScore, genderScore);
 
-            // Komponente 3: GFK-Kommunikationsfaktor (K)
-            const K = calculateGfkFactor();
+            // Komponente 3: GFK-Kommunikationsfaktor (K) mit K1-K4 Subfaktoren
+            const kResult = calculateGfkFactor();
+            const K = kResult.K;  // Gesamt-K für Formel
 
             // Gesamtformel: R = 0.9 + [(M/100 × 0.35) + (B × 0.35) + (K × 0.30)] × 0.2
             // GFK bekommt 30% weil Kommunikation fundamental für Resonanz ist
@@ -11045,47 +11055,142 @@
                 R: Math.round(R * 100) / 100,
                 M: M,
                 B: Math.round(B * 100) / 100,
-                K: Math.round(K * 100) / 100,
+                K: K,
+                K1: kResult.K1,  // Orientierung-Bedürfnisse
+                K2: kResult.K2,  // Archetyp-Bedürfnisse
+                K3: kResult.K3,  // Dominanz-Bedürfnisse
+                K4: kResult.K4,  // Geschlecht-Bedürfnisse
+                kompetenz: kResult.kompetenz,
+                kompetenzLabel: kResult.kompetenzLabel,
                 interpretation: interpretation
             };
         }
 
         /**
-         * Berechnet den GFK-Kommunikationsfaktor (K)
-         * Basiert auf der GFK-Kompetenz beider Partner
-         * @returns {number} 0-1, wobei 1 = optimale Kommunikationsbasis
+         * K-FAKTOR ZUORDNUNG: GFK-Kategorien zu den 4 Hauptfaktoren
+         * ═══════════════════════════════════════════════════════════════════════
+         * Basiert auf Tiage-Modell (Pathos/Logos) + GFK (Rosenberg)
+         */
+        const K_FAKTOR_KATEGORIEN = {
+            // K1: Orientierung (Pathos) - Körperliche Anziehung, Sexualität
+            K1: ['existenz', 'zuneigung', 'musse'],  // 22 Bedürfnisse
+
+            // K2: Archetyp (Logos) - Beziehungsphilosophie
+            K2: ['freiheit', 'teilnahme', 'identitaet'],  // 26 Bedürfnisse
+
+            // K3: Dominanz (Pathos) - Energetische Dynamik
+            K3: ['dynamik', 'sicherheit'],  // 21 Bedürfnisse
+
+            // K4: Geschlecht (Pathos) - Gender-Chemie, Identität
+            K4: ['verstaendnis', 'erschaffen', 'verbundenheit']  // 19 Bedürfnisse
+        };
+
+        /**
+         * Berechnet den Bedürfnis-Match für eine K-Kategorie
+         * @param {string} kKey - 'K1', 'K2', 'K3' oder 'K4'
+         * @param {object} matching - Das Matching-Ergebnis von GfkBeduerfnisse.berechneMatching
+         * @returns {number} 0-1, wobei 1 = perfekte Übereinstimmung
+         */
+        function calculateKSubfaktor(kKey, matching) {
+            if (!matching || !matching.details) return 0.5;  // Fallback
+
+            const kategorien = K_FAKTOR_KATEGORIEN[kKey];
+            if (!kategorien) return 0.5;
+
+            let gemeinsam = 0;
+            let total = 0;
+
+            // Zähle gemeinsame und unterschiedliche Bedürfnisse pro Kategorie
+            const uebereinstimmend = matching.details.uebereinstimmend || [];
+            const konflikt = matching.details.konflikt || [];
+
+            for (const kat of kategorien) {
+                const gemeinsamInKat = uebereinstimmend.filter(b => {
+                    const def = GfkBeduerfnisse?.definitionen?.[b.id];
+                    return def?.kategorie === kat;
+                }).length;
+
+                const konfliktInKat = konflikt.filter(b => {
+                    const def = GfkBeduerfnisse?.definitionen?.[b.id];
+                    return def?.kategorie === kat;
+                }).length;
+
+                gemeinsam += gemeinsamInKat;
+                total += gemeinsamInKat + konfliktInKat;
+            }
+
+            // Wenn keine Bedürfnisse in dieser Kategorie: neutral
+            if (total === 0) return 0.5;
+
+            return gemeinsam / total;
+        }
+
+        /**
+         * Berechnet den GFK-Kommunikationsfaktor (K) mit K1-K4 Subfaktoren
+         * K = (K1 + K2 + K3 + K4) / 4
+         *
+         * Jeder Ki basiert auf dem Bedürfnis-Match der relevanten GFK-Kategorien:
+         * - K1 (Orientierung): existenz, zuneigung, musse
+         * - K2 (Archetyp): freiheit, teilnahme, identitaet
+         * - K3 (Dominanz): dynamik, sicherheit
+         * - K4 (Geschlecht): verstaendnis, erschaffen, verbundenheit
+         *
+         * @returns {object} { K: 0-1, K1, K2, K3, K4, details }
          */
         function calculateGfkFactor() {
             const ichGfk = personDimensions.ich?.gfk;
             const partnerGfk = personDimensions.partner?.gfk;
 
-            // Wenn einer nicht ausgewählt: neutral (0.5)
-            if (!ichGfk || !partnerGfk) {
-                return 0.5;
+            // Basis-Kompetenz-Faktor (alte Logik als Fallback/Gewichtung)
+            let kompetenzFaktor = 0.5;
+            if (ichGfk && partnerGfk) {
+                const gfkValues = { 'hoch': 3, 'mittel': 2, 'niedrig': 1 };
+                const v1 = gfkValues[ichGfk] || 2;
+                const v2 = gfkValues[partnerGfk] || 2;
+                const sum = v1 + v2;
+                const min = Math.min(v1, v2);
+
+                if (sum === 6) kompetenzFaktor = 1.0;
+                else if (sum === 5) kompetenzFaktor = 0.75;
+                else if (sum === 4 && min === 2) kompetenzFaktor = 0.5;
+                else if (sum === 4 && min === 1) kompetenzFaktor = 0.35;
+                else if (sum === 3) kompetenzFaktor = 0.2;
+                else kompetenzFaktor = 0.0;
             }
 
-            // GFK-Werte in numerische Werte umwandeln
-            const gfkValues = { 'hoch': 3, 'mittel': 2, 'niedrig': 1 };
-            const v1 = gfkValues[ichGfk] || 2;
-            const v2 = gfkValues[partnerGfk] || 2;
+            // Bedürfnis-Matching berechnen
+            const ichArchetyp = (currentArchetype || '').replace('_', '-');
+            const partnerArchetyp = (selectedPartner || '').replace('_', '-');
 
-            // Kombinationswerte (Summe: 2-6)
-            const sum = v1 + v2;
-            const min = Math.min(v1, v2);
+            let K1 = 0.5, K2 = 0.5, K3 = 0.5, K4 = 0.5;
+            let matching = null;
 
-            // Faktor-Mapping:
-            // 6 (hoch+hoch): 1.0
-            // 5 (hoch+mittel): 0.75
-            // 4 (mittel+mittel oder hoch+niedrig): 0.5 oder 0.4
-            // 3 (mittel+niedrig): 0.25
-            // 2 (niedrig+niedrig): 0.0
+            if (typeof GfkBeduerfnisse !== 'undefined' && ichArchetyp && partnerArchetyp) {
+                matching = GfkBeduerfnisse.berechneMatching(ichArchetyp, partnerArchetyp);
 
-            if (sum === 6) return 1.0;              // hoch + hoch
-            if (sum === 5) return 0.75;             // hoch + mittel
-            if (sum === 4 && min === 2) return 0.5; // mittel + mittel
-            if (sum === 4 && min === 1) return 0.35; // hoch + niedrig (asymmetrisch)
-            if (sum === 3) return 0.2;              // mittel + niedrig
-            return 0.0;                             // niedrig + niedrig
+                if (matching && !matching.fehler) {
+                    K1 = calculateKSubfaktor('K1', matching);
+                    K2 = calculateKSubfaktor('K2', matching);
+                    K3 = calculateKSubfaktor('K3', matching);
+                    K4 = calculateKSubfaktor('K4', matching);
+                }
+            }
+
+            // Gesamt-K: Durchschnitt der 4 Subfaktoren, gewichtet mit Kompetenz
+            // K = Bedürfnis-Match × Kompetenz-Multiplikator
+            const beduerfnisMatch = (K1 + K2 + K3 + K4) / 4;
+            const K = beduerfnisMatch * (0.5 + kompetenzFaktor * 0.5);  // Kompetenz skaliert 0.5-1.0
+
+            return {
+                K: Math.round(K * 100) / 100,
+                K1: Math.round(K1 * 100) / 100,
+                K2: Math.round(K2 * 100) / 100,
+                K3: Math.round(K3 * 100) / 100,
+                K4: Math.round(K4 * 100) / 100,
+                kompetenz: kompetenzFaktor,
+                kompetenzLabel: ichGfk && partnerGfk ? `${ichGfk} + ${partnerGfk}` : 'nicht gesetzt',
+                beduerfnisMatch: Math.round(beduerfnisMatch * 100) / 100
+            };
         }
 
         // ═══════════════════════════════════════════════════════════════════════
