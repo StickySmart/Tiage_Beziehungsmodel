@@ -1170,6 +1170,7 @@
                     </select>
                     <button class="archetype-nav-btn" onclick="navigateArchetype('ich', 1)" title="Nächster Archetyp">&#9654;</button>
                     <button class="archetype-info-btn" onclick="showArchetypeInfo('ich')" title="Info zum Archetyp">INFO</button>
+                    <button class="archetype-attributes-btn" onclick="openProfileReviewModal(getSelectedArchetype('ich'))" title="Attribute bearbeiten">⚙️ ATTRIBUTE</button>
                 </div>
                 <!-- Archetypen-Symbol-Grid für ICH -->
                 <div class="archetype-symbols-grid" id="ich-archetype-grid">
@@ -1277,6 +1278,7 @@
                     </select>
                     <button class="archetype-nav-btn" onclick="navigateArchetype('partner', 1)" title="Nächster Archetyp">&#9654;</button>
                     <button class="archetype-info-btn" onclick="showArchetypeInfo('partner')" title="Info zum Archetyp">INFO</button>
+                    <button class="archetype-attributes-btn" onclick="openProfileReviewModal(getSelectedArchetype('partner'))" title="Attribute bearbeiten">⚙️ ATTRIBUTE</button>
                 </div>
                 <!-- Archetypen-Symbol-Grid für PARTNER -->
                 <div class="archetype-symbols-grid" id="partner-archetype-grid">
@@ -16041,6 +16043,14 @@
                 osho: "Familie kann Gefängnis oder Flügel sein. Es kommt auf die Bewusstheit an."
             }
         };
+
+        // Get selected archetype for a person (ich/partner)
+        function getSelectedArchetype(person) {
+            var selectId = person === 'ich' ? 'ichSelect' : 'partnerSelect';
+            var select = document.getElementById(selectId);
+            return select ? select.value : 'duo';
+        }
+        window.getSelectedArchetype = getSelectedArchetype;
 
         // Open Profile Review Modal
         function openProfileReviewModal(archetypeKey) {

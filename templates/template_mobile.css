@@ -517,6 +517,26 @@ body {
         letter-spacing: 0.5px;
     }
 
+    .archetype-attributes-btn {
+        padding: 12px 16px;
+        background: linear-gradient(135deg, #9b59b6, #8e44ad);
+        border: 1px solid #8e44ad;
+        border-radius: 8px;
+        color: white;
+        cursor: pointer;
+        font-size: 14px;
+        font-weight: 600;
+        letter-spacing: 0.5px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 6px;
+    }
+
+    .archetype-attributes-btn:active {
+        background: linear-gradient(135deg, #8e44ad, #7d3c98);
+    }
+
     /* ========================================
        MOBILE DOMINANZ MULTI-SELECT
        ======================================== */
