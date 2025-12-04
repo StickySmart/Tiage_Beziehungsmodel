@@ -10,12 +10,12 @@
 const TiageVersion = {
     // Semantische Versionierung: MAJOR.MINOR.PATCH
     major: 1,
-    minor: 6,
-    patch: 1,
+    minor: 7,
+    patch: 0,
 
     // Letztes Merge-Datum und -Uhrzeit
-    mergeDate: '2025-12-02',
-    mergeTime: '20:39',
+    mergeDate: '2025-12-04',
+    mergeTime: '12:00',
 
     // Vollständige Version als String
     get version() {
@@ -39,12 +39,19 @@ const TiageVersion = {
     }
 };
 
-// Initialisierung: Version in UI anzeigen
+// Initialisierung: Version in UI anzeigen (Header und Footer)
 function initVersionDisplay() {
+    // Header-Version
     const versionElement = document.getElementById('appVersion');
     if (versionElement) {
         versionElement.textContent = TiageVersion.displayString;
         versionElement.title = `Version ${TiageVersion.version}\nMerge: ${TiageVersion.formattedDate} um ${TiageVersion.mergeTime} Uhr`;
+    }
+
+    // Footer-Version
+    const footerVersion = document.getElementById('footerVersion');
+    if (footerVersion) {
+        footerVersion.textContent = `Version ${TiageVersion.version}`;
     }
 }
 
