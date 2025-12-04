@@ -538,6 +538,30 @@ body {
     }
 
     /* ========================================
+       MOBILE PROFILE REVIEW MODAL
+       ======================================== */
+
+    .profile-review-checkbox-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .profile-review-modal {
+        max-width: 100%;
+        margin: 10px;
+        border-radius: 12px;
+    }
+
+    .profile-review-actions {
+        grid-template-columns: 1fr 1fr;
+        padding: 12px 16px;
+    }
+
+    .profile-review-btn {
+        padding: 10px 12px;
+        font-size: 13px;
+    }
+
+    /* ========================================
        MOBILE DOMINANZ MULTI-SELECT
        ======================================== */
 
