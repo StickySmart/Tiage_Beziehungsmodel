@@ -670,26 +670,22 @@
                         <span>LEBENSPLANUNG</span>
                     </div>
                     <div class="profile-review-checkbox-grid">
-                        <div class="profile-review-attribute" onclick="toggleCheckbox('pr-kinder')">
-                            <input type="checkbox" class="profile-review-checkbox" id="pr-kinder" onchange="trackProfileReviewChange(); updateAttributeStyle(this)">
-                            <label for="pr-kinder" class="profile-review-label">Kinder</label>
-                            <button class="profile-review-info-btn" onclick="event.stopPropagation(); showProfileReviewInfo('kinderWunsch')">?</button>
-                        </div>
-                        <div class="profile-review-attribute" onclick="toggleCheckbox('pr-ehe')">
-                            <input type="checkbox" class="profile-review-checkbox" id="pr-ehe" onchange="trackProfileReviewChange(); updateAttributeStyle(this)">
-                            <label for="pr-ehe" class="profile-review-label">Ehe</label>
-                            <button class="profile-review-info-btn" onclick="event.stopPropagation(); showProfileReviewInfo('eheWunsch')">?</button>
-                        </div>
-                        <div class="profile-review-attribute" onclick="toggleCheckbox('pr-zusammen')">
-                            <input type="checkbox" class="profile-review-checkbox" id="pr-zusammen" onchange="trackProfileReviewChange(); updateAttributeStyle(this)">
-                            <label for="pr-zusammen" class="profile-review-label">Zusammen wohnen</label>
-                            <button class="profile-review-info-btn" onclick="event.stopPropagation(); showProfileReviewInfo('wohnform')">?</button>
-                        </div>
-                        <div class="profile-review-attribute" onclick="toggleCheckbox('pr-haustiere')">
-                            <input type="checkbox" class="profile-review-checkbox" id="pr-haustiere" onchange="trackProfileReviewChange(); updateAttributeStyle(this)">
-                            <label for="pr-haustiere" class="profile-review-label">Haustiere</label>
-                            <button class="profile-review-info-btn" onclick="event.stopPropagation(); showProfileReviewInfo('haustiere')">?</button>
-                        </div>
+                        <button class="profile-review-toggle-btn" id="pr-kinder" onclick="toggleProfileBtn(this)">
+                            Kinder
+                            <span class="profile-review-info-btn" onclick="event.stopPropagation(); showProfileReviewInfo('kinderWunsch')">?</span>
+                        </button>
+                        <button class="profile-review-toggle-btn" id="pr-ehe" onclick="toggleProfileBtn(this)">
+                            Ehe
+                            <span class="profile-review-info-btn" onclick="event.stopPropagation(); showProfileReviewInfo('eheWunsch')">?</span>
+                        </button>
+                        <button class="profile-review-toggle-btn" id="pr-zusammen" onclick="toggleProfileBtn(this)">
+                            Zusammen wohnen
+                            <span class="profile-review-info-btn" onclick="event.stopPropagation(); showProfileReviewInfo('wohnform')">?</span>
+                        </button>
+                        <button class="profile-review-toggle-btn" id="pr-haustiere" onclick="toggleProfileBtn(this)">
+                            Haustiere
+                            <span class="profile-review-info-btn" onclick="event.stopPropagation(); showProfileReviewInfo('haustiere')">?</span>
+                        </button>
                     </div>
                     <div class="profile-review-slider-attribute">
                         <div class="profile-review-slider-header">
@@ -16248,20 +16244,13 @@
             if (archetype && archetype.defaultInferences) {
                 var inferences = archetype.defaultInferences;
 
-                // Checkboxen
-                var kinderCheckbox = document.getElementById('pr-kinder');
-                if (kinderCheckbox) kinderCheckbox.checked = inferences.kinderWunsch === 'ja';
+                // Toggle-Buttons
+                setProfileBtnState('pr-kinder', inferences.kinderWunsch === 'ja');
+                setProfileBtnState('pr-ehe', inferences.eheWunsch === 'ja');
+                setProfileBtnState('pr-zusammen', inferences.wohnform === 'zusammen');
+                setProfileBtnState('pr-haustiere', inferences.haustiere === 'ja' || inferences.haustiere === 'ja-gemeinsam' || inferences.haustiere === 'ja-eigene');
 
-                var eheCheckbox = document.getElementById('pr-ehe');
-                if (eheCheckbox) eheCheckbox.checked = inferences.eheWunsch === 'ja';
-
-                var zusammenCheckbox = document.getElementById('pr-zusammen');
-                if (zusammenCheckbox) zusammenCheckbox.checked = inferences.wohnform === 'zusammen';
-
-                var haustiereCheckbox = document.getElementById('pr-haustiere');
-                if (haustiereCheckbox) haustiereCheckbox.checked = inferences.haustiere === 'ja' || inferences.haustiere === 'ja-gemeinsam' || inferences.haustiere === 'ja-eigene';
-
-                // Slider
+                // Slider - Werte laden und Display aktualisieren
                 var umzugSlider = document.getElementById('pr-umzug');
                 if (umzugSlider) {
                     var umzugValue = 50;
@@ -16270,7 +16259,7 @@
                     else if (inferences.umzugsbereitschaft === 'verhandelbar') umzugValue = 50;
                     else if (inferences.umzugsbereitschaft === 'nur-gemeinsam') umzugValue = 25;
                     umzugSlider.value = umzugValue;
-                    updateProfileReviewSlider(umzugSlider, 'pr-umzug-value', ['Niedrig', 'Mittel', 'Hoch']);
+                    updateProfileReviewSlider(umzugSlider, 'pr-umzug-value');
                 }
 
                 var finanzenSlider = document.getElementById('pr-finanzen');
@@ -16280,21 +16269,21 @@
                     else if (inferences.finanzen === 'hybrid') finanzenValue = 50;
                     else if (inferences.finanzen === 'gemeinsam') finanzenValue = 85;
                     finanzenSlider.value = finanzenValue;
-                    updateProfileReviewSlider(finanzenSlider, 'pr-finanzen-value', ['Getrennt', 'Hybrid', 'Gemeinsam']);
+                    updateProfileReviewSlider(finanzenSlider, 'pr-finanzen-value');
                 }
 
                 var karriereSlider = document.getElementById('pr-karriere');
                 if (karriereSlider) {
                     var karriereValue = (inferences.karrierePrioritaet || 0.5) * 100;
                     karriereSlider.value = karriereValue;
-                    updateProfileReviewSlider(karriereSlider, 'pr-karriere-value', ['Familie', 'Balance', 'Karriere']);
+                    updateProfileReviewSlider(karriereSlider, 'pr-karriere-value');
                 }
 
                 var familieSlider = document.getElementById('pr-familie');
                 if (familieSlider) {
                     var familieValue = (inferences.familieWichtigkeit || 0.5) * 100;
                     familieSlider.value = familieValue;
-                    updateProfileReviewSlider(familieSlider, 'pr-familie-value', ['Unwichtig', 'Wichtig', 'Sehr wichtig']);
+                    updateProfileReviewSlider(familieSlider, 'pr-familie-value');
                 }
             }
 
@@ -16305,11 +16294,6 @@
 
             // Save initial state
             profileReviewInitialState = getProfileReviewState();
-
-            // Initialize checkbox card styles
-            document.querySelectorAll('.profile-review-checkbox').forEach(function(checkbox) {
-                updateAttributeStyle(checkbox);
-            });
 
             // Show modal
             modal.style.display = 'flex';
@@ -16354,28 +16338,25 @@
         }
         window.trackProfileReviewChange = trackProfileReviewChange;
 
-        // Toggle checkbox when clicking on attribute card
-        function toggleCheckbox(checkboxId) {
-            var checkbox = document.getElementById(checkboxId);
-            if (checkbox) {
-                checkbox.checked = !checkbox.checked;
-                checkbox.dispatchEvent(new Event('change'));
-            }
+        // Toggle button active state
+        function toggleProfileBtn(btn) {
+            btn.classList.toggle('active');
+            trackProfileReviewChange();
         }
-        window.toggleCheckbox = toggleCheckbox;
+        window.toggleProfileBtn = toggleProfileBtn;
 
-        // Update attribute card style based on checkbox state
-        function updateAttributeStyle(checkbox) {
-            var card = checkbox.closest('.profile-review-attribute');
-            if (card) {
-                if (checkbox.checked) {
-                    card.classList.add('checked');
+        // Set button state (for loading from archetype)
+        function setProfileBtnState(btnId, active) {
+            var btn = document.getElementById(btnId);
+            if (btn) {
+                if (active) {
+                    btn.classList.add('active');
                 } else {
-                    card.classList.remove('checked');
+                    btn.classList.remove('active');
                 }
             }
         }
-        window.updateAttributeStyle = updateAttributeStyle;
+        window.setProfileBtnState = setProfileBtnState;
 
         // Filter Attributes by Search
         function filterProfileReviewAttributes(query) {
@@ -16436,13 +16417,13 @@
         }
         window.closeProfileReviewInfoModal = closeProfileReviewInfoModal;
 
-        // Get Current State
+        // Get Current State (Toggle-Buttons statt Checkboxen)
         function getProfileReviewState() {
             return {
-                kinder: document.getElementById('pr-kinder')?.checked,
-                ehe: document.getElementById('pr-ehe')?.checked,
-                zusammen: document.getElementById('pr-zusammen')?.checked,
-                haustiere: document.getElementById('pr-haustiere')?.checked,
+                kinder: document.getElementById('pr-kinder')?.classList.contains('active'),
+                ehe: document.getElementById('pr-ehe')?.classList.contains('active'),
+                zusammen: document.getElementById('pr-zusammen')?.classList.contains('active'),
+                haustiere: document.getElementById('pr-haustiere')?.classList.contains('active'),
                 umzug: document.getElementById('pr-umzug')?.value,
                 finanzen: document.getElementById('pr-finanzen')?.value,
                 karriere: document.getElementById('pr-karriere')?.value,
@@ -16453,22 +16434,23 @@
         // Reset Profile Review
         function resetProfileReview() {
             if (confirm('Alle Änderungen zurücksetzen und Standard-Werte wiederherstellen?')) {
-                // Reload from initial state
+                // Reload from initial state (Toggle-Buttons)
                 if (profileReviewInitialState.kinder !== undefined) {
-                    document.getElementById('pr-kinder').checked = profileReviewInitialState.kinder;
-                    document.getElementById('pr-ehe').checked = profileReviewInitialState.ehe;
-                    document.getElementById('pr-zusammen').checked = profileReviewInitialState.zusammen;
-                    document.getElementById('pr-haustiere').checked = profileReviewInitialState.haustiere;
+                    setProfileBtnState('pr-kinder', profileReviewInitialState.kinder);
+                    setProfileBtnState('pr-ehe', profileReviewInitialState.ehe);
+                    setProfileBtnState('pr-zusammen', profileReviewInitialState.zusammen);
+                    setProfileBtnState('pr-haustiere', profileReviewInitialState.haustiere);
+
                     document.getElementById('pr-umzug').value = profileReviewInitialState.umzug;
                     document.getElementById('pr-finanzen').value = profileReviewInitialState.finanzen;
                     document.getElementById('pr-karriere').value = profileReviewInitialState.karriere;
                     document.getElementById('pr-familie').value = profileReviewInitialState.familie;
 
                     // Update slider displays
-                    updateProfileReviewSlider(document.getElementById('pr-umzug'), 'pr-umzug-value', ['Niedrig', 'Mittel', 'Hoch']);
-                    updateProfileReviewSlider(document.getElementById('pr-finanzen'), 'pr-finanzen-value', ['Getrennt', 'Hybrid', 'Gemeinsam']);
-                    updateProfileReviewSlider(document.getElementById('pr-karriere'), 'pr-karriere-value', ['Familie', 'Balance', 'Karriere']);
-                    updateProfileReviewSlider(document.getElementById('pr-familie'), 'pr-familie-value', ['Unwichtig', 'Wichtig', 'Sehr wichtig']);
+                    updateProfileReviewSlider(document.getElementById('pr-umzug'), 'pr-umzug-value');
+                    updateProfileReviewSlider(document.getElementById('pr-finanzen'), 'pr-finanzen-value');
+                    updateProfileReviewSlider(document.getElementById('pr-karriere'), 'pr-karriere-value');
+                    updateProfileReviewSlider(document.getElementById('pr-familie'), 'pr-familie-value');
                 }
 
                 // Reset counter
