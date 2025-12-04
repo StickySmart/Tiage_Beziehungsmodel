@@ -62,16 +62,16 @@ R = 0.9 + [(M/100 × 0.35) + (B × 0.35) + (K × 0.30)] × 0.2
 
 | Faktor | Berechnung | Ergebnis |
 |--------|------------|----------|
-| Archetyp | 75% × 0.40 | 30 (Duo ↔ Duo-Flex = nah verwandt) |
-| Orientierung | 100% × 0.25 | 25 (Hetero + Hetero bei M/F) |
+| Orientierung | 100% × 0.40 | 40 (Hetero + Hetero bei M/F) |
+| Archetyp | 75% × 0.25 | 19 (Duo ↔ Duo-Flex = nah verwandt) |
 | Dominanz | 100% × 0.20 | 20 (Submissiv + Dominant = Ergänzung) |
 | Geschlecht | 100% × 0.15 | 15 (Cis Frau × Cis Mann passt) |
-| **Basis-Score** | | **90** |
+| **Basis-Score** | | **94** |
 | Resonanz | R = 1.05 | (Leichte Harmonie) |
-| **Final** | 90 × 1.05 | **94.5 ≈ 95%** |
+| **Final** | 94 × 1.05 | **98.7 ≈ 99%** |
 
 ```
-(30 + 25 + 20 + 15) × 1.05 = 94.5 ≈ 95%
+(40 + 19 + 20 + 15) × 1.05 = 98.7 ≈ 99%
 ```
 
 ## Die 8 Archetypen
@@ -104,7 +104,7 @@ R = 0.9 + [(M/100 × 0.35) + (B × 0.35) + (K × 0.30)] × 0.2
 - [Tiage-Synthese](theory/tiage-synthesis.md) - Das Gesamtkonzept
 - [Pirsig-Philosophie](theory/pirsig.md) - Metaphysik der Qualität
 - [OSHO-Philosophie](theory/osho.md) - Bewusstsein und Beziehung
-- [Pathos/Logos](theory/pathos-logos.md) - Die 40:60 Gewichtung
+- [Pathos/Logos](theory/pathos-logos.md) - Die 75:25 Gewichtung
 - [Resonanz-Theorie](theory/resonance.md) - Der Meta-Faktor
 - [Die 4 Faktoren](theory/factors.md) - Alle Qualitätsfaktoren im Detail
 
