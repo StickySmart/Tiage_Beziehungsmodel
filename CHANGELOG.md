@@ -5,6 +5,43 @@ Alle wichtigen Änderungen am Tiage-Beziehungsmodell werden hier dokumentiert.
 Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.0.0/),
 Versionierung folgt [Semantic Versioning](https://semver.org/lang/de/).
 
+## [1.7.0] - 2025-12-04
+
+### Neu
+
+**NEU: Dynamische Kategorie-Score-Komposition (A-F)**
+
+Die 1.248 psychologischen Profile erhalten nun individuelle Kategorie-Scores basierend auf ihrer Kombination aus Archetyp, Gender, Dominanz und Orientierung.
+
+**Technische Änderungen:**
+- `baseScores` Konstante: Basis-Werte (A-F) für alle 8 Archetypen
+- `categoryModifiers` für alle 13 Gender-Modifikatoren
+- `categoryModifiers` für alle 4 Dominanz-Modifikatoren
+- `categoryModifiers` für alle 3 Orientierungs-Modifikatoren
+- `applyScoreModifiers()` Hilfsfunktion für Score-Komposition
+- Erweiterte `composeProfile()` Funktion mit A-F Score-Berechnung
+- Neue API-Methoden: `getBaseScores()`, `getAllBaseScores()`, `getAllModifiers()`
+
+**Kategorie-Dimensionen:**
+- A = Beziehungsphilosophie
+- B = Werte-Alignment
+- C = Nähe-Distanz
+- D = Autonomie
+- E = Kommunikation
+- F = Soziale Kompatibilität
+
+**Beispiel-Komposition (Single + Mann-Cis + Dominant + Heterosexuell):**
+```
+A: 66.7 + 0 + 0 + (-2) = 64.7
+B: 66.8 + 2 + 1 + 3 = 72.8
+C: 62.2 + (-2) + (-3) + 2 = 59.2
+D: 77.5 + 3 + 5 + (-3) = 82.5
+E: 68.0 + (-4) + (-2) + (-2) = 60.0
+F: 63.8 + 3 + 2 + 5 = 73.8
+```
+
+**Quelle:** `profiles/profile-store.js`
+
 ## [1.6.0] - 2025-12-02
 
 ### Geändert
@@ -63,7 +100,7 @@ Die Gewichtung wurde an die reale menschliche Kennenlernreihenfolge angepasst. M
 ## [1.3.0] - 2025-11-26
 
 ### Neu
-- **216 Psychologische Profile** - Vollständige Persönlichkeitsprofile für alle Archetyp-Kombinationen
+- **1.248 Psychologische Profile** - Vollständige Persönlichkeitsprofile für alle Archetyp-Kombinationen *[erweitert in v1.7.0 mit individuellen A-F Scores]*
 - Detaillierte Beschreibungen für Single, Duo, Duo-Flex, Solopoly, Poly-Hedo und Polyamor
 - Wissenschaftlich fundierte Quellen-Dokumentation (`profiles/research-sources.md`)
 

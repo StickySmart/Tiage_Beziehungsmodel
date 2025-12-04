@@ -356,6 +356,84 @@ finalScore = Math.round(93.75 × 1.035) = 97
 
 ---
 
+## Profil-Komposition (A-F Kategorie-Scores)
+
+Die 1.248 psychologischen Profile werden **on-demand komponiert** und erhalten individuelle Kategorie-Scores basierend auf ihrer Kombination.
+
+### Kompositions-Formel
+
+```
+Score[Kategorie] = baseScores[archetyp][Kategorie]
+                 + genderModifiers[gender].categoryModifiers[Kategorie]
+                 + dominanceModifiers[dominanz].categoryModifiers[Kategorie]
+                 + orientationModifiers[orientierung].categoryModifiers[Kategorie]
+```
+
+**Quelle:** `profiles/profile-store.js`
+
+### Kategorie-Dimensionen
+
+| Kategorie | Name | Beschreibung |
+|-----------|------|--------------|
+| **A** | Beziehungsphilosophie | Grundlegende Einstellung zu Beziehungen |
+| **B** | Werte-Alignment | Übereinstimmung traditioneller/progressiver Werte |
+| **C** | Nähe-Distanz | Bedürfnis nach Intimität vs. Freiraum |
+| **D** | Autonomie | Unabhängigkeit in der Beziehung |
+| **E** | Kommunikation | Emotionale Offenheit und Ausdrucksfähigkeit |
+| **F** | Soziale Kompatibilität | Passung zu gesellschaftlichen Normen |
+
+### Basis-Scores (nach Archetyp)
+
+| Archetyp | A | B | C | D | E | F |
+|----------|---|---|---|---|---|---|
+| Single | 66.7 | 66.8 | 62.2 | 77.5 | 68.0 | 63.8 |
+| Duo | 55.0 | 64.3 | 68.7 | 49.7 | 66.3 | 62.2 |
+| Duo-Flex | 73.7 | 73.8 | 69.5 | 71.5 | 72.7 | 66.5 |
+| Solopoly | 67.5 | 69.0 | 58.7 | 74.5 | 73.3 | 50.0 |
+| Polyamor | 68.3 | 72.0 | 65.5 | 70.3 | 78.7 | 50.7 |
+| RA | 72.0 | 68.0 | 62.0 | 85.0 | 72.0 | 42.0 |
+| LAT | 68.0 | 72.0 | 65.0 | 78.0 | 72.0 | 68.0 |
+| Aromantisch | 65.0 | 68.0 | 62.0 | 78.0 | 68.0 | 48.0 |
+
+### Modifier-Beispiele
+
+**Gender-Modifier (Mann-Cis):**
+```javascript
+{ A: 0, B: +2, C: -2, D: +3, E: -4, F: +3 }
+```
+
+**Dominanz-Modifier (Dominant):**
+```javascript
+{ A: 0, B: +1, C: -3, D: +5, E: -2, F: +2 }
+```
+
+**Orientierungs-Modifier (Heterosexuell):**
+```javascript
+{ A: -2, B: +3, C: +2, D: -3, E: -2, F: +5 }
+```
+
+### Rechenbeispiel
+
+**Profil:** Single + Mann-Cis + Dominant + Heterosexuell
+
+```
+A: 66.7 + 0 + 0 + (-2) = 64.7
+B: 66.8 + 2 + 1 + 3 = 72.8
+C: 62.2 + (-2) + (-3) + 2 = 59.2
+D: 77.5 + 3 + 5 + (-3) = 82.5
+E: 68.0 + (-4) + (-2) + (-2) = 60.0
+F: 63.8 + 3 + 2 + 5 = 73.8
+```
+
+### Score-Grenzen
+
+Alle Werte werden auf den Bereich **0-100** begrenzt:
+```javascript
+scores[cat] = Math.max(0, Math.min(100, scores[cat] + modifier))
+```
+
+---
+
 ## Quellenverzeichnis
 
 | Datei | Funktion |
