@@ -811,6 +811,64 @@ const TiageLocale_DE = {
             einsehen: 'Einsehen',
             anfang_ende: 'Anfang & Ende'
         }
+    },
+
+    // ═══════════════════════════════════════════════════════════════════════════════
+    // PROFILE REVIEW (v1.8)
+    // ═══════════════════════════════════════════════════════════════════════════════
+
+    profileReview: {
+        title: 'Alle vorausgefüllten Attribute',
+
+        categories: {
+            lebensplanung: 'LEBENSPLANUNG',
+            finanzen: 'FINANZEN & KARRIERE',
+            soziales: 'SOZIALES',
+            kommunikation: 'KOMMUNIKATION',
+            werte: 'WERTE & PRIORITÄTEN'
+        },
+
+        attributes: {
+            kinderWunsch: 'Kinder erwünscht',
+            eheWunsch: 'Ehe erwünscht',
+            wohnform: 'Zusammenleben',
+            haustiere: 'Haustiere wichtig',
+            umzugsbereitschaft: 'Umzugsbereitschaft',
+            finanzen: 'Finanzen',
+            karrierePrioritaet: 'Karriere vs. Familie',
+            familieWichtigkeit: 'Familie-Wichtigkeit',
+            exklusivitaet: 'Exklusivität',
+            zukunftsplanung: 'Zukunftsplanung'
+        },
+
+        slider: {
+            niedrig: 'Niedrig',
+            mittel: 'Mittel',
+            hoch: 'Hoch',
+            getrennt: 'Getrennt',
+            hybrid: 'Hybrid',
+            gemeinsam: 'Gemeinsam',
+            familie: 'Familie',
+            balance: 'Balance',
+            karriere: 'Karriere',
+            unwichtig: 'Unwichtig',
+            wichtig: 'Wichtig',
+            sehrWichtig: 'Sehr wichtig'
+        },
+
+        actions: {
+            reset: 'Zurücksetzen',
+            save: 'Weiter',
+            close: 'Schließen'
+        },
+
+        infoModal: {
+            statistik: 'STATISTIK',
+            forschung: 'FORSCHUNG',
+            pirsig: 'PIRSIG',
+            osho: 'OSHO',
+            verstanden: 'Verstanden'
+        }
     }
 };
 

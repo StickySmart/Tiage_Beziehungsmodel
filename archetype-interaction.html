@@ -636,6 +636,222 @@
         </div>
     </div>
 
+    <!-- ═══════════════════════════════════════════════════════════════════════════ -->
+    <!-- PROFILE REVIEW MODAL - Alle vorausgefüllten Attribute überprüfen -->
+    <!-- ═══════════════════════════════════════════════════════════════════════════ -->
+    <div class="modal-overlay" id="profileReviewModal" onclick="closeProfileReviewModal(event)" style="z-index: 2350;">
+        <div class="modal profile-review-modal" onclick="event.stopPropagation()" style="max-width: 600px; max-height: 90vh; display: flex; flex-direction: column;">
+
+            <!-- Header -->
+            <div class="modal-header profile-review-header">
+                <div class="profile-review-header-left">
+                    <span class="modal-title" id="profileReviewTitle">Alle vorausgefüllten Attribute</span>
+                    <span class="profile-review-badge" id="profileReviewBadge">Duo-Profil</span>
+                </div>
+                <button class="modal-close" onclick="closeProfileReviewModal()">&times;</button>
+            </div>
+
+            <!-- Search Bar -->
+            <div class="profile-review-search">
+                <input type="text"
+                       id="profileReviewSearchInput"
+                       placeholder="Attribute suchen..."
+                       oninput="filterProfileReviewAttributes(this.value)">
+                <span class="profile-review-search-icon">🔍</span>
+            </div>
+
+            <!-- Scrollable Content -->
+            <div class="modal-body profile-review-body" id="profileReviewBody" style="flex: 1; overflow-y: auto; padding: 20px;">
+
+                <!-- LEBENSPLANUNG -->
+                <div class="profile-review-category" data-category="lebensplanung">
+                    <div class="profile-review-category-header">
+                        <span class="profile-review-category-icon">📋</span>
+                        <span data-i18n="profileReview.categories.lebensplanung">LEBENSPLANUNG</span>
+                    </div>
+
+                    <!-- Kinder -->
+                    <div class="profile-review-attribute" data-attribute="kinderWunsch">
+                        <input type="checkbox" class="profile-review-checkbox" id="pr-kinder" onchange="trackProfileReviewChange()">
+                        <label for="pr-kinder" class="profile-review-label" data-i18n="profileReview.attributes.kinderWunsch">Kinder erwünscht</label>
+                        <button class="profile-review-info-btn" onclick="showProfileReviewInfo('kinderWunsch')" title="Mehr Informationen">?</button>
+                    </div>
+
+                    <!-- Ehe -->
+                    <div class="profile-review-attribute" data-attribute="eheWunsch">
+                        <input type="checkbox" class="profile-review-checkbox" id="pr-ehe" onchange="trackProfileReviewChange()">
+                        <label for="pr-ehe" class="profile-review-label" data-i18n="profileReview.attributes.eheWunsch">Ehe erwünscht</label>
+                        <button class="profile-review-info-btn" onclick="showProfileReviewInfo('eheWunsch')" title="Mehr Informationen">?</button>
+                    </div>
+
+                    <!-- Zusammenleben -->
+                    <div class="profile-review-attribute" data-attribute="wohnform">
+                        <input type="checkbox" class="profile-review-checkbox" id="pr-zusammen" onchange="trackProfileReviewChange()">
+                        <label for="pr-zusammen" class="profile-review-label" data-i18n="profileReview.attributes.wohnform">Zusammenleben</label>
+                        <button class="profile-review-info-btn" onclick="showProfileReviewInfo('wohnform')" title="Mehr Informationen">?</button>
+                    </div>
+
+                    <!-- Haustiere -->
+                    <div class="profile-review-attribute" data-attribute="haustiere">
+                        <input type="checkbox" class="profile-review-checkbox" id="pr-haustiere" onchange="trackProfileReviewChange()">
+                        <label for="pr-haustiere" class="profile-review-label" data-i18n="profileReview.attributes.haustiere">Haustiere wichtig</label>
+                        <button class="profile-review-info-btn" onclick="showProfileReviewInfo('haustiere')" title="Mehr Informationen">?</button>
+                    </div>
+
+                    <!-- Umzugsbereitschaft (Slider) -->
+                    <div class="profile-review-slider-attribute" data-attribute="umzugsbereitschaft">
+                        <div class="profile-review-slider-header">
+                            <span class="profile-review-slider-title" data-i18n="profileReview.attributes.umzugsbereitschaft">Umzugsbereitschaft</span>
+                            <button class="profile-review-info-btn" onclick="showProfileReviewInfo('umzugsbereitschaft')" title="Mehr Informationen">?</button>
+                        </div>
+                        <div class="profile-review-slider-labels">
+                            <span data-i18n="profileReview.slider.niedrig">Niedrig</span>
+                            <span class="profile-review-slider-value" id="pr-umzug-value">Mittel</span>
+                            <span data-i18n="profileReview.slider.hoch">Hoch</span>
+                        </div>
+                        <input type="range" class="profile-review-range" id="pr-umzug" min="0" max="100" value="50"
+                               oninput="updateProfileReviewSlider(this, 'pr-umzug-value', ['Niedrig', 'Mittel', 'Hoch'])"
+                               onchange="trackProfileReviewChange()">
+                    </div>
+                </div>
+
+                <!-- FINANZEN & KARRIERE -->
+                <div class="profile-review-category" data-category="finanzen">
+                    <div class="profile-review-category-header">
+                        <span class="profile-review-category-icon">💰</span>
+                        <span data-i18n="profileReview.categories.finanzen">FINANZEN & KARRIERE</span>
+                    </div>
+
+                    <!-- Finanzen (Slider) -->
+                    <div class="profile-review-slider-attribute" data-attribute="finanzen">
+                        <div class="profile-review-slider-header">
+                            <span class="profile-review-slider-title" data-i18n="profileReview.attributes.finanzen">Finanzen</span>
+                            <button class="profile-review-info-btn" onclick="showProfileReviewInfo('finanzen')" title="Mehr Informationen">?</button>
+                        </div>
+                        <div class="profile-review-slider-labels">
+                            <span data-i18n="profileReview.slider.getrennt">Getrennt</span>
+                            <span class="profile-review-slider-value" id="pr-finanzen-value">Hybrid</span>
+                            <span data-i18n="profileReview.slider.gemeinsam">Gemeinsam</span>
+                        </div>
+                        <input type="range" class="profile-review-range" id="pr-finanzen" min="0" max="100" value="50"
+                               oninput="updateProfileReviewSlider(this, 'pr-finanzen-value', ['Getrennt', 'Hybrid', 'Gemeinsam'])"
+                               onchange="trackProfileReviewChange()">
+                    </div>
+
+                    <!-- Karriere vs. Familie (Slider) -->
+                    <div class="profile-review-slider-attribute" data-attribute="karrierePrioritaet">
+                        <div class="profile-review-slider-header">
+                            <span class="profile-review-slider-title" data-i18n="profileReview.attributes.karrierePrioritaet">Karriere vs. Familie</span>
+                            <button class="profile-review-info-btn" onclick="showProfileReviewInfo('karrierePrioritaet')" title="Mehr Informationen">?</button>
+                        </div>
+                        <div class="profile-review-slider-labels">
+                            <span data-i18n="profileReview.slider.familie">Familie</span>
+                            <span class="profile-review-slider-value" id="pr-karriere-value">Balance</span>
+                            <span data-i18n="profileReview.slider.karriere">Karriere</span>
+                        </div>
+                        <input type="range" class="profile-review-range" id="pr-karriere" min="0" max="100" value="50"
+                               oninput="updateProfileReviewSlider(this, 'pr-karriere-value', ['Familie', 'Balance', 'Karriere'])"
+                               onchange="trackProfileReviewChange()">
+                    </div>
+                </div>
+
+                <!-- SOZIALES -->
+                <div class="profile-review-category" data-category="soziales">
+                    <div class="profile-review-category-header">
+                        <span class="profile-review-category-icon">👥</span>
+                        <span data-i18n="profileReview.categories.soziales">SOZIALES</span>
+                    </div>
+
+                    <!-- Familie-Wichtigkeit (Slider) -->
+                    <div class="profile-review-slider-attribute" data-attribute="familieWichtigkeit">
+                        <div class="profile-review-slider-header">
+                            <span class="profile-review-slider-title" data-i18n="profileReview.attributes.familieWichtigkeit">Familie-Wichtigkeit</span>
+                            <button class="profile-review-info-btn" onclick="showProfileReviewInfo('familieWichtigkeit')" title="Mehr Informationen">?</button>
+                        </div>
+                        <div class="profile-review-slider-labels">
+                            <span data-i18n="profileReview.slider.unwichtig">Unwichtig</span>
+                            <span class="profile-review-slider-value" id="pr-familie-value">Wichtig</span>
+                            <span data-i18n="profileReview.slider.sehrWichtig">Sehr wichtig</span>
+                        </div>
+                        <input type="range" class="profile-review-range" id="pr-familie" min="0" max="100" value="70"
+                               oninput="updateProfileReviewSlider(this, 'pr-familie-value', ['Unwichtig', 'Wichtig', 'Sehr wichtig'])"
+                               onchange="trackProfileReviewChange()">
+                    </div>
+                </div>
+
+                <!-- Spacer for sticky footer -->
+                <div style="height: 20px;"></div>
+
+            </div>
+
+            <!-- Sticky Footer Actions -->
+            <div class="profile-review-actions">
+                <button class="profile-review-btn profile-review-btn-secondary" onclick="resetProfileReview()">
+                    🔄 <span data-i18n="profileReview.actions.reset">Zurücksetzen</span>
+                </button>
+                <button class="profile-review-btn profile-review-btn-primary" onclick="saveProfileReview()">
+                    ✅ <span data-i18n="profileReview.actions.save">Weiter</span>
+                    <span class="profile-review-changes-badge" id="profileReviewChangesBadge" style="display: none;">0</span>
+                </button>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Profile Review Info Modal (nested) -->
+    <div class="modal-overlay" id="profileReviewInfoModal" onclick="closeProfileReviewInfoModal(event)" style="z-index: 2400;">
+        <div class="modal" onclick="event.stopPropagation()" style="max-width: 420px;">
+            <div class="modal-header" style="background: var(--primary); color: white;">
+                <span class="modal-title" id="profileReviewInfoTitle">ℹ️ Information</span>
+                <button class="modal-close" onclick="closeProfileReviewInfoModal()" style="color: white;">&times;</button>
+            </div>
+            <div class="modal-body" style="padding: 24px; max-height: 60vh; overflow-y: auto;">
+
+                <!-- Statistik -->
+                <div class="profile-review-info-section">
+                    <div class="profile-review-info-section-title">
+                        <span>📊</span>
+                        <span>STATISTIK</span>
+                    </div>
+                    <div class="profile-review-info-section-content" id="profileReviewInfoStats"></div>
+                </div>
+
+                <!-- Forschung -->
+                <div class="profile-review-info-section">
+                    <div class="profile-review-info-section-title">
+                        <span>🔬</span>
+                        <span>FORSCHUNG</span>
+                    </div>
+                    <div class="profile-review-info-section-content" id="profileReviewInfoResearch"></div>
+                </div>
+
+                <!-- Pirsig -->
+                <div class="profile-review-info-section">
+                    <div class="profile-review-info-section-title">
+                        <span>💭</span>
+                        <span>PIRSIG</span>
+                    </div>
+                    <div class="profile-review-info-section-content" id="profileReviewInfoPirsig"></div>
+                </div>
+
+                <!-- Osho -->
+                <div class="profile-review-info-section">
+                    <div class="profile-review-info-section-title">
+                        <span>🧘</span>
+                        <span>OSHO</span>
+                    </div>
+                    <div class="profile-review-info-section-content" id="profileReviewInfoOsho"></div>
+                </div>
+
+            </div>
+            <div class="modal-footer" style="padding: 16px 20px; border-top: 1px solid var(--border);">
+                <button class="btn-primary" onclick="closeProfileReviewInfoModal()" style="width: 100%; padding: 14px; border-radius: 8px; font-size: 15px; font-weight: 600;">
+                    Verstanden
+                </button>
+            </div>
+        </div>
+    </div>
+
     <!-- Comments List Modal -->
     <div class="comments-list-overlay" id="commentsListModal" onclick="closeCommentsListModal(event)">
         <div class="comments-list-modal" onclick="event.stopPropagation()">
@@ -15757,6 +15973,324 @@
         window.handleOrientierungSecondaryInteressiert = function(person, orientierungType, btn) {
             handleOrientierungStatusToggle(person, orientierungType, 'interessiert', btn);
         };
+
+        // ═══════════════════════════════════════════════════════════════════════════
+        // PROFILE REVIEW MODAL - Funktionen
+        // ═══════════════════════════════════════════════════════════════════════════
+
+        var profileReviewChangesCount = 0;
+        var profileReviewInitialState = {};
+
+        // Info-Daten für Attribute
+        var profileReviewInfoData = {
+            kinderWunsch: {
+                title: "Kinder erwünscht",
+                stats: "75% der Duo-Menschen wollen Kinder",
+                research: '"Monogamous couples show significantly higher desire for offspring due to stable pair-bonding patterns." <i>(Journal of Family Psychology, 2022)</i>',
+                pirsig: "Static Pattern sucht Fortsetzung durch Nachkommen - die biologische Form der Qualitätserhaltung.",
+                osho: "Kinder sind die Brücke zwischen Liebe und Ewigkeit. Aber wahre Liebe braucht keine Brücke."
+            },
+            eheWunsch: {
+                title: "Ehe erwünscht",
+                stats: "80% der Duo-Menschen wollen heiraten",
+                research: '"Legal commitment correlates with relationship stability and long-term satisfaction in monogamous pairs." <i>(Marriage & Family Review, 2021)</i>',
+                pirsig: "Die Ehe als statisches Muster institutionalisiert dynamische Qualität - formalisiert die Liebe.",
+                osho: "Ehe ist die Gesellschaft, die in dein Schlafzimmer eindringt. Aber manche brauchen die Form für den Inhalt."
+            },
+            wohnform: {
+                title: "Zusammenleben",
+                stats: "90% der Duo-Menschen leben zusammen",
+                research: '"Co-habitation strengthens emotional bonds and daily intimacy in committed relationships." <i>(Journal of Social Psychology, 2020)</i>',
+                pirsig: "Gemeinsamer physischer Raum verstärkt das statische Muster - Nähe durch Präsenz.",
+                osho: "Zusammen schlafen ist leicht. Zusammen aufwachen ist die Kunst."
+            },
+            haustiere: {
+                title: "Haustiere wichtig",
+                stats: "50% der Paare haben Haustiere, 35% planen welche",
+                research: '"Pet ownership increases relationship satisfaction and provides shared caregiving experience." <i>(Anthrozoös Journal, 2021)</i>',
+                pirsig: "Haustiere als Erweiterung des statischen Musters - gemeinsame Verantwortung.",
+                osho: "Ein Hund lehrt bedingungslose Liebe. Menschen könnten davon lernen."
+            },
+            umzugsbereitschaft: {
+                title: "Umzugsbereitschaft",
+                stats: "Duo-Menschen sind moderat flexibel (mittlere Umzugsbereitschaft)",
+                research: '"Committed couples balance stability needs with career/life opportunities." <i>(Journal of Vocational Behavior, 2020)</i>',
+                pirsig: "Balance zwischen statischem Muster (Verwurzelung) und dynamischer Anpassung.",
+                osho: "Heimat ist nicht ein Ort - Heimat ist ein Gefühl."
+            },
+            finanzen: {
+                title: "Finanzen",
+                stats: "65% der Duo-Paare führen gemeinsame Konten",
+                research: '"Financial merging correlates with relationship commitment and long-term stability." <i>(Journal of Consumer Finance, 2021)</i>',
+                pirsig: "Gemeinsame Finanzen als Symbol für statisches Muster - materielle Verschmelzung.",
+                osho: "Geld ist Energie. Wer teilt, vervielfacht."
+            },
+            karrierePrioritaet: {
+                title: "Karriere vs. Familie",
+                stats: "Duo suchen Balance zwischen Karriere und Familie (55% 'ausgeglichen')",
+                research: '"Dual-career couples increasingly value work-life balance over pure career focus." <i>(Work & Occupations, 2021)</i>',
+                pirsig: "Balance zwischen zwei statischen Mustern - Integration statt Polarisierung.",
+                osho: "Arbeit und Liebe sind nicht Gegensätze. Beide sind Wege zu dir selbst."
+            },
+            familieWichtigkeit: {
+                title: "Familie-Wichtigkeit",
+                stats: "Duo bewerten Familie als überdurchschnittlich wichtig (70%)",
+                research: '"Monogamous couples prioritize family connections and intergenerational bonds." <i>(Family Relations, 2020)</i>',
+                pirsig: "Familie als erweitertes statisches Muster - Zugehörigkeit über die Dyade hinaus.",
+                osho: "Familie kann Gefängnis oder Flügel sein. Es kommt auf die Bewusstheit an."
+            }
+        };
+
+        // Open Profile Review Modal
+        function openProfileReviewModal(archetypeKey) {
+            var modal = document.getElementById('profileReviewModal');
+            if (!modal) return;
+
+            // Get archetype data
+            archetypeKey = archetypeKey || 'duo';
+            var archetype = typeof archetypeDefinitions !== 'undefined' ? archetypeDefinitions[archetypeKey] : null;
+
+            // Update badge
+            var badge = document.getElementById('profileReviewBadge');
+            if (badge && archetype) {
+                badge.textContent = archetype.name + '-Profil';
+            }
+
+            // Load default values from archetype
+            if (archetype && archetype.defaultInferences) {
+                var inferences = archetype.defaultInferences;
+
+                // Checkboxen
+                var kinderCheckbox = document.getElementById('pr-kinder');
+                if (kinderCheckbox) kinderCheckbox.checked = inferences.kinderWunsch === 'ja';
+
+                var eheCheckbox = document.getElementById('pr-ehe');
+                if (eheCheckbox) eheCheckbox.checked = inferences.eheWunsch === 'ja';
+
+                var zusammenCheckbox = document.getElementById('pr-zusammen');
+                if (zusammenCheckbox) zusammenCheckbox.checked = inferences.wohnform === 'zusammen';
+
+                var haustiereCheckbox = document.getElementById('pr-haustiere');
+                if (haustiereCheckbox) haustiereCheckbox.checked = inferences.haustiere === 'ja' || inferences.haustiere === 'ja-gemeinsam' || inferences.haustiere === 'ja-eigene';
+
+                // Slider
+                var umzugSlider = document.getElementById('pr-umzug');
+                if (umzugSlider) {
+                    var umzugValue = 50;
+                    if (inferences.umzugsbereitschaft === 'sehr-flexibel') umzugValue = 85;
+                    else if (inferences.umzugsbereitschaft === 'flexibel') umzugValue = 65;
+                    else if (inferences.umzugsbereitschaft === 'verhandelbar') umzugValue = 50;
+                    else if (inferences.umzugsbereitschaft === 'nur-gemeinsam') umzugValue = 25;
+                    umzugSlider.value = umzugValue;
+                    updateProfileReviewSlider(umzugSlider, 'pr-umzug-value', ['Niedrig', 'Mittel', 'Hoch']);
+                }
+
+                var finanzenSlider = document.getElementById('pr-finanzen');
+                if (finanzenSlider) {
+                    var finanzenValue = 50;
+                    if (inferences.finanzen === 'getrennt') finanzenValue = 15;
+                    else if (inferences.finanzen === 'hybrid') finanzenValue = 50;
+                    else if (inferences.finanzen === 'gemeinsam') finanzenValue = 85;
+                    finanzenSlider.value = finanzenValue;
+                    updateProfileReviewSlider(finanzenSlider, 'pr-finanzen-value', ['Getrennt', 'Hybrid', 'Gemeinsam']);
+                }
+
+                var karriereSlider = document.getElementById('pr-karriere');
+                if (karriereSlider) {
+                    var karriereValue = (inferences.karrierePrioritaet || 0.5) * 100;
+                    karriereSlider.value = karriereValue;
+                    updateProfileReviewSlider(karriereSlider, 'pr-karriere-value', ['Familie', 'Balance', 'Karriere']);
+                }
+
+                var familieSlider = document.getElementById('pr-familie');
+                if (familieSlider) {
+                    var familieValue = (inferences.familieWichtigkeit || 0.5) * 100;
+                    familieSlider.value = familieValue;
+                    updateProfileReviewSlider(familieSlider, 'pr-familie-value', ['Unwichtig', 'Wichtig', 'Sehr wichtig']);
+                }
+            }
+
+            // Reset changes counter
+            profileReviewChangesCount = 0;
+            var badge = document.getElementById('profileReviewChangesBadge');
+            if (badge) badge.style.display = 'none';
+
+            // Save initial state
+            profileReviewInitialState = getProfileReviewState();
+
+            // Show modal
+            modal.style.display = 'flex';
+            modal.classList.add('active');
+        }
+        window.openProfileReviewModal = openProfileReviewModal;
+
+        // Close Profile Review Modal
+        function closeProfileReviewModal(event) {
+            if (event && event.target !== event.currentTarget) return;
+            var modal = document.getElementById('profileReviewModal');
+            if (modal) {
+                modal.style.display = 'none';
+                modal.classList.remove('active');
+            }
+        }
+        window.closeProfileReviewModal = closeProfileReviewModal;
+
+        // Update Slider Value Display
+        function updateProfileReviewSlider(slider, valueId, labels) {
+            var value = parseInt(slider.value);
+            var valueSpan = document.getElementById(valueId);
+            if (!valueSpan) return;
+
+            if (value < 33) {
+                valueSpan.textContent = labels[0];
+            } else if (value < 66) {
+                valueSpan.textContent = labels[1];
+            } else {
+                valueSpan.textContent = labels[2];
+            }
+        }
+        window.updateProfileReviewSlider = updateProfileReviewSlider;
+
+        // Track Changes
+        function trackProfileReviewChange() {
+            profileReviewChangesCount++;
+            var badge = document.getElementById('profileReviewChangesBadge');
+            if (badge) {
+                badge.textContent = profileReviewChangesCount;
+                badge.style.display = 'inline-block';
+            }
+        }
+        window.trackProfileReviewChange = trackProfileReviewChange;
+
+        // Filter Attributes by Search
+        function filterProfileReviewAttributes(query) {
+            var attributes = document.querySelectorAll('.profile-review-attribute, .profile-review-slider-attribute');
+            var categories = document.querySelectorAll('.profile-review-category');
+            var searchLower = query.toLowerCase();
+
+            if (!query) {
+                attributes.forEach(function(attr) { attr.style.display = ''; });
+                categories.forEach(function(cat) { cat.style.display = ''; });
+                return;
+            }
+
+            categories.forEach(function(category) {
+                var hasVisibleAttribute = false;
+                var categoryAttributes = category.querySelectorAll('.profile-review-attribute, .profile-review-slider-attribute');
+
+                categoryAttributes.forEach(function(attr) {
+                    var text = attr.textContent.toLowerCase();
+                    if (text.includes(searchLower)) {
+                        attr.style.display = '';
+                        hasVisibleAttribute = true;
+                    } else {
+                        attr.style.display = 'none';
+                    }
+                });
+
+                category.style.display = hasVisibleAttribute ? '' : 'none';
+            });
+        }
+        window.filterProfileReviewAttributes = filterProfileReviewAttributes;
+
+        // Show Info Modal
+        function showProfileReviewInfo(attribute) {
+            var data = profileReviewInfoData[attribute] || profileReviewInfoData.kinderWunsch;
+            var modal = document.getElementById('profileReviewInfoModal');
+            if (!modal) return;
+
+            document.getElementById('profileReviewInfoTitle').textContent = 'ℹ️ ' + data.title;
+            document.getElementById('profileReviewInfoStats').textContent = data.stats;
+            document.getElementById('profileReviewInfoResearch').innerHTML = data.research;
+            document.getElementById('profileReviewInfoPirsig').textContent = data.pirsig;
+            document.getElementById('profileReviewInfoOsho').textContent = data.osho;
+
+            modal.style.display = 'flex';
+            modal.classList.add('active');
+        }
+        window.showProfileReviewInfo = showProfileReviewInfo;
+
+        // Close Info Modal
+        function closeProfileReviewInfoModal(event) {
+            if (event && event.target !== event.currentTarget) return;
+            var modal = document.getElementById('profileReviewInfoModal');
+            if (modal) {
+                modal.style.display = 'none';
+                modal.classList.remove('active');
+            }
+        }
+        window.closeProfileReviewInfoModal = closeProfileReviewInfoModal;
+
+        // Get Current State
+        function getProfileReviewState() {
+            return {
+                kinder: document.getElementById('pr-kinder')?.checked,
+                ehe: document.getElementById('pr-ehe')?.checked,
+                zusammen: document.getElementById('pr-zusammen')?.checked,
+                haustiere: document.getElementById('pr-haustiere')?.checked,
+                umzug: document.getElementById('pr-umzug')?.value,
+                finanzen: document.getElementById('pr-finanzen')?.value,
+                karriere: document.getElementById('pr-karriere')?.value,
+                familie: document.getElementById('pr-familie')?.value
+            };
+        }
+
+        // Reset Profile Review
+        function resetProfileReview() {
+            if (confirm('Alle Änderungen zurücksetzen und Standard-Werte wiederherstellen?')) {
+                // Reload from initial state
+                if (profileReviewInitialState.kinder !== undefined) {
+                    document.getElementById('pr-kinder').checked = profileReviewInitialState.kinder;
+                    document.getElementById('pr-ehe').checked = profileReviewInitialState.ehe;
+                    document.getElementById('pr-zusammen').checked = profileReviewInitialState.zusammen;
+                    document.getElementById('pr-haustiere').checked = profileReviewInitialState.haustiere;
+                    document.getElementById('pr-umzug').value = profileReviewInitialState.umzug;
+                    document.getElementById('pr-finanzen').value = profileReviewInitialState.finanzen;
+                    document.getElementById('pr-karriere').value = profileReviewInitialState.karriere;
+                    document.getElementById('pr-familie').value = profileReviewInitialState.familie;
+
+                    // Update slider displays
+                    updateProfileReviewSlider(document.getElementById('pr-umzug'), 'pr-umzug-value', ['Niedrig', 'Mittel', 'Hoch']);
+                    updateProfileReviewSlider(document.getElementById('pr-finanzen'), 'pr-finanzen-value', ['Getrennt', 'Hybrid', 'Gemeinsam']);
+                    updateProfileReviewSlider(document.getElementById('pr-karriere'), 'pr-karriere-value', ['Familie', 'Balance', 'Karriere']);
+                    updateProfileReviewSlider(document.getElementById('pr-familie'), 'pr-familie-value', ['Unwichtig', 'Wichtig', 'Sehr wichtig']);
+                }
+
+                // Reset counter
+                profileReviewChangesCount = 0;
+                var badge = document.getElementById('profileReviewChangesBadge');
+                if (badge) badge.style.display = 'none';
+            }
+        }
+        window.resetProfileReview = resetProfileReview;
+
+        // Save Profile Review
+        function saveProfileReview() {
+            var state = getProfileReviewState();
+            console.log('Profil gespeichert:', state);
+
+            // Store in TiageState if available
+            if (typeof TiageState !== 'undefined') {
+                TiageState.setState({
+                    profileReview: state
+                });
+            }
+
+            // Close modal
+            closeProfileReviewModal();
+
+            // Optional: Show success message
+            // alert('Profil gespeichert! ' + profileReviewChangesCount + ' Änderungen übernommen.');
+        }
+        window.saveProfileReview = saveProfileReview;
+
+        // Close modal on ESC
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeProfileReviewInfoModal();
+                closeProfileReviewModal();
+            }
+        });
 
         console.log('All modal functions are now globally available');
     </script>

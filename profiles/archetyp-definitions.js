@@ -77,7 +77,12 @@ const archetypeDefinitions = {
       wohnform: "alleine",
       exklusivitaet: "nicht-relevant",
       zukunftsplanung: "spontan",
-      umzugsbereitschaft: "sehr-flexibel"
+      umzugsbereitschaft: "sehr-flexibel",
+      // Neue Attribute v1.8
+      familieWichtigkeit: 0.3,        // 0-1 Skala: 0.3 = niedrig
+      haustiere: "egal",              // "ja", "nein", "egal"
+      karrierePrioritaet: 0.8,        // 0-1 Skala: 0.8 = Karriere-fokussiert
+      finanzen: "getrennt"            // "getrennt", "gemeinsam", "hybrid"
     }
   },
 
@@ -141,7 +146,12 @@ const archetypeDefinitions = {
       wohnform: "zusammen",
       exklusivitaet: "strikt",
       zukunftsplanung: "gemeinsam-langfristig",
-      umzugsbereitschaft: "nur-gemeinsam"
+      umzugsbereitschaft: "nur-gemeinsam",
+      // Neue Attribute v1.8
+      familieWichtigkeit: 0.85,       // 0-1 Skala: 0.85 = sehr wichtig
+      haustiere: "ja",                // Duo liebt gemeinsame Haustiere
+      karrierePrioritaet: 0.4,        // 0-1 Skala: 0.4 = Familie > Karriere
+      finanzen: "gemeinsam"           // Duo verschmilzt auch finanziell
     }
   },
 
@@ -205,7 +215,12 @@ const archetypeDefinitions = {
       wohnform: "zusammen",
       exklusivitaet: "flexibel",
       zukunftsplanung: "gemeinsam-mit-raum",
-      umzugsbereitschaft: "verhandelbar"
+      umzugsbereitschaft: "verhandelbar",
+      // Neue Attribute v1.8
+      familieWichtigkeit: 0.65,       // 0-1 Skala: Balance
+      haustiere: "vielleicht",        // Offen für Haustiere
+      karrierePrioritaet: 0.5,        // 0-1 Skala: Ausgewogen
+      finanzen: "hybrid"              // Teilweise gemeinsam
     }
   },
 
@@ -269,7 +284,12 @@ const archetypeDefinitions = {
       wohnform: "variabel",
       exklusivitaet: "nicht-definiert",
       zukunftsplanung: "emergent",
-      umzugsbereitschaft: "sehr-flexibel"
+      umzugsbereitschaft: "sehr-flexibel",
+      // Neue Attribute v1.8
+      familieWichtigkeit: 0.4,        // 0-1 Skala: Niedrig, keine Hierarchien
+      haustiere: "egal",              // Individuell definiert
+      karrierePrioritaet: 0.6,        // 0-1 Skala: Leicht Karriere-orientiert
+      finanzen: "getrennt"            // RA lehnt gemeinsame Finanzen ab
     }
   },
 
@@ -333,7 +353,12 @@ const archetypeDefinitions = {
       wohnform: "getrennt",
       exklusivitaet: "variabel",
       zukunftsplanung: "gemeinsam-aber-getrennt",
-      umzugsbereitschaft: "flexibel"
+      umzugsbereitschaft: "flexibel",
+      // Neue Attribute v1.8
+      familieWichtigkeit: 0.55,       // 0-1 Skala: Moderat
+      haustiere: "ja-eigene",         // Eigene Haustiere im eigenen Raum
+      karrierePrioritaet: 0.55,       // 0-1 Skala: Leicht ausgewogen
+      finanzen: "getrennt"            // LAT hält Finanzen getrennt
     }
   },
 
@@ -397,7 +422,12 @@ const archetypeDefinitions = {
       wohnform: "variabel",
       exklusivitaet: "nicht-romantisch-relevant",
       zukunftsplanung: "individuell",
-      umzugsbereitschaft: "flexibel"
+      umzugsbereitschaft: "flexibel",
+      // Neue Attribute v1.8
+      familieWichtigkeit: 0.45,       // 0-1 Skala: Freundschaft > Familie
+      haustiere: "vielleicht",        // Variabel
+      karrierePrioritaet: 0.6,        // 0-1 Skala: Leicht Karriere
+      finanzen: "getrennt"            // Aromantisch hält Finanzen getrennt
     }
   },
 
@@ -461,7 +491,12 @@ const archetypeDefinitions = {
       wohnform: "alleine",
       exklusivitaet: "offen",
       zukunftsplanung: "flexibel",
-      umzugsbereitschaft: "sehr-flexibel"
+      umzugsbereitschaft: "sehr-flexibel",
+      // Neue Attribute v1.8
+      familieWichtigkeit: 0.35,       // 0-1 Skala: Niedrig, Autonomie wichtiger
+      haustiere: "egal",              // Individuell
+      karrierePrioritaet: 0.7,        // 0-1 Skala: Karriere-orientiert
+      finanzen: "getrennt"            // Solopoly hält alles getrennt
     }
   },
 
@@ -525,7 +560,12 @@ const archetypeDefinitions = {
       wohnform: "variabel",
       exklusivitaet: "offen",
       zukunftsplanung: "flexibel-gemeinsam",
-      umzugsbereitschaft: "verhandelbar"
+      umzugsbereitschaft: "verhandelbar",
+      // Neue Attribute v1.8
+      familieWichtigkeit: 0.6,        // 0-1 Skala: Moderat, Polycule als Familie
+      haustiere: "ja-gemeinsam",      // Polyamor: Gemeinsame Haustiere im Polycule
+      karrierePrioritaet: 0.5,        // 0-1 Skala: Ausgewogen
+      finanzen: "hybrid"              // Teilweise gemeinsam im Polycule
     }
   }
 };
