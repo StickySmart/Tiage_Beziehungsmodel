@@ -717,6 +717,53 @@
             <!-- Scrollable Content -->
             <div class="modal-body profile-review-body" id="profileReviewBody" style="flex: 1; overflow-y: auto;">
 
+                <!-- GEWICHTUNGS-EINSTELLUNGEN -->
+                <div class="profile-review-category" data-category="gewichtung" style="background: linear-gradient(135deg, rgba(139,92,246,0.1), rgba(139,92,246,0.05)); border: 1px solid rgba(139,92,246,0.3);">
+                    <div class="profile-review-category-header" style="color: #8B5CF6;">
+                        <span class="profile-review-category-icon">⚖️</span>
+                        <span>FAKTOR-GEWICHTUNG (Score-Formel)</span>
+                    </div>
+                    <div style="padding: 0 5px 10px 5px; font-size: 12px; color: var(--text-muted);">
+                        Passe an, wie stark jeder Faktor den Score beeinflusst. Summe muss nicht 100% sein.
+                    </div>
+                    <div class="gewichtung-sliders" style="display: flex; flex-direction: column; gap: 12px; padding: 0 5px;">
+                        <div class="gewichtung-slider-row" style="display: flex; align-items: center; gap: 10px;">
+                            <span style="width: 100px; font-size: 13px; color: var(--text-secondary);">Orientierung</span>
+                            <input type="range" id="gewicht-orientierung" min="0" max="100" value="40"
+                                   style="flex: 1; accent-color: #8B5CF6;"
+                                   oninput="updateGewichtungLabel(this, 'label-orientierung'); saveGewichtungen();">
+                            <span id="label-orientierung" style="width: 40px; text-align: right; font-weight: 600; color: #8B5CF6;">40%</span>
+                        </div>
+                        <div class="gewichtung-slider-row" style="display: flex; align-items: center; gap: 10px;">
+                            <span style="width: 100px; font-size: 13px; color: var(--text-secondary);">Archetyp</span>
+                            <input type="range" id="gewicht-archetyp" min="0" max="100" value="25"
+                                   style="flex: 1; accent-color: #8B5CF6;"
+                                   oninput="updateGewichtungLabel(this, 'label-archetyp'); saveGewichtungen();">
+                            <span id="label-archetyp" style="width: 40px; text-align: right; font-weight: 600; color: #8B5CF6;">25%</span>
+                        </div>
+                        <div class="gewichtung-slider-row" style="display: flex; align-items: center; gap: 10px;">
+                            <span style="width: 100px; font-size: 13px; color: var(--text-secondary);">Dominanz</span>
+                            <input type="range" id="gewicht-dominanz" min="0" max="100" value="20"
+                                   style="flex: 1; accent-color: #8B5CF6;"
+                                   oninput="updateGewichtungLabel(this, 'label-dominanz'); saveGewichtungen();">
+                            <span id="label-dominanz" style="width: 40px; text-align: right; font-weight: 600; color: #8B5CF6;">20%</span>
+                        </div>
+                        <div class="gewichtung-slider-row" style="display: flex; align-items: center; gap: 10px;">
+                            <span style="width: 100px; font-size: 13px; color: var(--text-secondary);">Geschlecht</span>
+                            <input type="range" id="gewicht-geschlecht" min="0" max="100" value="15"
+                                   style="flex: 1; accent-color: #8B5CF6;"
+                                   oninput="updateGewichtungLabel(this, 'label-geschlecht'); saveGewichtungen();">
+                            <span id="label-geschlecht" style="width: 40px; text-align: right; font-weight: 600; color: #8B5CF6;">15%</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 8px; padding-top: 8px; border-top: 1px solid rgba(139,92,246,0.2);">
+                            <span style="font-size: 12px; color: var(--text-muted);">Summe: <span id="gewicht-summe" style="font-weight: 600; color: #8B5CF6;">100%</span></span>
+                            <button onclick="resetGewichtungen()" style="padding: 4px 12px; font-size: 11px; background: rgba(139,92,246,0.1); border: 1px solid rgba(139,92,246,0.3); border-radius: 4px; color: #8B5CF6; cursor: pointer;">
+                                Standard (40/25/20/15)
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
                 <!-- LEBENSPLANUNG -->
                 <div class="profile-review-category" data-category="lebensplanung">
                     <div class="profile-review-category-header">
@@ -11312,12 +11359,19 @@
             // ═══════════════════════════════════════
             // SCHRITT 3: Score-Berechnung mit Resonanz
             // ═══════════════════════════════════════
-            // Score = (O × 0.40 × R1) + (A × 0.25 × R2) + (D × 0.20 × R3) + (G × 0.15 × R4)
+            // Score = (O × wO × R1) + (A × wA × R2) + (D × wD × R3) + (G × wG × R4)
+            // Gewichtungen aus localStorage (Standard: 40/25/20/15)
 
-            const scoreO = orientationScore * 0.40 * R1;
-            const scoreA = archetypeScore * 0.25 * R2;
-            const scoreD = dominanceScore * 0.20 * R3;
-            const scoreG = genderScore * 0.15 * R4;
+            const gew = typeof getGewichtungen === 'function' ? getGewichtungen() : { O: 40, A: 25, D: 20, G: 15 };
+            const wO = gew.O / 100;
+            const wA = gew.A / 100;
+            const wD = gew.D / 100;
+            const wG = gew.G / 100;
+
+            const scoreO = orientationScore * wO * R1;
+            const scoreA = archetypeScore * wA * R2;
+            const scoreD = dominanceScore * wD * R3;
+            const scoreG = genderScore * wG * R4;
 
             const totalScore = scoreO + scoreA + scoreD + scoreG;
 
@@ -11357,6 +11411,12 @@
                     A: Math.round(scoreA * 10) / 10,
                     D: Math.round(scoreD * 10) / 10,
                     G: Math.round(scoreG * 10) / 10
+                },
+                gewichtungen: {
+                    O: gew.O,
+                    A: gew.A,
+                    D: gew.D,
+                    G: gew.G
                 },
                 logos: logos,
                 pathos: pathos
@@ -16400,10 +16460,125 @@
         }
         window.getSelectedArchetype = getSelectedArchetype;
 
+        // ═══════════════════════════════════════════════════════════════════════
+        // GEWICHTUNGS-EINSTELLUNGEN (localStorage)
+        // ═══════════════════════════════════════════════════════════════════════
+
+        const GEWICHTUNG_DEFAULTS = { O: 40, A: 25, D: 20, G: 15 };
+        const GEWICHTUNG_STORAGE_KEY = 'tiage_faktor_gewichtungen';
+
+        // Lädt Gewichtungen aus localStorage oder gibt Defaults zurück
+        function getGewichtungen() {
+            try {
+                const stored = localStorage.getItem(GEWICHTUNG_STORAGE_KEY);
+                if (stored) {
+                    const parsed = JSON.parse(stored);
+                    return {
+                        O: parsed.O ?? GEWICHTUNG_DEFAULTS.O,
+                        A: parsed.A ?? GEWICHTUNG_DEFAULTS.A,
+                        D: parsed.D ?? GEWICHTUNG_DEFAULTS.D,
+                        G: parsed.G ?? GEWICHTUNG_DEFAULTS.G
+                    };
+                }
+            } catch (e) {
+                console.warn('Fehler beim Laden der Gewichtungen:', e);
+            }
+            return { ...GEWICHTUNG_DEFAULTS };
+        }
+
+        // Speichert Gewichtungen in localStorage
+        function saveGewichtungen() {
+            const gewichtungen = {
+                O: parseInt(document.getElementById('gewicht-orientierung')?.value) || GEWICHTUNG_DEFAULTS.O,
+                A: parseInt(document.getElementById('gewicht-archetyp')?.value) || GEWICHTUNG_DEFAULTS.A,
+                D: parseInt(document.getElementById('gewicht-dominanz')?.value) || GEWICHTUNG_DEFAULTS.D,
+                G: parseInt(document.getElementById('gewicht-geschlecht')?.value) || GEWICHTUNG_DEFAULTS.G
+            };
+            try {
+                localStorage.setItem(GEWICHTUNG_STORAGE_KEY, JSON.stringify(gewichtungen));
+            } catch (e) {
+                console.warn('Fehler beim Speichern der Gewichtungen:', e);
+            }
+            updateGewichtungSumme();
+            // Trigger recalculation
+            if (typeof updateDisplay === 'function') {
+                updateDisplay();
+            }
+        }
+        window.saveGewichtungen = saveGewichtungen;
+
+        // Aktualisiert das Label eines Sliders
+        function updateGewichtungLabel(slider, labelId) {
+            const label = document.getElementById(labelId);
+            if (label) {
+                label.textContent = slider.value + '%';
+            }
+        }
+        window.updateGewichtungLabel = updateGewichtungLabel;
+
+        // Aktualisiert die Summen-Anzeige
+        function updateGewichtungSumme() {
+            const gew = getGewichtungen();
+            const summe = gew.O + gew.A + gew.D + gew.G;
+            const summeEl = document.getElementById('gewicht-summe');
+            if (summeEl) {
+                summeEl.textContent = summe + '%';
+                summeEl.style.color = summe === 100 ? '#10B981' : '#8B5CF6';
+            }
+        }
+
+        // Setzt Gewichtungen auf Standard zurück
+        function resetGewichtungen() {
+            document.getElementById('gewicht-orientierung').value = GEWICHTUNG_DEFAULTS.O;
+            document.getElementById('gewicht-archetyp').value = GEWICHTUNG_DEFAULTS.A;
+            document.getElementById('gewicht-dominanz').value = GEWICHTUNG_DEFAULTS.D;
+            document.getElementById('gewicht-geschlecht').value = GEWICHTUNG_DEFAULTS.G;
+
+            document.getElementById('label-orientierung').textContent = GEWICHTUNG_DEFAULTS.O + '%';
+            document.getElementById('label-archetyp').textContent = GEWICHTUNG_DEFAULTS.A + '%';
+            document.getElementById('label-dominanz').textContent = GEWICHTUNG_DEFAULTS.D + '%';
+            document.getElementById('label-geschlecht').textContent = GEWICHTUNG_DEFAULTS.G + '%';
+
+            saveGewichtungen();
+        }
+        window.resetGewichtungen = resetGewichtungen;
+
+        // Lädt Gewichtungen in die UI beim Modal-Öffnen
+        function loadGewichtungenIntoUI() {
+            const gew = getGewichtungen();
+
+            const sliderO = document.getElementById('gewicht-orientierung');
+            const sliderA = document.getElementById('gewicht-archetyp');
+            const sliderD = document.getElementById('gewicht-dominanz');
+            const sliderG = document.getElementById('gewicht-geschlecht');
+
+            if (sliderO) sliderO.value = gew.O;
+            if (sliderA) sliderA.value = gew.A;
+            if (sliderD) sliderD.value = gew.D;
+            if (sliderG) sliderG.value = gew.G;
+
+            const labelO = document.getElementById('label-orientierung');
+            const labelA = document.getElementById('label-archetyp');
+            const labelD = document.getElementById('label-dominanz');
+            const labelG = document.getElementById('label-geschlecht');
+
+            if (labelO) labelO.textContent = gew.O + '%';
+            if (labelA) labelA.textContent = gew.A + '%';
+            if (labelD) labelD.textContent = gew.D + '%';
+            if (labelG) labelG.textContent = gew.G + '%';
+
+            updateGewichtungSumme();
+        }
+
+        // ═══════════════════════════════════════════════════════════════════════
+
         // Open Profile Review Modal
         function openProfileReviewModal(archetypeKey) {
             var modal = document.getElementById('profileReviewModal');
             if (!modal) return;
+
+            // Lade Gewichtungen in UI
+            loadGewichtungenIntoUI();
 
             // Get archetype data
             archetypeKey = archetypeKey || 'duo';
