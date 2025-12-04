@@ -78,6 +78,53 @@ const archetypeDefinitions = {
       exklusivitaet: "nicht-relevant",
       zukunftsplanung: "spontan",
       umzugsbereitschaft: "sehr-flexibel"
+    },
+
+    // Numerische Basis-Attribute für Matching (0.0 - 1.0 Skala)
+    baseAttributes: {
+      // LEBENSPLANUNG
+      kinderWunsch: "nein",
+      eheWunsch: "nein",
+      wohnform: "getrennt",
+      familieWichtigkeit: 0.40,
+      haustiere: "ja-eigene",
+      karrierePrioritaet: 0.70,
+      finanzen: "getrennt",
+
+      // KOMMUNIKATION
+      gespraechsBeduernis: 0.40,
+      konfliktverhalten: 0.35,
+      emotionaleOffenheit: 0.45,
+      kommunikationsstil: 0.30,
+      feedbackBeduernis: 0.40,
+
+      // SOZIALES
+      introExtro: 0.50,
+      freundeskreis: "getrennt",
+      sozialeBedürfnisse: 0.50,
+      alleinZeitBeduernis: 0.70,
+
+      // INTIMITÄT
+      koerperlicheNaehe: 0.40,
+      sexFrequenz: 0.40,
+      romantikBeduernis: 0.35,
+      koerperKontakt: 0.40,
+
+      // WERTE
+      religiositaet: 0.35,
+      politischeAktivitaet: 0.50,
+      umweltbewusstsein: 0.55,
+      traditionVsModern: 0.65,
+
+      // PRAKTISCHES
+      ordnung: 0.50,
+      haushaltsAufteilung: "flexibel",
+      reiseFrequenz: 0.60,
+
+      // EMOTIONALE DYNAMIK
+      eifersuchtNeigung: 0.30,
+      vertrauensbasis: 0.60,
+      emotionaleStabilitaet: 0.70
     }
   },
 
@@ -142,6 +189,53 @@ const archetypeDefinitions = {
       exklusivitaet: "strikt",
       zukunftsplanung: "gemeinsam-langfristig",
       umzugsbereitschaft: "nur-gemeinsam"
+    },
+
+    // Numerische Basis-Attribute für Matching (0.0 - 1.0 Skala)
+    baseAttributes: {
+      // LEBENSPLANUNG
+      kinderWunsch: "ja",
+      eheWunsch: "ja",
+      wohnform: "zusammen",
+      familieWichtigkeit: 0.70,
+      haustiere: "vielleicht",
+      karrierePrioritaet: 0.50,
+      finanzen: "hybrid",
+
+      // KOMMUNIKATION
+      gespraechsBeduernis: 0.65,
+      konfliktverhalten: 0.50,
+      emotionaleOffenheit: 0.55,
+      kommunikationsstil: 0.40,
+      feedbackBeduernis: 0.60,
+
+      // SOZIALES
+      introExtro: 0.35,
+      freundeskreis: "gemischt",
+      sozialeBedürfnisse: 0.60,
+      alleinZeitBeduernis: 0.40,
+
+      // INTIMITÄT
+      koerperlicheNaehe: 0.70,
+      sexFrequenz: 0.60,
+      romantikBeduernis: 0.65,
+      koerperKontakt: 0.70,
+
+      // WERTE
+      religiositaet: 0.45,
+      politischeAktivitaet: 0.40,
+      umweltbewusstsein: 0.55,
+      traditionVsModern: 0.35,
+
+      // PRAKTISCHES
+      ordnung: 0.55,
+      haushaltsAufteilung: "gleichberechtigt",
+      reiseFrequenz: 0.50,
+
+      // EMOTIONALE DYNAMIK
+      eifersuchtNeigung: 0.50,
+      vertrauensbasis: 0.70,
+      emotionaleStabilitaet: 0.65
     }
   },
 
@@ -206,6 +300,53 @@ const archetypeDefinitions = {
       exklusivitaet: "flexibel",
       zukunftsplanung: "gemeinsam-mit-raum",
       umzugsbereitschaft: "verhandelbar"
+    },
+
+    // Numerische Basis-Attribute für Matching (0.0 - 1.0 Skala)
+    baseAttributes: {
+      // LEBENSPLANUNG
+      kinderWunsch: "vielleicht",
+      eheWunsch: "vielleicht",
+      wohnform: "zusammen",
+      familieWichtigkeit: 0.60,
+      haustiere: "vielleicht",
+      karrierePrioritaet: 0.55,
+      finanzen: "hybrid",
+
+      // KOMMUNIKATION
+      gespraechsBeduernis: 0.70,
+      konfliktverhalten: 0.55,
+      emotionaleOffenheit: 0.65,
+      kommunikationsstil: 0.45,
+      feedbackBeduernis: 0.70,
+
+      // SOZIALES
+      introExtro: 0.40,
+      freundeskreis: "gemischt",
+      sozialeBedürfnisse: 0.65,
+      alleinZeitBeduernis: 0.45,
+
+      // INTIMITÄT
+      koerperlicheNaehe: 0.65,
+      sexFrequenz: 0.65,
+      romantikBeduernis: 0.60,
+      koerperKontakt: 0.65,
+
+      // WERTE
+      religiositaet: 0.35,
+      politischeAktivitaet: 0.50,
+      umweltbewusstsein: 0.60,
+      traditionVsModern: 0.55,
+
+      // PRAKTISCHES
+      ordnung: 0.50,
+      haushaltsAufteilung: "gleichberechtigt",
+      reiseFrequenz: 0.55,
+
+      // EMOTIONALE DYNAMIK
+      eifersuchtNeigung: 0.45,
+      vertrauensbasis: 0.75,
+      emotionaleStabilitaet: 0.65
     }
   },
 
@@ -270,6 +411,53 @@ const archetypeDefinitions = {
       exklusivitaet: "nicht-definiert",
       zukunftsplanung: "emergent",
       umzugsbereitschaft: "sehr-flexibel"
+    },
+
+    // Numerische Basis-Attribute für Matching (0.0 - 1.0 Skala)
+    baseAttributes: {
+      // LEBENSPLANUNG
+      kinderWunsch: "unsicher",
+      eheWunsch: "nein",
+      wohnform: "flexibel",
+      familieWichtigkeit: 0.40,
+      haustiere: "egal",
+      karrierePrioritaet: 0.60,
+      finanzen: "getrennt",
+
+      // KOMMUNIKATION
+      gespraechsBeduernis: 0.75,
+      konfliktverhalten: 0.55,
+      emotionaleOffenheit: 0.80,
+      kommunikationsstil: 0.30,
+      feedbackBeduernis: 0.80,
+
+      // SOZIALES
+      introExtro: 0.40,
+      freundeskreis: "getrennt",
+      sozialeBedürfnisse: 0.70,
+      alleinZeitBeduernis: 0.60,
+
+      // INTIMITÄT
+      koerperlicheNaehe: 0.60,
+      sexFrequenz: 0.65,
+      romantikBeduernis: 0.50,
+      koerperKontakt: 0.60,
+
+      // WERTE
+      religiositaet: 0.15,
+      politischeAktivitaet: 0.75,
+      umweltbewusstsein: 0.70,
+      traditionVsModern: 0.90,
+
+      // PRAKTISCHES
+      ordnung: 0.40,
+      haushaltsAufteilung: "flexibel",
+      reiseFrequenz: 0.70,
+
+      // EMOTIONALE DYNAMIK
+      eifersuchtNeigung: 0.20,
+      vertrauensbasis: 0.75,
+      emotionaleStabilitaet: 0.75
     }
   },
 
@@ -334,6 +522,53 @@ const archetypeDefinitions = {
       exklusivitaet: "variabel",
       zukunftsplanung: "gemeinsam-aber-getrennt",
       umzugsbereitschaft: "flexibel"
+    },
+
+    // Numerische Basis-Attribute für Matching (0.0 - 1.0 Skala)
+    baseAttributes: {
+      // LEBENSPLANUNG
+      kinderWunsch: "vielleicht",
+      eheWunsch: "vielleicht",
+      wohnform: "lat",
+      familieWichtigkeit: 0.55,
+      haustiere: "ja-eigene",
+      karrierePrioritaet: 0.60,
+      finanzen: "getrennt",
+
+      // KOMMUNIKATION
+      gespraechsBeduernis: 0.60,
+      konfliktverhalten: 0.55,
+      emotionaleOffenheit: 0.60,
+      kommunikationsstil: 0.40,
+      feedbackBeduernis: 0.65,
+
+      // SOZIALES
+      introExtro: 0.50,
+      freundeskreis: "getrennt",
+      sozialeBedürfnisse: 0.55,
+      alleinZeitBeduernis: 0.70,
+
+      // INTIMITÄT
+      koerperlicheNaehe: 0.60,
+      sexFrequenz: 0.55,
+      romantikBeduernis: 0.60,
+      koerperKontakt: 0.60,
+
+      // WERTE
+      religiositaet: 0.35,
+      politischeAktivitaet: 0.50,
+      umweltbewusstsein: 0.60,
+      traditionVsModern: 0.60,
+
+      // PRAKTISCHES
+      ordnung: 0.60,
+      haushaltsAufteilung: "flexibel",
+      reiseFrequenz: 0.55,
+
+      // EMOTIONALE DYNAMIK
+      eifersuchtNeigung: 0.40,
+      vertrauensbasis: 0.75,
+      emotionaleStabilitaet: 0.70
     }
   },
 
@@ -398,6 +633,53 @@ const archetypeDefinitions = {
       exklusivitaet: "nicht-romantisch-relevant",
       zukunftsplanung: "individuell",
       umzugsbereitschaft: "flexibel"
+    },
+
+    // Numerische Basis-Attribute für Matching (0.0 - 1.0 Skala)
+    baseAttributes: {
+      // LEBENSPLANUNG
+      kinderWunsch: "nein",
+      eheWunsch: "nein",
+      wohnform: "getrennt",
+      familieWichtigkeit: 0.50,
+      haustiere: "egal",
+      karrierePrioritaet: 0.65,
+      finanzen: "getrennt",
+
+      // KOMMUNIKATION
+      gespraechsBeduernis: 0.50,
+      konfliktverhalten: 0.45,
+      emotionaleOffenheit: 0.50,
+      kommunikationsstil: 0.35,
+      feedbackBeduernis: 0.50,
+
+      // SOZIALES
+      introExtro: 0.55,
+      freundeskreis: "getrennt",
+      sozialeBedürfnisse: 0.55,
+      alleinZeitBeduernis: 0.65,
+
+      // INTIMITÄT
+      koerperlicheNaehe: 0.30,
+      sexFrequenz: 0.30,
+      romantikBeduernis: 0.10,
+      koerperKontakt: 0.35,
+
+      // WERTE
+      religiositaet: 0.40,
+      politischeAktivitaet: 0.55,
+      umweltbewusstsein: 0.60,
+      traditionVsModern: 0.70,
+
+      // PRAKTISCHES
+      ordnung: 0.55,
+      haushaltsAufteilung: "flexibel",
+      reiseFrequenz: 0.50,
+
+      // EMOTIONALE DYNAMIK
+      eifersuchtNeigung: 0.20,
+      vertrauensbasis: 0.65,
+      emotionaleStabilitaet: 0.70
     }
   },
 
@@ -462,6 +744,53 @@ const archetypeDefinitions = {
       exklusivitaet: "offen",
       zukunftsplanung: "flexibel",
       umzugsbereitschaft: "sehr-flexibel"
+    },
+
+    // Numerische Basis-Attribute für Matching (0.0 - 1.0 Skala)
+    baseAttributes: {
+      // LEBENSPLANUNG
+      kinderWunsch: "nein",
+      eheWunsch: "nein",
+      wohnform: "getrennt",
+      familieWichtigkeit: 0.45,
+      haustiere: "ja-eigene",
+      karrierePrioritaet: 0.65,
+      finanzen: "getrennt",
+
+      // KOMMUNIKATION
+      gespraechsBeduernis: 0.75,
+      konfliktverhalten: 0.60,
+      emotionaleOffenheit: 0.70,
+      kommunikationsstil: 0.35,
+      feedbackBeduernis: 0.75,
+
+      // SOZIALES
+      introExtro: 0.35,
+      freundeskreis: "gemischt",
+      sozialeBedürfnisse: 0.70,
+      alleinZeitBeduernis: 0.60,
+
+      // INTIMITÄT
+      koerperlicheNaehe: 0.65,
+      sexFrequenz: 0.70,
+      romantikBeduernis: 0.60,
+      koerperKontakt: 0.65,
+
+      // WERTE
+      religiositaet: 0.25,
+      politischeAktivitaet: 0.60,
+      umweltbewusstsein: 0.65,
+      traditionVsModern: 0.75,
+
+      // PRAKTISCHES
+      ordnung: 0.45,
+      haushaltsAufteilung: "flexibel",
+      reiseFrequenz: 0.65,
+
+      // EMOTIONALE DYNAMIK
+      eifersuchtNeigung: 0.30,
+      vertrauensbasis: 0.75,
+      emotionaleStabilitaet: 0.70
     }
   },
 
@@ -526,6 +855,53 @@ const archetypeDefinitions = {
       exklusivitaet: "offen",
       zukunftsplanung: "flexibel-gemeinsam",
       umzugsbereitschaft: "verhandelbar"
+    },
+
+    // Numerische Basis-Attribute für Matching (0.0 - 1.0 Skala)
+    baseAttributes: {
+      // LEBENSPLANUNG
+      kinderWunsch: "vielleicht",
+      eheWunsch: "nein",
+      wohnform: "flexibel",
+      familieWichtigkeit: 0.55,
+      haustiere: "ja-gemeinsam",
+      karrierePrioritaet: 0.55,
+      finanzen: "hybrid",
+
+      // KOMMUNIKATION
+      gespraechsBeduernis: 0.80,
+      konfliktverhalten: 0.65,
+      emotionaleOffenheit: 0.75,
+      kommunikationsstil: 0.40,
+      feedbackBeduernis: 0.80,
+
+      // SOZIALES
+      introExtro: 0.30,
+      freundeskreis: "gemischt",
+      sozialeBedürfnisse: 0.75,
+      alleinZeitBeduernis: 0.50,
+
+      // INTIMITÄT
+      koerperlicheNaehe: 0.70,
+      sexFrequenz: 0.75,
+      romantikBeduernis: 0.70,
+      koerperKontakt: 0.70,
+
+      // WERTE
+      religiositaet: 0.20,
+      politischeAktivitaet: 0.65,
+      umweltbewusstsein: 0.65,
+      traditionVsModern: 0.80,
+
+      // PRAKTISCHES
+      ordnung: 0.45,
+      haushaltsAufteilung: "gleichberechtigt",
+      reiseFrequenz: 0.60,
+
+      // EMOTIONALE DYNAMIK
+      eifersuchtNeigung: 0.25,
+      vertrauensbasis: 0.80,
+      emotionaleStabilitaet: 0.70
     }
   }
 };
