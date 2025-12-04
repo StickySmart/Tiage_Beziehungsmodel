@@ -675,11 +675,91 @@ TiageSynthesis.Calculator = {
             }
         }
 
-        return TiageSynthesis.LifestyleFilter.checkArchetypes(
-            archetyp1,
-            archetyp2,
-            archetypeDefinitions
-        );
+        // NEU: User-Werte aus ProfileReview laden und mit Archetyp-Defaults mergen
+        var attrs1 = TiageSynthesis.LifestyleFilter.getBaseAttributes(archetyp1, archetypeDefinitions) || {};
+        var attrs2 = TiageSynthesis.LifestyleFilter.getBaseAttributes(archetyp2, archetypeDefinitions) || {};
+
+        // ProfileReview-Werte laden (falls vorhanden)
+        var profileReview = null;
+        if (typeof TiageState !== 'undefined' && TiageState.get) {
+            profileReview = TiageState.get('profileReview');
+        }
+
+        // User-Werte mit Archetyp-Defaults mergen (für ICH/Person1)
+        if (profileReview) {
+            attrs1 = this._mergeProfileReviewWithAttrs(attrs1, profileReview);
+        }
+
+        // Mit gemergten Attributen prüfen
+        return TiageSynthesis.LifestyleFilter.check(attrs1, attrs2);
+    },
+
+    /**
+     * Merged ProfileReview-Werte mit Archetyp baseAttributes
+     * Konvertiert UI-Werte (0-100 Slider, boolean Buttons) zu Filter-Format
+     *
+     * @param {object} baseAttrs - baseAttributes vom Archetyp
+     * @param {object} review - profileReview vom User
+     * @returns {object} Gemergte Attribute
+     */
+    _mergeProfileReviewWithAttrs: function(baseAttrs, review) {
+        var merged = Object.assign({}, baseAttrs);
+
+        // Toggle-Buttons → kategorisch
+        if (review.kinder !== undefined) {
+            merged.kinderWunsch = review.kinder ? 'ja' : 'nein';
+        }
+        if (review.ehe !== undefined) {
+            merged.eheWunsch = review.ehe ? 'ja' : 'nein';
+        }
+
+        // Slider (0-100) → numerisch (0-1)
+        if (review.familie !== undefined) {
+            merged.familieWichtigkeit = parseInt(review.familie) / 100;
+        }
+        if (review.finanzen !== undefined) {
+            // Finanzen: 0-33 = getrennt, 34-66 = hybrid, 67-100 = gemeinsam
+            var finVal = parseInt(review.finanzen);
+            merged.finanzen = finVal < 34 ? 'getrennt' : (finVal < 67 ? 'hybrid' : 'gemeinsam');
+        }
+        if (review.karriere !== undefined) {
+            merged.karrierePrioritaet = parseInt(review.karriere) / 100;
+        }
+        if (review.emotional !== undefined) {
+            merged.emotionaleOffenheit = parseInt(review.emotional) / 100;
+        }
+        if (review.konflikt !== undefined) {
+            merged.konfliktverhalten = parseInt(review.konflikt) / 100;
+        }
+        if (review.introextro !== undefined) {
+            merged.introExtro = parseInt(review.introextro) / 100;
+        }
+        if (review.alleinzeit !== undefined) {
+            merged.alleinZeitBeduernis = parseInt(review.alleinzeit) / 100;
+        }
+        if (review.freunde !== undefined) {
+            merged.freundeskreis = parseInt(review.freunde) / 100;
+        }
+        if (review.naehe !== undefined) {
+            merged.koerperlicheNaehe = parseInt(review.naehe) / 100;
+        }
+        if (review.romantik !== undefined) {
+            merged.romantikBeduernis = parseInt(review.romantik) / 100;
+        }
+        if (review.sex !== undefined) {
+            merged.sexFrequenz = parseInt(review.sex) / 100;
+        }
+        if (review.religion !== undefined) {
+            merged.religiositaet = parseInt(review.religion) / 100;
+        }
+        if (review.tradition !== undefined) {
+            merged.traditionVsModern = parseInt(review.tradition) / 100;
+        }
+        if (review.umwelt !== undefined) {
+            merged.umweltbewusstsein = parseInt(review.umwelt) / 100;
+        }
+
+        return merged;
     },
 
     /**

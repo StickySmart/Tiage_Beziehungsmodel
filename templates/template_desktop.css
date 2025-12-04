@@ -5843,31 +5843,35 @@
 /* Body */
 .profile-review-body {
     background: var(--bg-dark);
-    padding: 20px;
+    padding: 16px;
 }
 
 /* Category - Hilfe-Modal Style */
 .profile-review-category {
-    margin-bottom: 24px;
+    margin-bottom: 20px;
+    background: var(--bg-card);
+    border-radius: 12px;
+    padding: 16px;
+    border: 1px solid var(--border);
 }
 
 .profile-review-category-header {
-    font-size: 14px;
+    font-size: 13px;
     font-weight: 600;
     color: var(--primary);
     margin-bottom: 12px;
     display: flex;
     align-items: center;
     gap: 8px;
-    padding-bottom: 8px;
+    padding-bottom: 10px;
     border-bottom: 1px solid var(--border);
 }
 
 .profile-review-category-icon {
-    font-size: 16px;
+    font-size: 14px;
 }
 
-/* Checkbox Grid - 2x2 Layout */
+/* Toggle Button Grid - wie Hauptseite */
 .profile-review-checkbox-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
@@ -5875,163 +5879,132 @@
     margin-bottom: 12px;
 }
 
-@media (min-width: 500px) {
-    .profile-review-checkbox-grid {
-        grid-template-columns: repeat(2, 1fr);
-    }
-}
-
-/* Checkbox Attribute */
-.profile-review-attribute {
-    background: var(--bg-card);
-    border: 1px solid var(--border);
-    border-radius: 8px;
+/* Toggle Button - wie dominanz-btn */
+.profile-review-toggle-btn {
     padding: 10px 12px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    transition: all 0.2s;
-    cursor: pointer;
-    min-height: 44px;
-}
-
-.profile-review-attribute:hover {
-    border-color: var(--primary);
-    background: rgba(69, 123, 157, 0.08);
-}
-
-.profile-review-attribute.checked {
-    border-color: var(--primary);
-    background: rgba(69, 123, 157, 0.12);
-    box-shadow: 0 0 0 1px var(--primary);
-}
-
-.profile-review-checkbox {
-    width: 20px;
-    height: 20px;
-    cursor: pointer;
-    accent-color: var(--primary);
-    flex-shrink: 0;
-}
-
-.profile-review-label {
-    flex: 1;
-    font-size: 14px;
-    color: var(--text-primary);
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    background: var(--bg-dark);
+    color: var(--text-secondary);
+    font-size: 13px;
     font-weight: 500;
     cursor: pointer;
-}
-
-.profile-review-info-btn {
-    width: 24px;
-    height: 24px;
-    border-radius: 50%;
-    background: transparent;
-    border: 1px solid var(--border);
-    color: var(--text-muted);
-    cursor: pointer;
-    font-size: 12px;
-    font-weight: bold;
-    flex-shrink: 0;
+    transition: all 0.2s ease;
+    text-align: center;
     display: flex;
     align-items: center;
     justify-content: center;
+    gap: 6px;
+}
+
+.profile-review-toggle-btn:hover {
+    border-color: var(--primary);
+    color: var(--text-primary);
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.profile-review-toggle-btn.active {
+    background: var(--primary);
+    color: white;
+    border-color: var(--primary);
+    box-shadow: 0 2px 8px rgba(69, 123, 157, 0.4);
+}
+
+.profile-review-info-btn {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.1);
+    border: none;
+    color: var(--text-muted);
+    cursor: pointer;
+    font-size: 11px;
+    font-weight: bold;
+    flex-shrink: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
     transition: all 0.2s;
+    margin-left: auto;
 }
 
 .profile-review-info-btn:hover {
     background: var(--primary);
     color: white;
-    border-color: var(--primary);
 }
 
-/* Slider Attribute - Verbessert */
+/* Slider Attribute */
 .profile-review-slider-attribute {
-    background: var(--bg-card);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    padding: 14px 16px;
-    margin-bottom: 10px;
-    transition: all 0.2s;
-}
-
-.profile-review-slider-attribute:hover {
-    border-color: var(--primary);
+    background: var(--bg-dark);
+    border-radius: 8px;
+    padding: 12px;
+    margin-bottom: 8px;
 }
 
 .profile-review-slider-header {
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    margin-bottom: 14px;
+    gap: 8px;
+    margin-bottom: 10px;
 }
 
 .profile-review-slider-title {
-    font-size: 14px;
+    font-size: 13px;
     color: var(--text-primary);
     font-weight: 500;
+    flex: 1;
 }
 
 /* Slider Labels - Links und Rechts */
 .profile-review-slider-labels {
     display: flex;
     justify-content: space-between;
-    align-items: center;
-    font-size: 11px;
+    font-size: 10px;
     color: var(--text-muted);
     margin-bottom: 4px;
-}
-
-.profile-review-slider-labels span {
-    flex: 1;
-}
-
-.profile-review-slider-labels span:last-child {
-    text-align: right;
 }
 
 /* Zahlenwert Badge */
 .profile-review-slider-value {
     font-weight: 700;
     color: white;
-    min-width: 32px;
+    min-width: 28px;
     text-align: center;
-    font-size: 14px;
+    font-size: 12px;
     background: var(--primary);
-    padding: 4px 10px;
-    border-radius: 12px;
-    flex-shrink: 0;
+    padding: 3px 8px;
+    border-radius: 10px;
 }
 
 .profile-review-range {
     width: 100%;
-    height: 8px;
-    background: linear-gradient(to right, var(--bg-dark), rgba(69, 123, 157, 0.3));
+    height: 6px;
+    background: var(--bg-card);
     outline: none;
-    border-radius: 4px;
+    border-radius: 3px;
     -webkit-appearance: none;
     border: 1px solid var(--border);
 }
 
 .profile-review-range::-webkit-slider-thumb {
     -webkit-appearance: none;
-    width: 18px;
-    height: 18px;
-    background: linear-gradient(135deg, var(--primary), #5a9cbf);
+    width: 16px;
+    height: 16px;
+    background: var(--primary);
     border-radius: 50%;
     cursor: pointer;
     transition: transform 0.2s;
     border: 2px solid white;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
 }
 
 .profile-review-range::-webkit-slider-thumb:hover {
-    transform: scale(1.2);
+    transform: scale(1.15);
 }
 
 .profile-review-range::-moz-range-thumb {
-    width: 18px;
-    height: 18px;
+    width: 16px;
+    height: 16px;
     background: var(--primary);
     border-radius: 50%;
     cursor: pointer;
