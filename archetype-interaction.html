@@ -804,15 +804,6 @@
                 <button class="modal-close" onclick="closeProfileReviewModal()">&times;</button>
             </div>
 
-            <!-- Search Bar -->
-            <div class="profile-review-search">
-                <input type="text"
-                       id="profileReviewSearchInput"
-                       placeholder="Attribute suchen..."
-                       oninput="filterProfileReviewAttributes(this.value)">
-                <span class="profile-review-search-icon">🔍</span>
-            </div>
-
             <!-- Scrollable Content -->
             <div class="modal-body profile-review-body" id="profileReviewBody" style="flex: 1; overflow-y: auto;">
 
@@ -868,10 +859,7 @@
                         <span>LEBENSPLANUNG</span>
                     </div>
                     <div class="profile-review-card" id="pr-kinder-card">
-                        <div class="profile-review-card-header">
-                            <span class="profile-review-card-title">Kinder</span>
-                            <button class="profile-review-info-btn" onclick="showProfileReviewInfo('kinderWunsch')">?</button>
-                        </div>
+                        <div class="compact-dimension-label">Kinder <span class="dimension-hint">(wichtig ?)</span></div>
                         <div class="profile-review-triple-buttons" data-attr="pr-kinder">
                             <button class="profile-review-triple-btn" data-value="25" onclick="selectTripleBtn(this)">Nein</button>
                             <button class="profile-review-triple-btn active" data-value="50" onclick="selectTripleBtn(this)">Offen</button>
@@ -879,10 +867,7 @@
                         </div>
                     </div>
                     <div class="profile-review-card" id="pr-ehe-card">
-                        <div class="profile-review-card-header">
-                            <span class="profile-review-card-title">Ehe</span>
-                            <button class="profile-review-info-btn" onclick="showProfileReviewInfo('eheWunsch')">?</button>
-                        </div>
+                        <div class="compact-dimension-label">Ehe <span class="dimension-hint">(wichtig ?)</span></div>
                         <div class="profile-review-triple-buttons" data-attr="pr-ehe">
                             <button class="profile-review-triple-btn" data-value="25" onclick="selectTripleBtn(this)">Unwichtig</button>
                             <button class="profile-review-triple-btn active" data-value="50" onclick="selectTripleBtn(this)">Offen</button>
@@ -890,10 +875,7 @@
                         </div>
                     </div>
                     <div class="profile-review-card" id="pr-zusammen-card">
-                        <div class="profile-review-card-header">
-                            <span class="profile-review-card-title">Zusammen wohnen</span>
-                            <button class="profile-review-info-btn" onclick="showProfileReviewInfo('wohnform')">?</button>
-                        </div>
+                        <div class="compact-dimension-label">Zusammen wohnen <span class="dimension-hint">(wichtig ?)</span></div>
                         <div class="profile-review-triple-buttons" data-attr="pr-zusammen">
                             <button class="profile-review-triple-btn" data-value="25" onclick="selectTripleBtn(this)">Getrennt</button>
                             <button class="profile-review-triple-btn active" data-value="50" onclick="selectTripleBtn(this)">Offen</button>
@@ -901,10 +883,7 @@
                         </div>
                     </div>
                     <div class="profile-review-card" id="pr-haustiere-card">
-                        <div class="profile-review-card-header">
-                            <span class="profile-review-card-title">Haustiere</span>
-                            <button class="profile-review-info-btn" onclick="showProfileReviewInfo('haustiere')">?</button>
-                        </div>
+                        <div class="compact-dimension-label">Haustiere <span class="dimension-hint">(wichtig ?)</span></div>
                         <div class="profile-review-triple-buttons" data-attr="pr-haustiere">
                             <button class="profile-review-triple-btn" data-value="25" onclick="selectTripleBtn(this)">Ohne</button>
                             <button class="profile-review-triple-btn active" data-value="50" onclick="selectTripleBtn(this)">Offen</button>
@@ -912,10 +891,7 @@
                         </div>
                     </div>
                     <div class="profile-review-card">
-                        <div class="profile-review-card-header">
-                            <span class="profile-review-card-title">Umzugsbereitschaft</span>
-                            <button class="profile-review-info-btn" onclick="showProfileReviewInfo('umzugsbereitschaft')">?</button>
-                        </div>
+                        <div class="compact-dimension-label">Umzugsbereitschaft <span class="dimension-hint">(wichtig ?)</span></div>
                         <div class="profile-review-triple-buttons" data-attr="pr-umzug">
                             <button class="profile-review-triple-btn" data-value="25" onclick="selectTripleBtn(this)">Sesshaft</button>
                             <button class="profile-review-triple-btn active" data-value="50" onclick="selectTripleBtn(this)">Mittel</button>
@@ -923,10 +899,7 @@
                         </div>
                     </div>
                     <div class="profile-review-card">
-                        <div class="profile-review-card-header">
-                            <span class="profile-review-card-title">Familie-Wichtigkeit</span>
-                            <button class="profile-review-info-btn" onclick="showProfileReviewInfo('familieWichtigkeit')">?</button>
-                        </div>
+                        <div class="compact-dimension-label">Familie-Wichtigkeit <span class="dimension-hint">(wichtig ?)</span></div>
                         <div class="profile-review-triple-buttons" data-attr="pr-familie">
                             <button class="profile-review-triple-btn" data-value="25" onclick="selectTripleBtn(this)">Unwichtig</button>
                             <button class="profile-review-triple-btn active" data-value="50" onclick="selectTripleBtn(this)">Wichtig</button>
@@ -942,10 +915,7 @@
                         <span>FINANZEN & KARRIERE</span>
                     </div>
                     <div class="profile-review-card">
-                        <div class="profile-review-card-header">
-                            <span class="profile-review-card-title">Finanzen</span>
-                            <button class="profile-review-info-btn" onclick="showProfileReviewInfo('finanzen')">?</button>
-                        </div>
+                        <div class="compact-dimension-label">Finanzen <span class="dimension-hint">(wichtig ?)</span></div>
                         <div class="profile-review-triple-buttons" data-attr="pr-finanzen">
                             <button class="profile-review-triple-btn" data-value="25" onclick="selectTripleBtn(this)">Getrennt</button>
                             <button class="profile-review-triple-btn active" data-value="50" onclick="selectTripleBtn(this)">Hybrid</button>
@@ -953,10 +923,7 @@
                         </div>
                     </div>
                     <div class="profile-review-card">
-                        <div class="profile-review-card-header">
-                            <span class="profile-review-card-title">Karriere-Priorität</span>
-                            <button class="profile-review-info-btn" onclick="showProfileReviewInfo('karrierePrioritaet')">?</button>
-                        </div>
+                        <div class="compact-dimension-label">Karriere-Priorität <span class="dimension-hint">(wichtig ?)</span></div>
                         <div class="profile-review-triple-buttons" data-attr="pr-karriere">
                             <button class="profile-review-triple-btn" data-value="25" onclick="selectTripleBtn(this)">Familie</button>
                             <button class="profile-review-triple-btn active" data-value="50" onclick="selectTripleBtn(this)">Balance</button>
@@ -972,10 +939,7 @@
                         <span>KOMMUNIKATION</span>
                     </div>
                     <div class="profile-review-card">
-                        <div class="profile-review-card-header">
-                            <span class="profile-review-card-title">Gesprächsbedürfnis</span>
-                            <button class="profile-review-info-btn" onclick="showProfileReviewInfo('gespraechsBeduernis')">?</button>
-                        </div>
+                        <div class="compact-dimension-label">Gesprächsbedürfnis <span class="dimension-hint">(wichtig ?)</span></div>
                         <div class="profile-review-triple-buttons" data-attr="pr-gespraech">
                             <button class="profile-review-triple-btn" data-value="25" onclick="selectTripleBtn(this)">Wenig</button>
                             <button class="profile-review-triple-btn active" data-value="50" onclick="selectTripleBtn(this)">Mittel</button>
@@ -983,10 +947,7 @@
                         </div>
                     </div>
                     <div class="profile-review-card">
-                        <div class="profile-review-card-header">
-                            <span class="profile-review-card-title">Emotionale Offenheit</span>
-                            <button class="profile-review-info-btn" onclick="showProfileReviewInfo('emotionaleOffenheit')">?</button>
-                        </div>
+                        <div class="compact-dimension-label">Emotionale Offenheit <span class="dimension-hint">(wichtig ?)</span></div>
                         <div class="profile-review-triple-buttons" data-attr="pr-emotional">
                             <button class="profile-review-triple-btn" data-value="25" onclick="selectTripleBtn(this)">Zurückhaltend</button>
                             <button class="profile-review-triple-btn active" data-value="50" onclick="selectTripleBtn(this)">Mittel</button>
@@ -994,10 +955,7 @@
                         </div>
                     </div>
                     <div class="profile-review-card">
-                        <div class="profile-review-card-header">
-                            <span class="profile-review-card-title">Konfliktverhalten</span>
-                            <button class="profile-review-info-btn" onclick="showProfileReviewInfo('konfliktverhalten')">?</button>
-                        </div>
+                        <div class="compact-dimension-label">Konfliktverhalten <span class="dimension-hint">(wichtig ?)</span></div>
                         <div class="profile-review-triple-buttons" data-attr="pr-konflikt">
                             <button class="profile-review-triple-btn" data-value="25" onclick="selectTripleBtn(this)">Vermeidend</button>
                             <button class="profile-review-triple-btn active" data-value="50" onclick="selectTripleBtn(this)">Mittel</button>
@@ -1013,10 +971,7 @@
                         <span>SOZIALES</span>
                     </div>
                     <div class="profile-review-card">
-                        <div class="profile-review-card-header">
-                            <span class="profile-review-card-title">Intro/Extrovertiert</span>
-                            <button class="profile-review-info-btn" onclick="showProfileReviewInfo('introExtro')">?</button>
-                        </div>
+                        <div class="compact-dimension-label">Intro/Extrovertiert <span class="dimension-hint">(wichtig ?)</span></div>
                         <div class="profile-review-triple-buttons" data-attr="pr-introextro">
                             <button class="profile-review-triple-btn" data-value="25" onclick="selectTripleBtn(this)">Intro</button>
                             <button class="profile-review-triple-btn active" data-value="50" onclick="selectTripleBtn(this)">Ambivert</button>
@@ -1024,10 +979,7 @@
                         </div>
                     </div>
                     <div class="profile-review-card">
-                        <div class="profile-review-card-header">
-                            <span class="profile-review-card-title">Alleinzeit-Bedürfnis</span>
-                            <button class="profile-review-info-btn" onclick="showProfileReviewInfo('alleinZeitBeduernis')">?</button>
-                        </div>
+                        <div class="compact-dimension-label">Alleinzeit-Bedürfnis <span class="dimension-hint">(wichtig ?)</span></div>
                         <div class="profile-review-triple-buttons" data-attr="pr-alleinzeit">
                             <button class="profile-review-triple-btn" data-value="25" onclick="selectTripleBtn(this)">Wenig</button>
                             <button class="profile-review-triple-btn active" data-value="50" onclick="selectTripleBtn(this)">Mittel</button>
@@ -1035,10 +987,7 @@
                         </div>
                     </div>
                     <div class="profile-review-card">
-                        <div class="profile-review-card-header">
-                            <span class="profile-review-card-title">Freundeskreis</span>
-                            <button class="profile-review-info-btn" onclick="showProfileReviewInfo('freundeskreis')">?</button>
-                        </div>
+                        <div class="compact-dimension-label">Freundeskreis <span class="dimension-hint">(wichtig ?)</span></div>
                         <div class="profile-review-triple-buttons" data-attr="pr-freunde">
                             <button class="profile-review-triple-btn" data-value="25" onclick="selectTripleBtn(this)">Getrennt</button>
                             <button class="profile-review-triple-btn active" data-value="50" onclick="selectTripleBtn(this)">Gemischt</button>
@@ -1054,10 +1003,7 @@
                         <span>INTIMITÄT</span>
                     </div>
                     <div class="profile-review-card">
-                        <div class="profile-review-card-header">
-                            <span class="profile-review-card-title">Körperliche Nähe</span>
-                            <button class="profile-review-info-btn" onclick="showProfileReviewInfo('koerperlicheNaehe')">?</button>
-                        </div>
+                        <div class="compact-dimension-label">Körperliche Nähe <span class="dimension-hint">(wichtig ?)</span></div>
                         <div class="profile-review-triple-buttons" data-attr="pr-naehe">
                             <button class="profile-review-triple-btn" data-value="25" onclick="selectTripleBtn(this)">Wenig</button>
                             <button class="profile-review-triple-btn active" data-value="50" onclick="selectTripleBtn(this)">Mittel</button>
@@ -1065,10 +1011,7 @@
                         </div>
                     </div>
                     <div class="profile-review-card">
-                        <div class="profile-review-card-header">
-                            <span class="profile-review-card-title">Romantik-Bedürfnis</span>
-                            <button class="profile-review-info-btn" onclick="showProfileReviewInfo('romantikBeduernis')">?</button>
-                        </div>
+                        <div class="compact-dimension-label">Romantik-Bedürfnis <span class="dimension-hint">(wichtig ?)</span></div>
                         <div class="profile-review-triple-buttons" data-attr="pr-romantik">
                             <button class="profile-review-triple-btn" data-value="25" onclick="selectTripleBtn(this)">Wenig</button>
                             <button class="profile-review-triple-btn active" data-value="50" onclick="selectTripleBtn(this)">Mittel</button>
@@ -1076,10 +1019,7 @@
                         </div>
                     </div>
                     <div class="profile-review-card">
-                        <div class="profile-review-card-header">
-                            <span class="profile-review-card-title">Sexuelle Frequenz</span>
-                            <button class="profile-review-info-btn" onclick="showProfileReviewInfo('sexFrequenz')">?</button>
-                        </div>
+                        <div class="compact-dimension-label">Sexuelle Frequenz <span class="dimension-hint">(wichtig ?)</span></div>
                         <div class="profile-review-triple-buttons" data-attr="pr-sex">
                             <button class="profile-review-triple-btn" data-value="25" onclick="selectTripleBtn(this)">Selten</button>
                             <button class="profile-review-triple-btn active" data-value="50" onclick="selectTripleBtn(this)">Mittel</button>
@@ -1095,10 +1035,7 @@
                         <span>WERTE</span>
                     </div>
                     <div class="profile-review-card">
-                        <div class="profile-review-card-header">
-                            <span class="profile-review-card-title">Religiosität</span>
-                            <button class="profile-review-info-btn" onclick="showProfileReviewInfo('religiositaet')">?</button>
-                        </div>
+                        <div class="compact-dimension-label">Religiosität <span class="dimension-hint">(wichtig ?)</span></div>
                         <div class="profile-review-triple-buttons" data-attr="pr-religion">
                             <button class="profile-review-triple-btn" data-value="25" onclick="selectTripleBtn(this)">Keine</button>
                             <button class="profile-review-triple-btn active" data-value="50" onclick="selectTripleBtn(this)">Mittel</button>
@@ -1106,10 +1043,7 @@
                         </div>
                     </div>
                     <div class="profile-review-card">
-                        <div class="profile-review-card-header">
-                            <span class="profile-review-card-title">Tradition vs. Modern</span>
-                            <button class="profile-review-info-btn" onclick="showProfileReviewInfo('traditionVsModern')">?</button>
-                        </div>
+                        <div class="compact-dimension-label">Tradition vs. Modern <span class="dimension-hint">(wichtig ?)</span></div>
                         <div class="profile-review-triple-buttons" data-attr="pr-tradition">
                             <button class="profile-review-triple-btn" data-value="25" onclick="selectTripleBtn(this)">Traditionell</button>
                             <button class="profile-review-triple-btn active" data-value="50" onclick="selectTripleBtn(this)">Gemischt</button>
@@ -1117,10 +1051,7 @@
                         </div>
                     </div>
                     <div class="profile-review-card">
-                        <div class="profile-review-card-header">
-                            <span class="profile-review-card-title">Umweltbewusstsein</span>
-                            <button class="profile-review-info-btn" onclick="showProfileReviewInfo('umweltbewusstsein')">?</button>
-                        </div>
+                        <div class="compact-dimension-label">Umweltbewusstsein <span class="dimension-hint">(wichtig ?)</span></div>
                         <div class="profile-review-triple-buttons" data-attr="pr-umwelt">
                             <button class="profile-review-triple-btn" data-value="25" onclick="selectTripleBtn(this)">Gering</button>
                             <button class="profile-review-triple-btn active" data-value="50" onclick="selectTripleBtn(this)">Mittel</button>
@@ -1136,10 +1067,7 @@
                         <span>PRAKTISCHES</span>
                     </div>
                     <div class="profile-review-card">
-                        <div class="profile-review-card-header">
-                            <span class="profile-review-card-title">Ordnung</span>
-                            <button class="profile-review-info-btn" onclick="showProfileReviewInfo('ordnung')">?</button>
-                        </div>
+                        <div class="compact-dimension-label">Ordnung <span class="dimension-hint">(wichtig ?)</span></div>
                         <div class="profile-review-triple-buttons" data-attr="pr-ordnung">
                             <button class="profile-review-triple-btn" data-value="25" onclick="selectTripleBtn(this)">Chaotisch</button>
                             <button class="profile-review-triple-btn active" data-value="50" onclick="selectTripleBtn(this)">Mittel</button>
@@ -1147,10 +1075,7 @@
                         </div>
                     </div>
                     <div class="profile-review-card">
-                        <div class="profile-review-card-header">
-                            <span class="profile-review-card-title">Reise-Frequenz</span>
-                            <button class="profile-review-info-btn" onclick="showProfileReviewInfo('reiseFrequenz')">?</button>
-                        </div>
+                        <div class="compact-dimension-label">Reise-Frequenz <span class="dimension-hint">(wichtig ?)</span></div>
                         <div class="profile-review-triple-buttons" data-attr="pr-reise">
                             <button class="profile-review-triple-btn" data-value="25" onclick="selectTripleBtn(this)">Selten</button>
                             <button class="profile-review-triple-btn active" data-value="50" onclick="selectTripleBtn(this)">Mittel</button>
