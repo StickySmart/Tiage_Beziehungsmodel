@@ -6098,63 +6098,73 @@
     align-items: center;
     justify-content: center;
     font-size: 12px;
-    opacity: 0;
+    opacity: 0.7;
     transition: opacity 0.2s ease;
     cursor: pointer;
 }
 
 .gewichtung-slider-row:hover .gewichtung-lock-icon {
-    opacity: 0.4;
+    opacity: 1;
 }
 
+/* UNLOCKED = Grün */
+.gewichtung-slider-row:not(.locked):not(.readonly) .gewichtung-lock-icon::before {
+    content: "🟢";
+}
+
+.gewichtung-slider-row:not(.locked):not(.readonly) .gewichtung-slider {
+    accent-color: #10B981;
+}
+
+.gewichtung-slider-row:not(.locked):not(.readonly) .gewichtung-value {
+    color: #10B981;
+}
+
+/* LOCKED = Rot */
 .gewichtung-slider-row.locked .gewichtung-lock-icon {
     opacity: 1;
 }
 
 .gewichtung-slider-row.locked .gewichtung-lock-icon::before {
-    content: "🔒";
-}
-
-.gewichtung-slider-row:not(.locked) .gewichtung-lock-icon::before {
-    content: "🔓";
+    content: "🔴";
 }
 
 .gewichtung-slider-row.locked {
-    background: rgba(139, 92, 246, 0.08);
+    background: rgba(239, 68, 68, 0.08);
     border-radius: 6px;
     padding: 4px 6px;
     margin: -4px -6px;
 }
 
 .gewichtung-slider-row.locked .gewichtung-slider {
-    accent-color: #6B7280;
+    accent-color: #EF4444;
     opacity: 0.7;
 }
 
 .gewichtung-slider-row.locked .gewichtung-value {
-    color: #6B7280;
+    color: #EF4444;
 }
 
 .gewichtung-slider-row.locked .gewichtung-label {
-    color: #6B7280;
+    color: #EF4444;
 }
 
-/* Last unlocked slider (read-only) styling */
+/* Last unlocked slider (read-only) = Gelb/Orange */
+.gewichtung-slider-row.readonly .gewichtung-lock-icon::before {
+    content: "🟡";
+}
+
 .gewichtung-slider-row.readonly .gewichtung-slider {
-    accent-color: #9CA3AF;
+    accent-color: #F59E0B;
     pointer-events: none;
 }
 
 .gewichtung-slider-row.readonly .gewichtung-value {
-    color: #9CA3AF;
-}
-
-.gewichtung-slider-row.readonly .gewichtung-lock-icon::before {
-    content: "↔️";
+    color: #F59E0B;
 }
 
 .gewichtung-slider-row.readonly .gewichtung-lock-icon {
-    opacity: 0.6;
+    opacity: 0.8;
 }
 
 /* Shake animation for lock limit feedback */
