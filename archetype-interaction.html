@@ -855,8 +855,8 @@
                             </div>
                             <div class="gewichtung-footer">
                                 <span class="gewichtung-summe-text">Summe: <span class="gewichtung-summe-value" id="gewicht-summe">100%</span></span>
-                                <button class="gewichtung-reset-btn" onclick="resetGewichtungen()">
-                                    Standard (40/25/20/15)
+                                <button class="profile-review-triple-btn" onclick="resetGewichtungen()" style="padding: 6px 12px; font-size: 11px;">
+                                    🔄 Standard
                                 </button>
                             </div>
                         </div>
@@ -874,9 +874,10 @@
                             <span class="profile-review-card-title">Kinder</span>
                             <button class="profile-review-info-btn" onclick="showProfileReviewInfo('kinderWunsch')">?</button>
                         </div>
-                        <div class="profile-review-toggle-buttons" data-attr="pr-kinder">
-                            <button class="profile-review-toggle-option" data-value="0" onclick="selectToggleBtn(this)">Egal</button>
-                            <button class="profile-review-toggle-option active" data-value="1" onclick="selectToggleBtn(this)">Wichtig</button>
+                        <div class="profile-review-triple-buttons" data-attr="pr-kinder">
+                            <button class="profile-review-triple-btn" data-value="25" onclick="selectTripleBtn(this)">Nein</button>
+                            <button class="profile-review-triple-btn active" data-value="50" onclick="selectTripleBtn(this)">Offen</button>
+                            <button class="profile-review-triple-btn" data-value="75" onclick="selectTripleBtn(this)">Ja</button>
                         </div>
                     </div>
                     <div class="profile-review-card" id="pr-ehe-card">
@@ -884,9 +885,10 @@
                             <span class="profile-review-card-title">Ehe</span>
                             <button class="profile-review-info-btn" onclick="showProfileReviewInfo('eheWunsch')">?</button>
                         </div>
-                        <div class="profile-review-toggle-buttons" data-attr="pr-ehe">
-                            <button class="profile-review-toggle-option" data-value="0" onclick="selectToggleBtn(this)">Egal</button>
-                            <button class="profile-review-toggle-option active" data-value="1" onclick="selectToggleBtn(this)">Wichtig</button>
+                        <div class="profile-review-triple-buttons" data-attr="pr-ehe">
+                            <button class="profile-review-triple-btn" data-value="25" onclick="selectTripleBtn(this)">Unwichtig</button>
+                            <button class="profile-review-triple-btn active" data-value="50" onclick="selectTripleBtn(this)">Offen</button>
+                            <button class="profile-review-triple-btn" data-value="75" onclick="selectTripleBtn(this)">Wichtig</button>
                         </div>
                     </div>
                     <div class="profile-review-card" id="pr-zusammen-card">
@@ -894,9 +896,10 @@
                             <span class="profile-review-card-title">Zusammen wohnen</span>
                             <button class="profile-review-info-btn" onclick="showProfileReviewInfo('wohnform')">?</button>
                         </div>
-                        <div class="profile-review-toggle-buttons" data-attr="pr-zusammen">
-                            <button class="profile-review-toggle-option" data-value="0" onclick="selectToggleBtn(this)">Egal</button>
-                            <button class="profile-review-toggle-option active" data-value="1" onclick="selectToggleBtn(this)">Wichtig</button>
+                        <div class="profile-review-triple-buttons" data-attr="pr-zusammen">
+                            <button class="profile-review-triple-btn" data-value="25" onclick="selectTripleBtn(this)">Getrennt</button>
+                            <button class="profile-review-triple-btn active" data-value="50" onclick="selectTripleBtn(this)">Offen</button>
+                            <button class="profile-review-triple-btn" data-value="75" onclick="selectTripleBtn(this)">Zusammen</button>
                         </div>
                     </div>
                     <div class="profile-review-card" id="pr-haustiere-card">
@@ -904,9 +907,10 @@
                             <span class="profile-review-card-title">Haustiere</span>
                             <button class="profile-review-info-btn" onclick="showProfileReviewInfo('haustiere')">?</button>
                         </div>
-                        <div class="profile-review-toggle-buttons" data-attr="pr-haustiere">
-                            <button class="profile-review-toggle-option" data-value="0" onclick="selectToggleBtn(this)">Egal</button>
-                            <button class="profile-review-toggle-option active" data-value="1" onclick="selectToggleBtn(this)">Wichtig</button>
+                        <div class="profile-review-triple-buttons" data-attr="pr-haustiere">
+                            <button class="profile-review-triple-btn" data-value="25" onclick="selectTripleBtn(this)">Ohne</button>
+                            <button class="profile-review-triple-btn active" data-value="50" onclick="selectTripleBtn(this)">Offen</button>
+                            <button class="profile-review-triple-btn" data-value="75" onclick="selectTripleBtn(this)">Mit</button>
                         </div>
                     </div>
                     <div class="profile-review-card">
@@ -1164,13 +1168,16 @@
 
             <!-- Sticky Footer Actions -->
             <div class="profile-review-actions">
-                <button class="profile-review-btn profile-review-btn-secondary" onclick="resetProfileReview()">
-                    🔄 <span data-i18n="profileReview.actions.reset">Zurücksetzen</span>
-                </button>
-                <button class="profile-review-btn profile-review-btn-primary" onclick="saveProfileReview()">
-                    ✅ <span data-i18n="profileReview.actions.save">Weiter</span>
-                    <span class="profile-review-changes-badge" id="profileReviewChangesBadge" style="display: none;">0</span>
-                </button>
+                <div class="profile-review-card" style="margin: 0; padding: 12px;">
+                    <div class="profile-review-triple-buttons" style="grid-template-columns: 1fr 1fr;">
+                        <button class="profile-review-triple-btn" onclick="resetProfileReview()">
+                            🔄 <span data-i18n="profileReview.actions.reset">Zurücksetzen</span>
+                        </button>
+                        <button class="profile-review-triple-btn active" onclick="saveProfileReview()">
+                            ✅ <span data-i18n="profileReview.actions.save">Weiter</span>
+                        </button>
+                    </div>
+                </div>
             </div>
 
         </div>
