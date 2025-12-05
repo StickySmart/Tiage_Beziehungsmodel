@@ -663,25 +663,13 @@
             </div>
             <div class="comment-modal-body">
                 <div class="comment-form-group">
-                    <label for="commentName">Name / Kürzel *</label>
-                    <input type="text" id="commentName" placeholder="z.B. Max oder Anonym" maxlength="50" required>
-                    <small class="input-hint">Max. 50 Zeichen</small>
+                    <label for="commentName">Besucher-Nr</label>
+                    <input type="text" id="commentName" readonly style="background-color: rgba(255,255,255,0.1); cursor: not-allowed;">
                 </div>
                 <div class="comment-form-group">
-                    <label for="commentType">Art des Kommentars</label>
-                    <select id="commentType">
-                        <option value="fehler">Fehler melden</option>
-                        <option value="verbesserung">Verbesserungsvorschlag</option>
-                        <option value="feedback">Allgemeines Feedback</option>
-                    </select>
-                </div>
-                <div class="comment-form-group">
-                    <label for="commentText">Dein Kommentar *</label>
-                    <textarea id="commentText" placeholder="Schreibe hier deine Frage oder dein Feedback..." maxlength="2000" required></textarea>
+                    <label for="commentText">Was denkst Du?</label>
+                    <textarea id="commentText" placeholder="Schreibe hier deine Gedanken..." maxlength="2000" required></textarea>
                     <small class="input-hint">Max. 2000 Zeichen</small>
-                </div>
-                <div class="comment-form-group visitor-info">
-                    <small>Deine Besucher-Nr: <span id="visitorIdDisplay">wird geladen...</span></small>
                 </div>
                 <button class="comment-submit-btn" id="commentSubmitBtn" onclick="submitComment()">Absenden</button>
             </div>
