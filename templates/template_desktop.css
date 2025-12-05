@@ -6044,41 +6044,51 @@
 }
 
 .gewichtung-card-content {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    width: 100%;
 }
 
 .gewichtung-card-label {
     font-size: 13px;
     color: var(--text-secondary);
     font-weight: 500;
+    flex-shrink: 0;
 }
 
 .gewichtung-card-input-group {
-    display: flex;
-    align-items: center;
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
     gap: 6px;
+    flex-shrink: 0;
 }
 
-.gewichtung-input {
-    width: 48px;
-    padding: 6px 8px;
-    border: 1px solid rgba(16, 185, 129, 0.5);
-    border-radius: 4px;
-    background: rgba(16, 185, 129, 0.1);
-    color: #10B981;
-    font-size: 14px;
-    font-weight: 600;
-    text-align: center;
-    outline: none;
+.gewichtung-card .gewichtung-input,
+input.gewichtung-input {
+    width: 50px !important;
+    min-width: 50px !important;
+    max-width: 50px !important;
+    padding: 5px 4px !important;
+    border: 1px solid rgba(16, 185, 129, 0.5) !important;
+    border-radius: 4px !important;
+    background: rgba(16, 185, 129, 0.1) !important;
+    color: #10B981 !important;
+    font-size: 14px !important;
+    font-weight: 600 !important;
+    text-align: center !important;
+    outline: none !important;
     transition: all 0.2s ease;
+    box-sizing: border-box !important;
 }
 
-.gewichtung-input:focus {
-    border-color: #10B981;
-    background: rgba(16, 185, 129, 0.2);
-    box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.25);
+.gewichtung-card .gewichtung-input:focus,
+input.gewichtung-input:focus {
+    border-color: #10B981 !important;
+    background: rgba(16, 185, 129, 0.2) !important;
+    box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.25) !important;
 }
 
 .gewichtung-percent {
@@ -6108,10 +6118,10 @@
 }
 
 .gewichtung-card.locked .gewichtung-input {
-    border-color: rgba(239, 68, 68, 0.5);
-    background: rgba(239, 68, 68, 0.1);
-    color: #EF4444;
-    pointer-events: none;
+    border-color: rgba(239, 68, 68, 0.5) !important;
+    background: rgba(239, 68, 68, 0.1) !important;
+    color: #EF4444 !important;
+    pointer-events: none !important;
 }
 
 .gewichtung-card.locked .gewichtung-card-label {
@@ -6129,10 +6139,10 @@
 }
 
 .gewichtung-card.readonly .gewichtung-input {
-    border-color: rgba(245, 158, 11, 0.5);
-    background: rgba(245, 158, 11, 0.1);
-    color: #F59E0B;
-    pointer-events: none;
+    border-color: rgba(245, 158, 11, 0.5) !important;
+    background: rgba(245, 158, 11, 0.1) !important;
+    color: #F59E0B !important;
+    pointer-events: none !important;
 }
 
 .gewichtung-card.readonly .gewichtung-card-label {
