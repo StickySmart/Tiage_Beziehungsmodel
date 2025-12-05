@@ -724,8 +724,22 @@
             flex: 1 !important;
         }
 
+        /* Status-Indikator: "Egal" vs "Wichtig" */
+        .profile-review-toggle-btn::after {
+            content: "Egal";
+            font-size: 11px !important;
+            color: var(--text-muted, #888) !important;
+            margin-right: 8px !important;
+        }
+
         .profile-review-toggle-btn.active {
             background: rgba(34, 197, 94, 0.15) !important;
+        }
+
+        .profile-review-toggle-btn.active::after {
+            content: "✓ Wichtig";
+            color: #22c55e !important;
+            font-weight: 600 !important;
         }
 
         /* Triple Attribute - Card Row Style */
