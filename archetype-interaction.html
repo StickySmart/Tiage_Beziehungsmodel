@@ -1547,7 +1547,7 @@
                     </select>
                     <button class="archetype-nav-btn" onclick="navigateArchetype('ich', 1)" title="Nächster Archetyp">&#9654;</button>
                     <button class="archetype-info-btn" onclick="showArchetypeInfo('ich')" title="Info zum Archetyp">INFO</button>
-                    <button class="archetype-attributes-btn" onclick="openProfileReviewModal(getSelectedArchetype('ich'))" title="Attribute bearbeiten">⚙️ ATTRIBUTE</button>
+                    <button class="archetype-attributes-btn" onclick="openProfileReviewModal(getSelectedArchetype('ich'), 'ich')" title="Attribute bearbeiten">⚙️ ATTRIBUTE</button>
                 </div>
                 <!-- Archetypen-Symbol-Grid für ICH -->
                 <div class="archetype-symbols-grid" id="ich-archetype-grid">
@@ -1655,7 +1655,7 @@
                     </select>
                     <button class="archetype-nav-btn" onclick="navigateArchetype('partner', 1)" title="Nächster Archetyp">&#9654;</button>
                     <button class="archetype-info-btn" onclick="showArchetypeInfo('partner')" title="Info zum Archetyp">INFO</button>
-                    <button class="archetype-attributes-btn" onclick="openProfileReviewModal(getSelectedArchetype('partner'))" title="Attribute bearbeiten">⚙️ ATTRIBUTE</button>
+                    <button class="archetype-attributes-btn" onclick="openProfileReviewModal(getSelectedArchetype('partner'), 'partner')" title="Attribute bearbeiten">⚙️ ATTRIBUTE</button>
                 </div>
                 <!-- Archetypen-Symbol-Grid für PARTNER -->
                 <div class="archetype-symbols-grid" id="partner-archetype-grid">
@@ -16694,7 +16694,8 @@
         // ═══════════════════════════════════════════════════════════════════════
 
         // Open Profile Review Modal
-        function openProfileReviewModal(archetypeKey) {
+        // person: 'ich' oder 'partner' - wird benötigt um Gender-Modifikatoren anzuwenden
+        function openProfileReviewModal(archetypeKey, person) {
             var modal = document.getElementById('profileReviewModal');
             if (!modal) return;
 
@@ -16703,17 +16704,59 @@
 
             // Get archetype data
             archetypeKey = archetypeKey || 'duo';
+            person = person || 'ich';
             var archetype = typeof archetypeDefinitions !== 'undefined' ? archetypeDefinitions[archetypeKey] : null;
 
-            // Update badge
+            // Update badge mit Person-Info
             var badge = document.getElementById('profileReviewBadge');
             if (badge && archetype) {
-                badge.textContent = archetype.name + '-Profil';
+                var personLabel = person === 'ich' ? 'Single' : 'Partner';
+                badge.textContent = personLabel + '-Profil';
             }
 
-            // Load default values from archetype
-            if (archetype && archetype.defaultInferences) {
-                var inferences = archetype.defaultInferences;
+            // Versuche komponiertes Profil mit Gender-Modifikatoren zu laden
+            var inferences = null;
+            var personData = personDimensions[person];
+
+            if (personData && personData.geschlecht &&
+                personData.geschlecht.primary && personData.geschlecht.secondary &&
+                typeof TiageProfileStore !== 'undefined') {
+
+                // Hole Dominanz und Orientierung
+                var dominanz = 'ausgeglichen';
+                if (personData.dominanz && personData.dominanz.primary) {
+                    dominanz = personData.dominanz.primary;
+                }
+
+                var orientierung = 'heterosexuell';
+                if (personData.orientierung && personData.orientierung.primary) {
+                    orientierung = personData.orientierung.primary;
+                }
+
+                // Komponiertes Profil mit allen Modifikatoren laden
+                var composedProfile = TiageProfileStore.getProfileSync(
+                    archetypeKey,
+                    personData.geschlecht.primary,
+                    personData.geschlecht.secondary,
+                    dominanz,
+                    orientierung
+                );
+
+                if (composedProfile && composedProfile.attributes) {
+                    inferences = composedProfile.attributes;
+                    console.log('[ProfileReview] Komponiertes Profil geladen:',
+                        archetypeKey, personData.geschlecht.primary + '-' + personData.geschlecht.secondary);
+                }
+            }
+
+            // Fallback: nur Archetyp-Defaults wenn kein Gender ausgewählt
+            if (!inferences && archetype && archetype.defaultInferences) {
+                inferences = archetype.defaultInferences;
+                console.log('[ProfileReview] Fallback auf Archetyp-Defaults (kein vollständiges Gender ausgewählt)');
+            }
+
+            // Load default values from profile
+            if (inferences) {
 
                 // Toggle-Buttons
                 setProfileBtnState('pr-kinder', inferences.kinderWunsch === 'ja');
@@ -16721,41 +16764,75 @@
                 setProfileBtnState('pr-zusammen', inferences.wohnform === 'zusammen');
                 setProfileBtnState('pr-haustiere', inferences.haustiere === 'ja' || inferences.haustiere === 'ja-gemeinsam' || inferences.haustiere === 'ja-eigene');
 
-                // Slider - Werte laden und Display aktualisieren
-                var umzugSlider = document.getElementById('pr-umzug');
-                if (umzugSlider) {
-                    var umzugValue = 50;
-                    if (inferences.umzugsbereitschaft === 'sehr-flexibel') umzugValue = 85;
-                    else if (inferences.umzugsbereitschaft === 'flexibel') umzugValue = 65;
-                    else if (inferences.umzugsbereitschaft === 'verhandelbar') umzugValue = 50;
-                    else if (inferences.umzugsbereitschaft === 'nur-gemeinsam') umzugValue = 25;
-                    umzugSlider.value = umzugValue;
-                    updateProfileReviewSlider(umzugSlider, 'pr-umzug-value');
+                // Hilfsfunktion: Numerischen Wert (0-1) auf Triple-Button-Wert (25/50/75) mappen
+                function mapToTripleValue(numValue) {
+                    if (numValue === undefined || numValue === null) return 50;
+                    if (numValue <= 0.33) return 25;
+                    if (numValue >= 0.67) return 75;
+                    return 50;
                 }
 
-                var finanzenSlider = document.getElementById('pr-finanzen');
-                if (finanzenSlider) {
-                    var finanzenValue = 50;
-                    if (inferences.finanzen === 'getrennt') finanzenValue = 15;
-                    else if (inferences.finanzen === 'hybrid') finanzenValue = 50;
-                    else if (inferences.finanzen === 'gemeinsam') finanzenValue = 85;
-                    finanzenSlider.value = finanzenValue;
-                    updateProfileReviewSlider(finanzenSlider, 'pr-finanzen-value');
-                }
+                // Triple-Buttons basierend auf numerischen Profil-Werten setzen
+                // Diese Werte werden durch Gender-Modifikatoren beeinflusst!
 
-                var karriereSlider = document.getElementById('pr-karriere');
-                if (karriereSlider) {
-                    var karriereValue = (inferences.karrierePrioritaet || 0.5) * 100;
-                    karriereSlider.value = karriereValue;
-                    updateProfileReviewSlider(karriereSlider, 'pr-karriere-value');
-                }
+                // Umzugsbereitschaft
+                var umzugValue = 50;
+                if (inferences.umzugsbereitschaft === 'sehr-flexibel') umzugValue = 75;
+                else if (inferences.umzugsbereitschaft === 'flexibel') umzugValue = 75;
+                else if (inferences.umzugsbereitschaft === 'verhandelbar') umzugValue = 50;
+                else if (inferences.umzugsbereitschaft === 'nur-gemeinsam') umzugValue = 25;
+                else if (inferences.umzugsbereitschaft === 'sesshaft') umzugValue = 25;
+                setTripleBtnValue('pr-umzug', umzugValue);
 
-                var familieSlider = document.getElementById('pr-familie');
-                if (familieSlider) {
-                    var familieValue = (inferences.familieWichtigkeit || 0.5) * 100;
-                    familieSlider.value = familieValue;
-                    updateProfileReviewSlider(familieSlider, 'pr-familie-value');
+                // Familie-Wichtigkeit (numerisch 0-1, beeinflusst durch Gender)
+                setTripleBtnValue('pr-familie', mapToTripleValue(inferences.familieWichtigkeit));
+
+                // Finanzen
+                var finanzenValue = 50;
+                if (inferences.finanzen === 'getrennt') finanzenValue = 25;
+                else if (inferences.finanzen === 'hybrid') finanzenValue = 50;
+                else if (inferences.finanzen === 'gemeinsam') finanzenValue = 75;
+                setTripleBtnValue('pr-finanzen', finanzenValue);
+
+                // Karriere-Priorität (numerisch 0-1)
+                setTripleBtnValue('pr-karriere', mapToTripleValue(inferences.karrierePrioritaet));
+
+                // KOMMUNIKATION - stark beeinflusst durch Gender-Untergruppen
+                setTripleBtnValue('pr-gespraech', mapToTripleValue(inferences.gespraechsBeduernis));
+                setTripleBtnValue('pr-emotional', mapToTripleValue(inferences.emotionaleOffenheit));
+                setTripleBtnValue('pr-konflikt', mapToTripleValue(inferences.konfliktverhalten));
+
+                // SOZIALES
+                // IntroExtro: -1 = intro, 0 = ambivert, 1 = extro
+                var introExtroValue = 50;
+                if (typeof inferences.introExtro === 'number') {
+                    if (inferences.introExtro <= -0.33) introExtroValue = 25;
+                    else if (inferences.introExtro >= 0.33) introExtroValue = 75;
+                } else if (inferences.introExtro === 'introvertiert') introExtroValue = 25;
+                else if (inferences.introExtro === 'extrovertiert') introExtroValue = 75;
+                setTripleBtnValue('pr-introextro', introExtroValue);
+
+                setTripleBtnValue('pr-alleinzeit', mapToTripleValue(inferences.alleinZeitBeduernis));
+                setTripleBtnValue('pr-freunde', mapToTripleValue(inferences.freundeskreis));
+
+                // INTIMITÄT
+                setTripleBtnValue('pr-naehe', mapToTripleValue(inferences.koerperlicheNaehe));
+                setTripleBtnValue('pr-romantik', mapToTripleValue(inferences.romantikBeduernis));
+                setTripleBtnValue('pr-sex', mapToTripleValue(inferences.sexFrequenz));
+
+                // WERTE - beeinflusst durch Gender (z.B. traditionenWichtigkeit)
+                setTripleBtnValue('pr-religion', mapToTripleValue(inferences.religiositaet));
+                // traditionVsModern: niedrige traditionenWichtigkeit = modern (75), hohe = traditionell (25)
+                var traditionValue = 50;
+                if (typeof inferences.traditionenWichtigkeit === 'number') {
+                    // Invertiert: hohe traditionenWichtigkeit → traditionell (25), niedrige → modern (75)
+                    if (inferences.traditionenWichtigkeit >= 0.67) traditionValue = 25;
+                    else if (inferences.traditionenWichtigkeit <= 0.33) traditionValue = 75;
                 }
+                setTripleBtnValue('pr-tradition', traditionValue);
+
+                setTripleBtnValue('pr-umwelt', mapToTripleValue(inferences.umweltbewusstsein));
+                setTripleBtnValue('pr-politik', mapToTripleValue(inferences.politischesInteresse));
             }
 
             // Reset changes counter
