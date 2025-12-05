@@ -5952,7 +5952,148 @@
     flex: 1;
 }
 
-/* 3er Toggle-Button Attribut - Card Row Style */
+/* Unified Card Style for all attributes */
+.profile-review-card {
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 6px;
+    padding: 12px 14px;
+    margin-bottom: 6px;
+    border-left: 3px solid var(--primary);
+}
+
+.profile-review-card-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 10px;
+}
+
+.profile-review-card-title {
+    font-size: 13px;
+    color: var(--text-primary);
+    font-weight: 500;
+    flex: 1;
+}
+
+/* Toggle Buttons (2er) für Egal/Wichtig */
+.profile-review-toggle-buttons {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 6px;
+}
+
+.profile-review-toggle-option {
+    padding: 8px 6px;
+    border-radius: 6px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    outline: none;
+    background: rgba(255, 255, 255, 0.03);
+    color: var(--text-muted);
+    font-size: 12px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-align: center;
+}
+
+.profile-review-toggle-option:hover {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: rgba(255, 255, 255, 0.2);
+    color: var(--text-primary);
+}
+
+.profile-review-toggle-option.active {
+    background: #22c55e;
+    border-color: #22c55e;
+    color: white;
+    box-shadow: 0 2px 6px rgba(34, 197, 94, 0.25);
+}
+
+/* Gewichtungs-Category spezielle Styles */
+.profile-review-category-gewichtung {
+    background: linear-gradient(135deg, rgba(139,92,246,0.1), rgba(139,92,246,0.05));
+    border: 1px solid rgba(139,92,246,0.3);
+}
+
+.profile-review-category-header-gewichtung {
+    color: #8B5CF6;
+}
+
+.profile-review-card-gewichtung {
+    border-left-color: #8B5CF6;
+}
+
+.gewichtung-description {
+    padding: 0 5px 10px 5px;
+    font-size: 12px;
+    color: var(--text-muted);
+}
+
+.gewichtung-sliders {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 0 5px;
+}
+
+.gewichtung-slider-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.gewichtung-label {
+    width: 100px;
+    font-size: 13px;
+    color: var(--text-secondary);
+}
+
+.gewichtung-slider {
+    flex: 1;
+    accent-color: #8B5CF6;
+}
+
+.gewichtung-value {
+    width: 40px;
+    text-align: right;
+    font-weight: 600;
+    color: #8B5CF6;
+}
+
+.gewichtung-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 8px;
+    padding-top: 8px;
+    border-top: 1px solid rgba(139,92,246,0.2);
+}
+
+.gewichtung-summe-text {
+    font-size: 12px;
+    color: var(--text-muted);
+}
+
+.gewichtung-summe-value {
+    font-weight: 600;
+    color: #8B5CF6;
+}
+
+.gewichtung-reset-btn {
+    padding: 4px 12px;
+    font-size: 11px;
+    background: rgba(139,92,246,0.1);
+    border: 1px solid rgba(139,92,246,0.3);
+    border-radius: 4px;
+    color: #8B5CF6;
+    cursor: pointer;
+}
+
+.gewichtung-reset-btn:hover {
+    background: rgba(139,92,246,0.2);
+}
+
+/* Legacy support - redirect old class to new */
 .profile-review-triple-attribute {
     background: rgba(255, 255, 255, 0.03) !important;
     border-radius: 6px !important;
