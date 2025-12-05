@@ -6609,8 +6609,15 @@
         // ========================================
         // Pathos/Logos Check System
         // ========================================
+        // NOTE: Logic extracted to /js/compatibility/ modules
+        // These wrapper functions maintain backward compatibility
 
         function checkPhysicalCompatibility(person1, person2) {
+            // Delegate to extracted module
+            if (typeof TiageCompatibility !== 'undefined' && TiageCompatibility.Physical) {
+                return TiageCompatibility.Physical.check(person1, person2);
+            }
+            // Fallback: inline implementation for backwards compatibility
             // Extract primary gender from object format { primary: 'cis_mann', secondary: null }
             let g1 = person1.geschlecht;
             let g2 = person2.geschlecht;
@@ -6796,6 +6803,11 @@
         }
 
         function calculatePhilosophyCompatibility(type1, type2) {
+            // Delegate to extracted module
+            if (typeof TiageCompatibility !== 'undefined' && TiageCompatibility.Philosophy) {
+                return TiageCompatibility.Philosophy.calculate(type1, type2, data);
+            }
+            // Fallback: inline implementation for backwards compatibility
             // Get the philosophy score (Category A) from the matrix
             const key = `${type1}_${type2}`;
             const interaction = data?.interactions[key];
@@ -7041,7 +7053,13 @@
         };
 
         // Calculate dominanz modifier
+        // NOTE: Logic extracted to /js/dimensions/dominanzModifier.js
         function getDominanzModifier(dom1, dom2) {
+            // Delegate to extracted module
+            if (typeof TiageDimensions !== 'undefined' && TiageDimensions.Dominanz) {
+                return TiageDimensions.Dominanz.getModifier(dom1, dom2);
+            }
+            // Fallback: inline implementation for backwards compatibility
             // Return 0 if either is null/undefined
             if (!dom1 || !dom2) return 0;
 
@@ -7067,7 +7085,13 @@
 
         // Get dominanz modifier description
         // Basiert auf Forschung: Sadikaj et al. (2017), Tiedens & Fragale (2003)
+        // NOTE: Logic extracted to /js/dimensions/dominanzModifier.js
         function getDominanzDescription(dom1, dom2, modifier) {
+            // Delegate to extracted module
+            if (typeof TiageDimensions !== 'undefined' && TiageDimensions.Dominanz) {
+                return TiageDimensions.Dominanz.getDescription(dom1, dom2, modifier);
+            }
+            // Fallback: inline implementation for backwards compatibility
             if (modifier === 8) return `Komplementär (${dom1} × ${dom2}): Optimale Rollenverteilung - Forschung zeigt höhere Sympathie und Komfort`;
             if (modifier === 5) return `Beide ausgeglichen: Flexible Dynamik ohne starre Hierarchie`;
             if (modifier === 3) return `Beide switch: Wechselnde Dynamik mit situativer Anpassung`;
@@ -7078,7 +7102,13 @@
         }
 
         // Map tag to category
+        // NOTE: Logic extracted to /js/dimensions/tagDimensionRelevance.js
         function getTagCategory(tagId) {
+            // Delegate to extracted module
+            if (typeof TiageDimensions !== 'undefined' && TiageDimensions.TagRelevance) {
+                return TiageDimensions.TagRelevance.getTagCategory(tagId);
+            }
+            // Fallback: inline implementation for backwards compatibility
             const mapping = {
                 "exklusivitaets-erwartung": "A", "offenheit-fuer-alternative-modelle": "A",
                 "beziehung-als-lebensinhalt": "A", "primaerbeziehung-konzept": "A", "commitment-tiefe": "A",
@@ -7097,7 +7127,13 @@
         }
 
         // Calculate tag score with modifiers
+        // NOTE: Logic extracted to /js/dimensions/tagCalculator.js
         function calculateTagWithModifiers(tagId, person1, person2, pathosCheck) {
+            // Delegate to extracted module
+            if (typeof TiageDimensions !== 'undefined' && TiageDimensions.TagCalculator) {
+                return TiageDimensions.TagCalculator.calculateTagWithModifiers(tagId, person1, person2, pathosCheck, data);
+            }
+            // Fallback: inline implementation for backwards compatibility
             const interactionKey = `${person1.archetyp}_${person2.archetyp}`;
             const interaction = data?.interactions[interactionKey];
             const tagCategory = getTagCategory(tagId);
@@ -7147,7 +7183,13 @@
         }
 
         // Calculate category with modifiers
+        // NOTE: Logic extracted to /js/dimensions/tagCalculator.js
         function calculateCategoryWithModifiers(catLetter, person1, person2, pathosCheck) {
+            // Delegate to extracted module
+            if (typeof TiageDimensions !== 'undefined' && TiageDimensions.TagCalculator) {
+                return TiageDimensions.TagCalculator.calculateCategoryWithModifiers(catLetter, person1, person2, pathosCheck, data);
+            }
+            // Fallback: inline implementation for backwards compatibility
             const categoryTags = Object.keys(tagDimensionRelevance).filter(t => getTagCategory(t) === catLetter);
 
             if (categoryTags.length === 0) {
