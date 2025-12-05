@@ -12987,11 +12987,45 @@
         window.getSelectedArchetype = getSelectedArchetype;
 
         // ═══════════════════════════════════════════════════════════════════════
-        // GEWICHTUNGS-EINSTELLUNGEN (localStorage)
+        // GEWICHTUNGS-EINSTELLUNGEN MIT LOCK-FUNKTION (Option B)
         // ═══════════════════════════════════════════════════════════════════════
 
         const GEWICHTUNG_DEFAULTS = { O: 40, A: 25, D: 20, G: 15 };
         const GEWICHTUNG_STORAGE_KEY = 'tiage_faktor_gewichtungen';
+        const GEWICHTUNG_LOCK_KEY = 'tiage_faktor_locks';
+
+        // Faktor-Mapping: key -> { sliderId, labelId, storageKey }
+        const FAKTOR_MAP = {
+            orientierung: { sliderId: 'gewicht-orientierung', labelId: 'label-orientierung', key: 'O' },
+            archetyp: { sliderId: 'gewicht-archetyp', labelId: 'label-archetyp', key: 'A' },
+            dominanz: { sliderId: 'gewicht-dominanz', labelId: 'label-dominanz', key: 'D' },
+            geschlecht: { sliderId: 'gewicht-geschlecht', labelId: 'label-geschlecht', key: 'G' }
+        };
+
+        // Lock-Status (wird beim Laden initialisiert)
+        let gewichtungLocks = { orientierung: false, archetyp: false, dominanz: false, geschlecht: false };
+
+        // Lädt Lock-Status aus localStorage
+        function getGewichtungLocks() {
+            try {
+                const stored = localStorage.getItem(GEWICHTUNG_LOCK_KEY);
+                if (stored) {
+                    return JSON.parse(stored);
+                }
+            } catch (e) {
+                console.warn('Fehler beim Laden der Lock-Status:', e);
+            }
+            return { orientierung: false, archetyp: false, dominanz: false, geschlecht: false };
+        }
+
+        // Speichert Lock-Status in localStorage
+        function saveGewichtungLocks() {
+            try {
+                localStorage.setItem(GEWICHTUNG_LOCK_KEY, JSON.stringify(gewichtungLocks));
+            } catch (e) {
+                console.warn('Fehler beim Speichern der Lock-Status:', e);
+            }
+        }
 
         // Lädt Gewichtungen aus localStorage oder gibt Defaults zurück
         function getGewichtungen() {
@@ -13012,7 +13046,7 @@
             return { ...GEWICHTUNG_DEFAULTS };
         }
 
-        // Speichert Gewichtungen in localStorage
+        // Speichert Gewichtungen in localStorage (ohne Normalisierung - nur speichern)
         function saveGewichtungen() {
             const gewichtungen = {
                 O: parseInt(document.getElementById('gewicht-orientierung')?.value) || GEWICHTUNG_DEFAULTS.O,
@@ -13037,24 +13071,189 @@
         function updateGewichtungLabel(slider, labelId) {
             const label = document.getElementById(labelId);
             if (label) {
-                label.textContent = slider.value + '%';
+                label.textContent = Math.round(parseFloat(slider.value)) + '%';
             }
         }
         window.updateGewichtungLabel = updateGewichtungLabel;
 
-        // Aktualisiert die Summen-Anzeige
+        // Aktualisiert die Summen-Anzeige (sollte immer 100% sein)
         function updateGewichtungSumme() {
             const gew = getGewichtungen();
             const summe = gew.O + gew.A + gew.D + gew.G;
             const summeEl = document.getElementById('gewicht-summe');
             if (summeEl) {
                 summeEl.textContent = summe + '%';
-                summeEl.style.color = summe === 100 ? '#10B981' : '#8B5CF6';
+                summeEl.style.color = '#10B981'; // Immer grün da immer 100%
             }
         }
 
-        // Setzt Gewichtungen auf Standard zurück
+        // Berechnet und verteilt die Gewichtungen proportional
+        function handleGewichtungChange(changedFactor, newValue) {
+            const factors = Object.keys(FAKTOR_MAP);
+
+            // Berechne Summe der gelockten Werte (außer dem geänderten Faktor)
+            let lockedSum = 0;
+            const lockedFactors = [];
+            const unlockedFactors = [];
+
+            factors.forEach(factor => {
+                if (factor === changedFactor) return;
+
+                const info = FAKTOR_MAP[factor];
+                const slider = document.getElementById(info.sliderId);
+                const currentValue = parseFloat(slider?.value) || 0;
+
+                if (gewichtungLocks[factor]) {
+                    lockedSum += currentValue;
+                    lockedFactors.push({ factor, value: currentValue });
+                } else {
+                    unlockedFactors.push({ factor, value: currentValue });
+                }
+            });
+
+            // Berechne verfügbare Prozente für nicht-gelockte Slider
+            const maxForChanged = 100 - lockedSum;
+            const clampedNewValue = Math.min(Math.max(newValue, 0), maxForChanged);
+            const availableForOthers = 100 - lockedSum - clampedNewValue;
+
+            // Berechne aktuelle Summe der nicht-gelockten Slider (außer geändertem)
+            const currentUnlockedSum = unlockedFactors.reduce((sum, f) => sum + f.value, 0);
+
+            // Setze den geänderten Slider
+            const changedInfo = FAKTOR_MAP[changedFactor];
+            const changedSlider = document.getElementById(changedInfo.sliderId);
+            if (changedSlider) {
+                changedSlider.value = clampedNewValue;
+                updateGewichtungLabel(changedSlider, changedInfo.labelId);
+            }
+
+            // Verteile Rest proportional auf nicht-gelockte Slider
+            if (unlockedFactors.length > 0) {
+                let distributed = 0;
+                unlockedFactors.forEach((f, idx) => {
+                    const info = FAKTOR_MAP[f.factor];
+                    const slider = document.getElementById(info.sliderId);
+
+                    let newSliderValue;
+                    if (idx === unlockedFactors.length - 1) {
+                        // Letzter Slider bekommt exakt den Rest (Rundungsfehler vermeiden)
+                        newSliderValue = availableForOthers - distributed;
+                    } else if (currentUnlockedSum > 0) {
+                        // Proportionale Verteilung
+                        const proportion = f.value / currentUnlockedSum;
+                        newSliderValue = Math.round(availableForOthers * proportion);
+                        distributed += newSliderValue;
+                    } else {
+                        // Gleichverteilung wenn alle auf 0 waren
+                        newSliderValue = Math.round(availableForOthers / unlockedFactors.length);
+                        distributed += newSliderValue;
+                    }
+
+                    newSliderValue = Math.max(0, newSliderValue);
+
+                    if (slider) {
+                        slider.value = newSliderValue;
+                        updateGewichtungLabel(slider, info.labelId);
+                    }
+                });
+            }
+
+            saveGewichtungen();
+            updateSliderStates();
+        }
+
+        // Doppelklick-Handler für Lock/Unlock
+        function handleGewichtungDoubleClick(factor) {
+            const lockedCount = Object.values(gewichtungLocks).filter(v => v).length;
+
+            // Verhindere, dass alle 4 gelockt werden
+            if (!gewichtungLocks[factor] && lockedCount >= 3) {
+                // Visual Feedback statt alert
+                const row = document.querySelector(`.gewichtung-slider-row[data-factor="${factor}"]`);
+                if (row) {
+                    row.style.animation = 'shake 0.3s ease';
+                    setTimeout(() => { row.style.animation = ''; }, 300);
+                }
+                return;
+            }
+
+            // Toggle Lock-Status
+            gewichtungLocks[factor] = !gewichtungLocks[factor];
+            saveGewichtungLocks();
+            updateSliderStates();
+        }
+
+        // Aktualisiert die visuellen Zustände aller Slider
+        function updateSliderStates() {
+            const factors = Object.keys(FAKTOR_MAP);
+            const unlockedCount = factors.filter(f => !gewichtungLocks[f]).length;
+
+            factors.forEach(factor => {
+                const row = document.querySelector(`.gewichtung-slider-row[data-factor="${factor}"]`);
+                const info = FAKTOR_MAP[factor];
+                const slider = document.getElementById(info.sliderId);
+                const lockIcon = row?.querySelector('.gewichtung-lock-icon');
+
+                if (!row || !slider) return;
+
+                // Entferne alle Zustands-Klassen
+                row.classList.remove('locked', 'readonly');
+
+                if (gewichtungLocks[factor]) {
+                    // Gelockt
+                    row.classList.add('locked');
+                    if (lockIcon) lockIcon.title = 'Doppelklick zum Entsperren';
+                } else if (unlockedCount === 1 && !gewichtungLocks[factor]) {
+                    // Letzter nicht-gelockter Slider = readonly (bekommt automatisch den Rest)
+                    row.classList.add('readonly');
+                    if (lockIcon) lockIcon.title = 'Automatisch (= Rest zu 100%)';
+                } else {
+                    if (lockIcon) lockIcon.title = 'Doppelklick zum Fixieren';
+                }
+            });
+        }
+
+        // Initialisiert Event-Listener für alle Gewichtungs-Slider
+        function initGewichtungSliders() {
+            const factors = Object.keys(FAKTOR_MAP);
+
+            factors.forEach(factor => {
+                const row = document.querySelector(`.gewichtung-slider-row[data-factor="${factor}"]`);
+                const info = FAKTOR_MAP[factor];
+                const slider = document.getElementById(info.sliderId);
+
+                if (!slider) return;
+
+                // Input-Event für Slider-Bewegung
+                slider.addEventListener('input', function(e) {
+                    // Ignoriere wenn gelockt oder readonly
+                    const unlockedCount = Object.keys(FAKTOR_MAP).filter(f => !gewichtungLocks[f]).length;
+                    if (gewichtungLocks[factor] || (unlockedCount === 1 && !gewichtungLocks[factor])) {
+                        // Setze auf vorherigen Wert zurück
+                        const gew = getGewichtungen();
+                        slider.value = gew[info.key];
+                        return;
+                    }
+
+                    handleGewichtungChange(factor, parseFloat(e.target.value));
+                });
+
+                // Doppelklick für Lock/Unlock (auf der ganzen Row)
+                if (row) {
+                    row.addEventListener('dblclick', function(e) {
+                        handleGewichtungDoubleClick(factor);
+                    });
+                }
+            });
+        }
+
+        // Setzt Gewichtungen und Locks auf Standard zurück
         function resetGewichtungen() {
+            // Reset Lock-Status
+            gewichtungLocks = { orientierung: false, archetyp: false, dominanz: false, geschlecht: false };
+            saveGewichtungLocks();
+
+            // Reset Werte
             document.getElementById('gewicht-orientierung').value = GEWICHTUNG_DEFAULTS.O;
             document.getElementById('gewicht-archetyp').value = GEWICHTUNG_DEFAULTS.A;
             document.getElementById('gewicht-dominanz').value = GEWICHTUNG_DEFAULTS.D;
@@ -13066,12 +13265,14 @@
             document.getElementById('label-geschlecht').textContent = GEWICHTUNG_DEFAULTS.G + '%';
 
             saveGewichtungen();
+            updateSliderStates();
         }
         window.resetGewichtungen = resetGewichtungen;
 
-        // Lädt Gewichtungen in die UI beim Modal-Öffnen
+        // Lädt Gewichtungen und Lock-Status in die UI beim Modal-Öffnen
         function loadGewichtungenIntoUI() {
             const gew = getGewichtungen();
+            gewichtungLocks = getGewichtungLocks();
 
             const sliderO = document.getElementById('gewicht-orientierung');
             const sliderA = document.getElementById('gewicht-archetyp');
@@ -13094,7 +13295,13 @@
             if (labelG) labelG.textContent = gew.G + '%';
 
             updateGewichtungSumme();
+            updateSliderStates();
         }
+
+        // Event-Listener beim DOM-Load initialisieren
+        document.addEventListener('DOMContentLoaded', function() {
+            initGewichtungSliders();
+        });
 
         // ═══════════════════════════════════════════════════════════════════════
 

@@ -6082,7 +6082,86 @@
 
 .gewichtung-summe-value {
     font-weight: 600;
-    color: #8B5CF6;
+    color: #10B981; /* Always green since sum is always 100% */
+}
+
+/* Lock functionality styles */
+.gewichtung-hint {
+    opacity: 0.7;
+    font-style: italic;
+}
+
+.gewichtung-lock-icon {
+    width: 18px;
+    height: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+    cursor: pointer;
+}
+
+.gewichtung-slider-row:hover .gewichtung-lock-icon {
+    opacity: 0.4;
+}
+
+.gewichtung-slider-row.locked .gewichtung-lock-icon {
+    opacity: 1;
+}
+
+.gewichtung-slider-row.locked .gewichtung-lock-icon::before {
+    content: "🔒";
+}
+
+.gewichtung-slider-row:not(.locked) .gewichtung-lock-icon::before {
+    content: "🔓";
+}
+
+.gewichtung-slider-row.locked {
+    background: rgba(139, 92, 246, 0.08);
+    border-radius: 6px;
+    padding: 4px 6px;
+    margin: -4px -6px;
+}
+
+.gewichtung-slider-row.locked .gewichtung-slider {
+    accent-color: #6B7280;
+    opacity: 0.7;
+}
+
+.gewichtung-slider-row.locked .gewichtung-value {
+    color: #6B7280;
+}
+
+.gewichtung-slider-row.locked .gewichtung-label {
+    color: #6B7280;
+}
+
+/* Last unlocked slider (read-only) styling */
+.gewichtung-slider-row.readonly .gewichtung-slider {
+    accent-color: #9CA3AF;
+    pointer-events: none;
+}
+
+.gewichtung-slider-row.readonly .gewichtung-value {
+    color: #9CA3AF;
+}
+
+.gewichtung-slider-row.readonly .gewichtung-lock-icon::before {
+    content: "↔️";
+}
+
+.gewichtung-slider-row.readonly .gewichtung-lock-icon {
+    opacity: 0.6;
+}
+
+/* Shake animation for lock limit feedback */
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-4px); }
+    75% { transform: translateX(4px); }
 }
 
 .gewichtung-reset-btn {
