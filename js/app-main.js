@@ -13214,24 +13214,42 @@
         }
 
         // Initialisiert Event-Listener für alle Gewichtungs-Slider
+        let gewichtungSlidersInitialized = false;
         function initGewichtungSliders() {
+            // Verhindere doppelte Initialisierung
+            if (gewichtungSlidersInitialized) return;
+
             const factors = Object.keys(FAKTOR_MAP);
+            let allSlidersFound = true;
 
             factors.forEach(factor => {
                 const row = document.querySelector(`.gewichtung-slider-row[data-factor="${factor}"]`);
                 const info = FAKTOR_MAP[factor];
                 const slider = document.getElementById(info.sliderId);
 
-                if (!slider) return;
+                if (!slider || !row) {
+                    allSlidersFound = false;
+                    return;
+                }
 
                 // Input-Event für Slider-Bewegung
                 slider.addEventListener('input', function(e) {
-                    // Ignoriere wenn gelockt oder readonly
-                    const unlockedCount = Object.keys(FAKTOR_MAP).filter(f => !gewichtungLocks[f]).length;
-                    if (gewichtungLocks[factor] || (unlockedCount === 1 && !gewichtungLocks[factor])) {
+                    // Ignoriere wenn gelockt
+                    if (gewichtungLocks[factor]) {
                         // Setze auf vorherigen Wert zurück
                         const gew = getGewichtungen();
                         slider.value = gew[info.key];
+                        updateGewichtungLabel(slider, info.labelId);
+                        return;
+                    }
+
+                    // Prüfe ob dieser Slider der einzige unlocked ist
+                    const unlockedCount = Object.keys(FAKTOR_MAP).filter(f => !gewichtungLocks[f]).length;
+                    if (unlockedCount === 1) {
+                        // Readonly - setze zurück
+                        const gew = getGewichtungen();
+                        slider.value = gew[info.key];
+                        updateGewichtungLabel(slider, info.labelId);
                         return;
                     }
 
@@ -13239,12 +13257,14 @@
                 });
 
                 // Doppelklick für Lock/Unlock (auf der ganzen Row)
-                if (row) {
-                    row.addEventListener('dblclick', function(e) {
-                        handleGewichtungDoubleClick(factor);
-                    });
-                }
+                row.addEventListener('dblclick', function(e) {
+                    handleGewichtungDoubleClick(factor);
+                });
             });
+
+            if (allSlidersFound) {
+                gewichtungSlidersInitialized = true;
+            }
         }
 
         // Setzt Gewichtungen und Locks auf Standard zurück
@@ -13271,6 +13291,9 @@
 
         // Lädt Gewichtungen und Lock-Status in die UI beim Modal-Öffnen
         function loadGewichtungenIntoUI() {
+            // Event-Listener initialisieren (falls noch nicht geschehen)
+            initGewichtungSliders();
+
             const gew = getGewichtungen();
             gewichtungLocks = getGewichtungLocks();
 
@@ -13298,7 +13321,7 @@
             updateSliderStates();
         }
 
-        // Event-Listener beim DOM-Load initialisieren
+        // Event-Listener beim DOM-Load initialisieren (Fallback)
         document.addEventListener('DOMContentLoaded', function() {
             initGewichtungSliders();
         });
