@@ -11550,8 +11550,6 @@
             if (event && event.target !== event.currentTarget) return;
             document.getElementById('commentModal').classList.remove('active');
             // Reset form
-            document.getElementById('commentName').value = '';
-            document.getElementById('commentType').value = 'fehler';
             document.getElementById('commentText').value = '';
             // Go back in history if not triggered by back button
             if (!skipHistoryBack && history.state && history.state.modal === 'comment') {
@@ -11561,7 +11559,7 @@
 
         async function submitComment() {
             const name = document.getElementById('commentName').value.trim();
-            const typ = document.getElementById('commentType').value;
+            const typ = 'feedback'; // Default type since dropdown removed
             const text = document.getElementById('commentText').value.trim();
 
             // Rate limiting check
