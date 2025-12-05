@@ -717,39 +717,47 @@
                     </div>
                     <div class="profile-review-card profile-review-card-gewichtung">
                         <div class="gewichtung-description">
-                            Summe ist immer 100%. <span class="gewichtung-hint">Doppelklick = Wert fixieren 🔒</span>
+                            Summe ist immer 100%. <span class="gewichtung-hint">Doppelklick = Wert fixieren</span>
                         </div>
-                        <div class="gewichtung-sliders">
-                            <div class="gewichtung-slider-row" data-factor="orientierung">
+                        <div class="gewichtung-inputs">
+                            <div class="gewichtung-row" data-factor="orientierung">
                                 <span class="gewichtung-label">Orientierung</span>
-                                <span class="gewichtung-lock-icon" title="Doppelklick zum Fixieren"></span>
-                                <input type="range" class="gewichtung-slider" id="gewicht-orientierung" min="0" max="100" value="40">
-                                <span class="gewichtung-value" id="label-orientierung">40%</span>
+                                <div class="gewichtung-input-wrapper">
+                                    <input type="text" class="gewichtung-input" id="gewicht-orientierung" value="40" maxlength="3">
+                                    <span class="gewichtung-percent">%</span>
+                                    <span class="gewichtung-lock-indicator"></span>
+                                </div>
                             </div>
-                            <div class="gewichtung-slider-row" data-factor="archetyp">
+                            <div class="gewichtung-row" data-factor="archetyp">
                                 <span class="gewichtung-label">Archetyp</span>
-                                <span class="gewichtung-lock-icon" title="Doppelklick zum Fixieren"></span>
-                                <input type="range" class="gewichtung-slider" id="gewicht-archetyp" min="0" max="100" value="25">
-                                <span class="gewichtung-value" id="label-archetyp">25%</span>
+                                <div class="gewichtung-input-wrapper">
+                                    <input type="text" class="gewichtung-input" id="gewicht-archetyp" value="25" maxlength="3">
+                                    <span class="gewichtung-percent">%</span>
+                                    <span class="gewichtung-lock-indicator"></span>
+                                </div>
                             </div>
-                            <div class="gewichtung-slider-row" data-factor="dominanz">
+                            <div class="gewichtung-row" data-factor="dominanz">
                                 <span class="gewichtung-label">Dominanz</span>
-                                <span class="gewichtung-lock-icon" title="Doppelklick zum Fixieren"></span>
-                                <input type="range" class="gewichtung-slider" id="gewicht-dominanz" min="0" max="100" value="20">
-                                <span class="gewichtung-value" id="label-dominanz">20%</span>
+                                <div class="gewichtung-input-wrapper">
+                                    <input type="text" class="gewichtung-input" id="gewicht-dominanz" value="20" maxlength="3">
+                                    <span class="gewichtung-percent">%</span>
+                                    <span class="gewichtung-lock-indicator"></span>
+                                </div>
                             </div>
-                            <div class="gewichtung-slider-row" data-factor="geschlecht">
+                            <div class="gewichtung-row" data-factor="geschlecht">
                                 <span class="gewichtung-label">Geschlecht</span>
-                                <span class="gewichtung-lock-icon" title="Doppelklick zum Fixieren"></span>
-                                <input type="range" class="gewichtung-slider" id="gewicht-geschlecht" min="0" max="100" value="15">
-                                <span class="gewichtung-value" id="label-geschlecht">15%</span>
+                                <div class="gewichtung-input-wrapper">
+                                    <input type="text" class="gewichtung-input" id="gewicht-geschlecht" value="15" maxlength="3">
+                                    <span class="gewichtung-percent">%</span>
+                                    <span class="gewichtung-lock-indicator"></span>
+                                </div>
                             </div>
-                            <div class="gewichtung-footer">
-                                <span class="gewichtung-summe-text">Summe: <span class="gewichtung-summe-value" id="gewicht-summe">100%</span></span>
-                                <button class="profile-review-triple-btn" onclick="resetGewichtungen()" style="padding: 6px 12px; font-size: 11px;">
-                                    🔄 Standard
-                                </button>
-                            </div>
+                        </div>
+                        <div class="gewichtung-footer">
+                            <span class="gewichtung-summe-text">Summe: <span class="gewichtung-summe-value" id="gewicht-summe">100%</span></span>
+                            <button class="profile-review-triple-btn" onclick="resetGewichtungen()" style="padding: 6px 12px; font-size: 11px;">
+                                🔄 Standard
+                            </button>
                         </div>
                     </div>
                 </div>
