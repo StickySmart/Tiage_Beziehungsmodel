@@ -542,7 +542,18 @@ body {
        ======================================== */
 
     .profile-review-checkbox-grid {
-        grid-template-columns: 1fr;
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .profile-review-toggle-btn {
+        padding: 14px 12px !important;
+        font-size: 14px;
+    }
+
+    .profile-review-triple-btn {
+        padding: 10px 8px !important;
+        font-size: 12px;
     }
 
     .profile-review-modal {
