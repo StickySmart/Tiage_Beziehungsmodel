@@ -670,11 +670,9 @@
                 <div class="comment-form-group">
                     <label for="commentType">Art des Kommentars</label>
                     <select id="commentType">
-                        <option value="frage">Frage zur Bedienung</option>
-                        <option value="feedback">Allgemeines Feedback</option>
                         <option value="fehler">Fehler melden</option>
                         <option value="verbesserung">Verbesserungsvorschlag</option>
-                        <option value="doku">Frage zur Dokumentation</option>
+                        <option value="feedback">Allgemeines Feedback</option>
                     </select>
                 </div>
                 <div class="comment-form-group">
@@ -15144,6 +15142,11 @@
 
         function openCommentModal() {
             document.getElementById('commentModal').classList.add('active');
+            // Pre-fill name field with visitor number
+            const visitorId = localStorage.getItem('tiage_visitor_id');
+            if (visitorId) {
+                document.getElementById('commentName').value = '#' + visitorId;
+            }
             // Push state for back button to close modal
             history.pushState({ mobilePage: currentMobilePage, modal: 'comment' }, '', `#seite${currentMobilePage}-comment`);
         }
@@ -15153,7 +15156,7 @@
             document.getElementById('commentModal').classList.remove('active');
             // Reset form
             document.getElementById('commentName').value = '';
-            document.getElementById('commentType').value = 'frage';
+            document.getElementById('commentType').value = 'fehler';
             document.getElementById('commentText').value = '';
             // Go back in history if not triggered by back button
             if (!skipHistoryBack && history.state && history.state.modal === 'comment') {
