@@ -715,50 +715,57 @@
                         <span class="profile-review-category-icon">⚖️</span>
                         <span>FAKTOR-GEWICHTUNG (Score-Formel)</span>
                     </div>
-                    <div class="profile-review-card profile-review-card-gewichtung">
-                        <div class="gewichtung-description">
-                            Summe ist immer 100%. <span class="gewichtung-hint">Doppelklick = Wert fixieren</span>
-                        </div>
-                        <div class="gewichtung-inputs">
-                            <div class="gewichtung-row" data-factor="orientierung">
-                                <span class="gewichtung-label">Orientierung</span>
-                                <div class="gewichtung-input-wrapper">
-                                    <input type="text" class="gewichtung-input" id="gewicht-orientierung" value="40" maxlength="3">
-                                    <span class="gewichtung-percent">%</span>
-                                    <span class="gewichtung-lock-indicator"></span>
-                                </div>
-                            </div>
-                            <div class="gewichtung-row" data-factor="archetyp">
-                                <span class="gewichtung-label">Archetyp</span>
-                                <div class="gewichtung-input-wrapper">
-                                    <input type="text" class="gewichtung-input" id="gewicht-archetyp" value="25" maxlength="3">
-                                    <span class="gewichtung-percent">%</span>
-                                    <span class="gewichtung-lock-indicator"></span>
-                                </div>
-                            </div>
-                            <div class="gewichtung-row" data-factor="dominanz">
-                                <span class="gewichtung-label">Dominanz</span>
-                                <div class="gewichtung-input-wrapper">
-                                    <input type="text" class="gewichtung-input" id="gewicht-dominanz" value="20" maxlength="3">
-                                    <span class="gewichtung-percent">%</span>
-                                    <span class="gewichtung-lock-indicator"></span>
-                                </div>
-                            </div>
-                            <div class="gewichtung-row" data-factor="geschlecht">
-                                <span class="gewichtung-label">Geschlecht</span>
-                                <div class="gewichtung-input-wrapper">
-                                    <input type="text" class="gewichtung-input" id="gewicht-geschlecht" value="15" maxlength="3">
-                                    <span class="gewichtung-percent">%</span>
-                                    <span class="gewichtung-lock-indicator"></span>
-                                </div>
+
+                    <div class="profile-review-card gewichtung-card" data-factor="orientierung">
+                        <div class="gewichtung-card-content">
+                            <span class="gewichtung-card-label">Orientierung</span>
+                            <div class="gewichtung-card-input-group">
+                                <input type="text" class="gewichtung-input" id="gewicht-orientierung" value="40" maxlength="3">
+                                <span class="gewichtung-percent">%</span>
+                                <span class="gewichtung-lock-indicator"></span>
                             </div>
                         </div>
-                        <div class="gewichtung-footer">
-                            <span class="gewichtung-summe-text">Summe: <span class="gewichtung-summe-value" id="gewicht-summe">100%</span></span>
-                            <button class="profile-review-triple-btn" onclick="resetGewichtungen()" style="padding: 6px 12px; font-size: 11px;">
-                                🔄 Standard
-                            </button>
+                    </div>
+
+                    <div class="profile-review-card gewichtung-card" data-factor="archetyp">
+                        <div class="gewichtung-card-content">
+                            <span class="gewichtung-card-label">Archetyp</span>
+                            <div class="gewichtung-card-input-group">
+                                <input type="text" class="gewichtung-input" id="gewicht-archetyp" value="25" maxlength="3">
+                                <span class="gewichtung-percent">%</span>
+                                <span class="gewichtung-lock-indicator"></span>
+                            </div>
                         </div>
+                    </div>
+
+                    <div class="profile-review-card gewichtung-card" data-factor="dominanz">
+                        <div class="gewichtung-card-content">
+                            <span class="gewichtung-card-label">Dominanz</span>
+                            <div class="gewichtung-card-input-group">
+                                <input type="text" class="gewichtung-input" id="gewicht-dominanz" value="20" maxlength="3">
+                                <span class="gewichtung-percent">%</span>
+                                <span class="gewichtung-lock-indicator"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="profile-review-card gewichtung-card" data-factor="geschlecht">
+                        <div class="gewichtung-card-content">
+                            <span class="gewichtung-card-label">Geschlecht</span>
+                            <div class="gewichtung-card-input-group">
+                                <input type="text" class="gewichtung-input" id="gewicht-geschlecht" value="15" maxlength="3">
+                                <span class="gewichtung-percent">%</span>
+                                <span class="gewichtung-lock-indicator"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="gewichtung-footer-bar">
+                        <span class="gewichtung-hint">Doppelklick = Wert fixieren</span>
+                        <span class="gewichtung-summe-text">Summe: <span class="gewichtung-summe-value" id="gewicht-summe">100%</span></span>
+                        <button class="profile-review-triple-btn" onclick="resetGewichtungen()" style="padding: 6px 12px; font-size: 11px;">
+                            🔄 Standard
+                        </button>
                     </div>
                 </div>
 

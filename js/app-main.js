@@ -13130,7 +13130,7 @@
 
             // Max 3 Locks erlaubt
             if (!gewichtungLocks[factor] && lockedCount >= 3) {
-                const row = document.querySelector(`.gewichtung-row[data-factor="${factor}"]`);
+                const row = document.querySelector(`.gewichtung-card[data-factor="${factor}"]`);
                 if (row) {
                     row.style.animation = 'shake 0.3s ease';
                     setTimeout(() => { row.style.animation = ''; }, 300);
@@ -13149,7 +13149,7 @@
             const unlockedCount = factors.filter(f => !gewichtungLocks[f]).length;
 
             factors.forEach(factor => {
-                const row = document.querySelector(`.gewichtung-row[data-factor="${factor}"]`);
+                const row = document.querySelector(`.gewichtung-card[data-factor="${factor}"]`);
                 const input = document.getElementById(FAKTOR_MAP[factor].inputId);
                 if (!row || !input) return;
 
@@ -13172,7 +13172,7 @@
             let allFound = true;
 
             factors.forEach(factor => {
-                const row = document.querySelector(`.gewichtung-row[data-factor="${factor}"]`);
+                const row = document.querySelector(`.gewichtung-card[data-factor="${factor}"]`);
                 const input = document.getElementById(FAKTOR_MAP[factor].inputId);
 
                 if (!row || !input) {
