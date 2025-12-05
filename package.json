@@ -1,0 +1,16 @@
+{
+  "name": "tiage-beziehungsmodell",
+  "version": "1.7.0",
+  "description": "Ti-Age Beziehungsmodell - Interaktive Web-App",
+  "private": true,
+  "scripts": {
+    "version:show": "node -p \"require('./package.json').version\"",
+    "version:bump": "node scripts/bump-version.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/StickySmart/Tiage_Beziehungsmodel.git"
+  },
+  "author": "Ti-Age",
+  "license": "UNLICENSED"
+}
