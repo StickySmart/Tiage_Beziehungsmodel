@@ -1,0 +1,86 @@
+
+    <!-- GFK Explanation Modal -->
+    <div class="gfk-modal-overlay" id="gfkExplanationModal" onclick="closeGfkExplanationModal(event)">
+        <div class="gfk-modal" onclick="event.stopPropagation()">
+            <div class="gfk-modal-header">
+                <div class="gfk-modal-title">
+                    <span>GFK-Kompetenz</span>
+                    <span id="gfkModalLevelBadge" class="gfk-level-indicator"></span>
+                </div>
+                <button class="gfk-modal-close" onclick="closeGfkExplanationModal()">&times;</button>
+            </div>
+            <div class="gfk-modal-content">
+                <div class="gfk-explanation-text" id="gfkModalExplanation">
+                </div>
+                <div class="gfk-info-box">
+                    <div class="gfk-info-box-title">Automatische Berechnung</div>
+                    <div class="gfk-info-box-text">
+                        Die GFK-Kompetenz wird automatisch basierend auf den gewählten Beziehungsarchetypen berechnet.
+                        Sie zeigt die Übereinstimmung der Kernbedürfnisse nach Marshall Rosenbergs Gewaltfreier Kommunikation.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bedürfnis-Vergleich Modal -->
+    <div class="modal-overlay" id="needsCompareModal" onclick="closeNeedsCompareModal(event)" style="z-index: 2200;">
+        <div class="modal" onclick="event.stopPropagation()" style="max-width: 500px;">
+            <div class="modal-header">
+                <span class="modal-title" id="needsCompareModalTitle">Bedürfnis-Vergleich</span>
+                <button class="modal-close" onclick="closeNeedsCompareModal()">&times;</button>
+            </div>
+            <div class="modal-body" id="needsCompareModalBody" style="padding: 20px;">
+                <!-- Content wird dynamisch gefüllt -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Bedürfnis-Definition Modal -->
+    <div class="modal-overlay" id="needDefinitionModal" onclick="closeNeedDefinitionModal(event)" style="z-index: 2300;">
+        <div class="modal" onclick="event.stopPropagation()" style="max-width: 420px;">
+            <div class="modal-header">
+                <span class="modal-title" id="needDefinitionModalTitle">Definition</span>
+                <button class="modal-close" onclick="closeNeedDefinitionModal()">&times;</button>
+            </div>
+            <div class="modal-body" id="needDefinitionModalBody" style="padding: 20px;">
+                <!-- Content wird dynamisch gefüllt -->
+            </div>
+        </div>
+    </div>
+
+    <!-- GFK Begriffserklärung Modal -->
+    <div class="modal-overlay" id="gfkExplanationModal" onclick="closeGfkExplanationModal(event)" style="z-index: 2400;">
+        <div class="modal" onclick="event.stopPropagation()" style="max-width: 400px;">
+            <div class="modal-header" style="border-bottom: 2px solid rgba(139,92,246,0.3);">
+                <span class="modal-title" style="color: #8B5CF6;">Gewaltfreie Kommunikation (GFK)</span>
+                <button class="modal-close" onclick="closeGfkExplanationModal()">&times;</button>
+            </div>
+            <div class="modal-body" style="padding: 20px;">
+                <p style="font-size: 14px; line-height: 1.7; color: var(--text-primary); margin: 0 0 16px 0;">
+                    Nach <strong>Marshall Rosenberg</strong> sind Bedürfnisse universell und frei von Bewertung. Sie beschreiben, was wir zum Leben brauchen.
+                </p>
+                <p style="font-size: 13px; line-height: 1.6; color: var(--text-secondary); margin: 0;">
+                    Die GFK unterscheidet klar zwischen Bedürfnissen (was wir brauchen) und Strategien (wie wir es erfüllen). Diese Unterscheidung hilft uns, authentisch zu kommunizieren und echte Verbindung zu schaffen.
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Paarung Begriffserklärung Modal -->
+    <div class="modal-overlay" id="paarungExplanationModal" onclick="closePaarungExplanationModal(event)" style="z-index: 2400;">
+        <div class="modal" onclick="event.stopPropagation()" style="max-width: 400px;">
+            <div class="modal-header" style="border-bottom: 2px solid rgba(232,67,147,0.3);">
+                <span class="modal-title" style="color: #E84393;">Paarung</span>
+                <button class="modal-close" onclick="closePaarungExplanationModal()">&times;</button>
+            </div>
+            <div class="modal-body" style="padding: 20px;">
+                <p style="font-size: 14px; line-height: 1.7; color: var(--text-primary); margin: 0 0 16px 0;">
+                    In Beziehungen ist das gegenseitige Verstehen von Bedürfnissen essenziell. Wenn beide Partner ihre Bedürfnisse kennen und kommunizieren, entsteht Raum für echte Verbindung und gemeinsames Wachstum.
+                </p>
+                <p style="font-size: 13px; line-height: 1.6; color: var(--text-secondary); margin: 0;">
+                    Die Paarung zeigt, wie gut die Bedürfnisse beider Partner zueinander passen und wo Potenzial für gegenseitige Erfüllung besteht.
+                </p>
+            </div>
+        </div>
+    </div>

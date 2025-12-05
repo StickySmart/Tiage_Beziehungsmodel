@@ -1,0 +1,66 @@
+    <!-- Comment Modal -->
+    <div class="comment-modal-overlay" id="commentModal" onclick="closeCommentModal(event)">
+        <div class="comment-modal" onclick="event.stopPropagation()">
+            <div class="comment-modal-header">
+                <h3>Kommentar senden</h3>
+                <button class="comment-modal-close" onclick="closeCommentModal()">&times;</button>
+            </div>
+            <div class="comment-modal-body">
+                <div class="comment-form-group">
+                    <label for="commentName">Name / Kürzel *</label>
+                    <input type="text" id="commentName" placeholder="z.B. Max oder Anonym" maxlength="50" required>
+                    <small class="input-hint">Max. 50 Zeichen</small>
+                </div>
+                <div class="comment-form-group">
+                    <label for="commentType">Art des Kommentars</label>
+                    <select id="commentType">
+                        <option value="fehler">Fehler melden</option>
+                        <option value="verbesserung">Verbesserungsvorschlag</option>
+                        <option value="feedback">Allgemeines Feedback</option>
+                    </select>
+                </div>
+                <div class="comment-form-group">
+                    <label for="commentText">Dein Kommentar *</label>
+                    <textarea id="commentText" placeholder="Schreibe hier deine Frage oder dein Feedback..." maxlength="2000" required></textarea>
+                    <small class="input-hint">Max. 2000 Zeichen</small>
+                </div>
+                <div class="comment-form-group visitor-info">
+                    <small>Deine Besucher-Nr: <span id="visitorIdDisplay">wird geladen...</span></small>
+                </div>
+                <button class="comment-submit-btn" id="commentSubmitBtn" onclick="submitComment()">Absenden</button>
+            </div>
+        </div>
+    </div>
+    <!-- Comments List Modal -->
+    <div class="comments-list-overlay" id="commentsListModal" onclick="closeCommentsListModal(event)">
+        <div class="comments-list-modal" onclick="event.stopPropagation()">
+            <div class="comments-list-header">
+                <h2>📋 Alle Kommentare</h2>
+                <button class="help-modal-close" onclick="closeCommentsListModal()">&times;</button>
+            </div>
+            <div class="comments-actions-bar">
+                <button class="new-comment-btn" onclick="closeCommentsListModal(); openCommentModal();">
+                    ✏️ Neuen Kommentar schreiben
+                </button>
+            </div>
+            <div class="comments-search-container">
+                <div class="comments-search-wrapper">
+                    <span class="comments-search-icon">🔍</span>
+                    <input type="text"
+                           id="commentsSearchInput"
+                           class="comments-search-input"
+                           placeholder="Suche... (* als Platzhalter)"
+                           oninput="filterComments(this.value)">
+                    <button class="comments-search-clear" id="commentsSearchClear" onclick="clearCommentsSearch()">&times;</button>
+                </div>
+                <div class="comments-search-hint">Beispiel: *fehler* findet alle Kommentare mit "fehler" im Text</div>
+            </div>
+            <div class="comments-search-results" id="commentsSearchResults" style="display: none;"></div>
+            <div class="comments-list-body" id="commentsListBody">
+                <div class="no-comments">
+                    <div class="no-comments-icon">💬</div>
+                    <p>Lade Kommentare...</p>
+                </div>
+            </div>
+        </div>
+    </div>

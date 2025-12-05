@@ -1,0 +1,484 @@
+
+    <!-- Help Modal -->
+    <div class="help-modal-overlay" id="helpModal" onclick="closeHelpModal(event)">
+        <div class="help-modal" onclick="event.stopPropagation()">
+            <div class="help-modal-header">
+                <h2>Hilfe & Dokumentation</h2>
+                <button class="help-modal-close" onclick="closeHelpModal()">&times;</button>
+            </div>
+            <div class="help-modal-content">
+
+                <!-- KURZANLEITUNG -->
+                <div class="quick-guide">
+                    <h3>Kurzanleitung</h3>
+                    <ul>
+                        <li><strong>Mein Typ</strong> = Dein Archetyp + Eigenschaften (Orientierung, Dominanz, Geschlecht)</li>
+                        <li><strong>Beziehungsqualität</strong> = Partner-Archetyp + Eigenschaften und Kompatibilitätsberechnung</li>
+                        <li><strong>Gelebt</strong> = Was du aktiv lebst / <strong>Interessiert</strong> = Wofür du offen bist</li>
+                        <li><strong>INFO</strong>-Button = Details zum gewählten Archetyp</li>
+                        <li><strong>Ergebnis</strong> = Automatische Berechnung der Kompatibilität (4 Faktoren)</li>
+                        <li><strong>Prozentwerte</strong> anklicken = Detaillierte Erklärung pro Faktor</li>
+                    </ul>
+                </div>
+
+                <!-- WAS IST NEU -->
+                <div class="help-section" style="background: linear-gradient(135deg, rgba(var(--primary-rgb, 100,100,100), 0.1), transparent); border-left: 3px solid var(--primary);">
+                    <h3>Neu in Version 1.7</h3>
+                    <ul>
+                        <li><strong>1.248 psychologische Profile:</strong> Jede Kombination aus Archetyp, Gender, Dominanz und Orientierung ergibt ein einzigartiges Profil</li>
+                        <li><strong>Kategorie-Scores (A-F):</strong> Jedes Profil erhält individuelle Scores für 6 Dimensionen</li>
+                        <li><strong>Bedürfnis-Verrechnung:</strong> Basis-Werte + Modifikatoren (Gender ±4, Dominanz ±5, Orientierung ±3)</li>
+                        <li><strong>6 Dimensionen:</strong> Beziehungsphilosophie (A), Werte-Alignment (B), Nähe-Distanz (C), Autonomie (D), Kommunikation (E), Soziale Kompatibilität (F)</li>
+                    </ul>
+                </div>
+
+                <!-- KOMMENTAR-SEKTION -->
+                <div class="comment-section">
+                    <p>Fragen, Feedback oder Verbesserungsvorschläge?</p>
+                    <div style="display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;">
+                        <button class="comment-btn" onclick="openCommentModal()">
+                            Kommentar senden
+                        </button>
+                        <button class="view-comments-btn" onclick="openCommentsListModal()">
+                            📋 Alle Kommentare
+                        </button>
+                    </div>
+                </div>
+
+                <!-- DOKUMENTATION -->
+                <div class="documentation-section">
+                    <h3>Dokumentation</h3>
+
+                    <div class="help-section">
+                        <h3>Das Tiage-Beziehungsmodell</h3>
+                        <p>Eine <strong>eigenständige Synthese</strong> von Tiage, entwickelt durch Online-Recherche und persönliche Reflexion. Das Modell verbindet zwei philosophische Traditionen zu einem praktischen Analyse-Tool:</p>
+                        <ul style="margin-top: 10px;">
+                            <li><strong>MOQ (Robert M. Pirsig):</strong> Metaphysik der Qualität - statische vs. dynamische Qualität als Grundstruktur</li>
+                            <li><strong>OSHO:</strong> Bewusstsein durch Meditation - Polarität, Balance, Schwingung</li>
+                        </ul>
+                        <p style="margin-top: 10px; font-style: italic; color: var(--text-muted);">Tiage's Beitrag: Die Verbindung beider Philosophien zu einem konkreten Beziehungs-Rechner mit eigener Gewichtung und Archetypen-Matrix.</p>
+                    </div>
+
+                    <div class="help-section">
+                        <h3>Logos vs. Pathos (25:75)</h3>
+                        <p><strong>Logos (25% - Verstand):</strong> Die rationale, strukturgebende Dimension. Pirsig nennt dies "statische Qualität" - bewährte Muster, die Stabilität schaffen.</p>
+                        <p style="margin-top: 8px;"><strong>Pathos (75% - Gefühl):</strong> Die emotionale, anziehende Dimension. Pirsig nennt dies "dynamische Qualität" - die Kraft, die Veränderung und Wachstum antreibt.</p>
+                        <p style="margin-top: 8px; font-style: italic; color: var(--text-muted);">"Pathos vor Logos" - Das Leben/Erleben kommt vor der Interpretation. OSHO: "Akzeptiere was IST."</p>
+                    </div>
+
+                    <div class="help-section">
+                        <h3>Die 4 Qualitätsfaktoren</h3>
+                        <ul>
+                            <li><strong>Orientierungs-Kompatibilität</strong> (40% Pathos) - Körperliche Polarität und Anziehung. OSHO: "Nur Extreme können sich wirklich anziehen."</li>
+                            <li><strong>Archetyp-Übereinstimmung</strong> (25% Logos) - Fundamentale Beziehungsphilosophie: "Wie wollen wir Beziehung leben?"</li>
+                            <li><strong>Dominanz-Harmonie</strong> (20% Pathos) - Energetische Dynamik. OSHO: "Tao - eine Energie, zwei Ausdrucksformen."</li>
+                            <li><strong>Geschlechts-Attraktion</strong> (15% Pathos) - Gender-Chemie als Feinabstimmung der Orientierung.</li>
+                        </ul>
+                    </div>
+
+                    <div class="help-section">
+                        <h3>GFK-Kommunikationsfaktor (K)</h3>
+                        <p><strong>GFK (Gewaltfreie Kommunikation)</strong> nach Marshall Rosenberg beeinflusst die Resonanz-Berechnung mit 30% Gewichtung.</p>
+                        <ul style="margin-top: 10px;">
+                            <li><strong>Hoch</strong> - Aktive GFK-Praxis: Bedürfnisse klar benennen, empathisches Zuhören</li>
+                            <li><strong>Mittel</strong> - GFK-Grundkenntnisse: Bewusstsein für Kommunikationsmuster</li>
+                            <li><strong>Niedrig</strong> - Keine GFK-Erfahrung: Potenzial für Entwicklung</li>
+                        </ul>
+                        <p style="margin-top: 10px; font-style: italic; color: var(--text-muted);">Je höher die kombinierte GFK-Kompetenz beider Partner, desto stärker kann Resonanz entstehen - unabhängig von den 4 Qualitätsfaktoren.</p>
+                    </div>
+
+                    <div class="help-section">
+                        <h3>Berechnung (v2.0)</h3>
+                        <div class="help-formula">
+                            Score = (O × 0.40 × R1) + (A × 0.25 × R2) + (D × 0.20 × R3) + (G × 0.15 × R4)
+                        </div>
+                        <p>Jeder Faktor wird einzeln auf 0-100 bewertet. Die <strong>Resonanz-Faktoren R1-R4</strong> (0.5-1.5) verstärken oder schwächen basierend auf 88 Bedürfnis-Übereinstimmungen.</p>
+                        <div style="margin-top: 10px; padding: 8px; background: rgba(255,255,255,0.05); border-radius: 6px;">
+                            <strong>Resonanz-Skalierung:</strong> Ri = 0.5 + Bedürfnis-Match-i<br>
+                            <small style="opacity: 0.7;">0% Match → R=0.5 (schwächt) | 50% Match → R=1.0 (neutral) | 100% Match → R=1.5 (verstärkt)</small>
+                        </div>
+                        <div style="margin-top: 10px; padding: 8px; background: rgba(255,255,255,0.05); border-radius: 6px;">
+                            <strong>R1-R4 Bedürfnis-Zuordnung (88 total):</strong><br>
+                            <small style="opacity: 0.7;">R1 = Orientierung (22: existenz, zuneigung, musse) | R2 = Archetyp (26: freiheit, teilnahme, identitaet)</small><br>
+                            <small style="opacity: 0.7;">R3 = Dominanz (21: dynamik, sicherheit) | R4 = Geschlecht (19: verstaendnis, erschaffen, verbundenheit)</small>
+                        </div>
+                        <div style="margin-top: 10px; padding: 8px; background: rgba(255,255,255,0.05); border-radius: 6px;">
+                            <strong>GFK-Kompetenz:</strong> GFK = (R1 + R2 + R3 + R4) / 4<br>
+                            <small style="opacity: 0.7;">Meta-Info: M = Profil-Match (30 Attribute) | B = Logos-Pathos-Balance</small>
+                        </div>
+                    </div>
+
+                    <div class="help-section">
+                        <h3>Rechenbeispiel</h3>
+                        <div class="help-example">
+                            <div class="help-example-title">Duo × Duo-Flex</div>
+                            <div style="margin: 8px 0 12px 0; padding: 10px; background: rgba(255,255,255,0.03); border-radius: 6px; font-size: 0.9em;">
+                                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+                                    <div>
+                                        <div style="color: var(--success); font-weight: 600; margin-bottom: 6px;">👤 Person A (Duo)</div>
+                                        <div>Geschlecht: <strong>Cis Frau</strong> (P) / Trans Frau (S)</div>
+                                        <div>Dominanz: <strong>Submissiv</strong> (P) / Switch (S)</div>
+                                        <div>Orientierung: <strong>Hetero</strong> (P) / Bi (S)</div>
+                                    </div>
+                                    <div>
+                                        <div style="color: var(--danger); font-weight: 600; margin-bottom: 6px;">👤 Person B (Duo-Flex)</div>
+                                        <div>Geschlecht: <strong>Cis Mann</strong> (P) / –</div>
+                                        <div>Dominanz: <strong>Dominant</strong> (P) / Switch (S)</div>
+                                        <div>Orientierung: <strong>Hetero</strong> (P) / –</div>
+                                    </div>
+                                </div>
+                                <div style="margin-top: 8px; font-size: 0.85em; color: var(--text-muted);">P = Primär (Ich bin) | S = Sekundär (Ich könnte)</div>
+                            </div>
+                            <p style="margin: 8px 0 4px 0; font-size: 12px; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.5px;">1. Basis-Faktoren (0-100)</p>
+                            <ul>
+                                <li>O = 100 (Orientierung: Hetero + Hetero bei M/F)</li>
+                                <li>A = 75 (Archetyp: Duo ↔ Duo-Flex = nah verwandt)</li>
+                                <li>D = 100 (Dominanz: Submissiv + Dominant = Ergänzung)</li>
+                                <li>G = 100 (Geschlecht: Cis Frau × Cis Mann passt)</li>
+                            </ul>
+                            <p style="margin: 12px 0 4px 0; font-size: 12px; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.5px;">2. Resonanz-Faktoren (0.5-1.5)</p>
+                            <ul>
+                                <li><strong>R1 = 1.32</strong> (0.5 + 0.82) → 18/22 Orientierung-Bedürfnisse
+                                    <ul style="margin-top: 2px; font-size: 0.85em; opacity: 0.7;"><li>existenz, zuneigung, musse</li></ul>
+                                </li>
+                                <li><strong>R2 = 1.35</strong> (0.5 + 0.85) → 22/26 Archetyp-Bedürfnisse
+                                    <ul style="margin-top: 2px; font-size: 0.85em; opacity: 0.7;"><li>freiheit, teilnahme, identitaet</li></ul>
+                                </li>
+                                <li><strong>R3 = 1.40</strong> (0.5 + 0.90) → 19/21 Dominanz-Bedürfnisse
+                                    <ul style="margin-top: 2px; font-size: 0.85em; opacity: 0.7;"><li>dynamik, sicherheit</li></ul>
+                                </li>
+                                <li><strong>R4 = 1.29</strong> (0.5 + 0.79) → 15/19 Geschlecht-Bedürfnisse
+                                    <ul style="margin-top: 2px; font-size: 0.85em; opacity: 0.7;"><li>verstaendnis, erschaffen, verbundenheit</li></ul>
+                                </li>
+                            </ul>
+                            <p style="margin: 12px 0 4px 0; font-size: 12px; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.5px;">3. Score-Berechnung</p>
+                            <ul>
+                                <li>O × 0.40 × R1 = 100 × 0.40 × 1.32 = <strong>52.8</strong></li>
+                                <li>A × 0.25 × R2 = 75 × 0.25 × 1.35 = <strong>25.3</strong></li>
+                                <li>D × 0.20 × R3 = 100 × 0.20 × 1.40 = <strong>28.0</strong></li>
+                                <li>G × 0.15 × R4 = 100 × 0.15 × 1.29 = <strong>19.4</strong></li>
+                            </ul>
+                            <div class="help-formula" style="margin-top: 12px;">
+                                Score = 52.8 + 25.3 + 28.0 + 19.4 = <strong>125.5</strong>
+                            </div>
+                            <p style="margin: 12px 0 4px 0; font-size: 12px; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.5px;">4. Meta-Info</p>
+                            <ul>
+                                <li>GFK = (1.32 + 1.35 + 1.40 + 1.29) / 4 = <strong>1.34</strong></li>
+                                <li>M = 70 (Profil-Match: 21/30 Attribute)</li>
+                                <li>B = 0.80 (Logos-Pathos-Balance)</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="help-section">
+                        <h3>Score-Interpretation</h3>
+                        <ul>
+                            <li><strong>&gt; 120</strong> - Außergewöhnliche Resonanz</li>
+                            <li><strong>100-120</strong> - Starke Harmonie</li>
+                            <li><strong>80-100</strong> - Gute Basis</li>
+                            <li><strong>60-80</strong> - Arbeit erforderlich</li>
+                            <li><strong>&lt; 60</strong> - Herausfordernd</li>
+                        </ul>
+                        <p style="margin-top: 15px; font-style: italic; color: var(--text-muted);">Der Score ist kein Prozent-Wert, sondern ein Qualitätsindex. Höhere Werte zeigen stärkere Bedürfnis-Resonanz.</p>
+                    </div>
+
+                    <div class="help-section">
+                        <h3>Die 8 Archetypen</h3>
+                        <ul>
+                            <li><strong>Single</strong> - Autonomes Leben ohne Primärbeziehung</li>
+                            <li><strong>Duo</strong> - Monogame Zweierbeziehung mit Exklusivität</li>
+                            <li><strong>Duo-Flex</strong> - Primärbeziehung mit vereinbarten Öffnungen</li>
+                            <li><strong>Solopoly</strong> - Mehrere gleichwertige Beziehungen, Fokus Autonomie</li>
+                            <li><strong>Polyamor</strong> - Tiefe emotionale Bindungen zu mehreren Partnern</li>
+                            <li><strong>RA</strong> - Ablehnung aller Beziehungs-Hierarchien</li>
+                            <li><strong>LAT</strong> - Living Apart Together - Feste Partnerschaft ohne Zusammenleben</li>
+                            <li><strong>Aromantisch</strong> - Fokus auf platonische Verbindungen ohne romantische Komponente</li>
+                        </ul>
+                    </div>
+
+                    <div class="help-section">
+                        <h3>Philosophische Quellen</h3>
+                        <h4 style="margin-top: 15px;">Robert M. Pirsig (1928-2017) - Metaphysik der Qualität</h4>
+                        <p>Pirsig entwickelte ein philosophisches System, das <strong>Qualität</strong> als fundamentale Realität betrachtet:</p>
+                        <ul style="margin-top: 10px;">
+                            <li><strong>Statische Qualität:</strong> Strukturierte, wiederholbare Muster die Stabilität schaffen → im Tiage-Modell: <strong>Logos</strong></li>
+                            <li><strong>Dynamische Qualität:</strong> Die kreative Kraft für Wachstum und Veränderung → im Tiage-Modell: <strong>Pathos</strong></li>
+                        </ul>
+                        <h4 style="margin-top: 15px;">OSHO - Bewusstsein durch Meditation</h4>
+                        <p>OSHO lehrte Bewusstsein über Polarität, Balance und Schwingung - Meditation als Weg zur Klarheit:</p>
+                        <ul style="margin-top: 10px;">
+                            <li><strong>Bewusstsein:</strong> Klarheit durch Meditation und Loslassen (Let Go)</li>
+                            <li><strong>Polarität & Schwingung:</strong> Energetische Balance in Beziehungen</li>
+                        </ul>
+                        <p style="margin-top: 15px;"><strong>Tiage's Synthese:</strong> Die Verbindung von Pirsigs Qualitäts-Philosophie mit OSHOs Bewusstseins-Konzept zu einem praktischen Beziehungs-Rechner mit konkreter Gewichtung (40:60 Logos:Pathos) und 6 Archetypen.</p>
+                    </div>
+
+                    <div class="help-section">
+                        <h3>Literatur von Robert M. Pirsig</h3>
+                        <ul>
+                            <li>
+                                <strong>Zen und die Kunst ein Motorrad zu warten</strong> (1974)<br>
+                                <span style="color: var(--text-muted); font-size: 0.9em;">Originaltitel: "Zen and the Art of Motorcycle Maintenance: An Inquiry into Values"</span><br>
+                                <span style="margin-top: 5px; display: inline-block;">Ein philosophischer Roman, der Pirsigs erste Erkundung der Qualität als metaphysisches Konzept darstellt. Das Buch verbindet eine Motorradreise mit tiefgreifenden philosophischen Betrachtungen über Rationalität, Romantik und die Natur der Qualität.</span>
+                            </li>
+                            <li style="margin-top: 15px;">
+                                <strong>Lila – oder ein Versuch über Moral</strong> (1991)<br>
+                                <span style="color: var(--text-muted); font-size: 0.9em;">Originaltitel: "Lila: An Inquiry into Morals"</span><br>
+                                <span style="margin-top: 5px; display: inline-block;">Die Fortsetzung und systematische Ausarbeitung der Metaphysik der Qualität. Pirsig entwickelt hier eine vollständige philosophische Theorie, die statische und dynamische Qualitätsmuster auf biologischer, sozialer und intellektueller Ebene unterscheidet.</span>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="help-section">
+                        <h3>Ein Widerspruch zu Pirsig</h3>
+                        <p>Robert Pirsig argumentierte, dass Definitionen die unmittelbare Qualität des Erlebens zerstören – dass das Benennen dem Fühlen nachgelagert ist und es reduziert.</p>
+                        <p style="margin-top: 10px;">Diese App basiert auf der gegenteiligen Erfahrung:</p>
+                        <p style="margin-top: 10px;"><strong>Definition und Erleben sind nicht getrennt. Sie entstehen gleichzeitig – im Dialog, in Resonanz, in extremer Kürze.</strong></p>
+                        <p style="margin-top: 10px;">Wenn Begriffe aufgefächert werden, wenn Bedeutungsfelder sich öffnen, entsteht nicht weniger Qualität, sondern mehr. Die Sprache ist kein Käfig für das Erleben. Sie ist sein Resonanzraum.</p>
+                        <p style="margin-top: 10px; font-style: italic; color: var(--text-muted);">Diese Erkenntnis entstand nicht theoretisch, sondern praktisch – im Arbeiten mit KI-gestütztem Dialog. Das Argument gegen Pirsig ist die Erfahrung selbst.</p>
+                    </div>
+
+                    <div class="help-section">
+                        <h3>OSHO: Bewusstsein und Beziehung</h3>
+                        <p><strong>Bhagwan Shree Rajneesh (OSHO)</strong> (1931-1990) war ein indischer spiritueller Lehrer, dessen Philosophie über Bewusstsein und Liebe das Tiage-Modell prägt.</p>
+
+                        <h4 style="margin-top: 15px;">Kernkonzepte für Beziehungen:</h4>
+                        <ul style="margin-top: 10px;">
+                            <li><strong>Liebe ohne Besitz:</strong> "Liebe ist keine Bindung, sondern Freiheit. Wenn du jemanden liebst, gibst du ihm Flügel, keinen Käfig." → Basis für die Archetypen-Vielfalt (Single bis Polyamor)</li>
+                            <li style="margin-top: 8px;"><strong>Aloneness vs. Loneliness:</strong> Allein-Sein ist nicht Einsamkeit. Nur wer mit sich selbst sein kann, kann wirklich mit anderen sein. → Erklärt warum "Single" ein vollwertiger Archetyp ist</li>
+                            <li style="margin-top: 8px;"><strong>Akzeptanz statt Veränderung:</strong> "Liebe den Menschen, wie er ist. Versuch nicht, ihn zu verbessern." → Das Modell bewertet Kompatibilität, nicht "Korrektur"</li>
+                            <li style="margin-top: 8px;"><strong>Bewusstheit statt Unbewusstheit:</strong> Die meisten Beziehungsprobleme entstehen durch unbewusstes Handeln. Meditation schafft Klarheit. → Begründung für Pathos-Gewichtung (60%)</li>
+                            <li style="margin-top: 8px;"><strong>Polarität als Anziehung:</strong> "Gegensätze ziehen sich an, aber nicht um sich zu bekämpfen – um sich zu ergänzen." → Dominanz-Harmonie Faktor</li>
+                        </ul>
+                        <p style="margin-top: 15px; font-style: italic; color: var(--text-muted);">"Liebe ist eine Blume, die nur in der Freiheit wächst. Im Gefängnis von Erwartungen stirbt sie."</p>
+                    </div>
+
+                    <div class="help-section">
+                        <h3>OSHO & Tiages Widerspruch: Dialog als Meditation</h3>
+                        <p>OSHOs Philosophie verbindet sich überraschend mit Tiages Widerspruch zu Pirsig:</p>
+                        <ul style="margin-top: 10px;">
+                            <li><strong>OSHO:</strong> "Worte können lebendig sein, wenn Bewusstheit dahinter steht. Dann sind sie keine Gefängnisse, sondern Tore."</li>
+                            <li style="margin-top: 8px;"><strong>Tiage:</strong> Im bewussten Dialog <em>ist</em> die Definition das Erleben. Begriffe werden aufgefächert, nicht fixiert.</li>
+                        </ul>
+                        <p style="margin-top: 10px;">Beide sagen: <strong>Sprache muss nicht töten. Sie kann lebendig sein – wenn Bewusstheit da ist.</strong></p>
+                        <p style="margin-top: 10px; font-style: italic; color: var(--text-muted);">Die Qualität entsteht nicht trotz der Sprache, sondern <em>durch</em> sie – wenn zwei Menschen auf derselben Wellenlänge schwingen. Das ist OSHOs "Resonanz" und Tiages "Dialog-Erfahrung" zugleich.</p>
+                    </div>
+
+                    <div class="help-section">
+                        <h3>Tiages gelebter Kern</h3>
+                        <p>Was bleibt von OSHO im Tiage-Modell? Nicht abstrakte Konzepte, sondern <strong>gelebte Erfahrung</strong>:</p>
+
+                        <p style="margin-top: 15px; background: var(--bg-secondary); padding: 15px; border-radius: 8px; border-left: 3px solid var(--primary); font-size: 1.05em;">
+                            <em>Das Leben akzeptieren für das was es ist. Die Schönheit und Schwingung erkennen. Geerdet bleiben.</em>
+                        </p>
+
+                        <h4 style="margin-top: 20px;">Akzeptanz</h4>
+                        <p>Das Modell misst nicht, um zu urteilen oder zu "reparieren". Es macht die Schwingung zwischen zwei Menschen sichtbar – ohne Wertung, ob jemand "richtig" oder "falsch" ist.</p>
+
+                        <h4 style="margin-top: 15px;">Schwingung erkennen</h4>
+                        <p>Resonanz ist keine mystische Formel, sondern das Spürbare: Passen zwei Menschen zusammen? Schwingt etwas? Das Modell versucht, dieses Gefühl in Zahlen zu übersetzen – als Orientierung, nicht als Urteil.</p>
+
+                        <h4 style="margin-top: 15px;">Geerdet bleiben</h4>
+                        <p>Esoterisch, aber nicht zu hoch fliegen. Das Tiage-Modell bleibt praktisch: konkrete Faktoren, nachvollziehbare Berechnung. Die Philosophie ist der Boden, nicht die Wolke.</p>
+
+                        <h4 style="margin-top: 15px;">Meditation als Weg</h4>
+                        <p>Meditation ist der Weg zum Bewusstsein. Nicht als Flucht, sondern als Ankommen bei sich selbst. Wer sich selbst kennt, kann auch andere verstehen.</p>
+
+                        <p style="margin-top: 15px; font-style: italic; color: var(--text-muted);">"Liebe den Menschen, wie er ist. Versuch nicht, ihn zu verbessern." – OSHO</p>
+                    </div>
+
+                    <div class="help-section">
+                        <h3>TIAGE Resonanz-Theorie: Neurowissenschaftliche Grundlagen</h3>
+                        <p>Die philosophischen Konzepte werden durch neurowissenschaftliche Forschung untermauert:</p>
+
+                        <h4 style="margin-top: 15px;">Kernthese</h4>
+                        <p style="font-style: italic; background: var(--bg-secondary); padding: 10px; border-radius: 5px;">
+                            "Wahrnehmung basiert auf Schwingungen und Mustern. Resonanz = Synchronität zwischen inneren neuronalen Rhythmen und äußeren Signalen."
+                        </p>
+
+                        <h4 style="margin-top: 15px;">Die Wissenschaftler hinter der Theorie</h4>
+                        <ul style="margin-top: 10px;">
+                            <li><strong>Buzsáki & Singer</strong> (Neuronale Rhythmen): Gamma-Oszillationen als Basis für "auf einer Wellenlänge sein"</li>
+                            <li style="margin-top: 8px;"><strong>Friston</strong> (Predictive Coding): Kompatibilität = niedrige Vorhersage-Fehler im Umgang miteinander</li>
+                            <li style="margin-top: 8px;"><strong>Kapur</strong> (Aberrant Salience): Flow vs. Psychose als Spektrum der Synchronität</li>
+                            <li style="margin-top: 8px;"><strong>Levitin</strong> (Psychoakustik): Musik als externes Regulierungssystem für Emotionen</li>
+                            <li style="margin-top: 8px;"><strong>Aron</strong> (Hochsensitivität): Reizlast-Management als Beziehungsfaktor</li>
+                        </ul>
+
+                        <h4 style="margin-top: 15px;">Die Zustands-Skala</h4>
+                        <table style="width: 100%; margin-top: 10px; border-collapse: collapse; font-size: 0.9em;">
+                            <tr style="background: var(--bg-secondary);">
+                                <th style="padding: 8px; text-align: left; border: 1px solid var(--border);">Zustand</th>
+                                <th style="padding: 8px; text-align: left; border: 1px solid var(--border);">Beschreibung</th>
+                                <th style="padding: 8px; text-align: left; border: 1px solid var(--border);">In Beziehungen</th>
+                            </tr>
+                            <tr>
+                                <td style="padding: 8px; border: 1px solid var(--border);"><strong>Flow</strong></td>
+                                <td style="padding: 8px; border: 1px solid var(--border);">Optimale Synchronität</td>
+                                <td style="padding: 8px; border: 1px solid var(--border);">Tiefe Verbindung, "im Einklang"</td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 8px; border: 1px solid var(--border);"><strong>Hyper-Synchronität</strong></td>
+                                <td style="padding: 8px; border: 1px solid var(--border);">Übermäßige Muster-Erkennung</td>
+                                <td style="padding: 8px; border: 1px solid var(--border);">Verliebtheit / Abhängigkeit</td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 8px; border: 1px solid var(--border);"><strong>Hypo-Synchronität</strong></td>
+                                <td style="padding: 8px; border: 1px solid var(--border);">Reduzierte Bindung</td>
+                                <td style="padding: 8px; border: 1px solid var(--border);">Entfremdung, "aneinander vorbei"</td>
+                            </tr>
+                        </table>
+
+                        <h4 style="margin-top: 15px;">Weitere Kernthesen</h4>
+                        <ul style="margin-top: 10px;">
+                            <li><strong>Zufall</strong> = unerkannte Ordnung (Synchronizitäten als Muster)</li>
+                            <li style="margin-top: 8px;"><strong>Hochsensitivität + Reizlast</strong> → Zustandsschwankungen</li>
+                        </ul>
+
+                        <p style="margin-top: 15px; font-style: italic; color: var(--text-muted);">
+                            Die vollständige wissenschaftliche Dokumentation findet sich in: profiles/research-sources.md (Abschnitt 9)
+                        </p>
+                    </div>
+
+                    <div class="help-section">
+                        <h3>⚡ Resonanz-Override: Jenseits der Konditionierung</h3>
+                        <p>OSHO lehrte: <strong>Sexuelle Orientierung ist Konditionierung, nicht Natur.</strong> Der natürliche Mensch ist jenseits von Labels.</p>
+
+                        <h4 style="margin-top: 15px;">Was ist der Resonanz-Override?</h4>
+                        <p>Normalerweise gilt: Wenn die Orientierung inkompatibel ist (z.B. zwei heterosexuelle Männer), ergibt das 0% Orientierungs-Score und damit ein K.O.-Kriterium.</p>
+                        <p style="margin-top: 10px;">Der <strong>Resonanz-Override</strong> ermöglicht eine Ausnahme: Wenn zwei Menschen auf einer tiefen Ebene resonieren (R ≥ 1.05), kann diese Verbindung die konditionierten Grenzen überschreiten.</p>
+
+                        <h4 style="margin-top: 15px;">Wie funktioniert es?</h4>
+                        <table style="width: 100%; margin-top: 10px; border-collapse: collapse; font-size: 0.9em;">
+                            <tr style="background: var(--bg-secondary);">
+                                <th style="padding: 8px; text-align: left; border: 1px solid var(--border);">Resonanz (R)</th>
+                                <th style="padding: 8px; text-align: left; border: 1px solid var(--border);">Override-Effekt</th>
+                                <th style="padding: 8px; text-align: left; border: 1px solid var(--border);">O_effektiv</th>
+                            </tr>
+                            <tr>
+                                <td style="padding: 8px; border: 1px solid var(--border);">< 1.05</td>
+                                <td style="padding: 8px; border: 1px solid var(--border);">Kein Override</td>
+                                <td style="padding: 8px; border: 1px solid var(--border);">0% (K.O.)</td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 8px; border: 1px solid var(--border);">1.05</td>
+                                <td style="padding: 8px; border: 1px solid var(--border);">Schwache Öffnung</td>
+                                <td style="padding: 8px; border: 1px solid var(--border);">5%</td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 8px; border: 1px solid var(--border);">1.08</td>
+                                <td style="padding: 8px; border: 1px solid var(--border);">Moderate Öffnung</td>
+                                <td style="padding: 8px; border: 1px solid var(--border);">8%</td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 8px; border: 1px solid var(--border);">1.10</td>
+                                <td style="padding: 8px; border: 1px solid var(--border);">Maximale Öffnung</td>
+                                <td style="padding: 8px; border: 1px solid var(--border);">10%</td>
+                            </tr>
+                        </table>
+
+                        <p style="margin-top: 15px;"><strong>Formel:</strong> <code>O_effektiv = (R - 1.0) × 100</code></p>
+
+                        <h4 style="margin-top: 15px;">Philosophische Begründung (OSHO)</h4>
+                        <p style="font-style: italic; background: var(--bg-secondary); padding: 10px; border-radius: 5px;">
+                            "Liebe kennt keine Grenzen. Wenn zwei Seelen wirklich resonieren, sind alle gesellschaftlichen Kategorien nur noch Schatten an der Wand."
+                        </p>
+                        <p style="margin-top: 10px;">Resonanz repräsentiert die tiefere, unkonditionierte Ebene der Verbindung – jenseits dessen, was Gesellschaft und Erziehung uns beigebracht haben.</p>
+
+                        <p style="margin-top: 15px; padding: 10px; background: rgba(255,165,0,0.1); border-left: 3px solid orange; font-size: 0.9em;">
+                            <strong>Hinweis:</strong> Dies ist keine Empfehlung, sondern eine philosophische Möglichkeit, die das Modell abbildet. Der Override zeigt: Tiefe Resonanz kann konditionierte Muster transzendieren.
+                        </p>
+                    </div>
+
+                    <div class="help-section">
+                        <h3>🔬 R-Berechnung: Die zwei Komponenten</h3>
+                        <p>Der Resonanzfaktor R wird aus zwei gleichgewichteten Komponenten berechnet:</p>
+
+                        <h4 style="margin-top: 15px;">Komponente 1: Profil-Match (M)</h4>
+                        <p>Ähnlichkeit der 30 Persönlichkeitsattribute zwischen zwei Profilen.</p>
+                        <p style="background: var(--bg-secondary); padding: 10px; border-radius: 5px; font-family: monospace;">
+                            M = Übereinstimmende Attribute / 30 × 100
+                        </p>
+                        <p style="margin-top: 5px; font-size: 0.9em; color: var(--text-muted);">Bei 24 von 30 übereinstimmenden Attributen: M = 80</p>
+
+                        <h4 style="margin-top: 15px;">Komponente 2: Logos-Pathos-Balance (B)</h4>
+                        <p>Das Verhältnis zwischen rationaler Struktur und emotionaler Dynamik – basierend auf Pirsigs MOQ.</p>
+                        <table style="width: 100%; margin-top: 10px; border-collapse: collapse; font-size: 0.9em;">
+                            <tr style="background: var(--bg-secondary);">
+                                <th style="padding: 8px; text-align: left; border: 1px solid var(--border);">Konzept</th>
+                                <th style="padding: 8px; text-align: left; border: 1px solid var(--border);">Definition</th>
+                                <th style="padding: 8px; text-align: left; border: 1px solid var(--border);">TIAGE-Zuordnung</th>
+                            </tr>
+                            <tr>
+                                <td style="padding: 8px; border: 1px solid var(--border);"><strong>Logos</strong></td>
+                                <td style="padding: 8px; border: 1px solid var(--border);">Statische Qualität</td>
+                                <td style="padding: 8px; border: 1px solid var(--border);">A (Attraction)</td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 8px; border: 1px solid var(--border);"><strong>Pathos</strong></td>
+                                <td style="padding: 8px; border: 1px solid var(--border);">Dynamische Qualität</td>
+                                <td style="padding: 8px; border: 1px solid var(--border);">(O + D + G) / 3</td>
+                            </tr>
+                        </table>
+                        <p style="background: var(--bg-secondary); padding: 10px; border-radius: 5px; font-family: monospace; margin-top: 10px;">
+                            B = (100 - |Logos - Pathos|) / 100
+                        </p>
+                        <p style="margin-top: 5px; font-size: 0.9em; color: var(--text-muted);">Bei A=72% und avg(O,D,G)=65%: B = (100 - 7) / 100 = 0.93</p>
+
+                        <h4 style="margin-top: 15px;">Die R-Formel</h4>
+                        <p style="background: linear-gradient(90deg, rgba(147,112,219,0.1), rgba(255,215,0,0.1)); padding: 15px; border-radius: 5px; font-family: monospace; font-size: 1.1em; text-align: center; border: 1px solid var(--border);">
+                            R = 0.9 + [(M/100 × 0.5) + (B × 0.5)] × 0.2
+                        </p>
+                        <p style="margin-top: 10px;"><strong>Wertebereich:</strong> R variiert zwischen 0.9 (minimale Resonanz) und 1.1 (maximale Resonanz).</p>
+
+                        <h4 style="margin-top: 15px;">Beispielrechnung</h4>
+                        <div style="background: var(--bg-secondary); padding: 15px; border-radius: 5px; font-size: 0.9em;">
+                            <p><strong>Gegeben:</strong> M = 80 (80% Profil-Match), B = 0.93 (7% Logos-Pathos-Differenz)</p>
+                            <p style="margin-top: 8px; font-family: monospace;">
+                                R = 0.9 + [(80/100 × 0.5) + (0.93 × 0.5)] × 0.2<br>
+                                R = 0.9 + [0.4 + 0.465] × 0.2<br>
+                                R = 0.9 + 0.173<br>
+                                R = <strong>1.073</strong> → Override aktiv!
+                            </p>
+                        </div>
+
+                        <p style="margin-top: 15px; font-style: italic; color: var(--text-muted);">
+                            Die Balance zwischen Profil-Match und Logos-Pathos-Verhältnis erfasst sowohl die äußere Kompatibilität (ähnliche Eigenschaften) als auch die innere Dynamik (Verhältnis von Struktur und Emotion).
+                        </p>
+                    </div>
+
+                    <div class="help-section">
+                        <h3>Quellen & Weiterführende Ressourcen</h3>
+                        <ul>
+                            <li><strong>Pirsig, Robert M.</strong> (1974): <em>Zen and the Art of Motorcycle Maintenance: An Inquiry into Values.</em> William Morrow and Company, New York.</li>
+                            <li><strong>Pirsig, Robert M.</strong> (1991): <em>Lila: An Inquiry into Morals.</em> Bantam Books, New York.</li>
+                            <li><strong>McWatt, Anthony</strong> (2004): <em>An Introduction to Robert Pirsig's Metaphysics of Quality.</em> Dissertation, University of Liverpool.</li>
+                            <li style="margin-top: 10px;"><strong>Schupp, Hans</strong>: <em>Elemente der Logik.</em> <span style="color: var(--text-muted); font-size: 0.85em;">(Indirekte Quelle – als Grundlage für logische Strukturierung und formale Denkprinzipien)</span></li>
+                            <li style="margin-top: 10px;"><strong>OSHO:</strong>
+                                <ul style="margin-top: 5px;">
+                                    <li><a href="https://oshofriends.com/love" target="_blank" rel="noopener noreferrer" style="color: var(--primary);">OSHO on Love and Relationships</a></li>
+                                    <li><a href="https://www.oshonews.com/2021/03/07/man-and-woman/" target="_blank" rel="noopener noreferrer" style="color: var(--primary);">Man and Woman - Polarity</a></li>
+                                </ul>
+                            </li>
+                            <li style="margin-top: 10px;"><strong>MOQ Online-Ressourcen:</strong>
+                                <ul style="margin-top: 5px;">
+                                    <li><a href="https://www.moq.org" target="_blank" rel="noopener noreferrer" style="color: var(--primary);">moq.org</a> – Metaphysics of Quality Community</li>
+                                    <li><a href="https://en.wikipedia.org/wiki/Robert_M._Pirsig" target="_blank" rel="noopener noreferrer" style="color: var(--primary);">Wikipedia: Robert M. Pirsig</a></li>
+                                </ul>
+                            </li>
+                            <li style="margin-top: 10px;"><strong>Neurowissenschaftliche Resonanz-Theorie:</strong>
+                                <ul style="margin-top: 5px;">
+                                    <li>Buzsáki, G. (2006): <em>Rhythms of the Brain.</em> Oxford University Press.</li>
+                                    <li>Friston, K. (2010): The free-energy principle. <em>Nature Reviews Neuroscience.</em></li>
+                                    <li>Kapur, S. (2003): Psychosis as Aberrant Salience. <em>Am J Psychiatry.</em></li>
+                                    <li>Levitin, D.J. (2006): <em>This Is Your Brain on Music.</em> Dutton.</li>
+                                    <li>Aron, E.N. (1996): <em>The Highly Sensitive Person.</em> Broadway Books.</li>
+                                </ul>
+                            </li>
+                        </ul>
+                        <p style="margin-top: 15px; font-style: italic; color: var(--text-muted);">Das Tiage-Beziehungsmodell ist eine eigenständige Interpretation und Anwendung philosophischer Konzepte auf zwischenmenschliche Beziehungen und erhebt keinen Anspruch auf wissenschaftliche Validierung.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
