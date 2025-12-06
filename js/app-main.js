@@ -13554,6 +13554,23 @@
             // Geklickten Button aktivieren
             btn.classList.add('active');
             trackProfileReviewChange();
+
+            // Live-Synchronisierung für Geschlechtsidentität
+            var attrId = group.getAttribute('data-attr');
+            if (attrId === 'pr-geschlecht-sekundaer' && typeof TiageState !== 'undefined') {
+                var value = parseInt(btn.getAttribute('data-value'), 10);
+                var primaryGeschlecht = TiageState.getPrimaryGeschlecht('ich');
+                if (primaryGeschlecht) {
+                    var secondaryValue = mapGeschlechtsidentitaetToSecondary(value, primaryGeschlecht);
+                    TiageState.setSecondaryGeschlecht('ich', secondaryValue);
+                    console.log('[ProfileReview] Geschlechtsidentität live-sync:', value, '→', secondaryValue);
+
+                    // Update main UI
+                    if (typeof updateGeschlechtGrid === 'function') {
+                        updateGeschlechtGrid('ich');
+                    }
+                }
+            }
         }
         window.selectTripleBtn = selectTripleBtn;
 
