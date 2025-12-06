@@ -14,6 +14,18 @@ const ProfileReviewConfig = (function() {
      * Attribut-Konfigurationen nach Kategorie
      */
     const ATTRIBUTES = {
+        geschlechtsidentitaet: [
+            {
+                attrId: 'pr-geschlecht-sekundaer',
+                cardId: 'pr-geschlecht-sekundaer-card',
+                label: 'Geschlechtsidentität',
+                hint: 'Sekundär',
+                options: ['Cis', 'Trans', 'Nonbinär', 'Fluid', 'Unsicher'],
+                defaultValue: 0,
+                description: 'Geschlechtsidentität: Cis (Identität = Körper), Trans (Identität ≠ Körper), Nonbinär, Fluid (wechselnd), Unsicher (in Exploration).'
+            }
+        ],
+
         lebensplanung: [
             {
                 attrId: 'pr-kinder',
@@ -221,6 +233,7 @@ const ProfileReviewConfig = (function() {
      */
     const CATEGORIES = {
         gewichtung: { icon: '⚖️', label: 'FAKTOR-GEWICHTUNG (Score-Formel)', isGewichtung: true },
+        geschlechtsidentitaet: { icon: '⚧', label: 'GESCHLECHTSIDENTITÄT' },
         lebensplanung: { icon: '📋', label: 'LEBENSPLANUNG' },
         finanzen: { icon: '💰', label: 'FINANZEN & KARRIERE' },
         kommunikation: { icon: '💬', label: 'KOMMUNIKATION' },
@@ -261,7 +274,7 @@ const ProfileReviewConfig = (function() {
      * @returns {Array<string>} Kategorie-Keys
      */
     function getCategoryOrder() {
-        return ['gewichtung', 'lebensplanung', 'finanzen', 'kommunikation', 'soziales', 'intimitaet', 'werte', 'praktisches'];
+        return ['gewichtung', 'geschlechtsidentitaet', 'lebensplanung', 'finanzen', 'kommunikation', 'soziales', 'intimitaet', 'werte', 'praktisches'];
     }
 
     /**
