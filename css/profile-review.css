@@ -173,3 +173,125 @@
     opacity: 1;
     visibility: visible;
 }
+
+/* ============================================
+   GEWICHTUNG CARD STYLES
+   ============================================ */
+
+.gewichtung-card {
+    border-left: 3px solid #10B981 !important;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.gewichtung-card:hover {
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.gewichtung-card-content {
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    width: 100%;
+}
+
+.gewichtung-card-label {
+    font-size: 13px;
+    color: var(--text-secondary, #aaa);
+    font-weight: 500;
+    flex-shrink: 0;
+}
+
+.gewichtung-card-input-group {
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    gap: 6px;
+    flex-shrink: 0;
+}
+
+.gewichtung-card .gewichtung-input,
+input.gewichtung-input {
+    width: 50px !important;
+    min-width: 50px !important;
+    max-width: 50px !important;
+    padding: 5px 4px !important;
+    border: 1px solid rgba(16, 185, 129, 0.5) !important;
+    border-radius: 4px !important;
+    background: rgba(16, 185, 129, 0.1) !important;
+    color: #10B981 !important;
+    font-size: 14px !important;
+    font-weight: 600 !important;
+    text-align: center !important;
+    outline: none !important;
+    transition: all 0.2s ease;
+    box-sizing: border-box !important;
+}
+
+.gewichtung-card .gewichtung-input:focus,
+input.gewichtung-input:focus {
+    border-color: #10B981 !important;
+    box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.2) !important;
+}
+
+.gewichtung-percent {
+    color: var(--text-muted, #888);
+    font-size: 12px;
+}
+
+.gewichtung-lock-indicator {
+    width: 16px;
+    text-align: center;
+}
+
+.gewichtung-card:not(.locked):not(.readonly) .gewichtung-lock-indicator::before {
+    content: '🔓';
+    font-size: 12px;
+    opacity: 0.5;
+}
+
+.gewichtung-card.locked {
+    border-left-color: #f59e0b !important;
+    background: rgba(245, 158, 11, 0.05);
+}
+
+.gewichtung-card.locked .gewichtung-input {
+    background: rgba(245, 158, 11, 0.1) !important;
+    border-color: rgba(245, 158, 11, 0.5) !important;
+    color: #f59e0b !important;
+}
+
+.gewichtung-card.locked .gewichtung-lock-indicator::before {
+    content: '🔒';
+    font-size: 12px;
+}
+
+.gewichtung-footer-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px 12px;
+    background: rgba(255,255,255,0.02);
+    border-radius: 6px;
+    margin-top: 8px;
+}
+
+.gewichtung-hint {
+    font-size: 11px;
+    color: var(--text-muted, #888);
+}
+
+.gewichtung-summe-text {
+    font-size: 12px;
+    color: var(--text-secondary, #aaa);
+}
+
+.gewichtung-summe-value {
+    font-weight: 600;
+    color: #10B981;
+}
+
+.gewichtung-summe-error {
+    color: #ef4444 !important;
+}
