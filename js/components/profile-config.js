@@ -21,7 +21,8 @@ const ProfileReviewConfig = (function() {
                 label: 'Kinder',
                 hint: 'wichtig ?',
                 options: ['Nein', 'Offen', 'Ja'],
-                defaultValue: 50
+                defaultValue: 50,
+                description: 'Wunsch nach eigenen Kindern oder Offenheit dafür in der Zukunft.'
             },
             {
                 attrId: 'pr-ehe',
@@ -29,7 +30,8 @@ const ProfileReviewConfig = (function() {
                 label: 'Ehe',
                 hint: 'wichtig ?',
                 options: ['Unwichtig', 'Offen', 'Wichtig'],
-                defaultValue: 50
+                defaultValue: 50,
+                description: 'Bedeutung einer formellen Eheschließung für die Beziehung.'
             },
             {
                 attrId: 'pr-zusammen',
@@ -37,7 +39,8 @@ const ProfileReviewConfig = (function() {
                 label: 'Zusammen wohnen',
                 hint: 'wichtig ?',
                 options: ['Getrennt', 'Offen', 'Zusammen'],
-                defaultValue: 50
+                defaultValue: 50,
+                description: 'Präferenz für gemeinsames Wohnen oder getrennte Haushalte.'
             },
             {
                 attrId: 'pr-haustiere',
@@ -45,21 +48,24 @@ const ProfileReviewConfig = (function() {
                 label: 'Haustiere',
                 hint: 'wichtig ?',
                 options: ['Ohne', 'Offen', 'Mit'],
-                defaultValue: 50
+                defaultValue: 50,
+                description: 'Einstellung zu Haustieren im gemeinsamen Haushalt.'
             },
             {
                 attrId: 'pr-umzug',
                 label: 'Umzugsbereitschaft',
                 hint: 'wichtig ?',
                 options: ['Sesshaft', 'Mittel', 'Flexibel'],
-                defaultValue: 50
+                defaultValue: 50,
+                description: 'Bereitschaft, für die Beziehung den Wohnort zu wechseln.'
             },
             {
                 attrId: 'pr-familie',
                 label: 'Familie-Wichtigkeit',
                 hint: 'wichtig ?',
                 options: ['Unwichtig', 'Wichtig', 'Sehr wichtig'],
-                defaultValue: 50
+                defaultValue: 50,
+                description: 'Stellenwert der Herkunftsfamilie und regelmäßiger Kontakt.'
             }
         ],
 
@@ -69,14 +75,16 @@ const ProfileReviewConfig = (function() {
                 label: 'Finanzen',
                 hint: 'wichtig ?',
                 options: ['Getrennt', 'Hybrid', 'Gemeinsam'],
-                defaultValue: 50
+                defaultValue: 50,
+                description: 'Umgang mit Geld: getrennte Konten, Mischform oder gemeinsame Kasse.'
             },
             {
                 attrId: 'pr-karriere',
                 label: 'Karriere-Priorität',
                 hint: 'wichtig ?',
                 options: ['Familie', 'Balance', 'Karriere'],
-                defaultValue: 50
+                defaultValue: 50,
+                description: 'Gewichtung zwischen beruflichem Erfolg und Familienleben.'
             }
         ],
 
@@ -86,21 +94,24 @@ const ProfileReviewConfig = (function() {
                 label: 'Gesprächsbedürfnis',
                 hint: 'wichtig ?',
                 options: ['Wenig', 'Mittel', 'Viel'],
-                defaultValue: 50
+                defaultValue: 50,
+                description: 'Bedürfnis nach täglichem Austausch und Gesprächen.'
             },
             {
                 attrId: 'pr-emotional',
                 label: 'Emotionale Offenheit',
                 hint: 'wichtig ?',
                 options: ['Zurückhaltend', 'Mittel', 'Sehr offen'],
-                defaultValue: 50
+                defaultValue: 50,
+                description: 'Bereitschaft, Gefühle und Emotionen zu teilen.'
             },
             {
                 attrId: 'pr-konflikt',
                 label: 'Konfliktverhalten',
                 hint: 'wichtig ?',
                 options: ['Vermeidend', 'Mittel', 'Konfrontativ'],
-                defaultValue: 50
+                defaultValue: 50,
+                description: 'Art der Konfliktbewältigung: ausweichen oder direkt ansprechen.'
             }
         ],
 
@@ -110,21 +121,24 @@ const ProfileReviewConfig = (function() {
                 label: 'Intro/Extrovertiert',
                 hint: 'wichtig ?',
                 options: ['Intro', 'Ambivert', 'Extro'],
-                defaultValue: 50
+                defaultValue: 50,
+                description: 'Energie durch Alleinsein (Intro) oder soziale Kontakte (Extro).'
             },
             {
                 attrId: 'pr-alleinzeit',
                 label: 'Alleinzeit-Bedürfnis',
                 hint: 'wichtig ?',
                 options: ['Wenig', 'Mittel', 'Viel'],
-                defaultValue: 50
+                defaultValue: 50,
+                description: 'Bedürfnis nach Zeit für sich alleine ohne Partner.'
             },
             {
                 attrId: 'pr-freunde',
                 label: 'Freundeskreis',
                 hint: 'wichtig ?',
                 options: ['Getrennt', 'Gemischt', 'Gemeinsam'],
-                defaultValue: 50
+                defaultValue: 50,
+                description: 'Präferenz für eigene Freunde oder gemeinsamen Freundeskreis.'
             }
         ],
 
@@ -134,21 +148,24 @@ const ProfileReviewConfig = (function() {
                 label: 'Körperliche Nähe',
                 hint: 'wichtig ?',
                 options: ['Wenig', 'Mittel', 'Viel'],
-                defaultValue: 50
+                defaultValue: 50,
+                description: 'Bedürfnis nach Berührungen, Umarmungen und körperlicher Nähe.'
             },
             {
                 attrId: 'pr-romantik',
                 label: 'Romantik-Bedürfnis',
                 hint: 'wichtig ?',
                 options: ['Wenig', 'Mittel', 'Viel'],
-                defaultValue: 50
+                defaultValue: 50,
+                description: 'Wunsch nach romantischen Gesten, Überraschungen und Dates.'
             },
             {
                 attrId: 'pr-sex',
                 label: 'Sexuelle Frequenz',
                 hint: 'wichtig ?',
                 options: ['Selten', 'Mittel', 'Häufig'],
-                defaultValue: 50
+                defaultValue: 50,
+                description: 'Gewünschte Häufigkeit von Intimität in der Beziehung.'
             }
         ],
 
@@ -158,21 +175,24 @@ const ProfileReviewConfig = (function() {
                 label: 'Religiosität',
                 hint: 'wichtig ?',
                 options: ['Keine', 'Mittel', 'Stark'],
-                defaultValue: 50
+                defaultValue: 50,
+                description: 'Bedeutung von Religion und Spiritualität im Alltag.'
             },
             {
                 attrId: 'pr-tradition',
                 label: 'Tradition vs. Modern',
                 hint: 'wichtig ?',
                 options: ['Traditionell', 'Gemischt', 'Modern'],
-                defaultValue: 50
+                defaultValue: 50,
+                description: 'Orientierung an traditionellen Werten oder modernen Lebensweisen.'
             },
             {
                 attrId: 'pr-umwelt',
                 label: 'Umweltbewusstsein',
                 hint: 'wichtig ?',
                 options: ['Gering', 'Mittel', 'Hoch'],
-                defaultValue: 50
+                defaultValue: 50,
+                description: 'Wichtigkeit von Nachhaltigkeit und umweltbewusstem Leben.'
             }
         ],
 
@@ -182,14 +202,16 @@ const ProfileReviewConfig = (function() {
                 label: 'Ordnung',
                 hint: 'wichtig ?',
                 options: ['Chaotisch', 'Mittel', 'Ordentlich'],
-                defaultValue: 50
+                defaultValue: 50,
+                description: 'Präferenz für Ordnung und Sauberkeit im Wohnbereich.'
             },
             {
                 attrId: 'pr-reise',
                 label: 'Reise-Frequenz',
                 hint: 'wichtig ?',
                 options: ['Selten', 'Mittel', 'Häufig'],
-                defaultValue: 50
+                defaultValue: 50,
+                description: 'Wunsch nach Reisen und gemeinsamen Urlauben.'
             }
         ]
     };
