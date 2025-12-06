@@ -1,7 +1,8 @@
 /**
  * TRIPLE BUTTON GROUP COMPONENT
  *
- * Wiederverwendbare 3-Option-Button-Gruppe für Profile-Review.
+ * Wiederverwendbare Button-Gruppe für Profile-Review.
+ * Unterstützt 3 oder 5 Optionen mit automatischem Layout.
  * Ersetzt repetitive HTML-Strukturen mit data-driven Rendering.
  *
  * © 2025 Ti-age.de Alle Rechte vorbehalten.
@@ -11,13 +12,25 @@ const TripleButtonGroup = (function() {
     'use strict';
 
     /**
-     * Erstellt HTML für eine Triple-Button-Gruppe
+     * Generiert Werte für die Buttons basierend auf Anzahl der Optionen
+     * @param {number} count - Anzahl der Optionen
+     * @returns {Array<number>} Array mit Werten
+     */
+    function generateValues(count) {
+        if (count === 3) return [25, 50, 75];
+        if (count === 5) return [0, 25, 50, 75, 100];
+        // Fallback: gleichmäßig verteilen
+        return Array.from({ length: count }, (_, i) => Math.round((i / (count - 1)) * 100));
+    }
+
+    /**
+     * Erstellt HTML für eine Button-Gruppe (3 oder 5 Optionen)
      * @param {Object} config - Konfiguration
      * @param {string} config.attrId - Attribut-ID (z.B. 'pr-kinder')
      * @param {string} config.label - Anzeige-Label
      * @param {string} [config.hint] - Optionaler Hinweis in Klammern
-     * @param {Array<string>} config.options - Array mit 3 Button-Labels [links, mitte, rechts]
-     * @param {number} [config.defaultValue=50] - Standard-Wert (25, 50, oder 75)
+     * @param {Array<string>} config.options - Array mit Button-Labels (3 oder 5)
+     * @param {number} [config.defaultValue=50] - Standard-Wert
      * @param {string} [config.cardId] - Optionale Card-ID
      * @param {string} [config.description] - Optionale Beschreibung für Tooltip
      * @returns {string} HTML-String
@@ -25,12 +38,15 @@ const TripleButtonGroup = (function() {
     function render(config) {
         const { attrId, label, hint, options, defaultValue = 50, cardId, description } = config;
 
-        const values = [25, 50, 75];
+        const values = generateValues(options.length);
         const cardIdAttr = cardId ? ` id="${cardId}"` : '';
         const hintHtml = hint ? ` <span class="dimension-hint">(${hint})</span>` : '';
         const infoIconHtml = description
             ? ` <span class="attr-info-icon" title="${description}">ℹ</span>`
             : '';
+
+        // CSS-Klasse für 5-Button-Layout
+        const multiClass = options.length === 5 ? ' five-options' : '';
 
         const buttonsHtml = options.map((optLabel, i) => {
             const isActive = values[i] === defaultValue ? ' active' : '';
@@ -40,7 +56,7 @@ const TripleButtonGroup = (function() {
         return `
                     <div class="profile-review-card"${cardIdAttr}>
                         <div class="compact-dimension-label">${label}${hintHtml}${infoIconHtml}</div>
-                        <div class="profile-review-triple-buttons" data-attr="${attrId}">
+                        <div class="profile-review-triple-buttons${multiClass}" data-attr="${attrId}">
                             ${buttonsHtml}
                         </div>
                     </div>`;
