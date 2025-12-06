@@ -2302,7 +2302,7 @@
             <div class="geschlecht-info-scroll-container">
                 <div class="geschlecht-info-item" style="background: rgba(69, 123, 157, 0.1); border-radius: 8px; padding: 12px; margin-bottom: 16px;">
                     <div class="geschlecht-info-name" style="color: var(--primary);">Zwei-Dimensionales System</div>
-                    <div class="geschlecht-info-desc">Wähle sowohl deinen <strong>Körper</strong> (biologisch/bei Geburt) als auch deine <strong style="color: #f1c40f;">Identität / Psychologische Seele</strong> (wie du dich fühlst).</div>
+                    <div class="geschlecht-info-desc">Wähle deinen <strong>Körper</strong> (biologisch/bei Geburt) und dann deine <strong style="color: #f1c40f;">Identität</strong> – die Optionen passen sich automatisch an.</div>
                 </div>
 
                 <div class="geschlecht-info-item">
@@ -2322,15 +2322,28 @@
                 </div>
 
                 <div class="geschlecht-info-item" style="margin-top: 16px;">
-                    <div class="geschlecht-info-name" style="font-size: 1.1em; color: #f1c40f; font-weight: bold;">IDENTITÄT / Psychologische Seele (Wie du dich fühlst)</div>
+                    <div class="geschlecht-info-name" style="font-size: 1.1em; color: #f1c40f; font-weight: bold;">IDENTITÄT (Wie du dich fühlst)</div>
+                    <div class="geschlecht-info-desc" style="font-style: italic; margin-top: 4px;">Die Optionen hängen vom gewählten Körper ab:</div>
+                </div>
+
+                <div class="geschlecht-info-item" style="margin-top: 12px; padding-left: 8px; border-left: 2px solid var(--text-muted);">
+                    <div class="geschlecht-info-name" style="font-size: 0.9em; color: var(--text-muted);">Bei Körper = Mann oder Frau:</div>
                 </div>
                 <div class="geschlecht-info-item">
-                    <div class="geschlecht-info-name">Mann</div>
-                    <div class="geschlecht-info-desc">Du identifizierst dich als Mann.</div>
+                    <div class="geschlecht-info-name">Cis</div>
+                    <div class="geschlecht-info-desc">Deine Identität entspricht deinem Körper (z.B. Mann + Cis = Cis Mann).</div>
                 </div>
                 <div class="geschlecht-info-item">
-                    <div class="geschlecht-info-name">Frau</div>
-                    <div class="geschlecht-info-desc">Du identifizierst dich als Frau.</div>
+                    <div class="geschlecht-info-name">Trans</div>
+                    <div class="geschlecht-info-desc">Deine Identität entspricht nicht deinem Körper (z.B. Mann + Trans = Trans Frau).</div>
+                </div>
+                <div class="geschlecht-info-item">
+                    <div class="geschlecht-info-name">Suchend</div>
+                    <div class="geschlecht-info-desc">Du bist noch in einer Explorationsphase bezüglich deiner Geschlechtsidentität.</div>
+                </div>
+
+                <div class="geschlecht-info-item" style="margin-top: 12px; padding-left: 8px; border-left: 2px solid var(--text-muted);">
+                    <div class="geschlecht-info-name" style="font-size: 0.9em; color: var(--text-muted);">Bei Körper = Inter:</div>
                 </div>
                 <div class="geschlecht-info-item">
                     <div class="geschlecht-info-name">Nonbinär</div>
@@ -2341,25 +2354,25 @@
                     <div class="geschlecht-info-desc">Deine Geschlechtsidentität verändert sich über Zeit oder wechselt zwischen verschiedenen Identitäten.</div>
                 </div>
                 <div class="geschlecht-info-item">
-                    <div class="geschlecht-info-name">Unsicher</div>
-                    <div class="geschlecht-info-desc">Du bist dir über deine Geschlechtsidentität noch nicht sicher oder befindest dich in einer Explorationsphase.</div>
+                    <div class="geschlecht-info-name">Suchend</div>
+                    <div class="geschlecht-info-desc">Du bist noch in einer Explorationsphase bezüglich deiner Geschlechtsidentität.</div>
                 </div>
 
                 <div class="geschlecht-info-item" style="margin-top: 16px; background: rgba(243, 156, 18, 0.1); border-radius: 8px; padding: 12px;">
                     <div class="geschlecht-info-name" style="font-size: 0.9em; color: var(--warning);">BEISPIELE</div>
                     <div class="geschlecht-info-desc">
-                        <strong>Mann + Mann</strong> = Cis Mann<br>
-                        <strong>Mann + Frau</strong> = Trans Frau<br>
-                        <strong>Mann + Nonbinär</strong> = Nonbinär (AMAB)<br>
-                        <strong>Mann + Fluid</strong> = Genderfluid (AMAB)<br>
-                        <strong>Frau + Frau</strong> = Cis Frau<br>
-                        <strong>Frau + Mann</strong> = Trans Mann<br>
-                        <strong>Frau + Nonbinär</strong> = Nonbinär (AFAB)<br>
-                        <strong>Frau + Fluid</strong> = Genderfluid (AFAB)<br>
-                        <strong>Inter + Nonbinär</strong> = Nonbinär (Intersex)
+                        <strong>Mann + Cis</strong> = Cis Mann<br>
+                        <strong>Mann + Trans</strong> = Trans Frau<br>
+                        <strong>Mann + Suchend</strong> = In Exploration (AMAB)<br>
+                        <strong>Frau + Cis</strong> = Cis Frau<br>
+                        <strong>Frau + Trans</strong> = Trans Mann<br>
+                        <strong>Frau + Suchend</strong> = In Exploration (AFAB)<br>
+                        <strong>Inter + Nonbinär</strong> = Nonbinär (Intersex)<br>
+                        <strong>Inter + Fluid</strong> = Genderfluid (Intersex)<br>
+                        <strong>Inter + Suchend</strong> = In Exploration (Intersex)
                     </div>
                     <div class="geschlecht-info-desc" style="margin-top: 8px; font-size: 0.85em; color: var(--text-muted);">
-                        Unabhängig vom Körper kannst du jede Identität wählen – wie du dich fühlst, zählt.
+                        Die Identitätsoptionen passen sich automatisch an deinen Körper an.
                     </div>
                 </div>
             </div>

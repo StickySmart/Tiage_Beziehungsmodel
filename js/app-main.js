@@ -13452,11 +13452,11 @@
             person = person || 'ich';
             var archetype = typeof archetypeDefinitions !== 'undefined' ? archetypeDefinitions[archetypeKey] : null;
 
-            // Update badge mit Person-Info
+            // Update badge mit Archetyp-Info
             var badge = document.getElementById('profileReviewBadge');
             if (badge && archetype) {
-                var personLabel = person === 'ich' ? 'Single' : 'Partner';
-                badge.textContent = personLabel + '-Profil';
+                var personPrefix = person === 'ich' ? 'Dein' : 'Partner';
+                badge.textContent = personPrefix + ' ' + (archetype.name || archetypeKey) + '-Profil';
             }
 
             // Versuche komponiertes Profil mit Gender-Modifikatoren zu laden
