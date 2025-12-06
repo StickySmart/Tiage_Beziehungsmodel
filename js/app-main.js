@@ -13458,6 +13458,17 @@
                 setTripleBtnValue('pr-politik', mapToTripleValue(inferences.politischesInteresse));
             }
 
+            // Load geschlechtsidentität from current main gender selection
+            if (typeof TiageState !== 'undefined') {
+                var primaryGeschlecht = TiageState.getPrimaryGeschlecht(person);
+                var secondaryGeschlecht = TiageState.getSecondaryGeschlecht(person);
+                if (primaryGeschlecht && secondaryGeschlecht) {
+                    var geschlechtsidentitaetValue = mapSecondaryToGeschlechtsidentitaet(secondaryGeschlecht, primaryGeschlecht);
+                    setTripleBtnValue('pr-geschlecht-sekundaer', geschlechtsidentitaetValue);
+                    console.log('[ProfileReview] Geschlechtsidentität geladen:', primaryGeschlecht, '/', secondaryGeschlecht, '→', geschlechtsidentitaetValue);
+                }
+            }
+
             // Reset changes counter
             profileReviewChangesCount = 0;
             var badge = document.getElementById('profileReviewChangesBadge');
@@ -13664,6 +13675,8 @@
         // Nur die 16 wichtigsten Attribute werden gespeichert
         function getProfileReviewState() {
             return {
+                // GESCHLECHTSIDENTITÄT
+                geschlechtsidentitaet: getTripleBtnValue('pr-geschlecht-sekundaer'),
                 // LEBENSPLANUNG (ohne: zusammen, haustiere, umzug)
                 kinder: document.getElementById('pr-kinder')?.classList.contains('active'),
                 ehe: document.getElementById('pr-ehe')?.classList.contains('active'),
@@ -13699,6 +13712,7 @@
                 } else {
                     // Fallback: Manuelles Reset auf Default 50
                     var tripleAttrs = [
+                        'pr-geschlecht-sekundaer', // Geschlechtsidentität (default 0 = Cis)
                         'pr-kinder', 'pr-ehe', 'pr-zusammen', 'pr-haustiere',
                         'pr-umzug', 'pr-familie', 'pr-finanzen', 'pr-karriere',
                         'pr-gespraech', 'pr-emotional', 'pr-konflikt',
@@ -13723,6 +13737,61 @@
         }
         window.resetProfileReview = resetProfileReview;
 
+        /**
+         * Maps secondary geschlecht back to profile review value
+         * @param {string} secondary - 'mann', 'frau', 'nonbinaer', 'fluid', 'unsicher'
+         * @param {string} primary - Body: 'mann', 'frau', 'inter'
+         * @returns {number} Profile review value (0, 25, 50, 75, 100)
+         */
+        function mapSecondaryToGeschlechtsidentitaet(secondary, primary) {
+            // Nonbinär, Fluid, Unsicher: direct mapping
+            if (secondary === 'nonbinaer') return 50;
+            if (secondary === 'fluid') return 75;
+            if (secondary === 'unsicher') return 100;
+
+            // Cis: identity matches body
+            if (secondary === primary) return 0; // Cis
+
+            // Trans: identity differs from body
+            if ((primary === 'mann' && secondary === 'frau') ||
+                (primary === 'frau' && secondary === 'mann')) {
+                return 25; // Trans
+            }
+
+            // Default: Cis
+            return 0;
+        }
+
+        /**
+         * Maps profile review geschlechtsidentität value to secondary geschlecht
+         * @param {number} value - 0 (Cis), 25 (Trans), 50 (Nonbinär), 75 (Fluid), 100 (Unsicher)
+         * @param {string} primaryGeschlecht - Body: 'mann', 'frau', 'inter'
+         * @returns {string} Secondary value for TiageState
+         */
+        function mapGeschlechtsidentitaetToSecondary(value, primaryGeschlecht) {
+            // Map profile review value to identity type
+            var identityType;
+            if (value <= 12) identityType = 'cis';        // 0
+            else if (value <= 37) identityType = 'trans'; // 25
+            else if (value <= 62) identityType = 'nonbinaer'; // 50
+            else if (value <= 87) identityType = 'fluid'; // 75
+            else identityType = 'unsicher'; // 100
+
+            // For cis/trans, map to actual identity value based on body
+            if (identityType === 'cis') {
+                // Cis: identity = body
+                return primaryGeschlecht; // mann→mann, frau→frau, inter→inter
+            } else if (identityType === 'trans') {
+                // Trans: identity = opposite of body
+                if (primaryGeschlecht === 'mann') return 'frau';
+                if (primaryGeschlecht === 'frau') return 'mann';
+                return primaryGeschlecht; // inter stays inter
+            } else {
+                // Nonbinär, Fluid, Unsicher: use directly
+                return identityType;
+            }
+        }
+
         // Save Profile Review
         function saveProfileReview() {
             var state = getProfileReviewState();
@@ -13731,6 +13800,24 @@
             // Store in TiageState if available
             if (typeof TiageState !== 'undefined') {
                 TiageState.set('profileReview', state);
+
+                // Apply geschlechtsidentität to main gender selection for 'ich'
+                if (state.geschlechtsidentitaet !== undefined) {
+                    var primaryGeschlecht = TiageState.getPrimaryGeschlecht('ich');
+                    if (primaryGeschlecht) {
+                        var secondaryValue = mapGeschlechtsidentitaetToSecondary(
+                            parseInt(state.geschlechtsidentitaet, 10),
+                            primaryGeschlecht
+                        );
+                        TiageState.setSecondaryGeschlecht('ich', secondaryValue);
+                        console.log('Geschlechtsidentität angewendet:', primaryGeschlecht, '→', secondaryValue);
+
+                        // Update UI: trigger geschlecht grid update
+                        if (typeof updateGeschlechtGrid === 'function') {
+                            updateGeschlechtGrid('ich');
+                        }
+                    }
+                }
             }
 
             // Close modal
