@@ -205,6 +205,72 @@ TiageSynthesis.Constants = {
     },
 
     // ═══════════════════════════════════════════════════════════════════════
+    // IDENTITÄTS-RESONANZ-MATRIX
+    // ═══════════════════════════════════════════════════════════════════════
+    // Pirsig: "Qualität entsteht, wenn Muster resonieren"
+    // Ähnliche Identitäten verstehen sich intuitiv.
+    //
+    // Skala: Cis(0) → Trans(25) → Nonbinär(50) → Fluid(75) → Suchend(100)
+    //        Form     Wandel      Jenseits       Fluss       Entdeckung
+
+    IDENTITY_MATRIX: {
+        // Cis: Form = Körper, klare statische Qualität
+        "cis-cis": 100,
+        "cis-trans": 85,
+        "cis-nonbinaer": 70,
+        "cis-fluid": 60,
+        "cis-suchend": 50,
+
+        // Trans: Wandel durchlebt, neue Klarheit gefunden
+        "trans-cis": 85,
+        "trans-trans": 100,
+        "trans-nonbinaer": 80,
+        "trans-fluid": 70,
+        "trans-suchend": 60,
+
+        // Nonbinär: Jenseits der Dualität, bewusste Position
+        "nonbinaer-cis": 70,
+        "nonbinaer-trans": 80,
+        "nonbinaer-nonbinaer": 95,
+        "nonbinaer-fluid": 85,
+        "nonbinaer-suchend": 80,
+
+        // Fluid: Der Fluss, dynamische Qualität
+        "fluid-cis": 60,
+        "fluid-trans": 70,
+        "fluid-nonbinaer": 85,
+        "fluid-fluid": 95,
+        "fluid-suchend": 90,
+
+        // Suchend: Exploration, Anfängergeist (Shoshin)
+        "suchend-cis": 50,
+        "suchend-trans": 60,
+        "suchend-nonbinaer": 80,
+        "suchend-fluid": 90,
+        "suchend-suchend": 100
+    },
+
+    // ═══════════════════════════════════════════════════════════════════════
+    // OFFENHEITS-WERTE (für Resonanz-Bonus)
+    // ═══════════════════════════════════════════════════════════════════════
+    // Osho: "Je offener zwei Flüsse, desto leichter münden sie ineinander"
+    //
+    // Formel: Bonus = (Offenheit_A + Offenheit_B) / 200 × MAX_BONUS
+
+    IDENTITY_OPENNESS: {
+        "cis": 0,           // Statische Qualität - Form ist klar
+        "trans": 25,        // Wandel durchlebt - jetzt gefestigt
+        "nonbinaer": 50,    // Transzendenz der Dualität
+        "fluid": 75,        // Dynamische Qualität - ständige Bewegung
+        "suchend": 100      // Reine Potentialität - Anfängergeist
+    },
+
+    IDENTITY_RESONANCE: {
+        MAX_BONUS: 10,      // Maximaler Offenheits-Bonus
+        WEIGHT: 0.15        // Gewichtung im Gesamt-Score (bereits bei WEIGHTS.geschlecht)
+    },
+
+    // ═══════════════════════════════════════════════════════════════════════
     // EXPLORATION-MODIFIER
     // ═══════════════════════════════════════════════════════════════════════
     // Reduziert Konfidenz wenn jemand "interessiert" ist

@@ -82,14 +82,15 @@ const TiageConfig = (function() {
     };
 
     // SEKUNDÄR = Geist/Identität (wie man sich fühlt)
-    const GESCHLECHT_SECONDARY_TYPES = ['mann', 'frau', 'nonbinaer', 'fluid', 'unsicher'];
+    // Skala: Cis(0) → Trans(25) → Nonbinär(50) → Fluid(75) → Suchend(100)
+    const GESCHLECHT_SECONDARY_TYPES = ['mann', 'frau', 'nonbinaer', 'fluid', 'suchend'];
 
     const GESCHLECHT_SECONDARY_SHORT = {
         'mann': 'M',
         'frau': 'F',
         'nonbinaer': 'NB',
         'fluid': 'FL',
-        'unsicher': '?'
+        'suchend': 'Su'
     };
 
     const GESCHLECHT_SECONDARY_LABELS = {
@@ -97,7 +98,7 @@ const TiageConfig = (function() {
         'frau': 'Frau',
         'nonbinaer': 'Nonbinär',
         'fluid': 'Fluid',
-        'unsicher': 'Unsicher'
+        'suchend': 'Suchend'
     };
 
     // LEGACY: Alte GESCHLECHT_TYPES für Rückwärtskompatibilität (deprecated)
@@ -142,7 +143,7 @@ const TiageConfig = (function() {
         'frau': 'weiblich',
         'nonbinaer': 'nonbinaer',
         'fluid': 'fluid',
-        'unsicher': 'nonbinaer',  // Unsicher wird wie nonbinär behandelt für Orientierung
+        'suchend': 'suchend',  // Suchend = eigene Kategorie (Exploration)
         // Primär-Werte (Fallback)
         'inter': 'inter'
     };

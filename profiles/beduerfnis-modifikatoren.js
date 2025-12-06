@@ -1146,6 +1146,176 @@ const BeduerfnisModifikatoren = {
     },
 
     // ═══════════════════════════════════════════════════════════════════════════
+    // GESCHLECHTSIDENTITÄT-MODIFIKATOREN
+    // ═══════════════════════════════════════════════════════════════════════════
+    //
+    // Skala: Cis(0) → Trans(25) → Nonbinär(50) → Fluid(75) → Suchend(100)
+    //        Form     Wandel      Jenseits       Fluss       Entdeckung
+    //
+    // PIRSIG:
+    // - Cis: Statische Qualität - Form ist klar, gesellschaftlich etabliert
+    // - Trans: Dynamische Qualität durchlebt → neue Statik gefunden
+    // - Nonbinär: Transzendenz der Dualität
+    // - Fluid: Maximale Dynamische Qualität - ständige Bewegung
+    // - Suchend: Reine Potentialität - Anfängergeist (Shoshin)
+    //
+    // OSHO:
+    // - "Werde, wer du bist" - Authentizität über Konformität
+    // - Fluid/Suchend: "Der Fluss weiß nicht wohin, aber er fließt"
+
+    geschlechtsidentitaet: {
+
+        // ─────────────────────────────────────────────────────────────────────────
+        // CIS - Form = Körper
+        // ─────────────────────────────────────────────────────────────────────────
+        // PIRSIG: Statische Qualität - klare, gefestigte Form
+        // OSHO: Kann authentisch sein, aber oft unbewusst übernommen
+        // ─────────────────────────────────────────────────────────────────────────
+        cis: {
+            // Geringeres Bedürfnis nach Identitäts-Akzeptanz (wird vorausgesetzt)
+            akzeptanz: -10,
+            verstanden_werden: -5,
+            gesehen_werden: -5,
+
+            // Höhere Stabilität (weniger Identitäts-Fragen)
+            stabilitaet: +10,
+            bestaendigkeit: +10,
+            sich_sicher_fuehlen: +5,
+
+            // Weniger Selbstausdruck bzgl. Gender
+            selbst_ausdruck: -5,
+            authentizitaet: -5
+        },
+
+        // ─────────────────────────────────────────────────────────────────────────
+        // TRANS - Wandel durchlebt
+        // ─────────────────────────────────────────────────────────────────────────
+        // PIRSIG: Dynamische Qualität durchlebt, neue Klarheit gefunden
+        // OSHO: "Mut, sich gegen die Masse zu stellen"
+        // ─────────────────────────────────────────────────────────────────────────
+        trans: {
+            // Erhöhtes Bedürfnis nach Akzeptanz und Respekt
+            akzeptanz: +25,
+            verstanden_werden: +20,
+            gesehen_werden: +20,
+            respekt: +15,
+
+            // Authentizität hart erkämpft
+            authentizitaet: +25,
+            integritaet: +20,
+            selbst_ausdruck: +20,
+
+            // Community und Zugehörigkeit wichtig
+            zugehoerigkeit: +15,
+            gemeinschaft: +10,
+
+            // Sicherheit (je nach Umfeld)
+            sich_sicher_fuehlen: +15,
+            schutz: +15,
+
+            // Selbstbestimmung zentral
+            selbstbestimmung: +20,
+            waehlen_koennen: +15
+        },
+
+        // ─────────────────────────────────────────────────────────────────────────
+        // NONBINÄR - Jenseits der Dualität
+        // ─────────────────────────────────────────────────────────────────────────
+        // PIRSIG: Transzendenz statischer Kategorien
+        // OSHO: "Jenseits von Mann und Frau liegt das Ganze"
+        // ─────────────────────────────────────────────────────────────────────────
+        nonbinaer: {
+            // Sehr hohes Bedürfnis nach Akzeptanz (oft unsichtbar)
+            akzeptanz: +30,
+            verstanden_werden: +25,
+            gesehen_werden: +25,
+            respekt: +20,
+
+            // Kreativität und Selbstausdruck zentral
+            kreativitaet: +15,
+            selbst_ausdruck: +25,
+            authentizitaet: +25,
+
+            // Freiheit von Kategorien
+            selbstbestimmung: +20,
+            waehlen_koennen: +20,
+            raum_haben: +15,
+
+            // Wachstum und Entdeckung
+            wachstum: +15,
+            entdecken: +15
+        },
+
+        // ─────────────────────────────────────────────────────────────────────────
+        // FLUID - Der Fluss
+        // ─────────────────────────────────────────────────────────────────────────
+        // PIRSIG: Maximale Dynamische Qualität - ständige Bewegung
+        // OSHO: "Das Leben ist ein Fluss, nicht ein gefrorener See"
+        // ─────────────────────────────────────────────────────────────────────────
+        fluid: {
+            // Hohes Bedürfnis nach Akzeptanz (komplexe Identität)
+            akzeptanz: +25,
+            verstanden_werden: +30,
+            gesehen_werden: +20,
+            respekt: +15,
+
+            // Flexibilität und Wandel zentral
+            spontaneitaet: +20,
+            waehlen_koennen: +25,
+            raum_haben: +20,
+
+            // Starker Selbstausdruck
+            selbst_ausdruck: +25,
+            authentizitaet: +20,
+            kreativitaet: +20,
+
+            // Offenheit für Veränderung
+            wachstum: +20,
+            entdecken: +20,
+            herausforderung: +10,
+
+            // Weniger Bedürfnis nach Stabilität
+            stabilitaet: -15,
+            bestaendigkeit: -10
+        },
+
+        // ─────────────────────────────────────────────────────────────────────────
+        // SUCHEND - Anfängergeist (Shoshin)
+        // ─────────────────────────────────────────────────────────────────────────
+        // PIRSIG: Reine Potentialität - noch nicht festgelegt
+        // OSHO: "Im Nicht-Wissen liegt die Offenheit für alles"
+        // ─────────────────────────────────────────────────────────────────────────
+        suchend: {
+            // Sehr hohes Bedürfnis nach Akzeptanz und Raum
+            akzeptanz: +30,
+            verstanden_werden: +30,
+            gesehen_werden: +20,
+            respekt: +15,
+
+            // Exploration zentral
+            entdecken: +30,
+            wachstum: +25,
+            herausforderung: +15,
+            kreativitaet: +15,
+
+            // Raum und Freiheit brauchen
+            raum_haben: +25,
+            selbstbestimmung: +20,
+            waehlen_koennen: +25,
+
+            // Unterstützung auf der Reise
+            unterstuetzung: +20,
+            geduld: +20,
+            vertrauen: +15,
+
+            // Weniger Stabilität (noch im Wandel)
+            stabilitaet: -20,
+            bestaendigkeit: -15,
+            sich_sicher_fuehlen: -10
+        }
+    },
+
+    // ═══════════════════════════════════════════════════════════════════════════
     // STATUS-FAKTOREN
     // ═══════════════════════════════════════════════════════════════════════════
     //
@@ -1179,6 +1349,8 @@ const BeduerfnisModifikatoren = {
      * @param {string} params.geschlechtPrimaryStatus - 'gelebt' oder 'interessiert'
      * @param {string} params.geschlechtSecondary - Sekundäres Geschlecht (optional)
      * @param {string} params.geschlechtSecondaryStatus - 'gelebt' oder 'interessiert'
+     * @param {string} params.geschlechtsidentitaet - 'cis', 'trans', 'nonbinaer', 'fluid', 'suchend' (NEU)
+     * @param {string} params.geschlechtsidentitaetStatus - 'gelebt' oder 'interessiert' (NEU)
      * @param {string} params.orientierung - 'heterosexuell', 'homosexuell', 'bisexuell'
      * @param {string} params.orientierungStatus - 'gelebt' oder 'interessiert'
      * @returns {object} Modifizierte Bedürfnisse
@@ -1194,14 +1366,20 @@ const BeduerfnisModifikatoren = {
             (this.geschlecht[params.geschlechtSecondary] || {}) : {};
         var oriMod = this.orientierung[params.orientierung] || {};
 
+        // NEU: Geschlechtsidentität-Modifikator (cis, trans, nonbinaer, fluid, suchend)
+        var identMod = params.geschlechtsidentitaet ?
+            (this.geschlechtsidentitaet[params.geschlechtsidentitaet] || {}) : {};
+
         // Status-Faktoren
         var domStatus = this.status[params.dominanzStatus] || 1.0;
         var g1Status = this.status[params.geschlechtPrimaryStatus] || 1.0;
         var g2Status = this.status[params.geschlechtSecondaryStatus] || 1.0;
+        var identStatus = this.status[params.geschlechtsidentitaetStatus] || 1.0;
         var oriStatus = this.status[params.orientierungStatus] || 1.0;
 
-        // Sekundäres Geschlecht hat 50% Gewichtung
-        var g2Weight = 0.5;
+        // Gewichtungen
+        var g2Weight = 0.5;      // Sekundäres Geschlecht: 50%
+        var identWeight = 0.75;  // Geschlechtsidentität: 75% (wichtig aber nicht dominant)
 
         // Alle Basis-Bedürfnisse durchgehen
         for (var bed in params.basisBedürfnisse) {
@@ -1211,15 +1389,16 @@ const BeduerfnisModifikatoren = {
             var domDelta = (domMod[bed] || 0) * domStatus;
             var g1Delta = (gesch1Mod[bed] || 0) * g1Status;
             var g2Delta = (gesch2Mod[bed] || 0) * g2Weight * g2Status;
+            var identDelta = (identMod[bed] || 0) * identWeight * identStatus;
             var oriDelta = (oriMod[bed] || 0) * oriStatus;
 
             // Berechne finalen Wert (0-100 begrenzt)
-            var final = basis + domDelta + g1Delta + g2Delta + oriDelta;
+            var final = basis + domDelta + g1Delta + g2Delta + identDelta + oriDelta;
             ergebnis[bed] = Math.round(Math.max(0, Math.min(100, final)));
         }
 
         // Neue Bedürfnisse hinzufügen die nur durch Modifikatoren kommen
-        var alleMods = [domMod, gesch1Mod, gesch2Mod, oriMod];
+        var alleMods = [domMod, gesch1Mod, gesch2Mod, identMod, oriMod];
         var alleKeys = new Set();
 
         alleMods.forEach(function(mod) {
@@ -1234,9 +1413,10 @@ const BeduerfnisModifikatoren = {
                 var domDelta = (domMod[bed] || 0) * domStatus;
                 var g1Delta = (gesch1Mod[bed] || 0) * g1Status;
                 var g2Delta = (gesch2Mod[bed] || 0) * g2Weight * g2Status;
+                var identDelta = (identMod[bed] || 0) * identWeight * identStatus;
                 var oriDelta = (oriMod[bed] || 0) * oriStatus;
 
-                var neuWert = 50 + domDelta + g1Delta + g2Delta + oriDelta;
+                var neuWert = 50 + domDelta + g1Delta + g2Delta + identDelta + oriDelta;
                 if (Math.abs(neuWert - 50) > 5) {  // Nur wenn signifikant modifiziert
                     ergebnis[bed] = Math.round(Math.max(0, Math.min(100, neuWert)));
                 }
@@ -1268,12 +1448,16 @@ const BeduerfnisModifikatoren = {
      *
      * @param {object} profil1 - Kernbedürfnisse Person 1
      * @param {object} profil2 - Kernbedürfnisse Person 2
-     * @returns {object} { score, gemeinsam, unterschiedlich, komplementaer }
+     * @param {object} options - Optionale Parameter für erweiterte Berechnung
+     * @param {string} options.identitaet1 - Geschlechtsidentität Person 1
+     * @param {string} options.identitaet2 - Geschlechtsidentität Person 2
+     * @returns {object} { score, gemeinsam, unterschiedlich, komplementaer, identitaetsResonanz }
      */
-    berechneÜbereinstimmung: function(profil1, profil2) {
+    berechneÜbereinstimmung: function(profil1, profil2, options) {
         var gemeinsam = [];
         var unterschiedlich = [];
         var komplementaer = [];
+        options = options || {};
 
         var summeÜbereinstimmung = 0;
         var summeGewicht = 0;
@@ -1305,20 +1489,96 @@ const BeduerfnisModifikatoren = {
                 summeÜbereinstimmung += (100 - diff) * gewicht * 0.7;
             } else {
                 // Unterschiedlich: Potentieller Konflikt
-                unterschiedlich.push({ bedürfnis: bed, wert1: wert1, wert2: wert2 });
+                unterschiedlich.push({ bedürfnis: bed, wert1: wert1, wert2: wert2, differenz: diff });
                 summeÜbereinstimmung += (100 - diff) * gewicht * 0.3;
             }
 
             summeGewicht += gewicht;
         });
 
-        var score = summeGewicht > 0 ? Math.round(summeÜbereinstimmung / summeGewicht) : 50;
+        var basisScore = summeGewicht > 0 ? Math.round(summeÜbereinstimmung / summeGewicht) : 50;
+
+        // NEU: Identitäts-Resonanz berechnen und als Bonus/Malus einrechnen
+        var identitaetsResonanz = null;
+        var finalScore = basisScore;
+
+        if (options.identitaet1 && options.identitaet2) {
+            identitaetsResonanz = this.berechneIdentitaetsResonanz(
+                options.identitaet1,
+                options.identitaet2
+            );
+
+            // Resonanz-Bonus/Malus: Abweichung von 75 (neutral) als Modifikator
+            // Score 100 → +5 Bonus, Score 50 → -5 Malus
+            var resonanzModifikator = (identitaetsResonanz.score - 75) / 5;
+            finalScore = Math.round(Math.max(0, Math.min(100, basisScore + resonanzModifikator)));
+        }
 
         return {
-            score: score,
+            score: finalScore,
+            basisScore: basisScore,
             gemeinsam: gemeinsam,
             unterschiedlich: unterschiedlich,
-            komplementaer: komplementaer
+            komplementaer: komplementaer,
+            identitaetsResonanz: identitaetsResonanz
+        };
+    },
+
+    /**
+     * Berechnet Identitäts-Resonanz zwischen zwei Geschlechtsidentitäten
+     *
+     * Philosophie:
+     * - Pirsig: "Qualität entsteht, wenn Muster resonieren" → Matrix
+     * - Osho: "Je offener zwei Flüsse, desto leichter münden sie ineinander" → Bonus
+     *
+     * @param {string} id1 - Geschlechtsidentität Person 1 (cis, trans, nonbinaer, fluid, suchend)
+     * @param {string} id2 - Geschlechtsidentität Person 2
+     * @returns {object} { score, matrixScore, opennessBonus, isWarning }
+     */
+    berechneIdentitaetsResonanz: function(id1, id2) {
+        // Normalisieren
+        id1 = (id1 || 'cis').toLowerCase();
+        id2 = (id2 || 'cis').toLowerCase();
+
+        // Identitäts-Matrix (Ähnlichkeit)
+        var matrix = {
+            "cis-cis": 100, "cis-trans": 85, "cis-nonbinaer": 70, "cis-fluid": 60, "cis-suchend": 50,
+            "trans-cis": 85, "trans-trans": 100, "trans-nonbinaer": 80, "trans-fluid": 70, "trans-suchend": 60,
+            "nonbinaer-cis": 70, "nonbinaer-trans": 80, "nonbinaer-nonbinaer": 95, "nonbinaer-fluid": 85, "nonbinaer-suchend": 80,
+            "fluid-cis": 60, "fluid-trans": 70, "fluid-nonbinaer": 85, "fluid-fluid": 95, "fluid-suchend": 90,
+            "suchend-cis": 50, "suchend-trans": 60, "suchend-nonbinaer": 80, "suchend-fluid": 90, "suchend-suchend": 100
+        };
+
+        // Offenheits-Werte
+        var openness = {
+            "cis": 0, "trans": 25, "nonbinaer": 50, "fluid": 75, "suchend": 100
+        };
+
+        // Matrix-Lookup
+        var matrixKey = id1 + '-' + id2;
+        var matrixScore = matrix[matrixKey] !== undefined ? matrix[matrixKey] : 75;
+
+        // Offenheits-Bonus: (O1 + O2) / 200 × 10
+        var o1 = openness[id1] !== undefined ? openness[id1] : 50;
+        var o2 = openness[id2] !== undefined ? openness[id2] : 50;
+        var opennessBonus = ((o1 + o2) / 200) * 10;
+
+        var finalScore = Math.min(100, Math.round(matrixScore + opennessBonus));
+
+        // Warnung wenn sehr unterschiedlich (Score < 60)
+        var isWarning = finalScore < 60;
+
+        return {
+            score: finalScore,
+            matrixScore: matrixScore,
+            opennessBonus: Math.round(opennessBonus * 10) / 10,
+            identity1: id1,
+            identity2: id2,
+            openness1: o1,
+            openness2: o2,
+            isWarning: isWarning,
+            warningMessage: isWarning ?
+                'Große Unterschiede in der Geschlechtsidentität - kann zusätzliche Kommunikation erfordern' : null
         };
     }
 };
