@@ -20,9 +20,12 @@ const ProfileReviewConfig = (function() {
                 cardId: 'pr-geschlecht-sekundaer-card',
                 label: 'Geschlechtsidentität',
                 hint: 'Sekundär',
-                options: ['Cis', 'Trans', 'Nonbinär', 'Fluid', 'Suchend'],
+                // Options are dynamically set in updateGeschlechtsidentitaetOptions:
+                // Mann/Frau: ['Cis', 'Trans', 'Suchend']
+                // Inter: ['Nonbinär', 'Fluid', 'Suchend']
+                options: ['Cis', 'Trans', 'Suchend'],
                 defaultValue: 0,
-                description: 'Geschlechtsidentität: Cis (Form = Körper), Trans (Wandel durchlebt), Nonbinär (jenseits der Dualität), Fluid (fließend), Suchend (in Exploration).'
+                description: 'Geschlechtsidentität: Cis (Identität = Körper), Trans (Identität ≠ Körper), Suchend (in Exploration). Bei Inter: Nonbinär, Fluid, Suchend.'
             }
         ],
 
