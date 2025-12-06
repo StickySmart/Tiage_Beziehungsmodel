@@ -3905,7 +3905,7 @@
                 sOptions = [
                     { value: 'nonbinaer', label: TiageI18n.t('geschlecht.secondary.nonbinaer', 'Nonbinär') },
                     { value: 'fluid', label: TiageI18n.t('geschlecht.secondary.fluid', 'Fluid') },
-                    { value: 'unsicher', label: TiageI18n.t('geschlecht.secondary.unsicher', 'Unsicher') }
+                    { value: 'suchend', label: TiageI18n.t('geschlecht.secondary.suchend', 'Suchend') }
                 ];
             } else {
                 // Mann or Frau - alle Identitäts-Optionen verfügbar
@@ -3914,7 +3914,7 @@
                     { value: 'trans', label: TiageI18n.t('geschlecht.secondary.trans', 'Trans') },
                     { value: 'nonbinaer', label: TiageI18n.t('geschlecht.secondary.nonbinaer', 'Nonbinär') },
                     { value: 'fluid', label: TiageI18n.t('geschlecht.secondary.fluid', 'Fluid') },
-                    { value: 'unsicher', label: TiageI18n.t('geschlecht.secondary.unsicher', 'Unsicher') }
+                    { value: 'suchend', label: TiageI18n.t('geschlecht.secondary.suchend', 'Suchend') }
                 ];
             }
 
@@ -4063,7 +4063,7 @@
          * Update secondary geschlecht from external source (e.g., Profile Review Modal)
          * Syncs personDimensions with the new value and updates UI
          * @param {string} person - 'ich' or 'partner'
-         * @param {string} secondaryValue - New secondary value ('mann', 'frau', 'nonbinaer', 'fluid', 'unsicher')
+         * @param {string} secondaryValue - New secondary value ('mann', 'frau', 'nonbinaer', 'fluid', 'suchend')
          */
         function setSecondaryGeschlechtAndSync(person, secondaryValue) {
             if (!personDimensions[person].geschlecht) {
@@ -4232,13 +4232,15 @@
             const geschlechtSOptionsMannFrau = [
                 { value: 'cis', label: TiageI18n.t('geschlecht.secondary.cis', 'Cis') },
                 { value: 'trans', label: TiageI18n.t('geschlecht.secondary.trans', 'Trans') },
-                { value: 'unsicher', label: TiageI18n.t('geschlecht.secondary.unsicher', 'Unsicher') }
+                { value: 'nonbinaer', label: TiageI18n.t('geschlecht.secondary.nonbinaer', 'Nonbinär') },
+                { value: 'fluid', label: TiageI18n.t('geschlecht.secondary.fluid', 'Fluid') },
+                { value: 'suchend', label: TiageI18n.t('geschlecht.secondary.suchend', 'Suchend') }
             ];
             // Für P = Inter:
             const geschlechtSOptionsInter = [
                 { value: 'nonbinaer', label: TiageI18n.t('geschlecht.secondary.nonbinaer', 'Nonbinär') },
                 { value: 'fluid', label: TiageI18n.t('geschlecht.secondary.fluid', 'Fluid') },
-                { value: 'unsicher', label: TiageI18n.t('geschlecht.secondary.unsicher', 'Unsicher') }
+                { value: 'suchend', label: TiageI18n.t('geschlecht.secondary.suchend', 'Suchend') }
             ];
 
             // Dominanz Optionen
@@ -13892,13 +13894,13 @@
 
             var options, values;
             if (primaryGeschlecht === 'inter') {
-                // Inter: only Nonbinär, Fluid, Unsicher (3 options)
-                options = ['Nonbinär', 'Fluid', 'Unsicher'];
+                // Inter: only Nonbinär, Fluid, Suchend (3 options)
+                options = ['Nonbinär', 'Fluid', 'Suchend'];
                 values = [50, 75, 100];
                 buttonsContainer.classList.remove('five-options');
             } else {
                 // Mann/Frau or no selection: all 5 options
-                options = ['Cis', 'Trans', 'Nonbinär', 'Fluid', 'Unsicher'];
+                options = ['Cis', 'Trans', 'Nonbinär', 'Fluid', 'Suchend'];
                 values = [0, 25, 50, 75, 100];
                 buttonsContainer.classList.add('five-options');
             }
@@ -13914,9 +13916,9 @@
 
         /**
          * Maps secondary geschlecht back to profile review value
-         * For Mann/Frau: Cis=0, Trans=25, Nonbinär=50, Fluid=75, Unsicher=100
-         * For Inter: Nonbinär=50, Fluid=75, Unsicher=100 (no Cis/Trans)
-         * @param {string} secondary - 'mann', 'frau', 'nonbinaer', 'fluid', 'unsicher'
+         * For Mann/Frau: Cis=0, Trans=25, Nonbinär=50, Fluid=75, Suchend=100
+         * For Inter: Nonbinär=50, Fluid=75, Suchend=100 (no Cis/Trans)
+         * @param {string} secondary - 'mann', 'frau', 'nonbinaer', 'fluid', 'suchend'
          * @param {string} primary - Body: 'mann', 'frau', 'inter'
          * @returns {number} Profile review value
          */
@@ -13925,14 +13927,14 @@
             if (primary === 'inter') {
                 if (secondary === 'nonbinaer') return 50;
                 if (secondary === 'fluid') return 75;
-                if (secondary === 'unsicher') return 100;
+                if (secondary === 'suchend' || secondary === 'unsicher') return 100;
                 return 50; // Default to Nonbinär for Inter
             }
 
-            // For Mann/Frau: Nonbinär, Fluid, Unsicher map directly
+            // For Mann/Frau: Nonbinär, Fluid, Suchend map directly
             if (secondary === 'nonbinaer') return 50;
             if (secondary === 'fluid') return 75;
-            if (secondary === 'unsicher') return 100;
+            if (secondary === 'suchend' || secondary === 'unsicher') return 100;
 
             // Cis: identity matches body
             if (secondary === primary) return 0; // Cis
@@ -13949,18 +13951,18 @@
 
         /**
          * Maps profile review geschlechtsidentität value to secondary geschlecht
-         * For Mann/Frau: 0=Cis, 25=Trans, 50=Nonbinär, 75=Fluid, 100=Unsicher
-         * For Inter: 50=Nonbinär, 75=Fluid, 100=Unsicher (no Cis/Trans)
+         * For Mann/Frau: 0=Cis, 25=Trans, 50=Nonbinär, 75=Fluid, 100=Suchend
+         * For Inter: 50=Nonbinär, 75=Fluid, 100=Suchend (no Cis/Trans)
          * @param {number} value - Profile review button value
          * @param {string} primaryGeschlecht - Body: 'mann', 'frau', 'inter'
          * @returns {string} Secondary value for TiageState
          */
         function mapGeschlechtsidentitaetToSecondary(value, primaryGeschlecht) {
-            // For Inter: only nonbinaer/fluid/unsicher are valid
+            // For Inter: only nonbinaer/fluid/suchend are valid
             if (primaryGeschlecht === 'inter') {
                 if (value <= 62) return 'nonbinaer'; // 50 or lower
                 if (value <= 87) return 'fluid';     // 75
-                return 'unsicher';                   // 100
+                return 'suchend';                    // 100
             }
 
             // For Mann/Frau: map to identity type
@@ -13969,7 +13971,7 @@
             else if (value <= 37) identityType = 'trans'; // 25
             else if (value <= 62) identityType = 'nonbinaer'; // 50
             else if (value <= 87) identityType = 'fluid'; // 75
-            else identityType = 'unsicher'; // 100
+            else identityType = 'suchend'; // 100
 
             // For cis/trans, map to actual identity value based on body
             if (identityType === 'cis') {
@@ -13981,7 +13983,7 @@
                 if (primaryGeschlecht === 'frau') return 'mann';
             }
 
-            // Nonbinär, Fluid, Unsicher: use directly
+            // Nonbinär, Fluid, Suchend: use directly
             return identityType;
         }
 
