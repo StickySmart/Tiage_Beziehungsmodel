@@ -113,9 +113,12 @@ const TiageHelpers = (function() {
                 'nonbinär': 'nonbinaer',
                 'mann': 'maennlich',
                 'frau': 'weiblich',
+                'cis': 'kongruent',
+                'trans': 'gewandelt',
                 'nonbinaer': 'nonbinaer',
                 'fluid': 'fluid',
-                'unsicher': 'nonbinaer',
+                'suchend': 'suchend',
+                'unsicher': 'suchend',  // Legacy support
                 'inter': 'inter'
             };
             return fallbackMap[geschlecht] || 'andere';

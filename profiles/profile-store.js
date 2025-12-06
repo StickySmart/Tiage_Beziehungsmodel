@@ -2,15 +2,15 @@
  * TIAGE PROFILE STORE
  *
  * Kompositions-basiertes Profil-System mit LocalForage-Caching.
- * Generiert 1248 einzigartige Profile aus Basis-Komponenten:
- * - 8 Archetypen × 13 P/S-Gender × 4 Dominanz × 3 Orientierung
+ * Generiert 864 einzigartige Profile aus Basis-Komponenten:
+ * - 8 Archetypen × 9 P/S-Gender × 4 Dominanz × 3 Orientierung
  *
- * P/S-Gender Kombinationen (13):
- * - Mann: cis, trans, nonbinaer, fluid, unsicher (5)
- * - Frau: cis, trans, nonbinaer, fluid, unsicher (5)
- * - Inter: nonbinaer, fluid, unsicher (3)
+ * P/S-Gender Kombinationen (9) - KONTEXTABHÄNGIG:
+ * - Mann (binär): cis, trans, suchend (3)
+ * - Frau (binär): cis, trans, suchend (3)
+ * - Inter (divers): nonbinaer, fluid, suchend (3)
  *
- * Statt 1248 vollständige Profile im DOM zu laden, werden Profile
+ * Statt 864 vollständige Profile im DOM zu laden, werden Profile
  * bei Bedarf komponiert und in IndexedDB gecacht.
  *
  * KOMPOSITION beinhaltet:
@@ -39,17 +39,18 @@ var TiageProfileStore = (function() {
 
     // ════════════════════════════════════════════════════════════════════════
     // GENDER-MODIFIKATOREN (9 P/S-Kombinationen)
+    // Kontextabhängig: Binär (Cis/Trans/Suchend) vs. Divers (NB/Fluid/Suchend)
     // ════════════════════════════════════════════════════════════════════════
 
     var genderModifiers = {
 
         // ─────────────────────────────────────────────────────────────────────
-        // MANN (P) Kombinationen
+        // MANN (P) Kombinationen - BINÄR: Cis, Trans, Suchend
         // ─────────────────────────────────────────────────────────────────────
 
         'mann-cis': {
             key: 'mann-cis',
-            label: 'Mann (Cis)',
+            label: 'Cis-Mann',
             effectiveIdentity: 'maennlich',
             body: 'mann',
             identity: 'cis',
@@ -111,13 +112,13 @@ var TiageProfileStore = (function() {
             osho: 'Authentizität über Konvention. Die innere Wahrheit transzendiert den Körper.'
         },
 
-        'mann-unsicher': {
-            key: 'mann-unsicher',
-            label: 'Mann (Unsicher)',
-            effectiveIdentity: 'nonbinaer',
+        'mann-suchend': {
+            key: 'mann-suchend',
+            label: 'Mann (Suchend)',
+            effectiveIdentity: 'suchend',
             body: 'mann',
-            identity: 'unsicher',
-            description: 'Männlicher Körper, unsichere/fragende Identität',
+            identity: 'suchend',
+            description: 'Männlicher Körper, suchende/fragende Identität',
 
             modifiers: {
                 emotionaleOffenheit: 0.1,       // Offener durch Selbstreflexion
@@ -142,74 +143,13 @@ var TiageProfileStore = (function() {
             osho: 'Ehrliche Selbsterforschung. Der Mut zu sagen "Ich weiß es noch nicht".'
         },
 
-        'mann-nonbinaer': {
-            key: 'mann-nonbinaer',
-            label: 'Nonbinär (AMAB)',
-            effectiveIdentity: 'nonbinaer',
-            body: 'mann',
-            identity: 'nonbinaer',
-            description: 'Männlicher Körper (AMAB), nonbinäre Identität',
-
-            modifiers: {
-                emotionaleOffenheit: 0.1,       // Offener
-                kommunikationsstil: 0,          // Neutral
-                konfliktverhalten: 0,           // Neutral
-                familieWichtigkeit: -0.05,      // Etwas niedriger
-                traditionenWichtigkeit: -0.2,   // Weniger traditionell
-                openness: 0.25                  // Hohe Offenheit
-            },
-
-            categoryModifiers: {
-                A: +3,      // Offener für verschiedene Beziehungsformen
-                B: -4,      // Weniger traditionell
-                C: 0,       // Neutral
-                D: +4,      // Autonom durch Selbstfindung
-                E: +4,      // Reflektierter
-                F: -4       // Gesellschaftlich weniger normativ
-            },
-
-            pirsig: 'Jenseits binärer statischer Muster - dynamische Qualität mit männlichem Körper.',
-            osho: 'Die natürliche Vielfalt des Lebens. Authentizität jenseits der Körperform.'
-        },
-
-        'mann-fluid': {
-            key: 'mann-fluid',
-            label: 'Fluid (AMAB)',
-            effectiveIdentity: 'fluid',
-            body: 'mann',
-            identity: 'fluid',
-            description: 'Männlicher Körper (AMAB), fluide Identität',
-
-            modifiers: {
-                emotionaleOffenheit: 0.15,      // Offener
-                kommunikationsstil: 0,          // Neutral
-                konfliktverhalten: 0,           // Neutral
-                familieWichtigkeit: -0.05,      // Etwas niedriger
-                traditionenWichtigkeit: -0.25,  // Deutlich weniger traditionell
-                openness: 0.3,                  // Sehr hohe Offenheit
-                flexibility: 0.2                // Hohe Flexibilität
-            },
-
-            categoryModifiers: {
-                A: +4,      // Sehr offen für Beziehungsformen
-                B: -5,      // Sehr wenig traditionell
-                C: +1,      // Flexibel
-                D: +5,      // Hohe Autonomie
-                E: +5,      // Sehr reflektiert
-                F: -5       // Gesellschaftlich komplex
-            },
-
-            pirsig: 'Maximale dynamische Qualität - Identität als Prozess, nicht Zustand.',
-            osho: 'Wie der Fluss - nie zweimal dasselbe, immer authentisch.'
-        },
-
         // ─────────────────────────────────────────────────────────────────────
-        // FRAU (P) Kombinationen
+        // FRAU (P) Kombinationen - BINÄR: Cis, Trans, Suchend
         // ─────────────────────────────────────────────────────────────────────
 
         'frau-cis': {
             key: 'frau-cis',
-            label: 'Frau (Cis)',
+            label: 'Cis-Frau',
             effectiveIdentity: 'weiblich',
             body: 'frau',
             identity: 'cis',
@@ -266,13 +206,13 @@ var TiageProfileStore = (function() {
             osho: 'Authentizität über Konvention. Die innere Wahrheit transzendiert den Körper.'
         },
 
-        'frau-unsicher': {
-            key: 'frau-unsicher',
-            label: 'Frau (Unsicher)',
-            effectiveIdentity: 'nonbinaer',
+        'frau-suchend': {
+            key: 'frau-suchend',
+            label: 'Frau (Suchend)',
+            effectiveIdentity: 'suchend',
             body: 'frau',
-            identity: 'unsicher',
-            description: 'Weiblicher Körper, unsichere/fragende Identität',
+            identity: 'suchend',
+            description: 'Weiblicher Körper, suchende/fragende Identität',
 
             modifiers: {
                 emotionaleOffenheit: 0.15,      // Offener durch Selbstreflexion
@@ -297,69 +237,8 @@ var TiageProfileStore = (function() {
             osho: 'Ehrliche Selbsterforschung. Der Mut zu sagen "Ich weiß es noch nicht".'
         },
 
-        'frau-nonbinaer': {
-            key: 'frau-nonbinaer',
-            label: 'Nonbinär (AFAB)',
-            effectiveIdentity: 'nonbinaer',
-            body: 'frau',
-            identity: 'nonbinaer',
-            description: 'Weiblicher Körper (AFAB), nonbinäre Identität',
-
-            modifiers: {
-                emotionaleOffenheit: 0.1,       // Offener
-                kommunikationsstil: 0,          // Neutral
-                konfliktverhalten: 0,           // Neutral
-                familieWichtigkeit: -0.05,      // Etwas niedriger
-                traditionenWichtigkeit: -0.2,   // Weniger traditionell
-                openness: 0.25                  // Hohe Offenheit
-            },
-
-            categoryModifiers: {
-                A: +3,      // Offener für verschiedene Beziehungsformen
-                B: -4,      // Weniger traditionell
-                C: 0,       // Neutral
-                D: +4,      // Autonom durch Selbstfindung
-                E: +4,      // Reflektierter
-                F: -4       // Gesellschaftlich weniger normativ
-            },
-
-            pirsig: 'Jenseits binärer statischer Muster - dynamische Qualität mit weiblichem Körper.',
-            osho: 'Die natürliche Vielfalt des Lebens. Authentizität jenseits der Körperform.'
-        },
-
-        'frau-fluid': {
-            key: 'frau-fluid',
-            label: 'Fluid (AFAB)',
-            effectiveIdentity: 'fluid',
-            body: 'frau',
-            identity: 'fluid',
-            description: 'Weiblicher Körper (AFAB), fluide Identität',
-
-            modifiers: {
-                emotionaleOffenheit: 0.15,      // Offener
-                kommunikationsstil: 0,          // Neutral
-                konfliktverhalten: 0,           // Neutral
-                familieWichtigkeit: -0.05,      // Etwas niedriger
-                traditionenWichtigkeit: -0.25,  // Deutlich weniger traditionell
-                openness: 0.3,                  // Sehr hohe Offenheit
-                flexibility: 0.2                // Hohe Flexibilität
-            },
-
-            categoryModifiers: {
-                A: +4,      // Sehr offen für Beziehungsformen
-                B: -5,      // Sehr wenig traditionell
-                C: +1,      // Flexibel
-                D: +5,      // Hohe Autonomie
-                E: +5,      // Sehr reflektiert
-                F: -5       // Gesellschaftlich komplex
-            },
-
-            pirsig: 'Maximale dynamische Qualität - Identität als Prozess, nicht Zustand.',
-            osho: 'Wie der Fluss - nie zweimal dasselbe, immer authentisch.'
-        },
-
         // ─────────────────────────────────────────────────────────────────────
-        // INTER (P) Kombinationen
+        // INTER (P) Kombinationen - DIVERS: Nonbinär, Fluid, Suchend
         // ─────────────────────────────────────────────────────────────────────
 
         'inter-nonbinaer': {
@@ -423,13 +302,13 @@ var TiageProfileStore = (function() {
             osho: 'Wie der Fluss - nie zweimal dasselbe, immer authentisch.'
         },
 
-        'inter-unsicher': {
-            key: 'inter-unsicher',
-            label: 'Inter (Unsicher)',
-            effectiveIdentity: 'nonbinaer',
+        'inter-suchend': {
+            key: 'inter-suchend',
+            label: 'Inter (Suchend)',
+            effectiveIdentity: 'suchend',
             body: 'inter',
-            identity: 'unsicher',
-            description: 'Intersex-Körper, unsichere/fragende Identität',
+            identity: 'suchend',
+            description: 'Intersex-Körper, suchende/fragende Identität',
 
             modifiers: {
                 emotionaleOffenheit: 0.1,       // Offener
@@ -822,13 +701,14 @@ var TiageProfileStore = (function() {
 
         /**
          * Gibt alle gültigen S-Optionen für ein P zurück
+         * Kontextabhängig: Binär (Cis/Trans/Suchend) vs. Divers (NB/Fluid/Suchend)
          */
         getSecondaryOptionsForPrimary: function(pGender) {
             if (pGender === 'mann' || pGender === 'frau') {
-                return ['cis', 'trans', 'nonbinaer', 'fluid', 'unsicher'];
+                return ['cis', 'trans', 'suchend'];  // Binär
             }
             if (pGender === 'inter') {
-                return ['nonbinaer', 'fluid', 'unsicher'];
+                return ['nonbinaer', 'fluid', 'suchend'];  // Divers
             }
             return [];
         },
@@ -850,14 +730,14 @@ var TiageProfileStore = (function() {
             if (!db) {
                 return Promise.resolve({
                     cachedProfiles: 0,
-                    maxProfiles: 8 * 13 * 4 * 3,
+                    maxProfiles: 8 * 9 * 4 * 3,  // 864
                     localforageAvailable: false
                 });
             }
             return db.length().then(function(count) {
                 return {
                     cachedProfiles: count,
-                    maxProfiles: 8 * 13 * 4 * 3,  // 1248
+                    maxProfiles: 8 * 9 * 4 * 3,  // 864
                     localforageAvailable: true
                 };
             });

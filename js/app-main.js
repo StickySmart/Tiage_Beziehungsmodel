@@ -13851,8 +13851,9 @@
 
         /**
          * Updates the geschlechtsidentität card options based on primary geschlecht
-         * - Mann/Frau: Cis, Trans, Nonbinär, Fluid, Unsicher (5 options)
-         * - Inter: Nonbinär, Fluid, Unsicher (3 options)
+         * KONTEXTABHÄNGIG:
+         * - Mann/Frau (binär): Cis, Trans, Suchend (3 options)
+         * - Inter (divers): Nonbinär, Fluid, Suchend (3 options)
          * @param {string} primaryGeschlecht - 'mann', 'frau', 'inter', or null
          */
         function updateGeschlechtsidentitaetOptions(primaryGeschlecht) {
@@ -13864,16 +13865,15 @@
 
             var options, values;
             if (primaryGeschlecht === 'inter') {
-                // Inter: only Nonbinär, Fluid, Unsicher (3 options)
-                options = ['Nonbinär', 'Fluid', 'Unsicher'];
-                values = [50, 75, 100];
-                buttonsContainer.classList.remove('five-options');
+                // Inter (divers): Nonbinär, Fluid, Suchend (3 options)
+                options = ['Nonbinär', 'Fluid', 'Suchend'];
+                values = [0, 50, 100];
             } else {
-                // Mann/Frau or no selection: all 5 options
-                options = ['Cis', 'Trans', 'Nonbinär', 'Fluid', 'Unsicher'];
-                values = [0, 25, 50, 75, 100];
-                buttonsContainer.classList.add('five-options');
+                // Mann/Frau (binär): Cis, Trans, Suchend (3 options)
+                options = ['Cis', 'Trans', 'Suchend'];
+                values = [0, 50, 100];
             }
+            buttonsContainer.classList.remove('five-options');
 
             // Regenerate buttons
             var buttonsHtml = options.map(function(label, i) {
@@ -13886,33 +13886,34 @@
 
         /**
          * Maps secondary geschlecht back to profile review value
-         * For Mann/Frau: Cis=0, Trans=25, Nonbinär=50, Fluid=75, Unsicher=100
-         * For Inter: Nonbinär=50, Fluid=75, Unsicher=100 (no Cis/Trans)
-         * @param {string} secondary - 'mann', 'frau', 'nonbinaer', 'fluid', 'unsicher'
+         * KONTEXTABHÄNGIG (3 Optionen pro Kontext):
+         * - Mann/Frau (binär): Cis=0, Trans=50, Suchend=100
+         * - Inter (divers): Nonbinär=0, Fluid=50, Suchend=100
+         * @param {string} secondary - 'cis', 'trans', 'suchend', 'nonbinaer', 'fluid'
          * @param {string} primary - Body: 'mann', 'frau', 'inter'
          * @returns {number} Profile review value
          */
         function mapSecondaryToGeschlechtsidentitaet(secondary, primary) {
-            // For Inter: only these three options exist
+            // For Inter (divers): Nonbinär=0, Fluid=50, Suchend=100
             if (primary === 'inter') {
-                if (secondary === 'nonbinaer') return 50;
-                if (secondary === 'fluid') return 75;
-                if (secondary === 'unsicher') return 100;
-                return 50; // Default to Nonbinär for Inter
+                if (secondary === 'nonbinaer') return 0;
+                if (secondary === 'fluid') return 50;
+                if (secondary === 'suchend') return 100;
+                return 0; // Default to Nonbinär for Inter
             }
 
-            // For Mann/Frau: Nonbinär, Fluid, Unsicher map directly
-            if (secondary === 'nonbinaer') return 50;
-            if (secondary === 'fluid') return 75;
-            if (secondary === 'unsicher') return 100;
+            // For Mann/Frau (binär): Cis=0, Trans=50, Suchend=100
+            if (secondary === 'cis') return 0;
+            if (secondary === 'trans') return 50;
+            if (secondary === 'suchend') return 100;
 
-            // Cis: identity matches body
+            // Legacy support: identity matches body = Cis
             if (secondary === primary) return 0; // Cis
 
-            // Trans: identity differs from body
+            // Legacy support: identity differs from body = Trans
             if ((primary === 'mann' && secondary === 'frau') ||
                 (primary === 'frau' && secondary === 'mann')) {
-                return 25; // Trans
+                return 50; // Trans
             }
 
             // Default: Cis
@@ -13921,40 +13922,25 @@
 
         /**
          * Maps profile review geschlechtsidentität value to secondary geschlecht
-         * For Mann/Frau: 0=Cis, 25=Trans, 50=Nonbinär, 75=Fluid, 100=Unsicher
-         * For Inter: 50=Nonbinär, 75=Fluid, 100=Unsicher (no Cis/Trans)
+         * KONTEXTABHÄNGIG (3 Optionen pro Kontext):
+         * - Mann/Frau (binär): 0=Cis, 50=Trans, 100=Suchend
+         * - Inter (divers): 0=Nonbinär, 50=Fluid, 100=Suchend
          * @param {number} value - Profile review button value
          * @param {string} primaryGeschlecht - Body: 'mann', 'frau', 'inter'
          * @returns {string} Secondary value for TiageState
          */
         function mapGeschlechtsidentitaetToSecondary(value, primaryGeschlecht) {
-            // For Inter: only nonbinaer/fluid/unsicher are valid
+            // For Inter (divers): nonbinaer/fluid/suchend
             if (primaryGeschlecht === 'inter') {
-                if (value <= 62) return 'nonbinaer'; // 50 or lower
-                if (value <= 87) return 'fluid';     // 75
-                return 'unsicher';                   // 100
+                if (value <= 25) return 'nonbinaer';  // 0
+                if (value <= 75) return 'fluid';      // 50
+                return 'suchend';                     // 100
             }
 
-            // For Mann/Frau: map to identity type
-            var identityType;
-            if (value <= 12) identityType = 'cis';        // 0
-            else if (value <= 37) identityType = 'trans'; // 25
-            else if (value <= 62) identityType = 'nonbinaer'; // 50
-            else if (value <= 87) identityType = 'fluid'; // 75
-            else identityType = 'unsicher'; // 100
-
-            // For cis/trans, map to actual identity value based on body
-            if (identityType === 'cis') {
-                // Cis: identity = body
-                return primaryGeschlecht; // mann→mann, frau→frau
-            } else if (identityType === 'trans') {
-                // Trans: identity = opposite of body
-                if (primaryGeschlecht === 'mann') return 'frau';
-                if (primaryGeschlecht === 'frau') return 'mann';
-            }
-
-            // Nonbinär, Fluid, Unsicher: use directly
-            return identityType;
+            // For Mann/Frau (binär): cis/trans/suchend
+            if (value <= 25) return 'cis';    // 0
+            if (value <= 75) return 'trans';  // 50
+            return 'suchend';                 // 100
         }
 
         // Save Profile Review

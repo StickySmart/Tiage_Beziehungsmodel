@@ -82,20 +82,29 @@ const TiageConfig = (function() {
     };
 
     // SEKUNDÄR = Geist/Identität (wie man sich fühlt)
-    // Skala: Cis(0) → Trans(25) → Nonbinär(50) → Fluid(75) → Suchend(100)
-    const GESCHLECHT_SECONDARY_TYPES = ['mann', 'frau', 'nonbinaer', 'fluid', 'suchend'];
+    // Kontextabhängig je nach PRIMARY:
+    // - Mann/Frau (binär): Cis, Trans, Suchend
+    // - Inter (divers): Nonbinär, Fluid, Suchend
+    const GESCHLECHT_SECONDARY_TYPES = ['cis', 'trans', 'nonbinaer', 'fluid', 'suchend'];
+
+    // Kontextabhängige Optionen je nach Primary
+    const GESCHLECHT_SECONDARY_BY_PRIMARY = {
+        'mann': ['cis', 'trans', 'suchend'],      // Binär: Kongruenz, Gegenteil, Unsicher
+        'frau': ['cis', 'trans', 'suchend'],      // Binär: Kongruenz, Gegenteil, Unsicher
+        'inter': ['nonbinaer', 'fluid', 'suchend'] // Divers: NB, Fluid, Unsicher
+    };
 
     const GESCHLECHT_SECONDARY_SHORT = {
-        'mann': 'M',
-        'frau': 'F',
+        'cis': 'Cis',
+        'trans': 'Tr',
         'nonbinaer': 'NB',
-        'fluid': 'FL',
+        'fluid': 'Fl',
         'suchend': 'Su'
     };
 
     const GESCHLECHT_SECONDARY_LABELS = {
-        'mann': 'Mann',
-        'frau': 'Frau',
+        'cis': 'Cis',
+        'trans': 'Trans',
         'nonbinaer': 'Nonbinär',
         'fluid': 'Fluid',
         'suchend': 'Suchend'
@@ -137,13 +146,14 @@ const TiageConfig = (function() {
     };
 
     // Mapping für Orientierungslogik: Sekundär (Identität) bestimmt die Kategorie
+    // Cis/Trans werden kontextabhängig aufgelöst (braucht Primary)
     const GESCHLECHT_CATEGORY = {
         // Sekundär-Werte -> Orientierungskategorie
-        'mann': 'maennlich',
-        'frau': 'weiblich',
+        'cis': 'kongruent',      // Entspricht Primary (mann→maennlich, frau→weiblich)
+        'trans': 'gewandelt',    // Gegenteil von Primary (mann→weiblich, frau→maennlich)
         'nonbinaer': 'nonbinaer',
         'fluid': 'fluid',
-        'suchend': 'suchend',  // Suchend = eigene Kategorie (Exploration)
+        'suchend': 'suchend',    // Suchend = eigene Kategorie (Exploration)
         // Primär-Werte (Fallback)
         'inter': 'inter'
     };
@@ -190,25 +200,25 @@ const TiageConfig = (function() {
             title: "Inter (Körper)",
             text: "Angeborene körperliche Geschlechtsmerkmale, die nicht eindeutig männlich oder weiblich sind."
         },
-        // Sekundär-Werte (Identität)
-        secondary_mann: {
-            title: "Mann (Identität)",
-            text: "Du identifizierst dich als Mann."
+        // Sekundär-Werte (Identität) - kontextabhängig
+        secondary_cis: {
+            title: "Cis (Identität)",
+            text: "Deine Geschlechtsidentität entspricht deinem Körper."
         },
-        secondary_frau: {
-            title: "Frau (Identität)",
-            text: "Du identifizierst dich als Frau."
+        secondary_trans: {
+            title: "Trans (Identität)",
+            text: "Du hast einen Wandel durchlebt - deine Identität ist das Gegenteil deines Geburtskörpers."
         },
         secondary_nonbinaer: {
             title: "Nonbinär (Identität)",
-            text: "Du identifizierst dich weder ausschließlich als Mann noch als Frau."
+            text: "Du identifizierst dich weder ausschließlich als Mann noch als Frau. (Nur bei Inter)"
         },
         secondary_fluid: {
             title: "Fluid (Identität)",
-            text: "Deine Geschlechtsidentität verändert sich über Zeit oder wechselt zwischen verschiedenen Identitäten."
+            text: "Deine Geschlechtsidentität verändert sich über Zeit oder wechselt. (Nur bei Inter)"
         },
-        secondary_unsicher: {
-            title: "Unsicher (Identität)",
+        secondary_suchend: {
+            title: "Suchend (Identität)",
             text: "Du bist dir über deine Geschlechtsidentität noch nicht sicher oder befindest dich in einer Explorationsphase."
         },
         dominanz: {
@@ -388,6 +398,7 @@ const TiageConfig = (function() {
         GESCHLECHT_PRIMARY_SHORT,
         GESCHLECHT_PRIMARY_LABELS,
         GESCHLECHT_SECONDARY_TYPES,
+        GESCHLECHT_SECONDARY_BY_PRIMARY,
         GESCHLECHT_SECONDARY_SHORT,
         GESCHLECHT_SECONDARY_LABELS,
         // Legacy (deprecated, für Rückwärtskompatibilität)
@@ -457,6 +468,11 @@ const TiageConfig = (function() {
         // Helper: Geschlecht Secondary Short (i18n aware)
         getGeschlechtSecondaryShort(id) {
             return i18n(`geschlecht.secondaryShort.${id}`, GESCHLECHT_SECONDARY_SHORT[id] || id);
+        },
+
+        // Helper: Kontextabhängige Secondary-Optionen für ein Primary
+        getSecondaryOptionsForPrimary(primary) {
+            return GESCHLECHT_SECONDARY_BY_PRIMARY[primary] || [];
         },
 
         // Helper: Kombiniertes Label (z.B. "Mann → Frau" für trans)

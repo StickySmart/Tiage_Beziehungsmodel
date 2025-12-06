@@ -210,44 +210,50 @@ TiageSynthesis.Constants = {
     // Pirsig: "Qualität entsteht, wenn Muster resonieren"
     // Ähnliche Identitäten verstehen sich intuitiv.
     //
-    // Skala: Cis(0) → Trans(25) → Nonbinär(50) → Fluid(75) → Suchend(100)
-    //        Form     Wandel      Jenseits       Fluss       Entdeckung
+    // Kontextabhängig:
+    // - Binär (Mann/Frau): Cis, Trans, Suchend
+    // - Divers (Inter): Nonbinär, Fluid, Suchend
 
     IDENTITY_MATRIX: {
+        // ─── BINÄR-KONTEXT (Cis, Trans, Suchend) ───
         // Cis: Form = Körper, klare statische Qualität
         "cis-cis": 100,
         "cis-trans": 85,
-        "cis-nonbinaer": 70,
-        "cis-fluid": 60,
-        "cis-suchend": 50,
+        "cis-suchend": 70,
 
         // Trans: Wandel durchlebt, neue Klarheit gefunden
         "trans-cis": 85,
         "trans-trans": 100,
-        "trans-nonbinaer": 80,
-        "trans-fluid": 70,
-        "trans-suchend": 60,
+        "trans-suchend": 75,
 
+        // ─── DIVERS-KONTEXT (Nonbinär, Fluid, Suchend) ───
         // Nonbinär: Jenseits der Dualität, bewusste Position
-        "nonbinaer-cis": 70,
-        "nonbinaer-trans": 80,
-        "nonbinaer-nonbinaer": 95,
-        "nonbinaer-fluid": 85,
+        "nonbinaer-nonbinaer": 100,
+        "nonbinaer-fluid": 90,
         "nonbinaer-suchend": 80,
 
         // Fluid: Der Fluss, dynamische Qualität
-        "fluid-cis": 60,
-        "fluid-trans": 70,
-        "fluid-nonbinaer": 85,
-        "fluid-fluid": 95,
-        "fluid-suchend": 90,
+        "fluid-nonbinaer": 90,
+        "fluid-fluid": 100,
+        "fluid-suchend": 85,
 
-        // Suchend: Exploration, Anfängergeist (Shoshin)
-        "suchend-cis": 50,
-        "suchend-trans": 60,
+        // ─── SUCHEND (universell) ───
+        "suchend-cis": 70,
+        "suchend-trans": 75,
         "suchend-nonbinaer": 80,
-        "suchend-fluid": 90,
-        "suchend-suchend": 100
+        "suchend-fluid": 85,
+        "suchend-suchend": 100,
+
+        // ─── CROSS-KONTEXT (Binär ↔ Divers) ───
+        // Cis/Trans trifft auf Nonbinär/Fluid
+        "cis-nonbinaer": 65,
+        "cis-fluid": 55,
+        "trans-nonbinaer": 75,
+        "trans-fluid": 65,
+        "nonbinaer-cis": 65,
+        "nonbinaer-trans": 75,
+        "fluid-cis": 55,
+        "fluid-trans": 65
     },
 
     // ═══════════════════════════════════════════════════════════════════════
@@ -259,9 +265,9 @@ TiageSynthesis.Constants = {
 
     IDENTITY_OPENNESS: {
         "cis": 0,           // Statische Qualität - Form ist klar
-        "trans": 25,        // Wandel durchlebt - jetzt gefestigt
+        "trans": 30,        // Wandel durchlebt - jetzt gefestigt
         "nonbinaer": 50,    // Transzendenz der Dualität
-        "fluid": 75,        // Dynamische Qualität - ständige Bewegung
+        "fluid": 80,        // Dynamische Qualität - ständige Bewegung
         "suchend": 100      // Reine Potentialität - Anfängergeist
     },
 
