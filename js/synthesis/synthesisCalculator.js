@@ -352,6 +352,9 @@ TiageSynthesis.Calculator = {
             geschlechtPrimaryStatus: this._extractGeschlechtStatus(person1.geschlecht, 'primary'),
             geschlechtSecondary: this._extractGeschlechtSecondary(person1.geschlecht),
             geschlechtSecondaryStatus: this._extractGeschlechtStatus(person1.geschlecht, 'secondary'),
+            // NEU: Geschlechtsidentität (cis, trans, nonbinaer, fluid, suchend)
+            geschlechtsidentitaet: this._extractGeschlechtsidentitaet(person1.geschlecht),
+            geschlechtsidentitaetStatus: this._extractGeschlechtStatus(person1.geschlecht, 'secondary'),
             orientierung: this._extractOrientierung(person1.orientierung),
             orientierungStatus: this._extractOrientierungStatus(person1.orientierung)
         });
@@ -364,12 +367,18 @@ TiageSynthesis.Calculator = {
             geschlechtPrimaryStatus: this._extractGeschlechtStatus(person2.geschlecht, 'primary'),
             geschlechtSecondary: this._extractGeschlechtSecondary(person2.geschlecht),
             geschlechtSecondaryStatus: this._extractGeschlechtStatus(person2.geschlecht, 'secondary'),
+            // NEU: Geschlechtsidentität (cis, trans, nonbinaer, fluid, suchend)
+            geschlechtsidentitaet: this._extractGeschlechtsidentitaet(person2.geschlecht),
+            geschlechtsidentitaetStatus: this._extractGeschlechtStatus(person2.geschlecht, 'secondary'),
             orientierung: this._extractOrientierung(person2.orientierung),
             orientierungStatus: this._extractOrientierungStatus(person2.orientierung)
         });
 
-        // Übereinstimmung berechnen
-        var result = BeduerfnisModifikatoren.berechneÜbereinstimmung(profil1, profil2);
+        // Übereinstimmung berechnen (mit Identitäts-Resonanz)
+        var result = BeduerfnisModifikatoren.berechneÜbereinstimmung(profil1, profil2, {
+            identitaet1: this._extractGeschlechtsidentitaet(person1.geschlecht),
+            identitaet2: this._extractGeschlechtsidentitaet(person2.geschlecht)
+        });
 
         // Profile zum Ergebnis hinzufügen
         result.profile = {
@@ -447,6 +456,36 @@ TiageSynthesis.Calculator = {
     _extractGeschlechtSecondary: function(geschlecht) {
         if (!geschlecht || typeof geschlecht !== 'object') return null;
         return geschlecht.secondary || null;
+    },
+
+    /**
+     * Extrahiert Geschlechtsidentität (cis, trans, nonbinaer, fluid, suchend)
+     *
+     * Mapping von UI-Werten zu internen Werten:
+     * - Aus geschlecht.secondary wenn vorhanden
+     * - Fallback: Ableitung aus Primary/Secondary Kombination
+     */
+    _extractGeschlechtsidentitaet: function(geschlecht) {
+        if (!geschlecht) return 'cis';
+
+        if (typeof geschlecht === 'object') {
+            var secondary = geschlecht.secondary;
+
+            // Direkte Mapping für neue Identitäts-Werte
+            if (secondary === 'cis' || secondary === 'trans' ||
+                secondary === 'nonbinaer' || secondary === 'fluid' ||
+                secondary === 'suchend') {
+                return secondary;
+            }
+
+            // Legacy-Support: Alte Werte umwandeln
+            if (secondary === 'unsicher') return 'suchend';
+
+            // Fallback: Cis wenn kein secondary
+            return 'cis';
+        }
+
+        return 'cis';
     },
 
     /**
