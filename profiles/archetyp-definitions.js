@@ -1,7 +1,7 @@
 /**
  * ARCHETYP-DEFINITIONEN
  *
- * Basis-Definitionen der 6 Beziehungs-Archetypen nach Pirsig (Metaphysics of Quality)
+ * Basis-Definitionen der 8 Beziehungs-Archetypen nach Pirsig (Metaphysics of Quality)
  * und Osho (Tantra/Polarität).
  *
  * Quellen:
@@ -9,6 +9,33 @@
  * - Osho (1975-1990): Various discourses on love, freedom, and relationships
  * - DePaulo, Bella (2017): Singled Out: How Singles Are Stereotyped
  * - Moors et al. (2021): Polyamory Research Meta-analysis
+ *
+ * ═══════════════════════════════════════════════════════════════════════════════
+ * NAMING CONVENTION - Drei getrennte Konzepte (siehe docs/NAMING_CONVENTION.md)
+ * ═══════════════════════════════════════════════════════════════════════════════
+ *
+ * 1. BASE ATTRIBUTES (baseAttributes)
+ *    Die 30 Profil-Parameter die beschreiben "Wie jemand Beziehung führt":
+ *    - Lebensplanung: kinderWunsch, eheWunsch, wohnform, familieWichtigkeit...
+ *    - Kommunikation: gespraechsBeduernis, konfliktverhalten, emotionaleOffenheit...
+ *    - Soziales: introExtro, freundeskreis, alleinZeitBeduernis...
+ *    - Intimität: koerperlicheNaehe, sexFrequenz, romantikBeduernis...
+ *    - Werte: religiositaet, politischeAktivitaet, traditionVsModern...
+ *    - Praktisches: ordnung, haushaltsAufteilung, reiseFrequenz
+ *    - Emotionale Dynamik: eifersuchtNeigung, vertrauensbasis, emotionaleStabilitaet
+ *
+ * 2. CORE VALUES (coreValues) & AVOIDS (avoids)
+ *    Philosophische Werte basierend auf Pirsig/Osho - NICHT für Matching verwendet,
+ *    sondern für die konzeptuelle Beschreibung des Archetyps.
+ *
+ * 3. DEFAULT INFERENCES (defaultInferences)
+ *    Kategorische Ableitungen - Legacy, teilweise redundant mit baseAttributes.
+ *    Wird bei Profil-Komposition verwendet.
+ *
+ * NICHT HIER DEFINIERT (aber wichtig zu unterscheiden):
+ * - personDimensions (js/state.js): Meta-Eigenschaften wie geschlecht, dominanz, orientierung
+ * - needs/Bedürfnisse (gfk-beduerfnisse.js): 88 GFK-Bedürfnisse nach Marshall Rosenberg
+ * ═══════════════════════════════════════════════════════════════════════════════
  */
 
 const archetypeDefinitions = {
