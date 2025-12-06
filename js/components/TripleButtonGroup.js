@@ -42,7 +42,7 @@ const TripleButtonGroup = (function() {
         const cardIdAttr = cardId ? ` id="${cardId}"` : '';
         const hintHtml = hint ? ` <span class="dimension-hint">(${hint})</span>` : '';
         const infoIconHtml = description
-            ? ` <span class="attr-info-icon" data-tooltip="${description}">ℹ</span>`
+            ? ` <span class="attr-info-icon" onclick="event.stopPropagation(); openAttributeDefinitionModal('${attrId}')" title="Info anzeigen">ℹ</span>`
             : '';
 
         // CSS-Klasse für 5-Button-Layout

@@ -180,6 +180,19 @@
         </div>
     </div>
 
+    <!-- Attribut-Definition Modal (für Profile-Review Attribute) -->
+    <div class="modal-overlay" id="attributeDefinitionModal" onclick="closeAttributeDefinitionModal(event)" style="z-index: 2300;">
+        <div class="modal" onclick="event.stopPropagation()" style="max-width: 420px;">
+            <div class="modal-header">
+                <span class="modal-title" id="attributeDefinitionModalTitle">Definition</span>
+                <button class="modal-close" onclick="closeAttributeDefinitionModal()">&times;</button>
+            </div>
+            <div class="modal-body" id="attributeDefinitionModalBody" style="padding: 20px;">
+                <!-- Content wird dynamisch gefüllt -->
+            </div>
+        </div>
+    </div>
+
     <!-- Help Modal -->
     <div class="help-modal-overlay" id="helpModal" onclick="closeHelpModal(event)">
         <div class="help-modal" onclick="event.stopPropagation()">

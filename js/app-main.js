@@ -5737,6 +5737,87 @@
             }
         }
 
+        /**
+         * Öffnet das Attribut-Definition Modal (für Profile-Review Attribute)
+         * @param {string} attrId - Die ID des Attributs (z.B. 'pr-kinder')
+         */
+        function openAttributeDefinitionModal(attrId) {
+            const modal = document.getElementById('attributeDefinitionModal');
+            const body = document.getElementById('attributeDefinitionModalBody');
+            const title = document.getElementById('attributeDefinitionModalTitle');
+
+            if (!modal || !body) return;
+
+            // Attribut-Definition mit Kategorie suchen
+            const attr = typeof ProfileReviewConfig !== 'undefined'
+                ? ProfileReviewConfig.findAttributeWithCategory(attrId)
+                : null;
+
+            if (!attr) {
+                body.innerHTML = '<p style="color: var(--text-muted);">Keine Definition verfügbar.</p>';
+                modal.classList.add('active');
+                return;
+            }
+
+            // Titel setzen
+            title.textContent = attr.label;
+
+            // Optionen als Badges formatieren
+            const optionsBadges = (attr.options || []).map(opt =>
+                `<span style="display: inline-block; padding: 4px 10px; background: rgba(255,255,255,0.08); border-radius: 12px; font-size: 11px; color: var(--text-secondary);">${opt}</span>`
+            ).join(' ');
+
+            // Inhalt erstellen (ähnlich wie needDefinitionModal)
+            body.innerHTML = `
+                <div style="display: flex; flex-direction: column; gap: 16px;">
+                    <!-- Kategorie-Badge -->
+                    <div style="display: flex; align-items: center; gap: 8px;">
+                        <span style="width: 12px; height: 12px; border-radius: 50%; background: ${attr.kategorieColor};"></span>
+                        <span style="font-size: 12px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px;">${attr.kategorie}</span>
+                    </div>
+
+                    <!-- Beschreibung -->
+                    <div style="background: rgba(255,255,255,0.03); border-radius: 12px; padding: 16px; border-left: 3px solid ${attr.kategorieColor};">
+                        <p style="font-size: 14px; line-height: 1.7; color: var(--text-primary); margin: 0;">${attr.description || 'Keine Beschreibung verfügbar.'}</p>
+                    </div>
+
+                    <!-- Optionen -->
+                    <div style="padding: 12px; background: rgba(139,92,246,0.08); border-radius: 8px; border: 1px solid rgba(139,92,246,0.2);">
+                        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px;">
+                            <strong style="font-size: 12px; color: #8B5CF6;">Mögliche Ausprägungen</strong>
+                        </div>
+                        <div style="display: flex; flex-wrap: wrap; gap: 8px;">
+                            ${optionsBadges}
+                        </div>
+                    </div>
+
+                    <!-- Beziehungs-Bezug -->
+                    <div style="padding: 12px; background: rgba(232,67,147,0.08); border-radius: 8px; border: 1px solid rgba(232,67,147,0.2);">
+                        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px;">
+                            <strong style="font-size: 12px; color: #E84393;">Paarung</strong>
+                            <button onclick="openPaarungExplanationModal(event)" style="background: none; border: none; cursor: pointer; color: #E84393; font-size: 14px; padding: 2px 6px; border-radius: 4px; transition: background 0.2s;" title="Was bedeutet Paarung?">ⓘ</button>
+                        </div>
+                        <p style="font-size: 11px; color: var(--text-secondary); margin: 0; line-height: 1.5;">
+                            Unterschiedliche Präferenzen bei <strong>${attr.label}</strong> können Kompromisse erfordern – offene Kommunikation hilft dabei, gemeinsame Lösungen zu finden.
+                        </p>
+                    </div>
+                </div>
+            `;
+
+            modal.classList.add('active');
+        }
+
+        /**
+         * Schließt das Attribut-Definition Modal
+         */
+        function closeAttributeDefinitionModal(event) {
+            if (event && event.target !== event.currentTarget) return;
+            const modal = document.getElementById('attributeDefinitionModal');
+            if (modal) {
+                modal.classList.remove('active');
+            }
+        }
+
         // Aktueller Tab für das vollständige Modal
         let needsFullModalCurrentTab = 'gemeinsam';
         // Sortierung: 'duo' oder 'ra', und Richtung: 'asc' oder 'desc'
