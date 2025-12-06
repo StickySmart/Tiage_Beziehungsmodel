@@ -30,7 +30,7 @@ const ProfileReviewConfig = (function() {
                 },
                 options: ['Cis', 'Trans', 'Suchend'], // Default für binär
                 defaultValue: 0,
-                description: 'Geschlechtsidentität: Cis (Form = Körper), Trans (Wandel durchlebt), Suchend (in Exploration). Bei Inter: Nonbinär, Fluid, Suchend.'
+                description: 'Geschlechtsidentität: Cis (Identität = Körper), Trans (Identität ≠ Körper), Suchend (in Exploration). Bei Inter: Nonbinär, Fluid, Suchend.'
             }
         ],
 
