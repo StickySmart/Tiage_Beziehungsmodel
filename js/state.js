@@ -4,6 +4,14 @@
  * Zentraler State-Store mit Pub/Sub Pattern für reaktive Updates.
  * Ersetzt die doppelte personDimensions/mobilePersonDimensions Struktur.
  *
+ * NAMING CONVENTION (siehe docs/NAMING_CONVENTION.md):
+ * - personDimensions: Meta-Eigenschaften die beschreiben "Wer ich bin"
+ *   • geschlecht.primary/secondary: Körper/Identität
+ *   • dominanz: dominant/submissiv/switch/ausgeglichen
+ *   • orientierung: hetero/homo/bi
+ * - Diese modifizieren die baseAttributes (30 Profil-Parameter)
+ * - NICHT VERWECHSELN mit: baseAttributes (Matching), needs (GFK)
+ *
  * © 2025 Ti-age.de Alle Rechte vorbehalten.
  */
 

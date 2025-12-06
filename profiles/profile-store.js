@@ -14,11 +14,17 @@
  * bei Bedarf komponiert und in IndexedDB gecacht.
  *
  * KOMPOSITION beinhaltet:
- * - Basis-Attribute (defaultInferences aus Archetyp)
+ * - baseAttributes (30 Profil-Parameter aus archetyp-definitions.js)
  * - Attribut-Modifikatoren (Gender + Dominanz + Orientierung)
  * - Kategorie-Scores A-F (Basis + categoryModifiers)
  *   A: Beziehungsphilosophie, B: Werte-Alignment, C: Nähe-Distanz
  *   D: Autonomie, E: Kommunikation, F: Soziale Kompatibilität
+ *
+ * NAMING CONVENTION (siehe docs/NAMING_CONVENTION.md):
+ * - baseAttributes: Die 30 Matching-Parameter pro Archetyp
+ * - modifiers: Anpassungen basierend auf Gender/Dominanz/Orientierung
+ * - profile.attributes: Das komponierte Attribut-Objekt
+ * - NICHT VERWECHSELN mit: needs (GFK-Bedürfnisse), coreValues (Philosophie)
  */
 
 var TiageProfileStore = (function() {
