@@ -717,6 +717,22 @@
                 <button class="modal-close" onclick="closeProfileReviewModal()">&times;</button>
             </div>
 
+            <!-- Source Explanation Banner -->
+            <div class="profile-review-source-explanation" id="profileReviewSourceExplanation">
+                <div class="source-explanation-header" onclick="toggleSourceExplanation()">
+                    <span class="source-explanation-icon">&#x2139;</span>
+                    <span class="source-explanation-title" data-i18n="profileReview.sourceExplanation.title">Woher kommen diese Werte?</span>
+                    <span class="source-explanation-toggle" id="sourceExplanationToggle">&#9660;</span>
+                </div>
+                <div class="source-explanation-content" id="sourceExplanationContent">
+                    <p class="source-explanation-intro" data-i18n="profileReview.sourceExplanation.intro">Diese Attribute wurden automatisch berechnet basierend auf:</p>
+                    <div class="source-explanation-factors" id="sourceExplanationFactors">
+                        <!-- Filled dynamically by openProfileReviewModal -->
+                    </div>
+                    <p class="source-explanation-note" data-i18n="profileReview.sourceExplanation.note">Die Werte sind Vorschläge basierend auf statistischen Mustern. Du kannst sie jederzeit anpassen.</p>
+                </div>
+            </div>
+
             <!-- Scrollable Content - Dynamically rendered by ProfileReviewRenderer -->
             <div class="modal-body profile-review-body" id="profileReviewBody" style="flex: 1; overflow-y: auto;">
                 <!-- Content wird dynamisch durch ProfileReviewRenderer.initializeModal() generiert -->

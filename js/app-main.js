@@ -13463,20 +13463,22 @@
             var inferences = null;
             var personData = personDimensions[person];
 
-            if (personData && personData.geschlecht &&
-                personData.geschlecht.primary && personData.geschlecht.secondary &&
-                typeof TiageProfileStore !== 'undefined') {
+            // Hole Dominanz und Orientierung (auch für Source-Explanation benötigt)
+            var dominanz = 'ausgeglichen';
+            var orientierung = 'heterosexuell';
 
-                // Hole Dominanz und Orientierung
-                var dominanz = 'ausgeglichen';
+            if (personData) {
                 if (personData.dominanz && personData.dominanz.primary) {
                     dominanz = personData.dominanz.primary;
                 }
-
-                var orientierung = 'heterosexuell';
                 if (personData.orientierung && personData.orientierung.primary) {
                     orientierung = personData.orientierung.primary;
                 }
+            }
+
+            if (personData && personData.geschlecht &&
+                personData.geschlecht.primary && personData.geschlecht.secondary &&
+                typeof TiageProfileStore !== 'undefined') {
 
                 // Komponiertes Profil mit allen Modifikatoren laden
                 var composedProfile = TiageProfileStore.getProfileSync(
@@ -13499,6 +13501,9 @@
                 inferences = archetype.defaultInferences;
                 console.log('[ProfileReview] Fallback auf Archetyp-Defaults (kein vollständiges Gender ausgewählt)');
             }
+
+            // Update Source Explanation with current factors
+            updateSourceExplanation(archetypeKey, personData, dominanz, orientierung);
 
             // Load default values from profile
             if (inferences) {
@@ -13619,6 +13624,80 @@
             }
         }
         window.closeProfileReviewModal = closeProfileReviewModal;
+
+        // Toggle Source Explanation Section
+        function toggleSourceExplanation() {
+            var content = document.getElementById('sourceExplanationContent');
+            var toggle = document.getElementById('sourceExplanationToggle');
+            if (content && toggle) {
+                content.classList.toggle('collapsed');
+                toggle.classList.toggle('collapsed');
+            }
+        }
+        window.toggleSourceExplanation = toggleSourceExplanation;
+
+        // Update Source Explanation with current factors
+        function updateSourceExplanation(archetypeKey, personData, dominanz, orientierung) {
+            var factorsContainer = document.getElementById('sourceExplanationFactors');
+            if (!factorsContainer) return;
+
+            // Get locale for labels
+            var locale = typeof TiageI18n !== 'undefined' ? TiageI18n.getLocale() : null;
+            var labels = {
+                archetype: 'Archetyp',
+                gender: 'Geschlecht',
+                dominance: 'Dominanz',
+                orientation: 'Orientierung'
+            };
+
+            // Try to get localized labels
+            if (locale && locale.profileReview && locale.profileReview.sourceExplanation) {
+                var src = locale.profileReview.sourceExplanation;
+                labels.archetype = src.archetype || labels.archetype;
+                labels.gender = src.gender || labels.gender;
+                labels.dominance = src.dominance || labels.dominance;
+                labels.orientation = src.orientation || labels.orientation;
+            }
+
+            // Get display values
+            var archetypeName = archetypeKey ? archetypeKey.charAt(0).toUpperCase() + archetypeKey.slice(1) : 'Duo';
+            var genderPrimary = personData && personData.geschlecht ? personData.geschlecht.primary : null;
+            var genderSecondary = personData && personData.geschlecht ? personData.geschlecht.secondary : null;
+            var genderDisplay = '-';
+
+            if (genderPrimary && genderSecondary) {
+                // Get localized gender labels
+                if (locale && locale.geschlecht) {
+                    var pLabel = locale.geschlecht.primary && locale.geschlecht.primary[genderPrimary] ? locale.geschlecht.primary[genderPrimary] : genderPrimary;
+                    var sLabel = locale.geschlecht.secondary && locale.geschlecht.secondary[genderSecondary] ? locale.geschlecht.secondary[genderSecondary] : genderSecondary;
+                    genderDisplay = pLabel + ' / ' + sLabel;
+                } else {
+                    genderDisplay = genderPrimary + ' / ' + genderSecondary;
+                }
+            }
+
+            // Get localized dominanz label
+            var dominanzDisplay = dominanz || 'Ausgeglichen';
+            if (locale && locale.dominanz && locale.dominanz.types && locale.dominanz.types[dominanz]) {
+                dominanzDisplay = locale.dominanz.types[dominanz];
+            }
+
+            // Get localized orientierung label
+            var orientierungDisplay = orientierung || 'Heterosexuell';
+            if (locale && locale.orientierung && locale.orientierung.types && locale.orientierung.types[orientierung]) {
+                orientierungDisplay = locale.orientierung.types[orientierung];
+            }
+
+            // Build HTML
+            var html = '';
+            html += '<span class="source-factor-tag"><span class="factor-label">' + labels.archetype + ':</span> <span class="factor-value">' + archetypeName + '</span></span>';
+            html += '<span class="source-factor-tag"><span class="factor-label">' + labels.gender + ':</span> <span class="factor-value">' + genderDisplay + '</span></span>';
+            html += '<span class="source-factor-tag"><span class="factor-label">' + labels.dominance + ':</span> <span class="factor-value">' + dominanzDisplay + '</span></span>';
+            html += '<span class="source-factor-tag"><span class="factor-label">' + labels.orientation + ':</span> <span class="factor-value">' + orientierungDisplay + '</span></span>';
+
+            factorsContainer.innerHTML = html;
+        }
+        window.updateSourceExplanation = updateSourceExplanation;
 
         // Update Slider Value Display - Zeigt Zahl 1-10
         function updateProfileReviewSlider(slider, valueId) {

@@ -820,6 +820,19 @@ const TiageLocale_DE = {
     profileReview: {
         title: 'Alle vorausgefüllten Attribute',
 
+        // Quellen-Erklärung für die Attribut-Herkunft
+        sourceExplanation: {
+            title: 'Woher kommen diese Werte?',
+            intro: 'Diese Attribute wurden automatisch berechnet basierend auf:',
+            archetype: 'Archetyp',
+            gender: 'Geschlecht',
+            dominance: 'Dominanz',
+            orientation: 'Orientierung',
+            note: 'Die Werte sind Vorschläge basierend auf statistischen Mustern. Du kannst sie jederzeit anpassen.',
+            learnMore: 'Mehr erfahren',
+            collapse: 'Weniger'
+        },
+
         categories: {
             geschlechtsidentitaet: 'GESCHLECHTSIDENTITÄT',
             lebensplanung: 'LEBENSPLANUNG',
