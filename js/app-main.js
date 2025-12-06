@@ -13039,63 +13039,73 @@
         var profileReviewChangesCount = 0;
         var profileReviewInitialState = {};
 
-        // Info-Daten für Attribute
+        // Info-Daten für Attribute (Keys = attrIds aus profile-config.js)
         var profileReviewInfoData = {
-            kinderWunsch: {
+            // GESCHLECHTSIDENTITÄT
+            'pr-geschlecht-sekundaer': {
+                title: "Geschlechtsidentität",
+                stats: "Ca. 1-2% der Bevölkerung identifizieren sich als trans oder nonbinär",
+                research: '"Gender identity is a deeply personal sense of one\'s own gender, which may or may not align with sex assigned at birth." <i>(American Psychological Association, 2023)</i>',
+                pirsig: "Identität als dynamische Qualität - das Selbst jenseits biologischer Muster entdecken.",
+                osho: "Du bist nicht dein Körper, du bist nicht dein Geist. Du bist das Bewusstsein, das beides beobachtet."
+            },
+            // LEBENSPLANUNG
+            'pr-kinder': {
                 title: "Kinder erwünscht",
                 stats: "75% der Duo-Menschen wollen Kinder",
                 research: '"Monogamous couples show significantly higher desire for offspring due to stable pair-bonding patterns." <i>(Journal of Family Psychology, 2022)</i>',
                 pirsig: "Static Pattern sucht Fortsetzung durch Nachkommen - die biologische Form der Qualitätserhaltung.",
                 osho: "Kinder sind die Brücke zwischen Liebe und Ewigkeit. Aber wahre Liebe braucht keine Brücke."
             },
-            eheWunsch: {
+            'pr-ehe': {
                 title: "Ehe erwünscht",
                 stats: "80% der Duo-Menschen wollen heiraten",
                 research: '"Legal commitment correlates with relationship stability and long-term satisfaction in monogamous pairs." <i>(Marriage & Family Review, 2021)</i>',
                 pirsig: "Die Ehe als statisches Muster institutionalisiert dynamische Qualität - formalisiert die Liebe.",
                 osho: "Ehe ist die Gesellschaft, die in dein Schlafzimmer eindringt. Aber manche brauchen die Form für den Inhalt."
             },
-            wohnform: {
+            'pr-zusammen': {
                 title: "Zusammenleben",
                 stats: "90% der Duo-Menschen leben zusammen",
                 research: '"Co-habitation strengthens emotional bonds and daily intimacy in committed relationships." <i>(Journal of Social Psychology, 2020)</i>',
                 pirsig: "Gemeinsamer physischer Raum verstärkt das statische Muster - Nähe durch Präsenz.",
                 osho: "Zusammen schlafen ist leicht. Zusammen aufwachen ist die Kunst."
             },
-            haustiere: {
+            'pr-haustiere': {
                 title: "Haustiere wichtig",
                 stats: "50% der Paare haben Haustiere, 35% planen welche",
                 research: '"Pet ownership increases relationship satisfaction and provides shared caregiving experience." <i>(Anthrozoös Journal, 2021)</i>',
                 pirsig: "Haustiere als Erweiterung des statischen Musters - gemeinsame Verantwortung.",
                 osho: "Ein Hund lehrt bedingungslose Liebe. Menschen könnten davon lernen."
             },
-            umzugsbereitschaft: {
+            'pr-umzug': {
                 title: "Umzugsbereitschaft",
                 stats: "Duo-Menschen sind moderat flexibel (mittlere Umzugsbereitschaft)",
                 research: '"Committed couples balance stability needs with career/life opportunities." <i>(Journal of Vocational Behavior, 2020)</i>',
                 pirsig: "Balance zwischen statischem Muster (Verwurzelung) und dynamischer Anpassung.",
                 osho: "Heimat ist nicht ein Ort - Heimat ist ein Gefühl."
             },
-            finanzen: {
+            'pr-familie': {
+                title: "Familie-Wichtigkeit",
+                stats: "Duo bewerten Familie als überdurchschnittlich wichtig (70%)",
+                research: '"Monogamous couples prioritize family connections and intergenerational bonds." <i>(Family Relations, 2020)</i>',
+                pirsig: "Familie als erweitertes statisches Muster - Zugehörigkeit über die Dyade hinaus.",
+                osho: "Familie kann Gefängnis oder Flügel sein. Es kommt auf die Bewusstheit an."
+            },
+            // FINANZEN & KARRIERE
+            'pr-finanzen': {
                 title: "Finanzen",
                 stats: "65% der Duo-Paare führen gemeinsame Konten",
                 research: '"Financial merging correlates with relationship commitment and long-term stability." <i>(Journal of Consumer Finance, 2021)</i>',
                 pirsig: "Gemeinsame Finanzen als Symbol für statisches Muster - materielle Verschmelzung.",
                 osho: "Geld ist Energie. Wer teilt, vervielfacht."
             },
-            karrierePrioritaet: {
+            'pr-karriere': {
                 title: "Karriere vs. Familie",
                 stats: "Duo suchen Balance zwischen Karriere und Familie (55% 'ausgeglichen')",
                 research: '"Dual-career couples increasingly value work-life balance over pure career focus." <i>(Work & Occupations, 2021)</i>',
                 pirsig: "Balance zwischen zwei statischen Mustern - Integration statt Polarisierung.",
                 osho: "Arbeit und Liebe sind nicht Gegensätze. Beide sind Wege zu dir selbst."
-            },
-            familieWichtigkeit: {
-                title: "Familie-Wichtigkeit",
-                stats: "Duo bewerten Familie als überdurchschnittlich wichtig (70%)",
-                research: '"Monogamous couples prioritize family connections and intergenerational bonds." <i>(Family Relations, 2020)</i>',
-                pirsig: "Familie als erweitertes statisches Muster - Zugehörigkeit über die Dyade hinaus.",
-                osho: "Familie kann Gefängnis oder Flügel sein. Es kommt auf die Bewusstheit an."
             }
         };
 
@@ -13635,6 +13645,23 @@
             // Geklickten Button aktivieren
             btn.classList.add('active');
             trackProfileReviewChange();
+
+            // Live-Synchronisierung für Geschlechtsidentität
+            var attrId = group.getAttribute('data-attr');
+            if (attrId === 'pr-geschlecht-sekundaer' && typeof TiageState !== 'undefined') {
+                var value = parseInt(btn.getAttribute('data-value'), 10);
+                var primaryGeschlecht = TiageState.getPrimaryGeschlecht('ich');
+                if (primaryGeschlecht) {
+                    var secondaryValue = mapGeschlechtsidentitaetToSecondary(value, primaryGeschlecht);
+                    TiageState.setSecondaryGeschlecht('ich', secondaryValue);
+                    console.log('[ProfileReview] Geschlechtsidentität live-sync:', value, '→', secondaryValue);
+
+                    // Update main UI
+                    if (typeof updateGeschlechtGrid === 'function') {
+                        updateGeschlechtGrid('ich');
+                    }
+                }
+            }
         }
         window.selectTripleBtn = selectTripleBtn;
 
@@ -13730,7 +13757,7 @@
 
         // Show Info Modal
         function showProfileReviewInfo(attribute) {
-            var data = profileReviewInfoData[attribute] || profileReviewInfoData.kinderWunsch;
+            var data = profileReviewInfoData[attribute] || profileReviewInfoData['pr-kinder'];
             var modal = document.getElementById('profileReviewInfoModal');
             if (!modal) return;
 
