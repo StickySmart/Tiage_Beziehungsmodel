@@ -93,17 +93,22 @@ TiageSynthesis.Factors.Geschlecht = {
     /**
      * Extrahiert das Geschlecht für Orientierungslogik
      *
-     * NEUES SYSTEM mit P/S:
+     * NEUES SYSTEM mit P/S (kontextabhängig):
      * - P = Körper (mann, frau, inter)
-     * - S = Identität (cis, trans, unsicher für mann/frau; nonbinaer, fluid, unsicher für inter)
+     * - S = Identität:
+     *   - Binär (Mann/Frau): cis, trans, suchend
+     *   - Divers (Inter): nonbinaer, fluid, suchend
      *
      * Logik für Orientierung:
      * - P=Mann + S=Cis → mann (identifiziert als Mann)
      * - P=Mann + S=Trans → frau (identifiziert als Frau)
+     * - P=Mann + S=Suchend → suchend (in Exploration)
      * - P=Frau + S=Cis → frau (identifiziert als Frau)
      * - P=Frau + S=Trans → mann (identifiziert als Mann)
-     * - P=Inter + S=Nonbinär/Fluid/Unsicher → nonbinaer/fluid/unsicher
-     * - P=* + S=Unsicher → unsicher
+     * - P=Frau + S=Suchend → suchend (in Exploration)
+     * - P=Inter + S=Nonbinär → nonbinaer
+     * - P=Inter + S=Fluid → fluid
+     * - P=Inter + S=Suchend → suchend
      */
     _extractPrimaryGeschlecht: function(geschlecht) {
         if (!geschlecht) return null;

@@ -13877,8 +13877,9 @@
 
         /**
          * Updates the geschlechtsidentität card options based on primary geschlecht
-         * - Mann/Frau: Cis, Trans, Nonbinär, Fluid, Unsicher (5 options)
-         * - Inter: Nonbinär, Fluid, Unsicher (3 options)
+         * KONTEXTABHÄNGIG:
+         * - Mann/Frau (binär): Cis, Trans, Suchend (3 options)
+         * - Inter (divers): Nonbinär, Fluid, Suchend (3 options)
          * @param {string} primaryGeschlecht - 'mann', 'frau', 'inter', or null
          */
         function updateGeschlechtsidentitaetOptions(primaryGeschlecht) {
@@ -13890,16 +13891,15 @@
 
             var options, values;
             if (primaryGeschlecht === 'inter') {
-                // Inter: Nonbinär, Fluid, Suchend (3 options)
+                // Inter (divers): Nonbinär, Fluid, Suchend (3 options)
                 options = ['Nonbinär', 'Fluid', 'Suchend'];
                 values = [0, 50, 100];
-                buttonsContainer.classList.remove('five-options');
             } else {
-                // Mann/Frau: Cis, Trans, Suchend (3 options)
+                // Mann/Frau (binär): Cis, Trans, Suchend (3 options)
                 options = ['Cis', 'Trans', 'Suchend'];
                 values = [0, 50, 100];
-                buttonsContainer.classList.remove('five-options');
             }
+            buttonsContainer.classList.remove('five-options');
 
             // Regenerate buttons
             var buttonsHtml = options.map(function(label, i) {
@@ -13912,14 +13912,15 @@
 
         /**
          * Maps secondary geschlecht back to profile review value
-         * For Mann/Frau: Cis=0, Trans=50, Suchend=100 (3 options)
-         * For Inter: Nonbinär=0, Fluid=50, Suchend=100 (3 options)
+         * KONTEXTABHÄNGIG (3 Optionen pro Kontext):
+         * - Mann/Frau (binär): Cis=0, Trans=50, Suchend=100
+         * - Inter (divers): Nonbinär=0, Fluid=50, Suchend=100
          * @param {string} secondary - 'cis', 'trans', 'nonbinaer', 'fluid', 'suchend'
          * @param {string} primary - Body: 'mann', 'frau', 'inter'
          * @returns {number} Profile review value
          */
         function mapSecondaryToGeschlechtsidentitaet(secondary, primary) {
-            // For Inter: Nonbinär=0, Fluid=50, Suchend=100
+            // For Inter (divers): Nonbinär=0, Fluid=50, Suchend=100
             if (primary === 'inter') {
                 if (secondary === 'nonbinaer') return 0;
                 if (secondary === 'fluid') return 50;
@@ -13927,7 +13928,7 @@
                 return 0; // Default to Nonbinär for Inter
             }
 
-            // For Mann/Frau: Cis=0, Trans=50, Suchend=100
+            // For Mann/Frau (binär): Cis=0, Trans=50, Suchend=100
             if (secondary === 'suchend' || secondary === 'unsicher') return 100;
 
             // Cis: identity matches body
@@ -13949,21 +13950,22 @@
 
         /**
          * Maps profile review geschlechtsidentität value to secondary geschlecht
-         * For Mann/Frau: 0=Cis, 50=Trans, 100=Suchend (3 options)
-         * For Inter: 0=Nonbinär, 50=Fluid, 100=Suchend (3 options)
+         * KONTEXTABHÄNGIG (3 Optionen pro Kontext):
+         * - Mann/Frau (binär): 0=Cis, 50=Trans, 100=Suchend
+         * - Inter (divers): 0=Nonbinär, 50=Fluid, 100=Suchend
          * @param {number} value - Profile review button value
          * @param {string} primaryGeschlecht - Body: 'mann', 'frau', 'inter'
          * @returns {string} Secondary value for TiageState
          */
         function mapGeschlechtsidentitaetToSecondary(value, primaryGeschlecht) {
-            // For Inter: 0=Nonbinär, 50=Fluid, 100=Suchend
+            // For Inter (divers): 0=Nonbinär, 50=Fluid, 100=Suchend
             if (primaryGeschlecht === 'inter') {
                 if (value <= 25) return 'nonbinaer';  // 0
                 if (value <= 75) return 'fluid';      // 50
                 return 'suchend';                     // 100
             }
 
-            // For Mann/Frau: 0=Cis, 50=Trans, 100=Suchend
+            // For Mann/Frau (binär): 0=Cis, 50=Trans, 100=Suchend
             if (value <= 25) return 'cis';    // 0
             if (value <= 75) return 'trans';  // 50
             return 'suchend';                 // 100
