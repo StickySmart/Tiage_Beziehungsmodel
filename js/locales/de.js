@@ -821,24 +821,278 @@ const TiageLocale_DE = {
         title: 'Alle vorausgefüllten Attribute',
 
         categories: {
+            geschlechtsidentitaet: 'GESCHLECHTSIDENTITÄT',
             lebensplanung: 'LEBENSPLANUNG',
             finanzen: 'FINANZEN & KARRIERE',
-            soziales: 'SOZIALES',
             kommunikation: 'KOMMUNIKATION',
-            werte: 'WERTE & PRIORITÄTEN'
+            soziales: 'SOZIALES',
+            intimitaet: 'INTIMITÄT',
+            werte: 'WERTE',
+            praktisches: 'PRAKTISCHES'
         },
 
         attributes: {
-            kinderWunsch: 'Kinder erwünscht',
-            eheWunsch: 'Ehe erwünscht',
-            wohnform: 'Zusammenleben',
-            haustiere: 'Haustiere wichtig',
-            umzugsbereitschaft: 'Umzugsbereitschaft',
-            finanzen: 'Finanzen',
-            karrierePrioritaet: 'Karriere vs. Familie',
-            familieWichtigkeit: 'Familie-Wichtigkeit',
-            exklusivitaet: 'Exklusivität',
-            zukunftsplanung: 'Zukunftsplanung'
+            // ═══════════════════════════════════════════════════════════════════════
+            // GESCHLECHTSIDENTITÄT
+            // ═══════════════════════════════════════════════════════════════════════
+            geschlechtSekundaer: {
+                label: 'Geschlechtsidentität',
+                description: 'Geschlechtsidentität: Cis (Identität = Körper), Trans (Identität ≠ Körper), Suchend (in Exploration). Bei Inter: Nonbinär, Fluid, Suchend.',
+                info: {
+                    stats: 'Ca. 0,5-1% der Bevölkerung identifizieren sich als trans oder nonbinär (Williams Institute, 2022). Tendenz steigend durch höhere Akzeptanz.',
+                    research: 'Identitätskongruenz korreliert mit 40% höherem Wohlbefinden (American Psychological Association). Partner-Akzeptanz ist stärkster Prädiktor für Beziehungszufriedenheit.',
+                    pirsig: 'Die Suche nach authentischer Identität ist dynamische Qualität. Cis bedeutet nicht automatisch weniger Bewusstsein - die bewusste Bestätigung der eigenen Identität ist ebenso wertvoll.',
+                    osho: 'Du bist nicht der Körper, du bist nicht der Geist. Finde heraus, wer du wirklich bist - jenseits aller Labels und Zuschreibungen.'
+                }
+            },
+
+            // ═══════════════════════════════════════════════════════════════════════
+            // LEBENSPLANUNG
+            // ═══════════════════════════════════════════════════════════════════════
+            kinder: {
+                label: 'Kinderwunsch',
+                description: 'Wunsch nach eigenen Kindern oder Offenheit dafür in der Zukunft.',
+                info: {
+                    stats: '20% der Paare in DE sind kinderlos gewollt (Destatis 2023). Uneinigkeit beim Kinderwunsch ist Trennungsgrund Nr. 3.',
+                    research: 'Gottman-Institut: 94% der Paare mit unterschiedlichem Kinderwunsch trennen sich langfristig ohne Kompromiss.',
+                    pirsig: 'Ein Kind ist weder Projekt noch Pflicht. Die Frage ist nicht "soll ich?", sondern "warum will ich?" - und ob beide Antworten harmonieren.',
+                    osho: 'Kinder sind keine Fortsetzung deines Egos. Sie sind eigenständige Seelen, die durch dich kommen, aber nicht dir gehören.'
+                }
+            },
+            ehe: {
+                label: 'Ehe-Wunsch',
+                description: 'Bedeutung einer formellen Eheschließung für die Beziehung.',
+                info: {
+                    stats: '60% der Deutschen sehen Ehe als wichtig (Allensbach 2023). Bei unter 30-Jährigen nur noch 42%.',
+                    research: 'Studien zeigen keinen signifikanten Unterschied in Beziehungszufriedenheit zwischen verheirateten und unverheirateten Langzeitpaaren.',
+                    pirsig: 'Die Ehe ist ein statisches Muster. Ihre Qualität liegt nicht im Vertrag, sondern in der täglichen Entscheidung füreinander.',
+                    osho: 'Ehe kann ein Gefängnis oder ein Tempel sein. Es hängt davon ab, ob sie aus Angst oder aus Liebe geschlossen wird.'
+                }
+            },
+            zusammen: {
+                label: 'Zusammen wohnen',
+                description: 'Präferenz für gemeinsames Wohnen oder getrennte Haushalte.',
+                info: {
+                    stats: '8% der deutschen Paare leben in LAT-Beziehungen (getrennte Haushalte). Bei über 60-Jährigen sind es 15%.',
+                    research: 'LAT-Paare berichten 12% höhere Beziehungsqualität bei gleichbleibender emotionaler Nähe (University of Missouri).',
+                    pirsig: 'Räumliche Nähe ist nicht gleich emotionale Nähe. Qualität entsteht durch bewusste Präsenz, nicht durch physische Dauernähe.',
+                    osho: 'Zwei Menschen können im selben Raum allein sein - oder in verschiedenen Städten verbunden. Wahre Intimität braucht keinen gemeinsamen Schlüssel.'
+                }
+            },
+            haustiere: {
+                label: 'Haustiere',
+                description: 'Einstellung zu Haustieren im gemeinsamen Haushalt.',
+                info: {
+                    stats: '47% der deutschen Haushalte haben Haustiere. 78% der Tierhalter sehen ihr Tier als Familienmitglied.',
+                    research: 'Haustierbesitzer zeigen 20% niedrigere Cortisol-Werte. Gemeinsame Tierpflege stärkt die Paarbindung.',
+                    pirsig: 'Ein Tier lehrt uns etwas, das in Beziehungen essentiell ist: bedingungslose Präsenz ohne Erwartung an Veränderung.',
+                    osho: 'Tiere leben im Jetzt. Sie erinnern uns daran, dass Liebe kein Denken braucht - nur Sein.'
+                }
+            },
+            umzug: {
+                label: 'Umzugsbereitschaft',
+                description: 'Bereitschaft, für die Beziehung den Wohnort zu wechseln.',
+                info: {
+                    stats: '35% der Deutschen würden für die Liebe umziehen. Bei unter 30-Jährigen sind es 58%.',
+                    research: 'Fernbeziehungen haben gleiche Erfolgsrate wie Nahbeziehungen - sofern ein gemeinsames Ziel existiert.',
+                    pirsig: 'Flexibilität ist dynamische Qualität. Die Frage ist nicht, wer umzieht, sondern: Wächst die Beziehung durch diese Entscheidung?',
+                    osho: 'Wurzeln und Flügel - wer nur Wurzeln hat, kann nicht fliegen. Wer nur Flügel hat, findet keine Ruhe. Die Kunst ist beides.'
+                }
+            },
+            familie: {
+                label: 'Familie-Wichtigkeit',
+                description: 'Stellenwert der Herkunftsfamilie und regelmäßiger Kontakt.',
+                info: {
+                    stats: '67% der Deutschen sehen ihre Herkunftsfamilie mindestens monatlich. 12% haben keinen Kontakt.',
+                    research: 'In-Law-Konflikte sind in 40% der Scheidungen ein Hauptfaktor (Terling-Watt Studie).',
+                    pirsig: 'Familie ist ein statisches Muster aus der Vergangenheit. Die Kunst ist, es zu ehren ohne sich davon definieren zu lassen.',
+                    osho: 'Du kannst deine Eltern lieben, ohne ihren Wünschen zu folgen. Respekt bedeutet nicht Gehorsam.'
+                }
+            },
+
+            // ═══════════════════════════════════════════════════════════════════════
+            // FINANZEN & KARRIERE
+            // ═══════════════════════════════════════════════════════════════════════
+            finanzen: {
+                label: 'Finanzen',
+                description: 'Umgang mit Geld: getrennte Konten, Mischform oder gemeinsame Kasse.',
+                info: {
+                    stats: '42% der Paare haben komplett getrennte Finanzen. 31% ein Drei-Konten-Modell. 27% gemeinsame Kasse.',
+                    research: 'Geld ist Streitthema Nr. 1 bei Paaren. Transparenz reduziert Konflikte um 70% (Kansas State University).',
+                    pirsig: 'Geld ist ein Werkzeug, kein Maßstab für Wert. Die Frage ist nicht wieviel, sondern: Dient es eurer gemeinsamen Qualität?',
+                    osho: 'Geld ist wie Wasser - es muss fließen. Wer es festhält, erstickt. Wer es teilen kann, wird reich an Vertrauen.'
+                }
+            },
+            karriere: {
+                label: 'Karriere-Priorität',
+                description: 'Gewichtung zwischen beruflichem Erfolg und Familienleben.',
+                info: {
+                    stats: '58% der Deutschen priorisieren Work-Life-Balance über Karriere (Gallup 2023).',
+                    research: 'Dual-Career-Paare haben höhere Scheidungsraten - aber nur wenn traditionelle Rollenerwartungen bestehen.',
+                    pirsig: 'Karriere ohne Sinn ist Hamsterrad. Sinn ohne Handeln ist Träumerei. Qualität liegt in der Integration beider.',
+                    osho: 'Arbeit kann Meditation sein - wenn du nicht für Anerkennung arbeitest, sondern weil die Arbeit selbst Freude ist.'
+                }
+            },
+
+            // ═══════════════════════════════════════════════════════════════════════
+            // KOMMUNIKATION
+            // ═══════════════════════════════════════════════════════════════════════
+            gespraech: {
+                label: 'Gesprächsbedürfnis',
+                description: 'Bedürfnis nach täglichem Austausch und Gesprächen.',
+                info: {
+                    stats: 'Glückliche Paare sprechen durchschnittlich 5+ Stunden pro Woche miteinander (exkl. Alltagslogistik).',
+                    research: 'Gottman: "Bid-Response-Ratio" über 85% = stabile Beziehung. Unter 33% = hohes Trennungsrisiko.',
+                    pirsig: 'Worte können Brücken oder Mauern sein. Qualität entsteht nicht durch Menge, sondern durch echtes Hinhören.',
+                    osho: 'Wahre Kommunikation geschieht in der Stille zwischen den Worten. Wer zuhören kann, muss nicht viel reden.'
+                }
+            },
+            emotional: {
+                label: 'Emotionale Offenheit',
+                description: 'Bereitschaft, Gefühle und Emotionen zu teilen.',
+                info: {
+                    stats: 'Männer teilen Gefühle durchschnittlich 60% seltener als Frauen (Meta-Analyse, 2021).',
+                    research: 'Emotionale Selbstoffenbarung erhöht Intimität um 45% - aber nur bei reziproker Offenheit.',
+                    pirsig: 'Gefühle zu zeigen erfordert Mut zur Verletzlichkeit. Das ist keine Schwäche, sondern höchste Qualität des Menschseins.',
+                    osho: 'Wenn du deine Tränen versteckst, versteckst du auch dein Lachen. Authentizität kennt keine Halbheiten.'
+                }
+            },
+            konflikt: {
+                label: 'Konfliktverhalten',
+                description: 'Art der Konfliktbewältigung: ausweichen oder direkt ansprechen.',
+                info: {
+                    stats: '44% der Paare vermeiden Konflikte. 23% eskalieren regelmäßig. 33% lösen konstruktiv.',
+                    research: 'Gottman: Konflikt-Vermeidung ist schädlicher als Streit. Entscheidend ist das Verhältnis: 5:1 positiv zu negativ.',
+                    pirsig: 'Konflikt ist nicht das Problem - Stillstand ist es. Dynamische Qualität entsteht durch Reibung, nicht durch Vermeidung.',
+                    osho: 'Streit kann reinigend sein wie ein Gewitter. Nicht der Streit zerstört, sondern das Unausgesprochene.'
+                }
+            },
+
+            // ═══════════════════════════════════════════════════════════════════════
+            // SOZIALES
+            // ═══════════════════════════════════════════════════════════════════════
+            introextro: {
+                label: 'Intro-/Extrovertiert',
+                description: 'Energie durch Alleinsein (Intro) oder soziale Kontakte (Extro).',
+                info: {
+                    stats: '25-40% der Bevölkerung sind introvertiert. Ambivertierte bilden die größte Gruppe.',
+                    research: 'Intro-Extro-Paare können gut funktionieren, wenn beide ihre Unterschiede respektieren statt ändern zu wollen.',
+                    pirsig: 'Introversion ist keine Schüchternheit, Extroversion keine Oberflächlichkeit. Beides sind legitime Wege zur Qualität.',
+                    osho: 'Der Introvertierte sucht die Tiefe, der Extrovertierte die Weite. Beide suchen das Gleiche auf unterschiedlichen Wegen.'
+                }
+            },
+            alleinzeit: {
+                label: 'Alleinzeit-Bedürfnis',
+                description: 'Bedürfnis nach Zeit für sich alleine ohne Partner.',
+                info: {
+                    stats: '72% der Menschen brauchen regelmäßig Alleinzeit. 28% fühlen sich dabei einsam.',
+                    research: 'Partner, die individuelle Zeit respektieren, berichten 30% höhere Beziehungszufriedenheit.',
+                    pirsig: 'Alleinzeit ist nicht Abwesenheit von Liebe - sie ist Anwesenheit bei sich selbst. Nur wer sich selbst kennt, kann sich geben.',
+                    osho: 'Einsamkeit und Alleinsein sind grundverschieden. Alleinsein ist voller Freude - Einsamkeit ist Armut trotz Gesellschaft.'
+                }
+            },
+            freunde: {
+                label: 'Freundeskreis',
+                description: 'Präferenz für eigene Freunde oder gemeinsamen Freundeskreis.',
+                info: {
+                    stats: '61% der Paare teilen größtenteils den Freundeskreis. 15% haben komplett getrennte Freunde.',
+                    research: 'Gemeinsame Freunde stabilisieren Beziehungen - erhöhen aber auch den sozialen Druck bei Trennungen.',
+                    pirsig: 'Freundschaften außerhalb der Beziehung sind keine Bedrohung - sie sind Nahrung für die Individualität.',
+                    osho: 'Eine Beziehung, die keine anderen Beziehungen erlaubt, ist ein Gefängnis, keine Liebe.'
+                }
+            },
+
+            // ═══════════════════════════════════════════════════════════════════════
+            // INTIMITÄT
+            // ═══════════════════════════════════════════════════════════════════════
+            naehe: {
+                label: 'Körperliche Nähe',
+                description: 'Bedürfnis nach Berührungen, Umarmungen und körperlicher Nähe.',
+                info: {
+                    stats: 'Menschen brauchen 4-12 Umarmungen täglich für emotionales Wohlbefinden (Virginia Satir).',
+                    research: '20-Sekunden-Umarmungen setzen Oxytocin frei und senken Blutdruck und Cortisol signifikant.',
+                    pirsig: 'Körperliche Berührung ist nonverbale Kommunikation höchster Qualität. Sie braucht keine Interpretation.',
+                    osho: 'Der Körper ist der Tempel. Eine Berührung kann mehr sagen als tausend Worte - wenn sie bewusst geschieht.'
+                }
+            },
+            romantik: {
+                label: 'Romantik-Bedürfnis',
+                description: 'Wunsch nach romantischen Gesten, Überraschungen und Dates.',
+                info: {
+                    stats: '67% der Frauen und 51% der Männer wünschen sich mehr Romantik in der Beziehung.',
+                    research: 'Regelmäßige Date-Nights erhöhen die Beziehungszufriedenheit um 36% (National Marriage Project).',
+                    pirsig: 'Romantik ist kein Kitsch - es ist bewusste Aufmerksamkeit für die Außergewöhnlichkeit des Gewöhnlichen.',
+                    osho: 'Romantik stirbt, wenn Liebe zur Gewohnheit wird. Halte die Augen des Anfangs offen.'
+                }
+            },
+            sex: {
+                label: 'Sexuelle Frequenz',
+                description: 'Gewünschte Häufigkeit von Intimität in der Beziehung.',
+                info: {
+                    stats: 'Deutsche Paare haben durchschnittlich 1,5x pro Woche Sex. 15% sind in "sexless marriages" (<10x/Jahr).',
+                    research: 'Frequenz korreliert wenig mit Zufriedenheit. Entscheidend ist, ob beide sich verstanden fühlen.',
+                    pirsig: 'Sexualität ist nicht quantifizierbar. Die Qualität liegt im Präsentsein, nicht in der Statistik.',
+                    osho: 'Sex kann Meditation sein - wenn er aus Präsenz entsteht statt aus Verlangen. Dann ist einmal wie tausendmal.'
+                }
+            },
+
+            // ═══════════════════════════════════════════════════════════════════════
+            // WERTE
+            // ═══════════════════════════════════════════════════════════════════════
+            religion: {
+                label: 'Religiosität',
+                description: 'Bedeutung von Religion und Spiritualität im Alltag.',
+                info: {
+                    stats: '52% der Deutschen glauben an Gott. 27% praktizieren aktiv. Interreligiöse Ehen bei 24%.',
+                    research: 'Religiöse Homogamie (gleicher Glaube) korreliert mit längeren Ehen - aber Atheisten haben ähnliche Stabilität.',
+                    pirsig: 'Religion ist ein Versuch, statische Qualität zu greifen. Spiritualität lebt in der dynamischen Suche selbst.',
+                    osho: 'Religion sollte kein Glaubensbekenntnis sein, sondern eine Erfahrung. Was du nicht selbst erlebt hast, ist nur Information.'
+                }
+            },
+            tradition: {
+                label: 'Tradition vs. Modern',
+                description: 'Orientierung an traditionellen Werten oder modernen Lebensweisen.',
+                info: {
+                    stats: '38% der Deutschen bevorzugen traditionelle Werte. Generationenunterschied: 60+ vs. 18-30 = 52% vs. 21%.',
+                    research: 'Wertekongruenz ist wichtiger als die Richtung. Gemischte Paare (trad+modern) berichten mehr Konflikte.',
+                    pirsig: 'Tradition ist statische Qualität - wertvoll, wenn sie trägt, hinderlich, wenn sie fesselt. Die Kunst ist die Unterscheidung.',
+                    osho: 'Tradition ist die Asche des Feuers vergangener Generationen. Suche das Feuer, nicht die Asche.'
+                }
+            },
+            umwelt: {
+                label: 'Umweltbewusstsein',
+                description: 'Wichtigkeit von Nachhaltigkeit und umweltbewusstem Leben.',
+                info: {
+                    stats: '68% der Deutschen halten Klimaschutz für wichtig. 23% ändern aktiv ihr Verhalten.',
+                    research: 'Werte-Diskrepanz bei Nachhaltigkeit führt zu täglichen Mikrokonflikten (Einkauf, Mobilität, Konsum).',
+                    pirsig: 'Umweltbewusstsein ist die Erkenntnis, dass wir nicht getrennt von der Natur sind. Jede Handlung hat Konsequenzen.',
+                    osho: 'Die Erde ist nicht dein Besitz - du bist ihr Gast. Gäste hinterlassen das Haus schöner als sie es vorgefunden haben.'
+                }
+            },
+
+            // ═══════════════════════════════════════════════════════════════════════
+            // PRAKTISCHES
+            // ═══════════════════════════════════════════════════════════════════════
+            ordnung: {
+                label: 'Ordnung',
+                description: 'Präferenz für Ordnung und Sauberkeit im Wohnbereich.',
+                info: {
+                    stats: 'Haushaltsführung ist Top-5 Streitthema bei Paaren. 62% der Frauen tragen Hauptlast - mit sinkender Tendenz.',
+                    research: 'Ungleiche Haushaltsverteilung reduziert sexuelle Zufriedenheit bei Frauen um 50%.',
+                    pirsig: 'Ordnung ist nicht Kontrolle - es ist Klarheit des Raumes für Klarheit des Geistes.',
+                    osho: 'Äußere Ordnung reflektiert innere Ordnung. Aber zwanghaftes Aufräumen kann auch Flucht vor dem inneren Chaos sein.'
+                }
+            },
+            reise: {
+                label: 'Reise-Frequenz',
+                description: 'Wunsch nach Reisen und gemeinsamen Urlauben.',
+                info: {
+                    stats: 'Deutsche verreisen durchschnittlich 2,4x pro Jahr. 18% nie. Reiseunterschiede sind häufiger Konflikt.',
+                    research: 'Gemeinsame Erlebnisse (nicht materielle Geschenke) stärken die Paarbindung langfristig am stärksten.',
+                    pirsig: 'Reisen erweitert die statischen Muster des Alltags. Neue Erfahrungen sind dynamische Qualität in Reinform.',
+                    osho: 'Die wichtigste Reise ist die nach Innen. Aber manchmal braucht es äußere Bewegung, um inneren Stillstand zu lösen.'
+                }
+            }
         },
 
         slider: {
