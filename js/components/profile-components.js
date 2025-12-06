@@ -95,20 +95,21 @@ const ProfileReviewRenderer = (function() {
      * Wird aufgerufen wenn das Modal zum ersten Mal geöffnet wird
      */
     function initializeModal() {
-        const body = document.getElementById('profileReviewBody');
-        if (!body) {
-            console.warn('ProfileReviewRenderer: Modal body element not found');
+        // Use dedicated content container to preserve source-explanation
+        const contentContainer = document.getElementById('profileReviewContent');
+        if (!contentContainer) {
+            console.warn('ProfileReviewRenderer: Content container not found');
             return;
         }
 
         // Prüfe ob bereits initialisiert
-        if (body.dataset.initialized === 'true') {
+        if (contentContainer.dataset.initialized === 'true') {
             return;
         }
 
         // Generiere und setze Content
-        body.innerHTML = renderModalBody() + '\n                <div style="height: 20px;"></div>';
-        body.dataset.initialized = 'true';
+        contentContainer.innerHTML = renderModalBody() + '\n                <div style="height: 20px;"></div>';
+        contentContainer.dataset.initialized = 'true';
 
         console.log('ProfileReviewRenderer: Modal initialized');
     }

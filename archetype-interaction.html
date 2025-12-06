@@ -717,33 +717,34 @@
                 <button class="modal-close" onclick="closeProfileReviewModal()">&times;</button>
             </div>
 
-            <!-- Source Explanation Banner -->
-            <div class="profile-review-source-explanation" id="profileReviewSourceExplanation">
-                <div class="source-explanation-header" onclick="toggleSourceExplanation()">
-                    <span class="source-explanation-icon">&#x2139;</span>
-                    <span class="source-explanation-title" data-i18n="profileReview.sourceExplanation.title">Woher kommen diese Werte?</span>
-                    <span class="source-explanation-toggle" id="sourceExplanationToggle">&#9660;</span>
-                </div>
-                <div class="source-explanation-content" id="sourceExplanationContent">
-                    <p class="source-explanation-intro" data-i18n="profileReview.sourceExplanation.intro">Diese Attribute wurden automatisch berechnet basierend auf:</p>
-                    <div class="source-explanation-factors" id="sourceExplanationFactors">
-                        <span class="source-factor-tag"><span class="factor-label">Archetyp:</span> <span class="factor-value" id="srcFactor-archetype">Duo</span></span>
-                        <span class="source-factor-tag"><span class="factor-label">Geschlecht:</span> <span class="factor-value" id="srcFactor-gender">-</span></span>
-                        <span class="source-factor-tag"><span class="factor-label">Dominanz:</span> <span class="factor-value" id="srcFactor-dominance">Ausgeglichen</span></span>
-                        <span class="source-factor-tag"><span class="factor-label">Orientierung:</span> <span class="factor-value" id="srcFactor-orientation">Heterosexuell</span></span>
-                    </div>
-                    <p class="source-explanation-note">
-                        <span data-i18n="profileReview.sourceExplanation.note">Tiage nutzt 1.248 psychologische Profile aus Beziehungsforschung (Gottman, Esther Perel, u.a.). Die Werte sind Vorschläge - du kannst sie anpassen.</span>
-                        <a href="#" onclick="closeProfileReviewModal(); openHelpModal(); return false;" class="source-explanation-link" data-i18n="profileReview.sourceExplanation.helpLink">Mehr in der Hilfe</a>
-                    </p>
-                </div>
-            </div>
-
             <!-- Scrollable Content - Dynamically rendered by ProfileReviewRenderer -->
             <div class="modal-body profile-review-body" id="profileReviewBody" style="flex: 1; overflow-y: auto;">
+                <!-- Source Explanation Banner (inside scrollable area) -->
+                <div class="profile-review-source-explanation" id="profileReviewSourceExplanation">
+                    <div class="source-explanation-header" onclick="toggleSourceExplanation()">
+                        <span class="source-explanation-icon">&#x2139;</span>
+                        <span class="source-explanation-title" data-i18n="profileReview.sourceExplanation.title">Woher kommen diese Werte?</span>
+                        <span class="source-explanation-toggle" id="sourceExplanationToggle">&#9660;</span>
+                    </div>
+                    <div class="source-explanation-content" id="sourceExplanationContent">
+                        <p class="source-explanation-intro" data-i18n="profileReview.sourceExplanation.intro">Diese Attribute wurden automatisch berechnet basierend auf:</p>
+                        <div class="source-explanation-factors" id="sourceExplanationFactors">
+                            <span class="source-factor-tag"><span class="factor-label">Archetyp:</span> <span class="factor-value" id="srcFactor-archetype">Duo</span></span>
+                            <span class="source-factor-tag"><span class="factor-label">Geschlecht:</span> <span class="factor-value" id="srcFactor-gender">-</span></span>
+                            <span class="source-factor-tag"><span class="factor-label">Dominanz:</span> <span class="factor-value" id="srcFactor-dominance">Ausgeglichen</span></span>
+                            <span class="source-factor-tag"><span class="factor-label">Orientierung:</span> <span class="factor-value" id="srcFactor-orientation">Heterosexuell</span></span>
+                        </div>
+                        <p class="source-explanation-note">
+                            <span data-i18n="profileReview.sourceExplanation.note">Tiage nutzt 1.248 psychologische Profile aus Beziehungsforschung (Gottman, Esther Perel, u.a.). Die Werte sind Vorschläge - du kannst sie anpassen.</span>
+                            <a href="#" onclick="closeProfileReviewModal(); openHelpModal(); return false;" class="source-explanation-link" data-i18n="profileReview.sourceExplanation.helpLink">Mehr in der Hilfe</a>
+                        </p>
+                    </div>
+                </div>
                 <!-- Content wird dynamisch durch ProfileReviewRenderer.initializeModal() generiert -->
-                <div class="profile-review-loading" style="padding: 40px; text-align: center; color: rgba(255,255,255,0.6);">
-                    Lade Profile-Attribute...
+                <div id="profileReviewContent">
+                    <div class="profile-review-loading" style="padding: 40px; text-align: center; color: rgba(255,255,255,0.6);">
+                        Lade Profile-Attribute...
+                    </div>
                 </div>
             </div>
 
