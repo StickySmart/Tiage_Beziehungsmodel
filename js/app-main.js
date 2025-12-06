@@ -13690,35 +13690,35 @@
             };
         }
 
-        // Reset Profile Review - nur die 16 wichtigsten Attribute
+        // Reset Profile Review - alle Attribute auf Config-Defaults zurücksetzen
         function resetProfileReview() {
             if (confirm('Alle Änderungen zurücksetzen und Standard-Werte wiederherstellen?')) {
-                // Reload from initial state (Toggle-Buttons - nur kinder, ehe)
-                if (profileReviewInitialState.kinder !== undefined) {
-                    setProfileBtnState('pr-kinder', profileReviewInitialState.kinder);
-                    setProfileBtnState('pr-ehe', profileReviewInitialState.ehe);
+                // Nutze ProfileReviewRenderer für vollständigen Reset auf Config-Defaults
+                if (typeof ProfileReviewRenderer !== 'undefined') {
+                    ProfileReviewRenderer.resetAllValues();
+                } else {
+                    // Fallback: Manuelles Reset auf Default 50
+                    var tripleAttrs = [
+                        'pr-kinder', 'pr-ehe', 'pr-zusammen', 'pr-haustiere',
+                        'pr-umzug', 'pr-familie', 'pr-finanzen', 'pr-karriere',
+                        'pr-gespraech', 'pr-emotional', 'pr-konflikt',
+                        'pr-introextro', 'pr-alleinzeit', 'pr-freunde',
+                        'pr-naehe', 'pr-romantik', 'pr-sex',
+                        'pr-religion', 'pr-tradition', 'pr-umwelt',
+                        'pr-ordnung', 'pr-reise'
+                    ];
+                    tripleAttrs.forEach(function(attrId) {
+                        setTripleBtnValue(attrId, 50);
+                    });
                 }
-
-                // 3er-Toggle-Gruppen zurücksetzen (ohne: umzug, gespraech, ordnung, reise)
-                var tripleAttrs = [
-                    'pr-familie', 'pr-finanzen', 'pr-karriere',
-                    'pr-emotional', 'pr-konflikt',
-                    'pr-introextro', 'pr-alleinzeit', 'pr-freunde',
-                    'pr-naehe', 'pr-romantik', 'pr-sex',
-                    'pr-religion', 'pr-tradition', 'pr-umwelt'
-                ];
-
-                tripleAttrs.forEach(function(attrId) {
-                    var key = attrId.replace('pr-', '');
-                    if (profileReviewInitialState[key] !== undefined) {
-                        setTripleBtnValue(attrId, profileReviewInitialState[key]);
-                    }
-                });
 
                 // Reset counter
                 profileReviewChangesCount = 0;
                 var badge = document.getElementById('profileReviewChangesBadge');
                 if (badge) badge.style.display = 'none';
+
+                // Update initial state nach Reset
+                profileReviewInitialState = getProfileReviewState();
             }
         }
         window.resetProfileReview = resetProfileReview;
