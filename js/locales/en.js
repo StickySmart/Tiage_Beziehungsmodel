@@ -931,6 +931,7 @@ const TiageLocale_EN = {
             gender: 'Gender',
             dominance: 'Dominance',
             orientation: 'Orientation',
+            notSelected: 'Not selected',
             note: 'These values are suggestions based on statistical patterns. You can adjust them at any time.',
             learnMore: 'Learn more',
             collapse: 'Show less'

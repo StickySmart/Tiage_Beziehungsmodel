@@ -13639,7 +13639,10 @@
         // Update Source Explanation with current factors
         function updateSourceExplanation(archetypeKey, personData, dominanz, orientierung) {
             var factorsContainer = document.getElementById('sourceExplanationFactors');
-            if (!factorsContainer) return;
+            if (!factorsContainer) {
+                console.warn('[SourceExplanation] Container not found');
+                return;
+            }
 
             // Get locale for labels
             var locale = typeof TiageI18n !== 'undefined' ? TiageI18n.getLocale() : null;
@@ -13659,36 +13662,56 @@
                 labels.orientation = src.orientation || labels.orientation;
             }
 
-            // Get display values
+            // Get display values with robust fallbacks
             var archetypeName = archetypeKey ? archetypeKey.charAt(0).toUpperCase() + archetypeKey.slice(1) : 'Duo';
-            var genderPrimary = personData && personData.geschlecht ? personData.geschlecht.primary : null;
-            var genderSecondary = personData && personData.geschlecht ? personData.geschlecht.secondary : null;
-            var genderDisplay = '-';
 
-            if (genderPrimary && genderSecondary) {
-                // Get localized gender labels
-                if (locale && locale.geschlecht) {
-                    var pLabel = locale.geschlecht.primary && locale.geschlecht.primary[genderPrimary] ? locale.geschlecht.primary[genderPrimary] : genderPrimary;
-                    var sLabel = locale.geschlecht.secondary && locale.geschlecht.secondary[genderSecondary] ? locale.geschlecht.secondary[genderSecondary] : genderSecondary;
-                    genderDisplay = pLabel + ' / ' + sLabel;
-                } else {
-                    genderDisplay = genderPrimary + ' / ' + genderSecondary;
+            // Not selected text (localized)
+            var notSelectedText = 'Nicht gewählt';
+            if (locale && locale.profileReview && locale.profileReview.sourceExplanation && locale.profileReview.sourceExplanation.notSelected) {
+                notSelectedText = locale.profileReview.sourceExplanation.notSelected;
+            }
+
+            // Gender display
+            var genderDisplay = notSelectedText;
+            if (personData && personData.geschlecht) {
+                var genderPrimary = personData.geschlecht.primary;
+                var genderSecondary = personData.geschlecht.secondary;
+
+                if (genderPrimary && genderSecondary) {
+                    // Get localized gender labels
+                    if (locale && locale.geschlecht) {
+                        var pLabel = locale.geschlecht.primary && locale.geschlecht.primary[genderPrimary] ? locale.geschlecht.primary[genderPrimary] : genderPrimary;
+                        var sLabel = locale.geschlecht.secondary && locale.geschlecht.secondary[genderSecondary] ? locale.geschlecht.secondary[genderSecondary] : genderSecondary;
+                        genderDisplay = pLabel + ' / ' + sLabel;
+                    } else {
+                        genderDisplay = genderPrimary + ' / ' + genderSecondary;
+                    }
+                } else if (genderPrimary) {
+                    genderDisplay = locale && locale.geschlecht && locale.geschlecht.primary && locale.geschlecht.primary[genderPrimary]
+                        ? locale.geschlecht.primary[genderPrimary]
+                        : genderPrimary;
                 }
             }
 
-            // Get localized dominanz label
-            var dominanzDisplay = dominanz || 'Ausgeglichen';
+            // Dominanz display with localization
+            var dominanzDisplay = dominanz || 'ausgeglichen';
             if (locale && locale.dominanz && locale.dominanz.types && locale.dominanz.types[dominanz]) {
                 dominanzDisplay = locale.dominanz.types[dominanz];
+            } else {
+                // Capitalize first letter as fallback
+                dominanzDisplay = dominanzDisplay.charAt(0).toUpperCase() + dominanzDisplay.slice(1);
             }
 
-            // Get localized orientierung label
-            var orientierungDisplay = orientierung || 'Heterosexuell';
+            // Orientierung display with localization
+            var orientierungDisplay = orientierung || 'heterosexuell';
             if (locale && locale.orientierung && locale.orientierung.types && locale.orientierung.types[orientierung]) {
                 orientierungDisplay = locale.orientierung.types[orientierung];
+            } else {
+                // Capitalize first letter as fallback
+                orientierungDisplay = orientierungDisplay.charAt(0).toUpperCase() + orientierungDisplay.slice(1);
             }
 
-            // Build HTML
+            // Build HTML with all factors
             var html = '';
             html += '<span class="source-factor-tag"><span class="factor-label">' + labels.archetype + ':</span> <span class="factor-value">' + archetypeName + '</span></span>';
             html += '<span class="source-factor-tag"><span class="factor-label">' + labels.gender + ':</span> <span class="factor-value">' + genderDisplay + '</span></span>';
@@ -13696,6 +13719,7 @@
             html += '<span class="source-factor-tag"><span class="factor-label">' + labels.orientation + ':</span> <span class="factor-value">' + orientierungDisplay + '</span></span>';
 
             factorsContainer.innerHTML = html;
+            console.log('[SourceExplanation] Updated with:', archetypeName, genderDisplay, dominanzDisplay, orientierungDisplay);
         }
         window.updateSourceExplanation = updateSourceExplanation;
 
