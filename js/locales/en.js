@@ -923,6 +923,19 @@ const TiageLocale_EN = {
     profileReview: {
         title: 'All Pre-filled Attributes',
 
+        // Source explanation for attribute origin
+        sourceExplanation: {
+            title: 'Where do these values come from?',
+            intro: 'These attributes were automatically calculated based on:',
+            archetype: 'Archetype',
+            gender: 'Gender',
+            dominance: 'Dominance',
+            orientation: 'Orientation',
+            note: 'These values are suggestions based on statistical patterns. You can adjust them at any time.',
+            learnMore: 'Learn more',
+            collapse: 'Show less'
+        },
+
         categories: {
             geschlechtsidentitaet: 'GENDER IDENTITY',
             lebensplanung: 'LIFE PLANNING',
