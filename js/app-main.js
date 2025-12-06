@@ -4060,6 +4060,30 @@
         }
 
         /**
+         * Update secondary geschlecht from external source (e.g., Profile Review Modal)
+         * Syncs personDimensions with the new value and updates UI
+         * @param {string} person - 'ich' or 'partner'
+         * @param {string} secondaryValue - New secondary value ('mann', 'frau', 'nonbinaer', 'fluid', 'unsicher')
+         */
+        function setSecondaryGeschlechtAndSync(person, secondaryValue) {
+            if (!personDimensions[person].geschlecht) {
+                personDimensions[person].geschlecht = { primary: null, secondary: null };
+            }
+            personDimensions[person].geschlecht.secondary = secondaryValue;
+
+            // Sync to TiageState
+            if (typeof TiageState !== 'undefined') {
+                TiageState.set(`personDimensions.${person}.geschlecht.secondary`, secondaryValue);
+            }
+
+            // Update UI
+            syncGeschlechtUI(person);
+
+            console.log('[Geschlecht] Secondary updated and synced:', person, '→', secondaryValue);
+        }
+        window.setSecondaryGeschlechtAndSync = setSecondaryGeschlechtAndSync;
+
+        /**
          * Get summary text for geschlecht selection
          */
         function getGeschlechtSummary(person) {
@@ -5817,6 +5841,8 @@
                 modal.classList.remove('active');
             }
         }
+        window.openAttributeDefinitionModal = openAttributeDefinitionModal;
+        window.closeAttributeDefinitionModal = closeAttributeDefinitionModal;
 
         // Aktueller Tab für das vollständige Modal
         let needsFullModalCurrentTab = 'gemeinsam';
@@ -13653,13 +13679,15 @@
                 var primaryGeschlecht = TiageState.getPrimaryGeschlecht('ich');
                 if (primaryGeschlecht) {
                     var secondaryValue = mapGeschlechtsidentitaetToSecondary(value, primaryGeschlecht);
-                    TiageState.setSecondaryGeschlecht('ich', secondaryValue);
-                    console.log('[ProfileReview] Geschlechtsidentität live-sync:', value, '→', secondaryValue);
 
-                    // Update main UI
-                    if (typeof updateGeschlechtGrid === 'function') {
-                        updateGeschlechtGrid('ich');
+                    // Use the new sync function that updates both personDimensions and UI
+                    if (typeof setSecondaryGeschlechtAndSync === 'function') {
+                        setSecondaryGeschlechtAndSync('ich', secondaryValue);
+                    } else {
+                        // Fallback to TiageState only
+                        TiageState.setSecondaryGeschlecht('ich', secondaryValue);
                     }
+                    console.log('[ProfileReview] Geschlechtsidentität live-sync:', value, '→', secondaryValue);
                 }
             }
         }
