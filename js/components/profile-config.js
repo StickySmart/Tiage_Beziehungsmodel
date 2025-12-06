@@ -229,18 +229,18 @@ const ProfileReviewConfig = (function() {
     };
 
     /**
-     * Kategorie-Metadaten
+     * Kategorie-Metadaten mit Farben für modales Design
      */
     const CATEGORIES = {
-        gewichtung: { icon: '⚖️', label: 'FAKTOR-GEWICHTUNG (Score-Formel)', isGewichtung: true },
-        geschlechtsidentitaet: { icon: '⚧', label: 'GESCHLECHTSIDENTITÄT' },
-        lebensplanung: { icon: '📋', label: 'LEBENSPLANUNG' },
-        finanzen: { icon: '💰', label: 'FINANZEN & KARRIERE' },
-        kommunikation: { icon: '💬', label: 'KOMMUNIKATION' },
-        soziales: { icon: '👥', label: 'SOZIALES' },
-        intimitaet: { icon: '💕', label: 'INTIMITÄT' },
-        werte: { icon: '⚖️', label: 'WERTE' },
-        praktisches: { icon: '🏠', label: 'PRAKTISCHES' }
+        gewichtung: { icon: '⚖️', label: 'FAKTOR-GEWICHTUNG (Score-Formel)', isGewichtung: true, color: '#6366F1' },
+        geschlechtsidentitaet: { icon: '⚧', label: 'GESCHLECHTSIDENTITÄT', color: '#EC4899' },
+        lebensplanung: { icon: '📋', label: 'LEBENSPLANUNG', color: '#F4A261' },
+        finanzen: { icon: '💰', label: 'FINANZEN & KARRIERE', color: '#10B981' },
+        kommunikation: { icon: '💬', label: 'KOMMUNIKATION', color: '#8B5CF6' },
+        soziales: { icon: '👥', label: 'SOZIALES', color: '#3B82F6' },
+        intimitaet: { icon: '💕', label: 'INTIMITÄT', color: '#E84393' },
+        werte: { icon: '⚖️', label: 'WERTE', color: '#F59E0B' },
+        praktisches: { icon: '🏠', label: 'PRAKTISCHES', color: '#14B8A6' }
     };
 
     /**
@@ -290,6 +290,27 @@ const ProfileReviewConfig = (function() {
         return null;
     }
 
+    /**
+     * Findet ein Attribut mit seiner Kategorie-Info
+     * @param {string} attrId - Attribut-ID
+     * @returns {Object|null} Attribut mit Kategorie-Metadaten
+     */
+    function findAttributeWithCategory(attrId) {
+        for (const [categoryKey, attrs] of Object.entries(ATTRIBUTES)) {
+            const found = attrs.find(a => a.attrId === attrId);
+            if (found) {
+                const category = CATEGORIES[categoryKey];
+                return {
+                    ...found,
+                    kategorie: category.label,
+                    kategorieColor: category.color,
+                    kategorieIcon: category.icon
+                };
+            }
+        }
+        return null;
+    }
+
     return {
         ATTRIBUTES,
         CATEGORIES,
@@ -297,7 +318,8 @@ const ProfileReviewConfig = (function() {
         getAllAttributes,
         getCategory,
         getCategoryOrder,
-        findAttribute
+        findAttribute,
+        findAttributeWithCategory
     };
 })();
 
