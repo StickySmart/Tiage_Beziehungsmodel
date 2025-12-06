@@ -13638,64 +13638,41 @@
 
         // Update Source Explanation with current factors
         function updateSourceExplanation(archetypeKey, personData, dominanz, orientierung) {
-            var factorsContainer = document.getElementById('sourceExplanationFactors');
-            if (!factorsContainer) return;
-
-            // Get locale for labels
             var locale = typeof TiageI18n !== 'undefined' ? TiageI18n.getLocale() : null;
-            var labels = {
-                archetype: 'Archetyp',
-                gender: 'Geschlecht',
-                dominance: 'Dominanz',
-                orientation: 'Orientierung'
-            };
 
-            // Try to get localized labels
-            if (locale && locale.profileReview && locale.profileReview.sourceExplanation) {
-                var src = locale.profileReview.sourceExplanation;
-                labels.archetype = src.archetype || labels.archetype;
-                labels.gender = src.gender || labels.gender;
-                labels.dominance = src.dominance || labels.dominance;
-                labels.orientation = src.orientation || labels.orientation;
+            // Archetyp
+            var archetypeEl = document.getElementById('srcFactor-archetype');
+            if (archetypeEl) {
+                archetypeEl.textContent = archetypeKey ? archetypeKey.charAt(0).toUpperCase() + archetypeKey.slice(1) : 'Duo';
             }
 
-            // Get display values
-            var archetypeName = archetypeKey ? archetypeKey.charAt(0).toUpperCase() + archetypeKey.slice(1) : 'Duo';
-            var genderPrimary = personData && personData.geschlecht ? personData.geschlecht.primary : null;
-            var genderSecondary = personData && personData.geschlecht ? personData.geschlecht.secondary : null;
-            var genderDisplay = '-';
-
-            if (genderPrimary && genderSecondary) {
-                // Get localized gender labels
-                if (locale && locale.geschlecht) {
-                    var pLabel = locale.geschlecht.primary && locale.geschlecht.primary[genderPrimary] ? locale.geschlecht.primary[genderPrimary] : genderPrimary;
-                    var sLabel = locale.geschlecht.secondary && locale.geschlecht.secondary[genderSecondary] ? locale.geschlecht.secondary[genderSecondary] : genderSecondary;
-                    genderDisplay = pLabel + ' / ' + sLabel;
-                } else {
-                    genderDisplay = genderPrimary + ' / ' + genderSecondary;
+            // Gender
+            var genderEl = document.getElementById('srcFactor-gender');
+            if (genderEl && personData && personData.geschlecht) {
+                var p = personData.geschlecht.primary;
+                var s = personData.geschlecht.secondary;
+                if (p && s) {
+                    var pLabel = (locale && locale.geschlecht && locale.geschlecht.primary && locale.geschlecht.primary[p]) ? locale.geschlecht.primary[p] : p;
+                    var sLabel = (locale && locale.geschlecht && locale.geschlecht.secondary && locale.geschlecht.secondary[s]) ? locale.geschlecht.secondary[s] : s;
+                    genderEl.textContent = pLabel + ' / ' + sLabel;
+                } else if (p) {
+                    genderEl.textContent = (locale && locale.geschlecht && locale.geschlecht.primary && locale.geschlecht.primary[p]) ? locale.geschlecht.primary[p] : p;
                 }
             }
 
-            // Get localized dominanz label
-            var dominanzDisplay = dominanz || 'Ausgeglichen';
-            if (locale && locale.dominanz && locale.dominanz.types && locale.dominanz.types[dominanz]) {
-                dominanzDisplay = locale.dominanz.types[dominanz];
+            // Dominanz
+            var domEl = document.getElementById('srcFactor-dominance');
+            if (domEl && dominanz) {
+                var domLabel = (locale && locale.dominanz && locale.dominanz.types && locale.dominanz.types[dominanz]) ? locale.dominanz.types[dominanz] : dominanz.charAt(0).toUpperCase() + dominanz.slice(1);
+                domEl.textContent = domLabel;
             }
 
-            // Get localized orientierung label
-            var orientierungDisplay = orientierung || 'Heterosexuell';
-            if (locale && locale.orientierung && locale.orientierung.types && locale.orientierung.types[orientierung]) {
-                orientierungDisplay = locale.orientierung.types[orientierung];
+            // Orientierung
+            var oriEl = document.getElementById('srcFactor-orientation');
+            if (oriEl && orientierung) {
+                var oriLabel = (locale && locale.orientierung && locale.orientierung.types && locale.orientierung.types[orientierung]) ? locale.orientierung.types[orientierung] : orientierung.charAt(0).toUpperCase() + orientierung.slice(1);
+                oriEl.textContent = oriLabel;
             }
-
-            // Build HTML
-            var html = '';
-            html += '<span class="source-factor-tag"><span class="factor-label">' + labels.archetype + ':</span> <span class="factor-value">' + archetypeName + '</span></span>';
-            html += '<span class="source-factor-tag"><span class="factor-label">' + labels.gender + ':</span> <span class="factor-value">' + genderDisplay + '</span></span>';
-            html += '<span class="source-factor-tag"><span class="factor-label">' + labels.dominance + ':</span> <span class="factor-value">' + dominanzDisplay + '</span></span>';
-            html += '<span class="source-factor-tag"><span class="factor-label">' + labels.orientation + ':</span> <span class="factor-value">' + orientierungDisplay + '</span></span>';
-
-            factorsContainer.innerHTML = html;
         }
         window.updateSourceExplanation = updateSourceExplanation;
 

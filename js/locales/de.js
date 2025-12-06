@@ -824,13 +824,8 @@ const TiageLocale_DE = {
         sourceExplanation: {
             title: 'Woher kommen diese Werte?',
             intro: 'Diese Attribute wurden automatisch berechnet basierend auf:',
-            archetype: 'Archetyp',
-            gender: 'Geschlecht',
-            dominance: 'Dominanz',
-            orientation: 'Orientierung',
-            note: 'Die Werte sind Vorschläge basierend auf statistischen Mustern. Du kannst sie jederzeit anpassen.',
-            learnMore: 'Mehr erfahren',
-            collapse: 'Weniger'
+            note: 'Tiage nutzt 1.248 psychologische Profile aus Beziehungsforschung (Gottman, Esther Perel, u.a.). Die Werte sind Vorschläge - du kannst sie anpassen.',
+            helpLink: 'Mehr in der Hilfe'
         },
 
         categories: {
