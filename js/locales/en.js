@@ -914,6 +914,318 @@ const TiageLocale_EN = {
             einsehen: 'Insight',
             anfang_ende: 'Beginning & End'
         }
+    },
+
+    // ═══════════════════════════════════════════════════════════════════════════════
+    // PROFILE REVIEW (v1.8)
+    // ═══════════════════════════════════════════════════════════════════════════════
+
+    profileReview: {
+        title: 'All Pre-filled Attributes',
+
+        categories: {
+            geschlechtsidentitaet: 'GENDER IDENTITY',
+            lebensplanung: 'LIFE PLANNING',
+            finanzen: 'FINANCES & CAREER',
+            kommunikation: 'COMMUNICATION',
+            soziales: 'SOCIAL',
+            intimitaet: 'INTIMACY',
+            werte: 'VALUES',
+            praktisches: 'PRACTICAL'
+        },
+
+        attributes: {
+            // ═══════════════════════════════════════════════════════════════════════
+            // GENDER IDENTITY
+            // ═══════════════════════════════════════════════════════════════════════
+            geschlechtSekundaer: {
+                label: 'Gender Identity',
+                description: 'Gender identity: Cis (identity = body), Trans (identity ≠ body), Searching (exploring). For Inter: Non-binary, Fluid, Searching.',
+                info: {
+                    stats: 'Approx. 0.5-1% of the population identifies as trans or non-binary (Williams Institute, 2022). Trend rising with higher acceptance.',
+                    research: 'Identity congruence correlates with 40% higher well-being (American Psychological Association). Partner acceptance is the strongest predictor of relationship satisfaction.',
+                    pirsig: 'The search for authentic identity is dynamic Quality. Cis does not automatically mean less awareness - conscious confirmation of one\'s identity is equally valuable.',
+                    osho: 'You are not the body, you are not the mind. Find out who you really are - beyond all labels and attributions.'
+                }
+            },
+
+            // ═══════════════════════════════════════════════════════════════════════
+            // LIFE PLANNING
+            // ═══════════════════════════════════════════════════════════════════════
+            kinder: {
+                label: 'Desire for Children',
+                description: 'Desire for own children or openness to it in the future.',
+                info: {
+                    stats: '20% of couples in Germany are voluntarily childless (Destatis 2023). Disagreement on children is separation reason #3.',
+                    research: 'Gottman Institute: 94% of couples with different views on children separate long-term without compromise.',
+                    pirsig: 'A child is neither project nor duty. The question is not "should I?" but "why do I want to?" - and whether both answers harmonize.',
+                    osho: 'Children are not an extension of your ego. They are independent souls who come through you but don\'t belong to you.'
+                }
+            },
+            ehe: {
+                label: 'Marriage Desire',
+                description: 'Importance of formal marriage for the relationship.',
+                info: {
+                    stats: '60% of Germans see marriage as important (Allensbach 2023). Among under 30s only 42%.',
+                    research: 'Studies show no significant difference in relationship satisfaction between married and unmarried long-term couples.',
+                    pirsig: 'Marriage is a static pattern. Its quality lies not in the contract, but in the daily choice for each other.',
+                    osho: 'Marriage can be a prison or a temple. It depends on whether it\'s entered from fear or from love.'
+                }
+            },
+            zusammen: {
+                label: 'Living Together',
+                description: 'Preference for living together or separate households.',
+                info: {
+                    stats: '8% of German couples live in LAT relationships (separate households). Among over 60s it\'s 15%.',
+                    research: 'LAT couples report 12% higher relationship quality with equal emotional closeness (University of Missouri).',
+                    pirsig: 'Physical proximity is not the same as emotional closeness. Quality comes from conscious presence, not from permanent physical nearness.',
+                    osho: 'Two people can be alone in the same room - or connected across cities. True intimacy doesn\'t need a shared key.'
+                }
+            },
+            haustiere: {
+                label: 'Pets',
+                description: 'Attitude towards pets in the shared household.',
+                info: {
+                    stats: '47% of German households have pets. 78% of pet owners see their pet as a family member.',
+                    research: 'Pet owners show 20% lower cortisol levels. Joint pet care strengthens the couple bond.',
+                    pirsig: 'An animal teaches us something essential in relationships: unconditional presence without expectation of change.',
+                    osho: 'Animals live in the now. They remind us that love needs no thinking - only being.'
+                }
+            },
+            umzug: {
+                label: 'Willingness to Relocate',
+                description: 'Willingness to change location for the relationship.',
+                info: {
+                    stats: '35% of Germans would relocate for love. Among under 30s it\'s 58%.',
+                    research: 'Long-distance relationships have the same success rate as close ones - as long as a shared goal exists.',
+                    pirsig: 'Flexibility is dynamic Quality. The question is not who moves, but: Does the relationship grow through this decision?',
+                    osho: 'Roots and wings - whoever has only roots cannot fly. Whoever has only wings finds no rest. The art is both.'
+                }
+            },
+            familie: {
+                label: 'Family Importance',
+                description: 'Importance of family of origin and regular contact.',
+                info: {
+                    stats: '67% of Germans see their family of origin at least monthly. 12% have no contact.',
+                    research: 'In-law conflicts are a main factor in 40% of divorces (Terling-Watt Study).',
+                    pirsig: 'Family is a static pattern from the past. The art is to honor it without letting it define you.',
+                    osho: 'You can love your parents without following their wishes. Respect does not mean obedience.'
+                }
+            },
+
+            // ═══════════════════════════════════════════════════════════════════════
+            // FINANCES & CAREER
+            // ═══════════════════════════════════════════════════════════════════════
+            finanzen: {
+                label: 'Finances',
+                description: 'Approach to money: separate accounts, hybrid model, or shared finances.',
+                info: {
+                    stats: '42% of couples have completely separate finances. 31% use a three-account model. 27% have shared finances.',
+                    research: 'Money is the #1 dispute topic for couples. Transparency reduces conflicts by 70% (Kansas State University).',
+                    pirsig: 'Money is a tool, not a measure of value. The question is not how much, but: Does it serve your shared Quality?',
+                    osho: 'Money is like water - it must flow. Those who hold onto it suffocate. Those who can share become rich in trust.'
+                }
+            },
+            karriere: {
+                label: 'Career Priority',
+                description: 'Weighting between professional success and family life.',
+                info: {
+                    stats: '58% of Germans prioritize work-life balance over career (Gallup 2023).',
+                    research: 'Dual-career couples have higher divorce rates - but only when traditional role expectations exist.',
+                    pirsig: 'Career without meaning is a hamster wheel. Meaning without action is daydreaming. Quality lies in integrating both.',
+                    osho: 'Work can be meditation - when you work not for recognition, but because the work itself brings joy.'
+                }
+            },
+
+            // ═══════════════════════════════════════════════════════════════════════
+            // COMMUNICATION
+            // ═══════════════════════════════════════════════════════════════════════
+            gespraech: {
+                label: 'Need for Conversation',
+                description: 'Need for daily exchange and conversations.',
+                info: {
+                    stats: 'Happy couples talk an average of 5+ hours per week (excl. daily logistics).',
+                    research: 'Gottman: "Bid-response ratio" above 85% = stable relationship. Below 33% = high separation risk.',
+                    pirsig: 'Words can be bridges or walls. Quality comes not from quantity, but from true listening.',
+                    osho: 'True communication happens in the silence between words. Those who can listen don\'t need to talk much.'
+                }
+            },
+            emotional: {
+                label: 'Emotional Openness',
+                description: 'Willingness to share feelings and emotions.',
+                info: {
+                    stats: 'Men share feelings on average 60% less often than women (Meta-analysis, 2021).',
+                    research: 'Emotional self-disclosure increases intimacy by 45% - but only with reciprocal openness.',
+                    pirsig: 'Showing feelings requires the courage to be vulnerable. This is not weakness, but the highest Quality of being human.',
+                    osho: 'When you hide your tears, you also hide your laughter. Authenticity knows no half measures.'
+                }
+            },
+            konflikt: {
+                label: 'Conflict Behavior',
+                description: 'Style of conflict resolution: avoidance or direct approach.',
+                info: {
+                    stats: '44% of couples avoid conflicts. 23% escalate regularly. 33% resolve constructively.',
+                    research: 'Gottman: Conflict avoidance is more harmful than arguing. What matters is the ratio: 5:1 positive to negative.',
+                    pirsig: 'Conflict is not the problem - stagnation is. Dynamic Quality emerges through friction, not avoidance.',
+                    osho: 'Conflict can be cleansing like a thunderstorm. It\'s not the argument that destroys, but the unspoken.'
+                }
+            },
+
+            // ═══════════════════════════════════════════════════════════════════════
+            // SOCIAL
+            // ═══════════════════════════════════════════════════════════════════════
+            introextro: {
+                label: 'Intro-/Extroverted',
+                description: 'Energy through alone time (Intro) or social contacts (Extro).',
+                info: {
+                    stats: '25-40% of the population are introverted. Ambiverts form the largest group.',
+                    research: 'Intro-Extro couples can work well when both respect their differences instead of trying to change each other.',
+                    pirsig: 'Introversion is not shyness, extroversion is not superficiality. Both are legitimate paths to Quality.',
+                    osho: 'The introvert seeks depth, the extrovert seeks breadth. Both seek the same thing on different paths.'
+                }
+            },
+            alleinzeit: {
+                label: 'Alone Time Need',
+                description: 'Need for time alone without partner.',
+                info: {
+                    stats: '72% of people need regular alone time. 28% feel lonely during it.',
+                    research: 'Partners who respect individual time report 30% higher relationship satisfaction.',
+                    pirsig: 'Alone time is not absence of love - it is presence with yourself. Only those who know themselves can give themselves.',
+                    osho: 'Loneliness and being alone are fundamentally different. Being alone is full of joy - loneliness is poverty despite company.'
+                }
+            },
+            freunde: {
+                label: 'Friend Circle',
+                description: 'Preference for separate friends or shared friend circle.',
+                info: {
+                    stats: '61% of couples largely share their friend circle. 15% have completely separate friends.',
+                    research: 'Shared friends stabilize relationships - but also increase social pressure during separations.',
+                    pirsig: 'Friendships outside the relationship are not a threat - they are nourishment for individuality.',
+                    osho: 'A relationship that allows no other relationships is a prison, not love.'
+                }
+            },
+
+            // ═══════════════════════════════════════════════════════════════════════
+            // INTIMACY
+            // ═══════════════════════════════════════════════════════════════════════
+            naehe: {
+                label: 'Physical Closeness',
+                description: 'Need for touch, hugs, and physical closeness.',
+                info: {
+                    stats: 'People need 4-12 hugs daily for emotional well-being (Virginia Satir).',
+                    research: '20-second hugs release oxytocin and significantly lower blood pressure and cortisol.',
+                    pirsig: 'Physical touch is nonverbal communication of the highest Quality. It needs no interpretation.',
+                    osho: 'The body is the temple. A touch can say more than a thousand words - when it happens consciously.'
+                }
+            },
+            romantik: {
+                label: 'Romance Need',
+                description: 'Desire for romantic gestures, surprises, and dates.',
+                info: {
+                    stats: '67% of women and 51% of men wish for more romance in the relationship.',
+                    research: 'Regular date nights increase relationship satisfaction by 36% (National Marriage Project).',
+                    pirsig: 'Romance is not kitsch - it is conscious attention to the extraordinariness of the ordinary.',
+                    osho: 'Romance dies when love becomes habit. Keep the eyes of the beginning open.'
+                }
+            },
+            sex: {
+                label: 'Sexual Frequency',
+                description: 'Desired frequency of intimacy in the relationship.',
+                info: {
+                    stats: 'German couples have sex on average 1.5x per week. 15% are in "sexless marriages" (<10x/year).',
+                    research: 'Frequency correlates little with satisfaction. What matters is whether both feel understood.',
+                    pirsig: 'Sexuality is not quantifiable. Quality lies in being present, not in statistics.',
+                    osho: 'Sex can be meditation - when it arises from presence rather than desire. Then once is like a thousand times.'
+                }
+            },
+
+            // ═══════════════════════════════════════════════════════════════════════
+            // VALUES
+            // ═══════════════════════════════════════════════════════════════════════
+            religion: {
+                label: 'Religiosity',
+                description: 'Importance of religion and spirituality in daily life.',
+                info: {
+                    stats: '52% of Germans believe in God. 27% practice actively. Interfaith marriages at 24%.',
+                    research: 'Religious homogamy (same faith) correlates with longer marriages - but atheists have similar stability.',
+                    pirsig: 'Religion is an attempt to grasp static Quality. Spirituality lives in the dynamic search itself.',
+                    osho: 'Religion should not be a creed, but an experience. What you haven\'t experienced yourself is just information.'
+                }
+            },
+            tradition: {
+                label: 'Traditional vs. Modern',
+                description: 'Orientation towards traditional values or modern lifestyles.',
+                info: {
+                    stats: '38% of Germans prefer traditional values. Generation gap: 60+ vs. 18-30 = 52% vs. 21%.',
+                    research: 'Value congruence matters more than direction. Mixed couples (trad+modern) report more conflicts.',
+                    pirsig: 'Tradition is static Quality - valuable when it carries, hindering when it binds. The art is in distinguishing.',
+                    osho: 'Tradition is the ash of the fire of past generations. Seek the fire, not the ash.'
+                }
+            },
+            umwelt: {
+                label: 'Environmental Awareness',
+                description: 'Importance of sustainability and environmentally conscious living.',
+                info: {
+                    stats: '68% of Germans consider climate protection important. 23% actively change their behavior.',
+                    research: 'Value discrepancy on sustainability leads to daily micro-conflicts (shopping, mobility, consumption).',
+                    pirsig: 'Environmental awareness is the recognition that we are not separate from nature. Every action has consequences.',
+                    osho: 'The earth is not your possession - you are its guest. Guests leave the house more beautiful than they found it.'
+                }
+            },
+
+            // ═══════════════════════════════════════════════════════════════════════
+            // PRACTICAL
+            // ═══════════════════════════════════════════════════════════════════════
+            ordnung: {
+                label: 'Orderliness',
+                description: 'Preference for order and cleanliness in the living area.',
+                info: {
+                    stats: 'Housekeeping is a top-5 dispute topic for couples. 62% of women carry the main burden - with declining trend.',
+                    research: 'Unequal household distribution reduces sexual satisfaction for women by 50%.',
+                    pirsig: 'Order is not control - it is clarity of space for clarity of mind.',
+                    osho: 'Outer order reflects inner order. But compulsive tidying can also be an escape from inner chaos.'
+                }
+            },
+            reise: {
+                label: 'Travel Frequency',
+                description: 'Desire for travel and shared vacations.',
+                info: {
+                    stats: 'Germans travel on average 2.4x per year. 18% never. Travel differences are a common conflict.',
+                    research: 'Shared experiences (not material gifts) strengthen the couple bond most in the long term.',
+                    pirsig: 'Travel expands the static patterns of everyday life. New experiences are dynamic Quality in pure form.',
+                    osho: 'The most important journey is the one inward. But sometimes outer movement is needed to resolve inner stagnation.'
+                }
+            }
+        },
+
+        slider: {
+            niedrig: 'Low',
+            mittel: 'Medium',
+            hoch: 'High',
+            getrennt: 'Separate',
+            hybrid: 'Hybrid',
+            gemeinsam: 'Shared',
+            familie: 'Family',
+            balance: 'Balance',
+            karriere: 'Career',
+            unwichtig: 'Unimportant',
+            wichtig: 'Important',
+            sehrWichtig: 'Very important'
+        },
+
+        actions: {
+            reset: 'Reset',
+            save: 'Continue',
+            close: 'Close'
+        },
+
+        infoModal: {
+            statistik: 'STATISTICS',
+            forschung: 'RESEARCH',
+            pirsig: 'PIRSIG',
+            osho: 'OSHO',
+            verstanden: 'Got it'
+        }
     }
 };
 
