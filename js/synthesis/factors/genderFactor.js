@@ -70,6 +70,12 @@ TiageSynthesis.Factors.Geschlecht = {
         // Bonus für kompatible sekundäre Geschlechter (max +5 Punkte)
         var secondaryBonus = this._calculateSecondaryBonus(g1, g1Secondary, g2, g2Secondary, oriList1, oriList2, constants);
 
+        // NEU: Identitäts-Resonanz berechnen (wenn sekundäre Geschlechter vorhanden)
+        var identityResonance = null;
+        if (g1Secondary && g2Secondary && constants.IDENTITY_MATRIX) {
+            identityResonance = this._calculateIdentityResonance(g1Secondary, g2Secondary, constants);
+        }
+
         return {
             score: Math.min(100, bestScore + secondaryBonus),
             details: {
@@ -77,7 +83,9 @@ TiageSynthesis.Factors.Geschlecht = {
                 genderCombo: g1 + '-' + g2,
                 attractionLevel: this._getAttractionLevel(bestScore),
                 hasSecondary: !!(g1Secondary || g2Secondary),
-                secondaryBonus: secondaryBonus
+                secondaryBonus: secondaryBonus,
+                // NEU: Identitäts-Resonanz-Details
+                identityResonance: identityResonance
             }
         };
     },
@@ -117,8 +125,8 @@ TiageSynthesis.Factors.Geschlecht = {
                     if (primary === 'frau') return 'mann';
                     return primary; // inter bleibt inter
                 }
-                // Nonbinär, Fluid, Unsicher: direkt verwenden
-                if (secondary === 'nonbinaer' || secondary === 'fluid' || secondary === 'unsicher') {
+                // Nonbinär, Fluid, Suchend: direkt verwenden
+                if (secondary === 'nonbinaer' || secondary === 'fluid' || secondary === 'suchend') {
                     return secondary;
                 }
                 // Fallback: S-Wert direkt (für Legacy-Kompatibilität)
@@ -164,37 +172,96 @@ TiageSynthesis.Factors.Geschlecht = {
     },
 
     /**
+     * Berechnet Identitäts-Resonanz basierend auf Matrix + Offenheits-Bonus
+     *
+     * Philosophie:
+     * - Pirsig: "Qualität entsteht, wenn Muster resonieren" → Matrix
+     * - Osho: "Je offener zwei Flüsse, desto leichter münden sie ineinander" → Bonus
+     *
+     * @param {string} identity1 - Geschlechtsidentität Person 1 (cis, trans, nonbinaer, fluid, suchend)
+     * @param {string} identity2 - Geschlechtsidentität Person 2
+     * @param {object} constants - Konstanten-Objekt
+     * @returns {object} { score: 0-100, matrixScore, opennessBonus, details }
+     */
+    _calculateIdentityResonance: function(identity1, identity2, constants) {
+        // Normalisiere Identitäten zu Lowercase
+        var id1 = (identity1 || 'cis').toLowerCase();
+        var id2 = (identity2 || 'cis').toLowerCase();
+
+        // Matrix-Lookup
+        var matrixKey = id1 + '-' + id2;
+        var matrixScore = constants.IDENTITY_MATRIX[matrixKey];
+
+        // Fallback wenn Kombination nicht in Matrix (z.B. alte Daten)
+        if (matrixScore === undefined) {
+            matrixScore = 75; // Neutraler Wert
+        }
+
+        // Offenheits-Werte holen
+        var openness1 = constants.IDENTITY_OPENNESS[id1];
+        var openness2 = constants.IDENTITY_OPENNESS[id2];
+
+        // Fallback für unbekannte Identitäten
+        if (openness1 === undefined) openness1 = 50;
+        if (openness2 === undefined) openness2 = 50;
+
+        // Offenheits-Bonus berechnen: (O1 + O2) / 200 × MAX_BONUS
+        var maxBonus = constants.IDENTITY_RESONANCE.MAX_BONUS;
+        var opennessBonus = ((openness1 + openness2) / 200) * maxBonus;
+
+        // Finale Score (max 100)
+        var finalScore = Math.min(100, Math.round(matrixScore + opennessBonus));
+
+        return {
+            score: finalScore,
+            matrixScore: matrixScore,
+            opennessBonus: Math.round(opennessBonus * 10) / 10,
+            identity1: id1,
+            identity2: id2,
+            openness1: openness1,
+            openness2: openness2
+        };
+    },
+
+    /**
      * Berechnet Bonus wenn sekundäre Geschlechter zusätzliche Kompatibilität bieten
+     * ERWEITERT: Nutzt jetzt Identitäts-Resonanz für den Bonus
      */
     _calculateSecondaryBonus: function(g1, g1Sec, g2, g2Sec, oriList1, oriList2, constants) {
         if (!g1Sec && !g2Sec) return 0;
 
         var bonus = 0;
 
-        // Wenn eine Person sekundäres Geschlecht hat, das zur anderen Person passt
-        if (g1Sec) {
-            for (var i = 0; i < oriList2.length; i++) {
-                var testResult = this._calculateSingleAttraction(g1Sec, oriList1[0], g2, oriList2[i], constants);
-                if (testResult.score >= 80) {
-                    bonus = Math.max(bonus, 3);
+        // NEU: Identitäts-Resonanz zwischen sekundären Geschlechtern
+        if (g1Sec && g2Sec && constants.IDENTITY_MATRIX) {
+            var resonance = this._calculateIdentityResonance(g1Sec, g2Sec, constants);
+            // Bonus proportional zur Resonanz (max +5 bei Score 100)
+            bonus = Math.round((resonance.score / 100) * 5);
+        } else {
+            // Fallback: Alte Logik wenn Matrix nicht verfügbar
+            if (g1Sec) {
+                for (var i = 0; i < oriList2.length; i++) {
+                    var testResult = this._calculateSingleAttraction(g1Sec, oriList1[0], g2, oriList2[i], constants);
+                    if (testResult.score >= 80) {
+                        bonus = Math.max(bonus, 3);
+                    }
                 }
             }
-        }
 
-        if (g2Sec) {
-            for (var j = 0; j < oriList1.length; j++) {
-                var testResult = this._calculateSingleAttraction(g1, oriList1[j], g2Sec, oriList2[0], constants);
-                if (testResult.score >= 80) {
-                    bonus = Math.max(bonus, 3);
+            if (g2Sec) {
+                for (var j = 0; j < oriList1.length; j++) {
+                    var testResult = this._calculateSingleAttraction(g1, oriList1[j], g2Sec, oriList2[0], constants);
+                    if (testResult.score >= 80) {
+                        bonus = Math.max(bonus, 3);
+                    }
                 }
             }
-        }
 
-        // Beide haben sekundäre Geschlechter und diese passen zusammen
-        if (g1Sec && g2Sec) {
-            var secResult = this._calculateSingleAttraction(g1Sec, oriList1[0], g2Sec, oriList2[0], constants);
-            if (secResult.score >= 80) {
-                bonus = Math.max(bonus, 5);
+            if (g1Sec && g2Sec) {
+                var secResult = this._calculateSingleAttraction(g1Sec, oriList1[0], g2Sec, oriList2[0], constants);
+                if (secResult.score >= 80) {
+                    bonus = Math.max(bonus, 5);
+                }
             }
         }
 
@@ -236,7 +303,7 @@ TiageSynthesis.Factors.Geschlecht = {
             'frau': 'weiblich',
             'nonbinaer': 'nonbinaer',
             'fluid': 'fluid',
-            'unsicher': 'nonbinaer',  // Unsicher wird wie nonbinär behandelt
+            'suchend': 'suchend',  // Suchend = eigene Kategorie (Exploration)
             'inter': 'inter',
             // Legacy-Support für alte Daten
             'cis_mann': 'maennlich',
