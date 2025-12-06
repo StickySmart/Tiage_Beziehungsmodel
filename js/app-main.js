@@ -13317,6 +13317,11 @@
             var modal = document.getElementById('profileReviewModal');
             if (!modal) return;
 
+            // Initialisiere Modal-Content dynamisch (nur beim ersten Öffnen)
+            if (typeof ProfileReviewRenderer !== 'undefined') {
+                ProfileReviewRenderer.initializeModal();
+            }
+
             // Lade Gewichtungen in UI
             loadGewichtungenIntoUI();
 

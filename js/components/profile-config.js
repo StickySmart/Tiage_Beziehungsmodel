@@ -1,0 +1,272 @@
+/**
+ * PROFILE REVIEW CONFIGURATION
+ *
+ * Zentrale Konfiguration für alle Profile-Review-Attribute.
+ * Data-driven Approach für dynamisches UI-Rendering.
+ *
+ * © 2025 Ti-age.de Alle Rechte vorbehalten.
+ */
+
+const ProfileReviewConfig = (function() {
+    'use strict';
+
+    /**
+     * Attribut-Konfigurationen nach Kategorie
+     */
+    const ATTRIBUTES = {
+        lebensplanung: [
+            {
+                attrId: 'pr-kinder',
+                cardId: 'pr-kinder-card',
+                label: 'Kinder',
+                hint: 'wichtig ?',
+                options: ['Nein', 'Offen', 'Ja'],
+                defaultValue: 50
+            },
+            {
+                attrId: 'pr-ehe',
+                cardId: 'pr-ehe-card',
+                label: 'Ehe',
+                hint: 'wichtig ?',
+                options: ['Unwichtig', 'Offen', 'Wichtig'],
+                defaultValue: 50
+            },
+            {
+                attrId: 'pr-zusammen',
+                cardId: 'pr-zusammen-card',
+                label: 'Zusammen wohnen',
+                hint: 'wichtig ?',
+                options: ['Getrennt', 'Offen', 'Zusammen'],
+                defaultValue: 50
+            },
+            {
+                attrId: 'pr-haustiere',
+                cardId: 'pr-haustiere-card',
+                label: 'Haustiere',
+                hint: 'wichtig ?',
+                options: ['Ohne', 'Offen', 'Mit'],
+                defaultValue: 50
+            },
+            {
+                attrId: 'pr-umzug',
+                label: 'Umzugsbereitschaft',
+                hint: 'wichtig ?',
+                options: ['Sesshaft', 'Mittel', 'Flexibel'],
+                defaultValue: 50
+            },
+            {
+                attrId: 'pr-familie',
+                label: 'Familie-Wichtigkeit',
+                hint: 'wichtig ?',
+                options: ['Unwichtig', 'Wichtig', 'Sehr wichtig'],
+                defaultValue: 50
+            }
+        ],
+
+        finanzen: [
+            {
+                attrId: 'pr-finanzen',
+                label: 'Finanzen',
+                hint: 'wichtig ?',
+                options: ['Getrennt', 'Hybrid', 'Gemeinsam'],
+                defaultValue: 50
+            },
+            {
+                attrId: 'pr-karriere',
+                label: 'Karriere-Priorität',
+                hint: 'wichtig ?',
+                options: ['Familie', 'Balance', 'Karriere'],
+                defaultValue: 50
+            }
+        ],
+
+        kommunikation: [
+            {
+                attrId: 'pr-gespraech',
+                label: 'Gesprächsbedürfnis',
+                hint: 'wichtig ?',
+                options: ['Wenig', 'Mittel', 'Viel'],
+                defaultValue: 50
+            },
+            {
+                attrId: 'pr-emotional',
+                label: 'Emotionale Offenheit',
+                hint: 'wichtig ?',
+                options: ['Zurückhaltend', 'Mittel', 'Sehr offen'],
+                defaultValue: 50
+            },
+            {
+                attrId: 'pr-konflikt',
+                label: 'Konfliktverhalten',
+                hint: 'wichtig ?',
+                options: ['Vermeidend', 'Mittel', 'Konfrontativ'],
+                defaultValue: 50
+            }
+        ],
+
+        soziales: [
+            {
+                attrId: 'pr-introextro',
+                label: 'Intro/Extrovertiert',
+                hint: 'wichtig ?',
+                options: ['Intro', 'Ambivert', 'Extro'],
+                defaultValue: 50
+            },
+            {
+                attrId: 'pr-alleinzeit',
+                label: 'Alleinzeit-Bedürfnis',
+                hint: 'wichtig ?',
+                options: ['Wenig', 'Mittel', 'Viel'],
+                defaultValue: 50
+            },
+            {
+                attrId: 'pr-freunde',
+                label: 'Freundeskreis',
+                hint: 'wichtig ?',
+                options: ['Getrennt', 'Gemischt', 'Gemeinsam'],
+                defaultValue: 50
+            }
+        ],
+
+        intimitaet: [
+            {
+                attrId: 'pr-naehe',
+                label: 'Körperliche Nähe',
+                hint: 'wichtig ?',
+                options: ['Wenig', 'Mittel', 'Viel'],
+                defaultValue: 50
+            },
+            {
+                attrId: 'pr-romantik',
+                label: 'Romantik-Bedürfnis',
+                hint: 'wichtig ?',
+                options: ['Wenig', 'Mittel', 'Viel'],
+                defaultValue: 50
+            },
+            {
+                attrId: 'pr-sex',
+                label: 'Sexuelle Frequenz',
+                hint: 'wichtig ?',
+                options: ['Selten', 'Mittel', 'Häufig'],
+                defaultValue: 50
+            }
+        ],
+
+        werte: [
+            {
+                attrId: 'pr-religion',
+                label: 'Religiosität',
+                hint: 'wichtig ?',
+                options: ['Keine', 'Mittel', 'Stark'],
+                defaultValue: 50
+            },
+            {
+                attrId: 'pr-tradition',
+                label: 'Tradition vs. Modern',
+                hint: 'wichtig ?',
+                options: ['Traditionell', 'Gemischt', 'Modern'],
+                defaultValue: 50
+            },
+            {
+                attrId: 'pr-umwelt',
+                label: 'Umweltbewusstsein',
+                hint: 'wichtig ?',
+                options: ['Gering', 'Mittel', 'Hoch'],
+                defaultValue: 50
+            }
+        ],
+
+        praktisches: [
+            {
+                attrId: 'pr-ordnung',
+                label: 'Ordnung',
+                hint: 'wichtig ?',
+                options: ['Chaotisch', 'Mittel', 'Ordentlich'],
+                defaultValue: 50
+            },
+            {
+                attrId: 'pr-reise',
+                label: 'Reise-Frequenz',
+                hint: 'wichtig ?',
+                options: ['Selten', 'Mittel', 'Häufig'],
+                defaultValue: 50
+            }
+        ]
+    };
+
+    /**
+     * Kategorie-Metadaten
+     */
+    const CATEGORIES = {
+        gewichtung: { icon: '⚖️', label: 'FAKTOR-GEWICHTUNG (Score-Formel)', isGewichtung: true },
+        lebensplanung: { icon: '📋', label: 'LEBENSPLANUNG' },
+        finanzen: { icon: '💰', label: 'FINANZEN & KARRIERE' },
+        kommunikation: { icon: '💬', label: 'KOMMUNIKATION' },
+        soziales: { icon: '👥', label: 'SOZIALES' },
+        intimitaet: { icon: '💕', label: 'INTIMITÄT' },
+        werte: { icon: '⚖️', label: 'WERTE' },
+        praktisches: { icon: '🏠', label: 'PRAKTISCHES' }
+    };
+
+    /**
+     * Holt Attribute einer Kategorie
+     * @param {string} category - Kategorie-Key
+     * @returns {Array} Attribut-Array
+     */
+    function getAttributes(category) {
+        return ATTRIBUTES[category] || [];
+    }
+
+    /**
+     * Holt alle Attribute als flaches Array
+     * @returns {Array} Alle Attribute
+     */
+    function getAllAttributes() {
+        return Object.values(ATTRIBUTES).flat();
+    }
+
+    /**
+     * Holt Kategorie-Info
+     * @param {string} category - Kategorie-Key
+     * @returns {Object} Kategorie-Metadaten
+     */
+    function getCategory(category) {
+        return CATEGORIES[category];
+    }
+
+    /**
+     * Holt alle Kategorie-Keys (in Reihenfolge)
+     * @returns {Array<string>} Kategorie-Keys
+     */
+    function getCategoryOrder() {
+        return ['gewichtung', 'lebensplanung', 'finanzen', 'kommunikation', 'soziales', 'intimitaet', 'werte', 'praktisches'];
+    }
+
+    /**
+     * Findet ein Attribut nach ID
+     * @param {string} attrId - Attribut-ID
+     * @returns {Object|null} Attribut-Konfiguration
+     */
+    function findAttribute(attrId) {
+        for (const attrs of Object.values(ATTRIBUTES)) {
+            const found = attrs.find(a => a.attrId === attrId);
+            if (found) return found;
+        }
+        return null;
+    }
+
+    return {
+        ATTRIBUTES,
+        CATEGORIES,
+        getAttributes,
+        getAllAttributes,
+        getCategory,
+        getCategoryOrder,
+        findAttribute
+    };
+})();
+
+// Export für Module-System
+if (typeof module !== 'undefined' && module.exports) {
+    module.exports = ProfileReviewConfig;
+}
