@@ -431,5 +431,19 @@ input.gewichtung-input:focus {
     padding: 8px 10px;
     background: rgba(0, 0, 0, 0.2);
     border-radius: 6px;
-    font-style: italic;
+    line-height: 1.5;
+}
+
+.source-explanation-link {
+    display: inline-block;
+    margin-left: 6px;
+    color: #a5b4fc;
+    text-decoration: none;
+    font-style: normal;
+    font-weight: 500;
+}
+
+.source-explanation-link:hover {
+    color: #c7d2fe;
+    text-decoration: underline;
 }

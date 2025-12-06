@@ -927,7 +927,8 @@ const TiageLocale_EN = {
         sourceExplanation: {
             title: 'Where do these values come from?',
             intro: 'These attributes were automatically calculated based on:',
-            note: 'These values are suggestions based on statistical patterns. You can adjust them at any time.'
+            note: 'Tiage uses 1,248 psychological profiles from relationship research (Gottman, Esther Perel, et al.). These are suggestions - you can adjust them.',
+            helpLink: 'More in Help'
         },
 
         categories: {
