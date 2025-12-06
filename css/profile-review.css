@@ -121,6 +121,13 @@
     color: white !important;
 }
 
+/* Geschlechtsidentität (Sekundär) - Gelbe Farbe wie auf Hauptseite */
+[data-attr="pr-geschlecht-sekundaer"] .profile-review-triple-btn.active {
+    background: rgba(234, 179, 8, 0.6) !important;
+    border-color: #eab308 !important;
+    color: white !important;
+}
+
 /* Info Icon for Attribute Descriptions */
 .attr-info-icon {
     display: inline-flex;
