@@ -29,7 +29,7 @@ const TripleButtonGroup = (function() {
         const cardIdAttr = cardId ? ` id="${cardId}"` : '';
         const hintHtml = hint ? ` <span class="dimension-hint">(${hint})</span>` : '';
         const infoIconHtml = description
-            ? ` <span class="attr-info-icon" title="${description}">ℹ</span>`
+            ? ` <span class="attr-info-icon" data-tooltip="${description}">ℹ</span>`
             : '';
 
         const buttonsHtml = options.map((optLabel, i) => {
