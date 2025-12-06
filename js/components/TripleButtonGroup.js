@@ -19,14 +19,18 @@ const TripleButtonGroup = (function() {
      * @param {Array<string>} config.options - Array mit 3 Button-Labels [links, mitte, rechts]
      * @param {number} [config.defaultValue=50] - Standard-Wert (25, 50, oder 75)
      * @param {string} [config.cardId] - Optionale Card-ID
+     * @param {string} [config.description] - Optionale Beschreibung für Tooltip
      * @returns {string} HTML-String
      */
     function render(config) {
-        const { attrId, label, hint, options, defaultValue = 50, cardId } = config;
+        const { attrId, label, hint, options, defaultValue = 50, cardId, description } = config;
 
         const values = [25, 50, 75];
         const cardIdAttr = cardId ? ` id="${cardId}"` : '';
         const hintHtml = hint ? ` <span class="dimension-hint">(${hint})</span>` : '';
+        const infoIconHtml = description
+            ? ` <span class="attr-info-icon" title="${description}">&#9432;</span>`
+            : '';
 
         const buttonsHtml = options.map((optLabel, i) => {
             const isActive = values[i] === defaultValue ? ' active' : '';
@@ -35,7 +39,7 @@ const TripleButtonGroup = (function() {
 
         return `
                     <div class="profile-review-card"${cardIdAttr}>
-                        <div class="compact-dimension-label">${label}${hintHtml}</div>
+                        <div class="compact-dimension-label">${label}${hintHtml}${infoIconHtml}</div>
                         <div class="profile-review-triple-buttons" data-attr="${attrId}">
                             ${buttonsHtml}
                         </div>

@@ -101,3 +101,29 @@
     border-color: var(--primary, #457b9d) !important;
     color: white !important;
 }
+
+/* Info Icon for Attribute Descriptions */
+.attr-info-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 16px;
+    height: 16px;
+    margin-left: 6px;
+    font-size: 14px;
+    color: var(--text-muted, #888);
+    cursor: help;
+    vertical-align: middle;
+    opacity: 0.7;
+    transition: opacity 0.2s, color 0.2s;
+}
+
+.attr-info-icon:hover {
+    opacity: 1;
+    color: var(--primary, #457b9d);
+}
+
+/* Native Tooltip Styling via title attribute */
+.attr-info-icon[title] {
+    position: relative;
+}
