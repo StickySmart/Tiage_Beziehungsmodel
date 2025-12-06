@@ -129,12 +129,13 @@
     width: 16px;
     height: 16px;
     margin-left: 6px;
-    font-size: 14px;
+    font-size: 12px;
     color: var(--text-muted, #888);
     cursor: help;
     vertical-align: middle;
     opacity: 0.7;
     transition: opacity 0.2s, color 0.2s;
+    position: relative;
 }
 
 .attr-info-icon:hover {
@@ -142,7 +143,174 @@
     color: var(--primary, #457b9d);
 }
 
-/* Native Tooltip Styling via title attribute */
-.attr-info-icon[title] {
-    position: relative;
+/* CSS-only Tooltip */
+.attr-info-icon[data-tooltip]::after {
+    content: attr(data-tooltip);
+    position: absolute;
+    left: 50%;
+    bottom: 100%;
+    transform: translateX(-50%);
+    margin-bottom: 8px;
+    padding: 8px 12px;
+    background: rgba(0, 0, 0, 0.9);
+    color: #fff;
+    font-size: 12px;
+    font-weight: normal;
+    text-transform: none;
+    line-height: 1.4;
+    white-space: normal;
+    width: max-content;
+    max-width: 250px;
+    border-radius: 6px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.2s, visibility 0.2s;
+    z-index: 9999;
+    pointer-events: none;
+}
+
+/* Tooltip Arrow */
+.attr-info-icon[data-tooltip]::before {
+    content: '';
+    position: absolute;
+    left: 50%;
+    bottom: 100%;
+    transform: translateX(-50%);
+    margin-bottom: 2px;
+    border: 6px solid transparent;
+    border-top-color: rgba(0, 0, 0, 0.9);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.2s, visibility 0.2s;
+    z-index: 9999;
+}
+
+/* Show tooltip on hover */
+.attr-info-icon[data-tooltip]:hover::after,
+.attr-info-icon[data-tooltip]:hover::before {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* ============================================
+   GEWICHTUNG CARD STYLES
+   ============================================ */
+
+.gewichtung-card {
+    border-left: 3px solid #10B981 !important;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.gewichtung-card:hover {
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.gewichtung-card-content {
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    width: 100%;
+}
+
+.gewichtung-card-label {
+    font-size: 13px;
+    color: var(--text-secondary, #aaa);
+    font-weight: 500;
+    flex-shrink: 0;
+}
+
+.gewichtung-card-input-group {
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    gap: 6px;
+    flex-shrink: 0;
+}
+
+.gewichtung-card .gewichtung-input,
+input.gewichtung-input {
+    width: 50px !important;
+    min-width: 50px !important;
+    max-width: 50px !important;
+    padding: 5px 4px !important;
+    border: 1px solid rgba(16, 185, 129, 0.5) !important;
+    border-radius: 4px !important;
+    background: rgba(16, 185, 129, 0.1) !important;
+    color: #10B981 !important;
+    font-size: 14px !important;
+    font-weight: 600 !important;
+    text-align: center !important;
+    outline: none !important;
+    transition: all 0.2s ease;
+    box-sizing: border-box !important;
+}
+
+.gewichtung-card .gewichtung-input:focus,
+input.gewichtung-input:focus {
+    border-color: #10B981 !important;
+    box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.2) !important;
+}
+
+.gewichtung-percent {
+    color: var(--text-muted, #888);
+    font-size: 12px;
+}
+
+.gewichtung-lock-indicator {
+    width: 16px;
+    text-align: center;
+}
+
+.gewichtung-card:not(.locked):not(.readonly) .gewichtung-lock-indicator::before {
+    content: '🔓';
+    font-size: 12px;
+    opacity: 0.5;
+}
+
+.gewichtung-card.locked {
+    border-left-color: #f59e0b !important;
+    background: rgba(245, 158, 11, 0.05);
+}
+
+.gewichtung-card.locked .gewichtung-input {
+    background: rgba(245, 158, 11, 0.1) !important;
+    border-color: rgba(245, 158, 11, 0.5) !important;
+    color: #f59e0b !important;
+}
+
+.gewichtung-card.locked .gewichtung-lock-indicator::before {
+    content: '🔒';
+    font-size: 12px;
+}
+
+.gewichtung-footer-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px 12px;
+    background: rgba(255,255,255,0.02);
+    border-radius: 6px;
+    margin-top: 8px;
+}
+
+.gewichtung-hint {
+    font-size: 11px;
+    color: var(--text-muted, #888);
+}
+
+.gewichtung-summe-text {
+    font-size: 12px;
+    color: var(--text-secondary, #aaa);
+}
+
+.gewichtung-summe-value {
+    font-weight: 600;
+    color: #10B981;
+}
+
+.gewichtung-summe-error {
+    color: #ef4444 !important;
 }
