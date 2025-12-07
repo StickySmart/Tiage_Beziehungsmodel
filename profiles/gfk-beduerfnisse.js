@@ -694,10 +694,22 @@ const GfkBeduerfnisse = {
     // ═══════════════════════════════════════════════════════════════════════════
     // ARCHETYPEN-BEDÜRFNIS-PROFILE
     // ═══════════════════════════════════════════════════════════════════════════
-    // Gewichtung 0-100: Wie wichtig ist dieses Bedürfnis für den Archetyp?
-    // Nur die relevantesten Bedürfnisse werden aufgeführt (> 50)
+    // Profile werden aus separaten Dateien geladen (profiles/archetypen/*.js)
+    // Jedes Profil enthält alle 88 Bedürfnisse mit Werten 0-100
+    // Fallback auf Legacy-Profile falls neue nicht geladen
 
-    archetypProfile: {
+    // Dynamischer Getter für archetypProfile
+    get archetypProfile() {
+        // Prüfe ob neue Profile geladen wurden
+        if (window.LoadedArchetypProfile && Object.keys(window.LoadedArchetypProfile).length > 0) {
+            return window.LoadedArchetypProfile;
+        }
+        // Fallback auf Legacy-Profile
+        return this._legacyArchetypProfile;
+    },
+
+    // Legacy-Profile als Fallback (alte ~20 Werte pro Profil)
+    _legacyArchetypProfile: {
 
         // ─────────────────────────────────────────────────────────────────────
         // SINGLE - Der Autonome
@@ -1032,6 +1044,20 @@ const GfkBeduerfnisse = {
                 sich_sicher_fuehlen: 70
             },
             beschreibung: "Tiefe platonische Verbindungen ohne romantische Komponente. Authentisch anders."
+        }
+    },
+
+    /**
+     * Initialisiert die Profile aus den geladenen Archetyp-Dateien
+     * Wird automatisch aufgerufen wenn die Profile verfügbar sind
+     */
+    initFromLoadedProfiles: function() {
+        if (window.LoadedArchetypProfile) {
+            console.log('GfkBeduerfnisse: Neue Profile geladen mit je 88 Bedürfnissen');
+            Object.keys(window.LoadedArchetypProfile).forEach(key => {
+                const profil = window.LoadedArchetypProfile[key];
+                console.log(`  - ${key}: ${Object.keys(profil.kernbeduerfnisse).length} Bedürfnisse`);
+            });
         }
     },
 
