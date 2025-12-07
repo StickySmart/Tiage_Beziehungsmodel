@@ -145,289 +145,43 @@
         };
 
         // ═══════════════════════════════════════════════════════════════════════
-        // MICRO-STATEMENTS DATABASE für dynamische Text-Generierung
+        // MICRO-STATEMENTS DATABASE REFERENCES
         // Philosophische Grundlage: Pirsig (MOQ) + OSHO
         //
-        // HINWEIS: Die vollständigen Archetyp-Statements (64 Kombinationen) werden
-        // aus den externen Dateien geladen:
-        // - statements/archetypeStatements.js (Deutsch)
-        // - statements/archetypeStatements_EN.js (Englisch)
+        // Alle Micro-Statements werden aus externen Dateien geladen:
+        // - statements/archetypeStatements.js (Archetyp-Kombinationen DE)
+        // - statements/archetypeStatements_EN.js (Archetyp-Kombinationen EN)
+        // - statements/dominanceStatements.js (Dominanz-Kombinationen)
+        // - statements/orientationStatements.js (Orientierungs-Kombinationen)
+        // - statements/statusStatements.js (Status-Kombinationen)
+        // - statements/gfkStatements.js (GFK-Kombinationen)
         // ═══════════════════════════════════════════════════════════════════════
 
-        // archetypeStatements wird aus externer Datei geladen (statements/archetypeStatements.js)
-        // archetypeStatements_EN wird aus externer Datei geladen (statements/archetypeStatements_EN.js)
-
-        // Fallback-Definition falls externe Datei nicht geladen wurde
-        // Note: archetypeStatements wird in statements/archetypeStatements.js definiert
-        // Dieser Check ist nur für den Fall dass die Datei nicht geladen wurde
+        // Fallback-Definitionen falls externe Dateien nicht geladen wurden
         if (typeof window.archetypeStatements === 'undefined') {
             console.warn('archetypeStatements nicht geladen - verwende leeres Objekt');
             window.archetypeStatements = {};
         }
-
-        // dominanceStatements ist inline definiert (da vollständig und korrekt)
-        const dominanceStatements = {
-            "dominant_submissiv": { score: 100, pathos: ["Die perfekte Polarität: Führung trifft auf Hingabe.", "OSHO's Weisheit manifestiert sich hier – Extreme ziehen sich an.", "Eine magnetische Kraft entsteht aus der Gegensätzlichkeit."], logos: ["Komplementarität führt zu höherer Sympathie (Tiedens & Fragale, 2003).", "Klare Rollenverteilung minimiert Entscheidungskonflikte."], pro: ["Optimale Rollenverteilung", "Natürliche Dynamik", "Hohe gegenseitige Anziehung", "Wissenschaftlich belegte höhere Zufriedenheit"], contra: ["Balance muss bewusst gehalten werden"] },
-            "submissiv_dominant": { score: 100, pathos: ["Hingabe trifft auf Führung – eine tiefe Resonanz.", "Das Vertrauen, sich führen zu lassen, schafft Intimität."], logos: ["Komplementäre Dynamik ist strukturell am stabilsten."], pro: ["Natürliche Harmonie", "Klare Rollenverteilung", "Tiefes Vertrauen möglich"], contra: ["Abhängigkeitsdynamiken müssen reflektiert werden"] },
-            "ausgeglichen_ausgeglichen": { score: 95, pathos: ["Zwei Seelen in Balance – ein stiller Tanz der Gleichheit.", "Harmonie durch gemeinsame Mitte."], logos: ["Flexible Dynamik ohne starre Hierarchie.", "Entscheidungen werden gemeinsam getroffen."], pro: ["Gleichberechtigte Partnerschaft", "Flexible Rollenverteilung", "Keine Machtkämpfe erwartet", "Stabile Grunddynamik"], contra: ["Manchmal fehlt klare Führung", "Weniger 'Feuer' durch fehlende Polarität"] },
-            "switch_switch": { score: 90, pathos: ["Spielerische Dynamik – heute führst du, morgen ich.", "Die Freude am Rollenwechsel verbindet."], logos: ["Hohe Anpassungsfähigkeit auf beiden Seiten."], pro: ["Vielfalt in der Dynamik", "Gegenseitiges Verständnis für Rollenwechsel", "Hohe Flexibilität"], contra: ["Manchmal unklar, wer gerade führt", "Koordination nötig"] },
-            "switch_ausgeglichen": { score: 88, pathos: ["Flexibilität trifft auf Balance."], logos: ["Switch kann sich an die Balance anpassen."], pro: ["Hohe Anpassungsfähigkeit", "Ausgeglichener bietet Stabilität"], contra: ["Switch könnte manchmal mehr Polarität vermissen"] },
-            "ausgeglichen_switch": { score: 88, pathos: ["Balance begegnet Vielseitigkeit."], logos: ["Beide können sich situativ anpassen."], pro: ["Hohe gegenseitige Anpassungsfähigkeit", "Flexible Rollenverteilung"], contra: ["Manchmal unklar, wer führt"] },
-            "dominant_ausgeglichen": { score: 85, pathos: ["Führung trifft auf Gelassenheit."], logos: ["Dominanter gibt Richtung, Ausgeglichener stabilisiert."], pro: ["Klare Führung mit stabilem Fundament", "Harmonische Grunddynamik"], contra: ["Dominanter könnte mehr Polarität vermissen"] },
-            "ausgeglichen_dominant": { score: 85, pathos: ["Balance begegnet Stärke."], logos: ["Strukturell kompatibel."], pro: ["Harmonische Dynamik möglich", "Ausgeglichener behält Autonomie"], contra: ["Dominanter könnte mehr Gegenpol vermissen"] },
-            "submissiv_ausgeglichen": { score: 85, pathos: ["Hingabebereitschaft trifft auf sanfte Führung."], logos: ["Ausgeglichener kann situativ Führung übernehmen."], pro: ["Sanfte Führungsdynamik", "Submissiver fühlt sich sicher"], contra: ["Submissiver könnte stärkere Führung vermissen"] },
-            "ausgeglichen_submissiv": { score: 85, pathos: ["Balance kann sanft führen."], logos: ["Ausgeglichener kann Führung übernehmen wenn nötig."], pro: ["Weiche, liebevolle Dynamik"], contra: ["Submissiver könnte klarere Führung wünschen"] },
-            "switch_dominant": { score: 80, pathos: ["Flexibilität begegnet fester Führung."], logos: ["Switch kann submissive Rolle übernehmen."], pro: ["Switch kann sich anpassen", "Dominanter bekommt oft Führungsrolle"], contra: ["Switch könnte eigene dominante Seite vermissen", "Potenzial für Frustration"] },
-            "dominant_switch": { score: 80, pathos: ["Führung trifft auf Vielseitigkeit."], logos: ["Switch's dominante Phasen können Konflikte schaffen."], pro: ["Grunddynamik kann funktionieren"], contra: ["Machtkonflikte wenn Switch dominant sein will"] },
-            "switch_submissiv": { score: 80, pathos: ["Vielseitigkeit begegnet Hingabe."], logos: ["Switch kann dominant sein wenn nötig."], pro: ["Switch kann führen", "Flexibilität kann bereichernd sein"], contra: ["Inkonsistenz kann verunsichern", "Submissiver wünscht sich beständigere Dominanz"] },
-            "submissiv_switch": { score: 80, pathos: ["Hingabe trifft auf Wechselhaftigkeit."], logos: ["Inkonsistenz kann strukturell herausfordernd sein."], pro: ["Grunddynamik kann funktionieren"], contra: ["Inkonsistenz kann frustrieren", "Führungsvakuum in Switch's submissiven Phasen"] },
-            "dominant_dominant": { score: 55, pathos: ["Zwei Alphas treffen aufeinander – Funken fliegen.", "Machtkampf ist unvermeidlich, aber auch aufregend.", "Die Energie ist hoch, aber die Reibung auch."], logos: ["Sadikaj et al. (2017): Gleiche hohe Dominanz korreliert mit niedrigerer Zufriedenheit.", "Strukturelles Problem: Zwei Führer, keine Folger."], pro: ["Starke Persönlichkeiten können sich inspirieren", "Hohe Energie"], contra: ["Machtkämpfe unvermeidlich", "Wissenschaftlich belegte niedrigere Zufriedenheit", "Entscheidungskonflikte vorprogrammiert", "Bewusste Regeln erforderlich"] },
-            "submissiv_submissiv": { score: 55, pathos: ["Zwei, die auf Führung warten – wer beginnt?", "Führungsvakuum kann lähmend wirken.", "Die Sehnsucht nach Führung bleibt unerfüllt."], logos: ["Strukturelles Führungsvakuum.", "Entscheidungsprozesse können stagnieren."], pro: ["Keine Machtkämpfe", "Harmonische, sanfte Grundstimmung", "Gegenseitige Empathie"], contra: ["Führungsvakuum", "Stagnation in Entscheidungsprozessen", "Beide warten auf Initiative des anderen", "Externe Struktur oft nötig"] },
-            "default": { score: 75, pathos: ["Die Dominanz-Dynamik ist noch nicht vollständig erkennbar."], logos: ["Standardwert wird verwendet bis alle Dimensionen ausgewählt sind."], pro: ["Neutrale Ausgangssituation"], contra: ["Unvollständige Information"] }
-        };
-
-        // Orientierungs-Statements für Pathos/Logos
-        // Berücksichtigt Orientierung UND Geschlecht für realistische Kompatibilität
-        const orientierungStatements = {
-            // Kompatible Kombinationen
-            "kompatibel_hetero_hetero": {
-                score: 95,
-                pathos: ["Die heterosexuelle Anziehung ist beidseitig und natürlich.", "Körperliche und emotionale Chemie kann frei fließen."],
-                logos: ["Klassische Konstellation mit klarer gegenseitiger Anziehungsbasis."],
-                pro: ["Natürliche gegenseitige Anziehung", "Gesellschaftlich etabliert"],
-                contra: ["Keine besonderen Herausforderungen durch Orientierung"]
-            },
-            "kompatibel_homo_homo": {
-                score: 95,
-                pathos: ["Die homosexuelle Anziehung verbindet auf einer tiefen Ebene.", "Gemeinsames Verständnis der eigenen Identität schafft Nähe."],
-                logos: ["Gleiche Orientierung ermöglicht authentische Verbindung."],
-                pro: ["Tiefes gegenseitiges Verständnis", "Gemeinsame Erfahrungswelt"],
-                contra: ["Gesellschaftliche Herausforderungen möglich"]
-            },
-            "kompatibel_bi_hetero": {
-                score: 85,
-                pathos: ["Anziehung ist vorhanden, auch wenn die Spektren unterschiedlich breit sind.", "Der bisexuelle Partner kann sich voll einlassen."],
-                logos: ["Funktionale Kompatibilität gegeben, aber unterschiedliche Erfahrungswelten."],
-                pro: ["Grundlegende Anziehung vorhanden", "Bisexueller bringt Offenheit mit"],
-                contra: ["Heterosexueller versteht bi-Erfahrung nicht vollständig", "Teile der bi-Identität bleiben unausgelebt"]
-            },
-            "kompatibel_bi_homo": {
-                score: 85,
-                pathos: ["Anziehung ist da, aber die Wege dorthin waren unterschiedlich.", "Gemeinsame queere Erfahrungen können verbinden."],
-                logos: ["Kompatibilität gegeben, unterschiedliche Identitätserfahrungen."],
-                pro: ["Gemeinsame queere Perspektive", "Gegenseitiges Verständnis für Nicht-Heteronormativität"],
-                contra: ["Bi-Identität wird manchmal in Frage gestellt", "Unterschiedliche Community-Erfahrungen"]
-            },
-            "kompatibel_bi_bi": {
-                score: 95,
-                pathos: ["Maximale Flexibilität trifft auf maximales Verständnis.", "Beide kennen die Komplexität fluider Anziehung."],
-                logos: ["Tiefes gegenseitiges Verständnis der bi-Erfahrung.", "Keine Teile der Identität müssen versteckt werden."],
-                pro: ["Vollständiges Verständnis der bi-Erfahrung", "Maximale Offenheit", "Keine Identitätsaspekte werden unterdrückt"],
-                contra: ["Gesellschaftliche Bi-Erasure betrifft beide"]
-            },
-            // Inkompatible Kombinationen
-            "inkompatibel_hetero_hetero": {
-                score: 15,
-                pathos: ["Keine sexuelle Anziehung möglich – beide orientieren sich zum anderen Geschlecht.", "Freundschaft ja, romantische Verbindung nein."],
-                logos: ["Strukturelle Inkompatibilität: Beide suchen das jeweils andere Geschlecht."],
-                pro: ["Tiefe Freundschaft möglich"],
-                contra: ["Keine romantische/sexuelle Basis", "Fundamentale Orientierungsdiskrepanz"]
-            },
-            "inkompatibel_homo_homo": {
-                score: 15,
-                pathos: ["Die Orientierung weist in entgegengesetzte Richtungen.", "Emotionale Nähe möglich, sexuelle Anziehung nicht."],
-                logos: ["Strukturelle Inkompatibilität durch gegenläufige Orientierung."],
-                pro: ["Verständnis füreinander als queere Menschen"],
-                contra: ["Keine romantische/sexuelle Basis", "Orientierung zeigt zu unterschiedlichen Geschlechtern"]
-            },
-            "inkompatibel_hetero_homo": {
-                score: 10,
-                pathos: ["Die Anziehungskräfte gehen aneinander vorbei.", "Was der eine sucht, kann der andere nicht bieten."],
-                logos: ["Maximale strukturelle Inkompatibilität.", "Keine gemeinsame Anziehungsbasis vorhanden."],
-                pro: ["Freundschaft auf anderen Ebenen möglich"],
-                contra: ["Keine romantische/sexuelle Kompatibilität", "Fundamentale Orientierungsdiskrepanz"]
-            },
-            "teilweise_bi_inkompatibel": {
-                score: 40,
-                pathos: ["Der bisexuelle Partner könnte angezogen sein, aber es ist nicht gegenseitig.", "Einseitige Anziehung schafft Ungleichgewicht."],
-                logos: ["Nur einseitige Anziehung möglich – strukturelles Ungleichgewicht."],
-                pro: ["Bisexueller zeigt Offenheit"],
-                contra: ["Keine gegenseitige Anziehung", "Einseitiges Interesse führt zu Frustration"]
-            },
-            // Default
-            "default": {
-                score: 50,
-                pathos: ["Die Orientierungs-Kompatibilität ist noch nicht vollständig erkennbar."],
-                logos: ["Standardwert wird verwendet bis Orientierung und Geschlecht ausgewählt sind."],
-                pro: ["Neutrale Ausgangssituation"],
-                contra: ["Unvollständige Information"]
-            }
-        };
-
-        // Status-Statements für Pathos/Logos (Pirsig & Osho Perspektive)
-        // Berücksichtigt den Sicherheitsgrad beider Personen (gelebt vs. interessiert)
-        const statusStatements = {
-            // Beide wissen wer sie sind
-            "gelebt_gelebt": {
-                pathos: [
-                    "Zwei gefestigte Seelen begegnen sich – die emotionale Klarheit beider schafft Tiefe.",
-                    "Die Sicherheit in der eigenen Identität ermöglicht authentische Begegnung."
-                ],
-                logos: [
-                    "Hohe Qualität durch klare Selbstkenntnis beider Partner (Pirsig).",
-                    "Beide wissen, was sie wollen – eine solide Basis für rationale Entscheidungen."
-                ],
-                modifier: 1.0  // Volle Konfidenz
-            },
-            // Einer führt, einer exploriert
-            "gelebt_interessiert": {
-                pathos: [
-                    "Klarheit trifft auf Offenheit – Raum für gemeinsames Wachstum entsteht.",
-                    "Der eine bietet emotionalen Anker, der andere bringt Neugier mit."
-                ],
-                logos: [
-                    "Qualität im Werden: Der gefestigte Partner kann Orientierung bieten.",
-                    "Asymmetrie in der Selbstkenntnis – erfordert Geduld und Kommunikation."
-                ],
-                modifier: 0.85  // Reduzierte Konfidenz
-            },
-            // Beide auf Entdeckungsreise
-            "interessiert_interessiert": {
-                pathos: [
-                    "Zwei Suchende auf gemeinsamer Reise – Verbundenheit durch geteilte Unsicherheit.",
-                    "Die Offenheit beider kann befreiend sein, aber auch destabilisierend."
-                ],
-                logos: [
-                    "Qualität noch im Fluss – viel Potential, aber unklare Grundlagen.",
-                    "Beide explorieren noch – Beziehungsbasis kann sich stark verändern."
-                ],
-                modifier: 0.7  // Deutlich reduzierte Konfidenz
-            },
-            // Default
-            "default": {
-                pathos: ["Der Sicherheitsgrad der Selbstkenntnis ist noch nicht vollständig erkennbar."],
-                logos: ["Standardwert wird verwendet bis der Status ausgewählt ist."],
-                modifier: 0.8
-            }
-        };
-
-        // ═══════════════════════════════════════════════════════════════════════
-        // GFK-STATEMENTS (Gewaltfreie Kommunikation nach Marshall Rosenberg)
-        // ═══════════════════════════════════════════════════════════════════════
-        const gfkStatements = {
-            // Beide hohe GFK-Kompetenz
-            "hoch_hoch": {
-                pathos: [
-                    "Zwei Menschen, die empathisch zuhören können – Konflikte werden zu Wachstumschancen.",
-                    "Die Fähigkeit, hinter Vorwürfe zu hören, schafft tiefe emotionale Sicherheit.",
-                    "Bedürfnisse werden gehört, nicht gefordert – eine Basis für echte Intimität."
-                ],
-                logos: [
-                    "Exzellente Voraussetzungen für konstruktive Kommunikation.",
-                    "Beide beherrschen die 4 Schritte: Beobachtung, Gefühl, Bedürfnis, Bitte.",
-                    "Konfliktlösung auf Augenhöhe ist selbstverständlich."
-                ],
-                resonanzModifier: 1.1,  // Erhöht die Resonanz
-                konfliktPotenzial: "niedrig"
-            },
-            // Einer hoch, einer mittel
-            "hoch_mittel": {
-                pathos: [
-                    "Der GFK-erfahrene Partner kann als Brücke dienen – Geduld ist gefragt.",
-                    "Unter Stress zeigt sich der Unterschied, aber Wachstum ist möglich."
-                ],
-                logos: [
-                    "Solide Basis mit Entwicklungspotenzial.",
-                    "Der erfahrenere Partner kann unterstützen, ohne zu dominieren."
-                ],
-                resonanzModifier: 1.05,
-                konfliktPotenzial: "mittel-niedrig"
-            },
-            // Einer hoch, einer niedrig
-            "hoch_niedrig": {
-                pathos: [
-                    "Eine Herausforderung: Empathie trifft auf Reaktivität.",
-                    "Der GFK-erfahrene Partner muss viel tragen – Gefahr der Erschöpfung.",
-                    "Potenzial für Transformation, wenn der Lernwille da ist."
-                ],
-                logos: [
-                    "Asymmetrie erfordert bewusste Arbeit.",
-                    "Ohne Bereitschaft zum Lernen kann Frustration entstehen.",
-                    "Klare Grenzen und Selbstfürsorge sind essenziell."
-                ],
-                resonanzModifier: 0.95,
-                konfliktPotenzial: "mittel-hoch"
-            },
-            // Beide mittel
-            "mittel_mittel": {
-                pathos: [
-                    "Zwei auf dem Weg – gemeinsames Wachstum ist möglich.",
-                    "In ruhigen Zeiten funktioniert die Kommunikation gut.",
-                    "Stress kann alte Muster aktivieren – Bewusstsein hilft."
-                ],
-                logos: [
-                    "Gute Grundlage mit Entwicklungspotenzial.",
-                    "Beide kennen die Prinzipien, üben noch die Anwendung.",
-                    "Gemeinsames Üben kann die Beziehung stärken."
-                ],
-                resonanzModifier: 1.0,
-                konfliktPotenzial: "mittel"
-            },
-            // Einer mittel, einer niedrig
-            "mittel_niedrig": {
-                pathos: [
-                    "Unterschiedliche Kommunikationsebenen können frustrieren.",
-                    "Der mittlere Partner fällt selbst unter Druck zurück – keine stabile Brücke."
-                ],
-                logos: [
-                    "Kommunikationsprobleme sind wahrscheinlich.",
-                    "Externe Unterstützung (Paartherapie, Kurse) kann helfen."
-                ],
-                resonanzModifier: 0.9,
-                konfliktPotenzial: "hoch"
-            },
-            // Beide niedrig
-            "niedrig_niedrig": {
-                pathos: [
-                    "Kommunikation geprägt von Vorwürfen und Missverständnissen.",
-                    "Eskalation ist wahrscheinlich – ohne Werkzeuge fehlt der Ausweg.",
-                    "Verletzungen entstehen oft unbeabsichtigt, heilen langsam."
-                ],
-                logos: [
-                    "Hohe Wahrscheinlichkeit für destruktive Konfliktmuster.",
-                    "Beide brauchen Unterstützung – GFK-Kurse dringend empfohlen.",
-                    "Ohne Intervention kann die Beziehung leiden."
-                ],
-                resonanzModifier: 0.8,
-                konfliktPotenzial: "sehr hoch"
-            },
-            // Default
-            "default": {
-                pathos: ["Die GFK-Kompetenz ist noch nicht bekannt."],
-                logos: ["Kommunikationsstil wird nicht bewertet."],
-                resonanzModifier: 1.0,
-                konfliktPotenzial: "unbekannt"
-            }
-        };
-
-        // Hilfsfunktion: Hole GFK-Statements basierend auf beiden Kompetenzen
-        function getGfkStatements(gfk1, gfk2) {
-            if (!gfk1 || !gfk2) return gfkStatements.default;
-
-            // Normalisiere auf Key-Format (hoch, mittel, niedrig)
-            const normalize = (g) => g?.toLowerCase() || null;
-            const g1 = normalize(gfk1);
-            const g2 = normalize(gfk2);
-
-            if (!g1 || !g2) return gfkStatements.default;
-
-            // Sortiere für konsistente Keys (hoch vor mittel vor niedrig)
-            const order = { 'hoch': 0, 'mittel': 1, 'niedrig': 2 };
-            const sorted = [g1, g2].sort((a, b) => (order[a] || 99) - (order[b] || 99));
-            const key = `${sorted[0]}_${sorted[1]}`;
-
-            return gfkStatements[key] || gfkStatements.default;
+        if (typeof window.dominanceStatements === 'undefined') {
+            console.warn('dominanceStatements nicht geladen - verwende leeres Objekt');
+            window.dominanceStatements = {};
         }
+        if (typeof window.orientationStatements === 'undefined') {
+            console.warn('orientationStatements nicht geladen - verwende leeres Objekt');
+            window.orientationStatements = {};
+        }
+        if (typeof window.statusStatements === 'undefined') {
+            console.warn('statusStatements nicht geladen - verwende leeres Objekt');
+            window.statusStatements = {};
+        }
+        if (typeof window.gfkStatements === 'undefined') {
+            console.warn('gfkStatements nicht geladen - verwende leeres Objekt');
+            window.gfkStatements = {};
+        }
+
+        // Legacy-Referenzen für Rückwärtskompatibilität mit altem Code
+        // Die Statements sind jetzt globale Objekte aus den externen Dateien
+        const orientierungStatements = window.orientationStatements;
 
         // Hilfsfunktion: Hole Statements für Archetyp-Kombination
         // Verwendet je nach Sprache die deutsche oder englische Version
