@@ -188,6 +188,224 @@ const LATProfil = {
             machtaustausch: 50,          // Mittel
             dienend_sein: 50,            // Mittel
             beschuetzen: 65              // Mittel-hoch
+        },
+
+        // ═══════════════════════════════════════════════════════════════════════
+        // LEBENSPLANUNG (15) - Kinder, Ehe, Wohnen, Familie
+        // ═══════════════════════════════════════════════════════════════════════
+        // LAT: Feste Beziehung, aber getrennt wohnen
+        lebensplanung: {
+            kinderwunsch: 50,            // Mittel - individuell
+            elternschaft: 45,            // Mittel - kann kompliziert sein mit LAT
+            fortpflanzung: 40,           // Niedrig-mittel
+            fuersorge: 70,               // Hoch - aus der Distanz
+            familie_gruenden: 40,        // Niedrig-mittel - erschwert durch LAT
+            generativitaet: 55,          // Mittel
+            erziehung_werte: 50,         // Mittel - wenn relevant
+            verbindlichkeit: 75,         // Hoch - feste Beziehung
+            langfristige_bindung: 80,    // Hoch - langfristig angelegt
+            rechtliche_sicherheit: 50,   // Mittel - offen
+            tradition_ehe: 40,           // Niedrig-mittel - nicht priorisiert
+            oeffentliches_bekenntnis: 60, // Mittel - Beziehung anerkannt
+            gemeinsamer_wohnraum: 10,    // Sehr niedrig - bewusst vermieden
+            eigener_rueckzugsort: 100,   // Maximum - Kernbedürfnis
+            haeuslichkeit: 75,           // Hoch - im eigenen Zuhause
+            // Pirsig & Osho - Lebensplanung
+            biologisches_muster: 45,     // Mittel
+            soziales_muster: 45,         // Mittel
+            statische_stabilitaet: 60,   // Mittel
+            qualitaet_der_fuersorge: 75, // Hoch
+            familien_rebellion: 55,      // Mittel
+            zorba_das_kind: 65,          // Mittel-hoch
+            nicht_anhaften_an_familie: 65, // Mittel-hoch
+            bewusste_elternschaft: 60,   // Mittel
+            commune_statt_kernfamilie: 30 // Niedrig
+        },
+
+        // ═══════════════════════════════════════════════════════════════════════
+        // FINANZEN & KARRIERE (10) - Geld, Arbeit, berufliche Entwicklung
+        // ═══════════════════════════════════════════════════════════════════════
+        // LAT: Getrennte Finanzen, eigene Karrieren
+        finanzen_karriere: {
+            finanzielle_unabhaengigkeit: 90, // Sehr hoch - jeder zahlt eigene Wohnung
+            gemeinsame_finanzen: 25,     // Niedrig - meist getrennt
+            versorger_rolle: 25,         // Niedrig - jeder für sich
+            materielle_sicherheit: 75,   // Hoch - eigene Absicherung
+            karriere_entwicklung: 80,    // Hoch - eigene Karriere
+            berufliche_anerkennung: 75,  // Hoch
+            work_life_balance: 80,       // Hoch - eigener Rhythmus
+            gemeinsame_ziele: 60,        // Mittel-hoch - für die Beziehung
+            erfolg: 75,                  // Hoch
+            leistung: 70,                // Hoch
+            // Pirsig & Osho - Finanzen & Karriere
+            gumption: 75,                // Hoch
+            qualitaet_der_arbeit: 75,    // Hoch
+            intellektuelles_muster: 70,  // Hoch
+            dynamische_evolution: 70,    // Hoch
+            klassisches_verstehen: 65,   // Mittel-hoch
+            arbeit_als_meditation: 55,   // Mittel
+            nicht_karriere: 35,          // Niedrig
+            zorba_der_unternehmer: 60,   // Mittel
+            nicht_anhaften_an_geld: 50,  // Mittel
+            kreative_selbstverwirklichung: 75 // Hoch
+        },
+
+        // ═══════════════════════════════════════════════════════════════════════
+        // KOMMUNIKATION & STIL (12) - Art des Austauschs
+        // ═══════════════════════════════════════════════════════════════════════
+        // LAT: Kommunikation über Distanz essentiell
+        kommunikation_stil: {
+            emotionale_offenheit: 75,    // Hoch - wichtig für die Distanz
+            tiefe_gespraeche: 80,        // Hoch - bei Treffen
+            small_talk: 60,              // Mittel
+            konfliktbereitschaft: 70,    // Hoch - ansprechen statt schwelen
+            konstruktive_kritik: 75,     // Hoch
+            aktives_zuhoeren: 80,        // Hoch - bei Treffen präsent
+            nonverbale_kommunikation: 70, // Hoch - wenn zusammen
+            humor_ironie: 75,            // Hoch
+            intellektueller_austausch: 75, // Hoch
+            digitale_kommunikation: 90,  // Sehr hoch - wichtig für die Distanz
+            verbale_anerkennung: 80,     // Hoch - Wertschätzung zeigen
+            schweigen_aushalten: 75,     // Hoch - Zeit alleine
+            // Pirsig & Osho - Kommunikation
+            romantisches_verstehen: 70,  // Hoch
+            klassische_klarheit: 75,     // Hoch
+            dialektik: 55,               // Mittel
+            qualitaets_ausdruck: 70,     // Hoch
+            care_im_gespraech: 75,       // Hoch
+            schweigen_statt_worte: 70,   // Hoch
+            radikale_ehrlichkeit: 75,    // Hoch
+            humorvolle_leichtigkeit: 70, // Hoch
+            paradoxe_weisheit: 40,       // Niedrig-mittel
+            herz_statt_kopf: 60,         // Mittel
+            authentischer_ausdruck: 80   // Hoch
+        },
+
+        // ═══════════════════════════════════════════════════════════════════════
+        // SOZIALES LEBEN (12) - Freunde, Familie, Gesellschaft
+        // ═══════════════════════════════════════════════════════════════════════
+        // LAT: Eigene und gemeinsame Kreise
+        soziales_leben: {
+            freundeskreis_pflege: 80,    // Hoch - eigene Freunde wichtig
+            gemeinsame_freunde: 65,      // Mittel-hoch - auch gemeinsam
+            familieneinbindung: 55,      // Mittel - kann Erklärung brauchen
+            gesellschaftliches_engagement: 55, // Mittel
+            networking: 65,              // Mittel-hoch
+            gemeinsame_hobbys: 55,       // Mittel - bei Treffen
+            individuelle_hobbys: 85,     // Sehr hoch - eigene Zeit
+            gemeinsame_zeit: 65,         // Mittel-hoch - qualitativ
+            zeit_fuer_sich: 90,          // Sehr hoch - viel Eigenzeit
+            soziale_unterstuetzung: 70,  // Hoch - gegenseitig
+            gemeinsame_erlebnisse: 75,   // Hoch - bewusst geplant
+            alltagsteilung: 25,          // Niedrig - getrennte Alltage
+            // Pirsig & Osho - Soziales Leben
+            soziale_qualitaet: 80,       // Hoch
+            tribe_muster: 55,            // Mittel
+            intellektuelle_gemeinschaft: 65, // Mittel-hoch
+            statische_sozialstrukturen: 50, // Mittel
+            sannyas_gemeinschaft: 25,    // Niedrig
+            rebellion_gegen_gesellschaft: 35, // Niedrig-mittel
+            einsamkeit_in_menge: 60,     // Mittel
+            celebration_mit_anderen: 70, // Hoch
+            keine_freundschaft_besitz: 50, // Mittel
+            tantra_gruppe: 25            // Niedrig
+        },
+
+        // ═══════════════════════════════════════════════════════════════════════
+        // INTIMITÄT & BEZIEHUNG (12) - Nähe, Sexualität, Bindung
+        // ═══════════════════════════════════════════════════════════════════════
+        // LAT: Intensive Nähe bei Treffen, meist exklusiv
+        intimitaet_beziehung: {
+            koerpernaehe: 75,            // Hoch - wenn zusammen intensiv
+            kuscheln: 75,                // Hoch - bei Treffen
+            sexuelle_exklusivitaet: 75,  // Hoch - meist monogam
+            sexuelle_offenheit: 60,      // Mittel-hoch
+            leidenschaft: 80,            // Hoch - Wiedersehensfreude
+            zaertlichkeit: 75,           // Hoch
+            emotionale_tiefe: 80,        // Hoch - feste Bindung
+            romantik: 80,                // Hoch - Dates bleiben besonders
+            flirten: 45,                 // Mittel - meist mit Partner
+            eifersucht_als_signal: 50,   // Mittel - Vertrauen wichtiger
+            treue_werte: 75,             // Hoch - meist treu
+            bindungsbereitschaft: 80,    // Hoch - feste Beziehung
+            // Pirsig & Osho - Intimität
+            biologische_anziehung: 75,   // Hoch
+            intellektuelle_verbindung: 80, // Hoch
+            qualitaet_der_beruehrung: 80, // Hoch
+            dynamische_liebe: 75,        // Hoch
+            care_in_intimitaet: 80,      // Hoch
+            sex_als_meditation: 55,      // Mittel
+            liebe_ohne_beziehung: 20,    // Niedrig - Beziehung wichtig
+            orgastisches_leben: 65,      // Mittel-hoch
+            nicht_anhaften_an_partner: 40, // Niedrig-mittel
+            hier_und_jetzt_intimitaet: 75, // Hoch
+            polyamore_energie: 15,       // Niedrig
+            wildheit_und_zartheit: 70,   // Hoch
+            meditation_zu_zweit: 60      // Mittel
+        },
+
+        // ═══════════════════════════════════════════════════════════════════════
+        // WERTE & HALTUNG (10) - Überzeugungen, Religion, Politik
+        // ═══════════════════════════════════════════════════════════════════════
+        // LAT: Moderat progressive Werte
+        werte_haltung: {
+            spiritualitaet: 55,          // Mittel
+            religioese_praxis: 35,       // Niedrig-mittel
+            politisches_engagement: 50,  // Mittel
+            umweltbewusstsein: 60,       // Mittel-hoch
+            traditionelle_werte: 35,     // Niedrig-mittel - bewusst anders
+            moderne_werte: 75,           // Hoch - offenes Modell
+            toleranz: 80,                // Hoch - akzeptiert verschiedene Wege
+            offenheit_neues: 75,         // Hoch
+            kulturelle_identitaet: 60,   // Mittel-hoch
+            wertekongruenz: 70,          // Hoch - lebt nach Überzeugung
+            // Pirsig & Osho - Werte
+            qualitaet_als_gott: 70,      // Hoch
+            rationaler_mystizismus: 50,  // Mittel
+            aristotelische_vernunft: 60, // Mittel
+            platonische_ideen: 50,       // Mittel
+            buddhistische_achtsamkeit: 60, // Mittel
+            religionslosigkeit: 50,      // Mittel
+            eigene_wahrheit: 70,         // Hoch
+            zen_paradox: 35,             // Niedrig-mittel
+            tantra_als_weg: 40,          // Niedrig-mittel
+            politische_rebellion: 30,    // Niedrig
+            individueller_anarchismus: 45, // Mittel
+            leben_als_kunst: 65,         // Mittel-hoch
+            celebration_statt_gebet: 55  // Mittel
+        },
+
+        // ═══════════════════════════════════════════════════════════════════════
+        // PRAKTISCHES LEBEN (10) - Alltag, Organisation, Gesundheit
+        // ═══════════════════════════════════════════════════════════════════════
+        // LAT: Eigenständiger Alltag, Treffen planen
+        praktisches_leben: {
+            haushaltsaufteilung: 15,     // Sehr niedrig - jeder eigene Wohnung
+            alltagsorganisation: 80,     // Hoch - gut organisiert
+            gesundheitsbewusstsein: 70,  // Hoch
+            ernaehrungsstil: 60,         // Mittel-hoch
+            ordnung_sauberkeit: 70,      // Hoch - eigener Standard
+            mobilitaet: 80,              // Hoch - Reisen zum Partner
+            wohnort_flexibilitaet: 55,   // Mittel - je nach Distanz
+            heimatverbundenheit: 65,     // Mittel-hoch - eigenes Zuhause
+            reisen_abenteuer: 70,        // Hoch - gemeinsame Reisen
+            routine_struktur: 75,        // Hoch - geplante Abläufe
+            // Pirsig & Osho - Praktisches Leben
+            motorrad_pflege: 55,         // Mittel
+            gumption_im_alltag: 70,      // Hoch
+            stuck_vermeiden: 60,         // Mittel
+            klassische_ordnung: 70,      // Hoch - strukturiert
+            romantisches_chaos: 40,      // Niedrig-mittel
+            qualitaets_werkzeug: 60,     // Mittel
+            achtsamkeit_im_detail: 70,   // Hoch
+            meditation_im_alltag: 50,    // Mittel
+            gesundheit_durch_bewusstsein: 65, // Mittel-hoch
+            dynamische_meditation: 40,   // Niedrig-mittel
+            vipassana_im_leben: 45,      // Mittel
+            natuerliches_leben: 55,      // Mittel
+            lachen_therapie: 65,         // Mittel-hoch
+            no_mind: 40,                 // Niedrig-mittel
+            zorba_der_geniesser: 70      // Hoch
         }
     },
 

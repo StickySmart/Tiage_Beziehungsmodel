@@ -205,6 +205,126 @@ const GfkBeduerfnisse = {
                 "dienend_sein",
                 "beschuetzen"
             ]
+        },
+
+        // ═══════════════════════════════════════════════════════════════════════════
+        // ATTRIBUT-SPEZIFISCHE KATEGORIEN (NEU)
+        // Konkrete Lebensthemen für Beziehungs-Matching
+        // ═══════════════════════════════════════════════════════════════════════════
+
+        lebensplanung: {
+            name: "Lebensplanung",
+            description: "Kinder, Ehe, Wohnen, Familie",
+            color: "#10B981",
+            beduerfnisse: [
+                "kinderwunsch", "elternschaft", "fortpflanzung", "familie_gruenden", "generativitaet",
+                "verbindlichkeit", "langfristige_bindung", "rechtliche_sicherheit", "treueversprechen",
+                "gemeinsamer_wohnraum", "haeuslichkeit", "nest_bauen", "alltag_teilen",
+                "eigener_raum", "rueckzugsort",
+                "tierliebe", "fuersorge_tiere", "begleiter", "verantwortung_tier",
+                "sesshaftigkeit", "verwurzelung", "mobilitaet", "heimat", "neue_orte",
+                "familienbindung", "herkunftsfamilie", "familientreffen", "generationenverbund",
+                // Pirsig & Osho - Lebensplanung
+                "biologisches_muster", "soziales_muster", "statische_stabilitaet", "qualitaet_der_fuersorge",
+                "familien_rebellion", "zorba_das_kind", "nicht_anhaften_an_familie", "bewusste_elternschaft", "commune_statt_kernfamilie"
+            ]
+        },
+
+        finanzen_karriere: {
+            name: "Finanzen & Karriere",
+            description: "Geld, Beruf, Work-Life-Balance",
+            color: "#F59E0B",
+            beduerfnisse: [
+                "finanzielle_unabhaengigkeit", "gemeinsame_finanzen", "finanzielle_transparenz",
+                "finanzielle_sicherheit", "sparsamkeit", "grosszuegigkeit",
+                "berufliche_erfuellung", "karriereambition", "work_life_balance",
+                "berufliche_anerkennung", "zeit_fuer_beziehung", "berufliche_flexibilitaet",
+                // Pirsig & Osho - Finanzen & Karriere
+                "gumption", "qualitaet_der_arbeit", "intellektuelles_muster", "dynamische_evolution", "klassisches_verstehen",
+                "arbeit_als_meditation", "nicht_karriere", "zorba_der_unternehmer", "nicht_anhaften_an_geld", "kreative_selbstverwirklichung"
+            ]
+        },
+
+        kommunikation_stil: {
+            name: "Kommunikationsstil",
+            description: "Gespräche, Emotionen, Konflikte",
+            color: "#3B82F6",
+            beduerfnisse: [
+                "taeglicher_austausch", "tiefgehende_gespraeche", "small_talk",
+                "stille_gemeinsam", "verbale_verbindung", "zuhoeren",
+                "emotionale_offenheit", "gefuehle_zeigen", "verletzlichkeit",
+                "emotionale_zurueckhaltung", "emotionale_sicherheit", "gefuehle_teilen",
+                "konfliktklaerung", "aussprache", "konflikt_vermeiden", "streitkultur", "versoehnlichkeit",
+                // Pirsig & Osho - Kommunikation & Stil
+                "romantisches_verstehen", "klassische_klarheit", "dialektik", "qualitaets_ausdruck", "care_im_gespraech",
+                "schweigen_statt_worte", "radikale_ehrlichkeit", "humorvolle_leichtigkeit", "paradoxe_weisheit", "herz_statt_kopf", "authentischer_ausdruck"
+            ]
+        },
+
+        soziales_leben: {
+            name: "Soziales Leben",
+            description: "Introversion/Extroversion, Freunde, Alleinzeit",
+            color: "#8B5CF6",
+            beduerfnisse: [
+                "soziale_energie", "geselligkeit", "ruhe_von_menschen",
+                "allein_aufladen", "menschen_treffen", "kleine_gruppen",
+                "zeit_fuer_sich", "eigene_hobbys", "gemeinsame_zeit",
+                "partnerzeit", "eigene_interessen",
+                "eigene_freunde", "gemeinsame_freunde", "freundeskreis_teilen",
+                "soziales_netz", "freunde_pflegen", "neue_freundschaften",
+                // Pirsig & Osho - Soziales Leben
+                "soziale_qualitaet", "tribe_muster", "intellektuelle_gemeinschaft", "statische_sozialstrukturen",
+                "sannyas_gemeinschaft", "rebellion_gegen_gesellschaft", "einsamkeit_in_menge", "celebration_mit_anderen", "keine_freundschaft_besitz", "tantra_gruppe"
+            ]
+        },
+
+        intimitaet_beziehung: {
+            name: "Intimität & Romantik",
+            description: "Körperliche Nähe, Romantik, Sexualität",
+            color: "#EC4899",
+            beduerfnisse: [
+                "koerpernaehe", "kuscheln", "physische_distanz",
+                "koerperkontakt", "umarmungen", "hand_halten",
+                "romantische_gesten", "ueberraschungen", "dates",
+                "alltags_romantik", "aufmerksamkeiten", "liebesbekundungen",
+                "sexuelle_haeufigkeit", "sexuelle_intimiaet", "koerperliche_lust",
+                "sexuelle_experimentierfreude", "sexuelle_verbindung", "sexuelle_zufriedenheit",
+                // Pirsig & Osho - Intimität & Beziehung
+                "biologische_anziehung", "intellektuelle_verbindung", "qualitaet_der_beruehrung", "dynamische_liebe", "care_in_intimitaet",
+                "sex_als_meditation", "liebe_ohne_beziehung", "orgastisches_leben", "nicht_anhaften_an_partner", "hier_und_jetzt_intimitaet", "polyamore_energie", "wildheit_und_zartheit", "meditation_zu_zweit"
+            ]
+        },
+
+        werte_haltung: {
+            name: "Werte & Haltungen",
+            description: "Religion, Tradition, Umwelt",
+            color: "#6366F1",
+            beduerfnisse: [
+                "spiritualitaet", "glaubenspraxis", "religioese_gemeinschaft",
+                "saekularitaet", "sinnsuche", "transzendenz",
+                "traditionelle_werte", "moderne_lebensweise", "konservative_werte",
+                "progressive_werte", "kulturelle_tradition", "offenheit_fuer_neues",
+                "umweltverantwortung", "nachhaltigkeit", "oekologisches_bewusstsein",
+                "pragmatismus", "klimaschutz", "ressourcenschonung",
+                // Pirsig & Osho - Werte & Haltung
+                "qualitaet_als_gott", "rationaler_mystizismus", "aristotelische_vernunft", "platonische_ideen", "buddhistische_achtsamkeit",
+                "religionslosigkeit", "eigene_wahrheit", "zen_paradox", "tantra_als_weg", "politische_rebellion", "individueller_anarchismus", "leben_als_kunst", "celebration_statt_gebet"
+            ]
+        },
+
+        praktisches_leben: {
+            name: "Praktisches Leben",
+            description: "Ordnung, Reisen, Alltag",
+            color: "#14B8A6",
+            beduerfnisse: [
+                "ordnungssinn", "sauberkeit", "struktur",
+                "chaos_toleranz", "organisiert_sein", "flexibilitaet_haushalt",
+                "reisen", "abenteuer", "neue_orte_entdecken",
+                "zuhause_bleiben", "urlaub", "fernweh", "heimatverbundenheit",
+                // Pirsig & Osho - Praktisches Leben
+                "motorrad_pflege", "gumption_im_alltag", "stuck_vermeiden", "klassische_ordnung", "romantisches_chaos", "qualitaets_werkzeug", "achtsamkeit_im_detail",
+                "meditation_im_alltag", "gesundheit_durch_bewusstsein", "dynamische_meditation", "vipassana_im_leben", "natuerliches_leben", "lachen_therapie", "no_mind", "zorba_der_geniesser"
+            ]
         }
     },
 
@@ -346,7 +466,303 @@ const GfkBeduerfnisse = {
         sich_fallenlassen: { label: "Sich fallenlassen", kategorie: "dynamik", sekundaer: ["verstaendnis", "sicherheit", "zuneigung"] },
         machtaustausch: { label: "Machtaustausch", kategorie: "dynamik", sekundaer: ["verbundenheit", "intimitaet"] },
         dienend_sein: { label: "Dienend sein", kategorie: "dynamik", sekundaer: ["zuneigung", "identitaet"] },
-        beschuetzen: { label: "Beschützen", kategorie: "dynamik", sekundaer: ["zuneigung", "sicherheit", "identitaet"] }
+        beschuetzen: { label: "Beschützen", kategorie: "dynamik", sekundaer: ["zuneigung", "sicherheit", "identitaet"] },
+
+        // ═══════════════════════════════════════════════════════════════════════
+        // LEBENSPLANUNG - Kinder, Ehe, Wohnen, Familie
+        // ═══════════════════════════════════════════════════════════════════════
+        kinderwunsch: { label: "Kinderwunsch", kategorie: "lebensplanung" },
+        elternschaft: { label: "Elternschaft", kategorie: "lebensplanung" },
+        fortpflanzung: { label: "Fortpflanzung", kategorie: "lebensplanung" },
+        familie_gruenden: { label: "Familie gründen", kategorie: "lebensplanung" },
+        generativitaet: { label: "Generativität", kategorie: "lebensplanung" },
+        verbindlichkeit: { label: "Verbindlichkeit", kategorie: "lebensplanung", sekundaer: ["sicherheit"] },
+        langfristige_bindung: { label: "Langfristige Bindung", kategorie: "lebensplanung", sekundaer: ["sicherheit", "zuneigung"] },
+        rechtliche_sicherheit: { label: "Rechtliche Sicherheit", kategorie: "lebensplanung", sekundaer: ["sicherheit"] },
+        treueversprechen: { label: "Treueversprechen", kategorie: "lebensplanung", sekundaer: ["verstaendnis"] },
+        gemeinsamer_wohnraum: { label: "Gemeinsamer Wohnraum", kategorie: "lebensplanung" },
+        haeuslichkeit: { label: "Häuslichkeit", kategorie: "lebensplanung", sekundaer: ["sicherheit"] },
+        nest_bauen: { label: "Nest bauen", kategorie: "lebensplanung", sekundaer: ["zuneigung"] },
+        alltag_teilen: { label: "Alltag teilen", kategorie: "lebensplanung", sekundaer: ["zuneigung", "teilnahme"] },
+        eigener_raum: { label: "Eigener Raum", kategorie: "lebensplanung", sekundaer: ["freiheit"] },
+        rueckzugsort: { label: "Rückzugsort", kategorie: "lebensplanung", sekundaer: ["freiheit", "sicherheit"] },
+        tierliebe: { label: "Tierliebe", kategorie: "lebensplanung" },
+        fuersorge_tiere: { label: "Fürsorge für Tiere", kategorie: "lebensplanung", sekundaer: ["zuneigung"] },
+        begleiter: { label: "Tierischer Begleiter", kategorie: "lebensplanung" },
+        verantwortung_tier: { label: "Verantwortung für Tier", kategorie: "lebensplanung" },
+        sesshaftigkeit: { label: "Sesshaftigkeit", kategorie: "lebensplanung", sekundaer: ["sicherheit"] },
+        verwurzelung: { label: "Verwurzelung", kategorie: "lebensplanung", sekundaer: ["sicherheit", "teilnahme"] },
+        mobilitaet: { label: "Mobilität", kategorie: "lebensplanung", sekundaer: ["freiheit"] },
+        heimat: { label: "Heimat", kategorie: "lebensplanung", sekundaer: ["sicherheit", "teilnahme"] },
+        neue_orte: { label: "Neue Orte", kategorie: "lebensplanung", sekundaer: ["freiheit", "erschaffen"] },
+        familienbindung: { label: "Familienbindung", kategorie: "lebensplanung", sekundaer: ["teilnahme"] },
+        herkunftsfamilie: { label: "Herkunftsfamilie", kategorie: "lebensplanung", sekundaer: ["teilnahme"] },
+        familientreffen: { label: "Familientreffen", kategorie: "lebensplanung", sekundaer: ["teilnahme"] },
+        generationenverbund: { label: "Generationenverbund", kategorie: "lebensplanung", sekundaer: ["teilnahme", "verbundenheit"] },
+
+        // ═══════════════════════════════════════════════════════════════════════
+        // FINANZEN & KARRIERE
+        // ═══════════════════════════════════════════════════════════════════════
+        finanzielle_unabhaengigkeit: { label: "Finanzielle Unabhängigkeit", kategorie: "finanzen_karriere", sekundaer: ["freiheit"] },
+        gemeinsame_finanzen: { label: "Gemeinsame Finanzen", kategorie: "finanzen_karriere", sekundaer: ["teilnahme"] },
+        finanzielle_transparenz: { label: "Finanzielle Transparenz", kategorie: "finanzen_karriere", sekundaer: ["verstaendnis"] },
+        finanzielle_sicherheit: { label: "Finanzielle Sicherheit", kategorie: "finanzen_karriere", sekundaer: ["sicherheit"] },
+        sparsamkeit: { label: "Sparsamkeit", kategorie: "finanzen_karriere" },
+        grosszuegigkeit: { label: "Großzügigkeit", kategorie: "finanzen_karriere", sekundaer: ["zuneigung"] },
+        berufliche_erfuellung: { label: "Berufliche Erfüllung", kategorie: "finanzen_karriere", sekundaer: ["identitaet"] },
+        karriereambition: { label: "Karriereambition", kategorie: "finanzen_karriere", sekundaer: ["identitaet"] },
+        work_life_balance: { label: "Work-Life-Balance", kategorie: "finanzen_karriere", sekundaer: ["musse", "zuneigung"] },
+        berufliche_anerkennung: { label: "Berufliche Anerkennung", kategorie: "finanzen_karriere", sekundaer: ["identitaet", "verstaendnis"] },
+        zeit_fuer_beziehung: { label: "Zeit für Beziehung", kategorie: "finanzen_karriere", sekundaer: ["zuneigung"] },
+        berufliche_flexibilitaet: { label: "Berufliche Flexibilität", kategorie: "finanzen_karriere", sekundaer: ["freiheit"] },
+
+        // ═══════════════════════════════════════════════════════════════════════
+        // KOMMUNIKATIONSSTIL
+        // ═══════════════════════════════════════════════════════════════════════
+        taeglicher_austausch: { label: "Täglicher Austausch", kategorie: "kommunikation_stil", sekundaer: ["teilnahme"] },
+        tiefgehende_gespraeche: { label: "Tiefgehende Gespräche", kategorie: "kommunikation_stil", sekundaer: ["verstaendnis", "verbundenheit"] },
+        small_talk: { label: "Small Talk", kategorie: "kommunikation_stil", sekundaer: ["teilnahme"] },
+        stille_gemeinsam: { label: "Stille gemeinsam", kategorie: "kommunikation_stil", sekundaer: ["zuneigung", "sicherheit"] },
+        verbale_verbindung: { label: "Verbale Verbindung", kategorie: "kommunikation_stil", sekundaer: ["teilnahme", "verstaendnis"] },
+        zuhoeren: { label: "Zuhören", kategorie: "kommunikation_stil", sekundaer: ["verstaendnis", "zuneigung"] },
+        emotionale_offenheit: { label: "Emotionale Offenheit", kategorie: "kommunikation_stil", sekundaer: ["verstaendnis", "zuneigung"] },
+        gefuehle_zeigen: { label: "Gefühle zeigen", kategorie: "kommunikation_stil", sekundaer: ["verstaendnis"] },
+        verletzlichkeit: { label: "Verletzlichkeit zulassen", kategorie: "kommunikation_stil", sekundaer: ["verstaendnis", "zuneigung"] },
+        emotionale_zurueckhaltung: { label: "Emotionale Zurückhaltung", kategorie: "kommunikation_stil" },
+        emotionale_sicherheit: { label: "Emotionale Sicherheit", kategorie: "kommunikation_stil", sekundaer: ["sicherheit"] },
+        gefuehle_teilen: { label: "Gefühle teilen", kategorie: "kommunikation_stil", sekundaer: ["verstaendnis", "zuneigung"] },
+        konfliktklaerung: { label: "Konfliktklärung", kategorie: "kommunikation_stil", sekundaer: ["teilnahme"] },
+        aussprache: { label: "Aussprache", kategorie: "kommunikation_stil", sekundaer: ["teilnahme", "verstaendnis"] },
+        konflikt_vermeiden: { label: "Konflikt vermeiden", kategorie: "kommunikation_stil", sekundaer: ["sicherheit"] },
+        streitkultur: { label: "Streitkultur", kategorie: "kommunikation_stil", sekundaer: ["teilnahme"] },
+        versoehnlichkeit: { label: "Versöhnlichkeit", kategorie: "kommunikation_stil", sekundaer: ["zuneigung", "verstaendnis"] },
+
+        // ═══════════════════════════════════════════════════════════════════════
+        // SOZIALES LEBEN
+        // ═══════════════════════════════════════════════════════════════════════
+        soziale_energie: { label: "Soziale Energie", kategorie: "soziales_leben" },
+        geselligkeit: { label: "Geselligkeit", kategorie: "soziales_leben", sekundaer: ["teilnahme"] },
+        ruhe_von_menschen: { label: "Ruhe von Menschen", kategorie: "soziales_leben", sekundaer: ["freiheit"] },
+        allein_aufladen: { label: "Allein aufladen", kategorie: "soziales_leben", sekundaer: ["freiheit"] },
+        menschen_treffen: { label: "Menschen treffen", kategorie: "soziales_leben", sekundaer: ["teilnahme"] },
+        kleine_gruppen: { label: "Kleine Gruppen", kategorie: "soziales_leben", sekundaer: ["teilnahme"] },
+        zeit_fuer_sich: { label: "Zeit für sich", kategorie: "soziales_leben", sekundaer: ["freiheit"] },
+        eigene_hobbys: { label: "Eigene Hobbys", kategorie: "soziales_leben", sekundaer: ["freiheit", "identitaet"] },
+        gemeinsame_zeit: { label: "Gemeinsame Zeit", kategorie: "soziales_leben", sekundaer: ["zuneigung"] },
+        partnerzeit: { label: "Partnerzeit", kategorie: "soziales_leben", sekundaer: ["zuneigung"] },
+        eigene_interessen: { label: "Eigene Interessen", kategorie: "soziales_leben", sekundaer: ["freiheit", "identitaet"] },
+        eigene_freunde: { label: "Eigene Freunde", kategorie: "soziales_leben", sekundaer: ["freiheit", "teilnahme"] },
+        gemeinsame_freunde: { label: "Gemeinsame Freunde", kategorie: "soziales_leben", sekundaer: ["teilnahme"] },
+        freundeskreis_teilen: { label: "Freundeskreis teilen", kategorie: "soziales_leben", sekundaer: ["teilnahme"] },
+        soziales_netz: { label: "Soziales Netz", kategorie: "soziales_leben", sekundaer: ["sicherheit", "teilnahme"] },
+        freunde_pflegen: { label: "Freunde pflegen", kategorie: "soziales_leben", sekundaer: ["teilnahme"] },
+        neue_freundschaften: { label: "Neue Freundschaften", kategorie: "soziales_leben", sekundaer: ["erschaffen", "teilnahme"] },
+
+        // ═══════════════════════════════════════════════════════════════════════
+        // INTIMITÄT & ROMANTIK
+        // ═══════════════════════════════════════════════════════════════════════
+        koerpernaehe: { label: "Körpernähe", kategorie: "intimitaet_beziehung", sekundaer: ["zuneigung", "existenz"] },
+        kuscheln: { label: "Kuscheln", kategorie: "intimitaet_beziehung", sekundaer: ["zuneigung", "sicherheit"] },
+        physische_distanz: { label: "Physische Distanz", kategorie: "intimitaet_beziehung", sekundaer: ["freiheit"] },
+        koerperkontakt: { label: "Körperkontakt", kategorie: "intimitaet_beziehung", sekundaer: ["zuneigung", "existenz"] },
+        umarmungen: { label: "Umarmungen", kategorie: "intimitaet_beziehung", sekundaer: ["zuneigung", "sicherheit"] },
+        hand_halten: { label: "Hand halten", kategorie: "intimitaet_beziehung", sekundaer: ["zuneigung"] },
+        romantische_gesten: { label: "Romantische Gesten", kategorie: "intimitaet_beziehung", sekundaer: ["zuneigung"] },
+        ueberraschungen: { label: "Überraschungen", kategorie: "intimitaet_beziehung", sekundaer: ["zuneigung", "musse"] },
+        dates: { label: "Dates", kategorie: "intimitaet_beziehung", sekundaer: ["zuneigung"] },
+        alltags_romantik: { label: "Alltags-Romantik", kategorie: "intimitaet_beziehung", sekundaer: ["zuneigung"] },
+        aufmerksamkeiten: { label: "Aufmerksamkeiten", kategorie: "intimitaet_beziehung", sekundaer: ["zuneigung", "verstaendnis"] },
+        liebesbekundungen: { label: "Liebesbekundungen", kategorie: "intimitaet_beziehung", sekundaer: ["zuneigung"] },
+        sexuelle_haeufigkeit: { label: "Sexuelle Häufigkeit", kategorie: "intimitaet_beziehung", sekundaer: ["existenz"] },
+        sexuelle_intimiaet: { label: "Sexuelle Intimität", kategorie: "intimitaet_beziehung", sekundaer: ["zuneigung", "verbundenheit"] },
+        koerperliche_lust: { label: "Körperliche Lust", kategorie: "intimitaet_beziehung", sekundaer: ["existenz", "musse"] },
+        sexuelle_experimentierfreude: { label: "Sexuelle Experimentierfreude", kategorie: "intimitaet_beziehung", sekundaer: ["erschaffen", "freiheit"] },
+        sexuelle_verbindung: { label: "Sexuelle Verbindung", kategorie: "intimitaet_beziehung", sekundaer: ["verbundenheit", "zuneigung"] },
+        sexuelle_zufriedenheit: { label: "Sexuelle Zufriedenheit", kategorie: "intimitaet_beziehung", sekundaer: ["musse"] },
+
+        // ═══════════════════════════════════════════════════════════════════════
+        // WERTE & HALTUNGEN
+        // ═══════════════════════════════════════════════════════════════════════
+        spiritualitaet: { label: "Spiritualität", kategorie: "werte_haltung", sekundaer: ["verbundenheit"] },
+        glaubenspraxis: { label: "Glaubenspraxis", kategorie: "werte_haltung", sekundaer: ["teilnahme"] },
+        religioese_gemeinschaft: { label: "Religiöse Gemeinschaft", kategorie: "werte_haltung", sekundaer: ["teilnahme"] },
+        saekularitaet: { label: "Säkularität", kategorie: "werte_haltung", sekundaer: ["freiheit"] },
+        sinnsuche: { label: "Sinnsuche", kategorie: "werte_haltung", sekundaer: ["identitaet", "verbundenheit"] },
+        transzendenz: { label: "Transzendenz", kategorie: "werte_haltung", sekundaer: ["verbundenheit"] },
+        traditionelle_werte: { label: "Traditionelle Werte", kategorie: "werte_haltung", sekundaer: ["sicherheit"] },
+        moderne_lebensweise: { label: "Moderne Lebensweise", kategorie: "werte_haltung", sekundaer: ["freiheit"] },
+        konservative_werte: { label: "Konservative Werte", kategorie: "werte_haltung", sekundaer: ["sicherheit"] },
+        progressive_werte: { label: "Progressive Werte", kategorie: "werte_haltung", sekundaer: ["freiheit", "erschaffen"] },
+        kulturelle_tradition: { label: "Kulturelle Tradition", kategorie: "werte_haltung", sekundaer: ["teilnahme"] },
+        offenheit_fuer_neues: { label: "Offenheit für Neues", kategorie: "werte_haltung", sekundaer: ["freiheit", "erschaffen"] },
+        umweltverantwortung: { label: "Umweltverantwortung", kategorie: "werte_haltung", sekundaer: ["identitaet"] },
+        nachhaltigkeit: { label: "Nachhaltigkeit", kategorie: "werte_haltung", sekundaer: ["identitaet"] },
+        oekologisches_bewusstsein: { label: "Ökologisches Bewusstsein", kategorie: "werte_haltung", sekundaer: ["identitaet"] },
+        pragmatismus: { label: "Pragmatismus", kategorie: "werte_haltung" },
+        klimaschutz: { label: "Klimaschutz", kategorie: "werte_haltung", sekundaer: ["identitaet"] },
+        ressourcenschonung: { label: "Ressourcenschonung", kategorie: "werte_haltung", sekundaer: ["identitaet"] },
+
+        // ═══════════════════════════════════════════════════════════════════════
+        // PRAKTISCHES LEBEN
+        // ═══════════════════════════════════════════════════════════════════════
+        ordnungssinn: { label: "Ordnungssinn", kategorie: "praktisches_leben", sekundaer: ["identitaet"] },
+        sauberkeit: { label: "Sauberkeit", kategorie: "praktisches_leben" },
+        struktur: { label: "Struktur", kategorie: "praktisches_leben", sekundaer: ["sicherheit"] },
+        chaos_toleranz: { label: "Chaos-Toleranz", kategorie: "praktisches_leben", sekundaer: ["freiheit"] },
+        organisiert_sein: { label: "Organisiert sein", kategorie: "praktisches_leben", sekundaer: ["identitaet"] },
+        flexibilitaet_haushalt: { label: "Flexibilität im Haushalt", kategorie: "praktisches_leben", sekundaer: ["freiheit"] },
+        reisen: { label: "Reisen", kategorie: "praktisches_leben", sekundaer: ["erschaffen", "musse"] },
+        abenteuer: { label: "Abenteuer", kategorie: "praktisches_leben", sekundaer: ["erschaffen", "freiheit"] },
+        neue_orte_entdecken: { label: "Neue Orte entdecken", kategorie: "praktisches_leben", sekundaer: ["erschaffen"] },
+        zuhause_bleiben: { label: "Zuhause bleiben", kategorie: "praktisches_leben", sekundaer: ["sicherheit"] },
+        urlaub: { label: "Urlaub", kategorie: "praktisches_leben", sekundaer: ["musse"] },
+        fernweh: { label: "Fernweh", kategorie: "praktisches_leben", sekundaer: ["freiheit", "erschaffen"] },
+        heimatverbundenheit: { label: "Heimatverbundenheit", kategorie: "praktisches_leben", sekundaer: ["sicherheit", "teilnahme"] },
+
+        // ═══════════════════════════════════════════════════════════════════════
+        // PIRSIG & OSHO BEDÜRFNISSE - Philosophische Erweiterungen
+        // ═══════════════════════════════════════════════════════════════════════
+        // Basiert auf:
+        // - Robert M. Pirsig: "Zen und die Kunst ein Motorrad zu warten" (1974)
+        // - Osho: Tantra, Meditation & Non-Attachment
+        // ═══════════════════════════════════════════════════════════════════════
+
+        // ─────────────────────────────────────────────────────────────────────
+        // LEBENSPLANUNG - Pirsig
+        // ─────────────────────────────────────────────────────────────────────
+        biologisches_muster: { label: "Biologisches Muster", kategorie: "lebensplanung", sekundaer: ["existenz"], description: "Bedürfnis nach biologischer Kontinuität, Fortpflanzung, Stamm" },
+        soziales_muster: { label: "Soziales Muster", kategorie: "lebensplanung", sekundaer: ["teilnahme"], description: "Bedürfnis nach sozialen Strukturen, Institutionen, Tradition" },
+        statische_stabilitaet: { label: "Statische Stabilität", kategorie: "lebensplanung", sekundaer: ["sicherheit"], description: "Bedürfnis nach festen Mustern, Vorhersehbarkeit, Struktur" },
+        qualitaet_der_fuersorge: { label: "Qualität der Fürsorge", kategorie: "lebensplanung", sekundaer: ["zuneigung"], description: "Bedürfnis nach sorgfältiger Planung, Care, Verantwortung" },
+
+        // ─────────────────────────────────────────────────────────────────────
+        // LEBENSPLANUNG - Osho
+        // ─────────────────────────────────────────────────────────────────────
+        familien_rebellion: { label: "Familien-Rebellion", kategorie: "lebensplanung", sekundaer: ["freiheit"], description: "Bedürfnis gegen traditionelle Familienstrukturen zu rebellieren" },
+        zorba_das_kind: { label: "Zorba das Kind", kategorie: "lebensplanung", sekundaer: ["musse", "zuneigung"], description: "Bedürfnis nach weltlicher Freude am Familienleben (Zorba-Aspekt)" },
+        nicht_anhaften_an_familie: { label: "Nicht-Anhaften an Familie", kategorie: "lebensplanung", sekundaer: ["freiheit"], description: "Bedürfnis nach Nicht-Anhaftung trotz Familienbindung" },
+        bewusste_elternschaft: { label: "Bewusste Elternschaft", kategorie: "lebensplanung", sekundaer: ["identitaet"], description: "Bedürfnis nach bewusster, nicht-konditionierter Erziehung" },
+        commune_statt_kernfamilie: { label: "Kommune statt Kernfamilie", kategorie: "lebensplanung", sekundaer: ["teilnahme"], description: "Bedürfnis nach Gemeinschaftsleben statt Kleinfamilie" },
+
+        // ─────────────────────────────────────────────────────────────────────
+        // FINANZEN & KARRIERE - Pirsig
+        // ─────────────────────────────────────────────────────────────────────
+        gumption: { label: "Gumption", kategorie: "finanzen_karriere", sekundaer: ["identitaet", "erschaffen"], description: "Bedürfnis nach innerer Motivation, Enthusiasmus, Flow in der Arbeit" },
+        qualitaet_der_arbeit: { label: "Qualität der Arbeit", kategorie: "finanzen_karriere", sekundaer: ["identitaet"], description: "Bedürfnis nach handwerklicher Exzellenz, Perfektion, Meisterschaft" },
+        intellektuelles_muster: { label: "Intellektuelles Muster", kategorie: "finanzen_karriere", sekundaer: ["identitaet", "erschaffen"], description: "Bedürfnis nach konzeptueller Arbeit, Verstehen, Systematik" },
+        dynamische_evolution: { label: "Dynamische Evolution", kategorie: "finanzen_karriere", sekundaer: ["erschaffen", "freiheit"], description: "Bedürfnis nach beruflicher Evolution, Wachstum, Innovation" },
+        klassisches_verstehen: { label: "Klassisches Verstehen", kategorie: "finanzen_karriere", sekundaer: ["identitaet"], description: "Bedürfnis nach analytischem, strukturiertem Arbeiten" },
+
+        // ─────────────────────────────────────────────────────────────────────
+        // FINANZEN & KARRIERE - Osho
+        // ─────────────────────────────────────────────────────────────────────
+        arbeit_als_meditation: { label: "Arbeit als Meditation", kategorie: "finanzen_karriere", sekundaer: ["verbundenheit", "identitaet"], description: "Bedürfnis nach Arbeit als spirituelle Praxis, Präsenz" },
+        nicht_karriere: { label: "Nicht-Karriere", kategorie: "finanzen_karriere", sekundaer: ["freiheit"], description: "Bedürfnis nach Ablehnung von Karriere-Ambition, Statusdenken" },
+        zorba_der_unternehmer: { label: "Zorba der Unternehmer", kategorie: "finanzen_karriere", sekundaer: ["musse", "identitaet"], description: "Bedürfnis nach weltlichem Erfolg UND Spiritualität" },
+        nicht_anhaften_an_geld: { label: "Nicht-Anhaften an Geld", kategorie: "finanzen_karriere", sekundaer: ["freiheit"], description: "Bedürfnis nach finanzieller Freiheit durch Nicht-Anhaften" },
+        kreative_selbstverwirklichung: { label: "Kreative Selbstverwirklichung", kategorie: "finanzen_karriere", sekundaer: ["erschaffen", "identitaet"], description: "Bedürfnis nach Arbeit als kreativem Ausdruck, nicht Gelderwerb" },
+
+        // ─────────────────────────────────────────────────────────────────────
+        // KOMMUNIKATION & STIL - Pirsig
+        // ─────────────────────────────────────────────────────────────────────
+        romantisches_verstehen: { label: "Romantisches Verstehen", kategorie: "kommunikation_stil", sekundaer: ["verstaendnis", "verbundenheit"], description: "Bedürfnis nach intuitivem, ganzheitlichem Kommunizieren" },
+        klassische_klarheit: { label: "Klassische Klarheit", kategorie: "kommunikation_stil", sekundaer: ["identitaet"], description: "Bedürfnis nach präziser, analytischer Kommunikation" },
+        dialektik: { label: "Dialektik", kategorie: "kommunikation_stil", sekundaer: ["verstaendnis", "erschaffen"], description: "Bedürfnis nach philosophischem Dialog, Sokrates-Methode" },
+        qualitaets_ausdruck: { label: "Qualitäts-Ausdruck", kategorie: "kommunikation_stil", sekundaer: ["identitaet", "erschaffen"], description: "Bedürfnis nach qualitativ hochwertigem Ausdruck, Eloquenz" },
+        care_im_gespraech: { label: "Care im Gespräch", kategorie: "kommunikation_stil", sekundaer: ["zuneigung", "verstaendnis"], description: "Bedürfnis nach sorgfältiger, achtsamer Kommunikation" },
+
+        // ─────────────────────────────────────────────────────────────────────
+        // KOMMUNIKATION & STIL - Osho
+        // ─────────────────────────────────────────────────────────────────────
+        schweigen_statt_worte: { label: "Schweigen statt Worte", kategorie: "kommunikation_stil", sekundaer: ["verbundenheit", "musse"], description: "Bedürfnis nach Stille, non-verbaler Kommunikation" },
+        radikale_ehrlichkeit: { label: "Radikale Ehrlichkeit", kategorie: "kommunikation_stil", sekundaer: ["identitaet", "freiheit"], description: "Bedürfnis nach kompromissloser Wahrheit, keine Höflichkeit" },
+        humorvolle_leichtigkeit: { label: "Humorvolle Leichtigkeit", kategorie: "kommunikation_stil", sekundaer: ["musse", "verbundenheit"], description: "Bedürfnis nach Lachen, Witz, spielerischer Kommunikation" },
+        paradoxe_weisheit: { label: "Paradoxe Weisheit", kategorie: "kommunikation_stil", sekundaer: ["erschaffen", "verbundenheit"], description: "Bedürfnis nach Zen-Koans, Widersprüchen, Rätsel statt Logik" },
+        herz_statt_kopf: { label: "Herz statt Kopf", kategorie: "kommunikation_stil", sekundaer: ["zuneigung", "verbundenheit"], description: "Bedürfnis nach emotionaler statt rationaler Kommunikation" },
+        authentischer_ausdruck: { label: "Authentischer Ausdruck", kategorie: "kommunikation_stil", sekundaer: ["identitaet", "freiheit"], description: "Bedürfnis nach ungefilterten Gefühlen, keine soziale Maske" },
+
+        // ─────────────────────────────────────────────────────────────────────
+        // SOZIALES LEBEN - Pirsig
+        // ─────────────────────────────────────────────────────────────────────
+        soziale_qualitaet: { label: "Soziale Qualität", kategorie: "soziales_leben", sekundaer: ["teilnahme", "verstaendnis"], description: "Bedürfnis nach hochwertigen sozialen Beziehungen" },
+        tribe_muster: { label: "Tribe-Muster", kategorie: "soziales_leben", sekundaer: ["teilnahme", "sicherheit"], description: "Bedürfnis nach Stammes-Zugehörigkeit, Gruppe, Identität" },
+        intellektuelle_gemeinschaft: { label: "Intellektuelle Gemeinschaft", kategorie: "soziales_leben", sekundaer: ["erschaffen", "verstaendnis"], description: "Bedürfnis nach Gleichgesinnten, philosophischem Austausch" },
+        statische_sozialstrukturen: { label: "Statische Sozialstrukturen", kategorie: "soziales_leben", sekundaer: ["sicherheit"], description: "Bedürfnis nach festen sozialen Rollen, Hierarchien" },
+
+        // ─────────────────────────────────────────────────────────────────────
+        // SOZIALES LEBEN - Osho
+        // ─────────────────────────────────────────────────────────────────────
+        sannyas_gemeinschaft: { label: "Sannyas-Gemeinschaft", kategorie: "soziales_leben", sekundaer: ["teilnahme", "verbundenheit"], description: "Bedürfnis nach spiritueller Commune, Ashram-Leben" },
+        rebellion_gegen_gesellschaft: { label: "Rebellion gegen Gesellschaft", kategorie: "soziales_leben", sekundaer: ["freiheit", "identitaet"], description: "Bedürfnis nach Ablehnung gesellschaftlicher Normen" },
+        einsamkeit_in_menge: { label: "Einsamkeit in Menge", kategorie: "soziales_leben", sekundaer: ["freiheit", "identitaet"], description: "Bedürfnis allein zu sein AUCH in Gemeinschaft" },
+        celebration_mit_anderen: { label: "Celebration mit Anderen", kategorie: "soziales_leben", sekundaer: ["musse", "verbundenheit"], description: "Bedürfnis nach gemeinsamer Freude, Festen, Tanz" },
+        keine_freundschaft_besitz: { label: "Keine Freundschafts-Besitz", kategorie: "soziales_leben", sekundaer: ["freiheit"], description: "Bedürfnis nach Nicht-Anhaften an Freunde, Fluidity" },
+        tantra_gruppe: { label: "Tantra-Gruppe", kategorie: "soziales_leben", sekundaer: ["verbundenheit", "zuneigung"], description: "Bedürfnis nach Gruppen-Intimität, energetischem Austausch" },
+
+        // ─────────────────────────────────────────────────────────────────────
+        // INTIMITÄT & BEZIEHUNG - Pirsig
+        // ─────────────────────────────────────────────────────────────────────
+        biologische_anziehung: { label: "Biologische Anziehung", kategorie: "intimitaet_beziehung", sekundaer: ["existenz"], description: "Bedürfnis nach körperlicher Chemie, Instinkt, Pheromonen" },
+        intellektuelle_verbindung: { label: "Intellektuelle Verbindung", kategorie: "intimitaet_beziehung", sekundaer: ["verstaendnis", "erschaffen"], description: "Bedürfnis nach geistigem Match, gemeinsamer Wellenlänge" },
+        qualitaet_der_beruehrung: { label: "Qualität der Berührung", kategorie: "intimitaet_beziehung", sekundaer: ["zuneigung"], description: "Bedürfnis nach achtsamer, präsenter Berührung" },
+        dynamische_liebe: { label: "Dynamische Liebe", kategorie: "intimitaet_beziehung", sekundaer: ["zuneigung", "erschaffen"], description: "Bedürfnis nach sich entwickelnder, wachsender Liebe" },
+        care_in_intimitaet: { label: "Care in Intimität", kategorie: "intimitaet_beziehung", sekundaer: ["zuneigung", "sicherheit"], description: "Bedürfnis nach Sorgfalt, Aufmerksamkeit, Präzision" },
+
+        // ─────────────────────────────────────────────────────────────────────
+        // INTIMITÄT & BEZIEHUNG - Osho
+        // ─────────────────────────────────────────────────────────────────────
+        sex_als_meditation: { label: "Sex als Meditation", kategorie: "intimitaet_beziehung", sekundaer: ["verbundenheit"], description: "Bedürfnis nach tantrischer Sexualität, spiritueller Vereinigung" },
+        liebe_ohne_beziehung: { label: "Liebe ohne Beziehung", kategorie: "intimitaet_beziehung", sekundaer: ["freiheit", "zuneigung"], description: "Bedürfnis nach Liebe OHNE Besitz, Eifersucht, Erwartung" },
+        orgastisches_leben: { label: "Orgastisches Leben", kategorie: "intimitaet_beziehung", sekundaer: ["existenz", "verbundenheit"], description: "Bedürfnis nach ganzem Körper als erogene Zone, totale Hingabe" },
+        nicht_anhaften_an_partner: { label: "Nicht-Anhaften an Partner", kategorie: "intimitaet_beziehung", sekundaer: ["freiheit"], description: "Bedürfnis nach Freiheit IN der Beziehung" },
+        hier_und_jetzt_intimitaet: { label: "Hier-und-Jetzt-Intimität", kategorie: "intimitaet_beziehung", sekundaer: ["verbundenheit"], description: "Bedürfnis nach völliger Präsenz, keine Vergangenheit/Zukunft" },
+        polyamore_energie: { label: "Polyamore Energie", kategorie: "intimitaet_beziehung", sekundaer: ["freiheit", "zuneigung"], description: "Bedürfnis nach Liebe zu vielen, keine Monogamie" },
+        wildheit_und_zartheit: { label: "Wildheit und Zartheit", kategorie: "intimitaet_beziehung", sekundaer: ["dynamik"], description: "Bedürfnis nach beidem: animalisch UND sanft" },
+        meditation_zu_zweit: { label: "Meditation zu zweit", kategorie: "intimitaet_beziehung", sekundaer: ["verbundenheit"], description: "Bedürfnis nach gemeinsamer Stille, energetischer Fusion" },
+
+        // ─────────────────────────────────────────────────────────────────────
+        // WERTE & HALTUNG - Pirsig
+        // ─────────────────────────────────────────────────────────────────────
+        qualitaet_als_gott: { label: "Qualität als Gott", kategorie: "werte_haltung", sekundaer: ["identitaet", "verbundenheit"], description: "Bedürfnis nach Qualität als höchstem Wert, Metaphysik" },
+        rationaler_mystizismus: { label: "Rationaler Mystizismus", kategorie: "werte_haltung", sekundaer: ["identitaet", "verbundenheit"], description: "Bedürfnis nach Verbindung von Logik UND Spiritualität" },
+        aristotelische_vernunft: { label: "Aristotelische Vernunft", kategorie: "werte_haltung", sekundaer: ["identitaet"], description: "Bedürfnis nach logischem Denken, Kausalität, Objektivität" },
+        platonische_ideen: { label: "Platonische Ideen", kategorie: "werte_haltung", sekundaer: ["verbundenheit"], description: "Bedürfnis nach absoluten Werten, ewigen Wahrheiten" },
+        buddhistische_achtsamkeit: { label: "Buddhistische Achtsamkeit", kategorie: "werte_haltung", sekundaer: ["verbundenheit", "identitaet"], description: "Bedürfnis nach Präsenz, Nicht-Dualität (Pirsig's Zen)" },
+
+        // ─────────────────────────────────────────────────────────────────────
+        // WERTE & HALTUNG - Osho
+        // ─────────────────────────────────────────────────────────────────────
+        religionslosigkeit: { label: "Religionslosigkeit", kategorie: "werte_haltung", sekundaer: ["freiheit"], description: "Bedürfnis nach Ablehnung aller organisierten Religionen" },
+        eigene_wahrheit: { label: "Eigene Wahrheit", kategorie: "werte_haltung", sekundaer: ["identitaet", "freiheit"], description: "Bedürfnis nach selbst gefundener Wahrheit, keine Dogmen" },
+        zen_paradox: { label: "Zen-Paradox", kategorie: "werte_haltung", sekundaer: ["erschaffen", "verbundenheit"], description: "Bedürfnis nach Widersprüchen, Koans, Nicht-Wissen" },
+        tantra_als_weg: { label: "Tantra als Weg", kategorie: "werte_haltung", sekundaer: ["verbundenheit", "existenz"], description: "Bedürfnis nach Bejahung des Körpers, keine Askese" },
+        politische_rebellion: { label: "Politische Rebellion", kategorie: "werte_haltung", sekundaer: ["freiheit"], description: "Bedürfnis nach Ablehnung ALLER politischer Systeme" },
+        individueller_anarchismus: { label: "Individueller Anarchismus", kategorie: "werte_haltung", sekundaer: ["freiheit", "identitaet"], description: "Bedürfnis nach radikaler Freiheit, keine Autorität" },
+        leben_als_kunst: { label: "Leben als Kunst", kategorie: "werte_haltung", sekundaer: ["erschaffen", "musse"], description: "Bedürfnis nach Leben als kreativem Akt, nicht moralisch" },
+        celebration_statt_gebet: { label: "Celebration statt Gebet", kategorie: "werte_haltung", sekundaer: ["musse", "verbundenheit"], description: "Bedürfnis nach Freude statt Ernsthaftigkeit in Spiritualität" },
+
+        // ─────────────────────────────────────────────────────────────────────
+        // PRAKTISCHES LEBEN - Pirsig
+        // ─────────────────────────────────────────────────────────────────────
+        motorrad_pflege: { label: "Motorrad-Pflege", kategorie: "praktisches_leben", sekundaer: ["identitaet"], description: "Bedürfnis nach handwerklicher Sorgfalt, Wartung, Technik" },
+        gumption_im_alltag: { label: "Gumption im Alltag", kategorie: "praktisches_leben", sekundaer: ["identitaet", "musse"], description: "Bedürfnis nach Motivation, Flow in täglichen Aufgaben" },
+        stuck_vermeiden: { label: "Stuck vermeiden", kategorie: "praktisches_leben", sekundaer: ["freiheit", "erschaffen"], description: "Bedürfnis nach Flexibilität, Nicht-Festgefahren-Sein" },
+        klassische_ordnung: { label: "Klassische Ordnung", kategorie: "praktisches_leben", sekundaer: ["sicherheit", "identitaet"], description: "Bedürfnis nach Systematik, Checklisten, Struktur" },
+        romantisches_chaos: { label: "Romantisches Chaos", kategorie: "praktisches_leben", sekundaer: ["freiheit", "erschaffen"], description: "Bedürfnis nach spontanem, intuitivem Alltag (Gegen-Ordnung)" },
+        qualitaets_werkzeug: { label: "Qualitäts-Werkzeug", kategorie: "praktisches_leben", sekundaer: ["identitaet"], description: "Bedürfnis nach gutem Werkzeug, richtiger Ausrüstung" },
+        achtsamkeit_im_detail: { label: "Achtsamkeit im Detail", kategorie: "praktisches_leben", sekundaer: ["identitaet", "verbundenheit"], description: "Bedürfnis nach Präzision, Perfektion in kleinen Dingen" },
+
+        // ─────────────────────────────────────────────────────────────────────
+        // PRAKTISCHES LEBEN - Osho
+        // ─────────────────────────────────────────────────────────────────────
+        meditation_im_alltag: { label: "Meditation im Alltag", kategorie: "praktisches_leben", sekundaer: ["verbundenheit"], description: "Bedürfnis nach Achtsamkeit beim Kochen, Putzen, Gehen" },
+        gesundheit_durch_bewusstsein: { label: "Gesundheit durch Bewusstsein", kategorie: "praktisches_leben", sekundaer: ["existenz", "identitaet"], description: "Bedürfnis nach natürlicher Gesundheit, keine Medikamente" },
+        dynamische_meditation: { label: "Dynamische Meditation", kategorie: "praktisches_leben", sekundaer: ["existenz", "verbundenheit"], description: "Bedürfnis nach körperlicher Bewegung als Meditation (Osho-Technik)" },
+        vipassana_im_leben: { label: "Vipassana im Leben", kategorie: "praktisches_leben", sekundaer: ["verbundenheit", "identitaet"], description: "Bedürfnis nach Beobachten ohne Urteilen im Alltag" },
+        natuerliches_leben: { label: "Natürliches Leben", kategorie: "praktisches_leben", sekundaer: ["existenz", "verbundenheit"], description: "Bedürfnis nach Bio-Ernährung, Natur, Einfachheit" },
+        lachen_therapie: { label: "Lachen-Therapie", kategorie: "praktisches_leben", sekundaer: ["musse", "existenz"], description: "Bedürfnis nach Humor als Heilung, Leichtigkeit" },
+        no_mind: { label: "No-Mind", kategorie: "praktisches_leben", sekundaer: ["verbundenheit", "freiheit"], description: "Bedürfnis nach Nicht-Denken, Leere, Stille im Alltag" },
+        zorba_der_geniesser: { label: "Zorba der Genießer", kategorie: "praktisches_leben", sekundaer: ["musse", "existenz"], description: "Bedürfnis nach sinnlichem Genuss: Essen, Trinken, Komfort" }
     },
 
     // ═══════════════════════════════════════════════════════════════════════════
