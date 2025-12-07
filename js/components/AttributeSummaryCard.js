@@ -489,9 +489,19 @@ const AttributeSummaryCard = (function() {
     const lockedNeeds = {};
 
     /**
-     * Kategorien die Slider verwenden sollen (zum Testen)
+     * Kategorien die Slider verwenden sollen
+     * Alle Kategorien mit Bedürfnis-Mapping aktiviert
      */
-    const SLIDER_ENABLED_CATEGORIES = ['geschlechtsidentitaet'];
+    const SLIDER_ENABLED_CATEGORIES = [
+        'geschlechtsidentitaet',
+        'lebensplanung',
+        'finanzen',
+        'kommunikation',
+        'soziales',
+        'intimitaet',
+        'werte',
+        'praktisches'
+    ];
 
     /**
      * Berechnet den aggregierten Wert für ein Attribut basierend auf seinen Bedürfnissen
