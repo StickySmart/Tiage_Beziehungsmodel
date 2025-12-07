@@ -483,6 +483,17 @@ const AttributeSummaryCard = (function() {
     const lockedAttributes = {};
 
     /**
+     * Speicher für Lock-Status pro Bedürfnis (NEU)
+     * Format: { 'attrId': { 'needId': true/false } }
+     */
+    const lockedNeeds = {};
+
+    /**
+     * Kategorien die Slider verwenden sollen (zum Testen)
+     */
+    const SLIDER_ENABLED_CATEGORIES = ['geschlechtsidentitaet'];
+
+    /**
      * Berechnet den aggregierten Wert für ein Attribut basierend auf seinen Bedürfnissen
      * @param {string} attrId - Attribut-ID
      * @returns {number} Aggregierter Wert (0-100)
@@ -535,17 +546,51 @@ const AttributeSummaryCard = (function() {
             return '';
         }
 
+        // Initialisiere lockedNeeds für dieses Attribut
+        if (!lockedNeeds[attrId]) {
+            lockedNeeds[attrId] = {};
+        }
+
         const aggregatedValue = calculateAggregatedValue(attrId);
         const hintHtml = hint ? ` <span class="dimension-hint">(${hint})</span>` : '';
         const infoIconHtml = description
             ? ` <span class="attr-info-icon" onclick="event.stopPropagation(); openAttributeDefinitionModal('${attrId}')" title="Info anzeigen">ℹ</span>`
             : '';
 
+        // Prüfe ob Slider aktiviert sein sollen
+        const useSliders = SLIDER_ENABLED_CATEGORIES.includes(mapping.category);
+
         // Generiere Bedürfnis-Liste für Expansion
         const needsListHtml = mapping.needs.map(need => {
             const needLabel = NEEDS_LABELS[need] || need;
             const needValue = needsValues[attrId][need] || 50;
-            return `
+            const isNeedLocked = lockedNeeds[attrId] && lockedNeeds[attrId][need];
+
+            if (useSliders) {
+                // NEU: Slider-Layout mit individuellem Lock
+                return `
+                <div class="attribute-need-item with-slider${isNeedLocked ? ' need-locked' : ''}" data-need="${need}">
+                    <div class="need-item-header">
+                        <span class="attribute-need-label">${needLabel}</span>
+                        <div class="need-item-controls">
+                            <span class="need-lock-icon"
+                                  onclick="event.stopPropagation(); AttributeSummaryCard.toggleNeedLock('${attrId}', '${need}', this)"
+                                  title="Wert fixieren"></span>
+                        </div>
+                    </div>
+                    <div class="need-slider-row">
+                        <input type="range" class="need-slider"
+                               min="0" max="100" value="${needValue}"
+                               oninput="AttributeSummaryCard.onSliderInput('${attrId}', '${need}', this.value, this)"
+                               onclick="event.stopPropagation()">
+                        <input type="text" class="attribute-need-input" value="${needValue}" maxlength="3"
+                               onchange="AttributeSummaryCard.updateNeedValue('${attrId}', '${need}', this.value)"
+                               onclick="event.stopPropagation()">
+                    </div>
+                </div>`;
+            } else {
+                // Original-Layout ohne Slider
+                return `
                 <div class="attribute-need-item" data-need="${need}">
                     <span class="attribute-need-label">${needLabel}</span>
                     <div class="attribute-need-input-group">
@@ -555,6 +600,7 @@ const AttributeSummaryCard = (function() {
                         <span class="attribute-need-percent"></span>
                     </div>
                 </div>`;
+            }
         }).join('');
 
         return `
@@ -623,6 +669,9 @@ const AttributeSummaryCard = (function() {
     function updateNeedValue(attrId, needId, value) {
         if (lockedAttributes[attrId]) return;
 
+        // Prüfe ob das individuelle Bedürfnis gesperrt ist
+        if (lockedNeeds[attrId] && lockedNeeds[attrId][needId]) return;
+
         const numValue = parseInt(value, 10);
         if (isNaN(numValue) || numValue < 0 || numValue > 100) return;
 
@@ -639,6 +688,15 @@ const AttributeSummaryCard = (function() {
             if (summaryInput) {
                 summaryInput.value = calculateAggregatedValue(attrId);
             }
+
+            // Sync Slider falls vorhanden
+            const needItem = card.querySelector(`[data-need="${needId}"]`);
+            if (needItem) {
+                const slider = needItem.querySelector('.need-slider');
+                if (slider && slider.value !== String(numValue)) {
+                    slider.value = numValue;
+                }
+            }
         }
 
         // Custom Event für Änderungstracking
@@ -647,6 +705,107 @@ const AttributeSummaryCard = (function() {
             detail: { attrId, needId, value: numValue }
         });
         document.dispatchEvent(event);
+    }
+
+    /**
+     * Handler für Slider-Input (live update während Drag)
+     * @param {string} attrId - Attribut-ID
+     * @param {string} needId - Bedürfnis-ID
+     * @param {string|number} value - Slider-Wert
+     * @param {HTMLElement} sliderEl - Slider-Element
+     */
+    function onSliderInput(attrId, needId, value, sliderEl) {
+        if (lockedAttributes[attrId]) return;
+        if (lockedNeeds[attrId] && lockedNeeds[attrId][needId]) return;
+
+        const numValue = parseInt(value, 10);
+        if (isNaN(numValue)) return;
+
+        // Update interner Wert
+        if (!needsValues[attrId]) {
+            initializeNeedsValues(attrId);
+        }
+        needsValues[attrId][needId] = numValue;
+
+        // Sync Input-Feld
+        const needItem = sliderEl.closest('.attribute-need-item');
+        if (needItem) {
+            const input = needItem.querySelector('.attribute-need-input');
+            if (input) {
+                input.value = numValue;
+                // Kurze Animation
+                input.classList.add('value-changed');
+                setTimeout(() => input.classList.remove('value-changed'), 200);
+            }
+        }
+
+        // Update aggregierter Wert
+        const card = document.querySelector(`[data-attr="${attrId}"]`);
+        if (card) {
+            const summaryInput = card.querySelector('.attribute-summary-input');
+            if (summaryInput) {
+                summaryInput.value = calculateAggregatedValue(attrId);
+            }
+        }
+    }
+
+    /**
+     * Togglet den Lock-Status eines einzelnen Bedürfnisses
+     * @param {string} attrId - Attribut-ID
+     * @param {string} needId - Bedürfnis-ID
+     * @param {HTMLElement} lockElement - Das Lock-Icon Element
+     */
+    function toggleNeedLock(attrId, needId, lockElement) {
+        // Initialisiere falls nötig
+        if (!lockedNeeds[attrId]) {
+            lockedNeeds[attrId] = {};
+        }
+
+        // Toggle Lock-Status
+        lockedNeeds[attrId][needId] = !lockedNeeds[attrId][needId];
+        const isLocked = lockedNeeds[attrId][needId];
+
+        // Update UI
+        const needItem = lockElement.closest('.attribute-need-item');
+        if (needItem) {
+            needItem.classList.toggle('need-locked', isLocked);
+
+            // Disable/Enable Slider und Input
+            const slider = needItem.querySelector('.need-slider');
+            const input = needItem.querySelector('.attribute-need-input');
+
+            if (slider) {
+                slider.disabled = isLocked;
+            }
+            if (input) {
+                input.readOnly = isLocked;
+            }
+        }
+
+        // Custom Event
+        const event = new CustomEvent('needLockChange', {
+            bubbles: true,
+            detail: { attrId, needId, locked: isLocked }
+        });
+        document.dispatchEvent(event);
+    }
+
+    /**
+     * Prüft ob ein Bedürfnis gesperrt ist
+     * @param {string} attrId - Attribut-ID
+     * @param {string} needId - Bedürfnis-ID
+     * @returns {boolean}
+     */
+    function isNeedLocked(attrId, needId) {
+        return !!(lockedNeeds[attrId] && lockedNeeds[attrId][needId]);
+    }
+
+    /**
+     * Gibt alle gesperrten Bedürfnisse zurück
+     * @returns {Object}
+     */
+    function getLockedNeeds() {
+        return { ...lockedNeeds };
     }
 
     /**
@@ -748,14 +907,19 @@ const AttributeSummaryCard = (function() {
         renderMany,
         toggleExpand,
         toggleLock,
+        toggleNeedLock,
+        onSliderInput,
         updateNeedValue,
         getValue,
         getNeedsValues,
         setNeedsValues,
         reset,
         getAllValues,
+        isNeedLocked,
+        getLockedNeeds,
         ATTRIBUTE_NEEDS_MAPPING,
-        NEEDS_LABELS
+        NEEDS_LABELS,
+        SLIDER_ENABLED_CATEGORIES
     };
 })();
 
