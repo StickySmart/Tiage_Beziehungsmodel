@@ -10563,7 +10563,8 @@
                         <div class="gfk-tags" style="max-height: 150px; overflow-y: auto; padding-right: 5px;">
                             ${gemeinsam.map(b => {
                                 const translatedLabel = TiageI18n.t(`needs.items.${b.id || b.key}`, b.label);
-                                return `<span class="gfk-tag gfk-tag-match" title="ICH: ${b.wert1}% | PARTNER: ${b.wert2}%">${translatedLabel}</span>`;
+                                const needId = b.id || b.key;
+                                return `<span class="gfk-tag gfk-tag-match gfk-tag-clickable" onclick="openNeedDefinitionModal('${needId}')" title="Klicken für Definition | ICH: ${b.wert1}% | PARTNER: ${b.wert2}%">${translatedLabel}</span>`;
                             }).join('')}
                         </div>
                     </div>
@@ -10578,7 +10579,8 @@
                         <div class="gfk-tags" style="max-height: 150px; overflow-y: auto; padding-right: 5px;">
                             ${unterschiedlich.map(b => {
                                 const translatedLabel = TiageI18n.t(`needs.items.${b.id || b.key}`, b.label);
-                                return `<span class="gfk-tag gfk-tag-conflict" title="ICH: ${b.wert1}% | PARTNER: ${b.wert2}%">${translatedLabel}</span>`;
+                                const needId = b.id || b.key;
+                                return `<span class="gfk-tag gfk-tag-conflict gfk-tag-clickable" onclick="openNeedDefinitionModal('${needId}')" title="Klicken für Definition | ICH: ${b.wert1}% | PARTNER: ${b.wert2}%">${translatedLabel}</span>`;
                             }).join('')}
                         </div>
                     </div>
