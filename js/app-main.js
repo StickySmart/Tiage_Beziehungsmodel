@@ -10484,6 +10484,73 @@
             } else {
                 contraList.innerHTML = '<li style="color: var(--text-muted);">Keine Daten verfügbar</li>';
             }
+
+            // Update Bedürfnis-Übereinstimmung section
+            updateProContraModalNeedsSection();
+        }
+
+        function updateProContraModalNeedsSection() {
+            const needsContent = document.getElementById('proContraModalNeedsContent');
+            if (!needsContent) return;
+
+            // Get the current matching data from GfkBeduerfnisse
+            if (typeof GfkBeduerfnisse === 'undefined') {
+                needsContent.innerHTML = '';
+                return;
+            }
+
+            const matching = GfkBeduerfnisse.berechneMatching(currentArchetype, selectedPartner);
+            if (!matching || matching.score === undefined) {
+                needsContent.innerHTML = '';
+                return;
+            }
+
+            // Score-Farbe basierend auf Level
+            const scoreColor = matching.level === 'hoch' ? '#22c55e' :
+                              matching.level === 'mittel' ? '#eab308' : '#ef4444';
+
+            // HTML generieren
+            const beduerfnisLabel = TiageI18n.t('synthesisSection.beduerfnisUebereinstimmung', 'Bedürfnis-Übereinstimmung');
+            let html = `
+                <div class="gfk-matching-header" onclick="openNeedsFullModal()" style="cursor: pointer;" title="Klicken für vollständige Liste">
+                    <div class="gfk-score-display">
+                        <span class="gfk-score" style="color: ${scoreColor}">${matching.score}%</span>
+                        <span class="gfk-level-label">${beduerfnisLabel}</span>
+                    </div>
+                </div>
+            `;
+
+            // Top Übereinstimmungen
+            if (matching.topUebereinstimmungen && matching.topUebereinstimmungen.length > 0) {
+                html += `
+                    <div class="gfk-section gfk-matches">
+                        <div class="gfk-section-title" style="color: #22c55e;">${TiageI18n.t('needs.sharedTitle', 'GEMEINSAME BEDÜRFNISSE')}</div>
+                        <div class="gfk-tags">
+                            ${matching.topUebereinstimmungen.map(b => {
+                                const translatedLabel = TiageI18n.t(`needs.items.${b.id}`, b.label);
+                                return `<span class="gfk-tag gfk-tag-match">${translatedLabel}</span>`;
+                            }).join('')}
+                        </div>
+                    </div>
+                `;
+            }
+
+            // Konflikte
+            if (matching.topKonflikte && matching.topKonflikte.length > 0) {
+                html += `
+                    <div class="gfk-section gfk-conflicts">
+                        <div class="gfk-section-title" style="color: #ef4444;">${TiageI18n.t('needs.differentTitle', 'UNTERSCHIEDLICHE PRIORITÄTEN')}</div>
+                        <div class="gfk-tags">
+                            ${matching.topKonflikte.map(b => {
+                                const translatedLabel = TiageI18n.t(`needs.items.${b.id}`, b.label);
+                                return `<span class="gfk-tag gfk-tag-conflict" title="${matching.archetyp1}: ${b.wert1}% | ${matching.archetyp2}: ${b.wert2}%">${translatedLabel}</span>`;
+                            }).join('')}
+                        </div>
+                    </div>
+                `;
+            }
+
+            needsContent.innerHTML = html;
         }
 
         function navigateProContraArchetype(person, direction) {
