@@ -90,9 +90,6 @@
             // Update fold/unfold button
             updateFoldUnfoldButton();
 
-            // Update help modal
-            updateHelpModal();
-
             // Update gender info modal
             updateGenderInfoModal();
 
@@ -457,41 +454,6 @@
                         TiageI18n.t('foldUnfold.fold', 'Einklappen') :
                         TiageI18n.t('foldUnfold.unfold', 'Ausklappen');
                 }
-            }
-        }
-
-        /**
-         * Update help modal content
-         */
-        function updateHelpModal() {
-            // Update title
-            const helpTitle = document.querySelector('#helpModal .help-modal-header h2');
-            if (helpTitle) {
-                helpTitle.textContent = TiageI18n.t('helpModal.title', 'Hilfe & Dokumentation');
-            }
-
-            // Update quick guide title
-            const quickGuideTitle = document.querySelector('#helpModal .quick-guide h3');
-            if (quickGuideTitle) {
-                quickGuideTitle.textContent = TiageI18n.t('helpModal.quickGuideTitle', 'Kurzanleitung');
-            }
-
-            // Update feedback prompt
-            const feedbackPrompt = document.querySelector('#helpModal .comment-section p');
-            if (feedbackPrompt) {
-                feedbackPrompt.textContent = TiageI18n.t('helpModal.feedbackPrompt', 'Fragen, Feedback oder Verbesserungsvorschläge?');
-            }
-
-            // Update comment button
-            const commentBtn = document.querySelector('#helpModal .comment-btn');
-            if (commentBtn) {
-                commentBtn.innerHTML = TiageI18n.t('helpModal.sendComment', 'Kommentar senden');
-            }
-
-            // Update view comments button
-            const viewCommentsBtn = document.querySelector('#helpModal .view-comments-btn');
-            if (viewCommentsBtn) {
-                viewCommentsBtn.innerHTML = '📋 ' + TiageI18n.t('helpModal.viewAllComments', 'Alle Kommentare');
             }
         }
 

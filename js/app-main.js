@@ -11609,54 +11609,6 @@
             }
         }
 
-        // ========================================
-        // HELP MODAL FUNCTIONS
-        // ========================================
-
-        // Flag to track if help content has been loaded
-        let helpContentLoaded = false;
-
-        async function openHelpModal() {
-            console.log('openHelpModal called');
-            const modal = document.getElementById('helpModal');
-            console.log('helpModal element:', modal);
-            if (modal) {
-                modal.classList.add('active');
-                document.body.style.overflow = 'hidden';
-                console.log('helpModal activated');
-                // Push state for back button to close modal
-                history.pushState({ mobilePage: currentMobilePage, modal: 'help' }, '', `#seite${currentMobilePage}-help`);
-
-                // Load Markdown content dynamically on first open
-                if (!helpContentLoaded && typeof MarkdownLoader !== 'undefined') {
-                    const contentContainer = modal.querySelector('.help-modal-content');
-                    if (contentContainer) {
-                        try {
-                            // Load help guide from Markdown
-                            await MarkdownLoader.loadInto('docs/help-guide.md', contentContainer, true);
-                            helpContentLoaded = true;
-                            console.log('Help content loaded from Markdown');
-                        } catch (error) {
-                            console.error('Failed to load help content:', error);
-                            // Keep static content as fallback
-                        }
-                    }
-                }
-            } else {
-                console.error('helpModal element not found!');
-            }
-        }
-
-        function closeHelpModal(event, skipHistoryBack = false) {
-            if (event && event.target !== event.currentTarget) return;
-            document.getElementById('helpModal').classList.remove('active');
-            document.body.style.overflow = '';
-            // Go back in history if not triggered by back button
-            if (!skipHistoryBack && history.state && history.state.modal === 'help') {
-                history.back();
-            }
-        }
-
         // Close modals with Escape key
         document.addEventListener('keydown', function(e) {
             if (e.key === 'Escape') {
@@ -12928,8 +12880,6 @@
         loadDataAndUpdateComparison();
 
         // Make key functions globally accessible for onclick handlers
-        window.openHelpModal = openHelpModal;
-        window.closeHelpModal = closeHelpModal;
         window.showArchetypeInfo = showArchetypeInfo;
         window.openArchetypeInfo = openArchetypeInfo;
         window.openFactorModal = openFactorModal;
