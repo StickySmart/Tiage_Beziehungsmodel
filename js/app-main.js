@@ -12696,6 +12696,13 @@
         window.syncMobileDominanzStatusButtons = syncMobileDominanzStatusButtons;
         window.syncMobileOrientierungStatusButtons = syncMobileOrientierungStatusButtons;
 
+        // UI Sync functions (for MemoryManager)
+        window.syncGeschlechtUI = syncGeschlechtUI;
+        window.syncDominanzUI = syncDominanzUI;
+        window.syncOrientierungUI = syncOrientierungUI;
+        window.updateAll = updateAll;
+        window.saveSelectionToStorage = saveSelectionToStorage;
+
         // Pathos/Logos Modal open function
         window.openPathosLogosModal = openPathosLogosModal;
 
