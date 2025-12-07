@@ -53,6 +53,12 @@ function initVersionDisplay() {
     if (footerVersion) {
         footerVersion.textContent = `Version ${TiageVersion.version}`;
     }
+
+    // Age Verification Version
+    const ageVerificationVersion = document.getElementById('ageVerificationVersion');
+    if (ageVerificationVersion) {
+        ageVerificationVersion.textContent = TiageVersion.displayString;
+    }
 }
 
 // Bei DOM ready ausführen
