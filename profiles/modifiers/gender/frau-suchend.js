@@ -1,19 +1,19 @@
 /**
- * GENDER MODIFIER: Frau (Unsicher/Questioning)
+ * GENDER MODIFIER: Frau (Suchend/Questioning)
  *
  * Modifikator für Menschen mit weiblicher Tendenz, die ihre Gender-Identität hinterfragen.
  * Basiert auf Forschung zu Gender-Exploration und Identitätsentwicklung.
  *
- * @module TiageModifiers.Gender.FrauUnsicher
+ * @module TiageModifiers.Gender.FrauSuchend
  */
 
 var TiageModifiers = TiageModifiers || {};
 TiageModifiers.Gender = TiageModifiers.Gender || {};
 
-TiageModifiers.Gender.FrauUnsicher = {
+TiageModifiers.Gender.FrauSuchend = {
 
-    id: "frau-unsicher",
-    label: "Frau (Unsicher/Questioning)",
+    id: "frau-suchend",
+    label: "Frau (Suchend/Questioning)",
     category: "gender",
 
     // ═══════════════════════════════════════════════════════════════════════
