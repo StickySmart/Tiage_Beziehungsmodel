@@ -52,12 +52,67 @@ Jeder Faktor wird einzeln auf 0-100% bewertet. Die **Resonanz (R)** ist ein Meta
 ### Resonanz-Formel
 
 ```
-R = 0.9 + [(M/100 × 0.35) + (B × 0.35) + (K × 0.30)] × 0.2
+R = 0.9 + [(M/100 × 0.5) + (B × 0.5)] × 0.2
 ```
 
-- **M** = Bedürfnis-Match (dynamisch berechnet aus Archetyp + Dominanz + Geschlecht + Orientierung)
-- **B** = Logos-Pathos-Balance = (100 - |Logos - Pathos|) / 100
-- **K** = GFK-Kommunikationsfaktor (0-1, basierend auf beider Partner GFK-Kompetenz)
+**Wertebereich:** R variiert zwischen 0.9 (minimale Resonanz) und 1.1 (maximale Resonanz).
+
+#### Komponente 1: Profil-Match (M)
+
+Ähnlichkeit der 30 Persönlichkeitsattribute zwischen zwei Profilen.
+
+```
+M = Übereinstimmende Attribute / 30 × 100
+```
+
+*Beispiel: Bei 24 von 30 übereinstimmenden Attributen: M = 80*
+
+#### Komponente 2: Logos-Pathos-Balance (B)
+
+Das Verhältnis zwischen rationaler Struktur und emotionaler Dynamik – basierend auf Pirsigs MOQ.
+
+| Konzept | Definition | TIAGE-Zuordnung |
+|---------|------------|-----------------|
+| **Logos** | Statische Qualität | A (Archetyp-Übereinstimmung) |
+| **Pathos** | Dynamische Qualität | (O + D + G) / 3 |
+
+```
+B = (100 - |Logos - Pathos|) / 100
+```
+
+*Beispiel: Bei A=72% und avg(O,D,G)=65%: B = (100 - 7) / 100 = 0.93*
+
+#### R-Beispielrechnung
+
+**Gegeben:** M = 80 (80% Profil-Match), B = 0.93 (7% Logos-Pathos-Differenz)
+
+```
+R = 0.9 + [(80/100 × 0.5) + (0.93 × 0.5)] × 0.2
+R = 0.9 + [0.4 + 0.465] × 0.2
+R = 0.9 + 0.173
+R = 1.073
+```
+
+### Resonanz-Override
+
+OSHO lehrte: **Sexuelle Orientierung ist Konditionierung, nicht Natur.** Der natürliche Mensch ist jenseits von Labels.
+
+Normalerweise gilt: Wenn die Orientierung inkompatibel ist (z.B. zwei heterosexuelle Männer), ergibt das 0% Orientierungs-Score und damit ein K.O.-Kriterium.
+
+Der **Resonanz-Override** ermöglicht eine Ausnahme: Wenn zwei Menschen auf einer tiefen Ebene resonieren (R >= 1.05), kann diese Verbindung die konditionierten Grenzen überschreiten.
+
+| Resonanz (R) | Override-Effekt | O_effektiv |
+|--------------|-----------------|------------|
+| < 1.05 | Kein Override | 0% (K.O.) |
+| 1.05 | Schwache Öffnung | 5% |
+| 1.08 | Moderate Öffnung | 8% |
+| 1.10 | Maximale Öffnung | 10% |
+
+**Formel:** `O_effektiv = (R - 1.0) × 100`
+
+> *"Liebe kennt keine Grenzen. Wenn zwei Seelen wirklich resonieren, sind alle gesellschaftlichen Kategorien nur noch Schatten an der Wand."* – OSHO
+
+**Hinweis:** Dies ist keine Empfehlung, sondern eine philosophische Möglichkeit, die das Modell abbildet. Der Override zeigt: Tiefe Resonanz kann konditionierte Muster transzendieren.
 
 ## Rechenbeispiel
 
