@@ -5550,8 +5550,17 @@
             // Sortieren falls aktiv
             if (needsFullModalSortBy && items.length > 0) {
                 items = [...items].sort((a, b) => {
-                    const valA = needsFullModalSortBy === 'duo' ? (a.wert1 || 0) : (a.wert2 || 0);
-                    const valB = needsFullModalSortBy === 'duo' ? (b.wert1 || 0) : (b.wert2 || 0);
+                    let valA, valB;
+                    if (needsFullModalSortBy === 'duo') {
+                        valA = a.wert1 || 0;
+                        valB = b.wert1 || 0;
+                    } else if (needsFullModalSortBy === 'diff') {
+                        valA = Math.abs((a.wert1 || 0) - (a.wert2 || 0));
+                        valB = Math.abs((b.wert1 || 0) - (b.wert2 || 0));
+                    } else {
+                        valA = a.wert2 || 0;
+                        valB = b.wert2 || 0;
+                    }
                     return needsFullModalSortDir === 'desc' ? valB - valA : valA - valB;
                 });
             }
@@ -5572,18 +5581,26 @@
             const duoSortIcon = needsFullModalSortBy === 'duo'
                 ? (needsFullModalSortDir === 'desc' ? '▼' : '▲')
                 : '⇅';
+            const diffSortIcon = needsFullModalSortBy === 'diff'
+                ? (needsFullModalSortDir === 'desc' ? '▼' : '▲')
+                : '⇅';
             const raSortIcon = needsFullModalSortBy === 'ra'
                 ? (needsFullModalSortDir === 'desc' ? '▼' : '▲')
                 : '⇅';
             const duoActive = needsFullModalSortBy === 'duo';
+            const diffActive = needsFullModalSortBy === 'diff';
             const raActive = needsFullModalSortBy === 'ra';
 
             // Header mit Namen und Sortier-Buttons
             const headerHtml = `
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 12px; padding-bottom: 8px; border-bottom: 1px solid rgba(255,255,255,0.1);">
+                <div style="display: grid; grid-template-columns: 1fr auto 1fr; gap: 10px; margin-bottom: 12px; padding-bottom: 8px; border-bottom: 1px solid rgba(255,255,255,0.1);">
                     <button onclick="sortNeedsFullModal('duo')" style="display: flex; align-items: center; justify-content: center; gap: 6px; background: ${duoActive ? 'rgba(34, 197, 94, 0.15)' : 'transparent'}; border: 1px solid ${duoActive ? 'rgba(34, 197, 94, 0.4)' : 'transparent'}; border-radius: 6px; padding: 6px 8px; cursor: pointer; transition: all 0.2s;">
                         <span style="font-weight: 600; color: var(--success); font-size: 11px; text-transform: uppercase; letter-spacing: 1px;">${ichName}</span>
                         <span style="color: ${duoActive ? 'var(--success)' : 'var(--text-muted)'}; font-size: 10px;">${duoSortIcon}</span>
+                    </button>
+                    <button onclick="sortNeedsFullModal('diff')" style="display: flex; align-items: center; justify-content: center; gap: 4px; background: ${diffActive ? 'rgba(234, 179, 8, 0.15)' : 'transparent'}; border: 1px solid ${diffActive ? 'rgba(234, 179, 8, 0.4)' : 'transparent'}; border-radius: 6px; padding: 6px 8px; cursor: pointer; transition: all 0.2s; min-width: 60px;">
+                        <span style="font-weight: 600; color: var(--warning, #eab308); font-size: 10px; text-transform: uppercase; letter-spacing: 0.5px;">Diff</span>
+                        <span style="color: ${diffActive ? 'var(--warning, #eab308)' : 'var(--text-muted)'}; font-size: 10px;">${diffSortIcon}</span>
                     </button>
                     <button onclick="sortNeedsFullModal('ra')" style="display: flex; align-items: center; justify-content: center; gap: 6px; background: ${raActive ? 'rgba(239, 68, 68, 0.15)' : 'transparent'}; border: 1px solid ${raActive ? 'rgba(239, 68, 68, 0.4)' : 'transparent'}; border-radius: 6px; padding: 6px 8px; cursor: pointer; transition: all 0.2s;">
                         <span style="font-weight: 600; color: var(--danger); font-size: 11px; text-transform: uppercase; letter-spacing: 1px;">${partnerName}</span>
@@ -5620,12 +5637,15 @@
                                 ${label}
                                 <span style="font-size: 10px; opacity: 0.5;">ⓘ</span>
                             </div>
-                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                            <div style="display: grid; grid-template-columns: 1fr auto 1fr; gap: 8px; align-items: center;">
                                 <div style="display: flex; align-items: center; gap: 6px;">
                                     <div style="flex: 1; height: 5px; background: rgba(255,255,255,0.1); border-radius: 3px; overflow: hidden;">
                                         <div style="width: ${wert1}%; height: 100%; background: var(--success); border-radius: 3px;"></div>
                                     </div>
                                     <span style="font-size: 11px; color: var(--text-muted); min-width: 32px; text-align: right;">${wert1}%</span>
+                                </div>
+                                <div style="display: flex; align-items: center; justify-content: center; min-width: 50px;">
+                                    <span style="font-size: 11px; font-weight: 600; color: ${statusColor}; background: ${statusColor}22; padding: 2px 6px; border-radius: 4px;">${diff}%</span>
                                 </div>
                                 <div style="display: flex; align-items: center; gap: 6px;">
                                     <div style="flex: 1; height: 5px; background: rgba(255,255,255,0.1); border-radius: 3px; overflow: hidden;">
