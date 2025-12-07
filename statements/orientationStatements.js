@@ -284,6 +284,81 @@ const orientationStatements = {
             "Gesellschaftliche Missverständnisse über Bisexualität möglich",
             "Stereotypen über 'Unentschlossenheit' können auftreten"
         ]
+    },
+
+    // ═══════════════════════════════════════════════════════════════════════
+    // LEGACY GERMAN KEYS (für Rückwärtskompatibilität mit getOrientierungStatements)
+    // ═══════════════════════════════════════════════════════════════════════
+
+    "kompatibel_hetero_hetero": {
+        score: 95,
+        pathos: ["Die heterosexuelle Anziehung ist beidseitig und natürlich.", "Körperliche und emotionale Chemie kann frei fließen."],
+        logos: ["Klassische Konstellation mit klarer gegenseitiger Anziehungsbasis."],
+        pro: ["Natürliche gegenseitige Anziehung", "Gesellschaftlich etabliert"],
+        contra: ["Keine besonderen Herausforderungen durch Orientierung"]
+    },
+    "kompatibel_homo_homo": {
+        score: 95,
+        pathos: ["Die homosexuelle Anziehung verbindet auf einer tiefen Ebene.", "Gemeinsames Verständnis der eigenen Identität schafft Nähe."],
+        logos: ["Gleiche Orientierung ermöglicht authentische Verbindung."],
+        pro: ["Tiefes gegenseitiges Verständnis", "Gemeinsame Erfahrungswelt"],
+        contra: ["Gesellschaftliche Herausforderungen möglich"]
+    },
+    "kompatibel_bi_hetero": {
+        score: 85,
+        pathos: ["Anziehung ist vorhanden, auch wenn die Spektren unterschiedlich breit sind.", "Der bisexuelle Partner kann sich voll einlassen."],
+        logos: ["Funktionale Kompatibilität gegeben, aber unterschiedliche Erfahrungswelten."],
+        pro: ["Grundlegende Anziehung vorhanden", "Bisexueller bringt Offenheit mit"],
+        contra: ["Heterosexueller versteht bi-Erfahrung nicht vollständig", "Teile der bi-Identität bleiben unausgelebt"]
+    },
+    "kompatibel_bi_homo": {
+        score: 85,
+        pathos: ["Anziehung ist da, aber die Wege dorthin waren unterschiedlich.", "Gemeinsame queere Erfahrungen können verbinden."],
+        logos: ["Kompatibilität gegeben, unterschiedliche Identitätserfahrungen."],
+        pro: ["Gemeinsame queere Perspektive", "Gegenseitiges Verständnis für Nicht-Heteronormativität"],
+        contra: ["Bi-Identität wird manchmal in Frage gestellt", "Unterschiedliche Community-Erfahrungen"]
+    },
+    "kompatibel_bi_bi": {
+        score: 95,
+        pathos: ["Maximale Flexibilität trifft auf maximales Verständnis.", "Beide kennen die Komplexität fluider Anziehung."],
+        logos: ["Tiefes gegenseitiges Verständnis der bi-Erfahrung.", "Keine Teile der Identität müssen versteckt werden."],
+        pro: ["Vollständiges Verständnis der bi-Erfahrung", "Maximale Offenheit", "Keine Identitätsaspekte werden unterdrückt"],
+        contra: ["Gesellschaftliche Bi-Erasure betrifft beide"]
+    },
+    "inkompatibel_hetero_hetero": {
+        score: 15,
+        pathos: ["Keine sexuelle Anziehung möglich – beide orientieren sich zum anderen Geschlecht.", "Freundschaft ja, romantische Verbindung nein."],
+        logos: ["Strukturelle Inkompatibilität: Beide suchen das jeweils andere Geschlecht."],
+        pro: ["Tiefe Freundschaft möglich"],
+        contra: ["Keine romantische/sexuelle Basis", "Fundamentale Orientierungsdiskrepanz"]
+    },
+    "inkompatibel_homo_homo": {
+        score: 15,
+        pathos: ["Die Orientierung weist in entgegengesetzte Richtungen.", "Emotionale Nähe möglich, sexuelle Anziehung nicht."],
+        logos: ["Strukturelle Inkompatibilität durch gegenläufige Orientierung."],
+        pro: ["Verständnis füreinander als queere Menschen"],
+        contra: ["Keine romantische/sexuelle Basis", "Orientierung zeigt zu unterschiedlichen Geschlechtern"]
+    },
+    "inkompatibel_hetero_homo": {
+        score: 10,
+        pathos: ["Die Anziehungskräfte gehen aneinander vorbei.", "Was der eine sucht, kann der andere nicht bieten."],
+        logos: ["Maximale strukturelle Inkompatibilität.", "Keine gemeinsame Anziehungsbasis vorhanden."],
+        pro: ["Freundschaft auf anderen Ebenen möglich"],
+        contra: ["Keine romantische/sexuelle Kompatibilität", "Fundamentale Orientierungsdiskrepanz"]
+    },
+    "teilweise_bi_inkompatibel": {
+        score: 40,
+        pathos: ["Der bisexuelle Partner könnte angezogen sein, aber es ist nicht gegenseitig.", "Einseitige Anziehung schafft Ungleichgewicht."],
+        logos: ["Nur einseitige Anziehung möglich – strukturelles Ungleichgewicht."],
+        pro: ["Bisexueller zeigt Offenheit"],
+        contra: ["Keine gegenseitige Anziehung", "Einseitiges Interesse führt zu Frustration"]
+    },
+    "default": {
+        score: 50,
+        pathos: ["Die Orientierungs-Kompatibilität ist noch nicht vollständig erkennbar."],
+        logos: ["Standardwert wird verwendet bis Orientierung und Geschlecht ausgewählt sind."],
+        pro: ["Neutrale Ausgangssituation"],
+        contra: ["Unvollständige Information"]
     }
 };
 
