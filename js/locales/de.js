@@ -851,7 +851,7 @@ const TiageLocale_DE = {
         sourceExplanation: {
             title: 'Woher kommen diese Werte?',
             intro: 'Diese Attribute wurden automatisch berechnet basierend auf:',
-            note: 'Tiage nutzt 1.248 psychologische Profile aus Beziehungsforschung (Gottman, Esther Perel, u.a.). Die Werte sind Vorschläge - du kannst sie anpassen.',
+            note: 'Tiage nutzt 1.248 psychologische Profile aus Beziehungsforschung (Gottman, Esther Perel, u.a.). Die Werte folgen einer Gaußschen Verteilung (Normalverteilung) – die meisten liegen im mittleren Bereich. Du kannst sie anpassen.',
             helpLink: 'Mehr in der Hilfe'
         },
 
