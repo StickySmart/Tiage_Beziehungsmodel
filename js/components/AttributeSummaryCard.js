@@ -671,13 +671,25 @@ const AttributeSummaryCard = (function() {
     }
 
     /**
+     * Prüft ob ein Attribut durch Kategorie-Lock gesperrt ist
+     * @param {string} attrId - Attribut-ID
+     * @returns {boolean} Ob das Attribut gesperrt ist
+     */
+    function isLockedByCategory(attrId) {
+        const card = document.querySelector(`[data-attr="${attrId}"]`);
+        if (!card) return false;
+        return card.classList.contains('category-parent-locked');
+    }
+
+    /**
      * Aktualisiert einen einzelnen Bedürfniswert
      * @param {string} attrId - Attribut-ID
      * @param {string} needId - Bedürfnis-ID
      * @param {string|number} value - Neuer Wert
      */
     function updateNeedValue(attrId, needId, value) {
-        if (lockedAttributes[attrId]) return;
+        // Prüfe sowohl eigenen Lock als auch Kategorie-Lock
+        if (lockedAttributes[attrId] || isLockedByCategory(attrId)) return;
 
         // Prüfe ob das individuelle Bedürfnis gesperrt ist
         if (lockedNeeds[attrId] && lockedNeeds[attrId][needId]) return;
@@ -842,7 +854,8 @@ const AttributeSummaryCard = (function() {
      * @param {Object} values - Bedürfniswerte
      */
     function setNeedsValues(attrId, values) {
-        if (lockedAttributes[attrId]) return;
+        // Prüfe sowohl eigenen Lock als auch Kategorie-Lock
+        if (lockedAttributes[attrId] || isLockedByCategory(attrId)) return;
 
         needsValues[attrId] = { ...values };
 

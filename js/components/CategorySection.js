@@ -21,8 +21,14 @@ const CategorySection = (function() {
         soziales: { icon: '👥', label: 'SOZIALES' },
         intimitaet: { icon: '💕', label: 'INTIMITÄT' },
         werte: { icon: '⚖️', label: 'WERTE' },
-        praktisches: { icon: '🏠', label: 'PRAKTISCHES' }
+        praktisches: { icon: '🏠', label: 'PRAKTISCHES' },
+        geschlechtsidentitaet: { icon: '⚧', label: 'GESCHLECHTSIDENTITÄT' }
     };
+
+    /**
+     * Speicher für Lock-Status pro Kategorie
+     */
+    const lockedCategories = {};
 
     /**
      * Erstellt HTML für eine Kategorie-Section
@@ -32,10 +38,11 @@ const CategorySection = (function() {
      * @param {string} [config.label] - Überschreibt Standard-Label
      * @param {string} config.content - Innerer HTML-Content (Cards)
      * @param {boolean} [config.isGewichtung=false] - Spezielle Gewichtungs-Styles
+     * @param {number} [config.itemCount] - Anzahl der Unterelemente
      * @returns {string} HTML-String
      */
     function render(config) {
-        const { category, icon, label, content, isGewichtung = false } = config;
+        const { category, icon, label, content, isGewichtung = false, itemCount } = config;
 
         const categoryInfo = CATEGORIES[category] || { icon: '📌', label: category.toUpperCase() };
         const displayIcon = icon || categoryInfo.icon;
@@ -49,11 +56,24 @@ const CategorySection = (function() {
             ? 'profile-review-category-header profile-review-category-header-gewichtung'
             : 'profile-review-category-header';
 
+        // Zähler-Anzeige wenn itemCount vorhanden
+        const countHtml = typeof itemCount === 'number'
+            ? `<span class="profile-review-category-count">(${itemCount})</span>`
+            : '';
+
+        // Lock-Symbol für Kategorie (nicht für Gewichtung)
+        const lockHtml = !isGewichtung
+            ? `<span class="profile-review-category-lock" onclick="event.stopPropagation(); CategorySection.toggleCategoryLock('${category}', this)"></span>`
+            : '';
+
         return `
                 <div class="${categoryClass}" data-category="${category}">
                     <div class="${headerClass}">
                         <span class="profile-review-category-icon">${displayIcon}</span>
                         <span>${displayLabel}</span>
+                        ${countHtml}
+                        <span style="flex: 1;"></span>
+                        ${lockHtml}
                     </div>
                     ${content}
                 </div>`;
@@ -134,12 +154,80 @@ const CategorySection = (function() {
         }
     }
 
+    /**
+     * Togglet den Lock-Status einer Kategorie
+     * @param {string} category - Kategorie-Key
+     * @param {HTMLElement} [lockElement] - Das Lock-Element (optional)
+     */
+    function toggleCategoryLock(category, lockElement) {
+        lockedCategories[category] = !lockedCategories[category];
+        const isLocked = lockedCategories[category];
+
+        const section = document.querySelector(`[data-category="${category}"]`);
+        if (section) {
+            section.classList.toggle('category-locked', isLocked);
+
+            // Alle Attribute in dieser Kategorie sperren/entsperren
+            const attrCards = section.querySelectorAll('.attribute-summary-card');
+            attrCards.forEach(card => {
+                const attrId = card.getAttribute('data-attr');
+                if (attrId && typeof AttributeSummaryCard !== 'undefined') {
+                    // Setze Lock-Status für das Attribut
+                    if (isLocked) {
+                        card.classList.add('category-parent-locked');
+                    } else {
+                        card.classList.remove('category-parent-locked');
+                    }
+                }
+            });
+        }
+
+        // Custom Event für Tracking
+        const event = new CustomEvent('categoryLockChange', {
+            bubbles: true,
+            detail: { category, locked: isLocked }
+        });
+        document.dispatchEvent(event);
+    }
+
+    /**
+     * Prüft ob eine Kategorie gesperrt ist
+     * @param {string} category - Kategorie-Key
+     * @returns {boolean} Lock-Status
+     */
+    function isCategoryLocked(category) {
+        return lockedCategories[category] || false;
+    }
+
+    /**
+     * Setzt den Lock-Status einer Kategorie
+     * @param {string} category - Kategorie-Key
+     * @param {boolean} locked - Lock-Status
+     */
+    function setCategoryLock(category, locked) {
+        if (lockedCategories[category] !== locked) {
+            toggleCategoryLock(category);
+        }
+    }
+
+    /**
+     * Holt alle Lock-Status
+     * @returns {Object} Lock-Status pro Kategorie
+     */
+    function getAllLockStatus() {
+        return { ...lockedCategories };
+    }
+
     return {
         render,
         renderWithAttributes,
         getCategoryValues,
         isVisible,
         setVisible,
+        toggleCategoryLock,
+        isCategoryLocked,
+        setCategoryLock,
+        getAllLockStatus,
         CATEGORIES
     };
 })();
