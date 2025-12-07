@@ -81,26 +81,28 @@ const TiageVersion = {
     }
 };
 
-// Initialisierung: Version in UI anzeigen (Header und Footer)
+// Initialisierung: Version in UI anzeigen (Header, Footer, Age Verification)
 function initVersionDisplay() {
-    // Header-Version
-    const versionElement = document.getElementById('appVersion');
-    if (versionElement) {
-        versionElement.textContent = TiageVersion.displayString;
-        versionElement.title = \`Version \${TiageVersion.version}\\nMerge: \${TiageVersion.formattedDate} um \${TiageVersion.mergeTime} Uhr\`;
-    }
+    const versionText = \`Version \${TiageVersion.version}\`;
+    const mergeText = \`Merge: \${TiageVersion.formattedDate} um \${TiageVersion.mergeTime} Uhr\`;
+
+    // Header-Version (zwei Zeilen oben rechts)
+    const versionLine = document.getElementById('versionLine');
+    const mergeLine = document.getElementById('mergeLine');
+    if (versionLine) versionLine.textContent = versionText;
+    if (mergeLine) mergeLine.textContent = mergeText;
 
     // Footer-Version
     const footerVersion = document.getElementById('footerVersion');
     if (footerVersion) {
-        footerVersion.textContent = \`Version \${TiageVersion.version}\`;
+        footerVersion.textContent = versionText;
     }
 
-    // Age Verification Version
-    const ageVerificationVersion = document.getElementById('ageVerificationVersion');
-    if (ageVerificationVersion) {
-        ageVerificationVersion.textContent = TiageVersion.displayString;
-    }
+    // Age Verification Version (zwei Zeilen)
+    const ageVersionLine = document.getElementById('ageVersionLine');
+    const ageMergeLine = document.getElementById('ageMergeLine');
+    if (ageVersionLine) ageVersionLine.textContent = versionText;
+    if (ageMergeLine) ageMergeLine.textContent = mergeText;
 }
 
 // Bei DOM ready ausführen
