@@ -35,6 +35,7 @@ const GfkBeduerfnisse = {
             name: "Existenz",
             description: "Grundlegende physische Bedürfnisse",
             color: "#E63946",
+            sigma: 11,  // Grundbedürfnis, geringe Varianz (10-12)
             beduerfnisse: [
                 "luft",
                 "wasser",
@@ -52,6 +53,7 @@ const GfkBeduerfnisse = {
             name: "Sicherheit",
             description: "Emotionale und psychische Sicherheit",
             color: "#F4A261",
+            sigma: 11,  // Grundbedürfnis, relativ stabil (10-12)
             beduerfnisse: [
                 "bestaendigkeit",
                 "sich_sicher_fuehlen",
@@ -66,6 +68,7 @@ const GfkBeduerfnisse = {
             name: "Zuneigung",
             description: "Liebe, Nähe und emotionale Verbindung",
             color: "#E84393",
+            sigma: 12,  // Variiert nach Bindungsstil (10-14)
             beduerfnisse: [
                 "waerme",
                 "wertschaetzung",
@@ -83,6 +86,7 @@ const GfkBeduerfnisse = {
             name: "Verständnis",
             description: "Gesehen und verstanden werden",
             color: "#9B5DE5",
+            sigma: 13,  // Mittlere Varianz (12-14)
             beduerfnisse: [
                 "akzeptanz",
                 "mitgefuehl",
@@ -100,6 +104,7 @@ const GfkBeduerfnisse = {
             name: "Freiheit",
             description: "Autonomie und Selbstbestimmung",
             color: "#2A9D8F",
+            sigma: 14,  // Hohe individuelle Variation (12-15)
             beduerfnisse: [
                 "selbstbestimmung",
                 "waehlen_koennen",
@@ -113,6 +118,7 @@ const GfkBeduerfnisse = {
             name: "Teilnahme",
             description: "Gemeinschaft und Zugehörigkeit",
             color: "#06D6A0",
+            sigma: 13,  // Mittlere Varianz (12-14)
             beduerfnisse: [
                 "zusammenarbeit",
                 "kommunikation",
@@ -128,6 +134,7 @@ const GfkBeduerfnisse = {
             name: "Muße",
             description: "Erholung, Freude und Genuss",
             color: "#118AB2",
+            sigma: 15,  // Lifestyle-abhängig (14-16)
             beduerfnisse: [
                 "schoenheit",
                 "freizeit",
@@ -140,6 +147,7 @@ const GfkBeduerfnisse = {
             name: "Identität & Bedeutung",
             description: "Selbstverwirklichung und Sinn",
             color: "#FFD166",
+            sigma: 14,  // Entwicklungsabhängig (12-15)
             beduerfnisse: [
                 "authentizitaet",
                 "echtheit",
@@ -162,6 +170,7 @@ const GfkBeduerfnisse = {
             name: "Etwas erschaffen",
             description: "Kreativität und Lernen",
             color: "#FF6B6B",
+            sigma: 16,  // Stark erfahrungsabhängig (14-18)
             beduerfnisse: [
                 "kreativitaet",
                 "entdecken",
@@ -175,6 +184,7 @@ const GfkBeduerfnisse = {
             name: "Verbunden sein",
             description: "Tiefe existenzielle Verbindung",
             color: "#A8DADC",
+            sigma: 16,  // Höchste Varianz, spirituell (14-18)
             beduerfnisse: [
                 "leben_feiern",
                 "inspiration",
@@ -188,6 +198,7 @@ const GfkBeduerfnisse = {
             name: "Dynamik & Austausch",
             description: "Machtdynamik, Kontrolle und bewusster Austausch",
             color: "#8B5CF6",
+            sigma: 17,  // Stark erfahrungsabhängig (15-18)
             beduerfnisse: [
                 "kontrolle_ausueben",
                 "hingabe",
@@ -216,6 +227,7 @@ const GfkBeduerfnisse = {
             name: "Lebensplanung",
             description: "Kinder, Ehe, Wohnen, Familie",
             color: "#10B981",
+            sigma: 14,  // Kulturell/biografisch beeinflusst (12-15)
             beduerfnisse: [
                 "kinderwunsch", "elternschaft", "fortpflanzung", "familie_gruenden", "generativitaet",
                 "verbindlichkeit", "langfristige_bindung", "rechtliche_sicherheit", "treueversprechen",
@@ -234,6 +246,7 @@ const GfkBeduerfnisse = {
             name: "Finanzen & Karriere",
             description: "Geld, Beruf, Work-Life-Balance",
             color: "#F59E0B",
+            sigma: 14,  // Biografisch/kulturell beeinflusst (12-15)
             beduerfnisse: [
                 "finanzielle_unabhaengigkeit", "gemeinsame_finanzen", "finanzielle_transparenz",
                 "finanzielle_sicherheit", "sparsamkeit", "grosszuegigkeit",
@@ -249,6 +262,7 @@ const GfkBeduerfnisse = {
             name: "Kommunikationsstil",
             description: "Gespräche, Emotionen, Konflikte",
             color: "#3B82F6",
+            sigma: 13,  // Mittlere Varianz (12-14)
             beduerfnisse: [
                 "taeglicher_austausch", "tiefgehende_gespraeche", "small_talk",
                 "stille_gemeinsam", "verbale_verbindung", "zuhoeren",
@@ -265,6 +279,7 @@ const GfkBeduerfnisse = {
             name: "Soziales Leben",
             description: "Introversion/Extroversion, Freunde, Alleinzeit",
             color: "#8B5CF6",
+            sigma: 14,  // Persönlichkeitsabhängig (12-15)
             beduerfnisse: [
                 "soziale_energie", "geselligkeit", "ruhe_von_menschen",
                 "allein_aufladen", "menschen_treffen", "kleine_gruppen",
@@ -282,6 +297,7 @@ const GfkBeduerfnisse = {
             name: "Intimität & Romantik",
             description: "Körperliche Nähe, Romantik, Sexualität",
             color: "#EC4899",
+            sigma: 16,  // Sehr individuelle Ausprägung (14-18)
             beduerfnisse: [
                 "koerpernaehe", "kuscheln", "physische_distanz",
                 "koerperkontakt", "umarmungen", "hand_halten",
@@ -299,6 +315,7 @@ const GfkBeduerfnisse = {
             name: "Werte & Haltungen",
             description: "Religion, Tradition, Umwelt",
             color: "#6366F1",
+            sigma: 15,  // Weltanschauungsabhängig (14-16)
             beduerfnisse: [
                 "spiritualitaet", "glaubenspraxis", "religioese_gemeinschaft",
                 "saekularitaet", "sinnsuche", "transzendenz",
@@ -316,6 +333,7 @@ const GfkBeduerfnisse = {
             name: "Praktisches Leben",
             description: "Ordnung, Reisen, Alltag",
             color: "#14B8A6",
+            sigma: 14,  // Lifestyle-abhängig (12-15)
             beduerfnisse: [
                 "ordnungssinn", "sauberkeit", "struktur",
                 "chaos_toleranz", "organisiert_sein", "flexibilitaet_haushalt",
