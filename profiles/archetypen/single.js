@@ -201,6 +201,136 @@ const SingleProfil = {
             machtaustausch: 35,          // Niedrig - vermeidet
             dienend_sein: 25,            // Niedrig - nicht unterwürfig
             beschuetzen: 50              // Mittel - kann beschützen
+        },
+
+        // ═══════════════════════════════════════════════════════════════════════
+        // LEBENSPLANUNG (15) - Kinder, Ehe, Wohnen, Familie
+        // ═══════════════════════════════════════════════════════════════════════
+        // Singles: Niedrig - Freiheit und Flexibilität priorisiert
+        lebensplanung: {
+            kinderwunsch: 25,            // Niedrig - oft kein aktiver Wunsch
+            elternschaft: 20,            // Niedrig - Verantwortung einschränkt
+            fortpflanzung: 20,           // Niedrig - nicht priorisiert
+            fuersorge: 45,               // Mittel - kann fürsorglich sein
+            familie_gruenden: 15,        // Sehr niedrig - nicht das Ziel
+            generativitaet: 40,          // Mittel - anders ausgelebt
+            erziehung_werte: 30,         // Niedrig - keine Kinder geplant
+            verbindlichkeit: 25,         // Niedrig - vermeidet langfristige Bindung
+            langfristige_bindung: 20,    // Niedrig - Flexibilität wichtiger
+            rechtliche_sicherheit: 30,   // Niedrig - braucht keine Absicherung
+            tradition_ehe: 15,           // Sehr niedrig - traditionelle Werte unwichtig
+            oeffentliches_bekenntnis: 20, // Niedrig - braucht keine Bestätigung
+            gemeinsamer_wohnraum: 15,    // Sehr niedrig - eigener Raum essentiell
+            eigener_rueckzugsort: 95,    // Sehr hoch - Kernbedürfnis
+            haeuslichkeit: 50            // Mittel - eigenes Zuhause wichtig
+        },
+
+        // ═══════════════════════════════════════════════════════════════════════
+        // FINANZEN & KARRIERE (10) - Geld, Arbeit, berufliche Entwicklung
+        // ═══════════════════════════════════════════════════════════════════════
+        // Singles: Hohe finanzielle Unabhängigkeit, Karriere wichtig
+        finanzen_karriere: {
+            finanzielle_unabhaengigkeit: 95, // Sehr hoch - Kernbedürfnis
+            gemeinsame_finanzen: 10,     // Sehr niedrig - alles getrennt
+            versorger_rolle: 20,         // Niedrig - nur Selbstversorgung
+            materielle_sicherheit: 65,   // Mittel-hoch - eigene Absicherung
+            karriere_entwicklung: 85,    // Sehr hoch - berufliche Erfüllung
+            berufliche_anerkennung: 80,  // Hoch - Erfolg wichtig
+            work_life_balance: 75,       // Hoch - Balance für sich
+            gemeinsame_ziele: 25,        // Niedrig - eigene Ziele
+            erfolg: 85,                  // Sehr hoch - persönlicher Erfolg
+            leistung: 80                 // Hoch - Selbstwirksamkeit durch Leistung
+        },
+
+        // ═══════════════════════════════════════════════════════════════════════
+        // KOMMUNIKATION & STIL (12) - Art des Austauschs
+        // ═══════════════════════════════════════════════════════════════════════
+        // Singles: Direkte Kommunikation, emotionale Distanz
+        kommunikation_stil: {
+            emotionale_offenheit: 40,    // Niedrig-mittel - selektiv offen
+            tiefe_gespraeche: 55,        // Mittel - mit Ausgewählten
+            small_talk: 60,              // Mittel - oberflächlich ok
+            konfliktbereitschaft: 70,    // Hoch - kann Konflikte austragen
+            konstruktive_kritik: 75,     // Hoch - direkt und sachlich
+            aktives_zuhoeren: 55,        // Mittel - wenn interessiert
+            nonverbale_kommunikation: 50, // Mittel - weniger Fokus
+            humor_ironie: 75,            // Hoch - Leichtigkeit
+            intellektueller_austausch: 80, // Hoch - geistige Stimulation
+            digitale_kommunikation: 70,  // Hoch - praktisch und distanziert
+            verbale_anerkennung: 55,     // Mittel - braucht weniger externe
+            schweigen_aushalten: 85      // Sehr hoch - allein sein können
+        },
+
+        // ═══════════════════════════════════════════════════════════════════════
+        // SOZIALES LEBEN (12) - Freunde, Familie, Gesellschaft
+        // ═══════════════════════════════════════════════════════════════════════
+        // Singles: Lose Netzwerke, selektive Kontakte
+        soziales_leben: {
+            freundeskreis_pflege: 60,    // Mittel - wichtig aber nicht zentral
+            gemeinsame_freunde: 35,      // Niedrig - eigene Freunde
+            familieneinbindung: 40,      // Niedrig-mittel - auf Distanz
+            gesellschaftliches_engagement: 50, // Mittel - individuell
+            networking: 70,              // Hoch - beruflich nützlich
+            gemeinsame_hobbys: 25,       // Niedrig - eigene Interessen
+            individuelle_hobbys: 95,     // Sehr hoch - Kernbedürfnis
+            gemeinsame_zeit: 25,         // Niedrig - Zeit für sich
+            zeit_fuer_sich: 95,          // Sehr hoch - Kernbedürfnis
+            soziale_unterstuetzung: 45,  // Mittel - braucht weniger
+            gemeinsame_erlebnisse: 40,   // Niedrig-mittel - selektiv
+            alltagsteilung: 15           // Sehr niedrig - eigener Alltag
+        },
+
+        // ═══════════════════════════════════════════════════════════════════════
+        // INTIMITÄT & BEZIEHUNG (12) - Nähe, Sexualität, Bindung
+        // ═══════════════════════════════════════════════════════════════════════
+        // Singles: Körperliche Intimität ohne emotionale Bindung
+        intimitaet_beziehung: {
+            koerpernaehe: 45,            // Mittel - dosiert
+            kuscheln: 35,                // Niedrig - nicht so wichtig
+            sexuelle_exklusivitaet: 30,  // Niedrig - offen für Optionen
+            sexuelle_offenheit: 75,      // Hoch - experimentierfreudig
+            leidenschaft: 60,            // Mittel - wenn vorhanden
+            zaertlichkeit: 40,           // Niedrig-mittel - distanziert
+            emotionale_tiefe: 45,        // Mittel - vorsichtig
+            romantik: 35,                // Niedrig - nüchtern
+            flirten: 70,                 // Hoch - unverbindlich
+            eifersucht_als_signal: 25,   // Niedrig - keine Besitzansprüche
+            treue_werte: 40,             // Niedrig-mittel - flexible Definition
+            bindungsbereitschaft: 20     // Niedrig - Autonomie wichtiger
+        },
+
+        // ═══════════════════════════════════════════════════════════════════════
+        // WERTE & HALTUNG (10) - Überzeugungen, Religion, Politik
+        // ═══════════════════════════════════════════════════════════════════════
+        // Singles: Progressive, individuelle Werte
+        werte_haltung: {
+            spiritualitaet: 55,          // Mittel - individuelle Spiritualität
+            religioese_praxis: 25,       // Niedrig - nicht institutionell
+            politisches_engagement: 55,  // Mittel - wenn persönlich relevant
+            umweltbewusstsein: 60,       // Mittel-hoch - individuell gelebt
+            traditionelle_werte: 20,     // Niedrig - progressiv
+            moderne_werte: 85,           // Sehr hoch - individualistisch
+            toleranz: 80,                // Hoch - akzeptiert Diversität
+            offenheit_neues: 85,         // Sehr hoch - Neugier
+            kulturelle_identitaet: 55,   // Mittel - eigene Definition
+            wertekongruenz: 70           // Hoch - lebt nach eigenen Werten
+        },
+
+        // ═══════════════════════════════════════════════════════════════════════
+        // PRAKTISCHES LEBEN (10) - Alltag, Organisation, Gesundheit
+        // ═══════════════════════════════════════════════════════════════════════
+        // Singles: Hohe Eigenständigkeit, flexible Lebensgestaltung
+        praktisches_leben: {
+            haushaltsaufteilung: 10,     // Sehr niedrig - alles alleine
+            alltagsorganisation: 70,     // Hoch - strukturiert für sich
+            gesundheitsbewusstsein: 75,  // Hoch - Selbstfürsorge
+            ernaehrungsstil: 65,         // Mittel-hoch - eigene Wahl
+            ordnung_sauberkeit: 60,      // Mittel - eigener Standard
+            mobilitaet: 90,              // Sehr hoch - flexibel und mobil
+            wohnort_flexibilitaet: 90,   // Sehr hoch - ortsungebunden
+            heimatverbundenheit: 35,     // Niedrig - nicht verwurzelt
+            reisen_abenteuer: 85,        // Sehr hoch - Entdeckungslust
+            routine_struktur: 55         // Mittel - eigene Routinen
         }
     },
 

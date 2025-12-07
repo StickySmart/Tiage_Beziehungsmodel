@@ -188,6 +188,136 @@ const LATProfil = {
             machtaustausch: 50,          // Mittel
             dienend_sein: 50,            // Mittel
             beschuetzen: 65              // Mittel-hoch
+        },
+
+        // ═══════════════════════════════════════════════════════════════════════
+        // LEBENSPLANUNG (15) - Kinder, Ehe, Wohnen, Familie
+        // ═══════════════════════════════════════════════════════════════════════
+        // LAT: Feste Beziehung, aber getrennt wohnen
+        lebensplanung: {
+            kinderwunsch: 50,            // Mittel - individuell
+            elternschaft: 45,            // Mittel - kann kompliziert sein mit LAT
+            fortpflanzung: 40,           // Niedrig-mittel
+            fuersorge: 70,               // Hoch - aus der Distanz
+            familie_gruenden: 40,        // Niedrig-mittel - erschwert durch LAT
+            generativitaet: 55,          // Mittel
+            erziehung_werte: 50,         // Mittel - wenn relevant
+            verbindlichkeit: 75,         // Hoch - feste Beziehung
+            langfristige_bindung: 80,    // Hoch - langfristig angelegt
+            rechtliche_sicherheit: 50,   // Mittel - offen
+            tradition_ehe: 40,           // Niedrig-mittel - nicht priorisiert
+            oeffentliches_bekenntnis: 60, // Mittel - Beziehung anerkannt
+            gemeinsamer_wohnraum: 10,    // Sehr niedrig - bewusst vermieden
+            eigener_rueckzugsort: 100,   // Maximum - Kernbedürfnis
+            haeuslichkeit: 75            // Hoch - im eigenen Zuhause
+        },
+
+        // ═══════════════════════════════════════════════════════════════════════
+        // FINANZEN & KARRIERE (10) - Geld, Arbeit, berufliche Entwicklung
+        // ═══════════════════════════════════════════════════════════════════════
+        // LAT: Getrennte Finanzen, eigene Karrieren
+        finanzen_karriere: {
+            finanzielle_unabhaengigkeit: 90, // Sehr hoch - jeder zahlt eigene Wohnung
+            gemeinsame_finanzen: 25,     // Niedrig - meist getrennt
+            versorger_rolle: 25,         // Niedrig - jeder für sich
+            materielle_sicherheit: 75,   // Hoch - eigene Absicherung
+            karriere_entwicklung: 80,    // Hoch - eigene Karriere
+            berufliche_anerkennung: 75,  // Hoch
+            work_life_balance: 80,       // Hoch - eigener Rhythmus
+            gemeinsame_ziele: 60,        // Mittel-hoch - für die Beziehung
+            erfolg: 75,                  // Hoch
+            leistung: 70                 // Hoch
+        },
+
+        // ═══════════════════════════════════════════════════════════════════════
+        // KOMMUNIKATION & STIL (12) - Art des Austauschs
+        // ═══════════════════════════════════════════════════════════════════════
+        // LAT: Kommunikation über Distanz essentiell
+        kommunikation_stil: {
+            emotionale_offenheit: 75,    // Hoch - wichtig für die Distanz
+            tiefe_gespraeche: 80,        // Hoch - bei Treffen
+            small_talk: 60,              // Mittel
+            konfliktbereitschaft: 70,    // Hoch - ansprechen statt schwelen
+            konstruktive_kritik: 75,     // Hoch
+            aktives_zuhoeren: 80,        // Hoch - bei Treffen präsent
+            nonverbale_kommunikation: 70, // Hoch - wenn zusammen
+            humor_ironie: 75,            // Hoch
+            intellektueller_austausch: 75, // Hoch
+            digitale_kommunikation: 90,  // Sehr hoch - wichtig für die Distanz
+            verbale_anerkennung: 80,     // Hoch - Wertschätzung zeigen
+            schweigen_aushalten: 75      // Hoch - Zeit alleine
+        },
+
+        // ═══════════════════════════════════════════════════════════════════════
+        // SOZIALES LEBEN (12) - Freunde, Familie, Gesellschaft
+        // ═══════════════════════════════════════════════════════════════════════
+        // LAT: Eigene und gemeinsame Kreise
+        soziales_leben: {
+            freundeskreis_pflege: 80,    // Hoch - eigene Freunde wichtig
+            gemeinsame_freunde: 65,      // Mittel-hoch - auch gemeinsam
+            familieneinbindung: 55,      // Mittel - kann Erklärung brauchen
+            gesellschaftliches_engagement: 55, // Mittel
+            networking: 65,              // Mittel-hoch
+            gemeinsame_hobbys: 55,       // Mittel - bei Treffen
+            individuelle_hobbys: 85,     // Sehr hoch - eigene Zeit
+            gemeinsame_zeit: 65,         // Mittel-hoch - qualitativ
+            zeit_fuer_sich: 90,          // Sehr hoch - viel Eigenzeit
+            soziale_unterstuetzung: 70,  // Hoch - gegenseitig
+            gemeinsame_erlebnisse: 75,   // Hoch - bewusst geplant
+            alltagsteilung: 25           // Niedrig - getrennte Alltage
+        },
+
+        // ═══════════════════════════════════════════════════════════════════════
+        // INTIMITÄT & BEZIEHUNG (12) - Nähe, Sexualität, Bindung
+        // ═══════════════════════════════════════════════════════════════════════
+        // LAT: Intensive Nähe bei Treffen, meist exklusiv
+        intimitaet_beziehung: {
+            koerpernaehe: 75,            // Hoch - wenn zusammen intensiv
+            kuscheln: 75,                // Hoch - bei Treffen
+            sexuelle_exklusivitaet: 75,  // Hoch - meist monogam
+            sexuelle_offenheit: 60,      // Mittel-hoch
+            leidenschaft: 80,            // Hoch - Wiedersehensfreude
+            zaertlichkeit: 75,           // Hoch
+            emotionale_tiefe: 80,        // Hoch - feste Bindung
+            romantik: 80,                // Hoch - Dates bleiben besonders
+            flirten: 45,                 // Mittel - meist mit Partner
+            eifersucht_als_signal: 50,   // Mittel - Vertrauen wichtiger
+            treue_werte: 75,             // Hoch - meist treu
+            bindungsbereitschaft: 80     // Hoch - feste Beziehung
+        },
+
+        // ═══════════════════════════════════════════════════════════════════════
+        // WERTE & HALTUNG (10) - Überzeugungen, Religion, Politik
+        // ═══════════════════════════════════════════════════════════════════════
+        // LAT: Moderat progressive Werte
+        werte_haltung: {
+            spiritualitaet: 55,          // Mittel
+            religioese_praxis: 35,       // Niedrig-mittel
+            politisches_engagement: 50,  // Mittel
+            umweltbewusstsein: 60,       // Mittel-hoch
+            traditionelle_werte: 35,     // Niedrig-mittel - bewusst anders
+            moderne_werte: 75,           // Hoch - offenes Modell
+            toleranz: 80,                // Hoch - akzeptiert verschiedene Wege
+            offenheit_neues: 75,         // Hoch
+            kulturelle_identitaet: 60,   // Mittel-hoch
+            wertekongruenz: 70           // Hoch - lebt nach Überzeugung
+        },
+
+        // ═══════════════════════════════════════════════════════════════════════
+        // PRAKTISCHES LEBEN (10) - Alltag, Organisation, Gesundheit
+        // ═══════════════════════════════════════════════════════════════════════
+        // LAT: Eigenständiger Alltag, Treffen planen
+        praktisches_leben: {
+            haushaltsaufteilung: 15,     // Sehr niedrig - jeder eigene Wohnung
+            alltagsorganisation: 80,     // Hoch - gut organisiert
+            gesundheitsbewusstsein: 70,  // Hoch
+            ernaehrungsstil: 60,         // Mittel-hoch
+            ordnung_sauberkeit: 70,      // Hoch - eigener Standard
+            mobilitaet: 80,              // Hoch - Reisen zum Partner
+            wohnort_flexibilitaet: 55,   // Mittel - je nach Distanz
+            heimatverbundenheit: 65,     // Mittel-hoch - eigenes Zuhause
+            reisen_abenteuer: 70,        // Hoch - gemeinsame Reisen
+            routine_struktur: 75         // Hoch - geplante Abläufe
         }
     },
 

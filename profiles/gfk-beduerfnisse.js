@@ -205,6 +205,105 @@ const GfkBeduerfnisse = {
                 "dienend_sein",
                 "beschuetzen"
             ]
+        },
+
+        // ═══════════════════════════════════════════════════════════════════════════
+        // ATTRIBUT-SPEZIFISCHE KATEGORIEN (NEU)
+        // Konkrete Lebensthemen für Beziehungs-Matching
+        // ═══════════════════════════════════════════════════════════════════════════
+
+        lebensplanung: {
+            name: "Lebensplanung",
+            description: "Kinder, Ehe, Wohnen, Familie",
+            color: "#10B981",
+            beduerfnisse: [
+                "kinderwunsch", "elternschaft", "fortpflanzung", "familie_gruenden", "generativitaet",
+                "verbindlichkeit", "langfristige_bindung", "rechtliche_sicherheit", "treueversprechen",
+                "gemeinsamer_wohnraum", "haeuslichkeit", "nest_bauen", "alltag_teilen",
+                "eigener_raum", "rueckzugsort",
+                "tierliebe", "fuersorge_tiere", "begleiter", "verantwortung_tier",
+                "sesshaftigkeit", "verwurzelung", "mobilitaet", "heimat", "neue_orte",
+                "familienbindung", "herkunftsfamilie", "familientreffen", "generationenverbund"
+            ]
+        },
+
+        finanzen_karriere: {
+            name: "Finanzen & Karriere",
+            description: "Geld, Beruf, Work-Life-Balance",
+            color: "#F59E0B",
+            beduerfnisse: [
+                "finanzielle_unabhaengigkeit", "gemeinsame_finanzen", "finanzielle_transparenz",
+                "finanzielle_sicherheit", "sparsamkeit", "grosszuegigkeit",
+                "berufliche_erfuellung", "karriereambition", "work_life_balance",
+                "berufliche_anerkennung", "zeit_fuer_beziehung", "berufliche_flexibilitaet"
+            ]
+        },
+
+        kommunikation_stil: {
+            name: "Kommunikationsstil",
+            description: "Gespräche, Emotionen, Konflikte",
+            color: "#3B82F6",
+            beduerfnisse: [
+                "taeglicher_austausch", "tiefgehende_gespraeche", "small_talk",
+                "stille_gemeinsam", "verbale_verbindung", "zuhoeren",
+                "emotionale_offenheit", "gefuehle_zeigen", "verletzlichkeit",
+                "emotionale_zurueckhaltung", "emotionale_sicherheit", "gefuehle_teilen",
+                "konfliktklaerung", "aussprache", "konflikt_vermeiden", "streitkultur", "versoehnlichkeit"
+            ]
+        },
+
+        soziales_leben: {
+            name: "Soziales Leben",
+            description: "Introversion/Extroversion, Freunde, Alleinzeit",
+            color: "#8B5CF6",
+            beduerfnisse: [
+                "soziale_energie", "geselligkeit", "ruhe_von_menschen",
+                "allein_aufladen", "menschen_treffen", "kleine_gruppen",
+                "zeit_fuer_sich", "eigene_hobbys", "gemeinsame_zeit",
+                "partnerzeit", "eigene_interessen",
+                "eigene_freunde", "gemeinsame_freunde", "freundeskreis_teilen",
+                "soziales_netz", "freunde_pflegen", "neue_freundschaften"
+            ]
+        },
+
+        intimitaet_beziehung: {
+            name: "Intimität & Romantik",
+            description: "Körperliche Nähe, Romantik, Sexualität",
+            color: "#EC4899",
+            beduerfnisse: [
+                "koerpernaehe", "kuscheln", "physische_distanz",
+                "koerperkontakt", "umarmungen", "hand_halten",
+                "romantische_gesten", "ueberraschungen", "dates",
+                "alltags_romantik", "aufmerksamkeiten", "liebesbekundungen",
+                "sexuelle_haeufigkeit", "sexuelle_intimiaet", "koerperliche_lust",
+                "sexuelle_experimentierfreude", "sexuelle_verbindung", "sexuelle_zufriedenheit"
+            ]
+        },
+
+        werte_haltung: {
+            name: "Werte & Haltungen",
+            description: "Religion, Tradition, Umwelt",
+            color: "#6366F1",
+            beduerfnisse: [
+                "spiritualitaet", "glaubenspraxis", "religioese_gemeinschaft",
+                "saekularitaet", "sinnsuche", "transzendenz",
+                "traditionelle_werte", "moderne_lebensweise", "konservative_werte",
+                "progressive_werte", "kulturelle_tradition", "offenheit_fuer_neues",
+                "umweltverantwortung", "nachhaltigkeit", "oekologisches_bewusstsein",
+                "pragmatismus", "klimaschutz", "ressourcenschonung"
+            ]
+        },
+
+        praktisches_leben: {
+            name: "Praktisches Leben",
+            description: "Ordnung, Reisen, Alltag",
+            color: "#14B8A6",
+            beduerfnisse: [
+                "ordnungssinn", "sauberkeit", "struktur",
+                "chaos_toleranz", "organisiert_sein", "flexibilitaet_haushalt",
+                "reisen", "abenteuer", "neue_orte_entdecken",
+                "zuhause_bleiben", "urlaub", "fernweh", "heimatverbundenheit"
+            ]
         }
     },
 
@@ -346,7 +445,158 @@ const GfkBeduerfnisse = {
         sich_fallenlassen: { label: "Sich fallenlassen", kategorie: "dynamik", sekundaer: ["verstaendnis", "sicherheit", "zuneigung"] },
         machtaustausch: { label: "Machtaustausch", kategorie: "dynamik", sekundaer: ["verbundenheit", "intimitaet"] },
         dienend_sein: { label: "Dienend sein", kategorie: "dynamik", sekundaer: ["zuneigung", "identitaet"] },
-        beschuetzen: { label: "Beschützen", kategorie: "dynamik", sekundaer: ["zuneigung", "sicherheit", "identitaet"] }
+        beschuetzen: { label: "Beschützen", kategorie: "dynamik", sekundaer: ["zuneigung", "sicherheit", "identitaet"] },
+
+        // ═══════════════════════════════════════════════════════════════════════
+        // LEBENSPLANUNG - Kinder, Ehe, Wohnen, Familie
+        // ═══════════════════════════════════════════════════════════════════════
+        kinderwunsch: { label: "Kinderwunsch", kategorie: "lebensplanung" },
+        elternschaft: { label: "Elternschaft", kategorie: "lebensplanung" },
+        fortpflanzung: { label: "Fortpflanzung", kategorie: "lebensplanung" },
+        familie_gruenden: { label: "Familie gründen", kategorie: "lebensplanung" },
+        generativitaet: { label: "Generativität", kategorie: "lebensplanung" },
+        verbindlichkeit: { label: "Verbindlichkeit", kategorie: "lebensplanung", sekundaer: ["sicherheit"] },
+        langfristige_bindung: { label: "Langfristige Bindung", kategorie: "lebensplanung", sekundaer: ["sicherheit", "zuneigung"] },
+        rechtliche_sicherheit: { label: "Rechtliche Sicherheit", kategorie: "lebensplanung", sekundaer: ["sicherheit"] },
+        treueversprechen: { label: "Treueversprechen", kategorie: "lebensplanung", sekundaer: ["verstaendnis"] },
+        gemeinsamer_wohnraum: { label: "Gemeinsamer Wohnraum", kategorie: "lebensplanung" },
+        haeuslichkeit: { label: "Häuslichkeit", kategorie: "lebensplanung", sekundaer: ["sicherheit"] },
+        nest_bauen: { label: "Nest bauen", kategorie: "lebensplanung", sekundaer: ["zuneigung"] },
+        alltag_teilen: { label: "Alltag teilen", kategorie: "lebensplanung", sekundaer: ["zuneigung", "teilnahme"] },
+        eigener_raum: { label: "Eigener Raum", kategorie: "lebensplanung", sekundaer: ["freiheit"] },
+        rueckzugsort: { label: "Rückzugsort", kategorie: "lebensplanung", sekundaer: ["freiheit", "sicherheit"] },
+        tierliebe: { label: "Tierliebe", kategorie: "lebensplanung" },
+        fuersorge_tiere: { label: "Fürsorge für Tiere", kategorie: "lebensplanung", sekundaer: ["zuneigung"] },
+        begleiter: { label: "Tierischer Begleiter", kategorie: "lebensplanung" },
+        verantwortung_tier: { label: "Verantwortung für Tier", kategorie: "lebensplanung" },
+        sesshaftigkeit: { label: "Sesshaftigkeit", kategorie: "lebensplanung", sekundaer: ["sicherheit"] },
+        verwurzelung: { label: "Verwurzelung", kategorie: "lebensplanung", sekundaer: ["sicherheit", "teilnahme"] },
+        mobilitaet: { label: "Mobilität", kategorie: "lebensplanung", sekundaer: ["freiheit"] },
+        heimat: { label: "Heimat", kategorie: "lebensplanung", sekundaer: ["sicherheit", "teilnahme"] },
+        neue_orte: { label: "Neue Orte", kategorie: "lebensplanung", sekundaer: ["freiheit", "erschaffen"] },
+        familienbindung: { label: "Familienbindung", kategorie: "lebensplanung", sekundaer: ["teilnahme"] },
+        herkunftsfamilie: { label: "Herkunftsfamilie", kategorie: "lebensplanung", sekundaer: ["teilnahme"] },
+        familientreffen: { label: "Familientreffen", kategorie: "lebensplanung", sekundaer: ["teilnahme"] },
+        generationenverbund: { label: "Generationenverbund", kategorie: "lebensplanung", sekundaer: ["teilnahme", "verbundenheit"] },
+
+        // ═══════════════════════════════════════════════════════════════════════
+        // FINANZEN & KARRIERE
+        // ═══════════════════════════════════════════════════════════════════════
+        finanzielle_unabhaengigkeit: { label: "Finanzielle Unabhängigkeit", kategorie: "finanzen_karriere", sekundaer: ["freiheit"] },
+        gemeinsame_finanzen: { label: "Gemeinsame Finanzen", kategorie: "finanzen_karriere", sekundaer: ["teilnahme"] },
+        finanzielle_transparenz: { label: "Finanzielle Transparenz", kategorie: "finanzen_karriere", sekundaer: ["verstaendnis"] },
+        finanzielle_sicherheit: { label: "Finanzielle Sicherheit", kategorie: "finanzen_karriere", sekundaer: ["sicherheit"] },
+        sparsamkeit: { label: "Sparsamkeit", kategorie: "finanzen_karriere" },
+        grosszuegigkeit: { label: "Großzügigkeit", kategorie: "finanzen_karriere", sekundaer: ["zuneigung"] },
+        berufliche_erfuellung: { label: "Berufliche Erfüllung", kategorie: "finanzen_karriere", sekundaer: ["identitaet"] },
+        karriereambition: { label: "Karriereambition", kategorie: "finanzen_karriere", sekundaer: ["identitaet"] },
+        work_life_balance: { label: "Work-Life-Balance", kategorie: "finanzen_karriere", sekundaer: ["musse", "zuneigung"] },
+        berufliche_anerkennung: { label: "Berufliche Anerkennung", kategorie: "finanzen_karriere", sekundaer: ["identitaet", "verstaendnis"] },
+        zeit_fuer_beziehung: { label: "Zeit für Beziehung", kategorie: "finanzen_karriere", sekundaer: ["zuneigung"] },
+        berufliche_flexibilitaet: { label: "Berufliche Flexibilität", kategorie: "finanzen_karriere", sekundaer: ["freiheit"] },
+
+        // ═══════════════════════════════════════════════════════════════════════
+        // KOMMUNIKATIONSSTIL
+        // ═══════════════════════════════════════════════════════════════════════
+        taeglicher_austausch: { label: "Täglicher Austausch", kategorie: "kommunikation_stil", sekundaer: ["teilnahme"] },
+        tiefgehende_gespraeche: { label: "Tiefgehende Gespräche", kategorie: "kommunikation_stil", sekundaer: ["verstaendnis", "verbundenheit"] },
+        small_talk: { label: "Small Talk", kategorie: "kommunikation_stil", sekundaer: ["teilnahme"] },
+        stille_gemeinsam: { label: "Stille gemeinsam", kategorie: "kommunikation_stil", sekundaer: ["zuneigung", "sicherheit"] },
+        verbale_verbindung: { label: "Verbale Verbindung", kategorie: "kommunikation_stil", sekundaer: ["teilnahme", "verstaendnis"] },
+        zuhoeren: { label: "Zuhören", kategorie: "kommunikation_stil", sekundaer: ["verstaendnis", "zuneigung"] },
+        emotionale_offenheit: { label: "Emotionale Offenheit", kategorie: "kommunikation_stil", sekundaer: ["verstaendnis", "zuneigung"] },
+        gefuehle_zeigen: { label: "Gefühle zeigen", kategorie: "kommunikation_stil", sekundaer: ["verstaendnis"] },
+        verletzlichkeit: { label: "Verletzlichkeit zulassen", kategorie: "kommunikation_stil", sekundaer: ["verstaendnis", "zuneigung"] },
+        emotionale_zurueckhaltung: { label: "Emotionale Zurückhaltung", kategorie: "kommunikation_stil" },
+        emotionale_sicherheit: { label: "Emotionale Sicherheit", kategorie: "kommunikation_stil", sekundaer: ["sicherheit"] },
+        gefuehle_teilen: { label: "Gefühle teilen", kategorie: "kommunikation_stil", sekundaer: ["verstaendnis", "zuneigung"] },
+        konfliktklaerung: { label: "Konfliktklärung", kategorie: "kommunikation_stil", sekundaer: ["teilnahme"] },
+        aussprache: { label: "Aussprache", kategorie: "kommunikation_stil", sekundaer: ["teilnahme", "verstaendnis"] },
+        konflikt_vermeiden: { label: "Konflikt vermeiden", kategorie: "kommunikation_stil", sekundaer: ["sicherheit"] },
+        streitkultur: { label: "Streitkultur", kategorie: "kommunikation_stil", sekundaer: ["teilnahme"] },
+        versoehnlichkeit: { label: "Versöhnlichkeit", kategorie: "kommunikation_stil", sekundaer: ["zuneigung", "verstaendnis"] },
+
+        // ═══════════════════════════════════════════════════════════════════════
+        // SOZIALES LEBEN
+        // ═══════════════════════════════════════════════════════════════════════
+        soziale_energie: { label: "Soziale Energie", kategorie: "soziales_leben" },
+        geselligkeit: { label: "Geselligkeit", kategorie: "soziales_leben", sekundaer: ["teilnahme"] },
+        ruhe_von_menschen: { label: "Ruhe von Menschen", kategorie: "soziales_leben", sekundaer: ["freiheit"] },
+        allein_aufladen: { label: "Allein aufladen", kategorie: "soziales_leben", sekundaer: ["freiheit"] },
+        menschen_treffen: { label: "Menschen treffen", kategorie: "soziales_leben", sekundaer: ["teilnahme"] },
+        kleine_gruppen: { label: "Kleine Gruppen", kategorie: "soziales_leben", sekundaer: ["teilnahme"] },
+        zeit_fuer_sich: { label: "Zeit für sich", kategorie: "soziales_leben", sekundaer: ["freiheit"] },
+        eigene_hobbys: { label: "Eigene Hobbys", kategorie: "soziales_leben", sekundaer: ["freiheit", "identitaet"] },
+        gemeinsame_zeit: { label: "Gemeinsame Zeit", kategorie: "soziales_leben", sekundaer: ["zuneigung"] },
+        partnerzeit: { label: "Partnerzeit", kategorie: "soziales_leben", sekundaer: ["zuneigung"] },
+        eigene_interessen: { label: "Eigene Interessen", kategorie: "soziales_leben", sekundaer: ["freiheit", "identitaet"] },
+        eigene_freunde: { label: "Eigene Freunde", kategorie: "soziales_leben", sekundaer: ["freiheit", "teilnahme"] },
+        gemeinsame_freunde: { label: "Gemeinsame Freunde", kategorie: "soziales_leben", sekundaer: ["teilnahme"] },
+        freundeskreis_teilen: { label: "Freundeskreis teilen", kategorie: "soziales_leben", sekundaer: ["teilnahme"] },
+        soziales_netz: { label: "Soziales Netz", kategorie: "soziales_leben", sekundaer: ["sicherheit", "teilnahme"] },
+        freunde_pflegen: { label: "Freunde pflegen", kategorie: "soziales_leben", sekundaer: ["teilnahme"] },
+        neue_freundschaften: { label: "Neue Freundschaften", kategorie: "soziales_leben", sekundaer: ["erschaffen", "teilnahme"] },
+
+        // ═══════════════════════════════════════════════════════════════════════
+        // INTIMITÄT & ROMANTIK
+        // ═══════════════════════════════════════════════════════════════════════
+        koerpernaehe: { label: "Körpernähe", kategorie: "intimitaet_beziehung", sekundaer: ["zuneigung", "existenz"] },
+        kuscheln: { label: "Kuscheln", kategorie: "intimitaet_beziehung", sekundaer: ["zuneigung", "sicherheit"] },
+        physische_distanz: { label: "Physische Distanz", kategorie: "intimitaet_beziehung", sekundaer: ["freiheit"] },
+        koerperkontakt: { label: "Körperkontakt", kategorie: "intimitaet_beziehung", sekundaer: ["zuneigung", "existenz"] },
+        umarmungen: { label: "Umarmungen", kategorie: "intimitaet_beziehung", sekundaer: ["zuneigung", "sicherheit"] },
+        hand_halten: { label: "Hand halten", kategorie: "intimitaet_beziehung", sekundaer: ["zuneigung"] },
+        romantische_gesten: { label: "Romantische Gesten", kategorie: "intimitaet_beziehung", sekundaer: ["zuneigung"] },
+        ueberraschungen: { label: "Überraschungen", kategorie: "intimitaet_beziehung", sekundaer: ["zuneigung", "musse"] },
+        dates: { label: "Dates", kategorie: "intimitaet_beziehung", sekundaer: ["zuneigung"] },
+        alltags_romantik: { label: "Alltags-Romantik", kategorie: "intimitaet_beziehung", sekundaer: ["zuneigung"] },
+        aufmerksamkeiten: { label: "Aufmerksamkeiten", kategorie: "intimitaet_beziehung", sekundaer: ["zuneigung", "verstaendnis"] },
+        liebesbekundungen: { label: "Liebesbekundungen", kategorie: "intimitaet_beziehung", sekundaer: ["zuneigung"] },
+        sexuelle_haeufigkeit: { label: "Sexuelle Häufigkeit", kategorie: "intimitaet_beziehung", sekundaer: ["existenz"] },
+        sexuelle_intimiaet: { label: "Sexuelle Intimität", kategorie: "intimitaet_beziehung", sekundaer: ["zuneigung", "verbundenheit"] },
+        koerperliche_lust: { label: "Körperliche Lust", kategorie: "intimitaet_beziehung", sekundaer: ["existenz", "musse"] },
+        sexuelle_experimentierfreude: { label: "Sexuelle Experimentierfreude", kategorie: "intimitaet_beziehung", sekundaer: ["erschaffen", "freiheit"] },
+        sexuelle_verbindung: { label: "Sexuelle Verbindung", kategorie: "intimitaet_beziehung", sekundaer: ["verbundenheit", "zuneigung"] },
+        sexuelle_zufriedenheit: { label: "Sexuelle Zufriedenheit", kategorie: "intimitaet_beziehung", sekundaer: ["musse"] },
+
+        // ═══════════════════════════════════════════════════════════════════════
+        // WERTE & HALTUNGEN
+        // ═══════════════════════════════════════════════════════════════════════
+        spiritualitaet: { label: "Spiritualität", kategorie: "werte_haltung", sekundaer: ["verbundenheit"] },
+        glaubenspraxis: { label: "Glaubenspraxis", kategorie: "werte_haltung", sekundaer: ["teilnahme"] },
+        religioese_gemeinschaft: { label: "Religiöse Gemeinschaft", kategorie: "werte_haltung", sekundaer: ["teilnahme"] },
+        saekularitaet: { label: "Säkularität", kategorie: "werte_haltung", sekundaer: ["freiheit"] },
+        sinnsuche: { label: "Sinnsuche", kategorie: "werte_haltung", sekundaer: ["identitaet", "verbundenheit"] },
+        transzendenz: { label: "Transzendenz", kategorie: "werte_haltung", sekundaer: ["verbundenheit"] },
+        traditionelle_werte: { label: "Traditionelle Werte", kategorie: "werte_haltung", sekundaer: ["sicherheit"] },
+        moderne_lebensweise: { label: "Moderne Lebensweise", kategorie: "werte_haltung", sekundaer: ["freiheit"] },
+        konservative_werte: { label: "Konservative Werte", kategorie: "werte_haltung", sekundaer: ["sicherheit"] },
+        progressive_werte: { label: "Progressive Werte", kategorie: "werte_haltung", sekundaer: ["freiheit", "erschaffen"] },
+        kulturelle_tradition: { label: "Kulturelle Tradition", kategorie: "werte_haltung", sekundaer: ["teilnahme"] },
+        offenheit_fuer_neues: { label: "Offenheit für Neues", kategorie: "werte_haltung", sekundaer: ["freiheit", "erschaffen"] },
+        umweltverantwortung: { label: "Umweltverantwortung", kategorie: "werte_haltung", sekundaer: ["identitaet"] },
+        nachhaltigkeit: { label: "Nachhaltigkeit", kategorie: "werte_haltung", sekundaer: ["identitaet"] },
+        oekologisches_bewusstsein: { label: "Ökologisches Bewusstsein", kategorie: "werte_haltung", sekundaer: ["identitaet"] },
+        pragmatismus: { label: "Pragmatismus", kategorie: "werte_haltung" },
+        klimaschutz: { label: "Klimaschutz", kategorie: "werte_haltung", sekundaer: ["identitaet"] },
+        ressourcenschonung: { label: "Ressourcenschonung", kategorie: "werte_haltung", sekundaer: ["identitaet"] },
+
+        // ═══════════════════════════════════════════════════════════════════════
+        // PRAKTISCHES LEBEN
+        // ═══════════════════════════════════════════════════════════════════════
+        ordnungssinn: { label: "Ordnungssinn", kategorie: "praktisches_leben", sekundaer: ["identitaet"] },
+        sauberkeit: { label: "Sauberkeit", kategorie: "praktisches_leben" },
+        struktur: { label: "Struktur", kategorie: "praktisches_leben", sekundaer: ["sicherheit"] },
+        chaos_toleranz: { label: "Chaos-Toleranz", kategorie: "praktisches_leben", sekundaer: ["freiheit"] },
+        organisiert_sein: { label: "Organisiert sein", kategorie: "praktisches_leben", sekundaer: ["identitaet"] },
+        flexibilitaet_haushalt: { label: "Flexibilität im Haushalt", kategorie: "praktisches_leben", sekundaer: ["freiheit"] },
+        reisen: { label: "Reisen", kategorie: "praktisches_leben", sekundaer: ["erschaffen", "musse"] },
+        abenteuer: { label: "Abenteuer", kategorie: "praktisches_leben", sekundaer: ["erschaffen", "freiheit"] },
+        neue_orte_entdecken: { label: "Neue Orte entdecken", kategorie: "praktisches_leben", sekundaer: ["erschaffen"] },
+        zuhause_bleiben: { label: "Zuhause bleiben", kategorie: "praktisches_leben", sekundaer: ["sicherheit"] },
+        urlaub: { label: "Urlaub", kategorie: "praktisches_leben", sekundaer: ["musse"] },
+        fernweh: { label: "Fernweh", kategorie: "praktisches_leben", sekundaer: ["freiheit", "erschaffen"] },
+        heimatverbundenheit: { label: "Heimatverbundenheit", kategorie: "praktisches_leben", sekundaer: ["sicherheit", "teilnahme"] }
     },
 
     // ═══════════════════════════════════════════════════════════════════════════

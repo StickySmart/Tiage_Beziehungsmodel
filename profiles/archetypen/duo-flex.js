@@ -189,6 +189,136 @@ const DuoFlexProfil = {
             machtaustausch: 55,          // Mittel - wenn gewünscht
             dienend_sein: 55,            // Mittel - gegenseitig
             beschuetzen: 75              // Hoch - gegenseitig
+        },
+
+        // ═══════════════════════════════════════════════════════════════════════
+        // LEBENSPLANUNG (15) - Kinder, Ehe, Wohnen, Familie
+        // ═══════════════════════════════════════════════════════════════════════
+        // Duo-Flex: Offen für beides, individuelle Entscheidung
+        lebensplanung: {
+            kinderwunsch: 60,            // Mittel-hoch - offen
+            elternschaft: 60,            // Mittel-hoch - wenn gewünscht
+            fortpflanzung: 55,           // Mittel - nicht zwingend
+            fuersorge: 75,               // Hoch - fürsorglich aber nicht aufopfernd
+            familie_gruenden: 55,        // Mittel - offen
+            generativitaet: 65,          // Mittel-hoch
+            erziehung_werte: 60,         // Mittel-hoch - wenn relevant
+            verbindlichkeit: 75,         // Hoch - aber flexibel
+            langfristige_bindung: 75,    // Hoch - mit Entwicklungsraum
+            rechtliche_sicherheit: 55,   // Mittel - nicht zwingend
+            tradition_ehe: 45,           // Mittel - offen aber nicht priorisiert
+            oeffentliches_bekenntnis: 60, // Mittel - schön aber nicht nötig
+            gemeinsamer_wohnraum: 70,    // Hoch - aber mit eigenen Bereichen
+            eigener_rueckzugsort: 80,    // Hoch - wichtig für Balance
+            haeuslichkeit: 65            // Mittel-hoch - Zuhause wichtig
+        },
+
+        // ═══════════════════════════════════════════════════════════════════════
+        // FINANZEN & KARRIERE (10) - Geld, Arbeit, berufliche Entwicklung
+        // ═══════════════════════════════════════════════════════════════════════
+        // Duo-Flex: Geteilte und individuelle Finanzen
+        finanzen_karriere: {
+            finanzielle_unabhaengigkeit: 70, // Hoch - eigenes Einkommen wichtig
+            gemeinsame_finanzen: 60,     // Mittel - teilweise gemeinsam
+            versorger_rolle: 45,         // Mittel - gegenseitig
+            materielle_sicherheit: 70,   // Hoch
+            karriere_entwicklung: 75,    // Hoch - beide können Karriere machen
+            berufliche_anerkennung: 70,  // Hoch
+            work_life_balance: 80,       // Hoch - wichtig
+            gemeinsame_ziele: 75,        // Hoch - aber nicht identisch
+            erfolg: 70,                  // Hoch - individuell definiert
+            leistung: 70                 // Hoch
+        },
+
+        // ═══════════════════════════════════════════════════════════════════════
+        // KOMMUNIKATION & STIL (12) - Art des Austauschs
+        // ═══════════════════════════════════════════════════════════════════════
+        // Duo-Flex: Offene, tiefe Kommunikation - Schlüssel zur Flexibilität
+        kommunikation_stil: {
+            emotionale_offenheit: 85,    // Sehr hoch - Kern der Flexibilität
+            tiefe_gespraeche: 85,        // Sehr hoch - regelmäßig
+            small_talk: 60,              // Mittel - auch ok
+            konfliktbereitschaft: 80,    // Hoch - Konflikte ansprechen
+            konstruktive_kritik: 85,     // Sehr hoch - offen dafür
+            aktives_zuhoeren: 85,        // Sehr hoch - wichtig
+            nonverbale_kommunikation: 75, // Hoch - achtsam
+            humor_ironie: 75,            // Hoch - Leichtigkeit
+            intellektueller_austausch: 75, // Hoch - stimulierend
+            digitale_kommunikation: 65,  // Mittel-hoch
+            verbale_anerkennung: 80,     // Hoch - wichtig
+            schweigen_aushalten: 70      // Hoch - kann auch still sein
+        },
+
+        // ═══════════════════════════════════════════════════════════════════════
+        // SOZIALES LEBEN (12) - Freunde, Familie, Gesellschaft
+        // ═══════════════════════════════════════════════════════════════════════
+        // Duo-Flex: Eigene und gemeinsame Freunde, Balance
+        soziales_leben: {
+            freundeskreis_pflege: 80,    // Hoch - wichtig
+            gemeinsame_freunde: 70,      // Hoch - schön aber nicht exklusiv
+            familieneinbindung: 65,      // Mittel-hoch - in Balance
+            gesellschaftliches_engagement: 60, // Mittel-hoch
+            networking: 60,              // Mittel-hoch
+            gemeinsame_hobbys: 65,       // Mittel-hoch - einige
+            individuelle_hobbys: 80,     // Hoch - wichtig für Identität
+            gemeinsame_zeit: 75,         // Hoch - qualitativ
+            zeit_fuer_sich: 80,          // Hoch - ebenso wichtig
+            soziale_unterstuetzung: 75,  // Hoch - gegenseitig
+            gemeinsame_erlebnisse: 80,   // Hoch - verbindend
+            alltagsteilung: 70           // Hoch - aber nicht verschmolzen
+        },
+
+        // ═══════════════════════════════════════════════════════════════════════
+        // INTIMITÄT & BEZIEHUNG (12) - Nähe, Sexualität, Bindung
+        // ═══════════════════════════════════════════════════════════════════════
+        // Duo-Flex: Tiefe Intimität mit individueller Freiheit
+        intimitaet_beziehung: {
+            koerpernaehe: 80,            // Hoch - wichtig
+            kuscheln: 80,                // Hoch
+            sexuelle_exklusivitaet: 70,  // Hoch - meist exklusiv, offen verhandelbar
+            sexuelle_offenheit: 70,      // Hoch - kann Wünsche äußern
+            leidenschaft: 80,            // Hoch - lebendig halten
+            zaertlichkeit: 80,           // Hoch
+            emotionale_tiefe: 85,        // Sehr hoch - Kern
+            romantik: 70,                // Hoch - schätzt es
+            flirten: 55,                 // Mittel - spielerisch ok
+            eifersucht_als_signal: 50,   // Mittel - reflektiert damit umgehen
+            treue_werte: 80,             // Hoch - nach eigener Definition
+            bindungsbereitschaft: 80     // Hoch - bewusst gewählt
+        },
+
+        // ═══════════════════════════════════════════════════════════════════════
+        // WERTE & HALTUNG (10) - Überzeugungen, Religion, Politik
+        // ═══════════════════════════════════════════════════════════════════════
+        // Duo-Flex: Progressive, respektiert Unterschiede
+        werte_haltung: {
+            spiritualitaet: 55,          // Mittel - individuell
+            religioese_praxis: 40,       // Mittel-niedrig - offen
+            politisches_engagement: 55,  // Mittel
+            umweltbewusstsein: 65,       // Mittel-hoch
+            traditionelle_werte: 45,     // Mittel - selektiv
+            moderne_werte: 75,           // Hoch - offen für Neues
+            toleranz: 85,                // Sehr hoch - akzeptiert Unterschiede
+            offenheit_neues: 80,         // Hoch
+            kulturelle_identitaet: 60,   // Mittel-hoch
+            wertekongruenz: 75           // Hoch - aber respektiert Unterschiede
+        },
+
+        // ═══════════════════════════════════════════════════════════════════════
+        // PRAKTISCHES LEBEN (10) - Alltag, Organisation, Gesundheit
+        // ═══════════════════════════════════════════════════════════════════════
+        // Duo-Flex: Geteilte Verantwortung mit Flexibilität
+        praktisches_leben: {
+            haushaltsaufteilung: 80,     // Hoch - fair geteilt
+            alltagsorganisation: 75,     // Hoch - koordiniert
+            gesundheitsbewusstsein: 70,  // Hoch
+            ernaehrungsstil: 60,         // Mittel-hoch - Kompromisse
+            ordnung_sauberkeit: 65,      // Mittel-hoch
+            mobilitaet: 70,              // Hoch - flexibel
+            wohnort_flexibilitaet: 65,   // Mittel-hoch - verhandelbar
+            heimatverbundenheit: 60,     // Mittel-hoch
+            reisen_abenteuer: 75,        // Hoch - gemeinsam & alleine
+            routine_struktur: 65         // Mittel-hoch - flexible Routinen
         }
     },
 

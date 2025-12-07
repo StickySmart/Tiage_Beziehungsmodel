@@ -188,6 +188,136 @@ const RAProfil = {
             machtaustausch: 40,          // Niedrig-mittel
             dienend_sein: 30,            // Niedrig
             beschuetzen: 50              // Mittel
+        },
+
+        // ═══════════════════════════════════════════════════════════════════════
+        // LEBENSPLANUNG (15) - Kinder, Ehe, Wohnen, Familie
+        // ═══════════════════════════════════════════════════════════════════════
+        // RA: Keine vordefinierten Strukturen, alles individuell verhandelbar
+        lebensplanung: {
+            kinderwunsch: 35,            // Niedrig-mittel - individuell
+            elternschaft: 30,            // Niedrig - nicht priorisiert
+            fortpflanzung: 25,           // Niedrig
+            fuersorge: 50,               // Mittel - ohne Verpflichtung
+            familie_gruenden: 20,        // Niedrig - traditionelle Struktur abgelehnt
+            generativitaet: 45,          // Mittel
+            erziehung_werte: 35,         // Niedrig-mittel
+            verbindlichkeit: 25,         // Niedrig - keine festen Commitments
+            langfristige_bindung: 30,    // Niedrig - Wandel akzeptiert
+            rechtliche_sicherheit: 15,   // Sehr niedrig - institutionell abgelehnt
+            tradition_ehe: 5,            // Minimum - explizit abgelehnt
+            oeffentliches_bekenntnis: 15, // Sehr niedrig - nicht nötig
+            gemeinsamer_wohnraum: 25,    // Niedrig - kann, muss nicht
+            eigener_rueckzugsort: 90,    // Sehr hoch - wichtig
+            haeuslichkeit: 50            // Mittel - eigene Definition
+        },
+
+        // ═══════════════════════════════════════════════════════════════════════
+        // FINANZEN & KARRIERE (10) - Geld, Arbeit, berufliche Entwicklung
+        // ═══════════════════════════════════════════════════════════════════════
+        // RA: Vollständige finanzielle Autonomie
+        finanzen_karriere: {
+            finanzielle_unabhaengigkeit: 95, // Sehr hoch - essentiell
+            gemeinsame_finanzen: 10,     // Sehr niedrig - vermeidet
+            versorger_rolle: 15,         // Sehr niedrig - lehnt ab
+            materielle_sicherheit: 60,   // Mittel-hoch
+            karriere_entwicklung: 70,    // Hoch - eigene Erfüllung
+            berufliche_anerkennung: 65,  // Mittel-hoch
+            work_life_balance: 80,       // Hoch - Freiheit wichtig
+            gemeinsame_ziele: 35,        // Niedrig - eigene Ziele
+            erfolg: 70,                  // Hoch - selbst definiert
+            leistung: 65                 // Mittel-hoch
+        },
+
+        // ═══════════════════════════════════════════════════════════════════════
+        // KOMMUNIKATION & STIL (12) - Art des Austauschs
+        // ═══════════════════════════════════════════════════════════════════════
+        // RA: Ehrlich, direkt, ohne Zwang
+        kommunikation_stil: {
+            emotionale_offenheit: 65,    // Mittel-hoch - authentisch
+            tiefe_gespraeche: 70,        // Hoch - philosophisch
+            small_talk: 50,              // Mittel
+            konfliktbereitschaft: 80,    // Hoch - hinterfragt
+            konstruktive_kritik: 80,     // Hoch
+            aktives_zuhoeren: 70,        // Hoch
+            nonverbale_kommunikation: 55, // Mittel
+            humor_ironie: 80,            // Hoch - kritisch
+            intellektueller_austausch: 85, // Sehr hoch - Ideen wichtig
+            digitale_kommunikation: 70,  // Hoch
+            verbale_anerkennung: 55,     // Mittel
+            schweigen_aushalten: 80      // Hoch - braucht keine Bestätigung
+        },
+
+        // ═══════════════════════════════════════════════════════════════════════
+        // SOZIALES LEBEN (12) - Freunde, Familie, Gesellschaft
+        // ═══════════════════════════════════════════════════════════════════════
+        // RA: Alle Beziehungen gleichwertig, keine Hierarchie
+        soziales_leben: {
+            freundeskreis_pflege: 80,    // Hoch - gleichwertig mit Partnern
+            gemeinsame_freunde: 55,      // Mittel - keine Trennung
+            familieneinbindung: 35,      // Niedrig-mittel - auf Distanz
+            gesellschaftliches_engagement: 65, // Mittel-hoch - politisch
+            networking: 70,              // Hoch - Verbindungen ohne Hierarchie
+            gemeinsame_hobbys: 45,       // Mittel - situativ
+            individuelle_hobbys: 90,     // Sehr hoch - wichtig
+            gemeinsame_zeit: 45,         // Mittel - freiwillig
+            zeit_fuer_sich: 90,          // Sehr hoch - essentiell
+            soziale_unterstuetzung: 55,  // Mittel - gegenseitig aber frei
+            gemeinsame_erlebnisse: 55,   // Mittel - situativ
+            alltagsteilung: 20           // Niedrig - vermeidet Verschmelzung
+        },
+
+        // ═══════════════════════════════════════════════════════════════════════
+        // INTIMITÄT & BEZIEHUNG (12) - Nähe, Sexualität, Bindung
+        // ═══════════════════════════════════════════════════════════════════════
+        // RA: Intimität nicht hierarchisiert, situativ
+        intimitaet_beziehung: {
+            koerpernaehe: 50,            // Mittel - situativ
+            kuscheln: 45,                // Mittel - nicht priorisiert
+            sexuelle_exklusivitaet: 5,   // Minimum - explizit abgelehnt
+            sexuelle_offenheit: 90,      // Sehr hoch - keine Regeln
+            leidenschaft: 55,            // Mittel - situativ
+            zaertlichkeit: 50,           // Mittel
+            emotionale_tiefe: 55,        // Mittel - mit verschiedenen
+            romantik: 40,                // Niedrig-mittel - nicht hierarchisiert
+            flirten: 75,                 // Hoch - Freiheit
+            eifersucht_als_signal: 20,   // Niedrig - wird abgelehnt
+            treue_werte: 25,             // Niedrig - eigene Definition
+            bindungsbereitschaft: 30     // Niedrig - flexibel
+        },
+
+        // ═══════════════════════════════════════════════════════════════════════
+        // WERTE & HALTUNG (10) - Überzeugungen, Religion, Politik
+        // ═══════════════════════════════════════════════════════════════════════
+        // RA: Anarchistische, anti-hierarchische Werte
+        werte_haltung: {
+            spiritualitaet: 50,          // Mittel - individuell
+            religioese_praxis: 15,       // Sehr niedrig - institutionell abgelehnt
+            politisches_engagement: 75,  // Hoch - politisch aktiv
+            umweltbewusstsein: 70,       // Hoch - progressive Werte
+            traditionelle_werte: 5,      // Minimum - explizit abgelehnt
+            moderne_werte: 95,           // Sehr hoch - radikal progressiv
+            toleranz: 95,                // Sehr hoch - alle Wege akzeptiert
+            offenheit_neues: 95,         // Sehr hoch
+            kulturelle_identitaet: 45,   // Mittel - flexibel
+            wertekongruenz: 85           // Sehr hoch - lebt nach Überzeugungen
+        },
+
+        // ═══════════════════════════════════════════════════════════════════════
+        // PRAKTISCHES LEBEN (10) - Alltag, Organisation, Gesundheit
+        // ═══════════════════════════════════════════════════════════════════════
+        // RA: Maximale Flexibilität und Autonomie
+        praktisches_leben: {
+            haushaltsaufteilung: 15,     // Sehr niedrig - eigenständig
+            alltagsorganisation: 60,     // Mittel - für sich selbst
+            gesundheitsbewusstsein: 70,  // Hoch
+            ernaehrungsstil: 60,         // Mittel-hoch - bewusst
+            ordnung_sauberkeit: 50,      // Mittel - eigener Standard
+            mobilitaet: 95,              // Sehr hoch - maximal flexibel
+            wohnort_flexibilitaet: 95,   // Sehr hoch - ortsungebunden
+            heimatverbundenheit: 25,     // Niedrig - nomadisch
+            reisen_abenteuer: 90,        // Sehr hoch
+            routine_struktur: 35         // Niedrig - wenig Struktur
         }
     },
 

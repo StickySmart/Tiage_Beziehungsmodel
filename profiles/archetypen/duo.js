@@ -201,6 +201,172 @@ const DuoProfil = {
             machtaustausch: 65,          // Mittel-hoch - offen dafür
             dienend_sein: 70,            // Hoch - für Partner da sein
             beschuetzen: 80              // Hoch - will beschützen
+        },
+
+        // ═══════════════════════════════════════════════════════════════════════
+        // LEBENSPLANUNG - Kinder, Ehe, Wohnen, Familie
+        // ═══════════════════════════════════════════════════════════════════════
+        // Duos: Traditionelle Lebensplanung, Familie als Ziel
+        lebensplanung: {
+            kinderwunsch: 85,            // Sehr hoch - Familie gründen
+            elternschaft: 80,            // Hoch - gemeinsam Eltern sein
+            fortpflanzung: 75,           // Hoch - biologisches Bedürfnis
+            familie_gruenden: 85,        // Sehr hoch - Kernwunsch
+            generativitaet: 75,          // Hoch - etwas weitergeben
+            verbindlichkeit: 95,         // Sehr hoch - Kern des Duo
+            langfristige_bindung: 95,    // Sehr hoch - "für immer"
+            rechtliche_sicherheit: 85,   // Sehr hoch - Ehe wichtig
+            treueversprechen: 95,        // Sehr hoch - exklusiv
+            gemeinsamer_wohnraum: 95,    // Sehr hoch - zusammen leben
+            haeuslichkeit: 90,           // Sehr hoch - gemeinsames Zuhause
+            nest_bauen: 90,              // Sehr hoch - Heim schaffen
+            alltag_teilen: 95,           // Sehr hoch - alles zusammen
+            eigener_raum: 35,            // Niedrig - wenig Raumbedürfnis
+            rueckzugsort: 40,            // Niedrig - immer zusammen
+            tierliebe: 70,               // Hoch - gemeinsame Haustiere
+            fuersorge_tiere: 70,         // Hoch
+            begleiter: 65,               // Mittel-hoch
+            verantwortung_tier: 70,      // Hoch
+            sesshaftigkeit: 90,          // Sehr hoch - Stabilität
+            verwurzelung: 85,            // Sehr hoch - Heimat
+            mobilitaet: 30,              // Niedrig - sesshaft
+            heimat: 90,                  // Sehr hoch
+            neue_orte: 35,               // Niedrig
+            familienbindung: 85,         // Sehr hoch
+            herkunftsfamilie: 80,        // Hoch
+            familientreffen: 80,         // Hoch
+            generationenverbund: 80      // Hoch
+        },
+
+        // ═══════════════════════════════════════════════════════════════════════
+        // FINANZEN & KARRIERE
+        // ═══════════════════════════════════════════════════════════════════════
+        finanzen_karriere: {
+            finanzielle_unabhaengigkeit: 40,  // Niedrig - gemeinsam
+            gemeinsame_finanzen: 90,          // Sehr hoch - alles teilen
+            finanzielle_transparenz: 85,      // Sehr hoch
+            finanzielle_sicherheit: 90,       // Sehr hoch - Stabilität
+            sparsamkeit: 70,                  // Hoch - für Familie
+            grosszuegigkeit: 75,              // Hoch - für Partner
+            berufliche_erfuellung: 55,        // Mittel - Beziehung wichtiger
+            karriereambition: 45,             // Niedrig-mittel
+            work_life_balance: 85,            // Sehr hoch - Zeit für Beziehung
+            berufliche_anerkennung: 50,       // Mittel
+            zeit_fuer_beziehung: 95,          // Sehr hoch - Priorität
+            berufliche_flexibilitaet: 60      // Mittel - für Familie
+        },
+
+        // ═══════════════════════════════════════════════════════════════════════
+        // KOMMUNIKATIONSSTIL
+        // ═══════════════════════════════════════════════════════════════════════
+        kommunikation_stil: {
+            taeglicher_austausch: 90,         // Sehr hoch
+            tiefgehende_gespraeche: 85,       // Sehr hoch
+            small_talk: 70,                   // Hoch
+            stille_gemeinsam: 85,             // Sehr hoch - gemeinsam still
+            verbale_verbindung: 85,           // Sehr hoch
+            zuhoeren: 85,                     // Sehr hoch
+            emotionale_offenheit: 85,         // Sehr hoch
+            gefuehle_zeigen: 85,              // Sehr hoch
+            verletzlichkeit: 80,              // Hoch - beim Partner sicher
+            emotionale_zurueckhaltung: 25,    // Niedrig
+            emotionale_sicherheit: 95,        // Sehr hoch - braucht das
+            gefuehle_teilen: 90,              // Sehr hoch
+            konfliktklaerung: 65,             // Mittel-hoch
+            aussprache: 70,                   // Hoch
+            konflikt_vermeiden: 80,           // Hoch - Harmonie wichtig
+            streitkultur: 55,                 // Mittel
+            versoehnlichkeit: 90              // Sehr hoch
+        },
+
+        // ═══════════════════════════════════════════════════════════════════════
+        // SOZIALES LEBEN
+        // ═══════════════════════════════════════════════════════════════════════
+        soziales_leben: {
+            soziale_energie: 60,              // Mittel - Paar-zentriert
+            geselligkeit: 55,                 // Mittel
+            ruhe_von_menschen: 60,            // Mittel
+            allein_aufladen: 40,              // Niedrig - mit Partner aufladen
+            menschen_treffen: 55,             // Mittel
+            kleine_gruppen: 65,               // Mittel-hoch
+            zeit_fuer_sich: 35,               // Niedrig
+            eigene_hobbys: 40,                // Niedrig - gemeinsame Hobbys
+            gemeinsame_zeit: 95,              // Sehr hoch - Priorität
+            partnerzeit: 95,                  // Sehr hoch
+            eigene_interessen: 45,            // Niedrig-mittel
+            eigene_freunde: 45,               // Niedrig-mittel
+            gemeinsame_freunde: 80,           // Hoch
+            freundeskreis_teilen: 80,         // Hoch
+            soziales_netz: 70,                // Hoch - als Paar
+            freunde_pflegen: 65,              // Mittel-hoch
+            neue_freundschaften: 50           // Mittel
+        },
+
+        // ═══════════════════════════════════════════════════════════════════════
+        // INTIMITÄT & ROMANTIK
+        // ═══════════════════════════════════════════════════════════════════════
+        intimitaet_beziehung: {
+            koerpernaehe: 95,                 // Sehr hoch
+            kuscheln: 95,                     // Sehr hoch
+            physische_distanz: 20,            // Niedrig - will Nähe
+            koerperkontakt: 90,               // Sehr hoch
+            umarmungen: 90,                   // Sehr hoch
+            hand_halten: 85,                  // Sehr hoch
+            romantische_gesten: 85,           // Sehr hoch
+            ueberraschungen: 75,              // Hoch
+            dates: 80,                        // Hoch
+            alltags_romantik: 85,             // Sehr hoch
+            aufmerksamkeiten: 85,             // Sehr hoch
+            liebesbekundungen: 90,            // Sehr hoch
+            sexuelle_haeufigkeit: 80,         // Hoch
+            sexuelle_intimiaet: 90,           // Sehr hoch
+            koerperliche_lust: 75,            // Hoch
+            sexuelle_experimentierfreude: 55, // Mittel
+            sexuelle_verbindung: 90,          // Sehr hoch
+            sexuelle_zufriedenheit: 85        // Sehr hoch
+        },
+
+        // ═══════════════════════════════════════════════════════════════════════
+        // WERTE & HALTUNGEN
+        // ═══════════════════════════════════════════════════════════════════════
+        werte_haltung: {
+            spiritualitaet: 55,               // Mittel
+            glaubenspraxis: 50,               // Mittel
+            religioese_gemeinschaft: 55,      // Mittel
+            saekularitaet: 50,                // Mittel
+            sinnsuche: 65,                    // Mittel-hoch
+            transzendenz: 55,                 // Mittel
+            traditionelle_werte: 75,          // Hoch - eher traditionell
+            moderne_lebensweise: 45,          // Niedrig-mittel
+            konservative_werte: 65,           // Mittel-hoch
+            progressive_werte: 45,            // Niedrig-mittel
+            kulturelle_tradition: 70,         // Hoch
+            offenheit_fuer_neues: 45,         // Niedrig-mittel
+            umweltverantwortung: 55,          // Mittel
+            nachhaltigkeit: 55,               // Mittel
+            oekologisches_bewusstsein: 50,    // Mittel
+            pragmatismus: 65,                 // Mittel-hoch
+            klimaschutz: 50,                  // Mittel
+            ressourcenschonung: 55            // Mittel
+        },
+
+        // ═══════════════════════════════════════════════════════════════════════
+        // PRAKTISCHES LEBEN
+        // ═══════════════════════════════════════════════════════════════════════
+        praktisches_leben: {
+            ordnungssinn: 70,                 // Hoch
+            sauberkeit: 70,                   // Hoch
+            struktur: 75,                     // Hoch - braucht Struktur
+            chaos_toleranz: 40,               // Niedrig
+            organisiert_sein: 70,             // Hoch
+            flexibilitaet_haushalt: 50,       // Mittel
+            reisen: 55,                       // Mittel - gemeinsam
+            abenteuer: 40,                    // Niedrig - Sicherheit
+            neue_orte_entdecken: 50,          // Mittel
+            zuhause_bleiben: 80,              // Hoch - Nestwärme
+            urlaub: 70,                       // Hoch - gemeinsam
+            fernweh: 35,                      // Niedrig
+            heimatverbundenheit: 85           // Sehr hoch
         }
     },
 

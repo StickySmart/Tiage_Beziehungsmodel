@@ -189,6 +189,136 @@ const AromantischProfil = {
             machtaustausch: 35,          // Niedrig
             dienend_sein: 40,            // Niedrig-mittel
             beschuetzen: 55              // Mittel
+        },
+
+        // ═══════════════════════════════════════════════════════════════════════
+        // LEBENSPLANUNG (15) - Kinder, Ehe, Wohnen, Familie
+        // ═══════════════════════════════════════════════════════════════════════
+        // Aromantisch: Kein romantischer Rahmen für Lebensplanung
+        lebensplanung: {
+            kinderwunsch: 30,            // Niedrig - nicht durch Partnerschaft
+            elternschaft: 25,            // Niedrig - selten priorisiert
+            fortpflanzung: 20,           // Niedrig
+            fuersorge: 55,               // Mittel - für Freunde
+            familie_gruenden: 15,        // Sehr niedrig - nicht das Ziel
+            generativitaet: 50,          // Mittel - anders ausgelebt
+            erziehung_werte: 30,         // Niedrig-mittel
+            verbindlichkeit: 30,         // Niedrig - keine romantische Bindung
+            langfristige_bindung: 35,    // Niedrig - nicht romantisch
+            rechtliche_sicherheit: 25,   // Niedrig - nicht relevant
+            tradition_ehe: 5,            // Minimum - kein Interesse
+            oeffentliches_bekenntnis: 15, // Sehr niedrig - nicht nötig
+            gemeinsamer_wohnraum: 25,    // Niedrig - eventuell mit Freunden
+            eigener_rueckzugsort: 90,    // Sehr hoch - wichtig
+            haeuslichkeit: 60            // Mittel-hoch - eigenes Zuhause
+        },
+
+        // ═══════════════════════════════════════════════════════════════════════
+        // FINANZEN & KARRIERE (10) - Geld, Arbeit, berufliche Entwicklung
+        // ═══════════════════════════════════════════════════════════════════════
+        // Aromantisch: Vollständige Eigenständigkeit
+        finanzen_karriere: {
+            finanzielle_unabhaengigkeit: 95, // Sehr hoch - essentiell
+            gemeinsame_finanzen: 10,     // Sehr niedrig - nur evtl. mit Freunden
+            versorger_rolle: 15,         // Sehr niedrig - nur für sich
+            materielle_sicherheit: 70,   // Hoch - eigene Absicherung
+            karriere_entwicklung: 80,    // Hoch - Erfüllung durch Arbeit
+            berufliche_anerkennung: 75,  // Hoch
+            work_life_balance: 80,       // Hoch
+            gemeinsame_ziele: 30,        // Niedrig - eigene Ziele
+            erfolg: 80,                  // Hoch
+            leistung: 75                 // Hoch
+        },
+
+        // ═══════════════════════════════════════════════════════════════════════
+        // KOMMUNIKATION & STIL (12) - Art des Austauschs
+        // ═══════════════════════════════════════════════════════════════════════
+        // Aromantisch: Kommunikation über Identität wichtig
+        kommunikation_stil: {
+            emotionale_offenheit: 55,    // Mittel - mit Freunden
+            tiefe_gespraeche: 70,        // Hoch - intellektuell/philosophisch
+            small_talk: 55,              // Mittel
+            konfliktbereitschaft: 65,    // Mittel-hoch
+            konstruktive_kritik: 70,     // Hoch
+            aktives_zuhoeren: 70,        // Hoch - für Freunde
+            nonverbale_kommunikation: 50, // Mittel
+            humor_ironie: 80,            // Hoch - oft selbstironisch
+            intellektueller_austausch: 85, // Sehr hoch
+            digitale_kommunikation: 75,  // Hoch - Community online
+            verbale_anerkennung: 55,     // Mittel
+            schweigen_aushalten: 85      // Sehr hoch - allein sein können
+        },
+
+        // ═══════════════════════════════════════════════════════════════════════
+        // SOZIALES LEBEN (12) - Freunde, Familie, Gesellschaft
+        // ═══════════════════════════════════════════════════════════════════════
+        // Aromantisch: Freundschaften statt romantische Beziehungen
+        soziales_leben: {
+            freundeskreis_pflege: 90,    // Sehr hoch - zentral
+            gemeinsame_freunde: 70,      // Hoch - Freundeskreis
+            familieneinbindung: 45,      // Mittel - kann Erklärung brauchen
+            gesellschaftliches_engagement: 60, // Mittel-hoch - Aktivismus
+            networking: 65,              // Mittel-hoch
+            gemeinsame_hobbys: 60,       // Mittel-hoch - mit Freunden
+            individuelle_hobbys: 90,     // Sehr hoch - wichtig
+            gemeinsame_zeit: 55,         // Mittel - mit Freunden
+            zeit_fuer_sich: 90,          // Sehr hoch - Kernbedürfnis
+            soziale_unterstuetzung: 70,  // Hoch - Freundesnetzwerk
+            gemeinsame_erlebnisse: 65,   // Mittel-hoch - mit Freunden
+            alltagsteilung: 20           // Niedrig - eigener Alltag
+        },
+
+        // ═══════════════════════════════════════════════════════════════════════
+        // INTIMITÄT & BEZIEHUNG (12) - Nähe, Sexualität, Bindung
+        // ═══════════════════════════════════════════════════════════════════════
+        // Aromantisch: Keine romantische Intimität, platonische Nähe möglich
+        intimitaet_beziehung: {
+            koerpernaehe: 35,            // Niedrig - platonisch ok
+            kuscheln: 35,                // Niedrig - mit Freunden evtl.
+            sexuelle_exklusivitaet: 30,  // Niedrig - nicht romantisch definiert
+            sexuelle_offenheit: 50,      // Mittel - variabel (aro ≠ ace)
+            leidenschaft: 25,            // Niedrig - keine romantische
+            zaertlichkeit: 35,           // Niedrig-mittel - platonisch
+            emotionale_tiefe: 50,        // Mittel - mit Freunden
+            romantik: 10,                // Sehr niedrig - nicht gefühlt
+            flirten: 25,                 // Niedrig - meist nicht
+            eifersucht_als_signal: 25,   // Niedrig - kein Thema
+            treue_werte: 30,             // Niedrig - nicht romantisch definiert
+            bindungsbereitschaft: 25     // Niedrig - keine romantische
+        },
+
+        // ═══════════════════════════════════════════════════════════════════════
+        // WERTE & HALTUNG (10) - Überzeugungen, Religion, Politik
+        // ═══════════════════════════════════════════════════════════════════════
+        // Aromantisch: Progressive, hinterfragt gesellschaftliche Normen
+        werte_haltung: {
+            spiritualitaet: 55,          // Mittel - individuell
+            religioese_praxis: 25,       // Niedrig - oft kritisch
+            politisches_engagement: 65,  // Mittel-hoch - Aktivismus
+            umweltbewusstsein: 65,       // Mittel-hoch
+            traditionelle_werte: 10,     // Sehr niedrig - hinterfragt
+            moderne_werte: 90,           // Sehr hoch - progressiv
+            toleranz: 95,                // Sehr hoch - Vielfalt
+            offenheit_neues: 85,         // Sehr hoch
+            kulturelle_identitaet: 50,   // Mittel
+            wertekongruenz: 90           // Sehr hoch - lebt authentisch
+        },
+
+        // ═══════════════════════════════════════════════════════════════════════
+        // PRAKTISCHES LEBEN (10) - Alltag, Organisation, Gesundheit
+        // ═══════════════════════════════════════════════════════════════════════
+        // Aromantisch: Eigenständiges Leben
+        praktisches_leben: {
+            haushaltsaufteilung: 15,     // Sehr niedrig - alleine
+            alltagsorganisation: 75,     // Hoch - für sich selbst
+            gesundheitsbewusstsein: 75,  // Hoch - Selbstfürsorge
+            ernaehrungsstil: 60,         // Mittel-hoch
+            ordnung_sauberkeit: 60,      // Mittel
+            mobilitaet: 80,              // Hoch - flexibel
+            wohnort_flexibilitaet: 80,   // Hoch - ungebunden
+            heimatverbundenheit: 45,     // Mittel
+            reisen_abenteuer: 80,        // Hoch - Freiheit nutzen
+            routine_struktur: 60         // Mittel - eigene Routinen
         }
     },
 
