@@ -13293,22 +13293,32 @@
 
         // Select Triple Button (für 3er-Gruppen)
         function selectTripleBtn(btn) {
-            // Alle Buttons in der Gruppe deaktivieren
             var group = btn.parentElement;
+            var attrId = group.getAttribute('data-attr');
+            var wasActive = btn.classList.contains('active');
+
+            // Alle Buttons in der Gruppe deaktivieren
             group.querySelectorAll('.profile-review-triple-btn').forEach(function(b) {
                 b.classList.remove('active');
             });
-            // Geklickten Button aktivieren
-            btn.classList.add('active');
+
+            // Toggle: Wenn bereits aktiv war, nicht wieder aktivieren (Abwahl ermöglichen)
+            if (!wasActive) {
+                btn.classList.add('active');
+            }
             trackProfileReviewChange();
 
             // Live-Synchronisierung für Geschlechtsidentität
-            var attrId = group.getAttribute('data-attr');
             if (attrId === 'pr-geschlecht-sekundaer' && typeof TiageState !== 'undefined') {
-                var value = parseInt(btn.getAttribute('data-value'), 10);
                 var primaryGeschlecht = TiageState.getPrimaryGeschlecht('ich');
                 if (primaryGeschlecht) {
-                    var secondaryValue = mapGeschlechtsidentitaetToSecondary(value, primaryGeschlecht);
+                    var secondaryValue = null;
+
+                    // Nur wenn ein Button aktiv ist, setze den Wert
+                    if (!wasActive) {
+                        var value = parseInt(btn.getAttribute('data-value'), 10);
+                        secondaryValue = mapGeschlechtsidentitaetToSecondary(value, primaryGeschlecht);
+                    }
 
                     // Use the new sync function that updates both personDimensions and UI
                     if (typeof setSecondaryGeschlechtAndSync === 'function') {
@@ -13317,10 +13327,19 @@
                         // Fallback to TiageState only
                         TiageState.setSecondaryGeschlecht('ich', secondaryValue);
                     }
-                    console.log('[ProfileReview] Geschlechtsidentität live-sync:', value, '→', secondaryValue);
+                    console.log('[ProfileReview] Geschlechtsidentität live-sync:', wasActive ? 'abgewählt' : secondaryValue);
 
-                    // NEU: Profil-Attribute neu laden mit neuen Gender-Modifikatoren
-                    reloadProfileAttributesAfterGenderChange();
+                    // Profil-Attribute und Anzeige aktualisieren
+                    if (!wasActive) {
+                        reloadProfileAttributesAfterGenderChange();
+                    } else {
+                        // Bei Abwahl: Source-Explanation aktualisieren (zeigt nur noch primary)
+                        var person = currentProfileReviewContext.person || 'ich';
+                        var personData = personDimensions[person];
+                        var dominanz = (personData && personData.dominanz && personData.dominanz.primary) ? personData.dominanz.primary : 'ausgeglichen';
+                        var orientierung = (personData && personData.orientierung && personData.orientierung.primary) ? personData.orientierung.primary : 'heterosexuell';
+                        updateSourceExplanation(currentProfileReviewContext.archetypeKey, personData, dominanz, orientierung);
+                    }
                 }
             }
         }
