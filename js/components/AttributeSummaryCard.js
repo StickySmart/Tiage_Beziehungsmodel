@@ -552,7 +552,7 @@ const AttributeSummaryCard = (function() {
                         <input type="text" class="attribute-need-input" value="${needValue}" maxlength="3"
                                onchange="AttributeSummaryCard.updateNeedValue('${attrId}', '${need}', this.value)"
                                onclick="event.stopPropagation()">
-                        <span class="attribute-need-percent">%</span>
+                        <span class="attribute-need-percent"></span>
                     </div>
                 </div>`;
         }).join('');
@@ -567,7 +567,7 @@ const AttributeSummaryCard = (function() {
                     <div class="attribute-summary-input-group">
                         <input type="text" class="attribute-summary-input" value="${aggregatedValue}" maxlength="3"
                                onclick="event.stopPropagation()" readonly>
-                        <span class="attribute-summary-percent">%</span>
+                        <span class="attribute-summary-percent"></span>
                         <span class="attribute-summary-lock" onclick="event.stopPropagation(); AttributeSummaryCard.toggleLock('${attrId}', this)"></span>
                         <span class="attribute-summary-expand-icon">▼</span>
                     </div>
