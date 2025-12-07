@@ -1616,7 +1616,7 @@
             if (needsSummaryValueEl) {
                 // Get Bedürfnis-Übereinstimmung from lastGfkMatchingResult
                 const needsScore = lastGfkMatchingResult ? lastGfkMatchingResult.score : 0;
-                needsSummaryValueEl.textContent = needsScore + '%';
+                needsSummaryValueEl.textContent = needsScore;
                 // Color based on needs score
                 const needsColor = getScoreGradientColor(needsScore);
                 needsSummaryValueEl.style.color = needsColor;
@@ -6001,7 +6001,7 @@
             let html = `
                 <div class="gfk-matching-header" onclick="openNeedsFullModal()" style="cursor: pointer;" title="Klicken für vollständige Liste">
                     <div class="gfk-score-display">
-                        <span class="gfk-score" style="color: ${scoreColor}">${matching.score}%</span>
+                        <span class="gfk-score" style="color: ${scoreColor}">${matching.score}</span>
                         <span class="gfk-level-label">${beduerfnisLabel}</span>
                     </div>
                 </div>
@@ -10600,7 +10600,7 @@
             let html = `
                 <div class="gfk-matching-header" onclick="openNeedsFullModal()" style="cursor: pointer;" title="Klicken für vollständige Liste">
                     <div class="gfk-score-display">
-                        <span class="gfk-score" style="color: ${scoreColor}">${matching.score}%</span>
+                        <span class="gfk-score" style="color: ${scoreColor}">${matching.score}</span>
                         <span class="gfk-level-label">${beduerfnisLabel}</span>
                     </div>
                 </div>
