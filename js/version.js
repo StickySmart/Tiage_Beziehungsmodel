@@ -15,7 +15,7 @@ const TiageVersion = {
 
     // Letztes Merge-Datum und -Uhrzeit
     mergeDate: '2025-12-07',
-    mergeTime: '12:00',
+    mergeTime: '09:19',
 
     // Vollständige Version als String (Patch 3-stellig mit führenden Nullen)
     get version() {
