@@ -5744,10 +5744,10 @@
             // Prüfen ob BeduerfnisModifikatoren verfügbar ist
             if (typeof BeduerfnisModifikatoren !== 'undefined' && GfkBeduerfnisse.archetypProfile) {
                 // NEU: Dynamische Berechnung mit allen Dimensionen
-                const matching = calculateDynamicBeduerfnisMatch(ichNormalized, partnerNormalized);
+                const matching = calculateNeedsComparison(ichNormalized, partnerNormalized);
                 if (matching) {
                     lastGfkMatchingResult = matching;
-                    console.log(`GFK Bedürfnis-Matching (dynamisch): ${ichNormalized} + ${partnerNormalized} → Score=${matching.score}`);
+                    console.log(`Bedürfnis-Vergleich berechnet: ${ichNormalized} + ${partnerNormalized} → Score=${matching.score}`);
                     console.log(`  Faktoren: Dominanz, Geschlecht, Orientierung berücksichtigt`);
 
                     // GFK-Level setzen (basierend auf Bedürfnis-Übereinstimmung)
@@ -5774,7 +5774,7 @@
 
             lastGfkMatchingResult = matching;
 
-            console.log(`GFK Bedürfnis-Matching (statisch): ${matching.archetyp1} + ${matching.archetyp2} → Score=${matching.score} (${matching.level})`);
+            console.log(`Bedürfnis-Vergleich berechnet (nur Archetyp): ${matching.archetyp1} + ${matching.archetyp2} → Score=${matching.score} (${matching.level})`);
 
             // GFK-Level setzen (basierend auf Bedürfnis-Übereinstimmung)
             personDimensions.ich.gfk = matching.level;
@@ -5794,7 +5794,7 @@
          * @param {string} partnerArchetyp - Normalisierter Archetyp-ID für "partner"
          * @returns {object|null} Matching-Ergebnis oder null bei Fehler
          */
-        function calculateDynamicBeduerfnisMatch(ichArchetyp, partnerArchetyp) {
+        function calculateNeedsComparison(ichArchetyp, partnerArchetyp) {
             // Basis-Bedürfnisse laden
             const ichBasis = GfkBeduerfnisse.archetypProfile[ichArchetyp];
             const partnerBasis = GfkBeduerfnisse.archetypProfile[partnerArchetyp];
@@ -5862,8 +5862,8 @@
                 orientierungStatus: partnerDims.orientierungStatus || 'gelebt'
             };
 
-            // Debug-Log
-            console.log('Bedürfnis-Berechnung mit Dimensionen:', {
+            // Debug-Log: Gesammelte Profil-Parameter für beide Personen
+            console.log('Profil-Parameter für Paarvergleich:', {
                 ich: { archetyp: ichArchetyp, dominanz: ichParams.dominanz, geschlecht: ichParams.geschlechtPrimary, orientierung: ichParams.orientierung },
                 partner: { archetyp: partnerArchetyp, dominanz: partnerParams.dominanz, geschlecht: partnerParams.geschlechtPrimary, orientierung: partnerParams.orientierung }
             });
