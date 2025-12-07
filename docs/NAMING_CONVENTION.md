@@ -151,11 +151,63 @@ genderModifiers['mann-cis'] = {
 
 ### Definition
 Die **88 universellen Bedürfnisse** nach der Gewaltfreien Kommunikation (GFK).
-**Komplett anderes Konzept** als die baseAttributes!
 
-### Im Code
+### NEU: Integration ins Profil (seit v2.0)
+
+**ALLES IM PROFIL = EINE QUELLE DER WAHRHEIT**
+
+Die GFK-Bedürfnisse werden jetzt direkt im Profil gespeichert (`profile.needs`).
+Dies vereinfacht die Formel-Berechnung und macht das System leichter verständlich.
+
 ```javascript
-// In gfk-beduerfnisse.js
+// NEU: Im komponierten Profil (profile-store.js)
+profile = {
+    archetyp: 'duo',
+    gender: 'mann-cis',
+    dominanz: 'dominant',
+    orientierung: 'heterosexuell',
+
+    // 30 Attribute
+    attributes: { gespraechsBeduernis: 0.80, ... },
+
+    // 88 GFK-Bedürfnisse - NEU IM PROFIL!
+    needs: {
+        selbstbestimmung: 50,    // Duo: 45 + dominant: +10 - hetero: -5
+        geborgenheit: 90,        // Duo: 95 + dominant: -5
+        vertrauen: 100,          // Duo: 95 + dominant: +5
+        kontrolle_ausueben: 65,  // Basis: 50 + dominant: +15
+        // ... 84 weitere
+    }
+}
+```
+
+### Needs-Modifikatoren (profile-store.js)
+
+Die Needs werden durch Modifikatoren angepasst:
+
+```javascript
+needsModifiers = {
+    gender: {
+        'mann-cis': { raum_haben: +5, unabhaengigkeit: +5 },
+        'mann-trans': { akzeptanz: +10, gesehen_werden: +10 },
+        // ...
+    },
+    dominance: {
+        'dominant': { kontrolle_ausueben: +15, selbstbestimmung: +10 },
+        'submissiv': { hingabe: +15, geborgenheit: +10 },
+        // ...
+    },
+    orientation: {
+        'homosexuell': { gemeinschaft: +10, akzeptanz: +10 },
+        // ...
+    }
+}
+```
+
+### Legacy: Quelle der Basis-Daten
+
+```javascript
+// In gfk-beduerfnisse.js (Quelle für Basis-Werte)
 GfkBeduerfnisse.archetypProfile = {
     single: {
         kernbeduerfnisse: {
@@ -165,18 +217,9 @@ GfkBeduerfnisse.archetypProfile = {
         }
     }
 };
-
-// In Locale-Dateien
-needs: {
-    items: {
-        autonomie: "Autonomie",
-        freiheit: "Freiheit",
-        // ... 88 Bedürfnisse
-    }
-}
 ```
 
-### 10 Bedürfnis-Kategorien (GFK)
+### 11 Bedürfnis-Kategorien (GFK + BDSM-Erweiterung)
 
 1. **Existenz**: Luft, Wasser, Nahrung, Bewegung...
 2. **Sicherheit**: Beständigkeit, Schutz, Stabilität...
@@ -188,6 +231,7 @@ needs: {
 8. **Identität**: Authentizität, Integrität, Sinn...
 9. **Erschaffen**: Kreativität, Lernen, Ausdruck...
 10. **Verbundenheit**: Inspiration, Feiern...
+11. **Dynamik** (NEU): Kontrolle, Hingabe, Machtaustausch... (BDSM)
 
 ---
 
@@ -224,8 +268,38 @@ archetypeDefinitions.single = {
 |------------|-------------|-------|
 | Die 30 Matching-Parameter meinst | `baseAttributes` / `attributes` | archetyp-definitions.js, profile-store.js |
 | Geschlecht/Dominanz/Orientierung meinst | `personDimensions` | js/state.js |
-| GFK-Bedürfnisse meinst | `needs` / `Bedürfnisse` | gfk-beduerfnisse.js, locales |
+| GFK-Bedürfnisse meinst | `profile.needs` (NEU!) | profile-store.js (komponiert aus gfk-beduerfnisse.js) |
 | Archetyp-Philosophie meinst | `coreValues` / `avoids` | archetyp-definitions.js |
+
+## NEU: ALLES IM PROFIL (v2.0)
+
+```
+┌─────────────────────────────────────────────────────────────────────────────────┐
+│  profile = {                                                                    │
+│    // META                                                                      │
+│    archetyp: 'duo',                                                             │
+│    gender: 'mann-cis',                                                          │
+│    dominanz: 'dominant',                                                        │
+│    orientierung: 'heterosexuell',                                               │
+│                                                                                 │
+│    // SCORES (A-F)                                                              │
+│    scores: { A: 55, B: 68, C: 64, D: 57, E: 59, F: 68 },                        │
+│                                                                                 │
+│    // ATTRIBUTE (30)                                                            │
+│    attributes: { gespraechsBeduernis: 0.80, alleinZeitBeduernis: 0.40, ... },  │
+│                                                                                 │
+│    // NEEDS (88) - NEU!                                                         │
+│    needs: { geborgenheit: 90, vertrauen: 100, selbstbestimmung: 50, ... },     │
+│                                                                                 │
+│    // PHILOSOPHIE                                                               │
+│    pirsig: '...',                                                               │
+│    osho: '...'                                                                  │
+│  }                                                                              │
+│                                                                                 │
+│  → EINE QUELLE DER WAHRHEIT                                                     │
+│  → Formel kann Score/Texte/Schlussfolgerungen einfacher berechnen               │
+└─────────────────────────────────────────────────────────────────────────────────┘
+```
 
 ---
 
@@ -262,4 +336,5 @@ user.eigenschaften.kinderWunsch = "ja";
 
 | Datum | Änderung |
 |-------|----------|
+| 2025-12-06 | v2.0: GFK-Bedürfnisse (needs) ins Profil integriert - EINE QUELLE DER WAHRHEIT |
 | 2025-12-06 | Initiale Dokumentation erstellt |

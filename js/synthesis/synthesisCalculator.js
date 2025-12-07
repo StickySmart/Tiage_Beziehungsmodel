@@ -308,15 +308,44 @@ TiageSynthesis.Calculator = {
     /**
      * Berechnet die Bedürfnis-Übereinstimmung zwischen zwei Personen
      *
-     * Verwendet BeduerfnisModifikatoren um individuelle Bedürfnis-Profile
-     * zu berechnen und dann die Übereinstimmung zu ermitteln.
+     * NEU: Nutzt profile.needs direkt wenn verfügbar (VEREINFACHT!)
+     * Fallback: Alte BeduerfnisModifikatoren-Logik
      *
      * @param {object} person1 - Profil Person 1
      * @param {object} person2 - Profil Person 2
-     * @param {object} archetypProfile - Basis-Archetyp-Profile (optional)
+     * @param {object} archetypProfile - Basis-Archetyp-Profile (optional, nur für Fallback)
      * @returns {object|null} { score, gemeinsam, unterschiedlich, komplementaer, profile }
      */
     _calculateBedürfnisMatch: function(person1, person2, archetypProfile) {
+
+        // ════════════════════════════════════════════════════════════════════
+        // NEU: VEREINFACHTER WEG - Nutze profile.needs direkt!
+        // Wenn beide Profile bereits needs haben, nutze TiageProfileStore
+        // ════════════════════════════════════════════════════════════════════
+
+        if (person1.needs && person2.needs && typeof TiageProfileStore !== 'undefined') {
+            // NEUER WEG: Direkt aus Profil - EINE QUELLE DER WAHRHEIT!
+            var result = TiageProfileStore.calculateNeedsMatch(person1, person2);
+
+            // Format anpassen für Kompatibilität
+            return {
+                score: result.score,
+                gemeinsam: result.gemeinsam,
+                unterschiedlich: result.unterschiedlich,
+                komplementaer: result.komplementaer,
+                profile: {
+                    person1: person1.needs,
+                    person2: person2.needs
+                },
+                source: 'profile.needs'  // Markierung: Neuer vereinfachter Weg
+            };
+        }
+
+        // ════════════════════════════════════════════════════════════════════
+        // FALLBACK: Alter Weg mit BeduerfnisModifikatoren
+        // Wird verwendet wenn profile.needs nicht verfügbar
+        // ════════════════════════════════════════════════════════════════════
+
         // Prüfen ob BeduerfnisModifikatoren verfügbar
         if (typeof BeduerfnisModifikatoren === 'undefined') {
             console.warn('BeduerfnisModifikatoren nicht geladen - verwende Default');
@@ -343,7 +372,7 @@ TiageSynthesis.Calculator = {
             return null;
         }
 
-        // Vollständige Bedürfnis-Profile berechnen
+        // Vollständige Bedürfnis-Profile berechnen (ALTER WEG)
         var profil1 = BeduerfnisModifikatoren.berechneVollständigesBedürfnisProfil({
             basisBedürfnisse: basis1.kernbeduerfnisse,
             dominanz: this._extractDominanz(person1.dominanz),
@@ -352,7 +381,6 @@ TiageSynthesis.Calculator = {
             geschlechtPrimaryStatus: this._extractGeschlechtStatus(person1.geschlecht, 'primary'),
             geschlechtSecondary: this._extractGeschlechtSecondary(person1.geschlecht),
             geschlechtSecondaryStatus: this._extractGeschlechtStatus(person1.geschlecht, 'secondary'),
-            // NEU: Geschlechtsidentität (cis, trans, nonbinaer, fluid, suchend)
             geschlechtsidentitaet: this._extractGeschlechtsidentitaet(person1.geschlecht),
             geschlechtsidentitaetStatus: this._extractGeschlechtStatus(person1.geschlecht, 'secondary'),
             orientierung: this._extractOrientierung(person1.orientierung),
@@ -367,7 +395,6 @@ TiageSynthesis.Calculator = {
             geschlechtPrimaryStatus: this._extractGeschlechtStatus(person2.geschlecht, 'primary'),
             geschlechtSecondary: this._extractGeschlechtSecondary(person2.geschlecht),
             geschlechtSecondaryStatus: this._extractGeschlechtStatus(person2.geschlecht, 'secondary'),
-            // NEU: Geschlechtsidentität (cis, trans, nonbinaer, fluid, suchend)
             geschlechtsidentitaet: this._extractGeschlechtsidentitaet(person2.geschlecht),
             geschlechtsidentitaetStatus: this._extractGeschlechtStatus(person2.geschlecht, 'secondary'),
             orientierung: this._extractOrientierung(person2.orientierung),
@@ -385,6 +412,7 @@ TiageSynthesis.Calculator = {
             person1: profil1,
             person2: profil2
         };
+        result.source = 'BeduerfnisModifikatoren';  // Markierung: Alter Weg
 
         return result;
     },
