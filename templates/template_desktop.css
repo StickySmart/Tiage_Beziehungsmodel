@@ -4596,8 +4596,9 @@
             box-shadow: 0 0 8px rgba(139, 92, 246, 0.5);
         }
 
-        /* GFK Bedürfnis-Anzeige */
+        /* GFK Bedürfnis-Anzeige - VERSTECKT */
         .gfk-beduerfnis-display {
+            display: none !important; /* Übereinstimmungsblock auf Hauptseite versteckt */
             background: rgba(30, 30, 35, 0.8);
             border: 1px solid var(--border);
             border-radius: 12px;
