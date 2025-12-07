@@ -1472,9 +1472,6 @@ const BeduerfnisModifikatoren = {
             var wert1 = profil1[bed] || 50;
             var wert2 = profil2[bed] || 50;
 
-            // Nur relevante Bedürfnisse (> 30)
-            if (wert1 <= 30 && wert2 <= 30) return;
-
             var gewicht = (wert1 + wert2) / 2;
             var diff = Math.abs(wert1 - wert2);
 
