@@ -75,9 +75,23 @@ score = Σ((100 - diff) × gewicht) / Σ(gewicht)
 
 ### Gewichtung
 
-- **Basis-Werte**: Aus Recherche (Rosenberg, Pirsig, Osho)
-- **Änderbar**: Pro Bedürfnis individuell anpassbar
-- **Lock-Funktion**: Doppelklick = Wert fixieren (🔒)
+**Default-Formel:**
+```
+gewicht = (score_A + score_B) / 2 / 100
+```
+
+**Logik:** Je wichtiger ein Bedürfnis für BEIDE Personen ist, desto mehr zählt es im Matching.
+
+| Bedürfnis | Person A | Person B | Default-Gewicht | Bedeutung |
+|-----------|----------|----------|-----------------|-----------|
+| kinderwunsch | 90 | 90 | 0.90 | Beiden wichtig → zählt stark |
+| kinderwunsch | 10 | 10 | 0.10 | Beiden unwichtig → zählt wenig |
+| kinderwunsch | 90 | 10 | 0.50 | Einer will, einer nicht → mittleres Gewicht, große Differenz! |
+
+**Anpassbar:**
+- Jedes Bedürfnis kann individuell gewichtet werden
+- Lock-Funktion: Doppelklick = Wert fixieren (🔒)
+- Basis-Werte stammen aus Recherche (Rosenberg, Pirsig, Osho)
 
 ---
 
