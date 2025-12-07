@@ -214,8 +214,59 @@ TiageSynthesis.Calculator = {
             },
 
             // NEU: Bedürfnis-Übereinstimmung (wenn berechnet)
-            beduerfnisse: beduerfnisResult
+            beduerfnisse: beduerfnisResult,
+
+            // NEU: Statistische Unsicherheit (80% Konfidenzintervall)
+            uncertainty: this._calculateUncertainty(finalScore, beduerfnisResult)
         };
+    },
+
+    /**
+     * Berechnet die statistische Unsicherheit des Scores
+     *
+     * Basiert auf Gaußscher Normalverteilung:
+     * - Jedes Bedürfnis hat einen Erwartungswert (μ) und Standardabweichung (σ)
+     * - Das 80% Konfidenzintervall nutzt z = 1.28
+     *
+     * @param {number} score - Der finale Score
+     * @param {object} beduerfnisResult - Bedürfnis-Match-Ergebnis
+     * @returns {object} { margin, lower, upper, confidence, sigma }
+     */
+    _calculateUncertainty: function(score, beduerfnisResult) {
+        // Falls TiageStatistics nicht geladen
+        if (typeof TiageStatistics === 'undefined') {
+            return {
+                margin: 14,  // Default-Schätzung
+                lower: Math.max(0, score - 14),
+                upper: Math.min(100, score + 14),
+                confidence: 80,
+                sigma: 14,
+                available: false
+            };
+        }
+
+        // Sammle relevante Kategorien
+        var kategorien = [];
+        if (beduerfnisResult && beduerfnisResult.gemeinsam) {
+            for (var i = 0; i < beduerfnisResult.gemeinsam.length; i++) {
+                var item = beduerfnisResult.gemeinsam[i];
+                var kat = TiageStatistics.findKategorieForBeduerfnis(item.key);
+                if (kat) kategorien.push(kat);
+            }
+        }
+        if (beduerfnisResult && beduerfnisResult.unterschiedlich) {
+            for (var j = 0; j < beduerfnisResult.unterschiedlich.length; j++) {
+                var item2 = beduerfnisResult.unterschiedlich[j];
+                var kat2 = TiageStatistics.findKategorieForBeduerfnis(item2.key);
+                if (kat2) kategorien.push(kat2);
+            }
+        }
+
+        var result = TiageStatistics.calculateScoreUncertainty(score, kategorien, 80);
+        result.available = true;
+        result.formatted = TiageStatistics.formatScoreWithUncertainty(score, result.margin);
+
+        return result;
     },
 
     /**
