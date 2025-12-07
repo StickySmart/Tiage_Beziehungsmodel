@@ -72,7 +72,7 @@ const CategorySection = (function() {
         const cardsHtml = attributes.map(attr => {
             const values = [25, 50, 75];
             const defaultValue = attr.defaultValue || 50;
-            const hintHtml = attr.hint ? ` <span class="dimension-hint">(${attr.hint})</span>` : '';
+            const questionHtml = attr.question ? `<div class="dimension-question">${attr.question}</div>` : '';
             const cardIdAttr = attr.cardId ? ` id="${attr.cardId}"` : '';
 
             const buttonsHtml = attr.options.map((optLabel, i) => {
@@ -82,7 +82,8 @@ const CategorySection = (function() {
 
             return `
                     <div class="profile-review-card"${cardIdAttr}>
-                        <div class="compact-dimension-label">${attr.label}${hintHtml}</div>
+                        <div class="compact-dimension-label">${attr.label}</div>
+                        ${questionHtml}
                         <div class="profile-review-triple-buttons" data-attr="${attr.attrId}">
                             ${buttonsHtml}
                         </div>
