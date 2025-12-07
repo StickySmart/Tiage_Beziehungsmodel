@@ -13153,17 +13153,19 @@
             }
 
             // Load geschlechtsidentität from current main gender selection
+            // KOPPLUNG: Nur wenn auf Hauptseite etwas ausgewählt ist, wird hier auch etwas ausgewählt
             if (typeof TiageState !== 'undefined') {
                 var primaryGeschlecht = TiageState.getPrimaryGeschlecht(person);
                 var secondaryGeschlecht = TiageState.getSecondaryGeschlecht(person);
 
-                // Update geschlechtsidentität options based on primary (body)
-                updateGeschlechtsidentitaetOptions(primaryGeschlecht);
+                // Update geschlechtsidentität options + Auswahl basierend auf Hauptseite
+                // Wenn secondaryGeschlecht null ist, wird keine Option aktiviert
+                updateGeschlechtsidentitaetOptions(primaryGeschlecht, secondaryGeschlecht);
 
                 if (primaryGeschlecht && secondaryGeschlecht) {
-                    var geschlechtsidentitaetValue = mapSecondaryToGeschlechtsidentitaet(secondaryGeschlecht, primaryGeschlecht);
-                    setTripleBtnValue('pr-geschlecht-sekundaer', geschlechtsidentitaetValue);
-                    console.log('[ProfileReview] Geschlechtsidentität geladen:', primaryGeschlecht, '/', secondaryGeschlecht, '→', geschlechtsidentitaetValue);
+                    console.log('[ProfileReview] Geschlechtsidentität geladen:', primaryGeschlecht, '/', secondaryGeschlecht);
+                } else {
+                    console.log('[ProfileReview] Geschlechtsidentität: Keine Auswahl (Hauptseite nicht vollständig)');
                 }
             }
 
@@ -13445,6 +13447,9 @@
             setTripleBtnValue('pr-umwelt', mapToTripleValue(inferences.umweltbewusstsein));
             setTripleBtnValue('pr-politik', mapToTripleValue(inferences.politischesInteresse));
 
+            // NEU: Source-Explanation aktualisieren um sekundäres Geschlecht oben anzuzeigen
+            updateSourceExplanation(archetypeKey, personData, dominanz, orientierung);
+
             console.log('[ProfileReview] Alle 30 Attribute wurden mit neuen Gender-Modifikatoren aktualisiert');
         }
         window.reloadProfileAttributesAfterGenderChange = reloadProfileAttributesAfterGenderChange;
@@ -13640,7 +13645,7 @@
          * - Inter (divers): Nonbinär, Fluid, Suchend (3 options)
          * @param {string} primaryGeschlecht - 'mann', 'frau', 'inter', or null
          */
-        function updateGeschlechtsidentitaetOptions(primaryGeschlecht) {
+        function updateGeschlechtsidentitaetOptions(primaryGeschlecht, secondaryGeschlecht) {
             var card = document.getElementById('pr-geschlecht-sekundaer-card');
             if (!card) return;
 
@@ -13659,9 +13664,18 @@
             }
             buttonsContainer.classList.remove('five-options');
 
+            // Bestimme welche Option aktiv sein soll basierend auf Hauptseiten-Auswahl
+            var activeIndex = -1; // -1 = keine Auswahl wenn nichts auf Hauptseite ausgewählt
+            if (primaryGeschlecht && secondaryGeschlecht) {
+                // Synchronisiere mit Hauptseiten-Auswahl
+                var mappedValue = mapSecondaryToGeschlechtsidentitaet(secondaryGeschlecht, primaryGeschlecht);
+                activeIndex = values.indexOf(mappedValue);
+                if (activeIndex === -1) activeIndex = 0; // Fallback
+            }
+
             // Regenerate buttons
             var buttonsHtml = options.map(function(label, i) {
-                var isActive = i === 0 ? ' active' : '';
+                var isActive = (i === activeIndex) ? ' active' : '';
                 return '<button class="profile-review-triple-btn' + isActive + '" data-value="' + values[i] + '" onclick="selectTripleBtn(this)">' + label + '</button>';
             }).join('');
 
