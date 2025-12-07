@@ -4662,7 +4662,20 @@
             background: rgba(239, 68, 68, 0.15);
             border: 1px solid rgba(239, 68, 68, 0.3);
             color: #f87171;
-            cursor: help;
+        }
+
+        .gfk-tag-clickable {
+            cursor: pointer;
+            transition: transform 0.15s ease, box-shadow 0.15s ease;
+        }
+
+        .gfk-tag-clickable:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .gfk-tag-clickable:active {
+            transform: translateY(0);
         }
 
         /* Indikatoren für Dominanz/Orientierung (gleiche wie Geschlecht) */

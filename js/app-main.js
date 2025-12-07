@@ -5979,7 +5979,7 @@
                         <div class="gfk-tags">
                             ${matching.topUebereinstimmungen.map(b => {
                                 const translatedLabel = TiageI18n.t(`needs.items.${b.id}`, b.label);
-                                return `<span class="gfk-tag gfk-tag-match">${translatedLabel}</span>`;
+                                return `<span class="gfk-tag gfk-tag-match gfk-tag-clickable" onclick="openNeedDefinitionModal('${b.id}')" title="Klicken für Definition">${translatedLabel}</span>`;
                             }).join('')}
                         </div>
                     </div>
@@ -5995,7 +5995,7 @@
                         <div class="gfk-tags">
                             ${matching.topKonflikte.map(b => {
                                 const translatedLabel = TiageI18n.t(`needs.items.${b.id}`, b.label);
-                                return `<span class="gfk-tag gfk-tag-conflict" title="${matching.archetyp1}: ${b.wert1}% | ${matching.archetyp2}: ${b.wert2}%">${translatedLabel}</span>`;
+                                return `<span class="gfk-tag gfk-tag-conflict gfk-tag-clickable" onclick="openNeedDefinitionModal('${b.id}')" title="Klicken für Definition | ${matching.archetyp1}: ${b.wert1}% | ${matching.archetyp2}: ${b.wert2}%">${translatedLabel}</span>`;
                             }).join('')}
                         </div>
                     </div>
