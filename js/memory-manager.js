@@ -46,16 +46,81 @@ const MemoryManager = (function() {
     }
 
     /**
-     * Collect current ME data from state
+     * Get value from triple button group
+     */
+    function getTripleBtnValue(attrId) {
+        const container = document.getElementById(attrId);
+        if (!container) return 50;
+        const activeBtn = container.querySelector('.profile-review-triple-btn.active');
+        if (!activeBtn) return 50;
+        return parseInt(activeBtn.dataset.value, 10) || 50;
+    }
+
+    /**
+     * Collect ProfileReview state (16 Attribute)
+     */
+    function collectProfileReviewState(person) {
+        // Prefix for person-specific attributes (if implemented)
+        // Currently ProfileReview is global, not per-person
+        return {
+            geschlechtsidentitaet: getTripleBtnValue('pr-geschlecht-sekundaer'),
+            kinder: document.getElementById('pr-kinder')?.classList.contains('active') || false,
+            ehe: document.getElementById('pr-ehe')?.classList.contains('active') || false,
+            familie: getTripleBtnValue('pr-familie'),
+            finanzen: getTripleBtnValue('pr-finanzen'),
+            karriere: getTripleBtnValue('pr-karriere'),
+            emotional: getTripleBtnValue('pr-emotional'),
+            konflikt: getTripleBtnValue('pr-konflikt'),
+            introextro: getTripleBtnValue('pr-introextro'),
+            alleinzeit: getTripleBtnValue('pr-alleinzeit'),
+            freunde: getTripleBtnValue('pr-freunde'),
+            naehe: getTripleBtnValue('pr-naehe'),
+            romantik: getTripleBtnValue('pr-romantik'),
+            sex: getTripleBtnValue('pr-sex'),
+            religion: getTripleBtnValue('pr-religion'),
+            tradition: getTripleBtnValue('pr-tradition'),
+            umwelt: getTripleBtnValue('pr-umwelt')
+        };
+    }
+
+    /**
+     * Collect Gewichtungen (factor weights)
+     */
+    function collectGewichtungen() {
+        try {
+            const stored = localStorage.getItem('tiage_faktor_gewichtungen');
+            return stored ? JSON.parse(stored) : null;
+        } catch (e) {
+            return null;
+        }
+    }
+
+    /**
+     * Collect Gewichtung Locks
+     */
+    function collectGewichtungLocks() {
+        try {
+            const stored = localStorage.getItem('tiage_faktor_locks');
+            return stored ? JSON.parse(stored) : null;
+        } catch (e) {
+            return null;
+        }
+    }
+
+    /**
+     * Collect current ME data from state (COMPLETE PROFILE)
      */
     function collectMeData() {
         const data = {
             timestamp: Date.now(),
-            version: '1.0',
+            version: '2.0',
             archetyp: null,
             geschlecht: null,
             dominanz: null,
-            orientierung: null
+            orientierung: null,
+            profileReview: null,
+            gewichtungen: null,
+            gewichtungLocks: null
         };
 
         // Get from TiageState if available
@@ -74,20 +139,30 @@ const MemoryManager = (function() {
             }
         }
 
+        // Collect ProfileReview state (Bedürfnisse)
+        data.profileReview = collectProfileReviewState('ich');
+
+        // Collect Gewichtungen
+        data.gewichtungen = collectGewichtungen();
+        data.gewichtungLocks = collectGewichtungLocks();
+
         return data;
     }
 
     /**
-     * Collect current PARTNER data from state
+     * Collect current PARTNER data from state (COMPLETE PROFILE)
      */
     function collectPartnerData() {
         const data = {
             timestamp: Date.now(),
-            version: '1.0',
+            version: '2.0',
             archetyp: null,
             geschlecht: null,
             dominanz: null,
-            orientierung: null
+            orientierung: null,
+            profileReview: null,
+            gewichtungen: null,
+            gewichtungLocks: null
         };
 
         // Get from TiageState if available
@@ -106,11 +181,105 @@ const MemoryManager = (function() {
             }
         }
 
+        // Collect ProfileReview state (Bedürfnisse)
+        data.profileReview = collectProfileReviewState('partner');
+
+        // Collect Gewichtungen (same as ME since they're global)
+        data.gewichtungen = collectGewichtungen();
+        data.gewichtungLocks = collectGewichtungLocks();
+
         return data;
     }
 
     /**
-     * Apply loaded data to ME
+     * Set value for triple button group
+     */
+    function setTripleBtnValue(attrId, value) {
+        const container = document.getElementById(attrId);
+        if (!container) return;
+
+        // Remove active from all buttons
+        container.querySelectorAll('.profile-review-triple-btn').forEach(btn => {
+            btn.classList.remove('active');
+        });
+
+        // Set active on matching button
+        const targetBtn = container.querySelector(`.profile-review-triple-btn[data-value="${value}"]`);
+        if (targetBtn) {
+            targetBtn.classList.add('active');
+        }
+    }
+
+    /**
+     * Apply ProfileReview state (Bedürfnisse)
+     */
+    function applyProfileReviewState(profileReview) {
+        if (!profileReview) return;
+
+        // Triple button attributes
+        if (profileReview.geschlechtsidentitaet !== undefined) {
+            setTripleBtnValue('pr-geschlecht-sekundaer', profileReview.geschlechtsidentitaet);
+        }
+        if (profileReview.familie !== undefined) setTripleBtnValue('pr-familie', profileReview.familie);
+        if (profileReview.finanzen !== undefined) setTripleBtnValue('pr-finanzen', profileReview.finanzen);
+        if (profileReview.karriere !== undefined) setTripleBtnValue('pr-karriere', profileReview.karriere);
+        if (profileReview.emotional !== undefined) setTripleBtnValue('pr-emotional', profileReview.emotional);
+        if (profileReview.konflikt !== undefined) setTripleBtnValue('pr-konflikt', profileReview.konflikt);
+        if (profileReview.introextro !== undefined) setTripleBtnValue('pr-introextro', profileReview.introextro);
+        if (profileReview.alleinzeit !== undefined) setTripleBtnValue('pr-alleinzeit', profileReview.alleinzeit);
+        if (profileReview.freunde !== undefined) setTripleBtnValue('pr-freunde', profileReview.freunde);
+        if (profileReview.naehe !== undefined) setTripleBtnValue('pr-naehe', profileReview.naehe);
+        if (profileReview.romantik !== undefined) setTripleBtnValue('pr-romantik', profileReview.romantik);
+        if (profileReview.sex !== undefined) setTripleBtnValue('pr-sex', profileReview.sex);
+        if (profileReview.religion !== undefined) setTripleBtnValue('pr-religion', profileReview.religion);
+        if (profileReview.tradition !== undefined) setTripleBtnValue('pr-tradition', profileReview.tradition);
+        if (profileReview.umwelt !== undefined) setTripleBtnValue('pr-umwelt', profileReview.umwelt);
+
+        // Boolean toggle attributes (kinder, ehe)
+        const kinderEl = document.getElementById('pr-kinder');
+        if (kinderEl) {
+            if (profileReview.kinder) {
+                kinderEl.classList.add('active');
+            } else {
+                kinderEl.classList.remove('active');
+            }
+        }
+        const eheEl = document.getElementById('pr-ehe');
+        if (eheEl) {
+            if (profileReview.ehe) {
+                eheEl.classList.add('active');
+            } else {
+                eheEl.classList.remove('active');
+            }
+        }
+    }
+
+    /**
+     * Apply Gewichtungen (factor weights)
+     */
+    function applyGewichtungen(gewichtungen) {
+        if (!gewichtungen) return;
+        try {
+            localStorage.setItem('tiage_faktor_gewichtungen', JSON.stringify(gewichtungen));
+        } catch (e) {
+            console.warn('[MemoryManager] Could not save Gewichtungen:', e);
+        }
+    }
+
+    /**
+     * Apply Gewichtung Locks
+     */
+    function applyGewichtungLocks(locks) {
+        if (!locks) return;
+        try {
+            localStorage.setItem('tiage_faktor_locks', JSON.stringify(locks));
+        } catch (e) {
+            console.warn('[MemoryManager] Could not save Gewichtung Locks:', e);
+        }
+    }
+
+    /**
+     * Apply loaded data to ME (COMPLETE PROFILE)
      */
     function applyMeData(data) {
         if (!data) return false;
@@ -158,6 +327,19 @@ const MemoryManager = (function() {
                 if (ichSelect) ichSelect.value = archetypValue;
                 const mobileIchSelect = document.getElementById('mobileIchSelect');
                 if (mobileIchSelect) mobileIchSelect.value = archetypValue;
+            }
+
+            // Apply ProfileReview state (Bedürfnisse)
+            if (data.profileReview) {
+                applyProfileReviewState(data.profileReview);
+            }
+
+            // Apply Gewichtungen
+            if (data.gewichtungen) {
+                applyGewichtungen(data.gewichtungen);
+            }
+            if (data.gewichtungLocks) {
+                applyGewichtungLocks(data.gewichtungLocks);
             }
 
             // Sync UI functions (use window.* as they're exposed globally in app-main.js)
@@ -223,6 +405,19 @@ const MemoryManager = (function() {
                 if (partnerSelect) partnerSelect.value = archetypValue;
                 const mobilePartnerSelect = document.getElementById('mobilePartnerSelect');
                 if (mobilePartnerSelect) mobilePartnerSelect.value = archetypValue;
+            }
+
+            // Apply ProfileReview state (Bedürfnisse)
+            if (data.profileReview) {
+                applyProfileReviewState(data.profileReview);
+            }
+
+            // Apply Gewichtungen
+            if (data.gewichtungen) {
+                applyGewichtungen(data.gewichtungen);
+            }
+            if (data.gewichtungLocks) {
+                applyGewichtungLocks(data.gewichtungLocks);
             }
 
             // Sync UI functions (use window.* as they're exposed globally in app-main.js)
