@@ -297,81 +297,184 @@ const TiageLocale_DE = {
         single: {
             name: 'Single',
             shortDef: 'Bewusste Entscheidung für ein autonomes Leben ohne Primärbeziehung als dauerhafte Lebensform.',
+            longDef: 'Single-orientierte Menschen haben sich aktiv für ein Leben ohne dauerhafte romantische Partnerschaft entschieden. Dies ist keine Übergangsphase ("zwischen Beziehungen"), sondern ein bewusster Lebensstil, der Selbstgenügsamkeit und persönliche Autonomie als zentrale Werte sieht. Soziale Kontakte, Freundschaften und gelegentliche romantische/sexuelle Begegnungen sind möglich, aber keine dauerhafte Partnerschaft wird angestrebt.',
             keyPrinciples: [
                 'Selbstgenügsamkeit als Wert, nicht als Mangel',
                 'Persönliche Autonomie über Verbindlichkeit',
                 'Beziehungen als Option, nicht als Notwendigkeit',
                 'Erfüllung durch Selbst, Freunde, Projekte'
+            ],
+            notTheSameAs: [
+                '"Zwischen Beziehungen"',
+                '"Noch nicht den Richtigen gefunden"',
+                'Bindungsunfähig oder Bindungsangst',
+                'Einsam oder unglücklich'
+            ],
+            variants: [
+                'Aromantisch-Single: Keine romantischen Gefühle, kein Bedürfnis danach',
+                'Bewusst-autonom: Positive Entscheidung für Freiheit',
+                'Beziehungskritisch: Bevorzugt Unabhängigkeit'
             ]
         },
         duo: {
             name: 'Duo',
             shortDef: 'Traditionelle monogame Zweierbeziehung mit Exklusivität und gemeinsamer Lebensgestaltung.',
+            longDef: 'Duo-orientierte Menschen leben in oder suchen eine klassische Zweierbeziehung mit romantischer und sexueller Exklusivität. Die Partnerschaft steht im Zentrum der Lebensgestaltung und wird als primäre emotionale und soziale Einheit verstanden. Gemeinsame Ziele, Alltag und Zukunftsplanung werden als Paar gestaltet.',
             keyPrinciples: [
                 "Exklusivität als Ausdruck von Verbindlichkeit",
                 "'Wir' als zentrale Einheit über 'Ich'",
                 'Tiefe durch Fokussierung auf eine Person',
-                'Gemeinsame Lebensgestaltung und Zukunftsplanung'
+                'Gemeinsame Lebensgestaltung und Zukunftsplanung',
+                'Treue als emotionale und sexuelle Exklusivität'
+            ],
+            notTheSameAs: [
+                'Besitzdenken oder Kontrolle',
+                'Verlust der eigenen Identität',
+                '"Alte" oder "überholte" Beziehungsform',
+                'Langweilig oder unerfüllt'
+            ],
+            variants: [
+                'Traditionell-Duo: Klassisches Ehe-Modell',
+                'Modern-Duo: Ohne Trauschein, flexiblere Rollen',
+                'Intensiv-Duo: Sehr enge emotionale Verschmelzung'
             ]
         },
         duo_flex: {
             name: 'Duo-Flex',
             shortDef: 'Primäre Zweierbeziehung mit vereinbarten Öffnungen für zusätzliche Kontakte.',
+            longDef: 'Duo-Flex-orientierte Menschen leben in einer Hauptbeziehung mit einem Primärpartner, öffnen diese aber bewusst und einvernehmlich für zusätzliche Kontakte. Die Primärbeziehung bleibt zentral und privilegiert. Alle Öffnungen sind transparent und nach gemeinsam vereinbarten Regeln.',
             keyPrinciples: [
                 'Primärbeziehung als Anker und Priorität',
                 'Sexuelle/romantische Vielfalt ohne Hierarchie-Aufgabe',
                 'Ehrlichkeit und Transparenz über alle Kontakte',
+                'Regeln schützen die Hauptbeziehung',
                 'Freiheit innerhalb vereinbarter Grenzen'
+            ],
+            notTheSameAs: [
+                'Fremdgehen oder Betrug (alles ist abgesprochen!)',
+                '"Beziehung retten" durch Öffnung',
+                'Mangelnde Verbindlichkeit',
+                'Übergangsphase zu Polyamorie'
+            ],
+            variants: [
+                'Swinging/Lifestyle: Gemeinsame sexuelle Erfahrungen',
+                'Offene Beziehung: Individuelle sexuelle Freiheit',
+                'Hierarchische Poly: Primärpartner + Sekundärbeziehungen'
             ]
         },
         solopoly: {
             name: 'Solopoly',
             shortDef: 'Mehrere gleichwertige Beziehungen bei bewusster Bewahrung der eigenen Autonomie.',
+            longDef: 'Solopoly-orientierte Menschen haben mehrere romantische und/oder sexuelle Beziehungen parallel, ohne eine davon als "Hauptbeziehung" zu priorisieren. Die persönliche Autonomie steht im Zentrum: Kein Zusammenziehen, keine gemeinsame Haushaltsführung. "Ich bin mein eigener Primärpartner".',
             keyPrinciples: [
                 'Autonomie als höchster Wert - auch in Beziehungen',
                 'Mehrere gleichwertige Beziehungen ohne Hierarchie',
                 'Keine Verschmelzung oder gemeinsame Haushalte',
-                "'Ich bin mein eigener Primärpartner'"
+                "'Ich bin mein eigener Primärpartner'",
+                'Liebe ohne Aufgabe der Unabhängigkeit'
+            ],
+            notTheSameAs: [
+                'Bindungsangst oder Bindungsprobleme',
+                '"Light-Version" von Polyamorie',
+                'Egoistisch oder beziehungsunfähig',
+                'Zwischenstufe zu "echter" Partnerschaft'
+            ],
+            variants: [
+                'Stark-autonom: Sehr klare Grenzen',
+                'Beziehungs-balanciert: Tiefe Beziehungen, getrennte Wohnungen',
+                'Netzwerk-orientiert: Viele gleichwertige Verbindungen'
             ]
         },
         polyamor: {
             name: 'Polyamor',
             shortDef: 'Mehrere gleichzeitige, ethisch geführte Liebesbeziehungen mit Transparenz.',
+            longDef: 'Polyamore Menschen leben mehrere romantische Beziehungen gleichzeitig, alle mit dem Wissen und Einverständnis aller Beteiligten. Anders als bei Duo-Flex gibt es oft keine klare Hierarchie - alle Beziehungen können gleich wichtig sein.',
             keyPrinciples: [
                 'Liebe ist nicht begrenzt oder exklusiv',
                 'Ehrlichkeit und Transparenz gegenüber allen',
                 'Konsens und Einvernehmlichkeit als Basis',
-                'Kommunikation als zentrale Kompetenz'
+                'Kommunikation als zentrale Kompetenz',
+                'Jede Beziehung hat ihren eigenen Wert'
+            ],
+            notTheSameAs: [
+                'Fremdgehen oder Geheimniskrämerei',
+                '"Alles haben wollen"',
+                'Bindungsunfähig',
+                'Nur auf Sex ausgerichtet'
+            ],
+            variants: [
+                'Kitchen-Table-Poly: Alle Partner kennen und mögen sich',
+                'Parallel-Poly: Beziehungen existieren getrennt',
+                'Polycule: Netzwerk aus verbundenen Beziehungen'
             ]
         },
         ra: {
             name: 'RA',
             shortDef: 'RA - Ablehnung aller Beziehungs-Hierarchien und Labels.',
+            longDef: 'RAs hinterfragen radikal alle gesellschaftlichen Beziehungsnormen. Keine Beziehung ist "höher" als eine andere - Freundschaften können genauso wichtig sein wie romantische Beziehungen. Jede Verbindung wird individuell definiert, ohne externe Vorlagen.',
             keyPrinciples: [
+                'Keine Hierarchien zwischen Beziehungstypen',
                 'Jede Beziehung wird individuell definiert',
-                'Keine vorgegebenen Kategorien oder Labels',
-                'Gleichwertigkeit aller Verbindungen',
-                'Radikale Autonomie und Freiheit'
+                'Ablehnung gesellschaftlicher Beziehungsnormen',
+                'Autonomie als höchster Wert',
+                'Keine Besitzansprüche auf andere Menschen'
+            ],
+            notTheSameAs: [
+                'Beziehungsunfähig oder Bindungsangst',
+                'Chaotisch oder ohne Regeln',
+                'Verantwortungslos',
+                'Gegen Verbindlichkeit generell'
+            ],
+            variants: [
+                'Anarchisch-vernetzt: Viele gleichwertige Verbindungen',
+                'Philosophisch-RA: Tiefe Reflexion über Normen',
+                'Pragmatisch-RA: Flexible Anwendung der Prinzipien'
             ]
         },
         lat: {
             name: 'LAT',
             shortDef: 'Living Apart Together - Feste Partnerschaft ohne Zusammenleben.',
+            longDef: 'LAT-orientierte Menschen wünschen sich tiefe, verbindliche Beziehungen, aber mit klarer räumlicher und alltäglicher Autonomie. Die eigenen vier Wände sind kein Zeichen von Distanz, sondern von gesunder Selbstfürsorge.',
             keyPrinciples: [
-                'Verbindlichkeit ohne Zusammenleben',
-                'Eigener Raum als Wert',
+                'Liebe braucht kein gemeinsames Dach',
+                'Eigener Rückzugsraum ist essentiell',
                 'Qualitätszeit statt Quantität',
-                'Bewusste Nähe durch gewählte Distanz'
+                'Autonomie im Alltag',
+                'Bewusste Entscheidung für Nähe'
+            ],
+            notTheSameAs: [
+                'Fernbeziehung (ungewollte Distanz)',
+                'Übergangsphase vor dem Zusammenziehen',
+                'Bindungsangst',
+                '"Die Beziehung nicht ernst nehmen"'
+            ],
+            variants: [
+                'Nahbereichs-LAT: Nah beieinander, aber getrennt wohnen',
+                'Wochenend-LAT: Am Wochenende zusammen, unter der Woche getrennt',
+                'Flexibles-LAT: Wechselnde Zeitanteile zusammen'
             ]
         },
         aromantisch: {
             name: 'Aromantisch',
             shortDef: 'Fokus auf platonische Verbindungen ohne romantische Komponente.',
+            longDef: 'Aromantische Menschen empfinden wenig oder keine romantische Anziehung. Sie können trotzdem tiefe, bedeutungsvolle Beziehungen haben - nur ohne romantische Komponente. Freundschaft, Familie und andere Verbindungen sind genauso wertvoll.',
             keyPrinciples: [
                 'Tiefe Verbindungen ohne Romantik',
                 'Freundschaft als gleichwertiges Beziehungsmodell',
                 'Authentizität jenseits romantischer Normen',
-                'Platonische Liebe als vollwertige Verbindung'
+                'Platonische Liebe als vollwertige Verbindung',
+                'Selbstwert unabhängig von romantischen Beziehungen'
+            ],
+            notTheSameAs: [
+                'Kalt oder gefühllos',
+                'Unfähig zu lieben',
+                'Asexuell (das ist ein anderes Spektrum)',
+                'Einfach noch nicht die richtige Person gefunden'
+            ],
+            variants: [
+                'Voll-Aromantisch: Gar keine romantische Anziehung',
+                'Grauromantisch: Selten romantische Anziehung',
+                'Queerplatonisch: Tiefe, verbindliche nicht-romantische Partnerschaften'
             ]
         }
     },
