@@ -50,7 +50,8 @@ const ProfileReviewRenderer = (function() {
             category,
             icon: categoryInfo.icon,
             label: categoryInfo.label,
-            content: cardsHtml
+            content: cardsHtml,
+            itemCount: attributes.length
         });
     }
 

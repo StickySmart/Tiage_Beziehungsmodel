@@ -13,7 +13,8 @@ concurrency:
 jobs:
   bump-version:
     # Skip if commit message contains [skip ci] to prevent infinite loops
-    if: "!contains(github.event.head_commit.message, '[skip ci]')"
+    # Note: Use fallback to empty string for null-safety when head_commit.message is null (e.g., merge commits)
+    if: "!contains(github.event.head_commit.message || '', '[skip ci]')"
     runs-on: ubuntu-latest
     permissions:
       contents: write

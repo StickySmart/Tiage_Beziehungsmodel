@@ -5255,6 +5255,234 @@
                 kategorie: "Dynamik & Austausch",
                 kategorieColor: "#8B5CF6",
                 definition: "Das Bedürfnis, den Partner zu beschützen – Sicherheit zu geben und über sein Wohlergehen zu wachen."
+            },
+
+            // ═══════════════════════════════════════════════════════════════════════
+            // LEBENSPLANUNG - Kinder, Ehe, Wohnen, Familie
+            // ═══════════════════════════════════════════════════════════════════════
+            kinderwunsch: {
+                label: "Kinderwunsch",
+                kategorie: "Lebensplanung",
+                kategorieColor: "#10B981",
+                definition: "Das Bedürfnis, eigene Kinder zu haben und sie aufwachsen zu sehen – ein tiefer Wunsch nach Weitergabe und Fürsorge.",
+                quelle: "Evolutionspsychologie & Entwicklungspsychologie",
+                quelleDetail: "Basiert auf dem biologischen Fortpflanzungstrieb (Darwin) und Eriksons Konzept der Generativität – dem Bedürfnis, etwas für die nächste Generation zu hinterlassen."
+            },
+            elternschaft: {
+                label: "Elternschaft",
+                kategorie: "Lebensplanung",
+                kategorieColor: "#10B981",
+                definition: "Das Bedürfnis, als Elternteil zu wirken – Kinder zu erziehen, zu begleiten und in ihrer Entwicklung zu unterstützen.",
+                quelle: "Erik Erikson – Stufenmodell der psychosozialen Entwicklung",
+                quelleDetail: "Im 7. Stadium (Generativität vs. Stagnation) beschreibt Erikson das Bedürfnis, für die nächste Generation zu sorgen als zentralen Entwicklungsaspekt des Erwachsenenalters."
+            },
+            fortpflanzung: {
+                label: "Fortpflanzung",
+                kategorie: "Lebensplanung",
+                kategorieColor: "#10B981",
+                definition: "Das biologische Bedürfnis nach genetischer Weitergabe – der Wunsch, eigene Gene und damit einen Teil von sich selbst weiterzugeben.",
+                quelle: "Evolutionsbiologie & Soziobiologie",
+                quelleDetail: "Richard Dawkins ('Das egoistische Gen', 1976) erklärt, wie der Fortpflanzungsdrang evolutionär verankert ist. Dieses Bedürfnis variiert individuell stark."
+            },
+            familie_gruenden: {
+                label: "Familie gründen",
+                kategorie: "Lebensplanung",
+                kategorieColor: "#10B981",
+                definition: "Das Bedürfnis, eine eigene Familieneinheit zu schaffen – einen stabilen Rahmen für gemeinsames Leben und gegenseitige Fürsorge.",
+                quelle: "Familiensoziologie & Bindungstheorie",
+                quelleDetail: "Bowlby's Bindungstheorie zeigt, wie sichere Bindungen in Familien die Grundlage für psychische Gesundheit bilden."
+            },
+            generativitaet: {
+                label: "Generativität",
+                kategorie: "Lebensplanung",
+                kategorieColor: "#10B981",
+                definition: "Das Bedürfnis, etwas Bleibendes zu schaffen und weiterzugeben – sei es durch Kinder, Mentoring oder kreative Werke.",
+                quelle: "Erik Erikson – Psychosoziale Entwicklung",
+                quelleDetail: "Eriksons 7. Stufe beschreibt Generativität als das Bedürfnis, über das eigene Selbst hinauszuwachsen und zur nächsten Generation beizutragen."
+            },
+            verbindlichkeit: {
+                label: "Verbindlichkeit",
+                kategorie: "Lebensplanung",
+                kategorieColor: "#10B981",
+                definition: "Das Bedürfnis nach verlässlichen Zusagen und beständigen Verpflichtungen in der Beziehung.",
+                quelle: "Bindungstheorie & Beziehungsforschung",
+                quelleDetail: "John Gottman zeigt in seiner Forschung, dass Commitment (Verbindlichkeit) einer der stärksten Prädiktoren für Beziehungsstabilität ist."
+            },
+            langfristige_bindung: {
+                label: "Langfristige Bindung",
+                kategorie: "Lebensplanung",
+                kategorieColor: "#10B981",
+                definition: "Das Bedürfnis nach einer dauerhaften, stabilen Partnerschaft – Sicherheit durch Beständigkeit.",
+                quelle: "Bindungstheorie (Bowlby/Ainsworth)",
+                quelleDetail: "Sicher gebundene Menschen zeigen ein starkes Bedürfnis nach langfristigen Bindungen, die emotionale Sicherheit bieten."
+            },
+            rechtliche_sicherheit: {
+                label: "Rechtliche Sicherheit",
+                kategorie: "Lebensplanung",
+                kategorieColor: "#10B981",
+                definition: "Das Bedürfnis nach rechtlicher Absicherung der Beziehung – Schutz durch Institutionen wie Ehe oder eingetragene Partnerschaft.",
+                quelle: "Familienrecht & Soziologie",
+                quelleDetail: "Die Ehe bietet rechtliche Vorteile wie Erbrecht, Steuervorteile und Entscheidungsbefugnisse im Krankheitsfall."
+            },
+            treueversprechen: {
+                label: "Treueversprechen",
+                kategorie: "Lebensplanung",
+                kategorieColor: "#10B981",
+                definition: "Das Bedürfnis nach exklusiver emotionaler und/oder sexueller Bindung – Vertrauen durch gegenseitige Treuezusage.",
+                quelle: "Evolutionspsychologie & Kulturanthropologie",
+                quelleDetail: "David Buss zeigt, wie sich Eifersucht und Treuewunsch evolutionär entwickelt haben, während kulturelle Faktoren deren Ausprägung beeinflussen."
+            },
+            gemeinsamer_wohnraum: {
+                label: "Gemeinsamer Wohnraum",
+                kategorie: "Lebensplanung",
+                kategorieColor: "#10B981",
+                definition: "Das Bedürfnis, den Lebensraum mit dem Partner zu teilen – ein gemeinsames Zuhause als Symbol der Verbundenheit.",
+                quelle: "Umweltpsychologie & Beziehungsforschung",
+                quelleDetail: "Geteilter Wohnraum fördert Intimität und Alltagsroutinen, die die Beziehungszufriedenheit stärken."
+            },
+            haeuslichkeit: {
+                label: "Häuslichkeit",
+                kategorie: "Lebensplanung",
+                kategorieColor: "#10B981",
+                definition: "Das Bedürfnis nach einem gemütlichen Zuhause – Geborgenheit und Wohlbefinden in den eigenen vier Wänden.",
+                quelle: "Umweltpsychologie",
+                quelleDetail: "Das Konzept 'Home' (Zuhause) ist psychologisch mit Sicherheit, Identität und emotionaler Regulierung verbunden."
+            },
+            nest_bauen: {
+                label: "Nest bauen",
+                kategorie: "Lebensplanung",
+                kategorieColor: "#10B981",
+                definition: "Das Bedürfnis, gemeinsam ein Heim zu gestalten – einen Ort der Sicherheit und des Rückzugs zu schaffen.",
+                quelle: "Evolutionspsychologie & Nesting-Instinkt",
+                quelleDetail: "Der 'Nesting-Instinkt' ist besonders bei werdenden Eltern stark ausgeprägt, aber auch generell ein Zeichen für Bindungssicherheit."
+            },
+            alltag_teilen: {
+                label: "Alltag teilen",
+                kategorie: "Lebensplanung",
+                kategorieColor: "#10B981",
+                definition: "Das Bedürfnis, den täglichen Rhythmus gemeinsam zu erleben – kleine Momente des Zusammenseins im Alltag.",
+                quelle: "Beziehungsforschung (Gottman)",
+                quelleDetail: "Gottman betont die Bedeutung von 'Bids for Connection' – kleinen Alltagsmomenten, die Beziehungen stärken."
+            },
+            eigener_raum: {
+                label: "Eigener Raum",
+                kategorie: "Lebensplanung",
+                kategorieColor: "#10B981",
+                definition: "Das Bedürfnis nach einem persönlichen Bereich – Rückzugsort für Individualität auch in der Partnerschaft.",
+                quelle: "Selbstbestimmungstheorie (Deci & Ryan)",
+                quelleDetail: "Autonomie ist ein Grundbedürfnis. Auch in engen Beziehungen braucht jeder Mensch Raum für sich selbst."
+            },
+            rueckzugsort: {
+                label: "Rückzugsort",
+                kategorie: "Lebensplanung",
+                kategorieColor: "#10B981",
+                definition: "Das Bedürfnis nach einem Ort der Stille und Erholung – Raum zum Auftanken und Reflektieren.",
+                quelle: "Stressforschung & Resilienz",
+                quelleDetail: "Rückzugsmöglichkeiten sind essentiell für Stressregulation und emotionale Regeneration."
+            },
+            tierliebe: {
+                label: "Tierliebe",
+                kategorie: "Lebensplanung",
+                kategorieColor: "#10B981",
+                definition: "Das Bedürfnis nach Verbindung mit Tieren – Fürsorge, Zuneigung und Freude im Umgang mit tierischen Begleitern.",
+                quelle: "Anthrozoologie & Tiergestützte Therapie",
+                quelleDetail: "Die Mensch-Tier-Beziehung kann Oxytocin freisetzen und hat nachweislich positive Effekte auf die psychische Gesundheit."
+            },
+            fuersorge_tiere: {
+                label: "Fürsorge für Tiere",
+                kategorie: "Lebensplanung",
+                kategorieColor: "#10B981",
+                definition: "Das Bedürfnis, für ein Tier zu sorgen – Verantwortung, Pflege und die Freude am Wohlergehen eines Tieres.",
+                quelle: "Caring-Motivation & Bindung",
+                quelleDetail: "Die Fürsorge für Tiere aktiviert ähnliche neurologische Mechanismen wie die Fürsorge für Kinder."
+            },
+            begleiter: {
+                label: "Tierischer Begleiter",
+                kategorie: "Lebensplanung",
+                kategorieColor: "#10B981",
+                definition: "Das Bedürfnis nach einem treuen tierischen Gefährten – bedingungslose Präsenz und Gesellschaft.",
+                quelle: "Soziale Unterstützungsforschung",
+                quelleDetail: "Haustiere bieten soziale Unterstützung und können Einsamkeit reduzieren."
+            },
+            verantwortung_tier: {
+                label: "Verantwortung für Tier",
+                kategorie: "Lebensplanung",
+                kategorieColor: "#10B981",
+                definition: "Das Bedürfnis, Verantwortung für ein Lebewesen zu tragen – Struktur und Sinn durch tägliche Fürsorge.",
+                quelle: "Entwicklungspsychologie",
+                quelleDetail: "Verantwortung für andere (auch Tiere) fördert Selbstwirksamkeit und emotionale Reife."
+            },
+            sesshaftigkeit: {
+                label: "Sesshaftigkeit",
+                kategorie: "Lebensplanung",
+                kategorieColor: "#10B981",
+                definition: "Das Bedürfnis nach einem festen Wohnort – Stabilität und Verwurzelung an einem Ort.",
+                quelle: "Place Attachment Theorie",
+                quelleDetail: "Ortsbindung (Place Attachment) ist mit Identität, Sicherheit und Wohlbefinden verbunden."
+            },
+            verwurzelung: {
+                label: "Verwurzelung",
+                kategorie: "Lebensplanung",
+                kategorieColor: "#10B981",
+                definition: "Das Bedürfnis nach tiefer Verbindung mit einem Ort oder einer Gemeinschaft – Heimatgefühl und Zugehörigkeit.",
+                quelle: "Simone Weil – 'Die Einwurzelung'",
+                quelleDetail: "Weil beschreibt Verwurzelung als eines der wichtigsten, aber am wenigsten anerkannten Bedürfnisse der Seele."
+            },
+            mobilitaet: {
+                label: "Mobilität",
+                kategorie: "Lebensplanung",
+                kategorieColor: "#10B981",
+                definition: "Das Bedürfnis nach Bewegungsfreiheit – flexibel den Wohnort wechseln zu können.",
+                quelle: "Freiheitsbedürfnis & Moderne Soziologie",
+                quelleDetail: "In einer globalisierten Welt ist Mobilität für viele Menschen ein wichtiger Aspekt von Freiheit und Selbstverwirklichung."
+            },
+            heimat: {
+                label: "Heimat",
+                kategorie: "Lebensplanung",
+                kategorieColor: "#10B981",
+                definition: "Das Bedürfnis nach einem Ort der Zugehörigkeit – emotionale Verbundenheit mit einem geografischen oder sozialen Raum.",
+                quelle: "Kulturpsychologie & Identitätsforschung",
+                quelleDetail: "Heimat ist ein komplexes psychologisches Konstrukt, das Sicherheit, Identität und soziale Einbettung umfasst."
+            },
+            neue_orte: {
+                label: "Neue Orte",
+                kategorie: "Lebensplanung",
+                kategorieColor: "#10B981",
+                definition: "Das Bedürfnis, neue Orte zu entdecken und zu erleben – Neugier und Offenheit für Veränderung.",
+                quelle: "Explorationsverhalten & Neugierforschung",
+                quelleDetail: "Das Bedürfnis nach Neuheit (Novelty Seeking) ist ein Persönlichkeitsmerkmal mit neurobiologischer Grundlage."
+            },
+            familienbindung: {
+                label: "Familienbindung",
+                kategorie: "Lebensplanung",
+                kategorieColor: "#10B981",
+                definition: "Das Bedürfnis nach enger Verbindung zur eigenen Familie – emotionale Nähe und regelmäßiger Kontakt.",
+                quelle: "Bindungstheorie & Familienpsychologie",
+                quelleDetail: "Sichere Bindungen zur Herkunftsfamilie können Ressource und Herausforderung zugleich sein."
+            },
+            herkunftsfamilie: {
+                label: "Herkunftsfamilie",
+                kategorie: "Lebensplanung",
+                kategorieColor: "#10B981",
+                definition: "Das Bedürfnis, mit der Familie, in der man aufgewachsen ist, verbunden zu bleiben – Wurzeln und Geschichte.",
+                quelle: "Systemische Familientherapie",
+                quelleDetail: "Die Herkunftsfamilie prägt Beziehungsmuster, die in der Paarbeziehung reflektiert werden sollten."
+            },
+            familientreffen: {
+                label: "Familientreffen",
+                kategorie: "Lebensplanung",
+                kategorieColor: "#10B981",
+                definition: "Das Bedürfnis nach regelmäßigen Zusammenkünften mit der erweiterten Familie – Rituale der Verbundenheit.",
+                quelle: "Ritual- und Familienforschung",
+                quelleDetail: "Familienrituale stärken den Zusammenhalt und geben Orientierung über Generationen hinweg."
+            },
+            generationenverbund: {
+                label: "Generationenverbund",
+                kategorie: "Lebensplanung",
+                kategorieColor: "#10B981",
+                definition: "Das Bedürfnis nach Verbindung über Generationen hinweg – von Großeltern zu Enkeln, Weitergabe von Wissen und Werten.",
+                quelle: "Generationenforschung & Narrative Psychologie",
+                quelleDetail: "Die Weitergabe von Familiengeschichten stärkt die Identität und das Gefühl von Kontinuität."
             }
         };
 
@@ -5280,6 +5508,21 @@
             // Titel setzen
             title.textContent = def.label;
 
+            // Quellen-Sektion erstellen (falls vorhanden)
+            const quelleHtml = def.quelle ? `
+                    <!-- Quelle / Begründung -->
+                    <div style="padding: 12px; background: rgba(16,185,129,0.08); border-radius: 8px; border: 1px solid rgba(16,185,129,0.2);">
+                        <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
+                            <span style="font-size: 14px;">📚</span>
+                            <strong style="font-size: 12px; color: #10B981;">Quelle & Begründung</strong>
+                        </div>
+                        <p style="font-size: 12px; color: var(--text-primary); margin: 0 0 8px 0; font-weight: 500;">
+                            ${def.quelle}
+                        </p>
+                        ${def.quelleDetail ? `<p style="font-size: 11px; color: var(--text-secondary); margin: 0; line-height: 1.5;">${def.quelleDetail}</p>` : ''}
+                    </div>
+            ` : '';
+
             // Inhalt erstellen
             body.innerHTML = `
                 <div style="display: flex; flex-direction: column; gap: 16px;">
@@ -5293,6 +5536,8 @@
                     <div style="background: rgba(255,255,255,0.03); border-radius: 12px; padding: 16px; border-left: 3px solid ${def.kategorieColor};">
                         <p style="font-size: 14px; line-height: 1.7; color: var(--text-primary); margin: 0;">${def.definition}</p>
                     </div>
+
+                    ${quelleHtml}
 
                     <!-- GFK-Hinweis -->
                     <div style="padding: 12px; background: rgba(139,92,246,0.08); border-radius: 8px; border: 1px solid rgba(139,92,246,0.2);">

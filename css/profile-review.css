@@ -609,6 +609,25 @@ input.gewichtung-input:focus {
     color: var(--text-secondary, #aaa);
 }
 
+/* Klickbare Bedürfnis-Labels für Modal-Öffnung */
+.attribute-need-label.clickable {
+    cursor: pointer;
+    transition: all 0.2s ease;
+    padding: 2px 4px;
+    margin: -2px -4px;
+    border-radius: 4px;
+}
+
+.attribute-need-label.clickable:hover {
+    color: var(--primary, #457b9d);
+    background: rgba(69, 123, 157, 0.1);
+    text-decoration: underline;
+}
+
+.attribute-need-label.clickable:active {
+    background: rgba(69, 123, 157, 0.2);
+}
+
 .attribute-need-input-group {
     display: flex;
     align-items: center;
@@ -644,4 +663,287 @@ input.gewichtung-input:focus {
     border-color: rgba(245, 158, 11, 0.3) !important;
     color: rgba(245, 158, 11, 0.7) !important;
     cursor: not-allowed;
+}
+
+/* ============================================
+   CATEGORY LOCK STYLES
+   ============================================ */
+
+/* Kategorie-Zähler */
+.profile-review-category-count {
+    font-size: 12px;
+    color: var(--text-muted, #888);
+    font-weight: 400;
+    margin-left: 4px;
+}
+
+/* Kategorie Lock-Symbol im Header */
+.profile-review-category-lock {
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    opacity: 0.5;
+    transition: opacity 0.2s, transform 0.2s;
+    border-radius: 4px;
+}
+
+.profile-review-category-lock:hover {
+    opacity: 1;
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.profile-review-category:not(.category-locked) .profile-review-category-lock::before {
+    content: '🔓';
+    font-size: 14px;
+}
+
+.profile-review-category.category-locked .profile-review-category-lock::before {
+    content: '🔒';
+    font-size: 14px;
+}
+
+/* Gesperrte Kategorie Styling */
+.profile-review-category.category-locked {
+    border-color: rgba(245, 158, 11, 0.3);
+}
+
+.profile-review-category.category-locked .profile-review-category-header {
+    background: rgba(245, 158, 11, 0.05);
+    border-bottom-color: rgba(245, 158, 11, 0.2);
+}
+
+.profile-review-category.category-locked .profile-review-category-count {
+    color: #f59e0b;
+}
+
+/* Attribute-Karten wenn Kategorie gesperrt */
+.attribute-summary-card.category-parent-locked {
+    border-left-color: #f59e0b !important;
+    background: rgba(245, 158, 11, 0.03) !important;
+    pointer-events: none;
+}
+
+.attribute-summary-card.category-parent-locked .attribute-summary-input {
+    background: rgba(245, 158, 11, 0.1) !important;
+    border-color: rgba(245, 158, 11, 0.5) !important;
+    color: #f59e0b !important;
+}
+
+.attribute-summary-card.category-parent-locked .attribute-need-input {
+    background: rgba(245, 158, 11, 0.05) !important;
+    border-color: rgba(245, 158, 11, 0.3) !important;
+    color: rgba(245, 158, 11, 0.7) !important;
+    cursor: not-allowed;
+}
+
+/* Lock-Symbol bei Attribut ausblenden wenn Kategorie gesperrt */
+.attribute-summary-card.category-parent-locked .attribute-summary-lock {
+    display: none;
+}
+
+/* Expand-Icon bei Kategorie-Lock auch ausblenden */
+.attribute-summary-card.category-parent-locked .attribute-summary-expand-icon {
+    opacity: 0.3;
+}
+
+/* ============================================
+   NEED SLIDER CARD STYLES (NEU)
+   ============================================ */
+
+/* Need-Item mit Slider - Inline Layout */
+.attribute-need-item.with-slider {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 10px 12px;
+    background: rgba(255,255,255,0.04);
+    border-radius: 6px;
+    border-left: 2px solid transparent;
+    transition: all 0.2s ease;
+}
+
+.attribute-need-item.with-slider:hover {
+    background: rgba(255,255,255,0.07);
+}
+
+/* Header Row: Label + Input + Lock */
+.need-item-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+}
+
+.need-item-header .attribute-need-label {
+    flex: 1;
+    font-size: 12px;
+    color: var(--text-secondary, #aaa);
+    font-weight: 500;
+}
+
+.need-item-controls {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+/* Need Lock Icon */
+.need-lock-icon {
+    width: 18px;
+    height: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    opacity: 0.5;
+    font-size: 11px;
+    transition: opacity 0.2s, transform 0.1s;
+    border-radius: 4px;
+}
+
+.need-lock-icon:hover {
+    opacity: 1;
+    background: rgba(255,255,255,0.1);
+}
+
+.need-lock-icon:active {
+    transform: scale(0.9);
+}
+
+.need-lock-icon::before {
+    content: '🔓';
+}
+
+/* Locked Need State */
+.attribute-need-item.with-slider.need-locked {
+    border-left-color: #f59e0b;
+    background: rgba(245, 158, 11, 0.08);
+}
+
+.attribute-need-item.with-slider.need-locked .need-lock-icon::before {
+    content: '🔒';
+}
+
+.attribute-need-item.with-slider.need-locked .need-lock-icon {
+    opacity: 1;
+}
+
+.attribute-need-item.with-slider.need-locked .attribute-need-input {
+    background: rgba(245, 158, 11, 0.15) !important;
+    border-color: rgba(245, 158, 11, 0.4) !important;
+    color: #f59e0b !important;
+}
+
+.attribute-need-item.with-slider.need-locked .need-slider {
+    opacity: 0.6;
+    pointer-events: none;
+}
+
+/* Slider Row */
+.need-slider-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+}
+
+/* Range Slider Styling */
+.need-slider {
+    -webkit-appearance: none;
+    appearance: none;
+    flex: 1;
+    height: 6px;
+    border-radius: 3px;
+    background: linear-gradient(to right,
+        rgba(59, 130, 246, 0.4) 0%,
+        rgba(16, 185, 129, 0.4) 50%,
+        rgba(245, 158, 11, 0.4) 100%);
+    outline: none;
+    cursor: pointer;
+    transition: opacity 0.2s;
+}
+
+.need-slider:hover {
+    background: linear-gradient(to right,
+        rgba(59, 130, 246, 0.6) 0%,
+        rgba(16, 185, 129, 0.6) 50%,
+        rgba(245, 158, 11, 0.6) 100%);
+}
+
+/* Slider Thumb - Webkit (Chrome, Safari, Edge) */
+.need-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: #fff;
+    border: 2px solid var(--primary, #457b9d);
+    box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+    cursor: grab;
+    transition: transform 0.1s, box-shadow 0.2s;
+}
+
+.need-slider::-webkit-slider-thumb:hover {
+    transform: scale(1.1);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.4);
+}
+
+.need-slider::-webkit-slider-thumb:active {
+    cursor: grabbing;
+    transform: scale(1.15);
+    box-shadow: 0 2px 10px rgba(69, 123, 157, 0.5);
+}
+
+/* Slider Thumb - Firefox */
+.need-slider::-moz-range-thumb {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: #fff;
+    border: 2px solid var(--primary, #457b9d);
+    box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+    cursor: grab;
+    transition: transform 0.1s, box-shadow 0.2s;
+}
+
+.need-slider::-moz-range-thumb:hover {
+    transform: scale(1.1);
+}
+
+.need-slider::-moz-range-thumb:active {
+    cursor: grabbing;
+}
+
+/* Slider Track - Firefox */
+.need-slider::-moz-range-track {
+    height: 6px;
+    border-radius: 3px;
+    background: linear-gradient(to right,
+        rgba(59, 130, 246, 0.4) 0%,
+        rgba(16, 185, 129, 0.4) 50%,
+        rgba(245, 158, 11, 0.4) 100%);
+}
+
+/* Need Input neben Slider */
+.need-slider-row .attribute-need-input {
+    width: 42px !important;
+    min-width: 42px !important;
+    padding: 4px 2px !important;
+    font-size: 12px !important;
+    font-weight: 600 !important;
+}
+
+/* Animierte Wert-Änderung */
+@keyframes needValuePulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+}
+
+.need-slider-row .attribute-need-input.value-changed {
+    animation: needValuePulse 0.2s ease;
 }

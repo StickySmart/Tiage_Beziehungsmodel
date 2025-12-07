@@ -444,9 +444,75 @@ Diese Theorie verbindet die philosophische Ebene (Pirsig, OSHO) mit neurowissens
 ## Methodologische Anmerkungen
 
 ### Gaußsche Normalverteilung
-- **80%-Regel**: 80% der Population zeigt die beschriebenen Traits
-- **20% Abweichung**: Individuelle Variation ist normal
-- **Confidence-Level**: Angegeben für jedes Schlüsselattribut
+
+Das Tiage-Modell basiert auf der statistischen Annahme, dass **jeder Bedürfniswert den Erwartungswert (μ)** einer Gaußschen Normalverteilung darstellt.
+
+#### Wahrscheinlichkeitsdichte
+
+```
+f(x) = (1 / (σ√(2π))) × e^(-(x-μ)²/(2σ²))
+```
+
+| Symbol | Bedeutung | Im Tiage-Modell |
+|--------|-----------|-----------------|
+| **μ** | Mittelwert (Erwartungswert) | Der gespeicherte Bedürfniswert (z.B. `naehe: 75`) |
+| **σ** | Standardabweichung | Variabilität innerhalb der Gruppe |
+| **x** | Individueller Wert | Tatsächlicher Wert einer spezifischen Person |
+
+#### Statistische Kennwerte
+
+**Konfidenzintervalle (z-Werte):**
+
+| Konfidenz | z-Wert | Intervall | Verwendung |
+|-----------|--------|-----------|------------|
+| **80%** | 1.28 | μ ± 1.28σ | **Standard im Tiage-Modell** |
+| **90%** | 1.645 | μ ± 1.645σ | Erweiterte Schätzung |
+| **95%** | 1.96 | μ ± 1.96σ | Wissenschaftlicher Standard |
+| **99%** | 2.576 | μ ± 2.576σ | Hochsicherheits-Analyse |
+
+**Typische Standardabweichungen (σ) nach Kategorie:**
+
+| Bedürfnis-Kategorie | σ-Bereich | Begründung |
+|---------------------|-----------|------------|
+| **Sicherheit** | 10-12 | Grundbedürfnis, relativ stabil |
+| **Zuneigung** | 10-14 | Variiert nach Bindungsstil |
+| **Freiheit** | 12-15 | Hohe individuelle Variation |
+| **Dynamik** | 15-18 | Stark erfahrungsabhängig |
+| **Lebensplanung** | 12-15 | Kulturell/biografisch beeinflusst |
+| **Intimität** | 14-18 | Sehr individuelle Ausprägung |
+
+#### Berechnung des finalen μ
+
+```
+μ_final = μ_archetyp + Δ_dominanz + Δ_geschlecht + Δ_orientierung
+
+→ Clipping: max(0, min(100, μ_final))
+```
+
+**Beispielrechnung:**
+```
+Duo + Submissiv + Cis-Frau + Heterosexuell → Bedürfnis "Nähe"
+
+μ_final = 95 (Duo) + 20 (Submissiv) + 20 (Cis-Frau) + 0 (Hetero)
+        = 135 → 100 (Clipping)
+
+Mit σ = 12:
+80%-Intervall: [100 - 1.28×12, 100] = [84.6, 100]
+
+→ 80% dieser Gruppe bewerten "Nähe" mit 85-100 Punkten
+```
+
+#### Wissenschaftliche Basis der 80%-Regel
+
+> "In personality research, the 80% confidence interval is commonly used to describe the 'typical' range for a given trait within a population subgroup."
+> — McCrae & Costa (1997)
+
+**Begründung:**
+- **Praktikabilität**: Erfasst die Kerngruppe ohne Ausreißer
+- **Varianz-Toleranz**: 20% Abweichung ist erwartbar und normal
+- **Forschungsbasis**: Standard in psychologischen Studien
+
+Siehe auch: [Gaußsches Verteilungsmodell](../docs/theory/gaussian-model.md) für detaillierte Dokumentation.
 
 ### Inferenz-Methodik
 1. **Basis**: Archetyp-Definition bestimmt Kernwerte
