@@ -16,7 +16,7 @@
 
 ## Neu in Version 1.8
 
-- **1.248 psychologische Profile:** Jede Kombination aus Archetyp, Gender, Dominanz und Orientierung ergibt ein einzigartiges Profil
+- **864 psychologische Profile:** Jede Kombination aus Archetyp, Gender, Dominanz und Orientierung ergibt ein einzigartiges Profil
 - **Kategorie-Scores (A-F):** Beziehungsphilosophie, Werte-Alignment, Nähe-Distanz, Autonomie, Kommunikation, Soziale Kompatibilität
 - **Bedürfnis-Verrechnung:** Basis-Werte werden durch Modifikatoren angepasst:
   - Gender-Modifikatoren: +/-4 Punkte

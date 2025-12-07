@@ -2,9 +2,9 @@
 
 > *Wissenschaftliche Grundlagen des Tiage-Beziehungsmodells*
 
-Dieses Dokument listet alle wissenschaftlichen Quellen auf, die zur Erstellung der **1.248 psychologischen Profile** verwendet wurden.
+Dieses Dokument listet alle wissenschaftlichen Quellen auf, die zur Erstellung der **864 psychologischen Profile** verwendet wurden.
 
-> **Profil-Zusammensetzung:** 8 Archetypen × 13 Gender × 4 Dominanz × 3 Orientierung = 1.248 einzigartige Profile
+> **Profil-Zusammensetzung:** 8 Archetypen × 9 Gender × 4 Dominanz × 3 Orientierung = 864 einzigartige Profile
 
 ---
 

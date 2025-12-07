@@ -882,11 +882,18 @@ const AttributeSummaryCard = (function() {
 
     /**
      * Setzt ein Attribut zurück auf Standardwert
+     * Respektiert Lock-Status: Gesperrte Attribute werden NICHT zurückgesetzt
      * @param {string} attrId - Attribut-ID
      * @param {number} defaultValue - Standardwert
+     * @returns {boolean} true wenn zurückgesetzt, false wenn gesperrt
      */
     function reset(attrId, defaultValue = 50) {
-        lockedAttributes[attrId] = false;
+        // WICHTIG: Respektiere Lock - gesperrte Attribute nicht zurücksetzen
+        if (lockedAttributes[attrId]) {
+            console.log(`[AttributeSummaryCard] ${attrId} ist gesperrt - Reset übersprungen`);
+            return false;
+        }
+
         initializeNeedsValues(attrId, defaultValue);
 
         const mapping = ATTRIBUTE_NEEDS_MAPPING[attrId];
@@ -911,6 +918,7 @@ const AttributeSummaryCard = (function() {
                 summaryInput.value = defaultValue;
             }
         }
+        return true;
     }
 
     /**

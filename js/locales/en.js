@@ -954,7 +954,7 @@ const TiageLocale_EN = {
         sourceExplanation: {
             title: 'Where do these values come from?',
             intro: 'These attributes were automatically calculated based on:',
-            note: 'Tiage uses 1,248 psychological profiles from relationship research (Gottman, Esther Perel, et al.). These are suggestions - you can adjust them.',
+            note: 'Tiage uses 864 psychological profiles from relationship research (Gottman, Esther Perel, et al.). Values are based on the Gaussian distribution of the population (Europe, Americas, Asia): 80% rate the importance of a need between 30-70 out of 100 points.',
             helpLink: 'More in Help'
         },
 

@@ -176,22 +176,84 @@ const ProfileReviewRenderer = (function() {
     }
 
     /**
-     * Setzt alle Werte auf Standard zurück
+     * Berechnet den Default-Wert für ein Attribut basierend auf dem Archetyp-Profil
+     * @param {string} attrId - Attribut-ID (z.B. 'pr-kinder')
+     * @param {string} archetypeKey - Archetyp-Key (z.B. 'single', 'duo')
+     * @returns {number} Berechneter Default-Wert (0-100)
      */
-    function resetAllValues() {
+    function getDefaultFromArchetype(attrId, archetypeKey) {
+        // Fallback wenn keine Daten verfügbar
+        if (!archetypeKey || !window.LoadedArchetypProfile) {
+            return 50;
+        }
+
+        const archetype = window.LoadedArchetypProfile[archetypeKey];
+        if (!archetype || !archetype.kernbeduerfnisse) {
+            console.warn('[ProfileReview] Archetyp nicht gefunden:', archetypeKey);
+            return 50;
+        }
+
+        // Hole die gemappten Bedürfnisse für dieses Attribut
+        if (typeof AttributeSummaryCard === 'undefined' ||
+            !AttributeSummaryCard.ATTRIBUTE_NEEDS_MAPPING[attrId]) {
+            return 50;
+        }
+
+        const mapping = AttributeSummaryCard.ATTRIBUTE_NEEDS_MAPPING[attrId];
+        const needs = mapping.needs || [];
+
+        if (needs.length === 0) {
+            return 50;
+        }
+
+        // Berechne Durchschnitt der Bedürfniswerte aus dem Archetyp-Profil
+        let sum = 0;
+        let count = 0;
+
+        needs.forEach(needId => {
+            const value = archetype.kernbeduerfnisse[needId];
+            if (typeof value === 'number') {
+                sum += value;
+                count++;
+            }
+        });
+
+        if (count === 0) {
+            return 50;
+        }
+
+        const average = Math.round(sum / count);
+        console.log(`[ProfileReview] Default für ${attrId} (${archetypeKey}): ${average} (aus ${count} Bedürfnissen)`);
+        return average;
+    }
+
+    /**
+     * Setzt alle Werte auf Standard zurück (basierend auf aktuellem Archetyp)
+     * @param {string} archetypeKey - Optional: Archetyp-Key für Defaults
+     */
+    function resetAllValues(archetypeKey) {
+        // Versuche Archetyp aus Kontext zu holen wenn nicht übergeben
+        if (!archetypeKey && typeof currentProfileReviewContext !== 'undefined') {
+            archetypeKey = currentProfileReviewContext.archetypeKey;
+        }
+
         const attributes = ProfileReviewConfig.getAllAttributes();
 
         attributes.forEach(attr => {
+            // Berechne Default aus Archetyp-Profil
+            const defaultValue = getDefaultFromArchetype(attr.attrId, archetypeKey);
+
             // NEU: Reset für AttributeSummaryCard
             if (typeof AttributeSummaryCard !== 'undefined' &&
                 AttributeSummaryCard.ATTRIBUTE_NEEDS_MAPPING[attr.attrId]) {
-                AttributeSummaryCard.reset(attr.attrId, attr.defaultValue || 50);
+                AttributeSummaryCard.reset(attr.attrId, defaultValue);
             } else {
-                TripleButtonGroup.setValue(attr.attrId, attr.defaultValue || 50);
+                TripleButtonGroup.setValue(attr.attrId, defaultValue);
             }
         });
 
         GewichtungCard.reset();
+        console.log('[ProfileReview] Alle Werte zurückgesetzt auf Archetyp-Defaults:', archetypeKey || 'standard');
     }
 
     return {
@@ -202,7 +264,8 @@ const ProfileReviewRenderer = (function() {
         initializeModal,
         collectAllValues,
         setAllValues,
-        resetAllValues
+        resetAllValues,
+        getDefaultFromArchetype
     };
 })();
 

@@ -954,7 +954,7 @@ const TiageLocale_DE = {
         sourceExplanation: {
             title: 'Woher kommen diese Werte?',
             intro: 'Diese Attribute wurden automatisch berechnet basierend auf:',
-            note: 'Tiage nutzt 1.248 psychologische Profile aus Beziehungsforschung (Gottman, Esther Perel, u.a.). Die Werte basieren auf der Gaußschen Normalverteilung der Bevölkerung (Europa, Amerika, Asien): 80% bewerten die Wichtigkeit eines Bedürfnisses zwischen 30-70 von 100 Punkten.',
+            note: 'Tiage nutzt 864 psychologische Profile aus Beziehungsforschung (Gottman, Esther Perel, u.a.). Die Werte basieren auf der Gaußschen Normalverteilung der Bevölkerung (Europa, Amerika, Asien): 80% bewerten die Wichtigkeit eines Bedürfnisses zwischen 30-70 von 100 Punkten.',
             helpLink: 'Mehr in der Hilfe'
         },
 

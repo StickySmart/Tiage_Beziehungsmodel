@@ -1,19 +1,19 @@
 /**
- * GENDER MODIFIER: Mann (Unsicher/Questioning)
+ * GENDER MODIFIER: Mann (Suchend/Questioning)
  *
  * Modifikator für Menschen mit männlicher Tendenz, die ihre Gender-Identität hinterfragen.
  * Basiert auf Forschung zu Gender-Exploration und Identitätsentwicklung.
  *
- * @module TiageModifiers.Gender.MannUnsicher
+ * @module TiageModifiers.Gender.MannSuchend
  */
 
 var TiageModifiers = TiageModifiers || {};
 TiageModifiers.Gender = TiageModifiers.Gender || {};
 
-TiageModifiers.Gender.MannUnsicher = {
+TiageModifiers.Gender.MannSuchend = {
 
-    id: "mann-unsicher",
-    label: "Mann (Unsicher/Questioning)",
+    id: "mann-suchend",
+    label: "Mann (Suchend/Questioning)",
     category: "gender",
 
     // ═══════════════════════════════════════════════════════════════════════

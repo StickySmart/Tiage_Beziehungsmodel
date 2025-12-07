@@ -11,11 +11,11 @@ Versionierung folgt [Semantic Versioning](https://semver.org/lang/de/).
 
 **NEU: Dynamische Kategorie-Score-Komposition (A-F)**
 
-Die 1.248 psychologischen Profile erhalten nun individuelle Kategorie-Scores basierend auf ihrer Kombination aus Archetyp, Gender, Dominanz und Orientierung.
+Die 864 psychologischen Profile erhalten nun individuelle Kategorie-Scores basierend auf ihrer Kombination aus Archetyp, Gender, Dominanz und Orientierung.
 
 **Technische Änderungen:**
 - `baseScores` Konstante: Basis-Werte (A-F) für alle 8 Archetypen
-- `categoryModifiers` für alle 13 Gender-Modifikatoren
+- `categoryModifiers` für alle 9 Gender-Modifikatoren
 - `categoryModifiers` für alle 4 Dominanz-Modifikatoren
 - `categoryModifiers` für alle 3 Orientierungs-Modifikatoren
 - `applyScoreModifiers()` Hilfsfunktion für Score-Komposition
@@ -100,7 +100,7 @@ Die Gewichtung wurde an die reale menschliche Kennenlernreihenfolge angepasst. M
 ## [1.3.0] - 2025-11-26
 
 ### Neu
-- **1.248 Psychologische Profile** - Vollständige Persönlichkeitsprofile für alle Archetyp-Kombinationen *[erweitert in v1.7.0 mit individuellen A-F Scores]*
+- **864 Psychologische Profile** - Vollständige Persönlichkeitsprofile für alle Archetyp-Kombinationen *[erweitert in v1.7.0 mit individuellen A-F Scores]*
 - Detaillierte Beschreibungen für Single, Duo, Duo-Flex, Solopoly, Poly-Hedo und Polyamor
 - Wissenschaftlich fundierte Quellen-Dokumentation (`profiles/research-sources.md`)
 

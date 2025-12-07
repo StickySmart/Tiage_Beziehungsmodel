@@ -358,7 +358,7 @@ finalScore = Math.round(93.75 × 1.035) = 97
 
 ## Profil-Komposition (A-F Kategorie-Scores)
 
-Die 1.248 psychologischen Profile werden **on-demand komponiert** und erhalten individuelle Kategorie-Scores basierend auf ihrer Kombination.
+Die 864 psychologischen Profile werden **on-demand komponiert** und erhalten individuelle Kategorie-Scores basierend auf ihrer Kombination.
 
 ### Kompositions-Formel
 

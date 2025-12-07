@@ -1,19 +1,19 @@
 /**
- * GENDER MODIFIER: Inter (Unsicher/Questioning)
+ * GENDER MODIFIER: Inter (Suchend/Questioning)
  *
  * Modifikator für intergeschlechtliche Personen, die ihre Gender-Identität hinterfragen.
  * Basiert auf Forschung zu Intersex-Identität und Identitätsexploration.
  *
- * @module TiageModifiers.Gender.InterUnsicher
+ * @module TiageModifiers.Gender.InterSuchend
  */
 
 var TiageModifiers = TiageModifiers || {};
 TiageModifiers.Gender = TiageModifiers.Gender || {};
 
-TiageModifiers.Gender.InterUnsicher = {
+TiageModifiers.Gender.InterSuchend = {
 
-    id: "inter-unsicher",
-    label: "Inter (Unsicher/Questioning)",
+    id: "inter-suchend",
+    label: "Inter (Suchend/Questioning)",
     category: "gender",
 
     // ═══════════════════════════════════════════════════════════════════════
