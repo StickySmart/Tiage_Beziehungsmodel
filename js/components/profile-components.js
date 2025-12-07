@@ -13,6 +13,9 @@
 /**
  * Profile Review Renderer
  * Generiert das gesamte Profile-Review-Modal aus Konfiguration
+ *
+ * NEU: Verwendet AttributeSummaryCard statt TripleButtonGroup
+ * Attribute zeigen nur die zugehörigen Bedürfnisse als Zusammenfassung
  */
 const ProfileReviewRenderer = (function() {
     'use strict';
@@ -32,7 +35,14 @@ const ProfileReviewRenderer = (function() {
 
         if (!categoryInfo || !attributes.length) return '';
 
+        // NEU: Verwende AttributeSummaryCard statt TripleButtonGroup
         const cardsHtml = attributes.map(attr => {
+            // Prüfe ob AttributeSummaryCard verfügbar ist
+            if (typeof AttributeSummaryCard !== 'undefined' &&
+                AttributeSummaryCard.ATTRIBUTE_NEEDS_MAPPING[attr.attrId]) {
+                return AttributeSummaryCard.render(attr);
+            }
+            // Fallback auf TripleButtonGroup für nicht gemappte Attribute
             return TripleButtonGroup.render(attr);
         }).join('\n');
 
@@ -123,7 +133,16 @@ const ProfileReviewRenderer = (function() {
         const attributes = ProfileReviewConfig.getAllAttributes();
 
         attributes.forEach(attr => {
-            values[attr.attrId] = TripleButtonGroup.getValue(attr.attrId);
+            // NEU: Verwende AttributeSummaryCard wenn verfügbar
+            if (typeof AttributeSummaryCard !== 'undefined' &&
+                AttributeSummaryCard.ATTRIBUTE_NEEDS_MAPPING[attr.attrId]) {
+                values[attr.attrId] = {
+                    aggregated: AttributeSummaryCard.getValue(attr.attrId),
+                    needs: AttributeSummaryCard.getNeedsValues(attr.attrId)
+                };
+            } else {
+                values[attr.attrId] = TripleButtonGroup.getValue(attr.attrId);
+            }
         });
 
         // Gewichtungen hinzufügen
@@ -142,6 +161,11 @@ const ProfileReviewRenderer = (function() {
                 Object.entries(value).forEach(([factor, factorValue]) => {
                     GewichtungCard.setValue(factor, factorValue);
                 });
+            } else if (typeof value === 'object' && value.needs) {
+                // NEU: Setze Bedürfniswerte für AttributeSummaryCard
+                if (typeof AttributeSummaryCard !== 'undefined') {
+                    AttributeSummaryCard.setNeedsValues(attrId, value.needs);
+                }
             } else {
                 TripleButtonGroup.setValue(attrId, value);
             }
@@ -157,7 +181,13 @@ const ProfileReviewRenderer = (function() {
         const attributes = ProfileReviewConfig.getAllAttributes();
 
         attributes.forEach(attr => {
-            TripleButtonGroup.setValue(attr.attrId, attr.defaultValue || 50);
+            // NEU: Reset für AttributeSummaryCard
+            if (typeof AttributeSummaryCard !== 'undefined' &&
+                AttributeSummaryCard.ATTRIBUTE_NEEDS_MAPPING[attr.attrId]) {
+                AttributeSummaryCard.reset(attr.attrId, attr.defaultValue || 50);
+            } else {
+                TripleButtonGroup.setValue(attr.attrId, attr.defaultValue || 50);
+            }
         });
 
         GewichtungCard.reset();
@@ -183,6 +213,7 @@ if (typeof module !== 'undefined' && module.exports) {
         GewichtungCard,
         CategorySection,
         ProfileReviewConfig,
-        ProfileReviewRenderer
+        ProfileReviewRenderer,
+        AttributeSummaryCard
     };
 }

@@ -447,3 +447,201 @@ input.gewichtung-input:focus {
     color: #c7d2fe;
     text-decoration: underline;
 }
+
+/* ============================================
+   ATTRIBUTE SUMMARY CARD STYLES
+   ============================================ */
+
+.attribute-summary-card {
+    background: rgba(255,255,255,0.03) !important;
+    border: 1px solid rgba(255,255,255,0.08);
+    border-left: 3px solid var(--primary, #457b9d) !important;
+    border-radius: 6px !important;
+    margin-bottom: 8px !important;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    overflow: hidden;
+}
+
+.attribute-summary-card:hover {
+    background: rgba(255,255,255,0.05) !important;
+    border-color: rgba(255,255,255,0.15);
+}
+
+.attribute-summary-card.locked {
+    border-left-color: #f59e0b !important;
+    background: rgba(245, 158, 11, 0.05) !important;
+}
+
+.attribute-summary-header {
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    padding: 12px 14px !important;
+    width: 100%;
+}
+
+.attribute-summary-label-group {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    flex: 1;
+    min-width: 0;
+}
+
+.attribute-summary-label {
+    font-size: 13px;
+    color: var(--text-secondary, #aaa);
+    font-weight: 500;
+}
+
+.attribute-summary-sublabel {
+    font-size: 10px;
+    color: var(--text-muted, #666);
+    font-style: italic;
+}
+
+.attribute-summary-input-group {
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    gap: 6px;
+    flex-shrink: 0;
+}
+
+.attribute-summary-input {
+    width: 50px !important;
+    min-width: 50px !important;
+    max-width: 50px !important;
+    padding: 5px 4px !important;
+    border: 1px solid rgba(69, 123, 157, 0.5) !important;
+    border-radius: 4px !important;
+    background: rgba(69, 123, 157, 0.1) !important;
+    color: var(--primary, #457b9d) !important;
+    font-size: 14px !important;
+    font-weight: 600 !important;
+    text-align: center !important;
+    outline: none !important;
+    transition: all 0.2s ease;
+    box-sizing: border-box !important;
+    cursor: default;
+}
+
+.attribute-summary-card.locked .attribute-summary-input {
+    background: rgba(245, 158, 11, 0.1) !important;
+    border-color: rgba(245, 158, 11, 0.5) !important;
+    color: #f59e0b !important;
+}
+
+.attribute-summary-percent {
+    color: var(--text-muted, #888);
+    font-size: 12px;
+}
+
+.attribute-summary-lock {
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    opacity: 0.6;
+    transition: opacity 0.2s;
+}
+
+.attribute-summary-lock:hover {
+    opacity: 1;
+}
+
+.attribute-summary-card:not(.locked) .attribute-summary-lock::before {
+    content: '🔓';
+    font-size: 12px;
+}
+
+.attribute-summary-card.locked .attribute-summary-lock::before {
+    content: '🔒';
+    font-size: 12px;
+}
+
+.attribute-summary-expand-icon {
+    font-size: 10px;
+    color: var(--text-muted, #888);
+    transition: transform 0.2s ease;
+    margin-left: 4px;
+}
+
+.attribute-summary-expand-icon.expanded {
+    transform: rotate(180deg);
+}
+
+/* Bedürfnis-Liste (expandierbar) */
+.attribute-summary-needs-list {
+    padding: 0 14px 14px 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    border-top: 1px solid rgba(255,255,255,0.05);
+    margin-top: 0;
+    background: rgba(0,0,0,0.1);
+}
+
+.attribute-summary-needs-list.collapsed {
+    display: none;
+}
+
+.attribute-need-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px 10px;
+    background: rgba(255,255,255,0.03);
+    border-radius: 4px;
+    transition: background 0.2s;
+}
+
+.attribute-need-item:hover {
+    background: rgba(255,255,255,0.06);
+}
+
+.attribute-need-label {
+    font-size: 12px;
+    color: var(--text-secondary, #aaa);
+}
+
+.attribute-need-input-group {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.attribute-need-input {
+    width: 45px !important;
+    padding: 4px !important;
+    border: 1px solid rgba(255,255,255,0.15) !important;
+    border-radius: 4px !important;
+    background: rgba(255,255,255,0.05) !important;
+    color: var(--text-primary, #fff) !important;
+    font-size: 12px !important;
+    text-align: center !important;
+    outline: none !important;
+    transition: all 0.2s ease;
+}
+
+.attribute-need-input:focus {
+    border-color: var(--primary, #457b9d) !important;
+    box-shadow: 0 0 0 2px rgba(69, 123, 157, 0.2) !important;
+}
+
+.attribute-need-percent {
+    font-size: 11px;
+    color: var(--text-muted, #666);
+}
+
+/* Locked state für Bedürfnis-Inputs */
+.attribute-summary-card.locked .attribute-need-input {
+    background: rgba(245, 158, 11, 0.05) !important;
+    border-color: rgba(245, 158, 11, 0.3) !important;
+    color: rgba(245, 158, 11, 0.7) !important;
+    cursor: not-allowed;
+}
