@@ -14,15 +14,14 @@
 | **Ergebnis** | Automatische Berechnung der Kompatibilität (4 Faktoren) |
 | **Prozentwerte** | Anklicken = Detaillierte Erklärung pro Faktor |
 
-## Neu in Version 1.7
+## Neu in Version 1.8
 
 - **1.248 psychologische Profile:** Jede Kombination aus Archetyp, Gender, Dominanz und Orientierung ergibt ein einzigartiges Profil
-- **Kategorie-Scores (A-F):** Jedes Profil erhält individuelle Scores für 6 Dimensionen
+- **Kategorie-Scores (A-F):** Beziehungsphilosophie, Werte-Alignment, Nähe-Distanz, Autonomie, Kommunikation, Soziale Kompatibilität
 - **Bedürfnis-Verrechnung:** Basis-Werte werden durch Modifikatoren angepasst:
   - Gender-Modifikatoren: +/-4 Punkte
   - Dominanz-Modifikatoren: +/-5 Punkte
   - Orientierungs-Modifikatoren: +/-3 Punkte
-- **6 Dimensionen:** Beziehungsphilosophie (A), Werte-Alignment (B), Nähe-Distanz (C), Autonomie (D), Kommunikation (E), Soziale Kompatibilität (F)
 
 ## Neu in Version 1.6
 
