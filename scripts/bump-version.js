@@ -59,9 +59,9 @@ const TiageVersion = {
     mergeDate: '${mergeDate}',
     mergeTime: '${mergeTime}',
 
-    // Vollständige Version als String (Patch 4-stellig mit führenden Nullen)
+    // Vollständige Version als String (Patch 3-stellig mit führenden Nullen)
     get version() {
-        return \`\${this.major}.\${this.minor}.\${String(this.patch).padStart(4, '0')}\`;
+        return \`\${this.major}.\${this.minor}.\${String(this.patch).padStart(3, '0')}\`;
     },
 
     // Formatiertes Datum (deutsch)
