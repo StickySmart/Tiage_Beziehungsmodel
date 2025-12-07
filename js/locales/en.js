@@ -176,7 +176,14 @@ const TiageLocale_EN = {
         types: {
             mann: 'Male',
             frau: 'Female',
-            inter: 'Inter'
+            inter: 'Inter',
+            // Secondary types (used in two-dimensional system)
+            cis: 'Cis',
+            trans: 'Trans',
+            nonbinaer: 'Non-binary',
+            fluid: 'Fluid',
+            suchend: 'Searching',
+            unsicher: 'Uncertain'
         },
         short: {
             mann: 'M',
@@ -816,7 +823,8 @@ const TiageLocale_EN = {
             musse: 'Leisure',
             identitaet: 'Identity & Meaning',
             erschaffen: 'Creation',
-            verbundenheit: 'Connection'
+            verbundenheit: 'Connection',
+            dynamik: 'Dynamics & Exchange'
         },
 
         // Individual needs
@@ -912,7 +920,24 @@ const TiageLocale_EN = {
             inspiration: 'Inspiration',
             trauer_ausdruecken: 'Expressing Grief',
             einsehen: 'Insight',
-            anfang_ende: 'Beginning & End'
+            anfang_ende: 'Beginning & End',
+
+            // DYNAMICS & EXCHANGE
+            kontrolle_ausueben: 'Exercising Control',
+            hingabe: 'Devotion',
+            fuehrung_geben: 'Providing Leadership',
+            gefuehrt_werden: 'Being Led',
+            ritual: 'Rituals & Structure',
+            nachsorge: 'Aftercare',
+            grenzen_setzen: 'Setting Boundaries',
+            grenzen_respektieren: 'Respecting Boundaries',
+            intensitaet: 'Experiencing Intensity',
+            vertrauen_schenken: 'Giving Trust',
+            verantwortung_uebernehmen: 'Taking Responsibility',
+            sich_fallenlassen: 'Letting Go',
+            machtaustausch: 'Power Exchange',
+            dienend_sein: 'Being of Service',
+            beschuetzen: 'Protecting'
         }
     },
 

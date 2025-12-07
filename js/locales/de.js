@@ -176,7 +176,14 @@ const TiageLocale_DE = {
         types: {
             mann: 'Mann',
             frau: 'Frau',
-            inter: 'Inter'
+            inter: 'Inter',
+            // Sekundär-Typen (für zwei-dimensionales System)
+            cis: 'Cis',
+            trans: 'Trans',
+            nonbinaer: 'Nonbinär',
+            fluid: 'Fluid',
+            suchend: 'Suchend',
+            unsicher: 'Unsicher'
         },
         short: {
             mann: 'M',
@@ -713,7 +720,8 @@ const TiageLocale_DE = {
             musse: 'Muße',
             identitaet: 'Identität & Bedeutung',
             erschaffen: 'Etwas erschaffen',
-            verbundenheit: 'Verbunden sein'
+            verbundenheit: 'Verbunden sein',
+            dynamik: 'Dynamik & Austausch'
         },
 
         // Einzelne Bedürfnisse
@@ -809,7 +817,24 @@ const TiageLocale_DE = {
             inspiration: 'Inspiration',
             trauer_ausdruecken: 'Trauer ausdrücken',
             einsehen: 'Einsehen',
-            anfang_ende: 'Anfang & Ende'
+            anfang_ende: 'Anfang & Ende',
+
+            // DYNAMIK & AUSTAUSCH
+            kontrolle_ausueben: 'Kontrolle ausüben',
+            hingabe: 'Hingabe',
+            fuehrung_geben: 'Führung geben',
+            gefuehrt_werden: 'Geführt werden',
+            ritual: 'Rituale & Struktur',
+            nachsorge: 'Nachsorge/Aftercare',
+            grenzen_setzen: 'Grenzen setzen',
+            grenzen_respektieren: 'Grenzen respektieren',
+            intensitaet: 'Intensität erleben',
+            vertrauen_schenken: 'Vertrauen schenken',
+            verantwortung_uebernehmen: 'Verantwortung übernehmen',
+            sich_fallenlassen: 'Sich fallenlassen',
+            machtaustausch: 'Machtaustausch',
+            dienend_sein: 'Dienend sein',
+            beschuetzen: 'Beschützen'
         }
     },
 
