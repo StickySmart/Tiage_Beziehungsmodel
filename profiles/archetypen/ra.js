@@ -209,7 +209,17 @@ const RAProfil = {
             oeffentliches_bekenntnis: 15, // Sehr niedrig - nicht nötig
             gemeinsamer_wohnraum: 25,    // Niedrig - kann, muss nicht
             eigener_rueckzugsort: 90,    // Sehr hoch - wichtig
-            haeuslichkeit: 50            // Mittel - eigene Definition
+            haeuslichkeit: 50,           // Mittel - eigene Definition
+            // Pirsig & Osho - Lebensplanung
+            biologisches_muster: 20,     // Niedrig
+            soziales_muster: 15,         // Sehr niedrig - abgelehnt
+            statische_stabilitaet: 20,   // Niedrig
+            qualitaet_der_fuersorge: 50, // Mittel
+            familien_rebellion: 95,      // Sehr hoch
+            zorba_das_kind: 80,          // Hoch
+            nicht_anhaften_an_familie: 95, // Sehr hoch
+            bewusste_elternschaft: 40,   // Niedrig-mittel
+            commune_statt_kernfamilie: 65 // Mittel-hoch
         },
 
         // ═══════════════════════════════════════════════════════════════════════
@@ -226,7 +236,18 @@ const RAProfil = {
             work_life_balance: 80,       // Hoch - Freiheit wichtig
             gemeinsame_ziele: 35,        // Niedrig - eigene Ziele
             erfolg: 70,                  // Hoch - selbst definiert
-            leistung: 65                 // Mittel-hoch
+            leistung: 65,                // Mittel-hoch
+            // Pirsig & Osho - Finanzen & Karriere
+            gumption: 80,                // Hoch
+            qualitaet_der_arbeit: 75,    // Hoch
+            intellektuelles_muster: 80,  // Hoch
+            dynamische_evolution: 85,    // Sehr hoch
+            klassisches_verstehen: 60,   // Mittel
+            arbeit_als_meditation: 65,   // Mittel-hoch
+            nicht_karriere: 55,          // Mittel
+            zorba_der_unternehmer: 65,   // Mittel-hoch
+            nicht_anhaften_an_geld: 75,  // Hoch
+            kreative_selbstverwirklichung: 90 // Sehr hoch
         },
 
         // ═══════════════════════════════════════════════════════════════════════
@@ -245,7 +266,19 @@ const RAProfil = {
             intellektueller_austausch: 85, // Sehr hoch - Ideen wichtig
             digitale_kommunikation: 70,  // Hoch
             verbale_anerkennung: 55,     // Mittel
-            schweigen_aushalten: 80      // Hoch - braucht keine Bestätigung
+            schweigen_aushalten: 80,     // Hoch - braucht keine Bestätigung
+            // Pirsig & Osho - Kommunikation
+            romantisches_verstehen: 50,  // Mittel
+            klassische_klarheit: 80,     // Hoch
+            dialektik: 85,               // Sehr hoch - philosophisch
+            qualitaets_ausdruck: 75,     // Hoch
+            care_im_gespraech: 50,       // Mittel
+            schweigen_statt_worte: 80,   // Hoch
+            radikale_ehrlichkeit: 95,    // Sehr hoch
+            humorvolle_leichtigkeit: 80, // Hoch
+            paradoxe_weisheit: 75,       // Hoch
+            herz_statt_kopf: 40,         // Niedrig-mittel
+            authentischer_ausdruck: 95   // Sehr hoch
         },
 
         // ═══════════════════════════════════════════════════════════════════════
@@ -264,7 +297,18 @@ const RAProfil = {
             zeit_fuer_sich: 90,          // Sehr hoch - essentiell
             soziale_unterstuetzung: 55,  // Mittel - gegenseitig aber frei
             gemeinsame_erlebnisse: 55,   // Mittel - situativ
-            alltagsteilung: 20           // Niedrig - vermeidet Verschmelzung
+            alltagsteilung: 20,          // Niedrig - vermeidet Verschmelzung
+            // Pirsig & Osho - Soziales Leben
+            soziale_qualitaet: 70,       // Hoch
+            tribe_muster: 40,            // Niedrig-mittel
+            intellektuelle_gemeinschaft: 85, // Sehr hoch
+            statische_sozialstrukturen: 10, // Sehr niedrig
+            sannyas_gemeinschaft: 55,    // Mittel
+            rebellion_gegen_gesellschaft: 90, // Sehr hoch
+            einsamkeit_in_menge: 80,     // Hoch
+            celebration_mit_anderen: 70, // Hoch
+            keine_freundschaft_besitz: 90, // Sehr hoch
+            tantra_gruppe: 45            // Mittel
         },
 
         // ═══════════════════════════════════════════════════════════════════════
@@ -283,7 +327,21 @@ const RAProfil = {
             flirten: 75,                 // Hoch - Freiheit
             eifersucht_als_signal: 20,   // Niedrig - wird abgelehnt
             treue_werte: 25,             // Niedrig - eigene Definition
-            bindungsbereitschaft: 30     // Niedrig - flexibel
+            bindungsbereitschaft: 30,    // Niedrig - flexibel
+            // Pirsig & Osho - Intimität
+            biologische_anziehung: 55,   // Mittel
+            intellektuelle_verbindung: 80, // Hoch
+            qualitaet_der_beruehrung: 55, // Mittel
+            dynamische_liebe: 60,        // Mittel
+            care_in_intimitaet: 50,      // Mittel
+            sex_als_meditation: 55,      // Mittel
+            liebe_ohne_beziehung: 95,    // Sehr hoch - Kernwert
+            orgastisches_leben: 55,      // Mittel
+            nicht_anhaften_an_partner: 100, // Maximum
+            hier_und_jetzt_intimitaet: 75, // Hoch
+            polyamore_energie: 70,       // Hoch
+            wildheit_und_zartheit: 55,   // Mittel
+            meditation_zu_zweit: 40      // Niedrig-mittel
         },
 
         // ═══════════════════════════════════════════════════════════════════════
@@ -300,7 +358,21 @@ const RAProfil = {
             toleranz: 95,                // Sehr hoch - alle Wege akzeptiert
             offenheit_neues: 95,         // Sehr hoch
             kulturelle_identitaet: 45,   // Mittel - flexibel
-            wertekongruenz: 85           // Sehr hoch - lebt nach Überzeugungen
+            wertekongruenz: 85,          // Sehr hoch - lebt nach Überzeugungen
+            // Pirsig & Osho - Werte
+            qualitaet_als_gott: 80,      // Hoch
+            rationaler_mystizismus: 75,  // Hoch
+            aristotelische_vernunft: 60, // Mittel
+            platonische_ideen: 55,       // Mittel
+            buddhistische_achtsamkeit: 70, // Hoch
+            religionslosigkeit: 90,      // Sehr hoch
+            eigene_wahrheit: 100,        // Maximum
+            zen_paradox: 75,             // Hoch
+            tantra_als_weg: 55,          // Mittel
+            politische_rebellion: 85,    // Sehr hoch
+            individueller_anarchismus: 95, // Sehr hoch
+            leben_als_kunst: 90,         // Sehr hoch
+            celebration_statt_gebet: 80  // Hoch
         },
 
         // ═══════════════════════════════════════════════════════════════════════
@@ -317,7 +389,23 @@ const RAProfil = {
             wohnort_flexibilitaet: 95,   // Sehr hoch - ortsungebunden
             heimatverbundenheit: 25,     // Niedrig - nomadisch
             reisen_abenteuer: 90,        // Sehr hoch
-            routine_struktur: 35         // Niedrig - wenig Struktur
+            routine_struktur: 35,        // Niedrig - wenig Struktur
+            // Pirsig & Osho - Praktisches Leben
+            motorrad_pflege: 55,         // Mittel
+            gumption_im_alltag: 80,      // Hoch
+            stuck_vermeiden: 85,         // Sehr hoch
+            klassische_ordnung: 35,      // Niedrig
+            romantisches_chaos: 75,      // Hoch
+            qualitaets_werkzeug: 60,     // Mittel
+            achtsamkeit_im_detail: 55,   // Mittel
+            meditation_im_alltag: 65,    // Mittel-hoch
+            gesundheit_durch_bewusstsein: 70, // Hoch
+            dynamische_meditation: 70,   // Hoch
+            vipassana_im_leben: 60,      // Mittel
+            natuerliches_leben: 70,      // Hoch
+            lachen_therapie: 80,         // Hoch
+            no_mind: 70,                 // Hoch
+            zorba_der_geniesser: 85      // Sehr hoch
         }
     },
 

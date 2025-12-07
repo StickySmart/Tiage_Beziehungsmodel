@@ -210,7 +210,17 @@ const AromantischProfil = {
             oeffentliches_bekenntnis: 15, // Sehr niedrig - nicht nötig
             gemeinsamer_wohnraum: 25,    // Niedrig - eventuell mit Freunden
             eigener_rueckzugsort: 90,    // Sehr hoch - wichtig
-            haeuslichkeit: 60            // Mittel-hoch - eigenes Zuhause
+            haeuslichkeit: 60,           // Mittel-hoch - eigenes Zuhause
+            // Pirsig & Osho - Lebensplanung
+            biologisches_muster: 20,     // Niedrig
+            soziales_muster: 20,         // Niedrig - Normen abgelehnt
+            statische_stabilitaet: 45,   // Mittel
+            qualitaet_der_fuersorge: 60, // Mittel
+            familien_rebellion: 80,      // Hoch
+            zorba_das_kind: 65,          // Mittel-hoch
+            nicht_anhaften_an_familie: 85, // Sehr hoch
+            bewusste_elternschaft: 35,   // Niedrig
+            commune_statt_kernfamilie: 55 // Mittel
         },
 
         // ═══════════════════════════════════════════════════════════════════════
@@ -227,7 +237,18 @@ const AromantischProfil = {
             work_life_balance: 80,       // Hoch
             gemeinsame_ziele: 30,        // Niedrig - eigene Ziele
             erfolg: 80,                  // Hoch
-            leistung: 75                 // Hoch
+            leistung: 75,                // Hoch
+            // Pirsig & Osho - Finanzen & Karriere
+            gumption: 80,                // Hoch
+            qualitaet_der_arbeit: 80,    // Hoch
+            intellektuelles_muster: 80,  // Hoch
+            dynamische_evolution: 75,    // Hoch
+            klassisches_verstehen: 70,   // Hoch
+            arbeit_als_meditation: 65,   // Mittel-hoch
+            nicht_karriere: 35,          // Niedrig
+            zorba_der_unternehmer: 65,   // Mittel-hoch
+            nicht_anhaften_an_geld: 60,  // Mittel
+            kreative_selbstverwirklichung: 85 // Sehr hoch
         },
 
         // ═══════════════════════════════════════════════════════════════════════
@@ -246,7 +267,19 @@ const AromantischProfil = {
             intellektueller_austausch: 85, // Sehr hoch
             digitale_kommunikation: 75,  // Hoch - Community online
             verbale_anerkennung: 55,     // Mittel
-            schweigen_aushalten: 85      // Sehr hoch - allein sein können
+            schweigen_aushalten: 85,     // Sehr hoch - allein sein können
+            // Pirsig & Osho - Kommunikation
+            romantisches_verstehen: 30,  // Niedrig - nicht romantisch
+            klassische_klarheit: 80,     // Hoch
+            dialektik: 75,               // Hoch
+            qualitaets_ausdruck: 70,     // Hoch
+            care_im_gespraech: 60,       // Mittel
+            schweigen_statt_worte: 80,   // Hoch
+            radikale_ehrlichkeit: 85,    // Sehr hoch
+            humorvolle_leichtigkeit: 80, // Hoch
+            paradoxe_weisheit: 60,       // Mittel
+            herz_statt_kopf: 35,         // Niedrig - rational
+            authentischer_ausdruck: 95   // Sehr hoch
         },
 
         // ═══════════════════════════════════════════════════════════════════════
@@ -265,7 +298,18 @@ const AromantischProfil = {
             zeit_fuer_sich: 90,          // Sehr hoch - Kernbedürfnis
             soziale_unterstuetzung: 70,  // Hoch - Freundesnetzwerk
             gemeinsame_erlebnisse: 65,   // Mittel-hoch - mit Freunden
-            alltagsteilung: 20           // Niedrig - eigener Alltag
+            alltagsteilung: 20,          // Niedrig - eigener Alltag
+            // Pirsig & Osho - Soziales Leben
+            soziale_qualitaet: 85,       // Sehr hoch - tiefe Freundschaften
+            tribe_muster: 60,            // Mittel - Freundeskreis
+            intellektuelle_gemeinschaft: 85, // Sehr hoch
+            statische_sozialstrukturen: 30, // Niedrig
+            sannyas_gemeinschaft: 45,    // Mittel
+            rebellion_gegen_gesellschaft: 75, // Hoch - gegen Amatonormativität
+            einsamkeit_in_menge: 75,     // Hoch
+            celebration_mit_anderen: 70, // Hoch
+            keine_freundschaft_besitz: 65, // Mittel-hoch
+            tantra_gruppe: 20            // Niedrig
         },
 
         // ═══════════════════════════════════════════════════════════════════════
@@ -284,7 +328,21 @@ const AromantischProfil = {
             flirten: 25,                 // Niedrig - meist nicht
             eifersucht_als_signal: 25,   // Niedrig - kein Thema
             treue_werte: 30,             // Niedrig - nicht romantisch definiert
-            bindungsbereitschaft: 25     // Niedrig - keine romantische
+            bindungsbereitschaft: 25,    // Niedrig - keine romantische
+            // Pirsig & Osho - Intimität
+            biologische_anziehung: 35,   // Niedrig
+            intellektuelle_verbindung: 80, // Hoch - Freundschaftsbasis
+            qualitaet_der_beruehrung: 40, // Niedrig-mittel
+            dynamische_liebe: 35,        // Niedrig
+            care_in_intimitaet: 45,      // Mittel
+            sex_als_meditation: 40,      // Niedrig-mittel
+            liebe_ohne_beziehung: 85,    // Sehr hoch - keine romantische
+            orgastisches_leben: 40,      // Niedrig-mittel
+            nicht_anhaften_an_partner: 95, // Sehr hoch
+            hier_und_jetzt_intimitaet: 50, // Mittel
+            polyamore_energie: 25,       // Niedrig
+            wildheit_und_zartheit: 35,   // Niedrig
+            meditation_zu_zweit: 30      // Niedrig
         },
 
         // ═══════════════════════════════════════════════════════════════════════
@@ -301,7 +359,21 @@ const AromantischProfil = {
             toleranz: 95,                // Sehr hoch - Vielfalt
             offenheit_neues: 85,         // Sehr hoch
             kulturelle_identitaet: 50,   // Mittel
-            wertekongruenz: 90           // Sehr hoch - lebt authentisch
+            wertekongruenz: 90,          // Sehr hoch - lebt authentisch
+            // Pirsig & Osho - Werte
+            qualitaet_als_gott: 75,      // Hoch
+            rationaler_mystizismus: 65,  // Mittel-hoch
+            aristotelische_vernunft: 70, // Hoch
+            platonische_ideen: 55,       // Mittel
+            buddhistische_achtsamkeit: 70, // Hoch
+            religionslosigkeit: 75,      // Hoch
+            eigene_wahrheit: 95,         // Sehr hoch
+            zen_paradox: 55,             // Mittel
+            tantra_als_weg: 30,          // Niedrig
+            politische_rebellion: 65,    // Mittel-hoch
+            individueller_anarchismus: 75, // Hoch
+            leben_als_kunst: 85,         // Sehr hoch
+            celebration_statt_gebet: 70  // Hoch
         },
 
         // ═══════════════════════════════════════════════════════════════════════
@@ -318,7 +390,23 @@ const AromantischProfil = {
             wohnort_flexibilitaet: 80,   // Hoch - ungebunden
             heimatverbundenheit: 45,     // Mittel
             reisen_abenteuer: 80,        // Hoch - Freiheit nutzen
-            routine_struktur: 60         // Mittel - eigene Routinen
+            routine_struktur: 60,        // Mittel - eigene Routinen
+            // Pirsig & Osho - Praktisches Leben
+            motorrad_pflege: 60,         // Mittel
+            gumption_im_alltag: 75,      // Hoch
+            stuck_vermeiden: 70,         // Hoch
+            klassische_ordnung: 55,      // Mittel
+            romantisches_chaos: 55,      // Mittel
+            qualitaets_werkzeug: 65,     // Mittel-hoch
+            achtsamkeit_im_detail: 65,   // Mittel-hoch
+            meditation_im_alltag: 60,    // Mittel
+            gesundheit_durch_bewusstsein: 75, // Hoch
+            dynamische_meditation: 60,   // Mittel
+            vipassana_im_leben: 55,      // Mittel
+            natuerliches_leben: 65,      // Mittel-hoch
+            lachen_therapie: 75,         // Hoch
+            no_mind: 55,                 // Mittel
+            zorba_der_geniesser: 75      // Hoch
         }
     },
 

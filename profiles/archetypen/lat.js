@@ -209,7 +209,17 @@ const LATProfil = {
             oeffentliches_bekenntnis: 60, // Mittel - Beziehung anerkannt
             gemeinsamer_wohnraum: 10,    // Sehr niedrig - bewusst vermieden
             eigener_rueckzugsort: 100,   // Maximum - Kernbedürfnis
-            haeuslichkeit: 75            // Hoch - im eigenen Zuhause
+            haeuslichkeit: 75,           // Hoch - im eigenen Zuhause
+            // Pirsig & Osho - Lebensplanung
+            biologisches_muster: 45,     // Mittel
+            soziales_muster: 45,         // Mittel
+            statische_stabilitaet: 60,   // Mittel
+            qualitaet_der_fuersorge: 75, // Hoch
+            familien_rebellion: 55,      // Mittel
+            zorba_das_kind: 65,          // Mittel-hoch
+            nicht_anhaften_an_familie: 65, // Mittel-hoch
+            bewusste_elternschaft: 60,   // Mittel
+            commune_statt_kernfamilie: 30 // Niedrig
         },
 
         // ═══════════════════════════════════════════════════════════════════════
@@ -226,7 +236,18 @@ const LATProfil = {
             work_life_balance: 80,       // Hoch - eigener Rhythmus
             gemeinsame_ziele: 60,        // Mittel-hoch - für die Beziehung
             erfolg: 75,                  // Hoch
-            leistung: 70                 // Hoch
+            leistung: 70,                // Hoch
+            // Pirsig & Osho - Finanzen & Karriere
+            gumption: 75,                // Hoch
+            qualitaet_der_arbeit: 75,    // Hoch
+            intellektuelles_muster: 70,  // Hoch
+            dynamische_evolution: 70,    // Hoch
+            klassisches_verstehen: 65,   // Mittel-hoch
+            arbeit_als_meditation: 55,   // Mittel
+            nicht_karriere: 35,          // Niedrig
+            zorba_der_unternehmer: 60,   // Mittel
+            nicht_anhaften_an_geld: 50,  // Mittel
+            kreative_selbstverwirklichung: 75 // Hoch
         },
 
         // ═══════════════════════════════════════════════════════════════════════
@@ -245,7 +266,19 @@ const LATProfil = {
             intellektueller_austausch: 75, // Hoch
             digitale_kommunikation: 90,  // Sehr hoch - wichtig für die Distanz
             verbale_anerkennung: 80,     // Hoch - Wertschätzung zeigen
-            schweigen_aushalten: 75      // Hoch - Zeit alleine
+            schweigen_aushalten: 75,     // Hoch - Zeit alleine
+            // Pirsig & Osho - Kommunikation
+            romantisches_verstehen: 70,  // Hoch
+            klassische_klarheit: 75,     // Hoch
+            dialektik: 55,               // Mittel
+            qualitaets_ausdruck: 70,     // Hoch
+            care_im_gespraech: 75,       // Hoch
+            schweigen_statt_worte: 70,   // Hoch
+            radikale_ehrlichkeit: 75,    // Hoch
+            humorvolle_leichtigkeit: 70, // Hoch
+            paradoxe_weisheit: 40,       // Niedrig-mittel
+            herz_statt_kopf: 60,         // Mittel
+            authentischer_ausdruck: 80   // Hoch
         },
 
         // ═══════════════════════════════════════════════════════════════════════
@@ -264,7 +297,18 @@ const LATProfil = {
             zeit_fuer_sich: 90,          // Sehr hoch - viel Eigenzeit
             soziale_unterstuetzung: 70,  // Hoch - gegenseitig
             gemeinsame_erlebnisse: 75,   // Hoch - bewusst geplant
-            alltagsteilung: 25           // Niedrig - getrennte Alltage
+            alltagsteilung: 25,          // Niedrig - getrennte Alltage
+            // Pirsig & Osho - Soziales Leben
+            soziale_qualitaet: 80,       // Hoch
+            tribe_muster: 55,            // Mittel
+            intellektuelle_gemeinschaft: 65, // Mittel-hoch
+            statische_sozialstrukturen: 50, // Mittel
+            sannyas_gemeinschaft: 25,    // Niedrig
+            rebellion_gegen_gesellschaft: 35, // Niedrig-mittel
+            einsamkeit_in_menge: 60,     // Mittel
+            celebration_mit_anderen: 70, // Hoch
+            keine_freundschaft_besitz: 50, // Mittel
+            tantra_gruppe: 25            // Niedrig
         },
 
         // ═══════════════════════════════════════════════════════════════════════
@@ -283,7 +327,21 @@ const LATProfil = {
             flirten: 45,                 // Mittel - meist mit Partner
             eifersucht_als_signal: 50,   // Mittel - Vertrauen wichtiger
             treue_werte: 75,             // Hoch - meist treu
-            bindungsbereitschaft: 80     // Hoch - feste Beziehung
+            bindungsbereitschaft: 80,    // Hoch - feste Beziehung
+            // Pirsig & Osho - Intimität
+            biologische_anziehung: 75,   // Hoch
+            intellektuelle_verbindung: 80, // Hoch
+            qualitaet_der_beruehrung: 80, // Hoch
+            dynamische_liebe: 75,        // Hoch
+            care_in_intimitaet: 80,      // Hoch
+            sex_als_meditation: 55,      // Mittel
+            liebe_ohne_beziehung: 20,    // Niedrig - Beziehung wichtig
+            orgastisches_leben: 65,      // Mittel-hoch
+            nicht_anhaften_an_partner: 40, // Niedrig-mittel
+            hier_und_jetzt_intimitaet: 75, // Hoch
+            polyamore_energie: 15,       // Niedrig
+            wildheit_und_zartheit: 70,   // Hoch
+            meditation_zu_zweit: 60      // Mittel
         },
 
         // ═══════════════════════════════════════════════════════════════════════
@@ -300,7 +358,21 @@ const LATProfil = {
             toleranz: 80,                // Hoch - akzeptiert verschiedene Wege
             offenheit_neues: 75,         // Hoch
             kulturelle_identitaet: 60,   // Mittel-hoch
-            wertekongruenz: 70           // Hoch - lebt nach Überzeugung
+            wertekongruenz: 70,          // Hoch - lebt nach Überzeugung
+            // Pirsig & Osho - Werte
+            qualitaet_als_gott: 70,      // Hoch
+            rationaler_mystizismus: 50,  // Mittel
+            aristotelische_vernunft: 60, // Mittel
+            platonische_ideen: 50,       // Mittel
+            buddhistische_achtsamkeit: 60, // Mittel
+            religionslosigkeit: 50,      // Mittel
+            eigene_wahrheit: 70,         // Hoch
+            zen_paradox: 35,             // Niedrig-mittel
+            tantra_als_weg: 40,          // Niedrig-mittel
+            politische_rebellion: 30,    // Niedrig
+            individueller_anarchismus: 45, // Mittel
+            leben_als_kunst: 65,         // Mittel-hoch
+            celebration_statt_gebet: 55  // Mittel
         },
 
         // ═══════════════════════════════════════════════════════════════════════
@@ -317,7 +389,23 @@ const LATProfil = {
             wohnort_flexibilitaet: 55,   // Mittel - je nach Distanz
             heimatverbundenheit: 65,     // Mittel-hoch - eigenes Zuhause
             reisen_abenteuer: 70,        // Hoch - gemeinsame Reisen
-            routine_struktur: 75         // Hoch - geplante Abläufe
+            routine_struktur: 75,        // Hoch - geplante Abläufe
+            // Pirsig & Osho - Praktisches Leben
+            motorrad_pflege: 55,         // Mittel
+            gumption_im_alltag: 70,      // Hoch
+            stuck_vermeiden: 60,         // Mittel
+            klassische_ordnung: 70,      // Hoch - strukturiert
+            romantisches_chaos: 40,      // Niedrig-mittel
+            qualitaets_werkzeug: 60,     // Mittel
+            achtsamkeit_im_detail: 70,   // Hoch
+            meditation_im_alltag: 50,    // Mittel
+            gesundheit_durch_bewusstsein: 65, // Mittel-hoch
+            dynamische_meditation: 40,   // Niedrig-mittel
+            vipassana_im_leben: 45,      // Mittel
+            natuerliches_leben: 55,      // Mittel
+            lachen_therapie: 65,         // Mittel-hoch
+            no_mind: 40,                 // Niedrig-mittel
+            zorba_der_geniesser: 70      // Hoch
         }
     },
 

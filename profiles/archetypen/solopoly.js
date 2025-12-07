@@ -209,7 +209,17 @@ const SolopolyProfil = {
             oeffentliches_bekenntnis: 20, // Niedrig - nicht nötig
             gemeinsamer_wohnraum: 10,    // Sehr niedrig - eigenes Zuhause unverhandelbar
             eigener_rueckzugsort: 100,   // Maximum - Kernbedürfnis
-            haeuslichkeit: 60            // Mittel-hoch - eigenes Zuhause wichtig
+            haeuslichkeit: 60,           // Mittel-hoch - eigenes Zuhause wichtig
+            // Pirsig & Osho - Lebensplanung
+            biologisches_muster: 25,     // Niedrig
+            soziales_muster: 20,         // Niedrig - Normen abgelehnt
+            statische_stabilitaet: 30,   // Niedrig - Flexibilität
+            qualitaet_der_fuersorge: 55, // Mittel
+            familien_rebellion: 85,      // Sehr hoch - gegen Normen
+            zorba_das_kind: 75,          // Hoch - Lebensfreude
+            nicht_anhaften_an_familie: 90, // Sehr hoch
+            bewusste_elternschaft: 45,   // Mittel
+            commune_statt_kernfamilie: 50 // Mittel
         },
 
         // ═══════════════════════════════════════════════════════════════════════
@@ -226,7 +236,18 @@ const SolopolyProfil = {
             work_life_balance: 80,       // Hoch - Zeit für sich
             gemeinsame_ziele: 30,        // Niedrig - eigene Ziele
             erfolg: 80,                  // Hoch - persönlicher Erfolg
-            leistung: 75                 // Hoch
+            leistung: 75,                // Hoch
+            // Pirsig & Osho - Finanzen & Karriere
+            gumption: 85,                // Sehr hoch
+            qualitaet_der_arbeit: 80,    // Hoch
+            intellektuelles_muster: 75,  // Hoch
+            dynamische_evolution: 80,    // Hoch
+            klassisches_verstehen: 65,   // Mittel-hoch
+            arbeit_als_meditation: 70,   // Hoch
+            nicht_karriere: 40,          // Niedrig-mittel
+            zorba_der_unternehmer: 70,   // Hoch
+            nicht_anhaften_an_geld: 65,  // Mittel-hoch
+            kreative_selbstverwirklichung: 85 // Sehr hoch
         },
 
         // ═══════════════════════════════════════════════════════════════════════
@@ -245,7 +266,19 @@ const SolopolyProfil = {
             intellektueller_austausch: 80, // Hoch
             digitale_kommunikation: 75,  // Hoch - ermöglicht Distanz
             verbale_anerkennung: 55,     // Mittel
-            schweigen_aushalten: 85      // Sehr hoch - allein sein können
+            schweigen_aushalten: 85,     // Sehr hoch - allein sein können
+            // Pirsig & Osho - Kommunikation
+            romantisches_verstehen: 55,  // Mittel
+            klassische_klarheit: 75,     // Hoch
+            dialektik: 70,               // Hoch
+            qualitaets_ausdruck: 70,     // Hoch
+            care_im_gespraech: 55,       // Mittel
+            schweigen_statt_worte: 80,   // Hoch
+            radikale_ehrlichkeit: 85,    // Sehr hoch
+            humorvolle_leichtigkeit: 75, // Hoch
+            paradoxe_weisheit: 55,       // Mittel
+            herz_statt_kopf: 45,         // Niedrig-mittel
+            authentischer_ausdruck: 90   // Sehr hoch
         },
 
         // ═══════════════════════════════════════════════════════════════════════
@@ -264,7 +297,18 @@ const SolopolyProfil = {
             zeit_fuer_sich: 95,          // Sehr hoch - Kernbedürfnis
             soziale_unterstuetzung: 50,  // Mittel - Netzwerk statt Partner
             gemeinsame_erlebnisse: 50,   // Mittel - situativ
-            alltagsteilung: 10           // Sehr niedrig - eigener Alltag
+            alltagsteilung: 10,          // Sehr niedrig - eigener Alltag
+            // Pirsig & Osho - Soziales Leben
+            soziale_qualitaet: 75,       // Hoch
+            tribe_muster: 45,            // Mittel
+            intellektuelle_gemeinschaft: 80, // Hoch
+            statische_sozialstrukturen: 20, // Niedrig
+            sannyas_gemeinschaft: 50,    // Mittel - offen
+            rebellion_gegen_gesellschaft: 70, // Hoch
+            einsamkeit_in_menge: 85,     // Sehr hoch
+            celebration_mit_anderen: 65, // Mittel-hoch
+            keine_freundschaft_besitz: 80, // Hoch
+            tantra_gruppe: 45            // Mittel
         },
 
         // ═══════════════════════════════════════════════════════════════════════
@@ -283,7 +327,21 @@ const SolopolyProfil = {
             flirten: 75,                 // Hoch - Freiheit
             eifersucht_als_signal: 25,   // Niedrig - kein Thema
             treue_werte: 30,             // Niedrig - eigene Definition
-            bindungsbereitschaft: 35     // Niedrig - Autonomie wichtiger
+            bindungsbereitschaft: 35,    // Niedrig - Autonomie wichtiger
+            // Pirsig & Osho - Intimität
+            biologische_anziehung: 65,   // Mittel-hoch
+            intellektuelle_verbindung: 80, // Hoch
+            qualitaet_der_beruehrung: 65, // Mittel-hoch
+            dynamische_liebe: 60,        // Mittel
+            care_in_intimitaet: 55,      // Mittel
+            sex_als_meditation: 60,      // Mittel
+            liebe_ohne_beziehung: 90,    // Sehr hoch - Kernwert
+            orgastisches_leben: 65,      // Mittel-hoch
+            nicht_anhaften_an_partner: 95, // Sehr hoch
+            hier_und_jetzt_intimitaet: 75, // Hoch
+            polyamore_energie: 80,       // Hoch
+            wildheit_und_zartheit: 60,   // Mittel
+            meditation_zu_zweit: 45      // Mittel
         },
 
         // ═══════════════════════════════════════════════════════════════════════
@@ -300,7 +358,21 @@ const SolopolyProfil = {
             toleranz: 90,                // Sehr hoch - akzeptiert alle Lebensmodelle
             offenheit_neues: 90,         // Sehr hoch
             kulturelle_identitaet: 50,   // Mittel - flexibel
-            wertekongruenz: 75           // Hoch - lebt nach eigenen Werten
+            wertekongruenz: 75,          // Hoch - lebt nach eigenen Werten
+            // Pirsig & Osho - Werte
+            qualitaet_als_gott: 75,      // Hoch
+            rationaler_mystizismus: 65,  // Mittel-hoch
+            aristotelische_vernunft: 65, // Mittel-hoch
+            platonische_ideen: 50,       // Mittel
+            buddhistische_achtsamkeit: 70, // Hoch
+            religionslosigkeit: 75,      // Hoch
+            eigene_wahrheit: 90,         // Sehr hoch
+            zen_paradox: 55,             // Mittel
+            tantra_als_weg: 55,          // Mittel
+            politische_rebellion: 60,    // Mittel
+            individueller_anarchismus: 75, // Hoch
+            leben_als_kunst: 85,         // Sehr hoch
+            celebration_statt_gebet: 70  // Hoch
         },
 
         // ═══════════════════════════════════════════════════════════════════════
@@ -317,7 +389,23 @@ const SolopolyProfil = {
             wohnort_flexibilitaet: 95,   // Sehr hoch - ortsungebunden
             heimatverbundenheit: 30,     // Niedrig - nicht verwurzelt
             reisen_abenteuer: 90,        // Sehr hoch - Entdeckungslust
-            routine_struktur: 50         // Mittel - flexible Routinen
+            routine_struktur: 50,        // Mittel - flexible Routinen
+            // Pirsig & Osho - Praktisches Leben
+            motorrad_pflege: 60,         // Mittel
+            gumption_im_alltag: 80,      // Hoch
+            stuck_vermeiden: 80,         // Hoch
+            klassische_ordnung: 50,      // Mittel
+            romantisches_chaos: 65,      // Mittel-hoch
+            qualitaets_werkzeug: 65,     // Mittel-hoch
+            achtsamkeit_im_detail: 60,   // Mittel
+            meditation_im_alltag: 65,    // Mittel-hoch
+            gesundheit_durch_bewusstsein: 75, // Hoch
+            dynamische_meditation: 65,   // Mittel-hoch
+            vipassana_im_leben: 60,      // Mittel
+            natuerliches_leben: 65,      // Mittel-hoch
+            lachen_therapie: 70,         // Hoch
+            no_mind: 55,                 // Mittel
+            zorba_der_geniesser: 80      // Hoch
         }
     },
 
