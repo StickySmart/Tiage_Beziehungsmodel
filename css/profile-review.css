@@ -609,6 +609,25 @@ input.gewichtung-input:focus {
     color: var(--text-secondary, #aaa);
 }
 
+/* Klickbare Bedürfnis-Labels für Modal-Öffnung */
+.attribute-need-label.clickable {
+    cursor: pointer;
+    transition: all 0.2s ease;
+    padding: 2px 4px;
+    margin: -2px -4px;
+    border-radius: 4px;
+}
+
+.attribute-need-label.clickable:hover {
+    color: var(--primary, #457b9d);
+    background: rgba(69, 123, 157, 0.1);
+    text-decoration: underline;
+}
+
+.attribute-need-label.clickable:active {
+    background: rgba(69, 123, 157, 0.2);
+}
+
 .attribute-need-input-group {
     display: flex;
     align-items: center;

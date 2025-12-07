@@ -581,7 +581,9 @@ const AttributeSummaryCard = (function() {
                 return `
                 <div class="attribute-need-item with-slider${isNeedLocked ? ' need-locked' : ''}" data-need="${need}">
                     <div class="need-item-header">
-                        <span class="attribute-need-label">${needLabel}</span>
+                        <span class="attribute-need-label clickable"
+                              onclick="event.stopPropagation(); openNeedDefinitionModal('${need}')"
+                              title="Klicken für Info zu diesem Bedürfnis">${needLabel}</span>
                         <div class="need-item-controls">
                             <span class="need-lock-icon"
                                   onclick="event.stopPropagation(); AttributeSummaryCard.toggleNeedLock('${attrId}', '${need}', this)"
@@ -602,7 +604,9 @@ const AttributeSummaryCard = (function() {
                 // Original-Layout ohne Slider
                 return `
                 <div class="attribute-need-item" data-need="${need}">
-                    <span class="attribute-need-label">${needLabel}</span>
+                    <span class="attribute-need-label clickable"
+                          onclick="event.stopPropagation(); openNeedDefinitionModal('${need}')"
+                          title="Klicken für Info zu diesem Bedürfnis">${needLabel}</span>
                     <div class="attribute-need-input-group">
                         <input type="text" class="attribute-need-input" value="${needValue}" maxlength="3"
                                onchange="AttributeSummaryCard.updateNeedValue('${attrId}', '${need}', this.value)"
