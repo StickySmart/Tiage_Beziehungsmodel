@@ -39,52 +39,52 @@ const ProfileReviewConfig = (function() {
                 attrId: 'pr-kinder',
                 cardId: 'pr-kinder-card',
                 label: 'Kinder',
-                hint: 'wichtig ?',
                 options: ['Nein', 'Offen', 'Ja'],
                 defaultValue: 50,
+                question: 'Wünschen Sie sich eigene Kinder in der Zukunft?',
                 description: 'Wunsch nach eigenen Kindern oder Offenheit dafür in der Zukunft.'
             },
             {
                 attrId: 'pr-ehe',
                 cardId: 'pr-ehe-card',
                 label: 'Ehe',
-                hint: 'wichtig ?',
                 options: ['Unwichtig', 'Offen', 'Wichtig'],
                 defaultValue: 50,
+                question: 'Wie wichtig ist Ihnen eine formelle Eheschließung?',
                 description: 'Bedeutung einer formellen Eheschließung für die Beziehung.'
             },
             {
                 attrId: 'pr-zusammen',
                 cardId: 'pr-zusammen-card',
                 label: 'Zusammen wohnen',
-                hint: 'wichtig ?',
                 options: ['Getrennt', 'Offen', 'Zusammen'],
                 defaultValue: 50,
+                question: 'Möchten Sie mit Ihrem Partner zusammenwohnen?',
                 description: 'Präferenz für gemeinsames Wohnen oder getrennte Haushalte.'
             },
             {
                 attrId: 'pr-haustiere',
                 cardId: 'pr-haustiere-card',
                 label: 'Haustiere',
-                hint: 'wichtig ?',
                 options: ['Ohne', 'Offen', 'Mit'],
                 defaultValue: 50,
+                question: 'Möchten Sie Haustiere im gemeinsamen Haushalt haben?',
                 description: 'Einstellung zu Haustieren im gemeinsamen Haushalt.'
             },
             {
                 attrId: 'pr-umzug',
                 label: 'Umzugsbereitschaft',
-                hint: 'wichtig ?',
                 options: ['Sesshaft', 'Mittel', 'Flexibel'],
                 defaultValue: 50,
+                question: 'Wie bereit wären Sie, für die Beziehung umzuziehen?',
                 description: 'Bereitschaft, für die Beziehung den Wohnort zu wechseln.'
             },
             {
                 attrId: 'pr-familie',
                 label: 'Familie-Wichtigkeit',
-                hint: 'wichtig ?',
                 options: ['Unwichtig', 'Wichtig', 'Sehr wichtig'],
                 defaultValue: 50,
+                question: 'Wie wichtig ist Ihnen der Kontakt zur Herkunftsfamilie?',
                 description: 'Stellenwert der Herkunftsfamilie und regelmäßiger Kontakt.'
             }
         ],
@@ -93,17 +93,17 @@ const ProfileReviewConfig = (function() {
             {
                 attrId: 'pr-finanzen',
                 label: 'Finanzen',
-                hint: 'wichtig ?',
                 options: ['Getrennt', 'Hybrid', 'Gemeinsam'],
                 defaultValue: 50,
+                question: 'Wie möchten Sie in einer Beziehung mit Geld umgehen?',
                 description: 'Umgang mit Geld: getrennte Konten, Mischform oder gemeinsame Kasse.'
             },
             {
                 attrId: 'pr-karriere',
                 label: 'Karriere-Priorität',
-                hint: 'wichtig ?',
                 options: ['Familie', 'Balance', 'Karriere'],
                 defaultValue: 50,
+                question: 'Was ist wichtiger: Karriere oder Familie?',
                 description: 'Gewichtung zwischen beruflichem Erfolg und Familienleben.'
             }
         ],
@@ -112,25 +112,25 @@ const ProfileReviewConfig = (function() {
             {
                 attrId: 'pr-gespraech',
                 label: 'Gesprächsbedürfnis',
-                hint: 'wichtig ?',
                 options: ['Wenig', 'Mittel', 'Viel'],
                 defaultValue: 50,
+                question: 'Wie viel täglichen Austausch und Gespräche brauchen Sie?',
                 description: 'Bedürfnis nach täglichem Austausch und Gesprächen.'
             },
             {
                 attrId: 'pr-emotional',
                 label: 'Emotionale Offenheit',
-                hint: 'wichtig ?',
                 options: ['Zurückhaltend', 'Mittel', 'Sehr offen'],
                 defaultValue: 50,
+                question: 'Wie offen teilen Sie Ihre Gefühle und Emotionen?',
                 description: 'Bereitschaft, Gefühle und Emotionen zu teilen.'
             },
             {
                 attrId: 'pr-konflikt',
                 label: 'Konfliktverhalten',
-                hint: 'wichtig ?',
                 options: ['Vermeidend', 'Mittel', 'Konfrontativ'],
                 defaultValue: 50,
+                question: 'Wie gehen Sie mit Konflikten um?',
                 description: 'Art der Konfliktbewältigung: ausweichen oder direkt ansprechen.'
             }
         ],
@@ -139,25 +139,25 @@ const ProfileReviewConfig = (function() {
             {
                 attrId: 'pr-introextro',
                 label: 'Intro/Extrovertiert',
-                hint: 'wichtig ?',
                 options: ['Intro', 'Ambivert', 'Extro'],
                 defaultValue: 50,
+                question: 'Woher beziehen Sie Ihre Energie - aus Alleinsein oder sozialen Kontakten?',
                 description: 'Energie durch Alleinsein (Intro) oder soziale Kontakte (Extro).'
             },
             {
                 attrId: 'pr-alleinzeit',
                 label: 'Alleinzeit-Bedürfnis',
-                hint: 'wichtig ?',
                 options: ['Wenig', 'Mittel', 'Viel'],
                 defaultValue: 50,
+                question: 'Wie viel Zeit für sich alleine brauchen Sie?',
                 description: 'Bedürfnis nach Zeit für sich alleine ohne Partner.'
             },
             {
                 attrId: 'pr-freunde',
                 label: 'Freundeskreis',
-                hint: 'wichtig ?',
                 options: ['Getrennt', 'Gemischt', 'Gemeinsam'],
                 defaultValue: 50,
+                question: 'Möchten Sie getrennte oder gemeinsame Freunde mit Ihrem Partner?',
                 description: 'Präferenz für eigene Freunde oder gemeinsamen Freundeskreis.'
             }
         ],
@@ -166,25 +166,25 @@ const ProfileReviewConfig = (function() {
             {
                 attrId: 'pr-naehe',
                 label: 'Körperliche Nähe',
-                hint: 'wichtig ?',
                 options: ['Wenig', 'Mittel', 'Viel'],
                 defaultValue: 50,
+                question: 'Wie viel körperliche Nähe (Berührungen, Umarmungen) brauchen Sie?',
                 description: 'Bedürfnis nach Berührungen, Umarmungen und körperlicher Nähe.'
             },
             {
                 attrId: 'pr-romantik',
                 label: 'Romantik-Bedürfnis',
-                hint: 'wichtig ?',
                 options: ['Wenig', 'Mittel', 'Viel'],
                 defaultValue: 50,
+                question: 'Wie wichtig sind Ihnen romantische Gesten und Dates?',
                 description: 'Wunsch nach romantischen Gesten, Überraschungen und Dates.'
             },
             {
                 attrId: 'pr-sex',
                 label: 'Sexuelle Frequenz',
-                hint: 'wichtig ?',
                 options: ['Selten', 'Mittel', 'Häufig'],
                 defaultValue: 50,
+                question: 'Wie häufig wünschen Sie sich Intimität in der Beziehung?',
                 description: 'Gewünschte Häufigkeit von Intimität in der Beziehung.'
             }
         ],
@@ -193,25 +193,25 @@ const ProfileReviewConfig = (function() {
             {
                 attrId: 'pr-religion',
                 label: 'Religiosität',
-                hint: 'wichtig ?',
                 options: ['Keine', 'Mittel', 'Stark'],
                 defaultValue: 50,
+                question: 'Welche Bedeutung hat Religion und Spiritualität für Sie?',
                 description: 'Bedeutung von Religion und Spiritualität im Alltag.'
             },
             {
                 attrId: 'pr-tradition',
                 label: 'Tradition vs. Modern',
-                hint: 'wichtig ?',
                 options: ['Traditionell', 'Gemischt', 'Modern'],
                 defaultValue: 50,
+                question: 'Leben Sie eher nach traditionellen Werten oder modern?',
                 description: 'Orientierung an traditionellen Werten oder modernen Lebensweisen.'
             },
             {
                 attrId: 'pr-umwelt',
                 label: 'Umweltbewusstsein',
-                hint: 'wichtig ?',
                 options: ['Gering', 'Mittel', 'Hoch'],
                 defaultValue: 50,
+                question: 'Wie wichtig ist Ihnen Nachhaltigkeit und Umweltschutz?',
                 description: 'Wichtigkeit von Nachhaltigkeit und umweltbewusstem Leben.'
             }
         ],
@@ -220,17 +220,17 @@ const ProfileReviewConfig = (function() {
             {
                 attrId: 'pr-ordnung',
                 label: 'Ordnung',
-                hint: 'wichtig ?',
                 options: ['Chaotisch', 'Mittel', 'Ordentlich'],
                 defaultValue: 50,
+                question: 'Wie ordentlich und sauber halten Sie Ihre Wohnung?',
                 description: 'Präferenz für Ordnung und Sauberkeit im Wohnbereich.'
             },
             {
                 attrId: 'pr-reise',
                 label: 'Reise-Frequenz',
-                hint: 'wichtig ?',
                 options: ['Selten', 'Mittel', 'Häufig'],
                 defaultValue: 50,
+                question: 'Wie oft möchten Sie verreisen und Urlaub machen?',
                 description: 'Wunsch nach Reisen und gemeinsamen Urlauben.'
             }
         ]

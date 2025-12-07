@@ -38,24 +38,91 @@ const TiageConfig = (function() {
     const CATEGORY_LETTERS = ['A', 'B', 'C', 'D', 'E', 'F'];
 
     // ═══════════════════════════════════════════════════════════════════════
-    // DOMINANZ
+    // DOMINANZ (Zwei-Dimensionales System: Sexuell + Sozial)
     // ═══════════════════════════════════════════════════════════════════════
 
-    const DOMINANZ_TYPES = ['dominant', 'submissiv', 'switch', 'ausgeglichen'];
+    // PRIMÄR = Sexuelle Dominanz (im intimen Bereich)
+    const DOMINANZ_PRIMARY_TYPES = ['dominant', 'submissiv', 'switch', 'ausgeglichen'];
 
-    const DOMINANZ_SHORT = {
+    const DOMINANZ_PRIMARY_SHORT = {
         dominant: 'Dom',
         submissiv: 'Sub',
         switch: 'Swi',
         ausgeglichen: 'Aus'
     };
 
+    const DOMINANZ_PRIMARY_LABELS = {
+        dominant: 'Dominant',
+        submissiv: 'Submissiv',
+        switch: 'Switch',
+        ausgeglichen: 'Ausgeglichen'
+    };
+
+    // SEKUNDÄR = Soziale Dominanz (im Alltag/Beziehung)
+    const DOMINANZ_SECONDARY_TYPES = ['fuehrend', 'folgend', 'flexibel', 'partnerschaftlich'];
+
+    const DOMINANZ_SECONDARY_SHORT = {
+        fuehrend: 'Führ',
+        folgend: 'Folg',
+        flexibel: 'Flex',
+        partnerschaftlich: 'Part'
+    };
+
+    const DOMINANZ_SECONDARY_LABELS = {
+        fuehrend: 'Führend',
+        folgend: 'Folgend',
+        flexibel: 'Flexibel',
+        partnerschaftlich: 'Partnerschaftlich'
+    };
+
+    // LEGACY: Alte DOMINANZ_TYPES für Rückwärtskompatibilität
+    const DOMINANZ_TYPES = DOMINANZ_PRIMARY_TYPES;
+    const DOMINANZ_SHORT = DOMINANZ_PRIMARY_SHORT;
+
     // ═══════════════════════════════════════════════════════════════════════
-    // ORIENTIERUNG
+    // ORIENTIERUNG (Zwei-Dimensionales System: Sexuell + Romantisch)
     // ═══════════════════════════════════════════════════════════════════════
 
-    const ORIENTIERUNG_TYPES = ['heterosexuell', 'homosexuell', 'bisexuell'];
+    // PRIMÄR = Sexuelle Anziehung (wen begehre ich körperlich?)
+    const ORIENTIERUNG_PRIMARY_TYPES = ['heterosexuell', 'homosexuell', 'bisexuell', 'pansexuell', 'asexuell'];
 
+    const ORIENTIERUNG_PRIMARY_SHORT = {
+        heterosexuell: 'Hetero',
+        homosexuell: 'Homo',
+        bisexuell: 'Bi',
+        pansexuell: 'Pan',
+        asexuell: 'Ace'
+    };
+
+    const ORIENTIERUNG_PRIMARY_LABELS = {
+        heterosexuell: 'Heterosexuell',
+        homosexuell: 'Homosexuell',
+        bisexuell: 'Bisexuell',
+        pansexuell: 'Pansexuell',
+        asexuell: 'Asexuell'
+    };
+
+    // SEKUNDÄR = Romantische Anziehung (in wen verliebe ich mich?)
+    const ORIENTIERUNG_SECONDARY_TYPES = ['heteroromantisch', 'homoromantisch', 'biromantisch', 'panromantisch', 'aromantisch'];
+
+    const ORIENTIERUNG_SECONDARY_SHORT = {
+        heteroromantisch: 'HetRom',
+        homoromantisch: 'HomRom',
+        biromantisch: 'BiRom',
+        panromantisch: 'PanRom',
+        aromantisch: 'ARom'
+    };
+
+    const ORIENTIERUNG_SECONDARY_LABELS = {
+        heteroromantisch: 'Heteroromantisch',
+        homoromantisch: 'Homoromantisch',
+        biromantisch: 'Biromantisch',
+        panromantisch: 'Panromantisch',
+        aromantisch: 'Aromantisch'
+    };
+
+    // LEGACY: Alte ORIENTIERUNG_TYPES für Rückwärtskompatibilität
+    const ORIENTIERUNG_TYPES = ORIENTIERUNG_PRIMARY_TYPES.slice(0, 3); // nur hetero, homo, bi
     const ORIENTIERUNG_SHORT = {
         heterosexuell: 'Hetero',
         homosexuell: 'Homo',
@@ -223,11 +290,27 @@ const TiageConfig = (function() {
         },
         dominanz: {
             title: "Dominanz-Präferenz",
-            text: "Welche Rolle bevorzugst du in der emotionalen und praktischen Beziehungsdynamik?"
+            text: "Zwei Dimensionen: Sexuelle Dominanz (im intimen Bereich) und Soziale Dominanz (im Alltag/Beziehung). Diese können unterschiedlich sein."
+        },
+        dominanz_primary: {
+            title: "Sexuelle Dominanz (Primär)",
+            text: "Deine Rolle im intimen Bereich: Führst du (Dominant), lässt du dich führen (Submissiv), wechselst du (Switch) oder bevorzugst du Gleichberechtigung (Ausgeglichen)?"
+        },
+        dominanz_secondary: {
+            title: "Soziale Dominanz (Sekundär)",
+            text: "Deine Rolle im Alltag und in der Beziehungsdynamik: Führend, Folgend, Flexibel oder Partnerschaftlich."
         },
         orientierung: {
-            title: "Sexuelle Orientierung",
-            text: "Zu welchem Geschlecht fühlst du dich romantisch und/oder sexuell hingezogen?"
+            title: "Orientierung",
+            text: "Zwei Dimensionen: Sexuelle Anziehung (wen begehrst du körperlich?) und Romantische Anziehung (in wen verliebst du dich?). Diese können unterschiedlich sein."
+        },
+        orientierung_primary: {
+            title: "Sexuelle Anziehung (Primär)",
+            text: "Zu welchem Geschlecht fühlst du dich körperlich/sexuell hingezogen?"
+        },
+        orientierung_secondary: {
+            title: "Romantische Anziehung (Sekundär)",
+            text: "In wen verliebst du dich? Mit wem möchtest du romantische Beziehungen führen?"
         },
         status: {
             title: "Orientierungs-Status",
@@ -388,12 +471,29 @@ const TiageConfig = (function() {
         CATEGORY_NAMES,
         CATEGORY_LETTERS,
 
-        // Dimensionen
+        // Dimensionen - Dominanz (Primär/Sekundär)
+        DOMINANZ_PRIMARY_TYPES,
+        DOMINANZ_PRIMARY_SHORT,
+        DOMINANZ_PRIMARY_LABELS,
+        DOMINANZ_SECONDARY_TYPES,
+        DOMINANZ_SECONDARY_SHORT,
+        DOMINANZ_SECONDARY_LABELS,
+        // Legacy Dominanz (für Rückwärtskompatibilität)
         DOMINANZ_TYPES,
         DOMINANZ_SHORT,
+
+        // Dimensionen - Orientierung (Primär/Sekundär)
+        ORIENTIERUNG_PRIMARY_TYPES,
+        ORIENTIERUNG_PRIMARY_SHORT,
+        ORIENTIERUNG_PRIMARY_LABELS,
+        ORIENTIERUNG_SECONDARY_TYPES,
+        ORIENTIERUNG_SECONDARY_SHORT,
+        ORIENTIERUNG_SECONDARY_LABELS,
+        // Legacy Orientierung (für Rückwärtskompatibilität)
         ORIENTIERUNG_TYPES,
         ORIENTIERUNG_SHORT,
-        // Neues Geschlechts-System (Primär/Sekundär)
+
+        // Geschlechts-System (Primär/Sekundär)
         GESCHLECHT_PRIMARY_TYPES,
         GESCHLECHT_PRIMARY_SHORT,
         GESCHLECHT_PRIMARY_LABELS,

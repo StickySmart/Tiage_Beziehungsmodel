@@ -176,6 +176,85 @@ Gender-Chemie als Feinabstimmung der Orientierung
 
 ---
 
+## Profilparameter
+
+Profilparameter sind alle Eigenschaften, die ein Nutzerprofil definieren. Sie unterteilen sich in **Attribute** (feste Eigenschaften) und **Bedürfnisse** (persönliche Präferenzen).
+
+### Übersicht
+
+```
+PROFILPARAMETER (Oberbegriff)
+│
+├── ATTRIBUTE (was man ist - 4 Hauptfaktoren)
+│   │
+│   ├── Geschlecht
+│   │   ├── Primär: Körper (Mann, Frau, Inter)
+│   │   └── Sekundär: Identität (Cis, Trans, Nonbinär, Fluid, Suchend)
+│   │
+│   ├── Orientierung
+│   │   ├── Primär: Sexuelle Anziehung (wen begehre ich körperlich?)
+│   │   │   └── Optionen: Heterosexuell, Homosexuell, Bisexuell, Pansexuell, Asexuell
+│   │   └── Sekundär: Romantische Anziehung (in wen verliebe ich mich?)
+│   │       └── Optionen: Heteroromantisch, Homoromantisch, Biromantisch, Panromantisch, Aromantisch
+│   │
+│   ├── Dominanz
+│   │   ├── Primär: Sexuelle Dominanz (im intimen Bereich)
+│   │   │   └── Optionen: Dominant, Submissiv, Switch, Ausgeglichen
+│   │   └── Sekundär: Soziale Dominanz (im Alltag/Beziehung)
+│   │       └── Optionen: Führend, Folgend, Flexibel, Partnerschaftlich
+│   │
+│   └── Archetyp (kein Primär/Sekundär - ist eine bewusste Wahl)
+│       └── Single, Duo, Duo-Flex, Solopoly, Polyamor, RA, LAT, Aromantisch
+│
+└── BEDÜRFNISSE (was man möchte - 20 Detailpräferenzen)
+    │
+    ├── Lebensplanung (6)
+    │   └── Kinder, Ehe, Zusammenwohnen, Haustiere, Umzugsbereitschaft, Familie-Wichtigkeit
+    │
+    ├── Finanzen & Karriere (2)
+    │   └── Finanzen, Karriere-Priorität
+    │
+    ├── Kommunikation (3)
+    │   └── Gesprächsbedürfnis, Emotionale Offenheit, Konfliktverhalten
+    │
+    ├── Soziales (3)
+    │   └── Intro/Extrovertiert, Alleinzeit-Bedürfnis, Freundeskreis
+    │
+    ├── Intimität (3)
+    │   └── Körperliche Nähe, Romantik-Bedürfnis, Sexuelle Frequenz
+    │
+    ├── Werte (3)
+    │   └── Religiosität, Tradition vs. Modern, Umweltbewusstsein
+    │
+    └── Praktisches (2)
+        └── Ordnung, Reise-Frequenz
+```
+
+### Das Primär/Sekundär-Konzept
+
+Das Primär/Sekundär-Konzept ermöglicht eine differenziertere Betrachtung der Attribute:
+
+| Attribut | Primär | Sekundär |
+|----------|--------|----------|
+| **Geschlecht** | Körper (biologisch) | Identität (psychologisch) |
+| **Orientierung** | Sexuelle Anziehung | Romantische Anziehung |
+| **Dominanz** | Sexuelle Rolle | Alltags-/Beziehungsrolle |
+
+**Beispiele für Kombinationen:**
+
+| Kombination | Bedeutung |
+|-------------|-----------|
+| Bisexuell (P) + Heteroromantisch (S) | Körperlich von beiden Geschlechtern angezogen, verliebt sich aber nur ins andere Geschlecht |
+| Homosexuell (P) + Biromantisch (S) | Körperlich nur vom gleichen Geschlecht angezogen, kann sich aber in beide verlieben |
+| Dominant (P) + Partnerschaftlich (S) | Im Bett dominant, im Alltag auf Augenhöhe |
+| Submissiv (P) + Führend (S) | Im intimen Bereich submissiv, übernimmt aber im Alltag Verantwortung |
+
+**Wissenschaftliche Grundlage:**
+- Split Attraction Model (SAM): Unterscheidung zwischen sexueller und romantischer Anziehung
+- BDSM-Forschung: Rollenverhalten kann kontextabhängig variieren
+
+---
+
 ## Methodische Grundlagen
 
 ### Die 864 Psychologischen Profile
