@@ -10490,13 +10490,8 @@
             const needsContent = document.getElementById('proContraModalNeedsContent');
             if (!needsContent) return;
 
-            // Get the current matching data from GfkBeduerfnisse
-            if (typeof GfkBeduerfnisse === 'undefined') {
-                needsContent.innerHTML = '';
-                return;
-            }
-
-            const matching = GfkBeduerfnisse.berechneMatching(currentArchetype, selectedPartner);
+            // Use cached matching result (same as displayed on main page)
+            const matching = lastGfkMatchingResult;
             if (!matching || matching.score === undefined) {
                 needsContent.innerHTML = '';
                 return;
