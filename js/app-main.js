@@ -1616,7 +1616,7 @@
             if (needsSummaryValueEl) {
                 // Get Bedürfnis-Übereinstimmung from lastGfkMatchingResult
                 const needsScore = lastGfkMatchingResult ? lastGfkMatchingResult.score : 0;
-                needsSummaryValueEl.textContent = needsScore + '%';
+                needsSummaryValueEl.textContent = needsScore;
                 // Color based on needs score
                 const needsColor = getScoreGradientColor(needsScore);
                 needsSummaryValueEl.style.color = needsColor;
@@ -4653,13 +4653,13 @@
                                     <div style="flex: 1; height: 6px; background: rgba(255,255,255,0.1); border-radius: 3px; overflow: hidden;">
                                         <div style="width: ${wert1}%; height: 100%; background: var(--success); border-radius: 3px;"></div>
                                     </div>
-                                    <span style="font-size: 11px; color: var(--text-muted); min-width: 35px; text-align: right;">${wert1}%</span>
+                                    <span style="font-size: 11px; color: var(--text-muted); min-width: 35px; text-align: right;">${wert1}</span>
                                 </div>
                                 <div style="display: flex; align-items: center; gap: 8px;">
                                     <div style="flex: 1; height: 6px; background: rgba(255,255,255,0.1); border-radius: 3px; overflow: hidden;">
                                         <div style="width: ${wert2}%; height: 100%; background: var(--danger); border-radius: 3px;"></div>
                                     </div>
-                                    <span style="font-size: 11px; color: var(--text-muted); min-width: 35px; text-align: right;">${wert2}%</span>
+                                    <span style="font-size: 11px; color: var(--text-muted); min-width: 35px; text-align: right;">${wert2}</span>
                                 </div>
                             </div>
                         </div>
@@ -5642,16 +5642,16 @@
                                     <div style="flex: 1; height: 5px; background: rgba(255,255,255,0.1); border-radius: 3px; overflow: hidden;">
                                         <div style="width: ${wert1}%; height: 100%; background: var(--success); border-radius: 3px;"></div>
                                     </div>
-                                    <span style="font-size: 11px; color: var(--text-muted); min-width: 32px; text-align: right;">${wert1}%</span>
+                                    <span style="font-size: 11px; color: var(--text-muted); min-width: 32px; text-align: right;">${wert1}</span>
                                 </div>
                                 <div style="display: flex; align-items: center; justify-content: center; min-width: 50px;">
-                                    <span style="font-size: 11px; font-weight: 600; color: ${statusColor}; background: ${statusColor}22; padding: 2px 6px; border-radius: 4px;">${diff}%</span>
+                                    <span style="font-size: 11px; font-weight: 600; color: ${statusColor}; background: ${statusColor}22; padding: 2px 6px; border-radius: 4px;">${diff}</span>
                                 </div>
                                 <div style="display: flex; align-items: center; gap: 6px;">
                                     <div style="flex: 1; height: 5px; background: rgba(255,255,255,0.1); border-radius: 3px; overflow: hidden;">
                                         <div style="width: ${wert2}%; height: 100%; background: var(--danger); border-radius: 3px;"></div>
                                     </div>
-                                    <span style="font-size: 11px; color: var(--text-muted); min-width: 32px; text-align: right;">${wert2}%</span>
+                                    <span style="font-size: 11px; color: var(--text-muted); min-width: 32px; text-align: right;">${wert2}</span>
                                 </div>
                             </div>
                         </div>
@@ -6001,7 +6001,7 @@
             let html = `
                 <div class="gfk-matching-header" onclick="openNeedsFullModal()" style="cursor: pointer;" title="Klicken für vollständige Liste">
                     <div class="gfk-score-display">
-                        <span class="gfk-score" style="color: ${scoreColor}">${matching.score}%</span>
+                        <span class="gfk-score" style="color: ${scoreColor}">${matching.score}</span>
                         <span class="gfk-level-label">${beduerfnisLabel}</span>
                     </div>
                 </div>
@@ -6032,7 +6032,7 @@
                         <div class="gfk-tags">
                             ${matching.topKonflikte.map(b => {
                                 const translatedLabel = TiageI18n.t(`needs.items.${b.id}`, b.label);
-                                return `<span class="gfk-tag gfk-tag-conflict gfk-tag-clickable" onclick="openNeedDefinitionModal('${b.id}')" title="Klicken für Definition | ${matching.archetyp1}: ${b.wert1}% | ${matching.archetyp2}: ${b.wert2}%">${translatedLabel}</span>`;
+                                return `<span class="gfk-tag gfk-tag-conflict gfk-tag-clickable" onclick="openNeedDefinitionModal('${b.id}')" title="Klicken für Definition | ${matching.archetyp1}: ${b.wert1} | ${matching.archetyp2}: ${b.wert2}">${translatedLabel}</span>`;
                             }).join('')}
                         </div>
                     </div>
@@ -10600,7 +10600,7 @@
             let html = `
                 <div class="gfk-matching-header" onclick="openNeedsFullModal()" style="cursor: pointer;" title="Klicken für vollständige Liste">
                     <div class="gfk-score-display">
-                        <span class="gfk-score" style="color: ${scoreColor}">${matching.score}%</span>
+                        <span class="gfk-score" style="color: ${scoreColor}">${matching.score}</span>
                         <span class="gfk-level-label">${beduerfnisLabel}</span>
                     </div>
                 </div>
@@ -10615,7 +10615,7 @@
                             ${gemeinsam.map(b => {
                                 const translatedLabel = TiageI18n.t(`needs.items.${b.id || b.key}`, b.label);
                                 const needId = b.id || b.key;
-                                return `<span class="gfk-tag gfk-tag-match gfk-tag-clickable" onclick="openNeedDefinitionModal('${needId}')" title="Klicken für Definition | ICH: ${b.wert1}% | PARTNER: ${b.wert2}%">${translatedLabel}</span>`;
+                                return `<span class="gfk-tag gfk-tag-match gfk-tag-clickable" onclick="openNeedDefinitionModal('${needId}')" title="Klicken für Definition | ICH: ${b.wert1} | PARTNER: ${b.wert2}">${translatedLabel}</span>`;
                             }).join('')}
                         </div>
                     </div>
@@ -10631,7 +10631,7 @@
                             ${unterschiedlich.map(b => {
                                 const translatedLabel = TiageI18n.t(`needs.items.${b.id || b.key}`, b.label);
                                 const needId = b.id || b.key;
-                                return `<span class="gfk-tag gfk-tag-conflict gfk-tag-clickable" onclick="openNeedDefinitionModal('${needId}')" title="Klicken für Definition | ICH: ${b.wert1}% | PARTNER: ${b.wert2}%">${translatedLabel}</span>`;
+                                return `<span class="gfk-tag gfk-tag-conflict gfk-tag-clickable" onclick="openNeedDefinitionModal('${needId}')" title="Klicken für Definition | ICH: ${b.wert1} | PARTNER: ${b.wert2}">${translatedLabel}</span>`;
                             }).join('')}
                         </div>
                     </div>
