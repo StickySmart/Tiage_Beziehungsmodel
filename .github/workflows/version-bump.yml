@@ -47,8 +47,20 @@ jobs:
       - name: Commit and push version bump
         run: |
           git add package.json js/version.js
+
+          # Only commit if there are changes
+          if git diff --staged --quiet; then
+            echo "No changes to commit"
+            exit 0
+          fi
+
           git commit -m "chore: bump version to ${{ env.NEW_VERSION }} [skip ci]"
-          git tag -a "v${{ env.NEW_VERSION }}" -m "Version ${{ env.NEW_VERSION }}"
+
+          # Only create tag if it doesn't exist
+          if ! git tag -l "v${{ env.NEW_VERSION }}" | grep -q .; then
+            git tag -a "v${{ env.NEW_VERSION }}" -m "Version ${{ env.NEW_VERSION }}"
+          fi
+
           git push --follow-tags
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
