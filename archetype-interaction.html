@@ -16,6 +16,8 @@
     <link rel="stylesheet" href="templates/template_mobile.css?v=20251205c" media="(max-width: 768px)">
     <!-- Hilfe-Styling - PERMANENTE SICHERUNG (nicht verändern!) -->
     <link rel="stylesheet" href="css/help.css">
+    <!-- Memory Manager Styling -->
+    <link rel="stylesheet" href="css/memory-manager.css">
 
     <!-- LocalForage - Browser-Datenbank für Profile -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/localforage/1.10.0/localforage.min.js"></script>
@@ -589,6 +591,10 @@
                 <button class="lang-btn" onclick="TiageI18n.toggle(); updateAllTranslations();" title="Switch Language / Sprache wechseln">
                     <span class="lang-icon">🌐</span>
                     <span class="lang-code" id="currentLangCode">DE</span>
+                </button>
+                <button class="memory-btn" onclick="openMemoryModal()" title="Speichern / Laden">
+                    <span class="memory-icon">💾</span>
+                    <span class="memory-text">Save</span>
                 </button>
                 <a href="docs.html?doc=docs/help-guide.md" class="help-btn" title="Hilfe & Dokumentation">?</a>
             </div>
@@ -2021,8 +2027,31 @@
         </div>
     </div>
 
+    <!-- Memory Management Modal -->
+    <div class="modal-overlay" id="memoryModal" onclick="closeMemoryModal(event)" style="z-index: 2600;">
+        <div class="modal memory-modal" onclick="event.stopPropagation()" style="max-width: 500px;">
+            <div class="modal-header" style="border-bottom: 2px solid rgba(59, 130, 246, 0.3);">
+                <span class="modal-title" style="color: #3B82F6;">Speichermanagement</span>
+                <span class="memory-slot-count-badge">Slots: <span id="memorySlotCount">0/4</span></span>
+                <button class="modal-close" onclick="closeMemoryModal()">&times;</button>
+            </div>
+            <div class="modal-body" style="padding: 16px;">
+                <div class="memory-info-box">
+                    <p>Speichere deine aktuellen Einstellungen in bis zu 4 Slots.</p>
+                    <p><strong>Speichern:</strong> ME + PARTNER werden zusammen gespeichert</p>
+                    <p><strong>Laden:</strong> ME oder PARTNER einzeln ladbar</p>
+                </div>
+                <div class="memory-slots-list" id="memorySlotsList">
+                    <!-- Slots werden dynamisch generiert -->
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- State Management - Single Source of Truth -->
     <script src="js/state.js"></script>
+    <!-- Memory Manager -->
+    <script src="js/memory-manager.js"></script>
     <script src="js/markdown-loader.js"></script>
 
     <script src="js/app-i18n.js"></script>
