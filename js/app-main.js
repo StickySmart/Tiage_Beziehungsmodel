@@ -10513,9 +10513,36 @@
             const scoreColor = matching.level === 'hoch' ? '#22c55e' :
                               matching.level === 'mittel' ? '#eab308' : '#ef4444';
 
-            // Verwende alle Bedürfnisse wenn verfügbar, sonst Top-Liste
-            const gemeinsam = matching.alleGemeinsam || matching.topUebereinstimmungen || [];
-            const unterschiedlich = matching.alleUnterschiedlich || matching.topKonflikte || [];
+            // Vollständige Daten holen - entweder aus dynamischer Berechnung oder aus GfkBeduerfnisse.details
+            let gemeinsam = matching.alleGemeinsam || [];
+            let unterschiedlich = matching.alleUnterschiedlich || [];
+
+            // Fallback: Wenn keine vollständigen Daten, direkt aus GfkBeduerfnisse holen
+            if (gemeinsam.length === 0 && unterschiedlich.length === 0 && typeof GfkBeduerfnisse !== 'undefined') {
+                const ichArchetyp = (currentArchetype || '').replace('_', '-');
+                const partnerArchetyp = (selectedPartner || '').replace('_', '-');
+                const fullMatching = GfkBeduerfnisse.berechneMatching(ichArchetyp, partnerArchetyp);
+                if (fullMatching && fullMatching.details) {
+                    gemeinsam = (fullMatching.details.uebereinstimmend || []).map(b => ({
+                        label: b.label,
+                        id: b.id,
+                        key: b.id,
+                        wert1: b.wert1,
+                        wert2: b.wert2
+                    }));
+                    unterschiedlich = (fullMatching.details.konflikt || []).map(b => ({
+                        label: b.label,
+                        id: b.id,
+                        key: b.id,
+                        wert1: b.wert1,
+                        wert2: b.wert2
+                    }));
+                }
+            }
+
+            // Weitere Fallback: Top-Listen verwenden
+            if (gemeinsam.length === 0) gemeinsam = matching.topUebereinstimmungen || [];
+            if (unterschiedlich.length === 0) unterschiedlich = matching.topKonflikte || [];
 
             // HTML generieren
             const beduerfnisLabel = TiageI18n.t('synthesisSection.beduerfnisUebereinstimmung', 'Bedürfnis-Übereinstimmung');
