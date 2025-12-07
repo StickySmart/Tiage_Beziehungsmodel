@@ -57,30 +57,63 @@ const MemoryManager = (function() {
     }
 
     /**
-     * Collect ProfileReview state (16 Attribute)
+     * Collect ProfileReview state - ALL 22 Attributes
+     * Dynamisch aus ProfileReviewConfig laden wenn verfügbar
      */
     function collectProfileReviewState(person) {
-        // Prefix for person-specific attributes (if implemented)
-        // Currently ProfileReview is global, not per-person
-        return {
-            geschlechtsidentitaet: getTripleBtnValue('pr-geschlecht-sekundaer'),
-            kinder: document.getElementById('pr-kinder')?.classList.contains('active') || false,
-            ehe: document.getElementById('pr-ehe')?.classList.contains('active') || false,
-            familie: getTripleBtnValue('pr-familie'),
-            finanzen: getTripleBtnValue('pr-finanzen'),
-            karriere: getTripleBtnValue('pr-karriere'),
-            emotional: getTripleBtnValue('pr-emotional'),
-            konflikt: getTripleBtnValue('pr-konflikt'),
-            introextro: getTripleBtnValue('pr-introextro'),
-            alleinzeit: getTripleBtnValue('pr-alleinzeit'),
-            freunde: getTripleBtnValue('pr-freunde'),
-            naehe: getTripleBtnValue('pr-naehe'),
-            romantik: getTripleBtnValue('pr-romantik'),
-            sex: getTripleBtnValue('pr-sex'),
-            religion: getTripleBtnValue('pr-religion'),
-            tradition: getTripleBtnValue('pr-tradition'),
-            umwelt: getTripleBtnValue('pr-umwelt')
-        };
+        const state = {};
+
+        // Wenn ProfileReviewConfig verfügbar, dynamisch alle Attribute holen
+        if (typeof ProfileReviewConfig !== 'undefined') {
+            const allAttrs = ProfileReviewConfig.getAllAttributes();
+            allAttrs.forEach(attr => {
+                const attrId = attr.attrId;
+                const key = attrId.replace('pr-', '').replace(/-/g, '_');
+                state[key] = getTripleBtnValue(attrId);
+            });
+        } else {
+            // Fallback: Alle bekannten Attribute manuell
+            // Kategorie: Geschlechtsidentität
+            state.geschlecht_sekundaer = getTripleBtnValue('pr-geschlecht-sekundaer');
+
+            // Kategorie: Lebensplanung (6)
+            state.kinder = getTripleBtnValue('pr-kinder');
+            state.ehe = getTripleBtnValue('pr-ehe');
+            state.zusammen = getTripleBtnValue('pr-zusammen');
+            state.haustiere = getTripleBtnValue('pr-haustiere');
+            state.umzug = getTripleBtnValue('pr-umzug');
+            state.familie = getTripleBtnValue('pr-familie');
+
+            // Kategorie: Finanzen (2)
+            state.finanzen = getTripleBtnValue('pr-finanzen');
+            state.karriere = getTripleBtnValue('pr-karriere');
+
+            // Kategorie: Kommunikation (3)
+            state.gespraech = getTripleBtnValue('pr-gespraech');
+            state.emotional = getTripleBtnValue('pr-emotional');
+            state.konflikt = getTripleBtnValue('pr-konflikt');
+
+            // Kategorie: Soziales (3)
+            state.introextro = getTripleBtnValue('pr-introextro');
+            state.alleinzeit = getTripleBtnValue('pr-alleinzeit');
+            state.freunde = getTripleBtnValue('pr-freunde');
+
+            // Kategorie: Intimität (3)
+            state.naehe = getTripleBtnValue('pr-naehe');
+            state.romantik = getTripleBtnValue('pr-romantik');
+            state.sex = getTripleBtnValue('pr-sex');
+
+            // Kategorie: Werte (3)
+            state.religion = getTripleBtnValue('pr-religion');
+            state.tradition = getTripleBtnValue('pr-tradition');
+            state.umwelt = getTripleBtnValue('pr-umwelt');
+
+            // Kategorie: Praktisches (2)
+            state.ordnung = getTripleBtnValue('pr-ordnung');
+            state.reise = getTripleBtnValue('pr-reise');
+        }
+
+        return state;
     }
 
     /**
@@ -211,46 +244,68 @@ const MemoryManager = (function() {
     }
 
     /**
-     * Apply ProfileReview state (Bedürfnisse)
+     * Apply ProfileReview state - ALL 22 Attributes
+     * Dynamisch aus ProfileReviewConfig laden wenn verfügbar
      */
     function applyProfileReviewState(profileReview) {
         if (!profileReview) return;
 
-        // Triple button attributes
-        if (profileReview.geschlechtsidentitaet !== undefined) {
-            setTripleBtnValue('pr-geschlecht-sekundaer', profileReview.geschlechtsidentitaet);
-        }
-        if (profileReview.familie !== undefined) setTripleBtnValue('pr-familie', profileReview.familie);
-        if (profileReview.finanzen !== undefined) setTripleBtnValue('pr-finanzen', profileReview.finanzen);
-        if (profileReview.karriere !== undefined) setTripleBtnValue('pr-karriere', profileReview.karriere);
-        if (profileReview.emotional !== undefined) setTripleBtnValue('pr-emotional', profileReview.emotional);
-        if (profileReview.konflikt !== undefined) setTripleBtnValue('pr-konflikt', profileReview.konflikt);
-        if (profileReview.introextro !== undefined) setTripleBtnValue('pr-introextro', profileReview.introextro);
-        if (profileReview.alleinzeit !== undefined) setTripleBtnValue('pr-alleinzeit', profileReview.alleinzeit);
-        if (profileReview.freunde !== undefined) setTripleBtnValue('pr-freunde', profileReview.freunde);
-        if (profileReview.naehe !== undefined) setTripleBtnValue('pr-naehe', profileReview.naehe);
-        if (profileReview.romantik !== undefined) setTripleBtnValue('pr-romantik', profileReview.romantik);
-        if (profileReview.sex !== undefined) setTripleBtnValue('pr-sex', profileReview.sex);
-        if (profileReview.religion !== undefined) setTripleBtnValue('pr-religion', profileReview.religion);
-        if (profileReview.tradition !== undefined) setTripleBtnValue('pr-tradition', profileReview.tradition);
-        if (profileReview.umwelt !== undefined) setTripleBtnValue('pr-umwelt', profileReview.umwelt);
+        // Wenn ProfileReviewConfig verfügbar, dynamisch alle Attribute setzen
+        if (typeof ProfileReviewConfig !== 'undefined') {
+            const allAttrs = ProfileReviewConfig.getAllAttributes();
+            allAttrs.forEach(attr => {
+                const attrId = attr.attrId;
+                const key = attrId.replace('pr-', '').replace(/-/g, '_');
+                if (profileReview[key] !== undefined) {
+                    setTripleBtnValue(attrId, profileReview[key]);
+                }
+            });
+        } else {
+            // Fallback: Alle bekannten Attribute manuell setzen
+            // Geschlechtsidentität
+            if (profileReview.geschlecht_sekundaer !== undefined) {
+                setTripleBtnValue('pr-geschlecht-sekundaer', profileReview.geschlecht_sekundaer);
+            }
+            // Legacy-Support für alte Speicherformate
+            if (profileReview.geschlechtsidentitaet !== undefined) {
+                setTripleBtnValue('pr-geschlecht-sekundaer', profileReview.geschlechtsidentitaet);
+            }
 
-        // Boolean toggle attributes (kinder, ehe)
-        const kinderEl = document.getElementById('pr-kinder');
-        if (kinderEl) {
-            if (profileReview.kinder) {
-                kinderEl.classList.add('active');
-            } else {
-                kinderEl.classList.remove('active');
-            }
-        }
-        const eheEl = document.getElementById('pr-ehe');
-        if (eheEl) {
-            if (profileReview.ehe) {
-                eheEl.classList.add('active');
-            } else {
-                eheEl.classList.remove('active');
-            }
+            // Lebensplanung
+            if (profileReview.kinder !== undefined) setTripleBtnValue('pr-kinder', profileReview.kinder);
+            if (profileReview.ehe !== undefined) setTripleBtnValue('pr-ehe', profileReview.ehe);
+            if (profileReview.zusammen !== undefined) setTripleBtnValue('pr-zusammen', profileReview.zusammen);
+            if (profileReview.haustiere !== undefined) setTripleBtnValue('pr-haustiere', profileReview.haustiere);
+            if (profileReview.umzug !== undefined) setTripleBtnValue('pr-umzug', profileReview.umzug);
+            if (profileReview.familie !== undefined) setTripleBtnValue('pr-familie', profileReview.familie);
+
+            // Finanzen
+            if (profileReview.finanzen !== undefined) setTripleBtnValue('pr-finanzen', profileReview.finanzen);
+            if (profileReview.karriere !== undefined) setTripleBtnValue('pr-karriere', profileReview.karriere);
+
+            // Kommunikation
+            if (profileReview.gespraech !== undefined) setTripleBtnValue('pr-gespraech', profileReview.gespraech);
+            if (profileReview.emotional !== undefined) setTripleBtnValue('pr-emotional', profileReview.emotional);
+            if (profileReview.konflikt !== undefined) setTripleBtnValue('pr-konflikt', profileReview.konflikt);
+
+            // Soziales
+            if (profileReview.introextro !== undefined) setTripleBtnValue('pr-introextro', profileReview.introextro);
+            if (profileReview.alleinzeit !== undefined) setTripleBtnValue('pr-alleinzeit', profileReview.alleinzeit);
+            if (profileReview.freunde !== undefined) setTripleBtnValue('pr-freunde', profileReview.freunde);
+
+            // Intimität
+            if (profileReview.naehe !== undefined) setTripleBtnValue('pr-naehe', profileReview.naehe);
+            if (profileReview.romantik !== undefined) setTripleBtnValue('pr-romantik', profileReview.romantik);
+            if (profileReview.sex !== undefined) setTripleBtnValue('pr-sex', profileReview.sex);
+
+            // Werte
+            if (profileReview.religion !== undefined) setTripleBtnValue('pr-religion', profileReview.religion);
+            if (profileReview.tradition !== undefined) setTripleBtnValue('pr-tradition', profileReview.tradition);
+            if (profileReview.umwelt !== undefined) setTripleBtnValue('pr-umwelt', profileReview.umwelt);
+
+            // Praktisches
+            if (profileReview.ordnung !== undefined) setTripleBtnValue('pr-ordnung', profileReview.ordnung);
+            if (profileReview.reise !== undefined) setTripleBtnValue('pr-reise', profileReview.reise);
         }
     }
 
