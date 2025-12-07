@@ -5531,9 +5531,21 @@
 
             // Vollständige Listen aus details holen
             const type = needsFullModalCurrentTab;
-            let items = type === 'gemeinsam'
-                ? (matching.details?.uebereinstimmend || matching.topUebereinstimmungen || [])
-                : (matching.details?.konflikt || matching.topKonflikte || []);
+            let items;
+            if (type === 'gemeinsam') {
+                // Combine uebereinstimmend + komplementaer for "gemeinsam" tab
+                const uebereinstimmend = matching.details?.uebereinstimmend || [];
+                const komplementaer = matching.details?.komplementaer || [];
+                items = [...uebereinstimmend, ...komplementaer];
+                // Sort by average importance if not already sorted
+                if (items.length > 0 && !needsFullModalSortBy) {
+                    items.sort((a, b) => ((b.wert1 + b.wert2) / 2) - ((a.wert1 + a.wert2) / 2));
+                }
+                // Fallback
+                if (items.length === 0) items = matching.topUebereinstimmungen || [];
+            } else {
+                items = matching.details?.konflikt || matching.topKonflikte || [];
+            }
 
             // Sortieren falls aktiv
             if (needsFullModalSortBy && items.length > 0) {
@@ -5548,7 +5560,7 @@
             const toggleHtml = `
                 <div style="display: flex; gap: 0; margin-bottom: 16px; background: rgba(255,255,255,0.05); border-radius: 8px; padding: 4px;">
                     <button onclick="switchNeedsFullModalTab('gemeinsam')" style="flex: 1; padding: 10px 16px; border: none; border-radius: 6px; cursor: pointer; font-size: 12px; font-weight: 600; transition: all 0.2s; ${type === 'gemeinsam' ? 'background: #22c55e; color: white;' : 'background: transparent; color: var(--text-muted);'}">
-                        Gemeinsame Bedürfnisse
+                        Gemeinsame & Kompatible
                     </button>
                     <button onclick="switchNeedsFullModalTab('unterschiedlich')" style="flex: 1; padding: 10px 16px; border: none; border-radius: 6px; cursor: pointer; font-size: 12px; font-weight: 600; transition: all 0.2s; ${type === 'unterschiedlich' ? 'background: #ef4444; color: white;' : 'background: transparent; color: var(--text-muted);'}">
                         Unterschiedliche Prioritäten
@@ -5632,7 +5644,7 @@
             // Anzahl anzeigen
             const countHtml = `
                 <div style="margin-top: 12px; text-align: center; font-size: 11px; color: var(--text-muted);">
-                    ${items.length} ${type === 'gemeinsam' ? 'gemeinsame Bedürfnisse' : 'unterschiedliche Prioritäten'}
+                    ${items.length} ${type === 'gemeinsam' ? 'gemeinsame & kompatible Bedürfnisse' : 'unterschiedliche Prioritäten'}
                 </div>
             `;
 
@@ -5904,17 +5916,22 @@
                 wert2: b.wert2
             }));
 
+            // Combine gemeinsam + komplementaer for shared/compatible needs
+            const allGemeinsamUndKompatibel = [...allGemeinsam, ...allKomplementaer].sort((a, b) =>
+                ((b.wert1 + b.wert2) / 2) - ((a.wert1 + a.wert2) / 2)
+            );
+
             return {
                 score: result.score,
                 level: level,
                 archetyp1: ichArchetyp,
                 archetyp2: partnerArchetyp,
-                // Top 5 für kompakte Anzeige (Hauptseite)
-                topUebereinstimmungen: allGemeinsam.slice(0, 5),
+                // Top 5 für kompakte Anzeige (Hauptseite) - now includes komplementaer
+                topUebereinstimmungen: allGemeinsamUndKompatibel.slice(0, 5),
                 topKonflikte: allUnterschiedlich.slice(0, 5),
                 komplementaer: allKomplementaer.slice(0, 5),
                 // Alle Bedürfnisse für vollständige Anzeige (Modal)
-                alleGemeinsam: allGemeinsam,
+                alleGemeinsam: allGemeinsamUndKompatibel,
                 alleUnterschiedlich: allUnterschiedlich,
                 alleKomplementaer: allKomplementaer,
                 // Zusätzliche Details
@@ -5970,12 +5987,12 @@
                 </div>
             `;
 
-            // Top Übereinstimmungen
+            // Top Übereinstimmungen (now includes gemeinsam + komplementaer)
             if (matching.topUebereinstimmungen && matching.topUebereinstimmungen.length > 0) {
-                const gemeinsameLabel = TiageI18n.t('synthesisSection.gemeinsameBeduerfnisse', 'Gemeinsame Bedürfnisse');
+                const gemeinsameLabel = TiageI18n.t('synthesisSection.gemeinsameBeduerfnisse', 'Gemeinsame & Kompatible Bedürfnisse');
                 html += `
                     <div class="gfk-section gfk-matches">
-                        <div class="gfk-section-title" style="color: #22c55e;">${TiageI18n.t('needs.sharedTitle', 'GEMEINSAME BEDÜRFNISSE')}</div>
+                        <div class="gfk-section-title" style="color: #22c55e;">${TiageI18n.t('needs.sharedTitle', 'GEMEINSAME & KOMPATIBLE BEDÜRFNISSE')}</div>
                         <div class="gfk-tags">
                             ${matching.topUebereinstimmungen.map(b => {
                                 const translatedLabel = TiageI18n.t(`needs.items.${b.id}`, b.label);
@@ -10523,13 +10540,27 @@
                 const partnerArchetyp = (selectedPartner || '').replace('_', '-');
                 const fullMatching = GfkBeduerfnisse.berechneMatching(ichArchetyp, partnerArchetyp);
                 if (fullMatching && fullMatching.details) {
-                    gemeinsam = (fullMatching.details.uebereinstimmend || []).map(b => ({
+                    // Combine uebereinstimmend AND komplementaer as "gemeinsam" (shared/compatible needs)
+                    const uebereinstimmend = (fullMatching.details.uebereinstimmend || []).map(b => ({
                         label: b.label,
                         id: b.id,
                         key: b.id,
                         wert1: b.wert1,
-                        wert2: b.wert2
+                        wert2: b.wert2,
+                        diff: b.diff
                     }));
+                    const komplementaer = (fullMatching.details.komplementaer || []).map(b => ({
+                        label: b.label,
+                        id: b.id,
+                        key: b.id,
+                        wert1: b.wert1,
+                        wert2: b.wert2,
+                        diff: b.diff
+                    }));
+                    // Merge and sort by average importance
+                    gemeinsam = [...uebereinstimmend, ...komplementaer].sort((a, b) =>
+                        ((b.wert1 + b.wert2) / 2) - ((a.wert1 + a.wert2) / 2)
+                    );
                     unterschiedlich = (fullMatching.details.konflikt || []).map(b => ({
                         label: b.label,
                         id: b.id,
@@ -10555,11 +10586,11 @@
                 </div>
             `;
 
-            // Alle gemeinsamen Bedürfnisse
+            // Alle gemeinsamen Bedürfnisse (übereinstimmend + komplementär)
             if (gemeinsam.length > 0) {
                 html += `
                     <div class="gfk-section gfk-matches">
-                        <div class="gfk-section-title" style="color: #22c55e;">${TiageI18n.t('needs.sharedTitle', 'GEMEINSAME BEDÜRFNISSE')} (${gemeinsam.length})</div>
+                        <div class="gfk-section-title" style="color: #22c55e;">${TiageI18n.t('needs.sharedTitle', 'GEMEINSAME & KOMPATIBLE BEDÜRFNISSE')} (${gemeinsam.length})</div>
                         <div class="gfk-tags" style="max-height: 150px; overflow-y: auto; padding-right: 5px;">
                             ${gemeinsam.map(b => {
                                 const translatedLabel = TiageI18n.t(`needs.items.${b.id || b.key}`, b.label);
@@ -10748,8 +10779,8 @@
                     return `<span style="${tagStyleMatch}">${translatedLabel}</span>`;
                 }).join('');
                 const sectionTitle = type === 'pathos'
-                    ? TiageI18n.t('needs.sharedTitle', 'GEMEINSAME BEDÜRFNISSE')
-                    : TiageI18n.t('needs.valuesTitle', 'GEMEINSAME WERTE');
+                    ? TiageI18n.t('needs.sharedTitle', 'GEMEINSAME & KOMPATIBLE BEDÜRFNISSE')
+                    : TiageI18n.t('needs.valuesTitle', 'GEMEINSAME & KOMPATIBLE WERTE');
                 result.gemeinsamSection = `
                 <div style="margin-bottom: 16px;">
                     <div style="padding: 12px; background: rgba(34,197,94,0.08); border-radius: 10px; border: 1px solid rgba(34,197,94,0.25);">
