@@ -27,7 +27,30 @@ Das Tiage-Modell fokussiert auf **Schritt 3: die Bedürfnisse**. Diese bilden di
 
 ---
 
-## Die 10 GFK-Kategorien im Tiage-Modell
+## Erweiterung gegenüber Rosenberg
+
+### Quantitative Übersicht
+
+| | Rosenberg (GFK) | Tiage-Modell | Erweiterung |
+|---|---|---|---|
+| **Kategorien** | 10 | 18 | **+8 Kategorien** |
+| **Bedürfnisse** | ~50-60 | **150+** | **+100 Bedürfnisse** |
+
+### Die drei Erweiterungsebenen
+
+1. **+1 Dynamik-Kategorie** (BDSM-Quellen)
+   - Kontrolle, Hingabe, Führung, Nachsorge, Grenzen, Intensität
+
+2. **+7 Lebensbereiche** (praktische Beziehungsthemen)
+   - Lebensplanung, Finanzen, Kommunikation, Soziales, Intimität, Werte, Praktisches
+
+3. **Pirsig/Osho-Erweiterungen** (je Kategorie)
+   - Jede Kategorie enthält zusätzliche philosophische Bedürfnisse
+   - z.B. "meditation_im_alltag", "qualitaet_der_arbeit", "nicht_anhaften"
+
+---
+
+## Die 10 GFK-Kategorien (Rosenberg Original)
 
 ### Übersicht
 
@@ -239,9 +262,11 @@ Bedürfnisse:
 
 ---
 
-## Erweiterung: Dynamik-Kategorie
+## Tiage-Erweiterungen
 
-Das Tiage-Modell erweitert Rosenbergs 10 Kategorien um eine **11. Kategorie: Dynamik & Austausch**, basierend auf BDSM/Kink-Forschung:
+### Kategorie 11: Dynamik & Austausch
+
+Die erste Erweiterung basiert auf BDSM/Kink-Forschung:
 
 ```
 Quellen:
@@ -265,6 +290,96 @@ Bedürfnisse:
 ```
 
 **Relevanz**: Diese Kategorie ermöglicht die Modellierung von Dominanz-Dynamiken (dominant/submissiv/switch).
+
+---
+
+### Kategorien 12-18: Lebensbereiche
+
+Praktische Beziehungsthemen, die über Rosenbergs abstrakte Bedürfnisse hinausgehen:
+
+#### 12. Lebensplanung
+
+```
+Bedürfnisse:
+├── kinderwunsch, elternschaft, familie_gruenden
+├── verbindlichkeit, langfristige_bindung, treueversprechen
+├── gemeinsamer_wohnraum, alltag_teilen, eigener_raum
+├── sesshaftigkeit, mobilitaet, heimat
+└── familienbindung, herkunftsfamilie
+```
+
+#### 13. Finanzen & Karriere
+
+```
+Bedürfnisse:
+├── finanzielle_unabhaengigkeit, gemeinsame_finanzen
+├── finanzielle_sicherheit, grosszuegigkeit
+├── karriereambition, work_life_balance
+└── zeit_fuer_beziehung, berufliche_flexibilitaet
+```
+
+#### 14. Kommunikationsstil
+
+```
+Bedürfnisse:
+├── taeglicher_austausch, tiefgehende_gespraeche
+├── stille_gemeinsam, zuhoeren
+├── emotionale_offenheit, verletzlichkeit
+└── konfliktklaerung, streitkultur, versoehnlichkeit
+```
+
+#### 15. Soziales Leben
+
+```
+Bedürfnisse:
+├── soziale_energie, geselligkeit, ruhe_von_menschen
+├── zeit_fuer_sich, gemeinsame_zeit
+├── eigene_freunde, gemeinsame_freunde
+└── soziales_netz, neue_freundschaften
+```
+
+#### 16. Intimität & Romantik
+
+```
+Bedürfnisse:
+├── koerpernaehe, kuscheln, umarmungen
+├── romantische_gesten, dates, aufmerksamkeiten
+├── sexuelle_haeufigkeit, sexuelle_experimentierfreude
+└── sexuelle_verbindung, sexuelle_zufriedenheit
+```
+
+#### 17. Werte & Haltungen
+
+```
+Bedürfnisse:
+├── spiritualitaet, glaubenspraxis, sinnsuche
+├── traditionelle_werte, progressive_werte
+├── umweltverantwortung, nachhaltigkeit
+└── oekologisches_bewusstsein, klimaschutz
+```
+
+#### 18. Praktisches Leben
+
+```
+Bedürfnisse:
+├── ordnungssinn, sauberkeit, struktur
+├── chaos_toleranz, flexibilitaet_haushalt
+├── reisen, abenteuer, neue_orte_entdecken
+└── zuhause_bleiben, heimatverbundenheit
+```
+
+---
+
+### Pirsig/Osho-Erweiterungen (je Kategorie)
+
+Jede der 18 Kategorien enthält zusätzlich philosophische Bedürfnisse:
+
+| Quelle | Beispiel-Bedürfnisse |
+|--------|---------------------|
+| **Pirsig** | qualitaet_der_arbeit, gumption, klassisches_verstehen, dynamische_evolution |
+| **Osho** | meditation_im_alltag, nicht_anhaften, zorba_der_geniesser, sex_als_meditation |
+
+Diese verbinden das praktische Matching mit der philosophischen Tiefenstruktur des Tiage-Modells.
 
 ---
 
