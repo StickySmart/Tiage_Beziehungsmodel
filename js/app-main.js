@@ -5744,10 +5744,10 @@
             // Prüfen ob BeduerfnisModifikatoren verfügbar ist
             if (typeof BeduerfnisModifikatoren !== 'undefined' && GfkBeduerfnisse.archetypProfile) {
                 // NEU: Dynamische Berechnung mit allen Dimensionen
-                const matching = calculateNeedsComparison(ichNormalized, partnerNormalized);
+                const matching = calculateDynamicBeduerfnisMatch(ichNormalized, partnerNormalized);
                 if (matching) {
                     lastGfkMatchingResult = matching;
-                    console.log(`Bedürfnis-Vergleich berechnet: ${ichNormalized} + ${partnerNormalized} → Score=${matching.score}`);
+                    console.log(`GFK Bedürfnis-Matching (dynamisch): ${ichNormalized} + ${partnerNormalized} → Score=${matching.score}`);
                     console.log(`  Faktoren: Dominanz, Geschlecht, Orientierung berücksichtigt`);
 
                     // GFK-Level setzen (basierend auf Bedürfnis-Übereinstimmung)
@@ -5774,7 +5774,7 @@
 
             lastGfkMatchingResult = matching;
 
-            console.log(`Bedürfnis-Vergleich berechnet (nur Archetyp): ${matching.archetyp1} + ${matching.archetyp2} → Score=${matching.score} (${matching.level})`);
+            console.log(`GFK Bedürfnis-Matching (statisch): ${matching.archetyp1} + ${matching.archetyp2} → Score=${matching.score} (${matching.level})`);
 
             // GFK-Level setzen (basierend auf Bedürfnis-Übereinstimmung)
             personDimensions.ich.gfk = matching.level;
@@ -5794,7 +5794,7 @@
          * @param {string} partnerArchetyp - Normalisierter Archetyp-ID für "partner"
          * @returns {object|null} Matching-Ergebnis oder null bei Fehler
          */
-        function calculateNeedsComparison(ichArchetyp, partnerArchetyp) {
+        function calculateDynamicBeduerfnisMatch(ichArchetyp, partnerArchetyp) {
             // Basis-Bedürfnisse laden
             const ichBasis = GfkBeduerfnisse.archetypProfile[ichArchetyp];
             const partnerBasis = GfkBeduerfnisse.archetypProfile[partnerArchetyp];
@@ -5862,8 +5862,8 @@
                 orientierungStatus: partnerDims.orientierungStatus || 'gelebt'
             };
 
-            // Debug-Log: Gesammelte Profil-Parameter für beide Personen
-            console.log('Profil-Parameter für Paarvergleich:', {
+            // Debug-Log
+            console.log('Bedürfnis-Berechnung mit Dimensionen:', {
                 ich: { archetyp: ichArchetyp, dominanz: ichParams.dominanz, geschlecht: ichParams.geschlechtPrimary, orientierung: ichParams.orientierung },
                 partner: { archetyp: partnerArchetyp, dominanz: partnerParams.dominanz, geschlecht: partnerParams.geschlechtPrimary, orientierung: partnerParams.orientierung }
             });
@@ -5881,33 +5881,42 @@
             else if (result.score >= 40) level = 'mittel';
 
             // Ergebnis im erwarteten Format zurückgeben
+            // Alle Bedürfnisse speichern (nicht limitiert)
+            const allGemeinsam = result.gemeinsam.map(b => ({
+                label: formatBeduerfnisLabel(b.bedürfnis),
+                id: b.bedürfnis,
+                key: b.bedürfnis,
+                wert1: b.wert1,
+                wert2: b.wert2
+            }));
+            const allUnterschiedlich = result.unterschiedlich.map(b => ({
+                label: formatBeduerfnisLabel(b.bedürfnis),
+                id: b.bedürfnis,
+                key: b.bedürfnis,
+                wert1: b.wert1,
+                wert2: b.wert2
+            }));
+            const allKomplementaer = result.komplementaer.map(b => ({
+                label: formatBeduerfnisLabel(b.bedürfnis),
+                id: b.bedürfnis,
+                key: b.bedürfnis,
+                wert1: b.wert1,
+                wert2: b.wert2
+            }));
+
             return {
                 score: result.score,
                 level: level,
                 archetyp1: ichArchetyp,
                 archetyp2: partnerArchetyp,
-                // Konvertiere zu erwarteten Strukturen für updateGfkBeduerfnisDisplay
-                topUebereinstimmungen: result.gemeinsam.slice(0, 5).map(b => ({
-                    id: b.bedürfnis,
-                    label: formatBeduerfnisLabel(b.bedürfnis),
-                    key: b.bedürfnis,
-                    wert1: b.wert1,
-                    wert2: b.wert2
-                })),
-                topKonflikte: result.unterschiedlich.slice(0, 5).map(b => ({
-                    id: b.bedürfnis,
-                    label: formatBeduerfnisLabel(b.bedürfnis),
-                    key: b.bedürfnis,
-                    wert1: b.wert1,
-                    wert2: b.wert2
-                })),
-                komplementaer: result.komplementaer.slice(0, 5).map(b => ({
-                    id: b.bedürfnis,
-                    label: formatBeduerfnisLabel(b.bedürfnis),
-                    key: b.bedürfnis,
-                    wert1: b.wert1,
-                    wert2: b.wert2
-                })),
+                // Top 5 für kompakte Anzeige (Hauptseite)
+                topUebereinstimmungen: allGemeinsam.slice(0, 5),
+                topKonflikte: allUnterschiedlich.slice(0, 5),
+                komplementaer: allKomplementaer.slice(0, 5),
+                // Alle Bedürfnisse für vollständige Anzeige (Modal)
+                alleGemeinsam: allGemeinsam,
+                alleUnterschiedlich: allUnterschiedlich,
+                alleKomplementaer: allKomplementaer,
                 // Zusätzliche Details
                 profile: {
                     ich: ichProfil,
@@ -10493,13 +10502,8 @@
             const needsContent = document.getElementById('proContraModalNeedsContent');
             if (!needsContent) return;
 
-            // Get the current matching data from GfkBeduerfnisse
-            if (typeof GfkBeduerfnisse === 'undefined') {
-                needsContent.innerHTML = '';
-                return;
-            }
-
-            const matching = GfkBeduerfnisse.berechneMatching(currentArchetype, selectedPartner);
+            // Use cached matching result (same as displayed on main page)
+            const matching = lastGfkMatchingResult;
             if (!matching || matching.score === undefined) {
                 needsContent.innerHTML = '';
                 return;
@@ -10508,6 +10512,37 @@
             // Score-Farbe basierend auf Level
             const scoreColor = matching.level === 'hoch' ? '#22c55e' :
                               matching.level === 'mittel' ? '#eab308' : '#ef4444';
+
+            // Vollständige Daten holen - entweder aus dynamischer Berechnung oder aus GfkBeduerfnisse.details
+            let gemeinsam = matching.alleGemeinsam || [];
+            let unterschiedlich = matching.alleUnterschiedlich || [];
+
+            // Fallback: Wenn keine vollständigen Daten, direkt aus GfkBeduerfnisse holen
+            if (gemeinsam.length === 0 && unterschiedlich.length === 0 && typeof GfkBeduerfnisse !== 'undefined') {
+                const ichArchetyp = (currentArchetype || '').replace('_', '-');
+                const partnerArchetyp = (selectedPartner || '').replace('_', '-');
+                const fullMatching = GfkBeduerfnisse.berechneMatching(ichArchetyp, partnerArchetyp);
+                if (fullMatching && fullMatching.details) {
+                    gemeinsam = (fullMatching.details.uebereinstimmend || []).map(b => ({
+                        label: b.label,
+                        id: b.id,
+                        key: b.id,
+                        wert1: b.wert1,
+                        wert2: b.wert2
+                    }));
+                    unterschiedlich = (fullMatching.details.konflikt || []).map(b => ({
+                        label: b.label,
+                        id: b.id,
+                        key: b.id,
+                        wert1: b.wert1,
+                        wert2: b.wert2
+                    }));
+                }
+            }
+
+            // Weitere Fallback: Top-Listen verwenden
+            if (gemeinsam.length === 0) gemeinsam = matching.topUebereinstimmungen || [];
+            if (unterschiedlich.length === 0) unterschiedlich = matching.topKonflikte || [];
 
             // HTML generieren
             const beduerfnisLabel = TiageI18n.t('synthesisSection.beduerfnisUebereinstimmung', 'Bedürfnis-Übereinstimmung');
@@ -10520,30 +10555,30 @@
                 </div>
             `;
 
-            // Top Übereinstimmungen
-            if (matching.topUebereinstimmungen && matching.topUebereinstimmungen.length > 0) {
+            // Alle gemeinsamen Bedürfnisse
+            if (gemeinsam.length > 0) {
                 html += `
                     <div class="gfk-section gfk-matches">
-                        <div class="gfk-section-title" style="color: #22c55e;">${TiageI18n.t('needs.sharedTitle', 'GEMEINSAME BEDÜRFNISSE')}</div>
-                        <div class="gfk-tags">
-                            ${matching.topUebereinstimmungen.map(b => {
-                                const translatedLabel = TiageI18n.t(`needs.items.${b.id}`, b.label);
-                                return `<span class="gfk-tag gfk-tag-match">${translatedLabel}</span>`;
+                        <div class="gfk-section-title" style="color: #22c55e;">${TiageI18n.t('needs.sharedTitle', 'GEMEINSAME BEDÜRFNISSE')} (${gemeinsam.length})</div>
+                        <div class="gfk-tags" style="max-height: 150px; overflow-y: auto; padding-right: 5px;">
+                            ${gemeinsam.map(b => {
+                                const translatedLabel = TiageI18n.t(`needs.items.${b.id || b.key}`, b.label);
+                                return `<span class="gfk-tag gfk-tag-match" title="ICH: ${b.wert1}% | PARTNER: ${b.wert2}%">${translatedLabel}</span>`;
                             }).join('')}
                         </div>
                     </div>
                 `;
             }
 
-            // Konflikte
-            if (matching.topKonflikte && matching.topKonflikte.length > 0) {
+            // Alle unterschiedlichen Prioritäten
+            if (unterschiedlich.length > 0) {
                 html += `
                     <div class="gfk-section gfk-conflicts">
-                        <div class="gfk-section-title" style="color: #ef4444;">${TiageI18n.t('needs.differentTitle', 'UNTERSCHIEDLICHE PRIORITÄTEN')}</div>
-                        <div class="gfk-tags">
-                            ${matching.topKonflikte.map(b => {
-                                const translatedLabel = TiageI18n.t(`needs.items.${b.id}`, b.label);
-                                return `<span class="gfk-tag gfk-tag-conflict" title="${matching.archetyp1}: ${b.wert1}% | ${matching.archetyp2}: ${b.wert2}%">${translatedLabel}</span>`;
+                        <div class="gfk-section-title" style="color: #ef4444;">${TiageI18n.t('needs.differentTitle', 'UNTERSCHIEDLICHE PRIORITÄTEN')} (${unterschiedlich.length})</div>
+                        <div class="gfk-tags" style="max-height: 150px; overflow-y: auto; padding-right: 5px;">
+                            ${unterschiedlich.map(b => {
+                                const translatedLabel = TiageI18n.t(`needs.items.${b.id || b.key}`, b.label);
+                                return `<span class="gfk-tag gfk-tag-conflict" title="ICH: ${b.wert1}% | PARTNER: ${b.wert2}%">${translatedLabel}</span>`;
                             }).join('')}
                         </div>
                     </div>
@@ -13223,19 +13258,17 @@
             }
 
             // Load geschlechtsidentität from current main gender selection
-            // KOPPLUNG: Nur wenn auf Hauptseite etwas ausgewählt ist, wird hier auch etwas ausgewählt
             if (typeof TiageState !== 'undefined') {
                 var primaryGeschlecht = TiageState.getPrimaryGeschlecht(person);
                 var secondaryGeschlecht = TiageState.getSecondaryGeschlecht(person);
 
-                // Update geschlechtsidentität options + Auswahl basierend auf Hauptseite
-                // Wenn secondaryGeschlecht null ist, wird keine Option aktiviert
-                updateGeschlechtsidentitaetOptions(primaryGeschlecht, secondaryGeschlecht);
+                // Update geschlechtsidentität options based on primary (body)
+                updateGeschlechtsidentitaetOptions(primaryGeschlecht);
 
                 if (primaryGeschlecht && secondaryGeschlecht) {
-                    console.log('[ProfileReview] Geschlechtsidentität geladen:', primaryGeschlecht, '/', secondaryGeschlecht);
-                } else {
-                    console.log('[ProfileReview] Geschlechtsidentität: Keine Auswahl (Hauptseite nicht vollständig)');
+                    var geschlechtsidentitaetValue = mapSecondaryToGeschlechtsidentitaet(secondaryGeschlecht, primaryGeschlecht);
+                    setTripleBtnValue('pr-geschlecht-sekundaer', geschlechtsidentitaetValue);
+                    console.log('[ProfileReview] Geschlechtsidentität geladen:', primaryGeschlecht, '/', secondaryGeschlecht, '→', geschlechtsidentitaetValue);
                 }
             }
 
@@ -13363,32 +13396,22 @@
 
         // Select Triple Button (für 3er-Gruppen)
         function selectTripleBtn(btn) {
-            var group = btn.parentElement;
-            var attrId = group.getAttribute('data-attr');
-            var wasActive = btn.classList.contains('active');
-
             // Alle Buttons in der Gruppe deaktivieren
+            var group = btn.parentElement;
             group.querySelectorAll('.profile-review-triple-btn').forEach(function(b) {
                 b.classList.remove('active');
             });
-
-            // Toggle: Wenn bereits aktiv war, nicht wieder aktivieren (Abwahl ermöglichen)
-            if (!wasActive) {
-                btn.classList.add('active');
-            }
+            // Geklickten Button aktivieren
+            btn.classList.add('active');
             trackProfileReviewChange();
 
             // Live-Synchronisierung für Geschlechtsidentität
+            var attrId = group.getAttribute('data-attr');
             if (attrId === 'pr-geschlecht-sekundaer' && typeof TiageState !== 'undefined') {
+                var value = parseInt(btn.getAttribute('data-value'), 10);
                 var primaryGeschlecht = TiageState.getPrimaryGeschlecht('ich');
                 if (primaryGeschlecht) {
-                    var secondaryValue = null;
-
-                    // Nur wenn ein Button aktiv ist, setze den Wert
-                    if (!wasActive) {
-                        var value = parseInt(btn.getAttribute('data-value'), 10);
-                        secondaryValue = mapGeschlechtsidentitaetToSecondary(value, primaryGeschlecht);
-                    }
+                    var secondaryValue = mapGeschlechtsidentitaetToSecondary(value, primaryGeschlecht);
 
                     // Use the new sync function that updates both personDimensions and UI
                     if (typeof setSecondaryGeschlechtAndSync === 'function') {
@@ -13397,19 +13420,10 @@
                         // Fallback to TiageState only
                         TiageState.setSecondaryGeschlecht('ich', secondaryValue);
                     }
-                    console.log('[ProfileReview] Geschlechtsidentität live-sync:', wasActive ? 'abgewählt' : secondaryValue);
+                    console.log('[ProfileReview] Geschlechtsidentität live-sync:', value, '→', secondaryValue);
 
-                    // Profil-Attribute und Anzeige aktualisieren
-                    if (!wasActive) {
-                        reloadProfileAttributesAfterGenderChange();
-                    } else {
-                        // Bei Abwahl: Source-Explanation aktualisieren (zeigt nur noch primary)
-                        var person = currentProfileReviewContext.person || 'ich';
-                        var personData = personDimensions[person];
-                        var dominanz = (personData && personData.dominanz && personData.dominanz.primary) ? personData.dominanz.primary : 'ausgeglichen';
-                        var orientierung = (personData && personData.orientierung && personData.orientierung.primary) ? personData.orientierung.primary : 'heterosexuell';
-                        updateSourceExplanation(currentProfileReviewContext.archetypeKey, personData, dominanz, orientierung);
-                    }
+                    // NEU: Profil-Attribute neu laden mit neuen Gender-Modifikatoren
+                    reloadProfileAttributesAfterGenderChange();
                 }
             }
         }
@@ -13535,9 +13549,6 @@
 
             setTripleBtnValue('pr-umwelt', mapToTripleValue(inferences.umweltbewusstsein));
             setTripleBtnValue('pr-politik', mapToTripleValue(inferences.politischesInteresse));
-
-            // NEU: Source-Explanation aktualisieren um sekundäres Geschlecht oben anzuzeigen
-            updateSourceExplanation(archetypeKey, personData, dominanz, orientierung);
 
             console.log('[ProfileReview] Alle 30 Attribute wurden mit neuen Gender-Modifikatoren aktualisiert');
         }
@@ -13734,7 +13745,7 @@
          * - Inter (divers): Nonbinär, Fluid, Suchend (3 options)
          * @param {string} primaryGeschlecht - 'mann', 'frau', 'inter', or null
          */
-        function updateGeschlechtsidentitaetOptions(primaryGeschlecht, secondaryGeschlecht) {
+        function updateGeschlechtsidentitaetOptions(primaryGeschlecht) {
             var card = document.getElementById('pr-geschlecht-sekundaer-card');
             if (!card) return;
 
@@ -13753,18 +13764,9 @@
             }
             buttonsContainer.classList.remove('five-options');
 
-            // Bestimme welche Option aktiv sein soll basierend auf Hauptseiten-Auswahl
-            var activeIndex = -1; // -1 = keine Auswahl wenn nichts auf Hauptseite ausgewählt
-            if (primaryGeschlecht && secondaryGeschlecht) {
-                // Synchronisiere mit Hauptseiten-Auswahl
-                var mappedValue = mapSecondaryToGeschlechtsidentitaet(secondaryGeschlecht, primaryGeschlecht);
-                activeIndex = values.indexOf(mappedValue);
-                if (activeIndex === -1) activeIndex = 0; // Fallback
-            }
-
             // Regenerate buttons
             var buttonsHtml = options.map(function(label, i) {
-                var isActive = (i === activeIndex) ? ' active' : '';
+                var isActive = i === 0 ? ' active' : '';
                 return '<button class="profile-review-triple-btn' + isActive + '" data-value="' + values[i] + '" onclick="selectTripleBtn(this)">' + label + '</button>';
             }).join('');
 

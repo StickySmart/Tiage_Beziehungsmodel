@@ -209,119 +209,144 @@ const GfkBeduerfnisse = {
     },
 
     // ═══════════════════════════════════════════════════════════════════════════
-    // BEDÜRFNIS-DEFINITIONEN (mit deutschen Labels)
+    // BEDÜRFNIS-DEFINITIONEN MIT PRIMÄR + SEKUNDÄR KATEGORIEN
     // ═══════════════════════════════════════════════════════════════════════════
+    // Primär: Hauptkategorie (für Sortierung/Anzeige)
+    // Sekundär: Zusätzliche Kategorien (für Cross-Category-Analyse)
+    // Basiert auf: GFK (Rosenberg), Attachment Theory, Self-Determination Theory
 
     definitionen: {
-        // EXISTENZ
+        // ═══════════════════════════════════════════════════════════════════════
+        // EXISTENZ (9) - Grundlegende physische Bedürfnisse
+        // ═══════════════════════════════════════════════════════════════════════
         luft: { label: "Luft", kategorie: "existenz" },
         wasser: { label: "Wasser", kategorie: "existenz" },
         nahrung: { label: "Nahrung", kategorie: "existenz" },
-        bewegung: { label: "Bewegung/Betätigung", kategorie: "existenz" },
-        beruehrung: { label: "Berührung/Körperkontakt", kategorie: "existenz" },
-        erholung: { label: "Erholung/Schlaf", kategorie: "existenz" },
-        sexueller_ausdruck: { label: "Sexueller Ausdruck", kategorie: "existenz" },
-        sicherheit_physisch: { label: "Physische Sicherheit", kategorie: "existenz" },
-        unterschlupf: { label: "Unterschlupf", kategorie: "existenz" },
+        bewegung: { label: "Bewegung/Betätigung", kategorie: "existenz", sekundaer: ["identitaet", "musse"] },
+        beruehrung: { label: "Berührung/Körperkontakt", kategorie: "existenz", sekundaer: ["zuneigung", "dynamik", "sicherheit"] },
+        erholung: { label: "Erholung/Schlaf", kategorie: "existenz", sekundaer: ["sicherheit", "musse"] },
+        sexueller_ausdruck: { label: "Sexueller Ausdruck", kategorie: "existenz", sekundaer: ["zuneigung", "dynamik", "identitaet", "verbundenheit"] },
+        sicherheit_physisch: { label: "Physische Sicherheit", kategorie: "existenz", sekundaer: ["sicherheit"] },
+        unterschlupf: { label: "Unterschlupf", kategorie: "existenz", sekundaer: ["sicherheit"] },
 
-        // SICHERHEIT
-        bestaendigkeit: { label: "Beständigkeit", kategorie: "sicherheit" },
-        sich_sicher_fuehlen: { label: "Sich sicher fühlen", kategorie: "sicherheit" },
-        schutz: { label: "Schutz", kategorie: "sicherheit" },
-        stabilitaet: { label: "Stabilität", kategorie: "sicherheit" },
-        leichtigkeit: { label: "Leichtigkeit", kategorie: "sicherheit" },
-        geborgenheit: { label: "Geborgenheit", kategorie: "sicherheit" },
+        // ═══════════════════════════════════════════════════════════════════════
+        // SICHERHEIT (6) - Emotionale und psychische Sicherheit
+        // ═══════════════════════════════════════════════════════════════════════
+        bestaendigkeit: { label: "Beständigkeit", kategorie: "sicherheit", sekundaer: ["verstaendnis", "zuneigung"] },
+        sich_sicher_fuehlen: { label: "Sich sicher fühlen", kategorie: "sicherheit", sekundaer: ["zuneigung", "verstaendnis", "dynamik"] },
+        schutz: { label: "Schutz", kategorie: "sicherheit", sekundaer: ["zuneigung", "dynamik"] },
+        stabilitaet: { label: "Stabilität", kategorie: "sicherheit", sekundaer: ["identitaet", "verstaendnis"] },
+        leichtigkeit: { label: "Leichtigkeit", kategorie: "sicherheit", sekundaer: ["musse", "freiheit"] },
+        geborgenheit: { label: "Geborgenheit", kategorie: "sicherheit", sekundaer: ["zuneigung", "dynamik"] },
 
-        // ZUNEIGUNG
-        waerme: { label: "Wärme", kategorie: "zuneigung" },
-        wertschaetzung: { label: "Wertschätzung", kategorie: "zuneigung" },
-        naehe: { label: "Nähe", kategorie: "zuneigung" },
-        gesellschaft: { label: "Gesellschaft", kategorie: "zuneigung" },
-        intimitaet: { label: "Intimität", kategorie: "zuneigung" },
-        liebe: { label: "Liebe", kategorie: "zuneigung" },
-        fuersorge: { label: "Fürsorge", kategorie: "zuneigung" },
-        unterstuetzung: { label: "Unterstützung", kategorie: "zuneigung" },
-        fuereinander_da_sein: { label: "Füreinander da sein", kategorie: "zuneigung" },
+        // ═══════════════════════════════════════════════════════════════════════
+        // ZUNEIGUNG (9) - Liebe, Nähe und emotionale Verbindung
+        // ═══════════════════════════════════════════════════════════════════════
+        waerme: { label: "Wärme", kategorie: "zuneigung", sekundaer: ["sicherheit"] },
+        wertschaetzung: { label: "Wertschätzung", kategorie: "zuneigung", sekundaer: ["verstaendnis", "identitaet"] },
+        naehe: { label: "Nähe", kategorie: "zuneigung", sekundaer: ["sicherheit", "verbundenheit"] },
+        gesellschaft: { label: "Gesellschaft", kategorie: "zuneigung", sekundaer: ["teilnahme"] },
+        intimitaet: { label: "Intimität", kategorie: "zuneigung", sekundaer: ["verstaendnis", "dynamik", "verbundenheit"] },
+        liebe: { label: "Liebe", kategorie: "zuneigung", sekundaer: ["sicherheit", "verbundenheit", "identitaet"] },
+        fuersorge: { label: "Fürsorge", kategorie: "zuneigung", sekundaer: ["dynamik", "sicherheit"] },
+        unterstuetzung: { label: "Unterstützung", kategorie: "zuneigung", sekundaer: ["teilnahme", "sicherheit"] },
+        fuereinander_da_sein: { label: "Füreinander da sein", kategorie: "zuneigung", sekundaer: ["sicherheit", "verbundenheit"] },
 
-        // VERSTÄNDNIS
-        akzeptanz: { label: "Akzeptanz", kategorie: "verstaendnis" },
-        mitgefuehl: { label: "Mitgefühl", kategorie: "verstaendnis" },
-        beruecksichtigung: { label: "Berücksichtigung", kategorie: "verstaendnis" },
-        empathie: { label: "Empathie", kategorie: "verstaendnis" },
-        vertrauen: { label: "Vertrauen", kategorie: "verstaendnis" },
-        beachtung: { label: "Beachtung", kategorie: "verstaendnis" },
-        gesehen_werden: { label: "Gesehen werden", kategorie: "verstaendnis" },
-        verstanden_werden: { label: "Verstanden werden", kategorie: "verstaendnis" },
-        harmonie: { label: "Harmonie", kategorie: "verstaendnis" },
+        // ═══════════════════════════════════════════════════════════════════════
+        // VERSTÄNDNIS (9) - Gesehen und verstanden werden
+        // ═══════════════════════════════════════════════════════════════════════
+        akzeptanz: { label: "Akzeptanz", kategorie: "verstaendnis", sekundaer: ["zuneigung", "identitaet"] },
+        mitgefuehl: { label: "Mitgefühl", kategorie: "verstaendnis", sekundaer: ["zuneigung", "verbundenheit"] },
+        beruecksichtigung: { label: "Berücksichtigung", kategorie: "verstaendnis", sekundaer: ["teilnahme"] },
+        empathie: { label: "Empathie", kategorie: "verstaendnis", sekundaer: ["zuneigung", "verbundenheit"] },
+        vertrauen: { label: "Vertrauen", kategorie: "verstaendnis", sekundaer: ["sicherheit", "dynamik", "zuneigung"] },
+        beachtung: { label: "Beachtung", kategorie: "verstaendnis", sekundaer: ["identitaet", "zuneigung"] },
+        gesehen_werden: { label: "Gesehen werden", kategorie: "verstaendnis", sekundaer: ["identitaet", "zuneigung"] },
+        verstanden_werden: { label: "Verstanden werden", kategorie: "verstaendnis", sekundaer: ["zuneigung", "verbundenheit"] },
+        harmonie: { label: "Harmonie", kategorie: "verstaendnis", sekundaer: ["sicherheit", "teilnahme"] },
 
-        // FREIHEIT
-        selbstbestimmung: { label: "Selbstbestimmung", kategorie: "freiheit" },
-        waehlen_koennen: { label: "Wählen können", kategorie: "freiheit" },
-        unabhaengigkeit: { label: "Unabhängigkeit", kategorie: "freiheit" },
-        raum_haben: { label: "Raum haben", kategorie: "freiheit" },
-        spontaneitaet: { label: "Spontaneität", kategorie: "freiheit" },
+        // ═══════════════════════════════════════════════════════════════════════
+        // FREIHEIT (5) - Autonomie und Selbstbestimmung
+        // ═══════════════════════════════════════════════════════════════════════
+        selbstbestimmung: { label: "Selbstbestimmung", kategorie: "freiheit", sekundaer: ["identitaet", "dynamik"] },
+        waehlen_koennen: { label: "Wählen können", kategorie: "freiheit", sekundaer: ["identitaet"] },
+        unabhaengigkeit: { label: "Unabhängigkeit", kategorie: "freiheit", sekundaer: ["identitaet", "sicherheit"] },
+        raum_haben: { label: "Raum haben", kategorie: "freiheit", sekundaer: ["sicherheit", "identitaet"] },
+        spontaneitaet: { label: "Spontaneität", kategorie: "freiheit", sekundaer: ["musse", "erschaffen"] },
 
-        // TEILNAHME
-        zusammenarbeit: { label: "Zusammenarbeit", kategorie: "teilnahme" },
-        kommunikation: { label: "Kommunikation", kategorie: "teilnahme" },
-        gemeinschaft: { label: "Gemeinschaft", kategorie: "teilnahme" },
-        zugehoerigkeit: { label: "Zugehörigkeit", kategorie: "teilnahme" },
-        gegenseitigkeit: { label: "Gegenseitigkeit", kategorie: "teilnahme" },
-        respekt: { label: "Respekt", kategorie: "teilnahme" },
-        bedeutung_haben: { label: "Bedeutung haben", kategorie: "teilnahme" },
+        // ═══════════════════════════════════════════════════════════════════════
+        // TEILNAHME (7) - Gemeinschaft und Zugehörigkeit
+        // ═══════════════════════════════════════════════════════════════════════
+        zusammenarbeit: { label: "Zusammenarbeit", kategorie: "teilnahme", sekundaer: ["zuneigung", "identitaet"] },
+        kommunikation: { label: "Kommunikation", kategorie: "teilnahme", sekundaer: ["verstaendnis", "zuneigung"] },
+        gemeinschaft: { label: "Gemeinschaft", kategorie: "teilnahme", sekundaer: ["zuneigung", "sicherheit"] },
+        zugehoerigkeit: { label: "Zugehörigkeit", kategorie: "teilnahme", sekundaer: ["sicherheit", "identitaet"] },
+        gegenseitigkeit: { label: "Gegenseitigkeit", kategorie: "teilnahme", sekundaer: ["zuneigung", "dynamik"] },
+        respekt: { label: "Respekt", kategorie: "teilnahme", sekundaer: ["verstaendnis", "dynamik", "identitaet"] },
+        bedeutung_haben: { label: "Bedeutung haben", kategorie: "teilnahme", sekundaer: ["identitaet", "verbundenheit"] },
 
-        // MUSSE
-        schoenheit: { label: "Schönheit", kategorie: "musse" },
-        freizeit: { label: "Freizeit", kategorie: "musse" },
-        freude: { label: "Freude", kategorie: "musse" },
-        humor: { label: "Humor", kategorie: "musse" },
+        // ═══════════════════════════════════════════════════════════════════════
+        // MUSSE (4) - Erholung, Freude und Genuss
+        // ═══════════════════════════════════════════════════════════════════════
+        schoenheit: { label: "Schönheit", kategorie: "musse", sekundaer: ["verbundenheit", "erschaffen"] },
+        freizeit: { label: "Freizeit", kategorie: "musse", sekundaer: ["freiheit", "erholung"] },
+        freude: { label: "Freude", kategorie: "musse", sekundaer: ["verbundenheit", "zuneigung"] },
+        humor: { label: "Humor", kategorie: "musse", sekundaer: ["verbundenheit", "zuneigung"] },
 
-        // IDENTITÄT
-        authentizitaet: { label: "Authentizität", kategorie: "identitaet" },
-        echtheit: { label: "Echtheit", kategorie: "identitaet" },
-        integritaet: { label: "Integrität", kategorie: "identitaet" },
-        praesenz: { label: "Präsenz", kategorie: "identitaet" },
-        ordnung: { label: "Ordnung", kategorie: "identitaet" },
-        bewusstheit: { label: "Bewusstheit", kategorie: "identitaet" },
-        herausforderung: { label: "Herausforderung", kategorie: "identitaet" },
-        klarheit: { label: "Klarheit", kategorie: "identitaet" },
-        kompetenz: { label: "Kompetenz", kategorie: "identitaet" },
-        effizienz: { label: "Effizienz", kategorie: "identitaet" },
-        wirksamkeit: { label: "Wirksamkeit", kategorie: "identitaet" },
-        wachstum: { label: "Wachstum", kategorie: "identitaet" },
-        sinn: { label: "Sinn", kategorie: "identitaet" },
-        beitrag_leisten: { label: "Einen Beitrag leisten", kategorie: "identitaet" },
+        // ═══════════════════════════════════════════════════════════════════════
+        // IDENTITÄT (14) - Selbstverwirklichung und Sinn
+        // ═══════════════════════════════════════════════════════════════════════
+        authentizitaet: { label: "Authentizität", kategorie: "identitaet", sekundaer: ["freiheit", "verstaendnis"] },
+        echtheit: { label: "Echtheit", kategorie: "identitaet", sekundaer: ["verstaendnis", "verbundenheit"] },
+        integritaet: { label: "Integrität", kategorie: "identitaet", sekundaer: ["verstaendnis", "dynamik"] },
+        praesenz: { label: "Präsenz", kategorie: "identitaet", sekundaer: ["verbundenheit", "verstaendnis"] },
+        ordnung: { label: "Ordnung", kategorie: "identitaet", sekundaer: ["sicherheit"] },
+        bewusstheit: { label: "Bewusstheit", kategorie: "identitaet", sekundaer: ["verbundenheit", "verstaendnis"] },
+        herausforderung: { label: "Herausforderung", kategorie: "identitaet", sekundaer: ["erschaffen", "freiheit"] },
+        klarheit: { label: "Klarheit", kategorie: "identitaet", sekundaer: ["verstaendnis", "sicherheit"] },
+        kompetenz: { label: "Kompetenz", kategorie: "identitaet", sekundaer: ["erschaffen", "teilnahme"] },
+        effizienz: { label: "Effizienz", kategorie: "identitaet", sekundaer: ["freiheit"] },
+        wirksamkeit: { label: "Wirksamkeit", kategorie: "identitaet", sekundaer: ["dynamik", "teilnahme"] },
+        wachstum: { label: "Wachstum", kategorie: "identitaet", sekundaer: ["erschaffen", "verbundenheit"] },
+        sinn: { label: "Sinn", kategorie: "identitaet", sekundaer: ["verbundenheit"] },
+        beitrag_leisten: { label: "Einen Beitrag leisten", kategorie: "identitaet", sekundaer: ["teilnahme", "verbundenheit"] },
 
-        // ERSCHAFFEN
-        kreativitaet: { label: "Kreativität", kategorie: "erschaffen" },
-        entdecken: { label: "Entdecken", kategorie: "erschaffen" },
-        lernen: { label: "Lernen", kategorie: "erschaffen" },
-        selbst_ausdruck: { label: "Selbst-Ausdruck", kategorie: "erschaffen" },
-        anreize_bekommen: { label: "Anreize bekommen", kategorie: "erschaffen" },
+        // ═══════════════════════════════════════════════════════════════════════
+        // ERSCHAFFEN (5) - Kreativität und Lernen
+        // ═══════════════════════════════════════════════════════════════════════
+        kreativitaet: { label: "Kreativität", kategorie: "erschaffen", sekundaer: ["freiheit", "identitaet"] },
+        entdecken: { label: "Entdecken", kategorie: "erschaffen", sekundaer: ["freiheit", "verbundenheit"] },
+        lernen: { label: "Lernen", kategorie: "erschaffen", sekundaer: ["identitaet", "verbundenheit"] },
+        selbst_ausdruck: { label: "Selbst-Ausdruck", kategorie: "erschaffen", sekundaer: ["identitaet", "freiheit"] },
+        anreize_bekommen: { label: "Anreize bekommen", kategorie: "erschaffen", sekundaer: ["verbundenheit", "teilnahme"] },
 
-        // VERBUNDENHEIT
-        leben_feiern: { label: "Das Leben feiern", kategorie: "verbundenheit" },
-        inspiration: { label: "Inspiration", kategorie: "verbundenheit" },
-        trauer_ausdruecken: { label: "Trauer ausdrücken", kategorie: "verbundenheit" },
-        einsehen: { label: "Einsehen", kategorie: "verbundenheit" },
-        anfang_ende: { label: "Anfang & Ende", kategorie: "verbundenheit" },
+        // ═══════════════════════════════════════════════════════════════════════
+        // VERBUNDENHEIT (5) - Tiefe existenzielle Verbindung
+        // ═══════════════════════════════════════════════════════════════════════
+        leben_feiern: { label: "Das Leben feiern", kategorie: "verbundenheit", sekundaer: ["musse", "zuneigung"] },
+        inspiration: { label: "Inspiration", kategorie: "verbundenheit", sekundaer: ["erschaffen", "identitaet"] },
+        trauer_ausdruecken: { label: "Trauer ausdrücken", kategorie: "verbundenheit", sekundaer: ["verstaendnis", "zuneigung"] },
+        einsehen: { label: "Einsehen", kategorie: "verbundenheit", sekundaer: ["verstaendnis", "identitaet"] },
+        anfang_ende: { label: "Anfang & Ende", kategorie: "verbundenheit", sekundaer: ["identitaet", "sicherheit"] },
 
-        // DYNAMIK & AUSTAUSCH (BDSM/Kink)
-        kontrolle_ausueben: { label: "Kontrolle ausüben", kategorie: "dynamik" },
-        hingabe: { label: "Hingabe", kategorie: "dynamik" },
-        fuehrung_geben: { label: "Führung geben", kategorie: "dynamik" },
-        gefuehrt_werden: { label: "Geführt werden", kategorie: "dynamik" },
-        ritual: { label: "Rituale & Struktur", kategorie: "dynamik" },
-        nachsorge: { label: "Nachsorge/Aftercare", kategorie: "dynamik" },
-        grenzen_setzen: { label: "Grenzen setzen", kategorie: "dynamik" },
-        grenzen_respektieren: { label: "Grenzen respektieren", kategorie: "dynamik" },
-        intensitaet: { label: "Intensität erleben", kategorie: "dynamik" },
-        vertrauen_schenken: { label: "Vertrauen schenken", kategorie: "dynamik" },
-        verantwortung_uebernehmen: { label: "Verantwortung übernehmen", kategorie: "dynamik" },
-        sich_fallenlassen: { label: "Sich fallenlassen", kategorie: "dynamik" },
-        machtaustausch: { label: "Machtaustausch", kategorie: "dynamik" },
-        dienend_sein: { label: "Dienend sein", kategorie: "dynamik" },
-        beschuetzen: { label: "Beschützen", kategorie: "dynamik" }
+        // ═══════════════════════════════════════════════════════════════════════
+        // DYNAMIK (15) - Machtdynamik und bewusster Austausch
+        // ═══════════════════════════════════════════════════════════════════════
+        kontrolle_ausueben: { label: "Kontrolle ausüben", kategorie: "dynamik", sekundaer: ["freiheit", "identitaet", "sicherheit"] },
+        hingabe: { label: "Hingabe", kategorie: "dynamik", sekundaer: ["zuneigung", "verstaendnis", "sicherheit"] },
+        fuehrung_geben: { label: "Führung geben", kategorie: "dynamik", sekundaer: ["identitaet", "teilnahme", "zuneigung"] },
+        gefuehrt_werden: { label: "Geführt werden", kategorie: "dynamik", sekundaer: ["sicherheit", "zuneigung", "verstaendnis"] },
+        ritual: { label: "Rituale & Struktur", kategorie: "dynamik", sekundaer: ["sicherheit", "verbundenheit", "identitaet"] },
+        nachsorge: { label: "Nachsorge/Aftercare", kategorie: "dynamik", sekundaer: ["zuneigung", "sicherheit", "verstaendnis"] },
+        grenzen_setzen: { label: "Grenzen setzen", kategorie: "dynamik", sekundaer: ["freiheit", "sicherheit", "identitaet"] },
+        grenzen_respektieren: { label: "Grenzen respektieren", kategorie: "dynamik", sekundaer: ["verstaendnis", "teilnahme"] },
+        intensitaet: { label: "Intensität erleben", kategorie: "dynamik", sekundaer: ["verbundenheit", "existenz"] },
+        vertrauen_schenken: { label: "Vertrauen schenken", kategorie: "dynamik", sekundaer: ["verstaendnis", "zuneigung", "sicherheit"] },
+        verantwortung_uebernehmen: { label: "Verantwortung übernehmen", kategorie: "dynamik", sekundaer: ["identitaet", "zuneigung"] },
+        sich_fallenlassen: { label: "Sich fallenlassen", kategorie: "dynamik", sekundaer: ["verstaendnis", "sicherheit", "zuneigung"] },
+        machtaustausch: { label: "Machtaustausch", kategorie: "dynamik", sekundaer: ["verbundenheit", "intimitaet"] },
+        dienend_sein: { label: "Dienend sein", kategorie: "dynamik", sekundaer: ["zuneigung", "identitaet"] },
+        beschuetzen: { label: "Beschützen", kategorie: "dynamik", sekundaer: ["zuneigung", "sicherheit", "identitaet"] }
     },
 
     // ═══════════════════════════════════════════════════════════════════════════
@@ -694,10 +719,22 @@ const GfkBeduerfnisse = {
     // ═══════════════════════════════════════════════════════════════════════════
     // ARCHETYPEN-BEDÜRFNIS-PROFILE
     // ═══════════════════════════════════════════════════════════════════════════
-    // Gewichtung 0-100: Wie wichtig ist dieses Bedürfnis für den Archetyp?
-    // Nur die relevantesten Bedürfnisse werden aufgeführt (> 50)
+    // Profile werden aus separaten Dateien geladen (profiles/archetypen/*.js)
+    // Jedes Profil enthält alle 88 Bedürfnisse mit Werten 0-100
+    // Fallback auf Legacy-Profile falls neue nicht geladen
 
-    archetypProfile: {
+    // Dynamischer Getter für archetypProfile
+    get archetypProfile() {
+        // Prüfe ob neue Profile geladen wurden
+        if (window.LoadedArchetypProfile && Object.keys(window.LoadedArchetypProfile).length > 0) {
+            return window.LoadedArchetypProfile;
+        }
+        // Fallback auf Legacy-Profile
+        return this._legacyArchetypProfile;
+    },
+
+    // Legacy-Profile als Fallback (alte ~20 Werte pro Profil)
+    _legacyArchetypProfile: {
 
         // ─────────────────────────────────────────────────────────────────────
         // SINGLE - Der Autonome
@@ -1032,6 +1069,20 @@ const GfkBeduerfnisse = {
                 sich_sicher_fuehlen: 70
             },
             beschreibung: "Tiefe platonische Verbindungen ohne romantische Komponente. Authentisch anders."
+        }
+    },
+
+    /**
+     * Initialisiert die Profile aus den geladenen Archetyp-Dateien
+     * Wird automatisch aufgerufen wenn die Profile verfügbar sind
+     */
+    initFromLoadedProfiles: function() {
+        if (window.LoadedArchetypProfile) {
+            console.log('GfkBeduerfnisse: Neue Profile geladen mit je 88 Bedürfnissen');
+            Object.keys(window.LoadedArchetypProfile).forEach(key => {
+                const profil = window.LoadedArchetypProfile[key];
+                console.log(`  - ${key}: ${Object.keys(profil.kernbeduerfnisse).length} Bedürfnisse`);
+            });
         }
     },
 
