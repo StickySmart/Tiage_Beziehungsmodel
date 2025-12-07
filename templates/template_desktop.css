@@ -95,7 +95,7 @@
         /* Visitor Info Bar */
         .visitor-info-bar {
             position: fixed;
-            top: 85px;
+            top: 95px;
             left: 0;
             right: 0;
             z-index: 199;
@@ -125,7 +125,7 @@
 
         @media (max-width: 768px) {
             .visitor-info-bar {
-                top: 75px;
+                top: 85px;
                 font-size: 11px;
                 gap: 12px;
                 padding: 5px 10px;

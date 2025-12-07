@@ -141,12 +141,42 @@ const MemoryManager = (function() {
     }
 
     /**
+     * Get current app version
+     */
+    function getAppVersion() {
+        if (typeof TiageVersion !== 'undefined') {
+            return TiageVersion.version;
+        }
+        return '0.0.000';
+    }
+
+    /**
+     * Compare versions (returns -1 if v1 < v2, 0 if equal, 1 if v1 > v2)
+     */
+    function compareVersions(v1, v2) {
+        if (!v1) return -1;
+        if (!v2) return 1;
+
+        const parts1 = v1.split('.').map(Number);
+        const parts2 = v2.split('.').map(Number);
+
+        for (let i = 0; i < 3; i++) {
+            const p1 = parts1[i] || 0;
+            const p2 = parts2[i] || 0;
+            if (p1 < p2) return -1;
+            if (p1 > p2) return 1;
+        }
+        return 0;
+    }
+
+    /**
      * Collect current ME data from state (COMPLETE PROFILE)
      */
     function collectMeData() {
         const data = {
             timestamp: Date.now(),
-            version: '2.0',
+            dataVersion: '2.0',
+            appVersion: getAppVersion(),
             archetyp: null,
             geschlecht: null,
             dominanz: null,
@@ -188,7 +218,8 @@ const MemoryManager = (function() {
     function collectPartnerData() {
         const data = {
             timestamp: Date.now(),
-            version: '2.0',
+            dataVersion: '2.0',
+            appVersion: getAppVersion(),
             archetyp: null,
             geschlecht: null,
             dominanz: null,
@@ -334,12 +365,45 @@ const MemoryManager = (function() {
     }
 
     /**
+     * Check version and show warning if older
+     * @returns {Object} { isOlder: boolean, savedVersion: string, currentVersion: string }
+     */
+    function checkVersionCompatibility(data) {
+        const currentVersion = getAppVersion();
+        const savedVersion = data.appVersion || data.version || '0.0.000';
+
+        const comparison = compareVersions(savedVersion, currentVersion);
+
+        return {
+            isOlder: comparison < 0,
+            isNewer: comparison > 0,
+            savedVersion: savedVersion,
+            currentVersion: currentVersion
+        };
+    }
+
+    /**
+     * Show version warning toast
+     */
+    function showVersionWarning(savedVersion, currentVersion, person) {
+        const message = `Ältere Version geladen (v${savedVersion})\nAktuelle App: v${currentVersion}\nFehlende Felder bleiben auf Standard.`;
+        showMemoryToast(message, 'warning');
+        console.warn(`[MemoryManager] Loading ${person} from older version:`, savedVersion, '→', currentVersion);
+    }
+
+    /**
      * Apply loaded data to ME (COMPLETE PROFILE)
      */
     function applyMeData(data) {
         if (!data) return false;
 
         try {
+            // Check version compatibility
+            const versionInfo = checkVersionCompatibility(data);
+            if (versionInfo.isOlder) {
+                showVersionWarning(versionInfo.savedVersion, versionInfo.currentVersion, 'ME');
+            }
+
             if (typeof TiageState !== 'undefined') {
                 if (data.geschlecht) {
                     TiageState.set('personDimensions.ich.geschlecht', data.geschlecht);
@@ -418,6 +482,12 @@ const MemoryManager = (function() {
         if (!data) return false;
 
         try {
+            // Check version compatibility
+            const versionInfo = checkVersionCompatibility(data);
+            if (versionInfo.isOlder) {
+                showVersionWarning(versionInfo.savedVersion, versionInfo.currentVersion, 'PARTNER');
+            }
+
             if (typeof TiageState !== 'undefined') {
                 if (data.geschlecht) {
                     TiageState.set('personDimensions.partner.geschlecht', data.geschlecht);
@@ -524,12 +594,14 @@ const MemoryManager = (function() {
                     me: meData ? {
                         timestamp: meData.timestamp,
                         dateTime: formatDateTime(meData.timestamp),
-                        archetyp: meData.archetyp?.primary || meData.archetyp || '-'
+                        archetyp: meData.archetyp?.primary || meData.archetyp || '-',
+                        appVersion: meData.appVersion || meData.version || '-'
                     } : null,
                     partner: partData ? {
                         timestamp: partData.timestamp,
                         dateTime: formatDateTime(partData.timestamp),
-                        archetyp: partData.archetyp?.primary || partData.archetyp || '-'
+                        archetyp: partData.archetyp?.primary || partData.archetyp || '-',
+                        appVersion: partData.appVersion || partData.version || '-'
                     } : null
                 });
             }
@@ -764,6 +836,7 @@ function updateMemoryModalContent() {
                         <div class="memory-person-info">
                             <span class="memory-timestamp">${slot.me.dateTime}</span>
                             <span class="memory-archetyp">${slot.me.archetyp}</span>
+                            <span class="memory-version">v${slot.me.appVersion}</span>
                         </div>
                         <button class="memory-load-btn" onclick="handleLoadMe(${slotNum})" title="ME laden">
                             <span>Laden</span>
@@ -778,6 +851,7 @@ function updateMemoryModalContent() {
                         <div class="memory-person-info">
                             <span class="memory-timestamp">${slot.partner.dateTime}</span>
                             <span class="memory-archetyp">${slot.partner.archetyp}</span>
+                            <span class="memory-version">v${slot.partner.appVersion}</span>
                         </div>
                         <button class="memory-load-btn" onclick="handleLoadPartner(${slotNum})" title="PARTNER laden">
                             <span>Laden</span>
