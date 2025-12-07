@@ -5881,30 +5881,42 @@
             else if (result.score >= 40) level = 'mittel';
 
             // Ergebnis im erwarteten Format zurückgeben
+            // Alle Bedürfnisse speichern (nicht limitiert)
+            const allGemeinsam = result.gemeinsam.map(b => ({
+                label: formatBeduerfnisLabel(b.bedürfnis),
+                id: b.bedürfnis,
+                key: b.bedürfnis,
+                wert1: b.wert1,
+                wert2: b.wert2
+            }));
+            const allUnterschiedlich = result.unterschiedlich.map(b => ({
+                label: formatBeduerfnisLabel(b.bedürfnis),
+                id: b.bedürfnis,
+                key: b.bedürfnis,
+                wert1: b.wert1,
+                wert2: b.wert2
+            }));
+            const allKomplementaer = result.komplementaer.map(b => ({
+                label: formatBeduerfnisLabel(b.bedürfnis),
+                id: b.bedürfnis,
+                key: b.bedürfnis,
+                wert1: b.wert1,
+                wert2: b.wert2
+            }));
+
             return {
                 score: result.score,
                 level: level,
                 archetyp1: ichArchetyp,
                 archetyp2: partnerArchetyp,
-                // Konvertiere zu erwarteten Strukturen für updateGfkBeduerfnisDisplay
-                topUebereinstimmungen: result.gemeinsam.slice(0, 5).map(b => ({
-                    label: formatBeduerfnisLabel(b.bedürfnis),
-                    key: b.bedürfnis,
-                    wert1: b.wert1,
-                    wert2: b.wert2
-                })),
-                topKonflikte: result.unterschiedlich.slice(0, 5).map(b => ({
-                    label: formatBeduerfnisLabel(b.bedürfnis),
-                    key: b.bedürfnis,
-                    wert1: b.wert1,
-                    wert2: b.wert2
-                })),
-                komplementaer: result.komplementaer.slice(0, 5).map(b => ({
-                    label: formatBeduerfnisLabel(b.bedürfnis),
-                    key: b.bedürfnis,
-                    wert1: b.wert1,
-                    wert2: b.wert2
-                })),
+                // Top 5 für kompakte Anzeige (Hauptseite)
+                topUebereinstimmungen: allGemeinsam.slice(0, 5),
+                topKonflikte: allUnterschiedlich.slice(0, 5),
+                komplementaer: allKomplementaer.slice(0, 5),
+                // Alle Bedürfnisse für vollständige Anzeige (Modal)
+                alleGemeinsam: allGemeinsam,
+                alleUnterschiedlich: allUnterschiedlich,
+                alleKomplementaer: allKomplementaer,
                 // Zusätzliche Details
                 profile: {
                     ich: ichProfil,
@@ -10501,6 +10513,10 @@
             const scoreColor = matching.level === 'hoch' ? '#22c55e' :
                               matching.level === 'mittel' ? '#eab308' : '#ef4444';
 
+            // Verwende alle Bedürfnisse wenn verfügbar, sonst Top-Liste
+            const gemeinsam = matching.alleGemeinsam || matching.topUebereinstimmungen || [];
+            const unterschiedlich = matching.alleUnterschiedlich || matching.topKonflikte || [];
+
             // HTML generieren
             const beduerfnisLabel = TiageI18n.t('synthesisSection.beduerfnisUebereinstimmung', 'Bedürfnis-Übereinstimmung');
             let html = `
@@ -10512,30 +10528,30 @@
                 </div>
             `;
 
-            // Top Übereinstimmungen
-            if (matching.topUebereinstimmungen && matching.topUebereinstimmungen.length > 0) {
+            // Alle gemeinsamen Bedürfnisse
+            if (gemeinsam.length > 0) {
                 html += `
                     <div class="gfk-section gfk-matches">
-                        <div class="gfk-section-title" style="color: #22c55e;">${TiageI18n.t('needs.sharedTitle', 'GEMEINSAME BEDÜRFNISSE')}</div>
-                        <div class="gfk-tags">
-                            ${matching.topUebereinstimmungen.map(b => {
-                                const translatedLabel = TiageI18n.t(`needs.items.${b.id}`, b.label);
-                                return `<span class="gfk-tag gfk-tag-match">${translatedLabel}</span>`;
+                        <div class="gfk-section-title" style="color: #22c55e;">${TiageI18n.t('needs.sharedTitle', 'GEMEINSAME BEDÜRFNISSE')} (${gemeinsam.length})</div>
+                        <div class="gfk-tags" style="max-height: 150px; overflow-y: auto; padding-right: 5px;">
+                            ${gemeinsam.map(b => {
+                                const translatedLabel = TiageI18n.t(`needs.items.${b.id || b.key}`, b.label);
+                                return `<span class="gfk-tag gfk-tag-match" title="ICH: ${b.wert1}% | PARTNER: ${b.wert2}%">${translatedLabel}</span>`;
                             }).join('')}
                         </div>
                     </div>
                 `;
             }
 
-            // Konflikte
-            if (matching.topKonflikte && matching.topKonflikte.length > 0) {
+            // Alle unterschiedlichen Prioritäten
+            if (unterschiedlich.length > 0) {
                 html += `
                     <div class="gfk-section gfk-conflicts">
-                        <div class="gfk-section-title" style="color: #ef4444;">${TiageI18n.t('needs.differentTitle', 'UNTERSCHIEDLICHE PRIORITÄTEN')}</div>
-                        <div class="gfk-tags">
-                            ${matching.topKonflikte.map(b => {
-                                const translatedLabel = TiageI18n.t(`needs.items.${b.id}`, b.label);
-                                return `<span class="gfk-tag gfk-tag-conflict" title="${matching.archetyp1}: ${b.wert1}% | ${matching.archetyp2}: ${b.wert2}%">${translatedLabel}</span>`;
+                        <div class="gfk-section-title" style="color: #ef4444;">${TiageI18n.t('needs.differentTitle', 'UNTERSCHIEDLICHE PRIORITÄTEN')} (${unterschiedlich.length})</div>
+                        <div class="gfk-tags" style="max-height: 150px; overflow-y: auto; padding-right: 5px;">
+                            ${unterschiedlich.map(b => {
+                                const translatedLabel = TiageI18n.t(`needs.items.${b.id || b.key}`, b.label);
+                                return `<span class="gfk-tag gfk-tag-conflict" title="ICH: ${b.wert1}% | PARTNER: ${b.wert2}%">${translatedLabel}</span>`;
                             }).join('')}
                         </div>
                     </div>
