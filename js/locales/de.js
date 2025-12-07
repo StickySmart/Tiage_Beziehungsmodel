@@ -136,6 +136,7 @@ const TiageLocale_DE = {
             fluid: 'Fluid',
             // Gemeinsam
             unsicher: 'Unsicher',
+            suchend: 'Suchend',
             // Legacy
             mann: 'Mann',
             frau: 'Frau'
@@ -146,6 +147,7 @@ const TiageLocale_DE = {
             nonbinaer: 'NB',
             fluid: 'FL',
             unsicher: '?',
+            suchend: 'S',
             mann: 'M',
             frau: 'F'
         },

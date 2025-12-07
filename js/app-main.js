@@ -5888,18 +5888,21 @@
                 archetyp2: partnerArchetyp,
                 // Konvertiere zu erwarteten Strukturen für updateGfkBeduerfnisDisplay
                 topUebereinstimmungen: result.gemeinsam.slice(0, 5).map(b => ({
+                    id: b.bedürfnis,
                     label: formatBeduerfnisLabel(b.bedürfnis),
                     key: b.bedürfnis,
                     wert1: b.wert1,
                     wert2: b.wert2
                 })),
                 topKonflikte: result.unterschiedlich.slice(0, 5).map(b => ({
+                    id: b.bedürfnis,
                     label: formatBeduerfnisLabel(b.bedürfnis),
                     key: b.bedürfnis,
                     wert1: b.wert1,
                     wert2: b.wert2
                 })),
                 komplementaer: result.komplementaer.slice(0, 5).map(b => ({
+                    id: b.bedürfnis,
                     label: formatBeduerfnisLabel(b.bedürfnis),
                     key: b.bedürfnis,
                     wert1: b.wert1,
