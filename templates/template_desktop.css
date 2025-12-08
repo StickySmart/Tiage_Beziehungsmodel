@@ -4459,6 +4459,12 @@
             color: var(--text-primary);
         }
 
+        /* Strikethrough für Primary wenn Trans als Secondary ausgewählt */
+        .geschlecht-btn.primary-selected.primary-strikethrough {
+            text-decoration: line-through;
+            text-decoration-color: rgba(255, 255, 255, 0.7);
+        }
+
         /* Kleine Kreis-Indikatoren für Primary (P) und Secondary (S) */
         .geschlecht-indicator {
             position: absolute;

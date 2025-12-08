@@ -1166,5 +1166,11 @@ body {
     color: var(--text-primary);
 }
 
+/* Strikethrough für Primary wenn Trans als Secondary ausgewählt */
+.geschlecht-btn.primary-selected.primary-strikethrough {
+    text-decoration: line-through;
+    text-decoration-color: rgba(255, 255, 255, 0.7);
+}
+
 /* DevView Styles wurden nach template_desktop.css verschoben,
    damit sie IMMER geladen werden (auch wenn Browser Desktop meldet) */

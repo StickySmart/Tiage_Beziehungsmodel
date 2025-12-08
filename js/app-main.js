@@ -3601,7 +3601,7 @@
             // Update P-Grid buttons (Körper)
             document.querySelectorAll(`#${person}-geschlecht-p-grid .geschlecht-btn`).forEach(btn => {
                 const value = btn.dataset.value;
-                btn.classList.remove('primary-selected');
+                btn.classList.remove('primary-selected', 'primary-strikethrough');
 
                 // Remove existing indicators
                 const existingIndicator = btn.querySelector('.geschlecht-indicator');
@@ -3609,6 +3609,10 @@
 
                 if (value === primary) {
                     btn.classList.add('primary-selected');
+                    // Strikethrough wenn Trans als Secondary ausgewählt
+                    if (secondary === 'trans') {
+                        btn.classList.add('primary-strikethrough');
+                    }
                     const indicator = document.createElement('span');
                     indicator.className = 'geschlecht-indicator indicator-primary';
                     indicator.textContent = 'P';
@@ -3645,13 +3649,17 @@
             legacySelectors.forEach(selector => {
                 document.querySelectorAll(selector).forEach(btn => {
                     const value = btn.dataset.value;
-                    btn.classList.remove('primary-selected', 'secondary-selected');
+                    btn.classList.remove('primary-selected', 'secondary-selected', 'primary-strikethrough');
 
                     const existingIndicator = btn.querySelector('.geschlecht-indicator');
                     if (existingIndicator) existingIndicator.remove();
 
                     if (value === primary) {
                         btn.classList.add('primary-selected');
+                        // Strikethrough wenn Trans als Secondary ausgewählt
+                        if (secondary === 'trans') {
+                            btn.classList.add('primary-strikethrough');
+                        }
                         const indicator = document.createElement('span');
                         indicator.className = 'geschlecht-indicator indicator-primary';
                         indicator.textContent = 'P';
