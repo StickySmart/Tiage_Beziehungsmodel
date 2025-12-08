@@ -34,13 +34,58 @@ Diese Dimensionen sind **orthogonal** – sie messen verschiedene, voneinander u
 
 ### Komponente 1: Profil-Match (M)
 
-Ähnlichkeit der 30 Persönlichkeitsattribute zwischen zwei Profilen.
+Ähnlichkeit der **88 GFK-Bedürfnisse** zwischen zwei Profilen.
+
+> **Hinweis:** Das System unterscheidet zwischen zwei Matching-Ebenen:
+> - **88 GFK-Bedürfnisse** → Emotionaler Match (M) in der Resonanz-Formel
+> - **30 baseAttributes** → Lifestyle-Filter (K.O.-Kriterien wie Kinderwunsch, Wohnform)
+
+#### Berechnung
+
+Die Übereinstimmung wird **gewichtet nach Wichtigkeit** berechnet:
 
 ```
-M = Übereinstimmende Attribute / 30 × 100
+Für jedes Bedürfnis mit Gewicht > 30:
+  Ähnlichkeit = 100 - |Wert_Person1 - Wert_Person2|
+  Gewicht = (Wert_Person1 + Wert_Person2) / 2
+
+M = Σ(Ähnlichkeit × Gewicht) / Σ(Gewicht)
 ```
 
-*Beispiel: Bei 24 von 30 übereinstimmenden Attributen: M = 80*
+#### Kategorisierung
+
+| Kategorie | Kriterium | Bedeutung |
+|-----------|-----------|-----------|
+| **Gemeinsam** | Beide > 70, Differenz < 15 | Starke gemeinsame Basis |
+| **Unterschiedlich** | Differenz > 30 | Potenzielle Konfliktfelder |
+| **Komplementär** | Einer > 70, anderer < 50 | Kann positiv oder negativ sein |
+
+*Beispiel: Bei 72% gewichteter Übereinstimmung: M = 72*
+
+#### Die 88 GFK-Bedürfnisse (Auszug)
+
+Die Bedürfnisse basieren auf Marshall Rosenbergs Gewaltfreier Kommunikation:
+
+- **Verbindung:** Nähe, Akzeptanz, Vertrauen, Empathie, Gemeinschaft
+- **Autonomie:** Unabhängigkeit, Selbstbestimmung, Raum haben, Wahlfreiheit
+- **Sicherheit:** Geborgenheit, Stabilität, Beständigkeit, Vertrauen
+- **Wachstum:** Lernen, Entwicklung, Herausforderung, Kompetenz
+- **Ausdruck:** Authentizität, Kreativität, Selbstausdruck, Gesehen werden
+
+→ Vollständige Liste: `profiles/gfk-beduerfnisse.js`
+
+#### Die 30 baseAttributes (Lifestyle-Filter)
+
+Diese werden **separat** für K.O.-Prüfungen verwendet:
+
+| Kategorie | Beispiele |
+|-----------|-----------|
+| **Lebensplanung** | kinderWunsch, eheWunsch, wohnform, karrierePrioritaet |
+| **Kommunikation** | emotionaleOffenheit, konfliktverhalten |
+| **Intimität** | sexFrequenz, koerperlicheNaehe, romantikBeduernis |
+| **Werte** | religiositaet, traditionVsModern, umweltbewusstsein |
+
+→ Vollständige Liste: `profiles/archetyp-definitions.js`
 
 ### Komponente 2: Logos-Pathos-Balance (B)
 

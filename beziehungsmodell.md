@@ -654,27 +654,35 @@ Resonanz ist kein fünfter Faktor, sondern beschreibt die **Qualität des Zusamm
 
 ### Berechnung des Resonanz-Koeffizienten (R)
 
-Der Resonanz-Koeffizient R wird aus **zwei Komponenten** berechnet:
+Der Resonanz-Koeffizient R wird aus **drei Komponenten** berechnet:
 
-1. **Profil-Match (M):** Ähnlichkeit der 30 Profil-Attribute
+1. **Profil-Match (M):** Ähnlichkeit der 88 GFK-Bedürfnisse
 2. **Logos-Pathos-Balance (B):** Wie harmonisch sind Kopf und Herz?
+3. **GFK-Kommunikationsfaktor (K):** Qualität der Kommunikation
+
+> **Wichtige Unterscheidung:**
+> - **88 GFK-Bedürfnisse** → Emotionaler Match (M) in der Resonanz-Formel
+> - **30 baseAttributes** → Lifestyle-Filter (K.O.-Kriterien wie Kinderwunsch, Wohnform)
 
 ```
 ┌─────────────────────────────────────────────────────────────────────────────────┐
-│                    RESONANZ-BERECHNUNG: ZWEI KOMPONENTEN                        │
+│                    RESONANZ-BERECHNUNG: DREI KOMPONENTEN                        │
 │                                                                                 │
 │   ═══════════════════════════════════════════════════════════════════════════   │
-│   KOMPONENTE 1: PROFIL-MATCH (M)                                                │
+│   KOMPONENTE 1: PROFIL-MATCH (M) - basiert auf 88 GFK-Bedürfnissen              │
 │   ═══════════════════════════════════════════════════════════════════════════   │
 │                                                                                 │
-│   Jedes Profil hat 30 Attribute in 3 Kategorien:                                │
-│   • D: Werte & Lebensplanung (10 Attribute)                                     │
-│   • E: Kommunikation & Konflikt (10 Attribute)                                  │
-│   • F: Soziale Kompatibilität (10 Attribute)                                    │
+│   Jedes Profil hat 88 GFK-Bedürfnisse nach Marshall Rosenberg:                  │
+│   • Verbindung: Nähe, Akzeptanz, Vertrauen, Empathie...                         │
+│   • Autonomie: Unabhängigkeit, Selbstbestimmung, Raum haben...                  │
+│   • Sicherheit: Geborgenheit, Stabilität, Beständigkeit...                      │
+│   • Wachstum: Lernen, Entwicklung, Herausforderung...                           │
 │                                                                                 │
-│         Übereinstimmende Attribute                                              │
-│   M = ─────────────────────────────── × 100    (Match-Prozent: 0-100%)          │
-│                    30                                                           │
+│   Für jedes Bedürfnis mit Gewicht > 30:                                         │
+│     Ähnlichkeit = 100 - |Wert_P1 - Wert_P2|                                     │
+│     Gewicht = (Wert_P1 + Wert_P2) / 2                                           │
+│                                                                                 │
+│   M = Σ(Ähnlichkeit × Gewicht) / Σ(Gewicht)    (Match-Prozent: 0-100%)          │
 │                                                                                 │
 │   ═══════════════════════════════════════════════════════════════════════════   │
 │   KOMPONENTE 2: LOGOS-PATHOS-BALANCE (B)                                        │
@@ -692,12 +700,26 @@ Der Resonanz-Koeffizient R wird aus **zwei Komponenten** berechnet:
 │   → Differenz = 100 (volle Dissonanz)     →  B = 0.0                            │
 │                                                                                 │
 │   ═══════════════════════════════════════════════════════════════════════════   │
+│   KOMPONENTE 3: GFK-KOMMUNIKATIONSFAKTOR (K)                                    │
+│   ═══════════════════════════════════════════════════════════════════════════   │
+│                                                                                 │
+│   Basierend auf der GFK-Kompetenz (niedrig/mittel/hoch) beider Personen:        │
+│                                                                                 │
+│   | ICH / Partner | hoch | mittel | niedrig |                                   │
+│   |---------------|------|--------|---------|                                   │
+│   | hoch          | 1.0  | 0.75   | 0.35    |                                   │
+│   | mittel        | 0.75 | 0.5    | 0.2     |                                   │
+│   | niedrig       | 0.35 | 0.2    | 0.0     |                                   │
+│                                                                                 │
+│   ═══════════════════════════════════════════════════════════════════════════   │
 │   GESAMTFORMEL                                                                  │
 │   ═══════════════════════════════════════════════════════════════════════════   │
 │                                                                                 │
-│   R = 0.9 + [(M/100 × 0.5) + (B × 0.5)] × 0.2                                   │
+│   R = 0.9 + [(M/100 × 0.35) + (B × 0.35) + (K × 0.30)] × 0.2                    │
 │                                                                                 │
-│   → Profil-Match und Balance tragen je 50% zur Resonanz bei                     │
+│   → Profil-Match (M): 35% Gewicht                                               │
+│   → Balance (B): 35% Gewicht                                                    │
+│   → Kommunikation (K): 30% Gewicht                                              │
 │   → Ergebnis: R zwischen 0.9 und 1.1                                            │
 │                                                                                 │
 └─────────────────────────────────────────────────────────────────────────────────┘
@@ -710,11 +732,12 @@ Der Resonanz-Koeffizient R wird aus **zwei Komponenten** berechnet:
 │   BEISPIEL: Zwei Profile vergleichen                                            │
 │                                                                                 │
 │   Scores:  A = 75%,  O = 100%,  D = 100%,  G = 100%                             │
+│   GFK: Person1 = mittel, Person2 = hoch                                         │
 │                                                                                 │
 │   ─────────────────────────────────────────────────────────────────────────     │
-│   SCHRITT 1: Profil-Match                                                       │
-│   Übereinstimmungen: 18 von 30 Attributen = 60%                                 │
-│   M = 60%                                                                       │
+│   SCHRITT 1: Profil-Match (basiert auf 88 GFK-Bedürfnissen)                     │
+│   Gewichtete Übereinstimmung der Bedürfnisse = 72%                              │
+│   M = 72%                                                                       │
 │                                                                                 │
 │   ─────────────────────────────────────────────────────────────────────────     │
 │   SCHRITT 2: Logos-Pathos-Balance                                               │
@@ -724,14 +747,19 @@ Der Resonanz-Koeffizient R wird aus **zwei Komponenten** berechnet:
 │   B = (100 - 25) / 100 = 0.75                                                   │
 │                                                                                 │
 │   ─────────────────────────────────────────────────────────────────────────     │
-│   SCHRITT 3: Gesamtformel                                                       │
-│   R = 0.9 + [(0.60 × 0.5) + (0.75 × 0.5)] × 0.2                                 │
-│   R = 0.9 + [0.30 + 0.375] × 0.2                                                │
-│   R = 0.9 + 0.675 × 0.2                                                         │
-│   R = 0.9 + 0.135                                                               │
-│   R = 1.035  ≈  1.04                                                            │
+│   SCHRITT 3: GFK-Kommunikationsfaktor                                           │
+│   mittel + hoch = 0.75                                                          │
+│   K = 0.75                                                                      │
 │                                                                                 │
-│   → Leichte Harmonie: Logos und Pathos schwingen gut zusammen                   │
+│   ─────────────────────────────────────────────────────────────────────────     │
+│   SCHRITT 4: Gesamtformel                                                       │
+│   R = 0.9 + [(0.72 × 0.35) + (0.75 × 0.35) + (0.75 × 0.30)] × 0.2               │
+│   R = 0.9 + [0.252 + 0.263 + 0.225] × 0.2                                       │
+│   R = 0.9 + 0.740 × 0.2                                                         │
+│   R = 0.9 + 0.148                                                               │
+│   R = 1.048  ≈  1.05                                                            │
+│                                                                                 │
+│   → Gute Harmonie: Logos, Pathos und Kommunikation schwingen zusammen           │
 └─────────────────────────────────────────────────────────────────────────────────┘
 ```
 
