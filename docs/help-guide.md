@@ -51,20 +51,28 @@ Jeder Faktor wird einzeln auf 0-100% bewertet. Die **Resonanz (R)** ist ein Meta
 ### Resonanz-Formel
 
 ```
-R = 0.9 + [(M/100 × 0.5) + (B × 0.5)] × 0.2
+R = 0.9 + [(M/100 × 0.35) + (B × 0.35) + (K × 0.30)] × 0.2
 ```
 
 **Wertebereich:** R variiert zwischen 0.9 (minimale Resonanz) und 1.1 (maximale Resonanz).
 
+> **Wichtige Unterscheidung:**
+> - **88 GFK-Bedürfnisse** → Emotionaler Match (M) in der Resonanz-Formel
+> - **30 baseAttributes** → Lifestyle-Filter (K.O.-Kriterien wie Kinderwunsch, Wohnform)
+
 #### Komponente 1: Profil-Match (M)
 
-Ähnlichkeit der 30 Persönlichkeitsattribute zwischen zwei Profilen.
+Ähnlichkeit der **88 GFK-Bedürfnisse** zwischen zwei Profilen (nach Marshall Rosenberg).
 
 ```
-M = Übereinstimmende Attribute / 30 × 100
+Für jedes Bedürfnis mit Gewicht > 30:
+  Ähnlichkeit = 100 - |Wert_Person1 - Wert_Person2|
+  Gewicht = (Wert_Person1 + Wert_Person2) / 2
+
+M = Σ(Ähnlichkeit × Gewicht) / Σ(Gewicht)
 ```
 
-*Beispiel: Bei 24 von 30 übereinstimmenden Attributen: M = 80*
+*Beispiel: Bei 72% gewichteter Übereinstimmung der Bedürfnisse: M = 72*
 
 #### Komponente 2: Logos-Pathos-Balance (B)
 
@@ -81,15 +89,26 @@ B = (100 - |Logos - Pathos|) / 100
 
 *Beispiel: Bei A=72% und avg(O,D,G)=65%: B = (100 - 7) / 100 = 0.93*
 
+#### Komponente 3: GFK-Kommunikationsfaktor (K)
+
+Die Gewaltfreie Kommunikation (GFK) nach Marshall Rosenberg als Schlüssel zur Resonanz.
+
+| ICH / Partner | hoch | mittel | niedrig |
+|---------------|------|--------|---------|
+| **hoch**      | 1.0  | 0.75   | 0.35    |
+| **mittel**    | 0.75 | 0.5    | 0.2     |
+| **niedrig**   | 0.35 | 0.2    | 0.0     |
+
 #### R-Beispielrechnung
 
-**Gegeben:** M = 80 (80% Profil-Match), B = 0.93 (7% Logos-Pathos-Differenz)
+**Gegeben:** M = 72 (72% Bedürfnis-Match), B = 0.93 (7% Logos-Pathos-Differenz), K = 0.75 (mittel + hoch)
 
 ```
-R = 0.9 + [(80/100 × 0.5) + (0.93 × 0.5)] × 0.2
-R = 0.9 + [0.4 + 0.465] × 0.2
-R = 0.9 + 0.173
-R = 1.073
+R = 0.9 + [(72/100 × 0.35) + (0.93 × 0.35) + (0.75 × 0.30)] × 0.2
+R = 0.9 + [0.252 + 0.326 + 0.225] × 0.2
+R = 0.9 + 0.803 × 0.2
+R = 0.9 + 0.161
+R = 1.061
 ```
 
 ### Resonanz-Override
