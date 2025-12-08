@@ -18,6 +18,16 @@
         let currentArchetype = 'single';
         let selectedPartner = 'duo';
 
+        // ═══════════════════════════════════════════════════════════════════════
+        // GEWICHTUNGS-KONSTANTEN (müssen vor getGewichtungen() definiert sein)
+        // ═══════════════════════════════════════════════════════════════════════
+        const GEWICHTUNG_DEFAULTS = { O: 40, A: 25, D: 20, G: 15 };
+        const GEWICHTUNG_STORAGE_KEY = 'tiage_faktor_gewichtungen';
+        const GEWICHTUNG_LOCK_KEY = 'tiage_faktor_locks';
+
+        // Modal-Kontext für Profile Review (muss vor openProfileReviewModal() definiert sein)
+        var currentProfileReviewContext = { archetypeKey: null, person: null };
+
         // Legacy personDimensions - now a reference to TiageState for backward compatibility
         // TODO: Remove after full migration to TiageState
         const personDimensions = {
@@ -13162,10 +13172,8 @@
         // ═══════════════════════════════════════════════════════════════════════
         // GEWICHTUNGS-EINSTELLUNGEN MIT LOCK-FUNKTION (Text-Inputs)
         // ═══════════════════════════════════════════════════════════════════════
-
-        const GEWICHTUNG_DEFAULTS = { O: 40, A: 25, D: 20, G: 15 };
-        const GEWICHTUNG_STORAGE_KEY = 'tiage_faktor_gewichtungen';
-        const GEWICHTUNG_LOCK_KEY = 'tiage_faktor_locks';
+        // Hinweis: GEWICHTUNG_DEFAULTS, GEWICHTUNG_STORAGE_KEY und GEWICHTUNG_LOCK_KEY
+        // sind am Anfang der Datei definiert (vor getGewichtungen()).
 
         // Faktor-Mapping
         const FAKTOR_MAP = {
@@ -13445,9 +13453,7 @@
         // ═══════════════════════════════════════════════════════════════════════
 
         // Open Profile Review Modal
-        // Speichere aktuellen Modal-Kontext für Reload-Funktion
-        var currentProfileReviewContext = { archetypeKey: null, person: null };
-
+        // Hinweis: currentProfileReviewContext ist am Anfang der Datei definiert.
         // person: 'ich' oder 'partner' - wird benötigt um Gender-Modifikatoren anzuwenden
         function openProfileReviewModal(archetypeKey, person) {
             var modal = document.getElementById('profileReviewModal');
