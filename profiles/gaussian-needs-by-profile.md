@@ -425,6 +425,31 @@ Beispiel für "kinderwunsch":
 | familienbräuche | 50 | "Wie wichtig sind Ihnen Familienbräuche und -rituale?" | Familienbräuche |
 | gesellschaftliche_normen | 45 | "Wie wichtig ist Ihnen die Einhaltung gesellschaftlicher Normen?" | Gesellschaftliche Normen |
 
+#### Archetyp-Deltas für Tradition
+
+| Bedürfnis | Single | Aromantisch | Duo | LAT | Solopoly | RA | Duo-Flex | Polyamor |
+|-----------|--------|-------------|-----|-----|----------|-----|----------|----------|
+| traditionsbewusstsein | -5 | -10 | +15 | 0 | -15 | -20 | +5 | -10 |
+| konservative_werte | -5 | -10 | +15 | 0 | -20 | -25 | +5 | -15 |
+| moderne_werte | +5 | +10 | -10 | +5 | +20 | +25 | 0 | +15 |
+| kulturelle_tradition | 0 | -5 | +10 | +5 | -10 | -15 | +5 | -5 |
+| familienbräuche | -10 | -15 | +15 | 0 | -10 | -15 | +10 | -5 |
+| gesellschaftliche_normen | -5 | -15 | +15 | 0 | -20 | -25 | +5 | -15 |
+
+#### Orientierung-Deltas für Tradition
+
+| Bedürfnis | Heterosexuell | Homosexuell | Bisexuell |
+|-----------|---------------|-------------|-----------|
+| traditionsbewusstsein | +5 | -10 | -5 |
+| konservative_werte | +5 | -15 | -10 |
+| moderne_werte | -5 | +15 | +10 |
+| gesellschaftliche_normen | +5 | -10 | -5 |
+
+**Begründung:**
+- RA/Polyamor/Solopoly: Leben außerhalb traditioneller Beziehungsnormen
+- Duo: Traditionellstes Beziehungsmodell
+- LGBTQ+: Historisch weniger in traditionellen Strukturen verankert
+
 **Quellen:**
 - 21% der Deutschen identifizieren sich als konservativer, 15% als progressiver ([Statista Consumer Insights](https://de.statista.com/infografik/33429/umfrage-zum-wertewandel-in-verschiedenen-laendern/))
 
@@ -443,6 +468,29 @@ Beispiel für "kinderwunsch":
 | allergie_toleranz | 50 | "Wie tolerant sind Sie gegenüber Tierallergien/Tierhaltung anderer?" | Toleranz |
 | tierfreier_haushalt | 45 | "Wie wichtig ist Ihnen ein tierfreier Haushalt?" | Keine Tiere gewünscht |
 
+#### Geschlecht-Deltas für Haustiere
+
+| Bedürfnis | Mann | Frau | Divers |
+|-----------|------|------|--------|
+| tierhaltung | -5 | +10 | 0 |
+| tierliebe | -10 | +10 | 0 |
+| tier_mensch_bindung | -10 | +10 | 0 |
+| tierfreier_haushalt | +5 | -10 | 0 |
+
+#### Archetyp-Deltas für Haustiere
+
+| Bedürfnis | Single | Aromantisch | Duo | LAT | Solopoly | RA | Duo-Flex | Polyamor |
+|-----------|--------|-------------|-----|-----|----------|-----|----------|----------|
+| tierhaltung | +5 | +10 | +5 | -5 | 0 | 0 | +5 | 0 |
+| tierliebe | +5 | +10 | +5 | 0 | +5 | +5 | +5 | +5 |
+| verantwortung_tiere | 0 | +5 | +10 | -10 | -5 | -5 | +5 | -5 |
+| tierfreier_haushalt | -5 | -10 | -5 | +10 | +5 | +5 | -5 | +5 |
+
+**Begründung:**
+- Single/Aromantisch: Haustiere oft als Partnerersatz/Begleiter
+- LAT: Getrennte Haushalte erschweren Tierhaltung
+- Frauen zeigen höhere Tieraffinität in Studien
+
 **Quellen:**
 - 44% der deutschen Haushalte haben Haustiere ([IVH/ZZF 2024](https://www.zzf.de/presse/meldungen/artikel/news/heimtierpopulation-2023))
 - 98% sagen Haustiere machen glücklich ([Uelzener 2024](https://www.presseportal.de/pm/174913/5833365))
@@ -459,6 +507,30 @@ Beispiel für "kinderwunsch":
 | flexibilitaet_wohnort | 50 | "Wie flexibel sind Sie bezüglich Ihres Wohnortes?" | Wohnort-Flexibilität |
 | heimatverbundenheit | 55 | "Wie stark ist Ihre Heimatverbundenheit?" | Verbundenheit zur Heimat |
 | abenteuer_neuer_ort | 45 | "Wie offen sind Sie für einen Neuanfang an einem neuen Ort?" | Offenheit für Neues |
+
+#### Archetyp-Deltas für Umzugsbereitschaft
+
+| Bedürfnis | Single | Aromantisch | Duo | LAT | Solopoly | RA | Duo-Flex | Polyamor |
+|-----------|--------|-------------|-----|-----|----------|-----|----------|----------|
+| ortsgebundenheit | +5 | +5 | +10 | -5 | -10 | -10 | 0 | -5 |
+| umzugsbereitschaft | -10 | -15 | +15 | +10 | +5 | +10 | +10 | +5 |
+| fernbeziehung_toleranz | -5 | 0 | -10 | +20 | +15 | +15 | +5 | +10 |
+| flexibilitaet_wohnort | 0 | 0 | +5 | +10 | +15 | +15 | +5 | +10 |
+| heimatverbundenheit | +10 | +10 | +10 | -5 | -10 | -10 | +5 | -5 |
+| abenteuer_neuer_ort | -5 | -5 | +5 | +10 | +15 | +15 | +5 | +10 |
+
+#### Geschlecht-Deltas für Umzugsbereitschaft
+
+| Bedürfnis | Mann | Frau | Divers |
+|-----------|------|------|--------|
+| umzugsbereitschaft | -5 | +5 | 0 |
+| heimatverbundenheit | -5 | +5 | 0 |
+
+**Begründung:**
+- LAT: Fernbeziehung ist das Modell - höchste Toleranz
+- RA/Solopoly: Flexibler in Wohnort-Entscheidungen
+- Duo: Bereitschaft umzuziehen für gemeinsames Leben
+- Single: Weniger Anreiz für Umzug wegen Beziehung
 
 **Quellen:**
 - 70% würden innerhalb Deutschlands für die Liebe umziehen ([Immowelt](https://www.umzugspreisvergleich.de/presse/liebe-schlaegt-karriere-die-deutschen-ziehen-vor-allem-wegen-dem-partner-um/))
@@ -477,6 +549,31 @@ Beispiel für "kinderwunsch":
 | geschwisterbeziehung | 50 | "Wie wichtig ist Ihnen die Beziehung zu Ihren Geschwistern?" | Beziehung zu Geschwistern |
 | familienunabhaengigkeit | 50 | "Wie wichtig ist Ihnen Unabhängigkeit von Ihrer Familie?" | Unabhängigkeit |
 
+#### Archetyp-Deltas für Herkunftsfamilie
+
+| Bedürfnis | Single | Aromantisch | Duo | LAT | Solopoly | RA | Duo-Flex | Polyamor |
+|-----------|--------|-------------|-----|-----|----------|-----|----------|----------|
+| familienkontakt | +5 | -5 | +10 | +5 | -5 | -10 | +5 | -5 |
+| familiennaehe | +5 | -5 | +10 | 0 | -10 | -15 | +5 | -10 |
+| familienfeste | 0 | -10 | +15 | +5 | -5 | -10 | +10 | -5 |
+| elternbeziehung | +5 | -5 | +10 | +5 | -5 | -10 | +5 | -5 |
+| geschwisterbeziehung | +5 | 0 | +5 | +5 | 0 | -5 | +5 | 0 |
+| familienunabhaengigkeit | -5 | +15 | -10 | 0 | +15 | +20 | -5 | +10 |
+
+#### Orientierung-Deltas für Herkunftsfamilie
+
+| Bedürfnis | Heterosexuell | Homosexuell | Bisexuell |
+|-----------|---------------|-------------|-----------|
+| familienkontakt | +5 | -10 | -5 |
+| familiennaehe | +5 | -10 | -5 |
+| familienunabhaengigkeit | -5 | +10 | +5 |
+
+**Begründung:**
+- Duo: Traditionell starke Familienorientierung
+- RA: Höchste Unabhängigkeit von Herkunftsfamilie
+- LGBTQ+: Oft komplizierte Familienbeziehungen (Akzeptanz-Thematik)
+- Single: Oft engerer Kontakt zur Herkunftsfamilie
+
 **Quellen:**
 - 56 Mio. Deutsche halten Familie für besonders wichtig ([Statista/Allensbach](https://de.statista.com/statistik/daten/studie/173267/umfrage/lebenseinstellung-wert-der-familie/))
 
@@ -492,6 +589,31 @@ Beispiel für "kinderwunsch":
 | finanzielle_sicherheit | 60 | "Wie wichtig ist Ihnen finanzielle Sicherheit?" | Finanzielle Sicherheit |
 | sparsamkeit | 50 | "Wie sparsam sind Sie im Alltag?" | Sparsamkeit |
 | grosszuegigkeit | 50 | "Wie großzügig sind Sie mit Geld?" | Großzügigkeit |
+
+#### Archetyp-Deltas für Finanzen
+
+| Bedürfnis | Single | Aromantisch | Duo | LAT | Solopoly | RA | Duo-Flex | Polyamor |
+|-----------|--------|-------------|-----|-----|----------|-----|----------|----------|
+| finanzielle_transparenz | -15 | -20 | +15 | +5 | 0 | -5 | +10 | 0 |
+| gemeinsame_finanzen | -25 | -30 | +20 | -15 | -20 | -25 | +10 | -10 |
+| getrennte_finanzen | +20 | +25 | -15 | +15 | +20 | +25 | -5 | +15 |
+| finanzielle_sicherheit | 0 | 0 | +10 | +5 | 0 | -5 | +5 | 0 |
+| sparsamkeit | +5 | +5 | +5 | 0 | 0 | 0 | +5 | 0 |
+| grosszuegigkeit | -5 | -5 | +5 | 0 | +5 | +5 | +5 | +5 |
+
+#### Geschlecht-Deltas für Finanzen
+
+| Bedürfnis | Mann | Frau | Divers |
+|-----------|------|------|--------|
+| finanzielle_sicherheit | -5 | +10 | 0 |
+| gemeinsame_finanzen | -5 | +5 | 0 |
+| getrennte_finanzen | +5 | -5 | 0 |
+
+**Begründung:**
+- Duo: Höchste Bereitschaft für gemeinsame Finanzen
+- Single/Aromantisch/RA: Getrennte Finanzen als Standard
+- LAT: Getrennte Haushalte = getrennte Finanzen
+- Frauen: Höheres Sicherheitsbedürfnis (Gender Pay Gap, Altersarmut)
 
 **Quellen:**
 - 45% der Paare haben getrennte Konten, 33% gemeinsam, 18% Drei-Konten-Modell ([Postbank 2023](https://www.postbank.de/unternehmen/medien/meldungen/2023/maerz/lieber-getrennt-so-organisieren-paare-ihre-bankkonten.html))
@@ -510,6 +632,32 @@ Beispiel für "kinderwunsch":
 | karriere_vor_familie | 40 | "Wie stark priorisieren Sie Karriere vor Familie?" | Karriere priorisieren |
 | berufliche_flexibilitaet | 55 | "Wie wichtig ist Ihnen berufliche Flexibilität?" | Berufliche Flexibilität |
 
+#### Geschlecht-Deltas für Karriere
+
+| Bedürfnis | Mann | Frau | Divers |
+|-----------|------|------|--------|
+| karriereorientierung | +10 | -5 | 0 |
+| work_life_balance | -5 | +10 | +5 |
+| familie_vor_karriere | -10 | +15 | 0 |
+| karriere_vor_familie | +10 | -10 | 0 |
+
+#### Archetyp-Deltas für Karriere
+
+| Bedürfnis | Single | Aromantisch | Duo | LAT | Solopoly | RA | Duo-Flex | Polyamor |
+|-----------|--------|-------------|-----|-----|----------|-----|----------|----------|
+| karriereorientierung | +10 | +10 | -5 | +5 | +5 | +5 | 0 | 0 |
+| work_life_balance | -5 | -5 | +10 | +5 | 0 | +5 | +5 | +5 |
+| berufliche_selbstverwirklichung | +5 | +10 | 0 | +5 | +10 | +10 | +5 | +5 |
+| familie_vor_karriere | -15 | -20 | +15 | +5 | -5 | -10 | +10 | 0 |
+| karriere_vor_familie | +15 | +20 | -10 | 0 | +10 | +10 | -5 | +5 |
+| berufliche_flexibilitaet | +5 | +5 | 0 | +10 | +10 | +15 | +5 | +10 |
+
+**Begründung:**
+- Single/Aromantisch: Karrierefokus ohne Familienverpflichtungen
+- Duo: Stärkste Familie-vor-Karriere-Orientierung
+- RA/Solopoly: Hohe Wertschätzung für Selbstverwirklichung und Flexibilität
+- Geschlecht: Traditionelle Rollenbilder noch wirksam
+
 **Quellen:**
 - 38% der Deutschen sind mit ihrer Work-Life-Balance zufrieden ([t3n 2023](https://t3n.de/news/work-life-balance-unzufrieden-umfrage-1562380/))
 - 86% der Arbeitgeber legen Wert auf Familienfreundlichkeit
@@ -526,6 +674,31 @@ Beispiel für "kinderwunsch":
 | ungestoerte_zeit | 50 | "Wie wichtig ist Ihnen ungestörte Zeit?" | Ungestörte Zeit |
 | gemeinsame_zeit | 55 | "Wie wichtig ist Ihnen gemeinsame Zeit mit dem Partner?" | Gemeinsame Zeit |
 | balance_allein_zusammen | 55 | "Wie wichtig ist Ihnen eine Balance zwischen Allein- und Paarzeit?" | Balance |
+
+#### Archetyp-Deltas für Alleinzeit
+
+| Bedürfnis | Single | Aromantisch | Duo | LAT | Solopoly | RA | Duo-Flex | Polyamor |
+|-----------|--------|-------------|-----|-----|----------|-----|----------|----------|
+| zeit_fuer_sich | +15 | +20 | -10 | +10 | +15 | +20 | 0 | +5 |
+| me_time | +15 | +20 | -10 | +10 | +15 | +20 | 0 | +5 |
+| raum_fuer_hobbys | +10 | +15 | -5 | +10 | +15 | +15 | +5 | +10 |
+| ungestoerte_zeit | +10 | +15 | -5 | +10 | +10 | +15 | 0 | +5 |
+| gemeinsame_zeit | -20 | -25 | +15 | -5 | -5 | -10 | +10 | +5 |
+| balance_allein_zusammen | -5 | -10 | +10 | +10 | +5 | +5 | +10 | +5 |
+
+#### Dominanz-Deltas für Alleinzeit
+
+| Bedürfnis | Dominant | Submissiv | Switch | Vanilla |
+|-----------|----------|-----------|--------|---------|
+| zeit_fuer_sich | +5 | -5 | 0 | 0 |
+| me_time | +5 | -5 | 0 | 0 |
+| gemeinsame_zeit | -5 | +10 | 0 | +5 |
+
+**Begründung:**
+- Single/Aromantisch/RA: Höchstes Bedürfnis nach Alleinzeit
+- Duo: Stärkste Präferenz für gemeinsame Zeit
+- LAT: Balance durch räumliche Trennung
+- Dominant: Mehr Bedürfnis nach eigenem Raum
 
 **Quellen:**
 - 72% haben genug Me-Time, 28% zu wenig ([EARSandEYES 2023](https://www.earsandeyes.com/blog/zeit-fur-sich-ist-faulpelz-sein-wirklich-so-schlimm/))
@@ -544,6 +717,32 @@ Beispiel für "kinderwunsch":
 | soziales_netzwerk | 55 | "Wie wichtig ist Ihnen ein breites soziales Netzwerk?" | Soziales Netzwerk |
 | beste_freunde | 55 | "Wie wichtig sind Ihnen enge, beste Freundschaften?" | Beste Freunde |
 
+#### Geschlecht-Deltas für Freunde
+
+| Bedürfnis | Mann | Frau | Divers |
+|-----------|------|------|--------|
+| eigene_freunde | -5 | +10 | +5 |
+| freundschaftspflege | -10 | +10 | +5 |
+| soziales_netzwerk | -5 | +5 | +5 |
+| beste_freunde | -5 | +10 | +5 |
+
+#### Archetyp-Deltas für Freunde
+
+| Bedürfnis | Single | Aromantisch | Duo | LAT | Solopoly | RA | Duo-Flex | Polyamor |
+|-----------|--------|-------------|-----|-----|----------|-----|----------|----------|
+| eigene_freunde | +10 | +15 | -5 | +10 | +15 | +20 | +5 | +10 |
+| gemeinsame_freunde | -15 | -20 | +15 | +5 | +5 | -5 | +10 | +10 |
+| freundschaftspflege | +5 | +10 | 0 | +5 | +10 | +15 | +5 | +10 |
+| freundeskreis_integration | -15 | -20 | +15 | +5 | +5 | -5 | +10 | +10 |
+| soziales_netzwerk | +5 | +5 | 0 | +5 | +15 | +15 | +5 | +15 |
+| beste_freunde | +10 | +15 | 0 | +5 | +10 | +15 | +5 | +10 |
+
+**Begründung:**
+- Single/Aromantisch: Freundschaften als primäres soziales Netz
+- RA/Solopoly/Polyamor: Breites soziales Netzwerk wichtig
+- Duo: Stärkste Präferenz für gemeinsame Freunde
+- Frauen: Höhere Investition in Freundschaftspflege
+
 **Quellen:**
 - 68% der Frauen wollen unabhängige Freundschaften, 57% der Männer ([ElitePartner 2024](https://www.elitepartner.de/studien/freundschaft-und-beziehung/))
 - Deutsche haben im Schnitt 3,7 enge Freunde
@@ -560,6 +759,33 @@ Beispiel für "kinderwunsch":
 | liebesbekundungen | 55 | "Wie wichtig sind Ihnen verbale Liebesbekundungen?" | Liebesbekundungen |
 | romantische_atmosphaere | 50 | "Wie wichtig ist Ihnen eine romantische Atmosphäre?" | Romantische Atmosphäre |
 | alltags_romantik | 50 | "Wie wichtig ist Ihnen Romantik im Alltag?" | Alltags-Romantik |
+
+#### Archetyp-Deltas für Romantik
+
+| Bedürfnis | Single | Aromantisch | Duo | LAT | Solopoly | RA | Duo-Flex | Polyamor |
+|-----------|--------|-------------|-----|-----|----------|-----|----------|----------|
+| romantische_gesten | -10 | -30 | +15 | +10 | 0 | -15 | +10 | +5 |
+| ueberraschungen | -5 | -20 | +10 | +10 | +5 | -10 | +10 | +10 |
+| date_nights | -15 | -25 | +15 | +15 | +5 | -10 | +10 | +10 |
+| liebesbekundungen | -10 | -30 | +15 | +10 | 0 | -15 | +10 | +5 |
+| romantische_atmosphaere | -10 | -25 | +15 | +10 | 0 | -15 | +10 | +5 |
+| alltags_romantik | -10 | -25 | +15 | +5 | 0 | -15 | +10 | +5 |
+
+#### Geschlecht-Deltas für Romantik
+
+| Bedürfnis | Mann | Frau | Divers |
+|-----------|------|------|--------|
+| romantische_gesten | -5 | +10 | 0 |
+| liebesbekundungen | -5 | +10 | 0 |
+| romantische_atmosphaere | -10 | +10 | 0 |
+| date_nights | -5 | +5 | 0 |
+
+**Begründung:**
+- Aromantisch: Per Definition wenig/kein romantisches Interesse
+- Duo: Höchste Romantik-Orientierung
+- RA: Lehnt oft romantische Normen ab
+- LAT: Date-Nights besonders wichtig bei getrenntem Wohnen
+- Frauen: Höhere Romantik-Erwartungen (sozialisiert)
 
 **Quellen:**
 - 70% der Deutschen glauben an Liebe auf den ersten Blick ([Statista](https://de.statista.com/themen/142/liebe/))
@@ -578,6 +804,31 @@ Beispiel für "kinderwunsch":
 | putzen | 50 | "Wie wichtig ist Ihnen regelmäßiges Putzen?" | Regelmäßiges Putzen |
 | aufgabenteilung_haushalt | 55 | "Wie wichtig ist Ihnen eine faire Haushaltsaufteilung?" | Faire Aufgabenteilung |
 
+#### Geschlecht-Deltas für Ordnung
+
+| Bedürfnis | Mann | Frau | Divers |
+|-----------|------|------|--------|
+| ordnungssinn | -10 | +10 | 0 |
+| sauberkeit | -10 | +10 | 0 |
+| putzen | -15 | +10 | 0 |
+| aufgabenteilung_haushalt | -10 | +15 | +5 |
+| chaos_toleranz | +10 | -10 | 0 |
+
+#### Archetyp-Deltas für Ordnung
+
+| Bedürfnis | Single | Aromantisch | Duo | LAT | Solopoly | RA | Duo-Flex | Polyamor |
+|-----------|--------|-------------|-----|-----|----------|-----|----------|----------|
+| ordnungssinn | 0 | 0 | +5 | 0 | -5 | -5 | +5 | -5 |
+| sauberkeit | 0 | 0 | +5 | 0 | -5 | -5 | +5 | -5 |
+| struktur | +5 | +5 | +10 | 0 | -5 | -10 | +5 | -5 |
+| aufgabenteilung_haushalt | -10 | -15 | +15 | +5 | +5 | -5 | +10 | +5 |
+
+**Begründung:**
+- Duo: Höchste Relevanz von Haushaltsthemen (Zusammenwohnen)
+- RA/Solopoly: Weniger konventionelle Haushaltsstrukturen
+- Frauen: Traditionell höhere Haushalts-Verantwortung (sozialisiert)
+- Single: Keine Abstimmung mit Partner nötig
+
 **Quellen:**
 - 96% halten Sauberkeit für wichtig, 75% sagen Ordnung ist sehr wichtig ([IKW Studie](https://www.ikw.org/haushaltspflege/presse/neue-ikw-studie-so-putzt-deutschland-haushaltspflege-zwischen-sozialisierung-und-nachhaltigkeit))
 - 44% der Paare streiten über Ordnung
@@ -594,6 +845,32 @@ Beispiel für "kinderwunsch":
 | kulturelle_erlebnisse | 50 | "Wie wichtig sind Ihnen kulturelle Erlebnisse auf Reisen?" | Kulturelle Erlebnisse |
 | staycation | 45 | "Wie wohl fühlen Sie sich mit Urlaub zu Hause (Staycation)?" | Staycation |
 | fernreisen | 45 | "Wie wichtig sind Ihnen Fernreisen?" | Fernreisen |
+
+#### Archetyp-Deltas für Reisen
+
+| Bedürfnis | Single | Aromantisch | Duo | LAT | Solopoly | RA | Duo-Flex | Polyamor |
+|-----------|--------|-------------|-----|-----|----------|-----|----------|----------|
+| reisefreude | +5 | +5 | +5 | +10 | +10 | +10 | +5 | +10 |
+| abenteuer | +5 | +5 | 0 | +10 | +15 | +15 | +5 | +15 |
+| erholung | 0 | 0 | +10 | +5 | 0 | 0 | +5 | 0 |
+| kulturelle_erlebnisse | +5 | +5 | +5 | +10 | +10 | +15 | +5 | +10 |
+| staycation | 0 | +5 | +5 | -10 | -10 | -10 | 0 | -5 |
+| fernreisen | +5 | +5 | 0 | +10 | +15 | +15 | +5 | +15 |
+
+#### Orientierung-Deltas für Reisen
+
+| Bedürfnis | Heterosexuell | Homosexuell | Bisexuell |
+|-----------|---------------|-------------|-----------|
+| reisefreude | 0 | +10 | +5 |
+| abenteuer | 0 | +10 | +10 |
+| kulturelle_erlebnisse | 0 | +10 | +5 |
+| fernreisen | 0 | +10 | +5 |
+
+**Begründung:**
+- RA/Solopoly/Polyamor: Höhere Offenheit für Abenteuer und neue Erfahrungen
+- LAT: Reisen als gemeinsame Quality-Time
+- Duo: Mehr Erholungsfokus (Familien-/Paarstress)
+- LGBTQ+: Höhere Reiseaffinität (urbane, weltoffene Lebensweise)
 
 **Quellen:**
 - 63% der Deutschen machen mind. 1 Reise/Jahr (5+ Tage) ([ADAC Tourismusstudien 2024](https://www.adac.de/verkehr/standpunkte-studien/mobilitaets-trends/tourismusstudie-reisen/))
