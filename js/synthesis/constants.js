@@ -14,19 +14,24 @@ TiageSynthesis.Constants = {
     // ═══════════════════════════════════════════════════════════════════════
     // FAKTOR-GEWICHTE
     // ═══════════════════════════════════════════════════════════════════════
-    // Logos (Verstand): 25% | Pathos (Gefühl): 75%
-    // "Pathos vor Logos" - Das Leben/Erleben kommt vor der Interpretation
+    // Jeder Faktor hat eine Logos/Pathos-Mischung:
+    // - Archetyp:     80% Logos / 20% Pathos (Beziehungsphilosophie)
+    // - Orientierung: 20% Logos / 80% Pathos (Körperliche Polarität)
+    // - Dominanz:     20% Logos / 80% Pathos (Energetische Dynamik)
+    // - Geschlecht:   Primär = Logos, Sekundär = Pathos
 
     WEIGHTS: {
-        archetyp: 0.25,      // LOGOS - Beziehungsphilosophie
-        orientierung: 0.40,  // PATHOS - Körperliche Polarität
-        dominanz: 0.20,      // PATHOS - Energetische Dynamik
-        geschlecht: 0.15     // PATHOS - Gender-Chemie
+        archetyp: 0.15,      // 80% Logos / 20% Pathos
+        orientierung: 0.40,  // 20% Logos / 80% Pathos
+        dominanz: 0.20,      // 20% Logos / 80% Pathos
+        geschlecht: 0.25     // Primär: Logos, Sekundär: Pathos
     },
 
-    CATEGORIES: {
-        logos: ['archetyp'],
-        pathos: ['orientierung', 'dominanz', 'geschlecht']
+    FACTOR_COMPOSITION: {
+        archetyp:     { logos: 0.80, pathos: 0.20 },
+        orientierung: { logos: 0.20, pathos: 0.80 },
+        dominanz:     { logos: 0.20, pathos: 0.80 },
+        geschlecht:   { primaer: 'logos', sekundaer: 'pathos' }
     },
 
     // ═══════════════════════════════════════════════════════════════════════
