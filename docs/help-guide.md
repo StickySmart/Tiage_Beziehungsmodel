@@ -36,14 +36,14 @@
 | Faktor | Gewicht | Dimension | Beschreibung |
 |--------|---------|-----------|--------------|
 | **Orientierungs-Kompatibilität** | 40% | Pathos | Körperliche Polarität und Anziehung. OSHO: "Nur Extreme können sich wirklich anziehen." |
-| **Archetyp-Übereinstimmung** | 25% | Logos | Fundamentale Beziehungsphilosophie: "Wie wollen wir Beziehung leben?" |
+| **Geschlechts-Attraktion** | 25% | Pathos | Gender-Chemie und Identitäts-Resonanz |
 | **Dominanz-Harmonie** | 20% | Pathos | Energetische Dynamik. OSHO: "Tao - eine Energie, zwei Ausdrucksformen." |
-| **Geschlechts-Attraktion** | 15% | Pathos | Gender-Chemie als Feinabstimmung der Orientierung |
+| **Archetyp-Übereinstimmung** | 15% | Logos | Fundamentale Beziehungsphilosophie: "Wie wollen wir Beziehung leben?" |
 
 ## Berechnung
 
 ```
-Qualitätsindex = [(Orientierung × 40%) + (Archetyp × 25%) + (Dominanz × 20%) + (Geschlecht × 15%)] × Resonanz
+Qualitätsindex = [(Archetyp × 15%) + (Orientierung × 40%) + (Dominanz × 20%) + (Geschlecht × 25%)] × Resonanz
 ```
 
 Jeder Faktor wird einzeln auf 0-100% bewertet. Die **Resonanz (R)** ist ein Meta-Faktor (0.9-1.1), der moduliert, wie gut Kopf (Logos) und Herz (Pathos) zusammenschwingen.
@@ -138,16 +138,16 @@ Der **Resonanz-Override** ermöglicht eine Ausnahme: Wenn zwei Menschen auf eine
 
 | Faktor | Berechnung | Ergebnis |
 |--------|------------|----------|
+| Archetyp | 75% × 0.15 | 11.25 (Duo ↔ Duo-Flex = nah verwandt) |
 | Orientierung | 100% × 0.40 | 40 (Hetero + Hetero bei M/F) |
-| Archetyp | 75% × 0.25 | 19 (Duo ↔ Duo-Flex = nah verwandt) |
 | Dominanz | 100% × 0.20 | 20 (Submissiv + Dominant = Ergänzung) |
-| Geschlecht | 100% × 0.15 | 15 (Cis Frau × Cis Mann passt) |
-| **Basis-Score** | | **94** |
+| Geschlecht | 100% × 0.25 | 25 (Cis Frau × Cis Mann passt) |
+| **Basis-Score** | | **96.25** |
 | Resonanz | R = 1.05 | (Leichte Harmonie) |
-| **Final** | 94 × 1.05 | **98.7 ≈ 99%** |
+| **Final** | 96.25 × 1.05 | **101 → 100%** |
 
 ```
-(40 + 19 + 20 + 15) × 1.05 = 98.7 ≈ 99%
+(11.25 + 40 + 20 + 25) × 1.05 = 101.06 → gekappt auf 100%
 ```
 
 ## Die 8 Archetypen

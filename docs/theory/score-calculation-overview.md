@@ -53,12 +53,12 @@ Dominanz:
 
 | Variable | Name | Gewicht | Kategorie | Quelle (Formel) | Quelle (Wert) |
 |----------|------|---------|-----------|-----------------|---------------|
-| **Q** | Qualitätsindex | - | Ergebnis | `synthesisCalculator.js:120` | Berechnet |
-| **A** | Archetyp-Score | 25% | LOGOS | `constants.js:21` | `archetypeFactor.js` |
-| **O** | Orientierungs-Score | 40% | PATHOS | `constants.js:22` | `orientationFactor.js` |
-| **D** | Dominanz-Score | 20% | PATHOS | `constants.js:23` | `dominanceFactor.js` |
-| **G** | Geschlechts-Score | 15% | PATHOS | `constants.js:24` | `genderFactor.js` |
-| **R** | Resonanz-Koeffizient | ×0.9-1.1 | Meta | `synthesisCalculator.js:547-576` | Berechnet |
+| **Q** | Qualitätsindex | - | Ergebnis | `synthesisCalculator.js:195` | Berechnet |
+| **A** | Archetyp-Score | 15% | LOGOS | `constants.js:24` | `archetypeFactor.js` |
+| **O** | Orientierungs-Score | 40% | PATHOS | `constants.js:25` | `orientationFactor.js` |
+| **D** | Dominanz-Score | 20% | PATHOS | `constants.js:26` | `dominanceFactor.js` |
+| **G** | Geschlechts-Score | 25% | PATHOS | `constants.js:27` | `genderFactor.js` |
+| **R** | Resonanz-Koeffizient | ×0.9-1.1 | Meta | `synthesisCalculator.js:747-776` | Berechnet |
 
 ---
 
@@ -169,12 +169,12 @@ Dominanz:
                                         ▼
 ┌─────────────────────────────────────────────────────────────────────────────────┐
 │                          SCHRITT 4: FINALE BERECHNUNG                           │
-│                          (synthesisCalculator.js:112-120)                       │
+│                          (synthesisCalculator.js:184-195)                       │
 ├─────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                 │
-│   baseScore = (A × 0.25) + (O × 0.40) + (D × 0.20) + (G × 0.15)   (Zeile 114-118)│
+│   baseScore = (A × 0.15) + (O × 0.40) + (D × 0.20) + (G × 0.25)   (Zeile 189-193)│
 │                                                                                 │
-│   finalScore = Math.round(baseScore × R)                          (Zeile 120)  │
+│   finalScore = Math.round(baseScore × R)                          (Zeile 195)  │
 │                                                                                 │
 └─────────────────────────────────────────────────────────────────────────────────┘
                                         │
@@ -188,16 +188,16 @@ Dominanz:
 │     score: finalScore,              // 0-100 (Zeile 127)                        │
 │     baseScore: baseScore,           // Vor Resonanz (Zeile 128)                 │
 │                                                                                 │
-│     logos: {                        // (Zeile 134-138)                          │
+│     logos: {                        // (Zeile 209-213)                          │
 │       score: A,                                                                 │
-│       weight: 0.25,                                                             │
-│       contribution: A × 0.25                                                    │
+│       weight: 0.15,                                                             │
+│       contribution: A × 0.15                                                    │
 │     },                                                                          │
 │                                                                                 │
-│     pathos: {                       // (Zeile 139-147)                          │
+│     pathos: {                       // (Zeile 214-222)                          │
 │       score: (O+D+G)/3,                                                         │
-│       weight: 0.75,                                                             │
-│       contribution: (O×0.40) + (D×0.20) + (G×0.15)                              │
+│       weight: 0.85,                                                             │
+│       contribution: (O×0.40) + (D×0.20) + (G×0.25)                              │
 │     },                                                                          │
 │                                                                                 │
 │     resonanz: {                     // (Zeile 568-575)                          │
@@ -207,11 +207,11 @@ Dominanz:
 │       gfk: { value: K, ... }                                                    │
 │     },                                                                          │
 │                                                                                 │
-│     breakdown: {                    // Einzelne Faktoren (Zeile 150-175)        │
-│       archetyp:     { score: A, weight: 0.25, category: 'logos' },              │
+│     breakdown: {                    // Einzelne Faktoren (Zeile 225-250)        │
+│       archetyp:     { score: A, weight: 0.15, category: 'logos' },              │
 │       orientierung: { score: O, weight: 0.40, category: 'pathos' },             │
 │       dominanz:     { score: D, weight: 0.20, category: 'pathos' },             │
-│       geschlecht:   { score: G, weight: 0.15, category: 'pathos' }              │
+│       geschlecht:   { score: G, weight: 0.25, category: 'pathos' }              │
 │     },                                                                          │
 │                                                                                 │
 │     meta: {                         // (Zeile 178-194)                          │
@@ -230,7 +230,7 @@ Dominanz:
 
 ## Die 4 Faktoren im Detail
 
-### 1. Archetyp (A) - 25% LOGOS
+### 1. Archetyp (A) - 15% LOGOS
 
 **Quelle:** `js/synthesis/factors/archetypeFactor.js`
 **Daten:** `archetype-matrix.json`
@@ -290,7 +290,7 @@ DOMINANCE_MATRIX: {
 
 ---
 
-### 4. Geschlecht (G) - 15% PATHOS
+### 4. Geschlecht (G) - 25% PATHOS
 
 **Quelle:** `js/synthesis/factors/genderFactor.js`
 **Konstanten:** `constants.js:201-205`
@@ -383,10 +383,10 @@ R = 1.035
 
 **Schritt 4: Finale Berechnung**
 ```
-baseScore = (75 × 0.25) + (100 × 0.40) + (100 × 0.20) + (100 × 0.15)
-baseScore = 18.75 + 40 + 20 + 15 = 93.75
+baseScore = (75 × 0.15) + (100 × 0.40) + (100 × 0.20) + (100 × 0.25)
+baseScore = 11.25 + 40 + 20 + 25 = 96.25
 
-finalScore = Math.round(93.75 × 1.035) = 97
+finalScore = Math.round(96.25 × 1.035) = 100
 ```
 
 ---
