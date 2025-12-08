@@ -15,7 +15,7 @@
 
 :root {
     /* Primärfarben - IDENTISCH MIT DESKTOP */
-    --primary: #457B9D;           /* Hauptfarbe (Standard Blau) */
+    --primary: #9b59b6;           /* Hauptfarbe (Lila) */
     --primary-light: #A8D5E2;     /* Helle Akzentfarbe */
 
     /* Hintergrundfarben - IDENTISCH MIT DESKTOP */
@@ -1182,6 +1182,16 @@ body {
     background: rgba(255, 255, 255, 0.8);
     transform: translateY(-50%);
     pointer-events: none;
+}
+
+/* Hervorhebung für Summary-Text wenn Trans als Secondary */
+.summary-strikethrough {
+    font-size: 1.3em;
+    font-weight: 700;
+    font-style: italic;
+    font-family: 'Georgia', 'Times New Roman', serif;
+    color: #e879f9;
+    text-shadow: 0 0 8px rgba(232, 121, 249, 0.5);
 }
 
 /* DevView Styles wurden nach template_desktop.css verschoben,

@@ -3758,7 +3758,12 @@
 
             const parts = [];
             const primaryLabel = TiageI18n.t(`geschlecht.types.${primary}`, primary);
-            parts.push(primaryLabel + ' (P)');
+            // Strikethrough für Primary wenn Trans als Secondary
+            if (secondary === 'trans') {
+                parts.push('<span class="summary-strikethrough">' + primaryLabel + '</span> (P)');
+            } else {
+                parts.push(primaryLabel + ' (P)');
+            }
 
             if (secondary) {
                 const secondaryLabel = TiageI18n.t(`geschlecht.types.${secondary}`, secondary);
@@ -3791,7 +3796,7 @@
                 const summaryId = `${prefix}${person}-geschlecht-summary`;
                 const summary = document.getElementById(summaryId);
                 if (summary) {
-                    summary.textContent = gridSummaryText;
+                    summary.innerHTML = gridSummaryText;
                     summary.classList.toggle('has-selection', !isMissing);
                 }
             });
