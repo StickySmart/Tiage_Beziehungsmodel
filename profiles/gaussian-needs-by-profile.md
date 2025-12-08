@@ -3,8 +3,20 @@
 > **Recherche-Datum:** 2025-12-08
 > **Nächste geplante Aktualisierung:** 2026-12-07
 > **Zweck:** Dynamische Default-Werte basierend auf Profil-Kombination
+>
+> ## Validierungs-Status
+>
+> | Kategorie | Bedürfnisse | Validiert | Quote |
+> |-----------|-------------|-----------|-------|
+> | GFK-Kern (Rosenberg) | 88 | 88 | ✅ 100% |
+> | Lebensthemen | 47 | 47 | ✅ 100% |
+> | Pirsig (Quality) | 41 | 0 | ⚠️ 0% |
+> | Osho (Tantra/Zen) | 40 | 0 | ⚠️ 0% |
+> | **Gesamt** | **216** | **135** | **62%** |
+>
+> → Philosophische Bedürfnisse: siehe [gaussian-needs-philosophy.md](../docs/theory/gaussian-needs-philosophy.md)
 
-Dieses Dokument beschreibt, wie jedes der **135 Bedürfnisse** (verteilt auf 22 Kategorien) von den fünf Profil-Faktoren beeinflusst wird:
+Dieses Dokument beschreibt, wie jedes der **135 validierten Bedürfnisse** (GFK + Lebensthemen) von den fünf Profil-Faktoren beeinflusst wird:
 - **Archetyp** (8): Single, Aromantisch, Duo, LAT, Solopoly, RA, Duo-Flex, Polyamor
 - **Dominanz** (4): Dominant, Submissiv, Switch, Vanilla
 - **Orientierung** (3): Heterosexuell, Homosexuell, Bisexuell
