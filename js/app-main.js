@@ -1321,6 +1321,11 @@
         }
 
         function updateAll() {
+            // Guard: Don't update UI if data not loaded yet
+            if (!data || !data.archetypes) {
+                console.warn('[TIAGE] updateAll called before data loaded - skipping');
+                return;
+            }
             updateTheme();
             updateMyType();
             updatePartnerSelector();
@@ -1340,6 +1345,11 @@
         }
 
         function updateMyType() {
+            // Guard against data not being loaded yet
+            if (!data || !data.archetypes) {
+                console.warn('[TIAGE] updateMyType called before data loaded');
+                return;
+            }
             const arch = data.archetypes[currentArchetype];
             if (!arch) return;
 
