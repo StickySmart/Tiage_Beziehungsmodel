@@ -2039,9 +2039,203 @@ const GfkBeduerfnisse = {
 };
 
 // ═══════════════════════════════════════════════════════════════════════════
+// RECHERCHE-STATUS TRACKING
+// ═══════════════════════════════════════════════════════════════════════════
+// Dokumentiert den Validierungs-Status aller Bedürfnisse
+// Detaillierte Recherche-Dokumentation: docs/theory/gaussian-needs-philosophy.md
+
+const RechercheStatus = {
+
+    // Metadaten
+    meta: {
+        letztesUpdate: "2025-12-08",
+        naechstesUpdate: "2026-12-07",
+        dokumentation: "docs/theory/gaussian-needs-philosophy.md"
+    },
+
+    // Status-Definitionen
+    STATUS: {
+        VALIDIERT: "validiert",           // Peer-reviewed Quelle vorhanden
+        HYPOTHETISCH: "hypothetisch",     // Philosophisch hergeleitet, keine Studie
+        IN_RECHERCHE: "in_recherche",     // Aktiv nach Quellen gesucht
+        NICHT_VALIDIERBAR: "nicht_validierbar" // Keine empirische Grundlage möglich
+    },
+
+    // Übersicht nach Kategorie
+    uebersicht: {
+        gfk_kern: { total: 88, validiert: 88, quote: 100 },
+        lebensthemen: { total: 47, validiert: 47, quote: 100 },
+        pirsig: { total: 41, validiert: 0, quote: 0 },
+        osho: { total: 40, validiert: 0, quote: 0 }
+    },
+
+    // Pirsig-Bedürfnisse: Mapping zu wissenschaftlichen Konstrukten
+    pirsig: {
+        // Gumption / Flow
+        gumption: {
+            status: "hypothetisch",
+            wissenschaftlich: "Flow State (Csikszentmihalyi)",
+            messinstrument: "Flow Short Scale",
+            naechsteRecherche: "2026-03"
+        },
+        gumption_im_alltag: { status: "hypothetisch", wissenschaftlich: "Daily Flow Experience" },
+        qualitaet_der_arbeit: { status: "hypothetisch", wissenschaftlich: "Work Engagement (Gallup)" },
+
+        // Static/Dynamic Quality
+        statische_stabilitaet: {
+            status: "hypothetisch",
+            wissenschaftlich: "Need for Structure (NFS)",
+            messinstrument: "PNS Scale",
+            naechsteRecherche: "2026-03"
+        },
+        dynamische_evolution: {
+            status: "hypothetisch",
+            wissenschaftlich: "Need for Cognition (NFC)",
+            messinstrument: "NFC-18 Scale",
+            naechsteRecherche: "2026-03"
+        },
+        klassisches_verstehen: { status: "hypothetisch", wissenschaftlich: "Analytical Thinking (REI-40)" },
+        romantisches_verstehen: { status: "hypothetisch", wissenschaftlich: "Intuitive Thinking (REI-40)" },
+
+        // Quality-Metaphysik (schwer validierbar)
+        qualitaet_als_gott: { status: "nicht_validierbar", wissenschaftlich: "Kein direktes Äquivalent" },
+        rationaler_mystizismus: { status: "nicht_validierbar", wissenschaftlich: "Kein direktes Äquivalent" },
+
+        // Praktische Konzepte
+        motorrad_pflege: { status: "hypothetisch", wissenschaftlich: "Craft/DIY Satisfaction" },
+        stuck_vermeiden: { status: "hypothetisch", wissenschaftlich: "Problem-Solving Orientation" },
+        klassische_ordnung: { status: "hypothetisch", wissenschaftlich: "Need for Order" },
+        romantisches_chaos: { status: "hypothetisch", wissenschaftlich: "Tolerance for Ambiguity" },
+        achtsamkeit_im_detail: { status: "hypothetisch", wissenschaftlich: "Mindful Attention (MAAS)" }
+    },
+
+    // Osho-Bedürfnisse: Mapping zu wissenschaftlichen Konstrukten
+    osho: {
+        // Nicht-Anhaften (Attachment Theory)
+        nicht_anhaften_an_partner: {
+            status: "hypothetisch",
+            wissenschaftlich: "Secure Attachment (low anxiety)",
+            messinstrument: "ECR-R Scale",
+            naechsteRecherche: "2026-06"
+        },
+        nicht_anhaften_an_familie: {
+            status: "hypothetisch",
+            wissenschaftlich: "Differentiation of Self (Bowen)",
+            naechsteRecherche: "2026-06"
+        },
+        nicht_anhaften_an_geld: {
+            status: "hypothetisch",
+            wissenschaftlich: "Material Values (inverse)",
+            messinstrument: "MVS Scale"
+        },
+
+        // Zorba-Buddha
+        zorba_der_geniesser: {
+            status: "hypothetisch",
+            wissenschaftlich: "Hedonic Well-being",
+            messinstrument: "SWLS, PANAS"
+        },
+        zorba_das_kind: { status: "hypothetisch", wissenschaftlich: "Playfulness (Proyer)" },
+        zorba_der_unternehmer: { status: "hypothetisch", wissenschaftlich: "Achievement + Enjoyment" },
+
+        // Meditation/Achtsamkeit
+        meditation_im_alltag: {
+            status: "hypothetisch",
+            wissenschaftlich: "Trait Mindfulness",
+            messinstrument: "MAAS Scale",
+            naechsteRecherche: "2026-06"
+        },
+        no_mind: {
+            status: "hypothetisch",
+            wissenschaftlich: "Cognitive Defusion",
+            messinstrument: "ACT Measures"
+        },
+        vipassana_im_leben: { status: "hypothetisch", wissenschaftlich: "Mindful Awareness (FFMQ)" },
+
+        // Rebellion/Freiheit
+        familien_rebellion: { status: "hypothetisch", wissenschaftlich: "Differentiation of Self" },
+        rebellion_gegen_gesellschaft: { status: "hypothetisch", wissenschaftlich: "Non-Conformity" },
+        individueller_anarchismus: { status: "hypothetisch", wissenschaftlich: "Autonomy Orientation (SDT)" },
+
+        // Spirituelle Konzepte (teilweise validierbar)
+        eigene_wahrheit: { status: "hypothetisch", wissenschaftlich: "Authenticity (Wood et al.)" },
+        humorvolle_leichtigkeit: { status: "hypothetisch", wissenschaftlich: "Humor in Relationships (MSHS)" },
+        natuerliches_leben: { status: "hypothetisch", wissenschaftlich: "Nature Connectedness (NR Scale)" },
+
+        // Tantra/Sexualität (schwer validierbar)
+        sex_als_meditation: { status: "nicht_validierbar", wissenschaftlich: "Mindful Sex - wenig Forschung" },
+        tantra_als_weg: { status: "nicht_validierbar", wissenschaftlich: "Sacred Sexuality - wenig Forschung" },
+        liebe_ohne_beziehung: { status: "hypothetisch", wissenschaftlich: "Unconditional Positive Regard (Rogers)" }
+    },
+
+    /**
+     * Gibt den Recherche-Status eines Bedürfnisses zurück
+     * @param {string} beduerfnisId - Die ID des Bedürfnisses
+     * @returns {Object|null} Status-Objekt oder null
+     */
+    getStatus: function(beduerfnisId) {
+        if (this.pirsig[beduerfnisId]) {
+            return { ...this.pirsig[beduerfnisId], philosophie: "pirsig" };
+        }
+        if (this.osho[beduerfnisId]) {
+            return { ...this.osho[beduerfnisId], philosophie: "osho" };
+        }
+        // GFK-Kern und Lebensthemen sind validiert
+        if (GfkBeduerfnisse.definitionen[beduerfnisId]) {
+            return { status: "validiert", philosophie: "gfk" };
+        }
+        return null;
+    },
+
+    /**
+     * Gibt alle Bedürfnisse mit einem bestimmten Status zurück
+     * @param {string} status - Der gesuchte Status
+     * @returns {Array} Liste der Bedürfnis-IDs
+     */
+    getByStatus: function(status) {
+        const result = [];
+        Object.entries(this.pirsig).forEach(([id, data]) => {
+            if (data.status === status) result.push({ id, ...data, philosophie: "pirsig" });
+        });
+        Object.entries(this.osho).forEach(([id, data]) => {
+            if (data.status === status) result.push({ id, ...data, philosophie: "osho" });
+        });
+        return result;
+    },
+
+    /**
+     * Gibt eine Zusammenfassung des Validierungs-Status zurück
+     * @returns {Object} Zusammenfassung
+     */
+    getSummary: function() {
+        const pirsigStats = { validiert: 0, hypothetisch: 0, in_recherche: 0, nicht_validierbar: 0 };
+        const oshoStats = { validiert: 0, hypothetisch: 0, in_recherche: 0, nicht_validierbar: 0 };
+
+        Object.values(this.pirsig).forEach(data => {
+            pirsigStats[data.status] = (pirsigStats[data.status] || 0) + 1;
+        });
+        Object.values(this.osho).forEach(data => {
+            oshoStats[data.status] = (oshoStats[data.status] || 0) + 1;
+        });
+
+        return {
+            pirsig: pirsigStats,
+            osho: oshoStats,
+            gesamt: {
+                validiert: pirsigStats.validiert + oshoStats.validiert,
+                hypothetisch: pirsigStats.hypothetisch + oshoStats.hypothetisch,
+                in_recherche: pirsigStats.in_recherche + oshoStats.in_recherche,
+                nicht_validierbar: pirsigStats.nicht_validierbar + oshoStats.nicht_validierbar
+            },
+            naechstesUpdate: this.meta.naechstesUpdate
+        };
+    }
+};
+
+// ═══════════════════════════════════════════════════════════════════════════
 // EXPORT
 // ═══════════════════════════════════════════════════════════════════════════
 if (typeof module !== 'undefined' && module.exports) {
-    module.exports = { GfkBeduerfnisse };
+    module.exports = { GfkBeduerfnisse, RechercheStatus };
 }
 
