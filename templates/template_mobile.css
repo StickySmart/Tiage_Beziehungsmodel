@@ -1155,8 +1155,8 @@ body {
 }
 
 .geschlecht-btn.primary-selected {
-    background: var(--primary);
-    border-color: var(--primary);
+    background: #9b59b6;
+    border-color: #9b59b6;
     color: white;
 }
 
@@ -1168,8 +1168,19 @@ body {
 
 /* Strikethrough für Primary wenn Trans als Secondary ausgewählt */
 .geschlecht-btn.primary-selected.primary-strikethrough {
-    text-decoration: line-through;
-    text-decoration-color: rgba(255, 255, 255, 0.7);
+    position: relative;
+}
+
+.geschlecht-btn.primary-selected.primary-strikethrough::after {
+    content: '';
+    position: absolute;
+    left: 15%;
+    right: 15%;
+    top: 50%;
+    height: 2px;
+    background: rgba(255, 255, 255, 0.8);
+    transform: translateY(-50%);
+    pointer-events: none;
 }
 
 /* DevView Styles wurden nach template_desktop.css verschoben,
