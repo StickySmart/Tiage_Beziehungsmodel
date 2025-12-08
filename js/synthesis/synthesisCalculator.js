@@ -6,23 +6,36 @@
  *   Q = [(A × wₐ) + (O × wₒ) + (D × wᵈ) + (G × wᵍ)] × R
  *
  * Wobei:
- *   A = Archetyp-Score (25% - LOGOS)
+ *   A = Archetyp-Score (15% - LOGOS)
  *   O = Orientierungs-Score (40% - PATHOS)
  *   D = Dominanz-Score (20% - PATHOS)
- *   G = Geschlechts-Score (15% - PATHOS)
+ *   G = Geschlechts-Score (25% - PATHOS)
  *   R = Resonanz-Koeffizient (0.9 - 1.1)
+ *
+ * NEU v3.0: BEDÜRFNIS-INTEGRATION PRO FAKTOR
+ * ═══════════════════════════════════════════════════════════════════════════
+ * Jeder Faktor (A, O, D, G) kombiniert Matrix-Score mit Bedürfnis-Match:
+ *
+ *   Faktor = (Matrix × matrixWeight) + (BedürfnisMatch × needsWeight)
+ *
+ * Beispiel Orientierung:
+ *   O = (GeometrieCheck × 0.5) + (Orientierung-Bedürfnisse × 0.5)
+ *
+ * Relevante Bedürfnisse pro Faktor:
+ *   - Archetyp: kinderwunsch, langfristige_bindung, nicht_anhaften_an_partner...
+ *   - Orientierung: sexuelle_experimentierfreude, biologische_anziehung, sex_als_meditation...
+ *   - Dominanz: kontrolle_ausueben, hingabe, dynamische_evolution, statische_stabilitaet...
+ *   - Geschlecht: authentizitaet, eigene_wahrheit, akzeptanz...
+ *
+ * Pirsig/Osho-Bedürfnisse fließen direkt in die Faktor-Berechnung ein!
+ * ═══════════════════════════════════════════════════════════════════════════
  *
  * Resonanz-Formel:
  *   R = 0.9 + [(M/100 × 0.35) + (B × 0.35) + (K × 0.30)] × 0.2
  *
- *   M = Bedürfnis-Match (0-100%) - JETZT IMPLEMENTIERT via BeduerfnisModifikatoren
+ *   M = Bedürfnis-Match (0-100%) - Gesamt-Übereinstimmung
  *   B = Logos-Pathos-Balance = (100 - |Logos - Pathos|) / 100
  *   K = GFK-Kommunikationsfaktor (0-1) - Gewaltfreie Kommunikation
- *
- * NEU v2.0: Dynamische Bedürfnis-Berechnung
- * - Bedürfnisse werden pro Person individuell berechnet
- * - Faktoren: Archetyp + Dominanz + Geschlecht + Orientierung + Status
- * - Übereinstimmung kategorisiert: gemeinsam, komplementär, unterschiedlich
  */
 
 var TiageSynthesis = TiageSynthesis || {};
@@ -99,13 +112,59 @@ TiageSynthesis.Calculator = {
 
         var geschlechtResult = factors.Geschlecht.calculate(person1, person2);
 
-        // Scores extrahieren
-        var scores = {
+        // Scores extrahieren (Matrix-basiert)
+        var matrixScores = {
             archetyp: archetypResult.score,
             orientierung: orientierungResult.score,
             dominanz: dominanzResult.score,
             geschlecht: geschlechtResult.score
         };
+
+        // ═══════════════════════════════════════════════════════════════════
+        // SCHRITT 1b: BEDÜRFNIS-INTEGRATION PRO FAKTOR (NEU!)
+        // ═══════════════════════════════════════════════════════════════════
+        // Formel: Faktor = (Matrix × matrixWeight) + (BedürfnisMatch × needsWeight)
+        // Pirsig/Osho-Bedürfnisse fließen hier direkt in A, O, D, G ein
+
+        var scores = {};
+        var needsIntegrationDetails = null;
+
+        if (TiageSynthesis.NeedsIntegration && constants.NEEDS_INTEGRATION && constants.NEEDS_INTEGRATION.ENABLED) {
+            // Berechne Bedürfnis-Match pro Faktor
+            var factorNeedsMatches = TiageSynthesis.NeedsIntegration.calculateAllFactorMatches(person1, person2);
+
+            needsIntegrationDetails = {
+                enabled: true,
+                weights: constants.NEEDS_INTEGRATION.FACTOR_WEIGHTS,
+                faktoren: {}
+            };
+
+            // Kombiniere Matrix + Bedürfnisse pro Faktor
+            var faktorList = ['archetyp', 'orientierung', 'dominanz', 'geschlecht'];
+            for (var i = 0; i < faktorList.length; i++) {
+                var faktor = faktorList[i];
+                var needsMatch = factorNeedsMatches[faktor];
+                var combined = TiageSynthesis.NeedsIntegration.combineScores(
+                    matrixScores[faktor],
+                    needsMatch.score,
+                    faktor
+                );
+
+                scores[faktor] = combined.combinedScore;
+                needsIntegrationDetails.faktoren[faktor] = {
+                    matrixScore: matrixScores[faktor],
+                    needsScore: needsMatch.score,
+                    combinedScore: combined.combinedScore,
+                    needsIntegrated: combined.needsIntegrated,
+                    gemeinsam: needsMatch.gemeinsam,
+                    unterschiedlich: needsMatch.unterschiedlich
+                };
+            }
+        } else {
+            // Fallback: Nur Matrix-Scores (alte Berechnung)
+            scores = matrixScores;
+            needsIntegrationDetails = { enabled: false };
+        }
 
         // ═══════════════════════════════════════════════════════════════════
         // SCHRITT 2: Logos und Pathos berechnen
@@ -210,10 +269,13 @@ TiageSynthesis.Calculator = {
                 hasLifestyleWarnings: lifestyleResult && lifestyleResult.warnings.length > 0,
 
                 // P↔S Bonus
-                psBonus: this._calculatePSBonus(person1, person2, constants)
+                psBonus: this._calculatePSBonus(person1, person2, constants),
+
+                // NEU: Bedürfnis-Integration pro Faktor (Pirsig/Osho)
+                needsIntegration: needsIntegrationDetails
             },
 
-            // NEU: Bedürfnis-Übereinstimmung (wenn berechnet)
+            // Bedürfnis-Übereinstimmung (Gesamt)
             beduerfnisse: beduerfnisResult,
 
             // NEU: Statistische Unsicherheit (80% Konfidenzintervall)

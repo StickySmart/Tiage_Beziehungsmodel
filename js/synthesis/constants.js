@@ -288,5 +288,142 @@ TiageSynthesis.Constants = {
 
     EXPLORATION: {
         MODIFIER: 0.70  // 30% Reduktion bei Exploration
+    },
+
+    // ═══════════════════════════════════════════════════════════════════════
+    // BEDÜRFNIS-INTEGRATION PRO FAKTOR
+    // ═══════════════════════════════════════════════════════════════════════
+    // Jeder Faktor (A, O, D, G) hat relevante Bedürfnisse die in die
+    // Berechnung einfließen. Die Gewichtung bestimmt das Verhältnis
+    // zwischen Matrix-Score und Bedürfnis-Match.
+    //
+    // Formel: Faktor = (Matrix × matrixWeight) + (BedürfnisMatch × needsWeight)
+
+    NEEDS_INTEGRATION: {
+        ENABLED: true,
+
+        // Gewichtung: Matrix vs. Bedürfnisse pro Faktor
+        FACTOR_WEIGHTS: {
+            archetyp:     { matrix: 0.60, needs: 0.40 },
+            orientierung: { matrix: 0.50, needs: 0.50 },
+            dominanz:     { matrix: 0.50, needs: 0.50 },
+            geschlecht:   { matrix: 0.60, needs: 0.40 }
+        },
+
+        // ─────────────────────────────────────────────────────────────────────
+        // ARCHETYP-RELEVANTE BEDÜRFNISSE
+        // ─────────────────────────────────────────────────────────────────────
+        // Beziehungsphilosophie: Wie will ich Beziehung leben?
+        ARCHETYP_NEEDS: [
+            // Lebensplanung - Kernthemen
+            "kinderwunsch",
+            "langfristige_bindung",
+            "verbindlichkeit",
+            "gemeinsamer_wohnraum",
+            "eigener_raum",
+            "alltag_teilen",
+            "treueversprechen",
+
+            // Autonomie vs. Bindung
+            "unabhaengigkeit",
+            "selbstbestimmung",
+            "zugehoerigkeit",
+            "gemeinschaft",
+
+            // Pirsig - Statisch/Dynamisch
+            "statische_stabilitaet",
+            "dynamische_evolution",
+
+            // Osho - Nicht-Anhaften
+            "nicht_anhaften_an_partner",
+            "nicht_anhaften_an_familie",
+            "liebe_ohne_beziehung",
+            "commune_statt_kernfamilie",
+            "polyamore_energie"
+        ],
+
+        // ─────────────────────────────────────────────────────────────────────
+        // ORIENTIERUNG-RELEVANTE BEDÜRFNISSE
+        // ─────────────────────────────────────────────────────────────────────
+        // Sexuelle/romantische Anziehung: Was zieht mich an?
+        ORIENTIERUNG_NEEDS: [
+            // Sexualität - Kern
+            "sexuelle_haeufigkeit",
+            "sexuelle_experimentierfreude",
+            "sexuelle_verbindung",
+            "sexueller_ausdruck",
+            "koerpernaehe",
+            "koerperkontakt",
+
+            // Intimität
+            "intimitaet",
+            "romantische_gesten",
+            "koerperliche_lust",
+
+            // Pirsig
+            "biologische_anziehung",
+            "qualitaet_der_beruehrung",
+            "dynamische_liebe",
+
+            // Osho - Tantra
+            "sex_als_meditation",
+            "hier_und_jetzt_intimitaet",
+            "wildheit_und_zartheit",
+            "orgastisches_leben",
+            "meditation_zu_zweit",
+            "polyamore_energie"
+        ],
+
+        // ─────────────────────────────────────────────────────────────────────
+        // DOMINANZ-RELEVANTE BEDÜRFNISSE
+        // ─────────────────────────────────────────────────────────────────────
+        // Machtdynamik: Wer führt, wer folgt?
+        DOMINANZ_NEEDS: [
+            // Dynamik-Kategorie (GFK-Erweiterung)
+            "kontrolle_ausueben",
+            "hingabe",
+            "fuehrung_geben",
+            "gefuehrt_werden",
+            "machtaustausch",
+            "sich_fallenlassen",
+            "verantwortung_uebernehmen",
+            "dienend_sein",
+            "beschuetzen",
+            "nachsorge",
+            "grenzen_setzen",
+            "grenzen_respektieren",
+            "intensitaet",
+            "vertrauen_schenken",
+            "ritual",
+
+            // Pirsig - Statisch (Sub) vs. Dynamisch (Dom)
+            "statische_stabilitaet",
+            "dynamische_evolution",
+
+            // Osho
+            "nicht_anhaften_an_partner"
+        ],
+
+        // ─────────────────────────────────────────────────────────────────────
+        // GESCHLECHT-RELEVANTE BEDÜRFNISSE
+        // ─────────────────────────────────────────────────────────────────────
+        // Identität & Ausdruck: Wer bin ich, wie zeige ich mich?
+        GESCHLECHT_NEEDS: [
+            // Identität
+            "authentizitaet",
+            "selbst_ausdruck",
+            "echtheit",
+            "integritaet",
+
+            // Verständnis
+            "akzeptanz",
+            "gesehen_werden",
+            "verstanden_werden",
+
+            // Osho - Authentizität
+            "eigene_wahrheit",
+            "authentischer_ausdruck",
+            "radikale_ehrlichkeit"
+        ]
     }
 };

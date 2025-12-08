@@ -7,10 +7,45 @@
 ## Hauptformel
 
 ```
-Q = [(A × 0.25) + (O × 0.40) + (D × 0.20) + (G × 0.15)] × R
+Q = [(A × 0.15) + (O × 0.40) + (D × 0.20) + (G × 0.25)] × R
 ```
 
 **Quelle:** `js/synthesis/synthesisCalculator.js:6` und `js/synthesis/constants.js:7`
+
+---
+
+## NEU v3.0: Bedürfnis-Integration pro Faktor
+
+Jeder Faktor (A, O, D, G) kombiniert jetzt Matrix-Score mit Bedürfnis-Match:
+
+```
+Faktor = (Matrix × matrixWeight) + (BedürfnisMatch × needsWeight)
+```
+
+### Gewichtung pro Faktor
+
+| Faktor | Matrix | Bedürfnisse | Relevante Needs |
+|--------|--------|-------------|-----------------|
+| **Archetyp** | 60% | 40% | kinderwunsch, langfristige_bindung, nicht_anhaften... |
+| **Orientierung** | 50% | 50% | sexuelle_experimentierfreude, biologische_anziehung... |
+| **Dominanz** | 50% | 50% | kontrolle_ausueben, hingabe, dynamische_evolution... |
+| **Geschlecht** | 60% | 40% | authentizitaet, eigene_wahrheit, akzeptanz... |
+
+### Pirsig/Osho-Bedürfnisse in Faktoren
+
+Die philosophischen Bedürfnisse fließen jetzt DIREKT in die Faktor-Berechnung:
+
+```
+Orientierung:
+  Matrix (50%): Geometrie-Check (Hetero×Hetero = 100)
+  Needs (50%):  sex_als_meditation, hier_und_jetzt_intimitaet, wildheit_und_zartheit...
+
+Dominanz:
+  Matrix (50%): Dom×Sub = 100, Dom×Dom = 55
+  Needs (50%):  statische_stabilitaet (Pirsig), dynamische_evolution (Pirsig)...
+```
+
+**Quelle:** `js/synthesis/needsIntegration.js` und `js/synthesis/constants.js:NEEDS_INTEGRATION`
 
 ---
 

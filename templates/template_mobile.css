@@ -678,17 +678,18 @@ body {
     .status-toggle-btn {
         padding: 6px 12px;
         font-size: 11px;
-        background: var(--bg-dark);
-        border: 1px solid var(--border);
+        background: var(--toggle-bg);
+        border: 1px solid var(--toggle-border);
         border-radius: 6px;
-        color: var(--text-muted);
+        color: var(--toggle-text);
         cursor: pointer;
         transition: all 0.2s ease;
     }
 
     .status-toggle-btn:hover {
-        background: rgba(255,255,255,0.1);
-        color: var(--text-primary);
+        background: var(--toggle-bg-hover);
+        border-color: var(--toggle-border-hover);
+        box-shadow: 0 0 12px rgba(255, 0, 255, 0.3);
     }
 
     /* Gelebt Status - Aktiv (IDENTISCH MIT DESKTOP) */
@@ -1155,8 +1156,8 @@ body {
 }
 
 .geschlecht-btn.primary-selected {
-    background: var(--primary);
-    border-color: var(--primary);
+    background: #9b59b6;
+    border-color: #9b59b6;
     color: white;
 }
 
