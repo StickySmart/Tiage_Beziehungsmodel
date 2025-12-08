@@ -18,10 +18,10 @@ TiageSynthesis.Constants = {
     // "Pathos vor Logos" - Das Leben/Erleben kommt vor der Interpretation
 
     WEIGHTS: {
-        archetyp: 0.25,      // LOGOS - Beziehungsphilosophie
+        archetyp: 0.15,      // LOGOS - Beziehungsphilosophie
         orientierung: 0.40,  // PATHOS - Körperliche Polarität
         dominanz: 0.20,      // PATHOS - Energetische Dynamik
-        geschlecht: 0.15     // PATHOS - Gender-Chemie
+        geschlecht: 0.25     // PATHOS - Gender-Chemie
     },
 
     CATEGORIES: {
