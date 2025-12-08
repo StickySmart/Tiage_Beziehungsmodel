@@ -3998,7 +3998,7 @@
             width: 100px;
             height: 100px;
             cursor: pointer;
-            margin-bottom: 15px;
+            margin-bottom: 0;
             transition: transform 0.2s ease;
         }
 
@@ -4046,6 +4046,7 @@
             cursor: pointer;
             transition: transform 0.2s ease;
             border-radius: 10px;
+            margin-bottom: 10px;
         }
 
         .lightbulb-button:hover {

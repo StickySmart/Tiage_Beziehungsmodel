@@ -6253,6 +6253,8 @@
             `;
 
             // Top Übereinstimmungen (now includes gemeinsam + komplementaer)
+            // HIDDEN: Direct needs comparison hidden per user request
+            /*
             if (matching.topUebereinstimmungen && matching.topUebereinstimmungen.length > 0) {
                 const gemeinsameLabel = TiageI18n.t('synthesisSection.gemeinsameBeduerfnisse', 'Gemeinsame & Kompatible Bedürfnisse');
                 html += `
@@ -6267,6 +6269,7 @@
                     </div>
                 `;
             }
+            */
 
             // Konflikte
             if (matching.topKonflikte && matching.topKonflikte.length > 0) {
@@ -11057,6 +11060,8 @@
                 return !pl || pl === type; // Wenn keine Zuordnung, zeige in beiden
             });
 
+            // HIDDEN: Direct needs comparison hidden per user request
+            /*
             if (gemeinsam.length > 0) {
                 const tags = gemeinsam.slice(0, 5).map(b => {
                     const translatedLabel = TiageI18n.t(`needs.items.${b.id}`, b.label);
@@ -11076,6 +11081,7 @@
                     </div>
                 </div>`;
             }
+            */
 
             // Dynamik + Wachstum als kombinierter Fließtext
             // Dynamik: Aus gemeinsam mit Kategorie 'dynamik'
