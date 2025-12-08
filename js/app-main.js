@@ -1568,6 +1568,7 @@
 
         // Update Score Cycle im Synthese Modal und auf der Hauptseite
         function updateSyntheseScoreCycle() {
+            console.log('[TIAGE] updateSyntheseScoreCycle called');
             const scoreValueEl = document.getElementById('syntheseScoreValue');
             const scoreProgressEl = document.getElementById('syntheseScoreProgress');
             const mainScoreValueEl = document.getElementById('mainScoreValue');
@@ -1576,6 +1577,7 @@
             // Get current score from resultPercentage
             const percentage = document.getElementById('resultPercentage');
             const currentScore = percentage ? parseInt(percentage.textContent) || 0 : 0;
+            console.log('[TIAGE] Score cycle - percentage element:', !!percentage, 'text:', percentage?.textContent, 'parsed:', currentScore);
 
             // Update circle progress (circumference = 2 * PI * r = 2 * 3.14159 * 42 ≈ 264)
             const circumference = 264;
@@ -3994,6 +3996,7 @@
          * - Click on Secondary = Clear only secondary
          */
         function handleDominanzClick(person, dominanzValue, btn) {
+            console.log('[TIAGE] handleDominanzClick called:', person, dominanzValue);
             // Ensure dominanz has correct structure (migration from old format)
             if (!personDimensions[person].dominanz ||
                 !('primary' in personDimensions[person].dominanz)) {
@@ -8283,6 +8286,7 @@
         }
 
         function updateComparisonView() {
+            console.log('[TIAGE] updateComparisonView called, data:', !!data);
             if (!data) return;
 
             const ichArch = data.archetypes[currentArchetype];
@@ -8394,6 +8398,7 @@
             const percentage = document.getElementById('resultPercentage');
             const progressFill = document.getElementById('resultProgressFill');
 
+            console.log('[TIAGE] Setting score:', overallScore);
             percentage.textContent = overallScore;
             progressFill.style.width = Math.min(100, overallScore) + '%';
 
