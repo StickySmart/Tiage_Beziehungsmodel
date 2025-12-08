@@ -4811,40 +4811,49 @@
         /* Geschlechtsidentität collapsible styles */
         .compact-dimension.collapsible-dimension .geschlecht-grid {
             max-height: 500px;
-            overflow: hidden;
+            overflow: visible;
             transition: max-height 0.3s ease, opacity 0.3s ease;
             opacity: 1;
+            padding: 6px;
+            margin: -6px;
         }
 
         .compact-dimension.collapsible-dimension.collapsed .geschlecht-grid {
             max-height: 0;
             opacity: 0;
+            overflow: hidden;
         }
 
         /* Dominanz collapsible styles */
         .compact-dimension.collapsible-dimension .dominanz-grid {
             max-height: 500px;
-            overflow: hidden;
+            overflow: visible;
             transition: max-height 0.3s ease, opacity 0.3s ease;
             opacity: 1;
+            padding: 6px;
+            margin: -6px;
         }
 
         .compact-dimension.collapsible-dimension.collapsed .dominanz-grid {
             max-height: 0;
             opacity: 0;
+            overflow: hidden;
         }
 
         /* Orientierung collapsible styles */
         .compact-dimension.collapsible-dimension .orientierung-grid {
             max-height: 500px;
-            overflow: hidden;
+            overflow: visible;
             transition: max-height 0.3s ease, opacity 0.3s ease;
             opacity: 1;
+            padding: 6px;
+            margin: -6px;
         }
 
         .compact-dimension.collapsible-dimension.collapsed .orientierung-grid {
             max-height: 0;
             opacity: 0;
+            overflow: hidden;
         }
 
         .compact-dimension.collapsible-dimension .collapsed-summary {
