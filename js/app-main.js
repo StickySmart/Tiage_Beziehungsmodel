@@ -25,6 +25,14 @@
         const GEWICHTUNG_STORAGE_KEY = 'tiage_faktor_gewichtungen';
         const GEWICHTUNG_LOCK_KEY = 'tiage_faktor_locks';
 
+        // Faktor-Mapping für Gewichtungen (muss vor den Funktionen definiert sein, die es verwenden)
+        const FAKTOR_MAP = {
+            orientierung: { inputId: 'gewicht-orientierung', key: 'O' },
+            archetyp: { inputId: 'gewicht-archetyp', key: 'A' },
+            dominanz: { inputId: 'gewicht-dominanz', key: 'D' },
+            geschlecht: { inputId: 'gewicht-geschlecht', key: 'G' }
+        };
+
         // Modal-Kontext für Profile Review (muss vor openProfileReviewModal() definiert sein)
         var currentProfileReviewContext = { archetypeKey: null, person: null };
 
@@ -13213,16 +13221,8 @@
         // ═══════════════════════════════════════════════════════════════════════
         // GEWICHTUNGS-EINSTELLUNGEN MIT LOCK-FUNKTION (Text-Inputs)
         // ═══════════════════════════════════════════════════════════════════════
-        // Hinweis: GEWICHTUNG_DEFAULTS, GEWICHTUNG_STORAGE_KEY und GEWICHTUNG_LOCK_KEY
-        // sind am Anfang der Datei definiert (vor getGewichtungen()).
-
-        // Faktor-Mapping
-        const FAKTOR_MAP = {
-            orientierung: { inputId: 'gewicht-orientierung', key: 'O' },
-            archetyp: { inputId: 'gewicht-archetyp', key: 'A' },
-            dominanz: { inputId: 'gewicht-dominanz', key: 'D' },
-            geschlecht: { inputId: 'gewicht-geschlecht', key: 'G' }
-        };
+        // Hinweis: GEWICHTUNG_DEFAULTS, GEWICHTUNG_STORAGE_KEY, GEWICHTUNG_LOCK_KEY
+        // und FAKTOR_MAP sind am Anfang der Datei definiert.
 
         // Lock-Status
         let gewichtungLocks = { orientierung: false, archetyp: false, dominanz: false, geschlecht: false };
