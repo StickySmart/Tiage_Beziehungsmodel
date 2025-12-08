@@ -4476,6 +4476,12 @@
             pointer-events: none;
         }
 
+        /* Strikethrough für Summary-Text wenn Trans als Secondary */
+        .summary-strikethrough {
+            text-decoration: line-through;
+            text-decoration-color: currentColor;
+        }
+
         /* Kleine Kreis-Indikatoren für Primary (P) und Secondary (S) */
         .geschlecht-indicator {
             position: absolute;

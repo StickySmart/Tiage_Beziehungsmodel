@@ -1183,5 +1183,11 @@ body {
     pointer-events: none;
 }
 
+/* Strikethrough für Summary-Text wenn Trans als Secondary */
+.summary-strikethrough {
+    text-decoration: line-through;
+    text-decoration-color: currentColor;
+}
+
 /* DevView Styles wurden nach template_desktop.css verschoben,
    damit sie IMMER geladen werden (auch wenn Browser Desktop meldet) */
