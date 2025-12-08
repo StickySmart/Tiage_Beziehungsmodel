@@ -2,16 +2,16 @@
 
 > *Die duale Struktur der Beziehungsqualität*
 
-## Grundkonzept: 25:75 Gewichtung
+## Grundkonzept: 15:85 Gewichtung
 
 Das Tiage-Modell teilt Beziehungsqualität in zwei fundamentale Dimensionen:
 
 | Dimension | Anteil | Ursprung | Pirsig-Begriff |
 |-----------|--------|----------|----------------|
-| **Pathos** | 75% | Gefühl | Dynamische Qualität |
-| **Logos** | 25% | Verstand | Statische Qualität |
+| **Pathos** | 85% | Gefühl | Dynamische Qualität |
+| **Logos** | 15% | Verstand | Statische Qualität |
 
-## Logos (25% - Verstand)
+## Logos (15% - Verstand)
 
 Die rationale, strukturgebende Dimension.
 
@@ -24,14 +24,14 @@ Die rationale, strukturgebende Dimension.
 
 ### Manifestation im Modell
 
-**Archetyp-Übereinstimmung (25% des Gesamtscores)**
+**Archetyp-Übereinstimmung (15% des Gesamtscores)**
 
 Die fundamentale Beziehungsphilosophie: *"Wie wollen wir Beziehung leben?"*
 
 - Single ↔ Polyamor = niedrige Übereinstimmung
 - Duo ↔ Duo-Flex = hohe Übereinstimmung
 
-## Pathos (75% - Gefühl)
+## Pathos (85% - Gefühl)
 
 Die emotionale, anziehende Dimension.
 
@@ -47,8 +47,8 @@ Die emotionale, anziehende Dimension.
 | Faktor | Anteil | Beschreibung |
 |--------|--------|--------------|
 | **Orientierungs-Kompatibilität** | 40% | Körperliche Polarität und Anziehung |
+| **Geschlechts-Attraktion** | 25% | Gender-Chemie und Identitäts-Resonanz |
 | **Dominanz-Harmonie** | 20% | Energetische Dynamik (Tao) |
-| **Geschlechts-Attraktion** | 15% | Gender-Chemie als Feinabstimmung |
 
 ## Philosophische Grundlagen
 
@@ -83,7 +83,7 @@ Balance (B) = (100 - |Logos - Pathos|) / 100
 
 Eine hohe Balance (nahe 1.0) bedeutet: Kopf und Herz sind im Einklang.
 
-## Warum 75% Pathos?
+## Warum 85% Pathos?
 
 Das Modell gewichtet emotionale Faktoren höher, weil:
 

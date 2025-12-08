@@ -9,9 +9,9 @@ Das Tiage-Beziehungsmodell verwendet **4 Hauptfaktoren** zur Berechnung der Bezi
 | Faktor | Gewicht | Dimension | Beschreibung |
 |--------|---------|-----------|--------------|
 | **Orientierung** | 40% | Pathos | Sexuelle Orientierung und Anziehungsrichtung |
-| **Archetyp** | 25% | Logos | Fundamentale Beziehungsphilosophie |
+| **Geschlecht** | 25% | Pathos | Gender-Chemie und Identitäts-Resonanz |
 | **Dominanz** | 20% | Pathos | Energetische Dynamik und Machtverhältnis |
-| **Geschlecht** | 15% | Pathos | Gender-Chemie und Attraktion |
+| **Archetyp** | 15% | Logos | Fundamentale Beziehungsphilosophie |
 
 ---
 
@@ -40,7 +40,7 @@ Definiert die sexuelle Orientierung und damit die grundlegende Anziehungsrichtun
 
 ---
 
-## 2. Archetyp-Faktor (25%)
+## 2. Archetyp-Faktor (15%)
 
 **Dimension:** Logos (Verstand)
 
@@ -105,7 +105,7 @@ Jeder Typ kann als **gelebt** (aktiv praktiziert) oder **interessiert** (offen f
 
 ---
 
-## 4. Geschlechts-Faktor (15%)
+## 4. Geschlechts-Faktor (25%)
 
 **Dimension:** Pathos (Gefühl)
 
@@ -150,14 +150,14 @@ Der Resonanz-Koeffizient bewegt sich zwischen **0.9 und 1.1** und verstärkt ode
 ## Gesamtformel
 
 ```
-Qualitätsindex = [(O × 0.40) + (A × 0.25) + (D × 0.20) + (G × 0.15)] × R
+Qualitätsindex = [(A × 0.15) + (O × 0.40) + (D × 0.20) + (G × 0.25)] × R
 ```
 
 Wobei:
-- O = Orientierungs-Score (0-100)
-- A = Archetyp-Score (0-100)
-- D = Dominanz-Score (0-100)
-- G = Geschlechts-Score (0-100)
+- A = Archetyp-Score (0-100) - 15%
+- O = Orientierungs-Score (0-100) - 40%
+- D = Dominanz-Score (0-100) - 20%
+- G = Geschlechts-Score (0-100) - 25%
 - R = Resonanz-Koeffizient (0.9-1.1)
 
 ---
