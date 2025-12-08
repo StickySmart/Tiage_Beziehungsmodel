@@ -1155,8 +1155,8 @@ body {
 }
 
 .geschlecht-btn.primary-selected {
-    background: var(--primary);
-    border-color: var(--primary);
+    background: #9b59b6;
+    border-color: #9b59b6;
     color: white;
 }
 
