@@ -12962,6 +12962,17 @@
         window.showPathosLogosContent = showPathosLogosContent;
         window.navigatePathosLogosArchetype = navigatePathosLogosArchetype;
 
+        // Ti-Age Synthese Modal functions
+        window.openTiageSyntheseModal = openTiageSyntheseModal;
+        window.closeTiageSyntheseModal = closeTiageSyntheseModal;
+        window.showTiageSyntheseContent = showTiageSyntheseContent;
+        window.navigateTiageSyntheseArchetype = navigateTiageSyntheseArchetype;
+
+        // Additional modal close functions
+        window.closeNeedsCompareModal = closeNeedsCompareModal;
+        window.closeNeedDefinitionModal = closeNeedDefinitionModal;
+        window.closePaarungExplanationModal = closePaarungExplanationModal;
+
         // Dimension toggle and collapse functions
         window.toggleAllDimensionsCollapse = toggleAllDimensionsCollapse;
         window.toggleDimensionCollapse = toggleDimensionCollapse;
