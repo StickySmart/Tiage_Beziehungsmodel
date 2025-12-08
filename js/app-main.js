@@ -13479,8 +13479,12 @@
         // Hinweis: currentProfileReviewContext ist am Anfang der Datei definiert.
         // person: 'ich' oder 'partner' - wird benötigt um Gender-Modifikatoren anzuwenden
         function openProfileReviewModal(archetypeKey, person) {
+            console.log('[TIAGE] openProfileReviewModal called:', archetypeKey, person);
             var modal = document.getElementById('profileReviewModal');
-            if (!modal) return;
+            if (!modal) {
+                console.log('[TIAGE] profileReviewModal not found!');
+                return;
+            }
 
             // Speichere Kontext für spätere Neuladung bei Gender-Änderung
             currentProfileReviewContext.archetypeKey = archetypeKey || 'duo';
@@ -13488,7 +13492,10 @@
 
             // Initialisiere Modal-Content dynamisch (nur beim ersten Öffnen)
             if (typeof ProfileReviewRenderer !== 'undefined') {
+                console.log('[TIAGE] ProfileReviewRenderer exists, initializing...');
                 ProfileReviewRenderer.initializeModal();
+            } else {
+                console.log('[TIAGE] ProfileReviewRenderer NOT defined!');
             }
 
             // Lade Gewichtungen in UI
@@ -13773,8 +13780,10 @@
 
         // Select Triple Button (für 3er-Gruppen)
         function selectTripleBtn(btn) {
+            console.log('[TIAGE] selectTripleBtn called', btn);
             var group = btn.parentElement;
             var attrId = group.getAttribute('data-attr');
+            console.log('[TIAGE] attrId:', attrId, 'group:', group);
             var wasActive = btn.classList.contains('active');
 
             // Alle Buttons in der Gruppe deaktivieren
@@ -14272,6 +14281,11 @@
 
             // Close modal
             closeProfileReviewModal();
+
+            // Update score display after profile changes
+            if (typeof updateComparisonView === 'function') {
+                updateComparisonView();
+            }
 
             // Optional: Show success message
             // alert('Profil gespeichert! ' + profileReviewChangesCount + ' Änderungen übernommen.');
