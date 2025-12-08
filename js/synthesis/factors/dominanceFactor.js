@@ -84,6 +84,11 @@ TiageSynthesis.Factors.Dominanz = {
 
     /**
      * Extrahiert Präferenzen aus Dominanz-Objekt
+     *
+     * Unterstützt drei Formate:
+     * 1. String: 'dominant' → [{ type: 'dominant', status: 'gelebt' }]
+     * 2. NEU P/S-Format: { primary: 'dominant', secondary: 'submissiv' }
+     * 3. Altes Multi-Select: { dominant: 'gelebt', submissiv: 'interessiert' }
      */
     _extractPreferences: function(domObj) {
         var list = [];
@@ -96,6 +101,18 @@ TiageSynthesis.Factors.Dominanz = {
             return list;
         }
 
+        // NEU: Handle Primary/Secondary Format aus UI
+        if ('primary' in domObj) {
+            if (domObj.primary) {
+                list.push({ type: domObj.primary, status: 'gelebt' });
+            }
+            if (domObj.secondary) {
+                list.push({ type: domObj.secondary, status: 'interessiert' });
+            }
+            return list;
+        }
+
+        // Altes Multi-Select Format: { dominant: 'gelebt', submissiv: 'interessiert' }
         var types = ['dominant', 'submissiv', 'switch', 'ausgeglichen'];
         for (var i = 0; i < types.length; i++) {
             var type = types[i];
