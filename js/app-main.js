@@ -1247,6 +1247,11 @@
             if (archetypeSelect) {
                 archetypeSelect.addEventListener('change', (e) => {
                     currentArchetype = e.target.value;
+                    mobileIchArchetype = e.target.value;
+                    // Sync with TiageState for save/load
+                    if (typeof TiageState !== 'undefined') {
+                        TiageState.setArchetype('ich', e.target.value);
+                    }
                     updateAll();
                 });
             }
@@ -8210,6 +8215,11 @@
             if (ichSelect) {
                 ichSelect.addEventListener('change', (e) => {
                     currentArchetype = e.target.value;
+                    mobileIchArchetype = e.target.value;
+                    // Sync with TiageState for save/load
+                    if (typeof TiageState !== 'undefined') {
+                        TiageState.setArchetype('ich', e.target.value);
+                    }
                     // Sync with old select if exists
                     const oldSelect = document.getElementById('archetypeSelect');
                     if (oldSelect) oldSelect.value = e.target.value;
@@ -8225,6 +8235,11 @@
             if (partnerSelect) {
                 partnerSelect.addEventListener('change', (e) => {
                     selectedPartner = e.target.value;
+                    mobilePartnerArchetype = e.target.value;
+                    // Sync with TiageState for save/load
+                    if (typeof TiageState !== 'undefined') {
+                        TiageState.setArchetype('partner', e.target.value);
+                    }
                     updateArchetypeGrid('partner', e.target.value);
                     updateComparisonView();
                     // GFK automatisch aus Archetypen-Matching ableiten
@@ -9763,6 +9778,10 @@
             if (mobileIchSelect) {
                 mobileIchSelect.addEventListener('change', (e) => {
                     mobileIchArchetype = e.target.value;
+                    // Sync with TiageState for save/load
+                    if (typeof TiageState !== 'undefined') {
+                        TiageState.setArchetype('ich', e.target.value);
+                    }
                     // Sync with desktop
                     const desktopSelect = document.getElementById('ichSelect');
                     if (desktopSelect) desktopSelect.value = e.target.value;
@@ -9778,6 +9797,10 @@
             if (mobilePartnerSelect) {
                 mobilePartnerSelect.addEventListener('change', (e) => {
                     mobilePartnerArchetype = e.target.value;
+                    // Sync with TiageState for save/load
+                    if (typeof TiageState !== 'undefined') {
+                        TiageState.setArchetype('partner', e.target.value);
+                    }
                     // Sync with desktop
                     const desktopSelect = document.getElementById('partnerSelect');
                     if (desktopSelect) desktopSelect.value = e.target.value;
