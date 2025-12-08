@@ -13047,9 +13047,12 @@
         window.showTiageSyntheseContent = showTiageSyntheseContent;
         window.navigateTiageSyntheseArchetype = navigateTiageSyntheseArchetype;
 
-        // Additional modal close functions
+        // Additional modal functions for needs
         window.closeNeedsCompareModal = closeNeedsCompareModal;
+        window.openNeedDefinitionModal = openNeedDefinitionModal;
         window.closeNeedDefinitionModal = closeNeedDefinitionModal;
+        window.openGfkExplanationModal = openGfkExplanationModal;
+        window.openPaarungExplanationModal = openPaarungExplanationModal;
         window.closePaarungExplanationModal = closePaarungExplanationModal;
 
         // Dimension toggle and collapse functions
