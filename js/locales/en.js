@@ -286,6 +286,43 @@ const TiageLocale_EN = {
         bisexuell: {
             title: 'Bi-/Pansexual',
             text: 'Attraction to multiple or all genders, regardless of gender identity.'
+        },
+        // Gender Identities (Legacy mode)
+        cis_mann: {
+            title: 'Cis Man',
+            text: 'Person assigned male at birth who identifies as a man.'
+        },
+        cis_frau: {
+            title: 'Cis Woman',
+            text: 'Person assigned female at birth who identifies as a woman.'
+        },
+        trans_mann: {
+            title: 'Trans Man',
+            text: 'Person assigned female at birth who identifies as a man.'
+        },
+        trans_frau: {
+            title: 'Trans Woman',
+            text: 'Person assigned male at birth who identifies as a woman.'
+        },
+        nonbinaer: {
+            title: 'Non-binary',
+            text: 'Person whose gender identity is neither exclusively male nor female.'
+        },
+        genderfluid: {
+            title: 'Genderfluid',
+            text: 'Person whose gender identity changes over time or shifts between different identities.'
+        },
+        agender: {
+            title: 'Agender',
+            text: 'Person who does not identify with any gender or rejects gender as a concept.'
+        },
+        intersex: {
+            title: 'Intersex',
+            text: 'Person with innate physical sex characteristics that are not clearly male or female.'
+        },
+        divers: {
+            title: 'Diverse',
+            text: 'Umbrella term for gender identities outside the binary man/woman system.'
         }
     },
 
