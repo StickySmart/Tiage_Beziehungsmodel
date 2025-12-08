@@ -1,10 +1,10 @@
 # Gaußsche Verteilung der Bedürfnisse nach Profil-Faktoren
 
-> **Recherche-Datum:** 2025-12-07
+> **Recherche-Datum:** 2025-12-08
 > **Nächste geplante Aktualisierung:** 2026-12-07
 > **Zweck:** Dynamische Default-Werte basierend auf Profil-Kombination
 
-Dieses Dokument beschreibt, wie jedes der **137 Bedürfnisse** von den vier Profil-Faktoren beeinflusst wird:
+Dieses Dokument beschreibt, wie jedes der **135 Bedürfnisse** (verteilt auf 22 Kategorien) von den vier Profil-Faktoren beeinflusst wird:
 - **Archetyp** (8): Single, Aromantisch, Duo, LAT, Solopoly, RA, Duo-Flex, Polyamor
 - **Dominanz** (4): Dominant, Submissiv, Switch, Vanilla
 - **Orientierung** (3): Heterosexuell, Homosexuell, Bisexuell
@@ -32,15 +32,15 @@ Beispiel für "kinderwunsch":
 
 ### 1.1 Kinder (pr-kinder)
 
-| Bedürfnis | Basis | Beschreibung |
-|-----------|-------|--------------|
-| kinderwunsch | 55 | Wunsch, eigene Kinder zu haben |
-| elternschaft | 55 | Wunsch, Elternrolle zu übernehmen |
-| fortpflanzung | 50 | Biologischer Fortpflanzungswunsch |
-| fuersorge | 55 | Für andere sorgen wollen |
-| familie_gruenden | 55 | Eigene Familie aufbauen |
-| generativitaet | 50 | Etwas an nächste Generation weitergeben |
-| verantwortung_uebernehmen | 55 | Bereitschaft für Verantwortung |
+| Bedürfnis | Basis | Frage | Beschreibung |
+|-----------|-------|-------|--------------|
+| kinderwunsch | 55 | "Wie stark wünschen Sie sich eigene Kinder?" | Wunsch, eigene Kinder zu haben |
+| elternschaft | 55 | "Wie wichtig ist es Ihnen, Eltern zu werden?" | Wunsch, Elternrolle zu übernehmen |
+| fortpflanzung | 50 | "Wie wichtig ist Ihnen biologische Fortpflanzung?" | Biologischer Fortpflanzungswunsch |
+| fuersorge | 55 | "Wie stark ist Ihr Bedürfnis, für andere zu sorgen?" | Für andere sorgen wollen |
+| familie_gruenden | 55 | "Wie wichtig ist es Ihnen, eine eigene Familie zu gründen?" | Eigene Familie aufbauen |
+| generativitaet | 50 | "Wie wichtig ist es Ihnen, etwas an die nächste Generation weiterzugeben?" | Etwas an nächste Generation weitergeben |
+| verantwortung_uebernehmen | 55 | "Wie bereit sind Sie, langfristige Verantwortung zu übernehmen?" | Bereitschaft für Verantwortung |
 
 #### Archetyp-Deltas für Kinder-Bedürfnisse
 
@@ -99,14 +99,14 @@ Beispiel für "kinderwunsch":
 
 ### 1.2 Ehe (pr-ehe)
 
-| Bedürfnis | Basis | Beschreibung |
-|-----------|-------|--------------|
-| verbindlichkeit | 50 | Wunsch nach fester Zusage |
-| langfristige_bindung | 55 | Langfristige Beziehung anstreben |
-| rechtliche_sicherheit | 45 | Rechtliche Absicherung wichtig |
-| gesellschaftliche_anerkennung | 40 | Soziale Anerkennung der Beziehung |
-| tradition | 45 | Traditionelle Ehe-Werte |
-| treueversprechen | 55 | Gegenseitiges Treueversprechen |
+| Bedürfnis | Basis | Frage | Beschreibung |
+|-----------|-------|-------|--------------|
+| verbindlichkeit | 50 | "Wie wichtig ist Ihnen ein verbindliches Beziehungsversprechen?" | Wunsch nach fester Zusage |
+| langfristige_bindung | 55 | "Wie wichtig ist Ihnen eine langfristige, dauerhafte Beziehung?" | Langfristige Beziehung anstreben |
+| rechtliche_sicherheit | 45 | "Wie wichtig ist Ihnen rechtliche Absicherung durch Ehe?" | Rechtliche Absicherung wichtig |
+| gesellschaftliche_anerkennung | 40 | "Wie wichtig ist Ihnen die gesellschaftliche Anerkennung Ihrer Beziehung?" | Soziale Anerkennung der Beziehung |
+| tradition | 45 | "Wie wichtig sind Ihnen traditionelle Ehe-Werte?" | Traditionelle Ehe-Werte |
+| treueversprechen | 55 | "Wie wichtig ist Ihnen ein gegenseitiges Treueversprechen?" | Gegenseitiges Treueversprechen |
 
 #### Archetyp-Deltas für Ehe-Bedürfnisse
 
@@ -129,15 +129,15 @@ Beispiel für "kinderwunsch":
 
 ### 1.3 Zusammenwohnen (pr-zusammen)
 
-| Bedürfnis | Basis | Beschreibung |
-|-----------|-------|--------------|
-| gemeinsamer_wohnraum | 55 | Zusammen wohnen wollen |
-| haeuslichkeit | 50 | Häusliche Atmosphäre schätzen |
-| nest_bauen | 55 | Gemeinsames Zuhause aufbauen |
-| alltag_teilen | 55 | Tägliches Leben teilen |
-| naehe | 55 | Räumliche Nähe zum Partner |
-| eigener_raum | 50 | Eigenen Bereich haben |
-| rueckzugsort | 55 | Rückzugsmöglichkeit haben |
+| Bedürfnis | Basis | Frage | Beschreibung |
+|-----------|-------|-------|--------------|
+| gemeinsamer_wohnraum | 55 | "Wie wichtig ist es Ihnen, mit Ihrem Partner zusammenzuwohnen?" | Zusammen wohnen wollen |
+| haeuslichkeit | 50 | "Wie wichtig ist Ihnen eine gemütliche, häusliche Atmosphäre?" | Häusliche Atmosphäre schätzen |
+| nest_bauen | 55 | "Wie wichtig ist es Ihnen, ein gemeinsames Zuhause aufzubauen?" | Gemeinsames Zuhause aufbauen |
+| alltag_teilen | 55 | "Wie wichtig ist es Ihnen, den Alltag mit Ihrem Partner zu teilen?" | Tägliches Leben teilen |
+| naehe | 55 | "Wie wichtig ist Ihnen räumliche Nähe zu Ihrem Partner?" | Räumliche Nähe zum Partner |
+| eigener_raum | 50 | "Wie wichtig ist es Ihnen, einen eigenen Bereich/Raum zu haben?" | Eigenen Bereich haben |
+| rueckzugsort | 55 | "Wie wichtig ist Ihnen eine Rückzugsmöglichkeit für sich allein?" | Rückzugsmöglichkeit haben |
 
 #### Archetyp-Deltas für Zusammenwohnen-Bedürfnisse
 
@@ -162,14 +162,14 @@ Beispiel für "kinderwunsch":
 
 ### 2.1 Gesprächsbedürfnis (pr-gespraech)
 
-| Bedürfnis | Basis | Beschreibung |
-|-----------|-------|--------------|
-| taeglicher_austausch | 50 | Tägliche Kommunikation |
-| tiefgehende_gespraeche | 55 | Bedeutungsvolle Gespräche |
-| small_talk | 45 | Leichte Unterhaltung |
-| stille_gemeinsam | 50 | Gemeinsame Stille genießen |
-| verbale_verbindung | 55 | Durch Worte verbinden |
-| zuhoeren | 60 | Aktiv zuhören |
+| Bedürfnis | Basis | Frage | Beschreibung |
+|-----------|-------|-------|--------------|
+| taeglicher_austausch | 50 | "Wie wichtig ist Ihnen täglicher verbaler Austausch mit Ihrem Partner?" | Tägliche Kommunikation |
+| tiefgehende_gespraeche | 55 | "Wie wichtig sind Ihnen tiefgehende, bedeutungsvolle Gespräche?" | Bedeutungsvolle Gespräche |
+| small_talk | 45 | "Wie wohl fühlen Sie sich mit leichter, alltäglicher Unterhaltung?" | Leichte Unterhaltung |
+| stille_gemeinsam | 50 | "Wie wohl fühlen Sie sich in gemeinsamer Stille mit Ihrem Partner?" | Gemeinsame Stille genießen |
+| verbale_verbindung | 55 | "Wie wichtig ist es Ihnen, sich durch Worte zu verbinden?" | Durch Worte verbinden |
+| zuhoeren | 60 | "Wie wichtig ist es Ihnen, dass Ihr Partner Ihnen aktiv zuhört?" | Aktiv zuhören |
 
 #### Geschlecht-Deltas für Kommunikation
 
@@ -188,14 +188,14 @@ Beispiel für "kinderwunsch":
 
 ### 2.2 Emotionale Offenheit (pr-emotional)
 
-| Bedürfnis | Basis | Beschreibung |
-|-----------|-------|--------------|
-| emotionale_offenheit | 50 | Gefühle offen zeigen |
-| gefuehle_zeigen | 50 | Emotionen ausdrücken |
-| verletzlichkeit | 45 | Sich verletzlich zeigen |
-| emotionale_zurueckhaltung | 50 | Gefühle zurückhalten |
-| emotionale_sicherheit | 60 | Sicherheit für Emotionen |
-| gefuehle_teilen | 55 | Gefühle miteinander teilen |
+| Bedürfnis | Basis | Frage | Beschreibung |
+|-----------|-------|-------|--------------|
+| emotionale_offenheit | 50 | "Wie offen zeigen Sie Ihre Gefühle gegenüber Ihrem Partner?" | Gefühle offen zeigen |
+| gefuehle_zeigen | 50 | "Wie wichtig ist es Ihnen, Emotionen offen auszudrücken?" | Emotionen ausdrücken |
+| verletzlichkeit | 45 | "Wie wohl fühlen Sie sich, sich verletzlich zu zeigen?" | Sich verletzlich zeigen |
+| emotionale_zurueckhaltung | 50 | "Wie stark neigen Sie dazu, Gefühle zurückzuhalten?" | Gefühle zurückhalten |
+| emotionale_sicherheit | 60 | "Wie wichtig ist Ihnen ein emotionales Sicherheitsgefühl in der Beziehung?" | Sicherheit für Emotionen |
+| gefuehle_teilen | 55 | "Wie wichtig ist es Ihnen, Gefühle mit Ihrem Partner zu teilen?" | Gefühle miteinander teilen |
 
 #### Dominanz-Deltas für Emotionale Offenheit
 
@@ -226,14 +226,14 @@ Beispiel für "kinderwunsch":
 
 ### 2.3 Konfliktverhalten (pr-konflikt)
 
-| Bedürfnis | Basis | Beschreibung |
-|-----------|-------|--------------|
-| konfliktklaerung | 55 | Konflikte aktiv klären |
-| harmonie | 55 | Harmonisches Miteinander |
-| aussprache | 55 | Dinge aussprechen |
-| konflikt_vermeiden | 45 | Konflikte meiden |
-| streitkultur | 50 | Konstruktiv streiten |
-| versoehnlichkeit | 60 | Sich versöhnen können |
+| Bedürfnis | Basis | Frage | Beschreibung |
+|-----------|-------|-------|--------------|
+| konfliktklaerung | 55 | "Wie wichtig ist es Ihnen, Konflikte aktiv anzusprechen und zu klären?" | Konflikte aktiv klären |
+| harmonie | 55 | "Wie wichtig ist Ihnen ein harmonisches Miteinander?" | Harmonisches Miteinander |
+| aussprache | 55 | "Wie wichtig ist es Ihnen, Dinge offen auszusprechen?" | Dinge aussprechen |
+| konflikt_vermeiden | 45 | "Wie stark neigen Sie dazu, Konflikte zu vermeiden?" | Konflikte meiden |
+| streitkultur | 50 | "Wie wichtig ist Ihnen eine konstruktive Streitkultur?" | Konstruktiv streiten |
+| versoehnlichkeit | 60 | "Wie wichtig ist Ihnen, sich nach einem Streit schnell zu versöhnen?" | Sich versöhnen können |
 
 #### Dominanz-Deltas für Konfliktverhalten
 
@@ -255,14 +255,14 @@ Beispiel für "kinderwunsch":
 
 ### 3.1 Introversion/Extroversion (pr-introextro)
 
-| Bedürfnis | Basis | Beschreibung |
-|-----------|-------|--------------|
-| soziale_energie | 50 | Energie aus sozialem Kontakt |
-| geselligkeit | 50 | Gerne unter Menschen |
-| ruhe_von_menschen | 50 | Ruhe von Menschen brauchen |
-| allein_aufladen | 50 | Alleine Energie tanken |
-| menschen_treffen | 50 | Menschen treffen wollen |
-| kleine_gruppen | 55 | Kleine Gruppen bevorzugen |
+| Bedürfnis | Basis | Frage | Beschreibung |
+|-----------|-------|-------|--------------|
+| soziale_energie | 50 | "Wie viel Energie ziehen Sie aus sozialen Kontakten?" | Energie aus sozialem Kontakt |
+| geselligkeit | 50 | "Wie gerne sind Sie unter Menschen?" | Gerne unter Menschen |
+| ruhe_von_menschen | 50 | "Wie stark brauchen Sie Ruhe von anderen Menschen?" | Ruhe von Menschen brauchen |
+| allein_aufladen | 50 | "Wie wichtig ist es Ihnen, alleine Energie zu tanken?" | Alleine Energie tanken |
+| menschen_treffen | 50 | "Wie wichtig ist es Ihnen, regelmäßig Menschen zu treffen?" | Menschen treffen wollen |
+| kleine_gruppen | 55 | "Wie stark bevorzugen Sie kleine Gruppen gegenüber großen?" | Kleine Gruppen bevorzugen |
 
 **Quellen:**
 - 70% der Bevölkerung sind Ambiverts ([Psychology Today](https://www.psychologytoday.com/us/blog/people-unexplained/202203/why-almost-no-one-is-100-percent-extraverted-or-introverted))
@@ -288,15 +288,15 @@ Beispiel für "kinderwunsch":
 
 ### 4.1 Körperliche Nähe (pr-naehe)
 
-| Bedürfnis | Basis | Beschreibung |
-|-----------|-------|--------------|
-| koerpernaehe | 55 | Körperliche Nähe allgemein |
-| beruehrung | 55 | Berührt werden |
-| kuscheln | 55 | Kuscheln und Schmusen |
-| physische_distanz | 45 | Physische Distanz wahren |
-| koerperkontakt | 55 | Allgemeiner Körperkontakt |
-| umarmungen | 60 | Umarmungen |
-| hand_halten | 55 | Händchen halten |
+| Bedürfnis | Basis | Frage | Beschreibung |
+|-----------|-------|-------|--------------|
+| koerpernaehe | 55 | "Wie wichtig ist Ihnen körperliche Nähe zu Ihrem Partner?" | Körperliche Nähe allgemein |
+| beruehrung | 55 | "Wie wichtig ist es Ihnen, von Ihrem Partner berührt zu werden?" | Berührt werden |
+| kuscheln | 55 | "Wie wichtig ist Ihnen regelmäßiges Kuscheln?" | Kuscheln und Schmusen |
+| physische_distanz | 45 | "Wie wichtig ist es Ihnen, physische Distanz wahren zu können?" | Physische Distanz wahren |
+| koerperkontakt | 55 | "Wie wichtig ist Ihnen allgemeiner Körperkontakt im Alltag?" | Allgemeiner Körperkontakt |
+| umarmungen | 60 | "Wie wichtig sind Ihnen regelmäßige Umarmungen?" | Umarmungen |
+| hand_halten | 55 | "Wie wichtig ist es Ihnen, Händchen zu halten?" | Händchen halten |
 
 #### Archetyp-Deltas für Körperliche Nähe
 
@@ -326,14 +326,14 @@ Beispiel für "kinderwunsch":
 
 ### 4.2 Sexuelle Frequenz (pr-sex)
 
-| Bedürfnis | Basis | Beschreibung |
-|-----------|-------|--------------|
-| sexuelle_haeufigkeit | 50 | Gewünschte Sex-Frequenz |
-| sexuelle_intimiaet | 55 | Sexuelle Nähe |
-| koerperliche_lust | 50 | Körperliches Verlangen |
-| sexuelle_experimentierfreude | 45 | Neues ausprobieren |
-| sexuelle_verbindung | 55 | Sex als Verbindung |
-| sexuelle_zufriedenheit | 60 | Zufriedenheit wichtig |
+| Bedürfnis | Basis | Frage | Beschreibung |
+|-----------|-------|-------|--------------|
+| sexuelle_haeufigkeit | 50 | "Wie häufig wünschen Sie sich sexuelle Intimität?" | Gewünschte Sex-Frequenz |
+| sexuelle_intimiaet | 55 | "Wie wichtig ist Ihnen sexuelle Nähe in einer Beziehung?" | Sexuelle Nähe |
+| koerperliche_lust | 50 | "Wie stark ist Ihr körperliches Verlangen typischerweise?" | Körperliches Verlangen |
+| sexuelle_experimentierfreude | 45 | "Wie offen sind Sie, sexuell Neues auszuprobieren?" | Neues ausprobieren |
+| sexuelle_verbindung | 55 | "Wie wichtig ist Sex als emotionale Verbindung für Sie?" | Sex als Verbindung |
+| sexuelle_zufriedenheit | 60 | "Wie wichtig ist Ihnen sexuelle Zufriedenheit in der Beziehung?" | Zufriedenheit wichtig |
 
 #### Dominanz-Deltas für Sexualität
 
@@ -363,14 +363,14 @@ Beispiel für "kinderwunsch":
 
 ### 5.1 Religiosität (pr-religion)
 
-| Bedürfnis | Basis | Beschreibung |
-|-----------|-------|--------------|
-| spiritualitaet | 45 | Spirituelle Orientierung |
-| glaubenspraxis | 40 | Religiöse Praxis |
-| religioese_gemeinschaft | 40 | Religiöse Gemeinschaft |
-| saekularitaet | 55 | Weltliche Orientierung |
-| sinnsuche | 55 | Nach Sinn suchen |
-| transzendenz | 45 | Transzendente Erfahrungen |
+| Bedürfnis | Basis | Frage | Beschreibung |
+|-----------|-------|-------|--------------|
+| spiritualitaet | 45 | "Wie wichtig ist Ihnen Spiritualität in Ihrem Leben?" | Spirituelle Orientierung |
+| glaubenspraxis | 40 | "Wie wichtig ist Ihnen aktive religiöse Praxis (Beten, Gottesdienst)?" | Religiöse Praxis |
+| religioese_gemeinschaft | 40 | "Wie wichtig ist Ihnen eine religiöse Gemeinschaft?" | Religiöse Gemeinschaft |
+| saekularitaet | 55 | "Wie wichtig ist Ihnen ein weltlicher, nicht-religiöser Lebensstil?" | Weltliche Orientierung |
+| sinnsuche | 55 | "Wie wichtig ist es Ihnen, nach dem Sinn des Lebens zu suchen?" | Nach Sinn suchen |
+| transzendenz | 45 | "Wie wichtig sind Ihnen transzendente/spirituelle Erfahrungen?" | Transzendente Erfahrungen |
 
 **Regionale Basis-Variation:**
 - Europa: Basis -15 (30 statt 45)
@@ -392,14 +392,14 @@ Beispiel für "kinderwunsch":
 
 ### 5.2 Umweltbewusstsein (pr-umwelt)
 
-| Bedürfnis | Basis | Beschreibung |
-|-----------|-------|--------------|
-| umweltverantwortung | 55 | Verantwortung für Umwelt |
-| nachhaltigkeit | 55 | Nachhaltig leben |
-| oekologisches_bewusstsein | 55 | Ökologisches Bewusstsein |
-| pragmatismus | 50 | Pragmatischer Umgang |
-| klimaschutz | 55 | Klimaschutz wichtig |
-| ressourcenschonung | 55 | Ressourcen schonen |
+| Bedürfnis | Basis | Frage | Beschreibung |
+|-----------|-------|-------|--------------|
+| umweltverantwortung | 55 | "Wie wichtig ist Ihnen persönliche Verantwortung für die Umwelt?" | Verantwortung für Umwelt |
+| nachhaltigkeit | 55 | "Wie wichtig ist es Ihnen, nachhaltig zu leben?" | Nachhaltig leben |
+| oekologisches_bewusstsein | 55 | "Wie ausgeprägt ist Ihr ökologisches Bewusstsein?" | Ökologisches Bewusstsein |
+| pragmatismus | 50 | "Wie pragmatisch gehen Sie mit Umweltthemen um?" | Pragmatischer Umgang |
+| klimaschutz | 55 | "Wie wichtig ist Ihnen aktiver Klimaschutz?" | Klimaschutz wichtig |
+| ressourcenschonung | 55 | "Wie wichtig ist Ihnen Ressourcenschonung im Alltag?" | Ressourcen schonen |
 
 #### Geschlecht-Deltas für Umweltbewusstsein
 
@@ -411,6 +411,193 @@ Beispiel für "kinderwunsch":
 
 **Quellen:**
 - Frauen zeigen höheres Umweltbewusstsein in Studien ([PwC 2024](https://www.pwc.com/gx/en/news-room/press-releases/2024/pwc-2024-voice-of-consumer-survey.html))
+
+---
+
+### 5.3 Tradition (pr-tradition)
+
+| Bedürfnis | Basis | Frage | Beschreibung |
+|-----------|-------|-------|--------------|
+| traditionsbewusstsein | 45 | "Wie wichtig sind Ihnen traditionelle Werte und Bräuche?" | Traditionelle Werte schätzen |
+| konservative_werte | 45 | "Wie stark identifizieren Sie sich mit konservativen Werten?" | Konservative Einstellung |
+| moderne_werte | 55 | "Wie offen sind Sie für moderne, progressive Werte?" | Progressive Einstellung |
+| kulturelle_tradition | 50 | "Wie wichtig ist Ihnen die Pflege kultureller Traditionen?" | Kulturelle Traditionen |
+| familienbräuche | 50 | "Wie wichtig sind Ihnen Familienbräuche und -rituale?" | Familienbräuche |
+| gesellschaftliche_normen | 45 | "Wie wichtig ist Ihnen die Einhaltung gesellschaftlicher Normen?" | Gesellschaftliche Normen |
+
+**Quellen:**
+- 21% der Deutschen identifizieren sich als konservativer, 15% als progressiver ([Statista Consumer Insights](https://de.statista.com/infografik/33429/umfrage-zum-wertewandel-in-verschiedenen-laendern/))
+
+---
+
+## TEIL 6: PRAKTISCHES
+
+### 6.1 Haustiere (pr-haustiere)
+
+| Bedürfnis | Basis | Frage | Beschreibung |
+|-----------|-------|-------|--------------|
+| tierhaltung | 50 | "Wie wichtig ist es Ihnen, Haustiere zu haben?" | Wunsch nach Haustieren |
+| tierliebe | 55 | "Wie ausgeprägt ist Ihre Tierliebe?" | Liebe zu Tieren |
+| verantwortung_tiere | 50 | "Wie bereit sind Sie, Verantwortung für Tiere zu übernehmen?" | Verantwortung für Tiere |
+| tier_mensch_bindung | 55 | "Wie wichtig ist Ihnen eine enge Bindung zu Haustieren?" | Bindung zu Tieren |
+| allergie_toleranz | 50 | "Wie tolerant sind Sie gegenüber Tierallergien/Tierhaltung anderer?" | Toleranz |
+| tierfreier_haushalt | 45 | "Wie wichtig ist Ihnen ein tierfreier Haushalt?" | Keine Tiere gewünscht |
+
+**Quellen:**
+- 44% der deutschen Haushalte haben Haustiere ([IVH/ZZF 2024](https://www.zzf.de/presse/meldungen/artikel/news/heimtierpopulation-2023))
+- 98% sagen Haustiere machen glücklich ([Uelzener 2024](https://www.presseportal.de/pm/174913/5833365))
+
+---
+
+### 6.2 Umzugsbereitschaft (pr-umzug)
+
+| Bedürfnis | Basis | Frage | Beschreibung |
+|-----------|-------|-------|--------------|
+| ortsgebundenheit | 50 | "Wie stark fühlen Sie sich an Ihren aktuellen Wohnort gebunden?" | Bindung an Wohnort |
+| umzugsbereitschaft | 50 | "Wie bereit wären Sie, für eine Beziehung umzuziehen?" | Bereitschaft umzuziehen |
+| fernbeziehung_toleranz | 45 | "Wie tolerant wären Sie gegenüber einer Fernbeziehung?" | Fernbeziehung akzeptieren |
+| flexibilitaet_wohnort | 50 | "Wie flexibel sind Sie bezüglich Ihres Wohnortes?" | Wohnort-Flexibilität |
+| heimatverbundenheit | 55 | "Wie stark ist Ihre Heimatverbundenheit?" | Verbundenheit zur Heimat |
+| abenteuer_neuer_ort | 45 | "Wie offen sind Sie für einen Neuanfang an einem neuen Ort?" | Offenheit für Neues |
+
+**Quellen:**
+- 70% würden innerhalb Deutschlands für die Liebe umziehen ([Immowelt](https://www.umzugspreisvergleich.de/presse/liebe-schlaegt-karriere-die-deutschen-ziehen-vor-allem-wegen-dem-partner-um/))
+- 59% sind schon mal für den Partner umgezogen
+
+---
+
+### 6.3 Herkunftsfamilie (pr-familie)
+
+| Bedürfnis | Basis | Frage | Beschreibung |
+|-----------|-------|-------|--------------|
+| familienkontakt | 55 | "Wie wichtig ist Ihnen regelmäßiger Kontakt zu Ihrer Herkunftsfamilie?" | Kontakt zur Familie |
+| familiennaehe | 55 | "Wie wichtig ist Ihnen räumliche Nähe zu Ihrer Familie?" | Nähe zur Familie |
+| familienfeste | 50 | "Wie wichtig sind Ihnen gemeinsame Familienfeste?" | Familienfeste |
+| elternbeziehung | 55 | "Wie wichtig ist Ihnen eine gute Beziehung zu Ihren Eltern?" | Beziehung zu Eltern |
+| geschwisterbeziehung | 50 | "Wie wichtig ist Ihnen die Beziehung zu Ihren Geschwistern?" | Beziehung zu Geschwistern |
+| familienunabhaengigkeit | 50 | "Wie wichtig ist Ihnen Unabhängigkeit von Ihrer Familie?" | Unabhängigkeit |
+
+**Quellen:**
+- 56 Mio. Deutsche halten Familie für besonders wichtig ([Statista/Allensbach](https://de.statista.com/statistik/daten/studie/173267/umfrage/lebenseinstellung-wert-der-familie/))
+
+---
+
+### 6.4 Finanzen (pr-finanzen)
+
+| Bedürfnis | Basis | Frage | Beschreibung |
+|-----------|-------|-------|--------------|
+| finanzielle_transparenz | 55 | "Wie wichtig ist Ihnen finanzielle Transparenz in der Beziehung?" | Offenheit über Finanzen |
+| gemeinsame_finanzen | 45 | "Wie wichtig ist Ihnen ein gemeinsames Konto/Finanzen?" | Gemeinsame Finanzen |
+| getrennte_finanzen | 50 | "Wie wichtig ist es Ihnen, getrennte Finanzen zu haben?" | Getrennte Finanzen |
+| finanzielle_sicherheit | 60 | "Wie wichtig ist Ihnen finanzielle Sicherheit?" | Finanzielle Sicherheit |
+| sparsamkeit | 50 | "Wie sparsam sind Sie im Alltag?" | Sparsamkeit |
+| grosszuegigkeit | 50 | "Wie großzügig sind Sie mit Geld?" | Großzügigkeit |
+
+**Quellen:**
+- 45% der Paare haben getrennte Konten, 33% gemeinsam, 18% Drei-Konten-Modell ([Postbank 2023](https://www.postbank.de/unternehmen/medien/meldungen/2023/maerz/lieber-getrennt-so-organisieren-paare-ihre-bankkonten.html))
+- 39% der Paare streiten über Geld
+
+---
+
+### 6.5 Karriere (pr-karriere)
+
+| Bedürfnis | Basis | Frage | Beschreibung |
+|-----------|-------|-------|--------------|
+| karriereorientierung | 50 | "Wie wichtig ist Ihnen beruflicher Erfolg?" | Beruflicher Erfolg |
+| work_life_balance | 60 | "Wie wichtig ist Ihnen eine gute Work-Life-Balance?" | Work-Life-Balance |
+| berufliche_selbstverwirklichung | 55 | "Wie wichtig ist Ihnen berufliche Selbstverwirklichung?" | Selbstverwirklichung |
+| familie_vor_karriere | 55 | "Wie stark priorisieren Sie Familie vor Karriere?" | Familie priorisieren |
+| karriere_vor_familie | 40 | "Wie stark priorisieren Sie Karriere vor Familie?" | Karriere priorisieren |
+| berufliche_flexibilitaet | 55 | "Wie wichtig ist Ihnen berufliche Flexibilität?" | Berufliche Flexibilität |
+
+**Quellen:**
+- 38% der Deutschen sind mit ihrer Work-Life-Balance zufrieden ([t3n 2023](https://t3n.de/news/work-life-balance-unzufrieden-umfrage-1562380/))
+- 86% der Arbeitgeber legen Wert auf Familienfreundlichkeit
+
+---
+
+### 6.6 Alleinzeit (pr-alleinzeit)
+
+| Bedürfnis | Basis | Frage | Beschreibung |
+|-----------|-------|-------|--------------|
+| zeit_fuer_sich | 55 | "Wie wichtig ist Ihnen Zeit nur für sich selbst?" | Zeit für sich |
+| me_time | 55 | "Wie wichtig ist Ihnen regelmäßige Me-Time?" | Me-Time |
+| raum_fuer_hobbys | 55 | "Wie wichtig ist Ihnen Raum für eigene Hobbys?" | Raum für Hobbys |
+| ungestoerte_zeit | 50 | "Wie wichtig ist Ihnen ungestörte Zeit?" | Ungestörte Zeit |
+| gemeinsame_zeit | 55 | "Wie wichtig ist Ihnen gemeinsame Zeit mit dem Partner?" | Gemeinsame Zeit |
+| balance_allein_zusammen | 55 | "Wie wichtig ist Ihnen eine Balance zwischen Allein- und Paarzeit?" | Balance |
+
+**Quellen:**
+- 72% haben genug Me-Time, 28% zu wenig ([EARSandEYES 2023](https://www.earsandeyes.com/blog/zeit-fur-sich-ist-faulpelz-sein-wirklich-so-schlimm/))
+- 40% haben täglich weniger als 45 Minuten Zeit für sich
+
+---
+
+### 6.7 Freunde (pr-freunde)
+
+| Bedürfnis | Basis | Frage | Beschreibung |
+|-----------|-------|-------|--------------|
+| eigene_freunde | 55 | "Wie wichtig sind Ihnen eigene, unabhängige Freundschaften?" | Eigene Freundschaften |
+| gemeinsame_freunde | 50 | "Wie wichtig sind Ihnen gemeinsame Freunde als Paar?" | Gemeinsame Freunde |
+| freundschaftspflege | 55 | "Wie wichtig ist Ihnen die Pflege von Freundschaften?" | Freundschaften pflegen |
+| freundeskreis_integration | 50 | "Wie wichtig ist Ihnen, dass Ihr Partner in Ihren Freundeskreis integriert ist?" | Integration Partner |
+| soziales_netzwerk | 55 | "Wie wichtig ist Ihnen ein breites soziales Netzwerk?" | Soziales Netzwerk |
+| beste_freunde | 55 | "Wie wichtig sind Ihnen enge, beste Freundschaften?" | Beste Freunde |
+
+**Quellen:**
+- 68% der Frauen wollen unabhängige Freundschaften, 57% der Männer ([ElitePartner 2024](https://www.elitepartner.de/studien/freundschaft-und-beziehung/))
+- Deutsche haben im Schnitt 3,7 enge Freunde
+
+---
+
+### 6.8 Romantik (pr-romantik)
+
+| Bedürfnis | Basis | Frage | Beschreibung |
+|-----------|-------|-------|--------------|
+| romantische_gesten | 55 | "Wie wichtig sind Ihnen romantische Gesten?" | Romantische Gesten |
+| ueberraschungen | 50 | "Wie wichtig sind Ihnen Überraschungen in der Beziehung?" | Überraschungen |
+| date_nights | 55 | "Wie wichtig sind Ihnen regelmäßige Date-Nights?" | Date-Nights |
+| liebesbekundungen | 55 | "Wie wichtig sind Ihnen verbale Liebesbekundungen?" | Liebesbekundungen |
+| romantische_atmosphaere | 50 | "Wie wichtig ist Ihnen eine romantische Atmosphäre?" | Romantische Atmosphäre |
+| alltags_romantik | 50 | "Wie wichtig ist Ihnen Romantik im Alltag?" | Alltags-Romantik |
+
+**Quellen:**
+- 70% der Deutschen glauben an Liebe auf den ersten Blick ([Statista](https://de.statista.com/themen/142/liebe/))
+- 24% sagen ihr Partner ist absolut romantisch
+
+---
+
+### 6.9 Ordnung (pr-ordnung)
+
+| Bedürfnis | Basis | Frage | Beschreibung |
+|-----------|-------|-------|--------------|
+| ordnungssinn | 55 | "Wie wichtig ist Ihnen Ordnung im Haushalt?" | Ordnung im Haushalt |
+| sauberkeit | 55 | "Wie wichtig ist Ihnen Sauberkeit?" | Sauberkeit |
+| struktur | 50 | "Wie wichtig ist Ihnen Struktur im Alltag?" | Struktur im Alltag |
+| chaos_toleranz | 45 | "Wie tolerant sind Sie gegenüber Unordnung?" | Toleranz für Unordnung |
+| putzen | 50 | "Wie wichtig ist Ihnen regelmäßiges Putzen?" | Regelmäßiges Putzen |
+| aufgabenteilung_haushalt | 55 | "Wie wichtig ist Ihnen eine faire Haushaltsaufteilung?" | Faire Aufgabenteilung |
+
+**Quellen:**
+- 96% halten Sauberkeit für wichtig, 75% sagen Ordnung ist sehr wichtig ([IKW Studie](https://www.ikw.org/haushaltspflege/presse/neue-ikw-studie-so-putzt-deutschland-haushaltspflege-zwischen-sozialisierung-und-nachhaltigkeit))
+- 44% der Paare streiten über Ordnung
+
+---
+
+### 6.10 Reisen (pr-reise)
+
+| Bedürfnis | Basis | Frage | Beschreibung |
+|-----------|-------|-------|--------------|
+| reisefreude | 55 | "Wie wichtig ist Ihnen regelmäßiges Reisen?" | Reisefreude |
+| abenteuer | 50 | "Wie wichtig ist Ihnen Abenteuer und Neues erleben?" | Abenteuer |
+| erholung | 55 | "Wie wichtig ist Ihnen Erholung im Urlaub?" | Erholung |
+| kulturelle_erlebnisse | 50 | "Wie wichtig sind Ihnen kulturelle Erlebnisse auf Reisen?" | Kulturelle Erlebnisse |
+| staycation | 45 | "Wie wohl fühlen Sie sich mit Urlaub zu Hause (Staycation)?" | Staycation |
+| fernreisen | 45 | "Wie wichtig sind Ihnen Fernreisen?" | Fernreisen |
+
+**Quellen:**
+- 63% der Deutschen machen mind. 1 Reise/Jahr (5+ Tage) ([ADAC Tourismusstudien 2024](https://www.adac.de/verkehr/standpunkte-studien/mobilitaets-trends/tourismusstudie-reisen/))
+- 2-3 Urlaube pro Jahr ist der Durchschnitt
 
 ---
 
