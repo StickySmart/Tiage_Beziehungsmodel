@@ -646,141 +646,141 @@ const GfkBeduerfnisse = {
         // ═══════════════════════════════════════════════════════════════════════
 
         // ─────────────────────────────────────────────────────────────────────
-        // LEBENSPLANUNG - Pirsig
+        // LEBENSPLANUNG - Pirsig (vereinfacht)
         // ─────────────────────────────────────────────────────────────────────
-        biologisches_muster: { label: "Biologisches Muster", kategorie: "lebensplanung", sekundaer: ["existenz"], description: "Bedürfnis nach biologischer Kontinuität, Fortpflanzung, Stamm" },
-        soziales_muster: { label: "Soziales Muster", kategorie: "lebensplanung", sekundaer: ["teilnahme"], description: "Bedürfnis nach sozialen Strukturen, Institutionen, Tradition" },
-        statische_stabilitaet: { label: "Statische Stabilität", kategorie: "lebensplanung", sekundaer: ["sicherheit"], description: "Bedürfnis nach festen Mustern, Vorhersehbarkeit, Struktur" },
-        qualitaet_der_fuersorge: { label: "Qualität der Fürsorge", kategorie: "lebensplanung", sekundaer: ["zuneigung"], description: "Bedürfnis nach sorgfältiger Planung, Care, Verantwortung" },
+        biologisches_muster: { label: "Gene weitergeben", kategorie: "lebensplanung", sekundaer: ["existenz"], description: "Wie wichtig ist dir, dass deine Familie und Gene weiterleben?" },
+        soziales_muster: { label: "Tradition & Institutionen", kategorie: "lebensplanung", sekundaer: ["teilnahme"], description: "Wie wichtig sind dir feste soziale Strukturen wie Ehe, Rituale?" },
+        statische_stabilitaet: { label: "Vorhersehbarkeit", kategorie: "lebensplanung", sekundaer: ["sicherheit"], description: "Wie wichtig ist dir ein planbares, strukturiertes Leben?" },
+        qualitaet_der_fuersorge: { label: "Sorgfältige Planung", kategorie: "lebensplanung", sekundaer: ["zuneigung"], description: "Wie wichtig ist dir verantwortungsvolle Lebensplanung?" },
 
         // ─────────────────────────────────────────────────────────────────────
-        // LEBENSPLANUNG - Osho
+        // LEBENSPLANUNG - Osho (vereinfacht)
         // ─────────────────────────────────────────────────────────────────────
-        familien_rebellion: { label: "Familien-Rebellion", kategorie: "lebensplanung", sekundaer: ["freiheit"], description: "Bedürfnis gegen traditionelle Familienstrukturen zu rebellieren" },
-        zorba_das_kind: { label: "Zorba das Kind", kategorie: "lebensplanung", sekundaer: ["musse", "zuneigung"], description: "Bedürfnis nach weltlicher Freude am Familienleben (Zorba-Aspekt)" },
-        nicht_anhaften_an_familie: { label: "Nicht-Anhaften an Familie", kategorie: "lebensplanung", sekundaer: ["freiheit"], description: "Bedürfnis nach Nicht-Anhaftung trotz Familienbindung" },
-        bewusste_elternschaft: { label: "Bewusste Elternschaft", kategorie: "lebensplanung", sekundaer: ["identitaet"], description: "Bedürfnis nach bewusster, nicht-konditionierter Erziehung" },
-        commune_statt_kernfamilie: { label: "Kommune statt Kernfamilie", kategorie: "lebensplanung", sekundaer: ["teilnahme"], description: "Bedürfnis nach Gemeinschaftsleben statt Kleinfamilie" },
+        familien_rebellion: { label: "Gegen Familien-Tradition", kategorie: "lebensplanung", sekundaer: ["freiheit"], description: "Wie stark möchtest du dich von traditionellen Familienmustern lösen?" },
+        zorba_das_kind: { label: "Lebensfreude & Spiritualität", kategorie: "lebensplanung", sekundaer: ["musse", "zuneigung"], description: "Wie wichtig ist dir weltliche Freude UND spirituelle Tiefe?" },
+        nicht_anhaften_an_familie: { label: "Innere Freiheit trotz Familie", kategorie: "lebensplanung", sekundaer: ["freiheit"], description: "Wie wichtig ist dir innere Unabhängigkeit auch in der Familie?" },
+        bewusste_elternschaft: { label: "Bewusste Erziehung", kategorie: "lebensplanung", sekundaer: ["identitaet"], description: "Wie wichtig ist dir, Kinder ohne gesellschaftliche Konditionierung zu erziehen?" },
+        commune_statt_kernfamilie: { label: "Gemeinschaft statt Kleinfamilie", kategorie: "lebensplanung", sekundaer: ["teilnahme"], description: "Wie offen bist du für Gemeinschaftsleben statt klassische Kleinfamilie?" },
 
         // ─────────────────────────────────────────────────────────────────────
-        // FINANZEN & KARRIERE - Pirsig
+        // FINANZEN & KARRIERE - Pirsig (vereinfacht)
         // ─────────────────────────────────────────────────────────────────────
-        gumption: { label: "Gumption", kategorie: "finanzen_karriere", sekundaer: ["identitaet", "erschaffen"], description: "Bedürfnis nach innerer Motivation, Enthusiasmus, Flow in der Arbeit" },
-        qualitaet_der_arbeit: { label: "Qualität der Arbeit", kategorie: "finanzen_karriere", sekundaer: ["identitaet"], description: "Bedürfnis nach handwerklicher Exzellenz, Perfektion, Meisterschaft" },
-        intellektuelles_muster: { label: "Intellektuelles Muster", kategorie: "finanzen_karriere", sekundaer: ["identitaet", "erschaffen"], description: "Bedürfnis nach konzeptueller Arbeit, Verstehen, Systematik" },
-        dynamische_evolution: { label: "Dynamische Evolution", kategorie: "finanzen_karriere", sekundaer: ["erschaffen", "freiheit"], description: "Bedürfnis nach beruflicher Evolution, Wachstum, Innovation" },
-        klassisches_verstehen: { label: "Klassisches Verstehen", kategorie: "finanzen_karriere", sekundaer: ["identitaet"], description: "Bedürfnis nach analytischem, strukturiertem Arbeiten" },
+        gumption: { label: "Flow bei der Arbeit", kategorie: "finanzen_karriere", sekundaer: ["identitaet", "erschaffen"], description: "Wie wichtig ist dir innere Motivation und Begeisterung bei der Arbeit?" },
+        qualitaet_der_arbeit: { label: "Handwerkliche Perfektion", kategorie: "finanzen_karriere", sekundaer: ["identitaet"], description: "Wie wichtig ist dir Exzellenz und Meisterschaft in deiner Arbeit?" },
+        intellektuelles_muster: { label: "Konzeptuelle Arbeit", kategorie: "finanzen_karriere", sekundaer: ["identitaet", "erschaffen"], description: "Wie wichtig ist dir systematisches Verstehen und Durchdenken?" },
+        dynamische_evolution: { label: "Berufliche Entwicklung", kategorie: "finanzen_karriere", sekundaer: ["erschaffen", "freiheit"], description: "Wie wichtig ist dir kontinuierliches Wachstum und Innovation?" },
+        klassisches_verstehen: { label: "Analytisches Arbeiten", kategorie: "finanzen_karriere", sekundaer: ["identitaet"], description: "Wie wichtig ist dir strukturiertes, logisches Arbeiten?" },
 
         // ─────────────────────────────────────────────────────────────────────
-        // FINANZEN & KARRIERE - Osho
+        // FINANZEN & KARRIERE - Osho (vereinfacht)
         // ─────────────────────────────────────────────────────────────────────
-        arbeit_als_meditation: { label: "Arbeit als Meditation", kategorie: "finanzen_karriere", sekundaer: ["verbundenheit", "identitaet"], description: "Bedürfnis nach Arbeit als spirituelle Praxis, Präsenz" },
-        nicht_karriere: { label: "Nicht-Karriere", kategorie: "finanzen_karriere", sekundaer: ["freiheit"], description: "Bedürfnis nach Ablehnung von Karriere-Ambition, Statusdenken" },
-        zorba_der_unternehmer: { label: "Zorba der Unternehmer", kategorie: "finanzen_karriere", sekundaer: ["musse", "identitaet"], description: "Bedürfnis nach weltlichem Erfolg UND Spiritualität" },
-        nicht_anhaften_an_geld: { label: "Nicht-Anhaften an Geld", kategorie: "finanzen_karriere", sekundaer: ["freiheit"], description: "Bedürfnis nach finanzieller Freiheit durch Nicht-Anhaften" },
-        kreative_selbstverwirklichung: { label: "Kreative Selbstverwirklichung", kategorie: "finanzen_karriere", sekundaer: ["erschaffen", "identitaet"], description: "Bedürfnis nach Arbeit als kreativem Ausdruck, nicht Gelderwerb" },
+        arbeit_als_meditation: { label: "Achtsames Arbeiten", kategorie: "finanzen_karriere", sekundaer: ["verbundenheit", "identitaet"], description: "Wie wichtig ist dir volle Präsenz und Achtsamkeit bei der Arbeit?" },
+        nicht_karriere: { label: "Kein Karriere-Druck", kategorie: "finanzen_karriere", sekundaer: ["freiheit"], description: "Wie wichtig ist dir, frei von Statusdenken und Karrierezwang zu sein?" },
+        zorba_der_unternehmer: { label: "Erfolg & Sinnerfüllung", kategorie: "finanzen_karriere", sekundaer: ["musse", "identitaet"], description: "Wie wichtig ist dir weltlicher Erfolg UND innere Erfüllung?" },
+        nicht_anhaften_an_geld: { label: "Innere Freiheit von Geld", kategorie: "finanzen_karriere", sekundaer: ["freiheit"], description: "Wie wichtig ist dir, nicht von Geld abhängig zu fühlen?" },
+        kreative_selbstverwirklichung: { label: "Kreative Selbstverwirklichung", kategorie: "finanzen_karriere", sekundaer: ["erschaffen", "identitaet"], description: "Wie wichtig ist dir Arbeit als kreativer Ausdruck statt nur Gelderwerb?" },
 
         // ─────────────────────────────────────────────────────────────────────
-        // KOMMUNIKATION & STIL - Pirsig
+        // KOMMUNIKATION & STIL - Pirsig (vereinfacht)
         // ─────────────────────────────────────────────────────────────────────
-        romantisches_verstehen: { label: "Romantisches Verstehen", kategorie: "kommunikation_stil", sekundaer: ["verstaendnis", "verbundenheit"], description: "Bedürfnis nach intuitivem, ganzheitlichem Kommunizieren" },
-        klassische_klarheit: { label: "Klassische Klarheit", kategorie: "kommunikation_stil", sekundaer: ["identitaet"], description: "Bedürfnis nach präziser, analytischer Kommunikation" },
-        dialektik: { label: "Dialektik", kategorie: "kommunikation_stil", sekundaer: ["verstaendnis", "erschaffen"], description: "Bedürfnis nach philosophischem Dialog, Sokrates-Methode" },
-        qualitaets_ausdruck: { label: "Qualitäts-Ausdruck", kategorie: "kommunikation_stil", sekundaer: ["identitaet", "erschaffen"], description: "Bedürfnis nach qualitativ hochwertigem Ausdruck, Eloquenz" },
-        care_im_gespraech: { label: "Care im Gespräch", kategorie: "kommunikation_stil", sekundaer: ["zuneigung", "verstaendnis"], description: "Bedürfnis nach sorgfältiger, achtsamer Kommunikation" },
+        romantisches_verstehen: { label: "Intuitiv kommunizieren", kategorie: "kommunikation_stil", sekundaer: ["verstaendnis", "verbundenheit"], description: "Wie wichtig ist dir gefühlsbetontes, ganzheitliches Kommunizieren?" },
+        klassische_klarheit: { label: "Klar & präzise sprechen", kategorie: "kommunikation_stil", sekundaer: ["identitaet"], description: "Wie wichtig ist dir logische, analytische Kommunikation?" },
+        dialektik: { label: "Tiefe Gespräche führen", kategorie: "kommunikation_stil", sekundaer: ["verstaendnis", "erschaffen"], description: "Wie wichtig ist dir philosophischer Dialog und gemeinsames Erkunden?" },
+        qualitaets_ausdruck: { label: "Eloquenz", kategorie: "kommunikation_stil", sekundaer: ["identitaet", "erschaffen"], description: "Wie wichtig ist dir hochwertiger, überlegter Ausdruck?" },
+        care_im_gespraech: { label: "Achtsame Kommunikation", kategorie: "kommunikation_stil", sekundaer: ["zuneigung", "verstaendnis"], description: "Wie wichtig ist dir sorgfältiges, aufmerksames Zuhören und Sprechen?" },
 
         // ─────────────────────────────────────────────────────────────────────
-        // KOMMUNIKATION & STIL - Osho
+        // KOMMUNIKATION & STIL - Osho (vereinfacht)
         // ─────────────────────────────────────────────────────────────────────
-        schweigen_statt_worte: { label: "Schweigen statt Worte", kategorie: "kommunikation_stil", sekundaer: ["verbundenheit", "musse"], description: "Bedürfnis nach Stille, non-verbaler Kommunikation" },
-        radikale_ehrlichkeit: { label: "Radikale Ehrlichkeit", kategorie: "kommunikation_stil", sekundaer: ["identitaet", "freiheit"], description: "Bedürfnis nach kompromissloser Wahrheit, keine Höflichkeit" },
-        humorvolle_leichtigkeit: { label: "Humorvolle Leichtigkeit", kategorie: "kommunikation_stil", sekundaer: ["musse", "verbundenheit"], description: "Bedürfnis nach Lachen, Witz, spielerischer Kommunikation" },
-        paradoxe_weisheit: { label: "Paradoxe Weisheit", kategorie: "kommunikation_stil", sekundaer: ["erschaffen", "verbundenheit"], description: "Bedürfnis nach Zen-Koans, Widersprüchen, Rätsel statt Logik" },
-        herz_statt_kopf: { label: "Herz statt Kopf", kategorie: "kommunikation_stil", sekundaer: ["zuneigung", "verbundenheit"], description: "Bedürfnis nach emotionaler statt rationaler Kommunikation" },
-        authentischer_ausdruck: { label: "Authentischer Ausdruck", kategorie: "kommunikation_stil", sekundaer: ["identitaet", "freiheit"], description: "Bedürfnis nach ungefilterten Gefühlen, keine soziale Maske" },
+        schweigen_statt_worte: { label: "Gemeinsame Stille", kategorie: "kommunikation_stil", sekundaer: ["verbundenheit", "musse"], description: "Wie wichtig ist dir Verbindung durch Stille statt ständigem Reden?" },
+        radikale_ehrlichkeit: { label: "Kompromisslose Ehrlichkeit", kategorie: "kommunikation_stil", sekundaer: ["identitaet", "freiheit"], description: "Wie wichtig ist dir ungeschönte Wahrheit, auch wenn es unangenehm ist?" },
+        humorvolle_leichtigkeit: { label: "Humor & Leichtigkeit", kategorie: "kommunikation_stil", sekundaer: ["musse", "verbundenheit"], description: "Wie wichtig ist dir spielerische, humorvolle Kommunikation?" },
+        paradoxe_weisheit: { label: "Widersprüche aushalten", kategorie: "kommunikation_stil", sekundaer: ["erschaffen", "verbundenheit"], description: "Wie wichtig ist dir, Widersprüche zuzulassen statt alles erklären zu müssen?" },
+        herz_statt_kopf: { label: "Gefühl vor Verstand", kategorie: "kommunikation_stil", sekundaer: ["zuneigung", "verbundenheit"], description: "Wie wichtig ist dir emotionale statt rationaler Kommunikation?" },
+        authentischer_ausdruck: { label: "Echt sein ohne Maske", kategorie: "kommunikation_stil", sekundaer: ["identitaet", "freiheit"], description: "Wie wichtig ist dir, ungefiltert du selbst zu sein?" },
 
         // ─────────────────────────────────────────────────────────────────────
-        // SOZIALES LEBEN - Pirsig
+        // SOZIALES LEBEN - Pirsig (vereinfacht)
         // ─────────────────────────────────────────────────────────────────────
-        soziale_qualitaet: { label: "Soziale Qualität", kategorie: "soziales_leben", sekundaer: ["teilnahme", "verstaendnis"], description: "Bedürfnis nach hochwertigen sozialen Beziehungen" },
-        tribe_muster: { label: "Tribe-Muster", kategorie: "soziales_leben", sekundaer: ["teilnahme", "sicherheit"], description: "Bedürfnis nach Stammes-Zugehörigkeit, Gruppe, Identität" },
-        intellektuelle_gemeinschaft: { label: "Intellektuelle Gemeinschaft", kategorie: "soziales_leben", sekundaer: ["erschaffen", "verstaendnis"], description: "Bedürfnis nach Gleichgesinnten, philosophischem Austausch" },
-        statische_sozialstrukturen: { label: "Statische Sozialstrukturen", kategorie: "soziales_leben", sekundaer: ["sicherheit"], description: "Bedürfnis nach festen sozialen Rollen, Hierarchien" },
+        soziale_qualitaet: { label: "Tiefe Freundschaften", kategorie: "soziales_leben", sekundaer: ["teilnahme", "verstaendnis"], description: "Wie wichtig sind dir wenige, aber hochwertige soziale Beziehungen?" },
+        tribe_muster: { label: "Gruppenzugehörigkeit", kategorie: "soziales_leben", sekundaer: ["teilnahme", "sicherheit"], description: "Wie wichtig ist dir Zugehörigkeit zu einer festen Gruppe?" },
+        intellektuelle_gemeinschaft: { label: "Gleichgesinnte finden", kategorie: "soziales_leben", sekundaer: ["erschaffen", "verstaendnis"], description: "Wie wichtig ist dir Austausch mit intellektuell Gleichgesinnten?" },
+        statische_sozialstrukturen: { label: "Feste soziale Rollen", kategorie: "soziales_leben", sekundaer: ["sicherheit"], description: "Wie wichtig sind dir klare Rollen und Hierarchien im Umfeld?" },
 
         // ─────────────────────────────────────────────────────────────────────
-        // SOZIALES LEBEN - Osho
+        // SOZIALES LEBEN - Osho (vereinfacht)
         // ─────────────────────────────────────────────────────────────────────
-        sannyas_gemeinschaft: { label: "Sannyas-Gemeinschaft", kategorie: "soziales_leben", sekundaer: ["teilnahme", "verbundenheit"], description: "Bedürfnis nach spiritueller Commune, Ashram-Leben" },
-        rebellion_gegen_gesellschaft: { label: "Rebellion gegen Gesellschaft", kategorie: "soziales_leben", sekundaer: ["freiheit", "identitaet"], description: "Bedürfnis nach Ablehnung gesellschaftlicher Normen" },
-        einsamkeit_in_menge: { label: "Einsamkeit in Menge", kategorie: "soziales_leben", sekundaer: ["freiheit", "identitaet"], description: "Bedürfnis allein zu sein AUCH in Gemeinschaft" },
-        celebration_mit_anderen: { label: "Celebration mit Anderen", kategorie: "soziales_leben", sekundaer: ["musse", "verbundenheit"], description: "Bedürfnis nach gemeinsamer Freude, Festen, Tanz" },
-        keine_freundschaft_besitz: { label: "Keine Freundschafts-Besitz", kategorie: "soziales_leben", sekundaer: ["freiheit"], description: "Bedürfnis nach Nicht-Anhaften an Freunde, Fluidity" },
-        tantra_gruppe: { label: "Tantra-Gruppe", kategorie: "soziales_leben", sekundaer: ["verbundenheit", "zuneigung"], description: "Bedürfnis nach Gruppen-Intimität, energetischem Austausch" },
+        sannyas_gemeinschaft: { label: "Spirituelle Gemeinschaft", kategorie: "soziales_leben", sekundaer: ["teilnahme", "verbundenheit"], description: "Wie wichtig ist dir Leben in einer spirituellen Gemeinschaft?" },
+        rebellion_gegen_gesellschaft: { label: "Gesellschaftliche Normen hinterfragen", kategorie: "soziales_leben", sekundaer: ["freiheit", "identitaet"], description: "Wie wichtig ist dir, gesellschaftliche Konventionen abzulehnen?" },
+        einsamkeit_in_menge: { label: "Allein sein können", kategorie: "soziales_leben", sekundaer: ["freiheit", "identitaet"], description: "Wie wichtig ist dir, auch in Gesellschaft bei dir selbst zu sein?" },
+        celebration_mit_anderen: { label: "Gemeinsam feiern", kategorie: "soziales_leben", sekundaer: ["musse", "verbundenheit"], description: "Wie wichtig sind dir gemeinsame Freude, Feste und Tanz?" },
+        keine_freundschaft_besitz: { label: "Freundschaft ohne Besitz", kategorie: "soziales_leben", sekundaer: ["freiheit"], description: "Wie wichtig ist dir, Freunde nicht festzuhalten?" },
+        tantra_gruppe: { label: "Intensive Gruppenverbindung", kategorie: "soziales_leben", sekundaer: ["verbundenheit", "zuneigung"], description: "Wie wichtig ist dir tiefe Intimität in Gruppenkontext?" },
 
         // ─────────────────────────────────────────────────────────────────────
-        // INTIMITÄT & BEZIEHUNG - Pirsig
+        // INTIMITÄT & BEZIEHUNG - Pirsig (vereinfacht)
         // ─────────────────────────────────────────────────────────────────────
-        biologische_anziehung: { label: "Biologische Anziehung", kategorie: "intimitaet_beziehung", sekundaer: ["existenz"], description: "Bedürfnis nach körperlicher Chemie, Instinkt, Pheromonen" },
-        intellektuelle_verbindung: { label: "Intellektuelle Verbindung", kategorie: "intimitaet_beziehung", sekundaer: ["verstaendnis", "erschaffen"], description: "Bedürfnis nach geistigem Match, gemeinsamer Wellenlänge" },
-        qualitaet_der_beruehrung: { label: "Qualität der Berührung", kategorie: "intimitaet_beziehung", sekundaer: ["zuneigung"], description: "Bedürfnis nach achtsamer, präsenter Berührung" },
-        dynamische_liebe: { label: "Dynamische Liebe", kategorie: "intimitaet_beziehung", sekundaer: ["zuneigung", "erschaffen"], description: "Bedürfnis nach sich entwickelnder, wachsender Liebe" },
-        care_in_intimitaet: { label: "Care in Intimität", kategorie: "intimitaet_beziehung", sekundaer: ["zuneigung", "sicherheit"], description: "Bedürfnis nach Sorgfalt, Aufmerksamkeit, Präzision" },
+        biologische_anziehung: { label: "Körperliche Chemie", kategorie: "intimitaet_beziehung", sekundaer: ["existenz"], description: "Wie wichtig ist dir instinktive körperliche Anziehung?" },
+        intellektuelle_verbindung: { label: "Geistige Verbindung", kategorie: "intimitaet_beziehung", sekundaer: ["verstaendnis", "erschaffen"], description: "Wie wichtig ist dir, auf einer Wellenlänge zu denken?" },
+        qualitaet_der_beruehrung: { label: "Achtsame Berührung", kategorie: "intimitaet_beziehung", sekundaer: ["zuneigung"], description: "Wie wichtig ist dir präsente, aufmerksame Berührung?" },
+        dynamische_liebe: { label: "Wachsende Liebe", kategorie: "intimitaet_beziehung", sekundaer: ["zuneigung", "erschaffen"], description: "Wie wichtig ist dir, dass Liebe sich weiterentwickelt?" },
+        care_in_intimitaet: { label: "Sorgfalt in Intimität", kategorie: "intimitaet_beziehung", sekundaer: ["zuneigung", "sicherheit"], description: "Wie wichtig ist dir achtsame, aufmerksame Intimität?" },
 
         // ─────────────────────────────────────────────────────────────────────
-        // INTIMITÄT & BEZIEHUNG - Osho
+        // INTIMITÄT & BEZIEHUNG - Osho (vereinfacht)
         // ─────────────────────────────────────────────────────────────────────
-        sex_als_meditation: { label: "Sex als Meditation", kategorie: "intimitaet_beziehung", sekundaer: ["verbundenheit"], description: "Bedürfnis nach tantrischer Sexualität, spiritueller Vereinigung" },
-        liebe_ohne_beziehung: { label: "Liebe ohne Beziehung", kategorie: "intimitaet_beziehung", sekundaer: ["freiheit", "zuneigung"], description: "Bedürfnis nach Liebe OHNE Besitz, Eifersucht, Erwartung" },
-        orgastisches_leben: { label: "Orgastisches Leben", kategorie: "intimitaet_beziehung", sekundaer: ["existenz", "verbundenheit"], description: "Bedürfnis nach ganzem Körper als erogene Zone, totale Hingabe" },
-        nicht_anhaften_an_partner: { label: "Nicht-Anhaften an Partner", kategorie: "intimitaet_beziehung", sekundaer: ["freiheit"], description: "Bedürfnis nach Freiheit IN der Beziehung" },
-        hier_und_jetzt_intimitaet: { label: "Hier-und-Jetzt-Intimität", kategorie: "intimitaet_beziehung", sekundaer: ["verbundenheit"], description: "Bedürfnis nach völliger Präsenz, keine Vergangenheit/Zukunft" },
-        polyamore_energie: { label: "Polyamore Energie", kategorie: "intimitaet_beziehung", sekundaer: ["freiheit", "zuneigung"], description: "Bedürfnis nach Liebe zu vielen, keine Monogamie" },
-        wildheit_und_zartheit: { label: "Wildheit und Zartheit", kategorie: "intimitaet_beziehung", sekundaer: ["dynamik"], description: "Bedürfnis nach beidem: animalisch UND sanft" },
-        meditation_zu_zweit: { label: "Meditation zu zweit", kategorie: "intimitaet_beziehung", sekundaer: ["verbundenheit"], description: "Bedürfnis nach gemeinsamer Stille, energetischer Fusion" },
+        sex_als_meditation: { label: "Spirituelle Sexualität", kategorie: "intimitaet_beziehung", sekundaer: ["verbundenheit"], description: "Wie wichtig ist dir achtsame, spirituelle Sexualität?" },
+        liebe_ohne_beziehung: { label: "Liebe ohne Besitzanspruch", kategorie: "intimitaet_beziehung", sekundaer: ["freiheit", "zuneigung"], description: "Wie wichtig ist dir Liebe OHNE Besitzdenken oder Eifersucht?" },
+        orgastisches_leben: { label: "Volle Hingabe", kategorie: "intimitaet_beziehung", sekundaer: ["existenz", "verbundenheit"], description: "Wie wichtig ist dir totale körperliche und emotionale Hingabe?" },
+        nicht_anhaften_an_partner: { label: "Freiheit in der Beziehung", kategorie: "intimitaet_beziehung", sekundaer: ["freiheit"], description: "Wie wichtig ist dir innere Freiheit auch IN einer Beziehung?" },
+        hier_und_jetzt_intimitaet: { label: "Im Moment sein", kategorie: "intimitaet_beziehung", sekundaer: ["verbundenheit"], description: "Wie wichtig ist dir volle Präsenz ohne Vergangenheit/Zukunft?" },
+        polyamore_energie: { label: "Offenheit für Mehrfachliebe", kategorie: "intimitaet_beziehung", sekundaer: ["freiheit", "zuneigung"], description: "Wie offen bist du für Liebe zu mehreren Menschen?" },
+        wildheit_und_zartheit: { label: "Wild & Zärtlich", kategorie: "intimitaet_beziehung", sekundaer: ["dynamik"], description: "Wie wichtig ist dir das Spiel zwischen Leidenschaft und Sanftheit?" },
+        meditation_zu_zweit: { label: "Gemeinsame Stille", kategorie: "intimitaet_beziehung", sekundaer: ["verbundenheit"], description: "Wie wichtig ist dir stille Verbindung und Meditation zu zweit?" },
 
         // ─────────────────────────────────────────────────────────────────────
-        // WERTE & HALTUNG - Pirsig
+        // WERTE & HALTUNG - Pirsig (vereinfacht)
         // ─────────────────────────────────────────────────────────────────────
-        qualitaet_als_gott: { label: "Qualität als Gott", kategorie: "werte_haltung", sekundaer: ["identitaet", "verbundenheit"], description: "Bedürfnis nach Qualität als höchstem Wert, Metaphysik" },
-        rationaler_mystizismus: { label: "Rationaler Mystizismus", kategorie: "werte_haltung", sekundaer: ["identitaet", "verbundenheit"], description: "Bedürfnis nach Verbindung von Logik UND Spiritualität" },
-        aristotelische_vernunft: { label: "Aristotelische Vernunft", kategorie: "werte_haltung", sekundaer: ["identitaet"], description: "Bedürfnis nach logischem Denken, Kausalität, Objektivität" },
-        platonische_ideen: { label: "Platonische Ideen", kategorie: "werte_haltung", sekundaer: ["verbundenheit"], description: "Bedürfnis nach absoluten Werten, ewigen Wahrheiten" },
-        buddhistische_achtsamkeit: { label: "Buddhistische Achtsamkeit", kategorie: "werte_haltung", sekundaer: ["verbundenheit", "identitaet"], description: "Bedürfnis nach Präsenz, Nicht-Dualität (Pirsig's Zen)" },
+        qualitaet_als_gott: { label: "Qualität als höchster Wert", kategorie: "werte_haltung", sekundaer: ["identitaet", "verbundenheit"], description: "Wie wichtig ist dir Qualität als Lebensphilosophie?" },
+        rationaler_mystizismus: { label: "Logik & Spiritualität", kategorie: "werte_haltung", sekundaer: ["identitaet", "verbundenheit"], description: "Wie wichtig ist dir die Verbindung von Vernunft UND Transzendenz?" },
+        aristotelische_vernunft: { label: "Logisches Denken", kategorie: "werte_haltung", sekundaer: ["identitaet"], description: "Wie wichtig ist dir rationales, objektives Denken?" },
+        platonische_ideen: { label: "Ewige Wahrheiten", kategorie: "werte_haltung", sekundaer: ["verbundenheit"], description: "Wie wichtig ist dir der Glaube an absolute, zeitlose Werte?" },
+        buddhistische_achtsamkeit: { label: "Zen-Achtsamkeit", kategorie: "werte_haltung", sekundaer: ["verbundenheit", "identitaet"], description: "Wie wichtig ist dir achtsame Präsenz im Hier und Jetzt?" },
 
         // ─────────────────────────────────────────────────────────────────────
-        // WERTE & HALTUNG - Osho
+        // WERTE & HALTUNG - Osho (vereinfacht)
         // ─────────────────────────────────────────────────────────────────────
-        religionslosigkeit: { label: "Religionslosigkeit", kategorie: "werte_haltung", sekundaer: ["freiheit"], description: "Bedürfnis nach Ablehnung aller organisierten Religionen" },
-        eigene_wahrheit: { label: "Eigene Wahrheit", kategorie: "werte_haltung", sekundaer: ["identitaet", "freiheit"], description: "Bedürfnis nach selbst gefundener Wahrheit, keine Dogmen" },
-        zen_paradox: { label: "Zen-Paradox", kategorie: "werte_haltung", sekundaer: ["erschaffen", "verbundenheit"], description: "Bedürfnis nach Widersprüchen, Koans, Nicht-Wissen" },
-        tantra_als_weg: { label: "Tantra als Weg", kategorie: "werte_haltung", sekundaer: ["verbundenheit", "existenz"], description: "Bedürfnis nach Bejahung des Körpers, keine Askese" },
-        politische_rebellion: { label: "Politische Rebellion", kategorie: "werte_haltung", sekundaer: ["freiheit"], description: "Bedürfnis nach Ablehnung ALLER politischer Systeme" },
-        individueller_anarchismus: { label: "Individueller Anarchismus", kategorie: "werte_haltung", sekundaer: ["freiheit", "identitaet"], description: "Bedürfnis nach radikaler Freiheit, keine Autorität" },
-        leben_als_kunst: { label: "Leben als Kunst", kategorie: "werte_haltung", sekundaer: ["erschaffen", "musse"], description: "Bedürfnis nach Leben als kreativem Akt, nicht moralisch" },
-        celebration_statt_gebet: { label: "Celebration statt Gebet", kategorie: "werte_haltung", sekundaer: ["musse", "verbundenheit"], description: "Bedürfnis nach Freude statt Ernsthaftigkeit in Spiritualität" },
+        religionslosigkeit: { label: "Frei von Religion", kategorie: "werte_haltung", sekundaer: ["freiheit"], description: "Wie wichtig ist dir Unabhängigkeit von organisierten Religionen?" },
+        eigene_wahrheit: { label: "Eigene Wahrheit finden", kategorie: "werte_haltung", sekundaer: ["identitaet", "freiheit"], description: "Wie wichtig ist dir, deine eigene Wahrheit zu entdecken statt Dogmen zu folgen?" },
+        zen_paradox: { label: "Nicht-Wissen genießen", kategorie: "werte_haltung", sekundaer: ["erschaffen", "verbundenheit"], description: "Wie wichtig ist dir, Mysterien stehen zu lassen statt alles zu erklären?" },
+        tantra_als_weg: { label: "Körperbejahung", kategorie: "werte_haltung", sekundaer: ["verbundenheit", "existenz"], description: "Wie wichtig ist dir, den Körper als heilig zu sehen statt zu unterdrücken?" },
+        politische_rebellion: { label: "Politisch unabhängig", kategorie: "werte_haltung", sekundaer: ["freiheit"], description: "Wie wichtig ist dir Unabhängigkeit von allen politischen Systemen?" },
+        individueller_anarchismus: { label: "Radikale Selbstbestimmung", kategorie: "werte_haltung", sekundaer: ["freiheit", "identitaet"], description: "Wie wichtig ist dir völlige Unabhängigkeit von äußeren Autoritäten?" },
+        leben_als_kunst: { label: "Leben als Kunstwerk", kategorie: "werte_haltung", sekundaer: ["erschaffen", "musse"], description: "Wie wichtig ist dir, dein Leben kreativ zu gestalten statt Regeln zu folgen?" },
+        celebration_statt_gebet: { label: "Feiern statt Beten", kategorie: "werte_haltung", sekundaer: ["musse", "verbundenheit"], description: "Wie wichtig ist dir freudvolle Spiritualität statt ernster Religiosität?" },
 
         // ─────────────────────────────────────────────────────────────────────
-        // PRAKTISCHES LEBEN - Pirsig
+        // PRAKTISCHES LEBEN - Pirsig (vereinfacht)
         // ─────────────────────────────────────────────────────────────────────
-        motorrad_pflege: { label: "Motorrad-Pflege", kategorie: "praktisches_leben", sekundaer: ["identitaet"], description: "Bedürfnis nach handwerklicher Sorgfalt, Wartung, Technik" },
-        gumption_im_alltag: { label: "Gumption im Alltag", kategorie: "praktisches_leben", sekundaer: ["identitaet", "musse"], description: "Bedürfnis nach Motivation, Flow in täglichen Aufgaben" },
-        stuck_vermeiden: { label: "Stuck vermeiden", kategorie: "praktisches_leben", sekundaer: ["freiheit", "erschaffen"], description: "Bedürfnis nach Flexibilität, Nicht-Festgefahren-Sein" },
-        klassische_ordnung: { label: "Klassische Ordnung", kategorie: "praktisches_leben", sekundaer: ["sicherheit", "identitaet"], description: "Bedürfnis nach Systematik, Checklisten, Struktur" },
-        romantisches_chaos: { label: "Romantisches Chaos", kategorie: "praktisches_leben", sekundaer: ["freiheit", "erschaffen"], description: "Bedürfnis nach spontanem, intuitivem Alltag (Gegen-Ordnung)" },
-        qualitaets_werkzeug: { label: "Qualitäts-Werkzeug", kategorie: "praktisches_leben", sekundaer: ["identitaet"], description: "Bedürfnis nach gutem Werkzeug, richtiger Ausrüstung" },
-        achtsamkeit_im_detail: { label: "Achtsamkeit im Detail", kategorie: "praktisches_leben", sekundaer: ["identitaet", "verbundenheit"], description: "Bedürfnis nach Präzision, Perfektion in kleinen Dingen" },
+        motorrad_pflege: { label: "Handwerkliche Sorgfalt", kategorie: "praktisches_leben", sekundaer: ["identitaet"], description: "Wie wichtig ist dir sorgfältige Wartung und Pflege von Dingen?" },
+        gumption_im_alltag: { label: "Motivation im Alltag", kategorie: "praktisches_leben", sekundaer: ["identitaet", "musse"], description: "Wie wichtig ist dir Flow und Begeisterung bei alltäglichen Aufgaben?" },
+        stuck_vermeiden: { label: "Flexibel bleiben", kategorie: "praktisches_leben", sekundaer: ["freiheit", "erschaffen"], description: "Wie wichtig ist dir, nicht in festgefahrenen Mustern stecken zu bleiben?" },
+        klassische_ordnung: { label: "Struktur & System", kategorie: "praktisches_leben", sekundaer: ["sicherheit", "identitaet"], description: "Wie wichtig sind dir Checklisten, Systematik und klare Ordnung?" },
+        romantisches_chaos: { label: "Kreatives Chaos", kategorie: "praktisches_leben", sekundaer: ["freiheit", "erschaffen"], description: "Wie wichtig ist dir spontaner, intuitiver Alltag ohne strenge Ordnung?" },
+        qualitaets_werkzeug: { label: "Gute Ausrüstung", kategorie: "praktisches_leben", sekundaer: ["identitaet"], description: "Wie wichtig ist dir hochwertiges Werkzeug und richtige Ausstattung?" },
+        achtsamkeit_im_detail: { label: "Liebe zum Detail", kategorie: "praktisches_leben", sekundaer: ["identitaet", "verbundenheit"], description: "Wie wichtig ist dir Perfektion und Präzision in kleinen Dingen?" },
 
         // ─────────────────────────────────────────────────────────────────────
-        // PRAKTISCHES LEBEN - Osho
+        // PRAKTISCHES LEBEN - Osho (vereinfacht)
         // ─────────────────────────────────────────────────────────────────────
-        meditation_im_alltag: { label: "Meditation im Alltag", kategorie: "praktisches_leben", sekundaer: ["verbundenheit"], description: "Bedürfnis nach Achtsamkeit beim Kochen, Putzen, Gehen" },
-        gesundheit_durch_bewusstsein: { label: "Gesundheit durch Bewusstsein", kategorie: "praktisches_leben", sekundaer: ["existenz", "identitaet"], description: "Bedürfnis nach natürlicher Gesundheit, keine Medikamente" },
-        dynamische_meditation: { label: "Dynamische Meditation", kategorie: "praktisches_leben", sekundaer: ["existenz", "verbundenheit"], description: "Bedürfnis nach körperlicher Bewegung als Meditation (Osho-Technik)" },
-        vipassana_im_leben: { label: "Vipassana im Leben", kategorie: "praktisches_leben", sekundaer: ["verbundenheit", "identitaet"], description: "Bedürfnis nach Beobachten ohne Urteilen im Alltag" },
-        natuerliches_leben: { label: "Natürliches Leben", kategorie: "praktisches_leben", sekundaer: ["existenz", "verbundenheit"], description: "Bedürfnis nach Bio-Ernährung, Natur, Einfachheit" },
-        lachen_therapie: { label: "Lachen-Therapie", kategorie: "praktisches_leben", sekundaer: ["musse", "existenz"], description: "Bedürfnis nach Humor als Heilung, Leichtigkeit" },
-        no_mind: { label: "No-Mind", kategorie: "praktisches_leben", sekundaer: ["verbundenheit", "freiheit"], description: "Bedürfnis nach Nicht-Denken, Leere, Stille im Alltag" },
-        zorba_der_geniesser: { label: "Zorba der Genießer", kategorie: "praktisches_leben", sekundaer: ["musse", "existenz"], description: "Bedürfnis nach sinnlichem Genuss: Essen, Trinken, Komfort" }
+        meditation_im_alltag: { label: "Achtsamkeit im Alltag", kategorie: "praktisches_leben", sekundaer: ["verbundenheit"], description: "Wie wichtig ist dir achtsame Präsenz bei alltäglichen Tätigkeiten?" },
+        gesundheit_durch_bewusstsein: { label: "Natürliche Gesundheit", kategorie: "praktisches_leben", sekundaer: ["existenz", "identitaet"], description: "Wie wichtig ist dir ganzheitliche, natürliche Gesundheit?" },
+        dynamische_meditation: { label: "Bewegung als Meditation", kategorie: "praktisches_leben", sekundaer: ["existenz", "verbundenheit"], description: "Wie wichtig ist dir körperliche Bewegung als spirituelle Praxis?" },
+        vipassana_im_leben: { label: "Beobachten ohne Urteilen", kategorie: "praktisches_leben", sekundaer: ["verbundenheit", "identitaet"], description: "Wie wichtig ist dir, den Alltag wertfrei zu beobachten?" },
+        natuerliches_leben: { label: "Naturverbunden leben", kategorie: "praktisches_leben", sekundaer: ["existenz", "verbundenheit"], description: "Wie wichtig ist dir natürliche Ernährung und einfaches Leben?" },
+        lachen_therapie: { label: "Lachen als Heilung", kategorie: "praktisches_leben", sekundaer: ["musse", "existenz"], description: "Wie wichtig ist dir Humor und Leichtigkeit als Lebensenergie?" },
+        no_mind: { label: "Gedankenstille", kategorie: "praktisches_leben", sekundaer: ["verbundenheit", "freiheit"], description: "Wie wichtig ist dir innere Stille und Freiheit von Gedankenlärm?" },
+        zorba_der_geniesser: { label: "Sinnlicher Genuss", kategorie: "praktisches_leben", sekundaer: ["musse", "existenz"], description: "Wie wichtig ist dir gutes Essen, Trinken und körperlicher Komfort?" }
     },
 
     // ═══════════════════════════════════════════════════════════════════════════
