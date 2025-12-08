@@ -712,22 +712,21 @@
                 </div>
             </div>
 
-            <!-- Center Column - Score Circle & Lightbulb Button -->
+            <!-- Center Column - Lightbulb Button & Score Circle -->
             <div class="center-column">
                 <!-- Score Label -->
-                <div class="score-label">SCORE</div>
-                <!-- Score Circle -->
+                <div class="score-label">Ti-Age Synthese Score</div>
+                <!-- Lightbulb Button (moved to top) -->
+                <div class="lightbulb-button" onclick="openPathosLogosModal('pathos')" title="Tiage's Synthese - Pathos & Logos">
+                    <span class="lightbulb-icon">💡</span>
+                </div>
+                <!-- Score Circle (moved to bottom) -->
                 <div class="score-circle-display" id="mainScoreCircle" onclick="openProContraModal()" title="Klicken für Pro & Contra Details">
                     <svg viewBox="0 0 100 100">
                         <circle class="score-bg" cx="50" cy="50" r="42"></circle>
                         <circle class="score-progress" id="mainScoreProgress" cx="50" cy="50" r="42" stroke-dasharray="264" stroke-dashoffset="264"></circle>
                     </svg>
                     <div class="score-circle-value" id="mainScoreValue">0</div>
-                </div>
-                <!-- Lightbulb Button -->
-                <div class="lightbulb-button" onclick="openPathosLogosModal('pathos')" title="Tiage's Synthese - Pathos & Logos">
-                    <span class="lightbulb-icon">💡</span>
-                    <span class="lightbulb-text">Tiage's Synthese</span>
                 </div>
             </div>
 
