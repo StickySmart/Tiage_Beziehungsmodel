@@ -10308,9 +10308,14 @@
         }
 
         // Initialize when DOM is ready
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', async function() {
             console.log('[TIAGE DEBUG] DOMContentLoaded fired');
             try {
+                // Load archetype data first - this is critical for all other functions
+                console.log('[TIAGE DEBUG] Before loadData');
+                await loadData();
+                console.log('[TIAGE DEBUG] After loadData, data loaded:', data !== null);
+
                 checkAgeVerification();
                 initAgeVerification();
                 initFeedbackSystem();
