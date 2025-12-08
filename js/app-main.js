@@ -33,6 +33,9 @@
             geschlecht: { inputId: 'gewicht-geschlecht', key: 'G' }
         };
 
+        // Lock-Status für Gewichtungen (muss vor den Funktionen definiert sein, die es verwenden)
+        let gewichtungLocks = { orientierung: false, archetyp: false, dominanz: false, geschlecht: false };
+
         // Modal-Kontext für Profile Review (muss vor openProfileReviewModal() definiert sein)
         var currentProfileReviewContext = { archetypeKey: null, person: null };
 
@@ -13226,11 +13229,8 @@
         // ═══════════════════════════════════════════════════════════════════════
         // GEWICHTUNGS-EINSTELLUNGEN MIT LOCK-FUNKTION (Text-Inputs)
         // ═══════════════════════════════════════════════════════════════════════
-        // Hinweis: GEWICHTUNG_DEFAULTS, GEWICHTUNG_STORAGE_KEY, GEWICHTUNG_LOCK_KEY
-        // und FAKTOR_MAP sind am Anfang der Datei definiert.
-
-        // Lock-Status
-        let gewichtungLocks = { orientierung: false, archetyp: false, dominanz: false, geschlecht: false };
+        // Hinweis: GEWICHTUNG_DEFAULTS, GEWICHTUNG_STORAGE_KEY, GEWICHTUNG_LOCK_KEY,
+        // FAKTOR_MAP und gewichtungLocks sind am Anfang der Datei definiert.
 
         // Lädt Lock-Status aus localStorage
         function getGewichtungLocks() {
