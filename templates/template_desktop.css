@@ -3997,13 +3997,7 @@
             position: relative;
             width: 100px;
             height: 100px;
-            cursor: pointer;
             margin-bottom: 0;
-            transition: transform 0.2s ease;
-        }
-
-        .score-circle-display:hover {
-            transform: scale(1.08);
         }
 
         .score-circle-display svg {
