@@ -12979,6 +12979,8 @@
 
         // Dimension click handlers
         window.handleGeschlechtClick = handleGeschlechtClick;
+        window.handleGeschlechtPClick = handleGeschlechtPClick;
+        window.handleGeschlechtSClick = handleGeschlechtSClick;
         window.handleDominanzClick = handleDominanzClick;
         window.handleOrientierungClick = handleOrientierungClick;
         window.handleGfkClick = handleGfkClick;
