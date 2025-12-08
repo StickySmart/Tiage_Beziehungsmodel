@@ -1,6 +1,6 @@
 {
   "name": "tiage-beziehungsmodell",
-  "version": "1.8.18",
+  "version": "1.8.19",
   "description": "Ti-Age Beziehungsmodell - Interaktive Web-App",
   "private": true,
   "scripts": {
