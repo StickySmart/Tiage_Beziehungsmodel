@@ -1,5 +1,5 @@
         :root {
-            --primary: #457B9D;
+            --primary: #9b59b6;
             --primary-light: #A8D5E2;
             --bg-dark: #0f0f1a;
             --bg-card: #1a1a2e;
@@ -4448,8 +4448,8 @@
         }
 
         .geschlecht-btn.primary-selected {
-            background: #9b59b6;
-            border-color: #9b59b6;
+            background: var(--primary);
+            border-color: var(--primary);
             color: white;
         }
 
@@ -4503,7 +4503,7 @@
         }
 
         .geschlecht-indicator.indicator-primary {
-            background: #9b59b6;
+            background: var(--primary);
             color: white;
             border: 1px solid rgba(255,255,255,0.3);
         }
@@ -4540,8 +4540,8 @@
         }
 
         .dominanz-btn.primary-selected {
-            background: #9b59b6;
-            border-color: #9b59b6;
+            background: var(--primary);
+            border-color: var(--primary);
             color: white;
         }
 
@@ -4577,8 +4577,8 @@
         }
 
         .orientierung-btn.primary-selected {
-            background: #9b59b6;
-            border-color: #9b59b6;
+            background: var(--primary);
+            border-color: var(--primary);
             color: white;
         }
 

@@ -15,7 +15,7 @@
 
 :root {
     /* Primärfarben - IDENTISCH MIT DESKTOP */
-    --primary: #457B9D;           /* Hauptfarbe (Standard Blau) */
+    --primary: #9b59b6;           /* Hauptfarbe (Lila) */
     --primary-light: #A8D5E2;     /* Helle Akzentfarbe */
 
     /* Hintergrundfarben - IDENTISCH MIT DESKTOP */
@@ -1155,8 +1155,8 @@ body {
 }
 
 .geschlecht-btn.primary-selected {
-    background: #9b59b6;
-    border-color: #9b59b6;
+    background: var(--primary);
+    border-color: var(--primary);
     color: white;
 }
 
