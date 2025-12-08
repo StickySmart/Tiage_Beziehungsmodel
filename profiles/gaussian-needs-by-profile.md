@@ -4,18 +4,19 @@
 > **Nächste geplante Aktualisierung:** 2026-12-07
 > **Zweck:** Dynamische Default-Werte basierend auf Profil-Kombination
 
-Dieses Dokument beschreibt, wie jedes der **135 Bedürfnisse** (verteilt auf 22 Kategorien) von den vier Profil-Faktoren beeinflusst wird:
+Dieses Dokument beschreibt, wie jedes der **135 Bedürfnisse** (verteilt auf 22 Kategorien) von den fünf Profil-Faktoren beeinflusst wird:
 - **Archetyp** (8): Single, Aromantisch, Duo, LAT, Solopoly, RA, Duo-Flex, Polyamor
 - **Dominanz** (4): Dominant, Submissiv, Switch, Vanilla
 - **Orientierung** (3): Heterosexuell, Homosexuell, Bisexuell
-- **Geschlecht** (3): Mann, Frau, Divers
+- **Geschlecht** (3): Mann, Frau, Inter
+- **Geschlechtsidentität** (9): Mann-Cis, Mann-Trans, Mann-Suchend, Frau-Cis, Frau-Trans, Frau-Suchend, Inter-Nonbinär, Inter-Fluid, Inter-Suchend
 
 ---
 
 ## Berechnungsformel
 
 ```
-Bedürfnis-Default = Basis(50) + Archetyp-Delta + Dominanz-Delta + Orientierung-Delta + Geschlecht-Delta
+Bedürfnis-Default = Basis(50) + Archetyp-Delta + Dominanz-Delta + Orientierung-Delta + Geschlecht-Delta + Identität-Delta
 ```
 
 Beispiel für "kinderwunsch":
@@ -24,7 +25,8 @@ Beispiel für "kinderwunsch":
 - Dominant: +5 | Submissiv: 0
 - Heterosexuell: +10 | Homosexuell: -5
 - Mann: -5 | Frau: +10
-→ Single + Heterosexuell + Mann = 50 - 15 + 10 - 5 = **40**
+- Mann-Trans: +5 (erhöhter Wunsch nach biologischer Familie)
+→ Single + Heterosexuell + Mann + Mann-Trans = 50 - 15 + 10 - 5 + 5 = **45**
 
 ---
 
@@ -95,6 +97,24 @@ Beispiel für "kinderwunsch":
 **Quellen:**
 - Frauen (45%) vs. Männer (57%) wollen Kinder - aber Frauen priorisieren es stärker ([Pew Research](https://www.pewresearch.org/short-reads/2024/02/15/among-young-adults-without-children-men-are-more-likely-than-women-to-say-they-want-to-be-parents-someday/))
 
+#### Geschlechtsidentität-Deltas für Kinder-Bedürfnisse
+
+| Bedürfnis | Cis | Trans | Suchend | Nonbinär | Fluid |
+|-----------|-----|-------|---------|----------|-------|
+| kinderwunsch | 0 | -5 | -10 | -10 | -10 |
+| fortpflanzung | 0 | -15 | -10 | -15 | -15 |
+| elternschaft | 0 | +5 | -5 | 0 | 0 |
+| fuersorge | 0 | +5 | 0 | +5 | +5 |
+
+**Begründung:**
+- Trans: Biologische Fortpflanzung komplexer (Hormontherapie etc.), aber Elternwunsch oft stark
+- Suchend: In Identitätsfindung, Familienplanung oft aufgeschoben
+- Nonbinär/Fluid: Komplexere Beziehung zu traditionellen Familienmodellen
+
+**Quellen:**
+- Trans-Personen: 38% wünschen sich Kinder ([Family Equality](https://www.familyequality.org/))
+- Reproduktive Optionen für Trans-Personen sind begrenzt aber wachsend
+
 ---
 
 ### 1.2 Ehe (pr-ehe)
@@ -124,6 +144,18 @@ Beispiel für "kinderwunsch":
 - Singles & Aromantisch: Niedrigste Ehe-Orientierung - Autonomie-Fokus
 - Polyamor: Treueversprechen anders definiert (nicht-exklusiv)
 - RA (Relationship Anarchists): Lehnen institutionelle Beziehungsformen ab
+
+#### Geschlechtsidentität-Deltas für Ehe-Bedürfnisse
+
+| Bedürfnis | Cis | Trans | Suchend | Nonbinär | Fluid |
+|-----------|-----|-------|---------|----------|-------|
+| rechtliche_sicherheit | 0 | +10 | -5 | 0 | 0 |
+| gesellschaftliche_anerkennung | 0 | +5 | -10 | -10 | -10 |
+| tradition | 0 | -5 | -10 | -15 | -15 |
+
+**Begründung:**
+- Trans: Höherer Wert auf rechtliche Sicherheit (Absicherung bei Diskriminierung)
+- Nonbinär/Fluid: Weniger Affinität zu traditionellen Ehe-Normen
 
 ---
 
@@ -221,6 +253,23 @@ Beispiel für "kinderwunsch":
 **Quellen:**
 - Frauen zeigen höhere emotionale Expressivität ([AJS Study](https://www.journals.uchicago.edu/doi/10.1086/382111))
 - Männer sozialisiert für emotionale Zurückhaltung
+
+#### Geschlechtsidentität-Deltas für Emotionale Offenheit
+
+| Bedürfnis | Cis | Trans | Suchend | Nonbinär | Fluid |
+|-----------|-----|-------|---------|----------|-------|
+| emotionale_offenheit | 0 | +10 | +5 | +10 | +10 |
+| gefuehle_zeigen | 0 | +10 | +5 | +10 | +10 |
+| verletzlichkeit | 0 | +10 | +10 | +10 | +10 |
+| emotionale_sicherheit | 0 | +15 | +10 | +10 | +10 |
+
+**Begründung:**
+- Trans: Signifikant höhere Selbstreflexion und Kommunikationsfähigkeit durch Transition (Reigeluth & Addis, 2021)
+- Suchend/Nonbinär/Fluid: Höheres Bedürfnis nach emotionaler Sicherheit und Akzeptanz
+
+**Quellen:**
+- Trans-Personen zeigen verbesserte Kommunikationsfähigkeiten ([Iantaffi & Bockting, 2011](https://pmc.ncbi.nlm.nih.gov/articles/PMC3076785/))
+- Resilienz durch Überwindung von Identitäts-Herausforderungen
 
 ---
 
@@ -449,6 +498,19 @@ Beispiel für "kinderwunsch":
 - RA/Polyamor/Solopoly: Leben außerhalb traditioneller Beziehungsnormen
 - Duo: Traditionellstes Beziehungsmodell
 - LGBTQ+: Historisch weniger in traditionellen Strukturen verankert
+
+#### Geschlechtsidentität-Deltas für Tradition
+
+| Bedürfnis | Cis | Trans | Suchend | Nonbinär | Fluid |
+|-----------|-----|-------|---------|----------|-------|
+| traditionsbewusstsein | +5 | -10 | -15 | -20 | -20 |
+| konservative_werte | +5 | -15 | -15 | -25 | -25 |
+| moderne_werte | -5 | +15 | +15 | +25 | +25 |
+| gesellschaftliche_normen | +5 | -10 | -15 | -20 | -20 |
+
+**Begründung:**
+- Trans/Nonbinär/Fluid: Leben per Definition außerhalb traditioneller Gender-Normen
+- Cis: Höhere Affinität zu bestehenden gesellschaftlichen Strukturen
 
 **Quellen:**
 - 21% der Deutschen identifizieren sich als konservativer, 15% als progressiver ([Statista Consumer Insights](https://de.statista.com/infografik/33429/umfrage-zum-wertewandel-in-verschiedenen-laendern/))

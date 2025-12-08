@@ -177,11 +177,13 @@ const ProfileReviewRenderer = (function() {
 
     /**
      * Berechnet den Default-Wert für ein Attribut basierend auf dem Archetyp-Profil
+     * und zusätzlichen Profil-Faktoren (Geschlechtsidentität, Dominanz, Orientierung)
      * @param {string} attrId - Attribut-ID (z.B. 'pr-kinder')
      * @param {string} archetypeKey - Archetyp-Key (z.B. 'single', 'duo')
+     * @param {Object} profileContext - Optional: Zusätzliche Profil-Daten für Modifier
      * @returns {number} Berechneter Default-Wert (0-100)
      */
-    function getDefaultFromArchetype(attrId, archetypeKey) {
+    function getDefaultFromArchetype(attrId, archetypeKey, profileContext) {
         // Fallback wenn keine Daten verfügbar
         if (!archetypeKey || !window.LoadedArchetypProfile) {
             return 50;
@@ -222,26 +224,65 @@ const ProfileReviewRenderer = (function() {
             return 50;
         }
 
-        const average = Math.round(sum / count);
+        let average = Math.round(sum / count);
+
+        // NEU: Wende Profil-Modifier an (Geschlechtsidentität, Dominanz, Orientierung)
+        if (window.ProfileModifiers && profileContext) {
+            const deltas = window.ProfileModifiers.calculateProfileDeltas(profileContext);
+
+            // Prüfe ob einer der gemappten Bedürfnisse einen Delta hat
+            let deltaSum = 0;
+            let deltaCount = 0;
+
+            needs.forEach(needId => {
+                // Versuche verschiedene Schreibweisen des Bedürfnisnamens
+                const normalizedNeed = needId.toLowerCase().replace(/-/g, '_');
+                if (deltas[needId] !== undefined) {
+                    deltaSum += deltas[needId];
+                    deltaCount++;
+                } else if (deltas[normalizedNeed] !== undefined) {
+                    deltaSum += deltas[normalizedNeed];
+                    deltaCount++;
+                }
+            });
+
+            if (deltaCount > 0) {
+                const avgDelta = Math.round(deltaSum / deltaCount);
+                const originalAverage = average;
+                average = Math.min(100, Math.max(0, average + avgDelta));
+                console.log(`[ProfileReview] Modifier-Delta für ${attrId}: ${avgDelta} (${originalAverage} → ${average})`);
+            }
+        }
+
         console.log(`[ProfileReview] Default für ${attrId} (${archetypeKey}): ${average} (aus ${count} Bedürfnissen)`);
         return average;
     }
 
     /**
-     * Setzt alle Werte auf Standard zurück (basierend auf aktuellem Archetyp)
+     * Setzt alle Werte auf Standard zurück (basierend auf aktuellem Archetyp + Profil-Modifier)
      * @param {string} archetypeKey - Optional: Archetyp-Key für Defaults
+     * @param {Object} profileContext - Optional: Profil-Daten für Modifier (geschlecht, dominanz, orientierung)
      */
-    function resetAllValues(archetypeKey) {
+    function resetAllValues(archetypeKey, profileContext) {
         // Versuche Archetyp aus Kontext zu holen wenn nicht übergeben
         if (!archetypeKey && typeof currentProfileReviewContext !== 'undefined') {
             archetypeKey = currentProfileReviewContext.archetypeKey;
         }
 
+        // Versuche Profil-Kontext zu bauen wenn nicht übergeben
+        if (!profileContext && typeof currentProfileReviewContext !== 'undefined') {
+            profileContext = {
+                geschlecht: currentProfileReviewContext.geschlecht,
+                dominanz: currentProfileReviewContext.dominanz,
+                orientierung: currentProfileReviewContext.orientierung
+            };
+        }
+
         const attributes = ProfileReviewConfig.getAllAttributes();
 
         attributes.forEach(attr => {
-            // Berechne Default aus Archetyp-Profil
-            const defaultValue = getDefaultFromArchetype(attr.attrId, archetypeKey);
+            // Berechne Default aus Archetyp-Profil + Modifier
+            const defaultValue = getDefaultFromArchetype(attr.attrId, archetypeKey, profileContext);
 
             // NEU: Reset für AttributeSummaryCard
             if (typeof AttributeSummaryCard !== 'undefined' &&
@@ -253,7 +294,12 @@ const ProfileReviewRenderer = (function() {
         });
 
         GewichtungCard.reset();
-        console.log('[ProfileReview] Alle Werte zurückgesetzt auf Archetyp-Defaults:', archetypeKey || 'standard');
+
+        // Log mit Modifier-Info
+        const modifierInfo = profileContext && window.ProfileModifiers
+            ? ` + Modifier (${profileContext.geschlecht?.primary || 'n/a'}-${profileContext.geschlecht?.secondary || 'n/a'})`
+            : '';
+        console.log('[ProfileReview] Alle Werte zurückgesetzt auf Archetyp-Defaults:', archetypeKey || 'standard', modifierInfo);
     }
 
     return {
