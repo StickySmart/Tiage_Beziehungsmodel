@@ -6284,13 +6284,11 @@
             `;
 
             // Top Übereinstimmungen (now includes gemeinsam + komplementaer)
-            // HIDDEN: Direct needs comparison hidden per user request
-            /*
             if (matching.topUebereinstimmungen && matching.topUebereinstimmungen.length > 0) {
                 const gemeinsameLabel = TiageI18n.t('synthesisSection.gemeinsameBeduerfnisse', 'Gemeinsame & Kompatible Bedürfnisse');
                 html += `
                     <div class="gfk-section gfk-matches">
-                        <div class="gfk-section-title" style="color: #22c55e;">${TiageI18n.t('needs.sharedTitle', 'GEMEINSAME & KOMPATIBLE BEDÜRFNISSE')}</div>
+                        <div class="gfk-section-title" style="color: #22c55e;">${TiageI18n.t('needs.sharedTitle', 'GEMEINSAME BEDÜRFNISSE')}</div>
                         <div class="gfk-tags">
                             ${matching.topUebereinstimmungen.map(b => {
                                 const translatedLabel = TiageI18n.t(`needs.items.${b.id}`, b.label);
@@ -6300,7 +6298,6 @@
                     </div>
                 `;
             }
-            */
 
             // Konflikte
             if (matching.topKonflikte && matching.topKonflikte.length > 0) {
