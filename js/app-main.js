@@ -10177,6 +10177,23 @@
             // Load from TiageState
             TiageState.loadFromStorage();
 
+            // Load archetypes from TiageState and sync with global variables (Desktop only)
+            // TODO: Mobile nachziehen - mobileIchArchetype, mobilePartnerArchetype, mobile selectors
+            const savedIchArchetype = TiageState.getArchetype('ich');
+            const savedPartnerArchetype = TiageState.getArchetype('partner');
+
+            if (savedIchArchetype) {
+                currentArchetype = savedIchArchetype;
+                const archetypeSelect = document.getElementById('archetypeSelect');
+                if (archetypeSelect) {
+                    archetypeSelect.value = savedIchArchetype;
+                }
+            }
+
+            if (savedPartnerArchetype) {
+                selectedPartner = savedPartnerArchetype;
+            }
+
             ['ich', 'partner'].forEach(person => {
                 const savedDims = TiageState.get(`personDimensions.${person}`);
                 if (!savedDims) return;
@@ -10262,9 +10279,10 @@
                 }
             });
 
-            // Update comparison view after loading all dimensions
-            if (typeof updateComparisonView === 'function') {
-                updateComparisonView();
+            // Update entire UI after loading all dimensions and archetypes
+            // This ensures all UI elements reflect the loaded state
+            if (typeof updateAll === 'function') {
+                updateAll();
             }
         }
 
