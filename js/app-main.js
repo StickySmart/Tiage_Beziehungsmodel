@@ -28,6 +28,9 @@
         // Modal-Kontext für Profile Review (muss vor openProfileReviewModal() definiert sein)
         var currentProfileReviewContext = { archetypeKey: null, person: null };
 
+        // Gewichtung initialization flag (muss vor initGewichtungInputs() definiert sein)
+        var gewichtungInitialized = false;
+
         // Legacy personDimensions - now a reference to TiageState for backward compatibility
         // TODO: Remove after full migration to TiageState
         const personDimensions = {
@@ -3379,17 +3382,6 @@
 
             const currentPrimary = personDimensions[person].geschlecht.primary;
             const currentSecondary = personDimensions[person].geschlecht.secondary;
-
-            // DEBUG: Log what's happening
-            console.log('[DEBUG] handleGeschlechtClick:', {
-                person,
-                geschlechtValue,
-                currentPrimary,
-                currentSecondary,
-                typeOfPrimary: typeof currentPrimary,
-                geschlechtObject: JSON.stringify(personDimensions[person].geschlecht),
-                willSetAs: !currentPrimary ? 'PRIMARY' : (geschlechtValue === currentPrimary ? 'CLEAR' : 'SECONDARY')
-            });
 
             if (geschlechtValue === currentPrimary) {
                 // Click on Primary: Clear both
@@ -13345,7 +13337,6 @@
         }
 
         // Initialisiert Event-Listener
-        let gewichtungInitialized = false;
         function initGewichtungInputs() {
             if (gewichtungInitialized) return;
 
