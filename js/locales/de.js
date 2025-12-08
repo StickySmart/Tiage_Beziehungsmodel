@@ -991,8 +991,8 @@ const TiageLocale_DE = {
                 label: 'Kinderwunsch',
                 description: 'Wunsch nach eigenen Kindern oder Offenheit dafür in der Zukunft.',
                 info: {
-                    stats: '20% der Paare in DE sind kinderlos gewollt (Destatis 2023). Uneinigkeit beim Kinderwunsch ist Trennungsgrund Nr. 3.',
-                    research: 'Gottman-Institut: 94% der Paare mit unterschiedlichem Kinderwunsch trennen sich langfristig ohne Kompromiss.',
+                    stats: 'Frage: "Wünschen Sie sich Kinder?" – 79% der Frauen und 72% der Männer (21-25 J.) äußern Kinderwunsch (BZgA 2023). 56% bewerten übereinstimmende Familienplanung als wichtig für die Partnersuche (Parship).',
+                    research: '9% haben schon eine Trennung wegen unterschiedlicher Kinderwünsche erlebt (ElitePartner). Gottman-Institut: 94% der Paare mit Kinderwunsch-Differenz trennen sich langfristig ohne Kompromiss.',
                     pirsig: 'Ein Kind ist weder Projekt noch Pflicht. Die Frage ist nicht "soll ich?", sondern "warum will ich?" - und ob beide Antworten harmonieren.',
                     osho: 'Kinder sind keine Fortsetzung deines Egos. Sie sind eigenständige Seelen, die durch dich kommen, aber nicht dir gehören.'
                 }
