@@ -25,6 +25,17 @@
         const GEWICHTUNG_STORAGE_KEY = 'tiage_faktor_gewichtungen';
         const GEWICHTUNG_LOCK_KEY = 'tiage_faktor_locks';
 
+        // Faktor-Mapping für Gewichtungen (muss vor den Funktionen definiert sein, die es verwenden)
+        const FAKTOR_MAP = {
+            orientierung: { inputId: 'gewicht-orientierung', key: 'O' },
+            archetyp: { inputId: 'gewicht-archetyp', key: 'A' },
+            dominanz: { inputId: 'gewicht-dominanz', key: 'D' },
+            geschlecht: { inputId: 'gewicht-geschlecht', key: 'G' }
+        };
+
+        // Lock-Status für Gewichtungen (muss vor den Funktionen definiert sein, die es verwenden)
+        let gewichtungLocks = { orientierung: false, archetyp: false, dominanz: false, geschlecht: false };
+
         // Modal-Kontext für Profile Review (muss vor openProfileReviewModal() definiert sein)
         var currentProfileReviewContext = { archetypeKey: null, person: null };
 
@@ -1310,6 +1321,11 @@
         }
 
         function updateAll() {
+            // Guard: Don't update UI if data not loaded yet
+            if (!data || !data.archetypes) {
+                console.warn('[TIAGE] updateAll called before data loaded - skipping');
+                return;
+            }
             updateTheme();
             updateMyType();
             updatePartnerSelector();
@@ -1329,6 +1345,11 @@
         }
 
         function updateMyType() {
+            // Guard against data not being loaded yet
+            if (!data || !data.archetypes) {
+                console.warn('[TIAGE] updateMyType called before data loaded');
+                return;
+            }
             const arch = data.archetypes[currentArchetype];
             if (!arch) return;
 
@@ -3601,7 +3622,7 @@
             // Update P-Grid buttons (Körper)
             document.querySelectorAll(`#${person}-geschlecht-p-grid .geschlecht-btn`).forEach(btn => {
                 const value = btn.dataset.value;
-                btn.classList.remove('primary-selected');
+                btn.classList.remove('primary-selected', 'primary-strikethrough');
 
                 // Remove existing indicators
                 const existingIndicator = btn.querySelector('.geschlecht-indicator');
@@ -3609,6 +3630,10 @@
 
                 if (value === primary) {
                     btn.classList.add('primary-selected');
+                    // Strikethrough wenn Trans als Secondary ausgewählt
+                    if (secondary === 'trans') {
+                        btn.classList.add('primary-strikethrough');
+                    }
                     const indicator = document.createElement('span');
                     indicator.className = 'geschlecht-indicator indicator-primary';
                     indicator.textContent = 'P';
@@ -3645,13 +3670,17 @@
             legacySelectors.forEach(selector => {
                 document.querySelectorAll(selector).forEach(btn => {
                     const value = btn.dataset.value;
-                    btn.classList.remove('primary-selected', 'secondary-selected');
+                    btn.classList.remove('primary-selected', 'secondary-selected', 'primary-strikethrough');
 
                     const existingIndicator = btn.querySelector('.geschlecht-indicator');
                     if (existingIndicator) existingIndicator.remove();
 
                     if (value === primary) {
                         btn.classList.add('primary-selected');
+                        // Strikethrough wenn Trans als Secondary ausgewählt
+                        if (secondary === 'trans') {
+                            btn.classList.add('primary-strikethrough');
+                        }
                         const indicator = document.createElement('span');
                         indicator.className = 'geschlecht-indicator indicator-primary';
                         indicator.textContent = 'P';
@@ -3742,7 +3771,12 @@
 
             const parts = [];
             const primaryLabel = TiageI18n.t(`geschlecht.types.${primary}`, primary);
-            parts.push(primaryLabel + ' (P)');
+            // Strikethrough für Primary wenn Trans als Secondary
+            if (secondary === 'trans') {
+                parts.push('<span class="summary-strikethrough">' + primaryLabel + '</span> (P)');
+            } else {
+                parts.push(primaryLabel + ' (P)');
+            }
 
             if (secondary) {
                 const secondaryLabel = TiageI18n.t(`geschlecht.types.${secondary}`, secondary);
@@ -3775,7 +3809,7 @@
                 const summaryId = `${prefix}${person}-geschlecht-summary`;
                 const summary = document.getElementById(summaryId);
                 if (summary) {
-                    summary.textContent = gridSummaryText;
+                    summary.innerHTML = gridSummaryText;
                     summary.classList.toggle('has-selection', !isMissing);
                 }
             });
@@ -6260,13 +6294,11 @@
             `;
 
             // Top Übereinstimmungen (now includes gemeinsam + komplementaer)
-            // HIDDEN: Direct needs comparison hidden per user request
-            /*
             if (matching.topUebereinstimmungen && matching.topUebereinstimmungen.length > 0) {
                 const gemeinsameLabel = TiageI18n.t('synthesisSection.gemeinsameBeduerfnisse', 'Gemeinsame & Kompatible Bedürfnisse');
                 html += `
                     <div class="gfk-section gfk-matches">
-                        <div class="gfk-section-title" style="color: #22c55e;">${TiageI18n.t('needs.sharedTitle', 'GEMEINSAME & KOMPATIBLE BEDÜRFNISSE')}</div>
+                        <div class="gfk-section-title" style="color: #22c55e;">${TiageI18n.t('needs.sharedTitle', 'GEMEINSAME BEDÜRFNISSE')}</div>
                         <div class="gfk-tags">
                             ${matching.topUebereinstimmungen.map(b => {
                                 const translatedLabel = TiageI18n.t(`needs.items.${b.id}`, b.label);
@@ -6276,7 +6308,6 @@
                     </div>
                 `;
             }
-            */
 
             // Konflikte
             if (matching.topKonflikte && matching.topKonflikte.length > 0) {
@@ -10287,9 +10318,14 @@
         }
 
         // Initialize when DOM is ready
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', async function() {
             console.log('[TIAGE DEBUG] DOMContentLoaded fired');
             try {
+                // Load archetype data first - this is critical for all other functions
+                console.log('[TIAGE DEBUG] Before loadData');
+                await loadData();
+                console.log('[TIAGE DEBUG] After loadData, data loaded:', data !== null);
+
                 checkAgeVerification();
                 initAgeVerification();
                 initFeedbackSystem();
@@ -13205,19 +13241,8 @@
         // ═══════════════════════════════════════════════════════════════════════
         // GEWICHTUNGS-EINSTELLUNGEN MIT LOCK-FUNKTION (Text-Inputs)
         // ═══════════════════════════════════════════════════════════════════════
-        // Hinweis: GEWICHTUNG_DEFAULTS, GEWICHTUNG_STORAGE_KEY und GEWICHTUNG_LOCK_KEY
-        // sind am Anfang der Datei definiert (vor getGewichtungen()).
-
-        // Faktor-Mapping
-        const FAKTOR_MAP = {
-            orientierung: { inputId: 'gewicht-orientierung', key: 'O' },
-            archetyp: { inputId: 'gewicht-archetyp', key: 'A' },
-            dominanz: { inputId: 'gewicht-dominanz', key: 'D' },
-            geschlecht: { inputId: 'gewicht-geschlecht', key: 'G' }
-        };
-
-        // Lock-Status
-        let gewichtungLocks = { orientierung: false, archetyp: false, dominanz: false, geschlecht: false };
+        // Hinweis: GEWICHTUNG_DEFAULTS, GEWICHTUNG_STORAGE_KEY, GEWICHTUNG_LOCK_KEY,
+        // FAKTOR_MAP und gewichtungLocks sind am Anfang der Datei definiert.
 
         // Lädt Lock-Status aus localStorage
         function getGewichtungLocks() {
@@ -13646,6 +13671,45 @@
 
                 setTripleBtnValue('pr-umwelt', mapToTripleValue(inferences.umweltbewusstsein));
                 setTripleBtnValue('pr-politik', mapToTripleValue(inferences.politischesInteresse));
+            }
+
+            // ════════════════════════════════════════════════════════════════════════
+            // NEU: Lade Bedürfniswerte aus composedProfile.needs in AttributeSummaryCard
+            // Dies füllt die Slider mit den echten Profil-Werten statt defaultValue 50
+            // ════════════════════════════════════════════════════════════════════════
+            if (composedProfile && composedProfile.needs &&
+                typeof AttributeSummaryCard !== 'undefined' &&
+                AttributeSummaryCard.ATTRIBUTE_NEEDS_MAPPING) {
+
+                console.log('[ProfileReview] Lade Bedürfniswerte aus composedProfile.needs');
+
+                // Für jedes Attribut-Mapping die zugehörigen Needs aus dem Profil setzen
+                Object.keys(AttributeSummaryCard.ATTRIBUTE_NEEDS_MAPPING).forEach(function(attrId) {
+                    var mapping = AttributeSummaryCard.ATTRIBUTE_NEEDS_MAPPING[attrId];
+                    if (!mapping || !mapping.needs) return;
+
+                    var needValues = {};
+                    var foundCount = 0;
+
+                    mapping.needs.forEach(function(needId) {
+                        if (composedProfile.needs[needId] !== undefined) {
+                            needValues[needId] = composedProfile.needs[needId];
+                            foundCount++;
+                        } else {
+                            // Fallback auf 50 wenn Bedürfnis nicht im Profil definiert
+                            needValues[needId] = 50;
+                        }
+                    });
+
+                    // Nur setzen wenn mindestens ein Wert gefunden wurde
+                    if (foundCount > 0) {
+                        AttributeSummaryCard.setNeedsValues(attrId, needValues);
+                    }
+                });
+
+                console.log('[ProfileReview] Bedürfniswerte geladen für', Object.keys(AttributeSummaryCard.ATTRIBUTE_NEEDS_MAPPING).length, 'Attribute');
+            } else {
+                console.log('[ProfileReview] Keine Bedürfniswerte verfügbar (composedProfile.needs fehlt oder AttributeSummaryCard nicht geladen)');
             }
 
             // Load geschlechtsidentität from current main gender selection

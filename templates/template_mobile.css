@@ -15,7 +15,7 @@
 
 :root {
     /* Primärfarben - IDENTISCH MIT DESKTOP */
-    --primary: #457B9D;           /* Hauptfarbe (Standard Blau) */
+    --primary: #9b59b6;           /* Hauptfarbe (Lila) */
     --primary-light: #A8D5E2;     /* Helle Akzentfarbe */
 
     /* Hintergrundfarben - IDENTISCH MIT DESKTOP */
@@ -678,17 +678,18 @@ body {
     .status-toggle-btn {
         padding: 6px 12px;
         font-size: 11px;
-        background: var(--bg-dark);
-        border: 1px solid var(--border);
+        background: var(--toggle-bg);
+        border: 1px solid var(--toggle-border);
         border-radius: 6px;
-        color: var(--text-muted);
+        color: var(--toggle-text);
         cursor: pointer;
         transition: all 0.2s ease;
     }
 
     .status-toggle-btn:hover {
-        background: rgba(255,255,255,0.1);
-        color: var(--text-primary);
+        background: var(--toggle-bg-hover);
+        border-color: var(--toggle-border-hover);
+        box-shadow: 0 0 12px rgba(255, 0, 255, 0.3);
     }
 
     /* Gelebt Status - Aktiv (IDENTISCH MIT DESKTOP) */
@@ -1155,8 +1156,8 @@ body {
 }
 
 .geschlecht-btn.primary-selected {
-    background: var(--primary);
-    border-color: var(--primary);
+    background: #9b59b6;
+    border-color: #9b59b6;
     color: white;
 }
 
@@ -1164,6 +1165,33 @@ body {
     background: rgba(234, 179, 8, 0.25);
     border-color: rgba(234, 179, 8, 0.6);
     color: var(--text-primary);
+}
+
+/* Strikethrough für Primary wenn Trans als Secondary ausgewählt */
+.geschlecht-btn.primary-selected.primary-strikethrough {
+    position: relative;
+}
+
+.geschlecht-btn.primary-selected.primary-strikethrough::after {
+    content: '';
+    position: absolute;
+    left: 15%;
+    right: 15%;
+    top: 50%;
+    height: 2px;
+    background: rgba(255, 255, 255, 0.8);
+    transform: translateY(-50%);
+    pointer-events: none;
+}
+
+/* Hervorhebung für Summary-Text wenn Trans als Secondary */
+.summary-strikethrough {
+    font-size: 1.3em;
+    font-weight: 700;
+    font-style: italic;
+    font-family: 'Georgia', 'Times New Roman', serif;
+    color: #e879f9;
+    text-shadow: 0 0 8px rgba(232, 121, 249, 0.5);
 }
 
 /* DevView Styles wurden nach template_desktop.css verschoben,
