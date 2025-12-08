@@ -13661,6 +13661,45 @@
                 setTripleBtnValue('pr-politik', mapToTripleValue(inferences.politischesInteresse));
             }
 
+            // ════════════════════════════════════════════════════════════════════════
+            // NEU: Lade Bedürfniswerte aus composedProfile.needs in AttributeSummaryCard
+            // Dies füllt die Slider mit den echten Profil-Werten statt defaultValue 50
+            // ════════════════════════════════════════════════════════════════════════
+            if (composedProfile && composedProfile.needs &&
+                typeof AttributeSummaryCard !== 'undefined' &&
+                AttributeSummaryCard.ATTRIBUTE_NEEDS_MAPPING) {
+
+                console.log('[ProfileReview] Lade Bedürfniswerte aus composedProfile.needs');
+
+                // Für jedes Attribut-Mapping die zugehörigen Needs aus dem Profil setzen
+                Object.keys(AttributeSummaryCard.ATTRIBUTE_NEEDS_MAPPING).forEach(function(attrId) {
+                    var mapping = AttributeSummaryCard.ATTRIBUTE_NEEDS_MAPPING[attrId];
+                    if (!mapping || !mapping.needs) return;
+
+                    var needValues = {};
+                    var foundCount = 0;
+
+                    mapping.needs.forEach(function(needId) {
+                        if (composedProfile.needs[needId] !== undefined) {
+                            needValues[needId] = composedProfile.needs[needId];
+                            foundCount++;
+                        } else {
+                            // Fallback auf 50 wenn Bedürfnis nicht im Profil definiert
+                            needValues[needId] = 50;
+                        }
+                    });
+
+                    // Nur setzen wenn mindestens ein Wert gefunden wurde
+                    if (foundCount > 0) {
+                        AttributeSummaryCard.setNeedsValues(attrId, needValues);
+                    }
+                });
+
+                console.log('[ProfileReview] Bedürfniswerte geladen für', Object.keys(AttributeSummaryCard.ATTRIBUTE_NEEDS_MAPPING).length, 'Attribute');
+            } else {
+                console.log('[ProfileReview] Keine Bedürfniswerte verfügbar (composedProfile.needs fehlt oder AttributeSummaryCard nicht geladen)');
+            }
+
             // Load geschlechtsidentität from current main gender selection
             // KOPPLUNG: Nur wenn auf Hauptseite etwas ausgewählt ist, wird hier auch etwas ausgewählt
             if (typeof TiageState !== 'undefined') {
