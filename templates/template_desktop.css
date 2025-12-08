@@ -135,7 +135,8 @@
             }
         }
 
-        /* Pathos/Logos toggle buttons in modal header */
+        /* Score/Pathos/Logos toggle buttons in modal header */
+        .header-score-btn,
         .header-pathos-btn,
         .header-logos-btn {
             padding: 8px 12px;
@@ -149,6 +150,7 @@
             backdrop-filter: blur(10px);
         }
 
+        .header-score-btn:hover,
         .header-pathos-btn:hover,
         .header-logos-btn:hover {
             transform: scale(1.1);
@@ -156,6 +158,7 @@
             border-color: var(--primary);
         }
 
+        .header-score-btn.active,
         .header-pathos-btn.active,
         .header-logos-btn.active {
             color: var(--text-primary);

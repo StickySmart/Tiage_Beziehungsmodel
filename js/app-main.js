@@ -10095,7 +10095,7 @@
                 const factorModal = document.getElementById('factorModal');
                 const helpModal = document.getElementById('helpModal');
                 const commentModal = document.getElementById('commentModal');
-                const proContraModal = document.getElementById('proContraModal');
+                const tiageSyntheseModal = document.getElementById('tiageSyntheseModal');
 
                 // Check if we're returning FROM a modal state (current modal should close)
                 if (factorModal && factorModal.classList.contains('active')) {
@@ -10107,8 +10107,8 @@
                 if (commentModal && commentModal.classList.contains('active')) {
                     closeCommentModal(null, true);
                 }
-                if (proContraModal && proContraModal.classList.contains('active')) {
-                    closeProContraModal(null, true);
+                if (tiageSyntheseModal && tiageSyntheseModal.classList.contains('active')) {
+                    closeTiageSyntheseModal(null, true);
                 }
 
                 // Navigate to the correct page
@@ -10696,67 +10696,185 @@
             }
         }
 
-        // Pro/Contra Modal Functions
-        function openProContraModal() {
-            console.log('openProContraModal called');
-            const modal = document.getElementById('proContraModal');
-            console.log('proContraModal element:', modal);
-            if (!modal) {
-                console.error('proContraModal not found!');
-                return;
+        // Ti-Age Synthese Modal Functions (unified Score/Pathos/Logos)
+        let currentTiageSyntheseType = localStorage.getItem('tiageSyntheseType') || 'score'; // Sticky: 'score', 'pathos' or 'logos'
+        let currentTiageSyntheseContent = { score: '', pathos: '', logos: '' };
+
+        // Legacy aliases for backwards compatibility
+        let currentPathosLogosType = currentTiageSyntheseType;
+        let currentPathosLogosContent = currentTiageSyntheseContent;
+
+        function openTiageSyntheseModal(type = null) {
+            const modal = document.getElementById('tiageSyntheseModal');
+            if (!modal) return;
+
+            // Use sticky type if no type specified
+            if (type === null) {
+                type = currentTiageSyntheseType;
             }
+            currentTiageSyntheseType = type;
+            currentPathosLogosType = type; // Keep legacy in sync
+
+            // Get current archetypes
+            const ichArch = archetypeDescriptions[currentArchetype];
+            const partnerArch = archetypeDescriptions[selectedPartner];
 
             // Update archetype display
-            updateProContraModalArchetypeDisplay();
+            const ichDisplay = document.getElementById('tiageSyntheseModalIch');
+            const partnerDisplay = document.getElementById('tiageSyntheseModalPartner');
+            if (ichDisplay) ichDisplay.textContent = ichArch?.name || currentArchetype;
+            if (partnerDisplay) partnerDisplay.textContent = partnerArch?.name || selectedPartner;
 
-            // Update score and pro/contra lists
-            updateProContraModalContent();
+            // Generate content for all types
+            currentTiageSyntheseContent.pathos = generateCombinedPathos(ichArch, partnerArch);
+            currentTiageSyntheseContent.logos = generateCombinedLogos(ichArch, partnerArch);
+
+            // Show the selected type
+            showTiageSyntheseContent(type);
+
+            // Update Score Cycle
+            updateSyntheseScoreCycle();
 
             modal.classList.add('active');
-            console.log('proContraModal activated, classList:', modal.classList.toString());
-            history.pushState({ mobilePage: currentMobilePage, modal: 'procontra' }, '', `#seite${currentMobilePage}-procontra`);
+            history.pushState({ mobilePage: currentMobilePage, modal: 'tiagesynthese' }, '', `#seite${currentMobilePage}-tiagesynthese`);
         }
 
-        function closeProContraModal(event, skipHistoryBack = false) {
+        // Legacy alias
+        function openPathosLogosModal(type = null) {
+            openTiageSyntheseModal(type);
+        }
+
+        // Legacy alias for Pro/Contra modal
+        function openProContraModal() {
+            openTiageSyntheseModal('score');
+        }
+
+        function closeTiageSyntheseModal(event, skipHistoryBack = false) {
             if (event && event.target !== event.currentTarget) return;
-            document.getElementById('proContraModal').classList.remove('active');
-            if (!skipHistoryBack && history.state && history.state.modal === 'procontra') {
+            // Stop TTS when modal is closed
+            stopTTSOnModalClose();
+            const modal = document.getElementById('tiageSyntheseModal');
+            if (modal) modal.classList.remove('active');
+            if (!skipHistoryBack && history.state && (history.state.modal === 'tiagesynthese' || history.state.modal === 'pathoslogos' || history.state.modal === 'procontra')) {
                 history.back();
             }
         }
 
-        function updateProContraModalArchetypeDisplay() {
-            const ichDisplay = document.getElementById('proContraModalIch');
-            const partnerDisplay = document.getElementById('proContraModalPartner');
-            if (ichDisplay) ichDisplay.textContent = archetypeDescriptions[currentArchetype]?.name || currentArchetype;
-            if (partnerDisplay) partnerDisplay.textContent = archetypeDescriptions[selectedPartner]?.name || selectedPartner;
+        // Legacy aliases
+        function closePathosLogosModal(event, skipHistoryBack = false) {
+            closeTiageSyntheseModal(event, skipHistoryBack);
+        }
+        function closeProContraModal(event, skipHistoryBack = false) {
+            closeTiageSyntheseModal(event, skipHistoryBack);
         }
 
-        function updateProContraModalContent() {
-            const scoreDisplay = document.getElementById('proContraModalScore');
-            const proList = document.getElementById('proContraModalProList');
-            const contraList = document.getElementById('proContraModalContraList');
+        function showTiageSyntheseContent(type) {
+            currentTiageSyntheseType = type;
+            currentPathosLogosType = type; // Keep legacy in sync
+            // Stop TTS when switching content
+            stopTTSOnModalClose();
+            // Save to localStorage for sticky behavior
+            localStorage.setItem('tiageSyntheseType', type);
+            localStorage.setItem('pathosLogosType', type); // Keep legacy storage
 
-            if (!scoreDisplay || !proList || !contraList) return;
+            const titleEl = document.getElementById('tiageSyntheseModalTitle');
+            const iconEl = document.getElementById('tiageSyntheseIcon');
+            const categoryEl = document.getElementById('tiageSyntheseCategory');
+            const subtitleEl = document.getElementById('tiageSyntheseSubtitle');
+            const contentEl = document.getElementById('tiageSyntheseModalContent');
+            const typeIndicatorEl = document.getElementById('tiageSyntheseTypeIndicator');
 
+            // Sticky side buttons
+            const scoreBtn = document.getElementById('tiageSyntheseToggleScore');
+            const pathosBtn = document.getElementById('tiageSyntheseTogglePathos');
+            const logosBtn = document.getElementById('tiageSyntheseToggleLogos');
+
+            // Modal header buttons
+            const modalScoreBtn = document.getElementById('modalScoreBtn');
+            const modalPathosBtn = document.getElementById('modalPathosBtn');
+            const modalLogosBtn = document.getElementById('modalLogosBtn');
+
+            // Reset all sticky side button styles
+            [scoreBtn, pathosBtn, logosBtn].forEach(btn => {
+                if (btn) {
+                    btn.style.background = 'rgba(30,30,35,0.95)';
+                    btn.style.color = 'var(--text-muted)';
+                    btn.style.border = '1px solid var(--border)';
+                }
+            });
+
+            // Reset modal header button styles
+            [modalScoreBtn, modalPathosBtn, modalLogosBtn].forEach(btn => {
+                if (btn) btn.classList.remove('active');
+            });
+
+            if (type === 'score') {
+                titleEl.textContent = "Ti-Age Synthese";
+                iconEl.textContent = '📊';
+                categoryEl.textContent = 'Kompatibilitäts-Analyse';
+                subtitleEl.textContent = 'Score – Pro & Contra';
+                typeIndicatorEl.style.display = 'flex';
+                contentEl.innerHTML = getScoreContent();
+                if (scoreBtn) {
+                    scoreBtn.style.background = 'rgba(139, 92, 246, 0.3)';
+                    scoreBtn.style.color = 'var(--text-primary)';
+                    scoreBtn.style.border = '1px solid #8B5CF6';
+                }
+                if (modalScoreBtn) modalScoreBtn.classList.add('active');
+            } else if (type === 'pathos') {
+                titleEl.textContent = "Ti-Age Synthese";
+                iconEl.textContent = '🔥';
+                categoryEl.textContent = 'Dynamische Qualität (Pirsig)';
+                subtitleEl.textContent = 'Pathos – Emotionale Resonanz';
+                typeIndicatorEl.style.display = 'flex';
+                contentEl.innerHTML = getPathosContent();
+                if (pathosBtn) {
+                    pathosBtn.style.background = 'rgba(231,111,81,0.3)';
+                    pathosBtn.style.color = 'var(--text-primary)';
+                    pathosBtn.style.border = '1px solid #E76F51';
+                }
+                if (modalPathosBtn) modalPathosBtn.classList.add('active');
+            } else if (type === 'logos') {
+                titleEl.textContent = "Ti-Age Synthese";
+                iconEl.textContent = '🧠';
+                categoryEl.textContent = 'Statische Qualität (Pirsig)';
+                subtitleEl.textContent = 'Logos – Rationale Struktur';
+                typeIndicatorEl.style.display = 'flex';
+                contentEl.innerHTML = getLogosContent();
+                if (logosBtn) {
+                    logosBtn.style.background = 'rgba(100,149,237,0.3)';
+                    logosBtn.style.color = 'var(--text-primary)';
+                    logosBtn.style.border = '1px solid #6495ED';
+                }
+                if (modalLogosBtn) modalLogosBtn.classList.add('active');
+            }
+        }
+
+        // Legacy alias
+        function showPathosLogosContent(type) {
+            showTiageSyntheseContent(type);
+        }
+
+        /**
+         * Generate Score content (formerly Pro & Contra)
+         */
+        function getScoreContent() {
             // Get current score
             const percentage = document.getElementById('resultPercentage');
             const currentScore = percentage ? percentage.textContent : '0%';
-            scoreDisplay.textContent = currentScore;
+            const scoreValue = parseInt(currentScore) || 0;
 
             // Set color based on score
-            const scoreValue = parseInt(currentScore) || 0;
+            let scoreColor = 'var(--danger)';
             if (scoreValue >= 80) {
-                scoreDisplay.style.color = 'var(--success)';
+                scoreColor = 'var(--success)';
             } else if (scoreValue >= 65) {
-                scoreDisplay.style.color = 'var(--primary)';
+                scoreColor = 'var(--primary)';
             } else if (scoreValue >= 50) {
-                scoreDisplay.style.color = 'var(--warning)';
-            } else {
-                scoreDisplay.style.color = 'var(--danger)';
+                scoreColor = 'var(--warning)';
             }
 
-            // Generate Pro/Contra directly
+            // Generate Pro/Contra
             const dynamicProContra = generateDynamicProContra(
                 currentArchetype,
                 selectedPartner,
@@ -10764,31 +10882,52 @@
                 personDimensions.partner
             );
 
+            let proListHtml = '';
             if (dynamicProContra.pro && dynamicProContra.pro.length > 0) {
-                proList.innerHTML = dynamicProContra.pro.slice(0, 5).map(s => `<li>${s}</li>`).join('');
+                proListHtml = dynamicProContra.pro.slice(0, 5).map(s => `<li style="margin-bottom: 8px; padding-left: 8px; border-left: 2px solid var(--success);">${s}</li>`).join('');
             } else {
-                proList.innerHTML = '<li style="color: var(--text-muted);">Keine Daten verfügbar</li>';
+                proListHtml = '<li style="color: var(--text-muted);">Keine Daten verfügbar</li>';
             }
 
+            let contraListHtml = '';
             if (dynamicProContra.contra && dynamicProContra.contra.length > 0) {
-                contraList.innerHTML = dynamicProContra.contra.slice(0, 5).map(c => `<li>${c}</li>`).join('');
+                contraListHtml = dynamicProContra.contra.slice(0, 5).map(c => `<li style="margin-bottom: 8px; padding-left: 8px; border-left: 2px solid var(--danger);">${c}</li>`).join('');
             } else {
-                contraList.innerHTML = '<li style="color: var(--text-muted);">Keine Daten verfügbar</li>';
+                contraListHtml = '<li style="color: var(--text-muted);">Keine Daten verfügbar</li>';
             }
 
-            // Update Bedürfnis-Übereinstimmung section
-            updateProContraModalNeedsSection();
+            // Get needs matching content
+            const needsHtml = getScoreNeedsContent();
+
+            return `
+                <!-- Score Display -->
+                <div style="text-align: center; margin-bottom: 20px;">
+                    <div style="font-size: 3rem; font-weight: 700; color: ${scoreColor};">${currentScore}</div>
+                </div>
+                <!-- Pro/Contra Lists -->
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px;">
+                    <div>
+                        <h4 style="color: var(--success); margin-bottom: 12px; font-size: 14px;">✓ Was funktioniert</h4>
+                        <ul style="list-style: none; padding: 0; margin: 0;">${proListHtml}</ul>
+                    </div>
+                    <div>
+                        <h4 style="color: var(--danger); margin-bottom: 12px; font-size: 14px;">✗ Herausforderungen</h4>
+                        <ul style="list-style: none; padding: 0; margin: 0;">${contraListHtml}</ul>
+                    </div>
+                </div>
+                <!-- Bedürfnis-Übereinstimmung Section -->
+                ${needsHtml}
+            `;
         }
 
-        function updateProContraModalNeedsSection() {
-            const needsContent = document.getElementById('proContraModalNeedsContent');
-            if (!needsContent) return;
-
+        /**
+         * Generate Needs Matching content for Score view
+         */
+        function getScoreNeedsContent() {
             // Use cached matching result (same as displayed on main page)
             const matching = lastGfkMatchingResult;
             if (!matching || matching.score === undefined) {
-                needsContent.innerHTML = '';
-                return;
+                return '';
             }
 
             // Score-Farbe basierend auf Level
@@ -10805,7 +10944,6 @@
                 const partnerArchetyp = (selectedPartner || '').replace('_', '-');
                 const fullMatching = GfkBeduerfnisse.berechneMatching(ichArchetyp, partnerArchetyp);
                 if (fullMatching && fullMatching.details) {
-                    // Combine uebereinstimmend AND komplementaer as "gemeinsam" (shared/compatible needs)
                     const uebereinstimmend = (fullMatching.details.uebereinstimmend || []).map(b => ({
                         label: b.label,
                         id: b.id,
@@ -10822,7 +10960,6 @@
                         wert2: b.wert2,
                         diff: b.diff
                     }));
-                    // Merge and sort by average importance
                     gemeinsam = [...uebereinstimmend, ...komplementaer].sort((a, b) =>
                         ((b.wert1 + b.wert2) / 2) - ((a.wert1 + a.wert2) / 2)
                     );
@@ -10837,167 +10974,47 @@
             }
 
             // Weitere Fallback: Top-Listen verwenden
-            if (gemeinsam.length === 0) gemeinsam = matching.topUebereinstimmungen || [];
-            if (unterschiedlich.length === 0) unterschiedlich = matching.topKonflikte || [];
+            if (gemeinsam.length === 0) gemeinsam = matching.topGemeinsam || [];
+            if (unterschiedlich.length === 0) unterschiedlich = matching.topUnterschiedlich || [];
 
-            // HTML generieren
-            const beduerfnisLabel = TiageI18n.t('synthesisSection.beduerfnisUebereinstimmung', 'Bedürfnis-Übereinstimmung');
-            let html = `
-                <div class="gfk-matching-header" onclick="openNeedsFullModal()" style="cursor: pointer;" title="Klicken für vollständige Liste">
-                    <div class="gfk-score-display">
-                        <span class="gfk-score" style="color: ${scoreColor}">${matching.score}</span>
-                        <span class="gfk-level-label">${beduerfnisLabel}</span>
+            // Tag-Style
+            const tagBaseStyle = `display: inline-block; padding: 4px 10px; margin: 3px; border-radius: 12px; font-size: 12px; font-weight: 500;`;
+            const greenTagStyle = `${tagBaseStyle} background: rgba(34,197,94,0.15); border: 1px solid rgba(34,197,94,0.4); color: #22c55e;`;
+            const redTagStyle = `${tagBaseStyle} background: rgba(239,68,68,0.15); border: 1px solid rgba(239,68,68,0.4); color: #ef4444;`;
+
+            // Gemeinsame Bedürfnisse Tags (max 8)
+            const gemeinsamTags = gemeinsam.slice(0, 8).map(b => {
+                const label = typeof TiageI18n !== 'undefined' ? TiageI18n.t(`needs.items.${b.key || b.id}`, b.label) : b.label;
+                return `<span style="${greenTagStyle}">${label}</span>`;
+            }).join('');
+
+            // Unterschiedliche Bedürfnisse Tags (max 5)
+            const unterschiedlichTags = unterschiedlich.slice(0, 5).map(b => {
+                const label = typeof TiageI18n !== 'undefined' ? TiageI18n.t(`needs.items.${b.key || b.id}`, b.label) : b.label;
+                return `<span style="${redTagStyle}">${label}</span>`;
+            }).join('');
+
+            return `
+                <div style="margin-top: 20px; padding-top: 20px; border-top: 1px solid var(--border);">
+                    <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 15px;">
+                        <span style="font-size: 16px;">🤝</span>
+                        <span style="font-size: 13px; color: var(--text-muted);">Bedürfnis-Übereinstimmung:</span>
+                        <span style="font-size: 18px; font-weight: 700; color: ${scoreColor};">${matching.score}%</span>
                     </div>
+                    ${gemeinsamTags ? `
+                        <div style="margin-bottom: 12px;">
+                            <div style="font-size: 11px; color: var(--success); font-weight: 600; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px;">Gemeinsame Bedürfnisse</div>
+                            <div>${gemeinsamTags}</div>
+                        </div>
+                    ` : ''}
+                    ${unterschiedlichTags ? `
+                        <div>
+                            <div style="font-size: 11px; color: var(--danger); font-weight: 600; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px;">Herausfordernde Unterschiede</div>
+                            <div>${unterschiedlichTags}</div>
+                        </div>
+                    ` : ''}
                 </div>
             `;
-
-            // Alle gemeinsamen Bedürfnisse (übereinstimmend + komplementär)
-            if (gemeinsam.length > 0) {
-                html += `
-                    <div class="gfk-section gfk-matches">
-                        <div class="gfk-section-title" style="color: #22c55e;">${TiageI18n.t('needs.sharedTitle', 'GEMEINSAME & KOMPATIBLE BEDÜRFNISSE')} (${gemeinsam.length})</div>
-                        <div class="gfk-tags" style="max-height: 150px; overflow-y: auto; padding-right: 5px;">
-                            ${gemeinsam.map(b => {
-                                const translatedLabel = TiageI18n.t(`needs.items.${b.id || b.key}`, b.label);
-                                const needId = b.id || b.key;
-                                return `<span class="gfk-tag gfk-tag-match gfk-tag-clickable" onclick="openNeedDefinitionModal('${needId}')" title="Klicken für Definition | ICH: ${b.wert1} | PARTNER: ${b.wert2}">${translatedLabel}</span>`;
-                            }).join('')}
-                        </div>
-                    </div>
-                `;
-            }
-
-            // Alle unterschiedlichen Prioritäten
-            if (unterschiedlich.length > 0) {
-                html += `
-                    <div class="gfk-section gfk-conflicts">
-                        <div class="gfk-section-title" style="color: #ef4444;">${TiageI18n.t('needs.differentTitle', 'UNTERSCHIEDLICHE PRIORITÄTEN')} (${unterschiedlich.length})</div>
-                        <div class="gfk-tags" style="max-height: 150px; overflow-y: auto; padding-right: 5px;">
-                            ${unterschiedlich.map(b => {
-                                const translatedLabel = TiageI18n.t(`needs.items.${b.id || b.key}`, b.label);
-                                const needId = b.id || b.key;
-                                return `<span class="gfk-tag gfk-tag-conflict gfk-tag-clickable" onclick="openNeedDefinitionModal('${needId}')" title="Klicken für Definition | ICH: ${b.wert1} | PARTNER: ${b.wert2}">${translatedLabel}</span>`;
-                            }).join('')}
-                        </div>
-                    </div>
-                `;
-            }
-
-            needsContent.innerHTML = html;
-        }
-
-        function navigateProContraArchetype(person, direction) {
-            // Use the same logic as navigateArchetype
-            navigateArchetype(person, direction);
-
-            // Update the modal displays
-            updateProContraModalArchetypeDisplay();
-            updateProContraModalContent();
-        }
-
-        // Pathos/Logos Modal Functions
-        let currentPathosLogosType = localStorage.getItem('pathosLogosType') || 'pathos'; // Sticky: 'pathos' or 'logos'
-        let currentPathosLogosContent = { pathos: '', logos: '' };
-
-        function openPathosLogosModal(type = null) {
-            const modal = document.getElementById('pathosLogosModal');
-            if (!modal) return;
-
-            // Use sticky type if no type specified
-            if (type === null) {
-                type = currentPathosLogosType;
-            }
-            currentPathosLogosType = type;
-
-            // Get current archetypes
-            const ichArch = archetypeDescriptions[currentArchetype];
-            const partnerArch = archetypeDescriptions[selectedPartner];
-
-            // Update archetype display
-            const ichDisplay = document.getElementById('pathosLogosModalIch');
-            const partnerDisplay = document.getElementById('pathosLogosModalPartner');
-            if (ichDisplay) ichDisplay.textContent = ichArch?.name || currentArchetype;
-            if (partnerDisplay) partnerDisplay.textContent = partnerArch?.name || selectedPartner;
-
-            // Generate content
-            currentPathosLogosContent.pathos = generateCombinedPathos(ichArch, partnerArch);
-            currentPathosLogosContent.logos = generateCombinedLogos(ichArch, partnerArch);
-
-            // Show the selected type
-            showPathosLogosContent(type);
-
-            // Update Score Cycle
-            updateSyntheseScoreCycle();
-
-            modal.classList.add('active');
-            history.pushState({ mobilePage: currentMobilePage, modal: 'pathoslogos' }, '', `#seite${currentMobilePage}-pathoslogos`);
-        }
-
-        function closePathosLogosModal(event, skipHistoryBack = false) {
-            if (event && event.target !== event.currentTarget) return;
-            // Stop TTS when modal is closed
-            stopTTSOnModalClose();
-            document.getElementById('pathosLogosModal').classList.remove('active');
-            if (!skipHistoryBack && history.state && history.state.modal === 'pathoslogos') {
-                history.back();
-            }
-        }
-
-        function showPathosLogosContent(type) {
-            currentPathosLogosType = type;
-            // Stop TTS when switching between Pathos/Logos
-            stopTTSOnModalClose();
-            // Save to localStorage for sticky behavior
-            localStorage.setItem('pathosLogosType', type);
-
-            const titleEl = document.getElementById('pathosLogosModalTitle');
-            const iconEl = document.getElementById('pathosLogosIcon');
-            const categoryEl = document.getElementById('pathosLogosCategory');
-            const subtitleEl = document.getElementById('pathosLogosSubtitle');
-            const contentEl = document.getElementById('pathosLogosModalContent');
-            const archetypeContextEl = document.getElementById('pathosLogosArchetypeContext');
-            const pathosBtn = document.getElementById('pathosLogosTogglePathos');
-            const logosBtn = document.getElementById('pathosLogosToggleLogos');
-            const modalPathosBtn = document.getElementById('modalPathosBtn');
-            const modalLogosBtn = document.getElementById('modalLogosBtn');
-
-            // Reset all button styles (for sticky side buttons)
-            [pathosBtn, logosBtn].forEach(btn => {
-                if (btn) {
-                    btn.style.background = 'rgba(30,30,35,0.95)';
-                    btn.style.color = 'var(--text-muted)';
-                    btn.style.border = '1px solid var(--border)';
-                }
-            });
-
-            // Reset modal header button styles
-            [modalPathosBtn, modalLogosBtn].forEach(btn => {
-                if (btn) btn.classList.remove('active');
-            });
-
-            if (type === 'pathos') {
-                titleEl.textContent = "Tiage's Synthese";
-                iconEl.textContent = '🔥';
-                categoryEl.textContent = 'Dynamische Qualität (Pirsig)';
-                subtitleEl.textContent = 'Pathos – Emotionale Resonanz';
-                archetypeContextEl.style.display = 'flex';
-                contentEl.innerHTML = getPathosContent();
-                pathosBtn.style.background = 'rgba(231,111,81,0.3)';
-                pathosBtn.style.color = 'var(--text-primary)';
-                pathosBtn.style.border = '1px solid #E76F51';
-                if (modalPathosBtn) modalPathosBtn.classList.add('active');
-            } else if (type === 'logos') {
-                titleEl.textContent = "Tiage's Synthese";
-                iconEl.textContent = '🧠';
-                categoryEl.textContent = 'Statische Qualität (Pirsig)';
-                subtitleEl.textContent = 'Logos – Rationale Struktur';
-                archetypeContextEl.style.display = 'flex';
-                contentEl.innerHTML = getLogosContent();
-                logosBtn.style.background = 'rgba(100,149,237,0.3)';
-                logosBtn.style.color = 'var(--text-primary)';
-                logosBtn.style.border = '1px solid #6495ED';
-                if (modalLogosBtn) modalLogosBtn.classList.add('active');
-            }
         }
 
         /**
@@ -11411,8 +11428,8 @@
             return html;
         }
 
-        // Navigate archetypes within Pathos/Logos Modal
-        function navigatePathosLogosArchetype(person, direction) {
+        // Navigate archetypes within Ti-Age Synthese Modal
+        function navigateTiageSyntheseArchetype(person, direction) {
             const archetypes = archetypeOrder;
             let currentIndex;
 
@@ -11444,17 +11461,17 @@
             const ichArch = archetypeDescriptions[currentArchetype];
             const partnerArch = archetypeDescriptions[selectedPartner];
 
-            const ichDisplay = document.getElementById('pathosLogosModalIch');
-            const partnerDisplay = document.getElementById('pathosLogosModalPartner');
+            const ichDisplay = document.getElementById('tiageSyntheseModalIch');
+            const partnerDisplay = document.getElementById('tiageSyntheseModalPartner');
             if (ichDisplay) ichDisplay.textContent = ichArch?.name || currentArchetype;
             if (partnerDisplay) partnerDisplay.textContent = partnerArch?.name || selectedPartner;
 
             // Regenerate content with new archetypes
-            currentPathosLogosContent.pathos = generateCombinedPathos(ichArch, partnerArch);
-            currentPathosLogosContent.logos = generateCombinedLogos(ichArch, partnerArch);
+            currentTiageSyntheseContent.pathos = generateCombinedPathos(ichArch, partnerArch);
+            currentTiageSyntheseContent.logos = generateCombinedLogos(ichArch, partnerArch);
 
             // Refresh the displayed content
-            showPathosLogosContent(currentPathosLogosType);
+            showTiageSyntheseContent(currentTiageSyntheseType);
 
             // Save to localStorage and update main view
             saveSelectionToStorage();
@@ -11463,6 +11480,11 @@
 
             // Update Score Cycle with new score
             updateSyntheseScoreCycle();
+        }
+
+        // Legacy alias
+        function navigatePathosLogosArchetype(person, direction) {
+            navigateTiageSyntheseArchetype(person, direction);
         }
 
         function getTiageTheoryContent() {
