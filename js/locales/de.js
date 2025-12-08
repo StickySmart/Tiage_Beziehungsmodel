@@ -286,6 +286,43 @@ const TiageLocale_DE = {
         bisexuell: {
             title: 'Bi-/Pansexuell',
             text: 'Anziehung zu mehreren oder allen Geschlechtern, unabhängig von Geschlechtsidentität.'
+        },
+        // Geschlechtsidentitäten (Legacy-Modus)
+        cis_mann: {
+            title: 'Cis Mann',
+            text: 'Person, die bei Geburt als männlich zugewiesen wurde und sich als Mann identifiziert.'
+        },
+        cis_frau: {
+            title: 'Cis Frau',
+            text: 'Person, die bei Geburt als weiblich zugewiesen wurde und sich als Frau identifiziert.'
+        },
+        trans_mann: {
+            title: 'Trans Mann',
+            text: 'Person, die bei Geburt als weiblich zugewiesen wurde, sich aber als Mann identifiziert.'
+        },
+        trans_frau: {
+            title: 'Trans Frau',
+            text: 'Person, die bei Geburt als männlich zugewiesen wurde, sich aber als Frau identifiziert.'
+        },
+        nonbinaer: {
+            title: 'Nonbinär',
+            text: 'Person, deren Geschlechtsidentität weder ausschließlich männlich noch weiblich ist.'
+        },
+        genderfluid: {
+            title: 'Genderfluid',
+            text: 'Person, deren Geschlechtsidentität sich über Zeit verändert oder zwischen verschiedenen Identitäten wechselt.'
+        },
+        agender: {
+            title: 'Agender',
+            text: 'Person, die sich keiner Geschlechtsidentität zugehörig fühlt oder Geschlecht als Konzept ablehnt.'
+        },
+        intersex: {
+            title: 'Intersex',
+            text: 'Person mit angeborenen körperlichen Geschlechtsmerkmalen, die nicht eindeutig männlich oder weiblich sind.'
+        },
+        divers: {
+            title: 'Divers',
+            text: 'Sammelbegriff für Geschlechtsidentitäten außerhalb des binären Mann/Frau-Systems.'
         }
     },
 
