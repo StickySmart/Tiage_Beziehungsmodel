@@ -36,6 +36,20 @@
     --warning: #f39c12;           /* Warnung (Orange) - INTERESSIERT */
     --danger: #e74c3c;            /* Gefahr/Partner-Spalte (Rot) */
 
+    /* ========================================
+       TOGGLE BUTTON BASIS-STYLE
+       Neon-Pink/Magenta mit Lila Akzenten
+       ======================================== */
+    --toggle-bg: #1a0a2e;                          /* Dunkler Lila Hintergrund */
+    --toggle-bg-hover: #2d1b4e;                    /* Hellerer Lila beim Hover */
+    --toggle-border: rgba(255, 0, 255, 0.3);       /* Subtiler Magenta Rand */
+    --toggle-border-hover: rgba(255, 0, 255, 0.6); /* Stärkerer Magenta Rand beim Hover */
+    --toggle-glow: #ff00ff;                        /* Neon Magenta Glow */
+    --toggle-glow-secondary: #9b5de5;              /* Sekundärer Lila Glow */
+    --toggle-active-bg: linear-gradient(135deg, #ff00ff, #9b5de5); /* Aktiver Gradient */
+    --toggle-text: #e0d0ff;                        /* Heller Lila Text */
+    --toggle-text-active: #ffffff;                 /* Weißer Text wenn aktiv */
+
     /* Font-Sizes: Definiert in template_desktop.css / template_mobile.css */
     /* Bar-Heights: Definiert in template_desktop.css / template_mobile.css */
 }
