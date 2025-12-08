@@ -14250,6 +14250,11 @@
             // Close modal
             closeProfileReviewModal();
 
+            // Update score display after profile changes
+            if (typeof updateComparisonView === 'function') {
+                updateComparisonView();
+            }
+
             // Optional: Show success message
             // alert('Profil gespeichert! ' + profileReviewChangesCount + ' Änderungen übernommen.');
         }
