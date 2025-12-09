@@ -1,81 +1,75 @@
 /**
- * TIAGE BEDÜRFNIS-ID-KATALOG v1.2
+ * TIAGE BEDÜRFNIS-ID-KATALOG v2.0
  *
- * Zentrales Mapping: String-Keys <-> #IDs
+ * Zentrales Mapping: String-Keys <-> #IDs für Bedürfnisse
+ *
+ * WICHTIG: Perspektiven, Dimensionen und Kategorien werden aus
+ *          taxonomie.js referenziert (SSOT - Single Source of Truth)
  *
  * Struktur:
- * #P1-#P4   → 4 Perspektiven (Statistik, Osho, Pirsig, SexPositiv)
- * #D1-#D6   → 6 Dimensionen
- * #K1-#K18  → 18 Kategorien
+ * #P1-#P4   → 4 Perspektiven    (siehe taxonomie.js)
+ * #D1-#D6   → 6 Dimensionen     (siehe taxonomie.js, Kurzform A-F)
+ * #K1-#K18  → 18 Kategorien     (siehe taxonomie.js)
  * #B1-#B88  → 88 Kern-Bedürfnisse (GFK + Dynamik)
  * #B89      → Spezial (Geduld)
  * #B90-#B208 → 119 Lebensthemen-Bedürfnisse
  * #B209-#B220 → 12 Erweiterte Kink/BDSM-Bedürfnisse
  *
- * Kategorien:
+ * Kategorien-Zuordnung:
  * #K11 Dynamik (Basis):      #B74-#B88  (15) - Kontrolle, Hingabe, Führung...
  * #K11 Dynamik (Erweitert):  #B209-#B220 (12) - Schmerz, Bondage, Devotion...
  * #K12 Lebensplanung:        #B90-#B126  (37)
  * #K13 Finanzen/Karriere:    #B127-#B148 (22)
- * #K15 Kommunikation:        #B149-#B176 (28)
- * #K16 Soziales Leben:       #B177-#B203 (27)
- * #K17 Intimität/Romantik:   #B204-#B208 (5)
+ * #K14 Kommunikationsstil:   #B149-#B176 (28)
+ * #K15 Soziales Leben:       #B177-#B203 (27)
+ * #K16 Intimität/Romantik:   #B204-#B208 (5)
  *
  * TOTAL: 220 Bedürfnisse
  */
 
 const BeduerfnisIds = {
 
-    // ═══════════════════════════════════════════════════════════════════════════
-    // PERSPEKTIVEN (#P1-#P4)
-    // ═══════════════════════════════════════════════════════════════════════════
-    perspektiven: {
-        '#P1': { key: 'statistik', name: 'Statistik', beschreibung: 'Empirische Forschung' },
-        '#P2': { key: 'osho', name: 'Osho', beschreibung: 'Tantra/Polarität' },
-        '#P3': { key: 'pirsig', name: 'Pirsig', beschreibung: 'Metaphysics of Quality' },
-        '#P4': { key: 'sexpositiv', name: 'SexPositiv', beschreibung: 'BDSM/Kink Dynamik' }
-    },
+    version: '2.0.0',
 
     // ═══════════════════════════════════════════════════════════════════════════
-    // DIMENSIONEN (#D1-#D6)
+    // TAXONOMIE-REFERENZ (SSOT)
     // ═══════════════════════════════════════════════════════════════════════════
-    dimensionen: {
-        '#D1': { key: 'grundbeduerfnisse', name: 'Grundbedürfnisse' },
-        '#D2': { key: 'beziehungsbeduerfnisse', name: 'Beziehungsbedürfnisse' },
-        '#D3': { key: 'selbstbeduerfnisse', name: 'Selbstbedürfnisse' },
-        '#D4': { key: 'dynamik', name: 'Dynamik & Austausch' },
-        '#D5': { key: 'lebensplanung', name: 'Lebensplanung' },
-        '#D6': { key: 'werte', name: 'Werte & Haltungen' }
+    // Perspektiven, Dimensionen und Kategorien kommen aus taxonomie.js
+    // Diese Getter sorgen für Kompatibilität mit bestehendem Code
+
+    _taxonomie: null,
+
+    _getTaxonomie: function() {
+        if (this._taxonomie) return this._taxonomie;
+
+        if (typeof window !== 'undefined' && window.TiageTaxonomie) {
+            this._taxonomie = window.TiageTaxonomie;
+        } else if (typeof TiageTaxonomie !== 'undefined') {
+            this._taxonomie = TiageTaxonomie;
+        } else if (typeof require !== 'undefined') {
+            try {
+                this._taxonomie = require('./taxonomie.js');
+            } catch (e) {
+                console.warn('TiageTaxonomie nicht verfügbar:', e.message);
+            }
+        }
+        return this._taxonomie;
     },
 
-    // ═══════════════════════════════════════════════════════════════════════════
-    // KATEGORIEN (#K1-#K18)
-    // ═══════════════════════════════════════════════════════════════════════════
-    kategorien: {
-        // Dimension 1: Grundbedürfnisse
-        '#K1': { key: 'existenz', dimension: '#D1', name: 'Existenz' },
-        '#K2': { key: 'sicherheit', dimension: '#D1', name: 'Sicherheit' },
-        // Dimension 2: Beziehungsbedürfnisse
-        '#K3': { key: 'zuneigung', dimension: '#D2', name: 'Zuneigung' },
-        '#K4': { key: 'verstaendnis', dimension: '#D2', name: 'Verständnis' },
-        '#K5': { key: 'teilnahme', dimension: '#D2', name: 'Teilnahme' },
-        // Dimension 3: Selbstbedürfnisse
-        '#K6': { key: 'freiheit', dimension: '#D3', name: 'Freiheit' },
-        '#K7': { key: 'identitaet', dimension: '#D3', name: 'Identität' },
-        '#K8': { key: 'musse', dimension: '#D3', name: 'Muße' },
-        '#K9': { key: 'erschaffen', dimension: '#D3', name: 'Erschaffen' },
-        '#K10': { key: 'verbundenheit', dimension: '#D3', name: 'Verbundenheit' },
-        // Dimension 4: Dynamik
-        '#K11': { key: 'dynamik', dimension: '#D4', name: 'Dynamik & Austausch' },
-        // Dimension 5: Lebensplanung
-        '#K12': { key: 'lebensplanung', dimension: '#D5', name: 'Lebensplanung' },
-        '#K13': { key: 'finanzen_karriere', dimension: '#D5', name: 'Finanzen & Karriere' },
-        '#K14': { key: 'praktisches_leben', dimension: '#D5', name: 'Praktisches Leben' },
-        // Dimension 6: Werte & Haltungen
-        '#K15': { key: 'kommunikation_stil', dimension: '#D6', name: 'Kommunikationsstil' },
-        '#K16': { key: 'soziales_leben', dimension: '#D6', name: 'Soziales Leben' },
-        '#K17': { key: 'intimitaet_beziehung', dimension: '#D6', name: 'Intimität & Romantik' },
-        '#K18': { key: 'werte_haltung', dimension: '#D6', name: 'Werte & Haltungen' }
+    // Kompatibilitäts-Getter für direkten Zugriff
+    get perspektiven() {
+        var tax = this._getTaxonomie();
+        return tax ? tax.perspektiven : {};
+    },
+
+    get dimensionen() {
+        var tax = this._getTaxonomie();
+        return tax ? tax.dimensionen : {};
+    },
+
+    get kategorien() {
+        var tax = this._getTaxonomie();
+        return tax ? tax.kategorien : {};
     },
 
     // ═══════════════════════════════════════════════════════════════════════════
@@ -294,78 +288,78 @@ const BeduerfnisIds = {
         '#B148': { key: 'kreative_selbstverwirklichung', kategorie: '#K13', label: 'Kreative Selbstverwirklichung' },
 
         // ─────────────────────────────────────────────────────────────────────────
-        // KOMMUNIKATIONSSTIL (#B149-#B176) - Kategorie #K15
+        // KOMMUNIKATIONSSTIL (#B149-#B176) - Kategorie #K14
         // ─────────────────────────────────────────────────────────────────────────
-        '#B149': { key: 'taeglicher_austausch', kategorie: '#K15', label: 'Täglicher Austausch' },
-        '#B150': { key: 'tiefgehende_gespraeche', kategorie: '#K15', label: 'Tiefgehende Gespräche' },
-        '#B151': { key: 'small_talk', kategorie: '#K15', label: 'Small Talk' },
-        '#B152': { key: 'stille_gemeinsam', kategorie: '#K15', label: 'Stille gemeinsam' },
-        '#B153': { key: 'verbale_verbindung', kategorie: '#K15', label: 'Verbale Verbindung' },
-        '#B154': { key: 'zuhoeren', kategorie: '#K15', label: 'Zuhören' },
-        '#B155': { key: 'emotionale_offenheit', kategorie: '#K15', label: 'Emotionale Offenheit' },
-        '#B156': { key: 'gefuehle_zeigen', kategorie: '#K15', label: 'Gefühle zeigen' },
-        '#B157': { key: 'verletzlichkeit', kategorie: '#K15', label: 'Verletzlichkeit' },
-        '#B158': { key: 'emotionale_zurueckhaltung', kategorie: '#K15', label: 'Emotionale Zurückhaltung' },
-        '#B159': { key: 'emotionale_sicherheit', kategorie: '#K15', label: 'Emotionale Sicherheit' },
-        '#B160': { key: 'gefuehle_teilen', kategorie: '#K15', label: 'Gefühle teilen' },
-        '#B161': { key: 'konfliktklaerung', kategorie: '#K15', label: 'Konfliktklärung' },
-        '#B162': { key: 'aussprache', kategorie: '#K15', label: 'Aussprache' },
-        '#B163': { key: 'konflikt_vermeiden', kategorie: '#K15', label: 'Konflikt vermeiden' },
-        '#B164': { key: 'streitkultur', kategorie: '#K15', label: 'Streitkultur' },
-        '#B165': { key: 'versoehnlichkeit', kategorie: '#K15', label: 'Versöhnlichkeit' },
+        '#B149': { key: 'taeglicher_austausch', kategorie: '#K14', label: 'Täglicher Austausch' },
+        '#B150': { key: 'tiefgehende_gespraeche', kategorie: '#K14', label: 'Tiefgehende Gespräche' },
+        '#B151': { key: 'small_talk', kategorie: '#K14', label: 'Small Talk' },
+        '#B152': { key: 'stille_gemeinsam', kategorie: '#K14', label: 'Stille gemeinsam' },
+        '#B153': { key: 'verbale_verbindung', kategorie: '#K14', label: 'Verbale Verbindung' },
+        '#B154': { key: 'zuhoeren', kategorie: '#K14', label: 'Zuhören' },
+        '#B155': { key: 'emotionale_offenheit', kategorie: '#K14', label: 'Emotionale Offenheit' },
+        '#B156': { key: 'gefuehle_zeigen', kategorie: '#K14', label: 'Gefühle zeigen' },
+        '#B157': { key: 'verletzlichkeit', kategorie: '#K14', label: 'Verletzlichkeit' },
+        '#B158': { key: 'emotionale_zurueckhaltung', kategorie: '#K14', label: 'Emotionale Zurückhaltung' },
+        '#B159': { key: 'emotionale_sicherheit', kategorie: '#K14', label: 'Emotionale Sicherheit' },
+        '#B160': { key: 'gefuehle_teilen', kategorie: '#K14', label: 'Gefühle teilen' },
+        '#B161': { key: 'konfliktklaerung', kategorie: '#K14', label: 'Konfliktklärung' },
+        '#B162': { key: 'aussprache', kategorie: '#K14', label: 'Aussprache' },
+        '#B163': { key: 'konflikt_vermeiden', kategorie: '#K14', label: 'Konflikt vermeiden' },
+        '#B164': { key: 'streitkultur', kategorie: '#K14', label: 'Streitkultur' },
+        '#B165': { key: 'versoehnlichkeit', kategorie: '#K14', label: 'Versöhnlichkeit' },
         // Pirsig & Osho - Kommunikation
-        '#B166': { key: 'romantisches_verstehen', kategorie: '#K15', label: 'Romantisches Verstehen' },
-        '#B167': { key: 'klassische_klarheit', kategorie: '#K15', label: 'Klassische Klarheit' },
-        '#B168': { key: 'dialektik', kategorie: '#K15', label: 'Dialektik' },
-        '#B169': { key: 'qualitaets_ausdruck', kategorie: '#K15', label: 'Qualitäts-Ausdruck' },
-        '#B170': { key: 'care_im_gespraech', kategorie: '#K15', label: 'Care im Gespräch' },
-        '#B171': { key: 'schweigen_statt_worte', kategorie: '#K15', label: 'Schweigen statt Worte' },
-        '#B172': { key: 'radikale_ehrlichkeit', kategorie: '#K15', label: 'Radikale Ehrlichkeit' },
-        '#B173': { key: 'humorvolle_leichtigkeit', kategorie: '#K15', label: 'Humorvolle Leichtigkeit' },
-        '#B174': { key: 'paradoxe_weisheit', kategorie: '#K15', label: 'Paradoxe Weisheit' },
-        '#B175': { key: 'herz_statt_kopf', kategorie: '#K15', label: 'Herz statt Kopf' },
-        '#B176': { key: 'authentischer_ausdruck', kategorie: '#K15', label: 'Authentischer Ausdruck' },
+        '#B166': { key: 'romantisches_verstehen', kategorie: '#K14', label: 'Romantisches Verstehen' },
+        '#B167': { key: 'klassische_klarheit', kategorie: '#K14', label: 'Klassische Klarheit' },
+        '#B168': { key: 'dialektik', kategorie: '#K14', label: 'Dialektik' },
+        '#B169': { key: 'qualitaets_ausdruck', kategorie: '#K14', label: 'Qualitäts-Ausdruck' },
+        '#B170': { key: 'care_im_gespraech', kategorie: '#K14', label: 'Care im Gespräch' },
+        '#B171': { key: 'schweigen_statt_worte', kategorie: '#K14', label: 'Schweigen statt Worte' },
+        '#B172': { key: 'radikale_ehrlichkeit', kategorie: '#K14', label: 'Radikale Ehrlichkeit' },
+        '#B173': { key: 'humorvolle_leichtigkeit', kategorie: '#K14', label: 'Humorvolle Leichtigkeit' },
+        '#B174': { key: 'paradoxe_weisheit', kategorie: '#K14', label: 'Paradoxe Weisheit' },
+        '#B175': { key: 'herz_statt_kopf', kategorie: '#K14', label: 'Herz statt Kopf' },
+        '#B176': { key: 'authentischer_ausdruck', kategorie: '#K14', label: 'Authentischer Ausdruck' },
 
         // ─────────────────────────────────────────────────────────────────────────
-        // SOZIALES LEBEN (#B177-#B203) - Kategorie #K16
+        // SOZIALES LEBEN (#B177-#B203) - Kategorie #K15
         // ─────────────────────────────────────────────────────────────────────────
-        '#B177': { key: 'soziale_energie', kategorie: '#K16', label: 'Soziale Energie' },
-        '#B178': { key: 'geselligkeit', kategorie: '#K16', label: 'Geselligkeit' },
-        '#B179': { key: 'ruhe_von_menschen', kategorie: '#K16', label: 'Ruhe von Menschen' },
-        '#B180': { key: 'allein_aufladen', kategorie: '#K16', label: 'Allein aufladen' },
-        '#B181': { key: 'menschen_treffen', kategorie: '#K16', label: 'Menschen treffen' },
-        '#B182': { key: 'kleine_gruppen', kategorie: '#K16', label: 'Kleine Gruppen' },
-        '#B183': { key: 'zeit_fuer_sich', kategorie: '#K16', label: 'Zeit für sich' },
-        '#B184': { key: 'eigene_hobbys', kategorie: '#K16', label: 'Eigene Hobbys' },
-        '#B185': { key: 'gemeinsame_zeit', kategorie: '#K16', label: 'Gemeinsame Zeit' },
-        '#B186': { key: 'partnerzeit', kategorie: '#K16', label: 'Partnerzeit' },
-        '#B187': { key: 'eigene_interessen', kategorie: '#K16', label: 'Eigene Interessen' },
-        '#B188': { key: 'eigene_freunde', kategorie: '#K16', label: 'Eigene Freunde' },
-        '#B189': { key: 'gemeinsame_freunde', kategorie: '#K16', label: 'Gemeinsame Freunde' },
-        '#B190': { key: 'freundeskreis_teilen', kategorie: '#K16', label: 'Freundeskreis teilen' },
-        '#B191': { key: 'soziales_netz', kategorie: '#K16', label: 'Soziales Netz' },
-        '#B192': { key: 'freunde_pflegen', kategorie: '#K16', label: 'Freunde pflegen' },
-        '#B193': { key: 'neue_freundschaften', kategorie: '#K16', label: 'Neue Freundschaften' },
+        '#B177': { key: 'soziale_energie', kategorie: '#K15', label: 'Soziale Energie' },
+        '#B178': { key: 'geselligkeit', kategorie: '#K15', label: 'Geselligkeit' },
+        '#B179': { key: 'ruhe_von_menschen', kategorie: '#K15', label: 'Ruhe von Menschen' },
+        '#B180': { key: 'allein_aufladen', kategorie: '#K15', label: 'Allein aufladen' },
+        '#B181': { key: 'menschen_treffen', kategorie: '#K15', label: 'Menschen treffen' },
+        '#B182': { key: 'kleine_gruppen', kategorie: '#K15', label: 'Kleine Gruppen' },
+        '#B183': { key: 'zeit_fuer_sich', kategorie: '#K15', label: 'Zeit für sich' },
+        '#B184': { key: 'eigene_hobbys', kategorie: '#K15', label: 'Eigene Hobbys' },
+        '#B185': { key: 'gemeinsame_zeit', kategorie: '#K15', label: 'Gemeinsame Zeit' },
+        '#B186': { key: 'partnerzeit', kategorie: '#K15', label: 'Partnerzeit' },
+        '#B187': { key: 'eigene_interessen', kategorie: '#K15', label: 'Eigene Interessen' },
+        '#B188': { key: 'eigene_freunde', kategorie: '#K15', label: 'Eigene Freunde' },
+        '#B189': { key: 'gemeinsame_freunde', kategorie: '#K15', label: 'Gemeinsame Freunde' },
+        '#B190': { key: 'freundeskreis_teilen', kategorie: '#K15', label: 'Freundeskreis teilen' },
+        '#B191': { key: 'soziales_netz', kategorie: '#K15', label: 'Soziales Netz' },
+        '#B192': { key: 'freunde_pflegen', kategorie: '#K15', label: 'Freunde pflegen' },
+        '#B193': { key: 'neue_freundschaften', kategorie: '#K15', label: 'Neue Freundschaften' },
         // Pirsig & Osho - Soziales
-        '#B194': { key: 'soziale_qualitaet', kategorie: '#K16', label: 'Soziale Qualität' },
-        '#B195': { key: 'tribe_muster', kategorie: '#K16', label: 'Tribe-Muster' },
-        '#B196': { key: 'intellektuelle_gemeinschaft', kategorie: '#K16', label: 'Intellektuelle Gemeinschaft' },
-        '#B197': { key: 'statische_sozialstrukturen', kategorie: '#K16', label: 'Statische Sozialstrukturen' },
-        '#B198': { key: 'sannyas_gemeinschaft', kategorie: '#K16', label: 'Sannyas-Gemeinschaft' },
-        '#B199': { key: 'rebellion_gegen_gesellschaft', kategorie: '#K16', label: 'Rebellion gegen Gesellschaft' },
-        '#B200': { key: 'einsamkeit_in_menge', kategorie: '#K16', label: 'Einsamkeit in der Menge' },
-        '#B201': { key: 'celebration_mit_anderen', kategorie: '#K16', label: 'Celebration mit anderen' },
-        '#B202': { key: 'keine_freundschaft_besitz', kategorie: '#K16', label: 'Keine Freundschaft als Besitz' },
-        '#B203': { key: 'tantra_gruppe', kategorie: '#K16', label: 'Tantra-Gruppe' },
+        '#B194': { key: 'soziale_qualitaet', kategorie: '#K15', label: 'Soziale Qualität' },
+        '#B195': { key: 'tribe_muster', kategorie: '#K15', label: 'Tribe-Muster' },
+        '#B196': { key: 'intellektuelle_gemeinschaft', kategorie: '#K15', label: 'Intellektuelle Gemeinschaft' },
+        '#B197': { key: 'statische_sozialstrukturen', kategorie: '#K15', label: 'Statische Sozialstrukturen' },
+        '#B198': { key: 'sannyas_gemeinschaft', kategorie: '#K15', label: 'Sannyas-Gemeinschaft' },
+        '#B199': { key: 'rebellion_gegen_gesellschaft', kategorie: '#K15', label: 'Rebellion gegen Gesellschaft' },
+        '#B200': { key: 'einsamkeit_in_menge', kategorie: '#K15', label: 'Einsamkeit in der Menge' },
+        '#B201': { key: 'celebration_mit_anderen', kategorie: '#K15', label: 'Celebration mit anderen' },
+        '#B202': { key: 'keine_freundschaft_besitz', kategorie: '#K15', label: 'Keine Freundschaft als Besitz' },
+        '#B203': { key: 'tantra_gruppe', kategorie: '#K15', label: 'Tantra-Gruppe' },
 
         // ─────────────────────────────────────────────────────────────────────────
-        // INTIMITÄT & ROMANTIK (#B204-#B234) - Kategorie #K17
+        // INTIMITÄT & ROMANTIK (#B204-#B208) - Kategorie #K16
         // ─────────────────────────────────────────────────────────────────────────
-        '#B204': { key: 'koerpernaehe', kategorie: '#K17', label: 'Körpernähe' },
-        '#B205': { key: 'kuscheln', kategorie: '#K17', label: 'Kuscheln' },
-        '#B206': { key: 'physische_distanz', kategorie: '#K17', label: 'Physische Distanz' },
-        '#B207': { key: 'koerperkontakt', kategorie: '#K17', label: 'Körperkontakt' },
-        '#B208': { key: 'umarmungen', kategorie: '#K17', label: 'Umarmungen' },
+        '#B204': { key: 'koerpernaehe', kategorie: '#K16', label: 'Körpernähe' },
+        '#B205': { key: 'kuscheln', kategorie: '#K16', label: 'Kuscheln' },
+        '#B206': { key: 'physische_distanz', kategorie: '#K16', label: 'Physische Distanz' },
+        '#B207': { key: 'koerperkontakt', kategorie: '#K16', label: 'Körperkontakt' },
+        '#B208': { key: 'umarmungen', kategorie: '#K16', label: 'Umarmungen' },
 
         // ─────────────────────────────────────────────────────────────────────────
         // ERWEITERTE KINK/DYNAMIK (#B209-#B220) - Kategorie #K11

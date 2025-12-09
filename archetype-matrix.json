@@ -1,42 +1,54 @@
 {
   "meta": {
     "title": "Archetypen-Interaktionsmatrix für Beziehungsmodelle",
-    "version": "6.0.0",
+    "version": "7.0.0",
     "created": "2025-01-22",
-    "updated": "2025-01-29",
-    "description": "Eine 8x8 Matrix zur Bewertung der Beziehungsqualität verschiedener Beziehungsarchetypen mit Primär/Sekundär-System",
+    "updated": "2025-12-09",
+    "description": "8 Archetypen mit #IDs und Pro/Contra-Texte für 64 Interaktionen",
     "matrixType": "asymmetric",
     "note": "Asymmetrisch, da die Perspektive die wahrgenommene Beziehungsqualität beeinflusst",
-    "changes": "v5.0: Poly-Hedo entfernt, RA/LAT/Aromantisch hinzugefügt, Primär/Sekundär-System"
+    "changes": "v7.0: Verschlankt - nur Pro/Contra Texte, Scores werden berechnet. #IDs eingeführt (#A1-#A8, #D1-#D6)"
   },
 
-  "categories": {
-    "A": {
+  "dimensions": {
+    "#D1": {
+      "id": "#D1",
+      "key": "A",
       "name": "Beziehungsphilosophie",
       "description": "Die fundamentale Einstellung zu Beziehungen: Exklusivität, Offenheit, Tiefe und Freiheit",
       "subDimensions": ["Exklusivitäts-Erwartung", "Offenheit für alternative Modelle", "Beziehung als Lebensinhalt vs. Lebensbereich"]
     },
-    "B": {
+    "#D2": {
+      "id": "#D2",
+      "key": "B",
       "name": "Werte-Alignment",
       "description": "Übereinstimmung in Kernwerten wie Ehrlichkeit, Treue-Definition und ethischem Umgang",
       "subDimensions": ["Definition von Treue", "Ethische Grundhaltung", "Verantwortungsbewusstsein"]
     },
-    "C": {
+    "#D3": {
+      "id": "#D3",
+      "key": "C",
       "name": "Nähe-Distanz-Präferenzen",
       "description": "Gewünschte emotionale und physische Nähe, Fähigkeit Raum zu geben",
       "subDimensions": ["Emotionale Verschmelzungs-Tendenz", "Physische Nähe-Bedürfnisse", "Fähigkeit, Raum zu geben"]
     },
-    "D": {
+    "#D4": {
+      "id": "#D4",
+      "key": "D",
       "name": "Autonomie-Bedürfnisse",
       "description": "Bedürfnis nach Unabhängigkeit, eigenen Projekten und Freiheit",
       "subDimensions": ["Individuelle Freiheit", "Entscheidungsautonomie", "Akzeptanz der Autonomie des anderen"]
     },
-    "E": {
+    "#D5": {
+      "id": "#D5",
+      "key": "E",
       "name": "Kommunikations-Matching",
       "description": "Passung der Kommunikationsstile: Tiefe, Direktheit, Konfliktfähigkeit",
       "subDimensions": ["Kommunikationstiefe", "Konfliktfähigkeit", "Emotionale Transparenz"]
     },
-    "F": {
+    "#D6": {
+      "id": "#D6",
+      "key": "F",
       "name": "Soziale Kompatibilität",
       "description": "Funktion der Beziehung im sozialen Kontext, Umgang mit Normen",
       "subDimensions": ["Gesellschaftliche Akzeptanz", "Integration in soziale Kreise", "Umgang mit Stigma"]
@@ -44,8 +56,9 @@
   },
 
   "archetypes": {
-    "single": {
-      "id": "single",
+    "#A1": {
+      "id": "#A1",
+      "key": "single",
       "name": "Single",
       "color": "#E63946",
       "colorLight": "#FFB4A2",
@@ -53,8 +66,9 @@
       "shortDescription": "Fokus auf Selbstentwicklung, temporär oder bewusst ungebunden. Maximale persönliche Freiheit.",
       "fullDescription": "Der Single-Archetyp lebt primär für sich selbst und eigene Projekte. Dies kann eine bewusste Lebensphase oder eine dauerhafte Entscheidung sein."
     },
-    "duo": {
-      "id": "duo",
+    "#A2": {
+      "id": "#A2",
+      "key": "duo",
       "name": "Duo",
       "color": "#E84393",
       "colorLight": "#FDA7DF",
@@ -62,8 +76,9 @@
       "shortDescription": "Klassische monogame Zweierbeziehung. Exklusivität, Tiefe und Verbindlichkeit mit einer Person.",
       "fullDescription": "Das Duo-Modell repräsentiert die traditionelle monogame Partnerschaft: Eine tiefe, exklusive Verbindung zwischen zwei Menschen."
     },
-    "duo_flex": {
-      "id": "duo_flex",
+    "#A3": {
+      "id": "#A3",
+      "key": "duo_flex",
       "name": "Duo-Flex",
       "color": "#FF6B6B",
       "colorLight": "#FFA5A5",
@@ -71,8 +86,9 @@
       "shortDescription": "Primär Zweierbeziehung mit situativer Öffnung. Monogamisch mit Flexibilität nach Absprache.",
       "fullDescription": "Das Duo-Flex-Modell vereint die Stabilität einer Hauptbeziehung mit situativer Offenheit."
     },
-    "solopoly": {
-      "id": "solopoly",
+    "#A4": {
+      "id": "#A4",
+      "key": "solopoly",
       "name": "Solopoly",
       "color": "#2A9D8F",
       "colorLight": "#A8DADC",
@@ -80,8 +96,9 @@
       "shortDescription": "Polyamor mit maximaler Autonomie. Keine Primärbeziehung, kein Zusammenleben.",
       "fullDescription": "Solopoly vereint polyamore Offenheit mit konsequenter Autonomie. Der Fokus liegt auf dem 'Solo'."
     },
-    "polyamor": {
-      "id": "polyamor",
+    "#A5": {
+      "id": "#A5",
+      "key": "polyamor",
       "name": "Polyamor",
       "color": "#F4A261",
       "colorLight": "#FFE5B4",
@@ -89,8 +106,9 @@
       "shortDescription": "Strukturierte, ethische Mehrfachbeziehungen mit Fokus auf tiefe romantische Bindungen.",
       "fullDescription": "Klassisches Polyamory mit Betonung auf Ethik, Kommunikation und oft einer hierarchischen Struktur."
     },
-    "ra": {
-      "id": "ra",
+    "#A6": {
+      "id": "#A6",
+      "key": "ra",
       "name": "RA",
       "color": "#9B5DE5",
       "colorLight": "#D4A5FF",
@@ -98,8 +116,9 @@
       "shortDescription": "RA - Ablehnung aller Beziehungs-Hierarchien und Labels.",
       "fullDescription": "RA lehnt gesellschaftliche Beziehungsnormen ab. Jede Verbindung wird individuell definiert ohne vorgegebene Kategorien."
     },
-    "lat": {
-      "id": "lat",
+    "#A7": {
+      "id": "#A7",
+      "key": "lat",
       "name": "LAT",
       "color": "#06D6A0",
       "colorLight": "#B5EAD7",
@@ -107,8 +126,9 @@
       "shortDescription": "Living Apart Together - Feste Partnerschaft ohne Zusammenleben.",
       "fullDescription": "LAT beschreibt eine verbindliche Beziehung, bei der beide Partner bewusst getrennte Wohnungen behalten."
     },
-    "aromantisch": {
-      "id": "aromantisch",
+    "#A8": {
+      "id": "#A8",
+      "key": "aromantisch",
       "name": "Aromantisch",
       "color": "#118AB2",
       "colorLight": "#83C5D8",
@@ -120,475 +140,267 @@
 
   "interactions": {
     "single_single": {
-      "from": "single", "to": "single",
-      "scores": { "A": { "value": 100 }, "B": { "value": 88 }, "C": { "value": 85 }, "D": { "value": 95 }, "E": { "value": 88 }, "F": { "value": 95 } },
-      "overall": 95,
       "pro": ["Identische Beziehungsphilosophie", "Gegenseitiger Respekt für Autonomie", "Keine Erwartungshaltung"],
       "contra": ["Fehlende Polarität", "Keiner gibt Impuls zur Vertiefung"]
     },
     "single_duo": {
-      "from": "single", "to": "duo",
-      "scores": { "A": { "value": 70 }, "B": { "value": 75 }, "C": { "value": 65 }, "D": { "value": 55 }, "E": { "value": 65 }, "F": { "value": 95 } },
-      "overall": 71,
       "pro": ["Gesellschaftlich voll akzeptiert", "Klare Erwartungen", "Potenzial für Transformation"],
       "contra": ["Single muss Freiheit aufgeben", "Anpassungsdruck", "Verschmelzungserwartung"]
     },
     "single_duo_flex": {
-      "from": "single", "to": "duo_flex",
-      "scores": { "A": { "value": 65 }, "B": { "value": 68 }, "C": { "value": 60 }, "D": { "value": 70 }, "E": { "value": 62 }, "F": { "value": 68 } },
-      "overall": 65,
       "pro": ["Flexibilität passt zum Single-Lebensstil", "Weniger Verschmelzungsdruck"],
       "contra": ["Single muss sich einlassen", "Unklare Position im System"]
     },
     "single_solopoly": {
-      "from": "single", "to": "solopoly",
-      "scores": { "A": { "value": 55 }, "B": { "value": 60 }, "C": { "value": 50 }, "D": { "value": 85 }, "E": { "value": 68 }, "F": { "value": 45 } },
-      "overall": 61,
       "pro": ["Solopoly bietet klare Kommunikation", "Single behält Freiheit"],
       "contra": ["Single könnte sich als 'einer von vielen' fühlen", "Exklusivitätswunsch unerfüllt"]
     },
     "single_polyamor": {
-      "from": "single", "to": "polyamor",
-      "scores": { "A": { "value": 48 }, "B": { "value": 58 }, "C": { "value": 55 }, "D": { "value": 72 }, "E": { "value": 70 }, "F": { "value": 38 } },
-      "overall": 57,
       "pro": ["Zugang zu Poly-Community", "Tiefe Verbindung möglich"],
       "contra": ["Single muss geteilte Zeit akzeptieren", "Komplexe Regeln verstehen"]
     },
     "single_ra": {
-      "from": "single", "to": "ra",
-      "scores": { "A": { "value": 78 }, "B": { "value": 72 }, "C": { "value": 65 }, "D": { "value": 92 }, "E": { "value": 70 }, "F": { "value": 40 } },
-      "overall": 70,
       "pro": ["Maximale Freiheit beidseitig", "Keine Labels oder Erwartungen", "Individuelle Vereinbarungen"],
       "contra": ["Kann verwirrend sein ohne klare Strukturen", "Gesellschaftlich schwer erklärbar"]
     },
     "single_lat": {
-      "from": "single", "to": "lat",
-      "scores": { "A": { "value": 75 }, "B": { "value": 78 }, "C": { "value": 70 }, "D": { "value": 80 }, "E": { "value": 72 }, "F": { "value": 75 } },
-      "overall": 75,
       "pro": ["Eigener Raum bleibt erhalten", "Verbindung ohne Verschmelzung", "Guter Übergang"],
       "contra": ["LAT erwartet mehr Verbindlichkeit als Single gewohnt"]
     },
     "single_aromantisch": {
-      "from": "single", "to": "aromantisch",
-      "scores": { "A": { "value": 82 }, "B": { "value": 80 }, "C": { "value": 75 }, "D": { "value": 88 }, "E": { "value": 78 }, "F": { "value": 60 } },
-      "overall": 77,
       "pro": ["Keine romantischen Erwartungen", "Platonische Tiefe möglich", "Autonomie wird respektiert"],
       "contra": ["Single könnte Romantik suchen", "Unterschiedliche Beziehungsziele"]
     },
 
     "duo_single": {
-      "from": "duo", "to": "single",
-      "scores": { "A": { "value": 65 }, "B": { "value": 70 }, "C": { "value": 70 }, "D": { "value": 50 }, "E": { "value": 65 }, "F": { "value": 90 } },
-      "overall": 68,
       "pro": ["Single ist offen für Entwicklung", "Gesellschaftlich idealer Start"],
       "contra": ["Single könnte zögern", "Duo könnte zu schnell zu viel wollen"]
     },
     "duo_duo": {
-      "from": "duo", "to": "duo",
-      "scores": { "A": { "value": 100 }, "B": { "value": 95 }, "C": { "value": 92 }, "D": { "value": 85 }, "E": { "value": 90 }, "F": { "value": 98 } },
-      "overall": 97,
       "pro": ["Identische Beziehungsphilosophie", "Maximale gesellschaftliche Unterstützung", "Klare gemeinsame Vision"],
       "contra": ["Hohe Erwartungen können zu Druck führen"]
     },
     "duo_duo_flex": {
-      "from": "duo", "to": "duo_flex",
-      "scores": { "A": { "value": 72 }, "B": { "value": 78 }, "C": { "value": 80 }, "D": { "value": 58 }, "E": { "value": 70 }, "F": { "value": 70 } },
-      "overall": 75,
       "pro": ["Ähnliche Grundwerte", "Duo-Flex könnte exklusiver werden"],
       "contra": ["Duo erlebt Flex-Anteil als Bedrohung", "Unterschiedliche Treue-Definitionen"]
     },
     "duo_solopoly": {
-      "from": "duo", "to": "solopoly",
-      "scores": { "A": { "value": 20 }, "B": { "value": 40 }, "C": { "value": 45 }, "D": { "value": 25 }, "E": { "value": 55 }, "F": { "value": 30 } },
-      "overall": 36,
       "pro": ["Solopoly ist ehrlich über Grenzen"],
       "contra": ["Duo fühlt sich nie 'genug'", "Exklusivität unmöglich", "Kein Zusammenleben"]
     },
     "duo_polyamor": {
-      "from": "duo", "to": "polyamor",
-      "scores": { "A": { "value": 38 }, "B": { "value": 58 }, "C": { "value": 65 }, "D": { "value": 40 }, "E": { "value": 68 }, "F": { "value": 35 } },
-      "overall": 51,
       "pro": ["Tiefe Verbindung möglich", "Duo könnte Primary werden"],
       "contra": ["Duo muss Exklusivität aufgeben", "Eifersucht als ständige Herausforderung"]
     },
     "duo_ra": {
-      "from": "duo", "to": "ra",
-      "scores": { "A": { "value": 15 }, "B": { "value": 35 }, "C": { "value": 40 }, "D": { "value": 20 }, "E": { "value": 45 }, "F": { "value": 25 } },
-      "overall": 30,
       "pro": ["RA ist authentisch und ehrlich"],
       "contra": ["Fundamentaler Weltanschauungs-Konflikt", "RA lehnt Labels ab, Duo braucht sie"]
     },
     "duo_lat": {
-      "from": "duo", "to": "lat",
-      "scores": { "A": { "value": 68 }, "B": { "value": 75 }, "C": { "value": 55 }, "D": { "value": 45 }, "E": { "value": 70 }, "F": { "value": 65 } },
-      "overall": 63,
       "pro": ["LAT kann exklusiv sein", "Tiefe Verbindung möglich"],
       "contra": ["Duo will zusammenleben", "Unterschiedliche Nähe-Bedürfnisse"]
     },
     "duo_aromantisch": {
-      "from": "duo", "to": "aromantisch",
-      "scores": { "A": { "value": 25 }, "B": { "value": 45 }, "C": { "value": 50 }, "D": { "value": 55 }, "E": { "value": 55 }, "F": { "value": 35 } },
-      "overall": 44,
       "pro": ["Aromantisch kann tiefe Bindung bieten"],
       "contra": ["Duo sucht Romantik", "Fundamentaler Unterschied in Beziehungsdefinition"]
     },
 
     "duo_flex_single": {
-      "from": "duo_flex", "to": "single",
-      "scores": { "A": { "value": 62 }, "B": { "value": 65 }, "C": { "value": 58 }, "D": { "value": 72 }, "E": { "value": 60 }, "F": { "value": 75 } },
-      "overall": 65,
       "pro": ["Single kann verschiedene Rollen einnehmen", "Gesellschaftlich unkompliziert"],
       "contra": ["Single könnte mehr wollen", "Unklare Erwartungen"]
     },
     "duo_flex_duo": {
-      "from": "duo_flex", "to": "duo",
-      "scores": { "A": { "value": 78 }, "B": { "value": 80 }, "C": { "value": 82 }, "D": { "value": 52 }, "E": { "value": 72 }, "F": { "value": 85 } },
-      "overall": 75,
       "pro": ["Geteilte Werte bei Primärbeziehung", "Duo könnte sich öffnen"],
       "contra": ["Duo muss Öffnung akzeptieren", "Potenzielle Eifersucht"]
     },
     "duo_flex_duo_flex": {
-      "from": "duo_flex", "to": "duo_flex",
-      "scores": { "A": { "value": 100 }, "B": { "value": 92 }, "C": { "value": 90 }, "D": { "value": 90 }, "E": { "value": 92 }, "F": { "value": 85 } },
-      "overall": 96,
       "pro": ["Identische Beziehungsphilosophie", "Geteilte Sprache und Erwartungen"],
       "contra": ["Grenzen müssen individuell abgestimmt werden"]
     },
     "duo_flex_solopoly": {
-      "from": "duo_flex", "to": "solopoly",
-      "scores": { "A": { "value": 65 }, "B": { "value": 68 }, "C": { "value": 55 }, "D": { "value": 78 }, "E": { "value": 72 }, "F": { "value": 48 } },
-      "overall": 64,
       "pro": ["Solopoly passt als Außenkontakt", "Keine Konkurrenz um Primärposition"],
       "contra": ["Solopoly bietet nie 'mehr'", "Duo-Flex könnte tiefere Verbindung wünschen"]
     },
     "duo_flex_polyamor": {
-      "from": "duo_flex", "to": "polyamor",
-      "scores": { "A": { "value": 62 }, "B": { "value": 68 }, "C": { "value": 60 }, "D": { "value": 55 }, "E": { "value": 72 }, "F": { "value": 48 } },
-      "overall": 61,
       "pro": ["Polyamor bringt Poly-Erfahrung", "Kommunikation auf hohem Niveau"],
       "contra": ["Polyamor will mehr als situative Öffnung", "Regelkonflikte möglich"]
     },
     "duo_flex_ra": {
-      "from": "duo_flex", "to": "ra",
-      "scores": { "A": { "value": 55 }, "B": { "value": 58 }, "C": { "value": 52 }, "D": { "value": 75 }, "E": { "value": 62 }, "F": { "value": 40 } },
-      "overall": 57,
       "pro": ["Beide verstehen Offenheit", "Flexible Vereinbarungen möglich"],
       "contra": ["RA lehnt Primärbeziehungs-Konzept ab", "Strukturkonflikt"]
     },
     "duo_flex_lat": {
-      "from": "duo_flex", "to": "lat",
-      "scores": { "A": { "value": 72 }, "B": { "value": 75 }, "C": { "value": 65 }, "D": { "value": 78 }, "E": { "value": 75 }, "F": { "value": 70 } },
-      "overall": 73,
       "pro": ["LAT versteht bewusste Distanz", "Gute Balance möglich"],
       "contra": ["Unterschiedliche Erwartungen an Öffnung"]
     },
     "duo_flex_aromantisch": {
-      "from": "duo_flex", "to": "aromantisch",
-      "scores": { "A": { "value": 50 }, "B": { "value": 55 }, "C": { "value": 55 }, "D": { "value": 70 }, "E": { "value": 60 }, "F": { "value": 45 } },
-      "overall": 56,
       "pro": ["Aromantisch könnte als Flex-Partner passen"],
       "contra": ["Romantische Erwartungen werden nicht erfüllt"]
     },
 
     "solopoly_single": {
-      "from": "solopoly", "to": "single",
-      "scores": { "A": { "value": 62 }, "B": { "value": 65 }, "C": { "value": 55 }, "D": { "value": 92 }, "E": { "value": 70 }, "F": { "value": 52 } },
-      "overall": 66,
       "pro": ["Single bringt keine Verschmelzungserwartungen", "Autonomie wird geschätzt"],
       "contra": ["Single könnte heimlich mehr wollen", "Asymmetrische Beziehungsbereitschaft"]
     },
     "solopoly_duo": {
-      "from": "solopoly", "to": "duo",
-      "scores": { "A": { "value": 25 }, "B": { "value": 45 }, "C": { "value": 40 }, "D": { "value": 30 }, "E": { "value": 55 }, "F": { "value": 35 } },
-      "overall": 38,
       "pro": ["Duo bietet Stabilität"],
       "contra": ["Fundamentale Inkompatibilität", "Solopoly kann nie 'alles' sein"]
     },
     "solopoly_duo_flex": {
-      "from": "solopoly", "to": "duo_flex",
-      "scores": { "A": { "value": 58 }, "B": { "value": 62 }, "C": { "value": 52 }, "D": { "value": 65 }, "E": { "value": 68 }, "F": { "value": 48 } },
-      "overall": 59,
       "pro": ["Duo-Flex versteht Nicht-Exklusivität", "Weniger Druck als Duo"],
       "contra": ["Solopoly passt nicht in Primär-Struktur", "Statusfragen"]
     },
     "solopoly_solopoly": {
-      "from": "solopoly", "to": "solopoly",
-      "scores": { "A": { "value": 100 }, "B": { "value": 92 }, "C": { "value": 85 }, "D": { "value": 98 }, "E": { "value": 92 }, "F": { "value": 85 } },
-      "overall": 95,
       "pro": ["Identische Beziehungsphilosophie", "Maximale Autonomie-Akzeptanz"],
       "contra": ["Balance zwischen Solo und Poly individuell verschieden"]
     },
     "solopoly_polyamor": {
-      "from": "solopoly", "to": "polyamor",
-      "scores": { "A": { "value": 78 }, "B": { "value": 82 }, "C": { "value": 58 }, "D": { "value": 70 }, "E": { "value": 85 }, "F": { "value": 45 } },
-      "overall": 70,
       "pro": ["Geteilte Poly-Community und Sprache", "Ethische Übereinstimmung"],
       "contra": ["Hierarchie-Konflikt", "Polyamor könnte mehr Nähe wollen"]
     },
     "solopoly_ra": {
-      "from": "solopoly", "to": "ra",
-      "scores": { "A": { "value": 88 }, "B": { "value": 85 }, "C": { "value": 75 }, "D": { "value": 95 }, "E": { "value": 82 }, "F": { "value": 55 } },
-      "overall": 80,
       "pro": ["Beide schätzen Autonomie maximal", "Keine Hierarchie-Erwartungen"],
       "contra": ["RA noch weniger strukturiert als Solopoly"]
     },
     "solopoly_lat": {
-      "from": "solopoly", "to": "lat",
-      "scores": { "A": { "value": 68 }, "B": { "value": 72 }, "C": { "value": 70 }, "D": { "value": 82 }, "E": { "value": 75 }, "F": { "value": 60 } },
-      "overall": 71,
       "pro": ["LAT versteht getrenntes Wohnen", "Autonomie-Kompatibilität"],
       "contra": ["LAT könnte mehr Exklusivität wollen"]
     },
     "solopoly_aromantisch": {
-      "from": "solopoly", "to": "aromantisch",
-      "scores": { "A": { "value": 72 }, "B": { "value": 75 }, "C": { "value": 68 }, "D": { "value": 85 }, "E": { "value": 78 }, "F": { "value": 55 } },
-      "overall": 72,
       "pro": ["Beide haben unkonventionelle Beziehungsmodelle", "Autonomie wird respektiert"],
       "contra": ["Solopoly sucht romantische Verbindungen"]
     },
 
     "polyamor_single": {
-      "from": "polyamor", "to": "single",
-      "scores": { "A": { "value": 52 }, "B": { "value": 60 }, "C": { "value": 60 }, "D": { "value": 75 }, "E": { "value": 72 }, "F": { "value": 42 } },
-      "overall": 60,
       "pro": ["Potenzial für neuen Partner im Polycule", "Single kann Poly kennenlernen"],
       "contra": ["Einarbeitungsaufwand", "Single muss Hierarchie verstehen"]
     },
     "polyamor_duo": {
-      "from": "polyamor", "to": "duo",
-      "scores": { "A": { "value": 35 }, "B": { "value": 55 }, "C": { "value": 60 }, "D": { "value": 45 }, "E": { "value": 70 }, "F": { "value": 40 } },
-      "overall": 51,
       "pro": ["Tiefe romantische Verbindung möglich", "Duo könnte Primary werden"],
       "contra": ["Duo muss geteilte Zeit akzeptieren", "Eifersucht unvermeidlich"]
     },
     "polyamor_duo_flex": {
-      "from": "polyamor", "to": "duo_flex",
-      "scores": { "A": { "value": 68 }, "B": { "value": 72 }, "C": { "value": 65 }, "D": { "value": 62 }, "E": { "value": 75 }, "F": { "value": 52 } },
-      "overall": 65,
       "pro": ["Duo-Flex versteht Poly-Konzepte", "Respekt für verschiedene Modelle"],
       "contra": ["Polyamor will mehr als situative Öffnung"]
     },
     "polyamor_solopoly": {
-      "from": "polyamor", "to": "solopoly",
-      "scores": { "A": { "value": 80 }, "B": { "value": 85 }, "C": { "value": 55 }, "D": { "value": 72 }, "E": { "value": 88 }, "F": { "value": 45 } },
-      "overall": 71,
       "pro": ["Geteilte Poly-Sprache und Ethik", "Starke Kommunikation"],
       "contra": ["Solopoly wird nie Primary", "Nähe-Distanz-Konflikt"]
     },
     "polyamor_polyamor": {
-      "from": "polyamor", "to": "polyamor",
-      "scores": { "A": { "value": 100 }, "B": { "value": 95 }, "C": { "value": 88 }, "D": { "value": 88 }, "E": { "value": 95 }, "F": { "value": 85 } },
-      "overall": 96,
       "pro": ["Identische Beziehungsphilosophie", "Compersion als verbindendes Element"],
       "contra": ["Kalender-Koordination komplex"]
     },
     "polyamor_ra": {
-      "from": "polyamor", "to": "ra",
-      "scores": { "A": { "value": 72 }, "B": { "value": 75 }, "C": { "value": 60 }, "D": { "value": 78 }, "E": { "value": 75 }, "F": { "value": 50 } },
-      "overall": 68,
       "pro": ["Beide verstehen nicht-monogame Lebensweisen"],
       "contra": ["RA lehnt Hierarchien ab, Polyamor hat oft welche"]
     },
     "polyamor_lat": {
-      "from": "polyamor", "to": "lat",
-      "scores": { "A": { "value": 65 }, "B": { "value": 70 }, "C": { "value": 62 }, "D": { "value": 72 }, "E": { "value": 75 }, "F": { "value": 55 } },
-      "overall": 67,
       "pro": ["LAT versteht bewusste Distanz", "Kann als Partner im Netzwerk funktionieren"],
       "contra": ["LAT könnte mehr Exklusivität erwarten"]
     },
     "polyamor_aromantisch": {
-      "from": "polyamor", "to": "aromantisch",
-      "scores": { "A": { "value": 45 }, "B": { "value": 55 }, "C": { "value": 55 }, "D": { "value": 70 }, "E": { "value": 65 }, "F": { "value": 45 } },
-      "overall": 56,
       "pro": ["Aromantisch könnte platonischer Partner sein"],
       "contra": ["Polyamor sucht romantische Liebe"]
     },
 
     "ra_single": {
-      "from": "ra", "to": "single",
-      "scores": { "A": { "value": 80 }, "B": { "value": 75 }, "C": { "value": 68 }, "D": { "value": 95 }, "E": { "value": 72 }, "F": { "value": 45 } },
-      "overall": 72,
       "pro": ["Single ist offen und ungebunden", "Keine Label-Erwartungen"],
       "contra": ["Single könnte mehr Struktur wollen"]
     },
     "ra_duo": {
-      "from": "ra", "to": "duo",
-      "scores": { "A": { "value": 18 }, "B": { "value": 38 }, "C": { "value": 42 }, "D": { "value": 22 }, "E": { "value": 48 }, "F": { "value": 28 } },
-      "overall": 33,
       "pro": ["Duo bietet Stabilität und Tiefe"],
       "contra": ["Fundamentaler Weltanschauungs-Konflikt", "Duo braucht Labels, RA lehnt sie ab"]
     },
     "ra_duo_flex": {
-      "from": "ra", "to": "duo_flex",
-      "scores": { "A": { "value": 52 }, "B": { "value": 55 }, "C": { "value": 50 }, "D": { "value": 72 }, "E": { "value": 60 }, "F": { "value": 42 } },
-      "overall": 55,
       "pro": ["Duo-Flex zeigt Offenheit"],
       "contra": ["Primärbeziehungs-Konzept widerspricht RA"]
     },
     "ra_solopoly": {
-      "from": "ra", "to": "solopoly",
-      "scores": { "A": { "value": 85 }, "B": { "value": 82 }, "C": { "value": 72 }, "D": { "value": 92 }, "E": { "value": 80 }, "F": { "value": 52 } },
-      "overall": 77,
       "pro": ["Beide maximieren Autonomie", "Ähnliche Werte"],
       "contra": ["Solopoly strukturierter als RA"]
     },
     "ra_polyamor": {
-      "from": "ra", "to": "polyamor",
-      "scores": { "A": { "value": 68 }, "B": { "value": 72 }, "C": { "value": 58 }, "D": { "value": 75 }, "E": { "value": 72 }, "F": { "value": 48 } },
-      "overall": 66,
       "pro": ["Beide verstehen nicht-monogame Lebensweisen"],
       "contra": ["RA lehnt Hierarchien ab", "Polyamor's Struktur kann einengend wirken"]
     },
     "ra_ra": {
-      "from": "ra", "to": "ra",
-      "scores": { "A": { "value": 100 }, "B": { "value": 95 }, "C": { "value": 85 }, "D": { "value": 100 }, "E": { "value": 90 }, "F": { "value": 75 } },
-      "overall": 94,
       "pro": ["Identische Philosophie", "Maximale gegenseitige Freiheit", "Keine vorgegebenen Erwartungen"],
       "contra": ["Kann zu wenig Struktur für manche sein"]
     },
     "ra_lat": {
-      "from": "ra", "to": "lat",
-      "scores": { "A": { "value": 72 }, "B": { "value": 75 }, "C": { "value": 70 }, "D": { "value": 85 }, "E": { "value": 75 }, "F": { "value": 62 } },
-      "overall": 73,
       "pro": ["LAT respektiert Autonomie", "Getrenntes Wohnen passt zu RA"],
       "contra": ["LAT hat mehr Beziehungserwartungen"]
     },
     "ra_aromantisch": {
-      "from": "ra", "to": "aromantisch",
-      "scores": { "A": { "value": 82 }, "B": { "value": 80 }, "C": { "value": 75 }, "D": { "value": 90 }, "E": { "value": 78 }, "F": { "value": 58 } },
-      "overall": 77,
       "pro": ["Beide lehnen traditionelle Erwartungen ab", "Individuelle Vereinbarungen"],
       "contra": ["Unterschiedliche Motivationen"]
     },
 
     "lat_single": {
-      "from": "lat", "to": "single",
-      "scores": { "A": { "value": 72 }, "B": { "value": 75 }, "C": { "value": 68 }, "D": { "value": 78 }, "E": { "value": 70 }, "F": { "value": 72 } },
-      "overall": 72,
       "pro": ["Single versteht eigenen Raum", "Guter Übergang zur Beziehung"],
       "contra": ["Single könnte nicht bereit für Verbindlichkeit sein"]
     },
     "lat_duo": {
-      "from": "lat", "to": "duo",
-      "scores": { "A": { "value": 65 }, "B": { "value": 72 }, "C": { "value": 52 }, "D": { "value": 48 }, "E": { "value": 68 }, "F": { "value": 68 } },
-      "overall": 62,
       "pro": ["Beide wollen tiefe Verbindung", "Exklusivität möglich"],
       "contra": ["Duo will zusammenleben", "Fundamentaler Wohnform-Konflikt"]
     },
     "lat_duo_flex": {
-      "from": "lat", "to": "duo_flex",
-      "scores": { "A": { "value": 70 }, "B": { "value": 73 }, "C": { "value": 62 }, "D": { "value": 75 }, "E": { "value": 72 }, "F": { "value": 68 } },
-      "overall": 70,
       "pro": ["Beide verstehen Flexibilität", "Gute Balance möglich"],
       "contra": ["Unterschiedliche Prioritäten"]
     },
     "lat_solopoly": {
-      "from": "lat", "to": "solopoly",
-      "scores": { "A": { "value": 65 }, "B": { "value": 70 }, "C": { "value": 68 }, "D": { "value": 80 }, "E": { "value": 72 }, "F": { "value": 55 } },
-      "overall": 68,
       "pro": ["Beide leben getrennt", "Autonomie-Verständnis"],
       "contra": ["LAT könnte mehr Exklusivität wollen"]
     },
     "lat_polyamor": {
-      "from": "lat", "to": "polyamor",
-      "scores": { "A": { "value": 62 }, "B": { "value": 68 }, "C": { "value": 60 }, "D": { "value": 70 }, "E": { "value": 72 }, "F": { "value": 52 } },
-      "overall": 64,
       "pro": ["LAT kann Teil eines Netzwerks sein"],
       "contra": ["LAT könnte von Komplexität überfordert sein"]
     },
     "lat_ra": {
-      "from": "lat", "to": "ra",
-      "scores": { "A": { "value": 70 }, "B": { "value": 72 }, "C": { "value": 68 }, "D": { "value": 82 }, "E": { "value": 72 }, "F": { "value": 58 } },
-      "overall": 70,
       "pro": ["RA respektiert LAT's Autonomie"],
       "contra": ["RA's Label-Ablehnung kann verwirrend sein"]
     },
     "lat_lat": {
-      "from": "lat", "to": "lat",
-      "scores": { "A": { "value": 100 }, "B": { "value": 95 }, "C": { "value": 95 }, "D": { "value": 92 }, "E": { "value": 90 }, "F": { "value": 85 } },
-      "overall": 95,
       "pro": ["Identische Beziehungsphilosophie", "Geteiltes Verständnis für eigenen Raum"],
       "contra": ["Beide könnten zu distanziert sein"]
     },
     "lat_aromantisch": {
-      "from": "lat", "to": "aromantisch",
-      "scores": { "A": { "value": 68 }, "B": { "value": 72 }, "C": { "value": 70 }, "D": { "value": 78 }, "E": { "value": 72 }, "F": { "value": 58 } },
-      "overall": 70,
       "pro": ["Beide schätzen Distanz", "Platonische LAT-Beziehung möglich"],
       "contra": ["LAT könnte Romantik erwarten"]
     },
 
     "aromantisch_single": {
-      "from": "aromantisch", "to": "single",
-      "scores": { "A": { "value": 80 }, "B": { "value": 78 }, "C": { "value": 72 }, "D": { "value": 85 }, "E": { "value": 75 }, "F": { "value": 58 } },
-      "overall": 75,
       "pro": ["Single hat keine romantischen Erwartungen", "Tiefe Freundschaft möglich"],
       "contra": ["Single könnte Romantik suchen"]
     },
     "aromantisch_duo": {
-      "from": "aromantisch", "to": "duo",
-      "scores": { "A": { "value": 28 }, "B": { "value": 48 }, "C": { "value": 52 }, "D": { "value": 58 }, "E": { "value": 58 }, "F": { "value": 38 } },
-      "overall": 47,
       "pro": ["Duo kann tiefe Verbindung bieten"],
       "contra": ["Fundamentaler Unterschied", "Duo erwartet Romantik"]
     },
     "aromantisch_duo_flex": {
-      "from": "aromantisch", "to": "duo_flex",
-      "scores": { "A": { "value": 48 }, "B": { "value": 55 }, "C": { "value": 55 }, "D": { "value": 68 }, "E": { "value": 60 }, "F": { "value": 45 } },
-      "overall": 55,
       "pro": ["Duo-Flex ist flexibler"],
       "contra": ["Romantische Erwartungen bestehen"]
     },
     "aromantisch_solopoly": {
-      "from": "aromantisch", "to": "solopoly",
-      "scores": { "A": { "value": 70 }, "B": { "value": 72 }, "C": { "value": 65 }, "D": { "value": 82 }, "E": { "value": 75 }, "F": { "value": 52 } },
-      "overall": 69,
       "pro": ["Solopoly versteht alternative Beziehungsformen"],
       "contra": ["Solopoly sucht romantische Verbindungen"]
     },
     "aromantisch_polyamor": {
-      "from": "aromantisch", "to": "polyamor",
-      "scores": { "A": { "value": 48 }, "B": { "value": 58 }, "C": { "value": 55 }, "D": { "value": 72 }, "E": { "value": 68 }, "F": { "value": 48 } },
-      "overall": 58,
       "pro": ["Polyamor ist offen für verschiedene Verbindungsarten"],
       "contra": ["Polyamor fokussiert auf romantische Liebe"]
     },
     "aromantisch_ra": {
-      "from": "aromantisch", "to": "ra",
-      "scores": { "A": { "value": 80 }, "B": { "value": 78 }, "C": { "value": 72 }, "D": { "value": 88 }, "E": { "value": 75 }, "F": { "value": 55 } },
-      "overall": 75,
       "pro": ["RA lehnt Beziehungs-Labels ab", "Individuelle Definitionen möglich"],
       "contra": ["Unterschiedliche Motivationen"]
     },
     "aromantisch_lat": {
-      "from": "aromantisch", "to": "lat",
-      "scores": { "A": { "value": 65 }, "B": { "value": 70 }, "C": { "value": 68 }, "D": { "value": 75 }, "E": { "value": 70 }, "F": { "value": 55 } },
-      "overall": 67,
       "pro": ["LAT kann platonisch funktionieren", "Eigener Raum wird respektiert"],
       "contra": ["LAT könnte Romantik erwarten"]
     },
     "aromantisch_aromantisch": {
-      "from": "aromantisch", "to": "aromantisch",
-      "scores": { "A": { "value": 100 }, "B": { "value": 95 }, "C": { "value": 90 }, "D": { "value": 88 }, "E": { "value": 92 }, "F": { "value": 78 } },
-      "overall": 94,
       "pro": ["Identisches Verständnis", "Tiefe platonische Verbindung möglich", "Keine romantischen Erwartungen"],
       "contra": ["Gesellschaftlich wenig verstanden"]
     }
-  },
-
-  "aggregatedMatrix": {
-    "description": "8x8 Übersichtsmatrix mit Gesamtwerten (Zeile = VON, Spalte = ZU)",
-    "rows": ["single", "duo", "duo_flex", "solopoly", "polyamor", "ra", "lat", "aromantisch"],
-    "cols": ["single", "duo", "duo_flex", "solopoly", "polyamor", "ra", "lat", "aromantisch"],
-    "values": [
-      [95, 71, 65, 61, 57, 70, 75, 77],
-      [68, 97, 75, 36, 51, 30, 63, 44],
-      [65, 75, 96, 64, 61, 57, 73, 56],
-      [66, 38, 59, 95, 70, 80, 71, 72],
-      [60, 51, 65, 71, 96, 68, 67, 56],
-      [72, 33, 55, 77, 66, 94, 73, 77],
-      [72, 62, 70, 68, 64, 70, 95, 70],
-      [75, 47, 55, 69, 58, 75, 67, 94]
-    ]
   }
 }

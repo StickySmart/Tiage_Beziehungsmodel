@@ -1,7 +1,8 @@
 /**
  * SOLOPOLY - Der Autonome Liebende
  *
- * Vollständiges Bedürfnis-Profil mit allen 88 Werten (0-100)
+ * Vollständiges Bedürfnis-Profil mit 220 Werten (0-100)
+ * Verwendet #ID-System aus beduerfnis-ids.js
  *
  * WISSENSCHAFTLICHE GRUNDLAGEN:
  * ─────────────────────────────────────────────────────────────────────────────
@@ -30,382 +31,392 @@ const SolopolyProfil = {
         "Singlehood Studies (DePaulo, 2006)"
     ],
 
+    // ═══════════════════════════════════════════════════════════════════════════
+    // BEDÜRFNISSE MIT #IDs (220 Werte)
+    // ═══════════════════════════════════════════════════════════════════════════
+
     beduerfnisse: {
 
-        // ═══════════════════════════════════════════════════════════════════════
-        // EXISTENZ (9)
-        // ═══════════════════════════════════════════════════════════════════════
-        existenz: {
-            luft: 50,
-            wasser: 50,
-            nahrung: 50,
-            bewegung: 75,                // Hoch - körperliche Autonomie
-            beruehrung: 60,              // Mittel - dosiert, nicht abhängig
-            erholung: 75,                // Hoch - Selbstfürsorge
-            sexueller_ausdruck: 75,      // Hoch - frei, aber nicht zentral
-            sicherheit_physisch: 65,     // Mittel-hoch - Selbstschutz
-            unterschlupf: 85             // Sehr hoch - eigenes Zuhause essentiell
+        // ─────────────────────────────────────────────────────────────────────────
+        // EXISTENZ (#B1-#B9)
+        // ─────────────────────────────────────────────────────────────────────────
+        '#B1': 50,   // luft
+        '#B2': 50,   // wasser
+        '#B3': 50,   // nahrung
+        '#B4': 75,   // bewegung - Hoch - körperliche Autonomie
+        '#B5': 60,   // beruehrung - Mittel - dosiert, nicht abhängig
+        '#B6': 75,   // erholung - Hoch - Selbstfürsorge
+        '#B7': 75,   // sexueller_ausdruck - Hoch - frei, aber nicht zentral
+        '#B8': 65,   // sicherheit_physisch - Mittel-hoch - Selbstschutz
+        '#B9': 85,   // unterschlupf - Sehr hoch - eigenes Zuhause essentiell
+
+        // ─────────────────────────────────────────────────────────────────────────
+        // SICHERHEIT (#B10-#B15) - Innere Sicherheit, wenig externe Abhängigkeit
+        // ─────────────────────────────────────────────────────────────────────────
+        '#B10': 55,  // bestaendigkeit - Mittel - flexibel
+        '#B11': 70,  // sich_sicher_fuehlen - Hoch - in sich selbst
+        '#B12': 40,  // schutz - Niedrig-mittel - braucht keinen Beschützer
+        '#B13': 60,  // stabilitaet - Mittel - eigene Stabilität
+        '#B14': 80,  // leichtigkeit - Hoch - Unbeschwertheit wichtig
+        '#B15': 45,  // geborgenheit - Niedrig-mittel - in sich selbst
+
+        // ─────────────────────────────────────────────────────────────────────────
+        // ZUNEIGUNG (#B16-#B24) - Liebesfähig aber nicht bedürftig
+        // ─────────────────────────────────────────────────────────────────────────
+        '#B16': 65,  // waerme - Mittel-hoch - kann geben
+        '#B17': 70,  // wertschaetzung - Hoch - gegenseitig
+        '#B18': 55,  // naehe - Mittel - dosiert
+        '#B19': 65,  // gesellschaft - Mittel-hoch - selektiv
+        '#B20': 65,  // intimitaet - Mittel-hoch - situativ
+        '#B21': 70,  // liebe - Hoch - aber nicht exklusiv
+        '#B22': 60,  // fuersorge - Mittel - gegenseitig
+        '#B23': 60,  // unterstuetzung - Mittel - ohne Verpflichtung
+        '#B24': 55,  // fuereinander_da_sein - Mittel - aber mit Grenzen
+
+        // ─────────────────────────────────────────────────────────────────────────
+        // VERSTÄNDNIS (#B25-#B33)
+        // ─────────────────────────────────────────────────────────────────────────
+        '#B25': 80,  // akzeptanz - Hoch - Lebensmodell akzeptiert
+        '#B26': 65,  // mitgefuehl - Mittel-hoch
+        '#B27': 70,  // beruecksichtigung - Hoch
+        '#B28': 65,  // empathie - Mittel-hoch
+        '#B29': 70,  // vertrauen - Hoch - aber vorsichtig
+        '#B30': 65,  // beachtung - Mittel-hoch
+        '#B31': 75,  // gesehen_werden - Hoch - als Individuum
+        '#B32': 70,  // verstanden_werden - Hoch
+        '#B33': 55,  // harmonie - Mittel - kann Konflikte
+
+        // ─────────────────────────────────────────────────────────────────────────
+        // FREIHEIT (#B34-#B38) - KERN-KATEGORIE - höchste Werte
+        // ─────────────────────────────────────────────────────────────────────────
+        '#B34': 95,  // selbstbestimmung - Sehr hoch - Kernwert
+        '#B35': 95,  // waehlen_koennen - Sehr hoch - alle Optionen offen
+        '#B36': 95,  // unabhaengigkeit - Sehr hoch - emotional & praktisch
+        '#B37': 95,  // raum_haben - Sehr hoch - eigener Raum unverhandelbar
+        '#B38': 85,  // spontaneitaet - Sehr hoch
+
+        // ─────────────────────────────────────────────────────────────────────────
+        // TEILNAHME (#B39-#B45)
+        // ─────────────────────────────────────────────────────────────────────────
+        '#B39': 60,  // zusammenarbeit - Mittel - situativ
+        '#B40': 80,  // kommunikation - Hoch - ehrlich, klar
+        '#B41': 65,  // gemeinschaft - Mittel-hoch - Netzwerk wichtig
+        '#B42': 55,  // zugehoerigkeit - Mittel - ohne Verpflichtung
+        '#B43': 70,  // gegenseitigkeit - Hoch - fair
+        '#B44': 85,  // respekt - Sehr hoch - für alle Grenzen
+        '#B45': 70,  // bedeutung_haben - Hoch
+
+        // ─────────────────────────────────────────────────────────────────────────
+        // MUSSE (#B46-#B49)
+        // ─────────────────────────────────────────────────────────────────────────
+        '#B46': 70,  // schoenheit - Hoch
+        '#B47': 90,  // freizeit - Sehr hoch - eigene Zeit wertvoll
+        '#B48': 85,  // freude - Sehr hoch
+        '#B49': 75,  // humor - Hoch
+
+        // ─────────────────────────────────────────────────────────────────────────
+        // IDENTITÄT (#B50-#B63)
+        // ─────────────────────────────────────────────────────────────────────────
+        '#B50': 90,  // authentizitaet - Sehr hoch
+        '#B51': 90,  // echtheit - Sehr hoch
+        '#B52': 85,  // integritaet - Sehr hoch
+        '#B53': 75,  // praesenz - Hoch
+        '#B54': 60,  // ordnung - Mittel - eigene Ordnung
+        '#B55': 85,  // bewusstheit - Sehr hoch - Selbstreflexion
+        '#B56': 75,  // herausforderung - Hoch
+        '#B57': 85,  // klarheit - Sehr hoch - klare Grenzen
+        '#B58': 85,  // kompetenz - Sehr hoch
+        '#B59': 70,  // effizienz - Hoch
+        '#B60': 85,  // wirksamkeit - Sehr hoch
+        '#B61': 85,  // wachstum - Sehr hoch
+        '#B62': 80,  // sinn - Hoch - eigener Sinn
+        '#B63': 70,  // beitrag_leisten - Hoch
+
+        // ─────────────────────────────────────────────────────────────────────────
+        // ERSCHAFFEN (#B64-#B68)
+        // ─────────────────────────────────────────────────────────────────────────
+        '#B64': 80,  // kreativitaet - Hoch
+        '#B65': 85,  // entdecken - Sehr hoch
+        '#B66': 80,  // lernen - Hoch
+        '#B67': 90,  // selbst_ausdruck - Sehr hoch
+        '#B68': 75,  // anreize_bekommen - Hoch
+
+        // ─────────────────────────────────────────────────────────────────────────
+        // VERBUNDENHEIT (#B69-#B73)
+        // ─────────────────────────────────────────────────────────────────────────
+        '#B69': 80,  // leben_feiern - Hoch
+        '#B70': 80,  // inspiration - Hoch
+        '#B71': 55,  // trauer_ausdruecken - Mittel - privat
+        '#B72': 70,  // einsehen - Hoch
+        '#B73': 65,  // anfang_ende - Mittel-hoch
+
+        // ─────────────────────────────────────────────────────────────────────────
+        // DYNAMIK (#B74-#B88) - Eher autonom, kann beides situativ
+        // ─────────────────────────────────────────────────────────────────────────
+        '#B74': 60,  // kontrolle_ausueben - Mittel - über eigenes Leben
+        '#B75': 40,  // hingabe - Niedrig-mittel - temporär ok
+        '#B76': 55,  // fuehrung_geben - Mittel
+        '#B77': 35,  // gefuehrt_werden - Niedrig - bevorzugt Autonomie
+        '#B78': 50,  // ritual - Mittel - eigene Rituale
+        '#B79': 60,  // nachsorge - Mittel - wichtig
+        '#B80': 90,  // grenzen_setzen - Sehr hoch - essentiell
+        '#B81': 85,  // grenzen_respektieren - Sehr hoch
+        '#B82': 65,  // intensitaet - Mittel-hoch - dosiert
+        '#B83': 55,  // vertrauen_schenken - Mittel - vorsichtig
+        '#B84': 80,  // verantwortung_uebernehmen - Hoch - für sich selbst
+        '#B85': 40,  // sich_fallenlassen - Niedrig-mittel
+        '#B86': 45,  // machtaustausch - Mittel - situativ
+        '#B87': 35,  // dienend_sein - Niedrig
+        '#B88': 55,  // beschuetzen - Mittel
+
+        // ─────────────────────────────────────────────────────────────────────────
+        // LEBENSPLANUNG (#B90-#B126) - Keine Lebensplanung mit anderen
+        // ─────────────────────────────────────────────────────────────────────────
+        '#B90': 30,   // kinderwunsch - Niedrig - nicht priorisiert
+        '#B91': 25,   // elternschaft - Niedrig - würde Autonomie einschränken
+        '#B92': 25,   // fortpflanzung - Niedrig
+        '#B93': 15,   // familie_gruenden - Sehr niedrig - nicht das Ziel
+        '#B94': 45,   // generativitaet - Mittel - anders ausgelebt
+        '#B95': 35,   // verbindlichkeit - Niedrig - keine festen Verpflichtungen
+        '#B96': 40,   // langfristige_bindung - Niedrig-mittel - flexibel
+        '#B97': 25,   // rechtliche_sicherheit - Niedrig - braucht keine
+        '#B98': 30,   // treueversprechen - Niedrig - eigene Definition
+        '#B99': 10,   // gemeinsamer_wohnraum - Sehr niedrig - eigenes Zuhause unverhandelbar
+        '#B100': 60,  // haeuslichkeit - Mittel-hoch - eigenes Zuhause wichtig
+        '#B101': 40,  // nest_bauen - Niedrig-mittel - für sich
+        '#B102': 10,  // alltag_teilen - Sehr niedrig - eigener Alltag
+        '#B103': 100, // eigener_raum - Maximum - Kernbedürfnis
+        '#B104': 100, // rueckzugsort - Maximum - Kernbedürfnis
+        '#B105': 45,  // tierliebe - Mittel
+        '#B106': 45,  // fuersorge_tiere - Mittel
+        '#B107': 50,  // begleiter - Mittel - eventuell Haustier
+        '#B108': 45,  // verantwortung_tier - Mittel
+        '#B109': 30,  // sesshaftigkeit - Niedrig
+        '#B110': 30,  // verwurzelung - Niedrig - nicht verwurzelt
+        '#B111': 95,  // mobilitaet - Sehr hoch - flexibel und mobil
+        '#B112': 35,  // heimat - Niedrig
+        '#B113': 90,  // neue_orte - Sehr hoch - Entdeckungslust
+        '#B114': 40,  // familienbindung - Niedrig-mittel - auf Distanz
+        '#B115': 35,  // herkunftsfamilie - Niedrig
+        '#B116': 35,  // familientreffen - Niedrig
+        '#B117': 30,  // generationenverbund - Niedrig
+        // Pirsig & Osho - Lebensplanung
+        '#B118': 25,  // biologisches_muster - Niedrig
+        '#B119': 20,  // soziales_muster - Niedrig - Normen abgelehnt
+        '#B120': 30,  // statische_stabilitaet - Niedrig - Flexibilität
+        '#B121': 55,  // qualitaet_der_fuersorge - Mittel
+        '#B122': 85,  // familien_rebellion - Sehr hoch - gegen Normen
+        '#B123': 75,  // zorba_das_kind - Hoch - Lebensfreude
+        '#B124': 90,  // nicht_anhaften_an_familie - Sehr hoch
+        '#B125': 45,  // bewusste_elternschaft - Mittel
+        '#B126': 50,  // commune_statt_kernfamilie - Mittel
+
+        // ─────────────────────────────────────────────────────────────────────────
+        // FINANZEN & KARRIERE (#B127-#B148) - Vollständige finanzielle Unabhängigkeit
+        // ─────────────────────────────────────────────────────────────────────────
+        '#B127': 100, // finanzielle_unabhaengigkeit - Maximum - essentiell
+        '#B128': 5,   // gemeinsame_finanzen - Sehr niedrig - niemals
+        '#B129': 60,  // finanzielle_transparenz - Mittel
+        '#B130': 70,  // finanzielle_sicherheit - Hoch - eigene Absicherung
+        '#B131': 55,  // sparsamkeit - Mittel
+        '#B132': 50,  // grosszuegigkeit - Mittel
+        '#B133': 80,  // berufliche_erfuellung - Hoch - Erfüllung durch Arbeit
+        '#B134': 75,  // karriereambition - Hoch - persönlicher Erfolg
+        '#B135': 80,  // work_life_balance - Hoch - Zeit für sich
+        '#B136': 75,  // berufliche_anerkennung - Hoch
+        '#B137': 30,  // zeit_fuer_beziehung - Niedrig - eigene Ziele
+        '#B138': 80,  // berufliche_flexibilitaet - Hoch
+        // Pirsig & Osho - Finanzen & Karriere
+        '#B139': 85,  // gumption - Sehr hoch
+        '#B140': 80,  // qualitaet_der_arbeit - Hoch
+        '#B141': 75,  // intellektuelles_muster - Hoch
+        '#B142': 80,  // dynamische_evolution - Hoch
+        '#B143': 65,  // klassisches_verstehen - Mittel-hoch
+        '#B144': 70,  // arbeit_als_meditation - Hoch
+        '#B145': 40,  // nicht_karriere - Niedrig-mittel
+        '#B146': 70,  // zorba_der_unternehmer - Hoch
+        '#B147': 65,  // nicht_anhaften_an_geld - Mittel-hoch
+        '#B148': 85,  // kreative_selbstverwirklichung - Sehr hoch
+
+        // ─────────────────────────────────────────────────────────────────────────
+        // KOMMUNIKATIONSSTIL (#B149-#B176) - Ehrliche, direkte Kommunikation
+        // ─────────────────────────────────────────────────────────────────────────
+        '#B149': 55,  // taeglicher_austausch - Mittel
+        '#B150': 65,  // tiefgehende_gespraeche - Mittel-hoch - mit Ausgewählten
+        '#B151': 55,  // small_talk - Mittel
+        '#B152': 85,  // stille_gemeinsam - Sehr hoch - allein sein können
+        '#B153': 60,  // verbale_verbindung - Mittel
+        '#B154': 65,  // zuhoeren - Mittel-hoch
+        '#B155': 60,  // emotionale_offenheit - Mittel-hoch - selektiv
+        '#B156': 55,  // gefuehle_zeigen - Mittel
+        '#B157': 55,  // verletzlichkeit - Mittel
+        '#B158': 55,  // emotionale_zurueckhaltung - Mittel
+        '#B159': 60,  // emotionale_sicherheit - Mittel
+        '#B160': 55,  // gefuehle_teilen - Mittel
+        '#B161': 75,  // konfliktklaerung - Hoch - kann Konflikte
+        '#B162': 70,  // aussprache - Hoch
+        '#B163': 40,  // konflikt_vermeiden - Niedrig-mittel
+        '#B164': 70,  // streitkultur - Hoch
+        '#B165': 60,  // versoehnlichkeit - Mittel
+        // Pirsig & Osho - Kommunikation
+        '#B166': 55,  // romantisches_verstehen - Mittel
+        '#B167': 75,  // klassische_klarheit - Hoch
+        '#B168': 70,  // dialektik - Hoch
+        '#B169': 70,  // qualitaets_ausdruck - Hoch
+        '#B170': 55,  // care_im_gespraech - Mittel
+        '#B171': 80,  // schweigen_statt_worte - Hoch
+        '#B172': 85,  // radikale_ehrlichkeit - Sehr hoch
+        '#B173': 75,  // humorvolle_leichtigkeit - Hoch
+        '#B174': 55,  // paradoxe_weisheit - Mittel
+        '#B175': 45,  // herz_statt_kopf - Niedrig-mittel
+        '#B176': 90,  // authentischer_ausdruck - Sehr hoch
+
+        // ─────────────────────────────────────────────────────────────────────────
+        // SOZIALES LEBEN (#B177-#B203) - Netzwerk statt Partner
+        // ─────────────────────────────────────────────────────────────────────────
+        '#B177': 55,  // soziale_energie - Mittel
+        '#B178': 50,  // geselligkeit - Mittel
+        '#B179': 75,  // ruhe_von_menschen - Hoch
+        '#B180': 90,  // allein_aufladen - Sehr hoch
+        '#B181': 55,  // menschen_treffen - Mittel
+        '#B182': 60,  // kleine_gruppen - Mittel
+        '#B183': 95,  // zeit_fuer_sich - Sehr hoch - Kernbedürfnis
+        '#B184': 95,  // eigene_hobbys - Sehr hoch
+        '#B185': 40,  // gemeinsame_zeit - Niedrig-mittel - dosiert
+        '#B186': 45,  // partnerzeit - Mittel
+        '#B187': 95,  // eigene_interessen - Sehr hoch
+        '#B188': 75,  // eigene_freunde - Hoch - Netzwerk wichtig
+        '#B189': 40,  // gemeinsame_freunde - Niedrig-mittel - getrennte Kreise ok
+        '#B190': 35,  // freundeskreis_teilen - Niedrig
+        '#B191': 50,  // soziales_netz - Mittel - Netzwerk statt Partner
+        '#B192': 60,  // freunde_pflegen - Mittel
+        '#B193': 60,  // neue_freundschaften - Mittel
+        // Pirsig & Osho - Soziales Leben
+        '#B194': 75,  // soziale_qualitaet - Hoch
+        '#B195': 45,  // tribe_muster - Mittel
+        '#B196': 80,  // intellektuelle_gemeinschaft - Hoch
+        '#B197': 20,  // statische_sozialstrukturen - Niedrig
+        '#B198': 50,  // sannyas_gemeinschaft - Mittel - offen
+        '#B199': 70,  // rebellion_gegen_gesellschaft - Hoch
+        '#B200': 85,  // einsamkeit_in_menge - Sehr hoch
+        '#B201': 65,  // celebration_mit_anderen - Mittel-hoch
+        '#B202': 80,  // keine_freundschaft_besitz - Hoch
+        '#B203': 45,  // tantra_gruppe - Mittel
+
+        // ─────────────────────────────────────────────────────────────────────────
+        // INTIMITÄT & ROMANTIK (#B204-#B208) - Liebesfähig ohne Exklusivität
+        // ─────────────────────────────────────────────────────────────────────────
+        '#B204': 55,  // koerpernaehe - Mittel - dosiert
+        '#B205': 50,  // kuscheln - Mittel - nicht so zentral
+        '#B206': 60,  // physische_distanz - Mittel - ok mit Distanz
+        '#B207': 55,  // koerperkontakt - Mittel
+        '#B208': 50,  // umarmungen - Mittel
+
+        // ─────────────────────────────────────────────────────────────────────────
+        // ERWEITERTE DYNAMIK (#B209-#B220) - Kink/BDSM
+        // ─────────────────────────────────────────────────────────────────────────
+        '#B209': 40,  // schmerzerleben - Niedrig-mittel
+        '#B210': 40,  // schmerz_geben - Niedrig-mittel
+        '#B211': 40,  // bondage_erleben - Niedrig-mittel
+        '#B212': 45,  // bondage_geben - Mittel
+        '#B213': 35,  // devotion - Niedrig
+        '#B214': 40,  // anbetung - Niedrig-mittel
+        '#B215': 30,  // demuetig_sein - Niedrig
+        '#B216': 50,  // dominieren - Mittel
+        '#B217': 30,  // bestrafung_erhalten - Niedrig
+        '#B218': 35,  // bestrafen - Niedrig
+        '#B219': 35,  // service_orientierung - Niedrig
+        '#B220': 45   // service_empfangen - Mittel
+    },
+
+    // ═══════════════════════════════════════════════════════════════════════════
+    // ERWEITERTE BEDÜRFNISSE (noch ohne #IDs)
+    // ═══════════════════════════════════════════════════════════════════════════
+
+    erweitert: {
+        // Intimität & Romantik - Erweitert
+        intimitaet_romantik: {
+            sexuelle_exklusivitaet: 15,
+            sexuelle_offenheit: 85,
+            leidenschaft: 65,
+            zaertlichkeit: 55,
+            emotionale_tiefe: 60,
+            romantik: 50,
+            flirten: 75,
+            eifersucht_als_signal: 25,
+            treue_werte: 30,
+            bindungsbereitschaft: 35,
+            // Pirsig & Osho
+            biologische_anziehung: 65,
+            intellektuelle_verbindung: 80,
+            qualitaet_der_beruehrung: 65,
+            dynamische_liebe: 60,
+            care_in_intimitaet: 55,
+            sex_als_meditation: 60,
+            liebe_ohne_beziehung: 90,
+            orgastisches_leben: 65,
+            nicht_anhaften_an_partner: 95,
+            hier_und_jetzt_intimitaet: 75,
+            polyamore_energie: 80,
+            wildheit_und_zartheit: 60,
+            meditation_zu_zweit: 45
         },
 
-        // ═══════════════════════════════════════════════════════════════════════
-        // SICHERHEIT (6)
-        // ═══════════════════════════════════════════════════════════════════════
-        // Solopoly: Innere Sicherheit, wenig externe Abhängigkeit
-        sicherheit: {
-            bestaendigkeit: 55,          // Mittel - flexibel
-            sich_sicher_fuehlen: 70,     // Hoch - in sich selbst
-            schutz: 40,                  // Niedrig-mittel - braucht keinen Beschützer
-            stabilitaet: 60,             // Mittel - eigene Stabilität
-            leichtigkeit: 80,            // Hoch - Unbeschwertheit wichtig
-            geborgenheit: 45             // Niedrig-mittel - in sich selbst
-        },
-
-        // ═══════════════════════════════════════════════════════════════════════
-        // ZUNEIGUNG (9)
-        // ═══════════════════════════════════════════════════════════════════════
-        // Solopoly: Liebesfähig aber nicht bedürftig
-        zuneigung: {
-            waerme: 65,                  // Mittel-hoch - kann geben
-            wertschaetzung: 70,          // Hoch - gegenseitig
-            naehe: 55,                   // Mittel - dosiert
-            gesellschaft: 65,            // Mittel-hoch - selektiv
-            intimitaet: 65,              // Mittel-hoch - situativ
-            liebe: 70,                   // Hoch - aber nicht exklusiv
-            fuersorge: 60,               // Mittel - gegenseitig
-            unterstuetzung: 60,          // Mittel - ohne Verpflichtung
-            fuereinander_da_sein: 55     // Mittel - aber mit Grenzen
-        },
-
-        // ═══════════════════════════════════════════════════════════════════════
-        // VERSTÄNDNIS (9)
-        // ═══════════════════════════════════════════════════════════════════════
-        verstaendnis: {
-            akzeptanz: 80,               // Hoch - Lebensmodell akzeptiert
-            mitgefuehl: 65,              // Mittel-hoch
-            beruecksichtigung: 70,       // Hoch
-            empathie: 65,                // Mittel-hoch
-            vertrauen: 70,               // Hoch - aber vorsichtig
-            beachtung: 65,               // Mittel-hoch
-            gesehen_werden: 75,          // Hoch - als Individuum
-            verstanden_werden: 70,       // Hoch
-            harmonie: 55                 // Mittel - kann Konflikte
-        },
-
-        // ═══════════════════════════════════════════════════════════════════════
-        // FREIHEIT (5)
-        // ═══════════════════════════════════════════════════════════════════════
-        // Solopoly: KERN-KATEGORIE - höchste Werte
-        freiheit: {
-            selbstbestimmung: 95,        // Sehr hoch - Kernwert
-            waehlen_koennen: 95,         // Sehr hoch - alle Optionen offen
-            unabhaengigkeit: 95,         // Sehr hoch - emotional & praktisch
-            raum_haben: 95,              // Sehr hoch - eigener Raum unverhandelbar
-            spontaneitaet: 85            // Sehr hoch
-        },
-
-        // ═══════════════════════════════════════════════════════════════════════
-        // TEILNAHME (7)
-        // ═══════════════════════════════════════════════════════════════════════
-        teilnahme: {
-            zusammenarbeit: 60,          // Mittel - situativ
-            kommunikation: 80,           // Hoch - ehrlich, klar
-            gemeinschaft: 65,            // Mittel-hoch - Netzwerk wichtig
-            zugehoerigkeit: 55,          // Mittel - ohne Verpflichtung
-            gegenseitigkeit: 70,         // Hoch - fair
-            respekt: 85,                 // Sehr hoch - für alle Grenzen
-            bedeutung_haben: 70          // Hoch
-        },
-
-        // ═══════════════════════════════════════════════════════════════════════
-        // MUSSE (4)
-        // ═══════════════════════════════════════════════════════════════════════
-        musse: {
-            schoenheit: 70,              // Hoch
-            freizeit: 90,                // Sehr hoch - eigene Zeit wertvoll
-            freude: 85,                  // Sehr hoch
-            humor: 75                    // Hoch
-        },
-
-        // ═══════════════════════════════════════════════════════════════════════
-        // IDENTITÄT (14)
-        // ═══════════════════════════════════════════════════════════════════════
-        identitaet: {
-            authentizitaet: 90,          // Sehr hoch
-            echtheit: 90,                // Sehr hoch
-            integritaet: 85,             // Sehr hoch
-            praesenz: 75,                // Hoch
-            ordnung: 60,                 // Mittel - eigene Ordnung
-            bewusstheit: 85,             // Sehr hoch - Selbstreflexion
-            herausforderung: 75,         // Hoch
-            klarheit: 85,                // Sehr hoch - klare Grenzen
-            kompetenz: 85,               // Sehr hoch
-            effizienz: 70,               // Hoch
-            wirksamkeit: 85,             // Sehr hoch
-            wachstum: 85,                // Sehr hoch
-            sinn: 80,                    // Hoch - eigener Sinn
-            beitrag_leisten: 70          // Hoch
-        },
-
-        // ═══════════════════════════════════════════════════════════════════════
-        // ERSCHAFFEN (5)
-        // ═══════════════════════════════════════════════════════════════════════
-        erschaffen: {
-            kreativitaet: 80,            // Hoch
-            entdecken: 85,               // Sehr hoch
-            lernen: 80,                  // Hoch
-            selbst_ausdruck: 90,         // Sehr hoch
-            anreize_bekommen: 75         // Hoch
-        },
-
-        // ═══════════════════════════════════════════════════════════════════════
-        // VERBUNDENHEIT (5)
-        // ═══════════════════════════════════════════════════════════════════════
-        verbundenheit: {
-            leben_feiern: 80,            // Hoch
-            inspiration: 80,             // Hoch
-            trauer_ausdruecken: 55,      // Mittel - privat
-            einsehen: 70,                // Hoch
-            anfang_ende: 65              // Mittel-hoch
-        },
-
-        // ═══════════════════════════════════════════════════════════════════════
-        // DYNAMIK (15)
-        // ═══════════════════════════════════════════════════════════════════════
-        // Solopoly: Eher autonom, kann beides situativ
-        dynamik: {
-            kontrolle_ausueben: 60,      // Mittel - über eigenes Leben
-            hingabe: 40,                 // Niedrig-mittel - temporär ok
-            fuehrung_geben: 55,          // Mittel
-            gefuehrt_werden: 35,         // Niedrig - bevorzugt Autonomie
-            ritual: 50,                  // Mittel - eigene Rituale
-            nachsorge: 60,               // Mittel - wichtig
-            grenzen_setzen: 90,          // Sehr hoch - essentiell
-            grenzen_respektieren: 85,    // Sehr hoch
-            intensitaet: 65,             // Mittel-hoch - dosiert
-            vertrauen_schenken: 55,      // Mittel - vorsichtig
-            verantwortung_uebernehmen: 80, // Hoch - für sich selbst
-            sich_fallenlassen: 40,       // Niedrig-mittel
-            machtaustausch: 45,          // Mittel - situativ
-            dienend_sein: 35,            // Niedrig
-            beschuetzen: 55              // Mittel
-        },
-
-        // ═══════════════════════════════════════════════════════════════════════
-        // LEBENSPLANUNG (15) - Kinder, Ehe, Wohnen, Familie
-        // ═══════════════════════════════════════════════════════════════════════
-        // Solopoly: Keine Lebensplanung mit anderen, eigener primärer Partner
-        lebensplanung: {
-            kinderwunsch: 30,            // Niedrig - nicht priorisiert
-            elternschaft: 25,            // Niedrig - würde Autonomie einschränken
-            fortpflanzung: 25,           // Niedrig
-            fuersorge: 50,               // Mittel - kann fürsorglich sein
-            familie_gruenden: 15,        // Sehr niedrig - nicht das Ziel
-            generativitaet: 45,          // Mittel - anders ausgelebt
-            erziehung_werte: 35,         // Niedrig-mittel
-            verbindlichkeit: 35,         // Niedrig - keine festen Verpflichtungen
-            langfristige_bindung: 40,    // Niedrig-mittel - flexibel
-            rechtliche_sicherheit: 25,   // Niedrig - braucht keine
-            tradition_ehe: 10,           // Sehr niedrig - lehnt ab
-            oeffentliches_bekenntnis: 20, // Niedrig - nicht nötig
-            gemeinsamer_wohnraum: 10,    // Sehr niedrig - eigenes Zuhause unverhandelbar
-            eigener_rueckzugsort: 100,   // Maximum - Kernbedürfnis
-            haeuslichkeit: 60,           // Mittel-hoch - eigenes Zuhause wichtig
-            // Pirsig & Osho - Lebensplanung
-            biologisches_muster: 25,     // Niedrig
-            soziales_muster: 20,         // Niedrig - Normen abgelehnt
-            statische_stabilitaet: 30,   // Niedrig - Flexibilität
-            qualitaet_der_fuersorge: 55, // Mittel
-            familien_rebellion: 85,      // Sehr hoch - gegen Normen
-            zorba_das_kind: 75,          // Hoch - Lebensfreude
-            nicht_anhaften_an_familie: 90, // Sehr hoch
-            bewusste_elternschaft: 45,   // Mittel
-            commune_statt_kernfamilie: 50 // Mittel
-        },
-
-        // ═══════════════════════════════════════════════════════════════════════
-        // FINANZEN & KARRIERE (10) - Geld, Arbeit, berufliche Entwicklung
-        // ═══════════════════════════════════════════════════════════════════════
-        // Solopoly: Vollständige finanzielle Unabhängigkeit
-        finanzen_karriere: {
-            finanzielle_unabhaengigkeit: 100, // Maximum - essentiell
-            gemeinsame_finanzen: 5,      // Sehr niedrig - niemals
-            versorger_rolle: 15,         // Sehr niedrig - nur Selbstversorgung
-            materielle_sicherheit: 70,   // Hoch - eigene Absicherung
-            karriere_entwicklung: 80,    // Hoch - Erfüllung durch Arbeit
-            berufliche_anerkennung: 75,  // Hoch
-            work_life_balance: 80,       // Hoch - Zeit für sich
-            gemeinsame_ziele: 30,        // Niedrig - eigene Ziele
-            erfolg: 80,                  // Hoch - persönlicher Erfolg
-            leistung: 75,                // Hoch
-            // Pirsig & Osho - Finanzen & Karriere
-            gumption: 85,                // Sehr hoch
-            qualitaet_der_arbeit: 80,    // Hoch
-            intellektuelles_muster: 75,  // Hoch
-            dynamische_evolution: 80,    // Hoch
-            klassisches_verstehen: 65,   // Mittel-hoch
-            arbeit_als_meditation: 70,   // Hoch
-            nicht_karriere: 40,          // Niedrig-mittel
-            zorba_der_unternehmer: 70,   // Hoch
-            nicht_anhaften_an_geld: 65,  // Mittel-hoch
-            kreative_selbstverwirklichung: 85 // Sehr hoch
-        },
-
-        // ═══════════════════════════════════════════════════════════════════════
-        // KOMMUNIKATION & STIL (12) - Art des Austauschs
-        // ═══════════════════════════════════════════════════════════════════════
-        // Solopoly: Ehrliche, direkte Kommunikation
-        kommunikation_stil: {
-            emotionale_offenheit: 60,    // Mittel-hoch - selektiv
-            tiefe_gespraeche: 65,        // Mittel-hoch - mit Ausgewählten
-            small_talk: 55,              // Mittel
-            konfliktbereitschaft: 75,    // Hoch - kann Konflikte
-            konstruktive_kritik: 75,     // Hoch - direkt
-            aktives_zuhoeren: 65,        // Mittel-hoch
-            nonverbale_kommunikation: 55, // Mittel
-            humor_ironie: 75,            // Hoch
-            intellektueller_austausch: 80, // Hoch
-            digitale_kommunikation: 75,  // Hoch - ermöglicht Distanz
-            verbale_anerkennung: 55,     // Mittel
-            schweigen_aushalten: 85,     // Sehr hoch - allein sein können
-            // Pirsig & Osho - Kommunikation
-            romantisches_verstehen: 55,  // Mittel
-            klassische_klarheit: 75,     // Hoch
-            dialektik: 70,               // Hoch
-            qualitaets_ausdruck: 70,     // Hoch
-            care_im_gespraech: 55,       // Mittel
-            schweigen_statt_worte: 80,   // Hoch
-            radikale_ehrlichkeit: 85,    // Sehr hoch
-            humorvolle_leichtigkeit: 75, // Hoch
-            paradoxe_weisheit: 55,       // Mittel
-            herz_statt_kopf: 45,         // Niedrig-mittel
-            authentischer_ausdruck: 90   // Sehr hoch
-        },
-
-        // ═══════════════════════════════════════════════════════════════════════
-        // SOZIALES LEBEN (12) - Freunde, Familie, Gesellschaft
-        // ═══════════════════════════════════════════════════════════════════════
-        // Solopoly: Netzwerk statt Partner, individuelle Verbindungen
-        soziales_leben: {
-            freundeskreis_pflege: 75,    // Hoch - Netzwerk wichtig
-            gemeinsame_freunde: 40,      // Niedrig-mittel - getrennte Kreise ok
-            familieneinbindung: 40,      // Niedrig-mittel - auf Distanz
-            gesellschaftliches_engagement: 55, // Mittel
-            networking: 70,              // Hoch - Vielfalt
-            gemeinsame_hobbys: 35,       // Niedrig - eigene Interessen
-            individuelle_hobbys: 95,     // Sehr hoch
-            gemeinsame_zeit: 40,         // Niedrig-mittel - dosiert
-            zeit_fuer_sich: 95,          // Sehr hoch - Kernbedürfnis
-            soziale_unterstuetzung: 50,  // Mittel - Netzwerk statt Partner
-            gemeinsame_erlebnisse: 50,   // Mittel - situativ
-            alltagsteilung: 10,          // Sehr niedrig - eigener Alltag
-            // Pirsig & Osho - Soziales Leben
-            soziale_qualitaet: 75,       // Hoch
-            tribe_muster: 45,            // Mittel
-            intellektuelle_gemeinschaft: 80, // Hoch
-            statische_sozialstrukturen: 20, // Niedrig
-            sannyas_gemeinschaft: 50,    // Mittel - offen
-            rebellion_gegen_gesellschaft: 70, // Hoch
-            einsamkeit_in_menge: 85,     // Sehr hoch
-            celebration_mit_anderen: 65, // Mittel-hoch
-            keine_freundschaft_besitz: 80, // Hoch
-            tantra_gruppe: 45            // Mittel
-        },
-
-        // ═══════════════════════════════════════════════════════════════════════
-        // INTIMITÄT & BEZIEHUNG (12) - Nähe, Sexualität, Bindung
-        // ═══════════════════════════════════════════════════════════════════════
-        // Solopoly: Liebesfähig ohne Exklusivität
-        intimitaet_beziehung: {
-            koerpernaehe: 55,            // Mittel - dosiert
-            kuscheln: 50,                // Mittel - nicht so zentral
-            sexuelle_exklusivitaet: 15,  // Sehr niedrig - nicht exklusiv
-            sexuelle_offenheit: 85,      // Sehr hoch - offen
-            leidenschaft: 65,            // Mittel-hoch - situativ
-            zaertlichkeit: 55,           // Mittel - dosiert
-            emotionale_tiefe: 60,        // Mittel - mit Grenzen
-            romantik: 50,                // Mittel - nicht priorisiert
-            flirten: 75,                 // Hoch - Freiheit
-            eifersucht_als_signal: 25,   // Niedrig - kein Thema
-            treue_werte: 30,             // Niedrig - eigene Definition
-            bindungsbereitschaft: 35,    // Niedrig - Autonomie wichtiger
-            // Pirsig & Osho - Intimität
-            biologische_anziehung: 65,   // Mittel-hoch
-            intellektuelle_verbindung: 80, // Hoch
-            qualitaet_der_beruehrung: 65, // Mittel-hoch
-            dynamische_liebe: 60,        // Mittel
-            care_in_intimitaet: 55,      // Mittel
-            sex_als_meditation: 60,      // Mittel
-            liebe_ohne_beziehung: 90,    // Sehr hoch - Kernwert
-            orgastisches_leben: 65,      // Mittel-hoch
-            nicht_anhaften_an_partner: 95, // Sehr hoch
-            hier_und_jetzt_intimitaet: 75, // Hoch
-            polyamore_energie: 80,       // Hoch
-            wildheit_und_zartheit: 60,   // Mittel
-            meditation_zu_zweit: 45      // Mittel
-        },
-
-        // ═══════════════════════════════════════════════════════════════════════
-        // WERTE & HALTUNG (10) - Überzeugungen, Religion, Politik
-        // ═══════════════════════════════════════════════════════════════════════
-        // Solopoly: Sehr progressive, nicht-traditionelle Werte
+        // Werte & Haltungen
         werte_haltung: {
-            spiritualitaet: 55,          // Mittel - individuell
-            religioese_praxis: 20,       // Niedrig - nicht institutionell
-            politisches_engagement: 60,  // Mittel-hoch - progressive Werte
-            umweltbewusstsein: 65,       // Mittel-hoch
-            traditionelle_werte: 15,     // Sehr niedrig - lehnt ab
-            moderne_werte: 90,           // Sehr hoch - progressiv
-            toleranz: 90,                // Sehr hoch - akzeptiert alle Lebensmodelle
-            offenheit_neues: 90,         // Sehr hoch
-            kulturelle_identitaet: 50,   // Mittel - flexibel
-            wertekongruenz: 75,          // Hoch - lebt nach eigenen Werten
-            // Pirsig & Osho - Werte
-            qualitaet_als_gott: 75,      // Hoch
-            rationaler_mystizismus: 65,  // Mittel-hoch
-            aristotelische_vernunft: 65, // Mittel-hoch
-            platonische_ideen: 50,       // Mittel
-            buddhistische_achtsamkeit: 70, // Hoch
-            religionslosigkeit: 75,      // Hoch
-            eigene_wahrheit: 90,         // Sehr hoch
-            zen_paradox: 55,             // Mittel
-            tantra_als_weg: 55,          // Mittel
-            politische_rebellion: 60,    // Mittel
-            individueller_anarchismus: 75, // Hoch
-            leben_als_kunst: 85,         // Sehr hoch
-            celebration_statt_gebet: 70  // Hoch
+            spiritualitaet: 55,
+            religioese_praxis: 20,
+            politisches_engagement: 60,
+            umweltbewusstsein: 65,
+            traditionelle_werte: 15,
+            moderne_werte: 90,
+            toleranz: 90,
+            offenheit_neues: 90,
+            kulturelle_identitaet: 50,
+            wertekongruenz: 75,
+            // Pirsig & Osho
+            qualitaet_als_gott: 75,
+            rationaler_mystizismus: 65,
+            aristotelische_vernunft: 65,
+            platonische_ideen: 50,
+            buddhistische_achtsamkeit: 70,
+            religionslosigkeit: 75,
+            eigene_wahrheit: 90,
+            zen_paradox: 55,
+            tantra_als_weg: 55,
+            politische_rebellion: 60,
+            individueller_anarchismus: 75,
+            leben_als_kunst: 85,
+            celebration_statt_gebet: 70
         },
 
-        // ═══════════════════════════════════════════════════════════════════════
-        // PRAKTISCHES LEBEN (10) - Alltag, Organisation, Gesundheit
-        // ═══════════════════════════════════════════════════════════════════════
-        // Solopoly: Vollständig eigenständig, hohe Mobilität
+        // Praktisches Leben
         praktisches_leben: {
-            haushaltsaufteilung: 5,      // Sehr niedrig - alles alleine
-            alltagsorganisation: 75,     // Hoch - für sich selbst
-            gesundheitsbewusstsein: 80,  // Hoch - Selbstfürsorge
-            ernaehrungsstil: 65,         // Mittel-hoch - eigene Wahl
-            ordnung_sauberkeit: 60,      // Mittel - eigener Standard
-            mobilitaet: 95,              // Sehr hoch - flexibel und mobil
-            wohnort_flexibilitaet: 95,   // Sehr hoch - ortsungebunden
-            heimatverbundenheit: 30,     // Niedrig - nicht verwurzelt
-            reisen_abenteuer: 90,        // Sehr hoch - Entdeckungslust
-            routine_struktur: 50,        // Mittel - flexible Routinen
-            // Pirsig & Osho - Praktisches Leben
-            motorrad_pflege: 60,         // Mittel
-            gumption_im_alltag: 80,      // Hoch
-            stuck_vermeiden: 80,         // Hoch
-            klassische_ordnung: 50,      // Mittel
-            romantisches_chaos: 65,      // Mittel-hoch
-            qualitaets_werkzeug: 65,     // Mittel-hoch
-            achtsamkeit_im_detail: 60,   // Mittel
-            meditation_im_alltag: 65,    // Mittel-hoch
-            gesundheit_durch_bewusstsein: 75, // Hoch
-            dynamische_meditation: 65,   // Mittel-hoch
-            vipassana_im_leben: 60,      // Mittel
-            natuerliches_leben: 65,      // Mittel-hoch
-            lachen_therapie: 70,         // Hoch
-            no_mind: 55,                 // Mittel
-            zorba_der_geniesser: 80      // Hoch
+            haushaltsaufteilung: 5,
+            alltagsorganisation: 75,
+            gesundheitsbewusstsein: 80,
+            ernaehrungsstil: 65,
+            ordnung_sauberkeit: 60,
+            wohnort_flexibilitaet: 95,
+            heimatverbundenheit: 30,
+            reisen_abenteuer: 90,
+            routine_struktur: 50,
+            // Pirsig & Osho
+            motorrad_pflege: 60,
+            gumption_im_alltag: 80,
+            stuck_vermeiden: 80,
+            klassische_ordnung: 50,
+            romantisches_chaos: 65,
+            qualitaets_werkzeug: 65,
+            achtsamkeit_im_detail: 60,
+            meditation_im_alltag: 65,
+            gesundheit_durch_bewusstsein: 75,
+            dynamische_meditation: 65,
+            vipassana_im_leben: 60,
+            natuerliches_leben: 65,
+            lachen_therapie: 70,
+            no_mind: 55,
+            zorba_der_geniesser: 80
         }
     },
 

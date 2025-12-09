@@ -60,6 +60,8 @@
     <script src="js/dimensions/tagDimensionRelevance.js"></script>
     <script src="js/dimensions/dominanzModifier.js"></script>
     <script src="js/dimensions/tagCalculator.js"></script>
+    <!-- BEDÜRFNIS-IDs (MUSS vor Archetypen geladen werden für ID->Key Konvertierung) -->
+    <script src="profiles/definitions/beduerfnis-ids.js"></script>
     <!-- ARCHETYP PROFILE (88 Bedürfnisse pro Profil) -->
     <script src="profiles/archetypen/single.js"></script>
     <script src="profiles/archetypen/duo.js"></script>
@@ -91,8 +93,10 @@
     <script src="profiles/modifiers/orientierung/bisexuell.js"></script>
     <!-- MODIFIER INDEX (lädt alle) -->
     <script src="profiles/modifiers/index.js"></script>
+    <!-- SSOT Taxonomie (MUSS vor anderen Definitionen geladen werden) -->
+    <script src="profiles/definitions/taxonomie.js"></script>
     <!-- GFK Bedürfnisse & Modifikatoren -->
-    <script src="profiles/definitions/beduerfnis-ids.js"></script>
+    <!-- beduerfnis-ids.js wird früher geladen (vor Archetypen) -->
     <script src="profiles/definitions/gfk-beduerfnisse.js"></script>
     <script src="profiles/beduerfnis-modifikatoren.js"></script>
     <script src="profiles/definitions/archetyp-definitions.js"></script>

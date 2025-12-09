@@ -258,11 +258,30 @@
                 return orientierungStatements.default;
             }
 
-            // Extract primary gender from object format { primary: 'cis_mann', secondary: null }
-            let g1 = geschlecht1;
-            let g2 = geschlecht2;
-            if (g1 && typeof g1 === 'object' && 'primary' in g1) g1 = g1.primary;
-            if (g2 && typeof g2 === 'object' && 'primary' in g2) g2 = g2.primary;
+            // Extract effective gender identity (handles Trans transformation)
+            const extractEffectiveGender = (geschlecht) => {
+                if (!geschlecht) return null;
+                if (typeof geschlecht === 'object' && 'primary' in geschlecht) {
+                    const primary = geschlecht.primary;
+                    const secondary = geschlecht.secondary;
+                    if (secondary) {
+                        if (secondary === 'cis') return primary;
+                        if (secondary === 'trans') {
+                            if (primary === 'mann') return 'frau';
+                            if (primary === 'frau') return 'mann';
+                            return primary;
+                        }
+                        if (['nonbinaer', 'fluid', 'suchend'].includes(secondary)) return secondary;
+                        return secondary;
+                    }
+                    return primary || null;
+                }
+                if (typeof geschlecht === 'string') return geschlecht;
+                return null;
+            };
+
+            let g1 = extractEffectiveGender(geschlecht1);
+            let g2 = extractEffectiveGender(geschlecht2);
 
             // Extrahiere primäre Orientierung aus Multi-Select-Objekt
             const getPrimaryOrientation = (orient) => {
@@ -6680,16 +6699,30 @@
                 return TiageCompatibility.Physical.check(person1, person2);
             }
             // Fallback: inline implementation for backwards compatibility
-            // Extract primary gender from object format { primary: 'cis_mann', secondary: null }
-            let g1 = person1.geschlecht;
-            let g2 = person2.geschlecht;
+            // Extract effective gender identity (handles Trans transformation)
+            const extractEffectiveGender = (geschlecht) => {
+                if (!geschlecht) return null;
+                if (typeof geschlecht === 'object' && 'primary' in geschlecht) {
+                    const primary = geschlecht.primary;
+                    const secondary = geschlecht.secondary;
+                    if (secondary) {
+                        if (secondary === 'cis') return primary;
+                        if (secondary === 'trans') {
+                            if (primary === 'mann') return 'frau';
+                            if (primary === 'frau') return 'mann';
+                            return primary;
+                        }
+                        if (['nonbinaer', 'fluid', 'suchend'].includes(secondary)) return secondary;
+                        return secondary;
+                    }
+                    return primary || null;
+                }
+                if (typeof geschlecht === 'string') return geschlecht;
+                return null;
+            };
 
-            if (g1 && typeof g1 === 'object' && 'primary' in g1) {
-                g1 = g1.primary;
-            }
-            if (g2 && typeof g2 === 'object' && 'primary' in g2) {
-                g2 = g2.primary;
-            }
+            let g1 = extractEffectiveGender(person1.geschlecht);
+            let g2 = extractEffectiveGender(person2.geschlecht);
 
             // Get orientierung as multi-select object
             const ori1 = person1.orientierung;
@@ -10054,9 +10087,42 @@
                 let quoteSource = '';
                 const score = qualityResult.score;
 
+                // ═══════════════════════════════════════════════════════════════
+                // K.O.-WARNUNG: Prüfe auf harte Ausschlusskriterien
+                // ═══════════════════════════════════════════════════════════════
+                let koWarning = null;
+
+                // 1. Orientierungs-K.O. (keine körperliche Anziehung möglich)
+                if (qualityResult.blocked && qualityResult.reason) {
+                    koWarning = {
+                        type: 'orientation',
+                        message: qualityResult.reason
+                    };
+                }
+
+                // 2. Lifestyle-K.O. prüfen (Kinderwunsch, Wohnform etc.)
+                if (!koWarning && typeof TiageSynthesis !== 'undefined' && TiageSynthesis.LifestyleFilter) {
+                    const attrs1 = personDimensions.ich?.baseAttributes || {};
+                    const attrs2 = personDimensions.partner?.baseAttributes || {};
+                    const lifestyleCheck = TiageSynthesis.LifestyleFilter.check(attrs1, attrs2);
+
+                    if (lifestyleCheck.isKO && lifestyleCheck.koReasons.length > 0) {
+                        koWarning = {
+                            type: 'lifestyle',
+                            message: lifestyleCheck.koReasons.map(r => r.message).join(' | '),
+                            details: lifestyleCheck.koReasons
+                        };
+                    }
+                }
+
                 if (qualityResult.incomplete) {
                     noteText = 'Bitte alle Dimensionen auswählen.';
                     mobileScoreNote.textContent = noteText;
+                    mobileScoreNote.style.display = 'block';
+                } else if (koWarning) {
+                    // K.O.-Warnung anzeigen
+                    mobileScoreNote.innerHTML = '<div class="ko-warning-message" style="color: #e74c3c; background: rgba(231, 76, 60, 0.15); border: 1px solid #e74c3c; border-radius: 8px; padding: 10px 12px; margin-top: 8px; text-align: center;"><strong style="display: block; margin-bottom: 4px;">⚠️ K.O.-Kriterium</strong><span style="font-size: 0.9em; opacity: 0.95;">' + koWarning.message + '</span></div>';
+                    mobileScoreNote.style.display = 'block';
                 } else {
                     // Bestimme Resonanzlevel basierend auf Score
                     let resonanceLevel = 'niedrig';
@@ -10096,6 +10162,7 @@
                     }
 
                     mobileScoreNote.innerHTML = '<strong>' + noteText + '</strong><br><span style="font-style: italic; opacity: 0.85; font-size: 0.9em;">"' + quoteText + '"' + quoteSource + '</span>';
+                    mobileScoreNote.style.display = 'block';
                 }
             }
         }
