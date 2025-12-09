@@ -220,6 +220,287 @@ const AttributeSummaryCard = (function() {
     const NEEDS_LABELS = null; // Wird durch getNeedLabel() ersetzt
 
     /**
+     * Speicher für flache Bedürfniswerte (für renderAllNeedsFlat)
+     * Format: { needId: value }
+     */
+    const flatNeedsValues = {};
+
+    /**
+     * Speicher für Lock-Status bei flacher Darstellung
+     * Format: { needId: true/false }
+     */
+    const flatLockedNeeds = {};
+
+    /**
+     * Aktueller Archetyp für flache Darstellung
+     */
+    let currentFlatArchetyp = null;
+
+    /**
+     * GFK-Kategorien mit Labels und Icons
+     */
+    const GFK_KATEGORIEN = {
+        existenz: { label: 'Existenz', icon: '🫁' },
+        sicherheit: { label: 'Sicherheit', icon: '🛡️' },
+        zuneigung: { label: 'Zuneigung', icon: '💕' },
+        verstaendnis: { label: 'Verständnis', icon: '🤝' },
+        freiheit: { label: 'Freiheit', icon: '🦅' },
+        teilnahme: { label: 'Teilnahme', icon: '👥' },
+        musse: { label: 'Muße', icon: '🎨' },
+        identitaet: { label: 'Identität', icon: '🪞' },
+        erschaffen: { label: 'Erschaffen', icon: '✨' },
+        verbundenheit: { label: 'Verbundenheit', icon: '🌊' },
+        dynamik: { label: 'Dynamik', icon: '⚡' },
+        lebensplanung: { label: 'Lebensplanung', icon: '🏠' },
+        finanzen_karriere: { label: 'Finanzen & Karriere', icon: '💼' },
+        kommunikation_stil: { label: 'Kommunikation', icon: '💬' },
+        soziales_leben: { label: 'Soziales Leben', icon: '🎭' },
+        intimitaet_beziehung: { label: 'Intimität & Romantik', icon: '💋' },
+        werte_haltung: { label: 'Werte & Haltungen', icon: '⚖️' },
+        praktisches_leben: { label: 'Praktisches Leben', icon: '🧹' }
+    };
+
+    /**
+     * Rendert ALLE Bedürfnisse aus dem Archetyp-Profil als flache Liste
+     * Gruppiert nach GFK-Kategorien, wie in der Ti-Age Synthese
+     *
+     * @param {string} archetyp - Archetyp-ID (z.B. 'polyamor', 'solopoly')
+     * @param {string} archetypLabel - Anzeige-Label des Archetyps
+     * @returns {string} HTML-String
+     */
+    function renderAllNeedsFlat(archetyp, archetypLabel) {
+        // Prüfe ob GfkBeduerfnisse verfügbar ist
+        if (typeof GfkBeduerfnisse === 'undefined' || !GfkBeduerfnisse.archetypProfile) {
+            console.warn('renderAllNeedsFlat: GfkBeduerfnisse nicht verfügbar');
+            return '<p style="color: var(--text-muted);">Bedürfnis-Daten nicht verfügbar</p>';
+        }
+
+        const profil = GfkBeduerfnisse.archetypProfile[archetyp];
+        if (!profil || !profil.kernbeduerfnisse) {
+            console.warn('renderAllNeedsFlat: Profil nicht gefunden:', archetyp);
+            return '<p style="color: var(--text-muted);">Profil nicht gefunden</p>';
+        }
+
+        // Speichere aktuellen Archetyp
+        currentFlatArchetyp = archetyp;
+
+        // Initialisiere Werte aus Profil
+        const kernbeduerfnisse = profil.kernbeduerfnisse;
+        Object.keys(kernbeduerfnisse).forEach(needId => {
+            if (flatNeedsValues[needId] === undefined) {
+                flatNeedsValues[needId] = kernbeduerfnisse[needId];
+            }
+        });
+
+        // Gruppiere Bedürfnisse nach Kategorien
+        const grouped = {};
+        Object.keys(kernbeduerfnisse).forEach(needId => {
+            const def = GfkBeduerfnisse.definitionen[needId];
+            const kategorie = def?.kategorie || 'sonstige';
+
+            if (!grouped[kategorie]) {
+                grouped[kategorie] = [];
+            }
+            grouped[kategorie].push({
+                id: needId,
+                value: flatNeedsValues[needId] ?? kernbeduerfnisse[needId],
+                label: getNeedLabel(needId)
+            });
+        });
+
+        // Sortiere Bedürfnisse in jeder Kategorie nach Wert (absteigend)
+        Object.keys(grouped).forEach(kategorie => {
+            grouped[kategorie].sort((a, b) => b.value - a.value);
+        });
+
+        // Rendere HTML
+        let html = `<div class="flat-needs-container" data-archetyp="${archetyp}">`;
+        html += `<div class="flat-needs-header">
+            <span class="flat-needs-title">Alle Bedürfnisse</span>
+            <span class="flat-needs-subtitle">Dein ${archetypLabel}-Profil</span>
+        </div>`;
+
+        // Sortiere Kategorien nach GFK_KATEGORIEN Reihenfolge
+        const kategorieOrder = Object.keys(GFK_KATEGORIEN);
+        const sortedKategorien = Object.keys(grouped).sort((a, b) => {
+            const idxA = kategorieOrder.indexOf(a);
+            const idxB = kategorieOrder.indexOf(b);
+            return (idxA === -1 ? 999 : idxA) - (idxB === -1 ? 999 : idxB);
+        });
+
+        sortedKategorien.forEach(kategorie => {
+            const needs = grouped[kategorie];
+            const katInfo = GFK_KATEGORIEN[kategorie] || { label: kategorie, icon: '📌' };
+
+            html += `
+            <div class="flat-needs-category" data-category="${kategorie}">
+                <div class="flat-needs-category-header" onclick="this.parentElement.classList.toggle('collapsed')">
+                    <span class="flat-needs-category-icon">${katInfo.icon}</span>
+                    <span class="flat-needs-category-label">${katInfo.label}</span>
+                    <span class="flat-needs-category-count">(${needs.length})</span>
+                    <span class="flat-needs-category-expand">▼</span>
+                </div>
+                <div class="flat-needs-category-content">`;
+
+            needs.forEach(need => {
+                const isLocked = flatLockedNeeds[need.id] || false;
+                html += renderFlatNeedItem(need.id, need.label, need.value, isLocked);
+            });
+
+            html += `</div></div>`;
+        });
+
+        html += '</div>';
+        return html;
+    }
+
+    /**
+     * Rendert ein einzelnes Bedürfnis-Item für die flache Darstellung
+     */
+    function renderFlatNeedItem(needId, label, value, isLocked) {
+        return `
+        <div class="flat-need-item${isLocked ? ' need-locked' : ''}" data-need="${needId}">
+            <div class="flat-need-header">
+                <span class="flat-need-label clickable"
+                      onclick="event.stopPropagation(); openNeedDefinitionModal('${needId}')"
+                      title="Klicken für Info">${label}</span>
+                <div class="flat-need-controls">
+                    <span class="need-lock-icon"
+                          onclick="event.stopPropagation(); AttributeSummaryCard.toggleFlatNeedLock('${needId}', this)"
+                          title="Wert fixieren"></span>
+                </div>
+            </div>
+            <div class="flat-need-slider-row">
+                <input type="range" class="need-slider"
+                       min="0" max="100" value="${value}"
+                       oninput="AttributeSummaryCard.onFlatSliderInput('${needId}', this.value, this)"
+                       onclick="event.stopPropagation()"
+                       ${isLocked ? 'disabled' : ''}>
+                <input type="text" class="flat-need-input" value="${value}" maxlength="3"
+                       onchange="AttributeSummaryCard.updateFlatNeedValue('${needId}', this.value)"
+                       onclick="event.stopPropagation()"
+                       ${isLocked ? 'readonly' : ''}>
+            </div>
+        </div>`;
+    }
+
+    /**
+     * Slider-Input-Handler für flache Darstellung
+     */
+    function onFlatSliderInput(needId, value, sliderElement) {
+        if (flatLockedNeeds[needId]) return;
+
+        const numValue = parseInt(value, 10);
+        if (isNaN(numValue)) return;
+
+        flatNeedsValues[needId] = numValue;
+
+        // Sync Input-Feld
+        const needItem = sliderElement.closest('.flat-need-item');
+        if (needItem) {
+            const input = needItem.querySelector('.flat-need-input');
+            if (input) input.value = numValue;
+        }
+
+        // Event für Änderungstracking
+        document.dispatchEvent(new CustomEvent('flatNeedChange', {
+            bubbles: true,
+            detail: { needId, value: numValue }
+        }));
+    }
+
+    /**
+     * Aktualisiert einen Bedürfniswert in der flachen Darstellung
+     */
+    function updateFlatNeedValue(needId, value) {
+        if (flatLockedNeeds[needId]) return;
+
+        const numValue = parseInt(value, 10);
+        if (isNaN(numValue) || numValue < 0 || numValue > 100) return;
+
+        flatNeedsValues[needId] = numValue;
+
+        // Sync Slider
+        const needItem = document.querySelector(`.flat-need-item[data-need="${needId}"]`);
+        if (needItem) {
+            const slider = needItem.querySelector('.need-slider');
+            if (slider) slider.value = numValue;
+        }
+
+        // Event
+        document.dispatchEvent(new CustomEvent('flatNeedChange', {
+            bubbles: true,
+            detail: { needId, value: numValue }
+        }));
+    }
+
+    /**
+     * Toggle Lock für ein Bedürfnis in der flachen Darstellung
+     */
+    function toggleFlatNeedLock(needId, lockElement) {
+        flatLockedNeeds[needId] = !flatLockedNeeds[needId];
+        const isLocked = flatLockedNeeds[needId];
+
+        // Update UI
+        const needItem = lockElement.closest('.flat-need-item');
+        if (needItem) {
+            needItem.classList.toggle('need-locked', isLocked);
+
+            const slider = needItem.querySelector('.need-slider');
+            const input = needItem.querySelector('.flat-need-input');
+
+            if (slider) slider.disabled = isLocked;
+            if (input) input.readOnly = isLocked;
+        }
+
+        // Event
+        document.dispatchEvent(new CustomEvent('flatNeedLockChange', {
+            bubbles: true,
+            detail: { needId, locked: isLocked }
+        }));
+    }
+
+    /**
+     * Holt alle flachen Bedürfniswerte
+     */
+    function getFlatNeedsValues() {
+        return { ...flatNeedsValues };
+    }
+
+    /**
+     * Holt alle gesperrten flachen Bedürfnisse
+     */
+    function getFlatLockedNeeds() {
+        return { ...flatLockedNeeds };
+    }
+
+    /**
+     * Setzt alle flachen Bedürfniswerte zurück auf Profil-Werte
+     */
+    function resetFlatNeeds() {
+        if (!currentFlatArchetyp || typeof GfkBeduerfnisse === 'undefined') return;
+
+        const profil = GfkBeduerfnisse.archetypProfile[currentFlatArchetyp];
+        if (!profil) return;
+
+        // Nur nicht-gesperrte Werte zurücksetzen
+        Object.keys(profil.kernbeduerfnisse).forEach(needId => {
+            if (!flatLockedNeeds[needId]) {
+                flatNeedsValues[needId] = profil.kernbeduerfnisse[needId];
+
+                // Update UI
+                const needItem = document.querySelector(`.flat-need-item[data-need="${needId}"]`);
+                if (needItem) {
+                    const slider = needItem.querySelector('.need-slider');
+                    const input = needItem.querySelector('.flat-need-input');
+                    if (slider) slider.value = flatNeedsValues[needId];
+                    if (input) input.value = flatNeedsValues[needId];
+                }
+            }
+        });
+    }
+
+    /**
      * Speicher für Bedürfniswerte pro Attribut
      */
     const needsValues = {};
@@ -700,8 +981,17 @@ const AttributeSummaryCard = (function() {
         isNeedLocked,
         getLockedNeeds,
         ATTRIBUTE_NEEDS_MAPPING,
-        getNeedLabel,  // NEU: Dynamischer Label-Getter aus GfkBeduerfnisse.definitionen
-        SLIDER_ENABLED_CATEGORIES
+        getNeedLabel,
+        SLIDER_ENABLED_CATEGORIES,
+        // NEU: Flache Darstellung aller Bedürfnisse (wie Ti-Age Synthese)
+        renderAllNeedsFlat,
+        onFlatSliderInput,
+        updateFlatNeedValue,
+        toggleFlatNeedLock,
+        getFlatNeedsValues,
+        getFlatLockedNeeds,
+        resetFlatNeeds,
+        GFK_KATEGORIEN
     };
 })();
 

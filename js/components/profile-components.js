@@ -302,6 +302,71 @@ const ProfileReviewRenderer = (function() {
         console.log('[ProfileReview] Alle Werte zurückgesetzt auf Archetyp-Defaults:', archetypeKey || 'standard', modifierInfo);
     }
 
+    /**
+     * Rendert den Modal-Body mit FLACHER Bedürfnis-Darstellung
+     * Zeigt alle Bedürfnisse aus dem Archetyp-Profil gruppiert nach GFK-Kategorien
+     *
+     * @param {string} archetyp - Archetyp-ID (z.B. 'polyamor', 'solopoly')
+     * @param {string} archetypLabel - Anzeige-Label des Archetyps
+     * @returns {string} HTML-String
+     */
+    function renderFlatModalBody(archetyp, archetypLabel) {
+        if (typeof AttributeSummaryCard === 'undefined' || !AttributeSummaryCard.renderAllNeedsFlat) {
+            console.warn('ProfileReviewRenderer: AttributeSummaryCard.renderAllNeedsFlat nicht verfügbar');
+            return renderModalBody(); // Fallback auf alte Darstellung
+        }
+
+        // Gewichtungs-Sektion am Anfang
+        const gewichtungHtml = renderGewichtungSection();
+
+        // Flache Bedürfnis-Darstellung
+        const flatNeedsHtml = AttributeSummaryCard.renderAllNeedsFlat(archetyp, archetypLabel);
+
+        return gewichtungHtml + '\n' + flatNeedsHtml;
+    }
+
+    /**
+     * Initialisiert das Modal mit FLACHER Bedürfnis-Darstellung
+     *
+     * @param {string} archetyp - Archetyp-ID
+     * @param {string} archetypLabel - Anzeige-Label des Archetyps
+     */
+    function initializeFlatModal(archetyp, archetypLabel) {
+        const contentContainer = document.getElementById('profileReviewContent');
+        if (!contentContainer) {
+            console.warn('ProfileReviewRenderer: Content container not found');
+            return;
+        }
+
+        // Force re-initialization for flat view
+        contentContainer.dataset.initialized = 'false';
+        contentContainer.dataset.viewMode = 'flat';
+        contentContainer.dataset.archetyp = archetyp;
+
+        // Generiere flachen Content
+        contentContainer.innerHTML = renderFlatModalBody(archetyp, archetypLabel) +
+            '\n<div style="height: 20px;"></div>';
+        contentContainer.dataset.initialized = 'true';
+
+        console.log('ProfileReviewRenderer: Flat modal initialized for', archetyp);
+    }
+
+    /**
+     * Sammelt alle Werte aus der FLACHEN Darstellung
+     * @returns {Object} Alle Bedürfniswerte
+     */
+    function collectFlatValues() {
+        if (typeof AttributeSummaryCard === 'undefined') {
+            return {};
+        }
+
+        return {
+            needs: AttributeSummaryCard.getFlatNeedsValues(),
+            lockedNeeds: AttributeSummaryCard.getFlatLockedNeeds(),
+            gewichtungen: GewichtungCard.getAllValues()
+        };
+    }
+
     return {
         renderCategory,
         renderGewichtungSection,
@@ -311,7 +376,11 @@ const ProfileReviewRenderer = (function() {
         collectAllValues,
         setAllValues,
         resetAllValues,
-        getDefaultFromArchetype
+        getDefaultFromArchetype,
+        // NEU: Flache Darstellung
+        renderFlatModalBody,
+        initializeFlatModal,
+        collectFlatValues
     };
 })();
 

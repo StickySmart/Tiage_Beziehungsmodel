@@ -1069,3 +1069,211 @@ input.gewichtung-input:focus {
 .attribute-summary-card.has-filter-match .attribute-summary-expand-icon {
     transform: rotate(180deg);
 }
+
+/* ═══════════════════════════════════════════════════════════════════════════ */
+/* FLAT NEEDS DISPLAY - Alle Bedürfnisse wie in Ti-Age Synthese                 */
+/* ═══════════════════════════════════════════════════════════════════════════ */
+
+.flat-needs-container {
+    padding: 0 4px;
+}
+
+.flat-needs-header {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding: 16px 12px;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+    margin-bottom: 12px;
+}
+
+.flat-needs-title {
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--text-primary, #fff);
+}
+
+.flat-needs-subtitle {
+    font-size: 12px;
+    color: var(--text-muted, #888);
+}
+
+/* Kategorie-Container */
+.flat-needs-category {
+    margin-bottom: 8px;
+    background: rgba(255,255,255,0.02);
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.flat-needs-category.collapsed .flat-needs-category-content {
+    display: none;
+}
+
+.flat-needs-category.collapsed .flat-needs-category-expand {
+    transform: rotate(-90deg);
+}
+
+.flat-needs-category-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 14px;
+    background: rgba(255,255,255,0.05);
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.flat-needs-category-header:hover {
+    background: rgba(255,255,255,0.08);
+}
+
+.flat-needs-category-icon {
+    font-size: 16px;
+}
+
+.flat-needs-category-label {
+    flex: 1;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--primary, #FFD700);
+}
+
+.flat-needs-category-count {
+    font-size: 12px;
+    color: var(--text-muted, #888);
+}
+
+.flat-needs-category-expand {
+    font-size: 10px;
+    color: var(--text-muted, #888);
+    transition: transform 0.2s;
+}
+
+.flat-needs-category-content {
+    padding: 8px 12px;
+}
+
+/* Einzelnes Bedürfnis-Item */
+.flat-need-item {
+    padding: 10px 12px;
+    margin-bottom: 6px;
+    background: rgba(255,255,255,0.03);
+    border-radius: 6px;
+    border-left: 3px solid var(--primary, #457b9d);
+    transition: all 0.2s;
+}
+
+.flat-need-item:hover {
+    background: rgba(255,255,255,0.06);
+}
+
+.flat-need-item.need-locked {
+    border-left-color: #f59e0b;
+    background: rgba(245, 158, 11, 0.1);
+}
+
+.flat-need-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 8px;
+}
+
+.flat-need-label {
+    font-size: 13px;
+    color: var(--text-primary, #fff);
+}
+
+.flat-need-label.clickable {
+    cursor: pointer;
+}
+
+.flat-need-label.clickable:hover {
+    color: var(--primary, #FFD700);
+    text-decoration: underline;
+}
+
+.flat-need-controls {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.flat-need-slider-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.flat-need-slider-row .need-slider {
+    flex: 1;
+    height: 6px;
+    -webkit-appearance: none;
+    appearance: none;
+    background: rgba(255,255,255,0.1);
+    border-radius: 3px;
+    cursor: pointer;
+}
+
+.flat-need-slider-row .need-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: var(--primary, #FFD700);
+    cursor: pointer;
+    border: 2px solid rgba(0,0,0,0.3);
+}
+
+.flat-need-slider-row .need-slider:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.flat-need-input {
+    width: 48px;
+    padding: 6px 8px;
+    text-align: center;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-primary, #fff);
+    background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 6px;
+}
+
+.flat-need-input:focus {
+    outline: none;
+    border-color: var(--primary, #FFD700);
+}
+
+/* Lock Icon für flache Darstellung */
+.flat-need-item .need-lock-icon {
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    opacity: 0.4;
+    transition: opacity 0.2s;
+}
+
+.flat-need-item .need-lock-icon::before {
+    content: "🔓";
+    font-size: 14px;
+}
+
+.flat-need-item .need-lock-icon:hover {
+    opacity: 1;
+}
+
+.flat-need-item.need-locked .need-lock-icon {
+    opacity: 1;
+}
+
+.flat-need-item.need-locked .need-lock-icon::before {
+    content: "🔒";
+}
