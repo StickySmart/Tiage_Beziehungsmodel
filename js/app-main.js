@@ -5532,11 +5532,15 @@
          * @param {string} needId - Die ID des Bedürfnisses
          */
         function openNeedDefinitionModal(needId) {
+            console.log('[NEEDS] openNeedDefinitionModal called with:', needId);
             const modal = document.getElementById('needDefinitionModal');
             const body = document.getElementById('needDefinitionModalBody');
             const title = document.getElementById('needDefinitionModalTitle');
 
-            if (!modal || !body) return;
+            if (!modal || !body) {
+                console.error('[NEEDS] Modal elements not found! modal:', modal, 'body:', body);
+                return;
+            }
 
             // Definition suchen
             const def = needDefinitions[needId];
@@ -13056,6 +13060,7 @@
         window.openGfkExplanationModal = openGfkExplanationModal;
         window.openPaarungExplanationModal = openPaarungExplanationModal;
         window.closePaarungExplanationModal = closePaarungExplanationModal;
+        console.log('[NEEDS] Modal functions exported to window:', typeof window.openNeedDefinitionModal);
 
         // Dimension toggle and collapse functions
         window.toggleAllDimensionsCollapse = toggleAllDimensionsCollapse;
