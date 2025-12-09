@@ -1,0 +1,99 @@
+{
+  "version": "1.0.0",
+  "beschreibung": "Perspektiven-Gewichtungen und Quellen für alle Bedürfnisse",
+  "format": "source[#BedürfnisID][#PerspektiveID]",
+
+  "perspektiven": {
+    "#P1": {
+      "id": "#P1",
+      "label": "Statistik",
+      "beschreibung": "Reine Übereinstimmung der Werte (Gauß-basiert, 80% Konfidenz)",
+      "methodik": "Empirische Forschung, Meta-Analysen, quantitative Studien",
+      "hauptquellen": [
+        "GFK - Marshall B. Rosenberg (2001)",
+        "Attachment Theory - Hazan & Shaver (1987)",
+        "Big Five - McCrae & Costa (1997)",
+        "Self-Determination Theory - Ryan & Deci (2000)"
+      ]
+    },
+    "#P2": {
+      "id": "#P2",
+      "label": "Osho",
+      "beschreibung": "Tantra, Polarität, Natürlichkeit vs. Konditionierung",
+      "methodik": "Philosophische Interpretation, Tantra-Tradition",
+      "hauptquellen": [
+        "Osho: Intimacy - Trusting Oneself and the Other (1984)",
+        "Osho: The Book of Secrets (1974)",
+        "Osho: From Sex to Superconsciousness (1968)"
+      ]
+    },
+    "#P3": {
+      "id": "#P3",
+      "label": "Pirsig",
+      "beschreibung": "Static vs. Dynamic Quality, Metaphysics of Quality",
+      "methodik": "Philosophische Interpretation, Quality-Paradigma",
+      "hauptquellen": [
+        "Robert M. Pirsig: Zen and the Art of Motorcycle Maintenance (1974)",
+        "Robert M. Pirsig: Lila - An Inquiry into Morals (1991)"
+      ]
+    },
+    "#P4": {
+      "id": "#P4",
+      "label": "SexPositiv",
+      "beschreibung": "Sex-Positive Movement, Consent, Autonomie, Inklusion",
+      "methodik": "Aktivismus, Community-basierte Forschung",
+      "hauptquellen": [
+        "noch zu recherchieren"
+      ]
+    }
+  },
+
+  "sources": {
+    "#B1": {
+      "_label": "#B1-Luft",
+      "#P1": { "gewichtung": 50, "referenz": "GFK - Rosenberg 2001", "interpretation": "Universelles Grundbedürfnis" },
+      "#P2": { "gewichtung": 50, "referenz": "Osho: The Book of Secrets", "interpretation": "Atem als Meditation, Prana" },
+      "#P3": { "gewichtung": 50, "referenz": "Pirsig: Biological Patterns", "interpretation": "Biologisches Basismuster" }
+    },
+    "#B5": {
+      "_label": "#B5-Berührung",
+      "#P1": { "gewichtung": 70, "referenz": "Attachment Theory - Harlow 1958", "interpretation": "Körperkontakt essentiell für Bindung", "zitat": "Contact comfort is crucial for attachment" },
+      "#P2": { "gewichtung": 85, "referenz": "Osho: Intimacy", "interpretation": "Berührung als Energieaustausch, tantrisch", "zitat": "Touch is the forgotten language" },
+      "#P3": { "gewichtung": 65, "referenz": "Pirsig: Biological Quality", "interpretation": "Biologisches Bedürfnis mit sozialer Dimension" }
+    },
+    "#B18": {
+      "_label": "#B18-Nähe",
+      "#P1": { "gewichtung": 75, "referenz": "GFK - Rosenberg 2001, Attachment Theory", "interpretation": "Korreliert stark mit Beziehungszufriedenheit", "jahr": 2001 },
+      "#P2": { "gewichtung": 40, "referenz": "Osho: Intimacy", "interpretation": "Nähe als natürlicher Ausdruck, nicht Bedürftigkeit. Nicht anhaften.", "zitat": "Two pillars supporting the same roof but standing apart", "jahr": 1984 },
+      "#P3": { "gewichtung": 85, "referenz": "Pirsig: Lila", "interpretation": "Dynamic Quality - lebendige Verbindung. Hohe statische Qualität bei Duo.", "jahr": 1991 }
+    },
+    "#B34": {
+      "_label": "#B34-Selbstbestimmung",
+      "#P1": { "gewichtung": 80, "referenz": "Self-Determination Theory - Ryan & Deci 2000", "interpretation": "Kernbedürfnis für intrinsische Motivation", "zitat": "Autonomy is one of the three basic psychological needs" },
+      "#P2": { "gewichtung": 95, "referenz": "Osho: Freedom", "interpretation": "Höchster Wert, Konditionierung durchbrechen", "zitat": "Freedom is the highest value" },
+      "#P3": { "gewichtung": 90, "referenz": "Pirsig: Dynamic Quality", "interpretation": "Dynamic Quality - gegen statische Muster" }
+    },
+    "#B75": {
+      "_label": "#B75-Hingabe",
+      "#P1": { "gewichtung": 65, "referenz": "BDSM Research - Wismeijer & van Assen 2013", "interpretation": "Psychologisch gesund, erfüllt tiefe Bedürfnisse" },
+      "#P2": { "gewichtung": 90, "referenz": "Osho: Tantra", "interpretation": "Höchste Form der Stärke, Ego loslassen", "zitat": "Surrender is the highest form of strength" },
+      "#P3": { "gewichtung": 70, "referenz": "Pirsig: Static Quality", "interpretation": "Statische Qualität - Stabilität durch Struktur finden" }
+    },
+    "#B74": {
+      "_label": "#B74-Kontrolle-ausüben",
+      "#P1": { "gewichtung": 60, "referenz": "BDSM Research - Hébert & Weaver 2015", "interpretation": "Erfüllt Bedürfnisse nach Wirksamkeit und Kompetenz" },
+      "#P2": { "gewichtung": 45, "referenz": "Osho: Power", "interpretation": "Kann Ego verstärken, muss bewusst sein", "zitat": "The desire for power is the desire of the ego" },
+      "#P3": { "gewichtung": 80, "referenz": "Pirsig: Dynamic Quality", "interpretation": "Dynamic Quality - aktiv gestalten, Muster verändern" }
+    },
+
+    "_comment": "Weitere Bedürfnisse werden bei Bedarf hinzugefügt"
+  },
+
+  "default_gewichtungen": {
+    "_comment": "Standard-Gewichtungen wenn keine spezifischen definiert sind",
+    "#P1": 50,
+    "#P2": 50,
+    "#P3": 50,
+    "#P4": null
+  }
+}
