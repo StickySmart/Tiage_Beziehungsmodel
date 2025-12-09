@@ -13127,6 +13127,14 @@
         window.openPaarungExplanationModal = openPaarungExplanationModal;
         window.closePaarungExplanationModal = closePaarungExplanationModal;
 
+        // Needs comparison modal functions
+        window.openNeedsFullModal = openNeedsFullModal;
+        window.openNeedDefinitionModal = openNeedDefinitionModal;
+        window.switchNeedsFullModalTab = switchNeedsFullModalTab;
+        window.sortNeedsFullModal = sortNeedsFullModal;
+        window.openGfkExplanationModal = openGfkExplanationModal;
+        window.openPaarungExplanationModal = openPaarungExplanationModal;
+
         // Dimension toggle and collapse functions
         window.toggleAllDimensionsCollapse = toggleAllDimensionsCollapse;
         window.toggleDimensionCollapse = toggleDimensionCollapse;
