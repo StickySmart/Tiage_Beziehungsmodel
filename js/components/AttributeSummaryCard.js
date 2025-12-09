@@ -262,7 +262,7 @@ const AttributeSummaryCard = (function() {
 
     /**
      * Rendert ALLE Bedürfnisse aus dem Archetyp-Profil als flache Liste
-     * Gruppiert nach GFK-Kategorien, wie in der Ti-Age Synthese
+     * OHNE Kategorien-Gruppierung - einfache flache Liste
      *
      * @param {string} archetyp - Archetyp-ID (z.B. 'polyamor', 'solopoly')
      * @param {string} archetypLabel - Anzeige-Label des Archetyps
@@ -292,63 +292,30 @@ const AttributeSummaryCard = (function() {
             }
         });
 
-        // Gruppiere Bedürfnisse nach Kategorien
-        const grouped = {};
-        Object.keys(kernbeduerfnisse).forEach(needId => {
-            const def = GfkBeduerfnisse.definitionen[needId];
-            const kategorie = def?.kategorie || 'sonstige';
+        // Sammle alle Bedürfnisse in einer flachen Liste
+        const allNeeds = Object.keys(kernbeduerfnisse).map(needId => ({
+            id: needId,
+            value: flatNeedsValues[needId] ?? kernbeduerfnisse[needId],
+            label: getNeedLabel(needId)
+        }));
 
-            if (!grouped[kategorie]) {
-                grouped[kategorie] = [];
-            }
-            grouped[kategorie].push({
-                id: needId,
-                value: flatNeedsValues[needId] ?? kernbeduerfnisse[needId],
-                label: getNeedLabel(needId)
-            });
-        });
+        // Sortiere Bedürfnisse nach Wert (absteigend)
+        allNeeds.sort((a, b) => b.value - a.value);
 
-        // Sortiere Bedürfnisse in jeder Kategorie nach Wert (absteigend)
-        Object.keys(grouped).forEach(kategorie => {
-            grouped[kategorie].sort((a, b) => b.value - a.value);
-        });
-
-        // Rendere HTML
-        let html = `<div class="flat-needs-container" data-archetyp="${archetyp}">`;
+        // Rendere HTML - flache Liste ohne Kategorien
+        let html = `<div class="flat-needs-container flat-needs-no-categories" data-archetyp="${archetyp}">`;
         html += `<div class="flat-needs-header">
             <span class="flat-needs-title">Alle Bedürfnisse</span>
-            <span class="flat-needs-subtitle">Dein ${archetypLabel}-Profil</span>
+            <span class="flat-needs-subtitle">Dein ${archetypLabel}-Profil (${allNeeds.length} Bedürfnisse)</span>
         </div>`;
 
-        // Sortiere Kategorien nach GFK_KATEGORIEN Reihenfolge
-        const kategorieOrder = Object.keys(GFK_KATEGORIEN);
-        const sortedKategorien = Object.keys(grouped).sort((a, b) => {
-            const idxA = kategorieOrder.indexOf(a);
-            const idxB = kategorieOrder.indexOf(b);
-            return (idxA === -1 ? 999 : idxA) - (idxB === -1 ? 999 : idxB);
+        // Direkte flache Liste ohne Kategorien-Wrapper
+        html += `<div class="flat-needs-list">`;
+        allNeeds.forEach(need => {
+            const isLocked = flatLockedNeeds[need.id] || false;
+            html += renderFlatNeedItem(need.id, need.label, need.value, isLocked);
         });
-
-        sortedKategorien.forEach(kategorie => {
-            const needs = grouped[kategorie];
-            const katInfo = GFK_KATEGORIEN[kategorie] || { label: kategorie, icon: '📌' };
-
-            html += `
-            <div class="flat-needs-category" data-category="${kategorie}">
-                <div class="flat-needs-category-header" onclick="this.parentElement.classList.toggle('collapsed')">
-                    <span class="flat-needs-category-icon">${katInfo.icon}</span>
-                    <span class="flat-needs-category-label">${katInfo.label}</span>
-                    <span class="flat-needs-category-count">(${needs.length})</span>
-                    <span class="flat-needs-category-expand">▼</span>
-                </div>
-                <div class="flat-needs-category-content">`;
-
-            needs.forEach(need => {
-                const isLocked = flatLockedNeeds[need.id] || false;
-                html += renderFlatNeedItem(need.id, need.label, need.value, isLocked);
-            });
-
-            html += `</div></div>`;
-        });
+        html += `</div>`;
 
         html += '</div>';
         return html;
