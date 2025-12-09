@@ -66,13 +66,13 @@ TiageSynthesis.Constants = {
     RESONANCE_DIMENSIONAL: {
         ENABLED: true,       // Multi-Dimensional aktivieren
 
-        // Die 4 Dimensionen und ihre Quell-Needs
+        // Die 4 Dimensionen und ihre Quell-Needs (disjunkt!)
         DIMENSIONS: {
-            beduerfnisse: {
-                name: 'Bedürfnisse',
+            identitaet: {
+                name: 'Identität',
                 emoji: '💚',
-                source: 'ALL',           // Alle Bedürfnisse (Gesamt-Match)
-                weight: 0.25             // 25% Gewicht im Durchschnitt
+                source: 'GESCHLECHT_NEEDS',  // Authentizität, Selbstausdruck
+                weight: 0.25                 // 25% Gewicht im Durchschnitt
             },
             philosophie: {
                 name: 'Philosophie',
