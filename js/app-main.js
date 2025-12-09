@@ -14153,6 +14153,10 @@
                 modal.style.display = 'none';
                 modal.classList.remove('active');
             }
+            // Clear search filter when closing modal
+            if (typeof clearProfileReviewSearch === 'function') {
+                clearProfileReviewSearch();
+            }
         }
         window.closeProfileReviewModal = closeProfileReviewModal;
 
@@ -14166,6 +14170,195 @@
             }
         }
         window.toggleSourceExplanation = toggleSourceExplanation;
+
+        // ═══════════════════════════════════════════════════════════════════════════
+        // BEDÜRFNIS SEARCH/FILTER FUNCTIONALITY
+        // ═══════════════════════════════════════════════════════════════════════════
+
+        /**
+         * Convert wildcard pattern to regex (* = any characters)
+         * @param {string} pattern - Search pattern with * wildcards
+         * @returns {RegExp} Regular expression for matching
+         */
+        function needWildcardToRegex(pattern) {
+            // Escape special regex characters except *
+            var escaped = pattern.replace(/[.+?^${}()|[\]\\]/g, '\\$&');
+            // Convert * to .* for wildcard matching
+            var regex = escaped.replace(/\*/g, '.*');
+            return new RegExp(regex, 'i'); // Case insensitive
+        }
+
+        /**
+         * Filter profile review modal by need name
+         * @param {string} query - Search query (supports * wildcard)
+         */
+        function filterProfileReviewByNeed(query) {
+            var searchWrapper = document.querySelector('.profile-review-search-wrapper');
+            var hint = document.getElementById('profileReviewSearchHint');
+            var contentContainer = document.getElementById('profileReviewContent');
+
+            if (!contentContainer) return;
+
+            // Toggle clear button visibility
+            if (searchWrapper) {
+                searchWrapper.classList.toggle('has-value', query && query.trim().length > 0);
+            }
+
+            // Reset hint classes
+            if (hint) {
+                hint.classList.remove('has-results', 'no-results');
+            }
+
+            // If empty query, show all and reset
+            if (!query || query.trim() === '') {
+                resetProfileReviewFilter();
+                if (hint) hint.textContent = '';
+                return;
+            }
+
+            var searchPattern = needWildcardToRegex(query.trim());
+            var totalMatches = 0;
+            var matchedAttributes = 0;
+
+            // Get all attribute cards
+            var cards = contentContainer.querySelectorAll('.attribute-summary-card');
+            var categories = contentContainer.querySelectorAll('.profile-review-category');
+
+            // First pass: check each card for matching needs
+            cards.forEach(function(card) {
+                var needItems = card.querySelectorAll('.attribute-need-item');
+                var cardHasMatch = false;
+
+                needItems.forEach(function(needItem) {
+                    var needLabel = needItem.querySelector('.attribute-need-label');
+                    if (!needLabel) return;
+
+                    var labelText = needLabel.textContent || '';
+                    var needId = needItem.getAttribute('data-need') || '';
+
+                    // Check if need matches the search pattern
+                    var matches = searchPattern.test(labelText) || searchPattern.test(needId);
+
+                    // Toggle match class
+                    needItem.classList.toggle('filter-match', matches);
+
+                    if (matches) {
+                        cardHasMatch = true;
+                        totalMatches++;
+                    }
+                });
+
+                // Show/hide card and auto-expand if has matches
+                card.classList.toggle('filter-hidden', !cardHasMatch);
+                card.classList.toggle('has-filter-match', cardHasMatch);
+
+                if (cardHasMatch) {
+                    matchedAttributes++;
+                    // Expand the needs list to show matches
+                    var needsList = card.querySelector('.attribute-summary-needs-list');
+                    if (needsList) {
+                        needsList.classList.remove('collapsed');
+                    }
+                }
+            });
+
+            // Second pass: hide categories with no visible cards
+            categories.forEach(function(category) {
+                var visibleCards = category.querySelectorAll('.attribute-summary-card:not(.filter-hidden)');
+                category.classList.toggle('filter-hidden', visibleCards.length === 0);
+
+                // Update item count badge if present
+                var badge = category.querySelector('.category-item-count');
+                if (badge && visibleCards.length > 0) {
+                    badge.textContent = '(' + visibleCards.length + ')';
+                }
+            });
+
+            // Update hint
+            if (hint) {
+                if (totalMatches > 0) {
+                    hint.textContent = totalMatches + ' Bedürfnis' + (totalMatches !== 1 ? 'se' : '') +
+                                      ' in ' + matchedAttributes + ' Attribut' + (matchedAttributes !== 1 ? 'en' : '') +
+                                      ' gefunden';
+                    hint.classList.add('has-results');
+                } else {
+                    hint.textContent = 'Keine Bedürfnisse gefunden. Tipp: Verwende * als Platzhalter (z.B. *kind*)';
+                    hint.classList.add('no-results');
+                }
+            }
+        }
+        window.filterProfileReviewByNeed = filterProfileReviewByNeed;
+
+        /**
+         * Reset all filter states
+         */
+        function resetProfileReviewFilter() {
+            var contentContainer = document.getElementById('profileReviewContent');
+            if (!contentContainer) return;
+
+            // Remove all filter classes
+            var hiddenElements = contentContainer.querySelectorAll('.filter-hidden');
+            hiddenElements.forEach(function(el) {
+                el.classList.remove('filter-hidden');
+            });
+
+            var matchedCards = contentContainer.querySelectorAll('.has-filter-match');
+            matchedCards.forEach(function(el) {
+                el.classList.remove('has-filter-match');
+            });
+
+            var matchedNeeds = contentContainer.querySelectorAll('.filter-match');
+            matchedNeeds.forEach(function(el) {
+                el.classList.remove('filter-match');
+            });
+
+            // Collapse all expanded needs lists (restore original state)
+            var expandedLists = contentContainer.querySelectorAll('.attribute-summary-needs-list:not(.collapsed)');
+            expandedLists.forEach(function(list) {
+                // Only collapse if it was auto-expanded by filter
+                var card = list.closest('.attribute-summary-card');
+                if (card && !card.classList.contains('user-expanded')) {
+                    list.classList.add('collapsed');
+                }
+            });
+
+            // Restore original category counts
+            var categories = contentContainer.querySelectorAll('.profile-review-category');
+            categories.forEach(function(category) {
+                var totalCards = category.querySelectorAll('.attribute-summary-card').length;
+                var badge = category.querySelector('.category-item-count');
+                if (badge) {
+                    badge.textContent = '(' + totalCards + ')';
+                }
+            });
+        }
+        window.resetProfileReviewFilter = resetProfileReviewFilter;
+
+        /**
+         * Clear search input and reset filter
+         */
+        function clearProfileReviewSearch() {
+            var input = document.getElementById('profileReviewSearchInput');
+            if (input) {
+                input.value = '';
+                input.focus();
+            }
+            resetProfileReviewFilter();
+
+            var hint = document.getElementById('profileReviewSearchHint');
+            if (hint) {
+                hint.textContent = '';
+                hint.classList.remove('has-results', 'no-results');
+            }
+
+            var searchWrapper = document.querySelector('.profile-review-search-wrapper');
+            if (searchWrapper) {
+                searchWrapper.classList.remove('has-value');
+            }
+        }
+        window.clearProfileReviewSearch = clearProfileReviewSearch;
+
+        // ═══════════════════════════════════════════════════════════════════════════
 
         // Update Source Explanation with current factors
         function updateSourceExplanation(archetypeKey, personData, dominanz, orientierung) {
@@ -14617,6 +14810,11 @@
 
                 // Update initial state nach Reset
                 profileReviewInitialState = getProfileReviewState();
+
+                // Clear search filter
+                if (typeof clearProfileReviewSearch === 'function') {
+                    clearProfileReviewSearch();
+                }
             }
         }
         window.resetProfileReview = resetProfileReview;
