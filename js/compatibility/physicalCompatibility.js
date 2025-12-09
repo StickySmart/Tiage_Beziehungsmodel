@@ -116,6 +116,52 @@ TiageCompatibility.Physical = (function() {
     // ═══════════════════════════════════════════════════════════════════════
 
     /**
+     * Extract effective gender identity from geschlecht object
+     * Handles Trans transformation: P=frau + S=trans → mann (Trans-Mann)
+     *
+     * @param {string|object} geschlecht - Geschlecht value or { primary, secondary }
+     * @returns {string|null} Effective gender identity
+     */
+    function extractEffectiveGender(geschlecht) {
+        if (!geschlecht) return null;
+
+        // New P/S format: { primary, secondary }
+        if (typeof geschlecht === 'object' && 'primary' in geschlecht) {
+            var primary = geschlecht.primary;   // Body: mann, frau, inter
+            var secondary = geschlecht.secondary; // Identity: cis, trans, suchend, nonbinaer, fluid
+
+            if (secondary !== undefined && secondary !== null) {
+                // Cis: Identity = Body
+                if (secondary === 'cis') {
+                    return primary;
+                }
+                // Trans: Identity = Opposite of body
+                if (secondary === 'trans') {
+                    if (primary === 'mann') return 'frau';
+                    if (primary === 'frau') return 'mann';
+                    return primary; // inter stays inter
+                }
+                // Nonbinär, Fluid, Suchend: use directly
+                if (secondary === 'nonbinaer' || secondary === 'fluid' || secondary === 'suchend') {
+                    return secondary;
+                }
+                // Fallback: use secondary value
+                return secondary;
+            }
+
+            // No secondary set: fallback to primary (body)
+            return primary || null;
+        }
+
+        // Old format: string directly
+        if (typeof geschlecht === 'string') {
+            return geschlecht;
+        }
+
+        return null;
+    }
+
+    /**
      * Check physical compatibility between two persons
      *
      * @param {object} person1 - Person 1 data
@@ -128,16 +174,9 @@ TiageCompatibility.Physical = (function() {
      *   - missingItems: array (optional)
      */
     function check(person1, person2) {
-        // Extract primary gender from object format { primary: 'cis_mann', secondary: null }
-        var g1 = person1.geschlecht;
-        var g2 = person2.geschlecht;
-
-        if (g1 && typeof g1 === 'object' && 'primary' in g1) {
-            g1 = g1.primary;
-        }
-        if (g2 && typeof g2 === 'object' && 'primary' in g2) {
-            g2 = g2.primary;
-        }
+        // Extract effective gender identity (handles Trans transformation)
+        var g1 = extractEffectiveGender(person1.geschlecht);
+        var g2 = extractEffectiveGender(person2.geschlecht);
 
         // Get orientierung as multi-select object
         var ori1 = person1.orientierung;
@@ -261,6 +300,7 @@ TiageCompatibility.Physical = (function() {
         check: check,
 
         // Helper functions (exposed for testing and reuse)
+        extractEffectiveGender: extractEffectiveGender,
         isMaleGender: isMaleGender,
         isFemaleGender: isFemaleGender,
         isSameGenderCategory: isSameGenderCategory,
