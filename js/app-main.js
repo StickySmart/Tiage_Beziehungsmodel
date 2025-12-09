@@ -5532,11 +5532,15 @@
          * @param {string} needId - Die ID des Bedürfnisses
          */
         function openNeedDefinitionModal(needId) {
+            console.log('[NEEDS] openNeedDefinitionModal called with:', needId);
             const modal = document.getElementById('needDefinitionModal');
             const body = document.getElementById('needDefinitionModalBody');
             const title = document.getElementById('needDefinitionModalTitle');
 
-            if (!modal || !body) return;
+            if (!modal || !body) {
+                console.error('[NEEDS] Modal elements not found! modal:', modal, 'body:', body);
+                return;
+            }
 
             // Definition suchen
             const def = needDefinitions[needId];
@@ -11131,21 +11135,23 @@
             if (gemeinsam.length === 0) gemeinsam = matching.topGemeinsam || [];
             if (unterschiedlich.length === 0) unterschiedlich = matching.topUnterschiedlich || [];
 
-            // Tag-Style
-            const tagBaseStyle = `display: inline-block; padding: 4px 10px; margin: 3px; border-radius: 12px; font-size: 12px; font-weight: 500;`;
+            // Tag-Style - clickable with hover effect
+            const tagBaseStyle = `display: inline-block; padding: 4px 10px; margin: 3px; border-radius: 12px; font-size: 12px; font-weight: 500; cursor: pointer; transition: transform 0.15s, box-shadow 0.15s;`;
             const greenTagStyle = `${tagBaseStyle} background: rgba(34,197,94,0.15); border: 1px solid rgba(34,197,94,0.4); color: #22c55e;`;
             const redTagStyle = `${tagBaseStyle} background: rgba(239,68,68,0.15); border: 1px solid rgba(239,68,68,0.4); color: #ef4444;`;
 
-            // Gemeinsame Bedürfnisse Tags (max 8)
+            // Gemeinsame Bedürfnisse Tags (max 8) - clickable
             const gemeinsamTags = gemeinsam.slice(0, 8).map(b => {
-                const label = typeof TiageI18n !== 'undefined' ? TiageI18n.t(`needs.items.${b.key || b.id}`, b.label) : b.label;
-                return `<span style="${greenTagStyle}">${label}</span>`;
+                const needId = b.key || b.id;
+                const label = typeof TiageI18n !== 'undefined' ? TiageI18n.t(`needs.items.${needId}`, b.label) : b.label;
+                return `<span style="${greenTagStyle}" onclick="openNeedDefinitionModal('${needId}')" title="Klicken für Definition" onmouseover="this.style.transform='translateY(-1px)';this.style.boxShadow='0 2px 8px rgba(34,197,94,0.3)'" onmouseout="this.style.transform='';this.style.boxShadow=''">${label}</span>`;
             }).join('');
 
-            // Unterschiedliche Bedürfnisse Tags (max 5)
+            // Unterschiedliche Bedürfnisse Tags (max 5) - clickable
             const unterschiedlichTags = unterschiedlich.slice(0, 5).map(b => {
-                const label = typeof TiageI18n !== 'undefined' ? TiageI18n.t(`needs.items.${b.key || b.id}`, b.label) : b.label;
-                return `<span style="${redTagStyle}">${label}</span>`;
+                const needId = b.key || b.id;
+                const label = typeof TiageI18n !== 'undefined' ? TiageI18n.t(`needs.items.${needId}`, b.label) : b.label;
+                return `<span style="${redTagStyle}" onclick="openNeedDefinitionModal('${needId}')" title="Klicken für Definition" onmouseover="this.style.transform='translateY(-1px)';this.style.boxShadow='0 2px 8px rgba(239,68,68,0.3)'" onmouseout="this.style.transform='';this.style.boxShadow=''">${label}</span>`;
             }).join('');
 
             return `
@@ -13126,6 +13132,7 @@
         window.openGfkExplanationModal = openGfkExplanationModal;
         window.openPaarungExplanationModal = openPaarungExplanationModal;
         window.closePaarungExplanationModal = closePaarungExplanationModal;
+        console.log('[NEEDS] Modal functions exported to window:', typeof window.openNeedDefinitionModal);
 
         // Needs comparison modal functions
         window.openNeedsFullModal = openNeedsFullModal;
