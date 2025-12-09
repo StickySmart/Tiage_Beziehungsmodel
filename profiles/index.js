@@ -7,6 +7,7 @@
  * Struktur:
  * profiles/
  * ├── definitions/          # Kern-Definitionen
+ * │   ├── taxonomie.js          # SSOT: #P, #D, #K Hierarchie
  * │   ├── beduerfnis-ids.js     # #ID-System (#B1-#B220)
  * │   ├── gfk-beduerfnisse.js   # GFK-Bedürfnisse
  * │   ├── archetyp-definitions.js
@@ -15,6 +16,7 @@
  * │   ├── beduerfnis-katalog.json
  * │   └── beduerfnis-sources.json
  * ├── docs/                 # Dokumentation & Forschung
+ * │   ├── alle-220-beduerfnisse-fragen.md
  * │   └── *.md
  * ├── archetypen/           # 8 Archetyp-Definitionen
  * ├── modifiers/            # Demografische Modifikatoren
