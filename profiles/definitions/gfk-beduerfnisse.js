@@ -675,6 +675,20 @@ const GfkBeduerfnisse = {
         heimatverbundenheit: { label: "Heimatverbundenheit", kategorie: "praktisches_leben", sekundaer: ["sicherheit", "teilnahme"] },
 
         // ═══════════════════════════════════════════════════════════════════════
+        // ZUSÄTZLICHE BEDÜRFNISSE für ATTRIBUTE_NEEDS_MAPPING Kompatibilität
+        // Stellt sicher, dass AttributeSummaryCard und Ti-Age Synthese
+        // identische IDs und Labels verwenden (Single Source of Truth)
+        // ═══════════════════════════════════════════════════════════════════════
+        gesellschaftliche_anerkennung: { label: "Gesellschaftliche Anerkennung", kategorie: "lebensplanung", sekundaer: ["teilnahme", "identitaet"] },
+        natur_verbundenheit: { label: "Naturverbundenheit", kategorie: "lebensplanung", sekundaer: ["verbundenheit"] },
+        stabiler_lebensmittelpunkt: { label: "Stabiler Lebensmittelpunkt", kategorie: "lebensplanung", sekundaer: ["sicherheit"] },
+        familienpflichten: { label: "Familienpflichten", kategorie: "lebensplanung", sekundaer: ["teilnahme"] },
+        eigenstaendigkeit_von_familie: { label: "Eigenständigkeit von Familie", kategorie: "lebensplanung", sekundaer: ["freiheit"] },
+        tradition: { label: "Tradition", kategorie: "werte_haltung", sekundaer: ["sicherheit", "teilnahme"] },
+        flexibilitaet: { label: "Flexibilität", kategorie: "freiheit", sekundaer: ["spontaneitaet"] },
+        ungebundenheit: { label: "Ungebundenheit", kategorie: "freiheit", sekundaer: ["spontaneitaet"] },
+
+        // ═══════════════════════════════════════════════════════════════════════
         // PIRSIG & OSHO BEDÜRFNISSE - Philosophische Erweiterungen
         // ═══════════════════════════════════════════════════════════════════════
         // Basiert auf:

@@ -13,6 +13,7 @@
  * │   ├── archetyp-definitions.js
  * │   └── dominance-definitions.js
  * ├── data/                 # Strukturierte Daten (JSON)
+ * │   ├── beduerfnis-katalog.json
  * │   └── beduerfnis-sources.json
  * ├── docs/                 # Dokumentation & Forschung
  * │   ├── alle-220-beduerfnisse-fragen.md

@@ -41,9 +41,13 @@
       "id": "#P4",
       "label": "SexPositiv",
       "beschreibung": "Sex-Positive Movement, Consent, Autonomie, Inklusion",
-      "methodik": "Aktivismus, Community-basierte Forschung",
+      "methodik": "Aktivismus, Community-basierte Forschung, Sexualwissenschaft",
       "hauptquellen": [
-        "noch zu recherchieren"
+        "Gayle Rubin: Thinking Sex - Notes for a Radical Theory of the Politics of Sexuality (1984)",
+        "Dossie Easton & Janet Hardy: The Ethical Slut (1997, 3rd ed. 2017)",
+        "Emily Nagoski: Come As You Are (2015)",
+        "Betty Dodson: Sex for One - The Joy of Selfloving (1987)",
+        "Carol Queen: Real Live Nude Girl - Chronicles of Sex-Positive Culture (1997)"
       ]
     }
   },
@@ -53,37 +57,43 @@
       "_label": "#B1-Luft",
       "#P1": { "gewichtung": 50, "referenz": "GFK - Rosenberg 2001", "interpretation": "Universelles Grundbedürfnis" },
       "#P2": { "gewichtung": 50, "referenz": "Osho: The Book of Secrets", "interpretation": "Atem als Meditation, Prana" },
-      "#P3": { "gewichtung": 50, "referenz": "Pirsig: Biological Patterns", "interpretation": "Biologisches Basismuster" }
+      "#P3": { "gewichtung": 50, "referenz": "Pirsig: Biological Patterns", "interpretation": "Biologisches Basismuster" },
+      "#P4": { "gewichtung": 55, "referenz": "Nagoski: Come As You Are", "interpretation": "Atemarbeit als Teil von Embodiment und Selbstverbindung" }
     },
     "#B5": {
       "_label": "#B5-Berührung",
       "#P1": { "gewichtung": 70, "referenz": "Attachment Theory - Harlow 1958", "interpretation": "Körperkontakt essentiell für Bindung", "zitat": "Contact comfort is crucial for attachment" },
       "#P2": { "gewichtung": 85, "referenz": "Osho: Intimacy", "interpretation": "Berührung als Energieaustausch, tantrisch", "zitat": "Touch is the forgotten language" },
-      "#P3": { "gewichtung": 65, "referenz": "Pirsig: Biological Quality", "interpretation": "Biologisches Bedürfnis mit sozialer Dimension" }
+      "#P3": { "gewichtung": 65, "referenz": "Pirsig: Biological Quality", "interpretation": "Biologisches Bedürfnis mit sozialer Dimension" },
+      "#P4": { "gewichtung": 80, "referenz": "Easton & Hardy: The Ethical Slut", "interpretation": "Consent-basierte Berührung, enthusiastic consent als Grundlage", "zitat": "Ask first, and keep asking" }
     },
     "#B18": {
       "_label": "#B18-Nähe",
       "#P1": { "gewichtung": 75, "referenz": "GFK - Rosenberg 2001, Attachment Theory", "interpretation": "Korreliert stark mit Beziehungszufriedenheit", "jahr": 2001 },
       "#P2": { "gewichtung": 40, "referenz": "Osho: Intimacy", "interpretation": "Nähe als natürlicher Ausdruck, nicht Bedürftigkeit. Nicht anhaften.", "zitat": "Two pillars supporting the same roof but standing apart", "jahr": 1984 },
-      "#P3": { "gewichtung": 85, "referenz": "Pirsig: Lila", "interpretation": "Dynamic Quality - lebendige Verbindung. Hohe statische Qualität bei Duo.", "jahr": 1991 }
+      "#P3": { "gewichtung": 85, "referenz": "Pirsig: Lila", "interpretation": "Dynamic Quality - lebendige Verbindung. Hohe statische Qualität bei Duo.", "jahr": 1991 },
+      "#P4": { "gewichtung": 75, "referenz": "Easton & Hardy: The Ethical Slut", "interpretation": "Nähe in vielfältigen Beziehungsformen möglich, Polyamorie, Beziehungsanarchie", "zitat": "Abundance is a state of mind" }
     },
     "#B34": {
       "_label": "#B34-Selbstbestimmung",
       "#P1": { "gewichtung": 80, "referenz": "Self-Determination Theory - Ryan & Deci 2000", "interpretation": "Kernbedürfnis für intrinsische Motivation", "zitat": "Autonomy is one of the three basic psychological needs" },
       "#P2": { "gewichtung": 95, "referenz": "Osho: Freedom", "interpretation": "Höchster Wert, Konditionierung durchbrechen", "zitat": "Freedom is the highest value" },
-      "#P3": { "gewichtung": 90, "referenz": "Pirsig: Dynamic Quality", "interpretation": "Dynamic Quality - gegen statische Muster" }
+      "#P3": { "gewichtung": 90, "referenz": "Pirsig: Dynamic Quality", "interpretation": "Dynamic Quality - gegen statische Muster" },
+      "#P4": { "gewichtung": 95, "referenz": "Rubin: Thinking Sex; Dodson: Sex for One", "interpretation": "Bodily autonomy als Kernwert, sexuelle Selbstbestimmung, Recht auf Lust", "zitat": "My body, my choice - extends to pleasure" }
     },
     "#B75": {
       "_label": "#B75-Hingabe",
       "#P1": { "gewichtung": 65, "referenz": "BDSM Research - Wismeijer & van Assen 2013", "interpretation": "Psychologisch gesund, erfüllt tiefe Bedürfnisse" },
       "#P2": { "gewichtung": 90, "referenz": "Osho: Tantra", "interpretation": "Höchste Form der Stärke, Ego loslassen", "zitat": "Surrender is the highest form of strength" },
-      "#P3": { "gewichtung": 70, "referenz": "Pirsig: Static Quality", "interpretation": "Statische Qualität - Stabilität durch Struktur finden" }
+      "#P3": { "gewichtung": 70, "referenz": "Pirsig: Static Quality", "interpretation": "Statische Qualität - Stabilität durch Struktur finden" },
+      "#P4": { "gewichtung": 85, "referenz": "Easton & Hardy: The Ethical Slut; Queen: Real Live Nude Girl", "interpretation": "Consensual submission als empowering, Power Exchange mit enthusiastic consent", "zitat": "Submission is a gift freely given" }
     },
     "#B74": {
       "_label": "#B74-Kontrolle-ausüben",
       "#P1": { "gewichtung": 60, "referenz": "BDSM Research - Hébert & Weaver 2015", "interpretation": "Erfüllt Bedürfnisse nach Wirksamkeit und Kompetenz" },
       "#P2": { "gewichtung": 45, "referenz": "Osho: Power", "interpretation": "Kann Ego verstärken, muss bewusst sein", "zitat": "The desire for power is the desire of the ego" },
-      "#P3": { "gewichtung": 80, "referenz": "Pirsig: Dynamic Quality", "interpretation": "Dynamic Quality - aktiv gestalten, Muster verändern" }
+      "#P3": { "gewichtung": 80, "referenz": "Pirsig: Dynamic Quality", "interpretation": "Dynamic Quality - aktiv gestalten, Muster verändern" },
+      "#P4": { "gewichtung": 75, "referenz": "Easton & Hardy: The Ethical Slut", "interpretation": "Ethical dominance, verantwortungsvolle Macht mit Consent und Care", "zitat": "Power exchange requires trust and responsibility" }
     },
 
     "_comment": "Weitere Bedürfnisse werden bei Bedarf hinzugefügt"
@@ -94,6 +104,6 @@
     "#P1": 50,
     "#P2": 50,
     "#P3": 50,
-    "#P4": null
+    "#P4": 50
   }
 }

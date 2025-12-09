@@ -12,18 +12,34 @@ const AttributeSummaryCard = (function() {
     'use strict';
 
     /**
+     * SINGLE SOURCE OF TRUTH für Bedürfnis-Labels
+     * Greift dynamisch auf GfkBeduerfnisse.definitionen zu.
+     * Dies stellt sicher, dass Attribute Modal und Ti-Age Synthese
+     * identische Bedürfnis-Namen/IDs anzeigen.
+     *
+     * @param {string} needId - Die Bedürfnis-ID
+     * @returns {string} Das Label für das Bedürfnis
+     */
+    function getNeedLabel(needId) {
+        // Primär: GfkBeduerfnisse.definitionen (Single Source of Truth)
+        if (typeof GfkBeduerfnisse !== 'undefined' && GfkBeduerfnisse.definitionen) {
+            const def = GfkBeduerfnisse.definitionen[needId];
+            if (def && def.label) {
+                return def.label;
+            }
+        }
+        // Fallback: Formatiere ID als lesbaren String
+        return needId
+            .replace(/_/g, ' ')
+            .replace(/\b\w/g, c => c.toUpperCase());
+    }
+
+    /**
      * Mapping: Attribut → zugehörige Bedürfnisse
      *
-     * NEU: Erweitert um attribut-spezifische Bedürfnisse
-     * Die GFK-Bedürfnisse (Rosenberg) sind zu abstrakt für konkrete Lebensthemen.
-     * Daher wurden spezifische Bedürfnisse hinzugefügt wie:
-     * - kinderwunsch, elternschaft, fortpflanzung
-     * - finanzielle_sicherheit, finanzielle_unabhaengigkeit
-     * - haeuslichkeit, nest_bauen, sesshaftigkeit
-     * - abenteuer, reisen, mobilitaet
-     * - ordnungssinn, struktur
-     * - spiritualitaet, glaubenspraxis
-     * - umweltverantwortung, nachhaltigkeit
+     * Die Bedürfnis-IDs müssen mit den IDs in den Archetyp-Profilen
+     * (z.B. solopoly.js, duo.js) übereinstimmen, damit beide Modals
+     * auf dieselbe Datenquelle zugreifen.
      */
     const ATTRIBUTE_NEEDS_MAPPING = {
         // GESCHLECHTSIDENTITÄT
@@ -182,295 +198,14 @@ const AttributeSummaryCard = (function() {
     };
 
     /**
-     * Deutsche Übersetzungen für Bedürfnisse
+     * DEPRECATED: NEEDS_LABELS
+     * Die Labels werden jetzt dynamisch aus GfkBeduerfnisse.definitionen geladen.
+     * Siehe getNeedLabel() Funktion oben.
      *
-     * Enthält sowohl GFK-Bedürfnisse (Rosenberg) als auch
-     * attribut-spezifische Bedürfnisse für das Beziehungsmodell.
+     * Diese Konstante bleibt nur für Abwärtskompatibilität erhalten,
+     * falls externe Module darauf zugreifen.
      */
-    const NEEDS_LABELS = {
-        // ═══════════════════════════════════════════════════════════════
-        // ATTRIBUT-SPEZIFISCHE BEDÜRFNISSE (NEU)
-        // ═══════════════════════════════════════════════════════════════
-
-        // KINDER / LEBENSPLANUNG
-        kinderwunsch: 'Kinderwunsch',
-        elternschaft: 'Elternschaft',
-        fortpflanzung: 'Fortpflanzung',
-        familie_gruenden: 'Familie gründen',
-        generativitaet: 'Generativität (Weitergabe)',
-
-        // EHE / BINDUNG
-        verbindlichkeit: 'Verbindlichkeit',
-        langfristige_bindung: 'Langfristige Bindung',
-        rechtliche_sicherheit: 'Rechtliche Sicherheit',
-        gesellschaftliche_anerkennung: 'Gesellschaftliche Anerkennung',
-        tradition: 'Tradition',
-        treueversprechen: 'Treueversprechen',
-
-        // WOHNEN
-        gemeinsamer_wohnraum: 'Gemeinsamer Wohnraum',
-        haeuslichkeit: 'Häuslichkeit',
-        nest_bauen: 'Nest bauen',
-        alltag_teilen: 'Alltag teilen',
-        eigener_raum: 'Eigener Raum',
-        rueckzugsort: 'Rückzugsort',
-
-        // HAUSTIERE
-        tierliebe: 'Tierliebe',
-        fuersorge_tiere: 'Fürsorge für Tiere',
-        begleiter: 'Tierischer Begleiter',
-        verantwortung_tier: 'Verantwortung für Tier',
-        natur_verbundenheit: 'Naturverbundenheit',
-        ungebundenheit: 'Ungebundenheit',
-
-        // UMZUG / MOBILITÄT
-        sesshaftigkeit: 'Sesshaftigkeit',
-        verwurzelung: 'Verwurzelung',
-        mobilitaet: 'Mobilität',
-        flexibilitaet: 'Flexibilität',
-        heimat: 'Heimat',
-        neue_orte: 'Neue Orte',
-        stabiler_lebensmittelpunkt: 'Stabiler Lebensmittelpunkt',
-
-        // FAMILIE
-        familienbindung: 'Familienbindung',
-        herkunftsfamilie: 'Herkunftsfamilie',
-        familientreffen: 'Familientreffen',
-        generationenverbund: 'Generationenverbund',
-        familienpflichten: 'Familienpflichten',
-        eigenstaendigkeit_von_familie: 'Eigenständigkeit von Familie',
-
-        // FINANZEN
-        finanzielle_unabhaengigkeit: 'Finanzielle Unabhängigkeit',
-        gemeinsame_finanzen: 'Gemeinsame Finanzen',
-        finanzielle_transparenz: 'Finanzielle Transparenz',
-        finanzielle_sicherheit: 'Finanzielle Sicherheit',
-        sparsamkeit: 'Sparsamkeit',
-        grosszuegigkeit: 'Großzügigkeit',
-
-        // KARRIERE
-        berufliche_erfuellung: 'Berufliche Erfüllung',
-        karriereambition: 'Karriereambition',
-        work_life_balance: 'Work-Life-Balance',
-        berufliche_anerkennung: 'Berufliche Anerkennung',
-        zeit_fuer_beziehung: 'Zeit für Beziehung',
-        berufliche_flexibilitaet: 'Berufliche Flexibilität',
-
-        // KOMMUNIKATION
-        taeglicher_austausch: 'Täglicher Austausch',
-        tiefgehende_gespraeche: 'Tiefgehende Gespräche',
-        small_talk: 'Small Talk',
-        stille_gemeinsam: 'Stille gemeinsam',
-        verbale_verbindung: 'Verbale Verbindung',
-        zuhoeren: 'Zuhören',
-
-        // EMOTIONEN
-        emotionale_offenheit: 'Emotionale Offenheit',
-        gefuehle_zeigen: 'Gefühle zeigen',
-        verletzlichkeit: 'Verletzlichkeit zulassen',
-        emotionale_zurueckhaltung: 'Emotionale Zurückhaltung',
-        emotionale_sicherheit: 'Emotionale Sicherheit',
-        gefuehle_teilen: 'Gefühle teilen',
-
-        // KONFLIKTE
-        konfliktklaerung: 'Konfliktklärung',
-        aussprache: 'Aussprache',
-        konflikt_vermeiden: 'Konflikt vermeiden',
-        streitkultur: 'Streitkultur',
-        versoehnlichkeit: 'Versöhnlichkeit',
-
-        // SOZIALES / INTROVERSION-EXTROVERSION
-        soziale_energie: 'Soziale Energie',
-        geselligkeit: 'Geselligkeit',
-        ruhe_von_menschen: 'Ruhe von Menschen',
-        allein_aufladen: 'Allein aufladen',
-        menschen_treffen: 'Menschen treffen',
-        kleine_gruppen: 'Kleine Gruppen',
-
-        // ALLEINZEIT
-        zeit_fuer_sich: 'Zeit für sich',
-        eigene_hobbys: 'Eigene Hobbys',
-        gemeinsame_zeit: 'Gemeinsame Zeit',
-        partnerzeit: 'Partnerzeit',
-        eigene_interessen: 'Eigene Interessen',
-
-        // FREUNDESKREIS
-        eigene_freunde: 'Eigene Freunde',
-        gemeinsame_freunde: 'Gemeinsame Freunde',
-        freundeskreis_teilen: 'Freundeskreis teilen',
-        soziales_netz: 'Soziales Netz',
-        freunde_pflegen: 'Freunde pflegen',
-        neue_freundschaften: 'Neue Freundschaften',
-
-        // KÖRPERLICHE NÄHE
-        koerpernaehe: 'Körpernähe',
-        kuscheln: 'Kuscheln',
-        physische_distanz: 'Physische Distanz',
-        koerperkontakt: 'Körperkontakt',
-        umarmungen: 'Umarmungen',
-        hand_halten: 'Hand halten',
-
-        // ROMANTIK
-        romantische_gesten: 'Romantische Gesten',
-        ueberraschungen: 'Überraschungen',
-        dates: 'Dates',
-        alltags_romantik: 'Alltags-Romantik',
-        aufmerksamkeiten: 'Aufmerksamkeiten',
-        liebesbekundungen: 'Liebesbekundungen',
-
-        // SEXUALITÄT
-        sexuelle_haeufigkeit: 'Sexuelle Häufigkeit',
-        sexuelle_intimiaet: 'Sexuelle Intimität',
-        koerperliche_lust: 'Körperliche Lust',
-        sexuelle_experimentierfreude: 'Sexuelle Experimentierfreude',
-        sexuelle_verbindung: 'Sexuelle Verbindung',
-        sexuelle_zufriedenheit: 'Sexuelle Zufriedenheit',
-
-        // RELIGION / SPIRITUALITÄT
-        spiritualitaet: 'Spiritualität',
-        glaubenspraxis: 'Glaubenspraxis',
-        religioese_gemeinschaft: 'Religiöse Gemeinschaft',
-        saekularitaet: 'Säkularität',
-        sinnsuche: 'Sinnsuche',
-        transzendenz: 'Transzendenz',
-
-        // TRADITION / MODERNE
-        traditionelle_werte: 'Traditionelle Werte',
-        moderne_lebensweise: 'Moderne Lebensweise',
-        konservative_werte: 'Konservative Werte',
-        progressive_werte: 'Progressive Werte',
-        kulturelle_tradition: 'Kulturelle Tradition',
-        offenheit_fuer_neues: 'Offenheit für Neues',
-
-        // UMWELT
-        umweltverantwortung: 'Umweltverantwortung',
-        nachhaltigkeit: 'Nachhaltigkeit',
-        oekologisches_bewusstsein: 'Ökologisches Bewusstsein',
-        pragmatismus: 'Pragmatismus',
-        klimaschutz: 'Klimaschutz',
-        ressourcenschonung: 'Ressourcenschonung',
-
-        // ORDNUNG
-        ordnungssinn: 'Ordnungssinn',
-        sauberkeit: 'Sauberkeit',
-        struktur: 'Struktur',
-        chaos_toleranz: 'Chaos-Toleranz',
-        organisiert_sein: 'Organisiert sein',
-        flexibilitaet_haushalt: 'Flexibilität im Haushalt',
-
-        // REISEN
-        reisen: 'Reisen',
-        abenteuer: 'Abenteuer',
-        neue_orte_entdecken: 'Neue Orte entdecken',
-        zuhause_bleiben: 'Zuhause bleiben',
-        urlaub: 'Urlaub',
-        fernweh: 'Fernweh',
-        heimatverbundenheit: 'Heimatverbundenheit',
-
-        // ═══════════════════════════════════════════════════════════════
-        // GFK-BEDÜRFNISSE (Rosenberg) - für Rückwärtskompatibilität
-        // ═══════════════════════════════════════════════════════════════
-
-        // PHYSISCH
-        luft: 'Luft',
-        wasser: 'Wasser',
-        essen: 'Nahrung',
-        bewegung: 'Bewegung',
-        beruehrung: 'Berührung',
-        ruhe: 'Ruhe',
-        sexualitaet: 'Sexualität',
-        lust: 'Lust',
-        koerperliche_sicherheit: 'Körperliche Sicherheit',
-        obdach: 'Obdach',
-
-        // SICHERHEIT
-        stabilitaet: 'Stabilität',
-        sich_sicher_fuehlen: 'Sicherheitsgefühl',
-        schutz: 'Schutz',
-        bestaendigkeit: 'Beständigkeit',
-        leichtigkeit: 'Leichtigkeit',
-        geborgenheit: 'Geborgenheit',
-
-        // ZUNEIGUNG
-        waerme: 'Wärme',
-        wertschaetzung: 'Wertschätzung',
-        naehe: 'Nähe',
-        gesellschaft: 'Gesellschaft',
-        intimitaet: 'Intimität',
-        liebe: 'Liebe',
-        fuersorge: 'Fürsorge',
-        unterstuetzung: 'Unterstützung',
-        fuereinander_da_sein: 'Füreinander-Da-Sein',
-
-        // VERSTÄNDNIS
-        akzeptanz: 'Akzeptanz',
-        empathie: 'Empathie',
-        beachtung: 'Beachtung',
-        verstanden_werden: 'Verstanden-Werden',
-        vertrauen: 'Vertrauen',
-        beachtet_werden: 'Beachtet-Werden',
-        gesehen_werden: 'Gesehen-Werden',
-        mitgefuehl: 'Mitgefühl',
-        harmonie: 'Harmonie',
-
-        // FREIHEIT
-        selbstbestimmung: 'Selbstbestimmung',
-        waehlen_koennen: 'Wählen-Können',
-        unabhaengigkeit: 'Unabhängigkeit',
-        raum_haben: 'Raum-Haben',
-        spontaneitaet: 'Spontaneität',
-
-        // TEILNAHME
-        zusammenarbeit: 'Zusammenarbeit',
-        kommunikation: 'Kommunikation',
-        gemeinschaft: 'Gemeinschaft',
-        zugehoerigkeit: 'Zugehörigkeit',
-        gegenseitigkeit: 'Gegenseitigkeit',
-        respekt: 'Respekt',
-        bedeutung_haben: 'Bedeutung-Haben',
-
-        // IDENTITÄT
-        authentizitaet: 'Authentizität',
-        identitaet: 'Identität',
-        kompetenz: 'Kompetenz',
-        wirksamkeit: 'Wirksamkeit',
-        herausforderung: 'Herausforderung',
-        sinn: 'Sinn',
-        wachstum: 'Wachstum',
-        beitrag_leisten: 'Beitrag-Leisten',
-        integritaet: 'Integrität',
-        effizienz: 'Effizienz',
-        selbst_ausdruck: 'Selbstausdruck',
-
-        // MUSSE
-        freude: 'Freude',
-        freizeit: 'Freizeit',
-
-        // ERSCHAFFEN
-        kreativitaet: 'Kreativität',
-        entdecken: 'Entdecken',
-
-        // VERBUNDENHEIT
-        leben_feiern: 'Leben-Feiern',
-        inspiration: 'Inspiration',
-
-        // DYNAMIK
-        kontrolle_ausueben: 'Kontrolle-Ausüben',
-        hingabe: 'Hingabe',
-        fuehrung_geben: 'Führung-Geben',
-        gefuehrt_werden: 'Geführt-Werden',
-        ritual: 'Ritual',
-        nachsorge: 'Nachsorge',
-        grenzen_setzen: 'Grenzen-Setzen',
-        grenzen_respektieren: 'Grenzen-Respektieren',
-        intensitaet: 'Intensität',
-        vertrauen_schenken: 'Vertrauen-Schenken',
-        verantwortung_uebernehmen: 'Verantwortung-Übernehmen',
-        sich_fallenlassen: 'Sich-Fallenlassen',
-        machtaustausch: 'Machtaustausch',
-        dienend_sein: 'Dienend-Sein',
-        beschuetzen: 'Beschützen'
-    };
+    const NEEDS_LABELS = null; // Wird durch getNeedLabel() ersetzt
 
     /**
      * Speicher für Bedürfniswerte pro Attribut
@@ -572,7 +307,7 @@ const AttributeSummaryCard = (function() {
 
         // Generiere Bedürfnis-Liste für Expansion
         const needsListHtml = mapping.needs.map(need => {
-            const needLabel = NEEDS_LABELS[need] || need;
+            const needLabel = getNeedLabel(need);
             const needValue = needsValues[attrId][need] || 50;
             const isNeedLocked = lockedNeeds[attrId] && lockedNeeds[attrId][need];
 
@@ -953,7 +688,7 @@ const AttributeSummaryCard = (function() {
         isNeedLocked,
         getLockedNeeds,
         ATTRIBUTE_NEEDS_MAPPING,
-        NEEDS_LABELS,
+        getNeedLabel,  // NEU: Dynamischer Label-Getter aus GfkBeduerfnisse.definitionen
         SLIDER_ENABLED_CATEGORIES
     };
 })();
