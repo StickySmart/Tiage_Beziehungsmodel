@@ -10989,14 +10989,16 @@
             const scoreBtn = document.getElementById('tiageSyntheseToggleScore');
             const pathosBtn = document.getElementById('tiageSyntheseTogglePathos');
             const logosBtn = document.getElementById('tiageSyntheseToggleLogos');
+            const needsBtn = document.getElementById('tiageSyntheseToggleNeeds');
 
             // Modal header buttons
             const modalScoreBtn = document.getElementById('modalScoreBtn');
             const modalPathosBtn = document.getElementById('modalPathosBtn');
             const modalLogosBtn = document.getElementById('modalLogosBtn');
+            const modalNeedsBtn = document.getElementById('modalNeedsBtn');
 
             // Reset all sticky side button styles
-            [scoreBtn, pathosBtn, logosBtn].forEach(btn => {
+            [scoreBtn, pathosBtn, logosBtn, needsBtn].forEach(btn => {
                 if (btn) {
                     btn.style.background = 'rgba(30,30,35,0.95)';
                     btn.style.color = 'var(--text-muted)';
@@ -11005,7 +11007,7 @@
             });
 
             // Reset modal header button styles
-            [modalScoreBtn, modalPathosBtn, modalLogosBtn].forEach(btn => {
+            [modalScoreBtn, modalPathosBtn, modalLogosBtn, modalNeedsBtn].forEach(btn => {
                 if (btn) btn.classList.remove('active');
             });
 
@@ -11048,6 +11050,19 @@
                     logosBtn.style.border = '1px solid #6495ED';
                 }
                 if (modalLogosBtn) modalLogosBtn.classList.add('active');
+            } else if (type === 'needs') {
+                titleEl.textContent = "Ti-Age Synthese";
+                iconEl.textContent = '💚';
+                categoryEl.textContent = 'GFK-Bedürfnisanalyse';
+                subtitleEl.textContent = 'Bedürfnis-Match mit Differenz';
+                typeIndicatorEl.style.display = 'flex';
+                contentEl.innerHTML = getNeedsContent();
+                if (needsBtn) {
+                    needsBtn.style.background = 'rgba(34, 197, 94, 0.3)';
+                    needsBtn.style.color = 'var(--text-primary)';
+                    needsBtn.style.border = '1px solid #22c55e';
+                }
+                if (modalNeedsBtn) modalNeedsBtn.classList.add('active');
             }
         }
 
@@ -11651,6 +11666,179 @@
 
             // PSYCHOLOGISCHE EINORDNUNG (Jung + GFK)
             html += generateJungGfkStatement();
+
+            return html;
+        }
+
+        /**
+         * Generate Needs content (Bedürfnis-Match mit Differenz)
+         * Shows the full needs comparison with difference values
+         */
+        function getNeedsContent() {
+            // Matching-Daten holen
+            const ichArchetyp = (currentArchetype || '').replace('_', '-');
+            const partnerArchetyp = (selectedPartner || '').replace('_', '-');
+
+            if (!ichArchetyp || !partnerArchetyp || typeof GfkBeduerfnisse === 'undefined') {
+                return '<p style="color: var(--text-muted);">Keine Daten verfügbar.</p>';
+            }
+
+            const matching = GfkBeduerfnisse.berechneMatching(ichArchetyp, partnerArchetyp);
+            const ichName = archetypeDescriptions[currentArchetype]?.name || 'ICH';
+            const partnerName = archetypeDescriptions[selectedPartner]?.name || 'Partner';
+
+            // Score-Anzeige
+            const scoreValue = matching.score || 0;
+            let scoreColor = '#ef4444';
+            if (scoreValue >= 80) {
+                scoreColor = '#22c55e';
+            } else if (scoreValue >= 60) {
+                scoreColor = '#eab308';
+            }
+
+            // Score Header
+            let html = `
+                <div style="text-align: center; margin-bottom: 20px;">
+                    <div style="font-size: 48px; font-weight: 700; color: ${scoreColor};">${scoreValue}%</div>
+                    <div style="font-size: 12px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px;">Bedürfnis-Übereinstimmung</div>
+                </div>
+            `;
+
+            // Gemeinsame & Kompatible Bedürfnisse
+            const uebereinstimmend = matching.details?.uebereinstimmend || [];
+            const komplementaer = matching.details?.komplementaer || [];
+            const gemeinsam = [...uebereinstimmend, ...komplementaer];
+            gemeinsam.sort((a, b) => ((b.wert1 + b.wert2) / 2) - ((a.wert1 + a.wert2) / 2));
+
+            // Unterschiedliche Prioritäten
+            const konflikt = matching.details?.konflikt || [];
+
+            // Header mit Archetyp-Namen
+            html += `
+                <div style="display: grid; grid-template-columns: 1fr auto 1fr; gap: 10px; margin-bottom: 12px; padding-bottom: 8px; border-bottom: 1px solid rgba(255,255,255,0.1);">
+                    <div style="display: flex; align-items: center; justify-content: center;">
+                        <span style="font-weight: 600; color: var(--success); font-size: 11px; text-transform: uppercase; letter-spacing: 1px;">${ichName}</span>
+                    </div>
+                    <div style="display: flex; align-items: center; justify-content: center;">
+                        <span style="font-weight: 600; color: var(--warning, #eab308); font-size: 10px; text-transform: uppercase; letter-spacing: 0.5px;">Diff</span>
+                    </div>
+                    <div style="display: flex; align-items: center; justify-content: center;">
+                        <span style="font-weight: 600; color: var(--danger); font-size: 11px; text-transform: uppercase; letter-spacing: 1px;">${partnerName}</span>
+                    </div>
+                </div>
+            `;
+
+            // Gemeinsame Bedürfnisse Section
+            if (gemeinsam.length > 0) {
+                html += `
+                    <div style="margin-bottom: 20px;">
+                        <div style="font-size: 11px; color: #22c55e; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 10px; display: flex; align-items: center; gap: 6px;">
+                            <span style="font-size: 14px;">✓</span> Gemeinsame & Kompatible Bedürfnisse
+                        </div>
+                        <div style="display: flex; flex-direction: column; gap: 6px; max-height: 200px; overflow-y: auto;">
+                `;
+
+                gemeinsam.slice(0, 15).forEach(item => {
+                    const label = TiageI18n.t(`needs.items.${item.id}`, item.label);
+                    const wert1 = item.wert1 || 0;
+                    const wert2 = item.wert2 || 0;
+                    const diff = Math.abs(wert1 - wert2);
+
+                    let statusColor = '#22c55e';
+                    if (diff > 35) statusColor = '#ef4444';
+                    else if (diff > 15) statusColor = '#eab308';
+
+                    html += `
+                        <div style="background: rgba(255,255,255,0.03); border-radius: 6px; padding: 10px 12px; border-left: 3px solid ${statusColor};">
+                            <div onclick="openNeedDefinitionModal('${item.id}')" style="font-weight: 500; color: var(--text-primary); font-size: 13px; margin-bottom: 6px; cursor: pointer; display: flex; align-items: center; gap: 6px; transition: color 0.2s;" onmouseover="this.style.color='var(--primary)'" onmouseout="this.style.color='var(--text-primary)'">
+                                ${label}
+                                <span style="font-size: 10px; opacity: 0.5;">ⓘ</span>
+                            </div>
+                            <div style="display: grid; grid-template-columns: 1fr auto 1fr; gap: 8px; align-items: center;">
+                                <div style="display: flex; align-items: center; gap: 6px;">
+                                    <div style="flex: 1; height: 5px; background: rgba(255,255,255,0.1); border-radius: 3px; overflow: hidden;">
+                                        <div style="width: ${wert1}%; height: 100%; background: var(--success); border-radius: 3px;"></div>
+                                    </div>
+                                    <span style="font-size: 11px; color: var(--text-muted); min-width: 32px; text-align: right;">${wert1}</span>
+                                </div>
+                                <div style="display: flex; align-items: center; justify-content: center; min-width: 50px;">
+                                    <span style="font-size: 11px; font-weight: 600; color: ${statusColor}; background: ${statusColor}22; padding: 2px 6px; border-radius: 4px;">${diff}</span>
+                                </div>
+                                <div style="display: flex; align-items: center; gap: 6px;">
+                                    <div style="flex: 1; height: 5px; background: rgba(255,255,255,0.1); border-radius: 3px; overflow: hidden;">
+                                        <div style="width: ${wert2}%; height: 100%; background: var(--danger); border-radius: 3px;"></div>
+                                    </div>
+                                    <span style="font-size: 11px; color: var(--text-muted); min-width: 32px; text-align: right;">${wert2}</span>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                });
+
+                html += `
+                        </div>
+                        <div style="text-align: center; font-size: 11px; color: var(--text-muted); margin-top: 8px;">
+                            ${gemeinsam.length} gemeinsame & kompatible Bedürfnisse
+                        </div>
+                    </div>
+                `;
+            }
+
+            // Unterschiedliche Prioritäten Section
+            if (konflikt.length > 0) {
+                html += `
+                    <div style="margin-bottom: 10px;">
+                        <div style="font-size: 11px; color: #ef4444; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 10px; display: flex; align-items: center; gap: 6px;">
+                            <span style="font-size: 14px;">✗</span> Herausfordernde Unterschiede
+                        </div>
+                        <div style="display: flex; flex-direction: column; gap: 6px; max-height: 200px; overflow-y: auto;">
+                `;
+
+                konflikt.slice(0, 10).forEach(item => {
+                    const label = TiageI18n.t(`needs.items.${item.id}`, item.label);
+                    const wert1 = item.wert1 || 0;
+                    const wert2 = item.wert2 || 0;
+                    const diff = Math.abs(wert1 - wert2);
+
+                    let statusColor = '#22c55e';
+                    if (diff > 35) statusColor = '#ef4444';
+                    else if (diff > 15) statusColor = '#eab308';
+
+                    html += `
+                        <div style="background: rgba(255,255,255,0.03); border-radius: 6px; padding: 10px 12px; border-left: 3px solid ${statusColor};">
+                            <div onclick="openNeedDefinitionModal('${item.id}')" style="font-weight: 500; color: var(--text-primary); font-size: 13px; margin-bottom: 6px; cursor: pointer; display: flex; align-items: center; gap: 6px; transition: color 0.2s;" onmouseover="this.style.color='var(--primary)'" onmouseout="this.style.color='var(--text-primary)'">
+                                ${label}
+                                <span style="font-size: 10px; opacity: 0.5;">ⓘ</span>
+                            </div>
+                            <div style="display: grid; grid-template-columns: 1fr auto 1fr; gap: 8px; align-items: center;">
+                                <div style="display: flex; align-items: center; gap: 6px;">
+                                    <div style="flex: 1; height: 5px; background: rgba(255,255,255,0.1); border-radius: 3px; overflow: hidden;">
+                                        <div style="width: ${wert1}%; height: 100%; background: var(--success); border-radius: 3px;"></div>
+                                    </div>
+                                    <span style="font-size: 11px; color: var(--text-muted); min-width: 32px; text-align: right;">${wert1}</span>
+                                </div>
+                                <div style="display: flex; align-items: center; justify-content: center; min-width: 50px;">
+                                    <span style="font-size: 11px; font-weight: 600; color: ${statusColor}; background: ${statusColor}22; padding: 2px 6px; border-radius: 4px;">${diff}</span>
+                                </div>
+                                <div style="display: flex; align-items: center; gap: 6px;">
+                                    <div style="flex: 1; height: 5px; background: rgba(255,255,255,0.1); border-radius: 3px; overflow: hidden;">
+                                        <div style="width: ${wert2}%; height: 100%; background: var(--danger); border-radius: 3px;"></div>
+                                    </div>
+                                    <span style="font-size: 11px; color: var(--text-muted); min-width: 32px; text-align: right;">${wert2}</span>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                });
+
+                html += `
+                        </div>
+                        <div style="text-align: center; font-size: 11px; color: var(--text-muted); margin-top: 8px;">
+                            ${konflikt.length} unterschiedliche Prioritäten
+                        </div>
+                    </div>
+                `;
+            }
 
             return html;
         }
