@@ -7393,11 +7393,20 @@
 
         // Factor 4: Gender Attraction (15%)
         function calculateGenderAttraction(p1, p2) {
-            // Extract primary gender from object format { primary: 'cis_mann', secondary: null }
+            // Extract primary gender from object format { primary: 'mann', secondary: 'cis' }
             let g1 = p1.geschlecht;
             let g2 = p2.geschlecht;
-            if (g1 && typeof g1 === 'object' && 'primary' in g1) g1 = g1.primary;
-            if (g2 && typeof g2 === 'object' && 'primary' in g2) g2 = g2.primary;
+            let identity1 = null;
+            let identity2 = null;
+
+            if (g1 && typeof g1 === 'object' && 'primary' in g1) {
+                identity1 = g1.secondary;  // cis, trans, suchend, nonbinaer, fluid
+                g1 = g1.primary;           // mann, frau, inter
+            }
+            if (g2 && typeof g2 === 'object' && 'primary' in g2) {
+                identity2 = g2.secondary;
+                g2 = g2.primary;
+            }
 
             // Handle Primary/Secondary orientierung structure
             const oriList1 = [];
@@ -7420,7 +7429,7 @@
             // Return default if values missing
             if (!g1 || !g2 || oriList1.length === 0 || oriList2.length === 0) return 75;
 
-            // Check best combination
+            // Check best combination for base score
             let bestScore = 0;
 
             for (const o1 of oriList1) {
@@ -7432,7 +7441,70 @@
                 }
             }
 
+            // Apply Identity Resonance (cis/trans/suchend) if both identities are set
+            if (identity1 && identity2) {
+                const identityFactor = calculateIdentityResonance(identity1, identity2);
+                // Combine: 70% base attraction + 30% identity resonance
+                bestScore = Math.round(bestScore * 0.7 + identityFactor * 0.3);
+            }
+
             return bestScore;
+        }
+
+        // Calculate Identity Resonance using IDENTITY_MATRIX from constants
+        function calculateIdentityResonance(id1, id2) {
+            // Use TiageSynthesis constants if available
+            const IDENTITY_MATRIX = (typeof TiageSynthesis !== 'undefined' && TiageSynthesis.Constants?.IDENTITY_MATRIX) || {
+                "cis-cis": 100,
+                "cis-trans": 85,
+                "cis-suchend": 70,
+                "trans-cis": 85,
+                "trans-trans": 100,
+                "trans-suchend": 75,
+                "nonbinaer-nonbinaer": 100,
+                "nonbinaer-fluid": 90,
+                "nonbinaer-suchend": 80,
+                "fluid-nonbinaer": 90,
+                "fluid-fluid": 100,
+                "fluid-suchend": 85,
+                "suchend-cis": 70,
+                "suchend-trans": 75,
+                "suchend-nonbinaer": 80,
+                "suchend-fluid": 85,
+                "suchend-suchend": 100,
+                "cis-nonbinaer": 65,
+                "cis-fluid": 55,
+                "trans-nonbinaer": 75,
+                "trans-fluid": 65,
+                "nonbinaer-cis": 65,
+                "nonbinaer-trans": 75,
+                "fluid-cis": 55,
+                "fluid-trans": 65
+            };
+
+            const IDENTITY_OPENNESS = (typeof TiageSynthesis !== 'undefined' && TiageSynthesis.Constants?.IDENTITY_OPENNESS) || {
+                "cis": 0,
+                "trans": 30,
+                "nonbinaer": 50,
+                "fluid": 80,
+                "suchend": 100
+            };
+
+            // Get base score from matrix
+            const key = `${id1}-${id2}`;
+            let baseScore = IDENTITY_MATRIX[key];
+
+            // Fallback for unknown combinations
+            if (baseScore === undefined) {
+                baseScore = 75;
+            }
+
+            // Calculate openness bonus
+            const openness1 = IDENTITY_OPENNESS[id1] || 0;
+            const openness2 = IDENTITY_OPENNESS[id2] || 0;
+            const opennessBonus = Math.round((openness1 + openness2) / 200 * 10); // Max 10 points
+
+            return Math.min(100, baseScore + opennessBonus);
         }
 
         // Helper for single orientierung pair - nutzt Geschlechts-Kategorien
