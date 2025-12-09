@@ -1,7 +1,8 @@
 /**
  * POLYAMOR - Der Netzwerk-Liebende
  *
- * Vollständiges Bedürfnis-Profil mit allen 88 Werten (0-100)
+ * Vollständiges Bedürfnis-Profil mit 220 Werten (0-100)
+ * Verwendet #ID-System aus beduerfnis-ids.js
  *
  * WISSENSCHAFTLICHE GRUNDLAGEN:
  * ─────────────────────────────────────────────────────────────────────────────
@@ -30,383 +31,392 @@ const PolyamorProfil = {
         "Communal Orientation (Clark et al., 1987)"
     ],
 
+    // ═══════════════════════════════════════════════════════════════════════════
+    // BEDÜRFNISSE MIT #IDs (220 Werte)
+    // ═══════════════════════════════════════════════════════════════════════════
+
     beduerfnisse: {
 
-        // ═══════════════════════════════════════════════════════════════════════
-        // EXISTENZ (9)
-        // ═══════════════════════════════════════════════════════════════════════
-        existenz: {
-            luft: 50,
-            wasser: 50,
-            nahrung: 50,
-            bewegung: 60,                // Mittel
-            beruehrung: 80,              // Hoch - mehrere Quellen
-            erholung: 70,                // Hoch - wichtig bei komplexem Leben
-            sexueller_ausdruck: 80,      // Hoch - wichtig, vielfältig
-            sicherheit_physisch: 65,     // Mittel-hoch
-            unterschlupf: 70             // Hoch - kann variieren
+        // ─────────────────────────────────────────────────────────────────────────
+        // EXISTENZ (#B1-#B9)
+        // ─────────────────────────────────────────────────────────────────────────
+        '#B1': 50,   // luft
+        '#B2': 50,   // wasser
+        '#B3': 50,   // nahrung
+        '#B4': 60,   // bewegung - Mittel
+        '#B5': 80,   // beruehrung - Hoch - mehrere Quellen
+        '#B6': 70,   // erholung - Hoch - wichtig bei komplexem Leben
+        '#B7': 80,   // sexueller_ausdruck - Hoch - wichtig, vielfältig
+        '#B8': 65,   // sicherheit_physisch - Mittel-hoch
+        '#B9': 70,   // unterschlupf - Hoch - kann variieren
+
+        // ─────────────────────────────────────────────────────────────────────────
+        // SICHERHEIT (#B10-#B15) - Sicherheit durch Netzwerk, nicht durch Exklusivität
+        // ─────────────────────────────────────────────────────────────────────────
+        '#B10': 70,  // bestaendigkeit - Hoch - verlässliche Verbindungen
+        '#B11': 75,  // sich_sicher_fuehlen - Hoch - durch Transparenz
+        '#B12': 60,  // schutz - Mittel - Netzwerk schützt
+        '#B13': 65,  // stabilitaet - Mittel-hoch - flexible Stabilität
+        '#B14': 70,  // leichtigkeit - Hoch
+        '#B15': 70,  // geborgenheit - Hoch - multiple Quellen
+
+        // ─────────────────────────────────────────────────────────────────────────
+        // ZUNEIGUNG (#B16-#B24) - KERN-KATEGORIE - hohe emotionale Kapazität
+        // ─────────────────────────────────────────────────────────────────────────
+        '#B16': 85,  // waerme - Sehr hoch - viel zu geben
+        '#B17': 85,  // wertschaetzung - Sehr hoch - alle Partner wertschätzen
+        '#B18': 85,  // naehe - Sehr hoch - zu mehreren
+        '#B19': 85,  // gesellschaft - Sehr hoch - reiches Sozialleben
+        '#B20': 90,  // intimitaet - Sehr hoch - tiefe Verbindungen
+        '#B21': 95,  // liebe - Sehr hoch - Kern des Lebensmodells
+        '#B22': 85,  // fuersorge - Sehr hoch - für alle Partner
+        '#B23': 85,  // unterstuetzung - Sehr hoch - Netzwerk
+        '#B24': 85,  // fuereinander_da_sein - Sehr hoch
+
+        // ─────────────────────────────────────────────────────────────────────────
+        // VERSTÄNDNIS (#B25-#B33)
+        // ─────────────────────────────────────────────────────────────────────────
+        '#B25': 90,  // akzeptanz - Sehr hoch - akzeptiert andere
+        '#B26': 85,  // mitgefuehl - Sehr hoch - Compersion
+        '#B27': 90,  // beruecksichtigung - Sehr hoch - alle berücksichtigen
+        '#B28': 90,  // empathie - Sehr hoch - für alle Partner
+        '#B29': 90,  // vertrauen - Sehr hoch - Basis von Poly
+        '#B30': 75,  // beachtung - Hoch
+        '#B31': 80,  // gesehen_werden - Hoch
+        '#B32': 85,  // verstanden_werden - Sehr hoch
+        '#B33': 75,  // harmonie - Hoch - zwischen allen
+
+        // ─────────────────────────────────────────────────────────────────────────
+        // FREIHEIT (#B34-#B38) - Hohe Freiheit innerhalb von Vereinbarungen
+        // ─────────────────────────────────────────────────────────────────────────
+        '#B34': 80,  // selbstbestimmung - Hoch - eigene Entscheidungen
+        '#B35': 85,  // waehlen_koennen - Sehr hoch - keine Exklusivität
+        '#B36': 65,  // unabhaengigkeit - Mittel-hoch - verbunden, nicht abhängig
+        '#B37': 70,  // raum_haben - Hoch - eigener Raum wichtig
+        '#B38': 70,  // spontaneitaet - Hoch - innerhalb von Kommunikation
+
+        // ─────────────────────────────────────────────────────────────────────────
+        // TEILNAHME (#B39-#B45) - Starke Gemeinschaftsorientierung
+        // ─────────────────────────────────────────────────────────────────────────
+        '#B39': 85,  // zusammenarbeit - Sehr hoch - Polykül koordinieren
+        '#B40': 95,  // kommunikation - Sehr hoch - essentiell
+        '#B41': 90,  // gemeinschaft - Sehr hoch - Poly-Community
+        '#B42': 85,  // zugehoerigkeit - Sehr hoch - zu mehreren
+        '#B43': 90,  // gegenseitigkeit - Sehr hoch
+        '#B44': 90,  // respekt - Sehr hoch - für alle Beziehungen
+        '#B45': 80,  // bedeutung_haben - Hoch
+
+        // ─────────────────────────────────────────────────────────────────────────
+        // MUSSE (#B46-#B49)
+        // ─────────────────────────────────────────────────────────────────────────
+        '#B46': 70,  // schoenheit - Hoch
+        '#B47': 65,  // freizeit - Mittel-hoch - Zeit ist limitiert
+        '#B48': 85,  // freude - Sehr hoch - geteilte Freude
+        '#B49': 80,  // humor - Hoch
+
+        // ─────────────────────────────────────────────────────────────────────────
+        // IDENTITÄT (#B50-#B63)
+        // ─────────────────────────────────────────────────────────────────────────
+        '#B50': 85,  // authentizitaet - Sehr hoch
+        '#B51': 85,  // echtheit - Sehr hoch
+        '#B52': 90,  // integritaet - Sehr hoch - Ehrlichkeit zentral
+        '#B53': 80,  // praesenz - Hoch - präsent für alle
+        '#B54': 75,  // ordnung - Hoch - Kalender-Management
+        '#B55': 85,  // bewusstheit - Sehr hoch - Selbstreflexion
+        '#B56': 70,  // herausforderung - Hoch
+        '#B57': 85,  // klarheit - Sehr hoch - klare Kommunikation
+        '#B58': 75,  // kompetenz - Hoch
+        '#B59': 75,  // effizienz - Hoch - Zeit-Management
+        '#B60': 75,  // wirksamkeit - Hoch
+        '#B61': 85,  // wachstum - Sehr hoch - durch Beziehungen
+        '#B62': 85,  // sinn - Sehr hoch - Liebe als Sinn
+        '#B63': 85,  // beitrag_leisten - Sehr hoch
+
+        // ─────────────────────────────────────────────────────────────────────────
+        // ERSCHAFFEN (#B64-#B68)
+        // ─────────────────────────────────────────────────────────────────────────
+        '#B64': 75,  // kreativitaet - Hoch - kreative Beziehungsformen
+        '#B65': 80,  // entdecken - Hoch - neue Dynamiken
+        '#B66': 85,  // lernen - Sehr hoch - von allen Partnern
+        '#B67': 80,  // selbst_ausdruck - Hoch
+        '#B68': 80,  // anreize_bekommen - Hoch - vielfältige Stimulation
+
+        // ─────────────────────────────────────────────────────────────────────────
+        // VERBUNDENHEIT (#B69-#B73)
+        // ─────────────────────────────────────────────────────────────────────────
+        '#B69': 90,  // leben_feiern - Sehr hoch - mit allen
+        '#B70': 85,  // inspiration - Sehr hoch
+        '#B71': 75,  // trauer_ausdruecken - Hoch - Netzwerk unterstützt
+        '#B72': 75,  // einsehen - Hoch
+        '#B73': 75,  // anfang_ende - Hoch - viele Übergänge
+
+        // ─────────────────────────────────────────────────────────────────────────
+        // DYNAMIK (#B74-#B88) - Flexibel, kann verschiedene Rollen
+        // ─────────────────────────────────────────────────────────────────────────
+        '#B74': 50,  // kontrolle_ausueben - Mittel - situativ
+        '#B75': 65,  // hingabe - Mittel-hoch - kann sich hingeben
+        '#B76': 55,  // fuehrung_geben - Mittel
+        '#B77': 55,  // gefuehrt_werden - Mittel
+        '#B78': 75,  // ritual - Hoch - verschiedene Rituale
+        '#B79': 85,  // nachsorge - Sehr hoch - wichtig
+        '#B80': 85,  // grenzen_setzen - Sehr hoch - essentiell
+        '#B81': 95,  // grenzen_respektieren - Sehr hoch - absolut zentral
+        '#B82': 80,  // intensitaet - Hoch - tiefe Verbindungen
+        '#B83': 85,  // vertrauen_schenken - Sehr hoch
+        '#B84': 85,  // verantwortung_uebernehmen - Sehr hoch - für alle
+        '#B85': 65,  // sich_fallenlassen - Mittel-hoch
+        '#B86': 60,  // machtaustausch - Mittel - offen
+        '#B87': 60,  // dienend_sein - Mittel
+        '#B88': 75,  // beschuetzen - Hoch
+
+        // ─────────────────────────────────────────────────────────────────────────
+        // LEBENSPLANUNG (#B90-#B126) - Offen für verschiedene Konstellationen
+        // ─────────────────────────────────────────────────────────────────────────
+        '#B90': 55,   // kinderwunsch - Mittel - kann, muss nicht
+        '#B91': 55,   // elternschaft - Mittel - Co-Parenting möglich
+        '#B92': 45,   // fortpflanzung - Mittel - nicht zentral
+        '#B93': 50,   // familie_gruenden - Mittel - nicht-traditionell möglich
+        '#B94': 60,   // generativitaet - Mittel-hoch - anders gelebt
+        '#B95': 70,   // verbindlichkeit - Hoch - zu allen Partnern
+        '#B96': 75,   // langfristige_bindung - Hoch - mehrfach
+        '#B97': 40,   // rechtliche_sicherheit - Niedrig-mittel - nicht Standard
+        '#B98': 50,   // treueversprechen - Mittel - eigene Definition
+        '#B99': 55,   // gemeinsamer_wohnraum - Mittel - kann, muss nicht
+        '#B100': 60,  // haeuslichkeit - Mittel-hoch - flexibel
+        '#B101': 55,  // nest_bauen - Mittel
+        '#B102': 60,  // alltag_teilen - Mittel-hoch - mit einigen
+        '#B103': 75,  // eigener_raum - Hoch - wichtig für Balance
+        '#B104': 75,  // rueckzugsort - Hoch - wichtig für Balance
+        '#B105': 55,  // tierliebe - Mittel
+        '#B106': 55,  // fuersorge_tiere - Mittel
+        '#B107': 55,  // begleiter - Mittel
+        '#B108': 55,  // verantwortung_tier - Mittel
+        '#B109': 45,  // sesshaftigkeit - Mittel
+        '#B110': 50,  // verwurzelung - Mittel
+        '#B111': 75,  // mobilitaet - Hoch - flexibel
+        '#B112': 50,  // heimat - Mittel
+        '#B113': 75,  // neue_orte - Hoch - mit verschiedenen
+        '#B114': 50,  // familienbindung - Mittel
+        '#B115': 45,  // herkunftsfamilie - Mittel
+        '#B116': 45,  // familientreffen - Mittel
+        '#B117': 45,  // generationenverbund - Mittel
+        // Pirsig & Osho - Lebensplanung
+        '#B118': 45,  // biologisches_muster - Mittel
+        '#B119': 35,  // soziales_muster - Niedrig-mittel - anders
+        '#B120': 40,  // statische_stabilitaet - Niedrig-mittel
+        '#B121': 80,  // qualitaet_der_fuersorge - Hoch - für alle
+        '#B122': 65,  // familien_rebellion - Mittel-hoch
+        '#B123': 75,  // zorba_das_kind - Hoch
+        '#B124': 60,  // nicht_anhaften_an_familie - Mittel
+        '#B125': 70,  // bewusste_elternschaft - Hoch - reflektiert
+        '#B126': 70,  // commune_statt_kernfamilie - Hoch - Polykül
+
+        // ─────────────────────────────────────────────────────────────────────────
+        // FINANZEN & KARRIERE (#B127-#B148) - Flexible Finanzen, Netzwerk-basiert
+        // ─────────────────────────────────────────────────────────────────────────
+        '#B127': 70,  // finanzielle_unabhaengigkeit - Hoch - eigene Basis
+        '#B128': 45,  // gemeinsame_finanzen - Mittel - mit einigen Partnern
+        '#B129': 75,  // finanzielle_transparenz - Hoch
+        '#B130': 65,  // finanzielle_sicherheit - Mittel-hoch
+        '#B131': 50,  // sparsamkeit - Mittel
+        '#B132': 65,  // grosszuegigkeit - Mittel-hoch - für alle
+        '#B133': 70,  // berufliche_erfuellung - Hoch
+        '#B134': 65,  // karriereambition - Mittel-hoch
+        '#B135': 75,  // work_life_balance - Hoch - Zeit-Management wichtig
+        '#B136': 65,  // berufliche_anerkennung - Mittel-hoch
+        '#B137': 65,  // zeit_fuer_beziehung - Mittel-hoch - mit verschiedenen Partnern
+        '#B138': 70,  // berufliche_flexibilitaet - Hoch
+        // Pirsig & Osho - Finanzen & Karriere
+        '#B139': 70,  // gumption - Hoch
+        '#B140': 70,  // qualitaet_der_arbeit - Hoch
+        '#B141': 65,  // intellektuelles_muster - Mittel-hoch
+        '#B142': 70,  // dynamische_evolution - Hoch
+        '#B143': 55,  // klassisches_verstehen - Mittel
+        '#B144': 55,  // arbeit_als_meditation - Mittel
+        '#B145': 45,  // nicht_karriere - Mittel
+        '#B146': 60,  // zorba_der_unternehmer - Mittel
+        '#B147': 55,  // nicht_anhaften_an_geld - Mittel
+        '#B148': 75,  // kreative_selbstverwirklichung - Hoch
+
+        // ─────────────────────────────────────────────────────────────────────────
+        // KOMMUNIKATIONSSTIL (#B149-#B176) - KERN-KATEGORIE - höchste Kommunikationswerte
+        // ─────────────────────────────────────────────────────────────────────────
+        '#B149': 90,  // taeglicher_austausch - Sehr hoch
+        '#B150': 90,  // tiefgehende_gespraeche - Sehr hoch - mit allen Partnern
+        '#B151': 60,  // small_talk - Mittel
+        '#B152': 60,  // stille_gemeinsam - Mittel-hoch - verträgt auch Stille
+        '#B153': 85,  // verbale_verbindung - Sehr hoch
+        '#B154': 90,  // zuhoeren - Sehr hoch - für alle
+        '#B155': 95,  // emotionale_offenheit - Sehr hoch - absolut zentral
+        '#B156': 85,  // gefuehle_zeigen - Sehr hoch
+        '#B157': 80,  // verletzlichkeit - Hoch
+        '#B158': 25,  // emotionale_zurueckhaltung - Niedrig
+        '#B159': 85,  // emotionale_sicherheit - Sehr hoch
+        '#B160': 90,  // gefuehle_teilen - Sehr hoch
+        '#B161': 85,  // konfliktklaerung - Sehr hoch - konstruktiv
+        '#B162': 85,  // aussprache - Sehr hoch
+        '#B163': 35,  // konflikt_vermeiden - Niedrig - offen
+        '#B164': 80,  // streitkultur - Hoch
+        '#B165': 85,  // versoehnlichkeit - Sehr hoch
+        // Pirsig & Osho - Kommunikation
+        '#B166': 80,  // romantisches_verstehen - Hoch - intuitiv
+        '#B167': 75,  // klassische_klarheit - Hoch - klar
+        '#B168': 70,  // dialektik - Hoch
+        '#B169': 75,  // qualitaets_ausdruck - Hoch
+        '#B170': 85,  // care_im_gespraech - Sehr hoch - für alle
+        '#B171': 55,  // schweigen_statt_worte - Mittel
+        '#B172': 90,  // radikale_ehrlichkeit - Sehr hoch
+        '#B173': 75,  // humorvolle_leichtigkeit - Hoch
+        '#B174': 50,  // paradoxe_weisheit - Mittel
+        '#B175': 70,  // herz_statt_kopf - Hoch
+        '#B176': 85,  // authentischer_ausdruck - Sehr hoch
+
+        // ─────────────────────────────────────────────────────────────────────────
+        // SOZIALES LEBEN (#B177-#B203) - Reiches Netzwerk, Community wichtig
+        // ─────────────────────────────────────────────────────────────────────────
+        '#B177': 80,  // soziale_energie - Hoch
+        '#B178': 80,  // geselligkeit - Hoch
+        '#B179': 45,  // ruhe_von_menschen - Mittel
+        '#B180': 55,  // allein_aufladen - Mittel
+        '#B181': 80,  // menschen_treffen - Hoch
+        '#B182': 75,  // kleine_gruppen - Hoch
+        '#B183': 70,  // zeit_fuer_sich - Hoch - Balance wichtig
+        '#B184': 70,  // eigene_hobbys - Hoch - auch eigene Zeit
+        '#B185': 80,  // gemeinsame_zeit - Hoch - mit allen Partnern
+        '#B186': 80,  // partnerzeit - Hoch
+        '#B187': 70,  // eigene_interessen - Hoch
+        '#B188': 85,  // eigene_freunde - Sehr hoch - großes Netzwerk
+        '#B189': 80,  // gemeinsame_freunde - Hoch - Polykül & Metamours
+        '#B190': 80,  // freundeskreis_teilen - Hoch
+        '#B191': 90,  // soziales_netz - Sehr hoch - Netzwerk
+        '#B192': 80,  // freunde_pflegen - Hoch
+        '#B193': 75,  // neue_freundschaften - Hoch
+        // Pirsig & Osho - Soziales Leben
+        '#B194': 85,  // soziale_qualitaet - Sehr hoch
+        '#B195': 70,  // tribe_muster - Hoch - Polykül
+        '#B196': 70,  // intellektuelle_gemeinschaft - Hoch
+        '#B197': 30,  // statische_sozialstrukturen - Niedrig
+        '#B198': 55,  // sannyas_gemeinschaft - Mittel
+        '#B199': 55,  // rebellion_gegen_gesellschaft - Mittel
+        '#B200': 45,  // einsamkeit_in_menge - Mittel
+        '#B201': 85,  // celebration_mit_anderen - Sehr hoch
+        '#B202': 55,  // keine_freundschaft_besitz - Mittel
+        '#B203': 60,  // tantra_gruppe - Mittel-hoch
+
+        // ─────────────────────────────────────────────────────────────────────────
+        // INTIMITÄT & ROMANTIK (#B204-#B208) - Tiefe Intimität mit mehreren
+        // ─────────────────────────────────────────────────────────────────────────
+        '#B204': 85,  // koerpernaehe - Sehr hoch - zu mehreren
+        '#B205': 85,  // kuscheln - Sehr hoch
+        '#B206': 30,  // physische_distanz - Niedrig - offen für Nähe
+        '#B207': 85,  // koerperkontakt - Sehr hoch
+        '#B208': 85,  // umarmungen - Sehr hoch
+
+        // ─────────────────────────────────────────────────────────────────────────
+        // ERWEITERTE DYNAMIK (#B209-#B220) - Kink/BDSM
+        // ─────────────────────────────────────────────────────────────────────────
+        '#B209': 45,  // schmerzerleben - Mittel
+        '#B210': 45,  // schmerz_geben - Mittel
+        '#B211': 50,  // bondage_erleben - Mittel
+        '#B212': 50,  // bondage_geben - Mittel
+        '#B213': 55,  // devotion - Mittel
+        '#B214': 50,  // anbetung - Mittel
+        '#B215': 45,  // demuetig_sein - Mittel
+        '#B216': 50,  // dominieren - Mittel
+        '#B217': 40,  // bestrafung_erhalten - Niedrig-mittel
+        '#B218': 40,  // bestrafen - Niedrig-mittel
+        '#B219': 55,  // service_orientierung - Mittel
+        '#B220': 55   // service_empfangen - Mittel
+    },
+
+    // ═══════════════════════════════════════════════════════════════════════════
+    // ERWEITERTE BEDÜRFNISSE (noch ohne #IDs)
+    // ═══════════════════════════════════════════════════════════════════════════
+
+    erweitert: {
+        // Intimität & Romantik - Erweitert
+        intimitaet_romantik: {
+            sexuelle_exklusivitaet: 10,
+            sexuelle_offenheit: 95,
+            leidenschaft: 85,
+            zaertlichkeit: 85,
+            emotionale_tiefe: 90,
+            romantik: 80,
+            flirten: 80,
+            eifersucht_als_signal: 40,
+            treue_werte: 50,
+            bindungsbereitschaft: 85,
+            // Pirsig & Osho
+            biologische_anziehung: 80,
+            intellektuelle_verbindung: 80,
+            qualitaet_der_beruehrung: 85,
+            dynamische_liebe: 85,
+            care_in_intimitaet: 85,
+            sex_als_meditation: 65,
+            liebe_ohne_beziehung: 50,
+            orgastisches_leben: 75,
+            nicht_anhaften_an_partner: 55,
+            hier_und_jetzt_intimitaet: 80,
+            polyamore_energie: 95,
+            wildheit_und_zartheit: 75,
+            meditation_zu_zweit: 65
         },
 
-        // ═══════════════════════════════════════════════════════════════════════
-        // SICHERHEIT (6)
-        // ═══════════════════════════════════════════════════════════════════════
-        // Polyamor: Sicherheit durch Netzwerk, nicht durch Exklusivität
-        sicherheit: {
-            bestaendigkeit: 70,          // Hoch - verlässliche Verbindungen
-            sich_sicher_fuehlen: 75,     // Hoch - durch Transparenz
-            schutz: 60,                  // Mittel - Netzwerk schützt
-            stabilitaet: 65,             // Mittel-hoch - flexible Stabilität
-            leichtigkeit: 70,            // Hoch
-            geborgenheit: 70             // Hoch - multiple Quellen
-        },
-
-        // ═══════════════════════════════════════════════════════════════════════
-        // ZUNEIGUNG (9)
-        // ═══════════════════════════════════════════════════════════════════════
-        // Polyamor: KERN-KATEGORIE - hohe emotionale Kapazität
-        zuneigung: {
-            waerme: 85,                  // Sehr hoch - viel zu geben
-            wertschaetzung: 85,          // Sehr hoch - alle Partner wertschätzen
-            naehe: 85,                   // Sehr hoch - zu mehreren
-            gesellschaft: 85,            // Sehr hoch - reiches Sozialleben
-            intimitaet: 90,              // Sehr hoch - tiefe Verbindungen
-            liebe: 95,                   // Sehr hoch - Kern des Lebensmodells
-            fuersorge: 85,               // Sehr hoch - für alle Partner
-            unterstuetzung: 85,          // Sehr hoch - Netzwerk
-            fuereinander_da_sein: 85     // Sehr hoch
-        },
-
-        // ═══════════════════════════════════════════════════════════════════════
-        // VERSTÄNDNIS (9)
-        // ═══════════════════════════════════════════════════════════════════════
-        verstaendnis: {
-            akzeptanz: 90,               // Sehr hoch - akzeptiert andere
-            mitgefuehl: 85,              // Sehr hoch - Compersion
-            beruecksichtigung: 90,       // Sehr hoch - alle berücksichtigen
-            empathie: 90,                // Sehr hoch - für alle Partner
-            vertrauen: 90,               // Sehr hoch - Basis von Poly
-            beachtung: 75,               // Hoch
-            gesehen_werden: 80,          // Hoch
-            verstanden_werden: 85,       // Sehr hoch
-            harmonie: 75                 // Hoch - zwischen allen
-        },
-
-        // ═══════════════════════════════════════════════════════════════════════
-        // FREIHEIT (5)
-        // ═══════════════════════════════════════════════════════════════════════
-        // Polyamor: Hohe Freiheit innerhalb von Vereinbarungen
-        freiheit: {
-            selbstbestimmung: 80,        // Hoch - eigene Entscheidungen
-            waehlen_koennen: 85,         // Sehr hoch - keine Exklusivität
-            unabhaengigkeit: 65,         // Mittel-hoch - verbunden, nicht abhängig
-            raum_haben: 70,              // Hoch - eigener Raum wichtig
-            spontaneitaet: 70            // Hoch - innerhalb von Kommunikation
-        },
-
-        // ═══════════════════════════════════════════════════════════════════════
-        // TEILNAHME (7)
-        // ═══════════════════════════════════════════════════════════════════════
-        // Polyamor: Starke Gemeinschaftsorientierung
-        teilnahme: {
-            zusammenarbeit: 85,          // Sehr hoch - Polykül koordinieren
-            kommunikation: 95,           // Sehr hoch - essentiell
-            gemeinschaft: 90,            // Sehr hoch - Poly-Community
-            zugehoerigkeit: 85,          // Sehr hoch - zu mehreren
-            gegenseitigkeit: 90,         // Sehr hoch
-            respekt: 90,                 // Sehr hoch - für alle Beziehungen
-            bedeutung_haben: 80          // Hoch
-        },
-
-        // ═══════════════════════════════════════════════════════════════════════
-        // MUSSE (4)
-        // ═══════════════════════════════════════════════════════════════════════
-        musse: {
-            schoenheit: 70,              // Hoch
-            freizeit: 65,                // Mittel-hoch - Zeit ist limitiert
-            freude: 85,                  // Sehr hoch - geteilte Freude
-            humor: 80                    // Hoch
-        },
-
-        // ═══════════════════════════════════════════════════════════════════════
-        // IDENTITÄT (14)
-        // ═══════════════════════════════════════════════════════════════════════
-        identitaet: {
-            authentizitaet: 85,          // Sehr hoch
-            echtheit: 85,                // Sehr hoch
-            integritaet: 90,             // Sehr hoch - Ehrlichkeit zentral
-            praesenz: 80,                // Hoch - präsent für alle
-            ordnung: 75,                 // Hoch - Kalender-Management
-            bewusstheit: 85,             // Sehr hoch - Selbstreflexion
-            herausforderung: 70,         // Hoch
-            klarheit: 85,                // Sehr hoch - klare Kommunikation
-            kompetenz: 75,               // Hoch
-            effizienz: 75,               // Hoch - Zeit-Management
-            wirksamkeit: 75,             // Hoch
-            wachstum: 85,                // Sehr hoch - durch Beziehungen
-            sinn: 85,                    // Sehr hoch - Liebe als Sinn
-            beitrag_leisten: 85          // Sehr hoch
-        },
-
-        // ═══════════════════════════════════════════════════════════════════════
-        // ERSCHAFFEN (5)
-        // ═══════════════════════════════════════════════════════════════════════
-        erschaffen: {
-            kreativitaet: 75,            // Hoch - kreative Beziehungsformen
-            entdecken: 80,               // Hoch - neue Dynamiken
-            lernen: 85,                  // Sehr hoch - von allen Partnern
-            selbst_ausdruck: 80,         // Hoch
-            anreize_bekommen: 80         // Hoch - vielfältige Stimulation
-        },
-
-        // ═══════════════════════════════════════════════════════════════════════
-        // VERBUNDENHEIT (5)
-        // ═══════════════════════════════════════════════════════════════════════
-        verbundenheit: {
-            leben_feiern: 90,            // Sehr hoch - mit allen
-            inspiration: 85,             // Sehr hoch
-            trauer_ausdruecken: 75,      // Hoch - Netzwerk unterstützt
-            einsehen: 75,                // Hoch
-            anfang_ende: 75              // Hoch - viele Übergänge
-        },
-
-        // ═══════════════════════════════════════════════════════════════════════
-        // DYNAMIK (15)
-        // ═══════════════════════════════════════════════════════════════════════
-        // Polyamor: Flexibel, kann verschiedene Rollen
-        dynamik: {
-            kontrolle_ausueben: 50,      // Mittel - situativ
-            hingabe: 65,                 // Mittel-hoch - kann sich hingeben
-            fuehrung_geben: 55,          // Mittel
-            gefuehrt_werden: 55,         // Mittel
-            ritual: 75,                  // Hoch - verschiedene Rituale
-            nachsorge: 85,               // Sehr hoch - wichtig
-            grenzen_setzen: 85,          // Sehr hoch - essentiell
-            grenzen_respektieren: 95,    // Sehr hoch - absolut zentral
-            intensitaet: 80,             // Hoch - tiefe Verbindungen
-            vertrauen_schenken: 85,      // Sehr hoch
-            verantwortung_uebernehmen: 85, // Sehr hoch - für alle
-            sich_fallenlassen: 65,       // Mittel-hoch
-            machtaustausch: 60,          // Mittel - offen
-            dienend_sein: 60,            // Mittel
-            beschuetzen: 75              // Hoch
-        },
-
-        // ═══════════════════════════════════════════════════════════════════════
-        // LEBENSPLANUNG (15) - Kinder, Ehe, Wohnen, Familie
-        // ═══════════════════════════════════════════════════════════════════════
-        // Polyamor: Offen für verschiedene Konstellationen
-        lebensplanung: {
-            kinderwunsch: 55,            // Mittel - kann, muss nicht
-            elternschaft: 55,            // Mittel - Co-Parenting möglich
-            fortpflanzung: 45,           // Mittel - nicht zentral
-            fuersorge: 80,               // Hoch - für alle Partner
-            familie_gruenden: 50,        // Mittel - nicht-traditionell möglich
-            generativitaet: 60,          // Mittel-hoch - anders gelebt
-            erziehung_werte: 55,         // Mittel - wenn relevant
-            verbindlichkeit: 70,         // Hoch - zu allen Partnern
-            langfristige_bindung: 75,    // Hoch - mehrfach
-            rechtliche_sicherheit: 40,   // Niedrig-mittel - nicht Standard
-            tradition_ehe: 25,           // Niedrig - nicht priorisiert
-            oeffentliches_bekenntnis: 55, // Mittel - zu allen
-            gemeinsamer_wohnraum: 55,    // Mittel - kann, muss nicht
-            eigener_rueckzugsort: 75,    // Hoch - wichtig für Balance
-            haeuslichkeit: 60,           // Mittel-hoch - flexibel
-            // Pirsig & Osho - Lebensplanung
-            biologisches_muster: 45,     // Mittel
-            soziales_muster: 35,         // Niedrig-mittel - anders
-            statische_stabilitaet: 40,   // Niedrig-mittel
-            qualitaet_der_fuersorge: 80, // Hoch - für alle
-            familien_rebellion: 65,      // Mittel-hoch
-            zorba_das_kind: 75,          // Hoch
-            nicht_anhaften_an_familie: 60, // Mittel
-            bewusste_elternschaft: 70,   // Hoch - reflektiert
-            commune_statt_kernfamilie: 70 // Hoch - Polykül
-        },
-
-        // ═══════════════════════════════════════════════════════════════════════
-        // FINANZEN & KARRIERE (10) - Geld, Arbeit, berufliche Entwicklung
-        // ═══════════════════════════════════════════════════════════════════════
-        // Polyamor: Flexible Finanzen, Netzwerk-basiert
-        finanzen_karriere: {
-            finanzielle_unabhaengigkeit: 70, // Hoch - eigene Basis
-            gemeinsame_finanzen: 45,     // Mittel - mit einigen Partnern
-            versorger_rolle: 40,         // Niedrig-mittel - gegenseitig
-            materielle_sicherheit: 65,   // Mittel-hoch
-            karriere_entwicklung: 70,    // Hoch
-            berufliche_anerkennung: 65,  // Mittel-hoch
-            work_life_balance: 75,       // Hoch - Zeit-Management wichtig
-            gemeinsame_ziele: 65,        // Mittel-hoch - mit verschiedenen Partnern
-            erfolg: 65,                  // Mittel-hoch
-            leistung: 65,                // Mittel-hoch
-            // Pirsig & Osho - Finanzen & Karriere
-            gumption: 70,                // Hoch
-            qualitaet_der_arbeit: 70,    // Hoch
-            intellektuelles_muster: 65,  // Mittel-hoch
-            dynamische_evolution: 70,    // Hoch
-            klassisches_verstehen: 55,   // Mittel
-            arbeit_als_meditation: 55,   // Mittel
-            nicht_karriere: 45,          // Mittel
-            zorba_der_unternehmer: 60,   // Mittel
-            nicht_anhaften_an_geld: 55,  // Mittel
-            kreative_selbstverwirklichung: 75 // Hoch
-        },
-
-        // ═══════════════════════════════════════════════════════════════════════
-        // KOMMUNIKATION & STIL (12) - Art des Austauschs
-        // ═══════════════════════════════════════════════════════════════════════
-        // Polyamor: KERN-KATEGORIE - höchste Kommunikationswerte
-        kommunikation_stil: {
-            emotionale_offenheit: 95,    // Sehr hoch - absolut zentral
-            tiefe_gespraeche: 90,        // Sehr hoch - mit allen Partnern
-            small_talk: 60,              // Mittel
-            konfliktbereitschaft: 85,    // Sehr hoch - konstruktiv
-            konstruktive_kritik: 85,     // Sehr hoch - offen dafür
-            aktives_zuhoeren: 90,        // Sehr hoch - für alle
-            nonverbale_kommunikation: 80, // Hoch - achtsam
-            humor_ironie: 75,            // Hoch
-            intellektueller_austausch: 75, // Hoch
-            digitale_kommunikation: 80,  // Hoch - Koordination
-            verbale_anerkennung: 85,     // Sehr hoch - alle wertschätzen
-            schweigen_aushalten: 60,     // Mittel-hoch - verträgt auch Stille
-            // Pirsig & Osho - Kommunikation
-            romantisches_verstehen: 80,  // Hoch - intuitiv
-            klassische_klarheit: 75,     // Hoch - klar
-            dialektik: 70,               // Hoch
-            qualitaets_ausdruck: 75,     // Hoch
-            care_im_gespraech: 85,       // Sehr hoch - für alle
-            schweigen_statt_worte: 55,   // Mittel
-            radikale_ehrlichkeit: 90,    // Sehr hoch
-            humorvolle_leichtigkeit: 75, // Hoch
-            paradoxe_weisheit: 50,       // Mittel
-            herz_statt_kopf: 70,         // Hoch
-            authentischer_ausdruck: 85   // Sehr hoch
-        },
-
-        // ═══════════════════════════════════════════════════════════════════════
-        // SOZIALES LEBEN (12) - Freunde, Familie, Gesellschaft
-        // ═══════════════════════════════════════════════════════════════════════
-        // Polyamor: Reiches Netzwerk, Community wichtig
-        soziales_leben: {
-            freundeskreis_pflege: 85,    // Sehr hoch - großes Netzwerk
-            gemeinsame_freunde: 80,      // Hoch - Polykül & Metamours
-            familieneinbindung: 50,      // Mittel - kann kompliziert sein
-            gesellschaftliches_engagement: 70, // Hoch - Poly-Community
-            networking: 80,              // Hoch - Verbindungen
-            gemeinsame_hobbys: 70,       // Hoch - mit verschiedenen
-            individuelle_hobbys: 70,     // Hoch - auch eigene Zeit
-            gemeinsame_zeit: 80,         // Hoch - mit allen Partnern
-            zeit_fuer_sich: 70,          // Hoch - Balance wichtig
-            soziale_unterstuetzung: 90,  // Sehr hoch - Netzwerk
-            gemeinsame_erlebnisse: 85,   // Sehr hoch - mit verschiedenen
-            alltagsteilung: 60,          // Mittel-hoch - flexibel
-            // Pirsig & Osho - Soziales Leben
-            soziale_qualitaet: 85,       // Sehr hoch
-            tribe_muster: 70,            // Hoch - Polykül
-            intellektuelle_gemeinschaft: 70, // Hoch
-            statische_sozialstrukturen: 30, // Niedrig
-            sannyas_gemeinschaft: 55,    // Mittel
-            rebellion_gegen_gesellschaft: 55, // Mittel
-            einsamkeit_in_menge: 45,     // Mittel
-            celebration_mit_anderen: 85, // Sehr hoch
-            keine_freundschaft_besitz: 55, // Mittel
-            tantra_gruppe: 60            // Mittel-hoch
-        },
-
-        // ═══════════════════════════════════════════════════════════════════════
-        // INTIMITÄT & BEZIEHUNG (12) - Nähe, Sexualität, Bindung
-        // ═══════════════════════════════════════════════════════════════════════
-        // Polyamor: Tiefe Intimität mit mehreren, keine Exklusivität
-        intimitaet_beziehung: {
-            koerpernaehe: 85,            // Sehr hoch - zu mehreren
-            kuscheln: 85,                // Sehr hoch
-            sexuelle_exklusivitaet: 10,  // Sehr niedrig - nicht exklusiv
-            sexuelle_offenheit: 95,      // Sehr hoch - offen
-            leidenschaft: 85,            // Sehr hoch - mit mehreren
-            zaertlichkeit: 85,           // Sehr hoch
-            emotionale_tiefe: 90,        // Sehr hoch - Kern
-            romantik: 80,                // Hoch - mit mehreren
-            flirten: 80,                 // Hoch - Offenheit
-            eifersucht_als_signal: 40,   // Niedrig-mittel - Compersion statt
-            treue_werte: 50,             // Mittel - eigene Definition
-            bindungsbereitschaft: 85,    // Sehr hoch - zu mehreren
-            // Pirsig & Osho - Intimität
-            biologische_anziehung: 80,   // Hoch
-            intellektuelle_verbindung: 80, // Hoch
-            qualitaet_der_beruehrung: 85, // Sehr hoch
-            dynamische_liebe: 85,        // Sehr hoch
-            care_in_intimitaet: 85,      // Sehr hoch
-            sex_als_meditation: 65,      // Mittel-hoch
-            liebe_ohne_beziehung: 50,    // Mittel
-            orgastisches_leben: 75,      // Hoch
-            nicht_anhaften_an_partner: 55, // Mittel
-            hier_und_jetzt_intimitaet: 80, // Hoch
-            polyamore_energie: 95,       // Sehr hoch - Kernwert
-            wildheit_und_zartheit: 75,   // Hoch
-            meditation_zu_zweit: 65      // Mittel-hoch
-        },
-
-        // ═══════════════════════════════════════════════════════════════════════
-        // WERTE & HALTUNG (10) - Überzeugungen, Religion, Politik
-        // ═══════════════════════════════════════════════════════════════════════
-        // Polyamor: Progressive, offene Werte
+        // Werte & Haltungen
         werte_haltung: {
-            spiritualitaet: 55,          // Mittel - individuell
-            religioese_praxis: 25,       // Niedrig - meist nicht institutionell
-            politisches_engagement: 65,  // Mittel-hoch - progressive Werte
-            umweltbewusstsein: 65,       // Mittel-hoch
-            traditionelle_werte: 20,     // Niedrig - nicht-traditionell
-            moderne_werte: 90,           // Sehr hoch - progressiv
-            toleranz: 95,                // Sehr hoch - akzeptiert Vielfalt
-            offenheit_neues: 90,         // Sehr hoch
-            kulturelle_identitaet: 55,   // Mittel
-            wertekongruenz: 75,          // Hoch - lebt nach Werten
-            // Pirsig & Osho - Werte
-            qualitaet_als_gott: 70,      // Hoch
-            rationaler_mystizismus: 55,  // Mittel
-            aristotelische_vernunft: 55, // Mittel
-            platonische_ideen: 50,       // Mittel
-            buddhistische_achtsamkeit: 65, // Mittel-hoch
-            religionslosigkeit: 60,      // Mittel
-            eigene_wahrheit: 80,         // Hoch
-            zen_paradox: 50,             // Mittel
-            tantra_als_weg: 65,          // Mittel-hoch
-            politische_rebellion: 50,    // Mittel
-            individueller_anarchismus: 50, // Mittel
-            leben_als_kunst: 80,         // Hoch
-            celebration_statt_gebet: 75  // Hoch
+            spiritualitaet: 55,
+            religioese_praxis: 25,
+            politisches_engagement: 65,
+            umweltbewusstsein: 65,
+            traditionelle_werte: 20,
+            moderne_werte: 90,
+            toleranz: 95,
+            offenheit_neues: 90,
+            kulturelle_identitaet: 55,
+            wertekongruenz: 75,
+            // Pirsig & Osho
+            qualitaet_als_gott: 70,
+            rationaler_mystizismus: 55,
+            aristotelische_vernunft: 55,
+            platonische_ideen: 50,
+            buddhistische_achtsamkeit: 65,
+            religionslosigkeit: 60,
+            eigene_wahrheit: 80,
+            zen_paradox: 50,
+            tantra_als_weg: 65,
+            politische_rebellion: 50,
+            individueller_anarchismus: 50,
+            leben_als_kunst: 80,
+            celebration_statt_gebet: 75
         },
 
-        // ═══════════════════════════════════════════════════════════════════════
-        // PRAKTISCHES LEBEN (10) - Alltag, Organisation, Gesundheit
-        // ═══════════════════════════════════════════════════════════════════════
-        // Polyamor: Hohe Organisation nötig, flexible Wohnsituation
+        // Praktisches Leben
         praktisches_leben: {
-            haushaltsaufteilung: 55,     // Mittel - situationsabhängig
-            alltagsorganisation: 85,     // Sehr hoch - Kalender-Management essentiell
-            gesundheitsbewusstsein: 80,  // Hoch - STI-Tests wichtig
-            ernaehrungsstil: 55,         // Mittel
-            ordnung_sauberkeit: 60,      // Mittel
-            mobilitaet: 75,              // Hoch - flexibel zwischen Orten
-            wohnort_flexibilitaet: 65,   // Mittel-hoch - kann variieren
-            heimatverbundenheit: 50,     // Mittel
-            reisen_abenteuer: 75,        // Hoch - gemeinsam mit verschiedenen
-            routine_struktur: 70,        // Hoch - Struktur hilft
-            // Pirsig & Osho - Praktisches Leben
-            motorrad_pflege: 50,         // Mittel
-            gumption_im_alltag: 70,      // Hoch
-            stuck_vermeiden: 65,         // Mittel-hoch
-            klassische_ordnung: 60,      // Mittel
-            romantisches_chaos: 55,      // Mittel
-            qualitaets_werkzeug: 55,     // Mittel
-            achtsamkeit_im_detail: 65,   // Mittel-hoch
-            meditation_im_alltag: 55,    // Mittel
-            gesundheit_durch_bewusstsein: 75, // Hoch
-            dynamische_meditation: 55,   // Mittel
-            vipassana_im_leben: 55,      // Mittel
-            natuerliches_leben: 60,      // Mittel
-            lachen_therapie: 75,         // Hoch
-            no_mind: 45,                 // Mittel
-            zorba_der_geniesser: 80      // Hoch
+            haushaltsaufteilung: 55,
+            alltagsorganisation: 85,
+            gesundheitsbewusstsein: 80,
+            ernaehrungsstil: 55,
+            ordnung_sauberkeit: 60,
+            wohnort_flexibilitaet: 65,
+            heimatverbundenheit: 50,
+            reisen_abenteuer: 75,
+            routine_struktur: 70,
+            // Pirsig & Osho
+            motorrad_pflege: 50,
+            gumption_im_alltag: 70,
+            stuck_vermeiden: 65,
+            klassische_ordnung: 60,
+            romantisches_chaos: 55,
+            qualitaets_werkzeug: 55,
+            achtsamkeit_im_detail: 65,
+            meditation_im_alltag: 55,
+            gesundheit_durch_bewusstsein: 75,
+            dynamische_meditation: 55,
+            vipassana_im_leben: 55,
+            natuerliches_leben: 60,
+            lachen_therapie: 75,
+            no_mind: 45,
+            zorba_der_geniesser: 80
         }
     },
 
