@@ -1,81 +1,75 @@
 /**
- * TIAGE BEDÜRFNIS-ID-KATALOG v1.2
+ * TIAGE BEDÜRFNIS-ID-KATALOG v2.0
  *
- * Zentrales Mapping: String-Keys <-> #IDs
+ * Zentrales Mapping: String-Keys <-> #IDs für Bedürfnisse
+ *
+ * WICHTIG: Perspektiven, Dimensionen und Kategorien werden aus
+ *          taxonomie.js referenziert (SSOT - Single Source of Truth)
  *
  * Struktur:
- * #P1-#P4   → 4 Perspektiven (Statistik, Osho, Pirsig, SexPositiv)
- * #D1-#D6   → 6 Dimensionen
- * #K1-#K18  → 18 Kategorien
+ * #P1-#P4   → 4 Perspektiven    (siehe taxonomie.js)
+ * #D1-#D6   → 6 Dimensionen     (siehe taxonomie.js, Kurzform A-F)
+ * #K1-#K18  → 18 Kategorien     (siehe taxonomie.js)
  * #B1-#B88  → 88 Kern-Bedürfnisse (GFK + Dynamik)
  * #B89      → Spezial (Geduld)
  * #B90-#B208 → 119 Lebensthemen-Bedürfnisse
  * #B209-#B220 → 12 Erweiterte Kink/BDSM-Bedürfnisse
  *
- * Kategorien:
+ * Kategorien-Zuordnung:
  * #K11 Dynamik (Basis):      #B74-#B88  (15) - Kontrolle, Hingabe, Führung...
  * #K11 Dynamik (Erweitert):  #B209-#B220 (12) - Schmerz, Bondage, Devotion...
  * #K12 Lebensplanung:        #B90-#B126  (37)
  * #K13 Finanzen/Karriere:    #B127-#B148 (22)
- * #K15 Kommunikation:        #B149-#B176 (28)
- * #K16 Soziales Leben:       #B177-#B203 (27)
- * #K17 Intimität/Romantik:   #B204-#B208 (5)
+ * #K14 Kommunikationsstil:   #B149-#B176 (28)
+ * #K15 Soziales Leben:       #B177-#B203 (27)
+ * #K16 Intimität/Romantik:   #B204-#B208 (5)
  *
  * TOTAL: 220 Bedürfnisse
  */
 
 const BeduerfnisIds = {
 
-    // ═══════════════════════════════════════════════════════════════════════════
-    // PERSPEKTIVEN (#P1-#P4)
-    // ═══════════════════════════════════════════════════════════════════════════
-    perspektiven: {
-        '#P1': { key: 'statistik', name: 'Statistik', beschreibung: 'Empirische Forschung' },
-        '#P2': { key: 'osho', name: 'Osho', beschreibung: 'Tantra/Polarität' },
-        '#P3': { key: 'pirsig', name: 'Pirsig', beschreibung: 'Metaphysics of Quality' },
-        '#P4': { key: 'sexpositiv', name: 'SexPositiv', beschreibung: 'BDSM/Kink Dynamik' }
-    },
+    version: '2.0.0',
 
     // ═══════════════════════════════════════════════════════════════════════════
-    // DIMENSIONEN (#D1-#D6)
+    // TAXONOMIE-REFERENZ (SSOT)
     // ═══════════════════════════════════════════════════════════════════════════
-    dimensionen: {
-        '#D1': { key: 'grundbeduerfnisse', name: 'Grundbedürfnisse' },
-        '#D2': { key: 'beziehungsbeduerfnisse', name: 'Beziehungsbedürfnisse' },
-        '#D3': { key: 'selbstbeduerfnisse', name: 'Selbstbedürfnisse' },
-        '#D4': { key: 'dynamik', name: 'Dynamik & Austausch' },
-        '#D5': { key: 'lebensplanung', name: 'Lebensplanung' },
-        '#D6': { key: 'werte', name: 'Werte & Haltungen' }
+    // Perspektiven, Dimensionen und Kategorien kommen aus taxonomie.js
+    // Diese Getter sorgen für Kompatibilität mit bestehendem Code
+
+    _taxonomie: null,
+
+    _getTaxonomie: function() {
+        if (this._taxonomie) return this._taxonomie;
+
+        if (typeof window !== 'undefined' && window.TiageTaxonomie) {
+            this._taxonomie = window.TiageTaxonomie;
+        } else if (typeof TiageTaxonomie !== 'undefined') {
+            this._taxonomie = TiageTaxonomie;
+        } else if (typeof require !== 'undefined') {
+            try {
+                this._taxonomie = require('./taxonomie.js');
+            } catch (e) {
+                console.warn('TiageTaxonomie nicht verfügbar:', e.message);
+            }
+        }
+        return this._taxonomie;
     },
 
-    // ═══════════════════════════════════════════════════════════════════════════
-    // KATEGORIEN (#K1-#K18)
-    // ═══════════════════════════════════════════════════════════════════════════
-    kategorien: {
-        // Dimension 1: Grundbedürfnisse
-        '#K1': { key: 'existenz', dimension: '#D1', name: 'Existenz' },
-        '#K2': { key: 'sicherheit', dimension: '#D1', name: 'Sicherheit' },
-        // Dimension 2: Beziehungsbedürfnisse
-        '#K3': { key: 'zuneigung', dimension: '#D2', name: 'Zuneigung' },
-        '#K4': { key: 'verstaendnis', dimension: '#D2', name: 'Verständnis' },
-        '#K5': { key: 'teilnahme', dimension: '#D2', name: 'Teilnahme' },
-        // Dimension 3: Selbstbedürfnisse
-        '#K6': { key: 'freiheit', dimension: '#D3', name: 'Freiheit' },
-        '#K7': { key: 'identitaet', dimension: '#D3', name: 'Identität' },
-        '#K8': { key: 'musse', dimension: '#D3', name: 'Muße' },
-        '#K9': { key: 'erschaffen', dimension: '#D3', name: 'Erschaffen' },
-        '#K10': { key: 'verbundenheit', dimension: '#D3', name: 'Verbundenheit' },
-        // Dimension 4: Dynamik
-        '#K11': { key: 'dynamik', dimension: '#D4', name: 'Dynamik & Austausch' },
-        // Dimension 5: Lebensplanung
-        '#K12': { key: 'lebensplanung', dimension: '#D5', name: 'Lebensplanung' },
-        '#K13': { key: 'finanzen_karriere', dimension: '#D5', name: 'Finanzen & Karriere' },
-        '#K14': { key: 'praktisches_leben', dimension: '#D5', name: 'Praktisches Leben' },
-        // Dimension 6: Werte & Haltungen
-        '#K15': { key: 'kommunikation_stil', dimension: '#D6', name: 'Kommunikationsstil' },
-        '#K16': { key: 'soziales_leben', dimension: '#D6', name: 'Soziales Leben' },
-        '#K17': { key: 'intimitaet_beziehung', dimension: '#D6', name: 'Intimität & Romantik' },
-        '#K18': { key: 'werte_haltung', dimension: '#D6', name: 'Werte & Haltungen' }
+    // Kompatibilitäts-Getter für direkten Zugriff
+    get perspektiven() {
+        var tax = this._getTaxonomie();
+        return tax ? tax.perspektiven : {};
+    },
+
+    get dimensionen() {
+        var tax = this._getTaxonomie();
+        return tax ? tax.dimensionen : {};
+    },
+
+    get kategorien() {
+        var tax = this._getTaxonomie();
+        return tax ? tax.kategorien : {};
     },
 
     // ═══════════════════════════════════════════════════════════════════════════

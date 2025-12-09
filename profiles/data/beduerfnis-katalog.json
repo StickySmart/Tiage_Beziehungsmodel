@@ -1,44 +1,15 @@
 {
-  "version": "2.0.0",
-  "beschreibung": "Ti-age Bedürfnis-Katalog - Single Source of Truth mit #IDs",
+  "version": "2.1.0",
+  "beschreibung": "Ti-age Bedürfnis-Katalog - Erweiterte Bedürfnis-Daten mit Sekundär-Kategorien",
   "format": "#[Typ][Nr]-[Label]",
   "erstellt": "2025-12-09",
 
-  "perspektiven": {
-    "#P1": { "id": "#P1", "label": "Statistik", "beschreibung": "Reine Übereinstimmung der Werte (Gauß-basiert)" },
-    "#P2": { "id": "#P2", "label": "Osho", "beschreibung": "Tantra, Polarität, Natürlichkeit vs. Konditionierung" },
-    "#P3": { "id": "#P3", "label": "Pirsig", "beschreibung": "Static vs. Dynamic Quality" },
-    "#P4": { "id": "#P4", "label": "SexPositiv", "beschreibung": "Sex-Positive Movement, Consent, Autonomie" }
-  },
+  "_ssot_hinweis": "WICHTIG: Perspektiven, Dimensionen und Kategorien-Metadaten (sigma, color) kommen aus profiles/definitions/taxonomie.js (SSOT). Diese Datei enthält nur die erweiterten Bedürfnis-Daten mit sekundären Kategorien.",
 
-  "dimensionen": {
-    "#D1": { "id": "#D1", "label": "Beziehungsphilosophie", "kurzform": "A", "color": "#E63946", "beschreibung": "Grundlegende Beziehungsform und Lebensplanung" },
-    "#D2": { "id": "#D2", "label": "Werte-Alignment", "kurzform": "B", "color": "#F4A261", "beschreibung": "Weltanschauung, Religion, Tradition" },
-    "#D3": { "id": "#D3", "label": "Nähe-Distanz", "kurzform": "C", "color": "#E84393", "beschreibung": "Körperliche und emotionale Nähe" },
-    "#D4": { "id": "#D4", "label": "Autonomie", "kurzform": "D", "color": "#2A9D8F", "beschreibung": "Freiheit, Selbstbestimmung, Dynamik" },
-    "#D5": { "id": "#D5", "label": "Kommunikation", "kurzform": "E", "color": "#8B5CF6", "beschreibung": "Austausch, Verständnis, Konfliktverhalten" },
-    "#D6": { "id": "#D6", "label": "Soziale-Kompatibilität", "kurzform": "F", "color": "#3B82F6", "beschreibung": "Soziales Leben, Praktisches, Alltag" }
-  },
-
-  "kategorien": {
-    "#K1":  { "id": "#K1",  "label": "Existenz", "dimension": "#D3", "sigma": 11, "color": "#E63946", "beschreibung": "Grundlegende physische Bedürfnisse" },
-    "#K2":  { "id": "#K2",  "label": "Sicherheit", "dimension": "#D3", "sigma": 11, "color": "#F4A261", "beschreibung": "Emotionale und psychische Sicherheit" },
-    "#K3":  { "id": "#K3",  "label": "Zuneigung", "dimension": "#D3", "sigma": 12, "color": "#E84393", "beschreibung": "Liebe, Nähe und emotionale Verbindung" },
-    "#K4":  { "id": "#K4",  "label": "Verständnis", "dimension": "#D5", "sigma": 13, "color": "#9B5DE5", "beschreibung": "Gesehen und verstanden werden" },
-    "#K5":  { "id": "#K5",  "label": "Freiheit", "dimension": "#D4", "sigma": 14, "color": "#2A9D8F", "beschreibung": "Autonomie und Selbstbestimmung" },
-    "#K6":  { "id": "#K6",  "label": "Teilnahme", "dimension": "#D6", "sigma": 13, "color": "#06D6A0", "beschreibung": "Gemeinschaft und Zugehörigkeit" },
-    "#K7":  { "id": "#K7",  "label": "Muße", "dimension": "#D6", "sigma": 15, "color": "#118AB2", "beschreibung": "Erholung, Freude und Genuss" },
-    "#K8":  { "id": "#K8",  "label": "Identität", "dimension": "#D4", "sigma": 14, "color": "#FFD166", "beschreibung": "Selbstverwirklichung und Sinn" },
-    "#K9":  { "id": "#K9",  "label": "Erschaffen", "dimension": "#D4", "sigma": 16, "color": "#FF6B6B", "beschreibung": "Kreativität und Lernen" },
-    "#K10": { "id": "#K10", "label": "Verbundenheit", "dimension": "#D3", "sigma": 16, "color": "#A8DADC", "beschreibung": "Tiefe existenzielle Verbindung" },
-    "#K11": { "id": "#K11", "label": "Dynamik", "dimension": "#D4", "sigma": 17, "color": "#8B5CF6", "beschreibung": "Machtdynamik und bewusster Austausch" },
-    "#K12": { "id": "#K12", "label": "Lebensplanung", "dimension": "#D1", "sigma": 14, "color": "#10B981", "beschreibung": "Kinder, Ehe, Wohnen, Familie" },
-    "#K13": { "id": "#K13", "label": "Finanzen-Karriere", "dimension": "#D1", "sigma": 14, "color": "#F59E0B", "beschreibung": "Geld, Beruf, Work-Life-Balance" },
-    "#K14": { "id": "#K14", "label": "Kommunikationsstil", "dimension": "#D5", "sigma": 13, "color": "#3B82F6", "beschreibung": "Gespräche, Emotionen, Konflikte" },
-    "#K15": { "id": "#K15", "label": "Soziales-Leben", "dimension": "#D6", "sigma": 14, "color": "#8B5CF6", "beschreibung": "Introversion/Extroversion, Freunde" },
-    "#K16": { "id": "#K16", "label": "Intimität-Romantik", "dimension": "#D3", "sigma": 16, "color": "#EC4899", "beschreibung": "Körperliche Nähe, Romantik, Sexualität" },
-    "#K17": { "id": "#K17", "label": "Werte-Haltungen", "dimension": "#D2", "sigma": 15, "color": "#6366F1", "beschreibung": "Religion, Tradition, Umwelt" },
-    "#K18": { "id": "#K18", "label": "Praktisches-Leben", "dimension": "#D6", "sigma": 14, "color": "#14B8A6", "beschreibung": "Ordnung, Reisen, Alltag" }
+  "_taxonomie_referenz": {
+    "perspektiven": "siehe taxonomie.js → TiageTaxonomie.perspektiven",
+    "dimensionen": "siehe taxonomie.js → TiageTaxonomie.dimensionen (A-F)",
+    "kategorien": "siehe taxonomie.js → TiageTaxonomie.kategorien (sigma, color)"
   },
 
   "beduerfnisse": {

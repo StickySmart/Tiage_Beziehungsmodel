@@ -1,7 +1,11 @@
 /**
- * TIAGE BEDÜRFNIS-KATALOG
+ * TIAGE BEDÜRFNIS-KATALOG v2.0
  *
  * Erweiterte Bedürfnisliste für Beziehungsqualitäts-Matching
+ *
+ * WICHTIG: Kategorien-Metadaten (sigma, color, dimension) kommen aus
+ *          taxonomie.js (SSOT - Single Source of Truth)
+ *          Diese Datei enthält nur die Bedürfnis-Listen pro Kategorie.
  *
  * QUELLEN:
  * ─────────────────────────────────────────────────────────────────────────────
@@ -26,16 +30,52 @@
 
 const GfkBeduerfnisse = {
 
+    version: '2.0.0',
+
     // ═══════════════════════════════════════════════════════════════════════════
-    // BEDÜRFNIS-KATEGORIEN
+    // TAXONOMIE-REFERENZ (SSOT)
     // ═══════════════════════════════════════════════════════════════════════════
+
+    _taxonomie: null,
+
+    _getTaxonomie: function() {
+        if (this._taxonomie) return this._taxonomie;
+
+        if (typeof window !== 'undefined' && window.TiageTaxonomie) {
+            this._taxonomie = window.TiageTaxonomie;
+        } else if (typeof TiageTaxonomie !== 'undefined') {
+            this._taxonomie = TiageTaxonomie;
+        } else if (typeof require !== 'undefined') {
+            try {
+                this._taxonomie = require('./taxonomie.js');
+            } catch (e) {
+                console.warn('TiageTaxonomie nicht verfügbar:', e.message);
+            }
+        }
+        return this._taxonomie;
+    },
+
+    /**
+     * Gibt Kategorie-Metadaten aus der Taxonomie zurück
+     * @param {string} key - z.B. 'existenz'
+     * @returns {object} Kategorie mit sigma, color, dimension
+     */
+    getKategorieMetadaten: function(key) {
+        var tax = this._getTaxonomie();
+        if (!tax) return null;
+        return tax.getKategorie(key);
+    },
+
+    // ═══════════════════════════════════════════════════════════════════════════
+    // BEDÜRFNIS-LISTEN PRO KATEGORIE
+    // ═══════════════════════════════════════════════════════════════════════════
+    // Hinweis: sigma/color kommen aus taxonomie.js (SSOT)
 
     kategorien: {
         existenz: {
             name: "Existenz",
             description: "Grundlegende physische Bedürfnisse",
-            color: "#E63946",
-            sigma: 11,  // Grundbedürfnis, geringe Varianz (10-12)
+            // sigma/color: siehe TiageTaxonomie.kategorien['#K1']
             beduerfnisse: [
                 "luft",
                 "wasser",
@@ -52,8 +92,7 @@ const GfkBeduerfnisse = {
         sicherheit: {
             name: "Sicherheit",
             description: "Emotionale und psychische Sicherheit",
-            color: "#F4A261",
-            sigma: 11,  // Grundbedürfnis, relativ stabil (10-12)
+            // sigma/color: siehe TiageTaxonomie.kategorien['#K2']
             beduerfnisse: [
                 "bestaendigkeit",
                 "sich_sicher_fuehlen",
@@ -67,8 +106,7 @@ const GfkBeduerfnisse = {
         zuneigung: {
             name: "Zuneigung",
             description: "Liebe, Nähe und emotionale Verbindung",
-            color: "#E84393",
-            sigma: 12,  // Variiert nach Bindungsstil (10-14)
+            // sigma/color: siehe TiageTaxonomie.kategorien['#K3']
             beduerfnisse: [
                 "waerme",
                 "wertschaetzung",
@@ -85,8 +123,7 @@ const GfkBeduerfnisse = {
         verstaendnis: {
             name: "Verständnis",
             description: "Gesehen und verstanden werden",
-            color: "#9B5DE5",
-            sigma: 13,  // Mittlere Varianz (12-14)
+            // sigma/color: siehe TiageTaxonomie.kategorien['#K4']
             beduerfnisse: [
                 "akzeptanz",
                 "mitgefuehl",
