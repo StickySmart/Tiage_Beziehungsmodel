@@ -8461,20 +8461,43 @@
             if (desktopScoreNote) {
                 let noteText = '';
                 let quoteText = '';
-                if (pathosCheck.result === 'unmöglich') {
-                    noteText = 'Keine Basis für Resonanz vorhanden.';
-                    quoteText = 'Diese Beziehung zeigt eine Qualität von ' + overallScore + ' – keine kompatible Basis vorhanden, deren Muster sich ausschließen.';
-                } else if (overallScore >= 70) {
-                    noteText = 'Gute Resonanz – Muster ergänzen sich.';
-                    quoteText = 'Diese Beziehung zeigt eine Qualität von ' + overallScore + ' – eine gute Resonanz zwischen zwei Menschen, deren Muster sich ergänzen.';
-                } else if (overallScore >= 50) {
-                    noteText = 'Basis vorhanden, Arbeit erforderlich.';
-                    quoteText = 'Diese Beziehung zeigt eine Qualität von ' + overallScore + ' – eine Basis ist vorhanden, erfordert aber bewusste Arbeit und Kommunikation.';
-                } else {
-                    noteText = 'Bewusste Reflexion erforderlich.';
-                    quoteText = 'Diese Beziehung zeigt eine Qualität von ' + overallScore + ' – bewusste Reflexion und offene Kommunikation sind erforderlich.';
+                let quoteSource = '';
+
+                // Bestimme Resonanzlevel basierend auf Score
+                let resonanceLevel = 'niedrig';
+                if (overallScore >= 80) resonanceLevel = 'hoch';
+                else if (overallScore >= 50) resonanceLevel = 'mittel';
+
+                // Versuche Zitat aus ResonanceQuotesTable zu holen
+                if (typeof ResonanceQuotesTable !== 'undefined' && pathosCheck.result !== 'unmöglich') {
+                    const category = overallScore >= 65 ? 'RESONANCE' : overallScore >= 50 ? 'GROWTH' : 'AWARENESS';
+                    const result = ResonanceQuotesTable.generateResonanceText(resonanceLevel, category, 'de');
+
+                    if (result && result.quote) {
+                        noteText = result.title;
+                        quoteText = result.quote;
+                        quoteSource = result.quoteSource ? ` — ${result.quoteSource}` : '';
+                    }
                 }
-                desktopScoreNote.innerHTML = '<strong>' + noteText + '</strong><br><span style="font-style: italic; opacity: 0.85; font-size: 0.9em;">"' + quoteText + '"</span>';
+
+                // Fallback zu hardcoded Texten
+                if (!quoteText) {
+                    if (pathosCheck.result === 'unmöglich') {
+                        noteText = 'Keine Basis für Resonanz vorhanden.';
+                        quoteText = 'Diese Beziehung zeigt eine Qualität von ' + overallScore + ' – keine kompatible Basis vorhanden, deren Muster sich ausschließen.';
+                    } else if (overallScore >= 70) {
+                        noteText = 'Gute Resonanz – Muster ergänzen sich.';
+                        quoteText = 'Diese Beziehung zeigt eine Qualität von ' + overallScore + ' – eine gute Resonanz zwischen zwei Menschen, deren Muster sich ergänzen.';
+                    } else if (overallScore >= 50) {
+                        noteText = 'Basis vorhanden, Arbeit erforderlich.';
+                        quoteText = 'Diese Beziehung zeigt eine Qualität von ' + overallScore + ' – eine Basis ist vorhanden, erfordert aber bewusste Arbeit und Kommunikation.';
+                    } else {
+                        noteText = 'Bewusste Reflexion erforderlich.';
+                        quoteText = 'Diese Beziehung zeigt eine Qualität von ' + overallScore + ' – bewusste Reflexion und offene Kommunikation sind erforderlich.';
+                    }
+                }
+
+                desktopScoreNote.innerHTML = '<strong>' + noteText + '</strong><br><span style="font-style: italic; opacity: 0.85; font-size: 0.9em;">"' + quoteText + '"' + quoteSource + '</span>';
             }
 
             // Update Radar Chart
@@ -9951,31 +9974,51 @@
             if (mobileScoreNote) {
                 let noteText = '';
                 let quoteText = '';
+                let quoteSource = '';
                 const score = qualityResult.score;
+
                 if (qualityResult.incomplete) {
                     noteText = 'Bitte alle Dimensionen auswählen.';
                     mobileScoreNote.textContent = noteText;
-                } else if (score < 30) {
-                    // Sehr niedrige Resonanz - sanfter Hinweis statt K.O.
-                    noteText = 'Sehr niedrige Resonanz – große Unterschiede.';
-                    quoteText = 'Hier begegnen sich zwei Menschen, deren Frequenzen sich deutlich unterscheiden. Diese Beziehung erfordert besondere Achtsamkeit und die Bereitschaft, die Andersartigkeit des anderen als Bereicherung zu sehen.';
-                    mobileScoreNote.innerHTML = '<strong>' + noteText + '</strong><br><span style="font-style: italic; opacity: 0.85; font-size: 0.9em;">"' + quoteText + '"</span>';
-                } else if (score >= 80) {
-                    noteText = 'Hohe Resonanz – Muster ergänzen sich.';
-                    quoteText = 'Hier begegnen sich zwei Menschen, deren Frequenzen sich natürlich ergänzen. Diese Verbindung trägt die Qualität tiefer Resonanz – ein Zusammenspiel, das beide bereichert und wachsen lässt.';
-                    mobileScoreNote.innerHTML = '<strong>' + noteText + '</strong><br><span style="font-style: italic; opacity: 0.85; font-size: 0.9em;">"' + quoteText + '"</span>';
-                } else if (score >= 65) {
-                    noteText = 'Solide Balance mit Potenzial.';
-                    quoteText = 'Hier begegnen sich zwei Menschen mit guter Grundresonanz. Diese Verbindung bietet eine solide Balance und echtes Potenzial für gemeinsames Wachstum.';
-                    mobileScoreNote.innerHTML = '<strong>' + noteText + '</strong><br><span style="font-style: italic; opacity: 0.85; font-size: 0.9em;">"' + quoteText + '"</span>';
-                } else if (score >= 50) {
-                    noteText = 'Basis vorhanden, Arbeit erforderlich.';
-                    quoteText = 'Hier begegnen sich zwei Menschen mit einer tragfähigen Basis. Diese Verbindung hat Qualität, die durch bewusste Kommunikation und gegenseitiges Verständnis vertieft werden kann.';
-                    mobileScoreNote.innerHTML = '<strong>' + noteText + '</strong><br><span style="font-style: italic; opacity: 0.85; font-size: 0.9em;">"' + quoteText + '"</span>';
                 } else {
-                    noteText = 'Bewusste Reflexion erforderlich.';
-                    quoteText = 'Hier begegnen sich zwei Menschen mit unterschiedlichen Mustern. Diese Verbindung lädt zur bewussten Reflexion ein – ein Weg, der Offenheit und ehrliche Kommunikation erfordert.';
-                    mobileScoreNote.innerHTML = '<strong>' + noteText + '</strong><br><span style="font-style: italic; opacity: 0.85; font-size: 0.9em;">"' + quoteText + '"</span>';
+                    // Bestimme Resonanzlevel basierend auf Score
+                    let resonanceLevel = 'niedrig';
+                    if (score >= 80) resonanceLevel = 'hoch';
+                    else if (score >= 50) resonanceLevel = 'mittel';
+
+                    // Versuche Zitat aus ResonanceQuotesTable zu holen
+                    if (typeof ResonanceQuotesTable !== 'undefined') {
+                        const category = score >= 65 ? 'RESONANCE' : score >= 50 ? 'GROWTH' : 'AWARENESS';
+                        const result = ResonanceQuotesTable.generateResonanceText(resonanceLevel, category, 'de');
+
+                        if (result && result.quote) {
+                            noteText = result.title;
+                            quoteText = result.quote;
+                            quoteSource = result.quoteSource ? ` — ${result.quoteSource}` : '';
+                        }
+                    }
+
+                    // Fallback zu hardcoded Texten wenn ResonanceQuotesTable nicht verfügbar
+                    if (!quoteText) {
+                        if (score < 30) {
+                            noteText = 'Sehr niedrige Resonanz – große Unterschiede.';
+                            quoteText = 'Hier begegnen sich zwei Menschen, deren Frequenzen sich deutlich unterscheiden. Diese Beziehung erfordert besondere Achtsamkeit und die Bereitschaft, die Andersartigkeit des anderen als Bereicherung zu sehen.';
+                        } else if (score >= 80) {
+                            noteText = 'Hohe Resonanz – Muster ergänzen sich.';
+                            quoteText = 'Hier begegnen sich zwei Menschen, deren Frequenzen sich natürlich ergänzen. Diese Verbindung trägt die Qualität tiefer Resonanz – ein Zusammenspiel, das beide bereichert und wachsen lässt.';
+                        } else if (score >= 65) {
+                            noteText = 'Solide Balance mit Potenzial.';
+                            quoteText = 'Hier begegnen sich zwei Menschen mit guter Grundresonanz. Diese Verbindung bietet eine solide Balance und echtes Potenzial für gemeinsames Wachstum.';
+                        } else if (score >= 50) {
+                            noteText = 'Basis vorhanden, Arbeit erforderlich.';
+                            quoteText = 'Hier begegnen sich zwei Menschen mit einer tragfähigen Basis. Diese Verbindung hat Qualität, die durch bewusste Kommunikation und gegenseitiges Verständnis vertieft werden kann.';
+                        } else {
+                            noteText = 'Bewusste Reflexion erforderlich.';
+                            quoteText = 'Hier begegnen sich zwei Menschen mit unterschiedlichen Mustern. Diese Verbindung lädt zur bewussten Reflexion ein – ein Weg, der Offenheit und ehrliche Kommunikation erfordert.';
+                        }
+                    }
+
+                    mobileScoreNote.innerHTML = '<strong>' + noteText + '</strong><br><span style="font-style: italic; opacity: 0.85; font-size: 0.9em;">"' + quoteText + '"' + quoteSource + '</span>';
                 }
             }
         }
@@ -11286,6 +11329,7 @@
         /**
          * Generiert den Synthese-Quote-Text basierend auf dem aktuellen Score
          * Wird im CREATIVITY-Abschnitt des Modals angezeigt
+         * Verwendet die ResonanceQuotesTable für Pirsig/Osho/Sprichwörter-Zitate
          */
         function getSyntheseQuoteText() {
             // Hole den aktuellen Score aus dem Display
@@ -11295,7 +11339,27 @@
 
             let noteText = '';
             let quoteText = '';
+            let quoteSource = '';
 
+            // Bestimme Resonanzlevel basierend auf Score
+            let resonanceLevel = 'niedrig';
+            if (score >= 80) resonanceLevel = 'hoch';
+            else if (score >= 50) resonanceLevel = 'mittel';
+
+            // Versuche Zitat aus ResonanceQuotesTable zu holen
+            if (typeof ResonanceQuotesTable !== 'undefined') {
+                const category = score >= 65 ? 'RESONANCE' : score >= 50 ? 'GROWTH' : 'AWARENESS';
+                const result = ResonanceQuotesTable.generateResonanceText(resonanceLevel, category, 'de');
+
+                if (result && result.quote) {
+                    noteText = result.title;
+                    quoteText = result.quote;
+                    quoteSource = result.quoteSource;
+                    return { noteText, quoteText, quoteSource };
+                }
+            }
+
+            // Fallback zu hardcoded Texten
             if (score < 30) {
                 noteText = 'Sehr niedrige Resonanz – große Unterschiede.';
                 quoteText = 'Hier begegnen sich zwei Menschen, deren Frequenzen sich deutlich unterscheiden. Diese Beziehung erfordert besondere Achtsamkeit und die Bereitschaft, die Andersartigkeit des anderen als Bereicherung zu sehen.';
@@ -11313,7 +11377,7 @@
                 quoteText = 'Hier begegnen sich zwei Menschen mit unterschiedlichen Mustern. Diese Verbindung lädt zur bewussten Reflexion ein – ein Weg, der Offenheit und ehrliche Kommunikation erfordert.';
             }
 
-            return { noteText, quoteText };
+            return { noteText, quoteText, quoteSource: '' };
         }
 
         // ═══════════════════════════════════════════════════════════════════════
