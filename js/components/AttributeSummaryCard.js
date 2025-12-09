@@ -17,21 +17,33 @@ const AttributeSummaryCard = (function() {
      * Dies stellt sicher, dass Attribute Modal und Ti-Age Synthese
      * identische Bedürfnis-Namen/IDs anzeigen.
      *
-     * @param {string} needId - Die Bedürfnis-ID
-     * @returns {string} Das Label für das Bedürfnis
+     * Format: "#B34 Selbstbestimmung" (mit #ID für Referenzierbarkeit)
+     *
+     * @param {string} needId - Die Bedürfnis-ID (String-Key)
+     * @returns {string} Das Label für das Bedürfnis mit #B-ID
      */
     function getNeedLabel(needId) {
+        // Hole die #B-ID aus BeduerfnisIds
+        let hashId = '';
+        if (typeof BeduerfnisIds !== 'undefined' && BeduerfnisIds.toId) {
+            const id = BeduerfnisIds.toId(needId);
+            if (id && id.startsWith('#B')) {
+                hashId = id + ' ';
+            }
+        }
+
         // Primär: GfkBeduerfnisse.definitionen (Single Source of Truth)
         if (typeof GfkBeduerfnisse !== 'undefined' && GfkBeduerfnisse.definitionen) {
             const def = GfkBeduerfnisse.definitionen[needId];
             if (def && def.label) {
-                return def.label;
+                return hashId + def.label;
             }
         }
         // Fallback: Formatiere ID als lesbaren String
-        return needId
+        const fallbackLabel = needId
             .replace(/_/g, ' ')
             .replace(/\b\w/g, c => c.toUpperCase());
+        return hashId + fallbackLabel;
     }
 
     /**
