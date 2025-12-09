@@ -1604,7 +1604,8 @@
 
             // Get current score from resultPercentage
             const percentage = document.getElementById('resultPercentage');
-            const currentScore = percentage ? parseInt(percentage.textContent) || 0 : 0;
+            const currentScore = percentage ? parseFloat(percentage.textContent) || 0 : 0;
+            const displayScore = currentScore.toFixed(1);
 
             // Update circle progress (circumference = 2 * PI * r = 2 * 3.14159 * 42 ≈ 264)
             const circumference = 264;
@@ -1615,7 +1616,7 @@
 
             // Update Modal Score Circle
             if (scoreValueEl && scoreProgressEl) {
-                scoreValueEl.textContent = currentScore;
+                scoreValueEl.textContent = displayScore;
                 scoreProgressEl.style.strokeDashoffset = offset;
                 scoreProgressEl.style.stroke = color;
                 scoreValueEl.style.color = color;
@@ -1623,7 +1624,7 @@
 
             // Update Main Page Score Circle
             if (mainScoreValueEl && mainScoreProgressEl) {
-                mainScoreValueEl.textContent = currentScore;
+                mainScoreValueEl.textContent = displayScore;
                 mainScoreProgressEl.style.strokeDashoffset = offset;
                 mainScoreProgressEl.style.stroke = color;
                 mainScoreValueEl.style.color = color;
@@ -1634,7 +1635,7 @@
             const mobileScoreProgressEl = document.getElementById('mobileScoreProgress');
 
             if (mobileScoreEl) {
-                mobileScoreEl.textContent = currentScore;
+                mobileScoreEl.textContent = displayScore;
                 mobileScoreEl.style.color = color;
             }
 
@@ -1648,7 +1649,7 @@
             const needsSummaryValueEl = document.getElementById('syntheseNeedsSummaryValue');
 
             if (scoreSummaryValueEl) {
-                scoreSummaryValueEl.textContent = currentScore;
+                scoreSummaryValueEl.textContent = displayScore;
                 scoreSummaryValueEl.style.color = color;
             }
 
@@ -8508,13 +8509,13 @@
             const percentage = document.getElementById('resultPercentage');
             const progressFill = document.getElementById('resultProgressFill');
 
-            percentage.textContent = overallScore;
+            percentage.textContent = overallScore.toFixed(1);
             progressFill.style.width = Math.min(100, overallScore) + '%';
 
             // Update desktop score circle
             const desktopCircle = document.getElementById('desktopCirclePercentage');
             if (desktopCircle) {
-                desktopCircle.textContent = overallScore;
+                desktopCircle.textContent = overallScore.toFixed(1);
             }
 
             // Set color based on score (3-Stufen-Skala: 70/50)
@@ -10035,14 +10036,14 @@
             if (qualityResult.incomplete) {
                 scoreCircle.textContent = '–';
             } else {
-                scoreCircle.textContent = qualityResult.score;
+                scoreCircle.textContent = qualityResult.score.toFixed(1);
             }
             scoreCircle.style.background = 'transparent';
 
             // Sync score to resultPercentage for Tiage's Synthese modal
             const resultPercentageEl = document.getElementById('resultPercentage');
             if (resultPercentageEl) {
-                resultPercentageEl.textContent = qualityResult.incomplete ? '–' : qualityResult.score;
+                resultPercentageEl.textContent = qualityResult.incomplete ? '–' : qualityResult.score.toFixed(1);
             }
 
             // Update Mobile Score Note (direkt beim Kreis)
