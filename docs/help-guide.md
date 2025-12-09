@@ -14,22 +14,9 @@
 | **Ergebnis** | Automatische Berechnung der Kompatibilität (4 Faktoren) |
 | **Prozentwerte** | Anklicken = Detaillierte Erklärung pro Faktor |
 
-## Neu in Version 1.8
+## Versionshistorie
 
-- **864 psychologische Profile:** Jede Kombination aus Archetyp, Gender, Dominanz und Orientierung ergibt ein einzigartiges Profil
-- **Kategorie-Scores (A-F):** Beziehungsphilosophie, Werte-Alignment, Nähe-Distanz, Autonomie, Kommunikation, Soziale Kompatibilität
-- **Bedürfnis-Verrechnung:** Basis-Werte werden durch Modifikatoren angepasst:
-  - Gender-Modifikatoren: +/-4 Punkte
-  - Dominanz-Modifikatoren: +/-5 Punkte
-  - Orientierungs-Modifikatoren: +/-3 Punkte
-
-## Neu in Version 1.6
-
-- **GFK-Kommunikationsfaktor:** Neuer Resonanz-Faktor basierend auf Gewaltfreier Kommunikation (Marshall Rosenberg)
-- **Dynamische Bedürfnis-Berechnung:** Individuelle Bedürfnis-Profile basierend auf Archetyp, Dominanz, Geschlecht und Orientierung
-- **Erweiterte Resonanz-Formel:** Drei Faktoren (Bedürfnis-Match, Balance, GFK) statt zwei
-- **8 Archetypen:** RA, LAT und Aromantisch hinzugefügt, Poly-Hedo entfernt
-- **Primär/Sekundär-System:** Mehrere Eigenschaften gleichzeitig wählbar
+Alle Änderungen und neue Features findest du im [Changelog](../CHANGELOG.md).
 
 ## Die 4 Qualitätsfaktoren
 
