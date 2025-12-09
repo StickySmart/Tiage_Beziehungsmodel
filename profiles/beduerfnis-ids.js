@@ -1,5 +1,5 @@
 /**
- * TIAGE BEDÜRFNIS-ID-KATALOG v1.1
+ * TIAGE BEDÜRFNIS-ID-KATALOG v1.2
  *
  * Zentrales Mapping: String-Keys <-> #IDs
  *
@@ -10,13 +10,18 @@
  * #B1-#B88  → 88 Kern-Bedürfnisse (GFK + Dynamik)
  * #B89      → Spezial (Geduld)
  * #B90-#B208 → 119 Lebensthemen-Bedürfnisse
+ * #B209-#B220 → 12 Erweiterte Kink/BDSM-Bedürfnisse
  *
  * Kategorien:
- * #K12 Lebensplanung:      #B90-#B126  (37)
- * #K13 Finanzen/Karriere:  #B127-#B148 (22)
- * #K15 Kommunikation:      #B149-#B176 (28)
- * #K16 Soziales Leben:     #B177-#B203 (27)
- * #K17 Intimität/Romantik: #B204-#B208 (5+)
+ * #K11 Dynamik (Basis):      #B74-#B88  (15) - Kontrolle, Hingabe, Führung...
+ * #K11 Dynamik (Erweitert):  #B209-#B220 (12) - Schmerz, Bondage, Devotion...
+ * #K12 Lebensplanung:        #B90-#B126  (37)
+ * #K13 Finanzen/Karriere:    #B127-#B148 (22)
+ * #K15 Kommunikation:        #B149-#B176 (28)
+ * #K16 Soziales Leben:       #B177-#B203 (27)
+ * #K17 Intimität/Romantik:   #B204-#B208 (5)
+ *
+ * TOTAL: 220 Bedürfnisse
  */
 
 const BeduerfnisIds = {
@@ -360,7 +365,24 @@ const BeduerfnisIds = {
         '#B205': { key: 'kuscheln', kategorie: '#K17', label: 'Kuscheln' },
         '#B206': { key: 'physische_distanz', kategorie: '#K17', label: 'Physische Distanz' },
         '#B207': { key: 'koerperkontakt', kategorie: '#K17', label: 'Körperkontakt' },
-        '#B208': { key: 'umarmungen', kategorie: '#K17', label: 'Umarmungen' }
+        '#B208': { key: 'umarmungen', kategorie: '#K17', label: 'Umarmungen' },
+
+        // ─────────────────────────────────────────────────────────────────────────
+        // ERWEITERTE KINK/DYNAMIK (#B209-#B220) - Kategorie #K11
+        // ─────────────────────────────────────────────────────────────────────────
+        // Spezifische BDSM/Kink-Bedürfnisse (Erweiterung zu #B74-#B88)
+        '#B209': { key: 'schmerzerleben', kategorie: '#K11', label: 'Schmerz erleben (Masochismus)' },
+        '#B210': { key: 'schmerz_geben', kategorie: '#K11', label: 'Schmerz geben (Sadismus)' },
+        '#B211': { key: 'bondage_erleben', kategorie: '#K11', label: 'Bondage erleben (gefesselt werden)' },
+        '#B212': { key: 'bondage_geben', kategorie: '#K11', label: 'Bondage geben (fesseln)' },
+        '#B213': { key: 'devotion', kategorie: '#K11', label: 'Devotion (Hingabe/Verehrung geben)' },
+        '#B214': { key: 'anbetung', kategorie: '#K11', label: 'Anbetung (Verehrung empfangen)' },
+        '#B215': { key: 'demuetig_sein', kategorie: '#K11', label: 'Demütig sein (Demut zeigen)' },
+        '#B216': { key: 'dominieren', kategorie: '#K11', label: 'Dominieren (Dominanz ausüben)' },
+        '#B217': { key: 'bestrafung_erhalten', kategorie: '#K11', label: 'Bestrafung erhalten' },
+        '#B218': { key: 'bestrafen', kategorie: '#K11', label: 'Bestrafen (Disziplin geben)' },
+        '#B219': { key: 'service_orientierung', kategorie: '#K11', label: 'Service-Orientierung (dienen wollen)' },
+        '#B220': { key: 'service_empfangen', kategorie: '#K11', label: 'Service empfangen (bedient werden)' }
     },
 
     // ═══════════════════════════════════════════════════════════════════════════
