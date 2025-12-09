@@ -135,10 +135,11 @@
             }
         }
 
-        /* Score/Pathos/Logos toggle buttons in modal header */
+        /* Score/Pathos/Logos/Needs toggle buttons in modal header */
         .header-score-btn,
         .header-pathos-btn,
-        .header-logos-btn {
+        .header-logos-btn,
+        .header-needs-btn {
             padding: 8px 12px;
             border-radius: 8px;
             border: 1px solid var(--border);
@@ -152,7 +153,8 @@
 
         .header-score-btn:hover,
         .header-pathos-btn:hover,
-        .header-logos-btn:hover {
+        .header-logos-btn:hover,
+        .header-needs-btn:hover {
             transform: scale(1.1);
             box-shadow: 0 4px 12px rgba(0,0,0,0.3);
             border-color: var(--primary);
@@ -160,7 +162,8 @@
 
         .header-score-btn.active,
         .header-pathos-btn.active,
-        .header-logos-btn.active {
+        .header-logos-btn.active,
+        .header-needs-btn.active {
             color: var(--text-primary);
             border-color: var(--primary);
             box-shadow: 0 2px 8px rgba(139, 92, 246, 0.3);
