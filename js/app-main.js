@@ -10327,21 +10327,38 @@
             // Load from TiageState
             TiageState.loadFromStorage();
 
-            // Load archetypes from TiageState and sync with global variables (Desktop only)
-            // TODO: Mobile nachziehen - mobileIchArchetype, mobilePartnerArchetype, mobile selectors
+            // Load archetypes from TiageState and sync with global variables (Desktop + Mobile)
             const savedIchArchetype = TiageState.getArchetype('ich');
             const savedPartnerArchetype = TiageState.getArchetype('partner');
 
             if (savedIchArchetype) {
                 currentArchetype = savedIchArchetype;
+                mobileIchArchetype = savedIchArchetype;
+                // Sync all ICH select dropdowns
                 const archetypeSelect = document.getElementById('archetypeSelect');
-                if (archetypeSelect) {
-                    archetypeSelect.value = savedIchArchetype;
+                const ichSelect = document.getElementById('ichSelect');
+                const mobileIchSelect = document.getElementById('mobileIchSelect');
+                if (archetypeSelect) archetypeSelect.value = savedIchArchetype;
+                if (ichSelect) ichSelect.value = savedIchArchetype;
+                if (mobileIchSelect) mobileIchSelect.value = savedIchArchetype;
+                // Sync archetype grid highlighting
+                if (typeof updateArchetypeGrid === 'function') {
+                    updateArchetypeGrid('ich', savedIchArchetype);
                 }
             }
 
             if (savedPartnerArchetype) {
                 selectedPartner = savedPartnerArchetype;
+                mobilePartnerArchetype = savedPartnerArchetype;
+                // Sync all PARTNER select dropdowns
+                const partnerSelect = document.getElementById('partnerSelect');
+                const mobilePartnerSelect = document.getElementById('mobilePartnerSelect');
+                if (partnerSelect) partnerSelect.value = savedPartnerArchetype;
+                if (mobilePartnerSelect) mobilePartnerSelect.value = savedPartnerArchetype;
+                // Sync archetype grid highlighting
+                if (typeof updateArchetypeGrid === 'function') {
+                    updateArchetypeGrid('partner', savedPartnerArchetype);
+                }
             }
 
             ['ich', 'partner'].forEach(person => {
@@ -11919,6 +11936,9 @@
                 const mobileIchSelect = document.getElementById('mobileIchSelect');
                 if (ichSelect) ichSelect.value = currentArchetype;
                 if (mobileIchSelect) mobileIchSelect.value = currentArchetype;
+
+                // Sync archetype grid highlighting
+                updateArchetypeGrid('ich', currentArchetype);
             } else {
                 currentIndex = archetypes.indexOf(selectedPartner);
                 currentIndex = (currentIndex + direction + archetypes.length) % archetypes.length;
@@ -11930,6 +11950,9 @@
                 const mobilePartnerSelect = document.getElementById('mobilePartnerSelect');
                 if (partnerSelect) partnerSelect.value = selectedPartner;
                 if (mobilePartnerSelect) mobilePartnerSelect.value = selectedPartner;
+
+                // Sync archetype grid highlighting
+                updateArchetypeGrid('partner', selectedPartner);
             }
 
             // Update the modal display
