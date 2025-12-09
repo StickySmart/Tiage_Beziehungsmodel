@@ -11919,6 +11919,9 @@
                 const mobileIchSelect = document.getElementById('mobileIchSelect');
                 if (ichSelect) ichSelect.value = currentArchetype;
                 if (mobileIchSelect) mobileIchSelect.value = currentArchetype;
+
+                // Sync archetype grid highlighting
+                updateArchetypeGrid('ich', currentArchetype);
             } else {
                 currentIndex = archetypes.indexOf(selectedPartner);
                 currentIndex = (currentIndex + direction + archetypes.length) % archetypes.length;
@@ -11930,6 +11933,9 @@
                 const mobilePartnerSelect = document.getElementById('mobilePartnerSelect');
                 if (partnerSelect) partnerSelect.value = selectedPartner;
                 if (mobilePartnerSelect) mobilePartnerSelect.value = selectedPartner;
+
+                // Sync archetype grid highlighting
+                updateArchetypeGrid('partner', selectedPartner);
             }
 
             // Update the modal display
