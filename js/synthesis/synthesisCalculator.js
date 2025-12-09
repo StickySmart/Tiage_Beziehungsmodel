@@ -185,10 +185,17 @@ TiageSynthesis.Calculator = {
         var resonanz = this._calculateResonance(logos, pathos, profilMatch, gfkFaktor, constants, profile1, profile2);
 
         // ═══════════════════════════════════════════════════════════════════
-        // SCHRITT 4: Gewichtete Summe × Resonanz
+        // SCHRITT 4: Gewichtete Summe × Dimensionale Resonanz (v3.1)
         // ═══════════════════════════════════════════════════════════════════
+        //
+        // NEU: Jeder Faktor wird mit seiner zugehörigen R-Dimension multipliziert:
+        //   A × R_Philosophie  (Archetyp ↔ Beziehungsphilosophie)
+        //   O × R_Leben        (Orientierung ↔ Anziehung/Intimität)
+        //   D × R_Dynamik      (Dominanz ↔ Machtdynamik)
+        //   G × R_Identität    (Geschlecht ↔ Identität/Ausdruck)
 
         var weights = constants.WEIGHTS;
+        var dim = resonanz.dimensional;
 
         var baseScore =
             (scores.archetyp * weights.archetyp) +
@@ -196,7 +203,20 @@ TiageSynthesis.Calculator = {
             (scores.dominanz * weights.dominanz) +
             (scores.geschlecht * weights.geschlecht);
 
-        var finalScore = Math.round(baseScore * resonanz.coefficient);
+        var finalScore;
+
+        if (dim) {
+            // v3.1: Dimensionale Multiplikation
+            finalScore = Math.round(
+                (scores.archetyp * weights.archetyp * dim.philosophie.rValue) +
+                (scores.orientierung * weights.orientierung * dim.leben.rValue) +
+                (scores.dominanz * weights.dominanz * dim.dynamik.rValue) +
+                (scores.geschlecht * weights.geschlecht * dim.identitaet.rValue)
+            );
+        } else {
+            // Legacy: Gesamt-R auf baseScore
+            finalScore = Math.round(baseScore * resonanz.coefficient);
+        }
 
         // ═══════════════════════════════════════════════════════════════════
         // ERGEBNIS
