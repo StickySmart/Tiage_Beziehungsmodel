@@ -296,6 +296,21 @@
                         </p>
                     </div>
                 </div>
+                <!-- Search/Filter Input for Bedürfnisse -->
+                <div class="profile-review-search-container">
+                    <div class="profile-review-search-wrapper">
+                        <span class="profile-review-search-icon">🔍</span>
+                        <input type="text"
+                               id="profileReviewSearchInput"
+                               class="profile-review-search-input"
+                               placeholder="Bedürfnis suchen... (* = Platzhalter)"
+                               oninput="filterProfileReviewByNeed(this.value)">
+                        <button class="profile-review-search-clear"
+                                onclick="clearProfileReviewSearch()"
+                                title="Suche leeren">×</button>
+                    </div>
+                    <div class="profile-review-search-hint" id="profileReviewSearchHint"></div>
+                </div>
                 <!-- Content wird dynamisch durch ProfileReviewRenderer.initializeModal() generiert -->
                 <div id="profileReviewContent">
                     <div class="profile-review-loading" style="padding: 40px; text-align: center; color: rgba(255,255,255,0.6);">
