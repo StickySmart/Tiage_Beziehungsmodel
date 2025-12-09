@@ -10,27 +10,59 @@ Resonanz (R) ist ein **Meta-Faktor** (0.9-1.1), der moduliert, wie gut Kopf (Log
 
 ## Die R-Formel
 
+### Legacy-Formel (v3.0)
 ```
 R = 0.9 + [(M/100 × 0.35) + (B × 0.35) + (K × 0.30)] × 0.2
 ```
 
+### Multi-Dimensionale Resonanz (v3.1)
+
+**NEU:** Resonanz wird jetzt auf 4 Dimensionen separat berechnet:
+
+```
+R_Bedürfnisse  = 0.9 + (Match_alle × 0.2)         💚
+R_Philosophie  = 0.9 + (Match_archetyp × 0.2)     🧠
+R_Leben        = 0.9 + (Match_orientierung × 0.2) 🔥
+R_Dynamik      = 0.9 + (Match_dominanz × 0.2)     ⚡
+
+R_gesamt = (R_Bedürfnisse + R_Philosophie + R_Leben + R_Dynamik) / 4
+R_final  = R_gesamt × (0.85 + K × 0.15)
+```
+
+**Interpretation pro Dimension:**
+| R-Wert | Status | Symbol |
+|--------|--------|--------|
+| ≥ 1.05 | Resonanz | ⬆️ |
+| 0.97-1.05 | Neutral | ➡️ |
+| ≤ 0.97 | Dissonanz | ⬇️ |
+
 **Wertebereich:** R variiert zwischen 0.9 (minimale Resonanz) und 1.1 (maximale Resonanz).
 
-## Die drei Dimensionen der Kompatibilität
+## Die vier Dimensionen der Kompatibilität (v3.1)
 
-Die Resonanz-Formel erfasst Beziehungskompatibilität auf **drei unabhängigen Dimensionen**:
+Die multi-dimensionale Resonanz erfasst Beziehungskompatibilität auf **vier unabhängigen Dimensionen**:
 
-| Dimension | Faktor | Frage | Beschreibung |
-|-----------|--------|-------|--------------|
-| **Inhalt** | M | *Was brauchen sie?* | Substanz der Bedürfnisse |
-| **Stil** | B | *Wie ticken sie?* | Denken vs. Fühlen |
-| **Prozess** | K | *Können sie sich verstehen?* | Qualität der Kommunikation |
+| Dimension | Emoji | Frage | Bedürfnis-Quelle |
+|-----------|-------|-------|------------------|
+| **Bedürfnisse** | 💚 | *Was brauchen sie insgesamt?* | Alle GFK-Bedürfnisse |
+| **Philosophie** | 🧠 | *Wie wollen sie Beziehung leben?* | Archetyp-bezogene Bedürfnisse |
+| **Leben** | 🔥 | *Was zieht sie an?* | Orientierungs-bezogene Bedürfnisse |
+| **Dynamik** | ⚡ | *Wer führt, wer folgt?* | Dominanz-bezogene Bedürfnisse |
 
 Diese Dimensionen sind **orthogonal** – sie messen verschiedene, voneinander unabhängige Aspekte:
 
-- **Hoher Inhalt-Match (M)** bedeutet nicht automatisch gute Kommunikation (K)
-- **Ähnlicher Stil (B)** garantiert keine übereinstimmenden Bedürfnisse (M)
-- **Gute Kommunikation (K)** kann Unterschiede in M und B ausgleichen
+- **Hohe Bedürfnis-Resonanz** bedeutet nicht automatisch kompatible Lebensphilosophie
+- **Ähnliche Philosophie** garantiert keine sexuelle/romantische Anziehung
+- **Kompatible Dynamik** kann Unterschiede in anderen Dimensionen ausgleichen
+- **GFK-Kommunikation (K)** moduliert das Gesamt-Ergebnis
+
+### Legacy: Die drei Komponenten (v3.0)
+
+| Komponente | Faktor | Gewicht |
+|------------|--------|---------|
+| **Profil-Match** | M | 35% |
+| **Logos-Pathos-Balance** | B | 35% |
+| **GFK-Kommunikation** | K | 30% |
 
 ### Komponente 1: Profil-Match (M)
 

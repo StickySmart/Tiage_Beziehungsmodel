@@ -52,6 +52,57 @@ TiageSynthesis.Constants = {
     },
 
     // ═══════════════════════════════════════════════════════════════════════
+    // MULTI-DIMENSIONALE RESONANZ (v3.1)
+    // ═══════════════════════════════════════════════════════════════════════
+    //
+    // Formel pro Dimension: R_dim = 0.9 + (Match × 0.2)
+    // Gesamt: R = (R_beduerfnisse + R_philosophie + R_leben + R_dynamik) / 4
+    //
+    // Schwellenwerte:
+    //   R ≥ 1.05 → Resonanz ⬆️
+    //   R ≤ 0.97 → Dissonanz ⬇️
+    //   R 0.97-1.05 → Neutral ➡️
+    //
+    RESONANCE_DIMENSIONAL: {
+        ENABLED: true,       // Multi-Dimensional aktivieren
+
+        // Die 4 Dimensionen und ihre Quell-Needs
+        DIMENSIONS: {
+            beduerfnisse: {
+                name: 'Bedürfnisse',
+                emoji: '💚',
+                source: 'ALL',           // Alle Bedürfnisse (Gesamt-Match)
+                weight: 0.25             // 25% Gewicht im Durchschnitt
+            },
+            philosophie: {
+                name: 'Philosophie',
+                emoji: '🧠',
+                source: 'ARCHETYP_NEEDS', // Aus NEEDS_INTEGRATION
+                weight: 0.25
+            },
+            leben: {
+                name: 'Leben',
+                emoji: '🔥',
+                source: 'ORIENTIERUNG_NEEDS',
+                weight: 0.25
+            },
+            dynamik: {
+                name: 'Dynamik',
+                emoji: '⚡',
+                source: 'DOMINANZ_NEEDS',
+                weight: 0.25
+            }
+        },
+
+        // Interpretation pro Dimension
+        THRESHOLDS: {
+            resonanz: 1.05,   // R ≥ 1.05 = Resonanz ⬆️
+            dissonanz: 0.97   // R ≤ 0.97 = Dissonanz ⬇️
+                              // Dazwischen = Neutral ➡️
+        }
+    },
+
+    // ═══════════════════════════════════════════════════════════════════════
     // GFK-KOMPETENZ-MATRIX (Gewaltfreie Kommunikation)
     // ═══════════════════════════════════════════════════════════════════════
     // Marshall Rosenberg's 4-Schritte: Beobachtung, Gefühl, Bedürfnis, Bitte

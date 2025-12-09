@@ -178,7 +178,11 @@ TiageSynthesis.Calculator = {
         // SCHRITT 3: Resonanz berechnen (inkl. GFK-Faktor K)
         // ═══════════════════════════════════════════════════════════════════
 
-        var resonanz = this._calculateResonance(logos, pathos, profilMatch, gfkFaktor, constants);
+        // Profile für dimensionale Resonanz extrahieren
+        var profile1 = beduerfnisResult && beduerfnisResult.profile ? beduerfnisResult.profile.person1 : null;
+        var profile2 = beduerfnisResult && beduerfnisResult.profile ? beduerfnisResult.profile.person2 : null;
+
+        var resonanz = this._calculateResonance(logos, pathos, profilMatch, gfkFaktor, constants, profile1, profile2);
 
         // ═══════════════════════════════════════════════════════════════════
         // SCHRITT 4: Gewichtete Summe × Resonanz
@@ -735,16 +739,19 @@ TiageSynthesis.Calculator = {
     /**
      * Berechnet den Resonanz-Koeffizienten
      *
-     * R = 0.9 + [(M/100 × 0.35) + (B × 0.35) + (K × 0.30)] × 0.2
+     * LEGACY: R = 0.9 + [(M/100 × 0.35) + (B × 0.35) + (K × 0.30)] × 0.2
+     * NEU v3.1: Multi-Dimensionale Resonanz wenn Profile verfügbar
      *
      * @param {number} logos - Logos-Score (0-100)
      * @param {number} pathos - Pathos-Durchschnitt (0-100)
      * @param {number} profilMatch - Profil-Match (0-100)
      * @param {object} gfkFaktor - GFK-Faktor Objekt mit .value
      * @param {object} constants - TiageSynthesis.Constants
-     * @returns {object} { coefficient, balance, profilMatch, gfk, interpretation }
+     * @param {object} profil1 - Bedürfnisse Person 1 (optional, für dimensionale Berechnung)
+     * @param {object} profil2 - Bedürfnisse Person 2 (optional, für dimensionale Berechnung)
+     * @returns {object} { coefficient, balance, profilMatch, gfk, interpretation, dimensional }
      */
-    _calculateResonance: function(logos, pathos, profilMatch, gfkFaktor, constants) {
+    _calculateResonance: function(logos, pathos, profilMatch, gfkFaktor, constants, profil1, profil2) {
         var cfg = constants.RESONANCE;
 
         // Logos-Pathos-Balance: B = (100 - |Logos - Pathos|) / 100
@@ -754,16 +761,35 @@ TiageSynthesis.Calculator = {
         // GFK-Wert extrahieren (K)
         var gfkValue = gfkFaktor.value;
 
-        // R = 0.9 + [(M/100 × 0.35) + (B × 0.35) + (K × 0.30)] × 0.2
-        var coefficient = cfg.BASE +
-            (
-                ((profilMatch / 100) * cfg.PROFILE_WEIGHT) +
-                (balance * cfg.BALANCE_WEIGHT) +
-                (gfkValue * cfg.GFK_WEIGHT)
-            ) * cfg.MAX_BOOST;
+        // ═══════════════════════════════════════════════════════════════════
+        // Multi-Dimensionale Resonanz (v3.1)
+        // ═══════════════════════════════════════════════════════════════════
+        var dimensional = null;
+        var coefficient;
 
-        // Auf 3 Dezimalstellen runden
-        coefficient = Math.round(coefficient * 1000) / 1000;
+        if (profil1 && profil2 && constants.RESONANCE_DIMENSIONAL && constants.RESONANCE_DIMENSIONAL.ENABLED) {
+            // Neue dimensionale Berechnung
+            dimensional = this._calculateDimensionalResonance(profil1, profil2, constants);
+
+            if (dimensional) {
+                // Dimensionaler Koeffizient als Basis, moduliert durch GFK
+                // R = R_dimensional × (0.85 + K × 0.15)
+                var gfkModulator = 0.85 + (gfkValue * 0.15);
+                coefficient = dimensional.coefficient * gfkModulator;
+                coefficient = Math.round(coefficient * 1000) / 1000;
+            }
+        }
+
+        // Fallback zur Legacy-Berechnung wenn dimensional nicht verfügbar
+        if (!dimensional) {
+            coefficient = cfg.BASE +
+                (
+                    ((profilMatch / 100) * cfg.PROFILE_WEIGHT) +
+                    (balance * cfg.BALANCE_WEIGHT) +
+                    (gfkValue * cfg.GFK_WEIGHT)
+                ) * cfg.MAX_BOOST;
+            coefficient = Math.round(coefficient * 1000) / 1000;
+        }
 
         return {
             coefficient: coefficient,
@@ -771,7 +797,9 @@ TiageSynthesis.Calculator = {
             differenz: Math.round(differenz),
             profilMatch: profilMatch,
             gfk: gfkFaktor,
-            interpretation: this._interpretResonance(coefficient)
+            interpretation: this._interpretResonance(coefficient),
+            // NEU: Dimensionale Details
+            dimensional: dimensional
         };
     },
 
@@ -784,6 +812,154 @@ TiageSynthesis.Calculator = {
         if (coefficient >= 0.98) return { level: 'neutral', text: 'Ausgewogenes Verhältnis' };
         if (coefficient >= 0.93) return { level: 'spannung', text: 'Leichte Spannung zwischen Logos und Pathos' };
         return { level: 'dissonanz', text: 'Logos und Pathos widersprechen sich' };
+    },
+
+    // ═══════════════════════════════════════════════════════════════════════════
+    // MULTI-DIMENSIONALE RESONANZ (v3.1)
+    // ═══════════════════════════════════════════════════════════════════════════
+
+    /**
+     * Berechnet Multi-Dimensionale Resonanz
+     *
+     * Formel pro Dimension: R_dim = 0.9 + (Match × 0.2)
+     * Gesamt: R = Σ(R_dim × weight)
+     *
+     * @param {object} profil1 - Bedürfnisse Person 1
+     * @param {object} profil2 - Bedürfnisse Person 2
+     * @param {object} constants - TiageSynthesis.Constants
+     * @returns {object} { coefficient, dimensions, interpretation }
+     */
+    _calculateDimensionalResonance: function(profil1, profil2, constants) {
+        var cfg = constants.RESONANCE_DIMENSIONAL;
+        var needsIntegration = constants.NEEDS_INTEGRATION;
+
+        if (!cfg || !cfg.ENABLED) {
+            return null; // Fallback zur alten Berechnung
+        }
+
+        var dimensions = {};
+        var totalR = 0;
+        var totalWeight = 0;
+
+        // Für jede Dimension den Match und R-Wert berechnen
+        for (var dimKey in cfg.DIMENSIONS) {
+            var dim = cfg.DIMENSIONS[dimKey];
+            var needsList = this._getDimensionNeeds(dim.source, needsIntegration);
+            var match = this._calculatePartialMatch(profil1, profil2, needsList);
+
+            // R_dim = 0.9 + (Match × 0.2)
+            var rValue = 0.9 + (match * 0.2);
+            rValue = Math.round(rValue * 1000) / 1000;
+
+            // Status bestimmen
+            var status = 'neutral';
+            var emoji = '➡️';
+            if (rValue >= cfg.THRESHOLDS.resonanz) {
+                status = 'resonanz';
+                emoji = '⬆️';
+            } else if (rValue <= cfg.THRESHOLDS.dissonanz) {
+                status = 'dissonanz';
+                emoji = '⬇️';
+            }
+
+            dimensions[dimKey] = {
+                name: dim.name,
+                emoji: dim.emoji,
+                match: Math.round(match * 100),
+                rValue: rValue,
+                status: status,
+                statusEmoji: emoji,
+                weight: dim.weight
+            };
+
+            totalR += rValue * dim.weight;
+            totalWeight += dim.weight;
+        }
+
+        // Gesamt-Koeffizient
+        var coefficient = totalWeight > 0 ? totalR / totalWeight : 0.9;
+        coefficient = Math.round(coefficient * 1000) / 1000;
+
+        return {
+            coefficient: coefficient,
+            dimensions: dimensions,
+            interpretation: this._interpretDimensionalResonance(coefficient, dimensions, cfg.THRESHOLDS)
+        };
+    },
+
+    /**
+     * Holt die Bedürfnis-Liste für eine Dimension
+     */
+    _getDimensionNeeds: function(source, needsIntegration) {
+        if (source === 'ALL') {
+            return null; // null = alle Bedürfnisse
+        }
+        if (needsIntegration && needsIntegration[source]) {
+            return needsIntegration[source];
+        }
+        return null;
+    },
+
+    /**
+     * Berechnet partiellen Match für eine Subset von Bedürfnissen
+     *
+     * @param {object} profil1 - Alle Bedürfnisse Person 1
+     * @param {object} profil2 - Alle Bedürfnisse Person 2
+     * @param {array|null} needsList - Liste der relevanten Bedürfnisse (null = alle)
+     * @returns {number} Match 0.0-1.0
+     */
+    _calculatePartialMatch: function(profil1, profil2, needsList) {
+        if (!profil1 || !profil2) return 0.5;
+
+        var sumMatch = 0;
+        var count = 0;
+
+        // Wenn needsList null, alle gemeinsamen Keys verwenden
+        var keysToCheck = needsList || Object.keys(profil1);
+
+        for (var i = 0; i < keysToCheck.length; i++) {
+            var key = keysToCheck[i];
+            var val1 = profil1[key];
+            var val2 = profil2[key];
+
+            // Nur wenn beide einen Wert haben
+            if (val1 !== undefined && val2 !== undefined) {
+                var diff = Math.abs(val1 - val2);
+                var match = (100 - diff) / 100;
+                sumMatch += match;
+                count++;
+            }
+        }
+
+        return count > 0 ? sumMatch / count : 0.5;
+    },
+
+    /**
+     * Interpretiert dimensionale Resonanz
+     */
+    _interpretDimensionalResonance: function(coefficient, dimensions, thresholds) {
+        // Zähle Resonanzen und Dissonanzen
+        var resonanzCount = 0;
+        var dissonanzCount = 0;
+
+        for (var key in dimensions) {
+            if (dimensions[key].status === 'resonanz') resonanzCount++;
+            if (dimensions[key].status === 'dissonanz') dissonanzCount++;
+        }
+
+        if (coefficient >= 1.08 || resonanzCount >= 3) {
+            return { level: 'harmonie', text: 'Mehrdimensionale Resonanz auf hohem Niveau' };
+        }
+        if (coefficient >= 1.02 || resonanzCount >= 2) {
+            return { level: 'resonanz', text: 'Überwiegend gute Schwingung' };
+        }
+        if (dissonanzCount >= 2) {
+            return { level: 'spannung', text: 'Mehrere Dimensionen mit Dissonanz' };
+        }
+        if (dissonanzCount >= 3) {
+            return { level: 'dissonanz', text: 'Ausgeprägte mehrdimensionale Dissonanz' };
+        }
+        return { level: 'neutral', text: 'Ausgewogene dimensionale Verteilung' };
     },
 
     /**
