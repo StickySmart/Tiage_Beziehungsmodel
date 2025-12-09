@@ -29,23 +29,39 @@
     }
 
     /**
-     * Konvertiert ein kategorisiertes Profil in flache kernbeduerfnisse
-     * @param {Object} profil - Profil mit beduerfnisse.kategorie.bedürfnis Struktur
-     * @returns {Object} Flaches Objekt mit allen Bedürfnissen
+     * Konvertiert ein Profil in flache kernbeduerfnisse (String-Keys)
+     * Unterstützt zwei Formate:
+     * 1. Flaches #ID-Format: { '#B1': 50, '#B2': 60, ... }
+     * 2. Verschachteltes Kategorie-Format: { kategorie: { bed1: 50, bed2: 60 }, ... }
+     *
+     * @param {Object} profil - Profil mit beduerfnisse
+     * @returns {Object} Flaches Objekt mit String-Keys
      */
     function flattenBeduerfnisse(profil) {
         if (!profil || !profil.beduerfnisse) return {};
 
-        const flat = {};
-        const kategorien = profil.beduerfnisse;
+        const beduerfnisse = profil.beduerfnisse;
+        const keys = Object.keys(beduerfnisse);
 
-        // Alle Kategorien durchgehen
-        Object.keys(kategorien).forEach(kategorie => {
-            const beduerfnisse = kategorien[kategorie];
-            if (typeof beduerfnisse === 'object') {
+        // Erkennung: Flaches #ID-Format wenn erster Key mit '#' beginnt
+        if (keys.length > 0 && keys[0].startsWith('#')) {
+            // Neues flaches #ID-Format -> zu String-Keys konvertieren
+            const ids = getBeduerfnisIds();
+            if (ids && ids.convertObjToKeys) {
+                return ids.convertObjToKeys(beduerfnisse);
+            }
+            // Fallback: IDs direkt zurückgeben wenn keine Konvertierung möglich
+            return beduerfnisse;
+        }
+
+        // Altes verschachteltes Kategorie-Format
+        const flat = {};
+        keys.forEach(kategorie => {
+            const katBeduerfnisse = beduerfnisse[kategorie];
+            if (typeof katBeduerfnisse === 'object' && katBeduerfnisse !== null) {
                 // Alle Bedürfnisse der Kategorie zum flachen Objekt hinzufügen
-                Object.keys(beduerfnisse).forEach(bed => {
-                    flat[bed] = beduerfnisse[bed];
+                Object.keys(katBeduerfnisse).forEach(bed => {
+                    flat[bed] = katBeduerfnisse[bed];
                 });
             }
         });
