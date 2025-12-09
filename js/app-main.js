@@ -5524,6 +5524,1348 @@
                 definition: "Das Bedürfnis nach Verbindung über Generationen hinweg – von Großeltern zu Enkeln, Weitergabe von Wissen und Werten.",
                 quelle: "Generationenforschung & Narrative Psychologie",
                 quelleDetail: "Die Weitergabe von Familiengeschichten stärkt die Identität und das Gefühl von Kontinuität."
+            },
+
+            // ═══════════════════════════════════════════════════════════════════════
+            // FINANZEN & KARRIERE
+            // ═══════════════════════════════════════════════════════════════════════
+            finanzielle_unabhaengigkeit: {
+                label: "Finanzielle Unabhängigkeit",
+                kategorie: "Finanzen & Karriere",
+                kategorieColor: "#F59E0B",
+                definition: "Das Bedürfnis, finanziell auf eigenen Beinen zu stehen – nicht von anderen abhängig zu sein für den eigenen Lebensunterhalt.",
+                quelle: "Selbstbestimmungstheorie (Deci & Ryan)",
+                quelleDetail: "Finanzielle Autonomie ist eng mit dem psychologischen Grundbedürfnis nach Autonomie verknüpft."
+            },
+            gemeinsame_finanzen: {
+                label: "Gemeinsame Finanzen",
+                kategorie: "Finanzen & Karriere",
+                kategorieColor: "#F59E0B",
+                definition: "Das Bedürfnis, Finanzen mit dem Partner zu teilen – gemeinsame Konten, geteilte Ausgaben, finanzielle Einheit.",
+                quelle: "Beziehungsforschung",
+                quelleDetail: "Gemeinsame Finanzen können Vertrauen und Verbundenheit stärken, erfordern aber klare Kommunikation."
+            },
+            finanzielle_transparenz: {
+                label: "Finanzielle Transparenz",
+                kategorie: "Finanzen & Karriere",
+                kategorieColor: "#F59E0B",
+                definition: "Das Bedürfnis nach Offenheit über finanzielle Angelegenheiten – keine Geheimnisse bei Geld, Schulden oder Ausgaben.",
+                quelle: "Vertrauensforschung",
+                quelleDetail: "Finanzielle Geheimnisse sind einer der häufigsten Konfliktpunkte in Beziehungen."
+            },
+            finanzielle_sicherheit: {
+                label: "Finanzielle Sicherheit",
+                kategorie: "Finanzen & Karriere",
+                kategorieColor: "#F59E0B",
+                definition: "Das Bedürfnis nach materieller Absicherung – genug Ressourcen für Grundbedürfnisse und Notfälle.",
+                quelle: "Maslows Bedürfnispyramide",
+                quelleDetail: "Finanzielle Sicherheit gehört zu den grundlegenden Sicherheitsbedürfnissen."
+            },
+            sparsamkeit: {
+                label: "Sparsamkeit",
+                kategorie: "Finanzen & Karriere",
+                kategorieColor: "#F59E0B",
+                definition: "Das Bedürfnis, mit Geld bewusst und sparsam umzugehen – Ressourcen zu schonen und für die Zukunft vorzusorgen."
+            },
+            grosszuegigkeit: {
+                label: "Großzügigkeit",
+                kategorie: "Finanzen & Karriere",
+                kategorieColor: "#F59E0B",
+                definition: "Das Bedürfnis, großzügig zu geben – Freude am Schenken und Teilen von Ressourcen mit anderen.",
+                quelle: "Positive Psychologie",
+                quelleDetail: "Großzügigkeit ist mit höherem Wohlbefinden und stärkeren sozialen Bindungen verbunden."
+            },
+            berufliche_erfuellung: {
+                label: "Berufliche Erfüllung",
+                kategorie: "Finanzen & Karriere",
+                kategorieColor: "#F59E0B",
+                definition: "Das Bedürfnis, im Beruf Sinn und Zufriedenheit zu finden – Arbeit als Quelle von Erfüllung, nicht nur Einkommen.",
+                quelle: "Arbeitspsychologie",
+                quelleDetail: "Berufliche Erfüllung korreliert stark mit allgemeiner Lebenszufriedenheit."
+            },
+            karriereambition: {
+                label: "Karriereambition",
+                kategorie: "Finanzen & Karriere",
+                kategorieColor: "#F59E0B",
+                definition: "Das Bedürfnis nach beruflichem Aufstieg und Erfolg – Ziele erreichen und sich professionell weiterzuentwickeln.",
+                quelle: "Leistungsmotivation (McClelland)",
+                quelleDetail: "Das Bedürfnis nach Leistung (Need for Achievement) treibt Karriereambitionen an."
+            },
+            work_life_balance: {
+                label: "Work-Life-Balance",
+                kategorie: "Finanzen & Karriere",
+                kategorieColor: "#F59E0B",
+                definition: "Das Bedürfnis nach Ausgewogenheit zwischen Beruf und Privatleben – Zeit und Energie für beide Bereiche.",
+                quelle: "Arbeits- und Organisationspsychologie",
+                quelleDetail: "Ungleichgewicht führt zu Burnout und Beziehungsproblemen."
+            },
+            berufliche_anerkennung: {
+                label: "Berufliche Anerkennung",
+                kategorie: "Finanzen & Karriere",
+                kategorieColor: "#F59E0B",
+                definition: "Das Bedürfnis, für berufliche Leistungen gewürdigt zu werden – Respekt und Wertschätzung im Arbeitsumfeld.",
+                quelle: "Herzbergs Zwei-Faktoren-Theorie",
+                quelleDetail: "Anerkennung ist ein wichtiger Motivationsfaktor am Arbeitsplatz."
+            },
+            zeit_fuer_beziehung: {
+                label: "Zeit für Beziehung",
+                kategorie: "Finanzen & Karriere",
+                kategorieColor: "#F59E0B",
+                definition: "Das Bedürfnis, trotz beruflicher Anforderungen genügend Zeit für die Partnerschaft zu haben.",
+                quelle: "Beziehungsforschung (Gottman)",
+                quelleDetail: "Qualitätszeit ist einer der wichtigsten Faktoren für Beziehungszufriedenheit."
+            },
+            berufliche_flexibilitaet: {
+                label: "Berufliche Flexibilität",
+                kategorie: "Finanzen & Karriere",
+                kategorieColor: "#F59E0B",
+                definition: "Das Bedürfnis nach flexiblen Arbeitszeiten und -orten – Freiheit in der Gestaltung des Arbeitsalltags.",
+                quelle: "New Work & Arbeitspsychologie",
+                quelleDetail: "Flexibilität am Arbeitsplatz erhöht Zufriedenheit und ermöglicht bessere Vereinbarkeit."
+            },
+
+            // ═══════════════════════════════════════════════════════════════════════
+            // KOMMUNIKATIONSSTIL
+            // ═══════════════════════════════════════════════════════════════════════
+            taeglicher_austausch: {
+                label: "Täglicher Austausch",
+                kategorie: "Kommunikationsstil",
+                kategorieColor: "#3B82F6",
+                definition: "Das Bedürfnis nach regelmäßiger, alltäglicher Kommunikation – sich über den Tag auszutauschen und in Verbindung zu bleiben.",
+                quelle: "Beziehungsforschung",
+                quelleDetail: "Regelmäßiger Austausch stärkt die emotionale Verbindung und verhindert Entfremdung."
+            },
+            tiefgehende_gespraeche: {
+                label: "Tiefgehende Gespräche",
+                kategorie: "Kommunikationsstil",
+                kategorieColor: "#3B82F6",
+                definition: "Das Bedürfnis nach bedeutsamen, tiefgründigen Gesprächen – über Gefühle, Werte, Träume und existenzielle Themen.",
+                quelle: "Intimität & Selbstoffenbarung",
+                quelleDetail: "Tiefe Gespräche fördern emotionale Intimität und gegenseitiges Verständnis."
+            },
+            small_talk: {
+                label: "Small Talk",
+                kategorie: "Kommunikationsstil",
+                kategorieColor: "#3B82F6",
+                definition: "Das Bedürfnis nach leichter, unverbindlicher Konversation – entspannter Austausch ohne tiefe Themen."
+            },
+            stille_gemeinsam: {
+                label: "Stille gemeinsam",
+                kategorie: "Kommunikationsstil",
+                kategorieColor: "#3B82F6",
+                definition: "Das Bedürfnis, auch in Stille zusammen sein zu können – Verbundenheit ohne Worte, komfortables Schweigen.",
+                quelle: "Bindungsforschung",
+                quelleDetail: "Sichere Bindung ermöglicht es, auch in Stille verbunden zu sein, ohne Unbehagen."
+            },
+            verbale_verbindung: {
+                label: "Verbale Verbindung",
+                kategorie: "Kommunikationsstil",
+                kategorieColor: "#3B82F6",
+                definition: "Das Bedürfnis, sich durch Worte zu verbinden – Sprache als primäres Mittel der Nähe und des Ausdrucks."
+            },
+            zuhoeren: {
+                label: "Zuhören",
+                kategorie: "Kommunikationsstil",
+                kategorieColor: "#3B82F6",
+                definition: "Das Bedürfnis, wirklich gehört zu werden – aktives, aufmerksames Zuhören ohne Unterbrechung oder vorschnelle Ratschläge.",
+                quelle: "Gewaltfreie Kommunikation (Rosenberg)",
+                quelleDetail: "Empathisches Zuhören ist die Grundlage für echtes Verstehen und Verbindung."
+            },
+            emotionale_offenheit: {
+                label: "Emotionale Offenheit",
+                kategorie: "Kommunikationsstil",
+                kategorieColor: "#3B82F6",
+                definition: "Das Bedürfnis, Gefühle offen zu teilen und zu empfangen – emotionale Transparenz in der Beziehung.",
+                quelle: "Emotionsfokussierte Therapie (Johnson)",
+                quelleDetail: "Emotionale Offenheit ist zentral für sichere Bindung und Intimität."
+            },
+            gefuehle_zeigen: {
+                label: "Gefühle zeigen",
+                kategorie: "Kommunikationsstil",
+                kategorieColor: "#3B82F6",
+                definition: "Das Bedürfnis, eigene Emotionen ausdrücken zu können – Tränen, Freude, Wut authentisch zu zeigen."
+            },
+            verletzlichkeit: {
+                label: "Verletzlichkeit zulassen",
+                kategorie: "Kommunikationsstil",
+                kategorieColor: "#3B82F6",
+                definition: "Das Bedürfnis, sich verletzlich zeigen zu dürfen – Schwächen und Unsicherheiten teilen zu können.",
+                quelle: "Brené Brown – Verletzlichkeitsforschung",
+                quelleDetail: "Verletzlichkeit ist der Geburtsort von Liebe, Zugehörigkeit und Freude."
+            },
+            emotionale_zurueckhaltung: {
+                label: "Emotionale Zurückhaltung",
+                kategorie: "Kommunikationsstil",
+                kategorieColor: "#3B82F6",
+                definition: "Das Bedürfnis nach Raum für emotionale Privatsphäre – nicht alles teilen zu müssen, Gefühle zu verarbeiten bevor man sie teilt."
+            },
+            emotionale_sicherheit: {
+                label: "Emotionale Sicherheit",
+                kategorie: "Kommunikationsstil",
+                kategorieColor: "#3B82F6",
+                definition: "Das Bedürfnis, sich emotional sicher zu fühlen – zu wissen, dass Gefühle nicht abgewertet oder gegen einen verwendet werden.",
+                quelle: "Bindungstheorie",
+                quelleDetail: "Emotionale Sicherheit ist die Grundlage für sichere Bindung und offene Kommunikation."
+            },
+            gefuehle_teilen: {
+                label: "Gefühle teilen",
+                kategorie: "Kommunikationsstil",
+                kategorieColor: "#3B82F6",
+                definition: "Das Bedürfnis, emotionale Erlebnisse mit dem Partner zu teilen – gemeinsam zu fühlen und mitzuerleben."
+            },
+            konfliktklaerung: {
+                label: "Konfliktklärung",
+                kategorie: "Kommunikationsstil",
+                kategorieColor: "#3B82F6",
+                definition: "Das Bedürfnis, Konflikte offen anzusprechen und zu lösen – nicht unter den Teppich kehren, sondern klären.",
+                quelle: "Gottman-Forschung",
+                quelleDetail: "Die Art, wie Paare mit Konflikten umgehen, ist entscheidend für die Beziehungsqualität."
+            },
+            aussprache: {
+                label: "Aussprache",
+                kategorie: "Kommunikationsstil",
+                kategorieColor: "#3B82F6",
+                definition: "Das Bedürfnis, Dinge auszusprechen – Missverständnisse zu klären und einen Abschluss zu finden."
+            },
+            konflikt_vermeiden: {
+                label: "Konflikt vermeiden",
+                kategorie: "Kommunikationsstil",
+                kategorieColor: "#3B82F6",
+                definition: "Das Bedürfnis, Konfrontationen zu minimieren – Harmonie zu bewahren und Streit aus dem Weg zu gehen."
+            },
+            streitkultur: {
+                label: "Streitkultur",
+                kategorie: "Kommunikationsstil",
+                kategorieColor: "#3B82F6",
+                definition: "Das Bedürfnis nach konstruktivem Streiten – Konflikte fair und respektvoll auszutragen.",
+                quelle: "Paartherapie-Forschung",
+                quelleDetail: "Eine gesunde Streitkultur ermöglicht Wachstum und tieferes Verständnis."
+            },
+            versoehnlichkeit: {
+                label: "Versöhnlichkeit",
+                kategorie: "Kommunikationsstil",
+                kategorieColor: "#3B82F6",
+                definition: "Das Bedürfnis nach Versöhnung nach Konflikten – wieder zueinander zu finden und Frieden zu schließen.",
+                quelle: "Vergebungsforschung",
+                quelleDetail: "Versöhnlichkeit ist essentiell für langfristige Beziehungszufriedenheit."
+            },
+
+            // ═══════════════════════════════════════════════════════════════════════
+            // SOZIALES LEBEN
+            // ═══════════════════════════════════════════════════════════════════════
+            soziale_energie: {
+                label: "Soziale Energie",
+                kategorie: "Soziales Leben",
+                kategorieColor: "#8B5CF6",
+                definition: "Das Bedürfnis nach einem bestimmten Level sozialer Interaktion – manche brauchen mehr, manche weniger.",
+                quelle: "Persönlichkeitspsychologie (Extraversion)",
+                quelleDetail: "Das Kontinuum Introversion-Extraversion beschreibt unterschiedliche soziale Energiebedürfnisse."
+            },
+            geselligkeit: {
+                label: "Geselligkeit",
+                kategorie: "Soziales Leben",
+                kategorieColor: "#8B5CF6",
+                definition: "Das Bedürfnis nach Gesellschaft und sozialem Beisammensein – Freude an Gruppen und gemeinsamen Aktivitäten."
+            },
+            ruhe_von_menschen: {
+                label: "Ruhe von Menschen",
+                kategorie: "Soziales Leben",
+                kategorieColor: "#8B5CF6",
+                definition: "Das Bedürfnis nach Pausen von sozialen Interaktionen – Zeit ohne Menschen, um sich zu erholen."
+            },
+            allein_aufladen: {
+                label: "Allein aufladen",
+                kategorie: "Soziales Leben",
+                kategorieColor: "#8B5CF6",
+                definition: "Das Bedürfnis, durch Alleinsein Energie zu tanken – Introversion als Kraftquelle.",
+                quelle: "Introversionsforschung (Susan Cain)",
+                quelleDetail: "Introvertierte Menschen regenerieren ihre Energie durch Alleinsein."
+            },
+            menschen_treffen: {
+                label: "Menschen treffen",
+                kategorie: "Soziales Leben",
+                kategorieColor: "#8B5CF6",
+                definition: "Das Bedürfnis, regelmäßig andere Menschen zu sehen – soziale Kontakte pflegen und neue Menschen kennenlernen."
+            },
+            kleine_gruppen: {
+                label: "Kleine Gruppen",
+                kategorie: "Soziales Leben",
+                kategorieColor: "#8B5CF6",
+                definition: "Das Bedürfnis nach Intimität kleiner Gruppen – tiefere Gespräche statt oberflächlicher Großgruppeninteraktion."
+            },
+            zeit_fuer_sich: {
+                label: "Zeit für sich",
+                kategorie: "Soziales Leben",
+                kategorieColor: "#8B5CF6",
+                definition: "Das Bedürfnis nach persönlicher Zeit ohne den Partner – Raum für individuelle Interessen und Selbstfürsorge.",
+                quelle: "Selbstbestimmungstheorie",
+                quelleDetail: "Autonomie, auch in Beziehungen, ist ein psychologisches Grundbedürfnis."
+            },
+            eigene_hobbys: {
+                label: "Eigene Hobbys",
+                kategorie: "Soziales Leben",
+                kategorieColor: "#8B5CF6",
+                definition: "Das Bedürfnis, eigene Interessen und Hobbys zu pflegen – Individualität neben der Partnerschaft bewahren."
+            },
+            gemeinsame_zeit: {
+                label: "Gemeinsame Zeit",
+                kategorie: "Soziales Leben",
+                kategorieColor: "#8B5CF6",
+                definition: "Das Bedürfnis nach Qualitätszeit zu zweit – bewusste gemeinsame Momente und Aktivitäten.",
+                quelle: "Liebessprachen (Gary Chapman)",
+                quelleDetail: "Qualitätszeit ist eine der fünf Liebessprachen."
+            },
+            partnerzeit: {
+                label: "Partnerzeit",
+                kategorie: "Soziales Leben",
+                kategorieColor: "#8B5CF6",
+                definition: "Das Bedürfnis nach exklusiver Zeit mit dem Partner – ungeteilte Aufmerksamkeit und Präsenz."
+            },
+            eigene_interessen: {
+                label: "Eigene Interessen",
+                kategorie: "Soziales Leben",
+                kategorieColor: "#8B5CF6",
+                definition: "Das Bedürfnis, persönliche Interessen zu verfolgen – Identität jenseits der Beziehung."
+            },
+            eigene_freunde: {
+                label: "Eigene Freunde",
+                kategorie: "Soziales Leben",
+                kategorieColor: "#8B5CF6",
+                definition: "Das Bedürfnis nach eigenen Freundschaften außerhalb der Beziehung – separate soziale Netzwerke."
+            },
+            gemeinsame_freunde: {
+                label: "Gemeinsame Freunde",
+                kategorie: "Soziales Leben",
+                kategorieColor: "#8B5CF6",
+                definition: "Das Bedürfnis nach Freunden, die man als Paar teilt – gemeinsame soziale Welt."
+            },
+            freundeskreis_teilen: {
+                label: "Freundeskreis teilen",
+                kategorie: "Soziales Leben",
+                kategorieColor: "#8B5CF6",
+                definition: "Das Bedürfnis, den Partner in den eigenen Freundeskreis zu integrieren – Welten zusammenführen."
+            },
+            soziales_netz: {
+                label: "Soziales Netz",
+                kategorie: "Soziales Leben",
+                kategorieColor: "#8B5CF6",
+                definition: "Das Bedürfnis nach einem stabilen sozialen Netzwerk – Unterstützung durch Freunde und Familie.",
+                quelle: "Soziale Unterstützungsforschung",
+                quelleDetail: "Ein starkes soziales Netz ist ein wichtiger Schutzfaktor für psychische Gesundheit."
+            },
+            freunde_pflegen: {
+                label: "Freunde pflegen",
+                kategorie: "Soziales Leben",
+                kategorieColor: "#8B5CF6",
+                definition: "Das Bedürfnis, Freundschaften aktiv zu pflegen – Zeit und Energie in Beziehungen außerhalb der Partnerschaft zu investieren."
+            },
+            neue_freundschaften: {
+                label: "Neue Freundschaften",
+                kategorie: "Soziales Leben",
+                kategorieColor: "#8B5CF6",
+                definition: "Das Bedürfnis, offen für neue Bekanntschaften zu sein – Freundeskreis erweitern und neue Menschen kennenlernen."
+            },
+
+            // ═══════════════════════════════════════════════════════════════════════
+            // INTIMITÄT & ROMANTIK
+            // ═══════════════════════════════════════════════════════════════════════
+            koerpernaehe: {
+                label: "Körpernähe",
+                kategorie: "Intimität & Romantik",
+                kategorieColor: "#EC4899",
+                definition: "Das Bedürfnis nach physischer Nähe zum Partner – körperlich beieinander sein, spürbare Präsenz.",
+                quelle: "Bindungstheorie & Körperpsychologie",
+                quelleDetail: "Körperliche Nähe aktiviert das Bindungssystem und fördert Oxytocin-Ausschüttung."
+            },
+            kuscheln: {
+                label: "Kuscheln",
+                kategorie: "Intimität & Romantik",
+                kategorieColor: "#EC4899",
+                definition: "Das Bedürfnis nach zärtlichem körperlichem Kontakt – Umarmungen, Anschmiegen, Geborgenheit durch Berührung."
+            },
+            physische_distanz: {
+                label: "Physische Distanz",
+                kategorie: "Intimität & Romantik",
+                kategorieColor: "#EC4899",
+                definition: "Das Bedürfnis nach körperlichem Abstand – Raum zwischen sich und anderen als Komfortzone."
+            },
+            koerperkontakt: {
+                label: "Körperkontakt",
+                kategorie: "Intimität & Romantik",
+                kategorieColor: "#EC4899",
+                definition: "Das Bedürfnis nach regelmäßigem körperlichem Kontakt – Berührung als Sprache der Verbundenheit.",
+                quelle: "Liebessprachen (Gary Chapman)",
+                quelleDetail: "Körperliche Berührung ist eine der fünf Liebessprachen."
+            },
+            umarmungen: {
+                label: "Umarmungen",
+                kategorie: "Intimität & Romantik",
+                kategorieColor: "#EC4899",
+                definition: "Das Bedürfnis, umarmt zu werden und zu umarmen – einfache, tiefe Gesten der Zuneigung."
+            },
+            hand_halten: {
+                label: "Hand halten",
+                kategorie: "Intimität & Romantik",
+                kategorieColor: "#EC4899",
+                definition: "Das Bedürfnis nach Händchenhalten – öffentliche und private Geste der Verbundenheit."
+            },
+            romantische_gesten: {
+                label: "Romantische Gesten",
+                kategorie: "Intimität & Romantik",
+                kategorieColor: "#EC4899",
+                definition: "Das Bedürfnis nach romantischen Ausdrucksformen – Blumen, Briefe, überraschende Gesten der Liebe."
+            },
+            ueberraschungen: {
+                label: "Überraschungen",
+                kategorie: "Intimität & Romantik",
+                kategorieColor: "#EC4899",
+                definition: "Das Bedürfnis, überrascht zu werden oder zu überraschen – Spannung und Freude durch Unerwartetes."
+            },
+            dates: {
+                label: "Dates",
+                kategorie: "Intimität & Romantik",
+                kategorieColor: "#EC4899",
+                definition: "Das Bedürfnis nach bewussten Verabredungen – Zeit zu zweit außerhalb des Alltags, auch in langen Beziehungen.",
+                quelle: "Beziehungsforschung",
+                quelleDetail: "Regelmäßige Dates erhalten die Romantik und verhindern Alltagstrott."
+            },
+            alltags_romantik: {
+                label: "Alltags-Romantik",
+                kategorie: "Intimität & Romantik",
+                kategorieColor: "#EC4899",
+                definition: "Das Bedürfnis nach kleinen romantischen Momenten im Alltag – liebevolle Gesten zwischendurch."
+            },
+            aufmerksamkeiten: {
+                label: "Aufmerksamkeiten",
+                kategorie: "Intimität & Romantik",
+                kategorieColor: "#EC4899",
+                definition: "Das Bedürfnis nach kleinen Aufmerksamkeiten – Geschenke, Komplimente, Zeichen der Wertschätzung."
+            },
+            liebesbekundungen: {
+                label: "Liebesbekundungen",
+                kategorie: "Intimität & Romantik",
+                kategorieColor: "#EC4899",
+                definition: "Das Bedürfnis, Liebe ausgedrückt zu bekommen – 'Ich liebe dich' hören und sagen."
+            },
+            sexuelle_haeufigkeit: {
+                label: "Sexuelle Häufigkeit",
+                kategorie: "Intimität & Romantik",
+                kategorieColor: "#EC4899",
+                definition: "Das Bedürfnis nach einer bestimmten Frequenz sexueller Intimität – unterschiedliche Libido-Level.",
+                quelle: "Sexualforschung",
+                quelleDetail: "Unterschiedliche sexuelle Bedürfnisse sind einer der häufigsten Beziehungskonflikte."
+            },
+            sexuelle_intimiaet: {
+                label: "Sexuelle Intimität",
+                kategorie: "Intimität & Romantik",
+                kategorieColor: "#EC4899",
+                definition: "Das Bedürfnis nach sexueller Verbindung als Form tiefer Intimität – Sex als Ausdruck von Liebe und Nähe."
+            },
+            koerperliche_lust: {
+                label: "Körperliche Lust",
+                kategorie: "Intimität & Romantik",
+                kategorieColor: "#EC4899",
+                definition: "Das Bedürfnis nach körperlichem Vergnügen und Lust – Genuss und Befriedigung durch Sexualität."
+            },
+            sexuelle_experimentierfreude: {
+                label: "Sexuelle Experimentierfreude",
+                kategorie: "Intimität & Romantik",
+                kategorieColor: "#EC4899",
+                definition: "Das Bedürfnis, sexuell Neues auszuprobieren – Neugier und Offenheit für Variation."
+            },
+            sexuelle_verbindung: {
+                label: "Sexuelle Verbindung",
+                kategorie: "Intimität & Romantik",
+                kategorieColor: "#EC4899",
+                definition: "Das Bedürfnis, durch Sexualität eine tiefe Verbindung zu spüren – Sex als spirituelle und emotionale Erfahrung."
+            },
+            sexuelle_zufriedenheit: {
+                label: "Sexuelle Zufriedenheit",
+                kategorie: "Intimität & Romantik",
+                kategorieColor: "#EC4899",
+                definition: "Das Bedürfnis nach erfüllender Sexualität – dass beide Partner zufrieden und erfüllt sind."
+            },
+
+            // ═══════════════════════════════════════════════════════════════════════
+            // WERTE & HALTUNGEN
+            // ═══════════════════════════════════════════════════════════════════════
+            spiritualitaet: {
+                label: "Spiritualität",
+                kategorie: "Werte & Haltungen",
+                kategorieColor: "#6366F1",
+                definition: "Das Bedürfnis nach spiritueller Erfahrung und Praxis – Verbindung zu etwas Größerem als sich selbst.",
+                quelle: "Religionspsychologie",
+                quelleDetail: "Spiritualität ist mit Sinnerleben und Wohlbefinden verbunden, unabhängig von Religion."
+            },
+            glaubenspraxis: {
+                label: "Glaubenspraxis",
+                kategorie: "Werte & Haltungen",
+                kategorieColor: "#6366F1",
+                definition: "Das Bedürfnis, den eigenen Glauben aktiv zu praktizieren – Rituale, Gebete, religiöse Gemeinschaft."
+            },
+            religioese_gemeinschaft: {
+                label: "Religiöse Gemeinschaft",
+                kategorie: "Werte & Haltungen",
+                kategorieColor: "#6366F1",
+                definition: "Das Bedürfnis, Teil einer religiösen Gemeinde zu sein – geteilter Glaube und spirituelle Gemeinschaft."
+            },
+            saekularitaet: {
+                label: "Säkularität",
+                kategorie: "Werte & Haltungen",
+                kategorieColor: "#6366F1",
+                definition: "Das Bedürfnis nach einem weltlichen, nicht-religiösen Lebensansatz – Sinn ohne Religion finden."
+            },
+            sinnsuche: {
+                label: "Sinnsuche",
+                kategorie: "Werte & Haltungen",
+                kategorieColor: "#6366F1",
+                definition: "Das Bedürfnis, den Sinn des Lebens zu erforschen – existenzielle Fragen zu stellen und Antworten zu suchen.",
+                quelle: "Existenzpsychologie (Viktor Frankl)",
+                quelleDetail: "Die Suche nach Sinn ist nach Frankl die primäre Motivation des Menschen."
+            },
+            transzendenz: {
+                label: "Transzendenz",
+                kategorie: "Werte & Haltungen",
+                kategorieColor: "#6366F1",
+                definition: "Das Bedürfnis, über das Alltägliche hinauszugehen – Erfahrungen, die über das Selbst hinausweisen.",
+                quelle: "Maslow – Selbsttranszendenz",
+                quelleDetail: "Maslow fügte später Transzendenz als höchste Stufe über Selbstverwirklichung hinzu."
+            },
+            traditionelle_werte: {
+                label: "Traditionelle Werte",
+                kategorie: "Werte & Haltungen",
+                kategorieColor: "#6366F1",
+                definition: "Das Bedürfnis nach Bewährtem – Werte und Lebensweisen, die über Generationen weitergegeben wurden."
+            },
+            moderne_lebensweise: {
+                label: "Moderne Lebensweise",
+                kategorie: "Werte & Haltungen",
+                kategorieColor: "#6366F1",
+                definition: "Das Bedürfnis nach zeitgemäßen, progressiven Lebensformen – offen für neue Wege des Zusammenlebens."
+            },
+            konservative_werte: {
+                label: "Konservative Werte",
+                kategorie: "Werte & Haltungen",
+                kategorieColor: "#6366F1",
+                definition: "Das Bedürfnis nach Bewahrung von Tradition – Stabilität durch bewährte Werte und Strukturen."
+            },
+            progressive_werte: {
+                label: "Progressive Werte",
+                kategorie: "Werte & Haltungen",
+                kategorieColor: "#6366F1",
+                definition: "Das Bedürfnis nach gesellschaftlichem Fortschritt – Veränderung zum Besseren, soziale Gerechtigkeit."
+            },
+            kulturelle_tradition: {
+                label: "Kulturelle Tradition",
+                kategorie: "Werte & Haltungen",
+                kategorieColor: "#6366F1",
+                definition: "Das Bedürfnis, kulturelle Traditionen zu pflegen – Bräuche, Feste und Rituale der eigenen Kultur."
+            },
+            offenheit_fuer_neues: {
+                label: "Offenheit für Neues",
+                kategorie: "Werte & Haltungen",
+                kategorieColor: "#6366F1",
+                definition: "Das Bedürfnis nach Offenheit gegenüber neuen Ideen und Erfahrungen – Neugier und Flexibilität.",
+                quelle: "Big Five – Offenheit für Erfahrungen",
+                quelleDetail: "Offenheit ist ein Persönlichkeitsmerkmal mit Einfluss auf Beziehungskompatibilität."
+            },
+            umweltverantwortung: {
+                label: "Umweltverantwortung",
+                kategorie: "Werte & Haltungen",
+                kategorieColor: "#6366F1",
+                definition: "Das Bedürfnis, Verantwortung für die Umwelt zu übernehmen – nachhaltig leben und handeln."
+            },
+            nachhaltigkeit: {
+                label: "Nachhaltigkeit",
+                kategorie: "Werte & Haltungen",
+                kategorieColor: "#6366F1",
+                definition: "Das Bedürfnis, ressourcenschonend zu leben – für kommende Generationen zu erhalten."
+            },
+            oekologisches_bewusstsein: {
+                label: "Ökologisches Bewusstsein",
+                kategorie: "Werte & Haltungen",
+                kategorieColor: "#6366F1",
+                definition: "Das Bedürfnis, ökologische Zusammenhänge zu beachten – die Natur als Teil des eigenen Wertsystems."
+            },
+            pragmatismus: {
+                label: "Pragmatismus",
+                kategorie: "Werte & Haltungen",
+                kategorieColor: "#6366F1",
+                definition: "Das Bedürfnis nach praktischen, funktionierenden Lösungen – Ideologie weniger wichtig als Ergebnis."
+            },
+            klimaschutz: {
+                label: "Klimaschutz",
+                kategorie: "Werte & Haltungen",
+                kategorieColor: "#6366F1",
+                definition: "Das Bedürfnis, aktiv zum Klimaschutz beizutragen – Handeln gegen den Klimawandel."
+            },
+            ressourcenschonung: {
+                label: "Ressourcenschonung",
+                kategorie: "Werte & Haltungen",
+                kategorieColor: "#6366F1",
+                definition: "Das Bedürfnis, sparsam mit Ressourcen umzugehen – weniger verbrauchen, wiederverwenden, recyceln."
+            },
+
+            // ═══════════════════════════════════════════════════════════════════════
+            // PRAKTISCHES LEBEN
+            // ═══════════════════════════════════════════════════════════════════════
+            ordnungssinn: {
+                label: "Ordnungssinn",
+                kategorie: "Praktisches Leben",
+                kategorieColor: "#14B8A6",
+                definition: "Das Bedürfnis nach Ordnung und Aufgeräumtheit – klare Strukturen im Wohnumfeld.",
+                quelle: "Persönlichkeitspsychologie (Gewissenhaftigkeit)",
+                quelleDetail: "Ordnungsbedürfnis ist Teil des Persönlichkeitsmerkmals Gewissenhaftigkeit."
+            },
+            sauberkeit: {
+                label: "Sauberkeit",
+                kategorie: "Praktisches Leben",
+                kategorieColor: "#14B8A6",
+                definition: "Das Bedürfnis nach Reinlichkeit – ein sauberes Zuhause als Wohlfühlfaktor."
+            },
+            struktur: {
+                label: "Struktur",
+                kategorie: "Praktisches Leben",
+                kategorieColor: "#14B8A6",
+                definition: "Das Bedürfnis nach klaren Abläufen und Routinen – Vorhersehbarkeit im Alltag."
+            },
+            chaos_toleranz: {
+                label: "Chaos-Toleranz",
+                kategorie: "Praktisches Leben",
+                kategorieColor: "#14B8A6",
+                definition: "Das Bedürfnis, mit Unordnung leben zu können – Flexibilität gegenüber Chaos."
+            },
+            organisiert_sein: {
+                label: "Organisiert sein",
+                kategorie: "Praktisches Leben",
+                kategorieColor: "#14B8A6",
+                definition: "Das Bedürfnis, Dinge geplant und organisiert zu haben – Termine, Aufgaben, Alltag im Griff."
+            },
+            flexibilitaet_haushalt: {
+                label: "Flexibilität im Haushalt",
+                kategorie: "Praktisches Leben",
+                kategorieColor: "#14B8A6",
+                definition: "Das Bedürfnis nach flexibler Aufteilung von Haushaltsaufgaben – spontan und situationsabhängig."
+            },
+            reisen: {
+                label: "Reisen",
+                kategorie: "Praktisches Leben",
+                kategorieColor: "#14B8A6",
+                definition: "Das Bedürfnis zu reisen und neue Orte zu entdecken – Abenteuer und Horizonterweiterung.",
+                quelle: "Neugierforschung",
+                quelleDetail: "Reisen befriedigt das Bedürfnis nach Neuheit und Stimulation."
+            },
+            abenteuer: {
+                label: "Abenteuer",
+                kategorie: "Praktisches Leben",
+                kategorieColor: "#14B8A6",
+                definition: "Das Bedürfnis nach aufregenden Erlebnissen – Nervenkitzel und Unbekanntes."
+            },
+            neue_orte_entdecken: {
+                label: "Neue Orte entdecken",
+                kategorie: "Praktisches Leben",
+                kategorieColor: "#14B8A6",
+                definition: "Das Bedürfnis, unbekannte Orte zu erkunden – Neugier auf fremde Länder und Kulturen."
+            },
+            zuhause_bleiben: {
+                label: "Zuhause bleiben",
+                kategorie: "Praktisches Leben",
+                kategorieColor: "#14B8A6",
+                definition: "Das Bedürfnis, die eigenen vier Wände als Rückzugsort zu genießen – Homebodymentalität."
+            },
+            urlaub: {
+                label: "Urlaub",
+                kategorie: "Praktisches Leben",
+                kategorieColor: "#14B8A6",
+                definition: "Das Bedürfnis nach regelmäßigen Auszeiten vom Alltag – Erholung durch Urlaub."
+            },
+            fernweh: {
+                label: "Fernweh",
+                kategorie: "Praktisches Leben",
+                kategorieColor: "#14B8A6",
+                definition: "Das Bedürfnis, in die Ferne zu schweifen – Sehnsucht nach fernen Ländern und Kulturen."
+            },
+            heimatverbundenheit: {
+                label: "Heimatverbundenheit",
+                kategorie: "Praktisches Leben",
+                kategorieColor: "#14B8A6",
+                definition: "Das Bedürfnis nach Verbundenheit mit der Heimat – Verwurzelung am Geburtsort oder Wohnort."
+            },
+
+            // ═══════════════════════════════════════════════════════════════════════
+            // PIRSIG & OSHO ERWEITERUNGEN - Lebensplanung
+            // ═══════════════════════════════════════════════════════════════════════
+            biologisches_muster: {
+                label: "Biologisches Muster",
+                kategorie: "Lebensplanung",
+                kategorieColor: "#10B981",
+                definition: "Das Bedürfnis nach biologischer Kontinuität – Fortpflanzung und Stammeszugehörigkeit als natürliches Muster.",
+                quelle: "Robert M. Pirsig – Qualitätsebenen",
+                quelleDetail: "Das biologische Qualitätsmuster repräsentiert evolutionär entstandene Bedürfnisse."
+            },
+            soziales_muster: {
+                label: "Soziales Muster",
+                kategorie: "Lebensplanung",
+                kategorieColor: "#10B981",
+                definition: "Das Bedürfnis nach sozialen Strukturen – Institutionen, Traditionen und gesellschaftliche Ordnung.",
+                quelle: "Robert M. Pirsig – Lila",
+                quelleDetail: "Soziale Muster entstehen aus biologischen und ermöglichen Kultur und Zivilisation."
+            },
+            statische_stabilitaet: {
+                label: "Statische Stabilität",
+                kategorie: "Lebensplanung",
+                kategorieColor: "#10B981",
+                definition: "Das Bedürfnis nach festen, verlässlichen Mustern – Vorhersehbarkeit und Struktur im Leben.",
+                quelle: "Robert M. Pirsig – Statische vs. Dynamische Qualität",
+                quelleDetail: "Statische Qualität bewahrt, was funktioniert und gibt Sicherheit."
+            },
+            qualitaet_der_fuersorge: {
+                label: "Qualität der Fürsorge",
+                kategorie: "Lebensplanung",
+                kategorieColor: "#10B981",
+                definition: "Das Bedürfnis nach sorgfältiger, achtsamer Planung und Fürsorge – Verantwortung mit Hingabe.",
+                quelle: "Robert M. Pirsig – Care",
+                quelleDetail: "Pirsig betont 'Care' (Sorgfalt) als wesentlich für Qualität in allem Handeln."
+            },
+            familien_rebellion: {
+                label: "Familien-Rebellion",
+                kategorie: "Lebensplanung",
+                kategorieColor: "#10B981",
+                definition: "Das Bedürfnis, gegen traditionelle Familienstrukturen zu rebellieren – eigene Wege der Verbindung finden.",
+                quelle: "Osho – Rebellion & Freiheit",
+                quelleDetail: "Osho sah die traditionelle Familie oft als Quelle von Konditionierung und Unfreiheit."
+            },
+            zorba_das_kind: {
+                label: "Zorba das Kind",
+                kategorie: "Lebensplanung",
+                kategorieColor: "#10B981",
+                definition: "Das Bedürfnis nach weltlicher Freude am Familienleben – Genuss und Präsenz im Hier und Jetzt.",
+                quelle: "Osho – Zorba der Buddha",
+                quelleDetail: "Die kindliche Qualität von Zorba verbindet Lebensfreude mit Familienglück."
+            },
+            nicht_anhaften_an_familie: {
+                label: "Nicht-Anhaften an Familie",
+                kategorie: "Lebensplanung",
+                kategorieColor: "#10B981",
+                definition: "Das Bedürfnis nach Liebe ohne Besitzanspruch – Familie haben, ohne daran zu klammern.",
+                quelle: "Osho – Nicht-Anhaftung",
+                quelleDetail: "Oshos Konzept der Nicht-Anhaftung erlaubt Liebe ohne die Last des Besitzens."
+            },
+            bewusste_elternschaft: {
+                label: "Bewusste Elternschaft",
+                kategorie: "Lebensplanung",
+                kategorieColor: "#10B981",
+                definition: "Das Bedürfnis nach achtsamer, nicht-konditionierender Erziehung – Kinder als eigenständige Wesen ehren.",
+                quelle: "Osho – Bewusstes Elternsein",
+                quelleDetail: "Kinder begleiten ohne zu formen, ihre natürliche Entfaltung unterstützen."
+            },
+            commune_statt_kernfamilie: {
+                label: "Kommune statt Kernfamilie",
+                kategorie: "Lebensplanung",
+                kategorieColor: "#10B981",
+                definition: "Das Bedürfnis nach Gemeinschaftsleben statt isolierter Kleinfamilie – erweiterte Wahlfamilie.",
+                quelle: "Osho – Kommune",
+                quelleDetail: "Osho propagierte das Ashram-Leben als Alternative zur einengenden Kernfamilie."
+            },
+
+            // ═══════════════════════════════════════════════════════════════════════
+            // PIRSIG & OSHO ERWEITERUNGEN - Finanzen & Karriere
+            // ═══════════════════════════════════════════════════════════════════════
+            gumption: {
+                label: "Gumption",
+                kategorie: "Finanzen & Karriere",
+                kategorieColor: "#F59E0B",
+                definition: "Das Bedürfnis nach innerer Motivation und Enthusiasmus – Flow und Begeisterung in der Arbeit.",
+                quelle: "Robert M. Pirsig – Gumption Traps",
+                quelleDetail: "Gumption ist die psychische Benzin, die uns antreibt – ohne sie bleiben wir stecken."
+            },
+            qualitaet_der_arbeit: {
+                label: "Qualität der Arbeit",
+                kategorie: "Finanzen & Karriere",
+                kategorieColor: "#F59E0B",
+                definition: "Das Bedürfnis nach handwerklicher Exzellenz – Meisterschaft und Perfektion im eigenen Tun.",
+                quelle: "Robert M. Pirsig – Zen und die Kunst",
+                quelleDetail: "Pirsigs zentrales Thema: Qualität als das, was die Welt verbessert."
+            },
+            intellektuelles_muster: {
+                label: "Intellektuelles Muster",
+                kategorie: "Finanzen & Karriere",
+                kategorieColor: "#F59E0B",
+                definition: "Das Bedürfnis nach konzeptueller Arbeit – Verstehen, Systematisieren und geistige Durchdringung.",
+                quelle: "Robert M. Pirsig – Qualitätsebenen",
+                quelleDetail: "Intellektuelle Muster stehen über sozialen und ermöglichen kritisches Denken."
+            },
+            dynamische_evolution: {
+                label: "Dynamische Evolution",
+                kategorie: "Finanzen & Karriere",
+                kategorieColor: "#F59E0B",
+                definition: "Das Bedürfnis nach beruflicher Weiterentwicklung – Wachstum, Innovation und Veränderung.",
+                quelle: "Robert M. Pirsig – Dynamische Qualität",
+                quelleDetail: "Dynamische Qualität treibt Evolution und Kreativität an."
+            },
+            klassisches_verstehen: {
+                label: "Klassisches Verstehen",
+                kategorie: "Finanzen & Karriere",
+                kategorieColor: "#F59E0B",
+                definition: "Das Bedürfnis nach analytischem, strukturiertem Arbeiten – Logik, Systematik und rationales Vorgehen.",
+                quelle: "Robert M. Pirsig – Klassisch vs. Romantisch",
+                quelleDetail: "Die klassische Sichtweise sieht die zugrundeliegende Form, nicht nur die Oberfläche."
+            },
+            arbeit_als_meditation: {
+                label: "Arbeit als Meditation",
+                kategorie: "Finanzen & Karriere",
+                kategorieColor: "#F59E0B",
+                definition: "Das Bedürfnis, Arbeit als spirituelle Praxis zu erleben – volle Präsenz und Achtsamkeit im Tun.",
+                quelle: "Osho – Meditatives Arbeiten",
+                quelleDetail: "Jede Handlung kann Meditation werden, wenn sie mit totaler Bewusstheit geschieht."
+            },
+            nicht_karriere: {
+                label: "Nicht-Karriere",
+                kategorie: "Finanzen & Karriere",
+                kategorieColor: "#F59E0B",
+                definition: "Das Bedürfnis, Karriere-Ambitionen loszulassen – nicht durch Status oder Position definiert zu sein.",
+                quelle: "Osho – Nicht-Ehrgeiz",
+                quelleDetail: "Osho sah Karrierestreben als Ego-Spiel, das von wahrem Glück ablenkt."
+            },
+            zorba_der_unternehmer: {
+                label: "Zorba der Unternehmer",
+                kategorie: "Finanzen & Karriere",
+                kategorieColor: "#F59E0B",
+                definition: "Das Bedürfnis nach weltlichem Erfolg verbunden mit Spiritualität – reich an Erfahrung und Geld.",
+                quelle: "Osho – Zorba der Buddha",
+                quelleDetail: "Zorba genießt das Materielle, Buddha transzendiert es – beides zusammen ist möglich."
+            },
+            nicht_anhaften_an_geld: {
+                label: "Nicht-Anhaften an Geld",
+                kategorie: "Finanzen & Karriere",
+                kategorieColor: "#F59E0B",
+                definition: "Das Bedürfnis nach finanzieller Freiheit durch innere Unabhängigkeit – Geld haben ohne davon besessen zu sein.",
+                quelle: "Osho – Nicht-Anhaftung",
+                quelleDetail: "Geld kann fließen, ohne dass wir uns daran klammern oder es fürchten."
+            },
+            kreative_selbstverwirklichung: {
+                label: "Kreative Selbstverwirklichung",
+                kategorie: "Finanzen & Karriere",
+                kategorieColor: "#F59E0B",
+                definition: "Das Bedürfnis, Arbeit als kreativen Ausdruck zu leben – nicht für Geld, sondern aus innerem Antrieb.",
+                quelle: "Osho – Kreativität",
+                quelleDetail: "Wahre Kreativität entsteht aus Freude, nicht aus dem Bedürfnis nach Anerkennung."
+            },
+
+            // ═══════════════════════════════════════════════════════════════════════
+            // PIRSIG & OSHO ERWEITERUNGEN - Kommunikationsstil
+            // ═══════════════════════════════════════════════════════════════════════
+            romantisches_verstehen: {
+                label: "Romantisches Verstehen",
+                kategorie: "Kommunikationsstil",
+                kategorieColor: "#3B82F6",
+                definition: "Das Bedürfnis nach intuitivem, ganzheitlichem Kommunizieren – Gefühl vor Analyse.",
+                quelle: "Robert M. Pirsig – Romantisch vs. Klassisch",
+                quelleDetail: "Die romantische Sichtweise erfasst das Ganze, die unmittelbare Erscheinung."
+            },
+            klassische_klarheit: {
+                label: "Klassische Klarheit",
+                kategorie: "Kommunikationsstil",
+                kategorieColor: "#3B82F6",
+                definition: "Das Bedürfnis nach präziser, analytischer Kommunikation – klare Begriffe und logische Struktur.",
+                quelle: "Robert M. Pirsig – Klassisches Denken",
+                quelleDetail: "Klassisches Denken zerlegt und analysiert, um zu verstehen."
+            },
+            dialektik: {
+                label: "Dialektik",
+                kategorie: "Kommunikationsstil",
+                kategorieColor: "#3B82F6",
+                definition: "Das Bedürfnis nach philosophischem Dialog – Wahrheitsfindung durch These, Antithese, Synthese.",
+                quelle: "Robert M. Pirsig – Sokratisches Gespräch",
+                quelleDetail: "Pirsig nutzt die dialektische Methode, um Qualität zu erkunden."
+            },
+            qualitaets_ausdruck: {
+                label: "Qualitäts-Ausdruck",
+                kategorie: "Kommunikationsstil",
+                kategorieColor: "#3B82F6",
+                definition: "Das Bedürfnis nach qualitativ hochwertigem Ausdruck – Eloquenz, Präzision und sprachliche Schönheit.",
+                quelle: "Robert M. Pirsig – Qualität",
+                quelleDetail: "Qualität zeigt sich auch in der Art, wie wir kommunizieren."
+            },
+            care_im_gespraech: {
+                label: "Care im Gespräch",
+                kategorie: "Kommunikationsstil",
+                kategorieColor: "#3B82F6",
+                definition: "Das Bedürfnis nach sorgfältiger, achtsamer Kommunikation – mit Hingabe und Aufmerksamkeit sprechen.",
+                quelle: "Robert M. Pirsig – Care",
+                quelleDetail: "Sorgfalt im Gespräch bedeutet, wirklich präsent und aufmerksam zu sein."
+            },
+            schweigen_statt_worte: {
+                label: "Schweigen statt Worte",
+                kategorie: "Kommunikationsstil",
+                kategorieColor: "#3B82F6",
+                definition: "Das Bedürfnis nach Stille als Kommunikation – das Ungesagte als tiefste Verständigung.",
+                quelle: "Osho – Stille",
+                quelleDetail: "Osho sprach viel über Stille als das eigentliche Medium der Wahrheit."
+            },
+            radikale_ehrlichkeit: {
+                label: "Radikale Ehrlichkeit",
+                kategorie: "Kommunikationsstil",
+                kategorieColor: "#3B82F6",
+                definition: "Das Bedürfnis nach kompromissloser Wahrheit – keine Höflichkeitslügen, authentischer Ausdruck.",
+                quelle: "Osho – Authentizität",
+                quelleDetail: "Osho forderte radikale Ehrlichkeit, auch wenn sie unbequem ist."
+            },
+            humorvolle_leichtigkeit: {
+                label: "Humorvolle Leichtigkeit",
+                kategorie: "Kommunikationsstil",
+                kategorieColor: "#3B82F6",
+                definition: "Das Bedürfnis nach Lachen und spielerischer Kommunikation – Witz statt Schwere.",
+                quelle: "Osho – Humor & Lachen",
+                quelleDetail: "Osho betonte Lachen als spirituelle Praxis und Zeichen von Freiheit."
+            },
+            paradoxe_weisheit: {
+                label: "Paradoxe Weisheit",
+                kategorie: "Kommunikationsstil",
+                kategorieColor: "#3B82F6",
+                definition: "Das Bedürfnis nach paradoxer Kommunikation – Zen-Koans, Widersprüche als Weg zur Erkenntnis.",
+                quelle: "Osho – Zen",
+                quelleDetail: "Paradoxe durchbrechen den analytischen Verstand und öffnen für tiefere Einsicht."
+            },
+            herz_statt_kopf: {
+                label: "Herz statt Kopf",
+                kategorie: "Kommunikationsstil",
+                kategorieColor: "#3B82F6",
+                definition: "Das Bedürfnis nach emotionaler statt rationaler Kommunikation – aus dem Herzen sprechen.",
+                quelle: "Osho – Herz",
+                quelleDetail: "Osho sah den Kopf als Hindernis für wahre Kommunikation, das Herz als Brücke."
+            },
+            authentischer_ausdruck: {
+                label: "Authentischer Ausdruck",
+                kategorie: "Kommunikationsstil",
+                kategorieColor: "#3B82F6",
+                definition: "Das Bedürfnis, ungefiltert zu kommunizieren – keine soziale Maske, echte Gefühle zeigen.",
+                quelle: "Osho – Authentizität",
+                quelleDetail: "Authentischer Ausdruck erfordert Mut und die Bereitschaft, verletzlich zu sein."
+            },
+
+            // ═══════════════════════════════════════════════════════════════════════
+            // PIRSIG & OSHO ERWEITERUNGEN - Soziales Leben
+            // ═══════════════════════════════════════════════════════════════════════
+            soziale_qualitaet: {
+                label: "Soziale Qualität",
+                kategorie: "Soziales Leben",
+                kategorieColor: "#8B5CF6",
+                definition: "Das Bedürfnis nach hochwertigen sozialen Beziehungen – Tiefe statt Breite, Qualität vor Quantität.",
+                quelle: "Robert M. Pirsig – Qualität",
+                quelleDetail: "Qualität gilt auch für Beziehungen – wenige tiefe sind wertvoller als viele oberflächliche."
+            },
+            tribe_muster: {
+                label: "Tribe-Muster",
+                kategorie: "Soziales Leben",
+                kategorieColor: "#8B5CF6",
+                definition: "Das Bedürfnis nach Stammeszugehörigkeit – Teil einer Gruppe mit geteilter Identität und Werten.",
+                quelle: "Robert M. Pirsig – Soziale Muster",
+                quelleDetail: "Das Stammesmuster ist eines der ursprünglichsten sozialen Bedürfnisse."
+            },
+            intellektuelle_gemeinschaft: {
+                label: "Intellektuelle Gemeinschaft",
+                kategorie: "Soziales Leben",
+                kategorieColor: "#8B5CF6",
+                definition: "Das Bedürfnis nach Gleichgesinnten für geistigen Austausch – philosophische Gespräche und geteilte Neugier.",
+                quelle: "Robert M. Pirsig – Intellektuelle Ebene",
+                quelleDetail: "Intellektuelle Gemeinschaft transzendiert bloße soziale Zugehörigkeit."
+            },
+            statische_sozialstrukturen: {
+                label: "Statische Sozialstrukturen",
+                kategorie: "Soziales Leben",
+                kategorieColor: "#8B5CF6",
+                definition: "Das Bedürfnis nach festen sozialen Rollen und Hierarchien – Klarheit durch Struktur.",
+                quelle: "Robert M. Pirsig – Statische Muster",
+                quelleDetail: "Statische Strukturen geben Orientierung, können aber auch einengen."
+            },
+            sannyas_gemeinschaft: {
+                label: "Sannyas-Gemeinschaft",
+                kategorie: "Soziales Leben",
+                kategorieColor: "#8B5CF6",
+                definition: "Das Bedürfnis nach spiritueller Gemeinschaft – Menschen auf dem gleichen inneren Weg.",
+                quelle: "Osho – Sannyas",
+                quelleDetail: "Sannyas bedeutet bei Osho nicht Weltentsagung, sondern bewusstes Leben in Gemeinschaft."
+            },
+            rebellion_gegen_gesellschaft: {
+                label: "Rebellion gegen Gesellschaft",
+                kategorie: "Soziales Leben",
+                kategorieColor: "#8B5CF6",
+                definition: "Das Bedürfnis, gesellschaftliche Normen in Frage zu stellen – Nonkonformismus als Freiheit.",
+                quelle: "Osho – Rebellion",
+                quelleDetail: "Osho unterschied zwischen Reaktion (gegen etwas) und Rebellion (für Freiheit)."
+            },
+            einsamkeit_in_menge: {
+                label: "Einsamkeit in Menge",
+                kategorie: "Soziales Leben",
+                kategorieColor: "#8B5CF6",
+                definition: "Das Bedürfnis, auch in Gemeinschaft bei sich selbst zu bleiben – allein und doch verbunden.",
+                quelle: "Osho – Aloneness",
+                quelleDetail: "Osho unterschied zwischen Einsamkeit (loneliness) und Alleinsein (aloneness) – letzteres ist positiv."
+            },
+            celebration_mit_anderen: {
+                label: "Celebration mit Anderen",
+                kategorie: "Soziales Leben",
+                kategorieColor: "#8B5CF6",
+                definition: "Das Bedürfnis, gemeinsam zu feiern – Freude, Tanz und Ekstase in der Gruppe.",
+                quelle: "Osho – Celebration",
+                quelleDetail: "Oshos Ashrams waren für ihre Feiern und ekstatischen Meditationen bekannt."
+            },
+            keine_freundschaft_besitz: {
+                label: "Keine Freundschafts-Besitz",
+                kategorie: "Soziales Leben",
+                kategorieColor: "#8B5CF6",
+                definition: "Das Bedürfnis nach Freundschaft ohne Besitzanspruch – fließende, nicht-anhaftende Verbindungen.",
+                quelle: "Osho – Nicht-Anhaftung",
+                quelleDetail: "Liebe ohne Besitzdenken gilt für alle Beziehungen, nicht nur romantische."
+            },
+            tantra_gruppe: {
+                label: "Tantra-Gruppe",
+                kategorie: "Soziales Leben",
+                kategorieColor: "#8B5CF6",
+                definition: "Das Bedürfnis nach Gruppen-Intimität und energetischem Austausch – Verbindung jenseits des Individuellen.",
+                quelle: "Osho – Tantra",
+                quelleDetail: "Oshos Tantra-Gruppen erforschten Intimität und Energie in geschütztem Rahmen."
+            },
+
+            // ═══════════════════════════════════════════════════════════════════════
+            // PIRSIG & OSHO ERWEITERUNGEN - Intimität & Romantik
+            // ═══════════════════════════════════════════════════════════════════════
+            biologische_anziehung: {
+                label: "Biologische Anziehung",
+                kategorie: "Intimität & Romantik",
+                kategorieColor: "#EC4899",
+                definition: "Das Bedürfnis nach körperlicher Chemie und instinktiver Anziehung – Pheromone und Biologie.",
+                quelle: "Robert M. Pirsig – Biologische Muster",
+                quelleDetail: "Biologische Anziehung ist ein grundlegendes Muster, das intellektuell nicht vollständig erklärbar ist."
+            },
+            intellektuelle_verbindung: {
+                label: "Intellektuelle Verbindung",
+                kategorie: "Intimität & Romantik",
+                kategorieColor: "#EC4899",
+                definition: "Das Bedürfnis nach geistigem Match – gemeinsame Wellenlänge im Denken und in Interessen.",
+                quelle: "Robert M. Pirsig – Intellektuelle Ebene",
+                quelleDetail: "Intellektuelle Verbindung ergänzt biologische Anziehung um eine tiefere Dimension."
+            },
+            qualitaet_der_beruehrung: {
+                label: "Qualität der Berührung",
+                kategorie: "Intimität & Romantik",
+                kategorieColor: "#EC4899",
+                definition: "Das Bedürfnis nach achtsamer, präsenter Berührung – Qualität statt Routine.",
+                quelle: "Robert M. Pirsig – Care",
+                quelleDetail: "Sorgfalt in der Berührung macht den Unterschied zwischen mechanisch und bedeutsam."
+            },
+            dynamische_liebe: {
+                label: "Dynamische Liebe",
+                kategorie: "Intimität & Romantik",
+                kategorieColor: "#EC4899",
+                definition: "Das Bedürfnis nach sich entwickelnder, wachsender Liebe – nicht statisch, sondern lebendig.",
+                quelle: "Robert M. Pirsig – Dynamische Qualität",
+                quelleDetail: "Dynamische Liebe überrascht, wächst und erneuert sich ständig."
+            },
+            care_in_intimitaet: {
+                label: "Care in Intimität",
+                kategorie: "Intimität & Romantik",
+                kategorieColor: "#EC4899",
+                definition: "Das Bedürfnis nach Sorgfalt und Aufmerksamkeit in intimen Momenten – Präzision und Hingabe.",
+                quelle: "Robert M. Pirsig – Care",
+                quelleDetail: "Intimität mit Care bedeutet volle Aufmerksamkeit und Präsenz."
+            },
+            sex_als_meditation: {
+                label: "Sex als Meditation",
+                kategorie: "Intimität & Romantik",
+                kategorieColor: "#EC4899",
+                definition: "Das Bedürfnis nach tantrischer Sexualität – Sex als spirituelle Praxis und Meditation.",
+                quelle: "Osho – Tantra",
+                quelleDetail: "Osho lehrte Sex als Tor zur Meditation, nicht als etwas zu Unterdrückendes."
+            },
+            liebe_ohne_beziehung: {
+                label: "Liebe ohne Beziehung",
+                kategorie: "Intimität & Romantik",
+                kategorieColor: "#EC4899",
+                definition: "Das Bedürfnis, zu lieben ohne Besitz und Erwartungen – Liebe als Zustand, nicht als Vertrag.",
+                quelle: "Osho – Unconditional Love",
+                quelleDetail: "Osho kritisierte Beziehungen, die auf Besitz statt auf Freiheit basieren."
+            },
+            orgastisches_leben: {
+                label: "Orgastisches Leben",
+                kategorie: "Intimität & Romantik",
+                kategorieColor: "#EC4899",
+                definition: "Das Bedürfnis nach totaler körperlicher Präsenz – der ganze Körper als Instrument der Ekstase.",
+                quelle: "Osho – Körper",
+                quelleDetail: "Osho betonte die Heiligkeit des Körpers und voller körperlicher Erfahrung."
+            },
+            nicht_anhaften_an_partner: {
+                label: "Nicht-Anhaften an Partner",
+                kategorie: "Intimität & Romantik",
+                kategorieColor: "#EC4899",
+                definition: "Das Bedürfnis nach Freiheit in der Beziehung – lieben ohne zu klammern.",
+                quelle: "Osho – Nicht-Anhaftung",
+                quelleDetail: "Wahre Liebe hält nicht fest, sondern gibt Flügel."
+            },
+            hier_und_jetzt_intimitaet: {
+                label: "Hier-und-Jetzt-Intimität",
+                kategorie: "Intimität & Romantik",
+                kategorieColor: "#EC4899",
+                definition: "Das Bedürfnis nach völliger Präsenz in intimen Momenten – keine Vergangenheit, keine Zukunft.",
+                quelle: "Osho – Präsenz",
+                quelleDetail: "Nur im Jetzt ist echte Intimität möglich."
+            },
+            polyamore_energie: {
+                label: "Polyamore Energie",
+                kategorie: "Intimität & Romantik",
+                kategorieColor: "#EC4899",
+                definition: "Das Bedürfnis, Liebe und Intimität mit mehreren Menschen zu teilen – Freiheit von Monogamie-Normen.",
+                quelle: "Osho – Freie Liebe",
+                quelleDetail: "Osho stellte Monogamie als soziale Konditionierung in Frage."
+            },
+            wildheit_und_zartheit: {
+                label: "Wildheit und Zartheit",
+                kategorie: "Intimität & Romantik",
+                kategorieColor: "#EC4899",
+                definition: "Das Bedürfnis nach beiden Polen – sowohl wild und leidenschaftlich als auch sanft und zärtlich.",
+                quelle: "Osho – Polaritäten",
+                quelleDetail: "Osho lehrte, alle Polaritäten in sich zu vereinen."
+            },
+            meditation_zu_zweit: {
+                label: "Meditation zu zweit",
+                kategorie: "Intimität & Romantik",
+                kategorieColor: "#EC4899",
+                definition: "Das Bedürfnis nach gemeinsamer Stille und energetischer Verbindung – zusammen meditieren.",
+                quelle: "Osho – Meditation",
+                quelleDetail: "Gemeinsame Meditation kann tiefe Verbundenheit ohne Worte schaffen."
+            },
+
+            // ═══════════════════════════════════════════════════════════════════════
+            // PIRSIG & OSHO ERWEITERUNGEN - Werte & Haltungen
+            // ═══════════════════════════════════════════════════════════════════════
+            qualitaet_als_gott: {
+                label: "Qualität als Gott",
+                kategorie: "Werte & Haltungen",
+                kategorieColor: "#6366F1",
+                definition: "Das Bedürfnis, Qualität als höchsten Wert zu sehen – eine säkulare Spiritualität.",
+                quelle: "Robert M. Pirsig – Metaphysik der Qualität",
+                quelleDetail: "Pirsig schlägt Qualität als vereinendes Prinzip vor, das Wissenschaft und Spiritualität verbindet."
+            },
+            rationaler_mystizismus: {
+                label: "Rationaler Mystizismus",
+                kategorie: "Werte & Haltungen",
+                kategorieColor: "#6366F1",
+                definition: "Das Bedürfnis, Logik und Spiritualität zu verbinden – Verstand und Transzendenz.",
+                quelle: "Robert M. Pirsig – Zen",
+                quelleDetail: "Pirsigs Werk vereint analytisches Denken mit mystischer Erfahrung."
+            },
+            aristotelische_vernunft: {
+                label: "Aristotelische Vernunft",
+                kategorie: "Werte & Haltungen",
+                kategorieColor: "#6366F1",
+                definition: "Das Bedürfnis nach logischem Denken und Kausalität – rationale Welterklärung.",
+                quelle: "Robert M. Pirsig – Aristoteles-Kritik",
+                quelleDetail: "Pirsig kritisiert, wie aristotelische Logik Qualität nicht erfassen kann."
+            },
+            platonische_ideen: {
+                label: "Platonische Ideen",
+                kategorie: "Werte & Haltungen",
+                kategorieColor: "#6366F1",
+                definition: "Das Bedürfnis nach absoluten Werten und ewigen Wahrheiten – Idealismus.",
+                quelle: "Robert M. Pirsig – Platon",
+                quelleDetail: "Pirsig setzt sich mit Platon auseinander, um seine eigene Qualitätsmetaphysik zu entwickeln."
+            },
+            buddhistische_achtsamkeit: {
+                label: "Buddhistische Achtsamkeit",
+                kategorie: "Werte & Haltungen",
+                kategorieColor: "#6366F1",
+                definition: "Das Bedürfnis nach Präsenz und Nicht-Dualität – Zen als Lebensweg.",
+                quelle: "Robert M. Pirsig – Zen",
+                quelleDetail: "Zen durchzieht Pirsigs Werk als Gegenpol zum rein analytischen Denken."
+            },
+            religionslosigkeit: {
+                label: "Religionslosigkeit",
+                kategorie: "Werte & Haltungen",
+                kategorieColor: "#6366F1",
+                definition: "Das Bedürfnis, frei von organisierten Religionen zu sein – Spiritualität ohne Dogma.",
+                quelle: "Osho – Anti-Religion",
+                quelleDetail: "Osho kritisierte alle organisierten Religionen als Hindernisse für wahre Spiritualität."
+            },
+            eigene_wahrheit: {
+                label: "Eigene Wahrheit",
+                kategorie: "Werte & Haltungen",
+                kategorieColor: "#6366F1",
+                definition: "Das Bedürfnis, die eigene Wahrheit selbst zu finden – keine übernommenen Glaubenssätze.",
+                quelle: "Osho – Individualität",
+                quelleDetail: "Osho betonte, dass jeder seine eigene Wahrheit finden muss."
+            },
+            zen_paradox: {
+                label: "Zen-Paradox",
+                kategorie: "Werte & Haltungen",
+                kategorieColor: "#6366F1",
+                definition: "Das Bedürfnis nach Widersprüchen und Koans – den Verstand durch Paradoxe transzendieren.",
+                quelle: "Osho – Zen",
+                quelleDetail: "Osho nutzte Zen-Geschichten und Paradoxe, um den analytischen Verstand zu überwinden."
+            },
+            tantra_als_weg: {
+                label: "Tantra als Weg",
+                kategorie: "Werte & Haltungen",
+                kategorieColor: "#6366F1",
+                definition: "Das Bedürfnis nach Bejahung von Körper und Sinnlichkeit als spirituellem Weg – keine Askese.",
+                quelle: "Osho – Tantra",
+                quelleDetail: "Tantra sagt Ja zum Leben, zum Körper, zur Sexualität als Tor zum Göttlichen."
+            },
+            politische_rebellion: {
+                label: "Politische Rebellion",
+                kategorie: "Werte & Haltungen",
+                kategorieColor: "#6366F1",
+                definition: "Das Bedürfnis, politische Systeme und Machtstrukturen in Frage zu stellen – Anarchie des Geistes.",
+                quelle: "Osho – Politik-Kritik",
+                quelleDetail: "Osho lehnte alle politischen Systeme als Formen der Unterdrückung ab."
+            },
+            individueller_anarchismus: {
+                label: "Individueller Anarchismus",
+                kategorie: "Werte & Haltungen",
+                kategorieColor: "#6366F1",
+                definition: "Das Bedürfnis nach radikaler Freiheit – keine Autorität außer dem eigenen Bewusstsein.",
+                quelle: "Osho – Freiheit",
+                quelleDetail: "Wahre Freiheit ist innerlich und unabhängig von äußeren Umständen."
+            },
+            leben_als_kunst: {
+                label: "Leben als Kunst",
+                kategorie: "Werte & Haltungen",
+                kategorieColor: "#6366F1",
+                definition: "Das Bedürfnis, das Leben selbst als kreatives Kunstwerk zu gestalten – ästhetisch, nicht moralisch.",
+                quelle: "Osho – Kreativität",
+                quelleDetail: "Das Leben selbst ist die größte Leinwand für kreative Entfaltung."
+            },
+            celebration_statt_gebet: {
+                label: "Celebration statt Gebet",
+                kategorie: "Werte & Haltungen",
+                kategorieColor: "#6366F1",
+                definition: "Das Bedürfnis nach Freude statt Ernsthaftigkeit in der Spiritualität – Feiern statt Bitten.",
+                quelle: "Osho – Celebration",
+                quelleDetail: "Osho ersetzte frommes Gebet durch ekstatische Feier des Lebens."
+            },
+
+            // ═══════════════════════════════════════════════════════════════════════
+            // PIRSIG & OSHO ERWEITERUNGEN - Praktisches Leben
+            // ═══════════════════════════════════════════════════════════════════════
+            motorrad_pflege: {
+                label: "Motorrad-Pflege",
+                kategorie: "Praktisches Leben",
+                kategorieColor: "#14B8A6",
+                definition: "Das Bedürfnis nach handwerklicher Sorgfalt und Technikverständnis – Wartung als Meditation.",
+                quelle: "Robert M. Pirsig – Motorrad",
+                quelleDetail: "Das Motorrad ist Pirsigs Metapher für die Verbindung von Technik und Philosophie."
+            },
+            gumption_im_alltag: {
+                label: "Gumption im Alltag",
+                kategorie: "Praktisches Leben",
+                kategorieColor: "#14B8A6",
+                definition: "Das Bedürfnis nach Motivation und Flow in täglichen Aufgaben – Enthusiasmus bewahren.",
+                quelle: "Robert M. Pirsig – Gumption",
+                quelleDetail: "Gumption im Alltag verhindert, dass Routinen zur Last werden."
+            },
+            stuck_vermeiden: {
+                label: "Stuck vermeiden",
+                kategorie: "Praktisches Leben",
+                kategorieColor: "#14B8A6",
+                definition: "Das Bedürfnis, nicht festzustecken – Flexibilität und Kreativität bei Hindernissen.",
+                quelle: "Robert M. Pirsig – Gumption Traps",
+                quelleDetail: "Pirsig beschreibt Fallen, die unsere Motivation blockieren, und wie man sie vermeidet."
+            },
+            klassische_ordnung: {
+                label: "Klassische Ordnung",
+                kategorie: "Praktisches Leben",
+                kategorieColor: "#14B8A6",
+                definition: "Das Bedürfnis nach Systematik und Checklisten – Struktur und rationale Organisation.",
+                quelle: "Robert M. Pirsig – Klassisch",
+                quelleDetail: "Der klassische Ansatz analysiert und strukturiert für Effizienz."
+            },
+            romantisches_chaos: {
+                label: "Romantisches Chaos",
+                kategorie: "Praktisches Leben",
+                kategorieColor: "#14B8A6",
+                definition: "Das Bedürfnis nach spontanem, intuitivem Alltag – Gegen-Ordnung, kreatives Durcheinander.",
+                quelle: "Robert M. Pirsig – Romantisch",
+                quelleDetail: "Der romantische Ansatz folgt dem Gefühl, nicht dem Plan."
+            },
+            qualitaets_werkzeug: {
+                label: "Qualitäts-Werkzeug",
+                kategorie: "Praktisches Leben",
+                kategorieColor: "#14B8A6",
+                definition: "Das Bedürfnis nach gutem Werkzeug und richtiger Ausrüstung – Qualität in den Mitteln.",
+                quelle: "Robert M. Pirsig – Werkzeug",
+                quelleDetail: "Gutes Werkzeug ermöglicht gute Arbeit – ein zentrales Thema bei Pirsig."
+            },
+            achtsamkeit_im_detail: {
+                label: "Achtsamkeit im Detail",
+                kategorie: "Praktisches Leben",
+                kategorieColor: "#14B8A6",
+                definition: "Das Bedürfnis nach Präzision und Perfektion in kleinen Dingen – Sorgfalt im Alltäglichen.",
+                quelle: "Robert M. Pirsig – Care",
+                quelleDetail: "Qualität zeigt sich im Detail, in der Aufmerksamkeit für das Kleine."
+            },
+            meditation_im_alltag: {
+                label: "Meditation im Alltag",
+                kategorie: "Praktisches Leben",
+                kategorieColor: "#14B8A6",
+                definition: "Das Bedürfnis, alltägliche Tätigkeiten meditativ zu verrichten – Kochen, Putzen, Gehen als Praxis.",
+                quelle: "Osho – Alltagsmeditation",
+                quelleDetail: "Osho lehrte, dass jede Tätigkeit zur Meditation werden kann."
+            },
+            gesundheit_durch_bewusstsein: {
+                label: "Gesundheit durch Bewusstsein",
+                kategorie: "Praktisches Leben",
+                kategorieColor: "#14B8A6",
+                definition: "Das Bedürfnis nach natürlicher Gesundheit durch Bewusstheit – Körperbewusstsein statt Pillen.",
+                quelle: "Osho – Körper",
+                quelleDetail: "Bewusstsein heilt – der Körper weiß, was er braucht, wenn wir ihm zuhören."
+            },
+            dynamische_meditation: {
+                label: "Dynamische Meditation",
+                kategorie: "Praktisches Leben",
+                kategorieColor: "#14B8A6",
+                definition: "Das Bedürfnis nach körperlicher Bewegung als Meditation – Oshos aktive Meditationstechniken.",
+                quelle: "Osho – Dynamische Meditation",
+                quelleDetail: "Oshos bekannteste Technik: Kathartische Bewegung führt zu Stille."
+            },
+            vipassana_im_leben: {
+                label: "Vipassana im Leben",
+                kategorie: "Praktisches Leben",
+                kategorieColor: "#14B8A6",
+                definition: "Das Bedürfnis, im Alltag beobachtend und urteilsfrei zu sein – Achtsamkeit in jeder Situation.",
+                quelle: "Osho – Vipassana",
+                quelleDetail: "Beobachten ohne Urteilen, im Alltag integriert, nicht nur auf dem Kissen."
+            },
+            natuerliches_leben: {
+                label: "Natürliches Leben",
+                kategorie: "Praktisches Leben",
+                kategorieColor: "#14B8A6",
+                definition: "Das Bedürfnis nach naturnahem, einfachem Leben – Bio-Ernährung, Naturkontakt, Reduktion.",
+                quelle: "Osho – Natürlichkeit",
+                quelleDetail: "Zurück zur Natur, weg von künstlicher Komplexität."
+            },
+            lachen_therapie: {
+                label: "Lachen-Therapie",
+                kategorie: "Praktisches Leben",
+                kategorieColor: "#14B8A6",
+                definition: "Das Bedürfnis nach Humor als Heilung – Lachen als tägliche Medizin.",
+                quelle: "Osho – Lachen",
+                quelleDetail: "Osho integrierte Lachen als spirituelle Praxis in viele seiner Meditationen."
+            },
+            no_mind: {
+                label: "No-Mind",
+                kategorie: "Praktisches Leben",
+                kategorieColor: "#14B8A6",
+                definition: "Das Bedürfnis nach gedankenfreien Momenten im Alltag – Stille im Kopf, Präsenz ohne Denken.",
+                quelle: "Osho – No-Mind",
+                quelleDetail: "No-Mind ist der Zustand jenseits des Denkens, aber mit voller Wachheit."
+            },
+            zorba_der_geniesser: {
+                label: "Zorba der Genießer",
+                kategorie: "Praktisches Leben",
+                kategorieColor: "#14B8A6",
+                definition: "Das Bedürfnis nach sinnlichem Genuss – gutes Essen, Trinken, Komfort und Lebensfreude.",
+                quelle: "Osho – Zorba",
+                quelleDetail: "Zorba steht für die volle Bejahung des weltlichen Lebens in all seiner Sinnlichkeit."
             }
         };
 
