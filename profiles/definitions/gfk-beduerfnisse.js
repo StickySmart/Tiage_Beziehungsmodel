@@ -1620,9 +1620,18 @@ const GfkBeduerfnisse = {
                 summeUebereinstimmung += uebereinstimmung * gewicht;
                 summeGewicht += gewicht;
 
+                // Hole #B-ID für Referenzierbarkeit
+                let hashId = '';
+                if (typeof BeduerfnisIds !== 'undefined' && BeduerfnisIds.toId) {
+                    const bId = BeduerfnisIds.toId(bed);
+                    if (bId && bId.startsWith('#B')) {
+                        hashId = bId + ' ';
+                    }
+                }
+
                 const bedInfo = {
                     id: bed,
-                    label: this.definitionen[bed]?.label || bed,
+                    label: hashId + (this.definitionen[bed]?.label || bed),
                     wert1: wert1,
                     wert2: wert2,
                     diff: diff
@@ -1677,15 +1686,26 @@ const GfkBeduerfnisse = {
         const profil = this.archetypProfile[archetyp];
         if (!profil) return [];
 
+        const self = this;
         return Object.entries(profil.kernbeduerfnisse)
             .sort((a, b) => b[1] - a[1])
             .slice(0, anzahl)
-            .map(([id, wert]) => ({
-                id: id,
-                label: this.definitionen[id]?.label || id,
-                wert: wert,
-                kategorie: this.definitionen[id]?.kategorie
-            }));
+            .map(([id, wert]) => {
+                // Hole #B-ID für Referenzierbarkeit
+                let hashId = '';
+                if (typeof BeduerfnisIds !== 'undefined' && BeduerfnisIds.toId) {
+                    const bId = BeduerfnisIds.toId(id);
+                    if (bId && bId.startsWith('#B')) {
+                        hashId = bId + ' ';
+                    }
+                }
+                return {
+                    id: id,
+                    label: hashId + (self.definitionen[id]?.label || id),
+                    wert: wert,
+                    kategorie: self.definitionen[id]?.kategorie
+                };
+            });
     },
 
     /**
