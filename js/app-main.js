@@ -258,11 +258,30 @@
                 return orientierungStatements.default;
             }
 
-            // Extract primary gender from object format { primary: 'cis_mann', secondary: null }
-            let g1 = geschlecht1;
-            let g2 = geschlecht2;
-            if (g1 && typeof g1 === 'object' && 'primary' in g1) g1 = g1.primary;
-            if (g2 && typeof g2 === 'object' && 'primary' in g2) g2 = g2.primary;
+            // Extract effective gender identity (handles Trans transformation)
+            const extractEffectiveGender = (geschlecht) => {
+                if (!geschlecht) return null;
+                if (typeof geschlecht === 'object' && 'primary' in geschlecht) {
+                    const primary = geschlecht.primary;
+                    const secondary = geschlecht.secondary;
+                    if (secondary) {
+                        if (secondary === 'cis') return primary;
+                        if (secondary === 'trans') {
+                            if (primary === 'mann') return 'frau';
+                            if (primary === 'frau') return 'mann';
+                            return primary;
+                        }
+                        if (['nonbinaer', 'fluid', 'suchend'].includes(secondary)) return secondary;
+                        return secondary;
+                    }
+                    return primary || null;
+                }
+                if (typeof geschlecht === 'string') return geschlecht;
+                return null;
+            };
+
+            let g1 = extractEffectiveGender(geschlecht1);
+            let g2 = extractEffectiveGender(geschlecht2);
 
             // Extrahiere primäre Orientierung aus Multi-Select-Objekt
             const getPrimaryOrientation = (orient) => {
@@ -6680,16 +6699,30 @@
                 return TiageCompatibility.Physical.check(person1, person2);
             }
             // Fallback: inline implementation for backwards compatibility
-            // Extract primary gender from object format { primary: 'cis_mann', secondary: null }
-            let g1 = person1.geschlecht;
-            let g2 = person2.geschlecht;
+            // Extract effective gender identity (handles Trans transformation)
+            const extractEffectiveGender = (geschlecht) => {
+                if (!geschlecht) return null;
+                if (typeof geschlecht === 'object' && 'primary' in geschlecht) {
+                    const primary = geschlecht.primary;
+                    const secondary = geschlecht.secondary;
+                    if (secondary) {
+                        if (secondary === 'cis') return primary;
+                        if (secondary === 'trans') {
+                            if (primary === 'mann') return 'frau';
+                            if (primary === 'frau') return 'mann';
+                            return primary;
+                        }
+                        if (['nonbinaer', 'fluid', 'suchend'].includes(secondary)) return secondary;
+                        return secondary;
+                    }
+                    return primary || null;
+                }
+                if (typeof geschlecht === 'string') return geschlecht;
+                return null;
+            };
 
-            if (g1 && typeof g1 === 'object' && 'primary' in g1) {
-                g1 = g1.primary;
-            }
-            if (g2 && typeof g2 === 'object' && 'primary' in g2) {
-                g2 = g2.primary;
-            }
+            let g1 = extractEffectiveGender(person1.geschlecht);
+            let g2 = extractEffectiveGender(person2.geschlecht);
 
             // Get orientierung as multi-select object
             const ori1 = person1.orientierung;
