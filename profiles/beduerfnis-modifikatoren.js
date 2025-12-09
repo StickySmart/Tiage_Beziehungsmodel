@@ -1,5 +1,9 @@
 /**
- * BEDÜRFNIS-MODIFIKATOREN v2.2
+ * BEDÜRFNIS-MODIFIKATOREN v2.3
+ *
+ * NEU in v2.3:
+ * - ID-Konvertierungsfunktionen (toIds, getDominanzMitIds, etc.)
+ * - Integration mit BeduerfnisIds für #ID-System
  *
  * Modifiziert die Basis-Bedürfnisse der 8 Archetypen basierend auf:
  * - Dominanz (4 Stufen)
@@ -1577,10 +1581,92 @@ const BeduerfnisModifikatoren = {
             warningMessage: isWarning ?
                 'Große Unterschiede in der Geschlechtsidentität - kann zusätzliche Kommunikation erfordern' : null
         };
+    },
+
+    // ═══════════════════════════════════════════════════════════════════════════
+    // ID-KONVERTIERUNGSFUNKTIONEN (v2.3)
+    // ═══════════════════════════════════════════════════════════════════════════
+
+    /**
+     * Konvertiert ein Modifier-Objekt von String-Keys zu #IDs
+     * @param {Object} modifiers - Modifier-Objekt mit String-Keys
+     * @returns {Object} Modifier-Objekt mit #IDs
+     */
+    toIds: function(modifiers) {
+        if (!modifiers) return {};
+        if (typeof window !== 'undefined' && window.BeduerfnisIds) {
+            return window.BeduerfnisIds.objectToIds(modifiers);
+        }
+        if (typeof require !== 'undefined') {
+            try {
+                const BeduerfnisIds = require('./definitions/beduerfnis-ids.js');
+                return BeduerfnisIds.objectToIds(modifiers);
+            } catch (e) {
+                console.warn('BeduerfnisIds nicht verfügbar:', e.message);
+            }
+        }
+        return modifiers;
+    },
+
+    /**
+     * Holt Dominanz-Modifikatoren mit #IDs statt String-Keys
+     * @param {string} dominanzTyp - 'dominant', 'submissiv', 'switch', 'ausgeglichen'
+     * @returns {Object} Modifier-Objekt mit #IDs
+     */
+    getDominanzMitIds: function(dominanzTyp) {
+        const mods = this.dominanz[dominanzTyp];
+        if (!mods) return {};
+        return this.toIds(mods);
+    },
+
+    /**
+     * Holt Geschlechts-Modifikatoren mit #IDs statt String-Keys
+     * @param {string} geschlecht - z.B. 'cis_mann', 'cis_frau', 'trans_mann', etc.
+     * @returns {Object} Modifier-Objekt mit #IDs
+     */
+    getGeschlechtMitIds: function(geschlecht) {
+        const mods = this.geschlecht[geschlecht];
+        if (!mods) return {};
+        return this.toIds(mods);
+    },
+
+    /**
+     * Holt Orientierungs-Modifikatoren mit #IDs statt String-Keys
+     * @param {string} orientierung - 'heterosexuell', 'homosexuell', 'bisexuell'
+     * @returns {Object} Modifier-Objekt mit #IDs
+     */
+    getOrientierungMitIds: function(orientierung) {
+        const mods = this.orientierung[orientierung];
+        if (!mods) return {};
+        return this.toIds(mods);
+    },
+
+    /**
+     * Holt Geschlechtsidentitäts-Modifikatoren mit #IDs statt String-Keys
+     * @param {string} identitaet - 'cis', 'trans', 'nonbinaer', 'fluid', 'suchend'
+     * @returns {Object} Modifier-Objekt mit #IDs
+     */
+    getGeschlechtsidentitaetMitIds: function(identitaet) {
+        const mods = this.geschlechtsidentitaet[identitaet];
+        if (!mods) return {};
+        return this.toIds(mods);
+    },
+
+    /**
+     * Berechnet vollständiges Bedürfnis-Profil mit #IDs statt String-Keys
+     * @param {Object} params - Alle Parameter (wie berechneVollständigesBedürfnisProfil)
+     * @returns {Object} Modifizierte Bedürfnisse mit #IDs
+     */
+    berechneProfilMitIds: function(params) {
+        const ergebnis = this.berechneVollständigesBedürfnisProfil(params);
+        return this.toIds(ergebnis);
     }
 };
 
 // Export für Node.js und Browser
 if (typeof module !== 'undefined' && module.exports) {
     module.exports = BeduerfnisModifikatoren;
+}
+if (typeof window !== 'undefined') {
+    window.BeduerfnisModifikatoren = BeduerfnisModifikatoren;
 }
