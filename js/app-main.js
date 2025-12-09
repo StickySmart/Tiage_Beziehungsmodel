@@ -11674,6 +11674,25 @@
          * Generate Needs content (Bedürfnis-Match mit Differenz)
          * Shows the full needs comparison with difference values
          */
+        // Sortierung State für Needs Synthese
+        let needsSyntheseSortBy = null; // 'ich', 'diff', 'partner'
+        let needsSyntheseSortDir = 'desc';
+
+        function sortNeedsSyntheseContent(column) {
+            if (needsSyntheseSortBy === column) {
+                needsSyntheseSortDir = needsSyntheseSortDir === 'desc' ? 'asc' : 'desc';
+            } else {
+                needsSyntheseSortBy = column;
+                needsSyntheseSortDir = 'desc';
+            }
+            // Re-render content
+            const contentEl = document.getElementById('tiageSyntheseModalContent');
+            if (contentEl) {
+                contentEl.innerHTML = getNeedsContent();
+            }
+        }
+        window.sortNeedsSyntheseContent = sortNeedsSyntheseContent;
+
         function getNeedsContent() {
             // Matching-Daten holen
             const ichArchetyp = (currentArchetype || '').replace('_', '-');
@@ -11707,24 +11726,65 @@
             // Gemeinsame & Kompatible Bedürfnisse
             const uebereinstimmend = matching.details?.uebereinstimmend || [];
             const komplementaer = matching.details?.komplementaer || [];
-            const gemeinsam = [...uebereinstimmend, ...komplementaer];
-            gemeinsam.sort((a, b) => ((b.wert1 + b.wert2) / 2) - ((a.wert1 + a.wert2) / 2));
+            let gemeinsam = [...uebereinstimmend, ...komplementaer];
 
             // Unterschiedliche Prioritäten
-            const konflikt = matching.details?.konflikt || [];
+            let konflikt = [...(matching.details?.konflikt || [])];
 
-            // Header mit Archetyp-Namen
+            // Sortierung anwenden
+            const sortItems = (items) => {
+                if (!needsSyntheseSortBy) {
+                    // Default: nach Durchschnitt sortieren
+                    return items.sort((a, b) => ((b.wert1 + b.wert2) / 2) - ((a.wert1 + a.wert2) / 2));
+                }
+                return items.sort((a, b) => {
+                    let valA, valB;
+                    if (needsSyntheseSortBy === 'ich') {
+                        valA = a.wert1 || 0;
+                        valB = b.wert1 || 0;
+                    } else if (needsSyntheseSortBy === 'diff') {
+                        valA = Math.abs((a.wert1 || 0) - (a.wert2 || 0));
+                        valB = Math.abs((b.wert1 || 0) - (b.wert2 || 0));
+                    } else {
+                        valA = a.wert2 || 0;
+                        valB = b.wert2 || 0;
+                    }
+                    return needsSyntheseSortDir === 'desc' ? valB - valA : valA - valB;
+                });
+            };
+
+            gemeinsam = sortItems(gemeinsam);
+            konflikt = sortItems(konflikt);
+
+            // Sort-Icons
+            const ichSortIcon = needsSyntheseSortBy === 'ich'
+                ? (needsSyntheseSortDir === 'desc' ? '▼' : '▲')
+                : '⇅';
+            const diffSortIcon = needsSyntheseSortBy === 'diff'
+                ? (needsSyntheseSortDir === 'desc' ? '▼' : '▲')
+                : '⇅';
+            const partnerSortIcon = needsSyntheseSortBy === 'partner'
+                ? (needsSyntheseSortDir === 'desc' ? '▼' : '▲')
+                : '⇅';
+            const ichActive = needsSyntheseSortBy === 'ich';
+            const diffActive = needsSyntheseSortBy === 'diff';
+            const partnerActive = needsSyntheseSortBy === 'partner';
+
+            // Header mit Archetyp-Namen und Sortier-Buttons
             html += `
                 <div style="display: grid; grid-template-columns: 1fr auto 1fr; gap: 10px; margin-bottom: 12px; padding-bottom: 8px; border-bottom: 1px solid rgba(255,255,255,0.1);">
-                    <div style="display: flex; align-items: center; justify-content: center;">
+                    <button onclick="sortNeedsSyntheseContent('ich')" style="display: flex; align-items: center; justify-content: center; gap: 6px; background: ${ichActive ? 'rgba(34, 197, 94, 0.15)' : 'transparent'}; border: 1px solid ${ichActive ? 'rgba(34, 197, 94, 0.4)' : 'transparent'}; border-radius: 6px; padding: 6px 8px; cursor: pointer; transition: all 0.2s;">
                         <span style="font-weight: 600; color: var(--success); font-size: 11px; text-transform: uppercase; letter-spacing: 1px;">${ichName}</span>
-                    </div>
-                    <div style="display: flex; align-items: center; justify-content: center;">
+                        <span style="color: ${ichActive ? 'var(--success)' : 'var(--text-muted)'}; font-size: 10px;">${ichSortIcon}</span>
+                    </button>
+                    <button onclick="sortNeedsSyntheseContent('diff')" style="display: flex; align-items: center; justify-content: center; gap: 4px; background: ${diffActive ? 'rgba(234, 179, 8, 0.15)' : 'transparent'}; border: 1px solid ${diffActive ? 'rgba(234, 179, 8, 0.4)' : 'transparent'}; border-radius: 6px; padding: 6px 8px; cursor: pointer; transition: all 0.2s; min-width: 60px;">
                         <span style="font-weight: 600; color: var(--warning, #eab308); font-size: 10px; text-transform: uppercase; letter-spacing: 0.5px;">Diff</span>
-                    </div>
-                    <div style="display: flex; align-items: center; justify-content: center;">
+                        <span style="color: ${diffActive ? 'var(--warning, #eab308)' : 'var(--text-muted)'}; font-size: 10px;">${diffSortIcon}</span>
+                    </button>
+                    <button onclick="sortNeedsSyntheseContent('partner')" style="display: flex; align-items: center; justify-content: center; gap: 6px; background: ${partnerActive ? 'rgba(239, 68, 68, 0.15)' : 'transparent'}; border: 1px solid ${partnerActive ? 'rgba(239, 68, 68, 0.4)' : 'transparent'}; border-radius: 6px; padding: 6px 8px; cursor: pointer; transition: all 0.2s;">
                         <span style="font-weight: 600; color: var(--danger); font-size: 11px; text-transform: uppercase; letter-spacing: 1px;">${partnerName}</span>
-                    </div>
+                        <span style="color: ${partnerActive ? 'var(--danger)' : 'var(--text-muted)'}; font-size: 10px;">${partnerSortIcon}</span>
+                    </button>
                 </div>
             `;
 
