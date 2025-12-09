@@ -4,9 +4,10 @@
  * Lädt alle Archetyp-Profile und stellt sie als einheitliches Objekt bereit.
  * Konvertiert die kategorisierte Struktur in flache kernbeduerfnisse für Kompatibilität.
  *
- * NEU v2.0: #ID-Konvertierung via BeduerfnisIds-Modul
- * - flattenZuIds(profil): Flache Bedürfnisse mit #IDs
- * - getProfilMitIds(key): Komplettes Profil mit #ID-Bedürfnissen
+ * NEU in v2.0:
+ * - flattenZuIds(): Konvertiert flache Bedürfnisse zu #IDs
+ * - getProfilMitIds(): Holt ein Profil mit #IDs statt String-Keys
+ * - Integration mit BeduerfnisIds für #ID-System
  */
 
 (function() {
@@ -19,7 +20,9 @@
     function getBeduerfnisIds() {
         if (_beduerfnisIds) return _beduerfnisIds;
 
-        if (typeof BeduerfnisIds !== 'undefined') {
+        if (typeof window !== 'undefined' && window.BeduerfnisIds) {
+            _beduerfnisIds = window.BeduerfnisIds;
+        } else if (typeof BeduerfnisIds !== 'undefined') {
             _beduerfnisIds = BeduerfnisIds;
         }
         return _beduerfnisIds;
@@ -51,17 +54,17 @@
     }
 
     /**
-     * Konvertiert ein kategorisiertes Profil in flache kernbeduerfnisse mit #IDs
-     * @param {Object} profil - Profil mit beduerfnisse.kategorie.bedürfnis Struktur
-     * @returns {Object} Flaches Objekt mit #IDs als Keys
+     * Konvertiert flache Bedürfnisse zu #IDs
+     * @param {Object} flat - Flaches Bedürfnis-Objekt mit String-Keys
+     * @returns {Object} Objekt mit #IDs als Keys
      */
-    function flattenZuIds(profil) {
-        const flat = flattenBeduerfnisse(profil);
+    function flattenZuIds(flat) {
+        if (!flat) return {};
         const ids = getBeduerfnisIds();
-
-        if (!ids) return flat; // Fallback: String-Keys
-
-        return ids.convertObjToIds(flat);
+        if (ids && ids.objectToIds) {
+            return ids.objectToIds(flat);
+        }
+        return flat; // Fallback: String-Keys
     }
 
     /**
@@ -116,24 +119,29 @@
     }
 
     /**
-     * Gibt ein Profil mit #ID-basierten Bedürfnissen zurück
-     * @param {string} key - Archetyp-Key (single, duo, etc.)
-     * @returns {Object|null} Profil mit kernbeduerfnisseIds
+     * Holt ein Profil mit #IDs statt String-Keys
+     * @param {string} key - Der Archetyp-Key (z.B. 'single', 'duo')
+     * @returns {Object|null} Profil mit kernbeduerfnisse als #IDs
      */
     function getProfilMitIds(key) {
         const profil = window.LoadedArchetypProfile && window.LoadedArchetypProfile[key];
         if (!profil) return null;
 
-        const ids = getBeduerfnisIds();
         return {
-            ...profil,
-            kernbeduerfnisseIds: ids ? ids.convertObjToIds(profil.kernbeduerfnisse) : profil.kernbeduerfnisse
+            name: profil.name,
+            beschreibung: profil.beschreibung,
+            kernbeduerfnisse: flattenZuIds(profil.kernbeduerfnisse),
+            kernbeduerfnisseIds: flattenZuIds(profil.kernbeduerfnisse), // Alias für Kompatibilität
+            quellen: profil.quellen || [],
+            kernwerte: profil.kernwerte || [],
+            vermeidet: profil.vermeidet || [],
+            beduerfnisseKategorisiert: profil.beduerfnisseKategorisiert
         };
     }
 
     /**
-     * Gibt alle Profile mit #ID-basierten Bedürfnissen zurück
-     * @returns {Object} Alle Profile mit kernbeduerfnisseIds
+     * Holt alle Profile mit #IDs
+     * @returns {Object} Alle Profile mit #IDs
      */
     function getAlleProfileMitIds() {
         const result = {};

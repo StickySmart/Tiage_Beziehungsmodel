@@ -482,7 +482,11 @@ const BeduerfnisIds = {
             return !!this.beduerfnisse[idOrKey];
         }
         return !!this._keyToId[idOrKey];
-    }
+    },
+
+    // Aliase für Kompatibilität
+    objectToIds: function(obj) { return this.convertObjToIds(obj); },
+    objectToKeys: function(obj) { return this.convertObjToKeys(obj); }
 };
 
 // Export für Node.js und Browser
