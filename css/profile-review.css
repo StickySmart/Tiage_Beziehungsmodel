@@ -1277,3 +1277,18 @@ input.gewichtung-input:focus {
 .flat-need-item.need-locked .need-lock-icon::before {
     content: "🔒";
 }
+
+/* ═══════════════════════════════════════════════════════════════════════════ */
+/* FLAT NEEDS LIST - Flache Liste ohne Kategorien-Gruppierung                   */
+/* ═══════════════════════════════════════════════════════════════════════════ */
+
+.flat-needs-no-categories .flat-needs-list {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding: 8px 12px;
+}
+
+.flat-needs-no-categories .flat-need-item {
+    margin-bottom: 0;
+}
