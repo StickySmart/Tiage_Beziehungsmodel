@@ -70,19 +70,53 @@ TiageSynthesis.Factors.Orientierung = {
 
     /**
      * Extrahiert Geschlecht aus P/S-Format oder String
-     * Für Orientierungslogik wird sekundär (Identität) bevorzugt
+     * Für Orientierungslogik wird die effektive Identität berechnet
+     *
+     * NEUES SYSTEM mit P/S (kontextabhängig):
+     * - P = Körper (mann, frau, inter)
+     * - S = Identität:
+     *   - Binär (Mann/Frau): cis, trans, suchend
+     *   - Divers (Inter): nonbinaer, fluid, suchend
+     *
+     * Logik für Orientierung:
+     * - P=Mann + S=Cis → mann (identifiziert als Mann)
+     * - P=Mann + S=Trans → frau (identifiziert als Frau)
+     * - P=Frau + S=Cis → frau (identifiziert als Frau)
+     * - P=Frau + S=Trans → mann (identifiziert als Mann)
+     * - P=Inter + S=Nonbinär → nonbinaer
+     * - P=Inter + S=Fluid → fluid
+     * - Suchend → suchend (in Exploration)
      */
     _extractGeschlecht: function(geschlecht) {
         if (!geschlecht) return null;
         // Neues P/S-Format: { primary, secondary }
         if (typeof geschlecht === 'object') {
-            // Sekundär (Identität) hat Vorrang für Orientierungslogik
-            if (geschlecht.secondary !== undefined && geschlecht.secondary !== null) {
-                return geschlecht.secondary;
+            var primary = geschlecht.primary;   // Körper: mann, frau, inter
+            var secondary = geschlecht.secondary; // Identität: cis, trans, suchend, nonbinaer, fluid
+
+            // Wenn S gesetzt ist, berechne effektive Identität
+            if (secondary !== undefined && secondary !== null) {
+                // Cis: Identität = Körper
+                if (secondary === 'cis') {
+                    return primary; // mann → mann, frau → frau
+                }
+                // Trans: Identität = Gegenteil des Körpers
+                if (secondary === 'trans') {
+                    if (primary === 'mann') return 'frau';
+                    if (primary === 'frau') return 'mann';
+                    return primary; // inter bleibt inter
+                }
+                // Nonbinär, Fluid, Suchend: direkt verwenden
+                if (secondary === 'nonbinaer' || secondary === 'fluid' || secondary === 'suchend') {
+                    return secondary;
+                }
+                // Fallback: S-Wert direkt (für Legacy-Kompatibilität)
+                return secondary;
             }
-            // Fallback auf Primär (Körper)
-            if (geschlecht.primary !== undefined) {
-                return geschlecht.primary;
+
+            // Kein S gesetzt: Fallback auf P (Körper)
+            if (primary !== undefined) {
+                return primary;
             }
         }
         // Altes Format: String direkt
