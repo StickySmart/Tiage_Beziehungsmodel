@@ -1588,24 +1588,39 @@ const BeduerfnisModifikatoren = {
     // ═══════════════════════════════════════════════════════════════════════════
 
     /**
+     * Lädt das BeduerfnisIds-Modul (lazy loading)
+     * @private
+     */
+    _getBeduerfnisIds: function() {
+        if (this._beduerfnisIds) return this._beduerfnisIds;
+
+        if (typeof window !== 'undefined' && window.BeduerfnisIds) {
+            this._beduerfnisIds = window.BeduerfnisIds;
+        } else if (typeof BeduerfnisIds !== 'undefined') {
+            this._beduerfnisIds = BeduerfnisIds;
+        } else if (typeof require !== 'undefined') {
+            try {
+                this._beduerfnisIds = require('./definitions/beduerfnis-ids.js');
+            } catch (e) {
+                console.warn('BeduerfnisIds nicht verfügbar:', e.message);
+            }
+        }
+
+        return this._beduerfnisIds;
+    },
+
+    /**
      * Konvertiert ein Modifier-Objekt von String-Keys zu #IDs
      * @param {Object} modifiers - Modifier-Objekt mit String-Keys
      * @returns {Object} Modifier-Objekt mit #IDs
      */
     toIds: function(modifiers) {
         if (!modifiers) return {};
-        if (typeof window !== 'undefined' && window.BeduerfnisIds) {
-            return window.BeduerfnisIds.objectToIds(modifiers);
+        var ids = this._getBeduerfnisIds();
+        if (ids && ids.objectToIds) {
+            return ids.objectToIds(modifiers);
         }
-        if (typeof require !== 'undefined') {
-            try {
-                const BeduerfnisIds = require('./definitions/beduerfnis-ids.js');
-                return BeduerfnisIds.objectToIds(modifiers);
-            } catch (e) {
-                console.warn('BeduerfnisIds nicht verfügbar:', e.message);
-            }
-        }
-        return modifiers;
+        return modifiers; // Fallback: unverändert zurückgeben
     },
 
     /**
@@ -1614,9 +1629,8 @@ const BeduerfnisModifikatoren = {
      * @returns {Object} Modifier-Objekt mit #IDs
      */
     getDominanzMitIds: function(dominanzTyp) {
-        const mods = this.dominanz[dominanzTyp];
-        if (!mods) return {};
-        return this.toIds(mods);
+        var mods = this.dominanz[dominanzTyp];
+        return mods ? this.toIds(mods) : {};
     },
 
     /**
@@ -1625,9 +1639,8 @@ const BeduerfnisModifikatoren = {
      * @returns {Object} Modifier-Objekt mit #IDs
      */
     getGeschlechtMitIds: function(geschlecht) {
-        const mods = this.geschlecht[geschlecht];
-        if (!mods) return {};
-        return this.toIds(mods);
+        var mods = this.geschlecht[geschlecht];
+        return mods ? this.toIds(mods) : {};
     },
 
     /**
@@ -1636,9 +1649,8 @@ const BeduerfnisModifikatoren = {
      * @returns {Object} Modifier-Objekt mit #IDs
      */
     getOrientierungMitIds: function(orientierung) {
-        const mods = this.orientierung[orientierung];
-        if (!mods) return {};
-        return this.toIds(mods);
+        var mods = this.orientierung[orientierung];
+        return mods ? this.toIds(mods) : {};
     },
 
     /**
@@ -1647,9 +1659,8 @@ const BeduerfnisModifikatoren = {
      * @returns {Object} Modifier-Objekt mit #IDs
      */
     getGeschlechtsidentitaetMitIds: function(identitaet) {
-        const mods = this.geschlechtsidentitaet[identitaet];
-        if (!mods) return {};
-        return this.toIds(mods);
+        var mods = this.geschlechtsidentitaet[identitaet];
+        return mods ? this.toIds(mods) : {};
     },
 
     /**
@@ -1658,8 +1669,17 @@ const BeduerfnisModifikatoren = {
      * @returns {Object} Modifizierte Bedürfnisse mit #IDs
      */
     berechneProfilMitIds: function(params) {
-        const ergebnis = this.berechneVollständigesBedürfnisProfil(params);
+        var ergebnis = this.berechneVollständigesBedürfnisProfil(params);
         return this.toIds(ergebnis);
+    },
+
+    /**
+     * Alias: Konvertiert das Ergebnis von berechneVollständigesBedürfnisProfil zu #IDs
+     * @param {Object} profil - Profil mit String-Keys
+     * @returns {Object} - Profil mit #IDs
+     */
+    profilZuIds: function(profil) {
+        return this.toIds(profil);
     }
 };
 

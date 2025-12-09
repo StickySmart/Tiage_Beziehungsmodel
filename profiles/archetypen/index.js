@@ -14,6 +14,21 @@
     'use strict';
 
     /**
+     * Lädt das BeduerfnisIds-Modul (lazy loading)
+     */
+    let _beduerfnisIds = null;
+    function getBeduerfnisIds() {
+        if (_beduerfnisIds) return _beduerfnisIds;
+
+        if (typeof window !== 'undefined' && window.BeduerfnisIds) {
+            _beduerfnisIds = window.BeduerfnisIds;
+        } else if (typeof BeduerfnisIds !== 'undefined') {
+            _beduerfnisIds = BeduerfnisIds;
+        }
+        return _beduerfnisIds;
+    }
+
+    /**
      * Konvertiert ein kategorisiertes Profil in flache kernbeduerfnisse
      * @param {Object} profil - Profil mit beduerfnisse.kategorie.bedürfnis Struktur
      * @returns {Object} Flaches Objekt mit allen Bedürfnissen
@@ -36,6 +51,20 @@
         });
 
         return flat;
+    }
+
+    /**
+     * Konvertiert flache Bedürfnisse zu #IDs
+     * @param {Object} flat - Flaches Bedürfnis-Objekt mit String-Keys
+     * @returns {Object} Objekt mit #IDs als Keys
+     */
+    function flattenZuIds(flat) {
+        if (!flat) return {};
+        const ids = getBeduerfnisIds();
+        if (ids && ids.objectToIds) {
+            return ids.objectToIds(flat);
+        }
+        return flat; // Fallback: String-Keys
     }
 
     /**
@@ -90,19 +119,6 @@
     }
 
     /**
-     * Konvertiert flache Bedürfnisse zu #IDs
-     * @param {Object} flat - Flaches Bedürfnis-Objekt mit String-Keys
-     * @returns {Object} Objekt mit #IDs als Keys
-     */
-    function flattenZuIds(flat) {
-        if (!flat) return {};
-        if (typeof window !== 'undefined' && window.BeduerfnisIds) {
-            return window.BeduerfnisIds.objectToIds(flat);
-        }
-        return flat;
-    }
-
-    /**
      * Holt ein Profil mit #IDs statt String-Keys
      * @param {string} key - Der Archetyp-Key (z.B. 'single', 'duo')
      * @returns {Object|null} Profil mit kernbeduerfnisse als #IDs
@@ -115,6 +131,7 @@
             name: profil.name,
             beschreibung: profil.beschreibung,
             kernbeduerfnisse: flattenZuIds(profil.kernbeduerfnisse),
+            kernbeduerfnisseIds: flattenZuIds(profil.kernbeduerfnisse), // Alias für Kompatibilität
             quellen: profil.quellen || [],
             kernwerte: profil.kernwerte || [],
             vermeidet: profil.vermeidet || [],
@@ -128,9 +145,9 @@
      */
     function getAlleProfileMitIds() {
         const result = {};
-        if (!window.LoadedArchetypProfile) return result;
+        const profile = window.LoadedArchetypProfile || {};
 
-        Object.keys(window.LoadedArchetypProfile).forEach(key => {
+        Object.keys(profile).forEach(key => {
             result[key] = getProfilMitIds(key);
         });
 
@@ -140,10 +157,9 @@
     // Globale Hilfsfunktionen exportieren
     window.ArchetypProfileLoader = {
         flattenBeduerfnisse: flattenBeduerfnisse,
+        flattenZuIds: flattenZuIds,
         convertToLegacyFormat: convertToLegacyFormat,
         initArchetypProfile: initArchetypProfile,
-        // v2.0 Funktionen
-        flattenZuIds: flattenZuIds,
         getProfilMitIds: getProfilMitIds,
         getAlleProfileMitIds: getAlleProfileMitIds
     };
