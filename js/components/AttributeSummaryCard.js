@@ -332,9 +332,25 @@ const AttributeSummaryCard = (function() {
             return '<p style="color: var(--text-muted);">Profil nicht gefunden</p>';
         }
 
+        // Prüfe ob neuer Archetyp geladen wird
+        const isNewArchetyp = currentFlatArchetyp !== archetyp;
+
         // Speichere aktuellen Archetyp und Label
         currentFlatArchetyp = archetyp;
         currentFlatArchetypLabel = archetypLabel;
+
+        // Bei neuem Archetyp: Alle Sperren zurücksetzen
+        if (isNewArchetyp) {
+            // Alle gesperrten Bedürfnisse entsperren
+            Object.keys(flatLockedNeeds).forEach(needId => {
+                delete flatLockedNeeds[needId];
+            });
+            // Alle Werte zurücksetzen damit neue Profil-Werte geladen werden
+            Object.keys(flatNeedsValues).forEach(needId => {
+                delete flatNeedsValues[needId];
+            });
+            console.log('[AttributeSummaryCard] Neuer Archetyp geladen - Sperren zurückgesetzt');
+        }
 
         // Hole ALLE Bedürfnisse aus dem Profil (alle 220)
         const kernbeduerfnisse = profil.kernbeduerfnisse || {};
@@ -571,7 +587,34 @@ const AttributeSummaryCard = (function() {
     }
 
     /**
+     * Löscht alle flachen Bedürfnis-Sperren und aktualisiert die UI
+     * Wird aufgerufen beim Reset auf Standard oder beim Laden eines neuen Profils
+     */
+    function clearFlatLockedNeeds() {
+        // Alle Lock-Einträge entfernen
+        Object.keys(flatLockedNeeds).forEach(needId => {
+            delete flatLockedNeeds[needId];
+
+            // UI aktualisieren - Lock-Icon und Disabled-Status zurücksetzen
+            const needItem = document.querySelector(`.flat-need-item[data-need="${needId}"]`);
+            if (needItem) {
+                needItem.classList.remove('need-locked');
+                const slider = needItem.querySelector('.need-slider');
+                const input = needItem.querySelector('.flat-need-input');
+                const lockIcon = needItem.querySelector('.flat-need-lock');
+
+                if (slider) slider.disabled = false;
+                if (input) input.readOnly = false;
+                if (lockIcon) lockIcon.textContent = '🔓';
+            }
+        });
+
+        console.log('[AttributeSummaryCard] Alle flachen Bedürfnis-Sperren wurden gelöscht');
+    }
+
+    /**
      * Setzt alle flachen Bedürfniswerte zurück auf Profil-Werte
+     * WICHTIG: Setzt auch alle Sperren zurück!
      */
     function resetFlatNeeds() {
         if (!currentFlatArchetyp || typeof GfkBeduerfnisse === 'undefined') return;
@@ -579,19 +622,20 @@ const AttributeSummaryCard = (function() {
         const profil = GfkBeduerfnisse.archetypProfile[currentFlatArchetyp];
         const kernbeduerfnisse = profil?.kernbeduerfnisse || {};
 
-        // Alle Bedürfnisse zurücksetzen (nicht-gesperrte)
-        Object.keys(kernbeduerfnisse).forEach(needId => {
-            if (!flatLockedNeeds[needId]) {
-                flatNeedsValues[needId] = kernbeduerfnisse[needId];
+        // ERST alle Sperren löschen, DANN alle Werte zurücksetzen
+        clearFlatLockedNeeds();
 
-                // Update UI
-                const needItem = document.querySelector(`.flat-need-item[data-need="${needId}"]`);
-                if (needItem) {
-                    const slider = needItem.querySelector('.need-slider');
-                    const input = needItem.querySelector('.flat-need-input');
-                    if (slider) slider.value = flatNeedsValues[needId];
-                    if (input) input.value = flatNeedsValues[needId];
-                }
+        // Alle Werte zurücksetzen (jetzt ohne Lock-Prüfung, da alle entsperrt)
+        Object.keys(kernbeduerfnisse).forEach(needId => {
+            flatNeedsValues[needId] = profil.kernbeduerfnisse[needId];
+
+            // Update UI
+            const needItem = document.querySelector(`.flat-need-item[data-need="${needId}"]`);
+            if (needItem) {
+                const slider = needItem.querySelector('.need-slider');
+                const input = needItem.querySelector('.flat-need-input');
+                if (slider) slider.value = flatNeedsValues[needId];
+                if (input) input.value = flatNeedsValues[needId];
             }
         });
     }
@@ -1088,6 +1132,7 @@ const AttributeSummaryCard = (function() {
         setFlatNeedsValues,
         getFlatLockedNeeds,
         setFlatLockedNeeds,
+        clearFlatLockedNeeds,
         resetFlatNeeds,
         reRenderFlatNeeds,
         setSortMode,
