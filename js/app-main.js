@@ -3940,16 +3940,22 @@
             ];
 
             // Geschlecht P-Grids befüllen (Körper: Mann, Frau, Inter)
-            const pGrids = document.querySelectorAll('.geschlecht-p-grid');
-            console.log('[TIAGE DEBUG] Found geschlecht-p-grids:', pGrids.length);
-            pGrids.forEach(grid => {
-                const person = grid.dataset.person;
-                console.log('[TIAGE DEBUG] Processing p-grid for person:', person);
-                if (!person) return;
-                grid.innerHTML = geschlechtPOptions.map(opt =>
-                    `<button type="button" class="geschlecht-btn geschlecht-p-btn" data-value="${opt.value}" onclick="handleGeschlechtPClick('${person}', '${opt.value}', this)">${opt.label}</button>`
-                ).join('');
+            // Use both class selector and explicit IDs as fallback
+            const pGridSelectors = ['.geschlecht-p-grid', '#ich-geschlecht-p-grid', '#partner-geschlecht-p-grid'];
+            const processedPGrids = new Set();
+            pGridSelectors.forEach(selector => {
+                document.querySelectorAll(selector).forEach(grid => {
+                    if (processedPGrids.has(grid.id)) return;
+                    processedPGrids.add(grid.id);
+                    const person = grid.dataset.person;
+                    console.log('[TIAGE DEBUG] Processing p-grid for person:', person, 'id:', grid.id);
+                    if (!person) return;
+                    grid.innerHTML = geschlechtPOptions.map(opt =>
+                        `<button type="button" class="geschlecht-btn geschlecht-p-btn" data-value="${opt.value}" onclick="handleGeschlechtPClick('${person}', '${opt.value}', this)">${opt.label}</button>`
+                    ).join('');
+                });
             });
+            console.log('[TIAGE DEBUG] Processed geschlecht-p-grids:', processedPGrids.size);
 
             // Mobile und Modal Geschlecht-Grids befüllen (kombiniertes P/S Grid)
             const mobileModalGrids = document.querySelectorAll('#mobile-ich-geschlecht-grid, #mobile-partner-geschlecht-grid, #modal-ich-geschlecht-grid, #modal-partner-geschlecht-grid');
@@ -3967,37 +3973,58 @@
             // (kontextabhängig von P-Auswahl)
 
             // Dominanz-Grids befüllen (nur Desktop mit data-person)
-            const dGrids = document.querySelectorAll('.dominanz-grid[data-person]');
-            console.log('[TIAGE DEBUG] Found dominanz-grids:', dGrids.length);
-            dGrids.forEach(grid => {
-                const person = grid.dataset.person;
-                if (!person) return;
-                grid.innerHTML = dominanzOptions.map(opt =>
-                    `<button type="button" class="dominanz-btn" data-value="${opt.value}" onclick="handleDominanzClick('${person}', '${opt.value}', this)">${opt.label}</button>`
-                ).join('');
+            // Use both class selector and explicit IDs as fallback
+            const dGridSelectors = ['.dominanz-grid[data-person]', '#ich-dominanz-grid', '#partner-dominanz-grid'];
+            const processedDGrids = new Set();
+            dGridSelectors.forEach(selector => {
+                document.querySelectorAll(selector).forEach(grid => {
+                    if (processedDGrids.has(grid.id)) return;
+                    processedDGrids.add(grid.id);
+                    const person = grid.dataset.person;
+                    console.log('[TIAGE DEBUG] Processing dominanz-grid for person:', person, 'id:', grid.id);
+                    if (!person) return;
+                    grid.innerHTML = dominanzOptions.map(opt =>
+                        `<button type="button" class="dominanz-btn" data-value="${opt.value}" onclick="handleDominanzClick('${person}', '${opt.value}', this)">${opt.label}</button>`
+                    ).join('');
+                });
             });
+            console.log('[TIAGE DEBUG] Processed dominanz-grids:', processedDGrids.size);
 
             // Orientierung-Grids befüllen (nur Desktop mit data-person)
-            const oGrids = document.querySelectorAll('.orientierung-grid[data-person]');
-            console.log('[TIAGE DEBUG] Found orientierung-grids:', oGrids.length);
-            oGrids.forEach(grid => {
-                const person = grid.dataset.person;
-                if (!person) return;
-                grid.innerHTML = orientierungOptions.map(opt =>
-                    `<button type="button" class="orientierung-btn" data-value="${opt.value}" onclick="handleOrientierungClick('${person}', '${opt.value}', this)">${opt.label}</button>`
-                ).join('');
+            // Use both class selector and explicit IDs as fallback
+            const oGridSelectors = ['.orientierung-grid[data-person]', '#ich-orientierung-grid', '#partner-orientierung-grid'];
+            const processedOGrids = new Set();
+            oGridSelectors.forEach(selector => {
+                document.querySelectorAll(selector).forEach(grid => {
+                    if (processedOGrids.has(grid.id)) return;
+                    processedOGrids.add(grid.id);
+                    const person = grid.dataset.person;
+                    console.log('[TIAGE DEBUG] Processing orientierung-grid for person:', person, 'id:', grid.id);
+                    if (!person) return;
+                    grid.innerHTML = orientierungOptions.map(opt =>
+                        `<button type="button" class="orientierung-btn" data-value="${opt.value}" onclick="handleOrientierungClick('${person}', '${opt.value}', this)">${opt.label}</button>`
+                    ).join('');
+                });
             });
+            console.log('[TIAGE DEBUG] Processed orientierung-grids:', processedOGrids.size);
 
             // GFK-Grids befüllen
-            const gfkGrids = document.querySelectorAll('.gfk-grid[data-person]');
-            console.log('[TIAGE DEBUG] Found gfk-grids:', gfkGrids.length);
-            gfkGrids.forEach(grid => {
-                const person = grid.dataset.person;
-                if (!person) return;
-                grid.innerHTML = gfkOptions.map(opt =>
-                    `<button type="button" class="gfk-btn" data-value="${opt.value}" onclick="handleGfkClick('${person}', '${opt.value}', this)">${opt.label}</button>`
-                ).join('');
+            // Use both class selector and explicit IDs as fallback
+            const gfkGridSelectors = ['.gfk-grid[data-person]', '#ich-gfk-grid', '#partner-gfk-grid', '#mobile-ich-gfk-grid', '#mobile-partner-gfk-grid'];
+            const processedGfkGrids = new Set();
+            gfkGridSelectors.forEach(selector => {
+                document.querySelectorAll(selector).forEach(grid => {
+                    if (processedGfkGrids.has(grid.id)) return;
+                    processedGfkGrids.add(grid.id);
+                    const person = grid.dataset.person;
+                    console.log('[TIAGE DEBUG] Processing gfk-grid for person:', person, 'id:', grid.id);
+                    if (!person) return;
+                    grid.innerHTML = gfkOptions.map(opt =>
+                        `<button type="button" class="gfk-btn" data-value="${opt.value}" onclick="handleGfkClick('${person}', '${opt.value}', this)">${opt.label}</button>`
+                    ).join('');
+                });
             });
+            console.log('[TIAGE DEBUG] Processed gfk-grids:', processedGfkGrids.size);
 
             // UI mit gespeichertem State synchronisieren
             ['ich', 'partner'].forEach(person => {
