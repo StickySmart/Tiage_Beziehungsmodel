@@ -47,7 +47,9 @@ const GewichtungCard = (function() {
                                        oninput="GewichtungCard.onInputChange('${factor}', this.value)"
                                        onclick="event.stopPropagation()">
                                 <span class="gewichtung-percent">%</span>
-                                <span class="gewichtung-lock-indicator"></span>
+                                <span class="gewichtung-lock-indicator"
+                                      onclick="event.stopPropagation(); if(typeof handleLockToggle === 'function') handleLockToggle('${factor}');"
+                                      title="Klicken zum Sperren/Entsperren"></span>
                             </div>
                         </div>
                     </div>`;
@@ -79,8 +81,13 @@ const GewichtungCard = (function() {
     function renderFooter() {
         return `
                     <div class="gewichtung-footer-bar">
-                        <span class="gewichtung-hint">Doppelklick = Wert fixieren</span>
-                        <span class="gewichtung-summe-text">Summe: <span class="gewichtung-summe-value" id="gewicht-summe">100%</span></span>
+                        <span class="gewichtung-hint">Klick auf 🔓 = Wert fixieren</span>
+                        <span class="gewichtung-summe-text">
+                            Summe: <span class="gewichtung-summe-value" id="gewicht-summe">100%</span>
+                            <span class="gewichtung-summe-lock" id="gewicht-summe-lock"
+                                  onclick="if(typeof toggleSummeLock === 'function') toggleSummeLock();"
+                                  title="Summe auf 100% fixieren">🔓</span>
+                        </span>
                         <button class="profile-review-triple-btn" onclick="resetGewichtungen()" style="padding: 6px 12px; font-size: 11px;">
                             🔄 Standard
                         </button>

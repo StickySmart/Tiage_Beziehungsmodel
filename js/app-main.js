@@ -24,6 +24,7 @@
         const GEWICHTUNG_DEFAULTS = { O: 40, A: 25, D: 20, G: 15 };
         const GEWICHTUNG_STORAGE_KEY = 'tiage_faktor_gewichtungen';
         const GEWICHTUNG_LOCK_KEY = 'tiage_faktor_locks';
+        const GEWICHTUNG_SUMME_LOCK_KEY = 'tiage_summe_lock';
 
         // Faktor-Mapping für Gewichtungen (muss vor den Funktionen definiert sein, die es verwenden)
         const FAKTOR_MAP = {
@@ -35,6 +36,9 @@
 
         // Lock-Status für Gewichtungen (muss vor den Funktionen definiert sein, die es verwenden)
         let gewichtungLocks = { orientierung: false, archetyp: false, dominanz: false, geschlecht: false };
+
+        // Summen-Lock-Status (fixiert Summe auf 100%)
+        let summeLocked = true; // Standardmäßig aktiviert
 
         // Modal-Kontext für Profile Review (muss vor openProfileReviewModal() definiert sein)
         var currentProfileReviewContext = { archetypeKey: null, person: null };
@@ -7766,6 +7770,83 @@
          * @returns {object|null} Matching-Ergebnis oder null bei Fehler
          */
         function calculateDynamicBeduerfnisMatch(ichArchetyp, partnerArchetyp) {
+            // ════════════════════════════════════════════════════════════════════
+            // NEU: KONSISTENTE BERECHNUNG - Nutze TiageProfileStore wenn verfügbar
+            // Dies stellt sicher, dass der Score hier identisch ist mit dem
+            // Score in der Tiagesynthese-Ansicht (EINE QUELLE DER WAHRHEIT)
+            // ════════════════════════════════════════════════════════════════════
+            if (typeof TiageProfileStore !== 'undefined' && typeof getProfileFromStore === 'function') {
+                const ichPerson = { archetyp: ichArchetyp, ...personDimensions.ich };
+                const partnerPerson = { archetyp: partnerArchetyp, ...personDimensions.partner };
+
+                const ichProfile = getProfileFromStore(ichPerson);
+                const partnerProfile = getProfileFromStore(partnerPerson);
+
+                if (ichProfile && ichProfile.needs && partnerProfile && partnerProfile.needs) {
+                    console.log('[GFK] Verwende TiageProfileStore.calculateNeedsMatch für konsistente Berechnung');
+                    const result = TiageProfileStore.calculateNeedsMatch(ichProfile, partnerProfile);
+
+                    // Level basierend auf Score bestimmen
+                    let level = 'niedrig';
+                    if (result.score >= 70) level = 'hoch';
+                    else if (result.score >= 40) level = 'mittel';
+
+                    // Format für Bedürfnis-Labels
+                    const formatLabel = (need) => {
+                        if (typeof formatBeduerfnisLabel === 'function') {
+                            return formatBeduerfnisLabel(need);
+                        }
+                        return need.charAt(0).toUpperCase() + need.slice(1).replace(/_/g, ' ');
+                    };
+
+                    // Ergebnis im erwarteten Format
+                    const allGemeinsam = (result.gemeinsam || []).map(b => ({
+                        label: formatLabel(b.need),
+                        id: b.need,
+                        key: b.need,
+                        wert1: b.wert1,
+                        wert2: b.wert2
+                    }));
+                    const allUnterschiedlich = (result.unterschiedlich || []).map(b => ({
+                        label: formatLabel(b.need),
+                        id: b.need,
+                        key: b.need,
+                        wert1: b.wert1,
+                        wert2: b.wert2
+                    }));
+                    const allKomplementaer = (result.komplementaer || []).map(b => ({
+                        label: formatLabel(b.need),
+                        id: b.need,
+                        key: b.need,
+                        wert1: b.wert1,
+                        wert2: b.wert2
+                    }));
+
+                    const allGemeinsamUndKompatibel = [...allGemeinsam, ...allKomplementaer].sort((a, b) =>
+                        ((b.wert1 + b.wert2) / 2) - ((a.wert1 + a.wert2) / 2)
+                    );
+
+                    return {
+                        score: result.score,
+                        level: level,
+                        archetyp1: ichArchetyp,
+                        archetyp2: partnerArchetyp,
+                        topUebereinstimmungen: allGemeinsamUndKompatibel.slice(0, 5),
+                        topKonflikte: allUnterschiedlich.slice(0, 5),
+                        komplementaer: allKomplementaer.slice(0, 5),
+                        alleGemeinsam: allGemeinsamUndKompatibel,
+                        alleUnterschiedlich: allUnterschiedlich,
+                        alleKomplementaer: allKomplementaer,
+                        source: 'TiageProfileStore'  // Markierung: Konsistente Berechnung
+                    };
+                }
+            }
+
+            // ════════════════════════════════════════════════════════════════════
+            // FALLBACK: Alter Weg mit BeduerfnisModifikatoren
+            // Wird verwendet wenn profile.needs nicht verfügbar
+            // ════════════════════════════════════════════════════════════════════
+
             // Basis-Bedürfnisse laden
             const ichBasis = GfkBeduerfnisse.archetypProfile[ichArchetyp];
             const partnerBasis = GfkBeduerfnisse.archetypProfile[partnerArchetyp];
@@ -7955,7 +8036,9 @@
                         <div class="gfk-tags">
                             ${matching.topUebereinstimmungen.map(b => {
                                 const translatedLabel = TiageI18n.t(`needs.items.${b.id}`, b.label);
-                                return `<span class="gfk-tag gfk-tag-match gfk-tag-clickable" onclick="openNeedDefinitionModal('${b.id}')" title="Klicken für Definition">${translatedLabel}</span>`;
+                                const bid = typeof BeduerfnisIds !== 'undefined' && BeduerfnisIds.toId ? BeduerfnisIds.toId(b.id) : '';
+                                const bidDisplay = bid && bid.startsWith('#B') ? `<span style="opacity: 0.6; font-size: 0.85em; margin-right: 4px;">${bid}</span>` : '';
+                                return `<span class="gfk-tag gfk-tag-match gfk-tag-clickable" onclick="openNeedDefinitionModal('${b.id}')" title="Klicken für Definition">${bidDisplay}${translatedLabel}</span>`;
                             }).join('')}
                         </div>
                     </div>
@@ -7971,7 +8054,9 @@
                         <div class="gfk-tags">
                             ${matching.topKonflikte.map(b => {
                                 const translatedLabel = TiageI18n.t(`needs.items.${b.id}`, b.label);
-                                return `<span class="gfk-tag gfk-tag-conflict gfk-tag-clickable" onclick="openNeedDefinitionModal('${b.id}')" title="Klicken für Definition | ${matching.archetyp1}: ${b.wert1} | ${matching.archetyp2}: ${b.wert2}">${translatedLabel}</span>`;
+                                const bid = typeof BeduerfnisIds !== 'undefined' && BeduerfnisIds.toId ? BeduerfnisIds.toId(b.id) : '';
+                                const bidDisplay = bid && bid.startsWith('#B') ? `<span style="opacity: 0.6; font-size: 0.85em; margin-right: 4px;">${bid}</span>` : '';
+                                return `<span class="gfk-tag gfk-tag-conflict gfk-tag-clickable" onclick="openNeedDefinitionModal('${b.id}')" title="Klicken für Definition | ${matching.archetyp1}: ${b.wert1} | ${matching.archetyp2}: ${b.wert2}">${bidDisplay}${translatedLabel}</span>`;
                             }).join('')}
                         </div>
                     </div>
@@ -12916,14 +13001,18 @@
             const gemeinsamTags = gemeinsam.slice(0, 8).map(b => {
                 const needId = b.key || b.id;
                 const label = typeof TiageI18n !== 'undefined' ? TiageI18n.t(`needs.items.${needId}`, b.label) : b.label;
-                return `<span style="${greenTagStyle}" onclick="openNeedDefinitionModal('${needId}')" title="Klicken für Definition" onmouseover="this.style.transform='translateY(-1px)';this.style.boxShadow='0 2px 8px rgba(34,197,94,0.3)'" onmouseout="this.style.transform='';this.style.boxShadow=''">${label}</span>`;
+                const bid = typeof BeduerfnisIds !== 'undefined' && BeduerfnisIds.toId ? BeduerfnisIds.toId(needId) : '';
+                const bidDisplay = bid && bid.startsWith('#B') ? `<span style="opacity: 0.6; font-size: 0.85em; margin-right: 4px;">${bid}</span>` : '';
+                return `<span style="${greenTagStyle}" onclick="openNeedDefinitionModal('${needId}')" title="Klicken für Definition" onmouseover="this.style.transform='translateY(-1px)';this.style.boxShadow='0 2px 8px rgba(34,197,94,0.3)'" onmouseout="this.style.transform='';this.style.boxShadow=''">${bidDisplay}${label}</span>`;
             }).join('');
 
             // Unterschiedliche Bedürfnisse Tags (max 5) - clickable
             const unterschiedlichTags = unterschiedlich.slice(0, 5).map(b => {
                 const needId = b.key || b.id;
                 const label = typeof TiageI18n !== 'undefined' ? TiageI18n.t(`needs.items.${needId}`, b.label) : b.label;
-                return `<span style="${redTagStyle}" onclick="openNeedDefinitionModal('${needId}')" title="Klicken für Definition" onmouseover="this.style.transform='translateY(-1px)';this.style.boxShadow='0 2px 8px rgba(239,68,68,0.3)'" onmouseout="this.style.transform='';this.style.boxShadow=''">${label}</span>`;
+                const bid = typeof BeduerfnisIds !== 'undefined' && BeduerfnisIds.toId ? BeduerfnisIds.toId(needId) : '';
+                const bidDisplay = bid && bid.startsWith('#B') ? `<span style="opacity: 0.6; font-size: 0.85em; margin-right: 4px;">${bid}</span>` : '';
+                return `<span style="${redTagStyle}" onclick="openNeedDefinitionModal('${needId}')" title="Klicken für Definition" onmouseover="this.style.transform='translateY(-1px)';this.style.boxShadow='0 2px 8px rgba(239,68,68,0.3)'" onmouseout="this.style.transform='';this.style.boxShadow=''">${bidDisplay}${label}</span>`;
             }).join('');
 
             return `
@@ -15439,6 +15528,18 @@
 
         // Normalisiert Gewichtungen auf 100%
         function normalizeGewichtungen(changedFactor, newValue) {
+            // Wenn Summen-Lock deaktiviert ist, nur den geänderten Wert setzen
+            if (!summeLocked) {
+                const changedInput = document.getElementById(FAKTOR_MAP[changedFactor].inputId);
+                const changedSlider = document.getElementById(`gewicht-slider-${changedFactor}`);
+                const clampedValue = Math.min(Math.max(newValue, 0), 100);
+                if (changedInput) changedInput.value = clampedValue;
+                if (changedSlider) changedSlider.value = clampedValue;
+                saveGewichtungen();
+                updateGewichtungSumme();
+                return;
+            }
+
             const factors = Object.keys(FAKTOR_MAP);
 
             // Sammle aktuelle Werte und Lock-Status
@@ -15463,9 +15564,11 @@
             const maxForChanged = 100 - lockedSum;
             const clampedValue = Math.min(Math.max(newValue, 0), maxForChanged);
 
-            // Setze geänderten Wert
+            // Setze geänderten Wert (Input und Slider)
             const changedInput = document.getElementById(FAKTOR_MAP[changedFactor].inputId);
+            const changedSlider = document.getElementById(`gewicht-slider-${changedFactor}`);
             if (changedInput) changedInput.value = clampedValue;
+            if (changedSlider) changedSlider.value = clampedValue;
 
             // Verteile Rest auf nicht-gelockte Faktoren
             const availableForOthers = 100 - lockedSum - clampedValue;
@@ -15487,15 +15590,20 @@
                         newVal = Math.round(availableForOthers / unlockedFactors.length);
                         distributed += newVal;
                     }
-                    f.input.value = Math.max(0, newVal);
+                    const finalValue = Math.max(0, newVal);
+                    f.input.value = finalValue;
+                    // Synchronisiere auch den Slider
+                    const slider = document.getElementById(`gewicht-slider-${f.factor}`);
+                    if (slider) slider.value = finalValue;
                 });
             }
 
             saveGewichtungen();
             updateRowStates();
+            updateGewichtungSumme();
         }
 
-        // Doppelklick-Handler für Lock/Unlock
+        // Klick-Handler für Lock/Unlock
         function handleLockToggle(factor) {
             const lockedCount = Object.values(gewichtungLocks).filter(v => v).length;
 
@@ -15513,6 +15621,7 @@
             saveGewichtungLocks();
             updateRowStates();
         }
+        window.handleLockToggle = handleLockToggle;
 
         // Aktualisiert visuelle Zustände
         function updateRowStates() {
@@ -15532,6 +15641,56 @@
                     row.classList.add('readonly');
                 }
             });
+
+            // Aktualisiere Summen-Lock-Anzeige
+            updateSummeLockDisplay();
+        }
+
+        // Lädt Summen-Lock-Status aus localStorage
+        function getSummeLock() {
+            try {
+                const stored = localStorage.getItem(GEWICHTUNG_SUMME_LOCK_KEY);
+                return stored !== null ? JSON.parse(stored) : true; // Standard: aktiviert
+            } catch (e) { return true; }
+        }
+
+        // Speichert Summen-Lock-Status
+        function saveSummeLock() {
+            try {
+                localStorage.setItem(GEWICHTUNG_SUMME_LOCK_KEY, JSON.stringify(summeLocked));
+            } catch (e) { console.warn('Fehler beim Speichern des Summen-Lock-Status:', e); }
+        }
+
+        // Toggle Summen-Lock
+        function toggleSummeLock() {
+            summeLocked = !summeLocked;
+            saveSummeLock();
+            updateSummeLockDisplay();
+
+            // Wenn aktiviert, normalisiere sofort auf 100%
+            if (summeLocked) {
+                const factors = Object.keys(FAKTOR_MAP);
+                const unlockedFactors = factors.filter(f => !gewichtungLocks[f]);
+                if (unlockedFactors.length > 0) {
+                    // Normalisiere auf 100%
+                    const firstUnlocked = unlockedFactors[0];
+                    const input = document.getElementById(FAKTOR_MAP[firstUnlocked].inputId);
+                    if (input) {
+                        normalizeGewichtungen(firstUnlocked, parseInt(input.value) || 0);
+                    }
+                }
+            }
+        }
+        window.toggleSummeLock = toggleSummeLock;
+
+        // Aktualisiert Summen-Lock-Anzeige
+        function updateSummeLockDisplay() {
+            const lockElement = document.getElementById('gewicht-summe-lock');
+            if (lockElement) {
+                lockElement.textContent = summeLocked ? '🔒' : '🔓';
+                lockElement.classList.toggle('locked', summeLocked);
+                lockElement.title = summeLocked ? 'Summe ist auf 100% fixiert (klicken zum Entsperren)' : 'Summe auf 100% fixieren';
+            }
         }
 
         // Initialisiert Event-Listener
@@ -15544,6 +15703,7 @@
             factors.forEach(factor => {
                 const row = document.querySelector(`.gewichtung-card[data-factor="${factor}"]`);
                 const input = document.getElementById(FAKTOR_MAP[factor].inputId);
+                const slider = document.getElementById(`gewicht-slider-${factor}`);
 
                 if (!row || !input) {
                     allFound = false;
@@ -15587,9 +15747,43 @@
                     }
                 });
 
-                // Doppelklick auf Row für Lock
+                // Slider-Events für Normalisierung
+                if (slider) {
+                    slider.addEventListener('input', function(e) {
+                        if (gewichtungLocks[factor]) {
+                            // Wenn gesperrt, Slider zurücksetzen
+                            const gew = getGewichtungen();
+                            slider.value = gew[FAKTOR_MAP[factor].key];
+                            return;
+                        }
+                        // Synchronisiere mit Text-Input
+                        input.value = e.target.value;
+                        updateGewichtungSumme();
+                    });
+
+                    slider.addEventListener('change', function(e) {
+                        if (gewichtungLocks[factor]) {
+                            const gew = getGewichtungen();
+                            slider.value = gew[FAKTOR_MAP[factor].key];
+                            return;
+                        }
+
+                        const unlockedCount = factors.filter(f => !gewichtungLocks[f]).length;
+                        if (unlockedCount === 1 && !gewichtungLocks[factor]) {
+                            const gew = getGewichtungen();
+                            slider.value = gew[FAKTOR_MAP[factor].key];
+                            input.value = gew[FAKTOR_MAP[factor].key];
+                            return;
+                        }
+
+                        const newVal = parseInt(e.target.value) || 0;
+                        normalizeGewichtungen(factor, newVal);
+                    });
+                }
+
+                // Doppelklick auf Row für Lock (zusätzlich zum Klick auf Icon)
                 row.addEventListener('dblclick', function(e) {
-                    if (e.target.tagName !== 'INPUT') {
+                    if (e.target.tagName !== 'INPUT' && !e.target.classList.contains('gewichtung-lock-indicator')) {
                         handleLockToggle(factor);
                     }
                 });
@@ -15600,16 +15794,33 @@
 
         // Reset auf Standard
         function resetGewichtungen() {
+            // Reset Faktor-Locks
             gewichtungLocks = { orientierung: false, archetyp: false, dominanz: false, geschlecht: false };
             saveGewichtungLocks();
 
+            // Reset Summen-Lock auf Standard (aktiviert)
+            summeLocked = true;
+            saveSummeLock();
+
+            // Reset Text-Inputs
             document.getElementById('gewicht-orientierung').value = GEWICHTUNG_DEFAULTS.O;
             document.getElementById('gewicht-archetyp').value = GEWICHTUNG_DEFAULTS.A;
             document.getElementById('gewicht-dominanz').value = GEWICHTUNG_DEFAULTS.D;
             document.getElementById('gewicht-geschlecht').value = GEWICHTUNG_DEFAULTS.G;
 
+            // Reset Slider
+            const sliderO = document.getElementById('gewicht-slider-orientierung');
+            const sliderA = document.getElementById('gewicht-slider-archetyp');
+            const sliderD = document.getElementById('gewicht-slider-dominanz');
+            const sliderG = document.getElementById('gewicht-slider-geschlecht');
+            if (sliderO) sliderO.value = GEWICHTUNG_DEFAULTS.O;
+            if (sliderA) sliderA.value = GEWICHTUNG_DEFAULTS.A;
+            if (sliderD) sliderD.value = GEWICHTUNG_DEFAULTS.D;
+            if (sliderG) sliderG.value = GEWICHTUNG_DEFAULTS.G;
+
             saveGewichtungen();
             updateRowStates();
+            updateGewichtungSumme();
         }
         window.resetGewichtungen = resetGewichtungen;
 
@@ -15619,16 +15830,28 @@
 
             const gew = getGewichtungen();
             gewichtungLocks = getGewichtungLocks();
+            summeLocked = getSummeLock();
 
             const inputO = document.getElementById('gewicht-orientierung');
             const inputA = document.getElementById('gewicht-archetyp');
             const inputD = document.getElementById('gewicht-dominanz');
             const inputG = document.getElementById('gewicht-geschlecht');
 
+            const sliderO = document.getElementById('gewicht-slider-orientierung');
+            const sliderA = document.getElementById('gewicht-slider-archetyp');
+            const sliderD = document.getElementById('gewicht-slider-dominanz');
+            const sliderG = document.getElementById('gewicht-slider-geschlecht');
+
             if (inputO) inputO.value = gew.O;
             if (inputA) inputA.value = gew.A;
             if (inputD) inputD.value = gew.D;
             if (inputG) inputG.value = gew.G;
+
+            // Synchronisiere Slider mit Inputs
+            if (sliderO) sliderO.value = gew.O;
+            if (sliderA) sliderA.value = gew.A;
+            if (sliderD) sliderD.value = gew.D;
+            if (sliderG) sliderG.value = gew.G;
 
             updateGewichtungSumme();
             updateRowStates();

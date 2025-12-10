@@ -361,7 +361,7 @@ const PerspektivenModal = {
     },
 
     /**
-     * Rendert die Perspektiven-Karten (GFK + Paarung Style, aber mit Perspektive)
+     * Rendert die Perspektiven-Karten (nur relevante Inhalte, keine generischen Phrasen)
      */
     renderPerspektiveCards: function(needDef, perspektive) {
         return `
@@ -389,39 +389,18 @@ const PerspektivenModal = {
                 </p>
             </div>
 
-            <!-- GFK-Hinweis -->
+            <!-- Kompakte Fußnote statt generischer Sektionen -->
             <div style="
-                padding: 12px;
-                background: rgba(139,92,246,0.08);
-                border-radius: 8px;
-                border: 1px solid rgba(139,92,246,0.2);
-                margin-bottom: 12px;
+                display: flex;
+                gap: 12px;
+                font-size: 10px;
+                color: var(--text-muted);
+                opacity: 0.7;
+                padding-top: 8px;
+                border-top: 1px solid rgba(255,255,255,0.05);
             ">
-                <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
-                    <span style="font-size: 14px;">💬</span>
-                    <strong style="font-size: 12px; color: #8B5CF6;">Gewaltfreie Kommunikation</strong>
-                </div>
-                <p style="font-size: 11px; color: var(--text-secondary); margin: 0; line-height: 1.5;">
-                    Das Bedürfnis nach <strong>${needDef.label}</strong> ist universell und frei von Bewertung –
-                    es beschreibt, was du zum Leben brauchst.
-                </p>
-            </div>
-
-            <!-- Paarung-Bezug -->
-            <div style="
-                padding: 12px;
-                background: rgba(232,67,147,0.08);
-                border-radius: 8px;
-                border: 1px solid rgba(232,67,147,0.2);
-            ">
-                <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
-                    <span style="font-size: 14px;">💑</span>
-                    <strong style="font-size: 12px; color: #E84393;">Paarung</strong>
-                </div>
-                <p style="font-size: 11px; color: var(--text-secondary); margin: 0; line-height: 1.5;">
-                    Wenn beide Partner ihr Bedürfnis nach <strong>${needDef.label}</strong> kennen und
-                    kommunizieren, entsteht Raum für echte Verbindung.
-                </p>
+                <span>💬 GFK-Bedürfnis</span>
+                <span>💑 Paarungsrelevant</span>
             </div>
         `;
     },
