@@ -4700,9 +4700,9 @@
 
             if (!modal || !body) return;
 
-            // Matching-Daten holen
-            const ichArchetyp = (currentArchetype || '').replace('_', '-');
-            const partnerArchetyp = (selectedPartner || '').replace('_', '-');
+            // Matching-Daten holen - Schlüssel unverändert lassen (duo_flex, nicht duo-flex)
+            const ichArchetyp = currentArchetype || '';
+            const partnerArchetyp = selectedPartner || '';
 
             if (!ichArchetyp || !partnerArchetyp || typeof GfkBeduerfnisse === 'undefined') {
                 body.innerHTML = '<p style="color: var(--text-muted);">Keine Daten verfügbar.</p>';
@@ -7480,9 +7480,9 @@
 
             if (!modal || !body) return;
 
-            // Matching-Daten holen
-            const ichArchetyp = (currentArchetype || '').replace('_', '-');
-            const partnerArchetyp = (selectedPartner || '').replace('_', '-');
+            // Matching-Daten holen - Schlüssel unverändert lassen (duo_flex, nicht duo-flex)
+            const ichArchetyp = currentArchetype || '';
+            const partnerArchetyp = selectedPartner || '';
 
             if (!ichArchetyp || !partnerArchetyp || typeof GfkBeduerfnisse === 'undefined') {
                 body.innerHTML = '<p style="color: var(--text-muted);">Keine Daten verfügbar.</p>';
@@ -7738,9 +7738,9 @@
 
             if (!ichArchetype || !partnerArchetype) return;
 
-            // Archetyp-IDs normalisieren (duo_flex → duo-flex)
-            const ichNormalized = ichArchetype.replace('_', '-');
-            const partnerNormalized = partnerArchetype.replace('_', '-');
+            // Archetyp-IDs unverändert verwenden (duo_flex bleibt duo_flex)
+            const ichNormalized = ichArchetype;
+            const partnerNormalized = partnerArchetype;
 
             // Prüfen ob BeduerfnisModifikatoren verfügbar ist
             if (typeof BeduerfnisModifikatoren !== 'undefined' && GfkBeduerfnisse.archetypProfile) {
@@ -8099,8 +8099,8 @@
          */
         function getArchetypBeduerfnisse(archetyp) {
             if (typeof GfkBeduerfnisse === 'undefined') return [];
-            const normalized = archetyp.replace('_', '-');
-            return GfkBeduerfnisse.getTopBeduerfnisse(normalized, 5);
+            // Archetyp-Schlüssel unverändert verwenden (duo_flex bleibt duo_flex)
+            return GfkBeduerfnisse.getTopBeduerfnisse(archetyp, 5);
         }
 
         // ========================================
@@ -9684,9 +9684,9 @@
                 else kompetenzFaktor = 0.0;
             }
 
-            // Bedürfnis-Matching berechnen
-            const ichArchetyp = (currentArchetype || '').replace('_', '-');
-            const partnerArchetyp = (selectedPartner || '').replace('_', '-');
+            // Bedürfnis-Matching berechnen - Schlüssel unverändert (duo_flex bleibt duo_flex)
+            const ichArchetyp = currentArchetype || '';
+            const partnerArchetyp = selectedPartner || '';
 
             let K1 = 0.5, K2 = 0.5, K3 = 0.5, K4 = 0.5;
             let matching = null;
@@ -9802,8 +9802,9 @@
             // ═══════════════════════════════════════
             // Basierend auf 88 Bedürfnissen, aufgeteilt nach Faktor
 
-            const ichArchetyp = (currentArchetype || '').replace('_', '-');
-            const partnerArchetyp = (selectedPartner || '').replace('_', '-');
+            // Schlüssel unverändert verwenden (duo_flex bleibt duo_flex)
+            const ichArchetyp = currentArchetype || '';
+            const partnerArchetyp = selectedPartner || '';
 
             let R1 = 1.0, R2 = 1.0, R3 = 1.0, R4 = 1.0;  // Default: neutral
             let matching = null;
@@ -13005,8 +13006,9 @@
 
             // Fallback: Wenn keine vollständigen Daten, direkt aus GfkBeduerfnisse holen
             if (gemeinsam.length === 0 && unterschiedlich.length === 0 && typeof GfkBeduerfnisse !== 'undefined') {
-                const ichArchetyp = (currentArchetype || '').replace('_', '-');
-                const partnerArchetyp = (selectedPartner || '').replace('_', '-');
+                // Schlüssel unverändert verwenden (duo_flex bleibt duo_flex)
+                const ichArchetyp = currentArchetype || '';
+                const partnerArchetyp = selectedPartner || '';
                 const fullMatching = GfkBeduerfnisse.berechneMatching(ichArchetyp, partnerArchetyp);
                 if (fullMatching && fullMatching.details) {
                     const uebereinstimmend = (fullMatching.details.uebereinstimmend || []).map(b => ({
@@ -13108,9 +13110,9 @@
                 return result;
             }
 
-            // Archetyp-IDs normalisieren
-            const ichArchetyp = (currentArchetype || '').replace('_', '-');
-            const partnerArchetyp = (selectedPartner || '').replace('_', '-');
+            // Schlüssel unverändert verwenden (duo_flex bleibt duo_flex)
+            const ichArchetyp = currentArchetype || '';
+            const partnerArchetyp = selectedPartner || '';
 
             if (!ichArchetyp || !partnerArchetyp) return result;
 
@@ -13204,9 +13206,9 @@
                 return '';
             }
 
-            // Archetyp-IDs und Namen holen
-            const ichArchetyp = (currentArchetype || '').replace('_', '-');
-            const partnerArchetyp = (selectedPartner || '').replace('_', '-');
+            // Schlüssel unverändert verwenden (duo_flex bleibt duo_flex)
+            const ichArchetyp = currentArchetype || '';
+            const partnerArchetyp = selectedPartner || '';
             const ichArch = archetypeDescriptions[currentArchetype];
             const partnerArch = archetypeDescriptions[selectedPartner];
             const ichName = ichArch?.name || 'ICH';
@@ -13547,9 +13549,9 @@
         window.sortNeedsSyntheseContent = sortNeedsSyntheseContent;
 
         function getNeedsContent() {
-            // Matching-Daten holen
-            const ichArchetyp = (currentArchetype || '').replace('_', '-');
-            const partnerArchetyp = (selectedPartner || '').replace('_', '-');
+            // Matching-Daten holen - Schlüssel unverändert (duo_flex bleibt duo_flex)
+            const ichArchetyp = currentArchetype || '';
+            const partnerArchetyp = selectedPartner || '';
 
             if (!ichArchetyp || !partnerArchetyp || typeof GfkBeduerfnisse === 'undefined') {
                 return '<p style="color: var(--text-muted);">Keine Daten verfügbar.</p>';
