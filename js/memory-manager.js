@@ -57,23 +57,34 @@ const MemoryManager = (function() {
     }
 
     /**
-     * Collect ProfileReview state - Flat Needs only (attributes removed for cleaner storage)
+     * Collect ProfileReview state - Flat Needs with integrated lock status
+     *
+     * STRUKTUR (v1.8.89): flatNeeds enthält jetzt { needId: { value, locked } }
+     * Die alte getrennte Struktur (flatNeeds + flatLockedNeeds) wird nicht mehr verwendet.
      *
      * MIGRATION v1.8.84: attributes werden nicht mehr gespeichert, da sie redundant sind.
      * Die Kategorie-Werte können aus flatNeeds berechnet werden.
-     * Beim Laden werden Legacy-Dateien (nur attributes) weiterhin unterstützt.
+     * Beim Laden werden Legacy-Dateien (alle Formate) weiterhin unterstützt.
      */
     function collectProfileReviewState(person) {
         const state = {
-            flatNeeds: null,
-            flatLockedNeeds: null
+            flatNeeds: null
+            // flatLockedNeeds entfernt - jetzt integriert in flatNeeds
         };
 
-        // NEU: Sammle echte Bedürfniswerte aus AttributeSummaryCard (Primary Source)
-        if (typeof AttributeSummaryCard !== 'undefined' && AttributeSummaryCard.getFlatNeedsValues) {
-            state.flatNeeds = AttributeSummaryCard.getFlatNeedsValues();
-            state.flatLockedNeeds = AttributeSummaryCard.getFlatLockedNeeds ?
-                AttributeSummaryCard.getFlatLockedNeeds() : null;
+        // NEU (v1.8.89): Sammle integrierte Struktur aus AttributeSummaryCard
+        if (typeof AttributeSummaryCard !== 'undefined') {
+            if (AttributeSummaryCard.getFlatNeeds) {
+                // Neue API: Integrierte Struktur { needId: { value, locked } }
+                state.flatNeeds = AttributeSummaryCard.getFlatNeeds();
+            } else if (AttributeSummaryCard.getFlatNeedsValues) {
+                // Fallback: Alte API (sollte nicht mehr vorkommen)
+                state.flatNeeds = AttributeSummaryCard.getFlatNeedsValues();
+                // Legacy: flatLockedNeeds separat hinzufügen für alte Konsumenten
+                if (AttributeSummaryCard.getFlatLockedNeeds) {
+                    state.flatLockedNeeds = AttributeSummaryCard.getFlatLockedNeeds();
+                }
+            }
         }
 
         // REMOVED: attributes werden nicht mehr gespeichert (v1.8.84)
@@ -244,7 +255,11 @@ const MemoryManager = (function() {
      * Berechnet Kategorie-Werte (0/50/100) aus flatNeeds
      * Verwendet ATTRIBUTE_NEEDS_MAPPING aus AttributeSummaryCard
      *
-     * @param {Object} flatNeeds - Die flachen Bedürfniswerte { needId: value }
+     * MIGRATION (v1.8.89): Unterstützt beide Strukturen:
+     * - Neu: { needId: { value, locked } }
+     * - Alt: { needId: value }
+     *
+     * @param {Object} flatNeeds - Die flachen Bedürfnisse (beide Formate unterstützt)
      * @returns {Object} Berechnete Kategorie-Werte { key: 0|50|100 }
      */
     function calculateAttributesFromFlatNeeds(flatNeeds) {
@@ -256,6 +271,14 @@ const MemoryManager = (function() {
         const mapping = AttributeSummaryCard.ATTRIBUTE_NEEDS_MAPPING;
         const attributes = {};
 
+        // Hilfsfunktion um den Wert zu extrahieren (beide Formate)
+        const getValue = (entry) => {
+            if (typeof entry === 'object' && entry !== null && 'value' in entry) {
+                return entry.value; // Neue Struktur
+            }
+            return entry; // Alte Struktur (Zahl direkt)
+        };
+
         Object.keys(mapping).forEach(attrId => {
             const config = mapping[attrId];
             const key = attrId.replace('pr-', '').replace(/-/g, '_');
@@ -265,7 +288,7 @@ const MemoryManager = (function() {
             let count = 0;
             config.needs.forEach(needId => {
                 if (flatNeeds[needId] !== undefined) {
-                    sum += flatNeeds[needId];
+                    sum += getValue(flatNeeds[needId]);
                     count++;
                 }
             });
@@ -289,22 +312,38 @@ const MemoryManager = (function() {
     /**
      * Apply ProfileReview state - Flat Needs + berechnete Kategorien
      *
-     * MIGRATION v1.8.84: Unterstützt drei Szenarien:
-     * 1. Neue Dateien: Nur flatNeeds → Kategorien werden berechnet
-     * 2. Legacy-Dateien: Nur attributes → Direkt für Triple-Buttons verwenden
-     * 3. Übergangs-Dateien: Beides vorhanden → flatNeeds priorisiert
+     * MIGRATION: Unterstützt mehrere Datenformate:
+     * 1. v1.8.89+: flatNeeds als { needId: { value, locked } }
+     * 2. v1.8.84-88: flatNeeds als { needId: value } + flatLockedNeeds separat
+     * 3. Legacy: Nur attributes → Direkt für Triple-Buttons verwenden
      */
     function applyProfileReviewState(profileReview) {
         if (!profileReview) return;
 
         // Lade flatNeeds in AttributeSummaryCard (Primary Source)
         if (profileReview.flatNeeds && typeof AttributeSummaryCard !== 'undefined') {
-            if (AttributeSummaryCard.setFlatNeedsValues) {
-                AttributeSummaryCard.setFlatNeedsValues(profileReview.flatNeeds);
-                console.log('[MemoryManager] FlatNeeds geladen:', Object.keys(profileReview.flatNeeds).length, 'Werte');
-            }
-            if (profileReview.flatLockedNeeds && AttributeSummaryCard.setFlatLockedNeeds) {
-                AttributeSummaryCard.setFlatLockedNeeds(profileReview.flatLockedNeeds);
+            // Prüfe ob neue integrierte Struktur (v1.8.89+)
+            const firstKey = Object.keys(profileReview.flatNeeds)[0];
+            const firstValue = firstKey ? profileReview.flatNeeds[firstKey] : null;
+            const isNewFormat = firstValue && typeof firstValue === 'object' && 'value' in firstValue;
+
+            if (isNewFormat) {
+                // Neue Struktur (v1.8.89+): { needId: { value, locked } }
+                if (AttributeSummaryCard.setFlatNeeds) {
+                    AttributeSummaryCard.setFlatNeeds(profileReview.flatNeeds);
+                    console.log('[MemoryManager] FlatNeeds geladen (neue Struktur):', Object.keys(profileReview.flatNeeds).length, 'Einträge');
+                }
+            } else {
+                // Alte Struktur (v1.8.84-88): { needId: value }
+                if (AttributeSummaryCard.setFlatNeedsValues) {
+                    AttributeSummaryCard.setFlatNeedsValues(profileReview.flatNeeds);
+                    console.log('[MemoryManager] FlatNeeds geladen (Legacy-Migration):', Object.keys(profileReview.flatNeeds).length, 'Werte');
+                }
+                // Lade separate Locks falls vorhanden
+                if (profileReview.flatLockedNeeds && AttributeSummaryCard.setFlatLockedNeeds) {
+                    AttributeSummaryCard.setFlatLockedNeeds(profileReview.flatLockedNeeds);
+                    console.log('[MemoryManager] FlatLockedNeeds geladen (Legacy):', Object.keys(profileReview.flatLockedNeeds).length, 'Locks');
+                }
             }
         }
 
