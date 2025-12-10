@@ -15906,8 +15906,49 @@
                     var labelText = needLabel.textContent || '';
                     var needId = needItem.getAttribute('data-need') || '';
 
-                    // Check if need matches the search pattern
+                    // Check if need matches the search pattern (label or ID)
                     var matches = searchPattern.test(labelText) || searchPattern.test(needId);
+
+                    // Also check category and dimension names
+                    if (!matches && typeof GfkBeduerfnisse !== 'undefined' && GfkBeduerfnisse.definitionen) {
+                        var needDef = GfkBeduerfnisse.definitionen[needId];
+                        if (needDef) {
+                            // Check category name
+                            var kategorie = needDef.kategorie || '';
+                            if (kategorie && searchPattern.test(kategorie)) {
+                                matches = true;
+                            }
+
+                            // Check category label from taxonomy
+                            if (!matches && typeof TiageTaxonomie !== 'undefined') {
+                                var katData = TiageTaxonomie.kategorien && TiageTaxonomie.getKategorie
+                                    ? TiageTaxonomie.getKategorie(kategorie)
+                                    : null;
+                                if (katData) {
+                                    if (katData.label && searchPattern.test(katData.label)) {
+                                        matches = true;
+                                    }
+                                    if (katData.beschreibung && searchPattern.test(katData.beschreibung)) {
+                                        matches = true;
+                                    }
+                                    // Check dimension
+                                    if (!matches && katData.dimension) {
+                                        var dimData = TiageTaxonomie.getDimension
+                                            ? TiageTaxonomie.getDimension(katData.dimension)
+                                            : null;
+                                        if (dimData) {
+                                            if (dimData.label && searchPattern.test(dimData.label)) {
+                                                matches = true;
+                                            }
+                                            if (dimData.beschreibung && searchPattern.test(dimData.beschreibung)) {
+                                                matches = true;
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
 
                     // Toggle match class
                     needItem.classList.toggle('filter-match', matches);
