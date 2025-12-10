@@ -807,112 +807,6 @@ const MemoryManager = (function() {
 })();
 
 // ═══════════════════════════════════════════════════════════════════════════
-// PROFILE STATUS UI FUNCTIONS
-// Updates the status badges next to DU/PARTNER headers
-// ═══════════════════════════════════════════════════════════════════════════
-
-/**
- * Update the profile status badge for a person
- * @param {string} person - 'ich' or 'partner'
- */
-function updateProfileStatusBadge(person) {
-    if (typeof TiageState === 'undefined') return;
-
-    const status = TiageState.getProfileStatus(person);
-    const slot = status?.loadedSlot;
-    const isDirty = status?.isDirty;
-
-    // Get all badge elements (desktop and mobile)
-    const badgeIds = person === 'ich'
-        ? ['ich-profile-status', 'mobile-ich-profile-status']
-        : ['partner-profile-status', 'mobile-partner-profile-status'];
-
-    badgeIds.forEach(id => {
-        const badge = document.getElementById(id);
-        if (!badge) return;
-
-        if (slot === null) {
-            // No slot loaded - hide badge
-            badge.textContent = '';
-            badge.className = 'profile-status-badge';
-        } else {
-            // Show slot number with status
-            badge.textContent = `Slot ${slot}`;
-            badge.className = isDirty
-                ? 'profile-status-badge unsaved'
-                : 'profile-status-badge saved';
-        }
-    });
-}
-
-/**
- * Update all profile status badges
- */
-function updateAllProfileStatusBadges() {
-    updateProfileStatusBadge('ich');
-    updateProfileStatusBadge('partner');
-}
-
-/**
- * Initialize profile status tracking
- * Subscribe to TiageState changes to update badges
- */
-function initProfileStatusTracking() {
-    if (typeof TiageState === 'undefined') {
-        console.warn('[MemoryManager] TiageState not available for status tracking');
-        return;
-    }
-
-    // Subscribe to profileStatus changes
-    TiageState.subscribe('profileStatus', () => {
-        updateAllProfileStatusBadges();
-    });
-
-    // Subscribe to relevant state changes to mark as dirty
-    TiageState.subscribe('personDimensions.ich', () => {
-        const slot = TiageState.getLoadedSlot('ich');
-        if (slot !== null) {
-            TiageState.markDirty('ich');
-        }
-    });
-
-    TiageState.subscribe('personDimensions.partner', () => {
-        const slot = TiageState.getLoadedSlot('partner');
-        if (slot !== null) {
-            TiageState.markDirty('partner');
-        }
-    });
-
-    TiageState.subscribe('archetypes.ich', () => {
-        const slot = TiageState.getLoadedSlot('ich');
-        if (slot !== null) {
-            TiageState.markDirty('ich');
-        }
-    });
-
-    TiageState.subscribe('archetypes.partner', () => {
-        const slot = TiageState.getLoadedSlot('partner');
-        if (slot !== null) {
-            TiageState.markDirty('partner');
-        }
-    });
-
-    // Initial update
-    updateAllProfileStatusBadges();
-    console.log('[MemoryManager] Profile status tracking initialized');
-}
-
-// Initialize when DOM is ready
-if (typeof document !== 'undefined') {
-    if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', initProfileStatusTracking);
-    } else {
-        // DOM already loaded
-        setTimeout(initProfileStatusTracking, 100);
-    }
-}
-
-// ═══════════════════════════════════════════════════════════════════════════
 // MODAL UI FUNCTIONS
 // ═══════════════════════════════════════════════════════════════════════════
 
@@ -1040,11 +934,6 @@ function updateMemoryModalContent() {
 function handleSaveToSlot(slotNumber) {
     const success = MemoryManager.saveToSlot(slotNumber);
     if (success) {
-        // Update profile status - both profiles saved to this slot
-        if (typeof TiageState !== 'undefined') {
-            TiageState.setLoadedSlot('ich', slotNumber);
-            TiageState.setLoadedSlot('partner', slotNumber);
-        }
         updateMemoryModalContent();
         showMemoryToast('Gespeichert in Slot ' + slotNumber);
     } else {
@@ -1058,10 +947,6 @@ function handleSaveToSlot(slotNumber) {
 function handleLoadMe(slotNumber) {
     const success = MemoryManager.loadMeFromSlot(slotNumber);
     if (success) {
-        // Update profile status for ME
-        if (typeof TiageState !== 'undefined') {
-            TiageState.setLoadedSlot('ich', slotNumber);
-        }
         showMemoryToast('ME geladen aus Slot ' + slotNumber);
         closeMemoryModal();
     } else {
@@ -1075,10 +960,6 @@ function handleLoadMe(slotNumber) {
 function handleLoadPartner(slotNumber) {
     const success = MemoryManager.loadPartnerFromSlot(slotNumber);
     if (success) {
-        // Update profile status for PARTNER
-        if (typeof TiageState !== 'undefined') {
-            TiageState.setLoadedSlot('partner', slotNumber);
-        }
         showMemoryToast('PARTNER geladen aus Slot ' + slotNumber);
         closeMemoryModal();
     } else {
@@ -1092,11 +973,6 @@ function handleLoadPartner(slotNumber) {
 function handleLoadBoth(slotNumber) {
     const success = MemoryManager.loadBothFromSlot(slotNumber);
     if (success) {
-        // Update profile status for both
-        if (typeof TiageState !== 'undefined') {
-            TiageState.setLoadedSlot('ich', slotNumber);
-            TiageState.setLoadedSlot('partner', slotNumber);
-        }
         showMemoryToast('Beide geladen aus Slot ' + slotNumber);
         closeMemoryModal();
     } else {
@@ -1114,15 +990,6 @@ function handleDeleteSlot(slotNumber) {
 
     const success = MemoryManager.deleteSlot(slotNumber);
     if (success) {
-        // Clear profile status if this was the loaded slot
-        if (typeof TiageState !== 'undefined') {
-            if (TiageState.getLoadedSlot('ich') === slotNumber) {
-                TiageState.setLoadedSlot('ich', null);
-            }
-            if (TiageState.getLoadedSlot('partner') === slotNumber) {
-                TiageState.setLoadedSlot('partner', null);
-            }
-        }
         updateMemoryModalContent();
         showMemoryToast('Slot ' + slotNumber + ' gelöscht');
     } else {
@@ -1165,101 +1032,75 @@ function openMemoryDetailModal(slotNumber, personType, data) {
     const contentEl = document.getElementById('memoryDetailContent');
     if (!contentEl) return;
 
+    // Helper to format any value (handles objects, arrays, primitives)
+    const formatValue = (val) => {
+        if (val === null || val === undefined) return '-';
+        if (typeof val === 'object') return JSON.stringify(val, null, 2);
+        return String(val);
+    };
+
+    // Helper to format value for inline display
+    const formatInline = (val) => {
+        if (val === null || val === undefined) return '-';
+        if (typeof val === 'object') return JSON.stringify(val);
+        return String(val);
+    };
+
     let html = '';
 
-    // Basic Info Section
+    // Grunddaten Section
     html += `
         <div class="memory-detail-section">
             <div class="memory-detail-section-title">Grunddaten</div>
             <div class="memory-detail-grid">
                 <div class="memory-detail-item">
                     <span class="memory-detail-label">Archetyp</span>
-                    <span class="memory-detail-value">${data.archetyp?.primary || data.archetyp || '-'}</span>
+                    <span class="memory-detail-value">${formatInline(data.archetyp)}</span>
                 </div>
-                ${data.archetyp?.secondary ? `
-                <div class="memory-detail-item">
-                    <span class="memory-detail-label">Sekundär-Archetyp</span>
-                    <span class="memory-detail-value">${data.archetyp.secondary}</span>
-                </div>
-                ` : ''}
                 <div class="memory-detail-item">
                     <span class="memory-detail-label">Geschlecht</span>
-                    <span class="memory-detail-value">${data.geschlecht || '-'}</span>
+                    <span class="memory-detail-value">${formatInline(data.geschlecht)}</span>
                 </div>
                 <div class="memory-detail-item">
                     <span class="memory-detail-label">Dominanz</span>
-                    <span class="memory-detail-value">${data.dominanz ?? '-'}</span>
+                    <span class="memory-detail-value">${formatInline(data.dominanz)}</span>
                 </div>
                 <div class="memory-detail-item">
                     <span class="memory-detail-label">Orientierung</span>
-                    <span class="memory-detail-value">${data.orientierung || '-'}</span>
+                    <span class="memory-detail-value">${formatInline(data.orientierung)}</span>
                 </div>
             </div>
         </div>
     `;
 
-    // Profile Review Section (Bedürfnisse)
-    if (data.profileReview) {
-        const categories = [
-            { name: 'Lebensplanung', keys: ['kinder', 'ehe', 'zusammen', 'haustiere', 'umzug', 'familie'] },
-            { name: 'Finanzen', keys: ['finanzen', 'karriere'] },
-            { name: 'Kommunikation', keys: ['gespraech', 'emotional', 'konflikt'] },
-            { name: 'Soziales', keys: ['introextro', 'alleinzeit', 'freunde'] },
-            { name: 'Intimität', keys: ['naehe', 'romantik', 'sex'] },
-            { name: 'Werte', keys: ['religion', 'tradition', 'umwelt'] },
-            { name: 'Praktisches', keys: ['ordnung', 'reise'] }
-        ];
+    // ProfileReview Section (Bedürfnisse)
+    if (data.profileReview && Object.keys(data.profileReview).length > 0) {
+        html += `
+            <div class="memory-detail-section">
+                <div class="memory-detail-section-title">Bedürfnisse (ProfileReview)</div>
+                <div class="memory-detail-raw-data">${formatValue(data.profileReview)}</div>
+            </div>
+        `;
+    }
 
-        // Mapping für lesbare Namen
-        const labelMap = {
-            kinder: 'Kinder',
-            ehe: 'Ehe',
-            zusammen: 'Zusammenwohnen',
-            haustiere: 'Haustiere',
-            umzug: 'Umzugsbereitschaft',
-            familie: 'Familienorientierung',
-            finanzen: 'Finanzen',
-            karriere: 'Karriere',
-            gespraech: 'Gesprächsstil',
-            emotional: 'Emotionalität',
-            konflikt: 'Konfliktstil',
-            introextro: 'Intro/Extrovertiert',
-            alleinzeit: 'Alleinzeit',
-            freunde: 'Freunde',
-            naehe: 'Nähe',
-            romantik: 'Romantik',
-            sex: 'Intimität',
-            religion: 'Religion',
-            tradition: 'Tradition',
-            umwelt: 'Umwelt',
-            ordnung: 'Ordnung',
-            reise: 'Reisen'
-        };
+    // Gewichtungen Section
+    if (data.gewichtungen && Object.keys(data.gewichtungen).length > 0) {
+        html += `
+            <div class="memory-detail-section">
+                <div class="memory-detail-section-title">Gewichtungen (Faktoren)</div>
+                <div class="memory-detail-raw-data">${formatValue(data.gewichtungen)}</div>
+            </div>
+        `;
+    }
 
-        html += `<div class="memory-detail-section">
-            <div class="memory-detail-section-title">Bedürfnisse (ProfileReview)</div>`;
-
-        for (const cat of categories) {
-            const items = cat.keys
-                .filter(k => data.profileReview[k] !== undefined)
-                .map(k => `
-                    <div class="memory-detail-need-item">
-                        <span class="memory-detail-need-label">${labelMap[k] || k}</span>
-                        <span class="memory-detail-need-value ${data.profileReview[k] === 50 ? 'neutral' : ''}">${data.profileReview[k]}</span>
-                    </div>
-                `).join('');
-
-            if (items) {
-                html += `
-                    <div class="memory-detail-category">
-                        <div class="memory-detail-category-name">${cat.name}</div>
-                        <div class="memory-detail-needs-grid">${items}</div>
-                    </div>
-                `;
-            }
-        }
-
-        html += `</div>`;
+    // Gewichtung Locks Section
+    if (data.gewichtungLocks && Object.keys(data.gewichtungLocks).length > 0) {
+        html += `
+            <div class="memory-detail-section">
+                <div class="memory-detail-section-title">Gewichtung Locks</div>
+                <div class="memory-detail-raw-data">${formatValue(data.gewichtungLocks)}</div>
+            </div>
+        `;
     }
 
     // Metadata Section
@@ -1279,6 +1120,18 @@ function openMemoryDetailModal(slotNumber, personType, data) {
                     <span class="memory-detail-label">Daten-Version</span>
                     <span class="memory-detail-value">${data.dataVersion || '1.0'}</span>
                 </div>
+            </div>
+        </div>
+    `;
+
+    // Raw JSON Section (collapsible)
+    html += `
+        <div class="memory-detail-section">
+            <div class="memory-detail-section-title" onclick="this.parentElement.classList.toggle('expanded')" style="cursor: pointer;">
+                Rohdaten (JSON) <span class="memory-detail-expand-icon">+</span>
+            </div>
+            <div class="memory-detail-raw-json">
+                <pre>${JSON.stringify(data, null, 2)}</pre>
             </div>
         </div>
     `;

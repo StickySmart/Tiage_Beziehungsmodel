@@ -454,6 +454,63 @@
     color: rgba(255, 255, 255, 0.4);
 }
 
+/* Raw Data Display */
+.memory-detail-raw-data {
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 6px;
+    padding: 10px 12px;
+    font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+    font-size: 11px;
+    color: #A855F7;
+    white-space: pre-wrap;
+    word-break: break-all;
+    max-height: 200px;
+    overflow-y: auto;
+}
+
+/* Collapsible Raw JSON Section */
+.memory-detail-raw-json {
+    display: none;
+    background: rgba(0, 0, 0, 0.4);
+    border-radius: 6px;
+    padding: 10px;
+    margin-top: 10px;
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+.memory-detail-raw-json pre {
+    margin: 0;
+    font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+    font-size: 10px;
+    color: #10B981;
+    white-space: pre-wrap;
+    word-break: break-all;
+}
+
+.memory-detail-section.expanded .memory-detail-raw-json {
+    display: block;
+}
+
+.memory-detail-section.expanded .memory-detail-expand-icon {
+    display: inline-block;
+    transform: rotate(45deg);
+}
+
+.memory-detail-expand-icon {
+    float: right;
+    font-size: 16px;
+    font-weight: bold;
+    transition: transform 0.2s ease;
+}
+
+.memory-detail-value {
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.9);
+    font-weight: 500;
+    word-break: break-all;
+}
+
 /* ═══════════════════════════════════════════════════════════════════════════
    MOBILE ADJUSTMENTS
    ═══════════════════════════════════════════════════════════════════════════ */
@@ -503,65 +560,5 @@
     .memory-person-buttons {
         flex-direction: column;
         gap: 4px;
-    }
-}
-
-/* ═══════════════════════════════════════════════════════════════════════════
-   PROFILE STATUS BADGE
-   Displays current slot and save status next to DU/PARTNER headers
-   ═══════════════════════════════════════════════════════════════════════════ */
-
-.profile-status-badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 4px;
-    font-size: 10px;
-    font-weight: 500;
-    padding: 2px 6px;
-    border-radius: 4px;
-    margin-left: 6px;
-    vertical-align: middle;
-    opacity: 0.9;
-    transition: all 0.2s ease;
-}
-
-/* Hidden state (when no slot is loaded) */
-.profile-status-badge:empty {
-    display: none;
-}
-
-/* Saved state - green badge */
-.profile-status-badge.saved {
-    background: rgba(34, 197, 94, 0.2);
-    color: #22C55E;
-    border: 1px solid rgba(34, 197, 94, 0.3);
-}
-
-/* Unsaved state - orange badge with asterisk */
-.profile-status-badge.unsaved {
-    background: rgba(249, 115, 22, 0.2);
-    color: #F97316;
-    border: 1px solid rgba(249, 115, 22, 0.3);
-}
-
-/* Unsaved indicator asterisk */
-.profile-status-badge.unsaved::after {
-    content: '*';
-    font-weight: bold;
-    margin-left: 2px;
-}
-
-/* Hover effect */
-.profile-status-badge:hover {
-    opacity: 1;
-    transform: scale(1.05);
-}
-
-/* Mobile adjustments */
-@media (max-width: 768px) {
-    .profile-status-badge {
-        font-size: 9px;
-        padding: 1px 4px;
-        margin-left: 4px;
     }
 }
