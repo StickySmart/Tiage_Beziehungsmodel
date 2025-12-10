@@ -14160,10 +14160,16 @@
             currentProfileReviewContext.archetypeKey = archetypeKey || 'duo';
             currentProfileReviewContext.person = person || 'ich';
 
-            // Initialisiere Modal-Content dynamisch (nur beim ersten Öffnen)
+            // Initialisiere Modal-Content dynamisch - FLACHE Darstellung ohne Kategorien
             if (typeof ProfileReviewRenderer !== 'undefined') {
-                console.log('[TIAGE] ProfileReviewRenderer exists, initializing...');
-                ProfileReviewRenderer.initializeModal();
+                console.log('[TIAGE] ProfileReviewRenderer exists, initializing flat view...');
+                // Hole Archetyp-Label für die flache Darstellung
+                var archetypLabel = 'Profil';
+                var archDef = typeof archetypeDefinitions !== 'undefined' ? archetypeDefinitions[archetypeKey || 'duo'] : null;
+                if (archDef && archDef.name) {
+                    archetypLabel = archDef.name;
+                }
+                ProfileReviewRenderer.initializeFlatModal(archetypeKey || 'duo', archetypLabel);
             } else {
                 console.log('[TIAGE] ProfileReviewRenderer NOT defined!');
             }
