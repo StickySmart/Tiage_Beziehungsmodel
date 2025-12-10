@@ -25,6 +25,7 @@
         const GEWICHTUNG_STORAGE_KEY = 'tiage_faktor_gewichtungen';
         const GEWICHTUNG_LOCK_KEY = 'tiage_faktor_locks';
         const GEWICHTUNG_SUMME_LOCK_KEY = 'tiage_summe_lock';
+        const GEWICHTUNG_SUMME_TARGET_KEY = 'tiage_summe_target';
 
         // Faktor-Mapping für Gewichtungen (muss vor den Funktionen definiert sein, die es verwenden)
         const FAKTOR_MAP = {
@@ -37,8 +38,9 @@
         // Lock-Status für Gewichtungen (muss vor den Funktionen definiert sein, die es verwenden)
         let gewichtungLocks = { orientierung: false, archetyp: false, dominanz: false, geschlecht: false };
 
-        // Summen-Lock-Status (fixiert Summe auf 100%)
+        // Summen-Lock-Status (fixiert Summe auf aktuellen Wert)
         let summeLocked = true; // Standardmäßig aktiviert
+        let lockedSummeTarget = 100; // Der Zielwert, auf den die Summe fixiert wird
 
         // Modal-Kontext für Profile Review (muss vor openProfileReviewModal() definiert sein)
         var currentProfileReviewContext = { archetypeKey: null, person: null };
@@ -15521,12 +15523,15 @@
             const summeEl = document.getElementById('gewicht-summe');
             if (summeEl) {
                 summeEl.textContent = summe + '%';
-                summeEl.classList.toggle('error', summe !== 100);
-                summeEl.style.color = summe === 100 ? '#10B981' : '#EF4444';
+                // Wenn gelockt, vergleiche mit Zielwert; sonst mit 100
+                const targetValue = summeLocked ? lockedSummeTarget : 100;
+                const isOnTarget = summe === targetValue;
+                summeEl.classList.toggle('error', !isOnTarget);
+                summeEl.style.color = isOnTarget ? '#10B981' : '#EF4444';
             }
         }
 
-        // Normalisiert Gewichtungen auf 100%
+        // Normalisiert Gewichtungen auf den gesperrten Summenwert (lockedSummeTarget)
         function normalizeGewichtungen(changedFactor, newValue) {
             // Wenn Summen-Lock deaktiviert ist, nur den geänderten Wert setzen
             if (!summeLocked) {
@@ -15560,8 +15565,8 @@
                 }
             });
 
-            // Berechne max. erlaubten Wert für geänderten Faktor
-            const maxForChanged = 100 - lockedSum;
+            // Berechne max. erlaubten Wert für geänderten Faktor (basierend auf lockedSummeTarget)
+            const maxForChanged = lockedSummeTarget - lockedSum;
             const clampedValue = Math.min(Math.max(newValue, 0), maxForChanged);
 
             // Setze geänderten Wert (Input und Slider)
@@ -15571,7 +15576,7 @@
             if (changedSlider) changedSlider.value = clampedValue;
 
             // Verteile Rest auf nicht-gelockte Faktoren
-            const availableForOthers = 100 - lockedSum - clampedValue;
+            const availableForOthers = lockedSummeTarget - lockedSum - clampedValue;
 
             if (unlockedFactors.length > 0) {
                 const currentSum = unlockedFactors.reduce((sum, f) => sum + f.value, 0);
@@ -15654,32 +15659,39 @@
             } catch (e) { return true; }
         }
 
+        // Lädt den gesperrten Summen-Zielwert aus localStorage
+        function getSummeTarget() {
+            try {
+                const stored = localStorage.getItem(GEWICHTUNG_SUMME_TARGET_KEY);
+                return stored !== null ? JSON.parse(stored) : 100; // Standard: 100%
+            } catch (e) { return 100; }
+        }
+
         // Speichert Summen-Lock-Status
         function saveSummeLock() {
             try {
                 localStorage.setItem(GEWICHTUNG_SUMME_LOCK_KEY, JSON.stringify(summeLocked));
+                localStorage.setItem(GEWICHTUNG_SUMME_TARGET_KEY, JSON.stringify(lockedSummeTarget));
             } catch (e) { console.warn('Fehler beim Speichern des Summen-Lock-Status:', e); }
         }
 
         // Toggle Summen-Lock
         function toggleSummeLock() {
             summeLocked = !summeLocked;
-            saveSummeLock();
-            updateSummeLockDisplay();
 
-            // Wenn aktiviert, normalisiere sofort auf 100%
+            // Wenn aktiviert, speichere den aktuellen Summenwert als Ziel
             if (summeLocked) {
                 const factors = Object.keys(FAKTOR_MAP);
-                const unlockedFactors = factors.filter(f => !gewichtungLocks[f]);
-                if (unlockedFactors.length > 0) {
-                    // Normalisiere auf 100%
-                    const firstUnlocked = unlockedFactors[0];
-                    const input = document.getElementById(FAKTOR_MAP[firstUnlocked].inputId);
-                    if (input) {
-                        normalizeGewichtungen(firstUnlocked, parseInt(input.value) || 0);
-                    }
-                }
+                let currentSum = 0;
+                factors.forEach(factor => {
+                    const input = document.getElementById(FAKTOR_MAP[factor].inputId);
+                    currentSum += parseInt(input?.value) || 0;
+                });
+                lockedSummeTarget = currentSum;
             }
+
+            saveSummeLock();
+            updateSummeLockDisplay();
         }
         window.toggleSummeLock = toggleSummeLock;
 
@@ -15689,7 +15701,9 @@
             if (lockElement) {
                 lockElement.textContent = summeLocked ? '🔒' : '🔓';
                 lockElement.classList.toggle('locked', summeLocked);
-                lockElement.title = summeLocked ? 'Summe ist auf 100% fixiert (klicken zum Entsperren)' : 'Summe auf 100% fixieren';
+                lockElement.title = summeLocked
+                    ? `Summe ist auf ${lockedSummeTarget}% fixiert (klicken zum Entsperren)`
+                    : 'Summe auf aktuellen Wert fixieren';
             }
         }
 
@@ -15798,8 +15812,9 @@
             gewichtungLocks = { orientierung: false, archetyp: false, dominanz: false, geschlecht: false };
             saveGewichtungLocks();
 
-            // Reset Summen-Lock auf Standard (aktiviert)
+            // Reset Summen-Lock auf Standard (aktiviert) mit Zielwert 100%
             summeLocked = true;
+            lockedSummeTarget = 100;
             saveSummeLock();
 
             // Reset Text-Inputs
@@ -15831,6 +15846,7 @@
             const gew = getGewichtungen();
             gewichtungLocks = getGewichtungLocks();
             summeLocked = getSummeLock();
+            lockedSummeTarget = getSummeTarget();
 
             const inputO = document.getElementById('gewicht-orientierung');
             const inputA = document.getElementById('gewicht-archetyp');
