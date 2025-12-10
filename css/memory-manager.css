@@ -304,6 +304,157 @@
 }
 
 /* ═══════════════════════════════════════════════════════════════════════════
+   PERSON BUTTONS (Anzeigen + Laden)
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.memory-person-buttons {
+    display: flex;
+    gap: 6px;
+    margin-top: 8px;
+}
+
+.memory-display-btn {
+    flex: 1;
+    background: rgba(147, 51, 234, 0.2);
+    border: 1px solid rgba(147, 51, 234, 0.3);
+    color: #A855F7;
+    padding: 4px 8px;
+    border-radius: 6px;
+    font-size: 11px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.memory-display-btn:hover {
+    background: rgba(147, 51, 234, 0.3);
+    border-color: #A855F7;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   DETAIL MODAL
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.memory-detail-modal {
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+}
+
+.memory-detail-body {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(147, 51, 234, 0.3) transparent;
+}
+
+.memory-detail-body::-webkit-scrollbar {
+    width: 6px;
+}
+
+.memory-detail-body::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.memory-detail-body::-webkit-scrollbar-thumb {
+    background: rgba(147, 51, 234, 0.3);
+    border-radius: 3px;
+}
+
+.memory-detail-section {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    padding: 14px;
+    margin-bottom: 12px;
+}
+
+.memory-detail-section:last-child {
+    margin-bottom: 0;
+}
+
+.memory-detail-section-title {
+    font-size: 13px;
+    font-weight: 600;
+    color: #A855F7;
+    margin-bottom: 12px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid rgba(147, 51, 234, 0.2);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.memory-detail-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+}
+
+.memory-detail-item {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.memory-detail-label {
+    font-size: 10px;
+    color: rgba(255, 255, 255, 0.5);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.memory-detail-value {
+    font-size: 13px;
+    color: rgba(255, 255, 255, 0.9);
+    font-weight: 500;
+    text-transform: capitalize;
+}
+
+/* Bedürfnisse / ProfileReview */
+.memory-detail-category {
+    margin-bottom: 12px;
+}
+
+.memory-detail-category:last-child {
+    margin-bottom: 0;
+}
+
+.memory-detail-category-name {
+    font-size: 11px;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.6);
+    margin-bottom: 8px;
+    padding-left: 4px;
+}
+
+.memory-detail-needs-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 6px;
+}
+
+.memory-detail-need-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: rgba(0, 0, 0, 0.2);
+    padding: 6px 10px;
+    border-radius: 6px;
+}
+
+.memory-detail-need-label {
+    font-size: 11px;
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.memory-detail-need-value {
+    font-size: 12px;
+    font-weight: 600;
+    color: #A855F7;
+    min-width: 28px;
+    text-align: right;
+}
+
+.memory-detail-need-value.neutral {
+    color: rgba(255, 255, 255, 0.4);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
    MOBILE ADJUSTMENTS
    ═══════════════════════════════════════════════════════════════════════════ */
 
@@ -333,6 +484,25 @@
 
     .memory-icon {
         font-size: 14px;
+    }
+
+    /* Detail Modal Mobile */
+    .memory-detail-modal {
+        max-width: 95% !important;
+        margin: 10px;
+    }
+
+    .memory-detail-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .memory-detail-needs-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .memory-person-buttons {
+        flex-direction: column;
+        gap: 4px;
     }
 }
 

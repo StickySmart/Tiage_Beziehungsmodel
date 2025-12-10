@@ -2040,6 +2040,21 @@
         </div>
     </div>
 
+    <!-- Memory Detail Modal -->
+    <div class="modal-overlay" id="memoryDetailModal" onclick="closeMemoryDetailModal(event)" style="z-index: 2700;">
+        <div class="modal memory-detail-modal" onclick="event.stopPropagation()" style="max-width: 450px;">
+            <div class="modal-header" style="border-bottom: 2px solid rgba(147, 51, 234, 0.3);">
+                <span class="modal-title memory-detail-title" style="color: #A855F7;">Slot Details</span>
+                <button class="modal-close" onclick="closeMemoryDetailModal()">&times;</button>
+            </div>
+            <div class="modal-body memory-detail-body" style="padding: 16px; max-height: 70vh; overflow-y: auto;">
+                <div id="memoryDetailContent">
+                    <!-- Content wird dynamisch generiert -->
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- State Management - Single Source of Truth -->
     <script src="js/state.js"></script>
     <!-- Memory Manager -->
