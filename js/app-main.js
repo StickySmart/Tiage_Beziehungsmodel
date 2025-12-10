@@ -15597,6 +15597,31 @@
             currentProfileReviewContext.archetypeKey = archetypeKey || 'duo';
             currentProfileReviewContext.person = person || 'ich';
 
+            // ════════════════════════════════════════════════════════════════════════
+            // NEU: Lade gespeicherte Bedürfniswerte VOR dem Rendering
+            // So werden die Werte beim initializeFlatModal berücksichtigt
+            // ════════════════════════════════════════════════════════════════════════
+            if (typeof AttributeSummaryCard !== 'undefined') {
+                try {
+                    var storedNeedsValues = localStorage.getItem('tiage_flat_needs_values');
+                    var storedNeedsLocks = localStorage.getItem('tiage_flat_needs_locks');
+
+                    if (storedNeedsValues) {
+                        var parsedValues = JSON.parse(storedNeedsValues);
+                        AttributeSummaryCard.setFlatNeedsValues(parsedValues);
+                        console.log('[ProfileReview] Gespeicherte Bedürfniswerte geladen:', Object.keys(parsedValues).length, 'Werte');
+                    }
+
+                    if (storedNeedsLocks) {
+                        var parsedLocks = JSON.parse(storedNeedsLocks);
+                        AttributeSummaryCard.setFlatLockedNeeds(parsedLocks);
+                        console.log('[ProfileReview] Gespeicherte Locks geladen:', Object.keys(parsedLocks).length, 'Locks');
+                    }
+                } catch (e) {
+                    console.warn('[ProfileReview] Fehler beim Laden der Bedürfniswerte:', e);
+                }
+            }
+
             // Initialisiere Modal-Content dynamisch - FLACHE Darstellung ohne Kategorien
             if (typeof ProfileReviewRenderer !== 'undefined') {
                 console.log('[TIAGE] ProfileReviewRenderer exists, initializing flat view...');
@@ -16605,6 +16630,30 @@
         function saveProfileReview() {
             var state = getProfileReviewState();
             console.log('Profil gespeichert:', state);
+
+            // ════════════════════════════════════════════════════════════════════════
+            // NEU: Speichere Gewichtungen
+            // ════════════════════════════════════════════════════════════════════════
+            if (typeof saveGewichtungen === 'function') {
+                saveGewichtungen();
+                console.log('[ProfileReview] Gewichtungen gespeichert');
+            }
+
+            // ════════════════════════════════════════════════════════════════════════
+            // NEU: Speichere flache Bedürfniswerte und Lock-Status
+            // ════════════════════════════════════════════════════════════════════════
+            if (typeof AttributeSummaryCard !== 'undefined') {
+                var flatNeedsValues = AttributeSummaryCard.getFlatNeedsValues();
+                var flatLockedNeeds = AttributeSummaryCard.getFlatLockedNeeds();
+
+                try {
+                    localStorage.setItem('tiage_flat_needs_values', JSON.stringify(flatNeedsValues));
+                    localStorage.setItem('tiage_flat_needs_locks', JSON.stringify(flatLockedNeeds));
+                    console.log('[ProfileReview] Bedürfniswerte gespeichert:', Object.keys(flatNeedsValues).length, 'Werte');
+                } catch (e) {
+                    console.warn('[ProfileReview] Fehler beim Speichern der Bedürfniswerte:', e);
+                }
+            }
 
             // Store in TiageState if available
             if (typeof TiageState !== 'undefined') {

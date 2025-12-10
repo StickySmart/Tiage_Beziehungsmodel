@@ -531,10 +531,41 @@ const AttributeSummaryCard = (function() {
     }
 
     /**
+     * Setzt alle flachen Bedürfniswerte (für Load-Funktion)
+     * @param {Object} values - Bedürfniswerte { needId: value }
+     */
+    function setFlatNeedsValues(values) {
+        if (!values || typeof values !== 'object') return;
+
+        Object.keys(values).forEach(needId => {
+            const numValue = parseInt(values[needId], 10);
+            if (!isNaN(numValue) && numValue >= 0 && numValue <= 100) {
+                flatNeedsValues[needId] = numValue;
+            }
+        });
+
+        console.log('[AttributeSummaryCard] Flat needs values geladen:', Object.keys(values).length, 'Werte');
+    }
+
+    /**
      * Holt alle gesperrten flachen Bedürfnisse
      */
     function getFlatLockedNeeds() {
         return { ...flatLockedNeeds };
+    }
+
+    /**
+     * Setzt alle gesperrten flachen Bedürfnisse (für Load-Funktion)
+     * @param {Object} locks - Lock-Status { needId: true/false }
+     */
+    function setFlatLockedNeeds(locks) {
+        if (!locks || typeof locks !== 'object') return;
+
+        Object.keys(locks).forEach(needId => {
+            flatLockedNeeds[needId] = !!locks[needId];
+        });
+
+        console.log('[AttributeSummaryCard] Flat locks geladen:', Object.keys(locks).length, 'Locks');
     }
 
     /**
@@ -1052,7 +1083,9 @@ const AttributeSummaryCard = (function() {
         updateFlatNeedValue,
         toggleFlatNeedLock,
         getFlatNeedsValues,
+        setFlatNeedsValues,
         getFlatLockedNeeds,
+        setFlatLockedNeeds,
         resetFlatNeeds,
         reRenderFlatNeeds,
         setSortMode,
