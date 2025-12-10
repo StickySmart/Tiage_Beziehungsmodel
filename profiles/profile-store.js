@@ -1027,37 +1027,39 @@ var TiageProfileStore = (function() {
             var summeUebereinstimmung = 0;
             var summeGewicht = 0;
             var details = {
-                gemeinsam: [],      // Beide hoch (> 70)
-                unterschiedlich: [], // Große Differenz (> 30)
-                komplementaer: []    // Einer hoch, einer niedrig (kann positiv sein)
+                gemeinsam: [],       // Ähnliche Werte (diff <= 15)
+                unterschiedlich: [], // Große Differenz (diff > 35)
+                komplementaer: []    // Mittlere Differenz (15 < diff <= 35)
             };
 
             for (var need in allNeeds) {
                 if (!allNeeds.hasOwnProperty(need)) continue;
 
-                var wert1 = needs1[need] || 0;
-                var wert2 = needs2[need] || 0;
+                // Default 50 für fehlende Werte (konsistent mit BeduerfnisModifikatoren)
+                var wert1 = needs1[need] !== undefined ? needs1[need] : 50;
+                var wert2 = needs2[need] !== undefined ? needs2[need] : 50;
 
                 // Gewicht = Durchschnitt der Wichtigkeit
                 var gewicht = (wert1 + wert2) / 2;
+                var diff = Math.abs(wert1 - wert2);
 
-                if (gewicht > 30) {
-                    var diff = Math.abs(wert1 - wert2);
-
-                    // Kategorisierung
-                    if (diff < 15 && wert1 > 70 && wert2 > 70) {
-                        details.gemeinsam.push({ need: need, wert1: wert1, wert2: wert2 });
-                    } else if (diff > 30) {
-                        details.unterschiedlich.push({ need: need, wert1: wert1, wert2: wert2, diff: diff });
-                    } else if ((wert1 > 70 && wert2 < 50) || (wert2 > 70 && wert1 < 50)) {
-                        details.komplementaer.push({ need: need, wert1: wert1, wert2: wert2 });
-                    }
-
-                    // Score-Berechnung: Ähnlichkeit gewichtet nach Wichtigkeit
-                    var aehnlichkeit = 100 - diff;
-                    summeUebereinstimmung += aehnlichkeit * (gewicht / 100);
-                    summeGewicht += gewicht / 100;
+                // ALLE Bedürfnisse berücksichtigen (keine Filterung)
+                // Lockere Kategorisierung (konsistent mit BeduerfnisModifikatoren)
+                if (diff <= 15) {
+                    // Gemeinsam: Beide wollen ähnliches
+                    details.gemeinsam.push({ need: need, wert1: wert1, wert2: wert2 });
+                } else if (diff <= 35) {
+                    // Komplementär: Können sich ergänzen
+                    details.komplementaer.push({ need: need, wert1: wert1, wert2: wert2 });
+                } else {
+                    // Unterschiedlich: Potentieller Konflikt
+                    details.unterschiedlich.push({ need: need, wert1: wert1, wert2: wert2, diff: diff });
                 }
+
+                // Lineare Score-Berechnung: Ähnlichkeit gewichtet nach Wichtigkeit
+                var aehnlichkeit = 100 - diff;
+                summeUebereinstimmung += aehnlichkeit * gewicht;
+                summeGewicht += gewicht;
             }
 
             var score = summeGewicht > 0

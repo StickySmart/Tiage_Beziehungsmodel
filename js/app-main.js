@@ -7770,6 +7770,83 @@
          * @returns {object|null} Matching-Ergebnis oder null bei Fehler
          */
         function calculateDynamicBeduerfnisMatch(ichArchetyp, partnerArchetyp) {
+            // ════════════════════════════════════════════════════════════════════
+            // NEU: KONSISTENTE BERECHNUNG - Nutze TiageProfileStore wenn verfügbar
+            // Dies stellt sicher, dass der Score hier identisch ist mit dem
+            // Score in der Tiagesynthese-Ansicht (EINE QUELLE DER WAHRHEIT)
+            // ════════════════════════════════════════════════════════════════════
+            if (typeof TiageProfileStore !== 'undefined' && typeof getProfileFromStore === 'function') {
+                const ichPerson = { archetyp: ichArchetyp, ...personDimensions.ich };
+                const partnerPerson = { archetyp: partnerArchetyp, ...personDimensions.partner };
+
+                const ichProfile = getProfileFromStore(ichPerson);
+                const partnerProfile = getProfileFromStore(partnerPerson);
+
+                if (ichProfile && ichProfile.needs && partnerProfile && partnerProfile.needs) {
+                    console.log('[GFK] Verwende TiageProfileStore.calculateNeedsMatch für konsistente Berechnung');
+                    const result = TiageProfileStore.calculateNeedsMatch(ichProfile, partnerProfile);
+
+                    // Level basierend auf Score bestimmen
+                    let level = 'niedrig';
+                    if (result.score >= 70) level = 'hoch';
+                    else if (result.score >= 40) level = 'mittel';
+
+                    // Format für Bedürfnis-Labels
+                    const formatLabel = (need) => {
+                        if (typeof formatBeduerfnisLabel === 'function') {
+                            return formatBeduerfnisLabel(need);
+                        }
+                        return need.charAt(0).toUpperCase() + need.slice(1).replace(/_/g, ' ');
+                    };
+
+                    // Ergebnis im erwarteten Format
+                    const allGemeinsam = (result.gemeinsam || []).map(b => ({
+                        label: formatLabel(b.need),
+                        id: b.need,
+                        key: b.need,
+                        wert1: b.wert1,
+                        wert2: b.wert2
+                    }));
+                    const allUnterschiedlich = (result.unterschiedlich || []).map(b => ({
+                        label: formatLabel(b.need),
+                        id: b.need,
+                        key: b.need,
+                        wert1: b.wert1,
+                        wert2: b.wert2
+                    }));
+                    const allKomplementaer = (result.komplementaer || []).map(b => ({
+                        label: formatLabel(b.need),
+                        id: b.need,
+                        key: b.need,
+                        wert1: b.wert1,
+                        wert2: b.wert2
+                    }));
+
+                    const allGemeinsamUndKompatibel = [...allGemeinsam, ...allKomplementaer].sort((a, b) =>
+                        ((b.wert1 + b.wert2) / 2) - ((a.wert1 + a.wert2) / 2)
+                    );
+
+                    return {
+                        score: result.score,
+                        level: level,
+                        archetyp1: ichArchetyp,
+                        archetyp2: partnerArchetyp,
+                        topUebereinstimmungen: allGemeinsamUndKompatibel.slice(0, 5),
+                        topKonflikte: allUnterschiedlich.slice(0, 5),
+                        komplementaer: allKomplementaer.slice(0, 5),
+                        alleGemeinsam: allGemeinsamUndKompatibel,
+                        alleUnterschiedlich: allUnterschiedlich,
+                        alleKomplementaer: allKomplementaer,
+                        source: 'TiageProfileStore'  // Markierung: Konsistente Berechnung
+                    };
+                }
+            }
+
+            // ════════════════════════════════════════════════════════════════════
+            // FALLBACK: Alter Weg mit BeduerfnisModifikatoren
+            // Wird verwendet wenn profile.needs nicht verfügbar
+            // ════════════════════════════════════════════════════════════════════
+
             // Basis-Bedürfnisse laden
             const ichBasis = GfkBeduerfnisse.archetypProfile[ichArchetyp];
             const partnerBasis = GfkBeduerfnisse.archetypProfile[partnerArchetyp];
