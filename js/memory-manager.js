@@ -57,13 +57,14 @@ const MemoryManager = (function() {
     }
 
     /**
-     * Collect ProfileReview state - ALL 22 Attributes + Flat Needs
-     * Dynamisch aus ProfileReviewConfig laden wenn verfügbar
-     * NEU: Sammelt auch die echten Bedürfniswerte aus AttributeSummaryCard
+     * Collect ProfileReview state - Flat Needs only (attributes removed for cleaner storage)
+     *
+     * MIGRATION v1.8.84: attributes werden nicht mehr gespeichert, da sie redundant sind.
+     * Die Kategorie-Werte können aus flatNeeds berechnet werden.
+     * Beim Laden werden Legacy-Dateien (nur attributes) weiterhin unterstützt.
      */
     function collectProfileReviewState(person) {
         const state = {
-            attributes: {},
             flatNeeds: null,
             flatLockedNeeds: null
         };
@@ -75,56 +76,8 @@ const MemoryManager = (function() {
                 AttributeSummaryCard.getFlatLockedNeeds() : null;
         }
 
-        // Sammle Attribut-Werte (Secondary, für Kompatibilität)
-        // Wenn ProfileReviewConfig verfügbar, dynamisch alle Attribute holen
-        if (typeof ProfileReviewConfig !== 'undefined') {
-            const allAttrs = ProfileReviewConfig.getAllAttributes();
-            allAttrs.forEach(attr => {
-                const attrId = attr.attrId;
-                const key = attrId.replace('pr-', '').replace(/-/g, '_');
-                state.attributes[key] = getTripleBtnValue(attrId);
-            });
-        } else {
-            // Fallback: Alle bekannten Attribute manuell
-            // Kategorie: Geschlechtsidentität
-            state.attributes.geschlecht_sekundaer = getTripleBtnValue('pr-geschlecht-sekundaer');
-
-            // Kategorie: Lebensplanung (6)
-            state.attributes.kinder = getTripleBtnValue('pr-kinder');
-            state.attributes.ehe = getTripleBtnValue('pr-ehe');
-            state.attributes.zusammen = getTripleBtnValue('pr-zusammen');
-            state.attributes.haustiere = getTripleBtnValue('pr-haustiere');
-            state.attributes.umzug = getTripleBtnValue('pr-umzug');
-            state.attributes.familie = getTripleBtnValue('pr-familie');
-
-            // Kategorie: Finanzen (2)
-            state.attributes.finanzen = getTripleBtnValue('pr-finanzen');
-            state.attributes.karriere = getTripleBtnValue('pr-karriere');
-
-            // Kategorie: Kommunikation (3)
-            state.attributes.gespraech = getTripleBtnValue('pr-gespraech');
-            state.attributes.emotional = getTripleBtnValue('pr-emotional');
-            state.attributes.konflikt = getTripleBtnValue('pr-konflikt');
-
-            // Kategorie: Soziales (3)
-            state.attributes.introextro = getTripleBtnValue('pr-introextro');
-            state.attributes.alleinzeit = getTripleBtnValue('pr-alleinzeit');
-            state.attributes.freunde = getTripleBtnValue('pr-freunde');
-
-            // Kategorie: Intimität (3)
-            state.attributes.naehe = getTripleBtnValue('pr-naehe');
-            state.attributes.romantik = getTripleBtnValue('pr-romantik');
-            state.attributes.sex = getTripleBtnValue('pr-sex');
-
-            // Kategorie: Werte (3)
-            state.attributes.religion = getTripleBtnValue('pr-religion');
-            state.attributes.tradition = getTripleBtnValue('pr-tradition');
-            state.attributes.umwelt = getTripleBtnValue('pr-umwelt');
-
-            // Kategorie: Praktisches (2)
-            state.attributes.ordnung = getTripleBtnValue('pr-ordnung');
-            state.attributes.reise = getTripleBtnValue('pr-reise');
-        }
+        // REMOVED: attributes werden nicht mehr gespeichert (v1.8.84)
+        // Die Kategorie-Werte können beim Laden aus flatNeeds berechnet werden
 
         return state;
     }
@@ -288,14 +241,63 @@ const MemoryManager = (function() {
     }
 
     /**
-     * Apply ProfileReview state - ALL 22 Attributes + Flat Needs
-     * Dynamisch aus ProfileReviewConfig laden wenn verfügbar
-     * NEU: Unterstützt neue Struktur mit flatNeeds + attributes
+     * Berechnet Kategorie-Werte (0/50/100) aus flatNeeds
+     * Verwendet ATTRIBUTE_NEEDS_MAPPING aus AttributeSummaryCard
+     *
+     * @param {Object} flatNeeds - Die flachen Bedürfniswerte { needId: value }
+     * @returns {Object} Berechnete Kategorie-Werte { key: 0|50|100 }
+     */
+    function calculateAttributesFromFlatNeeds(flatNeeds) {
+        if (!flatNeeds || typeof AttributeSummaryCard === 'undefined' ||
+            !AttributeSummaryCard.ATTRIBUTE_NEEDS_MAPPING) {
+            return {};
+        }
+
+        const mapping = AttributeSummaryCard.ATTRIBUTE_NEEDS_MAPPING;
+        const attributes = {};
+
+        Object.keys(mapping).forEach(attrId => {
+            const config = mapping[attrId];
+            const key = attrId.replace('pr-', '').replace(/-/g, '_');
+
+            // Berechne Durchschnitt der zugehörigen Needs
+            let sum = 0;
+            let count = 0;
+            config.needs.forEach(needId => {
+                if (flatNeeds[needId] !== undefined) {
+                    sum += flatNeeds[needId];
+                    count++;
+                }
+            });
+
+            if (count > 0) {
+                const avg = sum / count;
+                // Konvertiere zu Triple-Button-Wert: 0, 50, oder 100
+                if (avg < 33) {
+                    attributes[key] = 0;
+                } else if (avg > 66) {
+                    attributes[key] = 100;
+                } else {
+                    attributes[key] = 50;
+                }
+            }
+        });
+
+        return attributes;
+    }
+
+    /**
+     * Apply ProfileReview state - Flat Needs + berechnete Kategorien
+     *
+     * MIGRATION v1.8.84: Unterstützt drei Szenarien:
+     * 1. Neue Dateien: Nur flatNeeds → Kategorien werden berechnet
+     * 2. Legacy-Dateien: Nur attributes → Direkt für Triple-Buttons verwenden
+     * 3. Übergangs-Dateien: Beides vorhanden → flatNeeds priorisiert
      */
     function applyProfileReviewState(profileReview) {
         if (!profileReview) return;
 
-        // NEU: Lade flatNeeds in AttributeSummaryCard (Primary Source)
+        // Lade flatNeeds in AttributeSummaryCard (Primary Source)
         if (profileReview.flatNeeds && typeof AttributeSummaryCard !== 'undefined') {
             if (AttributeSummaryCard.setFlatNeedsValues) {
                 AttributeSummaryCard.setFlatNeedsValues(profileReview.flatNeeds);
@@ -306,8 +308,17 @@ const MemoryManager = (function() {
             }
         }
 
-        // Extrahiere attributes aus neuer oder alter Struktur
-        const attributes = profileReview.attributes || profileReview;
+        // Bestimme attributes: berechnet aus flatNeeds ODER Legacy-attributes
+        let attributes;
+        if (profileReview.flatNeeds && Object.keys(profileReview.flatNeeds).length > 0) {
+            // Neue Struktur: Berechne Kategorien aus flatNeeds
+            attributes = calculateAttributesFromFlatNeeds(profileReview.flatNeeds);
+            console.log('[MemoryManager] Kategorien aus flatNeeds berechnet:', Object.keys(attributes).length, 'Kategorien');
+        } else {
+            // Legacy: Verwende gespeicherte attributes
+            attributes = profileReview.attributes || profileReview;
+            console.log('[MemoryManager] Legacy-Attributes geladen');
+        }
 
         // Wenn ProfileReviewConfig verfügbar, dynamisch alle Attribute setzen
         if (typeof ProfileReviewConfig !== 'undefined') {
