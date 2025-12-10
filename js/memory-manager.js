@@ -192,13 +192,13 @@ const MemoryManager = (function() {
             data.geschlecht = TiageState.get('personDimensions.ich.geschlecht');
             data.dominanz = TiageState.get('personDimensions.ich.dominanz');
             data.orientierung = TiageState.get('personDimensions.ich.orientierung');
-        } else if (typeof personDimensions !== 'undefined') {
+        } else if (typeof window.personDimensions !== 'undefined') {
             // Fallback to global personDimensions
-            data.geschlecht = personDimensions.ich?.geschlecht;
-            data.dominanz = personDimensions.ich?.dominanz;
-            data.orientierung = personDimensions.ich?.orientierung;
-            if (typeof mobileIchArchetype !== 'undefined') {
-                data.archetyp = { primary: mobileIchArchetype, secondary: null };
+            data.geschlecht = window.personDimensions.ich?.geschlecht;
+            data.dominanz = window.personDimensions.ich?.dominanz;
+            data.orientierung = window.personDimensions.ich?.orientierung;
+            if (typeof window.mobileIchArchetype !== 'undefined') {
+                data.archetyp = { primary: window.mobileIchArchetype, secondary: null };
             }
         }
 
@@ -235,13 +235,13 @@ const MemoryManager = (function() {
             data.geschlecht = TiageState.get('personDimensions.partner.geschlecht');
             data.dominanz = TiageState.get('personDimensions.partner.dominanz');
             data.orientierung = TiageState.get('personDimensions.partner.orientierung');
-        } else if (typeof personDimensions !== 'undefined') {
+        } else if (typeof window.personDimensions !== 'undefined') {
             // Fallback to global personDimensions
-            data.geschlecht = personDimensions.partner?.geschlecht;
-            data.dominanz = personDimensions.partner?.dominanz;
-            data.orientierung = personDimensions.partner?.orientierung;
-            if (typeof mobilePartnerArchetype !== 'undefined') {
-                data.archetyp = { primary: mobilePartnerArchetype, secondary: null };
+            data.geschlecht = window.personDimensions.partner?.geschlecht;
+            data.dominanz = window.personDimensions.partner?.dominanz;
+            data.orientierung = window.personDimensions.partner?.orientierung;
+            if (typeof window.mobilePartnerArchetype !== 'undefined') {
+                data.archetyp = { primary: window.mobilePartnerArchetype, secondary: null };
             }
         }
 
@@ -421,16 +421,16 @@ const MemoryManager = (function() {
             }
 
             // Also update global variables and UI
-            if (typeof personDimensions !== 'undefined') {
-                if (data.geschlecht) personDimensions.ich.geschlecht = data.geschlecht;
-                if (data.dominanz) personDimensions.ich.dominanz = data.dominanz;
-                if (data.orientierung) personDimensions.ich.orientierung = data.orientierung;
+            if (typeof window.personDimensions !== 'undefined') {
+                if (data.geschlecht) window.personDimensions.ich.geschlecht = data.geschlecht;
+                if (data.dominanz) window.personDimensions.ich.dominanz = data.dominanz;
+                if (data.orientierung) window.personDimensions.ich.orientierung = data.orientierung;
             }
 
-            if (typeof mobilePersonDimensions !== 'undefined') {
-                if (data.geschlecht) mobilePersonDimensions.ich.geschlecht = data.geschlecht;
-                if (data.dominanz) mobilePersonDimensions.ich.dominanz = data.dominanz;
-                if (data.orientierung) mobilePersonDimensions.ich.orientierung = data.orientierung;
+            if (typeof window.mobilePersonDimensions !== 'undefined') {
+                if (data.geschlecht) window.mobilePersonDimensions.ich.geschlecht = data.geschlecht;
+                if (data.dominanz) window.mobilePersonDimensions.ich.dominanz = data.dominanz;
+                if (data.orientierung) window.mobilePersonDimensions.ich.orientierung = data.orientierung;
             }
 
             // Update archetype selects
@@ -505,16 +505,16 @@ const MemoryManager = (function() {
             }
 
             // Also update global variables and UI
-            if (typeof personDimensions !== 'undefined') {
-                if (data.geschlecht) personDimensions.partner.geschlecht = data.geschlecht;
-                if (data.dominanz) personDimensions.partner.dominanz = data.dominanz;
-                if (data.orientierung) personDimensions.partner.orientierung = data.orientierung;
+            if (typeof window.personDimensions !== 'undefined') {
+                if (data.geschlecht) window.personDimensions.partner.geschlecht = data.geschlecht;
+                if (data.dominanz) window.personDimensions.partner.dominanz = data.dominanz;
+                if (data.orientierung) window.personDimensions.partner.orientierung = data.orientierung;
             }
 
-            if (typeof mobilePersonDimensions !== 'undefined') {
-                if (data.geschlecht) mobilePersonDimensions.partner.geschlecht = data.geschlecht;
-                if (data.dominanz) mobilePersonDimensions.partner.dominanz = data.dominanz;
-                if (data.orientierung) mobilePersonDimensions.partner.orientierung = data.orientierung;
+            if (typeof window.mobilePersonDimensions !== 'undefined') {
+                if (data.geschlecht) window.mobilePersonDimensions.partner.geschlecht = data.geschlecht;
+                if (data.dominanz) window.mobilePersonDimensions.partner.dominanz = data.dominanz;
+                if (data.orientierung) window.mobilePersonDimensions.partner.orientierung = data.orientierung;
             }
 
             // Update archetype selects
