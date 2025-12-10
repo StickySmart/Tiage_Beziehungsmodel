@@ -24,6 +24,7 @@
         const GEWICHTUNG_DEFAULTS = { O: 40, A: 25, D: 20, G: 15 };
         const GEWICHTUNG_STORAGE_KEY = 'tiage_faktor_gewichtungen';
         const GEWICHTUNG_LOCK_KEY = 'tiage_faktor_locks';
+        const GEWICHTUNG_SUMME_LOCK_KEY = 'tiage_summe_lock';
 
         // Faktor-Mapping für Gewichtungen (muss vor den Funktionen definiert sein, die es verwenden)
         const FAKTOR_MAP = {
@@ -35,6 +36,9 @@
 
         // Lock-Status für Gewichtungen (muss vor den Funktionen definiert sein, die es verwenden)
         let gewichtungLocks = { orientierung: false, archetyp: false, dominanz: false, geschlecht: false };
+
+        // Summen-Lock-Status (fixiert Summe auf 100%)
+        let summeLocked = true; // Standardmäßig aktiviert
 
         // Modal-Kontext für Profile Review (muss vor openProfileReviewModal() definiert sein)
         var currentProfileReviewContext = { archetypeKey: null, person: null };
@@ -15443,6 +15447,18 @@
 
         // Normalisiert Gewichtungen auf 100%
         function normalizeGewichtungen(changedFactor, newValue) {
+            // Wenn Summen-Lock deaktiviert ist, nur den geänderten Wert setzen
+            if (!summeLocked) {
+                const changedInput = document.getElementById(FAKTOR_MAP[changedFactor].inputId);
+                const changedSlider = document.getElementById(`gewicht-slider-${changedFactor}`);
+                const clampedValue = Math.min(Math.max(newValue, 0), 100);
+                if (changedInput) changedInput.value = clampedValue;
+                if (changedSlider) changedSlider.value = clampedValue;
+                saveGewichtungen();
+                updateGewichtungSumme();
+                return;
+            }
+
             const factors = Object.keys(FAKTOR_MAP);
 
             // Sammle aktuelle Werte und Lock-Status
@@ -15467,9 +15483,11 @@
             const maxForChanged = 100 - lockedSum;
             const clampedValue = Math.min(Math.max(newValue, 0), maxForChanged);
 
-            // Setze geänderten Wert
+            // Setze geänderten Wert (Input und Slider)
             const changedInput = document.getElementById(FAKTOR_MAP[changedFactor].inputId);
+            const changedSlider = document.getElementById(`gewicht-slider-${changedFactor}`);
             if (changedInput) changedInput.value = clampedValue;
+            if (changedSlider) changedSlider.value = clampedValue;
 
             // Verteile Rest auf nicht-gelockte Faktoren
             const availableForOthers = 100 - lockedSum - clampedValue;
@@ -15491,15 +15509,20 @@
                         newVal = Math.round(availableForOthers / unlockedFactors.length);
                         distributed += newVal;
                     }
-                    f.input.value = Math.max(0, newVal);
+                    const finalValue = Math.max(0, newVal);
+                    f.input.value = finalValue;
+                    // Synchronisiere auch den Slider
+                    const slider = document.getElementById(`gewicht-slider-${f.factor}`);
+                    if (slider) slider.value = finalValue;
                 });
             }
 
             saveGewichtungen();
             updateRowStates();
+            updateGewichtungSumme();
         }
 
-        // Doppelklick-Handler für Lock/Unlock
+        // Klick-Handler für Lock/Unlock
         function handleLockToggle(factor) {
             const lockedCount = Object.values(gewichtungLocks).filter(v => v).length;
 
@@ -15517,6 +15540,7 @@
             saveGewichtungLocks();
             updateRowStates();
         }
+        window.handleLockToggle = handleLockToggle;
 
         // Aktualisiert visuelle Zustände
         function updateRowStates() {
@@ -15536,6 +15560,56 @@
                     row.classList.add('readonly');
                 }
             });
+
+            // Aktualisiere Summen-Lock-Anzeige
+            updateSummeLockDisplay();
+        }
+
+        // Lädt Summen-Lock-Status aus localStorage
+        function getSummeLock() {
+            try {
+                const stored = localStorage.getItem(GEWICHTUNG_SUMME_LOCK_KEY);
+                return stored !== null ? JSON.parse(stored) : true; // Standard: aktiviert
+            } catch (e) { return true; }
+        }
+
+        // Speichert Summen-Lock-Status
+        function saveSummeLock() {
+            try {
+                localStorage.setItem(GEWICHTUNG_SUMME_LOCK_KEY, JSON.stringify(summeLocked));
+            } catch (e) { console.warn('Fehler beim Speichern des Summen-Lock-Status:', e); }
+        }
+
+        // Toggle Summen-Lock
+        function toggleSummeLock() {
+            summeLocked = !summeLocked;
+            saveSummeLock();
+            updateSummeLockDisplay();
+
+            // Wenn aktiviert, normalisiere sofort auf 100%
+            if (summeLocked) {
+                const factors = Object.keys(FAKTOR_MAP);
+                const unlockedFactors = factors.filter(f => !gewichtungLocks[f]);
+                if (unlockedFactors.length > 0) {
+                    // Normalisiere auf 100%
+                    const firstUnlocked = unlockedFactors[0];
+                    const input = document.getElementById(FAKTOR_MAP[firstUnlocked].inputId);
+                    if (input) {
+                        normalizeGewichtungen(firstUnlocked, parseInt(input.value) || 0);
+                    }
+                }
+            }
+        }
+        window.toggleSummeLock = toggleSummeLock;
+
+        // Aktualisiert Summen-Lock-Anzeige
+        function updateSummeLockDisplay() {
+            const lockElement = document.getElementById('gewicht-summe-lock');
+            if (lockElement) {
+                lockElement.textContent = summeLocked ? '🔒' : '🔓';
+                lockElement.classList.toggle('locked', summeLocked);
+                lockElement.title = summeLocked ? 'Summe ist auf 100% fixiert (klicken zum Entsperren)' : 'Summe auf 100% fixieren';
+            }
         }
 
         // Initialisiert Event-Listener
@@ -15548,6 +15622,7 @@
             factors.forEach(factor => {
                 const row = document.querySelector(`.gewichtung-card[data-factor="${factor}"]`);
                 const input = document.getElementById(FAKTOR_MAP[factor].inputId);
+                const slider = document.getElementById(`gewicht-slider-${factor}`);
 
                 if (!row || !input) {
                     allFound = false;
@@ -15591,9 +15666,43 @@
                     }
                 });
 
-                // Doppelklick auf Row für Lock
+                // Slider-Events für Normalisierung
+                if (slider) {
+                    slider.addEventListener('input', function(e) {
+                        if (gewichtungLocks[factor]) {
+                            // Wenn gesperrt, Slider zurücksetzen
+                            const gew = getGewichtungen();
+                            slider.value = gew[FAKTOR_MAP[factor].key];
+                            return;
+                        }
+                        // Synchronisiere mit Text-Input
+                        input.value = e.target.value;
+                        updateGewichtungSumme();
+                    });
+
+                    slider.addEventListener('change', function(e) {
+                        if (gewichtungLocks[factor]) {
+                            const gew = getGewichtungen();
+                            slider.value = gew[FAKTOR_MAP[factor].key];
+                            return;
+                        }
+
+                        const unlockedCount = factors.filter(f => !gewichtungLocks[f]).length;
+                        if (unlockedCount === 1 && !gewichtungLocks[factor]) {
+                            const gew = getGewichtungen();
+                            slider.value = gew[FAKTOR_MAP[factor].key];
+                            input.value = gew[FAKTOR_MAP[factor].key];
+                            return;
+                        }
+
+                        const newVal = parseInt(e.target.value) || 0;
+                        normalizeGewichtungen(factor, newVal);
+                    });
+                }
+
+                // Doppelklick auf Row für Lock (zusätzlich zum Klick auf Icon)
                 row.addEventListener('dblclick', function(e) {
-                    if (e.target.tagName !== 'INPUT') {
+                    if (e.target.tagName !== 'INPUT' && !e.target.classList.contains('gewichtung-lock-indicator')) {
                         handleLockToggle(factor);
                     }
                 });
@@ -15604,16 +15713,33 @@
 
         // Reset auf Standard
         function resetGewichtungen() {
+            // Reset Faktor-Locks
             gewichtungLocks = { orientierung: false, archetyp: false, dominanz: false, geschlecht: false };
             saveGewichtungLocks();
 
+            // Reset Summen-Lock auf Standard (aktiviert)
+            summeLocked = true;
+            saveSummeLock();
+
+            // Reset Text-Inputs
             document.getElementById('gewicht-orientierung').value = GEWICHTUNG_DEFAULTS.O;
             document.getElementById('gewicht-archetyp').value = GEWICHTUNG_DEFAULTS.A;
             document.getElementById('gewicht-dominanz').value = GEWICHTUNG_DEFAULTS.D;
             document.getElementById('gewicht-geschlecht').value = GEWICHTUNG_DEFAULTS.G;
 
+            // Reset Slider
+            const sliderO = document.getElementById('gewicht-slider-orientierung');
+            const sliderA = document.getElementById('gewicht-slider-archetyp');
+            const sliderD = document.getElementById('gewicht-slider-dominanz');
+            const sliderG = document.getElementById('gewicht-slider-geschlecht');
+            if (sliderO) sliderO.value = GEWICHTUNG_DEFAULTS.O;
+            if (sliderA) sliderA.value = GEWICHTUNG_DEFAULTS.A;
+            if (sliderD) sliderD.value = GEWICHTUNG_DEFAULTS.D;
+            if (sliderG) sliderG.value = GEWICHTUNG_DEFAULTS.G;
+
             saveGewichtungen();
             updateRowStates();
+            updateGewichtungSumme();
         }
         window.resetGewichtungen = resetGewichtungen;
 
@@ -15623,16 +15749,28 @@
 
             const gew = getGewichtungen();
             gewichtungLocks = getGewichtungLocks();
+            summeLocked = getSummeLock();
 
             const inputO = document.getElementById('gewicht-orientierung');
             const inputA = document.getElementById('gewicht-archetyp');
             const inputD = document.getElementById('gewicht-dominanz');
             const inputG = document.getElementById('gewicht-geschlecht');
 
+            const sliderO = document.getElementById('gewicht-slider-orientierung');
+            const sliderA = document.getElementById('gewicht-slider-archetyp');
+            const sliderD = document.getElementById('gewicht-slider-dominanz');
+            const sliderG = document.getElementById('gewicht-slider-geschlecht');
+
             if (inputO) inputO.value = gew.O;
             if (inputA) inputA.value = gew.A;
             if (inputD) inputD.value = gew.D;
             if (inputG) inputG.value = gew.G;
+
+            // Synchronisiere Slider mit Inputs
+            if (sliderO) sliderO.value = gew.O;
+            if (sliderA) sliderA.value = gew.A;
+            if (sliderD) sliderD.value = gew.D;
+            if (sliderG) sliderG.value = gew.G;
 
             updateGewichtungSumme();
             updateRowStates();

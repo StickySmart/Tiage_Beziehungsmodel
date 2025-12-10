@@ -273,6 +273,13 @@ input.gewichtung-input:focus {
 .gewichtung-lock-indicator {
     width: 16px;
     text-align: center;
+    cursor: pointer;
+    user-select: none;
+    transition: transform 0.15s ease;
+}
+
+.gewichtung-lock-indicator:hover {
+    transform: scale(1.2);
 }
 
 .gewichtung-card:not(.locked):not(.readonly) .gewichtung-lock-indicator::before {
@@ -324,6 +331,24 @@ input.gewichtung-input:focus {
 
 .gewichtung-summe-error {
     color: #ef4444 !important;
+}
+
+.gewichtung-summe-lock {
+    cursor: pointer;
+    user-select: none;
+    margin-left: 6px;
+    font-size: 12px;
+    opacity: 0.6;
+    transition: transform 0.15s ease, opacity 0.15s ease;
+}
+
+.gewichtung-summe-lock:hover {
+    transform: scale(1.2);
+    opacity: 1;
+}
+
+.gewichtung-summe-lock.locked {
+    opacity: 1;
 }
 
 /* Gewichtung Slider Styles */
