@@ -15311,6 +15311,10 @@
         window.updateAll = updateAll;
         window.saveSelectionToStorage = saveSelectionToStorage;
 
+        // State variables (for MemoryManager to update)
+        window.personDimensions = personDimensions;
+        window.mobilePersonDimensions = mobilePersonDimensions;
+
         // Pathos/Logos Modal open function
         window.openPathosLogosModal = openPathosLogosModal;
 
