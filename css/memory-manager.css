@@ -454,6 +454,63 @@
     color: rgba(255, 255, 255, 0.4);
 }
 
+/* Raw Data Display */
+.memory-detail-raw-data {
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 6px;
+    padding: 10px 12px;
+    font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+    font-size: 11px;
+    color: #A855F7;
+    white-space: pre-wrap;
+    word-break: break-all;
+    max-height: 200px;
+    overflow-y: auto;
+}
+
+/* Collapsible Raw JSON Section */
+.memory-detail-raw-json {
+    display: none;
+    background: rgba(0, 0, 0, 0.4);
+    border-radius: 6px;
+    padding: 10px;
+    margin-top: 10px;
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+.memory-detail-raw-json pre {
+    margin: 0;
+    font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+    font-size: 10px;
+    color: #10B981;
+    white-space: pre-wrap;
+    word-break: break-all;
+}
+
+.memory-detail-section.expanded .memory-detail-raw-json {
+    display: block;
+}
+
+.memory-detail-section.expanded .memory-detail-expand-icon {
+    display: inline-block;
+    transform: rotate(45deg);
+}
+
+.memory-detail-expand-icon {
+    float: right;
+    font-size: 16px;
+    font-weight: bold;
+    transition: transform 0.2s ease;
+}
+
+.memory-detail-value {
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.9);
+    font-weight: 500;
+    word-break: break-all;
+}
+
 /* ═══════════════════════════════════════════════════════════════════════════
    MOBILE ADJUSTMENTS
    ═══════════════════════════════════════════════════════════════════════════ */
