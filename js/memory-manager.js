@@ -57,60 +57,73 @@ const MemoryManager = (function() {
     }
 
     /**
-     * Collect ProfileReview state - ALL 22 Attributes
+     * Collect ProfileReview state - ALL 22 Attributes + Flat Needs
      * Dynamisch aus ProfileReviewConfig laden wenn verfügbar
+     * NEU: Sammelt auch die echten Bedürfniswerte aus AttributeSummaryCard
      */
     function collectProfileReviewState(person) {
-        const state = {};
+        const state = {
+            attributes: {},
+            flatNeeds: null,
+            flatLockedNeeds: null
+        };
 
+        // NEU: Sammle echte Bedürfniswerte aus AttributeSummaryCard (Primary Source)
+        if (typeof AttributeSummaryCard !== 'undefined' && AttributeSummaryCard.getFlatNeedsValues) {
+            state.flatNeeds = AttributeSummaryCard.getFlatNeedsValues();
+            state.flatLockedNeeds = AttributeSummaryCard.getFlatLockedNeeds ?
+                AttributeSummaryCard.getFlatLockedNeeds() : null;
+        }
+
+        // Sammle Attribut-Werte (Secondary, für Kompatibilität)
         // Wenn ProfileReviewConfig verfügbar, dynamisch alle Attribute holen
         if (typeof ProfileReviewConfig !== 'undefined') {
             const allAttrs = ProfileReviewConfig.getAllAttributes();
             allAttrs.forEach(attr => {
                 const attrId = attr.attrId;
                 const key = attrId.replace('pr-', '').replace(/-/g, '_');
-                state[key] = getTripleBtnValue(attrId);
+                state.attributes[key] = getTripleBtnValue(attrId);
             });
         } else {
             // Fallback: Alle bekannten Attribute manuell
             // Kategorie: Geschlechtsidentität
-            state.geschlecht_sekundaer = getTripleBtnValue('pr-geschlecht-sekundaer');
+            state.attributes.geschlecht_sekundaer = getTripleBtnValue('pr-geschlecht-sekundaer');
 
             // Kategorie: Lebensplanung (6)
-            state.kinder = getTripleBtnValue('pr-kinder');
-            state.ehe = getTripleBtnValue('pr-ehe');
-            state.zusammen = getTripleBtnValue('pr-zusammen');
-            state.haustiere = getTripleBtnValue('pr-haustiere');
-            state.umzug = getTripleBtnValue('pr-umzug');
-            state.familie = getTripleBtnValue('pr-familie');
+            state.attributes.kinder = getTripleBtnValue('pr-kinder');
+            state.attributes.ehe = getTripleBtnValue('pr-ehe');
+            state.attributes.zusammen = getTripleBtnValue('pr-zusammen');
+            state.attributes.haustiere = getTripleBtnValue('pr-haustiere');
+            state.attributes.umzug = getTripleBtnValue('pr-umzug');
+            state.attributes.familie = getTripleBtnValue('pr-familie');
 
             // Kategorie: Finanzen (2)
-            state.finanzen = getTripleBtnValue('pr-finanzen');
-            state.karriere = getTripleBtnValue('pr-karriere');
+            state.attributes.finanzen = getTripleBtnValue('pr-finanzen');
+            state.attributes.karriere = getTripleBtnValue('pr-karriere');
 
             // Kategorie: Kommunikation (3)
-            state.gespraech = getTripleBtnValue('pr-gespraech');
-            state.emotional = getTripleBtnValue('pr-emotional');
-            state.konflikt = getTripleBtnValue('pr-konflikt');
+            state.attributes.gespraech = getTripleBtnValue('pr-gespraech');
+            state.attributes.emotional = getTripleBtnValue('pr-emotional');
+            state.attributes.konflikt = getTripleBtnValue('pr-konflikt');
 
             // Kategorie: Soziales (3)
-            state.introextro = getTripleBtnValue('pr-introextro');
-            state.alleinzeit = getTripleBtnValue('pr-alleinzeit');
-            state.freunde = getTripleBtnValue('pr-freunde');
+            state.attributes.introextro = getTripleBtnValue('pr-introextro');
+            state.attributes.alleinzeit = getTripleBtnValue('pr-alleinzeit');
+            state.attributes.freunde = getTripleBtnValue('pr-freunde');
 
             // Kategorie: Intimität (3)
-            state.naehe = getTripleBtnValue('pr-naehe');
-            state.romantik = getTripleBtnValue('pr-romantik');
-            state.sex = getTripleBtnValue('pr-sex');
+            state.attributes.naehe = getTripleBtnValue('pr-naehe');
+            state.attributes.romantik = getTripleBtnValue('pr-romantik');
+            state.attributes.sex = getTripleBtnValue('pr-sex');
 
             // Kategorie: Werte (3)
-            state.religion = getTripleBtnValue('pr-religion');
-            state.tradition = getTripleBtnValue('pr-tradition');
-            state.umwelt = getTripleBtnValue('pr-umwelt');
+            state.attributes.religion = getTripleBtnValue('pr-religion');
+            state.attributes.tradition = getTripleBtnValue('pr-tradition');
+            state.attributes.umwelt = getTripleBtnValue('pr-umwelt');
 
             // Kategorie: Praktisches (2)
-            state.ordnung = getTripleBtnValue('pr-ordnung');
-            state.reise = getTripleBtnValue('pr-reise');
+            state.attributes.ordnung = getTripleBtnValue('pr-ordnung');
+            state.attributes.reise = getTripleBtnValue('pr-reise');
         }
 
         return state;
@@ -275,11 +288,26 @@ const MemoryManager = (function() {
     }
 
     /**
-     * Apply ProfileReview state - ALL 22 Attributes
+     * Apply ProfileReview state - ALL 22 Attributes + Flat Needs
      * Dynamisch aus ProfileReviewConfig laden wenn verfügbar
+     * NEU: Unterstützt neue Struktur mit flatNeeds + attributes
      */
     function applyProfileReviewState(profileReview) {
         if (!profileReview) return;
+
+        // NEU: Lade flatNeeds in AttributeSummaryCard (Primary Source)
+        if (profileReview.flatNeeds && typeof AttributeSummaryCard !== 'undefined') {
+            if (AttributeSummaryCard.setFlatNeedsValues) {
+                AttributeSummaryCard.setFlatNeedsValues(profileReview.flatNeeds);
+                console.log('[MemoryManager] FlatNeeds geladen:', Object.keys(profileReview.flatNeeds).length, 'Werte');
+            }
+            if (profileReview.flatLockedNeeds && AttributeSummaryCard.setFlatLockedNeeds) {
+                AttributeSummaryCard.setFlatLockedNeeds(profileReview.flatLockedNeeds);
+            }
+        }
+
+        // Extrahiere attributes aus neuer oder alter Struktur
+        const attributes = profileReview.attributes || profileReview;
 
         // Wenn ProfileReviewConfig verfügbar, dynamisch alle Attribute setzen
         if (typeof ProfileReviewConfig !== 'undefined') {
@@ -287,56 +315,56 @@ const MemoryManager = (function() {
             allAttrs.forEach(attr => {
                 const attrId = attr.attrId;
                 const key = attrId.replace('pr-', '').replace(/-/g, '_');
-                if (profileReview[key] !== undefined) {
-                    setTripleBtnValue(attrId, profileReview[key]);
+                if (attributes[key] !== undefined) {
+                    setTripleBtnValue(attrId, attributes[key]);
                 }
             });
         } else {
             // Fallback: Alle bekannten Attribute manuell setzen
             // Geschlechtsidentität
-            if (profileReview.geschlecht_sekundaer !== undefined) {
-                setTripleBtnValue('pr-geschlecht-sekundaer', profileReview.geschlecht_sekundaer);
+            if (attributes.geschlecht_sekundaer !== undefined) {
+                setTripleBtnValue('pr-geschlecht-sekundaer', attributes.geschlecht_sekundaer);
             }
             // Legacy-Support für alte Speicherformate
-            if (profileReview.geschlechtsidentitaet !== undefined) {
-                setTripleBtnValue('pr-geschlecht-sekundaer', profileReview.geschlechtsidentitaet);
+            if (attributes.geschlechtsidentitaet !== undefined) {
+                setTripleBtnValue('pr-geschlecht-sekundaer', attributes.geschlechtsidentitaet);
             }
 
             // Lebensplanung
-            if (profileReview.kinder !== undefined) setTripleBtnValue('pr-kinder', profileReview.kinder);
-            if (profileReview.ehe !== undefined) setTripleBtnValue('pr-ehe', profileReview.ehe);
-            if (profileReview.zusammen !== undefined) setTripleBtnValue('pr-zusammen', profileReview.zusammen);
-            if (profileReview.haustiere !== undefined) setTripleBtnValue('pr-haustiere', profileReview.haustiere);
-            if (profileReview.umzug !== undefined) setTripleBtnValue('pr-umzug', profileReview.umzug);
-            if (profileReview.familie !== undefined) setTripleBtnValue('pr-familie', profileReview.familie);
+            if (attributes.kinder !== undefined) setTripleBtnValue('pr-kinder', attributes.kinder);
+            if (attributes.ehe !== undefined) setTripleBtnValue('pr-ehe', attributes.ehe);
+            if (attributes.zusammen !== undefined) setTripleBtnValue('pr-zusammen', attributes.zusammen);
+            if (attributes.haustiere !== undefined) setTripleBtnValue('pr-haustiere', attributes.haustiere);
+            if (attributes.umzug !== undefined) setTripleBtnValue('pr-umzug', attributes.umzug);
+            if (attributes.familie !== undefined) setTripleBtnValue('pr-familie', attributes.familie);
 
             // Finanzen
-            if (profileReview.finanzen !== undefined) setTripleBtnValue('pr-finanzen', profileReview.finanzen);
-            if (profileReview.karriere !== undefined) setTripleBtnValue('pr-karriere', profileReview.karriere);
+            if (attributes.finanzen !== undefined) setTripleBtnValue('pr-finanzen', attributes.finanzen);
+            if (attributes.karriere !== undefined) setTripleBtnValue('pr-karriere', attributes.karriere);
 
             // Kommunikation
-            if (profileReview.gespraech !== undefined) setTripleBtnValue('pr-gespraech', profileReview.gespraech);
-            if (profileReview.emotional !== undefined) setTripleBtnValue('pr-emotional', profileReview.emotional);
-            if (profileReview.konflikt !== undefined) setTripleBtnValue('pr-konflikt', profileReview.konflikt);
+            if (attributes.gespraech !== undefined) setTripleBtnValue('pr-gespraech', attributes.gespraech);
+            if (attributes.emotional !== undefined) setTripleBtnValue('pr-emotional', attributes.emotional);
+            if (attributes.konflikt !== undefined) setTripleBtnValue('pr-konflikt', attributes.konflikt);
 
             // Soziales
-            if (profileReview.introextro !== undefined) setTripleBtnValue('pr-introextro', profileReview.introextro);
-            if (profileReview.alleinzeit !== undefined) setTripleBtnValue('pr-alleinzeit', profileReview.alleinzeit);
-            if (profileReview.freunde !== undefined) setTripleBtnValue('pr-freunde', profileReview.freunde);
+            if (attributes.introextro !== undefined) setTripleBtnValue('pr-introextro', attributes.introextro);
+            if (attributes.alleinzeit !== undefined) setTripleBtnValue('pr-alleinzeit', attributes.alleinzeit);
+            if (attributes.freunde !== undefined) setTripleBtnValue('pr-freunde', attributes.freunde);
 
             // Intimität
-            if (profileReview.naehe !== undefined) setTripleBtnValue('pr-naehe', profileReview.naehe);
-            if (profileReview.romantik !== undefined) setTripleBtnValue('pr-romantik', profileReview.romantik);
-            if (profileReview.sex !== undefined) setTripleBtnValue('pr-sex', profileReview.sex);
+            if (attributes.naehe !== undefined) setTripleBtnValue('pr-naehe', attributes.naehe);
+            if (attributes.romantik !== undefined) setTripleBtnValue('pr-romantik', attributes.romantik);
+            if (attributes.sex !== undefined) setTripleBtnValue('pr-sex', attributes.sex);
 
             // Werte
-            if (profileReview.religion !== undefined) setTripleBtnValue('pr-religion', profileReview.religion);
-            if (profileReview.tradition !== undefined) setTripleBtnValue('pr-tradition', profileReview.tradition);
-            if (profileReview.umwelt !== undefined) setTripleBtnValue('pr-umwelt', profileReview.umwelt);
+            if (attributes.religion !== undefined) setTripleBtnValue('pr-religion', attributes.religion);
+            if (attributes.tradition !== undefined) setTripleBtnValue('pr-tradition', attributes.tradition);
+            if (attributes.umwelt !== undefined) setTripleBtnValue('pr-umwelt', attributes.umwelt);
 
             // Praktisches
-            if (profileReview.ordnung !== undefined) setTripleBtnValue('pr-ordnung', profileReview.ordnung);
-            if (profileReview.reise !== undefined) setTripleBtnValue('pr-reise', profileReview.reise);
+            if (attributes.ordnung !== undefined) setTripleBtnValue('pr-ordnung', attributes.ordnung);
+            if (attributes.reise !== undefined) setTripleBtnValue('pr-reise', attributes.reise);
         }
     }
 
@@ -1073,14 +1101,33 @@ function openMemoryDetailModal(slotNumber, personType, data) {
         </div>
     `;
 
-    // ProfileReview Section (Bedürfnisse)
+    // ProfileReview Section (Bedürfnisse) - NEU: Unterstützt flatNeeds + attributes
     if (data.profileReview && Object.keys(data.profileReview).length > 0) {
-        html += `
-            <div class="memory-detail-section">
-                <div class="memory-detail-section-title">Bedürfnisse (ProfileReview)</div>
-                <div class="memory-detail-raw-data">${formatValue(data.profileReview)}</div>
-            </div>
-        `;
+        // NEU: Prüfe ob flatNeeds vorhanden (echte 220 Bedürfnisse aus Archetyp-Profil)
+        if (data.profileReview.flatNeeds && Object.keys(data.profileReview.flatNeeds).length > 0) {
+            const needsCount = Object.keys(data.profileReview.flatNeeds).length;
+            const lockedCount = data.profileReview.flatLockedNeeds
+                ? Object.keys(data.profileReview.flatLockedNeeds).filter(k => data.profileReview.flatLockedNeeds[k]).length
+                : 0;
+            html += `
+                <div class="memory-detail-section">
+                    <div class="memory-detail-section-title">Bedürfnisse (${needsCount} Werte${lockedCount > 0 ? `, ${lockedCount} gesperrt` : ''})</div>
+                    <div class="memory-detail-raw-data">${formatValue(data.profileReview.flatNeeds)}</div>
+                </div>
+            `;
+        }
+
+        // Attribute-Werte (Sekundär, für Kompatibilität)
+        const attributes = data.profileReview.attributes || data.profileReview;
+        if (attributes && Object.keys(attributes).length > 0 && !data.profileReview.flatNeeds) {
+            // Nur anzeigen wenn keine flatNeeds vorhanden (Legacy-Daten)
+            html += `
+                <div class="memory-detail-section">
+                    <div class="memory-detail-section-title">Attribute (Legacy)</div>
+                    <div class="memory-detail-raw-data">${formatValue(attributes)}</div>
+                </div>
+            `;
+        }
     }
 
     // Gewichtungen Section
