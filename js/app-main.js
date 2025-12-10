@@ -7153,60 +7153,53 @@
             // Titel setzen
             title.textContent = def.label;
 
-            // Quellen-Sektion erstellen (falls vorhanden)
-            const quelleHtml = def.quelle ? `
-                    <!-- Quelle / Begründung -->
+            // Kategorie-Key für PerspektivenModal ermitteln
+            const kategorieKey = def.kategorie ? def.kategorie.toLowerCase()
+                .replace(/ä/g, 'ae').replace(/ö/g, 'oe').replace(/ü/g, 'ue').replace(/ß/g, 'ss')
+                .replace(/\s+&\s+/g, '_').replace(/\s+/g, '_') : '';
+
+            // Erweiterte Definition mit key für PerspektivenModal
+            const extendedDef = {
+                ...def,
+                key: needId,
+                id: def['#ID'] || ''
+            };
+
+            // PerspektivenModal verwenden für den Inhalt
+            if (typeof PerspektivenModal !== 'undefined') {
+                body.innerHTML = PerspektivenModal.renderNeedModal(extendedDef, kategorieKey);
+            } else {
+                // Fallback: Alte Darstellung
+                const quelleHtml = def.quelle ? `
                     <div style="padding: 12px; background: rgba(16,185,129,0.08); border-radius: 8px; border: 1px solid rgba(16,185,129,0.2);">
                         <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
                             <span style="font-size: 14px;">📚</span>
                             <strong style="font-size: 12px; color: #10B981;">Quelle & Begründung</strong>
                         </div>
-                        <p style="font-size: 12px; color: var(--text-primary); margin: 0 0 8px 0; font-weight: 500;">
-                            ${def.quelle}
-                        </p>
+                        <p style="font-size: 12px; color: var(--text-primary); margin: 0 0 8px 0; font-weight: 500;">${def.quelle}</p>
                         ${def.quelleDetail ? `<p style="font-size: 11px; color: var(--text-secondary); margin: 0; line-height: 1.5;">${def.quelleDetail}</p>` : ''}
                     </div>
-            ` : '';
+                ` : '';
 
-            // Inhalt erstellen
-            body.innerHTML = `
-                <div style="display: flex; flex-direction: column; gap: 16px;">
-                    <!-- Kategorie-Badge -->
-                    <div style="display: flex; align-items: center; gap: 8px;">
-                        <span style="width: 12px; height: 12px; border-radius: 50%; background: ${def.kategorieColor};"></span>
-                        <span style="font-size: 12px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px;">${def.kategorie}</span>
-                    </div>
-
-                    <!-- Definition -->
-                    <div style="background: rgba(255,255,255,0.03); border-radius: 12px; padding: 16px; border-left: 3px solid ${def.kategorieColor};">
-                        <p style="font-size: 14px; line-height: 1.7; color: var(--text-primary); margin: 0;">${def.definition}</p>
-                    </div>
-
-                    ${quelleHtml}
-
-                    <!-- GFK-Hinweis -->
-                    <div style="padding: 12px; background: rgba(139,92,246,0.08); border-radius: 8px; border: 1px solid rgba(139,92,246,0.2);">
-                        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px;">
+                body.innerHTML = `
+                    <div style="display: flex; flex-direction: column; gap: 16px;">
+                        <div style="display: flex; align-items: center; gap: 8px;">
+                            <span style="width: 12px; height: 12px; border-radius: 50%; background: ${def.kategorieColor};"></span>
+                            <span style="font-size: 12px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px;">${def.kategorie}</span>
+                        </div>
+                        <div style="background: rgba(255,255,255,0.03); border-radius: 12px; padding: 16px; border-left: 3px solid ${def.kategorieColor};">
+                            <p style="font-size: 14px; line-height: 1.7; color: var(--text-primary); margin: 0;">${def.definition}</p>
+                        </div>
+                        ${quelleHtml}
+                        <div style="padding: 12px; background: rgba(139,92,246,0.08); border-radius: 8px; border: 1px solid rgba(139,92,246,0.2);">
                             <strong style="font-size: 12px; color: #8B5CF6;">Gewaltfreie Kommunikation (GFK)</strong>
-                            <button onclick="openGfkExplanationModal(event)" style="background: none; border: none; cursor: pointer; color: #8B5CF6; font-size: 14px; padding: 2px 6px; border-radius: 4px; transition: background 0.2s;" title="Was ist GFK?">ⓘ</button>
+                            <p style="font-size: 11px; color: var(--text-secondary); margin: 8px 0 0 0; line-height: 1.5;">
+                                Das Bedürfnis nach <strong>${def.label}</strong> ist universell und frei von Bewertung.
+                            </p>
                         </div>
-                        <p style="font-size: 11px; color: var(--text-secondary); margin: 0; line-height: 1.5;">
-                            Das Bedürfnis nach <strong>${def.label}</strong> ist universell und frei von Bewertung – es beschreibt, was du zum Leben brauchst.
-                        </p>
                     </div>
-
-                    <!-- Paarung-Bezug -->
-                    <div style="padding: 12px; background: rgba(232,67,147,0.08); border-radius: 8px; border: 1px solid rgba(232,67,147,0.2);">
-                        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px;">
-                            <strong style="font-size: 12px; color: #E84393;">Paarung</strong>
-                            <button onclick="openPaarungExplanationModal(event)" style="background: none; border: none; cursor: pointer; color: #E84393; font-size: 14px; padding: 2px 6px; border-radius: 4px; transition: background 0.2s;" title="Was bedeutet Paarung?">ⓘ</button>
-                        </div>
-                        <p style="font-size: 11px; color: var(--text-secondary); margin: 0; line-height: 1.5;">
-                            Wenn beide Partner ihr Bedürfnis nach <strong>${def.label}</strong> kennen und kommunizieren, entsteht Raum für echte Verbindung.
-                        </p>
-                    </div>
-                </div>
-            `;
+                `;
+            }
 
             modal.classList.add('active');
         }
