@@ -284,7 +284,7 @@ const AttributeSummaryCard = (function() {
     /**
      * Sortiert die Bedürfnis-Liste nach dem aktuellen Modus
      * @param {Array} needs - Array von {id, value, label}
-     * @param {string} mode - 'value', 'name', 'id'
+     * @param {string} mode - 'value', 'name', 'id', 'status'
      * @returns {Array} Sortiertes Array
      */
     function sortNeedsList(needs, mode) {
@@ -301,6 +301,19 @@ const AttributeSummaryCard = (function() {
             case 'id':
                 // Nach #B-Nummer aufsteigend
                 sorted.sort((a, b) => extractBNumber(a.label) - extractBNumber(b.label));
+                break;
+            case 'status':
+                // Nach Status: Geschlossene (locked) zuerst, dann nach Wert
+                sorted.sort((a, b) => {
+                    const aLocked = flatLockedNeeds[a.id] ? 1 : 0;
+                    const bLocked = flatLockedNeeds[b.id] ? 1 : 0;
+                    // Geschlossene zuerst
+                    if (bLocked !== aLocked) {
+                        return bLocked - aLocked;
+                    }
+                    // Bei gleichem Status nach Wert absteigend
+                    return b.value - a.value;
+                });
                 break;
             case 'value':
             default:
@@ -373,6 +386,7 @@ const AttributeSummaryCard = (function() {
                 <button class="flat-needs-sort-btn${currentFlatSortMode === 'value' ? ' active' : ''}" onclick="AttributeSummaryCard.setSortMode('value')">Wert</button>
                 <button class="flat-needs-sort-btn${currentFlatSortMode === 'name' ? ' active' : ''}" onclick="AttributeSummaryCard.setSortMode('name')">Name</button>
                 <button class="flat-needs-sort-btn${currentFlatSortMode === 'id' ? ' active' : ''}" onclick="AttributeSummaryCard.setSortMode('id')">#B Nr.</button>
+                <button class="flat-needs-sort-btn${currentFlatSortMode === 'status' ? ' active' : ''}" onclick="AttributeSummaryCard.setSortMode('status')">Status</button>
             </div>
         </div>`;
 
