@@ -1464,16 +1464,20 @@
 
             if (topMatch.id) {
                 const arch = data.archetypes[topMatch.id];
-                document.getElementById('topMatchDot').style.background = arch.color;
-                document.getElementById('topMatchName').textContent = `${myArch.name} (Ich) mit ${arch.name}`;
-                document.getElementById('topMatchScore').textContent = topMatch.score;
+                if (arch) {
+                    document.getElementById('topMatchDot').style.background = arch.color;
+                    document.getElementById('topMatchName').textContent = `${myArch?.name || 'Ich'} (Ich) mit ${arch.name}`;
+                    document.getElementById('topMatchScore').textContent = topMatch.score;
+                }
             }
 
             if (challenge.id) {
                 const arch = data.archetypes[challenge.id];
-                document.getElementById('challengeDot').style.background = arch.color;
-                document.getElementById('challengeName').textContent = `${myArch.name} (Ich) mit ${arch.name}`;
-                document.getElementById('challengeScore').textContent = challenge.score;
+                if (arch) {
+                    document.getElementById('challengeDot').style.background = arch.color;
+                    document.getElementById('challengeName').textContent = `${myArch?.name || 'Ich'} (Ich) mit ${arch.name}`;
+                    document.getElementById('challengeScore').textContent = challenge.score;
+                }
             }
         }
 
