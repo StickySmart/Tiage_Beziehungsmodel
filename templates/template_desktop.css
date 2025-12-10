@@ -4279,6 +4279,70 @@
         .archetype-symbol-item.active[data-archetype="lat"] { border-color: #00B4D8; background: rgba(0, 180, 216, 0.2); }
         .archetype-symbol-item.active[data-archetype="aromantisch"] { border-color: #A8DADC; background: rgba(168, 218, 220, 0.2); }
 
+        /* ═══════════════════════════════════════════════════════════════════════
+           BEST MATCH BUTTON - Findet automatisch den besten Partner-Archetyp
+           ═══════════════════════════════════════════════════════════════════════ */
+        .best-match-btn {
+            grid-column: span 2;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 4px;
+            padding: 12px 8px;
+            background: linear-gradient(135deg, rgba(244, 162, 97, 0.15) 0%, rgba(230, 57, 70, 0.15) 100%);
+            border: 2px solid #F4A261;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            min-height: 60px;
+        }
+
+        .best-match-btn:hover {
+            background: linear-gradient(135deg, rgba(244, 162, 97, 0.3) 0%, rgba(230, 57, 70, 0.3) 100%);
+            border-color: #E63946;
+            transform: scale(1.02);
+            box-shadow: 0 0 20px rgba(244, 162, 97, 0.4);
+        }
+
+        .best-match-btn:active {
+            transform: scale(0.98);
+        }
+
+        .best-match-btn .match-icon {
+            font-size: 20px;
+            line-height: 1;
+        }
+
+        .best-match-btn .match-text {
+            font-size: 10px;
+            font-weight: 700;
+            color: #F4A261;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .best-match-btn:hover .match-text {
+            color: #E63946;
+        }
+
+        /* Animation wenn Match gefunden wurde */
+        .best-match-btn.match-found {
+            animation: matchPulse 0.5s ease-out;
+            border-color: #2A9D8F;
+            background: linear-gradient(135deg, rgba(42, 157, 143, 0.3) 0%, rgba(42, 157, 143, 0.15) 100%);
+        }
+
+        .best-match-btn.match-found .match-text {
+            color: #2A9D8F;
+        }
+
+        @keyframes matchPulse {
+            0% { transform: scale(1); box-shadow: 0 0 0 rgba(42, 157, 143, 0); }
+            50% { transform: scale(1.05); box-shadow: 0 0 30px rgba(42, 157, 143, 0.6); }
+            100% { transform: scale(1); box-shadow: 0 0 15px rgba(42, 157, 143, 0.3); }
+        }
+
         .archetype-nav-btn {
             background: var(--bg-dark);
             border: 1px solid var(--border);
