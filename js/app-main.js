@@ -7130,9 +7130,11 @@
         /**
          * Öffnet das Bedürfnis-Definition Modal
          * @param {string} needId - Die ID des Bedürfnisses
+         * @param {string} context - Kontext: 'resonance' für Storytelling-Modal, 'info' für Standard (default)
+         * @param {object} resonanceData - Optionale Resonanz-Daten {wert1, wert2, ichName, partnerName}
          */
-        function openNeedDefinitionModal(needId) {
-            console.log('[NEEDS] openNeedDefinitionModal called with:', needId);
+        function openNeedDefinitionModal(needId, context, resonanceData) {
+            console.log('[NEEDS] openNeedDefinitionModal called with:', needId, 'context:', context);
             const modal = document.getElementById('needDefinitionModal');
             const body = document.getElementById('needDefinitionModalBody');
             const title = document.getElementById('needDefinitionModalTitle');
@@ -7167,7 +7169,14 @@
 
             // PerspektivenModal verwenden für den Inhalt
             if (typeof PerspektivenModal !== 'undefined') {
-                body.innerHTML = PerspektivenModal.renderNeedModal(extendedDef, kategorieKey);
+                // Kontext-abhängiges Rendering
+                if (context === 'resonance' && resonanceData) {
+                    // Storytelling-Resonanz-Modal
+                    body.innerHTML = PerspektivenModal.renderResonanceModal(extendedDef, kategorieKey, resonanceData);
+                } else {
+                    // Standard Info-Modal
+                    body.innerHTML = PerspektivenModal.renderNeedModal(extendedDef, kategorieKey);
+                }
             } else {
                 // Fallback: Alte Darstellung
                 const quelleHtml = def.quelle ? `
@@ -7212,6 +7221,53 @@
             const modal = document.getElementById('needDefinitionModal');
             if (modal) {
                 modal.classList.remove('active');
+            }
+        }
+
+        /**
+         * Holt Resonanz-Daten für ein Bedürfnis aus dem aktuellen Matching
+         * @param {string} needId - Die ID des Bedürfnisses
+         * @returns {object|null} Resonanz-Daten {wert1, wert2, ichName, partnerName} oder null
+         */
+        function getResonanceDataForNeed(needId) {
+            if (!lastGfkMatchingResult || !lastGfkMatchingResult.details) {
+                return null;
+            }
+
+            // In allen Kategorien suchen (uebereinstimmend, komplementaer, konflikt)
+            const allNeeds = [
+                ...(lastGfkMatchingResult.details.uebereinstimmend || []),
+                ...(lastGfkMatchingResult.details.komplementaer || []),
+                ...(lastGfkMatchingResult.details.konflikt || [])
+            ];
+
+            const found = allNeeds.find(n => n.id === needId);
+            if (!found) return null;
+
+            // Namen holen
+            const ichName = archetypeDescriptions[currentArchetype]?.name || 'Du';
+            const partnerName = archetypeDescriptions[selectedPartner]?.name || 'Partner';
+
+            return {
+                wert1: found.wert1 || 0,
+                wert2: found.wert2 || 0,
+                ichName: ichName,
+                partnerName: partnerName
+            };
+        }
+
+        /**
+         * Öffnet das Bedürfnis-Modal im Resonanz-Modus (falls Daten verfügbar)
+         * Diese Funktion wird von der AttributeSummaryCard aufgerufen
+         * @param {string} needId - Die ID des Bedürfnisses
+         */
+        function openNeedWithResonance(needId) {
+            const resonanceData = getResonanceDataForNeed(needId);
+            if (resonanceData) {
+                openNeedDefinitionModal(needId, 'resonance', resonanceData);
+            } else {
+                // Fallback: Standard Info-Modal
+                openNeedDefinitionModal(needId);
             }
         }
 
@@ -13466,9 +13522,13 @@
                     if (diff > 35) statusColor = '#ef4444';
                     else if (diff > 15) statusColor = '#eab308';
 
+                    // Escape Namen für sichere JSON-Übergabe
+                    const safeIchName = (ichName || 'Du').replace(/'/g, "\\'");
+                    const safePartnerName = (partnerName || 'Partner').replace(/'/g, "\\'");
+
                     html += `
                         <div style="background: rgba(255,255,255,0.03); border-radius: 6px; padding: 10px 12px; border-left: 3px solid ${statusColor};">
-                            <div onclick="openNeedDefinitionModal('${item.id}')" style="font-weight: 500; color: var(--text-primary); font-size: 13px; margin-bottom: 6px; cursor: pointer; display: flex; align-items: center; gap: 6px; transition: color 0.2s;" onmouseover="this.style.color='var(--primary)'" onmouseout="this.style.color='var(--text-primary)'">
+                            <div onclick="openNeedDefinitionModal('${item.id}', 'resonance', {wert1: ${wert1}, wert2: ${wert2}, ichName: '${safeIchName}', partnerName: '${safePartnerName}'})" style="font-weight: 500; color: var(--text-primary); font-size: 13px; margin-bottom: 6px; cursor: pointer; display: flex; align-items: center; gap: 6px; transition: color 0.2s;" onmouseover="this.style.color='var(--primary)'" onmouseout="this.style.color='var(--text-primary)'">
                                 ${label}
                                 <span style="font-size: 10px; opacity: 0.5;">ⓘ</span>
                             </div>
@@ -13522,9 +13582,13 @@
                     if (diff > 35) statusColor = '#ef4444';
                     else if (diff > 15) statusColor = '#eab308';
 
+                    // Escape Namen für sichere JSON-Übergabe
+                    const safeIchName = (ichName || 'Du').replace(/'/g, "\\'");
+                    const safePartnerName = (partnerName || 'Partner').replace(/'/g, "\\'");
+
                     html += `
                         <div style="background: rgba(255,255,255,0.03); border-radius: 6px; padding: 10px 12px; border-left: 3px solid ${statusColor};">
-                            <div onclick="openNeedDefinitionModal('${item.id}')" style="font-weight: 500; color: var(--text-primary); font-size: 13px; margin-bottom: 6px; cursor: pointer; display: flex; align-items: center; gap: 6px; transition: color 0.2s;" onmouseover="this.style.color='var(--primary)'" onmouseout="this.style.color='var(--text-primary)'">
+                            <div onclick="openNeedDefinitionModal('${item.id}', 'resonance', {wert1: ${wert1}, wert2: ${wert2}, ichName: '${safeIchName}', partnerName: '${safePartnerName}'})" style="font-weight: 500; color: var(--text-primary); font-size: 13px; margin-bottom: 6px; cursor: pointer; display: flex; align-items: center; gap: 6px; transition: color 0.2s;" onmouseover="this.style.color='var(--primary)'" onmouseout="this.style.color='var(--text-primary)'">
                                 ${label}
                                 <span style="font-size: 10px; opacity: 0.5;">ⓘ</span>
                             </div>
@@ -15104,6 +15168,8 @@
         // Additional modal functions for needs
         window.closeNeedsCompareModal = closeNeedsCompareModal;
         window.openNeedDefinitionModal = openNeedDefinitionModal;
+        window.openNeedWithResonance = openNeedWithResonance;
+        window.getResonanceDataForNeed = getResonanceDataForNeed;
         window.closeNeedDefinitionModal = closeNeedDefinitionModal;
         window.openGfkExplanationModal = openGfkExplanationModal;
         window.openPaarungExplanationModal = openPaarungExplanationModal;
