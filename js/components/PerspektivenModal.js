@@ -609,6 +609,348 @@ const PerspektivenModal = {
         return html;
     },
 
+    // ═══════════════════════════════════════════════════════════════════════════
+    // RESONANZ-MODAL (Storytelling-Ansatz)
+    // ═══════════════════════════════════════════════════════════════════════════
+
+    /**
+     * Mapping: Welches Bedürfnis gehört zu welcher Resonanz-Dimension?
+     */
+    needToDimension: {
+        // IDENTITÄT (💚) - Geschlecht/Identitäts-relevante Bedürfnisse
+        'authentizitaet': 'identitaet',
+        'selbst_ausdruck': 'identitaet',
+        'echtheit': 'identitaet',
+        'integritaet': 'identitaet',
+        'akzeptanz': 'identitaet',
+        'gesehen_werden': 'identitaet',
+        'verstanden_werden': 'identitaet',
+        'eigene_wahrheit': 'identitaet',
+        'authentischer_ausdruck': 'identitaet',
+        'radikale_ehrlichkeit': 'identitaet',
+
+        // PHILOSOPHIE (🧠) - Archetyp/Beziehungsphilosophie
+        'kinderwunsch': 'philosophie',
+        'langfristige_bindung': 'philosophie',
+        'verbindlichkeit': 'philosophie',
+        'gemeinsamer_wohnraum': 'philosophie',
+        'eigener_raum': 'philosophie',
+        'alltag_teilen': 'philosophie',
+        'treueversprechen': 'philosophie',
+        'unabhaengigkeit': 'philosophie',
+        'selbstbestimmung': 'philosophie',
+        'zugehoerigkeit': 'philosophie',
+        'gemeinschaft': 'philosophie',
+        'statische_stabilitaet': 'philosophie',
+        'dynamische_evolution': 'philosophie',
+        'nicht_anhaften_an_partner': 'philosophie',
+        'nicht_anhaften_an_familie': 'philosophie',
+        'liebe_ohne_beziehung': 'philosophie',
+        'commune_statt_kernfamilie': 'philosophie',
+        'polyamore_energie': 'philosophie',
+
+        // LEBEN (🔥) - Orientierung/Anziehung
+        'sexuelle_haeufigkeit': 'leben',
+        'sexuelle_experimentierfreude': 'leben',
+        'sexuelle_verbindung': 'leben',
+        'sexueller_ausdruck': 'leben',
+        'koerpernaehe': 'leben',
+        'koerperkontakt': 'leben',
+        'intimitaet': 'leben',
+        'romantische_gesten': 'leben',
+        'koerperliche_lust': 'leben',
+        'biologische_anziehung': 'leben',
+        'qualitaet_der_beruehrung': 'leben',
+        'dynamische_liebe': 'leben',
+        'sex_als_meditation': 'leben',
+        'hier_und_jetzt_intimitaet': 'leben',
+        'wildheit_und_zartheit': 'leben',
+        'orgastisches_leben': 'leben',
+        'meditation_zu_zweit': 'leben',
+
+        // DYNAMIK (⚡) - Dominanz/Machtdynamik
+        'kontrolle_ausueben': 'dynamik',
+        'hingabe': 'dynamik',
+        'fuehrung_geben': 'dynamik',
+        'gefuehrt_werden': 'dynamik',
+        'machtaustausch': 'dynamik',
+        'sich_fallenlassen': 'dynamik',
+        'verantwortung_uebernehmen': 'dynamik',
+        'dienend_sein': 'dynamik',
+        'beschuetzen': 'dynamik',
+        'nachsorge': 'dynamik',
+        'grenzen_setzen': 'dynamik',
+        'grenzen_respektieren': 'dynamik',
+        'intensitaet': 'dynamik',
+        'vertrauen_schenken': 'dynamik',
+        'ritual': 'dynamik'
+    },
+
+    /**
+     * Dimension-Konfiguration für die Anzeige
+     */
+    dimensionConfig: {
+        identitaet: {
+            name: 'Identität',
+            emoji: '💚',
+            color: '#22c55e',
+            question: 'Wer bin ich, wer bist du?',
+            gradient: 'linear-gradient(135deg, #22c55e 0%, #16a34a 100%)'
+        },
+        philosophie: {
+            name: 'Philosophie',
+            emoji: '🧠',
+            color: '#6366f1',
+            question: 'Wie wollen wir Beziehung leben?',
+            gradient: 'linear-gradient(135deg, #6366f1 0%, #4f46e5 100%)'
+        },
+        leben: {
+            name: 'Leben',
+            emoji: '🔥',
+            color: '#f97316',
+            question: 'Was zieht uns an?',
+            gradient: 'linear-gradient(135deg, #f97316 0%, #ea580c 100%)'
+        },
+        dynamik: {
+            name: 'Dynamik',
+            emoji: '⚡',
+            color: '#eab308',
+            question: 'Wer führt, wer folgt?',
+            gradient: 'linear-gradient(135deg, #eab308 0%, #ca8a04 100%)'
+        }
+    },
+
+    /**
+     * Ermittelt die Resonanz-Dimension für ein Bedürfnis
+     */
+    getDimensionForNeed: function(needKey) {
+        return this.needToDimension[needKey] || null;
+    },
+
+    /**
+     * Berechnet den Resonanz-Status basierend auf der Differenz
+     */
+    getResonanceStatus: function(wert1, wert2) {
+        const diff = Math.abs(wert1 - wert2);
+        const match = (100 - diff) / 100;
+        const rValue = 0.9 + (match * 0.2);
+
+        let status, statusEmoji, statusText;
+        if (rValue >= 1.05) {
+            status = 'resonanz';
+            statusEmoji = '⬆️';
+            statusText = 'Resonanz';
+        } else if (rValue <= 0.97) {
+            status = 'dissonanz';
+            statusEmoji = '⬇️';
+            statusText = 'Dissonanz';
+        } else {
+            status = 'neutral';
+            statusEmoji = '➡️';
+            statusText = 'Neutral';
+        }
+
+        return {
+            diff,
+            match: Math.round(match * 100),
+            rValue: rValue.toFixed(2),
+            status,
+            statusEmoji,
+            statusText
+        };
+    },
+
+    /**
+     * Generiert einen Storytelling-Text für die Resonanz
+     */
+    getResonanceStory: function(needDef, wert1, wert2, dimension, resonance) {
+        const label = needDef.label;
+        const dimConfig = this.dimensionConfig[dimension];
+
+        // Differenz-basierte Aussagen
+        if (resonance.status === 'resonanz') {
+            const stories = [
+                `Bei <strong>${label}</strong> schwingen eure Wellen harmonisch. Beide schätzen dieses Bedürfnis ähnlich stark.`,
+                `Eure Herzen sind im Einklang bei <strong>${label}</strong>. Diese Übereinstimmung stärkt eure Verbindung.`,
+                `<strong>${label}</strong> verbindet euch – hier braucht ihr nicht viele Worte, ihr versteht euch intuitiv.`
+            ];
+            return stories[Math.floor(Math.random() * stories.length)];
+        } else if (resonance.status === 'dissonanz') {
+            const stories = [
+                `Bei <strong>${label}</strong> gibt es unterschiedliche Wellenlängen. Das ist kein Problem – es braucht bewusste Kommunikation.`,
+                `Eure Bedürfnisse nach <strong>${label}</strong> unterscheiden sich. Hier liegt Raum für gegenseitiges Lernen.`,
+                `<strong>${label}</strong> zeigt verschiedene Prioritäten. Osho würde sagen: "Unterschiede sind Chancen für Wachstum."`
+            ];
+            return stories[Math.floor(Math.random() * stories.length)];
+        } else {
+            const stories = [
+                `Bei <strong>${label}</strong> seid ihr in einer guten Balance – nicht identisch, aber nah genug für Verständnis.`,
+                `<strong>${label}</strong> zeigt eine solide Basis. Kleine Unterschiede machen Beziehungen interessant.`,
+                `Eure Werte bei <strong>${label}</strong> sind ausgewogen. Hier herrscht Stabilität mit Raum für Individualität.`
+            ];
+            return stories[Math.floor(Math.random() * stories.length)];
+        }
+    },
+
+    /**
+     * Rendert das Resonanz-Modal (Storytelling-Ansatz)
+     * @param {object} needDef - Die Bedürfnis-Definition
+     * @param {string} kategorieKey - Der Kategorie-Schlüssel
+     * @param {object} resonanceData - Optionale Resonanz-Daten {wert1, wert2, ichName, partnerName}
+     * @returns {string} HTML-String
+     */
+    renderResonanceModal: function(needDef, kategorieKey, resonanceData) {
+        const needKey = needDef.key || '';
+        const dimension = this.getDimensionForNeed(needKey);
+        const dimConfig = dimension ? this.dimensionConfig[dimension] : null;
+
+        // Wenn keine Dimension gefunden oder keine Resonanz-Daten, Fallback auf Standard-Modal
+        if (!dimConfig || !resonanceData || resonanceData.wert1 === undefined) {
+            return this.renderNeedModal(needDef, kategorieKey);
+        }
+
+        const { wert1, wert2, ichName, partnerName } = resonanceData;
+        const resonance = this.getResonanceStatus(wert1, wert2);
+        const story = this.getResonanceStory(needDef, wert1, wert2, dimension, resonance);
+
+        // Status-Farbe
+        let statusColor = dimConfig.color;
+        if (resonance.status === 'resonanz') statusColor = '#22c55e';
+        else if (resonance.status === 'dissonanz') statusColor = '#ef4444';
+        else statusColor = '#eab308';
+
+        return `
+            <div class="resonance-modal-content" style="display: flex; flex-direction: column; gap: 0;">
+
+                <!-- Dimension Header -->
+                <div class="dimension-header" style="
+                    background: ${dimConfig.gradient};
+                    border-radius: 12px;
+                    padding: 16px;
+                    margin-bottom: 16px;
+                    color: white;
+                ">
+                    <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 8px;">
+                        <span style="font-size: 32px;">${dimConfig.emoji}</span>
+                        <div>
+                            <div style="font-size: 18px; font-weight: 600;">${dimConfig.name}-Resonanz</div>
+                            <div style="font-size: 12px; opacity: 0.9; font-style: italic;">
+                                „${dimConfig.question}"
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Storytelling-Box -->
+                <div class="resonance-story" style="
+                    background: rgba(255,255,255,0.05);
+                    border-radius: 12px;
+                    padding: 16px;
+                    margin-bottom: 16px;
+                    border-left: 4px solid ${statusColor};
+                ">
+                    <p style="
+                        font-size: 14px;
+                        line-height: 1.7;
+                        color: var(--text-primary);
+                        margin: 0;
+                        font-style: italic;
+                    ">${story}</p>
+                </div>
+
+                <!-- Werte-Vergleich -->
+                <div class="resonance-comparison" style="
+                    background: rgba(255,255,255,0.03);
+                    border-radius: 12px;
+                    padding: 16px;
+                    margin-bottom: 16px;
+                ">
+                    <div style="font-size: 12px; color: var(--text-muted); margin-bottom: 12px; text-transform: uppercase; letter-spacing: 1px;">
+                        Bedürfnis-Werte
+                    </div>
+
+                    <!-- Ich-Wert -->
+                    <div style="margin-bottom: 12px;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+                            <span style="font-size: 12px; color: #22c55e; font-weight: 600;">${ichName || 'Du'}</span>
+                            <span style="font-size: 14px; font-weight: 700; color: #22c55e;">${wert1}</span>
+                        </div>
+                        <div style="height: 8px; background: rgba(255,255,255,0.1); border-radius: 4px; overflow: hidden;">
+                            <div style="width: ${wert1}%; height: 100%; background: linear-gradient(90deg, #22c55e, #16a34a); border-radius: 4px; transition: width 0.5s;"></div>
+                        </div>
+                    </div>
+
+                    <!-- Partner-Wert -->
+                    <div style="margin-bottom: 16px;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+                            <span style="font-size: 12px; color: #ef4444; font-weight: 600;">${partnerName || 'Partner'}</span>
+                            <span style="font-size: 14px; font-weight: 700; color: #ef4444;">${wert2}</span>
+                        </div>
+                        <div style="height: 8px; background: rgba(255,255,255,0.1); border-radius: 4px; overflow: hidden;">
+                            <div style="width: ${wert2}%; height: 100%; background: linear-gradient(90deg, #ef4444, #dc2626); border-radius: 4px; transition: width 0.5s;"></div>
+                        </div>
+                    </div>
+
+                    <!-- Resonanz-Welle Animation -->
+                    <div style="
+                        text-align: center;
+                        padding: 12px;
+                        background: ${statusColor}15;
+                        border-radius: 8px;
+                        border: 1px solid ${statusColor}30;
+                    ">
+                        <div style="font-size: 20px; margin-bottom: 4px;">
+                            ~~~〉〉〉 ${resonance.statusEmoji} 〈〈〈~~~
+                        </div>
+                        <div style="display: flex; justify-content: center; gap: 16px; align-items: center;">
+                            <span style="font-size: 11px; color: var(--text-muted);">Match: <strong style="color: ${statusColor};">${resonance.match}%</strong></span>
+                            <span style="font-size: 11px; color: var(--text-muted);">R = <strong style="color: ${statusColor};">${resonance.rValue}</strong></span>
+                            <span style="font-size: 12px; font-weight: 600; color: ${statusColor};">${resonance.statusText}</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Auswirkung auf Dimension -->
+                <div class="resonance-impact" style="
+                    padding: 12px;
+                    background: ${dimConfig.color}15;
+                    border-radius: 8px;
+                    border: 1px solid ${dimConfig.color}30;
+                    margin-bottom: 12px;
+                ">
+                    <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 6px;">
+                        <span style="font-size: 14px;">${dimConfig.emoji}</span>
+                        <strong style="font-size: 11px; color: ${dimConfig.color};">Einfluss auf ${dimConfig.name}</strong>
+                    </div>
+                    <p style="font-size: 11px; color: var(--text-secondary); margin: 0; line-height: 1.5;">
+                        ${resonance.status === 'resonanz'
+                            ? `Dieses Bedürfnis verstärkt eure Qualität im Bereich <strong>${dimConfig.name}</strong> – es fließt mehr Energie in eure Verbindung.`
+                            : resonance.status === 'dissonanz'
+                            ? `Hier liegt ein Wachstumsfeld für eure <strong>${dimConfig.name}</strong>-Dimension. Bewusste Kommunikation kann Brücken bauen.`
+                            : `Dieses Bedürfnis stabilisiert eure <strong>${dimConfig.name}</strong>-Dimension mit ausgewogener Energie.`
+                        }
+                    </p>
+                </div>
+
+                <!-- Bedürfnis-Definition (kompakt) -->
+                <div class="need-definition-compact" style="
+                    padding: 12px;
+                    background: rgba(139,92,246,0.08);
+                    border-radius: 8px;
+                    border: 1px solid rgba(139,92,246,0.2);
+                ">
+                    <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 6px;">
+                        <span style="font-size: 14px;">💬</span>
+                        <strong style="font-size: 11px; color: #8B5CF6;">Was ist ${needDef.label}?</strong>
+                    </div>
+                    <p style="font-size: 11px; color: var(--text-secondary); margin: 0; line-height: 1.5;">
+                        ${needDef.definition || 'Ein universelles menschliches Bedürfnis.'}
+                    </p>
+                </div>
+            </div>
+        `;
+    },
+
     /**
      * Zeigt Detail für ein Bedürfnis (Callback)
      */

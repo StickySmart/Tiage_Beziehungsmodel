@@ -457,8 +457,8 @@ const AttributeSummaryCard = (function() {
         <div class="flat-need-item${isLocked ? ' need-locked' : ''}" data-need="${needId}">
             <div class="flat-need-header">
                 <span class="flat-need-label clickable"
-                      onclick="event.stopPropagation(); openNeedDefinitionModal('${needId}')"
-                      title="Klicken für Info">${label}</span>
+                      onclick="event.stopPropagation(); openNeedWithResonance('${needId}')"
+                      title="Klicken für Resonanz-Details">${label}</span>
                 <div class="flat-need-controls">
                     <span class="need-lock-icon"
                           onclick="event.stopPropagation(); AttributeSummaryCard.toggleFlatNeedLock('${needId}', this)"
@@ -764,8 +764,8 @@ const AttributeSummaryCard = (function() {
                 <div class="attribute-need-item with-slider${isNeedLocked ? ' need-locked' : ''}" data-need="${need}">
                     <div class="need-item-header">
                         <span class="attribute-need-label clickable"
-                              onclick="event.stopPropagation(); openNeedDefinitionModal('${need}')"
-                              title="Klicken für Info zu diesem Bedürfnis">${needLabel}</span>
+                              onclick="event.stopPropagation(); openNeedWithResonance('${need}')"
+                              title="Klicken für Resonanz-Details">${needLabel}</span>
                         <div class="need-item-controls">
                             <span class="need-lock-icon"
                                   onclick="event.stopPropagation(); AttributeSummaryCard.toggleNeedLock('${attrId}', '${need}', this)"
@@ -787,8 +787,8 @@ const AttributeSummaryCard = (function() {
                 return `
                 <div class="attribute-need-item" data-need="${need}">
                     <span class="attribute-need-label clickable"
-                          onclick="event.stopPropagation(); openNeedDefinitionModal('${need}')"
-                          title="Klicken für Info zu diesem Bedürfnis">${needLabel}</span>
+                          onclick="event.stopPropagation(); openNeedWithResonance('${need}')"
+                          title="Klicken für Resonanz-Details">${needLabel}</span>
                     <div class="attribute-need-input-group">
                         <input type="text" class="attribute-need-input" value="${needValue}" maxlength="3"
                                onchange="AttributeSummaryCard.updateNeedValue('${attrId}', '${need}', this.value)"
