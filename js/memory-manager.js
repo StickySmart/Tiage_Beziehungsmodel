@@ -474,6 +474,11 @@ const MemoryManager = (function() {
                 if (ichSelect) ichSelect.value = archetypValue;
                 const mobileIchSelect = document.getElementById('mobileIchSelect');
                 if (mobileIchSelect) mobileIchSelect.value = archetypValue;
+
+                // Update archetype grid buttons to match loaded profile
+                if (typeof window.updateArchetypeGrid === 'function') {
+                    window.updateArchetypeGrid('ich', archetypValue);
+                }
             }
 
             // Apply ProfileReview state (Bedürfnisse)
@@ -558,6 +563,11 @@ const MemoryManager = (function() {
                 if (partnerSelect) partnerSelect.value = archetypValue;
                 const mobilePartnerSelect = document.getElementById('mobilePartnerSelect');
                 if (mobilePartnerSelect) mobilePartnerSelect.value = archetypValue;
+
+                // Update archetype grid buttons to match loaded profile
+                if (typeof window.updateArchetypeGrid === 'function') {
+                    window.updateArchetypeGrid('partner', archetypValue);
+                }
             }
 
             // Apply ProfileReview state (Bedürfnisse)
