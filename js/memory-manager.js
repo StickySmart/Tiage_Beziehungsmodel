@@ -771,7 +771,38 @@ const MemoryManager = (function() {
         /**
          * Format date/time for display
          */
-        formatDateTime: formatDateTime
+        formatDateTime: formatDateTime,
+
+        /**
+         * Get raw data from a slot for display
+         * @param {number} slotNumber - Slot number (1-4)
+         * @param {string} type - 'ME' or 'PART'
+         * @returns {Object|null} Raw slot data or null
+         */
+        getSlotRawData(slotNumber, type) {
+            if (slotNumber < 1 || slotNumber > MAX_SLOTS) {
+                return null;
+            }
+            try {
+                const key = getSlotKey(type, slotNumber);
+                const raw = localStorage.getItem(key);
+                return raw ? JSON.parse(raw) : null;
+            } catch (e) {
+                console.warn('[MemoryManager] Error reading slot data:', e);
+                return null;
+            }
+        },
+
+        /**
+         * Format profile review value to readable text
+         * @param {number} value - 0, 50, or 100
+         * @returns {string}
+         */
+        formatProfileReviewValue(value) {
+            if (value === 0) return 'Links';
+            if (value === 100) return 'Rechts';
+            return 'Neutral';
+        }
     };
 })();
 
@@ -838,9 +869,14 @@ function updateMemoryModalContent() {
                             <span class="memory-archetyp">${slot.me.archetyp}</span>
                             <span class="memory-version">v${slot.me.appVersion}</span>
                         </div>
-                        <button class="memory-load-btn" onclick="handleLoadMe(${slotNum})" title="ME laden">
-                            <span>Laden</span>
-                        </button>
+                        <div class="memory-person-buttons">
+                            <button class="memory-display-btn" onclick="handleDisplayPerson(${slotNum}, 'ME')" title="ME anzeigen">
+                                <span>Anzeigen</span>
+                            </button>
+                            <button class="memory-load-btn" onclick="handleLoadMe(${slotNum})" title="ME laden">
+                                <span>Laden</span>
+                            </button>
+                        </div>
                     ` : '<div class="memory-person-info empty">-</div>'}
                 </div>
 
@@ -853,9 +889,14 @@ function updateMemoryModalContent() {
                             <span class="memory-archetyp">${slot.partner.archetyp}</span>
                             <span class="memory-version">v${slot.partner.appVersion}</span>
                         </div>
-                        <button class="memory-load-btn" onclick="handleLoadPartner(${slotNum})" title="PARTNER laden">
-                            <span>Laden</span>
-                        </button>
+                        <div class="memory-person-buttons">
+                            <button class="memory-display-btn" onclick="handleDisplayPerson(${slotNum}, 'PARTNER')" title="PARTNER anzeigen">
+                                <span>Anzeigen</span>
+                            </button>
+                            <button class="memory-load-btn" onclick="handleLoadPartner(${slotNum})" title="PARTNER laden">
+                                <span>Laden</span>
+                            </button>
+                        </div>
                     ` : '<div class="memory-person-info empty">-</div>'}
                 </div>
             </div>
@@ -953,6 +994,177 @@ function handleDeleteSlot(slotNumber) {
         showMemoryToast('Slot ' + slotNumber + ' gelöscht');
     } else {
         showMemoryToast('Fehler beim Löschen', 'error');
+    }
+}
+
+/**
+ * Handle display slot data for a person (ME or PARTNER)
+ */
+function handleDisplayPerson(slotNumber, personType) {
+    const type = personType === 'ME' ? 'ME' : 'PART';
+    const data = MemoryManager.getSlotRawData(slotNumber, type);
+
+    if (!data) {
+        showMemoryToast('Keine Daten in diesem Slot', 'error');
+        return;
+    }
+
+    openMemoryDetailModal(slotNumber, personType, data);
+}
+
+/**
+ * Open the detail modal to display slot data
+ */
+function openMemoryDetailModal(slotNumber, personType, data) {
+    const modal = document.getElementById('memoryDetailModal');
+    if (!modal) {
+        console.error('[MemoryManager] Detail modal not found');
+        return;
+    }
+
+    // Update title
+    const titleEl = modal.querySelector('.memory-detail-title');
+    if (titleEl) {
+        titleEl.textContent = `Slot ${slotNumber} - ${personType}`;
+    }
+
+    // Build content
+    const contentEl = document.getElementById('memoryDetailContent');
+    if (!contentEl) return;
+
+    let html = '';
+
+    // Basic Info Section
+    html += `
+        <div class="memory-detail-section">
+            <div class="memory-detail-section-title">Grunddaten</div>
+            <div class="memory-detail-grid">
+                <div class="memory-detail-item">
+                    <span class="memory-detail-label">Archetyp</span>
+                    <span class="memory-detail-value">${data.archetyp?.primary || data.archetyp || '-'}</span>
+                </div>
+                ${data.archetyp?.secondary ? `
+                <div class="memory-detail-item">
+                    <span class="memory-detail-label">Sekundär-Archetyp</span>
+                    <span class="memory-detail-value">${data.archetyp.secondary}</span>
+                </div>
+                ` : ''}
+                <div class="memory-detail-item">
+                    <span class="memory-detail-label">Geschlecht</span>
+                    <span class="memory-detail-value">${data.geschlecht || '-'}</span>
+                </div>
+                <div class="memory-detail-item">
+                    <span class="memory-detail-label">Dominanz</span>
+                    <span class="memory-detail-value">${data.dominanz ?? '-'}</span>
+                </div>
+                <div class="memory-detail-item">
+                    <span class="memory-detail-label">Orientierung</span>
+                    <span class="memory-detail-value">${data.orientierung || '-'}</span>
+                </div>
+            </div>
+        </div>
+    `;
+
+    // Profile Review Section (Bedürfnisse)
+    if (data.profileReview) {
+        const categories = [
+            { name: 'Lebensplanung', keys: ['kinder', 'ehe', 'zusammen', 'haustiere', 'umzug', 'familie'] },
+            { name: 'Finanzen', keys: ['finanzen', 'karriere'] },
+            { name: 'Kommunikation', keys: ['gespraech', 'emotional', 'konflikt'] },
+            { name: 'Soziales', keys: ['introextro', 'alleinzeit', 'freunde'] },
+            { name: 'Intimität', keys: ['naehe', 'romantik', 'sex'] },
+            { name: 'Werte', keys: ['religion', 'tradition', 'umwelt'] },
+            { name: 'Praktisches', keys: ['ordnung', 'reise'] }
+        ];
+
+        // Mapping für lesbare Namen
+        const labelMap = {
+            kinder: 'Kinder',
+            ehe: 'Ehe',
+            zusammen: 'Zusammenwohnen',
+            haustiere: 'Haustiere',
+            umzug: 'Umzugsbereitschaft',
+            familie: 'Familienorientierung',
+            finanzen: 'Finanzen',
+            karriere: 'Karriere',
+            gespraech: 'Gesprächsstil',
+            emotional: 'Emotionalität',
+            konflikt: 'Konfliktstil',
+            introextro: 'Intro/Extrovertiert',
+            alleinzeit: 'Alleinzeit',
+            freunde: 'Freunde',
+            naehe: 'Nähe',
+            romantik: 'Romantik',
+            sex: 'Intimität',
+            religion: 'Religion',
+            tradition: 'Tradition',
+            umwelt: 'Umwelt',
+            ordnung: 'Ordnung',
+            reise: 'Reisen'
+        };
+
+        html += `<div class="memory-detail-section">
+            <div class="memory-detail-section-title">Bedürfnisse (ProfileReview)</div>`;
+
+        for (const cat of categories) {
+            const items = cat.keys
+                .filter(k => data.profileReview[k] !== undefined)
+                .map(k => `
+                    <div class="memory-detail-need-item">
+                        <span class="memory-detail-need-label">${labelMap[k] || k}</span>
+                        <span class="memory-detail-need-value ${data.profileReview[k] === 50 ? 'neutral' : ''}">${data.profileReview[k]}</span>
+                    </div>
+                `).join('');
+
+            if (items) {
+                html += `
+                    <div class="memory-detail-category">
+                        <div class="memory-detail-category-name">${cat.name}</div>
+                        <div class="memory-detail-needs-grid">${items}</div>
+                    </div>
+                `;
+            }
+        }
+
+        html += `</div>`;
+    }
+
+    // Metadata Section
+    html += `
+        <div class="memory-detail-section">
+            <div class="memory-detail-section-title">Metadaten</div>
+            <div class="memory-detail-grid">
+                <div class="memory-detail-item">
+                    <span class="memory-detail-label">Gespeichert</span>
+                    <span class="memory-detail-value">${MemoryManager.formatDateTime(data.timestamp)}</span>
+                </div>
+                <div class="memory-detail-item">
+                    <span class="memory-detail-label">App-Version</span>
+                    <span class="memory-detail-value">v${data.appVersion || data.version || '-'}</span>
+                </div>
+                <div class="memory-detail-item">
+                    <span class="memory-detail-label">Daten-Version</span>
+                    <span class="memory-detail-value">${data.dataVersion || '1.0'}</span>
+                </div>
+            </div>
+        </div>
+    `;
+
+    contentEl.innerHTML = html;
+
+    // Show modal
+    modal.classList.add('active');
+}
+
+/**
+ * Close the detail modal
+ */
+function closeMemoryDetailModal(event) {
+    if (event && event.target !== event.currentTarget) return;
+
+    const modal = document.getElementById('memoryDetailModal');
+    if (modal) {
+        modal.classList.remove('active');
     }
 }
 
