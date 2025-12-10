@@ -137,11 +137,19 @@ const GewichtungCard = (function() {
             return;
         }
 
-        const input = document.getElementById(`gewicht-${factor}`);
-        if (input) {
-            input.value = value;
+        const numValue = parseInt(value, 10) || 0;
+
+        // Verwende normalizeGewichtungen aus app-main.js wenn verfügbar (für Summen-Lock)
+        if (typeof window.normalizeGewichtungen === 'function') {
+            window.normalizeGewichtungen(factor, numValue);
+        } else {
+            // Fallback ohne Normalisierung
+            const input = document.getElementById(`gewicht-${factor}`);
+            if (input) {
+                input.value = value;
+            }
+            updateSum();
         }
-        updateSum();
     }
 
     /**
@@ -158,11 +166,17 @@ const GewichtungCard = (function() {
         const numValue = parseInt(value, 10) || 0;
         const clampedValue = Math.max(0, Math.min(100, numValue));
 
-        const slider = document.getElementById(`gewicht-slider-${factor}`);
-        if (slider) {
-            slider.value = clampedValue;
+        // Verwende normalizeGewichtungen aus app-main.js wenn verfügbar (für Summen-Lock)
+        if (typeof window.normalizeGewichtungen === 'function') {
+            window.normalizeGewichtungen(factor, clampedValue);
+        } else {
+            // Fallback ohne Normalisierung
+            const slider = document.getElementById(`gewicht-slider-${factor}`);
+            if (slider) {
+                slider.value = clampedValue;
+            }
+            updateSum();
         }
-        updateSum();
     }
 
     /**
