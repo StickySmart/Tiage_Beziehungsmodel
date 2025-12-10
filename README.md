@@ -1,6 +1,6 @@
 # Tiage-Beziehungsmodell
 
-**Version 1.7.0** | [Changelog](CHANGELOG.md)
+**Version 1.8.85** | [Changelog](CHANGELOG.md)
 
 Eine eigenständige Synthese zur Analyse von Beziehungskompatibilität, entwickelt durch Tiage's Online-Recherche und persönliche Reflexion.
 
@@ -73,19 +73,29 @@ Oder besuche: [GitHub Pages](https://stickysmart.github.io/Tiage_Beziehungsmodel
 
 ```
 Tiage_Beziehungsmodel/
+├── index.html                      # Startseite mit Weiterleitung
 ├── archetype-interaction.html      # Haupt-Web-App
+├── docs.html                       # Dokumentations-Viewer
 ├── archetype-matrix.json           # 8x8 Kompatibilitäts-Matrix
-├── beziehungsmodell.md             # Modell-Dokumentation
-├── analyse.md                      # Analyse-Dokumentation
-├── ARCHETYPE-MATRIX-README.md      # Matrix-Dokumentation
-├── CHANGELOG.md                    # Versionshistorie
-├── datenschutz.html                # Datenschutzerklärung
-├── nutzungsbedingungen.html        # Nutzungsbedingungen
-├── profiles/                       # 216 psychologische Profile
-│   └── research-sources.md         # Wissenschaftliche Quellen
+├── kategorien.json                 # Bedürfnis-Kategorien
+├── js/                             # JavaScript-Module
+│   ├── components/                 # UI-Komponenten
+│   ├── services/                   # Daten-Services
+│   └── utils/                      # Hilfsfunktionen
+├── css/                            # Stylesheet-Dateien
+├── profiles/                       # 864 psychologische Profile
+│   ├── data/                       # Profil-Daten
+│   ├── definitions/                # Bedürfnis-Definitionen
+│   ├── modifiers/                  # Score-Modifikatoren
+│   └── docs/                       # Profil-Dokumentation
+├── docs/                           # Projektdokumentation
+│   ├── theory/                     # Philosophische Grundlagen
+│   ├── legal/                      # Rechtliche Dokumente
+│   └── help-guide.md               # Benutzerhandbuch
 ├── statements/                     # Philosophische Statements
-├── templates/                      # Design-Vorlagen
-│   └── README.md                   # Template-Dokumentation
+├── scripts/                        # Build-Scripts
+├── beziehungsmodell.md             # Modell-Dokumentation
+├── CHANGELOG.md                    # Versionshistorie
 └── README.md                       # Diese Datei
 ```
 
