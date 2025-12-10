@@ -336,18 +336,23 @@ const AttributeSummaryCard = (function() {
         currentFlatArchetyp = archetyp;
         currentFlatArchetypLabel = archetypLabel;
 
-        // Initialisiere Werte aus Profil
-        const kernbeduerfnisse = profil.kernbeduerfnisse;
-        Object.keys(kernbeduerfnisse).forEach(needId => {
+        // Hole ALLE Bedürfnisse aus definitionen (220 Bedürfnisse)
+        const alleBeduerfnisse = GfkBeduerfnisse.definitionen || {};
+        const kernbeduerfnisse = profil.kernbeduerfnisse || {};
+
+        // Initialisiere Werte: Profil-Werte als Default, sonst 50
+        Object.keys(alleBeduerfnisse).forEach(needId => {
             if (flatNeedsValues[needId] === undefined) {
-                flatNeedsValues[needId] = kernbeduerfnisse[needId];
+                flatNeedsValues[needId] = kernbeduerfnisse[needId] !== undefined
+                    ? kernbeduerfnisse[needId]
+                    : 50;
             }
         });
 
-        // Sammle alle Bedürfnisse in einer flachen Liste
-        const allNeeds = Object.keys(kernbeduerfnisse).map(needId => ({
+        // Sammle ALLE Bedürfnisse in einer flachen Liste (nicht nur kernbeduerfnisse)
+        const allNeeds = Object.keys(alleBeduerfnisse).map(needId => ({
             id: needId,
-            value: flatNeedsValues[needId] ?? kernbeduerfnisse[needId],
+            value: flatNeedsValues[needId] ?? kernbeduerfnisse[needId] ?? 50,
             label: getNeedLabel(needId)
         }));
 
@@ -569,18 +574,22 @@ const AttributeSummaryCard = (function() {
     }
 
     /**
-     * Setzt alle flachen Bedürfniswerte zurück auf Profil-Werte
+     * Setzt alle flachen Bedürfniswerte zurück auf Profil-Werte (oder 50 als Fallback)
      */
     function resetFlatNeeds() {
         if (!currentFlatArchetyp || typeof GfkBeduerfnisse === 'undefined') return;
 
         const profil = GfkBeduerfnisse.archetypProfile[currentFlatArchetyp];
-        if (!profil) return;
+        const kernbeduerfnisse = profil?.kernbeduerfnisse || {};
+        const alleBeduerfnisse = GfkBeduerfnisse.definitionen || {};
 
-        // Nur nicht-gesperrte Werte zurücksetzen
-        Object.keys(profil.kernbeduerfnisse).forEach(needId => {
+        // Alle 220 Bedürfnisse zurücksetzen (nicht-gesperrte)
+        Object.keys(alleBeduerfnisse).forEach(needId => {
             if (!flatLockedNeeds[needId]) {
-                flatNeedsValues[needId] = profil.kernbeduerfnisse[needId];
+                // Profil-Wert wenn vorhanden, sonst 50
+                flatNeedsValues[needId] = kernbeduerfnisse[needId] !== undefined
+                    ? kernbeduerfnisse[needId]
+                    : 50;
 
                 // Update UI
                 const needItem = document.querySelector(`.flat-need-item[data-need="${needId}"]`);
