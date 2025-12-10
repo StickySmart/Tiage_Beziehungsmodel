@@ -3940,16 +3940,22 @@
             ];
 
             // Geschlecht P-Grids befüllen (Körper: Mann, Frau, Inter)
-            const pGrids = document.querySelectorAll('.geschlecht-p-grid');
-            console.log('[TIAGE DEBUG] Found geschlecht-p-grids:', pGrids.length);
-            pGrids.forEach(grid => {
-                const person = grid.dataset.person;
-                console.log('[TIAGE DEBUG] Processing p-grid for person:', person);
-                if (!person) return;
-                grid.innerHTML = geschlechtPOptions.map(opt =>
-                    `<button type="button" class="geschlecht-btn geschlecht-p-btn" data-value="${opt.value}" onclick="handleGeschlechtPClick('${person}', '${opt.value}', this)">${opt.label}</button>`
-                ).join('');
+            // Use both class selector and explicit IDs as fallback
+            const pGridSelectors = ['.geschlecht-p-grid', '#ich-geschlecht-p-grid', '#partner-geschlecht-p-grid'];
+            const processedPGrids = new Set();
+            pGridSelectors.forEach(selector => {
+                document.querySelectorAll(selector).forEach(grid => {
+                    if (processedPGrids.has(grid.id)) return;
+                    processedPGrids.add(grid.id);
+                    const person = grid.dataset.person;
+                    console.log('[TIAGE DEBUG] Processing p-grid for person:', person, 'id:', grid.id);
+                    if (!person) return;
+                    grid.innerHTML = geschlechtPOptions.map(opt =>
+                        `<button type="button" class="geschlecht-btn geschlecht-p-btn" data-value="${opt.value}" onclick="handleGeschlechtPClick('${person}', '${opt.value}', this)">${opt.label}</button>`
+                    ).join('');
+                });
             });
+            console.log('[TIAGE DEBUG] Processed geschlecht-p-grids:', processedPGrids.size);
 
             // Mobile und Modal Geschlecht-Grids befüllen (kombiniertes P/S Grid)
             const mobileModalGrids = document.querySelectorAll('#mobile-ich-geschlecht-grid, #mobile-partner-geschlecht-grid, #modal-ich-geschlecht-grid, #modal-partner-geschlecht-grid');
@@ -3967,37 +3973,58 @@
             // (kontextabhängig von P-Auswahl)
 
             // Dominanz-Grids befüllen (nur Desktop mit data-person)
-            const dGrids = document.querySelectorAll('.dominanz-grid[data-person]');
-            console.log('[TIAGE DEBUG] Found dominanz-grids:', dGrids.length);
-            dGrids.forEach(grid => {
-                const person = grid.dataset.person;
-                if (!person) return;
-                grid.innerHTML = dominanzOptions.map(opt =>
-                    `<button type="button" class="dominanz-btn" data-value="${opt.value}" onclick="handleDominanzClick('${person}', '${opt.value}', this)">${opt.label}</button>`
-                ).join('');
+            // Use both class selector and explicit IDs as fallback
+            const dGridSelectors = ['.dominanz-grid[data-person]', '#ich-dominanz-grid', '#partner-dominanz-grid'];
+            const processedDGrids = new Set();
+            dGridSelectors.forEach(selector => {
+                document.querySelectorAll(selector).forEach(grid => {
+                    if (processedDGrids.has(grid.id)) return;
+                    processedDGrids.add(grid.id);
+                    const person = grid.dataset.person;
+                    console.log('[TIAGE DEBUG] Processing dominanz-grid for person:', person, 'id:', grid.id);
+                    if (!person) return;
+                    grid.innerHTML = dominanzOptions.map(opt =>
+                        `<button type="button" class="dominanz-btn" data-value="${opt.value}" onclick="handleDominanzClick('${person}', '${opt.value}', this)">${opt.label}</button>`
+                    ).join('');
+                });
             });
+            console.log('[TIAGE DEBUG] Processed dominanz-grids:', processedDGrids.size);
 
             // Orientierung-Grids befüllen (nur Desktop mit data-person)
-            const oGrids = document.querySelectorAll('.orientierung-grid[data-person]');
-            console.log('[TIAGE DEBUG] Found orientierung-grids:', oGrids.length);
-            oGrids.forEach(grid => {
-                const person = grid.dataset.person;
-                if (!person) return;
-                grid.innerHTML = orientierungOptions.map(opt =>
-                    `<button type="button" class="orientierung-btn" data-value="${opt.value}" onclick="handleOrientierungClick('${person}', '${opt.value}', this)">${opt.label}</button>`
-                ).join('');
+            // Use both class selector and explicit IDs as fallback
+            const oGridSelectors = ['.orientierung-grid[data-person]', '#ich-orientierung-grid', '#partner-orientierung-grid'];
+            const processedOGrids = new Set();
+            oGridSelectors.forEach(selector => {
+                document.querySelectorAll(selector).forEach(grid => {
+                    if (processedOGrids.has(grid.id)) return;
+                    processedOGrids.add(grid.id);
+                    const person = grid.dataset.person;
+                    console.log('[TIAGE DEBUG] Processing orientierung-grid for person:', person, 'id:', grid.id);
+                    if (!person) return;
+                    grid.innerHTML = orientierungOptions.map(opt =>
+                        `<button type="button" class="orientierung-btn" data-value="${opt.value}" onclick="handleOrientierungClick('${person}', '${opt.value}', this)">${opt.label}</button>`
+                    ).join('');
+                });
             });
+            console.log('[TIAGE DEBUG] Processed orientierung-grids:', processedOGrids.size);
 
             // GFK-Grids befüllen
-            const gfkGrids = document.querySelectorAll('.gfk-grid[data-person]');
-            console.log('[TIAGE DEBUG] Found gfk-grids:', gfkGrids.length);
-            gfkGrids.forEach(grid => {
-                const person = grid.dataset.person;
-                if (!person) return;
-                grid.innerHTML = gfkOptions.map(opt =>
-                    `<button type="button" class="gfk-btn" data-value="${opt.value}" onclick="handleGfkClick('${person}', '${opt.value}', this)">${opt.label}</button>`
-                ).join('');
+            // Use both class selector and explicit IDs as fallback
+            const gfkGridSelectors = ['.gfk-grid[data-person]', '#ich-gfk-grid', '#partner-gfk-grid', '#mobile-ich-gfk-grid', '#mobile-partner-gfk-grid'];
+            const processedGfkGrids = new Set();
+            gfkGridSelectors.forEach(selector => {
+                document.querySelectorAll(selector).forEach(grid => {
+                    if (processedGfkGrids.has(grid.id)) return;
+                    processedGfkGrids.add(grid.id);
+                    const person = grid.dataset.person;
+                    console.log('[TIAGE DEBUG] Processing gfk-grid for person:', person, 'id:', grid.id);
+                    if (!person) return;
+                    grid.innerHTML = gfkOptions.map(opt =>
+                        `<button type="button" class="gfk-btn" data-value="${opt.value}" onclick="handleGfkClick('${person}', '${opt.value}', this)">${opt.label}</button>`
+                    ).join('');
+                });
             });
+            console.log('[TIAGE DEBUG] Processed gfk-grids:', processedGfkGrids.size);
 
             // UI mit gespeichertem State synchronisieren
             ['ich', 'partner'].forEach(person => {
@@ -4770,54 +4797,63 @@
         const needDefinitions = {
             // EXISTENZ
             luft: {
+                "#ID": "#B1",
                 label: "Luft",
                 kategorie: "Existenz",
                 kategorieColor: "#E63946",
                 definition: "Das grundlegende Bedürfnis nach frischer Luft und freiem Atmen – sowohl physisch als auch metaphorisch als Raum zum Durchatmen."
             },
             wasser: {
+                "#ID": "#B2",
                 label: "Wasser",
                 kategorie: "Existenz",
                 kategorieColor: "#E63946",
                 definition: "Das Bedürfnis nach Flüssigkeit und Erfrischung – die Basis körperlicher Vitalität."
             },
             nahrung: {
+                "#ID": "#B3",
                 label: "Nahrung",
                 kategorie: "Existenz",
                 kategorieColor: "#E63946",
                 definition: "Das Bedürfnis nach Nährung – körperlich durch Essen, aber auch emotional durch nährende Beziehungen."
             },
             bewegung: {
+                "#ID": "#B4",
                 label: "Bewegung/Betätigung",
                 kategorie: "Existenz",
                 kategorieColor: "#E63946",
                 definition: "Das Bedürfnis nach körperlicher Aktivität, Bewegung und dem Ausdruck von Lebensenergie durch den Körper."
             },
             beruehrung: {
+                "#ID": "#B5",
                 label: "Berührung/Körperkontakt",
                 kategorie: "Existenz",
                 kategorieColor: "#E63946",
                 definition: "Das tiefe menschliche Bedürfnis nach physischem Kontakt, Hautnähe und der Wärme eines anderen Körpers."
             },
             erholung: {
+                "#ID": "#B6",
                 label: "Erholung/Schlaf",
                 kategorie: "Existenz",
                 kategorieColor: "#E63946",
                 definition: "Das Bedürfnis nach Ruhe, Regeneration und ausreichend Schlaf zur Wiederherstellung von Körper und Geist."
             },
             sexueller_ausdruck: {
+                "#ID": "#B7",
                 label: "Sexueller Ausdruck",
                 kategorie: "Existenz",
                 kategorieColor: "#E63946",
                 definition: "Das Bedürfnis nach sexueller Entfaltung, körperlicher Lust und dem intimen Ausdruck von Begehren und Verbindung."
             },
             sicherheit_physisch: {
+                "#ID": "#B8",
                 label: "Physische Sicherheit",
                 kategorie: "Existenz",
                 kategorieColor: "#E63946",
                 definition: "Das grundlegende Bedürfnis nach körperlicher Unversehrtheit und Schutz vor physischen Bedrohungen."
             },
             unterschlupf: {
+                "#ID": "#B9",
                 label: "Unterschlupf",
                 kategorie: "Existenz",
                 kategorieColor: "#E63946",
@@ -4826,36 +4862,42 @@
 
             // SICHERHEIT
             bestaendigkeit: {
+                "#ID": "#B10",
                 label: "Beständigkeit",
                 kategorie: "Sicherheit",
                 kategorieColor: "#F4A261",
                 definition: "Das Bedürfnis nach Kontinuität, Verlässlichkeit und der Gewissheit, dass Dinge bleiben und nicht plötzlich verschwinden."
             },
             sich_sicher_fuehlen: {
+                "#ID": "#B11",
                 label: "Sich sicher fühlen",
                 kategorie: "Sicherheit",
                 kategorieColor: "#F4A261",
                 definition: "Das emotionale Bedürfnis nach innerer Sicherheit – zu wissen, dass man in der Beziehung gehalten wird."
             },
             schutz: {
+                "#ID": "#B12",
                 label: "Schutz",
                 kategorie: "Sicherheit",
                 kategorieColor: "#F4A261",
                 definition: "Das Bedürfnis, beschützt zu werden oder andere zu beschützen – ein Gefühl von Fürsorge und Wachsamkeit."
             },
             stabilitaet: {
+                "#ID": "#B13",
                 label: "Stabilität",
                 kategorie: "Sicherheit",
                 kategorieColor: "#F4A261",
                 definition: "Das Bedürfnis nach einem festen Grund unter den Füßen – emotionale und praktische Beständigkeit in der Beziehung."
             },
             leichtigkeit: {
+                "#ID": "#B14",
                 label: "Leichtigkeit",
                 kategorie: "Sicherheit",
                 kategorieColor: "#F4A261",
                 definition: "Das Bedürfnis, sich entspannt und unbeschwert fühlen zu können, ohne ständige Sorgen oder Anspannung."
             },
             geborgenheit: {
+                "#ID": "#B15",
                 label: "Geborgenheit",
                 kategorie: "Sicherheit",
                 kategorieColor: "#F4A261",
@@ -4864,54 +4906,63 @@
 
             // ZUNEIGUNG
             waerme: {
+                "#ID": "#B16",
                 label: "Wärme",
                 kategorie: "Zuneigung",
                 kategorieColor: "#E84393",
                 definition: "Das Bedürfnis nach emotionaler Wärme – Herzlichkeit, Zugewandtheit und liebevoller Präsenz."
             },
             wertschaetzung: {
+                "#ID": "#B17",
                 label: "Wertschätzung",
                 kategorie: "Zuneigung",
                 kategorieColor: "#E84393",
                 definition: "Das Bedürfnis, in seinem Wert erkannt und geschätzt zu werden – für das, was man ist und beiträgt."
             },
             naehe: {
+                "#ID": "#B18",
                 label: "Nähe",
                 kategorie: "Zuneigung",
                 kategorieColor: "#E84393",
                 definition: "Das Bedürfnis nach emotionaler und körperlicher Nähe – die Verbindung, die entsteht, wenn man sich einander öffnet."
             },
             gesellschaft: {
+                "#ID": "#B19",
                 label: "Gesellschaft",
                 kategorie: "Zuneigung",
                 kategorieColor: "#E84393",
                 definition: "Das Bedürfnis nach Gemeinschaft und Zusammensein – nicht allein zu sein, sondern Zeit miteinander zu verbringen."
             },
             intimitaet: {
+                "#ID": "#B20",
                 label: "Intimität",
                 kategorie: "Zuneigung",
                 kategorieColor: "#E84393",
                 definition: "Das Bedürfnis nach tiefer, ungeschützter Verbindung – das Teilen von Innerem ohne Masken."
             },
             liebe: {
+                "#ID": "#B21",
                 label: "Liebe",
                 kategorie: "Zuneigung",
                 kategorieColor: "#E84393",
                 definition: "Das universelle Bedürfnis, zu lieben und geliebt zu werden – die kraftvollste Form menschlicher Verbindung."
             },
             fuersorge: {
+                "#ID": "#B22",
                 label: "Fürsorge",
                 kategorie: "Zuneigung",
                 kategorieColor: "#E84393",
                 definition: "Das Bedürfnis, für jemanden zu sorgen oder umsorgt zu werden – aktive Zuwendung und Kümmern."
             },
             unterstuetzung: {
+                "#ID": "#B23",
                 label: "Unterstützung",
                 kategorie: "Zuneigung",
                 kategorieColor: "#E84393",
                 definition: "Das Bedürfnis nach Hilfe und Beistand – zu wissen, dass jemand da ist, wenn man Unterstützung braucht."
             },
             fuereinander_da_sein: {
+                "#ID": "#B24",
                 label: "Füreinander da sein",
                 kategorie: "Zuneigung",
                 kategorieColor: "#E84393",
@@ -4920,54 +4971,63 @@
 
             // VERSTÄNDNIS
             akzeptanz: {
+                "#ID": "#B25",
                 label: "Akzeptanz",
                 kategorie: "Verständnis",
                 kategorieColor: "#9B5DE5",
                 definition: "Das Bedürfnis, so angenommen zu werden, wie man ist – ohne Bedingungen oder den Druck, sich ändern zu müssen."
             },
             mitgefuehl: {
+                "#ID": "#B26",
                 label: "Mitgefühl",
                 kategorie: "Verständnis",
                 kategorieColor: "#9B5DE5",
                 definition: "Das Bedürfnis nach einfühlsamer Anteilnahme – dass jemand mit einem fühlt, nicht nur versteht."
             },
             beruecksichtigung: {
+                "#ID": "#B27",
                 label: "Berücksichtigung",
                 kategorie: "Verständnis",
                 kategorieColor: "#9B5DE5",
                 definition: "Das Bedürfnis, dass die eigenen Bedürfnisse, Wünsche und Grenzen in Betracht gezogen werden."
             },
             empathie: {
+                "#ID": "#B28",
                 label: "Empathie",
                 kategorie: "Verständnis",
                 kategorieColor: "#9B5DE5",
                 definition: "Das Bedürfnis nach tiefem Verstanden-Werden – dass jemand sich in die eigene Welt einfühlt."
             },
             vertrauen: {
+                "#ID": "#B29",
                 label: "Vertrauen",
                 kategorie: "Verständnis",
                 kategorieColor: "#9B5DE5",
                 definition: "Das fundamentale Bedürfnis nach Vertrauen – die Gewissheit, dass man sich auf den anderen verlassen kann."
             },
             beachtung: {
+                "#ID": "#B30",
                 label: "Beachtung",
                 kategorie: "Verständnis",
                 kategorieColor: "#9B5DE5",
                 definition: "Das Bedürfnis nach Aufmerksamkeit – wahrgenommen und nicht übersehen zu werden."
             },
             gesehen_werden: {
+                "#ID": "#B31",
                 label: "Gesehen werden",
                 kategorie: "Verständnis",
                 kategorieColor: "#9B5DE5",
                 definition: "Das tiefe Bedürfnis, in seiner Essenz erkannt zu werden – wirklich gesehen, nicht nur oberflächlich."
             },
             verstanden_werden: {
+                "#ID": "#B32",
                 label: "Verstanden werden",
                 kategorie: "Verständnis",
                 kategorieColor: "#9B5DE5",
                 definition: "Das Bedürfnis, dass die eigene Perspektive, Gefühle und Beweggründe wirklich nachvollzogen werden."
             },
             harmonie: {
+                "#ID": "#B33",
                 label: "Harmonie",
                 kategorie: "Verständnis",
                 kategorieColor: "#9B5DE5",
@@ -4976,30 +5036,35 @@
 
             // FREIHEIT
             selbstbestimmung: {
+                "#ID": "#B34",
                 label: "Selbstbestimmung",
                 kategorie: "Freiheit",
                 kategorieColor: "#2A9D8F",
                 definition: "Das Bedürfnis, das eigene Leben und die eigenen Entscheidungen selbst zu gestalten – Autonomie über das eigene Sein."
             },
             waehlen_koennen: {
+                "#ID": "#B35",
                 label: "Wählen können",
                 kategorie: "Freiheit",
                 kategorieColor: "#2A9D8F",
                 definition: "Das Bedürfnis nach Wahlfreiheit – Optionen zu haben und frei entscheiden zu können."
             },
             unabhaengigkeit: {
+                "#ID": "#B36",
                 label: "Unabhängigkeit",
                 kategorie: "Freiheit",
                 kategorieColor: "#2A9D8F",
                 definition: "Das Bedürfnis nach Eigenständigkeit – nicht von anderen abhängig oder kontrolliert zu sein."
             },
             raum_haben: {
+                "#ID": "#B37",
                 label: "Raum haben",
                 kategorie: "Freiheit",
                 kategorieColor: "#2A9D8F",
                 definition: "Das Bedürfnis nach persönlichem Freiraum – Zeit und Raum für sich selbst, ohne Erwartungen."
             },
             spontaneitaet: {
+                "#ID": "#B38",
                 label: "Spontaneität",
                 kategorie: "Freiheit",
                 kategorieColor: "#2A9D8F",
@@ -5008,42 +5073,49 @@
 
             // TEILNAHME
             zusammenarbeit: {
+                "#ID": "#B39",
                 label: "Zusammenarbeit",
                 kategorie: "Teilnahme",
                 kategorieColor: "#06D6A0",
                 definition: "Das Bedürfnis, gemeinsam an etwas zu arbeiten – als Team zu agieren und gemeinsame Ziele zu verfolgen."
             },
             kommunikation: {
+                "#ID": "#B40",
                 label: "Kommunikation",
                 kategorie: "Teilnahme",
                 kategorieColor: "#06D6A0",
                 definition: "Das Bedürfnis nach Austausch und Dialog – Gedanken, Gefühle und Ideen miteinander zu teilen."
             },
             gemeinschaft: {
+                "#ID": "#B41",
                 label: "Gemeinschaft",
                 kategorie: "Teilnahme",
                 kategorieColor: "#06D6A0",
                 definition: "Das Bedürfnis nach Zugehörigkeit zu einer Gruppe – Teil von etwas Größerem zu sein."
             },
             zugehoerigkeit: {
+                "#ID": "#B42",
                 label: "Zugehörigkeit",
                 kategorie: "Teilnahme",
                 kategorieColor: "#06D6A0",
                 definition: "Das tiefe Bedürfnis, dazuzugehören – ein Gefühl von 'Hier bin ich richtig, hier gehöre ich hin'."
             },
             gegenseitigkeit: {
+                "#ID": "#B43",
                 label: "Gegenseitigkeit",
                 kategorie: "Teilnahme",
                 kategorieColor: "#06D6A0",
                 definition: "Das Bedürfnis nach balanciertem Geben und Nehmen – ein ausgewogener Austausch, bei dem beide Seiten beitragen und empfangen."
             },
             respekt: {
+                "#ID": "#B44",
                 label: "Respekt",
                 kategorie: "Teilnahme",
                 kategorieColor: "#06D6A0",
                 definition: "Das Bedürfnis nach Achtung und Würdigung – als Mensch respektiert und ernst genommen zu werden."
             },
             bedeutung_haben: {
+                "#ID": "#B45",
                 label: "Bedeutung haben",
                 kategorie: "Teilnahme",
                 kategorieColor: "#06D6A0",
@@ -5052,24 +5124,28 @@
 
             // MUSSE
             schoenheit: {
+                "#ID": "#B46",
                 label: "Schönheit",
                 kategorie: "Muße",
                 kategorieColor: "#118AB2",
                 definition: "Das Bedürfnis nach ästhetischem Erleben – Schönheit wahrzunehmen und sich davon berühren zu lassen."
             },
             freizeit: {
+                "#ID": "#B47",
                 label: "Freizeit",
                 kategorie: "Muße",
                 kategorieColor: "#118AB2",
                 definition: "Das Bedürfnis nach freier, ungeplanter Zeit – Raum für Erholung, Spiel und Nichtstun."
             },
             freude: {
+                "#ID": "#B48",
                 label: "Freude",
                 kategorie: "Muße",
                 kategorieColor: "#118AB2",
                 definition: "Das Bedürfnis nach Freude und Vergnügen – Momente der Leichtigkeit und des Glücks."
             },
             humor: {
+                "#ID": "#B49",
                 label: "Humor",
                 kategorie: "Muße",
                 kategorieColor: "#118AB2",
@@ -5078,84 +5154,98 @@
 
             // IDENTITÄT
             authentizitaet: {
+                "#ID": "#B50",
                 label: "Authentizität",
                 kategorie: "Identität & Bedeutung",
                 kategorieColor: "#FFD166",
                 definition: "Das Bedürfnis, echt und wahrhaftig zu sein – sich selbst treu zu bleiben und nicht zu verstellen."
             },
             echtheit: {
+                "#ID": "#B51",
                 label: "Echtheit",
                 kategorie: "Identität & Bedeutung",
                 kategorieColor: "#FFD166",
                 definition: "Das Bedürfnis nach Aufrichtigkeit und Wahrhaftigkeit – in echten, unverfälschten Begegnungen."
             },
             integritaet: {
+                "#ID": "#B52",
                 label: "Integrität",
                 kategorie: "Identität & Bedeutung",
                 kategorieColor: "#FFD166",
                 definition: "Das Bedürfnis, im Einklang mit den eigenen Werten zu handeln – innere Stimmigkeit und Konsequenz."
             },
             praesenz: {
+                "#ID": "#B53",
                 label: "Präsenz",
                 kategorie: "Identität & Bedeutung",
                 kategorieColor: "#FFD166",
                 definition: "Das Bedürfnis, vollständig im Moment zu sein – ganz da, wach und aufmerksam."
             },
             ordnung: {
+                "#ID": "#B54",
                 label: "Ordnung",
                 kategorie: "Identität & Bedeutung",
                 kategorieColor: "#FFD166",
                 definition: "Das Bedürfnis nach Struktur und Klarheit – ein geordnetes Umfeld, das Orientierung gibt."
             },
             bewusstheit: {
+                "#ID": "#B55",
                 label: "Bewusstheit",
                 kategorie: "Identität & Bedeutung",
                 kategorieColor: "#FFD166",
                 definition: "Das Bedürfnis nach Selbsterkenntnis und Achtsamkeit – sich seiner selbst und der Welt bewusst zu sein."
             },
             herausforderung: {
+                "#ID": "#B56",
                 label: "Herausforderung",
                 kategorie: "Identität & Bedeutung",
                 kategorieColor: "#FFD166",
                 definition: "Das Bedürfnis, gefordert zu werden – an Aufgaben zu wachsen und sich zu beweisen."
             },
             klarheit: {
+                "#ID": "#B57",
                 label: "Klarheit",
                 kategorie: "Identität & Bedeutung",
                 kategorieColor: "#FFD166",
                 definition: "Das Bedürfnis nach Durchblick und Verständnis – zu wissen, woran man ist."
             },
             kompetenz: {
+                "#ID": "#B58",
                 label: "Kompetenz",
                 kategorie: "Identität & Bedeutung",
                 kategorieColor: "#FFD166",
                 definition: "Das Bedürfnis nach Fähigkeit und Können – etwas gut zu beherrschen und wirksam zu sein."
             },
             effizienz: {
+                "#ID": "#B59",
                 label: "Effizienz",
                 kategorie: "Identität & Bedeutung",
                 kategorieColor: "#FFD166",
                 definition: "Das Bedürfnis, Dinge effektiv und ohne Verschwendung zu tun – optimales Handeln."
             },
             wirksamkeit: {
+                "#ID": "#B60",
                 label: "Wirksamkeit",
                 kategorie: "Identität & Bedeutung",
                 kategorieColor: "#FFD166",
                 definition: "Das Bedürfnis, etwas zu bewirken – Einfluss zu haben und Veränderung hervorzurufen."
             },
             wachstum: {
+                "#ID": "#B61",
                 label: "Wachstum",
                 kategorie: "Identität & Bedeutung",
                 kategorieColor: "#FFD166",
                 definition: "Das Bedürfnis nach persönlicher Entwicklung – zu lernen, zu reifen und das eigene Potenzial zu entfalten."
             },
             sinn: {
+                "#ID": "#B62",
                 label: "Sinn",
                 kategorie: "Identität & Bedeutung",
                 kategorieColor: "#FFD166",
                 definition: "Das tiefe Bedürfnis nach Bedeutung und Zweck – dass das Leben und Handeln einen Sinn hat."
             },
             beitrag_leisten: {
+                "#ID": "#B63",
                 label: "Einen Beitrag leisten",
                 kategorie: "Identität & Bedeutung",
                 kategorieColor: "#FFD166",
@@ -5164,30 +5254,35 @@
 
             // ERSCHAFFEN
             kreativitaet: {
+                "#ID": "#B64",
                 label: "Kreativität",
                 kategorie: "Etwas erschaffen",
                 kategorieColor: "#FF6B6B",
                 definition: "Das Bedürfnis, schöpferisch tätig zu sein – Neues zu erschaffen und kreativ Ausdruck zu finden."
             },
             entdecken: {
+                "#ID": "#B65",
                 label: "Entdecken",
                 kategorie: "Etwas erschaffen",
                 kategorieColor: "#FF6B6B",
                 definition: "Das Bedürfnis nach Neugier und Exploration – neue Dinge, Orte und Ideen zu entdecken."
             },
             lernen: {
+                "#ID": "#B66",
                 label: "Lernen",
                 kategorie: "Etwas erschaffen",
                 kategorieColor: "#FF6B6B",
                 definition: "Das Bedürfnis nach Wissen und Verständnis – sich weiterzubilden und Neues zu verstehen."
             },
             selbst_ausdruck: {
+                "#ID": "#B67",
                 label: "Selbst-Ausdruck",
                 kategorie: "Etwas erschaffen",
                 kategorieColor: "#FF6B6B",
                 definition: "Das Bedürfnis, sich auszudrücken – die eigene Persönlichkeit, Gefühle und Ideen sichtbar zu machen."
             },
             anreize_bekommen: {
+                "#ID": "#B68",
                 label: "Anreize bekommen",
                 kategorie: "Etwas erschaffen",
                 kategorieColor: "#FF6B6B",
@@ -5196,30 +5291,35 @@
 
             // VERBUNDENHEIT
             leben_feiern: {
+                "#ID": "#B69",
                 label: "Das Leben feiern",
                 kategorie: "Verbunden sein",
                 kategorieColor: "#A8DADC",
                 definition: "Das Bedürfnis, die Schönheit und Fülle des Lebens zu würdigen – Dankbarkeit und Freude am Sein."
             },
             inspiration: {
+                "#ID": "#B70",
                 label: "Inspiration",
                 kategorie: "Verbunden sein",
                 kategorieColor: "#A8DADC",
                 definition: "Das Bedürfnis, inspiriert zu werden – berührt, bewegt und zu Höherem angeregt."
             },
             trauer_ausdruecken: {
+                "#ID": "#B71",
                 label: "Trauer ausdrücken",
                 kategorie: "Verbunden sein",
                 kategorieColor: "#A8DADC",
                 definition: "Das Bedürfnis, Verlust und Schmerz ausdrücken zu dürfen – Trauer als Teil des Lebens zu ehren."
             },
             einsehen: {
+                "#ID": "#B72",
                 label: "Einsehen",
                 kategorie: "Verbunden sein",
                 kategorieColor: "#A8DADC",
                 definition: "Das Bedürfnis nach tieferer Erkenntnis – Zusammenhänge zu verstehen und Einsicht zu gewinnen."
             },
             anfang_ende: {
+                "#ID": "#B73",
                 label: "Anfang & Ende",
                 kategorie: "Verbunden sein",
                 kategorieColor: "#A8DADC",
@@ -5228,90 +5328,105 @@
 
             // DYNAMIK & AUSTAUSCH
             kontrolle_ausueben: {
+                "#ID": "#B74",
                 label: "Kontrolle ausüben",
                 kategorie: "Dynamik & Austausch",
                 kategorieColor: "#8B5CF6",
                 definition: "Das Bedürfnis, in einer Beziehung Verantwortung und Führung zu übernehmen – Entscheidungen zu treffen und Struktur zu geben."
             },
             hingabe: {
+                "#ID": "#B75",
                 label: "Hingabe",
                 kategorie: "Dynamik & Austausch",
                 kategorieColor: "#8B5CF6",
                 definition: "Das Bedürfnis, sich vertrauensvoll hinzugeben – Kontrolle abzugeben und sich ganz auf den Partner einzulassen."
             },
             fuehrung_geben: {
+                "#ID": "#B76",
                 label: "Führung geben",
                 kategorie: "Dynamik & Austausch",
                 kategorieColor: "#8B5CF6",
                 definition: "Das Bedürfnis, Richtung und Orientierung zu geben – den Partner zu leiten und zu führen."
             },
             gefuehrt_werden: {
+                "#ID": "#B77",
                 label: "Geführt werden",
                 kategorie: "Dynamik & Austausch",
                 kategorieColor: "#8B5CF6",
                 definition: "Das Bedürfnis, sich führen zu lassen – Vertrauen in die Führung des Partners zu haben und Entlastung zu erfahren."
             },
             ritual: {
+                "#ID": "#B78",
                 label: "Rituale & Struktur",
                 kategorie: "Dynamik & Austausch",
                 kategorieColor: "#8B5CF6",
                 definition: "Das Bedürfnis nach wiederkehrenden Praktiken und Strukturen – Rituale, die Verbindung und Bedeutung schaffen."
             },
             nachsorge: {
+                "#ID": "#B79",
                 label: "Nachsorge/Aftercare",
                 kategorie: "Dynamik & Austausch",
                 kategorieColor: "#8B5CF6",
                 definition: "Das Bedürfnis nach Fürsorge und Geborgenheit nach intensiven Erlebnissen – sanftes Zurückkommen und Aufgefangen-Werden."
             },
             grenzen_setzen: {
+                "#ID": "#B80",
                 label: "Grenzen setzen",
                 kategorie: "Dynamik & Austausch",
                 kategorieColor: "#8B5CF6",
                 definition: "Das Bedürfnis, eigene Grenzen zu kennen und zu kommunizieren – Selbstschutz und klare Kommunikation."
             },
             grenzen_respektieren: {
+                "#ID": "#B81",
                 label: "Grenzen respektieren",
                 kategorie: "Dynamik & Austausch",
                 kategorieColor: "#8B5CF6",
                 definition: "Das Bedürfnis, dass die eigenen Grenzen geachtet werden – und selbst die Grenzen anderer zu respektieren."
             },
             intensitaet: {
+                "#ID": "#B82",
                 label: "Intensität erleben",
                 kategorie: "Dynamik & Austausch",
                 kategorieColor: "#8B5CF6",
                 definition: "Das Bedürfnis nach starken, tiefgehenden Erfahrungen – Momente hoher emotionaler oder körperlicher Intensität."
             },
             vertrauen_schenken: {
+                "#ID": "#B83",
                 label: "Vertrauen schenken",
                 kategorie: "Dynamik & Austausch",
                 kategorieColor: "#8B5CF6",
                 definition: "Das Bedürfnis, Vertrauen aktiv zu geben – sich verletzlich zu zeigen und dem Partner zu vertrauen."
             },
             verantwortung_uebernehmen: {
+                "#ID": "#B84",
                 label: "Verantwortung übernehmen",
                 kategorie: "Dynamik & Austausch",
                 kategorieColor: "#8B5CF6",
                 definition: "Das Bedürfnis, Verantwortung für sich, den Partner oder die Dynamik zu tragen – verlässlich und achtsam zu sein."
             },
             sich_fallenlassen: {
+                "#ID": "#B85",
                 label: "Sich fallenlassen",
                 kategorie: "Dynamik & Austausch",
                 kategorieColor: "#8B5CF6",
                 definition: "Das Bedürfnis, loszulassen und sich ganz einzulassen – in Vertrauen die Kontrolle abzugeben."
             },
             machtaustausch: {
+                "#ID": "#B86",
                 label: "Machtaustausch",
                 kategorie: "Dynamik & Austausch",
                 kategorieColor: "#8B5CF6",
                 definition: "Das Bedürfnis nach bewusstem Geben und Nehmen von Macht – eine einvernehmliche Dynamik, die beide erfüllt."
             },
             dienend_sein: {
+                "#ID": "#B87",
                 label: "Dienend sein",
                 kategorie: "Dynamik & Austausch",
                 kategorieColor: "#8B5CF6",
                 definition: "Das Bedürfnis, dem Partner zu dienen – Freude und Erfüllung darin zu finden, für den anderen da zu sein."
             },
             beschuetzen: {
+                "#ID": "#B88",
                 label: "Beschützen",
                 kategorie: "Dynamik & Austausch",
                 kategorieColor: "#8B5CF6",
@@ -5322,6 +5437,7 @@
             // LEBENSPLANUNG - Kinder, Ehe, Wohnen, Familie
             // ═══════════════════════════════════════════════════════════════════════
             kinderwunsch: {
+                "#ID": "#B90",
                 label: "Kinderwunsch",
                 kategorie: "Lebensplanung",
                 kategorieColor: "#10B981",
@@ -5330,6 +5446,7 @@
                 quelleDetail: "Basiert auf dem biologischen Fortpflanzungstrieb (Darwin) und Eriksons Konzept der Generativität – dem Bedürfnis, etwas für die nächste Generation zu hinterlassen."
             },
             elternschaft: {
+                "#ID": "#B91",
                 label: "Elternschaft",
                 kategorie: "Lebensplanung",
                 kategorieColor: "#10B981",
@@ -5338,6 +5455,7 @@
                 quelleDetail: "Im 7. Stadium (Generativität vs. Stagnation) beschreibt Erikson das Bedürfnis, für die nächste Generation zu sorgen als zentralen Entwicklungsaspekt des Erwachsenenalters."
             },
             fortpflanzung: {
+                "#ID": "#B92",
                 label: "Fortpflanzung",
                 kategorie: "Lebensplanung",
                 kategorieColor: "#10B981",
@@ -5346,6 +5464,7 @@
                 quelleDetail: "Richard Dawkins ('Das egoistische Gen', 1976) erklärt, wie der Fortpflanzungsdrang evolutionär verankert ist. Dieses Bedürfnis variiert individuell stark."
             },
             familie_gruenden: {
+                "#ID": "#B93",
                 label: "Familie gründen",
                 kategorie: "Lebensplanung",
                 kategorieColor: "#10B981",
@@ -5354,6 +5473,7 @@
                 quelleDetail: "Bowlby's Bindungstheorie zeigt, wie sichere Bindungen in Familien die Grundlage für psychische Gesundheit bilden."
             },
             generativitaet: {
+                "#ID": "#B94",
                 label: "Generativität",
                 kategorie: "Lebensplanung",
                 kategorieColor: "#10B981",
@@ -5362,6 +5482,7 @@
                 quelleDetail: "Eriksons 7. Stufe beschreibt Generativität als das Bedürfnis, über das eigene Selbst hinauszuwachsen und zur nächsten Generation beizutragen."
             },
             verbindlichkeit: {
+                "#ID": "#B95",
                 label: "Verbindlichkeit",
                 kategorie: "Lebensplanung",
                 kategorieColor: "#10B981",
@@ -5370,6 +5491,7 @@
                 quelleDetail: "John Gottman zeigt in seiner Forschung, dass Commitment (Verbindlichkeit) einer der stärksten Prädiktoren für Beziehungsstabilität ist."
             },
             langfristige_bindung: {
+                "#ID": "#B96",
                 label: "Langfristige Bindung",
                 kategorie: "Lebensplanung",
                 kategorieColor: "#10B981",
@@ -5378,6 +5500,7 @@
                 quelleDetail: "Sicher gebundene Menschen zeigen ein starkes Bedürfnis nach langfristigen Bindungen, die emotionale Sicherheit bieten."
             },
             rechtliche_sicherheit: {
+                "#ID": "#B97",
                 label: "Rechtliche Sicherheit",
                 kategorie: "Lebensplanung",
                 kategorieColor: "#10B981",
@@ -5386,6 +5509,7 @@
                 quelleDetail: "Die Ehe bietet rechtliche Vorteile wie Erbrecht, Steuervorteile und Entscheidungsbefugnisse im Krankheitsfall."
             },
             treueversprechen: {
+                "#ID": "#B98",
                 label: "Treueversprechen",
                 kategorie: "Lebensplanung",
                 kategorieColor: "#10B981",
@@ -5394,6 +5518,7 @@
                 quelleDetail: "David Buss zeigt, wie sich Eifersucht und Treuewunsch evolutionär entwickelt haben, während kulturelle Faktoren deren Ausprägung beeinflussen."
             },
             gemeinsamer_wohnraum: {
+                "#ID": "#B99",
                 label: "Gemeinsamer Wohnraum",
                 kategorie: "Lebensplanung",
                 kategorieColor: "#10B981",
@@ -5402,6 +5527,7 @@
                 quelleDetail: "Geteilter Wohnraum fördert Intimität und Alltagsroutinen, die die Beziehungszufriedenheit stärken."
             },
             haeuslichkeit: {
+                "#ID": "#B100",
                 label: "Häuslichkeit",
                 kategorie: "Lebensplanung",
                 kategorieColor: "#10B981",
@@ -5410,6 +5536,7 @@
                 quelleDetail: "Das Konzept 'Home' (Zuhause) ist psychologisch mit Sicherheit, Identität und emotionaler Regulierung verbunden."
             },
             nest_bauen: {
+                "#ID": "#B101",
                 label: "Nest bauen",
                 kategorie: "Lebensplanung",
                 kategorieColor: "#10B981",
@@ -5418,6 +5545,7 @@
                 quelleDetail: "Der 'Nesting-Instinkt' ist besonders bei werdenden Eltern stark ausgeprägt, aber auch generell ein Zeichen für Bindungssicherheit."
             },
             alltag_teilen: {
+                "#ID": "#B102",
                 label: "Alltag teilen",
                 kategorie: "Lebensplanung",
                 kategorieColor: "#10B981",
@@ -5426,6 +5554,7 @@
                 quelleDetail: "Gottman betont die Bedeutung von 'Bids for Connection' – kleinen Alltagsmomenten, die Beziehungen stärken."
             },
             eigener_raum: {
+                "#ID": "#B103",
                 label: "Eigener Raum",
                 kategorie: "Lebensplanung",
                 kategorieColor: "#10B981",
@@ -5434,6 +5563,7 @@
                 quelleDetail: "Autonomie ist ein Grundbedürfnis. Auch in engen Beziehungen braucht jeder Mensch Raum für sich selbst."
             },
             rueckzugsort: {
+                "#ID": "#B104",
                 label: "Rückzugsort",
                 kategorie: "Lebensplanung",
                 kategorieColor: "#10B981",
@@ -5442,6 +5572,7 @@
                 quelleDetail: "Rückzugsmöglichkeiten sind essentiell für Stressregulation und emotionale Regeneration."
             },
             tierliebe: {
+                "#ID": "#B105",
                 label: "Tierliebe",
                 kategorie: "Lebensplanung",
                 kategorieColor: "#10B981",
@@ -5450,6 +5581,7 @@
                 quelleDetail: "Die Mensch-Tier-Beziehung kann Oxytocin freisetzen und hat nachweislich positive Effekte auf die psychische Gesundheit."
             },
             fuersorge_tiere: {
+                "#ID": "#B106",
                 label: "Fürsorge für Tiere",
                 kategorie: "Lebensplanung",
                 kategorieColor: "#10B981",
@@ -5458,6 +5590,7 @@
                 quelleDetail: "Die Fürsorge für Tiere aktiviert ähnliche neurologische Mechanismen wie die Fürsorge für Kinder."
             },
             begleiter: {
+                "#ID": "#B107",
                 label: "Tierischer Begleiter",
                 kategorie: "Lebensplanung",
                 kategorieColor: "#10B981",
@@ -5466,6 +5599,7 @@
                 quelleDetail: "Haustiere bieten soziale Unterstützung und können Einsamkeit reduzieren."
             },
             verantwortung_tier: {
+                "#ID": "#B108",
                 label: "Verantwortung für Tier",
                 kategorie: "Lebensplanung",
                 kategorieColor: "#10B981",
@@ -5474,6 +5608,7 @@
                 quelleDetail: "Verantwortung für andere (auch Tiere) fördert Selbstwirksamkeit und emotionale Reife."
             },
             sesshaftigkeit: {
+                "#ID": "#B109",
                 label: "Sesshaftigkeit",
                 kategorie: "Lebensplanung",
                 kategorieColor: "#10B981",
@@ -5482,6 +5617,7 @@
                 quelleDetail: "Ortsbindung (Place Attachment) ist mit Identität, Sicherheit und Wohlbefinden verbunden."
             },
             verwurzelung: {
+                "#ID": "#B110",
                 label: "Verwurzelung",
                 kategorie: "Lebensplanung",
                 kategorieColor: "#10B981",
@@ -5490,6 +5626,7 @@
                 quelleDetail: "Weil beschreibt Verwurzelung als eines der wichtigsten, aber am wenigsten anerkannten Bedürfnisse der Seele."
             },
             mobilitaet: {
+                "#ID": "#B111",
                 label: "Mobilität",
                 kategorie: "Lebensplanung",
                 kategorieColor: "#10B981",
@@ -5498,6 +5635,7 @@
                 quelleDetail: "In einer globalisierten Welt ist Mobilität für viele Menschen ein wichtiger Aspekt von Freiheit und Selbstverwirklichung."
             },
             heimat: {
+                "#ID": "#B112",
                 label: "Heimat",
                 kategorie: "Lebensplanung",
                 kategorieColor: "#10B981",
@@ -5506,6 +5644,7 @@
                 quelleDetail: "Heimat ist ein komplexes psychologisches Konstrukt, das Sicherheit, Identität und soziale Einbettung umfasst."
             },
             neue_orte: {
+                "#ID": "#B113",
                 label: "Neue Orte",
                 kategorie: "Lebensplanung",
                 kategorieColor: "#10B981",
@@ -5514,6 +5653,7 @@
                 quelleDetail: "Das Bedürfnis nach Neuheit (Novelty Seeking) ist ein Persönlichkeitsmerkmal mit neurobiologischer Grundlage."
             },
             familienbindung: {
+                "#ID": "#B114",
                 label: "Familienbindung",
                 kategorie: "Lebensplanung",
                 kategorieColor: "#10B981",
@@ -5522,6 +5662,7 @@
                 quelleDetail: "Sichere Bindungen zur Herkunftsfamilie können Ressource und Herausforderung zugleich sein."
             },
             herkunftsfamilie: {
+                "#ID": "#B115",
                 label: "Herkunftsfamilie",
                 kategorie: "Lebensplanung",
                 kategorieColor: "#10B981",
@@ -5530,6 +5671,7 @@
                 quelleDetail: "Die Herkunftsfamilie prägt Beziehungsmuster, die in der Paarbeziehung reflektiert werden sollten."
             },
             familientreffen: {
+                "#ID": "#B116",
                 label: "Familientreffen",
                 kategorie: "Lebensplanung",
                 kategorieColor: "#10B981",
@@ -5538,6 +5680,7 @@
                 quelleDetail: "Familienrituale stärken den Zusammenhalt und geben Orientierung über Generationen hinweg."
             },
             generationenverbund: {
+                "#ID": "#B117",
                 label: "Generationenverbund",
                 kategorie: "Lebensplanung",
                 kategorieColor: "#10B981",
