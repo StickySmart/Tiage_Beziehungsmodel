@@ -336,15 +336,17 @@ const AttributeSummaryCard = (function() {
         currentFlatArchetyp = archetyp;
         currentFlatArchetypLabel = archetypLabel;
 
+        // Hole ALLE Bedürfnisse aus dem Profil (alle 220)
+        const kernbeduerfnisse = profil.kernbeduerfnisse || {};
+
         // Initialisiere Werte aus Profil
-        const kernbeduerfnisse = profil.kernbeduerfnisse;
         Object.keys(kernbeduerfnisse).forEach(needId => {
             if (flatNeedsValues[needId] === undefined) {
                 flatNeedsValues[needId] = kernbeduerfnisse[needId];
             }
         });
 
-        // Sammle alle Bedürfnisse in einer flachen Liste
+        // Sammle ALLE Bedürfnisse aus dem Profil
         const allNeeds = Object.keys(kernbeduerfnisse).map(needId => ({
             id: needId,
             value: flatNeedsValues[needId] ?? kernbeduerfnisse[needId],
@@ -531,10 +533,41 @@ const AttributeSummaryCard = (function() {
     }
 
     /**
+     * Setzt alle flachen Bedürfniswerte (für Load-Funktion)
+     * @param {Object} values - Bedürfniswerte { needId: value }
+     */
+    function setFlatNeedsValues(values) {
+        if (!values || typeof values !== 'object') return;
+
+        Object.keys(values).forEach(needId => {
+            const numValue = parseInt(values[needId], 10);
+            if (!isNaN(numValue) && numValue >= 0 && numValue <= 100) {
+                flatNeedsValues[needId] = numValue;
+            }
+        });
+
+        console.log('[AttributeSummaryCard] Flat needs values geladen:', Object.keys(values).length, 'Werte');
+    }
+
+    /**
      * Holt alle gesperrten flachen Bedürfnisse
      */
     function getFlatLockedNeeds() {
         return { ...flatLockedNeeds };
+    }
+
+    /**
+     * Setzt alle gesperrten flachen Bedürfnisse (für Load-Funktion)
+     * @param {Object} locks - Lock-Status { needId: true/false }
+     */
+    function setFlatLockedNeeds(locks) {
+        if (!locks || typeof locks !== 'object') return;
+
+        Object.keys(locks).forEach(needId => {
+            flatLockedNeeds[needId] = !!locks[needId];
+        });
+
+        console.log('[AttributeSummaryCard] Flat locks geladen:', Object.keys(locks).length, 'Locks');
     }
 
     /**
@@ -544,12 +577,12 @@ const AttributeSummaryCard = (function() {
         if (!currentFlatArchetyp || typeof GfkBeduerfnisse === 'undefined') return;
 
         const profil = GfkBeduerfnisse.archetypProfile[currentFlatArchetyp];
-        if (!profil) return;
+        const kernbeduerfnisse = profil?.kernbeduerfnisse || {};
 
-        // Nur nicht-gesperrte Werte zurücksetzen
-        Object.keys(profil.kernbeduerfnisse).forEach(needId => {
+        // Alle Bedürfnisse zurücksetzen (nicht-gesperrte)
+        Object.keys(kernbeduerfnisse).forEach(needId => {
             if (!flatLockedNeeds[needId]) {
-                flatNeedsValues[needId] = profil.kernbeduerfnisse[needId];
+                flatNeedsValues[needId] = kernbeduerfnisse[needId];
 
                 // Update UI
                 const needItem = document.querySelector(`.flat-need-item[data-need="${needId}"]`);
@@ -1052,7 +1085,9 @@ const AttributeSummaryCard = (function() {
         updateFlatNeedValue,
         toggleFlatNeedLock,
         getFlatNeedsValues,
+        setFlatNeedsValues,
         getFlatLockedNeeds,
+        setFlatLockedNeeds,
         resetFlatNeeds,
         reRenderFlatNeeds,
         setSortMode,
