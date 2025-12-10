@@ -15607,6 +15607,7 @@
             updateRowStates();
             updateGewichtungSumme();
         }
+        window.normalizeGewichtungen = normalizeGewichtungen;
 
         // Klick-Handler für Lock/Unlock
         function handleLockToggle(factor) {
