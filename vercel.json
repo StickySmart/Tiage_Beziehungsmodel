@@ -4,12 +4,6 @@
   "outputDirectory": ".",
   "framework": null,
   "installCommand": null,
-  "git": {
-    "deploymentEnabled": {
-      "main": true,
-      "master": true
-    }
-  },
   "github": {
     "enabled": true,
     "autoJobCancelation": true
