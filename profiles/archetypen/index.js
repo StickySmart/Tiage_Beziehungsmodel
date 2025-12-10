@@ -112,7 +112,7 @@
         const profilQuellen = {
             'single': window.SingleProfil,
             'duo': window.DuoProfil,
-            'duo-flex': window.DuoFlexProfil,
+            'duo_flex': window.DuoFlexProfil,
             'solopoly': window.SolopolyProfil,
             'polyamor': window.PolyamorProfil,
             'ra': window.RAProfil,

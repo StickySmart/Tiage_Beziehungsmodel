@@ -16,14 +16,14 @@ const Top10RankingCalculator = (function() {
 
     // Alle verfügbaren Archetypen
     const ALL_ARCHETYPES = [
-        'single', 'duo', 'duo-flex', 'ra', 'lat', 'aromantisch', 'solopoly', 'polyamor'
+        'single', 'duo', 'duo_flex', 'ra', 'lat', 'aromantisch', 'solopoly', 'polyamor'
     ];
 
     // Archetyp-Namen für Anzeige
     const ARCHETYPE_DISPLAY_NAMES = {
         'single': 'Single',
         'duo': 'Duo',
-        'duo-flex': 'Duo-Flex',
+        'duo_flex': 'Duo-Flex',
         'ra': 'RA',
         'lat': 'LAT',
         'aromantisch': 'Aromantisch',
@@ -37,7 +37,7 @@ const Top10RankingCalculator = (function() {
         'single': {
             'single': 85,      // Verstehen sich, aber keine Beziehung angestrebt
             'duo': 25,         // Fundamentaler Konflikt
-            'duo-flex': 45,    // Möglich mit viel Raum
+            'duo_flex': 45,    // Möglich mit viel Raum
             'ra': 75,          // Ähnliche Autonomie-Werte
             'lat': 70,         // Raum-Bedürfnis passt
             'aromantisch': 80, // Keine romantischen Erwartungen
@@ -47,17 +47,17 @@ const Top10RankingCalculator = (function() {
         'duo': {
             'single': 25,
             'duo': 95,         // Perfekte Übereinstimmung
-            'duo-flex': 65,    // Mit Verhandlung
+            'duo_flex': 65,    // Mit Verhandlung
             'ra': 15,          // Starker Konflikt
             'lat': 55,         // Raum-Konflikt
             'aromantisch': 20, // Grundlegend inkompatibel
             'solopoly': 20,    // Grundlegend inkompatibel
             'polyamor': 35     // Schwieriger Konflikt
         },
-        'duo-flex': {
+        'duo_flex': {
             'single': 45,
             'duo': 65,
-            'duo-flex': 85,    // Gute Passung
+            'duo_flex': 85,    // Gute Passung
             'ra': 55,
             'lat': 70,
             'aromantisch': 45,
@@ -67,7 +67,7 @@ const Top10RankingCalculator = (function() {
         'ra': {
             'single': 75,
             'duo': 15,
-            'duo-flex': 55,
+            'duo_flex': 55,
             'ra': 90,          // Gleiche Philosophie
             'lat': 70,
             'aromantisch': 75,
@@ -77,7 +77,7 @@ const Top10RankingCalculator = (function() {
         'lat': {
             'single': 70,
             'duo': 55,
-            'duo-flex': 70,
+            'duo_flex': 70,
             'ra': 70,
             'lat': 90,         // Perfekte Übereinstimmung
             'aromantisch': 75,
@@ -87,7 +87,7 @@ const Top10RankingCalculator = (function() {
         'aromantisch': {
             'single': 80,
             'duo': 20,
-            'duo-flex': 45,
+            'duo_flex': 45,
             'ra': 75,
             'lat': 75,
             'aromantisch': 95, // Verstehen sich
@@ -97,7 +97,7 @@ const Top10RankingCalculator = (function() {
         'solopoly': {
             'single': 75,
             'duo': 20,
-            'duo-flex': 60,
+            'duo_flex': 60,
             'ra': 85,
             'lat': 65,
             'aromantisch': 65,
@@ -107,7 +107,7 @@ const Top10RankingCalculator = (function() {
         'polyamor': {
             'single': 50,
             'duo': 35,
-            'duo-flex': 75,
+            'duo_flex': 75,
             'ra': 70,
             'lat': 60,
             'aromantisch': 55,

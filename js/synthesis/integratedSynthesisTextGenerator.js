@@ -70,7 +70,7 @@ const IntegratedSynthesisTextGenerator = (function() {
             shadow: "Im Schatten liegt Verlustangst. Die Exklusivität kann zur Kontrolle werden, die Treue zur Eifersucht, die Nähe zur Erstickung.",
             growth: "Reifung bedeutet: Den Partner lieben, ohne ihn zu besitzen. Verbundenheit ohne Abhängigkeit. Zwei bleiben, während man Eines wird."
         },
-        "duo-flex": {
+        "duo_flex": {
             core: "Sicherheit vs. Erkundung",
             description: "Duo-Flex will beides: Den sicheren Hafen UND das offene Meer. Diese Spannung erfordert ständige Balance.",
             psychological: "Attachment-Theorie nennt dies 'secure base exploration' – nur wer sich sicher fühlt, kann explorieren. Doch was, wenn die Exploration den sicheren Hafen gefährdet?",
@@ -588,7 +588,7 @@ const IntegratedSynthesisTextGenerator = (function() {
         }
 
         // Struktur-Freiheit Check
-        const structureTypes = ['duo', 'duo-flex'];
+        const structureTypes = ['duo', 'duo_flex'];
         const freedomTypes = ['ra', 'solopoly'];
         if ((structureTypes.includes(arch1Id) && freedomTypes.includes(arch2Id)) ||
             (freedomTypes.includes(arch1Id) && structureTypes.includes(arch2Id))) {
@@ -597,7 +597,7 @@ const IntegratedSynthesisTextGenerator = (function() {
 
         // Exklusivität-Offenheit Check
         const exclusiveTypes = ['duo'];
-        const openTypes = ['polyamor', 'solopoly', 'duo-flex'];
+        const openTypes = ['polyamor', 'solopoly', 'duo_flex'];
         if ((exclusiveTypes.includes(arch1Id) && openTypes.includes(arch2Id)) ||
             (openTypes.includes(arch1Id) && exclusiveTypes.includes(arch2Id))) {
             conflicts.push(partnerConflicts["exklusivitaet-offenheit"]);

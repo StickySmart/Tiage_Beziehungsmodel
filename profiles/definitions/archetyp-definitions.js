@@ -269,8 +269,8 @@ const archetypeDefinitions = {
   // ════════════════════════════════════════════════════════════════════════════
   // DUO-FLEX - Der Flexible Ankernde
   // ════════════════════════════════════════════════════════════════════════════
-  "duo-flex": {
-    id: "duo-flex",
+  "duo_flex": {
+    id: "duo_flex",
     name: "Duo-Flex",
 
     coreValues: [
