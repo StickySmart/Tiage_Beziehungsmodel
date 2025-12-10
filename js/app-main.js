@@ -15949,27 +15949,50 @@
             currentProfileReviewContext.person = person || 'ich';
 
             // ════════════════════════════════════════════════════════════════════════
-            // NEU: Lade gespeicherte Bedürfniswerte VOR dem Rendering
-            // So werden die Werte beim initializeFlatModal berücksichtigt
+            // NEU (v1.8.89): Lade gespeicherte Bedürfnisse mit integrierter Struktur
+            // Format: { needId: { value, locked } }
+            // Mit Migration für alte Daten (getrennte values + locks)
             // ════════════════════════════════════════════════════════════════════════
             if (typeof AttributeSummaryCard !== 'undefined') {
                 try {
-                    var storedNeedsValues = localStorage.getItem('tiage_flat_needs_values');
-                    var storedNeedsLocks = localStorage.getItem('tiage_flat_needs_locks');
+                    // Versuche zuerst neue integrierte Struktur zu laden
+                    var storedFlatNeeds = localStorage.getItem('tiage_flat_needs');
 
-                    if (storedNeedsValues) {
-                        var parsedValues = JSON.parse(storedNeedsValues);
-                        AttributeSummaryCard.setFlatNeedsValues(parsedValues);
-                        console.log('[ProfileReview] Gespeicherte Bedürfniswerte geladen:', Object.keys(parsedValues).length, 'Werte');
-                    }
+                    if (storedFlatNeeds) {
+                        // Neue Struktur (v1.8.89+): { needId: { value, locked } }
+                        var parsedNeeds = JSON.parse(storedFlatNeeds);
+                        if (AttributeSummaryCard.setFlatNeeds) {
+                            AttributeSummaryCard.setFlatNeeds(parsedNeeds);
+                            console.log('[ProfileReview] Bedürfnisse geladen (neue Struktur):', Object.keys(parsedNeeds).length, 'Einträge');
+                        }
+                    } else {
+                        // Migration: Lade alte getrennte Struktur falls vorhanden
+                        var storedNeedsValues = localStorage.getItem('tiage_flat_needs_values');
+                        var storedNeedsLocks = localStorage.getItem('tiage_flat_needs_locks');
 
-                    if (storedNeedsLocks) {
-                        var parsedLocks = JSON.parse(storedNeedsLocks);
-                        AttributeSummaryCard.setFlatLockedNeeds(parsedLocks);
-                        console.log('[ProfileReview] Gespeicherte Locks geladen:', Object.keys(parsedLocks).length, 'Locks');
+                        if (storedNeedsValues) {
+                            var parsedValues = JSON.parse(storedNeedsValues);
+                            AttributeSummaryCard.setFlatNeedsValues(parsedValues);
+                            console.log('[ProfileReview] Bedürfniswerte migriert (Legacy):', Object.keys(parsedValues).length, 'Werte');
+                        }
+
+                        if (storedNeedsLocks) {
+                            var parsedLocks = JSON.parse(storedNeedsLocks);
+                            AttributeSummaryCard.setFlatLockedNeeds(parsedLocks);
+                            console.log('[ProfileReview] Locks migriert (Legacy):', Object.keys(parsedLocks).length, 'Locks');
+                        }
+
+                        // Nach Migration: Alte Keys entfernen und neue speichern
+                        if (storedNeedsValues && AttributeSummaryCard.getFlatNeeds) {
+                            var migratedNeeds = AttributeSummaryCard.getFlatNeeds();
+                            localStorage.setItem('tiage_flat_needs', JSON.stringify(migratedNeeds));
+                            localStorage.removeItem('tiage_flat_needs_values');
+                            localStorage.removeItem('tiage_flat_needs_locks');
+                            console.log('[ProfileReview] Migration abgeschlossen - alte Keys entfernt');
+                        }
                     }
                 } catch (e) {
-                    console.warn('[ProfileReview] Fehler beim Laden der Bedürfniswerte:', e);
+                    console.warn('[ProfileReview] Fehler beim Laden der Bedürfnisse:', e);
                 }
             }
 
@@ -17032,18 +17055,26 @@
             }
 
             // ════════════════════════════════════════════════════════════════════════
-            // NEU: Speichere flache Bedürfniswerte und Lock-Status
+            // NEU (v1.8.89): Speichere integrierte Bedürfnisstruktur
+            // Format: { needId: { value, locked } }
             // ════════════════════════════════════════════════════════════════════════
             if (typeof AttributeSummaryCard !== 'undefined') {
-                var flatNeedsValues = AttributeSummaryCard.getFlatNeedsValues();
-                var flatLockedNeeds = AttributeSummaryCard.getFlatLockedNeeds();
-
                 try {
-                    localStorage.setItem('tiage_flat_needs_values', JSON.stringify(flatNeedsValues));
-                    localStorage.setItem('tiage_flat_needs_locks', JSON.stringify(flatLockedNeeds));
-                    console.log('[ProfileReview] Bedürfniswerte gespeichert:', Object.keys(flatNeedsValues).length, 'Werte');
+                    if (AttributeSummaryCard.getFlatNeeds) {
+                        // Neue API: Integrierte Struktur
+                        var flatNeeds = AttributeSummaryCard.getFlatNeeds();
+                        localStorage.setItem('tiage_flat_needs', JSON.stringify(flatNeeds));
+                        console.log('[ProfileReview] Bedürfnisse gespeichert (neue Struktur):', Object.keys(flatNeeds).length, 'Einträge');
+                    } else {
+                        // Fallback: Alte API (sollte nicht mehr vorkommen)
+                        var flatNeedsValues = AttributeSummaryCard.getFlatNeedsValues();
+                        var flatLockedNeeds = AttributeSummaryCard.getFlatLockedNeeds();
+                        localStorage.setItem('tiage_flat_needs_values', JSON.stringify(flatNeedsValues));
+                        localStorage.setItem('tiage_flat_needs_locks', JSON.stringify(flatLockedNeeds));
+                        console.log('[ProfileReview] Bedürfnisse gespeichert (Legacy):', Object.keys(flatNeedsValues).length, 'Werte');
+                    }
                 } catch (e) {
-                    console.warn('[ProfileReview] Fehler beim Speichern der Bedürfniswerte:', e);
+                    console.warn('[ProfileReview] Fehler beim Speichern der Bedürfnisse:', e);
                 }
             }
 
