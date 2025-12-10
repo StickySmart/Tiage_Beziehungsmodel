@@ -1251,7 +1251,31 @@
         async function loadData() {
             try {
                 const response = await fetch('archetype-matrix.json');
-                data = await response.json();
+                const rawData = await response.json();
+
+                // Transform archetypes from #A1-#A8 keys to key names (single, duo, etc.)
+                if (rawData.archetypes) {
+                    const transformedArchetypes = {};
+                    for (const [id, archetype] of Object.entries(rawData.archetypes)) {
+                        const key = archetype.key || id;
+                        transformedArchetypes[key] = archetype;
+                    }
+                    rawData.archetypes = transformedArchetypes;
+                }
+
+                // Transform dimensions from #D1-#D6 keys to key names (A, B, C, etc.)
+                // Also support legacy 'categories' field
+                if (rawData.dimensions) {
+                    const transformedDimensions = {};
+                    for (const [id, dimension] of Object.entries(rawData.dimensions)) {
+                        const key = dimension.key || id;
+                        transformedDimensions[key] = dimension;
+                    }
+                    rawData.categories = transformedDimensions;
+                }
+
+                data = rawData;
+
                 // Load category descriptions from data
                 if (data.categories) {
                     categoryDescriptions = data.categories;
