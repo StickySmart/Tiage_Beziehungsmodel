@@ -7959,7 +7959,8 @@
                         <div class="gfk-tags">
                             ${matching.topUebereinstimmungen.map(b => {
                                 const translatedLabel = TiageI18n.t(`needs.items.${b.id}`, b.label);
-                                const bidDisplay = b.id ? `<span style="opacity: 0.6; font-size: 0.85em; margin-right: 4px;">#${b.id.toUpperCase()}</span>` : '';
+                                const bid = typeof BeduerfnisIds !== 'undefined' && BeduerfnisIds.toId ? BeduerfnisIds.toId(b.id) : '';
+                                const bidDisplay = bid && bid.startsWith('#B') ? `<span style="opacity: 0.6; font-size: 0.85em; margin-right: 4px;">${bid}</span>` : '';
                                 return `<span class="gfk-tag gfk-tag-match gfk-tag-clickable" onclick="openNeedDefinitionModal('${b.id}')" title="Klicken für Definition">${bidDisplay}${translatedLabel}</span>`;
                             }).join('')}
                         </div>
@@ -7976,7 +7977,8 @@
                         <div class="gfk-tags">
                             ${matching.topKonflikte.map(b => {
                                 const translatedLabel = TiageI18n.t(`needs.items.${b.id}`, b.label);
-                                const bidDisplay = b.id ? `<span style="opacity: 0.6; font-size: 0.85em; margin-right: 4px;">#${b.id.toUpperCase()}</span>` : '';
+                                const bid = typeof BeduerfnisIds !== 'undefined' && BeduerfnisIds.toId ? BeduerfnisIds.toId(b.id) : '';
+                                const bidDisplay = bid && bid.startsWith('#B') ? `<span style="opacity: 0.6; font-size: 0.85em; margin-right: 4px;">${bid}</span>` : '';
                                 return `<span class="gfk-tag gfk-tag-conflict gfk-tag-clickable" onclick="openNeedDefinitionModal('${b.id}')" title="Klicken für Definition | ${matching.archetyp1}: ${b.wert1} | ${matching.archetyp2}: ${b.wert2}">${bidDisplay}${translatedLabel}</span>`;
                             }).join('')}
                         </div>
@@ -12922,7 +12924,8 @@
             const gemeinsamTags = gemeinsam.slice(0, 8).map(b => {
                 const needId = b.key || b.id;
                 const label = typeof TiageI18n !== 'undefined' ? TiageI18n.t(`needs.items.${needId}`, b.label) : b.label;
-                const bidDisplay = needId ? `<span style="opacity: 0.6; font-size: 0.85em; margin-right: 4px;">#${needId.toUpperCase()}</span>` : '';
+                const bid = typeof BeduerfnisIds !== 'undefined' && BeduerfnisIds.toId ? BeduerfnisIds.toId(needId) : '';
+                const bidDisplay = bid && bid.startsWith('#B') ? `<span style="opacity: 0.6; font-size: 0.85em; margin-right: 4px;">${bid}</span>` : '';
                 return `<span style="${greenTagStyle}" onclick="openNeedDefinitionModal('${needId}')" title="Klicken für Definition" onmouseover="this.style.transform='translateY(-1px)';this.style.boxShadow='0 2px 8px rgba(34,197,94,0.3)'" onmouseout="this.style.transform='';this.style.boxShadow=''">${bidDisplay}${label}</span>`;
             }).join('');
 
@@ -12930,7 +12933,8 @@
             const unterschiedlichTags = unterschiedlich.slice(0, 5).map(b => {
                 const needId = b.key || b.id;
                 const label = typeof TiageI18n !== 'undefined' ? TiageI18n.t(`needs.items.${needId}`, b.label) : b.label;
-                const bidDisplay = needId ? `<span style="opacity: 0.6; font-size: 0.85em; margin-right: 4px;">#${needId.toUpperCase()}</span>` : '';
+                const bid = typeof BeduerfnisIds !== 'undefined' && BeduerfnisIds.toId ? BeduerfnisIds.toId(needId) : '';
+                const bidDisplay = bid && bid.startsWith('#B') ? `<span style="opacity: 0.6; font-size: 0.85em; margin-right: 4px;">${bid}</span>` : '';
                 return `<span style="${redTagStyle}" onclick="openNeedDefinitionModal('${needId}')" title="Klicken für Definition" onmouseover="this.style.transform='translateY(-1px)';this.style.boxShadow='0 2px 8px rgba(239,68,68,0.3)'" onmouseout="this.style.transform='';this.style.boxShadow=''">${bidDisplay}${label}</span>`;
             }).join('');
 
