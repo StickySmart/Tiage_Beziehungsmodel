@@ -20,7 +20,7 @@
  */
 
 const DuoFlexProfil = {
-    id: "duo-flex",
+    id: "duo_flex",
     name: "Duo-Flex",
     beschreibung: "Sichere Basis mit Raum für Individualität. Balance zwischen Wir und Ich.",
 
