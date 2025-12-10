@@ -237,6 +237,17 @@ const AttributeSummaryCard = (function() {
     let currentFlatArchetyp = null;
 
     /**
+     * Aktuelles Archetyp-Label für flache Darstellung
+     */
+    let currentFlatArchetypLabel = null;
+
+    /**
+     * Aktuelle Sortierung für flache Darstellung
+     * 'value' (Standard), 'name', 'id'
+     */
+    let currentFlatSortMode = 'value';
+
+    /**
      * GFK-Kategorien mit Labels und Icons
      */
     const GFK_KATEGORIEN = {
@@ -261,6 +272,46 @@ const AttributeSummaryCard = (function() {
     };
 
     /**
+     * Extrahiert die #B-Nummer aus einem Label für Sortierung
+     * @param {string} label - Label wie "#B21 Liebe"
+     * @returns {number} Die Nummer (z.B. 21) oder 9999 wenn nicht gefunden
+     */
+    function extractBNumber(label) {
+        const match = label.match(/#B(\d+)/);
+        return match ? parseInt(match[1], 10) : 9999;
+    }
+
+    /**
+     * Sortiert die Bedürfnis-Liste nach dem aktuellen Modus
+     * @param {Array} needs - Array von {id, value, label}
+     * @param {string} mode - 'value', 'name', 'id'
+     * @returns {Array} Sortiertes Array
+     */
+    function sortNeedsList(needs, mode) {
+        const sorted = [...needs];
+        switch (mode) {
+            case 'name':
+                // Nach Name alphabetisch (ohne #B-Prefix)
+                sorted.sort((a, b) => {
+                    const nameA = a.label.replace(/#B\d+\s*/, '').toLowerCase();
+                    const nameB = b.label.replace(/#B\d+\s*/, '').toLowerCase();
+                    return nameA.localeCompare(nameB, 'de');
+                });
+                break;
+            case 'id':
+                // Nach #B-Nummer aufsteigend
+                sorted.sort((a, b) => extractBNumber(a.label) - extractBNumber(b.label));
+                break;
+            case 'value':
+            default:
+                // Nach Wert absteigend
+                sorted.sort((a, b) => b.value - a.value);
+                break;
+        }
+        return sorted;
+    }
+
+    /**
      * Rendert ALLE Bedürfnisse aus dem Archetyp-Profil als flache Liste
      * OHNE Kategorien-Gruppierung - einfache flache Liste
      *
@@ -281,8 +332,9 @@ const AttributeSummaryCard = (function() {
             return '<p style="color: var(--text-muted);">Profil nicht gefunden</p>';
         }
 
-        // Speichere aktuellen Archetyp
+        // Speichere aktuellen Archetyp und Label
         currentFlatArchetyp = archetyp;
+        currentFlatArchetypLabel = archetypLabel;
 
         // Initialisiere Werte aus Profil
         const kernbeduerfnisse = profil.kernbeduerfnisse;
@@ -299,19 +351,32 @@ const AttributeSummaryCard = (function() {
             label: getNeedLabel(needId)
         }));
 
-        // Sortiere Bedürfnisse nach Wert (absteigend)
-        allNeeds.sort((a, b) => b.value - a.value);
+        // Sortiere nach aktuellem Modus
+        const sortedNeeds = sortNeedsList(allNeeds, currentFlatSortMode);
 
         // Rendere HTML - flache Liste ohne Kategorien
         let html = `<div class="flat-needs-container flat-needs-no-categories" data-archetyp="${archetyp}">`;
         html += `<div class="flat-needs-header">
-            <span class="flat-needs-title">Alle Bedürfnisse</span>
-            <span class="flat-needs-subtitle">Dein ${archetypLabel}-Profil (${allNeeds.length} Bedürfnisse)</span>
+            <div class="flat-needs-header-top">
+                <div class="flat-needs-header-left">
+                    <span class="flat-needs-title">Alle Bedürfnisse</span>
+                    <span class="flat-needs-subtitle">Dein ${archetypLabel}-Profil (${allNeeds.length} Bedürfnisse)</span>
+                </div>
+                <button class="flat-needs-reset-btn" onclick="AttributeSummaryCard.resetFlatNeeds(); AttributeSummaryCard.reRenderFlatNeeds();" title="Auf Profil-Standard zurücksetzen">
+                    🔄 Standard
+                </button>
+            </div>
+            <div class="flat-needs-sort-bar">
+                <span class="flat-needs-sort-label">Sortieren:</span>
+                <button class="flat-needs-sort-btn${currentFlatSortMode === 'value' ? ' active' : ''}" onclick="AttributeSummaryCard.setSortMode('value')">Wert</button>
+                <button class="flat-needs-sort-btn${currentFlatSortMode === 'name' ? ' active' : ''}" onclick="AttributeSummaryCard.setSortMode('name')">Name</button>
+                <button class="flat-needs-sort-btn${currentFlatSortMode === 'id' ? ' active' : ''}" onclick="AttributeSummaryCard.setSortMode('id')">#B Nr.</button>
+            </div>
         </div>`;
 
         // Direkte flache Liste ohne Kategorien-Wrapper
         html += `<div class="flat-needs-list">`;
-        allNeeds.forEach(need => {
+        sortedNeeds.forEach(need => {
             const isLocked = flatLockedNeeds[need.id] || false;
             html += renderFlatNeedItem(need.id, need.label, need.value, isLocked);
         });
@@ -319,6 +384,37 @@ const AttributeSummaryCard = (function() {
 
         html += '</div>';
         return html;
+    }
+
+    /**
+     * Setzt den Sortiermodus und rendert die Liste neu
+     * @param {string} mode - 'value', 'name', 'id'
+     */
+    function setSortMode(mode) {
+        currentFlatSortMode = mode;
+        reRenderFlatNeeds();
+    }
+
+    /**
+     * Rendert die flache Bedürfnisliste neu (z.B. nach Sortierung oder Reset)
+     */
+    function reRenderFlatNeeds() {
+        if (!currentFlatArchetyp || !currentFlatArchetypLabel) return;
+
+        const container = document.querySelector('.flat-needs-container');
+        if (!container) return;
+
+        // Generiere neuen HTML
+        const newHtml = renderAllNeedsFlat(currentFlatArchetyp, currentFlatArchetypLabel);
+
+        // Ersetze Container
+        const temp = document.createElement('div');
+        temp.innerHTML = newHtml;
+        const newContainer = temp.firstElementChild;
+
+        if (newContainer) {
+            container.replaceWith(newContainer);
+        }
     }
 
     /**
@@ -958,6 +1054,8 @@ const AttributeSummaryCard = (function() {
         getFlatNeedsValues,
         getFlatLockedNeeds,
         resetFlatNeeds,
+        reRenderFlatNeeds,
+        setSortMode,
         GFK_KATEGORIEN
     };
 })();

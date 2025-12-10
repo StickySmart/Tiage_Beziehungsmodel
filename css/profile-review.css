@@ -1292,3 +1292,72 @@ input.gewichtung-input:focus {
 .flat-needs-no-categories .flat-need-item {
     margin-bottom: 0;
 }
+
+/* Header mit Sortierung und Standard-Button */
+.flat-needs-header-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 12px;
+}
+
+.flat-needs-header-left {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.flat-needs-reset-btn {
+    padding: 6px 12px;
+    font-size: 11px;
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 6px;
+    color: var(--text-primary, #fff);
+    cursor: pointer;
+    transition: all 0.2s;
+    white-space: nowrap;
+}
+
+.flat-needs-reset-btn:hover {
+    background: rgba(255,255,255,0.15);
+    border-color: var(--primary, #FFD700);
+}
+
+/* Sortierleiste */
+.flat-needs-sort-bar {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 1px solid rgba(255,255,255,0.1);
+}
+
+.flat-needs-sort-label {
+    font-size: 12px;
+    color: var(--text-muted, #888);
+}
+
+.flat-needs-sort-btn {
+    padding: 4px 10px;
+    font-size: 11px;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 4px;
+    color: var(--text-secondary, #aaa);
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.flat-needs-sort-btn:hover {
+    background: rgba(255,255,255,0.1);
+    color: var(--text-primary, #fff);
+}
+
+.flat-needs-sort-btn.active {
+    background: var(--primary, #FFD700);
+    border-color: var(--primary, #FFD700);
+    color: #000;
+    font-weight: 600;
+}
