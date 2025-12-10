@@ -5666,6 +5666,7 @@
             // FINANZEN & KARRIERE
             // ═══════════════════════════════════════════════════════════════════════
             finanzielle_unabhaengigkeit: {
+                "#ID": "#B127",
                 label: "Finanzielle Unabhängigkeit",
                 kategorie: "Finanzen & Karriere",
                 kategorieColor: "#F59E0B",
@@ -5674,6 +5675,7 @@
                 quelleDetail: "Finanzielle Autonomie ist eng mit dem psychologischen Grundbedürfnis nach Autonomie verknüpft."
             },
             gemeinsame_finanzen: {
+                "#ID": "#B128",
                 label: "Gemeinsame Finanzen",
                 kategorie: "Finanzen & Karriere",
                 kategorieColor: "#F59E0B",
@@ -5682,6 +5684,7 @@
                 quelleDetail: "Gemeinsame Finanzen können Vertrauen und Verbundenheit stärken, erfordern aber klare Kommunikation."
             },
             finanzielle_transparenz: {
+                "#ID": "#B129",
                 label: "Finanzielle Transparenz",
                 kategorie: "Finanzen & Karriere",
                 kategorieColor: "#F59E0B",
@@ -5690,6 +5693,7 @@
                 quelleDetail: "Finanzielle Geheimnisse sind einer der häufigsten Konfliktpunkte in Beziehungen."
             },
             finanzielle_sicherheit: {
+                "#ID": "#B130",
                 label: "Finanzielle Sicherheit",
                 kategorie: "Finanzen & Karriere",
                 kategorieColor: "#F59E0B",
@@ -5698,12 +5702,14 @@
                 quelleDetail: "Finanzielle Sicherheit gehört zu den grundlegenden Sicherheitsbedürfnissen."
             },
             sparsamkeit: {
+                "#ID": "#B131",
                 label: "Sparsamkeit",
                 kategorie: "Finanzen & Karriere",
                 kategorieColor: "#F59E0B",
                 definition: "Das Bedürfnis, mit Geld bewusst und sparsam umzugehen – Ressourcen zu schonen und für die Zukunft vorzusorgen."
             },
             grosszuegigkeit: {
+                "#ID": "#B132",
                 label: "Großzügigkeit",
                 kategorie: "Finanzen & Karriere",
                 kategorieColor: "#F59E0B",
@@ -5712,6 +5718,7 @@
                 quelleDetail: "Großzügigkeit ist mit höherem Wohlbefinden und stärkeren sozialen Bindungen verbunden."
             },
             berufliche_erfuellung: {
+                "#ID": "#B133",
                 label: "Berufliche Erfüllung",
                 kategorie: "Finanzen & Karriere",
                 kategorieColor: "#F59E0B",
@@ -5720,6 +5727,7 @@
                 quelleDetail: "Berufliche Erfüllung korreliert stark mit allgemeiner Lebenszufriedenheit."
             },
             karriereambition: {
+                "#ID": "#B134",
                 label: "Karriereambition",
                 kategorie: "Finanzen & Karriere",
                 kategorieColor: "#F59E0B",
@@ -5728,6 +5736,7 @@
                 quelleDetail: "Das Bedürfnis nach Leistung (Need for Achievement) treibt Karriereambitionen an."
             },
             work_life_balance: {
+                "#ID": "#B135",
                 label: "Work-Life-Balance",
                 kategorie: "Finanzen & Karriere",
                 kategorieColor: "#F59E0B",
@@ -5736,6 +5745,7 @@
                 quelleDetail: "Ungleichgewicht führt zu Burnout und Beziehungsproblemen."
             },
             berufliche_anerkennung: {
+                "#ID": "#B136",
                 label: "Berufliche Anerkennung",
                 kategorie: "Finanzen & Karriere",
                 kategorieColor: "#F59E0B",
@@ -5744,6 +5754,7 @@
                 quelleDetail: "Anerkennung ist ein wichtiger Motivationsfaktor am Arbeitsplatz."
             },
             zeit_fuer_beziehung: {
+                "#ID": "#B137",
                 label: "Zeit für Beziehung",
                 kategorie: "Finanzen & Karriere",
                 kategorieColor: "#F59E0B",
@@ -5752,6 +5763,7 @@
                 quelleDetail: "Qualitätszeit ist einer der wichtigsten Faktoren für Beziehungszufriedenheit."
             },
             berufliche_flexibilitaet: {
+                "#ID": "#B138",
                 label: "Berufliche Flexibilität",
                 kategorie: "Finanzen & Karriere",
                 kategorieColor: "#F59E0B",
@@ -5764,6 +5776,7 @@
             // KOMMUNIKATIONSSTIL
             // ═══════════════════════════════════════════════════════════════════════
             taeglicher_austausch: {
+                "#ID": "#B149",
                 label: "Täglicher Austausch",
                 kategorie: "Kommunikationsstil",
                 kategorieColor: "#3B82F6",
@@ -5772,6 +5785,7 @@
                 quelleDetail: "Regelmäßiger Austausch stärkt die emotionale Verbindung und verhindert Entfremdung."
             },
             tiefgehende_gespraeche: {
+                "#ID": "#B150",
                 label: "Tiefgehende Gespräche",
                 kategorie: "Kommunikationsstil",
                 kategorieColor: "#3B82F6",
@@ -5780,12 +5794,14 @@
                 quelleDetail: "Tiefe Gespräche fördern emotionale Intimität und gegenseitiges Verständnis."
             },
             small_talk: {
+                "#ID": "#B151",
                 label: "Small Talk",
                 kategorie: "Kommunikationsstil",
                 kategorieColor: "#3B82F6",
                 definition: "Das Bedürfnis nach leichter, unverbindlicher Konversation – entspannter Austausch ohne tiefe Themen."
             },
             stille_gemeinsam: {
+                "#ID": "#B152",
                 label: "Stille gemeinsam",
                 kategorie: "Kommunikationsstil",
                 kategorieColor: "#3B82F6",
@@ -5794,12 +5810,14 @@
                 quelleDetail: "Sichere Bindung ermöglicht es, auch in Stille verbunden zu sein, ohne Unbehagen."
             },
             verbale_verbindung: {
+                "#ID": "#B153",
                 label: "Verbale Verbindung",
                 kategorie: "Kommunikationsstil",
                 kategorieColor: "#3B82F6",
                 definition: "Das Bedürfnis, sich durch Worte zu verbinden – Sprache als primäres Mittel der Nähe und des Ausdrucks."
             },
             zuhoeren: {
+                "#ID": "#B154",
                 label: "Zuhören",
                 kategorie: "Kommunikationsstil",
                 kategorieColor: "#3B82F6",
@@ -5808,6 +5826,7 @@
                 quelleDetail: "Empathisches Zuhören ist die Grundlage für echtes Verstehen und Verbindung."
             },
             emotionale_offenheit: {
+                "#ID": "#B155",
                 label: "Emotionale Offenheit",
                 kategorie: "Kommunikationsstil",
                 kategorieColor: "#3B82F6",
@@ -5816,12 +5835,14 @@
                 quelleDetail: "Emotionale Offenheit ist zentral für sichere Bindung und Intimität."
             },
             gefuehle_zeigen: {
+                "#ID": "#B156",
                 label: "Gefühle zeigen",
                 kategorie: "Kommunikationsstil",
                 kategorieColor: "#3B82F6",
                 definition: "Das Bedürfnis, eigene Emotionen ausdrücken zu können – Tränen, Freude, Wut authentisch zu zeigen."
             },
             verletzlichkeit: {
+                "#ID": "#B157",
                 label: "Verletzlichkeit zulassen",
                 kategorie: "Kommunikationsstil",
                 kategorieColor: "#3B82F6",
@@ -5830,12 +5851,14 @@
                 quelleDetail: "Verletzlichkeit ist der Geburtsort von Liebe, Zugehörigkeit und Freude."
             },
             emotionale_zurueckhaltung: {
+                "#ID": "#B158",
                 label: "Emotionale Zurückhaltung",
                 kategorie: "Kommunikationsstil",
                 kategorieColor: "#3B82F6",
                 definition: "Das Bedürfnis nach Raum für emotionale Privatsphäre – nicht alles teilen zu müssen, Gefühle zu verarbeiten bevor man sie teilt."
             },
             emotionale_sicherheit: {
+                "#ID": "#B159",
                 label: "Emotionale Sicherheit",
                 kategorie: "Kommunikationsstil",
                 kategorieColor: "#3B82F6",
@@ -5844,12 +5867,14 @@
                 quelleDetail: "Emotionale Sicherheit ist die Grundlage für sichere Bindung und offene Kommunikation."
             },
             gefuehle_teilen: {
+                "#ID": "#B160",
                 label: "Gefühle teilen",
                 kategorie: "Kommunikationsstil",
                 kategorieColor: "#3B82F6",
                 definition: "Das Bedürfnis, emotionale Erlebnisse mit dem Partner zu teilen – gemeinsam zu fühlen und mitzuerleben."
             },
             konfliktklaerung: {
+                "#ID": "#B161",
                 label: "Konfliktklärung",
                 kategorie: "Kommunikationsstil",
                 kategorieColor: "#3B82F6",
@@ -5858,18 +5883,21 @@
                 quelleDetail: "Die Art, wie Paare mit Konflikten umgehen, ist entscheidend für die Beziehungsqualität."
             },
             aussprache: {
+                "#ID": "#B162",
                 label: "Aussprache",
                 kategorie: "Kommunikationsstil",
                 kategorieColor: "#3B82F6",
                 definition: "Das Bedürfnis, Dinge auszusprechen – Missverständnisse zu klären und einen Abschluss zu finden."
             },
             konflikt_vermeiden: {
+                "#ID": "#B163",
                 label: "Konflikt vermeiden",
                 kategorie: "Kommunikationsstil",
                 kategorieColor: "#3B82F6",
                 definition: "Das Bedürfnis, Konfrontationen zu minimieren – Harmonie zu bewahren und Streit aus dem Weg zu gehen."
             },
             streitkultur: {
+                "#ID": "#B164",
                 label: "Streitkultur",
                 kategorie: "Kommunikationsstil",
                 kategorieColor: "#3B82F6",
@@ -5878,6 +5906,7 @@
                 quelleDetail: "Eine gesunde Streitkultur ermöglicht Wachstum und tieferes Verständnis."
             },
             versoehnlichkeit: {
+                "#ID": "#B165",
                 label: "Versöhnlichkeit",
                 kategorie: "Kommunikationsstil",
                 kategorieColor: "#3B82F6",
@@ -5890,6 +5919,7 @@
             // SOZIALES LEBEN
             // ═══════════════════════════════════════════════════════════════════════
             soziale_energie: {
+                "#ID": "#B177",
                 label: "Soziale Energie",
                 kategorie: "Soziales Leben",
                 kategorieColor: "#8B5CF6",
@@ -5898,18 +5928,21 @@
                 quelleDetail: "Das Kontinuum Introversion-Extraversion beschreibt unterschiedliche soziale Energiebedürfnisse."
             },
             geselligkeit: {
+                "#ID": "#B178",
                 label: "Geselligkeit",
                 kategorie: "Soziales Leben",
                 kategorieColor: "#8B5CF6",
                 definition: "Das Bedürfnis nach Gesellschaft und sozialem Beisammensein – Freude an Gruppen und gemeinsamen Aktivitäten."
             },
             ruhe_von_menschen: {
+                "#ID": "#B179",
                 label: "Ruhe von Menschen",
                 kategorie: "Soziales Leben",
                 kategorieColor: "#8B5CF6",
                 definition: "Das Bedürfnis nach Pausen von sozialen Interaktionen – Zeit ohne Menschen, um sich zu erholen."
             },
             allein_aufladen: {
+                "#ID": "#B180",
                 label: "Allein aufladen",
                 kategorie: "Soziales Leben",
                 kategorieColor: "#8B5CF6",
@@ -5918,18 +5951,21 @@
                 quelleDetail: "Introvertierte Menschen regenerieren ihre Energie durch Alleinsein."
             },
             menschen_treffen: {
+                "#ID": "#B181",
                 label: "Menschen treffen",
                 kategorie: "Soziales Leben",
                 kategorieColor: "#8B5CF6",
                 definition: "Das Bedürfnis, regelmäßig andere Menschen zu sehen – soziale Kontakte pflegen und neue Menschen kennenlernen."
             },
             kleine_gruppen: {
+                "#ID": "#B182",
                 label: "Kleine Gruppen",
                 kategorie: "Soziales Leben",
                 kategorieColor: "#8B5CF6",
                 definition: "Das Bedürfnis nach Intimität kleiner Gruppen – tiefere Gespräche statt oberflächlicher Großgruppeninteraktion."
             },
             zeit_fuer_sich: {
+                "#ID": "#B183",
                 label: "Zeit für sich",
                 kategorie: "Soziales Leben",
                 kategorieColor: "#8B5CF6",
@@ -5938,12 +5974,14 @@
                 quelleDetail: "Autonomie, auch in Beziehungen, ist ein psychologisches Grundbedürfnis."
             },
             eigene_hobbys: {
+                "#ID": "#B184",
                 label: "Eigene Hobbys",
                 kategorie: "Soziales Leben",
                 kategorieColor: "#8B5CF6",
                 definition: "Das Bedürfnis, eigene Interessen und Hobbys zu pflegen – Individualität neben der Partnerschaft bewahren."
             },
             gemeinsame_zeit: {
+                "#ID": "#B185",
                 label: "Gemeinsame Zeit",
                 kategorie: "Soziales Leben",
                 kategorieColor: "#8B5CF6",
@@ -5952,36 +5990,42 @@
                 quelleDetail: "Qualitätszeit ist eine der fünf Liebessprachen."
             },
             partnerzeit: {
+                "#ID": "#B186",
                 label: "Partnerzeit",
                 kategorie: "Soziales Leben",
                 kategorieColor: "#8B5CF6",
                 definition: "Das Bedürfnis nach exklusiver Zeit mit dem Partner – ungeteilte Aufmerksamkeit und Präsenz."
             },
             eigene_interessen: {
+                "#ID": "#B187",
                 label: "Eigene Interessen",
                 kategorie: "Soziales Leben",
                 kategorieColor: "#8B5CF6",
                 definition: "Das Bedürfnis, persönliche Interessen zu verfolgen – Identität jenseits der Beziehung."
             },
             eigene_freunde: {
+                "#ID": "#B188",
                 label: "Eigene Freunde",
                 kategorie: "Soziales Leben",
                 kategorieColor: "#8B5CF6",
                 definition: "Das Bedürfnis nach eigenen Freundschaften außerhalb der Beziehung – separate soziale Netzwerke."
             },
             gemeinsame_freunde: {
+                "#ID": "#B189",
                 label: "Gemeinsame Freunde",
                 kategorie: "Soziales Leben",
                 kategorieColor: "#8B5CF6",
                 definition: "Das Bedürfnis nach Freunden, die man als Paar teilt – gemeinsame soziale Welt."
             },
             freundeskreis_teilen: {
+                "#ID": "#B190",
                 label: "Freundeskreis teilen",
                 kategorie: "Soziales Leben",
                 kategorieColor: "#8B5CF6",
                 definition: "Das Bedürfnis, den Partner in den eigenen Freundeskreis zu integrieren – Welten zusammenführen."
             },
             soziales_netz: {
+                "#ID": "#B191",
                 label: "Soziales Netz",
                 kategorie: "Soziales Leben",
                 kategorieColor: "#8B5CF6",
@@ -5990,12 +6034,14 @@
                 quelleDetail: "Ein starkes soziales Netz ist ein wichtiger Schutzfaktor für psychische Gesundheit."
             },
             freunde_pflegen: {
+                "#ID": "#B192",
                 label: "Freunde pflegen",
                 kategorie: "Soziales Leben",
                 kategorieColor: "#8B5CF6",
                 definition: "Das Bedürfnis, Freundschaften aktiv zu pflegen – Zeit und Energie in Beziehungen außerhalb der Partnerschaft zu investieren."
             },
             neue_freundschaften: {
+                "#ID": "#B193",
                 label: "Neue Freundschaften",
                 kategorie: "Soziales Leben",
                 kategorieColor: "#8B5CF6",
@@ -6006,6 +6052,7 @@
             // INTIMITÄT & ROMANTIK
             // ═══════════════════════════════════════════════════════════════════════
             koerpernaehe: {
+                "#ID": "#B204",
                 label: "Körpernähe",
                 kategorie: "Intimität & Romantik",
                 kategorieColor: "#EC4899",
@@ -6014,18 +6061,21 @@
                 quelleDetail: "Körperliche Nähe aktiviert das Bindungssystem und fördert Oxytocin-Ausschüttung."
             },
             kuscheln: {
+                "#ID": "#B205",
                 label: "Kuscheln",
                 kategorie: "Intimität & Romantik",
                 kategorieColor: "#EC4899",
                 definition: "Das Bedürfnis nach zärtlichem körperlichem Kontakt – Umarmungen, Anschmiegen, Geborgenheit durch Berührung."
             },
             physische_distanz: {
+                "#ID": "#B206",
                 label: "Physische Distanz",
                 kategorie: "Intimität & Romantik",
                 kategorieColor: "#EC4899",
                 definition: "Das Bedürfnis nach körperlichem Abstand – Raum zwischen sich und anderen als Komfortzone."
             },
             koerperkontakt: {
+                "#ID": "#B207",
                 label: "Körperkontakt",
                 kategorie: "Intimität & Romantik",
                 kategorieColor: "#EC4899",
@@ -6034,6 +6084,7 @@
                 quelleDetail: "Körperliche Berührung ist eine der fünf Liebessprachen."
             },
             umarmungen: {
+                "#ID": "#B208",
                 label: "Umarmungen",
                 kategorie: "Intimität & Romantik",
                 kategorieColor: "#EC4899",
@@ -6332,6 +6383,7 @@
             // PIRSIG & OSHO ERWEITERUNGEN - Lebensplanung
             // ═══════════════════════════════════════════════════════════════════════
             biologisches_muster: {
+                "#ID": "#B118",
                 label: "Biologisches Muster",
                 kategorie: "Lebensplanung",
                 kategorieColor: "#10B981",
@@ -6340,6 +6392,7 @@
                 quelleDetail: "Das biologische Qualitätsmuster repräsentiert evolutionär entstandene Bedürfnisse."
             },
             soziales_muster: {
+                "#ID": "#B119",
                 label: "Soziales Muster",
                 kategorie: "Lebensplanung",
                 kategorieColor: "#10B981",
@@ -6348,6 +6401,7 @@
                 quelleDetail: "Soziale Muster entstehen aus biologischen und ermöglichen Kultur und Zivilisation."
             },
             statische_stabilitaet: {
+                "#ID": "#B120",
                 label: "Statische Stabilität",
                 kategorie: "Lebensplanung",
                 kategorieColor: "#10B981",
@@ -6356,6 +6410,7 @@
                 quelleDetail: "Statische Qualität bewahrt, was funktioniert und gibt Sicherheit."
             },
             qualitaet_der_fuersorge: {
+                "#ID": "#B121",
                 label: "Qualität der Fürsorge",
                 kategorie: "Lebensplanung",
                 kategorieColor: "#10B981",
@@ -6364,6 +6419,7 @@
                 quelleDetail: "Pirsig betont 'Care' (Sorgfalt) als wesentlich für Qualität in allem Handeln."
             },
             familien_rebellion: {
+                "#ID": "#B122",
                 label: "Familien-Rebellion",
                 kategorie: "Lebensplanung",
                 kategorieColor: "#10B981",
@@ -6372,6 +6428,7 @@
                 quelleDetail: "Osho sah die traditionelle Familie oft als Quelle von Konditionierung und Unfreiheit."
             },
             zorba_das_kind: {
+                "#ID": "#B123",
                 label: "Zorba das Kind",
                 kategorie: "Lebensplanung",
                 kategorieColor: "#10B981",
@@ -6380,6 +6437,7 @@
                 quelleDetail: "Die kindliche Qualität von Zorba verbindet Lebensfreude mit Familienglück."
             },
             nicht_anhaften_an_familie: {
+                "#ID": "#B124",
                 label: "Nicht-Anhaften an Familie",
                 kategorie: "Lebensplanung",
                 kategorieColor: "#10B981",
@@ -6388,6 +6446,7 @@
                 quelleDetail: "Oshos Konzept der Nicht-Anhaftung erlaubt Liebe ohne die Last des Besitzens."
             },
             bewusste_elternschaft: {
+                "#ID": "#B125",
                 label: "Bewusste Elternschaft",
                 kategorie: "Lebensplanung",
                 kategorieColor: "#10B981",
@@ -6396,6 +6455,7 @@
                 quelleDetail: "Kinder begleiten ohne zu formen, ihre natürliche Entfaltung unterstützen."
             },
             commune_statt_kernfamilie: {
+                "#ID": "#B126",
                 label: "Kommune statt Kernfamilie",
                 kategorie: "Lebensplanung",
                 kategorieColor: "#10B981",
@@ -6408,6 +6468,7 @@
             // PIRSIG & OSHO ERWEITERUNGEN - Finanzen & Karriere
             // ═══════════════════════════════════════════════════════════════════════
             gumption: {
+                "#ID": "#B139",
                 label: "Gumption",
                 kategorie: "Finanzen & Karriere",
                 kategorieColor: "#F59E0B",
@@ -6416,6 +6477,7 @@
                 quelleDetail: "Gumption ist die psychische Benzin, die uns antreibt – ohne sie bleiben wir stecken."
             },
             qualitaet_der_arbeit: {
+                "#ID": "#B140",
                 label: "Qualität der Arbeit",
                 kategorie: "Finanzen & Karriere",
                 kategorieColor: "#F59E0B",
@@ -6424,6 +6486,7 @@
                 quelleDetail: "Pirsigs zentrales Thema: Qualität als das, was die Welt verbessert."
             },
             intellektuelles_muster: {
+                "#ID": "#B141",
                 label: "Intellektuelles Muster",
                 kategorie: "Finanzen & Karriere",
                 kategorieColor: "#F59E0B",
@@ -6432,6 +6495,7 @@
                 quelleDetail: "Intellektuelle Muster stehen über sozialen und ermöglichen kritisches Denken."
             },
             dynamische_evolution: {
+                "#ID": "#B142",
                 label: "Dynamische Evolution",
                 kategorie: "Finanzen & Karriere",
                 kategorieColor: "#F59E0B",
@@ -6440,6 +6504,7 @@
                 quelleDetail: "Dynamische Qualität treibt Evolution und Kreativität an."
             },
             klassisches_verstehen: {
+                "#ID": "#B143",
                 label: "Klassisches Verstehen",
                 kategorie: "Finanzen & Karriere",
                 kategorieColor: "#F59E0B",
@@ -6448,6 +6513,7 @@
                 quelleDetail: "Die klassische Sichtweise sieht die zugrundeliegende Form, nicht nur die Oberfläche."
             },
             arbeit_als_meditation: {
+                "#ID": "#B144",
                 label: "Arbeit als Meditation",
                 kategorie: "Finanzen & Karriere",
                 kategorieColor: "#F59E0B",
@@ -6456,6 +6522,7 @@
                 quelleDetail: "Jede Handlung kann Meditation werden, wenn sie mit totaler Bewusstheit geschieht."
             },
             nicht_karriere: {
+                "#ID": "#B145",
                 label: "Nicht-Karriere",
                 kategorie: "Finanzen & Karriere",
                 kategorieColor: "#F59E0B",
@@ -6464,6 +6531,7 @@
                 quelleDetail: "Osho sah Karrierestreben als Ego-Spiel, das von wahrem Glück ablenkt."
             },
             zorba_der_unternehmer: {
+                "#ID": "#B146",
                 label: "Zorba der Unternehmer",
                 kategorie: "Finanzen & Karriere",
                 kategorieColor: "#F59E0B",
@@ -6472,6 +6540,7 @@
                 quelleDetail: "Zorba genießt das Materielle, Buddha transzendiert es – beides zusammen ist möglich."
             },
             nicht_anhaften_an_geld: {
+                "#ID": "#B147",
                 label: "Nicht-Anhaften an Geld",
                 kategorie: "Finanzen & Karriere",
                 kategorieColor: "#F59E0B",
@@ -6480,6 +6549,7 @@
                 quelleDetail: "Geld kann fließen, ohne dass wir uns daran klammern oder es fürchten."
             },
             kreative_selbstverwirklichung: {
+                "#ID": "#B148",
                 label: "Kreative Selbstverwirklichung",
                 kategorie: "Finanzen & Karriere",
                 kategorieColor: "#F59E0B",
@@ -6492,6 +6562,7 @@
             // PIRSIG & OSHO ERWEITERUNGEN - Kommunikationsstil
             // ═══════════════════════════════════════════════════════════════════════
             romantisches_verstehen: {
+                "#ID": "#B166",
                 label: "Romantisches Verstehen",
                 kategorie: "Kommunikationsstil",
                 kategorieColor: "#3B82F6",
@@ -6500,6 +6571,7 @@
                 quelleDetail: "Die romantische Sichtweise erfasst das Ganze, die unmittelbare Erscheinung."
             },
             klassische_klarheit: {
+                "#ID": "#B167",
                 label: "Klassische Klarheit",
                 kategorie: "Kommunikationsstil",
                 kategorieColor: "#3B82F6",
@@ -6508,6 +6580,7 @@
                 quelleDetail: "Klassisches Denken zerlegt und analysiert, um zu verstehen."
             },
             dialektik: {
+                "#ID": "#B168",
                 label: "Dialektik",
                 kategorie: "Kommunikationsstil",
                 kategorieColor: "#3B82F6",
@@ -6516,6 +6589,7 @@
                 quelleDetail: "Pirsig nutzt die dialektische Methode, um Qualität zu erkunden."
             },
             qualitaets_ausdruck: {
+                "#ID": "#B169",
                 label: "Qualitäts-Ausdruck",
                 kategorie: "Kommunikationsstil",
                 kategorieColor: "#3B82F6",
@@ -6524,6 +6598,7 @@
                 quelleDetail: "Qualität zeigt sich auch in der Art, wie wir kommunizieren."
             },
             care_im_gespraech: {
+                "#ID": "#B170",
                 label: "Care im Gespräch",
                 kategorie: "Kommunikationsstil",
                 kategorieColor: "#3B82F6",
@@ -6532,6 +6607,7 @@
                 quelleDetail: "Sorgfalt im Gespräch bedeutet, wirklich präsent und aufmerksam zu sein."
             },
             schweigen_statt_worte: {
+                "#ID": "#B171",
                 label: "Schweigen statt Worte",
                 kategorie: "Kommunikationsstil",
                 kategorieColor: "#3B82F6",
@@ -6540,6 +6616,7 @@
                 quelleDetail: "Osho sprach viel über Stille als das eigentliche Medium der Wahrheit."
             },
             radikale_ehrlichkeit: {
+                "#ID": "#B172",
                 label: "Radikale Ehrlichkeit",
                 kategorie: "Kommunikationsstil",
                 kategorieColor: "#3B82F6",
@@ -6548,6 +6625,7 @@
                 quelleDetail: "Osho forderte radikale Ehrlichkeit, auch wenn sie unbequem ist."
             },
             humorvolle_leichtigkeit: {
+                "#ID": "#B173",
                 label: "Humorvolle Leichtigkeit",
                 kategorie: "Kommunikationsstil",
                 kategorieColor: "#3B82F6",
@@ -6556,6 +6634,7 @@
                 quelleDetail: "Osho betonte Lachen als spirituelle Praxis und Zeichen von Freiheit."
             },
             paradoxe_weisheit: {
+                "#ID": "#B174",
                 label: "Paradoxe Weisheit",
                 kategorie: "Kommunikationsstil",
                 kategorieColor: "#3B82F6",
@@ -6564,6 +6643,7 @@
                 quelleDetail: "Paradoxe durchbrechen den analytischen Verstand und öffnen für tiefere Einsicht."
             },
             herz_statt_kopf: {
+                "#ID": "#B175",
                 label: "Herz statt Kopf",
                 kategorie: "Kommunikationsstil",
                 kategorieColor: "#3B82F6",
@@ -6572,6 +6652,7 @@
                 quelleDetail: "Osho sah den Kopf als Hindernis für wahre Kommunikation, das Herz als Brücke."
             },
             authentischer_ausdruck: {
+                "#ID": "#B176",
                 label: "Authentischer Ausdruck",
                 kategorie: "Kommunikationsstil",
                 kategorieColor: "#3B82F6",
@@ -6584,6 +6665,7 @@
             // PIRSIG & OSHO ERWEITERUNGEN - Soziales Leben
             // ═══════════════════════════════════════════════════════════════════════
             soziale_qualitaet: {
+                "#ID": "#B194",
                 label: "Soziale Qualität",
                 kategorie: "Soziales Leben",
                 kategorieColor: "#8B5CF6",
@@ -6592,6 +6674,7 @@
                 quelleDetail: "Qualität gilt auch für Beziehungen – wenige tiefe sind wertvoller als viele oberflächliche."
             },
             tribe_muster: {
+                "#ID": "#B195",
                 label: "Tribe-Muster",
                 kategorie: "Soziales Leben",
                 kategorieColor: "#8B5CF6",
@@ -6600,6 +6683,7 @@
                 quelleDetail: "Das Stammesmuster ist eines der ursprünglichsten sozialen Bedürfnisse."
             },
             intellektuelle_gemeinschaft: {
+                "#ID": "#B196",
                 label: "Intellektuelle Gemeinschaft",
                 kategorie: "Soziales Leben",
                 kategorieColor: "#8B5CF6",
@@ -6608,6 +6692,7 @@
                 quelleDetail: "Intellektuelle Gemeinschaft transzendiert bloße soziale Zugehörigkeit."
             },
             statische_sozialstrukturen: {
+                "#ID": "#B197",
                 label: "Statische Sozialstrukturen",
                 kategorie: "Soziales Leben",
                 kategorieColor: "#8B5CF6",
@@ -6616,6 +6701,7 @@
                 quelleDetail: "Statische Strukturen geben Orientierung, können aber auch einengen."
             },
             sannyas_gemeinschaft: {
+                "#ID": "#B198",
                 label: "Sannyas-Gemeinschaft",
                 kategorie: "Soziales Leben",
                 kategorieColor: "#8B5CF6",
@@ -6624,6 +6710,7 @@
                 quelleDetail: "Sannyas bedeutet bei Osho nicht Weltentsagung, sondern bewusstes Leben in Gemeinschaft."
             },
             rebellion_gegen_gesellschaft: {
+                "#ID": "#B199",
                 label: "Rebellion gegen Gesellschaft",
                 kategorie: "Soziales Leben",
                 kategorieColor: "#8B5CF6",
@@ -6632,6 +6719,7 @@
                 quelleDetail: "Osho unterschied zwischen Reaktion (gegen etwas) und Rebellion (für Freiheit)."
             },
             einsamkeit_in_menge: {
+                "#ID": "#B200",
                 label: "Einsamkeit in Menge",
                 kategorie: "Soziales Leben",
                 kategorieColor: "#8B5CF6",
@@ -6640,6 +6728,7 @@
                 quelleDetail: "Osho unterschied zwischen Einsamkeit (loneliness) und Alleinsein (aloneness) – letzteres ist positiv."
             },
             celebration_mit_anderen: {
+                "#ID": "#B201",
                 label: "Celebration mit Anderen",
                 kategorie: "Soziales Leben",
                 kategorieColor: "#8B5CF6",
@@ -6648,6 +6737,7 @@
                 quelleDetail: "Oshos Ashrams waren für ihre Feiern und ekstatischen Meditationen bekannt."
             },
             keine_freundschaft_besitz: {
+                "#ID": "#B202",
                 label: "Keine Freundschafts-Besitz",
                 kategorie: "Soziales Leben",
                 kategorieColor: "#8B5CF6",
@@ -6656,6 +6746,7 @@
                 quelleDetail: "Liebe ohne Besitzdenken gilt für alle Beziehungen, nicht nur romantische."
             },
             tantra_gruppe: {
+                "#ID": "#B203",
                 label: "Tantra-Gruppe",
                 kategorie: "Soziales Leben",
                 kategorieColor: "#8B5CF6",
