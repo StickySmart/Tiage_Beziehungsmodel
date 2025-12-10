@@ -776,6 +776,112 @@ const MemoryManager = (function() {
 })();
 
 // ═══════════════════════════════════════════════════════════════════════════
+// PROFILE STATUS UI FUNCTIONS
+// Updates the status badges next to DU/PARTNER headers
+// ═══════════════════════════════════════════════════════════════════════════
+
+/**
+ * Update the profile status badge for a person
+ * @param {string} person - 'ich' or 'partner'
+ */
+function updateProfileStatusBadge(person) {
+    if (typeof TiageState === 'undefined') return;
+
+    const status = TiageState.getProfileStatus(person);
+    const slot = status?.loadedSlot;
+    const isDirty = status?.isDirty;
+
+    // Get all badge elements (desktop and mobile)
+    const badgeIds = person === 'ich'
+        ? ['ich-profile-status', 'mobile-ich-profile-status']
+        : ['partner-profile-status', 'mobile-partner-profile-status'];
+
+    badgeIds.forEach(id => {
+        const badge = document.getElementById(id);
+        if (!badge) return;
+
+        if (slot === null) {
+            // No slot loaded - hide badge
+            badge.textContent = '';
+            badge.className = 'profile-status-badge';
+        } else {
+            // Show slot number with status
+            badge.textContent = `Slot ${slot}`;
+            badge.className = isDirty
+                ? 'profile-status-badge unsaved'
+                : 'profile-status-badge saved';
+        }
+    });
+}
+
+/**
+ * Update all profile status badges
+ */
+function updateAllProfileStatusBadges() {
+    updateProfileStatusBadge('ich');
+    updateProfileStatusBadge('partner');
+}
+
+/**
+ * Initialize profile status tracking
+ * Subscribe to TiageState changes to update badges
+ */
+function initProfileStatusTracking() {
+    if (typeof TiageState === 'undefined') {
+        console.warn('[MemoryManager] TiageState not available for status tracking');
+        return;
+    }
+
+    // Subscribe to profileStatus changes
+    TiageState.subscribe('profileStatus', () => {
+        updateAllProfileStatusBadges();
+    });
+
+    // Subscribe to relevant state changes to mark as dirty
+    TiageState.subscribe('personDimensions.ich', () => {
+        const slot = TiageState.getLoadedSlot('ich');
+        if (slot !== null) {
+            TiageState.markDirty('ich');
+        }
+    });
+
+    TiageState.subscribe('personDimensions.partner', () => {
+        const slot = TiageState.getLoadedSlot('partner');
+        if (slot !== null) {
+            TiageState.markDirty('partner');
+        }
+    });
+
+    TiageState.subscribe('archetypes.ich', () => {
+        const slot = TiageState.getLoadedSlot('ich');
+        if (slot !== null) {
+            TiageState.markDirty('ich');
+        }
+    });
+
+    TiageState.subscribe('archetypes.partner', () => {
+        const slot = TiageState.getLoadedSlot('partner');
+        if (slot !== null) {
+            TiageState.markDirty('partner');
+        }
+    });
+
+    // Initial update
+    updateAllProfileStatusBadges();
+    console.log('[MemoryManager] Profile status tracking initialized');
+}
+
+// Initialize when DOM is ready
+if (typeof document !== 'undefined') {
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initProfileStatusTracking);
+    } else {
+        // DOM already loaded
+        setTimeout(initProfileStatusTracking, 100);
+    }
+}
+
+// ═══════════════════════════════════════════════════════════════════════════
 // MODAL UI FUNCTIONS
 // ═══════════════════════════════════════════════════════════════════════════
 
@@ -893,6 +999,11 @@ function updateMemoryModalContent() {
 function handleSaveToSlot(slotNumber) {
     const success = MemoryManager.saveToSlot(slotNumber);
     if (success) {
+        // Update profile status - both profiles saved to this slot
+        if (typeof TiageState !== 'undefined') {
+            TiageState.setLoadedSlot('ich', slotNumber);
+            TiageState.setLoadedSlot('partner', slotNumber);
+        }
         updateMemoryModalContent();
         showMemoryToast('Gespeichert in Slot ' + slotNumber);
     } else {
@@ -906,6 +1017,10 @@ function handleSaveToSlot(slotNumber) {
 function handleLoadMe(slotNumber) {
     const success = MemoryManager.loadMeFromSlot(slotNumber);
     if (success) {
+        // Update profile status for ME
+        if (typeof TiageState !== 'undefined') {
+            TiageState.setLoadedSlot('ich', slotNumber);
+        }
         showMemoryToast('ME geladen aus Slot ' + slotNumber);
         closeMemoryModal();
     } else {
@@ -919,6 +1034,10 @@ function handleLoadMe(slotNumber) {
 function handleLoadPartner(slotNumber) {
     const success = MemoryManager.loadPartnerFromSlot(slotNumber);
     if (success) {
+        // Update profile status for PARTNER
+        if (typeof TiageState !== 'undefined') {
+            TiageState.setLoadedSlot('partner', slotNumber);
+        }
         showMemoryToast('PARTNER geladen aus Slot ' + slotNumber);
         closeMemoryModal();
     } else {
@@ -932,6 +1051,11 @@ function handleLoadPartner(slotNumber) {
 function handleLoadBoth(slotNumber) {
     const success = MemoryManager.loadBothFromSlot(slotNumber);
     if (success) {
+        // Update profile status for both
+        if (typeof TiageState !== 'undefined') {
+            TiageState.setLoadedSlot('ich', slotNumber);
+            TiageState.setLoadedSlot('partner', slotNumber);
+        }
         showMemoryToast('Beide geladen aus Slot ' + slotNumber);
         closeMemoryModal();
     } else {
@@ -949,6 +1073,15 @@ function handleDeleteSlot(slotNumber) {
 
     const success = MemoryManager.deleteSlot(slotNumber);
     if (success) {
+        // Clear profile status if this was the loaded slot
+        if (typeof TiageState !== 'undefined') {
+            if (TiageState.getLoadedSlot('ich') === slotNumber) {
+                TiageState.setLoadedSlot('ich', null);
+            }
+            if (TiageState.getLoadedSlot('partner') === slotNumber) {
+                TiageState.setLoadedSlot('partner', null);
+            }
+        }
         updateMemoryModalContent();
         showMemoryToast('Slot ' + slotNumber + ' gelöscht');
     } else {

@@ -83,6 +83,18 @@ const TiageState = (function() {
             currentMobilePage: 1,
             activeModal: null,
             selectedCategory: null
+        },
+
+        // Profile Save Status - tracks loaded slot and unsaved changes
+        profileStatus: {
+            ich: {
+                loadedSlot: null,    // null = not loaded from slot, 1-4 = slot number
+                isDirty: false       // true = unsaved changes since load/save
+            },
+            partner: {
+                loadedSlot: null,
+                isDirty: false
+            }
         }
     };
 
@@ -104,6 +116,9 @@ const TiageState = (function() {
         'archetypes.ich': [],
         'archetypes.partner': [],
         'ui': [],
+        'profileStatus': [],
+        'profileStatus.ich': [],
+        'profileStatus.partner': [],
         '*': []  // Wildcard - receives ALL updates
     };
 
@@ -532,6 +547,63 @@ const TiageState = (function() {
         },
 
         // ═══════════════════════════════════════════════════════════════════
+        // PROFILE STATUS METHODS
+        // ═══════════════════════════════════════════════════════════════════
+
+        /**
+         * Set loaded slot for a person
+         * @param {string} person - 'ich' or 'partner'
+         * @param {number|null} slotNumber - Slot number (1-4) or null
+         */
+        setLoadedSlot(person, slotNumber) {
+            this.set(`profileStatus.${person}.loadedSlot`, slotNumber);
+            this.set(`profileStatus.${person}.isDirty`, false);
+        },
+
+        /**
+         * Get loaded slot for a person
+         * @param {string} person - 'ich' or 'partner'
+         * @returns {number|null}
+         */
+        getLoadedSlot(person) {
+            return this.get(`profileStatus.${person}.loadedSlot`);
+        },
+
+        /**
+         * Mark profile as dirty (has unsaved changes)
+         * @param {string} person - 'ich' or 'partner'
+         */
+        markDirty(person) {
+            this.set(`profileStatus.${person}.isDirty`, true);
+        },
+
+        /**
+         * Mark profile as clean (saved)
+         * @param {string} person - 'ich' or 'partner'
+         */
+        markClean(person) {
+            this.set(`profileStatus.${person}.isDirty`, false);
+        },
+
+        /**
+         * Check if profile has unsaved changes
+         * @param {string} person - 'ich' or 'partner'
+         * @returns {boolean}
+         */
+        isDirty(person) {
+            return this.get(`profileStatus.${person}.isDirty`) === true;
+        },
+
+        /**
+         * Get full profile status for a person
+         * @param {string} person - 'ich' or 'partner'
+         * @returns {Object} { loadedSlot, isDirty }
+         */
+        getProfileStatus(person) {
+            return this.get(`profileStatus.${person}`);
+        },
+
+        // ═══════════════════════════════════════════════════════════════════
         // RESET / INITIALIZATION
         // ═══════════════════════════════════════════════════════════════════
 
@@ -560,6 +632,10 @@ const TiageState = (function() {
                 partner: { primary: 'duo', secondary: null }
             });
             this.set('ui', { currentView: 'desktop', currentMobilePage: 1, activeModal: null, selectedCategory: null });
+            this.set('profileStatus', {
+                ich: { loadedSlot: null, isDirty: false },
+                partner: { loadedSlot: null, isDirty: false }
+            });
         },
 
         /**

@@ -611,7 +611,7 @@
             <div class="comparison-column ich-column">
                 <div class="column-header">
                     <div class="column-icon">👤</div>
-                    <div class="column-title">DU</div>
+                    <div class="column-title">DU <span id="ich-profile-status" class="profile-status-badge"></span></div>
                 </div>
                 <div class="select-with-info">
                     <button class="archetype-nav-btn" onclick="navigateArchetype('ich', -1)" title="Vorheriger Archetyp">&#9664;</button>
@@ -718,7 +718,7 @@
             <div class="comparison-column partner-column">
                 <div class="column-header">
                     <div class="column-icon">👥</div>
-                    <div class="column-title">PARTNER</div>
+                    <div class="column-title">PARTNER <span id="partner-profile-status" class="profile-status-badge"></span></div>
                 </div>
                 <div class="select-with-info">
                     <button class="archetype-nav-btn" onclick="navigateArchetype('partner', -1)" title="Vorheriger Archetyp">&#9664;</button>
@@ -833,7 +833,7 @@
             <!-- ICH Auswahl -->
             <div style="background: var(--bg-card); border-radius: 16px; border: 1px solid var(--border); border-top: 3px solid var(--success); padding: 15px; margin-bottom: 15px;">
                 <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 12px; color: var(--success); font-weight: 700; font-size: var(--font-lg);">
-                    <span>👤</span> DU
+                    <span>👤</span> DU <span id="mobile-ich-profile-status" class="profile-status-badge"></span>
                 </div>
                 <div style="display: flex; gap: 8px; align-items: center; margin-bottom: 12px;">
                     <button class="archetype-nav-btn" onclick="navigateArchetype('ich', -1)" title="Vorheriger Archetyp">&#9664;</button>
@@ -990,7 +990,7 @@
             <!-- PARTNER Auswahl -->
             <div style="background: var(--bg-card); border-radius: 16px; border: 1px solid var(--border); border-top: 3px solid var(--danger); padding: 15px; margin-bottom: 15px;">
                 <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 12px; color: var(--danger); font-weight: 700; font-size: var(--font-lg);">
-                    <span>👥</span> DEIN PARTNER
+                    <span>👥</span> DEIN PARTNER <span id="mobile-partner-profile-status" class="profile-status-badge"></span>
                 </div>
                 <div style="display: flex; gap: 8px; align-items: center; margin-bottom: 12px;">
                     <button class="archetype-nav-btn" onclick="navigateArchetype('partner', -1)" title="Vorheriger Archetyp">&#9664;</button>
