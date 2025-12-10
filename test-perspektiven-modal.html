@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test: Perspektiven Modal</title>
+    <style>
+        :root {
+            --bg: #0f0f1a;
+            --surface: #1a1a2e;
+            --border: rgba(255,255,255,0.1);
+            --text-primary: #f0f0f0;
+            --text-secondary: #a0a0a0;
+            --text-muted: #666;
+            --primary: #8B5CF6;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--bg);
+            color: var(--text-primary);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            font-size: 24px;
+            margin-bottom: 8px;
+            color: var(--primary);
+        }
+
+        .subtitle {
+            color: var(--text-muted);
+            margin-bottom: 30px;
+            font-size: 14px;
+        }
+
+        .test-section {
+            background: var(--surface);
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 24px;
+            border: 1px solid var(--border);
+        }
+
+        .test-section h2 {
+            font-size: 16px;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .test-controls {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .test-btn {
+            background: rgba(139, 92, 246, 0.15);
+            border: 1px solid rgba(139, 92, 246, 0.3);
+            color: var(--text-primary);
+            padding: 10px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 13px;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .test-btn:hover {
+            background: rgba(139, 92, 246, 0.25);
+            transform: translateY(-1px);
+        }
+
+        .test-btn.active {
+            background: var(--primary);
+            border-color: var(--primary);
+        }
+
+        .test-btn .id {
+            font-family: monospace;
+            font-size: 10px;
+            opacity: 0.7;
+        }
+
+        .output-area {
+            background: rgba(0,0,0,0.3);
+            border-radius: 12px;
+            padding: 20px;
+            min-height: 200px;
+        }
+
+        .modal-preview {
+            max-width: 400px;
+            margin: 0 auto;
+        }
+
+        /* Perspektiven-Farben für Buttons */
+        .btn-p1 { border-color: #3B82F6; background: rgba(59, 130, 246, 0.15); }
+        .btn-p1:hover { background: rgba(59, 130, 246, 0.25); }
+        .btn-p2 { border-color: #F59E0B; background: rgba(245, 158, 11, 0.15); }
+        .btn-p2:hover { background: rgba(245, 158, 11, 0.25); }
+        .btn-p3 { border-color: #10B981; background: rgba(16, 185, 129, 0.15); }
+        .btn-p3:hover { background: rgba(16, 185, 129, 0.25); }
+        .btn-p4 { border-color: #8B5CF6; background: rgba(139, 92, 246, 0.15); }
+        .btn-p4:hover { background: rgba(139, 92, 246, 0.25); }
+
+        .info-box {
+            background: rgba(59, 130, 246, 0.1);
+            border: 1px solid rgba(59, 130, 246, 0.2);
+            border-radius: 8px;
+            padding: 12px;
+            font-size: 12px;
+            color: var(--text-secondary);
+            margin-bottom: 16px;
+        }
+
+        .code-ref {
+            font-family: monospace;
+            background: rgba(255,255,255,0.1);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 11px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Perspektiven Modal Test</h1>
+        <p class="subtitle">Modularer Test für die neue Bedürfnis-Anzeige mit Perspektiven (#P1-#P4)</p>
+
+        <!-- Test 1: Einzelne Perspektiven -->
+        <div class="test-section">
+            <h2>📊 Test 1: Perspektiven-Header</h2>
+            <p class="info-box">
+                Klicke auf eine Perspektive, um den Header zu sehen.
+                Jede Perspektive hat: Icon, Farbe, Motto, Beschreibung, Vibe.
+            </p>
+            <div class="test-controls">
+                <button class="test-btn btn-p1" onclick="showPerspektiveHeader('#P1')">
+                    <span>📊</span> Statistik <span class="id">#P1</span>
+                </button>
+                <button class="test-btn btn-p2" onclick="showPerspektiveHeader('#P2')">
+                    <span>🕉️</span> Osho <span class="id">#P2</span>
+                </button>
+                <button class="test-btn btn-p3" onclick="showPerspektiveHeader('#P3')">
+                    <span>🔧</span> Pirsig <span class="id">#P3</span>
+                </button>
+                <button class="test-btn btn-p4" onclick="showPerspektiveHeader('#P4')">
+                    <span>💜</span> SexPositiv <span class="id">#P4</span>
+                </button>
+            </div>
+            <div class="output-area" id="output1">
+                <p style="color: var(--text-muted); text-align: center; padding: 40px;">
+                    Wähle eine Perspektive...
+                </p>
+            </div>
+        </div>
+
+        <!-- Test 2: Bedürfnis-Modal -->
+        <div class="test-section">
+            <h2>💫 Test 2: Komplettes Bedürfnis-Modal</h2>
+            <p class="info-box">
+                Wähle ein Beispiel-Bedürfnis aus verschiedenen Perspektiven.
+                Das Modal zeigt: Perspektive + Kategorie + Definition + IDs
+            </p>
+            <div class="test-controls">
+                <button class="test-btn btn-p1" onclick="showNeedModal('liebe')">
+                    <span class="id">#B21</span> Liebe (GFK)
+                </button>
+                <button class="test-btn btn-p2" onclick="showNeedModal('sex_als_meditation')">
+                    <span class="id">#P2</span> Sex als Meditation (Osho)
+                </button>
+                <button class="test-btn btn-p3" onclick="showNeedModal('qualitaet_der_beruehrung')">
+                    <span class="id">#P3</span> Qualität der Berührung (Pirsig)
+                </button>
+                <button class="test-btn btn-p4" onclick="showNeedModal('hingabe')">
+                    <span class="id">#B66</span> Hingabe (SexPositiv)
+                </button>
+            </div>
+            <div class="output-area" id="output2">
+                <div class="modal-preview">
+                    <p style="color: var(--text-muted); text-align: center; padding: 40px;">
+                        Wähle ein Bedürfnis...
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Test 3: Cluster-Übersicht -->
+        <div class="test-section">
+            <h2>🗂️ Test 3: Cluster nach Perspektiven</h2>
+            <p class="info-box">
+                Zeigt alle Bedürfnisse gruppiert nach den 4 Perspektiven.
+                Jedes Bedürfnis zeigt seine ID (#B1-#B220).
+            </p>
+            <div class="test-controls">
+                <button class="test-btn" onclick="showClusterOverview()">
+                    🗂️ Cluster-Übersicht laden
+                </button>
+            </div>
+            <div class="output-area" id="output3">
+                <p style="color: var(--text-muted); text-align: center; padding: 40px;">
+                    Klicke auf "Cluster-Übersicht laden"...
+                </p>
+            </div>
+        </div>
+
+        <!-- Referenz -->
+        <div class="test-section" style="background: rgba(16, 185, 129, 0.05); border-color: rgba(16, 185, 129, 0.2);">
+            <h2>📚 Referenz</h2>
+            <p style="font-size: 13px; color: var(--text-secondary); line-height: 1.6;">
+                <strong>Dateien:</strong><br>
+                <span class="code-ref">js/components/PerspektivenModal.js</span> - Die neue Komponente<br>
+                <span class="code-ref">profiles/definitions/taxonomie.js</span> - Perspektiven-Definitionen (#P1-#P4)<br>
+                <span class="code-ref">profiles/definitions/gfk-beduerfnisse.js</span> - Bedürfnis-Katalog (#B1-#B220)<br>
+                <br>
+                <strong>Integration:</strong><br>
+                Um die Komponente in <span class="code-ref">app-main.js</span> zu integrieren,
+                ersetze den Inhalt von <span class="code-ref">openNeedDefinitionModal()</span>
+                mit dem Aufruf von <span class="code-ref">PerspektivenModal.renderNeedModal()</span>.
+            </p>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/components/PerspektivenModal.js"></script>
+    <script>
+        // Test-Daten: Beispiel-Bedürfnisse
+        const testNeeds = {
+            liebe: {
+                '#ID': '#B21',
+                key: 'liebe',
+                label: 'Liebe',
+                kategorie: 'Zuneigung',
+                kategorieColor: '#E84393',
+                definition: 'Das universelle Bedürfnis zu lieben und geliebt zu werden – die kraftvollste Form menschlicher Verbindung. Liebe ist mehr als ein Gefühl: Sie ist ein tiefes Verlangen nach Zugehörigkeit, Akzeptanz und dem Wissen, dass jemand uns sieht und wertschätzt.'
+            },
+            sex_als_meditation: {
+                '#ID': '#P2-IM1',
+                key: 'sex_als_meditation',
+                label: 'Sex als Meditation',
+                kategorie: 'Intimität & Romantik',
+                kategorieColor: '#EC4899',
+                definition: 'Das Bedürfnis nach tantrischer Sexualität, spiritueller Vereinigung. Sex nicht als Ziel, sondern als Weg – ein meditativer Akt der totalen Präsenz, bei dem zwei Energien verschmelzen ohne Anhaften an das Ergebnis.'
+            },
+            qualitaet_der_beruehrung: {
+                '#ID': '#P3-IM2',
+                key: 'qualitaet_der_beruehrung',
+                label: 'Qualität der Berührung',
+                kategorie: 'Intimität & Romantik',
+                kategorieColor: '#EC4899',
+                definition: 'Das Bedürfnis nach achtsamer, präsenter Berührung. Wie ein Meister sein Werkzeug pflegt, erfordert gute Berührung volle Aufmerksamkeit. Es geht nicht um Technik, sondern um "Care" – die sorgfältige Qualität, mit der wir einander begegnen.'
+            },
+            hingabe: {
+                '#ID': '#B66',
+                key: 'hingabe',
+                label: 'Hingabe',
+                kategorie: 'Dynamik & Austausch',
+                kategorieColor: '#8B5CF6',
+                definition: 'Das Bedürfnis, sich in sicherem Rahmen einem anderen Menschen anzuvertrauen und Kontrolle abzugeben. Hingabe ist ein aktiver Akt des Vertrauens – kein passives Erdulden, sondern bewusstes Loslassen in die Hände eines vertrauenswürdigen Menschen.'
+            }
+        };
+
+        // Test 1: Perspektive-Header
+        function showPerspektiveHeader(pId) {
+            const perspektive = PerspektivenModal.perspektiven[pId];
+            if (!perspektive) {
+                document.getElementById('output1').innerHTML = '<p style="color: #ef4444;">Perspektive nicht gefunden</p>';
+                return;
+            }
+            document.getElementById('output1').innerHTML = `
+                <div class="modal-preview">
+                    ${PerspektivenModal.renderPerspektiveHeader(perspektive)}
+                </div>
+            `;
+        }
+
+        // Test 2: Need Modal
+        function showNeedModal(needKey) {
+            const needDef = testNeeds[needKey];
+            if (!needDef) {
+                document.getElementById('output2').innerHTML = '<p style="color: #ef4444;">Bedürfnis nicht gefunden</p>';
+                return;
+            }
+
+            // Kategorie-Key extrahieren
+            const kategorieKey = needDef.kategorie.toLowerCase()
+                .replace(/ä/g, 'ae').replace(/ö/g, 'oe').replace(/ü/g, 'ue')
+                .replace(/\s+&\s+/g, '_').replace(/\s+/g, '_');
+
+            document.getElementById('output2').innerHTML = `
+                <div class="modal-preview">
+                    ${PerspektivenModal.renderNeedModal(needDef, kategorieKey)}
+                </div>
+            `;
+        }
+
+        // Test 3: Cluster Overview
+        function showClusterOverview() {
+            // Kombiniere Test-Daten mit ein paar mehr Beispielen
+            const allNeeds = {
+                ...testNeeds,
+                // GFK (#P1)
+                waerme: { '#ID': '#B16', key: 'waerme', label: 'Wärme', kategorie: 'zuneigung' },
+                naehe: { '#ID': '#B18', key: 'naehe', label: 'Nähe', kategorie: 'zuneigung' },
+                sicherheit_physisch: { '#ID': '#B8', key: 'sicherheit_physisch', label: 'Physische Sicherheit', kategorie: 'existenz' },
+                vertrauen: { '#ID': '#B29', key: 'vertrauen', label: 'Vertrauen', kategorie: 'verstaendnis' },
+                selbstbestimmung: { '#ID': '#B35', key: 'selbstbestimmung', label: 'Selbstbestimmung', kategorie: 'freiheit' },
+                // Osho (#P2)
+                nicht_anhaften_an_partner: { '#ID': '#P2-IM3', key: 'nicht_anhaften_an_partner', label: 'Nicht-Anhaften', kategorie: 'intimitaet_beziehung' },
+                radikale_ehrlichkeit: { '#ID': '#B172', key: 'radikale_ehrlichkeit', label: 'Radikale Ehrlichkeit', kategorie: 'kommunikation_stil' },
+                meditation_zu_zweit: { '#ID': '#P2-IM4', key: 'meditation_zu_zweit', label: 'Meditation zu zweit', kategorie: 'intimitaet_beziehung' },
+                // Pirsig (#P3)
+                gumption: { '#ID': '#B139', key: 'gumption', label: 'Gumption', kategorie: 'finanzen_karriere' },
+                care_im_gespraech: { '#ID': '#B170', key: 'care_im_gespraech', label: 'Care im Gespräch', kategorie: 'kommunikation_stil' },
+                // SexPositiv (#P4)
+                kontrolle_ausueben: { '#ID': '#B65', key: 'kontrolle_ausueben', label: 'Kontrolle ausüben', kategorie: 'dynamik' },
+                nachsorge: { '#ID': '#B70', key: 'nachsorge', label: 'Nachsorge', kategorie: 'dynamik' },
+                grenzen_setzen: { '#ID': '#B71', key: 'grenzen_setzen', label: 'Grenzen setzen', kategorie: 'dynamik' }
+            };
+
+            document.getElementById('output3').innerHTML = PerspektivenModal.renderClusterByPerspektiven(allNeeds);
+        }
+
+        // Initial: Zeige erstes Beispiel
+        document.addEventListener('DOMContentLoaded', () => {
+            showPerspektiveHeader('#P1');
+        });
+    </script>
+</body>
+</html>
