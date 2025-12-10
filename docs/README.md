@@ -12,13 +12,17 @@ Diese Dokumentation enthält alle theoretischen Grundlagen, Berechnungsformeln u
 docs/
 ├── README.md              ← Du bist hier
 ├── help-guide.md          ← Benutzerhandbuch
+├── NAMING_CONVENTION.md   ← ID-Referenzsystem (#AID, #BID, etc.)
 │
 ├── theory/                ← Philosophische Grundlagen
 │   ├── pirsig.md          ← Robert M. Pirsig (Logos)
 │   ├── osho.md            ← OSHO (Pathos)
 │   ├── tiage-synthesis.md ← Tiages Verbindung beider
 │   ├── pathos-logos.md    ← Die 75:25 Gewichtung
-│   └── resonance.md       ← Resonanz als Meta-Dimension
+│   ├── resonance.md       ← Resonanz als Meta-Dimension
+│   ├── factors.md         ← Die 4 Qualitätsfaktoren
+│   ├── gaussian-model.md  ← Gauß-Verteilung für Bedürfnisse
+│   └── gfk-rosenberg.md   ← GFK nach Marshall Rosenberg
 │
 └── legal/                 ← Rechtliche Dokumente
     ├── datenschutz.md     ← Datenschutzerklärung
@@ -87,11 +91,42 @@ Wobei:
 
 GFK = Gewaltfreie Kommunikation nach Marshall Rosenberg
 
+## Neue Features (v1.8.x)
+
+### Perspektiven-System (P1-P4)
+
+Die App bietet vier philosophische Perspektiven auf jeden Bedürfnis-Eintrag:
+
+| ID | Perspektive | Fokus |
+|----|-------------|-------|
+| P1 | Ti-Age Synthese | Praktische Integration |
+| P2 | Pirsig (MOQ) | Qualität und Struktur |
+| P3 | OSHO | Bewusstsein und Energie |
+| P4 | SexPositiv | Körperliche Dimension |
+
+### ID-Referenzsystem
+
+Alle Entitäten verwenden eindeutige IDs für konsistente Referenzierung:
+
+- **#AID** - Archetyp-IDs (#A01-#A08)
+- **#BID** - Bedürfnis-IDs (#B01-#B88)
+- **#PID** - Perspektiven-IDs (#P1-#P4)
+
+### Bedürfnis-Matching
+
+88 GFK-basierte Bedürfnisse werden zwischen Partnern verglichen:
+
+- Wildcard-Suche über Name, Kategorie, Dimension
+- Sortierung nach Erfüllungsgrad
+- Klickbare Tags mit Definition-Modals
+- Lock-Mechanismus für individuelle Gewichtung
+
 ## Verwandte Dokumentation
 
 - [beziehungsmodell.md](../beziehungsmodell.md) - Hauptdokumentation des Modells
-- [profiles/research-sources.md](../profiles/research-sources.md) - Wissenschaftliche Quellen
+- [profiles/docs/](../profiles/docs/) - Profil-Dokumentation und Bedürfnis-Fragen
 - [ARCHETYPE-MATRIX-README.md](../ARCHETYPE-MATRIX-README.md) - Matrix-Dokumentation
+- [CHANGELOG.md](../CHANGELOG.md) - Vollständige Versionshistorie
 
 ---
 

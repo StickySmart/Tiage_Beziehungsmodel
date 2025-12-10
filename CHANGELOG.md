@@ -5,6 +5,83 @@ Alle wichtigen Änderungen am Tiage-Beziehungsmodell werden hier dokumentiert.
 Format basiert auf [Keep a Changelog](https://keepachangelog.com/de/1.0.0/),
 Versionierung folgt [Semantic Versioning](https://semver.org/lang/de/).
 
+## [1.8.85] - 2025-12-10
+
+### Neu
+
+**Bedürfnis-System mit #ID-Referenzen**
+- **#BID Anzeige** - Bedürfnis-IDs (#B01-#B88) werden auf allen Tags und Buttons angezeigt
+- **Bedürfnis-Suche** - Wildcard-Suche über Name, Kategorie und Dimension
+- **Sortierung nach Status** - Bedürfnis-Liste nach Erfüllungsgrad sortierbar
+- **Klickbare Bedürfnis-Tags** - Öffnen Definition-Modal bei Klick in Synthese-Ansichten
+- **220 Bedürfnis-Fragen** - Vollständige Fragebogen-Dokumentation
+
+**Resonanz-Modal und Storytelling**
+- **Resonanz-Storytelling-Modal** - Narrative Visualisierung der Resonanz-Metriken
+- **Resonanz-Berechnung für Lebensdimensionen** - Erweiterte Metrik-Analyse
+- **Strukturierte Zitat-Tabelle** - Pirsig/OSHO Zitate in tabellarischer Form
+
+**Perspektiven-System (P1-P4)**
+- **PerspektivenModal** - 4 philosophische Perspektiven auf Bedürfnisse:
+  - P1: Ti-Age Synthese
+  - P2: Pirsig (MOQ)
+  - P3: OSHO
+  - P4: SexPositiv
+- **Vollständige P4-Perspektive** - SexPositiv-Perspektive für alle Bedürfnisse dokumentiert
+
+**Profile Review und Memory Management**
+- **Display-Button für gespeicherte Profile** - Schnellzugriff auf gespeicherte Informationen
+- **Profil-Speicher-Status** - Anzeige neben DU/PARTNER Headers
+- **ProfileReview-Optimierung** - Verwendung von flatNeeds als primäre Datenquelle
+- **AttributeSummaryCard-Synchronisation** - UI lädt gespeicherte Bedürfnis-Werte korrekt
+
+**Lock-Mechanismus für Gewichtungen**
+- **Vier-Lock-System** - Einzelne Faktoren sperrbar
+- **Summen-Lock** - Gesamtsumme bei beliebigem Wert sperrbar (nicht nur 100%)
+- **Slider-Kontrollen** - FAKTOR-GEWICHTUNG Komponente mit interaktiven Slidern
+- **Lock-Reset** - Locks werden bei Standard-Button und Profilwechsel zurückgesetzt
+
+**UI/UX Verbesserungen**
+- **KO-Warnung** - Warnmeldung unter Score-Anzeige bei inkompatiblen Kombinationen
+- **Neon Pink/Purple Toggle-Buttons** - Neue Button-Styling-Optionen
+- **Ti-Age Synthese Score** - Anzeige mit einer Dezimalstelle
+
+### Geändert
+
+**Architektur-Modernisierung**
+- **Archetype-Matrix mit #IDs** - Modernisierte JSON-Struktur mit eindeutigen Referenzen
+- **Backward Compatibility** - Transformation alter Keys für bestehende Profile
+- **Flache Bedürfnis-Liste** - Kategorien-Gruppierung entfernt für bessere Übersicht
+- **Codebase-Reorganisation** - Module in js/components/, js/services/, js/utils/
+- **profiles/ Struktur** - Reorganisiert mit data/, definitions/, modifiers/, docs/
+
+**Daten-Synchronisation**
+- **Modal-Synthese-Synchronisation** - Attribute Modal und Ti-Age Synthese nutzen gleiche Datenquelle
+- **Bedürfnis-Übereinstimmung** - Einheitliche Berechnung über alle Ansichten
+- **GFK-Export** - personDimensions global für MemoryManager zugänglich
+- **Dimension-Button-Initialisierung** - Verbessert mit Fallback-Selektoren
+
+### Behoben
+
+- **Trans-Gender-Identität** - Korrekte Behandlung in KO-Kriterien-Prüfung
+- **Cis/Trans/Suchend-Identität** - Korrekte Anwendung auf Gender-Score-Berechnung
+- **Strikethrough für Trans als Sekundär** - Primary wird durchgestrichen wenn Trans sekundär ist
+- **UI-Aktualisierung nach Laden** - Desktop-UI aktualisiert sich nach Laden des gespeicherten Zustands
+- **P/S-Indikatoren** - Werden korrekt bei Seitenreload angezeigt
+- **Score-Display-Buttons** - Funktionieren korrekt
+- **Archetype-Grid-Buttons** - Aktualisieren sich beim Laden aus Memory
+- **needDefinitionModal z-index** - Höher als profileReviewModal
+- **TDZ-Fehler** - gewichtungLocks und FAKTOR_MAP an Dateianfang verschoben
+- **loadData() Aufruf** - Initialisiert Archetypen-Daten korrekt
+- **Gemeinsame Bedürfnisse** - Sektion und Modal-Zugriff wiederhergestellt
+
+### Dokumentation
+
+- **Faktor-Gewichtung korrigiert** - Dokumentation zeigt korrekte 75/25 Pathos/Logos Gewichtung
+- **Version-Notes ersetzt** - Link zu CHANGELOG statt inline Notes
+
+---
+
 ## [1.7.0] - 2025-12-04
 
 ### Neu
