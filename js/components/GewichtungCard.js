@@ -36,8 +36,16 @@ const GewichtungCard = (function() {
                     <div class="profile-review-card gewichtung-card" data-factor="${factor}">
                         <div class="gewichtung-card-content">
                             <span class="gewichtung-card-label">${label}</span>
+                            <div class="gewichtung-slider-row">
+                                <input type="range" class="gewichtung-slider" id="gewicht-slider-${factor}"
+                                       min="0" max="100" value="${initialValue}"
+                                       oninput="GewichtungCard.onSliderInput('${factor}', this.value)"
+                                       onclick="event.stopPropagation()">
+                            </div>
                             <div class="gewichtung-card-input-group">
-                                <input type="text" class="gewichtung-input" id="gewicht-${factor}" value="${initialValue}" maxlength="3">
+                                <input type="text" class="gewichtung-input" id="gewicht-${factor}" value="${initialValue}" maxlength="3"
+                                       oninput="GewichtungCard.onInputChange('${factor}', this.value)"
+                                       onclick="event.stopPropagation()">
                                 <span class="gewichtung-percent">%</span>
                                 <span class="gewichtung-lock-indicator"></span>
                             </div>
@@ -90,15 +98,64 @@ const GewichtungCard = (function() {
     }
 
     /**
-     * Setzt den Wert einer Gewichtung
+     * Setzt den Wert einer Gewichtung (Input und Slider)
      * @param {string} factor - Faktor-Name
      * @param {number} value - Neuer Wert
      */
     function setValue(factor, value) {
         const input = document.getElementById(`gewicht-${factor}`);
+        const slider = document.getElementById(`gewicht-slider-${factor}`);
         if (input) {
             input.value = value;
         }
+        if (slider) {
+            slider.value = value;
+        }
+    }
+
+    /**
+     * Handler für Slider-Input
+     * @param {string} factor - Faktor-Name
+     * @param {string|number} value - Neuer Wert vom Slider
+     */
+    function onSliderInput(factor, value) {
+        const card = document.querySelector(`[data-factor="${factor}"]`);
+        if (card && card.classList.contains('locked')) {
+            // Wenn gesperrt, Slider zurücksetzen
+            const input = document.getElementById(`gewicht-${factor}`);
+            const slider = document.getElementById(`gewicht-slider-${factor}`);
+            if (input && slider) {
+                slider.value = input.value;
+            }
+            return;
+        }
+
+        const input = document.getElementById(`gewicht-${factor}`);
+        if (input) {
+            input.value = value;
+        }
+        updateSum();
+    }
+
+    /**
+     * Handler für Text-Input-Änderungen
+     * @param {string} factor - Faktor-Name
+     * @param {string|number} value - Neuer Wert vom Input
+     */
+    function onInputChange(factor, value) {
+        const card = document.querySelector(`[data-factor="${factor}"]`);
+        if (card && card.classList.contains('locked')) {
+            return;
+        }
+
+        const numValue = parseInt(value, 10) || 0;
+        const clampedValue = Math.max(0, Math.min(100, numValue));
+
+        const slider = document.getElementById(`gewicht-slider-${factor}`);
+        if (slider) {
+            slider.value = clampedValue;
+        }
+        updateSum();
     }
 
     /**
@@ -167,6 +224,8 @@ const GewichtungCard = (function() {
         updateSum,
         reset,
         toggleLock,
+        onSliderInput,
+        onInputChange,
         DEFAULT_WEIGHTS
     };
 })();
