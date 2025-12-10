@@ -10246,6 +10246,13 @@
                 const desktopScoreNoteIncomplete = document.getElementById('desktopScoreNote');
                 if (desktopScoreNoteIncomplete) desktopScoreNoteIncomplete.textContent = 'Bitte alle Dimensionen auswählen.';
 
+                // KO-Text ausblenden bei unvollständigen Dimensionen
+                const desktopKoTextIncomplete = document.getElementById('desktopKoTextDisplay');
+                if (desktopKoTextIncomplete) {
+                    desktopKoTextIncomplete.style.display = 'none';
+                    desktopKoTextIncomplete.innerHTML = '';
+                }
+
                 // Update Score-Circle auch bei unvollständigen Dimensionen
                 updateSyntheseScoreCycle();
                 return;
@@ -10304,6 +10311,23 @@
             const desktopScoreCircle = document.getElementById('desktopScoreCircle');
             if (desktopScoreCircle) {
                 desktopScoreCircle.style.background = 'transparent';
+            }
+
+            // ═══════════════════════════════════════════════════════════════
+            // DESKTOP KO-TEXT DISPLAY (unter dem Score Circle)
+            // ═══════════════════════════════════════════════════════════════
+            const desktopKoTextDisplay = document.getElementById('desktopKoTextDisplay');
+            if (desktopKoTextDisplay) {
+                if (pathosCheck.result === 'unmöglich') {
+                    // KO-Text anzeigen
+                    const koReason = pathosCheck.reason || 'Inkompatible Orientierungen';
+                    desktopKoTextDisplay.innerHTML = '<span class="ko-title">⚠️ K.O.-Kriterium</span><span class="ko-reason">' + koReason + '</span>';
+                    desktopKoTextDisplay.style.display = 'block';
+                } else {
+                    // KO-Text ausblenden
+                    desktopKoTextDisplay.style.display = 'none';
+                    desktopKoTextDisplay.innerHTML = '';
+                }
             }
 
             // Update Desktop Score Note (direkt beim Kreis) - 3-Stufen-Skala
