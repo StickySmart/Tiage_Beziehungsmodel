@@ -9842,7 +9842,7 @@
             // ═══════════════════════════════════════
             // SCHRITT 2: Resonanz-Faktoren R1-R4 (0.5-1.5)
             // ═══════════════════════════════════════
-            // Basierend auf 88 Bedürfnissen, aufgeteilt nach Faktor
+            // Basierend auf 220 Bedürfnissen (#B1-#B220), aufgeteilt nach Faktor
 
             // Schlüssel unverändert verwenden (duo_flex bleibt duo_flex)
             const ichArchetyp = currentArchetype || '';
