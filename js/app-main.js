@@ -16617,7 +16617,7 @@
                 typeof AttributeSummaryCard !== 'undefined' &&
                 AttributeSummaryCard.ATTRIBUTE_NEEDS_MAPPING) {
 
-                console.log('[ProfileReview] Lade Bedürfniswerte aus composedProfile.needs');
+                console.log('[ProfileReview] Lade Bedürfniswerte aus composedProfile.needs (' + Object.keys(composedProfile.needs).length + ' Bedürfnisse)');
 
                 // Für jedes Attribut-Mapping die zugehörigen Needs aus dem Profil setzen
                 Object.keys(AttributeSummaryCard.ATTRIBUTE_NEEDS_MAPPING).forEach(function(attrId) {
@@ -16643,7 +16643,7 @@
                     }
                 });
 
-                console.log('[ProfileReview] Bedürfniswerte geladen für', Object.keys(AttributeSummaryCard.ATTRIBUTE_NEEDS_MAPPING).length, 'Attribute');
+                console.log('[ProfileReview] Bedürfniswerte geladen:', Object.keys(composedProfile.needs).length, 'Bedürfnisse verteilt auf', Object.keys(AttributeSummaryCard.ATTRIBUTE_NEEDS_MAPPING).length, 'UI-Attribute');
             } else {
                 console.log('[ProfileReview] Keine Bedürfniswerte verfügbar (composedProfile.needs fehlt oder AttributeSummaryCard nicht geladen)');
             }
