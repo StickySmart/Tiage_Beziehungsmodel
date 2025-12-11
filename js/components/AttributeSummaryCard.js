@@ -306,18 +306,54 @@ const AttributeSummaryCard = (function() {
      * @returns {string} CSS-Farbwert oder null
      */
     function getDimensionColor(needId) {
-        if (typeof BeduerfnisIds !== 'undefined' && BeduerfnisIds.beduerfnisse &&
-            typeof TiageTaxonomie !== 'undefined') {
-            const need = BeduerfnisIds.beduerfnisse[needId];
-            if (need && need.kategorie) {
-                const kategorie = TiageTaxonomie.kategorien?.[need.kategorie];
-                if (kategorie && kategorie.dimension) {
-                    const dimension = TiageTaxonomie.dimensionen?.[kategorie.dimension];
-                    return dimension?.color || null;
-                }
-            }
+        // Versuche TiageTaxonomie zu finden (global oder window)
+        const taxonomie = (typeof TiageTaxonomie !== 'undefined') ? TiageTaxonomie :
+                          (typeof window !== 'undefined' && window.TiageTaxonomie) ? window.TiageTaxonomie : null;
+
+        // Versuche BeduerfnisIds zu finden
+        const beduerfnisIds = (typeof BeduerfnisIds !== 'undefined') ? BeduerfnisIds :
+                              (typeof window !== 'undefined' && window.BeduerfnisIds) ? window.BeduerfnisIds : null;
+
+        if (!taxonomie) {
+            console.warn('[getDimensionColor] TiageTaxonomie nicht verfügbar für', needId);
+            return null;
         }
-        return null;
+        if (!taxonomie.kategorien) {
+            console.warn('[getDimensionColor] TiageTaxonomie.kategorien nicht verfügbar für', needId);
+            return null;
+        }
+        if (!beduerfnisIds || !beduerfnisIds.beduerfnisse) {
+            console.warn('[getDimensionColor] BeduerfnisIds nicht verfügbar für', needId);
+            return null;
+        }
+
+        const need = beduerfnisIds.beduerfnisse[needId];
+        if (!need) {
+            console.warn('[getDimensionColor] Bedürfnis nicht gefunden:', needId);
+            return null;
+        }
+        if (!need.kategorie) {
+            console.warn('[getDimensionColor] Keine Kategorie für:', needId);
+            return null;
+        }
+
+        const kategorie = taxonomie.kategorien[need.kategorie];
+        if (!kategorie) {
+            console.warn('[getDimensionColor] Kategorie nicht gefunden:', need.kategorie, 'für', needId);
+            return null;
+        }
+        if (!kategorie.dimension) {
+            console.warn('[getDimensionColor] Keine Dimension in Kategorie:', need.kategorie);
+            return null;
+        }
+
+        const dimension = taxonomie.dimensionen?.[kategorie.dimension];
+        if (!dimension || !dimension.color) {
+            console.warn('[getDimensionColor] Dimension nicht gefunden:', kategorie.dimension);
+            return null;
+        }
+
+        return dimension.color;
     }
 
     /**
