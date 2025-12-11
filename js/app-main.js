@@ -9660,12 +9660,14 @@
 
             for (const kat of kategorien) {
                 const gemeinsamInKat = uebereinstimmend.filter(b => {
-                    const def = GfkBeduerfnisse?.definitionen?.[b.id];
+                    // b.stringKey für definitionen-Lookup verwenden
+                    const def = GfkBeduerfnisse?.definitionen?.[b.stringKey || b.id];
                     return def?.kategorie === kat;
                 }).length;
 
                 const konfliktInKat = konflikt.filter(b => {
-                    const def = GfkBeduerfnisse?.definitionen?.[b.id];
+                    // b.stringKey für definitionen-Lookup verwenden
+                    const def = GfkBeduerfnisse?.definitionen?.[b.stringKey || b.id];
                     return def?.kategorie === kat;
                 }).length;
 
@@ -13381,16 +13383,18 @@
                 if (fullMatching && fullMatching.details) {
                     const uebereinstimmend = (fullMatching.details.uebereinstimmend || []).map(b => ({
                         label: b.label,
-                        id: b.id,
-                        key: b.id,
+                        id: b.id,                  // "#B34"
+                        key: b.key,                // 34 (numerisch)
+                        stringKey: b.stringKey,    // "selbstbestimmung"
                         wert1: b.wert1,
                         wert2: b.wert2,
                         diff: b.diff
                     }));
                     const komplementaer = (fullMatching.details.komplementaer || []).map(b => ({
                         label: b.label,
-                        id: b.id,
-                        key: b.id,
+                        id: b.id,                  // "#B34"
+                        key: b.key,                // 34 (numerisch)
+                        stringKey: b.stringKey,    // "selbstbestimmung"
                         wert1: b.wert1,
                         wert2: b.wert2,
                         diff: b.diff
@@ -13400,8 +13404,9 @@
                     );
                     unterschiedlich = (fullMatching.details.konflikt || []).map(b => ({
                         label: b.label,
-                        id: b.id,
-                        key: b.id,
+                        id: b.id,                  // "#B34"
+                        key: b.key,                // 34 (numerisch)
+                        stringKey: b.stringKey,    // "selbstbestimmung"
                         wert1: b.wert1,
                         wert2: b.wert2
                     }));
@@ -13489,7 +13494,8 @@
 
             // Gemeinsame Bedürfnisse Section - gefiltert nach pathos/logos
             const gemeinsam = (matching.topUebereinstimmungen || []).filter(b => {
-                const pl = GfkBeduerfnisse.getPathosLogos ? GfkBeduerfnisse.getPathosLogos(b.id) : null;
+                // b.stringKey für getPathosLogos verwenden (braucht string-key für definitionen-Lookup)
+                const pl = GfkBeduerfnisse.getPathosLogos ? GfkBeduerfnisse.getPathosLogos(b.stringKey || b.id) : null;
                 return !pl || pl === type; // Wenn keine Zuordnung, zeige in beiden
             });
 
@@ -13519,7 +13525,8 @@
             // Dynamik + Wachstum als kombinierter Fließtext
             // Dynamik: Aus gemeinsam mit Kategorie 'dynamik'
             const dynamikNeeds = (matching.details?.uebereinstimmend || []).filter(b => {
-                const def = GfkBeduerfnisse.definitionen?.[b.id];
+                // b.stringKey für definitionen-Lookup verwenden
+                const def = GfkBeduerfnisse.definitionen?.[b.stringKey || b.id];
                 return def?.kategorie === 'dynamik';
             });
 
