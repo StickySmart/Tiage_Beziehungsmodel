@@ -29,13 +29,15 @@
     }
 
     /**
-     * Konvertiert ein Profil in flache kernbeduerfnisse (String-Keys)
+     * Konvertiert ein Profil in flache kernbeduerfnisse (#B-IDs)
      * Unterstützt zwei Formate:
-     * 1. Flaches #ID-Format: { '#B1': 50, '#B2': 60, ... }
-     * 2. Verschachteltes Kategorie-Format: { kategorie: { bed1: 50, bed2: 60 }, ... }
+     * 1. Flaches #ID-Format: { '#B1': 50, '#B2': 60, ... } → direkt übernehmen
+     * 2. Verschachteltes Kategorie-Format: { kategorie: { bed1: 50, bed2: 60 }, ... } → zu #IDs konvertieren
+     *
+     * MIGRATION v2.1: Gibt jetzt immer #B-IDs zurück, keine String-Keys mehr!
      *
      * @param {Object} profil - Profil mit beduerfnisse
-     * @returns {Object} Flaches Objekt mit String-Keys
+     * @returns {Object} Flaches Objekt mit #B-IDs als Keys
      */
     function flattenBeduerfnisse(profil) {
         if (!profil || !profil.beduerfnisse) return {};
@@ -45,23 +47,20 @@
 
         // Erkennung: Flaches #ID-Format wenn erster Key mit '#' beginnt
         if (keys.length > 0 && keys[0].startsWith('#')) {
-            // Neues flaches #ID-Format -> zu String-Keys konvertieren
-            const ids = getBeduerfnisIds();
-            if (ids && ids.convertObjToKeys) {
-                return ids.convertObjToKeys(beduerfnisse);
-            }
-            // Fallback: IDs direkt zurückgeben wenn keine Konvertierung möglich
-            return beduerfnisse;
+            // Bereits #ID-Format - direkt zurückgeben (KEINE Konvertierung mehr!)
+            return { ...beduerfnisse };
         }
 
-        // Altes verschachteltes Kategorie-Format
+        // Altes verschachteltes Kategorie-Format -> zu #IDs konvertieren
         const flat = {};
+        const ids = getBeduerfnisIds();
         keys.forEach(kategorie => {
             const katBeduerfnisse = beduerfnisse[kategorie];
             if (typeof katBeduerfnisse === 'object' && katBeduerfnisse !== null) {
-                // Alle Bedürfnisse der Kategorie zum flachen Objekt hinzufügen
                 Object.keys(katBeduerfnisse).forEach(bed => {
-                    flat[bed] = katBeduerfnisse[bed];
+                    // Konvertiere String-Key zu #B-ID
+                    const hashId = ids && ids.toId ? ids.toId(bed) : bed;
+                    flat[hashId] = katBeduerfnisse[bed];
                 });
             }
         });
