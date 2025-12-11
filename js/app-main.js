@@ -9842,7 +9842,7 @@
             // ═══════════════════════════════════════
             // SCHRITT 2: Resonanz-Faktoren R1-R4 (0.5-1.5)
             // ═══════════════════════════════════════
-            // Basierend auf 88 Bedürfnissen, aufgeteilt nach Faktor
+            // Basierend auf 220 Bedürfnissen (#B1-#B220), aufgeteilt nach Faktor
 
             // Schlüssel unverändert verwenden (duo_flex bleibt duo_flex)
             const ichArchetyp = currentArchetype || '';
@@ -10226,63 +10226,36 @@
                     };
 
                     let score = 0;
-                    let needsMatch = null;
 
-                    // Lade Profile mit needs aus dem Store für bessere Berechnung
-                    let person1WithNeeds = person1;
-                    let person2WithNeeds = person2;
+                    // WICHTIG: Verwende dieselbe Berechnung wie updateComparisonView()
+                    // um konsistente Scores zu erhalten
 
-                    if (typeof TiageProfileStore !== 'undefined' && typeof getProfileFromStore === 'function') {
-                        const ichProfile = getProfileFromStore(person1);
-                        const partnerProfile = getProfileFromStore(person2);
+                    // Temporär globale Variablen setzen für calculateRelationshipQuality
+                    const savedCurrentArchetype = currentArchetype;
+                    const savedSelectedPartner = selectedPartner;
+                    currentArchetype = ichArchetype;
+                    selectedPartner = partnerArch;
 
-                        // Wenn Profile mit needs verfügbar, verwende diese
-                        if (ichProfile && ichProfile.needs) {
-                            person1WithNeeds = { ...person1, needs: ichProfile.needs };
+                    try {
+                        const pathosCheck = checkPhysicalCompatibility(person1, person2);
+                        const logosCheck = calculatePhilosophyCompatibility(ichArchetype, partnerArch);
+
+                        if (pathosCheck.result !== 'unmöglich' && pathosCheck.result !== 'unvollständig') {
+                            const result = calculateOverallWithModifiers(person1, person2, pathosCheck, logosCheck);
+                            score = result.overall || 0;
+                        } else if (pathosCheck.result === 'unvollständig') {
+                            // Bei unvollständigen Dimensionen: Fallback auf Archetyp-Matrix
+                            const logosScore = logosCheck.score || 50;
+                            score = logosScore;
                         }
-                        if (partnerProfile && partnerProfile.needs) {
-                            person2WithNeeds = { ...person2, needs: partnerProfile.needs };
-                        }
-
-                        // Berechne auch den Bedürfnis-Match-Score separat
-                        if (ichProfile && partnerProfile && ichProfile.needs && partnerProfile.needs) {
-                            const needsResult = TiageProfileStore.calculateNeedsMatch(ichProfile, partnerProfile);
-                            needsMatch = needsResult.score || null;
-                        }
+                        // Bei 'unmöglich': score bleibt 0
+                    } finally {
+                        // Globale Variablen wiederherstellen
+                        currentArchetype = savedCurrentArchetype;
+                        selectedPartner = savedSelectedPartner;
                     }
 
-                    // Versuche TiageSynthesis.Calculator zu verwenden (inkl. Bedürfnis-Matching)
-                    // WICHTIG: data enthält archetype-matrix.json, nicht gewichtungen
-                    if (typeof TiageSynthesis !== 'undefined' && TiageSynthesis.Calculator && data) {
-                        const result = TiageSynthesis.Calculator.calculateQuick(person1WithNeeds, person2WithNeeds, data);
-                        score = result.score || 0;
-                    } else if (typeof Top10RankingCalculator !== 'undefined') {
-                        // Fallback: Verwende Top10RankingCalculator
-                        const archDefs = data?.archetypes || {};
-                        const combinations = Top10RankingCalculator.calculateAllCombinations(
-                            ichArchetype,
-                            { dominanz: getPrimaryDominanz(ichDims.dominanz), gfk: ichDims.gfk || 'mittel' },
-                            archDefs,
-                            { dominanz: getPrimaryDominanz(partnerDims.dominanz), gfk: partnerDims.gfk || 'mittel' }
-                        );
-                        const match = combinations.find(c => c.archetype === partnerArch);
-                        score = match ? match.overallScore : 0;
-                    } else {
-                        // Minimaler Fallback: Verwende Kompatibilitätsmatrix
-                        const matrix = {
-                            'single': { 'single': 85, 'duo': 25, 'duo_flex': 45, 'ra': 75, 'lat': 70, 'aromantisch': 80, 'solopoly': 75, 'polyamor': 50 },
-                            'duo': { 'single': 25, 'duo': 95, 'duo_flex': 65, 'ra': 15, 'lat': 55, 'aromantisch': 20, 'solopoly': 20, 'polyamor': 35 },
-                            'duo_flex': { 'single': 45, 'duo': 65, 'duo_flex': 85, 'ra': 55, 'lat': 70, 'aromantisch': 45, 'solopoly': 60, 'polyamor': 75 },
-                            'ra': { 'single': 75, 'duo': 15, 'duo_flex': 55, 'ra': 90, 'lat': 70, 'aromantisch': 75, 'solopoly': 85, 'polyamor': 70 },
-                            'lat': { 'single': 70, 'duo': 55, 'duo_flex': 70, 'ra': 70, 'lat': 90, 'aromantisch': 75, 'solopoly': 65, 'polyamor': 60 },
-                            'aromantisch': { 'single': 80, 'duo': 20, 'duo_flex': 45, 'ra': 75, 'lat': 75, 'aromantisch': 95, 'solopoly': 65, 'polyamor': 55 },
-                            'solopoly': { 'single': 75, 'duo': 20, 'duo_flex': 60, 'ra': 85, 'lat': 65, 'aromantisch': 65, 'solopoly': 90, 'polyamor': 80 },
-                            'polyamor': { 'single': 50, 'duo': 35, 'duo_flex': 75, 'ra': 70, 'lat': 60, 'aromantisch': 55, 'solopoly': 80, 'polyamor': 90 }
-                        };
-                        score = matrix[ichArchetype]?.[partnerArch] || 50;
-                    }
-
-                    results.push({ archetype: partnerArch, score: score, needsMatch: needsMatch });
+                    results.push({ archetype: partnerArch, score: score });
 
                     if (score > bestScore) {
                         bestScore = score;
@@ -10419,64 +10392,36 @@
                     };
 
                     let score = 0;
-                    let needsMatch = null;
 
-                    // Lade Profile mit needs aus dem Store für bessere Berechnung
-                    let person1WithNeeds = person1;
-                    let person2WithNeeds = person2;
+                    // WICHTIG: Verwende dieselbe Berechnung wie updateComparisonView()
+                    // um konsistente Scores zu erhalten
 
-                    if (typeof TiageProfileStore !== 'undefined' && typeof getProfileFromStore === 'function') {
-                        const ichProfile = getProfileFromStore(person1);
-                        const partnerProfile = getProfileFromStore(person2);
+                    // Temporär globale Variablen setzen für calculateRelationshipQuality
+                    const savedCurrentArchetype = currentArchetype;
+                    const savedSelectedPartner = selectedPartner;
+                    currentArchetype = ichArch;
+                    selectedPartner = partnerArchetype;
 
-                        // Wenn Profile mit needs verfügbar, verwende diese
-                        if (ichProfile && ichProfile.needs) {
-                            person1WithNeeds = { ...person1, needs: ichProfile.needs };
+                    try {
+                        const pathosCheck = checkPhysicalCompatibility(person1, person2);
+                        const logosCheck = calculatePhilosophyCompatibility(ichArch, partnerArchetype);
+
+                        if (pathosCheck.result !== 'unmöglich' && pathosCheck.result !== 'unvollständig') {
+                            const result = calculateOverallWithModifiers(person1, person2, pathosCheck, logosCheck);
+                            score = result.overall || 0;
+                        } else if (pathosCheck.result === 'unvollständig') {
+                            // Bei unvollständigen Dimensionen: Fallback auf Archetyp-Matrix
+                            const logosScore = logosCheck.score || 50;
+                            score = logosScore;
                         }
-                        if (partnerProfile && partnerProfile.needs) {
-                            person2WithNeeds = { ...person2, needs: partnerProfile.needs };
-                        }
-
-                        // Berechne auch den Bedürfnis-Match-Score separat
-                        if (ichProfile && partnerProfile && ichProfile.needs && partnerProfile.needs) {
-                            const needsResult = TiageProfileStore.calculateNeedsMatch(ichProfile, partnerProfile);
-                            needsMatch = needsResult.score || null;
-                        }
+                        // Bei 'unmöglich': score bleibt 0
+                    } finally {
+                        // Globale Variablen wiederherstellen
+                        currentArchetype = savedCurrentArchetype;
+                        selectedPartner = savedSelectedPartner;
                     }
 
-                    // Versuche TiageSynthesis.Calculator zu verwenden
-                    // WICHTIG: data enthält archetype-matrix.json, nicht gewichtungen
-                    if (typeof TiageSynthesis !== 'undefined' && TiageSynthesis.Calculator && data) {
-                        const result = TiageSynthesis.Calculator.calculateQuick(person1WithNeeds, person2WithNeeds, data);
-                        score = result.score || 0;
-                    } else if (typeof Top10RankingCalculator !== 'undefined') {
-                        // Fallback: Verwende Top10RankingCalculator
-                        const archDefs = data?.archetypes || {};
-                        const combinations = Top10RankingCalculator.calculateAllCombinations(
-                            ichArch,
-                            { dominanz: getPrimaryDominanz(ichDims.dominanz), gfk: ichDims.gfk || 'mittel' },
-                            archDefs,
-                            { dominanz: getPrimaryDominanz(partnerDims.dominanz), gfk: partnerDims.gfk || 'mittel' }
-                        );
-                        // Da wir den ICH-Archetyp variieren, suchen wir den Partner-Archetyp im Ergebnis
-                        const match = combinations.find(c => c.archetype === partnerArchetype);
-                        score = match ? match.overallScore : 0;
-                    } else {
-                        // Minimaler Fallback: Verwende Kompatibilitätsmatrix
-                        const matrix = {
-                            'single': { 'single': 85, 'duo': 25, 'duo_flex': 45, 'ra': 75, 'lat': 70, 'aromantisch': 80, 'solopoly': 75, 'polyamor': 50 },
-                            'duo': { 'single': 25, 'duo': 95, 'duo_flex': 65, 'ra': 15, 'lat': 55, 'aromantisch': 20, 'solopoly': 20, 'polyamor': 35 },
-                            'duo_flex': { 'single': 45, 'duo': 65, 'duo_flex': 85, 'ra': 55, 'lat': 70, 'aromantisch': 45, 'solopoly': 60, 'polyamor': 75 },
-                            'ra': { 'single': 75, 'duo': 15, 'duo_flex': 55, 'ra': 90, 'lat': 70, 'aromantisch': 75, 'solopoly': 85, 'polyamor': 70 },
-                            'lat': { 'single': 70, 'duo': 55, 'duo_flex': 70, 'ra': 70, 'lat': 90, 'aromantisch': 75, 'solopoly': 65, 'polyamor': 60 },
-                            'aromantisch': { 'single': 80, 'duo': 20, 'duo_flex': 45, 'ra': 75, 'lat': 75, 'aromantisch': 95, 'solopoly': 65, 'polyamor': 55 },
-                            'solopoly': { 'single': 75, 'duo': 20, 'duo_flex': 60, 'ra': 85, 'lat': 65, 'aromantisch': 65, 'solopoly': 90, 'polyamor': 80 },
-                            'polyamor': { 'single': 50, 'duo': 35, 'duo_flex': 75, 'ra': 70, 'lat': 60, 'aromantisch': 55, 'solopoly': 80, 'polyamor': 90 }
-                        };
-                        score = matrix[ichArch]?.[partnerArchetype] || 50;
-                    }
-
-                    results.push({ archetype: ichArch, score: score, needsMatch: needsMatch });
+                    results.push({ archetype: ichArch, score: score });
 
                     if (score > bestScore) {
                         bestScore = score;
