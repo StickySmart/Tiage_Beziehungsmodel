@@ -10113,12 +10113,29 @@
          * Berechnet und wählt automatisch den besten Partner-Archetyp
          * basierend auf den aktuellen ICH-Einstellungen (Archetyp, Dimensionen, Gewichtungen)
          *
-         * Faktoren:
-         * - Archetyp-Matrix: Basis-Score (25-95 Punkte)
-         * - Dominanz: ±12 Punkte (dominant↔submissiv optimal)
-         * - Orientierung: ±10 Punkte (Kompatibilität der sexuellen Orientierung)
-         * - Geschlecht: ±8 Punkte (basierend auf Orientierung+Geschlecht Kompatibilität)
-         * - Resonanz: Multiplikator 0.9-1.1 (basierend auf Logos/Pathos-Balance und GFK)
+         * ═══════════════════════════════════════════════════════════════════════
+         * TIAGE SYNTHESE v3.1 FORMEL
+         * ═══════════════════════════════════════════════════════════════════════
+         *
+         * Basis-Formel:
+         *   Q = [(A × wₐ) + (O × wₒ) + (D × wᵈ) + (G × wᵍ)] × R
+         *
+         * Gewichtungen (constants.js):
+         *   A (Archetyp/LOGOS)    = 15%  - Beziehungsphilosophie
+         *   O (Orientierung)      = 40%  - Sexuelle Orientierung
+         *   D (Dominanz)          = 20%  - Dom/Sub/Switch Dynamik
+         *   G (Geschlecht)        = 25%  - Gender-Attraktion
+         *
+         * v3.1 Dimensionale Resonanz (wenn Bedürfnis-Profile vorhanden):
+         *   Q = (A × wₐ × R_Philosophie) +
+         *       (O × wₒ × R_Leben) +
+         *       (D × wᵈ × R_Dynamik) +
+         *       (G × wᵍ × R_Identität)
+         *
+         * Wobei R_dim = 0.9 + (Bedürfnis-Match × 0.2), also 0.9-1.1
+         *
+         * Fallback (ohne Profile): Q = baseScore × R_gesamt
+         * ═══════════════════════════════════════════════════════════════════════
          */
         // Hilfsfunktion: Stellt sicher, dass Geschlechts-Objekt valide Werte hat
         function ensureValidGeschlecht(geschlechtObj) {
@@ -10331,6 +10348,15 @@
          * findBestIchMatch() - Findet den besten ICH-Archetyp basierend auf den Partner-Einstellungen
          * Umgekehrte Logik zu findBestPartnerMatch(): Hier werden die PARTNER-Einstellungen als Basis genommen
          * und der beste ICH-Archetyp gesucht.
+         *
+         * ═══════════════════════════════════════════════════════════════════════
+         * TIAGE SYNTHESE v3.1 FORMEL (siehe findBestPartnerMatch für Details)
+         * ═══════════════════════════════════════════════════════════════════════
+         *
+         * Q = [(A × 0.15) + (O × 0.40) + (D × 0.20) + (G × 0.25)] × R
+         *
+         * v3.1: Q = Σ(Faktor × Gewicht × R_Dimension)
+         * ═══════════════════════════════════════════════════════════════════════
          */
         function findBestIchMatch() {
             console.log('[findBestIchMatch] Funktion aufgerufen');
