@@ -131,34 +131,53 @@ Feinjustierung der Gender-Chemie als Ergänzung zum Orientierungs-Faktor.
 
 ---
 
-## Resonanz-Koeffizient
+## Resonanz-Koeffizient (v3.1)
 
-Zusätzlich zu den 4 Hauptfaktoren gibt es einen **Meta-Faktor**, der das Ergebnis moduliert:
+Zusätzlich zu den 4 Hauptfaktoren gibt es einen **Meta-Faktor**, der das Ergebnis moduliert.
 
-**Formel:** `R = 0.9 + [(M × 0.35) + (B × 0.35) + (K × 0.30)] × 0.2`
+### Multi-Dimensionale Resonanz
 
-| Komponente | Gewicht | Bedeutung |
-|------------|---------|-----------|
-| **M** | 35% | Bedürfnis-Match (GFK-basiert) |
-| **B** | 35% | Logos-Pathos-Balance |
-| **K** | 30% | GFK-Kommunikationsfaktor |
+Jeder Faktor hat seine **eigene Resonanz-Dimension** basierend auf dem Bedürfnis-Match:
 
-Der Resonanz-Koeffizient bewegt sich zwischen **0.9 und 1.1** und verstärkt oder dämpft den Basis-Score.
+| Dimension | Emoji | Faktor | Bedürfnisse |
+|-----------|-------|--------|-------------|
+| **R_Philosophie** | 🧠 | Archetyp | 17 Needs (Bindung, Autonomie, Lebensplanung) |
+| **R_Leben** | 🔥 | Orientierung | 18 Needs (Sexualität, Intimität, Tantra) |
+| **R_Dynamik** | ⚡ | Dominanz | 18 Needs (Führung, Hingabe, Machtdynamik) |
+| **R_Identität** | 💚 | Geschlecht | 10 Needs (Authentizität, Selbstausdruck) |
+
+**Formel pro Dimension:**
+```
+R_dim = 0.9 + (Match_dim × 0.2)
+```
+
+**Interpretation:**
+| R-Wert | Status | Symbol |
+|--------|--------|--------|
+| ≥ 1.05 | Resonanz | ⬆️ |
+| 0.97-1.05 | Neutral | ➡️ |
+| ≤ 0.97 | Dissonanz | ⬇️ |
+
+Der Resonanz-Koeffizient bewegt sich zwischen **0.9 und 1.1** pro Dimension.
 
 ---
 
-## Gesamtformel
+## Gesamtformel (v3.1)
 
 ```
-Qualitätsindex = [(A × 0.15) + (O × 0.40) + (D × 0.20) + (G × 0.25)] × R
+Q = (A × 0.15 × R_Philosophie) + (O × 0.40 × R_Leben) + (D × 0.20 × R_Dynamik) + (G × 0.25 × R_Identität)
 ```
 
 Wobei:
-- A = Archetyp-Score (0-100) - 15%
-- O = Orientierungs-Score (0-100) - 40%
-- D = Dominanz-Score (0-100) - 20%
-- G = Geschlechts-Score (0-100) - 25%
-- R = Resonanz-Koeffizient (0.9-1.1)
+- A = Archetyp-Score (0-100) × 15% × 🧠 R_Philosophie
+- O = Orientierungs-Score (0-100) × 40% × 🔥 R_Leben
+- D = Dominanz-Score (0-100) × 20% × ⚡ R_Dynamik
+- G = Geschlechts-Score (0-100) × 25% × 💚 R_Identität
+
+### Wichtige Unterscheidung
+
+- **88 GFK-Bedürfnisse** → Emotionaler Match in der Resonanz-Formel
+- **30 baseAttributes** → Lifestyle-Filter (K.O.-Kriterien wie Kinderwunsch, Wohnform)
 
 ---
 

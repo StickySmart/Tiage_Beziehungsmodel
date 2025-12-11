@@ -652,126 +652,110 @@ Resonanz ist kein fünfter Faktor, sondern beschreibt die **Qualität des Zusamm
 - Basiert auf Friston's Predictive Coding: Niedrige "Vorhersage-Fehler" = hohe Resonanz
 - Entspricht Buzsáki/Singer's Gamma-Kohärenz: Neuronale Synchronisation über Hirnareale
 
-### Berechnung des Resonanz-Koeffizienten (R)
+### Berechnung des Resonanz-Koeffizienten (R) - v3.1 Multi-Dimensional
 
-Der Resonanz-Koeffizient R wird aus **drei Komponenten** berechnet:
-
-1. **Profil-Match (M):** Ähnlichkeit der 88 GFK-Bedürfnisse
-2. **Logos-Pathos-Balance (B):** Wie harmonisch sind Kopf und Herz?
-3. **GFK-Kommunikationsfaktor (K):** Qualität der Kommunikation
+Der Resonanz-Koeffizient R wird **pro Faktor** berechnet - jeder Faktor hat seine eigene Resonanz-Dimension:
 
 > **Wichtige Unterscheidung:**
-> - **88 GFK-Bedürfnisse** → Emotionaler Match (M) in der Resonanz-Formel
+> - **88 GFK-Bedürfnisse** → Aufgeteilt auf 4 Dimensionen (63 disjunkte Needs)
 > - **30 baseAttributes** → Lifestyle-Filter (K.O.-Kriterien wie Kinderwunsch, Wohnform)
 
 ```
 ┌─────────────────────────────────────────────────────────────────────────────────┐
-│                    RESONANZ-BERECHNUNG: DREI KOMPONENTEN                        │
+│                    MULTI-DIMENSIONALE RESONANZ (v3.1)                           │
+│                                                                                 │
+│   Jeder Faktor hat seine EIGENE Resonanz-Dimension:                             │
+│                                                                                 │
+│   ┌─────────────┬────────────────────┬────────────────────────────────────┐     │
+│   │ Dimension   │ Faktor             │ Bedürfnisse (disjunkt)             │     │
+│   ├─────────────┼────────────────────┼────────────────────────────────────┤     │
+│   │ 🧠 Philosophie │ Archetyp (15%)   │ 17 Needs: kinderwunsch, bindung... │     │
+│   │ 🔥 Leben       │ Orientierung (40%)│ 18 Needs: sexuelle_haeufigkeit... │     │
+│   │ ⚡ Dynamik     │ Dominanz (20%)    │ 18 Needs: kontrolle, hingabe...   │     │
+│   │ 💚 Identität   │ Geschlecht (25%)  │ 10 Needs: authentizitaet...       │     │
+│   └─────────────┴────────────────────┴────────────────────────────────────┘     │
 │                                                                                 │
 │   ═══════════════════════════════════════════════════════════════════════════   │
-│   KOMPONENTE 1: PROFIL-MATCH (M) - basiert auf 88 GFK-Bedürfnissen              │
+│   FORMEL PRO DIMENSION                                                          │
 │   ═══════════════════════════════════════════════════════════════════════════   │
 │                                                                                 │
-│   Jedes Profil hat 88 GFK-Bedürfnisse nach Marshall Rosenberg:                  │
-│   • Verbindung: Nähe, Akzeptanz, Vertrauen, Empathie...                         │
-│   • Autonomie: Unabhängigkeit, Selbstbestimmung, Raum haben...                  │
-│   • Sicherheit: Geborgenheit, Stabilität, Beständigkeit...                      │
-│   • Wachstum: Lernen, Entwicklung, Herausforderung...                           │
+│   R_dim = 0.9 + (Match_dim × 0.2)                                               │
 │                                                                                 │
-│   Für jedes Bedürfnis mit Gewicht > 30:                                         │
-│     Ähnlichkeit = 100 - |Wert_P1 - Wert_P2|                                     │
-│     Gewicht = (Wert_P1 + Wert_P2) / 2                                           │
-│                                                                                 │
-│   M = Σ(Ähnlichkeit × Gewicht) / Σ(Gewicht)    (Match-Prozent: 0-100%)          │
+│   Match = Σ(100 - |Wert_P1 - Wert_P2|) / 100 / n                                │
+│   (für alle Bedürfnisse der jeweiligen Dimension)                               │
 │                                                                                 │
 │   ═══════════════════════════════════════════════════════════════════════════   │
-│   KOMPONENTE 2: LOGOS-PATHOS-BALANCE (B)                                        │
+│   INTERPRETATION PRO DIMENSION                                                  │
 │   ═══════════════════════════════════════════════════════════════════════════   │
 │                                                                                 │
-│   Logos = Archetyp-Score (A)                                                    │
-│   Pathos = Durchschnitt von O, D, G = (O + D + G) / 3                           │
+│   R ≥ 1.05  →  ⬆️ Resonanz (gute Schwingung in dieser Dimension)                │
+│   R 0.97-1.05 → ➡️ Neutral (ausgewogen)                                         │
+│   R ≤ 0.97  →  ⬇️ Dissonanz (Spannung in dieser Dimension)                      │
 │                                                                                 │
-│   Differenz = |Logos - Pathos|                                                  │
-│                                                                                 │
-│   B = (100 - Differenz) / 100              (Balance: 0.0 - 1.0)                 │
-│                                                                                 │
-│   → Differenz = 0   (perfekte Balance)    →  B = 1.0                            │
-│   → Differenz = 50  (mittlere Spannung)   →  B = 0.5                            │
-│   → Differenz = 100 (volle Dissonanz)     →  B = 0.0                            │
+│   Wertebereich: 0.9 - 1.1 pro Dimension                                         │
 │                                                                                 │
 │   ═══════════════════════════════════════════════════════════════════════════   │
-│   KOMPONENTE 3: GFK-KOMMUNIKATIONSFAKTOR (K)                                    │
+│   GESAMTFORMEL (v3.1)                                                           │
 │   ═══════════════════════════════════════════════════════════════════════════   │
 │                                                                                 │
-│   Basierend auf der GFK-Kompetenz (niedrig/mittel/hoch) beider Personen:        │
+│   Q = (A × 0.15 × R_Philosophie) +                                              │
+│       (O × 0.40 × R_Leben) +                                                    │
+│       (D × 0.20 × R_Dynamik) +                                                  │
+│       (G × 0.25 × R_Identität)                                                  │
 │                                                                                 │
-│   | ICH / Partner | hoch | mittel | niedrig |                                   │
-│   |---------------|------|--------|---------|                                   │
-│   | hoch          | 1.0  | 0.75   | 0.35    |                                   │
-│   | mittel        | 0.75 | 0.5    | 0.2     |                                   │
-│   | niedrig       | 0.35 | 0.2    | 0.0     |                                   │
-│                                                                                 │
-│   ═══════════════════════════════════════════════════════════════════════════   │
-│   GESAMTFORMEL                                                                  │
-│   ═══════════════════════════════════════════════════════════════════════════   │
-│                                                                                 │
-│   R = 0.9 + [(M/100 × 0.35) + (B × 0.35) + (K × 0.30)] × 0.2                    │
-│                                                                                 │
-│   → Profil-Match (M): 35% Gewicht                                               │
-│   → Balance (B): 35% Gewicht                                                    │
-│   → Kommunikation (K): 30% Gewicht                                              │
-│   → Ergebnis: R zwischen 0.9 und 1.1                                            │
+│   Jeder Faktor wird mit SEINER spezifischen Resonanz multipliziert!             │
 │                                                                                 │
 └─────────────────────────────────────────────────────────────────────────────────┘
 ```
 
-**Beispiel-Berechnung:**
+**Beispiel-Berechnung (v3.1):**
 
 ```
 ┌─────────────────────────────────────────────────────────────────────────────────┐
 │   BEISPIEL: Zwei Profile vergleichen                                            │
 │                                                                                 │
-│   Scores:  A = 75%,  O = 100%,  D = 100%,  G = 100%                             │
-│   GFK: Person1 = mittel, Person2 = hoch                                         │
+│   Scores:  A = 75%,  O = 100%,  D = 100%,  G = 90%                              │
 │                                                                                 │
 │   ─────────────────────────────────────────────────────────────────────────     │
-│   SCHRITT 1: Profil-Match (basiert auf 88 GFK-Bedürfnissen)                     │
-│   Gewichtete Übereinstimmung der Bedürfnisse = 72%                              │
-│   M = 72%                                                                       │
+│   SCHRITT 1: Match pro Dimension berechnen                                      │
+│   (basierend auf den Bedürfnissen jeder Dimension)                              │
+│                                                                                 │
+│   Match_Philosophie  = 0.30 (30% Übereinstimmung bei Archetyp-Needs)            │
+│   Match_Leben        = 0.90 (90% Übereinstimmung bei Orientierung-Needs)        │
+│   Match_Dynamik      = 0.60 (60% Übereinstimmung bei Dominanz-Needs)            │
+│   Match_Identität    = 0.80 (80% Übereinstimmung bei Geschlecht-Needs)          │
 │                                                                                 │
 │   ─────────────────────────────────────────────────────────────────────────     │
-│   SCHRITT 2: Logos-Pathos-Balance                                               │
-│   Logos = A = 75%                                                               │
-│   Pathos = (100 + 100 + 100) / 3 = 100%                                         │
-│   Differenz = |75 - 100| = 25                                                   │
-│   B = (100 - 25) / 100 = 0.75                                                   │
+│   SCHRITT 2: R-Wert pro Dimension (R = 0.9 + Match × 0.2)                       │
+│                                                                                 │
+│   R_Philosophie = 0.9 + (0.30 × 0.2) = 0.96  ⬇️ Dissonanz                       │
+│   R_Leben       = 0.9 + (0.90 × 0.2) = 1.08  ⬆️ Resonanz                        │
+│   R_Dynamik     = 0.9 + (0.60 × 0.2) = 1.02  ➡️ Neutral                         │
+│   R_Identität   = 0.9 + (0.80 × 0.2) = 1.06  ⬆️ Resonanz                        │
 │                                                                                 │
 │   ─────────────────────────────────────────────────────────────────────────     │
-│   SCHRITT 3: GFK-Kommunikationsfaktor                                           │
-│   mittel + hoch = 0.75                                                          │
-│   K = 0.75                                                                      │
+│   SCHRITT 3: Dimensionale Multiplikation                                        │
 │                                                                                 │
-│   ─────────────────────────────────────────────────────────────────────────     │
-│   SCHRITT 4: Gesamtformel                                                       │
-│   R = 0.9 + [(0.72 × 0.35) + (0.75 × 0.35) + (0.75 × 0.30)] × 0.2               │
-│   R = 0.9 + [0.252 + 0.263 + 0.225] × 0.2                                       │
-│   R = 0.9 + 0.740 × 0.2                                                         │
-│   R = 0.9 + 0.148                                                               │
-│   R = 1.048  ≈  1.05                                                            │
+│   A × 0.15 × R_Phil   = 75 × 0.15 × 0.96  = 10.8  🧠                            │
+│   O × 0.40 × R_Leben  = 100 × 0.40 × 1.08 = 43.2  🔥                            │
+│   D × 0.20 × R_Dyn    = 100 × 0.20 × 1.02 = 20.4  ⚡                            │
+│   G × 0.25 × R_Ident  = 90 × 0.25 × 1.06  = 23.9  💚                            │
+│   ────────────────────────────────────────────────                              │
+│   Q = 98% (gerundet)                                                            │
 │                                                                                 │
-│   → Gute Harmonie: Logos, Pathos und Kommunikation schwingen zusammen           │
+│   → Trotz Dissonanz bei Philosophie: Starke Resonanz bei Leben & Identität      │
+│   → Differenzierte Analyse statt einheitlicher R-Wert                           │
 └─────────────────────────────────────────────────────────────────────────────────┘
 ```
 
 **Wissenschaftliche Begründung:**
 
-| Komponente | Wissenschaft | Bedeutung |
-|------------|--------------|-----------|
-| **Profil-Match (M)** | Friston (Predictive Coding) | Ähnliche Profile = niedrige "prediction error" |
-| **Balance (B)** | Pirsig (MOQ) | Harmonie zwischen statischer und dynamischer Qualität |
-| **Kombination** | Buzsáki/Singer | Neuronale Kohärenz auf mehreren Ebenen |
-
-**Hinweis:** Bei Attributen mit Confidence-Level < 70% wird die Übereinstimmung mit dem Confidence gewichtet.
+| Dimension | Wissenschaft | Bedeutung |
+|-----------|--------------|-----------|
+| **🧠 Philosophie** | Pirsig (MOQ) | Statische Qualität - Wie wollen wir leben? |
+| **🔥 Leben** | OSHO (Tantra) | Dynamische Qualität - Was zieht uns an? |
+| **⚡ Dynamik** | Tiedens (Power) | Komplementarität - Wer führt, wer folgt? |
+| **💚 Identität** | Friston (Predictive) | Authentizität - Wer bin ich wirklich? |
 
 ### Gewichtungen nach Pirsig (Logos/Pathos = 40/60)
 
