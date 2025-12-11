@@ -10108,6 +10108,33 @@
          * - Geschlecht: ±8 Punkte (basierend auf Orientierung+Geschlecht Kompatibilität)
          * - Resonanz: Multiplikator 0.9-1.1 (basierend auf Logos/Pathos-Balance und GFK)
          */
+        // Hilfsfunktion: Stellt sicher, dass Geschlechts-Objekt valide Werte hat
+        function ensureValidGeschlecht(geschlechtObj) {
+            const g = geschlechtObj || {};
+            return {
+                primary: g.primary || 'mann',      // Default: mann
+                secondary: g.secondary || 'cis'    // Default: cis
+            };
+        }
+
+        // Hilfsfunktion: Stellt sicher, dass Dominanz-Objekt valide Werte hat
+        function ensureValidDominanz(dominanzObj) {
+            const d = dominanzObj || {};
+            return {
+                primary: d.primary || 'ausgeglichen',
+                secondary: d.secondary || null
+            };
+        }
+
+        // Hilfsfunktion: Stellt sicher, dass Orientierungs-Objekt valide Werte hat
+        function ensureValidOrientierung(orientierungObj) {
+            const o = orientierungObj || {};
+            return {
+                primary: o.primary || 'heterosexuell',
+                secondary: o.secondary || null
+            };
+        }
+
         function findBestPartnerMatch() {
             console.log('[findBestPartnerMatch] Funktion aufgerufen');
             console.log('[findBestPartnerMatch] data geladen:', data !== null);
@@ -10129,6 +10156,20 @@
             // Sammle Partner-Dimensionen (für die Berechnung)
             const partnerDims = personDimensions.partner || {};
 
+            // Validierte Dimensionen mit Defaults für fehlende Werte
+            const validIchGeschlecht = ensureValidGeschlecht(ichDims.geschlecht);
+            const validIchDominanz = ensureValidDominanz(ichDims.dominanz);
+            const validIchOrientierung = ensureValidOrientierung(ichDims.orientierung);
+            const validPartnerGeschlecht = ensureValidGeschlecht(partnerDims.geschlecht);
+            const validPartnerDominanz = ensureValidDominanz(partnerDims.dominanz);
+            const validPartnerOrientierung = ensureValidOrientierung(partnerDims.orientierung);
+
+            console.log('[findBestPartnerMatch] Validierte ICH-Dimensionen:', {
+                geschlecht: validIchGeschlecht,
+                dominanz: validIchDominanz,
+                orientierung: validIchOrientierung
+            });
+
             let bestMatch = null;
             let bestScore = -1;
             const results = [];
@@ -10140,39 +10181,52 @@
                     // Person1 = ICH (die festen Einstellungen)
                     const person1 = {
                         archetyp: ichArchetype,
-                        dominanz: ichDims.dominanz || {},
-                        geschlecht: ichDims.geschlecht || {},
-                        orientierung: ichDims.orientierung || {},
+                        dominanz: validIchDominanz,
+                        geschlecht: validIchGeschlecht,
+                        orientierung: validIchOrientierung,
                         gfk: ichDims.gfk || 'mittel'
                     };
 
                     // Person2 = PARTNER (der Archetyp, der getestet wird)
                     const person2 = {
                         archetyp: partnerArch,
-                        dominanz: partnerDims.dominanz || {},
-                        geschlecht: partnerDims.geschlecht || {},
-                        orientierung: partnerDims.orientierung || {},
+                        dominanz: validPartnerDominanz,
+                        geschlecht: validPartnerGeschlecht,
+                        orientierung: validPartnerOrientierung,
                         gfk: partnerDims.gfk || 'mittel'
                     };
 
                     let score = 0;
                     let needsMatch = null;
 
+                    // Lade Profile mit needs aus dem Store für bessere Berechnung
+                    let person1WithNeeds = person1;
+                    let person2WithNeeds = person2;
+
+                    if (typeof TiageProfileStore !== 'undefined' && typeof getProfileFromStore === 'function') {
+                        const ichProfile = getProfileFromStore(person1);
+                        const partnerProfile = getProfileFromStore(person2);
+
+                        // Wenn Profile mit needs verfügbar, verwende diese
+                        if (ichProfile && ichProfile.needs) {
+                            person1WithNeeds = { ...person1, needs: ichProfile.needs };
+                        }
+                        if (partnerProfile && partnerProfile.needs) {
+                            person2WithNeeds = { ...person2, needs: partnerProfile.needs };
+                        }
+
+                        // Berechne auch den Bedürfnis-Match-Score separat
+                        if (ichProfile && partnerProfile && ichProfile.needs && partnerProfile.needs) {
+                            const needsResult = TiageProfileStore.calculateNeedsMatch(ichProfile, partnerProfile);
+                            needsMatch = needsResult.score || null;
+                        }
+                    }
+
                     // Versuche TiageSynthesis.Calculator zu verwenden (inkl. Bedürfnis-Matching)
                     // WICHTIG: data enthält archetype-matrix.json, nicht gewichtungen
                     if (typeof TiageSynthesis !== 'undefined' && TiageSynthesis.Calculator && data) {
-                        const result = TiageSynthesis.Calculator.calculateQuick(person1, person2, data);
+                        const result = TiageSynthesis.Calculator.calculateQuick(person1WithNeeds, person2WithNeeds, data);
                         score = result.score || 0;
-
-                        // Versuche auch die Bedürfnis-Übereinstimmung zu holen
-                        if (typeof TiageProfileStore !== 'undefined' && typeof getProfileFromStore === 'function') {
-                            const ichProfile = getProfileFromStore(person1);
-                            const partnerProfile = getProfileFromStore(person2);
-                            if (ichProfile && partnerProfile && ichProfile.needs && partnerProfile.needs) {
-                                const needsResult = TiageProfileStore.calculateNeedsMatch(ichProfile, partnerProfile);
-                                needsMatch = needsResult.score || null;
-                            }
-                        }
                     } else if (typeof Top10RankingCalculator !== 'undefined') {
                         // Fallback: Verwende Top10RankingCalculator
                         const archDefs = data?.archetypes || {};
@@ -10285,7 +10339,20 @@
             // Sammle ICH-Dimensionen (für die Berechnung)
             const ichDims = personDimensions.ich || {};
 
+            // Validierte Dimensionen mit Defaults für fehlende Werte
+            const validIchGeschlecht = ensureValidGeschlecht(ichDims.geschlecht);
+            const validIchDominanz = ensureValidDominanz(ichDims.dominanz);
+            const validIchOrientierung = ensureValidOrientierung(ichDims.orientierung);
+            const validPartnerGeschlecht = ensureValidGeschlecht(partnerDims.geschlecht);
+            const validPartnerDominanz = ensureValidDominanz(partnerDims.dominanz);
+            const validPartnerOrientierung = ensureValidOrientierung(partnerDims.orientierung);
+
             console.log('[findBestIchMatch] selectedPartner:', selectedPartner, '-> verwendet:', partnerArchetype);
+            console.log('[findBestIchMatch] Validierte Partner-Dimensionen:', {
+                geschlecht: validPartnerGeschlecht,
+                dominanz: validPartnerDominanz,
+                orientierung: validPartnerOrientierung
+            });
 
             let bestMatch = null;
             let bestScore = -1;
@@ -10298,27 +10365,51 @@
                     // Person1 = ICH (der Archetyp, der getestet wird)
                     const person1 = {
                         archetyp: ichArch,
-                        dominanz: ichDims.dominanz || {},
-                        geschlecht: ichDims.geschlecht || {},
-                        orientierung: ichDims.orientierung || {},
+                        dominanz: validIchDominanz,
+                        geschlecht: validIchGeschlecht,
+                        orientierung: validIchOrientierung,
                         gfk: ichDims.gfk || 'mittel'
                     };
 
                     // Person2 = PARTNER (die festen Einstellungen)
                     const person2 = {
                         archetyp: partnerArchetype,
-                        dominanz: partnerDims.dominanz || {},
-                        geschlecht: partnerDims.geschlecht || {},
-                        orientierung: partnerDims.orientierung || {},
+                        dominanz: validPartnerDominanz,
+                        geschlecht: validPartnerGeschlecht,
+                        orientierung: validPartnerOrientierung,
                         gfk: partnerDims.gfk || 'mittel'
                     };
 
                     let score = 0;
+                    let needsMatch = null;
+
+                    // Lade Profile mit needs aus dem Store für bessere Berechnung
+                    let person1WithNeeds = person1;
+                    let person2WithNeeds = person2;
+
+                    if (typeof TiageProfileStore !== 'undefined' && typeof getProfileFromStore === 'function') {
+                        const ichProfile = getProfileFromStore(person1);
+                        const partnerProfile = getProfileFromStore(person2);
+
+                        // Wenn Profile mit needs verfügbar, verwende diese
+                        if (ichProfile && ichProfile.needs) {
+                            person1WithNeeds = { ...person1, needs: ichProfile.needs };
+                        }
+                        if (partnerProfile && partnerProfile.needs) {
+                            person2WithNeeds = { ...person2, needs: partnerProfile.needs };
+                        }
+
+                        // Berechne auch den Bedürfnis-Match-Score separat
+                        if (ichProfile && partnerProfile && ichProfile.needs && partnerProfile.needs) {
+                            const needsResult = TiageProfileStore.calculateNeedsMatch(ichProfile, partnerProfile);
+                            needsMatch = needsResult.score || null;
+                        }
+                    }
 
                     // Versuche TiageSynthesis.Calculator zu verwenden
                     // WICHTIG: data enthält archetype-matrix.json, nicht gewichtungen
                     if (typeof TiageSynthesis !== 'undefined' && TiageSynthesis.Calculator && data) {
-                        const result = TiageSynthesis.Calculator.calculateQuick(person1, person2, data);
+                        const result = TiageSynthesis.Calculator.calculateQuick(person1WithNeeds, person2WithNeeds, data);
                         score = result.score || 0;
                     } else if (typeof Top10RankingCalculator !== 'undefined') {
                         // Fallback: Verwende Top10RankingCalculator
@@ -10347,7 +10438,7 @@
                         score = matrix[ichArch]?.[partnerArchetype] || 50;
                     }
 
-                    results.push({ archetype: ichArch, score: score });
+                    results.push({ archetype: ichArch, score: score, needsMatch: needsMatch });
 
                     if (score > bestScore) {
                         bestScore = score;
