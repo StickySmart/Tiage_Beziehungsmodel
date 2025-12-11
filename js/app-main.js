@@ -10247,11 +10247,18 @@
                 const desktopScoreNoteIncomplete = document.getElementById('desktopScoreNote');
                 if (desktopScoreNoteIncomplete) desktopScoreNoteIncomplete.textContent = 'Bitte alle Dimensionen auswählen.';
 
-                // KO-Text ausblenden bei unvollständigen Dimensionen
+                // KO-Text ausblenden bei unvollständigen Dimensionen (Desktop)
                 const desktopKoTextIncomplete = document.getElementById('desktopKoTextDisplay');
                 if (desktopKoTextIncomplete) {
                     desktopKoTextIncomplete.style.display = 'none';
                     desktopKoTextIncomplete.innerHTML = '';
+                }
+
+                // KO-Text ausblenden bei unvollständigen Dimensionen (Mobile)
+                const mobileKoTextIncomplete = document.getElementById('mobileKoTextDisplay');
+                if (mobileKoTextIncomplete) {
+                    mobileKoTextIncomplete.style.display = 'none';
+                    mobileKoTextIncomplete.innerHTML = '';
                 }
 
                 // Update Score-Circle auch bei unvollständigen Dimensionen
@@ -10328,6 +10335,23 @@
                     // KO-Text ausblenden
                     desktopKoTextDisplay.style.display = 'none';
                     desktopKoTextDisplay.innerHTML = '';
+                }
+            }
+
+            // ═══════════════════════════════════════════════════════════════
+            // MOBILE KO-TEXT DISPLAY (unter dem Score Circle auf Page 3)
+            // ═══════════════════════════════════════════════════════════════
+            const mobileKoTextDisplay = document.getElementById('mobileKoTextDisplay');
+            if (mobileKoTextDisplay) {
+                if (pathosCheck.result === 'unmöglich') {
+                    // KO-Text anzeigen
+                    const koReason = pathosCheck.reason || 'Inkompatible Orientierungen';
+                    mobileKoTextDisplay.innerHTML = '<span class="ko-title">⚠️ K.O.-Kriterium</span><br><span class="ko-reason">' + koReason + '</span>';
+                    mobileKoTextDisplay.style.display = 'block';
+                } else {
+                    // KO-Text ausblenden
+                    mobileKoTextDisplay.style.display = 'none';
+                    mobileKoTextDisplay.innerHTML = '';
                 }
             }
 
