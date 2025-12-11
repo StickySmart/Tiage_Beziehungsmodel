@@ -286,9 +286,48 @@ const PerspektivenModal = {
     },
 
     /**
-     * Rendert den Kategorie-Badge
+     * Rendert den Kategorie-Badge mit optionaler Dimension-Info
+     * @param {string} kategorie - Kategorie-Label
+     * @param {string} kategorieColor - Kategorie-Farbe
+     * @param {string} kategorieId - Kategorie-ID (z.B. '#K6')
+     * @param {object|null} dimensionInfo - Optional: {id, label, color, kurzform}
      */
-    renderKategorieBadge: function(kategorie, kategorieColor, kategorieId) {
+    renderKategorieBadge: function(kategorie, kategorieColor, kategorieId, dimensionInfo) {
+        // Dimension-Badge rendern wenn vorhanden (mit ID, Kurzform und Label)
+        const dimensionBadge = dimensionInfo ? `
+            <div style="
+                display: flex;
+                align-items: center;
+                gap: 6px;
+                padding: 4px 10px;
+                background: ${dimensionInfo.color}15;
+                border: 1px solid ${dimensionInfo.color}40;
+                border-radius: 12px;
+                margin-left: auto;
+            ">
+                <span style="
+                    width: 8px;
+                    height: 8px;
+                    border-radius: 50%;
+                    background: ${dimensionInfo.color};
+                "></span>
+                <span style="
+                    font-size: 10px;
+                    color: var(--text-muted);
+                    font-family: monospace;
+                ">${dimensionInfo.id}</span>
+                <span style="
+                    font-size: 11px;
+                    color: ${dimensionInfo.color};
+                    font-weight: 600;
+                ">${dimensionInfo.kurzform}</span>
+                <span style="
+                    font-size: 11px;
+                    color: var(--text-secondary);
+                ">${dimensionInfo.label}</span>
+            </div>
+        ` : '';
+
         return `
             <div class="kategorie-badge" style="
                 display: flex;
@@ -299,6 +338,7 @@ const PerspektivenModal = {
                 border-radius: 8px;
                 border-left: 3px solid ${kategorieColor};
                 margin-bottom: 16px;
+                flex-wrap: wrap;
             ">
                 <span style="
                     width: 12px;
@@ -316,8 +356,8 @@ const PerspektivenModal = {
                     font-size: 10px;
                     color: var(--text-muted);
                     font-family: monospace;
-                    margin-left: auto;
                 ">${kategorieId || ''}</span>
+                ${dimensionBadge}
             </div>
         `;
     },
@@ -444,11 +484,13 @@ const PerspektivenModal = {
         const kategorie = needDef.kategorie || 'Unbekannt';
         const kategorieColor = needDef.kategorieColor || '#888';
         const kategorieId = this.getKategorieId(kategorieKey);
+        // Dimension-Info ermitteln
+        const dimensionInfo = this.getDimensionInfo(kategorieId);
 
         return `
             <div class="perspektiven-modal-content" style="display: flex; flex-direction: column; gap: 0;">
                 ${this.renderPerspektiveHeader(perspektive)}
-                ${this.renderKategorieBadge(kategorie, kategorieColor, kategorieId)}
+                ${this.renderKategorieBadge(kategorie, kategorieColor, kategorieId, dimensionInfo)}
                 ${this.renderDefinition(needDef, kategorieColor)}
                 ${this.renderPerspektiveCards(needDef, perspektive)}
             </div>
@@ -480,6 +522,31 @@ const PerspektivenModal = {
             'praktisches_leben': '#K18'
         };
         return mapping[kategorieKey] || '';
+    },
+
+    /**
+     * Hilfsfunktion: Dimension-Info für eine Kategorie-ID ermitteln
+     * @param {string} kategorieId - z.B. '#K3'
+     * @returns {object|null} {id, label, color, kurzform} oder null
+     */
+    getDimensionInfo: function(kategorieId) {
+        if (typeof TiageTaxonomie === 'undefined' || !TiageTaxonomie.kategorien) {
+            return null;
+        }
+        const kategorie = TiageTaxonomie.kategorien[kategorieId];
+        if (!kategorie || !kategorie.dimension) {
+            return null;
+        }
+        const dimension = TiageTaxonomie.dimensionen?.[kategorie.dimension];
+        if (!dimension) {
+            return null;
+        }
+        return {
+            id: dimension.id,
+            label: dimension.label,
+            color: dimension.color,
+            kurzform: dimension.kurzform
+        };
     },
 
     // ═══════════════════════════════════════════════════════════════════════════
