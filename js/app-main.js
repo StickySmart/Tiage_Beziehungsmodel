@@ -10168,9 +10168,6 @@
             return 'ausgeglichen';
         }
 
-        // Globale Funktion verfügbar machen
-        window.findBestMatch = findBestMatch;
-
         // Navigation auf Seite 2 (Ergebnis) - ruft navigateArchetype auf und aktualisiert Seite 2
         function navigateArchetypeOnPage2(person, direction) {
             navigateArchetype(person, direction);
@@ -15444,6 +15441,7 @@
         window.updateArchetypeGrid = updateArchetypeGrid;
         window.navigateArchetypeOnPage2 = navigateArchetypeOnPage2;
         window.navigateArchetypeOnPage3 = navigateArchetypeOnPage3;
+        window.findBestMatch = findBestMatch;
 
         // Pathos/Logos Modal functions
         window.closePathosLogosModal = closePathosLogosModal;
