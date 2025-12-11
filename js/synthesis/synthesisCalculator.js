@@ -1209,5 +1209,91 @@ TiageSynthesis.Calculator = {
             // Keine Bedürfnisse berechnet
             beduerfnisse: null
         };
+    },
+
+    // ═══════════════════════════════════════════════════════════════════════════
+    // DEBUG: v3.1 STATUS CHECK
+    // ═══════════════════════════════════════════════════════════════════════════
+
+    /**
+     * Prüft ob alle Voraussetzungen für v3.1 erfüllt sind
+     * Aufruf: TiageSynthesis.Calculator.checkV31Status()
+     *
+     * @returns {object} Status mit Details zu jeder Voraussetzung
+     */
+    checkV31Status: function() {
+        var constants = TiageSynthesis.Constants;
+        var status = {
+            v31Active: false,
+            checks: {},
+            missing: [],
+            recommendation: ''
+        };
+
+        // Check 1: RESONANCE_DIMENSIONAL aktiviert?
+        status.checks.resonanceDimensionalEnabled = constants.RESONANCE_DIMENSIONAL &&
+                                                     constants.RESONANCE_DIMENSIONAL.ENABLED === true;
+        if (!status.checks.resonanceDimensionalEnabled) {
+            status.missing.push('RESONANCE_DIMENSIONAL.ENABLED ist false oder nicht definiert');
+        }
+
+        // Check 2: NEEDS_INTEGRATION aktiviert?
+        status.checks.needsIntegrationEnabled = constants.NEEDS_INTEGRATION &&
+                                                 constants.NEEDS_INTEGRATION.ENABLED === true;
+        if (!status.checks.needsIntegrationEnabled) {
+            status.missing.push('NEEDS_INTEGRATION.ENABLED ist false oder nicht definiert');
+        }
+
+        // Check 3: GfkBeduerfnisse geladen?
+        status.checks.gfkBeduerfnisseLoaded = typeof GfkBeduerfnisse !== 'undefined' &&
+                                               GfkBeduerfnisse.archetypProfile !== undefined;
+        if (!status.checks.gfkBeduerfnisseLoaded) {
+            status.missing.push('GfkBeduerfnisse nicht geladen (gfk-beduerfnisse.js fehlt)');
+        }
+
+        // Check 4: TiageProfileStore verfügbar?
+        status.checks.profileStoreAvailable = typeof TiageProfileStore !== 'undefined';
+        if (!status.checks.profileStoreAvailable) {
+            status.missing.push('TiageProfileStore nicht verfügbar (profile-store.js fehlt)');
+        }
+
+        // Check 5: BeduerfnisModifikatoren als Fallback?
+        status.checks.beduerfnisModifikatorenAvailable = typeof BeduerfnisModifikatoren !== 'undefined';
+
+        // Check 6: NeedsIntegration Modul?
+        status.checks.needsIntegrationModuleLoaded = typeof TiageSynthesis.NeedsIntegration !== 'undefined';
+        if (!status.checks.needsIntegrationModuleLoaded) {
+            status.missing.push('TiageSynthesis.NeedsIntegration nicht geladen (needsIntegration.js fehlt)');
+        }
+
+        // Gesamtstatus bestimmen
+        status.v31Active = status.checks.resonanceDimensionalEnabled &&
+                           status.checks.gfkBeduerfnisseLoaded &&
+                           (status.checks.profileStoreAvailable || status.checks.beduerfnisModifikatorenAvailable);
+
+        // Empfehlung generieren
+        if (status.v31Active) {
+            status.recommendation = 'v3.1 ist aktiv. Dimensionale Resonanz wird verwendet.';
+        } else if (status.missing.length > 0) {
+            status.recommendation = 'v3.1 NICHT aktiv! Fehlende Komponenten:\n- ' + status.missing.join('\n- ');
+        }
+
+        return status;
+    },
+
+    /**
+     * Gibt v3.1-Status in der Konsole aus (für schnelles Debugging)
+     */
+    logV31Status: function() {
+        var status = this.checkV31Status();
+        console.group('🔍 TIAGE v3.1 Status');
+        console.log('v3.1 aktiv:', status.v31Active ? '✅ JA' : '❌ NEIN');
+        console.table(status.checks);
+        if (status.missing.length > 0) {
+            console.warn('Fehlende Komponenten:', status.missing);
+        }
+        console.log('Empfehlung:', status.recommendation);
+        console.groupEnd();
+        return status;
     }
 };
