@@ -285,9 +285,45 @@ const AttributeSummaryCard = (function() {
     }
 
     /**
+     * Holt die Kategorie-Nummer für ein Bedürfnis
+     * @param {string} needId - z.B. '#B21'
+     * @returns {number} Kategorie-Nummer (1-18) oder 99 wenn nicht gefunden
+     */
+    function getCategoryNumber(needId) {
+        if (typeof BeduerfnisIds !== 'undefined' && BeduerfnisIds.beduerfnisse) {
+            const need = BeduerfnisIds.beduerfnisse[needId];
+            if (need && need.kategorie) {
+                const match = need.kategorie.match(/#K(\d+)/);
+                return match ? parseInt(match[1], 10) : 99;
+            }
+        }
+        return 99;
+    }
+
+    /**
+     * Holt die Dimension-Farbe für ein Bedürfnis basierend auf seiner Kategorie
+     * @param {string} needId - z.B. '#B21'
+     * @returns {string} CSS-Farbwert oder null
+     */
+    function getDimensionColor(needId) {
+        if (typeof BeduerfnisIds !== 'undefined' && BeduerfnisIds.beduerfnisse &&
+            typeof TiageTaxonomie !== 'undefined') {
+            const need = BeduerfnisIds.beduerfnisse[needId];
+            if (need && need.kategorie) {
+                const kategorie = TiageTaxonomie.kategorien?.[need.kategorie];
+                if (kategorie && kategorie.dimension) {
+                    const dimension = TiageTaxonomie.dimensionen?.[kategorie.dimension];
+                    return dimension?.color || null;
+                }
+            }
+        }
+        return null;
+    }
+
+    /**
      * Sortiert die Bedürfnis-Liste nach dem aktuellen Modus
      * @param {Array} needs - Array von {id, value, label}
-     * @param {string} mode - 'value', 'name', 'id', 'status'
+     * @param {string} mode - 'value', 'name', 'id', 'status', 'kategorie'
      * @returns {Array} Sortiertes Array
      */
     function sortNeedsList(needs, mode) {
@@ -315,6 +351,19 @@ const AttributeSummaryCard = (function() {
                         return bLocked - aLocked;
                     }
                     // Bei gleichem Status nach Wert absteigend
+                    return b.value - a.value;
+                });
+                break;
+            case 'kategorie':
+                // Nach Kategorie (#K1-#K18), innerhalb Kategorie nach Wert absteigend
+                sorted.sort((a, b) => {
+                    const catA = getCategoryNumber(a.id);
+                    const catB = getCategoryNumber(b.id);
+                    // Erst nach Kategorie sortieren
+                    if (catA !== catB) {
+                        return catA - catB;
+                    }
+                    // Bei gleicher Kategorie nach Wert absteigend
                     return b.value - a.value;
                 });
                 break;
@@ -405,14 +454,17 @@ const AttributeSummaryCard = (function() {
                 <button class="flat-needs-sort-btn${currentFlatSortMode === 'name' ? ' active' : ''}" onclick="AttributeSummaryCard.setSortMode('name')">Name</button>
                 <button class="flat-needs-sort-btn${currentFlatSortMode === 'id' ? ' active' : ''}" onclick="AttributeSummaryCard.setSortMode('id')">#B Nr.</button>
                 <button class="flat-needs-sort-btn${currentFlatSortMode === 'status' ? ' active' : ''}" onclick="AttributeSummaryCard.setSortMode('status')">Status</button>
+                <button class="flat-needs-sort-btn${currentFlatSortMode === 'kategorie' ? ' active' : ''}" onclick="AttributeSummaryCard.setSortMode('kategorie')">Kategorie</button>
             </div>
         </div>`;
 
         // Direkte flache Liste ohne Kategorien-Wrapper
-        html += `<div class="flat-needs-list">`;
+        html += `<div class="flat-needs-list${currentFlatSortMode === 'kategorie' ? ' kategorie-mode' : ''}">`;
         sortedNeeds.forEach(need => {
             const isLocked = flatNeeds[need.id]?.locked || false;
-            html += renderFlatNeedItem(need.id, need.label, need.value, isLocked);
+            // Bei Kategorie-Sortierung: Dimension-Farbe anzeigen
+            const dimColor = currentFlatSortMode === 'kategorie' ? getDimensionColor(need.id) : null;
+            html += renderFlatNeedItem(need.id, need.label, need.value, isLocked, dimColor);
         });
         html += `</div>`;
 
@@ -453,10 +505,17 @@ const AttributeSummaryCard = (function() {
 
     /**
      * Rendert ein einzelnes Bedürfnis-Item für die flache Darstellung
+     * @param {string} needId - Bedürfnis-ID
+     * @param {string} label - Anzeige-Label
+     * @param {number} value - Wert 0-100
+     * @param {boolean} isLocked - Ob fixiert
+     * @param {string|null} dimensionColor - Optional: Farbe für border-left (bei Kategorie-Sortierung)
      */
-    function renderFlatNeedItem(needId, label, value, isLocked) {
+    function renderFlatNeedItem(needId, label, value, isLocked, dimensionColor) {
+        const borderStyle = dimensionColor ? `style="border-left: 3px solid ${dimensionColor};"` : '';
+        const colorClass = dimensionColor ? ' has-dimension-color' : '';
         return `
-        <div class="flat-need-item${isLocked ? ' need-locked' : ''}" data-need="${needId}">
+        <div class="flat-need-item${isLocked ? ' need-locked' : ''}${colorClass}" data-need="${needId}" ${borderStyle}>
             <div class="flat-need-header">
                 <span class="flat-need-label clickable"
                       onclick="event.stopPropagation(); openNeedWithResonance('${needId}')"
