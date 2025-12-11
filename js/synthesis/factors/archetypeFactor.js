@@ -8,13 +8,25 @@
  * - Wie wollen beide Partner zusammenleben?
  * - Die Archetyp-Frage stellt sich NACH den initialen Pathos-Faktoren
  *
- * Datenquelle: archetype-matrix.json (6x6 Matrix)
+ * Datenquelle: archetype-matrix.json (8x8 Matrix)
  */
 
 var TiageSynthesis = TiageSynthesis || {};
 TiageSynthesis.Factors = TiageSynthesis.Factors || {};
 
 TiageSynthesis.Factors.Archetyp = {
+
+    // Fallback-Kompatibilitätsmatrix wenn keine overall Scores vorhanden
+    _fallbackMatrix: {
+        'single': { 'single': 85, 'duo': 25, 'duo_flex': 45, 'ra': 75, 'lat': 70, 'aromantisch': 80, 'solopoly': 75, 'polyamor': 50 },
+        'duo': { 'single': 25, 'duo': 95, 'duo_flex': 65, 'ra': 15, 'lat': 55, 'aromantisch': 20, 'solopoly': 20, 'polyamor': 35 },
+        'duo_flex': { 'single': 45, 'duo': 65, 'duo_flex': 85, 'ra': 55, 'lat': 70, 'aromantisch': 45, 'solopoly': 60, 'polyamor': 75 },
+        'ra': { 'single': 75, 'duo': 15, 'duo_flex': 55, 'ra': 90, 'lat': 70, 'aromantisch': 75, 'solopoly': 85, 'polyamor': 70 },
+        'lat': { 'single': 70, 'duo': 55, 'duo_flex': 70, 'ra': 70, 'lat': 90, 'aromantisch': 75, 'solopoly': 65, 'polyamor': 60 },
+        'aromantisch': { 'single': 80, 'duo': 20, 'duo_flex': 45, 'ra': 75, 'lat': 75, 'aromantisch': 95, 'solopoly': 65, 'polyamor': 55 },
+        'solopoly': { 'single': 75, 'duo': 20, 'duo_flex': 60, 'ra': 85, 'lat': 65, 'aromantisch': 65, 'solopoly': 90, 'polyamor': 80 },
+        'polyamor': { 'single': 50, 'duo': 35, 'duo_flex': 75, 'ra': 70, 'lat': 60, 'aromantisch': 55, 'solopoly': 80, 'polyamor': 90 }
+    },
 
     /**
      * Berechnet den Archetyp-Kompatibilitätsscore
@@ -35,42 +47,90 @@ TiageSynthesis.Factors.Archetyp = {
             };
         }
 
-        const key = type1 + '_' + type2;
-        const interaction = matrixData?.interactions?.[key];
+        var key = type1 + '_' + type2;
+        var interaction = matrixData?.interactions?.[key];
 
         if (!interaction) {
             // Fallback: Versuche umgekehrte Kombination
-            const reverseKey = type2 + '_' + type1;
-            const reverseInteraction = matrixData?.interactions?.[reverseKey];
+            var reverseKey = type2 + '_' + type1;
+            var reverseInteraction = matrixData?.interactions?.[reverseKey];
 
             if (reverseInteraction) {
+                interaction = reverseInteraction;
+                key = reverseKey;
+            }
+        }
+
+        // Wenn Interaction vorhanden, berechne Score
+        if (interaction) {
+            // Wenn overall vorhanden, nutze es
+            if (typeof interaction.overall === 'number') {
                 return {
-                    score: reverseInteraction.overall || 50,
+                    score: interaction.overall,
                     details: {
-                        combination: reverseKey,
-                        source: 'matrix-reverse'
+                        combination: key,
+                        source: 'matrix-overall'
                     }
                 };
             }
 
-            return {
-                score: 50,
-                details: {
-                    reason: 'Kombination nicht in Matrix',
-                    combination: key
-                }
-            };
+            // Wenn nur pro/contra vorhanden, berechne Score daraus
+            if (interaction.pro || interaction.contra) {
+                var score = this._calculateFromProContra(interaction, type1, type2);
+                return {
+                    score: score,
+                    details: {
+                        combination: key,
+                        source: 'matrix-procontra',
+                        proCount: (interaction.pro || []).length,
+                        contraCount: (interaction.contra || []).length
+                    }
+                };
+            }
         }
 
+        // Fallback: Nutze die eingebaute Kompatibilitätsmatrix
+        var fallbackScore = this._getFallbackScore(type1, type2);
         return {
-            score: interaction.overall || 50,
+            score: fallbackScore,
             details: {
                 combination: key,
-                source: 'matrix',
-                philosophyMatch: interaction.philosophyMatch,
-                compatibilityLevel: this._getCompatibilityLevel(interaction.overall)
+                source: 'fallback-matrix',
+                reason: 'Keine Matrix-Daten vorhanden'
             }
         };
+    },
+
+    /**
+     * Berechnet Score aus Pro/Contra Listen
+     * Berücksichtigt auch die Fallback-Matrix für Basis-Kompatibilität
+     */
+    _calculateFromProContra: function(interaction, type1, type2) {
+        var proCount = (interaction.pro || []).length;
+        var contraCount = (interaction.contra || []).length;
+
+        // Hole Basis-Score aus Fallback-Matrix
+        var baseScore = this._getFallbackScore(type1, type2);
+
+        // Pro/Contra modifizieren den Score leicht (±5 pro Punkt, max ±15)
+        var modifier = Math.min(15, Math.max(-15, (proCount - contraCount) * 5));
+
+        var finalScore = Math.min(100, Math.max(0, baseScore + modifier));
+        return finalScore;
+    },
+
+    /**
+     * Holt Score aus der Fallback-Matrix
+     */
+    _getFallbackScore: function(type1, type2) {
+        if (this._fallbackMatrix[type1] && typeof this._fallbackMatrix[type1][type2] === 'number') {
+            return this._fallbackMatrix[type1][type2];
+        }
+        // Versuche umgekehrt
+        if (this._fallbackMatrix[type2] && typeof this._fallbackMatrix[type2][type1] === 'number') {
+            return this._fallbackMatrix[type2][type1];
+        }
+        return 50; // Default
     },
 
     /**
@@ -89,7 +149,7 @@ TiageSynthesis.Factors.Archetyp = {
      * (Kein K.O., aber wichtige Info für Resonanz)
      */
     hasFundamentalConflict: function(type1, type2) {
-        const conflictPairs = [
+        var conflictPairs = [
             ['single', 'polyamor'],
             ['duo', 'polyamor'],
             ['solopoly', 'duo']
