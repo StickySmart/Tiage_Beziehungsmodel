@@ -17697,16 +17697,17 @@
             }
 
             // ════════════════════════════════════════════════════════════════════════
-            // NEU (v1.8.89): Speichere integrierte Bedürfnisstruktur
-            // Format: { needId: { value, locked } }
+            // NEU (v1.8.128): Speichere Array-Bedürfnisstruktur
+            // Format: [{ id, key, stringKey, label, value, locked }, ...]
             // ════════════════════════════════════════════════════════════════════════
             if (typeof AttributeSummaryCard !== 'undefined') {
                 try {
                     if (AttributeSummaryCard.getFlatNeeds) {
-                        // Neue API: Integrierte Struktur
+                        // Neue API (v1.8.128): Array-Struktur
                         var flatNeeds = AttributeSummaryCard.getFlatNeeds();
                         localStorage.setItem('tiage_flat_needs', JSON.stringify(flatNeeds));
-                        console.log('[ProfileReview] Bedürfnisse gespeichert (neue Struktur):', Object.keys(flatNeeds).length, 'Einträge');
+                        var count = Array.isArray(flatNeeds) ? flatNeeds.length : Object.keys(flatNeeds).length;
+                        console.log('[ProfileReview] Bedürfnisse gespeichert (Array-Format):', count, 'Einträge');
                     } else {
                         // Fallback: Alte API (sollte nicht mehr vorkommen)
                         var flatNeedsValues = AttributeSummaryCard.getFlatNeedsValues();
