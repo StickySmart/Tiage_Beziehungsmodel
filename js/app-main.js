@@ -10066,7 +10066,7 @@
          * - Geschlecht: ±8 Punkte (basierend auf Orientierung+Geschlecht Kompatibilität)
          * - Resonanz: Multiplikator 0.9-1.1 (basierend auf Logos/Pathos-Balance und GFK)
          */
-        function findBestMatch() {
+        function findBestPartnerMatch() {
             const ALL_ARCHETYPES = ['single', 'duo', 'duo_flex', 'ra', 'lat', 'aromantisch', 'solopoly', 'polyamor'];
 
             // Sammle ICH-Daten (feste Basis)
@@ -10153,15 +10153,15 @@
                         bestMatch = partnerArch;
                     }
                 } catch (e) {
-                    console.warn(`[findBestMatch] Fehler bei der Berechnung für ${partnerArch}:`, e);
+                    console.warn(`[findBestPartnerMatch] Fehler bei der Berechnung für ${partnerArch}:`, e);
                 }
             }
 
             // Sortiere Ergebnisse nach Score
             results.sort((a, b) => b.score - a.score);
-            console.log('[findBestMatch] ICH:', ichArchetype);
-            console.log('[findBestMatch] Ranking:', results);
-            console.log('[findBestMatch] Bester Match:', bestMatch, 'mit Score:', bestScore);
+            console.log('[findBestPartnerMatch] ICH:', ichArchetype);
+            console.log('[findBestPartnerMatch] Ranking:', results);
+            console.log('[findBestPartnerMatch] Bester Match:', bestMatch, 'mit Score:', bestScore);
 
             // Wähle den besten Match aus
             if (bestMatch) {
@@ -10209,11 +10209,11 @@
         }
 
         /**
-         * findBestMatchForIch() - Findet den besten ICH-Archetyp basierend auf den Partner-Einstellungen
-         * Umgekehrte Logik zu findBestMatch(): Hier werden die PARTNER-Einstellungen als Basis genommen
+         * findBestIchMatch() - Findet den besten ICH-Archetyp basierend auf den Partner-Einstellungen
+         * Umgekehrte Logik zu findBestPartnerMatch(): Hier werden die PARTNER-Einstellungen als Basis genommen
          * und der beste ICH-Archetyp gesucht.
          */
-        function findBestMatchForIch() {
+        function findBestIchMatch() {
             const ALL_ARCHETYPES = ['single', 'duo', 'duo_flex', 'ra', 'lat', 'aromantisch', 'solopoly', 'polyamor'];
 
             // Sammle PARTNER-Daten (DU) als Basis
@@ -10296,8 +10296,8 @@
 
             // Sortiere Ergebnisse für Debugging
             results.sort((a, b) => b.score - a.score);
-            console.log('[findBestMatchForIch] Ranking:', results);
-            console.log('[findBestMatchForIch] Bester ICH-Match:', bestMatch, 'mit Score:', bestScore);
+            console.log('[findBestIchMatch] Ranking:', results);
+            console.log('[findBestIchMatch] Bester ICH-Match:', bestMatch, 'mit Score:', bestScore);
 
             // Wähle den besten Match aus
             if (bestMatch) {
@@ -10315,7 +10315,7 @@
         }
 
         // Globale Funktion verfügbar machen
-        window.findBestMatchForIch = findBestMatchForIch;
+        window.findBestIchMatch = findBestIchMatch;
 
         // Navigation auf Seite 2 (Ergebnis) - ruft navigateArchetype auf und aktualisiert Seite 2
         function navigateArchetypeOnPage2(person, direction) {
@@ -15590,7 +15590,7 @@
         window.updateArchetypeGrid = updateArchetypeGrid;
         window.navigateArchetypeOnPage2 = navigateArchetypeOnPage2;
         window.navigateArchetypeOnPage3 = navigateArchetypeOnPage3;
-        window.findBestMatch = findBestMatch;
+        window.findBestPartnerMatch = findBestPartnerMatch;
 
         // Pathos/Logos Modal functions
         window.closePathosLogosModal = closePathosLogosModal;
