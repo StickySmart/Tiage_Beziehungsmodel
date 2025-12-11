@@ -205,13 +205,14 @@ TiageSynthesis.Calculator = {
 
         var finalScore;
 
-        if (dim) {
+        // Prüfe ob dimensionale Resonanz verfügbar ist (mit korrekter Struktur)
+        if (dim && dim.dimensions && dim.dimensions.philosophie && dim.dimensions.leben && dim.dimensions.dynamik && dim.dimensions.identitaet) {
             // v3.1: Dimensionale Multiplikation
             finalScore = Math.round(
-                (scores.archetyp * weights.archetyp * dim.philosophie.rValue) +
-                (scores.orientierung * weights.orientierung * dim.leben.rValue) +
-                (scores.dominanz * weights.dominanz * dim.dynamik.rValue) +
-                (scores.geschlecht * weights.geschlecht * dim.identitaet.rValue)
+                (scores.archetyp * weights.archetyp * dim.dimensions.philosophie.rValue) +
+                (scores.orientierung * weights.orientierung * dim.dimensions.leben.rValue) +
+                (scores.dominanz * weights.dominanz * dim.dimensions.dynamik.rValue) +
+                (scores.geschlecht * weights.geschlecht * dim.dimensions.identitaet.rValue)
             );
         } else {
             // Legacy: Gesamt-R auf baseScore
