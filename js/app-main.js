@@ -7852,6 +7852,10 @@
                         if (typeof formatBeduerfnisLabel === 'function') {
                             return formatBeduerfnisLabel(need);
                         }
+                        // Fallback für #B-IDs
+                        if (need && need.startsWith('#B') && typeof GfkBeduerfnisse !== 'undefined' && GfkBeduerfnisse.getLabel) {
+                            return GfkBeduerfnisse.getLabel(need);
+                        }
                         return need.charAt(0).toUpperCase() + need.slice(1).replace(/_/g, ' ');
                     };
 
@@ -8041,10 +8045,32 @@
 
         /**
          * Formatiert Bedürfnis-Keys in lesbare Labels
+         * Unterstützt #B-IDs (z.B. '#B21') und String-Keys (z.B. 'liebe')
          */
         function formatBeduerfnisLabel(key) {
             if (!key) return '';
-            // Underscore zu Leerzeichen, erster Buchstabe groß
+
+            // #B-ID: Nutze GfkBeduerfnisse.getLabel() für korrekte Umwandlung
+            if (key.startsWith('#B')) {
+                if (typeof GfkBeduerfnisse !== 'undefined' && GfkBeduerfnisse.getLabel) {
+                    return GfkBeduerfnisse.getLabel(key);
+                }
+                // Fallback: Versuche über BeduerfnisIds den String-Key zu holen
+                if (typeof BeduerfnisIds !== 'undefined' && BeduerfnisIds.toKey) {
+                    const stringKey = BeduerfnisIds.toKey(key);
+                    if (stringKey) {
+                        return stringKey.replace(/_/g, ' ')
+                            .replace(/ae/g, 'ä')
+                            .replace(/oe/g, 'ö')
+                            .replace(/ue/g, 'ü')
+                            .split(' ')
+                            .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+                            .join(' ');
+                    }
+                }
+            }
+
+            // String-Key: Underscore zu Leerzeichen, erster Buchstabe groß
             return key.replace(/_/g, ' ')
                       .replace(/ae/g, 'ä')
                       .replace(/oe/g, 'ö')
