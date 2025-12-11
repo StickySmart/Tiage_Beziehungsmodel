@@ -1265,6 +1265,8 @@
                     const transformedArchetypes = {};
                     for (const [id, archetype] of Object.entries(rawData.archetypes)) {
                         const key = archetype.key || id;
+                        // Normalize id property to match the key for consistency
+                        archetype.id = key;
                         transformedArchetypes[key] = archetype;
                     }
                     rawData.archetypes = transformedArchetypes;
@@ -1276,6 +1278,8 @@
                     const transformedDimensions = {};
                     for (const [id, dimension] of Object.entries(rawData.dimensions)) {
                         const key = dimension.key || id;
+                        // Normalize id property to match the key for consistency
+                        dimension.id = key;
                         transformedDimensions[key] = dimension;
                     }
                     rawData.categories = transformedDimensions;
@@ -9403,6 +9407,18 @@
                 pGender = person.geschlecht;
             }
 
+            // Fallback für sGender wenn nur pGender gesetzt ist
+            // Standard-Werte basierend auf pGender:
+            // - mann/frau → cis
+            // - inter → nonbinaer
+            if (pGender && !sGender) {
+                if (pGender === 'inter') {
+                    sGender = 'nonbinaer';
+                } else if (pGender === 'mann' || pGender === 'frau') {
+                    sGender = 'cis';
+                }
+            }
+
             // Dominanz extrahieren
             let dominanz = 'ausgeglichen';
             if (person.dominanz && typeof person.dominanz === 'object') {
@@ -9985,6 +10001,8 @@
 
         // Function to select archetype from grid click
         function selectArchetypeFromGrid(person, archetype) {
+            console.log('[selectArchetypeFromGrid] Aufgerufen für:', person, 'archetype:', archetype);
+
             const selectId = person === 'ich' ? 'ichSelect' : 'partnerSelect';
             const mobileSelectId = person === 'ich' ? 'mobileIchSelect' : 'mobilePartnerSelect';
             const select = document.getElementById(selectId);
@@ -10017,14 +10035,31 @@
                 mobilePartnerArchetype = archetype;
             }
 
+            // Sync with TiageState for persistence
+            if (typeof TiageState !== 'undefined') {
+                TiageState.setArchetype(person, archetype);
+            }
+
             // Update archetype grid highlighting
             updateArchetypeGrid(person, archetype);
 
-            // Trigger change event
+            // Trigger change event - use bubbles: true to ensure it propagates
             const activeSelect = select || mobileSelect;
             if (activeSelect) {
-                activeSelect.dispatchEvent(new Event('change'));
+                activeSelect.dispatchEvent(new Event('change', { bubbles: true }));
             }
+
+            // Update comparison view directly to ensure UI updates even without change event
+            if (typeof updateComparisonView === 'function') {
+                updateComparisonView();
+            }
+
+            // Update GFK from archetypes
+            if (typeof updateGfkFromArchetypes === 'function') {
+                updateGfkFromArchetypes();
+            }
+
+            console.log('[selectArchetypeFromGrid] Abgeschlossen für:', person, 'archetype:', archetype);
         }
 
         // Function to update archetype grid highlighting
@@ -10066,184 +10101,113 @@
          * - Geschlecht: ±8 Punkte (basierend auf Orientierung+Geschlecht Kompatibilität)
          * - Resonanz: Multiplikator 0.9-1.1 (basierend auf Logos/Pathos-Balance und GFK)
          */
-        function findBestMatch() {
-            // Sammle ICH-Daten
-            const ichArchetype = currentArchetype || 'single';
-            const ichDimensions = personDimensions.ich || {};
-            const partnerDims = personDimensions.partner || {};
+        function findBestPartnerMatch() {
+            console.log('[findBestPartnerMatch] Funktion aufgerufen');
+            console.log('[findBestPartnerMatch] data geladen:', data !== null);
+            console.log('[findBestPartnerMatch] personDimensions:', JSON.stringify(personDimensions));
 
-            // ═══════════════════════════════════════════════════════════════════
-            // KOMPATIBILITÄTS-MATRIZEN
-            // ═══════════════════════════════════════════════════════════════════
-
-            // Archetyp-Kompatibilität (Basis-Score)
-            const ARCHETYPE_MATRIX = {
-                'single': { 'single': 85, 'duo': 25, 'duo_flex': 45, 'ra': 75, 'lat': 70, 'aromantisch': 80, 'solopoly': 75, 'polyamor': 50 },
-                'duo': { 'single': 25, 'duo': 95, 'duo_flex': 65, 'ra': 15, 'lat': 55, 'aromantisch': 20, 'solopoly': 20, 'polyamor': 35 },
-                'duo_flex': { 'single': 45, 'duo': 65, 'duo_flex': 85, 'ra': 55, 'lat': 70, 'aromantisch': 45, 'solopoly': 60, 'polyamor': 75 },
-                'ra': { 'single': 75, 'duo': 15, 'duo_flex': 55, 'ra': 90, 'lat': 70, 'aromantisch': 75, 'solopoly': 85, 'polyamor': 70 },
-                'lat': { 'single': 70, 'duo': 55, 'duo_flex': 70, 'ra': 70, 'lat': 90, 'aromantisch': 75, 'solopoly': 65, 'polyamor': 60 },
-                'aromantisch': { 'single': 80, 'duo': 20, 'duo_flex': 45, 'ra': 75, 'lat': 75, 'aromantisch': 95, 'solopoly': 65, 'polyamor': 55 },
-                'solopoly': { 'single': 75, 'duo': 20, 'duo_flex': 60, 'ra': 85, 'lat': 65, 'aromantisch': 65, 'solopoly': 90, 'polyamor': 80 },
-                'polyamor': { 'single': 50, 'duo': 35, 'duo_flex': 75, 'ra': 70, 'lat': 60, 'aromantisch': 55, 'solopoly': 80, 'polyamor': 90 }
-            };
-
-            // Dominanz-Kompatibilität (70 = neutral, >70 = Bonus, <70 = Malus)
-            const DOMINANCE_MATRIX = {
-                'dominant-submissiv': 95, 'submissiv-dominant': 95,
-                'dominant-switch': 80, 'switch-dominant': 80,
-                'submissiv-switch': 80, 'switch-submissiv': 80,
-                'switch-switch': 85,
-                'dominant-dominant': 55, 'submissiv-submissiv': 55,
-                'ausgeglichen-ausgeglichen': 90,
-                'ausgeglichen-dominant': 75, 'dominant-ausgeglichen': 75,
-                'ausgeglichen-submissiv': 75, 'submissiv-ausgeglichen': 75,
-                'ausgeglichen-switch': 85, 'switch-ausgeglichen': 85
-            };
-
-            // Orientierungs-Kompatibilität (70 = neutral)
-            const ORIENTATION_MATRIX = {
-                'heterosexuell-heterosexuell': 95,
-                'homosexuell-homosexuell': 95,
-                'bisexuell-bisexuell': 90,
-                'bisexuell-heterosexuell': 85, 'heterosexuell-bisexuell': 85,
-                'bisexuell-homosexuell': 85, 'homosexuell-bisexuell': 85,
-                'heterosexuell-homosexuell': 30, 'homosexuell-heterosexuell': 30,
-                'pansexuell-pansexuell': 90,
-                'pansexuell-bisexuell': 85, 'bisexuell-pansexuell': 85,
-                'pansexuell-heterosexuell': 80, 'heterosexuell-pansexuell': 80,
-                'pansexuell-homosexuell': 80, 'homosexuell-pansexuell': 80
-            };
-
-            // Geschlechts-Kompatibilität basierend auf Orientierung
-            // Format: ichGeschlecht-partnerGeschlecht-ichOrientierung
-            const GENDER_ORIENTATION_MATRIX = {
-                // Heterosexuell: Mann sucht Frau, Frau sucht Mann
-                'mann-frau-heterosexuell': 95, 'frau-mann-heterosexuell': 95,
-                'mann-mann-heterosexuell': 20, 'frau-frau-heterosexuell': 20,
-                // Homosexuell: Gleiche Geschlechter
-                'mann-mann-homosexuell': 95, 'frau-frau-homosexuell': 95,
-                'mann-frau-homosexuell': 20, 'frau-mann-homosexuell': 20,
-                // Bisexuell/Pansexuell: Alle Kombinationen OK
-                'mann-frau-bisexuell': 90, 'frau-mann-bisexuell': 90,
-                'mann-mann-bisexuell': 90, 'frau-frau-bisexuell': 90,
-                'mann-frau-pansexuell': 90, 'frau-mann-pansexuell': 90,
-                'mann-mann-pansexuell': 90, 'frau-frau-pansexuell': 90,
-                // Inter - generell offen
-                'inter-mann-heterosexuell': 70, 'inter-frau-heterosexuell': 70,
-                'inter-mann-homosexuell': 70, 'inter-frau-homosexuell': 70,
-                'inter-mann-bisexuell': 85, 'inter-frau-bisexuell': 85,
-                'inter-inter-bisexuell': 85,
-                'mann-inter-bisexuell': 85, 'frau-inter-bisexuell': 85,
-                'mann-inter-pansexuell': 85, 'frau-inter-pansexuell': 85
-            };
-
-            const ALL_ARCHETYPES = ['single', 'duo', 'duo_flex', 'ra', 'lat', 'aromantisch', 'solopoly', 'polyamor'];
-            const results = [];
-
-            // ═══════════════════════════════════════════════════════════════════
-            // DIMENSIONEN EXTRAHIEREN
-            // ═══════════════════════════════════════════════════════════════════
-
-            const ichDominanz = getPrimaryDominanz(ichDimensions.dominanz);
-            const partnerDominanz = getPrimaryDominanz(partnerDims.dominanz);
-
-            const ichOrientierung = getPrimaryOrientierung(ichDimensions.orientierung);
-            const partnerOrientierung = getPrimaryOrientierung(partnerDims.orientierung);
-
-            const ichGeschlecht = getPrimaryGeschlecht(ichDimensions.geschlecht);
-            const partnerGeschlecht = getPrimaryGeschlecht(partnerDims.geschlecht);
-
-            // ═══════════════════════════════════════════════════════════════════
-            // BERECHNUNG FÜR JEDEN ARCHETYP
-            // ═══════════════════════════════════════════════════════════════════
-
-            // GFK-Kompatibilität für Resonanz
-            const GFK_MATRIX = {
-                'hoch-hoch': 100, 'hoch-mittel': 75, 'mittel-hoch': 75,
-                'hoch-niedrig': 45, 'niedrig-hoch': 45,
-                'mittel-mittel': 65, 'mittel-niedrig': 40, 'niedrig-mittel': 40,
-                'niedrig-niedrig': 25
-            };
-
-            // Hole GFK-Level
-            const ichGfk = ichDimensions.gfk || 'mittel';
-            const partnerGfk = partnerDims.gfk || 'mittel';
-
-            for (const partnerArch of ALL_ARCHETYPES) {
-                // 1. Basis-Score aus Archetyp-Matrix (25-95)
-                const baseScore = ARCHETYPE_MATRIX[ichArchetype]?.[partnerArch] || 50;
-
-                // 2. Dominanz-Modifikator (±12 Punkte)
-                const domKey = `${ichDominanz}-${partnerDominanz}`;
-                const domCompat = DOMINANCE_MATRIX[domKey] || 70;
-                const domModifier = Math.round((domCompat - 70) * 0.5);
-
-                // 3. Orientierungs-Modifikator (±10 Punkte)
-                const oriKey = `${ichOrientierung}-${partnerOrientierung}`;
-                const oriCompat = ORIENTATION_MATRIX[oriKey] || 70;
-                const oriModifier = Math.round((oriCompat - 70) * 0.4);
-
-                // 4. Geschlechts-Modifikator (±8 Punkte)
-                const genderKey = `${ichGeschlecht}-${partnerGeschlecht}-${ichOrientierung}`;
-                const genderCompat = GENDER_ORIENTATION_MATRIX[genderKey] || 70;
-                const genderModifier = Math.round((genderCompat - 70) * 0.3);
-
-                // 5. Resonanz-Berechnung (Multiplikator 0.9-1.1)
-                // Logos = Archetyp-Score (philosophische Kompatibilität)
-                // Pathos = Durchschnitt von Dominanz, Orientierung, Geschlecht (emotionale Kompatibilität)
-                const logos = baseScore;
-                const pathos = Math.round((domCompat + oriCompat + genderCompat) / 3);
-
-                // Balance zwischen Logos und Pathos (je ausgeglichener, desto besser)
-                const balance = (100 - Math.abs(logos - pathos)) / 100;
-
-                // GFK-Faktor (Kommunikationskompetenz)
-                const gfkKey = `${ichGfk}-${partnerGfk}`;
-                const gfkCompat = GFK_MATRIX[gfkKey] || 65;
-                const gfkFactor = gfkCompat / 100;
-
-                // Resonanz-Koeffizient: Basis 0.9 + Balance-Bonus + GFK-Bonus
-                const resonanz = Math.min(1.1, Math.max(0.9,
-                    0.9 + (balance * 0.1) + (gfkFactor * 0.1)
-                ));
-
-                // Gesamt-Score mit Resonanz-Multiplikator
-                const totalModifier = domModifier + oriModifier + genderModifier;
-                const rawScore = baseScore + totalModifier;
-                const score = Math.min(100, Math.max(0, Math.round(rawScore * resonanz)));
-
-                results.push({
-                    archetype: partnerArch,
-                    score: score,
-                    baseScore: baseScore,
-                    modifiers: {
-                        dominanz: domModifier,
-                        orientierung: oriModifier,
-                        geschlecht: genderModifier,
-                        total: totalModifier
-                    },
-                    resonanz: {
-                        coefficient: resonanz,
-                        logos: logos,
-                        pathos: pathos,
-                        balance: balance,
-                        gfk: gfkFactor
-                    }
-                });
+            // Prüfe, ob data geladen ist
+            if (!data) {
+                console.warn('[findBestPartnerMatch] WARNUNG: data ist nicht geladen! Verwende Fallback-Matrix.');
             }
 
-            // Sortiere nach Score
+            const ALL_ARCHETYPES = ['single', 'duo', 'duo_flex', 'ra', 'lat', 'aromantisch', 'solopoly', 'polyamor'];
+
+            // Sammle ICH-Daten (feste Basis)
+            const ichArchetype = currentArchetype || 'single';
+            const ichDims = personDimensions.ich || {};
+
+            console.log('[findBestPartnerMatch] currentArchetype:', currentArchetype, '-> verwendet:', ichArchetype);
+
+            // Sammle Partner-Dimensionen (für die Berechnung)
+            const partnerDims = personDimensions.partner || {};
+
+            let bestMatch = null;
+            let bestScore = -1;
+            const results = [];
+
+            // Berechne Score für jeden möglichen Partner-Archetyp
+            for (const partnerArch of ALL_ARCHETYPES) {
+                try {
+                    // Erstelle temporäre Person-Objekte für die Berechnung
+                    // Person1 = ICH (die festen Einstellungen)
+                    const person1 = {
+                        archetyp: ichArchetype,
+                        dominanz: ichDims.dominanz || {},
+                        geschlecht: ichDims.geschlecht || {},
+                        orientierung: ichDims.orientierung || {},
+                        gfk: ichDims.gfk || 'mittel'
+                    };
+
+                    // Person2 = PARTNER (der Archetyp, der getestet wird)
+                    const person2 = {
+                        archetyp: partnerArch,
+                        dominanz: partnerDims.dominanz || {},
+                        geschlecht: partnerDims.geschlecht || {},
+                        orientierung: partnerDims.orientierung || {},
+                        gfk: partnerDims.gfk || 'mittel'
+                    };
+
+                    let score = 0;
+                    let needsMatch = null;
+
+                    // Versuche TiageSynthesis.Calculator zu verwenden (inkl. Bedürfnis-Matching)
+                    // WICHTIG: data enthält archetype-matrix.json, nicht gewichtungen
+                    if (typeof TiageSynthesis !== 'undefined' && TiageSynthesis.Calculator && data) {
+                        const result = TiageSynthesis.Calculator.calculateQuick(person1, person2, data);
+                        score = result.score || 0;
+
+                        // Versuche auch die Bedürfnis-Übereinstimmung zu holen
+                        if (typeof TiageProfileStore !== 'undefined' && typeof getProfileFromStore === 'function') {
+                            const ichProfile = getProfileFromStore(person1);
+                            const partnerProfile = getProfileFromStore(person2);
+                            if (ichProfile && partnerProfile && ichProfile.needs && partnerProfile.needs) {
+                                const needsResult = TiageProfileStore.calculateNeedsMatch(ichProfile, partnerProfile);
+                                needsMatch = needsResult.score || null;
+                            }
+                        }
+                    } else if (typeof Top10RankingCalculator !== 'undefined') {
+                        // Fallback: Verwende Top10RankingCalculator
+                        const archDefs = data?.archetypes || {};
+                        const combinations = Top10RankingCalculator.calculateAllCombinations(
+                            ichArchetype,
+                            { dominanz: getPrimaryDominanz(ichDims.dominanz), gfk: ichDims.gfk || 'mittel' },
+                            archDefs,
+                            { dominanz: getPrimaryDominanz(partnerDims.dominanz), gfk: partnerDims.gfk || 'mittel' }
+                        );
+                        const match = combinations.find(c => c.archetype === partnerArch);
+                        score = match ? match.overallScore : 0;
+                    } else {
+                        // Minimaler Fallback: Verwende Kompatibilitätsmatrix
+                        const matrix = {
+                            'single': { 'single': 85, 'duo': 25, 'duo_flex': 45, 'ra': 75, 'lat': 70, 'aromantisch': 80, 'solopoly': 75, 'polyamor': 50 },
+                            'duo': { 'single': 25, 'duo': 95, 'duo_flex': 65, 'ra': 15, 'lat': 55, 'aromantisch': 20, 'solopoly': 20, 'polyamor': 35 },
+                            'duo_flex': { 'single': 45, 'duo': 65, 'duo_flex': 85, 'ra': 55, 'lat': 70, 'aromantisch': 45, 'solopoly': 60, 'polyamor': 75 },
+                            'ra': { 'single': 75, 'duo': 15, 'duo_flex': 55, 'ra': 90, 'lat': 70, 'aromantisch': 75, 'solopoly': 85, 'polyamor': 70 },
+                            'lat': { 'single': 70, 'duo': 55, 'duo_flex': 70, 'ra': 70, 'lat': 90, 'aromantisch': 75, 'solopoly': 65, 'polyamor': 60 },
+                            'aromantisch': { 'single': 80, 'duo': 20, 'duo_flex': 45, 'ra': 75, 'lat': 75, 'aromantisch': 95, 'solopoly': 65, 'polyamor': 55 },
+                            'solopoly': { 'single': 75, 'duo': 20, 'duo_flex': 60, 'ra': 85, 'lat': 65, 'aromantisch': 65, 'solopoly': 90, 'polyamor': 80 },
+                            'polyamor': { 'single': 50, 'duo': 35, 'duo_flex': 75, 'ra': 70, 'lat': 60, 'aromantisch': 55, 'solopoly': 80, 'polyamor': 90 }
+                        };
+                        score = matrix[ichArchetype]?.[partnerArch] || 50;
+                    }
+
+                    results.push({ archetype: partnerArch, score: score, needsMatch: needsMatch });
+
+                    if (score > bestScore) {
+                        bestScore = score;
+                        bestMatch = partnerArch;
+                    }
+                } catch (e) {
+                    console.warn(`[findBestPartnerMatch] Fehler bei der Berechnung für ${partnerArch}:`, e);
+                }
+            }
+
+            // Sortiere Ergebnisse nach Score
             results.sort((a, b) => b.score - a.score);
-
-            const bestMatch = results[0]?.archetype || ichArchetype;
-            const bestScore = results[0]?.score || 0;
-
-            console.log('[findBestMatch] ICH:', ichArchetype);
-            console.log('[findBestMatch] Dimensionen - Dominanz:', ichDominanz, '| Orientierung:', ichOrientierung, '| Geschlecht:', ichGeschlecht, '| GFK:', ichGfk);
-            console.log('[findBestMatch] Partner-Dims - Dominanz:', partnerDominanz, '| Orientierung:', partnerOrientierung, '| Geschlecht:', partnerGeschlecht, '| GFK:', partnerGfk);
-            console.log('[findBestMatch] Ranking:', results);
-            console.log('[findBestMatch] Bester Match:', bestMatch, 'mit Score:', bestScore, '| Resonanz:', results[0]?.resonanz?.coefficient?.toFixed(2));
+            console.log('[findBestPartnerMatch] ICH:', ichArchetype);
+            console.log('[findBestPartnerMatch] Ranking:', results);
+            console.log('[findBestPartnerMatch] Bester Match:', bestMatch, 'mit Score:', bestScore);
 
             // Wähle den besten Match aus
             if (bestMatch) {
@@ -10291,22 +10255,30 @@
         }
 
         /**
-         * findBestMatchForIch() - Findet den besten ICH-Archetyp basierend auf den Partner-Einstellungen
-         * Umgekehrte Logik zu findBestMatch(): Hier werden die PARTNER-Einstellungen als Basis genommen
+         * findBestIchMatch() - Findet den besten ICH-Archetyp basierend auf den Partner-Einstellungen
+         * Umgekehrte Logik zu findBestPartnerMatch(): Hier werden die PARTNER-Einstellungen als Basis genommen
          * und der beste ICH-Archetyp gesucht.
          */
-        function findBestMatchForIch() {
+        function findBestIchMatch() {
+            console.log('[findBestIchMatch] Funktion aufgerufen');
+            console.log('[findBestIchMatch] data geladen:', data !== null);
+            console.log('[findBestIchMatch] personDimensions:', JSON.stringify(personDimensions));
+
+            // Prüfe, ob data geladen ist
+            if (!data) {
+                console.warn('[findBestIchMatch] WARNUNG: data ist nicht geladen! Verwende Fallback-Matrix.');
+            }
+
             const ALL_ARCHETYPES = ['single', 'duo', 'duo_flex', 'ra', 'lat', 'aromantisch', 'solopoly', 'polyamor'];
 
             // Sammle PARTNER-Daten (DU) als Basis
             const partnerArchetype = selectedPartner || 'duo';
             const partnerDims = personDimensions.partner || {};
 
-            // Hole Gewichtungen
-            const gewichtungen = getGewichtungen();
-
             // Sammle ICH-Dimensionen (für die Berechnung)
             const ichDims = personDimensions.ich || {};
+
+            console.log('[findBestIchMatch] selectedPartner:', selectedPartner, '-> verwendet:', partnerArchetype);
 
             let bestMatch = null;
             let bestScore = -1;
@@ -10337,8 +10309,9 @@
                     let score = 0;
 
                     // Versuche TiageSynthesis.Calculator zu verwenden
-                    if (typeof TiageSynthesis !== 'undefined' && TiageSynthesis.Calculator) {
-                        const result = TiageSynthesis.Calculator.calculateQuick(person1, person2, gewichtungen);
+                    // WICHTIG: data enthält archetype-matrix.json, nicht gewichtungen
+                    if (typeof TiageSynthesis !== 'undefined' && TiageSynthesis.Calculator && data) {
+                        const result = TiageSynthesis.Calculator.calculateQuick(person1, person2, data);
                         score = result.score || 0;
                     } else if (typeof Top10RankingCalculator !== 'undefined') {
                         // Fallback: Verwende Top10RankingCalculator
@@ -10380,8 +10353,8 @@
 
             // Sortiere Ergebnisse für Debugging
             results.sort((a, b) => b.score - a.score);
-            console.log('[findBestMatchForIch] Ranking:', results);
-            console.log('[findBestMatchForIch] Bester ICH-Match:', bestMatch, 'mit Score:', bestScore);
+            console.log('[findBestIchMatch] Ranking:', results);
+            console.log('[findBestIchMatch] Bester ICH-Match:', bestMatch, 'mit Score:', bestScore);
 
             // Wähle den besten Match aus
             if (bestMatch) {
@@ -10399,7 +10372,7 @@
         }
 
         // Globale Funktion verfügbar machen
-        window.findBestMatchForIch = findBestMatchForIch;
+        window.findBestIchMatch = findBestIchMatch;
 
         // Navigation auf Seite 2 (Ergebnis) - ruft navigateArchetype auf und aktualisiert Seite 2
         function navigateArchetypeOnPage2(person, direction) {
@@ -12535,6 +12508,7 @@
          * This ensures the UI reflects any previously saved selections
          */
         function loadDimensionsFromState() {
+            console.log('[loadDimensionsFromState] Start - TiageState verfügbar:', typeof TiageState !== 'undefined');
             if (typeof TiageState === 'undefined') return;
 
             // Load from TiageState
@@ -12543,6 +12517,8 @@
             // Load archetypes from TiageState and sync with global variables (Desktop + Mobile)
             const savedIchArchetype = TiageState.getArchetype('ich');
             const savedPartnerArchetype = TiageState.getArchetype('partner');
+
+            console.log('[loadDimensionsFromState] Geladene Archetypen - ICH:', savedIchArchetype, 'PARTNER:', savedPartnerArchetype);
 
             if (savedIchArchetype) {
                 currentArchetype = savedIchArchetype;
@@ -12576,7 +12552,11 @@
 
             ['ich', 'partner'].forEach(person => {
                 const savedDims = TiageState.get(`personDimensions.${person}`);
-                if (!savedDims) return;
+                console.log(`[loadDimensionsFromState] ${person} savedDims:`, JSON.stringify(savedDims));
+                if (!savedDims) {
+                    console.log(`[loadDimensionsFromState] Keine gespeicherten Dimensionen für ${person}`);
+                    return;
+                }
 
                 // Sync geschlecht
                 if (savedDims.geschlecht) {
@@ -12664,6 +12644,9 @@
             if (typeof updateAll === 'function') {
                 updateAll();
             }
+
+            console.log('[loadDimensionsFromState] Abgeschlossen - personDimensions:', JSON.stringify(personDimensions));
+            console.log('[loadDimensionsFromState] Abgeschlossen - currentArchetype:', currentArchetype, 'selectedPartner:', selectedPartner);
         }
 
         // Initialize when DOM is ready
@@ -15171,13 +15154,30 @@
 
                 const selection = JSON.parse(saved);
 
+                // Mapping von alten #A1-#A8 Keys zu neuen String-Keys
+                const archetypeIdToKey = {
+                    '#A1': 'single',
+                    '#A2': 'duo',
+                    '#A3': 'duo_flex',
+                    '#A4': 'solopoly',
+                    '#A5': 'polyamor',
+                    '#A6': 'ra',
+                    '#A7': 'lat',
+                    '#A8': 'aromantisch'
+                };
+                const convertArchetypeId = (id) => {
+                    if (!id) return id;
+                    return archetypeIdToKey[id] || id;
+                };
+
                 // Restore ICH
                 if (selection.ich) {
-                    mobileIchArchetype = selection.ich.archetyp;
-                    currentArchetype = selection.ich.archetyp;
-                    document.getElementById('mobileIchSelect').value = selection.ich.archetyp;
+                    const ichArchetyp = convertArchetypeId(selection.ich.archetyp);
+                    mobileIchArchetype = ichArchetyp;
+                    currentArchetype = ichArchetyp;
+                    document.getElementById('mobileIchSelect').value = ichArchetyp;
                     const ichSelect = document.getElementById('ichSelect');
-                    if (ichSelect) ichSelect.value = selection.ich.archetyp;
+                    if (ichSelect) ichSelect.value = ichArchetyp;
 
                     if (selection.ich.geschlecht) {
                         // Handle new primary/secondary format
@@ -15317,11 +15317,12 @@
 
                 // Restore PARTNER
                 if (selection.partner) {
-                    mobilePartnerArchetype = selection.partner.archetyp;
-                    selectedPartner = selection.partner.archetyp;
-                    document.getElementById('mobilePartnerSelect').value = selection.partner.archetyp;
+                    const partnerArchetyp = convertArchetypeId(selection.partner.archetyp);
+                    mobilePartnerArchetype = partnerArchetyp;
+                    selectedPartner = partnerArchetyp;
+                    document.getElementById('mobilePartnerSelect').value = partnerArchetyp;
                     const partnerSelect = document.getElementById('partnerSelect');
-                    if (partnerSelect) partnerSelect.value = selection.partner.archetyp;
+                    if (partnerSelect) partnerSelect.value = partnerArchetyp;
 
                     if (selection.partner.geschlecht) {
                         // Handle new primary/secondary format
@@ -15483,10 +15484,10 @@
                 // Sync archetype grid highlighting with loaded selections
                 if (typeof updateArchetypeGrid === 'function') {
                     if (selection.ich && selection.ich.archetyp) {
-                        updateArchetypeGrid('ich', selection.ich.archetyp);
+                        updateArchetypeGrid('ich', convertArchetypeId(selection.ich.archetyp));
                     }
                     if (selection.partner && selection.partner.archetyp) {
-                        updateArchetypeGrid('partner', selection.partner.archetyp);
+                        updateArchetypeGrid('partner', convertArchetypeId(selection.partner.archetyp));
                     }
                 }
 
@@ -15674,7 +15675,7 @@
         window.updateArchetypeGrid = updateArchetypeGrid;
         window.navigateArchetypeOnPage2 = navigateArchetypeOnPage2;
         window.navigateArchetypeOnPage3 = navigateArchetypeOnPage3;
-        window.findBestMatch = findBestMatch;
+        window.findBestPartnerMatch = findBestPartnerMatch;
 
         // Pathos/Logos Modal functions
         window.closePathosLogosModal = closePathosLogosModal;
@@ -16057,7 +16058,7 @@
             });
 
             // Berechne max. erlaubten Wert für geänderten Faktor (basierend auf lockedSummeTarget)
-            const maxForChanged = lockedSummeTarget - lockedSum;
+            const maxForChanged = Math.max(0, lockedSummeTarget - lockedSum);
             const clampedValue = Math.min(Math.max(newValue, 0), maxForChanged);
 
             // Setze geänderten Wert (Input und Slider)
@@ -16067,7 +16068,7 @@
             if (changedSlider) changedSlider.value = clampedValue;
 
             // Verteile Rest auf nicht-gelockte Faktoren
-            const availableForOthers = lockedSummeTarget - lockedSum - clampedValue;
+            const availableForOthers = Math.max(0, lockedSummeTarget - lockedSum - clampedValue);
 
             if (unlockedFactors.length > 0) {
                 const currentSum = unlockedFactors.reduce((sum, f) => sum + f.value, 0);
@@ -16310,20 +16311,20 @@
             saveSummeLock();
 
             // Reset Text-Inputs
-            document.getElementById('gewicht-orientierung').value = GEWICHTUNG_DEFAULTS.O;
-            document.getElementById('gewicht-archetyp').value = GEWICHTUNG_DEFAULTS.A;
-            document.getElementById('gewicht-dominanz').value = GEWICHTUNG_DEFAULTS.D;
-            document.getElementById('gewicht-geschlecht').value = GEWICHTUNG_DEFAULTS.G;
+            document.getElementById('gewicht-orientierung').value = GEWICHTUNG_DEFAULTS.O.value;
+            document.getElementById('gewicht-archetyp').value = GEWICHTUNG_DEFAULTS.A.value;
+            document.getElementById('gewicht-dominanz').value = GEWICHTUNG_DEFAULTS.D.value;
+            document.getElementById('gewicht-geschlecht').value = GEWICHTUNG_DEFAULTS.G.value;
 
             // Reset Slider
             const sliderO = document.getElementById('gewicht-slider-orientierung');
             const sliderA = document.getElementById('gewicht-slider-archetyp');
             const sliderD = document.getElementById('gewicht-slider-dominanz');
             const sliderG = document.getElementById('gewicht-slider-geschlecht');
-            if (sliderO) sliderO.value = GEWICHTUNG_DEFAULTS.O;
-            if (sliderA) sliderA.value = GEWICHTUNG_DEFAULTS.A;
-            if (sliderD) sliderD.value = GEWICHTUNG_DEFAULTS.D;
-            if (sliderG) sliderG.value = GEWICHTUNG_DEFAULTS.G;
+            if (sliderO) sliderO.value = GEWICHTUNG_DEFAULTS.O.value;
+            if (sliderA) sliderA.value = GEWICHTUNG_DEFAULTS.A.value;
+            if (sliderD) sliderD.value = GEWICHTUNG_DEFAULTS.D.value;
+            if (sliderG) sliderG.value = GEWICHTUNG_DEFAULTS.G.value;
 
             saveGewichtungen();
             updateRowStates();
@@ -16360,6 +16361,46 @@
             if (sliderA) sliderA.value = gew.A;
             if (sliderD) sliderD.value = gew.D;
             if (sliderG) sliderG.value = gew.G;
+
+            // Wenn Summen-Lock aktiv und Summe nicht dem Zielwert entspricht, renormalisieren
+            if (summeLocked) {
+                const currentSum = gew.O + gew.A + gew.D + gew.G;
+                if (currentSum !== lockedSummeTarget && currentSum > 0) {
+                    const factors = Object.keys(FAKTOR_MAP);
+                    const unlockedFactors = factors.filter(f => !gewichtungLocks[f]);
+                    const lockedSum = factors.filter(f => gewichtungLocks[f])
+                        .reduce((sum, f) => {
+                            const key = FAKTOR_MAP[f].key;
+                            return sum + gew[key];
+                        }, 0);
+                    const unlockedSum = currentSum - lockedSum;
+                    const targetForUnlocked = Math.max(0, lockedSummeTarget - lockedSum);
+
+                    if (unlockedSum > 0 && unlockedFactors.length > 0) {
+                        let distributed = 0;
+                        unlockedFactors.forEach((factor, idx) => {
+                            const input = document.getElementById(FAKTOR_MAP[factor].inputId);
+                            const slider = document.getElementById(`gewicht-slider-${factor}`);
+                            const key = FAKTOR_MAP[factor].key;
+                            let newValue;
+
+                            if (idx === unlockedFactors.length - 1) {
+                                newValue = targetForUnlocked - distributed;
+                            } else {
+                                const proportion = gew[key] / unlockedSum;
+                                newValue = Math.round(targetForUnlocked * proportion);
+                                distributed += newValue;
+                            }
+
+                            newValue = Math.max(0, newValue);
+                            if (input) input.value = newValue;
+                            if (slider) slider.value = newValue;
+                        });
+
+                        saveGewichtungen();
+                    }
+                }
+            }
 
             updateGewichtungSumme();
             updateRowStates();
@@ -16735,17 +16776,16 @@
             var totalMatches = 0;
             var matchedAttributes = 0;
 
-            // Get all attribute cards
-            var cards = contentContainer.querySelectorAll('.attribute-summary-card');
-            var categories = contentContainer.querySelectorAll('.profile-review-category');
+            // Check if we're in flat view mode (flat-needs-container present)
+            var flatContainer = contentContainer.querySelector('.flat-needs-container');
+            var isFlatView = !!flatContainer;
 
-            // First pass: check each card for matching needs
-            cards.forEach(function(card) {
-                var needItems = card.querySelectorAll('.attribute-need-item');
-                var cardHasMatch = false;
+            if (isFlatView) {
+                // FLAT VIEW: Search in flat-need-item elements
+                var flatNeedItems = contentContainer.querySelectorAll('.flat-need-item');
 
-                needItems.forEach(function(needItem) {
-                    var needLabel = needItem.querySelector('.attribute-need-label');
+                flatNeedItems.forEach(function(needItem) {
+                    var needLabel = needItem.querySelector('.flat-need-label');
                     if (!needLabel) return;
 
                     var labelText = needLabel.textContent || '';
@@ -16755,8 +16795,11 @@
                     var matches = searchPattern.test(labelText) || searchPattern.test(needId);
 
                     // Also check category and dimension names
-                    if (!matches && typeof GfkBeduerfnisse !== 'undefined' && GfkBeduerfnisse.definitionen) {
-                        var needDef = GfkBeduerfnisse.definitionen[needId];
+                    if (!matches && typeof GfkBeduerfnisse !== 'undefined') {
+                        // Use getDefinition() which supports both #B-IDs and String-Keys
+                        var needDef = GfkBeduerfnisse.getDefinition
+                            ? GfkBeduerfnisse.getDefinition(needId)
+                            : GfkBeduerfnisse.definitionen[needId];
                         if (needDef) {
                             // Check category name
                             var kategorie = needDef.kategorie || '';
@@ -16795,47 +16838,128 @@
                         }
                     }
 
-                    // Toggle match class
+                    // Toggle visibility and match class for flat view
+                    needItem.classList.toggle('filter-hidden', !matches);
                     needItem.classList.toggle('filter-match', matches);
 
                     if (matches) {
-                        cardHasMatch = true;
                         totalMatches++;
                     }
                 });
 
-                // Show/hide card and auto-expand if has matches
-                card.classList.toggle('filter-hidden', !cardHasMatch);
-                card.classList.toggle('has-filter-match', cardHasMatch);
+                // In flat view, count visible items as "matched attributes"
+                matchedAttributes = totalMatches > 0 ? 1 : 0;
 
-                if (cardHasMatch) {
-                    matchedAttributes++;
-                    // Expand the needs list to show matches
-                    var needsList = card.querySelector('.attribute-summary-needs-list');
-                    if (needsList) {
-                        needsList.classList.remove('collapsed');
+            } else {
+                // CARD VIEW: Original behavior with attribute-summary-card
+                var cards = contentContainer.querySelectorAll('.attribute-summary-card');
+                var categories = contentContainer.querySelectorAll('.profile-review-category');
+
+                // First pass: check each card for matching needs
+                cards.forEach(function(card) {
+                    var needItems = card.querySelectorAll('.attribute-need-item');
+                    var cardHasMatch = false;
+
+                    needItems.forEach(function(needItem) {
+                        var needLabel = needItem.querySelector('.attribute-need-label');
+                        if (!needLabel) return;
+
+                        var labelText = needLabel.textContent || '';
+                        var needId = needItem.getAttribute('data-need') || '';
+
+                        // Check if need matches the search pattern (label or ID)
+                        var matches = searchPattern.test(labelText) || searchPattern.test(needId);
+
+                        // Also check category and dimension names
+                        if (!matches && typeof GfkBeduerfnisse !== 'undefined') {
+                            // Use getDefinition() which supports both #B-IDs and String-Keys
+                            var needDef = GfkBeduerfnisse.getDefinition
+                                ? GfkBeduerfnisse.getDefinition(needId)
+                                : GfkBeduerfnisse.definitionen[needId];
+                            if (needDef) {
+                                // Check category name
+                                var kategorie = needDef.kategorie || '';
+                                if (kategorie && searchPattern.test(kategorie)) {
+                                    matches = true;
+                                }
+
+                                // Check category label from taxonomy
+                                if (!matches && typeof TiageTaxonomie !== 'undefined') {
+                                    var katData = TiageTaxonomie.kategorien && TiageTaxonomie.getKategorie
+                                        ? TiageTaxonomie.getKategorie(kategorie)
+                                        : null;
+                                    if (katData) {
+                                        if (katData.label && searchPattern.test(katData.label)) {
+                                            matches = true;
+                                        }
+                                        if (katData.beschreibung && searchPattern.test(katData.beschreibung)) {
+                                            matches = true;
+                                        }
+                                        // Check dimension
+                                        if (!matches && katData.dimension) {
+                                            var dimData = TiageTaxonomie.getDimension
+                                                ? TiageTaxonomie.getDimension(katData.dimension)
+                                                : null;
+                                            if (dimData) {
+                                                if (dimData.label && searchPattern.test(dimData.label)) {
+                                                    matches = true;
+                                                }
+                                                if (dimData.beschreibung && searchPattern.test(dimData.beschreibung)) {
+                                                    matches = true;
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+
+                        // Toggle match class
+                        needItem.classList.toggle('filter-match', matches);
+
+                        if (matches) {
+                            cardHasMatch = true;
+                            totalMatches++;
+                        }
+                    });
+
+                    // Show/hide card and auto-expand if has matches
+                    card.classList.toggle('filter-hidden', !cardHasMatch);
+                    card.classList.toggle('has-filter-match', cardHasMatch);
+
+                    if (cardHasMatch) {
+                        matchedAttributes++;
+                        // Expand the needs list to show matches
+                        var needsList = card.querySelector('.attribute-summary-needs-list');
+                        if (needsList) {
+                            needsList.classList.remove('collapsed');
+                        }
                     }
-                }
-            });
+                });
 
-            // Second pass: hide categories with no visible cards
-            categories.forEach(function(category) {
-                var visibleCards = category.querySelectorAll('.attribute-summary-card:not(.filter-hidden)');
-                category.classList.toggle('filter-hidden', visibleCards.length === 0);
+                // Second pass: hide categories with no visible cards
+                categories.forEach(function(category) {
+                    var visibleCards = category.querySelectorAll('.attribute-summary-card:not(.filter-hidden)');
+                    category.classList.toggle('filter-hidden', visibleCards.length === 0);
 
-                // Update item count badge if present
-                var badge = category.querySelector('.category-item-count');
-                if (badge && visibleCards.length > 0) {
-                    badge.textContent = '(' + visibleCards.length + ')';
-                }
-            });
+                    // Update item count badge if present
+                    var badge = category.querySelector('.category-item-count');
+                    if (badge && visibleCards.length > 0) {
+                        badge.textContent = '(' + visibleCards.length + ')';
+                    }
+                });
+            }
 
             // Update hint
             if (hint) {
                 if (totalMatches > 0) {
-                    hint.textContent = totalMatches + ' Bedürfnis' + (totalMatches !== 1 ? 'se' : '') +
-                                      ' in ' + matchedAttributes + ' Attribut' + (matchedAttributes !== 1 ? 'en' : '') +
-                                      ' gefunden';
+                    if (isFlatView) {
+                        hint.textContent = totalMatches + ' Bedürfnis' + (totalMatches !== 1 ? 'se' : '') + ' gefunden';
+                    } else {
+                        hint.textContent = totalMatches + ' Bedürfnis' + (totalMatches !== 1 ? 'se' : '') +
+                                          ' in ' + matchedAttributes + ' Attribut' + (matchedAttributes !== 1 ? 'en' : '') +
+                                          ' gefunden';
+                    }
                     hint.classList.add('has-results');
                 } else {
                     hint.textContent = 'Keine Bedürfnisse gefunden. Tipp: Verwende * als Platzhalter (z.B. *kind*)';

@@ -642,6 +642,29 @@ const TiageState = (function() {
          * Load state from localStorage
          */
         loadFromStorage() {
+            // Mapping von alten #A1-#A8 Keys zu neuen String-Keys
+            const archetypeIdToKey = {
+                '#A1': 'single',
+                '#A2': 'duo',
+                '#A3': 'duo_flex',
+                '#A4': 'solopoly',
+                '#A5': 'polyamor',
+                '#A6': 'ra',
+                '#A7': 'lat',
+                '#A8': 'aromantisch'
+            };
+
+            // Hilfsfunktion: Konvertiert alten Archetyp-ID zu neuem Key
+            const convertArchetypeId = (id) => {
+                if (!id) return id;
+                const newKey = archetypeIdToKey[id];
+                if (newKey) {
+                    console.log(`[TiageState] Konvertiere alten Archetyp-ID ${id} zu ${newKey}`);
+                    return newKey;
+                }
+                return id;
+            };
+
             try {
                 const saved = localStorage.getItem('tiage_state');
                 if (saved) {
@@ -650,6 +673,15 @@ const TiageState = (function() {
                         this.set('personDimensions', parsed.personDimensions);
                     }
                     if (parsed.archetypes) {
+                        // Konvertiere alte #A1-#A8 Keys zu neuen String-Keys
+                        if (parsed.archetypes.ich) {
+                            parsed.archetypes.ich.primary = convertArchetypeId(parsed.archetypes.ich.primary);
+                            parsed.archetypes.ich.secondary = convertArchetypeId(parsed.archetypes.ich.secondary);
+                        }
+                        if (parsed.archetypes.partner) {
+                            parsed.archetypes.partner.primary = convertArchetypeId(parsed.archetypes.partner.primary);
+                            parsed.archetypes.partner.secondary = convertArchetypeId(parsed.archetypes.partner.secondary);
+                        }
                         this.set('archetypes', parsed.archetypes);
                     }
                 }

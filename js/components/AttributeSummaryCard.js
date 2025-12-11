@@ -13,37 +13,44 @@ const AttributeSummaryCard = (function() {
 
     /**
      * SINGLE SOURCE OF TRUTH für Bedürfnis-Labels
-     * Greift dynamisch auf GfkBeduerfnisse.definitionen zu.
-     * Dies stellt sicher, dass Attribute Modal und Ti-Age Synthese
-     * identische Bedürfnis-Namen/IDs anzeigen.
+     * Greift dynamisch auf GfkBeduerfnisse.getDefinition() zu.
+     * Unterstützt sowohl #B-IDs als auch String-Keys.
      *
      * Format: "#B34 Selbstbestimmung" (mit #ID für Referenzierbarkeit)
      *
-     * @param {string} needId - Die Bedürfnis-ID (String-Key)
-     * @returns {string} Das Label für das Bedürfnis mit #B-ID
+     * @param {string} needId - Die Bedürfnis-ID (#B-ID wie '#B21' oder String-Key wie 'liebe')
+     * @returns {string} Das Label für das Bedürfnis mit #B-ID Prefix
      */
     function getNeedLabel(needId) {
-        // Hole die #B-ID aus BeduerfnisIds
-        let hashId = '';
-        if (typeof BeduerfnisIds !== 'undefined' && BeduerfnisIds.toId) {
-            const id = BeduerfnisIds.toId(needId);
-            if (id && id.startsWith('#B')) {
-                hashId = id + ' ';
+        // Bestimme die #B-ID für das Prefix
+        let hashId = needId.startsWith('#B') ? needId : '';
+        if (!hashId && typeof BeduerfnisIds !== 'undefined' && BeduerfnisIds.toId) {
+            hashId = BeduerfnisIds.toId(needId) || '';
+        }
+        const prefix = hashId ? hashId + ' ' : '';
+
+        // Primär: GfkBeduerfnisse.getDefinition() (unterstützt #B-IDs und String-Keys)
+        if (typeof GfkBeduerfnisse !== 'undefined' && GfkBeduerfnisse.getDefinition) {
+            const def = GfkBeduerfnisse.getDefinition(needId);
+            if (def && def.label) {
+                return prefix + def.label;
             }
         }
 
-        // Primär: GfkBeduerfnisse.definitionen (Single Source of Truth)
+        // Fallback für alte definitionen-Struktur
         if (typeof GfkBeduerfnisse !== 'undefined' && GfkBeduerfnisse.definitionen) {
             const def = GfkBeduerfnisse.definitionen[needId];
             if (def && def.label) {
-                return hashId + def.label;
+                return prefix + def.label;
             }
         }
+
         // Fallback: Formatiere ID als lesbaren String
         const fallbackLabel = needId
+            .replace(/^#B\d+\s*/, '') // Entferne #B-Prefix falls vorhanden
             .replace(/_/g, ' ')
             .replace(/\b\w/g, c => c.toUpperCase());
-        return hashId + fallbackLabel;
+        return prefix + fallbackLabel;
     }
 
     /**
@@ -286,22 +293,34 @@ const AttributeSummaryCard = (function() {
 
     /**
      * Holt die Kategorie-Nummer für ein Bedürfnis
-     * @param {string} needId - z.B. '#B21'
+     * Unterstützt sowohl #B-IDs als auch String-Keys
+     *
+     * @param {string} needId - #B-ID (z.B. '#B21') oder String-Key (z.B. 'liebe')
      * @returns {number} Kategorie-Nummer (1-18) oder 99 wenn nicht gefunden
      */
     function getCategoryNumber(needId) {
-        if (typeof BeduerfnisIds !== 'undefined' && BeduerfnisIds.beduerfnisse) {
-            const need = BeduerfnisIds.beduerfnisse[needId];
-            if (need && need.kategorie) {
-                const match = need.kategorie.match(/#K(\d+)/);
-                return match ? parseInt(match[1], 10) : 99;
-            }
+        if (typeof BeduerfnisIds === 'undefined' || !BeduerfnisIds.beduerfnisse) {
+            return 99;
+        }
+
+        // Konvertiere String-Key zu #B-ID falls nötig
+        let hashId = needId;
+        if (!needId.startsWith('#B') && BeduerfnisIds.toId) {
+            hashId = BeduerfnisIds.toId(needId);
+        }
+
+        const need = BeduerfnisIds.beduerfnisse[hashId];
+        if (need && need.kategorie) {
+            const match = need.kategorie.match(/#K(\d+)/);
+            return match ? parseInt(match[1], 10) : 99;
         }
         return 99;
     }
 
     /**
      * Holt die Dimension-Farbe für ein Bedürfnis basierend auf seiner Kategorie
+     * Unterstützt sowohl #B-IDs als auch String-Keys
+     *
      * @param {string} needIdOrKey - z.B. '#B21' oder 'selbstbestimmung' (Key)
      * @returns {string} CSS-Farbwert oder null
      */
@@ -324,7 +343,6 @@ const AttributeSummaryCard = (function() {
         // Konvertiere Key zu ID falls nötig (z.B. 'selbstbestimmung' -> '#B34')
         let needId = needIdOrKey;
         if (!needIdOrKey.startsWith('#')) {
-            // Es ist ein Key, nicht eine ID - konvertieren mit BeduerfnisIds.toId()
             if (beduerfnisIds.toId) {
                 needId = beduerfnisIds.toId(needIdOrKey);
             }

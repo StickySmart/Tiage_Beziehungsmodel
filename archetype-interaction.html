@@ -106,9 +106,9 @@
 <body>
     <!-- Age Verification - Inline Script BEFORE modal for onclick to work -->
     <script>
-        // ========================================
+        // =====
         // GOOGLE SHEETS CONFIGURATION
-        // ========================================
+        // =====
         // Nach dem Deployen des Google Apps Scripts, füge hier die URL ein:
         // const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/DEINE_SCRIPT_ID/exec';
         const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzuHUlgKBXl_HCoTdddpYo97qo3sTf26ahkC-h04EPzKJJV-7bT3-h3qBkiXm30qk1HRg/exec';
@@ -663,10 +663,10 @@
                         <span class="archetype-symbol-icon">◇</span>
                         <span class="archetype-symbol-name">Aromantisch</span>
                     </div>
-                    <!-- MATCH Button für ICH - findet besten ICH-Archetyp basierend auf Partner-Einstellungen -->
-                    <button class="best-match-btn ich-match-btn" onclick="findBestMatchForIch()" title="Finde den besten Archetyp für DICH basierend auf den Partner-Einstellungen">
+                    <!-- MATCH Button für DU - findet bestes ICH basierend auf Partner-Einstellungen -->
+                    <button class="best-match-btn ich-match-btn" onclick="findBestIchMatch()" title="Finde den besten ICH-Archetyp basierend auf den Partner-Einstellungen">
                         <span class="match-icon">🎯</span>
-                        <span class="match-text">MATCH</span>
+                        <span class="match-text">FINDE PASSENDES ICH</span>
                     </button>
                 </div>
                 <div class="header-geschlecht-info" id="ich-header-geschlecht"></div>
@@ -777,10 +777,10 @@
                         <span class="archetype-symbol-icon">◇</span>
                         <span class="archetype-symbol-name">Aromantisch</span>
                     </div>
-                    <!-- MATCH Button -->
-                    <button class="best-match-btn" onclick="findBestMatch()" title="Finde den besten Match basierend auf deinen aktuellen Einstellungen">
+                    <!-- MATCH Button für PARTNER - findet besten Partner-Archetyp basierend auf DU-Einstellungen -->
+                    <button class="best-match-btn" onclick="findBestPartnerMatch()" title="Finde den besten Partner-Archetyp basierend auf deinen DU-Einstellungen">
                         <span class="match-icon">🎯</span>
-                        <span class="match-text">MATCH</span>
+                        <span class="match-text">FINDE PASSENDEN PARTNER</span>
                     </button>
                 </div>
                 <div class="header-geschlecht-info" id="partner-header-geschlecht"></div>
@@ -898,10 +898,10 @@
                         <span class="archetype-symbol-icon">◇</span>
                         <span class="archetype-symbol-name">Aromantisch</span>
                     </div>
-                    <!-- MATCH Button für ICH (Mobile) - findet besten ICH-Archetyp basierend auf Partner-Einstellungen -->
-                    <button class="best-match-btn ich-match-btn" onclick="findBestMatchForIch()" title="Finde den besten Archetyp für DICH basierend auf den Partner-Einstellungen">
+                    <!-- MATCH Button für DU (Mobile) - findet bestes ICH basierend auf Partner-Einstellungen -->
+                    <button class="best-match-btn ich-match-btn" onclick="findBestIchMatch()" title="Finde den besten ICH-Archetyp basierend auf den Partner-Einstellungen">
                         <span class="match-icon">🎯</span>
-                        <span class="match-text">MATCH</span>
+                        <span class="match-text">FINDE PASSENDES ICH</span>
                     </button>
                 </div>
                 <div class="mobile-header-info-container">
@@ -1062,10 +1062,10 @@
                         <span class="archetype-symbol-icon">◇</span>
                         <span class="archetype-symbol-name">Aromantisch</span>
                     </div>
-                    <!-- MATCH Button (Mobile) -->
-                    <button class="best-match-btn" onclick="findBestMatch()" title="Finde den besten Match basierend auf deinen aktuellen Einstellungen">
+                    <!-- MATCH Button für PARTNER (Mobile) - findet besten Partner-Archetyp basierend auf DU-Einstellungen -->
+                    <button class="best-match-btn" onclick="findBestPartnerMatch()" title="Finde den besten Partner-Archetyp basierend auf deinen DU-Einstellungen">
                         <span class="match-icon">🎯</span>
-                        <span class="match-text">MATCH</span>
+                        <span class="match-text">FINDE PASSENDEN PARTNER</span>
                     </button>
                 </div>
                 <div class="mobile-header-info-container">
