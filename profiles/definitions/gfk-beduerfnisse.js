@@ -1295,9 +1295,21 @@ const GfkBeduerfnisse = {
                 summeUebereinstimmung += uebereinstimmung * gewicht;
                 summeGewicht += gewicht;
 
-                // Label ohne #ID-Prefix (wird vom UI bei Bedarf hinzugefügt)
+                // Hole #B-ID und extrahiere numerischen Key
+                let hashId = bed;
+                let numKey = null;
+                if (typeof BeduerfnisIds !== 'undefined' && BeduerfnisIds.toId) {
+                    const bId = BeduerfnisIds.toId(bed);
+                    if (bId && bId.startsWith('#B')) {
+                        hashId = bId;
+                        numKey = parseInt(bId.replace('#B', ''), 10);
+                    }
+                }
+
                 const bedInfo = {
-                    id: bed,
+                    id: hashId,                    // "#B34" - vollständige ID
+                    key: numKey,                   // 34 - numerischer Key für Sortierung
+                    stringKey: bed,                // "selbstbestimmung" - für definitionen-Lookups
                     label: this.definitionen[bed]?.label || this._formatKeyAsLabel(bed),
                     wert1: wert1,
                     wert2: wert2,
@@ -1357,12 +1369,26 @@ const GfkBeduerfnisse = {
         return Object.entries(profil.kernbeduerfnisse)
             .sort((a, b) => b[1] - a[1])
             .slice(0, anzahl)
-            .map(([id, wert]) => ({
-                id: id,
-                label: self.definitionen[id]?.label || self._formatKeyAsLabel(id),
-                wert: wert,
-                kategorie: self.definitionen[id]?.kategorie
-            }));
+            .map(([stringKey, wert]) => {
+                // Hole #B-ID und extrahiere numerischen Key
+                let hashId = stringKey;
+                let numKey = null;
+                if (typeof BeduerfnisIds !== 'undefined' && BeduerfnisIds.toId) {
+                    const bId = BeduerfnisIds.toId(stringKey);
+                    if (bId && bId.startsWith('#B')) {
+                        hashId = bId;
+                        numKey = parseInt(bId.replace('#B', ''), 10);
+                    }
+                }
+                return {
+                    id: hashId,                    // "#B34" - vollständige ID
+                    key: numKey,                   // 34 - numerischer Key für Sortierung
+                    stringKey: stringKey,          // "selbstbestimmung" - für definitionen-Lookups
+                    label: self.definitionen[stringKey]?.label || self._formatKeyAsLabel(stringKey),
+                    wert: wert,
+                    kategorie: self.definitionen[stringKey]?.kategorie
+                };
+            });
     },
 
     /**

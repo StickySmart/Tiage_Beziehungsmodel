@@ -4754,7 +4754,8 @@
                 `;
 
                 items.forEach(item => {
-                    const label = TiageI18n.t(`needs.items.${item.id}`, item.label);
+                    // item.id ist jetzt #B-ID, item.label ist der Display-Name
+                    const label = item.label;
                     const wert1 = item.wert1 || 0;
                     const wert2 = item.wert2 || 0;
                     const diff = Math.abs(wert1 - wert2);
@@ -7185,8 +7186,13 @@
                 return;
             }
 
-            // Definition suchen
-            const def = needDefinitions[needId];
+            // Definition suchen - unterstützt sowohl #B-IDs als auch string-keys
+            let lookupKey = needId;
+            if (needId && needId.startsWith('#B') && typeof BeduerfnisIds !== 'undefined' && BeduerfnisIds.toKey) {
+                // Konvertiere #B-ID zu string-key für Lookup
+                lookupKey = BeduerfnisIds.toKey(needId);
+            }
+            const def = needDefinitions[lookupKey];
             if (!def) {
                 body.innerHTML = '<p style="color: var(--text-muted);">Keine Definition verfügbar.</p>';
                 modal.classList.add('active');
@@ -7596,7 +7602,8 @@
                 listHtml = '<div style="display: flex; flex-direction: column; gap: 6px; max-height: 400px; overflow-y: auto;">';
 
                 items.forEach(item => {
-                    const label = TiageI18n.t(`needs.items.${item.id}`, item.label);
+                    // item.id ist jetzt #B-ID, item.label ist der Display-Name
+                    const label = item.label;
                     const wert1 = item.wert1 || 0;
                     const wert2 = item.wert2 || 0;
                     const diff = Math.abs(wert1 - wert2);
@@ -8072,10 +8079,9 @@
                         <div class="gfk-section-title" style="color: #22c55e;">${TiageI18n.t('needs.sharedTitle', 'GEMEINSAME BEDÜRFNISSE')}</div>
                         <div class="gfk-tags">
                             ${matching.topUebereinstimmungen.map(b => {
-                                const translatedLabel = TiageI18n.t(`needs.items.${b.id}`, b.label);
-                                const bid = typeof BeduerfnisIds !== 'undefined' && BeduerfnisIds.toId ? BeduerfnisIds.toId(b.id) : '';
-                                const bidDisplay = bid && bid.startsWith('#B') ? `<span style="opacity: 0.6; font-size: 0.85em; margin-right: 4px;">${bid}</span>` : '';
-                                return `<span class="gfk-tag gfk-tag-match gfk-tag-clickable" onclick="openNeedDefinitionModal('${b.id}')" title="Klicken für Definition">${bidDisplay}${translatedLabel}</span>`;
+                                // b.id ist jetzt bereits #B-ID (z.B. "#B34"), b.label ist der Display-Name
+                                const bidDisplay = b.id && b.id.startsWith('#B') ? `<span style="opacity: 0.6; font-size: 0.85em; margin-right: 4px;">${b.id}</span>` : '';
+                                return `<span class="gfk-tag gfk-tag-match gfk-tag-clickable" onclick="openNeedDefinitionModal('${b.id}')" title="Klicken für Definition">${bidDisplay}${b.label}</span>`;
                             }).join('')}
                         </div>
                     </div>
@@ -8090,10 +8096,9 @@
                         <div class="gfk-section-title" style="color: #ef4444;">${TiageI18n.t('needs.differentTitle', 'UNTERSCHIEDLICHE PRIORITÄTEN')}</div>
                         <div class="gfk-tags">
                             ${matching.topKonflikte.map(b => {
-                                const translatedLabel = TiageI18n.t(`needs.items.${b.id}`, b.label);
-                                const bid = typeof BeduerfnisIds !== 'undefined' && BeduerfnisIds.toId ? BeduerfnisIds.toId(b.id) : '';
-                                const bidDisplay = bid && bid.startsWith('#B') ? `<span style="opacity: 0.6; font-size: 0.85em; margin-right: 4px;">${bid}</span>` : '';
-                                return `<span class="gfk-tag gfk-tag-conflict gfk-tag-clickable" onclick="openNeedDefinitionModal('${b.id}')" title="Klicken für Definition | ${matching.archetyp1}: ${b.wert1} | ${matching.archetyp2}: ${b.wert2}">${bidDisplay}${translatedLabel}</span>`;
+                                // b.id ist jetzt bereits #B-ID (z.B. "#B34"), b.label ist der Display-Name
+                                const bidDisplay = b.id && b.id.startsWith('#B') ? `<span style="opacity: 0.6; font-size: 0.85em; margin-right: 4px;">${b.id}</span>` : '';
+                                return `<span class="gfk-tag gfk-tag-conflict gfk-tag-clickable" onclick="openNeedDefinitionModal('${b.id}')" title="Klicken für Definition | ${matching.archetyp1}: ${b.wert1} | ${matching.archetyp2}: ${b.wert2}">${bidDisplay}${b.label}</span>`;
                             }).join('')}
                         </div>
                     </div>
@@ -9655,12 +9660,14 @@
 
             for (const kat of kategorien) {
                 const gemeinsamInKat = uebereinstimmend.filter(b => {
-                    const def = GfkBeduerfnisse?.definitionen?.[b.id];
+                    // b.stringKey für definitionen-Lookup verwenden
+                    const def = GfkBeduerfnisse?.definitionen?.[b.stringKey || b.id];
                     return def?.kategorie === kat;
                 }).length;
 
                 const konfliktInKat = konflikt.filter(b => {
-                    const def = GfkBeduerfnisse?.definitionen?.[b.id];
+                    // b.stringKey für definitionen-Lookup verwenden
+                    const def = GfkBeduerfnisse?.definitionen?.[b.stringKey || b.id];
                     return def?.kategorie === kat;
                 }).length;
 
@@ -13376,16 +13383,18 @@
                 if (fullMatching && fullMatching.details) {
                     const uebereinstimmend = (fullMatching.details.uebereinstimmend || []).map(b => ({
                         label: b.label,
-                        id: b.id,
-                        key: b.id,
+                        id: b.id,                  // "#B34"
+                        key: b.key,                // 34 (numerisch)
+                        stringKey: b.stringKey,    // "selbstbestimmung"
                         wert1: b.wert1,
                         wert2: b.wert2,
                         diff: b.diff
                     }));
                     const komplementaer = (fullMatching.details.komplementaer || []).map(b => ({
                         label: b.label,
-                        id: b.id,
-                        key: b.id,
+                        id: b.id,                  // "#B34"
+                        key: b.key,                // 34 (numerisch)
+                        stringKey: b.stringKey,    // "selbstbestimmung"
                         wert1: b.wert1,
                         wert2: b.wert2,
                         diff: b.diff
@@ -13395,8 +13404,9 @@
                     );
                     unterschiedlich = (fullMatching.details.konflikt || []).map(b => ({
                         label: b.label,
-                        id: b.id,
-                        key: b.id,
+                        id: b.id,                  // "#B34"
+                        key: b.key,                // 34 (numerisch)
+                        stringKey: b.stringKey,    // "selbstbestimmung"
                         wert1: b.wert1,
                         wert2: b.wert2
                     }));
@@ -13413,21 +13423,16 @@
             const redTagStyle = `${tagBaseStyle} background: rgba(239,68,68,0.15); border: 1px solid rgba(239,68,68,0.4); color: #ef4444;`;
 
             // Gemeinsame Bedürfnisse Tags (max 8) - clickable
+            // b.id ist jetzt #B-ID (z.B. "#B34"), b.key ist numerisch (34), b.label ist Display-Name
             const gemeinsamTags = gemeinsam.slice(0, 8).map(b => {
-                const needId = b.key || b.id;
-                const label = typeof TiageI18n !== 'undefined' ? TiageI18n.t(`needs.items.${needId}`, b.label) : b.label;
-                const bid = typeof BeduerfnisIds !== 'undefined' && BeduerfnisIds.toId ? BeduerfnisIds.toId(needId) : '';
-                const bidDisplay = bid && bid.startsWith('#B') ? `<span style="opacity: 0.6; font-size: 0.85em; margin-right: 4px;">${bid}</span>` : '';
-                return `<span style="${greenTagStyle}" onclick="openNeedDefinitionModal('${needId}')" title="Klicken für Definition" onmouseover="this.style.transform='translateY(-1px)';this.style.boxShadow='0 2px 8px rgba(34,197,94,0.3)'" onmouseout="this.style.transform='';this.style.boxShadow=''">${bidDisplay}${label}</span>`;
+                const bidDisplay = b.id && b.id.startsWith('#B') ? `<span style="opacity: 0.6; font-size: 0.85em; margin-right: 4px;">${b.id}</span>` : '';
+                return `<span style="${greenTagStyle}" onclick="openNeedDefinitionModal('${b.id}')" title="Klicken für Definition" onmouseover="this.style.transform='translateY(-1px)';this.style.boxShadow='0 2px 8px rgba(34,197,94,0.3)'" onmouseout="this.style.transform='';this.style.boxShadow=''">${bidDisplay}${b.label}</span>`;
             }).join('');
 
             // Unterschiedliche Bedürfnisse Tags (max 5) - clickable
             const unterschiedlichTags = unterschiedlich.slice(0, 5).map(b => {
-                const needId = b.key || b.id;
-                const label = typeof TiageI18n !== 'undefined' ? TiageI18n.t(`needs.items.${needId}`, b.label) : b.label;
-                const bid = typeof BeduerfnisIds !== 'undefined' && BeduerfnisIds.toId ? BeduerfnisIds.toId(needId) : '';
-                const bidDisplay = bid && bid.startsWith('#B') ? `<span style="opacity: 0.6; font-size: 0.85em; margin-right: 4px;">${bid}</span>` : '';
-                return `<span style="${redTagStyle}" onclick="openNeedDefinitionModal('${needId}')" title="Klicken für Definition" onmouseover="this.style.transform='translateY(-1px)';this.style.boxShadow='0 2px 8px rgba(239,68,68,0.3)'" onmouseout="this.style.transform='';this.style.boxShadow=''">${bidDisplay}${label}</span>`;
+                const bidDisplay = b.id && b.id.startsWith('#B') ? `<span style="opacity: 0.6; font-size: 0.85em; margin-right: 4px;">${b.id}</span>` : '';
+                return `<span style="${redTagStyle}" onclick="openNeedDefinitionModal('${b.id}')" title="Klicken für Definition" onmouseover="this.style.transform='translateY(-1px)';this.style.boxShadow='0 2px 8px rgba(239,68,68,0.3)'" onmouseout="this.style.transform='';this.style.boxShadow=''">${bidDisplay}${b.label}</span>`;
             }).join('');
 
             return `
@@ -13489,7 +13494,8 @@
 
             // Gemeinsame Bedürfnisse Section - gefiltert nach pathos/logos
             const gemeinsam = (matching.topUebereinstimmungen || []).filter(b => {
-                const pl = GfkBeduerfnisse.getPathosLogos ? GfkBeduerfnisse.getPathosLogos(b.id) : null;
+                // b.stringKey für getPathosLogos verwenden (braucht string-key für definitionen-Lookup)
+                const pl = GfkBeduerfnisse.getPathosLogos ? GfkBeduerfnisse.getPathosLogos(b.stringKey || b.id) : null;
                 return !pl || pl === type; // Wenn keine Zuordnung, zeige in beiden
             });
 
@@ -13497,8 +13503,8 @@
             /*
             if (gemeinsam.length > 0) {
                 const tags = gemeinsam.slice(0, 5).map(b => {
-                    const translatedLabel = TiageI18n.t(`needs.items.${b.id}`, b.label);
-                    return `<span style="${tagStyleMatch}">${translatedLabel}</span>`;
+                    // b.label ist bereits der Display-Name
+                    return `<span style="${tagStyleMatch}">${b.label}</span>`;
                 }).join('');
                 const sectionTitle = type === 'pathos'
                     ? TiageI18n.t('needs.sharedTitle', 'GEMEINSAME & KOMPATIBLE BEDÜRFNISSE')
@@ -13519,7 +13525,8 @@
             // Dynamik + Wachstum als kombinierter Fließtext
             // Dynamik: Aus gemeinsam mit Kategorie 'dynamik'
             const dynamikNeeds = (matching.details?.uebereinstimmend || []).filter(b => {
-                const def = GfkBeduerfnisse.definitionen?.[b.id];
+                // b.stringKey für definitionen-Lookup verwenden
+                const def = GfkBeduerfnisse.definitionen?.[b.stringKey || b.id];
                 return def?.kategorie === 'dynamik';
             });
 
@@ -13528,13 +13535,13 @@
 
             if (dynamikNeeds.length > 0 || wachstum.length > 0) {
                 const dynamikNames = dynamikNeeds.slice(0, 2).map(b => {
-                    const label = TiageI18n.t(`needs.items.${b.id}`, b.label);
-                    return `<span style="color: #8B5CF6; font-weight: 500;">${label}</span>`;
+                    // b.label ist bereits der Display-Name
+                    return `<span style="color: #8B5CF6; font-weight: 500;">${b.label}</span>`;
                 });
 
                 const wachstumNames = wachstum.slice(0, 2).map(b => {
-                    const label = TiageI18n.t(`needs.items.${b.id}`, b.label);
-                    return `<span style="color: #a855f7; font-weight: 500;">${label}</span>`;
+                    // b.label ist bereits der Display-Name
+                    return `<span style="color: #a855f7; font-weight: 500;">${b.label}</span>`;
                 });
 
                 let sentence = '';
@@ -14017,7 +14024,8 @@
                 `;
 
                 gemeinsam.slice(0, 15).forEach(item => {
-                    const label = TiageI18n.t(`needs.items.${item.id}`, item.label);
+                    // item.label ist bereits der Display-Name
+                    const label = item.label;
                     const wert1 = item.wert1 || 0;
                     const wert2 = item.wert2 || 0;
                     const diff = Math.abs(wert1 - wert2);
@@ -14077,7 +14085,8 @@
                 `;
 
                 konflikt.slice(0, 10).forEach(item => {
-                    const label = TiageI18n.t(`needs.items.${item.id}`, item.label);
+                    // item.label ist bereits der Display-Name
+                    const label = item.label;
                     const wert1 = item.wert1 || 0;
                     const wert2 = item.wert2 || 0;
                     const diff = Math.abs(wert1 - wert2);
