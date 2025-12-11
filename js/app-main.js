@@ -1265,6 +1265,8 @@
                     const transformedArchetypes = {};
                     for (const [id, archetype] of Object.entries(rawData.archetypes)) {
                         const key = archetype.key || id;
+                        // Normalize id property to match the key for consistency
+                        archetype.id = key;
                         transformedArchetypes[key] = archetype;
                     }
                     rawData.archetypes = transformedArchetypes;
@@ -1276,6 +1278,8 @@
                     const transformedDimensions = {};
                     for (const [id, dimension] of Object.entries(rawData.dimensions)) {
                         const key = dimension.key || id;
+                        // Normalize id property to match the key for consistency
+                        dimension.id = key;
                         transformedDimensions[key] = dimension;
                     }
                     rawData.categories = transformedDimensions;
