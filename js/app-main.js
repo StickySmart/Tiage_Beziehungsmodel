@@ -15154,13 +15154,30 @@
 
                 const selection = JSON.parse(saved);
 
+                // Mapping von alten #A1-#A8 Keys zu neuen String-Keys
+                const archetypeIdToKey = {
+                    '#A1': 'single',
+                    '#A2': 'duo',
+                    '#A3': 'duo_flex',
+                    '#A4': 'solopoly',
+                    '#A5': 'polyamor',
+                    '#A6': 'ra',
+                    '#A7': 'lat',
+                    '#A8': 'aromantisch'
+                };
+                const convertArchetypeId = (id) => {
+                    if (!id) return id;
+                    return archetypeIdToKey[id] || id;
+                };
+
                 // Restore ICH
                 if (selection.ich) {
-                    mobileIchArchetype = selection.ich.archetyp;
-                    currentArchetype = selection.ich.archetyp;
-                    document.getElementById('mobileIchSelect').value = selection.ich.archetyp;
+                    const ichArchetyp = convertArchetypeId(selection.ich.archetyp);
+                    mobileIchArchetype = ichArchetyp;
+                    currentArchetype = ichArchetyp;
+                    document.getElementById('mobileIchSelect').value = ichArchetyp;
                     const ichSelect = document.getElementById('ichSelect');
-                    if (ichSelect) ichSelect.value = selection.ich.archetyp;
+                    if (ichSelect) ichSelect.value = ichArchetyp;
 
                     if (selection.ich.geschlecht) {
                         // Handle new primary/secondary format
@@ -15300,11 +15317,12 @@
 
                 // Restore PARTNER
                 if (selection.partner) {
-                    mobilePartnerArchetype = selection.partner.archetyp;
-                    selectedPartner = selection.partner.archetyp;
-                    document.getElementById('mobilePartnerSelect').value = selection.partner.archetyp;
+                    const partnerArchetyp = convertArchetypeId(selection.partner.archetyp);
+                    mobilePartnerArchetype = partnerArchetyp;
+                    selectedPartner = partnerArchetyp;
+                    document.getElementById('mobilePartnerSelect').value = partnerArchetyp;
                     const partnerSelect = document.getElementById('partnerSelect');
-                    if (partnerSelect) partnerSelect.value = selection.partner.archetyp;
+                    if (partnerSelect) partnerSelect.value = partnerArchetyp;
 
                     if (selection.partner.geschlecht) {
                         // Handle new primary/secondary format
@@ -15466,10 +15484,10 @@
                 // Sync archetype grid highlighting with loaded selections
                 if (typeof updateArchetypeGrid === 'function') {
                     if (selection.ich && selection.ich.archetyp) {
-                        updateArchetypeGrid('ich', selection.ich.archetyp);
+                        updateArchetypeGrid('ich', convertArchetypeId(selection.ich.archetyp));
                     }
                     if (selection.partner && selection.partner.archetyp) {
-                        updateArchetypeGrid('partner', selection.partner.archetyp);
+                        updateArchetypeGrid('partner', convertArchetypeId(selection.partner.archetyp));
                     }
                 }
 
