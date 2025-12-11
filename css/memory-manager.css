@@ -49,6 +49,49 @@
 }
 
 /* ═══════════════════════════════════════════════════════════════════════════
+   CLEAR STORAGE BUTTON
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.clear-storage-btn {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: linear-gradient(135deg, #EF4444, #DC2626);
+    border: none;
+    border-radius: 8px;
+    padding: 8px 12px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    color: white;
+    font-size: 13px;
+    font-weight: 500;
+}
+
+.clear-storage-btn:hover {
+    background: linear-gradient(135deg, #F87171, #EF4444);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+}
+
+.clear-storage-btn:active {
+    transform: translateY(0);
+}
+
+.clear-icon {
+    font-size: 16px;
+}
+
+.clear-text {
+    display: none;
+}
+
+@media (min-width: 600px) {
+    .clear-text {
+        display: inline;
+    }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
    MODAL STYLING
    ═══════════════════════════════════════════════════════════════════════════ */
 

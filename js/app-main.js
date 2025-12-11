@@ -15616,6 +15616,76 @@
             setTimeout(() => warning.remove(), 3000);
         }
 
+        /**
+         * Löscht den gesamten lokalen Speicher (alle tiage_* Einträge)
+         * und initialisiert die UI neu durch Seiten-Reload
+         */
+        function clearAllStorage() {
+            const confirmMsg = TiageI18n && TiageI18n.currentLang === 'en'
+                ? 'Really DELETE all stored data and reset UI?\n\nThis will remove:\n• All saved profiles (memory slots)\n• All current selections\n• All settings and preferences\n\nThis action cannot be undone!'
+                : 'Wirklich ALLE gespeicherten Daten löschen und UI zurücksetzen?\n\nDies entfernt:\n• Alle gespeicherten Profile (Speicherplätze)\n• Alle aktuellen Auswahlen\n• Alle Einstellungen und Präferenzen\n\nDiese Aktion kann nicht rückgängig gemacht werden!';
+
+            if (!confirm(confirmMsg)) {
+                return;
+            }
+
+            try {
+                // TiageStorage.clear() löscht alle tiage_* Einträge
+                if (typeof TiageStorage !== 'undefined' && TiageStorage.clear) {
+                    TiageStorage.clear();
+                } else {
+                    // Fallback: manuell alle tiage_* Keys löschen
+                    const keys = [];
+                    for (let i = 0; i < localStorage.length; i++) {
+                        const key = localStorage.key(i);
+                        if (key && key.startsWith('tiage')) {
+                            keys.push(key);
+                        }
+                    }
+                    keys.forEach(key => localStorage.removeItem(key));
+                }
+
+                // Auch die legacy Keys löschen
+                localStorage.removeItem('tiage-selection');
+                localStorage.removeItem('matchModalView');
+                localStorage.removeItem('tiageSyntheseType');
+                localStorage.removeItem('pathosLogosType');
+
+                // Kurze Bestätigung anzeigen
+                const toast = document.createElement('div');
+                toast.style.cssText = `
+                    position: fixed;
+                    top: 50%;
+                    left: 50%;
+                    transform: translate(-50%, -50%);
+                    background: linear-gradient(135deg, #10B981, #059669);
+                    color: white;
+                    padding: 20px 30px;
+                    border-radius: 12px;
+                    font-size: 16px;
+                    font-weight: 600;
+                    z-index: 99999;
+                    box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+                    text-align: center;
+                `;
+                toast.innerHTML = TiageI18n && TiageI18n.currentLang === 'en'
+                    ? '✓ All data cleared!<br><small>Reloading...</small>'
+                    : '✓ Alle Daten gelöscht!<br><small>Lade neu...</small>';
+                document.body.appendChild(toast);
+
+                // Seite nach kurzer Verzögerung neu laden
+                setTimeout(() => {
+                    window.location.reload();
+                }, 1000);
+
+            } catch (e) {
+                console.error('[clearAllStorage] Fehler:', e);
+                alert(TiageI18n && TiageI18n.currentLang === 'en'
+                    ? 'Error clearing storage: ' + e.message
+                    : 'Fehler beim Löschen: ' + e.message);
+            }
+        }
+
         // Auto-save on changes
         function initAutoSave() {
             // Save on archetype change
