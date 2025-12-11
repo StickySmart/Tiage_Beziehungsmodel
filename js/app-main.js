@@ -16226,20 +16226,20 @@
             saveSummeLock();
 
             // Reset Text-Inputs
-            document.getElementById('gewicht-orientierung').value = GEWICHTUNG_DEFAULTS.O;
-            document.getElementById('gewicht-archetyp').value = GEWICHTUNG_DEFAULTS.A;
-            document.getElementById('gewicht-dominanz').value = GEWICHTUNG_DEFAULTS.D;
-            document.getElementById('gewicht-geschlecht').value = GEWICHTUNG_DEFAULTS.G;
+            document.getElementById('gewicht-orientierung').value = GEWICHTUNG_DEFAULTS.O.value;
+            document.getElementById('gewicht-archetyp').value = GEWICHTUNG_DEFAULTS.A.value;
+            document.getElementById('gewicht-dominanz').value = GEWICHTUNG_DEFAULTS.D.value;
+            document.getElementById('gewicht-geschlecht').value = GEWICHTUNG_DEFAULTS.G.value;
 
             // Reset Slider
             const sliderO = document.getElementById('gewicht-slider-orientierung');
             const sliderA = document.getElementById('gewicht-slider-archetyp');
             const sliderD = document.getElementById('gewicht-slider-dominanz');
             const sliderG = document.getElementById('gewicht-slider-geschlecht');
-            if (sliderO) sliderO.value = GEWICHTUNG_DEFAULTS.O;
-            if (sliderA) sliderA.value = GEWICHTUNG_DEFAULTS.A;
-            if (sliderD) sliderD.value = GEWICHTUNG_DEFAULTS.D;
-            if (sliderG) sliderG.value = GEWICHTUNG_DEFAULTS.G;
+            if (sliderO) sliderO.value = GEWICHTUNG_DEFAULTS.O.value;
+            if (sliderA) sliderA.value = GEWICHTUNG_DEFAULTS.A.value;
+            if (sliderD) sliderD.value = GEWICHTUNG_DEFAULTS.D.value;
+            if (sliderG) sliderG.value = GEWICHTUNG_DEFAULTS.G.value;
 
             saveGewichtungen();
             updateRowStates();
