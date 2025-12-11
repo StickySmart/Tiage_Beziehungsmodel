@@ -4,11 +4,20 @@
 
 ---
 
-## Hauptformel
+## Hauptformel (v3.1)
 
 ```
-Q = [(A × 0.15) + (O × 0.40) + (D × 0.20) + (G × 0.25)] × R
+Q = (A × 0.15 × R_Philosophie) + (O × 0.40 × R_Leben) + (D × 0.20 × R_Dynamik) + (G × 0.25 × R_Identität)
 ```
+
+Jeder Faktor wird mit seiner **eigenen Resonanz-Dimension** multipliziert:
+
+| Faktor | Gewicht | Resonanz |
+|--------|---------|----------|
+| A (Archetyp) | 15% | 🧠 R_Philosophie |
+| O (Orientierung) | 40% | 🔥 R_Leben |
+| D (Dominanz) | 20% | ⚡ R_Dynamik |
+| G (Geschlecht) | 25% | 💚 R_Identität |
 
 **Quelle:** `js/synthesis/synthesisCalculator.js:6` und `js/synthesis/constants.js:7`
 
@@ -118,114 +127,75 @@ Dominanz:
                                         │
                                         ▼
 ┌─────────────────────────────────────────────────────────────────────────────────┐
-│                          SCHRITT 3: RESONANZ (R)                                │
-│                          (synthesisCalculator.js:760-824)                       │
+│                     SCHRITT 3: MULTI-DIMENSIONALE RESONANZ (v3.1)               │
+│                          (synthesisCalculator.js:774-824)                       │
 ├─────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                 │
-│   ══════════════════════════════════════════════════════════════════════════    │
-│   v3.1 MULTI-DIMENSIONALE RESONANZ (wenn Profile verfügbar)                     │
-│   ══════════════════════════════════════════════════════════════════════════    │
+│   Jeder Faktor hat seine EIGENE Resonanz-Dimension:                             │
 │                                                                                 │
-│   Statt einer globalen R werden 4 dimensionale R-Werte berechnet:               │
-│                                                                                 │
-│   ┌──────────────┬──────────────┬──────────────┬──────────────┐                 │
-│   │ 💚 R_Ident   │ 🧠 R_Phil    │ 🔥 R_Leben   │ ⚡ R_Dyn     │                 │
-│   │ GESCHLECHT   │ ARCHETYP     │ ORIENTIERUNG │ DOMINANZ     │                 │
-│   │ (10 Needs)   │ (17 Needs)   │ (18 Needs)   │ (18 Needs)   │                 │
-│   └──────────────┴──────────────┴──────────────┴──────────────┘                 │
-│                                                                                 │
-│   Formel pro Dimension:                                                         │
-│     R_dim = 0.9 + (Match_dim × 0.2)                                             │
-│                                                                                 │
-│   Interpretation:                                                               │
-│     R ≥ 1.05  → Resonanz ⬆️                                                     │
-│     R 0.97-1.05 → Neutral ➡️                                                    │
-│     R ≤ 0.97  → Dissonanz ⬇️                                                    │
-│                                                                                 │
-│   Quelle: constants.js:66-103 (RESONANCE_DIMENSIONAL)                           │
-│                                                                                 │
-│   ══════════════════════════════════════════════════════════════════════════    │
-│   LEGACY v3.0 (Fallback wenn keine Profile)                                     │
-│   ══════════════════════════════════════════════════════════════════════════    │
-│                                                                                 │
-│   R = 0.9 + [(M/100 × 0.35) + (B × 0.35) + (K × 0.30)] × 0.2                    │
+│   R_Philosophie = 0.9 + (Match_archetyp × 0.2)      🧠 17 Needs                 │
+│   R_Leben       = 0.9 + (Match_orientierung × 0.2)  🔥 18 Needs                 │
+│   R_Dynamik     = 0.9 + (Match_dominanz × 0.2)      ⚡ 18 Needs                 │
+│   R_Identität   = 0.9 + (Match_geschlecht × 0.2)    💚 10 Needs                 │
 │                                                                                 │
 │   ┌───────────────────────────────────────────────────────────────────────┐     │
-│   │ KOMPONENTE M (Profil-Match)                                           │     │
-│   │ Quelle: synthesisCalculator.js:299-361                                │     │
-│   │ Berechnung: BeduerfnisModifikatoren.berechneÜbereinstimmung()         │     │
-│   │ Daten: profiles/beduerfnis-modifikatoren.js                           │     │
-│   │        profiles/gfk-beduerfnisse.js (archetypProfile)                 │     │
-│   │ Wertebereich: 0-100                                                   │     │
-│   └───────────────────────────────────────────────────────────────────────┘     │
-│                                                                                 │
-│   ┌───────────────────────────────────────────────────────────────────────┐     │
-│   │ KOMPONENTE B (Logos-Pathos-Balance)                                   │     │
-│   │ Quelle: synthesisCalculator.js:550-552                                │     │
-│   │ Formel: B = (100 - |Logos - Pathos|) / 100                            │     │
-│   │ Wertebereich: 0.0 - 1.0                                               │     │
+│   │ BEDÜRFNIS-DIMENSIONEN (disjunkt, keine Überlappung)                   │     │
+│   │ Quelle: constants.js:NEEDS_INTEGRATION                                │     │
 │   │                                                                       │     │
-│   │ Beispiel:                                                             │     │
-│   │   Logos = 75, Pathos = 65                                             │     │
-│   │   |75 - 65| = 10                                                      │     │
-│   │   B = (100 - 10) / 100 = 0.90                                         │     │
+│   │ 🧠 ARCHETYP_NEEDS (17):                                               │     │
+│   │    kinderwunsch, langfristige_bindung, nicht_anhaften...              │     │
+│   │                                                                       │     │
+│   │ 🔥 ORIENTIERUNG_NEEDS (18):                                           │     │
+│   │    sexuelle_experimentierfreude, sex_als_meditation...                │     │
+│   │                                                                       │     │
+│   │ ⚡ DOMINANZ_NEEDS (18):                                                │     │
+│   │    kontrolle_ausueben, hingabe, fuehrung_geben...                     │     │
+│   │                                                                       │     │
+│   │ 💚 GESCHLECHT_NEEDS (10):                                             │     │
+│   │    authentizitaet, eigene_wahrheit, akzeptanz...                      │     │
 │   └───────────────────────────────────────────────────────────────────────┘     │
 │                                                                                 │
 │   ┌───────────────────────────────────────────────────────────────────────┐     │
-│   │ KOMPONENTE K (GFK-Kommunikationsfaktor)                               │     │
-│   │ Quelle: synthesisCalculator.js:498-533                                │     │
-│   │ Daten: constants.js:61-89 (GFK_MATRIX)                                │     │
+│   │ INTERPRETATION PRO DIMENSION                                          │     │
+│   │ Quelle: constants.js:RESONANCE_DIMENSIONAL.THRESHOLDS                 │     │
 │   │                                                                       │     │
-│   │ Matrix-Beispiele:                                                     │     │
-│   │   "hoch-hoch"     = 1.0   (Optimale Kommunikation)                    │     │
-│   │   "mittel-mittel" = 0.5   (Gute Basis)                                │     │
-│   │   "niedrig-niedrig" = 0.0 (Destruktive Muster)                        │     │
-│   │ Wertebereich: 0.0 - 1.0                                               │     │
+│   │   R ≥ 1.05  →  Resonanz ⬆️   (gute Schwingung)                        │     │
+│   │   R 0.97-1.05 → Neutral ➡️   (ausgewogen)                             │     │
+│   │   R ≤ 0.97  →  Dissonanz ⬇️  (Spannung)                               │     │
+│   │                                                                       │     │
+│   │ Wertebereich: 0.9 - 1.1 pro Dimension                                 │     │
 │   └───────────────────────────────────────────────────────────────────────┘     │
 │                                                                                 │
-│   RESONANZ-KONSTANTEN (constants.js:38-47):                                     │
-│   - BASE: 0.9          (Minimum Resonanz)                                       │
-│   - MAX_BOOST: 0.2     (Maximum zusätzliche Resonanz)                           │
-│   - PROFILE_WEIGHT: 0.35                                                        │
-│   - BALANCE_WEIGHT: 0.35                                                        │
-│   - GFK_WEIGHT: 0.30                                                            │
+│   RESONANZ-KONSTANTEN (constants.js:66-103):                                    │
+│   - RESONANCE_DIMENSIONAL.ENABLED: true                                         │
+│   - THRESHOLDS.resonanz: 1.05                                                   │
+│   - THRESHOLDS.dissonanz: 0.97                                                  │
+│   - Alle 4 Dimensionen: weight = 0.25                                           │
 │                                                                                 │
 └─────────────────────────────────────────────────────────────────────────────────┘
                                         │
                                         ▼
 ┌─────────────────────────────────────────────────────────────────────────────────┐
-│                          SCHRITT 4: FINALE BERECHNUNG                           │
-│                          (synthesisCalculator.js:196-219)                       │
+│                     SCHRITT 4: DIMENSIONALE MULTIPLIKATION (v3.1)               │
+│                          (synthesisCalculator.js:200-219)                       │
 ├─────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                 │
-│   baseScore = (A × 0.15) + (O × 0.40) + (D × 0.20) + (G × 0.25)                 │
+│   Jeder Faktor wird mit SEINER Resonanz-Dimension multipliziert:                │
 │                                                                                 │
-│   ══════════════════════════════════════════════════════════════════════════    │
-│   v3.1 DIMENSIONALE MULTIPLIKATION (wenn Profile verfügbar)                     │
-│   ══════════════════════════════════════════════════════════════════════════    │
+│   finalScore = Math.round(                                                      │
+│       (A × 0.15 × R_Philosophie) +                               🧠             │
+│       (O × 0.40 × R_Leben) +                                     🔥             │
+│       (D × 0.20 × R_Dynamik) +                                   ⚡             │
+│       (G × 0.25 × R_Identität)                                   💚             │
+│   )                                                                             │
 │                                                                                 │
-│   Jeder Faktor wird mit seiner zugehörigen R-Dimension multipliziert:           │
-│                                                                                 │
-│   finalScore = (A × 0.15 × R_Phil) +                                            │
-│                (O × 0.40 × R_Leben) +                                           │
-│                (D × 0.20 × R_Dyn) +                                             │
-│                (G × 0.25 × R_Ident)                                             │
-│                                                                                 │
-│   Faktor-Resonanz-Mapping:                                                      │
-│   ┌─────────────┬─────────┬────────────────┐                                    │
-│   │ Faktor      │ Gewicht │ × Resonanz     │                                    │
-│   ├─────────────┼─────────┼────────────────┤                                    │
-│   │ A (Archetyp)│  15%    │ 🧠 R_Phil      │                                    │
-│   │ O (Orient.) │  40%    │ 🔥 R_Leben     │                                    │
-│   │ D (Dominanz)│  20%    │ ⚡ R_Dyn       │                                    │
-│   │ G (Geschl.) │  25%    │ 💚 R_Ident     │                                    │
-│   └─────────────┴─────────┴────────────────┘                                    │
-│                                                                                 │
-│   ══════════════════════════════════════════════════════════════════════════    │
-│   LEGACY v3.0 (Fallback)                                                        │
-│   ══════════════════════════════════════════════════════════════════════════    │
-│                                                                                 │
-│   finalScore = Math.round(baseScore × R)                                        │
+│   Beispiel:                                                                     │
+│   A=75 × 0.15 × R_Phil=0.96   = 10.8  🧠                                        │
+│   O=100 × 0.40 × R_Leben=1.08 = 43.2  🔥                                        │
+│   D=100 × 0.20 × R_Dyn=1.02   = 20.4  ⚡                                        │
+│   G=90 × 0.25 × R_Ident=1.06  = 23.9  💚                                        │
+│   ─────────────────────────────────────                                         │
+│   finalScore = 98                                                               │
 │                                                                                 │
 └─────────────────────────────────────────────────────────────────────────────────┘
                                         │
@@ -356,43 +326,46 @@ GENDER: {
 
 ---
 
-## Resonanz-Berechnung im Detail
+## Resonanz-Berechnung im Detail (v3.1)
 
-**Hauptformel** (Quelle: `synthesisCalculator.js:557-563`):
-
-```
-R = 0.9 + [(M/100 × 0.35) + (B × 0.35) + (K × 0.30)] × 0.2
-```
-
-### Komponente M: Bedürfnis-Match
-
-**Quelle:** `synthesisCalculator.js:299-361`
+**Multi-Dimensionale Formel** (Quelle: `synthesisCalculator.js:852-907`):
 
 ```
-M = BeduerfnisModifikatoren.berechneÜbereinstimmung(profil1, profil2).score
+R_dim = 0.9 + (Match_dim × 0.2)
 ```
+
+Jede der 4 Dimensionen berechnet ihren eigenen R-Wert basierend auf dem Bedürfnis-Match:
+
+| Dimension | Bedürfnis-Quelle | Anzahl Needs |
+|-----------|------------------|--------------|
+| 🧠 R_Philosophie | ARCHETYP_NEEDS | 17 |
+| 🔥 R_Leben | ORIENTIERUNG_NEEDS | 18 |
+| ⚡ R_Dynamik | DOMINANZ_NEEDS | 18 |
+| 💚 R_Identität | GESCHLECHT_NEEDS | 10 |
+
+### Match-Berechnung pro Dimension
+
+**Quelle:** `synthesisCalculator.js:931-955`
+
+```
+Match = Σ(100 - |Wert_P1 - Wert_P2|) / 100 / n
+```
+
+Für jedes Bedürfnis in der Dimension wird die Ähnlichkeit berechnet und gemittelt.
 
 **Datenquellen:**
 - `profiles/gfk-beduerfnisse.js` → Basis-Bedürfnisse pro Archetyp
-- `profiles/beduerfnis-modifikatoren.js` → Modifikation durch Dominanz/Geschlecht/Orientierung
+- `constants.js:NEEDS_INTEGRATION` → Bedürfnis-Listen pro Dimension
 
-### Komponente B: Logos-Pathos-Balance
+### Interpretation pro Dimension
 
-**Quelle:** `synthesisCalculator.js:550-552`
+**Quelle:** `constants.js:98-102`
 
-```
-differenz = Math.abs(logos - pathos)
-B = (100 - differenz) / 100
-```
-
-### Komponente K: GFK-Faktor
-
-**Quelle:** `synthesisCalculator.js:498-533`
-**Matrix:** `constants.js:61-89`
-
-```
-K = GFK_MATRIX[gfk1 + "-" + gfk2]
-```
+| R-Wert | Status | Bedeutung |
+|--------|--------|-----------|
+| ≥ 1.05 | ⬆️ Resonanz | Gute Schwingung in dieser Dimension |
+| 0.97-1.05 | ➡️ Neutral | Ausgewogen |
+| ≤ 0.97 | ⬇️ Dissonanz | Spannung in dieser Dimension |
 
 ---
 
@@ -419,53 +392,25 @@ logos = A = 75
 pathos = (100 + 100 + 100) / 3 = 100
 ```
 
-**Schritt 3: Resonanz**
-
-### v3.1 Multi-Dimensional (wenn Profile verfügbar)
-
+**Schritt 3: Multi-Dimensionale Resonanz (v3.1)**
 ```
-Bedürfnis-Matches pro Dimension (angenommen):
-  Match_Phil   (Archetyp-Needs)     = 0.70  → R_Phil  = 0.9 + (0.70 × 0.2) = 1.04 ➡️
-  Match_Leben  (Orientierung-Needs) = 0.85  → R_Leben = 0.9 + (0.85 × 0.2) = 1.07 ⬆️
-  Match_Dyn    (Dominanz-Needs)     = 0.90  → R_Dyn   = 0.9 + (0.90 × 0.2) = 1.08 ⬆️
-  Match_Ident  (Geschlecht-Needs)   = 0.80  → R_Ident = 0.9 + (0.80 × 0.2) = 1.06 ⬆️
+Match pro Dimension (angenommen):
+  Match_Philosophie  = 0.30  → R_Phil   = 0.9 + (0.30 × 0.2) = 0.96  🧠
+  Match_Leben        = 0.90  → R_Leben  = 0.9 + (0.90 × 0.2) = 1.08  🔥
+  Match_Dynamik      = 0.60  → R_Dyn    = 0.9 + (0.60 × 0.2) = 1.02  ⚡
+  Match_Identität    = 0.80  → R_Ident  = 0.9 + (0.80 × 0.2) = 1.06  💚
 ```
 
-### Legacy v3.0 (Fallback)
-
+**Schritt 4: Dimensionale Multiplikation (v3.1)**
 ```
-M = 75  (angenommen: Bedürfnis-Match)
-B = (100 - |75 - 100|) / 100 = 0.75
-K = 0.5 (mittel-mittel aus GFK_MATRIX)
-
-R = 0.9 + [(75/100 × 0.35) + (0.75 × 0.35) + (0.5 × 0.30)] × 0.2
-R = 0.9 + [0.2625 + 0.2625 + 0.15] × 0.2
-R = 0.9 + 0.675 × 0.2
-R = 0.9 + 0.135
-R = 1.035
-```
-
-**Schritt 4: Finale Berechnung**
-
-### v3.1 Dimensionale Multiplikation
-
-```
-finalScore = (A × 0.15 × R_Phil)  + (O × 0.40 × R_Leben) +
-             (D × 0.20 × R_Dyn)   + (G × 0.25 × R_Ident)
-
-finalScore = (75 × 0.15 × 1.04)  + (100 × 0.40 × 1.07) +
-             (100 × 0.20 × 1.08) + (100 × 0.25 × 1.06)
-
-finalScore = 11.7 + 42.8 + 21.6 + 26.5 = 102.6 → gerundet: 103
-```
-
-### Legacy v3.0 (zum Vergleich)
-
-```
-baseScore = (75 × 0.15) + (100 × 0.40) + (100 × 0.20) + (100 × 0.25)
-baseScore = 11.25 + 40 + 20 + 25 = 96.25
-
-finalScore = Math.round(96.25 × 1.035) = 100
+finalScore = Math.round(
+  (75 × 0.15 × 0.96) +     = 10.8  🧠 (Archetyp × R_Philosophie)
+  (100 × 0.40 × 1.08) +    = 43.2  🔥 (Orientierung × R_Leben)
+  (100 × 0.20 × 1.02) +    = 20.4  ⚡ (Dominanz × R_Dynamik)
+  (100 × 0.25 × 1.06)      = 26.5  💚 (Geschlecht × R_Identität)
+)
+────────────────────────────────────
+finalScore = 101 → gecapped auf 100
 ```
 
 > **Hinweis:** v3.1 kann durch dimensionale Resonanz-Unterschiede
