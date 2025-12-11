@@ -1,6 +1,6 @@
 # Nutzungsbedingungen
 
-**Stand:** November 2025
+**Stand:** Dezember 2025
 
 > **© 2025 Ti-age.de** – Das Tiage Beziehungsmodell und alle zugehörigen Inhalte sind urheberrechtlich geschützt.
 
@@ -15,6 +15,34 @@ Das Urheberrecht umfasst insbesondere:
 - Die Bewertungssysteme und Kategorien
 - Alle visuellen Darstellungen und Designs
 - Der Programmcode und die technische Umsetzung
+
+## 1a. Geistiges Eigentum und Konzeptschutz
+
+### Ursprung und Priorität
+
+Das Tiage Beziehungsmodell wurde von **Tiage (StickySmart)** als eigenständige intellektuelle Leistung entwickelt. Die erstmalige Veröffentlichung erfolgte im Jahr 2025 auf GitHub unter dem Repository `StickySmart/Tiage_Beziehungsmodel`.
+
+### Beanspruchtes geistiges Eigentum
+
+Über das Urheberrecht hinaus beansprucht der Urheber das geistige Eigentum an folgenden konzeptionellen Elementen:
+
+- **Die Synthese:** Die Verbindung von Robert M. Pirsigs Metaphysik der Qualität (MOQ) mit OSHOs Bewusstseinsphilosophie zu einem praktischen Beziehungsmodell
+- **Die Logos/Pathos-Methodik:** Die Anwendung der Unterscheidung statische/dynamische Qualität auf Beziehungskompatibilität mit der spezifischen Gewichtung
+- **Das 8-Archetypen-System:** Die Kategorisierung und Beschreibung der acht Beziehungsformen in ihrer spezifischen Konstellation
+- **Die 4-Faktoren-Berechnung:** Die Methode zur Kompatibilitätsberechnung mit den Faktoren Archetyp-Übereinstimmung, Orientierungs-Kompatibilität, Dominanz-Harmonie und Geschlechts-Attraktion
+- **Die 864 psychologischen Profile:** Die systematische Kombination von Archetyp, Orientierung, Dominanz und Geschlecht
+
+### Hinweis zur Rechtslage
+
+Der Urheber ist sich bewusst, dass das Urheberrecht primär die konkrete Ausdrucksform schützt und nicht die zugrunde liegenden Ideen. Dennoch:
+
+1. **Moralischer Anspruch:** Die hier dokumentierten Konzepte sind das Ergebnis eigenständiger intellektueller Arbeit. Ihre Übernahme ohne Anerkennung der Urheberschaft wird als ethisch verwerflich betrachtet.
+
+2. **Prioritätsnachweis:** Diese Veröffentlichung dient als dokumentierter Nachweis der Erstentwicklung. Spätere ähnliche Systeme können anhand der Git-Historie und Veröffentlichungsdaten eingeordnet werden.
+
+3. **Markenrechtlicher Vorbehalt:** Die Bezeichnungen "Tiage Beziehungsmodell", "Tiage" und "Ti-Age" werden als Kennzeichen beansprucht und dürfen nicht ohne Genehmigung zur Kennzeichnung ähnlicher Dienste verwendet werden.
+
+4. **Wissenschaftliche Integrität:** Bei jeglicher wissenschaftlicher oder publizistischer Bezugnahme auf dieses Modell ist eine korrekte Quellenangabe erforderlich.
 
 ## 2. Erlaubte Nutzung
 
