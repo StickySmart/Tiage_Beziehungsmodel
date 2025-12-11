@@ -27,58 +27,69 @@ Alle Änderungen und neue Features findest du im [Changelog](../CHANGELOG.md).
 | **Dominanz-Harmonie** | 20% | Pathos | Energetische Dynamik. OSHO: "Tao - eine Energie, zwei Ausdrucksformen." |
 | **Archetyp-Übereinstimmung** | 15% | Logos | Fundamentale Beziehungsphilosophie: "Wie wollen wir Beziehung leben?" |
 
-## Berechnung
+## Berechnung (v3.1)
+
+### Hauptformel
 
 ```
-Qualitätsindex = [(Archetyp × 15%) + (Orientierung × 40%) + (Dominanz × 20%) + (Geschlecht × 25%)] × Resonanz
+Q = (A × 0.15 × R_Philosophie) + (O × 0.40 × R_Leben) + (D × 0.20 × R_Dynamik) + (G × 0.25 × R_Identität)
 ```
+
+**NEU in v3.1:** Jeder Faktor wird mit seiner **eigenen Resonanz-Dimension** multipliziert:
+
+| Faktor | Gewicht | × | Resonanz-Dimension |
+|--------|---------|---|--------------------|
+| A (Archetyp) | 15% | × | 🧠 R_Philosophie |
+| O (Orientierung) | 40% | × | 🔥 R_Leben |
+| D (Dominanz) | 20% | × | ⚡ R_Dynamik |
+| G (Geschlecht) | 25% | × | 💚 R_Identität |
 
 Jeder Faktor wird einzeln auf 0-100% bewertet. Die **Resonanz (R)** ist ein Meta-Faktor (0.9-1.1), der moduliert, wie gut Kopf (Logos) und Herz (Pathos) zusammenschwingen.
 
-### Resonanz-Formel
+### Multi-Dimensionale Resonanz (v3.1)
+
+Resonanz wird auf **4 disjunkte Dimensionen** berechnet – keine Überlappung, jedes Bedürfnis wird nur einmal gezählt:
+
+| Dimension | Emoji | Frage | Bedürfnisse |
+|-----------|-------|-------|-------------|
+| **Identität** | 💚 | *Wer bin ich, wer bist du?* | 10 Needs (Authentizität, Selbstausdruck...) |
+| **Philosophie** | 🧠 | *Wie wollen wir Beziehung leben?* | 17 Needs (Bindung, Autonomie...) |
+| **Leben** | 🔥 | *Was zieht uns an?* | 18 Needs (Intimität, Sexualität...) |
+| **Dynamik** | ⚡ | *Wer führt, wer folgt?* | 18 Needs (Kontrolle, Hingabe...) |
+
+### Resonanz-Formel pro Dimension
 
 ```
-R = 0.9 + [(M/100 × 0.35) + (B × 0.35) + (K × 0.30)] × 0.2
+R_dim = 0.9 + (Match_dim × 0.2)
 ```
 
 **Wertebereich:** R variiert zwischen 0.9 (minimale Resonanz) und 1.1 (maximale Resonanz).
 
+**Interpretation pro Dimension:**
+
+| R-Wert | Status | Symbol |
+|--------|--------|--------|
+| ≥ 1.05 | Resonanz | ⬆️ |
+| 0.97-1.05 | Neutral | ➡️ |
+| ≤ 0.97 | Dissonanz | ⬇️ |
+
 > **Wichtige Unterscheidung:**
-> - **88 GFK-Bedürfnisse** → Emotionaler Match (M) in der Resonanz-Formel
+> - **63 GFK-Bedürfnisse** → Dimensionaler Match in den R-Werten
 > - **30 baseAttributes** → Lifestyle-Filter (K.O.-Kriterien wie Kinderwunsch, Wohnform)
 
-#### Komponente 1: Profil-Match (M)
+### Match-Berechnung pro Dimension
 
-Ähnlichkeit der **88 GFK-Bedürfnisse** zwischen zwei Profilen (nach Marshall Rosenberg).
-
-```
-Für jedes Bedürfnis mit Gewicht > 30:
-  Ähnlichkeit = 100 - |Wert_Person1 - Wert_Person2|
-  Gewicht = (Wert_Person1 + Wert_Person2) / 2
-
-M = Σ(Ähnlichkeit × Gewicht) / Σ(Gewicht)
-```
-
-*Beispiel: Bei 72% gewichteter Übereinstimmung der Bedürfnisse: M = 72*
-
-#### Komponente 2: Logos-Pathos-Balance (B)
-
-Das Verhältnis zwischen rationaler Struktur und emotionaler Dynamik – basierend auf Pirsigs MOQ.
-
-| Konzept | Definition | TIAGE-Zuordnung |
-|---------|------------|-----------------|
-| **Logos** | Statische Qualität | A (Archetyp-Übereinstimmung) |
-| **Pathos** | Dynamische Qualität | (O + D + G) / 3 |
+Für jede Dimension werden die relevanten Bedürfnisse verglichen:
 
 ```
-B = (100 - |Logos - Pathos|) / 100
+Match = Σ(100 - |Wert_P1 - Wert_P2|) / 100 / n
 ```
 
-*Beispiel: Bei A=72% und avg(O,D,G)=65%: B = (100 - 7) / 100 = 0.93*
+*Beispiel: Bei 80% Match in der Philosophie-Dimension: R_Phil = 0.9 + (0.8 × 0.2) = 1.06 ⬆️*
 
-#### Komponente 3: GFK-Kommunikationsfaktor (K)
+### GFK-Kommunikationsfaktor (K)
 
-Die Gewaltfreie Kommunikation (GFK) nach Marshall Rosenberg als Schlüssel zur Resonanz.
+Die Gewaltfreie Kommunikation (GFK) nach Marshall Rosenberg moduliert den dimensionalen Koeffizienten:
 
 | ICH / Partner | hoch | mittel | niedrig |
 |---------------|------|--------|---------|
@@ -86,16 +97,8 @@ Die Gewaltfreie Kommunikation (GFK) nach Marshall Rosenberg als Schlüssel zur R
 | **mittel**    | 0.75 | 0.5    | 0.2     |
 | **niedrig**   | 0.35 | 0.2    | 0.0     |
 
-#### R-Beispielrechnung
-
-**Gegeben:** M = 72 (72% Bedürfnis-Match), B = 0.93 (7% Logos-Pathos-Differenz), K = 0.75 (mittel + hoch)
-
 ```
-R = 0.9 + [(72/100 × 0.35) + (0.93 × 0.35) + (0.75 × 0.30)] × 0.2
-R = 0.9 + [0.252 + 0.326 + 0.225] × 0.2
-R = 0.9 + 0.803 × 0.2
-R = 0.9 + 0.161
-R = 1.061
+R_final = R_dimensional × (0.85 + K × 0.15)
 ```
 
 ### Resonanz-Override
@@ -119,23 +122,45 @@ Der **Resonanz-Override** ermöglicht eine Ausnahme: Wenn zwei Menschen auf eine
 
 **Hinweis:** Dies ist keine Empfehlung, sondern eine philosophische Möglichkeit, die das Modell abbildet. Der Override zeigt: Tiefe Resonanz kann konditionierte Muster transzendieren.
 
-## Rechenbeispiel
+## Rechenbeispiel (v3.1)
 
 **Duo (Cis Frau, Submissiv, Hetero) × Duo-Flex (Cis Mann, Dominant, Hetero)**
 
-| Faktor | Berechnung | Ergebnis |
-|--------|------------|----------|
-| Archetyp | 75% × 0.15 | 11.25 (Duo ↔ Duo-Flex = nah verwandt) |
-| Orientierung | 100% × 0.40 | 40 (Hetero + Hetero bei M/F) |
-| Dominanz | 100% × 0.20 | 20 (Submissiv + Dominant = Ergänzung) |
-| Geschlecht | 100% × 0.25 | 25 (Cis Frau × Cis Mann passt) |
-| **Basis-Score** | | **96.25** |
-| Resonanz | R = 1.05 | (Leichte Harmonie) |
-| **Final** | 96.25 × 1.05 | **101 → 100%** |
+### Schritt 1: Faktor-Scores
+
+| Faktor | Wert | Grund |
+|--------|------|-------|
+| A (Archetyp) | 75 | Duo ↔ Duo-Flex = nah verwandt |
+| O (Orientierung) | 100 | Hetero + Hetero bei M/F = voll kompatibel |
+| D (Dominanz) | 100 | Submissiv + Dominant = komplementär |
+| G (Geschlecht) | 100 | Cis Frau × Cis Mann = Match |
+
+### Schritt 2: Dimensionale Resonanz (angenommen)
+
+| Dimension | Match | R-Wert | Status |
+|-----------|-------|--------|--------|
+| 🧠 R_Philosophie | 30% | 0.9 + (0.3 × 0.2) = **0.96** | ⬇️ Dissonanz |
+| 🔥 R_Leben | 90% | 0.9 + (0.9 × 0.2) = **1.08** | ⬆️ Resonanz |
+| ⚡ R_Dynamik | 60% | 0.9 + (0.6 × 0.2) = **1.02** | ➡️ Neutral |
+| 💚 R_Identität | 80% | 0.9 + (0.8 × 0.2) = **1.06** | ⬆️ Resonanz |
+
+### Schritt 3: Dimensionale Multiplikation (v3.1)
 
 ```
-(11.25 + 40 + 20 + 25) × 1.05 = 101.06 → gekappt auf 100%
+Q = (A × w_A × R_Phil) + (O × w_O × R_Leben) + (D × w_D × R_Dyn) + (G × w_G × R_Ident)
+
+Q = (75 × 0.15 × 0.96) +     = 10.8  🧠
+    (100 × 0.40 × 1.08) +    = 43.2  🔥
+    (100 × 0.20 × 1.02) +    = 20.4  ⚡
+    (100 × 0.25 × 1.06)      = 26.5  💚
+    ─────────────────────────────────
+    finalScore               = 101 → 100%
 ```
+
+**Vergleich mit Legacy (baseScore × R_gesamt):**
+- baseScore = 11.25 + 40 + 20 + 25 = 96.25
+- Legacy: 96.25 × 1.03 = **99%**
+- v3.1: **100%** (dimensionale Resonanz belohnt starke Übereinstimmung in O, D, G)
 
 ## Die 8 Archetypen
 
