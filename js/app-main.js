@@ -10058,89 +10058,150 @@
         /**
          * Berechnet und wählt automatisch den besten Partner-Archetyp
          * basierend auf den aktuellen ICH-Einstellungen (Archetyp, Dimensionen, Gewichtungen)
+         *
+         * Faktoren:
+         * - Archetyp-Matrix: Basis-Score (25-95 Punkte)
+         * - Dominanz: ±12 Punkte (dominant↔submissiv optimal)
+         * - Orientierung: ±10 Punkte (Kompatibilität der sexuellen Orientierung)
+         * - Geschlecht: ±8 Punkte (basierend auf Orientierung+Geschlecht Kompatibilität)
          */
         function findBestMatch() {
-            const ALL_ARCHETYPES = ['single', 'duo', 'duo_flex', 'ra', 'lat', 'aromantisch', 'solopoly', 'polyamor'];
-
             // Sammle ICH-Daten
             const ichArchetype = currentArchetype || 'single';
             const ichDimensions = personDimensions.ich || {};
+            const partnerDims = personDimensions.partner || {};
 
-            // Hole Gewichtungen
-            const gewichtungen = getGewichtungen();
+            // ═══════════════════════════════════════════════════════════════════
+            // KOMPATIBILITÄTS-MATRIZEN
+            // ═══════════════════════════════════════════════════════════════════
 
-            // Sammle Partner-Dimensionen (für die Berechnung)
-            const partnerDimensions = personDimensions.partner || {};
+            // Archetyp-Kompatibilität (Basis-Score)
+            const ARCHETYPE_MATRIX = {
+                'single': { 'single': 85, 'duo': 25, 'duo_flex': 45, 'ra': 75, 'lat': 70, 'aromantisch': 80, 'solopoly': 75, 'polyamor': 50 },
+                'duo': { 'single': 25, 'duo': 95, 'duo_flex': 65, 'ra': 15, 'lat': 55, 'aromantisch': 20, 'solopoly': 20, 'polyamor': 35 },
+                'duo_flex': { 'single': 45, 'duo': 65, 'duo_flex': 85, 'ra': 55, 'lat': 70, 'aromantisch': 45, 'solopoly': 60, 'polyamor': 75 },
+                'ra': { 'single': 75, 'duo': 15, 'duo_flex': 55, 'ra': 90, 'lat': 70, 'aromantisch': 75, 'solopoly': 85, 'polyamor': 70 },
+                'lat': { 'single': 70, 'duo': 55, 'duo_flex': 70, 'ra': 70, 'lat': 90, 'aromantisch': 75, 'solopoly': 65, 'polyamor': 60 },
+                'aromantisch': { 'single': 80, 'duo': 20, 'duo_flex': 45, 'ra': 75, 'lat': 75, 'aromantisch': 95, 'solopoly': 65, 'polyamor': 55 },
+                'solopoly': { 'single': 75, 'duo': 20, 'duo_flex': 60, 'ra': 85, 'lat': 65, 'aromantisch': 65, 'solopoly': 90, 'polyamor': 80 },
+                'polyamor': { 'single': 50, 'duo': 35, 'duo_flex': 75, 'ra': 70, 'lat': 60, 'aromantisch': 55, 'solopoly': 80, 'polyamor': 90 }
+            };
 
-            let bestMatch = null;
-            let bestScore = -1;
+            // Dominanz-Kompatibilität (70 = neutral, >70 = Bonus, <70 = Malus)
+            const DOMINANCE_MATRIX = {
+                'dominant-submissiv': 95, 'submissiv-dominant': 95,
+                'dominant-switch': 80, 'switch-dominant': 80,
+                'submissiv-switch': 80, 'switch-submissiv': 80,
+                'switch-switch': 85,
+                'dominant-dominant': 55, 'submissiv-submissiv': 55,
+                'ausgeglichen-ausgeglichen': 90,
+                'ausgeglichen-dominant': 75, 'dominant-ausgeglichen': 75,
+                'ausgeglichen-submissiv': 75, 'submissiv-ausgeglichen': 75,
+                'ausgeglichen-switch': 85, 'switch-ausgeglichen': 85
+            };
+
+            // Orientierungs-Kompatibilität (70 = neutral)
+            const ORIENTATION_MATRIX = {
+                'heterosexuell-heterosexuell': 95,
+                'homosexuell-homosexuell': 95,
+                'bisexuell-bisexuell': 90,
+                'bisexuell-heterosexuell': 85, 'heterosexuell-bisexuell': 85,
+                'bisexuell-homosexuell': 85, 'homosexuell-bisexuell': 85,
+                'heterosexuell-homosexuell': 30, 'homosexuell-heterosexuell': 30,
+                'pansexuell-pansexuell': 90,
+                'pansexuell-bisexuell': 85, 'bisexuell-pansexuell': 85,
+                'pansexuell-heterosexuell': 80, 'heterosexuell-pansexuell': 80,
+                'pansexuell-homosexuell': 80, 'homosexuell-pansexuell': 80
+            };
+
+            // Geschlechts-Kompatibilität basierend auf Orientierung
+            // Format: ichGeschlecht-partnerGeschlecht-ichOrientierung
+            const GENDER_ORIENTATION_MATRIX = {
+                // Heterosexuell: Mann sucht Frau, Frau sucht Mann
+                'mann-frau-heterosexuell': 95, 'frau-mann-heterosexuell': 95,
+                'mann-mann-heterosexuell': 20, 'frau-frau-heterosexuell': 20,
+                // Homosexuell: Gleiche Geschlechter
+                'mann-mann-homosexuell': 95, 'frau-frau-homosexuell': 95,
+                'mann-frau-homosexuell': 20, 'frau-mann-homosexuell': 20,
+                // Bisexuell/Pansexuell: Alle Kombinationen OK
+                'mann-frau-bisexuell': 90, 'frau-mann-bisexuell': 90,
+                'mann-mann-bisexuell': 90, 'frau-frau-bisexuell': 90,
+                'mann-frau-pansexuell': 90, 'frau-mann-pansexuell': 90,
+                'mann-mann-pansexuell': 90, 'frau-frau-pansexuell': 90,
+                // Inter - generell offen
+                'inter-mann-heterosexuell': 70, 'inter-frau-heterosexuell': 70,
+                'inter-mann-homosexuell': 70, 'inter-frau-homosexuell': 70,
+                'inter-mann-bisexuell': 85, 'inter-frau-bisexuell': 85,
+                'inter-inter-bisexuell': 85,
+                'mann-inter-bisexuell': 85, 'frau-inter-bisexuell': 85,
+                'mann-inter-pansexuell': 85, 'frau-inter-pansexuell': 85
+            };
+
+            const ALL_ARCHETYPES = ['single', 'duo', 'duo_flex', 'ra', 'lat', 'aromantisch', 'solopoly', 'polyamor'];
             const results = [];
 
-            // Berechne Score für jeden möglichen Partner-Archetyp
+            // ═══════════════════════════════════════════════════════════════════
+            // DIMENSIONEN EXTRAHIEREN
+            // ═══════════════════════════════════════════════════════════════════
+
+            const ichDominanz = getPrimaryDominanz(ichDimensions.dominanz);
+            const partnerDominanz = getPrimaryDominanz(partnerDims.dominanz);
+
+            const ichOrientierung = getPrimaryOrientierung(ichDimensions.orientierung);
+            const partnerOrientierung = getPrimaryOrientierung(partnerDims.orientierung);
+
+            const ichGeschlecht = getPrimaryGeschlecht(ichDimensions.geschlecht);
+            const partnerGeschlecht = getPrimaryGeschlecht(partnerDims.geschlecht);
+
+            // ═══════════════════════════════════════════════════════════════════
+            // BERECHNUNG FÜR JEDEN ARCHETYP
+            // ═══════════════════════════════════════════════════════════════════
+
             for (const partnerArch of ALL_ARCHETYPES) {
-                try {
-                    // Erstelle temporäre Person-Objekte für die Berechnung
-                    const person1 = {
-                        archetyp: ichArchetype,
-                        dominanz: ichDimensions.dominanz || {},
-                        geschlecht: ichDimensions.geschlecht || {},
-                        orientierung: ichDimensions.orientierung || {},
-                        gfk: ichDimensions.gfk || 'mittel'
-                    };
+                // 1. Basis-Score aus Archetyp-Matrix (25-95)
+                const baseScore = ARCHETYPE_MATRIX[ichArchetype]?.[partnerArch] || 50;
 
-                    const person2 = {
-                        archetyp: partnerArch,
-                        dominanz: partnerDimensions.dominanz || {},
-                        geschlecht: partnerDimensions.geschlecht || {},
-                        orientierung: partnerDimensions.orientierung || {},
-                        gfk: partnerDimensions.gfk || 'mittel'
-                    };
+                // 2. Dominanz-Modifikator (±12 Punkte)
+                const domKey = `${ichDominanz}-${partnerDominanz}`;
+                const domCompat = DOMINANCE_MATRIX[domKey] || 70;
+                const domModifier = Math.round((domCompat - 70) * 0.5);
 
-                    let score = 0;
+                // 3. Orientierungs-Modifikator (±10 Punkte)
+                const oriKey = `${ichOrientierung}-${partnerOrientierung}`;
+                const oriCompat = ORIENTATION_MATRIX[oriKey] || 70;
+                const oriModifier = Math.round((oriCompat - 70) * 0.4);
 
-                    // Versuche TiageSynthesis.Calculator zu verwenden
-                    if (typeof TiageSynthesis !== 'undefined' && TiageSynthesis.Calculator) {
-                        const result = TiageSynthesis.Calculator.calculateQuick(person1, person2, gewichtungen);
-                        score = result.score || 0;
-                    } else if (typeof Top10RankingCalculator !== 'undefined') {
-                        // Fallback: Verwende Top10RankingCalculator
-                        const archDefs = data?.archetypes || {};
-                        const combinations = Top10RankingCalculator.calculateAllCombinations(
-                            ichArchetype,
-                            { dominanz: getPrimaryDominanz(ichDimensions.dominanz), gfk: ichDimensions.gfk || 'mittel' },
-                            archDefs,
-                            { dominanz: getPrimaryDominanz(partnerDimensions.dominanz), gfk: partnerDimensions.gfk || 'mittel' }
-                        );
-                        const match = combinations.find(c => c.archetype === partnerArch);
-                        score = match ? match.overallScore : 0;
-                    } else {
-                        // Minimaler Fallback: Verwende Kompatibilitätsmatrix
-                        const matrix = {
-                            'single': { 'single': 85, 'duo': 25, 'duo_flex': 45, 'ra': 75, 'lat': 70, 'aromantisch': 80, 'solopoly': 75, 'polyamor': 50 },
-                            'duo': { 'single': 25, 'duo': 95, 'duo_flex': 65, 'ra': 15, 'lat': 55, 'aromantisch': 20, 'solopoly': 20, 'polyamor': 35 },
-                            'duo_flex': { 'single': 45, 'duo': 65, 'duo_flex': 85, 'ra': 55, 'lat': 70, 'aromantisch': 45, 'solopoly': 60, 'polyamor': 75 },
-                            'ra': { 'single': 75, 'duo': 15, 'duo_flex': 55, 'ra': 90, 'lat': 70, 'aromantisch': 75, 'solopoly': 85, 'polyamor': 70 },
-                            'lat': { 'single': 70, 'duo': 55, 'duo_flex': 70, 'ra': 70, 'lat': 90, 'aromantisch': 75, 'solopoly': 65, 'polyamor': 60 },
-                            'aromantisch': { 'single': 80, 'duo': 20, 'duo_flex': 45, 'ra': 75, 'lat': 75, 'aromantisch': 95, 'solopoly': 65, 'polyamor': 55 },
-                            'solopoly': { 'single': 75, 'duo': 20, 'duo_flex': 60, 'ra': 85, 'lat': 65, 'aromantisch': 65, 'solopoly': 90, 'polyamor': 80 },
-                            'polyamor': { 'single': 50, 'duo': 35, 'duo_flex': 75, 'ra': 70, 'lat': 60, 'aromantisch': 55, 'solopoly': 80, 'polyamor': 90 }
-                        };
-                        score = matrix[ichArchetype]?.[partnerArch] || 50;
+                // 4. Geschlechts-Modifikator (±8 Punkte)
+                const genderKey = `${ichGeschlecht}-${partnerGeschlecht}-${ichOrientierung}`;
+                const genderCompat = GENDER_ORIENTATION_MATRIX[genderKey] || 70;
+                const genderModifier = Math.round((genderCompat - 70) * 0.3);
+
+                // Gesamt-Score (begrenzt auf 0-100)
+                const totalModifier = domModifier + oriModifier + genderModifier;
+                const score = Math.min(100, Math.max(0, baseScore + totalModifier));
+
+                results.push({
+                    archetype: partnerArch,
+                    score: score,
+                    baseScore: baseScore,
+                    modifiers: {
+                        dominanz: domModifier,
+                        orientierung: oriModifier,
+                        geschlecht: genderModifier,
+                        total: totalModifier
                     }
-
-                    results.push({ archetype: partnerArch, score: score });
-
-                    if (score > bestScore) {
-                        bestScore = score;
-                        bestMatch = partnerArch;
-                    }
-                } catch (e) {
-                    console.warn(`Fehler bei der Berechnung für ${partnerArch}:`, e);
-                }
+                });
             }
 
-            // Sortiere Ergebnisse für Debugging
+            // Sortiere nach Score
             results.sort((a, b) => b.score - a.score);
+
+            const bestMatch = results[0]?.archetype || ichArchetype;
+            const bestScore = results[0]?.score || 0;
+
+            console.log('[findBestMatch] ICH:', ichArchetype);
+            console.log('[findBestMatch] Dimensionen - Dominanz:', ichDominanz, '| Orientierung:', ichOrientierung, '| Geschlecht:', ichGeschlecht);
+            console.log('[findBestMatch] Partner-Dims - Dominanz:', partnerDominanz, '| Orientierung:', partnerOrientierung, '| Geschlecht:', partnerGeschlecht);
             console.log('[findBestMatch] Ranking:', results);
             console.log('[findBestMatch] Bester Match:', bestMatch, 'mit Score:', bestScore);
 
@@ -10149,17 +10210,21 @@
                 selectArchetypeFromGrid('partner', bestMatch);
 
                 // Zeige kurze Feedback-Animation auf dem Button
-                const matchBtn = document.querySelector('.best-match-btn');
-                if (matchBtn) {
-                    matchBtn.classList.add('match-found');
-                    setTimeout(() => matchBtn.classList.remove('match-found'), 1000);
-                }
+                const matchBtns = document.querySelectorAll('.best-match-btn');
+                matchBtns.forEach(btn => {
+                    btn.classList.add('match-found');
+                    setTimeout(() => btn.classList.remove('match-found'), 1000);
+                });
             }
 
             return { bestMatch, bestScore, results };
         }
 
-        // Hilfsfunktion: Extrahiert primäre Dominanz aus dem Dominanz-Objekt
+        // ═══════════════════════════════════════════════════════════════════════
+        // HILFSFUNKTIONEN FÜR DIMENSIONEN
+        // ═══════════════════════════════════════════════════════════════════════
+
+        // Extrahiert primäre Dominanz aus dem Dominanz-Objekt
         function getPrimaryDominanz(dominanzObj) {
             if (!dominanzObj) return 'ausgeglichen';
             for (const type of ['dominant', 'submissiv', 'switch', 'ausgeglichen']) {
@@ -10168,8 +10233,22 @@
             return 'ausgeglichen';
         }
 
-        // Globale Funktion verfügbar machen
-        window.findBestMatch = findBestMatch;
+        // Extrahiert primäre Orientierung aus dem Orientierungs-Objekt
+        function getPrimaryOrientierung(orientierungObj) {
+            if (!orientierungObj) return 'heterosexuell';
+            for (const type of ['heterosexuell', 'homosexuell', 'bisexuell', 'pansexuell']) {
+                if (orientierungObj[type] === 'gelebt') return type;
+            }
+            return 'heterosexuell';
+        }
+
+        // Extrahiert primäres Geschlecht aus dem Geschlechts-Objekt
+        function getPrimaryGeschlecht(geschlechtObj) {
+            if (!geschlechtObj) return 'mann';
+            const primary = geschlechtObj.primary;
+            if (primary) return primary.toLowerCase();
+            return 'mann';
+        }
 
         // Navigation auf Seite 2 (Ergebnis) - ruft navigateArchetype auf und aktualisiert Seite 2
         function navigateArchetypeOnPage2(person, direction) {
@@ -15444,6 +15523,7 @@
         window.updateArchetypeGrid = updateArchetypeGrid;
         window.navigateArchetypeOnPage2 = navigateArchetypeOnPage2;
         window.navigateArchetypeOnPage3 = navigateArchetypeOnPage3;
+        window.findBestMatch = findBestMatch;
 
         // Pathos/Logos Modal functions
         window.closePathosLogosModal = closePathosLogosModal;
