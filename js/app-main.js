@@ -16171,19 +16171,59 @@
         function toggleSummeLock() {
             summeLocked = !summeLocked;
 
-            // Wenn aktiviert, speichere den aktuellen Summenwert als Ziel
+            // Wenn aktiviert, immer auf 100% normalisieren
             if (summeLocked) {
+                lockedSummeTarget = 100;
+
+                // Berechne aktuelle Summe und normalisiere proportional auf 100%
                 const factors = Object.keys(FAKTOR_MAP);
                 let currentSum = 0;
+                const factorValues = {};
+
                 factors.forEach(factor => {
                     const input = document.getElementById(FAKTOR_MAP[factor].inputId);
-                    currentSum += parseInt(input?.value) || 0;
+                    const value = parseInt(input?.value) || 0;
+                    factorValues[factor] = value;
+                    currentSum += value;
                 });
-                lockedSummeTarget = currentSum;
+
+                // Wenn Summe nicht 100, proportional skalieren (nur nicht-gelockte Faktoren)
+                if (currentSum !== 100 && currentSum > 0) {
+                    const unlockedFactors = factors.filter(f => !gewichtungLocks[f]);
+                    const lockedSum = factors.filter(f => gewichtungLocks[f])
+                        .reduce((sum, f) => sum + factorValues[f], 0);
+                    const unlockedSum = currentSum - lockedSum;
+                    const targetForUnlocked = 100 - lockedSum;
+
+                    if (unlockedSum > 0 && unlockedFactors.length > 0) {
+                        let distributed = 0;
+                        unlockedFactors.forEach((factor, idx) => {
+                            const input = document.getElementById(FAKTOR_MAP[factor].inputId);
+                            const slider = document.getElementById(`gewicht-slider-${factor}`);
+                            let newValue;
+
+                            if (idx === unlockedFactors.length - 1) {
+                                // Letzter bekommt den Rest
+                                newValue = targetForUnlocked - distributed;
+                            } else {
+                                const proportion = factorValues[factor] / unlockedSum;
+                                newValue = Math.round(targetForUnlocked * proportion);
+                                distributed += newValue;
+                            }
+
+                            newValue = Math.max(0, newValue);
+                            if (input) input.value = newValue;
+                            if (slider) slider.value = newValue;
+                        });
+
+                        saveGewichtungen();
+                    }
+                }
             }
 
             saveSummeLock();
             updateSummeLockDisplay();
+            updateGewichtungSumme();
         }
         window.toggleSummeLock = toggleSummeLock;
 
@@ -16194,8 +16234,8 @@
                 lockElement.textContent = summeLocked ? '🔒' : '🔓';
                 lockElement.classList.toggle('locked', summeLocked);
                 lockElement.title = summeLocked
-                    ? `Summe ist auf ${lockedSummeTarget}% fixiert (klicken zum Entsperren)`
-                    : 'Summe auf aktuellen Wert fixieren';
+                    ? 'Summe ist auf 100% fixiert (klicken zum Entsperren)'
+                    : 'Summe auf 100% fixieren';
             }
         }
 
@@ -16338,7 +16378,9 @@
             const gew = getGewichtungen();
             gewichtungLocks = getGewichtungLocks();
             summeLocked = getSummeLock();
-            lockedSummeTarget = getSummeTarget();
+
+            // Zielwert ist immer 100% wenn Lock aktiv
+            lockedSummeTarget = 100;
 
             const inputO = document.getElementById('gewicht-orientierung');
             const inputA = document.getElementById('gewicht-archetyp');
@@ -16360,6 +16402,46 @@
             if (sliderA) sliderA.value = gew.A;
             if (sliderD) sliderD.value = gew.D;
             if (sliderG) sliderG.value = gew.G;
+
+            // Wenn Summen-Lock aktiv und Summe != 100%, renormalisieren
+            if (summeLocked) {
+                const currentSum = gew.O + gew.A + gew.D + gew.G;
+                if (currentSum !== 100 && currentSum > 0) {
+                    const factors = Object.keys(FAKTOR_MAP);
+                    const unlockedFactors = factors.filter(f => !gewichtungLocks[f]);
+                    const lockedSum = factors.filter(f => gewichtungLocks[f])
+                        .reduce((sum, f) => {
+                            const key = FAKTOR_MAP[f].key;
+                            return sum + gew[key];
+                        }, 0);
+                    const unlockedSum = currentSum - lockedSum;
+                    const targetForUnlocked = 100 - lockedSum;
+
+                    if (unlockedSum > 0 && unlockedFactors.length > 0) {
+                        let distributed = 0;
+                        unlockedFactors.forEach((factor, idx) => {
+                            const input = document.getElementById(FAKTOR_MAP[factor].inputId);
+                            const slider = document.getElementById(`gewicht-slider-${factor}`);
+                            const key = FAKTOR_MAP[factor].key;
+                            let newValue;
+
+                            if (idx === unlockedFactors.length - 1) {
+                                newValue = targetForUnlocked - distributed;
+                            } else {
+                                const proportion = gew[key] / unlockedSum;
+                                newValue = Math.round(targetForUnlocked * proportion);
+                                distributed += newValue;
+                            }
+
+                            newValue = Math.max(0, newValue);
+                            if (input) input.value = newValue;
+                            if (slider) slider.value = newValue;
+                        });
+
+                        saveGewichtungen();
+                    }
+                }
+            }
 
             updateGewichtungSumme();
             updateRowStates();
