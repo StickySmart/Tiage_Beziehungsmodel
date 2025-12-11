@@ -698,6 +698,10 @@ const MemoryManager = (function() {
                 if (typeof partnerArchetype !== 'undefined') {
                     window.partnerArchetype = archetypValue;
                 }
+                // FIX: Also update selectedPartner - this is the variable used by updateComparisonView()
+                if (typeof selectedPartner !== 'undefined') {
+                    window.selectedPartner = archetypValue;
+                }
                 const partnerSelect = document.getElementById('partnerSelect');
                 if (partnerSelect) partnerSelect.value = archetypValue;
                 const mobilePartnerSelect = document.getElementById('mobilePartnerSelect');
