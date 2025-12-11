@@ -16643,7 +16643,7 @@
                     }
                 });
 
-                console.log('[ProfileReview] Bedürfniswerte geladen:', Object.keys(composedProfile.needs).length, 'Bedürfnisse verteilt auf', Object.keys(AttributeSummaryCard.ATTRIBUTE_NEEDS_MAPPING).length, 'UI-Attribute');
+                console.log('[ProfileReview] Bedürfniswerte geladen:', Object.keys(composedProfile.needs).length, 'Bedürfnisse');
             } else {
                 console.log('[ProfileReview] Keine Bedürfniswerte verfügbar (composedProfile.needs fehlt oder AttributeSummaryCard nicht geladen)');
             }
