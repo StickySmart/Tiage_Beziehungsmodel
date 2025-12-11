@@ -16754,17 +16754,16 @@
             var totalMatches = 0;
             var matchedAttributes = 0;
 
-            // Get all attribute cards
-            var cards = contentContainer.querySelectorAll('.attribute-summary-card');
-            var categories = contentContainer.querySelectorAll('.profile-review-category');
+            // Check if we're in flat view mode (flat-needs-container present)
+            var flatContainer = contentContainer.querySelector('.flat-needs-container');
+            var isFlatView = !!flatContainer;
 
-            // First pass: check each card for matching needs
-            cards.forEach(function(card) {
-                var needItems = card.querySelectorAll('.attribute-need-item');
-                var cardHasMatch = false;
+            if (isFlatView) {
+                // FLAT VIEW: Search in flat-need-item elements
+                var flatNeedItems = contentContainer.querySelectorAll('.flat-need-item');
 
-                needItems.forEach(function(needItem) {
-                    var needLabel = needItem.querySelector('.attribute-need-label');
+                flatNeedItems.forEach(function(needItem) {
+                    var needLabel = needItem.querySelector('.flat-need-label');
                     if (!needLabel) return;
 
                     var labelText = needLabel.textContent || '';
@@ -16814,47 +16813,125 @@
                         }
                     }
 
-                    // Toggle match class
+                    // Toggle visibility and match class for flat view
+                    needItem.classList.toggle('filter-hidden', !matches);
                     needItem.classList.toggle('filter-match', matches);
 
                     if (matches) {
-                        cardHasMatch = true;
                         totalMatches++;
                     }
                 });
 
-                // Show/hide card and auto-expand if has matches
-                card.classList.toggle('filter-hidden', !cardHasMatch);
-                card.classList.toggle('has-filter-match', cardHasMatch);
+                // In flat view, count visible items as "matched attributes"
+                matchedAttributes = totalMatches > 0 ? 1 : 0;
 
-                if (cardHasMatch) {
-                    matchedAttributes++;
-                    // Expand the needs list to show matches
-                    var needsList = card.querySelector('.attribute-summary-needs-list');
-                    if (needsList) {
-                        needsList.classList.remove('collapsed');
+            } else {
+                // CARD VIEW: Original behavior with attribute-summary-card
+                var cards = contentContainer.querySelectorAll('.attribute-summary-card');
+                var categories = contentContainer.querySelectorAll('.profile-review-category');
+
+                // First pass: check each card for matching needs
+                cards.forEach(function(card) {
+                    var needItems = card.querySelectorAll('.attribute-need-item');
+                    var cardHasMatch = false;
+
+                    needItems.forEach(function(needItem) {
+                        var needLabel = needItem.querySelector('.attribute-need-label');
+                        if (!needLabel) return;
+
+                        var labelText = needLabel.textContent || '';
+                        var needId = needItem.getAttribute('data-need') || '';
+
+                        // Check if need matches the search pattern (label or ID)
+                        var matches = searchPattern.test(labelText) || searchPattern.test(needId);
+
+                        // Also check category and dimension names
+                        if (!matches && typeof GfkBeduerfnisse !== 'undefined' && GfkBeduerfnisse.definitionen) {
+                            var needDef = GfkBeduerfnisse.definitionen[needId];
+                            if (needDef) {
+                                // Check category name
+                                var kategorie = needDef.kategorie || '';
+                                if (kategorie && searchPattern.test(kategorie)) {
+                                    matches = true;
+                                }
+
+                                // Check category label from taxonomy
+                                if (!matches && typeof TiageTaxonomie !== 'undefined') {
+                                    var katData = TiageTaxonomie.kategorien && TiageTaxonomie.getKategorie
+                                        ? TiageTaxonomie.getKategorie(kategorie)
+                                        : null;
+                                    if (katData) {
+                                        if (katData.label && searchPattern.test(katData.label)) {
+                                            matches = true;
+                                        }
+                                        if (katData.beschreibung && searchPattern.test(katData.beschreibung)) {
+                                            matches = true;
+                                        }
+                                        // Check dimension
+                                        if (!matches && katData.dimension) {
+                                            var dimData = TiageTaxonomie.getDimension
+                                                ? TiageTaxonomie.getDimension(katData.dimension)
+                                                : null;
+                                            if (dimData) {
+                                                if (dimData.label && searchPattern.test(dimData.label)) {
+                                                    matches = true;
+                                                }
+                                                if (dimData.beschreibung && searchPattern.test(dimData.beschreibung)) {
+                                                    matches = true;
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+
+                        // Toggle match class
+                        needItem.classList.toggle('filter-match', matches);
+
+                        if (matches) {
+                            cardHasMatch = true;
+                            totalMatches++;
+                        }
+                    });
+
+                    // Show/hide card and auto-expand if has matches
+                    card.classList.toggle('filter-hidden', !cardHasMatch);
+                    card.classList.toggle('has-filter-match', cardHasMatch);
+
+                    if (cardHasMatch) {
+                        matchedAttributes++;
+                        // Expand the needs list to show matches
+                        var needsList = card.querySelector('.attribute-summary-needs-list');
+                        if (needsList) {
+                            needsList.classList.remove('collapsed');
+                        }
                     }
-                }
-            });
+                });
 
-            // Second pass: hide categories with no visible cards
-            categories.forEach(function(category) {
-                var visibleCards = category.querySelectorAll('.attribute-summary-card:not(.filter-hidden)');
-                category.classList.toggle('filter-hidden', visibleCards.length === 0);
+                // Second pass: hide categories with no visible cards
+                categories.forEach(function(category) {
+                    var visibleCards = category.querySelectorAll('.attribute-summary-card:not(.filter-hidden)');
+                    category.classList.toggle('filter-hidden', visibleCards.length === 0);
 
-                // Update item count badge if present
-                var badge = category.querySelector('.category-item-count');
-                if (badge && visibleCards.length > 0) {
-                    badge.textContent = '(' + visibleCards.length + ')';
-                }
-            });
+                    // Update item count badge if present
+                    var badge = category.querySelector('.category-item-count');
+                    if (badge && visibleCards.length > 0) {
+                        badge.textContent = '(' + visibleCards.length + ')';
+                    }
+                });
+            }
 
             // Update hint
             if (hint) {
                 if (totalMatches > 0) {
-                    hint.textContent = totalMatches + ' Bedürfnis' + (totalMatches !== 1 ? 'se' : '') +
-                                      ' in ' + matchedAttributes + ' Attribut' + (matchedAttributes !== 1 ? 'en' : '') +
-                                      ' gefunden';
+                    if (isFlatView) {
+                        hint.textContent = totalMatches + ' Bedürfnis' + (totalMatches !== 1 ? 'se' : '') + ' gefunden';
+                    } else {
+                        hint.textContent = totalMatches + ' Bedürfnis' + (totalMatches !== 1 ? 'se' : '') +
+                                          ' in ' + matchedAttributes + ' Attribut' + (matchedAttributes !== 1 ? 'en' : '') +
+                                          ' gefunden';
+                    }
                     hint.classList.add('has-results');
                 } else {
                     hint.textContent = 'Keine Bedürfnisse gefunden. Tipp: Verwende * als Platzhalter (z.B. *kind*)';
