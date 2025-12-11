@@ -16057,7 +16057,7 @@
             });
 
             // Berechne max. erlaubten Wert für geänderten Faktor (basierend auf lockedSummeTarget)
-            const maxForChanged = lockedSummeTarget - lockedSum;
+            const maxForChanged = Math.max(0, lockedSummeTarget - lockedSum);
             const clampedValue = Math.min(Math.max(newValue, 0), maxForChanged);
 
             // Setze geänderten Wert (Input und Slider)
@@ -16067,7 +16067,7 @@
             if (changedSlider) changedSlider.value = clampedValue;
 
             // Verteile Rest auf nicht-gelockte Faktoren
-            const availableForOthers = lockedSummeTarget - lockedSum - clampedValue;
+            const availableForOthers = Math.max(0, lockedSummeTarget - lockedSum - clampedValue);
 
             if (unlockedFactors.length > 0) {
                 const currentSum = unlockedFactors.reduce((sum, f) => sum + f.value, 0);
@@ -16360,6 +16360,46 @@
             if (sliderA) sliderA.value = gew.A;
             if (sliderD) sliderD.value = gew.D;
             if (sliderG) sliderG.value = gew.G;
+
+            // Wenn Summen-Lock aktiv und Summe nicht dem Zielwert entspricht, renormalisieren
+            if (summeLocked) {
+                const currentSum = gew.O + gew.A + gew.D + gew.G;
+                if (currentSum !== lockedSummeTarget && currentSum > 0) {
+                    const factors = Object.keys(FAKTOR_MAP);
+                    const unlockedFactors = factors.filter(f => !gewichtungLocks[f]);
+                    const lockedSum = factors.filter(f => gewichtungLocks[f])
+                        .reduce((sum, f) => {
+                            const key = FAKTOR_MAP[f].key;
+                            return sum + gew[key];
+                        }, 0);
+                    const unlockedSum = currentSum - lockedSum;
+                    const targetForUnlocked = Math.max(0, lockedSummeTarget - lockedSum);
+
+                    if (unlockedSum > 0 && unlockedFactors.length > 0) {
+                        let distributed = 0;
+                        unlockedFactors.forEach((factor, idx) => {
+                            const input = document.getElementById(FAKTOR_MAP[factor].inputId);
+                            const slider = document.getElementById(`gewicht-slider-${factor}`);
+                            const key = FAKTOR_MAP[factor].key;
+                            let newValue;
+
+                            if (idx === unlockedFactors.length - 1) {
+                                newValue = targetForUnlocked - distributed;
+                            } else {
+                                const proportion = gew[key] / unlockedSum;
+                                newValue = Math.round(targetForUnlocked * proportion);
+                                distributed += newValue;
+                            }
+
+                            newValue = Math.max(0, newValue);
+                            if (input) input.value = newValue;
+                            if (slider) slider.value = newValue;
+                        });
+
+                        saveGewichtungen();
+                    }
+                }
+            }
 
             updateGewichtungSumme();
             updateRowStates();
