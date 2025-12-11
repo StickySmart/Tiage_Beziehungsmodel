@@ -1671,6 +1671,8 @@
             const currentScore = percentage ? parseFloat(percentage.textContent) || 0 : 0;
             const displayScore = currentScore.toFixed(1);
 
+            console.log('[TIAGE] updateSyntheseScoreCycle - score:', currentScore, 'mainScoreValueEl:', !!mainScoreValueEl);
+
             // Update circle progress (circumference = 2 * PI * r = 2 * 3.14159 * 42 ≈ 264)
             const circumference = 264;
             const offset = circumference - (currentScore / 100) * circumference;
@@ -3525,6 +3527,8 @@
          * P = Primary = Körper (Mann, Frau, Inter)
          */
         function handleGeschlechtPClick(person, value, btn) {
+            console.log('[TIAGE] handleGeschlechtPClick:', person, value);
+
             // Ensure geschlecht has correct structure
             if (!personDimensions[person].geschlecht ||
                 !('primary' in personDimensions[person].geschlecht)) {
@@ -3562,6 +3566,8 @@
          * S = Secondary = Identität (kontextabhängig von P)
          */
         function handleGeschlechtSClick(person, value, btn) {
+            console.log('[TIAGE] handleGeschlechtSClick:', person, value);
+
             // Ensure geschlecht has correct structure
             if (!personDimensions[person].geschlecht) {
                 personDimensions[person].geschlecht = { primary: null, secondary: null };
@@ -4117,6 +4123,8 @@
          * - Click on Secondary = Clear only secondary
          */
         function handleDominanzClick(person, dominanzValue, btn) {
+            console.log('[TIAGE] handleDominanzClick:', person, dominanzValue);
+
             // Ensure dominanz has correct structure (migration from old format)
             if (!personDimensions[person].dominanz ||
                 !('primary' in personDimensions[person].dominanz)) {
@@ -4347,6 +4355,8 @@
          * - Click on Secondary = Clear only secondary
          */
         function handleOrientierungClick(person, orientierungValue, btn) {
+            console.log('[TIAGE] handleOrientierungClick:', person, orientierungValue);
+
             // Ensure orientierung has correct structure (migration from old format)
             if (!personDimensions[person].orientierung ||
                 !('primary' in personDimensions[person].orientierung)) {
@@ -4473,6 +4483,8 @@
          * @param {string} status - 'gelebt' (primary) oder 'interessiert' (secondary)
          */
         function handleStatusToggle(person, dimension, type, status) {
+            console.log('[TIAGE] handleStatusToggle:', person, dimension, type, status);
+
             // Sicherstellen, dass die Datenstruktur existiert
             if (!personDimensions[person][dimension] ||
                 !('primary' in personDimensions[person][dimension])) {
@@ -10510,11 +10522,20 @@
         function updateComparisonView() {
             if (!data) return;
 
+            console.log('[TIAGE] updateComparisonView called - dimensions:', JSON.stringify({
+                ich: personDimensions.ich,
+                partner: personDimensions.partner
+            }));
+
             const ichArch = data.archetypes[currentArchetype];
             const partnerArch = data.archetypes[selectedPartner];
 
             // NEU: GFK-Bedürfnis-Matching mit allen Dimensionen neu berechnen
-            updateGfkFromArchetypes();
+            try {
+                updateGfkFromArchetypes();
+            } catch (e) {
+                console.warn('[TIAGE] updateGfkFromArchetypes error:', e);
+            }
 
             // Update type names
             document.getElementById('resultIchType').textContent = ichArch?.name || currentArchetype;
@@ -10607,12 +10628,17 @@
             let qualityBreakdown = { archetyp: 0, dominanz: 0, orientierung: 0, geschlecht: 0 };
 
             if (pathosCheck.result !== 'unmöglich') {
-                const result = calculateOverallWithModifiers(person1, person2, pathosCheck, logosCheck);
-                overallScore = result.overall;
-                qualityBreakdown = result.breakdown || qualityBreakdown;
+                try {
+                    const result = calculateOverallWithModifiers(person1, person2, pathosCheck, logosCheck);
+                    overallScore = result.overall;
+                    qualityBreakdown = result.breakdown || qualityBreakdown;
+                    console.log('[TIAGE] Score calculated:', overallScore, 'breakdown:', qualityBreakdown);
 
-                // Update expandable category bars
-                updateExpandableCategoryBars(result.categories);
+                    // Update expandable category bars
+                    updateExpandableCategoryBars(result.categories);
+                } catch (e) {
+                    console.error('[TIAGE] calculateOverallWithModifiers error:', e);
+                }
             }
 
             // Update 4-Factor Breakdown (Desktop)
