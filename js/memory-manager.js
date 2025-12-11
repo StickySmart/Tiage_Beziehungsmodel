@@ -65,6 +65,8 @@ const MemoryManager = (function() {
      * MIGRATION v1.8.84: attributes werden nicht mehr gespeichert, da sie redundant sind.
      * Die Kategorie-Werte können aus flatNeeds berechnet werden.
      * Beim Laden werden Legacy-Dateien (alle Formate) weiterhin unterstützt.
+     *
+     * FIX v1.8.89: Wenn flatNeeds leer ist, lade Bedürfnisse aus dem Archetyp-Profil
      */
     function collectProfileReviewState(person) {
         const state = {
@@ -83,6 +85,30 @@ const MemoryManager = (function() {
                 // Legacy: flatLockedNeeds separat hinzufügen für alte Konsumenten
                 if (AttributeSummaryCard.getFlatLockedNeeds) {
                     state.flatLockedNeeds = AttributeSummaryCard.getFlatLockedNeeds();
+                }
+            }
+        }
+
+        // FIX v1.8.89: Fallback - wenn flatNeeds leer ist, lade aus Archetyp-Profil
+        const isFlatNeedsEmpty = !state.flatNeeds || Object.keys(state.flatNeeds).length === 0;
+        if (isFlatNeedsEmpty) {
+            // Hole aktuellen Archetyp für diese Person
+            let archetyp = null;
+            if (typeof TiageState !== 'undefined') {
+                const archetypData = TiageState.getArchetypes(person);
+                archetyp = archetypData?.primary;
+            } else if (person === 'ich' && typeof window.mobileIchArchetype !== 'undefined') {
+                archetyp = window.mobileIchArchetype;
+            } else if (person === 'partner' && typeof window.mobilePartnerArchetype !== 'undefined') {
+                archetyp = window.mobilePartnerArchetype;
+            }
+
+            // Lade Bedürfnisse aus Archetyp-Profil
+            if (archetyp && typeof GfkBeduerfnisse !== 'undefined' && GfkBeduerfnisse.archetypProfile) {
+                const profil = GfkBeduerfnisse.archetypProfile[archetyp];
+                if (profil && profil.kernbeduerfnisse) {
+                    state.flatNeeds = { ...profil.kernbeduerfnisse };
+                    console.log('[MemoryManager] flatNeeds aus Archetyp-Profil geladen:', archetyp, 'Anzahl:', Object.keys(state.flatNeeds).length);
                 }
             }
         }
