@@ -56,6 +56,19 @@ const GfkBeduerfnisse = {
     },
 
     /**
+     * Formatiert einen String-Key als lesbares Label (Fallback)
+     * @param {string} key - z.B. 'selbstbestimmung' oder 'kontrolle_ausueben'
+     * @returns {string} Formatiertes Label z.B. 'Selbstbestimmung' oder 'Kontrolle Ausueben'
+     */
+    _formatKeyAsLabel: function(key) {
+        if (!key) return '';
+        // Unterstriche zu Leerzeichen, erster Buchstabe jedes Worts groß
+        return key.replace(/_/g, ' ')
+                  .replace(/ae/g, 'ä').replace(/oe/g, 'ö').replace(/ue/g, 'ü')
+                  .replace(/\b\w/g, c => c.toUpperCase());
+    },
+
+    /**
      * Gibt Kategorie-Metadaten aus der Taxonomie zurück
      * @param {string} key - z.B. 'existenz'
      * @returns {object} Kategorie mit sigma, color, dimension
@@ -1282,18 +1295,10 @@ const GfkBeduerfnisse = {
                 summeUebereinstimmung += uebereinstimmung * gewicht;
                 summeGewicht += gewicht;
 
-                // Hole #B-ID für Referenzierbarkeit
-                let hashId = '';
-                if (typeof BeduerfnisIds !== 'undefined' && BeduerfnisIds.toId) {
-                    const bId = BeduerfnisIds.toId(bed);
-                    if (bId && bId.startsWith('#B')) {
-                        hashId = bId + ' ';
-                    }
-                }
-
+                // Label ohne #ID-Prefix (wird vom UI bei Bedarf hinzugefügt)
                 const bedInfo = {
                     id: bed,
-                    label: hashId + (this.definitionen[bed]?.label || bed),
+                    label: this.definitionen[bed]?.label || this._formatKeyAsLabel(bed),
                     wert1: wert1,
                     wert2: wert2,
                     diff: diff
@@ -1352,22 +1357,12 @@ const GfkBeduerfnisse = {
         return Object.entries(profil.kernbeduerfnisse)
             .sort((a, b) => b[1] - a[1])
             .slice(0, anzahl)
-            .map(([id, wert]) => {
-                // Hole #B-ID für Referenzierbarkeit
-                let hashId = '';
-                if (typeof BeduerfnisIds !== 'undefined' && BeduerfnisIds.toId) {
-                    const bId = BeduerfnisIds.toId(id);
-                    if (bId && bId.startsWith('#B')) {
-                        hashId = bId + ' ';
-                    }
-                }
-                return {
-                    id: id,
-                    label: hashId + (self.definitionen[id]?.label || id),
-                    wert: wert,
-                    kategorie: self.definitionen[id]?.kategorie
-                };
-            });
+            .map(([id, wert]) => ({
+                id: id,
+                label: self.definitionen[id]?.label || self._formatKeyAsLabel(id),
+                wert: wert,
+                kategorie: self.definitionen[id]?.kategorie
+            }));
     },
 
     /**
