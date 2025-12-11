@@ -1475,14 +1475,25 @@ input.gewichtung-input:focus {
 
 /* Kategorie-Modus: Items mit farblicher Kennzeichnung */
 .flat-needs-list.kategorie-mode .flat-need-item.has-dimension-color {
-    border-left-width: 3px;
+    border-left-width: 5px;
     border-left-style: solid;
     padding-left: 12px;
     border-radius: 0 6px 6px 0;
-    transition: border-left-color 0.2s ease;
+    transition: border-left-color 0.2s ease, background 0.2s ease;
 }
 
 /* Hover-Effekt für Items mit Dimension-Farbe */
 .flat-needs-list.kategorie-mode .flat-need-item.has-dimension-color:hover {
     background: rgba(255,255,255,0.06);
+}
+
+/* Slider-Thumb mit Dimension-Farbe im Kategorie-Modus */
+.flat-needs-list.kategorie-mode .flat-need-item.has-dimension-color .need-slider::-webkit-slider-thumb {
+    background: var(--dimension-color, #fff);
+    border-color: rgba(0,0,0,0.4);
+}
+
+.flat-needs-list.kategorie-mode .flat-need-item.has-dimension-color .need-slider::-moz-range-thumb {
+    background: var(--dimension-color, #fff);
+    border-color: rgba(0,0,0,0.4);
 }

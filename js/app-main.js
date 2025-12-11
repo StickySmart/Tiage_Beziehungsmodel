@@ -10317,6 +10317,117 @@
         // Globale Funktion verfügbar machen
         window.findBestMatchForIch = findBestMatchForIch;
 
+        /**
+         * findBestMatchForIch() - Findet den besten ICH-Archetyp basierend auf den Partner-Einstellungen
+         * Umgekehrte Logik zu findBestMatch(): Hier werden die PARTNER-Einstellungen als Basis genommen
+         * und der beste ICH-Archetyp gesucht.
+         */
+        function findBestMatchForIch() {
+            const ALL_ARCHETYPES = ['single', 'duo', 'duo_flex', 'ra', 'lat', 'aromantisch', 'solopoly', 'polyamor'];
+
+            // Sammle PARTNER-Daten (DU) als Basis
+            const partnerArchetype = selectedPartner || 'duo';
+            const partnerDims = personDimensions.partner || {};
+
+            // Hole Gewichtungen
+            const gewichtungen = getGewichtungen();
+
+            // Sammle ICH-Dimensionen (für die Berechnung)
+            const ichDims = personDimensions.ich || {};
+
+            let bestMatch = null;
+            let bestScore = -1;
+            const results = [];
+
+            // Berechne Score für jeden möglichen ICH-Archetyp
+            for (const ichArch of ALL_ARCHETYPES) {
+                try {
+                    // Erstelle temporäre Person-Objekte für die Berechnung
+                    // Person1 = ICH (der Archetyp, der getestet wird)
+                    const person1 = {
+                        archetyp: ichArch,
+                        dominanz: ichDims.dominanz || {},
+                        geschlecht: ichDims.geschlecht || {},
+                        orientierung: ichDims.orientierung || {},
+                        gfk: ichDims.gfk || 'mittel'
+                    };
+
+                    // Person2 = PARTNER (die festen Einstellungen)
+                    const person2 = {
+                        archetyp: partnerArchetype,
+                        dominanz: partnerDims.dominanz || {},
+                        geschlecht: partnerDims.geschlecht || {},
+                        orientierung: partnerDims.orientierung || {},
+                        gfk: partnerDims.gfk || 'mittel'
+                    };
+
+                    let score = 0;
+
+                    // Versuche TiageSynthesis.Calculator zu verwenden
+                    if (typeof TiageSynthesis !== 'undefined' && TiageSynthesis.Calculator) {
+                        const result = TiageSynthesis.Calculator.calculateQuick(person1, person2, gewichtungen);
+                        score = result.score || 0;
+                    } else if (typeof Top10RankingCalculator !== 'undefined') {
+                        // Fallback: Verwende Top10RankingCalculator
+                        const archDefs = data?.archetypes || {};
+                        const combinations = Top10RankingCalculator.calculateAllCombinations(
+                            ichArch,
+                            { dominanz: getPrimaryDominanz(ichDims.dominanz), gfk: ichDims.gfk || 'mittel' },
+                            archDefs,
+                            { dominanz: getPrimaryDominanz(partnerDims.dominanz), gfk: partnerDims.gfk || 'mittel' }
+                        );
+                        // Da wir den ICH-Archetyp variieren, suchen wir den Partner-Archetyp im Ergebnis
+                        const match = combinations.find(c => c.archetype === partnerArchetype);
+                        score = match ? match.overallScore : 0;
+                    } else {
+                        // Minimaler Fallback: Verwende Kompatibilitätsmatrix
+                        const matrix = {
+                            'single': { 'single': 85, 'duo': 25, 'duo_flex': 45, 'ra': 75, 'lat': 70, 'aromantisch': 80, 'solopoly': 75, 'polyamor': 50 },
+                            'duo': { 'single': 25, 'duo': 95, 'duo_flex': 65, 'ra': 15, 'lat': 55, 'aromantisch': 20, 'solopoly': 20, 'polyamor': 35 },
+                            'duo_flex': { 'single': 45, 'duo': 65, 'duo_flex': 85, 'ra': 55, 'lat': 70, 'aromantisch': 45, 'solopoly': 60, 'polyamor': 75 },
+                            'ra': { 'single': 75, 'duo': 15, 'duo_flex': 55, 'ra': 90, 'lat': 70, 'aromantisch': 75, 'solopoly': 85, 'polyamor': 70 },
+                            'lat': { 'single': 70, 'duo': 55, 'duo_flex': 70, 'ra': 70, 'lat': 90, 'aromantisch': 75, 'solopoly': 65, 'polyamor': 60 },
+                            'aromantisch': { 'single': 80, 'duo': 20, 'duo_flex': 45, 'ra': 75, 'lat': 75, 'aromantisch': 95, 'solopoly': 65, 'polyamor': 55 },
+                            'solopoly': { 'single': 75, 'duo': 20, 'duo_flex': 60, 'ra': 85, 'lat': 65, 'aromantisch': 65, 'solopoly': 90, 'polyamor': 80 },
+                            'polyamor': { 'single': 50, 'duo': 35, 'duo_flex': 75, 'ra': 70, 'lat': 60, 'aromantisch': 55, 'solopoly': 80, 'polyamor': 90 }
+                        };
+                        score = matrix[ichArch]?.[partnerArchetype] || 50;
+                    }
+
+                    results.push({ archetype: ichArch, score: score });
+
+                    if (score > bestScore) {
+                        bestScore = score;
+                        bestMatch = ichArch;
+                    }
+                } catch (e) {
+                    console.warn(`Fehler bei der Berechnung für ${ichArch}:`, e);
+                }
+            }
+
+            // Sortiere Ergebnisse für Debugging
+            results.sort((a, b) => b.score - a.score);
+            console.log('[findBestMatchForIch] Ranking:', results);
+            console.log('[findBestMatchForIch] Bester ICH-Match:', bestMatch, 'mit Score:', bestScore);
+
+            // Wähle den besten Match aus
+            if (bestMatch) {
+                selectArchetypeFromGrid('ich', bestMatch);
+
+                // Zeige kurze Feedback-Animation auf dem Button
+                const matchBtns = document.querySelectorAll('.ich-match-btn');
+                matchBtns.forEach(btn => {
+                    btn.classList.add('match-found');
+                    setTimeout(() => btn.classList.remove('match-found'), 1000);
+                });
+            }
+
+            return { bestMatch, bestScore, results };
+        }
+
+        // Globale Funktion verfügbar machen
+        window.findBestMatchForIch = findBestMatchForIch;
+
         // Navigation auf Seite 2 (Ergebnis) - ruft navigateArchetype auf und aktualisiert Seite 2
         function navigateArchetypeOnPage2(person, direction) {
             navigateArchetype(person, direction);
@@ -15973,7 +16084,7 @@
             });
 
             // Berechne max. erlaubten Wert für geänderten Faktor (basierend auf lockedSummeTarget)
-            const maxForChanged = lockedSummeTarget - lockedSum;
+            const maxForChanged = Math.max(0, lockedSummeTarget - lockedSum);
             const clampedValue = Math.min(Math.max(newValue, 0), maxForChanged);
 
             // Setze geänderten Wert (Input und Slider)
@@ -15983,7 +16094,7 @@
             if (changedSlider) changedSlider.value = clampedValue;
 
             // Verteile Rest auf nicht-gelockte Faktoren
-            const availableForOthers = lockedSummeTarget - lockedSum - clampedValue;
+            const availableForOthers = Math.max(0, lockedSummeTarget - lockedSum - clampedValue);
 
             if (unlockedFactors.length > 0) {
                 const currentSum = unlockedFactors.reduce((sum, f) => sum + f.value, 0);
@@ -16276,6 +16387,46 @@
             if (sliderA) sliderA.value = gew.A;
             if (sliderD) sliderD.value = gew.D;
             if (sliderG) sliderG.value = gew.G;
+
+            // Wenn Summen-Lock aktiv und Summe nicht dem Zielwert entspricht, renormalisieren
+            if (summeLocked) {
+                const currentSum = gew.O + gew.A + gew.D + gew.G;
+                if (currentSum !== lockedSummeTarget && currentSum > 0) {
+                    const factors = Object.keys(FAKTOR_MAP);
+                    const unlockedFactors = factors.filter(f => !gewichtungLocks[f]);
+                    const lockedSum = factors.filter(f => gewichtungLocks[f])
+                        .reduce((sum, f) => {
+                            const key = FAKTOR_MAP[f].key;
+                            return sum + gew[key];
+                        }, 0);
+                    const unlockedSum = currentSum - lockedSum;
+                    const targetForUnlocked = Math.max(0, lockedSummeTarget - lockedSum);
+
+                    if (unlockedSum > 0 && unlockedFactors.length > 0) {
+                        let distributed = 0;
+                        unlockedFactors.forEach((factor, idx) => {
+                            const input = document.getElementById(FAKTOR_MAP[factor].inputId);
+                            const slider = document.getElementById(`gewicht-slider-${factor}`);
+                            const key = FAKTOR_MAP[factor].key;
+                            let newValue;
+
+                            if (idx === unlockedFactors.length - 1) {
+                                newValue = targetForUnlocked - distributed;
+                            } else {
+                                const proportion = gew[key] / unlockedSum;
+                                newValue = Math.round(targetForUnlocked * proportion);
+                                distributed += newValue;
+                            }
+
+                            newValue = Math.max(0, newValue);
+                            if (input) input.value = newValue;
+                            if (slider) slider.value = newValue;
+                        });
+
+                        saveGewichtungen();
+                    }
+                }
+            }
 
             updateGewichtungSumme();
             updateRowStates();
