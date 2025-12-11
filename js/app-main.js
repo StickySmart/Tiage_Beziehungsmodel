@@ -10073,9 +10073,6 @@
             const ichArchetype = currentArchetype || 'single';
             const ichDims = personDimensions.ich || {};
 
-            // Hole Gewichtungen
-            const gewichtungen = getGewichtungen();
-
             // Sammle Partner-Dimensionen (für die Berechnung)
             const partnerDims = personDimensions.partner || {};
 
@@ -10109,8 +10106,9 @@
                     let needsMatch = null;
 
                     // Versuche TiageSynthesis.Calculator zu verwenden (inkl. Bedürfnis-Matching)
-                    if (typeof TiageSynthesis !== 'undefined' && TiageSynthesis.Calculator) {
-                        const result = TiageSynthesis.Calculator.calculateQuick(person1, person2, gewichtungen);
+                    // WICHTIG: data enthält archetype-matrix.json, nicht gewichtungen
+                    if (typeof TiageSynthesis !== 'undefined' && TiageSynthesis.Calculator && data) {
+                        const result = TiageSynthesis.Calculator.calculateQuick(person1, person2, data);
                         score = result.score || 0;
 
                         // Versuche auch die Bedürfnis-Übereinstimmung zu holen
@@ -10222,9 +10220,6 @@
             const partnerArchetype = selectedPartner || 'duo';
             const partnerDims = personDimensions.partner || {};
 
-            // Hole Gewichtungen
-            const gewichtungen = getGewichtungen();
-
             // Sammle ICH-Dimensionen (für die Berechnung)
             const ichDims = personDimensions.ich || {};
 
@@ -10257,8 +10252,9 @@
                     let score = 0;
 
                     // Versuche TiageSynthesis.Calculator zu verwenden
-                    if (typeof TiageSynthesis !== 'undefined' && TiageSynthesis.Calculator) {
-                        const result = TiageSynthesis.Calculator.calculateQuick(person1, person2, gewichtungen);
+                    // WICHTIG: data enthält archetype-matrix.json, nicht gewichtungen
+                    if (typeof TiageSynthesis !== 'undefined' && TiageSynthesis.Calculator && data) {
+                        const result = TiageSynthesis.Calculator.calculateQuick(person1, person2, data);
                         score = result.score || 0;
                     } else if (typeof Top10RankingCalculator !== 'undefined') {
                         // Fallback: Verwende Top10RankingCalculator
