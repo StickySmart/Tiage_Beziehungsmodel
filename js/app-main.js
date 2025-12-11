@@ -16990,16 +16990,21 @@
                     // Check if need matches the search pattern (label or ID)
                     var matches = searchPattern.test(labelText) || searchPattern.test(needId);
 
-                    // Also check category and dimension names
+                    // Also check category, dimension, perspective names and need description
                     if (!matches && typeof GfkBeduerfnisse !== 'undefined') {
                         // Use getDefinition() which supports both #B-IDs and String-Keys
                         var needDef = GfkBeduerfnisse.getDefinition
                             ? GfkBeduerfnisse.getDefinition(needId)
                             : GfkBeduerfnisse.definitionen[needId];
                         if (needDef) {
-                            // Check category name
+                            // Check need description (#B)
+                            if (needDef.description && searchPattern.test(needDef.description)) {
+                                matches = true;
+                            }
+
+                            // Check category name (#K)
                             var kategorie = needDef.kategorie || '';
-                            if (kategorie && searchPattern.test(kategorie)) {
+                            if (!matches && kategorie && searchPattern.test(kategorie)) {
                                 matches = true;
                             }
 
@@ -17012,10 +17017,10 @@
                                     if (katData.label && searchPattern.test(katData.label)) {
                                         matches = true;
                                     }
-                                    if (katData.beschreibung && searchPattern.test(katData.beschreibung)) {
+                                    if (!matches && katData.beschreibung && searchPattern.test(katData.beschreibung)) {
                                         matches = true;
                                     }
-                                    // Check dimension
+                                    // Check dimension (#D)
                                     if (!matches && katData.dimension) {
                                         var dimData = TiageTaxonomie.getDimension
                                             ? TiageTaxonomie.getDimension(katData.dimension)
@@ -17024,9 +17029,29 @@
                                             if (dimData.label && searchPattern.test(dimData.label)) {
                                                 matches = true;
                                             }
-                                            if (dimData.beschreibung && searchPattern.test(dimData.beschreibung)) {
+                                            if (!matches && dimData.beschreibung && searchPattern.test(dimData.beschreibung)) {
                                                 matches = true;
                                             }
+                                        }
+                                    }
+                                }
+
+                                // Check all perspectives (#P)
+                                if (!matches && TiageTaxonomie.perspektiven) {
+                                    var perspektiven = Object.values(TiageTaxonomie.perspektiven);
+                                    for (var p = 0; p < perspektiven.length; p++) {
+                                        var perspektive = perspektiven[p];
+                                        if (perspektive.label && searchPattern.test(perspektive.label)) {
+                                            matches = true;
+                                            break;
+                                        }
+                                        if (perspektive.beschreibung && searchPattern.test(perspektive.beschreibung)) {
+                                            matches = true;
+                                            break;
+                                        }
+                                        if (perspektive.quelle && searchPattern.test(perspektive.quelle)) {
+                                            matches = true;
+                                            break;
                                         }
                                     }
                                 }
@@ -17066,16 +17091,21 @@
                         // Check if need matches the search pattern (label or ID)
                         var matches = searchPattern.test(labelText) || searchPattern.test(needId);
 
-                        // Also check category and dimension names
+                        // Also check category, dimension, perspective names and need description
                         if (!matches && typeof GfkBeduerfnisse !== 'undefined') {
                             // Use getDefinition() which supports both #B-IDs and String-Keys
                             var needDef = GfkBeduerfnisse.getDefinition
                                 ? GfkBeduerfnisse.getDefinition(needId)
                                 : GfkBeduerfnisse.definitionen[needId];
                             if (needDef) {
-                                // Check category name
+                                // Check need description (#B)
+                                if (needDef.description && searchPattern.test(needDef.description)) {
+                                    matches = true;
+                                }
+
+                                // Check category name (#K)
                                 var kategorie = needDef.kategorie || '';
-                                if (kategorie && searchPattern.test(kategorie)) {
+                                if (!matches && kategorie && searchPattern.test(kategorie)) {
                                     matches = true;
                                 }
 
@@ -17088,10 +17118,10 @@
                                         if (katData.label && searchPattern.test(katData.label)) {
                                             matches = true;
                                         }
-                                        if (katData.beschreibung && searchPattern.test(katData.beschreibung)) {
+                                        if (!matches && katData.beschreibung && searchPattern.test(katData.beschreibung)) {
                                             matches = true;
                                         }
-                                        // Check dimension
+                                        // Check dimension (#D)
                                         if (!matches && katData.dimension) {
                                             var dimData = TiageTaxonomie.getDimension
                                                 ? TiageTaxonomie.getDimension(katData.dimension)
@@ -17100,9 +17130,29 @@
                                                 if (dimData.label && searchPattern.test(dimData.label)) {
                                                     matches = true;
                                                 }
-                                                if (dimData.beschreibung && searchPattern.test(dimData.beschreibung)) {
+                                                if (!matches && dimData.beschreibung && searchPattern.test(dimData.beschreibung)) {
                                                     matches = true;
                                                 }
+                                            }
+                                        }
+                                    }
+
+                                    // Check all perspectives (#P)
+                                    if (!matches && TiageTaxonomie.perspektiven) {
+                                        var perspektiven = Object.values(TiageTaxonomie.perspektiven);
+                                        for (var p = 0; p < perspektiven.length; p++) {
+                                            var perspektive = perspektiven[p];
+                                            if (perspektive.label && searchPattern.test(perspektive.label)) {
+                                                matches = true;
+                                                break;
+                                            }
+                                            if (perspektive.beschreibung && searchPattern.test(perspektive.beschreibung)) {
+                                                matches = true;
+                                                break;
+                                            }
+                                            if (perspektive.quelle && searchPattern.test(perspektive.quelle)) {
+                                                matches = true;
+                                                break;
                                             }
                                         }
                                     }
@@ -17158,7 +17208,7 @@
                     }
                     hint.classList.add('has-results');
                 } else {
-                    hint.textContent = 'Keine Bedürfnisse gefunden. Tipp: Verwende * als Platzhalter (z.B. *kind*)';
+                    hint.textContent = 'Keine Bedürfnisse gefunden. Tipp: Verwende * als Platzhalter (z.B. *kind*) - sucht in #B, #K, #D, #P';
                     hint.classList.add('no-results');
                 }
             }
