@@ -10064,6 +10064,7 @@
          * - Dominanz: ±12 Punkte (dominant↔submissiv optimal)
          * - Orientierung: ±10 Punkte (Kompatibilität der sexuellen Orientierung)
          * - Geschlecht: ±8 Punkte (basierend auf Orientierung+Geschlecht Kompatibilität)
+         * - Resonanz: Multiplikator 0.9-1.1 (basierend auf Logos/Pathos-Balance und GFK)
          */
         function findBestMatch() {
             // Sammle ICH-Daten
@@ -10157,6 +10158,18 @@
             // BERECHNUNG FÜR JEDEN ARCHETYP
             // ═══════════════════════════════════════════════════════════════════
 
+            // GFK-Kompatibilität für Resonanz
+            const GFK_MATRIX = {
+                'hoch-hoch': 100, 'hoch-mittel': 75, 'mittel-hoch': 75,
+                'hoch-niedrig': 45, 'niedrig-hoch': 45,
+                'mittel-mittel': 65, 'mittel-niedrig': 40, 'niedrig-mittel': 40,
+                'niedrig-niedrig': 25
+            };
+
+            // Hole GFK-Level
+            const ichGfk = ichDimensions.gfk || 'mittel';
+            const partnerGfk = partnerDims.gfk || 'mittel';
+
             for (const partnerArch of ALL_ARCHETYPES) {
                 // 1. Basis-Score aus Archetyp-Matrix (25-95)
                 const baseScore = ARCHETYPE_MATRIX[ichArchetype]?.[partnerArch] || 50;
@@ -10176,9 +10189,29 @@
                 const genderCompat = GENDER_ORIENTATION_MATRIX[genderKey] || 70;
                 const genderModifier = Math.round((genderCompat - 70) * 0.3);
 
-                // Gesamt-Score (begrenzt auf 0-100)
+                // 5. Resonanz-Berechnung (Multiplikator 0.9-1.1)
+                // Logos = Archetyp-Score (philosophische Kompatibilität)
+                // Pathos = Durchschnitt von Dominanz, Orientierung, Geschlecht (emotionale Kompatibilität)
+                const logos = baseScore;
+                const pathos = Math.round((domCompat + oriCompat + genderCompat) / 3);
+
+                // Balance zwischen Logos und Pathos (je ausgeglichener, desto besser)
+                const balance = (100 - Math.abs(logos - pathos)) / 100;
+
+                // GFK-Faktor (Kommunikationskompetenz)
+                const gfkKey = `${ichGfk}-${partnerGfk}`;
+                const gfkCompat = GFK_MATRIX[gfkKey] || 65;
+                const gfkFactor = gfkCompat / 100;
+
+                // Resonanz-Koeffizient: Basis 0.9 + Balance-Bonus + GFK-Bonus
+                const resonanz = Math.min(1.1, Math.max(0.9,
+                    0.9 + (balance * 0.1) + (gfkFactor * 0.1)
+                ));
+
+                // Gesamt-Score mit Resonanz-Multiplikator
                 const totalModifier = domModifier + oriModifier + genderModifier;
-                const score = Math.min(100, Math.max(0, baseScore + totalModifier));
+                const rawScore = baseScore + totalModifier;
+                const score = Math.min(100, Math.max(0, Math.round(rawScore * resonanz)));
 
                 results.push({
                     archetype: partnerArch,
@@ -10189,6 +10222,13 @@
                         orientierung: oriModifier,
                         geschlecht: genderModifier,
                         total: totalModifier
+                    },
+                    resonanz: {
+                        coefficient: resonanz,
+                        logos: logos,
+                        pathos: pathos,
+                        balance: balance,
+                        gfk: gfkFactor
                     }
                 });
             }
@@ -10200,10 +10240,10 @@
             const bestScore = results[0]?.score || 0;
 
             console.log('[findBestMatch] ICH:', ichArchetype);
-            console.log('[findBestMatch] Dimensionen - Dominanz:', ichDominanz, '| Orientierung:', ichOrientierung, '| Geschlecht:', ichGeschlecht);
-            console.log('[findBestMatch] Partner-Dims - Dominanz:', partnerDominanz, '| Orientierung:', partnerOrientierung, '| Geschlecht:', partnerGeschlecht);
+            console.log('[findBestMatch] Dimensionen - Dominanz:', ichDominanz, '| Orientierung:', ichOrientierung, '| Geschlecht:', ichGeschlecht, '| GFK:', ichGfk);
+            console.log('[findBestMatch] Partner-Dims - Dominanz:', partnerDominanz, '| Orientierung:', partnerOrientierung, '| Geschlecht:', partnerGeschlecht, '| GFK:', partnerGfk);
             console.log('[findBestMatch] Ranking:', results);
-            console.log('[findBestMatch] Bester Match:', bestMatch, 'mit Score:', bestScore);
+            console.log('[findBestMatch] Bester Match:', bestMatch, 'mit Score:', bestScore, '| Resonanz:', results[0]?.resonanz?.coefficient?.toFixed(2));
 
             // Wähle den besten Match aus
             if (bestMatch) {
