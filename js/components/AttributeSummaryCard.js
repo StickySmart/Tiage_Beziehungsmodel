@@ -512,10 +512,17 @@ const AttributeSummaryCard = (function() {
      * @param {string|null} dimensionColor - Optional: Farbe für border-left (bei Kategorie-Sortierung)
      */
     function renderFlatNeedItem(needId, label, value, isLocked, dimensionColor) {
-        const borderStyle = dimensionColor ? `style="border-left: 3px solid ${dimensionColor};"` : '';
+        // Bei Dimensionsfarbe: Border-left + CSS-Variable für Slider-Thumb
+        const itemStyle = dimensionColor
+            ? `style="border-left: 5px solid ${dimensionColor}; --dimension-color: ${dimensionColor};"`
+            : '';
         const colorClass = dimensionColor ? ' has-dimension-color' : '';
+        // Slider-Track-Hintergrund: gefüllt bis zum Wert mit Dimensionsfarbe
+        const sliderStyle = dimensionColor
+            ? `style="background: linear-gradient(to right, ${dimensionColor} 0%, ${dimensionColor} ${value}%, rgba(255,255,255,0.15) ${value}%, rgba(255,255,255,0.15) 100%);"`
+            : '';
         return `
-        <div class="flat-need-item${isLocked ? ' need-locked' : ''}${colorClass}" data-need="${needId}" ${borderStyle}>
+        <div class="flat-need-item${isLocked ? ' need-locked' : ''}${colorClass}" data-need="${needId}" ${itemStyle}>
             <div class="flat-need-header">
                 <span class="flat-need-label clickable"
                       onclick="event.stopPropagation(); openNeedWithResonance('${needId}')"
@@ -531,6 +538,7 @@ const AttributeSummaryCard = (function() {
                        min="0" max="100" value="${value}"
                        oninput="AttributeSummaryCard.onFlatSliderInput('${needId}', this.value, this)"
                        onclick="event.stopPropagation()"
+                       ${sliderStyle}
                        ${isLocked ? 'disabled' : ''}>
                 <input type="text" class="flat-need-input" value="${value}" maxlength="3"
                        onchange="AttributeSummaryCard.updateFlatNeedValue('${needId}', this.value)"
@@ -561,6 +569,14 @@ const AttributeSummaryCard = (function() {
         if (needItem) {
             const input = needItem.querySelector('.flat-need-input');
             if (input) input.value = numValue;
+
+            // Bei Kategorie-Modus: Slider-Track-Hintergrund aktualisieren
+            if (currentFlatSortMode === 'kategorie') {
+                const dimColor = getDimensionColor(needId);
+                if (dimColor) {
+                    sliderElement.style.background = `linear-gradient(to right, ${dimColor} 0%, ${dimColor} ${numValue}%, rgba(255,255,255,0.15) ${numValue}%, rgba(255,255,255,0.15) 100%)`;
+                }
+            }
         }
 
         // Event für Änderungstracking
