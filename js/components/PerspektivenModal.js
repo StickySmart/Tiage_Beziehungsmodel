@@ -293,7 +293,7 @@ const PerspektivenModal = {
      * @param {object|null} dimensionInfo - Optional: {id, label, color, kurzform}
      */
     renderKategorieBadge: function(kategorie, kategorieColor, kategorieId, dimensionInfo) {
-        // Dimension-Badge rendern wenn vorhanden
+        // Dimension-Badge rendern wenn vorhanden (mit ID, Kurzform und Label)
         const dimensionBadge = dimensionInfo ? `
             <div style="
                 display: flex;
@@ -303,7 +303,7 @@ const PerspektivenModal = {
                 background: ${dimensionInfo.color}15;
                 border: 1px solid ${dimensionInfo.color}40;
                 border-radius: 12px;
-                margin-left: 8px;
+                margin-left: auto;
             ">
                 <span style="
                     width: 8px;
@@ -312,13 +312,18 @@ const PerspektivenModal = {
                     background: ${dimensionInfo.color};
                 "></span>
                 <span style="
-                    font-size: 11px;
-                    color: ${dimensionInfo.color};
-                    font-weight: 500;
-                ">${dimensionInfo.kurzform}</span>
-                <span style="
                     font-size: 10px;
                     color: var(--text-muted);
+                    font-family: monospace;
+                ">${dimensionInfo.id}</span>
+                <span style="
+                    font-size: 11px;
+                    color: ${dimensionInfo.color};
+                    font-weight: 600;
+                ">${dimensionInfo.kurzform}</span>
+                <span style="
+                    font-size: 11px;
+                    color: var(--text-secondary);
                 ">${dimensionInfo.label}</span>
             </div>
         ` : '';
