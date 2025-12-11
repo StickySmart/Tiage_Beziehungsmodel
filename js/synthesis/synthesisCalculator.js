@@ -1,36 +1,53 @@
 /**
- * TIAGE SYNTHESE - Haupt-Calculator
+ * TIAGE SYNTHESE - Haupt-Calculator v3.1
  *
- * Zentrale Berechnung der Beziehungsqualität nach der Formel:
+ * ═══════════════════════════════════════════════════════════════════════════
+ * HAUPT-FORMEL (Basis)
+ * ═══════════════════════════════════════════════════════════════════════════
  *
  *   Q = [(A × wₐ) + (O × wₒ) + (D × wᵈ) + (G × wᵍ)] × R
  *
  * Wobei:
- *   A = Archetyp-Score (15% - LOGOS)
- *   O = Orientierungs-Score (40% - PATHOS)
- *   D = Dominanz-Score (20% - PATHOS)
- *   G = Geschlechts-Score (25% - PATHOS)
+ *   A = Archetyp-Score (15% - LOGOS)      - Beziehungsphilosophie
+ *   O = Orientierungs-Score (40% - PATHOS) - Sexuelle Orientierung
+ *   D = Dominanz-Score (20% - PATHOS)      - Dom/Sub/Switch Dynamik
+ *   G = Geschlechts-Score (25% - PATHOS)   - Gender-Attraktion
  *   R = Resonanz-Koeffizient (0.9 - 1.1)
  *
- * NEU v3.0: BEDÜRFNIS-INTEGRATION PRO FAKTOR
+ * ═══════════════════════════════════════════════════════════════════════════
+ * v3.0: BEDÜRFNIS-INTEGRATION PRO FAKTOR
  * ═══════════════════════════════════════════════════════════════════════════
  * Jeder Faktor (A, O, D, G) kombiniert Matrix-Score mit Bedürfnis-Match:
  *
  *   Faktor = (Matrix × matrixWeight) + (BedürfnisMatch × needsWeight)
  *
- * Beispiel Orientierung:
- *   O = (GeometrieCheck × 0.5) + (Orientierung-Bedürfnisse × 0.5)
- *
  * Relevante Bedürfnisse pro Faktor:
  *   - Archetyp: kinderwunsch, langfristige_bindung, nicht_anhaften_an_partner...
- *   - Orientierung: sexuelle_experimentierfreude, biologische_anziehung, sex_als_meditation...
- *   - Dominanz: kontrolle_ausueben, hingabe, dynamische_evolution, statische_stabilitaet...
+ *   - Orientierung: sexuelle_experimentierfreude, biologische_anziehung...
+ *   - Dominanz: kontrolle_ausueben, hingabe, dynamische_evolution...
  *   - Geschlecht: authentizitaet, eigene_wahrheit, akzeptanz...
  *
- * Pirsig/Osho-Bedürfnisse fließen direkt in die Faktor-Berechnung ein!
  * ═══════════════════════════════════════════════════════════════════════════
+ * v3.1: DIMENSIONALE RESONANZ (NEU!)
+ * ═══════════════════════════════════════════════════════════════════════════
+ * Jeder Faktor wird mit seiner zugehörigen Resonanz-Dimension multipliziert:
  *
- * Resonanz-Formel:
+ *   Q = (A × wₐ × R_Philosophie) +
+ *       (O × wₒ × R_Leben) +
+ *       (D × wᵈ × R_Dynamik) +
+ *       (G × wᵍ × R_Identität)
+ *
+ * Wobei R_dim = 0.9 + (Bedürfnis-Match_dim × 0.2), also 0.9-1.1
+ *
+ * Mapping:
+ *   A (Archetyp)     ↔ R_Philosophie (Beziehungsphilosophie-Bedürfnisse)
+ *   O (Orientierung) ↔ R_Leben (Anziehung/Intimität-Bedürfnisse)
+ *   D (Dominanz)     ↔ R_Dynamik (Machtdynamik-Bedürfnisse)
+ *   G (Geschlecht)   ↔ R_Identität (Identität/Ausdruck-Bedürfnisse)
+ *
+ * ═══════════════════════════════════════════════════════════════════════════
+ * RESONANZ-FORMEL (Legacy/Fallback)
+ * ═══════════════════════════════════════════════════════════════════════════
  *   R = 0.9 + [(M/100 × 0.35) + (B × 0.35) + (K × 0.30)] × 0.2
  *
  *   M = Bedürfnis-Match (0-100%) - Gesamt-Übereinstimmung
