@@ -1295,22 +1295,30 @@ const GfkBeduerfnisse = {
                 summeUebereinstimmung += uebereinstimmung * gewicht;
                 summeGewicht += gewicht;
 
+                // Konvertiere #ID zu String-Key für das Nachschlagen der Definition
+                const bedKey = this._resolveToKey(bed) || bed;
+                const bedDef = this.definitionen[bedKey];
+
                 // Hole #B-ID und extrahiere numerischen Key
                 let hashId = bed;
                 let numKey = null;
                 if (typeof BeduerfnisIds !== 'undefined' && BeduerfnisIds.toId) {
-                    const bId = BeduerfnisIds.toId(bed);
+                    const bId = BeduerfnisIds.toId(bedKey);
                     if (bId && bId.startsWith('#B')) {
                         hashId = bId;
                         numKey = parseInt(bId.replace('#B', ''), 10);
                     }
+                } else if (bed.startsWith('#B')) {
+                    // Wenn bed bereits eine #ID ist
+                    hashId = bed;
+                    numKey = parseInt(bed.replace('#B', ''), 10);
                 }
 
                 const bedInfo = {
                     id: hashId,                    // "#B34" - vollständige ID
                     key: numKey,                   // 34 - numerischer Key für Sortierung
-                    stringKey: bed,                // "selbstbestimmung" - für definitionen-Lookups
-                    label: this.definitionen[bed]?.label || this._formatKeyAsLabel(bed),
+                    stringKey: bedKey,             // "selbstbestimmung" - für definitionen-Lookups
+                    label: bedDef?.label || this._formatKeyAsLabel(bedKey),
                     wert1: wert1,
                     wert2: wert2,
                     diff: diff
@@ -1441,10 +1449,49 @@ const GfkBeduerfnisse = {
     },
 
     /**
+     * Internes Mapping von #ID zu String-Key (lazy initialized)
+     */
+    _idToKeyMap: null,
+
+    /**
+     * Initialisiert das ID-zu-Key Mapping aus den Definitionen
+     */
+    _initIdToKeyMap: function() {
+        if (this._idToKeyMap) return;
+        this._idToKeyMap = {};
+        for (const key in this.definitionen) {
+            const def = this.definitionen[key];
+            if (def && def['#ID']) {
+                this._idToKeyMap[def['#ID']] = key;
+            }
+        }
+    },
+
+    /**
+     * Konvertiert eine #ID zu String-Key
+     * @param {string} idOrKey - z.B. '#B175' oder 'herz_statt_kopf'
+     * @returns {string} String-Key
+     */
+    _resolveToKey: function(idOrKey) {
+        if (!idOrKey) return null;
+        // Wenn es bereits ein String-Key ist (nicht mit # beginnend)
+        if (!idOrKey.startsWith('#')) return idOrKey;
+        // Ansonsten aus dem Mapping holen
+        this._initIdToKeyMap();
+        return this._idToKeyMap[idOrKey] || null;
+    },
+
+    /**
      * Gibt zurück, ob ein Bedürfnis zu Pathos oder Logos gehört
+     * @param {string} beduerfnisId - Kann #ID (z.B. '#B175') oder String-Key (z.B. 'herz_statt_kopf') sein
+     * @returns {string|null} 'pathos', 'logos' oder null
      */
     getPathosLogos: function(beduerfnisId) {
-        const def = this.definitionen[beduerfnisId];
+        // Konvertiere #ID zu String-Key falls nötig
+        const key = this._resolveToKey(beduerfnisId);
+        if (!key) return null;
+
+        const def = this.definitionen[key];
         if (!def) return null;
 
         const kategorie = def.kategorie;
@@ -1452,6 +1499,117 @@ const GfkBeduerfnisse = {
             return 'logos';
         }
         return 'pathos';
+    },
+
+    /**
+     * Berechnet die Jung-Funktion (DENKEN, FÜHLEN, BALANCE) basierend auf Bedürfniswerten
+     * @param {object} beduerfnisse - Objekt mit Bedürfniswerten { '#B175': 70, '#B166': 80, ... }
+     * @returns {object} { funktion: 'DENKEN'|'FÜHLEN'|'BALANCE', scores: { fuehlen, denken }, details: {...} }
+     */
+    berechneJungFunktion: function(beduerfnisse) {
+        // Relevante Bedürfnisse für die Jung-Funktionsberechnung
+        // FÜHLEN (Pathos): emotionale, intuitive Kommunikation
+        const fuehlenIds = ['#B175', '#B166', '#B170']; // herz_statt_kopf, romantisches_verstehen, care_im_gespraech
+        // DENKEN (Logos): analytische, rationale Kommunikation
+        const denkenIds = ['#B168', '#B167'];          // dialektik, klassische_klarheit
+
+        let fuehlenSumme = 0;
+        let fuehlenCount = 0;
+        let denkenSumme = 0;
+        let denkenCount = 0;
+
+        const details = {
+            fuehlen: [],
+            denken: []
+        };
+
+        // Fühlen-Werte sammeln
+        fuehlenIds.forEach(id => {
+            const wert = beduerfnisse[id];
+            if (wert !== undefined) {
+                fuehlenSumme += wert;
+                fuehlenCount++;
+                const bedKey = this._resolveToKey(id);
+                details.fuehlen.push({
+                    id: id,
+                    label: this.definitionen[bedKey]?.label || id,
+                    wert: wert
+                });
+            }
+        });
+
+        // Denken-Werte sammeln
+        denkenIds.forEach(id => {
+            const wert = beduerfnisse[id];
+            if (wert !== undefined) {
+                denkenSumme += wert;
+                denkenCount++;
+                const bedKey = this._resolveToKey(id);
+                details.denken.push({
+                    id: id,
+                    label: this.definitionen[bedKey]?.label || id,
+                    wert: wert
+                });
+            }
+        });
+
+        // Durchschnittswerte berechnen
+        const fuehlenScore = fuehlenCount > 0 ? Math.round(fuehlenSumme / fuehlenCount) : 50;
+        const denkenScore = denkenCount > 0 ? Math.round(denkenSumme / denkenCount) : 50;
+
+        // Differenz berechnen
+        const diff = Math.abs(fuehlenScore - denkenScore);
+
+        // Jung-Funktion bestimmen (Schwellenwert: 10 Punkte für BALANCE)
+        let funktion;
+        if (diff <= 10) {
+            funktion = 'BALANCE';
+        } else if (fuehlenScore > denkenScore) {
+            funktion = 'FÜHLEN';
+        } else {
+            funktion = 'DENKEN';
+        }
+
+        return {
+            funktion: funktion,
+            scores: {
+                fuehlen: fuehlenScore,
+                denken: denkenScore,
+                differenz: diff
+            },
+            details: details
+        };
+    },
+
+    /**
+     * Berechnet die Jung-Funktion für einen Archetyp basierend auf seinem Profil
+     * @param {string} archetypId - z.B. 'polyamor', 'duo', 'single'
+     * @returns {object|null} Jung-Funktions-Ergebnis oder null wenn Archetyp nicht gefunden
+     */
+    getArchetypJungFunktion: function(archetypId) {
+        const profil = this.archetypProfile[archetypId];
+        if (!profil || !profil.kernbeduerfnisse) {
+            return null;
+        }
+        return this.berechneJungFunktion(profil.kernbeduerfnisse);
+    },
+
+    /**
+     * Berechnet die Jung-Funktionen für alle Archetypen
+     * @returns {object} Objekt mit Archetyp-IDs als Keys und Jung-Funktions-Ergebnissen als Values
+     */
+    getAlleArchetypJungFunktionen: function() {
+        const result = {};
+        const archetypen = Object.keys(this.archetypProfile || {});
+
+        archetypen.forEach(archetypId => {
+            const jungResult = this.getArchetypJungFunktion(archetypId);
+            if (jungResult) {
+                result[archetypId] = jungResult;
+            }
+        });
+
+        return result;
     },
 
     // ═══════════════════════════════════════════════════════════════════════════
@@ -1506,10 +1664,14 @@ const GfkBeduerfnisse = {
 
             if (!pathosLogos) return;
 
+            // Konvertiere #ID zu String-Key für das Nachschlagen der Definition
+            const bedKey = this._resolveToKey(bed) || bed;
+            const bedDef = this.definitionen[bedKey];
+
             const bedInfo = {
                 id: bed,
-                label: this.definitionen[bed]?.label || bed,
-                kategorie: this.definitionen[bed]?.kategorie,
+                label: bedDef?.label || bed,
+                kategorie: bedDef?.kategorie,
                 wertIch: wert1,
                 wertPartner: wert2
             };
@@ -1763,9 +1925,10 @@ const GfkBeduerfnisse = {
         Object.entries(mapping.erfuellteKategorien).forEach(([katId, details]) => {
             const kategorie = this.kategorien[katId];
             report += `● ${kategorie?.name || katId}\n`;
-            report += `  Bedürfnisse: ${details.beduerfnisse.map(b =>
-                this.definitionen[b]?.label || b
-            ).join(', ')}\n`;
+            report += `  Bedürfnisse: ${details.beduerfnisse.map(b => {
+                const bedKey = this._resolveToKey(b) || b;
+                return this.definitionen[bedKey]?.label || b;
+            }).join(', ')}\n`;
             report += `  → ${details.erklaerung}\n\n`;
         });
 
