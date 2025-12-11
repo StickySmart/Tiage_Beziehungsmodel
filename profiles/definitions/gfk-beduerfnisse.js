@@ -2188,6 +2188,67 @@ const RechercheStatus = {
             },
             naechstesUpdate: this.meta.naechstesUpdate
         };
+    },
+
+    // ═══════════════════════════════════════════════════════════════════════════
+    // #B-ID LOOKUP (Migration v2.1)
+    // ═══════════════════════════════════════════════════════════════════════════
+
+    /**
+     * Cache für #B-ID → Definition Mapping
+     * Wird beim ersten Aufruf von getDefinition() aufgebaut
+     */
+    _idToDefinition: null,
+
+    /**
+     * Baut den #B-ID → Definition Cache auf
+     */
+    _buildIdCache: function() {
+        if (this._idToDefinition) return;
+        this._idToDefinition = {};
+
+        Object.keys(this.definitionen).forEach(key => {
+            const def = this.definitionen[key];
+            if (def && def['#ID']) {
+                this._idToDefinition[def['#ID']] = { ...def, key: key };
+            }
+        });
+    },
+
+    /**
+     * Holt eine Bedürfnis-Definition anhand von String-Key ODER #B-ID
+     * @param {string} idOrKey - String-Key (z.B. 'liebe') oder #B-ID (z.B. '#B21')
+     * @returns {Object|null} Definition mit label, kategorie, etc. oder null
+     */
+    getDefinition: function(idOrKey) {
+        if (!idOrKey) return null;
+
+        // Direkt per String-Key
+        if (this.definitionen[idOrKey]) {
+            return { ...this.definitionen[idOrKey], key: idOrKey };
+        }
+
+        // Per #B-ID
+        if (idOrKey.startsWith('#B')) {
+            this._buildIdCache();
+            return this._idToDefinition[idOrKey] || null;
+        }
+
+        return null;
+    },
+
+    /**
+     * Holt das Label für eine Bedürfnis-ID (String-Key oder #B-ID)
+     * @param {string} idOrKey - String-Key oder #B-ID
+     * @returns {string} Label oder formatierte ID als Fallback
+     */
+    getLabel: function(idOrKey) {
+        const def = this.getDefinition(idOrKey);
+        if (def && def.label) {
+            return def.label;
+        }
+        // Fallback: ID formatieren
+        return idOrKey.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
     }
 };
 

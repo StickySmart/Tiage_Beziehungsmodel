@@ -16773,8 +16773,11 @@
                     var matches = searchPattern.test(labelText) || searchPattern.test(needId);
 
                     // Also check category and dimension names
-                    if (!matches && typeof GfkBeduerfnisse !== 'undefined' && GfkBeduerfnisse.definitionen) {
-                        var needDef = GfkBeduerfnisse.definitionen[needId];
+                    if (!matches && typeof GfkBeduerfnisse !== 'undefined') {
+                        // Use getDefinition() which supports both #B-IDs and String-Keys
+                        var needDef = GfkBeduerfnisse.getDefinition
+                            ? GfkBeduerfnisse.getDefinition(needId)
+                            : GfkBeduerfnisse.definitionen[needId];
                         if (needDef) {
                             // Check category name
                             var kategorie = needDef.kategorie || '';
@@ -16846,8 +16849,11 @@
                         var matches = searchPattern.test(labelText) || searchPattern.test(needId);
 
                         // Also check category and dimension names
-                        if (!matches && typeof GfkBeduerfnisse !== 'undefined' && GfkBeduerfnisse.definitionen) {
-                            var needDef = GfkBeduerfnisse.definitionen[needId];
+                        if (!matches && typeof GfkBeduerfnisse !== 'undefined') {
+                            // Use getDefinition() which supports both #B-IDs and String-Keys
+                            var needDef = GfkBeduerfnisse.getDefinition
+                                ? GfkBeduerfnisse.getDefinition(needId)
+                                : GfkBeduerfnisse.definitionen[needId];
                             if (needDef) {
                                 // Check category name
                                 var kategorie = needDef.kategorie || '';
