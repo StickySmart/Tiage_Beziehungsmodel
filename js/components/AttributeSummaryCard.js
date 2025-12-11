@@ -227,19 +227,67 @@ const AttributeSummaryCard = (function() {
     const NEEDS_LABELS = null; // Wird durch getNeedLabel() ersetzt
 
     /**
-     * Speicher für flache Bedürfnisse mit integriertem Lock-Status
-     * NEUE STRUKTUR (v1.8.89): { needId: { value: number, locked: boolean } }
+     * Speicher für flache Bedürfnisse als Array von Objekten
+     * NEUE STRUKTUR (v1.8.128): Array mit einheitlicher Objekt-Struktur
      *
-     * Diese integrierte Struktur ersetzt die vorherigen getrennten Objekte:
-     * - flatNeedsValues (alt): { needId: value }
-     * - flatLockedNeeds (alt): { needId: boolean }
+     * Format: [
+     *   { id: "#B1", key: 1, stringKey: "sicherheit", label: "Sicherheit", value: 50, locked: false },
+     *   { id: "#B2", key: 2, stringKey: "geborgenheit", label: "Geborgenheit", value: 75, locked: true },
+     *   ...
+     * ]
      *
      * Vorteile:
-     * - Wert und Lock-Status gehören zusammen
-     * - Erweiterbar für weitere Metadaten (z.B. timestamp, comment)
-     * - Keine Sync-Probleme zwischen zwei getrennten Objekten
+     * - Einheitliche Struktur überall (Matching-Ergebnisse, Storage, UI)
+     * - Alle Metadaten direkt am Objekt (id, key, label, value, locked)
+     * - Einfache Iteration und Filterung
      */
-    const flatNeeds = {};
+    let flatNeeds = [];
+
+    /**
+     * Helper: Findet ein Bedürfnis nach ID im flatNeeds Array
+     * @param {string} id - Die #B-ID (z.B. "#B34")
+     * @returns {Object|undefined} Das Bedürfnis-Objekt oder undefined
+     */
+    function findNeedById(id) {
+        return flatNeeds.find(n => n.id === id);
+    }
+
+    /**
+     * Helper: Findet den Index eines Bedürfnisses nach ID
+     * @param {string} id - Die #B-ID
+     * @returns {number} Index oder -1 wenn nicht gefunden
+     */
+    function findNeedIndex(id) {
+        return flatNeeds.findIndex(n => n.id === id);
+    }
+
+    /**
+     * Helper: Aktualisiert ein Bedürfnis oder fügt es hinzu
+     * @param {string} id - Die #B-ID
+     * @param {Object} updates - Zu aktualisierende Felder
+     */
+    function upsertNeed(id, updates) {
+        const index = findNeedIndex(id);
+        if (index >= 0) {
+            flatNeeds[index] = { ...flatNeeds[index], ...updates };
+        } else {
+            // Neues Bedürfnis hinzufügen mit vollständigen Metadaten
+            const numKey = parseInt(id.replace('#B', ''), 10) || 0;
+            let stringKey = '';
+            if (typeof BeduerfnisIds !== 'undefined' && BeduerfnisIds.toKey) {
+                stringKey = BeduerfnisIds.toKey(id) || '';
+            }
+            flatNeeds.push({
+                id: id,
+                key: numKey,
+                stringKey: stringKey,
+                label: getNeedLabel(id).replace(/^#B\d+\s*/, ''), // Label ohne #B-Prefix
+                value: 50,
+                locked: false,
+                ...updates
+            });
+        }
+    }
 
     /**
      * Aktueller Archetyp für flache Darstellung
@@ -459,8 +507,10 @@ const AttributeSummaryCard = (function() {
             case 'status':
                 // Nach Status: Geschlossene (locked) zuerst, dann nach Wert
                 sorted.sort((a, b) => {
-                    const aLocked = flatNeeds[a.id]?.locked ? 1 : 0;
-                    const bLocked = flatNeeds[b.id]?.locked ? 1 : 0;
+                    const aNeed = findNeedById(a.id);
+                    const bNeed = findNeedById(b.id);
+                    const aLocked = aNeed?.locked ? 1 : 0;
+                    const bLocked = bNeed?.locked ? 1 : 0;
                     // Geschlossene zuerst
                     if (bLocked !== aLocked) {
                         return bLocked - aLocked;
@@ -522,30 +572,39 @@ const AttributeSummaryCard = (function() {
         // Bei neuem Archetyp: Alle Einträge zurücksetzen
         if (isNewArchetyp) {
             // Alle Bedürfnisse zurücksetzen damit neue Profil-Werte geladen werden
-            Object.keys(flatNeeds).forEach(needId => {
-                delete flatNeeds[needId];
-            });
+            flatNeeds = [];
             console.log('[AttributeSummaryCard] Neuer Archetyp geladen - Bedürfnisse zurückgesetzt');
         }
 
         // Hole ALLE Bedürfnisse aus dem Profil (alle 220)
         const kernbeduerfnisse = profil.kernbeduerfnisse || {};
 
-        // Initialisiere Werte aus Profil (neue integrierte Struktur)
+        // Initialisiere Werte aus Profil (neue Array-Struktur)
         Object.keys(kernbeduerfnisse).forEach(needId => {
-            if (flatNeeds[needId] === undefined) {
-                flatNeeds[needId] = {
+            const existing = findNeedById(needId);
+            if (!existing) {
+                // Erstelle vollständiges Bedürfnis-Objekt
+                const numKey = parseInt(needId.replace('#B', ''), 10) || 0;
+                let stringKey = '';
+                if (typeof BeduerfnisIds !== 'undefined' && BeduerfnisIds.toKey) {
+                    stringKey = BeduerfnisIds.toKey(needId) || '';
+                }
+                flatNeeds.push({
+                    id: needId,
+                    key: numKey,
+                    stringKey: stringKey,
+                    label: getNeedLabel(needId).replace(/^#B\d+\s*/, ''),
                     value: kernbeduerfnisse[needId],
                     locked: false
-                };
+                });
             }
         });
 
-        // Sammle ALLE Bedürfnisse aus dem Profil
-        const allNeeds = Object.keys(kernbeduerfnisse).map(needId => ({
-            id: needId,
-            value: flatNeeds[needId]?.value ?? kernbeduerfnisse[needId],
-            label: getNeedLabel(needId)
+        // Sammle ALLE Bedürfnisse - nutze direkt flatNeeds Array
+        const allNeeds = flatNeeds.map(need => ({
+            id: need.id,
+            value: need.value,
+            label: `${need.id} ${need.label}` // Format: "#B34 Selbstbestimmung"
         }));
 
         // Sortiere nach aktuellem Modus
@@ -616,7 +675,8 @@ const AttributeSummaryCard = (function() {
         // Direkte flache Liste ohne Kategorien-Wrapper
         html += `<div class="flat-needs-list${currentFlatSortMode === 'kategorie' ? ' kategorie-mode' : ''}">`;
         filteredNeeds.forEach(need => {
-            const isLocked = flatNeeds[need.id]?.locked || false;
+            const needObj = findNeedById(need.id);
+            const isLocked = needObj?.locked || false;
             // Bei Kategorie-Sortierung: Dimension-Farbe anzeigen
             const dimColor = currentFlatSortMode === 'kategorie' ? getDimensionColor(need.id) : null;
             html += renderFlatNeedItem(need.id, need.label, need.value, isLocked, dimColor);
@@ -711,17 +771,14 @@ const AttributeSummaryCard = (function() {
      * Slider-Input-Handler für flache Darstellung
      */
     function onFlatSliderInput(needId, value, sliderElement) {
-        if (flatNeeds[needId]?.locked) return;
+        const needObj = findNeedById(needId);
+        if (needObj?.locked) return;
 
         const numValue = parseInt(value, 10);
         if (isNaN(numValue)) return;
 
-        // Initialisiere falls nötig
-        if (!flatNeeds[needId]) {
-            flatNeeds[needId] = { value: numValue, locked: false };
-        } else {
-            flatNeeds[needId].value = numValue;
-        }
+        // Aktualisiere oder erstelle Bedürfnis
+        upsertNeed(needId, { value: numValue });
 
         // Sync Input-Feld
         const needItem = sliderElement.closest('.flat-need-item');
@@ -749,17 +806,14 @@ const AttributeSummaryCard = (function() {
      * Aktualisiert einen Bedürfniswert in der flachen Darstellung
      */
     function updateFlatNeedValue(needId, value) {
-        if (flatNeeds[needId]?.locked) return;
+        const needObj = findNeedById(needId);
+        if (needObj?.locked) return;
 
         const numValue = parseInt(value, 10);
         if (isNaN(numValue) || numValue < 0 || numValue > 100) return;
 
-        // Initialisiere falls nötig
-        if (!flatNeeds[needId]) {
-            flatNeeds[needId] = { value: numValue, locked: false };
-        } else {
-            flatNeeds[needId].value = numValue;
-        }
+        // Aktualisiere oder erstelle Bedürfnis
+        upsertNeed(needId, { value: numValue });
 
         // Sync Slider
         const needItem = document.querySelector(`.flat-need-item[data-need="${needId}"]`);
@@ -779,13 +833,12 @@ const AttributeSummaryCard = (function() {
      * Toggle Lock für ein Bedürfnis in der flachen Darstellung
      */
     function toggleFlatNeedLock(needId, lockElement) {
-        // Initialisiere falls nötig
-        if (!flatNeeds[needId]) {
-            flatNeeds[needId] = { value: 50, locked: true };
-        } else {
-            flatNeeds[needId].locked = !flatNeeds[needId].locked;
-        }
-        const isLocked = flatNeeds[needId].locked;
+        const needObj = findNeedById(needId);
+        const newLockState = needObj ? !needObj.locked : true;
+
+        // Aktualisiere oder erstelle Bedürfnis
+        upsertNeed(needId, { locked: newLockState });
+        const isLocked = newLockState;
 
         // Update UI
         const needItem = lockElement.closest('.flat-need-item');
@@ -807,63 +860,100 @@ const AttributeSummaryCard = (function() {
     }
 
     /**
-     * Holt alle flachen Bedürfnisse (NEUE integrierte Struktur)
-     * @returns {Object} { needId: { value: number, locked: boolean } }
+     * Holt alle flachen Bedürfnisse (NEUE Array-Struktur v1.8.128)
+     * @returns {Array} Array von { id, key, stringKey, label, value, locked }
      */
     function getFlatNeeds() {
         // Tiefe Kopie um Mutationen zu vermeiden
-        const copy = {};
-        Object.keys(flatNeeds).forEach(needId => {
-            copy[needId] = { ...flatNeeds[needId] };
-        });
-        return copy;
+        return flatNeeds.map(need => ({ ...need }));
     }
 
     /**
-     * Setzt alle flachen Bedürfnisse (NEUE integrierte Struktur)
-     * Unterstützt sowohl neue als auch alte Datenformate (Migration)
+     * Setzt alle flachen Bedürfnisse
+     * Unterstützt mehrere Datenformate (Migration):
      *
-     * @param {Object} data - Kann sein:
-     *   - Neue Struktur: { needId: { value: number, locked: boolean } }
-     *   - Alte Struktur: { needId: number } (nur Werte, locked=false)
+     * @param {Array|Object} data - Kann sein:
+     *   - v1.8.128+ Array: [{ id, key, stringKey, label, value, locked }, ...]
+     *   - v1.8.89-127 Object: { needId: { value: number, locked: boolean } }
+     *   - Legacy Object: { needId: number } (nur Werte, locked=false)
      */
     function setFlatNeeds(data) {
-        if (!data || typeof data !== 'object') return;
+        if (!data) return;
 
         let migratedCount = 0;
         let newFormatCount = 0;
 
-        Object.keys(data).forEach(needId => {
-            const entry = data[needId];
-
-            if (typeof entry === 'object' && entry !== null && 'value' in entry) {
-                // Neue Struktur: { value: number, locked: boolean }
-                const numValue = parseInt(entry.value, 10);
-                if (!isNaN(numValue) && numValue >= 0 && numValue <= 100) {
-                    flatNeeds[needId] = {
-                        value: numValue,
-                        locked: !!entry.locked
-                    };
-                    newFormatCount++;
+        // Format 1: Neues Array-Format (v1.8.128+)
+        if (Array.isArray(data)) {
+            flatNeeds = data.map(need => {
+                // Validiere und normalisiere
+                const numValue = parseInt(need.value, 10);
+                if (isNaN(numValue) || numValue < 0 || numValue > 100) {
+                    return null;
                 }
-            } else if (typeof entry === 'number' || !isNaN(parseInt(entry, 10))) {
-                // Alte Struktur (Migration): nur Wert als Zahl
-                const numValue = parseInt(entry, 10);
-                if (!isNaN(numValue) && numValue >= 0 && numValue <= 100) {
-                    flatNeeds[needId] = {
-                        value: numValue,
-                        locked: false
-                    };
-                    migratedCount++;
-                }
-            }
-        });
-
-        if (migratedCount > 0) {
-            console.log('[AttributeSummaryCard] Flat needs migriert:', migratedCount, 'Werte (alte Struktur)');
+                newFormatCount++;
+                return {
+                    id: need.id || '',
+                    key: need.key || parseInt((need.id || '').replace('#B', ''), 10) || 0,
+                    stringKey: need.stringKey || '',
+                    label: need.label || '',
+                    value: numValue,
+                    locked: !!need.locked
+                };
+            }).filter(Boolean);
+            console.log('[AttributeSummaryCard] Flat needs geladen (Array-Format v1.8.128+):', newFormatCount, 'Einträge');
+            return;
         }
-        if (newFormatCount > 0) {
-            console.log('[AttributeSummaryCard] Flat needs geladen:', newFormatCount, 'Werte (neue Struktur)');
+
+        // Format 2 & 3: Altes Object-Format (Migration)
+        if (typeof data === 'object') {
+            flatNeeds = []; // Reset Array
+
+            Object.keys(data).forEach(needId => {
+                const entry = data[needId];
+                const numKey = parseInt(needId.replace('#B', ''), 10) || 0;
+                let stringKey = '';
+                if (typeof BeduerfnisIds !== 'undefined' && BeduerfnisIds.toKey) {
+                    stringKey = BeduerfnisIds.toKey(needId) || '';
+                }
+
+                if (typeof entry === 'object' && entry !== null && 'value' in entry) {
+                    // v1.8.89-127: { needId: { value, locked } }
+                    const numValue = parseInt(entry.value, 10);
+                    if (!isNaN(numValue) && numValue >= 0 && numValue <= 100) {
+                        flatNeeds.push({
+                            id: needId,
+                            key: numKey,
+                            stringKey: stringKey,
+                            label: getNeedLabel(needId).replace(/^#B\d+\s*/, ''),
+                            value: numValue,
+                            locked: !!entry.locked
+                        });
+                        newFormatCount++;
+                    }
+                } else if (typeof entry === 'number' || !isNaN(parseInt(entry, 10))) {
+                    // Legacy: { needId: number }
+                    const numValue = parseInt(entry, 10);
+                    if (!isNaN(numValue) && numValue >= 0 && numValue <= 100) {
+                        flatNeeds.push({
+                            id: needId,
+                            key: numKey,
+                            stringKey: stringKey,
+                            label: getNeedLabel(needId).replace(/^#B\d+\s*/, ''),
+                            value: numValue,
+                            locked: false
+                        });
+                        migratedCount++;
+                    }
+                }
+            });
+
+            if (migratedCount > 0) {
+                console.log('[AttributeSummaryCard] Flat needs migriert (Legacy-Object):', migratedCount, 'Werte');
+            }
+            if (newFormatCount > 0) {
+                console.log('[AttributeSummaryCard] Flat needs migriert (v1.8.89-127 Object):', newFormatCount, 'Werte');
+            }
         }
     }
 
@@ -874,8 +964,8 @@ const AttributeSummaryCard = (function() {
      */
     function getFlatNeedsValues() {
         const values = {};
-        Object.keys(flatNeeds).forEach(needId => {
-            values[needId] = flatNeeds[needId].value;
+        flatNeeds.forEach(need => {
+            values[need.id] = need.value;
         });
         return values;
     }
@@ -891,11 +981,7 @@ const AttributeSummaryCard = (function() {
         Object.keys(values).forEach(needId => {
             const numValue = parseInt(values[needId], 10);
             if (!isNaN(numValue) && numValue >= 0 && numValue <= 100) {
-                if (!flatNeeds[needId]) {
-                    flatNeeds[needId] = { value: numValue, locked: false };
-                } else {
-                    flatNeeds[needId].value = numValue;
-                }
+                upsertNeed(needId, { value: numValue });
             }
         });
 
@@ -908,9 +994,9 @@ const AttributeSummaryCard = (function() {
      */
     function getFlatLockedNeeds() {
         const locks = {};
-        Object.keys(flatNeeds).forEach(needId => {
-            if (flatNeeds[needId].locked) {
-                locks[needId] = true;
+        flatNeeds.forEach(need => {
+            if (need.locked) {
+                locks[need.id] = true;
             }
         });
         return locks;
@@ -924,12 +1010,7 @@ const AttributeSummaryCard = (function() {
         if (!locks || typeof locks !== 'object') return;
 
         Object.keys(locks).forEach(needId => {
-            if (flatNeeds[needId]) {
-                flatNeeds[needId].locked = !!locks[needId];
-            } else {
-                // Erstelle Eintrag mit Default-Wert wenn nicht vorhanden
-                flatNeeds[needId] = { value: 50, locked: !!locks[needId] };
-            }
+            upsertNeed(needId, { locked: !!locks[needId] });
         });
 
         console.log('[AttributeSummaryCard] Flat locks geladen (Legacy):', Object.keys(locks).length, 'Locks');
@@ -941,11 +1022,11 @@ const AttributeSummaryCard = (function() {
      */
     function clearFlatLockedNeeds() {
         // Alle Lock-Status auf false setzen
-        Object.keys(flatNeeds).forEach(needId => {
-            flatNeeds[needId].locked = false;
+        flatNeeds.forEach(need => {
+            need.locked = false;
 
             // UI aktualisieren - Lock-Icon und Disabled-Status zurücksetzen
-            const needItem = document.querySelector(`.flat-need-item[data-need="${needId}"]`);
+            const needItem = document.querySelector(`.flat-need-item[data-need="${need.id}"]`);
             if (needItem) {
                 needItem.classList.remove('need-locked');
                 const slider = needItem.querySelector('.need-slider');
@@ -974,13 +1055,18 @@ const AttributeSummaryCard = (function() {
         // ERST alle Sperren löschen, DANN alle Werte zurücksetzen
         clearFlatLockedNeeds();
 
-        // Alle Werte zurücksetzen (jetzt ohne Lock-Prüfung, da alle entsperrt)
+        // Alle Werte zurücksetzen
         Object.keys(kernbeduerfnisse).forEach(needId => {
-            const newValue = profil.kernbeduerfnisse[needId];
-            flatNeeds[needId] = {
-                value: newValue,
-                locked: false
-            };
+            const newValue = kernbeduerfnisse[needId];
+            const needObj = findNeedById(needId);
+
+            if (needObj) {
+                needObj.value = newValue;
+                needObj.locked = false;
+            } else {
+                // Sollte nicht passieren, aber sicherheitshalber
+                upsertNeed(needId, { value: newValue, locked: false });
+            }
 
             // Update UI
             const needItem = document.querySelector(`.flat-need-item[data-need="${needId}"]`);
