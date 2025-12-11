@@ -10066,7 +10066,7 @@
          * - Geschlecht: ±8 Punkte (basierend auf Orientierung+Geschlecht Kompatibilität)
          * - Resonanz: Multiplikator 0.9-1.1 (basierend auf Logos/Pathos-Balance und GFK)
          */
-        function findBestMatch() {
+        function findBestPartnerMatch() {
             const ALL_ARCHETYPES = ['single', 'duo', 'duo_flex', 'ra', 'lat', 'aromantisch', 'solopoly', 'polyamor'];
 
             // Sammle ICH-Daten (feste Basis)
@@ -10153,15 +10153,15 @@
                         bestMatch = partnerArch;
                     }
                 } catch (e) {
-                    console.warn(`[findBestMatch] Fehler bei der Berechnung für ${partnerArch}:`, e);
+                    console.warn(`[findBestPartnerMatch] Fehler bei der Berechnung für ${partnerArch}:`, e);
                 }
             }
 
             // Sortiere Ergebnisse nach Score
             results.sort((a, b) => b.score - a.score);
-            console.log('[findBestMatch] ICH:', ichArchetype);
-            console.log('[findBestMatch] Ranking:', results);
-            console.log('[findBestMatch] Bester Match:', bestMatch, 'mit Score:', bestScore);
+            console.log('[findBestPartnerMatch] ICH:', ichArchetype);
+            console.log('[findBestPartnerMatch] Ranking:', results);
+            console.log('[findBestPartnerMatch] Bester Match:', bestMatch, 'mit Score:', bestScore);
 
             // Wähle den besten Match aus
             if (bestMatch) {
@@ -10209,11 +10209,11 @@
         }
 
         /**
-         * findBestMatchForIch() - Findet den besten ICH-Archetyp basierend auf den Partner-Einstellungen
-         * Umgekehrte Logik zu findBestMatch(): Hier werden die PARTNER-Einstellungen als Basis genommen
+         * findBestIchMatch() - Findet den besten ICH-Archetyp basierend auf den Partner-Einstellungen
+         * Umgekehrte Logik zu findBestPartnerMatch(): Hier werden die PARTNER-Einstellungen als Basis genommen
          * und der beste ICH-Archetyp gesucht.
          */
-        function findBestMatchForIch() {
+        function findBestIchMatch() {
             const ALL_ARCHETYPES = ['single', 'duo', 'duo_flex', 'ra', 'lat', 'aromantisch', 'solopoly', 'polyamor'];
 
             // Sammle PARTNER-Daten (DU) als Basis
@@ -10296,8 +10296,8 @@
 
             // Sortiere Ergebnisse für Debugging
             results.sort((a, b) => b.score - a.score);
-            console.log('[findBestMatchForIch] Ranking:', results);
-            console.log('[findBestMatchForIch] Bester ICH-Match:', bestMatch, 'mit Score:', bestScore);
+            console.log('[findBestIchMatch] Ranking:', results);
+            console.log('[findBestIchMatch] Bester ICH-Match:', bestMatch, 'mit Score:', bestScore);
 
             // Wähle den besten Match aus
             if (bestMatch) {
@@ -10315,118 +10315,7 @@
         }
 
         // Globale Funktion verfügbar machen
-        window.findBestMatchForIch = findBestMatchForIch;
-
-        /**
-         * findBestMatchForIch() - Findet den besten ICH-Archetyp basierend auf den Partner-Einstellungen
-         * Umgekehrte Logik zu findBestMatch(): Hier werden die PARTNER-Einstellungen als Basis genommen
-         * und der beste ICH-Archetyp gesucht.
-         */
-        function findBestMatchForIch() {
-            const ALL_ARCHETYPES = ['single', 'duo', 'duo_flex', 'ra', 'lat', 'aromantisch', 'solopoly', 'polyamor'];
-
-            // Sammle PARTNER-Daten (DU) als Basis
-            const partnerArchetype = selectedPartner || 'duo';
-            const partnerDims = personDimensions.partner || {};
-
-            // Hole Gewichtungen
-            const gewichtungen = getGewichtungen();
-
-            // Sammle ICH-Dimensionen (für die Berechnung)
-            const ichDims = personDimensions.ich || {};
-
-            let bestMatch = null;
-            let bestScore = -1;
-            const results = [];
-
-            // Berechne Score für jeden möglichen ICH-Archetyp
-            for (const ichArch of ALL_ARCHETYPES) {
-                try {
-                    // Erstelle temporäre Person-Objekte für die Berechnung
-                    // Person1 = ICH (der Archetyp, der getestet wird)
-                    const person1 = {
-                        archetyp: ichArch,
-                        dominanz: ichDims.dominanz || {},
-                        geschlecht: ichDims.geschlecht || {},
-                        orientierung: ichDims.orientierung || {},
-                        gfk: ichDims.gfk || 'mittel'
-                    };
-
-                    // Person2 = PARTNER (die festen Einstellungen)
-                    const person2 = {
-                        archetyp: partnerArchetype,
-                        dominanz: partnerDims.dominanz || {},
-                        geschlecht: partnerDims.geschlecht || {},
-                        orientierung: partnerDims.orientierung || {},
-                        gfk: partnerDims.gfk || 'mittel'
-                    };
-
-                    let score = 0;
-
-                    // Versuche TiageSynthesis.Calculator zu verwenden
-                    if (typeof TiageSynthesis !== 'undefined' && TiageSynthesis.Calculator) {
-                        const result = TiageSynthesis.Calculator.calculateQuick(person1, person2, gewichtungen);
-                        score = result.score || 0;
-                    } else if (typeof Top10RankingCalculator !== 'undefined') {
-                        // Fallback: Verwende Top10RankingCalculator
-                        const archDefs = data?.archetypes || {};
-                        const combinations = Top10RankingCalculator.calculateAllCombinations(
-                            ichArch,
-                            { dominanz: getPrimaryDominanz(ichDims.dominanz), gfk: ichDims.gfk || 'mittel' },
-                            archDefs,
-                            { dominanz: getPrimaryDominanz(partnerDims.dominanz), gfk: partnerDims.gfk || 'mittel' }
-                        );
-                        // Da wir den ICH-Archetyp variieren, suchen wir den Partner-Archetyp im Ergebnis
-                        const match = combinations.find(c => c.archetype === partnerArchetype);
-                        score = match ? match.overallScore : 0;
-                    } else {
-                        // Minimaler Fallback: Verwende Kompatibilitätsmatrix
-                        const matrix = {
-                            'single': { 'single': 85, 'duo': 25, 'duo_flex': 45, 'ra': 75, 'lat': 70, 'aromantisch': 80, 'solopoly': 75, 'polyamor': 50 },
-                            'duo': { 'single': 25, 'duo': 95, 'duo_flex': 65, 'ra': 15, 'lat': 55, 'aromantisch': 20, 'solopoly': 20, 'polyamor': 35 },
-                            'duo_flex': { 'single': 45, 'duo': 65, 'duo_flex': 85, 'ra': 55, 'lat': 70, 'aromantisch': 45, 'solopoly': 60, 'polyamor': 75 },
-                            'ra': { 'single': 75, 'duo': 15, 'duo_flex': 55, 'ra': 90, 'lat': 70, 'aromantisch': 75, 'solopoly': 85, 'polyamor': 70 },
-                            'lat': { 'single': 70, 'duo': 55, 'duo_flex': 70, 'ra': 70, 'lat': 90, 'aromantisch': 75, 'solopoly': 65, 'polyamor': 60 },
-                            'aromantisch': { 'single': 80, 'duo': 20, 'duo_flex': 45, 'ra': 75, 'lat': 75, 'aromantisch': 95, 'solopoly': 65, 'polyamor': 55 },
-                            'solopoly': { 'single': 75, 'duo': 20, 'duo_flex': 60, 'ra': 85, 'lat': 65, 'aromantisch': 65, 'solopoly': 90, 'polyamor': 80 },
-                            'polyamor': { 'single': 50, 'duo': 35, 'duo_flex': 75, 'ra': 70, 'lat': 60, 'aromantisch': 55, 'solopoly': 80, 'polyamor': 90 }
-                        };
-                        score = matrix[ichArch]?.[partnerArchetype] || 50;
-                    }
-
-                    results.push({ archetype: ichArch, score: score });
-
-                    if (score > bestScore) {
-                        bestScore = score;
-                        bestMatch = ichArch;
-                    }
-                } catch (e) {
-                    console.warn(`Fehler bei der Berechnung für ${ichArch}:`, e);
-                }
-            }
-
-            // Sortiere Ergebnisse für Debugging
-            results.sort((a, b) => b.score - a.score);
-            console.log('[findBestMatchForIch] Ranking:', results);
-            console.log('[findBestMatchForIch] Bester ICH-Match:', bestMatch, 'mit Score:', bestScore);
-
-            // Wähle den besten Match aus
-            if (bestMatch) {
-                selectArchetypeFromGrid('ich', bestMatch);
-
-                // Zeige kurze Feedback-Animation auf dem Button
-                const matchBtns = document.querySelectorAll('.ich-match-btn');
-                matchBtns.forEach(btn => {
-                    btn.classList.add('match-found');
-                    setTimeout(() => btn.classList.remove('match-found'), 1000);
-                });
-            }
-
-            return { bestMatch, bestScore, results };
-        }
-
-        // Globale Funktion verfügbar machen
-        window.findBestMatchForIch = findBestMatchForIch;
+        window.findBestIchMatch = findBestIchMatch;
 
         // Navigation auf Seite 2 (Ergebnis) - ruft navigateArchetype auf und aktualisiert Seite 2
         function navigateArchetypeOnPage2(person, direction) {
@@ -15701,7 +15590,7 @@
         window.updateArchetypeGrid = updateArchetypeGrid;
         window.navigateArchetypeOnPage2 = navigateArchetypeOnPage2;
         window.navigateArchetypeOnPage3 = navigateArchetypeOnPage3;
-        window.findBestMatch = findBestMatch;
+        window.findBestPartnerMatch = findBestPartnerMatch;
 
         // Pathos/Logos Modal functions
         window.closePathosLogosModal = closePathosLogosModal;
