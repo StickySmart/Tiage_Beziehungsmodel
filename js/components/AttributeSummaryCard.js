@@ -319,35 +319,46 @@ const AttributeSummaryCard = (function() {
 
     /**
      * Holt die Dimension-Farbe für ein Bedürfnis basierend auf seiner Kategorie
-     * Unterstützt sowohl #B-IDs als auch String-Keys (für Rückwärtskompatibilität)
+     * Unterstützt sowohl #B-IDs als auch String-Keys
      *
-     * @param {string} needId - #B-ID (z.B. '#B21') oder String-Key (z.B. 'liebe')
+     * @param {string} needIdOrKey - z.B. '#B21' oder 'selbstbestimmung' (Key)
      * @returns {string} CSS-Farbwert oder null
      */
-    function getDimensionColor(needId) {
-        if (typeof BeduerfnisIds === 'undefined' || typeof TiageTaxonomie === 'undefined') {
+    function getDimensionColor(needIdOrKey) {
+        // Versuche TiageTaxonomie zu finden (global oder window)
+        const taxonomie = (typeof TiageTaxonomie !== 'undefined') ? TiageTaxonomie :
+                          (typeof window !== 'undefined' && window.TiageTaxonomie) ? window.TiageTaxonomie : null;
+
+        // Versuche BeduerfnisIds zu finden
+        const beduerfnisIds = (typeof BeduerfnisIds !== 'undefined') ? BeduerfnisIds :
+                              (typeof window !== 'undefined' && window.BeduerfnisIds) ? window.BeduerfnisIds : null;
+
+        if (!taxonomie || !taxonomie.kategorien) {
+            return null;
+        }
+        if (!beduerfnisIds || !beduerfnisIds.beduerfnisse) {
             return null;
         }
 
-        // Konvertiere String-Key zu #B-ID falls nötig
-        let hashId = needId;
-        if (!needId.startsWith('#B') && BeduerfnisIds.toId) {
-            hashId = BeduerfnisIds.toId(needId);
+        // Konvertiere Key zu ID falls nötig (z.B. 'selbstbestimmung' -> '#B34')
+        let needId = needIdOrKey;
+        if (!needIdOrKey.startsWith('#')) {
+            if (beduerfnisIds.toId) {
+                needId = beduerfnisIds.toId(needIdOrKey);
+            }
         }
 
-        // Hole Bedürfnis-Definition
-        const need = BeduerfnisIds.beduerfnisse?.[hashId];
+        const need = beduerfnisIds.beduerfnisse[needId];
         if (!need || !need.kategorie) {
             return null;
         }
 
-        // Hole Kategorie und Dimension
-        const kategorie = TiageTaxonomie.kategorien?.[need.kategorie];
+        const kategorie = taxonomie.kategorien[need.kategorie];
         if (!kategorie || !kategorie.dimension) {
             return null;
         }
 
-        const dimension = TiageTaxonomie.dimensionen?.[kategorie.dimension];
+        const dimension = taxonomie.dimensionen?.[kategorie.dimension];
         return dimension?.color || null;
     }
 

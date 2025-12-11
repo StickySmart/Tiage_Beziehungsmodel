@@ -1507,3 +1507,16 @@ input.gewichtung-input:focus {
     background: var(--dimension-color, #fff);
     border-color: rgba(0,0,0,0.4);
 }
+
+/* Firefox: Track-Progress mit Dimension-Farbe */
+.flat-needs-list.kategorie-mode .flat-need-item.has-dimension-color .need-slider::-moz-range-progress {
+    background: var(--dimension-color, #3B82F6);
+    border-radius: 3px;
+    height: 6px;
+}
+
+.flat-needs-list.kategorie-mode .flat-need-item.has-dimension-color .need-slider::-moz-range-track {
+    background: rgba(255,255,255,0.15);
+    border-radius: 3px;
+    height: 6px;
+}
