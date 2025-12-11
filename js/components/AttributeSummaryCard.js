@@ -496,10 +496,14 @@ const AttributeSummaryCard = (function() {
 
         // Direkte flache Liste ohne Kategorien-Wrapper
         html += `<div class="flat-needs-list${currentFlatSortMode === 'kategorie' ? ' kategorie-mode' : ''}">`;
+        console.log('[AttributeSummaryCard] Rendering with sortMode:', currentFlatSortMode);
         sortedNeeds.forEach(need => {
             const isLocked = flatNeeds[need.id]?.locked || false;
             // Bei Kategorie-Sortierung: Dimension-Farbe anzeigen
             const dimColor = currentFlatSortMode === 'kategorie' ? getDimensionColor(need.id) : null;
+            if (currentFlatSortMode === 'kategorie') {
+                console.log('[AttributeSummaryCard] getDimensionColor for', need.id, '=', dimColor);
+            }
             html += renderFlatNeedItem(need.id, need.label, need.value, isLocked, dimColor);
         });
         html += `</div>`;
