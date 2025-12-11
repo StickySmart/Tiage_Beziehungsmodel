@@ -9403,6 +9403,18 @@
                 pGender = person.geschlecht;
             }
 
+            // Fallback für sGender wenn nur pGender gesetzt ist
+            // Standard-Werte basierend auf pGender:
+            // - mann/frau → cis
+            // - inter → nonbinaer
+            if (pGender && !sGender) {
+                if (pGender === 'inter') {
+                    sGender = 'nonbinaer';
+                } else if (pGender === 'mann' || pGender === 'frau') {
+                    sGender = 'cis';
+                }
+            }
+
             // Dominanz extrahieren
             let dominanz = 'ausgeglichen';
             if (person.dominanz && typeof person.dominanz === 'object') {
@@ -9985,6 +9997,8 @@
 
         // Function to select archetype from grid click
         function selectArchetypeFromGrid(person, archetype) {
+            console.log('[selectArchetypeFromGrid] Aufgerufen für:', person, 'archetype:', archetype);
+
             const selectId = person === 'ich' ? 'ichSelect' : 'partnerSelect';
             const mobileSelectId = person === 'ich' ? 'mobileIchSelect' : 'mobilePartnerSelect';
             const select = document.getElementById(selectId);
@@ -10017,14 +10031,31 @@
                 mobilePartnerArchetype = archetype;
             }
 
+            // Sync with TiageState for persistence
+            if (typeof TiageState !== 'undefined') {
+                TiageState.setArchetype(person, archetype);
+            }
+
             // Update archetype grid highlighting
             updateArchetypeGrid(person, archetype);
 
-            // Trigger change event
+            // Trigger change event - use bubbles: true to ensure it propagates
             const activeSelect = select || mobileSelect;
             if (activeSelect) {
-                activeSelect.dispatchEvent(new Event('change'));
+                activeSelect.dispatchEvent(new Event('change', { bubbles: true }));
             }
+
+            // Update comparison view directly to ensure UI updates even without change event
+            if (typeof updateComparisonView === 'function') {
+                updateComparisonView();
+            }
+
+            // Update GFK from archetypes
+            if (typeof updateGfkFromArchetypes === 'function') {
+                updateGfkFromArchetypes();
+            }
+
+            console.log('[selectArchetypeFromGrid] Abgeschlossen für:', person, 'archetype:', archetype);
         }
 
         // Function to update archetype grid highlighting
@@ -10067,11 +10098,22 @@
          * - Resonanz: Multiplikator 0.9-1.1 (basierend auf Logos/Pathos-Balance und GFK)
          */
         function findBestPartnerMatch() {
+            console.log('[findBestPartnerMatch] Funktion aufgerufen');
+            console.log('[findBestPartnerMatch] data geladen:', data !== null);
+            console.log('[findBestPartnerMatch] personDimensions:', JSON.stringify(personDimensions));
+
+            // Prüfe, ob data geladen ist
+            if (!data) {
+                console.warn('[findBestPartnerMatch] WARNUNG: data ist nicht geladen! Verwende Fallback-Matrix.');
+            }
+
             const ALL_ARCHETYPES = ['single', 'duo', 'duo_flex', 'ra', 'lat', 'aromantisch', 'solopoly', 'polyamor'];
 
             // Sammle ICH-Daten (feste Basis)
             const ichArchetype = currentArchetype || 'single';
             const ichDims = personDimensions.ich || {};
+
+            console.log('[findBestPartnerMatch] currentArchetype:', currentArchetype, '-> verwendet:', ichArchetype);
 
             // Sammle Partner-Dimensionen (für die Berechnung)
             const partnerDims = personDimensions.partner || {};
@@ -10214,6 +10256,15 @@
          * und der beste ICH-Archetyp gesucht.
          */
         function findBestIchMatch() {
+            console.log('[findBestIchMatch] Funktion aufgerufen');
+            console.log('[findBestIchMatch] data geladen:', data !== null);
+            console.log('[findBestIchMatch] personDimensions:', JSON.stringify(personDimensions));
+
+            // Prüfe, ob data geladen ist
+            if (!data) {
+                console.warn('[findBestIchMatch] WARNUNG: data ist nicht geladen! Verwende Fallback-Matrix.');
+            }
+
             const ALL_ARCHETYPES = ['single', 'duo', 'duo_flex', 'ra', 'lat', 'aromantisch', 'solopoly', 'polyamor'];
 
             // Sammle PARTNER-Daten (DU) als Basis
@@ -10222,6 +10273,8 @@
 
             // Sammle ICH-Dimensionen (für die Berechnung)
             const ichDims = personDimensions.ich || {};
+
+            console.log('[findBestIchMatch] selectedPartner:', selectedPartner, '-> verwendet:', partnerArchetype);
 
             let bestMatch = null;
             let bestScore = -1;
@@ -12451,6 +12504,7 @@
          * This ensures the UI reflects any previously saved selections
          */
         function loadDimensionsFromState() {
+            console.log('[loadDimensionsFromState] Start - TiageState verfügbar:', typeof TiageState !== 'undefined');
             if (typeof TiageState === 'undefined') return;
 
             // Load from TiageState
@@ -12459,6 +12513,8 @@
             // Load archetypes from TiageState and sync with global variables (Desktop + Mobile)
             const savedIchArchetype = TiageState.getArchetype('ich');
             const savedPartnerArchetype = TiageState.getArchetype('partner');
+
+            console.log('[loadDimensionsFromState] Geladene Archetypen - ICH:', savedIchArchetype, 'PARTNER:', savedPartnerArchetype);
 
             if (savedIchArchetype) {
                 currentArchetype = savedIchArchetype;
@@ -12492,7 +12548,11 @@
 
             ['ich', 'partner'].forEach(person => {
                 const savedDims = TiageState.get(`personDimensions.${person}`);
-                if (!savedDims) return;
+                console.log(`[loadDimensionsFromState] ${person} savedDims:`, JSON.stringify(savedDims));
+                if (!savedDims) {
+                    console.log(`[loadDimensionsFromState] Keine gespeicherten Dimensionen für ${person}`);
+                    return;
+                }
 
                 // Sync geschlecht
                 if (savedDims.geschlecht) {
@@ -12580,6 +12640,9 @@
             if (typeof updateAll === 'function') {
                 updateAll();
             }
+
+            console.log('[loadDimensionsFromState] Abgeschlossen - personDimensions:', JSON.stringify(personDimensions));
+            console.log('[loadDimensionsFromState] Abgeschlossen - currentArchetype:', currentArchetype, 'selectedPartner:', selectedPartner);
         }
 
         // Initialize when DOM is ready
