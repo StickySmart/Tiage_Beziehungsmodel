@@ -103,15 +103,29 @@ Tiage_Beziehungsmodel/
 
 StickySmart (Tiage)
 
-## Lizenz
+## Lizenz & Geistiges Eigentum
 
 **© 2025 Ti-Age – Alle Rechte vorbehalten.**
 
 Dieses Werk ist urheberrechtlich geschützt. Keine Lizenz erteilt.
 
+### Urheberrecht
 Jegliche Nutzung, Vervielfältigung, Modifikation oder Verbreitung ohne ausdrückliche schriftliche Genehmigung des Urhebers ist untersagt. Die Nutzung ist ausschließlich für private, nicht-kommerzielle Zwecke gestattet.
 
-Siehe [Nutzungsbedingungen](nutzungsbedingungen.html) für weitere Details.
+### Konzeptschutz
+Das Tiage Beziehungsmodell ist eine eigenständige intellektuelle Leistung von **Tiage (StickySmart)**. Folgende konzeptionelle Elemente werden als geistiges Eigentum beansprucht:
+
+- Die Synthese von Pirsigs MOQ mit OSHOs Philosophie zu einem Beziehungsmodell
+- Die Logos/Pathos-Methodik mit spezifischer Gewichtung
+- Das 8-Archetypen-System in dieser Konstellation
+- Die 4-Faktoren-Kompatibilitätsberechnung
+- Die 864 psychologischen Profile
+
+**Prioritätsnachweis:** Erstveröffentlichung 2025 auf GitHub. Die Git-Historie dient als dokumentierter Nachweis der Erstentwicklung.
+
+**Markenrechtlicher Vorbehalt:** Die Bezeichnungen "Tiage Beziehungsmodell", "Tiage" und "Ti-Age" dürfen nicht ohne Genehmigung zur Kennzeichnung ähnlicher Dienste verwendet werden.
+
+Siehe [Nutzungsbedingungen](nutzungsbedingungen.html) für vollständige rechtliche Details.
 
 ---
 
