@@ -94,11 +94,39 @@ const MemoryManager = (function() {
     }
 
     /**
-     * Collect Gewichtungen (factor weights)
+     * Collect Gewichtungen (combined: value + locked)
+     * Returns new format: { O: { value, locked }, A: { value, locked }, ... }
      */
     function collectGewichtungen() {
         try {
             const stored = localStorage.getItem('tiage_faktor_gewichtungen');
+            if (stored) {
+                const parsed = JSON.parse(stored);
+                // Check if new combined format
+                if (parsed.O && typeof parsed.O === 'object' && 'value' in parsed.O) {
+                    return parsed;
+                }
+                // Legacy format - convert to combined
+                const legacyLocks = collectGewichtungLocksLegacy();
+                return {
+                    O: { value: parsed.O ?? 40, locked: legacyLocks?.orientierung ?? false },
+                    A: { value: parsed.A ?? 25, locked: legacyLocks?.archetyp ?? false },
+                    D: { value: parsed.D ?? 20, locked: legacyLocks?.dominanz ?? false },
+                    G: { value: parsed.G ?? 15, locked: legacyLocks?.geschlecht ?? false }
+                };
+            }
+            return null;
+        } catch (e) {
+            return null;
+        }
+    }
+
+    /**
+     * Collect Gewichtung Locks (legacy - for migration only)
+     */
+    function collectGewichtungLocksLegacy() {
+        try {
+            const stored = localStorage.getItem('tiage_faktor_locks');
             return stored ? JSON.parse(stored) : null;
         } catch (e) {
             return null;
@@ -106,15 +134,17 @@ const MemoryManager = (function() {
     }
 
     /**
-     * Collect Gewichtung Locks
+     * Collect Gewichtung Locks (derived from combined structure)
      */
     function collectGewichtungLocks() {
-        try {
-            const stored = localStorage.getItem('tiage_faktor_locks');
-            return stored ? JSON.parse(stored) : null;
-        } catch (e) {
-            return null;
-        }
+        const combined = collectGewichtungen();
+        if (!combined) return null;
+        return {
+            orientierung: combined.O?.locked ?? false,
+            archetyp: combined.A?.locked ?? false,
+            dominanz: combined.D?.locked ?? false,
+            geschlecht: combined.G?.locked ?? false
+        };
     }
 
     /**
@@ -419,24 +449,57 @@ const MemoryManager = (function() {
     }
 
     /**
-     * Apply Gewichtungen (factor weights)
+     * Apply Gewichtungen (factor weights) - supports both old and new format
+     * New format: { O: { value, locked }, A: { value, locked }, ... }
+     * Old format: { O: number, A: number, ... }
      */
     function applyGewichtungen(gewichtungen) {
         if (!gewichtungen) return;
         try {
-            localStorage.setItem('tiage_faktor_gewichtungen', JSON.stringify(gewichtungen));
+            // Check if already new format
+            if (gewichtungen.O && typeof gewichtungen.O === 'object' && 'value' in gewichtungen.O) {
+                localStorage.setItem('tiage_faktor_gewichtungen', JSON.stringify(gewichtungen));
+            } else {
+                // Old format - convert to new combined format
+                const currentLocks = collectGewichtungLocks() || {
+                    orientierung: false, archetyp: false, dominanz: false, geschlecht: false
+                };
+                const combined = {
+                    O: { value: gewichtungen.O ?? 40, locked: currentLocks.orientierung ?? false },
+                    A: { value: gewichtungen.A ?? 25, locked: currentLocks.archetyp ?? false },
+                    D: { value: gewichtungen.D ?? 20, locked: currentLocks.dominanz ?? false },
+                    G: { value: gewichtungen.G ?? 15, locked: currentLocks.geschlecht ?? false }
+                };
+                localStorage.setItem('tiage_faktor_gewichtungen', JSON.stringify(combined));
+            }
+            // Remove legacy locks key if exists
+            localStorage.removeItem('tiage_faktor_locks');
         } catch (e) {
             console.warn('[MemoryManager] Could not save Gewichtungen:', e);
         }
     }
 
     /**
-     * Apply Gewichtung Locks
+     * Apply Gewichtung Locks - updates combined structure
      */
     function applyGewichtungLocks(locks) {
         if (!locks) return;
         try {
-            localStorage.setItem('tiage_faktor_locks', JSON.stringify(locks));
+            // Get current combined or create new
+            let combined = collectGewichtungen() || {
+                O: { value: 40, locked: false },
+                A: { value: 25, locked: false },
+                D: { value: 20, locked: false },
+                G: { value: 15, locked: false }
+            };
+            // Update locks in combined structure
+            combined.O.locked = locks.orientierung ?? false;
+            combined.A.locked = locks.archetyp ?? false;
+            combined.D.locked = locks.dominanz ?? false;
+            combined.G.locked = locks.geschlecht ?? false;
+            localStorage.setItem('tiage_faktor_gewichtungen', JSON.stringify(combined));
+            // Remove legacy locks key
+            localStorage.removeItem('tiage_faktor_locks');
         } catch (e) {
             console.warn('[MemoryManager] Could not save Gewichtung Locks:', e);
         }

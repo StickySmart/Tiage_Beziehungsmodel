@@ -21,9 +21,16 @@
         // ═══════════════════════════════════════════════════════════════════════
         // GEWICHTUNGS-KONSTANTEN (müssen vor getGewichtungen() definiert sein)
         // ═══════════════════════════════════════════════════════════════════════
-        const GEWICHTUNG_DEFAULTS = { O: 40, A: 25, D: 20, G: 15 };
+        // Neue kombinierte Struktur: { O: { value, locked }, A: { value, locked }, ... }
+        const GEWICHTUNG_DEFAULTS = {
+            O: { value: 40, locked: false },
+            A: { value: 25, locked: false },
+            D: { value: 20, locked: false },
+            G: { value: 15, locked: false }
+        };
         const GEWICHTUNG_STORAGE_KEY = 'tiage_faktor_gewichtungen';
-        const GEWICHTUNG_LOCK_KEY = 'tiage_faktor_locks';
+        // Legacy keys für Migration (werden nach Migration nicht mehr verwendet)
+        const GEWICHTUNG_LOCK_KEY_LEGACY = 'tiage_faktor_locks';
         const GEWICHTUNG_SUMME_LOCK_KEY = 'tiage_summe_lock';
         const GEWICHTUNG_SUMME_TARGET_KEY = 'tiage_summe_target';
 
@@ -35,7 +42,7 @@
             geschlecht: { inputId: 'gewicht-geschlecht', key: 'G' }
         };
 
-        // Lock-Status für Gewichtungen (muss vor den Funktionen definiert sein, die es verwenden)
+        // Lock-Status für Gewichtungen (abgeleitet aus kombinierter Struktur)
         let gewichtungLocks = { orientierung: false, archetyp: false, dominanz: false, geschlecht: false };
 
         // Summen-Lock-Status (fixiert Summe auf aktuellen Wert)
@@ -15664,54 +15671,110 @@
         // Hinweis: GEWICHTUNG_DEFAULTS, GEWICHTUNG_STORAGE_KEY, GEWICHTUNG_LOCK_KEY,
         // FAKTOR_MAP und gewichtungLocks sind am Anfang der Datei definiert.
 
-        // Lädt Lock-Status aus localStorage
-        function getGewichtungLocks() {
-            try {
-                const stored = localStorage.getItem(GEWICHTUNG_LOCK_KEY);
-                if (stored) return JSON.parse(stored);
-            } catch (e) { console.warn('Fehler beim Laden der Lock-Status:', e); }
-            return { orientierung: false, archetyp: false, dominanz: false, geschlecht: false };
-        }
-
-        // Speichert Lock-Status
-        function saveGewichtungLocks() {
-            try {
-                localStorage.setItem(GEWICHTUNG_LOCK_KEY, JSON.stringify(gewichtungLocks));
-            } catch (e) { console.warn('Fehler beim Speichern der Lock-Status:', e); }
-        }
-
-        // Lädt Gewichtungen aus localStorage
-        function getGewichtungen() {
+        // Lädt kombinierte Gewichtungen (mit Werten und Lock-Status) aus localStorage
+        // Unterstützt Backward-Compatibility für alte getrennte Datenstruktur
+        function getGewichtungenCombined() {
             try {
                 const stored = localStorage.getItem(GEWICHTUNG_STORAGE_KEY);
                 if (stored) {
                     const parsed = JSON.parse(stored);
-                    return {
-                        O: parsed.O ?? GEWICHTUNG_DEFAULTS.O,
-                        A: parsed.A ?? GEWICHTUNG_DEFAULTS.A,
-                        D: parsed.D ?? GEWICHTUNG_DEFAULTS.D,
-                        G: parsed.G ?? GEWICHTUNG_DEFAULTS.G
+
+                    // Prüfe ob neue kombinierte Struktur (hat .value Property)
+                    if (parsed.O && typeof parsed.O === 'object' && 'value' in parsed.O) {
+                        return {
+                            O: { value: parsed.O.value ?? GEWICHTUNG_DEFAULTS.O.value, locked: parsed.O.locked ?? false },
+                            A: { value: parsed.A.value ?? GEWICHTUNG_DEFAULTS.A.value, locked: parsed.A.locked ?? false },
+                            D: { value: parsed.D.value ?? GEWICHTUNG_DEFAULTS.D.value, locked: parsed.D.locked ?? false },
+                            G: { value: parsed.G.value ?? GEWICHTUNG_DEFAULTS.G.value, locked: parsed.G.locked ?? false }
+                        };
+                    }
+
+                    // Legacy-Format: Migriere alte Daten
+                    const legacyValues = {
+                        O: parsed.O ?? GEWICHTUNG_DEFAULTS.O.value,
+                        A: parsed.A ?? GEWICHTUNG_DEFAULTS.A.value,
+                        D: parsed.D ?? GEWICHTUNG_DEFAULTS.D.value,
+                        G: parsed.G ?? GEWICHTUNG_DEFAULTS.G.value
                     };
+
+                    // Lade alte Lock-Daten falls vorhanden
+                    let legacyLocks = { orientierung: false, archetyp: false, dominanz: false, geschlecht: false };
+                    try {
+                        const storedLocks = localStorage.getItem(GEWICHTUNG_LOCK_KEY_LEGACY);
+                        if (storedLocks) legacyLocks = JSON.parse(storedLocks);
+                    } catch (e) { /* ignore */ }
+
+                    // Kombiniere zu neuer Struktur
+                    const combined = {
+                        O: { value: legacyValues.O, locked: legacyLocks.orientierung ?? false },
+                        A: { value: legacyValues.A, locked: legacyLocks.archetyp ?? false },
+                        D: { value: legacyValues.D, locked: legacyLocks.dominanz ?? false },
+                        G: { value: legacyValues.G, locked: legacyLocks.geschlecht ?? false }
+                    };
+
+                    // Speichere migrierte Daten und entferne Legacy-Key
+                    localStorage.setItem(GEWICHTUNG_STORAGE_KEY, JSON.stringify(combined));
+                    localStorage.removeItem(GEWICHTUNG_LOCK_KEY_LEGACY);
+
+                    return combined;
                 }
             } catch (e) { console.warn('Fehler beim Laden der Gewichtungen:', e); }
-            return { ...GEWICHTUNG_DEFAULTS };
+
+            // Default-Werte
+            return JSON.parse(JSON.stringify(GEWICHTUNG_DEFAULTS));
         }
 
-        // Speichert Gewichtungen
-        function saveGewichtungen() {
-            const gewichtungen = {
-                O: parseInt(document.getElementById('gewicht-orientierung')?.value) || 0,
-                A: parseInt(document.getElementById('gewicht-archetyp')?.value) || 0,
-                D: parseInt(document.getElementById('gewicht-dominanz')?.value) || 0,
-                G: parseInt(document.getElementById('gewicht-geschlecht')?.value) || 0
+        // Lädt Lock-Status aus kombinierter Struktur (für Backward-Compatibility)
+        function getGewichtungLocks() {
+            const combined = getGewichtungenCombined();
+            return {
+                orientierung: combined.O.locked,
+                archetyp: combined.A.locked,
+                dominanz: combined.D.locked,
+                geschlecht: combined.G.locked
             };
+        }
+
+        // Speichert Lock-Status in kombinierte Struktur
+        function saveGewichtungLocks() {
+            const combined = getGewichtungenCombined();
+            combined.O.locked = gewichtungLocks.orientierung;
+            combined.A.locked = gewichtungLocks.archetyp;
+            combined.D.locked = gewichtungLocks.dominanz;
+            combined.G.locked = gewichtungLocks.geschlecht;
             try {
-                localStorage.setItem(GEWICHTUNG_STORAGE_KEY, JSON.stringify(gewichtungen));
+                localStorage.setItem(GEWICHTUNG_STORAGE_KEY, JSON.stringify(combined));
+            } catch (e) { console.warn('Fehler beim Speichern der Lock-Status:', e); }
+        }
+
+        // Lädt nur Gewichtungs-Werte (für Backward-Compatibility mit bestehendem Code)
+        function getGewichtungen() {
+            const combined = getGewichtungenCombined();
+            return {
+                O: combined.O.value,
+                A: combined.A.value,
+                D: combined.D.value,
+                G: combined.G.value
+            };
+        }
+
+        // Speichert Gewichtungen in kombinierte Struktur
+        function saveGewichtungen() {
+            const combined = getGewichtungenCombined();
+            combined.O.value = parseInt(document.getElementById('gewicht-orientierung')?.value) || 0;
+            combined.A.value = parseInt(document.getElementById('gewicht-archetyp')?.value) || 0;
+            combined.D.value = parseInt(document.getElementById('gewicht-dominanz')?.value) || 0;
+            combined.G.value = parseInt(document.getElementById('gewicht-geschlecht')?.value) || 0;
+            try {
+                localStorage.setItem(GEWICHTUNG_STORAGE_KEY, JSON.stringify(combined));
             } catch (e) { console.warn('Fehler beim Speichern der Gewichtungen:', e); }
             updateGewichtungSumme();
             if (typeof updateDisplay === 'function') updateDisplay();
         }
         window.saveGewichtungen = saveGewichtungen;
+
+        // Exportiere kombinierte Struktur für Debug/Anzeige
+        window.getGewichtungenCombined = getGewichtungenCombined;
 
         // Aktualisiert Summen-Anzeige
         function updateGewichtungSumme() {
