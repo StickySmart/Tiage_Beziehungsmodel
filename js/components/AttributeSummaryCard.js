@@ -302,10 +302,10 @@ const AttributeSummaryCard = (function() {
 
     /**
      * Holt die Dimension-Farbe für ein Bedürfnis basierend auf seiner Kategorie
-     * @param {string} needId - z.B. '#B21'
+     * @param {string} needIdOrKey - z.B. '#B21' oder 'selbstbestimmung' (Key)
      * @returns {string} CSS-Farbwert oder null
      */
-    function getDimensionColor(needId) {
+    function getDimensionColor(needIdOrKey) {
         // Versuche TiageTaxonomie zu finden (global oder window)
         const taxonomie = (typeof TiageTaxonomie !== 'undefined') ? TiageTaxonomie :
                           (typeof window !== 'undefined' && window.TiageTaxonomie) ? window.TiageTaxonomie : null;
@@ -314,46 +314,34 @@ const AttributeSummaryCard = (function() {
         const beduerfnisIds = (typeof BeduerfnisIds !== 'undefined') ? BeduerfnisIds :
                               (typeof window !== 'undefined' && window.BeduerfnisIds) ? window.BeduerfnisIds : null;
 
-        if (!taxonomie) {
-            console.warn('[getDimensionColor] TiageTaxonomie nicht verfügbar für', needId);
-            return null;
-        }
-        if (!taxonomie.kategorien) {
-            console.warn('[getDimensionColor] TiageTaxonomie.kategorien nicht verfügbar für', needId);
+        if (!taxonomie || !taxonomie.kategorien) {
             return null;
         }
         if (!beduerfnisIds || !beduerfnisIds.beduerfnisse) {
-            console.warn('[getDimensionColor] BeduerfnisIds nicht verfügbar für', needId);
             return null;
         }
 
-        const need = beduerfnisIds.beduerfnisse[needId];
-        if (!need) {
-            console.warn('[getDimensionColor] Bedürfnis nicht gefunden:', needId);
-            return null;
+        // Konvertiere Key zu ID falls nötig (z.B. 'selbstbestimmung' -> '#B34')
+        let needId = needIdOrKey;
+        if (!needIdOrKey.startsWith('#')) {
+            // Es ist ein Key, nicht eine ID - konvertieren mit BeduerfnisIds.toId()
+            if (beduerfnisIds.toId) {
+                needId = beduerfnisIds.toId(needIdOrKey);
+            }
         }
-        if (!need.kategorie) {
-            console.warn('[getDimensionColor] Keine Kategorie für:', needId);
+
+        const need = beduerfnisIds.beduerfnisse[needId];
+        if (!need || !need.kategorie) {
             return null;
         }
 
         const kategorie = taxonomie.kategorien[need.kategorie];
-        if (!kategorie) {
-            console.warn('[getDimensionColor] Kategorie nicht gefunden:', need.kategorie, 'für', needId);
-            return null;
-        }
-        if (!kategorie.dimension) {
-            console.warn('[getDimensionColor] Keine Dimension in Kategorie:', need.kategorie);
+        if (!kategorie || !kategorie.dimension) {
             return null;
         }
 
         const dimension = taxonomie.dimensionen?.[kategorie.dimension];
-        if (!dimension || !dimension.color) {
-            console.warn('[getDimensionColor] Dimension nicht gefunden:', kategorie.dimension);
-            return null;
-        }
-
-        return dimension.color;
+        return dimension?.color || null;
     }
 
     /**
