@@ -1480,6 +1480,97 @@ input.gewichtung-input:focus {
 }
 
 /* ═══════════════════════════════════════════════════════════════════════════ */
+/* Perspektiven-Filter (bei Kategorie-Sortierung)                              */
+/* ═══════════════════════════════════════════════════════════════════════════ */
+
+.flat-needs-perspektive-bar {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: 1px dashed rgba(255,255,255,0.08);
+    flex-wrap: wrap;
+}
+
+.flat-needs-perspektive-label {
+    font-size: 11px;
+    color: var(--text-muted, #888);
+    margin-right: 4px;
+}
+
+.flat-needs-perspektive-btn {
+    padding: 4px 10px;
+    font-size: 11px;
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 12px;
+    color: var(--text-secondary, #aaa);
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.flat-needs-perspektive-btn:hover {
+    background: rgba(255,255,255,0.08);
+    color: var(--text-primary, #fff);
+    border-color: rgba(255,255,255,0.2);
+}
+
+/* Aktiver Perspektiven-Button (Alle) */
+.flat-needs-perspektive-btn.active {
+    background: var(--primary, #FFD700);
+    border-color: var(--primary, #FFD700);
+    color: #000;
+    font-weight: 600;
+}
+
+/* Aktive Perspektiven-Buttons mit eigener Farbe */
+.flat-needs-perspektive-btn.perspektive-p1.active {
+    background: #3B82F6;
+    border-color: #3B82F6;
+    color: #fff;
+}
+
+.flat-needs-perspektive-btn.perspektive-p2.active {
+    background: #F59E0B;
+    border-color: #F59E0B;
+    color: #000;
+}
+
+.flat-needs-perspektive-btn.perspektive-p3.active {
+    background: #10B981;
+    border-color: #10B981;
+    color: #fff;
+}
+
+.flat-needs-perspektive-btn.perspektive-p4.active {
+    background: #8B5CF6;
+    border-color: #8B5CF6;
+    color: #fff;
+}
+
+/* Hover für nicht-aktive Perspektiven-Buttons */
+.flat-needs-perspektive-btn.perspektive-p1:not(.active):hover {
+    border-color: #3B82F6;
+    color: #3B82F6;
+}
+
+.flat-needs-perspektive-btn.perspektive-p2:not(.active):hover {
+    border-color: #F59E0B;
+    color: #F59E0B;
+}
+
+.flat-needs-perspektive-btn.perspektive-p3:not(.active):hover {
+    border-color: #10B981;
+    color: #10B981;
+}
+
+.flat-needs-perspektive-btn.perspektive-p4:not(.active):hover {
+    border-color: #8B5CF6;
+    color: #8B5CF6;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════ */
 /* Kategorie-Sortierung: Dimension-Farben                                      */
 /* ═══════════════════════════════════════════════════════════════════════════ */
 

@@ -258,6 +258,12 @@ const AttributeSummaryCard = (function() {
     let currentFlatSortMode = 'value';
 
     /**
+     * Aktive Perspektiven-Filter (nur bei Kategorie-Sortierung)
+     * Set von Perspektiven-IDs ('#P1', '#P2', '#P3', '#P4') oder leer für "Alle"
+     */
+    let activePerspektiveFilters = new Set();
+
+    /**
      * GFK-Kategorien mit Labels und Icons
      */
     const GFK_KATEGORIEN = {
@@ -360,6 +366,73 @@ const AttributeSummaryCard = (function() {
 
         const dimension = taxonomie.dimensionen?.[kategorie.dimension];
         return dimension?.color || null;
+    }
+
+    /**
+     * Gibt die Perspektiven-ID für ein Bedürfnis zurück
+     * @param {string} needId - #B-ID (z.B. '#B34')
+     * @returns {string} Perspektiven-ID ('#P1', '#P2', '#P3', '#P4')
+     */
+    function getPerspektiveIdForNeed(needId) {
+        // Nutze PerspektivenModal wenn verfügbar
+        if (typeof PerspektivenModal !== 'undefined' && PerspektivenModal.getPerspektiveForNeed) {
+            // Hole needKey und kategorieKey
+            const beduerfnisIds = typeof BeduerfnisIds !== 'undefined' ? BeduerfnisIds : null;
+            if (beduerfnisIds && beduerfnisIds.beduerfnisse) {
+                const need = beduerfnisIds.beduerfnisse[needId];
+                if (need) {
+                    const needKey = need.key;
+                    // Kategorie-Key aus Taxonomie holen
+                    const taxonomie = typeof TiageTaxonomie !== 'undefined' ? TiageTaxonomie : null;
+                    let kategorieKey = null;
+                    if (taxonomie && need.kategorie) {
+                        const kat = taxonomie.kategorien[need.kategorie];
+                        kategorieKey = kat?.key || null;
+                    }
+                    const perspektive = PerspektivenModal.getPerspektiveForNeed(needKey, kategorieKey);
+                    return perspektive?.id || '#P1';
+                }
+            }
+        }
+        // Fallback: Statistik/GFK
+        return '#P1';
+    }
+
+    /**
+     * Filtert Bedürfnisse nach aktiven Perspektiven-Filtern
+     * @param {Array} needs - Array von {id, value, label}
+     * @returns {Array} Gefilterte Array
+     */
+    function filterNeedsByPerspektive(needs) {
+        // Kein Filter aktiv = alle anzeigen
+        if (activePerspektiveFilters.size === 0) {
+            return needs;
+        }
+        return needs.filter(need => {
+            const perspektiveId = getPerspektiveIdForNeed(need.id);
+            return activePerspektiveFilters.has(perspektiveId);
+        });
+    }
+
+    /**
+     * Toggle einen Perspektiven-Filter
+     * @param {string} perspektiveId - '#P1', '#P2', '#P3', '#P4'
+     */
+    function togglePerspektiveFilter(perspektiveId) {
+        if (activePerspektiveFilters.has(perspektiveId)) {
+            activePerspektiveFilters.delete(perspektiveId);
+        } else {
+            activePerspektiveFilters.add(perspektiveId);
+        }
+        reRenderFlatNeeds();
+    }
+
+    /**
+     * Setzt alle Perspektiven-Filter zurück (zeigt alle)
+     */
+    function clearPerspektiveFilters() {
+        activePerspektiveFilters.clear();
+        reRenderFlatNeeds();
     }
 
     /**
@@ -478,13 +551,24 @@ const AttributeSummaryCard = (function() {
         // Sortiere nach aktuellem Modus
         const sortedNeeds = sortNeedsList(allNeeds, currentFlatSortMode);
 
+        // Bei Kategorie-Sortierung: Perspektiven-Filter anwenden
+        const filteredNeeds = currentFlatSortMode === 'kategorie'
+            ? filterNeedsByPerspektive(sortedNeeds)
+            : sortedNeeds;
+
+        // Subtitle mit Filter-Info
+        const filterActive = currentFlatSortMode === 'kategorie' && activePerspektiveFilters.size > 0;
+        const subtitleText = filterActive
+            ? `Dein ${archetypLabel}-Profil (${filteredNeeds.length} von ${allNeeds.length} Bedürfnisse)`
+            : `Dein ${archetypLabel}-Profil (${allNeeds.length} Bedürfnisse)`;
+
         // Rendere HTML - flache Liste ohne Kategorien
         let html = `<div class="flat-needs-container flat-needs-no-categories" data-archetyp="${archetyp}">`;
         html += `<div class="flat-needs-header">
             <div class="flat-needs-header-top">
                 <div class="flat-needs-header-left">
                     <span class="flat-needs-title">Alle Bedürfnisse</span>
-                    <span class="flat-needs-subtitle">Dein ${archetypLabel}-Profil (${allNeeds.length} Bedürfnisse)</span>
+                    <span class="flat-needs-subtitle">${subtitleText}</span>
                 </div>
                 <button class="flat-needs-reset-btn" onclick="AttributeSummaryCard.resetFlatNeeds(); AttributeSummaryCard.reRenderFlatNeeds();" title="Auf Profil-Standard zurücksetzen">
                     🔄 Standard
@@ -497,12 +581,41 @@ const AttributeSummaryCard = (function() {
                 <button class="flat-needs-sort-btn${currentFlatSortMode === 'id' ? ' active' : ''}" onclick="AttributeSummaryCard.setSortMode('id')">#B Nr.</button>
                 <button class="flat-needs-sort-btn${currentFlatSortMode === 'status' ? ' active' : ''}" onclick="AttributeSummaryCard.setSortMode('status')">Status</button>
                 <button class="flat-needs-sort-btn${currentFlatSortMode === 'kategorie' ? ' active' : ''}" onclick="AttributeSummaryCard.setSortMode('kategorie')">Kategorie</button>
-            </div>
-        </div>`;
+            </div>`;
+
+        // Perspektiven-Filter (nur bei Kategorie-Sortierung)
+        if (currentFlatSortMode === 'kategorie') {
+            const noFilter = activePerspektiveFilters.size === 0;
+            html += `
+            <div class="flat-needs-perspektive-bar">
+                <span class="flat-needs-perspektive-label">Perspektive:</span>
+                <button class="flat-needs-perspektive-btn${noFilter ? ' active' : ''}"
+                        onclick="AttributeSummaryCard.clearPerspektiveFilters()"
+                        title="Alle Perspektiven anzeigen">Alle</button>
+                <button class="flat-needs-perspektive-btn perspektive-p1${activePerspektiveFilters.has('#P1') ? ' active' : ''}"
+                        onclick="AttributeSummaryCard.togglePerspektiveFilter('#P1')"
+                        title="Statistik/GFK - Universelle Bedürfnisse nach Marshall Rosenberg"
+                        style="--perspektive-color: #3B82F6;">📊 Statistik</button>
+                <button class="flat-needs-perspektive-btn perspektive-p2${activePerspektiveFilters.has('#P2') ? ' active' : ''}"
+                        onclick="AttributeSummaryCard.togglePerspektiveFilter('#P2')"
+                        title="Osho - Tantrische Weisheit, Freiheit IN der Beziehung"
+                        style="--perspektive-color: #F59E0B;">🕉️ Osho</button>
+                <button class="flat-needs-perspektive-btn perspektive-p3${activePerspektiveFilters.has('#P3') ? ' active' : ''}"
+                        onclick="AttributeSummaryCard.togglePerspektiveFilter('#P3')"
+                        title="Pirsig - Qualität als Lebensphilosophie"
+                        style="--perspektive-color: #10B981;">🔧 Pirsig</button>
+                <button class="flat-needs-perspektive-btn perspektive-p4${activePerspektiveFilters.has('#P4') ? ' active' : ''}"
+                        onclick="AttributeSummaryCard.togglePerspektiveFilter('#P4')"
+                        title="SexPositiv/Kink - Consent, Kommunikation, Machtaustausch"
+                        style="--perspektive-color: #8B5CF6;">💜 SexPositiv</button>
+            </div>`;
+        }
+
+        html += `</div>`;
 
         // Direkte flache Liste ohne Kategorien-Wrapper
         html += `<div class="flat-needs-list${currentFlatSortMode === 'kategorie' ? ' kategorie-mode' : ''}">`;
-        sortedNeeds.forEach(need => {
+        filteredNeeds.forEach(need => {
             const isLocked = flatNeeds[need.id]?.locked || false;
             // Bei Kategorie-Sortierung: Dimension-Farbe anzeigen
             const dimColor = currentFlatSortMode === 'kategorie' ? getDimensionColor(need.id) : null;
@@ -516,10 +629,14 @@ const AttributeSummaryCard = (function() {
 
     /**
      * Setzt den Sortiermodus und rendert die Liste neu
-     * @param {string} mode - 'value', 'name', 'id'
+     * @param {string} mode - 'value', 'name', 'id', 'status', 'kategorie'
      */
     function setSortMode(mode) {
         currentFlatSortMode = mode;
+        // Perspektiven-Filter zurücksetzen wenn nicht Kategorie-Modus
+        if (mode !== 'kategorie') {
+            activePerspektiveFilters.clear();
+        }
         reRenderFlatNeeds();
     }
 
@@ -1376,6 +1493,9 @@ const AttributeSummaryCard = (function() {
         resetFlatNeeds,
         reRenderFlatNeeds,
         setSortMode,
+        // NEU: Perspektiven-Filter für Kategorie-Sortierung
+        togglePerspektiveFilter,
+        clearPerspektiveFilters,
         GFK_KATEGORIEN
     };
 })();
