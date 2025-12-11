@@ -15747,6 +15747,9 @@
             }
 
             try {
+                // Besucher-ID vor dem Löschen sichern (soll erhalten bleiben)
+                const visitorId = localStorage.getItem('tiage_visitor_id');
+
                 // TiageStorage.clear() löscht alle tiage_* Einträge
                 if (typeof TiageStorage !== 'undefined' && TiageStorage.clear) {
                     TiageStorage.clear();
@@ -15760,6 +15763,11 @@
                         }
                     }
                     keys.forEach(key => localStorage.removeItem(key));
+                }
+
+                // Besucher-ID wiederherstellen
+                if (visitorId) {
+                    localStorage.setItem('tiage_visitor_id', visitorId);
                 }
 
                 // Auch die legacy Keys löschen
