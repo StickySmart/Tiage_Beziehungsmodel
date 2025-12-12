@@ -371,6 +371,117 @@ const ResonanzCard = (function() {
         updateGfkDisplay();
     }
 
+    /**
+     * Setzt berechnete Resonanzwerte (aus Synthese-Berechnung)
+     * Überschreibt nur nicht-gelockte Werte.
+     *
+     * @param {Object} calculatedValues - { R1: number, R2: number, R3: number, R4: number }
+     *                                    Werte im Bereich 0.5-1.5 (oder 0.9-1.1 aus Synthese)
+     * @param {boolean} forceOverwrite - Wenn true, überschreibt auch gelockte Werte
+     */
+    function setCalculatedValues(calculatedValues, forceOverwrite) {
+        if (!calculatedValues) {
+            console.warn('[ResonanzCard] Keine berechneten Werte übergeben');
+            return;
+        }
+
+        const currentValues = load();
+        let hasChanges = false;
+
+        ['R1', 'R2', 'R3', 'R4'].forEach(faktor => {
+            const newValue = calculatedValues[faktor];
+
+            // Nur setzen wenn:
+            // 1. Wert vorhanden ist
+            // 2. Nicht gelockt ODER forceOverwrite
+            if (newValue !== undefined && newValue !== null) {
+                if (!currentValues[faktor].locked || forceOverwrite) {
+                    const clampedValue = clampValue(newValue);
+                    currentValues[faktor].value = clampedValue;
+                    hasChanges = true;
+
+                    // UI aktualisieren
+                    const input = document.getElementById(`resonanz-${faktor}`);
+                    const slider = document.getElementById(`resonanz-slider-${faktor}`);
+
+                    if (input) input.value = clampedValue.toFixed(2);
+                    if (slider) slider.value = valueToSlider(clampedValue);
+                }
+            }
+        });
+
+        if (hasChanges) {
+            save(currentValues);
+            updateGfkDisplay();
+            console.log('[ResonanzCard] Berechnete Werte geladen:', calculatedValues);
+        }
+    }
+
+    /**
+     * Berechnet die Resonanzwerte basierend auf Profil-Kontext
+     * Nutzt NeedsIntegration.calculateDimensionalResonance wenn verfügbar
+     *
+     * @param {Object} profileContext - { archetyp, needs, dominanz, orientierung, geschlecht }
+     * @returns {Object|null} { R1, R2, R3, R4 } oder null bei Fehler
+     */
+    function calculateFromProfile(profileContext) {
+        // Prüfe ob NeedsIntegration verfügbar ist
+        if (typeof TiageSynthesis === 'undefined' ||
+            typeof TiageSynthesis.NeedsIntegration === 'undefined') {
+            console.warn('[ResonanzCard] TiageSynthesis.NeedsIntegration nicht verfügbar');
+            return null;
+        }
+
+        if (!profileContext || !profileContext.archetyp) {
+            console.warn('[ResonanzCard] Kein gültiger Profil-Kontext');
+            return null;
+        }
+
+        // Berechne dimensionale Resonanzen
+        const resonanz = TiageSynthesis.NeedsIntegration.calculateDimensionalResonance(profileContext);
+
+        if (!resonanz || !resonanz.enabled) {
+            console.warn('[ResonanzCard] Resonanz-Berechnung nicht aktiviert oder fehlgeschlagen');
+            return null;
+        }
+
+        // Mapping von Dimensions-Namen zu R-Faktoren:
+        // R1 = Orientierung → leben
+        // R2 = Archetyp → (berechne aus Kohärenz oder nutze Default)
+        // R3 = Dominanz → dynamik
+        // R4 = Geschlecht → identitaet
+        const result = {
+            R1: resonanz.leben || 1.0,
+            R2: 1.0,  // Archetyp-Kohärenz wird separat berechnet
+            R3: resonanz.dynamik || 1.0,
+            R4: resonanz.identitaet || 1.0
+        };
+
+        // R2 berechnen: Durchschnitt der anderen als Proxy für Archetyp-Kohärenz
+        // (Archetyp ist meta-level, beeinflusst durch alle Dimensionen)
+        result.R2 = (result.R1 + result.R3 + result.R4) / 3;
+        result.R2 = Math.round(result.R2 * 1000) / 1000;
+
+        console.log('[ResonanzCard] Berechnete Resonanz aus Profil:', result);
+        return result;
+    }
+
+    /**
+     * Lädt berechnete Werte und aktualisiert UI
+     * Kombiniert calculateFromProfile und setCalculatedValues
+     *
+     * @param {Object} profileContext - Profil-Kontext für Berechnung
+     * @returns {boolean} true wenn erfolgreich
+     */
+    function loadCalculatedValues(profileContext) {
+        const calculated = calculateFromProfile(profileContext);
+        if (calculated) {
+            setCalculatedValues(calculated, false);
+            return true;
+        }
+        return false;
+    }
+
     return {
         renderCard,
         renderAll,
@@ -383,6 +494,9 @@ const ResonanzCard = (function() {
         save,
         getValues,
         initializeUI,
+        setCalculatedValues,
+        calculateFromProfile,
+        loadCalculatedValues,
         DEFAULT_VALUES,
         FAKTOR_INFO,
         STORAGE_KEY

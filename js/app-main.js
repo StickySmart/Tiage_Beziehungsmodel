@@ -16984,6 +16984,57 @@
                 }
             }
 
+            // ═══════════════════════════════════════════════════════════════════════════
+            // RESONANZFAKTOREN aus Profil berechnen und laden (NEU)
+            // ═══════════════════════════════════════════════════════════════════════════
+            if (typeof ResonanzCard !== 'undefined' && typeof ResonanzCard.loadCalculatedValues === 'function') {
+                // Sammle Profil-Kontext für Resonanz-Berechnung
+                var resonanzProfileContext = {
+                    archetyp: archetypeKey || 'duo',
+                    needs: null,
+                    dominanz: dominanz,
+                    orientierung: orientierung,
+                    geschlecht: personData ? personData.geschlecht : null
+                };
+
+                // Versuche Bedürfnisse aus verschiedenen Quellen zu laden
+                // 1. Aus gespeicherten Needs (TiageState)
+                if (typeof TiageState !== 'undefined' && TiageState.get) {
+                    var savedNeeds = TiageState.get('tiage_needs_integrated');
+                    if (savedNeeds) {
+                        // Konvertiere integriertes Format { needId: { value, locked } } zu { needId: value }
+                        resonanzProfileContext.needs = {};
+                        for (var needKey in savedNeeds) {
+                            if (savedNeeds.hasOwnProperty(needKey)) {
+                                resonanzProfileContext.needs[needKey] = savedNeeds[needKey].value || savedNeeds[needKey];
+                            }
+                        }
+                    }
+                }
+
+                // 2. Fallback: Aus Archetyp-Profil (GfkBeduerfnisse)
+                if (!resonanzProfileContext.needs && typeof GfkBeduerfnisse !== 'undefined' &&
+                    GfkBeduerfnisse.archetypProfile && GfkBeduerfnisse.archetypProfile[archetypeKey]) {
+                    resonanzProfileContext.needs = GfkBeduerfnisse.archetypProfile[archetypeKey].kernbeduerfnisse || {};
+                }
+
+                // 3. Fallback: Aus LoadedArchetypProfile
+                if (!resonanzProfileContext.needs && typeof LoadedArchetypProfile !== 'undefined' &&
+                    LoadedArchetypProfile[archetypeKey] && LoadedArchetypProfile[archetypeKey].kernbeduerfnisse) {
+                    resonanzProfileContext.needs = LoadedArchetypProfile[archetypeKey].kernbeduerfnisse;
+                }
+
+                // Lade berechnete Resonanzwerte in die UI
+                if (resonanzProfileContext.needs) {
+                    var resonanzLoaded = ResonanzCard.loadCalculatedValues(resonanzProfileContext);
+                    if (resonanzLoaded) {
+                        console.log('[ProfileReview] Resonanzfaktoren aus Profil berechnet und geladen');
+                    }
+                } else {
+                    console.log('[ProfileReview] Keine Bedürfnis-Daten für Resonanz-Berechnung verfügbar');
+                }
+            }
+
             // Reset changes counter
             profileReviewChangesCount = 0;
             var badge = document.getElementById('profileReviewChangesBadge');
