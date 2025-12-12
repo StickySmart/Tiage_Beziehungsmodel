@@ -147,7 +147,7 @@ TiageSynthesis.Factors.Orientierung = {
             }
             // Altes Multi-Select Format: { heterosexuell: 'gelebt', ... }
             else {
-                var types = ['heterosexuell', 'homosexuell', 'bisexuell'];
+                var types = ['heterosexuell', 'homosexuell', 'bisexuell', 'pansexuell'];
                 for (var i = 0; i < types.length; i++) {
                     var type = types[i];
                     if (ori[type]) {
@@ -266,8 +266,9 @@ TiageSynthesis.Factors.Orientierung = {
     _checkSinglePair: function(type1, status1, type2, status2, g1, g2) {
         var isExploring = (status1 === 'interessiert' || status2 === 'interessiert');
 
-        // Bisexuell ist immer kompatibel
-        if (type1 === 'bisexuell' || type2 === 'bisexuell') {
+        // Bisexuell/Pansexuell ist immer kompatibel
+        if (type1 === 'bisexuell' || type1 === 'pansexuell' ||
+            type2 === 'bisexuell' || type2 === 'pansexuell') {
             return {
                 result: isExploring ? 'unsicher' : 'moeglich',
                 isHardKO: false
