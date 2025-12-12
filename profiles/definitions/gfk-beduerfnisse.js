@@ -1278,6 +1278,9 @@ const GfkBeduerfnisse = {
             konflikt: []
         };
 
+        // Save reference to this for use in forEach callback
+        const self = this;
+
         alleBed.forEach(bed => {
             const wert1 = bed1[bed] || 0;
             const wert2 = bed2[bed] || 0;
@@ -1296,7 +1299,7 @@ const GfkBeduerfnisse = {
                 summeGewicht += gewicht;
 
                 // Nutze getDefinition() für #ID-Unterstützung
-                const def = this.getDefinition(bed);
+                const def = self.getDefinition(bed);
                 // Zeige #ID als Präfix wenn bed bereits eine #ID ist
                 const hashId = bed.startsWith('#B') ? bed + ' ' : '';
 

@@ -178,6 +178,15 @@ TiageCompatibility.Physical = (function() {
         var g1 = extractEffectiveGender(person1.geschlecht);
         var g2 = extractEffectiveGender(person2.geschlecht);
 
+        console.log('[TiageCompatibility.Physical.check] Input:', {
+            person1_geschlecht: person1.geschlecht,
+            person2_geschlecht: person2.geschlecht,
+            person1_orientierung: person1.orientierung,
+            person2_orientierung: person2.orientierung,
+            g1_extracted: g1,
+            g2_extracted: g2
+        });
+
         // Get orientierung as multi-select object
         var ori1 = person1.orientierung;
         var ori2 = person2.orientierung;
@@ -262,7 +271,16 @@ TiageCompatibility.Physical = (function() {
         }
 
         // Return best result
+        console.log('[TiageCompatibility.Physical.check] Decision:', {
+            hasPossible: hasPossible,
+            hasUnsicher: hasUnsicher,
+            hasInteressiert: hasInteressiert,
+            oriList1: oriList1,
+            oriList2: oriList2
+        });
+
         if (hasPossible && !hasInteressiert) {
+            console.log('[TiageCompatibility.Physical.check] Result: möglich');
             return { result: 'möglich', confidence: 'hoch' };
         }
 
