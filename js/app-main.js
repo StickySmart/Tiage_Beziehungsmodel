@@ -13268,8 +13268,13 @@
         let currentPathosLogosContent = currentTiageSyntheseContent;
 
         function openTiageSyntheseModal(type = null) {
+            console.log('[TIAGE] openTiageSyntheseModal called with type:', type);
             const modal = document.getElementById('tiageSyntheseModal');
-            if (!modal) return;
+            console.log('[TIAGE] Modal element found:', !!modal);
+            if (!modal) {
+                console.error('[TIAGE] tiageSyntheseModal NOT FOUND in DOM!');
+                return;
+            }
 
             // Use sticky type if no type specified
             if (type === null) {
@@ -13281,6 +13286,7 @@
             // Get current archetypes
             const ichArch = archetypeDescriptions[currentArchetype];
             const partnerArch = archetypeDescriptions[selectedPartner];
+            console.log('[TIAGE] Archetypes:', currentArchetype, selectedPartner, !!ichArch, !!partnerArch);
 
             // Update archetype display
             const ichDisplay = document.getElementById('tiageSyntheseModalIch');
@@ -13289,17 +13295,35 @@
             if (partnerDisplay) partnerDisplay.textContent = partnerArch?.name || selectedPartner;
 
             // Generate content for all types
-            currentTiageSyntheseContent.pathos = generateCombinedPathos(ichArch, partnerArch);
-            currentTiageSyntheseContent.logos = generateCombinedLogos(ichArch, partnerArch);
+            try {
+                console.log('[TIAGE] Generating pathos content...');
+                currentTiageSyntheseContent.pathos = generateCombinedPathos(ichArch, partnerArch);
+                console.log('[TIAGE] Generating logos content...');
+                currentTiageSyntheseContent.logos = generateCombinedLogos(ichArch, partnerArch);
+                console.log('[TIAGE] Content generated successfully');
+            } catch (e) {
+                console.error('[TIAGE] Error generating content:', e);
+            }
 
             // Show the selected type
-            showTiageSyntheseContent(type);
+            try {
+                console.log('[TIAGE] Showing content type:', type);
+                showTiageSyntheseContent(type);
+            } catch (e) {
+                console.error('[TIAGE] Error in showTiageSyntheseContent:', e);
+            }
 
             // Update Score Cycle
-            updateSyntheseScoreCycle();
+            try {
+                updateSyntheseScoreCycle();
+            } catch (e) {
+                console.error('[TIAGE] Error in updateSyntheseScoreCycle:', e);
+            }
 
+            console.log('[TIAGE] Adding active class to modal');
             modal.classList.add('active');
             history.pushState({ mobilePage: currentMobilePage, modal: 'tiagesynthese' }, '', `#seite${currentMobilePage}-tiagesynthese`);
+            console.log('[TIAGE] Modal should now be visible');
         }
 
         // Legacy alias
@@ -15920,6 +15944,7 @@
         window.closeTiageSyntheseModal = closeTiageSyntheseModal;
         window.showTiageSyntheseContent = showTiageSyntheseContent;
         window.navigateTiageSyntheseArchetype = navigateTiageSyntheseArchetype;
+        console.log('[TIAGE] openTiageSyntheseModal exported to window:', typeof window.openTiageSyntheseModal);
 
         // Additional modal functions for needs
         window.closeNeedsCompareModal = closeNeedsCompareModal;
