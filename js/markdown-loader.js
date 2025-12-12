@@ -8,6 +8,54 @@
 const MarkdownLoader = {
     cache: new Map(),
     currentBasePath: '',
+    currentLanguage: 'de',
+
+    /**
+     * Initialize language awareness
+     * Subscribe to language changes and invalidate cache
+     */
+    initI18n() {
+        if (typeof TiageI18n !== 'undefined') {
+            this.currentLanguage = TiageI18n.getLanguage();
+            TiageI18n.subscribe((event) => {
+                this.currentLanguage = event.newLanguage;
+                // Clear cache when language changes
+                this.clearCache();
+                console.log('[MarkdownLoader] Language changed to:', event.newLanguage);
+            });
+        }
+    },
+
+    /**
+     * Convert a path to its language-specific version
+     * e.g., docs/help-guide.md → docs/en/help-guide.md (when language is 'en')
+     * @param {string} path - Original path
+     * @returns {string} - Language-specific path
+     */
+    getLocalizedPath(path) {
+        if (this.currentLanguage === 'de') {
+            return path; // German is the default
+        }
+
+        // Skip paths that already have /en/ in them
+        if (path.includes('/en/')) {
+            return path;
+        }
+
+        // Get directory and filename
+        const lastSlash = path.lastIndexOf('/');
+        if (lastSlash === -1) {
+            // Root level file (e.g., README.md)
+            const dir = path.substring(0, path.lastIndexOf('/') + 1) || '';
+            return `en/${path}`;
+        }
+
+        const dir = path.substring(0, lastSlash);
+        const filename = path.substring(lastSlash + 1);
+
+        // Insert /en/ before the filename
+        return `${dir}/en/${filename}`;
+    },
 
     /**
      * Extrahiert den Verzeichnispfad aus einem Dateipfad
@@ -47,32 +95,50 @@ const MarkdownLoader = {
 
     /**
      * Lädt eine Markdown-Datei und konvertiert sie zu HTML
+     * Automatically loads the localized version if available
      * @param {string} path - Pfad zur MD-Datei (relativ zum Root)
      * @returns {Promise<string>} - HTML-String
      */
     async load(path) {
+        // Get language-specific path
+        const localizedPath = this.getLocalizedPath(path);
+        const cacheKey = `${this.currentLanguage}:${path}`;
+
         // Cache prüfen
-        if (this.cache.has(path)) {
-            return this.cache.get(path);
+        if (this.cache.has(cacheKey)) {
+            return this.cache.get(cacheKey);
         }
 
         try {
-            const response = await fetch(path);
+            // Try localized path first
+            let response = await fetch(localizedPath);
+            let usedPath = localizedPath;
+
+            // If localized version not found and we're not using German, fall back to German
+            if (!response.ok && this.currentLanguage !== 'de') {
+                console.log(`[MarkdownLoader] Localized file not found: ${localizedPath}, falling back to German`);
+                response = await fetch(path);
+                usedPath = path;
+            }
+
             if (!response.ok) {
-                throw new Error(`Failed to load ${path}: ${response.status}`);
+                throw new Error(`Failed to load ${usedPath}: ${response.status}`);
             }
 
             const markdown = await response.text();
-            const basePath = this.getBasePath(path);
+            const basePath = this.getBasePath(usedPath);
             const html = this.toHTML(markdown, basePath);
 
-            // Im Cache speichern
-            this.cache.set(path, html);
+            // Im Cache speichern mit Language-Key
+            this.cache.set(cacheKey, html);
 
             return html;
         } catch (error) {
             console.error('MarkdownLoader error:', error);
-            return `<p class="md-error">Fehler beim Laden der Dokumentation: ${error.message}</p>`;
+            const errorMsg = this.currentLanguage === 'en'
+                ? `Error loading documentation: ${error.message}`
+                : `Fehler beim Laden der Dokumentation: ${error.message}`;
+            return `<p class="md-error">${errorMsg}</p>`;
         }
     },
 
@@ -461,6 +527,16 @@ const markdownStyles = `
 // Styles beim Laden einfügen
 if (typeof document !== 'undefined' && !document.getElementById('markdown-loader-styles')) {
     document.head.insertAdjacentHTML('beforeend', markdownStyles);
+}
+
+// Initialize i18n support when DOM is ready
+if (typeof document !== 'undefined') {
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', () => MarkdownLoader.initI18n());
+    } else {
+        // DOM already ready, wait a tick for TiageI18n to be available
+        setTimeout(() => MarkdownLoader.initI18n(), 0);
+    }
 }
 
 // Export für Module
