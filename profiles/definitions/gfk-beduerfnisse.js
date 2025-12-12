@@ -1279,9 +1279,6 @@ const GfkBeduerfnisse = {
             konflikt: []
         };
 
-        // Save reference to this for use in forEach callback
-        const self = this;
-
         alleBed.forEach(bed => {
             const wert1 = bed1[bed] || 0;
             const wert2 = bed2[bed] || 0;
