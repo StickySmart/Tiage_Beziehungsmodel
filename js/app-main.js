@@ -9110,9 +9110,48 @@
 
         // Factor 1: Archetype Match (40%) - from existing matrix
         function getArchetypeScore(type1, type2) {
+            // Nutze TiageSynthesis.Factors.Archetyp wenn verfügbar (hat vollständige Fallback-Matrix)
+            if (typeof TiageSynthesis !== 'undefined' &&
+                TiageSynthesis.Factors &&
+                TiageSynthesis.Factors.Archetyp &&
+                typeof TiageSynthesis.Factors.Archetyp.calculate === 'function') {
+                const result = TiageSynthesis.Factors.Archetyp.calculate(type1, type2, data);
+                console.log('[getArchetypeScore] Using TiageSynthesis.Factors.Archetyp:', type1, type2, '→', result.score, result.details?.source);
+                return result.score;
+            }
+
+            // Fallback: Direkter Matrix-Lookup
             const key = `${type1}_${type2}`;
             const interaction = data?.interactions[key];
-            return interaction?.overall || 50;
+            if (interaction?.overall) {
+                return interaction.overall;
+            }
+
+            // Lokale Fallback-Matrix (Kopie von archetypeFactor.js)
+            const fallbackMatrix = {
+                'single': { 'single': 85, 'duo': 25, 'duo_flex': 45, 'ra': 75, 'lat': 70, 'aromantisch': 80, 'solopoly': 75, 'polyamor': 50 },
+                'duo': { 'single': 25, 'duo': 95, 'duo_flex': 65, 'ra': 15, 'lat': 55, 'aromantisch': 20, 'solopoly': 20, 'polyamor': 35 },
+                'duo_flex': { 'single': 45, 'duo': 65, 'duo_flex': 85, 'ra': 55, 'lat': 70, 'aromantisch': 45, 'solopoly': 60, 'polyamor': 75 },
+                'ra': { 'single': 75, 'duo': 15, 'duo_flex': 55, 'ra': 90, 'lat': 70, 'aromantisch': 75, 'solopoly': 85, 'polyamor': 70 },
+                'lat': { 'single': 70, 'duo': 55, 'duo_flex': 70, 'ra': 70, 'lat': 90, 'aromantisch': 75, 'solopoly': 65, 'polyamor': 60 },
+                'aromantisch': { 'single': 80, 'duo': 20, 'duo_flex': 45, 'ra': 75, 'lat': 75, 'aromantisch': 95, 'solopoly': 65, 'polyamor': 55 },
+                'solopoly': { 'single': 75, 'duo': 20, 'duo_flex': 60, 'ra': 85, 'lat': 65, 'aromantisch': 65, 'solopoly': 90, 'polyamor': 80 },
+                'polyamor': { 'single': 50, 'duo': 35, 'duo_flex': 75, 'ra': 70, 'lat': 60, 'aromantisch': 55, 'solopoly': 80, 'polyamor': 90 }
+            };
+
+            // Lookup mit Fallback
+            if (fallbackMatrix[type1] && typeof fallbackMatrix[type1][type2] === 'number') {
+                console.log('[getArchetypeScore] Using fallback matrix:', type1, type2, '→', fallbackMatrix[type1][type2]);
+                return fallbackMatrix[type1][type2];
+            }
+            // Versuche umgekehrt
+            if (fallbackMatrix[type2] && typeof fallbackMatrix[type2][type1] === 'number') {
+                console.log('[getArchetypeScore] Using fallback matrix (reversed):', type1, type2, '→', fallbackMatrix[type2][type1]);
+                return fallbackMatrix[type2][type1];
+            }
+
+            console.log('[getArchetypeScore] No match found, using default 50 for:', type1, type2);
+            return 50;
         }
 
         // ═══════════════════════════════════════════════════════════════════════
