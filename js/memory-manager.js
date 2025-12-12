@@ -1205,11 +1205,48 @@ function handleDisplayPerson(slotNumber, personType) {
  * @returns {string} HTML string with the breakdown table
  */
 function generateNeedsBreakdown(data) {
-    // Get profile context
+    // Get profile context - handle both string and object formats
     const archetyp = data.archetyp?.primary || data.archetyp;
-    const geschlecht = data.geschlecht;
-    const dominanz = data.dominanz;
-    const orientierung = data.orientierung;
+
+    // Extract geschlecht key (e.g., "mann-cis" from { primary: "mann", secondary: "cis" })
+    let geschlechtKey = null;
+    let geschlechtDisplay = '-';
+    if (data.geschlecht) {
+        if (typeof data.geschlecht === 'string') {
+            geschlechtKey = data.geschlecht;
+            geschlechtDisplay = data.geschlecht;
+        } else if (data.geschlecht.primary && data.geschlecht.secondary) {
+            geschlechtKey = `${data.geschlecht.primary}-${data.geschlecht.secondary}`;
+            geschlechtDisplay = geschlechtKey;
+        }
+    }
+
+    // Extract dominanz key
+    let dominanzKey = null;
+    let dominanzDisplay = '-';
+    if (data.dominanz) {
+        if (typeof data.dominanz === 'string') {
+            dominanzKey = data.dominanz;
+            dominanzDisplay = data.dominanz;
+        } else if (data.dominanz.primary) {
+            dominanzKey = data.dominanz.primary;
+            dominanzDisplay = data.dominanz.primary;
+        }
+    }
+
+    // Extract orientierung key
+    let orientierungKey = null;
+    let orientierungDisplay = '-';
+    if (data.orientierung) {
+        if (typeof data.orientierung === 'string') {
+            orientierungKey = data.orientierung;
+            orientierungDisplay = data.orientierung;
+        } else if (data.orientierung.primary) {
+            orientierungKey = data.orientierung.primary;
+            orientierungDisplay = data.orientierung.primary;
+        }
+    }
+
     const flatNeeds = data.profileReview?.flatNeeds;
 
     // Check if we have all required data
@@ -1234,9 +1271,9 @@ function generateNeedsBreakdown(data) {
     if (typeof TiageProfileStore !== 'undefined' && TiageProfileStore.getNeedsModifiers) {
         const allMods = TiageProfileStore.getNeedsModifiers();
         if (allMods) {
-            genderMods = allMods.gender?.[geschlecht] || {};
-            dominanceMods = allMods.dominance?.[dominanz] || {};
-            orientationMods = allMods.orientation?.[orientierung] || {};
+            genderMods = allMods.gender?.[geschlechtKey] || {};
+            dominanceMods = allMods.dominance?.[dominanzKey] || {};
+            orientationMods = allMods.orientation?.[orientierungKey] || {};
         }
     }
 
@@ -1246,9 +1283,9 @@ function generateNeedsBreakdown(data) {
     // Header with profile context
     html += `<div class="memory-breakdown-header">
         <span><strong>Archetyp:</strong> ${archetyp}</span>
-        <span><strong>Geschlecht:</strong> ${geschlecht || '-'}</span>
-        <span><strong>Dominanz:</strong> ${dominanz || '-'}</span>
-        <span><strong>Orientierung:</strong> ${orientierung || '-'}</span>
+        <span><strong>Geschlecht:</strong> ${geschlechtDisplay}</span>
+        <span><strong>Dominanz:</strong> ${dominanzDisplay}</span>
+        <span><strong>Orientierung:</strong> ${orientierungDisplay}</span>
     </div>`;
 
     // Convert flatNeeds to array if it's an object
