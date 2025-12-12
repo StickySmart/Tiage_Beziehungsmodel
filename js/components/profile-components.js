@@ -348,10 +348,13 @@ const ProfileReviewRenderer = (function() {
         // Gewichtungs-Sektion am Anfang
         const gewichtungHtml = renderGewichtungSection();
 
+        // Resonanz-Sektion (falls verfügbar)
+        const resonanzHtml = typeof ResonanzCard !== 'undefined' ? renderResonanzSection() : '';
+
         // Flache Bedürfnis-Darstellung
         const flatNeedsHtml = AttributeSummaryCard.renderAllNeedsFlat(archetyp, archetypLabel);
 
-        return gewichtungHtml + '\n' + flatNeedsHtml;
+        return gewichtungHtml + '\n' + resonanzHtml + '\n' + flatNeedsHtml;
     }
 
     /**
