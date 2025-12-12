@@ -103,6 +103,187 @@ TiageSynthesis.Constants = {
     },
 
     // ═══════════════════════════════════════════════════════════════════════
+    // ARCHETYP-BEDÜRFNIS-KOHÄRENZ (v3.1)
+    // ═══════════════════════════════════════════════════════════════════════
+    // Definiert die erwarteten Bedürfnis-Ausprägungen pro Archetyp.
+    // R_dim = Übereinstimmung zwischen tatsächlichen und erwarteten Werten.
+    //
+    // Werte: 0-100 (erwartete Ausprägung für kohärentes Profil)
+    // null = Bedürfnis ist für diesen Archetyp nicht relevant
+    //
+    ARCHETYP_KOHAERENZ: {
+        // ═══════════════════════════════════════════════════════════════════
+        // R_Leben (Orientierungs-Bedürfnisse)
+        // ═══════════════════════════════════════════════════════════════════
+        leben: {
+            single: {
+                sexuelle_experimentierfreude: 50,  // Offen, aber nicht zentral
+                sexuelle_verbindung: 30,           // Gering - Fokus auf Selbst
+                koerpernaehe: 40,
+                intimitaet: 30
+            },
+            duo: {
+                sexuelle_experimentierfreude: 40,  // Eher konservativ
+                sexuelle_verbindung: 90,           // Sehr wichtig - exklusiv
+                koerpernaehe: 85,
+                intimitaet: 90
+            },
+            duo_flex: {
+                sexuelle_experimentierfreude: 70,  // Offen für Neues
+                sexuelle_verbindung: 75,
+                koerpernaehe: 75,
+                intimitaet: 80
+            },
+            solopoly: {
+                sexuelle_experimentierfreude: 85,  // Hoch - viel Exploration
+                sexuelle_verbindung: 60,           // Moderat - Autonomie wichtiger
+                koerpernaehe: 60,
+                intimitaet: 50
+            },
+            polyamor: {
+                sexuelle_experimentierfreude: 80,
+                sexuelle_verbindung: 85,           // Hoch - tiefe Verbindungen
+                koerpernaehe: 75,
+                intimitaet: 85
+            },
+            ra: {
+                sexuelle_experimentierfreude: 75,  // Keine Regeln
+                sexuelle_verbindung: 60,           // Variabel
+                koerpernaehe: 50,
+                intimitaet: 60
+            },
+            lat: {
+                sexuelle_experimentierfreude: 50,
+                sexuelle_verbindung: 80,           // Wichtig trotz Distanz
+                koerpernaehe: 60,
+                intimitaet: 75
+            },
+            aromantisch: {
+                sexuelle_experimentierfreude: 40,  // Kann variieren
+                sexuelle_verbindung: 20,           // Gering - keine Romantik
+                koerpernaehe: 30,
+                intimitaet: 25
+            }
+        },
+
+        // ═══════════════════════════════════════════════════════════════════
+        // R_Dynamik (Dominanz-Bedürfnisse)
+        // ═══════════════════════════════════════════════════════════════════
+        dynamik: {
+            single: {
+                kontrolle_ausueben: 50,            // Selbstbestimmt
+                hingabe: 30,
+                fuehrung_geben: 50,
+                gefuehrt_werden: 30,
+                autonomie: 90                       // Sehr hoch
+            },
+            duo: {
+                kontrolle_ausueben: 50,
+                hingabe: 60,                        // Bereitschaft zur Hingabe
+                fuehrung_geben: 50,
+                gefuehrt_werden: 50,
+                autonomie: 50                       // Balance
+            },
+            duo_flex: {
+                kontrolle_ausueben: 55,
+                hingabe: 55,
+                fuehrung_geben: 55,
+                gefuehrt_werden: 50,
+                autonomie: 65
+            },
+            solopoly: {
+                kontrolle_ausueben: 40,
+                hingabe: 40,
+                fuehrung_geben: 45,
+                gefuehrt_werden: 40,
+                autonomie: 95                       // Maximum
+            },
+            polyamor: {
+                kontrolle_ausueben: 45,
+                hingabe: 60,
+                fuehrung_geben: 50,
+                gefuehrt_werden: 55,
+                autonomie: 70
+            },
+            ra: {
+                kontrolle_ausueben: 30,             // Keine Hierarchien
+                hingabe: 50,
+                fuehrung_geben: 30,
+                gefuehrt_werden: 30,
+                autonomie: 90
+            },
+            lat: {
+                kontrolle_ausueben: 40,
+                hingabe: 55,
+                fuehrung_geben: 45,
+                gefuehrt_werden: 50,
+                autonomie: 80                       // Wichtig für LAT
+            },
+            aromantisch: {
+                kontrolle_ausueben: 40,
+                hingabe: 25,                        // Gering - keine romantische Hingabe
+                fuehrung_geben: 40,
+                gefuehrt_werden: 30,
+                autonomie: 85
+            }
+        },
+
+        // ═══════════════════════════════════════════════════════════════════
+        // R_Identität (Geschlechts-Bedürfnisse)
+        // ═══════════════════════════════════════════════════════════════════
+        identitaet: {
+            single: {
+                authentizitaet: 85,                 // Hoch - Selbstfokus
+                selbst_ausdruck: 80,
+                akzeptanz: 70,
+                gesehen_werden: 60
+            },
+            duo: {
+                authentizitaet: 75,
+                selbst_ausdruck: 70,
+                akzeptanz: 85,                      // Wichtig - vom Partner
+                gesehen_werden: 90
+            },
+            duo_flex: {
+                authentizitaet: 80,
+                selbst_ausdruck: 75,
+                akzeptanz: 80,
+                gesehen_werden: 80
+            },
+            solopoly: {
+                authentizitaet: 95,                 // Maximum - eigene Wahrheit
+                selbst_ausdruck: 90,
+                akzeptanz: 75,
+                gesehen_werden: 70
+            },
+            polyamor: {
+                authentizitaet: 85,
+                selbst_ausdruck: 85,
+                akzeptanz: 85,
+                gesehen_werden: 85
+            },
+            ra: {
+                authentizitaet: 95,                 // Keine Labels
+                selbst_ausdruck: 95,
+                akzeptanz: 80,
+                gesehen_werden: 70
+            },
+            lat: {
+                authentizitaet: 85,
+                selbst_ausdruck: 80,
+                akzeptanz: 80,
+                gesehen_werden: 80
+            },
+            aromantisch: {
+                authentizitaet: 90,                 // Hoch - gegen Normen
+                selbst_ausdruck: 85,
+                akzeptanz: 90,                      // Braucht Akzeptanz
+                gesehen_werden: 75
+            }
+        }
+    },
+
+    // ═══════════════════════════════════════════════════════════════════════
     // GFK-KOMPETENZ-MATRIX (Gewaltfreie Kommunikation)
     // ═══════════════════════════════════════════════════════════════════════
     // Marshall Rosenberg's 4-Schritte: Beobachtung, Gefühl, Bedürfnis, Bitte
