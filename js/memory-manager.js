@@ -647,6 +647,14 @@ const MemoryManager = (function() {
         if (!data) return false;
 
         try {
+            // ═══════════════════════════════════════════════════════════════════════════
+            // 1. Profil berechnen und in LoadedArchetypProfile laden
+            // ═══════════════════════════════════════════════════════════════════════════
+            if (typeof ProfileCalculator !== 'undefined' && ProfileCalculator.loadProfile) {
+                ProfileCalculator.loadProfile('ich', data);
+                console.log('[MemoryManager] Profil über ProfileCalculator geladen');
+            }
+
             // Archetyp: string (v3.0) oder { primary, secondary } (v2.0)
             const archetypValue = typeof data.archetyp === 'string'
                 ? data.archetyp
@@ -742,6 +750,14 @@ const MemoryManager = (function() {
         if (!data) return false;
 
         try {
+            // ═══════════════════════════════════════════════════════════════════════════
+            // 1. Profil berechnen und in LoadedArchetypProfile laden
+            // ═══════════════════════════════════════════════════════════════════════════
+            if (typeof ProfileCalculator !== 'undefined' && ProfileCalculator.loadProfile) {
+                ProfileCalculator.loadProfile('partner', data);
+                console.log('[MemoryManager] Partner-Profil über ProfileCalculator geladen');
+            }
+
             // Archetyp: string (v3.0) oder { primary, secondary } (v2.0)
             const archetypValue = typeof data.archetyp === 'string'
                 ? data.archetyp
