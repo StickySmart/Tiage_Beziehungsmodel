@@ -1295,30 +1295,14 @@ const GfkBeduerfnisse = {
                 summeUebereinstimmung += uebereinstimmung * gewicht;
                 summeGewicht += gewicht;
 
-                // Konvertiere #ID zu String-Key für das Nachschlagen der Definition
-                const bedKey = this._resolveToKey(bed) || bed;
-                const bedDef = this.definitionen[bedKey];
-
-                // Hole #B-ID und extrahiere numerischen Key
-                let hashId = bed;
-                let numKey = null;
-                if (typeof BeduerfnisIds !== 'undefined' && BeduerfnisIds.toId) {
-                    const bId = BeduerfnisIds.toId(bedKey);
-                    if (bId && bId.startsWith('#B')) {
-                        hashId = bId;
-                        numKey = parseInt(bId.replace('#B', ''), 10);
-                    }
-                } else if (bed.startsWith('#B')) {
-                    // Wenn bed bereits eine #ID ist
-                    hashId = bed;
-                    numKey = parseInt(bed.replace('#B', ''), 10);
-                }
+                // Nutze getDefinition() für #ID-Unterstützung
+                const def = this.getDefinition(bed);
+                // Zeige #ID als Präfix wenn bed bereits eine #ID ist
+                const hashId = bed.startsWith('#B') ? bed + ' ' : '';
 
                 const bedInfo = {
-                    id: hashId,                    // "#B34" - vollständige ID
-                    key: numKey,                   // 34 - numerischer Key für Sortierung
-                    stringKey: bedKey,             // "selbstbestimmung" - für definitionen-Lookups
-                    label: bedDef?.label || this._formatKeyAsLabel(bedKey),
+                    id: bed,
+                    label: hashId + (def?.label || bed),
                     wert1: wert1,
                     wert2: wert2,
                     diff: diff
@@ -1377,24 +1361,16 @@ const GfkBeduerfnisse = {
         return Object.entries(profil.kernbeduerfnisse)
             .sort((a, b) => b[1] - a[1])
             .slice(0, anzahl)
-            .map(([stringKey, wert]) => {
-                // Hole #B-ID und extrahiere numerischen Key
-                let hashId = stringKey;
-                let numKey = null;
-                if (typeof BeduerfnisIds !== 'undefined' && BeduerfnisIds.toId) {
-                    const bId = BeduerfnisIds.toId(stringKey);
-                    if (bId && bId.startsWith('#B')) {
-                        hashId = bId;
-                        numKey = parseInt(bId.replace('#B', ''), 10);
-                    }
-                }
+            .map(([id, wert]) => {
+                // Nutze getDefinition() für #ID-Unterstützung
+                const def = self.getDefinition(id);
+                // Zeige #ID als Präfix wenn id bereits eine #ID ist
+                const hashId = id.startsWith('#B') ? id + ' ' : '';
                 return {
-                    id: hashId,                    // "#B34" - vollständige ID
-                    key: numKey,                   // 34 - numerischer Key für Sortierung
-                    stringKey: stringKey,          // "selbstbestimmung" - für definitionen-Lookups
-                    label: self.definitionen[stringKey]?.label || self._formatKeyAsLabel(stringKey),
+                    id: id,
+                    label: hashId + (def?.label || id),
                     wert: wert,
-                    kategorie: self.definitionen[stringKey]?.kategorie
+                    kategorie: def?.kategorie
                 };
             });
     },
