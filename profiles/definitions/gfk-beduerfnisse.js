@@ -1223,11 +1223,11 @@ const GfkBeduerfnisse = {
 
     // Direkter Getter für archetypProfile - kein Legacy-Fallback
     get archetypProfile() {
-        if (!window.LoadedArchetypProfile || Object.keys(window.LoadedArchetypProfile).length === 0) {
-            console.error('GfkBeduerfnisse: LoadedArchetypProfile nicht geladen! Profile sind Pflicht.');
+        if (!window.BaseArchetypProfile || Object.keys(window.BaseArchetypProfile).length === 0) {
+            console.error('GfkBeduerfnisse: BaseArchetypProfile nicht geladen! Profile sind Pflicht.');
             return {};
         }
-        return window.LoadedArchetypProfile;
+        return window.BaseArchetypProfile;
     },
 
     /**
@@ -1235,14 +1235,14 @@ const GfkBeduerfnisse = {
      * Wird automatisch aufgerufen wenn die Profile verfügbar sind
      */
     initFromLoadedProfiles: function() {
-        if (window.LoadedArchetypProfile) {
+        if (window.BaseArchetypProfile) {
             console.log('GfkBeduerfnisse: Profile geladen mit je ~216 Bedürfnissen');
-            Object.keys(window.LoadedArchetypProfile).forEach(key => {
-                const profil = window.LoadedArchetypProfile[key];
+            Object.keys(window.BaseArchetypProfile).forEach(key => {
+                const profil = window.BaseArchetypProfile[key];
                 console.log(`  - ${key}: ${Object.keys(profil.kernbeduerfnisse).length} Bedürfnisse`);
             });
         } else {
-            console.error('GfkBeduerfnisse: FEHLER - LoadedArchetypProfile nicht verfügbar!');
+            console.error('GfkBeduerfnisse: FEHLER - BaseArchetypProfile nicht verfügbar!');
         }
     },
 

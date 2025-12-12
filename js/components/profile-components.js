@@ -144,11 +144,11 @@ const ProfileReviewRenderer = (function() {
      * @returns {number} Berechneter Default-Wert (0-100)
      */
     function getDefaultFromArchetype(attrId, archetypeKey, profileContext) {
-        if (!archetypeKey || !window.LoadedArchetypProfile) {
+        if (!archetypeKey || !window.BaseArchetypProfile) {
             return 50;
         }
 
-        const archetype = window.LoadedArchetypProfile[archetypeKey];
+        const archetype = window.BaseArchetypProfile[archetypeKey];
         if (!archetype || !archetype.kernbeduerfnisse) {
             return 50;
         }
