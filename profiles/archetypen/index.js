@@ -1,11 +1,17 @@
 /**
- * ARCHETYPEN PROFILE INDEX v3.1
+ * ARCHETYPEN PROFILE INDEX v4.0
  *
  * Lädt alle 8 Archetyp-Profile und stellt sie als window.LoadedArchetypProfile bereit.
- * Profile sind bereits im flachen #ID-Format - keine Konvertierung nötig.
+ * Profile verwenden die v3.0 Datenstruktur für Konsistenz mit gespeicherten Profilen.
  *
- * Einheitliche Struktur (wie Perspektive, Dimension, Kategorie):
- * { id, key, label, beschreibung, ... }
+ * Struktur (v3.0 kompatibel):
+ * {
+ *   archetyp, geschlecht, dominanz, orientierung,
+ *   profileReview: { flatNeeds: {...} },
+ *   gewichtungen, resonanzFaktoren,
+ *   // Meta
+ *   id, key, label, name, beschreibung, quellen, kernwerte, vermeidet
+ * }
  */
 
 (function() {
@@ -13,7 +19,7 @@
 
     /**
      * Formatiert ein Profil für LoadedArchetypProfile
-     * Einheitliche Struktur: { id, key, label, beschreibung, ... }
+     * Verwendet v3.0 Datenstruktur
      *
      * @param {Object} profil - Roh-Profil aus window.*Profil
      * @param {string} key - Der Schlüssel (z.B. 'single', 'duo')
@@ -22,18 +28,29 @@
     function formatProfile(profil, key) {
         if (!profil) return null;
         return {
-            // Einheitliche Struktur
+            // v3.0 Datenstruktur
+            archetyp: key,
+            geschlecht: null,
+            dominanz: null,
+            orientierung: null,
+            profileReview: {
+                flatNeeds: profil.beduerfnisse || {}
+            },
+            gewichtungen: null,
+            resonanzFaktoren: null,
+
+            // Meta (für Anzeige & Abwärtskompatibilität)
             id: profil.id || key,
             key: key,
             label: profil.name,
-            // Abwärtskompatibilität
             name: profil.name,
-            // Inhalt
             beschreibung: profil.beschreibung,
-            kernbeduerfnisse: profil.beduerfnisse,
             quellen: profil.quellen || [],
             kernwerte: profil.kernwerte || [],
-            vermeidet: profil.vermeidet || []
+            vermeidet: profil.vermeidet || [],
+
+            // Abwärtskompatibilität (deprecated, use profileReview.flatNeeds)
+            kernbeduerfnisse: profil.beduerfnisse
         };
     }
 
