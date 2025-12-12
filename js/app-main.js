@@ -17210,10 +17210,10 @@
                     resonanzProfileContext.needs = GfkBeduerfnisse.archetypProfile[archetypeKey].kernbeduerfnisse || {};
                 }
 
-                // 3. Fallback: Aus LoadedArchetypProfile
-                if (!resonanzProfileContext.needs && typeof LoadedArchetypProfile !== 'undefined' &&
-                    LoadedArchetypProfile[archetypeKey] && LoadedArchetypProfile[archetypeKey].kernbeduerfnisse) {
-                    resonanzProfileContext.needs = LoadedArchetypProfile[archetypeKey].kernbeduerfnisse;
+                // 3. Fallback: Aus BaseArchetypProfile
+                if (!resonanzProfileContext.needs && typeof BaseArchetypProfile !== 'undefined' &&
+                    BaseArchetypProfile[archetypeKey] && BaseArchetypProfile[archetypeKey].kernbeduerfnisse) {
+                    resonanzProfileContext.needs = BaseArchetypProfile[archetypeKey].kernbeduerfnisse;
                 }
 
                 // Lade berechnete Resonanzwerte in die UI
