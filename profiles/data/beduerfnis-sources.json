@@ -6,8 +6,10 @@
   "perspektiven": {
     "#P1": {
       "id": "#P1",
+      "key": "statistik",
       "label": "Statistik",
-      "beschreibung": "Reine Übereinstimmung der Werte (Gauß-basiert, 80% Konfidenz)",
+      "beschreibung": "Empirische Forschung - Gaußsche Übereinstimmung der Werte",
+      "quelle": "McCrae & Costa (Big Five), Wismeijer & van Assen (BDSM)",
       "methodik": "Empirische Forschung, Meta-Analysen, quantitative Studien",
       "hauptquellen": [
         "GFK - Marshall B. Rosenberg (2001)",
@@ -18,8 +20,10 @@
     },
     "#P2": {
       "id": "#P2",
+      "key": "osho",
       "label": "Osho",
       "beschreibung": "Tantra, Polarität, Natürlichkeit vs. Konditionierung",
+      "quelle": "Osho Rajneesh - Vorträge über Liebe und Beziehungen",
       "methodik": "Philosophische Interpretation, Tantra-Tradition",
       "hauptquellen": [
         "Osho: Intimacy - Trusting Oneself and the Other (1984)",
@@ -29,8 +33,10 @@
     },
     "#P3": {
       "id": "#P3",
+      "key": "pirsig",
       "label": "Pirsig",
-      "beschreibung": "Static vs. Dynamic Quality, Metaphysics of Quality",
+      "beschreibung": "Static vs. Dynamic Quality - Qualität als Fundament",
+      "quelle": "Robert M. Pirsig - Zen und die Kunst ein Motorrad zu warten (1974)",
       "methodik": "Philosophische Interpretation, Quality-Paradigma",
       "hauptquellen": [
         "Robert M. Pirsig: Zen and the Art of Motorcycle Maintenance (1974)",
@@ -39,8 +45,10 @@
     },
     "#P4": {
       "id": "#P4",
+      "key": "sexpositiv",
       "label": "SexPositiv",
-      "beschreibung": "Sex-Positive Movement, Consent, Autonomie, Inklusion",
+      "beschreibung": "Sex-Positive Movement, Consent, Autonomie, BDSM/Kink",
+      "quelle": "Dossie Easton, Janet Hardy, Jay Wiseman",
       "methodik": "Aktivismus, Community-basierte Forschung, Sexualwissenschaft",
       "hauptquellen": [
         "Gayle Rubin: Thinking Sex - Notes for a Radical Theory of the Politics of Sexuality (1984)",
