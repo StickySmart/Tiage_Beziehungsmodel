@@ -5,35 +5,37 @@
  * HAUPT-FORMEL v3.1
  * ═══════════════════════════════════════════════════════════════════════════
  *
- *   Q = (A × wₐ × R_Philosophie) +
- *       (O × wₒ × R_Leben) +
- *       (D × wᵈ × R_Dynamik) +
- *       (G × wᵍ × R_Identität)
+ *   Q = (A × 0.15) + (O × 0.40) + (D × 0.20) + (G × 0.25)
  *
  * Wobei:
- *   A = Archetyp-Score (15% - LOGOS)       - Beziehungsphilosophie
- *   O = Orientierungs-Score (40% - PATHOS) - Sexuelle Orientierung
- *   D = Dominanz-Score (20% - PATHOS)      - Dom/Sub/Switch Dynamik
- *   G = Geschlechts-Score (25% - PATHOS)   - Gender-Attraktion
- *
- *   R_dim = Dimensionale Resonanz (0.9 - 1.1)
- *
- * Mapping Faktor ↔ Resonanz:
- *   A (Archetyp)     ↔ R_Philosophie
- *   O (Orientierung) ↔ R_Leben
- *   D (Dominanz)     ↔ R_Dynamik
- *   G (Geschlecht)   ↔ R_Identität
+ *   A = Archetyp-Score (LOGOS)       - Beziehungsphilosophie
+ *   O = Orientierungs-Score (PATHOS) - Sexuelle Orientierung
+ *   D = Dominanz-Score (PATHOS)      - Dom/Sub/Switch Dynamik
+ *   G = Geschlechts-Score (PATHOS)   - Gender-Attraktion
  *
  * ═══════════════════════════════════════════════════════════════════════════
- * RESONANZ WIRKT AUF MODIFIKATOREN
+ * v3.1: RESONANZ ALS VORAB-MULTIPLIKATOR
  * ═══════════════════════════════════════════════════════════════════════════
+ * Die dimensionalen Resonanzen (R_dim) wirken VOR der Berechnung auf die
+ * Bedürfniswerte in der JSON:
  *
- *   Modifier_final = Modifier_base × R_dim
+ *   Bedürfnis_final = Bedürfnis_base × R_dim
  *
- * Die Resonanz verstärkt oder dämpft die Modifikatoren jedes Faktors:
- *   - R_dim > 1.0 → Modifier werden verstärkt
- *   - R_dim < 1.0 → Modifier werden gedämpft
- *   - R_dim = 1.0 → Modifier bleiben unverändert
+ * Anwendung pro Dimension:
+ *   - Orientierungs-Bedürfnisse × R_Leben
+ *   - Dominanz-Bedürfnisse × R_Dynamik
+ *   - Geschlechts-Bedürfnisse × R_Identität
+ *
+ * Effekt:
+ *   - R_dim > 1.0 → Bedürfniswerte werden verstärkt
+ *   - R_dim < 1.0 → Bedürfniswerte werden gedämpft
+ *   - R_dim = 1.0 → Bedürfniswerte bleiben unverändert
+ *
+ * ═══════════════════════════════════════════════════════════════════════════
+ * UNTERSCHIED: v3.1 Rs vs. altes R (Paarung)
+ * ═══════════════════════════════════════════════════════════════════════════
+ * v3.1 Rs:  Wirken auf Bedürfnisse VORAB (pro Person, pro Dimension)
+ * Altes R:  Wirkt auf Gesamt-Score AM ENDE (pro Paarung)
  *
  * ═══════════════════════════════════════════════════════════════════════════
  * BEDÜRFNIS-INTEGRATION PRO FAKTOR
