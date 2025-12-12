@@ -28,11 +28,20 @@
             D: { value: 20, locked: false },
             G: { value: 15, locked: false }
         };
-        const GEWICHTUNG_STORAGE_KEY = 'tiage_faktor_gewichtungen';
-        // Legacy keys für Migration (werden nach Migration nicht mehr verwendet)
+        // Person-spezifische Storage Keys für Gewichtungen
+        const GEWICHTUNG_STORAGE_KEY_ICH = 'tiage_faktor_gewichtungen_ich';
+        const GEWICHTUNG_STORAGE_KEY_PARTNER = 'tiage_faktor_gewichtungen_partner';
+        // Legacy key für Migration (wird nach Migration nicht mehr verwendet)
+        const GEWICHTUNG_STORAGE_KEY_LEGACY = 'tiage_faktor_gewichtungen';
         const GEWICHTUNG_LOCK_KEY_LEGACY = 'tiage_faktor_locks';
-        const GEWICHTUNG_SUMME_LOCK_KEY = 'tiage_summe_lock';
-        const GEWICHTUNG_SUMME_TARGET_KEY = 'tiage_summe_target';
+        // Person-spezifische Summen-Lock Keys
+        const GEWICHTUNG_SUMME_LOCK_KEY_ICH = 'tiage_summe_lock_ich';
+        const GEWICHTUNG_SUMME_LOCK_KEY_PARTNER = 'tiage_summe_lock_partner';
+        const GEWICHTUNG_SUMME_TARGET_KEY_ICH = 'tiage_summe_target_ich';
+        const GEWICHTUNG_SUMME_TARGET_KEY_PARTNER = 'tiage_summe_target_partner';
+        // Legacy Summen-Lock Keys für Migration
+        const GEWICHTUNG_SUMME_LOCK_KEY_LEGACY = 'tiage_summe_lock';
+        const GEWICHTUNG_SUMME_TARGET_KEY_LEGACY = 'tiage_summe_target';
 
         // Faktor-Mapping für Gewichtungen (muss vor den Funktionen definiert sein, die es verwenden)
         const FAKTOR_MAP = {
@@ -42,12 +51,87 @@
             geschlecht: { inputId: 'gewicht-geschlecht', key: 'G' }
         };
 
-        // Lock-Status für Gewichtungen (abgeleitet aus kombinierter Struktur)
-        let gewichtungLocks = { orientierung: false, archetyp: false, dominanz: false, geschlecht: false };
+        // Lock-Status für Gewichtungen - jetzt person-spezifisch (interner Store)
+        const gewichtungLocksStore = {
+            ich: { orientierung: false, archetyp: false, dominanz: false, geschlecht: false },
+            partner: { orientierung: false, archetyp: false, dominanz: false, geschlecht: false }
+        };
 
-        // Summen-Lock-Status (fixiert Summe auf aktuellen Wert)
-        let summeLocked = true; // Standardmäßig aktiviert
-        let lockedSummeTarget = 100; // Der Zielwert, auf den die Summe fixiert wird
+        // Summen-Lock-Status (fixiert Summe auf aktuellen Wert) - jetzt person-spezifisch (interner Store)
+        const summeLockedStore = {
+            ich: true,      // Standardmäßig aktiviert
+            partner: true   // Standardmäßig aktiviert
+        };
+        const lockedSummeTargetStore = {
+            ich: 100,       // Der Zielwert, auf den die Summe fixiert wird
+            partner: 100    // Der Zielwert, auf den die Summe fixiert wird
+        };
+
+        // Helper-Funktionen für aktuellen Kontext
+        function getCurrentPerson() {
+            return currentProfileReviewContext.person || 'ich';
+        }
+        function getGewichtungLocksByPerson(person) {
+            return gewichtungLocksStore[person === 'partner' ? 'partner' : 'ich'];
+        }
+        function setGewichtungLocksByPerson(person, locks) {
+            const key = person === 'partner' ? 'partner' : 'ich';
+            gewichtungLocksStore[key] = locks;
+        }
+        function getSummeLockedByPerson(person) {
+            return summeLockedStore[person === 'partner' ? 'partner' : 'ich'];
+        }
+        function setSummeLockedByPerson(person, value) {
+            summeLockedStore[person === 'partner' ? 'partner' : 'ich'] = value;
+        }
+        function getLockedSummeTargetByPerson(person) {
+            return lockedSummeTargetStore[person === 'partner' ? 'partner' : 'ich'];
+        }
+        function setLockedSummeTargetByPerson(person, value) {
+            lockedSummeTargetStore[person === 'partner' ? 'partner' : 'ich'] = value;
+        }
+        function getStorageKeyByPerson(person) {
+            return person === 'partner' ? GEWICHTUNG_STORAGE_KEY_PARTNER : GEWICHTUNG_STORAGE_KEY_ICH;
+        }
+        function getSummeLockKeyByPerson(person) {
+            return person === 'partner' ? GEWICHTUNG_SUMME_LOCK_KEY_PARTNER : GEWICHTUNG_SUMME_LOCK_KEY_ICH;
+        }
+        function getSummeTargetKeyByPerson(person) {
+            return person === 'partner' ? GEWICHTUNG_SUMME_TARGET_KEY_PARTNER : GEWICHTUNG_SUMME_TARGET_KEY_ICH;
+        }
+
+        // Proxy für gewichtungLocks - leitet alle Zugriffe auf die aktuelle Person um
+        const gewichtungLocks = new Proxy({}, {
+            get: function(target, prop) {
+                return getGewichtungLocksByPerson(getCurrentPerson())[prop];
+            },
+            set: function(target, prop, value) {
+                getGewichtungLocksByPerson(getCurrentPerson())[prop] = value;
+                return true;
+            },
+            ownKeys: function() {
+                return Object.keys(getGewichtungLocksByPerson(getCurrentPerson()));
+            },
+            getOwnPropertyDescriptor: function(target, prop) {
+                const locks = getGewichtungLocksByPerson(getCurrentPerson());
+                if (prop in locks) {
+                    return { enumerable: true, configurable: true, value: locks[prop] };
+                }
+                return undefined;
+            }
+        });
+
+        // Getter/Setter für summeLocked und lockedSummeTarget (werden von loadGewichtungenIntoUI gesetzt)
+        Object.defineProperty(window, 'summeLocked', {
+            get: function() { return getSummeLockedByPerson(getCurrentPerson()); },
+            set: function(val) { setSummeLockedByPerson(getCurrentPerson(), val); },
+            configurable: true
+        });
+        Object.defineProperty(window, 'lockedSummeTarget', {
+            get: function() { return getLockedSummeTargetByPerson(getCurrentPerson()); },
+            set: function(val) { setLockedSummeTargetByPerson(getCurrentPerson(), val); },
+            configurable: true
+        });
 
         // Modal-Kontext für Profile Review (muss vor openProfileReviewModal() definiert sein)
         var currentProfileReviewContext = { archetypeKey: null, person: null };
@@ -16197,18 +16281,105 @@
         // ═══════════════════════════════════════════════════════════════════════
         // GEWICHTUNGS-EINSTELLUNGEN MIT LOCK-FUNKTION (Text-Inputs)
         // ═══════════════════════════════════════════════════════════════════════
-        // Hinweis: GEWICHTUNG_DEFAULTS, GEWICHTUNG_STORAGE_KEY, GEWICHTUNG_LOCK_KEY,
-        // FAKTOR_MAP und gewichtungLocks sind am Anfang der Datei definiert.
+        // Hinweis: GEWICHTUNG_DEFAULTS und person-spezifische Storage-Keys
+        // sind am Anfang der Datei definiert.
+
+        // Migration: Prüft ob alte globale Daten existieren und migriert sie
+        function migrateGewichtungenIfNeeded() {
+            try {
+                // Prüfe ob bereits person-spezifische Daten existieren
+                const ichExists = localStorage.getItem(GEWICHTUNG_STORAGE_KEY_ICH);
+                const partnerExists = localStorage.getItem(GEWICHTUNG_STORAGE_KEY_PARTNER);
+
+                if (ichExists && partnerExists) {
+                    return; // Bereits migriert
+                }
+
+                // Lade alte globale Daten
+                const legacyData = localStorage.getItem(GEWICHTUNG_STORAGE_KEY_LEGACY);
+                if (!legacyData) {
+                    return; // Keine alten Daten vorhanden
+                }
+
+                const parsed = JSON.parse(legacyData);
+                let combined;
+
+                // Prüfe ob neue kombinierte Struktur (hat .value Property)
+                if (parsed.O && typeof parsed.O === 'object' && 'value' in parsed.O) {
+                    combined = parsed;
+                } else {
+                    // Legacy-Format: Konvertiere
+                    let legacyLocks = { orientierung: false, archetyp: false, dominanz: false, geschlecht: false };
+                    try {
+                        const storedLocks = localStorage.getItem(GEWICHTUNG_LOCK_KEY_LEGACY);
+                        if (storedLocks) legacyLocks = JSON.parse(storedLocks);
+                    } catch (e) { /* ignore */ }
+
+                    combined = {
+                        O: { value: parsed.O ?? GEWICHTUNG_DEFAULTS.O.value, locked: legacyLocks.orientierung ?? false },
+                        A: { value: parsed.A ?? GEWICHTUNG_DEFAULTS.A.value, locked: legacyLocks.archetyp ?? false },
+                        D: { value: parsed.D ?? GEWICHTUNG_DEFAULTS.D.value, locked: legacyLocks.dominanz ?? false },
+                        G: { value: parsed.G ?? GEWICHTUNG_DEFAULTS.G.value, locked: legacyLocks.geschlecht ?? false }
+                    };
+                }
+
+                // Kopiere zu beiden Personen (falls noch nicht vorhanden)
+                if (!ichExists) {
+                    localStorage.setItem(GEWICHTUNG_STORAGE_KEY_ICH, JSON.stringify(combined));
+                    console.log('[TIAGE] Gewichtungen für ICH migriert');
+                }
+                if (!partnerExists) {
+                    localStorage.setItem(GEWICHTUNG_STORAGE_KEY_PARTNER, JSON.stringify(combined));
+                    console.log('[TIAGE] Gewichtungen für PARTNER migriert');
+                }
+
+                // Migriere auch Summen-Lock
+                const legacySummeLock = localStorage.getItem(GEWICHTUNG_SUMME_LOCK_KEY_LEGACY);
+                const legacySummeTarget = localStorage.getItem(GEWICHTUNG_SUMME_TARGET_KEY_LEGACY);
+
+                if (legacySummeLock !== null) {
+                    if (!localStorage.getItem(GEWICHTUNG_SUMME_LOCK_KEY_ICH)) {
+                        localStorage.setItem(GEWICHTUNG_SUMME_LOCK_KEY_ICH, legacySummeLock);
+                    }
+                    if (!localStorage.getItem(GEWICHTUNG_SUMME_LOCK_KEY_PARTNER)) {
+                        localStorage.setItem(GEWICHTUNG_SUMME_LOCK_KEY_PARTNER, legacySummeLock);
+                    }
+                }
+                if (legacySummeTarget !== null) {
+                    if (!localStorage.getItem(GEWICHTUNG_SUMME_TARGET_KEY_ICH)) {
+                        localStorage.setItem(GEWICHTUNG_SUMME_TARGET_KEY_ICH, legacySummeTarget);
+                    }
+                    if (!localStorage.getItem(GEWICHTUNG_SUMME_TARGET_KEY_PARTNER)) {
+                        localStorage.setItem(GEWICHTUNG_SUMME_TARGET_KEY_PARTNER, legacySummeTarget);
+                    }
+                }
+
+                // Entferne Legacy-Keys
+                localStorage.removeItem(GEWICHTUNG_STORAGE_KEY_LEGACY);
+                localStorage.removeItem(GEWICHTUNG_LOCK_KEY_LEGACY);
+                localStorage.removeItem(GEWICHTUNG_SUMME_LOCK_KEY_LEGACY);
+                localStorage.removeItem(GEWICHTUNG_SUMME_TARGET_KEY_LEGACY);
+                console.log('[TIAGE] Legacy Gewichtungs-Keys entfernt');
+            } catch (e) {
+                console.warn('Fehler bei der Gewichtungs-Migration:', e);
+            }
+        }
+
+        // Führe Migration beim Laden aus
+        migrateGewichtungenIfNeeded();
 
         // Lädt kombinierte Gewichtungen (mit Werten und Lock-Status) aus localStorage
-        // Unterstützt Backward-Compatibility für alte getrennte Datenstruktur
-        function getGewichtungenCombined() {
+        // @param {string} person - 'ich' oder 'partner' (optional, default ist aktueller Kontext)
+        function getGewichtungenCombined(person) {
+            person = person || getCurrentPerson();
+            const storageKey = getStorageKeyByPerson(person);
+
             try {
-                const stored = localStorage.getItem(GEWICHTUNG_STORAGE_KEY);
+                const stored = localStorage.getItem(storageKey);
                 if (stored) {
                     const parsed = JSON.parse(stored);
 
-                    // Prüfe ob neue kombinierte Struktur (hat .value Property)
+                    // Prüfe ob kombinierte Struktur (hat .value Property)
                     if (parsed.O && typeof parsed.O === 'object' && 'value' in parsed.O) {
                         return {
                             O: { value: parsed.O.value ?? GEWICHTUNG_DEFAULTS.O.value, locked: parsed.O.locked ?? false },
@@ -16217,35 +16388,6 @@
                             G: { value: parsed.G.value ?? GEWICHTUNG_DEFAULTS.G.value, locked: parsed.G.locked ?? false }
                         };
                     }
-
-                    // Legacy-Format: Migriere alte Daten
-                    const legacyValues = {
-                        O: parsed.O ?? GEWICHTUNG_DEFAULTS.O.value,
-                        A: parsed.A ?? GEWICHTUNG_DEFAULTS.A.value,
-                        D: parsed.D ?? GEWICHTUNG_DEFAULTS.D.value,
-                        G: parsed.G ?? GEWICHTUNG_DEFAULTS.G.value
-                    };
-
-                    // Lade alte Lock-Daten falls vorhanden
-                    let legacyLocks = { orientierung: false, archetyp: false, dominanz: false, geschlecht: false };
-                    try {
-                        const storedLocks = localStorage.getItem(GEWICHTUNG_LOCK_KEY_LEGACY);
-                        if (storedLocks) legacyLocks = JSON.parse(storedLocks);
-                    } catch (e) { /* ignore */ }
-
-                    // Kombiniere zu neuer Struktur
-                    const combined = {
-                        O: { value: legacyValues.O, locked: legacyLocks.orientierung ?? false },
-                        A: { value: legacyValues.A, locked: legacyLocks.archetyp ?? false },
-                        D: { value: legacyValues.D, locked: legacyLocks.dominanz ?? false },
-                        G: { value: legacyValues.G, locked: legacyLocks.geschlecht ?? false }
-                    };
-
-                    // Speichere migrierte Daten und entferne Legacy-Key
-                    localStorage.setItem(GEWICHTUNG_STORAGE_KEY, JSON.stringify(combined));
-                    localStorage.removeItem(GEWICHTUNG_LOCK_KEY_LEGACY);
-
-                    return combined;
                 }
             } catch (e) { console.warn('Fehler beim Laden der Gewichtungen:', e); }
 
@@ -16253,9 +16395,10 @@
             return JSON.parse(JSON.stringify(GEWICHTUNG_DEFAULTS));
         }
 
-        // Lädt Lock-Status aus kombinierter Struktur (für Backward-Compatibility)
-        function getGewichtungLocks() {
-            const combined = getGewichtungenCombined();
+        // Lädt Lock-Status aus kombinierter Struktur
+        // @param {string} person - 'ich' oder 'partner' (optional)
+        function getGewichtungLocks(person) {
+            const combined = getGewichtungenCombined(person);
             return {
                 orientierung: combined.O.locked,
                 archetyp: combined.A.locked,
@@ -16265,20 +16408,27 @@
         }
 
         // Speichert Lock-Status in kombinierte Struktur
-        function saveGewichtungLocks() {
-            const combined = getGewichtungenCombined();
-            combined.O.locked = gewichtungLocks.orientierung;
-            combined.A.locked = gewichtungLocks.archetyp;
-            combined.D.locked = gewichtungLocks.dominanz;
-            combined.G.locked = gewichtungLocks.geschlecht;
+        // @param {string} person - 'ich' oder 'partner' (optional)
+        function saveGewichtungLocks(person) {
+            person = person || getCurrentPerson();
+            const combined = getGewichtungenCombined(person);
+            const locks = getGewichtungLocksByPerson(person);
+
+            combined.O.locked = locks.orientierung;
+            combined.A.locked = locks.archetyp;
+            combined.D.locked = locks.dominanz;
+            combined.G.locked = locks.geschlecht;
+
             try {
-                localStorage.setItem(GEWICHTUNG_STORAGE_KEY, JSON.stringify(combined));
+                const storageKey = getStorageKeyByPerson(person);
+                localStorage.setItem(storageKey, JSON.stringify(combined));
             } catch (e) { console.warn('Fehler beim Speichern der Lock-Status:', e); }
         }
 
-        // Lädt nur Gewichtungs-Werte (für Backward-Compatibility mit bestehendem Code)
-        function getGewichtungen() {
-            const combined = getGewichtungenCombined();
+        // Lädt nur Gewichtungs-Werte
+        // @param {string} person - 'ich' oder 'partner' (optional)
+        function getGewichtungen(person) {
+            const combined = getGewichtungenCombined(person);
             return {
                 O: combined.O.value,
                 A: combined.A.value,
@@ -16288,15 +16438,21 @@
         }
 
         // Speichert Gewichtungen in kombinierte Struktur
-        function saveGewichtungen() {
-            const combined = getGewichtungenCombined();
+        // @param {string} person - 'ich' oder 'partner' (optional)
+        function saveGewichtungen(person) {
+            person = person || getCurrentPerson();
+            const combined = getGewichtungenCombined(person);
+
             combined.O.value = parseInt(document.getElementById('gewicht-orientierung')?.value) || 0;
             combined.A.value = parseInt(document.getElementById('gewicht-archetyp')?.value) || 0;
             combined.D.value = parseInt(document.getElementById('gewicht-dominanz')?.value) || 0;
             combined.G.value = parseInt(document.getElementById('gewicht-geschlecht')?.value) || 0;
+
             try {
-                localStorage.setItem(GEWICHTUNG_STORAGE_KEY, JSON.stringify(combined));
+                const storageKey = getStorageKeyByPerson(person);
+                localStorage.setItem(storageKey, JSON.stringify(combined));
             } catch (e) { console.warn('Fehler beim Speichern der Gewichtungen:', e); }
+
             updateGewichtungSumme();
             if (typeof updateDisplay === 'function') updateDisplay();
         }
@@ -16304,6 +16460,8 @@
 
         // Exportiere kombinierte Struktur für Debug/Anzeige
         window.getGewichtungenCombined = getGewichtungenCombined;
+        window.getGewichtungen = getGewichtungen;
+        window.getGewichtungLocks = getGewichtungLocks;
 
         // Aktualisiert Summen-Anzeige
         function updateGewichtungSumme() {
@@ -16313,17 +16471,24 @@
             if (summeEl) {
                 summeEl.textContent = summe + '%';
                 // Wenn gelockt, vergleiche mit Zielwert; sonst mit 100
-                const targetValue = summeLocked ? lockedSummeTarget : 100;
+                const person = getCurrentPerson();
+                const isLocked = getSummeLockedByPerson(person);
+                const target = getLockedSummeTargetByPerson(person);
+                const targetValue = isLocked ? target : 100;
                 const isOnTarget = summe === targetValue;
                 summeEl.classList.toggle('error', !isOnTarget);
                 summeEl.style.color = isOnTarget ? '#10B981' : '#EF4444';
             }
         }
 
-        // Normalisiert Gewichtungen auf den gesperrten Summenwert (lockedSummeTarget)
+        // Normalisiert Gewichtungen auf den gesperrten Summenwert
         function normalizeGewichtungen(changedFactor, newValue) {
+            const person = getCurrentPerson();
+            const isLocked = getSummeLockedByPerson(person);
+            const target = getLockedSummeTargetByPerson(person);
+
             // Wenn Summen-Lock deaktiviert ist, nur den geänderten Wert setzen
-            if (!summeLocked) {
+            if (!isLocked) {
                 const changedInput = document.getElementById(FAKTOR_MAP[changedFactor].inputId);
                 const changedSlider = document.getElementById(`gewicht-slider-${changedFactor}`);
                 const clampedValue = Math.min(Math.max(newValue, 0), 100);
@@ -16354,8 +16519,8 @@
                 }
             });
 
-            // Berechne max. erlaubten Wert für geänderten Faktor (basierend auf lockedSummeTarget)
-            const maxForChanged = Math.max(0, lockedSummeTarget - lockedSum);
+            // Berechne max. erlaubten Wert für geänderten Faktor (basierend auf target)
+            const maxForChanged = Math.max(0, target - lockedSum);
             const clampedValue = Math.min(Math.max(newValue, 0), maxForChanged);
 
             // Setze geänderten Wert (Input und Slider)
@@ -16365,7 +16530,7 @@
             if (changedSlider) changedSlider.value = clampedValue;
 
             // Verteile Rest auf nicht-gelockte Faktoren
-            const availableForOthers = Math.max(0, lockedSummeTarget - lockedSum - clampedValue);
+            const availableForOthers = Math.max(0, target - lockedSum - clampedValue);
 
             if (unlockedFactors.length > 0) {
                 const currentSum = unlockedFactors.reduce((sum, f) => sum + f.value, 0);
@@ -16442,57 +16607,74 @@
         }
 
         // Lädt Summen-Lock-Status aus localStorage
-        function getSummeLock() {
+        // @param {string} person - 'ich' oder 'partner' (optional)
+        function getSummeLock(person) {
+            person = person || getCurrentPerson();
             try {
-                const stored = localStorage.getItem(GEWICHTUNG_SUMME_LOCK_KEY);
+                const key = getSummeLockKeyByPerson(person);
+                const stored = localStorage.getItem(key);
                 return stored !== null ? JSON.parse(stored) : true; // Standard: aktiviert
             } catch (e) { return true; }
         }
 
         // Lädt den gesperrten Summen-Zielwert aus localStorage
-        function getSummeTarget() {
+        // @param {string} person - 'ich' oder 'partner' (optional)
+        function getSummeTarget(person) {
+            person = person || getCurrentPerson();
             try {
-                const stored = localStorage.getItem(GEWICHTUNG_SUMME_TARGET_KEY);
+                const key = getSummeTargetKeyByPerson(person);
+                const stored = localStorage.getItem(key);
                 return stored !== null ? JSON.parse(stored) : 100; // Standard: 100%
             } catch (e) { return 100; }
         }
 
         // Speichert Summen-Lock-Status
-        function saveSummeLock() {
+        // @param {string} person - 'ich' oder 'partner' (optional)
+        function saveSummeLock(person) {
+            person = person || getCurrentPerson();
             try {
-                localStorage.setItem(GEWICHTUNG_SUMME_LOCK_KEY, JSON.stringify(summeLocked));
-                localStorage.setItem(GEWICHTUNG_SUMME_TARGET_KEY, JSON.stringify(lockedSummeTarget));
+                const lockKey = getSummeLockKeyByPerson(person);
+                const targetKey = getSummeTargetKeyByPerson(person);
+                const isLocked = getSummeLockedByPerson(person);
+                const target = getLockedSummeTargetByPerson(person);
+                localStorage.setItem(lockKey, JSON.stringify(isLocked));
+                localStorage.setItem(targetKey, JSON.stringify(target));
             } catch (e) { console.warn('Fehler beim Speichern des Summen-Lock-Status:', e); }
         }
 
         // Toggle Summen-Lock
         function toggleSummeLock() {
-            summeLocked = !summeLocked;
+            const person = getCurrentPerson();
+            const currentLocked = getSummeLockedByPerson(person);
+            setSummeLockedByPerson(person, !currentLocked);
 
             // Wenn aktiviert, speichere den aktuellen Summenwert als Ziel
-            if (summeLocked) {
+            if (!currentLocked) { // War nicht gesperrt, jetzt wird es gesperrt
                 const factors = Object.keys(FAKTOR_MAP);
                 let currentSum = 0;
                 factors.forEach(factor => {
                     const input = document.getElementById(FAKTOR_MAP[factor].inputId);
                     currentSum += parseInt(input?.value) || 0;
                 });
-                lockedSummeTarget = currentSum;
+                setLockedSummeTargetByPerson(person, currentSum);
             }
 
-            saveSummeLock();
+            saveSummeLock(person);
             updateSummeLockDisplay();
         }
         window.toggleSummeLock = toggleSummeLock;
 
         // Aktualisiert Summen-Lock-Anzeige
         function updateSummeLockDisplay() {
+            const person = getCurrentPerson();
+            const isLocked = getSummeLockedByPerson(person);
+            const target = getLockedSummeTargetByPerson(person);
             const lockElement = document.getElementById('gewicht-summe-lock');
             if (lockElement) {
-                lockElement.textContent = summeLocked ? '🔒' : '🔓';
-                lockElement.classList.toggle('locked', summeLocked);
-                lockElement.title = summeLocked
-                    ? `Summe ist auf ${lockedSummeTarget}% fixiert (klicken zum Entsperren)`
+                lockElement.textContent = isLocked ? '🔒' : '🔓';
+                lockElement.classList.toggle('locked', isLocked);
+                lockElement.title = isLocked
+                    ? `Summe ist auf ${target}% fixiert (klicken zum Entsperren)`
                     : 'Summe auf aktuellen Wert fixieren';
             }
         }
@@ -16598,14 +16780,16 @@
 
         // Reset auf Standard
         function resetGewichtungen() {
+            const person = getCurrentPerson();
+
             // Reset Faktor-Locks
-            gewichtungLocks = { orientierung: false, archetyp: false, dominanz: false, geschlecht: false };
-            saveGewichtungLocks();
+            setGewichtungLocksByPerson(person, { orientierung: false, archetyp: false, dominanz: false, geschlecht: false });
+            saveGewichtungLocks(person);
 
             // Reset Summen-Lock auf Standard (aktiviert) mit Zielwert 100%
-            summeLocked = true;
-            lockedSummeTarget = 100;
-            saveSummeLock();
+            setSummeLockedByPerson(person, true);
+            setLockedSummeTargetByPerson(person, 100);
+            saveSummeLock(person);
 
             // Reset Text-Inputs
             document.getElementById('gewicht-orientierung').value = GEWICHTUNG_DEFAULTS.O.value;
@@ -16629,14 +16813,22 @@
         }
         window.resetGewichtungen = resetGewichtungen;
 
-        // Lädt Gewichtungen in UI
+        // Lädt Gewichtungen in UI für die aktuelle Person
         function loadGewichtungenIntoUI() {
             initGewichtungInputs();
 
-            const gew = getGewichtungen();
-            gewichtungLocks = getGewichtungLocks();
-            summeLocked = getSummeLock();
-            lockedSummeTarget = getSummeTarget();
+            const person = getCurrentPerson();
+            const gew = getGewichtungen(person);
+
+            // Lade person-spezifische Locks aus localStorage in In-Memory-Variablen
+            const locks = getGewichtungLocks(person);
+            setGewichtungLocksByPerson(person, locks);
+
+            // Lade Summen-Lock-Status
+            const isLocked = getSummeLock(person);
+            const target = getSummeTarget(person);
+            setSummeLockedByPerson(person, isLocked);
+            setLockedSummeTargetByPerson(person, target);
 
             const inputO = document.getElementById('gewicht-orientierung');
             const inputA = document.getElementById('gewicht-archetyp');
@@ -16660,9 +16852,9 @@
             if (sliderG) sliderG.value = gew.G;
 
             // Wenn Summen-Lock aktiv und Summe nicht dem Zielwert entspricht, renormalisieren
-            if (summeLocked) {
+            if (isLocked) {
                 const currentSum = gew.O + gew.A + gew.D + gew.G;
-                if (currentSum !== lockedSummeTarget && currentSum > 0) {
+                if (currentSum !== target && currentSum > 0) {
                     const factors = Object.keys(FAKTOR_MAP);
                     const unlockedFactors = factors.filter(f => !gewichtungLocks[f]);
                     const lockedSum = factors.filter(f => gewichtungLocks[f])
@@ -16671,7 +16863,7 @@
                             return sum + gew[key];
                         }, 0);
                     const unlockedSum = currentSum - lockedSum;
-                    const targetForUnlocked = Math.max(0, lockedSummeTarget - lockedSum);
+                    const targetForUnlocked = Math.max(0, target - lockedSum);
 
                     if (unlockedSum > 0 && unlockedFactors.length > 0) {
                         let distributed = 0;
