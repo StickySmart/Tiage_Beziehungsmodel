@@ -21,10 +21,10 @@ TiageSynthesis.Constants = {
     // - Geschlecht:   Primär = Logos, Sekundär = Pathos
 
     WEIGHTS: {
-        archetyp: 0.15,      // 80% Logos / 20% Pathos
-        orientierung: 0.40,  // 20% Logos / 80% Pathos
-        dominanz: 0.20,      // 20% Logos / 80% Pathos
-        geschlecht: 0.25     // Primär: Logos, Sekundär: Pathos
+        archetyp: 0.25,      // 25% - Beziehungsphilosophie
+        orientierung: 0.25,  // 25% - Sexuelle Orientierung
+        dominanz: 0.25,      // 25% - Dom/Sub/Switch Dynamik
+        geschlecht: 0.25     // 25% - Gender-Attraktion
     },
 
     FACTOR_COMPOSITION: {
