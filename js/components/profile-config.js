@@ -241,6 +241,7 @@ const ProfileReviewConfig = (function() {
      */
     const CATEGORIES = {
         gewichtung: { icon: '⚖️', label: 'FAKTOR-GEWICHTUNG (Score-Formel)', isGewichtung: true, color: '#6366F1' },
+        resonanz: { icon: '🎵', label: 'RESONANZFAKTOREN (R1-R4)', isResonanz: true, color: '#22C55E' },
         geschlechtsidentitaet: { icon: '⚧', label: 'GESCHLECHTSIDENTITÄT', color: '#EC4899' },
         lebensplanung: { icon: '📋', label: 'LEBENSPLANUNG', color: '#F4A261' },
         finanzen: { icon: '💰', label: 'FINANZEN & KARRIERE', color: '#10B981' },
@@ -282,7 +283,7 @@ const ProfileReviewConfig = (function() {
      * @returns {Array<string>} Kategorie-Keys
      */
     function getCategoryOrder() {
-        return ['gewichtung', 'geschlechtsidentitaet', 'lebensplanung', 'finanzen', 'kommunikation', 'soziales', 'intimitaet', 'werte', 'praktisches'];
+        return ['gewichtung', 'resonanz', 'geschlechtsidentitaet', 'lebensplanung', 'finanzen', 'kommunikation', 'soziales', 'intimitaet', 'werte', 'praktisches'];
     }
 
     /**

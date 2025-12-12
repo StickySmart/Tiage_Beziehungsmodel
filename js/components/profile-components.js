@@ -29,6 +29,9 @@ const ProfileReviewRenderer = (function() {
         if (category === 'gewichtung') {
             return renderGewichtungSection();
         }
+        if (category === 'resonanz') {
+            return renderResonanzSection();
+        }
 
         const categoryInfo = ProfileReviewConfig.getCategory(category);
         const attributes = ProfileReviewConfig.getAttributes(category);
@@ -69,6 +72,29 @@ const ProfileReviewRenderer = (function() {
             label: categoryInfo.label,
             content,
             isGewichtung: true
+        });
+    }
+
+    /**
+     * Rendert die Resonanzfaktoren-Sektion
+     * @returns {string} HTML-String
+     */
+    function renderResonanzSection() {
+        // Prüfe ob ResonanzCard verfügbar ist
+        if (typeof ResonanzCard === 'undefined') {
+            console.warn('ResonanzCard nicht verfügbar');
+            return '';
+        }
+
+        const categoryInfo = ProfileReviewConfig.getCategory('resonanz');
+        const content = ResonanzCard.renderAll() + ResonanzCard.renderFooter();
+
+        return CategorySection.render({
+            category: 'resonanz',
+            icon: categoryInfo.icon,
+            label: categoryInfo.label,
+            content,
+            isResonanz: true
         });
     }
 
