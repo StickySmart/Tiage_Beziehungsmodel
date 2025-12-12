@@ -130,8 +130,9 @@ const ProfileReviewRenderer = (function() {
     /**
      * Initialisiert das Profile-Review-Modal mit dynamischem Content
      * Wird aufgerufen wenn das Modal zum ersten Mal geöffnet wird
+     * @param {boolean} [force=false] - Erzwingt Neuinitialisierung
      */
-    function initializeModal() {
+    function initializeModal(force = false) {
         // Use dedicated content container to preserve source-explanation
         const contentContainer = document.getElementById('profileReviewContent');
         if (!contentContainer) {
@@ -139,14 +140,16 @@ const ProfileReviewRenderer = (function() {
             return;
         }
 
-        // Prüfe ob bereits initialisiert
-        if (contentContainer.dataset.initialized === 'true') {
+        // Prüfe ob bereits initialisiert (außer bei force)
+        // Verwende Kategorie-Anzahl als Version für Cache-Invalidierung
+        const currentVersion = ProfileReviewConfig.getCategoryOrder().length.toString();
+        if (!force && contentContainer.dataset.initialized === currentVersion) {
             return;
         }
 
         // Generiere und setze Content
         contentContainer.innerHTML = renderModalBody() + '\n                <div style="height: 20px;"></div>';
-        contentContainer.dataset.initialized = 'true';
+        contentContainer.dataset.initialized = currentVersion;
 
         console.log('ProfileReviewRenderer: Modal initialized');
     }
