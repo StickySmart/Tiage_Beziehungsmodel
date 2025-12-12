@@ -9869,6 +9869,7 @@
             // SCHRITT 2: Resonanz-Faktoren R1-R4 (0.5-1.5)
             // ═══════════════════════════════════════
             // Basierend auf 220 Bedürfnissen (#B1-#B220), aufgeteilt nach Faktor
+            // ODER benutzerdefinierten Werten aus ResonanzCard
 
             // Schlüssel unverändert verwenden (duo_flex bleibt duo_flex)
             const ichArchetyp = currentArchetype || '';
@@ -9877,7 +9878,15 @@
             let R1 = 1.0, R2 = 1.0, R3 = 1.0, R4 = 1.0;  // Default: neutral
             let matching = null;
 
-            if (typeof GfkBeduerfnisse !== 'undefined' && ichArchetyp && partnerArchetyp) {
+            // Prüfe ob benutzerdefinierte Resonanzwerte aus ResonanzCard vorhanden sind
+            if (typeof ResonanzCard !== 'undefined' && typeof ResonanzCard.getValues === 'function') {
+                const customR = ResonanzCard.getValues();
+                R1 = customR.R1;
+                R2 = customR.R2;
+                R3 = customR.R3;
+                R4 = customR.R4;
+            } else if (typeof GfkBeduerfnisse !== 'undefined' && ichArchetyp && partnerArchetyp) {
+                // Fallback: Automatisch aus GFK-Matching berechnen
                 matching = GfkBeduerfnisse.berechneMatching(ichArchetyp, partnerArchetyp);
 
                 if (matching && !matching.fehler) {

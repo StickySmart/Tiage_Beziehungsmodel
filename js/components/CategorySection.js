@@ -15,6 +15,7 @@ const CategorySection = (function() {
      */
     const CATEGORIES = {
         gewichtung: { icon: '⚖️', label: 'FAKTOR-GEWICHTUNG (Score-Formel)' },
+        resonanz: { icon: '🎵', label: 'RESONANZFAKTOREN (R1-R4)' },
         lebensplanung: { icon: '📋', label: 'LEBENSPLANUNG' },
         finanzen: { icon: '💰', label: 'FINANZEN & KARRIERE' },
         kommunikation: { icon: '💬', label: 'KOMMUNIKATION' },
@@ -38,31 +39,36 @@ const CategorySection = (function() {
      * @param {string} [config.label] - Überschreibt Standard-Label
      * @param {string} config.content - Innerer HTML-Content (Cards)
      * @param {boolean} [config.isGewichtung=false] - Spezielle Gewichtungs-Styles
+     * @param {boolean} [config.isResonanz=false] - Spezielle Resonanz-Styles
      * @param {number} [config.itemCount] - Anzahl der Unterelemente
      * @returns {string} HTML-String
      */
     function render(config) {
-        const { category, icon, label, content, isGewichtung = false, itemCount } = config;
+        const { category, icon, label, content, isGewichtung = false, isResonanz = false, itemCount } = config;
 
         const categoryInfo = CATEGORIES[category] || { icon: '📌', label: category.toUpperCase() };
         const displayIcon = icon || categoryInfo.icon;
         const displayLabel = label || categoryInfo.label;
 
-        const categoryClass = isGewichtung
-            ? 'profile-review-category profile-review-category-gewichtung'
-            : 'profile-review-category';
+        // Spezielle Klassen für Gewichtung oder Resonanz
+        let categoryClass = 'profile-review-category';
+        let headerClass = 'profile-review-category-header';
 
-        const headerClass = isGewichtung
-            ? 'profile-review-category-header profile-review-category-header-gewichtung'
-            : 'profile-review-category-header';
+        if (isGewichtung) {
+            categoryClass += ' profile-review-category-gewichtung';
+            headerClass += ' profile-review-category-header-gewichtung';
+        } else if (isResonanz) {
+            categoryClass += ' profile-review-category-resonanz';
+            headerClass += ' profile-review-category-header-resonanz';
+        }
 
         // Zähler-Anzeige wenn itemCount vorhanden
         const countHtml = typeof itemCount === 'number'
             ? `<span class="profile-review-category-count">(${itemCount})</span>`
             : '';
 
-        // Lock-Symbol für Kategorie (nicht für Gewichtung)
-        const lockHtml = !isGewichtung
+        // Lock-Symbol für Kategorie (nicht für Gewichtung oder Resonanz)
+        const lockHtml = (!isGewichtung && !isResonanz)
             ? `<span class="profile-review-category-lock" onclick="event.stopPropagation(); CategorySection.toggleCategoryLock('${category}', this)"></span>`
             : '';
 
