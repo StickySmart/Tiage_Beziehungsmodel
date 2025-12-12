@@ -10633,7 +10633,11 @@
             const person1 = { archetyp: currentArchetype, ...personDimensions.ich };
             const person2 = { archetyp: selectedPartner, ...personDimensions.partner };
 
+            console.log('[updateComparisonView] person1:', JSON.stringify(person1));
+            console.log('[updateComparisonView] person2:', JSON.stringify(person2));
+
             const pathosCheck = checkPhysicalCompatibility(person1, person2);
+            console.log('[updateComparisonView] pathosCheck:', JSON.stringify(pathosCheck));
             const logosCheck = calculatePhilosophyCompatibility(currentArchetype, selectedPartner);
 
             // Update warnings
@@ -12746,6 +12750,7 @@
                     mobilePersonDimensions[person].geschlecht = personDimensions[person].geschlecht;
                     mobilePersonDimensions[person].dominanz = personDimensions[person].dominanz;
                     mobilePersonDimensions[person].orientierung = personDimensions[person].orientierung;
+                    mobilePersonDimensions[person].gfk = personDimensions[person].gfk;
                 }
 
                 // Sync UI elements after loading (Desktop + Mobile einheitlich)
@@ -12806,6 +12811,13 @@
                 updateOrientierungSummary('partner');
                 // GFK automatisch aus Archetypen-Matching setzen
                 updateGfkFromArchetypes();
+
+                // IMPORTANT: Update comparison view AFTER loading dimensions
+                // This ensures the score is calculated with the correct data
+                console.log('[TIAGE DEBUG] Before updateComparisonView');
+                updateComparisonView();
+                updateSyntheseScoreCycle();
+                console.log('[TIAGE DEBUG] After updateComparisonView');
 
                 // Note: openComments=1 parameter is now handled in handleAgeConfirm()
                 // to ensure age verification is completed before opening comments modal
