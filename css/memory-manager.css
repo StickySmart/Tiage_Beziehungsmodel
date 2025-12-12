@@ -605,3 +605,139 @@
         gap: 4px;
     }
 }
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   NEEDS BREAKDOWN SECTION
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.memory-detail-breakdown {
+    display: none;
+    margin-top: 10px;
+}
+
+.memory-detail-section.expanded .memory-detail-breakdown {
+    display: block;
+}
+
+.memory-breakdown-table {
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 8px;
+    padding: 12px;
+}
+
+.memory-breakdown-header {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-bottom: 14px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.memory-breakdown-header span {
+    display: inline-block;
+}
+
+.memory-breakdown-header strong {
+    color: #A855F7;
+}
+
+.memory-breakdown-info {
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.5);
+    font-style: italic;
+    padding: 10px;
+    text-align: center;
+}
+
+.memory-breakdown-entries {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 11px;
+}
+
+.memory-breakdown-entries thead th {
+    text-align: left;
+    padding: 6px 8px;
+    color: rgba(255, 255, 255, 0.6);
+    font-weight: 600;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.memory-breakdown-entries tbody tr {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.memory-breakdown-entries tbody tr:hover {
+    background: rgba(255, 255, 255, 0.03);
+}
+
+.memory-breakdown-entries td {
+    padding: 6px 8px;
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.memory-breakdown-entries .breakdown-need-name {
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.9);
+    max-width: 140px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.memory-breakdown-entries .breakdown-base {
+    color: #60A5FA;
+    font-weight: 500;
+    text-align: center;
+}
+
+.memory-breakdown-entries .breakdown-mod {
+    text-align: center;
+    font-weight: 500;
+}
+
+.memory-breakdown-entries .breakdown-mod.positive {
+    color: #10B981;
+}
+
+.memory-breakdown-entries .breakdown-mod.negative {
+    color: #EF4444;
+}
+
+.memory-breakdown-entries .breakdown-equals {
+    text-align: center;
+    color: rgba(255, 255, 255, 0.4);
+}
+
+.memory-breakdown-entries .breakdown-final {
+    color: #A855F7;
+    font-weight: 600;
+    text-align: center;
+}
+
+/* Mobile adjustments for breakdown */
+@media (max-width: 768px) {
+    .memory-breakdown-header {
+        flex-direction: column;
+        gap: 6px;
+    }
+
+    .memory-breakdown-entries {
+        font-size: 10px;
+    }
+
+    .memory-breakdown-entries thead th,
+    .memory-breakdown-entries td {
+        padding: 4px 4px;
+    }
+
+    .memory-breakdown-entries .breakdown-need-name {
+        max-width: 80px;
+    }
+}

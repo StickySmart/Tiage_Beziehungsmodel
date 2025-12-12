@@ -1200,6 +1200,118 @@ function handleDisplayPerson(slotNumber, personType) {
 }
 
 /**
+ * Generate needs breakdown HTML showing base value + modifiers = final value
+ * @param {Object} data - The saved profile data containing archetyp, geschlecht, dominanz, orientierung, and flatNeeds
+ * @returns {string} HTML string with the breakdown table
+ */
+function generateNeedsBreakdown(data) {
+    // Get profile context
+    const archetyp = data.archetyp?.primary || data.archetyp;
+    const geschlecht = data.geschlecht;
+    const dominanz = data.dominanz;
+    const orientierung = data.orientierung;
+    const flatNeeds = data.profileReview?.flatNeeds;
+
+    // Check if we have all required data
+    if (!archetyp || !flatNeeds) {
+        return '<div class="memory-breakdown-info">Keine Aufschlüsselung verfügbar (fehlende Profildaten)</div>';
+    }
+
+    // Get base values from archetype profile
+    let baseNeeds = {};
+    if (typeof GfkBeduerfnisse !== 'undefined' && GfkBeduerfnisse.archetypProfile) {
+        const profil = GfkBeduerfnisse.archetypProfile[archetyp];
+        if (profil && profil.kernbeduerfnisse) {
+            baseNeeds = profil.kernbeduerfnisse;
+        }
+    }
+
+    // Get modifiers from TiageProfileStore
+    let genderMods = {};
+    let dominanceMods = {};
+    let orientationMods = {};
+
+    if (typeof TiageProfileStore !== 'undefined' && TiageProfileStore.getNeedsModifiers) {
+        const allMods = TiageProfileStore.getNeedsModifiers();
+        if (allMods) {
+            genderMods = allMods.gender?.[geschlecht] || {};
+            dominanceMods = allMods.dominance?.[dominanz] || {};
+            orientationMods = allMods.orientation?.[orientierung] || {};
+        }
+    }
+
+    // Build breakdown table
+    let html = '<div class="memory-breakdown-table">';
+
+    // Header with profile context
+    html += `<div class="memory-breakdown-header">
+        <span><strong>Archetyp:</strong> ${archetyp}</span>
+        <span><strong>Geschlecht:</strong> ${geschlecht || '-'}</span>
+        <span><strong>Dominanz:</strong> ${dominanz || '-'}</span>
+        <span><strong>Orientierung:</strong> ${orientierung || '-'}</span>
+    </div>`;
+
+    // Convert flatNeeds to array if it's an object
+    const needsArray = Array.isArray(flatNeeds) ? flatNeeds :
+        Object.entries(flatNeeds).map(([key, val]) => ({
+            stringKey: key,
+            value: typeof val === 'object' ? val.value : val
+        }));
+
+    // Filter to show only needs with modifiers or significant differences
+    const needsWithBreakdown = needsArray
+        .filter(need => {
+            const stringKey = need.stringKey;
+            const hasModifier = genderMods[stringKey] || dominanceMods[stringKey] || orientationMods[stringKey];
+            return hasModifier; // Only show needs that have modifiers applied
+        })
+        .slice(0, 30); // Limit to 30 entries for readability
+
+    if (needsWithBreakdown.length === 0) {
+        html += '<div class="memory-breakdown-info">Keine Modifikatoren für dieses Profil aktiv</div>';
+    } else {
+        html += '<table class="memory-breakdown-entries">';
+        html += `<thead><tr>
+            <th>Bedürfnis</th>
+            <th>Basis</th>
+            <th>Gender</th>
+            <th>Dominanz</th>
+            <th>Orient.</th>
+            <th>=</th>
+            <th>Final</th>
+        </tr></thead><tbody>`;
+
+        needsWithBreakdown.forEach(need => {
+            const stringKey = need.stringKey;
+            const finalValue = need.value;
+            const baseValue = baseNeeds[stringKey] ?? 50;
+            const genderMod = genderMods[stringKey] || 0;
+            const dominanceMod = dominanceMods[stringKey] || 0;
+            const orientationMod = orientationMods[stringKey] || 0;
+            const calculatedValue = Math.max(0, Math.min(100, baseValue + genderMod + dominanceMod + orientationMod));
+
+            // Format modifiers with + or - sign
+            const formatMod = (val) => val === 0 ? '-' : (val > 0 ? `+${val}` : `${val}`);
+
+            html += `<tr>
+                <td class="breakdown-need-name">${stringKey}</td>
+                <td class="breakdown-base">${baseValue}</td>
+                <td class="breakdown-mod ${genderMod !== 0 ? (genderMod > 0 ? 'positive' : 'negative') : ''}">${formatMod(genderMod)}</td>
+                <td class="breakdown-mod ${dominanceMod !== 0 ? (dominanceMod > 0 ? 'positive' : 'negative') : ''}">${formatMod(dominanceMod)}</td>
+                <td class="breakdown-mod ${orientationMod !== 0 ? (orientationMod > 0 ? 'positive' : 'negative') : ''}">${formatMod(orientationMod)}</td>
+                <td class="breakdown-equals">=</td>
+                <td class="breakdown-final">${calculatedValue}</td>
+            </tr>`;
+        });
+
+        html += '</tbody></table>';
+    }
+
+    html += '</div>';
+    return html;
+}
+
+/**
  * Open the detail modal to display slot data
  */
 function openMemoryDetailModal(slotNumber, personType, data) {
@@ -1238,6 +1350,18 @@ function openMemoryDetailModal(slotNumber, personType, data) {
                     <span class="memory-detail-label">Daten-Version</span>
                     <span class="memory-detail-value">${data.dataVersion || '1.0'}</span>
                 </div>
+            </div>
+        </div>
+    `;
+
+    // Needs Breakdown Section (collapsible)
+    html += `
+        <div class="memory-detail-section">
+            <div class="memory-detail-section-title" onclick="this.parentElement.classList.toggle('expanded')" style="cursor: pointer;">
+                Bedürfnis-Aufschlüsselung <span class="memory-detail-expand-icon">+</span>
+            </div>
+            <div class="memory-detail-breakdown">
+                ${generateNeedsBreakdown(data)}
             </div>
         </div>
     `;
