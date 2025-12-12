@@ -9212,14 +9212,21 @@
         function calculateOrientationScore(person1, person2) {
             const pathosCheck = checkPhysicalCompatibility(person1, person2);
 
+            console.log('[calculateOrientationScore] pathosCheck.result:', pathosCheck.result,
+                        'reason:', pathosCheck.reason || '-',
+                        'missingItems:', pathosCheck.missingItems || '-');
+
             if (pathosCheck.result === "unmöglich") {
+                console.log('[calculateOrientationScore] K.O. - returning 0');
                 return 0;  // K.O.-Kriterium!
             }
 
             if (pathosCheck.result === "unsicher") {
+                console.log('[calculateOrientationScore] Unsicher - returning 70');
                 return 70;  // Exploration-Phase
             }
 
+            console.log('[calculateOrientationScore] Möglich - returning 100');
             return 100;  // Kompatibel
         }
 
