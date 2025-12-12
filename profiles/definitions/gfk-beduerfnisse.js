@@ -1297,7 +1297,7 @@ const GfkBeduerfnisse = {
                 summeGewicht += gewicht;
 
                 // Nutze getDefinition() für #ID-Unterstützung
-                const def = self.getDefinition(bed);
+                const def = GfkBeduerfnisse.getDefinition(bed);
                 // Zeige #ID als Präfix wenn bed bereits eine #ID ist
                 const hashId = bed.startsWith('#B') ? bed + ' ' : '';
 
@@ -1364,7 +1364,7 @@ const GfkBeduerfnisse = {
             .slice(0, anzahl)
             .map(([id, wert]) => {
                 // Nutze getDefinition() für #ID-Unterstützung
-                const def = self.getDefinition(id);
+                const def = GfkBeduerfnisse.getDefinition(id);
                 // Zeige #ID als Präfix wenn id bereits eine #ID ist
                 const hashId = id.startsWith('#B') ? id + ' ' : '';
                 return {
