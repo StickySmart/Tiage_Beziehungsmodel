@@ -280,6 +280,108 @@ TiageSynthesis.Constants = {
                 akzeptanz: 90,                      // Braucht Akzeptanz
                 gesehen_werden: 75
             }
+        },
+
+        // ═══════════════════════════════════════════════════════════════════
+        // R_Philosophie (Archetyp-Bedürfnisse) - für R2
+        // ═══════════════════════════════════════════════════════════════════
+        philosophie: {
+            single: {
+                kinderwunsch: 20,                   // Gering - kein Partner
+                langfristige_bindung: 15,          // Minimal
+                verbindlichkeit: 20,
+                gemeinsamer_wohnraum: 10,
+                eigener_raum: 95,                   // Maximum
+                alltag_teilen: 20,
+                unabhaengigkeit: 95,
+                selbstbestimmung: 95,
+                zugehoerigkeit: 40,
+                gemeinschaft: 50
+            },
+            duo: {
+                kinderwunsch: 75,                   // Hoch - traditionell
+                langfristige_bindung: 95,          // Maximum - Lebenspartner
+                verbindlichkeit: 95,
+                gemeinsamer_wohnraum: 90,
+                eigener_raum: 30,
+                alltag_teilen: 90,
+                unabhaengigkeit: 40,
+                selbstbestimmung: 50,
+                zugehoerigkeit: 90,
+                gemeinschaft: 70
+            },
+            duo_flex: {
+                kinderwunsch: 60,
+                langfristige_bindung: 85,
+                verbindlichkeit: 80,
+                gemeinsamer_wohnraum: 75,
+                eigener_raum: 50,
+                alltag_teilen: 75,
+                unabhaengigkeit: 60,
+                selbstbestimmung: 65,
+                zugehoerigkeit: 80,
+                gemeinschaft: 75
+            },
+            solopoly: {
+                kinderwunsch: 30,
+                langfristige_bindung: 50,
+                verbindlichkeit: 45,
+                gemeinsamer_wohnraum: 20,
+                eigener_raum: 90,                   // Sehr hoch
+                alltag_teilen: 35,
+                unabhaengigkeit: 95,
+                selbstbestimmung: 95,
+                zugehoerigkeit: 60,
+                gemeinschaft: 70
+            },
+            polyamor: {
+                kinderwunsch: 50,
+                langfristige_bindung: 75,
+                verbindlichkeit: 70,
+                gemeinsamer_wohnraum: 60,
+                eigener_raum: 60,
+                alltag_teilen: 65,
+                unabhaengigkeit: 70,
+                selbstbestimmung: 75,
+                zugehoerigkeit: 85,
+                gemeinschaft: 90                    // Polycule
+            },
+            ra: {
+                kinderwunsch: 35,
+                langfristige_bindung: 40,
+                verbindlichkeit: 30,                // Keine Hierarchien
+                gemeinsamer_wohnraum: 35,
+                eigener_raum: 80,
+                alltag_teilen: 40,
+                unabhaengigkeit: 90,
+                selbstbestimmung: 95,
+                zugehoerigkeit: 70,
+                gemeinschaft: 85
+            },
+            lat: {
+                kinderwunsch: 55,
+                langfristige_bindung: 80,
+                verbindlichkeit: 80,
+                gemeinsamer_wohnraum: 25,           // Getrennt wohnen!
+                eigener_raum: 85,
+                alltag_teilen: 45,
+                unabhaengigkeit: 75,
+                selbstbestimmung: 80,
+                zugehoerigkeit: 75,
+                gemeinschaft: 60
+            },
+            aromantisch: {
+                kinderwunsch: 25,
+                langfristige_bindung: 30,
+                verbindlichkeit: 35,
+                gemeinsamer_wohnraum: 30,
+                eigener_raum: 80,
+                alltag_teilen: 40,
+                unabhaengigkeit: 85,
+                selbstbestimmung: 90,
+                zugehoerigkeit: 65,                 // Freundschaften wichtig
+                gemeinschaft: 75
+            }
         }
     },
 

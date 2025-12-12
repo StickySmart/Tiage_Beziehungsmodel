@@ -447,20 +447,15 @@ const ResonanzCard = (function() {
 
         // Mapping von Dimensions-Namen zu R-Faktoren:
         // R1 = Orientierung → leben
-        // R2 = Archetyp → (berechne aus Kohärenz oder nutze Default)
+        // R2 = Archetyp → philosophie (aus Archetyp-Bedürfnissen)
         // R3 = Dominanz → dynamik
         // R4 = Geschlecht → identitaet
         const result = {
             R1: resonanz.leben || 1.0,
-            R2: 1.0,  // Archetyp-Kohärenz wird separat berechnet
+            R2: resonanz.philosophie || 1.0,
             R3: resonanz.dynamik || 1.0,
             R4: resonanz.identitaet || 1.0
         };
-
-        // R2 berechnen: Durchschnitt der anderen als Proxy für Archetyp-Kohärenz
-        // (Archetyp ist meta-level, beeinflusst durch alle Dimensionen)
-        result.R2 = (result.R1 + result.R3 + result.R4) / 3;
-        result.R2 = Math.round(result.R2 * 1000) / 1000;
 
         console.log('[ResonanzCard] Berechnete Resonanz aus Profil:', result);
         return result;
