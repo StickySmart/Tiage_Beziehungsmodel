@@ -1269,6 +1269,7 @@ const GfkBeduerfnisse = {
 
         // Alle Bedürfnisse sammeln
         const alleBed = new Set([...Object.keys(bed1), ...Object.keys(bed2)]);
+        const self = this;
 
         let summeUebereinstimmung = 0;
         let summeGewicht = 0;
@@ -1296,7 +1297,7 @@ const GfkBeduerfnisse = {
                 summeGewicht += gewicht;
 
                 // Nutze getDefinition() für #ID-Unterstützung
-                const def = this.getDefinition(bed);
+                const def = self.getDefinition(bed);
                 // Zeige #ID als Präfix wenn bed bereits eine #ID ist
                 const hashId = bed.startsWith('#B') ? bed + ' ' : '';
 
