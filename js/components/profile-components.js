@@ -13,50 +13,9 @@
 /**
  * Profile Review Renderer
  * Generiert das gesamte Profile-Review-Modal aus Konfiguration
- *
- * NEU: Verwendet AttributeSummaryCard statt TripleButtonGroup
- * Attribute zeigen nur die zugehörigen Bedürfnisse als Zusammenfassung
  */
 const ProfileReviewRenderer = (function() {
     'use strict';
-
-    /**
-     * Rendert eine einzelne Kategorie mit allen Attributen
-     * @param {string} category - Kategorie-Key
-     * @returns {string} HTML-String
-     */
-    function renderCategory(category) {
-        if (category === 'gewichtung') {
-            return renderGewichtungSection();
-        }
-        if (category === 'resonanz') {
-            return renderResonanzSection();
-        }
-
-        const categoryInfo = ProfileReviewConfig.getCategory(category);
-        const attributes = ProfileReviewConfig.getAttributes(category);
-
-        if (!categoryInfo || !attributes.length) return '';
-
-        // NEU: Verwende AttributeSummaryCard statt TripleButtonGroup
-        const cardsHtml = attributes.map(attr => {
-            // Prüfe ob AttributeSummaryCard verfügbar ist
-            if (typeof AttributeSummaryCard !== 'undefined' &&
-                AttributeSummaryCard.ATTRIBUTE_NEEDS_MAPPING[attr.attrId]) {
-                return AttributeSummaryCard.render(attr);
-            }
-            // Fallback auf TripleButtonGroup für nicht gemappte Attribute
-            return TripleButtonGroup.render(attr);
-        }).join('\n');
-
-        return CategorySection.render({
-            category,
-            icon: categoryInfo.icon,
-            label: categoryInfo.label,
-            content: cardsHtml,
-            itemCount: attributes.length
-        });
-    }
 
     /**
      * Rendert die Gewichtungs-Sektion
@@ -80,9 +39,7 @@ const ProfileReviewRenderer = (function() {
      * @returns {string} HTML-String
      */
     function renderResonanzSection() {
-        // Prüfe ob ResonanzCard verfügbar ist
         if (typeof ResonanzCard === 'undefined') {
-            console.warn('ResonanzCard nicht verfügbar');
             return '';
         }
 
@@ -96,15 +53,6 @@ const ProfileReviewRenderer = (function() {
             content,
             isResonanz: true
         });
-    }
-
-    /**
-     * Rendert den gesamten Modal-Body
-     * @returns {string} HTML-String
-     */
-    function renderModalBody() {
-        const categories = ProfileReviewConfig.getCategoryOrder();
-        return categories.map(renderCategory).join('\n\n');
     }
 
     /**
@@ -128,103 +76,83 @@ const ProfileReviewRenderer = (function() {
     }
 
     /**
-     * Initialisiert das Profile-Review-Modal mit dynamischem Content
-     * Wird aufgerufen wenn das Modal zum ersten Mal geöffnet wird
-     * @param {boolean} [force=false] - Erzwingt Neuinitialisierung
+     * Rendert den Modal-Body
+     * @param {string} archetyp - Archetyp-ID (z.B. 'polyamor', 'solopoly')
+     * @param {string} archetypLabel - Anzeige-Label des Archetyps
+     * @returns {string} HTML-String
      */
-    function initializeModal(force = false) {
-        // Use dedicated content container to preserve source-explanation
+    function renderModalBody(archetyp, archetypLabel) {
+        // Gewichtungs-Sektion
+        const gewichtungHtml = renderGewichtungSection();
+
+        // Resonanz-Sektion
+        const resonanzHtml = renderResonanzSection();
+
+        // Bedürfnis-Darstellung
+        let needsHtml = '';
+        if (typeof AttributeSummaryCard !== 'undefined' && AttributeSummaryCard.renderAllNeedsFlat) {
+            needsHtml = AttributeSummaryCard.renderAllNeedsFlat(archetyp, archetypLabel);
+        }
+
+        return gewichtungHtml + '\n' + resonanzHtml + '\n' + needsHtml;
+    }
+
+    /**
+     * Initialisiert das Profile-Review-Modal
+     * @param {string} archetyp - Archetyp-ID
+     * @param {string} archetypLabel - Anzeige-Label des Archetyps
+     */
+    function initializeModal(archetyp, archetypLabel) {
         const contentContainer = document.getElementById('profileReviewContent');
         if (!contentContainer) {
             console.warn('ProfileReviewRenderer: Content container not found');
             return;
         }
 
-        // Prüfe ob bereits initialisiert (außer bei force)
-        // Verwende Kategorie-Anzahl als Version für Cache-Invalidierung
-        const currentVersion = ProfileReviewConfig.getCategoryOrder().length.toString();
-        if (!force && contentContainer.dataset.initialized === currentVersion) {
-            return;
-        }
+        // Speichere Archetyp für Re-Rendering
+        contentContainer.dataset.archetyp = archetyp;
 
-        // Generiere und setze Content
-        contentContainer.innerHTML = renderModalBody() + '\n                <div style="height: 20px;"></div>';
-        contentContainer.dataset.initialized = currentVersion;
+        // Generiere Content
+        contentContainer.innerHTML = renderModalBody(archetyp, archetypLabel) +
+            '\n<div style="height: 20px;"></div>';
 
-        console.log('ProfileReviewRenderer: Modal initialized');
+        console.log('ProfileReviewRenderer: Modal initialized for', archetyp);
     }
 
     /**
      * Sammelt alle Werte aus dem Modal
-     * @returns {Object} Alle Attribut-Werte
+     * @returns {Object} Alle Bedürfniswerte
      */
     function collectAllValues() {
-        const values = {};
-        const attributes = ProfileReviewConfig.getAllAttributes();
+        if (typeof AttributeSummaryCard === 'undefined') {
+            return {};
+        }
 
-        attributes.forEach(attr => {
-            // NEU: Verwende AttributeSummaryCard wenn verfügbar
-            if (typeof AttributeSummaryCard !== 'undefined' &&
-                AttributeSummaryCard.ATTRIBUTE_NEEDS_MAPPING[attr.attrId]) {
-                values[attr.attrId] = {
-                    aggregated: AttributeSummaryCard.getValue(attr.attrId),
-                    needs: AttributeSummaryCard.getNeedsValues(attr.attrId)
-                };
-            } else {
-                values[attr.attrId] = TripleButtonGroup.getValue(attr.attrId);
-            }
-        });
-
-        // Gewichtungen hinzufügen
-        values.gewichtungen = GewichtungCard.getAllValues();
-
-        return values;
-    }
-
-    /**
-     * Setzt alle Werte im Modal
-     * @param {Object} values - Attribut-Werte
-     */
-    function setAllValues(values) {
-        Object.entries(values).forEach(([attrId, value]) => {
-            if (attrId === 'gewichtungen') {
-                Object.entries(value).forEach(([factor, factorValue]) => {
-                    GewichtungCard.setValue(factor, factorValue);
-                });
-            } else if (typeof value === 'object' && value.needs) {
-                // NEU: Setze Bedürfniswerte für AttributeSummaryCard
-                if (typeof AttributeSummaryCard !== 'undefined') {
-                    AttributeSummaryCard.setNeedsValues(attrId, value.needs);
-                }
-            } else {
-                TripleButtonGroup.setValue(attrId, value);
-            }
-        });
-
-        GewichtungCard.updateSum();
+        return {
+            needs: AttributeSummaryCard.getFlatNeedsValues(),
+            lockedNeeds: AttributeSummaryCard.getFlatLockedNeeds(),
+            gewichtungen: GewichtungCard.getAllValues(),
+            resonanz: typeof ResonanzCard !== 'undefined' ? ResonanzCard.getValues() : null
+        };
     }
 
     /**
      * Berechnet den Default-Wert für ein Attribut basierend auf dem Archetyp-Profil
-     * und zusätzlichen Profil-Faktoren (Geschlechtsidentität, Dominanz, Orientierung)
-     * @param {string} attrId - Attribut-ID (z.B. 'pr-kinder')
-     * @param {string} archetypeKey - Archetyp-Key (z.B. 'single', 'duo')
-     * @param {Object} profileContext - Optional: Zusätzliche Profil-Daten für Modifier
+     * @param {string} attrId - Attribut-ID
+     * @param {string} archetypeKey - Archetyp-Key
+     * @param {Object} profileContext - Profil-Daten für Modifier
      * @returns {number} Berechneter Default-Wert (0-100)
      */
     function getDefaultFromArchetype(attrId, archetypeKey, profileContext) {
-        // Fallback wenn keine Daten verfügbar
         if (!archetypeKey || !window.LoadedArchetypProfile) {
             return 50;
         }
 
         const archetype = window.LoadedArchetypProfile[archetypeKey];
         if (!archetype || !archetype.kernbeduerfnisse) {
-            console.warn('[ProfileReview] Archetyp nicht gefunden:', archetypeKey);
             return 50;
         }
 
-        // Hole die gemappten Bedürfnisse für dieses Attribut
         if (typeof AttributeSummaryCard === 'undefined' ||
             !AttributeSummaryCard.ATTRIBUTE_NEEDS_MAPPING[attrId]) {
             return 50;
@@ -237,7 +165,6 @@ const ProfileReviewRenderer = (function() {
             return 50;
         }
 
-        // Berechne Durchschnitt der Bedürfniswerte aus dem Archetyp-Profil
         let sum = 0;
         let count = 0;
 
@@ -255,16 +182,13 @@ const ProfileReviewRenderer = (function() {
 
         let average = Math.round(sum / count);
 
-        // NEU: Wende Profil-Modifier an (Geschlechtsidentität, Dominanz, Orientierung)
+        // Wende Profil-Modifier an
         if (window.ProfileModifiers && profileContext) {
             const deltas = window.ProfileModifiers.calculateProfileDeltas(profileContext);
-
-            // Prüfe ob einer der gemappten Bedürfnisse einen Delta hat
             let deltaSum = 0;
             let deltaCount = 0;
 
             needs.forEach(needId => {
-                // Versuche verschiedene Schreibweisen des Bedürfnisnamens
                 const normalizedNeed = needId.toLowerCase().replace(/-/g, '_');
                 if (deltas[needId] !== undefined) {
                     deltaSum += deltas[needId];
@@ -277,28 +201,23 @@ const ProfileReviewRenderer = (function() {
 
             if (deltaCount > 0) {
                 const avgDelta = Math.round(deltaSum / deltaCount);
-                const originalAverage = average;
                 average = Math.min(100, Math.max(0, average + avgDelta));
-                console.log(`[ProfileReview] Modifier-Delta für ${attrId}: ${avgDelta} (${originalAverage} → ${average})`);
             }
         }
 
-        console.log(`[ProfileReview] Default für ${attrId} (${archetypeKey}): ${average} (aus ${count} Bedürfnissen)`);
         return average;
     }
 
     /**
-     * Setzt alle Werte auf Standard zurück (basierend auf aktuellem Archetyp + Profil-Modifier)
-     * @param {string} archetypeKey - Optional: Archetyp-Key für Defaults
-     * @param {Object} profileContext - Optional: Profil-Daten für Modifier (geschlecht, dominanz, orientierung)
+     * Setzt alle Werte auf Standard zurück
+     * @param {string} archetypeKey - Archetyp-Key für Defaults
+     * @param {Object} profileContext - Profil-Daten für Modifier
      */
     function resetAllValues(archetypeKey, profileContext) {
-        // Versuche Archetyp aus Kontext zu holen wenn nicht übergeben
         if (!archetypeKey && typeof currentProfileReviewContext !== 'undefined') {
             archetypeKey = currentProfileReviewContext.archetypeKey;
         }
 
-        // Versuche Profil-Kontext zu bauen wenn nicht übergeben
         if (!profileContext && typeof currentProfileReviewContext !== 'undefined') {
             profileContext = {
                 geschlecht: currentProfileReviewContext.geschlecht,
@@ -307,106 +226,30 @@ const ProfileReviewRenderer = (function() {
             };
         }
 
-        const attributes = ProfileReviewConfig.getAllAttributes();
-
-        attributes.forEach(attr => {
-            // Berechne Default aus Archetyp-Profil + Modifier
-            const defaultValue = getDefaultFromArchetype(attr.attrId, archetypeKey, profileContext);
-
-            // NEU: Reset für AttributeSummaryCard
-            if (typeof AttributeSummaryCard !== 'undefined' &&
-                AttributeSummaryCard.ATTRIBUTE_NEEDS_MAPPING[attr.attrId]) {
-                AttributeSummaryCard.reset(attr.attrId, defaultValue);
-            } else {
-                TripleButtonGroup.setValue(attr.attrId, defaultValue);
-            }
-        });
-
         GewichtungCard.reset();
 
-        // Log mit Modifier-Info
-        const modifierInfo = profileContext && window.ProfileModifiers
-            ? ` + Modifier (${profileContext.geschlecht?.primary || 'n/a'}-${profileContext.geschlecht?.secondary || 'n/a'})`
-            : '';
-        console.log('[ProfileReview] Alle Werte zurückgesetzt auf Archetyp-Defaults:', archetypeKey || 'standard', modifierInfo);
-    }
-
-    /**
-     * Rendert den Modal-Body mit FLACHER Bedürfnis-Darstellung
-     * Zeigt alle Bedürfnisse aus dem Archetyp-Profil gruppiert nach GFK-Kategorien
-     *
-     * @param {string} archetyp - Archetyp-ID (z.B. 'polyamor', 'solopoly')
-     * @param {string} archetypLabel - Anzeige-Label des Archetyps
-     * @returns {string} HTML-String
-     */
-    function renderFlatModalBody(archetyp, archetypLabel) {
-        if (typeof AttributeSummaryCard === 'undefined' || !AttributeSummaryCard.renderAllNeedsFlat) {
-            console.warn('ProfileReviewRenderer: AttributeSummaryCard.renderAllNeedsFlat nicht verfügbar');
-            return renderModalBody(); // Fallback auf alte Darstellung
+        if (typeof ResonanzCard !== 'undefined') {
+            ResonanzCard.reset();
         }
 
-        // Gewichtungs-Sektion am Anfang
-        const gewichtungHtml = renderGewichtungSection();
-
-        // Flache Bedürfnis-Darstellung
-        const flatNeedsHtml = AttributeSummaryCard.renderAllNeedsFlat(archetyp, archetypLabel);
-
-        return gewichtungHtml + '\n' + flatNeedsHtml;
+        console.log('[ProfileReview] Alle Werte zurückgesetzt');
     }
 
-    /**
-     * Initialisiert das Modal mit FLACHER Bedürfnis-Darstellung
-     *
-     * @param {string} archetyp - Archetyp-ID
-     * @param {string} archetypLabel - Anzeige-Label des Archetyps
-     */
-    function initializeFlatModal(archetyp, archetypLabel) {
-        const contentContainer = document.getElementById('profileReviewContent');
-        if (!contentContainer) {
-            console.warn('ProfileReviewRenderer: Content container not found');
-            return;
-        }
-
-        // Force re-initialization for flat view
-        contentContainer.dataset.initialized = 'false';
-        contentContainer.dataset.viewMode = 'flat';
-        contentContainer.dataset.archetyp = archetyp;
-
-        // Generiere flachen Content
-        contentContainer.innerHTML = renderFlatModalBody(archetyp, archetypLabel) +
-            '\n<div style="height: 20px;"></div>';
-        contentContainer.dataset.initialized = 'true';
-
-        console.log('ProfileReviewRenderer: Flat modal initialized for', archetyp);
-    }
-
-    /**
-     * Sammelt alle Werte aus der FLACHEN Darstellung
-     * @returns {Object} Alle Bedürfniswerte
-     */
-    function collectFlatValues() {
-        if (typeof AttributeSummaryCard === 'undefined') {
-            return {};
-        }
-
-        return {
-            needs: AttributeSummaryCard.getFlatNeedsValues(),
-            lockedNeeds: AttributeSummaryCard.getFlatLockedNeeds(),
-            gewichtungen: GewichtungCard.getAllValues()
-        };
-    }
+    // Rückwärtskompatibilität
+    const initializeFlatModal = initializeModal;
+    const renderFlatModalBody = renderModalBody;
+    const collectFlatValues = collectAllValues;
 
     return {
-        renderCategory,
         renderGewichtungSection,
+        renderResonanzSection,
         renderModalBody,
         renderModalFooter,
         initializeModal,
         collectAllValues,
-        setAllValues,
         resetAllValues,
         getDefaultFromArchetype,
-        // NEU: Flache Darstellung
+        // Aliase für Rückwärtskompatibilität
         renderFlatModalBody,
         initializeFlatModal,
         collectFlatValues
@@ -416,12 +259,6 @@ const ProfileReviewRenderer = (function() {
 // Export für Module-System
 if (typeof module !== 'undefined' && module.exports) {
     module.exports = {
-        TripleButtonGroup,
-        ProfileCard,
-        GewichtungCard,
-        CategorySection,
-        ProfileReviewConfig,
-        ProfileReviewRenderer,
-        AttributeSummaryCard
+        ProfileReviewRenderer
     };
 }
