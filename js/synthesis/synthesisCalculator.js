@@ -5,16 +5,17 @@
  * HAUPT-FORMEL v3.1
  * ═══════════════════════════════════════════════════════════════════════════
  *
- *   Q = (A × 0.15) + (O × 0.40) + (D × 0.20) + (G × 0.25)
+ *   Q = [(A × 0.15) + (O × 0.40) + (D × 0.20) + (G × 0.25)] × R
  *
  * Wobei:
  *   A = Archetyp-Score (LOGOS)       - Beziehungsphilosophie
  *   O = Orientierungs-Score (PATHOS) - Sexuelle Orientierung
  *   D = Dominanz-Score (PATHOS)      - Dom/Sub/Switch Dynamik
  *   G = Geschlechts-Score (PATHOS)   - Gender-Attraktion
+ *   R = Paarungs-Resonanz (0.9 - 1.1) - Berechnung steht noch aus
  *
  * ═══════════════════════════════════════════════════════════════════════════
- * v3.1: RESONANZ ALS VORAB-MULTIPLIKATOR
+ * v3.1: DIMENSIONALE RESONANZ ALS VORAB-MULTIPLIKATOR
  * ═══════════════════════════════════════════════════════════════════════════
  * Die dimensionalen Resonanzen (R_dim) wirken VOR der Berechnung auf die
  * Bedürfniswerte in der JSON:
@@ -32,10 +33,10 @@
  *   - R_dim = 1.0 → Bedürfniswerte bleiben unverändert
  *
  * ═══════════════════════════════════════════════════════════════════════════
- * UNTERSCHIED: v3.1 Rs vs. altes R (Paarung)
+ * BEIDE RESONANZEN WERDEN VERWENDET
  * ═══════════════════════════════════════════════════════════════════════════
- * v3.1 Rs:  Wirken auf Bedürfnisse VORAB (pro Person, pro Dimension)
- * Altes R:  Wirkt auf Gesamt-Score AM ENDE (pro Paarung)
+ * 1. v3.1 Rs:  Wirken auf Bedürfnisse VORAB (pro Person, pro Dimension)
+ * 2. Altes R:  Wirkt auf Gesamt-Score AM ENDE (pro Paarung)
  *
  * ═══════════════════════════════════════════════════════════════════════════
  * BEDÜRFNIS-INTEGRATION PRO FAKTOR
