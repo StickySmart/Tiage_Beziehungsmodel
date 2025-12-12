@@ -2042,3 +2042,8 @@ const archetypeStatements = {
 if (typeof module !== 'undefined' && module.exports) {
     module.exports = archetypeStatements;
 }
+
+// Browser-Export
+if (typeof window !== 'undefined') {
+    window.archetypeStatements = archetypeStatements;
+}

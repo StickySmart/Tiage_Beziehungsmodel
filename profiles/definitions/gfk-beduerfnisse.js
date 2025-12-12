@@ -2423,3 +2423,9 @@ if (typeof module !== 'undefined' && module.exports) {
     module.exports = { GfkBeduerfnisse, RechercheStatus };
 }
 
+// Browser-Export
+if (typeof window !== 'undefined') {
+    window.GfkBeduerfnisse = GfkBeduerfnisse;
+    window.RechercheStatus = RechercheStatus;
+}
+

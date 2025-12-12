@@ -477,3 +477,9 @@ function getDominanceStatements(dom1, dom2) {
 if (typeof module !== 'undefined' && module.exports) {
     module.exports = { dominanceStatements, getDominanceStatements };
 }
+
+// Browser-Export
+if (typeof window !== 'undefined') {
+    window.dominanceStatements = dominanceStatements;
+    window.getDominanceStatements = getDominanceStatements;
+}

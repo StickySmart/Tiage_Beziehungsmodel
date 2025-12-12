@@ -2042,3 +2042,8 @@ const archetypeStatements_EN = {
 if (typeof module !== 'undefined' && module.exports) {
     module.exports = archetypeStatements_EN;
 }
+
+// Browser export
+if (typeof window !== 'undefined') {
+    window.archetypeStatements_EN = archetypeStatements_EN;
+}
