@@ -19,8 +19,8 @@
  * }
  *
  * Berechnung:
- * - flatNeeds = BaseArchetypProfile[archetyp].beduerfnisse + ProfileModifiers.calculateProfileDeltas()
- * - gewichtungen = Defaults { O: 40, A: 25, D: 20, G: 15 } oder aus Storage
+ * - flatNeeds = BaseArchetypProfile[archetyp].beduerfnisse (Umfragewerte) + ProfileModifiers.calculateProfileDeltas()
+ * - gewichtungen = Defaults { O: 25, A: 25, D: 25, G: 25 } oder aus Storage
  * - resonanzFaktoren = TiageSynthesis.NeedsIntegration.calculateDimensionalResonance()
  */
 
@@ -46,7 +46,7 @@
             label: profil.name,
             name: profil.name,
             beschreibung: profil.beschreibung,
-            // Basis-Bedürfnisse (Startwerte)
+            // Basis-Bedürfnisse (Umfragewerte)
             beduerfnisse: profil.beduerfnisse,
             // Abwärtskompatibilität
             kernbeduerfnisse: profil.beduerfnisse,
@@ -76,15 +76,15 @@
     }
 
     /**
-     * Default-Gewichtungen
+     * Default-Gewichtungen (je 25%)
      * @returns {Object} Default-Werte für O, A, D, G
      */
     function getDefaultGewichtungen() {
         return {
-            O: { value: 40, locked: false },  // Orientierung
+            O: { value: 25, locked: false },  // Orientierung
             A: { value: 25, locked: false },  // Archetyp
-            D: { value: 20, locked: false },  // Dominanz
-            G: { value: 15, locked: false }   // Geschlecht
+            D: { value: 25, locked: false },  // Dominanz
+            G: { value: 25, locked: false }   // Geschlecht
         };
     }
 
