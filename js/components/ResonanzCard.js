@@ -19,9 +19,11 @@ const ResonanzCard = (function() {
     'use strict';
 
     /**
-     * Storage Key für localStorage
+     * Person-spezifische Storage Keys für localStorage
      */
-    const STORAGE_KEY = 'tiage_resonanz_faktoren';
+    const STORAGE_KEY_ICH = 'tiage_resonanz_faktoren_ich';
+    const STORAGE_KEY_PARTNER = 'tiage_resonanz_faktoren_partner';
+    const STORAGE_KEY_LEGACY = 'tiage_resonanz_faktoren';
 
     /**
      * Standard-Resonanzwerte (neutral)
@@ -32,6 +34,68 @@ const ResonanzCard = (function() {
         R3: { value: 1.0, locked: false },
         R4: { value: 1.0, locked: false }
     };
+
+    /**
+     * Ermittelt die aktuelle Person aus dem ProfileReview-Kontext
+     * @returns {string} 'ich' oder 'partner'
+     */
+    function getCurrentPerson() {
+        if (typeof currentProfileReviewContext !== 'undefined' && currentProfileReviewContext.person) {
+            return currentProfileReviewContext.person;
+        }
+        return 'ich';
+    }
+
+    /**
+     * Gibt den Storage-Key für eine Person zurück
+     * @param {string} person - 'ich' oder 'partner'
+     * @returns {string} Storage-Key
+     */
+    function getStorageKey(person) {
+        return person === 'partner' ? STORAGE_KEY_PARTNER : STORAGE_KEY_ICH;
+    }
+
+    /**
+     * Migration: Prüft ob alte globale Daten existieren und migriert sie
+     */
+    function migrateIfNeeded() {
+        try {
+            // Prüfe ob bereits person-spezifische Daten existieren
+            const ichExists = localStorage.getItem(STORAGE_KEY_ICH);
+            const partnerExists = localStorage.getItem(STORAGE_KEY_PARTNER);
+
+            if (ichExists && partnerExists) {
+                return; // Bereits migriert
+            }
+
+            // Lade alte globale Daten
+            const legacyData = localStorage.getItem(STORAGE_KEY_LEGACY);
+            if (!legacyData) {
+                return; // Keine alten Daten vorhanden
+            }
+
+            const parsed = JSON.parse(legacyData);
+
+            // Kopiere zu beiden Personen (falls noch nicht vorhanden)
+            if (!ichExists) {
+                localStorage.setItem(STORAGE_KEY_ICH, JSON.stringify(parsed));
+                console.log('[TIAGE] Resonanzfaktoren für ICH migriert');
+            }
+            if (!partnerExists) {
+                localStorage.setItem(STORAGE_KEY_PARTNER, JSON.stringify(parsed));
+                console.log('[TIAGE] Resonanzfaktoren für PARTNER migriert');
+            }
+
+            // Entferne Legacy-Key
+            localStorage.removeItem(STORAGE_KEY_LEGACY);
+            console.log('[TIAGE] Legacy Resonanz-Key entfernt');
+        } catch (e) {
+            console.warn('Fehler bei der Resonanz-Migration:', e);
+        }
+    }
+
+    // Führe Migration beim Laden aus
+    migrateIfNeeded();
 
     /**
      * Faktor-Beschreibungen
@@ -61,11 +125,15 @@ const ResonanzCard = (function() {
 
     /**
      * Lädt Resonanzwerte aus localStorage
+     * @param {string} person - 'ich' oder 'partner' (optional, default ist aktueller Kontext)
      * @returns {Object} Resonanzwerte mit Lock-Status
      */
-    function load() {
+    function load(person) {
+        person = person || getCurrentPerson();
+        const storageKey = getStorageKey(person);
+
         try {
-            const stored = localStorage.getItem(STORAGE_KEY);
+            const stored = localStorage.getItem(storageKey);
             if (stored) {
                 const parsed = JSON.parse(stored);
                 // Validiere und merge mit Defaults
@@ -97,10 +165,14 @@ const ResonanzCard = (function() {
     /**
      * Speichert Resonanzwerte in localStorage
      * @param {Object} values - Resonanzwerte
+     * @param {string} person - 'ich' oder 'partner' (optional, default ist aktueller Kontext)
      */
-    function save(values) {
+    function save(values, person) {
+        person = person || getCurrentPerson();
+        const storageKey = getStorageKey(person);
+
         try {
-            localStorage.setItem(STORAGE_KEY, JSON.stringify(values));
+            localStorage.setItem(storageKey, JSON.stringify(values));
         } catch (e) {
             console.warn('Fehler beim Speichern der Resonanzfaktoren:', e);
         }
@@ -337,10 +409,11 @@ const ResonanzCard = (function() {
 
     /**
      * Holt nur die Resonanzwerte (für Berechnungen)
+     * @param {string} person - 'ich' oder 'partner' (optional, default ist aktueller Kontext)
      * @returns {Object} { R1, R2, R3, R4 }
      */
-    function getValues() {
-        const stored = load();
+    function getValues(person) {
+        const stored = load(person);
         return {
             R1: stored.R1.value,
             R2: stored.R2.value,
@@ -350,15 +423,22 @@ const ResonanzCard = (function() {
     }
 
     /**
-     * Initialisiert die UI mit gespeicherten Werten
+     * Initialisiert die UI mit gespeicherten Werten für die aktuelle Person
      */
     function initializeUI() {
-        const values = load();
+        const person = getCurrentPerson();
+        const values = load(person);
         ['R1', 'R2', 'R3', 'R4'].forEach(faktor => {
             const card = document.querySelector(`[data-resonanz="${faktor}"]`);
             const input = document.getElementById(`resonanz-${faktor}`);
             const slider = document.getElementById(`resonanz-slider-${faktor}`);
 
+            // Zuerst alles zurücksetzen
+            if (card) card.classList.remove('locked');
+            if (slider) slider.disabled = false;
+            if (input) input.readOnly = false;
+
+            // Dann Lock-Status für aktuelle Person anwenden
             if (values[faktor].locked) {
                 if (card) card.classList.add('locked');
                 if (slider) slider.disabled = true;
@@ -383,9 +463,12 @@ const ResonanzCard = (function() {
         save,
         getValues,
         initializeUI,
+        getCurrentPerson,
+        getStorageKey,
         DEFAULT_VALUES,
         FAKTOR_INFO,
-        STORAGE_KEY
+        STORAGE_KEY_ICH,
+        STORAGE_KEY_PARTNER
     };
 })();
 

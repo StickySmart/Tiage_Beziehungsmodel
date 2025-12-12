@@ -121,26 +121,24 @@ const MemoryManager = (function() {
     }
 
     /**
-     * Collect Gewichtungen (combined: value + locked)
+     * Collect Gewichtungen (combined: value + locked) for a specific person
      * Returns new format: { O: { value, locked }, A: { value, locked }, ... }
+     * @param {string} person - 'ich' oder 'partner'
      */
-    function collectGewichtungen() {
+    function collectGewichtungen(person) {
+        // Verwende neuen person-spezifischen Storage Key
+        const storageKey = person === 'partner'
+            ? 'tiage_faktor_gewichtungen_partner'
+            : 'tiage_faktor_gewichtungen_ich';
+
         try {
-            const stored = localStorage.getItem('tiage_faktor_gewichtungen');
+            const stored = localStorage.getItem(storageKey);
             if (stored) {
                 const parsed = JSON.parse(stored);
-                // Check if new combined format
+                // Check if combined format
                 if (parsed.O && typeof parsed.O === 'object' && 'value' in parsed.O) {
                     return parsed;
                 }
-                // Legacy format - convert to combined
-                const legacyLocks = collectGewichtungLocksLegacy();
-                return {
-                    O: { value: parsed.O ?? 40, locked: legacyLocks?.orientierung ?? false },
-                    A: { value: parsed.A ?? 25, locked: legacyLocks?.archetyp ?? false },
-                    D: { value: parsed.D ?? 20, locked: legacyLocks?.dominanz ?? false },
-                    G: { value: parsed.G ?? 15, locked: legacyLocks?.geschlecht ?? false }
-                };
             }
             return null;
         } catch (e) {
@@ -149,22 +147,11 @@ const MemoryManager = (function() {
     }
 
     /**
-     * Collect Gewichtung Locks (legacy - for migration only)
-     */
-    function collectGewichtungLocksLegacy() {
-        try {
-            const stored = localStorage.getItem('tiage_faktor_locks');
-            return stored ? JSON.parse(stored) : null;
-        } catch (e) {
-            return null;
-        }
-    }
-
-    /**
      * Collect Gewichtung Locks (derived from combined structure)
+     * @param {string} person - 'ich' oder 'partner'
      */
-    function collectGewichtungLocks() {
-        const combined = collectGewichtungen();
+    function collectGewichtungLocks(person) {
+        const combined = collectGewichtungen(person);
         if (!combined) return null;
         return {
             orientierung: combined.O?.locked ?? false,
@@ -172,6 +159,26 @@ const MemoryManager = (function() {
             dominanz: combined.D?.locked ?? false,
             geschlecht: combined.G?.locked ?? false
         };
+    }
+
+    /**
+     * Collect Resonanzfaktoren for a specific person
+     * @param {string} person - 'ich' oder 'partner'
+     */
+    function collectResonanzfaktoren(person) {
+        const storageKey = person === 'partner'
+            ? 'tiage_resonanz_faktoren_partner'
+            : 'tiage_resonanz_faktoren_ich';
+
+        try {
+            const stored = localStorage.getItem(storageKey);
+            if (stored) {
+                return JSON.parse(stored);
+            }
+            return null;
+        } catch (e) {
+            return null;
+        }
     }
 
     /**
@@ -204,38 +211,6 @@ const MemoryManager = (function() {
     }
 
     /**
-     * Collect Resonanzfaktoren (R1-R4) from ResonanzCard
-     * Returns: { R1: { value, locked }, R2: { value, locked }, R3: { value, locked }, R4: { value, locked } }
-     */
-    function collectResonanzFaktoren() {
-        try {
-            const stored = localStorage.getItem('tiage_resonanz_faktoren');
-            if (stored) {
-                const parsed = JSON.parse(stored);
-                // Validate structure
-                if (parsed.R1 && typeof parsed.R1 === 'object' && 'value' in parsed.R1) {
-                    return {
-                        R1: { value: parsed.R1.value ?? 1.0, locked: parsed.R1.locked ?? false },
-                        R2: { value: parsed.R2?.value ?? 1.0, locked: parsed.R2?.locked ?? false },
-                        R3: { value: parsed.R3?.value ?? 1.0, locked: parsed.R3?.locked ?? false },
-                        R4: { value: parsed.R4?.value ?? 1.0, locked: parsed.R4?.locked ?? false }
-                    };
-                }
-            }
-            // Return defaults if not found
-            return {
-                R1: { value: 1.0, locked: false },
-                R2: { value: 1.0, locked: false },
-                R3: { value: 1.0, locked: false },
-                R4: { value: 1.0, locked: false }
-            };
-        } catch (e) {
-            console.warn('[MemoryManager] Could not load Resonanzfaktoren:', e);
-            return null;
-        }
-    }
-
-    /**
      * Collect current ME data from state (COMPLETE PROFILE)
      *
      * Data Structure v3.0:
@@ -245,7 +220,7 @@ const MemoryManager = (function() {
      * - orientierung: { primary, secondary }
      * - profileReview: { flatNeeds: [...] } (220 Bedürfnisse)
      * - gewichtungen: { O, A, D, G } mit value + locked
-     * - resonanzFaktoren: { R1, R2, R3, R4 } mit value + locked
+     * - resonanzfaktoren: { R1, R2, R3, R4 } mit value + locked
      */
     function collectMeData() {
         const data = {
@@ -258,7 +233,7 @@ const MemoryManager = (function() {
             orientierung: null,
             profileReview: null,
             gewichtungen: null,
-            resonanzFaktoren: null
+            resonanzfaktoren: null
         };
 
         // Get from TiageState if available
@@ -288,11 +263,11 @@ const MemoryManager = (function() {
         // Collect ProfileReview state (220 Bedürfnisse)
         data.profileReview = collectProfileReviewState('ich');
 
-        // Collect Gewichtungen (O, A, D, G)
-        data.gewichtungen = collectGewichtungen();
+        // Collect Gewichtungen für ICH (person-spezifisch)
+        data.gewichtungen = collectGewichtungen('ich');
 
-        // Collect Resonanzfaktoren (R1, R2, R3, R4)
-        data.resonanzFaktoren = collectResonanzFaktoren();
+        // Collect Resonanzfaktoren für ICH (person-spezifisch)
+        data.resonanzfaktoren = collectResonanzfaktoren('ich');
 
         return data;
     }
@@ -307,7 +282,7 @@ const MemoryManager = (function() {
      * - orientierung: { primary, secondary }
      * - profileReview: { flatNeeds: [...] } (220 Bedürfnisse)
      * - gewichtungen: { O, A, D, G } mit value + locked
-     * - resonanzFaktoren: { R1, R2, R3, R4 } mit value + locked
+     * - resonanzfaktoren: { R1, R2, R3, R4 } mit value + locked
      */
     function collectPartnerData() {
         const data = {
@@ -320,7 +295,7 @@ const MemoryManager = (function() {
             orientierung: null,
             profileReview: null,
             gewichtungen: null,
-            resonanzFaktoren: null
+            resonanzfaktoren: null
         };
 
         // Get from TiageState if available
@@ -350,11 +325,11 @@ const MemoryManager = (function() {
         // Collect ProfileReview state (220 Bedürfnisse)
         data.profileReview = collectProfileReviewState('partner');
 
-        // Collect Gewichtungen (O, A, D, G) - same as ME since they're global
-        data.gewichtungen = collectGewichtungen();
+        // Collect Gewichtungen für PARTNER (person-spezifisch)
+        data.gewichtungen = collectGewichtungen('partner');
 
-        // Collect Resonanzfaktoren (R1, R2, R3, R4) - same as ME since they're global
-        data.resonanzFaktoren = collectResonanzFaktoren();
+        // Collect Resonanzfaktoren für PARTNER (person-spezifisch)
+        data.resonanzfaktoren = collectResonanzfaktoren('partner');
 
         return data;
     }
@@ -555,15 +530,20 @@ const MemoryManager = (function() {
      * New format: { O: { value, locked }, A: { value, locked }, ... }
      * Old format: { O: number, A: number, ... }
      */
-    function applyGewichtungen(gewichtungen) {
+    function applyGewichtungen(gewichtungen, person) {
         if (!gewichtungen) return;
+        // Verwende person-spezifischen Storage Key
+        const storageKey = person === 'partner'
+            ? 'tiage_faktor_gewichtungen_partner'
+            : 'tiage_faktor_gewichtungen_ich';
+
         try {
             // Check if already new format
             if (gewichtungen.O && typeof gewichtungen.O === 'object' && 'value' in gewichtungen.O) {
-                localStorage.setItem('tiage_faktor_gewichtungen', JSON.stringify(gewichtungen));
+                localStorage.setItem(storageKey, JSON.stringify(gewichtungen));
             } else {
                 // Old format - convert to new combined format
-                const currentLocks = collectGewichtungLocks() || {
+                const currentLocks = collectGewichtungLocks(person) || {
                     orientierung: false, archetyp: false, dominanz: false, geschlecht: false
                 };
                 const combined = {
@@ -572,10 +552,8 @@ const MemoryManager = (function() {
                     D: { value: gewichtungen.D ?? 20, locked: currentLocks.dominanz ?? false },
                     G: { value: gewichtungen.G ?? 15, locked: currentLocks.geschlecht ?? false }
                 };
-                localStorage.setItem('tiage_faktor_gewichtungen', JSON.stringify(combined));
+                localStorage.setItem(storageKey, JSON.stringify(combined));
             }
-            // Remove legacy locks key if exists
-            localStorage.removeItem('tiage_faktor_locks');
         } catch (e) {
             console.warn('[MemoryManager] Could not save Gewichtungen:', e);
         }
@@ -583,12 +561,18 @@ const MemoryManager = (function() {
 
     /**
      * Apply Gewichtung Locks - updates combined structure
+     * @param {Object} locks - Lock status
+     * @param {string} person - 'ich' oder 'partner'
      */
-    function applyGewichtungLocks(locks) {
+    function applyGewichtungLocks(locks, person) {
         if (!locks) return;
+        const storageKey = person === 'partner'
+            ? 'tiage_faktor_gewichtungen_partner'
+            : 'tiage_faktor_gewichtungen_ich';
+
         try {
             // Get current combined or create new
-            let combined = collectGewichtungen() || {
+            let combined = collectGewichtungen(person) || {
                 O: { value: 40, locked: false },
                 A: { value: 25, locked: false },
                 D: { value: 20, locked: false },
@@ -599,35 +583,25 @@ const MemoryManager = (function() {
             combined.A.locked = locks.archetyp ?? false;
             combined.D.locked = locks.dominanz ?? false;
             combined.G.locked = locks.geschlecht ?? false;
-            localStorage.setItem('tiage_faktor_gewichtungen', JSON.stringify(combined));
-            // Remove legacy locks key
-            localStorage.removeItem('tiage_faktor_locks');
+            localStorage.setItem(storageKey, JSON.stringify(combined));
         } catch (e) {
             console.warn('[MemoryManager] Could not save Gewichtung Locks:', e);
         }
     }
 
     /**
-     * Apply Resonanzfaktoren (R1-R4) to localStorage
-     * @param {Object} resonanzFaktoren - { R1: { value, locked }, R2: ..., R3: ..., R4: ... }
+     * Apply Resonanzfaktoren for a specific person
+     * @param {Object} resonanz - Resonanzfaktoren { R1: { value, locked }, ... }
+     * @param {string} person - 'ich' oder 'partner'
      */
-    function applyResonanzFaktoren(resonanzFaktoren) {
-        if (!resonanzFaktoren) return;
-        try {
-            // Validate and normalize structure
-            const normalized = {
-                R1: { value: resonanzFaktoren.R1?.value ?? 1.0, locked: resonanzFaktoren.R1?.locked ?? false },
-                R2: { value: resonanzFaktoren.R2?.value ?? 1.0, locked: resonanzFaktoren.R2?.locked ?? false },
-                R3: { value: resonanzFaktoren.R3?.value ?? 1.0, locked: resonanzFaktoren.R3?.locked ?? false },
-                R4: { value: resonanzFaktoren.R4?.value ?? 1.0, locked: resonanzFaktoren.R4?.locked ?? false }
-            };
-            localStorage.setItem('tiage_resonanz_faktoren', JSON.stringify(normalized));
-            console.log('[MemoryManager] Resonanzfaktoren geladen:', normalized);
+    function applyResonanzfaktoren(resonanz, person) {
+        if (!resonanz) return;
+        const storageKey = person === 'partner'
+            ? 'tiage_resonanz_faktoren_partner'
+            : 'tiage_resonanz_faktoren_ich';
 
-            // Update UI if ResonanzCard is available
-            if (typeof ResonanzCard !== 'undefined' && ResonanzCard.initializeUI) {
-                ResonanzCard.initializeUI();
-            }
+        try {
+            localStorage.setItem(storageKey, JSON.stringify(resonanz));
         } catch (e) {
             console.warn('[MemoryManager] Could not save Resonanzfaktoren:', e);
         }
@@ -673,8 +647,10 @@ const MemoryManager = (function() {
         if (!data) return false;
 
         try {
-            // Archetyp: string
-            const archetypValue = data.archetyp;
+            // Archetyp: string (v3.0) oder { primary, secondary } (v2.0)
+            const archetypValue = typeof data.archetyp === 'string'
+                ? data.archetyp
+                : data.archetyp?.primary || data.archetyp;
 
             if (typeof TiageState !== 'undefined') {
                 if (data.geschlecht) {
@@ -729,14 +705,14 @@ const MemoryManager = (function() {
                 applyProfileReviewState(data.profileReview);
             }
 
-            // Apply Gewichtungen (O, A, D, G)
+            // Apply Gewichtungen für ICH (person-spezifisch)
             if (data.gewichtungen) {
-                applyGewichtungen(data.gewichtungen);
+                applyGewichtungen(data.gewichtungen, 'ich');
             }
 
-            // Apply Resonanzfaktoren (R1, R2, R3, R4)
-            if (data.resonanzFaktoren) {
-                applyResonanzFaktoren(data.resonanzFaktoren);
+            // Apply Resonanzfaktoren für ICH (person-spezifisch)
+            if (data.resonanzfaktoren) {
+                applyResonanzfaktoren(data.resonanzfaktoren, 'ich');
             }
 
             // Sync UI functions
@@ -766,8 +742,10 @@ const MemoryManager = (function() {
         if (!data) return false;
 
         try {
-            // Archetyp: string
-            const archetypValue = data.archetyp;
+            // Archetyp: string (v3.0) oder { primary, secondary } (v2.0)
+            const archetypValue = typeof data.archetyp === 'string'
+                ? data.archetyp
+                : data.archetyp?.primary || data.archetyp;
 
             if (typeof TiageState !== 'undefined') {
                 if (data.geschlecht) {
@@ -825,14 +803,14 @@ const MemoryManager = (function() {
                 applyProfileReviewState(data.profileReview);
             }
 
-            // Apply Gewichtungen (O, A, D, G)
+            // Apply Gewichtungen für PARTNER (person-spezifisch)
             if (data.gewichtungen) {
-                applyGewichtungen(data.gewichtungen);
+                applyGewichtungen(data.gewichtungen, 'partner');
             }
 
-            // Apply Resonanzfaktoren (R1, R2, R3, R4)
-            if (data.resonanzFaktoren) {
-                applyResonanzFaktoren(data.resonanzFaktoren);
+            // Apply Resonanzfaktoren für PARTNER (person-spezifisch)
+            if (data.resonanzfaktoren) {
+                applyResonanzfaktoren(data.resonanzfaktoren, 'partner');
             }
 
             // Sync UI functions
