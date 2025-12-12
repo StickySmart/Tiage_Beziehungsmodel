@@ -113,172 +113,177 @@ TiageSynthesis.Constants = {
     //
     ARCHETYP_KOHAERENZ: {
         // ═══════════════════════════════════════════════════════════════════
-        // R_Leben (Orientierungs-Bedürfnisse)
+        // R_Leben (Orientierungs-Bedürfnisse) - für R1
+        // Bedürfnisse: (kein #BID), (kein #BID), #B204, #B20
+        // HINWEIS: sexuelle_experimentierfreude, sexuelle_verbindung fehlen in beduerfnis-ids.js
         // ═══════════════════════════════════════════════════════════════════
         leben: {
             single: {
-                sexuelle_experimentierfreude: 50,  // Offen, aber nicht zentral
-                sexuelle_verbindung: 30,           // Gering - Fokus auf Selbst
-                koerpernaehe: 40,
-                intimitaet: 30
+                sexuelle_experimentierfreude: 50,  // (kein #BID) - Offen, aber nicht zentral
+                sexuelle_verbindung: 30,           // (kein #BID) - Gering - Fokus auf Selbst
+                koerpernaehe: 40,                  // #B204
+                intimitaet: 30                     // #B20
             },
             duo: {
-                sexuelle_experimentierfreude: 40,  // Eher konservativ
-                sexuelle_verbindung: 90,           // Sehr wichtig - exklusiv
-                koerpernaehe: 85,
-                intimitaet: 90
+                sexuelle_experimentierfreude: 40,  // (kein #BID) - Eher konservativ
+                sexuelle_verbindung: 90,           // (kein #BID) - Sehr wichtig - exklusiv
+                koerpernaehe: 85,                  // #B204
+                intimitaet: 90                     // #B20
             },
             duo_flex: {
-                sexuelle_experimentierfreude: 70,  // Offen für Neues
-                sexuelle_verbindung: 75,
-                koerpernaehe: 75,
-                intimitaet: 80
+                sexuelle_experimentierfreude: 70,  // (kein #BID) - Offen für Neues
+                sexuelle_verbindung: 75,           // (kein #BID)
+                koerpernaehe: 75,                  // #B204
+                intimitaet: 80                     // #B20
             },
             solopoly: {
-                sexuelle_experimentierfreude: 85,  // Hoch - viel Exploration
-                sexuelle_verbindung: 60,           // Moderat - Autonomie wichtiger
-                koerpernaehe: 60,
-                intimitaet: 50
+                sexuelle_experimentierfreude: 85,  // (kein #BID) - Hoch - viel Exploration
+                sexuelle_verbindung: 60,           // (kein #BID) - Moderat - Autonomie wichtiger
+                koerpernaehe: 60,                  // #B204
+                intimitaet: 50                     // #B20
             },
             polyamor: {
-                sexuelle_experimentierfreude: 80,
-                sexuelle_verbindung: 85,           // Hoch - tiefe Verbindungen
-                koerpernaehe: 75,
-                intimitaet: 85
+                sexuelle_experimentierfreude: 80,  // (kein #BID)
+                sexuelle_verbindung: 85,           // (kein #BID) - Hoch - tiefe Verbindungen
+                koerpernaehe: 75,                  // #B204
+                intimitaet: 85                     // #B20
             },
             ra: {
-                sexuelle_experimentierfreude: 75,  // Keine Regeln
-                sexuelle_verbindung: 60,           // Variabel
-                koerpernaehe: 50,
-                intimitaet: 60
+                sexuelle_experimentierfreude: 75,  // (kein #BID) - Keine Regeln
+                sexuelle_verbindung: 60,           // (kein #BID) - Variabel
+                koerpernaehe: 50,                  // #B204
+                intimitaet: 60                     // #B20
             },
             lat: {
-                sexuelle_experimentierfreude: 50,
-                sexuelle_verbindung: 80,           // Wichtig trotz Distanz
-                koerpernaehe: 60,
-                intimitaet: 75
+                sexuelle_experimentierfreude: 50,  // (kein #BID)
+                sexuelle_verbindung: 80,           // (kein #BID) - Wichtig trotz Distanz
+                koerpernaehe: 60,                  // #B204
+                intimitaet: 75                     // #B20
             },
             aromantisch: {
-                sexuelle_experimentierfreude: 40,  // Kann variieren
-                sexuelle_verbindung: 20,           // Gering - keine Romantik
-                koerpernaehe: 30,
-                intimitaet: 25
+                sexuelle_experimentierfreude: 40,  // (kein #BID) - Kann variieren
+                sexuelle_verbindung: 20,           // (kein #BID) - Gering - keine Romantik
+                koerpernaehe: 30,                  // #B204
+                intimitaet: 25                     // #B20
             }
         },
 
         // ═══════════════════════════════════════════════════════════════════
-        // R_Dynamik (Dominanz-Bedürfnisse)
+        // R_Dynamik (Dominanz-Bedürfnisse) - für R3
+        // Bedürfnisse: #B74, #B75, #B76, #B77, #B36
+        // HINWEIS: autonomie → verwende unabhaengigkeit #B36
         // ═══════════════════════════════════════════════════════════════════
         dynamik: {
             single: {
-                kontrolle_ausueben: 50,            // Selbstbestimmt
-                hingabe: 30,
-                fuehrung_geben: 50,
-                gefuehrt_werden: 30,
-                autonomie: 90                       // Sehr hoch
+                kontrolle_ausueben: 50,            // #B74 - Selbstbestimmt
+                hingabe: 30,                       // #B75
+                fuehrung_geben: 50,                // #B76
+                gefuehrt_werden: 30,               // #B77
+                autonomie: 90                       // → #B36 unabhaengigkeit - Sehr hoch
             },
             duo: {
-                kontrolle_ausueben: 50,
-                hingabe: 60,                        // Bereitschaft zur Hingabe
-                fuehrung_geben: 50,
-                gefuehrt_werden: 50,
-                autonomie: 50                       // Balance
+                kontrolle_ausueben: 50,            // #B74
+                hingabe: 60,                        // #B75 - Bereitschaft zur Hingabe
+                fuehrung_geben: 50,                // #B76
+                gefuehrt_werden: 50,               // #B77
+                autonomie: 50                       // → #B36 unabhaengigkeit - Balance
             },
             duo_flex: {
-                kontrolle_ausueben: 55,
-                hingabe: 55,
-                fuehrung_geben: 55,
-                gefuehrt_werden: 50,
-                autonomie: 65
+                kontrolle_ausueben: 55,            // #B74
+                hingabe: 55,                       // #B75
+                fuehrung_geben: 55,                // #B76
+                gefuehrt_werden: 50,               // #B77
+                autonomie: 65                      // → #B36 unabhaengigkeit
             },
             solopoly: {
-                kontrolle_ausueben: 40,
-                hingabe: 40,
-                fuehrung_geben: 45,
-                gefuehrt_werden: 40,
-                autonomie: 95                       // Maximum
+                kontrolle_ausueben: 40,            // #B74
+                hingabe: 40,                       // #B75
+                fuehrung_geben: 45,                // #B76
+                gefuehrt_werden: 40,               // #B77
+                autonomie: 95                       // → #B36 unabhaengigkeit - Maximum
             },
             polyamor: {
-                kontrolle_ausueben: 45,
-                hingabe: 60,
-                fuehrung_geben: 50,
-                gefuehrt_werden: 55,
-                autonomie: 70
+                kontrolle_ausueben: 45,            // #B74
+                hingabe: 60,                       // #B75
+                fuehrung_geben: 50,                // #B76
+                gefuehrt_werden: 55,               // #B77
+                autonomie: 70                      // → #B36 unabhaengigkeit
             },
             ra: {
-                kontrolle_ausueben: 30,             // Keine Hierarchien
-                hingabe: 50,
-                fuehrung_geben: 30,
-                gefuehrt_werden: 30,
-                autonomie: 90
+                kontrolle_ausueben: 30,             // #B74 - Keine Hierarchien
+                hingabe: 50,                       // #B75
+                fuehrung_geben: 30,                // #B76
+                gefuehrt_werden: 30,               // #B77
+                autonomie: 90                      // → #B36 unabhaengigkeit
             },
             lat: {
-                kontrolle_ausueben: 40,
-                hingabe: 55,
-                fuehrung_geben: 45,
-                gefuehrt_werden: 50,
-                autonomie: 80                       // Wichtig für LAT
+                kontrolle_ausueben: 40,            // #B74
+                hingabe: 55,                       // #B75
+                fuehrung_geben: 45,                // #B76
+                gefuehrt_werden: 50,               // #B77
+                autonomie: 80                       // → #B36 unabhaengigkeit - Wichtig für LAT
             },
             aromantisch: {
-                kontrolle_ausueben: 40,
-                hingabe: 25,                        // Gering - keine romantische Hingabe
-                fuehrung_geben: 40,
-                gefuehrt_werden: 30,
-                autonomie: 85
+                kontrolle_ausueben: 40,            // #B74
+                hingabe: 25,                        // #B75 - Gering - keine romantische Hingabe
+                fuehrung_geben: 40,                // #B76
+                gefuehrt_werden: 30,               // #B77
+                autonomie: 85                      // → #B36 unabhaengigkeit
             }
         },
 
         // ═══════════════════════════════════════════════════════════════════
-        // R_Identität (Geschlechts-Bedürfnisse)
+        // R_Identität (Geschlechts-Bedürfnisse) - für R4
+        // Bedürfnisse: #B50, #B67, #B25, #B31
         // ═══════════════════════════════════════════════════════════════════
         identitaet: {
             single: {
-                authentizitaet: 85,                 // Hoch - Selbstfokus
-                selbst_ausdruck: 80,
-                akzeptanz: 70,
-                gesehen_werden: 60
+                authentizitaet: 85,                 // #B50 - Hoch - Selbstfokus
+                selbst_ausdruck: 80,               // #B67
+                akzeptanz: 70,                     // #B25
+                gesehen_werden: 60                 // #B31
             },
             duo: {
-                authentizitaet: 75,
-                selbst_ausdruck: 70,
-                akzeptanz: 85,                      // Wichtig - vom Partner
-                gesehen_werden: 90
+                authentizitaet: 75,                // #B50
+                selbst_ausdruck: 70,               // #B67
+                akzeptanz: 85,                      // #B25 - Wichtig - vom Partner
+                gesehen_werden: 90                 // #B31
             },
             duo_flex: {
-                authentizitaet: 80,
-                selbst_ausdruck: 75,
-                akzeptanz: 80,
-                gesehen_werden: 80
+                authentizitaet: 80,                // #B50
+                selbst_ausdruck: 75,               // #B67
+                akzeptanz: 80,                     // #B25
+                gesehen_werden: 80                 // #B31
             },
             solopoly: {
-                authentizitaet: 95,                 // Maximum - eigene Wahrheit
-                selbst_ausdruck: 90,
-                akzeptanz: 75,
-                gesehen_werden: 70
+                authentizitaet: 95,                 // #B50 - Maximum - eigene Wahrheit
+                selbst_ausdruck: 90,               // #B67
+                akzeptanz: 75,                     // #B25
+                gesehen_werden: 70                 // #B31
             },
             polyamor: {
-                authentizitaet: 85,
-                selbst_ausdruck: 85,
-                akzeptanz: 85,
-                gesehen_werden: 85
+                authentizitaet: 85,                // #B50
+                selbst_ausdruck: 85,               // #B67
+                akzeptanz: 85,                     // #B25
+                gesehen_werden: 85                 // #B31
             },
             ra: {
-                authentizitaet: 95,                 // Keine Labels
-                selbst_ausdruck: 95,
-                akzeptanz: 80,
-                gesehen_werden: 70
+                authentizitaet: 95,                 // #B50 - Keine Labels
+                selbst_ausdruck: 95,               // #B67
+                akzeptanz: 80,                     // #B25
+                gesehen_werden: 70                 // #B31
             },
             lat: {
-                authentizitaet: 85,
-                selbst_ausdruck: 80,
-                akzeptanz: 80,
-                gesehen_werden: 80
+                authentizitaet: 85,                // #B50
+                selbst_ausdruck: 80,               // #B67
+                akzeptanz: 80,                     // #B25
+                gesehen_werden: 80                 // #B31
             },
             aromantisch: {
-                authentizitaet: 90,                 // Hoch - gegen Normen
-                selbst_ausdruck: 85,
-                akzeptanz: 90,                      // Braucht Akzeptanz
-                gesehen_werden: 75
+                authentizitaet: 90,                 // #B50 - Hoch - gegen Normen
+                selbst_ausdruck: 85,               // #B67
+                akzeptanz: 90,                      // #B25 - Braucht Akzeptanz
+                gesehen_werden: 75                 // #B31
             }
         },
 
