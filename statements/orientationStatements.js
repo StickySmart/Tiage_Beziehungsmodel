@@ -447,3 +447,10 @@ function getGenderChemistryStatements(g1, g2) {
 if (typeof module !== 'undefined' && module.exports) {
     module.exports = { orientationStatements, getOrientationCompatibility, getGenderChemistryStatements };
 }
+
+// Browser-Export
+if (typeof window !== 'undefined') {
+    window.orientationStatements = orientationStatements;
+    window.getOrientationCompatibility = getOrientationCompatibility;
+    window.getGenderChemistryStatements = getGenderChemistryStatements;
+}

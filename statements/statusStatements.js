@@ -238,3 +238,11 @@ function getStatusStatementsFromDimensions(personDims1, personDims2) {
 if (typeof module !== 'undefined' && module.exports) {
     module.exports = { statusStatements, getStatusStatements, getPersonOverallStatus, getStatusStatementsFromDimensions };
 }
+
+// Browser-Export
+if (typeof window !== 'undefined') {
+    window.statusStatements = statusStatements;
+    window.getStatusStatements = getStatusStatements;
+    window.getPersonOverallStatus = getPersonOverallStatus;
+    window.getStatusStatementsFromDimensions = getStatusStatementsFromDimensions;
+}

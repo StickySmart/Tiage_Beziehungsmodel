@@ -361,3 +361,11 @@ function getGfkKonfliktPotenzial(gfk1, gfk2) {
 if (typeof module !== 'undefined' && module.exports) {
     module.exports = { gfkStatements, getGfkStatements, getGfkResonanzModifier, getGfkKonfliktPotenzial };
 }
+
+// Browser-Export
+if (typeof window !== 'undefined') {
+    window.gfkStatements = gfkStatements;
+    window.getGfkStatements = getGfkStatements;
+    window.getGfkResonanzModifier = getGfkResonanzModifier;
+    window.getGfkKonfliktPotenzial = getGfkKonfliktPotenzial;
+}
