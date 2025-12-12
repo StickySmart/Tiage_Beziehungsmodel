@@ -13331,6 +13331,10 @@
             closeTiageSyntheseModal(event, skipHistoryBack);
         }
 
+        function navigateProContraArchetype(person, direction) {
+            navigateTiageSyntheseArchetype(person, direction);
+        }
+
         function showTiageSyntheseContent(type) {
             currentTiageSyntheseType = type;
             currentPathosLogosType = type; // Keep legacy in sync
