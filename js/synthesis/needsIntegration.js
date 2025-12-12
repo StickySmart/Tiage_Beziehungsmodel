@@ -249,11 +249,11 @@ TiageSynthesis.NeedsIntegration = {
     // ═══════════════════════════════════════════════════════════════════════
 
     /**
-     * Berechnet die dimensionalen Resonanzen R_Leben, R_Dynamik, R_Identität
+     * Berechnet die dimensionalen Resonanzen R_Leben, R_Dynamik, R_Identität, R_Philosophie
      * basierend auf der Kohärenz zwischen Archetyp und Bedürfnissen.
      *
      * @param {object} person - Profil mit archetyp und needs
-     * @returns {object} { leben: R, dynamik: R, identitaet: R }
+     * @returns {object} { leben: R, dynamik: R, identitaet: R, philosophie: R }
      */
     calculateDimensionalResonance: function(person) {
         var constants = TiageSynthesis.Constants;
@@ -264,6 +264,7 @@ TiageSynthesis.NeedsIntegration = {
                 leben: 1.0,
                 dynamik: 1.0,
                 identitaet: 1.0,
+                philosophie: 1.0,
                 enabled: false
             };
         }
@@ -274,6 +275,7 @@ TiageSynthesis.NeedsIntegration = {
             leben: this._calculateSingleResonance(person.needs, kohaerenz.leben, archetyp),
             dynamik: this._calculateSingleResonance(person.needs, kohaerenz.dynamik, archetyp),
             identitaet: this._calculateSingleResonance(person.needs, kohaerenz.identitaet, archetyp),
+            philosophie: this._calculateSingleResonance(person.needs, kohaerenz.philosophie, archetyp),
             enabled: true,
             archetyp: archetyp
         };
@@ -284,6 +286,10 @@ TiageSynthesis.NeedsIntegration = {
      *
      * Formel: R_dim = 0.9 + (Übereinstimmung × 0.2)
      * Übereinstimmung = 1 - (durchschnittliche Abweichung / 100)
+     *
+     * Unterstützt zwei Formate:
+     * - Altes Format: { needKey: 50 }
+     * - Neues Format: { needKey: { value: 50, id: '#B50', label: 'Label' } }
      *
      * @private
      */
@@ -298,10 +304,16 @@ TiageSynthesis.NeedsIntegration = {
 
         for (var needId in expected) {
             if (expected.hasOwnProperty(needId) && expected[needId] !== null) {
-                var expectedValue = expected[needId];
+                var expectedEntry = expected[needId];
+
+                // Unterstütze beide Formate: direkte Zahl oder Objekt mit .value
+                var expectedValue = (typeof expectedEntry === 'object' && expectedEntry.value !== undefined)
+                    ? expectedEntry.value
+                    : expectedEntry;
+
                 var actualValue = needs[needId];
 
-                if (actualValue !== undefined) {
+                if (actualValue !== undefined && typeof expectedValue === 'number') {
                     var diff = Math.abs(actualValue - expectedValue);
                     totalDiff += diff;
                     count++;

@@ -113,172 +113,276 @@ TiageSynthesis.Constants = {
     //
     ARCHETYP_KOHAERENZ: {
         // ═══════════════════════════════════════════════════════════════════
-        // R_Leben (Orientierungs-Bedürfnisse)
+        // R_Leben (Orientierungs-Bedürfnisse) - für R1
+        // HINWEIS: sexuelle_experimentierfreude, sexuelle_verbindung fehlen in beduerfnis-ids.js
         // ═══════════════════════════════════════════════════════════════════
         leben: {
             single: {
-                sexuelle_experimentierfreude: 50,  // Offen, aber nicht zentral
-                sexuelle_verbindung: 30,           // Gering - Fokus auf Selbst
-                koerpernaehe: 40,
-                intimitaet: 30
+                sexuelle_experimentierfreude: { value: 50, id: null, label: 'Sexuelle Experimentierfreude' },
+                sexuelle_verbindung:          { value: 30, id: null, label: 'Sexuelle Verbindung' },
+                koerpernaehe:                 { value: 40, id: '#B204', label: 'Körpernähe' },
+                intimitaet:                   { value: 30, id: '#B20', label: 'Intimität' }
             },
             duo: {
-                sexuelle_experimentierfreude: 40,  // Eher konservativ
-                sexuelle_verbindung: 90,           // Sehr wichtig - exklusiv
-                koerpernaehe: 85,
-                intimitaet: 90
+                sexuelle_experimentierfreude: { value: 40, id: null, label: 'Sexuelle Experimentierfreude' },
+                sexuelle_verbindung:          { value: 90, id: null, label: 'Sexuelle Verbindung' },
+                koerpernaehe:                 { value: 85, id: '#B204', label: 'Körpernähe' },
+                intimitaet:                   { value: 90, id: '#B20', label: 'Intimität' }
             },
             duo_flex: {
-                sexuelle_experimentierfreude: 70,  // Offen für Neues
-                sexuelle_verbindung: 75,
-                koerpernaehe: 75,
-                intimitaet: 80
+                sexuelle_experimentierfreude: { value: 70, id: null, label: 'Sexuelle Experimentierfreude' },
+                sexuelle_verbindung:          { value: 75, id: null, label: 'Sexuelle Verbindung' },
+                koerpernaehe:                 { value: 75, id: '#B204', label: 'Körpernähe' },
+                intimitaet:                   { value: 80, id: '#B20', label: 'Intimität' }
             },
             solopoly: {
-                sexuelle_experimentierfreude: 85,  // Hoch - viel Exploration
-                sexuelle_verbindung: 60,           // Moderat - Autonomie wichtiger
-                koerpernaehe: 60,
-                intimitaet: 50
+                sexuelle_experimentierfreude: { value: 85, id: null, label: 'Sexuelle Experimentierfreude' },
+                sexuelle_verbindung:          { value: 60, id: null, label: 'Sexuelle Verbindung' },
+                koerpernaehe:                 { value: 60, id: '#B204', label: 'Körpernähe' },
+                intimitaet:                   { value: 50, id: '#B20', label: 'Intimität' }
             },
             polyamor: {
-                sexuelle_experimentierfreude: 80,
-                sexuelle_verbindung: 85,           // Hoch - tiefe Verbindungen
-                koerpernaehe: 75,
-                intimitaet: 85
+                sexuelle_experimentierfreude: { value: 80, id: null, label: 'Sexuelle Experimentierfreude' },
+                sexuelle_verbindung:          { value: 85, id: null, label: 'Sexuelle Verbindung' },
+                koerpernaehe:                 { value: 75, id: '#B204', label: 'Körpernähe' },
+                intimitaet:                   { value: 85, id: '#B20', label: 'Intimität' }
             },
             ra: {
-                sexuelle_experimentierfreude: 75,  // Keine Regeln
-                sexuelle_verbindung: 60,           // Variabel
-                koerpernaehe: 50,
-                intimitaet: 60
+                sexuelle_experimentierfreude: { value: 75, id: null, label: 'Sexuelle Experimentierfreude' },
+                sexuelle_verbindung:          { value: 60, id: null, label: 'Sexuelle Verbindung' },
+                koerpernaehe:                 { value: 50, id: '#B204', label: 'Körpernähe' },
+                intimitaet:                   { value: 60, id: '#B20', label: 'Intimität' }
             },
             lat: {
-                sexuelle_experimentierfreude: 50,
-                sexuelle_verbindung: 80,           // Wichtig trotz Distanz
-                koerpernaehe: 60,
-                intimitaet: 75
+                sexuelle_experimentierfreude: { value: 50, id: null, label: 'Sexuelle Experimentierfreude' },
+                sexuelle_verbindung:          { value: 80, id: null, label: 'Sexuelle Verbindung' },
+                koerpernaehe:                 { value: 60, id: '#B204', label: 'Körpernähe' },
+                intimitaet:                   { value: 75, id: '#B20', label: 'Intimität' }
             },
             aromantisch: {
-                sexuelle_experimentierfreude: 40,  // Kann variieren
-                sexuelle_verbindung: 20,           // Gering - keine Romantik
-                koerpernaehe: 30,
-                intimitaet: 25
+                sexuelle_experimentierfreude: { value: 40, id: null, label: 'Sexuelle Experimentierfreude' },
+                sexuelle_verbindung:          { value: 20, id: null, label: 'Sexuelle Verbindung' },
+                koerpernaehe:                 { value: 30, id: '#B204', label: 'Körpernähe' },
+                intimitaet:                   { value: 25, id: '#B20', label: 'Intimität' }
             }
         },
 
         // ═══════════════════════════════════════════════════════════════════
-        // R_Dynamik (Dominanz-Bedürfnisse)
+        // R_Dynamik (Dominanz-Bedürfnisse) - für R3
+        // HINWEIS: autonomie → verwende unabhaengigkeit #B36
         // ═══════════════════════════════════════════════════════════════════
         dynamik: {
             single: {
-                kontrolle_ausueben: 50,            // Selbstbestimmt
-                hingabe: 30,
-                fuehrung_geben: 50,
-                gefuehrt_werden: 30,
-                autonomie: 90                       // Sehr hoch
+                kontrolle_ausueben: { value: 50, id: '#B74', label: 'Kontrolle ausüben' },
+                hingabe:            { value: 30, id: '#B75', label: 'Hingabe' },
+                fuehrung_geben:     { value: 50, id: '#B76', label: 'Führung geben' },
+                gefuehrt_werden:    { value: 30, id: '#B77', label: 'Geführt werden' },
+                unabhaengigkeit:    { value: 90, id: '#B36', label: 'Unabhängigkeit' }
             },
             duo: {
-                kontrolle_ausueben: 50,
-                hingabe: 60,                        // Bereitschaft zur Hingabe
-                fuehrung_geben: 50,
-                gefuehrt_werden: 50,
-                autonomie: 50                       // Balance
+                kontrolle_ausueben: { value: 50, id: '#B74', label: 'Kontrolle ausüben' },
+                hingabe:            { value: 60, id: '#B75', label: 'Hingabe' },
+                fuehrung_geben:     { value: 50, id: '#B76', label: 'Führung geben' },
+                gefuehrt_werden:    { value: 50, id: '#B77', label: 'Geführt werden' },
+                unabhaengigkeit:    { value: 50, id: '#B36', label: 'Unabhängigkeit' }
             },
             duo_flex: {
-                kontrolle_ausueben: 55,
-                hingabe: 55,
-                fuehrung_geben: 55,
-                gefuehrt_werden: 50,
-                autonomie: 65
+                kontrolle_ausueben: { value: 55, id: '#B74', label: 'Kontrolle ausüben' },
+                hingabe:            { value: 55, id: '#B75', label: 'Hingabe' },
+                fuehrung_geben:     { value: 55, id: '#B76', label: 'Führung geben' },
+                gefuehrt_werden:    { value: 50, id: '#B77', label: 'Geführt werden' },
+                unabhaengigkeit:    { value: 65, id: '#B36', label: 'Unabhängigkeit' }
             },
             solopoly: {
-                kontrolle_ausueben: 40,
-                hingabe: 40,
-                fuehrung_geben: 45,
-                gefuehrt_werden: 40,
-                autonomie: 95                       // Maximum
+                kontrolle_ausueben: { value: 40, id: '#B74', label: 'Kontrolle ausüben' },
+                hingabe:            { value: 40, id: '#B75', label: 'Hingabe' },
+                fuehrung_geben:     { value: 45, id: '#B76', label: 'Führung geben' },
+                gefuehrt_werden:    { value: 40, id: '#B77', label: 'Geführt werden' },
+                unabhaengigkeit:    { value: 95, id: '#B36', label: 'Unabhängigkeit' }
             },
             polyamor: {
-                kontrolle_ausueben: 45,
-                hingabe: 60,
-                fuehrung_geben: 50,
-                gefuehrt_werden: 55,
-                autonomie: 70
+                kontrolle_ausueben: { value: 45, id: '#B74', label: 'Kontrolle ausüben' },
+                hingabe:            { value: 60, id: '#B75', label: 'Hingabe' },
+                fuehrung_geben:     { value: 50, id: '#B76', label: 'Führung geben' },
+                gefuehrt_werden:    { value: 55, id: '#B77', label: 'Geführt werden' },
+                unabhaengigkeit:    { value: 70, id: '#B36', label: 'Unabhängigkeit' }
             },
             ra: {
-                kontrolle_ausueben: 30,             // Keine Hierarchien
-                hingabe: 50,
-                fuehrung_geben: 30,
-                gefuehrt_werden: 30,
-                autonomie: 90
+                kontrolle_ausueben: { value: 30, id: '#B74', label: 'Kontrolle ausüben' },
+                hingabe:            { value: 50, id: '#B75', label: 'Hingabe' },
+                fuehrung_geben:     { value: 30, id: '#B76', label: 'Führung geben' },
+                gefuehrt_werden:    { value: 30, id: '#B77', label: 'Geführt werden' },
+                unabhaengigkeit:    { value: 90, id: '#B36', label: 'Unabhängigkeit' }
             },
             lat: {
-                kontrolle_ausueben: 40,
-                hingabe: 55,
-                fuehrung_geben: 45,
-                gefuehrt_werden: 50,
-                autonomie: 80                       // Wichtig für LAT
+                kontrolle_ausueben: { value: 40, id: '#B74', label: 'Kontrolle ausüben' },
+                hingabe:            { value: 55, id: '#B75', label: 'Hingabe' },
+                fuehrung_geben:     { value: 45, id: '#B76', label: 'Führung geben' },
+                gefuehrt_werden:    { value: 50, id: '#B77', label: 'Geführt werden' },
+                unabhaengigkeit:    { value: 80, id: '#B36', label: 'Unabhängigkeit' }
             },
             aromantisch: {
-                kontrolle_ausueben: 40,
-                hingabe: 25,                        // Gering - keine romantische Hingabe
-                fuehrung_geben: 40,
-                gefuehrt_werden: 30,
-                autonomie: 85
+                kontrolle_ausueben: { value: 40, id: '#B74', label: 'Kontrolle ausüben' },
+                hingabe:            { value: 25, id: '#B75', label: 'Hingabe' },
+                fuehrung_geben:     { value: 40, id: '#B76', label: 'Führung geben' },
+                gefuehrt_werden:    { value: 30, id: '#B77', label: 'Geführt werden' },
+                unabhaengigkeit:    { value: 85, id: '#B36', label: 'Unabhängigkeit' }
             }
         },
 
         // ═══════════════════════════════════════════════════════════════════
-        // R_Identität (Geschlechts-Bedürfnisse)
+        // R_Identität (Geschlechts-Bedürfnisse) - für R4
         // ═══════════════════════════════════════════════════════════════════
         identitaet: {
             single: {
-                authentizitaet: 85,                 // Hoch - Selbstfokus
-                selbst_ausdruck: 80,
-                akzeptanz: 70,
-                gesehen_werden: 60
+                authentizitaet:  { value: 85, id: '#B50', label: 'Authentizität' },
+                selbst_ausdruck: { value: 80, id: '#B67', label: 'Selbst-Ausdruck' },
+                akzeptanz:       { value: 70, id: '#B25', label: 'Akzeptanz' },
+                gesehen_werden:  { value: 60, id: '#B31', label: 'Gesehen werden' }
             },
             duo: {
-                authentizitaet: 75,
-                selbst_ausdruck: 70,
-                akzeptanz: 85,                      // Wichtig - vom Partner
-                gesehen_werden: 90
+                authentizitaet:  { value: 75, id: '#B50', label: 'Authentizität' },
+                selbst_ausdruck: { value: 70, id: '#B67', label: 'Selbst-Ausdruck' },
+                akzeptanz:       { value: 85, id: '#B25', label: 'Akzeptanz' },
+                gesehen_werden:  { value: 90, id: '#B31', label: 'Gesehen werden' }
             },
             duo_flex: {
-                authentizitaet: 80,
-                selbst_ausdruck: 75,
-                akzeptanz: 80,
-                gesehen_werden: 80
+                authentizitaet:  { value: 80, id: '#B50', label: 'Authentizität' },
+                selbst_ausdruck: { value: 75, id: '#B67', label: 'Selbst-Ausdruck' },
+                akzeptanz:       { value: 80, id: '#B25', label: 'Akzeptanz' },
+                gesehen_werden:  { value: 80, id: '#B31', label: 'Gesehen werden' }
             },
             solopoly: {
-                authentizitaet: 95,                 // Maximum - eigene Wahrheit
-                selbst_ausdruck: 90,
-                akzeptanz: 75,
-                gesehen_werden: 70
+                authentizitaet:  { value: 95, id: '#B50', label: 'Authentizität' },
+                selbst_ausdruck: { value: 90, id: '#B67', label: 'Selbst-Ausdruck' },
+                akzeptanz:       { value: 75, id: '#B25', label: 'Akzeptanz' },
+                gesehen_werden:  { value: 70, id: '#B31', label: 'Gesehen werden' }
             },
             polyamor: {
-                authentizitaet: 85,
-                selbst_ausdruck: 85,
-                akzeptanz: 85,
-                gesehen_werden: 85
+                authentizitaet:  { value: 85, id: '#B50', label: 'Authentizität' },
+                selbst_ausdruck: { value: 85, id: '#B67', label: 'Selbst-Ausdruck' },
+                akzeptanz:       { value: 85, id: '#B25', label: 'Akzeptanz' },
+                gesehen_werden:  { value: 85, id: '#B31', label: 'Gesehen werden' }
             },
             ra: {
-                authentizitaet: 95,                 // Keine Labels
-                selbst_ausdruck: 95,
-                akzeptanz: 80,
-                gesehen_werden: 70
+                authentizitaet:  { value: 95, id: '#B50', label: 'Authentizität' },
+                selbst_ausdruck: { value: 95, id: '#B67', label: 'Selbst-Ausdruck' },
+                akzeptanz:       { value: 80, id: '#B25', label: 'Akzeptanz' },
+                gesehen_werden:  { value: 70, id: '#B31', label: 'Gesehen werden' }
             },
             lat: {
-                authentizitaet: 85,
-                selbst_ausdruck: 80,
-                akzeptanz: 80,
-                gesehen_werden: 80
+                authentizitaet:  { value: 85, id: '#B50', label: 'Authentizität' },
+                selbst_ausdruck: { value: 80, id: '#B67', label: 'Selbst-Ausdruck' },
+                akzeptanz:       { value: 80, id: '#B25', label: 'Akzeptanz' },
+                gesehen_werden:  { value: 80, id: '#B31', label: 'Gesehen werden' }
             },
             aromantisch: {
-                authentizitaet: 90,                 // Hoch - gegen Normen
-                selbst_ausdruck: 85,
-                akzeptanz: 90,                      // Braucht Akzeptanz
-                gesehen_werden: 75
+                authentizitaet:  { value: 90, id: '#B50', label: 'Authentizität' },
+                selbst_ausdruck: { value: 85, id: '#B67', label: 'Selbst-Ausdruck' },
+                akzeptanz:       { value: 90, id: '#B25', label: 'Akzeptanz' },
+                gesehen_werden:  { value: 75, id: '#B31', label: 'Gesehen werden' }
+            }
+        },
+
+        // ═══════════════════════════════════════════════════════════════════
+        // R_Philosophie (Archetyp-Bedürfnisse) - für R2
+        // ═══════════════════════════════════════════════════════════════════
+        philosophie: {
+            single: {
+                kinderwunsch:         { value: 20, id: '#B90', label: 'Kinderwunsch' },
+                langfristige_bindung: { value: 15, id: '#B96', label: 'Langfristige Bindung' },
+                verbindlichkeit:      { value: 20, id: '#B95', label: 'Verbindlichkeit' },
+                gemeinsamer_wohnraum: { value: 10, id: '#B99', label: 'Gemeinsamer Wohnraum' },
+                eigener_raum:         { value: 95, id: '#B103', label: 'Eigener Raum' },
+                alltag_teilen:        { value: 20, id: '#B102', label: 'Alltag teilen' },
+                unabhaengigkeit:      { value: 95, id: '#B36', label: 'Unabhängigkeit' },
+                selbstbestimmung:     { value: 95, id: '#B34', label: 'Selbstbestimmung' },
+                zugehoerigkeit:       { value: 40, id: '#B42', label: 'Zugehörigkeit' },
+                gemeinschaft:         { value: 50, id: '#B41', label: 'Gemeinschaft' }
+            },
+            duo: {
+                kinderwunsch:         { value: 75, id: '#B90', label: 'Kinderwunsch' },
+                langfristige_bindung: { value: 95, id: '#B96', label: 'Langfristige Bindung' },
+                verbindlichkeit:      { value: 95, id: '#B95', label: 'Verbindlichkeit' },
+                gemeinsamer_wohnraum: { value: 90, id: '#B99', label: 'Gemeinsamer Wohnraum' },
+                eigener_raum:         { value: 30, id: '#B103', label: 'Eigener Raum' },
+                alltag_teilen:        { value: 90, id: '#B102', label: 'Alltag teilen' },
+                unabhaengigkeit:      { value: 40, id: '#B36', label: 'Unabhängigkeit' },
+                selbstbestimmung:     { value: 50, id: '#B34', label: 'Selbstbestimmung' },
+                zugehoerigkeit:       { value: 90, id: '#B42', label: 'Zugehörigkeit' },
+                gemeinschaft:         { value: 70, id: '#B41', label: 'Gemeinschaft' }
+            },
+            duo_flex: {
+                kinderwunsch:         { value: 60, id: '#B90', label: 'Kinderwunsch' },
+                langfristige_bindung: { value: 85, id: '#B96', label: 'Langfristige Bindung' },
+                verbindlichkeit:      { value: 80, id: '#B95', label: 'Verbindlichkeit' },
+                gemeinsamer_wohnraum: { value: 75, id: '#B99', label: 'Gemeinsamer Wohnraum' },
+                eigener_raum:         { value: 50, id: '#B103', label: 'Eigener Raum' },
+                alltag_teilen:        { value: 75, id: '#B102', label: 'Alltag teilen' },
+                unabhaengigkeit:      { value: 60, id: '#B36', label: 'Unabhängigkeit' },
+                selbstbestimmung:     { value: 65, id: '#B34', label: 'Selbstbestimmung' },
+                zugehoerigkeit:       { value: 80, id: '#B42', label: 'Zugehörigkeit' },
+                gemeinschaft:         { value: 75, id: '#B41', label: 'Gemeinschaft' }
+            },
+            solopoly: {
+                kinderwunsch:         { value: 30, id: '#B90', label: 'Kinderwunsch' },
+                langfristige_bindung: { value: 50, id: '#B96', label: 'Langfristige Bindung' },
+                verbindlichkeit:      { value: 45, id: '#B95', label: 'Verbindlichkeit' },
+                gemeinsamer_wohnraum: { value: 20, id: '#B99', label: 'Gemeinsamer Wohnraum' },
+                eigener_raum:         { value: 90, id: '#B103', label: 'Eigener Raum' },
+                alltag_teilen:        { value: 35, id: '#B102', label: 'Alltag teilen' },
+                unabhaengigkeit:      { value: 95, id: '#B36', label: 'Unabhängigkeit' },
+                selbstbestimmung:     { value: 95, id: '#B34', label: 'Selbstbestimmung' },
+                zugehoerigkeit:       { value: 60, id: '#B42', label: 'Zugehörigkeit' },
+                gemeinschaft:         { value: 70, id: '#B41', label: 'Gemeinschaft' }
+            },
+            polyamor: {
+                kinderwunsch:         { value: 50, id: '#B90', label: 'Kinderwunsch' },
+                langfristige_bindung: { value: 75, id: '#B96', label: 'Langfristige Bindung' },
+                verbindlichkeit:      { value: 70, id: '#B95', label: 'Verbindlichkeit' },
+                gemeinsamer_wohnraum: { value: 60, id: '#B99', label: 'Gemeinsamer Wohnraum' },
+                eigener_raum:         { value: 60, id: '#B103', label: 'Eigener Raum' },
+                alltag_teilen:        { value: 65, id: '#B102', label: 'Alltag teilen' },
+                unabhaengigkeit:      { value: 70, id: '#B36', label: 'Unabhängigkeit' },
+                selbstbestimmung:     { value: 75, id: '#B34', label: 'Selbstbestimmung' },
+                zugehoerigkeit:       { value: 85, id: '#B42', label: 'Zugehörigkeit' },
+                gemeinschaft:         { value: 90, id: '#B41', label: 'Gemeinschaft' }
+            },
+            ra: {
+                kinderwunsch:         { value: 35, id: '#B90', label: 'Kinderwunsch' },
+                langfristige_bindung: { value: 40, id: '#B96', label: 'Langfristige Bindung' },
+                verbindlichkeit:      { value: 30, id: '#B95', label: 'Verbindlichkeit' },
+                gemeinsamer_wohnraum: { value: 35, id: '#B99', label: 'Gemeinsamer Wohnraum' },
+                eigener_raum:         { value: 80, id: '#B103', label: 'Eigener Raum' },
+                alltag_teilen:        { value: 40, id: '#B102', label: 'Alltag teilen' },
+                unabhaengigkeit:      { value: 90, id: '#B36', label: 'Unabhängigkeit' },
+                selbstbestimmung:     { value: 95, id: '#B34', label: 'Selbstbestimmung' },
+                zugehoerigkeit:       { value: 70, id: '#B42', label: 'Zugehörigkeit' },
+                gemeinschaft:         { value: 85, id: '#B41', label: 'Gemeinschaft' }
+            },
+            lat: {
+                kinderwunsch:         { value: 55, id: '#B90', label: 'Kinderwunsch' },
+                langfristige_bindung: { value: 80, id: '#B96', label: 'Langfristige Bindung' },
+                verbindlichkeit:      { value: 80, id: '#B95', label: 'Verbindlichkeit' },
+                gemeinsamer_wohnraum: { value: 25, id: '#B99', label: 'Gemeinsamer Wohnraum' },
+                eigener_raum:         { value: 85, id: '#B103', label: 'Eigener Raum' },
+                alltag_teilen:        { value: 45, id: '#B102', label: 'Alltag teilen' },
+                unabhaengigkeit:      { value: 75, id: '#B36', label: 'Unabhängigkeit' },
+                selbstbestimmung:     { value: 80, id: '#B34', label: 'Selbstbestimmung' },
+                zugehoerigkeit:       { value: 75, id: '#B42', label: 'Zugehörigkeit' },
+                gemeinschaft:         { value: 60, id: '#B41', label: 'Gemeinschaft' }
+            },
+            aromantisch: {
+                kinderwunsch:         { value: 25, id: '#B90', label: 'Kinderwunsch' },
+                langfristige_bindung: { value: 30, id: '#B96', label: 'Langfristige Bindung' },
+                verbindlichkeit:      { value: 35, id: '#B95', label: 'Verbindlichkeit' },
+                gemeinsamer_wohnraum: { value: 30, id: '#B99', label: 'Gemeinsamer Wohnraum' },
+                eigener_raum:         { value: 80, id: '#B103', label: 'Eigener Raum' },
+                alltag_teilen:        { value: 40, id: '#B102', label: 'Alltag teilen' },
+                unabhaengigkeit:      { value: 85, id: '#B36', label: 'Unabhängigkeit' },
+                selbstbestimmung:     { value: 90, id: '#B34', label: 'Selbstbestimmung' },
+                zugehoerigkeit:       { value: 65, id: '#B42', label: 'Zugehörigkeit' },
+                gemeinschaft:         { value: 75, id: '#B41', label: 'Gemeinschaft' }
             }
         }
     },
