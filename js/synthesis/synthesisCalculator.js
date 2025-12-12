@@ -2,20 +2,30 @@
  * TIAGE SYNTHESE - Haupt-Calculator v3.1
  *
  * ═══════════════════════════════════════════════════════════════════════════
- * HAUPT-FORMEL (Basis)
+ * HAUPT-FORMEL v3.1
  * ═══════════════════════════════════════════════════════════════════════════
  *
- *   Q = [(A × wₐ) + (O × wₒ) + (D × wᵈ) + (G × wᵍ)] × R
+ *   Q = (A × wₐ × R_Philosophie) +
+ *       (O × wₒ × R_Leben) +
+ *       (D × wᵈ × R_Dynamik) +
+ *       (G × wᵍ × R_Identität)
  *
  * Wobei:
- *   A = Archetyp-Score (15% - LOGOS)      - Beziehungsphilosophie
+ *   A = Archetyp-Score (15% - LOGOS)       - Beziehungsphilosophie
  *   O = Orientierungs-Score (40% - PATHOS) - Sexuelle Orientierung
  *   D = Dominanz-Score (20% - PATHOS)      - Dom/Sub/Switch Dynamik
  *   G = Geschlechts-Score (25% - PATHOS)   - Gender-Attraktion
- *   R = Resonanz-Koeffizient (0.9 - 1.1)
+ *
+ *   R_dim = 0.9 + (Bedürfnis-Match_dim × 0.2), also 0.9-1.1
+ *
+ * Mapping Faktor ↔ Resonanz:
+ *   A (Archetyp)     ↔ R_Philosophie (Beziehungsphilosophie-Bedürfnisse)
+ *   O (Orientierung) ↔ R_Leben (Anziehung/Intimität-Bedürfnisse)
+ *   D (Dominanz)     ↔ R_Dynamik (Machtdynamik-Bedürfnisse)
+ *   G (Geschlecht)   ↔ R_Identität (Identität/Ausdruck-Bedürfnisse)
  *
  * ═══════════════════════════════════════════════════════════════════════════
- * v3.0: BEDÜRFNIS-INTEGRATION PRO FAKTOR
+ * BEDÜRFNIS-INTEGRATION PRO FAKTOR
  * ═══════════════════════════════════════════════════════════════════════════
  * Jeder Faktor (A, O, D, G) kombiniert Matrix-Score mit Bedürfnis-Match:
  *
@@ -26,24 +36,6 @@
  *   - Orientierung: sexuelle_experimentierfreude, biologische_anziehung...
  *   - Dominanz: kontrolle_ausueben, hingabe, dynamische_evolution...
  *   - Geschlecht: authentizitaet, eigene_wahrheit, akzeptanz...
- *
- * ═══════════════════════════════════════════════════════════════════════════
- * v3.1: DIMENSIONALE RESONANZ (NEU!)
- * ═══════════════════════════════════════════════════════════════════════════
- * Jeder Faktor wird mit seiner zugehörigen Resonanz-Dimension multipliziert:
- *
- *   Q = (A × wₐ × R_Philosophie) +
- *       (O × wₒ × R_Leben) +
- *       (D × wᵈ × R_Dynamik) +
- *       (G × wᵍ × R_Identität)
- *
- * Wobei R_dim = 0.9 + (Bedürfnis-Match_dim × 0.2), also 0.9-1.1
- *
- * Mapping:
- *   A (Archetyp)     ↔ R_Philosophie (Beziehungsphilosophie-Bedürfnisse)
- *   O (Orientierung) ↔ R_Leben (Anziehung/Intimität-Bedürfnisse)
- *   D (Dominanz)     ↔ R_Dynamik (Machtdynamik-Bedürfnisse)
- *   G (Geschlecht)   ↔ R_Identität (Identität/Ausdruck-Bedürfnisse)
  *
  * ═══════════════════════════════════════════════════════════════════════════
  * RESONANZ-FORMEL (Legacy/Fallback)
