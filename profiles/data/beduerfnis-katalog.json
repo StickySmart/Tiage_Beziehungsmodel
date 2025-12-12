@@ -5,40 +5,40 @@
   "erstellt": "2025-12-09",
 
   "perspektiven": {
-    "#P1": { "id": "#P1", "label": "Statistik", "beschreibung": "Reine Übereinstimmung der Werte (Gauß-basiert)" },
-    "#P2": { "id": "#P2", "label": "Osho", "beschreibung": "Tantra, Polarität, Natürlichkeit vs. Konditionierung" },
-    "#P3": { "id": "#P3", "label": "Pirsig", "beschreibung": "Static vs. Dynamic Quality" },
-    "#P4": { "id": "#P4", "label": "SexPositiv", "beschreibung": "Sex-Positive Movement, Consent, Autonomie" }
+    "#P1": { "id": "#P1", "key": "statistik", "label": "Statistik", "beschreibung": "Empirische Forschung - Gaußsche Übereinstimmung der Werte", "quelle": "McCrae & Costa (Big Five), Wismeijer & van Assen (BDSM)" },
+    "#P2": { "id": "#P2", "key": "osho", "label": "Osho", "beschreibung": "Tantra, Polarität, Natürlichkeit vs. Konditionierung", "quelle": "Osho Rajneesh - Vorträge über Liebe und Beziehungen" },
+    "#P3": { "id": "#P3", "key": "pirsig", "label": "Pirsig", "beschreibung": "Static vs. Dynamic Quality - Qualität als Fundament", "quelle": "Robert M. Pirsig - Zen und die Kunst ein Motorrad zu warten (1974)" },
+    "#P4": { "id": "#P4", "key": "sexpositiv", "label": "SexPositiv", "beschreibung": "Sex-Positive Movement, Consent, Autonomie, BDSM/Kink", "quelle": "Dossie Easton, Janet Hardy, Jay Wiseman" }
   },
 
   "dimensionen": {
-    "#D1": { "id": "#D1", "label": "Beziehungsphilosophie", "kurzform": "A", "color": "#E63946", "beschreibung": "Grundlegende Beziehungsform und Lebensplanung" },
-    "#D2": { "id": "#D2", "label": "Werte-Alignment", "kurzform": "B", "color": "#F4A261", "beschreibung": "Weltanschauung, Religion, Tradition" },
-    "#D3": { "id": "#D3", "label": "Nähe-Distanz", "kurzform": "C", "color": "#E84393", "beschreibung": "Körperliche und emotionale Nähe" },
-    "#D4": { "id": "#D4", "label": "Autonomie", "kurzform": "D", "color": "#2A9D8F", "beschreibung": "Freiheit, Selbstbestimmung, Dynamik" },
-    "#D5": { "id": "#D5", "label": "Kommunikation", "kurzform": "E", "color": "#8B5CF6", "beschreibung": "Austausch, Verständnis, Konfliktverhalten" },
-    "#D6": { "id": "#D6", "label": "Soziale-Kompatibilität", "kurzform": "F", "color": "#3B82F6", "beschreibung": "Soziales Leben, Praktisches, Alltag" }
+    "#D1": { "id": "#D1", "key": "beziehungsphilosophie", "label": "Beziehungsphilosophie", "kurzform": "A", "color": "#E63946", "beschreibung": "Grundlegende Beziehungsform und Lebensplanung", "beispiele": ["Mono vs. Poly", "Kinderwunsch", "Wohnsituation", "Ehe"] },
+    "#D2": { "id": "#D2", "key": "werte_alignment", "label": "Werte-Alignment", "kurzform": "B", "color": "#F4A261", "beschreibung": "Weltanschauung, Religion, Tradition", "beispiele": ["Spiritualität", "Politische Werte", "Umwelt", "Traditionen"] },
+    "#D3": { "id": "#D3", "key": "naehe_distanz", "label": "Nähe-Distanz", "kurzform": "C", "color": "#E84393", "beschreibung": "Körperliche und emotionale Nähe", "beispiele": ["Kuscheln", "Intimität", "Romantik", "Sicherheitsbedürfnis"] },
+    "#D4": { "id": "#D4", "key": "autonomie", "label": "Autonomie", "kurzform": "D", "color": "#2A9D8F", "beschreibung": "Freiheit, Selbstbestimmung, Dynamik", "beispiele": ["Unabhängigkeit", "Machtdynamik", "Kreativität", "Identität"] },
+    "#D5": { "id": "#D5", "key": "kommunikation", "label": "Kommunikation", "kurzform": "E", "color": "#8B5CF6", "beschreibung": "Austausch, Verständnis, Konfliktverhalten", "beispiele": ["Gesprächsstil", "Emotionale Offenheit", "Streitkultur"] },
+    "#D6": { "id": "#D6", "key": "soziale_kompatibilitaet", "label": "Soziale-Kompatibilität", "kurzform": "F", "color": "#3B82F6", "beschreibung": "Soziales Leben, Praktisches, Alltag", "beispiele": ["Intro/Extroversion", "Freundeskreis", "Ordnung", "Reisen"] }
   },
 
   "kategorien": {
-    "#K1":  { "id": "#K1",  "label": "Existenz", "dimension": "#D3", "sigma": 11, "color": "#E63946", "beschreibung": "Grundlegende physische Bedürfnisse" },
-    "#K2":  { "id": "#K2",  "label": "Sicherheit", "dimension": "#D3", "sigma": 11, "color": "#F4A261", "beschreibung": "Emotionale und psychische Sicherheit" },
-    "#K3":  { "id": "#K3",  "label": "Zuneigung", "dimension": "#D3", "sigma": 12, "color": "#E84393", "beschreibung": "Liebe, Nähe und emotionale Verbindung" },
-    "#K4":  { "id": "#K4",  "label": "Verständnis", "dimension": "#D5", "sigma": 13, "color": "#9B5DE5", "beschreibung": "Gesehen und verstanden werden" },
-    "#K5":  { "id": "#K5",  "label": "Freiheit", "dimension": "#D4", "sigma": 14, "color": "#2A9D8F", "beschreibung": "Autonomie und Selbstbestimmung" },
-    "#K6":  { "id": "#K6",  "label": "Teilnahme", "dimension": "#D6", "sigma": 13, "color": "#06D6A0", "beschreibung": "Gemeinschaft und Zugehörigkeit" },
-    "#K7":  { "id": "#K7",  "label": "Muße", "dimension": "#D6", "sigma": 15, "color": "#118AB2", "beschreibung": "Erholung, Freude und Genuss" },
-    "#K8":  { "id": "#K8",  "label": "Identität", "dimension": "#D4", "sigma": 14, "color": "#FFD166", "beschreibung": "Selbstverwirklichung und Sinn" },
-    "#K9":  { "id": "#K9",  "label": "Erschaffen", "dimension": "#D4", "sigma": 16, "color": "#FF6B6B", "beschreibung": "Kreativität und Lernen" },
-    "#K10": { "id": "#K10", "label": "Verbundenheit", "dimension": "#D3", "sigma": 16, "color": "#A8DADC", "beschreibung": "Tiefe existenzielle Verbindung" },
-    "#K11": { "id": "#K11", "label": "Dynamik", "dimension": "#D4", "sigma": 17, "color": "#8B5CF6", "beschreibung": "Machtdynamik und bewusster Austausch" },
-    "#K12": { "id": "#K12", "label": "Lebensplanung", "dimension": "#D1", "sigma": 14, "color": "#10B981", "beschreibung": "Kinder, Ehe, Wohnen, Familie" },
-    "#K13": { "id": "#K13", "label": "Finanzen-Karriere", "dimension": "#D1", "sigma": 14, "color": "#F59E0B", "beschreibung": "Geld, Beruf, Work-Life-Balance" },
-    "#K14": { "id": "#K14", "label": "Kommunikationsstil", "dimension": "#D5", "sigma": 13, "color": "#3B82F6", "beschreibung": "Gespräche, Emotionen, Konflikte" },
-    "#K15": { "id": "#K15", "label": "Soziales-Leben", "dimension": "#D6", "sigma": 14, "color": "#8B5CF6", "beschreibung": "Introversion/Extroversion, Freunde" },
-    "#K16": { "id": "#K16", "label": "Intimität-Romantik", "dimension": "#D3", "sigma": 16, "color": "#EC4899", "beschreibung": "Körperliche Nähe, Romantik, Sexualität" },
-    "#K17": { "id": "#K17", "label": "Werte-Haltungen", "dimension": "#D2", "sigma": 15, "color": "#6366F1", "beschreibung": "Religion, Tradition, Umwelt" },
-    "#K18": { "id": "#K18", "label": "Praktisches-Leben", "dimension": "#D6", "sigma": 14, "color": "#14B8A6", "beschreibung": "Ordnung, Reisen, Alltag" }
+    "#K1":  { "id": "#K1",  "key": "existenz", "label": "Existenz", "dimension": "#D3", "sigma": 11, "color": "#E63946", "beschreibung": "Grundlegende physische Bedürfnisse", "quelle": "GFK (Rosenberg)" },
+    "#K2":  { "id": "#K2",  "key": "sicherheit", "label": "Sicherheit", "dimension": "#D3", "sigma": 11, "color": "#F4A261", "beschreibung": "Emotionale und psychische Sicherheit", "quelle": "GFK (Rosenberg)" },
+    "#K3":  { "id": "#K3",  "key": "zuneigung", "label": "Zuneigung", "dimension": "#D3", "sigma": 12, "color": "#E84393", "beschreibung": "Liebe, Nähe und emotionale Verbindung", "quelle": "GFK (Rosenberg)" },
+    "#K4":  { "id": "#K4",  "key": "verstaendnis", "label": "Verständnis", "dimension": "#D5", "sigma": 13, "color": "#9B5DE5", "beschreibung": "Gesehen und verstanden werden", "quelle": "GFK (Rosenberg)" },
+    "#K5":  { "id": "#K5",  "key": "freiheit", "label": "Freiheit", "dimension": "#D4", "sigma": 14, "color": "#2A9D8F", "beschreibung": "Autonomie und Selbstbestimmung", "quelle": "GFK (Rosenberg)" },
+    "#K6":  { "id": "#K6",  "key": "teilnahme", "label": "Teilnahme", "dimension": "#D6", "sigma": 13, "color": "#06D6A0", "beschreibung": "Gemeinschaft und Zugehörigkeit", "quelle": "GFK (Rosenberg)" },
+    "#K7":  { "id": "#K7",  "key": "musse", "label": "Muße", "dimension": "#D6", "sigma": 15, "color": "#118AB2", "beschreibung": "Erholung, Freude und Genuss", "quelle": "GFK (Rosenberg)" },
+    "#K8":  { "id": "#K8",  "key": "identitaet", "label": "Identität", "dimension": "#D4", "sigma": 14, "color": "#FFD166", "beschreibung": "Selbstverwirklichung und Sinn", "quelle": "GFK (Rosenberg)" },
+    "#K9":  { "id": "#K9",  "key": "erschaffen", "label": "Erschaffen", "dimension": "#D4", "sigma": 16, "color": "#FF6B6B", "beschreibung": "Kreativität und Lernen", "quelle": "GFK (Rosenberg)" },
+    "#K10": { "id": "#K10", "key": "verbundenheit", "label": "Verbundenheit", "dimension": "#D3", "sigma": 16, "color": "#A8DADC", "beschreibung": "Tiefe existenzielle Verbindung", "quelle": "GFK (Rosenberg)" },
+    "#K11": { "id": "#K11", "key": "dynamik", "label": "Dynamik & Austausch", "dimension": "#D4", "sigma": 17, "color": "#8B5CF6", "beschreibung": "Machtdynamik und bewusster Austausch (BDSM/Kink)", "quelle": "Easton/Hardy (Topping/Bottoming), Wiseman (SM 101)" },
+    "#K12": { "id": "#K12", "key": "lebensplanung", "label": "Lebensplanung", "dimension": "#D1", "sigma": 14, "color": "#10B981", "beschreibung": "Kinder, Ehe, Wohnen, Familie", "quelle": "Tiage Erweiterung" },
+    "#K13": { "id": "#K13", "key": "finanzen_karriere", "label": "Finanzen & Karriere", "dimension": "#D1", "sigma": 14, "color": "#F59E0B", "beschreibung": "Geld, Beruf, Work-Life-Balance", "quelle": "Tiage Erweiterung" },
+    "#K14": { "id": "#K14", "key": "kommunikation_stil", "label": "Kommunikationsstil", "dimension": "#D5", "sigma": 13, "color": "#3B82F6", "beschreibung": "Gespräche, Emotionen, Konflikte", "quelle": "Tiage Erweiterung" },
+    "#K15": { "id": "#K15", "key": "soziales_leben", "label": "Soziales Leben", "dimension": "#D6", "sigma": 14, "color": "#8B5CF6", "beschreibung": "Introversion/Extroversion, Freunde", "quelle": "Tiage Erweiterung" },
+    "#K16": { "id": "#K16", "key": "intimitaet_romantik", "label": "Intimität & Romantik", "dimension": "#D3", "sigma": 16, "color": "#EC4899", "beschreibung": "Körperliche Nähe, Romantik, Sexualität", "quelle": "Tiage Erweiterung" },
+    "#K17": { "id": "#K17", "key": "werte_haltungen", "label": "Werte & Haltungen", "dimension": "#D2", "sigma": 15, "color": "#6366F1", "beschreibung": "Religion, Tradition, Umwelt", "quelle": "Tiage Erweiterung" },
+    "#K18": { "id": "#K18", "key": "praktisches_leben", "label": "Praktisches Leben", "dimension": "#D6", "sigma": 14, "color": "#14B8A6", "beschreibung": "Ordnung, Reisen, Alltag", "quelle": "Tiage Erweiterung" }
   },
 
   "beduerfnisse": {
