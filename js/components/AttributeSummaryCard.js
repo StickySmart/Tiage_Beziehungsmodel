@@ -54,111 +54,6 @@ const AttributeSummaryCard = (function() {
     }
 
     /**
-     * K-FAKTOR KATEGORIEN: GFK-Kategorien zu den 4 Resonanzfaktoren R1-R4
-     * Gleiche Zuordnung wie in app-main.js für konsistente Berechnung
-     */
-    const K_FAKTOR_KATEGORIEN = {
-        // R1: Orientierung (Pathos) - Körperliche Anziehung, Sexualität
-        R1: ['existenz', 'zuneigung', 'musse'],
-        // R2: Archetyp (Logos) - Beziehungsphilosophie
-        R2: ['freiheit', 'teilnahme', 'identitaet'],
-        // R3: Dominanz (Pathos) - Energetische Dynamik
-        R3: ['dynamik', 'sicherheit'],
-        // R4: Geschlecht (Pathos) - Gender-Chemie, Identität
-        R4: ['verstaendnis', 'erschaffen', 'verbundenheit']
-    };
-
-    /**
-     * Ermittelt den Resonanzfaktor (R1-R4) für ein Bedürfnis basierend auf seiner Kategorie
-     * @param {string} needIdOrKey - Bedürfnis-ID (#B-ID) oder String-Key
-     * @returns {string|null} 'R1', 'R2', 'R3', 'R4' oder null wenn nicht zugeordnet
-     */
-    function getResonanzFaktorKey(needIdOrKey) {
-        // Hole BeduerfnisIds
-        const beduerfnisIds = (typeof BeduerfnisIds !== 'undefined') ? BeduerfnisIds :
-                              (typeof window !== 'undefined' && window.BeduerfnisIds) ? window.BeduerfnisIds : null;
-
-        if (!beduerfnisIds || !beduerfnisIds.beduerfnisse) {
-            return null;
-        }
-
-        // Konvertiere Key zu ID falls nötig
-        let needId = needIdOrKey;
-        if (!needIdOrKey.startsWith('#')) {
-            if (beduerfnisIds.toId) {
-                needId = beduerfnisIds.toId(needIdOrKey);
-            }
-        }
-
-        const need = beduerfnisIds.beduerfnisse[needId];
-        if (!need || !need.kategorie) {
-            return null;
-        }
-
-        // Hole Kategorie-Key aus Taxonomie
-        const taxonomie = (typeof TiageTaxonomie !== 'undefined') ? TiageTaxonomie :
-                          (typeof window !== 'undefined' && window.TiageTaxonomie) ? window.TiageTaxonomie : null;
-
-        if (!taxonomie || !taxonomie.kategorien) {
-            return null;
-        }
-
-        const kategorie = taxonomie.kategorien[need.kategorie];
-        if (!kategorie || !kategorie.key) {
-            return null;
-        }
-
-        const kategorieKey = kategorie.key;
-
-        // Finde den zugehörigen R-Faktor
-        for (const [rKey, kategorien] of Object.entries(K_FAKTOR_KATEGORIEN)) {
-            if (kategorien.includes(kategorieKey)) {
-                return rKey;
-            }
-        }
-
-        return null;
-    }
-
-    /**
-     * Gibt die Farbe für einen Resonanzwert zurück (0.5-1.5 Range)
-     * @param {number} rWert - Resonanzwert
-     * @returns {string} CSS-Farbe
-     */
-    function getResonanzColor(rWert) {
-        if (rWert === undefined || rWert === null) return '#6b7280'; // Grau
-        if (rWert >= 1.2) return '#22c55e'; // Grün = hohe Resonanz
-        if (rWert >= 1.0) return '#3b82f6'; // Blau = gute Resonanz
-        if (rWert >= 0.8) return '#f59e0b'; // Orange = moderate Resonanz
-        return '#ef4444'; // Rot = niedrige Resonanz
-    }
-
-    /**
-     * Holt die aktuellen Resonanzfaktor-Werte (R1-R4) aus der globalen Berechnung
-     * @returns {Object} { R1: number, R2: number, R3: number, R4: number } oder null
-     */
-    function getCurrentResonanzWerte() {
-        // Versuche über calculateRelationshipQuality (wenn verfügbar)
-        if (typeof calculateRelationshipQuality === 'function' &&
-            typeof personDimensions !== 'undefined' &&
-            personDimensions.ich && personDimensions.partner) {
-            try {
-                const result = calculateRelationshipQuality(personDimensions.ich, personDimensions.partner);
-                return result?.resonanz || null;
-            } catch (e) {
-                console.warn('[AttributeSummaryCard] Resonanz-Berechnung fehlgeschlagen:', e);
-            }
-        }
-
-        // Versuche über window.lastRelationshipQuality (falls gecached)
-        if (typeof window !== 'undefined' && window.lastRelationshipQuality?.resonanz) {
-            return window.lastRelationshipQuality.resonanz;
-        }
-
-        return null;
-    }
-
-    /**
      * Mapping: Attribut → zugehörige Bedürfnisse
      *
      * Die Bedürfnis-IDs müssen mit den IDs in den Archetyp-Profilen
@@ -777,39 +672,6 @@ const AttributeSummaryCard = (function() {
 
         html += `</div>`;
 
-        // Hole aktuelle Resonanzwerte für R1-R4 Anzeige
-        const resonanzWerte = getCurrentResonanzWerte();
-
-        // Resonanzfaktoren-Legende (wenn Werte verfügbar)
-        if (resonanzWerte && (resonanzWerte.R1 || resonanzWerte.R2 || resonanzWerte.R3 || resonanzWerte.R4)) {
-            html += `
-            <div class="resonanz-legende">
-                <span class="resonanz-legende-title">Resonanzfaktoren:</span>
-                <div class="resonanz-legende-items">
-                    <span class="resonanz-legende-item" title="Orientierung: ${(resonanzWerte.R1 || 1).toFixed(2)} - Existenz, Zuneigung, Muße">
-                        <span class="resonanz-badge-small" style="background: ${getResonanzColor(resonanzWerte.R1)};">R1</span>
-                        <span class="resonanz-legende-label">Orientierung</span>
-                        <span class="resonanz-legende-value">${(resonanzWerte.R1 || 1).toFixed(2)}</span>
-                    </span>
-                    <span class="resonanz-legende-item" title="Archetyp: ${(resonanzWerte.R2 || 1).toFixed(2)} - Freiheit, Teilnahme, Identität">
-                        <span class="resonanz-badge-small" style="background: ${getResonanzColor(resonanzWerte.R2)};">R2</span>
-                        <span class="resonanz-legende-label">Archetyp</span>
-                        <span class="resonanz-legende-value">${(resonanzWerte.R2 || 1).toFixed(2)}</span>
-                    </span>
-                    <span class="resonanz-legende-item" title="Dominanz: ${(resonanzWerte.R3 || 1).toFixed(2)} - Dynamik, Sicherheit">
-                        <span class="resonanz-badge-small" style="background: ${getResonanzColor(resonanzWerte.R3)};">R3</span>
-                        <span class="resonanz-legende-label">Dominanz</span>
-                        <span class="resonanz-legende-value">${(resonanzWerte.R3 || 1).toFixed(2)}</span>
-                    </span>
-                    <span class="resonanz-legende-item" title="Geschlecht: ${(resonanzWerte.R4 || 1).toFixed(2)} - Verständnis, Erschaffen, Verbundenheit">
-                        <span class="resonanz-badge-small" style="background: ${getResonanzColor(resonanzWerte.R4)};">R4</span>
-                        <span class="resonanz-legende-label">Geschlecht</span>
-                        <span class="resonanz-legende-value">${(resonanzWerte.R4 || 1).toFixed(2)}</span>
-                    </span>
-                </div>
-            </div>`;
-        }
-
         // Direkte flache Liste ohne Kategorien-Wrapper
         html += `<div class="flat-needs-list${currentFlatSortMode === 'kategorie' ? ' kategorie-mode' : ''}">`;
         filteredNeeds.forEach(need => {
@@ -817,7 +679,7 @@ const AttributeSummaryCard = (function() {
             const isLocked = needObj?.locked || false;
             // Bei Kategorie-Sortierung: Dimension-Farbe anzeigen
             const dimColor = currentFlatSortMode === 'kategorie' ? getDimensionColor(need.id) : null;
-            html += renderFlatNeedItem(need.id, need.label, need.value, isLocked, dimColor, resonanzWerte);
+            html += renderFlatNeedItem(need.id, need.label, need.value, isLocked, dimColor);
         });
         html += `</div>`;
 
@@ -867,9 +729,8 @@ const AttributeSummaryCard = (function() {
      * @param {number} value - Wert 0-100
      * @param {boolean} isLocked - Ob fixiert
      * @param {string|null} dimensionColor - Optional: Farbe für border-left (bei Kategorie-Sortierung)
-     * @param {Object|null} resonanzWerte - Optional: { R1, R2, R3, R4 } Resonanzwerte
      */
-    function renderFlatNeedItem(needId, label, value, isLocked, dimensionColor, resonanzWerte) {
+    function renderFlatNeedItem(needId, label, value, isLocked, dimensionColor) {
         // Bei Dimensionsfarbe: Border-left + CSS-Variable für Slider-Thumb
         const itemStyle = dimensionColor
             ? `style="border-left: 5px solid ${dimensionColor}; --dimension-color: ${dimensionColor};"`
@@ -879,30 +740,12 @@ const AttributeSummaryCard = (function() {
         const sliderStyle = dimensionColor
             ? `style="background: linear-gradient(to right, ${dimensionColor} 0%, ${dimensionColor} ${value}%, rgba(255,255,255,0.15) ${value}%, rgba(255,255,255,0.15) 100%);"`
             : '';
-
-        // Resonanzfaktor für dieses Bedürfnis ermitteln
-        const rKey = getResonanzFaktorKey(needId);
-        let resonanzBadge = '';
-        if (rKey && resonanzWerte && resonanzWerte[rKey] !== undefined) {
-            const rWert = resonanzWerte[rKey];
-            // Farbe basierend auf Wert (0.5-1.5 Range)
-            let rColor = '#6b7280'; // Grau = neutral
-            if (rWert >= 1.2) rColor = '#22c55e'; // Grün = hohe Resonanz
-            else if (rWert >= 1.0) rColor = '#3b82f6'; // Blau = gute Resonanz
-            else if (rWert >= 0.8) rColor = '#f59e0b'; // Orange = moderate Resonanz
-            else rColor = '#ef4444'; // Rot = niedrige Resonanz
-
-            // R-Faktor Badge HTML
-            resonanzBadge = `<span class="resonanz-badge" style="background: ${rColor};" title="${rKey}: ${rWert.toFixed(2)} - Resonanzfaktor für diesen Bereich">${rKey}</span>`;
-        }
-
         return `
         <div class="flat-need-item${isLocked ? ' need-locked' : ''}${colorClass}" data-need="${needId}" ${itemStyle}>
             <div class="flat-need-header">
                 <span class="flat-need-label clickable"
                       onclick="event.stopPropagation(); openNeedWithResonance('${needId}')"
                       title="Klicken für Resonanz-Details">${label}</span>
-                ${resonanzBadge}
                 <div class="flat-need-controls">
                     <span class="need-lock-icon"
                           onclick="event.stopPropagation(); AttributeSummaryCard.toggleFlatNeedLock('${needId}', this)"
