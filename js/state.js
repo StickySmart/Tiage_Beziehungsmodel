@@ -24,25 +24,24 @@ const TiageState = (function() {
 
     const state = {
         // Person Dimensions - SINGLE SOURCE OF TRUTH
+        // Data Structure v3.0:
+        // - geschlecht: { primary, secondary }
+        // - dominanz: { primary, secondary }
+        // - orientierung: { primary, secondary }
         personDimensions: {
             ich: {
                 geschlecht: {
-                    primary: null,    // Primäre Geschlechtsidentität (P)
-                    secondary: null   // Sekundäre Geschlechtsidentität (S) - optional
+                    primary: null,    // Primäre Geschlechtsidentität (z.B. 'mann', 'frau', 'divers')
+                    secondary: null   // Sekundäre Geschlechtsidentität (z.B. 'cis', 'trans', 'nb')
                 },
                 dominanz: {
-                    dominant: null,      // null, 'gelebt', oder 'interessiert'
-                    submissiv: null,
-                    switch: null,
-                    ausgeglichen: null
+                    primary: null,    // 'dominant', 'submissiv', 'switch', 'ausgeglichen'
+                    secondary: null   // Optional zweite Präferenz
                 },
                 orientierung: {
-                    heterosexuell: null, // null, 'gelebt', oder 'interessiert'
-                    homosexuell: null,
-                    bisexuell: null
-                },
-                dominanzStatus: null,
-                orientierungStatus: null
+                    primary: null,    // 'heterosexuell', 'homosexuell', 'bisexuell'
+                    secondary: null   // Optional zweite Präferenz
+                }
             },
             partner: {
                 geschlecht: {
@@ -50,18 +49,13 @@ const TiageState = (function() {
                     secondary: null
                 },
                 dominanz: {
-                    dominant: null,
-                    submissiv: null,
-                    switch: null,
-                    ausgeglichen: null
+                    primary: null,
+                    secondary: null
                 },
                 orientierung: {
-                    heterosexuell: null,
-                    homosexuell: null,
-                    bisexuell: null
-                },
-                dominanzStatus: null,
-                orientierungStatus: null
+                    primary: null,
+                    secondary: null
+                }
             }
         },
 
@@ -360,75 +354,77 @@ const TiageState = (function() {
         },
 
         /**
-         * Set dominanz for a specific type
+         * Set primary dominanz
+         * @param {string} person - 'ich' or 'partner'
+         * @param {string|null} value - 'dominant', 'submissiv', 'switch', 'ausgeglichen' or null
          */
-        setDominanz(person, dominanzType, status) {
-            const currentDominanz = this.get(`personDimensions.${person}.dominanz`);
-
-            // If setting to 'gelebt', clear other 'gelebt' values (only one can be gelebt)
-            if (status === 'gelebt') {
-                for (const type in currentDominanz) {
-                    if (type !== dominanzType && currentDominanz[type] === 'gelebt') {
-                        currentDominanz[type] = null;
-                    }
-                }
-            }
-
-            currentDominanz[dominanzType] = status;
-            this.set(`personDimensions.${person}.dominanz`, currentDominanz);
+        setDominanz(person, value) {
+            this.set(`personDimensions.${person}.dominanz.primary`, value);
         },
 
         /**
-         * Set orientierung for a specific type
+         * Set secondary dominanz
+         * @param {string} person - 'ich' or 'partner'
+         * @param {string|null} value - 'dominant', 'submissiv', 'switch', 'ausgeglichen' or null
          */
-        setOrientierung(person, orientierungType, status) {
-            const currentOrientierung = this.get(`personDimensions.${person}.orientierung`);
-
-            // If setting to 'gelebt', clear other 'gelebt' values (only one can be gelebt)
-            if (status === 'gelebt') {
-                for (const type in currentOrientierung) {
-                    if (type !== orientierungType && currentOrientierung[type] === 'gelebt') {
-                        currentOrientierung[type] = null;
-                    }
-                }
+        setSecondaryDominanz(person, value) {
+            const primary = this.get(`personDimensions.${person}.dominanz.primary`);
+            if (value === primary) {
+                console.warn('[TiageState] Secondary dominanz cannot be same as primary');
+                return;
             }
-
-            currentOrientierung[orientierungType] = status;
-            this.set(`personDimensions.${person}.orientierung`, currentOrientierung);
+            this.set(`personDimensions.${person}.dominanz.secondary`, value);
         },
 
         /**
-         * Get the primary (gelebt) dominanz
+         * Set primary orientierung
+         * @param {string} person - 'ich' or 'partner'
+         * @param {string|null} value - 'heterosexuell', 'homosexuell', 'bisexuell' or null
+         */
+        setOrientierung(person, value) {
+            this.set(`personDimensions.${person}.orientierung.primary`, value);
+        },
+
+        /**
+         * Set secondary orientierung
+         * @param {string} person - 'ich' or 'partner'
+         * @param {string|null} value - 'heterosexuell', 'homosexuell', 'bisexuell' or null
+         */
+        setSecondaryOrientierung(person, value) {
+            const primary = this.get(`personDimensions.${person}.orientierung.primary`);
+            if (value === primary) {
+                console.warn('[TiageState] Secondary orientierung cannot be same as primary');
+                return;
+            }
+            this.set(`personDimensions.${person}.orientierung.secondary`, value);
+        },
+
+        /**
+         * Get the primary dominanz
          */
         getPrimaryDominanz(person) {
-            const dominanz = this.get(`personDimensions.${person}.dominanz`);
-            if (!dominanz) return null;
-            // New format: { primary: 'dominant', secondary: 'submissiv' }
-            if ('primary' in dominanz) {
-                return dominanz.primary || null;
-            }
-            // Old format: { dominant: 'gelebt', submissiv: 'interessiert' }
-            for (const type in dominanz) {
-                if (dominanz[type] === 'gelebt') return type;
-            }
-            return null;
+            return this.get(`personDimensions.${person}.dominanz.primary`);
         },
 
         /**
-         * Get the primary (gelebt) orientierung
+         * Get the secondary dominanz
+         */
+        getSecondaryDominanz(person) {
+            return this.get(`personDimensions.${person}.dominanz.secondary`);
+        },
+
+        /**
+         * Get the primary orientierung
          */
         getPrimaryOrientierung(person) {
-            const orientierung = this.get(`personDimensions.${person}.orientierung`);
-            if (!orientierung) return null;
-            // New format: { primary: 'homosexuell', secondary: 'heterosexuell' }
-            if ('primary' in orientierung) {
-                return orientierung.primary || null;
-            }
-            // Old format: { heterosexuell: 'gelebt', homosexuell: 'interessiert' }
-            for (const type in orientierung) {
-                if (orientierung[type] === 'gelebt') return type;
-            }
-            return null;
+            return this.get(`personDimensions.${person}.orientierung.primary`);
+        },
+
+        /**
+         * Get the secondary orientierung
+         */
+        getSecondaryOrientierung(person) {
+            return this.get(`personDimensions.${person}.orientierung.secondary`);
         },
 
         /**
@@ -614,17 +610,13 @@ const TiageState = (function() {
             this.set('personDimensions', {
                 ich: {
                     geschlecht: { primary: null, secondary: null },
-                    dominanz: { dominant: null, submissiv: null, switch: null, ausgeglichen: null },
-                    orientierung: { heterosexuell: null, homosexuell: null, bisexuell: null },
-                    dominanzStatus: null,
-                    orientierungStatus: null
+                    dominanz: { primary: null, secondary: null },
+                    orientierung: { primary: null, secondary: null }
                 },
                 partner: {
                     geschlecht: { primary: null, secondary: null },
-                    dominanz: { dominant: null, submissiv: null, switch: null, ausgeglichen: null },
-                    orientierung: { heterosexuell: null, homosexuell: null, bisexuell: null },
-                    dominanzStatus: null,
-                    orientierungStatus: null
+                    dominanz: { primary: null, secondary: null },
+                    orientierung: { primary: null, secondary: null }
                 }
             });
             this.set('archetypes', {

@@ -212,11 +212,20 @@ const MemoryManager = (function() {
 
     /**
      * Collect current ME data from state (COMPLETE PROFILE)
+     *
+     * Data Structure v3.0:
+     * - archetyp: string (nur primary, kein Object)
+     * - geschlecht: { primary, secondary }
+     * - dominanz: { primary, secondary }
+     * - orientierung: { primary, secondary }
+     * - profileReview: { flatNeeds: [...] } (220 Bedürfnisse)
+     * - gewichtungen: { O, A, D, G } mit value + locked
+     * - resonanzfaktoren: { R1, R2, R3, R4 } mit value + locked
      */
     function collectMeData() {
         const data = {
             timestamp: Date.now(),
-            dataVersion: '2.0',
+            dataVersion: '3.0',
             appVersion: getAppVersion(),
             archetyp: null,
             geschlecht: null,
@@ -224,15 +233,22 @@ const MemoryManager = (function() {
             orientierung: null,
             profileReview: null,
             gewichtungen: null,
-            gewichtungLocks: null,
             resonanzfaktoren: null
         };
 
         // Get from TiageState if available
         if (typeof TiageState !== 'undefined') {
-            data.archetyp = TiageState.getArchetypes('ich');
+            // Archetyp: nur primary (kein secondary)
+            const archetypes = TiageState.getArchetypes('ich');
+            data.archetyp = archetypes?.primary || archetypes || null;
+
+            // Geschlecht: { primary, secondary }
             data.geschlecht = TiageState.get('personDimensions.ich.geschlecht');
+
+            // Dominanz: { primary, secondary }
             data.dominanz = TiageState.get('personDimensions.ich.dominanz');
+
+            // Orientierung: { primary, secondary }
             data.orientierung = TiageState.get('personDimensions.ich.orientierung');
         } else if (typeof window.personDimensions !== 'undefined') {
             // Fallback to global personDimensions
@@ -240,18 +256,17 @@ const MemoryManager = (function() {
             data.dominanz = window.personDimensions.ich?.dominanz;
             data.orientierung = window.personDimensions.ich?.orientierung;
             if (typeof window.mobileIchArchetype !== 'undefined') {
-                data.archetyp = { primary: window.mobileIchArchetype, secondary: null };
+                data.archetyp = window.mobileIchArchetype;
             }
         }
 
-        // Collect ProfileReview state (Bedürfnisse)
+        // Collect ProfileReview state (220 Bedürfnisse)
         data.profileReview = collectProfileReviewState('ich');
 
-        // Collect Gewichtungen für ICH (jetzt person-spezifisch)
+        // Collect Gewichtungen für ICH (person-spezifisch)
         data.gewichtungen = collectGewichtungen('ich');
-        data.gewichtungLocks = collectGewichtungLocks('ich');
 
-        // Collect Resonanzfaktoren für ICH
+        // Collect Resonanzfaktoren für ICH (person-spezifisch)
         data.resonanzfaktoren = collectResonanzfaktoren('ich');
 
         return data;
@@ -259,11 +274,20 @@ const MemoryManager = (function() {
 
     /**
      * Collect current PARTNER data from state (COMPLETE PROFILE)
+     *
+     * Data Structure v3.0 (same as ME):
+     * - archetyp: string (nur primary, kein Object)
+     * - geschlecht: { primary, secondary }
+     * - dominanz: { primary, secondary }
+     * - orientierung: { primary, secondary }
+     * - profileReview: { flatNeeds: [...] } (220 Bedürfnisse)
+     * - gewichtungen: { O, A, D, G } mit value + locked
+     * - resonanzfaktoren: { R1, R2, R3, R4 } mit value + locked
      */
     function collectPartnerData() {
         const data = {
             timestamp: Date.now(),
-            dataVersion: '2.0',
+            dataVersion: '3.0',
             appVersion: getAppVersion(),
             archetyp: null,
             geschlecht: null,
@@ -271,15 +295,22 @@ const MemoryManager = (function() {
             orientierung: null,
             profileReview: null,
             gewichtungen: null,
-            gewichtungLocks: null,
             resonanzfaktoren: null
         };
 
         // Get from TiageState if available
         if (typeof TiageState !== 'undefined') {
-            data.archetyp = TiageState.getArchetypes('partner');
+            // Archetyp: nur primary (kein secondary)
+            const archetypes = TiageState.getArchetypes('partner');
+            data.archetyp = archetypes?.primary || archetypes || null;
+
+            // Geschlecht: { primary, secondary }
             data.geschlecht = TiageState.get('personDimensions.partner.geschlecht');
+
+            // Dominanz: { primary, secondary }
             data.dominanz = TiageState.get('personDimensions.partner.dominanz');
+
+            // Orientierung: { primary, secondary }
             data.orientierung = TiageState.get('personDimensions.partner.orientierung');
         } else if (typeof window.personDimensions !== 'undefined') {
             // Fallback to global personDimensions
@@ -287,18 +318,17 @@ const MemoryManager = (function() {
             data.dominanz = window.personDimensions.partner?.dominanz;
             data.orientierung = window.personDimensions.partner?.orientierung;
             if (typeof window.mobilePartnerArchetype !== 'undefined') {
-                data.archetyp = { primary: window.mobilePartnerArchetype, secondary: null };
+                data.archetyp = window.mobilePartnerArchetype;
             }
         }
 
-        // Collect ProfileReview state (Bedürfnisse)
+        // Collect ProfileReview state (220 Bedürfnisse)
         data.profileReview = collectProfileReviewState('partner');
 
-        // Collect Gewichtungen für PARTNER (jetzt person-spezifisch)
+        // Collect Gewichtungen für PARTNER (person-spezifisch)
         data.gewichtungen = collectGewichtungen('partner');
-        data.gewichtungLocks = collectGewichtungLocks('partner');
 
-        // Collect Resonanzfaktoren für PARTNER
+        // Collect Resonanzfaktoren für PARTNER (person-spezifisch)
         data.resonanzfaktoren = collectResonanzfaktoren('partner');
 
         return data;
@@ -606,16 +636,21 @@ const MemoryManager = (function() {
 
     /**
      * Apply loaded data to ME (COMPLETE PROFILE)
+     *
+     * Data Structure v3.0:
+     * - archetyp: string
+     * - geschlecht: { primary, secondary }
+     * - dominanz: { primary, secondary }
+     * - orientierung: { primary, secondary }
      */
     function applyMeData(data) {
         if (!data) return false;
 
         try {
-            // Check version compatibility
-            const versionInfo = checkVersionCompatibility(data);
-            if (versionInfo.isOlder) {
-                showVersionWarning(versionInfo.savedVersion, versionInfo.currentVersion, 'ME');
-            }
+            // Archetyp: string (v3.0) oder { primary, secondary } (v2.0)
+            const archetypValue = typeof data.archetyp === 'string'
+                ? data.archetyp
+                : data.archetyp?.primary || data.archetyp;
 
             if (typeof TiageState !== 'undefined') {
                 if (data.geschlecht) {
@@ -627,8 +662,8 @@ const MemoryManager = (function() {
                 if (data.orientierung) {
                     TiageState.set('personDimensions.ich.orientierung', data.orientierung);
                 }
-                if (data.archetyp) {
-                    TiageState.set('archetypes.ich', data.archetyp);
+                if (archetypValue) {
+                    TiageState.set('archetypes.ich', { primary: archetypValue, secondary: null });
                 }
                 TiageState.saveToStorage();
             }
@@ -647,8 +682,7 @@ const MemoryManager = (function() {
             }
 
             // Update archetype selects
-            if (data.archetyp) {
-                const archetypValue = data.archetyp.primary || data.archetyp;
+            if (archetypValue) {
                 if (typeof mobileIchArchetype !== 'undefined') {
                     window.mobileIchArchetype = archetypValue;
                 }
@@ -666,7 +700,7 @@ const MemoryManager = (function() {
                 }
             }
 
-            // Apply ProfileReview state (Bedürfnisse)
+            // Apply ProfileReview state (220 Bedürfnisse)
             if (data.profileReview) {
                 applyProfileReviewState(data.profileReview);
             }
@@ -675,16 +709,13 @@ const MemoryManager = (function() {
             if (data.gewichtungen) {
                 applyGewichtungen(data.gewichtungen, 'ich');
             }
-            if (data.gewichtungLocks) {
-                applyGewichtungLocks(data.gewichtungLocks, 'ich');
-            }
 
-            // Apply Resonanzfaktoren für ICH
+            // Apply Resonanzfaktoren für ICH (person-spezifisch)
             if (data.resonanzfaktoren) {
                 applyResonanzfaktoren(data.resonanzfaktoren, 'ich');
             }
 
-            // Sync UI functions (use window.* as they're exposed globally in app-main.js)
+            // Sync UI functions
             if (typeof window.syncGeschlechtUI === 'function') window.syncGeschlechtUI('ich');
             if (typeof window.syncDominanzUI === 'function') window.syncDominanzUI('ich');
             if (typeof window.syncOrientierungUI === 'function') window.syncOrientierungUI('ich');
@@ -699,17 +730,22 @@ const MemoryManager = (function() {
     }
 
     /**
-     * Apply loaded data to PARTNER
+     * Apply loaded data to PARTNER (COMPLETE PROFILE)
+     *
+     * Data Structure v3.0:
+     * - archetyp: string
+     * - geschlecht: { primary, secondary }
+     * - dominanz: { primary, secondary }
+     * - orientierung: { primary, secondary }
      */
     function applyPartnerData(data) {
         if (!data) return false;
 
         try {
-            // Check version compatibility
-            const versionInfo = checkVersionCompatibility(data);
-            if (versionInfo.isOlder) {
-                showVersionWarning(versionInfo.savedVersion, versionInfo.currentVersion, 'PARTNER');
-            }
+            // Archetyp: string (v3.0) oder { primary, secondary } (v2.0)
+            const archetypValue = typeof data.archetyp === 'string'
+                ? data.archetyp
+                : data.archetyp?.primary || data.archetyp;
 
             if (typeof TiageState !== 'undefined') {
                 if (data.geschlecht) {
@@ -721,8 +757,8 @@ const MemoryManager = (function() {
                 if (data.orientierung) {
                     TiageState.set('personDimensions.partner.orientierung', data.orientierung);
                 }
-                if (data.archetyp) {
-                    TiageState.set('archetypes.partner', data.archetyp);
+                if (archetypValue) {
+                    TiageState.set('archetypes.partner', { primary: archetypValue, secondary: null });
                 }
                 TiageState.saveToStorage();
             }
@@ -741,15 +777,13 @@ const MemoryManager = (function() {
             }
 
             // Update archetype selects
-            if (data.archetyp) {
-                const archetypValue = data.archetyp.primary || data.archetyp;
+            if (archetypValue) {
                 if (typeof mobilePartnerArchetype !== 'undefined') {
                     window.mobilePartnerArchetype = archetypValue;
                 }
                 if (typeof partnerArchetype !== 'undefined') {
                     window.partnerArchetype = archetypValue;
                 }
-                // FIX: Also update selectedPartner - this is the variable used by updateComparisonView()
                 if (typeof selectedPartner !== 'undefined') {
                     window.selectedPartner = archetypValue;
                 }
@@ -764,7 +798,7 @@ const MemoryManager = (function() {
                 }
             }
 
-            // Apply ProfileReview state (Bedürfnisse)
+            // Apply ProfileReview state (220 Bedürfnisse)
             if (data.profileReview) {
                 applyProfileReviewState(data.profileReview);
             }
@@ -773,16 +807,13 @@ const MemoryManager = (function() {
             if (data.gewichtungen) {
                 applyGewichtungen(data.gewichtungen, 'partner');
             }
-            if (data.gewichtungLocks) {
-                applyGewichtungLocks(data.gewichtungLocks, 'partner');
-            }
 
-            // Apply Resonanzfaktoren für PARTNER
+            // Apply Resonanzfaktoren für PARTNER (person-spezifisch)
             if (data.resonanzfaktoren) {
                 applyResonanzfaktoren(data.resonanzfaktoren, 'partner');
             }
 
-            // Sync UI functions (use window.* as they're exposed globally in app-main.js)
+            // Sync UI functions
             if (typeof window.syncGeschlechtUI === 'function') window.syncGeschlechtUI('partner');
             if (typeof window.syncDominanzUI === 'function') window.syncDominanzUI('partner');
             if (typeof window.syncOrientierungUI === 'function') window.syncOrientierungUI('partner');
