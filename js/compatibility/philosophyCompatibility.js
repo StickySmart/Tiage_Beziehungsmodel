@@ -14,6 +14,32 @@ var TiageCompatibility = TiageCompatibility || {};
 TiageCompatibility.Philosophy = (function() {
     'use strict';
 
+    // Fallback-Kompatibilitätsmatrix (identisch mit archetypeFactor.js)
+    var FALLBACK_MATRIX = {
+        'single': { 'single': 85, 'duo': 25, 'duo_flex': 45, 'ra': 75, 'lat': 70, 'aromantisch': 80, 'solopoly': 75, 'polyamor': 50 },
+        'duo': { 'single': 25, 'duo': 95, 'duo_flex': 65, 'ra': 15, 'lat': 55, 'aromantisch': 20, 'solopoly': 20, 'polyamor': 35 },
+        'duo_flex': { 'single': 45, 'duo': 65, 'duo_flex': 85, 'ra': 55, 'lat': 70, 'aromantisch': 45, 'solopoly': 60, 'polyamor': 75 },
+        'ra': { 'single': 75, 'duo': 15, 'duo_flex': 55, 'ra': 90, 'lat': 70, 'aromantisch': 75, 'solopoly': 85, 'polyamor': 70 },
+        'lat': { 'single': 70, 'duo': 55, 'duo_flex': 70, 'ra': 70, 'lat': 90, 'aromantisch': 75, 'solopoly': 65, 'polyamor': 60 },
+        'aromantisch': { 'single': 80, 'duo': 20, 'duo_flex': 45, 'ra': 75, 'lat': 75, 'aromantisch': 95, 'solopoly': 65, 'polyamor': 55 },
+        'solopoly': { 'single': 75, 'duo': 20, 'duo_flex': 60, 'ra': 85, 'lat': 65, 'aromantisch': 65, 'solopoly': 90, 'polyamor': 80 },
+        'polyamor': { 'single': 50, 'duo': 35, 'duo_flex': 75, 'ra': 70, 'lat': 60, 'aromantisch': 55, 'solopoly': 80, 'polyamor': 90 }
+    };
+
+    /**
+     * Holt Score aus der Fallback-Matrix
+     */
+    function getFallbackScore(type1, type2) {
+        if (FALLBACK_MATRIX[type1] && typeof FALLBACK_MATRIX[type1][type2] === 'number') {
+            return FALLBACK_MATRIX[type1][type2];
+        }
+        // Versuche umgekehrt
+        if (FALLBACK_MATRIX[type2] && typeof FALLBACK_MATRIX[type2][type1] === 'number') {
+            return FALLBACK_MATRIX[type2][type1];
+        }
+        return 50; // Default
+    }
+
     /**
      * Calculate philosophy compatibility between two archetypes
      *
@@ -64,12 +90,27 @@ TiageCompatibility.Philosophy = (function() {
             };
         }
 
-        // Fallback if not found
+        // Nutze TiageSynthesis.Factors.Archetyp wenn verfügbar
+        if (typeof TiageSynthesis !== 'undefined' &&
+            TiageSynthesis.Factors &&
+            TiageSynthesis.Factors.Archetyp &&
+            typeof TiageSynthesis.Factors.Archetyp.calculate === 'function') {
+            var result = TiageSynthesis.Factors.Archetyp.calculate(type1, type2, matrixData);
+            return {
+                score: result.score,
+                note: 'Berechnet aus Archetyp-Kompatibilität',
+                hasWarning: result.score < 50,
+                severity: getSeverity(result.score)
+            };
+        }
+
+        // Fallback: Nutze lokale Fallback-Matrix
+        var fallbackScore = getFallbackScore(type1, type2);
         return {
-            score: 50,
-            note: 'Keine spezifischen Daten verfügbar',
-            hasWarning: false,
-            severity: 'medium'
+            score: fallbackScore,
+            note: 'Berechnet aus Fallback-Matrix',
+            hasWarning: fallbackScore < 50,
+            severity: getSeverity(fallbackScore)
         };
     }
 
