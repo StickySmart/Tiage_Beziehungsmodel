@@ -1269,6 +1269,7 @@ const GfkBeduerfnisse = {
 
         // Alle Bedürfnisse sammeln
         const alleBed = new Set([...Object.keys(bed1), ...Object.keys(bed2)]);
+        const self = this;
 
         let summeUebereinstimmung = 0;
         let summeGewicht = 0;
