@@ -236,62 +236,6 @@ const MemoryManager = (function() {
     }
 
     /**
-     * Extract primary/secondary from old dominanz format
-     * Old: { dominant: 'gelebt', submissiv: 'interessiert', switch: null, ausgeglichen: null }
-     * New: { primary: 'dominant', secondary: 'submissiv' }
-     */
-    function convertDominanzToNewFormat(dominanz) {
-        if (!dominanz) return { primary: null, secondary: null };
-
-        // Already new format?
-        if ('primary' in dominanz) {
-            return { primary: dominanz.primary, secondary: dominanz.secondary };
-        }
-
-        // Convert from old format
-        let primary = null;
-        let secondary = null;
-
-        for (const type of ['dominant', 'submissiv', 'switch', 'ausgeglichen']) {
-            if (dominanz[type] === 'gelebt') {
-                primary = type;
-            } else if (dominanz[type] === 'interessiert' && !secondary) {
-                secondary = type;
-            }
-        }
-
-        return { primary, secondary };
-    }
-
-    /**
-     * Extract primary/secondary from old orientierung format
-     * Old: { heterosexuell: 'gelebt', homosexuell: 'interessiert', bisexuell: null }
-     * New: { primary: 'heterosexuell', secondary: 'homosexuell' }
-     */
-    function convertOrientierungToNewFormat(orientierung) {
-        if (!orientierung) return { primary: null, secondary: null };
-
-        // Already new format?
-        if ('primary' in orientierung) {
-            return { primary: orientierung.primary, secondary: orientierung.secondary };
-        }
-
-        // Convert from old format
-        let primary = null;
-        let secondary = null;
-
-        for (const type of ['heterosexuell', 'homosexuell', 'bisexuell']) {
-            if (orientierung[type] === 'gelebt') {
-                primary = type;
-            } else if (orientierung[type] === 'interessiert' && !secondary) {
-                secondary = type;
-            }
-        }
-
-        return { primary, secondary };
-    }
-
-    /**
      * Collect current ME data from state (COMPLETE PROFILE)
      *
      * Data Structure v3.0:
@@ -326,18 +270,16 @@ const MemoryManager = (function() {
             // Geschlecht: { primary, secondary }
             data.geschlecht = TiageState.get('personDimensions.ich.geschlecht');
 
-            // Dominanz: Convert to { primary, secondary }
-            const dominanzRaw = TiageState.get('personDimensions.ich.dominanz');
-            data.dominanz = convertDominanzToNewFormat(dominanzRaw);
+            // Dominanz: { primary, secondary }
+            data.dominanz = TiageState.get('personDimensions.ich.dominanz');
 
-            // Orientierung: Convert to { primary, secondary }
-            const orientierungRaw = TiageState.get('personDimensions.ich.orientierung');
-            data.orientierung = convertOrientierungToNewFormat(orientierungRaw);
+            // Orientierung: { primary, secondary }
+            data.orientierung = TiageState.get('personDimensions.ich.orientierung');
         } else if (typeof window.personDimensions !== 'undefined') {
             // Fallback to global personDimensions
             data.geschlecht = window.personDimensions.ich?.geschlecht;
-            data.dominanz = convertDominanzToNewFormat(window.personDimensions.ich?.dominanz);
-            data.orientierung = convertOrientierungToNewFormat(window.personDimensions.ich?.orientierung);
+            data.dominanz = window.personDimensions.ich?.dominanz;
+            data.orientierung = window.personDimensions.ich?.orientierung;
             if (typeof window.mobileIchArchetype !== 'undefined') {
                 data.archetyp = window.mobileIchArchetype;
             }
@@ -390,18 +332,16 @@ const MemoryManager = (function() {
             // Geschlecht: { primary, secondary }
             data.geschlecht = TiageState.get('personDimensions.partner.geschlecht');
 
-            // Dominanz: Convert to { primary, secondary }
-            const dominanzRaw = TiageState.get('personDimensions.partner.dominanz');
-            data.dominanz = convertDominanzToNewFormat(dominanzRaw);
+            // Dominanz: { primary, secondary }
+            data.dominanz = TiageState.get('personDimensions.partner.dominanz');
 
-            // Orientierung: Convert to { primary, secondary }
-            const orientierungRaw = TiageState.get('personDimensions.partner.orientierung');
-            data.orientierung = convertOrientierungToNewFormat(orientierungRaw);
+            // Orientierung: { primary, secondary }
+            data.orientierung = TiageState.get('personDimensions.partner.orientierung');
         } else if (typeof window.personDimensions !== 'undefined') {
             // Fallback to global personDimensions
             data.geschlecht = window.personDimensions.partner?.geschlecht;
-            data.dominanz = convertDominanzToNewFormat(window.personDimensions.partner?.dominanz);
-            data.orientierung = convertOrientierungToNewFormat(window.personDimensions.partner?.orientierung);
+            data.dominanz = window.personDimensions.partner?.dominanz;
+            data.orientierung = window.personDimensions.partner?.orientierung;
             if (typeof window.mobilePartnerArchetype !== 'undefined') {
                 data.archetyp = window.mobilePartnerArchetype;
             }
@@ -694,67 +634,6 @@ const MemoryManager = (function() {
     }
 
     /**
-     * Convert new dominanz format { primary, secondary } back to old TiageState format
-     * New: { primary: 'dominant', secondary: 'submissiv' }
-     * Old: { dominant: 'gelebt', submissiv: 'interessiert', switch: null, ausgeglichen: null }
-     */
-    function convertDominanzToOldFormat(dominanz) {
-        if (!dominanz) return null;
-
-        // Already old format?
-        if (!('primary' in dominanz) && ('dominant' in dominanz || 'submissiv' in dominanz)) {
-            return dominanz;
-        }
-
-        // Convert from new format
-        const result = {
-            dominant: null,
-            submissiv: null,
-            switch: null,
-            ausgeglichen: null
-        };
-
-        if (dominanz.primary) {
-            result[dominanz.primary] = 'gelebt';
-        }
-        if (dominanz.secondary) {
-            result[dominanz.secondary] = 'interessiert';
-        }
-
-        return result;
-    }
-
-    /**
-     * Convert new orientierung format { primary, secondary } back to old TiageState format
-     * New: { primary: 'heterosexuell', secondary: 'homosexuell' }
-     * Old: { heterosexuell: 'gelebt', homosexuell: 'interessiert', bisexuell: null }
-     */
-    function convertOrientierungToOldFormat(orientierung) {
-        if (!orientierung) return null;
-
-        // Already old format?
-        if (!('primary' in orientierung) && ('heterosexuell' in orientierung || 'homosexuell' in orientierung)) {
-            return orientierung;
-        }
-
-        // Convert from new format
-        const result = {
-            heterosexuell: null,
-            homosexuell: null,
-            bisexuell: null
-        };
-
-        if (orientierung.primary) {
-            result[orientierung.primary] = 'gelebt';
-        }
-        if (orientierung.secondary) {
-            result[orientierung.secondary] = 'interessiert';
-        }
-
-        return result;
-    }
-
-    /**
      * Check version and show warning if older
      * @returns {Object} { isOlder: boolean, savedVersion: string, currentVersion: string }
      */
@@ -784,41 +663,30 @@ const MemoryManager = (function() {
     /**
      * Apply loaded data to ME (COMPLETE PROFILE)
      *
-     * Supports both old (v2.0) and new (v3.0) data formats:
-     * - v3.0: archetyp is string, dominanz/orientierung are { primary, secondary }
-     * - v2.0: archetyp is { primary, secondary }, dominanz/orientierung are old multi-value format
+     * Data Structure v3.0:
+     * - archetyp: string
+     * - geschlecht: { primary, secondary }
+     * - dominanz: { primary, secondary }
+     * - orientierung: { primary, secondary }
      */
     function applyMeData(data) {
         if (!data) return false;
 
         try {
-            // Check version compatibility
-            const versionInfo = checkVersionCompatibility(data);
-            if (versionInfo.isOlder) {
-                showVersionWarning(versionInfo.savedVersion, versionInfo.currentVersion, 'ME');
-            }
-
-            // Determine archetyp value (v3.0: string, v2.0: { primary, secondary })
-            const archetypValue = typeof data.archetyp === 'string'
-                ? data.archetyp
-                : (data.archetyp?.primary || data.archetyp);
-
-            // Convert dominanz/orientierung to old format for TiageState (if new format)
-            const dominanzForState = convertDominanzToOldFormat(data.dominanz);
-            const orientierungForState = convertOrientierungToOldFormat(data.orientierung);
+            // Archetyp: string
+            const archetypValue = data.archetyp;
 
             if (typeof TiageState !== 'undefined') {
                 if (data.geschlecht) {
                     TiageState.set('personDimensions.ich.geschlecht', data.geschlecht);
                 }
-                if (dominanzForState) {
-                    TiageState.set('personDimensions.ich.dominanz', dominanzForState);
+                if (data.dominanz) {
+                    TiageState.set('personDimensions.ich.dominanz', data.dominanz);
                 }
-                if (orientierungForState) {
-                    TiageState.set('personDimensions.ich.orientierung', orientierungForState);
+                if (data.orientierung) {
+                    TiageState.set('personDimensions.ich.orientierung', data.orientierung);
                 }
                 if (archetypValue) {
-                    // Store as { primary, secondary: null } for TiageState compatibility
                     TiageState.set('archetypes.ich', { primary: archetypValue, secondary: null });
                 }
                 TiageState.saveToStorage();
@@ -827,14 +695,14 @@ const MemoryManager = (function() {
             // Also update global variables and UI
             if (typeof window.personDimensions !== 'undefined') {
                 if (data.geschlecht) window.personDimensions.ich.geschlecht = data.geschlecht;
-                if (dominanzForState) window.personDimensions.ich.dominanz = dominanzForState;
-                if (orientierungForState) window.personDimensions.ich.orientierung = orientierungForState;
+                if (data.dominanz) window.personDimensions.ich.dominanz = data.dominanz;
+                if (data.orientierung) window.personDimensions.ich.orientierung = data.orientierung;
             }
 
             if (typeof window.mobilePersonDimensions !== 'undefined') {
                 if (data.geschlecht) window.mobilePersonDimensions.ich.geschlecht = data.geschlecht;
-                if (dominanzForState) window.mobilePersonDimensions.ich.dominanz = dominanzForState;
-                if (orientierungForState) window.mobilePersonDimensions.ich.orientierung = orientierungForState;
+                if (data.dominanz) window.mobilePersonDimensions.ich.dominanz = data.dominanz;
+                if (data.orientierung) window.mobilePersonDimensions.ich.orientierung = data.orientierung;
             }
 
             // Update archetype selects
@@ -865,17 +733,13 @@ const MemoryManager = (function() {
             if (data.gewichtungen) {
                 applyGewichtungen(data.gewichtungen);
             }
-            // Legacy support for separate gewichtungLocks
-            if (data.gewichtungLocks) {
-                applyGewichtungLocks(data.gewichtungLocks);
-            }
 
-            // Apply Resonanzfaktoren (R1, R2, R3, R4) - NEW in v3.0
+            // Apply Resonanzfaktoren (R1, R2, R3, R4)
             if (data.resonanzFaktoren) {
                 applyResonanzFaktoren(data.resonanzFaktoren);
             }
 
-            // Sync UI functions (use window.* as they're exposed globally in app-main.js)
+            // Sync UI functions
             if (typeof window.syncGeschlechtUI === 'function') window.syncGeschlechtUI('ich');
             if (typeof window.syncDominanzUI === 'function') window.syncDominanzUI('ich');
             if (typeof window.syncOrientierungUI === 'function') window.syncOrientierungUI('ich');
@@ -892,41 +756,30 @@ const MemoryManager = (function() {
     /**
      * Apply loaded data to PARTNER (COMPLETE PROFILE)
      *
-     * Supports both old (v2.0) and new (v3.0) data formats:
-     * - v3.0: archetyp is string, dominanz/orientierung are { primary, secondary }
-     * - v2.0: archetyp is { primary, secondary }, dominanz/orientierung are old multi-value format
+     * Data Structure v3.0:
+     * - archetyp: string
+     * - geschlecht: { primary, secondary }
+     * - dominanz: { primary, secondary }
+     * - orientierung: { primary, secondary }
      */
     function applyPartnerData(data) {
         if (!data) return false;
 
         try {
-            // Check version compatibility
-            const versionInfo = checkVersionCompatibility(data);
-            if (versionInfo.isOlder) {
-                showVersionWarning(versionInfo.savedVersion, versionInfo.currentVersion, 'PARTNER');
-            }
-
-            // Determine archetyp value (v3.0: string, v2.0: { primary, secondary })
-            const archetypValue = typeof data.archetyp === 'string'
-                ? data.archetyp
-                : (data.archetyp?.primary || data.archetyp);
-
-            // Convert dominanz/orientierung to old format for TiageState (if new format)
-            const dominanzForState = convertDominanzToOldFormat(data.dominanz);
-            const orientierungForState = convertOrientierungToOldFormat(data.orientierung);
+            // Archetyp: string
+            const archetypValue = data.archetyp;
 
             if (typeof TiageState !== 'undefined') {
                 if (data.geschlecht) {
                     TiageState.set('personDimensions.partner.geschlecht', data.geschlecht);
                 }
-                if (dominanzForState) {
-                    TiageState.set('personDimensions.partner.dominanz', dominanzForState);
+                if (data.dominanz) {
+                    TiageState.set('personDimensions.partner.dominanz', data.dominanz);
                 }
-                if (orientierungForState) {
-                    TiageState.set('personDimensions.partner.orientierung', orientierungForState);
+                if (data.orientierung) {
+                    TiageState.set('personDimensions.partner.orientierung', data.orientierung);
                 }
                 if (archetypValue) {
-                    // Store as { primary, secondary: null } for TiageState compatibility
                     TiageState.set('archetypes.partner', { primary: archetypValue, secondary: null });
                 }
                 TiageState.saveToStorage();
@@ -935,14 +788,14 @@ const MemoryManager = (function() {
             // Also update global variables and UI
             if (typeof window.personDimensions !== 'undefined') {
                 if (data.geschlecht) window.personDimensions.partner.geschlecht = data.geschlecht;
-                if (dominanzForState) window.personDimensions.partner.dominanz = dominanzForState;
-                if (orientierungForState) window.personDimensions.partner.orientierung = orientierungForState;
+                if (data.dominanz) window.personDimensions.partner.dominanz = data.dominanz;
+                if (data.orientierung) window.personDimensions.partner.orientierung = data.orientierung;
             }
 
             if (typeof window.mobilePersonDimensions !== 'undefined') {
                 if (data.geschlecht) window.mobilePersonDimensions.partner.geschlecht = data.geschlecht;
-                if (dominanzForState) window.mobilePersonDimensions.partner.dominanz = dominanzForState;
-                if (orientierungForState) window.mobilePersonDimensions.partner.orientierung = orientierungForState;
+                if (data.dominanz) window.mobilePersonDimensions.partner.dominanz = data.dominanz;
+                if (data.orientierung) window.mobilePersonDimensions.partner.orientierung = data.orientierung;
             }
 
             // Update archetype selects
@@ -953,7 +806,6 @@ const MemoryManager = (function() {
                 if (typeof partnerArchetype !== 'undefined') {
                     window.partnerArchetype = archetypValue;
                 }
-                // FIX: Also update selectedPartner - this is the variable used by updateComparisonView()
                 if (typeof selectedPartner !== 'undefined') {
                     window.selectedPartner = archetypValue;
                 }
@@ -977,17 +829,13 @@ const MemoryManager = (function() {
             if (data.gewichtungen) {
                 applyGewichtungen(data.gewichtungen);
             }
-            // Legacy support for separate gewichtungLocks
-            if (data.gewichtungLocks) {
-                applyGewichtungLocks(data.gewichtungLocks);
-            }
 
-            // Apply Resonanzfaktoren (R1, R2, R3, R4) - NEW in v3.0
+            // Apply Resonanzfaktoren (R1, R2, R3, R4)
             if (data.resonanzFaktoren) {
                 applyResonanzFaktoren(data.resonanzFaktoren);
             }
 
-            // Sync UI functions (use window.* as they're exposed globally in app-main.js)
+            // Sync UI functions
             if (typeof window.syncGeschlechtUI === 'function') window.syncGeschlechtUI('partner');
             if (typeof window.syncDominanzUI === 'function') window.syncDominanzUI('partner');
             if (typeof window.syncOrientierungUI === 'function') window.syncOrientierungUI('partner');
