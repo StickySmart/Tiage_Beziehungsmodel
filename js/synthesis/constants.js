@@ -284,103 +284,104 @@ TiageSynthesis.Constants = {
 
         // ═══════════════════════════════════════════════════════════════════
         // R_Philosophie (Archetyp-Bedürfnisse) - für R2
+        // Bedürfnisse: #B90, #B96, #B95, #B99, #B103, #B102, #B36, #B34, #B42, #B41
         // ═══════════════════════════════════════════════════════════════════
         philosophie: {
             single: {
-                kinderwunsch: 20,                   // Gering - kein Partner
-                langfristige_bindung: 15,          // Minimal
-                verbindlichkeit: 20,
-                gemeinsamer_wohnraum: 10,
-                eigener_raum: 95,                   // Maximum
-                alltag_teilen: 20,
-                unabhaengigkeit: 95,
-                selbstbestimmung: 95,
-                zugehoerigkeit: 40,
-                gemeinschaft: 50
+                kinderwunsch: 20,                   // #B90 - Gering - kein Partner
+                langfristige_bindung: 15,          // #B96 - Minimal
+                verbindlichkeit: 20,               // #B95
+                gemeinsamer_wohnraum: 10,          // #B99
+                eigener_raum: 95,                   // #B103 - Maximum
+                alltag_teilen: 20,                 // #B102
+                unabhaengigkeit: 95,               // #B36
+                selbstbestimmung: 95,              // #B34
+                zugehoerigkeit: 40,                // #B42
+                gemeinschaft: 50                   // #B41
             },
             duo: {
-                kinderwunsch: 75,                   // Hoch - traditionell
-                langfristige_bindung: 95,          // Maximum - Lebenspartner
-                verbindlichkeit: 95,
-                gemeinsamer_wohnraum: 90,
-                eigener_raum: 30,
-                alltag_teilen: 90,
-                unabhaengigkeit: 40,
-                selbstbestimmung: 50,
-                zugehoerigkeit: 90,
-                gemeinschaft: 70
+                kinderwunsch: 75,                   // #B90 - Hoch - traditionell
+                langfristige_bindung: 95,          // #B96 - Maximum - Lebenspartner
+                verbindlichkeit: 95,               // #B95
+                gemeinsamer_wohnraum: 90,          // #B99
+                eigener_raum: 30,                  // #B103
+                alltag_teilen: 90,                 // #B102
+                unabhaengigkeit: 40,               // #B36
+                selbstbestimmung: 50,              // #B34
+                zugehoerigkeit: 90,                // #B42
+                gemeinschaft: 70                   // #B41
             },
             duo_flex: {
-                kinderwunsch: 60,
-                langfristige_bindung: 85,
-                verbindlichkeit: 80,
-                gemeinsamer_wohnraum: 75,
-                eigener_raum: 50,
-                alltag_teilen: 75,
-                unabhaengigkeit: 60,
-                selbstbestimmung: 65,
-                zugehoerigkeit: 80,
-                gemeinschaft: 75
+                kinderwunsch: 60,                  // #B90
+                langfristige_bindung: 85,          // #B96
+                verbindlichkeit: 80,               // #B95
+                gemeinsamer_wohnraum: 75,          // #B99
+                eigener_raum: 50,                  // #B103
+                alltag_teilen: 75,                 // #B102
+                unabhaengigkeit: 60,               // #B36
+                selbstbestimmung: 65,              // #B34
+                zugehoerigkeit: 80,                // #B42
+                gemeinschaft: 75                   // #B41
             },
             solopoly: {
-                kinderwunsch: 30,
-                langfristige_bindung: 50,
-                verbindlichkeit: 45,
-                gemeinsamer_wohnraum: 20,
-                eigener_raum: 90,                   // Sehr hoch
-                alltag_teilen: 35,
-                unabhaengigkeit: 95,
-                selbstbestimmung: 95,
-                zugehoerigkeit: 60,
-                gemeinschaft: 70
+                kinderwunsch: 30,                  // #B90
+                langfristige_bindung: 50,          // #B96
+                verbindlichkeit: 45,               // #B95
+                gemeinsamer_wohnraum: 20,          // #B99
+                eigener_raum: 90,                   // #B103 - Sehr hoch
+                alltag_teilen: 35,                 // #B102
+                unabhaengigkeit: 95,               // #B36
+                selbstbestimmung: 95,              // #B34
+                zugehoerigkeit: 60,                // #B42
+                gemeinschaft: 70                   // #B41
             },
             polyamor: {
-                kinderwunsch: 50,
-                langfristige_bindung: 75,
-                verbindlichkeit: 70,
-                gemeinsamer_wohnraum: 60,
-                eigener_raum: 60,
-                alltag_teilen: 65,
-                unabhaengigkeit: 70,
-                selbstbestimmung: 75,
-                zugehoerigkeit: 85,
-                gemeinschaft: 90                    // Polycule
+                kinderwunsch: 50,                  // #B90
+                langfristige_bindung: 75,          // #B96
+                verbindlichkeit: 70,               // #B95
+                gemeinsamer_wohnraum: 60,          // #B99
+                eigener_raum: 60,                  // #B103
+                alltag_teilen: 65,                 // #B102
+                unabhaengigkeit: 70,               // #B36
+                selbstbestimmung: 75,              // #B34
+                zugehoerigkeit: 85,                // #B42
+                gemeinschaft: 90                    // #B41 - Polycule
             },
             ra: {
-                kinderwunsch: 35,
-                langfristige_bindung: 40,
-                verbindlichkeit: 30,                // Keine Hierarchien
-                gemeinsamer_wohnraum: 35,
-                eigener_raum: 80,
-                alltag_teilen: 40,
-                unabhaengigkeit: 90,
-                selbstbestimmung: 95,
-                zugehoerigkeit: 70,
-                gemeinschaft: 85
+                kinderwunsch: 35,                  // #B90
+                langfristige_bindung: 40,          // #B96
+                verbindlichkeit: 30,                // #B95 - Keine Hierarchien
+                gemeinsamer_wohnraum: 35,          // #B99
+                eigener_raum: 80,                  // #B103
+                alltag_teilen: 40,                 // #B102
+                unabhaengigkeit: 90,               // #B36
+                selbstbestimmung: 95,              // #B34
+                zugehoerigkeit: 70,                // #B42
+                gemeinschaft: 85                   // #B41
             },
             lat: {
-                kinderwunsch: 55,
-                langfristige_bindung: 80,
-                verbindlichkeit: 80,
-                gemeinsamer_wohnraum: 25,           // Getrennt wohnen!
-                eigener_raum: 85,
-                alltag_teilen: 45,
-                unabhaengigkeit: 75,
-                selbstbestimmung: 80,
-                zugehoerigkeit: 75,
-                gemeinschaft: 60
+                kinderwunsch: 55,                  // #B90
+                langfristige_bindung: 80,          // #B96
+                verbindlichkeit: 80,               // #B95
+                gemeinsamer_wohnraum: 25,           // #B99 - Getrennt wohnen!
+                eigener_raum: 85,                  // #B103
+                alltag_teilen: 45,                 // #B102
+                unabhaengigkeit: 75,               // #B36
+                selbstbestimmung: 80,              // #B34
+                zugehoerigkeit: 75,                // #B42
+                gemeinschaft: 60                   // #B41
             },
             aromantisch: {
-                kinderwunsch: 25,
-                langfristige_bindung: 30,
-                verbindlichkeit: 35,
-                gemeinsamer_wohnraum: 30,
-                eigener_raum: 80,
-                alltag_teilen: 40,
-                unabhaengigkeit: 85,
-                selbstbestimmung: 90,
-                zugehoerigkeit: 65,                 // Freundschaften wichtig
-                gemeinschaft: 75
+                kinderwunsch: 25,                  // #B90
+                langfristige_bindung: 30,          // #B96
+                verbindlichkeit: 35,               // #B95
+                gemeinsamer_wohnraum: 30,          // #B99
+                eigener_raum: 80,                  // #B103
+                alltag_teilen: 40,                 // #B102
+                unabhaengigkeit: 85,               // #B36
+                selbstbestimmung: 90,              // #B34
+                zugehoerigkeit: 65,                 // #B42 - Freundschaften wichtig
+                gemeinschaft: 75                   // #B41
             }
         }
     },
