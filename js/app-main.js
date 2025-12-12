@@ -13924,17 +13924,16 @@
             // Resonanzfaktoren laden
             const resonanzWerte = typeof ResonanzCard !== 'undefined' ? ResonanzCard.getValues('ich') : { R1: 1.0, R2: 1.0, R3: 1.0, R4: 1.0 };
 
-            // Einfluss-Matrix: Welcher Resonanzfaktor beeinflusst welche Perspektive?
-            // Skala: 0 = kein Einfluss, 1 = schwach, 2 = mittel, 3 = stark
-            const einflussMatrix = {
+            // Gewichtungs-Matrix: Wie stark beeinflusst jeder Faktor jede Perspektive (in %)
+            const gewichtMatrix = {
                 // R1 Orientierung → beeinflusst primär P1 (GFK) und P2 (Osho)
-                R1: { P1: 3, P2: 2, P3: 1, P4: 1 },
+                R1: { P1: 0.40, P2: 0.30, P3: 0.15, P4: 0.15 },
                 // R2 Archetyp → beeinflusst primär P3 (Pirsig) und P1 (GFK)
-                R2: { P1: 2, P2: 1, P3: 3, P4: 1 },
+                R2: { P1: 0.25, P2: 0.15, P3: 0.45, P4: 0.15 },
                 // R3 Dominanz → beeinflusst primär P4 (SexPositiv) und P2 (Osho)
-                R3: { P1: 1, P2: 2, P3: 1, P4: 3 },
+                R3: { P1: 0.10, P2: 0.25, P3: 0.15, P4: 0.50 },
                 // R4 Geschlecht → beeinflusst alle Perspektiven gleichmäßig
-                R4: { P1: 2, P2: 2, P3: 2, P4: 2 }
+                R4: { P1: 0.25, P2: 0.25, P3: 0.25, P4: 0.25 }
             };
 
             // Perspektiven-Konfiguration
@@ -13953,11 +13952,25 @@
                 R4: { label: 'Geschlecht', color: '#F4A261' }
             };
 
-            // Einfluss-Indikator generieren (●○○ / ●●○ / ●●●)
-            function getEinflussIndikator(stufe, color) {
-                const filled = '●'.repeat(stufe);
-                const empty = '○'.repeat(3 - stufe);
-                return `<span style="color: ${color}; letter-spacing: 2px;">${filled}</span><span style="color: var(--text-muted); letter-spacing: 2px;">${empty}</span>`;
+            // Berechne effektiven Einfluss: (R-Wert - 1.0) * Gewicht * 100 = Prozentuale Änderung
+            function berechneEinfluss(rWert, gewicht) {
+                const abweichung = rWert - 1.0; // -0.5 bis +0.5
+                const einfluss = abweichung * gewicht * 100; // Prozentuale Änderung
+                return einfluss;
+            }
+
+            // Einfluss-Anzeige mit Farbcodierung
+            function getEinflussDisplay(einfluss, perspColor) {
+                let color = 'var(--text-muted)'; // neutral
+                let prefix = '';
+                if (einfluss > 0.5) {
+                    color = '#22c55e'; // positiv
+                    prefix = '+';
+                } else if (einfluss < -0.5) {
+                    color = '#ef4444'; // negativ
+                }
+                const displayVal = einfluss.toFixed(1);
+                return `<span style="color: ${color}; font-weight: 500; font-size: 11px;">${prefix}${displayVal}%</span>`;
             }
 
             // Wert-Anzeige mit Farbcodierung
@@ -13970,10 +13983,22 @@
 
             // Tabellen-Zeilen für jeden Resonanzfaktor
             let tableRows = '';
+            const perspektivenSummen = { P1: 0, P2: 0, P3: 0, P4: 0 };
+
             ['R1', 'R2', 'R3', 'R4'].forEach(rf => {
                 const faktor = faktoren[rf];
                 const wert = resonanzWerte[rf] || 1.0;
-                const einfluss = einflussMatrix[rf];
+                const gewichte = gewichtMatrix[rf];
+
+                const einflussP1 = berechneEinfluss(wert, gewichte.P1);
+                const einflussP2 = berechneEinfluss(wert, gewichte.P2);
+                const einflussP3 = berechneEinfluss(wert, gewichte.P3);
+                const einflussP4 = berechneEinfluss(wert, gewichte.P4);
+
+                perspektivenSummen.P1 += einflussP1;
+                perspektivenSummen.P2 += einflussP2;
+                perspektivenSummen.P3 += einflussP3;
+                perspektivenSummen.P4 += einflussP4;
 
                 tableRows += `
                     <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);">
@@ -13982,12 +14007,22 @@
                             <span style="color: var(--text-secondary); margin-left: 6px;">${faktor.label}</span>
                         </td>
                         <td style="padding: 8px 6px; text-align: center; font-size: 12px;">${getWertDisplay(wert)}</td>
-                        <td style="padding: 8px 6px; text-align: center; font-size: 10px;">${getEinflussIndikator(einfluss.P1, perspektiven.P1.color)}</td>
-                        <td style="padding: 8px 6px; text-align: center; font-size: 10px;">${getEinflussIndikator(einfluss.P2, perspektiven.P2.color)}</td>
-                        <td style="padding: 8px 6px; text-align: center; font-size: 10px;">${getEinflussIndikator(einfluss.P3, perspektiven.P3.color)}</td>
-                        <td style="padding: 8px 6px; text-align: center; font-size: 10px;">${getEinflussIndikator(einfluss.P4, perspektiven.P4.color)}</td>
+                        <td style="padding: 8px 6px; text-align: center;">${getEinflussDisplay(einflussP1, perspektiven.P1.color)}</td>
+                        <td style="padding: 8px 6px; text-align: center;">${getEinflussDisplay(einflussP2, perspektiven.P2.color)}</td>
+                        <td style="padding: 8px 6px; text-align: center;">${getEinflussDisplay(einflussP3, perspektiven.P3.color)}</td>
+                        <td style="padding: 8px 6px; text-align: center;">${getEinflussDisplay(einflussP4, perspektiven.P4.color)}</td>
                     </tr>`;
             });
+
+            // Summen-Zeile
+            const summenRow = `
+                <tr style="border-top: 2px solid rgba(139,92,246,0.3); background: rgba(139,92,246,0.05);">
+                    <td style="padding: 10px 10px; font-size: 11px; font-weight: 600; color: var(--text-primary);" colspan="2">Σ Gesamt</td>
+                    <td style="padding: 10px 6px; text-align: center;">${getEinflussDisplay(perspektivenSummen.P1, perspektiven.P1.color)}</td>
+                    <td style="padding: 10px 6px; text-align: center;">${getEinflussDisplay(perspektivenSummen.P2, perspektiven.P2.color)}</td>
+                    <td style="padding: 10px 6px; text-align: center;">${getEinflussDisplay(perspektivenSummen.P3, perspektiven.P3.color)}</td>
+                    <td style="padding: 10px 6px; text-align: center;">${getEinflussDisplay(perspektivenSummen.P4, perspektiven.P4.color)}</td>
+                </tr>`;
 
             // HTML generieren
             return `
@@ -14000,7 +14035,7 @@
                     <thead>
                         <tr style="border-bottom: 2px solid rgba(139,92,246,0.3);">
                             <th style="padding: 8px 10px; text-align: left; color: var(--text-muted); font-weight: 500;">Faktor</th>
-                            <th style="padding: 8px 6px; text-align: center; color: var(--text-muted); font-weight: 500;">Wert</th>
+                            <th style="padding: 8px 6px; text-align: center; color: var(--text-muted); font-weight: 500;">R</th>
                             <th style="padding: 8px 6px; text-align: center;"><span style="color: ${perspektiven.P1.color};">${perspektiven.P1.icon}</span></th>
                             <th style="padding: 8px 6px; text-align: center;"><span style="color: ${perspektiven.P2.color};">${perspektiven.P2.icon}</span></th>
                             <th style="padding: 8px 6px; text-align: center;"><span style="color: ${perspektiven.P3.color};">${perspektiven.P3.icon}</span></th>
@@ -14009,14 +14044,13 @@
                     </thead>
                     <tbody>
                         ${tableRows}
+                        ${summenRow}
                     </tbody>
                 </table>
                 <div style="display: flex; gap: 16px; margin-top: 12px; padding-top: 10px; border-top: 1px solid rgba(255,255,255,0.05); flex-wrap: wrap;">
-                    <span style="font-size: 10px; color: var(--text-muted);">●●● stark</span>
-                    <span style="font-size: 10px; color: var(--text-muted);">●●○ mittel</span>
-                    <span style="font-size: 10px; color: var(--text-muted);">●○○ schwach</span>
-                    <span style="font-size: 10px; color: #22c55e;">≥1.1 verstärkt</span>
-                    <span style="font-size: 10px; color: #ef4444;">≤0.9 schwächt</span>
+                    <span style="font-size: 10px; color: var(--text-muted);">R = Resonanzwert (0.5–1.5)</span>
+                    <span style="font-size: 10px; color: #22c55e;">+% verstärkt</span>
+                    <span style="font-size: 10px; color: #ef4444;">−% schwächt</span>
                 </div>
             </div>`;
         }
