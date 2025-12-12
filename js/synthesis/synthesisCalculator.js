@@ -2,20 +2,44 @@
  * TIAGE SYNTHESE - Haupt-Calculator v3.1
  *
  * ═══════════════════════════════════════════════════════════════════════════
- * HAUPT-FORMEL (Basis)
+ * HAUPT-FORMEL v3.1
  * ═══════════════════════════════════════════════════════════════════════════
  *
- *   Q = [(A × wₐ) + (O × wₒ) + (D × wᵈ) + (G × wᵍ)] × R
+ *   Q = [(A × 0.25) + (O × 0.25) + (D × 0.25) + (G × 0.25)] × R
  *
  * Wobei:
- *   A = Archetyp-Score (15% - LOGOS)      - Beziehungsphilosophie
- *   O = Orientierungs-Score (40% - PATHOS) - Sexuelle Orientierung
- *   D = Dominanz-Score (20% - PATHOS)      - Dom/Sub/Switch Dynamik
- *   G = Geschlechts-Score (25% - PATHOS)   - Gender-Attraktion
- *   R = Resonanz-Koeffizient (0.9 - 1.1)
+ *   A = Archetyp-Score (LOGOS)       - Beziehungsphilosophie
+ *   O = Orientierungs-Score (PATHOS) - Sexuelle Orientierung
+ *   D = Dominanz-Score (PATHOS)      - Dom/Sub/Switch Dynamik
+ *   G = Geschlechts-Score (PATHOS)   - Gender-Attraktion
+ *   R = Paarungs-Resonanz (0.9 - 1.1) - Berechnung steht noch aus
  *
  * ═══════════════════════════════════════════════════════════════════════════
- * v3.0: BEDÜRFNIS-INTEGRATION PRO FAKTOR
+ * v3.1: DIMENSIONALE RESONANZ ALS VORAB-MULTIPLIKATOR
+ * ═══════════════════════════════════════════════════════════════════════════
+ * Die dimensionalen Resonanzen (R_dim) wirken VOR der Berechnung auf die
+ * Bedürfniswerte in der JSON:
+ *
+ *   Bedürfnis_final = Bedürfnis_base × R_dim
+ *
+ * Anwendung pro Dimension:
+ *   - Orientierungs-Bedürfnisse × R_Leben
+ *   - Dominanz-Bedürfnisse × R_Dynamik
+ *   - Geschlechts-Bedürfnisse × R_Identität
+ *
+ * Effekt:
+ *   - R_dim > 1.0 → Bedürfniswerte werden verstärkt
+ *   - R_dim < 1.0 → Bedürfniswerte werden gedämpft
+ *   - R_dim = 1.0 → Bedürfniswerte bleiben unverändert
+ *
+ * ═══════════════════════════════════════════════════════════════════════════
+ * BEIDE RESONANZEN WERDEN VERWENDET
+ * ═══════════════════════════════════════════════════════════════════════════
+ * 1. v3.1 Rs:  Wirken auf Bedürfnisse VORAB (pro Person, pro Dimension)
+ * 2. Altes R:  Wirkt auf Gesamt-Score AM ENDE (pro Paarung)
+ *
+ * ═══════════════════════════════════════════════════════════════════════════
+ * BEDÜRFNIS-INTEGRATION PRO FAKTOR
  * ═══════════════════════════════════════════════════════════════════════════
  * Jeder Faktor (A, O, D, G) kombiniert Matrix-Score mit Bedürfnis-Match:
  *
@@ -26,24 +50,6 @@
  *   - Orientierung: sexuelle_experimentierfreude, biologische_anziehung...
  *   - Dominanz: kontrolle_ausueben, hingabe, dynamische_evolution...
  *   - Geschlecht: authentizitaet, eigene_wahrheit, akzeptanz...
- *
- * ═══════════════════════════════════════════════════════════════════════════
- * v3.1: DIMENSIONALE RESONANZ (NEU!)
- * ═══════════════════════════════════════════════════════════════════════════
- * Jeder Faktor wird mit seiner zugehörigen Resonanz-Dimension multipliziert:
- *
- *   Q = (A × wₐ × R_Philosophie) +
- *       (O × wₒ × R_Leben) +
- *       (D × wᵈ × R_Dynamik) +
- *       (G × wᵍ × R_Identität)
- *
- * Wobei R_dim = 0.9 + (Bedürfnis-Match_dim × 0.2), also 0.9-1.1
- *
- * Mapping:
- *   A (Archetyp)     ↔ R_Philosophie (Beziehungsphilosophie-Bedürfnisse)
- *   O (Orientierung) ↔ R_Leben (Anziehung/Intimität-Bedürfnisse)
- *   D (Dominanz)     ↔ R_Dynamik (Machtdynamik-Bedürfnisse)
- *   G (Geschlecht)   ↔ R_Identität (Identität/Ausdruck-Bedürfnisse)
  *
  * ═══════════════════════════════════════════════════════════════════════════
  * RESONANZ-FORMEL (Legacy/Fallback)
@@ -95,10 +101,31 @@ TiageSynthesis.Calculator = {
             return this._buildKOResult(person1, person2, lifestyleResult, matrixData);
         }
 
-        // Bedürfnis-Match berechnen wenn nicht explizit angegeben
+        // ═══════════════════════════════════════════════════════════════════
+        // SCHRITT 0.5: v3.1 Dimensionale Resonanz als Vorab-Multiplikator
+        // ═══════════════════════════════════════════════════════════════════
+        // Berechne Kohärenz zwischen Archetyp und Bedürfnissen pro Person
+        // und wende die Resonanzen auf die Bedürfniswerte an
+
+        var needsIntegration = TiageSynthesis.NeedsIntegration;
+        var resonanz1 = needsIntegration.calculateDimensionalResonance(person1);
+        var resonanz2 = needsIntegration.calculateDimensionalResonance(person2);
+
+        // Erstelle modifizierte Profile mit angepassten Bedürfnissen
+        var person1Modified = this._cloneProfile(person1);
+        var person2Modified = this._cloneProfile(person2);
+
+        if (person1.needs) {
+            person1Modified.needs = needsIntegration.applyResonanceToNeeds(person1.needs, resonanz1);
+        }
+        if (person2.needs) {
+            person2Modified.needs = needsIntegration.applyResonanceToNeeds(person2.needs, resonanz2);
+        }
+
+        // Bedürfnis-Match berechnen mit modifizierten Werten
         var beduerfnisResult = null;
         if (profilMatch === undefined || profilMatch === null) {
-            beduerfnisResult = this._calculateBedürfnisMatch(person1, person2, options.archetypProfile);
+            beduerfnisResult = this._calculateBedürfnisMatch(person1Modified, person2Modified, options.archetypProfile);
             profilMatch = beduerfnisResult ? beduerfnisResult.score : constants.RESONANCE.DEFAULT_PROFILE_MATCH;
         }
 
@@ -111,7 +138,7 @@ TiageSynthesis.Calculator = {
         );
 
         // ═══════════════════════════════════════════════════════════════════
-        // SCHRITT 1: Alle 4 Faktoren berechnen
+        // SCHRITT 1: Alle 4 Faktoren berechnen (mit modifizierten Profilen)
         // ═══════════════════════════════════════════════════════════════════
 
         var archetypResult = factors.Archetyp.calculate(
@@ -314,7 +341,14 @@ TiageSynthesis.Calculator = {
                 psBonus: this._calculatePSBonus(person1, person2, constants),
 
                 // NEU: Bedürfnis-Integration pro Faktor (Pirsig/Osho)
-                needsIntegration: needsIntegrationDetails
+                needsIntegration: needsIntegrationDetails,
+
+                // v3.1: Dimensionale Resonanzen als Vorab-Multiplikator
+                v31Resonanz: {
+                    person1: resonanz1,
+                    person2: resonanz2,
+                    enabled: resonanz1.enabled && resonanz2.enabled
+                }
             },
 
             // Bedürfnis-Übereinstimmung (Gesamt)
@@ -1312,5 +1346,31 @@ TiageSynthesis.Calculator = {
         console.log('Empfehlung:', status.recommendation);
         console.groupEnd();
         return status;
+    },
+
+    /**
+     * Klont ein Profil-Objekt (shallow clone mit deep clone für needs)
+     * @private
+     */
+    _cloneProfile: function(profile) {
+        if (!profile) return profile;
+
+        var clone = {};
+        for (var key in profile) {
+            if (profile.hasOwnProperty(key)) {
+                if (key === 'needs' && typeof profile.needs === 'object') {
+                    // Deep clone für needs
+                    clone.needs = {};
+                    for (var needKey in profile.needs) {
+                        if (profile.needs.hasOwnProperty(needKey)) {
+                            clone.needs[needKey] = profile.needs[needKey];
+                        }
+                    }
+                } else {
+                    clone[key] = profile[key];
+                }
+            }
+        }
+        return clone;
     }
 };

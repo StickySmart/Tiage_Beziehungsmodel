@@ -242,5 +242,140 @@ TiageSynthesis.NeedsIntegration = {
                 geschlecht: (constants.NEEDS_INTEGRATION.GESCHLECHT_NEEDS || []).length
             }
         };
+    },
+
+    // ═══════════════════════════════════════════════════════════════════════
+    // v3.1: DIMENSIONALE RESONANZ BERECHNUNG
+    // ═══════════════════════════════════════════════════════════════════════
+
+    /**
+     * Berechnet die dimensionalen Resonanzen R_Leben, R_Dynamik, R_Identität
+     * basierend auf der Kohärenz zwischen Archetyp und Bedürfnissen.
+     *
+     * @param {object} person - Profil mit archetyp und needs
+     * @returns {object} { leben: R, dynamik: R, identitaet: R }
+     */
+    calculateDimensionalResonance: function(person) {
+        var constants = TiageSynthesis.Constants;
+        var kohaerenz = constants.ARCHETYP_KOHAERENZ;
+
+        if (!kohaerenz || !person.archetyp || !person.needs) {
+            return {
+                leben: 1.0,
+                dynamik: 1.0,
+                identitaet: 1.0,
+                enabled: false
+            };
+        }
+
+        var archetyp = person.archetyp.key || person.archetyp;
+
+        return {
+            leben: this._calculateSingleResonance(person.needs, kohaerenz.leben, archetyp),
+            dynamik: this._calculateSingleResonance(person.needs, kohaerenz.dynamik, archetyp),
+            identitaet: this._calculateSingleResonance(person.needs, kohaerenz.identitaet, archetyp),
+            enabled: true,
+            archetyp: archetyp
+        };
+    },
+
+    /**
+     * Berechnet R für eine einzelne Dimension
+     *
+     * Formel: R_dim = 0.9 + (Übereinstimmung × 0.2)
+     * Übereinstimmung = 1 - (durchschnittliche Abweichung / 100)
+     *
+     * @private
+     */
+    _calculateSingleResonance: function(needs, dimensionKohaerenz, archetyp) {
+        if (!dimensionKohaerenz || !dimensionKohaerenz[archetyp]) {
+            return 1.0; // Neutral wenn keine Daten
+        }
+
+        var expected = dimensionKohaerenz[archetyp];
+        var totalDiff = 0;
+        var count = 0;
+
+        for (var needId in expected) {
+            if (expected.hasOwnProperty(needId) && expected[needId] !== null) {
+                var expectedValue = expected[needId];
+                var actualValue = needs[needId];
+
+                if (actualValue !== undefined) {
+                    var diff = Math.abs(actualValue - expectedValue);
+                    totalDiff += diff;
+                    count++;
+                }
+            }
+        }
+
+        if (count === 0) {
+            return 1.0; // Neutral wenn keine vergleichbaren Bedürfnisse
+        }
+
+        var avgDiff = totalDiff / count;
+        var uebereinstimmung = 1 - (avgDiff / 100);
+
+        // R_dim = 0.9 + (Übereinstimmung × 0.2)
+        var rValue = 0.9 + (uebereinstimmung * 0.2);
+
+        // Clamp auf 0.9 - 1.1
+        return Math.round(Math.max(0.9, Math.min(1.1, rValue)) * 1000) / 1000;
+    },
+
+    /**
+     * Wendet die dimensionalen Resonanzen als Vorab-Multiplikator auf
+     * die Bedürfniswerte an.
+     *
+     * @param {object} needs - Original-Bedürfnisse
+     * @param {object} resonanz - { leben, dynamik, identitaet }
+     * @returns {object} Modifizierte Bedürfnisse
+     */
+    applyResonanceToNeeds: function(needs, resonanz) {
+        if (!resonanz || !resonanz.enabled) {
+            return needs;
+        }
+
+        var constants = TiageSynthesis.Constants;
+        var modified = {};
+
+        // Kopiere alle Bedürfnisse
+        for (var key in needs) {
+            if (needs.hasOwnProperty(key)) {
+                modified[key] = needs[key];
+            }
+        }
+
+        // Wende R_Leben auf Orientierungs-Bedürfnisse an
+        var orientierungNeeds = constants.NEEDS_INTEGRATION.ORIENTIERUNG_NEEDS || [];
+        for (var i = 0; i < orientierungNeeds.length; i++) {
+            var needId = orientierungNeeds[i];
+            if (modified[needId] !== undefined) {
+                modified[needId] = Math.round(modified[needId] * resonanz.leben);
+                modified[needId] = Math.min(100, Math.max(0, modified[needId]));
+            }
+        }
+
+        // Wende R_Dynamik auf Dominanz-Bedürfnisse an
+        var dominanzNeeds = constants.NEEDS_INTEGRATION.DOMINANZ_NEEDS || [];
+        for (var j = 0; j < dominanzNeeds.length; j++) {
+            var needId2 = dominanzNeeds[j];
+            if (modified[needId2] !== undefined) {
+                modified[needId2] = Math.round(modified[needId2] * resonanz.dynamik);
+                modified[needId2] = Math.min(100, Math.max(0, modified[needId2]));
+            }
+        }
+
+        // Wende R_Identität auf Geschlechts-Bedürfnisse an
+        var geschlechtNeeds = constants.NEEDS_INTEGRATION.GESCHLECHT_NEEDS || [];
+        for (var k = 0; k < geschlechtNeeds.length; k++) {
+            var needId3 = geschlechtNeeds[k];
+            if (modified[needId3] !== undefined) {
+                modified[needId3] = Math.round(modified[needId3] * resonanz.identitaet);
+                modified[needId3] = Math.min(100, Math.max(0, modified[needId3]));
+            }
+        }
+
+        return modified;
     }
 };
