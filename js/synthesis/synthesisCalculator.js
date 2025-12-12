@@ -16,13 +16,24 @@
  *   D = Dominanz-Score (20% - PATHOS)      - Dom/Sub/Switch Dynamik
  *   G = Geschlechts-Score (25% - PATHOS)   - Gender-Attraktion
  *
- *   R_dim = 0.9 + (Bedürfnis-Match_dim × 0.2), also 0.9-1.1
+ *   R_dim = Dimensionale Resonanz (0.9 - 1.1)
  *
  * Mapping Faktor ↔ Resonanz:
- *   A (Archetyp)     ↔ R_Philosophie (Beziehungsphilosophie-Bedürfnisse)
- *   O (Orientierung) ↔ R_Leben (Anziehung/Intimität-Bedürfnisse)
- *   D (Dominanz)     ↔ R_Dynamik (Machtdynamik-Bedürfnisse)
- *   G (Geschlecht)   ↔ R_Identität (Identität/Ausdruck-Bedürfnisse)
+ *   A (Archetyp)     ↔ R_Philosophie
+ *   O (Orientierung) ↔ R_Leben
+ *   D (Dominanz)     ↔ R_Dynamik
+ *   G (Geschlecht)   ↔ R_Identität
+ *
+ * ═══════════════════════════════════════════════════════════════════════════
+ * RESONANZ WIRKT AUF MODIFIKATOREN
+ * ═══════════════════════════════════════════════════════════════════════════
+ *
+ *   Modifier_final = Modifier_base × R_dim
+ *
+ * Die Resonanz verstärkt oder dämpft die Modifikatoren jedes Faktors:
+ *   - R_dim > 1.0 → Modifier werden verstärkt
+ *   - R_dim < 1.0 → Modifier werden gedämpft
+ *   - R_dim = 1.0 → Modifier bleiben unverändert
  *
  * ═══════════════════════════════════════════════════════════════════════════
  * BEDÜRFNIS-INTEGRATION PRO FAKTOR
