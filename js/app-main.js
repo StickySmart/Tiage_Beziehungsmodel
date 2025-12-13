@@ -14412,7 +14412,6 @@
 
             // Tabellen-Zeilen
             let tableRows = '';
-            const perspektivenSummen = { P1: 0, P2: 0, P3: 0, P4: 0 };
 
             ['R1', 'R2', 'R3', 'R4'].forEach(rf => {
                 const faktor = faktoren[rf];
@@ -14423,11 +14422,6 @@
                 const einflussP2 = berechneEinfluss(wert, gewichte.P2);
                 const einflussP3 = berechneEinfluss(wert, gewichte.P3);
                 const einflussP4 = berechneEinfluss(wert, gewichte.P4);
-
-                perspektivenSummen.P1 += einflussP1;
-                perspektivenSummen.P2 += einflussP2;
-                perspektivenSummen.P3 += einflussP3;
-                perspektivenSummen.P4 += einflussP4;
 
                 tableRows += `
                     <tr style="border-bottom: 1px solid rgba(255,255,255,0.08);">
@@ -14442,16 +14436,6 @@
                         <td style="padding: 12px 10px; text-align: center;">${getEinflussDisplay(einflussP4)}</td>
                     </tr>`;
             });
-
-            // Summen-Zeile
-            const summenRow = `
-                <tr style="border-top: 2px solid rgba(139,92,246,0.4); background: rgba(139,92,246,0.08);">
-                    <td style="padding: 12px 14px; font-size: 13px; font-weight: 600; color: var(--text-primary);" colspan="2">Σ Gesamt</td>
-                    <td style="padding: 12px 10px; text-align: center;">${getEinflussDisplay(perspektivenSummen.P1)}</td>
-                    <td style="padding: 12px 10px; text-align: center;">${getEinflussDisplay(perspektivenSummen.P2)}</td>
-                    <td style="padding: 12px 10px; text-align: center;">${getEinflussDisplay(perspektivenSummen.P3)}</td>
-                    <td style="padding: 12px 10px; text-align: center;">${getEinflussDisplay(perspektivenSummen.P4)}</td>
-                </tr>`;
 
             // Archetyp-Buttons
             const ichArch = archetypeDescriptions[currentArchetype];
@@ -14514,7 +14498,6 @@
                                 </thead>
                                 <tbody>
                                     ${tableRows}
-                                    ${summenRow}
                                 </tbody>
                             </table>
                         </div>
