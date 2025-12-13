@@ -295,7 +295,7 @@ R = 1.066 → Override aktiv!
 ## Anwendung im Qualitätsindex
 
 ```
-Qualitätsindex = [(Orientierung × 25%) + (Archetyp × 25%) + (Dominanz × 25%) + (Geschlecht × 25%)] × R
+Q = (O × 0.25 × R_Leben) + (A × 0.25 × R_Philosophie) + (D × 0.25 × R_Dynamik) + (G × 0.25 × R_Identität)
 ```
 
 ## Die Zustands-Skala
