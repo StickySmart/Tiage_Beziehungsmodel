@@ -22,26 +22,26 @@ Alle Änderungen und neue Features findest du im [Changelog](../CHANGELOG.md).
 
 | Faktor | Gewicht | Dimension | Beschreibung |
 |--------|---------|-----------|--------------|
-| **Orientierungs-Kompatibilität** | 40% | Pathos | Körperliche Polarität und Anziehung. OSHO: "Nur Extreme können sich wirklich anziehen." |
+| **Orientierungs-Kompatibilität** | 25% | Pathos | Körperliche Polarität und Anziehung. OSHO: "Nur Extreme können sich wirklich anziehen." |
 | **Geschlechts-Attraktion** | 25% | Pathos | Gender-Chemie und Identitäts-Resonanz |
-| **Dominanz-Harmonie** | 20% | Pathos | Energetische Dynamik. OSHO: "Tao - eine Energie, zwei Ausdrucksformen." |
-| **Archetyp-Übereinstimmung** | 15% | Logos | Fundamentale Beziehungsphilosophie: "Wie wollen wir Beziehung leben?" |
+| **Dominanz-Harmonie** | 25% | Pathos | Energetische Dynamik. OSHO: "Tao - eine Energie, zwei Ausdrucksformen." |
+| **Archetyp-Übereinstimmung** | 25% | Logos | Fundamentale Beziehungsphilosophie: "Wie wollen wir Beziehung leben?" |
 
 ## Berechnung (v3.1)
 
 ### Hauptformel
 
 ```
-Q = (A × 0.15 × R_Philosophie) + (O × 0.40 × R_Leben) + (D × 0.20 × R_Dynamik) + (G × 0.25 × R_Identität)
+Q = (A × 0.25 × R_Philosophie) + (O × 0.25 × R_Leben) + (D × 0.25 × R_Dynamik) + (G × 0.25 × R_Identität)
 ```
 
 **NEU in v3.1:** Jeder Faktor wird mit seiner **eigenen Resonanz-Dimension** multipliziert:
 
 | Faktor | Gewicht | × | Resonanz-Dimension |
 |--------|---------|---|--------------------|
-| A (Archetyp) | 15% | × | 🧠 R_Philosophie |
-| O (Orientierung) | 40% | × | 🔥 R_Leben |
-| D (Dominanz) | 20% | × | ⚡ R_Dynamik |
+| A (Archetyp) | 25% | × | 🧠 R_Philosophie |
+| O (Orientierung) | 25% | × | 🔥 R_Leben |
+| D (Dominanz) | 25% | × | ⚡ R_Dynamik |
 | G (Geschlecht) | 25% | × | 💚 R_Identität |
 
 Jeder Faktor wird einzeln auf 0-100% bewertet. Die **Resonanz (R)** ist ein Meta-Faktor (0.9-1.1), der moduliert, wie gut Kopf (Logos) und Herz (Pathos) zusammenschwingen.

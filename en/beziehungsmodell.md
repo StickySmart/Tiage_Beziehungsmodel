@@ -74,7 +74,7 @@ Each archetype can engage in different types of relationships. The model disting
 
 ## The 4 Quality Factors
 
-### 1. Orientation Compatibility (40% - Pathos)
+### 1. Orientation Compatibility (25% - Pathos)
 Physical polarity and attraction (Hetero, Homo, Bi, Pan, Ace)
 "Pathos before Logos" - People experience relationships physically first
 
@@ -151,16 +151,16 @@ PROFILE PARAMETERS (umbrella term)
 ## Main Formula (v3.1)
 
 ```
-Q = (A × 0.15 × R_Philosophy) + (O × 0.40 × R_Life) + (D × 0.20 × R_Dynamics) + (G × 0.25 × R_Identity)
+Q = (A × 0.25 × R_Philosophy) + (O × 0.25 × R_Life) + (D × 0.25 × R_Dynamics) + (G × 0.25 × R_Identity)
 ```
 
 Each factor is multiplied by its **own resonance dimension**:
 
 | Factor | Weight | × | Resonance |
 |--------|--------|---|-----------|
-| A (Archetype) | 15% | × | 🧠 R_Philosophy |
-| O (Orientation) | 40% | × | 🔥 R_Life |
-| D (Dominance) | 20% | × | ⚡ R_Dynamics |
+| A (Archetype) | 25% | × | 🧠 R_Philosophy |
+| O (Orientation) | 25% | × | 🔥 R_Life |
+| D (Dominance) | 25% | × | ⚡ R_Dynamics |
 | G (Gender) | 25% | × | 💚 R_Identity |
 
 ---

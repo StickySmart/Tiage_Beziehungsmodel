@@ -32,9 +32,9 @@ Q = (A×w_A×R_Phil) + (O×w_O×R_Life) + (D×w_D×R_Dyn) + (G×w_G×R_Ident)
 **Factor-Resonance Mapping:**
 | Factor | Weight | × | Resonance |
 |--------|--------|---|-----------|
-| A (Archetype) | 15% | × | 🧠 R_Philosophy |
-| O (Orientation) | 40% | × | 🔥 R_Life |
-| D (Dominance) | 20% | × | ⚡ R_Dynamics |
+| A (Archetype) | 25% | × | 🧠 R_Philosophy |
+| O (Orientation) | 25% | × | 🔥 R_Life |
+| D (Dominance) | 25% | × | ⚡ R_Dynamics |
 | G (Gender) | 25% | × | 💚 R_Identity |
 
 **Interpretation per dimension:**
