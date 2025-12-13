@@ -636,5 +636,280 @@ TiageSynthesis.NeedsIntegration = {
             individual: result.individual,
             perspektivenLabels: result.perspektivenLabels
         };
+    },
+
+    // ═══════════════════════════════════════════════════════════════════════
+    // SEKUNDÄR-KATEGORIEN BERECHNUNG (v3.3)
+    // ═══════════════════════════════════════════════════════════════════════
+    //
+    // Berücksichtigt sekundäre Kategorien bei der Aggregation:
+    // - Primäre Kategorie: 100% Gewichtung
+    // - Sekundäre Kategorien: SECONDARY_WEIGHT (default 50%)
+    //
+    // Beispiel: Berührung (primär: existenz, sekundär: [zuneigung, dynamik, sicherheit])
+    // Bei Wert 80: existenz +80, zuneigung +40, dynamik +40, sicherheit +40
+    // ═══════════════════════════════════════════════════════════════════════
+
+    /**
+     * Gewichtung für sekundäre Kategorien (0.0 - 1.0)
+     * 0.5 = 50% des Wertes fließt auch in sekundäre Kategorien
+     */
+    SECONDARY_WEIGHT: 0.5,
+
+    /**
+     * Mapping: Kategorie-Keys → Resonanzfaktoren
+     */
+    KATEGORIE_TO_RESONANZ: {
+        // R1 - Leben
+        existenz: 'R1',
+        zuneigung: 'R1',
+        musse: 'R1',
+        // R2 - Philosophie
+        freiheit: 'R2',
+        teilnahme: 'R2',
+        identitaet: 'R2',
+        // R3 - Kink
+        dynamik: 'R3',
+        sicherheit: 'R3',
+        // R4 - Identität
+        verstaendnis: 'R4',
+        erschaffen: 'R4',
+        verbundenheit: 'R4'
+    },
+
+    /**
+     * Lädt Bedürfnis-Definitionen mit sekundären Kategorien
+     * @returns {Object|null} Mapping von needKey → { kategorie, sekundaer[] }
+     */
+    _getBeduerfnisDefinitionen: function() {
+        // Versuche GfkBeduerfnisse zu laden
+        var gfk = null;
+        if (typeof window !== 'undefined' && window.GfkBeduerfnisse) {
+            gfk = window.GfkBeduerfnisse;
+        } else if (typeof GfkBeduerfnisse !== 'undefined') {
+            gfk = GfkBeduerfnisse;
+        }
+
+        if (gfk && gfk.definitionen) {
+            return gfk.definitionen;
+        }
+
+        // Fallback: Versuche aus beduerfnis-katalog.json (wenn geladen)
+        if (typeof window !== 'undefined' && window.BeduerfnisKatalog) {
+            return window.BeduerfnisKatalog.beduerfnisse || null;
+        }
+
+        console.warn('[NeedsIntegration] Keine Bedürfnis-Definitionen gefunden');
+        return null;
+    },
+
+    /**
+     * Berechnet Kategorie-Scores unter Berücksichtigung sekundärer Zuordnungen
+     *
+     * @param {Object} needs - Bedürfniswerte { needKey: value, ... }
+     * @param {number} secondaryWeight - Gewichtung für sekundäre Kategorien (optional, default: SECONDARY_WEIGHT)
+     * @returns {Object} { kategorieScores: {}, resonanzScores: {}, details: [] }
+     */
+    calculateCategoryScoresWithSecondary: function(needs, secondaryWeight) {
+        var self = this;
+        var weight = (secondaryWeight !== undefined) ? secondaryWeight : self.SECONDARY_WEIGHT;
+        var definitionen = self._getBeduerfnisDefinitionen();
+
+        if (!needs || !definitionen) {
+            return {
+                kategorieScores: {},
+                resonanzScores: { R1: 50, R2: 50, R3: 50, R4: 50 },
+                details: [],
+                error: 'Keine Daten verfügbar'
+            };
+        }
+
+        // Initialisiere Kategorie-Akkumulatoren
+        var kategorien = {};
+        var kategorieWeights = {};
+        var details = [];
+
+        // Iteriere über alle Bedürfnisse im Profil
+        for (var needKey in needs) {
+            if (!needs.hasOwnProperty(needKey)) continue;
+
+            var value = needs[needKey];
+            if (value === undefined || value === null || typeof value !== 'number') continue;
+
+            // Finde Definition für dieses Bedürfnis
+            var def = definitionen[needKey];
+            if (!def) continue;
+
+            var primaerKategorie = def.kategorie;
+            var sekundaerKategorien = def.sekundaer || [];
+
+            // Detail für Debugging
+            var detail = {
+                needKey: needKey,
+                value: value,
+                primaer: primaerKategorie,
+                sekundaer: sekundaerKategorien,
+                contributions: {}
+            };
+
+            // Primäre Kategorie: 100% Gewichtung
+            if (primaerKategorie) {
+                if (!kategorien[primaerKategorie]) {
+                    kategorien[primaerKategorie] = 0;
+                    kategorieWeights[primaerKategorie] = 0;
+                }
+                kategorien[primaerKategorie] += value * 1.0;
+                kategorieWeights[primaerKategorie] += 1.0;
+                detail.contributions[primaerKategorie] = value;
+            }
+
+            // Sekundäre Kategorien: weight% Gewichtung
+            for (var i = 0; i < sekundaerKategorien.length; i++) {
+                var sekKat = sekundaerKategorien[i];
+                if (!kategorien[sekKat]) {
+                    kategorien[sekKat] = 0;
+                    kategorieWeights[sekKat] = 0;
+                }
+                var sekValue = value * weight;
+                kategorien[sekKat] += sekValue;
+                kategorieWeights[sekKat] += weight;
+                detail.contributions[sekKat] = Math.round(sekValue * 10) / 10;
+            }
+
+            details.push(detail);
+        }
+
+        // Berechne Durchschnitte pro Kategorie
+        var kategorieScores = {};
+        for (var kat in kategorien) {
+            if (kategorien.hasOwnProperty(kat) && kategorieWeights[kat] > 0) {
+                kategorieScores[kat] = Math.round(kategorien[kat] / kategorieWeights[kat] * 10) / 10;
+            }
+        }
+
+        // Aggregiere zu Resonanzfaktoren
+        var resonanzSums = { R1: 0, R2: 0, R3: 0, R4: 0 };
+        var resonanzCounts = { R1: 0, R2: 0, R3: 0, R4: 0 };
+
+        for (var katKey in kategorieScores) {
+            if (kategorieScores.hasOwnProperty(katKey)) {
+                var rFaktor = self.KATEGORIE_TO_RESONANZ[katKey];
+                if (rFaktor) {
+                    resonanzSums[rFaktor] += kategorieScores[katKey];
+                    resonanzCounts[rFaktor]++;
+                }
+            }
+        }
+
+        var resonanzScores = {};
+        for (var r in resonanzSums) {
+            if (resonanzCounts[r] > 0) {
+                resonanzScores[r] = Math.round(resonanzSums[r] / resonanzCounts[r] * 10) / 10;
+            } else {
+                resonanzScores[r] = 50; // Neutral
+            }
+        }
+
+        return {
+            kategorieScores: kategorieScores,
+            resonanzScores: resonanzScores,
+            details: details,
+            secondaryWeight: weight
+        };
+    },
+
+    /**
+     * Berechnet R-Werte (0.5-1.5) aus Kategorie-Scores mit sekundärer Gewichtung
+     *
+     * Formel: R = 0.5 + (Score / 100)
+     * Score 0 → R = 0.5, Score 50 → R = 1.0, Score 100 → R = 1.5
+     *
+     * @param {Object} needs - Bedürfniswerte
+     * @param {number} secondaryWeight - Gewichtung für sekundäre Kategorien (optional)
+     * @returns {Object} { R1, R2, R3, R4, kategorieScores, details }
+     */
+    calculateResonanzWithSecondary: function(needs, secondaryWeight) {
+        var result = this.calculateCategoryScoresWithSecondary(needs, secondaryWeight);
+
+        // Konvertiere Scores (0-100) zu R-Werten (0.5-1.5)
+        var rValues = {};
+        for (var r in result.resonanzScores) {
+            var score = result.resonanzScores[r];
+            // R = 0.5 + (score / 100)
+            rValues[r] = Math.round((0.5 + score / 100) * 1000) / 1000;
+            // Clamp auf 0.5-1.5
+            rValues[r] = Math.max(0.5, Math.min(1.5, rValues[r]));
+        }
+
+        return {
+            R1: rValues.R1 || 1.0,
+            R2: rValues.R2 || 1.0,
+            R3: rValues.R3 || 1.0,
+            R4: rValues.R4 || 1.0,
+            kategorieScores: result.kategorieScores,
+            resonanzScores: result.resonanzScores,
+            details: result.details,
+            secondaryWeight: result.secondaryWeight
+        };
+    },
+
+    /**
+     * Debug-Funktion: Zeigt wie ein einzelnes Bedürfnis in Kategorien fließt
+     *
+     * @param {string} needKey - Bedürfnis-Schlüssel (z.B. 'beruehrung')
+     * @param {number} value - Wert (0-100)
+     * @returns {Object} Detaillierte Aufschlüsselung
+     */
+    debugNeedContribution: function(needKey, value) {
+        var self = this;
+        var definitionen = self._getBeduerfnisDefinitionen();
+
+        if (!definitionen || !definitionen[needKey]) {
+            return { error: 'Bedürfnis nicht gefunden: ' + needKey };
+        }
+
+        var def = definitionen[needKey];
+        var contributions = {};
+        var resonanzContributions = {};
+
+        // Primär
+        if (def.kategorie) {
+            contributions[def.kategorie] = {
+                type: 'primär',
+                weight: 1.0,
+                contribution: value
+            };
+            var rFaktor = self.KATEGORIE_TO_RESONANZ[def.kategorie];
+            if (rFaktor) {
+                resonanzContributions[rFaktor] = (resonanzContributions[rFaktor] || 0) + value;
+            }
+        }
+
+        // Sekundär
+        var sekundaer = def.sekundaer || [];
+        for (var i = 0; i < sekundaer.length; i++) {
+            var sekKat = sekundaer[i];
+            var sekValue = value * self.SECONDARY_WEIGHT;
+            contributions[sekKat] = {
+                type: 'sekundär',
+                weight: self.SECONDARY_WEIGHT,
+                contribution: Math.round(sekValue * 10) / 10
+            };
+            var rFaktorSek = self.KATEGORIE_TO_RESONANZ[sekKat];
+            if (rFaktorSek) {
+                resonanzContributions[rFaktorSek] = (resonanzContributions[rFaktorSek] || 0) + sekValue;
+            }
+        }
+
+        return {
+            needKey: needKey,
+            label: def.label || needKey,
+            value: value,
+            primaerKategorie: def.kategorie,
+            sekundaerKategorien: sekundaer,
+            kategorieContributions: contributions,
+            resonanzContributions: resonanzContributions,
+            secondaryWeight: self.SECONDARY_WEIGHT
+        };
     }
 };
