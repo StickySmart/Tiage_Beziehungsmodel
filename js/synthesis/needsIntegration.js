@@ -249,6 +249,56 @@ TiageSynthesis.NeedsIntegration = {
     // ═══════════════════════════════════════════════════════════════════════
 
     /**
+     * Hilfsfunktion: Sucht einen Bedürfniswert in verschiedenen Formaten
+     *
+     * Unterstützt:
+     * - Array von {id, stringKey, value}
+     * - Objekt mit key → value
+     * - Objekt mit key → {value}
+     *
+     * @param {Array|Object} needs - Bedürfnisse in beliebigem Format
+     * @param {string} id - Bedürfnis-ID (z.B. '#B74')
+     * @param {string} stringKey - Bedürfnis-Key (z.B. 'kontrolle_ausueben')
+     * @returns {number|undefined} Gefundener Wert oder undefined
+     * @private
+     */
+    _getNeedValue: function(needs, id, stringKey) {
+        if (!needs) return undefined;
+
+        if (Array.isArray(needs)) {
+            // Format: Array von {id, stringKey, value}
+            for (var i = 0; i < needs.length; i++) {
+                var n = needs[i];
+                if ((id && (n.id === id || n.stringKey === id)) ||
+                    (stringKey && (n.id === stringKey || n.stringKey === stringKey))) {
+                    return n.value;
+                }
+            }
+            return undefined;
+        }
+
+        // Format: Objekt mit key → value oder key → {value}
+        var value = undefined;
+
+        // Versuche id
+        if (id && needs[id] !== undefined) {
+            value = needs[id];
+        }
+
+        // Fallback: versuche stringKey
+        if (value === undefined && stringKey && needs[stringKey] !== undefined) {
+            value = needs[stringKey];
+        }
+
+        // Falls Wert ein Objekt mit .value ist
+        if (value !== undefined && typeof value === 'object' && value.value !== undefined) {
+            return value.value;
+        }
+
+        return value;
+    },
+
+    /**
      * Berechnet die dimensionalen Resonanzen R_Leben, R_Dynamik, R_Identität, R_Philosophie
      * basierend auf der Kohärenz zwischen Archetyp und Bedürfnissen.
      *
@@ -314,12 +364,13 @@ TiageSynthesis.NeedsIntegration = {
                     ? typischEntry.value
                     : typischEntry;
 
-                // Lookup-Key: verwende ID wenn vorhanden, sonst den Key selbst
-                var lookupKey = (typeof typischEntry === 'object' && typischEntry.id)
+                // Hole Bedürfnis-ID wenn vorhanden
+                var needId = (typeof typischEntry === 'object' && typischEntry.id)
                     ? typischEntry.id
-                    : needKey;
+                    : null;
 
-                var actualValue = needs[lookupKey];
+                // Verwende Hilfsfunktion für konsistente Lookup-Logik
+                var actualValue = this._getNeedValue(needs, needId, needKey);
 
                 if (actualValue !== undefined && typeof typischValue === 'number') {
                     var diff = Math.abs(actualValue - typischValue);
@@ -529,11 +580,18 @@ TiageSynthesis.NeedsIntegration = {
 
         for (var i = 0; i < relevantNeeds.length; i++) {
             var needKey = relevantNeeds[i];
-            var actualValue = needs[needKey];
 
             var typischEntry = archetypTypisch[needKey];
             var typischValue = (typeof typischEntry === 'object' && typischEntry.value !== undefined)
                 ? typischEntry.value : typischEntry;
+
+            // Hole Bedürfnis-ID wenn vorhanden
+            var needId = (typeof typischEntry === 'object' && typischEntry.id)
+                ? typischEntry.id
+                : null;
+
+            // Verwende Hilfsfunktion für konsistente Lookup-Logik
+            var actualValue = this._getNeedValue(needs, needId, needKey);
 
             if (actualValue !== undefined && typischValue !== undefined && typeof typischValue === 'number') {
                 var diff = Math.abs(actualValue - typischValue);
