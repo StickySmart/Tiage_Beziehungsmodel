@@ -13,6 +13,8 @@ docs/
 ├── README.md              ← Du bist hier
 ├── help-guide.md          ← Benutzerhandbuch
 ├── NAMING_CONVENTION.md   ← ID-Referenzsystem (#AID, #BID, etc.)
+├── profile-calculator-data-flow.md   ← ProfileCalculator Datenfluss
+├── profile-calculator-data-flow.pdf  ← PDF-Version
 │
 ├── theory/                ← Philosophische Grundlagen
 │   ├── pirsig.md          ← Robert M. Pirsig (Logos)
@@ -34,6 +36,11 @@ docs/
 ### Für Benutzer
 
 → [help-guide.md](help-guide.md) - Kurzanleitung und Berechnungsbeispiele
+
+### Für Entwickler
+
+→ [profile-calculator-data-flow.md](profile-calculator-data-flow.md) - Datenfluss-Dokumentation
+→ [profile-calculator-data-flow.pdf](profile-calculator-data-flow.pdf) - PDF-Version
 
 ### Für Philosophie-Interessierte
 
@@ -124,6 +131,7 @@ Alle Entitäten verwenden eindeutige IDs für konsistente Referenzierung:
 ## Verwandte Dokumentation
 
 - [beziehungsmodell.md](../beziehungsmodell.md) - Hauptdokumentation des Modells
+- [profile-calculator-data-flow.md](profile-calculator-data-flow.md) - ProfileCalculator Datenfluss
 - [profiles/docs/](../profiles/docs/) - Profil-Dokumentation und Bedürfnis-Fragen
 - [ARCHETYPE-MATRIX-README.md](../ARCHETYPE-MATRIX-README.md) - Matrix-Dokumentation
 - [CHANGELOG.md](../CHANGELOG.md) - Vollständige Versionshistorie
