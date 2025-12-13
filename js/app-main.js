@@ -13921,8 +13921,28 @@
                 jungDynamikText = 'Diese komplementäre Konstellation vereint Ratio und Emotion – eine fruchtbare Spannung, die beide Seiten bereichern kann.';
             }
 
-            // Resonanzfaktoren laden
-            const resonanzWerte = typeof ResonanzCard !== 'undefined' ? ResonanzCard.getValues('ich') : { R1: 1.0, R2: 1.0, R3: 1.0, R4: 1.0 };
+            // Resonanzfaktoren BERECHNEN aus GFK-Matching
+            let resonanzWerte = { R1: 1.0, R2: 1.0, R3: 1.0, R4: 1.0 };
+
+            if (typeof GfkBeduerfnisse !== 'undefined' && ichArchetyp && partnerArchetyp) {
+                const matching = GfkBeduerfnisse.berechneMatching(ichArchetyp, partnerArchetyp);
+
+                if (matching && !matching.fehler) {
+                    // Berechne Bedürfnis-Match pro Kategorie (0-1)
+                    const match1 = calculateKSubfaktor('K1', matching);  // Orientierung
+                    const match2 = calculateKSubfaktor('K2', matching);  // Archetyp
+                    const match3 = calculateKSubfaktor('K3', matching);  // Dominanz
+                    const match4 = calculateKSubfaktor('K4', matching);  // Geschlecht
+
+                    // Skaliere auf 0.5-1.5
+                    resonanzWerte = {
+                        R1: 0.5 + match1,
+                        R2: 0.5 + match2,
+                        R3: 0.5 + match3,
+                        R4: 0.5 + match4
+                    };
+                }
+            }
 
             // Gewichtungs-Matrix: Wie stark beeinflusst jeder Faktor jede Perspektive (in %)
             const gewichtMatrix = {
@@ -14047,8 +14067,8 @@
                         ${summenRow}
                     </tbody>
                 </table>
-                <div style="display: flex; gap: 16px; margin-top: 12px; padding-top: 10px; border-top: 1px solid rgba(255,255,255,0.05); flex-wrap: wrap;">
-                    <span style="font-size: 10px; color: var(--text-muted);">R = Resonanzwert (0.5–1.5)</span>
+                <div style="display: flex; gap: 12px; margin-top: 12px; padding-top: 10px; border-top: 1px solid rgba(255,255,255,0.05); flex-wrap: wrap; align-items: center;">
+                    <span style="font-size: 10px; color: var(--text-muted); font-family: monospace;">(R − 1) × Gewicht × 100 = %</span>
                     <span style="font-size: 10px; color: #22c55e;">+% verstärkt</span>
                     <span style="font-size: 10px; color: #ef4444;">−% schwächt</span>
                 </div>
