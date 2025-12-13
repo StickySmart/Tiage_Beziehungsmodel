@@ -247,8 +247,19 @@
         const dominanz = storageData.dominanz || null;
         const orientierung = storageData.orientierung || null;
 
-        // 3.1 flatNeeds berechnen
+        // 3.1 flatNeeds berechnen (Basis + Modifikatoren)
         const flatNeeds = calculateFlatNeeds(archetyp, geschlecht, dominanz, orientierung);
+
+        // 3.1.1 Survey-Antworten integrieren (überschreibt berechnete Basis-Werte)
+        if (storageData.profileReview && storageData.profileReview.flatNeeds) {
+            const surveyNeeds = storageData.profileReview.flatNeeds;
+            Object.keys(surveyNeeds).forEach(needId => {
+                if (surveyNeeds[needId] !== undefined && surveyNeeds[needId] !== null) {
+                    flatNeeds[needId] = surveyNeeds[needId];
+                }
+            });
+            console.log('[ProfileCalculator] Survey-Antworten integriert:', Object.keys(surveyNeeds).length, 'Werte');
+        }
 
         // 3.2 Gewichtungen (aus Storage oder Defaults)
         const gewichtungen = storageData.gewichtungen || getDefaultGewichtungen();
