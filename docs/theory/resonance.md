@@ -90,7 +90,7 @@ Die 18 GFK-Kategorien werden auf 4 Resonanzfaktoren aggregiert:
 │  Profil1_Needs = basis[archetyp] + domMod + geschMod + oriMod               │
 │  Profil2_Needs = basis[archetyp] + domMod + geschMod + oriMod               │
 │                                                                             │
-│  → Jedes Profil hat ~88 Bedürfnisse mit Werten 0-100                        │
+│  → Jedes Profil hat ~220 Bedürfnisse mit Werten 0-100                       │
 └─────────────────────────────────────────────────────────────────────────────┘
                                       │
                                       ▼
