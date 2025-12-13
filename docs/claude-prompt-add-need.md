@@ -148,27 +148,28 @@ Wie verändert sich das Bedürfnis durch:
 | Homo | +/- ? | |
 | Bi/Pan | +/- ? | |
 
-### Geschlecht-Modifier (Primary/Secondary)
-| Typ | Delta | Begründung |
-|-----|-------|------------|
-| cis_mann | +/- ? | |
-| cis_frau | +/- ? | |
-| trans_mann | +/- ? | |
-| trans_frau | +/- ? | |
-| nonbinaer | +/- ? | |
-| genderfluid | +/- ? | |
-| agender | +/- ? | |
-| intersex | +/- ? | |
-| divers | +/- ? | |
+### Geschlecht-Modifier (B=Body, S=Soul System)
 
-### Geschlechtsidentität-Modifier
+**Body/Körper (Primary):**
 | Typ | Delta | Begründung |
 |-----|-------|------------|
-| cis | +/- ? | |
-| trans | +/- ? | |
+| mann | +/- ? | |
+| frau | +/- ? | |
+| inter | +/- ? | |
+
+**Soul/Identität (Secondary) - bei Mann/Frau:**
+| Typ | Delta | Begründung |
+|-----|-------|------------|
+| cis | +/- ? | Identität = Körper |
+| trans | +/- ? | Identität ≠ Körper |
+| suchend | +/- ? | Noch in Findungsphase |
+
+**Soul/Identität (Secondary) - bei Inter:**
+| Typ | Delta | Begründung |
+|-----|-------|------------|
 | nonbinaer | +/- ? | |
 | fluid | +/- ? | |
-| suchend | +/- ? | |
+| unsicher | +/- ? | |
 
 ---
 
