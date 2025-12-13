@@ -83,14 +83,14 @@ WEIGHTS: {
 
 ### Code (synthesisCalculator.js, Zeilen 255-260) - v3.1:
 ```
-Q = (A × 0.25 × R₁) + (O × 0.25 × R₂) + (D × 0.25 × R₃) + (G × 0.25 × R₄)
+Q = (O × 0.25 × R₁) + (A × 0.25 × R₂) + (D × 0.25 × R₃) + (G × 0.25 × R₄)
 ```
 
 **WICHTIG: R ist NICHT ein einzelner Multiplikator außen, sondern 4 dimensionale R-Werte INNERHALB der Summe:**
-- R₁ = R_Philosophie (Archetyp ↔ Beziehungsphilosophie-Bedürfnisse)
-- R₂ = R_Leben (Orientierung ↔ Anziehung/Intimität-Bedürfnisse)
-- R₃ = R_Dynamik (Dominanz ↔ Machtdynamik-Bedürfnisse)
-- R₄ = R_Identität (Geschlecht ↔ Identität/Ausdruck-Bedürfnisse)
+- R₁ = R_Leben (multipliziert O = Orientierung)
+- R₂ = R_Philosophie (multipliziert A = Archetyp)
+- R₃ = R_Dynamik (multipliziert D = Dominanz)
+- R₄ = R_Identität (multipliziert G = Geschlecht)
 
 ### Legacy-Fallback (synthesisCalculator.js, Zeile 263):
 ```
@@ -221,14 +221,14 @@ Q = [(O × 0.40) + (A × 0.25) + (D × 0.20) + (G × 0.15)] × R
 ┌─────────────────────────────────────────────────────────────────┐
 │     SCHRITT 2: Dimensionale Resonanz-Berechnung (v3.1)           │
 │  Für jede Dimension: R_dim = 0.9 + (Match_dim × 0.2)             │
-│  R₁ = R_Philosophie  │  R₂ = R_Leben                             │
-│  R₃ = R_Dynamik      │  R₄ = R_Identität                         │
+│  R₁ = R_Leben (→O)   │  R₂ = R_Philosophie (→A)                  │
+│  R₃ = R_Dynamik (→D) │  R₄ = R_Identität (→G)                    │
 └─────────────────────────────────────────────────────────────────┘
                               │
                               ▼
 ┌─────────────────────────────────────────────────────────────────┐
 │                    SCHRITT 3: Gesamt-Score (v3.1)                │
-│  Q = (A × 0.25 × R₁) + (O × 0.25 × R₂) +                         │
+│  Q = (O × 0.25 × R₁) + (A × 0.25 × R₂) +                         │
 │      (D × 0.25 × R₃) + (G × 0.25 × R₄)                           │
 │                                                                  │
 │  R₁-R₄ werden PRO FAKTOR angewandt, NICHT als einzelnes R außen │
