@@ -893,37 +893,105 @@ TiageSynthesis.Calculator = {
     /**
      * Berechnet Multi-Dimensionale Resonanz
      *
-     * Formel pro Dimension: R_dim = 0.9 + (Match × 0.2)
-     * Gesamt: R = Σ(R_dim × weight)
+     * NEU (v3.2): Perspektiven-basierte Berechnung
+     *   1. Für jede Zelle (Faktor × Perspektive): Bedürfnis-Match berechnen
+     *   2. Ø pro Faktor = Durchschnitt der 4 Perspektiven-Matches
+     *   3. R = 1 + Ø/100
+     *   4. Q = A×0.25×R1 + O×0.25×R2 + D×0.25×R3 + G×0.25×R4
      *
      * @param {object} profil1 - Bedürfnisse Person 1
      * @param {object} profil2 - Bedürfnisse Person 2
      * @param {object} constants - TiageSynthesis.Constants
-     * @returns {object} { coefficient, dimensions, interpretation }
+     * @returns {object} { coefficient, dimensions, interpretation, perspectiveMatrix }
      */
     _calculateDimensionalResonance: function(profil1, profil2, constants) {
         var cfg = constants.RESONANCE_DIMENSIONAL;
-        var needsIntegration = constants.NEEDS_INTEGRATION;
 
         if (!cfg || !cfg.ENABLED) {
             return null; // Fallback zur alten Berechnung
         }
 
+        // ═══════════════════════════════════════════════════════════════════
+        // NEU: Perspektiven-basierte Berechnung via NeedsIntegration
+        // ═══════════════════════════════════════════════════════════════════
+        var perspectiveResult = null;
+        if (TiageSynthesis.NeedsIntegration && TiageSynthesis.NeedsIntegration.calculateResonanceFromPerspectives) {
+            perspectiveResult = TiageSynthesis.NeedsIntegration.calculateResonanceFromPerspectives(profil1, profil2);
+        }
+
+        if (perspectiveResult) {
+            // Konvertiere zu dimensions-Format für Kompatibilität
+            var dimensions = {
+                leben: {
+                    name: 'Leben',
+                    emoji: '🔥',
+                    match: Math.round((perspectiveResult.R1 - 1) * 100),
+                    rValue: perspectiveResult.R1,
+                    status: perspectiveResult.R1 >= 1.05 ? 'resonanz' : (perspectiveResult.R1 <= 0.97 ? 'dissonanz' : 'neutral'),
+                    statusEmoji: perspectiveResult.R1 >= 1.05 ? '⬆️' : (perspectiveResult.R1 <= 0.97 ? '⬇️' : '➡️'),
+                    weight: 0.25
+                },
+                philosophie: {
+                    name: 'Philosophie',
+                    emoji: '🧠',
+                    match: Math.round((perspectiveResult.R2 - 1) * 100),
+                    rValue: perspectiveResult.R2,
+                    status: perspectiveResult.R2 >= 1.05 ? 'resonanz' : (perspectiveResult.R2 <= 0.97 ? 'dissonanz' : 'neutral'),
+                    statusEmoji: perspectiveResult.R2 >= 1.05 ? '⬆️' : (perspectiveResult.R2 <= 0.97 ? '⬇️' : '➡️'),
+                    weight: 0.25
+                },
+                dynamik: {
+                    name: 'Dynamik',
+                    emoji: '⚡',
+                    match: Math.round((perspectiveResult.R3 - 1) * 100),
+                    rValue: perspectiveResult.R3,
+                    status: perspectiveResult.R3 >= 1.05 ? 'resonanz' : (perspectiveResult.R3 <= 0.97 ? 'dissonanz' : 'neutral'),
+                    statusEmoji: perspectiveResult.R3 >= 1.05 ? '⬆️' : (perspectiveResult.R3 <= 0.97 ? '⬇️' : '➡️'),
+                    weight: 0.25
+                },
+                identitaet: {
+                    name: 'Identität',
+                    emoji: '💚',
+                    match: Math.round((perspectiveResult.R4 - 1) * 100),
+                    rValue: perspectiveResult.R4,
+                    status: perspectiveResult.R4 >= 1.05 ? 'resonanz' : (perspectiveResult.R4 <= 0.97 ? 'dissonanz' : 'neutral'),
+                    statusEmoji: perspectiveResult.R4 >= 1.05 ? '⬆️' : (perspectiveResult.R4 <= 0.97 ? '⬇️' : '➡️'),
+                    weight: 0.25
+                }
+            };
+
+            // Gesamt-Koeffizient = Durchschnitt der R-Werte
+            var coefficient = (perspectiveResult.R1 + perspectiveResult.R2 + perspectiveResult.R3 + perspectiveResult.R4) / 4;
+            coefficient = Math.round(coefficient * 1000) / 1000;
+
+            return {
+                coefficient: coefficient,
+                dimensions: dimensions,
+                interpretation: this._interpretDimensionalResonance(coefficient, dimensions, cfg.THRESHOLDS),
+                // NEU: Perspektiven-Matrix für Modal-Anzeige
+                perspectiveMatrix: perspectiveResult.matrix,
+                perspectiveAverages: perspectiveResult.averages,
+                perspectiveDetails: perspectiveResult.details,
+                perspektivenLabels: perspectiveResult.perspektivenLabels
+            };
+        }
+
+        // ═══════════════════════════════════════════════════════════════════
+        // LEGACY FALLBACK: Alte Berechnung wenn NeedsIntegration nicht verfügbar
+        // ═══════════════════════════════════════════════════════════════════
+        var needsIntegration = constants.NEEDS_INTEGRATION;
         var dimensions = {};
         var totalR = 0;
         var totalWeight = 0;
 
-        // Für jede Dimension den Match und R-Wert berechnen
         for (var dimKey in cfg.DIMENSIONS) {
             var dim = cfg.DIMENSIONS[dimKey];
             var needsList = this._getDimensionNeeds(dim.source, needsIntegration);
             var match = this._calculatePartialMatch(profil1, profil2, needsList);
 
-            // R_dim = 0.9 + (Match × 0.2)
             var rValue = 0.9 + (match * 0.2);
             rValue = Math.round(rValue * 1000) / 1000;
 
-            // Status bestimmen
             var status = 'neutral';
             var emoji = '➡️';
             if (rValue >= cfg.THRESHOLDS.resonanz) {
@@ -948,7 +1016,6 @@ TiageSynthesis.Calculator = {
             totalWeight += dim.weight;
         }
 
-        // Gesamt-Koeffizient
         var coefficient = totalWeight > 0 ? totalR / totalWeight : 0.9;
         coefficient = Math.round(coefficient * 1000) / 1000;
 

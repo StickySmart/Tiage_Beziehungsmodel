@@ -397,5 +397,253 @@ TiageSynthesis.NeedsIntegration = {
         }
 
         return modified;
+    },
+
+    // ═══════════════════════════════════════════════════════════════════════
+    // PERSPEKTIVEN-BASIERTE RESONANZ (NEU)
+    // ═══════════════════════════════════════════════════════════════════════
+    // Berechnet Bedürfnis-Match pro Faktor × Perspektive Kombination.
+    //
+    // Datenfluss:
+    //   1. Für jede Zelle (Faktor, Perspektive): finde relevante Bedürfnisse
+    //   2. Berechne Match zwischen Person1 und Person2
+    //   3. Ø pro Faktor = Durchschnitt der 4 Perspektiven-Matches
+    //   4. R = 1 + Ø/100
+    //   5. Q = A×0.25×R1 + O×0.25×R2 + D×0.25×R3 + G×0.25×R4
+    // ═══════════════════════════════════════════════════════════════════════
+
+    /**
+     * Ermittelt die Perspektive für ein Bedürfnis
+     * Nutzt PerspektivenModal falls verfügbar, sonst Fallback
+     *
+     * @param {string} needKey - Bedürfnis-ID
+     * @returns {string} Perspektive: '#P1', '#P2', '#P3', '#P4'
+     */
+    _getPerspectiveForNeed: function(needKey) {
+        // Versuche PerspektivenModal zu nutzen
+        if (typeof PerspektivenModal !== 'undefined' && PerspektivenModal.beduerfnisPerspektiven) {
+            if (PerspektivenModal.beduerfnisPerspektiven[needKey]) {
+                return PerspektivenModal.beduerfnisPerspektiven[needKey];
+            }
+        }
+
+        // Fallback: Hardcoded Mapping für wichtigste Bedürfnisse
+        var perspektivenMap = {
+            // Osho (#P2)
+            'sex_als_meditation': '#P2',
+            'nicht_anhaften_an_partner': '#P2',
+            'hier_und_jetzt_intimitaet': '#P2',
+            'polyamore_energie': '#P2',
+            'wildheit_und_zartheit': '#P2',
+            'meditation_zu_zweit': '#P2',
+            'liebe_ohne_beziehung': '#P2',
+            'nicht_anhaften_an_familie': '#P2',
+            'commune_statt_kernfamilie': '#P2',
+            'orgastisches_leben': '#P2',
+            'radikale_ehrlichkeit': '#P2',
+            'authentischer_ausdruck': '#P2',
+
+            // Pirsig (#P3)
+            'biologische_anziehung': '#P3',
+            'qualitaet_der_beruehrung': '#P3',
+            'dynamische_liebe': '#P3',
+            'statische_stabilitaet': '#P3',
+            'dynamische_evolution': '#P3',
+            'intellektuelle_verbindung': '#P3',
+
+            // Kink (#P4)
+            'kontrolle_ausueben': '#P4',
+            'hingabe': '#P4',
+            'fuehrung_geben': '#P4',
+            'gefuehrt_werden': '#P4',
+            'machtaustausch': '#P4',
+            'sich_fallenlassen': '#P4',
+            'nachsorge': '#P4',
+            'grenzen_setzen': '#P4',
+            'grenzen_respektieren': '#P4',
+            'intensitaet': '#P4',
+            'vertrauen_schenken': '#P4',
+            'ritual': '#P4'
+        };
+
+        return perspektivenMap[needKey] || '#P1'; // Default: GFK
+    },
+
+    /**
+     * Berechnet die 4×4 Faktor×Perspektive Matrix
+     *
+     * @param {object} needs1 - Bedürfnisse Person 1
+     * @param {object} needs2 - Bedürfnisse Person 2
+     * @returns {object} { matrix: {...}, averages: {...}, rValues: {...} }
+     */
+    calculatePerspectiveMatrix: function(needs1, needs2) {
+        var constants = TiageSynthesis.Constants;
+        var self = this;
+
+        // Faktor-Definitionen
+        var faktoren = {
+            orientierung: constants.NEEDS_INTEGRATION.ORIENTIERUNG_NEEDS || [],
+            archetyp: constants.NEEDS_INTEGRATION.ARCHETYP_NEEDS || [],
+            dominanz: constants.NEEDS_INTEGRATION.DOMINANZ_NEEDS || [],
+            geschlecht: constants.NEEDS_INTEGRATION.GESCHLECHT_NEEDS || []
+        };
+
+        var perspektiven = ['#P1', '#P2', '#P3', '#P4'];
+        var perspektivenLabels = { '#P1': 'GFK', '#P2': 'Osho', '#P3': 'Pirsig', '#P4': 'Kink' };
+
+        // Ergebnis-Struktur
+        var matrix = {};
+        var averages = {};
+        var rValues = {};
+        var details = {};
+
+        // Für jeden Faktor
+        for (var faktorKey in faktoren) {
+            var faktorNeeds = faktoren[faktorKey];
+            matrix[faktorKey] = {};
+            details[faktorKey] = {};
+            var sumMatch = 0;
+            var countPerspektiven = 0;
+
+            // Für jede Perspektive
+            for (var p = 0; p < perspektiven.length; p++) {
+                var perspektive = perspektiven[p];
+
+                // Finde Bedürfnisse die SOWOHL zum Faktor ALS AUCH zur Perspektive gehören
+                var relevantNeeds = [];
+                for (var n = 0; n < faktorNeeds.length; n++) {
+                    var needKey = faktorNeeds[n];
+                    var needPerspektive = self._getPerspectiveForNeed(needKey);
+                    if (needPerspektive === perspektive) {
+                        relevantNeeds.push(needKey);
+                    }
+                }
+
+                // Berechne Match für diese Bedürfnisse
+                var matchResult = self._calculateNeedsMatch(needs1, needs2, relevantNeeds);
+
+                matrix[faktorKey][perspektive] = matchResult.matchPercent;
+                details[faktorKey][perspektive] = {
+                    needs: relevantNeeds,
+                    count: relevantNeeds.length,
+                    matched: matchResult.matchedCount,
+                    matchPercent: matchResult.matchPercent,
+                    details: matchResult.details
+                };
+
+                if (matchResult.matchPercent !== null) {
+                    sumMatch += matchResult.matchPercent;
+                    countPerspektiven++;
+                }
+            }
+
+            // Ø = Durchschnitt der Perspektiven-Matches
+            var avg = countPerspektiven > 0 ? sumMatch / countPerspektiven : 0;
+            averages[faktorKey] = Math.round(avg * 10) / 10;
+
+            // R = 1 + Ø/100
+            rValues[faktorKey] = Math.round((1 + avg / 100) * 1000) / 1000;
+        }
+
+        return {
+            matrix: matrix,
+            averages: averages,
+            rValues: rValues,
+            details: details,
+            perspektivenLabels: perspektivenLabels
+        };
+    },
+
+    /**
+     * Berechnet Match für eine Liste von Bedürfnissen
+     *
+     * @private
+     * @param {object} needs1 - Bedürfnisse Person 1
+     * @param {object} needs2 - Bedürfnisse Person 2
+     * @param {array} needsList - Liste der zu vergleichenden Bedürfnisse
+     * @returns {object} { matchPercent, matchedCount, details }
+     */
+    _calculateNeedsMatch: function(needs1, needs2, needsList) {
+        if (!needsList || needsList.length === 0) {
+            return { matchPercent: null, matchedCount: 0, details: [] };
+        }
+
+        var sumScore = 0;
+        var sumWeight = 0;
+        var matchedCount = 0;
+        var details = [];
+
+        for (var i = 0; i < needsList.length; i++) {
+            var needKey = needsList[i];
+            var val1 = needs1 ? needs1[needKey] : undefined;
+            var val2 = needs2 ? needs2[needKey] : undefined;
+
+            if (val1 !== undefined && val2 !== undefined) {
+                matchedCount++;
+
+                var diff = Math.abs(val1 - val2);
+                var similarity = 100 - diff;
+                var avgValue = (val1 + val2) / 2;
+                var weight = avgValue / 100;
+
+                sumScore += similarity * weight;
+                sumWeight += weight;
+
+                details.push({
+                    need: needKey,
+                    person1: val1,
+                    person2: val2,
+                    diff: diff,
+                    similarity: similarity,
+                    weight: weight
+                });
+            }
+        }
+
+        if (matchedCount === 0) {
+            return { matchPercent: null, matchedCount: 0, details: details };
+        }
+
+        // Match als Abweichung von 100% (neutral = 0%)
+        var rawMatch = sumWeight > 0 ? sumScore / sumWeight : 50;
+        // Konvertiere zu +/- Prozent: 100 = +0%, 80 = -20%, 120 wäre +20%
+        // Aber similarity ist max 100, also: matchPercent = similarity - 100 wäre immer negativ
+        // Besser: matchPercent = (similarity - 50) / 50 * maxBonus
+        // Oder einfach: matchPercent = similarity - 100 ... nein
+
+        // Neuer Ansatz: similarity von 0-100, wobei 50 = neutral
+        // > 50 = positiv (Übereinstimmung), < 50 = negativ (Unterschied)
+        // matchPercent = (similarity - 50) * 0.2 → Range: -10% bis +10%
+        var matchPercent = (rawMatch - 50) * 0.2;
+        matchPercent = Math.round(matchPercent * 10) / 10;
+
+        return {
+            matchPercent: matchPercent,
+            matchedCount: matchedCount,
+            rawSimilarity: Math.round(rawMatch),
+            details: details
+        };
+    },
+
+    /**
+     * Berechnet die finalen R-Werte für die Hauptformel
+     *
+     * @param {object} needs1 - Bedürfnisse Person 1
+     * @param {object} needs2 - Bedürfnisse Person 2
+     * @returns {object} { R1, R2, R3, R4, matrix, averages }
+     */
+    calculateResonanceFromPerspectives: function(needs1, needs2) {
+        var result = this.calculatePerspectiveMatrix(needs1, needs2);
+
+        return {
+            R1: result.rValues.orientierung,
+            R2: result.rValues.archetyp,
+            R3: result.rValues.dominanz,
+            R4: result.rValues.geschlecht,
+            matrix: result.matrix,
+            averages: result.averages,
+            details: result.details,
+            perspektivenLabels: result.perspektivenLabels
+        };
     }
 };
