@@ -14302,81 +14302,97 @@
             const modal = document.getElementById('resonanzfaktorenModal');
             if (!modal) return;
 
-            // Archetyp-Daten bestimmen
-            const isIch = resonanzModalArchetyp === 'ich';
-            const archetyp = isIch ? currentArchetype : selectedPartner;
-            const archData = archetypeDescriptions[archetyp];
-            const archName = archData?.name || (isIch ? 'ICH' : 'Partner');
-            const archIcon = archData?.icon || '👤';
+            // ═══════════════════════════════════════════════════════════════════════════
+            // Resonanzwerte für BEIDE Personen laden und kombinieren
+            // Kombination via Produkt (wie im synthesisCalculator)
+            // ═══════════════════════════════════════════════════════════════════════════
 
-            // Resonanzwerte für ausgewählten Archetyp laden
-            let resonanzWerte = { R1: 1.0, R2: 1.0, R3: 1.0, R4: 1.0 };
-
-            const loadedProfile = isIch
-                ? window.LoadedArchetypProfile?.ich?.resonanzFaktoren
-                : window.LoadedArchetypProfile?.partner?.resonanzFaktoren;
-
-            if (loadedProfile) {
-                resonanzWerte = {
-                    R1: loadedProfile.R1?.value ?? loadedProfile.R1 ?? 1.0,
-                    R2: loadedProfile.R2?.value ?? loadedProfile.R2 ?? 1.0,
-                    R3: loadedProfile.R3?.value ?? loadedProfile.R3 ?? 1.0,
-                    R4: loadedProfile.R4?.value ?? loadedProfile.R4 ?? 1.0
+            // ICH Resonanzwerte laden
+            let resonanzIch = { R1: 1.0, R2: 1.0, R3: 1.0, R4: 1.0 };
+            const loadedIch = window.LoadedArchetypProfile?.ich?.resonanzFaktoren;
+            if (loadedIch) {
+                resonanzIch = {
+                    R1: loadedIch.R1?.value ?? loadedIch.R1 ?? 1.0,
+                    R2: loadedIch.R2?.value ?? loadedIch.R2 ?? 1.0,
+                    R3: loadedIch.R3?.value ?? loadedIch.R3 ?? 1.0,
+                    R4: loadedIch.R4?.value ?? loadedIch.R4 ?? 1.0
                 };
             } else if (typeof ResonanzCard !== 'undefined') {
-                const cardValues = ResonanzCard.getValues(resonanzModalArchetyp);
-                resonanzWerte = {
-                    R1: cardValues.R1 || 1.0,
-                    R2: cardValues.R2 || 1.0,
-                    R3: cardValues.R3 || 1.0,
-                    R4: cardValues.R4 || 1.0
+                const cardIch = ResonanzCard.getValues('ich');
+                resonanzIch = {
+                    R1: cardIch.R1 || 1.0,
+                    R2: cardIch.R2 || 1.0,
+                    R3: cardIch.R3 || 1.0,
+                    R4: cardIch.R4 || 1.0
                 };
             }
 
-            // Gewichtungs-Matrix
-            const gewichtMatrix = {
-                R1: { P1: 0.40, P2: 0.30, P3: 0.15, P4: 0.15 },
-                R2: { P1: 0.25, P2: 0.15, P3: 0.45, P4: 0.15 },
-                R3: { P1: 0.10, P2: 0.25, P3: 0.15, P4: 0.50 },
-                R4: { P1: 0.25, P2: 0.25, P3: 0.25, P4: 0.25 }
-            };
-
-            // Perspektiven-Konfiguration
-            const perspektiven = {
-                P1: { icon: '📊', label: 'GFK', color: '#3B82F6' },
-                P2: { icon: '🕉️', label: 'Osho', color: '#F59E0B' },
-                P3: { icon: '🔧', label: 'Pirsig', color: '#10B981' },
-                P4: { icon: '💜', label: 'Kink', color: '#8B5CF6' }
-            };
-
-            // Resonanzfaktor-Konfiguration
-            const faktoren = {
-                R1: { label: 'Orientierung', color: '#E63946' },
-                R2: { label: 'Archetyp', color: '#2A9D8F' },
-                R3: { label: 'Dominanz', color: '#8B5CF6' },
-                R4: { label: 'Geschlecht', color: '#F4A261' }
-            };
-
-            // Berechne effektiven Einfluss
-            function berechneEinfluss(rWert, gewicht) {
-                const abweichung = rWert - 1.0;
-                const einfluss = abweichung * gewicht * 100;
-                return einfluss;
+            // PARTNER Resonanzwerte laden
+            let resonanzPartner = { R1: 1.0, R2: 1.0, R3: 1.0, R4: 1.0 };
+            const loadedPartner = window.LoadedArchetypProfile?.partner?.resonanzFaktoren;
+            if (loadedPartner) {
+                resonanzPartner = {
+                    R1: loadedPartner.R1?.value ?? loadedPartner.R1 ?? 1.0,
+                    R2: loadedPartner.R2?.value ?? loadedPartner.R2 ?? 1.0,
+                    R3: loadedPartner.R3?.value ?? loadedPartner.R3 ?? 1.0,
+                    R4: loadedPartner.R4?.value ?? loadedPartner.R4 ?? 1.0
+                };
+            } else if (typeof ResonanzCard !== 'undefined') {
+                const cardPartner = ResonanzCard.getValues('partner');
+                resonanzPartner = {
+                    R1: cardPartner.R1 || 1.0,
+                    R2: cardPartner.R2 || 1.0,
+                    R3: cardPartner.R3 || 1.0,
+                    R4: cardPartner.R4 || 1.0
+                };
             }
 
-            // Einfluss-Anzeige mit Farbcodierung
-            function getEinflussDisplay(einfluss) {
-                let color = 'var(--text-muted)';
-                let prefix = '';
-                if (einfluss > 0.5) {
-                    color = '#22c55e';
-                    prefix = '+';
-                } else if (einfluss < -0.5) {
-                    color = '#ef4444';
+            // Kombinierte Resonanz berechnen (Produkt - wie im synthesisCalculator)
+            const resonanzWerte = {
+                R1: Math.round(resonanzIch.R1 * resonanzPartner.R1 * 1000) / 1000,
+                R2: Math.round(resonanzIch.R2 * resonanzPartner.R2 * 1000) / 1000,
+                R3: Math.round(resonanzIch.R3 * resonanzPartner.R3 * 1000) / 1000,
+                R4: Math.round(resonanzIch.R4 * resonanzPartner.R4 * 1000) / 1000
+            };
+
+            console.log('[ResonanzModal] ICH:', resonanzIch, 'PARTNER:', resonanzPartner, 'KOMBINIERT:', resonanzWerte);
+
+            // R-Faktoren Konfiguration mit AGOD-Zuordnung
+            // Quelle: synthesisCalculator.js - finalScore Berechnung
+            const rFaktoren = {
+                R1: {
+                    label: 'Leben',
+                    icon: '🔥',
+                    color: '#E63946',
+                    agod: 'Orientierung',
+                    agodIcon: 'O',
+                    beschreibung: 'Kohärenz der Lebensbedürfnisse'
+                },
+                R2: {
+                    label: 'Philosophie',
+                    icon: '🧠',
+                    color: '#2A9D8F',
+                    agod: 'Archetyp',
+                    agodIcon: 'A',
+                    beschreibung: 'Kohärenz der Weltanschauung'
+                },
+                R3: {
+                    label: 'Dynamik',
+                    icon: '⚡',
+                    color: '#8B5CF6',
+                    agod: 'Dominanz',
+                    agodIcon: 'D',
+                    beschreibung: 'Kohärenz der Machtdynamik'
+                },
+                R4: {
+                    label: 'Identität',
+                    icon: '💚',
+                    color: '#F4A261',
+                    agod: 'Geschlecht',
+                    agodIcon: 'G',
+                    beschreibung: 'Kohärenz der Geschlechtsidentität'
                 }
-                const displayVal = einfluss.toFixed(1);
-                return `<span style="color: ${color}; font-weight: 500; font-size: 12px;">${prefix}${displayVal}%</span>`;
-            }
+            };
 
             // Wert-Anzeige mit Farbcodierung
             function getWertDisplay(wert) {
@@ -14386,48 +14402,31 @@
                 return `<span style="color: ${color}; font-weight: 600;">${wert.toFixed(2)}</span>`;
             }
 
-            // Tabellen-Zeilen
+            // Tabellen-Zeilen für R-Faktoren
             let tableRows = '';
-            const perspektivenSummen = { P1: 0, P2: 0, P3: 0, P4: 0 };
 
-            ['R1', 'R2', 'R3', 'R4'].forEach(rf => {
-                const faktor = faktoren[rf];
-                const wert = resonanzWerte[rf] || 1.0;
-                const gewichte = gewichtMatrix[rf];
-
-                const einflussP1 = berechneEinfluss(wert, gewichte.P1);
-                const einflussP2 = berechneEinfluss(wert, gewichte.P2);
-                const einflussP3 = berechneEinfluss(wert, gewichte.P3);
-                const einflussP4 = berechneEinfluss(wert, gewichte.P4);
-
-                perspektivenSummen.P1 += einflussP1;
-                perspektivenSummen.P2 += einflussP2;
-                perspektivenSummen.P3 += einflussP3;
-                perspektivenSummen.P4 += einflussP4;
+            ['R1', 'R2', 'R3', 'R4'].forEach(rk => {
+                const rf = rFaktoren[rk];
+                const wertIch = resonanzIch[rk] || 1.0;
+                const wertPartner = resonanzPartner[rk] || 1.0;
+                const wertKombi = resonanzWerte[rk] || 1.0;
 
                 tableRows += `
                     <tr style="border-bottom: 1px solid rgba(255,255,255,0.08);">
                         <td style="padding: 12px 14px; font-size: 13px;">
-                            <span style="color: ${faktor.color}; font-weight: 600;">${rf}</span>
-                            <span style="color: var(--text-secondary); margin-left: 8px;">${faktor.label}</span>
+                            <div style="display: flex; align-items: center; gap: 8px;">
+                                <span style="color: ${rf.color}; font-weight: 600;">${rf.icon} ${rk}</span>
+                                <span style="color: var(--text-secondary);">${rf.label}</span>
+                            </div>
+                            <div style="font-size: 10px; color: var(--text-muted); margin-top: 2px;">
+                                → multipliziert <strong>${rf.agodIcon}</strong> (${rf.agod})
+                            </div>
                         </td>
-                        <td style="padding: 12px 10px; text-align: center; font-size: 14px;">${getWertDisplay(wert)}</td>
-                        <td style="padding: 12px 10px; text-align: center;">${getEinflussDisplay(einflussP1)}</td>
-                        <td style="padding: 12px 10px; text-align: center;">${getEinflussDisplay(einflussP2)}</td>
-                        <td style="padding: 12px 10px; text-align: center;">${getEinflussDisplay(einflussP3)}</td>
-                        <td style="padding: 12px 10px; text-align: center;">${getEinflussDisplay(einflussP4)}</td>
+                        <td style="padding: 12px 10px; text-align: center; font-size: 14px;">${getWertDisplay(wertIch)}</td>
+                        <td style="padding: 12px 10px; text-align: center; font-size: 14px;">${getWertDisplay(wertPartner)}</td>
+                        <td style="padding: 12px 10px; text-align: center; font-size: 14px; background: rgba(139,92,246,0.1);">${getWertDisplay(wertKombi)}</td>
                     </tr>`;
             });
-
-            // Summen-Zeile
-            const summenRow = `
-                <tr style="border-top: 2px solid rgba(139,92,246,0.4); background: rgba(139,92,246,0.08);">
-                    <td style="padding: 12px 14px; font-size: 13px; font-weight: 600; color: var(--text-primary);" colspan="2">Σ Gesamt</td>
-                    <td style="padding: 12px 10px; text-align: center;">${getEinflussDisplay(perspektivenSummen.P1)}</td>
-                    <td style="padding: 12px 10px; text-align: center;">${getEinflussDisplay(perspektivenSummen.P2)}</td>
-                    <td style="padding: 12px 10px; text-align: center;">${getEinflussDisplay(perspektivenSummen.P3)}</td>
-                    <td style="padding: 12px 10px; text-align: center;">${getEinflussDisplay(perspektivenSummen.P4)}</td>
-                </tr>`;
 
             // Archetyp-Buttons
             const ichArch = archetypeDescriptions[currentArchetype];
@@ -14444,8 +14443,8 @@
                         <div style="display: flex; align-items: center; gap: 12px;">
                             <span style="font-size: 24px;">🎛️</span>
                             <div>
-                                <h2 style="margin: 0; font-size: 18px; color: var(--text-primary);">Resonanzfaktoren × Perspektiven</h2>
-                                <p style="margin: 4px 0 0 0; font-size: 12px; color: var(--text-muted);">Wie Resonanzfaktoren die Perspektiven beeinflussen</p>
+                                <h2 style="margin: 0; font-size: 18px; color: var(--text-primary);">Resonanzfaktoren (R1-R4)</h2>
+                                <p style="margin: 4px 0 0 0; font-size: 12px; color: var(--text-muted);">Kohärenz zwischen Bedürfnissen und Archetyp</p>
                             </div>
                         </div>
                         <button onclick="closeResonanzfaktorenModal()" style="background: rgba(255,255,255,0.1); border: none; border-radius: 8px; width: 36px; height: 36px; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 18px; color: var(--text-secondary); transition: all 0.2s;">×</button>
@@ -14456,9 +14455,9 @@
                         <!-- ICH Navigation -->
                         <div style="display: flex; align-items: center; gap: 6px;">
                             <button class="archetype-nav-btn" onclick="navigateResonanzArchetype('ich', -1)" title="Vorheriger Archetyp" style="width: 28px; height: 28px; font-size: 1.2rem; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); border-radius: 6px; cursor: pointer; color: var(--text-secondary);">‹</button>
-                            <div style="text-align: center; min-width: 120px;" onclick="switchResonanzArchetyp('ich')">
+                            <div style="text-align: center; min-width: 120px;">
                                 <div style="font-size: 10px; color: var(--success); font-weight: 600; margin-bottom: 4px; text-transform: uppercase; letter-spacing: 0.5px;">ICH</div>
-                                <div style="font-size: 13px; color: ${isIch ? '#8B5CF6' : 'var(--text-primary)'}; font-weight: 600; cursor: pointer;">${ichName}</div>
+                                <div style="font-size: 13px; color: var(--text-primary); font-weight: 600;">${ichName}</div>
                             </div>
                             <button class="archetype-nav-btn" onclick="navigateResonanzArchetype('ich', 1)" title="Nächster Archetyp" style="width: 28px; height: 28px; font-size: 1.2rem; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); border-radius: 6px; cursor: pointer; color: var(--text-secondary);">›</button>
                         </div>
@@ -14466,9 +14465,9 @@
                         <!-- PARTNER Navigation -->
                         <div style="display: flex; align-items: center; gap: 6px;">
                             <button class="archetype-nav-btn" onclick="navigateResonanzArchetype('partner', -1)" title="Vorheriger Archetyp" style="width: 28px; height: 28px; font-size: 1.2rem; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); border-radius: 6px; cursor: pointer; color: var(--text-secondary);">‹</button>
-                            <div style="text-align: center; min-width: 120px;" onclick="switchResonanzArchetyp('partner')">
+                            <div style="text-align: center; min-width: 120px;">
                                 <div style="font-size: 10px; color: var(--danger); font-weight: 600; margin-bottom: 4px; text-transform: uppercase; letter-spacing: 0.5px;">PARTNER</div>
-                                <div style="font-size: 13px; color: ${!isIch ? '#8B5CF6' : 'var(--text-primary)'}; font-weight: 600; cursor: pointer;">${partnerName}</div>
+                                <div style="font-size: 13px; color: var(--text-primary); font-weight: 600;">${partnerName}</div>
                             </div>
                             <button class="archetype-nav-btn" onclick="navigateResonanzArchetype('partner', 1)" title="Nächster Archetyp" style="width: 28px; height: 28px; font-size: 1.2rem; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); border-radius: 6px; cursor: pointer; color: var(--text-secondary);">›</button>
                         </div>
@@ -14480,27 +14479,35 @@
                             <table style="width: 100%; border-collapse: collapse;">
                                 <thead>
                                     <tr style="border-bottom: 2px solid rgba(139,92,246,0.3); background: rgba(0,0,0,0.2);">
-                                        <th style="padding: 12px 14px; text-align: left; color: var(--text-muted); font-weight: 500; font-size: 12px;">Faktor</th>
-                                        <th style="padding: 12px 10px; text-align: center; color: var(--text-muted); font-weight: 500; font-size: 12px;">R</th>
-                                        <th style="padding: 12px 10px; text-align: center;"><span style="color: ${perspektiven.P1.color}; font-size: 11px;">${perspektiven.P1.icon} ${perspektiven.P1.label}</span></th>
-                                        <th style="padding: 12px 10px; text-align: center;"><span style="color: ${perspektiven.P2.color}; font-size: 11px;">${perspektiven.P2.icon} ${perspektiven.P2.label}</span></th>
-                                        <th style="padding: 12px 10px; text-align: center;"><span style="color: ${perspektiven.P3.color}; font-size: 11px;">${perspektiven.P3.icon} ${perspektiven.P3.label}</span></th>
-                                        <th style="padding: 12px 10px; text-align: center;"><span style="color: ${perspektiven.P4.color}; font-size: 11px;">${perspektiven.P4.icon} ${perspektiven.P4.label}</span></th>
+                                        <th style="padding: 12px 14px; text-align: left; color: var(--text-muted); font-weight: 500; font-size: 12px;">R-Faktor → AGOD</th>
+                                        <th style="padding: 12px 10px; text-align: center; color: var(--success); font-weight: 500; font-size: 12px;">ICH</th>
+                                        <th style="padding: 12px 10px; text-align: center; color: var(--danger); font-weight: 500; font-size: 12px;">PARTNER</th>
+                                        <th style="padding: 12px 10px; text-align: center; color: #8B5CF6; font-weight: 600; font-size: 12px; background: rgba(139,92,246,0.1);">ICH × PARTNER</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     ${tableRows}
-                                    ${summenRow}
                                 </tbody>
                             </table>
                         </div>
 
-                        <!-- Legende -->
-                        <div style="display: flex; gap: 16px; margin-top: 16px; flex-wrap: wrap; align-items: center; justify-content: center;">
-                            <span style="font-size: 11px; color: var(--text-muted); font-family: monospace;">(R − 1) × Gewicht × 100 = %</span>
-                            <span style="font-size: 11px; color: var(--text-muted);">R = 0.5–1.5</span>
-                            <span style="font-size: 11px; color: #22c55e;">+% verstärkt</span>
-                            <span style="font-size: 11px; color: #ef4444;">−% schwächt</span>
+                        <!-- Erläuterung -->
+                        <div style="margin-top: 16px; padding: 12px; background: rgba(0,0,0,0.2); border-radius: 8px; font-size: 11px; color: var(--text-muted); line-height: 1.6;">
+                            <div style="margin-bottom: 8px;">
+                                <strong style="color: var(--text-secondary);">Was zeigt diese Tabelle?</strong>
+                            </div>
+                            <div>
+                                Jeder R-Faktor misst die <em>Kohärenz</em> zwischen deinen Bedürfnissen und dem gewählten Archetyp.
+                                Der kombinierte Wert (ICH × PARTNER) multipliziert den jeweiligen AGOD-Score:
+                            </div>
+                            <div style="margin-top: 8px; font-family: monospace; font-size: 10px;">
+                                Score = (A × R2) + (G × R4) + (O × R1) + (D × R3)
+                            </div>
+                            <div style="margin-top: 8px; display: flex; gap: 12px; flex-wrap: wrap;">
+                                <span style="color: #22c55e;">● &gt;1.0 = verstärkt Score</span>
+                                <span style="color: #eab308;">● =1.0 = neutral</span>
+                                <span style="color: #ef4444;">● &lt;1.0 = schwächt Score</span>
+                            </div>
                         </div>
                     </div>
                 </div>`;
