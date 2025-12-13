@@ -301,28 +301,28 @@ TiageSynthesis.NeedsIntegration = {
             return 1.0; // Neutral wenn keine Daten
         }
 
-        var expected = dimensionKohaerenz[archetyp];
+        var archetypTypisch = dimensionKohaerenz[archetyp];
         var totalDiff = 0;
         var count = 0;
 
-        for (var needKey in expected) {
-            if (expected.hasOwnProperty(needKey) && expected[needKey] !== null) {
-                var expectedEntry = expected[needKey];
+        for (var needKey in archetypTypisch) {
+            if (archetypTypisch.hasOwnProperty(needKey) && archetypTypisch[needKey] !== null) {
+                var typischEntry = archetypTypisch[needKey];
 
                 // Unterstütze beide Formate: direkte Zahl oder Objekt mit .value
-                var expectedValue = (typeof expectedEntry === 'object' && expectedEntry.value !== undefined)
-                    ? expectedEntry.value
-                    : expectedEntry;
+                var typischValue = (typeof typischEntry === 'object' && typischEntry.value !== undefined)
+                    ? typischEntry.value
+                    : typischEntry;
 
                 // Lookup-Key: verwende ID wenn vorhanden, sonst den Key selbst
-                var lookupKey = (typeof expectedEntry === 'object' && expectedEntry.id)
-                    ? expectedEntry.id
+                var lookupKey = (typeof typischEntry === 'object' && typischEntry.id)
+                    ? typischEntry.id
                     : needKey;
 
                 var actualValue = needs[lookupKey];
 
-                if (actualValue !== undefined && typeof expectedValue === 'number') {
-                    var diff = Math.abs(actualValue - expectedValue);
+                if (actualValue !== undefined && typeof typischValue === 'number') {
+                    var diff = Math.abs(actualValue - typischValue);
                     totalDiff += diff;
                     count++;
                 }

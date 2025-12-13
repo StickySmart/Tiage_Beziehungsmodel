@@ -105,10 +105,10 @@ TiageSynthesis.Constants = {
     // ═══════════════════════════════════════════════════════════════════════
     // ARCHETYP-BEDÜRFNIS-KOHÄRENZ (v3.1)
     // ═══════════════════════════════════════════════════════════════════════
-    // Definiert die erwarteten Bedürfnis-Ausprägungen pro Archetyp.
-    // R_dim = Übereinstimmung zwischen tatsächlichen und erwarteten Werten.
+    // Definiert die archetyp-typischen Bedürfnis-Ausprägungen.
+    // R_dim = Übereinstimmung zwischen tatsächlichen und archetyp-typischen Werten.
     //
-    // Werte: 0-100 (erwartete Ausprägung für kohärentes Profil)
+    // Werte: 0-100 (archetyp-typische Ausprägung für kohärentes Profil)
     // null = Bedürfnis ist für diesen Archetyp nicht relevant
     //
     ARCHETYP_KOHAERENZ: {
