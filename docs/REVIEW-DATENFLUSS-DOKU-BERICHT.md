@@ -79,22 +79,35 @@ WEIGHTS: {
 
 ---
 
-## 3. MITTEL: Formel-Inkonsistenz
+## 3. KRITISCH: Formel-Inkonsistenz (v3.1 Dimensionale Resonanz)
 
-### Code (synthesisCalculator.js, Zeile 8):
+### Code (synthesisCalculator.js, Zeilen 255-260) - v3.1:
+```
+Q = (A × 0.25 × R₁) + (O × 0.25 × R₂) + (D × 0.25 × R₃) + (G × 0.25 × R₄)
+```
+
+**WICHTIG: R ist NICHT ein einzelner Multiplikator außen, sondern 4 dimensionale R-Werte INNERHALB der Summe:**
+- R₁ = R_Philosophie (Archetyp ↔ Beziehungsphilosophie-Bedürfnisse)
+- R₂ = R_Leben (Orientierung ↔ Anziehung/Intimität-Bedürfnisse)
+- R₃ = R_Dynamik (Dominanz ↔ Machtdynamik-Bedürfnisse)
+- R₄ = R_Identität (Geschlecht ↔ Identität/Ausdruck-Bedürfnisse)
+
+### Legacy-Fallback (synthesisCalculator.js, Zeile 263):
 ```
 Q = [(A × 0.25) + (O × 0.25) + (D × 0.25) + (G × 0.25)] × R
 ```
 
-### Dokumentation (docs/README.md, Zeile 63):
+### Dokumentation (docs/README.md, Zeile 63) - VERALTET:
 ```
 Q = [(O × 0.40) + (A × 0.25) + (D × 0.20) + (G × 0.15)] × R
 ```
 
 ### ANPASSUNGSBEDARF:
 
-- [ ] `docs/README.md` Zeile 63-71: Formel und Where-Block anpassen
-- [ ] `docs/en/README.md` Zeile 63-71: Formel und Where-Block anpassen
+- [ ] `docs/README.md` Zeile 63-71: Formel auf v3.1 aktualisieren (R₁-R₄ innerhalb)
+- [ ] `docs/en/README.md` Zeile 63-71: Formel auf v3.1 aktualisieren
+- [ ] `docs/theory/factors.md` Zeile 168: v3.1 Formel dokumentieren
+- [ ] `docs/theory/en/factors.md`: v3.1 Formel dokumentieren
 
 ---
 
@@ -206,17 +219,20 @@ Q = [(O × 0.40) + (A × 0.25) + (D × 0.20) + (G × 0.15)] × R
                               │
                               ▼
 ┌─────────────────────────────────────────────────────────────────┐
-│              SCHRITT 2: Resonanz-Berechnung (R)                  │
-│  R = 0.9 + [(M/100 × 0.35) + (B × 0.35) + (K × 0.30)] × 0.2      │
-│  M = Bedürfnis-Match, B = Balance, K = GFK-Kompetenz             │
+│     SCHRITT 2: Dimensionale Resonanz-Berechnung (v3.1)           │
+│  Für jede Dimension: R_dim = 0.9 + (Match_dim × 0.2)             │
+│  R₁ = R_Philosophie  │  R₂ = R_Leben                             │
+│  R₃ = R_Dynamik      │  R₄ = R_Identität                         │
 └─────────────────────────────────────────────────────────────────┘
                               │
                               ▼
 ┌─────────────────────────────────────────────────────────────────┐
-│                    SCHRITT 3: Gesamt-Score                       │
-│  Q = [(A × 0.25) + (O × 0.25) + (D × 0.25) + (G × 0.25)] × R     │
+│                    SCHRITT 3: Gesamt-Score (v3.1)                │
+│  Q = (A × 0.25 × R₁) + (O × 0.25 × R₂) +                         │
+│      (D × 0.25 × R₃) + (G × 0.25 × R₄)                           │
 │                                                                  │
-│  ACHTUNG: Code nutzt 25/25/25/25, nicht 15/40/20/25!             │
+│  R₁-R₄ werden PRO FAKTOR angewandt, NICHT als einzelnes R außen │
+│  ACHTUNG: Doku nutzt veraltete Formel mit R außerhalb!           │
 └─────────────────────────────────────────────────────────────────┘
                               │
                               ▼
@@ -235,19 +251,20 @@ Q = [(O × 0.40) + (A × 0.25) + (D × 0.20) + (G × 0.15)] × R
 | Aspekt | Dokumentation | Code | Status |
 |--------|---------------|------|--------|
 | 4 Hauptfaktoren | ✅ | ✅ | Korrekt |
-| Resonanz-Multiplikator | ✅ | ✅ | Korrekt |
+| Resonanz-Multiplikator | Single R außen | R₁-R₄ pro Faktor (v3.1) | **INKONSISTENT** |
 | Lifestyle-Filter | ✅ | ✅ | Korrekt |
 | Bedürfnis-Integration | ✅ | ✅ | Korrekt |
 | Gewichtung | 15/40/20/25 | 25/25/25/25 | **INKONSISTENT** |
+| Formel-Struktur | Q = [...] × R | Q = Σ(F × W × R_dim) | **INKONSISTENT** |
 
 ---
 
 ## 8. Prioritäten für Korrektur
 
 ### HOCH (Sofort beheben):
-1. **Gewichtung entscheiden:** Code ODER Doku anpassen
-2. **Logos/Pathos-Verhältnis:** pathos-logos.md korrigieren
-3. **Formeln vereinheitlichen:** Alle Formeln konsistent machen
+1. **v3.1 Formel dokumentieren:** R₁-R₄ pro Faktor innerhalb, nicht einzelnes R außen
+2. **Gewichtung entscheiden:** Code ODER Doku anpassen (25/25/25/25 vs 15/40/20/25)
+3. **Logos/Pathos-Verhältnis:** pathos-logos.md korrigieren (25:75 wenn Code = Wahrheit)
 
 ### MITTEL:
 4. **Version:** README.md aktualisieren
