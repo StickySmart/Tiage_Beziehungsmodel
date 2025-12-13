@@ -416,7 +416,7 @@ TiageSynthesis.NeedsIntegration = {
     //   2. Kombiniere via Produkt
     //   3. Ø pro Faktor = Durchschnitt der 4 Perspektiven
     //   4. R = 1 + Ø/100
-    //   5. Q = A×0.25×R1 + O×0.25×R2 + D×0.25×R3 + G×0.25×R4
+    //   5. Q = O×wO×R1 + A×wA×R2 + D×wD×R3 + G×wG×R4 (Gewichte aus UI)
     // ═══════════════════════════════════════════════════════════════════════
 
     /**

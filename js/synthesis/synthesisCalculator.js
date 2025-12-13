@@ -2,20 +2,33 @@
  * TIAGE SYNTHESE - Haupt-Calculator v3.1
  *
  * ═══════════════════════════════════════════════════════════════════════════
- * HAUPT-FORMEL v3.1
+ * HAUPT-FORMEL v3.1 (Dynamische Gewichtung + Dimensionale Resonanz)
  * ═══════════════════════════════════════════════════════════════════════════
  *
- *   Q = [(A × 0.25) + (O × 0.25) + (D × 0.25) + (G × 0.25)] × R
+ *   Q = [(O × wO × r1) + (A × wA × r2) + (D × wD × r3) + (G × wG × r4)]
+ *
+ * Standard-Gewichtungen (aus UI-Slider, anpassbar):
+ *   wO = 0.40 (40%) - Orientierung
+ *   wA = 0.25 (25%) - Archetyp
+ *   wD = 0.20 (20%) - Dominanz
+ *   wG = 0.15 (15%) - Geschlecht
+ *
+ * Dimensionale Resonanz-Faktoren (0.5 - 1.5):
+ *   r1 = R_Leben       (Orientierung ↔ Anziehung/Intimität)
+ *   r2 = R_Philosophie (Archetyp ↔ Beziehungsphilosophie)
+ *   r3 = R_Dynamik     (Dominanz ↔ Machtdynamik)
+ *   r4 = R_Identität   (Geschlecht ↔ Identität/Ausdruck)
+ *
+ *   0.5 = keine Übereinstimmung, 1.0 = neutral, 1.5 = perfekte Übereinstimmung
  *
  * Wobei:
- *   A = Archetyp-Score (LOGOS)       - Beziehungsphilosophie
  *   O = Orientierungs-Score (PATHOS) - Sexuelle Orientierung
+ *   A = Archetyp-Score (LOGOS)       - Beziehungsphilosophie
  *   D = Dominanz-Score (PATHOS)      - Dom/Sub/Switch Dynamik
  *   G = Geschlechts-Score (PATHOS)   - Gender-Attraktion
- *   R = Paarungs-Resonanz (0.9 - 1.1) - Berechnung steht noch aus
  *
  * ═══════════════════════════════════════════════════════════════════════════
- * v3.1: DIMENSIONALE RESONANZ ALS VORAB-MULTIPLIKATOR
+ * DIMENSIONALE RESONANZ ALS VORAB-MULTIPLIKATOR
  * ═══════════════════════════════════════════════════════════════════════════
  * Die dimensionalen Resonanzen (R_dim) wirken VOR der Berechnung auf die
  * Bedürfniswerte in der JSON:
@@ -238,7 +251,8 @@ TiageSynthesis.Calculator = {
         //   D × R_Dynamik      (Dominanz ↔ Machtdynamik)
         //   G × R_Identität    (Geschlecht ↔ Identität/Ausdruck)
 
-        var weights = constants.WEIGHTS;
+        // UI-Gewichtungen laden (options.weights überschreibt UI/Default)
+        var weights = options.weights || (constants.getWeights ? constants.getWeights() : constants.WEIGHTS);
         var dim = resonanz.dimensional;
 
         var baseScore =
