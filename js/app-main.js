@@ -18140,54 +18140,65 @@
             }
 
             // ═══════════════════════════════════════════════════════════════════════════
-            // RESONANZFAKTOREN aus Profil berechnen und laden (NEU)
+            // RESONANZFAKTOREN: Nur initialisieren wenn KEINE gespeicherten Werte existieren
+            // Bestehende Werte werden beibehalten um Überschreiben zu vermeiden (FIX v1.8.208)
             // ═══════════════════════════════════════════════════════════════════════════
-            if (typeof ResonanzCard !== 'undefined' && typeof ResonanzCard.loadCalculatedValues === 'function') {
-                // Sammle Profil-Kontext für Resonanz-Berechnung
-                var resonanzProfileContext = {
-                    archetyp: archetypeKey || 'duo',
-                    needs: null,
-                    dominanz: dominanz,
-                    orientierung: orientierung,
-                    geschlecht: personData ? personData.geschlecht : null
-                };
+            if (typeof ResonanzCard !== 'undefined') {
+                var currentPerson = currentProfileReviewContext?.person || 'ich';
 
-                // Versuche Bedürfnisse aus verschiedenen Quellen zu laden
-                // 1. Aus gespeicherten Needs (TiageState)
-                if (typeof TiageState !== 'undefined' && TiageState.get) {
-                    var savedNeeds = TiageState.get('tiage_needs_integrated');
-                    if (savedNeeds) {
-                        // Konvertiere integriertes Format { needId: { value, locked } } zu { needId: value }
-                        resonanzProfileContext.needs = {};
-                        for (var needKey in savedNeeds) {
-                            if (savedNeeds.hasOwnProperty(needKey)) {
-                                resonanzProfileContext.needs[needKey] = savedNeeds[needKey].value || savedNeeds[needKey];
+                // Prüfe ob bereits gespeicherte Werte existieren
+                if (typeof ResonanzCard.hasStoredValues === 'function' && ResonanzCard.hasStoredValues(currentPerson)) {
+                    // Gespeicherte Werte existieren - UI nur aktualisieren, NICHT neu berechnen
+                    if (typeof ResonanzCard.initializeUI === 'function') {
+                        ResonanzCard.initializeUI(currentPerson);
+                    }
+                    console.log('[ProfileReview] Resonanzfaktoren aus localStorage geladen für', currentPerson, '(gespeicherte Werte beibehalten)');
+                } else if (typeof ResonanzCard.loadCalculatedValues === 'function') {
+                    // Keine gespeicherten Werte - neu berechnen
+                    var resonanzProfileContext = {
+                        archetyp: archetypeKey || 'duo',
+                        needs: null,
+                        dominanz: dominanz,
+                        orientierung: orientierung,
+                        geschlecht: personData ? personData.geschlecht : null
+                    };
+
+                    // Versuche Bedürfnisse aus verschiedenen Quellen zu laden
+                    // 1. Aus gespeicherten Needs (TiageState)
+                    if (typeof TiageState !== 'undefined' && TiageState.get) {
+                        var savedNeeds = TiageState.get('tiage_needs_integrated');
+                        if (savedNeeds) {
+                            // Konvertiere integriertes Format { needId: { value, locked } } zu { needId: value }
+                            resonanzProfileContext.needs = {};
+                            for (var needKey in savedNeeds) {
+                                if (savedNeeds.hasOwnProperty(needKey)) {
+                                    resonanzProfileContext.needs[needKey] = savedNeeds[needKey].value || savedNeeds[needKey];
+                                }
                             }
                         }
                     }
-                }
 
-                // 2. Fallback: Aus Archetyp-Profil (GfkBeduerfnisse)
-                if (!resonanzProfileContext.needs && typeof GfkBeduerfnisse !== 'undefined' &&
-                    GfkBeduerfnisse.archetypProfile && GfkBeduerfnisse.archetypProfile[archetypeKey]) {
-                    resonanzProfileContext.needs = GfkBeduerfnisse.archetypProfile[archetypeKey].kernbeduerfnisse || {};
-                }
-
-                // 3. Fallback: Aus BaseArchetypProfile
-                if (!resonanzProfileContext.needs && typeof BaseArchetypProfile !== 'undefined' &&
-                    BaseArchetypProfile[archetypeKey] && BaseArchetypProfile[archetypeKey].kernbeduerfnisse) {
-                    resonanzProfileContext.needs = BaseArchetypProfile[archetypeKey].kernbeduerfnisse;
-                }
-
-                // Lade berechnete Resonanzwerte in die UI
-                if (resonanzProfileContext.needs) {
-                    var currentPerson = currentProfileReviewContext?.person || 'ich';
-                    var resonanzLoaded = ResonanzCard.loadCalculatedValues(resonanzProfileContext, currentPerson);
-                    if (resonanzLoaded) {
-                        console.log('[ProfileReview] Resonanzfaktoren aus Profil berechnet und geladen für', currentPerson);
+                    // 2. Fallback: Aus Archetyp-Profil (GfkBeduerfnisse)
+                    if (!resonanzProfileContext.needs && typeof GfkBeduerfnisse !== 'undefined' &&
+                        GfkBeduerfnisse.archetypProfile && GfkBeduerfnisse.archetypProfile[archetypeKey]) {
+                        resonanzProfileContext.needs = GfkBeduerfnisse.archetypProfile[archetypeKey].kernbeduerfnisse || {};
                     }
-                } else {
-                    console.log('[ProfileReview] Keine Bedürfnis-Daten für Resonanz-Berechnung verfügbar');
+
+                    // 3. Fallback: Aus BaseArchetypProfile
+                    if (!resonanzProfileContext.needs && typeof BaseArchetypProfile !== 'undefined' &&
+                        BaseArchetypProfile[archetypeKey] && BaseArchetypProfile[archetypeKey].kernbeduerfnisse) {
+                        resonanzProfileContext.needs = BaseArchetypProfile[archetypeKey].kernbeduerfnisse;
+                    }
+
+                    // Lade berechnete Resonanzwerte in die UI (nur bei Erstinitialisierung)
+                    if (resonanzProfileContext.needs) {
+                        var resonanzLoaded = ResonanzCard.loadCalculatedValues(resonanzProfileContext, currentPerson);
+                        if (resonanzLoaded) {
+                            console.log('[ProfileReview] Resonanzfaktoren initial berechnet für', currentPerson);
+                        }
+                    } else {
+                        console.log('[ProfileReview] Keine Bedürfnis-Daten für Resonanz-Berechnung verfügbar');
+                    }
                 }
             }
 
