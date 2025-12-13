@@ -13922,115 +13922,29 @@
             }
 
             // ═══════════════════════════════════════════════════════════════════════════
-            // RESONANZFAKTOREN live berechnen basierend auf aktuellem Archetyp
+            // RESONANZFAKTOREN aus State lesen (werden bei Archetyp-Wechsel berechnet)
             // ═══════════════════════════════════════════════════════════════════════════
             let resonanzWerte = { R1: 1.0, R2: 1.0, R3: 1.0, R4: 1.0 };
 
-            // PRIORITÄT 1: Live-Berechnung mit TiageSynthesis.NeedsIntegration
-            let liveCalculated = false;
-            if (typeof TiageSynthesis !== 'undefined' &&
-                typeof TiageSynthesis.NeedsIntegration !== 'undefined' &&
-                typeof TiageSynthesis.NeedsIntegration.calculateDimensionalResonance === 'function') {
-
-                // Sammle Bedürfnisse für Live-Berechnung
-                // Format muss Object sein: { needId: value } (mit ID als Key, z.B. "#B204": 75)
-                let needs = null;
-
-                // 1. Aus LoadedArchetypProfile.ich.profileReview.flatNeeds (User-Eingaben!)
-                const flatNeeds = window.LoadedArchetypProfile?.ich?.profileReview?.flatNeeds;
-                if (flatNeeds) {
-                    needs = {};
-                    if (Array.isArray(flatNeeds)) {
-                        // Array-Format v1.8.128+: [{ id: "#B204", stringKey: "koerpernaehe", value: 75, ... }]
-                        flatNeeds.forEach(n => {
-                            if (n.id) needs[n.id] = n.value;
-                            if (n.stringKey) needs[n.stringKey] = n.value;
-                        });
-                    } else {
-                        // Object-Format: { needId: value } oder { needId: { value } }
-                        for (const key in flatNeeds) {
-                            if (flatNeeds.hasOwnProperty(key)) {
-                                const entry = flatNeeds[key];
-                                needs[key] = (typeof entry === 'object' && entry.value !== undefined) ? entry.value : entry;
-                            }
-                        }
-                    }
-                }
-
-                // 2. Fallback: Aus AttributeSummaryCard.getFlatNeeds() (aktuelle UI-Werte)
-                if ((!needs || Object.keys(needs).length === 0) &&
-                    typeof AttributeSummaryCard !== 'undefined' && AttributeSummaryCard.getFlatNeeds) {
-                    const cardNeeds = AttributeSummaryCard.getFlatNeeds();
-                    if (cardNeeds) {
-                        needs = {};
-                        if (Array.isArray(cardNeeds)) {
-                            cardNeeds.forEach(n => {
-                                if (n.id) needs[n.id] = n.value;
-                                if (n.stringKey) needs[n.stringKey] = n.value;
-                            });
-                        } else {
-                            for (const key in cardNeeds) {
-                                if (cardNeeds.hasOwnProperty(key)) {
-                                    const entry = cardNeeds[key];
-                                    needs[key] = (typeof entry === 'object' && entry.value !== undefined) ? entry.value : entry;
-                                }
-                            }
-                        }
-                    }
-                }
-
-                // 3. Fallback: Aus GfkBeduerfnisse.archetypProfile (Standard-Werte des Archetyps)
-                if (!needs || Object.keys(needs).length === 0) {
-                    if (typeof GfkBeduerfnisse !== 'undefined' &&
-                        GfkBeduerfnisse.archetypProfile && GfkBeduerfnisse.archetypProfile[ichArchetyp]) {
-                        needs = GfkBeduerfnisse.archetypProfile[ichArchetyp].kernbeduerfnisse || {};
-                    }
-                }
-
-                if (needs && Object.keys(needs).length > 0) {
-                    const profileContext = {
-                        archetyp: ichArchetyp,
-                        needs: needs,
-                        dominanz: personDimensions?.ich?.dominanz || null,
-                        orientierung: personDimensions?.ich?.orientierung || null,
-                        geschlecht: personDimensions?.ich?.geschlecht || null
-                    };
-
-                    const resonanz = TiageSynthesis.NeedsIntegration.calculateDimensionalResonance(profileContext);
-
-                    if (resonanz && resonanz.enabled) {
-                        resonanzWerte = {
-                            R1: resonanz.leben || 1.0,
-                            R2: resonanz.philosophie || 1.0,
-                            R3: resonanz.dynamik || 1.0,
-                            R4: resonanz.identitaet || 1.0
-                        };
-                        liveCalculated = true;
-                    }
-                }
+            // Aus LoadedArchetypProfile.ich.resonanzFaktoren lesen
+            const loadedIch = window.LoadedArchetypProfile?.ich?.resonanzFaktoren;
+            if (loadedIch) {
+                resonanzWerte = {
+                    R1: loadedIch.R1?.value ?? loadedIch.R1 ?? 1.0,
+                    R2: loadedIch.R2?.value ?? loadedIch.R2 ?? 1.0,
+                    R3: loadedIch.R3?.value ?? loadedIch.R3 ?? 1.0,
+                    R4: loadedIch.R4?.value ?? loadedIch.R4 ?? 1.0
+                };
             }
-
-            // PRIORITÄT 2: Aus LoadedArchetypProfile (falls Live-Berechnung fehlschlug)
-            if (!liveCalculated) {
-                const loadedIch = window.LoadedArchetypProfile?.ich?.resonanzFaktoren;
-                if (loadedIch) {
-                    resonanzWerte = {
-                        R1: loadedIch.R1?.value ?? loadedIch.R1 ?? 1.0,
-                        R2: loadedIch.R2?.value ?? loadedIch.R2 ?? 1.0,
-                        R3: loadedIch.R3?.value ?? loadedIch.R3 ?? 1.0,
-                        R4: loadedIch.R4?.value ?? loadedIch.R4 ?? 1.0
-                    };
-                }
-                // PRIORITÄT 3: Aus ResonanzCard
-                else if (typeof ResonanzCard !== 'undefined') {
-                    const cardValues = ResonanzCard.getValues('ich');
-                    resonanzWerte = {
-                        R1: cardValues.R1 || 1.0,
-                        R2: cardValues.R2 || 1.0,
-                        R3: cardValues.R3 || 1.0,
-                        R4: cardValues.R4 || 1.0
-                    };
-                }
+            // Fallback: Aus ResonanzCard
+            else if (typeof ResonanzCard !== 'undefined') {
+                const cardValues = ResonanzCard.getValues('ich');
+                resonanzWerte = {
+                    R1: cardValues.R1 || 1.0,
+                    R2: cardValues.R2 || 1.0,
+                    R3: cardValues.R3 || 1.0,
+                    R4: cardValues.R4 || 1.0
+                };
             }
 
             // Gewichtungs-Matrix: Wie stark beeinflusst jeder Faktor jede Perspektive (in %)
@@ -15029,8 +14943,8 @@
             currentTiageSyntheseContent.logos = generateCombinedLogos(ichArch, partnerArch);
 
             // ═══════════════════════════════════════════════════════════════════════════
-            // RESONANZFAKTOREN neu berechnen bei Archetyp-Wechsel (VOR Content-Anzeige!)
-            // Hinweis: Die Tabelle in getScoreContent() berechnet die Werte jetzt live!
+            // RESONANZFAKTOREN neu berechnen und in State speichern (VOR Content-Anzeige!)
+            // Die Tabelle in getScoreContent() liest dann die gespeicherten Werte
             // ═══════════════════════════════════════════════════════════════════════════
             if (typeof ResonanzCard !== 'undefined' && typeof ResonanzCard.loadCalculatedValues === 'function') {
                 const personKey = person === 'ich' ? 'ich' : 'partner';
