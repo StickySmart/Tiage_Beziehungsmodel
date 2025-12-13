@@ -14612,39 +14612,67 @@
                 return;
             }
 
-            // Bedürfniswerte laden (gleiche Logik wie bei der eigentlichen R-Faktor-Berechnung)
-            let rawFlatNeeds = null;
-            if (person === 'ich') {
-                if (typeof AttributeSummaryCard !== 'undefined' && AttributeSummaryCard.getFlatNeeds) {
-                    rawFlatNeeds = AttributeSummaryCard.getFlatNeeds();
-                } else if (window.LoadedArchetypProfile?.ich?.profileReview?.flatNeeds) {
-                    rawFlatNeeds = window.LoadedArchetypProfile.ich.profileReview.flatNeeds;
-                }
-            } else {
-                rawFlatNeeds = window.LoadedArchetypProfile?.partner?.profileReview?.flatNeeds;
-            }
-
-            // Konvertiere zu Object-Format mit BEIDEN id und stringKey als Keys
-            // (gleiche Logik wie in der eigentlichen R-Faktor-Berechnung)
+            // Bedürfniswerte laden (GLEICHE Logik wie bei der R-Faktor-Berechnung in navigateResonanzArchetype)
+            // Wichtig: Die Reihenfolge der Datenquellen muss identisch sein!
             let needs = null;
-            if (rawFlatNeeds) {
-                needs = {};
-                if (Array.isArray(rawFlatNeeds)) {
-                    rawFlatNeeds.forEach(n => {
-                        if (n.id) needs[n.id] = n.value;
-                        if (n.stringKey) needs[n.stringKey] = n.value;
-                    });
-                } else {
-                    for (const key in rawFlatNeeds) {
-                        if (rawFlatNeeds.hasOwnProperty(key)) {
-                            const entry = rawFlatNeeds[key];
-                            needs[key] = (typeof entry === 'object' && entry.value !== undefined) ? entry.value : entry;
+
+            // 1. Aus TiageState (bevorzugt - enthält aktuelle User-Eingaben)
+            if (typeof TiageState !== 'undefined' && TiageState.get) {
+                const savedNeeds = TiageState.get('tiage_needs_integrated');
+                if (savedNeeds && Object.keys(savedNeeds).length > 0) {
+                    needs = {};
+                    for (const needKey in savedNeeds) {
+                        if (savedNeeds.hasOwnProperty(needKey)) {
+                            needs[needKey] = savedNeeds[needKey].value || savedNeeds[needKey];
                         }
                     }
                 }
             }
 
-            // Fallback: Standard-Werte des Archetyps wenn keine Bedürfnisse gefunden
+            // 2. Fallback: Aus AttributeSummaryCard
+            if ((!needs || Object.keys(needs).length === 0) &&
+                typeof AttributeSummaryCard !== 'undefined' && AttributeSummaryCard.getFlatNeeds) {
+                const cardNeeds = AttributeSummaryCard.getFlatNeeds();
+                if (cardNeeds) {
+                    needs = {};
+                    if (Array.isArray(cardNeeds)) {
+                        cardNeeds.forEach(n => {
+                            if (n.id) needs[n.id] = n.value;
+                            if (n.stringKey) needs[n.stringKey] = n.value;
+                        });
+                    } else {
+                        for (const key in cardNeeds) {
+                            if (cardNeeds.hasOwnProperty(key)) {
+                                const entry = cardNeeds[key];
+                                needs[key] = (typeof entry === 'object' && entry.value !== undefined) ? entry.value : entry;
+                            }
+                        }
+                    }
+                }
+            }
+
+            // 3. Fallback für Partner: LoadedArchetypProfile
+            if ((!needs || Object.keys(needs).length === 0) && person === 'partner') {
+                const partnerFlatNeeds = window.LoadedArchetypProfile?.partner?.profileReview?.flatNeeds;
+                if (partnerFlatNeeds) {
+                    needs = {};
+                    if (Array.isArray(partnerFlatNeeds)) {
+                        partnerFlatNeeds.forEach(n => {
+                            if (n.id) needs[n.id] = n.value;
+                            if (n.stringKey) needs[n.stringKey] = n.value;
+                        });
+                    } else {
+                        for (const key in partnerFlatNeeds) {
+                            if (partnerFlatNeeds.hasOwnProperty(key)) {
+                                const entry = partnerFlatNeeds[key];
+                                needs[key] = (typeof entry === 'object' && entry.value !== undefined) ? entry.value : entry;
+                            }
+                        }
+                    }
+                }
+            }
+
+            // 4. Fallback: Standard-Werte des Archetyps wenn keine Bedürfnisse gefunden
             if (!needs || Object.keys(needs).length === 0) {
                 if (typeof GfkBeduerfnisse !== 'undefined' &&
                     GfkBeduerfnisse.archetypProfile && GfkBeduerfnisse.archetypProfile[archetyp]) {
@@ -14714,6 +14742,29 @@
             const avgDiff = count > 0 ? totalDiff / count : 0;
             const uebereinstimmung = 1 - (avgDiff / 100);
             const calculatedR = Math.round((0.5 + (uebereinstimmung * 1.0)) * 1000) / 1000;
+
+            // Prüfe ob der gespeicherte Wert vom berechneten abweicht und aktualisiere ihn
+            // Nur wenn nicht gelockt und Differenz > 0.01
+            if (typeof ResonanzCard !== 'undefined') {
+                const storedData = ResonanzCard.load(person);
+                const storedValue = storedData[rKey]?.value || 1.0;
+                const isLocked = storedData[rKey]?.locked || false;
+                const diff = Math.abs(storedValue - calculatedR);
+
+                if (!isLocked && diff > 0.01) {
+                    console.log(`[showValueDerivation] ${rKey} für ${person}: Gespeichert=${storedValue.toFixed(3)}, Berechnet=${calculatedR.toFixed(3)} - Aktualisiere...`);
+
+                    // Aktualisiere den Wert
+                    const newValues = {};
+                    newValues[rKey] = calculatedR;
+                    ResonanzCard.setCalculatedValues(newValues, false, person);
+
+                    // Aktualisiere auch das Modal im Hintergrund falls offen
+                    if (typeof updateResonanzfaktorenModalContent === 'function') {
+                        setTimeout(() => updateResonanzfaktorenModalContent(), 100);
+                    }
+                }
+            }
 
             // Sortiere nach Abweichung (größte zuerst)
             rows.sort((a, b) => b.diff - a.diff);
