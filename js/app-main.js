@@ -14182,6 +14182,33 @@
         }
         window.closeResonanzfaktorenModal = closeResonanzfaktorenModal;
 
+        /**
+         * Toggled den Lock-Status eines R-Faktors für eine Person
+         * @param {string} person - 'ich' oder 'partner'
+         * @param {string} faktor - 'R1', 'R2', 'R3' oder 'R4'
+         */
+        function toggleResonanzLock(person, faktor) {
+            if (typeof ResonanzCard === 'undefined') {
+                console.warn('[ResonanzModal] ResonanzCard nicht verfügbar');
+                return;
+            }
+
+            // Lade aktuelle Werte für diese Person
+            const values = ResonanzCard.load(person);
+
+            // Toggle Lock-Status
+            values[faktor].locked = !values[faktor].locked;
+
+            // Speichern
+            ResonanzCard.save(values, person);
+
+            console.log(`[ResonanzModal] ${faktor} für ${person} ist jetzt ${values[faktor].locked ? 'gesperrt' : 'entsperrt'}`);
+
+            // Modal aktualisieren
+            updateResonanzfaktorenModalContent();
+        }
+        window.toggleResonanzLock = toggleResonanzLock;
+
         function switchResonanzArchetyp(archetyp) {
             resonanzModalArchetyp = archetyp;
             updateResonanzfaktorenModalContent();
@@ -14307,44 +14334,64 @@
             // Kombination via Produkt (wie im synthesisCalculator)
             // ═══════════════════════════════════════════════════════════════════════════
 
-            // ICH Resonanzwerte laden
+            // ICH Resonanzwerte laden (inkl. Lock-Status)
             let resonanzIch = { R1: 1.0, R2: 1.0, R3: 1.0, R4: 1.0 };
-            const loadedIch = window.LoadedArchetypProfile?.ich?.resonanzFaktoren;
-            if (loadedIch) {
+            let lockStatusIch = { R1: false, R2: false, R3: false, R4: false };
+
+            if (typeof ResonanzCard !== 'undefined') {
+                const fullDataIch = ResonanzCard.load('ich');
                 resonanzIch = {
-                    R1: loadedIch.R1?.value ?? loadedIch.R1 ?? 1.0,
-                    R2: loadedIch.R2?.value ?? loadedIch.R2 ?? 1.0,
-                    R3: loadedIch.R3?.value ?? loadedIch.R3 ?? 1.0,
-                    R4: loadedIch.R4?.value ?? loadedIch.R4 ?? 1.0
+                    R1: fullDataIch.R1?.value || 1.0,
+                    R2: fullDataIch.R2?.value || 1.0,
+                    R3: fullDataIch.R3?.value || 1.0,
+                    R4: fullDataIch.R4?.value || 1.0
                 };
-            } else if (typeof ResonanzCard !== 'undefined') {
-                const cardIch = ResonanzCard.getValues('ich');
-                resonanzIch = {
-                    R1: cardIch.R1 || 1.0,
-                    R2: cardIch.R2 || 1.0,
-                    R3: cardIch.R3 || 1.0,
-                    R4: cardIch.R4 || 1.0
+                lockStatusIch = {
+                    R1: fullDataIch.R1?.locked || false,
+                    R2: fullDataIch.R2?.locked || false,
+                    R3: fullDataIch.R3?.locked || false,
+                    R4: fullDataIch.R4?.locked || false
                 };
+            } else {
+                const loadedIch = window.LoadedArchetypProfile?.ich?.resonanzFaktoren;
+                if (loadedIch) {
+                    resonanzIch = {
+                        R1: loadedIch.R1?.value ?? loadedIch.R1 ?? 1.0,
+                        R2: loadedIch.R2?.value ?? loadedIch.R2 ?? 1.0,
+                        R3: loadedIch.R3?.value ?? loadedIch.R3 ?? 1.0,
+                        R4: loadedIch.R4?.value ?? loadedIch.R4 ?? 1.0
+                    };
+                }
             }
 
-            // PARTNER Resonanzwerte laden
+            // PARTNER Resonanzwerte laden (inkl. Lock-Status)
             let resonanzPartner = { R1: 1.0, R2: 1.0, R3: 1.0, R4: 1.0 };
-            const loadedPartner = window.LoadedArchetypProfile?.partner?.resonanzFaktoren;
-            if (loadedPartner) {
+            let lockStatusPartner = { R1: false, R2: false, R3: false, R4: false };
+
+            if (typeof ResonanzCard !== 'undefined') {
+                const fullDataPartner = ResonanzCard.load('partner');
                 resonanzPartner = {
-                    R1: loadedPartner.R1?.value ?? loadedPartner.R1 ?? 1.0,
-                    R2: loadedPartner.R2?.value ?? loadedPartner.R2 ?? 1.0,
-                    R3: loadedPartner.R3?.value ?? loadedPartner.R3 ?? 1.0,
-                    R4: loadedPartner.R4?.value ?? loadedPartner.R4 ?? 1.0
+                    R1: fullDataPartner.R1?.value || 1.0,
+                    R2: fullDataPartner.R2?.value || 1.0,
+                    R3: fullDataPartner.R3?.value || 1.0,
+                    R4: fullDataPartner.R4?.value || 1.0
                 };
-            } else if (typeof ResonanzCard !== 'undefined') {
-                const cardPartner = ResonanzCard.getValues('partner');
-                resonanzPartner = {
-                    R1: cardPartner.R1 || 1.0,
-                    R2: cardPartner.R2 || 1.0,
-                    R3: cardPartner.R3 || 1.0,
-                    R4: cardPartner.R4 || 1.0
+                lockStatusPartner = {
+                    R1: fullDataPartner.R1?.locked || false,
+                    R2: fullDataPartner.R2?.locked || false,
+                    R3: fullDataPartner.R3?.locked || false,
+                    R4: fullDataPartner.R4?.locked || false
                 };
+            } else {
+                const loadedPartner = window.LoadedArchetypProfile?.partner?.resonanzFaktoren;
+                if (loadedPartner) {
+                    resonanzPartner = {
+                        R1: loadedPartner.R1?.value ?? loadedPartner.R1 ?? 1.0,
+                        R2: loadedPartner.R2?.value ?? loadedPartner.R2 ?? 1.0,
+                        R3: loadedPartner.R3?.value ?? loadedPartner.R3 ?? 1.0,
+                        R4: loadedPartner.R4?.value ?? loadedPartner.R4 ?? 1.0
+                    };
+                }
             }
 
             // Kombinierte Resonanz berechnen (Produkt - wie im synthesisCalculator)
@@ -14394,12 +14441,17 @@
                 }
             };
 
-            // Wert-Anzeige mit Farbcodierung
-            function getWertDisplay(wert) {
+            // Wert-Anzeige mit Farbcodierung und optionalem Lock-Icon
+            function getWertDisplay(wert, isLocked, person, faktor) {
                 let color = '#eab308';
                 if (wert >= 1.1) color = '#22c55e';
                 else if (wert <= 0.9) color = '#ef4444';
-                return `<span style="color: ${color}; font-weight: 600;">${wert.toFixed(2)}</span>`;
+
+                const lockIcon = isLocked
+                    ? `<span style="cursor: pointer; margin-left: 4px; opacity: 0.9;" onclick="toggleResonanzLock('${person}', '${faktor}')" title="Entsperren (automatische Berechnung aktivieren)">🔒</span>`
+                    : `<span style="cursor: pointer; margin-left: 4px; opacity: 0.4;" onclick="toggleResonanzLock('${person}', '${faktor}')" title="Sperren (manuellen Wert beibehalten)">🔓</span>`;
+
+                return `<span style="color: ${color}; font-weight: 600;">${wert.toFixed(2)}</span>${person && faktor ? lockIcon : ''}`;
             }
 
             // Tabellen-Zeilen für R-Faktoren
@@ -14410,6 +14462,8 @@
                 const wertIch = resonanzIch[rk] || 1.0;
                 const wertPartner = resonanzPartner[rk] || 1.0;
                 const wertKombi = resonanzWerte[rk] || 1.0;
+                const lockedIch = lockStatusIch[rk];
+                const lockedPartner = lockStatusPartner[rk];
 
                 tableRows += `
                     <tr style="border-bottom: 1px solid rgba(255,255,255,0.08);">
@@ -14422,8 +14476,8 @@
                                 → multipliziert <strong>${rf.agodIcon}</strong> (${rf.agod})
                             </div>
                         </td>
-                        <td style="padding: 12px 10px; text-align: center; font-size: 14px;">${getWertDisplay(wertIch)}</td>
-                        <td style="padding: 12px 10px; text-align: center; font-size: 14px;">${getWertDisplay(wertPartner)}</td>
+                        <td style="padding: 12px 10px; text-align: center; font-size: 14px;">${getWertDisplay(wertIch, lockedIch, 'ich', rk)}</td>
+                        <td style="padding: 12px 10px; text-align: center; font-size: 14px;">${getWertDisplay(wertPartner, lockedPartner, 'partner', rk)}</td>
                         <td style="padding: 12px 10px; text-align: center; font-size: 14px; background: rgba(139,92,246,0.1);">${getWertDisplay(wertKombi)}</td>
                     </tr>`;
             });
@@ -14507,6 +14561,10 @@
                                 <span style="color: #22c55e;">● &gt;1.0 = verstärkt Score</span>
                                 <span style="color: #eab308;">● =1.0 = neutral</span>
                                 <span style="color: #ef4444;">● &lt;1.0 = schwächt Score</span>
+                            </div>
+                            <div style="margin-top: 10px; padding-top: 8px; border-top: 1px solid rgba(255,255,255,0.1);">
+                                <span>🔒 = manuell gesperrt (ändert sich nicht bei Archetyp-Wechsel)</span><br>
+                                <span>🔓 = automatisch (wird bei Archetyp-Wechsel neu berechnet)</span>
                             </div>
                         </div>
                     </div>
