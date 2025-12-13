@@ -3599,6 +3599,57 @@
                 }
             });
 
+            // ═══════════════════════════════════════════════════════════════════════════
+            // FIX: Resonanzfaktoren bei Geschlecht-Wechsel neu berechnen
+            // R4 (Identität) hängt vom Geschlecht ab und muss aktualisiert werden
+            // ═══════════════════════════════════════════════════════════════════════════
+            if (typeof ResonanzCard !== 'undefined' && typeof ResonanzCard.loadCalculatedValues === 'function') {
+                const personArchetyp = person === 'ich' ? currentArchetype : selectedPartner;
+                let needs = null;
+
+                // Hole Needs aus LoadedArchetypProfile
+                const flatNeeds = window.LoadedArchetypProfile?.[person]?.profileReview?.flatNeeds;
+                if (flatNeeds) {
+                    needs = {};
+                    if (Array.isArray(flatNeeds)) {
+                        flatNeeds.forEach(n => {
+                            if (n.id) needs[n.id] = n.value;
+                            if (n.stringKey) needs[n.stringKey] = n.value;
+                        });
+                    } else {
+                        for (const key in flatNeeds) {
+                            if (flatNeeds.hasOwnProperty(key)) {
+                                const entry = flatNeeds[key];
+                                needs[key] = (typeof entry === 'object' && entry.value !== undefined) ? entry.value : entry;
+                            }
+                        }
+                    }
+                }
+
+                // Fallback: Standard-Werte des Archetyps
+                if (!needs || Object.keys(needs).length === 0) {
+                    if (typeof GfkBeduerfnisse !== 'undefined' &&
+                        GfkBeduerfnisse.archetypProfile && GfkBeduerfnisse.archetypProfile[personArchetyp]) {
+                        needs = GfkBeduerfnisse.archetypProfile[personArchetyp].kernbeduerfnisse || {};
+                    }
+                }
+
+                const resonanzProfileContext = {
+                    archetyp: personArchetyp,
+                    needs: needs,
+                    dominanz: personDimensions[person]?.dominanz || null,
+                    orientierung: personDimensions[person]?.orientierung || null,
+                    geschlecht: personDimensions[person]?.geschlecht || null
+                };
+
+                if (resonanzProfileContext.needs && Object.keys(resonanzProfileContext.needs).length > 0) {
+                    const resonanzLoaded = ResonanzCard.loadCalculatedValues(resonanzProfileContext, person);
+                    if (resonanzLoaded) {
+                        console.log('[TIAGE] Resonanzfaktoren nach Geschlecht-Wechsel aktualisiert für', person);
+                    }
+                }
+            }
+
             updateComparisonView();
 
             if (typeof saveSelectionToStorage === 'function') {
@@ -3638,6 +3689,53 @@
             syncGeschlechtState(person);
             syncGeschlechtUI(person);
             updateGeschlechtNeedsSelection(person);
+
+            // ═══════════════════════════════════════════════════════════════════════════
+            // FIX: Resonanzfaktoren bei Geschlecht-Wechsel neu berechnen
+            // R4 (Identität) hängt vom Geschlecht ab und muss aktualisiert werden
+            // ═══════════════════════════════════════════════════════════════════════════
+            if (typeof ResonanzCard !== 'undefined' && typeof ResonanzCard.loadCalculatedValues === 'function') {
+                const personArchetyp = person === 'ich' ? currentArchetype : selectedPartner;
+                let needs = null;
+
+                const flatNeeds = window.LoadedArchetypProfile?.[person]?.profileReview?.flatNeeds;
+                if (flatNeeds) {
+                    needs = {};
+                    if (Array.isArray(flatNeeds)) {
+                        flatNeeds.forEach(n => {
+                            if (n.id) needs[n.id] = n.value;
+                            if (n.stringKey) needs[n.stringKey] = n.value;
+                        });
+                    } else {
+                        for (const key in flatNeeds) {
+                            if (flatNeeds.hasOwnProperty(key)) {
+                                const entry = flatNeeds[key];
+                                needs[key] = (typeof entry === 'object' && entry.value !== undefined) ? entry.value : entry;
+                            }
+                        }
+                    }
+                }
+
+                if (!needs || Object.keys(needs).length === 0) {
+                    if (typeof GfkBeduerfnisse !== 'undefined' &&
+                        GfkBeduerfnisse.archetypProfile && GfkBeduerfnisse.archetypProfile[personArchetyp]) {
+                        needs = GfkBeduerfnisse.archetypProfile[personArchetyp].kernbeduerfnisse || {};
+                    }
+                }
+
+                const resonanzProfileContext = {
+                    archetyp: personArchetyp,
+                    needs: needs,
+                    dominanz: personDimensions[person]?.dominanz || null,
+                    orientierung: personDimensions[person]?.orientierung || null,
+                    geschlecht: personDimensions[person]?.geschlecht || null
+                };
+
+                if (resonanzProfileContext.needs && Object.keys(resonanzProfileContext.needs).length > 0) {
+                    ResonanzCard.loadCalculatedValues(resonanzProfileContext, person);
+                }
+            }
+
             updateComparisonView();
 
             if (typeof saveSelectionToStorage === 'function') {
@@ -3670,6 +3768,53 @@
             // Sync and save
             syncGeschlechtState(person);
             syncGeschlechtUI(person);
+
+            // ═══════════════════════════════════════════════════════════════════════════
+            // FIX: Resonanzfaktoren bei Geschlecht-Wechsel neu berechnen
+            // R4 (Identität) hängt vom Geschlecht ab und muss aktualisiert werden
+            // ═══════════════════════════════════════════════════════════════════════════
+            if (typeof ResonanzCard !== 'undefined' && typeof ResonanzCard.loadCalculatedValues === 'function') {
+                const personArchetyp = person === 'ich' ? currentArchetype : selectedPartner;
+                let needs = null;
+
+                const flatNeeds = window.LoadedArchetypProfile?.[person]?.profileReview?.flatNeeds;
+                if (flatNeeds) {
+                    needs = {};
+                    if (Array.isArray(flatNeeds)) {
+                        flatNeeds.forEach(n => {
+                            if (n.id) needs[n.id] = n.value;
+                            if (n.stringKey) needs[n.stringKey] = n.value;
+                        });
+                    } else {
+                        for (const key in flatNeeds) {
+                            if (flatNeeds.hasOwnProperty(key)) {
+                                const entry = flatNeeds[key];
+                                needs[key] = (typeof entry === 'object' && entry.value !== undefined) ? entry.value : entry;
+                            }
+                        }
+                    }
+                }
+
+                if (!needs || Object.keys(needs).length === 0) {
+                    if (typeof GfkBeduerfnisse !== 'undefined' &&
+                        GfkBeduerfnisse.archetypProfile && GfkBeduerfnisse.archetypProfile[personArchetyp]) {
+                        needs = GfkBeduerfnisse.archetypProfile[personArchetyp].kernbeduerfnisse || {};
+                    }
+                }
+
+                const resonanzProfileContext = {
+                    archetyp: personArchetyp,
+                    needs: needs,
+                    dominanz: personDimensions[person]?.dominanz || null,
+                    orientierung: personDimensions[person]?.orientierung || null,
+                    geschlecht: personDimensions[person]?.geschlecht || null
+                };
+
+                if (resonanzProfileContext.needs && Object.keys(resonanzProfileContext.needs).length > 0) {
+                    ResonanzCard.loadCalculatedValues(resonanzProfileContext, person);
+                }
+            }
+
             updateComparisonView();
 
             if (typeof saveSelectionToStorage === 'function') {
@@ -4257,6 +4402,57 @@
                 }
             });
 
+            // ═══════════════════════════════════════════════════════════════════════════
+            // FIX: Resonanzfaktoren bei Dominanz-Wechsel neu berechnen
+            // R3 (Dynamik) hängt von der Dominanz ab und muss aktualisiert werden
+            // ═══════════════════════════════════════════════════════════════════════════
+            if (typeof ResonanzCard !== 'undefined' && typeof ResonanzCard.loadCalculatedValues === 'function') {
+                const personArchetyp = person === 'ich' ? currentArchetype : selectedPartner;
+                let needs = null;
+
+                // Hole Needs aus LoadedArchetypProfile
+                const flatNeeds = window.LoadedArchetypProfile?.[person]?.profileReview?.flatNeeds;
+                if (flatNeeds) {
+                    needs = {};
+                    if (Array.isArray(flatNeeds)) {
+                        flatNeeds.forEach(n => {
+                            if (n.id) needs[n.id] = n.value;
+                            if (n.stringKey) needs[n.stringKey] = n.value;
+                        });
+                    } else {
+                        for (const key in flatNeeds) {
+                            if (flatNeeds.hasOwnProperty(key)) {
+                                const entry = flatNeeds[key];
+                                needs[key] = (typeof entry === 'object' && entry.value !== undefined) ? entry.value : entry;
+                            }
+                        }
+                    }
+                }
+
+                // Fallback: Standard-Werte des Archetyps
+                if (!needs || Object.keys(needs).length === 0) {
+                    if (typeof GfkBeduerfnisse !== 'undefined' &&
+                        GfkBeduerfnisse.archetypProfile && GfkBeduerfnisse.archetypProfile[personArchetyp]) {
+                        needs = GfkBeduerfnisse.archetypProfile[personArchetyp].kernbeduerfnisse || {};
+                    }
+                }
+
+                const resonanzProfileContext = {
+                    archetyp: personArchetyp,
+                    needs: needs,
+                    dominanz: personDimensions[person]?.dominanz || null,
+                    orientierung: personDimensions[person]?.orientierung || null,
+                    geschlecht: personDimensions[person]?.geschlecht || null
+                };
+
+                if (resonanzProfileContext.needs && Object.keys(resonanzProfileContext.needs).length > 0) {
+                    const resonanzLoaded = ResonanzCard.loadCalculatedValues(resonanzProfileContext, person);
+                    if (resonanzLoaded) {
+                        console.log('[TIAGE] Resonanzfaktoren nach Dominanz-Wechsel aktualisiert für', person);
+                    }
+                }
+            }
+
             updateComparisonView();
 
             if (typeof saveSelectionToStorage === 'function') {
@@ -4488,6 +4684,57 @@
                     dim.classList.add('needs-selection');
                 }
             });
+
+            // ═══════════════════════════════════════════════════════════════════════════
+            // FIX: Resonanzfaktoren bei Orientierung-Wechsel neu berechnen
+            // R1 (Leben) hängt von der Orientierung ab und muss aktualisiert werden
+            // ═══════════════════════════════════════════════════════════════════════════
+            if (typeof ResonanzCard !== 'undefined' && typeof ResonanzCard.loadCalculatedValues === 'function') {
+                const personArchetyp = person === 'ich' ? currentArchetype : selectedPartner;
+                let needs = null;
+
+                // Hole Needs aus LoadedArchetypProfile
+                const flatNeeds = window.LoadedArchetypProfile?.[person]?.profileReview?.flatNeeds;
+                if (flatNeeds) {
+                    needs = {};
+                    if (Array.isArray(flatNeeds)) {
+                        flatNeeds.forEach(n => {
+                            if (n.id) needs[n.id] = n.value;
+                            if (n.stringKey) needs[n.stringKey] = n.value;
+                        });
+                    } else {
+                        for (const key in flatNeeds) {
+                            if (flatNeeds.hasOwnProperty(key)) {
+                                const entry = flatNeeds[key];
+                                needs[key] = (typeof entry === 'object' && entry.value !== undefined) ? entry.value : entry;
+                            }
+                        }
+                    }
+                }
+
+                // Fallback: Standard-Werte des Archetyps
+                if (!needs || Object.keys(needs).length === 0) {
+                    if (typeof GfkBeduerfnisse !== 'undefined' &&
+                        GfkBeduerfnisse.archetypProfile && GfkBeduerfnisse.archetypProfile[personArchetyp]) {
+                        needs = GfkBeduerfnisse.archetypProfile[personArchetyp].kernbeduerfnisse || {};
+                    }
+                }
+
+                const resonanzProfileContext = {
+                    archetyp: personArchetyp,
+                    needs: needs,
+                    dominanz: personDimensions[person]?.dominanz || null,
+                    orientierung: personDimensions[person]?.orientierung || null,
+                    geschlecht: personDimensions[person]?.geschlecht || null
+                };
+
+                if (resonanzProfileContext.needs && Object.keys(resonanzProfileContext.needs).length > 0) {
+                    const resonanzLoaded = ResonanzCard.loadCalculatedValues(resonanzProfileContext, person);
+                    if (resonanzLoaded) {
+                        console.log('[TIAGE] Resonanzfaktoren nach Orientierung-Wechsel aktualisiert für', person);
+                    }
+                }
+            }
 
             updateComparisonView();
 
