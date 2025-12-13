@@ -14801,7 +14801,7 @@
                                 Der kombinierte Wert (ICH × PARTNER) multipliziert den jeweiligen AGOD-Score:
                             </div>
                             <div style="margin-top: 8px; font-family: monospace; font-size: 10px;">
-                                Score = (A × R2) + (G × R4) + (O × R1) + (D × R3)
+                                Q = (O × wO × R₁) + (A × wA × R₂) + (D × wD × R₃) + (G × wG × R₄)
                             </div>
                             <div style="margin-top: 8px; display: flex; gap: 12px; flex-wrap: wrap;">
                                 <span style="color: #22c55e;">● &gt;1.0 = verstärkt Score</span>
