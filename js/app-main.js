@@ -13227,6 +13227,25 @@
                 // Note: openComments=1 parameter is now handled in handleAgeConfirm()
                 // to ensure age verification is completed before opening comments modal
 
+                // ═══════════════════════════════════════════════════════════════════════════
+                // Event-Listener für Resonanzfaktoren-Änderungen
+                // Aktualisiert LoadedArchetypProfile wenn sich Resonanzfaktoren ändern
+                // ═══════════════════════════════════════════════════════════════════════════
+                window.addEventListener('resonanzfaktoren-changed', function(e) {
+                    const { person, values, source } = e.detail;
+
+                    // Aktualisiere LoadedArchetypProfile
+                    if (window.LoadedArchetypProfile && window.LoadedArchetypProfile[person]) {
+                        window.LoadedArchetypProfile[person].resonanzFaktoren = values;
+                        console.log('[TIAGE] LoadedArchetypProfile.resonanzFaktoren aktualisiert für', person, '- Quelle:', source);
+                    }
+
+                    // Aktualisiere Comparison View wenn nicht vom Slider (vermeidet doppelte Updates)
+                    if (source !== 'slider') {
+                        updateComparisonView();
+                    }
+                });
+
                 console.log('[TIAGE DEBUG] DOMContentLoaded completed successfully');
             } catch (e) {
                 console.error('[TIAGE ERROR] DOMContentLoaded failed:', e);
