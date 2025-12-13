@@ -463,14 +463,16 @@ const ResonanzCard = (function() {
      * @param {Object} calculatedValues - { R1: number, R2: number, R3: number, R4: number }
      *                                    Werte im Bereich 0.5-1.5 (oder 0.9-1.1 aus Synthese)
      * @param {boolean} forceOverwrite - Wenn true, überschreibt auch gelockte Werte
+     * @param {string} person - 'ich' oder 'partner' (optional, default: getCurrentPerson())
      */
-    function setCalculatedValues(calculatedValues, forceOverwrite) {
+    function setCalculatedValues(calculatedValues, forceOverwrite, person) {
         if (!calculatedValues) {
             console.warn('[ResonanzCard] Keine berechneten Werte übergeben');
             return;
         }
 
-        const currentValues = load();
+        person = person || getCurrentPerson();
+        const currentValues = load(person);
         let hasChanges = false;
 
         ['R1', 'R2', 'R3', 'R4'].forEach(faktor => {
@@ -485,20 +487,24 @@ const ResonanzCard = (function() {
                     currentValues[faktor].value = clampedValue;
                     hasChanges = true;
 
-                    // UI aktualisieren
-                    const input = document.getElementById(`resonanz-${faktor}`);
-                    const slider = document.getElementById(`resonanz-slider-${faktor}`);
+                    // UI aktualisieren (nur wenn aktuelle Person angezeigt wird)
+                    if (person === getCurrentPerson()) {
+                        const input = document.getElementById(`resonanz-${faktor}`);
+                        const slider = document.getElementById(`resonanz-slider-${faktor}`);
 
-                    if (input) input.value = clampedValue.toFixed(2);
-                    if (slider) slider.value = valueToSlider(clampedValue);
+                        if (input) input.value = clampedValue.toFixed(2);
+                        if (slider) slider.value = valueToSlider(clampedValue);
+                    }
                 }
             }
         });
 
         if (hasChanges) {
-            save(currentValues);
-            updateGfkDisplay();
-            console.log('[ResonanzCard] Berechnete Werte geladen:', calculatedValues);
+            save(currentValues, person);
+            if (person === getCurrentPerson()) {
+                updateGfkDisplay();
+            }
+            console.log('[ResonanzCard] Berechnete Werte geladen für', person + ':', calculatedValues);
         }
     }
 
@@ -551,12 +557,13 @@ const ResonanzCard = (function() {
      * Kombiniert calculateFromProfile und setCalculatedValues
      *
      * @param {Object} profileContext - Profil-Kontext für Berechnung
+     * @param {string} person - 'ich' oder 'partner' (optional, default: getCurrentPerson())
      * @returns {boolean} true wenn erfolgreich
      */
-    function loadCalculatedValues(profileContext) {
+    function loadCalculatedValues(profileContext, person) {
         const calculated = calculateFromProfile(profileContext);
         if (calculated) {
-            setCalculatedValues(calculated, false);
+            setCalculatedValues(calculated, false, person);
             return true;
         }
         return false;
