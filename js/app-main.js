@@ -7942,7 +7942,7 @@
             if (items.length === 0) {
                 listHtml = '<p style="color: var(--text-muted); text-align: center; padding: 20px;">Keine Einträge vorhanden.</p>';
             } else {
-                listHtml = '<div style="display: flex; flex-direction: column; gap: 6px; max-height: 400px; overflow-y: auto;">';
+                listHtml = '<div style="display: flex; flex-direction: column; gap: 6px; max-height: calc(70vh - 180px); overflow-y: auto;">';
 
                 items.forEach(item => {
                     // item.id ist jetzt #B-ID, item.label ist der Display-Name
