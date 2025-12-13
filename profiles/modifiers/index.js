@@ -72,7 +72,7 @@
      * @returns {Object|null} Modifier-Objekt mit deltas
      */
     function getDominanzModifier(dominanz) {
-        if (!dominanz) return null;
+        if (!dominanz || typeof dominanz !== 'string') return null;
 
         const key = dominanz.toLowerCase();
         const modifierKey = DOMINANZ_MAP[key];
