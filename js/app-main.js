@@ -14612,29 +14612,60 @@
                 return;
             }
 
-            // Bedürfniswerte laden
-            let flatNeeds = null;
+            // Bedürfniswerte laden (gleiche Logik wie bei der eigentlichen R-Faktor-Berechnung)
+            let rawFlatNeeds = null;
             if (person === 'ich') {
                 if (typeof AttributeSummaryCard !== 'undefined' && AttributeSummaryCard.getFlatNeeds) {
-                    flatNeeds = AttributeSummaryCard.getFlatNeeds();
+                    rawFlatNeeds = AttributeSummaryCard.getFlatNeeds();
                 } else if (window.LoadedArchetypProfile?.ich?.profileReview?.flatNeeds) {
-                    flatNeeds = window.LoadedArchetypProfile.ich.profileReview.flatNeeds;
+                    rawFlatNeeds = window.LoadedArchetypProfile.ich.profileReview.flatNeeds;
                 }
             } else {
-                flatNeeds = window.LoadedArchetypProfile?.partner?.profileReview?.flatNeeds;
+                rawFlatNeeds = window.LoadedArchetypProfile?.partner?.profileReview?.flatNeeds;
             }
 
-            // Helper: Wert aus flatNeeds extrahieren
-            const getNeedValue = (needId) => {
-                if (!flatNeeds) return null;
-                if (Array.isArray(flatNeeds)) {
-                    const need = flatNeeds.find(n => n.id === needId || n.stringKey === needId);
-                    return need ? need.value : null;
+            // Konvertiere zu Object-Format mit BEIDEN id und stringKey als Keys
+            // (gleiche Logik wie in der eigentlichen R-Faktor-Berechnung)
+            let needs = null;
+            if (rawFlatNeeds) {
+                needs = {};
+                if (Array.isArray(rawFlatNeeds)) {
+                    rawFlatNeeds.forEach(n => {
+                        if (n.id) needs[n.id] = n.value;
+                        if (n.stringKey) needs[n.stringKey] = n.value;
+                    });
+                } else {
+                    for (const key in rawFlatNeeds) {
+                        if (rawFlatNeeds.hasOwnProperty(key)) {
+                            const entry = rawFlatNeeds[key];
+                            needs[key] = (typeof entry === 'object' && entry.value !== undefined) ? entry.value : entry;
+                        }
+                    }
                 }
-                const entry = flatNeeds[needId];
-                if (entry === undefined) return null;
-                if (typeof entry === 'object' && entry.value !== undefined) return entry.value;
-                return entry;
+            }
+
+            // Fallback: Standard-Werte des Archetyps wenn keine Bedürfnisse gefunden
+            if (!needs || Object.keys(needs).length === 0) {
+                if (typeof GfkBeduerfnisse !== 'undefined' &&
+                    GfkBeduerfnisse.archetypProfile && GfkBeduerfnisse.archetypProfile[archetyp]) {
+                    needs = GfkBeduerfnisse.archetypProfile[archetyp].kernbeduerfnisse || {};
+                }
+            }
+
+            // Helper: Wert aus needs extrahieren (unterstützt id und stringKey lookup)
+            const getNeedValue = (needId, stringKey) => {
+                if (!needs) return null;
+                // Versuche zuerst id
+                if (needId && needs[needId] !== undefined) {
+                    const entry = needs[needId];
+                    return (typeof entry === 'object' && entry.value !== undefined) ? entry.value : entry;
+                }
+                // Fallback: stringKey
+                if (stringKey && needs[stringKey] !== undefined) {
+                    const entry = needs[stringKey];
+                    return (typeof entry === 'object' && entry.value !== undefined) ? entry.value : entry;
+                }
+                return null;
             };
 
             // Berechnung durchführen
@@ -14651,12 +14682,13 @@
                     : typischEntry;
                 const needId = (typeof typischEntry === 'object' && typischEntry.id)
                     ? typischEntry.id
-                    : needKey;
+                    : null;
                 const needLabel = (typeof typischEntry === 'object' && typischEntry.label)
                     ? typischEntry.label
                     : needKey;
 
-                const actualValue = getNeedValue(needId);
+                // Verwende id UND stringKey für robustes Lookup (wie in NeedsIntegration._getNeedValue)
+                const actualValue = getNeedValue(needId, needKey);
 
                 if (actualValue !== null && typeof typischValue === 'number') {
                     const diff = Math.abs(actualValue - typischValue);
@@ -14669,7 +14701,7 @@
                     else if (diff > 15) diffColor = '#eab308'; // gelb
 
                     rows.push({
-                        id: needId,
+                        id: needId || needKey,  // Zeige id oder stringKey
                         label: needLabel,
                         typisch: typischValue,
                         actual: actualValue,
