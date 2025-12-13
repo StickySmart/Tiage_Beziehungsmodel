@@ -16588,41 +16588,52 @@
         }
 
         /**
-         * Löscht den gesamten lokalen Speicher (alle tiage_* Einträge)
-         * und initialisiert die UI neu durch Seiten-Reload
+         * Löscht die aktuelle Auswahl und setzt die UI zurück.
+         * WICHTIG: Die gespeicherten Profile (Memory-Slots) bleiben erhalten!
          */
         function clearAllStorage() {
             const confirmMsg = TiageI18n && TiageI18n.currentLang === 'en'
-                ? 'Really DELETE all stored data and reset UI?\n\nThis will remove:\n• All saved profiles (memory slots)\n• All current selections\n• All settings and preferences\n\nThis action cannot be undone!'
-                : 'Wirklich ALLE gespeicherten Daten löschen und UI zurücksetzen?\n\nDies entfernt:\n• Alle gespeicherten Profile (Speicherplätze)\n• Alle aktuellen Auswahlen\n• Alle Einstellungen und Präferenzen\n\nDiese Aktion kann nicht rückgängig gemacht werden!';
+                ? 'Reset current selection and UI?\n\nThis will remove:\n• Current archetype selections\n• Current dimension settings\n• Current preferences\n\nSaved profiles (memory slots) will be PRESERVED!'
+                : 'Aktuelle Auswahl und UI zurücksetzen?\n\nDies entfernt:\n• Aktuelle Archetyp-Auswahlen\n• Aktuelle Dimensions-Einstellungen\n• Aktuelle Präferenzen\n\nGespeicherte Profile (Speicherplätze) bleiben ERHALTEN!';
 
             if (!confirm(confirmMsg)) {
                 return;
             }
 
             try {
-                // Besucher-ID vor dem Löschen sichern (soll erhalten bleiben)
+                // Besucher-ID und Memory-Slots vor dem Löschen sichern
                 const visitorId = localStorage.getItem('tiage_visitor_id');
 
-                // TiageStorage.clear() löscht alle tiage_* Einträge
-                if (typeof TiageStorage !== 'undefined' && TiageStorage.clear) {
-                    TiageStorage.clear();
-                } else {
-                    // Fallback: manuell alle tiage_* Keys löschen
-                    const keys = [];
-                    for (let i = 0; i < localStorage.length; i++) {
-                        const key = localStorage.key(i);
-                        if (key && key.startsWith('tiage')) {
-                            keys.push(key);
-                        }
+                // Memory-Slots sichern (tiage_memory_ME001-004 und tiage_memory_PART001-004)
+                const memorySlots = {};
+                for (let i = 0; i < localStorage.length; i++) {
+                    const key = localStorage.key(i);
+                    if (key && key.startsWith('tiage_memory_')) {
+                        memorySlots[key] = localStorage.getItem(key);
                     }
-                    keys.forEach(key => localStorage.removeItem(key));
                 }
+
+                // Lösche alle tiage_* Einträge AUSSER Memory-Slots
+                const keysToDelete = [];
+                for (let i = 0; i < localStorage.length; i++) {
+                    const key = localStorage.key(i);
+                    if (key && key.startsWith('tiage') && !key.startsWith('tiage_memory_')) {
+                        keysToDelete.push(key);
+                    }
+                }
+                keysToDelete.forEach(key => localStorage.removeItem(key));
 
                 // Besucher-ID wiederherstellen
                 if (visitorId) {
                     localStorage.setItem('tiage_visitor_id', visitorId);
                 }
+
+                // Memory-Slots wiederherstellen (falls durch TiageStorage.clear() gelöscht)
+                Object.entries(memorySlots).forEach(([key, value]) => {
+                    if (value) {
+                        localStorage.setItem(key, value);
+                    }
+                });
 
                 // Auch die legacy Keys löschen
                 localStorage.removeItem('tiage-selection');
@@ -16648,8 +16659,8 @@
                     text-align: center;
                 `;
                 toast.innerHTML = TiageI18n && TiageI18n.currentLang === 'en'
-                    ? '✓ All data cleared!<br><small>Reloading...</small>'
-                    : '✓ Alle Daten gelöscht!<br><small>Lade neu...</small>';
+                    ? '✓ Selection cleared!<br><small>Saved profiles preserved. Reloading...</small>'
+                    : '✓ Auswahl gelöscht!<br><small>Profile erhalten. Lade neu...</small>';
                 document.body.appendChild(toast);
 
                 // Seite nach kurzer Verzögerung neu laden
@@ -16660,8 +16671,8 @@
             } catch (e) {
                 console.error('[clearAllStorage] Fehler:', e);
                 alert(TiageI18n && TiageI18n.currentLang === 'en'
-                    ? 'Error clearing storage: ' + e.message
-                    : 'Fehler beim Löschen: ' + e.message);
+                    ? 'Error clearing selection: ' + e.message
+                    : 'Fehler beim Zurücksetzen: ' + e.message);
             }
         }
 
