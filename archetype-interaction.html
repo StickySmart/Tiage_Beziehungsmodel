@@ -514,6 +514,7 @@
             <button id="tiageSyntheseTogglePathos" onclick="showTiageSyntheseContent('pathos')" style="padding: 12px 14px; border-radius: 8px; border: 1px solid var(--border); background: rgba(30,30,35,0.95); color: var(--text-muted); cursor: pointer; font-size: 16px; transition: all 0.2s; backdrop-filter: blur(10px); box-shadow: 0 2px 12px rgba(0,0,0,0.4);" title="Pathos - Emotionale Resonanz">🔥</button>
             <button id="tiageSyntheseToggleLogos" onclick="showTiageSyntheseContent('logos')" style="padding: 12px 14px; border-radius: 8px; border: 1px solid var(--border); background: rgba(30,30,35,0.95); color: var(--text-muted); cursor: pointer; font-size: 16px; transition: all 0.2s; backdrop-filter: blur(10px); box-shadow: 0 2px 12px rgba(0,0,0,0.4);" title="Logos - Rationale Struktur">🧠</button>
             <button id="tiageSyntheseToggleNeeds" onclick="showTiageSyntheseContent('needs')" style="padding: 12px 14px; border-radius: 8px; border: 1px solid var(--border); background: rgba(30,30,35,0.95); color: var(--text-muted); cursor: pointer; font-size: 16px; transition: all 0.2s; backdrop-filter: blur(10px); box-shadow: 0 2px 12px rgba(0,0,0,0.4);" title="Bedürfnis-Match mit Differenz">💚</button>
+            <button id="tiageSyntheseToggleResonanz" onclick="openResonanzfaktorenModal()" style="padding: 12px 14px; border-radius: 8px; border: 1px solid var(--border); background: rgba(30,30,35,0.95); color: var(--text-muted); cursor: pointer; font-size: 16px; transition: all 0.2s; backdrop-filter: blur(10px); box-shadow: 0 2px 12px rgba(0,0,0,0.4);" title="Resonanzfaktoren × Perspektiven">🎛️</button>
         </div>
         <div class="modal" onclick="event.stopPropagation()" style="max-width: 700px; max-height: 85vh; overflow-y: auto; position: relative;">
             <div class="modal-header">
@@ -523,6 +524,7 @@
                     <button class="header-pathos-btn" id="modalPathosBtn" onclick="showTiageSyntheseContent('pathos')" title="Pathos - Emotionale Resonanz">🔥</button>
                     <button class="header-logos-btn" id="modalLogosBtn" onclick="showTiageSyntheseContent('logos')" title="Logos - Rationale Struktur">🧠</button>
                     <button class="header-needs-btn" id="modalNeedsBtn" onclick="showTiageSyntheseContent('needs')" title="Bedürfnis-Match mit Differenz">💚</button>
+                    <button class="header-resonanz-btn" id="modalResonanzBtn" onclick="openResonanzfaktorenModal()" title="Resonanzfaktoren × Perspektiven">🎛️</button>
                     <button class="modal-close" onclick="closeTiageSyntheseModal()">&times;</button>
                 </div>
             </div>
@@ -559,6 +561,21 @@
                 </div>
                 <!-- Main content -->
                 <div id="tiageSyntheseModalContent" style="font-size: 15px; line-height: 1.7; color: var(--text-secondary);">
+                    <!-- Content will be injected here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Resonanzfaktoren Modal -->
+    <div class="modal-overlay" id="resonanzfaktorenModal" onclick="closeResonanzfaktorenModal(event)">
+        <div class="modal" onclick="event.stopPropagation()" style="max-width: 600px; max-height: 85vh; overflow-y: auto;">
+            <div class="modal-header">
+                <span class="modal-title">Resonanzfaktoren</span>
+                <button class="modal-close" onclick="closeResonanzfaktorenModal()">&times;</button>
+            </div>
+            <div class="modal-body" style="padding: 20px;">
+                <div id="resonanzfaktorenModalContent">
                     <!-- Content will be injected here -->
                 </div>
             </div>
