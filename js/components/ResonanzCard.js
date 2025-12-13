@@ -98,27 +98,34 @@ const ResonanzCard = (function() {
     migrateIfNeeded();
 
     /**
-     * Faktor-Beschreibungen
+     * Faktor-Beschreibungen (v3.3: 18 Kategorien mit sekundärer Gewichtung)
+     *
+     * Die 18 GFK-Kategorien werden auf 4 Resonanzfaktoren aggregiert.
+     * Sekundäre Kategorien fließen mit 30% Gewichtung ein.
      */
     const FAKTOR_INFO = {
         R1: {
             label: 'Leben',
-            beschreibung: 'Existenz, Zuneigung, Muße',
+            beschreibung: 'Existenz, Zuneigung, Muße, Intimität & Romantik',
+            kategorien: ['existenz', 'zuneigung', 'musse', 'intimitaet_romantik'],
             color: '#E63946'
         },
         R2: {
             label: 'Philosophie',
-            beschreibung: 'Freiheit, Teilnahme, Identität',
+            beschreibung: 'Freiheit, Teilnahme, Identität, Lebensplanung, Finanzen, Werte, Soziales, Praktisches',
+            kategorien: ['freiheit', 'teilnahme', 'identitaet', 'lebensplanung', 'finanzen_karriere', 'werte_haltungen', 'soziales_leben', 'praktisches_leben'],
             color: '#2A9D8F'
         },
         R3: {
-            label: 'Kink',
+            label: 'Dynamik',
             beschreibung: 'Dynamik, Sicherheit',
+            kategorien: ['dynamik', 'sicherheit'],
             color: '#8B5CF6'
         },
         R4: {
             label: 'Identität',
-            beschreibung: 'Verständnis, Erschaffen, Verbundenheit',
+            beschreibung: 'Verständnis, Erschaffen, Verbundenheit, Kommunikation',
+            kategorien: ['verstaendnis', 'erschaffen', 'verbundenheit', 'kommunikation_stil'],
             color: '#F4A261'
         }
     };

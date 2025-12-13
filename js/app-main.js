@@ -14643,8 +14643,9 @@
 
             console.log('[ResonanzModal] ICH:', resonanzIch, 'PARTNER:', resonanzPartner, 'KOMBINIERT:', resonanzWerte);
 
-            // R-Faktoren Konfiguration mit AGOD-Zuordnung
-            // Quelle: synthesisCalculator.js - finalScore Berechnung
+            // R-Faktoren Konfiguration mit AGOD-Zuordnung (v3.3: 18 Kategorien)
+            // Die 18 GFK-Kategorien werden auf 4 Resonanzfaktoren aggregiert.
+            // Sekundäre Kategorien fließen mit 30% Gewichtung ein.
             const rFaktoren = {
                 R1: {
                     label: 'Leben',
@@ -14652,7 +14653,8 @@
                     color: '#E63946',
                     agod: 'Orientierung',
                     agodIcon: 'O',
-                    beschreibung: 'Kohärenz der Lebensbedürfnisse'
+                    beschreibung: 'Existenz, Zuneigung, Muße, Intimität & Romantik',
+                    kategorien: 4
                 },
                 R2: {
                     label: 'Philosophie',
@@ -14660,7 +14662,8 @@
                     color: '#2A9D8F',
                     agod: 'Archetyp',
                     agodIcon: 'A',
-                    beschreibung: 'Kohärenz der Weltanschauung'
+                    beschreibung: 'Freiheit, Teilnahme, Identität, Lebensplanung, Finanzen, Werte, Soziales, Praktisches',
+                    kategorien: 8
                 },
                 R3: {
                     label: 'Dynamik',
@@ -14668,7 +14671,8 @@
                     color: '#8B5CF6',
                     agod: 'Dominanz',
                     agodIcon: 'D',
-                    beschreibung: 'Kohärenz der Machtdynamik'
+                    beschreibung: 'Dynamik, Sicherheit',
+                    kategorien: 2
                 },
                 R4: {
                     label: 'Identität',
@@ -14676,7 +14680,8 @@
                     color: '#F4A261',
                     agod: 'Geschlecht',
                     agodIcon: 'G',
-                    beschreibung: 'Kohärenz der Geschlechtsidentität'
+                    beschreibung: 'Verständnis, Erschaffen, Verbundenheit, Kommunikation',
+                    kategorien: 4
                 }
             };
 
