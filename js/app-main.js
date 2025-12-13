@@ -13926,14 +13926,6 @@
 
             // 1. Versuch: Aus LoadedArchetypProfile (beste Quelle)
             const loadedIch = window.LoadedArchetypProfile?.ich?.resonanzFaktoren;
-            const loadedPartner = window.LoadedArchetypProfile?.partner?.resonanzFaktoren;
-
-            console.log('[Resonanz-Tabelle] LoadedArchetypProfile:', {
-                ich: loadedIch ? 'OK' : 'FEHLT',
-                partner: loadedPartner ? 'OK' : 'FEHLT',
-                ichValues: loadedIch,
-                partnerValues: loadedPartner
-            });
 
             if (loadedIch) {
                 // Verwende ICH-Resonanzfaktoren (Format: { R1: { value, locked }, ... })
@@ -13943,7 +13935,6 @@
                     R3: loadedIch.R3?.value ?? loadedIch.R3 ?? 1.0,
                     R4: loadedIch.R4?.value ?? loadedIch.R4 ?? 1.0
                 };
-                console.log('[Resonanz-Tabelle] R-Werte aus LoadedArchetypProfile.ich:', resonanzWerte);
             }
             // 2. Fallback: Aus ResonanzCard (benutzerdefinierte Werte)
             else if (typeof ResonanzCard !== 'undefined') {
@@ -13954,7 +13945,6 @@
                     R3: cardValues.R3 || 1.0,
                     R4: cardValues.R4 || 1.0
                 };
-                console.log('[Resonanz-Tabelle] R-Werte aus ResonanzCard:', resonanzWerte);
             }
 
             // Gewichtungs-Matrix: Wie stark beeinflusst jeder Faktor jede Perspektive (in %)
@@ -14952,7 +14942,63 @@
             currentTiageSyntheseContent.pathos = generateCombinedPathos(ichArch, partnerArch);
             currentTiageSyntheseContent.logos = generateCombinedLogos(ichArch, partnerArch);
 
-            // Refresh the displayed content
+            // ═══════════════════════════════════════════════════════════════════════════
+            // RESONANZFAKTOREN neu berechnen bei Archetyp-Wechsel (VOR Content-Anzeige!)
+            // ═══════════════════════════════════════════════════════════════════════════
+            if (typeof ResonanzCard !== 'undefined' && typeof ResonanzCard.loadCalculatedValues === 'function') {
+                const personKey = person === 'ich' ? 'ich' : 'partner';
+                const newArchetype = person === 'ich' ? currentArchetype : selectedPartner;
+
+                // Sammle Profil-Kontext für Resonanz-Berechnung
+                const resonanzProfileContext = {
+                    archetyp: newArchetype,
+                    needs: null,
+                    dominanz: personDimensions[personKey]?.dominanz || null,
+                    orientierung: personDimensions[personKey]?.orientierung || null,
+                    geschlecht: personDimensions[personKey]?.geschlecht || null
+                };
+
+                // Versuche Bedürfnisse aus verschiedenen Quellen zu laden
+                // 1. Aus gespeicherten Needs (TiageState)
+                if (typeof TiageState !== 'undefined' && TiageState.get) {
+                    const savedNeeds = TiageState.get('tiage_needs_integrated');
+                    if (savedNeeds) {
+                        resonanzProfileContext.needs = {};
+                        for (const needKey in savedNeeds) {
+                            if (savedNeeds.hasOwnProperty(needKey)) {
+                                resonanzProfileContext.needs[needKey] = savedNeeds[needKey].value || savedNeeds[needKey];
+                            }
+                        }
+                    }
+                }
+
+                // 2. Fallback: Aus Archetyp-Profil (GfkBeduerfnisse)
+                if (!resonanzProfileContext.needs && typeof GfkBeduerfnisse !== 'undefined' &&
+                    GfkBeduerfnisse.archetypProfile && GfkBeduerfnisse.archetypProfile[newArchetype]) {
+                    resonanzProfileContext.needs = GfkBeduerfnisse.archetypProfile[newArchetype].kernbeduerfnisse || {};
+                }
+
+                // 3. Fallback: Aus BaseArchetypProfile
+                if (!resonanzProfileContext.needs && typeof BaseArchetypProfile !== 'undefined' &&
+                    BaseArchetypProfile[newArchetype] && BaseArchetypProfile[newArchetype].kernbeduerfnisse) {
+                    resonanzProfileContext.needs = BaseArchetypProfile[newArchetype].kernbeduerfnisse;
+                }
+
+                // Berechne und aktualisiere Resonanzfaktoren
+                if (resonanzProfileContext.needs) {
+                    const resonanzLoaded = ResonanzCard.loadCalculatedValues(resonanzProfileContext);
+                    if (resonanzLoaded) {
+                        // Aktualisiere auch LoadedArchetypProfile (falls vorhanden)
+                        if (window.LoadedArchetypProfile && window.LoadedArchetypProfile[personKey]) {
+                            const newValues = ResonanzCard.getValues(personKey);
+                            window.LoadedArchetypProfile[personKey].resonanzFaktoren = newValues;
+                        }
+                        console.log('[TIAGE] Resonanzfaktoren nach Archetyp-Wechsel aktualisiert:', newArchetype);
+                    }
+                }
+            }
+
+            // Refresh the displayed content (NACH Resonanzfaktoren-Update!)
             showTiageSyntheseContent(currentTiageSyntheseType);
 
             // Save to localStorage and update main view
