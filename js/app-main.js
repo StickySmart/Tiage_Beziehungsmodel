@@ -14357,14 +14357,6 @@
 
             console.log('[ResonanzModal] ICH:', resonanzIch, 'PARTNER:', resonanzPartner, 'KOMBINIERT:', resonanzWerte);
 
-            // Gewichtungs-Matrix
-            const gewichtMatrix = {
-                R1: { P1: 0.40, P2: 0.30, P3: 0.15, P4: 0.15 },
-                R2: { P1: 0.25, P2: 0.15, P3: 0.45, P4: 0.15 },
-                R3: { P1: 0.10, P2: 0.25, P3: 0.15, P4: 0.50 },
-                R4: { P1: 0.25, P2: 0.25, P3: 0.25, P4: 0.25 }
-            };
-
             // Perspektiven-Konfiguration
             const perspektiven = {
                 P1: { icon: '📊', label: 'GFK', color: '#3B82F6' },
@@ -14373,33 +14365,22 @@
                 P4: { icon: '💜', label: 'Kink', color: '#8B5CF6' }
             };
 
-            // Resonanzfaktor-Konfiguration
-            const faktoren = {
-                R1: { label: 'Orientierung', color: '#E63946' },
-                R2: { label: 'Archetyp', color: '#2A9D8F' },
-                R3: { label: 'Dominanz', color: '#8B5CF6' },
-                R4: { label: 'Geschlecht', color: '#F4A261' }
+            // Gewichtungs-Matrix (transponiert für Perspektiven-Zeilen)
+            // Welchen Einfluss hat jeder R-Faktor auf diese Perspektive?
+            const gewichtMatrix = {
+                P1: { R1: 0.40, R2: 0.25, R3: 0.10, R4: 0.25 }, // GFK
+                P2: { R1: 0.30, R2: 0.15, R3: 0.25, R4: 0.25 }, // Osho
+                P3: { R1: 0.15, R2: 0.45, R3: 0.15, R4: 0.25 }, // Pirsig
+                P4: { R1: 0.15, R2: 0.15, R3: 0.50, R4: 0.25 }  // Kink
             };
 
-            // Berechne effektiven Einfluss
-            function berechneEinfluss(rWert, gewicht) {
-                const abweichung = rWert - 1.0;
-                const einfluss = abweichung * gewicht * 100;
-                return einfluss;
-            }
-
-            // Einfluss-Anzeige mit Farbcodierung
-            function getEinflussDisplay(einfluss) {
-                let color = 'var(--text-muted)';
-                let prefix = '';
-                if (einfluss > 0.5) {
-                    color = '#22c55e';
-                    prefix = '+';
-                } else if (einfluss < -0.5) {
-                    color = '#ef4444';
-                }
-                const displayVal = einfluss.toFixed(1);
-                return `<span style="color: ${color}; font-weight: 500; font-size: 12px;">${prefix}${displayVal}%</span>`;
+            // Berechne gewichteten Resonanz-Wert für eine Perspektive
+            function berechnePerspektivWert(resonanz, perspektiveKey) {
+                const gewichte = gewichtMatrix[perspektiveKey];
+                return (resonanz.R1 * gewichte.R1) +
+                       (resonanz.R2 * gewichte.R2) +
+                       (resonanz.R3 * gewichte.R3) +
+                       (resonanz.R4 * gewichte.R4);
             }
 
             // Wert-Anzeige mit Farbcodierung
@@ -14410,30 +14391,26 @@
                 return `<span style="color: ${color}; font-weight: 600;">${wert.toFixed(2)}</span>`;
             }
 
-            // Tabellen-Zeilen
+            // Tabellen-Zeilen für Perspektiven
             let tableRows = '';
 
-            ['R1', 'R2', 'R3', 'R4'].forEach(rf => {
-                const faktor = faktoren[rf];
-                const wert = resonanzWerte[rf] || 1.0;
-                const gewichte = gewichtMatrix[rf];
+            ['P1', 'P2', 'P3', 'P4'].forEach(pk => {
+                const persp = perspektiven[pk];
 
-                const einflussP1 = berechneEinfluss(wert, gewichte.P1);
-                const einflussP2 = berechneEinfluss(wert, gewichte.P2);
-                const einflussP3 = berechneEinfluss(wert, gewichte.P3);
-                const einflussP4 = berechneEinfluss(wert, gewichte.P4);
+                // Berechne gewichtete Werte für jede Person
+                const wertIch = berechnePerspektivWert(resonanzIch, pk);
+                const wertPartner = berechnePerspektivWert(resonanzPartner, pk);
+                const wertKombi = Math.round(wertIch * wertPartner * 1000) / 1000;
 
                 tableRows += `
                     <tr style="border-bottom: 1px solid rgba(255,255,255,0.08);">
                         <td style="padding: 12px 14px; font-size: 13px;">
-                            <span style="color: ${faktor.color}; font-weight: 600;">${rf}</span>
-                            <span style="color: var(--text-secondary); margin-left: 8px;">${faktor.label}</span>
+                            <span style="color: ${persp.color}; font-weight: 600;">${persp.icon}</span>
+                            <span style="color: var(--text-secondary); margin-left: 8px;">${persp.label}</span>
                         </td>
-                        <td style="padding: 12px 10px; text-align: center; font-size: 14px;">${getWertDisplay(wert)}</td>
-                        <td style="padding: 12px 10px; text-align: center;">${getEinflussDisplay(einflussP1)}</td>
-                        <td style="padding: 12px 10px; text-align: center;">${getEinflussDisplay(einflussP2)}</td>
-                        <td style="padding: 12px 10px; text-align: center;">${getEinflussDisplay(einflussP3)}</td>
-                        <td style="padding: 12px 10px; text-align: center;">${getEinflussDisplay(einflussP4)}</td>
+                        <td style="padding: 12px 10px; text-align: center; font-size: 14px;">${getWertDisplay(wertIch)}</td>
+                        <td style="padding: 12px 10px; text-align: center; font-size: 14px;">${getWertDisplay(wertPartner)}</td>
+                        <td style="padding: 12px 10px; text-align: center; font-size: 14px; background: rgba(139,92,246,0.1);">${getWertDisplay(wertKombi)}</td>
                     </tr>`;
             });
 
@@ -14488,12 +14465,10 @@
                             <table style="width: 100%; border-collapse: collapse;">
                                 <thead>
                                     <tr style="border-bottom: 2px solid rgba(139,92,246,0.3); background: rgba(0,0,0,0.2);">
-                                        <th style="padding: 12px 14px; text-align: left; color: var(--text-muted); font-weight: 500; font-size: 12px;">Faktor</th>
-                                        <th style="padding: 12px 10px; text-align: center; color: var(--text-muted); font-weight: 500; font-size: 12px;">R</th>
-                                        <th style="padding: 12px 10px; text-align: center;"><span style="color: ${perspektiven.P1.color}; font-size: 11px;">${perspektiven.P1.icon} ${perspektiven.P1.label}</span></th>
-                                        <th style="padding: 12px 10px; text-align: center;"><span style="color: ${perspektiven.P2.color}; font-size: 11px;">${perspektiven.P2.icon} ${perspektiven.P2.label}</span></th>
-                                        <th style="padding: 12px 10px; text-align: center;"><span style="color: ${perspektiven.P3.color}; font-size: 11px;">${perspektiven.P3.icon} ${perspektiven.P3.label}</span></th>
-                                        <th style="padding: 12px 10px; text-align: center;"><span style="color: ${perspektiven.P4.color}; font-size: 11px;">${perspektiven.P4.icon} ${perspektiven.P4.label}</span></th>
+                                        <th style="padding: 12px 14px; text-align: left; color: var(--text-muted); font-weight: 500; font-size: 12px;">Perspektive</th>
+                                        <th style="padding: 12px 10px; text-align: center; color: var(--success); font-weight: 500; font-size: 12px;">ICH</th>
+                                        <th style="padding: 12px 10px; text-align: center; color: var(--danger); font-weight: 500; font-size: 12px;">PARTNER</th>
+                                        <th style="padding: 12px 10px; text-align: center; color: #8B5CF6; font-weight: 600; font-size: 12px; background: rgba(139,92,246,0.1);">ICH × PARTNER</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -14504,10 +14479,9 @@
 
                         <!-- Legende -->
                         <div style="display: flex; gap: 16px; margin-top: 16px; flex-wrap: wrap; align-items: center; justify-content: center;">
-                            <span style="font-size: 11px; color: var(--text-muted); font-family: monospace;">(R − 1) × Gewicht × 100 = %</span>
-                            <span style="font-size: 11px; color: var(--text-muted);">R = 0.5–1.5</span>
-                            <span style="font-size: 11px; color: #22c55e;">+% verstärkt</span>
-                            <span style="font-size: 11px; color: #ef4444;">−% schwächt</span>
+                            <span style="font-size: 11px; color: var(--text-muted);">Werte = gewichtete Resonanz</span>
+                            <span style="font-size: 11px; color: #22c55e;">&gt;1.0 verstärkt</span>
+                            <span style="font-size: 11px; color: #ef4444;">&lt;1.0 schwächt</span>
                         </div>
                     </div>
                 </div>`;
