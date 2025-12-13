@@ -15033,14 +15033,14 @@
 
                 // Berechne und aktualisiere Resonanzfaktoren
                 if (resonanzProfileContext.needs && Object.keys(resonanzProfileContext.needs).length > 0) {
-                    const resonanzLoaded = ResonanzCard.loadCalculatedValues(resonanzProfileContext);
+                    const resonanzLoaded = ResonanzCard.loadCalculatedValues(resonanzProfileContext, personKey);
                     if (resonanzLoaded) {
                         // Aktualisiere auch LoadedArchetypProfile (falls vorhanden)
                         if (window.LoadedArchetypProfile && window.LoadedArchetypProfile[personKey]) {
                             const newValues = ResonanzCard.getValues(personKey);
                             window.LoadedArchetypProfile[personKey].resonanzFaktoren = newValues;
                         }
-                        console.log('[TIAGE] Resonanzfaktoren nach Archetyp-Wechsel aktualisiert:', newArchetype);
+                        console.log('[TIAGE] Resonanzfaktoren nach Archetyp-Wechsel aktualisiert für', personKey + ':', newArchetype);
                     }
                 }
             }
@@ -17784,9 +17784,10 @@
 
                 // Lade berechnete Resonanzwerte in die UI
                 if (resonanzProfileContext.needs) {
-                    var resonanzLoaded = ResonanzCard.loadCalculatedValues(resonanzProfileContext);
+                    var currentPerson = currentProfileReviewContext?.person || 'ich';
+                    var resonanzLoaded = ResonanzCard.loadCalculatedValues(resonanzProfileContext, currentPerson);
                     if (resonanzLoaded) {
-                        console.log('[ProfileReview] Resonanzfaktoren aus Profil berechnet und geladen');
+                        console.log('[ProfileReview] Resonanzfaktoren aus Profil berechnet und geladen für', currentPerson);
                     }
                 } else {
                     console.log('[ProfileReview] Keine Bedürfnis-Daten für Resonanz-Berechnung verfügbar');

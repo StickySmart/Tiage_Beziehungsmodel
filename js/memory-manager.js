@@ -736,8 +736,8 @@ const MemoryManager = (function() {
                         R3: resonanzFaktoren.R3?.value || resonanzFaktoren.R3 || 1.0,
                         R4: resonanzFaktoren.R4?.value || resonanzFaktoren.R4 || 1.0
                     };
-                    ResonanzCard.setCalculatedValues(resonanzValues, false);
-                    console.log('[MemoryManager] ResonanzCard UI aktualisiert mit berechneten Werten');
+                    ResonanzCard.setCalculatedValues(resonanzValues, false, 'ich');
+                    console.log('[MemoryManager] ResonanzCard UI (Ich) aktualisiert mit berechneten Werten');
                 }
             }
 
@@ -852,7 +852,7 @@ const MemoryManager = (function() {
             const resonanzFaktoren = data.resonanzfaktoren || loadedProfile?.resonanzFaktoren;
             if (resonanzFaktoren) {
                 applyResonanzfaktoren(resonanzFaktoren, 'partner');
-                // Auch ResonanzCard UI aktualisieren (wenn Partner aktiv)
+                // Auch ResonanzCard Storage aktualisieren für Partner
                 if (typeof ResonanzCard !== 'undefined' && ResonanzCard.setCalculatedValues) {
                     const resonanzValues = {
                         R1: resonanzFaktoren.R1?.value || resonanzFaktoren.R1 || 1.0,
@@ -860,11 +860,9 @@ const MemoryManager = (function() {
                         R3: resonanzFaktoren.R3?.value || resonanzFaktoren.R3 || 1.0,
                         R4: resonanzFaktoren.R4?.value || resonanzFaktoren.R4 || 1.0
                     };
-                    // Partner-Werte nur setzen wenn Partner-Kontext aktiv
-                    if (ResonanzCard.getCurrentPerson && ResonanzCard.getCurrentPerson() === 'partner') {
-                        ResonanzCard.setCalculatedValues(resonanzValues, false);
-                        console.log('[MemoryManager] ResonanzCard UI (Partner) aktualisiert');
-                    }
+                    // Partner-Werte immer in Storage speichern, UI wird nur aktualisiert wenn Partner-Kontext aktiv
+                    ResonanzCard.setCalculatedValues(resonanzValues, false, 'partner');
+                    console.log('[MemoryManager] ResonanzCard Storage (Partner) aktualisiert');
                 }
             }
 
