@@ -2,16 +2,16 @@
 
 > *Die duale Struktur der Beziehungsqualität*
 
-## Grundkonzept: 15:85 Gewichtung
+## Grundkonzept: 25:75 Gewichtung
 
 Das Tiage-Modell teilt Beziehungsqualität in zwei fundamentale Dimensionen:
 
 | Dimension | Anteil | Ursprung | Pirsig-Begriff |
 |-----------|--------|----------|----------------|
-| **Pathos** | 85% | Gefühl | Dynamische Qualität |
-| **Logos** | 15% | Verstand | Statische Qualität |
+| **Pathos** | 75% | Gefühl | Dynamische Qualität |
+| **Logos** | 25% | Verstand | Statische Qualität |
 
-## Logos (15% - Verstand)
+## Logos (25% - Verstand)
 
 Die rationale, strukturgebende Dimension.
 
@@ -24,14 +24,14 @@ Die rationale, strukturgebende Dimension.
 
 ### Manifestation im Modell
 
-**Archetyp-Übereinstimmung (15% des Gesamtscores)**
+**Archetyp-Übereinstimmung (25% des Gesamtscores)**
 
 Die fundamentale Beziehungsphilosophie: *"Wie wollen wir Beziehung leben?"*
 
 - Single ↔ Polyamor = niedrige Übereinstimmung
 - Duo ↔ Duo-Flex = hohe Übereinstimmung
 
-## Pathos (85% - Gefühl)
+## Pathos (75% - Gefühl)
 
 Die emotionale, anziehende Dimension.
 
@@ -46,9 +46,9 @@ Die emotionale, anziehende Dimension.
 
 | Faktor | Anteil | Beschreibung |
 |--------|--------|--------------|
-| **Orientierungs-Kompatibilität** | 40% | Körperliche Polarität und Anziehung |
+| **Orientierungs-Kompatibilität** | 25% | Körperliche Polarität und Anziehung |
 | **Geschlechts-Attraktion** | 25% | Gender-Chemie und Identitäts-Resonanz |
-| **Dominanz-Harmonie** | 20% | Energetische Dynamik (Tao) |
+| **Dominanz-Harmonie** | 25% | Energetische Dynamik (Tao) |
 
 ## Philosophische Grundlagen
 
@@ -83,14 +83,14 @@ Balance (B) = (100 - |Logos - Pathos|) / 100
 
 Eine hohe Balance (nahe 1.0) bedeutet: Kopf und Herz sind im Einklang.
 
-## Warum 85% Pathos?
+## Warum 75% Pathos?
 
 Das Modell gewichtet emotionale Faktoren höher, weil:
 
 1. **"Pathos vor Logos"** - Menschen erleben Beziehung zuerst emotional/körperlich (Chemie, Anziehung)
 2. **Die Archetyp-Frage kommt später** - "Wie wollen wir Beziehung leben?" stellt sich erst nach den initialen Pathos-Faktoren
 3. **Zen/Osho-Perspektive** - Akzeptiere was IST (die gefühlte Anziehung), dann folgt die bewusste Wahl
-4. **Beziehungen primär über Gefühle funktionieren** - Logik allein schafft keine Anziehung
+4. **Gleichgewicht der Faktoren** - Jeder der 4 Faktoren trägt gleichmäßig 25% bei, aber 3 von 4 sind Pathos (O, D, G)
 
 ## Weiterführende Dokumentation
 
