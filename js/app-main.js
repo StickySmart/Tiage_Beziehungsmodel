@@ -14047,8 +14047,8 @@
                         ${summenRow}
                     </tbody>
                 </table>
-                <div style="display: flex; gap: 16px; margin-top: 12px; padding-top: 10px; border-top: 1px solid rgba(255,255,255,0.05); flex-wrap: wrap;">
-                    <span style="font-size: 10px; color: var(--text-muted);">R = Resonanzwert (0.5–1.5)</span>
+                <div style="display: flex; gap: 12px; margin-top: 12px; padding-top: 10px; border-top: 1px solid rgba(255,255,255,0.05); flex-wrap: wrap; align-items: center;">
+                    <span style="font-size: 10px; color: var(--text-muted); font-family: monospace;">(R − 1) × Gewicht × 100 = %</span>
                     <span style="font-size: 10px; color: #22c55e;">+% verstärkt</span>
                     <span style="font-size: 10px; color: #ef4444;">−% schwächt</span>
                 </div>
