@@ -13947,16 +13947,44 @@
                 };
             }
 
-            // Gewichtungs-Matrix: Wie stark beeinflusst jeder Faktor jede Perspektive (in %)
+            // ═══════════════════════════════════════════════════════════════════
+            // FAKTOR-PERSPEKTIVEN-GEWICHTUNGSMATRIX
+            // ═══════════════════════════════════════════════════════════════════
+            // Definiert wie stark jeder Resonanzfaktor (R1-R4) jede Perspektive
+            // (P1-P4) beeinflusst. Die Gewichte pro Faktor summieren sich zu 1.0.
+            //
+            // Theoretische Begründung:
+            //
+            // R1 ORIENTIERUNG (Anziehung/Sexualität)
+            //   → GFK (40%):  Rosenbergs Grundbedürfnisse umfassen Intimität,
+            //                 körperliche Nähe - Orientierung ist fundamental
+            //   → Osho (30%): Tantra, sexuelle Energie, Polarität sind zentral
+            //   → Pirsig (15%): Qualitätsphilosophie fokussiert nicht auf Sexualität
+            //   → Kink (15%):  Kink fokussiert auf Dynamik, nicht Orientierung
+            //
+            // R2 ARCHETYP (Beziehungsphilosophie)
+            //   → GFK (25%):  Bedürfnisse variieren leicht nach Beziehungsform
+            //   → Osho (15%): Nicht-Anhaften, aber kein Fokus auf Struktur
+            //   → Pirsig (45%): "Wie" einer Beziehung = Qualität = Pirsigs Kern
+            //   → Kink (15%):  Kink ist dynamik-, nicht strukturbezogen
+            //
+            // R3 DOMINANZ (Machtdynamik)
+            //   → GFK (10%):  GFK behandelt Macht nicht explizit
+            //   → Osho (25%): Polarität, maskulin/feminin, Energie-Austausch
+            //   → Pirsig (15%): Qualität unabhängig von Machtverteilung
+            //   → Kink (50%):  BDSM = konsensueller Machtaustausch per Definition
+            //
+            // R4 GESCHLECHT (Identität)
+            //   → Alle (25%): Geschlechtsidentität ist querschnittlich relevant,
+            //                 beeinflusst alle Perspektiven gleichermaßen
+            //
+            // Dokumentation: docs/theory/faktor-perspektiven-matrix.md
+            // ═══════════════════════════════════════════════════════════════════
             const gewichtMatrix = {
-                // R1 Orientierung → beeinflusst primär P1 (GFK) und P2 (Osho)
-                R1: { P1: 0.40, P2: 0.30, P3: 0.15, P4: 0.15 },
-                // R2 Archetyp → beeinflusst primär P3 (Pirsig) und P1 (GFK)
-                R2: { P1: 0.25, P2: 0.15, P3: 0.45, P4: 0.15 },
-                // R3 Dominanz → beeinflusst primär P4 (SexPositiv) und P2 (Osho)
-                R3: { P1: 0.10, P2: 0.25, P3: 0.15, P4: 0.50 },
-                // R4 Geschlecht → beeinflusst alle Perspektiven gleichmäßig
-                R4: { P1: 0.25, P2: 0.25, P3: 0.25, P4: 0.25 }
+                R1: { P1: 0.40, P2: 0.30, P3: 0.15, P4: 0.15 },  // Orientierung
+                R2: { P1: 0.25, P2: 0.15, P3: 0.45, P4: 0.15 },  // Archetyp
+                R3: { P1: 0.10, P2: 0.25, P3: 0.15, P4: 0.50 },  // Dominanz
+                R4: { P1: 0.25, P2: 0.25, P3: 0.25, P4: 0.25 }   // Geschlecht
             };
 
             // Perspektiven-Konfiguration
