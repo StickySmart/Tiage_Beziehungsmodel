@@ -14302,36 +14302,60 @@
             const modal = document.getElementById('resonanzfaktorenModal');
             if (!modal) return;
 
-            // Archetyp-Daten bestimmen
-            const isIch = resonanzModalArchetyp === 'ich';
-            const archetyp = isIch ? currentArchetype : selectedPartner;
-            const archData = archetypeDescriptions[archetyp];
-            const archName = archData?.name || (isIch ? 'ICH' : 'Partner');
-            const archIcon = archData?.icon || '👤';
+            // ═══════════════════════════════════════════════════════════════════════════
+            // Resonanzwerte für BEIDE Personen laden und kombinieren
+            // Kombination via Produkt (wie im synthesisCalculator)
+            // ═══════════════════════════════════════════════════════════════════════════
 
-            // Resonanzwerte für ausgewählten Archetyp laden
-            let resonanzWerte = { R1: 1.0, R2: 1.0, R3: 1.0, R4: 1.0 };
-
-            const loadedProfile = isIch
-                ? window.LoadedArchetypProfile?.ich?.resonanzFaktoren
-                : window.LoadedArchetypProfile?.partner?.resonanzFaktoren;
-
-            if (loadedProfile) {
-                resonanzWerte = {
-                    R1: loadedProfile.R1?.value ?? loadedProfile.R1 ?? 1.0,
-                    R2: loadedProfile.R2?.value ?? loadedProfile.R2 ?? 1.0,
-                    R3: loadedProfile.R3?.value ?? loadedProfile.R3 ?? 1.0,
-                    R4: loadedProfile.R4?.value ?? loadedProfile.R4 ?? 1.0
+            // ICH Resonanzwerte laden
+            let resonanzIch = { R1: 1.0, R2: 1.0, R3: 1.0, R4: 1.0 };
+            const loadedIch = window.LoadedArchetypProfile?.ich?.resonanzFaktoren;
+            if (loadedIch) {
+                resonanzIch = {
+                    R1: loadedIch.R1?.value ?? loadedIch.R1 ?? 1.0,
+                    R2: loadedIch.R2?.value ?? loadedIch.R2 ?? 1.0,
+                    R3: loadedIch.R3?.value ?? loadedIch.R3 ?? 1.0,
+                    R4: loadedIch.R4?.value ?? loadedIch.R4 ?? 1.0
                 };
             } else if (typeof ResonanzCard !== 'undefined') {
-                const cardValues = ResonanzCard.getValues(resonanzModalArchetyp);
-                resonanzWerte = {
-                    R1: cardValues.R1 || 1.0,
-                    R2: cardValues.R2 || 1.0,
-                    R3: cardValues.R3 || 1.0,
-                    R4: cardValues.R4 || 1.0
+                const cardIch = ResonanzCard.getValues('ich');
+                resonanzIch = {
+                    R1: cardIch.R1 || 1.0,
+                    R2: cardIch.R2 || 1.0,
+                    R3: cardIch.R3 || 1.0,
+                    R4: cardIch.R4 || 1.0
                 };
             }
+
+            // PARTNER Resonanzwerte laden
+            let resonanzPartner = { R1: 1.0, R2: 1.0, R3: 1.0, R4: 1.0 };
+            const loadedPartner = window.LoadedArchetypProfile?.partner?.resonanzFaktoren;
+            if (loadedPartner) {
+                resonanzPartner = {
+                    R1: loadedPartner.R1?.value ?? loadedPartner.R1 ?? 1.0,
+                    R2: loadedPartner.R2?.value ?? loadedPartner.R2 ?? 1.0,
+                    R3: loadedPartner.R3?.value ?? loadedPartner.R3 ?? 1.0,
+                    R4: loadedPartner.R4?.value ?? loadedPartner.R4 ?? 1.0
+                };
+            } else if (typeof ResonanzCard !== 'undefined') {
+                const cardPartner = ResonanzCard.getValues('partner');
+                resonanzPartner = {
+                    R1: cardPartner.R1 || 1.0,
+                    R2: cardPartner.R2 || 1.0,
+                    R3: cardPartner.R3 || 1.0,
+                    R4: cardPartner.R4 || 1.0
+                };
+            }
+
+            // Kombinierte Resonanz berechnen (Produkt - wie im synthesisCalculator)
+            const resonanzWerte = {
+                R1: Math.round(resonanzIch.R1 * resonanzPartner.R1 * 1000) / 1000,
+                R2: Math.round(resonanzIch.R2 * resonanzPartner.R2 * 1000) / 1000,
+                R3: Math.round(resonanzIch.R3 * resonanzPartner.R3 * 1000) / 1000,
+                R4: Math.round(resonanzIch.R4 * resonanzPartner.R4 * 1000) / 1000
+            };
+
+            console.log('[ResonanzModal] ICH:', resonanzIch, 'PARTNER:', resonanzPartner, 'KOMBINIERT:', resonanzWerte);
 
             // Gewichtungs-Matrix
             const gewichtMatrix = {
@@ -14456,9 +14480,9 @@
                         <!-- ICH Navigation -->
                         <div style="display: flex; align-items: center; gap: 6px;">
                             <button class="archetype-nav-btn" onclick="navigateResonanzArchetype('ich', -1)" title="Vorheriger Archetyp" style="width: 28px; height: 28px; font-size: 1.2rem; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); border-radius: 6px; cursor: pointer; color: var(--text-secondary);">‹</button>
-                            <div style="text-align: center; min-width: 120px;" onclick="switchResonanzArchetyp('ich')">
+                            <div style="text-align: center; min-width: 120px;">
                                 <div style="font-size: 10px; color: var(--success); font-weight: 600; margin-bottom: 4px; text-transform: uppercase; letter-spacing: 0.5px;">ICH</div>
-                                <div style="font-size: 13px; color: ${isIch ? '#8B5CF6' : 'var(--text-primary)'}; font-weight: 600; cursor: pointer;">${ichName}</div>
+                                <div style="font-size: 13px; color: var(--text-primary); font-weight: 600;">${ichName}</div>
                             </div>
                             <button class="archetype-nav-btn" onclick="navigateResonanzArchetype('ich', 1)" title="Nächster Archetyp" style="width: 28px; height: 28px; font-size: 1.2rem; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); border-radius: 6px; cursor: pointer; color: var(--text-secondary);">›</button>
                         </div>
@@ -14466,9 +14490,9 @@
                         <!-- PARTNER Navigation -->
                         <div style="display: flex; align-items: center; gap: 6px;">
                             <button class="archetype-nav-btn" onclick="navigateResonanzArchetype('partner', -1)" title="Vorheriger Archetyp" style="width: 28px; height: 28px; font-size: 1.2rem; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); border-radius: 6px; cursor: pointer; color: var(--text-secondary);">‹</button>
-                            <div style="text-align: center; min-width: 120px;" onclick="switchResonanzArchetyp('partner')">
+                            <div style="text-align: center; min-width: 120px;">
                                 <div style="font-size: 10px; color: var(--danger); font-weight: 600; margin-bottom: 4px; text-transform: uppercase; letter-spacing: 0.5px;">PARTNER</div>
-                                <div style="font-size: 13px; color: ${!isIch ? '#8B5CF6' : 'var(--text-primary)'}; font-weight: 600; cursor: pointer;">${partnerName}</div>
+                                <div style="font-size: 13px; color: var(--text-primary); font-weight: 600;">${partnerName}</div>
                             </div>
                             <button class="archetype-nav-btn" onclick="navigateResonanzArchetype('partner', 1)" title="Nächster Archetyp" style="width: 28px; height: 28px; font-size: 1.2rem; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); border-radius: 6px; cursor: pointer; color: var(--text-secondary);">›</button>
                         </div>
