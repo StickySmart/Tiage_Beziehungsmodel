@@ -893,11 +893,10 @@ TiageSynthesis.Calculator = {
     /**
      * Berechnet Multi-Dimensionale Resonanz
      *
-     * NEU (v3.2): Perspektiven-basierte Berechnung
-     *   1. Für jede Zelle (Faktor × Perspektive): Bedürfnis-Match berechnen
-     *   2. Ø pro Faktor = Durchschnitt der 4 Perspektiven-Matches
-     *   3. R = 1 + Ø/100
-     *   4. Q = A×0.25×R1 + O×0.25×R2 + D×0.25×R3 + G×0.25×R4
+     * NEU (v3.2): Perspektiven-basierte Berechnung mit gespeicherten R-Werten
+     *   1. Lese individuelle R-Werte aus gespeicherten Profilen (ResonanzCard/localStorage)
+     *   2. Kombiniere via Produkt: R_combined = R_Person1 × R_Person2
+     *   3. Q = A×0.25×R1 + O×0.25×R2 + D×0.25×R3 + G×0.25×R4
      *
      * @param {object} profil1 - Bedürfnisse Person 1
      * @param {object} profil2 - Bedürfnisse Person 2
@@ -912,13 +911,73 @@ TiageSynthesis.Calculator = {
         }
 
         // ═══════════════════════════════════════════════════════════════════
-        // NEU (v3.2): Perspektiven-basierte Berechnung via NeedsIntegration
+        // NEU (v3.2): Gespeicherte R-Werte lesen und via Produkt kombinieren
         // ═══════════════════════════════════════════════════════════════════
         // INDIVIDUELL: Jede Person hat eigene R-Werte (Kohärenz mit Archetyp)
         // RELATIONAL: Kombination via Produkt: R = R_Person1 × R_Person2
         // ═══════════════════════════════════════════════════════════════════
         var perspectiveResult = null;
-        if (TiageSynthesis.NeedsIntegration && TiageSynthesis.NeedsIntegration.calculateResonanceFromPerspectives) {
+
+        // Versuche gespeicherte R-Werte zu lesen
+        var r1_ich = null, r1_partner = null;
+
+        // Option 1: ResonanzCard.getValues (bevorzugt)
+        if (typeof ResonanzCard !== 'undefined' && ResonanzCard.getValues) {
+            r1_ich = ResonanzCard.getValues('ich');
+            r1_partner = ResonanzCard.getValues('partner');
+        }
+
+        // Option 2: LoadedArchetypProfile
+        if (!r1_ich && typeof window !== 'undefined' && window.LoadedArchetypProfile) {
+            if (window.LoadedArchetypProfile.ich && window.LoadedArchetypProfile.ich.resonanzFaktoren) {
+                r1_ich = window.LoadedArchetypProfile.ich.resonanzFaktoren;
+            }
+            if (window.LoadedArchetypProfile.partner && window.LoadedArchetypProfile.partner.resonanzFaktoren) {
+                r1_partner = window.LoadedArchetypProfile.partner.resonanzFaktoren;
+            }
+        }
+
+        // Option 3: localStorage direkt
+        if (!r1_ich && typeof localStorage !== 'undefined') {
+            try {
+                var storedIch = localStorage.getItem('tiage_resonanz_faktoren_ich');
+                var storedPartner = localStorage.getItem('tiage_resonanz_faktoren_partner');
+                if (storedIch) r1_ich = JSON.parse(storedIch);
+                if (storedPartner) r1_partner = JSON.parse(storedPartner);
+            } catch (e) {
+                console.warn('Konnte gespeicherte R-Werte nicht laden:', e);
+            }
+        }
+
+        // Wenn beide R-Werte verfügbar: Kombiniere via Produkt
+        if (r1_ich && r1_partner && r1_ich.R1 && r1_partner.R1) {
+            // Kombination via Produkt: verstärkt wenn beide kohärent, dämpft wenn beide inkohärent
+            var R1_combined = r1_ich.R1 * r1_partner.R1;
+            var R2_combined = r1_ich.R2 * r1_partner.R2;
+            var R3_combined = r1_ich.R3 * r1_partner.R3;
+            var R4_combined = r1_ich.R4 * r1_partner.R4;
+
+            // Runden auf 3 Dezimalstellen
+            R1_combined = Math.round(R1_combined * 1000) / 1000;
+            R2_combined = Math.round(R2_combined * 1000) / 1000;
+            R3_combined = Math.round(R3_combined * 1000) / 1000;
+            R4_combined = Math.round(R4_combined * 1000) / 1000;
+
+            perspectiveResult = {
+                R1: R1_combined,
+                R2: R2_combined,
+                R3: R3_combined,
+                R4: R4_combined,
+                source: 'stored_product',
+                individual: {
+                    ich: r1_ich,
+                    partner: r1_partner
+                }
+            };
+        }
+
+        // Fallback: Berechnung via NeedsIntegration wenn keine gespeicherten Werte
+        if (!perspectiveResult && TiageSynthesis.NeedsIntegration && TiageSynthesis.NeedsIntegration.calculateResonanceFromPerspectives) {
             // Hole Archetypen aus den Profilen (falls vorhanden)
             var archetyp1 = profil1.archetyp || 'duo';
             var archetyp2 = profil2.archetyp || 'duo';
