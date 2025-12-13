@@ -14564,6 +14564,224 @@
         }
         window.navigateResonanzArchetype = navigateResonanzArchetype;
 
+        /**
+         * Zeigt die vollständige Herleitung eines R-Faktors an
+         * @param {string} rKey - 'R1', 'R2', 'R3' oder 'R4'
+         * @param {string} person - 'ich' oder 'partner'
+         * @param {number} wert - Der angezeigte R-Wert
+         */
+        function showValueDerivation(rKey, person, wert) {
+            // Mapping R-Key zu Kohärenz-Dimension
+            const rToDimension = {
+                R1: { key: 'leben', name: 'Leben', emoji: '🔥' },
+                R2: { key: 'philosophie', name: 'Philosophie', emoji: '🧠' },
+                R3: { key: 'dynamik', name: 'Dynamik', emoji: '⚡' },
+                R4: { key: 'identitaet', name: 'Identität', emoji: '💚' }
+            };
+
+            const dimension = rToDimension[rKey];
+            if (!dimension) return;
+
+            // Archetyp bestimmen
+            const archetyp = person === 'ich' ? currentArchetype : selectedPartner;
+            const archetypName = archetypeDescriptions[archetyp]?.name || archetyp;
+
+            // Kohärenz-Daten laden
+            const kohaerenz = TiageSynthesis?.Constants?.ARCHETYP_KOHAERENZ?.[dimension.key]?.[archetyp];
+            if (!kohaerenz) {
+                console.warn('[showValueDerivation] Keine Kohärenzdaten für', dimension.key, archetyp);
+                return;
+            }
+
+            // Bedürfniswerte laden
+            let flatNeeds = null;
+            if (person === 'ich') {
+                if (typeof AttributeSummaryCard !== 'undefined' && AttributeSummaryCard.getFlatNeeds) {
+                    flatNeeds = AttributeSummaryCard.getFlatNeeds();
+                } else if (window.LoadedArchetypProfile?.ich?.profileReview?.flatNeeds) {
+                    flatNeeds = window.LoadedArchetypProfile.ich.profileReview.flatNeeds;
+                }
+            } else {
+                flatNeeds = window.LoadedArchetypProfile?.partner?.profileReview?.flatNeeds;
+            }
+
+            // Helper: Wert aus flatNeeds extrahieren
+            const getNeedValue = (needId) => {
+                if (!flatNeeds) return null;
+                if (Array.isArray(flatNeeds)) {
+                    const need = flatNeeds.find(n => n.id === needId || n.stringKey === needId);
+                    return need ? need.value : null;
+                }
+                const entry = flatNeeds[needId];
+                if (entry === undefined) return null;
+                if (typeof entry === 'object' && entry.value !== undefined) return entry.value;
+                return entry;
+            };
+
+            // Berechnung durchführen
+            let rows = [];
+            let totalDiff = 0;
+            let count = 0;
+
+            for (const needKey in kohaerenz) {
+                if (!kohaerenz.hasOwnProperty(needKey)) continue;
+
+                const typischEntry = kohaerenz[needKey];
+                const typischValue = (typeof typischEntry === 'object' && typischEntry.value !== undefined)
+                    ? typischEntry.value
+                    : typischEntry;
+                const needId = (typeof typischEntry === 'object' && typischEntry.id)
+                    ? typischEntry.id
+                    : needKey;
+                const needLabel = (typeof typischEntry === 'object' && typischEntry.label)
+                    ? typischEntry.label
+                    : needKey;
+
+                const actualValue = getNeedValue(needId);
+
+                if (actualValue !== null && typeof typischValue === 'number') {
+                    const diff = Math.abs(actualValue - typischValue);
+                    totalDiff += diff;
+                    count++;
+
+                    // Farbcodierung für Abweichung
+                    let diffColor = '#22c55e'; // grün
+                    if (diff > 30) diffColor = '#ef4444'; // rot
+                    else if (diff > 15) diffColor = '#eab308'; // gelb
+
+                    rows.push({
+                        id: needId,
+                        label: needLabel,
+                        typisch: typischValue,
+                        actual: actualValue,
+                        diff: diff,
+                        diffColor: diffColor
+                    });
+                }
+            }
+
+            const avgDiff = count > 0 ? totalDiff / count : 0;
+            const uebereinstimmung = 1 - (avgDiff / 100);
+            const calculatedR = Math.round((0.5 + (uebereinstimmung * 1.0)) * 1000) / 1000;
+
+            // Sortiere nach Abweichung (größte zuerst)
+            rows.sort((a, b) => b.diff - a.diff);
+
+            // HTML generieren
+            let tableHtml = rows.map(r => `
+                <tr style="border-bottom: 1px solid rgba(255,255,255,0.06);">
+                    <td style="padding: 8px 10px; font-size: 12px; color: var(--text-secondary);">
+                        <span style="color: var(--text-muted); font-size: 10px;">${r.id}</span><br>
+                        ${r.label}
+                    </td>
+                    <td style="padding: 8px 6px; text-align: center; font-size: 13px; color: var(--text-muted);">${r.typisch}</td>
+                    <td style="padding: 8px 6px; text-align: center; font-size: 13px; font-weight: 600;">${r.actual}</td>
+                    <td style="padding: 8px 6px; text-align: center; font-size: 13px; font-weight: 600; color: ${r.diffColor};">${r.diff}</td>
+                </tr>
+            `).join('');
+
+            // Popup erstellen
+            let popup = document.getElementById('valueDerivationPopup');
+            if (!popup) {
+                popup = document.createElement('div');
+                popup.id = 'valueDerivationPopup';
+                popup.style.cssText = `
+                    position: fixed;
+                    top: 0;
+                    left: 0;
+                    width: 100%;
+                    height: 100%;
+                    background: rgba(0,0,0,0.85);
+                    z-index: 10001;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    opacity: 0;
+                    transition: opacity 0.2s ease;
+                `;
+                document.body.appendChild(popup);
+            }
+
+            const personLabel = person === 'ich' ? 'ICH' : 'PARTNER';
+            const personColor = person === 'ich' ? 'var(--success)' : 'var(--danger)';
+
+            popup.innerHTML = `
+                <div style="background: var(--bg-primary); border-radius: 16px; max-width: 500px; width: 95%; max-height: 85vh; overflow-y: auto; box-shadow: 0 20px 60px rgba(0,0,0,0.6); border: 1px solid rgba(139,92,246,0.4);">
+                    <!-- Header -->
+                    <div style="padding: 16px 20px; border-bottom: 1px solid rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: space-between; background: linear-gradient(135deg, rgba(139,92,246,0.15), rgba(59,130,246,0.08));">
+                        <div>
+                            <h3 style="margin: 0; font-size: 16px; color: var(--text-primary);">
+                                ${dimension.emoji} ${rKey} Herleitung
+                            </h3>
+                            <p style="margin: 4px 0 0 0; font-size: 12px; color: var(--text-muted);">
+                                <span style="color: ${personColor}; font-weight: 600;">${personLabel}</span> • ${archetypName}
+                            </p>
+                        </div>
+                        <button onclick="closeValueDerivationPopup()" style="background: rgba(255,255,255,0.1); border: none; border-radius: 8px; width: 32px; height: 32px; cursor: pointer; font-size: 16px; color: var(--text-secondary);">×</button>
+                    </div>
+
+                    <!-- Ergebnis -->
+                    <div style="padding: 16px 20px; background: rgba(0,0,0,0.2); border-bottom: 1px solid rgba(255,255,255,0.05);">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+                            <span style="font-size: 13px; color: var(--text-secondary);">Berechneter Wert:</span>
+                            <span style="font-size: 20px; font-weight: 700; color: ${calculatedR >= 1.1 ? '#22c55e' : calculatedR <= 0.9 ? '#ef4444' : '#eab308'};">${calculatedR.toFixed(3)}</span>
+                        </div>
+
+                        <!-- Formel -->
+                        <div style="background: rgba(139,92,246,0.1); border-radius: 8px; padding: 12px; font-family: monospace; font-size: 11px; color: var(--text-secondary); line-height: 1.8;">
+                            <div><strong>Formel:</strong> R = 0.5 + (Übereinstimmung × 1.0)</div>
+                            <div style="margin-top: 8px; padding-top: 8px; border-top: 1px solid rgba(255,255,255,0.1);">
+                                <div>Summe Abweichungen: <strong>${totalDiff.toFixed(0)}</strong></div>
+                                <div>Anzahl Bedürfnisse: <strong>${count}</strong></div>
+                                <div>Ø Abweichung: <strong>${avgDiff.toFixed(1)}</strong></div>
+                                <div>Übereinstimmung: <strong>${(uebereinstimmung * 100).toFixed(1)}%</strong></div>
+                                <div style="margin-top: 4px;">R = 0.5 + (${uebereinstimmung.toFixed(3)} × 1.0) = <strong>${calculatedR.toFixed(3)}</strong></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Bedürfnis-Tabelle -->
+                    <div style="padding: 16px 20px;">
+                        <div style="font-size: 12px; color: var(--text-muted); margin-bottom: 10px;">
+                            ${count} Bedürfnisse verglichen (sortiert nach Abweichung):
+                        </div>
+                        <div style="background: rgba(0,0,0,0.15); border-radius: 8px; overflow: hidden; border: 1px solid rgba(255,255,255,0.08);">
+                            <table style="width: 100%; border-collapse: collapse;">
+                                <thead>
+                                    <tr style="background: rgba(0,0,0,0.3);">
+                                        <th style="padding: 10px; text-align: left; font-size: 11px; color: var(--text-muted); font-weight: 500;">Bedürfnis</th>
+                                        <th style="padding: 10px 6px; text-align: center; font-size: 11px; color: var(--text-muted); font-weight: 500;">Typisch</th>
+                                        <th style="padding: 10px 6px; text-align: center; font-size: 11px; color: ${personColor}; font-weight: 500;">Dein Wert</th>
+                                        <th style="padding: 10px 6px; text-align: center; font-size: 11px; color: var(--text-muted); font-weight: 500;">|Δ|</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    ${tableHtml}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            popup.style.display = 'flex';
+            requestAnimationFrame(() => popup.style.opacity = '1');
+
+            popup.onclick = (e) => {
+                if (e.target === popup) closeValueDerivationPopup();
+            };
+        }
+        window.showValueDerivation = showValueDerivation;
+
+        function closeValueDerivationPopup() {
+            const popup = document.getElementById('valueDerivationPopup');
+            if (popup) {
+                popup.style.opacity = '0';
+                setTimeout(() => popup.style.display = 'none', 200);
+            }
+        }
+        window.closeValueDerivationPopup = closeValueDerivationPopup;
+
         function updateResonanzfaktorenModalContent() {
             const modal = document.getElementById('resonanzfaktorenModal');
             if (!modal) return;
@@ -14711,6 +14929,11 @@
                 const lockedIch = lockStatusIch[rk];
                 const lockedPartner = lockStatusPartner[rk];
 
+                // Klickbare Zellen für Herleitung
+                const clickStyleIch = 'cursor: pointer; transition: background 0.15s;';
+                const clickStylePartner = 'cursor: pointer; transition: background 0.15s;';
+                const hoverTitle = 'Klick für Herleitung';
+
                 tableRows += `
                     <tr style="border-bottom: 1px solid rgba(255,255,255,0.08);">
                         <td style="padding: 12px 14px; font-size: 13px;">
@@ -14722,8 +14945,16 @@
                                 → multipliziert <strong>${rf.agodIcon}</strong> (${rf.agod})
                             </div>
                         </td>
-                        <td style="padding: 12px 10px; text-align: center; font-size: 14px;">${getWertDisplay(wertIch, lockedIch, true)}</td>
-                        <td style="padding: 12px 10px; text-align: center; font-size: 14px;">${getWertDisplay(wertPartner, lockedPartner, true)}</td>
+                        <td style="padding: 12px 10px; text-align: center; font-size: 14px; ${clickStyleIch}"
+                            onclick="showValueDerivation('${rk}', 'ich', ${wertIch})"
+                            title="${hoverTitle}"
+                            onmouseover="this.style.background='rgba(34,197,94,0.15)'"
+                            onmouseout="this.style.background=''">${getWertDisplay(wertIch, lockedIch, true)}</td>
+                        <td style="padding: 12px 10px; text-align: center; font-size: 14px; ${clickStylePartner}"
+                            onclick="showValueDerivation('${rk}', 'partner', ${wertPartner})"
+                            title="${hoverTitle}"
+                            onmouseover="this.style.background='rgba(239,68,68,0.15)'"
+                            onmouseout="this.style.background=''">${getWertDisplay(wertPartner, lockedPartner, true)}</td>
                         <td style="padding: 12px 10px; text-align: center; font-size: 14px; background: rgba(139,92,246,0.1);">${getWertDisplay(wertKombi, false, false)}</td>
                     </tr>`;
             });
@@ -14811,6 +15042,9 @@
                             <div style="margin-top: 10px; padding-top: 8px; border-top: 1px solid rgba(255,255,255,0.1);">
                                 <span>🔒 = manuell gesperrt (ändert sich nicht bei Archetyp-Wechsel)</span><br>
                                 <span>🔓 = automatisch (wird bei Archetyp-Wechsel neu berechnet)</span>
+                            </div>
+                            <div style="margin-top: 10px; padding: 8px; background: rgba(139,92,246,0.15); border-radius: 6px; border: 1px solid rgba(139,92,246,0.3);">
+                                <span style="color: var(--text-secondary);">💡 <strong>Tipp:</strong> Klicke auf einen ICH- oder PARTNER-Wert, um die vollständige Herleitung zu sehen!</span>
                             </div>
                         </div>
                     </div>
