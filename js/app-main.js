@@ -14079,6 +14079,284 @@
             </div>`;
         }
 
+        // ═══════════════════════════════════════════════════════════════════════
+        // RESONANZFAKTOREN MODAL (Separates Modal mit Archetyp-Wechsel)
+        // ═══════════════════════════════════════════════════════════════════════
+
+        // State für Resonanzfaktoren Modal
+        let resonanzModalArchetyp = 'ich'; // 'ich' oder 'partner'
+
+        /**
+         * Öffnet das separate Resonanzfaktoren Modal
+         * @param {string} initialArchetyp - 'ich' oder 'partner'
+         */
+        function openResonanzfaktorenModal(initialArchetyp = 'ich') {
+            resonanzModalArchetyp = initialArchetyp;
+
+            // Modal erstellen falls nicht vorhanden
+            let modal = document.getElementById('resonanzfaktorenModal');
+            if (!modal) {
+                modal = document.createElement('div');
+                modal.id = 'resonanzfaktorenModal';
+                modal.style.cssText = `
+                    position: fixed;
+                    top: 0;
+                    left: 0;
+                    width: 100%;
+                    height: 100%;
+                    background: rgba(0,0,0,0.8);
+                    z-index: 10000;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    opacity: 0;
+                    transition: opacity 0.3s ease;
+                `;
+                document.body.appendChild(modal);
+            }
+
+            // Modal Content rendern
+            updateResonanzfaktorenModalContent();
+
+            // Modal anzeigen
+            modal.style.display = 'flex';
+            requestAnimationFrame(() => {
+                modal.style.opacity = '1';
+            });
+
+            // Click außerhalb schließt Modal
+            modal.onclick = (e) => {
+                if (e.target === modal) {
+                    closeResonanzfaktorenModal();
+                }
+            };
+
+            // ESC-Taste schließt Modal
+            document.addEventListener('keydown', handleResonanzModalEsc);
+        }
+        window.openResonanzfaktorenModal = openResonanzfaktorenModal;
+
+        function handleResonanzModalEsc(e) {
+            if (e.key === 'Escape') {
+                closeResonanzfaktorenModal();
+            }
+        }
+
+        function closeResonanzfaktorenModal() {
+            const modal = document.getElementById('resonanzfaktorenModal');
+            if (modal) {
+                modal.style.opacity = '0';
+                setTimeout(() => {
+                    modal.style.display = 'none';
+                }, 300);
+            }
+            document.removeEventListener('keydown', handleResonanzModalEsc);
+        }
+        window.closeResonanzfaktorenModal = closeResonanzfaktorenModal;
+
+        function switchResonanzArchetyp(archetyp) {
+            resonanzModalArchetyp = archetyp;
+            updateResonanzfaktorenModalContent();
+        }
+        window.switchResonanzArchetyp = switchResonanzArchetyp;
+
+        function updateResonanzfaktorenModalContent() {
+            const modal = document.getElementById('resonanzfaktorenModal');
+            if (!modal) return;
+
+            // Archetyp-Daten bestimmen
+            const isIch = resonanzModalArchetyp === 'ich';
+            const archetyp = isIch ? currentArchetype : selectedPartner;
+            const archData = archetypeDescriptions[archetyp];
+            const archName = archData?.name || (isIch ? 'ICH' : 'Partner');
+            const archIcon = archData?.icon || '👤';
+
+            // Resonanzwerte für ausgewählten Archetyp laden
+            let resonanzWerte = { R1: 1.0, R2: 1.0, R3: 1.0, R4: 1.0 };
+
+            const loadedProfile = isIch
+                ? window.LoadedArchetypProfile?.ich?.resonanzFaktoren
+                : window.LoadedArchetypProfile?.partner?.resonanzFaktoren;
+
+            if (loadedProfile) {
+                resonanzWerte = {
+                    R1: loadedProfile.R1?.value ?? loadedProfile.R1 ?? 1.0,
+                    R2: loadedProfile.R2?.value ?? loadedProfile.R2 ?? 1.0,
+                    R3: loadedProfile.R3?.value ?? loadedProfile.R3 ?? 1.0,
+                    R4: loadedProfile.R4?.value ?? loadedProfile.R4 ?? 1.0
+                };
+            } else if (typeof ResonanzCard !== 'undefined') {
+                const cardValues = ResonanzCard.getValues(resonanzModalArchetyp);
+                resonanzWerte = {
+                    R1: cardValues.R1 || 1.0,
+                    R2: cardValues.R2 || 1.0,
+                    R3: cardValues.R3 || 1.0,
+                    R4: cardValues.R4 || 1.0
+                };
+            }
+
+            // Gewichtungs-Matrix
+            const gewichtMatrix = {
+                R1: { P1: 0.40, P2: 0.30, P3: 0.15, P4: 0.15 },
+                R2: { P1: 0.25, P2: 0.15, P3: 0.45, P4: 0.15 },
+                R3: { P1: 0.10, P2: 0.25, P3: 0.15, P4: 0.50 },
+                R4: { P1: 0.25, P2: 0.25, P3: 0.25, P4: 0.25 }
+            };
+
+            // Perspektiven-Konfiguration
+            const perspektiven = {
+                P1: { icon: '📊', label: 'GFK', color: '#3B82F6' },
+                P2: { icon: '🕉️', label: 'Osho', color: '#F59E0B' },
+                P3: { icon: '🔧', label: 'Pirsig', color: '#10B981' },
+                P4: { icon: '💜', label: 'Kink', color: '#8B5CF6' }
+            };
+
+            // Resonanzfaktor-Konfiguration
+            const faktoren = {
+                R1: { label: 'Orientierung', color: '#E63946' },
+                R2: { label: 'Archetyp', color: '#2A9D8F' },
+                R3: { label: 'Dominanz', color: '#8B5CF6' },
+                R4: { label: 'Geschlecht', color: '#F4A261' }
+            };
+
+            // Berechne effektiven Einfluss
+            function berechneEinfluss(rWert, gewicht) {
+                const abweichung = rWert - 1.0;
+                const einfluss = abweichung * gewicht * 100;
+                return einfluss;
+            }
+
+            // Einfluss-Anzeige mit Farbcodierung
+            function getEinflussDisplay(einfluss) {
+                let color = 'var(--text-muted)';
+                let prefix = '';
+                if (einfluss > 0.5) {
+                    color = '#22c55e';
+                    prefix = '+';
+                } else if (einfluss < -0.5) {
+                    color = '#ef4444';
+                }
+                const displayVal = einfluss.toFixed(1);
+                return `<span style="color: ${color}; font-weight: 500; font-size: 12px;">${prefix}${displayVal}%</span>`;
+            }
+
+            // Wert-Anzeige mit Farbcodierung
+            function getWertDisplay(wert) {
+                let color = '#eab308';
+                if (wert >= 1.1) color = '#22c55e';
+                else if (wert <= 0.9) color = '#ef4444';
+                return `<span style="color: ${color}; font-weight: 600;">${wert.toFixed(2)}</span>`;
+            }
+
+            // Tabellen-Zeilen
+            let tableRows = '';
+            const perspektivenSummen = { P1: 0, P2: 0, P3: 0, P4: 0 };
+
+            ['R1', 'R2', 'R3', 'R4'].forEach(rf => {
+                const faktor = faktoren[rf];
+                const wert = resonanzWerte[rf] || 1.0;
+                const gewichte = gewichtMatrix[rf];
+
+                const einflussP1 = berechneEinfluss(wert, gewichte.P1);
+                const einflussP2 = berechneEinfluss(wert, gewichte.P2);
+                const einflussP3 = berechneEinfluss(wert, gewichte.P3);
+                const einflussP4 = berechneEinfluss(wert, gewichte.P4);
+
+                perspektivenSummen.P1 += einflussP1;
+                perspektivenSummen.P2 += einflussP2;
+                perspektivenSummen.P3 += einflussP3;
+                perspektivenSummen.P4 += einflussP4;
+
+                tableRows += `
+                    <tr style="border-bottom: 1px solid rgba(255,255,255,0.08);">
+                        <td style="padding: 12px 14px; font-size: 13px;">
+                            <span style="color: ${faktor.color}; font-weight: 600;">${rf}</span>
+                            <span style="color: var(--text-secondary); margin-left: 8px;">${faktor.label}</span>
+                        </td>
+                        <td style="padding: 12px 10px; text-align: center; font-size: 14px;">${getWertDisplay(wert)}</td>
+                        <td style="padding: 12px 10px; text-align: center;">${getEinflussDisplay(einflussP1)}</td>
+                        <td style="padding: 12px 10px; text-align: center;">${getEinflussDisplay(einflussP2)}</td>
+                        <td style="padding: 12px 10px; text-align: center;">${getEinflussDisplay(einflussP3)}</td>
+                        <td style="padding: 12px 10px; text-align: center;">${getEinflussDisplay(einflussP4)}</td>
+                    </tr>`;
+            });
+
+            // Summen-Zeile
+            const summenRow = `
+                <tr style="border-top: 2px solid rgba(139,92,246,0.4); background: rgba(139,92,246,0.08);">
+                    <td style="padding: 12px 14px; font-size: 13px; font-weight: 600; color: var(--text-primary);" colspan="2">Σ Gesamt</td>
+                    <td style="padding: 12px 10px; text-align: center;">${getEinflussDisplay(perspektivenSummen.P1)}</td>
+                    <td style="padding: 12px 10px; text-align: center;">${getEinflussDisplay(perspektivenSummen.P2)}</td>
+                    <td style="padding: 12px 10px; text-align: center;">${getEinflussDisplay(perspektivenSummen.P3)}</td>
+                    <td style="padding: 12px 10px; text-align: center;">${getEinflussDisplay(perspektivenSummen.P4)}</td>
+                </tr>`;
+
+            // Archetyp-Buttons
+            const ichArch = archetypeDescriptions[currentArchetype];
+            const partnerArch = archetypeDescriptions[selectedPartner];
+            const ichName = ichArch?.name || 'ICH';
+            const partnerName = partnerArch?.name || 'Partner';
+            const ichIcon = ichArch?.icon || '👤';
+            const partnerIcon = partnerArch?.icon || '👤';
+
+            modal.innerHTML = `
+                <div style="background: var(--bg-primary); border-radius: 16px; max-width: 600px; width: 95%; max-height: 90vh; overflow-y: auto; box-shadow: 0 20px 60px rgba(0,0,0,0.5); border: 1px solid rgba(139,92,246,0.3);">
+                    <!-- Header -->
+                    <div style="padding: 20px 24px; border-bottom: 1px solid rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: space-between;">
+                        <div style="display: flex; align-items: center; gap: 12px;">
+                            <span style="font-size: 24px;">🎛️</span>
+                            <div>
+                                <h2 style="margin: 0; font-size: 18px; color: var(--text-primary);">Resonanzfaktoren × Perspektiven</h2>
+                                <p style="margin: 4px 0 0 0; font-size: 12px; color: var(--text-muted);">Wie Resonanzfaktoren die Perspektiven beeinflussen</p>
+                            </div>
+                        </div>
+                        <button onclick="closeResonanzfaktorenModal()" style="background: rgba(255,255,255,0.1); border: none; border-radius: 8px; width: 36px; height: 36px; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 18px; color: var(--text-secondary); transition: all 0.2s;">×</button>
+                    </div>
+
+                    <!-- Archetyp-Switcher -->
+                    <div style="padding: 16px 24px; border-bottom: 1px solid rgba(255,255,255,0.05); display: flex; gap: 12px;">
+                        <button onclick="switchResonanzArchetyp('ich')" style="flex: 1; padding: 12px 16px; border-radius: 10px; border: 2px solid ${isIch ? '#8B5CF6' : 'rgba(255,255,255,0.1)'}; background: ${isIch ? 'rgba(139,92,246,0.2)' : 'rgba(255,255,255,0.05)'}; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; transition: all 0.2s;">
+                            <span style="font-size: 20px;">${ichIcon}</span>
+                            <span style="font-size: 14px; font-weight: 600; color: ${isIch ? '#8B5CF6' : 'var(--text-secondary)'};">${ichName}</span>
+                        </button>
+                        <button onclick="switchResonanzArchetyp('partner')" style="flex: 1; padding: 12px 16px; border-radius: 10px; border: 2px solid ${!isIch ? '#8B5CF6' : 'rgba(255,255,255,0.1)'}; background: ${!isIch ? 'rgba(139,92,246,0.2)' : 'rgba(255,255,255,0.05)'}; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; transition: all 0.2s;">
+                            <span style="font-size: 20px;">${partnerIcon}</span>
+                            <span style="font-size: 14px; font-weight: 600; color: ${!isIch ? '#8B5CF6' : 'var(--text-secondary)'};">${partnerName}</span>
+                        </button>
+                    </div>
+
+                    <!-- Tabelle -->
+                    <div style="padding: 20px 24px;">
+                        <div style="background: linear-gradient(135deg, rgba(139,92,246,0.1), rgba(59,130,246,0.06)); border-radius: 12px; border: 1px solid rgba(139,92,246,0.25); overflow: hidden;">
+                            <table style="width: 100%; border-collapse: collapse;">
+                                <thead>
+                                    <tr style="border-bottom: 2px solid rgba(139,92,246,0.3); background: rgba(0,0,0,0.2);">
+                                        <th style="padding: 12px 14px; text-align: left; color: var(--text-muted); font-weight: 500; font-size: 12px;">Faktor</th>
+                                        <th style="padding: 12px 10px; text-align: center; color: var(--text-muted); font-weight: 500; font-size: 12px;">R</th>
+                                        <th style="padding: 12px 10px; text-align: center;"><span style="color: ${perspektiven.P1.color}; font-size: 11px;">${perspektiven.P1.icon} ${perspektiven.P1.label}</span></th>
+                                        <th style="padding: 12px 10px; text-align: center;"><span style="color: ${perspektiven.P2.color}; font-size: 11px;">${perspektiven.P2.icon} ${perspektiven.P2.label}</span></th>
+                                        <th style="padding: 12px 10px; text-align: center;"><span style="color: ${perspektiven.P3.color}; font-size: 11px;">${perspektiven.P3.icon} ${perspektiven.P3.label}</span></th>
+                                        <th style="padding: 12px 10px; text-align: center;"><span style="color: ${perspektiven.P4.color}; font-size: 11px;">${perspektiven.P4.icon} ${perspektiven.P4.label}</span></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    ${tableRows}
+                                    ${summenRow}
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <!-- Legende -->
+                        <div style="display: flex; gap: 16px; margin-top: 16px; flex-wrap: wrap; align-items: center; justify-content: center;">
+                            <span style="font-size: 11px; color: var(--text-muted); font-family: monospace;">(R − 1) × Gewicht × 100 = %</span>
+                            <span style="font-size: 11px; color: var(--text-muted);">R = 0.5–1.5</span>
+                            <span style="font-size: 11px; color: #22c55e;">+% verstärkt</span>
+                            <span style="font-size: 11px; color: #ef4444;">−% schwächt</span>
+                        </div>
+                    </div>
+                </div>`;
+        }
+
         /**
          * Generiert den Synthese-Quote-Text basierend auf dem aktuellen Score
          * Wird im CREATIVITY-Abschnitt des Modals angezeigt
@@ -14272,9 +14550,6 @@
                     </div>
                 </div>`;
 
-            // PSYCHOLOGISCHE EINORDNUNG (Jung + GFK)
-            html += generateJungGfkStatement();
-
             return html;
         }
 
@@ -14323,9 +14598,6 @@
                         ${dynamikWachstumText}
                     </div>
                 </div>`;
-
-            // PSYCHOLOGISCHE EINORDNUNG (Jung + GFK)
-            html += generateJungGfkStatement();
 
             return html;
         }

@@ -270,9 +270,14 @@ const ResonanzCard = (function() {
         return `
             <div class="resonanz-footer-bar">
                 <span class="resonanz-hint">GFK-Kompetenz: <span id="resonanz-gfk">${gfk}</span></span>
-                <button class="profile-review-triple-btn" onclick="ResonanzCard.reset()" style="padding: 6px 12px; font-size: 11px;">
-                    🔄 Standard
-                </button>
+                <div style="display: flex; gap: 8px;">
+                    <button class="profile-review-triple-btn" onclick="openResonanzfaktorenModal()" style="padding: 6px 12px; font-size: 11px; background: rgba(139,92,246,0.2); border-color: rgba(139,92,246,0.4);">
+                        🎛️ Perspektiven
+                    </button>
+                    <button class="profile-review-triple-btn" onclick="ResonanzCard.reset()" style="padding: 6px 12px; font-size: 11px;">
+                        🔄 Standard
+                    </button>
+                </div>
             </div>`;
     }
 
