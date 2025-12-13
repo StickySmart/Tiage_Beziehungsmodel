@@ -381,11 +381,44 @@ const ResonanzCard = (function() {
     }
 
     /**
-     * Setzt alle Resonanzwerte auf Standard zurück
+     * Setzt alle Resonanzwerte auf berechnete Durchschnitte zurück
+     * Holt Profil-Kontext aus LoadedArchetypProfile und berechnet R-Werte neu
      */
     function reset() {
-        const defaults = JSON.parse(JSON.stringify(DEFAULT_VALUES));
-        save(defaults);
+        const person = getCurrentPerson();
+        let calculatedValues = null;
+
+        // Versuche berechnete Werte aus Profil-Kontext zu holen
+        if (typeof window !== 'undefined' && window.LoadedArchetypProfile) {
+            const profile = window.LoadedArchetypProfile[person];
+            if (profile) {
+                // Baue Profil-Kontext für calculateFromProfile
+                const profileContext = {
+                    archetyp: profile.archetyp?.key || profile.archetyp,
+                    needs: profile.needs || profile.profileReview?.flatNeeds,
+                    dominanz: profile.dominanz,
+                    orientierung: profile.orientierung,
+                    geschlecht: profile.geschlecht
+                };
+
+                calculatedValues = calculateFromProfile(profileContext);
+                if (calculatedValues) {
+                    console.log('[ResonanzCard] Reset: Berechnete Durchschnitte für', person + ':', calculatedValues);
+                }
+            }
+        }
+
+        // Fallback auf DEFAULT_VALUES wenn keine Berechnung möglich
+        const values = calculatedValues
+            ? {
+                R1: { value: clampValue(calculatedValues.R1), locked: false },
+                R2: { value: clampValue(calculatedValues.R2), locked: false },
+                R3: { value: clampValue(calculatedValues.R3), locked: false },
+                R4: { value: clampValue(calculatedValues.R4), locked: false }
+            }
+            : JSON.parse(JSON.stringify(DEFAULT_VALUES));
+
+        save(values);
 
         // UI aktualisieren
         ['R1', 'R2', 'R3', 'R4'].forEach(faktor => {
@@ -395,11 +428,11 @@ const ResonanzCard = (function() {
 
             if (card) card.classList.remove('locked');
             if (input) {
-                input.value = defaults[faktor].value.toFixed(2);
+                input.value = values[faktor].value.toFixed(2);
                 input.readOnly = false;
             }
             if (slider) {
-                slider.value = valueToSlider(defaults[faktor].value);
+                slider.value = valueToSlider(values[faktor].value);
                 slider.disabled = false;
             }
         });
