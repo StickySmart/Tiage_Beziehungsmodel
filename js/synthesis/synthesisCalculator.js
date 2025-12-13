@@ -912,11 +912,22 @@ TiageSynthesis.Calculator = {
         }
 
         // ═══════════════════════════════════════════════════════════════════
-        // NEU: Perspektiven-basierte Berechnung via NeedsIntegration
+        // NEU (v3.2): Perspektiven-basierte Berechnung via NeedsIntegration
+        // ═══════════════════════════════════════════════════════════════════
+        // INDIVIDUELL: Jede Person hat eigene R-Werte (Kohärenz mit Archetyp)
+        // RELATIONAL: Kombination via Produkt: R = R_Person1 × R_Person2
         // ═══════════════════════════════════════════════════════════════════
         var perspectiveResult = null;
         if (TiageSynthesis.NeedsIntegration && TiageSynthesis.NeedsIntegration.calculateResonanceFromPerspectives) {
-            perspectiveResult = TiageSynthesis.NeedsIntegration.calculateResonanceFromPerspectives(profil1, profil2);
+            // Hole Archetypen aus den Profilen (falls vorhanden)
+            var archetyp1 = profil1.archetyp || 'duo';
+            var archetyp2 = profil2.archetyp || 'duo';
+            perspectiveResult = TiageSynthesis.NeedsIntegration.calculateResonanceFromPerspectives(
+                profil1.needs || profil1,
+                archetyp1,
+                profil2.needs || profil2,
+                archetyp2
+            );
         }
 
         if (perspectiveResult) {
