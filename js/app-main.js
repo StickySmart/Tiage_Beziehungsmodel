@@ -13926,14 +13926,6 @@
 
             // 1. Versuch: Aus LoadedArchetypProfile (beste Quelle)
             const loadedIch = window.LoadedArchetypProfile?.ich?.resonanzFaktoren;
-            const loadedPartner = window.LoadedArchetypProfile?.partner?.resonanzFaktoren;
-
-            console.log('[Resonanz-Tabelle] LoadedArchetypProfile:', {
-                ich: loadedIch ? 'OK' : 'FEHLT',
-                partner: loadedPartner ? 'OK' : 'FEHLT',
-                ichValues: loadedIch,
-                partnerValues: loadedPartner
-            });
 
             if (loadedIch) {
                 // Verwende ICH-Resonanzfaktoren (Format: { R1: { value, locked }, ... })
@@ -13943,7 +13935,6 @@
                     R3: loadedIch.R3?.value ?? loadedIch.R3 ?? 1.0,
                     R4: loadedIch.R4?.value ?? loadedIch.R4 ?? 1.0
                 };
-                console.log('[Resonanz-Tabelle] R-Werte aus LoadedArchetypProfile.ich:', resonanzWerte);
             }
             // 2. Fallback: Aus ResonanzCard (benutzerdefinierte Werte)
             else if (typeof ResonanzCard !== 'undefined') {
@@ -13954,7 +13945,6 @@
                     R3: cardValues.R3 || 1.0,
                     R4: cardValues.R4 || 1.0
                 };
-                console.log('[Resonanz-Tabelle] R-Werte aus ResonanzCard:', resonanzWerte);
             }
 
             // Gewichtungs-Matrix: Wie stark beeinflusst jeder Faktor jede Perspektive (in %)
