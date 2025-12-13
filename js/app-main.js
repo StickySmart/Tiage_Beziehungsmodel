@@ -13926,6 +13926,7 @@
 
             if (typeof GfkBeduerfnisse !== 'undefined' && ichArchetyp && partnerArchetyp) {
                 const matching = GfkBeduerfnisse.berechneMatching(ichArchetyp, partnerArchetyp);
+                console.log('[Resonanz-Tabelle] Matching:', { ichArchetyp, partnerArchetyp, matching: matching ? 'OK' : 'FEHLT', details: matching?.details ? 'OK' : 'FEHLT' });
 
                 if (matching && !matching.fehler) {
                     // Berechne Bedürfnis-Match pro Kategorie (0-1)
@@ -13934,6 +13935,8 @@
                     const match3 = calculateKSubfaktor('K3', matching);  // Dominanz
                     const match4 = calculateKSubfaktor('K4', matching);  // Geschlecht
 
+                    console.log('[Resonanz-Tabelle] K-Matches:', { K1: match1, K2: match2, K3: match3, K4: match4 });
+
                     // Skaliere auf 0.5-1.5
                     resonanzWerte = {
                         R1: 0.5 + match1,
@@ -13941,7 +13944,10 @@
                         R3: 0.5 + match3,
                         R4: 0.5 + match4
                     };
+                    console.log('[Resonanz-Tabelle] R-Werte:', resonanzWerte);
                 }
+            } else {
+                console.log('[Resonanz-Tabelle] SKIP: GfkBeduerfnisse oder Archetypen fehlen', { GfkBeduerfnisse: typeof GfkBeduerfnisse, ichArchetyp, partnerArchetyp });
             }
 
             // Gewichtungs-Matrix: Wie stark beeinflusst jeder Faktor jede Perspektive (in %)
