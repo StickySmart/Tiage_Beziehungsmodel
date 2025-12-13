@@ -469,9 +469,10 @@ const ResonanzCard = (function() {
 
     /**
      * Initialisiert die UI mit gespeicherten Werten für die aktuelle Person
+     * @param {string} person - 'ich' oder 'partner' (optional, default: getCurrentPerson())
      */
-    function initializeUI() {
-        const person = getCurrentPerson();
+    function initializeUI(person) {
+        person = person || getCurrentPerson();
         const values = load(person);
         ['R1', 'R2', 'R3', 'R4'].forEach(faktor => {
             const card = document.querySelector(`[data-resonanz="${faktor}"]`);
