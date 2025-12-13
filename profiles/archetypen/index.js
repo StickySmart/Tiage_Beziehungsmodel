@@ -306,6 +306,48 @@
     // 4. EXPORT - API für externe Nutzung
     // ═══════════════════════════════════════════════════════════════════════════
 
+    /**
+     * Initialisiert LoadedArchetypProfile aus TiageState
+     * Sollte nach App-Start aufgerufen werden
+     */
+    function initFromState() {
+        if (typeof TiageState === 'undefined') {
+            console.log('[ProfileCalculator] TiageState nicht verfügbar, überspringe Initialisierung');
+            return false;
+        }
+
+        let loaded = 0;
+
+        // ICH-Profil laden
+        const ichArchetyp = TiageState.getArchetypes?.('ich');
+        if (ichArchetyp?.primary) {
+            const ichData = {
+                archetyp: ichArchetyp.primary,
+                geschlecht: TiageState.get?.('personDimensions.ich.geschlecht') || null,
+                dominanz: TiageState.get?.('personDimensions.ich.dominanz') || null,
+                orientierung: TiageState.get?.('personDimensions.ich.orientierung') || null
+            };
+            loadProfile('ich', ichData);
+            loaded++;
+        }
+
+        // PARTNER-Profil laden
+        const partnerArchetyp = TiageState.getArchetypes?.('partner');
+        if (partnerArchetyp?.primary) {
+            const partnerData = {
+                archetyp: partnerArchetyp.primary,
+                geschlecht: TiageState.get?.('personDimensions.partner.geschlecht') || null,
+                dominanz: TiageState.get?.('personDimensions.partner.dominanz') || null,
+                orientierung: TiageState.get?.('personDimensions.partner.orientierung') || null
+            };
+            loadProfile('partner', partnerData);
+            loaded++;
+        }
+
+        console.log('[ProfileCalculator] Initialisierung aus TiageState:', loaded, 'Profile geladen');
+        return loaded > 0;
+    }
+
     window.ProfileCalculator = {
         // Berechnung
         calculateFlatNeeds: calculateFlatNeeds,
@@ -314,6 +356,7 @@
 
         // Laden
         loadProfile: loadProfile,
+        initFromState: initFromState,
 
         // Defaults
         getDefaultGewichtungen: getDefaultGewichtungen,
@@ -324,5 +367,20 @@
     };
 
     console.log('ProfileCalculator bereit');
+
+    // ═══════════════════════════════════════════════════════════════════════════
+    // 5. AUTO-INITIALISIERUNG - Lade Profile aus TiageState nach DOM-Ready
+    // ═══════════════════════════════════════════════════════════════════════════
+
+    // Verzögerte Initialisierung, damit TiageState Zeit hat zu laden
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', function() {
+            // Kurze Verzögerung für TiageState
+            setTimeout(initFromState, 100);
+        });
+    } else {
+        // DOM bereits geladen
+        setTimeout(initFromState, 100);
+    }
 
 })();

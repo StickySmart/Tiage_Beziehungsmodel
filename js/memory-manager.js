@@ -713,14 +713,32 @@ const MemoryManager = (function() {
                 applyProfileReviewState(data.profileReview);
             }
 
-            // Apply Gewichtungen für ICH (person-spezifisch)
-            if (data.gewichtungen) {
-                applyGewichtungen(data.gewichtungen, 'ich');
+            // ═══════════════════════════════════════════════════════════════════════════
+            // 2. Berechnete Werte aus LoadedArchetypProfile an UI weitergeben
+            // ═══════════════════════════════════════════════════════════════════════════
+            const loadedProfile = window.LoadedArchetypProfile?.ich;
+
+            // Apply Gewichtungen für ICH (aus Storage oder berechnet)
+            const gewichtungen = data.gewichtungen || loadedProfile?.gewichtungen;
+            if (gewichtungen) {
+                applyGewichtungen(gewichtungen, 'ich');
             }
 
-            // Apply Resonanzfaktoren für ICH (person-spezifisch)
-            if (data.resonanzfaktoren) {
-                applyResonanzfaktoren(data.resonanzfaktoren, 'ich');
+            // Apply Resonanzfaktoren für ICH (aus Storage oder berechnet)
+            const resonanzFaktoren = data.resonanzfaktoren || loadedProfile?.resonanzFaktoren;
+            if (resonanzFaktoren) {
+                applyResonanzfaktoren(resonanzFaktoren, 'ich');
+                // Auch ResonanzCard UI aktualisieren
+                if (typeof ResonanzCard !== 'undefined' && ResonanzCard.setCalculatedValues) {
+                    const resonanzValues = {
+                        R1: resonanzFaktoren.R1?.value || resonanzFaktoren.R1 || 1.0,
+                        R2: resonanzFaktoren.R2?.value || resonanzFaktoren.R2 || 1.0,
+                        R3: resonanzFaktoren.R3?.value || resonanzFaktoren.R3 || 1.0,
+                        R4: resonanzFaktoren.R4?.value || resonanzFaktoren.R4 || 1.0
+                    };
+                    ResonanzCard.setCalculatedValues(resonanzValues, false);
+                    console.log('[MemoryManager] ResonanzCard UI aktualisiert mit berechneten Werten');
+                }
             }
 
             // Sync UI functions
@@ -819,14 +837,35 @@ const MemoryManager = (function() {
                 applyProfileReviewState(data.profileReview);
             }
 
-            // Apply Gewichtungen für PARTNER (person-spezifisch)
-            if (data.gewichtungen) {
-                applyGewichtungen(data.gewichtungen, 'partner');
+            // ═══════════════════════════════════════════════════════════════════════════
+            // 2. Berechnete Werte aus LoadedArchetypProfile an UI weitergeben
+            // ═══════════════════════════════════════════════════════════════════════════
+            const loadedProfile = window.LoadedArchetypProfile?.partner;
+
+            // Apply Gewichtungen für PARTNER (aus Storage oder berechnet)
+            const gewichtungen = data.gewichtungen || loadedProfile?.gewichtungen;
+            if (gewichtungen) {
+                applyGewichtungen(gewichtungen, 'partner');
             }
 
-            // Apply Resonanzfaktoren für PARTNER (person-spezifisch)
-            if (data.resonanzfaktoren) {
-                applyResonanzfaktoren(data.resonanzfaktoren, 'partner');
+            // Apply Resonanzfaktoren für PARTNER (aus Storage oder berechnet)
+            const resonanzFaktoren = data.resonanzfaktoren || loadedProfile?.resonanzFaktoren;
+            if (resonanzFaktoren) {
+                applyResonanzfaktoren(resonanzFaktoren, 'partner');
+                // Auch ResonanzCard UI aktualisieren (wenn Partner aktiv)
+                if (typeof ResonanzCard !== 'undefined' && ResonanzCard.setCalculatedValues) {
+                    const resonanzValues = {
+                        R1: resonanzFaktoren.R1?.value || resonanzFaktoren.R1 || 1.0,
+                        R2: resonanzFaktoren.R2?.value || resonanzFaktoren.R2 || 1.0,
+                        R3: resonanzFaktoren.R3?.value || resonanzFaktoren.R3 || 1.0,
+                        R4: resonanzFaktoren.R4?.value || resonanzFaktoren.R4 || 1.0
+                    };
+                    // Partner-Werte nur setzen wenn Partner-Kontext aktiv
+                    if (ResonanzCard.getCurrentPerson && ResonanzCard.getCurrentPerson() === 'partner') {
+                        ResonanzCard.setCalculatedValues(resonanzValues, false);
+                        console.log('[MemoryManager] ResonanzCard UI (Partner) aktualisiert');
+                    }
+                }
             }
 
             // Sync UI functions
