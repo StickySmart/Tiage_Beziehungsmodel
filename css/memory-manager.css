@@ -623,6 +623,7 @@
     background: rgba(0, 0, 0, 0.3);
     border-radius: 8px;
     padding: 12px;
+    overflow-x: auto;
 }
 
 .memory-breakdown-header {
@@ -654,6 +655,7 @@
 
 .memory-breakdown-entries {
     width: 100%;
+    min-width: 550px;
     border-collapse: collapse;
     font-size: 11px;
 }
