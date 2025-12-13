@@ -259,7 +259,10 @@ TiageSynthesis.NeedsIntegration = {
         var constants = TiageSynthesis.Constants;
         var kohaerenz = constants.ARCHETYP_KOHAERENZ;
 
-        if (!kohaerenz || !person.archetyp || !person.needs) {
+        // Needs können in person.needs oder person.profileReview.flatNeeds sein
+        var needs = person.needs || (person.profileReview && person.profileReview.flatNeeds);
+
+        if (!kohaerenz || !person.archetyp || !needs) {
             return {
                 leben: 1.0,
                 dynamik: 1.0,
@@ -272,10 +275,10 @@ TiageSynthesis.NeedsIntegration = {
         var archetyp = person.archetyp.key || person.archetyp;
 
         return {
-            leben: this._calculateSingleResonance(person.needs, kohaerenz.leben, archetyp),
-            dynamik: this._calculateSingleResonance(person.needs, kohaerenz.dynamik, archetyp),
-            identitaet: this._calculateSingleResonance(person.needs, kohaerenz.identitaet, archetyp),
-            philosophie: this._calculateSingleResonance(person.needs, kohaerenz.philosophie, archetyp),
+            leben: this._calculateSingleResonance(needs, kohaerenz.leben, archetyp),
+            dynamik: this._calculateSingleResonance(needs, kohaerenz.dynamik, archetyp),
+            identitaet: this._calculateSingleResonance(needs, kohaerenz.identitaet, archetyp),
+            philosophie: this._calculateSingleResonance(needs, kohaerenz.philosophie, archetyp),
             enabled: true,
             archetyp: archetyp
         };
