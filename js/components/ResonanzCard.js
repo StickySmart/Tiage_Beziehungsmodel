@@ -389,30 +389,88 @@ const ResonanzCard = (function() {
 
     /**
      * Setzt alle Resonanzwerte auf berechnete Durchschnitte zurück
-     * Holt Profil-Kontext aus LoadedArchetypProfile und berechnet R-Werte neu
+     * Holt aktuelle Bedürfnisse aus TiageState/AttributeSummaryCard und berechnet R-Werte neu
      */
     function reset() {
         const person = getCurrentPerson();
         let calculatedValues = null;
 
-        // Versuche berechnete Werte aus Profil-Kontext zu holen
-        if (typeof window !== 'undefined' && window.LoadedArchetypProfile) {
-            const profile = window.LoadedArchetypProfile[person];
-            if (profile) {
-                // Baue Profil-Kontext für calculateFromProfile
-                const profileContext = {
-                    archetyp: profile.archetyp?.key || profile.archetyp,
-                    needs: profile.needs || profile.profileReview?.flatNeeds,
-                    dominanz: profile.dominanz,
-                    orientierung: profile.orientierung,
-                    geschlecht: profile.geschlecht
-                };
+        // Hole aktuellen Archetyp aus globalen Variablen
+        let archetypeKey = 'duo';
+        if (typeof window !== 'undefined') {
+            if (person === 'ich' && typeof currentArchetype !== 'undefined') {
+                archetypeKey = currentArchetype;
+            } else if (person === 'partner' && typeof selectedPartner !== 'undefined') {
+                archetypeKey = selectedPartner;
+            }
+        }
 
-                calculatedValues = calculateFromProfile(profileContext);
-                if (calculatedValues) {
-                    console.log('[ResonanzCard] Reset: Berechnete Durchschnitte für', person + ':', calculatedValues);
+        // Sammle aktuelle Bedürfnis-Daten aus verschiedenen Quellen
+        let needs = null;
+
+        // 1. Aus TiageState (bevorzugt - enthält aktuelle User-Eingaben)
+        if (typeof TiageState !== 'undefined' && TiageState.get) {
+            const savedNeeds = TiageState.get('tiage_needs_integrated');
+            if (savedNeeds && Object.keys(savedNeeds).length > 0) {
+                needs = {};
+                for (const needKey in savedNeeds) {
+                    if (savedNeeds.hasOwnProperty(needKey)) {
+                        needs[needKey] = savedNeeds[needKey].value || savedNeeds[needKey];
+                    }
                 }
             }
+        }
+
+        // 2. Aus AttributeSummaryCard (aktuell geladene Werte)
+        if ((!needs || Object.keys(needs).length === 0) &&
+            typeof AttributeSummaryCard !== 'undefined' && AttributeSummaryCard.getFlatNeeds) {
+            const cardNeeds = AttributeSummaryCard.getFlatNeeds();
+            if (cardNeeds) {
+                needs = {};
+                if (Array.isArray(cardNeeds)) {
+                    cardNeeds.forEach(n => {
+                        if (n.id) needs[n.id] = n.value;
+                        if (n.stringKey) needs[n.stringKey] = n.value;
+                    });
+                } else {
+                    for (const key in cardNeeds) {
+                        if (cardNeeds.hasOwnProperty(key)) {
+                            const entry = cardNeeds[key];
+                            needs[key] = (typeof entry === 'object' && entry.value !== undefined) ? entry.value : entry;
+                        }
+                    }
+                }
+            }
+        }
+
+        // 3. Fallback: Standard-Werte des aktuellen Archetyps
+        if (!needs || Object.keys(needs).length === 0) {
+            if (typeof GfkBeduerfnisse !== 'undefined' &&
+                GfkBeduerfnisse.archetypProfile && GfkBeduerfnisse.archetypProfile[archetypeKey]) {
+                needs = GfkBeduerfnisse.archetypProfile[archetypeKey].kernbeduerfnisse || {};
+            }
+        }
+
+        // Hole aktuelle Dimensions-Daten
+        let dominanz = null, orientierung = null, geschlecht = null;
+        if (typeof personDimensions !== 'undefined' && personDimensions[person]) {
+            dominanz = personDimensions[person].dominanz;
+            orientierung = personDimensions[person].orientierung;
+            geschlecht = personDimensions[person].geschlecht;
+        }
+
+        // Baue Profil-Kontext für Berechnung
+        const profileContext = {
+            archetyp: archetypeKey,
+            needs: needs,
+            dominanz: dominanz,
+            orientierung: orientierung,
+            geschlecht: geschlecht
+        };
+
+        calculatedValues = calculateFromProfile(profileContext);
+        if (calculatedValues) {
+            console.log('[ResonanzCard] Reset: Neu berechnete Werte für', person, 'mit Archetyp', archetypeKey + ':', calculatedValues);
         }
 
         // Fallback auf DEFAULT_VALUES wenn keine Berechnung möglich
