@@ -5,10 +5,10 @@
  * und automatischer Speicherung.
  *
  * Resonanzfaktoren modulieren die Score-Berechnung:
- * - R1: Orientierung (Existenz, Zuneigung, Muße)
- * - R2: Archetyp (Freiheit, Teilnahme, Identität)
- * - R3: Dominanz (Dynamik, Sicherheit)
- * - R4: Geschlecht (Verständnis, Erschaffen, Verbundenheit)
+ * - R1: Leben (Existenz, Zuneigung, Muße)
+ * - R2: Philosophie (Freiheit, Teilnahme, Identität)
+ * - R3: Kink (Dynamik, Sicherheit)
+ * - R4: Identität (Verständnis, Erschaffen, Verbundenheit)
  *
  * Range: 0.5 - 1.5 (0.5 = schwächt ab, 1.0 = neutral, 1.5 = verstärkt)
  *
@@ -102,22 +102,22 @@ const ResonanzCard = (function() {
      */
     const FAKTOR_INFO = {
         R1: {
-            label: 'Orientierung',
+            label: 'Leben',
             beschreibung: 'Existenz, Zuneigung, Muße',
             color: '#E63946'
         },
         R2: {
-            label: 'Archetyp',
+            label: 'Philosophie',
             beschreibung: 'Freiheit, Teilnahme, Identität',
             color: '#2A9D8F'
         },
         R3: {
-            label: 'Dominanz',
+            label: 'Kink',
             beschreibung: 'Dynamik, Sicherheit',
             color: '#8B5CF6'
         },
         R4: {
-            label: 'Geschlecht',
+            label: 'Identität',
             beschreibung: 'Verständnis, Erschaffen, Verbundenheit',
             color: '#F4A261'
         }
@@ -267,13 +267,13 @@ const ResonanzCard = (function() {
         const values = load();
         const gfk = ((values.R1.value + values.R2.value + values.R3.value + values.R4.value) / 4).toFixed(2);
 
+        const person = getCurrentPerson();
+        const personLabel = person === 'partner' ? '👤 Partner' : '👤 Ich';
+
         return `
             <div class="resonanz-footer-bar">
-                <span class="resonanz-hint">GFK-Kompetenz: <span id="resonanz-gfk">${gfk}</span></span>
+                <span class="resonanz-hint">GFK-Kompetenz: <span id="resonanz-gfk">${gfk}</span> | ${personLabel}</span>
                 <div style="display: flex; gap: 8px;">
-                    <button class="profile-review-triple-btn" onclick="openResonanzfaktorenModal()" style="padding: 6px 12px; font-size: 11px; background: rgba(139,92,246,0.2); border-color: rgba(139,92,246,0.4);">
-                        🎛️ Perspektiven
-                    </button>
                     <button class="profile-review-triple-btn" onclick="ResonanzCard.reset()" style="padding: 6px 12px; font-size: 11px;">
                         🔄 Standard
                     </button>
