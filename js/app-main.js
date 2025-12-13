@@ -13921,33 +13921,40 @@
                 jungDynamikText = 'Diese komplementäre Konstellation vereint Ratio und Emotion – eine fruchtbare Spannung, die beide Seiten bereichern kann.';
             }
 
-            // Resonanzfaktoren BERECHNEN aus GFK-Matching
+            // Resonanzfaktoren aus LoadedArchetypProfile holen (bereits berechnet)
             let resonanzWerte = { R1: 1.0, R2: 1.0, R3: 1.0, R4: 1.0 };
 
-            if (typeof GfkBeduerfnisse !== 'undefined' && ichArchetyp && partnerArchetyp) {
-                const matching = GfkBeduerfnisse.berechneMatching(ichArchetyp, partnerArchetyp);
-                console.log('[Resonanz-Tabelle] Matching:', { ichArchetyp, partnerArchetyp, matching: matching ? 'OK' : 'FEHLT', details: matching?.details ? 'OK' : 'FEHLT' });
+            // 1. Versuch: Aus LoadedArchetypProfile (beste Quelle)
+            const loadedIch = window.LoadedArchetypProfile?.ich?.resonanzFaktoren;
+            const loadedPartner = window.LoadedArchetypProfile?.partner?.resonanzFaktoren;
 
-                if (matching && !matching.fehler) {
-                    // Berechne Bedürfnis-Match pro Kategorie (0-1)
-                    const match1 = calculateKSubfaktor('K1', matching);  // Orientierung
-                    const match2 = calculateKSubfaktor('K2', matching);  // Archetyp
-                    const match3 = calculateKSubfaktor('K3', matching);  // Dominanz
-                    const match4 = calculateKSubfaktor('K4', matching);  // Geschlecht
+            console.log('[Resonanz-Tabelle] LoadedArchetypProfile:', {
+                ich: loadedIch ? 'OK' : 'FEHLT',
+                partner: loadedPartner ? 'OK' : 'FEHLT',
+                ichValues: loadedIch,
+                partnerValues: loadedPartner
+            });
 
-                    console.log('[Resonanz-Tabelle] K-Matches:', { K1: match1, K2: match2, K3: match3, K4: match4 });
-
-                    // Skaliere auf 0.5-1.5
-                    resonanzWerte = {
-                        R1: 0.5 + match1,
-                        R2: 0.5 + match2,
-                        R3: 0.5 + match3,
-                        R4: 0.5 + match4
-                    };
-                    console.log('[Resonanz-Tabelle] R-Werte:', resonanzWerte);
-                }
-            } else {
-                console.log('[Resonanz-Tabelle] SKIP: GfkBeduerfnisse oder Archetypen fehlen', { GfkBeduerfnisse: typeof GfkBeduerfnisse, ichArchetyp, partnerArchetyp });
+            if (loadedIch) {
+                // Verwende ICH-Resonanzfaktoren
+                resonanzWerte = {
+                    R1: loadedIch.R1 || 1.0,
+                    R2: loadedIch.R2 || 1.0,
+                    R3: loadedIch.R3 || 1.0,
+                    R4: loadedIch.R4 || 1.0
+                };
+                console.log('[Resonanz-Tabelle] R-Werte aus LoadedArchetypProfile.ich:', resonanzWerte);
+            }
+            // 2. Fallback: Aus ResonanzCard (benutzerdefinierte Werte)
+            else if (typeof ResonanzCard !== 'undefined') {
+                const cardValues = ResonanzCard.getValues('ich');
+                resonanzWerte = {
+                    R1: cardValues.R1 || 1.0,
+                    R2: cardValues.R2 || 1.0,
+                    R3: cardValues.R3 || 1.0,
+                    R4: cardValues.R4 || 1.0
+                };
+                console.log('[Resonanz-Tabelle] R-Werte aus ResonanzCard:', resonanzWerte);
             }
 
             // Gewichtungs-Matrix: Wie stark beeinflusst jeder Faktor jede Perspektive (in %)
