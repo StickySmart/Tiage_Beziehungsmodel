@@ -1004,6 +1004,16 @@ input.resonanz-input:focus {
     margin-left: 4px;
 }
 
+/* Kategorie-Beschreibung (für Gewichtung und Resonanz) */
+.profile-review-category-description {
+    font-size: 11px;
+    color: var(--text-muted, #888);
+    font-weight: 400;
+    font-style: italic;
+    margin-left: 12px;
+    opacity: 0.8;
+}
+
 /* Kategorie Lock-Symbol im Header */
 .profile-review-category-lock {
     width: 24px;

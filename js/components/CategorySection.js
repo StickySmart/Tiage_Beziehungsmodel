@@ -11,11 +11,19 @@ const CategorySection = (function() {
     'use strict';
 
     /**
-     * Kategorie-Icons und Labels
+     * Kategorie-Icons, Labels und Beschreibungen
      */
     const CATEGORIES = {
-        gewichtung: { icon: '⚖️', label: 'FAKTOR-GEWICHTUNG (Score-Formel)' },
-        resonanz: { icon: '🎵', label: 'RESONANZFAKTOREN (R1-R4)' },
+        gewichtung: {
+            icon: '⚖️',
+            label: 'FAKTOR-GEWICHTUNG (Score-Formel)',
+            description: 'Wie wichtig ist mir dieser Faktor?'
+        },
+        resonanz: {
+            icon: '🎵',
+            label: 'RESONANZFAKTOREN (R1-R4)',
+            description: 'Wie gut schwingen wir in diesem Bereich?'
+        },
         lebensplanung: { icon: '📋', label: 'LEBENSPLANUNG' },
         finanzen: { icon: '💰', label: 'FINANZEN & KARRIERE' },
         kommunikation: { icon: '💬', label: 'KOMMUNIKATION' },
@@ -49,6 +57,7 @@ const CategorySection = (function() {
         const categoryInfo = CATEGORIES[category] || { icon: '📌', label: category.toUpperCase() };
         const displayIcon = icon || categoryInfo.icon;
         const displayLabel = label || categoryInfo.label;
+        const displayDescription = categoryInfo.description || '';
 
         // Spezielle Klassen für Gewichtung oder Resonanz
         let categoryClass = 'profile-review-category';
@@ -72,11 +81,17 @@ const CategorySection = (function() {
             ? `<span class="profile-review-category-lock" onclick="event.stopPropagation(); CategorySection.toggleCategoryLock('${category}', this)"></span>`
             : '';
 
+        // Beschreibung nur für Gewichtung und Resonanz anzeigen
+        const descriptionHtml = displayDescription
+            ? `<span class="profile-review-category-description">${displayDescription}</span>`
+            : '';
+
         return `
                 <div class="${categoryClass}" data-category="${category}">
                     <div class="${headerClass}">
                         <span class="profile-review-category-icon">${displayIcon}</span>
                         <span>${displayLabel}</span>
+                        ${descriptionHtml}
                         ${countHtml}
                         <span style="flex: 1;"></span>
                         ${lockHtml}
