@@ -13936,12 +13936,12 @@
             });
 
             if (loadedIch) {
-                // Verwende ICH-Resonanzfaktoren
+                // Verwende ICH-Resonanzfaktoren (Format: { R1: { value, locked }, ... })
                 resonanzWerte = {
-                    R1: loadedIch.R1 || 1.0,
-                    R2: loadedIch.R2 || 1.0,
-                    R3: loadedIch.R3 || 1.0,
-                    R4: loadedIch.R4 || 1.0
+                    R1: loadedIch.R1?.value ?? loadedIch.R1 ?? 1.0,
+                    R2: loadedIch.R2?.value ?? loadedIch.R2 ?? 1.0,
+                    R3: loadedIch.R3?.value ?? loadedIch.R3 ?? 1.0,
+                    R4: loadedIch.R4?.value ?? loadedIch.R4 ?? 1.0
                 };
                 console.log('[Resonanz-Tabelle] R-Werte aus LoadedArchetypProfile.ich:', resonanzWerte);
             }
