@@ -658,23 +658,31 @@ TiageSynthesis.NeedsIntegration = {
 
     /**
      * Mapping: Kategorie-Keys → Resonanzfaktoren
+     * Alle 18 Kategorien (#K1-#K18)
      */
     KATEGORIE_TO_RESONANZ: {
-        // R1 - Leben
+        // R1 - Leben (Nähe-Distanz #D3)
         existenz: 'R1',
         zuneigung: 'R1',
         musse: 'R1',
-        // R2 - Philosophie
+        intimitaet_romantik: 'R1',      // #K16
+        // R2 - Philosophie (Beziehungsphilosophie #D1, Werte #D2, Sozial #D6)
         freiheit: 'R2',
         teilnahme: 'R2',
         identitaet: 'R2',
-        // R3 - Kink
+        lebensplanung: 'R2',            // #K12
+        finanzen_karriere: 'R2',        // #K13
+        werte_haltungen: 'R2',          // #K17
+        soziales_leben: 'R2',           // #K15
+        praktisches_leben: 'R2',        // #K18
+        // R3 - Kink (Dynamik, Sicherheit)
         dynamik: 'R3',
         sicherheit: 'R3',
-        // R4 - Identität
+        // R4 - Identität (Kommunikation #D5, Erschaffen, Verbundenheit)
         verstaendnis: 'R4',
         erschaffen: 'R4',
-        verbundenheit: 'R4'
+        verbundenheit: 'R4',
+        kommunikation_stil: 'R4'        // #K14
     },
 
     /**
