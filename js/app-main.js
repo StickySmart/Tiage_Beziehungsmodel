@@ -13921,30 +13921,116 @@
                 jungDynamikText = 'Diese komplementäre Konstellation vereint Ratio und Emotion – eine fruchtbare Spannung, die beide Seiten bereichern kann.';
             }
 
-            // Resonanzfaktoren aus LoadedArchetypProfile holen (bereits berechnet)
+            // ═══════════════════════════════════════════════════════════════════════════
+            // RESONANZFAKTOREN live berechnen basierend auf aktuellem Archetyp
+            // ═══════════════════════════════════════════════════════════════════════════
             let resonanzWerte = { R1: 1.0, R2: 1.0, R3: 1.0, R4: 1.0 };
 
-            // 1. Versuch: Aus LoadedArchetypProfile (beste Quelle)
-            const loadedIch = window.LoadedArchetypProfile?.ich?.resonanzFaktoren;
+            // PRIORITÄT 1: Live-Berechnung mit TiageSynthesis.NeedsIntegration
+            let liveCalculated = false;
+            if (typeof TiageSynthesis !== 'undefined' &&
+                typeof TiageSynthesis.NeedsIntegration !== 'undefined' &&
+                typeof TiageSynthesis.NeedsIntegration.calculateDimensionalResonance === 'function') {
 
-            if (loadedIch) {
-                // Verwende ICH-Resonanzfaktoren (Format: { R1: { value, locked }, ... })
-                resonanzWerte = {
-                    R1: loadedIch.R1?.value ?? loadedIch.R1 ?? 1.0,
-                    R2: loadedIch.R2?.value ?? loadedIch.R2 ?? 1.0,
-                    R3: loadedIch.R3?.value ?? loadedIch.R3 ?? 1.0,
-                    R4: loadedIch.R4?.value ?? loadedIch.R4 ?? 1.0
-                };
+                // Sammle Bedürfnisse für Live-Berechnung
+                // Format muss Object sein: { needId: value } (mit ID als Key, z.B. "#B204": 75)
+                let needs = null;
+
+                // 1. Aus LoadedArchetypProfile.ich.profileReview.flatNeeds (User-Eingaben!)
+                const flatNeeds = window.LoadedArchetypProfile?.ich?.profileReview?.flatNeeds;
+                if (flatNeeds) {
+                    needs = {};
+                    if (Array.isArray(flatNeeds)) {
+                        // Array-Format v1.8.128+: [{ id: "#B204", stringKey: "koerpernaehe", value: 75, ... }]
+                        flatNeeds.forEach(n => {
+                            if (n.id) needs[n.id] = n.value;
+                            if (n.stringKey) needs[n.stringKey] = n.value;
+                        });
+                    } else {
+                        // Object-Format: { needId: value } oder { needId: { value } }
+                        for (const key in flatNeeds) {
+                            if (flatNeeds.hasOwnProperty(key)) {
+                                const entry = flatNeeds[key];
+                                needs[key] = (typeof entry === 'object' && entry.value !== undefined) ? entry.value : entry;
+                            }
+                        }
+                    }
+                }
+
+                // 2. Fallback: Aus AttributeSummaryCard.getFlatNeeds() (aktuelle UI-Werte)
+                if ((!needs || Object.keys(needs).length === 0) &&
+                    typeof AttributeSummaryCard !== 'undefined' && AttributeSummaryCard.getFlatNeeds) {
+                    const cardNeeds = AttributeSummaryCard.getFlatNeeds();
+                    if (cardNeeds) {
+                        needs = {};
+                        if (Array.isArray(cardNeeds)) {
+                            cardNeeds.forEach(n => {
+                                if (n.id) needs[n.id] = n.value;
+                                if (n.stringKey) needs[n.stringKey] = n.value;
+                            });
+                        } else {
+                            for (const key in cardNeeds) {
+                                if (cardNeeds.hasOwnProperty(key)) {
+                                    const entry = cardNeeds[key];
+                                    needs[key] = (typeof entry === 'object' && entry.value !== undefined) ? entry.value : entry;
+                                }
+                            }
+                        }
+                    }
+                }
+
+                // 3. Fallback: Aus GfkBeduerfnisse.archetypProfile (Standard-Werte des Archetyps)
+                if (!needs || Object.keys(needs).length === 0) {
+                    if (typeof GfkBeduerfnisse !== 'undefined' &&
+                        GfkBeduerfnisse.archetypProfile && GfkBeduerfnisse.archetypProfile[ichArchetyp]) {
+                        needs = GfkBeduerfnisse.archetypProfile[ichArchetyp].kernbeduerfnisse || {};
+                    }
+                }
+
+                if (needs && Object.keys(needs).length > 0) {
+                    const profileContext = {
+                        archetyp: ichArchetyp,
+                        needs: needs,
+                        dominanz: personDimensions?.ich?.dominanz || null,
+                        orientierung: personDimensions?.ich?.orientierung || null,
+                        geschlecht: personDimensions?.ich?.geschlecht || null
+                    };
+
+                    const resonanz = TiageSynthesis.NeedsIntegration.calculateDimensionalResonance(profileContext);
+
+                    if (resonanz && resonanz.enabled) {
+                        resonanzWerte = {
+                            R1: resonanz.leben || 1.0,
+                            R2: resonanz.philosophie || 1.0,
+                            R3: resonanz.dynamik || 1.0,
+                            R4: resonanz.identitaet || 1.0
+                        };
+                        liveCalculated = true;
+                    }
+                }
             }
-            // 2. Fallback: Aus ResonanzCard (benutzerdefinierte Werte)
-            else if (typeof ResonanzCard !== 'undefined') {
-                const cardValues = ResonanzCard.getValues('ich');
-                resonanzWerte = {
-                    R1: cardValues.R1 || 1.0,
-                    R2: cardValues.R2 || 1.0,
-                    R3: cardValues.R3 || 1.0,
-                    R4: cardValues.R4 || 1.0
-                };
+
+            // PRIORITÄT 2: Aus LoadedArchetypProfile (falls Live-Berechnung fehlschlug)
+            if (!liveCalculated) {
+                const loadedIch = window.LoadedArchetypProfile?.ich?.resonanzFaktoren;
+                if (loadedIch) {
+                    resonanzWerte = {
+                        R1: loadedIch.R1?.value ?? loadedIch.R1 ?? 1.0,
+                        R2: loadedIch.R2?.value ?? loadedIch.R2 ?? 1.0,
+                        R3: loadedIch.R3?.value ?? loadedIch.R3 ?? 1.0,
+                        R4: loadedIch.R4?.value ?? loadedIch.R4 ?? 1.0
+                    };
+                }
+                // PRIORITÄT 3: Aus ResonanzCard
+                else if (typeof ResonanzCard !== 'undefined') {
+                    const cardValues = ResonanzCard.getValues('ich');
+                    resonanzWerte = {
+                        R1: cardValues.R1 || 1.0,
+                        R2: cardValues.R2 || 1.0,
+                        R3: cardValues.R3 || 1.0,
+                        R4: cardValues.R4 || 1.0
+                    };
+                }
             }
 
             // Gewichtungs-Matrix: Wie stark beeinflusst jeder Faktor jede Perspektive (in %)
@@ -14944,48 +15030,67 @@
 
             // ═══════════════════════════════════════════════════════════════════════════
             // RESONANZFAKTOREN neu berechnen bei Archetyp-Wechsel (VOR Content-Anzeige!)
+            // Hinweis: Die Tabelle in getScoreContent() berechnet die Werte jetzt live!
             // ═══════════════════════════════════════════════════════════════════════════
             if (typeof ResonanzCard !== 'undefined' && typeof ResonanzCard.loadCalculatedValues === 'function') {
                 const personKey = person === 'ich' ? 'ich' : 'partner';
                 const newArchetype = person === 'ich' ? currentArchetype : selectedPartner;
 
                 // Sammle Profil-Kontext für Resonanz-Berechnung
-                const resonanzProfileContext = {
-                    archetyp: newArchetype,
-                    needs: null,
-                    dominanz: personDimensions[personKey]?.dominanz || null,
-                    orientierung: personDimensions[personKey]?.orientierung || null,
-                    geschlecht: personDimensions[personKey]?.geschlecht || null
-                };
+                let needs = null;
 
-                // Versuche Bedürfnisse aus verschiedenen Quellen zu laden
-                // 1. Aus gespeicherten Needs (TiageState)
-                if (typeof TiageState !== 'undefined' && TiageState.get) {
-                    const savedNeeds = TiageState.get('tiage_needs_integrated');
-                    if (savedNeeds) {
-                        resonanzProfileContext.needs = {};
-                        for (const needKey in savedNeeds) {
-                            if (savedNeeds.hasOwnProperty(needKey)) {
-                                resonanzProfileContext.needs[needKey] = savedNeeds[needKey].value || savedNeeds[needKey];
+                // 1. Aus LoadedArchetypProfile.profileReview.flatNeeds (User-Eingaben!)
+                const flatNeeds = window.LoadedArchetypProfile?.[personKey]?.profileReview?.flatNeeds;
+                if (flatNeeds) {
+                    needs = {};
+                    if (Array.isArray(flatNeeds)) {
+                        flatNeeds.forEach(n => {
+                            if (n.id) needs[n.id] = n.value;
+                            if (n.stringKey) needs[n.stringKey] = n.value;
+                        });
+                    } else {
+                        for (const key in flatNeeds) {
+                            if (flatNeeds.hasOwnProperty(key)) {
+                                const entry = flatNeeds[key];
+                                needs[key] = (typeof entry === 'object' && entry.value !== undefined) ? entry.value : entry;
                             }
                         }
                     }
                 }
 
-                // 2. Fallback: Aus Archetyp-Profil (GfkBeduerfnisse)
-                if (!resonanzProfileContext.needs && typeof GfkBeduerfnisse !== 'undefined' &&
-                    GfkBeduerfnisse.archetypProfile && GfkBeduerfnisse.archetypProfile[newArchetype]) {
-                    resonanzProfileContext.needs = GfkBeduerfnisse.archetypProfile[newArchetype].kernbeduerfnisse || {};
+                // 2. Fallback: Aus AttributeSummaryCard
+                if ((!needs || Object.keys(needs).length === 0) &&
+                    typeof AttributeSummaryCard !== 'undefined' && AttributeSummaryCard.getFlatNeeds) {
+                    const cardNeeds = AttributeSummaryCard.getFlatNeeds();
+                    if (cardNeeds) {
+                        needs = {};
+                        if (Array.isArray(cardNeeds)) {
+                            cardNeeds.forEach(n => {
+                                if (n.id) needs[n.id] = n.value;
+                                if (n.stringKey) needs[n.stringKey] = n.value;
+                            });
+                        }
+                    }
                 }
 
-                // 3. Fallback: Aus BaseArchetypProfile
-                if (!resonanzProfileContext.needs && typeof BaseArchetypProfile !== 'undefined' &&
-                    BaseArchetypProfile[newArchetype] && BaseArchetypProfile[newArchetype].kernbeduerfnisse) {
-                    resonanzProfileContext.needs = BaseArchetypProfile[newArchetype].kernbeduerfnisse;
+                // 3. Fallback: Standard-Werte des Archetyps
+                if (!needs || Object.keys(needs).length === 0) {
+                    if (typeof GfkBeduerfnisse !== 'undefined' &&
+                        GfkBeduerfnisse.archetypProfile && GfkBeduerfnisse.archetypProfile[newArchetype]) {
+                        needs = GfkBeduerfnisse.archetypProfile[newArchetype].kernbeduerfnisse || {};
+                    }
                 }
+
+                const resonanzProfileContext = {
+                    archetyp: newArchetype,
+                    needs: needs,
+                    dominanz: personDimensions[personKey]?.dominanz || null,
+                    orientierung: personDimensions[personKey]?.orientierung || null,
+                    geschlecht: personDimensions[personKey]?.geschlecht || null
+                };
 
                 // Berechne und aktualisiere Resonanzfaktoren
-                if (resonanzProfileContext.needs) {
+                if (resonanzProfileContext.needs && Object.keys(resonanzProfileContext.needs).length > 0) {
                     const resonanzLoaded = ResonanzCard.loadCalculatedValues(resonanzProfileContext);
                     if (resonanzLoaded) {
                         // Aktualisiere auch LoadedArchetypProfile (falls vorhanden)
