@@ -14357,31 +14357,42 @@
 
             console.log('[ResonanzModal] ICH:', resonanzIch, 'PARTNER:', resonanzPartner, 'KOMBINIERT:', resonanzWerte);
 
-            // Perspektiven-Konfiguration
-            const perspektiven = {
-                P1: { icon: '📊', label: 'GFK', color: '#3B82F6' },
-                P2: { icon: '🕉️', label: 'Osho', color: '#F59E0B' },
-                P3: { icon: '🔧', label: 'Pirsig', color: '#10B981' },
-                P4: { icon: '💜', label: 'Kink', color: '#8B5CF6' }
+            // R-Faktoren Konfiguration mit AGOD-Zuordnung
+            // Quelle: synthesisCalculator.js - finalScore Berechnung
+            const rFaktoren = {
+                R1: {
+                    label: 'Leben',
+                    icon: '🔥',
+                    color: '#E63946',
+                    agod: 'Orientierung',
+                    agodIcon: 'O',
+                    beschreibung: 'Kohärenz der Lebensbedürfnisse'
+                },
+                R2: {
+                    label: 'Philosophie',
+                    icon: '🧠',
+                    color: '#2A9D8F',
+                    agod: 'Archetyp',
+                    agodIcon: 'A',
+                    beschreibung: 'Kohärenz der Weltanschauung'
+                },
+                R3: {
+                    label: 'Dynamik',
+                    icon: '⚡',
+                    color: '#8B5CF6',
+                    agod: 'Dominanz',
+                    agodIcon: 'D',
+                    beschreibung: 'Kohärenz der Machtdynamik'
+                },
+                R4: {
+                    label: 'Identität',
+                    icon: '💚',
+                    color: '#F4A261',
+                    agod: 'Geschlecht',
+                    agodIcon: 'G',
+                    beschreibung: 'Kohärenz der Geschlechtsidentität'
+                }
             };
-
-            // Gewichtungs-Matrix (transponiert für Perspektiven-Zeilen)
-            // Welchen Einfluss hat jeder R-Faktor auf diese Perspektive?
-            const gewichtMatrix = {
-                P1: { R1: 0.40, R2: 0.25, R3: 0.10, R4: 0.25 }, // GFK
-                P2: { R1: 0.30, R2: 0.15, R3: 0.25, R4: 0.25 }, // Osho
-                P3: { R1: 0.15, R2: 0.45, R3: 0.15, R4: 0.25 }, // Pirsig
-                P4: { R1: 0.15, R2: 0.15, R3: 0.50, R4: 0.25 }  // Kink
-            };
-
-            // Berechne gewichteten Resonanz-Wert für eine Perspektive
-            function berechnePerspektivWert(resonanz, perspektiveKey) {
-                const gewichte = gewichtMatrix[perspektiveKey];
-                return (resonanz.R1 * gewichte.R1) +
-                       (resonanz.R2 * gewichte.R2) +
-                       (resonanz.R3 * gewichte.R3) +
-                       (resonanz.R4 * gewichte.R4);
-            }
 
             // Wert-Anzeige mit Farbcodierung
             function getWertDisplay(wert) {
@@ -14391,22 +14402,25 @@
                 return `<span style="color: ${color}; font-weight: 600;">${wert.toFixed(2)}</span>`;
             }
 
-            // Tabellen-Zeilen für Perspektiven
+            // Tabellen-Zeilen für R-Faktoren
             let tableRows = '';
 
-            ['P1', 'P2', 'P3', 'P4'].forEach(pk => {
-                const persp = perspektiven[pk];
-
-                // Berechne gewichtete Werte für jede Person
-                const wertIch = berechnePerspektivWert(resonanzIch, pk);
-                const wertPartner = berechnePerspektivWert(resonanzPartner, pk);
-                const wertKombi = Math.round(wertIch * wertPartner * 1000) / 1000;
+            ['R1', 'R2', 'R3', 'R4'].forEach(rk => {
+                const rf = rFaktoren[rk];
+                const wertIch = resonanzIch[rk] || 1.0;
+                const wertPartner = resonanzPartner[rk] || 1.0;
+                const wertKombi = resonanzWerte[rk] || 1.0;
 
                 tableRows += `
                     <tr style="border-bottom: 1px solid rgba(255,255,255,0.08);">
                         <td style="padding: 12px 14px; font-size: 13px;">
-                            <span style="color: ${persp.color}; font-weight: 600;">${persp.icon}</span>
-                            <span style="color: var(--text-secondary); margin-left: 8px;">${persp.label}</span>
+                            <div style="display: flex; align-items: center; gap: 8px;">
+                                <span style="color: ${rf.color}; font-weight: 600;">${rf.icon} ${rk}</span>
+                                <span style="color: var(--text-secondary);">${rf.label}</span>
+                            </div>
+                            <div style="font-size: 10px; color: var(--text-muted); margin-top: 2px;">
+                                → multipliziert <strong>${rf.agodIcon}</strong> (${rf.agod})
+                            </div>
                         </td>
                         <td style="padding: 12px 10px; text-align: center; font-size: 14px;">${getWertDisplay(wertIch)}</td>
                         <td style="padding: 12px 10px; text-align: center; font-size: 14px;">${getWertDisplay(wertPartner)}</td>
@@ -14429,8 +14443,8 @@
                         <div style="display: flex; align-items: center; gap: 12px;">
                             <span style="font-size: 24px;">🎛️</span>
                             <div>
-                                <h2 style="margin: 0; font-size: 18px; color: var(--text-primary);">Resonanzfaktoren × Perspektiven</h2>
-                                <p style="margin: 4px 0 0 0; font-size: 12px; color: var(--text-muted);">Wie Resonanzfaktoren die Perspektiven beeinflussen</p>
+                                <h2 style="margin: 0; font-size: 18px; color: var(--text-primary);">Resonanzfaktoren (R1-R4)</h2>
+                                <p style="margin: 4px 0 0 0; font-size: 12px; color: var(--text-muted);">Kohärenz zwischen Bedürfnissen und Archetyp</p>
                             </div>
                         </div>
                         <button onclick="closeResonanzfaktorenModal()" style="background: rgba(255,255,255,0.1); border: none; border-radius: 8px; width: 36px; height: 36px; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 18px; color: var(--text-secondary); transition: all 0.2s;">×</button>
@@ -14465,7 +14479,7 @@
                             <table style="width: 100%; border-collapse: collapse;">
                                 <thead>
                                     <tr style="border-bottom: 2px solid rgba(139,92,246,0.3); background: rgba(0,0,0,0.2);">
-                                        <th style="padding: 12px 14px; text-align: left; color: var(--text-muted); font-weight: 500; font-size: 12px;">Perspektive</th>
+                                        <th style="padding: 12px 14px; text-align: left; color: var(--text-muted); font-weight: 500; font-size: 12px;">R-Faktor → AGOD</th>
                                         <th style="padding: 12px 10px; text-align: center; color: var(--success); font-weight: 500; font-size: 12px;">ICH</th>
                                         <th style="padding: 12px 10px; text-align: center; color: var(--danger); font-weight: 500; font-size: 12px;">PARTNER</th>
                                         <th style="padding: 12px 10px; text-align: center; color: #8B5CF6; font-weight: 600; font-size: 12px; background: rgba(139,92,246,0.1);">ICH × PARTNER</th>
@@ -14477,11 +14491,23 @@
                             </table>
                         </div>
 
-                        <!-- Legende -->
-                        <div style="display: flex; gap: 16px; margin-top: 16px; flex-wrap: wrap; align-items: center; justify-content: center;">
-                            <span style="font-size: 11px; color: var(--text-muted);">Werte = gewichtete Resonanz</span>
-                            <span style="font-size: 11px; color: #22c55e;">&gt;1.0 verstärkt</span>
-                            <span style="font-size: 11px; color: #ef4444;">&lt;1.0 schwächt</span>
+                        <!-- Erläuterung -->
+                        <div style="margin-top: 16px; padding: 12px; background: rgba(0,0,0,0.2); border-radius: 8px; font-size: 11px; color: var(--text-muted); line-height: 1.6;">
+                            <div style="margin-bottom: 8px;">
+                                <strong style="color: var(--text-secondary);">Was zeigt diese Tabelle?</strong>
+                            </div>
+                            <div>
+                                Jeder R-Faktor misst die <em>Kohärenz</em> zwischen deinen Bedürfnissen und dem gewählten Archetyp.
+                                Der kombinierte Wert (ICH × PARTNER) multipliziert den jeweiligen AGOD-Score:
+                            </div>
+                            <div style="margin-top: 8px; font-family: monospace; font-size: 10px;">
+                                Score = (A × R2) + (G × R4) + (O × R1) + (D × R3)
+                            </div>
+                            <div style="margin-top: 8px; display: flex; gap: 12px; flex-wrap: wrap;">
+                                <span style="color: #22c55e;">● &gt;1.0 = verstärkt Score</span>
+                                <span style="color: #eab308;">● =1.0 = neutral</span>
+                                <span style="color: #ef4444;">● &lt;1.0 = schwächt Score</span>
+                            </div>
                         </div>
                     </div>
                 </div>`;
