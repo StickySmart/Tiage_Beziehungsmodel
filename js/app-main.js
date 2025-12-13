@@ -10435,7 +10435,16 @@
             results.sort((a, b) => b.score - a.score);
             console.log('[findBestPartnerMatch] ICH:', ichArchetype);
             console.log('[findBestPartnerMatch] Ranking:', results);
-            console.log('[findBestPartnerMatch] Bester Match:', bestMatch, 'mit Score:', bestScore);
+
+            // Wähle den besten Match aus, der NICHT derselbe Archetyp wie ICH ist
+            // (nächstbester statt identischer Archetyp)
+            const bestDifferentMatch = results.find(r => r.archetype !== ichArchetype);
+            if (bestDifferentMatch) {
+                bestMatch = bestDifferentMatch.archetype;
+                bestScore = bestDifferentMatch.score;
+            }
+
+            console.log('[findBestPartnerMatch] Bester Match (≠ ICH):', bestMatch, 'mit Score:', bestScore);
 
             // Wähle den besten Match aus
             if (bestMatch) {
@@ -10599,8 +10608,18 @@
 
             // Sortiere Ergebnisse für Debugging
             results.sort((a, b) => b.score - a.score);
+            console.log('[findBestIchMatch] PARTNER:', partnerArchetype);
             console.log('[findBestIchMatch] Ranking:', results);
-            console.log('[findBestIchMatch] Bester ICH-Match:', bestMatch, 'mit Score:', bestScore);
+
+            // Wähle den besten Match aus, der NICHT derselbe Archetyp wie PARTNER ist
+            // (nächstbester statt identischer Archetyp)
+            const bestDifferentMatch = results.find(r => r.archetype !== partnerArchetype);
+            if (bestDifferentMatch) {
+                bestMatch = bestDifferentMatch.archetype;
+                bestScore = bestDifferentMatch.score;
+            }
+
+            console.log('[findBestIchMatch] Bester ICH-Match (≠ PARTNER):', bestMatch, 'mit Score:', bestScore);
 
             // Wähle den besten Match aus
             if (bestMatch) {
