@@ -28,36 +28,41 @@ Eine **eigenständige Synthese** von Tiage, entwickelt durch Online-Recherche un
 
 ## Die 4 Qualitätsfaktoren
 
-| Faktor | Gewicht | Dimension | Beschreibung |
-|--------|---------|-----------|--------------|
-| **Orientierungs-Kompatibilität** | 25% | Pathos | Körperliche Polarität und Anziehung |
+| Faktor | Standard | Dimension | Beschreibung |
+|--------|----------|-----------|--------------|
+| **Orientierungs-Kompatibilität** | 40% | Pathos | Körperliche Polarität und Anziehung |
 | **Archetyp-Übereinstimmung** | 25% | Logos | Fundamentale Beziehungsphilosophie |
-| **Dominanz-Harmonie** | 25% | Pathos | Energetische Dynamik (Dom/Sub/Switch) |
-| **Geschlechts-Attraktion** | 25% | Pathos | Gender-Chemie als Feinabstimmung |
+| **Dominanz-Harmonie** | 20% | Pathos | Energetische Dynamik (Dom/Sub/Switch) |
+| **Geschlechts-Attraktion** | 15% | Pathos | Gender-Chemie als Feinabstimmung |
+
+*Gewichtungen sind über UI-Slider anpassbar (Summe = 100%)*
 
 ---
 
 ## Logos vs. Pathos (25:75)
 
-Die Gewichtung basiert auf philosophischen Grundlagen:
+Die Standard-Gewichtung basiert auf philosophischen Grundlagen:
 
-**Pathos (75% - Gefühl)**
+**Pathos (75% - Gefühl)** = Orientierung (40%) + Dominanz (20%) + Geschlecht (15%)
 - Pirsig: "Dynamische Qualität" - Veränderung, Wachstum
 - OSHO: "Akzeptiere was IST" - das Erleben kommt zuerst
 - Emotionale Anziehung, Intuition, Resonanz
 - "Pathos vor Logos" - Menschen erleben Beziehung zuerst körperlich
 
-**Logos (25% - Verstand)**
+**Logos (25% - Verstand)** = Archetyp (25%)
 - Pirsig: "Statische Qualität" - bewährte Muster, Stabilität
 - Die Archetyp-Frage stellt sich NACH den Pathos-Faktoren
 - Struktur, Regeln, rationale Entscheidungen
 
 ---
 
-## Berechnung
+## Berechnung (v3.1)
 
 ```
-Qualitätsindex = (Orientierung × 25%) + (Archetyp × 25%) + (Dominanz × 25%) + (Geschlecht × 25%)
+Q = (O × wO × r1) + (A × wA × r2) + (D × wD × r3) + (G × wG × r4)
+
+Standard-Gewichtungen: wO=40%, wA=25%, wD=20%, wG=15%
+Resonanz-Faktoren:     r1=R_Leben, r2=R_Philosophie, r3=R_Dynamik, r4=R_Identität
 ```
 
 ### Ergebnis-Interpretation

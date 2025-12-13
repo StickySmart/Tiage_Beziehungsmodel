@@ -20,11 +20,37 @@ TiageSynthesis.Constants = {
     // - Dominanz:     20% Logos / 80% Pathos (Energetische Dynamik)
     // - Geschlecht:   Primär = Logos, Sekundär = Pathos
 
-    WEIGHTS: {
+    // WEIGHTS werden dynamisch aus UI geladen (Standard: 40/25/20/15)
+    // Getter-Funktion für aktuelle Gewichtungen
+    getWeights: function() {
+        // Versuche UI-Gewichtungen zu laden
+        if (typeof getGewichtungen === 'function') {
+            var gew = getGewichtungen();
+            return {
+                orientierung: (gew.O || 40) / 100,
+                archetyp: (gew.A || 25) / 100,
+                dominanz: (gew.D || 20) / 100,
+                geschlecht: (gew.G || 15) / 100
+            };
+        }
+        // Fallback: Standard-Gewichtungen
+        return this.DEFAULT_WEIGHTS;
+    },
+
+    // Standard-Gewichtungen (UI-Defaults)
+    DEFAULT_WEIGHTS: {
+        orientierung: 0.40,  // 40% - Sexuelle Orientierung
         archetyp: 0.25,      // 25% - Beziehungsphilosophie
-        orientierung: 0.25,  // 25% - Sexuelle Orientierung
-        dominanz: 0.25,      // 25% - Dom/Sub/Switch Dynamik
-        geschlecht: 0.25     // 25% - Gender-Attraktion
+        dominanz: 0.20,      // 20% - Dom/Sub/Switch Dynamik
+        geschlecht: 0.15     // 15% - Gender-Attraktion
+    },
+
+    // Legacy: Für Abwärtskompatibilität (wird von getWeights() überschrieben)
+    WEIGHTS: {
+        orientierung: 0.40,  // 40% - Sexuelle Orientierung (UI-Standard)
+        archetyp: 0.25,      // 25% - Beziehungsphilosophie
+        dominanz: 0.20,      // 20% - Dom/Sub/Switch Dynamik
+        geschlecht: 0.15     // 15% - Gender-Attraktion
     },
 
     FACTOR_COMPOSITION: {
@@ -55,13 +81,13 @@ TiageSynthesis.Constants = {
     // MULTI-DIMENSIONALE RESONANZ (v3.1)
     // ═══════════════════════════════════════════════════════════════════════
     //
-    // Formel pro Dimension: R_dim = 0.9 + (Match × 0.2)
-    // Gesamt: R = (R_beduerfnisse + R_philosophie + R_leben + R_dynamik) / 4
+    // Formel pro Dimension: R_dim = 0.5 + (Übereinstimmung × 1.0)
+    // Range: 0.5 (keine Übereinstimmung) bis 1.5 (perfekte Übereinstimmung)
     //
     // Schwellenwerte:
-    //   R ≥ 1.05 → Resonanz ⬆️
-    //   R ≤ 0.97 → Dissonanz ⬇️
-    //   R 0.97-1.05 → Neutral ➡️
+    //   R ≥ 1.25 → Resonanz ⬆️
+    //   R ≤ 0.75 → Dissonanz ⬇️
+    //   R 0.75-1.25 → Neutral ➡️
     //
     RESONANCE_DIMENSIONAL: {
         ENABLED: true,       // Multi-Dimensional aktivieren
