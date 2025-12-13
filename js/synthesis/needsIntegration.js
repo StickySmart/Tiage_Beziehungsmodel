@@ -305,16 +305,21 @@ TiageSynthesis.NeedsIntegration = {
         var totalDiff = 0;
         var count = 0;
 
-        for (var needId in expected) {
-            if (expected.hasOwnProperty(needId) && expected[needId] !== null) {
-                var expectedEntry = expected[needId];
+        for (var needKey in expected) {
+            if (expected.hasOwnProperty(needKey) && expected[needKey] !== null) {
+                var expectedEntry = expected[needKey];
 
                 // Unterstütze beide Formate: direkte Zahl oder Objekt mit .value
                 var expectedValue = (typeof expectedEntry === 'object' && expectedEntry.value !== undefined)
                     ? expectedEntry.value
                     : expectedEntry;
 
-                var actualValue = needs[needId];
+                // Lookup-Key: verwende ID wenn vorhanden, sonst den Key selbst
+                var lookupKey = (typeof expectedEntry === 'object' && expectedEntry.id)
+                    ? expectedEntry.id
+                    : needKey;
+
+                var actualValue = needs[lookupKey];
 
                 if (actualValue !== undefined && typeof expectedValue === 'number') {
                     var diff = Math.abs(actualValue - expectedValue);
