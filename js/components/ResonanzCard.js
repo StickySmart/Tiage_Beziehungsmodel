@@ -347,10 +347,8 @@ const ResonanzCard = (function() {
         // GFK-Anzeige aktualisieren
         updateGfkDisplay();
 
-        // Score neu berechnen wenn verfügbar
-        if (typeof updateDisplay === 'function') {
-            updateDisplay();
-        }
+        // Alle Listener benachrichtigen (feuert Event + updateDisplay)
+        notifyChange(getCurrentPerson(), 'slider');
     }
 
     /**
@@ -363,6 +361,34 @@ const ResonanzCard = (function() {
         if (gfkEl) {
             gfkEl.textContent = gfk.toFixed(2);
         }
+    }
+
+    /**
+     * Benachrichtigt alle Listener über Änderungen an den Resonanzfaktoren
+     * Feuert ein Custom Event und ruft updateDisplay() auf
+     * @param {string} person - 'ich' oder 'partner'
+     * @param {string} source - Quelle der Änderung (z.B. 'slider', 'calculated', 'reset')
+     */
+    function notifyChange(person, source) {
+        person = person || getCurrentPerson();
+        const values = getValues(person);
+
+        // Custom Event für andere Komponenten
+        const event = new CustomEvent('resonanzfaktoren-changed', {
+            detail: {
+                person: person,
+                values: values,
+                source: source || 'unknown'
+            }
+        });
+        window.dispatchEvent(event);
+
+        // Score neu berechnen wenn verfügbar
+        if (typeof updateDisplay === 'function') {
+            updateDisplay();
+        }
+
+        console.log('[ResonanzCard] Änderung notifiziert für', person, '- Quelle:', source);
     }
 
     /**
@@ -446,10 +472,8 @@ const ResonanzCard = (function() {
 
         updateGfkDisplay();
 
-        // Score neu berechnen
-        if (typeof updateDisplay === 'function') {
-            updateDisplay();
-        }
+        // Alle Listener benachrichtigen
+        notifyChange(person, 'reset');
     }
 
     /**
@@ -545,7 +569,8 @@ const ResonanzCard = (function() {
             if (person === getCurrentPerson()) {
                 updateGfkDisplay();
             }
-            console.log('[ResonanzCard] Berechnete Werte geladen für', person + ':', calculatedValues);
+            // Alle Listener benachrichtigen
+            notifyChange(person, 'calculated');
         }
     }
 
@@ -652,6 +677,7 @@ const ResonanzCard = (function() {
         calculateFromProfile,
         loadCalculatedValues,
         hasStoredValues,
+        notifyChange,
         getCurrentPerson,
         getStorageKey,
         DEFAULT_VALUES,
