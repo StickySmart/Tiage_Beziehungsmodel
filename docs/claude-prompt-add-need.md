@@ -148,12 +148,27 @@ Wie verändert sich das Bedürfnis durch:
 | Homo | +/- ? | |
 | Bi/Pan | +/- ? | |
 
-### Geschlecht-Modifier
+### Geschlecht-Modifier (Primary/Secondary)
 | Typ | Delta | Begründung |
 |-----|-------|------------|
-| Männlich | +/- ? | |
-| Weiblich | +/- ? | |
-| Non-Binär | +/- ? | |
+| cis_mann | +/- ? | |
+| cis_frau | +/- ? | |
+| trans_mann | +/- ? | |
+| trans_frau | +/- ? | |
+| nonbinaer | +/- ? | |
+| genderfluid | +/- ? | |
+| agender | +/- ? | |
+| intersex | +/- ? | |
+| divers | +/- ? | |
+
+### Geschlechtsidentität-Modifier
+| Typ | Delta | Begründung |
+|-----|-------|------------|
+| cis | +/- ? | |
+| trans | +/- ? | |
+| nonbinaer | +/- ? | |
+| fluid | +/- ? | |
+| suchend | +/- ? | |
 
 ---
 
