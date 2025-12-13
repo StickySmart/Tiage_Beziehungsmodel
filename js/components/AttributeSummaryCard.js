@@ -576,8 +576,18 @@ const AttributeSummaryCard = (function() {
             console.log('[AttributeSummaryCard] Neuer Archetyp geladen - Bedürfnisse zurückgesetzt');
         }
 
-        // Hole ALLE Bedürfnisse aus dem Profil (alle 220)
-        const kernbeduerfnisse = profil.kernbeduerfnisse || {};
+        // Hole ALLE Bedürfnisse - BEVORZUGE berechnete Werte aus LoadedArchetypProfile (Basis + Modifikatoren)
+        let kernbeduerfnisse = {};
+
+        // 1. Versuche berechnete Werte aus LoadedArchetypProfile zu holen
+        if (typeof window !== 'undefined' && window.LoadedArchetypProfile?.ich?.profileReview?.flatNeeds) {
+            kernbeduerfnisse = window.LoadedArchetypProfile.ich.profileReview.flatNeeds;
+            console.log('[AttributeSummaryCard] Verwende berechnete Werte aus LoadedArchetypProfile');
+        } else {
+            // 2. Fallback: Statische Archetyp-Werte
+            kernbeduerfnisse = profil.kernbeduerfnisse || {};
+            console.log('[AttributeSummaryCard] Fallback auf statische kernbeduerfnisse');
+        }
 
         // Initialisiere Werte aus Profil (neue Array-Struktur)
         Object.keys(kernbeduerfnisse).forEach(needId => {
