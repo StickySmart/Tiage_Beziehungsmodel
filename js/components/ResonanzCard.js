@@ -609,6 +609,32 @@ const ResonanzCard = (function() {
         return false;
     }
 
+    /**
+     * Prüft ob bereits Resonanzwerte in localStorage gespeichert sind
+     * @param {string} person - 'ich' oder 'partner' (optional, default: getCurrentPerson())
+     * @returns {boolean} true wenn gespeicherte Werte existieren
+     */
+    function hasStoredValues(person) {
+        person = person || getCurrentPerson();
+        const storageKey = getStorageKey(person);
+        try {
+            const stored = localStorage.getItem(storageKey);
+            if (stored) {
+                const parsed = JSON.parse(stored);
+                // Prüfe ob mindestens ein Wert existiert und nicht der Default ist
+                return parsed && (
+                    parsed.R1?.value !== undefined ||
+                    parsed.R2?.value !== undefined ||
+                    parsed.R3?.value !== undefined ||
+                    parsed.R4?.value !== undefined
+                );
+            }
+        } catch (e) {
+            console.warn('Fehler beim Prüfen gespeicherter Resonanzfaktoren:', e);
+        }
+        return false;
+    }
+
     return {
         renderCard,
         renderAll,
@@ -624,6 +650,7 @@ const ResonanzCard = (function() {
         setCalculatedValues,
         calculateFromProfile,
         loadCalculatedValues,
+        hasStoredValues,
         getCurrentPerson,
         getStorageKey,
         DEFAULT_VALUES,
