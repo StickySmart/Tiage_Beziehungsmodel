@@ -644,17 +644,17 @@ TiageSynthesis.NeedsIntegration = {
     //
     // Berücksichtigt sekundäre Kategorien bei der Aggregation:
     // - Primäre Kategorie: 100% Gewichtung
-    // - Sekundäre Kategorien: SECONDARY_WEIGHT (default 50%)
+    // - Sekundäre Kategorien: SECONDARY_WEIGHT (default 30%)
     //
     // Beispiel: Berührung (primär: existenz, sekundär: [zuneigung, dynamik, sicherheit])
-    // Bei Wert 80: existenz +80, zuneigung +40, dynamik +40, sicherheit +40
+    // Bei Wert 80: existenz +80, zuneigung +24, dynamik +24, sicherheit +24
     // ═══════════════════════════════════════════════════════════════════════
 
     /**
      * Gewichtung für sekundäre Kategorien (0.0 - 1.0)
-     * 0.5 = 50% des Wertes fließt auch in sekundäre Kategorien
+     * 0.3 = 30% des Wertes fließt auch in sekundäre Kategorien
      */
-    SECONDARY_WEIGHT: 0.5,
+    SECONDARY_WEIGHT: 0.3,
 
     /**
      * Mapping: Kategorie-Keys → Resonanzfaktoren
