@@ -57,10 +57,10 @@ docs/
 
 ## Core Formulas
 
-### Quality Index
+### Quality Index (v3.1)
 
 ```
-Q = [(O × 0.40) + (A × 0.25) + (D × 0.20) + (G × 0.15)] × R
+Q = (O × 0.25 × R₁) + (A × 0.25 × R₂) + (D × 0.25 × R₃) + (G × 0.25 × R₄)
 ```
 
 Where:
@@ -68,7 +68,10 @@ Where:
 - **A** = Archetype Score (0-100) - Relationship philosophy
 - **D** = Dominance Score (0-100) - Energetic dynamic
 - **G** = Gender Score (0-100) - Gender chemistry
-- **R** = Resonance Factor (0.9-1.1) - Meta-modulator
+- **R₁** = R_Life (modulates O)
+- **R₂** = R_Philosophy (modulates A)
+- **R₃** = R_Dynamics (modulates D)
+- **R₄** = R_Identity (modulates G)
 
 ### Resonance Factor
 

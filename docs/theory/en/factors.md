@@ -8,14 +8,14 @@ The Tiage Relationship Model uses **4 main factors** to calculate relationship q
 
 | Factor | Weight | Dimension | Description |
 |--------|--------|-----------|-------------|
-| **Orientation** | 40% | Pathos | Sexual orientation and direction of attraction |
+| **Orientation** | 25% | Pathos | Sexual orientation and direction of attraction |
 | **Gender** | 25% | Pathos | Gender chemistry and identity resonance |
-| **Dominance** | 20% | Pathos | Energetic dynamic and power relationship |
-| **Archetype** | 15% | Logos | Fundamental relationship philosophy |
+| **Dominance** | 25% | Pathos | Energetic dynamic and power relationship |
+| **Archetype** | 25% | Logos | Fundamental relationship philosophy |
 
 ---
 
-## 1. Orientation Factor (40%)
+## 1. Orientation Factor (25%)
 
 **Dimension:** Pathos (Feeling)
 
@@ -40,7 +40,7 @@ Defines sexual orientation and thus the basic direction of attraction.
 
 ---
 
-## 2. Archetype Factor (15%)
+## 2. Archetype Factor (25%)
 
 **Dimension:** Logos (Mind)
 
@@ -74,7 +74,7 @@ Archetype compatibility is calculated via an 8×8 matrix (`archetype-matrix.json
 
 ---
 
-## 3. Dominance Factor (20%)
+## 3. Dominance Factor (25%)
 
 **Dimension:** Pathos (Feeling)
 
@@ -165,14 +165,14 @@ The resonance coefficient moves between **0.9 and 1.1** per dimension.
 ## Total Formula (v3.1)
 
 ```
-Q = (A × 0.15 × R_Philosophy) + (O × 0.40 × R_Life) + (D × 0.20 × R_Dynamics) + (G × 0.25 × R_Identity)
+Q = (O × 0.25 × R₁) + (A × 0.25 × R₂) + (D × 0.25 × R₃) + (G × 0.25 × R₄)
 ```
 
 Where:
-- A = Archetype Score (0-100) × 15% × 🧠 R_Philosophy
-- O = Orientation Score (0-100) × 40% × 🔥 R_Life
-- D = Dominance Score (0-100) × 20% × ⚡ R_Dynamics
-- G = Gender Score (0-100) × 25% × 💚 R_Identity
+- O = Orientation Score (0-100) × 25% × R₁ (R_Life)
+- A = Archetype Score (0-100) × 25% × R₂ (R_Philosophy)
+- D = Dominance Score (0-100) × 25% × R₃ (R_Dynamics)
+- G = Gender Score (0-100) × 25% × R₄ (R_Identity)
 
 ### Important Distinction
 

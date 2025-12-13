@@ -64,10 +64,10 @@ docs/
 
 ## Kern-Formeln
 
-### Qualitätsindex
+### Qualitätsindex (v3.1)
 
 ```
-Q = [(O × 0.40) + (A × 0.25) + (D × 0.20) + (G × 0.15)] × R
+Q = (O × 0.25 × R₁) + (A × 0.25 × R₂) + (D × 0.25 × R₃) + (G × 0.25 × R₄)
 ```
 
 Wobei:
@@ -75,7 +75,10 @@ Wobei:
 - **A** = Archetyp-Score (0-100) - Beziehungsphilosophie
 - **D** = Dominanz-Score (0-100) - Energetische Dynamik
 - **G** = Geschlechts-Score (0-100) - Gender-Chemie
-- **R** = Resonanz-Faktor (0.9-1.1) - Meta-Modulator
+- **R₁** = R_Leben (moduliert O)
+- **R₂** = R_Philosophie (moduliert A)
+- **R₃** = R_Dynamik (moduliert D)
+- **R₄** = R_Identität (moduliert G)
 
 ### Resonanz-Faktor
 

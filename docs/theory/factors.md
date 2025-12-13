@@ -8,14 +8,14 @@ Das Tiage-Beziehungsmodell verwendet **4 Hauptfaktoren** zur Berechnung der Bezi
 
 | Faktor | Gewicht | Dimension | Beschreibung |
 |--------|---------|-----------|--------------|
-| **Orientierung** | 40% | Pathos | Sexuelle Orientierung und Anziehungsrichtung |
+| **Orientierung** | 25% | Pathos | Sexuelle Orientierung und Anziehungsrichtung |
 | **Geschlecht** | 25% | Pathos | Gender-Chemie und Identitäts-Resonanz |
-| **Dominanz** | 20% | Pathos | Energetische Dynamik und Machtverhältnis |
-| **Archetyp** | 15% | Logos | Fundamentale Beziehungsphilosophie |
+| **Dominanz** | 25% | Pathos | Energetische Dynamik und Machtverhältnis |
+| **Archetyp** | 25% | Logos | Fundamentale Beziehungsphilosophie |
 
 ---
 
-## 1. Orientierungs-Faktor (40%)
+## 1. Orientierungs-Faktor (25%)
 
 **Dimension:** Pathos (Gefühl)
 
@@ -40,7 +40,7 @@ Definiert die sexuelle Orientierung und damit die grundlegende Anziehungsrichtun
 
 ---
 
-## 2. Archetyp-Faktor (15%)
+## 2. Archetyp-Faktor (25%)
 
 **Dimension:** Logos (Verstand)
 
@@ -74,7 +74,7 @@ Die Archetyp-Kompatibilität wird über eine 8×8 Matrix berechnet (`archetype-m
 
 ---
 
-## 3. Dominanz-Faktor (20%)
+## 3. Dominanz-Faktor (25%)
 
 **Dimension:** Pathos (Gefühl)
 
@@ -165,14 +165,14 @@ Der Resonanz-Koeffizient bewegt sich zwischen **0.9 und 1.1** pro Dimension.
 ## Gesamtformel (v3.1)
 
 ```
-Q = (A × 0.15 × R_Philosophie) + (O × 0.40 × R_Leben) + (D × 0.20 × R_Dynamik) + (G × 0.25 × R_Identität)
+Q = (O × 0.25 × R₁) + (A × 0.25 × R₂) + (D × 0.25 × R₃) + (G × 0.25 × R₄)
 ```
 
 Wobei:
-- A = Archetyp-Score (0-100) × 15% × 🧠 R_Philosophie
-- O = Orientierungs-Score (0-100) × 40% × 🔥 R_Leben
-- D = Dominanz-Score (0-100) × 20% × ⚡ R_Dynamik
-- G = Geschlechts-Score (0-100) × 25% × 💚 R_Identität
+- O = Orientierungs-Score (0-100) × 25% × R₁ (R_Leben)
+- A = Archetyp-Score (0-100) × 25% × R₂ (R_Philosophie)
+- D = Dominanz-Score (0-100) × 25% × R₃ (R_Dynamik)
+- G = Geschlechts-Score (0-100) × 25% × R₄ (R_Identität)
 
 ### Wichtige Unterscheidung
 
