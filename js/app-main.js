@@ -23,10 +23,10 @@
         // ═══════════════════════════════════════════════════════════════════════
         // Neue kombinierte Struktur: { O: { value, locked }, A: { value, locked }, ... }
         const GEWICHTUNG_DEFAULTS = {
-            O: { value: 40, locked: false },
+            O: { value: 25, locked: false },
             A: { value: 25, locked: false },
-            D: { value: 20, locked: false },
-            G: { value: 15, locked: false }
+            D: { value: 25, locked: false },
+            G: { value: 25, locked: false }
         };
         // Person-spezifische Storage Keys für Gewichtungen
         const GEWICHTUNG_STORAGE_KEY_ICH = 'tiage_faktor_gewichtungen_ich';

@@ -30,10 +30,10 @@ Eine **eigenständige Synthese** von Tiage, entwickelt durch Online-Recherche un
 
 | Faktor | Standard | Dimension | Beschreibung |
 |--------|----------|-----------|--------------|
-| **Orientierungs-Kompatibilität** | 40% | Pathos | Körperliche Polarität und Anziehung |
+| **Orientierungs-Kompatibilität** | 25% | Pathos | Körperliche Polarität und Anziehung |
 | **Archetyp-Übereinstimmung** | 25% | Logos | Fundamentale Beziehungsphilosophie |
-| **Dominanz-Harmonie** | 20% | Pathos | Energetische Dynamik (Dom/Sub/Switch) |
-| **Geschlechts-Attraktion** | 15% | Pathos | Gender-Chemie als Feinabstimmung |
+| **Dominanz-Harmonie** | 25% | Pathos | Energetische Dynamik (Dom/Sub/Switch) |
+| **Geschlechts-Attraktion** | 25% | Pathos | Gender-Chemie als Feinabstimmung |
 
 *Gewichtungen sind über UI-Slider anpassbar (Summe = 100%)*
 
@@ -43,7 +43,7 @@ Eine **eigenständige Synthese** von Tiage, entwickelt durch Online-Recherche un
 
 Die Standard-Gewichtung basiert auf philosophischen Grundlagen:
 
-**Pathos (75% - Gefühl)** = Orientierung (40%) + Dominanz (20%) + Geschlecht (15%)
+**Pathos (75% - Gefühl)** = Orientierung (25%) + Dominanz (25%) + Geschlecht (25%)
 - Pirsig: "Dynamische Qualität" - Veränderung, Wachstum
 - OSHO: "Akzeptiere was IST" - das Erleben kommt zuerst
 - Emotionale Anziehung, Intuition, Resonanz
@@ -61,7 +61,7 @@ Die Standard-Gewichtung basiert auf philosophischen Grundlagen:
 ```
 Q = (O × wO × r1) + (A × wA × r2) + (D × wD × r3) + (G × wG × r4)
 
-Standard-Gewichtungen: wO=40%, wA=25%, wD=20%, wG=15%
+Standard-Gewichtungen: wO=25%, wA=25%, wD=25%, wG=25%
 Resonanz-Faktoren:     r1=R_Leben, r2=R_Philosophie, r3=R_Dynamik, r4=R_Identität
 ```
 
