@@ -17942,11 +17942,14 @@
             person = person || 'ich';
             var archetype = typeof archetypeDefinitions !== 'undefined' ? archetypeDefinitions[archetypeKey] : null;
 
-            // Update badge mit Archetyp-Info
+            // Update badge mit Profil-Info
             var badge = document.getElementById('profileReviewBadge');
-            if (badge && archetype) {
-                var personPrefix = person === 'ich' ? 'Dein' : 'Partner';
-                badge.textContent = personPrefix + ' ' + (archetype.name || archetypeKey) + '-Profil';
+            if (badge) {
+                if (person === 'ich') {
+                    badge.textContent = 'Deine Profileinstellung';
+                } else {
+                    badge.textContent = 'Partner-Profileinstellung';
+                }
             }
 
             // Versuche komponiertes Profil mit Gender-Modifikatoren zu laden
