@@ -27,9 +27,9 @@ The connection of both philosophies into a concrete relationship calculator with
 The emotional, attracting dimension. Pirsig calls this "dynamic quality" - the force that drives change and growth.
 
 **Manifestation:**
-- Orientation Compatibility (40%)
-- Dominance Harmony (20%)
-- Gender Attraction (15%)
+- Orientation Compatibility (25%)
+- Dominance Harmony (25%)
+- Gender Attraction (25%)
 
 ### Logos (25% - Mind)
 

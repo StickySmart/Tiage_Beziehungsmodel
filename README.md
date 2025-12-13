@@ -49,7 +49,7 @@ Wenn Begriffe aufgefächert werden, wenn Bedeutungsfelder sich öffnen, entsteht
 
 ## Die 4 Qualitätsfaktoren
 
-<!-- Gewichtung: 40/25/20/15 - Tiage's Synthese -->
+<!-- Gewichtung: 25/25/25/25 - Tiage's Synthese -->
 
 | Faktor | Dimension | Herkunft |
 |--------|-----------|----------|

@@ -14,9 +14,9 @@ Each factor is multiplied by its **own resonance dimension**:
 
 | Factor | Weight | Resonance |
 |--------|--------|-----------|
-| A (Archetype) | 15% | 🧠 R_Philosophy |
-| O (Orientation) | 40% | 🔥 R_Life |
-| D (Dominance) | 20% | ⚡ R_Dynamics |
+| A (Archetype) | 25% | 🧠 R_Philosophy |
+| O (Orientation) | 25% | 🔥 R_Life |
+| D (Dominance) | 25% | ⚡ R_Dynamics |
 | G (Gender) | 25% | 💚 R_Identity |
 
 **Source:** `js/synthesis/synthesisCalculator.js:6` and `js/synthesis/constants.js:7`
@@ -47,9 +47,9 @@ Factor = (Matrix × matrixWeight) + (NeedsMatch × needsWeight)
 | Variable | Name | Weight | Category | Source (Formula) | Source (Value) |
 |----------|------|--------|----------|------------------|----------------|
 | **Q** | Quality Index | - | Result | `synthesisCalculator.js:195` | Calculated |
-| **A** | Archetype Score | 15% | LOGOS | `constants.js:24` | `archetypeFactor.js` |
-| **O** | Orientation Score | 40% | PATHOS | `constants.js:25` | `orientationFactor.js` |
-| **D** | Dominance Score | 20% | PATHOS | `constants.js:26` | `dominanceFactor.js` |
+| **A** | Archetype Score | 25% | LOGOS | `constants.js:24` | `archetypeFactor.js` |
+| **O** | Orientation Score | 25% | PATHOS | `constants.js:25` | `orientationFactor.js` |
+| **D** | Dominance Score | 25% | PATHOS | `constants.js:26` | `dominanceFactor.js` |
 | **G** | Gender Score | 25% | PATHOS | `constants.js:27` | `genderFactor.js` |
 | **R** | Resonance Coefficient | ×0.9-1.1 | Meta | `synthesisCalculator.js:747-776` | Calculated |
 
@@ -57,7 +57,7 @@ Factor = (Matrix × matrixWeight) + (NeedsMatch × needsWeight)
 
 ## The 4 Factors in Detail
 
-### 1. Archetype (A) - 15% LOGOS
+### 1. Archetype (A) - 25% LOGOS
 
 **Source:** `js/synthesis/factors/archetypeFactor.js`
 **Data:** `archetype-matrix.json`
@@ -77,7 +77,7 @@ The 8×8 matrix contains precalculated compatibility values (0-100) for all arch
 
 ---
 
-### 2. Orientation (O) - 40% PATHOS
+### 2. Orientation (O) - 25% PATHOS
 
 **Source:** `js/synthesis/factors/orientationFactor.js`
 **Constants:** `constants.js:129-135`

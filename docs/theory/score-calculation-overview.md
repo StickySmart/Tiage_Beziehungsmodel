@@ -14,9 +14,9 @@ Jeder Faktor wird mit seiner **eigenen Resonanz-Dimension** multipliziert:
 
 | Faktor | Gewicht | Resonanz |
 |--------|---------|----------|
-| A (Archetyp) | 15% | 🧠 R_Philosophie |
-| O (Orientierung) | 40% | 🔥 R_Leben |
-| D (Dominanz) | 20% | ⚡ R_Dynamik |
+| A (Archetyp) | 25% | 🧠 R_Philosophie |
+| O (Orientierung) | 25% | 🔥 R_Leben |
+| D (Dominanz) | 25% | ⚡ R_Dynamik |
 | G (Geschlecht) | 25% | 💚 R_Identität |
 
 **Quelle:** `js/synthesis/synthesisCalculator.js:6` und `js/synthesis/constants.js:7`
@@ -63,9 +63,9 @@ Dominanz:
 | Variable | Name | Gewicht | Kategorie | Quelle (Formel) | Quelle (Wert) |
 |----------|------|---------|-----------|-----------------|---------------|
 | **Q** | Qualitätsindex | - | Ergebnis | `synthesisCalculator.js:195` | Berechnet |
-| **A** | Archetyp-Score | 15% | LOGOS | `constants.js:24` | `archetypeFactor.js` |
-| **O** | Orientierungs-Score | 40% | PATHOS | `constants.js:25` | `orientationFactor.js` |
-| **D** | Dominanz-Score | 20% | PATHOS | `constants.js:26` | `dominanceFactor.js` |
+| **A** | Archetyp-Score | 25% | LOGOS | `constants.js:24` | `archetypeFactor.js` |
+| **O** | Orientierungs-Score | 25% | PATHOS | `constants.js:25` | `orientationFactor.js` |
+| **D** | Dominanz-Score | 25% | PATHOS | `constants.js:26` | `dominanceFactor.js` |
 | **G** | Geschlechts-Score | 25% | PATHOS | `constants.js:27` | `genderFactor.js` |
 | **R** | Resonanz-Koeffizient | ×0.9-1.1 | Meta | `synthesisCalculator.js:747-776` | Berechnet |
 
@@ -251,7 +251,7 @@ Dominanz:
 
 ## Die 4 Faktoren im Detail
 
-### 1. Archetyp (A) - 15% LOGOS
+### 1. Archetyp (A) - 25% LOGOS
 
 **Quelle:** `js/synthesis/factors/archetypeFactor.js`
 **Daten:** `archetype-matrix.json`
@@ -271,7 +271,7 @@ Die 8×8 Matrix enthält vorberechnete Kompatibilitätswerte (0-100) für alle A
 
 ---
 
-### 2. Orientierung (O) - 40% PATHOS
+### 2. Orientierung (O) - 25% PATHOS
 
 **Quelle:** `js/synthesis/factors/orientationFactor.js`
 **Konstanten:** `constants.js:129-135`

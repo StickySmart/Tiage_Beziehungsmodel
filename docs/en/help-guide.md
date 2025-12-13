@@ -22,26 +22,26 @@ All changes and new features can be found in the [Changelog](../../CHANGELOG.md)
 
 | Factor | Weight | Dimension | Description |
 |--------|--------|-----------|-------------|
-| **Orientation Compatibility** | 40% | Pathos | Physical polarity and attraction. OSHO: "Only extremes can truly attract each other." |
+| **Orientation Compatibility** | 25% | Pathos | Physical polarity and attraction. OSHO: "Only extremes can truly attract each other." |
 | **Gender Attraction** | 25% | Pathos | Gender chemistry and identity resonance |
-| **Dominance Harmony** | 20% | Pathos | Energetic dynamic. OSHO: "Tao - one energy, two expressions." |
-| **Archetype Match** | 15% | Logos | Fundamental relationship philosophy: "How do we want to live relationships?" |
+| **Dominance Harmony** | 25% | Pathos | Energetic dynamic. OSHO: "Tao - one energy, two expressions." |
+| **Archetype Match** | 25% | Logos | Fundamental relationship philosophy: "How do we want to live relationships?" |
 
 ## Calculation (v3.1)
 
 ### Main Formula
 
 ```
-Q = (A × 0.15 × R_Philosophy) + (O × 0.40 × R_Life) + (D × 0.20 × R_Dynamics) + (G × 0.25 × R_Identity)
+Q = (A × 0.25 × R_Philosophy) + (O × 0.25 × R_Life) + (D × 0.25 × R_Dynamics) + (G × 0.25 × R_Identity)
 ```
 
 **NEW in v3.1:** Each factor is multiplied by its **own resonance dimension**:
 
 | Factor | Weight | × | Resonance Dimension |
 |--------|--------|---|---------------------|
-| A (Archetype) | 15% | × | 🧠 R_Philosophy |
-| O (Orientation) | 40% | × | 🔥 R_Life |
-| D (Dominance) | 20% | × | ⚡ R_Dynamics |
+| A (Archetype) | 25% | × | 🧠 R_Philosophy |
+| O (Orientation) | 25% | × | 🔥 R_Life |
+| D (Dominance) | 25% | × | ⚡ R_Dynamics |
 | G (Gender) | 25% | × | 💚 R_Identity |
 
 Each factor is individually rated on 0-100%. **Resonance (R)** is a meta-factor (0.9-1.1) that modulates how well head (Logos) and heart (Pathos) resonate together.

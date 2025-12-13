@@ -30,10 +30,10 @@ Eine **eigenständige Synthese** von Tiage, entwickelt durch Online-Recherche un
 
 | Faktor | Gewicht | Dimension | Beschreibung |
 |--------|---------|-----------|--------------|
-| **Orientierungs-Kompatibilität** | 40% | Pathos | Körperliche Polarität und Anziehung |
+| **Orientierungs-Kompatibilität** | 25% | Pathos | Körperliche Polarität und Anziehung |
 | **Archetyp-Übereinstimmung** | 25% | Logos | Fundamentale Beziehungsphilosophie |
-| **Dominanz-Harmonie** | 20% | Pathos | Energetische Dynamik (Dom/Sub/Switch) |
-| **Geschlechts-Attraktion** | 15% | Pathos | Gender-Chemie als Feinabstimmung |
+| **Dominanz-Harmonie** | 25% | Pathos | Energetische Dynamik (Dom/Sub/Switch) |
+| **Geschlechts-Attraktion** | 25% | Pathos | Gender-Chemie als Feinabstimmung |
 
 ---
 
@@ -57,7 +57,7 @@ Die Gewichtung basiert auf philosophischen Grundlagen:
 ## Berechnung
 
 ```
-Qualitätsindex = (Orientierung × 40%) + (Archetyp × 25%) + (Dominanz × 20%) + (Geschlecht × 15%)
+Qualitätsindex = (Orientierung × 25%) + (Archetyp × 25%) + (Dominanz × 25%) + (Geschlecht × 25%)
 ```
 
 ### Ergebnis-Interpretation
