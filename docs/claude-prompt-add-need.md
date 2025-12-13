@@ -94,14 +94,17 @@ Basierend auf der Recherche, bestimme:
 | #P3 | Pirsig | Static vs. Dynamic Quality, Qualität als Fundament |
 | #P4 | SexPositiv | Sex-Positive Movement, Consent, Autonomie, BDSM/Kink |
 
-### 2.3 Dimension (wähle eine)
+### 2.3 R-Faktor / GOD-Faktor (wähle einen)
 
-| Dimension | R-Faktor | Wählen wenn... |
-|-----------|----------|----------------|
-| ORIENTIERUNG_NEEDS | R1 | Sexualität, Anziehung, Intimität |
-| ARCHETYP_NEEDS | R2 | Beziehungsform, Lebensphilosophie |
-| DOMINANZ_NEEDS | R3 | Macht, Führung, Hingabe |
-| GESCHLECHT_NEEDS | R4 | Identität, Gender, Ausdruck |
+> **Hinweis:** Die Kategorie (#K) bestimmt automatisch die Dimension (D1-D6).
+> Der R-Faktor bestimmt, welches NEEDS-Array das Bedürfnis beeinflusst.
+
+| NEEDS Array | R-Faktor | Wählen wenn... |
+|-------------|----------|----------------|
+| ORIENTIERUNG_NEEDS | R1 (Leben 🔥) | Sexualität, Anziehung, Intimität |
+| ARCHETYP_NEEDS | R2 (Philosophie 🧠) | Beziehungsform, Lebensphilosophie |
+| DOMINANZ_NEEDS | R3 (Dynamik ⚡) | Macht, Führung, Hingabe |
+| GESCHLECHT_NEEDS | R4 (Identität 💚) | Identität, Gender, Ausdruck |
 
 ---
 
@@ -226,9 +229,9 @@ Bitte strukturiere deine Antwort so:
 ### Einordnung
 - ID: #B???
 - Key: `bedürfnis_key`
-- Kategorie: #K?? (Name)
+- Kategorie: #K?? (Name) → Dimension D? (automatisch)
 - Perspektive: #P? (Name)
-- Dimension: ???_NEEDS
+- R-Faktor: R? (???_NEEDS)
 
 ### Archetyp-Werte
 [Tabelle mit allen 8 Werten + Begründungen]

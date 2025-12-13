@@ -63,18 +63,21 @@ Bevor du anfängst, beantworte diese Fragen:
 
 ---
 
-### 3. Welche Dimension?
+### 3. Welcher R-Faktor / GOD-Faktor?
 
-| Dimension | R-Faktor | Passt für |
-|-----------|----------|-----------|
-| ORIENTIERUNG_NEEDS | R1 | Sexualität, Anziehung, Intimität |
-| ARCHETYP_NEEDS | R2 | Beziehungsphilosophie, Lebensstil |
-| DOMINANZ_NEEDS | R3 | Macht, Kontrolle, Hingabe |
-| GESCHLECHT_NEEDS | R4 | Identität, Ausdruck, Authentizität |
+> **Hinweis:** Die Kategorie (#K) bestimmt automatisch die Dimension (D1-D6).
+> Der R-Faktor bestimmt, welches NEEDS-Array das Bedürfnis beeinflusst.
+
+| NEEDS Array | R-Faktor | Passt für |
+|-------------|----------|-----------|
+| ORIENTIERUNG_NEEDS | R1 (Leben 🔥) | Sexualität, Anziehung, Intimität |
+| ARCHETYP_NEEDS | R2 (Philosophie 🧠) | Beziehungsphilosophie, Lebensstil |
+| DOMINANZ_NEEDS | R3 (Dynamik ⚡) | Macht, Kontrolle, Hingabe |
+| GESCHLECHT_NEEDS | R4 (Identität 💚) | Identität, Ausdruck, Authentizität |
 
 **Für "interesse_an_metaphysik":** Philosophische Grundhaltung
 
-→ Wir wählen: **ARCHETYP_NEEDS (R2)**
+→ Wir wählen: **R2 (ARCHETYP_NEEDS)**
 
 ---
 
@@ -370,9 +373,9 @@ node -c js/synthesis/constants.js
 ```
 interesse_an_metaphysik
 ├── ID: #B221
-├── Kategorie: #K10 (Verbundenheit)
+├── Kategorie: #K10 (Verbundenheit) → Dimension D3
 ├── Perspektive: #P3 (Pirsig)
-├── Dimension: ARCHETYP_NEEDS (R2)
+├── R-Faktor: R2 (ARCHETYP_NEEDS)
 ├── Werte: 40-75 (je nach Archetyp)
 └── Modifier: Orientierung +5/+10 für homo/bi
 ```
