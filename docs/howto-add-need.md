@@ -26,25 +26,33 @@ Um ein neues Bedürfnis zum Ti-Age System hinzuzufügen, müssen **9 Dateien** a
 
 Bevor du anfängst, beantworte diese Fragen:
 
-### 1. Welche Kategorie?
+### 1. Welche Kategorie (Primär + Sekundär)?
 
-| ID | Kategorie | Passt für |
-|----|-----------|-----------|
-| #K1 | Existenz | Grundbedürfnisse, Überleben |
-| #K2 | Sicherheit | Stabilität, Geborgenheit |
-| #K3 | Zuneigung | Liebe, Nähe, Wärme |
-| #K4 | Verständnis | Verstanden werden, Empathie |
-| #K5 | Freiheit | Autonomie, Selbstbestimmung |
-| #K6 | Teilnahme | Gemeinschaft, Zugehörigkeit |
-| #K7 | Muße | Erholung, Genuss, Spiel |
-| #K8 | Identität | Selbstausdruck, Authentizität |
-| #K9 | Erschaffen | Kreativität, Gestaltung |
-| #K10 | Verbundenheit | Spiritualität, Transzendenz |
-| #K11 | Dynamik | BDSM, Machtaustausch |
+| ID | Kategorie | Passt für | Resonanzfaktor |
+|----|-----------|-----------|----------------|
+| #K1 | Existenz | Grundbedürfnisse, Überleben | R1 (Leben) |
+| #K2 | Sicherheit | Stabilität, Geborgenheit | R3 (Kink) |
+| #K3 | Zuneigung | Liebe, Nähe, Wärme | R1 (Leben) |
+| #K4 | Verständnis | Verstanden werden, Empathie | R4 (Identität) |
+| #K5 | Freiheit | Autonomie, Selbstbestimmung | R2 (Philosophie) |
+| #K6 | Teilnahme | Gemeinschaft, Zugehörigkeit | R2 (Philosophie) |
+| #K7 | Muße | Erholung, Genuss, Spiel | R1 (Leben) |
+| #K8 | Identität | Selbstausdruck, Authentizität | R2 (Philosophie) |
+| #K9 | Erschaffen | Kreativität, Gestaltung | R4 (Identität) |
+| #K10 | Verbundenheit | Spiritualität, Transzendenz | R4 (Identität) |
+| #K11 | Dynamik | BDSM, Machtaustausch | R3 (Kink) |
+
+#### Sekundäre Kategorien (optional)
+
+Jedes Bedürfnis kann **zusätzlich zu seiner primären Kategorie** auch sekundäre Kategorien haben. Diese fließen mit **30% Gewichtung** in die Resonanzfaktor-Berechnung ein.
+
+**Beispiel "Berührung":**
+- Primär: `existenz` (100% → R1)
+- Sekundär: `["zuneigung", "dynamik", "sicherheit"]` (je 30% → R1, R3, R3)
 
 **Für "interesse_an_metaphysik":** `#K10` (Verbundenheit) oder `#K8` (Identität)
 
-→ Wir wählen: **#K10 (Verbundenheit)**
+→ Wir wählen: **#K10 (Verbundenheit)** als primär, **#K8 (Identität)** als sekundär
 
 ---
 
@@ -111,9 +119,11 @@ Prüfe in `beduerfnis-ids.js` die höchste vergebene ID.
 
 ---
 
-## Schritt 2: Kategorie-Liste
+## Schritt 2: Kategorie-Liste + Sekundäre Kategorien
 
 **Datei:** `profiles/definitions/gfk-beduerfnisse.js`
+
+### 2a. In der `kategorien`-Sektion
 
 **Suche:** `verbundenheit:` Objekt im `kategorien` Block
 
@@ -130,6 +140,27 @@ verbundenheit: {
         "interesse_an_metaphysik"  // NEU
     ]
 }
+```
+
+### 2b. In der `definitionen`-Sektion (mit sekundären Kategorien)
+
+**Suche:** Die Sektion nach `// VERBUNDENHEIT`
+
+**Füge hinzu:**
+
+```javascript
+interesse_an_metaphysik: {
+    "#ID": "#B221",
+    label: "Interesse an Metaphysik",
+    kategorie: "verbundenheit",                    // Primär
+    sekundaer: ["identitaet", "freiheit"]          // Sekundär (optional)
+},
+```
+
+**Hinweis:** Die `sekundaer`-Array enthält Kategorie-Keys (nicht IDs). Die Gewichtung ist in `js/synthesis/needsIntegration.js` definiert:
+
+```javascript
+SECONDARY_WEIGHT: 0.3  // 30% für sekundäre Kategorien
 ```
 
 ---
@@ -373,11 +404,24 @@ node -c js/synthesis/constants.js
 ```
 interesse_an_metaphysik
 ├── ID: #B221
-├── Kategorie: #K10 (Verbundenheit) → Dimension D3
+├── Kategorie (Primär): #K10 (Verbundenheit) → R4 (100%)
+├── Kategorien (Sekundär): identitaet, freiheit → R2 (je 30%)
 ├── Perspektive: #P3 (Pirsig)
 ├── R-Faktor: R2 (ARCHETYP_NEEDS)
 ├── Werte: 40-75 (je nach Archetyp)
 └── Modifier: Orientierung +5/+10 für homo/bi
+```
+
+### Sekundäre Kategorien - Berechnung
+
+Die Funktion `TiageSynthesis.NeedsIntegration.calculateResonanzWithSecondary(needs)` berechnet die R-Werte unter Berücksichtigung der sekundären Kategorien:
+
+```javascript
+// Beispiel: Berührung mit Wert 80
+// Primär: existenz (100%) → R1 +80
+// Sekundär: zuneigung (30%) → R1 +24
+// Sekundär: dynamik (30%) → R3 +24
+// Sekundär: sicherheit (30%) → R3 +24
 ```
 
 ---
