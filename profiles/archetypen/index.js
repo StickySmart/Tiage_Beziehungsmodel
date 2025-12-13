@@ -177,14 +177,25 @@
             const deltas = window.ProfileModifiers.calculateProfileDeltas(profileContext);
 
             if (deltas && Object.keys(deltas).length > 0) {
-                // Deltas anwenden
-                Object.keys(deltas).forEach(key => {
-                    if (flatNeeds[key] !== undefined) {
+                // Deltas anwenden - convert string keys to #IDs for lookup
+                let appliedCount = 0;
+                Object.keys(deltas).forEach(stringKey => {
+                    // Convert string key to #ID for lookup in flatNeeds (which uses #ID keys)
+                    const hashId = (typeof BeduerfnisIds !== 'undefined' && BeduerfnisIds.toId)
+                        ? BeduerfnisIds.toId(stringKey)
+                        : stringKey;
+
+                    if (flatNeeds[hashId] !== undefined) {
                         // Wert modifizieren und auf 0-100 begrenzen
-                        flatNeeds[key] = Math.min(100, Math.max(0, flatNeeds[key] + deltas[key]));
+                        flatNeeds[hashId] = Math.min(100, Math.max(0, flatNeeds[hashId] + deltas[stringKey]));
+                        appliedCount++;
+                    } else if (flatNeeds[stringKey] !== undefined) {
+                        // Fallback: try direct string key lookup
+                        flatNeeds[stringKey] = Math.min(100, Math.max(0, flatNeeds[stringKey] + deltas[stringKey]));
+                        appliedCount++;
                     }
                 });
-                console.log('[ProfileCalculator] Modifier angewendet:', Object.keys(deltas).length, 'Deltas');
+                console.log('[ProfileCalculator] Modifier angewendet:', appliedCount, 'von', Object.keys(deltas).length, 'Deltas');
             }
         }
 

@@ -1455,7 +1455,11 @@ function generateNeedsBreakdown(data) {
         needsWithBreakdown.forEach(need => {
             const stringKey = need.stringKey;
             const finalValue = need.value;
-            const baseValue = baseNeeds[stringKey] ?? 50;
+            // Convert string key to #ID for lookup in kernbeduerfnisse (which uses #ID keys)
+            const hashId = (typeof BeduerfnisIds !== 'undefined' && BeduerfnisIds.toId)
+                ? BeduerfnisIds.toId(stringKey)
+                : stringKey;
+            const baseValue = baseNeeds[hashId] ?? baseNeeds[stringKey] ?? 50;
             const genderMod = genderMods[stringKey] || 0;
             const dominanceMod = dominanceMods[stringKey] || 0;
             const orientationMod = orientationMods[stringKey] || 0;
