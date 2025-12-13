@@ -336,11 +336,13 @@ TiageSynthesis.NeedsIntegration = {
         var avgDiff = totalDiff / count;
         var uebereinstimmung = 1 - (avgDiff / 100);
 
-        // R_dim = 0.9 + (Übereinstimmung × 0.2)
-        var rValue = 0.9 + (uebereinstimmung * 0.2);
+        // R_dim = 0.5 + (Übereinstimmung × 1.0)
+        // Range: 0.5 (keine Übereinstimmung) bis 1.5 (perfekte Übereinstimmung)
+        // Passend zum UI-Slider Range
+        var rValue = 0.5 + (uebereinstimmung * 1.0);
 
-        // Clamp auf 0.9 - 1.1
-        return Math.round(Math.max(0.9, Math.min(1.1, rValue)) * 1000) / 1000;
+        // Clamp auf 0.5 - 1.5
+        return Math.round(Math.max(0.5, Math.min(1.5, rValue)) * 1000) / 1000;
     },
 
     /**
