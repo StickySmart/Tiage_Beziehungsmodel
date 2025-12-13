@@ -14205,6 +14205,9 @@
             const newArchetype = archetypeKeys[newIndex];
             const personKey = person === 'ich' ? 'ich' : 'partner';
 
+            // Wichtig: Modal-Kontext auf diese Person setzen, damit die richtigen Werte angezeigt werden
+            resonanzModalArchetyp = personKey;
+
             if (person === 'ich') {
                 currentArchetype = newArchetype;
                 if (typeof updateArchetypeGrid === 'function') {
