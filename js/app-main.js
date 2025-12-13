@@ -14182,33 +14182,6 @@
         }
         window.closeResonanzfaktorenModal = closeResonanzfaktorenModal;
 
-        /**
-         * Toggled den Lock-Status eines R-Faktors für eine Person
-         * @param {string} person - 'ich' oder 'partner'
-         * @param {string} faktor - 'R1', 'R2', 'R3' oder 'R4'
-         */
-        function toggleResonanzLock(person, faktor) {
-            if (typeof ResonanzCard === 'undefined') {
-                console.warn('[ResonanzModal] ResonanzCard nicht verfügbar');
-                return;
-            }
-
-            // Lade aktuelle Werte für diese Person
-            const values = ResonanzCard.load(person);
-
-            // Toggle Lock-Status
-            values[faktor].locked = !values[faktor].locked;
-
-            // Speichern
-            ResonanzCard.save(values, person);
-
-            console.log(`[ResonanzModal] ${faktor} für ${person} ist jetzt ${values[faktor].locked ? 'gesperrt' : 'entsperrt'}`);
-
-            // Modal aktualisieren
-            updateResonanzfaktorenModalContent();
-        }
-        window.toggleResonanzLock = toggleResonanzLock;
-
         function switchResonanzArchetyp(archetyp) {
             resonanzModalArchetyp = archetyp;
             updateResonanzfaktorenModalContent();
@@ -14441,17 +14414,19 @@
                 }
             };
 
-            // Wert-Anzeige mit Farbcodierung und optionalem Lock-Icon
-            function getWertDisplay(wert, isLocked, person, faktor) {
+            // Wert-Anzeige mit Farbcodierung und Lock-Status (nur Anzeige, nicht änderbar)
+            function getWertDisplay(wert, isLocked, showLock) {
                 let color = '#eab308';
                 if (wert >= 1.1) color = '#22c55e';
                 else if (wert <= 0.9) color = '#ef4444';
 
-                const lockIcon = isLocked
-                    ? `<span style="cursor: pointer; margin-left: 4px; opacity: 0.9;" onclick="toggleResonanzLock('${person}', '${faktor}')" title="Entsperren (automatische Berechnung aktivieren)">🔒</span>`
-                    : `<span style="cursor: pointer; margin-left: 4px; opacity: 0.4;" onclick="toggleResonanzLock('${person}', '${faktor}')" title="Sperren (manuellen Wert beibehalten)">🔓</span>`;
+                const lockIcon = showLock
+                    ? (isLocked
+                        ? `<span style="margin-left: 4px; opacity: 0.9;" title="Manuell gesperrt (ändern in Attribute)">🔒</span>`
+                        : `<span style="margin-left: 4px; opacity: 0.3;" title="Automatisch berechnet">🔓</span>`)
+                    : '';
 
-                return `<span style="color: ${color}; font-weight: 600;">${wert.toFixed(2)}</span>${person && faktor ? lockIcon : ''}`;
+                return `<span style="color: ${color}; font-weight: 600;">${wert.toFixed(2)}</span>${lockIcon}`;
             }
 
             // Tabellen-Zeilen für R-Faktoren
@@ -14476,9 +14451,9 @@
                                 → multipliziert <strong>${rf.agodIcon}</strong> (${rf.agod})
                             </div>
                         </td>
-                        <td style="padding: 12px 10px; text-align: center; font-size: 14px;">${getWertDisplay(wertIch, lockedIch, 'ich', rk)}</td>
-                        <td style="padding: 12px 10px; text-align: center; font-size: 14px;">${getWertDisplay(wertPartner, lockedPartner, 'partner', rk)}</td>
-                        <td style="padding: 12px 10px; text-align: center; font-size: 14px; background: rgba(139,92,246,0.1);">${getWertDisplay(wertKombi)}</td>
+                        <td style="padding: 12px 10px; text-align: center; font-size: 14px;">${getWertDisplay(wertIch, lockedIch, true)}</td>
+                        <td style="padding: 12px 10px; text-align: center; font-size: 14px;">${getWertDisplay(wertPartner, lockedPartner, true)}</td>
+                        <td style="padding: 12px 10px; text-align: center; font-size: 14px; background: rgba(139,92,246,0.1);">${getWertDisplay(wertKombi, false, false)}</td>
                     </tr>`;
             });
 
