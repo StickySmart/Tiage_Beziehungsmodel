@@ -30,14 +30,14 @@ Bitte recherchiere im Internet:
 
 ### 1.2 Philosophische Perspektiven
 
-Recherchiere wie diese 4 Denker/Schulen das Bedürfnis sehen würden:
+Recherchiere wie diese 4 Perspektiven das Bedürfnis sehen würden:
 
 | Perspektive | Recherche-Fragen |
 |-------------|------------------|
-| **GFK (Marshall Rosenberg)** | Ist es ein universelles menschliches Bedürfnis? Welcher GFK-Kategorie entspricht es? |
-| **Osho** | Wie würde Osho dieses Bedürfnis aus tantrischer/spiritueller Sicht betrachten? Fördert es Freiheit oder Anhaftung? |
-| **Pirsig (Zen & Motorrad)** | Ist es statische oder dynamische Qualität? Wie passt es zur Qualitäts-Philosophie? |
-| **Kink/BDSM** | Hat das Bedürfnis eine Komponente von Macht, Kontrolle, Hingabe oder Intensität? |
+| **Statistik (#P1)** | Gibt es empirische Forschung? Wie verteilt sich das Bedürfnis in der Bevölkerung (Gaußkurve)? |
+| **Osho (#P2)** | Wie würde Osho dieses Bedürfnis aus tantrischer/spiritueller Sicht betrachten? Fördert es Freiheit oder Anhaftung? |
+| **Pirsig (#P3)** | Ist es statische oder dynamische Qualität? Wie passt es zur Qualitäts-Philosophie? |
+| **SexPositiv (#P4)** | Hat das Bedürfnis eine Komponente von Consent, Autonomie, BDSM/Kink oder sexueller Freiheit? |
 
 ### 1.3 Beziehungsrelevanz
 - Wie beeinflusst dieses Bedürfnis romantische Beziehungen?
@@ -52,28 +52,47 @@ Basierend auf der Recherche, bestimme:
 
 ### 2.1 Kategorie (wähle eine)
 
+**GFK Kern-Kategorien (#K1-#K10):**
+
 | ID | Kategorie | Wählen wenn... |
 |----|-----------|----------------|
-| #K1 | Existenz | Grundlegende Überlebensbedürfnisse |
-| #K2 | Sicherheit | Stabilität, Schutz, Vorhersagbarkeit |
-| #K3 | Zuneigung | Liebe, Nähe, emotionale Wärme |
-| #K4 | Verständnis | Empathie, verstanden werden |
+| #K1 | Existenz | Grundlegende physische Bedürfnisse |
+| #K2 | Sicherheit | Emotionale und psychische Sicherheit |
+| #K3 | Zuneigung | Liebe, Nähe, emotionale Verbindung |
+| #K4 | Verständnis | Gesehen und verstanden werden |
 | #K5 | Freiheit | Autonomie, Selbstbestimmung |
 | #K6 | Teilnahme | Gemeinschaft, Zugehörigkeit |
-| #K7 | Muße | Erholung, Genuss, Entspannung |
-| #K8 | Identität | Selbstausdruck, Authentizität |
-| #K9 | Erschaffen | Kreativität, Gestaltung |
-| #K10 | Verbundenheit | Spiritualität, Transzendenz, Sinn |
-| #K11 | Dynamik | Macht, Kontrolle, BDSM |
+| #K7 | Muße | Erholung, Freude, Genuss |
+| #K8 | Identität | Selbstverwirklichung, Sinn |
+| #K9 | Erschaffen | Kreativität, Lernen |
+| #K10 | Verbundenheit | Tiefe existenzielle Verbindung |
+
+**Dynamik-Kategorie (#K11):**
+
+| ID | Kategorie | Wählen wenn... |
+|----|-----------|----------------|
+| #K11 | Dynamik & Austausch | Machtdynamik, BDSM/Kink |
+
+**Lebensbereiche (#K12-#K18):**
+
+| ID | Kategorie | Wählen wenn... |
+|----|-----------|----------------|
+| #K12 | Lebensplanung | Kinder, Ehe, Wohnen, Familie |
+| #K13 | Finanzen & Karriere | Geld, Beruf, Work-Life-Balance |
+| #K14 | Kommunikationsstil | Gespräche, Emotionen, Konflikte |
+| #K15 | Soziales Leben | Introversion/Extroversion, Freunde |
+| #K16 | Intimität & Romantik | Körperliche Nähe, Romantik, Sexualität |
+| #K17 | Werte & Haltungen | Religion, Tradition, Umwelt |
+| #K18 | Praktisches Leben | Ordnung, Reisen, Alltag |
 
 ### 2.2 Perspektive (wähle eine)
 
 | ID | Perspektive | Wählen wenn... |
 |----|-------------|----------------|
-| #P1 | GFK | Universelles, empirisch belegtes Bedürfnis |
-| #P2 | Osho | Spirituell, tantrisch, Freiheit-fokussiert |
-| #P3 | Pirsig | Philosophisch, Qualität-fokussiert |
-| #P4 | Kink | Dynamik, Macht, Intensität |
+| #P1 | Statistik | Empirische Forschung, Gaußsche Übereinstimmung |
+| #P2 | Osho | Tantra, Polarität, Natürlichkeit vs. Konditionierung |
+| #P3 | Pirsig | Static vs. Dynamic Quality, Qualität als Fundament |
+| #P4 | SexPositiv | Sex-Positive Movement, Consent, Autonomie, BDSM/Kink |
 
 ### 2.3 Dimension (wähle eine)
 
@@ -88,7 +107,7 @@ Basierend auf der Recherche, bestimme:
 
 ## Phase 3: Werte bestimmen
 
-Schätze für jeden Archetyp einen Wert (0-100):
+Recherchiere für jeden Archetyp einen begründeten Wert (0-100):
 
 | Archetyp | Typische Ausprägung | Begründung |
 |----------|---------------------|------------|
@@ -128,6 +147,13 @@ Wie verändert sich das Bedürfnis durch:
 | Hetero | +/- ? | |
 | Homo | +/- ? | |
 | Bi/Pan | +/- ? | |
+
+### Geschlecht-Modifier
+| Typ | Delta | Begründung |
+|-----|-------|------------|
+| Männlich | +/- ? | |
+| Weiblich | +/- ? | |
+| Non-Binär | +/- ? | |
 
 ---
 
@@ -217,9 +243,9 @@ Bitte strukturiere deine Antwort so:
 
 Claude wird:
 1. Im Internet nach Metaphysik recherchieren
-2. Pirsig, Osho, GFK, Kink Perspektiven finden
-3. Passende Kategorie/Perspektive/Dimension vorschlagen
-4. Werte für alle 8 Archetypen begründen
+2. Statistik, Osho, Pirsig, SexPositiv Perspektiven analysieren
+3. Passende Kategorie (#K1-#K18), Perspektive (#P1-#P4), Dimension (R1-R4) vorschlagen
+4. Werte für alle 8 Archetypen recherchieren und begründen
 5. Alle Code-Snippets generieren
 
 ---
@@ -287,26 +313,6 @@ Frage Claude nach:
 │ User fügt Code   │
 │ in Dateien ein   │
 └──────────────────┘
-```
-
----
-
-## Schnell-Version (Kurz-Prompt)
-
-Für erfahrene User, kürzere Version:
-
-```markdown
-Erstelle ein neues Ti-Age Bedürfnis:
-
-Name: [BEDÜRFNIS]
-
-1. Recherchiere: Definition, GFK/Osho/Pirsig/Kink Perspektiven
-2. Bestimme: Kategorie (#K1-#K11), Perspektive (#P1-#P4), Dimension (R1-R4)
-3. Schätze Werte (0-100) für: Single, Duo, Duo-Flex, Solopoly, Polyamor, RA, LAT, Aromantisch
-4. Erstelle Modifier für: Dominant, Submissiv, Switch, Hetero, Homo, Bi
-5. Generiere Code für alle Dateien (siehe docs/howto-add-need.md)
-
-Begründe alle Entscheidungen.
 ```
 
 ---

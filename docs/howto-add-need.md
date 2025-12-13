@@ -52,10 +52,10 @@ Bevor du anfängst, beantworte diese Fragen:
 
 | ID | Perspektive | Passt für |
 |----|-------------|-----------|
-| #P1 | GFK | Empirische, universelle Bedürfnisse |
-| #P2 | Osho | Tantra, Spiritualität, Nicht-Anhaften |
-| #P3 | Pirsig | Qualität, Philosophie, Achtsamkeit |
-| #P4 | Kink | BDSM, Dynamik, Machtaustausch |
+| #P1 | Statistik | Empirische Forschung, Gaußsche Übereinstimmung |
+| #P2 | Osho | Tantra, Polarität, Natürlichkeit vs. Konditionierung |
+| #P3 | Pirsig | Static vs. Dynamic Quality, Qualität als Fundament |
+| #P4 | SexPositiv | Sex-Positive Movement, Consent, Autonomie, BDSM/Kink |
 
 **Für "interesse_an_metaphysik":** Philosophie/Spiritualität
 
