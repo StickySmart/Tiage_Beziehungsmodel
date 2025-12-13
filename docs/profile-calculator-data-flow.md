@@ -212,12 +212,51 @@ function calculateResonanzFaktoren(profileContext) {
 
 **Resonanzfaktoren-Mapping:**
 
-| Faktor | Dimension | Beschreibung | Wertebereich |
-|--------|-----------|--------------|--------------|
-| R1 | Leben | Existenz, Zuneigung, Muße | 0.5 - 1.5 |
-| R2 | Philosophie | Freiheit, Teilnahme, Identität | 0.5 - 1.5 |
-| R3 | Dynamik | Dominanz, Sicherheit | 0.5 - 1.5 |
-| R4 | Identität | Verständnis, Erschaffen, Verbundenheit | 0.5 - 1.5 |
+| Faktor | Dimension | Kategorien | Wertebereich |
+|--------|-----------|------------|--------------|
+| R1 | Leben | existenz, zuneigung, musse | 0.5 - 1.5 |
+| R2 | Philosophie | freiheit, teilnahme, identitaet | 0.5 - 1.5 |
+| R3 | Kink | dynamik, sicherheit | 0.5 - 1.5 |
+| R4 | Identität | verstaendnis, erschaffen, verbundenheit | 0.5 - 1.5 |
+
+---
+
+### 3b. calculateResonanzWithSecondary(needs)
+
+**Datei:** `js/synthesis/needsIntegration.js`
+**Zeilen:** 831-854
+
+**Zweck:** Berechnet R-Werte unter Berücksichtigung sekundärer Kategorien.
+
+```javascript
+// Jedes Bedürfnis hat:
+// - Primäre Kategorie: 100% Gewichtung
+// - Sekundäre Kategorien: 30% Gewichtung (SECONDARY_WEIGHT)
+
+var result = TiageSynthesis.NeedsIntegration.calculateResonanzWithSecondary(needs);
+// → { R1: 1.05, R2: 0.98, R3: 1.12, R4: 1.01, kategorieScores: {...} }
+```
+
+**Kategorien → Resonanzfaktoren Mapping:**
+
+```javascript
+KATEGORIE_TO_RESONANZ: {
+    existenz: 'R1', zuneigung: 'R1', musse: 'R1',           // R1 - Leben
+    freiheit: 'R2', teilnahme: 'R2', identitaet: 'R2',     // R2 - Philosophie
+    dynamik: 'R3', sicherheit: 'R3',                        // R3 - Kink
+    verstaendnis: 'R4', erschaffen: 'R4', verbundenheit: 'R4'  // R4 - Identität
+}
+```
+
+**Berechnungsbeispiel:**
+
+```
+Berührung (Wert: 80)
+├── Primär: existenz (100%) → R1 +80
+├── Sekundär: zuneigung (30%) → R1 +24
+├── Sekundär: dynamik (30%) → R3 +24
+└── Sekundär: sicherheit (30%) → R3 +24
+```
 
 ---
 
