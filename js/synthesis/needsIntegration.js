@@ -301,28 +301,28 @@ TiageSynthesis.NeedsIntegration = {
             return 1.0; // Neutral wenn keine Daten
         }
 
-        var expected = dimensionKohaerenz[archetyp];
+        var archetypTypisch = dimensionKohaerenz[archetyp];
         var totalDiff = 0;
         var count = 0;
 
-        for (var needKey in expected) {
-            if (expected.hasOwnProperty(needKey) && expected[needKey] !== null) {
-                var expectedEntry = expected[needKey];
+        for (var needKey in archetypTypisch) {
+            if (archetypTypisch.hasOwnProperty(needKey) && archetypTypisch[needKey] !== null) {
+                var typischEntry = archetypTypisch[needKey];
 
                 // Unterstütze beide Formate: direkte Zahl oder Objekt mit .value
-                var expectedValue = (typeof expectedEntry === 'object' && expectedEntry.value !== undefined)
-                    ? expectedEntry.value
-                    : expectedEntry;
+                var typischValue = (typeof typischEntry === 'object' && typischEntry.value !== undefined)
+                    ? typischEntry.value
+                    : typischEntry;
 
                 // Lookup-Key: verwende ID wenn vorhanden, sonst den Key selbst
-                var lookupKey = (typeof expectedEntry === 'object' && expectedEntry.id)
-                    ? expectedEntry.id
+                var lookupKey = (typeof typischEntry === 'object' && typischEntry.id)
+                    ? typischEntry.id
                     : needKey;
 
                 var actualValue = needs[lookupKey];
 
-                if (actualValue !== undefined && typeof expectedValue === 'number') {
-                    var diff = Math.abs(actualValue - expectedValue);
+                if (actualValue !== undefined && typeof typischValue === 'number') {
+                    var diff = Math.abs(actualValue - typischValue);
                     totalDiff += diff;
                     count++;
                 }
@@ -397,5 +397,242 @@ TiageSynthesis.NeedsIntegration = {
         }
 
         return modified;
+    },
+
+    // ═══════════════════════════════════════════════════════════════════════
+    // PERSPEKTIVEN-BASIERTE RESONANZ (v3.2)
+    // ═══════════════════════════════════════════════════════════════════════
+    //
+    // INDIVIDUELL: Jede Person hat eigene R-Werte basierend auf Kohärenz
+    //   Person.needs vs. archetyp-typische Needs → Person.R-Matrix
+    //
+    // RELATIONAL: Kombination via Produkt
+    //   R_kombiniert = R_Person1 × R_Person2
+    //
+    // Datenfluss:
+    //   1. Berechne individuelle Matrix pro Person
+    //   2. Kombiniere via Produkt
+    //   3. Ø pro Faktor = Durchschnitt der 4 Perspektiven
+    //   4. R = 1 + Ø/100
+    //   5. Q = A×0.25×R1 + O×0.25×R2 + D×0.25×R3 + G×0.25×R4
+    // ═══════════════════════════════════════════════════════════════════════
+
+    /**
+     * Ermittelt die Perspektive für ein Bedürfnis
+     */
+    _getPerspectiveForNeed: function(needKey) {
+        if (typeof PerspektivenModal !== 'undefined' && PerspektivenModal.beduerfnisPerspektiven) {
+            if (PerspektivenModal.beduerfnisPerspektiven[needKey]) {
+                return PerspektivenModal.beduerfnisPerspektiven[needKey];
+            }
+        }
+
+        var perspektivenMap = {
+            // Osho (#P2)
+            'sex_als_meditation': '#P2', 'nicht_anhaften_an_partner': '#P2',
+            'hier_und_jetzt_intimitaet': '#P2', 'polyamore_energie': '#P2',
+            'wildheit_und_zartheit': '#P2', 'meditation_zu_zweit': '#P2',
+            'liebe_ohne_beziehung': '#P2', 'nicht_anhaften_an_familie': '#P2',
+            'commune_statt_kernfamilie': '#P2', 'orgastisches_leben': '#P2',
+            'radikale_ehrlichkeit': '#P2', 'authentischer_ausdruck': '#P2',
+            // Pirsig (#P3)
+            'biologische_anziehung': '#P3', 'qualitaet_der_beruehrung': '#P3',
+            'dynamische_liebe': '#P3', 'statische_stabilitaet': '#P3',
+            'dynamische_evolution': '#P3', 'intellektuelle_verbindung': '#P3',
+            // Kink (#P4)
+            'kontrolle_ausueben': '#P4', 'hingabe': '#P4',
+            'fuehrung_geben': '#P4', 'gefuehrt_werden': '#P4',
+            'machtaustausch': '#P4', 'sich_fallenlassen': '#P4',
+            'nachsorge': '#P4', 'grenzen_setzen': '#P4',
+            'grenzen_respektieren': '#P4', 'intensitaet': '#P4',
+            'vertrauen_schenken': '#P4', 'ritual': '#P4'
+        };
+
+        return perspektivenMap[needKey] || '#P1';
+    },
+
+    /**
+     * Berechnet INDIVIDUELLE Matrix für eine Person
+     * Vergleicht Person.needs mit archetyp-typischen Werten
+     *
+     * @param {object} needs - Bedürfnisse der Person
+     * @param {string} archetyp - Gewählter Archetyp (z.B. 'lat', 'duo')
+     * @returns {object} { matrix, averages, rValues }
+     */
+    calculateIndividualMatrix: function(needs, archetyp) {
+        var constants = TiageSynthesis.Constants;
+        var self = this;
+        var kohaerenz = constants.ARCHETYP_KOHAERENZ || {};
+
+        var faktoren = {
+            orientierung: { needs: constants.NEEDS_INTEGRATION.ORIENTIERUNG_NEEDS || [], kohaerenzKey: 'leben' },
+            archetyp: { needs: constants.NEEDS_INTEGRATION.ARCHETYP_NEEDS || [], kohaerenzKey: 'philosophie' },
+            dominanz: { needs: constants.NEEDS_INTEGRATION.DOMINANZ_NEEDS || [], kohaerenzKey: 'dynamik' },
+            geschlecht: { needs: constants.NEEDS_INTEGRATION.GESCHLECHT_NEEDS || [], kohaerenzKey: 'identitaet' }
+        };
+
+        var perspektiven = ['#P1', '#P2', '#P3', '#P4'];
+        var matrix = {};
+        var averages = {};
+        var rValues = {};
+
+        for (var faktorKey in faktoren) {
+            var faktor = faktoren[faktorKey];
+            var archetypTypisch = kohaerenz[faktor.kohaerenzKey] ? kohaerenz[faktor.kohaerenzKey][archetyp] : null;
+
+            matrix[faktorKey] = {};
+            var sumMatch = 0;
+            var countPerspektiven = 0;
+
+            for (var p = 0; p < perspektiven.length; p++) {
+                var perspektive = perspektiven[p];
+
+                // Finde Bedürfnisse für diesen Faktor + Perspektive
+                var relevantNeeds = [];
+                for (var n = 0; n < faktor.needs.length; n++) {
+                    var needKey = faktor.needs[n];
+                    if (self._getPerspectiveForNeed(needKey) === perspektive) {
+                        relevantNeeds.push(needKey);
+                    }
+                }
+
+                // Berechne Kohärenz für diese Zelle
+                var matchPercent = self._calculateCoherenceMatch(needs, archetypTypisch, relevantNeeds);
+                matrix[faktorKey][perspektive] = matchPercent;
+
+                if (matchPercent !== null) {
+                    sumMatch += matchPercent;
+                    countPerspektiven++;
+                }
+            }
+
+            var avg = countPerspektiven > 0 ? sumMatch / countPerspektiven : 0;
+            averages[faktorKey] = Math.round(avg * 10) / 10;
+            rValues[faktorKey] = Math.round((1 + avg / 100) * 1000) / 1000;
+        }
+
+        return { matrix: matrix, averages: averages, rValues: rValues, archetyp: archetyp };
+    },
+
+    /**
+     * Berechnet Kohärenz-Match: Person.needs vs archetyp-typisch
+     */
+    _calculateCoherenceMatch: function(needs, archetypTypisch, relevantNeeds) {
+        if (!needs || !archetypTypisch || !relevantNeeds || relevantNeeds.length === 0) {
+            return null;
+        }
+
+        var sumScore = 0;
+        var sumWeight = 0;
+
+        for (var i = 0; i < relevantNeeds.length; i++) {
+            var needKey = relevantNeeds[i];
+            var actualValue = needs[needKey];
+
+            var typischEntry = archetypTypisch[needKey];
+            var typischValue = (typeof typischEntry === 'object' && typischEntry.value !== undefined)
+                ? typischEntry.value : typischEntry;
+
+            if (actualValue !== undefined && typischValue !== undefined && typeof typischValue === 'number') {
+                var diff = Math.abs(actualValue - typischValue);
+                var similarity = 100 - diff;
+                var weight = (actualValue + typischValue) / 2 / 100;
+
+                sumScore += similarity * weight;
+                sumWeight += weight;
+            }
+        }
+
+        if (sumWeight === 0) return null;
+
+        var rawMatch = sumScore / sumWeight;
+        var matchPercent = (rawMatch - 50) * 0.2;
+        return Math.round(matchPercent * 10) / 10;
+    },
+
+    /**
+     * Berechnet KOMBINIERTE Matrix via Produkt
+     *
+     * @param {object} needs1 - Bedürfnisse Person 1
+     * @param {string} archetyp1 - Archetyp Person 1
+     * @param {object} needs2 - Bedürfnisse Person 2
+     * @param {string} archetyp2 - Archetyp Person 2
+     * @returns {object} { matrix, averages, rValues, individual }
+     */
+    calculateCombinedMatrix: function(needs1, archetyp1, needs2, archetyp2) {
+        var self = this;
+
+        // Individuelle Matrizen berechnen
+        var individual1 = self.calculateIndividualMatrix(needs1, archetyp1);
+        var individual2 = self.calculateIndividualMatrix(needs2, archetyp2);
+
+        var perspektiven = ['#P1', '#P2', '#P3', '#P4'];
+        var faktorKeys = ['orientierung', 'archetyp', 'dominanz', 'geschlecht'];
+
+        var combinedMatrix = {};
+        var combinedAverages = {};
+        var combinedRValues = {};
+
+        for (var f = 0; f < faktorKeys.length; f++) {
+            var faktorKey = faktorKeys[f];
+            combinedMatrix[faktorKey] = {};
+            var sumMatch = 0;
+            var countPerspektiven = 0;
+
+            for (var p = 0; p < perspektiven.length; p++) {
+                var perspektive = perspektiven[p];
+
+                var val1 = individual1.matrix[faktorKey][perspektive];
+                var val2 = individual2.matrix[faktorKey][perspektive];
+
+                // Produkt-Kombination: (1 + val1/100) × (1 + val2/100)
+                if (val1 !== null && val2 !== null) {
+                    var r1 = 1 + val1 / 100;
+                    var r2 = 1 + val2 / 100;
+                    var rCombined = r1 * r2;
+                    var combinedPercent = (rCombined - 1) * 100;
+                    combinedPercent = Math.round(combinedPercent * 10) / 10;
+
+                    combinedMatrix[faktorKey][perspektive] = combinedPercent;
+                    sumMatch += combinedPercent;
+                    countPerspektiven++;
+                } else {
+                    combinedMatrix[faktorKey][perspektive] = null;
+                }
+            }
+
+            var avg = countPerspektiven > 0 ? sumMatch / countPerspektiven : 0;
+            combinedAverages[faktorKey] = Math.round(avg * 10) / 10;
+            combinedRValues[faktorKey] = Math.round((1 + avg / 100) * 1000) / 1000;
+        }
+
+        return {
+            matrix: combinedMatrix,
+            averages: combinedAverages,
+            rValues: combinedRValues,
+            individual: {
+                person1: individual1,
+                person2: individual2
+            },
+            perspektivenLabels: { '#P1': 'GFK', '#P2': 'Osho', '#P3': 'Pirsig', '#P4': 'Kink' }
+        };
+    },
+
+    /**
+     * Hauptfunktion: Berechnet R-Werte für die Synthese-Formel
+     */
+    calculateResonanceFromPerspectives: function(needs1, archetyp1, needs2, archetyp2) {
+        var result = this.calculateCombinedMatrix(needs1, archetyp1, needs2, archetyp2);
+
+        return {
+            R1: result.rValues.orientierung,
+            R2: result.rValues.archetyp,
+            R3: result.rValues.dominanz,
+            R4: result.rValues.geschlecht,
+            matrix: result.matrix,
+            averages: result.averages,
+            individual: result.individual,
+            perspektivenLabels: result.perspektivenLabels
+        };
     }
 };
