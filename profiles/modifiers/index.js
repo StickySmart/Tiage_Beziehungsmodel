@@ -53,7 +53,7 @@
      * @returns {Object|null} Modifier-Objekt mit deltas
      */
     function getGenderModifier(primary, secondary) {
-        if (!primary || !secondary) return null;
+        if (!primary || !secondary || typeof primary !== 'string' || typeof secondary !== 'string') return null;
 
         const key = (primary + '-' + secondary).toLowerCase();
         const modifierKey = GENDER_IDENTITY_MAP[key];
@@ -90,7 +90,7 @@
      * @returns {Object|null} Modifier-Objekt mit deltas
      */
     function getOrientierungModifier(orientierung) {
-        if (!orientierung) return null;
+        if (!orientierung || typeof orientierung !== 'string') return null;
 
         const key = orientierung.toLowerCase();
         const modifierKey = ORIENTIERUNG_MAP[key];
