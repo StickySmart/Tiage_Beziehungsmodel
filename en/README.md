@@ -49,7 +49,7 @@ When concepts are unfolded, when fields of meaning open up, not less quality ari
 
 ## The 4 Quality Factors
 
-<!-- Weighting: 40/25/20/15 - Tiage's Synthesis -->
+<!-- Weighting: 25/25/25/25 - Tiage's Synthesis -->
 
 | Factor | Dimension | Origin |
 |--------|-----------|--------|

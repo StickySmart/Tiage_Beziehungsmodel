@@ -147,14 +147,14 @@ F: 66.5 × 0.7  = 46.6
 
 ## Die 4 Qualitätsfaktoren
 
-### 1. Orientierungs-Kompatibilität (40% - Pathos)
+### 1. Orientierungs-Kompatibilität (25% - Pathos)
 Körperliche Polarität und Anziehung (Hetero, Homo, Bi, Pan, Ace)
 "Pathos vor Logos" - Menschen erleben Beziehung zuerst körperlich
 
 ### 2. Archetyp-Übereinstimmung (25% - Logos)
 Fundamentale Beziehungsphilosophie: "Wie wollen wir Beziehung leben?"
 
-### 3. Dominanz-Harmonie (20% - Pathos)
+### 3. Dominanz-Harmonie (25% - Pathos)
 Energetische Dynamik: Dominant, Submissiv, Switch, Ausgeglichen
 
 **Wissenschaftliche Grundlage:**
@@ -171,7 +171,7 @@ Energetische Dynamik: Dominant, Submissiv, Switch, Ausgeglichen
 
 OSHO: "Tao - eine Energie, zwei Ausdrucksformen"
 
-### 4. Geschlechts-Attraktion (15% - Pathos)
+### 4. Geschlechts-Attraktion (25% - Pathos)
 Gender-Chemie als Feinabstimmung der Orientierung
 
 ---
@@ -669,9 +669,9 @@ Der Resonanz-Koeffizient R wird **pro Faktor** berechnet - jeder Faktor hat sein
 │   ┌─────────────┬────────────────────┬────────────────────────────────────┐     │
 │   │ Dimension   │ Faktor             │ Bedürfnisse (disjunkt)             │     │
 │   ├─────────────┼────────────────────┼────────────────────────────────────┤     │
-│   │ 🧠 Philosophie │ Archetyp (15%)   │ 17 Needs: kinderwunsch, bindung... │     │
-│   │ 🔥 Leben       │ Orientierung (40%)│ 18 Needs: sexuelle_haeufigkeit... │     │
-│   │ ⚡ Dynamik     │ Dominanz (20%)    │ 18 Needs: kontrolle, hingabe...   │     │
+│   │ 🧠 Philosophie │ Archetyp (25%)   │ 17 Needs: kinderwunsch, bindung... │     │
+│   │ 🔥 Leben       │ Orientierung (25%)│ 18 Needs: sexuelle_haeufigkeit... │     │
+│   │ ⚡ Dynamik     │ Dominanz (25%)    │ 18 Needs: kontrolle, hingabe...   │     │
 │   │ 💚 Identität   │ Geschlecht (25%)  │ 10 Needs: authentizitaet...       │     │
 │   └─────────────┴────────────────────┴────────────────────────────────────┘     │
 │                                                                                 │
@@ -798,7 +798,7 @@ Der Resonanz-Koeffizient R wird **pro Faktor** berechnet - jeder Faktor hat sein
     │                     │                   ▼             ▼             ▼
     │  ╔═══════════════╗  │         ┌─────────────┐ ┌─────────────┐ ┌─────────────┐
     │  ║   ARCHETYP    ║  │         │ ORIENTIERUNG│ │  DOMINANZ   │ │ GESCHLECHT  │
-    │  ║     25%       ║  │         │    40%      │ │    20%      │ │    15%      │
+    │  ║     25%       ║  │         │    25%      │ │    25%      │ │    25%      │
     │  ╚═══════════════╝  │         └─────────────┘ └─────────────┘ └─────────────┘
     │                     │                   │             │             │
     │  "Wie wollen wir    │         "Wen begehre  "Wie fließt   "Feintuning

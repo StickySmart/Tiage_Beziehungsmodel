@@ -24,7 +24,7 @@ The rational, structure-giving dimension.
 
 ### Manifestation in the Model
 
-**Archetype Match (15% of total score)**
+**Archetype Match (25% of total score)**
 
 The fundamental relationship philosophy: *"How do we want to live relationships?"*
 
@@ -46,9 +46,9 @@ The emotional, attracting dimension.
 
 | Factor | Share | Description |
 |--------|-------|-------------|
-| **Orientation Compatibility** | 40% | Physical polarity and attraction |
+| **Orientation Compatibility** | 25% | Physical polarity and attraction |
 | **Gender Attraction** | 25% | Gender chemistry and identity resonance |
-| **Dominance Harmony** | 20% | Energetic dynamic (Tao) |
+| **Dominance Harmony** | 25% | Energetic dynamic (Tao) |
 
 ## Philosophical Foundations
 

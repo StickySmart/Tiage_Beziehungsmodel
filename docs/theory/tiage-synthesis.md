@@ -27,9 +27,9 @@ Die Verbindung beider Philosophien zu einem konkreten Beziehungs-Rechner mit:
 Die emotionale, anziehende Dimension. Pirsig nennt dies "dynamische Qualität" - die Kraft, die Veränderung und Wachstum antreibt.
 
 **Manifestation:**
-- Orientierungs-Kompatibilität (40%)
-- Dominanz-Harmonie (20%)
-- Geschlechts-Attraktion (15%)
+- Orientierungs-Kompatibilität (25%)
+- Dominanz-Harmonie (25%)
+- Geschlechts-Attraktion (25%)
 
 ### Logos (25% - Verstand)
 

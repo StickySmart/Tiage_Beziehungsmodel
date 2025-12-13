@@ -32,9 +32,9 @@ Q = (A×w_A×R_Phil) + (O×w_O×R_Leben) + (D×w_D×R_Dyn) + (G×w_G×R_Ident)
 **Faktor-Resonanz-Mapping:**
 | Faktor | Gewicht | × | Resonanz |
 |--------|---------|---|----------|
-| A (Archetyp) | 15% | × | 🧠 R_Philosophie |
-| O (Orientierung) | 40% | × | 🔥 R_Leben |
-| D (Dominanz) | 20% | × | ⚡ R_Dynamik |
+| A (Archetyp) | 25% | × | 🧠 R_Philosophie |
+| O (Orientierung) | 25% | × | 🔥 R_Leben |
+| D (Dominanz) | 25% | × | ⚡ R_Dynamik |
 | G (Geschlecht) | 25% | × | 💚 R_Identität |
 
 **Interpretation pro Dimension:**
@@ -295,7 +295,7 @@ R = 1.066 → Override aktiv!
 ## Anwendung im Qualitätsindex
 
 ```
-Qualitätsindex = [(Orientierung × 40%) + (Archetyp × 25%) + (Dominanz × 20%) + (Geschlecht × 15%)] × R
+Q = (O × 0.25 × R_Leben) + (A × 0.25 × R_Philosophie) + (D × 0.25 × R_Dynamik) + (G × 0.25 × R_Identität)
 ```
 
 ## Die Zustands-Skala
