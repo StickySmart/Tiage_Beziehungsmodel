@@ -8,10 +8,10 @@
  *   Q = [(O × wO × r1) + (A × wA × r2) + (D × wD × r3) + (G × wG × r4)]
  *
  * Standard-Gewichtungen (aus UI-Slider, anpassbar):
- *   wO = 0.40 (40%) - Orientierung
+ *   wO = 0.25 (25%) - Orientierung
  *   wA = 0.25 (25%) - Archetyp
- *   wD = 0.20 (20%) - Dominanz
- *   wG = 0.15 (15%) - Geschlecht
+ *   wD = 0.25 (25%) - Dominanz
+ *   wG = 0.25 (25%) - Geschlecht
  *
  * Dimensionale Resonanz-Faktoren (0.5 - 1.5):
  *   r1 = R_Leben       (Orientierung ↔ Anziehung/Intimität)

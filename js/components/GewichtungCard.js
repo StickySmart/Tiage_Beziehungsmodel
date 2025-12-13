@@ -11,13 +11,13 @@ const GewichtungCard = (function() {
     'use strict';
 
     /**
-     * Standard-Gewichtungen
+     * Standard-Gewichtungen (gleichverteilt)
      */
     const DEFAULT_WEIGHTS = {
-        orientierung: 40,
+        orientierung: 25,
         archetyp: 25,
-        dominanz: 20,
-        geschlecht: 15
+        dominanz: 25,
+        geschlecht: 25
     };
 
     /**

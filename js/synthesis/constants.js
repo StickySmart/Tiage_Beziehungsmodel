@@ -20,37 +20,37 @@ TiageSynthesis.Constants = {
     // - Dominanz:     20% Logos / 80% Pathos (Energetische Dynamik)
     // - Geschlecht:   Primär = Logos, Sekundär = Pathos
 
-    // WEIGHTS werden dynamisch aus UI geladen (Standard: 40/25/20/15)
+    // WEIGHTS werden dynamisch aus UI geladen (Standard: 25/25/25/25)
     // Getter-Funktion für aktuelle Gewichtungen
     getWeights: function() {
         // Versuche UI-Gewichtungen zu laden
         if (typeof getGewichtungen === 'function') {
             var gew = getGewichtungen();
             return {
-                orientierung: (gew.O || 40) / 100,
+                orientierung: (gew.O || 25) / 100,
                 archetyp: (gew.A || 25) / 100,
-                dominanz: (gew.D || 20) / 100,
-                geschlecht: (gew.G || 15) / 100
+                dominanz: (gew.D || 25) / 100,
+                geschlecht: (gew.G || 25) / 100
             };
         }
         // Fallback: Standard-Gewichtungen
         return this.DEFAULT_WEIGHTS;
     },
 
-    // Standard-Gewichtungen (UI-Defaults)
+    // Standard-Gewichtungen (UI-Defaults, gleichverteilt)
     DEFAULT_WEIGHTS: {
-        orientierung: 0.40,  // 40% - Sexuelle Orientierung
+        orientierung: 0.25,  // 25% - Sexuelle Orientierung
         archetyp: 0.25,      // 25% - Beziehungsphilosophie
-        dominanz: 0.20,      // 20% - Dom/Sub/Switch Dynamik
-        geschlecht: 0.15     // 15% - Gender-Attraktion
+        dominanz: 0.25,      // 25% - Dom/Sub/Switch Dynamik
+        geschlecht: 0.25     // 25% - Gender-Attraktion
     },
 
     // Legacy: Für Abwärtskompatibilität (wird von getWeights() überschrieben)
     WEIGHTS: {
-        orientierung: 0.40,  // 40% - Sexuelle Orientierung (UI-Standard)
+        orientierung: 0.25,  // 25% - Sexuelle Orientierung
         archetyp: 0.25,      // 25% - Beziehungsphilosophie
-        dominanz: 0.20,      // 20% - Dom/Sub/Switch Dynamik
-        geschlecht: 0.15     // 15% - Gender-Attraktion
+        dominanz: 0.25,      // 25% - Dom/Sub/Switch Dynamik
+        geschlecht: 0.25     // 25% - Gender-Attraktion
     },
 
     FACTOR_COMPOSITION: {
