@@ -14160,6 +14160,44 @@
         }
         window.switchResonanzArchetyp = switchResonanzArchetyp;
 
+        /**
+         * Navigiert zum nächsten/vorherigen Archetyp im Resonanzfaktoren Modal
+         * @param {string} person - 'ich' oder 'partner'
+         * @param {number} direction - -1 für zurück, 1 für vor
+         */
+        function navigateResonanzArchetype(person, direction) {
+            const archetypeKeys = Object.keys(archetypeDescriptions);
+            const currentKey = person === 'ich' ? currentArchetype : selectedPartner;
+            const currentIndex = archetypeKeys.indexOf(currentKey);
+
+            let newIndex = currentIndex + direction;
+            if (newIndex < 0) newIndex = archetypeKeys.length - 1;
+            if (newIndex >= archetypeKeys.length) newIndex = 0;
+
+            const newArchetype = archetypeKeys[newIndex];
+
+            if (person === 'ich') {
+                currentArchetype = newArchetype;
+                if (typeof updateArchetypeGrid === 'function') {
+                    updateArchetypeGrid('ich', currentArchetype);
+                }
+            } else {
+                selectedPartner = newArchetype;
+                if (typeof updateArchetypeGrid === 'function') {
+                    updateArchetypeGrid('partner', selectedPartner);
+                }
+            }
+
+            // Update main displays
+            saveSelectionToStorage();
+            if (typeof updateComparisonView === 'function') updateComparisonView();
+            if (typeof updateMobileCardsContent === 'function') updateMobileCardsContent();
+
+            // Update Resonanzfaktoren Modal
+            updateResonanzfaktorenModalContent();
+        }
+        window.navigateResonanzArchetype = navigateResonanzArchetype;
+
         function updateResonanzfaktorenModalContent() {
             const modal = document.getElementById('resonanzfaktorenModal');
             if (!modal) return;
@@ -14313,16 +14351,27 @@
                         <button onclick="closeResonanzfaktorenModal()" style="background: rgba(255,255,255,0.1); border: none; border-radius: 8px; width: 36px; height: 36px; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 18px; color: var(--text-secondary); transition: all 0.2s;">×</button>
                     </div>
 
-                    <!-- Archetyp-Switcher -->
-                    <div style="padding: 16px 24px; border-bottom: 1px solid rgba(255,255,255,0.05); display: flex; gap: 12px;">
-                        <button onclick="switchResonanzArchetyp('ich')" style="flex: 1; padding: 12px 16px; border-radius: 10px; border: 2px solid ${isIch ? '#8B5CF6' : 'rgba(255,255,255,0.1)'}; background: ${isIch ? 'rgba(139,92,246,0.2)' : 'rgba(255,255,255,0.05)'}; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; transition: all 0.2s;">
-                            <span style="font-size: 20px;">${ichIcon}</span>
-                            <span style="font-size: 14px; font-weight: 600; color: ${isIch ? '#8B5CF6' : 'var(--text-secondary)'};">${ichName}</span>
-                        </button>
-                        <button onclick="switchResonanzArchetyp('partner')" style="flex: 1; padding: 12px 16px; border-radius: 10px; border: 2px solid ${!isIch ? '#8B5CF6' : 'rgba(255,255,255,0.1)'}; background: ${!isIch ? 'rgba(139,92,246,0.2)' : 'rgba(255,255,255,0.05)'}; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; transition: all 0.2s;">
-                            <span style="font-size: 20px;">${partnerIcon}</span>
-                            <span style="font-size: 14px; font-weight: 600; color: ${!isIch ? '#8B5CF6' : 'var(--text-secondary)'};">${partnerName}</span>
-                        </button>
+                    <!-- Archetyp-Switcher (gleicher Stil wie Ti-Age Synthese) -->
+                    <div style="display: flex; justify-content: center; align-items: center; gap: 20px; padding: 16px 24px; background: rgba(255,255,255,0.03); border-bottom: 1px solid rgba(255,255,255,0.05);">
+                        <!-- ICH Navigation -->
+                        <div style="display: flex; align-items: center; gap: 6px;">
+                            <button class="archetype-nav-btn" onclick="navigateResonanzArchetype('ich', -1)" title="Vorheriger Archetyp" style="width: 28px; height: 28px; font-size: 1.2rem; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); border-radius: 6px; cursor: pointer; color: var(--text-secondary);">‹</button>
+                            <div style="text-align: center; min-width: 120px;" onclick="switchResonanzArchetyp('ich')">
+                                <div style="font-size: 10px; color: var(--success); font-weight: 600; margin-bottom: 4px; text-transform: uppercase; letter-spacing: 0.5px;">ICH</div>
+                                <div style="font-size: 13px; color: ${isIch ? '#8B5CF6' : 'var(--text-primary)'}; font-weight: 600; cursor: pointer;">${ichName}</div>
+                            </div>
+                            <button class="archetype-nav-btn" onclick="navigateResonanzArchetype('ich', 1)" title="Nächster Archetyp" style="width: 28px; height: 28px; font-size: 1.2rem; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); border-radius: 6px; cursor: pointer; color: var(--text-secondary);">›</button>
+                        </div>
+                        <div style="font-size: 18px; color: var(--text-muted);">×</div>
+                        <!-- PARTNER Navigation -->
+                        <div style="display: flex; align-items: center; gap: 6px;">
+                            <button class="archetype-nav-btn" onclick="navigateResonanzArchetype('partner', -1)" title="Vorheriger Archetyp" style="width: 28px; height: 28px; font-size: 1.2rem; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); border-radius: 6px; cursor: pointer; color: var(--text-secondary);">‹</button>
+                            <div style="text-align: center; min-width: 120px;" onclick="switchResonanzArchetyp('partner')">
+                                <div style="font-size: 10px; color: var(--danger); font-weight: 600; margin-bottom: 4px; text-transform: uppercase; letter-spacing: 0.5px;">PARTNER</div>
+                                <div style="font-size: 13px; color: ${!isIch ? '#8B5CF6' : 'var(--text-primary)'}; font-weight: 600; cursor: pointer;">${partnerName}</div>
+                            </div>
+                            <button class="archetype-nav-btn" onclick="navigateResonanzArchetype('partner', 1)" title="Nächster Archetyp" style="width: 28px; height: 28px; font-size: 1.2rem; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); border-radius: 6px; cursor: pointer; color: var(--text-secondary);">›</button>
+                        </div>
                     </div>
 
                     <!-- Tabelle -->
