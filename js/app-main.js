@@ -14893,7 +14893,63 @@
             currentTiageSyntheseContent.pathos = generateCombinedPathos(ichArch, partnerArch);
             currentTiageSyntheseContent.logos = generateCombinedLogos(ichArch, partnerArch);
 
-            // Refresh the displayed content
+            // ═══════════════════════════════════════════════════════════════════════════
+            // RESONANZFAKTOREN neu berechnen bei Archetyp-Wechsel (VOR Content-Anzeige!)
+            // ═══════════════════════════════════════════════════════════════════════════
+            if (typeof ResonanzCard !== 'undefined' && typeof ResonanzCard.loadCalculatedValues === 'function') {
+                const personKey = person === 'ich' ? 'ich' : 'partner';
+                const newArchetype = person === 'ich' ? currentArchetype : selectedPartner;
+
+                // Sammle Profil-Kontext für Resonanz-Berechnung
+                const resonanzProfileContext = {
+                    archetyp: newArchetype,
+                    needs: null,
+                    dominanz: personDimensions[personKey]?.dominanz || null,
+                    orientierung: personDimensions[personKey]?.orientierung || null,
+                    geschlecht: personDimensions[personKey]?.geschlecht || null
+                };
+
+                // Versuche Bedürfnisse aus verschiedenen Quellen zu laden
+                // 1. Aus gespeicherten Needs (TiageState)
+                if (typeof TiageState !== 'undefined' && TiageState.get) {
+                    const savedNeeds = TiageState.get('tiage_needs_integrated');
+                    if (savedNeeds) {
+                        resonanzProfileContext.needs = {};
+                        for (const needKey in savedNeeds) {
+                            if (savedNeeds.hasOwnProperty(needKey)) {
+                                resonanzProfileContext.needs[needKey] = savedNeeds[needKey].value || savedNeeds[needKey];
+                            }
+                        }
+                    }
+                }
+
+                // 2. Fallback: Aus Archetyp-Profil (GfkBeduerfnisse)
+                if (!resonanzProfileContext.needs && typeof GfkBeduerfnisse !== 'undefined' &&
+                    GfkBeduerfnisse.archetypProfile && GfkBeduerfnisse.archetypProfile[newArchetype]) {
+                    resonanzProfileContext.needs = GfkBeduerfnisse.archetypProfile[newArchetype].kernbeduerfnisse || {};
+                }
+
+                // 3. Fallback: Aus BaseArchetypProfile
+                if (!resonanzProfileContext.needs && typeof BaseArchetypProfile !== 'undefined' &&
+                    BaseArchetypProfile[newArchetype] && BaseArchetypProfile[newArchetype].kernbeduerfnisse) {
+                    resonanzProfileContext.needs = BaseArchetypProfile[newArchetype].kernbeduerfnisse;
+                }
+
+                // Berechne und aktualisiere Resonanzfaktoren
+                if (resonanzProfileContext.needs) {
+                    const resonanzLoaded = ResonanzCard.loadCalculatedValues(resonanzProfileContext);
+                    if (resonanzLoaded) {
+                        // Aktualisiere auch LoadedArchetypProfile (falls vorhanden)
+                        if (window.LoadedArchetypProfile && window.LoadedArchetypProfile[personKey]) {
+                            const newValues = ResonanzCard.getValues(personKey);
+                            window.LoadedArchetypProfile[personKey].resonanzFaktoren = newValues;
+                        }
+                        console.log('[TIAGE] Resonanzfaktoren nach Archetyp-Wechsel aktualisiert:', newArchetype);
+                    }
+                }
+            }
+
+            // Refresh the displayed content (NACH Resonanzfaktoren-Update!)
             showTiageSyntheseContent(currentTiageSyntheseType);
 
             // Save to localStorage and update main view
