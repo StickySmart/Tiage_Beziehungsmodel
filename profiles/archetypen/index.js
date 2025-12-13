@@ -261,15 +261,34 @@
         // 3.1 flatNeeds berechnen (Basis + Modifikatoren)
         const flatNeeds = calculateFlatNeeds(archetyp, geschlecht, dominanz, orientierung);
 
-        // 3.1.1 Survey-Antworten integrieren (überschreibt berechnete Basis-Werte)
+        // 3.1.1 Survey-Antworten integrieren - NUR wenn locked (vom User manuell geändert)
         if (storageData.profileReview && storageData.profileReview.flatNeeds) {
             const surveyNeeds = storageData.profileReview.flatNeeds;
-            Object.keys(surveyNeeds).forEach(needId => {
-                if (surveyNeeds[needId] !== undefined && surveyNeeds[needId] !== null) {
-                    flatNeeds[needId] = surveyNeeds[needId];
-                }
-            });
-            console.log('[ProfileCalculator] Survey-Antworten integriert:', Object.keys(surveyNeeds).length, 'Werte');
+            let overrideCount = 0;
+
+            // Neue Array-Struktur: [{ id, value, locked }, ...]
+            if (Array.isArray(surveyNeeds)) {
+                surveyNeeds.forEach(need => {
+                    // Nur übernehmen wenn locked (User hat Wert manuell fixiert)
+                    if (need.locked && need.id && need.value !== undefined) {
+                        flatNeeds[need.id] = need.value;
+                        overrideCount++;
+                    }
+                });
+            } else {
+                // Legacy Objekt-Format: { needId: value } - alle übernehmen (Rückwärtskompatibilität)
+                Object.keys(surveyNeeds).forEach(needId => {
+                    if (surveyNeeds[needId] !== undefined && surveyNeeds[needId] !== null) {
+                        flatNeeds[needId] = surveyNeeds[needId];
+                        overrideCount++;
+                    }
+                });
+            }
+
+            if (overrideCount > 0) {
+                console.log('[ProfileCalculator] Locked Survey-Werte integriert:', overrideCount, 'von',
+                    Array.isArray(surveyNeeds) ? surveyNeeds.length : Object.keys(surveyNeeds).length);
+            }
         }
 
         // 3.2 Gewichtungen (aus Storage oder Defaults)
