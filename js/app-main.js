@@ -14203,6 +14203,7 @@
             if (newIndex >= archetypeKeys.length) newIndex = 0;
 
             const newArchetype = archetypeKeys[newIndex];
+            const personKey = person === 'ich' ? 'ich' : 'partner';
 
             if (person === 'ich') {
                 currentArchetype = newArchetype;
@@ -14213,6 +14214,77 @@
                 selectedPartner = newArchetype;
                 if (typeof updateArchetypeGrid === 'function') {
                     updateArchetypeGrid('partner', selectedPartner);
+                }
+            }
+
+            // ═══════════════════════════════════════════════════════════════════════════
+            // RESONANZFAKTOREN neu berechnen bei Archetyp-Wechsel
+            // ═══════════════════════════════════════════════════════════════════════════
+            if (typeof ResonanzCard !== 'undefined' && typeof ResonanzCard.loadCalculatedValues === 'function') {
+                // Sammle Profil-Kontext für Resonanz-Berechnung
+                let needs = null;
+
+                // 1. Aus LoadedArchetypProfile.profileReview.flatNeeds (User-Eingaben!)
+                const flatNeeds = window.LoadedArchetypProfile?.[personKey]?.profileReview?.flatNeeds;
+                if (flatNeeds) {
+                    needs = {};
+                    if (Array.isArray(flatNeeds)) {
+                        flatNeeds.forEach(n => {
+                            if (n.id) needs[n.id] = n.value;
+                            if (n.stringKey) needs[n.stringKey] = n.value;
+                        });
+                    } else {
+                        for (const key in flatNeeds) {
+                            if (flatNeeds.hasOwnProperty(key)) {
+                                const entry = flatNeeds[key];
+                                needs[key] = (typeof entry === 'object' && entry.value !== undefined) ? entry.value : entry;
+                            }
+                        }
+                    }
+                }
+
+                // 2. Fallback: Aus AttributeSummaryCard
+                if ((!needs || Object.keys(needs).length === 0) &&
+                    typeof AttributeSummaryCard !== 'undefined' && AttributeSummaryCard.getFlatNeeds) {
+                    const cardNeeds = AttributeSummaryCard.getFlatNeeds();
+                    if (cardNeeds) {
+                        needs = {};
+                        if (Array.isArray(cardNeeds)) {
+                            cardNeeds.forEach(n => {
+                                if (n.id) needs[n.id] = n.value;
+                                if (n.stringKey) needs[n.stringKey] = n.value;
+                            });
+                        }
+                    }
+                }
+
+                // 3. Fallback: Standard-Werte des Archetyps
+                if (!needs || Object.keys(needs).length === 0) {
+                    if (typeof GfkBeduerfnisse !== 'undefined' &&
+                        GfkBeduerfnisse.archetypProfile && GfkBeduerfnisse.archetypProfile[newArchetype]) {
+                        needs = GfkBeduerfnisse.archetypProfile[newArchetype].kernbeduerfnisse || {};
+                    }
+                }
+
+                const resonanzProfileContext = {
+                    archetyp: newArchetype,
+                    needs: needs,
+                    dominanz: personDimensions[personKey]?.dominanz || null,
+                    orientierung: personDimensions[personKey]?.orientierung || null,
+                    geschlecht: personDimensions[personKey]?.geschlecht || null
+                };
+
+                // Berechne und aktualisiere Resonanzfaktoren
+                if (resonanzProfileContext.needs && Object.keys(resonanzProfileContext.needs).length > 0) {
+                    const resonanzLoaded = ResonanzCard.loadCalculatedValues(resonanzProfileContext, personKey);
+                    if (resonanzLoaded) {
+                        // Aktualisiere auch LoadedArchetypProfile (falls vorhanden)
+                        if (window.LoadedArchetypProfile && window.LoadedArchetypProfile[personKey]) {
+                            const newValues = ResonanzCard.getValues(personKey);
+                            window.LoadedArchetypProfile[personKey].resonanzFaktoren = newValues;
+                        }
+                        console.log('[TIAGE] Resonanzfaktoren nach Archetyp-Wechsel (Modal) aktualisiert für', personKey + ':', newArchetype);
+                    }
                 }
             }
 
