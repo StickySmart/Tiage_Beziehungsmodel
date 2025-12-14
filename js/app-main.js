@@ -13807,18 +13807,16 @@
 
             // Sticky side buttons
             const scoreBtn = document.getElementById('tiageSyntheseToggleScore');
-            const pathosBtn = document.getElementById('tiageSyntheseTogglePathos');
-            const logosBtn = document.getElementById('tiageSyntheseToggleLogos');
+            const oshoZenBtn = document.getElementById('tiageSyntheseToggleOshoZen');
             const needsBtn = document.getElementById('tiageSyntheseToggleNeeds');
 
             // Modal header buttons
             const modalScoreBtn = document.getElementById('modalScoreBtn');
-            const modalPathosBtn = document.getElementById('modalPathosBtn');
-            const modalLogosBtn = document.getElementById('modalLogosBtn');
+            const modalOshoZenBtn = document.getElementById('modalOshoZenBtn');
             const modalNeedsBtn = document.getElementById('modalNeedsBtn');
 
             // Reset all sticky side button styles
-            [scoreBtn, pathosBtn, logosBtn, needsBtn].forEach(btn => {
+            [scoreBtn, oshoZenBtn, needsBtn].forEach(btn => {
                 if (btn) {
                     btn.style.background = 'rgba(30,30,35,0.95)';
                     btn.style.color = 'var(--text-muted)';
@@ -13827,7 +13825,7 @@
             });
 
             // Reset modal header button styles
-            [modalScoreBtn, modalPathosBtn, modalLogosBtn, modalNeedsBtn].forEach(btn => {
+            [modalScoreBtn, modalOshoZenBtn, modalNeedsBtn].forEach(btn => {
                 if (btn) btn.classList.remove('active');
             });
 
@@ -13844,32 +13842,23 @@
                     scoreBtn.style.border = '1px solid #8B5CF6';
                 }
                 if (modalScoreBtn) modalScoreBtn.classList.add('active');
-            } else if (type === 'pathos') {
+            } else if (type === 'oshozen') {
                 titleEl.textContent = "Ti-Age Synthese";
-                iconEl.textContent = '🔥';
-                categoryEl.textContent = 'Dynamische Qualität (Pirsig)';
-                subtitleEl.textContent = 'Pathos – Emotionale Resonanz';
+                iconEl.textContent = '🌸';
+                categoryEl.textContent = 'Osho Zen Tarot';
+                subtitleEl.textContent = 'Gemeinsame Bedürfnisse';
                 typeIndicatorEl.style.display = 'flex';
-                contentEl.innerHTML = getPathosContent();
-                if (pathosBtn) {
-                    pathosBtn.style.background = 'rgba(231,111,81,0.3)';
-                    pathosBtn.style.color = 'var(--text-primary)';
-                    pathosBtn.style.border = '1px solid #E76F51';
+                contentEl.innerHTML = getOshoZenContent();
+                if (oshoZenBtn) {
+                    oshoZenBtn.style.background = 'rgba(236, 72, 153, 0.3)';
+                    oshoZenBtn.style.color = 'var(--text-primary)';
+                    oshoZenBtn.style.border = '1px solid #EC4899';
                 }
-                if (modalPathosBtn) modalPathosBtn.classList.add('active');
-            } else if (type === 'logos') {
-                titleEl.textContent = "Ti-Age Synthese";
-                iconEl.textContent = '🧠';
-                categoryEl.textContent = 'Statische Qualität (Pirsig)';
-                subtitleEl.textContent = 'Logos – Rationale Struktur';
-                typeIndicatorEl.style.display = 'flex';
-                contentEl.innerHTML = getLogosContent();
-                if (logosBtn) {
-                    logosBtn.style.background = 'rgba(100,149,237,0.3)';
-                    logosBtn.style.color = 'var(--text-primary)';
-                    logosBtn.style.border = '1px solid #6495ED';
-                }
-                if (modalLogosBtn) modalLogosBtn.classList.add('active');
+                if (modalOshoZenBtn) modalOshoZenBtn.classList.add('active');
+            } else if (type === 'pathos' || type === 'logos') {
+                // Legacy support - redirect to oshozen
+                showTiageSyntheseContent('oshozen');
+                return;
             } else if (type === 'needs') {
                 titleEl.textContent = "Ti-Age Synthese";
                 iconEl.textContent = '💚';
@@ -15249,6 +15238,60 @@
                 resetTTSButtons();
                 currentTTSSection = null;
             }
+        }
+
+        /**
+         * Generate Osho Zen content - Top 5 gemeinsame Bedürfnisse mit Osho Zen Tarot Texten
+         */
+        function getOshoZenContent() {
+            // Hole die Profile
+            const profile1 = window.LoadedArchetypProfile?.ich || {};
+            const profile2 = window.LoadedArchetypProfile?.partner || {};
+
+            // Namen ermitteln
+            const ichName = profile1.name || archetypeDescriptions[currentArchetype]?.name || 'Ich';
+            const partnerName = profile2.name || archetypeDescriptions[selectedPartner]?.name || 'Partner';
+
+            // Prüfe ob OshoZenTextGenerator verfügbar ist
+            if (typeof OshoZenTextGenerator === 'undefined') {
+                return `
+                    <div style="padding: 20px; text-align: center; color: var(--text-muted);">
+                        <p>Osho Zen Modul wird geladen...</p>
+                        <p style="font-size: 0.85rem; margin-top: 10px;">
+                            Bitte stelle sicher, dass <code>oshoZenTextGenerator.js</code> geladen ist.
+                        </p>
+                    </div>
+                `;
+            }
+
+            // Prüfe ob Daten geladen sind
+            if (!OshoZenTextGenerator.isDataLoaded()) {
+                // Asynchron laden und dann Content aktualisieren
+                OshoZenTextGenerator.loadData().then(() => {
+                    const contentEl = document.getElementById('tiageSyntheseModalContent');
+                    if (contentEl && currentTiageSyntheseType === 'oshozen') {
+                        contentEl.innerHTML = getOshoZenContent();
+                    }
+                }).catch(err => {
+                    console.error('Fehler beim Laden der Osho Zen Daten:', err);
+                });
+
+                return `
+                    <div style="padding: 20px; text-align: center; color: var(--text-muted);">
+                        <div style="font-size: 2rem; margin-bottom: 10px;">🌸</div>
+                        <p>Lade Osho Zen Texte...</p>
+                    </div>
+                `;
+            }
+
+            // Generiere den Content
+            return OshoZenTextGenerator.generateSync({
+                profile1: profile1,
+                profile2: profile2,
+                name1: ichName,
+                name2: partnerName,
+                topN: 5
+            });
         }
 
         function getPathosContent() {

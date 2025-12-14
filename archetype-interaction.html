@@ -50,6 +50,7 @@
     <script src="js/synthesis/synthesisCalculator.js"></script>
     <script src="js/synthesis/pathosTextGenerator.js"></script>
     <script src="js/synthesis/logosTextGenerator.js"></script>
+    <script src="js/synthesis/oshoZenTextGenerator.js"></script>
     <script src="js/synthesis/integratedSynthesisTextGenerator.js"></script>
 
     <!-- TIAGE COMPATIBILITY - Extrahierte Kompatibilitätslogik -->
@@ -511,8 +512,7 @@
         <!-- Sticky side toggle buttons for Score, Pathos and Logos - positioned in overlay, right side of modal -->
         <div id="tiageSyntheseStickyToggle" onclick="event.stopPropagation()" style="position: fixed; left: min(calc(50% + 360px), calc(100% - 60px)); top: 50%; transform: translateY(-50%); display: flex; flex-direction: column; gap: 8px; z-index: 1002;">
             <button id="tiageSyntheseToggleScore" onclick="showTiageSyntheseContent('score')" style="padding: 12px 14px; border-radius: 8px; border: 1px solid var(--border); background: rgba(30,30,35,0.95); color: var(--text-muted); cursor: pointer; font-size: 16px; transition: all 0.2s; backdrop-filter: blur(10px); box-shadow: 0 2px 12px rgba(0,0,0,0.4);" title="Score - Pro & Contra">📊</button>
-            <button id="tiageSyntheseTogglePathos" onclick="showTiageSyntheseContent('pathos')" style="padding: 12px 14px; border-radius: 8px; border: 1px solid var(--border); background: rgba(30,30,35,0.95); color: var(--text-muted); cursor: pointer; font-size: 16px; transition: all 0.2s; backdrop-filter: blur(10px); box-shadow: 0 2px 12px rgba(0,0,0,0.4);" title="Pathos - Emotionale Resonanz">🔥</button>
-            <button id="tiageSyntheseToggleLogos" onclick="showTiageSyntheseContent('logos')" style="padding: 12px 14px; border-radius: 8px; border: 1px solid var(--border); background: rgba(30,30,35,0.95); color: var(--text-muted); cursor: pointer; font-size: 16px; transition: all 0.2s; backdrop-filter: blur(10px); box-shadow: 0 2px 12px rgba(0,0,0,0.4);" title="Logos - Rationale Struktur">🧠</button>
+            <button id="tiageSyntheseToggleOshoZen" onclick="showTiageSyntheseContent('oshozen')" style="padding: 12px 14px; border-radius: 8px; border: 1px solid var(--border); background: rgba(30,30,35,0.95); color: var(--text-muted); cursor: pointer; font-size: 16px; transition: all 0.2s; backdrop-filter: blur(10px); box-shadow: 0 2px 12px rgba(0,0,0,0.4);" title="Osho Zen - Gemeinsame Bedürfnisse">🌸</button>
             <button id="tiageSyntheseToggleNeeds" onclick="showTiageSyntheseContent('needs')" style="padding: 12px 14px; border-radius: 8px; border: 1px solid var(--border); background: rgba(30,30,35,0.95); color: var(--text-muted); cursor: pointer; font-size: 16px; transition: all 0.2s; backdrop-filter: blur(10px); box-shadow: 0 2px 12px rgba(0,0,0,0.4);" title="Bedürfnis-Match mit Differenz">💚</button>
             <button id="tiageSyntheseToggleResonanz" onclick="openResonanzfaktorenModal()" style="padding: 12px 14px; border-radius: 8px; border: 1px solid var(--border); background: rgba(30,30,35,0.95); color: var(--text-muted); cursor: pointer; font-size: 16px; transition: all 0.2s; backdrop-filter: blur(10px); box-shadow: 0 2px 12px rgba(0,0,0,0.4);" title="Resonanzfaktoren × Perspektiven">🎛️</button>
         </div>
@@ -521,8 +521,7 @@
                 <span class="modal-title" id="tiageSyntheseModalTitle">Ti-Age Synthese</span>
                 <div style="display: flex; align-items: center; gap: 8px;">
                     <button class="header-score-btn" id="modalScoreBtn" onclick="showTiageSyntheseContent('score')" title="Score - Pro & Contra">📊</button>
-                    <button class="header-pathos-btn" id="modalPathosBtn" onclick="showTiageSyntheseContent('pathos')" title="Pathos - Emotionale Resonanz">🔥</button>
-                    <button class="header-logos-btn" id="modalLogosBtn" onclick="showTiageSyntheseContent('logos')" title="Logos - Rationale Struktur">🧠</button>
+                    <button class="header-oshozen-btn" id="modalOshoZenBtn" onclick="showTiageSyntheseContent('oshozen')" title="Osho Zen - Gemeinsame Bedürfnisse">🌸</button>
                     <button class="header-needs-btn" id="modalNeedsBtn" onclick="showTiageSyntheseContent('needs')" title="Bedürfnis-Match mit Differenz">💚</button>
                     <button class="header-resonanz-btn" id="modalResonanzBtn" onclick="openResonanzfaktorenModal()" title="Resonanzfaktoren × Perspektiven">🎛️</button>
                     <button class="modal-close" onclick="closeTiageSyntheseModal()">&times;</button>
