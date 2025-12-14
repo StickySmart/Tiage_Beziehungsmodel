@@ -145,7 +145,7 @@ const OshoZenTextGenerator = (function() {
         let html = `
             <div class="osho-zen-container">
                 <div class="osho-zen-header">
-                    <h3>🌸 Eure Top ${topMatches.length} gemeinsamen Bedürfnisse</h3>
+                    <h3>🔥 Eure Top ${topMatches.length} gemeinsamen Bedürfnisse</h3>
                     <p class="osho-zen-subtitle">Basierend auf der Übereinstimmung eurer Bedürfnis-Profile</p>
                 </div>
                 <div class="osho-zen-list">
@@ -261,9 +261,9 @@ const OshoZenTextGenerator = (function() {
         // Daten laden falls noch nicht geschehen
         await loadOshoZenData();
 
-        // Bedürfnisse extrahieren
-        const needs1 = profile1?.needs || profile1?.beduerfnisse || {};
-        const needs2 = profile2?.needs || profile2?.beduerfnisse || {};
+        // Bedürfnisse extrahieren (flatNeeds enthält die tatsächlichen Bewertungen)
+        const needs1 = profile1?.profileReview?.flatNeeds || profile1?.needs || profile1?.beduerfnisse || {};
+        const needs2 = profile2?.profileReview?.flatNeeds || profile2?.needs || profile2?.beduerfnisse || {};
 
         // Top-Matches berechnen
         const topMatches = calculateTopMatches(needs1, needs2, topN);
@@ -289,8 +289,8 @@ const OshoZenTextGenerator = (function() {
             topN = 5
         } = config;
 
-        const needs1 = profile1?.needs || profile1?.beduerfnisse || {};
-        const needs2 = profile2?.needs || profile2?.beduerfnisse || {};
+        const needs1 = profile1?.profileReview?.flatNeeds || profile1?.needs || profile1?.beduerfnisse || {};
+        const needs2 = profile2?.profileReview?.flatNeeds || profile2?.needs || profile2?.beduerfnisse || {};
         const topMatches = calculateTopMatches(needs1, needs2, topN);
 
         return generateHTML(topMatches, name1, name2);
