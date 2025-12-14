@@ -2,7 +2,7 @@
 /**
  * Version Bump Script für Tiage
  *
- * Aktualisiert sowohl package.json als auch js/version.js
+ * Aktualisiert package.json, js/version.js und README.md
  * Wird automatisch von GitHub Actions nach jedem Merge ausgeführt.
  *
  * © 2025 Ti-age.de Alle Rechte vorbehalten.
@@ -14,6 +14,7 @@ const path = require('path');
 // Pfade
 const packageJsonPath = path.join(__dirname, '..', 'package.json');
 const versionJsPath = path.join(__dirname, '..', 'js', 'version.js');
+const readmePath = path.join(__dirname, '..', 'README.md');
 
 // Package.json lesen
 const packageJson = JSON.parse(fs.readFileSync(packageJsonPath, 'utf8'));
@@ -120,5 +121,14 @@ if (typeof module !== 'undefined' && module.exports) {
 
 fs.writeFileSync(versionJsPath, versionJsContent, 'utf8');
 console.log('✓ js/version.js updated');
+
+// 3. README.md aktualisieren
+let readmeContent = fs.readFileSync(readmePath, 'utf8');
+readmeContent = readmeContent.replace(
+    /\*\*Version \d+\.\d+\.\d+\*\*/,
+    `**Version ${newVersion}**`
+);
+fs.writeFileSync(readmePath, readmeContent, 'utf8');
+console.log('✓ README.md updated');
 
 console.log(`\n✅ Version bump complete: v${newVersion}`);
