@@ -2484,13 +2484,13 @@
         let currentTopMatch = { id: null, score: 0 };
         let currentChallenge = { id: null, score: 0 };
         let modalContextPartner = null; // Track which partner to use in category modal
-        let currentMatchModalView = localStorage.getItem('matchModalView') || 'pathos'; // pathos or logos
+        let currentMatchModalView = TiageState.get('ui.matchModalView') || 'pathos'; // pathos or logos
         let currentMatchModalData = null; // Store current modal data for toggle refresh
 
         // Match Modal Toggle Function
         function toggleMatchModalView(view) {
             currentMatchModalView = view;
-            localStorage.setItem('matchModalView', view);
+            TiageState.set('ui.matchModalView', view);
 
             // Update toggle button styles
             document.getElementById('matchTogglePathos').classList.toggle('active', view === 'pathos');
@@ -13526,7 +13526,7 @@
         }
 
         // Ti-Age Synthese Modal Functions (unified Score/Pathos/Logos)
-        let currentTiageSyntheseType = localStorage.getItem('tiageSyntheseType') || 'score'; // Sticky: 'score', 'pathos' or 'logos'
+        let currentTiageSyntheseType = TiageState.get('ui.syntheseType') || 'score'; // Sticky: 'score', 'pathos' or 'logos'
         let currentTiageSyntheseContent = { score: '', pathos: '', logos: '' };
 
         // Legacy aliases for backwards compatibility
@@ -13630,9 +13630,8 @@
             currentPathosLogosType = type; // Keep legacy in sync
             // Stop TTS when switching content
             stopTTSOnModalClose();
-            // Save to localStorage for sticky behavior
-            localStorage.setItem('tiageSyntheseType', type);
-            localStorage.setItem('pathosLogosType', type); // Keep legacy storage
+            // Save to TiageState for sticky behavior (SSOT)
+            TiageState.set('ui.syntheseType', type);
 
             const titleEl = document.getElementById('tiageSyntheseModalTitle');
             const iconEl = document.getElementById('tiageSyntheseIcon');
@@ -16480,25 +16479,32 @@
             };
 
             try {
-                localStorage.setItem('tiage-selection', JSON.stringify(selection));
-
-                // Also sync to TiageState storage for consistency
+                // TiageState als SSOT - selection und personDimensions speichern
                 if (typeof TiageState !== 'undefined') {
+                    TiageState.set('ui.selection', selection);
                     TiageState.set('personDimensions.ich', personDimensions.ich);
                     TiageState.set('personDimensions.partner', personDimensions.partner);
                     TiageState.saveToStorage();
                 }
             } catch (e) {
-                console.warn('LocalStorage not available:', e);
+                console.warn('TiageState not available:', e);
             }
         }
 
         function loadSelectionFromStorage() {
             try {
-                const saved = localStorage.getItem('tiage-selection');
-                if (!saved) return false;
-
-                const selection = JSON.parse(saved);
+                // Lade von TiageState (SSOT) mit localStorage Fallback
+                let selection = null;
+                if (typeof TiageState !== 'undefined') {
+                    selection = TiageState.get('ui.selection');
+                }
+                // Fallback: alte localStorage-Daten (werden bei loadFromStorage migriert)
+                if (!selection) {
+                    const saved = localStorage.getItem('tiage-selection');
+                    if (!saved) return false;
+                    selection = JSON.parse(saved);
+                }
+                if (!selection) return false;
 
                 // Mapping von alten #A1-#A8 Keys zu neuen String-Keys
                 const archetypeIdToKey = {
@@ -16849,11 +16855,13 @@
                 return;
             }
 
-            // Clear LocalStorage
+            // Clear TiageState selection (SSOT)
             try {
-                localStorage.removeItem('tiage-selection');
+                if (typeof TiageState !== 'undefined') {
+                    TiageState.set('ui.selection', null);
+                }
             } catch (e) {
-                console.warn('LocalStorage not available:', e);
+                console.warn('TiageState not available:', e);
             }
 
             // Reset mobile selections
@@ -17003,11 +17011,18 @@
                     }
                 });
 
-                // Auch die legacy Keys löschen
+                // Legacy Keys löschen (Migration zu TiageState)
                 localStorage.removeItem('tiage-selection');
                 localStorage.removeItem('matchModalView');
                 localStorage.removeItem('tiageSyntheseType');
                 localStorage.removeItem('pathosLogosType');
+
+                // TiageState UI-Settings zurücksetzen
+                if (typeof TiageState !== 'undefined') {
+                    TiageState.set('ui.selection', null);
+                    TiageState.set('ui.matchModalView', 'pathos');
+                    TiageState.set('ui.syntheseType', 'score');
+                }
 
                 // Kurze Bestätigung anzeigen
                 const toast = document.createElement('div');

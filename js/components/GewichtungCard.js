@@ -109,27 +109,70 @@ const GewichtungCard = (function() {
     // ═══════════════════════════════════════════════════════════════════════════
 
     function getLocksByPerson(person) {
+        // Lese Lock-Status aus TiageState (SSOT)
+        if (typeof TiageState !== 'undefined') {
+            const gew = TiageState.get(`gewichtungen.${person}`);
+            if (gew && gew.O) {
+                return {
+                    orientierung: gew.O.locked || false,
+                    archetyp: gew.A.locked || false,
+                    dominanz: gew.D.locked || false,
+                    geschlecht: gew.G.locked || false
+                };
+            }
+        }
         return locksStore[person === 'partner' ? 'partner' : 'ich'];
     }
 
     function setLocksByPerson(person, locks) {
         locksStore[person === 'partner' ? 'partner' : 'ich'] = locks;
+        // Sync zu TiageState (SSOT)
+        if (typeof TiageState !== 'undefined') {
+            const gew = TiageState.get(`gewichtungen.${person}`);
+            if (gew) {
+                gew.O.locked = locks.orientierung || false;
+                gew.A.locked = locks.archetyp || false;
+                gew.D.locked = locks.dominanz || false;
+                gew.G.locked = locks.geschlecht || false;
+                TiageState.set(`gewichtungen.${person}`, gew);
+            }
+        }
     }
 
     function getSummeLockedByPerson(person) {
+        // Lese direkt aus TiageState (SSOT)
+        if (typeof TiageState !== 'undefined') {
+            const summeLock = TiageState.get(`gewichtungen.${person}.summeLock`);
+            if (summeLock) return summeLock.enabled !== false;
+        }
         return summeLockedStore[person === 'partner' ? 'partner' : 'ich'];
     }
 
     function setSummeLockedByPerson(person, value) {
         summeLockedStore[person === 'partner' ? 'partner' : 'ich'] = value;
+        // Sync zu TiageState (SSOT)
+        if (typeof TiageState !== 'undefined') {
+            const current = TiageState.get(`gewichtungen.${person}.summeLock`) || { enabled: true, target: 100 };
+            TiageState.set(`gewichtungen.${person}.summeLock`, { ...current, enabled: value });
+        }
     }
 
     function getSummeTargetByPerson(person) {
+        // Lese direkt aus TiageState (SSOT)
+        if (typeof TiageState !== 'undefined') {
+            const summeLock = TiageState.get(`gewichtungen.${person}.summeLock`);
+            if (summeLock) return summeLock.target || 100;
+        }
         return summeTargetStore[person === 'partner' ? 'partner' : 'ich'];
     }
 
     function setSummeTargetByPerson(person, value) {
         summeTargetStore[person === 'partner' ? 'partner' : 'ich'] = value;
+        // Sync zu TiageState (SSOT)
+        if (typeof TiageState !== 'undefined') {
+            const current = TiageState.get(`gewichtungen.${person}.summeLock`) || { enabled: true, target: 100 };
+            TiageState.set(`gewichtungen.${person}.summeLock`, { ...current, target: value });
+        }
     }
 
     // ═══════════════════════════════════════════════════════════════════════════
@@ -338,6 +381,12 @@ const GewichtungCard = (function() {
 
     function getSummeLock(person) {
         person = person || getCurrentPerson();
+        // TiageState als SSOT
+        if (typeof TiageState !== 'undefined') {
+            const summeLock = TiageState.get(`gewichtungen.${person}.summeLock`);
+            if (summeLock) return summeLock.enabled !== false;
+        }
+        // Fallback: localStorage (Migration)
         try {
             const key = getSummeLockKey(person);
             const stored = localStorage.getItem(key);
@@ -347,6 +396,12 @@ const GewichtungCard = (function() {
 
     function getSummeTarget(person) {
         person = person || getCurrentPerson();
+        // TiageState als SSOT
+        if (typeof TiageState !== 'undefined') {
+            const summeLock = TiageState.get(`gewichtungen.${person}.summeLock`);
+            if (summeLock) return summeLock.target || 100;
+        }
+        // Fallback: localStorage (Migration)
         try {
             const key = getSummeTargetKey(person);
             const stored = localStorage.getItem(key);
@@ -356,13 +411,16 @@ const GewichtungCard = (function() {
 
     function saveSummeLock(person) {
         person = person || getCurrentPerson();
+        const isLocked = getSummeLockedByPerson(person);
+        const target = getSummeTargetByPerson(person);
         try {
-            const lockKey = getSummeLockKey(person);
-            const targetKey = getSummeTargetKey(person);
-            const isLocked = getSummeLockedByPerson(person);
-            const target = getSummeTargetByPerson(person);
-            localStorage.setItem(lockKey, JSON.stringify(isLocked));
-            localStorage.setItem(targetKey, JSON.stringify(target));
+            // TiageState als SSOT
+            if (typeof TiageState !== 'undefined') {
+                TiageState.set(`gewichtungen.${person}.summeLock`, {
+                    enabled: isLocked,
+                    target: target
+                });
+            }
         } catch (e) {
             console.warn('[GewichtungCard] Fehler beim Speichern des Summen-Locks:', e);
         }
