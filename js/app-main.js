@@ -15526,7 +15526,7 @@
                         <div style="display: flex; flex-direction: column; gap: 6px; max-height: 200px; overflow-y: auto;">
                 `;
 
-                gemeinsam.slice(0, 15).forEach(item => {
+                gemeinsam.forEach(item => {
                     // item.label ist bereits der Display-Name
                     const label = item.label;
                     const wert1 = item.wert1 || 0;
@@ -15587,7 +15587,7 @@
                         <div style="display: flex; flex-direction: column; gap: 6px; max-height: 200px; overflow-y: auto;">
                 `;
 
-                konflikt.slice(0, 10).forEach(item => {
+                konflikt.forEach(item => {
                     // item.label ist bereits der Display-Name
                     const label = item.label;
                     const wert1 = item.wert1 || 0;
