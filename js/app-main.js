@@ -14754,7 +14754,7 @@
                                     <tr style="background: rgba(0,0,0,0.3);">
                                         <th style="padding: 10px; text-align: left; font-size: 11px; color: var(--text-muted); font-weight: 500;">Bedürfnis</th>
                                         <th style="padding: 10px 6px; text-align: center; font-size: 11px; color: var(--text-muted); font-weight: 500;">Typisch</th>
-                                        <th style="padding: 10px 6px; text-align: center; font-size: 11px; color: ${personColor}; font-weight: 500;">Dein Wert</th>
+                                        <th style="padding: 10px 6px; text-align: center; font-size: 11px; color: ${personColor}; font-weight: 500;">${person === 'ich' ? 'Dein Wert' : 'Partner Wert'}</th>
                                         <th style="padding: 10px 6px; text-align: center; font-size: 11px; color: var(--text-muted); font-weight: 500;">|Δ|</th>
                                     </tr>
                                 </thead>
