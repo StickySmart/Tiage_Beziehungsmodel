@@ -219,6 +219,7 @@ TiageSynthesis.Calculator = {
             }
         } else {
             // Fallback: Nur Matrix-Scores (alte Berechnung)
+            console.warn('[TIAGE Calculator] NeedsIntegration nicht verfügbar oder deaktiviert - verwende nur Matrix-Scores');
             scores = matrixScores;
             needsIntegrationDetails = { enabled: false };
         }
@@ -274,6 +275,7 @@ TiageSynthesis.Calculator = {
             );
         } else {
             // Legacy: Gesamt-R auf baseScore
+            console.warn('[TIAGE Calculator] Dimensionale Resonanz nicht verfügbar - verwende Legacy-Berechnung (Gesamt-R auf baseScore)');
             finalScore = Math.round(baseScore * resonanz.coefficient);
         }
 
@@ -387,6 +389,7 @@ TiageSynthesis.Calculator = {
     _calculateUncertainty: function(score, beduerfnisResult) {
         // Falls TiageStatistics nicht geladen
         if (typeof TiageStatistics === 'undefined') {
+            console.warn('[TIAGE Calculator] TiageStatistics nicht geladen - verwende Default-Uncertainty (margin=14)');
             return {
                 margin: 14,  // Default-Schätzung
                 lower: Math.max(0, score - 14),
@@ -796,6 +799,7 @@ TiageSynthesis.Calculator = {
         // Wert aus Matrix holen (oder Default)
         var value = constants.GFK_MATRIX[key];
         if (value === undefined) {
+            console.warn('[TIAGE Calculator] GFK-Matrix-Key "' + key + '" nicht gefunden - verwende Default 0.5 (mittel-mittel)');
             value = 0.5; // Default: mittel-mittel
         }
 
@@ -868,6 +872,7 @@ TiageSynthesis.Calculator = {
 
         // Fallback zur Legacy-Berechnung wenn dimensional nicht verfügbar
         if (!dimensional) {
+            console.warn('[TIAGE Calculator] Dimensionale Resonanz-Berechnung fehlgeschlagen - verwende Legacy-Resonanz-Formel');
             coefficient = cfg.BASE +
                 (
                     ((profilMatch / 100) * cfg.PROFILE_WEIGHT) +
@@ -921,6 +926,7 @@ TiageSynthesis.Calculator = {
         var cfg = constants.RESONANCE_DIMENSIONAL;
 
         if (!cfg || !cfg.ENABLED) {
+            console.warn('[TIAGE Calculator] RESONANCE_DIMENSIONAL nicht konfiguriert oder deaktiviert - Fallback zur alten Berechnung');
             return null; // Fallback zur alten Berechnung
         }
 
@@ -1063,6 +1069,7 @@ TiageSynthesis.Calculator = {
         // ═══════════════════════════════════════════════════════════════════
         // LEGACY FALLBACK: Alte Berechnung wenn NeedsIntegration nicht verfügbar
         // ═══════════════════════════════════════════════════════════════════
+        console.warn('[TIAGE Calculator] NeedsIntegration.calculateResonanceFromPerspectives nicht verfügbar - verwende Legacy-Fallback für dimensionale Resonanz');
         var needsIntegration = constants.NEEDS_INTEGRATION;
         var dimensions = {};
         var totalR = 0;
