@@ -132,15 +132,153 @@
     console.log('BaseArchetypProfile geladen:', loadedCount, 'Basis-Definitionen');
 
     // ═══════════════════════════════════════════════════════════════════════════
-    // 2. LOADED ARCHETYP PROFILE - Geladene Benutzer-Profile (v3.0 Struktur)
+    // 2. LOADED ARCHETYP PROFILE - View auf TiageState (Single Source of Truth)
+    // ═══════════════════════════════════════════════════════════════════════════
+    // LoadedArchetypProfile ist jetzt ein "View" der direkt aus TiageState liest.
+    // Alle Schreibzugriffe gehen ebenfalls an TiageState.
+    // Bestehender Code funktioniert weiterhin ohne Änderung.
     // ═══════════════════════════════════════════════════════════════════════════
 
+    /**
+     * Erstellt einen Profil-View für eine Person (ich/partner)
+     * Liest und schreibt direkt von/zu TiageState
+     */
+    function createProfileView(person) {
+        return {
+            // Archetyp: TiageState.archetypes.{person}.primary
+            get archetyp() {
+                if (typeof TiageState !== 'undefined') {
+                    return TiageState.get(`archetypes.${person}.primary`);
+                }
+                return null;
+            },
+            set archetyp(value) {
+                if (typeof TiageState !== 'undefined') {
+                    TiageState.set(`archetypes.${person}.primary`, value);
+                }
+            },
+
+            // Geschlecht: TiageState.personDimensions.{person}.geschlecht
+            get geschlecht() {
+                if (typeof TiageState !== 'undefined') {
+                    return TiageState.get(`personDimensions.${person}.geschlecht`);
+                }
+                return null;
+            },
+            set geschlecht(value) {
+                if (typeof TiageState !== 'undefined') {
+                    TiageState.set(`personDimensions.${person}.geschlecht`, value);
+                }
+            },
+
+            // Dominanz: TiageState.personDimensions.{person}.dominanz
+            get dominanz() {
+                if (typeof TiageState !== 'undefined') {
+                    return TiageState.get(`personDimensions.${person}.dominanz`);
+                }
+                return null;
+            },
+            set dominanz(value) {
+                if (typeof TiageState !== 'undefined') {
+                    TiageState.set(`personDimensions.${person}.dominanz`, value);
+                }
+            },
+
+            // Orientierung: TiageState.personDimensions.{person}.orientierung
+            get orientierung() {
+                if (typeof TiageState !== 'undefined') {
+                    return TiageState.get(`personDimensions.${person}.orientierung`);
+                }
+                return null;
+            },
+            set orientierung(value) {
+                if (typeof TiageState !== 'undefined') {
+                    TiageState.set(`personDimensions.${person}.orientierung`, value);
+                }
+            },
+
+            // ProfileReview mit flatNeeds
+            get profileReview() {
+                const self = this;
+                return {
+                    get flatNeeds() {
+                        if (typeof TiageState !== 'undefined') {
+                            return TiageState.get(`flatNeeds.${person}`) || {};
+                        }
+                        return {};
+                    },
+                    set flatNeeds(value) {
+                        if (typeof TiageState !== 'undefined') {
+                            TiageState.set(`flatNeeds.${person}`, value);
+                        }
+                    }
+                };
+            },
+            set profileReview(value) {
+                if (typeof TiageState !== 'undefined' && value && value.flatNeeds) {
+                    TiageState.set(`flatNeeds.${person}`, value.flatNeeds);
+                }
+            },
+
+            // Gewichtungen: TiageState.gewichtungen.{person}
+            get gewichtungen() {
+                if (typeof TiageState !== 'undefined') {
+                    return TiageState.get(`gewichtungen.${person}`);
+                }
+                return null;
+            },
+            set gewichtungen(value) {
+                if (typeof TiageState !== 'undefined') {
+                    TiageState.set(`gewichtungen.${person}`, value);
+                }
+            },
+
+            // ResonanzFaktoren: TiageState.resonanzFaktoren.{person}
+            get resonanzFaktoren() {
+                if (typeof TiageState !== 'undefined') {
+                    return TiageState.get(`resonanzFaktoren.${person}`);
+                }
+                return null;
+            },
+            set resonanzFaktoren(value) {
+                if (typeof TiageState !== 'undefined') {
+                    TiageState.set(`resonanzFaktoren.${person}`, value);
+                }
+            }
+        };
+    }
+
+    // LoadedArchetypProfile als View auf TiageState
     window.LoadedArchetypProfile = {
-        ich: createEmptyProfile(),
-        partner: createEmptyProfile()
+        get ich() { return createProfileView('ich'); },
+        set ich(value) {
+            // Vollständiges Profil setzen
+            if (typeof TiageState !== 'undefined' && value) {
+                if (value.archetyp) TiageState.set('archetypes.ich.primary', value.archetyp);
+                if (value.geschlecht) TiageState.set('personDimensions.ich.geschlecht', value.geschlecht);
+                if (value.dominanz) TiageState.set('personDimensions.ich.dominanz', value.dominanz);
+                if (value.orientierung) TiageState.set('personDimensions.ich.orientierung', value.orientierung);
+                if (value.profileReview?.flatNeeds) TiageState.set('flatNeeds.ich', value.profileReview.flatNeeds);
+                if (value.gewichtungen) TiageState.set('gewichtungen.ich', value.gewichtungen);
+                if (value.resonanzFaktoren) TiageState.set('resonanzFaktoren.ich', value.resonanzFaktoren);
+            }
+        },
+        get partner() { return createProfileView('partner'); },
+        set partner(value) {
+            // Vollständiges Profil setzen
+            if (typeof TiageState !== 'undefined' && value) {
+                if (value.archetyp) TiageState.set('archetypes.partner.primary', value.archetyp);
+                if (value.geschlecht) TiageState.set('personDimensions.partner.geschlecht', value.geschlecht);
+                if (value.dominanz) TiageState.set('personDimensions.partner.dominanz', value.dominanz);
+                if (value.orientierung) TiageState.set('personDimensions.partner.orientierung', value.orientierung);
+                if (value.profileReview?.flatNeeds) TiageState.set('flatNeeds.partner', value.profileReview.flatNeeds);
+                if (value.gewichtungen) TiageState.set('gewichtungen.partner', value.gewichtungen);
+                if (value.resonanzFaktoren) TiageState.set('resonanzFaktoren.partner', value.resonanzFaktoren);
+            }
+        }
     };
 
-    console.log('LoadedArchetypProfile initialisiert: ich + partner');
+    console.log('[LoadedArchetypProfile] View auf TiageState aktiviert (SSOT)');
 
     // ═══════════════════════════════════════════════════════════════════════════
     // 3. PROFILE CALCULATOR - Berechnet und lädt Profile
@@ -331,25 +469,41 @@
         }
 
         const calculatedProfile = calculateProfile(storageData);
-        window.LoadedArchetypProfile[person] = calculatedProfile;
 
         // ═══════════════════════════════════════════════════════════════════════════
-        // SYNC zu TiageState (Single Source of Truth - Philosophie B)
+        // Direkt zu TiageState schreiben (Single Source of Truth)
+        // LoadedArchetypProfile ist jetzt ein View auf TiageState
         // ═══════════════════════════════════════════════════════════════════════════
         if (typeof TiageState !== 'undefined') {
-            // flatNeeds synchronisieren
+            // Archetyp setzen
+            if (calculatedProfile.archetyp) {
+                TiageState.set(`archetypes.${person}.primary`, calculatedProfile.archetyp);
+            }
+
+            // Dimensionen setzen (geschlecht, dominanz, orientierung)
+            if (calculatedProfile.geschlecht) {
+                TiageState.set(`personDimensions.${person}.geschlecht`, calculatedProfile.geschlecht);
+            }
+            if (calculatedProfile.dominanz) {
+                TiageState.set(`personDimensions.${person}.dominanz`, calculatedProfile.dominanz);
+            }
+            if (calculatedProfile.orientierung) {
+                TiageState.set(`personDimensions.${person}.orientierung`, calculatedProfile.orientierung);
+            }
+
+            // flatNeeds setzen
             if (calculatedProfile.profileReview?.flatNeeds) {
                 TiageState.set(`flatNeeds.${person}`, calculatedProfile.profileReview.flatNeeds);
             }
 
-            // gewichtungen synchronisieren (nur wenn nicht locked überschrieben)
+            // gewichtungen setzen (respektiere Locks!)
             if (calculatedProfile.gewichtungen) {
                 const currentGewichtungen = TiageState.get(`gewichtungen.${person}`);
                 const newGewichtungen = {};
                 ['O', 'A', 'D', 'G'].forEach(key => {
                     const current = currentGewichtungen?.[key];
                     const calculated = calculatedProfile.gewichtungen[key];
-                    // Nur überschreiben wenn nicht locked oder noch nicht gesetzt
+                    // Nur überschreiben wenn nicht locked
                     if (!current?.locked) {
                         newGewichtungen[key] = calculated;
                     } else {
@@ -359,14 +513,14 @@
                 TiageState.set(`gewichtungen.${person}`, newGewichtungen);
             }
 
-            // resonanzFaktoren synchronisieren (nur wenn nicht locked überschrieben)
+            // resonanzFaktoren setzen (respektiere Locks!)
             if (calculatedProfile.resonanzFaktoren) {
                 const currentResonanz = TiageState.get(`resonanzFaktoren.${person}`);
                 const newResonanz = {};
                 ['R1', 'R2', 'R3', 'R4'].forEach(key => {
                     const current = currentResonanz?.[key];
                     const calculated = calculatedProfile.resonanzFaktoren[key];
-                    // Nur überschreiben wenn nicht locked oder noch nicht gesetzt
+                    // Nur überschreiben wenn nicht locked
                     if (!current?.locked) {
                         newResonanz[key] = calculated;
                     } else {
@@ -375,8 +529,6 @@
                 });
                 TiageState.set(`resonanzFaktoren.${person}`, newResonanz);
             }
-
-            console.log(`[ProfileCalculator] TiageState synchronisiert für: ${person}`);
         }
 
         console.log(`[ProfileCalculator] Profil geladen: ${person}`, {
