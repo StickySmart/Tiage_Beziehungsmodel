@@ -913,7 +913,7 @@ TiageSynthesis.Calculator = {
      * Berechnet Multi-Dimensionale Resonanz
      *
      * NEU (v3.2): Perspektiven-basierte Berechnung mit gespeicherten R-Werten
-     *   1. Lese individuelle R-Werte aus gespeicherten Profilen (ResonanzCard/localStorage)
+     *   1. Lese individuelle R-Werte aus gespeicherten Profilen (ResonanzCard/TiageState)
      *   2. Kombiniere via Produkt: R_combined = R_Person1 × R_Person2
      *   3. Q = A×0.25×R1 + O×0.25×R2 + D×0.25×R3 + G×0.25×R4
      *
@@ -957,13 +957,13 @@ TiageSynthesis.Calculator = {
             }
         }
 
-        // Option 3: localStorage direkt
-        if (!r1_ich && typeof localStorage !== 'undefined') {
+        // Option 3: TiageState direkt (SSOT)
+        if (!r1_ich && typeof TiageState !== 'undefined') {
             try {
-                var storedIch = localStorage.getItem('tiage_resonanz_faktoren_ich');
-                var storedPartner = localStorage.getItem('tiage_resonanz_faktoren_partner');
-                if (storedIch) r1_ich = JSON.parse(storedIch);
-                if (storedPartner) r1_partner = JSON.parse(storedPartner);
+                var storedIch = TiageState.get('archetypes.ich.resonanzFaktoren');
+                var storedPartner = TiageState.get('archetypes.partner.resonanzFaktoren');
+                if (storedIch) r1_ich = storedIch;
+                if (storedPartner) r1_partner = storedPartner;
             } catch (e) {
                 console.warn('Konnte gespeicherte R-Werte nicht laden:', e);
             }
