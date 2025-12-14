@@ -14510,6 +14510,46 @@
             }
 
             // ═══════════════════════════════════════════════════════════════════
+            // PROFIL-ATTRIBUTE LADEN für Modifikator-Aufschlüsselung
+            // ═══════════════════════════════════════════════════════════════════
+            let profilDominanz = null;
+            let profilGeschlecht = null;
+            let profilOrientierung = null;
+
+            if (typeof TiageState !== 'undefined') {
+                profilDominanz = TiageState.getPrimaryDominanz(person);
+                profilGeschlecht = TiageState.getPrimaryGeschlecht(person);
+                profilOrientierung = TiageState.getPrimaryOrientierung(person);
+            }
+
+            // Modifikatoren-Objekte laden
+            const modDominanz = (typeof BeduerfnisModifikatoren !== 'undefined' && profilDominanz)
+                ? BeduerfnisModifikatoren.dominanz?.[profilDominanz] || {}
+                : {};
+            const modGeschlecht = (typeof BeduerfnisModifikatoren !== 'undefined' && profilGeschlecht)
+                ? BeduerfnisModifikatoren.geschlecht?.[profilGeschlecht] || {}
+                : {};
+            const modOrientierung = (typeof BeduerfnisModifikatoren !== 'undefined' && profilOrientierung)
+                ? BeduerfnisModifikatoren.orientierung?.[profilOrientierung] || {}
+                : {};
+
+            // Helper: Modifikator-Aufschlüsselung für ein Bedürfnis berechnen
+            const getModifikatorDetails = (needKey) => {
+                const domMod = modDominanz[needKey] || 0;
+                const geschMod = modGeschlecht[needKey] || 0;
+                const oriMod = modOrientierung[needKey] || 0;
+                const total = domMod + geschMod + oriMod;
+
+                return {
+                    dominanz: domMod,
+                    geschlecht: geschMod,
+                    orientierung: oriMod,
+                    total: total,
+                    hasModifiers: domMod !== 0 || geschMod !== 0 || oriMod !== 0
+                };
+            };
+
+            // ═══════════════════════════════════════════════════════════════════
             // ZENTRALE HELPER-FUNKTION für korrekte Person-spezifische Needs
             // Verwendet ResonanzCard.getPersonNeeds() für konsistente Datenquellen
             // ═══════════════════════════════════════════════════════════════════
@@ -14565,13 +14605,17 @@
                     if (diff > 30) diffColor = '#ef4444'; // rot
                     else if (diff > 15) diffColor = '#eab308'; // gelb
 
+                    // Modifikator-Details für dieses Bedürfnis berechnen
+                    const modDetails = getModifikatorDetails(needKey);
+
                     rows.push({
                         id: needId || needKey,  // Zeige id oder stringKey
                         label: needLabel,
                         typisch: typischValue,
                         actual: actualValue,
                         diff: diff,
-                        diffColor: diffColor
+                        diffColor: diffColor,
+                        modifiers: modDetails  // NEU: Modifikator-Aufschlüsselung
                     });
                 }
             }
@@ -14606,18 +14650,42 @@
             // Sortiere nach Abweichung (größte zuerst)
             rows.sort((a, b) => b.diff - a.diff);
 
-            // HTML generieren
-            let tableHtml = rows.map(r => `
+            // HTML generieren mit Modifikator-Aufschlüsselung
+            let tableHtml = rows.map(r => {
+                // Modifikator-Formel aufbauen
+                let modFormel = '';
+                if (r.modifiers && r.modifiers.hasModifiers) {
+                    const parts = [];
+                    parts.push(`<span style="color: var(--text-muted);">${r.typisch}</span>`);
+                    if (r.modifiers.dominanz !== 0) {
+                        const sign = r.modifiers.dominanz > 0 ? '+' : '';
+                        parts.push(`<span style="color: #a78bfa;" title="Dominanz: ${profilDominanz || '?'}">${sign}${r.modifiers.dominanz}</span>`);
+                    }
+                    if (r.modifiers.geschlecht !== 0) {
+                        const sign = r.modifiers.geschlecht > 0 ? '+' : '';
+                        parts.push(`<span style="color: #60a5fa;" title="Geschlecht: ${profilGeschlecht || '?'}">${sign}${r.modifiers.geschlecht}</span>`);
+                    }
+                    if (r.modifiers.orientierung !== 0) {
+                        const sign = r.modifiers.orientierung > 0 ? '+' : '';
+                        parts.push(`<span style="color: #f472b6;" title="Orientierung: ${profilOrientierung || '?'}">${sign}${r.modifiers.orientierung}</span>`);
+                    }
+                    modFormel = `<div style="font-size: 10px; margin-top: 4px; font-family: monospace; opacity: 0.8;">
+                        ${parts.join(' ')} = <strong>${r.actual}</strong>
+                    </div>`;
+                }
+
+                return `
                 <tr style="border-bottom: 1px solid rgba(255,255,255,0.06);">
                     <td style="padding: 8px 10px; font-size: 12px; color: var(--text-secondary);">
                         <span style="color: var(--text-muted); font-size: 10px;">${r.id}</span><br>
                         ${r.label}
+                        ${modFormel}
                     </td>
                     <td style="padding: 8px 6px; text-align: center; font-size: 13px; color: var(--text-muted);">${r.typisch}</td>
                     <td style="padding: 8px 6px; text-align: center; font-size: 13px; font-weight: 600;">${r.actual}</td>
                     <td style="padding: 8px 6px; text-align: center; font-size: 13px; font-weight: 600; color: ${r.diffColor};">${r.diff}</td>
                 </tr>
-            `).join('');
+            `}).join('');
 
             // Popup erstellen
             let popup = document.getElementById('valueDerivationPopup');
@@ -14678,6 +14746,20 @@
                             </div>
                         </div>
                     </div>
+
+                    <!-- Modifikator-Erklärung -->
+                    ${(profilDominanz || profilGeschlecht || profilOrientierung) ? `
+                    <div style="padding: 12px 20px; background: rgba(139,92,246,0.08); border-bottom: 1px solid rgba(255,255,255,0.05);">
+                        <div style="font-size: 11px; color: var(--text-muted); margin-bottom: 8px;">
+                            <strong>Modifikator-Formel:</strong> Dein Wert = Typisch + Modifikatoren
+                        </div>
+                        <div style="display: flex; flex-wrap: wrap; gap: 12px; font-size: 10px;">
+                            ${profilDominanz ? `<span style="color: #a78bfa;">● Dominanz: ${profilDominanz}</span>` : ''}
+                            ${profilGeschlecht ? `<span style="color: #60a5fa;">● Geschlecht: ${profilGeschlecht.replace(/_/g, ' ')}</span>` : ''}
+                            ${profilOrientierung ? `<span style="color: #f472b6;">● Orientierung: ${profilOrientierung}</span>` : ''}
+                        </div>
+                    </div>
+                    ` : ''}
 
                     <!-- Bedürfnis-Tabelle -->
                     <div style="padding: 16px 20px;">
