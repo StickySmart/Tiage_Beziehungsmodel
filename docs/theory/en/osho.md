@@ -2,6 +2,21 @@
 
 > *The philosophical foundation for the Pathos component in the Tiage Relationship Model*
 
+---
+
+## Source Attribution and Copyright
+
+> **Note on Osho Zen Tarot Interpretations:**
+> Content is based on the Osho Zen Tarot (Ma Deva Padma, St. Martin's Press, inspired by Osho). All rights belong to the respective owners.
+
+**Notation Guidelines in this Document:**
+
+- **Direct quotes** are marked in quotation marks with italics: *"Quote text"*
+- **Paraphrases** (interpretive renderings) are identified as such
+- **Own interpretations** by the Tiage Model are marked accordingly
+
+---
+
 ## About OSHO (1931-1990)
 
 **Bhagwan Shree Rajneesh (OSHO)** was an Indian spiritual teacher whose philosophy on consciousness and love shapes the Tiage Model.
@@ -11,6 +26,7 @@
 ### Love Without Possession
 
 > *"Love is not bondage, but freedom. If you love someone, you give them wings, not a cage."*
+> — **Paraphrase** based on OSHO teachings on love
 
 **In the Tiage Model:** Basis for archetype diversity (Single to Polyamorous)
 
@@ -23,6 +39,7 @@ Being alone is not loneliness. Only those who can be with themselves can truly b
 ### Acceptance Instead of Change
 
 > *"Love the person as they are. Don't try to improve them."*
+> — **Paraphrase** based on OSHO teachings on acceptance
 
 **In the Tiage Model:** The model evaluates compatibility, not "correction"
 
@@ -35,12 +52,14 @@ Most relationship problems arise from unconscious behavior. Meditation creates c
 ### Polarity as Attraction
 
 > *"Opposites attract, but not to fight – to complement each other."*
+> — **Paraphrase** based on OSHO teachings on polarity
 
 **In the Tiage Model:** Dominance Harmony Factor
 
 ## Quote
 
 > *"Love is a flower that only grows in freedom. In the prison of expectations, it dies."*
+> — **Paraphrase** based on OSHO teachings on love and freedom
 
 ## OSHO & Tiage's Contradiction: Dialogue as Meditation
 
@@ -48,7 +67,7 @@ OSHO's philosophy connects surprisingly with Tiage's contradiction to Pirsig:
 
 | Perspective | Statement |
 |-------------|-----------|
-| **OSHO** | "Words can be alive when awareness is behind them. Then they are not prisons, but gates." |
+| **OSHO** | *"Words can be alive when awareness is behind them. Then they are not prisons, but gates."* — Paraphrase |
 | **Tiage** | In conscious dialogue, definition *is* the experience. Concepts are unfolded, not fixed. |
 
 Both say: **Language doesn't have to kill. It can be alive – when awareness is present.**
@@ -89,3 +108,14 @@ Meditation is the path to consciousness. Not as escape, but as arriving at onese
 
 - [OSHO on Love and Relationships](https://oshofriends.com/love)
 - [Man and Woman - Polarity](https://www.oshonews.com/2021/03/07/man-and-woman/)
+
+---
+
+## Legal Notice
+
+> **Copyright Notice:**
+> The paraphrases and interpretations contained in this document are based on the public teachings of OSHO (Bhagwan Shree Rajneesh) and the Osho Zen Tarot (Ma Deva Padma, St. Martin's Press, inspired by Osho). All rights belong to the respective owners.
+>
+> **No Quote Guarantee:** Texts marked as "Paraphrase" are interpretive renderings and not literal quotations. They serve to illustrate philosophical concepts in the context of the Tiage Relationship Model.
+>
+> **Independent Interpretations:** All "In the Tiage Model" sections are independent interpretations and applications by the Tiage Team, not official OSHO teachings.

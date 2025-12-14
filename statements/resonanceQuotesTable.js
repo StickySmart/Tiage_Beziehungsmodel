@@ -21,12 +21,21 @@ const ResonanceQuotesTable = {
     // META-INFORMATION
     // ═══════════════════════════════════════════════════════════════════════════
 
-    version: "1.0.0",
-    lastUpdate: "2025-12-08",
+    version: "1.1.0",
+    lastUpdate: "2025-12-14",
     sources: {
         pirsig: "Robert M. Pirsig - Zen und die Kunst ein Motorrad zu warten (1974), Lila (1991)",
-        osho: "Osho - Gesammelte Werke und öffentliche Vorträge",
+        osho: "Paraphrasen basierend auf OSHO (Bhagwan Shree Rajneesh) - Öffentliche Lehren und Vorträge",
+        oshoZenTarot: "Inhalte basieren auf dem Osho Zen Tarot (Ma Deva Padma, St. Martin's Press, inspiriert durch Osho). Alle Rechte bei den jeweiligen Inhabern.",
         sprichwoerter: "Eigene Datenbank - Ti-Age Beziehungsmodell"
+    },
+
+    // ═══════════════════════════════════════════════════════════════════════════
+    // RECHTLICHER HINWEIS / LEGAL NOTICE
+    // ═══════════════════════════════════════════════════════════════════════════
+    legalNotice: {
+        de: "HINWEIS: Die OSHO-Zitate in dieser Datei sind Paraphrasen (sinngemäße Wiedergaben) und keine wörtlichen Zitate. Sie dienen der Veranschaulichung philosophischer Konzepte im Tiage-Beziehungsmodell. Alle Rechte bei den jeweiligen Inhabern.",
+        en: "NOTICE: The OSHO quotes in this file are paraphrases (interpretive renderings) and not literal quotations. They serve to illustrate philosophical concepts in the Tiage Relationship Model. All rights belong to the respective owners."
     },
 
     // ═══════════════════════════════════════════════════════════════════════════
@@ -128,11 +137,14 @@ const ResonanceQuotesTable = {
     },
 
     // ═══════════════════════════════════════════════════════════════════════════
-    // OSHO ZITATE (Öffentlich - Spirituelle Weisheit)
+    // OSHO PARAPHRASEN (Sinngemäße Wiedergaben - Keine wörtlichen Zitate)
+    // Quelle: Basierend auf OSHO-Lehren und dem Osho Zen Tarot
+    // (Ma Deva Padma, St. Martin's Press, inspiriert durch Osho)
+    // Alle Rechte bei den jeweiligen Inhabern.
     // ═══════════════════════════════════════════════════════════════════════════
 
     oshoQuotes: {
-        // Liebe und Beziehung
+        // Liebe und Beziehung (Paraphrasen)
         loveRelationship: [
             {
                 id: "O001",
