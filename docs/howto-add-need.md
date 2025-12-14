@@ -1,5 +1,9 @@
 # Anleitung: Neues Bedürfnis hinzufügen
 
+> ⚠️ **WICHTIG:** Diese Anleitung verwendet `interesse_an_metaphysik` als **fiktives Platzhalter-Beispiel**.
+> Die ID `#BXXX` ist ein Platzhalter - ersetze sie durch die **nächste freie ID** (siehe Schritt 4).
+> Das Beispiel-Bedürfnis existiert NICHT im System und dient nur zur Veranschaulichung.
+
 > **Beispiel:** `interesse_an_metaphysik` - Interesse an philosophischen/spirituellen Grundfragen
 
 ---
@@ -95,7 +99,7 @@ Prüfe in `beduerfnis-ids.js` die höchste vergebene ID.
 
 **Aktuell:** #B220 ist vergeben
 
-→ Wir verwenden: **#B221**
+→ Wir verwenden: **#BXXX** (ersetze XXX durch nächste freie Nummer)
 
 ---
 
@@ -110,7 +114,7 @@ Prüfe in `beduerfnis-ids.js` die höchste vergebene ID.
 ```javascript
 // In der beduerfnisse-Objekt, nach den anderen #K10 Einträgen:
 
-'#B221': {
+'#BXXX': {
     key: 'interesse_an_metaphysik',
     kategorie: '#K10',
     label: 'Interesse an Metaphysik'
@@ -150,7 +154,7 @@ verbundenheit: {
 
 ```javascript
 interesse_an_metaphysik: {
-    "#ID": "#B221",
+    "#ID": "#BXXX",
     label: "Interesse an Metaphysik",
     kategorie: "verbundenheit",                    // Primär
     sekundaer: ["identitaet", "freiheit"]          // Sekundär (optional)
@@ -196,28 +200,28 @@ ARCHETYP_NEEDS: [
 philosophie: {
     single: {
         // ... bestehende Einträge ...
-        interesse_an_metaphysik: { value: 50, id: '#B221', label: 'Interesse an Metaphysik' }
+        interesse_an_metaphysik: { value: 50, id: '#BXXX', label: 'Interesse an Metaphysik' }
     },
     duo: {
-        interesse_an_metaphysik: { value: 40, id: '#B221', label: 'Interesse an Metaphysik' }
+        interesse_an_metaphysik: { value: 40, id: '#BXXX', label: 'Interesse an Metaphysik' }
     },
     duo_flex: {
-        interesse_an_metaphysik: { value: 55, id: '#B221', label: 'Interesse an Metaphysik' }
+        interesse_an_metaphysik: { value: 55, id: '#BXXX', label: 'Interesse an Metaphysik' }
     },
     solopoly: {
-        interesse_an_metaphysik: { value: 65, id: '#B221', label: 'Interesse an Metaphysik' }
+        interesse_an_metaphysik: { value: 65, id: '#BXXX', label: 'Interesse an Metaphysik' }
     },
     polyamor: {
-        interesse_an_metaphysik: { value: 60, id: '#B221', label: 'Interesse an Metaphysik' }
+        interesse_an_metaphysik: { value: 60, id: '#BXXX', label: 'Interesse an Metaphysik' }
     },
     ra: {
-        interesse_an_metaphysik: { value: 75, id: '#B221', label: 'Interesse an Metaphysik' }
+        interesse_an_metaphysik: { value: 75, id: '#BXXX', label: 'Interesse an Metaphysik' }
     },
     lat: {
-        interesse_an_metaphysik: { value: 45, id: '#B221', label: 'Interesse an Metaphysik' }
+        interesse_an_metaphysik: { value: 45, id: '#BXXX', label: 'Interesse an Metaphysik' }
     },
     aromantisch: {
-        interesse_an_metaphysik: { value: 55, id: '#B221', label: 'Interesse an Metaphysik' }
+        interesse_an_metaphysik: { value: 55, id: '#BXXX', label: 'Interesse an Metaphysik' }
     }
 }
 ```
@@ -280,43 +284,43 @@ orientierung: {
 ```javascript
 kernbeduerfnisse: {
     // ... bestehende ...
-    '#B221': 50,  // interesse_an_metaphysik - Neutral
+    '#BXXX': 50,  // interesse_an_metaphysik - Neutral
 }
 ```
 
 ### duo.js
 ```javascript
-'#B221': 40,  // interesse_an_metaphysik - Eher praktisch orientiert
+'#BXXX': 40,  // interesse_an_metaphysik - Eher praktisch orientiert
 ```
 
 ### duo-flex.js
 ```javascript
-'#B221': 55,  // interesse_an_metaphysik - Offener für Reflexion
+'#BXXX': 55,  // interesse_an_metaphysik - Offener für Reflexion
 ```
 
 ### solopoly.js
 ```javascript
-'#B221': 65,  // interesse_an_metaphysik - Hohe Selbstreflexion
+'#BXXX': 65,  // interesse_an_metaphysik - Hohe Selbstreflexion
 ```
 
 ### polyamor.js
 ```javascript
-'#B221': 60,  // interesse_an_metaphysik - Alternative Denkweise
+'#BXXX': 60,  // interesse_an_metaphysik - Alternative Denkweise
 ```
 
 ### ra.js
 ```javascript
-'#B221': 75,  // interesse_an_metaphysik - Philosophisch fundiert
+'#BXXX': 75,  // interesse_an_metaphysik - Philosophisch fundiert
 ```
 
 ### lat.js
 ```javascript
-'#B221': 45,  // interesse_an_metaphysik - Moderate Affinität
+'#BXXX': 45,  // interesse_an_metaphysik - Moderate Affinität
 ```
 
 ### aromantisch.js
 ```javascript
-'#B221': 55,  // interesse_an_metaphysik - Hinterfragt Normen
+'#BXXX': 55,  // interesse_an_metaphysik - Hinterfragt Normen
 ```
 
 ---
@@ -447,4 +451,4 @@ Die Funktion `TiageSynthesis.NeedsIntegration.calculateResonanzWithSecondary(nee
 ---
 
 *Dokumentation erstellt: 2025-12-13*
-*Beispiel-Bedürfnis: interesse_an_metaphysik (#B221)*
+*Platzhalter-Beispiel: interesse_an_metaphysik (#BXXX) - NICHT im System vorhanden*
