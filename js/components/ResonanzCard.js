@@ -415,7 +415,7 @@ const ResonanzCard = (function() {
 
     /**
      * Setzt alle Resonanzwerte auf berechnete Durchschnitte zurück
-     * Holt aktuelle Bedürfnisse aus TiageState/AttributeSummaryCard und berechnet R-Werte neu
+     * Verwendet zentrale getPersonNeeds() für korrekte Person-spezifische Datenquellen
      */
     function reset() {
         const person = getCurrentPerson();
@@ -431,51 +431,10 @@ const ResonanzCard = (function() {
             }
         }
 
-        // Sammle aktuelle Bedürfnis-Daten aus verschiedenen Quellen
-        let needs = null;
-
-        // 1. Aus TiageState (bevorzugt - enthält aktuelle User-Eingaben)
-        if (typeof TiageState !== 'undefined' && TiageState.get) {
-            const savedNeeds = TiageState.get('tiage_needs_integrated');
-            if (savedNeeds && Object.keys(savedNeeds).length > 0) {
-                needs = {};
-                for (const needKey in savedNeeds) {
-                    if (savedNeeds.hasOwnProperty(needKey)) {
-                        needs[needKey] = savedNeeds[needKey].value || savedNeeds[needKey];
-                    }
-                }
-            }
-        }
-
-        // 2. Aus AttributeSummaryCard (aktuell geladene Werte)
-        if ((!needs || Object.keys(needs).length === 0) &&
-            typeof AttributeSummaryCard !== 'undefined' && AttributeSummaryCard.getFlatNeeds) {
-            const cardNeeds = AttributeSummaryCard.getFlatNeeds();
-            if (cardNeeds) {
-                needs = {};
-                if (Array.isArray(cardNeeds)) {
-                    cardNeeds.forEach(n => {
-                        if (n.id) needs[n.id] = n.value;
-                        if (n.stringKey) needs[n.stringKey] = n.value;
-                    });
-                } else {
-                    for (const key in cardNeeds) {
-                        if (cardNeeds.hasOwnProperty(key)) {
-                            const entry = cardNeeds[key];
-                            needs[key] = (typeof entry === 'object' && entry.value !== undefined) ? entry.value : entry;
-                        }
-                    }
-                }
-            }
-        }
-
-        // 3. Fallback: Standard-Werte des aktuellen Archetyps
-        if (!needs || Object.keys(needs).length === 0) {
-            if (typeof GfkBeduerfnisse !== 'undefined' &&
-                GfkBeduerfnisse.archetypProfile && GfkBeduerfnisse.archetypProfile[archetypeKey]) {
-                needs = GfkBeduerfnisse.archetypProfile[archetypeKey].kernbeduerfnisse || {};
-            }
-        }
+        // ═══════════════════════════════════════════════════════════════════
+        // ZENTRALE HELPER-FUNKTION für korrekte Person-spezifische Needs
+        // ═══════════════════════════════════════════════════════════════════
+        const needs = getPersonNeeds(person, archetypeKey);
 
         // Hole aktuelle Dimensions-Daten
         let dominanz = null, orientierung = null, geschlecht = null;
@@ -719,6 +678,86 @@ const ResonanzCard = (function() {
         return false;
     }
 
+    /**
+     * ZENTRALE HELPER-FUNKTION: Lädt Bedürfnisse für eine spezifische Person
+     *
+     * Einheitliche Datenquelle für ICH und PARTNER:
+     * LoadedArchetypProfile[person] → Archetyp-Standard
+     *
+     * @param {string} person - 'ich' oder 'partner'
+     * @param {string} archetypKey - Der Archetyp-Schlüssel (z.B. 'duo', 'polyamor')
+     * @returns {Object|null} Normalisierte Needs { needKey: value } oder null
+     */
+    function getPersonNeeds(person, archetypKey) {
+        person = person || getCurrentPerson();
+
+        // ═══════════════════════════════════════════════════════════════════
+        // EINHEITLICH: LoadedArchetypProfile für BEIDE Personen
+        // ═══════════════════════════════════════════════════════════════════
+        const flatNeeds = window.LoadedArchetypProfile?.[person]?.profileReview?.flatNeeds;
+        if (flatNeeds) {
+            const needs = _normalizeNeeds(flatNeeds);
+            if (needs && Object.keys(needs).length > 0) {
+                console.log('[ResonanzCard.getPersonNeeds] Needs aus LoadedArchetypProfile für', person);
+                return needs;
+            }
+        }
+
+        // ═══════════════════════════════════════════════════════════════════
+        // FALLBACK: Standard-Werte des Archetyps
+        // ═══════════════════════════════════════════════════════════════════
+        if (archetypKey && typeof GfkBeduerfnisse !== 'undefined' &&
+            GfkBeduerfnisse.archetypProfile?.[archetypKey]) {
+            const needs = GfkBeduerfnisse.archetypProfile[archetypKey].kernbeduerfnisse || {};
+            if (Object.keys(needs).length > 0) {
+                console.log('[ResonanzCard.getPersonNeeds] Fallback: Archetyp-Standard für', archetypKey);
+                return needs;
+            }
+        }
+
+        console.warn('[ResonanzCard.getPersonNeeds] Keine Needs gefunden für', person, archetypKey);
+        return null;
+    }
+
+    /**
+     * Normalisiert verschiedene Needs-Formate zu { needKey: value }
+     *
+     * Unterstützt:
+     * - Array: [{ id, stringKey, value }, ...]
+     * - Objekt mit value: { needKey: { value: 50 }, ... }
+     * - Objekt direkt: { needKey: 50, ... }
+     *
+     * @private
+     */
+    function _normalizeNeeds(rawNeeds) {
+        if (!rawNeeds) return null;
+
+        const normalized = {};
+
+        if (Array.isArray(rawNeeds)) {
+            rawNeeds.forEach(n => {
+                const value = (typeof n.value === 'number') ? n.value : null;
+                if (value !== null) {
+                    if (n.id) normalized[n.id] = value;
+                    if (n.stringKey) normalized[n.stringKey] = value;
+                }
+            });
+        } else {
+            for (const key in rawNeeds) {
+                if (rawNeeds.hasOwnProperty(key)) {
+                    const entry = rawNeeds[key];
+                    if (typeof entry === 'object' && entry !== null && entry.value !== undefined) {
+                        normalized[key] = entry.value;
+                    } else if (typeof entry === 'number') {
+                        normalized[key] = entry;
+                    }
+                }
+            }
+        }
+
+        return Object.keys(normalized).length > 0 ? normalized : null;
+    }
+
     return {
         renderCard,
         renderAll,
@@ -738,6 +777,7 @@ const ResonanzCard = (function() {
         notifyChange,
         getCurrentPerson,
         getStorageKey,
+        getPersonNeeds,
         DEFAULT_VALUES,
         FAKTOR_INFO,
         STORAGE_KEY_ICH,
