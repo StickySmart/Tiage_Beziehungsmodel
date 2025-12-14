@@ -1,0 +1,383 @@
+/**
+ * PHILOSOPHY HINT STYLES
+ *
+ * Styling für ausklappbare Philosophie-Hinweise.
+ * Basiert auf dem Dark-Mode-Theme des Tiage-Beziehungsmodells.
+ *
+ * © 2025 Ti-age.de Alle Rechte vorbehalten.
+ */
+
+/* ========================================
+   CSS VARIABLEN (Theme-Erweiterung)
+   ======================================== */
+
+:root {
+    /* Hint-spezifische Farben */
+    --hint-text: var(--text-secondary, #a0a0b0);
+    --hint-text-visible: var(--text-primary, #f0f0f0);
+    --hint-link: var(--primary-light, #A8D5E2);
+    --hint-link-hover: var(--primary, #457B9D);
+    --hint-expanded-bg: rgba(255, 255, 255, 0.03);
+    --hint-border: var(--border, rgba(255, 255, 255, 0.1));
+
+    /* Highlight Variant (Moment 3 - Der Spiegel) */
+    --hint-highlight-border: var(--toggle-glow, #ff00ff);
+    --hint-highlight-bg: rgba(155, 93, 229, 0.08);
+    --hint-highlight-glow: var(--toggle-glow-secondary, #9b5de5);
+}
+
+/* ========================================
+   BASIS-KOMPONENTE
+   ======================================== */
+
+.philosophy-hint {
+    position: relative;
+    padding: 1rem 1.25rem;
+    margin: 1rem 0;
+    background: var(--bg-card, #1a1a2e);
+    border-left: 3px solid var(--hint-border);
+    border-radius: 0 8px 8px 0;
+    transition: all 0.3s ease;
+}
+
+.philosophy-hint:hover {
+    background: var(--bg-hover, #252542);
+}
+
+/* ========================================
+   SICHTBARER TEXT
+   ======================================== */
+
+.philosophy-hint__visible {
+    margin: 0 0 0.5rem 0;
+    font-size: var(--font-sm, 0.95rem);
+    font-style: italic;
+    color: var(--hint-text-visible);
+    line-height: 1.5;
+    letter-spacing: 0.01em;
+}
+
+/* ========================================
+   TOGGLE BUTTON (Ausklapp-Link)
+   ======================================== */
+
+.philosophy-hint__toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0;
+    background: none;
+    border: none;
+    font-size: var(--font-xs, 0.85rem);
+    color: var(--hint-link);
+    cursor: pointer;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    transition: color 0.2s ease, text-underline-offset 0.2s ease;
+}
+
+.philosophy-hint__toggle:hover {
+    color: var(--hint-link-hover);
+    text-underline-offset: 5px;
+}
+
+.philosophy-hint__toggle:focus {
+    outline: 2px solid var(--hint-link);
+    outline-offset: 2px;
+    border-radius: 2px;
+}
+
+.philosophy-hint__toggle::after {
+    content: '↓';
+    display: inline-block;
+    font-size: 0.75em;
+    transition: transform 0.3s ease;
+}
+
+.philosophy-hint__toggle[aria-expanded="true"]::after {
+    transform: rotate(180deg);
+}
+
+/* ========================================
+   EXPANDED CONTENT (Ausklappbarer Bereich)
+   ======================================== */
+
+.philosophy-hint__expanded {
+    max-height: 0;
+    overflow: hidden;
+    opacity: 0;
+    transition:
+        max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+        opacity 0.3s ease,
+        padding 0.3s ease;
+}
+
+.philosophy-hint__expanded--open {
+    max-height: 600px;
+    opacity: 1;
+    padding-top: 1rem;
+}
+
+.philosophy-hint__expanded p {
+    margin: 0 0 0.75rem 0;
+    font-size: var(--font-sm, 0.95rem);
+    color: var(--hint-text);
+    line-height: 1.65;
+}
+
+.philosophy-hint__expanded p:last-of-type {
+    margin-bottom: 0;
+}
+
+/* ========================================
+   HIGHLIGHT VARIANT (Moment 3)
+   ======================================== */
+
+.philosophy-hint--highlight {
+    border-left: 3px solid var(--hint-highlight-border);
+    background: var(--hint-highlight-bg);
+    box-shadow:
+        0 0 20px rgba(155, 93, 229, 0.1),
+        inset 0 0 30px rgba(155, 93, 229, 0.03);
+}
+
+.philosophy-hint--highlight::before {
+    content: '✦';
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    font-size: 1rem;
+    color: var(--hint-highlight-glow);
+    opacity: 0.7;
+    animation: pulse-glow 2s ease-in-out infinite;
+}
+
+@keyframes pulse-glow {
+    0%, 100% {
+        opacity: 0.5;
+        transform: scale(1);
+    }
+    50% {
+        opacity: 1;
+        transform: scale(1.1);
+    }
+}
+
+.philosophy-hint--highlight:hover {
+    background: rgba(155, 93, 229, 0.12);
+    box-shadow:
+        0 0 30px rgba(155, 93, 229, 0.15),
+        inset 0 0 40px rgba(155, 93, 229, 0.05);
+}
+
+.philosophy-hint--highlight .philosophy-hint__visible {
+    color: var(--text-primary);
+    font-weight: 500;
+}
+
+/* ========================================
+   DISMISS BUTTON
+   ======================================== */
+
+.philosophy-hint__dismiss {
+    display: block;
+    margin-top: 1rem;
+    padding: 0.4rem 0.8rem;
+    background: transparent;
+    border: 1px solid var(--hint-border);
+    border-radius: 4px;
+    font-size: var(--font-xs, 0.8rem);
+    color: var(--text-muted);
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.philosophy-hint__dismiss:hover {
+    background: var(--bg-hover);
+    border-color: var(--text-muted);
+    color: var(--text-secondary);
+}
+
+/* ========================================
+   ANIMATIONS (Ein-/Ausblenden)
+   ======================================== */
+
+.philosophy-hint--entering {
+    opacity: 0;
+    transform: translateY(-10px);
+}
+
+.philosophy-hint--leaving {
+    opacity: 0;
+    transform: translateY(-10px);
+    transition: all 0.3s ease;
+}
+
+.philosophy-hint--dismissing {
+    opacity: 0;
+    transform: scale(0.95);
+    transition: all 0.3s ease;
+}
+
+/* Dismissed Placeholder (für Layout-Stabilität) */
+.philosophy-hint-dismissed {
+    display: none;
+}
+
+/* ========================================
+   RESPONSIVE DESIGN
+   ======================================== */
+
+@media (max-width: 768px) {
+    .philosophy-hint {
+        padding: 0.875rem 1rem;
+        margin: 0.75rem 0;
+    }
+
+    .philosophy-hint__visible {
+        font-size: var(--font-xs, 0.9rem);
+    }
+
+    .philosophy-hint__toggle {
+        font-size: 0.8rem;
+    }
+
+    .philosophy-hint__expanded p {
+        font-size: var(--font-xs, 0.9rem);
+    }
+
+    .philosophy-hint--highlight::before {
+        top: 0.75rem;
+        right: 0.75rem;
+        font-size: 0.875rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .philosophy-hint {
+        padding: 0.75rem;
+        border-radius: 0 6px 6px 0;
+    }
+
+    .philosophy-hint__expanded--open {
+        padding-top: 0.75rem;
+    }
+}
+
+/* ========================================
+   ACCESSIBILITY
+   ======================================== */
+
+@media (prefers-reduced-motion: reduce) {
+    .philosophy-hint,
+    .philosophy-hint__toggle,
+    .philosophy-hint__toggle::after,
+    .philosophy-hint__expanded,
+    .philosophy-hint--highlight::before {
+        animation: none;
+        transition: none;
+    }
+
+    .philosophy-hint__expanded--open {
+        max-height: none;
+    }
+}
+
+/* High Contrast Mode Support */
+@media (prefers-contrast: high) {
+    .philosophy-hint {
+        border-left-width: 4px;
+        border-left-color: var(--text-primary);
+    }
+
+    .philosophy-hint__toggle {
+        text-decoration-thickness: 2px;
+    }
+
+    .philosophy-hint--highlight {
+        border-left-color: var(--hint-highlight-border);
+        outline: 1px solid var(--hint-highlight-border);
+    }
+}
+
+/* ========================================
+   MOMENTS TOGGLE BUTTON (Header)
+   ======================================== */
+
+.moments-toggle-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 12px;
+    background: var(--bg-card, #1a1a2e);
+    border: 1px solid var(--border, rgba(255, 255, 255, 0.1));
+    border-radius: 6px;
+    font-size: 0.85rem;
+    color: var(--text-primary, #f0f0f0);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+}
+
+.moments-toggle-btn:hover {
+    background: var(--bg-hover, #252542);
+    border-color: var(--hint-highlight-glow, #9b5de5);
+    box-shadow: 0 0 10px rgba(155, 93, 229, 0.2);
+}
+
+.moments-toggle-btn:focus {
+    outline: 2px solid var(--hint-highlight-glow, #9b5de5);
+    outline-offset: 2px;
+}
+
+.moments-toggle-btn[aria-pressed="true"] {
+    border-color: var(--hint-highlight-glow, #9b5de5);
+    background: rgba(155, 93, 229, 0.15);
+}
+
+.moments-toggle-btn--disabled {
+    opacity: 0.7;
+    border-color: var(--border, rgba(255, 255, 255, 0.1));
+    background: var(--bg-card, #1a1a2e);
+}
+
+.moments-toggle-btn--disabled:hover {
+    opacity: 1;
+    border-color: var(--text-muted, #666);
+}
+
+.moments-toggle-icon {
+    font-size: 1rem;
+    line-height: 1;
+}
+
+.moments-toggle-text {
+    font-weight: 500;
+}
+
+/* Hidden state for moments */
+.philosophy-hint--hidden {
+    display: none !important;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .moments-toggle-btn {
+        padding: 5px 10px;
+        font-size: 0.8rem;
+    }
+
+    .moments-toggle-text {
+        display: none;
+    }
+
+    .moments-toggle-icon {
+        font-size: 1.1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .moments-toggle-btn {
+        padding: 4px 8px;
+    }
+}

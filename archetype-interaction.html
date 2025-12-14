@@ -703,15 +703,15 @@
                             <div class="geschlecht-grid geschlecht-s-grid" id="ich-geschlecht-s-grid" data-person="ich"></div>
                         </div>
                     </div>
-                    <div class="compact-dimension needs-selection collapsible-dimension" data-dimension="ich-dominanz-multi">
-                        <div class="compact-dimension-label"><span class="dominanz-info-link">Dominanz</span> <span id="ich-dominanz-legend" class="geschlecht-legend" style="font-size: 10px; text-decoration: underline; cursor: pointer;" onclick="showDimensionTooltip('dominanzStatus')">(<span class="legend-p">P</span>=Primär, <span class="legend-s">S</span>=Sekundär)</span></div>
-                        <div class="collapsed-summary" id="ich-dominanz-summary"></div>
-                        <div class="dominanz-grid" id="ich-dominanz-grid" data-person="ich"></div>
-                    </div>
                     <div class="compact-dimension needs-selection collapsible-dimension" data-dimension="ich-orientierung-multi">
                         <div class="compact-dimension-label"><span class="orientierung-info-link">Orientierung</span> <span id="ich-orientierung-legend" class="geschlecht-legend" style="font-size: 10px; text-decoration: underline; cursor: pointer;" onclick="showDimensionTooltip('status')">(<span class="legend-p">P</span>=Primär, <span class="legend-s">S</span>=Sekundär)</span></div>
                         <div class="collapsed-summary" id="ich-orientierung-summary"></div>
                         <div class="orientierung-grid" id="ich-orientierung-grid" data-person="ich"></div>
+                    </div>
+                    <div class="compact-dimension needs-selection collapsible-dimension" data-dimension="ich-dominanz-multi">
+                        <div class="compact-dimension-label"><span class="dominanz-info-link">Dominanz</span> <span id="ich-dominanz-legend" class="geschlecht-legend" style="font-size: 10px; text-decoration: underline; cursor: pointer;" onclick="showDimensionTooltip('dominanzStatus')">(<span class="legend-p">P</span>=Primär, <span class="legend-s">S</span>=Sekundär)</span></div>
+                        <div class="collapsed-summary" id="ich-dominanz-summary"></div>
+                        <div class="dominanz-grid" id="ich-dominanz-grid" data-person="ich"></div>
                     </div>
                     <div class="compact-dimension collapsible-dimension" data-dimension="ich-gfk">
                         <div class="compact-dimension-label"><span class="gfk-info-link">GFK-Kompetenz</span></div>
@@ -817,15 +817,15 @@
                             <div class="geschlecht-grid geschlecht-s-grid" id="partner-geschlecht-s-grid" data-person="partner"></div>
                         </div>
                     </div>
-                    <div class="compact-dimension needs-selection collapsible-dimension" data-dimension="partner-dominanz-multi">
-                        <div class="compact-dimension-label"><span class="dominanz-info-link">Dominanz</span> <span id="partner-dominanz-legend" class="geschlecht-legend" style="font-size: 10px; text-decoration: underline; cursor: pointer;" onclick="showDimensionTooltip('dominanzStatus')">(<span class="legend-p">P</span>=Primär, <span class="legend-s">S</span>=Sekundär)</span></div>
-                        <div class="collapsed-summary" id="partner-dominanz-summary"></div>
-                        <div class="dominanz-grid" id="partner-dominanz-grid" data-person="partner"></div>
-                    </div>
                     <div class="compact-dimension needs-selection collapsible-dimension" data-dimension="partner-orientierung-multi">
                         <div class="compact-dimension-label"><span class="orientierung-info-link">Orientierung</span> <span id="partner-orientierung-legend" class="geschlecht-legend" style="font-size: 10px; text-decoration: underline; cursor: pointer;" onclick="showDimensionTooltip('status')">(<span class="legend-p">P</span>=Primär, <span class="legend-s">S</span>=Sekundär)</span></div>
                         <div class="collapsed-summary" id="partner-orientierung-summary"></div>
                         <div class="orientierung-grid" id="partner-orientierung-grid" data-person="partner"></div>
+                    </div>
+                    <div class="compact-dimension needs-selection collapsible-dimension" data-dimension="partner-dominanz-multi">
+                        <div class="compact-dimension-label"><span class="dominanz-info-link">Dominanz</span> <span id="partner-dominanz-legend" class="geschlecht-legend" style="font-size: 10px; text-decoration: underline; cursor: pointer;" onclick="showDimensionTooltip('dominanzStatus')">(<span class="legend-p">P</span>=Primär, <span class="legend-s">S</span>=Sekundär)</span></div>
+                        <div class="collapsed-summary" id="partner-dominanz-summary"></div>
+                        <div class="dominanz-grid" id="partner-dominanz-grid" data-person="partner"></div>
                     </div>
                     <div class="compact-dimension collapsible-dimension" data-dimension="partner-gfk">
                         <div class="compact-dimension-label"><span class="gfk-info-link">GFK-Kompetenz</span></div>
@@ -1273,6 +1273,37 @@
                                 <div class="geschlecht-grid" id="modal-ich-geschlecht-grid" data-person="ich"></div>
                             </div>
 
+                            <!-- Sexuelle Orientierung -->
+                            <div class="dimension-group full-width needs-selection" data-dimension="modal-ich-orientierung-multi">
+                                <div class="dimension-label">
+                                    Sexuelle Orientierung
+                                    <span style="font-size: 10px; text-decoration: underline; cursor: pointer;" onclick="showDimensionTooltip('status')">(P=Primär, S=Sekundär)</span>
+                                </div>
+                                <div class="dominanz-multi-select">
+                                    <div class="dominanz-option-row" id="modal-ich-o-het-row">
+                                        <span class="dominanz-label" onclick="showDimensionTooltip('heterosexuell')" style="cursor: pointer;">heterosexuell</span>
+                                        <div id="modal-ich-o-het-status" class="status-toggle-group">
+                                            <button type="button" class="status-toggle-btn" data-status="gelebt" onclick="handleOrientierungStatusToggle('ich', 'heterosexuell', 'gelebt', this)">Gelebt</button>
+                                            <button type="button" class="status-toggle-btn" data-status="interessiert" onclick="handleOrientierungStatusToggle('ich', 'heterosexuell', 'interessiert', this)">Interessiert</button>
+                                        </div>
+                                    </div>
+                                    <div class="dominanz-option-row" id="modal-ich-o-hom-row">
+                                        <span class="dominanz-label" onclick="showDimensionTooltip('homosexuell')" style="cursor: pointer;">homosexuell</span>
+                                        <div id="modal-ich-o-hom-status" class="status-toggle-group">
+                                            <button type="button" class="status-toggle-btn" data-status="gelebt" onclick="handleOrientierungStatusToggle('ich', 'homosexuell', 'gelebt', this)">Gelebt</button>
+                                            <button type="button" class="status-toggle-btn" data-status="interessiert" onclick="handleOrientierungStatusToggle('ich', 'homosexuell', 'interessiert', this)">Interessiert</button>
+                                        </div>
+                                    </div>
+                                    <div class="dominanz-option-row" id="modal-ich-o-bi-row">
+                                        <span class="dominanz-label" onclick="showDimensionTooltip('bisexuell')" style="cursor: pointer;">Bi-/Pan</span>
+                                        <div id="modal-ich-o-bi-status" class="status-toggle-group">
+                                            <button type="button" class="status-toggle-btn" data-status="gelebt" onclick="handleOrientierungStatusToggle('ich', 'bisexuell', 'gelebt', this)">Gelebt</button>
+                                            <button type="button" class="status-toggle-btn" data-status="interessiert" onclick="handleOrientierungStatusToggle('ich', 'bisexuell', 'interessiert', this)">Interessiert</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
                             <!-- Dominanz Multi-Select -->
                             <div class="dimension-group needs-selection" data-dimension="modal-ich-dominanz-multi">
                                 <div class="dimension-label">
@@ -1306,37 +1337,6 @@
                                         <div id="modal-ich-d-aus-status" class="status-toggle-group">
                                             <button type="button" class="status-toggle-btn" data-status="gelebt" onclick="handleDominanzStatusToggle('ich', 'ausgeglichen', 'gelebt', this)">Gelebt</button>
                                             <button type="button" class="status-toggle-btn" data-status="interessiert" onclick="handleDominanzStatusToggle('ich', 'ausgeglichen', 'interessiert', this)">Interessiert</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Sexuelle Orientierung -->
-                            <div class="dimension-group full-width needs-selection" data-dimension="modal-ich-orientierung-multi">
-                                <div class="dimension-label">
-                                    Sexuelle Orientierung
-                                    <span style="font-size: 10px; text-decoration: underline; cursor: pointer;" onclick="showDimensionTooltip('status')">(P=Primär, S=Sekundär)</span>
-                                </div>
-                                <div class="dominanz-multi-select">
-                                    <div class="dominanz-option-row" id="modal-ich-o-het-row">
-                                        <span class="dominanz-label" onclick="showDimensionTooltip('heterosexuell')" style="cursor: pointer;">heterosexuell</span>
-                                        <div id="modal-ich-o-het-status" class="status-toggle-group">
-                                            <button type="button" class="status-toggle-btn" data-status="gelebt" onclick="handleOrientierungStatusToggle('ich', 'heterosexuell', 'gelebt', this)">Gelebt</button>
-                                            <button type="button" class="status-toggle-btn" data-status="interessiert" onclick="handleOrientierungStatusToggle('ich', 'heterosexuell', 'interessiert', this)">Interessiert</button>
-                                        </div>
-                                    </div>
-                                    <div class="dominanz-option-row" id="modal-ich-o-hom-row">
-                                        <span class="dominanz-label" onclick="showDimensionTooltip('homosexuell')" style="cursor: pointer;">homosexuell</span>
-                                        <div id="modal-ich-o-hom-status" class="status-toggle-group">
-                                            <button type="button" class="status-toggle-btn" data-status="gelebt" onclick="handleOrientierungStatusToggle('ich', 'homosexuell', 'gelebt', this)">Gelebt</button>
-                                            <button type="button" class="status-toggle-btn" data-status="interessiert" onclick="handleOrientierungStatusToggle('ich', 'homosexuell', 'interessiert', this)">Interessiert</button>
-                                        </div>
-                                    </div>
-                                    <div class="dominanz-option-row" id="modal-ich-o-bi-row">
-                                        <span class="dominanz-label" onclick="showDimensionTooltip('bisexuell')" style="cursor: pointer;">Bi-/Pan</span>
-                                        <div id="modal-ich-o-bi-status" class="status-toggle-group">
-                                            <button type="button" class="status-toggle-btn" data-status="gelebt" onclick="handleOrientierungStatusToggle('ich', 'bisexuell', 'gelebt', this)">Gelebt</button>
-                                            <button type="button" class="status-toggle-btn" data-status="interessiert" onclick="handleOrientierungStatusToggle('ich', 'bisexuell', 'interessiert', this)">Interessiert</button>
                                         </div>
                                     </div>
                                 </div>
@@ -1439,6 +1439,43 @@
                                 <div class="geschlecht-grid" id="modal-partner-geschlecht-grid" data-person="partner"></div>
                             </div>
 
+                            <!-- Sexuelle Orientierung -->
+                            <div class="dimension-group full-width needs-selection" data-dimension="modal-partner-orientierung-multi">
+                                <div class="dimension-label">
+                                    Sexuelle Orientierung
+                                    <span style="font-size: 10px; text-decoration: underline; cursor: pointer;" onclick="showDimensionTooltip('status')">(P=Primär, S=Sekundär)</span>
+                                </div>
+                                <div class="dominanz-multi-select">
+                                    <div class="dominanz-option-row" id="modal-partner-o-het-row">
+                                        <input type="checkbox" id="modal-partner-o-het" value="heterosexuell" class="dominanz-checkbox" onchange="handleModalOrientierungMultiChange('partner', 'heterosexuell', this.checked)">
+                                        <label for="modal-partner-o-het" class="dominanz-label" onclick="event.preventDefault(); showDimensionTooltip('heterosexuell')" style="cursor: pointer;">heterosexuell</label>
+                                        <button type="button" id="modal-partner-o-het-secondary" class="secondary-interessiert-btn" onclick="handleOrientierungSecondaryInteressiert('partner', 'heterosexuell', this)">interessiert</button>
+                                        <div id="modal-partner-o-het-status" class="status-toggle-group">
+                                            <button type="button" class="status-toggle-btn active-gelebt" data-status="gelebt" onclick="handleOrientierungStatusToggle('partner', 'heterosexuell', 'gelebt', this)">Gelebt</button>
+                                            <button type="button" class="status-toggle-btn" data-status="interessiert" onclick="handleOrientierungStatusToggle('partner', 'heterosexuell', 'interessiert', this)">Interessiert</button>
+                                        </div>
+                                    </div>
+                                    <div class="dominanz-option-row" id="modal-partner-o-hom-row">
+                                        <input type="checkbox" id="modal-partner-o-hom" value="homosexuell" class="dominanz-checkbox" onchange="handleModalOrientierungMultiChange('partner', 'homosexuell', this.checked)">
+                                        <label for="modal-partner-o-hom" class="dominanz-label" onclick="event.preventDefault(); showDimensionTooltip('homosexuell')" style="cursor: pointer;">homosexuell</label>
+                                        <button type="button" id="modal-partner-o-hom-secondary" class="secondary-interessiert-btn" onclick="handleOrientierungSecondaryInteressiert('partner', 'homosexuell', this)">interessiert</button>
+                                        <div id="modal-partner-o-hom-status" class="status-toggle-group">
+                                            <button type="button" class="status-toggle-btn active-gelebt" data-status="gelebt" onclick="handleOrientierungStatusToggle('partner', 'homosexuell', 'gelebt', this)">Gelebt</button>
+                                            <button type="button" class="status-toggle-btn" data-status="interessiert" onclick="handleOrientierungStatusToggle('partner', 'homosexuell', 'interessiert', this)">Interessiert</button>
+                                        </div>
+                                    </div>
+                                    <div class="dominanz-option-row" id="modal-partner-o-bi-row">
+                                        <input type="checkbox" id="modal-partner-o-bi" value="bisexuell" class="dominanz-checkbox" onchange="handleModalOrientierungMultiChange('partner', 'bisexuell', this.checked)">
+                                        <label for="modal-partner-o-bi" class="dominanz-label" onclick="event.preventDefault(); showDimensionTooltip('bisexuell')" style="cursor: pointer;">Bi-/Pan</label>
+                                        <button type="button" id="modal-partner-o-bi-secondary" class="secondary-interessiert-btn" onclick="handleOrientierungSecondaryInteressiert('partner', 'bisexuell', this)">interessiert</button>
+                                        <div id="modal-partner-o-bi-status" class="status-toggle-group">
+                                            <button type="button" class="status-toggle-btn active-gelebt" data-status="gelebt" onclick="handleOrientierungStatusToggle('partner', 'bisexuell', 'gelebt', this)">Gelebt</button>
+                                            <button type="button" class="status-toggle-btn" data-status="interessiert" onclick="handleOrientierungStatusToggle('partner', 'bisexuell', 'interessiert', this)">Interessiert</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
                             <!-- Dominanz Multi-Select -->
                             <div class="dimension-group needs-selection" data-dimension="modal-partner-dominanz-multi">
                                 <div class="dimension-label">
@@ -1480,43 +1517,6 @@
                                         <div id="modal-partner-d-aus-status" class="status-toggle-group">
                                             <button type="button" class="status-toggle-btn active-gelebt" data-status="gelebt" onclick="handleDominanzStatusToggle('partner', 'ausgeglichen', 'gelebt', this)">Gelebt</button>
                                             <button type="button" class="status-toggle-btn" data-status="interessiert" onclick="handleDominanzStatusToggle('partner', 'ausgeglichen', 'interessiert', this)">Interessiert</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Sexuelle Orientierung -->
-                            <div class="dimension-group full-width needs-selection" data-dimension="modal-partner-orientierung-multi">
-                                <div class="dimension-label">
-                                    Sexuelle Orientierung
-                                    <span style="font-size: 10px; text-decoration: underline; cursor: pointer;" onclick="showDimensionTooltip('status')">(P=Primär, S=Sekundär)</span>
-                                </div>
-                                <div class="dominanz-multi-select">
-                                    <div class="dominanz-option-row" id="modal-partner-o-het-row">
-                                        <input type="checkbox" id="modal-partner-o-het" value="heterosexuell" class="dominanz-checkbox" onchange="handleModalOrientierungMultiChange('partner', 'heterosexuell', this.checked)">
-                                        <label for="modal-partner-o-het" class="dominanz-label" onclick="event.preventDefault(); showDimensionTooltip('heterosexuell')" style="cursor: pointer;">heterosexuell</label>
-                                        <button type="button" id="modal-partner-o-het-secondary" class="secondary-interessiert-btn" onclick="handleOrientierungSecondaryInteressiert('partner', 'heterosexuell', this)">interessiert</button>
-                                        <div id="modal-partner-o-het-status" class="status-toggle-group">
-                                            <button type="button" class="status-toggle-btn active-gelebt" data-status="gelebt" onclick="handleOrientierungStatusToggle('partner', 'heterosexuell', 'gelebt', this)">Gelebt</button>
-                                            <button type="button" class="status-toggle-btn" data-status="interessiert" onclick="handleOrientierungStatusToggle('partner', 'heterosexuell', 'interessiert', this)">Interessiert</button>
-                                        </div>
-                                    </div>
-                                    <div class="dominanz-option-row" id="modal-partner-o-hom-row">
-                                        <input type="checkbox" id="modal-partner-o-hom" value="homosexuell" class="dominanz-checkbox" onchange="handleModalOrientierungMultiChange('partner', 'homosexuell', this.checked)">
-                                        <label for="modal-partner-o-hom" class="dominanz-label" onclick="event.preventDefault(); showDimensionTooltip('homosexuell')" style="cursor: pointer;">homosexuell</label>
-                                        <button type="button" id="modal-partner-o-hom-secondary" class="secondary-interessiert-btn" onclick="handleOrientierungSecondaryInteressiert('partner', 'homosexuell', this)">interessiert</button>
-                                        <div id="modal-partner-o-hom-status" class="status-toggle-group">
-                                            <button type="button" class="status-toggle-btn active-gelebt" data-status="gelebt" onclick="handleOrientierungStatusToggle('partner', 'homosexuell', 'gelebt', this)">Gelebt</button>
-                                            <button type="button" class="status-toggle-btn" data-status="interessiert" onclick="handleOrientierungStatusToggle('partner', 'homosexuell', 'interessiert', this)">Interessiert</button>
-                                        </div>
-                                    </div>
-                                    <div class="dominanz-option-row" id="modal-partner-o-bi-row">
-                                        <input type="checkbox" id="modal-partner-o-bi" value="bisexuell" class="dominanz-checkbox" onchange="handleModalOrientierungMultiChange('partner', 'bisexuell', this.checked)">
-                                        <label for="modal-partner-o-bi" class="dominanz-label" onclick="event.preventDefault(); showDimensionTooltip('bisexuell')" style="cursor: pointer;">Bi-/Pan</label>
-                                        <button type="button" id="modal-partner-o-bi-secondary" class="secondary-interessiert-btn" onclick="handleOrientierungSecondaryInteressiert('partner', 'bisexuell', this)">interessiert</button>
-                                        <div id="modal-partner-o-bi-status" class="status-toggle-group">
-                                            <button type="button" class="status-toggle-btn active-gelebt" data-status="gelebt" onclick="handleOrientierungStatusToggle('partner', 'bisexuell', 'gelebt', this)">Gelebt</button>
-                                            <button type="button" class="status-toggle-btn" data-status="interessiert" onclick="handleOrientierungStatusToggle('partner', 'bisexuell', 'interessiert', this)">Interessiert</button>
                                         </div>
                                     </div>
                                 </div>
@@ -2121,6 +2121,12 @@
     <script src="js/components/AttributeSummaryCard.js"></script>
     <script src="js/components/profile-components.js"></script>
     <script src="js/components/PerspektivenModal.js"></script>
+
+    <!-- Philosophy Hints Components -->
+    <script src="js/components/PhilosophyHint.js"></script>
+    <script src="js/components/hints/HintState.js"></script>
+    <script src="js/components/hints/index.js"></script>
+    <script src="js/components/hints/MomentsToggle.js"></script>
 
     <script src="js/app-main.js"></script>
 </body>

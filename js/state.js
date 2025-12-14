@@ -76,7 +76,14 @@ const TiageState = (function() {
             currentView: 'desktop',  // 'desktop' oder 'mobile'
             currentMobilePage: 1,
             activeModal: null,
-            selectedCategory: null
+            selectedCategory: null,
+            // Match Modal Settings
+            matchModalView: 'pathos',    // 'pathos' oder 'logos'
+            syntheseType: 'score',       // 'score', 'pathos', oder 'logos'
+            // Profil-Auswahl für Matching
+            selection: null,             // { ich: {...}, partner: {...} } oder null
+            // Sprach-Einstellung
+            language: 'de'               // 'de' oder 'en'
         },
 
         // Profile Save Status - tracks loaded slot and unsaved changes
@@ -101,13 +108,15 @@ const TiageState = (function() {
                 O: { value: 25, locked: false },  // Orientierung
                 A: { value: 25, locked: false },  // Archetyp
                 D: { value: 25, locked: false },  // Dominanz
-                G: { value: 25, locked: false }   // Geschlecht
+                G: { value: 25, locked: false },  // Geschlecht
+                summeLock: { enabled: true, target: 100 }  // Summen-Lock
             },
             partner: {
                 O: { value: 25, locked: false },
                 A: { value: 25, locked: false },
                 D: { value: 25, locked: false },
-                G: { value: 25, locked: false }
+                G: { value: 25, locked: false },
+                summeLock: { enabled: true, target: 100 }
             }
         },
 
@@ -176,6 +185,10 @@ const TiageState = (function() {
         'archetypes.ich': [],
         'archetypes.partner': [],
         'ui': [],
+        'ui.matchModalView': [],
+        'ui.syntheseType': [],
+        'ui.selection': [],
+        'ui.language': [],
         'profileStatus': [],
         'profileStatus.ich': [],
         'profileStatus.partner': [],
@@ -932,7 +945,16 @@ const TiageState = (function() {
                 ich: { primary: 'single', secondary: null },
                 partner: { primary: 'duo', secondary: null }
             });
-            this.set('ui', { currentView: 'desktop', currentMobilePage: 1, activeModal: null, selectedCategory: null });
+            this.set('ui', {
+                currentView: 'desktop',
+                currentMobilePage: 1,
+                activeModal: null,
+                selectedCategory: null,
+                matchModalView: 'pathos',
+                syntheseType: 'score',
+                selection: null,
+                language: 'de'
+            });
             this.set('profileStatus', {
                 ich: { loadedSlot: null, isDirty: false },
                 partner: { loadedSlot: null, isDirty: false }
@@ -943,13 +965,15 @@ const TiageState = (function() {
                     O: { value: 25, locked: false },
                     A: { value: 25, locked: false },
                     D: { value: 25, locked: false },
-                    G: { value: 25, locked: false }
+                    G: { value: 25, locked: false },
+                    summeLock: { enabled: true, target: 100 }
                 },
                 partner: {
                     O: { value: 25, locked: false },
                     A: { value: 25, locked: false },
                     D: { value: 25, locked: false },
-                    G: { value: 25, locked: false }
+                    G: { value: 25, locked: false },
+                    summeLock: { enabled: true, target: 100 }
                 }
             });
             this.set('resonanzFaktoren', {
@@ -1029,7 +1053,57 @@ const TiageState = (function() {
                     if (parsed.profileReview) {
                         this.set('profileReview', parsed.profileReview);
                     }
+                    // UI Settings laden
+                    if (parsed.ui) {
+                        if (parsed.ui.matchModalView) {
+                            this.set('ui.matchModalView', parsed.ui.matchModalView);
+                        }
+                        if (parsed.ui.syntheseType) {
+                            this.set('ui.syntheseType', parsed.ui.syntheseType);
+                        }
+                        if (parsed.ui.selection) {
+                            this.set('ui.selection', parsed.ui.selection);
+                        }
+                        if (parsed.ui.language) {
+                            this.set('ui.language', parsed.ui.language);
+                        }
+                    }
                     console.log('[TiageState] State aus localStorage geladen');
+                }
+
+                // Migration: Alte localStorage-Keys zu TiageState
+                const oldMatchView = localStorage.getItem('matchModalView');
+                if (oldMatchView && !this.get('ui.matchModalView')) {
+                    this.set('ui.matchModalView', oldMatchView);
+                    localStorage.removeItem('matchModalView');
+                    console.log('[TiageState] Migriert: matchModalView');
+                }
+                const oldSyntheseType = localStorage.getItem('tiageSyntheseType');
+                if (oldSyntheseType && !this.get('ui.syntheseType')) {
+                    this.set('ui.syntheseType', oldSyntheseType);
+                    localStorage.removeItem('tiageSyntheseType');
+                    localStorage.removeItem('pathosLogosType'); // Legacy key
+                    console.log('[TiageState] Migriert: tiageSyntheseType');
+                }
+                const oldSelection = localStorage.getItem('tiage-selection');
+                if (oldSelection) {
+                    try {
+                        const parsed = JSON.parse(oldSelection);
+                        if (!this.get('ui.selection')) {
+                            this.set('ui.selection', parsed);
+                        }
+                        localStorage.removeItem('tiage-selection');
+                        console.log('[TiageState] Migriert: tiage-selection');
+                    } catch (e) { /* ignore */ }
+                }
+                // Migriere Sprach-Einstellung
+                const oldLanguage = localStorage.getItem('tiage_language');
+                if (oldLanguage && ['de', 'en'].includes(oldLanguage)) {
+                    if (this.get('ui.language') === 'de') { // Nur wenn noch default
+                        this.set('ui.language', oldLanguage);
+                    }
+                    localStorage.removeItem('tiage_language');
+                    console.log('[TiageState] Migriert: tiage_language');
                 }
             } catch (e) {
                 console.warn('[TiageState] Failed to load from storage:', e);
@@ -1048,7 +1122,14 @@ const TiageState = (function() {
                     // Neue Felder - zentral speichern
                     gewichtungen: this.get('gewichtungen'),
                     resonanzFaktoren: this.get('resonanzFaktoren'),
-                    profileReview: this.get('profileReview')
+                    profileReview: this.get('profileReview'),
+                    // UI Settings - persistente Einstellungen
+                    ui: {
+                        matchModalView: this.get('ui.matchModalView'),
+                        syntheseType: this.get('ui.syntheseType'),
+                        selection: this.get('ui.selection'),
+                        language: this.get('ui.language')
+                    }
                     // flatNeeds werden NICHT gespeichert - sie werden aus Inputs berechnet
                 };
                 localStorage.setItem('tiage_state', JSON.stringify(toSave));

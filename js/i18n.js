@@ -2,7 +2,7 @@
  * INTERNATIONALIZATION (i18n) MODULE
  *
  * Handles language switching between German and English.
- * Uses localStorage for persistence and provides reactive updates.
+ * Uses TiageState (SSOT) for persistence and provides reactive updates.
  *
  * © 2025 Ti-age.de All rights reserved.
  */
@@ -63,11 +63,19 @@ const TiageI18n = (function() {
     }
 
     /**
-     * Load language preference from storage
+     * Load language preference from TiageState (SSOT)
      * @returns {string} The stored language or null
      */
     function loadFromStorage() {
         try {
+            // TiageState als SSOT
+            if (typeof TiageState !== 'undefined') {
+                const stored = TiageState.get('ui.language');
+                if (stored && SUPPORTED_LANGUAGES.includes(stored)) {
+                    return stored;
+                }
+            }
+            // Fallback: localStorage (für Migration)
             const stored = localStorage.getItem(STORAGE_KEY);
             if (stored && SUPPORTED_LANGUAGES.includes(stored)) {
                 return stored;
@@ -79,12 +87,16 @@ const TiageI18n = (function() {
     }
 
     /**
-     * Save language preference to storage
+     * Save language preference to TiageState (SSOT)
      * @param {string} lang - The language code to save
      */
     function saveToStorage(lang) {
         try {
-            localStorage.setItem(STORAGE_KEY, lang);
+            // TiageState als SSOT
+            if (typeof TiageState !== 'undefined') {
+                TiageState.set('ui.language', lang);
+                TiageState.saveToStorage();
+            }
         } catch (e) {
             console.warn('[TiageI18n] Failed to save to storage:', e);
         }
