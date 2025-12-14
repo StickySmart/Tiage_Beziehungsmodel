@@ -2,6 +2,21 @@
 
 > *Die philosophische Grundlage für den Pathos-Anteil im Tiage-Beziehungsmodell*
 
+---
+
+## Quellenhinweis und Urheberrecht
+
+> **Hinweis zu Osho-Zen-Tarot-Interpretationen:**
+> Inhalte basieren auf dem Osho Zen Tarot (Ma Deva Padma, St. Martin's Press, inspiriert durch Osho). Alle Rechte bei den jeweiligen Inhabern.
+
+**Kennzeichnungsrichtlinien in diesem Dokument:**
+
+- **Direkte Zitate** werden in Anführungszeichen mit Kursivschrift dargestellt: *„Zitattext"*
+- **Paraphrasen** (sinngemäße Wiedergaben) werden als solche gekennzeichnet oder beschreibend formuliert
+- **Eigene Interpretationen** des Tiage-Modells sind entsprechend markiert
+
+---
+
 ## Über OSHO (1931-1990)
 
 **Bhagwan Shree Rajneesh (OSHO)** war ein indischer spiritueller Lehrer, dessen Philosophie über Bewusstsein, Liebe und das Durchbrechen von Konditionierung das Tiage-Modell prägt. Seine Lehren sind keine Dogmen, sondern Einladungen zur Selbsterforschung.
@@ -12,7 +27,8 @@
 
 ### 1. Konditionierung
 
-> *"Du wurdest nicht frei geboren. Du wurdest in Ketten geboren – Ketten aus Ideen, Überzeugungen, Erwartungen. Die meisten Menschen sterben, ohne jemals zu bemerken, dass sie diese Ketten tragen."*
+> *„Du wurdest nicht frei geboren. Du wurdest in Ketten geboren – Ketten aus Ideen, Überzeugungen, Erwartungen. Die meisten Menschen sterben, ohne jemals zu bemerken, dass sie diese Ketten tragen."*
+> — **Paraphrase** nach OSHO-Lehren zur Konditionierung
 
 **Was OSHO darunter versteht:** Konditionierung ist alles, was uns beigebracht wurde, bevor wir die Möglichkeit hatten zu hinterfragen. Familie, Kultur, Religion, Gesellschaft – sie alle formen Muster in uns: was wir lieben sollen, wen wir begehren dürfen, wie eine "richtige" Beziehung aussieht.
 
@@ -30,7 +46,8 @@
 
 ### 2. Bewusstsein (Awareness)
 
-> *"Bewusstheit ist kein Denken über etwas. Es ist reines Schauen – ohne zu urteilen, ohne zu bewerten."*
+> *„Bewusstheit ist kein Denken über etwas. Es ist reines Schauen – ohne zu urteilen, ohne zu bewerten."*
+> — **Paraphrase** nach OSHO-Lehren zur Bewusstheit
 
 Die meisten Beziehungsprobleme entstehen unbewusst. Projektionen: "Er ist genau wie mein Vater." Reaktionen: Wut, die eigentlich Angst ist. Muster: Immer wieder denselben Typ wählen, der einen verletzt.
 
@@ -48,7 +65,8 @@ Diese Unterscheidung ist der erste Schritt aus der Konditionierung heraus.
 
 ### 3. Flow
 
-> *"Wenn der Denker verschwindet und nur das Denken bleibt – das ist Meditation. Wenn der Liebende verschwindet und nur das Lieben bleibt – das ist Liebe."*
+> *„Wenn der Denker verschwindet und nur das Denken bleibt – das ist Meditation. Wenn der Liebende verschwindet und nur das Lieben bleibt – das ist Liebe."*
+> — **Paraphrase** nach OSHO-Lehren zu Meditation und Liebe
 
 Flow ist der Zustand, in dem alles fließt. Kein Kampf zwischen Denken und Fühlen. Kein Müssen, kein Sollen. Nur Sein.
 
@@ -65,7 +83,8 @@ Die Resonanz-Formel des Modells versucht, dieses Fließen messbar zu machen – 
 
 ### 4. Meditation
 
-> *"Meditation ist keine Technik. Es ist eine Art zu sein – präsent, aufmerksam, ohne Urteil."*
+> *„Meditation ist keine Technik. Es ist eine Art zu sein – präsent, aufmerksam, ohne Urteil."*
+> — **Paraphrase** nach OSHO-Lehren zur Meditation
 
 OSHO verstand Meditation nicht als 20 Minuten auf einem Kissen. Meditation ist eine **Haltung**: Beobachtung ohne Bewertung. Präsenz im Moment. Den Gedanken zuschauen, ohne ihnen zu folgen.
 
@@ -73,7 +92,8 @@ OSHO verstand Meditation nicht als 20 Minuten auf einem Kissen. Meditation ist e
 
 **OSHOs zentraler Punkt:**
 
-> *"Wer sich selbst nicht kennt, kann andere nicht wirklich sehen. Er sieht nur seine Projektionen."*
+> *„Wer sich selbst nicht kennt, kann andere nicht wirklich sehen. Er sieht nur seine Projektionen."*
+> — **Paraphrase** nach OSHO-Lehren zur Selbsterkenntnis
 
 Selbstkenntnis kommt vor Partnersuche. Nicht als Bedingung, sondern als Einladung: Je klarer du dich selbst siehst, desto klarer siehst du, wer zu dir passt – und wer nur zu deinen Projektionen.
 
@@ -159,7 +179,7 @@ OSHOs Philosophie verbindet sich überraschend mit Tiages Widerspruch zu Pirsig:
 
 | Perspektive | Aussage |
 |-------------|---------|
-| **OSHO** | "Worte können lebendig sein, wenn Bewusstheit dahinter steht. Dann sind sie keine Gefängnisse, sondern Tore." |
+| **OSHO** | *„Worte können lebendig sein, wenn Bewusstheit dahinter steht. Dann sind sie keine Gefängnisse, sondern Tore."* — Paraphrase |
 | **Tiage** | Im bewussten Dialog *ist* die Definition das Erleben. Begriffe werden aufgefächert, nicht fixiert. |
 
 Beide sagen: **Sprache muss nicht töten. Sie kann lebendig sein – wenn Bewusstheit da ist.**
@@ -175,3 +195,14 @@ Die Qualität entsteht nicht trotz der Sprache, sondern *durch* sie – wenn zwe
 - [Resonanz-Theorie im Tiage-Modell](resonance.md) – Der Resonanz-Override
 - [Pirsig-Philosophie](pirsig.md) – Tiages Widerspruch im Detail
 - [Tiage-Synthese](tiage-synthesis.md) – Die Verbindung beider Philosophien
+
+---
+
+## Rechtlicher Hinweis
+
+> **Urheberrechtshinweis:**
+> Die in diesem Dokument enthaltenen Paraphrasen und Interpretationen basieren auf den öffentlichen Lehren von OSHO (Bhagwan Shree Rajneesh) und dem Osho Zen Tarot (Ma Deva Padma, St. Martin's Press, inspiriert durch Osho). Alle Rechte bei den jeweiligen Inhabern.
+>
+> **Keine Zitat-Garantie:** Die als „Paraphrase" gekennzeichneten Texte sind sinngemäße Wiedergaben und keine wörtlichen Zitate. Sie dienen der Veranschaulichung der philosophischen Konzepte im Kontext des Tiage-Beziehungsmodells.
+>
+> **Eigenständige Interpretationen:** Alle „Im Tiage-Modell"-Abschnitte sind eigenständige Interpretationen und Anwendungen durch das Tiage-Team, nicht offizielle OSHO-Lehren.
