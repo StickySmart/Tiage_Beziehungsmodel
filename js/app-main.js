@@ -12590,6 +12590,8 @@
                     const desktopSelect = document.getElementById('ichSelect');
                     if (desktopSelect) desktopSelect.value = e.target.value;
                     currentArchetype = e.target.value;
+                    // Sync archetype grid highlighting
+                    updateArchetypeGrid('ich', e.target.value);
                     updateComparisonView();
                     // GFK automatisch aus Archetypen-Matching ableiten
                     updateGfkFromArchetypes();
@@ -12609,6 +12611,8 @@
                     const desktopSelect = document.getElementById('partnerSelect');
                     if (desktopSelect) desktopSelect.value = e.target.value;
                     selectedPartner = e.target.value;
+                    // Sync archetype grid highlighting
+                    updateArchetypeGrid('partner', e.target.value);
                     updateComparisonView();
                     // GFK automatisch aus Archetypen-Matching ableiten
                     updateGfkFromArchetypes();
@@ -15553,6 +15557,11 @@
                 currentArchetype = archetypes[currentIndex];
                 mobileIchArchetype = archetypes[currentIndex];
 
+                // Sync with TiageState for persistence
+                if (typeof TiageState !== 'undefined') {
+                    TiageState.setArchetype('ich', currentArchetype);
+                }
+
                 // Sync dropdowns
                 const ichSelect = document.getElementById('ichSelect');
                 const mobileIchSelect = document.getElementById('mobileIchSelect');
@@ -15566,6 +15575,11 @@
                 currentIndex = (currentIndex + direction + archetypes.length) % archetypes.length;
                 selectedPartner = archetypes[currentIndex];
                 mobilePartnerArchetype = archetypes[currentIndex];
+
+                // Sync with TiageState for persistence
+                if (typeof TiageState !== 'undefined') {
+                    TiageState.setArchetype('partner', selectedPartner);
+                }
 
                 // Sync dropdowns
                 const partnerSelect = document.getElementById('partnerSelect');
