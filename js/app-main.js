@@ -13155,6 +13155,12 @@
                     }
                 });
 
+                // Initialize MomentsToggle in header
+                if (typeof MomentsToggle !== 'undefined' && typeof MomentsToggle.init === 'function') {
+                    MomentsToggle.init();
+                    console.log('[TIAGE DEBUG] MomentsToggle initialized');
+                }
+
                 console.log('[TIAGE DEBUG] DOMContentLoaded completed successfully');
             } catch (e) {
                 console.error('[TIAGE ERROR] DOMContentLoaded failed:', e);

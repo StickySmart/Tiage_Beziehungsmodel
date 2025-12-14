@@ -299,3 +299,85 @@
         outline: 1px solid var(--hint-highlight-border);
     }
 }
+
+/* ========================================
+   MOMENTS TOGGLE BUTTON (Header)
+   ======================================== */
+
+.moments-toggle-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 12px;
+    background: var(--bg-card, #1a1a2e);
+    border: 1px solid var(--border, rgba(255, 255, 255, 0.1));
+    border-radius: 6px;
+    font-size: 0.85rem;
+    color: var(--text-primary, #f0f0f0);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+}
+
+.moments-toggle-btn:hover {
+    background: var(--bg-hover, #252542);
+    border-color: var(--hint-highlight-glow, #9b5de5);
+    box-shadow: 0 0 10px rgba(155, 93, 229, 0.2);
+}
+
+.moments-toggle-btn:focus {
+    outline: 2px solid var(--hint-highlight-glow, #9b5de5);
+    outline-offset: 2px;
+}
+
+.moments-toggle-btn[aria-pressed="true"] {
+    border-color: var(--hint-highlight-glow, #9b5de5);
+    background: rgba(155, 93, 229, 0.15);
+}
+
+.moments-toggle-btn--disabled {
+    opacity: 0.7;
+    border-color: var(--border, rgba(255, 255, 255, 0.1));
+    background: var(--bg-card, #1a1a2e);
+}
+
+.moments-toggle-btn--disabled:hover {
+    opacity: 1;
+    border-color: var(--text-muted, #666);
+}
+
+.moments-toggle-icon {
+    font-size: 1rem;
+    line-height: 1;
+}
+
+.moments-toggle-text {
+    font-weight: 500;
+}
+
+/* Hidden state for moments */
+.philosophy-hint--hidden {
+    display: none !important;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .moments-toggle-btn {
+        padding: 5px 10px;
+        font-size: 0.8rem;
+    }
+
+    .moments-toggle-text {
+        display: none;
+    }
+
+    .moments-toggle-icon {
+        font-size: 1.1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .moments-toggle-btn {
+        padding: 4px 8px;
+    }
+}

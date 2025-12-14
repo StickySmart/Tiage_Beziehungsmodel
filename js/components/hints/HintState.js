@@ -20,7 +20,8 @@ const HintState = (function() {
     const STORAGE_KEYS = {
         SESSION: 'tiage_hint_session_state',
         PERSISTENT: 'tiage_hint_persistent_state',
-        ANALYTICS: 'tiage_hint_analytics'
+        ANALYTICS: 'tiage_hint_analytics',
+        MOMENTS_ENABLED: 'tiage_moments_enabled'
     };
 
     // ========================================
@@ -226,6 +227,53 @@ const HintState = (function() {
     }
 
     // ========================================
+    // GLOBAL MOMENTS TOGGLE
+    // ========================================
+
+    /**
+     * Prüft ob Momente global aktiviert sind
+     * @returns {boolean} true wenn aktiviert (Standard: true)
+     */
+    function areMomentsEnabled() {
+        try {
+            const stored = localStorage.getItem(STORAGE_KEYS.MOMENTS_ENABLED);
+            // Standard ist aktiviert (true)
+            return stored === null ? true : stored === 'true';
+        } catch (e) {
+            console.warn('[TIAGE] Fehler beim Laden der Moments-Einstellung:', e);
+            return true;
+        }
+    }
+
+    /**
+     * Setzt den globalen Moments-Status
+     * @param {boolean} enabled - true zum Aktivieren, false zum Deaktivieren
+     */
+    function setMomentsEnabled(enabled) {
+        try {
+            localStorage.setItem(STORAGE_KEYS.MOMENTS_ENABLED, String(enabled));
+            console.log('[TIAGE] Momente ' + (enabled ? 'aktiviert' : 'deaktiviert'));
+
+            // Custom Event für UI-Updates
+            window.dispatchEvent(new CustomEvent('tiage-moments-toggled', {
+                detail: { enabled }
+            }));
+        } catch (e) {
+            console.warn('[TIAGE] Fehler beim Speichern der Moments-Einstellung:', e);
+        }
+    }
+
+    /**
+     * Toggle für Momente (wechselt zwischen an/aus)
+     * @returns {boolean} Neuer Status
+     */
+    function toggleMomentsEnabled() {
+        const newState = !areMomentsEnabled();
+        setMomentsEnabled(newState);
+        return newState;
+    }
+
+    // ========================================
     // MOMENT TRACKING
     // ========================================
 
@@ -304,6 +352,11 @@ const HintState = (function() {
         hasShownConflictHint,
         markConflictHintShown,
         shouldShowConflictHint,
+
+        // Global Moments Toggle
+        areMomentsEnabled,
+        setMomentsEnabled,
+        toggleMomentsEnabled,
 
         // Analytics
         trackHintEvent,

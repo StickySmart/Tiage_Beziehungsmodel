@@ -157,6 +157,39 @@ Schau nicht auf die Zahl. Schau auf die Bedürfnisse. Wo seid ihr nah? Wo weit? 
     };
 
     // ========================================
+    // HELPER: CHECK IF MOMENTS ENABLED
+    // ========================================
+
+    /**
+     * Prüft ob Momente global aktiviert sind
+     * @returns {boolean}
+     */
+    function checkMomentsEnabled() {
+        // Prüfe ob HintState existiert und Momente aktiviert sind
+        if (typeof HintState !== 'undefined' && typeof HintState.areMomentsEnabled === 'function') {
+            return HintState.areMomentsEnabled();
+        }
+        // Fallback: direkt aus localStorage lesen
+        try {
+            const stored = localStorage.getItem('tiage_moments_enabled');
+            return stored === null ? true : stored === 'true';
+        } catch (e) {
+            return true;
+        }
+    }
+
+    /**
+     * Erstellt ein leeres Placeholder-Element wenn Momente deaktiviert sind
+     * @returns {HTMLElement}
+     */
+    function createDisabledPlaceholder() {
+        const placeholder = document.createElement('div');
+        placeholder.className = 'philosophy-hint-disabled';
+        placeholder.style.display = 'none';
+        return placeholder;
+    }
+
+    // ========================================
     // FACTORY FUNCTIONS
     // ========================================
 
@@ -189,9 +222,12 @@ Schau nicht auf die Zahl. Schau auf die Bedürfnisse. Wo seid ihr nah? Wo weit? 
     /**
      * Erstellt Moment 1: Start Hint
      * @param {Object} [options] - Zusätzliche Optionen
-     * @returns {HTMLElement} Die Hint-Komponente
+     * @returns {HTMLElement} Die Hint-Komponente oder ein leeres Element
      */
     function createMoment1Start(options = {}) {
+        if (!checkMomentsEnabled()) {
+            return createDisabledPlaceholder();
+        }
         return PhilosophyHint.create({
             ...HINTS.moment1,
             ...options
@@ -201,9 +237,12 @@ Schau nicht auf die Zahl. Schau auf die Bedürfnisse. Wo seid ihr nah? Wo weit? 
     /**
      * Erstellt Moment 2: Nach AGOD Hint
      * @param {Object} [options] - Zusätzliche Optionen
-     * @returns {HTMLElement} Die Hint-Komponente
+     * @returns {HTMLElement} Die Hint-Komponente oder ein leeres Element
      */
     function createMoment2AfterAGOD(options = {}) {
+        if (!checkMomentsEnabled()) {
+            return createDisabledPlaceholder();
+        }
         return PhilosophyHint.create({
             ...HINTS.moment2,
             ...options
@@ -213,9 +252,12 @@ Schau nicht auf die Zahl. Schau auf die Bedürfnisse. Wo seid ihr nah? Wo weit? 
     /**
      * Erstellt Moment 3: Needs Loaded Hint (WICHTIGSTER)
      * @param {Object} [options] - Zusätzliche Optionen
-     * @returns {HTMLElement} Die Hint-Komponente
+     * @returns {HTMLElement} Die Hint-Komponente oder ein leeres Element
      */
     function createMoment3NeedsLoaded(options = {}) {
+        if (!checkMomentsEnabled()) {
+            return createDisabledPlaceholder();
+        }
         return PhilosophyHint.create({
             ...HINTS.moment3,
             ...options
@@ -226,9 +268,12 @@ Schau nicht auf die Zahl. Schau auf die Bedürfnisse. Wo seid ihr nah? Wo weit? 
      * Erstellt Moment 4: First Lock Hint
      * Hinweis: Sollte nur einmal pro Session gezeigt werden!
      * @param {Object} [options] - Zusätzliche Optionen
-     * @returns {HTMLElement} Die Hint-Komponente
+     * @returns {HTMLElement} Die Hint-Komponente oder ein leeres Element
      */
     function createMoment4FirstLock(options = {}) {
+        if (!checkMomentsEnabled()) {
+            return createDisabledPlaceholder();
+        }
         return PhilosophyHint.create({
             ...HINTS.moment4,
             ...options
@@ -238,9 +283,12 @@ Schau nicht auf die Zahl. Schau auf die Bedürfnisse. Wo seid ihr nah? Wo weit? 
     /**
      * Erstellt Moment 5: Conflict Hint
      * @param {Object} [options] - Zusätzliche Optionen
-     * @returns {HTMLElement} Die Hint-Komponente
+     * @returns {HTMLElement} Die Hint-Komponente oder ein leeres Element
      */
     function createMoment5Conflict(options = {}) {
+        if (!checkMomentsEnabled()) {
+            return createDisabledPlaceholder();
+        }
         return PhilosophyHint.create({
             ...HINTS.moment5,
             ...options
@@ -250,9 +298,12 @@ Schau nicht auf die Zahl. Schau auf die Bedürfnisse. Wo seid ihr nah? Wo weit? 
     /**
      * Erstellt Moment 6: Result Hint
      * @param {Object} [options] - Zusätzliche Optionen
-     * @returns {HTMLElement} Die Hint-Komponente
+     * @returns {HTMLElement} Die Hint-Komponente oder ein leeres Element
      */
     function createMoment6Result(options = {}) {
+        if (!checkMomentsEnabled()) {
+            return createDisabledPlaceholder();
+        }
         return PhilosophyHint.create({
             ...HINTS.moment6,
             ...options
@@ -308,6 +359,9 @@ Schau nicht auf die Zahl. Schau auf die Bedürfnisse. Wo seid ihr nah? Wo weit? 
         // Helpers
         getHintDefinitions,
         getHintDefinition,
+
+        // Global Toggle Helper
+        areMomentsEnabled: checkMomentsEnabled,
 
         // Raw definitions (für Tests/Anpassungen)
         HINTS
