@@ -31,8 +31,8 @@ const TiageState = (function() {
         personDimensions: {
             ich: {
                 geschlecht: {
-                    primary: null,    // Primäre Geschlechtsidentität (z.B. 'mann', 'frau', 'divers')
-                    secondary: null   // Sekundäre Geschlechtsidentität (z.B. 'cis', 'trans', 'nb')
+                    primary: null,    // Körper: 'mann', 'frau', 'inter'
+                    secondary: null   // Identität: 'cis', 'trans', 'suchend', 'nonbinaer', 'fluid'
                 },
                 dominanz: {
                     primary: null,    // 'dominant', 'submissiv', 'switch', 'ausgeglichen'
@@ -210,6 +210,76 @@ const TiageState = (function() {
     }
 
     // ═══════════════════════════════════════════════════════════════════════
+    // GESCHLECHT NORMALISIERUNG
+    // ═══════════════════════════════════════════════════════════════════════
+    //
+    // Stellt sicher, dass Geschlechts-Werte konsistent mit ProfileModifiers sind.
+    // Konvertiert alte/alternative Werte zu den erwarteten Keys.
+    //
+    // MAPPING:
+    //   primary:   'divers' → 'inter'
+    //   secondary: 'nb' → 'nonbinaer'
+    // ═══════════════════════════════════════════════════════════════════════
+
+    const GESCHLECHT_PRIMARY_MAP = {
+        'divers': 'inter',
+        'diverse': 'inter',
+        'd': 'inter'
+    };
+
+    const GESCHLECHT_SECONDARY_MAP = {
+        'nb': 'nonbinaer',
+        'non-binary': 'nonbinaer',
+        'non-binär': 'nonbinaer',
+        'unsicher': 'suchend'
+    };
+
+    /**
+     * Normalisiert Geschlechts-Werte für Konsistenz mit ProfileModifiers
+     * @param {string} path - Der State-Pfad
+     * @param {*} value - Der zu setzende Wert
+     * @returns {*} Der normalisierte Wert
+     */
+    function normalizeGeschlechtValue(path, value) {
+        if (value === null || value === undefined) return value;
+
+        // Prüfe ob es ein Geschlechts-Pfad ist
+        if (path.includes('.geschlecht.primary')) {
+            const normalized = GESCHLECHT_PRIMARY_MAP[value.toLowerCase?.()];
+            if (normalized) {
+                console.log(`[TiageState] Geschlecht primary normalisiert: '${value}' → '${normalized}'`);
+                return normalized;
+            }
+        }
+
+        if (path.includes('.geschlecht.secondary')) {
+            const normalized = GESCHLECHT_SECONDARY_MAP[value.toLowerCase?.()];
+            if (normalized) {
+                console.log(`[TiageState] Geschlecht secondary normalisiert: '${value}' → '${normalized}'`);
+                return normalized;
+            }
+        }
+
+        // Wenn ein ganzes Geschlechts-Objekt gesetzt wird
+        if (path.includes('.geschlecht') && typeof value === 'object' && value !== null) {
+            const result = { ...value };
+            if (result.primary && GESCHLECHT_PRIMARY_MAP[result.primary.toLowerCase?.()]) {
+                const old = result.primary;
+                result.primary = GESCHLECHT_PRIMARY_MAP[result.primary.toLowerCase()];
+                console.log(`[TiageState] Geschlecht primary normalisiert: '${old}' → '${result.primary}'`);
+            }
+            if (result.secondary && GESCHLECHT_SECONDARY_MAP[result.secondary.toLowerCase?.()]) {
+                const old = result.secondary;
+                result.secondary = GESCHLECHT_SECONDARY_MAP[result.secondary.toLowerCase()];
+                console.log(`[TiageState] Geschlecht secondary normalisiert: '${old}' → '${result.secondary}'`);
+            }
+            return result;
+        }
+
+        return value;
+    }
+
+    // ═══════════════════════════════════════════════════════════════════════
     // PUBLIC API
     // ═══════════════════════════════════════════════════════════════════════
 
@@ -230,9 +300,12 @@ const TiageState = (function() {
          * @param {*} value - The new value
          */
         set(path, value) {
+            // Normalisiere Geschlechts-Werte für Konsistenz mit ProfileModifiers
+            const normalizedValue = normalizeGeschlechtValue(path, value);
+
             const oldValue = deepClone(getByPath(state, path));
-            setByPath(state, path, deepClone(value));
-            notify(path, value, oldValue);
+            setByPath(state, path, deepClone(normalizedValue));
+            notify(path, normalizedValue, oldValue);
         },
 
         /**
