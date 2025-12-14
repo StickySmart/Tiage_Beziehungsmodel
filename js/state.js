@@ -724,6 +724,112 @@ if (typeof window !== 'undefined') {
     });
 }
 
+// ═══════════════════════════════════════════════════════════════════════════
+// PROXY-LAYER: Legacy-Kompatibilität für window.personDimensions
+// ═══════════════════════════════════════════════════════════════════════════
+//
+// Dieser Proxy leitet alle Zugriffe auf window.personDimensions an TiageState weiter.
+// Legacy-Code funktioniert weiter, aber nutzt automatisch TiageState als Single Source of Truth.
+//
+// Beispiel:
+//   window.personDimensions.ich.geschlecht.primary = 'mann'
+//   → TiageState.set('personDimensions.ich.geschlecht.primary', 'mann')
+//
+// © 2025 Ti-age.de - Phase 1: Proxy-Layer Migration
+// ═══════════════════════════════════════════════════════════════════════════
+
+/**
+ * Erstellt einen rekursiven Proxy für verschachtelte Objekte
+ * @param {string} basePath - Der Pfad im TiageState (z.B. 'personDimensions.ich')
+ * @returns {Proxy} Ein Proxy-Objekt das auf TiageState mappt
+ */
+function createTiageStateProxy(basePath) {
+    return new Proxy({}, {
+        get(target, prop) {
+            // Symbol-Properties und interne Props ignorieren
+            if (typeof prop === 'symbol' || prop === 'toJSON' || prop === 'valueOf' || prop === 'toString') {
+                return undefined;
+            }
+
+            const fullPath = basePath ? `${basePath}.${prop}` : prop;
+            const value = TiageState.get(fullPath);
+
+            // Wenn der Wert ein Objekt ist, erstelle einen verschachtelten Proxy
+            if (value !== null && typeof value === 'object' && !Array.isArray(value)) {
+                return createTiageStateProxy(fullPath);
+            }
+
+            return value;
+        },
+
+        set(target, prop, value) {
+            const fullPath = basePath ? `${basePath}.${prop}` : prop;
+            TiageState.set(fullPath, value);
+            return true;
+        },
+
+        // Ermöglicht "key in obj" Checks
+        has(target, prop) {
+            const fullPath = basePath ? `${basePath}.${prop}` : prop;
+            return TiageState.get(fullPath) !== undefined;
+        },
+
+        // Ermöglicht Object.keys() und for...in
+        ownKeys(target) {
+            const value = TiageState.get(basePath);
+            if (value && typeof value === 'object') {
+                return Object.keys(value);
+            }
+            return [];
+        },
+
+        // Notwendig für Object.keys() - muss konfigurierbar und aufzählbar sein
+        getOwnPropertyDescriptor(target, prop) {
+            const fullPath = basePath ? `${basePath}.${prop}` : prop;
+            const value = TiageState.get(fullPath);
+            if (value !== undefined) {
+                return {
+                    value: value,
+                    writable: true,
+                    enumerable: true,
+                    configurable: true
+                };
+            }
+            return undefined;
+        }
+    });
+}
+
+// Erstelle den globalen Proxy für window.personDimensions
+if (typeof window !== 'undefined') {
+    /**
+     * window.personDimensions - Proxy zu TiageState
+     *
+     * LEGACY-KOMPATIBILITÄT:
+     * Dieser Proxy ersetzt die alte personDimensions Variable.
+     * Alle Lese- und Schreibzugriffe werden an TiageState weitergeleitet.
+     *
+     * VERWENDUNG (unverändert):
+     *   window.personDimensions.ich.geschlecht.primary = 'mann';
+     *   const geschlecht = window.personDimensions.ich.geschlecht.primary;
+     *
+     * INTERN wird das zu:
+     *   TiageState.set('personDimensions.ich.geschlecht.primary', 'mann');
+     *   TiageState.get('personDimensions.ich.geschlecht.primary');
+     */
+    window.personDimensions = createTiageStateProxy('personDimensions');
+
+    /**
+     * window.mobilePersonDimensions - Verweist auf denselben Proxy
+     *
+     * HINWEIS: Mobile und Desktop teilen sich jetzt denselben State.
+     * Das ist korrekt, da TiageState die Single Source of Truth ist.
+     */
+    window.mobilePersonDimensions = window.personDimensions;
+
+    console.log('[TiageState] Proxy-Layer aktiviert: window.personDimensions → TiageState');
+}
+
 // Export for ES6 modules (optional)
 if (typeof module !== 'undefined' && module.exports) {
     module.exports = TiageState;

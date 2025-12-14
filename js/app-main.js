@@ -139,40 +139,14 @@
         // Gewichtung initialization flag (muss vor initGewichtungInputs() definiert sein)
         var gewichtungInitialized = false;
 
-        // Legacy personDimensions - now a reference to TiageState for backward compatibility
-        // TODO: Remove after full migration to TiageState
-        const personDimensions = {
-            ich: {
-                geschlecht: {
-                    primary: null,    // Primäre Geschlechtsidentität (P)
-                    secondary: null   // Sekundäre Geschlechtsidentität (S)
-                },
-                dominanz: {
-                    primary: null,    // Primäre Dominanz (P)
-                    secondary: null   // Sekundäre Dominanz (S)
-                },
-                orientierung: {
-                    primary: null,    // Primäre Orientierung (P)
-                    secondary: null   // Sekundäre Orientierung (S)
-                },
-                gfk: null             // GFK-Kompetenz: niedrig, mittel, hoch
-            },
-            partner: {
-                geschlecht: {
-                    primary: null,
-                    secondary: null
-                },
-                dominanz: {
-                    primary: null,
-                    secondary: null
-                },
-                orientierung: {
-                    primary: null,
-                    secondary: null
-                },
-                gfk: null             // GFK-Kompetenz: niedrig, mittel, hoch
-            }
-        };
+        // ═══════════════════════════════════════════════════════════════════════════
+        // PHASE 1: PROXY-LAYER MIGRATION
+        // ═══════════════════════════════════════════════════════════════════════════
+        // personDimensions ist jetzt ein Proxy zu TiageState (definiert in state.js)
+        // Diese lokale Referenz ermöglicht weiterhin den Zugriff ohne 'window.' Prefix
+        // Alle Änderungen werden automatisch an TiageState weitergeleitet.
+        // ═══════════════════════════════════════════════════════════════════════════
+        const personDimensions = window.personDimensions;
 
         // Dimension tooltip content
         const dimensionTooltips = {
@@ -12404,18 +12378,13 @@
         // ========================================
 
         let currentMobilePage = 1;
-        let mobilePersonDimensions = {
-            ich: {
-                geschlecht: { primary: null, secondary: null },
-                dominanz: { primary: null, secondary: null },
-                orientierung: { primary: null, secondary: null }
-            },
-            partner: {
-                geschlecht: { primary: null, secondary: null },
-                dominanz: { primary: null, secondary: null },
-                orientierung: { primary: null, secondary: null }
-            }
-        };
+        // ═══════════════════════════════════════════════════════════════════════════
+        // PHASE 1: PROXY-LAYER MIGRATION
+        // ═══════════════════════════════════════════════════════════════════════════
+        // mobilePersonDimensions verweist jetzt auf denselben Proxy wie personDimensions.
+        // Mobile und Desktop teilen sich TiageState als Single Source of Truth.
+        // ═══════════════════════════════════════════════════════════════════════════
+        let mobilePersonDimensions = window.mobilePersonDimensions;
         let mobileIchArchetype = 'single';
         let mobilePartnerArchetype = 'duo';
         let mobileTouchStartX = 0;
@@ -17003,15 +16972,17 @@
             // Reset mobile selections
             mobileIchArchetype = 'single';
             mobilePartnerArchetype = 'duo';
-            const emptyDimension = { primary: null, secondary: null };
-            mobilePersonDimensions = {
-                ich: { geschlecht: { ...emptyDimension }, dominanz: { ...emptyDimension }, orientierung: { ...emptyDimension } },
-                partner: { geschlecht: { ...emptyDimension }, dominanz: { ...emptyDimension }, orientierung: { ...emptyDimension } }
-            };
 
-            // Reset personDimensions for desktop
-            personDimensions.ich = { geschlecht: { ...emptyDimension }, dominanz: { ...emptyDimension }, orientierung: { ...emptyDimension } };
-            personDimensions.partner = { geschlecht: { ...emptyDimension }, dominanz: { ...emptyDimension }, orientierung: { ...emptyDimension } };
+            // ═══════════════════════════════════════════════════════════════════════════
+            // PHASE 1: PROXY-LAYER MIGRATION
+            // ═══════════════════════════════════════════════════════════════════════════
+            // Verwende TiageState.reset() statt direkter Zuweisung
+            // Dies resettet personDimensions über den Proxy automatisch
+            // ═══════════════════════════════════════════════════════════════════════════
+            if (typeof TiageState !== 'undefined' && TiageState.reset) {
+                TiageState.reset();
+                console.log('[resetAll] TiageState reset durchgeführt');
+            }
 
             // Reset dropdowns
             document.getElementById('mobileIchSelect').value = 'single';
@@ -17323,9 +17294,9 @@
         window.updateAll = updateAll;
         window.saveSelectionToStorage = saveSelectionToStorage;
 
-        // State variables (for MemoryManager to update)
-        window.personDimensions = personDimensions;
-        window.mobilePersonDimensions = mobilePersonDimensions;
+        // State variables - HINWEIS: window.personDimensions und window.mobilePersonDimensions
+        // werden jetzt in state.js als Proxy zu TiageState definiert.
+        // Diese Zeilen sind nicht mehr nötig (Proxy-Layer Migration Phase 1).
 
         // Pathos/Logos Modal open function
         window.openPathosLogosModal = openPathosLogosModal;
