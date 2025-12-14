@@ -1,7 +1,7 @@
 /**
  * PHILOSOPHY HINTS - MOMENT KOMPONENTEN
  *
- * 6 spezifische Moment-Komponenten für den Tiage Profil-Flow.
+ * 8 spezifische Moment-Komponenten für den Tiage Profil-Flow.
  * Basierend auf Oshos vier Kernkonzepten:
  * - Konditionierung: Die geladenen Werte SIND Konditionierung
  * - Bewusstsein: Reflexion - was habe ich gewählt vs. was wurde mir beigebracht?
@@ -19,6 +19,42 @@ const PhilosophyHints = (function() {
     // ========================================
 
     const HINTS = {
+        /**
+         * Moment 0a: Landing Page (neuer Nutzer)
+         * Trigger: Nutzer öffnet App zum ersten Mal / Landing Page
+         * Konzept: Neugier wecken + Vertrauen aufbauen + differenzieren von Dating-Apps
+         * Ton: Einladend, differenzierend
+         */
+        moment0a: {
+            id: 'moment-0a-landing',
+            visible: 'Das hier ist kein Matching. Das hier ist ein Gespräch mit dir selbst – über das, was du wirklich willst.',
+            linkText: 'Was erwartet mich?',
+            expandedContent: `Tiage berechnet keine Traumpartner. Es zeigt dir, welche Muster du in Beziehungen lebst – und wo du dich von deinen Labels unterscheidest.
+
+Du wirst Entscheidungen treffen: Archetyp, Orientierung, Dominanz, Geschlecht. Das klingt nach Schubladen – ist es aber nicht. Jede Auswahl lädt statistische Erwartungen. Dann zeigst du, wo du anders bist.
+
+Kein Algorithmus kann dir sagen, wen du lieben sollst. Aber er kann dir zeigen, wo Resonanz möglich ist. Der Rest ist deine Entscheidung.
+
+Nimm dir Zeit. Es gibt keine falschen Antworten.`,
+            variant: 'default'
+        },
+
+        /**
+         * Moment 0b: App-Start (wiederkehrender Nutzer)
+         * Trigger: Nutzer öffnet App, hat bereits Profil
+         * Konzept: Wieder ankommen, sanft erinnern, Veränderung einladen
+         * Ton: Warm, offen
+         */
+        moment0b: {
+            id: 'moment-0b-returning',
+            visible: 'Du bist zurück. Dein Profil wartet – so wie du es verlassen hast.',
+            linkText: 'Was hat sich geändert?',
+            expandedContent: `Deine gelockten Werte sind noch da. Sie bleiben, egal welche Labels du ausprobierst.
+
+Falls du dich verändert hast seit dem letzten Mal: Das Modell auch. Schau rein. Vielleicht siehst du etwas Neues.`,
+            variant: 'default'
+        },
+
         /**
          * Moment 1: Start
          * Trigger: Profil-Erstellung wird geöffnet
@@ -125,6 +161,32 @@ Schau nicht auf die Zahl. Schau auf die Bedürfnisse. Wo seid ihr nah? Wo weit? 
     // ========================================
 
     /**
+     * Erstellt Moment 0a: Landing Page Hint (neue Nutzer)
+     * Trigger: isNewUser || isLandingPage
+     * @param {Object} [options] - Zusätzliche Optionen
+     * @returns {HTMLElement} Die Hint-Komponente
+     */
+    function createMoment0aLanding(options = {}) {
+        return PhilosophyHint.create({
+            ...HINTS.moment0a,
+            ...options
+        });
+    }
+
+    /**
+     * Erstellt Moment 0b: Returning User Hint (wiederkehrende Nutzer)
+     * Trigger: hasExistingProfile && isAppStart
+     * @param {Object} [options] - Zusätzliche Optionen
+     * @returns {HTMLElement} Die Hint-Komponente
+     */
+    function createMoment0bReturning(options = {}) {
+        return PhilosophyHint.create({
+            ...HINTS.moment0b,
+            ...options
+        });
+    }
+
+    /**
      * Erstellt Moment 1: Start Hint
      * @param {Object} [options] - Zusätzliche Optionen
      * @returns {HTMLElement} Die Hint-Komponente
@@ -224,6 +286,8 @@ Schau nicht auf die Zahl. Schau auf die Bedürfnisse. Wo seid ihr nah? Wo weit? 
 
     return {
         // Factory Functions
+        createMoment0aLanding,
+        createMoment0bReturning,
         createMoment1Start,
         createMoment2AfterAGOD,
         createMoment3NeedsLoaded,
@@ -232,6 +296,8 @@ Schau nicht auf die Zahl. Schau auf die Bedürfnisse. Wo seid ihr nah? Wo weit? 
         createMoment6Result,
 
         // Aliases (kürzere Namen)
+        HintMoment0aLanding: createMoment0aLanding,
+        HintMoment0bReturning: createMoment0bReturning,
         HintMoment1Start: createMoment1Start,
         HintMoment2AfterAGOD: createMoment2AfterAGOD,
         HintMoment3NeedsLoaded: createMoment3NeedsLoaded,
