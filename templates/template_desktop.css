@@ -28,6 +28,23 @@
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
+        /* Animation für fehlende Angaben - rot blinkend */
+        @keyframes blink-red {
+            0%, 100% {
+                color: var(--danger, #e74c3c);
+                opacity: 1;
+            }
+            50% {
+                color: var(--danger, #e74c3c);
+                opacity: 0.3;
+            }
+        }
+
+        .missing {
+            animation: blink-red 1.5s ease-in-out infinite;
+            color: var(--danger, #e74c3c) !important;
+        }
+
         body {
             font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
             background: var(--bg-dark);

@@ -48,6 +48,23 @@
     --bar-radius: calc(var(--bar-height) / 2);
 }
 
+/* Animation für fehlende Angaben - rot blinkend */
+@keyframes blink-red {
+    0%, 100% {
+        color: var(--danger, #e74c3c);
+        opacity: 1;
+    }
+    50% {
+        color: var(--danger, #e74c3c);
+        opacity: 0.3;
+    }
+}
+
+.missing {
+    animation: blink-red 1.5s ease-in-out infinite;
+    color: var(--danger, #e74c3c) !important;
+}
+
 /* ========================================
    ARCHETYP-THEME FARBEN
    (IDENTISCH MIT DESKTOP!)
