@@ -333,6 +333,52 @@
         const calculatedProfile = calculateProfile(storageData);
         window.LoadedArchetypProfile[person] = calculatedProfile;
 
+        // ═══════════════════════════════════════════════════════════════════════════
+        // SYNC zu TiageState (Single Source of Truth - Philosophie B)
+        // ═══════════════════════════════════════════════════════════════════════════
+        if (typeof TiageState !== 'undefined') {
+            // flatNeeds synchronisieren
+            if (calculatedProfile.profileReview?.flatNeeds) {
+                TiageState.set(`flatNeeds.${person}`, calculatedProfile.profileReview.flatNeeds);
+            }
+
+            // gewichtungen synchronisieren (nur wenn nicht locked überschrieben)
+            if (calculatedProfile.gewichtungen) {
+                const currentGewichtungen = TiageState.get(`gewichtungen.${person}`);
+                const newGewichtungen = {};
+                ['O', 'A', 'D', 'G'].forEach(key => {
+                    const current = currentGewichtungen?.[key];
+                    const calculated = calculatedProfile.gewichtungen[key];
+                    // Nur überschreiben wenn nicht locked oder noch nicht gesetzt
+                    if (!current?.locked) {
+                        newGewichtungen[key] = calculated;
+                    } else {
+                        newGewichtungen[key] = current;
+                    }
+                });
+                TiageState.set(`gewichtungen.${person}`, newGewichtungen);
+            }
+
+            // resonanzFaktoren synchronisieren (nur wenn nicht locked überschrieben)
+            if (calculatedProfile.resonanzFaktoren) {
+                const currentResonanz = TiageState.get(`resonanzFaktoren.${person}`);
+                const newResonanz = {};
+                ['R1', 'R2', 'R3', 'R4'].forEach(key => {
+                    const current = currentResonanz?.[key];
+                    const calculated = calculatedProfile.resonanzFaktoren[key];
+                    // Nur überschreiben wenn nicht locked oder noch nicht gesetzt
+                    if (!current?.locked) {
+                        newResonanz[key] = calculated;
+                    } else {
+                        newResonanz[key] = current;
+                    }
+                });
+                TiageState.set(`resonanzFaktoren.${person}`, newResonanz);
+            }
+
+            console.log(`[ProfileCalculator] TiageState synchronisiert für: ${person}`);
+        }
+
         console.log(`[ProfileCalculator] Profil geladen: ${person}`, {
             archetyp: calculatedProfile.archetyp,
             flatNeedsCount: Object.keys(calculatedProfile.profileReview.flatNeeds).length,

@@ -17542,8 +17542,22 @@
         // @param {string} person - 'ich' oder 'partner' (optional, default ist aktueller Kontext)
         function getGewichtungenCombined(person) {
             person = person || getCurrentPerson();
-            const storageKey = getStorageKeyByPerson(person);
 
+            // PHILOSOPHIE B: TiageState ist Single Source of Truth
+            if (typeof TiageState !== 'undefined') {
+                const fromState = TiageState.get(`gewichtungen.${person}`);
+                if (fromState && fromState.O && typeof fromState.O === 'object' && 'value' in fromState.O) {
+                    return {
+                        O: { value: fromState.O.value ?? GEWICHTUNG_DEFAULTS.O.value, locked: fromState.O.locked ?? false },
+                        A: { value: fromState.A.value ?? GEWICHTUNG_DEFAULTS.A.value, locked: fromState.A.locked ?? false },
+                        D: { value: fromState.D.value ?? GEWICHTUNG_DEFAULTS.D.value, locked: fromState.D.locked ?? false },
+                        G: { value: fromState.G.value ?? GEWICHTUNG_DEFAULTS.G.value, locked: fromState.G.locked ?? false }
+                    };
+                }
+            }
+
+            // Fallback: Legacy localStorage (für Migration)
+            const storageKey = getStorageKeyByPerson(person);
             try {
                 const stored = localStorage.getItem(storageKey);
                 if (stored) {
@@ -17551,12 +17565,18 @@
 
                     // Prüfe ob kombinierte Struktur (hat .value Property)
                     if (parsed.O && typeof parsed.O === 'object' && 'value' in parsed.O) {
-                        return {
+                        const result = {
                             O: { value: parsed.O.value ?? GEWICHTUNG_DEFAULTS.O.value, locked: parsed.O.locked ?? false },
                             A: { value: parsed.A.value ?? GEWICHTUNG_DEFAULTS.A.value, locked: parsed.A.locked ?? false },
                             D: { value: parsed.D.value ?? GEWICHTUNG_DEFAULTS.D.value, locked: parsed.D.locked ?? false },
                             G: { value: parsed.G.value ?? GEWICHTUNG_DEFAULTS.G.value, locked: parsed.G.locked ?? false }
                         };
+                        // Migriere zu TiageState
+                        if (typeof TiageState !== 'undefined') {
+                            TiageState.set(`gewichtungen.${person}`, result);
+                            console.log(`[app-main] Gewichtungen migriert zu TiageState: ${person}`);
+                        }
+                        return result;
                     }
                 }
             } catch (e) { console.warn('Fehler beim Laden der Gewichtungen:', e); }
@@ -17590,8 +17610,10 @@
             combined.G.locked = locks.geschlecht;
 
             try {
-                const storageKey = getStorageKeyByPerson(person);
-                localStorage.setItem(storageKey, JSON.stringify(combined));
+                // PHILOSOPHIE B: TiageState ist Single Source of Truth
+                if (typeof TiageState !== 'undefined') {
+                    TiageState.set(`gewichtungen.${person}`, combined);
+                }
             } catch (e) { console.warn('Fehler beim Speichern der Lock-Status:', e); }
         }
 
@@ -17619,8 +17641,10 @@
             combined.G.value = parseInt(document.getElementById('gewicht-geschlecht')?.value) || 0;
 
             try {
-                const storageKey = getStorageKeyByPerson(person);
-                localStorage.setItem(storageKey, JSON.stringify(combined));
+                // PHILOSOPHIE B: TiageState ist Single Source of Truth
+                if (typeof TiageState !== 'undefined') {
+                    TiageState.set(`gewichtungen.${person}`, combined);
+                }
             } catch (e) { console.warn('Fehler beim Speichern der Gewichtungen:', e); }
 
             updateGewichtungSumme();

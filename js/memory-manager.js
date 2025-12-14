@@ -126,7 +126,15 @@ const MemoryManager = (function() {
      * @param {string} person - 'ich' oder 'partner'
      */
     function collectGewichtungen(person) {
-        // Verwende neuen person-spezifischen Storage Key
+        // PHILOSOPHIE B: TiageState ist Single Source of Truth
+        if (typeof TiageState !== 'undefined') {
+            const fromState = TiageState.get(`gewichtungen.${person}`);
+            if (fromState && fromState.O && typeof fromState.O === 'object' && 'value' in fromState.O) {
+                return fromState;
+            }
+        }
+
+        // Fallback: Legacy localStorage (für Migration)
         const storageKey = person === 'partner'
             ? 'tiage_faktor_gewichtungen_partner'
             : 'tiage_faktor_gewichtungen_ich';
@@ -137,6 +145,11 @@ const MemoryManager = (function() {
                 const parsed = JSON.parse(stored);
                 // Check if combined format
                 if (parsed.O && typeof parsed.O === 'object' && 'value' in parsed.O) {
+                    // Migriere zu TiageState
+                    if (typeof TiageState !== 'undefined') {
+                        TiageState.set(`gewichtungen.${person}`, parsed);
+                        console.log(`[MemoryManager] Gewichtungen migriert zu TiageState: ${person}`);
+                    }
                     return parsed;
                 }
             }
@@ -166,6 +179,15 @@ const MemoryManager = (function() {
      * @param {string} person - 'ich' oder 'partner'
      */
     function collectResonanzfaktoren(person) {
+        // PHILOSOPHIE B: TiageState ist Single Source of Truth
+        if (typeof TiageState !== 'undefined') {
+            const fromState = TiageState.get(`resonanzFaktoren.${person}`);
+            if (fromState && fromState.R1) {
+                return fromState;
+            }
+        }
+
+        // Fallback: Legacy localStorage (für Migration)
         const storageKey = person === 'partner'
             ? 'tiage_resonanz_faktoren_partner'
             : 'tiage_resonanz_faktoren_ich';
@@ -173,7 +195,13 @@ const MemoryManager = (function() {
         try {
             const stored = localStorage.getItem(storageKey);
             if (stored) {
-                return JSON.parse(stored);
+                const parsed = JSON.parse(stored);
+                // Migriere zu TiageState
+                if (typeof TiageState !== 'undefined' && parsed) {
+                    TiageState.set(`resonanzFaktoren.${person}`, parsed);
+                    console.log(`[MemoryManager] ResonanzFaktoren migriert zu TiageState: ${person}`);
+                }
+                return parsed;
             }
             return null;
         } catch (e) {
@@ -532,27 +560,28 @@ const MemoryManager = (function() {
      */
     function applyGewichtungen(gewichtungen, person) {
         if (!gewichtungen) return;
-        // Verwende person-spezifischen Storage Key
-        const storageKey = person === 'partner'
-            ? 'tiage_faktor_gewichtungen_partner'
-            : 'tiage_faktor_gewichtungen_ich';
 
         try {
+            let combined;
             // Check if already new format
             if (gewichtungen.O && typeof gewichtungen.O === 'object' && 'value' in gewichtungen.O) {
-                localStorage.setItem(storageKey, JSON.stringify(gewichtungen));
+                combined = gewichtungen;
             } else {
                 // Old format - convert to new combined format
                 const currentLocks = collectGewichtungLocks(person) || {
                     orientierung: false, archetyp: false, dominanz: false, geschlecht: false
                 };
-                const combined = {
+                combined = {
                     O: { value: gewichtungen.O ?? 40, locked: currentLocks.orientierung ?? false },
                     A: { value: gewichtungen.A ?? 25, locked: currentLocks.archetyp ?? false },
                     D: { value: gewichtungen.D ?? 20, locked: currentLocks.dominanz ?? false },
                     G: { value: gewichtungen.G ?? 15, locked: currentLocks.geschlecht ?? false }
                 };
-                localStorage.setItem(storageKey, JSON.stringify(combined));
+            }
+
+            // PHILOSOPHIE B: TiageState ist Single Source of Truth
+            if (typeof TiageState !== 'undefined') {
+                TiageState.set(`gewichtungen.${person}`, combined);
             }
         } catch (e) {
             console.warn('[MemoryManager] Could not save Gewichtungen:', e);
@@ -566,9 +595,6 @@ const MemoryManager = (function() {
      */
     function applyGewichtungLocks(locks, person) {
         if (!locks) return;
-        const storageKey = person === 'partner'
-            ? 'tiage_faktor_gewichtungen_partner'
-            : 'tiage_faktor_gewichtungen_ich';
 
         try {
             // Get current combined or create new
@@ -583,7 +609,11 @@ const MemoryManager = (function() {
             combined.A.locked = locks.archetyp ?? false;
             combined.D.locked = locks.dominanz ?? false;
             combined.G.locked = locks.geschlecht ?? false;
-            localStorage.setItem(storageKey, JSON.stringify(combined));
+
+            // PHILOSOPHIE B: TiageState ist Single Source of Truth
+            if (typeof TiageState !== 'undefined') {
+                TiageState.set(`gewichtungen.${person}`, combined);
+            }
         } catch (e) {
             console.warn('[MemoryManager] Could not save Gewichtung Locks:', e);
         }
@@ -596,12 +626,12 @@ const MemoryManager = (function() {
      */
     function applyResonanzfaktoren(resonanz, person) {
         if (!resonanz) return;
-        const storageKey = person === 'partner'
-            ? 'tiage_resonanz_faktoren_partner'
-            : 'tiage_resonanz_faktoren_ich';
 
         try {
-            localStorage.setItem(storageKey, JSON.stringify(resonanz));
+            // PHILOSOPHIE B: TiageState ist Single Source of Truth
+            if (typeof TiageState !== 'undefined') {
+                TiageState.set(`resonanzFaktoren.${person}`, resonanz);
+            }
         } catch (e) {
             console.warn('[MemoryManager] Could not save Resonanzfaktoren:', e);
         }

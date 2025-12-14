@@ -131,20 +131,45 @@ const ResonanzCard = (function() {
     };
 
     /**
-     * Lädt Resonanzwerte aus localStorage
+     * Lädt Resonanzwerte aus TiageState (Single Source of Truth)
      * @param {string} person - 'ich' oder 'partner' (optional, default ist aktueller Kontext)
      * @returns {Object} Resonanzwerte mit Lock-Status
      */
     function load(person) {
         person = person || getCurrentPerson();
-        const storageKey = getStorageKey(person);
 
+        // PHILOSOPHIE B: TiageState ist Single Source of Truth
+        if (typeof TiageState !== 'undefined') {
+            const fromState = TiageState.get(`resonanzFaktoren.${person}`);
+            if (fromState && fromState.R1) {
+                return {
+                    R1: {
+                        value: clampValue(fromState.R1?.value ?? DEFAULT_VALUES.R1.value),
+                        locked: fromState.R1?.locked ?? false
+                    },
+                    R2: {
+                        value: clampValue(fromState.R2?.value ?? DEFAULT_VALUES.R2.value),
+                        locked: fromState.R2?.locked ?? false
+                    },
+                    R3: {
+                        value: clampValue(fromState.R3?.value ?? DEFAULT_VALUES.R3.value),
+                        locked: fromState.R3?.locked ?? false
+                    },
+                    R4: {
+                        value: clampValue(fromState.R4?.value ?? DEFAULT_VALUES.R4.value),
+                        locked: fromState.R4?.locked ?? false
+                    }
+                };
+            }
+        }
+
+        // Fallback: Legacy localStorage (für Migration)
+        const storageKey = getStorageKey(person);
         try {
             const stored = localStorage.getItem(storageKey);
             if (stored) {
                 const parsed = JSON.parse(stored);
-                // Validiere und merge mit Defaults
-                return {
+                const result = {
                     R1: {
                         value: clampValue(parsed.R1?.value ?? DEFAULT_VALUES.R1.value),
                         locked: parsed.R1?.locked ?? false
@@ -162,6 +187,12 @@ const ResonanzCard = (function() {
                         locked: parsed.R4?.locked ?? false
                     }
                 };
+                // Migriere zu TiageState
+                if (typeof TiageState !== 'undefined') {
+                    TiageState.set(`resonanzFaktoren.${person}`, result);
+                    console.log(`[ResonanzCard] Migriert zu TiageState: ${person}`);
+                }
+                return result;
             }
         } catch (e) {
             console.warn('Fehler beim Laden der Resonanzfaktoren:', e);
@@ -170,16 +201,18 @@ const ResonanzCard = (function() {
     }
 
     /**
-     * Speichert Resonanzwerte in localStorage
+     * Speichert Resonanzwerte in TiageState (Single Source of Truth)
      * @param {Object} values - Resonanzwerte
      * @param {string} person - 'ich' oder 'partner' (optional, default ist aktueller Kontext)
      */
     function save(values, person) {
         person = person || getCurrentPerson();
-        const storageKey = getStorageKey(person);
 
         try {
-            localStorage.setItem(storageKey, JSON.stringify(values));
+            // PHILOSOPHIE B: TiageState ist Single Source of Truth
+            if (typeof TiageState !== 'undefined') {
+                TiageState.set(`resonanzFaktoren.${person}`, values);
+            }
         } catch (e) {
             console.warn('Fehler beim Speichern der Resonanzfaktoren:', e);
         }
