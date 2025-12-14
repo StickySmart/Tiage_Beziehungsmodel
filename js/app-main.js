@@ -1554,6 +1554,22 @@
 
         function selectPartner(partnerId) {
             selectedPartner = partnerId;
+            mobilePartnerArchetype = partnerId;
+
+            // Sync with TiageState for persistence
+            if (typeof TiageState !== 'undefined') {
+                TiageState.setArchetype('partner', partnerId);
+            }
+
+            // Sync select dropdowns
+            const partnerSelect = document.getElementById('partnerSelect');
+            const mobilePartnerSelect = document.getElementById('mobilePartnerSelect');
+            if (partnerSelect) partnerSelect.value = partnerId;
+            if (mobilePartnerSelect) mobilePartnerSelect.value = partnerId;
+
+            // Sync archetype grid highlighting
+            updateArchetypeGrid('partner', partnerId);
+
             document.querySelectorAll('.partner-btn').forEach(btn => {
                 btn.classList.toggle('active', btn.dataset.id === partnerId);
             });
@@ -2233,8 +2249,23 @@
         function switchTooltipType(typeId, role, category) {
             if (role === 'ich') {
                 currentArchetype = typeId;
+                mobileIchArchetype = typeId;
+
+                // Sync with TiageState for persistence
+                if (typeof TiageState !== 'undefined') {
+                    TiageState.setArchetype('ich', typeId);
+                }
+
                 // Update main UI
                 document.getElementById('archetypeSelect').value = typeId;
+                const ichSelect = document.getElementById('ichSelect');
+                const mobileIchSelect = document.getElementById('mobileIchSelect');
+                if (ichSelect) ichSelect.value = typeId;
+                if (mobileIchSelect) mobileIchSelect.value = typeId;
+
+                // Sync archetype grid highlighting
+                updateArchetypeGrid('ich', typeId);
+
                 updateTheme();
                 updateMyType();
                 updatePartnerSelector();
@@ -2242,7 +2273,23 @@
                 updatePartnerView();
             } else {
                 selectedPartner = typeId;
+                mobilePartnerArchetype = typeId;
                 modalContextPartner = typeId;
+
+                // Sync with TiageState for persistence
+                if (typeof TiageState !== 'undefined') {
+                    TiageState.setArchetype('partner', typeId);
+                }
+
+                // Sync select dropdowns
+                const partnerSelect = document.getElementById('partnerSelect');
+                const mobilePartnerSelect = document.getElementById('mobilePartnerSelect');
+                if (partnerSelect) partnerSelect.value = typeId;
+                if (mobilePartnerSelect) mobilePartnerSelect.value = typeId;
+
+                // Sync archetype grid highlighting
+                updateArchetypeGrid('partner', typeId);
+
                 // Update partner selection buttons
                 document.querySelectorAll('.partner-btn').forEach(btn => {
                     btn.classList.toggle('active', btn.dataset.id === typeId);
@@ -14496,11 +14543,39 @@
 
             if (person === 'ich') {
                 currentArchetype = newArchetype;
+                mobileIchArchetype = newArchetype;
+
+                // Sync with TiageState for persistence
+                if (typeof TiageState !== 'undefined') {
+                    TiageState.setArchetype('ich', newArchetype);
+                }
+
+                // Sync select dropdowns
+                const ichSelect = document.getElementById('ichSelect');
+                const mobileIchSelect = document.getElementById('mobileIchSelect');
+                if (ichSelect) ichSelect.value = newArchetype;
+                if (mobileIchSelect) mobileIchSelect.value = newArchetype;
+
+                // Sync archetype grid highlighting
                 if (typeof updateArchetypeGrid === 'function') {
                     updateArchetypeGrid('ich', currentArchetype);
                 }
             } else {
                 selectedPartner = newArchetype;
+                mobilePartnerArchetype = newArchetype;
+
+                // Sync with TiageState for persistence
+                if (typeof TiageState !== 'undefined') {
+                    TiageState.setArchetype('partner', newArchetype);
+                }
+
+                // Sync select dropdowns
+                const partnerSelect = document.getElementById('partnerSelect');
+                const mobilePartnerSelect = document.getElementById('mobilePartnerSelect');
+                if (partnerSelect) partnerSelect.value = newArchetype;
+                if (mobilePartnerSelect) mobilePartnerSelect.value = newArchetype;
+
+                // Sync archetype grid highlighting
                 if (typeof updateArchetypeGrid === 'function') {
                     updateArchetypeGrid('partner', selectedPartner);
                 }
