@@ -91,6 +91,7 @@ const PerspektivenModal = {
 
         // #P4 - SexPositiv (Dynamik/BDSM)
         'dynamik': '#P4',
+        'dynamik_austausch': '#P4',  // Alternative: "Dynamik & Austausch" → "dynamik_austausch"
 
         // Lebensbereiche können mehreren Perspektiven zugeordnet werden
         // Standard ist #P1, spezifische Bedürfnisse haben eigene Zuordnung

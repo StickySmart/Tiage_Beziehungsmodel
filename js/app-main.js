@@ -7551,9 +7551,11 @@
                 .replace(/\s+&\s+/g, '_').replace(/\s+/g, '_') : '';
 
             // Erweiterte Definition mit key für PerspektivenModal
+            // WICHTIG: lookupKey verwenden (string-key wie "grenzen_setzen"), nicht needId (#B-ID wie "#B80")
+            // damit PerspektivenModal.getPerspektiveForNeed() das richtige Mapping findet
             const extendedDef = {
                 ...def,
-                key: needId,
+                key: lookupKey,
                 id: def['#ID'] || ''
             };
 
