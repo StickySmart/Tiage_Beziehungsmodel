@@ -14504,52 +14504,13 @@
 
             // ═══════════════════════════════════════════════════════════════════════════
             // RESONANZFAKTOREN neu berechnen bei Archetyp-Wechsel
+            // Verwendet zentrale getPersonNeeds() für konsistente Datenquellen
             // ═══════════════════════════════════════════════════════════════════════════
             if (typeof ResonanzCard !== 'undefined' && typeof ResonanzCard.loadCalculatedValues === 'function') {
-                // Sammle Profil-Kontext für Resonanz-Berechnung
-                let needs = null;
-
-                // 1. Aus LoadedArchetypProfile.profileReview.flatNeeds (User-Eingaben!)
-                const flatNeeds = window.LoadedArchetypProfile?.[personKey]?.profileReview?.flatNeeds;
-                if (flatNeeds) {
-                    needs = {};
-                    if (Array.isArray(flatNeeds)) {
-                        flatNeeds.forEach(n => {
-                            if (n.id) needs[n.id] = n.value;
-                            if (n.stringKey) needs[n.stringKey] = n.value;
-                        });
-                    } else {
-                        for (const key in flatNeeds) {
-                            if (flatNeeds.hasOwnProperty(key)) {
-                                const entry = flatNeeds[key];
-                                needs[key] = (typeof entry === 'object' && entry.value !== undefined) ? entry.value : entry;
-                            }
-                        }
-                    }
-                }
-
-                // 2. Fallback: Aus AttributeSummaryCard
-                if ((!needs || Object.keys(needs).length === 0) &&
-                    typeof AttributeSummaryCard !== 'undefined' && AttributeSummaryCard.getFlatNeeds) {
-                    const cardNeeds = AttributeSummaryCard.getFlatNeeds();
-                    if (cardNeeds) {
-                        needs = {};
-                        if (Array.isArray(cardNeeds)) {
-                            cardNeeds.forEach(n => {
-                                if (n.id) needs[n.id] = n.value;
-                                if (n.stringKey) needs[n.stringKey] = n.value;
-                            });
-                        }
-                    }
-                }
-
-                // 3. Fallback: Standard-Werte des Archetyps
-                if (!needs || Object.keys(needs).length === 0) {
-                    if (typeof GfkBeduerfnisse !== 'undefined' &&
-                        GfkBeduerfnisse.archetypProfile && GfkBeduerfnisse.archetypProfile[newArchetype]) {
-                        needs = GfkBeduerfnisse.archetypProfile[newArchetype].kernbeduerfnisse || {};
-                    }
-                }
+                // ZENTRALE HELPER-FUNKTION für korrekte Person-spezifische Needs
+                const needs = ResonanzCard.getPersonNeeds
+                    ? ResonanzCard.getPersonNeeds(personKey, newArchetype)
+                    : null;
 
                 const resonanzProfileContext = {
                     archetyp: newArchetype,
@@ -14612,73 +14573,13 @@
                 return;
             }
 
-            // Bedürfniswerte laden (GLEICHE Logik wie bei der R-Faktor-Berechnung in navigateResonanzArchetype)
-            // Wichtig: Die Reihenfolge der Datenquellen muss identisch sein!
-            let needs = null;
-
-            // 1. Aus TiageState (bevorzugt - enthält aktuelle User-Eingaben)
-            if (typeof TiageState !== 'undefined' && TiageState.get) {
-                const savedNeeds = TiageState.get('tiage_needs_integrated');
-                if (savedNeeds && Object.keys(savedNeeds).length > 0) {
-                    needs = {};
-                    for (const needKey in savedNeeds) {
-                        if (savedNeeds.hasOwnProperty(needKey)) {
-                            needs[needKey] = savedNeeds[needKey].value || savedNeeds[needKey];
-                        }
-                    }
-                }
-            }
-
-            // 2. Fallback: Aus AttributeSummaryCard
-            if ((!needs || Object.keys(needs).length === 0) &&
-                typeof AttributeSummaryCard !== 'undefined' && AttributeSummaryCard.getFlatNeeds) {
-                const cardNeeds = AttributeSummaryCard.getFlatNeeds();
-                if (cardNeeds) {
-                    needs = {};
-                    if (Array.isArray(cardNeeds)) {
-                        cardNeeds.forEach(n => {
-                            if (n.id) needs[n.id] = n.value;
-                            if (n.stringKey) needs[n.stringKey] = n.value;
-                        });
-                    } else {
-                        for (const key in cardNeeds) {
-                            if (cardNeeds.hasOwnProperty(key)) {
-                                const entry = cardNeeds[key];
-                                needs[key] = (typeof entry === 'object' && entry.value !== undefined) ? entry.value : entry;
-                            }
-                        }
-                    }
-                }
-            }
-
-            // 3. Fallback für Partner: LoadedArchetypProfile
-            if ((!needs || Object.keys(needs).length === 0) && person === 'partner') {
-                const partnerFlatNeeds = window.LoadedArchetypProfile?.partner?.profileReview?.flatNeeds;
-                if (partnerFlatNeeds) {
-                    needs = {};
-                    if (Array.isArray(partnerFlatNeeds)) {
-                        partnerFlatNeeds.forEach(n => {
-                            if (n.id) needs[n.id] = n.value;
-                            if (n.stringKey) needs[n.stringKey] = n.value;
-                        });
-                    } else {
-                        for (const key in partnerFlatNeeds) {
-                            if (partnerFlatNeeds.hasOwnProperty(key)) {
-                                const entry = partnerFlatNeeds[key];
-                                needs[key] = (typeof entry === 'object' && entry.value !== undefined) ? entry.value : entry;
-                            }
-                        }
-                    }
-                }
-            }
-
-            // 4. Fallback: Standard-Werte des Archetyps wenn keine Bedürfnisse gefunden
-            if (!needs || Object.keys(needs).length === 0) {
-                if (typeof GfkBeduerfnisse !== 'undefined' &&
-                    GfkBeduerfnisse.archetypProfile && GfkBeduerfnisse.archetypProfile[archetyp]) {
-                    needs = GfkBeduerfnisse.archetypProfile[archetyp].kernbeduerfnisse || {};
-                }
-            }
+            // ═══════════════════════════════════════════════════════════════════
+            // ZENTRALE HELPER-FUNKTION für korrekte Person-spezifische Needs
+            // Verwendet ResonanzCard.getPersonNeeds() für konsistente Datenquellen
+            // ═══════════════════════════════════════════════════════════════════
+            const needs = (typeof ResonanzCard !== 'undefined' && ResonanzCard.getPersonNeeds)
+                ? ResonanzCard.getPersonNeeds(person, archetyp)
+                : null;
 
             // Helper: Wert aus needs extrahieren (unterstützt id und stringKey lookup)
             const getNeedValue = (needId, stringKey) => {
@@ -18491,40 +18392,18 @@
                     console.log('[ProfileReview] Resonanzfaktoren aus localStorage geladen für', currentPerson, '(gespeicherte Werte beibehalten)');
                 } else if (typeof ResonanzCard.loadCalculatedValues === 'function') {
                     // Keine gespeicherten Werte - neu berechnen
+                    // ZENTRALE HELPER-FUNKTION für korrekte Person-spezifische Needs
+                    var needs = ResonanzCard.getPersonNeeds
+                        ? ResonanzCard.getPersonNeeds(currentPerson, archetypeKey || 'duo')
+                        : null;
+
                     var resonanzProfileContext = {
                         archetyp: archetypeKey || 'duo',
-                        needs: null,
+                        needs: needs,
                         dominanz: dominanz,
                         orientierung: orientierung,
                         geschlecht: personData ? personData.geschlecht : null
                     };
-
-                    // Versuche Bedürfnisse aus verschiedenen Quellen zu laden
-                    // 1. Aus gespeicherten Needs (TiageState)
-                    if (typeof TiageState !== 'undefined' && TiageState.get) {
-                        var savedNeeds = TiageState.get('tiage_needs_integrated');
-                        if (savedNeeds) {
-                            // Konvertiere integriertes Format { needId: { value, locked } } zu { needId: value }
-                            resonanzProfileContext.needs = {};
-                            for (var needKey in savedNeeds) {
-                                if (savedNeeds.hasOwnProperty(needKey)) {
-                                    resonanzProfileContext.needs[needKey] = savedNeeds[needKey].value || savedNeeds[needKey];
-                                }
-                            }
-                        }
-                    }
-
-                    // 2. Fallback: Aus Archetyp-Profil (GfkBeduerfnisse)
-                    if (!resonanzProfileContext.needs && typeof GfkBeduerfnisse !== 'undefined' &&
-                        GfkBeduerfnisse.archetypProfile && GfkBeduerfnisse.archetypProfile[archetypeKey]) {
-                        resonanzProfileContext.needs = GfkBeduerfnisse.archetypProfile[archetypeKey].kernbeduerfnisse || {};
-                    }
-
-                    // 3. Fallback: Aus BaseArchetypProfile
-                    if (!resonanzProfileContext.needs && typeof BaseArchetypProfile !== 'undefined' &&
-                        BaseArchetypProfile[archetypeKey] && BaseArchetypProfile[archetypeKey].kernbeduerfnisse) {
-                        resonanzProfileContext.needs = BaseArchetypProfile[archetypeKey].kernbeduerfnisse;
-                    }
 
                     // Lade berechnete Resonanzwerte in die UI (nur bei Erstinitialisierung)
                     if (resonanzProfileContext.needs) {
