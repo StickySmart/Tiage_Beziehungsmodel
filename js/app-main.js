@@ -1284,7 +1284,72 @@
             // Initialize dimension info link event listeners
             initDimensionInfoLinks();
 
+            // Initialize Philosophy Greeting Hints (0a or 0b)
+            initGreetingHint();
+
             updateAll();
+        }
+
+        /**
+         * Initialize Philosophy Greeting Hints
+         * Shows Moment 0a for new users, Moment 0b for returning users
+         */
+        function initGreetingHint() {
+            // Check if PhilosophyHints is available
+            if (typeof PhilosophyHints === 'undefined' || typeof PhilosophyHint === 'undefined') {
+                console.warn('[PhilosophyHints] Components not loaded');
+                return;
+            }
+
+            const container = document.getElementById('greetingHintContainer');
+            if (!container) {
+                console.warn('[PhilosophyHints] Greeting container not found');
+                return;
+            }
+
+            // Check if user has an existing profile (locked needs indicate engagement)
+            const savedState = localStorage.getItem('tiage_state');
+            let hasExistingProfile = false;
+
+            if (savedState) {
+                try {
+                    const state = JSON.parse(savedState);
+                    // Check for locked needs or AGOD selections as indicator of profile
+                    const ichLocked = state.profileReview?.ich?.lockedNeeds;
+                    const hasLockedNeeds = ichLocked && Object.keys(ichLocked).length > 0;
+                    const hasAGOD = state.personDimensions?.ich?.archetyp?.primary;
+                    hasExistingProfile = hasLockedNeeds || hasAGOD;
+                } catch (e) {
+                    console.warn('[PhilosophyHints] Could not parse saved state');
+                }
+            }
+
+            // Create appropriate greeting hint
+            let hintElement;
+            if (hasExistingProfile) {
+                // Moment 0b: Returning user
+                hintElement = PhilosophyHints.createMoment0bReturning({
+                    dismissable: true,
+                    onExpand: function(id) {
+                        if (typeof HintState !== 'undefined') {
+                            HintState.trackHintEvent('expanded', id);
+                        }
+                    }
+                });
+            } else {
+                // Moment 0a: New user / Landing
+                hintElement = PhilosophyHints.createMoment0aLanding({
+                    dismissable: true,
+                    onExpand: function(id) {
+                        if (typeof HintState !== 'undefined') {
+                            HintState.trackHintEvent('expanded', id);
+                        }
+                    }
+                });
+            }
+
+            // Show the hint
+            PhilosophyHint.show(hintElement, container);
         }
 
         /**
