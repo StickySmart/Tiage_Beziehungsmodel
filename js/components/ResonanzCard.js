@@ -681,9 +681,8 @@ const ResonanzCard = (function() {
     /**
      * ZENTRALE HELPER-FUNKTION: Lädt Bedürfnisse für eine spezifische Person
      *
-     * Diese Funktion verwendet die korrekten Datenquellen je nach Person:
-     * - ICH: TiageState → AttributeSummaryCard → Archetyp-Standard
-     * - PARTNER: LoadedArchetypProfile → Archetyp-Standard
+     * Einheitliche Datenquelle für ICH und PARTNER:
+     * LoadedArchetypProfile[person] → Archetyp-Standard
      *
      * @param {string} person - 'ich' oder 'partner'
      * @param {string} archetypKey - Der Archetyp-Schlüssel (z.B. 'duo', 'polyamor')
@@ -691,61 +690,28 @@ const ResonanzCard = (function() {
      */
     function getPersonNeeds(person, archetypKey) {
         person = person || getCurrentPerson();
-        let needs = null;
 
         // ═══════════════════════════════════════════════════════════════════
-        // PARTNER: Zuerst LoadedArchetypProfile prüfen (Partner-spezifisch!)
+        // EINHEITLICH: LoadedArchetypProfile für BEIDE Personen
         // ═══════════════════════════════════════════════════════════════════
-        if (person === 'partner') {
-            const partnerFlatNeeds = window.LoadedArchetypProfile?.partner?.profileReview?.flatNeeds;
-            if (partnerFlatNeeds) {
-                needs = _normalizeNeeds(partnerFlatNeeds);
-                if (needs && Object.keys(needs).length > 0) {
-                    console.log('[ResonanzCard.getPersonNeeds] Partner-Needs aus LoadedArchetypProfile geladen');
-                    return needs;
-                }
-            }
-        }
-
-        // ═══════════════════════════════════════════════════════════════════
-        // ICH: TiageState zuerst (enthält aktuelle User-Eingaben)
-        // ═══════════════════════════════════════════════════════════════════
-        if (person === 'ich') {
-            if (typeof TiageState !== 'undefined' && TiageState.get) {
-                const savedNeeds = TiageState.get('tiage_needs_integrated');
-                if (savedNeeds && Object.keys(savedNeeds).length > 0) {
-                    needs = _normalizeNeeds(savedNeeds);
-                    if (needs && Object.keys(needs).length > 0) {
-                        console.log('[ResonanzCard.getPersonNeeds] ICH-Needs aus TiageState geladen');
-                        return needs;
-                    }
-                }
-            }
-
-            // Fallback für ICH: AttributeSummaryCard
-            if (typeof AttributeSummaryCard !== 'undefined' && AttributeSummaryCard.getFlatNeeds) {
-                const cardNeeds = AttributeSummaryCard.getFlatNeeds();
-                if (cardNeeds) {
-                    needs = _normalizeNeeds(cardNeeds);
-                    if (needs && Object.keys(needs).length > 0) {
-                        console.log('[ResonanzCard.getPersonNeeds] ICH-Needs aus AttributeSummaryCard geladen');
-                        return needs;
-                    }
-                }
+        const flatNeeds = window.LoadedArchetypProfile?.[person]?.profileReview?.flatNeeds;
+        if (flatNeeds) {
+            const needs = _normalizeNeeds(flatNeeds);
+            if (needs && Object.keys(needs).length > 0) {
+                console.log('[ResonanzCard.getPersonNeeds] Needs aus LoadedArchetypProfile für', person);
+                return needs;
             }
         }
 
         // ═══════════════════════════════════════════════════════════════════
         // FALLBACK: Standard-Werte des Archetyps
         // ═══════════════════════════════════════════════════════════════════
-        if (archetypKey) {
-            if (typeof GfkBeduerfnisse !== 'undefined' &&
-                GfkBeduerfnisse.archetypProfile && GfkBeduerfnisse.archetypProfile[archetypKey]) {
-                needs = GfkBeduerfnisse.archetypProfile[archetypKey].kernbeduerfnisse || {};
-                if (Object.keys(needs).length > 0) {
-                    console.log('[ResonanzCard.getPersonNeeds] Fallback: Archetyp-Standard für', archetypKey);
-                    return needs;
-                }
+        if (archetypKey && typeof GfkBeduerfnisse !== 'undefined' &&
+            GfkBeduerfnisse.archetypProfile?.[archetypKey]) {
+            const needs = GfkBeduerfnisse.archetypProfile[archetypKey].kernbeduerfnisse || {};
+            if (Object.keys(needs).length > 0) {
+                console.log('[ResonanzCard.getPersonNeeds] Fallback: Archetyp-Standard für', archetypKey);
+                return needs;
             }
         }
 
