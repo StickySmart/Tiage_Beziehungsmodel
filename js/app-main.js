@@ -13801,7 +13801,7 @@
                 if (modalScoreBtn) modalScoreBtn.classList.add('active');
             } else if (type === 'oshozen') {
                 titleEl.textContent = "Ti-Age Synthese";
-                iconEl.textContent = '🌸';
+                iconEl.textContent = '🔥';
                 categoryEl.textContent = 'Osho Zen Tarot';
                 subtitleEl.textContent = 'Gemeinsame Bedürfnisse';
                 typeIndicatorEl.style.display = 'flex';
@@ -15317,7 +15317,7 @@
 
                 return `
                     <div style="padding: 20px; text-align: center; color: var(--text-muted);">
-                        <div style="font-size: 2rem; margin-bottom: 10px;">🌸</div>
+                        <div style="font-size: 2rem; margin-bottom: 10px;">🔥</div>
                         <p>Lade Osho Zen Texte...</p>
                     </div>
                 `;
