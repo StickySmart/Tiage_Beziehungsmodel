@@ -42,7 +42,7 @@
   },
 
   "beduerfnisse": {
-    "_comment": "GFK-KERN (88 Bedürfnisse) + LEBENSTHEMEN (128 Bedürfnisse) = 216 total",
+    "_comment": "GFK-KERN (88 Bedürfnisse) + LEBENSTHEMEN (132 Bedürfnisse) = 220 total",
 
     "#B1":   { "id": "#B1",   "label": "Luft", "kategorie": "#K1", "dimension": "#D3", "skala": [0, 100] },
     "#B2":   { "id": "#B2",   "label": "Wasser", "kategorie": "#K1", "dimension": "#D3", "skala": [0, 100] },
