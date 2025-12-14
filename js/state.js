@@ -31,8 +31,8 @@ const TiageState = (function() {
         personDimensions: {
             ich: {
                 geschlecht: {
-                    primary: null,    // Primäre Geschlechtsidentität (z.B. 'mann', 'frau', 'divers')
-                    secondary: null   // Sekundäre Geschlechtsidentität (z.B. 'cis', 'trans', 'nb')
+                    primary: null,    // Körper: 'mann', 'frau', 'inter'
+                    secondary: null   // Identität: 'cis', 'trans', 'suchend', 'nonbinaer', 'fluid'
                 },
                 dominanz: {
                     primary: null,    // 'dominant', 'submissiv', 'switch', 'ausgeglichen'
@@ -89,6 +89,72 @@ const TiageState = (function() {
                 loadedSlot: null,
                 isDirty: false
             }
+        },
+
+        // ═══════════════════════════════════════════════════════════════════════
+        // GEWICHTUNGEN - Faktor-Gewichte (O, A, D, G)
+        // ═══════════════════════════════════════════════════════════════════════
+        // Diese beeinflussen wie stark die 4 Dimensionen ins Matching einfließen.
+        // Summe sollte 100 ergeben. User kann diese manuell anpassen.
+        gewichtungen: {
+            ich: {
+                O: { value: 25, locked: false },  // Orientierung
+                A: { value: 25, locked: false },  // Archetyp
+                D: { value: 25, locked: false },  // Dominanz
+                G: { value: 25, locked: false }   // Geschlecht
+            },
+            partner: {
+                O: { value: 25, locked: false },
+                A: { value: 25, locked: false },
+                D: { value: 25, locked: false },
+                G: { value: 25, locked: false }
+            }
+        },
+
+        // ═══════════════════════════════════════════════════════════════════════
+        // RESONANZFAKTOREN - R1, R2, R3, R4
+        // ═══════════════════════════════════════════════════════════════════════
+        // Multiplier für die 4 Bedürfnis-Dimensionen (Leben, Philosophie, Kink, Identität).
+        // Werden aus dem Profil berechnet, aber User kann sie manuell überschreiben.
+        // Wertebereich: 0.5 - 1.5
+        resonanzFaktoren: {
+            ich: {
+                R1: { value: 1.0, locked: false },  // Leben (existenz, zuneigung, musse)
+                R2: { value: 1.0, locked: false },  // Philosophie (freiheit, teilnahme, identitaet)
+                R3: { value: 1.0, locked: false },  // Kink (dynamik, sicherheit)
+                R4: { value: 1.0, locked: false }   // Identität (verstaendnis, erschaffen, verbundenheit)
+            },
+            partner: {
+                R1: { value: 1.0, locked: false },
+                R2: { value: 1.0, locked: false },
+                R3: { value: 1.0, locked: false },
+                R4: { value: 1.0, locked: false }
+            }
+        },
+
+        // ═══════════════════════════════════════════════════════════════════════
+        // FLAT NEEDS - Die 220 Bedürfniswerte
+        // ═══════════════════════════════════════════════════════════════════════
+        // Werden aus Archetyp + Modifiern berechnet.
+        // Keys sind Bedürfnis-IDs wie '#B1', '#B2', etc.
+        // Werte: 0-100
+        flatNeeds: {
+            ich: {},    // z.B. { '#B1': 75, '#B2': 60, ... }
+            partner: {}
+        },
+
+        // ═══════════════════════════════════════════════════════════════════════
+        // PROFILE REVIEW - Survey-Overrides für einzelne Bedürfnisse
+        // ═══════════════════════════════════════════════════════════════════════
+        // Wenn User im Survey einzelne Bedürfnisse manuell setzt, werden sie hier gespeichert.
+        // Diese überschreiben die berechneten flatNeeds.
+        profileReview: {
+            ich: {
+                lockedNeeds: {}  // z.B. { '#B15': 90, '#B42': 30 } - manuell gesetzte Werte
+            },
+            partner: {
+                lockedNeeds: {}
+            }
         }
     };
 
@@ -113,6 +179,19 @@ const TiageState = (function() {
         'profileStatus': [],
         'profileStatus.ich': [],
         'profileStatus.partner': [],
+        // Neue Subscriber für erweiterten State
+        'gewichtungen': [],
+        'gewichtungen.ich': [],
+        'gewichtungen.partner': [],
+        'resonanzFaktoren': [],
+        'resonanzFaktoren.ich': [],
+        'resonanzFaktoren.partner': [],
+        'flatNeeds': [],
+        'flatNeeds.ich': [],
+        'flatNeeds.partner': [],
+        'profileReview': [],
+        'profileReview.ich': [],
+        'profileReview.partner': [],
         '*': []  // Wildcard - receives ALL updates
     };
 
@@ -210,6 +289,76 @@ const TiageState = (function() {
     }
 
     // ═══════════════════════════════════════════════════════════════════════
+    // GESCHLECHT NORMALISIERUNG
+    // ═══════════════════════════════════════════════════════════════════════
+    //
+    // Stellt sicher, dass Geschlechts-Werte konsistent mit ProfileModifiers sind.
+    // Konvertiert alte/alternative Werte zu den erwarteten Keys.
+    //
+    // MAPPING:
+    //   primary:   'divers' → 'inter'
+    //   secondary: 'nb' → 'nonbinaer'
+    // ═══════════════════════════════════════════════════════════════════════
+
+    const GESCHLECHT_PRIMARY_MAP = {
+        'divers': 'inter',
+        'diverse': 'inter',
+        'd': 'inter'
+    };
+
+    const GESCHLECHT_SECONDARY_MAP = {
+        'nb': 'nonbinaer',
+        'non-binary': 'nonbinaer',
+        'non-binär': 'nonbinaer',
+        'unsicher': 'suchend'
+    };
+
+    /**
+     * Normalisiert Geschlechts-Werte für Konsistenz mit ProfileModifiers
+     * @param {string} path - Der State-Pfad
+     * @param {*} value - Der zu setzende Wert
+     * @returns {*} Der normalisierte Wert
+     */
+    function normalizeGeschlechtValue(path, value) {
+        if (value === null || value === undefined) return value;
+
+        // Prüfe ob es ein Geschlechts-Pfad ist
+        if (path.includes('.geschlecht.primary')) {
+            const normalized = GESCHLECHT_PRIMARY_MAP[value.toLowerCase?.()];
+            if (normalized) {
+                console.log(`[TiageState] Geschlecht primary normalisiert: '${value}' → '${normalized}'`);
+                return normalized;
+            }
+        }
+
+        if (path.includes('.geschlecht.secondary')) {
+            const normalized = GESCHLECHT_SECONDARY_MAP[value.toLowerCase?.()];
+            if (normalized) {
+                console.log(`[TiageState] Geschlecht secondary normalisiert: '${value}' → '${normalized}'`);
+                return normalized;
+            }
+        }
+
+        // Wenn ein ganzes Geschlechts-Objekt gesetzt wird
+        if (path.includes('.geschlecht') && typeof value === 'object' && value !== null) {
+            const result = { ...value };
+            if (result.primary && GESCHLECHT_PRIMARY_MAP[result.primary.toLowerCase?.()]) {
+                const old = result.primary;
+                result.primary = GESCHLECHT_PRIMARY_MAP[result.primary.toLowerCase()];
+                console.log(`[TiageState] Geschlecht primary normalisiert: '${old}' → '${result.primary}'`);
+            }
+            if (result.secondary && GESCHLECHT_SECONDARY_MAP[result.secondary.toLowerCase?.()]) {
+                const old = result.secondary;
+                result.secondary = GESCHLECHT_SECONDARY_MAP[result.secondary.toLowerCase()];
+                console.log(`[TiageState] Geschlecht secondary normalisiert: '${old}' → '${result.secondary}'`);
+            }
+            return result;
+        }
+
+        return value;
+    }
+
+    // ═══════════════════════════════════════════════════════════════════════
     // PUBLIC API
     // ═══════════════════════════════════════════════════════════════════════
 
@@ -230,9 +379,12 @@ const TiageState = (function() {
          * @param {*} value - The new value
          */
         set(path, value) {
+            // Normalisiere Geschlechts-Werte für Konsistenz mit ProfileModifiers
+            const normalizedValue = normalizeGeschlechtValue(path, value);
+
             const oldValue = deepClone(getByPath(state, path));
-            setByPath(state, path, deepClone(value));
-            notify(path, value, oldValue);
+            setByPath(state, path, deepClone(normalizedValue));
+            notify(path, normalizedValue, oldValue);
         },
 
         /**
@@ -600,6 +752,163 @@ const TiageState = (function() {
         },
 
         // ═══════════════════════════════════════════════════════════════════
+        // GEWICHTUNGEN METHODS
+        // ═══════════════════════════════════════════════════════════════════
+
+        /**
+         * Get all Gewichtungen for a person
+         * @param {string} person - 'ich' or 'partner'
+         * @returns {Object} { O, A, D, G } mit value und locked
+         */
+        getGewichtungen(person) {
+            return this.get(`gewichtungen.${person}`);
+        },
+
+        /**
+         * Set a single Gewichtung
+         * @param {string} person - 'ich' or 'partner'
+         * @param {string} key - 'O', 'A', 'D', or 'G'
+         * @param {number} value - 0-100
+         * @param {boolean} locked - Whether the value is locked
+         */
+        setGewichtung(person, key, value, locked = false) {
+            this.set(`gewichtungen.${person}.${key}`, { value, locked });
+        },
+
+        /**
+         * Set all Gewichtungen at once
+         * @param {string} person - 'ich' or 'partner'
+         * @param {Object} gewichtungen - { O, A, D, G }
+         */
+        setGewichtungen(person, gewichtungen) {
+            this.set(`gewichtungen.${person}`, gewichtungen);
+        },
+
+        // ═══════════════════════════════════════════════════════════════════
+        // RESONANZFAKTOREN METHODS
+        // ═══════════════════════════════════════════════════════════════════
+
+        /**
+         * Get all Resonanzfaktoren for a person
+         * @param {string} person - 'ich' or 'partner'
+         * @returns {Object} { R1, R2, R3, R4 } mit value und locked
+         */
+        getResonanzFaktoren(person) {
+            return this.get(`resonanzFaktoren.${person}`);
+        },
+
+        /**
+         * Set a single Resonanzfaktor
+         * @param {string} person - 'ich' or 'partner'
+         * @param {string} key - 'R1', 'R2', 'R3', or 'R4'
+         * @param {number} value - 0.5-1.5
+         * @param {boolean} locked - Whether the value is locked
+         */
+        setResonanzFaktor(person, key, value, locked = false) {
+            // Clamp value to valid range
+            const clampedValue = Math.min(1.5, Math.max(0.5, value));
+            this.set(`resonanzFaktoren.${person}.${key}`, { value: clampedValue, locked });
+        },
+
+        /**
+         * Set all Resonanzfaktoren at once
+         * @param {string} person - 'ich' or 'partner'
+         * @param {Object} faktoren - { R1, R2, R3, R4 }
+         */
+        setResonanzFaktoren(person, faktoren) {
+            this.set(`resonanzFaktoren.${person}`, faktoren);
+        },
+
+        // ═══════════════════════════════════════════════════════════════════
+        // FLAT NEEDS METHODS
+        // ═══════════════════════════════════════════════════════════════════
+
+        /**
+         * Get all flatNeeds for a person
+         * @param {string} person - 'ich' or 'partner'
+         * @returns {Object} { '#B1': value, '#B2': value, ... }
+         */
+        getFlatNeeds(person) {
+            return this.get(`flatNeeds.${person}`);
+        },
+
+        /**
+         * Set all flatNeeds for a person
+         * @param {string} person - 'ich' or 'partner'
+         * @param {Object} needs - { '#B1': value, ... }
+         */
+        setFlatNeeds(person, needs) {
+            this.set(`flatNeeds.${person}`, needs);
+        },
+
+        /**
+         * Get a single need value
+         * @param {string} person - 'ich' or 'partner'
+         * @param {string} needId - e.g. '#B1'
+         * @returns {number} 0-100
+         */
+        getNeed(person, needId) {
+            return this.get(`flatNeeds.${person}.${needId}`);
+        },
+
+        /**
+         * Set a single need value
+         * @param {string} person - 'ich' or 'partner'
+         * @param {string} needId - e.g. '#B1'
+         * @param {number} value - 0-100
+         */
+        setNeed(person, needId, value) {
+            const clampedValue = Math.min(100, Math.max(0, value));
+            this.set(`flatNeeds.${person}.${needId}`, clampedValue);
+        },
+
+        // ═══════════════════════════════════════════════════════════════════
+        // PROFILE REVIEW METHODS (Survey Overrides)
+        // ═══════════════════════════════════════════════════════════════════
+
+        /**
+         * Get all locked (survey-overridden) needs for a person
+         * @param {string} person - 'ich' or 'partner'
+         * @returns {Object} { '#B15': value, ... }
+         */
+        getLockedNeeds(person) {
+            return this.get(`profileReview.${person}.lockedNeeds`);
+        },
+
+        /**
+         * Lock a need value (from survey)
+         * @param {string} person - 'ich' or 'partner'
+         * @param {string} needId - e.g. '#B15'
+         * @param {number} value - 0-100
+         */
+        lockNeed(person, needId, value) {
+            const clampedValue = Math.min(100, Math.max(0, value));
+            this.set(`profileReview.${person}.lockedNeeds.${needId}`, clampedValue);
+        },
+
+        /**
+         * Unlock a need (remove survey override)
+         * @param {string} person - 'ich' or 'partner'
+         * @param {string} needId - e.g. '#B15'
+         */
+        unlockNeed(person, needId) {
+            const current = this.get(`profileReview.${person}.lockedNeeds`) || {};
+            delete current[needId];
+            this.set(`profileReview.${person}.lockedNeeds`, current);
+        },
+
+        /**
+         * Check if a need is locked
+         * @param {string} person - 'ich' or 'partner'
+         * @param {string} needId - e.g. '#B15'
+         * @returns {boolean}
+         */
+        isNeedLocked(person, needId) {
+            const locked = this.get(`profileReview.${person}.lockedNeeds.${needId}`);
+            return locked !== undefined && locked !== null;
+        },
+
+        // ═══════════════════════════════════════════════════════════════════
         // RESET / INITIALIZATION
         // ═══════════════════════════════════════════════════════════════════
 
@@ -627,6 +936,40 @@ const TiageState = (function() {
             this.set('profileStatus', {
                 ich: { loadedSlot: null, isDirty: false },
                 partner: { loadedSlot: null, isDirty: false }
+            });
+            // Reset neue Felder
+            this.set('gewichtungen', {
+                ich: {
+                    O: { value: 25, locked: false },
+                    A: { value: 25, locked: false },
+                    D: { value: 25, locked: false },
+                    G: { value: 25, locked: false }
+                },
+                partner: {
+                    O: { value: 25, locked: false },
+                    A: { value: 25, locked: false },
+                    D: { value: 25, locked: false },
+                    G: { value: 25, locked: false }
+                }
+            });
+            this.set('resonanzFaktoren', {
+                ich: {
+                    R1: { value: 1.0, locked: false },
+                    R2: { value: 1.0, locked: false },
+                    R3: { value: 1.0, locked: false },
+                    R4: { value: 1.0, locked: false }
+                },
+                partner: {
+                    R1: { value: 1.0, locked: false },
+                    R2: { value: 1.0, locked: false },
+                    R3: { value: 1.0, locked: false },
+                    R4: { value: 1.0, locked: false }
+                }
+            });
+            this.set('flatNeeds', { ich: {}, partner: {} });
+            this.set('profileReview', {
+                ich: { lockedNeeds: {} },
+                partner: { lockedNeeds: {} }
             });
         },
 
@@ -676,6 +1019,17 @@ const TiageState = (function() {
                         }
                         this.set('archetypes', parsed.archetypes);
                     }
+                    // Neue Felder laden
+                    if (parsed.gewichtungen) {
+                        this.set('gewichtungen', parsed.gewichtungen);
+                    }
+                    if (parsed.resonanzFaktoren) {
+                        this.set('resonanzFaktoren', parsed.resonanzFaktoren);
+                    }
+                    if (parsed.profileReview) {
+                        this.set('profileReview', parsed.profileReview);
+                    }
+                    console.log('[TiageState] State aus localStorage geladen');
                 }
             } catch (e) {
                 console.warn('[TiageState] Failed to load from storage:', e);
@@ -684,14 +1038,21 @@ const TiageState = (function() {
 
         /**
          * Save state to localStorage
+         * Speichert alle persistenten Daten zentral
          */
         saveToStorage() {
             try {
                 const toSave = {
                     personDimensions: this.get('personDimensions'),
-                    archetypes: this.get('archetypes')
+                    archetypes: this.get('archetypes'),
+                    // Neue Felder - zentral speichern
+                    gewichtungen: this.get('gewichtungen'),
+                    resonanzFaktoren: this.get('resonanzFaktoren'),
+                    profileReview: this.get('profileReview')
+                    // flatNeeds werden NICHT gespeichert - sie werden aus Inputs berechnet
                 };
                 localStorage.setItem('tiage_state', JSON.stringify(toSave));
+                console.log('[TiageState] State gespeichert');
             } catch (e) {
                 console.warn('[TiageState] Failed to save to storage:', e);
             }
@@ -722,6 +1083,112 @@ if (typeof window !== 'undefined') {
             TiageState.setView(newView);
         }
     });
+}
+
+// ═══════════════════════════════════════════════════════════════════════════
+// PROXY-LAYER: Legacy-Kompatibilität für window.personDimensions
+// ═══════════════════════════════════════════════════════════════════════════
+//
+// Dieser Proxy leitet alle Zugriffe auf window.personDimensions an TiageState weiter.
+// Legacy-Code funktioniert weiter, aber nutzt automatisch TiageState als Single Source of Truth.
+//
+// Beispiel:
+//   window.personDimensions.ich.geschlecht.primary = 'mann'
+//   → TiageState.set('personDimensions.ich.geschlecht.primary', 'mann')
+//
+// © 2025 Ti-age.de - Phase 1: Proxy-Layer Migration
+// ═══════════════════════════════════════════════════════════════════════════
+
+/**
+ * Erstellt einen rekursiven Proxy für verschachtelte Objekte
+ * @param {string} basePath - Der Pfad im TiageState (z.B. 'personDimensions.ich')
+ * @returns {Proxy} Ein Proxy-Objekt das auf TiageState mappt
+ */
+function createTiageStateProxy(basePath) {
+    return new Proxy({}, {
+        get(target, prop) {
+            // Symbol-Properties und interne Props ignorieren
+            if (typeof prop === 'symbol' || prop === 'toJSON' || prop === 'valueOf' || prop === 'toString') {
+                return undefined;
+            }
+
+            const fullPath = basePath ? `${basePath}.${prop}` : prop;
+            const value = TiageState.get(fullPath);
+
+            // Wenn der Wert ein Objekt ist, erstelle einen verschachtelten Proxy
+            if (value !== null && typeof value === 'object' && !Array.isArray(value)) {
+                return createTiageStateProxy(fullPath);
+            }
+
+            return value;
+        },
+
+        set(target, prop, value) {
+            const fullPath = basePath ? `${basePath}.${prop}` : prop;
+            TiageState.set(fullPath, value);
+            return true;
+        },
+
+        // Ermöglicht "key in obj" Checks
+        has(target, prop) {
+            const fullPath = basePath ? `${basePath}.${prop}` : prop;
+            return TiageState.get(fullPath) !== undefined;
+        },
+
+        // Ermöglicht Object.keys() und for...in
+        ownKeys(target) {
+            const value = TiageState.get(basePath);
+            if (value && typeof value === 'object') {
+                return Object.keys(value);
+            }
+            return [];
+        },
+
+        // Notwendig für Object.keys() - muss konfigurierbar und aufzählbar sein
+        getOwnPropertyDescriptor(target, prop) {
+            const fullPath = basePath ? `${basePath}.${prop}` : prop;
+            const value = TiageState.get(fullPath);
+            if (value !== undefined) {
+                return {
+                    value: value,
+                    writable: true,
+                    enumerable: true,
+                    configurable: true
+                };
+            }
+            return undefined;
+        }
+    });
+}
+
+// Erstelle den globalen Proxy für window.personDimensions
+if (typeof window !== 'undefined') {
+    /**
+     * window.personDimensions - Proxy zu TiageState
+     *
+     * LEGACY-KOMPATIBILITÄT:
+     * Dieser Proxy ersetzt die alte personDimensions Variable.
+     * Alle Lese- und Schreibzugriffe werden an TiageState weitergeleitet.
+     *
+     * VERWENDUNG (unverändert):
+     *   window.personDimensions.ich.geschlecht.primary = 'mann';
+     *   const geschlecht = window.personDimensions.ich.geschlecht.primary;
+     *
+     * INTERN wird das zu:
+     *   TiageState.set('personDimensions.ich.geschlecht.primary', 'mann');
+     *   TiageState.get('personDimensions.ich.geschlecht.primary');
+     */
+    window.personDimensions = createTiageStateProxy('personDimensions');
+
+    /**
+     * window.mobilePersonDimensions - Verweist auf denselben Proxy
+     *
+     * HINWEIS: Mobile und Desktop teilen sich jetzt denselben State.
+     * Das ist korrekt, da TiageState die Single Source of Truth ist.
+     */
+    window.mobilePersonDimensions = window.personDimensions;
+
+    console.log('[TiageState] Proxy-Layer aktiviert: window.personDimensions → TiageState');
 }
 
 // Export for ES6 modules (optional)
