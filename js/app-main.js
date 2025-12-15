@@ -13984,9 +13984,6 @@
             // Calculate base archetype score (without modifiers)
             const baseArchetypeScore = getArchetypeScore(currentArchetype, selectedPartner);
 
-            // Get needs matching content
-            const needsHtml = getScoreNeedsContent();
-
             return `
                 <!-- Score Display -->
                 <div style="text-align: center; margin-bottom: 20px;">
@@ -14025,8 +14022,6 @@
                         <ul style="list-style: none; padding: 0; margin: 0;">${contraListHtml}</ul>
                     </div>
                 </div>
-                <!-- Bedürfnis-Übereinstimmung Section -->
-                ${needsHtml}
             `;
         }
 
