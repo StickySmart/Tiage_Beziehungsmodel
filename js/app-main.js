@@ -10933,8 +10933,12 @@
                             dominanz: TiageState.get('personDimensions.ich.dominanz'),
                             orientierung: TiageState.get('personDimensions.ich.orientierung')
                         };
+                        console.log('[SSOT] Rufe ProfileCalculator.loadProfile auf mit:', JSON.stringify(profileData));
                         ProfileCalculator.loadProfile('ich', profileData);
                         console.log('[SSOT] Profil für ICH neu berechnet:', e.target.value);
+                        // Debug: Was steht jetzt in TiageState?
+                        const resonanzNachBerechnung = TiageState.get('resonanzFaktoren.ich');
+                        console.log('[SSOT] resonanzFaktoren nach Berechnung:', JSON.stringify(resonanzNachBerechnung));
                     }
 
                     updateComparisonView();
@@ -13307,11 +13311,11 @@
                 window.addEventListener('resonanzfaktoren-changed', function(e) {
                     const { person, values, source } = e.detail;
 
-                    // Aktualisiere LoadedArchetypProfile
-                    if (window.LoadedArchetypProfile && window.LoadedArchetypProfile[person]) {
-                        window.LoadedArchetypProfile[person].resonanzFaktoren = values;
-                        console.log('[TIAGE] LoadedArchetypProfile.resonanzFaktoren aktualisiert für', person, '- Quelle:', source);
-                    }
+                    // NOTE: LoadedArchetypProfile ist ein View auf TiageState (SSOT).
+                    // save() in ResonanzCard hat TiageState bereits aktualisiert.
+                    // Hier NICHT separat schreiben, da 'values' nur Werte ohne Lock-Status enthält.
+                    // Das würde die Lock-Struktur {value, locked} mit nur Werten überschreiben.
+                    console.log('[TIAGE] resonanzfaktoren-changed Event für', person, '- Quelle:', source);
 
                     // Aktualisiere Comparison View wenn nicht vom Slider (vermeidet doppelte Updates)
                     if (source !== 'slider') {
@@ -14619,11 +14623,9 @@
                 if (resonanzProfileContext.needs && Object.keys(resonanzProfileContext.needs).length > 0) {
                     const resonanzLoaded = ResonanzCard.loadCalculatedValues(resonanzProfileContext, personKey);
                     if (resonanzLoaded) {
-                        // Aktualisiere auch LoadedArchetypProfile (falls vorhanden)
-                        if (window.LoadedArchetypProfile && window.LoadedArchetypProfile[personKey]) {
-                            const newValues = ResonanzCard.getValues(personKey);
-                            window.LoadedArchetypProfile[personKey].resonanzFaktoren = newValues;
-                        }
+                        // NOTE: LoadedArchetypProfile ist ein View auf TiageState.
+                        // Nicht separat setzen - save() in setCalculatedValues hat TiageState bereits aktualisiert.
+                        // Das würde sonst die Lock-Struktur {value, locked} mit nur Werten überschreiben.
                         console.log('[TIAGE] Resonanzfaktoren nach Archetyp-Wechsel (Modal) aktualisiert für', personKey + ':', newArchetype);
                     }
                 }
@@ -15919,11 +15921,9 @@
                 if (resonanzProfileContext.needs && Object.keys(resonanzProfileContext.needs).length > 0) {
                     const resonanzLoaded = ResonanzCard.loadCalculatedValues(resonanzProfileContext, personKey);
                     if (resonanzLoaded) {
-                        // Aktualisiere auch LoadedArchetypProfile (falls vorhanden)
-                        if (window.LoadedArchetypProfile && window.LoadedArchetypProfile[personKey]) {
-                            const newValues = ResonanzCard.getValues(personKey);
-                            window.LoadedArchetypProfile[personKey].resonanzFaktoren = newValues;
-                        }
+                        // NOTE: LoadedArchetypProfile ist ein View auf TiageState.
+                        // Nicht separat setzen - save() in setCalculatedValues hat TiageState bereits aktualisiert.
+                        // Das würde sonst die Lock-Struktur {value, locked} mit nur Werten überschreiben.
                         console.log('[TIAGE] Resonanzfaktoren nach Archetyp-Wechsel aktualisiert für', personKey + ':', newArchetype);
                     }
                 }
