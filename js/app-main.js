@@ -14663,12 +14663,15 @@
             const archetyp = person === 'ich' ? currentArchetype : selectedPartner;
             const archetypName = archetypeDescriptions[archetyp]?.name || archetyp;
 
-            // Kohärenz-Daten laden
+            // Kohärenz-Daten laden (für Bedürfnis-Liste dieser Dimension)
             const kohaerenz = TiageSynthesis?.Constants?.ARCHETYP_KOHAERENZ?.[dimension.key]?.[archetyp];
             if (!kohaerenz) {
                 console.warn('[showValueDerivation] Keine Kohärenzdaten für', dimension.key, archetyp);
                 return;
             }
+
+            // Archetyp-Profil laden für KORREKTE typische Werte (Single Source of Truth)
+            const archetypProfil = GfkBeduerfnisse?.archetypProfile?.[archetyp]?.kernbeduerfnisse || {};
 
             // ═══════════════════════════════════════════════════════════════════
             // PROFIL-ATTRIBUTE LADEN für Modifikator-Aufschlüsselung
@@ -14742,16 +14745,22 @@
             for (const needKey in kohaerenz) {
                 if (!kohaerenz.hasOwnProperty(needKey)) continue;
 
-                const typischEntry = kohaerenz[needKey];
-                const typischValue = (typeof typischEntry === 'object' && typischEntry.value !== undefined)
-                    ? typischEntry.value
-                    : typischEntry;
-                const needId = (typeof typischEntry === 'object' && typischEntry.id)
-                    ? typischEntry.id
+                const kohaerenzEntry = kohaerenz[needKey];
+                const needId = (typeof kohaerenzEntry === 'object' && kohaerenzEntry.id)
+                    ? kohaerenzEntry.id
                     : null;
-                const needLabel = (typeof typischEntry === 'object' && typischEntry.label)
-                    ? typischEntry.label
+                const needLabel = (typeof kohaerenzEntry === 'object' && kohaerenzEntry.label)
+                    ? kohaerenzEntry.label
                     : needKey;
+
+                // Typischer Wert aus Archetyp-Profil (Single Source of Truth)
+                // Versuche zuerst über needId (#B34), dann über needKey (selbstbestimmung)
+                let typischValue = null;
+                if (needId && archetypProfil[needId] !== undefined) {
+                    typischValue = archetypProfil[needId];
+                } else if (archetypProfil[needKey] !== undefined) {
+                    typischValue = archetypProfil[needKey];
+                }
 
                 // Verwende id UND stringKey für robustes Lookup (wie in NeedsIntegration._getNeedValue)
                 const actualValue = getNeedValue(needId, needKey);
