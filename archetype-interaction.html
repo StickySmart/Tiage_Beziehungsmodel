@@ -555,9 +555,12 @@
                 <!-- Type indicator (hidden for Score view) -->
                 <div id="tiageSyntheseTypeIndicator" style="display: flex; align-items: center; gap: 10px; margin-bottom: 15px; padding-bottom: 15px; border-bottom: 1px solid var(--border);">
                     <span style="font-size: 24px;" id="tiageSyntheseIcon">📊</span>
-                    <div>
-                        <div style="font-size: 11px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px;" id="tiageSyntheseCategory">Kompatibilitäts-Analyse</div>
-                        <div style="font-size: 14px; color: var(--text-primary); font-weight: 600;" id="tiageSyntheseSubtitle">Pro & Contra</div>
+                    <div style="flex: 1;">
+                        <div style="font-size: 11px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; display: flex; align-items: center; gap: 6px;" id="tiageSyntheseCategory">
+                            <span>Kompatibilitäts-Analyse</span>
+                            <span style="cursor: help; font-size: 14px;" title="Statistischer Score basierend auf Archetypen-Forschungsdaten. Der Gesamt-Score berücksichtigt zusätzlich individuelle Dimensionen (Orientierung, Dominanz, Geschlecht) und Bedürfnis-Übereinstimmung mit personalisierten Modifikatoren und Resonanzfaktoren.">ℹ️</span>
+                        </div>
+                        <div style="font-size: 14px; color: var(--text-primary); font-weight: 600;" id="tiageSyntheseSubtitle">Statistische Archetypen-Übereinstimmung</div>
                     </div>
                 </div>
                 <!-- Main content -->
