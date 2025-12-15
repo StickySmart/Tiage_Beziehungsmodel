@@ -5048,49 +5048,42 @@
             const ichName = archetypeDescriptions[currentArchetype]?.name || 'ICH';
             const partnerName = archetypeDescriptions[selectedPartner]?.name || 'Partner';
 
-            // NEU: Individualisierte Profile aus Store holen
+            // NEU: Direkt aus TiageState.flatNeeds lesen
             let matching = null;
             let isFallback = false;
-            if (typeof TiageProfileStore !== 'undefined' && typeof getProfileFromStore === 'function') {
-                const ichPerson = { archetyp: ichArchetyp, ...personDimensions.ich };
-                const partnerPerson = { archetyp: partnerArchetyp, ...personDimensions.partner };
 
-                const ichProfile = getProfileFromStore(ichPerson);
-                const partnerProfile = getProfileFromStore(partnerPerson);
+            // Primär: Direkt aus TiageState.flatNeeds
+            const result = calculateNeedsMatchFromFlatNeeds();
+            if (result) {
+                // Format-Konvertierung: need → { label, id, wert1, wert2, diff }
+                const formatNeed = (item) => ({
+                    label: formatBeduerfnisLabel(item.need),
+                    id: item.need,
+                    wert1: item.wert1,
+                    wert2: item.wert2,
+                    diff: Math.abs(item.wert1 - item.wert2)
+                });
 
-                if (ichProfile?.needs && partnerProfile?.needs) {
-                    const result = TiageProfileStore.calculateNeedsMatch(ichProfile, partnerProfile);
+                // Top 10 für gemeinsam/unterschiedlich
+                const allGemeinsam = [...result.gemeinsam, ...result.komplementaer].map(formatNeed);
+                const allUnterschiedlich = result.unterschiedlich.map(formatNeed);
 
-                    // Format-Konvertierung: need → { label, id, wert1, wert2, diff }
-                    const formatNeed = (item) => ({
-                        label: formatBeduerfnisLabel(item.need),
-                        id: item.need,
-                        wert1: item.wert1,
-                        wert2: item.wert2,
-                        diff: Math.abs(item.wert1 - item.wert2)
-                    });
+                // Nach Durchschnittswert sortieren (höchste zuerst)
+                allGemeinsam.sort((a, b) => ((b.wert1 + b.wert2) / 2) - ((a.wert1 + a.wert2) / 2));
+                allUnterschiedlich.sort((a, b) => ((b.wert1 + b.wert2) / 2) - ((a.wert1 + a.wert2) / 2));
 
-                    // Top 10 für gemeinsam/unterschiedlich
-                    const allGemeinsam = [...result.gemeinsam, ...result.komplementaer].map(formatNeed);
-                    const allUnterschiedlich = result.unterschiedlich.map(formatNeed);
-
-                    // Nach Durchschnittswert sortieren (höchste zuerst)
-                    allGemeinsam.sort((a, b) => ((b.wert1 + b.wert2) / 2) - ((a.wert1 + a.wert2) / 2));
-                    allUnterschiedlich.sort((a, b) => ((b.wert1 + b.wert2) / 2) - ((a.wert1 + a.wert2) / 2));
-
-                    matching = {
-                        topUebereinstimmungen: allGemeinsam.slice(0, 10),
-                        topKonflikte: allUnterschiedlich.slice(0, 10)
-                    };
-                    console.log('[openNeedsCompareModal] Verwende individualisierte Bedürfniswerte aus TiageState');
-                }
+                matching = {
+                    topUebereinstimmungen: allGemeinsam.slice(0, 10),
+                    topKonflikte: allUnterschiedlich.slice(0, 10)
+                };
+                console.log('[openNeedsCompareModal] ✓ Verwende individualisierte Werte aus TiageState.flatNeeds');
             }
 
-            // Fallback: Alte Methode (nur Archetyp)
+            // Fallback: Alte Methode (nur Archetyp - falls flatNeeds leer)
             if (!matching && typeof GfkBeduerfnisse !== 'undefined') {
                 matching = GfkBeduerfnisse.berechneMatching(ichArchetyp, partnerArchetyp);
                 isFallback = true;
-                console.log('[openNeedsCompareModal] Fallback: Verwende Archetyp-basierte Bedürfniswerte');
+                console.log('[openNeedsCompareModal] ⚠ Fallback: Verwende Archetyp-basierte Bedürfniswerte');
             }
 
             if (!matching) {
@@ -7913,44 +7906,37 @@
             const ichName = archetypeDescriptions[currentArchetype]?.name || 'ICH';
             const partnerName = archetypeDescriptions[selectedPartner]?.name || 'Partner';
 
-            // NEU: Individualisierte Profile aus Store holen
+            // NEU: Direkt aus TiageState.flatNeeds lesen
             let matching = null;
             let isFallback = false;
-            if (typeof TiageProfileStore !== 'undefined' && typeof getProfileFromStore === 'function') {
-                const ichPerson = { archetyp: ichArchetyp, ...personDimensions.ich };
-                const partnerPerson = { archetyp: partnerArchetyp, ...personDimensions.partner };
 
-                const ichProfile = getProfileFromStore(ichPerson);
-                const partnerProfile = getProfileFromStore(partnerPerson);
+            // Primär: Direkt aus TiageState.flatNeeds
+            const result = calculateNeedsMatchFromFlatNeeds();
+            if (result) {
+                // Format-Konvertierung: need → { label, id, wert1, wert2, diff }
+                const formatNeed = (item) => ({
+                    label: formatBeduerfnisLabel(item.need),
+                    id: item.need,
+                    wert1: item.wert1,
+                    wert2: item.wert2,
+                    diff: Math.abs(item.wert1 - item.wert2)
+                });
 
-                if (ichProfile?.needs && partnerProfile?.needs) {
-                    const result = TiageProfileStore.calculateNeedsMatch(ichProfile, partnerProfile);
-
-                    // Format-Konvertierung: need → { label, id, wert1, wert2, diff }
-                    const formatNeed = (item) => ({
-                        label: formatBeduerfnisLabel(item.need),
-                        id: item.need,
-                        wert1: item.wert1,
-                        wert2: item.wert2,
-                        diff: Math.abs(item.wert1 - item.wert2)
-                    });
-
-                    matching = {
-                        details: {
-                            uebereinstimmend: result.gemeinsam.map(formatNeed),
-                            komplementaer: result.komplementaer.map(formatNeed),
-                            konflikt: result.unterschiedlich.map(formatNeed)
-                        }
-                    };
-                    console.log('[renderNeedsFullModal] Verwende individualisierte Bedürfniswerte aus TiageState');
-                }
+                matching = {
+                    details: {
+                        uebereinstimmend: result.gemeinsam.map(formatNeed),
+                        komplementaer: result.komplementaer.map(formatNeed),
+                        konflikt: result.unterschiedlich.map(formatNeed)
+                    }
+                };
+                console.log('[renderNeedsFullModal] ✓ Verwende individualisierte Werte aus TiageState.flatNeeds');
             }
 
-            // Fallback: Alte Methode (nur Archetyp)
+            // Fallback: Alte Methode (nur Archetyp - falls flatNeeds leer)
             if (!matching && typeof GfkBeduerfnisse !== 'undefined') {
-                isFallback = true;
                 matching = GfkBeduerfnisse.berechneMatching(ichArchetyp, partnerArchetyp);
-                console.log('[renderNeedsFullModal] Fallback: Verwende Archetyp-basierte Bedürfniswerte');
+                isFallback = true;
+                console.log('[renderNeedsFullModal] ⚠ Fallback: Verwende Archetyp-basierte Bedürfniswerte');
             }
 
             if (!matching) {
@@ -9944,6 +9930,94 @@
         /**
          * Lädt ein Profil aus TiageProfileStore basierend auf Person-Daten
          */
+        /**
+         * Berechnet Bedürfnis-Matching direkt aus TiageState.flatNeeds
+         * Verwendet die individualisierten Werte (Archetyp + Modifikatoren)
+         * und berücksichtigt manuell gelockte Werte (lockedNeeds)
+         *
+         * @returns {Object|null} { score, gemeinsam, komplementaer, unterschiedlich } oder null
+         */
+        function calculateNeedsMatchFromFlatNeeds() {
+            if (typeof TiageState === 'undefined') {
+                return null;
+            }
+
+            // flatNeeds aus TiageState holen (Archetyp + D/G/O Modifikatoren)
+            const ichFlatNeeds = TiageState.getFlatNeeds('ich') || {};
+            const partnerFlatNeeds = TiageState.getFlatNeeds('partner') || {};
+
+            // Prüfen ob Daten vorhanden
+            const ichKeys = Object.keys(ichFlatNeeds);
+            const partnerKeys = Object.keys(partnerFlatNeeds);
+
+            if (ichKeys.length === 0 || partnerKeys.length === 0) {
+                return null; // Keine Daten verfügbar
+            }
+
+            // lockedNeeds holen (überschreiben flatNeeds)
+            const ichLockedNeeds = TiageState.getLockedNeeds('ich') || {};
+            const partnerLockedNeeds = TiageState.getLockedNeeds('partner') || {};
+
+            // Finale Werte: lockedNeeds überschreiben flatNeeds
+            const getFinalValue = (person, needId) => {
+                const locked = person === 'ich' ? ichLockedNeeds[needId] : partnerLockedNeeds[needId];
+                const flat = person === 'ich' ? ichFlatNeeds[needId] : partnerFlatNeeds[needId];
+
+                // lockedNeeds haben Priorität
+                if (locked !== undefined && locked !== null) return locked;
+                if (flat !== undefined && flat !== null) return flat;
+                return null;
+            };
+
+            // Alle Bedürfnis-IDs sammeln (Union von beiden)
+            const allNeedIds = new Set([...ichKeys, ...partnerKeys]);
+
+            const gemeinsam = [];
+            const komplementaer = [];
+            const unterschiedlich = [];
+
+            // Matching berechnen
+            allNeedIds.forEach(needId => {
+                const wert1 = getFinalValue('ich', needId);
+                const wert2 = getFinalValue('partner', needId);
+
+                // Skip wenn einer der Werte fehlt
+                if (wert1 === null || wert2 === null) return;
+
+                const diff = Math.abs(wert1 - wert2);
+
+                const item = {
+                    need: needId,       // '#B1', '#B2', etc.
+                    wert1: wert1,
+                    wert2: wert2
+                };
+
+                // Kategorisierung basierend auf Differenz
+                if (diff <= 15) {
+                    gemeinsam.push(item);           // Übereinstimmung (0-15)
+                } else if (diff <= 35) {
+                    komplementaer.push(item);       // Komplementär (16-35)
+                } else {
+                    unterschiedlich.push(item);     // Konflikt (36+)
+                }
+            });
+
+            // Score berechnen (gewichtet)
+            const totalItems = gemeinsam.length + komplementaer.length + unterschiedlich.length;
+            if (totalItems === 0) return null;
+
+            const score = Math.round(
+                ((gemeinsam.length * 100) + (komplementaer.length * 60) + (unterschiedlich.length * 20)) / totalItems
+            );
+
+            return {
+                score: score,
+                gemeinsam: gemeinsam,
+                komplementaer: komplementaer,
+                unterschiedlich: unterschiedlich
+            };
+        }
+
         function getProfileFromStore(person) {
             // P/S-Geschlecht extrahieren
             let pGender = null;
@@ -14177,48 +14251,39 @@
                 const ichArchetyp = currentArchetype || '';
                 const partnerArchetyp = selectedPartner || '';
 
-                // NEU: Individualisierte Profile aus Store holen
-                let fullMatching = null;
-                if (typeof TiageProfileStore !== 'undefined' && typeof getProfileFromStore === 'function') {
-                    const ichPerson = { archetyp: ichArchetyp, ...personDimensions.ich };
-                    const partnerPerson = { archetyp: partnerArchetyp, ...personDimensions.partner };
-
-                    const ichProfile = getProfileFromStore(ichPerson);
-                    const partnerProfile = getProfileFromStore(partnerPerson);
-
-                    if (ichProfile?.needs && partnerProfile?.needs) {
-                        const result = TiageProfileStore.calculateNeedsMatch(ichProfile, partnerProfile);
-
-                        // Format-Konvertierung: need → { label, id, wert1, wert2, stringKey }
-                        const formatNeed = (item) => {
-                            const stringKey = item.need.startsWith('#B') && typeof BeduerfnisIds !== 'undefined' && BeduerfnisIds.toKey
-                                ? BeduerfnisIds.toKey(item.need)
-                                : item.need;
-                            return {
-                                label: formatBeduerfnisLabel(item.need),
-                                id: item.need,
-                                key: item.need,
-                                stringKey: stringKey,
-                                wert1: item.wert1,
-                                wert2: item.wert2,
-                                diff: Math.abs(item.wert1 - item.wert2)
-                            };
+                // NEU: Direkt aus TiageState.flatNeeds lesen
+                // Primär: Direkt aus TiageState.flatNeeds
+                const result = calculateNeedsMatchFromFlatNeeds();
+                if (result) {
+                    // Format-Konvertierung: need → { label, id, wert1, wert2, stringKey }
+                    const formatNeed = (item) => {
+                        const stringKey = item.need.startsWith('#B') && typeof BeduerfnisIds !== 'undefined' && BeduerfnisIds.toKey
+                            ? BeduerfnisIds.toKey(item.need)
+                            : item.need;
+                        return {
+                            label: formatBeduerfnisLabel(item.need),
+                            id: item.need,
+                            key: item.need,
+                            stringKey: stringKey,
+                            wert1: item.wert1,
+                            wert2: item.wert2,
+                            diff: Math.abs(item.wert1 - item.wert2)
                         };
+                    };
 
-                        const uebereinstimmend = result.gemeinsam.map(formatNeed);
-                        const komplementaer = result.komplementaer.map(formatNeed);
-                        gemeinsam = [...uebereinstimmend, ...komplementaer].sort((a, b) =>
-                            ((b.wert1 + b.wert2) / 2) - ((a.wert1 + a.wert2) / 2)
-                        );
-                        unterschiedlich = result.unterschiedlich.map(formatNeed);
-                        console.log('[getScoreNeedsContent] Verwende individualisierte Bedürfniswerte aus TiageState');
-                    }
+                    const uebereinstimmend = result.gemeinsam.map(formatNeed);
+                    const komplementaer = result.komplementaer.map(formatNeed);
+                    gemeinsam = [...uebereinstimmend, ...komplementaer].sort((a, b) =>
+                        ((b.wert1 + b.wert2) / 2) - ((a.wert1 + a.wert2) / 2)
+                    );
+                    unterschiedlich = result.unterschiedlich.map(formatNeed);
+                    console.log('[getScoreNeedsContent] ✓ Verwende individualisierte Werte aus TiageState.flatNeeds');
                 }
 
-                // Fallback: Alte Methode (nur Archetyp)
-                if (!fullMatching && gemeinsam.length === 0 && typeof GfkBeduerfnisse !== 'undefined') {
+                // Fallback: Alte Methode (nur Archetyp - falls flatNeeds leer)
+                if (gemeinsam.length === 0 && typeof GfkBeduerfnisse !== 'undefined') {
                     isFallback = true;
-                    fullMatching = GfkBeduerfnisse.berechneMatching(ichArchetyp, partnerArchetyp);
+                    const fullMatching = GfkBeduerfnisse.berechneMatching(ichArchetyp, partnerArchetyp);
                     if (fullMatching && fullMatching.details) {
                         const uebereinstimmend = (fullMatching.details.uebereinstimmend || []).map(b => ({
                             label: b.label,
@@ -14249,7 +14314,7 @@
                             wert1: b.wert1,
                             wert2: b.wert2
                         }));
-                        console.log('[getScoreNeedsContent] Fallback: Verwende Archetyp-basierte Bedürfniswerte');
+                        console.log('[getScoreNeedsContent] ⚠ Fallback: Verwende Archetyp-basierte Bedürfniswerte');
                     }
                 }
             }
@@ -14340,50 +14405,43 @@
 
             if (!ichArchetyp || !partnerArchetyp) return result;
 
-            // NEU: Individualisierte Profile aus Store holen
+            // NEU: Direkt aus TiageState.flatNeeds lesen
             let matching = null;
             let isFallback = false;
-            if (typeof TiageProfileStore !== 'undefined' && typeof getProfileFromStore === 'function') {
-                const ichPerson = { archetyp: ichArchetyp, ...personDimensions.ich };
-                const partnerPerson = { archetyp: partnerArchetyp, ...personDimensions.partner };
 
-                const ichProfile = getProfileFromStore(ichPerson);
-                const partnerProfile = getProfileFromStore(partnerPerson);
-
-                if (ichProfile?.needs && partnerProfile?.needs) {
-                    const result = TiageProfileStore.calculateNeedsMatch(ichProfile, partnerProfile);
-
-                    // Format-Konvertierung: need → { label, id, wert1, wert2, stringKey }
-                    const formatNeed = (item) => {
-                        const stringKey = item.need.startsWith('#B') && typeof BeduerfnisIds !== 'undefined' && BeduerfnisIds.toKey
-                            ? BeduerfnisIds.toKey(item.need)
-                            : item.need;
-                        return {
-                            label: formatBeduerfnisLabel(item.need),
-                            id: item.need,
-                            stringKey: stringKey,
-                            wert1: item.wert1,
-                            wert2: item.wert2,
-                            diff: Math.abs(item.wert1 - item.wert2)
-                        };
+            // Primär: Direkt aus TiageState.flatNeeds
+            const result = calculateNeedsMatchFromFlatNeeds();
+            if (result) {
+                // Format-Konvertierung: need → { label, id, wert1, wert2, stringKey }
+                const formatNeed = (item) => {
+                    const stringKey = item.need.startsWith('#B') && typeof BeduerfnisIds !== 'undefined' && BeduerfnisIds.toKey
+                        ? BeduerfnisIds.toKey(item.need)
+                        : item.need;
+                    return {
+                        label: formatBeduerfnisLabel(item.need),
+                        id: item.need,
+                        stringKey: stringKey,
+                        wert1: item.wert1,
+                        wert2: item.wert2,
+                        diff: Math.abs(item.wert1 - item.wert2)
                     };
+                };
 
-                    // Top 10 Übereinstimmungen (gemeinsam + komplementär)
-                    const allGemeinsam = [...result.gemeinsam, ...result.komplementaer].map(formatNeed);
-                    allGemeinsam.sort((a, b) => ((b.wert1 + b.wert2) / 2) - ((a.wert1 + a.wert2) / 2));
+                // Top 10 Übereinstimmungen (gemeinsam + komplementär)
+                const allGemeinsam = [...result.gemeinsam, ...result.komplementaer].map(formatNeed);
+                allGemeinsam.sort((a, b) => ((b.wert1 + b.wert2) / 2) - ((a.wert1 + a.wert2) / 2));
 
-                    matching = {
-                        topUebereinstimmungen: allGemeinsam.slice(0, 10)
-                    };
-                    console.log('[getGfkBeduerfnisAnalyse] Verwende individualisierte Bedürfniswerte aus TiageState');
-                }
+                matching = {
+                    topUebereinstimmungen: allGemeinsam.slice(0, 10)
+                };
+                console.log('[getGfkBeduerfnisAnalyse] ✓ Verwende individualisierte Werte aus TiageState.flatNeeds');
             }
 
-            // Fallback: Alte Methode (nur Archetyp)
+            // Fallback: Alte Methode (nur Archetyp - falls flatNeeds leer)
             if (!matching && typeof GfkBeduerfnisse !== 'undefined') {
-                isFallback = true;
                 matching = GfkBeduerfnisse.berechneMatching(ichArchetyp, partnerArchetyp);
-                console.log('[getGfkBeduerfnisAnalyse] Fallback: Verwende Archetyp-basierte Bedürfniswerte');
+                isFallback = true;
+                console.log('[getGfkBeduerfnisAnalyse] ⚠ Fallback: Verwende Archetyp-basierte Bedürfniswerte');
             }
 
             if (!matching || matching.fehler) return result;
@@ -15978,74 +16036,48 @@
             const ichName = archetypeDescriptions[currentArchetype]?.name || 'ICH';
             const partnerName = archetypeDescriptions[selectedPartner]?.name || 'Partner';
 
-            // NEU: Individualisierte Profile aus Store holen
+            // NEU: Direkt aus TiageState.flatNeeds lesen (inkl. lockedNeeds)
             let matching = null;
             let isFallback = false;
-            if (typeof TiageProfileStore !== 'undefined' && typeof getProfileFromStore === 'function') {
-                const ichPerson = { archetyp: ichArchetyp, ...personDimensions.ich };
-                const partnerPerson = { archetyp: partnerArchetyp, ...personDimensions.partner };
 
-                const ichProfile = getProfileFromStore(ichPerson);
-                const partnerProfile = getProfileFromStore(partnerPerson);
+            // Primär: Direkt aus TiageState.flatNeeds
+            const result = calculateNeedsMatchFromFlatNeeds();
+            if (result) {
+                // Format-Konvertierung: need → { label, id, wert1, wert2, diff }
+                const formatNeed = (item) => ({
+                    label: formatBeduerfnisLabel(item.need),
+                    id: item.need,
+                    wert1: item.wert1,
+                    wert2: item.wert2,
+                    diff: Math.abs(item.wert1 - item.wert2)
+                });
 
-                if (ichProfile?.needs && partnerProfile?.needs) {
-                    const result = TiageProfileStore.calculateNeedsMatch(ichProfile, partnerProfile);
-
-                    // Format-Konvertierung: need → { label, id, wert1, wert2, diff }
-                    const formatNeed = (item) => ({
-                        label: formatBeduerfnisLabel(item.need),
-                        id: item.need,
-                        wert1: item.wert1,
-                        wert2: item.wert2,
-                        diff: Math.abs(item.wert1 - item.wert2)
-                    });
-
-                    matching = {
-                        score: result.score,
-                        details: {
-                            uebereinstimmend: result.gemeinsam.map(formatNeed),
-                            komplementaer: result.komplementaer.map(formatNeed),
-                            konflikt: result.unterschiedlich.map(formatNeed)
-                        }
-                    };
-                    console.log('[getNeedsContent] Verwende individualisierte Bedürfniswerte aus TiageState');
-                }
+                matching = {
+                    score: result.score,
+                    details: {
+                        uebereinstimmend: result.gemeinsam.map(formatNeed),
+                        komplementaer: result.komplementaer.map(formatNeed),
+                        konflikt: result.unterschiedlich.map(formatNeed)
+                    }
+                };
+                console.log('[getNeedsContent] ✓ Verwende individualisierte Werte aus TiageState.flatNeeds');
             }
 
-            // Fallback: Alte Methode (nur Archetyp)
+            // Fallback: Alte Methode (nur Archetyp - falls flatNeeds leer)
             if (!matching && typeof GfkBeduerfnisse !== 'undefined') {
                 matching = GfkBeduerfnisse.berechneMatching(ichArchetyp, partnerArchetyp);
                 isFallback = true;
-                console.log('[getNeedsContent] Fallback: Verwende Archetyp-basierte Bedürfniswerte');
+                console.log('[getNeedsContent] ⚠ Fallback: Verwende Archetyp-basierte Bedürfniswerte');
             }
 
             if (!matching) {
                 return '<p style="color: var(--text-muted);">Keine Daten verfügbar.</p>';
             }
 
-            // LOAD ACTUAL VALUES FROM TIAGESTATE FOR LOCK ICONS
-            // Get flatNeeds and lockedNeeds from TiageState
-            const ichFlatNeeds = typeof TiageState !== 'undefined' ? (TiageState.getFlatNeeds('ich') || {}) : {};
-            const partnerFlatNeeds = typeof TiageState !== 'undefined' ? (TiageState.getFlatNeeds('partner') || {}) : {};
+            // Lock-Icons helper für Anzeige
             const ichLockedNeeds = typeof TiageState !== 'undefined' ? (TiageState.getLockedNeeds('ich') || {}) : {};
             const partnerLockedNeeds = typeof TiageState !== 'undefined' ? (TiageState.getLockedNeeds('partner') || {}) : {};
 
-            // Helper function to get actual value for a need (flatNeeds overridden by lockedNeeds)
-            const getActualNeedValue = (person, needId) => {
-                const flatNeeds = person === 'ich' ? ichFlatNeeds : partnerFlatNeeds;
-                const lockedNeeds = person === 'ich' ? ichLockedNeeds : partnerLockedNeeds;
-
-                // lockedNeeds override flatNeeds
-                if (lockedNeeds[needId] !== undefined && lockedNeeds[needId] !== null) {
-                    return lockedNeeds[needId];
-                }
-                if (flatNeeds[needId] !== undefined && flatNeeds[needId] !== null) {
-                    return flatNeeds[needId];
-                }
-                return null;
-            };
-
-            // Helper function to check if a need is locked
             const isNeedLocked = (person, needId) => {
                 const lockedNeeds = person === 'ich' ? ichLockedNeeds : partnerLockedNeeds;
                 return lockedNeeds[needId] !== undefined && lockedNeeds[needId] !== null;
