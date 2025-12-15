@@ -14853,6 +14853,8 @@
                 const modD = r.modifiers?.dominanz || 0;
                 const modG = r.modifiers?.geschlecht || 0;
                 const modO = r.modifiers?.orientierung || 0;
+                // Prüfe ob PWert manuell überschrieben wurde (weicht von Erwartet ab)
+                const isOverridden = r.actual !== r.modifiedTypisch;
 
                 return `
                 <tr style="border-bottom: 1px solid rgba(255,255,255,0.06);">
@@ -14864,7 +14866,7 @@
                     <td style="padding: 6px 4px; text-align: center; font-size: 12px; color: #a78bfa; font-weight: ${modD !== 0 ? '600' : '400'};">${formatModValue(modD)}</td>
                     <td style="padding: 6px 4px; text-align: center; font-size: 12px; color: #60a5fa; font-weight: ${modG !== 0 ? '600' : '400'};">${formatModValue(modG)}</td>
                     <td style="padding: 6px 4px; text-align: center; font-size: 12px; color: #f472b6; font-weight: ${modO !== 0 ? '600' : '400'};">${formatModValue(modO)}</td>
-                    <td style="padding: 6px 4px; text-align: center; font-size: 12px; font-weight: 600;">${r.actual}</td>
+                    <td style="padding: 6px 4px; text-align: center; font-size: 12px; font-weight: 600;">${r.actual}${isOverridden ? '<span style="color: #eab308;" title="Manuell überschrieben">*</span>' : ''}</td>
                     <td style="padding: 6px 4px; text-align: center; font-size: 12px; font-weight: 600; color: ${r.diffColor};">${r.diff}</td>
                 </tr>
             `}).join('');
@@ -14958,7 +14960,7 @@
                     <!-- Bedürfnis-Tabelle -->
                     <div style="padding: 16px 20px;">
                         <div style="font-size: 12px; color: var(--text-muted); margin-bottom: 10px;">
-                            ${count} Bedürfnisse verglichen (sortiert nach Abweichung):
+                            ${count} Bedürfnisse verglichen (sortiert nach Abweichung)${rows.some(r => r.actual !== r.modifiedTypisch) ? ' · <span style="color: #eab308;">*</span> = überschrieben' : ''}:
                         </div>
                         <div style="background: rgba(0,0,0,0.15); border-radius: 8px; overflow: hidden; border: 1px solid rgba(255,255,255,0.08);">
                             <table style="width: 100%; border-collapse: collapse;">
