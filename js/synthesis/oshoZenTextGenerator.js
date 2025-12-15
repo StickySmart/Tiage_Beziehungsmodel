@@ -331,8 +331,9 @@ const OshoZenTextGenerator = (function() {
 
             .osho-zen-header h3 {
                 margin: 0 0 0.5rem 0;
-                color: var(--text-color, #333);
+                color: var(--heading-color, #ffffff);
                 font-size: 1.3rem;
+                text-shadow: 0 1px 2px rgba(0,0,0,0.3);
             }
 
             .osho-zen-subtitle {
