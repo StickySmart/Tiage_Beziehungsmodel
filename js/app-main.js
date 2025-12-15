@@ -15632,13 +15632,55 @@
             const ichArchetyp = currentArchetype || '';
             const partnerArchetyp = selectedPartner || '';
 
-            if (!ichArchetyp || !partnerArchetyp || typeof GfkBeduerfnisse === 'undefined') {
+            if (!ichArchetyp || !partnerArchetyp) {
                 return '<p style="color: var(--text-muted);">Keine Daten verfügbar.</p>';
             }
 
-            const matching = GfkBeduerfnisse.berechneMatching(ichArchetyp, partnerArchetyp);
             const ichName = archetypeDescriptions[currentArchetype]?.name || 'ICH';
             const partnerName = archetypeDescriptions[selectedPartner]?.name || 'Partner';
+
+            // NEU: Individualisierte Profile aus Store holen
+            let matching = null;
+            if (typeof TiageProfileStore !== 'undefined' && typeof getProfileFromStore === 'function') {
+                const ichPerson = { archetyp: ichArchetyp, ...personDimensions.ich };
+                const partnerPerson = { archetyp: partnerArchetyp, ...personDimensions.partner };
+
+                const ichProfile = getProfileFromStore(ichPerson);
+                const partnerProfile = getProfileFromStore(partnerPerson);
+
+                if (ichProfile?.needs && partnerProfile?.needs) {
+                    const result = TiageProfileStore.calculateNeedsMatch(ichProfile, partnerProfile);
+
+                    // Format-Konvertierung: need → { label, id, wert1, wert2, diff }
+                    const formatNeed = (item) => ({
+                        label: formatBeduerfnisLabel(item.need),
+                        id: item.need,
+                        wert1: item.wert1,
+                        wert2: item.wert2,
+                        diff: Math.abs(item.wert1 - item.wert2)
+                    });
+
+                    matching = {
+                        score: result.score,
+                        details: {
+                            uebereinstimmend: result.gemeinsam.map(formatNeed),
+                            komplementaer: result.komplementaer.map(formatNeed),
+                            konflikt: result.unterschiedlich.map(formatNeed)
+                        }
+                    };
+                    console.log('[getNeedsContent] Verwende individualisierte Bedürfniswerte aus TiageState');
+                }
+            }
+
+            // Fallback: Alte Methode (nur Archetyp)
+            if (!matching && typeof GfkBeduerfnisse !== 'undefined') {
+                matching = GfkBeduerfnisse.berechneMatching(ichArchetyp, partnerArchetyp);
+                console.log('[getNeedsContent] Fallback: Verwende Archetyp-basierte Bedürfniswerte');
+            }
+
+            if (!matching) {
+                return '<p style="color: var(--text-muted);">Keine Daten verfügbar.</p>';
+            }
 
             // Score-Anzeige
             const scoreValue = matching.score || 0;
