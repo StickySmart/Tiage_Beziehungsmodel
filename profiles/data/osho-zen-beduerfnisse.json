@@ -1,6 +1,6 @@
 {
-  "version": "1.0.0",
-  "beschreibung": "Osho Zen Tarot Texte zu den 220 Bedürfnissen",
+  "version": "2.0.0",
+  "beschreibung": "Osho Zen Tarot Texte zu den 220 Bedürfnissen - Erweiterte Version mit individuellen Weisheitstexten",
   "quelle": "Osho Zen Tarot von Ma Deva Padma (St. Martins Press), basierend auf den Lehren von Osho",
   "copyright": "Alle Rechte bei den jeweiligen Inhabern. Diese Beschreibungen sind freie Interpretationen.",
 
@@ -159,1171 +159,1171 @@
       "label": "Mitgefühl",
       "frage": "Wie wichtig ist Ihnen Mitgefühl?",
       "karte": "Completion",
-      "text": "Dieses Bedürfnis zeigt sich, wenn du nach innerem Gleichgewicht suchst. Die Karte erinnert dich daran, dass das Wesentliche bereits in dir ist."
+      "text": "Mitgefühl vollendet den Kreis zwischen dir und dem anderen. Es ist das Erkennen: Wir sind nicht getrennt."
     },
     "#B27": {
       "label": "Berücksichtigung",
       "frage": "Wie wichtig ist Ihnen Berücksichtigung?",
       "karte": "Trust",
-      "text": "Dieses Bedürfnis zeigt sich, wenn du nach innerem Gleichgewicht suchst. Die Karte erinnert dich daran, dass das Wesentliche bereits in dir ist."
+      "text": "Berücksichtigt zu werden heißt, im Bewusstsein des anderen einen Platz zu haben. Es ist ein Akt des Vertrauens."
     },
     "#B28": {
       "label": "Empathie",
       "frage": "Wie wichtig ist Ihnen Empathie?",
-      "karte": "Completion",
-      "text": "Dieses Bedürfnis zeigt sich, wenn du nach innerem Gleichgewicht suchst. Die Karte erinnert dich daran, dass das Wesentliche bereits in dir ist."
+      "karte": "Receptivity",
+      "text": "Empathie ist die Fähigkeit, mit dem Herzen zu hören. Der Kelch muss leer sein, um die Tränen des anderen aufzufangen."
     },
     "#B29": {
       "label": "Vertrauen",
       "frage": "Wie wichtig ist Ihnen Vertrauen?",
       "karte": "Change",
-      "text": "Dieses Bedürfnis zeigt sich, wenn du nach innerem Gleichgewicht suchst. Die Karte erinnert dich daran, dass das Wesentliche bereits in dir ist."
+      "text": "Vertrauen ist der Mut, sich dem Wandel hinzugeben. Es sagt Ja, bevor es Gewissheit gibt."
     },
     "#B30": {
       "label": "Beachtung",
       "frage": "Wie wichtig ist Ihnen Beachtung?",
-      "karte": "Completion",
-      "text": "Dieses Bedürfnis zeigt sich, wenn du nach innerem Gleichgewicht suchst. Die Karte erinnert dich daran, dass das Wesentliche bereits in dir ist."
+      "karte": "Awareness",
+      "text": "Beachtet zu werden ist das Geschenk der Aufmerksamkeit. Bewusstheit richtet sich auf das, was wichtig ist."
     },
     "#B31": {
       "label": "Gesehen-werden",
       "frage": "Wie wichtig ist Ihnen Gesehen-werden?",
       "karte": "The Lovers",
-      "text": "Dieses Bedürfnis zeigt sich, wenn du nach innerem Gleichgewicht suchst. Die Karte erinnert dich daran, dass das Wesentliche bereits in dir ist."
+      "text": "Gesehen werden heißt, in deiner Essenz erkannt zu werden. Die Liebenden sehen einander ohne Schleier."
     },
     "#B32": {
       "label": "Verstanden-werden",
       "frage": "Wie wichtig ist Ihnen Verstanden-werden?",
-      "karte": "Healing",
-      "text": "Dieses Bedürfnis zeigt sich, wenn du nach innerem Gleichgewicht suchst. Die Karte erinnert dich daran, dass das Wesentliche bereits in dir ist."
+      "karte": "Understanding",
+      "text": "Verstanden werden ist mehr als Worte. Es ist das Gefühl, dass jemand deine Sprache des Herzens spricht."
     },
     "#B33": {
       "label": "Harmonie",
       "frage": "Wie wichtig ist Ihnen Harmonie?",
       "karte": "Rebirth",
-      "text": "Dieses Bedürfnis zeigt sich, wenn du nach innerem Gleichgewicht suchst. Die Karte erinnert dich daran, dass das Wesentliche bereits in dir ist."
+      "text": "Wahre Harmonie entsteht durch Wiedergeburt – durch das Loslassen alter Dissonanzen."
     },
     "#B34": {
       "label": "Selbstbestimmung",
       "frage": "Wie wichtig ist Ihnen Selbstbestimmung?",
       "karte": "Aloneness",
-      "text": "Dieses Bedürfnis zeigt sich, wenn du nach innerem Gleichgewicht suchst. Die Karte erinnert dich daran, dass das Wesentliche bereits in dir ist."
+      "text": "Selbstbestimmung beginnt im Alleinsein. Nur wer sich selbst gehört, kann sich frei entscheiden."
     },
     "#B35": {
       "label": "Wählen-können",
       "frage": "Wie wichtig ist Ihnen Wählen-können?",
       "karte": "Transformation",
-      "text": "Dieses Bedürfnis zeigt sich, wenn du nach innerem Gleichgewicht suchst. Die Karte erinnert dich daran, dass das Wesentliche bereits in dir ist."
+      "text": "Jede Wahl ist eine kleine Transformation. Wählen zu können bedeutet, dein Leben aktiv zu gestalten."
     },
     "#B36": {
       "label": "Unabhängigkeit",
       "frage": "Wie wichtig ist Ihnen Unabhängigkeit?",
-      "karte": "The Lovers",
-      "text": "Dieses Bedürfnis zeigt sich, wenn du nach innerem Gleichgewicht suchst. Die Karte erinnert dich daran, dass das Wesentliche bereits in dir ist."
+      "karte": "The Rebel",
+      "text": "Unabhängigkeit ist der Weg des Rebellen. Er folgt seiner eigenen Wahrheit, auch wenn sie gegen den Strom geht."
     },
     "#B37": {
       "label": "Raum-haben",
       "frage": "Wie wichtig ist Ihnen Raum-haben?",
       "karte": "Adventure",
-      "text": "Dieses Bedürfnis zeigt sich, wenn du nach innerem Gleichgewicht suchst. Die Karte erinnert dich daran, dass das Wesentliche bereits in dir ist."
+      "text": "Raum haben bedeutet Freiheit zum Entdecken. Das Abenteuer braucht Weite, nicht Enge."
     },
     "#B38": {
       "label": "Spontaneität",
       "frage": "Wie wichtig ist Ihnen Spontaneität?",
-      "karte": "Rebirth",
-      "text": "Dieses Bedürfnis zeigt sich, wenn du nach innerem Gleichgewicht suchst. Die Karte erinnert dich daran, dass das Wesentliche bereits in dir ist."
+      "karte": "Playfulness",
+      "text": "Spontaneität ist der Tanz des Augenblicks. Das spielende Kind in dir kennt keine Pläne – nur Freude."
     },
     "#B39": {
       "label": "Zusammenarbeit",
       "frage": "Wie wichtig ist Ihnen Zusammenarbeit?",
-      "karte": "Change",
-      "text": "Dieses Bedürfnis zeigt sich, wenn du nach innerem Gleichgewicht suchst. Die Karte erinnert dich daran, dass das Wesentliche bereits in dir ist."
+      "karte": "Participation",
+      "text": "Zusammenarbeit ist geteilte Schöpfung. Wenn alle teilnehmen, entsteht mehr als die Summe der Teile."
     },
     "#B40": {
       "label": "Kommunikation",
       "frage": "Wie wichtig ist Ihnen Kommunikation?",
       "karte": "The Lovers",
-      "text": "Dieses Bedürfnis zeigt sich, wenn du nach innerem Gleichgewicht suchst. Die Karte erinnert dich daran, dass das Wesentliche bereits in dir ist."
+      "text": "Wahre Kommunikation ist der Dialog zweier Herzen. Die Liebenden sprechen auch in der Stille."
     },
     "#B41": {
       "label": "Gemeinschaft",
       "frage": "Wie wichtig ist Ihnen Gemeinschaft?",
-      "karte": "Awareness",
-      "text": "Dieses Bedürfnis zeigt sich, wenn du nach innerem Gleichgewicht suchst. Die Karte erinnert dich daran, dass das Wesentliche bereits in dir ist."
+      "karte": "We Are the World",
+      "text": "Gemeinschaft ist das Erkennen: Wir sind alle Wellen desselben Ozeans. Verbundenheit ist unser natürlicher Zustand."
     },
     "#B42": {
       "label": "Zugehörigkeit",
       "frage": "Wie wichtig ist Ihnen Zugehörigkeit?",
       "karte": "We Are the World",
-      "text": "Dieses Bedürfnis zeigt sich, wenn du nach innerem Gleichgewicht suchst. Die Karte erinnert dich daran, dass das Wesentliche bereits in dir ist."
+      "text": "Zugehörigkeit ist kein Besitz – es ist das Wissen, dass du Teil des Ganzen bist."
     },
     "#B43": {
       "label": "Gegenseitigkeit",
       "frage": "Wie wichtig ist Ihnen Gegenseitigkeit?",
-      "karte": "Transformation",
-      "text": "Dieses Bedürfnis zeigt sich, wenn du nach innerem Gleichgewicht suchst. Die Karte erinnert dich daran, dass das Wesentliche bereits in dir ist."
+      "karte": "Going With The Flow",
+      "text": "Gegenseitigkeit ist der natürliche Fluss zwischen Geben und Empfangen. Wie Wasser findet sie ihr Gleichgewicht."
     },
     "#B44": {
       "label": "Respekt",
       "frage": "Wie wichtig ist Ihnen Respekt?",
       "karte": "The Master",
-      "text": "Dieses Bedürfnis zeigt sich, wenn du nach innerem Gleichgewicht suchst. Die Karte erinnert dich daran, dass das Wesentliche bereits in dir ist."
+      "text": "Wahrer Respekt beginnt bei dir selbst. Der Meister ehrt das Leben in jeder Form."
     },
     "#B45": {
       "label": "Bedeutung-haben",
       "frage": "Wie wichtig ist Ihnen Bedeutung-haben?",
       "karte": "Ripeness",
-      "text": "Dieses Bedürfnis zeigt sich, wenn du nach innerem Gleichgewicht suchst. Die Karte erinnert dich daran, dass das Wesentliche bereits in dir ist."
+      "text": "Bedeutung reift wie eine Frucht. Wenn die Zeit gekommen ist, wird sichtbar, was du beigetragen hast."
     },
     "#B46": {
       "label": "Schönheit",
       "frage": "Wie wichtig ist Ihnen Schönheit?",
       "karte": "Creativity",
-      "text": "Dieses Bedürfnis zeigt sich, wenn du nach innerem Gleichgewicht suchst. Die Karte erinnert dich daran, dass das Wesentliche bereits in dir ist."
+      "text": "Schönheit ist die Sprache der Seele. Kreativität macht sichtbar, was das Herz empfindet."
     },
     "#B47": {
       "label": "Freizeit",
       "frage": "Wie wichtig ist Ihnen Freizeit?",
-      "karte": "Change",
-      "text": "Dieses Bedürfnis zeigt sich, wenn du nach innerem Gleichgewicht suchst. Die Karte erinnert dich daran, dass das Wesentliche bereits in dir ist."
+      "karte": "Moment to Moment",
+      "text": "Freizeit ist die Kunst, im Moment zu sein. Nicht füllen, sondern leeren – das ist wahre Erholung."
     },
     "#B48": {
       "label": "Freude",
       "frage": "Wie wichtig ist Ihnen Freude?",
       "karte": "Integration",
-      "text": "Dieses Bedürfnis zeigt sich, wenn du nach innerem Gleichgewicht suchst. Die Karte erinnert dich daran, dass das Wesentliche bereits in dir ist."
+      "text": "Freude entsteht, wenn alle Teile von dir zusammenkommen. Integration ist der Weg zur tiefen Freude."
     },
     "#B49": {
       "label": "Humor",
       "frage": "Wie wichtig ist Ihnen Humor?",
-      "karte": "Completion",
-      "text": "Dieses Bedürfnis zeigt sich, wenn du nach innerem Gleichgewicht suchst. Die Karte erinnert dich daran, dass das Wesentliche bereits in dir ist."
+      "karte": "Celebration",
+      "text": "Humor ist die Feier des Absurden. Wer lachen kann, hat verstanden, dass das Leben ein Spiel ist."
     },
     "#B50": {
       "label": "Authentizität",
       "frage": "Wie wichtig ist Ihnen Authentizität?",
       "karte": "Integration",
-      "text": "Dieses Bedürfnis zeigt sich, wenn du nach innerem Gleichgewicht suchst. Die Karte erinnert dich daran, dass das Wesentliche bereits in dir ist."
+      "text": "Authentizität ist Integration. Wenn Innen und Außen übereinstimmen, bist du ganz du selbst."
     },
     "#B51": {
       "label": "Echtheit",
       "frage": "Wie wichtig ist Ihnen Echtheit?",
       "karte": "Friendliness",
-      "text": "Dieses Bedürfnis zeigt sich, wenn du nach innerem Gleichgewicht suchst. Die Karte erinnert dich daran, dass das Wesentliche bereits in dir ist."
+      "text": "Echtheit zeigt sich in der Freundlichkeit zu dir selbst. Nur wer sich nicht verstellt, kann wahrhaft freundlich sein."
     },
     "#B52": {
       "label": "Integrität",
       "frage": "Wie wichtig ist Ihnen Integrität?",
       "karte": "Healing",
-      "text": "Dieses Bedürfnis zeigt sich, wenn du nach innerem Gleichgewicht suchst. Die Karte erinnert dich daran, dass das Wesentliche bereits in dir ist."
+      "text": "Integrität ist Heilung der inneren Spaltung. Wenn du integer bist, bist du heil."
     },
     "#B53": {
       "label": "Präsenz",
       "frage": "Wie wichtig ist Ihnen Präsenz?",
-      "karte": "Completion",
-      "text": "Dieses Bedürfnis zeigt sich, wenn du nach innerem Gleichgewicht suchst. Die Karte erinnert dich daran, dass das Wesentliche bereits in dir ist."
+      "karte": "Awareness",
+      "text": "Präsenz ist gelebte Bewusstheit. Hier und jetzt – das ist der einzige Ort, an dem Leben stattfindet."
     },
     "#B54": {
       "label": "Ordnung",
       "frage": "Wie wichtig ist Ihnen Ordnung?",
       "karte": "Understanding",
-      "text": "Dieses Bedürfnis zeigt sich, wenn du nach innerem Gleichgewicht suchst. Die Karte erinnert dich daran, dass das Wesentliche bereits in dir ist."
+      "text": "Ordnung entsteht durch Verstehen. Wenn du die Dinge durchschaust, finden sie ihren Platz."
     },
     "#B55": {
       "label": "Bewusstheit",
       "frage": "Wie wichtig ist Ihnen Bewusstheit?",
-      "karte": "Courage",
-      "text": "Dieses Bedürfnis zeigt sich, wenn du nach innerem Gleichgewicht suchst. Die Karte erinnert dich daran, dass das Wesentliche bereits in dir ist."
+      "karte": "Consciousness",
+      "text": "Bewusstheit ist der Himmel – Gedanken sind nur Wolken. Du bist der Himmel, nicht die Wolken."
     },
     "#B56": {
       "label": "Herausforderung",
       "frage": "Wie wichtig ist Ihnen Herausforderung?",
       "karte": "Courage",
-      "text": "Dieses Bedürfnis zeigt sich, wenn du nach innerem Gleichgewicht suchst. Die Karte erinnert dich daran, dass das Wesentliche bereits in dir ist."
+      "text": "Herausforderungen rufen deinen Mut. Jede überwundene Hürde macht dich stärker."
     },
     "#B57": {
       "label": "Klarheit",
       "frage": "Wie wichtig ist Ihnen Klarheit?",
-      "karte": "Change",
-      "text": "Dieses Bedürfnis zeigt sich, wenn du nach innerem Gleichgewicht suchst. Die Karte erinnert dich daran, dass das Wesentliche bereits in dir ist."
+      "karte": "Breakthrough",
+      "text": "Klarheit kommt nach dem Durchbruch. Wenn die Nebel sich lichten, siehst du, was immer schon da war."
     },
     "#B58": {
       "label": "Kompetenz",
       "frage": "Wie wichtig ist Ihnen Kompetenz?",
-      "karte": "Healing",
-      "text": "Dieses Bedürfnis zeigt sich, wenn du nach innerem Gleichgewicht suchst. Die Karte erinnert dich daran, dass das Wesentliche bereits in dir ist."
+      "karte": "The Creator",
+      "text": "Kompetenz ist Meisterschaft im Werden. Der Schöpfer verfeinert sein Handwerk durch liebevolle Übung."
     },
     "#B59": {
       "label": "Effizienz",
       "frage": "Wie wichtig ist Ihnen Effizienz?",
       "karte": "The Master",
-      "text": "Dieses Bedürfnis zeigt sich, wenn du nach innerem Gleichgewicht suchst. Die Karte erinnert dich daran, dass das Wesentliche bereits in dir ist."
+      "text": "Wahre Effizienz ist mühelose Präzision. Der Meister verschwendet keine Energie – er fließt."
     },
     "#B60": {
       "label": "Wirksamkeit",
       "frage": "Wie wichtig ist Ihnen Wirksamkeit?",
-      "karte": "Courage",
-      "text": "Dieses Bedürfnis zeigt sich, wenn du nach innerem Gleichgewicht suchst. Die Karte erinnert dich daran, dass das Wesentliche bereits in dir ist."
+      "karte": "Totality",
+      "text": "Wirksamkeit entsteht durch Totalität. Was immer du tust – tu es ganz, und es wird Wirkung zeigen."
     },
     "#B61": {
       "label": "Wachstum",
       "frage": "Wie wichtig ist Ihnen Wachstum?",
       "karte": "Rebirth",
-      "text": "Dieses Bedürfnis zeigt sich, wenn du nach innerem Gleichgewicht suchst. Die Karte erinnert dich daran, dass das Wesentliche bereits in dir ist."
+      "text": "Wachstum ist kontinuierliche Wiedergeburt. Jeden Tag stirbt etwas Altes, damit etwas Neues erblühen kann."
     },
     "#B62": {
       "label": "Sinn",
       "frage": "Wie wichtig ist Ihnen Sinn?",
       "karte": "Silence",
-      "text": "Dieses Bedürfnis zeigt sich, wenn du nach innerem Gleichgewicht suchst. Die Karte erinnert dich daran, dass das Wesentliche bereits in dir ist."
+      "text": "In der Stille offenbart sich der Sinn. Er kann nicht gedacht werden – nur gefühlt, in der Tiefe der Stille."
     },
     "#B63": {
       "label": "Beitrag-leisten",
       "frage": "Wie wichtig ist Ihnen Beitrag-leisten?",
-      "karte": "The Master",
-      "text": "Dieses Bedürfnis zeigt sich, wenn du nach innerem Gleichgewicht suchst. Die Karte erinnert dich daran, dass das Wesentliche bereits in dir ist."
+      "karte": "Sharing",
+      "text": "Beitragen ist natürliches Teilen. Wenn du aus der Fülle gibst, bereicherst du dich selbst."
     },
     "#B64": {
       "label": "Kreativität",
       "frage": "Wie wichtig ist Ihnen Kreativität?",
-      "karte": "Silence",
-      "text": "Dieses Bedürfnis zeigt sich, wenn du nach innerem Gleichgewicht suchst. Die Karte erinnert dich daran, dass das Wesentliche bereits in dir ist."
+      "karte": "Creativity",
+      "text": "Kreativität ist deine Natur. Wenn du schaffst, bist du eins mit dem Universum, das unaufhörlich erschafft."
     },
     "#B65": {
       "label": "Entdecken",
       "frage": "Wie wichtig ist Ihnen Entdecken?",
-      "karte": "Creativity",
-      "text": "Dieses Bedürfnis zeigt sich, wenn du nach innerem Gleichgewicht suchst. Die Karte erinnert dich daran, dass das Wesentliche bereits in dir ist."
+      "karte": "Adventure",
+      "text": "Entdecken ist das Abenteuer des Unbekannten. Jeder Schritt ins Neue ist ein Schritt in deine Weite."
     },
     "#B66": {
       "label": "Lernen",
       "frage": "Wie wichtig ist Ihnen Lernen?",
       "karte": "Understanding",
-      "text": "Dieses Bedürfnis zeigt sich, wenn du nach innerem Gleichgewicht suchst. Die Karte erinnert dich daran, dass das Wesentliche bereits in dir ist."
+      "text": "Lernen ist der Weg zum Verstehen. Der wahre Schüler bleibt immer neugierig, immer offen."
     },
     "#B67": {
       "label": "Selbst-Ausdruck",
       "frage": "Wie wichtig ist Ihnen Selbst-Ausdruck?",
       "karte": "Integration",
-      "text": "Dieses Bedürfnis zeigt sich, wenn du nach innerem Gleichgewicht suchst. Die Karte erinnert dich daran, dass das Wesentliche bereits in dir ist."
+      "text": "Selbst-Ausdruck ist gelebte Integration. Wenn du ganz du bist, fließt dein Wesen natürlich nach außen."
     },
     "#B68": {
       "label": "Anreize-bekommen",
       "frage": "Wie wichtig ist Ihnen Anreize-bekommen?",
-      "karte": "We Are the World",
-      "text": "Dieses Bedürfnis zeigt sich, wenn du nach innerem Gleichgewicht suchst. Die Karte erinnert dich daran, dass das Wesentliche bereits in dir ist."
+      "karte": "Source",
+      "text": "Die tiefsten Anreize kommen aus der Quelle in dir. Äußere Impulse wecken, was innen bereits lebt."
     },
     "#B69": {
       "label": "Leben-feiern",
       "frage": "Wie wichtig ist Ihnen Leben-feiern?",
-      "karte": "Rebirth",
-      "text": "Dieses Bedürfnis zeigt sich, wenn du nach innerem Gleichgewicht suchst. Die Karte erinnert dich daran, dass das Wesentliche bereits in dir ist."
+      "karte": "Celebration",
+      "text": "Das Leben ist ein Fest – du brauchst keinen Grund zu feiern. Dein Sein selbst ist Grund genug."
     },
     "#B70": {
       "label": "Inspiration",
       "frage": "Wie wichtig ist Ihnen Inspiration?",
-      "karte": "Ripeness",
-      "text": "Dieses Bedürfnis zeigt sich, wenn du nach innerem Gleichgewicht suchst. Die Karte erinnert dich daran, dass das Wesentliche bereits in dir ist."
+      "karte": "Inner Voice",
+      "text": "Inspiration ist die Stimme der inneren Weisheit. Sie flüstert dir zu, was dein Herz bereits weiß."
     },
     "#B71": {
       "label": "Trauer-ausdrücken",
       "frage": "Wie wichtig ist Ihnen Trauer-ausdrücken?",
-      "karte": "Silence",
-      "text": "Dieses Bedürfnis zeigt sich, wenn du nach innerem Gleichgewicht suchst. Die Karte erinnert dich daran, dass das Wesentliche bereits in dir ist."
+      "karte": "Sorrow",
+      "text": "Trauer braucht Ausdruck wie der Regen braucht zu fallen. Lass sie fließen – auf der anderen Seite wartet Klarheit."
     },
     "#B72": {
       "label": "Einsehen",
       "frage": "Wie wichtig ist Ihnen Einsehen?",
-      "karte": "Transformation",
-      "text": "Dieses Bedürfnis zeigt sich, wenn du nach innerem Gleichgewicht suchst. Die Karte erinnert dich daran, dass das Wesentliche bereits in dir ist."
+      "karte": "New Vision",
+      "text": "Einsicht ist neue Sicht. Manchmal musst du die Perspektive wechseln, um zu sehen, was immer schon da war."
     },
     "#B73": {
       "label": "Anfang-Ende",
       "frage": "Wie wichtig ist Ihnen Anfang-Ende?",
-      "karte": "Ripeness",
-      "text": "Dieses Bedürfnis zeigt sich, wenn du nach innerem Gleichgewicht suchst. Die Karte erinnert dich daran, dass das Wesentliche bereits in dir ist."
+      "karte": "Completion",
+      "text": "Jedes Ende trägt einen Anfang in sich. Der Kreis schließt sich, damit ein neuer beginnen kann."
     },
     "#B74": {
       "label": "Kontrolle-ausüben",
       "frage": "Wie wichtig ist Ihnen Kontrolle-ausüben?",
-      "karte": "Awareness",
-      "text": "Dieses Bedürfnis zeigt sich, wenn du nach innerem Gleichgewicht suchst. Die Karte erinnert dich daran, dass das Wesentliche bereits in dir ist."
+      "karte": "Control",
+      "text": "Wahre Kontrolle liegt im Loslassen der Kontrolle. Der Meister des Lebens kontrolliert nicht – er fließt."
     },
     "#B75": {
       "label": "Hingabe",
       "frage": "Wie wichtig ist Ihnen Hingabe?",
-      "karte": "Aloneness",
-      "text": "Dieses Bedürfnis zeigt sich, wenn du nach innerem Gleichgewicht suchst. Die Karte erinnert dich daran, dass das Wesentliche bereits in dir ist."
+      "karte": "Letting Go",
+      "text": "Hingabe ist Loslassen in Vertrauen. Die leeren Hände sind bereit zu empfangen."
     },
     "#B76": {
       "label": "Führung-geben",
       "frage": "Wie wichtig ist Ihnen Führung-geben?",
-      "karte": "The Lovers",
-      "text": "Dieses Bedürfnis zeigt sich, wenn du nach innerem Gleichgewicht suchst. Die Karte erinnert dich daran, dass das Wesentliche bereits in dir ist."
+      "karte": "Guidance",
+      "text": "Führung geben heißt, anderen den Weg zu zeigen, den du selbst gegangen bist. Authentische Führung inspiriert."
     },
     "#B77": {
       "label": "Geführt-werden",
       "frage": "Wie wichtig ist Ihnen Geführt-werden?",
-      "karte": "Friendliness",
-      "text": "Dieses Bedürfnis zeigt sich, wenn du nach innerem Gleichgewicht suchst. Die Karte erinnert dich daran, dass das Wesentliche bereits in dir ist."
+      "karte": "Trust",
+      "text": "Geführt werden erfordert Vertrauen. Es ist der Mut, einem anderen die Hand zu reichen im Dunkeln."
     },
     "#B78": {
       "label": "Ritual",
       "frage": "Wie wichtig ist Ihnen Ritual?",
       "karte": "The Master",
-      "text": "Dieses Bedürfnis zeigt sich, wenn du nach innerem Gleichgewicht suchst. Die Karte erinnert dich daran, dass das Wesentliche bereits in dir ist."
+      "text": "Rituale sind bewusste Handlungen. Sie bringen das Heilige in den Alltag und den Alltag ins Heilige."
     },
     "#B79": {
       "label": "Nachsorge",
       "frage": "Wie wichtig ist Ihnen Nachsorge?",
       "karte": "Healing",
-      "text": "Dieses Bedürfnis zeigt sich, wenn du nach innerem Gleichgewicht suchst. Die Karte erinnert dich daran, dass das Wesentliche bereits in dir ist."
+      "text": "Nachsorge ist achtsame Heilung. Sie gibt dem, was geschehen ist, Raum zur Integration."
     },
     "#B80": {
       "label": "Grenzen-setzen",
       "frage": "Wie wichtig ist Ihnen Grenzen-setzen?",
-      "karte": "Creativity",
-      "text": "Dieses Bedürfnis zeigt sich, wenn du nach innerem Gleichgewicht suchst. Die Karte erinnert dich daran, dass das Wesentliche bereits in dir ist."
+      "karte": "The Rebel",
+      "text": "Grenzen setzen ist ein Akt der Selbstachtung. Der Rebell sagt Nein, um sein Ja zu schützen."
     },
     "#B81": {
       "label": "Grenzen-respektieren",
       "frage": "Wie wichtig ist Ihnen Grenzen-respektieren?",
-      "karte": "Silence",
-      "text": "Dieses Bedürfnis zeigt sich, wenn du nach innerem Gleichgewicht suchst. Die Karte erinnert dich daran, dass das Wesentliche bereits in dir ist."
+      "karte": "Receptivity",
+      "text": "Grenzen respektieren heißt, den Raum des anderen zu ehren. Empfänglichkeit beginnt mit Achtsamkeit."
     },
     "#B82": {
       "label": "Intensität",
       "frage": "Wie wichtig ist Ihnen Intensität?",
-      "karte": "Silence",
-      "text": "Dieses Bedürfnis zeigt sich, wenn du nach innerem Gleichgewicht suchst. Die Karte erinnert dich daran, dass das Wesentliche bereits in dir ist."
+      "karte": "Intensity",
+      "text": "Intensität ist Leben in seiner reinsten Form. Brenne hell – aber verbrenne dich nicht."
     },
     "#B83": {
       "label": "Vertrauen-schenken",
       "frage": "Wie wichtig ist Ihnen Vertrauen-schenken?",
-      "karte": "Completion",
-      "text": "Dieses Bedürfnis zeigt sich, wenn du nach innerem Gleichgewicht suchst. Die Karte erinnert dich daran, dass das Wesentliche bereits in dir ist."
+      "karte": "Trust",
+      "text": "Vertrauen schenken ist ein Akt des Mutes. Es öffnet die Tür zu tiefer Verbindung."
     },
     "#B84": {
       "label": "Verantwortung-übernehmen",
       "frage": "Wie wichtig ist Ihnen Verantwortung-übernehmen?",
-      "karte": "Understanding",
-      "text": "Dieses Bedürfnis zeigt sich, wenn du nach innerem Gleichgewicht suchst. Die Karte erinnert dich daran, dass das Wesentliche bereits in dir ist."
+      "karte": "Maturity",
+      "text": "Verantwortung übernehmen ist ein Zeichen der Reife. Es heißt: Ich bin der Schöpfer meines Lebens."
     },
     "#B85": {
       "label": "Sich-fallenlassen",
       "frage": "Wie wichtig ist Ihnen Sich-fallenlassen?",
-      "karte": "Courage",
-      "text": "Dieses Bedürfnis zeigt sich, wenn du nach innerem Gleichgewicht suchst. Die Karte erinnert dich daran, dass das Wesentliche bereits in dir ist."
+      "karte": "Trust",
+      "text": "Sich fallenlassen erfordert tiefes Vertrauen. Es ist der Sprung, wissend, dass du gehalten wirst."
     },
     "#B86": {
       "label": "Machtaustausch",
       "frage": "Wie wichtig ist Ihnen Machtaustausch?",
-      "karte": "Awareness",
-      "text": "Dieses Bedürfnis zeigt sich, wenn du nach innerem Gleichgewicht suchst. Die Karte erinnert dich daran, dass das Wesentliche bereits in dir ist."
+      "karte": "Transformation",
+      "text": "Machtaustausch ist Transformation in Beziehung. Beide Partner verwandeln sich durch das bewusste Spiel."
     },
     "#B87": {
       "label": "Dienend-sein",
       "frage": "Wie wichtig ist Ihnen Dienend-sein?",
-      "karte": "Courage",
-      "text": "Dieses Bedürfnis zeigt sich, wenn du nach innerem Gleichgewicht suchst. Die Karte erinnert dich daran, dass das Wesentliche bereits in dir ist."
+      "karte": "Compassion",
+      "text": "Dienend sein aus Mitgefühl ist Hingabe ohne Verlust. Du gibst und empfängst zugleich."
     },
     "#B88": {
       "label": "Beschützen",
       "frage": "Wie wichtig ist Ihnen Beschützen?",
-      "karte": "Friendliness",
-      "text": "Dieses Bedürfnis zeigt sich, wenn du nach innerem Gleichgewicht suchst. Die Karte erinnert dich daran, dass das Wesentliche bereits in dir ist."
+      "karte": "Courage",
+      "text": "Beschützen erfordert Mut – den Mut, für das einzustehen, was du liebst."
     },
     "#B89": {
       "label": "Kinderwunsch",
       "frage": "Wie wichtig ist Ihnen Kinderwunsch?",
-      "karte": "Friendliness",
-      "text": "Dieses Bedürfnis zeigt sich, wenn du nach innerem Gleichgewicht suchst. Die Karte erinnert dich daran, dass das Wesentliche bereits in dir ist."
+      "karte": "Flowering",
+      "text": "Der Kinderwunsch ist das Verlangen nach Blüte. Leben möchte sich fortsetzen, erblühen, weitergeben."
     },
     "#B90": {
       "label": "Elternschaft",
       "frage": "Wie wichtig ist Ihnen Elternschaft?",
       "karte": "The Lovers",
-      "text": "Dieses Bedürfnis zeigt sich, wenn du nach innerem Gleichgewicht suchst. Die Karte erinnert dich daran, dass das Wesentliche bereits in dir ist."
+      "text": "Elternschaft ist eine Form der Liebe, die loslässt. Die Liebenden werden zu drei – und die Liebe wächst."
     },
     "#B91": {
       "label": "Fortpflanzung",
       "frage": "Wie wichtig ist Ihnen Fortpflanzung?",
-      "karte": "Aloneness",
-      "text": "Dieses Bedürfnis zeigt sich, wenn du nach innerem Gleichgewicht suchst. Die Karte erinnert dich daran, dass das Wesentliche bereits in dir ist."
+      "karte": "Source",
+      "text": "Fortpflanzung verbindet dich mit der Quelle des Lebens selbst. Du wirst zum Kanal für neues Sein."
     },
     "#B92": {
       "label": "Familie-gründen",
       "frage": "Wie wichtig ist Ihnen Familie-gründen?",
-      "karte": "Healing",
-      "text": "Dieses Bedürfnis zeigt sich, wenn du nach innerem Gleichgewicht suchst. Die Karte erinnert dich daran, dass das Wesentliche bereits in dir ist."
+      "karte": "We Are the World",
+      "text": "Familie gründen heißt, einen Kreis der Verbundenheit zu schaffen. Ein Mikrokosmos der Welt."
     },
     "#B93": {
       "label": "Patchwork-Familie",
       "frage": "Wie wichtig ist Ihnen Patchwork-Familie?",
       "karte": "Creativity",
-      "text": "Dieses Bedürfnis zeigt sich, wenn du nach innerem Gleichgewicht suchst. Die Karte erinnert dich daran, dass das Wesentliche bereits in dir ist."
+      "text": "Patchwork ist kreatives Gestalten von Familie. Neue Muster entstehen aus verschiedenen Fäden."
     },
     "#B94": {
       "label": "Kinderfreies-Leben",
       "frage": "Wie wichtig ist Ihnen Kinderfreies-Leben?",
       "karte": "Aloneness",
-      "text": "Dieses Bedürfnis zeigt sich, wenn du nach innerem Gleichgewicht suchst. Die Karte erinnert dich daran, dass das Wesentliche bereits in dir ist."
+      "text": "Ein kinderfreies Leben ist ein bewusster Weg. Im Alleinsein findest du andere Formen der Erfüllung."
     },
     "#B95": {
       "label": "Adoption",
       "frage": "Wie wichtig ist Ihnen Adoption?",
-      "karte": "Ripeness",
-      "text": "Dieses Bedürfnis zeigt sich, wenn du nach innerem Gleichgewicht suchst. Die Karte erinnert dich daran, dass das Wesentliche bereits in dir ist."
+      "karte": "Compassion",
+      "text": "Adoption ist Mitgefühl in Aktion. Du öffnest dein Herz für ein Kind, das nicht von dir kommt."
     },
     "#B96": {
       "label": "Pflegekinder",
       "frage": "Wie wichtig ist Ihnen Pflegekinder?",
-      "karte": "Understanding",
-      "text": "Dieses Bedürfnis zeigt sich, wenn du nach innerem Gleichgewicht suchst. Die Karte erinnert dich daran, dass das Wesentliche bereits in dir ist."
+      "karte": "Healing",
+      "text": "Pflegekinder aufnehmen ist Heilungsarbeit. Du gibst einem Kind, was es braucht, um zu heilen."
     },
     "#B97": {
       "label": "Zusammenziehen",
       "frage": "Wie wichtig ist Ihnen Zusammenziehen?",
-      "karte": "Adventure",
-      "text": "Dieses Bedürfnis zeigt sich, wenn du nach innerem Gleichgewicht suchst. Die Karte erinnert dich daran, dass das Wesentliche bereits in dir ist."
+      "karte": "Harmony",
+      "text": "Zusammenziehen ist das Weben gemeinsamer Harmonie. Zwei Leben werden zu einem geteilten Raum."
     },
     "#B98": {
       "label": "Getrennt-wohnen",
       "frage": "Wie wichtig ist Ihnen Getrennt-wohnen?",
-      "karte": "Healing",
-      "text": "Dieses Bedürfnis zeigt sich, wenn du nach innerem Gleichgewicht suchst. Die Karte erinnert dich daran, dass das Wesentliche bereits in dir ist."
+      "karte": "Aloneness",
+      "text": "Getrennt wohnen ehrt das Bedürfnis nach Alleinsein. Nähe braucht manchmal Distanz, um zu atmen."
     },
     "#B99": {
       "label": "WG-Leben",
       "frage": "Wie wichtig ist Ihnen WG-Leben?",
-      "karte": "Creativity",
-      "text": "Dieses Bedürfnis zeigt sich, wenn du nach innerem Gleichgewicht suchst. Die Karte erinnert dich daran, dass das Wesentliche bereits in dir ist."
+      "karte": "Participation",
+      "text": "WG-Leben ist geteilte Teilnahme am Alltag. Gemeinschaft entsteht in den kleinen Momenten."
     },
     "#B100": {
       "label": "Eigenes-Zimmer",
       "frage": "Wie wichtig ist Ihnen Eigenes-Zimmer?",
-      "karte": "Transformation",
-      "text": "Dieses Bedürfnis zeigt sich, wenn du nach innerem Gleichgewicht suchst. Die Karte erinnert dich daran, dass das Wesentliche bereits in dir ist."
+      "karte": "Aloneness",
+      "text": "Ein eigenes Zimmer ist der Rückzugsort der Seele. Im Alleinsein findest du dich selbst wieder."
     },
     "#B101": {
       "label": "Stadt-Leben",
       "frage": "Wie wichtig ist Ihnen Stadt-Leben?",
-      "karte": "Healing",
-      "text": "Dieses Bedürfnis zeigt sich, wenn du nach innerem Gleichgewicht suchst. Die Karte erinnert dich daran, dass das Wesentliche bereits in dir ist."
+      "karte": "Experiencing",
+      "text": "Stadtleben ist intensives Erfahren. Die Stadt pulsiert mit Leben – wer offen ist, wird reich beschenkt."
     },
     "#B102": {
       "label": "Land-Leben",
       "frage": "Wie wichtig ist Ihnen Land-Leben?",
-      "karte": "Completion",
-      "text": "Dieses Bedürfnis zeigt sich, wenn du nach innerem Gleichgewicht suchst. Die Karte erinnert dich daran, dass das Wesentliche bereits in dir ist."
+      "karte": "Harmony",
+      "text": "Landleben ist Harmonie mit der Natur. Der Rhythmus der Erde wird zu deinem Rhythmus."
     },
     "#B103": {
       "label": "Mobilität",
       "frage": "Wie wichtig ist Ihnen Mobilität?",
-      "karte": "Creativity",
-      "text": "Dieses Bedürfnis zeigt sich, wenn du nach innerem Gleichgewicht suchst. Die Karte erinnert dich daran, dass das Wesentliche bereits in dir ist."
+      "karte": "Traveling",
+      "text": "Mobilität ist die Freiheit der Reise. Wer sich bewegen kann, kann sich entfalten."
     },
     "#B104": {
       "label": "Sesshaftigkeit",
       "frage": "Wie wichtig ist Ihnen Sesshaftigkeit?",
-      "karte": "Transformation",
-      "text": "Dieses Bedürfnis zeigt sich, wenn du nach innerem Gleichgewicht suchst. Die Karte erinnert dich daran, dass das Wesentliche bereits in dir ist."
+      "karte": "Maturity",
+      "text": "Sesshaftigkeit ist gereifte Erdung. Wurzeln schlagen bedeutet, tief zu wachsen statt weit."
     },
     "#B105": {
       "label": "Heiraten",
       "frage": "Wie wichtig ist Ihnen Heiraten?",
-      "karte": "Creativity",
-      "text": "Dieses Bedürfnis zeigt sich, wenn du nach innerem Gleichgewicht suchst. Die Karte erinnert dich daran, dass das Wesentliche bereits in dir ist."
+      "karte": "Commitment",
+      "text": "Heirat ist ein bewusstes Ja. Es ist die Entscheidung, gemeinsam durch alle Jahreszeiten zu gehen."
     },
     "#B106": {
       "label": "Ohne-Trauschein",
       "frage": "Wie wichtig ist Ihnen Ohne-Trauschein?",
-      "karte": "Creativity",
-      "text": "Dieses Bedürfnis zeigt sich, wenn du nach innerem Gleichgewicht suchst. Die Karte erinnert dich daran, dass das Wesentliche bereits in dir ist."
+      "karte": "The Rebel",
+      "text": "Ohne Trauschein zu leben ist der Weg des Rebellen. Die Liebe braucht keine Urkunde – nur Wahrhaftigkeit."
     },
     "#B107": {
       "label": "Verpartnerung",
       "frage": "Wie wichtig ist Ihnen Verpartnerung?",
-      "karte": "We Are the World",
-      "text": "Dieses Bedürfnis zeigt sich, wenn du nach innerem Gleichgewicht suchst. Die Karte erinnert dich daran, dass das Wesentliche bereits in dir ist."
+      "karte": "The Lovers",
+      "text": "Verpartnerung ist die offizielle Anerkennung der Liebe. Die Liebenden treten sichtbar in die Welt."
     },
     "#B108": {
       "label": "Haustiere",
       "frage": "Wie wichtig ist Ihnen Haustiere?",
-      "karte": "Silence",
-      "text": "Dieses Bedürfnis zeigt sich, wenn du nach innerem Gleichgewicht suchst. Die Karte erinnert dich daran, dass das Wesentliche bereits in dir ist."
+      "karte": "Friendliness",
+      "text": "Haustiere lehren bedingungslose Freundlichkeit. Sie lieben, ohne zu fragen – und werden geliebt."
     },
     "#B109": {
       "label": "Keine-Haustiere",
       "frage": "Wie wichtig ist Ihnen Keine-Haustiere?",
-      "karte": "Completion",
-      "text": "Dieses Bedürfnis zeigt sich, wenn du nach innerem Gleichgewicht suchst. Die Karte erinnert dich daran, dass das Wesentliche bereits in dir ist."
+      "karte": "Slowing Down",
+      "text": "Keine Haustiere zu haben schafft Raum für Langsamkeit. Weniger Verpflichtung, mehr Stille."
     },
     "#B110": {
       "label": "Gemeinsame-Hobbys",
       "frage": "Wie wichtig ist Ihnen Gemeinsame-Hobbys?",
       "karte": "Celebration",
-      "text": "Dieses Bedürfnis zeigt sich, wenn du nach innerem Gleichgewicht suchst. Die Karte erinnert dich daran, dass das Wesentliche bereits in dir ist."
+      "text": "Gemeinsame Hobbys sind geteilte Feste. Was Freude macht, wird größer, wenn es geteilt wird."
     },
     "#B111": {
       "label": "Eigene-Hobbys",
       "frage": "Wie wichtig ist Ihnen Eigene-Hobbys?",
-      "karte": "Understanding",
-      "text": "Dieses Bedürfnis zeigt sich, wenn du nach innerem Gleichgewicht suchst. Die Karte erinnert dich daran, dass das Wesentliche bereits in dir ist."
+      "karte": "Aloneness",
+      "text": "Eigene Hobbys sind Räume des Alleinseins. Sie nähren den Teil von dir, der nur dir gehört."
     },
     "#B112": {
       "label": "Gemeinsamer-Urlaub",
       "frage": "Wie wichtig ist Ihnen Gemeinsamer-Urlaub?",
-      "karte": "Healing",
-      "text": "Dieses Bedürfnis zeigt sich, wenn du nach innerem Gleichgewicht suchst. Die Karte erinnert dich daran, dass das Wesentliche bereits in dir ist."
+      "karte": "Adventure",
+      "text": "Gemeinsamer Urlaub ist geteiltes Abenteuer. Neue Orte öffnen neue Räume – auch füreinander."
     },
     "#B113": {
       "label": "Getrennter-Urlaub",
       "frage": "Wie wichtig ist Ihnen Getrennter-Urlaub?",
-      "karte": "Transformation",
-      "text": "Dieses Bedürfnis zeigt sich, wenn du nach innerem Gleichgewicht suchst. Die Karte erinnert dich daran, dass das Wesentliche bereits in dir ist."
+      "karte": "Aloneness",
+      "text": "Getrennter Urlaub ehrt das Bedürfnis nach Alleinsein. Manchmal musst du allein reisen, um dich zu finden."
     },
     "#B114": {
       "label": "Langzeit-Planung",
       "frage": "Wie wichtig ist Ihnen Langzeit-Planung?",
-      "karte": "Trust",
-      "text": "Dieses Bedürfnis zeigt sich, wenn du nach innerem Gleichgewicht suchst. Die Karte erinnert dich daran, dass das Wesentliche bereits in dir ist."
+      "karte": "Patience",
+      "text": "Langzeit-Planung ist geduldiges Säen. Du vertraust darauf, dass die Saat zur rechten Zeit aufgeht."
     },
     "#B115": {
       "label": "Im-Moment-leben",
       "frage": "Wie wichtig ist Ihnen Im-Moment-leben?",
-      "karte": "Change",
-      "text": "Dieses Bedürfnis zeigt sich, wenn du nach innerem Gleichgewicht suchst. Die Karte erinnert dich daran, dass das Wesentliche bereits in dir ist."
+      "karte": "Moment to Moment",
+      "text": "Im Moment leben ist die höchste Kunst. Vergangenheit und Zukunft verschwinden – nur Jetzt bleibt."
     },
     "#B116": {
       "label": "Karriere-Fokus",
       "frage": "Wie wichtig ist Ihnen Karriere-Fokus?",
-      "karte": "Awareness",
-      "text": "Dieses Bedürfnis zeigt sich, wenn du nach innerem Gleichgewicht suchst. Die Karte erinnert dich daran, dass das Wesentliche bereits in dir ist."
+      "karte": "Success",
+      "text": "Karriere-Fokus ist gerichtete Energie. Doch wahrer Erfolg liegt nicht im Erreichen, sondern im Werden."
     },
     "#B117": {
       "label": "Familie-Fokus",
       "frage": "Wie wichtig ist Ihnen Familie-Fokus?",
-      "karte": "Ripeness",
-      "text": "Dieses Bedürfnis zeigt sich, wenn du nach innerem Gleichgewicht suchst. Die Karte erinnert dich daran, dass das Wesentliche bereits in dir ist."
+      "karte": "We Are the World",
+      "text": "Familie-Fokus ist Verbundenheit als Priorität. Die Familie ist ein Mikrokosmos der Welt."
     },
     "#B118": {
       "label": "Balance-Arbeit-Leben",
       "frage": "Wie wichtig ist Ihnen Balance-Arbeit-Leben?",
-      "karte": "Completion",
-      "text": "Dieses Bedürfnis zeigt sich, wenn du nach innerem Gleichgewicht suchst. Die Karte erinnert dich daran, dass das Wesentliche bereits in dir ist."
+      "karte": "Integration",
+      "text": "Work-Life-Balance ist gelebte Integration. Wenn alle Lebensbereiche fließen, entsteht Harmonie."
     },
     "#B119": {
       "label": "Gemeinsame-Werte",
       "frage": "Wie wichtig ist Ihnen Gemeinsame-Werte?",
-      "karte": "Friendliness",
-      "text": "Dieses Bedürfnis zeigt sich, wenn du nach innerem Gleichgewicht suchst. Die Karte erinnert dich daran, dass das Wesentliche bereits in dir ist."
+      "karte": "We Are the World",
+      "text": "Gemeinsame Werte sind das unsichtbare Band. Sie verbinden tiefer als Worte oder Taten."
     },
     "#B120": {
       "label": "Respekt-Unterschiede",
       "frage": "Wie wichtig ist Ihnen Respekt-Unterschiede?",
       "karte": "Understanding",
-      "text": "Dieses Bedürfnis zeigt sich, wenn du nach innerem Gleichgewicht suchst. Die Karte erinnert dich daran, dass das Wesentliche bereits in dir ist."
+      "text": "Unterschiede respektieren heißt verstehen, dass Vielfalt Reichtum ist. Der Regenbogen braucht alle Farben."
     },
     "#B121": {
       "label": "Traditionen-pflegen",
       "frage": "Wie wichtig ist Ihnen Traditionen-pflegen?",
-      "karte": "Ripeness",
-      "text": "Dieses Bedürfnis zeigt sich, wenn du nach innerem Gleichgewicht suchst. Die Karte erinnert dich daran, dass das Wesentliche bereits in dir ist."
+      "karte": "Ordinariness",
+      "text": "Traditionen pflegen ehrt das Gewöhnliche. Im Wiederkehrenden liegt das Heilige des Alltags."
     },
     "#B122": {
       "label": "Neue-Wege-gehen",
       "frage": "Wie wichtig ist Ihnen Neue-Wege-gehen?",
-      "karte": "Rebirth",
-      "text": "Dieses Bedürfnis zeigt sich, wenn du nach innerem Gleichgewicht suchst. Die Karte erinnert dich daran, dass das Wesentliche bereits in dir ist."
+      "karte": "Adventure",
+      "text": "Neue Wege gehen ist das Abenteuer des Pioniers. Das Unbekannte ruft – und du antwortest."
     },
     "#B123": {
       "label": "Spiritualität-teilen",
       "frage": "Wie wichtig ist Ihnen Spiritualität-teilen?",
-      "karte": "Friendliness",
-      "text": "Dieses Bedürfnis zeigt sich, wenn du nach innerem Gleichgewicht suchst. Die Karte erinnert dich daran, dass das Wesentliche bereits in dir ist."
+      "karte": "Inner Voice",
+      "text": "Spiritualität teilen heißt, gemeinsam der inneren Stimme zu lauschen. Geteilte Stille ist doppelte Tiefe."
     },
     "#B124": {
       "label": "Säkulares-Leben",
       "frage": "Wie wichtig ist Ihnen Säkulares-Leben?",
-      "karte": "Celebration",
-      "text": "Dieses Bedürfnis zeigt sich, wenn du nach innerem Gleichgewicht suchst. Die Karte erinnert dich daran, dass das Wesentliche bereits in dir ist."
+      "karte": "Ordinariness",
+      "text": "Säkulares Leben findet das Heilige im Gewöhnlichen. Jeder Moment ist heilig – auch ohne Ritual."
     },
     "#B125": {
       "label": "Gesunde-Ernährung",
       "frage": "Wie wichtig ist Ihnen Gesunde-Ernährung?",
-      "karte": "Celebration",
-      "text": "Dieses Bedürfnis zeigt sich, wenn du nach innerem Gleichgewicht suchst. Die Karte erinnert dich daran, dass das Wesentliche bereits in dir ist."
+      "karte": "Awareness",
+      "text": "Gesunde Ernährung ist bewusstes Nähren. Was du isst, wird zu dir – wähle mit Achtsamkeit."
     },
     "#B126": {
       "label": "Sport-Fitness",
       "frage": "Wie wichtig ist Ihnen Sport-Fitness?",
-      "karte": "Adventure",
-      "text": "Dieses Bedürfnis spiegelt einen inneren Ruf nach Tiefe. Die Karte weist dich auf den Punkt hin, an dem äußeres Handeln aus innerer Klarheit entsteht."
+      "karte": "Totality",
+      "text": "Sport und Fitness leben von Totalität. Gib dich ganz – und der Körper antwortet mit Vitalität."
     },
     "#B127": {
       "label": "Finanzielle-Unabhängigkeit",
       "frage": "Wie wichtig ist Ihnen Finanzielle-Unabhängigkeit?",
-      "karte": "Understanding",
-      "text": "Dieses Bedürfnis spiegelt einen inneren Ruf nach Tiefe. Die Karte weist dich auf den Punkt hin, an dem äußeres Handeln aus innerer Klarheit entsteht."
+      "karte": "Abundance",
+      "text": "Finanzielle Unabhängigkeit ist äußere Fülle als Spiegel innerer Freiheit. Fülle zieht Fülle an."
     },
     "#B128": {
       "label": "Gemeinsame-Finanzen",
       "frage": "Wie wichtig ist Ihnen Gemeinsame-Finanzen?",
-      "karte": "Change",
-      "text": "Dieses Bedürfnis spiegelt einen inneren Ruf nach Tiefe. Die Karte weist dich auf den Punkt hin, an dem äußeres Handeln aus innerer Klarheit entsteht."
+      "karte": "Going With The Flow",
+      "text": "Gemeinsame Finanzen sind geteilter Fluss. Das Geld fließt zwischen euch wie Wasser – natürlich und frei."
     },
     "#B129": {
       "label": "Getrennte-Finanzen",
       "frage": "Wie wichtig ist Ihnen Getrennte-Finanzen?",
       "karte": "Aloneness",
-      "text": "Dieses Bedürfnis spiegelt einen inneren Ruf nach Tiefe. Die Karte weist dich auf den Punkt hin, an dem äußeres Handeln aus innerer Klarheit entsteht."
+      "text": "Getrennte Finanzen ehren die Eigenständigkeit. Jeder trägt seinen Teil – das schafft Klarheit."
     },
     "#B130": {
       "label": "Sparsamkeit",
       "frage": "Wie wichtig ist Ihnen Sparsamkeit?",
-      "karte": "Celebration",
-      "text": "Dieses Bedürfnis spiegelt einen inneren Ruf nach Tiefe. Die Karte weist dich auf den Punkt hin, an dem äußeres Handeln aus innerer Klarheit entsteht."
+      "karte": "Patience",
+      "text": "Sparsamkeit ist geduldiges Hüten. Wie der Bauer seine Saat spart, sparst du für die Zukunft."
     },
     "#B131": {
       "label": "Großzügigkeit",
       "frage": "Wie wichtig ist Ihnen Großzügigkeit?",
-      "karte": "Rebirth",
-      "text": "Dieses Bedürfnis spiegelt einen inneren Ruf nach Tiefe. Die Karte weist dich auf den Punkt hin, an dem äußeres Handeln aus innerer Klarheit entsteht."
+      "karte": "Sharing",
+      "text": "Großzügigkeit ist Fülle, die überfließt. Wer aus der Quelle lebt, kann nicht anders als geben."
     },
     "#B132": {
       "label": "Vermögensaufbau",
       "frage": "Wie wichtig ist Ihnen Vermögensaufbau?",
-      "karte": "Integration",
-      "text": "Dieses Bedürfnis spiegelt einen inneren Ruf nach Tiefe. Die Karte weist dich auf den Punkt hin, an dem äußeres Handeln aus innerer Klarheit entsteht."
+      "karte": "Abundance",
+      "text": "Vermögensaufbau ist materielle Fülle schaffen. Doch vergiss nicht: Wahrer Reichtum ist innen."
     },
     "#B133": {
       "label": "Minimalismus",
       "frage": "Wie wichtig ist Ihnen Minimalismus?",
-      "karte": "The Master",
-      "text": "Dieses Bedürfnis spiegelt einen inneren Ruf nach Tiefe. Die Karte weist dich auf den Punkt hin, an dem äußeres Handeln aus innerer Klarheit entsteht."
+      "karte": "No-Thingness",
+      "text": "Minimalismus ist die Kunst der Leere. Weniger Dinge, mehr Raum – mehr Raum, mehr Freiheit."
     },
     "#B134": {
       "label": "Berufliche-Erfüllung",
       "frage": "Wie wichtig ist Ihnen Berufliche-Erfüllung?",
-      "karte": "The Master",
-      "text": "Dieses Bedürfnis spiegelt einen inneren Ruf nach Tiefe. Die Karte weist dich auf den Punkt hin, an dem äußeres Handeln aus innerer Klarheit entsteht."
+      "karte": "The Creator",
+      "text": "Berufliche Erfüllung ist Schöpfung im Alltag. Wenn Arbeit Ausdruck deines Wesens wird, ist sie Berufung."
     },
     "#B135": {
       "label": "Arbeit-als-Mittel",
       "frage": "Wie wichtig ist Ihnen Arbeit-als-Mittel?",
-      "karte": "Creativity",
-      "text": "Dieses Bedürfnis spiegelt einen inneren Ruf nach Tiefe. Die Karte weist dich auf den Punkt hin, an dem äußeres Handeln aus innerer Klarheit entsteht."
+      "karte": "Ordinariness",
+      "text": "Arbeit als Mittel sieht das Gewöhnliche nüchtern. Arbeit ist Werkzeug, nicht Identität."
     },
     "#B136": {
       "label": "Selbstständigkeit",
       "frage": "Wie wichtig ist Ihnen Selbstständigkeit?",
-      "karte": "Understanding",
-      "text": "Dieses Bedürfnis spiegelt einen inneren Ruf nach Tiefe. Die Karte weist dich auf den Punkt hin, an dem äußeres Handeln aus innerer Klarheit entsteht."
+      "karte": "The Rebel",
+      "text": "Selbstständigkeit ist der Weg des Rebellen in der Arbeitswelt. Du erschaffst nach deinen Regeln."
     },
     "#B137": {
       "label": "Angestellten-Dasein",
       "frage": "Wie wichtig ist Ihnen Angestellten-Dasein?",
-      "karte": "Understanding",
-      "text": "Dieses Bedürfnis spiegelt einen inneren Ruf nach Tiefe. Die Karte weist dich auf den Punkt hin, an dem äußeres Handeln aus innerer Klarheit entsteht."
+      "karte": "Participation",
+      "text": "Angestellt sein ist Teilnahme an etwas Größerem. Du bringst dich ein in ein gemeinsames Werk."
     },
     "#B138": {
       "label": "Führungsposition",
       "frage": "Wie wichtig ist Ihnen Führungsposition?",
-      "karte": "Awareness",
-      "text": "Dieses Bedürfnis spiegelt einen inneren Ruf nach Tiefe. Die Karte weist dich auf den Punkt hin, an dem äußeres Handeln aus innerer Klarheit entsteht."
+      "karte": "Guidance",
+      "text": "Führung ist Dienst, nicht Herrschaft. Der wahre Führer weist den Weg, den er selbst geht."
     },
     "#B139": {
       "label": "Team-Arbeit",
       "frage": "Wie wichtig ist Ihnen Team-Arbeit?",
-      "karte": "Awareness",
-      "text": "Dieses Bedürfnis spiegelt einen inneren Ruf nach Tiefe. Die Karte weist dich auf den Punkt hin, an dem äußeres Handeln aus innerer Klarheit entsteht."
+      "karte": "Participation",
+      "text": "Teamarbeit ist choreographierte Teilnahme. Jeder tanzt seinen Part, und gemeinsam entsteht das Ganze."
     },
     "#B140": {
       "label": "Home-Office",
       "frage": "Wie wichtig ist Ihnen Home-Office?",
-      "karte": "The Master",
-      "text": "Dieses Bedürfnis spiegelt einen inneren Ruf nach Tiefe. Die Karte weist dich auf den Punkt hin, an dem äußeres Handeln aus innerer Klarheit entsteht."
+      "karte": "Aloneness",
+      "text": "Home-Office vereint Arbeit und Alleinsein. Im eigenen Raum findest du deinen eigenen Rhythmus."
     },
     "#B141": {
       "label": "Büro-Präsenz",
       "frage": "Wie wichtig ist Ihnen Büro-Präsenz?",
-      "karte": "Integration",
-      "text": "Dieses Bedürfnis spiegelt einen inneren Ruf nach Tiefe. Die Karte weist dich auf den Punkt hin, an dem äußeres Handeln aus innerer Klarheit entsteht."
+      "karte": "Participation",
+      "text": "Büro-Präsenz ist physische Teilnahme. Manche Energie entsteht nur, wenn Menschen zusammen sind."
     },
     "#B142": {
       "label": "Flexible-Arbeitszeit",
       "frage": "Wie wichtig ist Ihnen Flexible-Arbeitszeit?",
-      "karte": "Aloneness",
-      "text": "Dieses Bedürfnis spiegelt einen inneren Ruf nach Tiefe. Die Karte weist dich auf den Punkt hin, an dem äußeres Handeln aus innerer Klarheit entsteht."
+      "karte": "Going With The Flow",
+      "text": "Flexible Arbeitszeit ist Arbeit im Fluss. Du passt dich dem Rhythmus des Lebens an, nicht umgekehrt."
     },
     "#B143": {
       "label": "Feste-Strukturen",
       "frage": "Wie wichtig ist Ihnen Feste-Strukturen?",
-      "karte": "Courage",
-      "text": "Dieses Bedürfnis spiegelt einen inneren Ruf nach Tiefe. Die Karte weist dich auf den Punkt hin, an dem äußeres Handeln aus innerer Klarheit entsteht."
+      "karte": "Maturity",
+      "text": "Feste Strukturen geben dem Leben Form. Die reife Seele schätzt den Rahmen, der Halt gibt."
     },
     "#B144": {
       "label": "Weiterbildung",
       "frage": "Wie wichtig ist Ihnen Weiterbildung?",
-      "karte": "Creativity",
-      "text": "Dieses Bedürfnis spiegelt einen inneren Ruf nach Tiefe. Die Karte weist dich auf den Punkt hin, an dem äußeres Handeln aus innerer Klarheit entsteht."
+      "karte": "Understanding",
+      "text": "Weiterbildung ist der Weg des ewigen Schülers. Wer aufhört zu lernen, hört auf zu wachsen."
     },
     "#B145": {
       "label": "Ruhestand-Planung",
       "frage": "Wie wichtig ist Ihnen Ruhestand-Planung?",
-      "karte": "Change",
-      "text": "Dieses Bedürfnis spiegelt einen inneren Ruf nach Tiefe. Die Karte weist dich auf den Punkt hin, an dem äußeres Handeln aus innerer Klarheit entsteht."
+      "karte": "Patience",
+      "text": "Ruhestand planen heißt, geduldig in die Zukunft säen. Die Ernte wird kommen – zur rechten Zeit."
     },
     "#B146": {
       "label": "Sabbatical",
       "frage": "Wie wichtig ist Ihnen Sabbatical?",
-      "karte": "Creativity",
-      "text": "Dieses Bedürfnis spiegelt einen inneren Ruf nach Tiefe. Die Karte weist dich auf den Punkt hin, an dem äußeres Handeln aus innerer Klarheit entsteht."
+      "karte": "Turning In",
+      "text": "Ein Sabbatical ist eine Zeit des Nach-innen-Wendens. Der äußere Stopp ermöglicht innere Bewegung."
     },
     "#B147": {
       "label": "Risiko-Bereitschaft",
       "frage": "Wie wichtig ist Ihnen Risiko-Bereitschaft?",
       "karte": "Adventure",
-      "text": "Dieses Bedürfnis spiegelt einen inneren Ruf nach Tiefe. Die Karte weist dich auf den Punkt hin, an dem äußeres Handeln aus innerer Klarheit entsteht."
+      "text": "Risikobereitschaft ist der Mut zum Abenteuer. Wer nie springt, erfährt nie, dass er fliegen kann."
     },
     "#B148": {
       "label": "Sicherheits-Orientierung",
       "frage": "Wie wichtig ist Ihnen Sicherheits-Orientierung?",
-      "karte": "Silence",
-      "text": "Dieses Bedürfnis spiegelt einen inneren Ruf nach Tiefe. Die Karte weist dich auf den Punkt hin, an dem äußeres Handeln aus innerer Klarheit entsteht."
+      "karte": "Protection",
+      "text": "Sicherheitsorientierung ist weiser Schutz. Manchmal ist Vorsicht die mutigste Entscheidung."
     },
     "#B149": {
       "label": "Täglicher-Austausch",
       "frage": "Wie wichtig ist Ihnen Täglicher-Austausch?",
-      "karte": "The Master",
-      "text": "Dieses Bedürfnis spiegelt einen inneren Ruf nach Tiefe. Die Karte weist dich auf den Punkt hin, an dem äußeres Handeln aus innerer Klarheit entsteht."
+      "karte": "Friendliness",
+      "text": "Täglicher Austausch ist gelebte Freundlichkeit. Kleine Worte weben das Netz der Verbundenheit."
     },
     "#B150": {
       "label": "Qualitäts-Zeit",
       "frage": "Wie wichtig ist Ihnen Qualitäts-Zeit?",
-      "karte": "We Are the World",
-      "text": "Dieses Bedürfnis spiegelt einen inneren Ruf nach Tiefe. Die Karte weist dich auf den Punkt hin, an dem äußeres Handeln aus innerer Klarheit entsteht."
+      "karte": "Moment to Moment",
+      "text": "Qualitätszeit ist präsente Zeit. Nicht die Menge zählt, sondern die Tiefe jedes Moments."
     },
     "#B151": {
       "label": "Tiefgehende-Gespräche",
       "frage": "Wie wichtig ist Ihnen Tiefgehende-Gespräche?",
-      "karte": "Ripeness",
-      "text": "Dieses Bedürfnis spiegelt einen inneren Ruf nach Tiefe. Die Karte weist dich auf den Punkt hin, an dem äußeres Handeln aus innerer Klarheit entsteht."
+      "karte": "Understanding",
+      "text": "Tiefgehende Gespräche führen zum Verstehen. Worte werden zu Brücken zwischen Seelen."
     },
     "#B152": {
       "label": "Leichte-Unterhaltung",
       "frage": "Wie wichtig ist Ihnen Leichte-Unterhaltung?",
-      "karte": "Integration",
-      "text": "Dieses Bedürfnis spiegelt einen inneren Ruf nach Tiefe. Die Karte weist dich auf den Punkt hin, an dem äußeres Handeln aus innerer Klarheit entsteht."
+      "karte": "Playfulness",
+      "text": "Leichte Unterhaltung ist spielerisches Sein. Nicht alles muss tief sein – manchmal reicht ein Lächeln."
     },
     "#B153": {
       "label": "Emotionale-Offenheit",
       "frage": "Wie wichtig ist Ihnen Emotionale-Offenheit?",
-      "karte": "Trust",
-      "text": "Dieses Bedürfnis spiegelt einen inneren Ruf nach Tiefe. Die Karte weist dich auf den Punkt hin, an dem äußeres Handeln aus innerer Klarheit entsteht."
+      "karte": "Receptivity",
+      "text": "Emotionale Offenheit ist empfängliches Herz. Der Kelch ist leer – bereit, gefüllt zu werden."
     },
     "#B154": {
       "label": "Sachliche-Kommunikation",
       "frage": "Wie wichtig ist Ihnen Sachliche-Kommunikation?",
-      "karte": "Understanding",
-      "text": "Dieses Bedürfnis spiegelt einen inneren Ruf nach Tiefe. Die Karte weist dich auf den Punkt hin, an dem äußeres Handeln aus innerer Klarheit entsteht."
+      "karte": "Consciousness",
+      "text": "Sachliche Kommunikation ist klares Bewusstsein. Gedanken werden präzise ausgedrückt."
     },
     "#B155": {
       "label": "Konflikt-Ansprechen",
       "frage": "Wie wichtig ist Ihnen Konflikt-Ansprechen?",
-      "karte": "Courage",
-      "text": "Dieses Bedürfnis spiegelt einen inneren Ruf nach Tiefe. Die Karte weist dich auf den Punkt hin, an dem äußeres Handeln aus innerer Klarheit entsteht."
+      "karte": "Breakthrough",
+      "text": "Konflikte ansprechen führt zum Durchbruch. Was ausgesprochen wird, kann heilen."
     },
     "#B156": {
       "label": "Harmonie-Bewahren",
       "frage": "Wie wichtig ist Ihnen Harmonie-Bewahren?",
-      "karte": "Integration",
-      "text": "Dieses Bedürfnis spiegelt einen inneren Ruf nach Tiefe. Die Karte weist dich auf den Punkt hin, an dem äußeres Handeln aus innerer Klarheit entsteht."
+      "karte": "Harmony",
+      "text": "Harmonie bewahren ist eine Kunst. Doch wahre Harmonie entsteht nicht durch Vermeidung, sondern durch Integration."
     },
     "#B157": {
       "label": "Direkte-Kommunikation",
       "frage": "Wie wichtig ist Ihnen Direkte-Kommunikation?",
-      "karte": "Integration",
-      "text": "Dieses Bedürfnis spiegelt einen inneren Ruf nach Tiefe. Die Karte weist dich auf den Punkt hin, an dem äußeres Handeln aus innerer Klarheit entsteht."
+      "karte": "Courage",
+      "text": "Direkte Kommunikation erfordert Mut. Die Wahrheit auszusprechen ist ein Akt der Liebe."
     },
     "#B158": {
       "label": "Diplomatische-Kommunikation",
       "frage": "Wie wichtig ist Ihnen Diplomatische-Kommunikation?",
-      "karte": "Trust",
-      "text": "Dieses Bedürfnis spiegelt einen inneren Ruf nach Tiefe. Die Karte weist dich auf den Punkt hin, an dem äußeres Handeln aus innerer Klarheit entsteht."
+      "karte": "Receptivity",
+      "text": "Diplomatische Kommunikation ist empfänglich für den anderen. Worte werden gewählt, um zu verbinden."
     },
     "#B159": {
       "label": "Feedback-Kultur",
       "frage": "Wie wichtig ist Ihnen Feedback-Kultur?",
-      "karte": "Integration",
-      "text": "Dieses Bedürfnis spiegelt einen inneren Ruf nach Tiefe. Die Karte weist dich auf den Punkt hin, an dem äußeres Handeln aus innerer Klarheit entsteht."
+      "karte": "Understanding",
+      "text": "Feedback ist gegenseitiges Verstehen. Jede Rückmeldung ist ein Geschenk – wenn sie gehört wird."
     },
     "#B160": {
       "label": "Nonverbale-Kommunikation",
       "frage": "Wie wichtig ist Ihnen Nonverbale-Kommunikation?",
-      "karte": "The Lovers",
-      "text": "Dieses Bedürfnis spiegelt einen inneren Ruf nach Tiefe. Die Karte weist dich auf den Punkt hin, an dem äußeres Handeln aus innerer Klarheit entsteht."
+      "karte": "Silence",
+      "text": "Nonverbale Kommunikation spricht in der Stille. Der Körper sagt, was Worte nicht können."
     },
     "#B161": {
       "label": "Aktives-Zuhören",
       "frage": "Wie wichtig ist Ihnen Aktives-Zuhören?",
-      "karte": "The Master",
-      "text": "Dieses Bedürfnis spiegelt einen inneren Ruf nach Tiefe. Die Karte weist dich auf den Punkt hin, an dem äußeres Handeln aus innerer Klarheit entsteht."
+      "karte": "Receptivity",
+      "text": "Aktives Zuhören ist empfängliche Präsenz. Du hörst nicht nur Worte – du hörst das Herz dahinter."
     },
     "#B162": {
       "label": "Humor-im-Gespräch",
       "frage": "Wie wichtig ist Ihnen Humor-im-Gespräch?",
       "karte": "Celebration",
-      "text": "Dieses Bedürfnis spiegelt einen inneren Ruf nach Tiefe. Die Karte weist dich auf den Punkt hin, an dem äußeres Handeln aus innerer Klarheit entsteht."
+      "text": "Humor im Gespräch ist eine kleine Feier. Gemeinsames Lachen verbindet tiefer als viele Worte."
     },
     "#B163": {
       "label": "Ernsthaftigkeit",
       "frage": "Wie wichtig ist Ihnen Ernsthaftigkeit?",
-      "karte": "Completion",
-      "text": "Dieses Bedürfnis spiegelt einen inneren Ruf nach Tiefe. Die Karte weist dich auf den Punkt hin, an dem äußeres Handeln aus innerer Klarheit entsteht."
+      "karte": "Maturity",
+      "text": "Ernsthaftigkeit ist reife Präsenz. Manche Themen verdienen die Tiefe ungeteilter Aufmerksamkeit."
     },
     "#B164": {
       "label": "Spontane-Gespräche",
       "frage": "Wie wichtig ist Ihnen Spontane-Gespräche?",
-      "karte": "Adventure",
-      "text": "Dieses Bedürfnis spiegelt einen inneren Ruf nach Tiefe. Die Karte weist dich auf den Punkt hin, an dem äußeres Handeln aus innerer Klarheit entsteht."
+      "karte": "Playfulness",
+      "text": "Spontane Gespräche sind spielerischer Austausch. Ungeplante Momente tragen oft die größte Magie."
     },
     "#B165": {
       "label": "Geplante-Gespräche",
       "frage": "Wie wichtig ist Ihnen Geplante-Gespräche?",
-      "karte": "Rebirth",
-      "text": "Dieses Bedürfnis spiegelt einen inneren Ruf nach Tiefe. Die Karte weist dich auf den Punkt hin, an dem äußeres Handeln aus innerer Klarheit entsteht."
+      "karte": "Guidance",
+      "text": "Geplante Gespräche geben Raum für Wichtiges. Manche Themen brauchen einen geschützten Rahmen."
     },
     "#B166": {
       "label": "Schriftliche-Kommunikation",
       "frage": "Wie wichtig ist Ihnen Schriftliche-Kommunikation?",
-      "karte": "Understanding",
-      "text": "Dieses Bedürfnis spiegelt einen inneren Ruf nach Tiefe. Die Karte weist dich auf den Punkt hin, an dem äußeres Handeln aus innerer Klarheit entsteht."
+      "karte": "Consciousness",
+      "text": "Schriftliche Kommunikation ist reflektiertes Bewusstsein. Das geschriebene Wort wiegt schwerer."
     },
     "#B167": {
       "label": "Mündliche-Kommunikation",
       "frage": "Wie wichtig ist Ihnen Mündliche-Kommunikation?",
-      "karte": "Rebirth",
-      "text": "Dieses Bedürfnis spiegelt einen inneren Ruf nach Tiefe. Die Karte weist dich auf den Punkt hin, an dem äußeres Handeln aus innerer Klarheit entsteht."
+      "karte": "Experiencing",
+      "text": "Mündliche Kommunikation ist lebendige Erfahrung. Die Stimme trägt mehr als nur Worte."
     },
     "#B168": {
       "label": "Gemeinsam-Entscheiden",
       "frage": "Wie wichtig ist Ihnen Gemeinsam-Entscheiden?",
-      "karte": "Integration",
-      "text": "Dieses Bedürfnis spiegelt einen inneren Ruf nach Tiefe. Die Karte weist dich auf den Punkt hin, an dem äußeres Handeln aus innerer Klarheit entsteht."
+      "karte": "The Lovers",
+      "text": "Gemeinsam entscheiden ist die Kunst der Liebenden. Zwei Stimmen finden eine gemeinsame Melodie."
     },
     "#B169": {
       "label": "Eigenständige-Entscheidungen",
       "frage": "Wie wichtig ist Ihnen Eigenständige-Entscheidungen?",
-      "karte": "Transformation",
-      "text": "Dieses Bedürfnis spiegelt einen inneren Ruf nach Tiefe. Die Karte weist dich auf den Punkt hin, an dem äußeres Handeln aus innerer Klarheit entsteht."
+      "karte": "The Rebel",
+      "text": "Eigenständige Entscheidungen sind der Weg des Rebellen. Du wählst nach deiner eigenen Wahrheit."
     },
     "#B170": {
       "label": "Kompromiss-Bereitschaft",
       "frage": "Wie wichtig ist Ihnen Kompromiss-Bereitschaft?",
-      "karte": "Ripeness",
-      "text": "Dieses Bedürfnis spiegelt einen inneren Ruf nach Tiefe. Die Karte weist dich auf den Punkt hin, an dem äußeres Handeln aus innerer Klarheit entsteht."
+      "karte": "Compromise",
+      "text": "Kompromiss ist eine Kunst. Doch unterscheide zwischen weiser Flexibilität und Selbstverrat."
     },
     "#B171": {
       "label": "Klare-Standpunkte",
       "frage": "Wie wichtig ist Ihnen Klare-Standpunkte?",
-      "karte": "Celebration",
-      "text": "Dieses Bedürfnis spiegelt einen inneren Ruf nach Tiefe. Die Karte weist dich auf den Punkt hin, an dem äußeres Handeln aus innerer Klarheit entsteht."
+      "karte": "Courage",
+      "text": "Klare Standpunkte erfordern Mut. Zu wissen, wofür du stehst, ist der Anker in stürmischen Zeiten."
     },
     "#B172": {
       "label": "Emotionale-Unterstützung",
       "frage": "Wie wichtig ist Ihnen Emotionale-Unterstützung?",
       "karte": "Healing",
-      "text": "Dieses Bedürfnis spiegelt einen inneren Ruf nach Tiefe. Die Karte weist dich auf den Punkt hin, an dem äußeres Handeln aus innerer Klarheit entsteht."
+      "text": "Emotionale Unterstützung ist heilende Präsenz. Manchmal reicht es, da zu sein – ohne Worte."
     },
     "#B173": {
       "label": "Praktische-Unterstützung",
       "frage": "Wie wichtig ist Ihnen Praktische-Unterstützung?",
-      "karte": "Courage",
-      "text": "Dieses Bedürfnis spiegelt einen inneren Ruf nach Tiefe. Die Karte weist dich auf den Punkt hin, an dem äußeres Handeln aus innerer Klarheit entsteht."
+      "karte": "Abundance",
+      "text": "Praktische Unterstützung ist Fülle in Aktion. Helfende Hände zeigen Liebe durch Taten."
     },
     "#B174": {
       "label": "Regelmäßige-Check-Ins",
       "frage": "Wie wichtig ist Ihnen Regelmäßige-Check-Ins?",
-      "karte": "Adventure",
-      "text": "Dieses Bedürfnis spiegelt einen inneren Ruf nach Tiefe. Die Karte weist dich auf den Punkt hin, an dem äußeres Handeln aus innerer Klarheit entsteht."
+      "karte": "Awareness",
+      "text": "Regelmäßige Check-Ins sind bewusste Aufmerksamkeit. Sie halten den Finger am Puls der Beziehung."
     },
     "#B175": {
       "label": "Beziehungs-Reflexion",
       "frage": "Wie wichtig ist Ihnen Beziehungs-Reflexion?",
-      "karte": "Ripeness",
-      "text": "Dieses Bedürfnis spiegelt einen inneren Ruf nach Tiefe. Die Karte weist dich auf den Punkt hin, an dem äußeres Handeln aus innerer Klarheit entsteht."
+      "karte": "New Vision",
+      "text": "Beziehungs-Reflexion bringt neue Sicht. Innehalten und schauen zeigt, wo ihr wirklich steht."
     },
     "#B176": {
       "label": "Natürlicher-Flow",
       "frage": "Wie wichtig ist Ihnen Natürlicher-Flow?",
-      "karte": "Friendliness",
-      "text": "Dieses Bedürfnis spiegelt einen inneren Ruf nach Tiefe. Die Karte weist dich auf den Punkt hin, an dem äußeres Handeln aus innerer Klarheit entsteht."
+      "karte": "Going With The Flow",
+      "text": "Natürlicher Flow ist müheloses Fließen. Wenn ihr nicht mehr kämpft, trägt euch der Strom."
     },
     "#B177": {
       "label": "Soziale-Energie",
       "frage": "Wie wichtig ist Ihnen Soziale-Energie?",
-      "karte": "Friendliness",
-      "text": "Dieses Bedürfnis spiegelt einen inneren Ruf nach Tiefe. Die Karte weist dich auf den Punkt hin, an dem äußeres Handeln aus innerer Klarheit entsteht."
+      "karte": "Experiencing",
+      "text": "Soziale Energie ist lebendige Erfahrung mit anderen. Manche Menschen laden dich auf – suche sie."
     },
     "#B178": {
       "label": "Geselligkeit",
       "frage": "Wie wichtig ist Ihnen Geselligkeit?",
-      "karte": "We Are the World",
-      "text": "Dieses Bedürfnis spiegelt einen inneren Ruf nach Tiefe. Die Karte weist dich auf den Punkt hin, an dem äußeres Handeln aus innerer Klarheit entsteht."
+      "karte": "Celebration",
+      "text": "Geselligkeit ist gemeinsames Feiern des Lebens. Menschen zusammen – das ist schon ein Fest."
     },
     "#B179": {
       "label": "Ruhe-von-Menschen",
       "frage": "Wie wichtig ist Ihnen Ruhe-von-Menschen?",
-      "karte": "Adventure",
-      "text": "Dieses Bedürfnis spiegelt einen inneren Ruf nach Tiefe. Die Karte weist dich auf den Punkt hin, an dem äußeres Handeln aus innerer Klarheit entsteht."
+      "karte": "Aloneness",
+      "text": "Ruhe von Menschen ist heilsames Alleinsein. Die Stille nach dem Trubel ist ein Geschenk."
     },
     "#B180": {
       "label": "Freunde-pflegen",
       "frage": "Wie wichtig ist Ihnen Freunde-pflegen?",
-      "karte": "Understanding",
-      "text": "Dieses Bedürfnis spiegelt einen inneren Ruf nach Tiefe. Die Karte weist dich auf den Punkt hin, an dem äußeres Handeln aus innerer Klarheit entsteht."
+      "karte": "Friendliness",
+      "text": "Freunde pflegen ist Freundlichkeit als Praxis. Beziehungen brauchen Aufmerksamkeit, um zu blühen."
     },
     "#B181": {
       "label": "Paar-Zeit-Fokus",
       "frage": "Wie wichtig ist Ihnen Paar-Zeit-Fokus?",
-      "karte": "Awareness",
-      "text": "Dieses Bedürfnis spiegelt einen inneren Ruf nach Tiefe. Die Karte weist dich auf den Punkt hin, an dem äußeres Handeln aus innerer Klarheit entsteht."
+      "karte": "The Lovers",
+      "text": "Paar-Zeit ist exklusive Zeit der Liebenden. In diesem Raum seid nur ihr zwei – und das ist heilig."
     },
     "#B182": {
       "label": "Gemeinsame-Freunde",
       "frage": "Wie wichtig ist Ihnen Gemeinsame-Freunde?",
-      "karte": "Understanding",
-      "text": "Dieses Bedürfnis spiegelt einen inneren Ruf nach Tiefe. Die Karte weist dich auf den Punkt hin, an dem äußeres Handeln aus innerer Klarheit entsteht."
+      "karte": "We Are the World",
+      "text": "Gemeinsame Freunde erweitern eure Welt. Der Kreis wird größer, die Verbundenheit tiefer."
     },
     "#B183": {
       "label": "Eigene-Freunde",
       "frage": "Wie wichtig ist Ihnen Eigene-Freunde?",
-      "karte": "We Are the World",
-      "text": "Dieses Bedürfnis spiegelt einen inneren Ruf nach Tiefe. Die Karte weist dich auf den Punkt hin, an dem äußeres Handeln aus innerer Klarheit entsteht."
+      "karte": "Aloneness",
+      "text": "Eigene Freunde sind Räume des Individuellen. Nicht alles muss geteilt werden – manches gehört nur dir."
     },
     "#B184": {
       "label": "Familie-treffen",
       "frage": "Wie wichtig ist Ihnen Familie-treffen?",
-      "karte": "Healing",
-      "text": "Dieses Bedürfnis spiegelt einen inneren Ruf nach Tiefe. Die Karte weist dich auf den Punkt hin, an dem äußeres Handeln aus innerer Klarheit entsteht."
+      "karte": "We Are the World",
+      "text": "Familientreffen verbinden mit deinen Wurzeln. Du bist Teil eines größeren Stroms des Lebens."
     },
     "#B185": {
       "label": "Familie-Distanz",
       "frage": "Wie wichtig ist Ihnen Familie-Distanz?",
-      "karte": "We Are the World",
-      "text": "Dieses Bedürfnis spiegelt einen inneren Ruf nach Tiefe. Die Karte weist dich auf den Punkt hin, an dem äußeres Handeln aus innerer Klarheit entsteht."
+      "karte": "Aloneness",
+      "text": "Distanz zur Familie kann heilsam sein. Manchmal brauchst du Raum, um dich selbst zu finden."
     },
     "#B186": {
       "label": "Partys-Events",
       "frage": "Wie wichtig ist Ihnen Partys-Events?",
-      "karte": "The Lovers",
-      "text": "Dieses Bedürfnis spiegelt einen inneren Ruf nach Tiefe. Die Karte weist dich auf den Punkt hin, an dem äußeres Handeln aus innerer Klarheit entsteht."
+      "karte": "Celebration",
+      "text": "Partys und Events sind kollektive Feiern. Die Energie vieler Menschen verstärkt die Freude."
     },
     "#B187": {
       "label": "Ruhige-Abende",
       "frage": "Wie wichtig ist Ihnen Ruhige-Abende?",
-      "karte": "Trust",
-      "text": "Dieses Bedürfnis spiegelt einen inneren Ruf nach Tiefe. Die Karte weist dich auf den Punkt hin, an dem äußeres Handeln aus innerer Klarheit entsteht."
+      "karte": "Silence",
+      "text": "Ruhige Abende sind Oasen der Stille. Im Schweigen des Abends findest du dich wieder."
     },
     "#B188": {
       "label": "Neue-Leute-treffen",
       "frage": "Wie wichtig ist Ihnen Neue-Leute-treffen?",
-      "karte": "Integration",
-      "text": "Dieses Bedürfnis spiegelt einen inneren Ruf nach Tiefe. Die Karte weist dich auf den Punkt hin, an dem äußeres Handeln aus innerer Klarheit entsteht."
+      "karte": "Adventure",
+      "text": "Neue Leute treffen ist ein Abenteuer. Jeder Mensch ist eine Welt – warte auf die Entdeckung."
     },
     "#B189": {
       "label": "Vertrauter-Kreis",
       "frage": "Wie wichtig ist Ihnen Vertrauter-Kreis?",
-      "karte": "Ripeness",
-      "text": "Dieses Bedürfnis spiegelt einen inneren Ruf nach Tiefe. Die Karte weist dich auf den Punkt hin, an dem äußeres Handeln aus innerer Klarheit entsteht."
+      "karte": "Trust",
+      "text": "Ein vertrauter Kreis ist ein Kreis des Vertrauens. Hier kannst du sein, wer du wirklich bist."
     },
     "#B190": {
       "label": "Allein-Zeit",
       "frage": "Wie wichtig ist Ihnen Allein-Zeit?",
       "karte": "Aloneness",
-      "text": "Dieses Bedürfnis spiegelt einen inneren Ruf nach Tiefe. Die Karte weist dich auf den Punkt hin, an dem äußeres Handeln aus innerer Klarheit entsteht."
+      "text": "Allein-Zeit ist nicht Einsamkeit – sie ist der Raum, in dem du dich selbst wiederfindest."
     },
     "#B191": {
       "label": "Gemeinsam-sein",
       "frage": "Wie wichtig ist Ihnen Gemeinsam-sein?",
-      "karte": "The Master",
-      "text": "Dieses Bedürfnis spiegelt einen inneren Ruf nach Tiefe. Die Karte weist dich auf den Punkt hin, an dem äußeres Handeln aus innerer Klarheit entsteht."
+      "karte": "We Are the World",
+      "text": "Gemeinsam sein ist gelebte Verbundenheit. Nicht allein zu sein ist ein tiefes menschliches Bedürfnis."
     },
     "#B192": {
       "label": "Spontane-Besuche",
       "frage": "Wie wichtig ist Ihnen Spontane-Besuche?",
-      "karte": "Ripeness",
-      "text": "Dieses Bedürfnis spiegelt einen inneren Ruf nach Tiefe. Die Karte weist dich auf den Punkt hin, an dem äußeres Handeln aus innerer Klarheit entsteht."
+      "karte": "Playfulness",
+      "text": "Spontane Besuche sind spielerische Überraschungen. Das Unerwartete bringt Frische ins Leben."
     },
     "#B193": {
       "label": "Geplante-Treffen",
       "frage": "Wie wichtig ist Ihnen Geplante-Treffen?",
-      "karte": "We Are the World",
-      "text": "Dieses Bedürfnis spiegelt einen inneren Ruf nach Tiefe. Die Karte weist dich auf den Punkt hin, an dem äußeres Handeln aus innerer Klarheit entsteht."
+      "karte": "Patience",
+      "text": "Geplante Treffen sind geduldige Vorfreude. Das Warten macht das Wiedersehen süßer."
     },
     "#B194": {
       "label": "Gastgeber-sein",
       "frage": "Wie wichtig ist Ihnen Gastgeber-sein?",
-      "karte": "Healing",
-      "text": "Dieses Bedürfnis spiegelt einen inneren Ruf nach Tiefe. Die Karte weist dich auf den Punkt hin, an dem äußeres Handeln aus innerer Klarheit entsteht."
+      "karte": "Sharing",
+      "text": "Gastgeber sein ist großzügiges Teilen. Du öffnest deinen Raum und dein Herz."
     },
     "#B195": {
       "label": "Gast-sein",
       "frage": "Wie wichtig ist Ihnen Gast-sein?",
-      "karte": "Rebirth",
-      "text": "Dieses Bedürfnis spiegelt einen inneren Ruf nach Tiefe. Die Karte weist dich auf den Punkt hin, an dem äußeres Handeln aus innerer Klarheit entsteht."
+      "karte": "Receptivity",
+      "text": "Gast sein ist empfänglich sein. Du nimmst an, was andere dir anbieten – mit Dankbarkeit."
     },
     "#B196": {
       "label": "Online-Kontakte",
       "frage": "Wie wichtig ist Ihnen Online-Kontakte?",
-      "karte": "Transformation",
-      "text": "Dieses Bedürfnis spiegelt einen inneren Ruf nach Tiefe. Die Karte weist dich auf den Punkt hin, an dem äußeres Handeln aus innerer Klarheit entsteht."
+      "karte": "Possibilities",
+      "text": "Online-Kontakte eröffnen Möglichkeiten. Die digitale Welt verbindet, was Entfernung trennt."
     },
     "#B197": {
       "label": "Persönliche-Treffen",
       "frage": "Wie wichtig ist Ihnen Persönliche-Treffen?",
-      "karte": "Completion",
-      "text": "Dieses Bedürfnis spiegelt einen inneren Ruf nach Tiefe. Die Karte weist dich auf den Punkt hin, an dem äußeres Handeln aus innerer Klarheit entsteht."
+      "karte": "Experiencing",
+      "text": "Persönliche Treffen sind volle Erfahrung. Präsenz von Angesicht zu Angesicht ist unersetzlich."
     },
     "#B198": {
       "label": "Community-Engagement",
       "frage": "Wie wichtig ist Ihnen Community-Engagement?",
-      "karte": "Aloneness",
-      "text": "Dieses Bedürfnis spiegelt einen inneren Ruf nach Tiefe. Die Karte weist dich auf den Punkt hin, an dem äußeres Handeln aus innerer Klarheit entsteht."
+      "karte": "Participation",
+      "text": "Community-Engagement ist aktive Teilnahme am größeren Ganzen. Du gibst zurück, was du empfängst."
     },
     "#B199": {
       "label": "Privat-Leben",
       "frage": "Wie wichtig ist Ihnen Privat-Leben?",
       "karte": "Silence",
-      "text": "Dieses Bedürfnis spiegelt einen inneren Ruf nach Tiefe. Die Karte weist dich auf den Punkt hin, an dem äußeres Handeln aus innerer Klarheit entsteht."
+      "text": "Privatleben ist geschützte Stille. Manches gehört nur dir – und das ist gut so."
     },
     "#B200": {
       "label": "Netzwerken",
       "frage": "Wie wichtig ist Ihnen Netzwerken?",
-      "karte": "Transformation",
-      "text": "Dieses Bedürfnis spiegelt einen inneren Ruf nach Tiefe. Die Karte weist dich auf den Punkt hin, an dem äußeres Handeln aus innerer Klarheit entsteht."
+      "karte": "We Are the World",
+      "text": "Netzwerken webt Verbindungen. Jeder Kontakt ist ein Faden im großen Netz des Lebens."
     },
     "#B201": {
       "label": "Wenige-tiefe-Beziehungen",
       "frage": "Wie wichtig ist Ihnen Wenige-tiefe-Beziehungen?",
-      "karte": "Courage",
-      "text": "Dieses Bedürfnis spiegelt einen inneren Ruf nach Tiefe. Die Karte weist dich auf den Punkt hin, an dem äußeres Handeln aus innerer Klarheit entsteht."
+      "karte": "Intimacy",
+      "text": "Wenige tiefe Beziehungen sind Intimität in Essenz. Qualität über Quantität – das ist der Weg des Herzens."
     },
     "#B202": {
       "label": "Viele-Bekanntschaften",
       "frage": "Wie wichtig ist Ihnen Viele-Bekanntschaften?",
       "karte": "Friendliness",
-      "text": "Dieses Bedürfnis spiegelt einen inneren Ruf nach Tiefe. Die Karte weist dich auf den Punkt hin, an dem äußeres Handeln aus innerer Klarheit entsteht."
+      "text": "Viele Bekanntschaften sind ausgebreitete Freundlichkeit. Ein weites Herz berührt viele Menschen."
     },
     "#B203": {
       "label": "Kulturelle-Events",
       "frage": "Wie wichtig ist Ihnen Kulturelle-Events?",
       "karte": "Creativity",
-      "text": "Dieses Bedürfnis spiegelt einen inneren Ruf nach Tiefe. Die Karte weist dich auf den Punkt hin, an dem äußeres Handeln aus innerer Klarheit entsteht."
+      "text": "Kulturelle Events nähren die Kreativität. Kunst öffnet Türen zu Welten jenseits des Alltags."
     },
     "#B204": {
       "label": "Körpernähe",
       "frage": "Wie wichtig ist Ihnen Körpernähe?",
-      "karte": "Aloneness",
-      "text": "Dieses Bedürfnis spiegelt einen inneren Ruf nach Tiefe. Die Karte weist dich auf den Punkt hin, an dem äußeres Handeln aus innerer Klarheit entsteht."
+      "karte": "Touch",
+      "text": "Körpernähe ist die Sprache der Berührung. Der Körper sehnt sich nach Kontakt – er ist dafür gemacht."
     },
     "#B205": {
       "label": "Kuscheln",
       "frage": "Wie wichtig ist Ihnen Kuscheln?",
-      "karte": "Celebration",
-      "text": "Dieses Bedürfnis spiegelt einen inneren Ruf nach Tiefe. Die Karte weist dich auf den Punkt hin, an dem äußeres Handeln aus innerer Klarheit entsteht."
+      "karte": "Warmth",
+      "text": "Kuscheln ist Wärme ohne Worte. In der Nähe eines anderen Körpers schmelzen die Grenzen."
     },
     "#B206": {
       "label": "Physische-Distanz",
       "frage": "Wie wichtig ist Ihnen Physische-Distanz?",
-      "karte": "Integration",
-      "text": "Dieses Bedürfnis spiegelt einen inneren Ruf nach Tiefe. Die Karte weist dich auf den Punkt hin, an dem äußeres Handeln aus innerer Klarheit entsteht."
+      "karte": "Aloneness",
+      "text": "Physische Distanz schafft Raum zum Atmen. Manchmal braucht der Körper seine eigene Zone."
     },
     "#B207": {
       "label": "Körperkontakt",
       "frage": "Wie wichtig ist Ihnen Körperkontakt?",
-      "karte": "Integration",
-      "text": "Dieses Bedürfnis spiegelt einen inneren Ruf nach Tiefe. Die Karte weist dich auf den Punkt hin, an dem äußeres Handeln aus innerer Klarheit entsteht."
+      "karte": "Touch",
+      "text": "Körperkontakt ist ursprüngliche Kommunikation. Die Haut ist das größte Sinnesorgan – nutze es."
     },
     "#B208": {
       "label": "Umarmungen",
       "frage": "Wie wichtig ist Ihnen Umarmungen?",
-      "karte": "Silence",
-      "text": "Dieses Bedürfnis spiegelt einen inneren Ruf nach Tiefe. Die Karte weist dich auf den Punkt hin, an dem äußeres Handeln aus innerer Klarheit entsteht."
+      "karte": "Love",
+      "text": "Umarmungen sind Liebe in Aktion. Ein Arm um den anderen sagt mehr als tausend Worte."
     },
     "#B209": {
       "label": "Schmerzerleben",
       "frage": "Wie wichtig ist Ihnen Schmerzerleben?",
-      "karte": "Adventure",
-      "text": "Dieses Bedürfnis spiegelt einen inneren Ruf nach Tiefe. Die Karte weist dich auf den Punkt hin, an dem äußeres Handeln aus innerer Klarheit entsteht."
+      "karte": "Transformation",
+      "text": "Bewusstes Schmerzerleben kann transformieren. Durch das Feuer gehend, wirst du gereinigt."
     },
     "#B210": {
       "label": "Schmerz-geben",
       "frage": "Wie wichtig ist Ihnen Schmerz-geben?",
-      "karte": "Celebration",
-      "text": "Dieses Bedürfnis spiegelt einen inneren Ruf nach Tiefe. Die Karte weist dich auf den Punkt hin, an dem äußeres Handeln aus innerer Klarheit entsteht."
+      "karte": "Intensity",
+      "text": "Schmerz geben in bewusstem Rahmen ist Intensität als Geschenk. Grenzen werden zu Toren."
     },
     "#B211": {
       "label": "Bondage-erleben",
       "frage": "Wie wichtig ist Ihnen Bondage-erleben?",
-      "karte": "Rebirth",
-      "text": "Dieses Bedürfnis spiegelt einen inneren Ruf nach Tiefe. Die Karte weist dich auf den Punkt hin, an dem äußeres Handeln aus innerer Klarheit entsteht."
+      "karte": "Letting Go",
+      "text": "Bondage erleben ist paradoxe Befreiung. Durch äußere Einschränkung findest du innere Freiheit."
     },
     "#B212": {
       "label": "Bondage-geben",
       "frage": "Wie wichtig ist Ihnen Bondage-geben?",
-      "karte": "Adventure",
-      "text": "Dieses Bedürfnis spiegelt einen inneren Ruf nach Tiefe. Die Karte weist dich auf den Punkt hin, an dem äußeres Handeln aus innerer Klarheit entsteht."
+      "karte": "The Creator",
+      "text": "Bondage geben ist kreatives Halten. Du erschaffst einen Raum, in dem der andere sich fallen lassen kann."
     },
     "#B213": {
       "label": "Devotion",
       "frage": "Wie wichtig ist Ihnen Devotion?",
-      "karte": "Transformation",
-      "text": "Dieses Bedürfnis spiegelt einen inneren Ruf nach Tiefe. Die Karte weist dich auf den Punkt hin, an dem äußeres Handeln aus innerer Klarheit entsteht."
+      "karte": "Trust",
+      "text": "Devotion ist tiefes Vertrauen in Hingabe. Du gibst dich einem größeren als dir selbst."
     },
     "#B214": {
       "label": "Anbetung",
       "frage": "Wie wichtig ist Ihnen Anbetung?",
-      "karte": "Adventure",
-      "text": "Dieses Bedürfnis spiegelt einen inneren Ruf nach Tiefe. Die Karte weist dich auf den Punkt hin, an dem äußeres Handeln aus innerer Klarheit entsteht."
+      "karte": "Inner Voice",
+      "text": "Anbetung folgt der inneren Stimme der Ehrfurcht. Das Göttliche im anderen zu sehen ist heilig."
     },
     "#B215": {
       "label": "Demütig-sein",
       "frage": "Wie wichtig ist Ihnen Demütig-sein?",
-      "karte": "Integration",
-      "text": "Dieses Bedürfnis spiegelt einen inneren Ruf nach Tiefe. Die Karte weist dich auf den Punkt hin, an dem äußeres Handeln aus innerer Klarheit entsteht."
+      "karte": "No-Thingness",
+      "text": "Demut ist das Erkennen der eigenen Leere. Im Nichts liegst du zu Füßen des Ganzen."
     },
     "#B216": {
       "label": "Dominieren",
       "frage": "Wie wichtig ist Ihnen Dominieren?",
-      "karte": "The Lovers",
-      "text": "Dieses Bedürfnis spiegelt einen inneren Ruf nach Tiefe. Die Karte weist dich auf den Punkt hin, an dem äußeres Handeln aus innerer Klarheit entsteht."
+      "karte": "The Master",
+      "text": "Dominieren ist Meisterschaft in Verantwortung. Der wahre Meister dient, indem er führt."
     },
     "#B217": {
       "label": "Bestrafung-erhalten",
       "frage": "Wie wichtig ist Ihnen Bestrafung-erhalten?",
-      "karte": "Creativity",
-      "text": "Dieses Bedürfnis spiegelt einen inneren Ruf nach Tiefe. Die Karte weist dich auf den Punkt hin, an dem äußeres Handeln aus innerer Klarheit entsteht."
+      "karte": "Transformation",
+      "text": "Bestrafung im bewussten Kontext ist Transformation. Das Ego stirbt ein wenig, damit du freier wirst."
     },
     "#B218": {
       "label": "Bestrafen",
       "frage": "Wie wichtig ist Ihnen Bestrafen?",
-      "karte": "Rebirth",
-      "text": "Dieses Bedürfnis spiegelt einen inneren Ruf nach Tiefe. Die Karte weist dich auf den Punkt hin, an dem äußeres Handeln aus innerer Klarheit entsteht."
+      "karte": "Guidance",
+      "text": "Bestrafen als bewusste Praxis ist Führung. Der Meister korrigiert mit Liebe, nicht mit Wut."
     },
     "#B219": {
       "label": "Service-Orientierung",
       "frage": "Wie wichtig ist Ihnen Service-Orientierung?",
-      "karte": "Courage",
-      "text": "Dieses Bedürfnis spiegelt einen inneren Ruf nach Tiefe. Die Karte weist dich auf den Punkt hin, an dem äußeres Handeln aus innerer Klarheit entsteht."
+      "karte": "Compassion",
+      "text": "Service ist Mitgefühl in Aktion. Du dienst, weil dein Herz überfließt – nicht aus Pflicht."
     },
     "#B220": {
       "label": "Service-empfangen",
       "frage": "Wie wichtig ist Ihnen Service-empfangen?",
-      "karte": "Trust",
-      "text": "Dieses Bedürfnis spiegelt einen inneren Ruf nach Tiefe. Die Karte weist dich auf den Punkt hin, an dem äußeres Handeln aus innerer Klarheit entsteht."
+      "karte": "Receptivity",
+      "text": "Service empfangen ist empfängliche Demut. Annehmen zu können ist eine eigene Kunst."
     }
   }
 }
