@@ -14893,6 +14893,25 @@
                 ? ResonanzCard.getPersonNeeds(person, archetyp)
                 : null;
 
+            // Lade flatNeeds mit Lock-Status für Anzeige
+            const flatNeedsRaw = window.LoadedArchetypProfile?.[person]?.profileReview?.flatNeeds || [];
+            const lockedNeedsMap = {};
+            if (Array.isArray(flatNeedsRaw)) {
+                flatNeedsRaw.forEach(n => {
+                    if (n.locked && n.id) {
+                        lockedNeedsMap[n.id] = true;
+                    }
+                    if (n.locked && n.stringKey) {
+                        lockedNeedsMap[n.stringKey] = true;
+                    }
+                });
+            }
+
+            // Helper: Prüft ob ein Bedürfnis gesperrt ist
+            const isNeedLocked = (needId, stringKey) => {
+                return lockedNeedsMap[needId] || lockedNeedsMap[stringKey] || false;
+            };
+
             // Helper: Wert aus needs extrahieren (unterstützt id und stringKey lookup)
             const getNeedValue = (needId, stringKey) => {
                 if (!needs) return null;
@@ -14912,7 +14931,9 @@
             // Berechnung durchführen
             let rows = [];
             let totalDiff = 0;
+            let totalDiffTypisch = 0;  // Berechnung NUR mit typischen Werten (ohne gesperrte Überschreibungen)
             let count = 0;
+            let lockedNeedsCount = 0;
 
             for (const needKey in kohaerenz) {
                 if (!kohaerenz.hasOwnProperty(needKey)) continue;
@@ -14937,6 +14958,10 @@
                 // Verwende id UND stringKey für robustes Lookup (wie in NeedsIntegration._getNeedValue)
                 const actualValue = getNeedValue(needId, needKey);
 
+                // Prüfe ob dieses Bedürfnis gesperrt ist
+                const needIsLocked = isNeedLocked(needId, needKey);
+                if (needIsLocked) lockedNeedsCount++;
+
                 if (actualValue !== null && typeof typischValue === 'number') {
                     // Modifikator-Details ZUERST berechnen (für korrekte Abweichung)
                     const modDetails = getModifikatorDetails(needKey);
@@ -14950,6 +14975,11 @@
                     // Abweichung gegen den MODIFIZIERTEN typischen Wert berechnen
                     const diff = Math.abs(actualValue - modifiedTypisch);
                     totalDiff += diff;
+
+                    // Für typische Berechnung: Wenn gesperrt, verwende 0 (= typischer Wert)
+                    // sonst die normale Abweichung
+                    totalDiffTypisch += needIsLocked ? 0 : diff;
+
                     count++;
 
                     // Farbcodierung für Abweichung
@@ -14965,7 +14995,8 @@
                         actual: actualValue,
                         diff: diff,
                         diffColor: diffColor,
-                        modifiers: modDetails
+                        modifiers: modDetails,
+                        isLocked: needIsLocked  // NEU: Lock-Status
                     });
                 }
             }
@@ -14973,6 +15004,11 @@
             const avgDiff = count > 0 ? totalDiff / count : 0;
             const uebereinstimmung = 1 - (avgDiff / 100);
             const calculatedR = Math.round((0.5 + (uebereinstimmung * 1.0)) * 1000) / 1000;
+
+            // Berechne auch den "typischen" R-Wert (wenn gesperrte Bedürfnisse auf typische Werte gesetzt wären)
+            const avgDiffTypisch = count > 0 ? totalDiffTypisch / count : 0;
+            const uebereinstimmungTypisch = 1 - (avgDiffTypisch / 100);
+            const calculatedRTypisch = Math.round((0.5 + (uebereinstimmungTypisch * 1.0)) * 1000) / 1000;
 
             // Lade gespeicherte Werte für Lock-Status Anzeige
             let storedValue = 1.0;
@@ -15040,11 +15076,15 @@
                 const modO = r.modifiers?.orientierung || 0;
                 // Prüfe ob PWert manuell überschrieben wurde (weicht von Erwartet ab)
                 const isOverridden = r.actual !== r.modifiedTypisch;
+                // Lock-Status für Bedürfnis
+                const needLockIcon = r.isLocked ? '<span style="color: #f59e0b; margin-left: 2px;" title="Bedürfnis gesperrt">🔒</span>' : '';
+                // Hintergrund für gesperrte Zeilen
+                const rowBg = r.isLocked ? 'background: rgba(245, 158, 11, 0.08);' : '';
 
                 return `
-                <tr style="border-bottom: 1px solid rgba(255,255,255,0.06);">
+                <tr style="border-bottom: 1px solid rgba(255,255,255,0.06); ${rowBg}">
                     <td style="padding: 6px 8px; font-size: 11px; color: var(--text-secondary);">
-                        <span style="color: var(--text-muted); font-size: 9px;">${r.id}</span><br>
+                        <span style="color: var(--text-muted); font-size: 9px;">${r.id}${needLockIcon}</span><br>
                         ${r.label}
                     </td>
                     <td style="padding: 6px 4px; text-align: center; font-size: 12px; color: var(--text-muted);">${r.typisch}</td>
@@ -15098,17 +15138,39 @@
 
                     <!-- Ergebnis -->
                     <div style="padding: 16px 20px; background: rgba(0,0,0,0.2); border-bottom: 1px solid rgba(255,255,255,0.05);">
+                        ${lockedNeedsCount > 0 ? `
+                        <!-- Zwei Berechnungen: Typisch vs. Mit gesperrten Werten -->
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px;">
+                            <!-- Typisch berechnet (wenn alle Bedürfnisse auf Archetyp-Werten wären) -->
+                            <div style="background: rgba(34, 197, 94, 0.1); border: 1px solid rgba(34, 197, 94, 0.3); border-radius: 8px; padding: 10px; text-align: center;">
+                                <div style="font-size: 10px; color: var(--text-muted); margin-bottom: 4px;">Typisch berechnet</div>
+                                <div style="font-size: 18px; font-weight: 700; color: ${calculatedRTypisch >= 1.1 ? '#22c55e' : calculatedRTypisch <= 0.9 ? '#ef4444' : '#eab308'};">${calculatedRTypisch.toFixed(3)}</div>
+                                <div style="font-size: 9px; color: var(--text-muted); margin-top: 2px;">ohne ${lockedNeedsCount} gesperrte</div>
+                            </div>
+                            <!-- Mit gesperrten Werten berechnet -->
+                            <div style="background: rgba(245, 158, 11, 0.1); border: 1px solid rgba(245, 158, 11, 0.3); border-radius: 8px; padding: 10px; text-align: center;">
+                                <div style="font-size: 10px; color: var(--text-muted); margin-bottom: 4px;">Mit gesperrten Werten</div>
+                                <div style="font-size: 18px; font-weight: 700; color: ${calculatedR >= 1.1 ? '#22c55e' : calculatedR <= 0.9 ? '#ef4444' : '#eab308'};">${calculatedR.toFixed(3)}</div>
+                                <div style="font-size: 9px; color: var(--text-muted); margin-top: 2px;">inkl. ${lockedNeedsCount} gesperrte</div>
+                            </div>
+                        </div>
+                        <div style="font-size: 11px; color: var(--text-muted); margin-bottom: 12px; padding: 8px; background: rgba(139,92,246,0.08); border-radius: 6px;">
+                            <strong>Δ</strong> = ${Math.abs(calculatedRTypisch - calculatedR).toFixed(3)} Differenz durch ${lockedNeedsCount} gesperrte Bedürfnisse
+                        </div>
+                        ` : `
+                        <!-- Normale Anzeige ohne gesperrte Bedürfnisse -->
                         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
                             <span style="font-size: 13px; color: var(--text-secondary);">Berechneter Wert:</span>
                             <span style="font-size: 20px; font-weight: 700; color: ${calculatedR >= 1.1 ? '#22c55e' : calculatedR <= 0.9 ? '#ef4444' : '#eab308'};">${calculatedR.toFixed(3)}</span>
                         </div>
+                        `}
 
                         ${isLocked ? `
-                        <!-- Locked Status Anzeige -->
+                        <!-- Locked Status Anzeige für R-Faktor selbst -->
                         <div style="background: linear-gradient(135deg, rgba(245, 158, 11, 0.15), rgba(245, 158, 11, 0.05)); border: 1px solid rgba(245, 158, 11, 0.4); border-radius: 8px; padding: 12px; margin-bottom: 12px;">
                             <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
                                 <span style="font-size: 16px;">🔒</span>
-                                <span style="font-size: 13px; font-weight: 600; color: #f59e0b;">Manuell gesperrt</span>
+                                <span style="font-size: 13px; font-weight: 600; color: #f59e0b;">${rKey} manuell gesperrt</span>
                             </div>
                             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
                                 <span style="font-size: 12px; color: var(--text-secondary);">Verwendeter Wert:</span>
@@ -15128,9 +15190,9 @@
                         <div style="background: rgba(139,92,246,0.1); border-radius: 8px; padding: 12px; font-family: monospace; font-size: 11px; color: var(--text-secondary); line-height: 1.8;">
                             <div><strong>Formel:</strong> R = 0.5 + (Übereinstimmung × 1.0)</div>
                             <div style="margin-top: 8px; padding-top: 8px; border-top: 1px solid rgba(255,255,255,0.1);">
-                                <div>Summe Abweichungen: <strong>${totalDiff.toFixed(0)}</strong></div>
-                                <div>Anzahl Bedürfnisse: <strong>${count}</strong></div>
-                                <div>Ø Abweichung: <strong>${avgDiff.toFixed(1)}</strong></div>
+                                <div>Summe Abweichungen: <strong>${totalDiff.toFixed(0)}</strong>${lockedNeedsCount > 0 ? ` <span style="color: var(--text-muted);">(${totalDiffTypisch.toFixed(0)} ohne gesperrte)</span>` : ''}</div>
+                                <div>Anzahl Bedürfnisse: <strong>${count}</strong>${lockedNeedsCount > 0 ? ` <span style="color: #f59e0b;">(${lockedNeedsCount} gesperrt)</span>` : ''}</div>
+                                <div>Ø Abweichung: <strong>${avgDiff.toFixed(1)}</strong>${lockedNeedsCount > 0 ? ` <span style="color: var(--text-muted);">(${avgDiffTypisch.toFixed(1)} ohne gesperrte)</span>` : ''}</div>
                                 <div>Übereinstimmung: <strong>${(uebereinstimmung * 100).toFixed(1)}%</strong></div>
                                 <div style="margin-top: 4px;">R = 0.5 + (${uebereinstimmung.toFixed(3)} × 1.0) = <strong>${calculatedR.toFixed(3)}</strong></div>
                             </div>
@@ -15166,7 +15228,7 @@
                     <!-- Bedürfnis-Tabelle -->
                     <div style="padding: 16px 20px;">
                         <div style="font-size: 12px; color: var(--text-muted); margin-bottom: 10px;">
-                            ${count} Bedürfnisse verglichen (sortiert nach Abweichung)${rows.some(r => r.actual !== r.modifiedTypisch) ? ' · <span style="color: #eab308;">*</span> = überschrieben' : ''}:
+                            ${count} Bedürfnisse verglichen (sortiert nach Abweichung)${rows.some(r => r.actual !== r.modifiedTypisch) ? ' · <span style="color: #eab308;">*</span> = überschrieben' : ''}${lockedNeedsCount > 0 ? ` · <span style="color: #f59e0b;">🔒</span> = gesperrt (${lockedNeedsCount})` : ''}:
                         </div>
                         <div style="background: rgba(0,0,0,0.15); border-radius: 8px; overflow: hidden; border: 1px solid rgba(255,255,255,0.08);">
                             <table style="width: 100%; border-collapse: collapse;">
@@ -15854,6 +15916,34 @@
                 return '<p style="color: var(--text-muted);">Keine Daten verfügbar.</p>';
             }
 
+            // LOAD ACTUAL VALUES FROM TIAGESTATE FOR LOCK ICONS
+            // Get flatNeeds and lockedNeeds from TiageState
+            const ichFlatNeeds = typeof TiageState !== 'undefined' ? (TiageState.getFlatNeeds('ich') || {}) : {};
+            const partnerFlatNeeds = typeof TiageState !== 'undefined' ? (TiageState.getFlatNeeds('partner') || {}) : {};
+            const ichLockedNeeds = typeof TiageState !== 'undefined' ? (TiageState.getLockedNeeds('ich') || {}) : {};
+            const partnerLockedNeeds = typeof TiageState !== 'undefined' ? (TiageState.getLockedNeeds('partner') || {}) : {};
+
+            // Helper function to get actual value for a need (flatNeeds overridden by lockedNeeds)
+            const getActualNeedValue = (person, needId) => {
+                const flatNeeds = person === 'ich' ? ichFlatNeeds : partnerFlatNeeds;
+                const lockedNeeds = person === 'ich' ? ichLockedNeeds : partnerLockedNeeds;
+
+                // lockedNeeds override flatNeeds
+                if (lockedNeeds[needId] !== undefined && lockedNeeds[needId] !== null) {
+                    return lockedNeeds[needId];
+                }
+                if (flatNeeds[needId] !== undefined && flatNeeds[needId] !== null) {
+                    return flatNeeds[needId];
+                }
+                return null;
+            };
+
+            // Helper function to check if a need is locked
+            const isNeedLocked = (person, needId) => {
+                const lockedNeeds = person === 'ich' ? ichLockedNeeds : partnerLockedNeeds;
+                return lockedNeeds[needId] !== undefined && lockedNeeds[needId] !== null;
+            };
+
             // Score-Anzeige
             const scoreValue = matching.score || 0;
             let scoreColor = '#ef4444';
@@ -15949,8 +16039,17 @@
                 gemeinsam.forEach(item => {
                     // item.label ist bereits der Display-Name
                     const label = item.label;
-                    const wert1 = item.wert1 || 0;
-                    const wert2 = item.wert2 || 0;
+
+                    // Use actual values from TiageState if available, otherwise fallback to archetyp values
+                    const actualWert1 = getActualNeedValue('ich', item.id);
+                    const actualWert2 = getActualNeedValue('partner', item.id);
+                    const wert1 = actualWert1 !== null ? actualWert1 : (item.wert1 || 0);
+                    const wert2 = actualWert2 !== null ? actualWert2 : (item.wert2 || 0);
+
+                    // Check if needs are locked
+                    const ichLocked = isNeedLocked('ich', item.id);
+                    const partnerLocked = isNeedLocked('partner', item.id);
+
                     const diff = Math.abs(wert1 - wert2);
 
                     let statusColor = '#22c55e';
@@ -15969,6 +16068,7 @@
                             </div>
                             <div style="display: grid; grid-template-columns: 1fr auto 1fr; gap: 8px; align-items: center;">
                                 <div style="display: flex; align-items: center; gap: 6px;">
+                                    ${ichLocked ? '<span style="font-size: 10px; color: #eab308;" title="Verschlossen">🔒</span>' : ''}
                                     <div style="flex: 1; height: 5px; background: rgba(255,255,255,0.1); border-radius: 3px; overflow: hidden;">
                                         <div style="width: ${wert1}%; height: 100%; background: var(--success); border-radius: 3px;"></div>
                                     </div>
@@ -15978,6 +16078,7 @@
                                     <span style="font-size: 11px; font-weight: 600; color: ${statusColor}; background: ${statusColor}22; padding: 2px 6px; border-radius: 4px;">${diff}</span>
                                 </div>
                                 <div style="display: flex; align-items: center; gap: 6px;">
+                                    ${partnerLocked ? '<span style="font-size: 10px; color: #eab308;" title="Verschlossen">🔒</span>' : ''}
                                     <div style="flex: 1; height: 5px; background: rgba(255,255,255,0.1); border-radius: 3px; overflow: hidden;">
                                         <div style="width: ${wert2}%; height: 100%; background: var(--danger); border-radius: 3px;"></div>
                                     </div>
@@ -16010,8 +16111,17 @@
                 konflikt.forEach(item => {
                     // item.label ist bereits der Display-Name
                     const label = item.label;
-                    const wert1 = item.wert1 || 0;
-                    const wert2 = item.wert2 || 0;
+
+                    // Use actual values from TiageState if available, otherwise fallback to archetyp values
+                    const actualWert1 = getActualNeedValue('ich', item.id);
+                    const actualWert2 = getActualNeedValue('partner', item.id);
+                    const wert1 = actualWert1 !== null ? actualWert1 : (item.wert1 || 0);
+                    const wert2 = actualWert2 !== null ? actualWert2 : (item.wert2 || 0);
+
+                    // Check if needs are locked
+                    const ichLocked = isNeedLocked('ich', item.id);
+                    const partnerLocked = isNeedLocked('partner', item.id);
+
                     const diff = Math.abs(wert1 - wert2);
 
                     let statusColor = '#22c55e';
@@ -16030,6 +16140,7 @@
                             </div>
                             <div style="display: grid; grid-template-columns: 1fr auto 1fr; gap: 8px; align-items: center;">
                                 <div style="display: flex; align-items: center; gap: 6px;">
+                                    ${ichLocked ? '<span style="font-size: 10px; color: #eab308;" title="Verschlossen">🔒</span>' : ''}
                                     <div style="flex: 1; height: 5px; background: rgba(255,255,255,0.1); border-radius: 3px; overflow: hidden;">
                                         <div style="width: ${wert1}%; height: 100%; background: var(--success); border-radius: 3px;"></div>
                                     </div>
@@ -16039,6 +16150,7 @@
                                     <span style="font-size: 11px; font-weight: 600; color: ${statusColor}; background: ${statusColor}22; padding: 2px 6px; border-radius: 4px;">${diff}</span>
                                 </div>
                                 <div style="display: flex; align-items: center; gap: 6px;">
+                                    ${partnerLocked ? '<span style="font-size: 10px; color: #eab308;" title="Verschlossen">🔒</span>' : ''}
                                     <div style="flex: 1; height: 5px; background: rgba(255,255,255,0.1); border-radius: 3px; overflow: hidden;">
                                         <div style="width: ${wert2}%; height: 100%; background: var(--danger); border-radius: 3px;"></div>
                                     </div>
