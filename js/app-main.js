@@ -5038,16 +5038,60 @@
             const ichArchetyp = currentArchetype || '';
             const partnerArchetyp = selectedPartner || '';
 
-            if (!ichArchetyp || !partnerArchetyp || typeof GfkBeduerfnisse === 'undefined') {
+            if (!ichArchetyp || !partnerArchetyp) {
                 body.innerHTML = '<p style="color: var(--text-muted);">Keine Daten verfügbar.</p>';
                 modal.classList.add('active');
                 document.body.style.overflow = 'hidden';
                 return;
             }
 
-            const matching = GfkBeduerfnisse.berechneMatching(ichArchetyp, partnerArchetyp);
             const ichName = archetypeDescriptions[currentArchetype]?.name || 'ICH';
             const partnerName = archetypeDescriptions[selectedPartner]?.name || 'Partner';
+
+            // NEU: Direkt aus TiageState.flatNeeds lesen
+            let matching = null;
+            let isFallback = false;
+
+            // Primär: Direkt aus TiageState.flatNeeds
+            const result = calculateNeedsMatchFromFlatNeeds();
+            if (result) {
+                // Format-Konvertierung: need → { label, id, wert1, wert2, diff }
+                const formatNeed = (item) => ({
+                    label: formatBeduerfnisLabel(item.need),
+                    id: item.need,
+                    wert1: item.wert1,
+                    wert2: item.wert2,
+                    diff: Math.abs(item.wert1 - item.wert2)
+                });
+
+                // Top 10 für gemeinsam/unterschiedlich
+                const allGemeinsam = [...result.gemeinsam, ...result.komplementaer].map(formatNeed);
+                const allUnterschiedlich = result.unterschiedlich.map(formatNeed);
+
+                // Nach Durchschnittswert sortieren (höchste zuerst)
+                allGemeinsam.sort((a, b) => ((b.wert1 + b.wert2) / 2) - ((a.wert1 + a.wert2) / 2));
+                allUnterschiedlich.sort((a, b) => ((b.wert1 + b.wert2) / 2) - ((a.wert1 + a.wert2) / 2));
+
+                matching = {
+                    topUebereinstimmungen: allGemeinsam.slice(0, 10),
+                    topKonflikte: allUnterschiedlich.slice(0, 10)
+                };
+                console.log('[openNeedsCompareModal] ✓ Verwende individualisierte Werte aus TiageState.flatNeeds');
+            }
+
+            // Fallback: Alte Methode (nur Archetyp - falls flatNeeds leer)
+            if (!matching && typeof GfkBeduerfnisse !== 'undefined') {
+                matching = GfkBeduerfnisse.berechneMatching(ichArchetyp, partnerArchetyp);
+                isFallback = true;
+                console.log('[openNeedsCompareModal] ⚠ Fallback: Verwende Archetyp-basierte Bedürfniswerte');
+            }
+
+            if (!matching) {
+                body.innerHTML = '<p style="color: var(--text-muted);">Keine Daten verfügbar.</p>';
+                modal.classList.add('active');
+                document.body.style.overflow = 'hidden';
+                return;
+            }
 
             // Titel setzen
             if (type === 'gemeinsam') {
@@ -5064,7 +5108,33 @@
             if (items.length === 0) {
                 body.innerHTML = '<p style="color: var(--text-muted);">Keine Einträge vorhanden.</p>';
             } else {
-                let html = `
+                let html = '';
+
+                // Fallback-Hinweis (nur wenn Archetyp-basierte Werte verwendet werden)
+                if (isFallback) {
+                    html += `
+                        <div style="
+                            background: rgba(234, 179, 8, 0.1);
+                            border: 1px solid rgba(234, 179, 8, 0.3);
+                            border-radius: 6px;
+                            padding: 8px 12px;
+                            margin-bottom: 16px;
+                            display: flex;
+                            align-items: center;
+                            gap: 8px;
+                        ">
+                            <span style="font-size: 14px;">ℹ️</span>
+                            <div style="flex: 1;">
+                                <div style="font-size: 11px; font-weight: 600; color: #eab308; margin-bottom: 2px;">Archetyp-Basis-Werte</div>
+                                <div style="font-size: 10px; color: var(--text-muted); line-height: 1.4;">
+                                    Individualisierte Werte nicht verfügbar. Es werden Standard-Archetyp-Werte angezeigt.
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                }
+
+                html += `
                     <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 16px;">
                         <div style="text-align: center; font-weight: 600; color: var(--success); font-size: 12px; text-transform: uppercase; letter-spacing: 1px;">
                             ${ichName}
@@ -7826,16 +7896,55 @@
             const ichArchetyp = currentArchetype || '';
             const partnerArchetyp = selectedPartner || '';
 
-            if (!ichArchetyp || !partnerArchetyp || typeof GfkBeduerfnisse === 'undefined') {
+            if (!ichArchetyp || !partnerArchetyp) {
                 body.innerHTML = '<p style="color: var(--text-muted);">Keine Daten verfügbar.</p>';
                 modal.classList.add('active');
                 document.body.style.overflow = 'hidden';
                 return;
             }
 
-            const matching = GfkBeduerfnisse.berechneMatching(ichArchetyp, partnerArchetyp);
             const ichName = archetypeDescriptions[currentArchetype]?.name || 'ICH';
             const partnerName = archetypeDescriptions[selectedPartner]?.name || 'Partner';
+
+            // NEU: Direkt aus TiageState.flatNeeds lesen
+            let matching = null;
+            let isFallback = false;
+
+            // Primär: Direkt aus TiageState.flatNeeds
+            const result = calculateNeedsMatchFromFlatNeeds();
+            if (result) {
+                // Format-Konvertierung: need → { label, id, wert1, wert2, diff }
+                const formatNeed = (item) => ({
+                    label: formatBeduerfnisLabel(item.need),
+                    id: item.need,
+                    wert1: item.wert1,
+                    wert2: item.wert2,
+                    diff: Math.abs(item.wert1 - item.wert2)
+                });
+
+                matching = {
+                    details: {
+                        uebereinstimmend: result.gemeinsam.map(formatNeed),
+                        komplementaer: result.komplementaer.map(formatNeed),
+                        konflikt: result.unterschiedlich.map(formatNeed)
+                    }
+                };
+                console.log('[renderNeedsFullModal] ✓ Verwende individualisierte Werte aus TiageState.flatNeeds');
+            }
+
+            // Fallback: Alte Methode (nur Archetyp - falls flatNeeds leer)
+            if (!matching && typeof GfkBeduerfnisse !== 'undefined') {
+                matching = GfkBeduerfnisse.berechneMatching(ichArchetyp, partnerArchetyp);
+                isFallback = true;
+                console.log('[renderNeedsFullModal] ⚠ Fallback: Verwende Archetyp-basierte Bedürfniswerte');
+            }
+
+            if (!matching) {
+                body.innerHTML = '<p style="color: var(--text-muted);">Keine Daten verfügbar.</p>';
+                modal.classList.add('active');
+                document.body.style.overflow = 'hidden';
+                return;
+            }
 
             // Titel setzen
             title.textContent = 'Bedürfnis-Vergleich';
@@ -7980,7 +8089,32 @@
                 </div>
             `;
 
-            body.innerHTML = toggleHtml + headerHtml + listHtml + countHtml;
+            // Fallback Banner
+            let fallbackBannerHtml = '';
+            if (isFallback) {
+                fallbackBannerHtml = `
+                    <div style="
+                        background: rgba(234, 179, 8, 0.1);
+                        border: 1px solid rgba(234, 179, 8, 0.3);
+                        border-radius: 6px;
+                        padding: 8px 12px;
+                        margin-bottom: 16px;
+                        display: flex;
+                        align-items: center;
+                        gap: 8px;
+                    ">
+                        <span style="font-size: 14px;">ℹ️</span>
+                        <div style="flex: 1;">
+                            <div style="font-size: 11px; font-weight: 600; color: #eab308; margin-bottom: 2px;">Archetyp-Basis-Werte</div>
+                            <div style="font-size: 10px; color: var(--text-muted); line-height: 1.4;">
+                                Individualisierte Werte nicht verfügbar. Es werden Standard-Archetyp-Werte angezeigt.
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+
+            body.innerHTML = toggleHtml + fallbackBannerHtml + headerHtml + listHtml + countHtml;
 
             modal.classList.add('active');
             document.body.style.overflow = 'hidden';
@@ -9796,6 +9930,94 @@
         /**
          * Lädt ein Profil aus TiageProfileStore basierend auf Person-Daten
          */
+        /**
+         * Berechnet Bedürfnis-Matching direkt aus TiageState.flatNeeds
+         * Verwendet die individualisierten Werte (Archetyp + Modifikatoren)
+         * und berücksichtigt manuell gelockte Werte (lockedNeeds)
+         *
+         * @returns {Object|null} { score, gemeinsam, komplementaer, unterschiedlich } oder null
+         */
+        function calculateNeedsMatchFromFlatNeeds() {
+            if (typeof TiageState === 'undefined') {
+                return null;
+            }
+
+            // flatNeeds aus TiageState holen (Archetyp + D/G/O Modifikatoren)
+            const ichFlatNeeds = TiageState.getFlatNeeds('ich') || {};
+            const partnerFlatNeeds = TiageState.getFlatNeeds('partner') || {};
+
+            // Prüfen ob Daten vorhanden
+            const ichKeys = Object.keys(ichFlatNeeds);
+            const partnerKeys = Object.keys(partnerFlatNeeds);
+
+            if (ichKeys.length === 0 || partnerKeys.length === 0) {
+                return null; // Keine Daten verfügbar
+            }
+
+            // lockedNeeds holen (überschreiben flatNeeds)
+            const ichLockedNeeds = TiageState.getLockedNeeds('ich') || {};
+            const partnerLockedNeeds = TiageState.getLockedNeeds('partner') || {};
+
+            // Finale Werte: lockedNeeds überschreiben flatNeeds
+            const getFinalValue = (person, needId) => {
+                const locked = person === 'ich' ? ichLockedNeeds[needId] : partnerLockedNeeds[needId];
+                const flat = person === 'ich' ? ichFlatNeeds[needId] : partnerFlatNeeds[needId];
+
+                // lockedNeeds haben Priorität
+                if (locked !== undefined && locked !== null) return locked;
+                if (flat !== undefined && flat !== null) return flat;
+                return null;
+            };
+
+            // Alle Bedürfnis-IDs sammeln (Union von beiden)
+            const allNeedIds = new Set([...ichKeys, ...partnerKeys]);
+
+            const gemeinsam = [];
+            const komplementaer = [];
+            const unterschiedlich = [];
+
+            // Matching berechnen
+            allNeedIds.forEach(needId => {
+                const wert1 = getFinalValue('ich', needId);
+                const wert2 = getFinalValue('partner', needId);
+
+                // Skip wenn einer der Werte fehlt
+                if (wert1 === null || wert2 === null) return;
+
+                const diff = Math.abs(wert1 - wert2);
+
+                const item = {
+                    need: needId,       // '#B1', '#B2', etc.
+                    wert1: wert1,
+                    wert2: wert2
+                };
+
+                // Kategorisierung basierend auf Differenz
+                if (diff <= 15) {
+                    gemeinsam.push(item);           // Übereinstimmung (0-15)
+                } else if (diff <= 35) {
+                    komplementaer.push(item);       // Komplementär (16-35)
+                } else {
+                    unterschiedlich.push(item);     // Konflikt (36+)
+                }
+            });
+
+            // Score berechnen (gewichtet)
+            const totalItems = gemeinsam.length + komplementaer.length + unterschiedlich.length;
+            if (totalItems === 0) return null;
+
+            const score = Math.round(
+                ((gemeinsam.length * 100) + (komplementaer.length * 60) + (unterschiedlich.length * 20)) / totalItems
+            );
+
+            return {
+                score: score,
+                gemeinsam: gemeinsam,
+                komplementaer: komplementaer,
+                unterschiedlich: unterschiedlich
+            };
+        }
+
         function getProfileFromStore(person) {
             // P/S-Geschlecht extrahieren
             let pGender = null;
@@ -14042,43 +14264,78 @@
             // Vollständige Daten holen - entweder aus dynamischer Berechnung oder aus GfkBeduerfnisse.details
             let gemeinsam = matching.alleGemeinsam || [];
             let unterschiedlich = matching.alleUnterschiedlich || [];
+            let isFallback = false;
 
-            // Fallback: Wenn keine vollständigen Daten, direkt aus GfkBeduerfnisse holen
-            if (gemeinsam.length === 0 && unterschiedlich.length === 0 && typeof GfkBeduerfnisse !== 'undefined') {
-                // Schlüssel unverändert verwenden (duo_flex bleibt duo_flex)
+            // Fallback: Wenn keine vollständigen Daten, aus TiageState holen
+            if (gemeinsam.length === 0 && unterschiedlich.length === 0) {
                 const ichArchetyp = currentArchetype || '';
                 const partnerArchetyp = selectedPartner || '';
-                const fullMatching = GfkBeduerfnisse.berechneMatching(ichArchetyp, partnerArchetyp);
-                if (fullMatching && fullMatching.details) {
-                    const uebereinstimmend = (fullMatching.details.uebereinstimmend || []).map(b => ({
-                        label: b.label,
-                        id: b.id,                  // "#B34"
-                        key: b.key,                // 34 (numerisch)
-                        stringKey: b.stringKey,    // "selbstbestimmung"
-                        wert1: b.wert1,
-                        wert2: b.wert2,
-                        diff: b.diff
-                    }));
-                    const komplementaer = (fullMatching.details.komplementaer || []).map(b => ({
-                        label: b.label,
-                        id: b.id,                  // "#B34"
-                        key: b.key,                // 34 (numerisch)
-                        stringKey: b.stringKey,    // "selbstbestimmung"
-                        wert1: b.wert1,
-                        wert2: b.wert2,
-                        diff: b.diff
-                    }));
+
+                // NEU: Direkt aus TiageState.flatNeeds lesen
+                // Primär: Direkt aus TiageState.flatNeeds
+                const result = calculateNeedsMatchFromFlatNeeds();
+                if (result) {
+                    // Format-Konvertierung: need → { label, id, wert1, wert2, stringKey }
+                    const formatNeed = (item) => {
+                        const stringKey = item.need.startsWith('#B') && typeof BeduerfnisIds !== 'undefined' && BeduerfnisIds.toKey
+                            ? BeduerfnisIds.toKey(item.need)
+                            : item.need;
+                        return {
+                            label: formatBeduerfnisLabel(item.need),
+                            id: item.need,
+                            key: item.need,
+                            stringKey: stringKey,
+                            wert1: item.wert1,
+                            wert2: item.wert2,
+                            diff: Math.abs(item.wert1 - item.wert2)
+                        };
+                    };
+
+                    const uebereinstimmend = result.gemeinsam.map(formatNeed);
+                    const komplementaer = result.komplementaer.map(formatNeed);
                     gemeinsam = [...uebereinstimmend, ...komplementaer].sort((a, b) =>
                         ((b.wert1 + b.wert2) / 2) - ((a.wert1 + a.wert2) / 2)
                     );
-                    unterschiedlich = (fullMatching.details.konflikt || []).map(b => ({
-                        label: b.label,
-                        id: b.id,                  // "#B34"
-                        key: b.key,                // 34 (numerisch)
-                        stringKey: b.stringKey,    // "selbstbestimmung"
-                        wert1: b.wert1,
-                        wert2: b.wert2
-                    }));
+                    unterschiedlich = result.unterschiedlich.map(formatNeed);
+                    console.log('[getScoreNeedsContent] ✓ Verwende individualisierte Werte aus TiageState.flatNeeds');
+                }
+
+                // Fallback: Alte Methode (nur Archetyp - falls flatNeeds leer)
+                if (gemeinsam.length === 0 && typeof GfkBeduerfnisse !== 'undefined') {
+                    isFallback = true;
+                    const fullMatching = GfkBeduerfnisse.berechneMatching(ichArchetyp, partnerArchetyp);
+                    if (fullMatching && fullMatching.details) {
+                        const uebereinstimmend = (fullMatching.details.uebereinstimmend || []).map(b => ({
+                            label: b.label,
+                            id: b.id,
+                            key: b.key,
+                            stringKey: b.stringKey,
+                            wert1: b.wert1,
+                            wert2: b.wert2,
+                            diff: b.diff
+                        }));
+                        const komplementaer = (fullMatching.details.komplementaer || []).map(b => ({
+                            label: b.label,
+                            id: b.id,
+                            key: b.key,
+                            stringKey: b.stringKey,
+                            wert1: b.wert1,
+                            wert2: b.wert2,
+                            diff: b.diff
+                        }));
+                        gemeinsam = [...uebereinstimmend, ...komplementaer].sort((a, b) =>
+                            ((b.wert1 + b.wert2) / 2) - ((a.wert1 + a.wert2) / 2)
+                        );
+                        unterschiedlich = (fullMatching.details.konflikt || []).map(b => ({
+                            label: b.label,
+                            id: b.id,
+                            key: b.key,
+                            stringKey: b.stringKey,
+                            wert1: b.wert1,
+                            wert2: b.wert2
+                        }));
+                        console.log('[getScoreNeedsContent] ⚠ Fallback: Verwende Archetyp-basierte Bedürfniswerte');
+                    }
                 }
             }
 
@@ -14106,6 +14363,26 @@
 
             return `
                 <div style="margin-top: 20px; padding-top: 20px; border-top: 1px solid var(--border);">
+                    ${isFallback ? `
+                        <div style="
+                            background: rgba(234, 179, 8, 0.1);
+                            border: 1px solid rgba(234, 179, 8, 0.3);
+                            border-radius: 6px;
+                            padding: 8px 12px;
+                            margin-bottom: 16px;
+                            display: flex;
+                            align-items: center;
+                            gap: 8px;
+                        ">
+                            <span style="font-size: 14px;">ℹ️</span>
+                            <div style="flex: 1;">
+                                <div style="font-size: 11px; font-weight: 600; color: #eab308; margin-bottom: 2px;">Archetyp-Basis-Werte</div>
+                                <div style="font-size: 10px; color: var(--text-muted); line-height: 1.4;">
+                                    Individualisierte Werte nicht verfügbar. Es werden Standard-Archetyp-Werte angezeigt.
+                                </div>
+                            </div>
+                        </div>
+                    ` : ''}
                     <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 15px;">
                         <span style="font-size: 16px;">🤝</span>
                         <span style="font-size: 13px; color: var(--text-muted);">Bedürfnis-Übereinstimmung:</span>
@@ -14142,20 +14419,52 @@
                 dynamikSection: ''
             };
 
-            // Prüfen ob GfkBeduerfnisse verfügbar ist
-            if (typeof GfkBeduerfnisse === 'undefined') {
-                return result;
-            }
-
             // Schlüssel unverändert verwenden (duo_flex bleibt duo_flex)
             const ichArchetyp = currentArchetype || '';
             const partnerArchetyp = selectedPartner || '';
 
             if (!ichArchetyp || !partnerArchetyp) return result;
 
-            // VEREINHEITLICHT: berechneMatching verwenden (gleiche Logik wie GFK-Matching oben)
-            const matching = GfkBeduerfnisse.berechneMatching(ichArchetyp, partnerArchetyp);
-            if (matching.fehler) return result;
+            // NEU: Direkt aus TiageState.flatNeeds lesen
+            let matching = null;
+            let isFallback = false;
+
+            // Primär: Direkt aus TiageState.flatNeeds
+            const result = calculateNeedsMatchFromFlatNeeds();
+            if (result) {
+                // Format-Konvertierung: need → { label, id, wert1, wert2, stringKey }
+                const formatNeed = (item) => {
+                    const stringKey = item.need.startsWith('#B') && typeof BeduerfnisIds !== 'undefined' && BeduerfnisIds.toKey
+                        ? BeduerfnisIds.toKey(item.need)
+                        : item.need;
+                    return {
+                        label: formatBeduerfnisLabel(item.need),
+                        id: item.need,
+                        stringKey: stringKey,
+                        wert1: item.wert1,
+                        wert2: item.wert2,
+                        diff: Math.abs(item.wert1 - item.wert2)
+                    };
+                };
+
+                // Top 10 Übereinstimmungen (gemeinsam + komplementär)
+                const allGemeinsam = [...result.gemeinsam, ...result.komplementaer].map(formatNeed);
+                allGemeinsam.sort((a, b) => ((b.wert1 + b.wert2) / 2) - ((a.wert1 + a.wert2) / 2));
+
+                matching = {
+                    topUebereinstimmungen: allGemeinsam.slice(0, 10)
+                };
+                console.log('[getGfkBeduerfnisAnalyse] ✓ Verwende individualisierte Werte aus TiageState.flatNeeds');
+            }
+
+            // Fallback: Alte Methode (nur Archetyp - falls flatNeeds leer)
+            if (!matching && typeof GfkBeduerfnisse !== 'undefined') {
+                matching = GfkBeduerfnisse.berechneMatching(ichArchetyp, partnerArchetyp);
+                isFallback = true;
+                console.log('[getGfkBeduerfnisAnalyse] ⚠ Fallback: Verwende Archetyp-basierte Bedürfniswerte');
+            }
+
+            if (!matching || matching.fehler) return result;
 
             // Tag-Style
             const tagStyle = `display: inline-block; padding: 3px 8px; margin: 2px; border-radius: 10px; font-size: 11px; font-weight: 500;`;
@@ -14178,7 +14487,33 @@
                 const sectionTitle = type === 'pathos'
                     ? TiageI18n.t('needs.sharedTitle', 'GEMEINSAME & KOMPATIBLE BEDÜRFNISSE')
                     : TiageI18n.t('needs.valuesTitle', 'GEMEINSAME & KOMPATIBLE WERTE');
-                result.gemeinsamSection = `
+
+                // Fallback Banner
+                let fallbackBanner = '';
+                if (isFallback) {
+                    fallbackBanner = `
+                        <div style="
+                            background: rgba(234, 179, 8, 0.1);
+                            border: 1px solid rgba(234, 179, 8, 0.3);
+                            border-radius: 6px;
+                            padding: 8px 12px;
+                            margin-bottom: 16px;
+                            display: flex;
+                            align-items: center;
+                            gap: 8px;
+                        ">
+                            <span style="font-size: 14px;">ℹ️</span>
+                            <div style="flex: 1;">
+                                <div style="font-size: 11px; font-weight: 600; color: #eab308; margin-bottom: 2px;">Archetyp-Basis-Werte</div>
+                                <div style="font-size: 10px; color: var(--text-muted); line-height: 1.4;">
+                                    Individualisierte Werte nicht verfügbar. Es werden Standard-Archetyp-Werte angezeigt.
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                }
+
+                result.gemeinsamSection = fallbackBanner + `
                 <div style="margin-bottom: 16px;">
                     <div style="padding: 12px; background: rgba(34,197,94,0.08); border-radius: 10px; border: 1px solid rgba(34,197,94,0.25);">
                         <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
@@ -14734,34 +15069,31 @@
             };
 
             // ═══════════════════════════════════════════════════════════════════
-            // NEEDS LADEN: Direkt aus TiageState.flatNeeds (enthält Modifikatoren!)
-            // Fallback auf BaseArchetypProfile nur wenn TiageState nicht verfügbar
+            // ZENTRALE HELPER-FUNKTION für korrekte Person-spezifische Needs
+            // Verwendet ResonanzCard.getPersonNeeds() für konsistente Datenquellen
             // ═══════════════════════════════════════════════════════════════════
-            let needs = null;
+            const needs = (typeof ResonanzCard !== 'undefined' && ResonanzCard.getPersonNeeds)
+                ? ResonanzCard.getPersonNeeds(person, archetyp)
+                : null;
 
-            // Primär: TiageState.flatNeeds (enthält bereits Basis + Modifikatoren)
-            if (typeof TiageState !== 'undefined') {
-                needs = TiageState.get(`flatNeeds.${person}`);
-                if (needs && Object.keys(needs).length > 0) {
-                    console.log('[showValueDerivation] Needs aus TiageState.flatNeeds für', person);
-                }
-            }
-
-            // Fallback: BaseArchetypProfile (nur Basis-Werte)
-            if (!needs || Object.keys(needs).length === 0) {
-                needs = archetypProfil;
-                console.log('[showValueDerivation] Fallback: BaseArchetypProfile für', person);
-            }
-
-            // Locked-Status aus AttributeSummaryCard holen (für ICH)
-            // Für Partner: aus Storage oder TiageState
-            let lockedNeeds = {};
-            if (person === 'ich' && typeof AttributeSummaryCard !== 'undefined' && AttributeSummaryCard.getFlatNeeds) {
-                const flatNeedsArray = AttributeSummaryCard.getFlatNeeds();
-                flatNeedsArray.forEach(n => {
-                    if (n.locked) lockedNeeds[n.id] = true;
+            // Lade flatNeeds mit Lock-Status für Anzeige
+            const flatNeedsRaw = window.LoadedArchetypProfile?.[person]?.profileReview?.flatNeeds || [];
+            const lockedNeedsMap = {};
+            if (Array.isArray(flatNeedsRaw)) {
+                flatNeedsRaw.forEach(n => {
+                    if (n.locked && n.id) {
+                        lockedNeedsMap[n.id] = true;
+                    }
+                    if (n.locked && n.stringKey) {
+                        lockedNeedsMap[n.stringKey] = true;
+                    }
                 });
             }
+
+            // Helper: Prüft ob ein Bedürfnis gesperrt ist
+            const isNeedLocked = (needId, stringKey) => {
+                return lockedNeedsMap[needId] || lockedNeedsMap[stringKey] || false;
+            };
 
             // Helper: Wert aus needs extrahieren (unterstützt id und stringKey lookup)
             const getNeedValue = (needId, stringKey) => {
@@ -14779,15 +15111,12 @@
                 return null;
             };
 
-            // Helper: Prüft ob ein Need locked ist
-            const isNeedLocked = (needId) => {
-                return lockedNeeds[needId] === true;
-            };
-
             // Berechnung durchführen
             let rows = [];
             let totalDiff = 0;
+            let totalDiffTypisch = 0;  // Berechnung NUR mit typischen Werten (ohne gesperrte Überschreibungen)
             let count = 0;
+            let lockedNeedsCount = 0;
 
             for (const needKey in kohaerenz) {
                 if (!kohaerenz.hasOwnProperty(needKey)) continue;
@@ -14812,8 +15141,12 @@
                 // Verwende id UND stringKey für robustes Lookup (wie in NeedsIntegration._getNeedValue)
                 const actualValue = getNeedValue(needId, needKey);
 
+                // Prüfe ob dieses Bedürfnis gesperrt ist
+                const needIsLocked = isNeedLocked(needId, needKey);
+                if (needIsLocked) lockedNeedsCount++;
+
                 if (actualValue !== null && typeof typischValue === 'number') {
-                    // Modifikator-Details berechnen
+                    // Modifikator-Details ZUERST berechnen (für korrekte Abweichung)
                     const modDetails = getModifikatorDetails(needKey);
 
                     // Modifizierten typischen Wert berechnen: Typ + D + G + O
@@ -14822,19 +15155,31 @@
                         (modDetails.geschlecht || 0) +
                         (modDetails.orientierung || 0);
 
-                    // Für R-Wert Berechnung
+                    // Abweichung gegen den MODIFIZIERTEN typischen Wert berechnen
                     const diff = Math.abs(actualValue - modifiedTypisch);
                     totalDiff += diff;
+
+                    // Für typische Berechnung: Wenn gesperrt, verwende 0 (= typischer Wert)
+                    // sonst die normale Abweichung
+                    totalDiffTypisch += needIsLocked ? 0 : diff;
+
                     count++;
 
+                    // Farbcodierung für Abweichung
+                    let diffColor = '#22c55e'; // grün
+                    if (diff > 30) diffColor = '#ef4444'; // rot
+                    else if (diff > 15) diffColor = '#eab308'; // gelb
+
                     rows.push({
-                        id: needId || needKey,
+                        id: needId || needKey,  // Zeige id oder stringKey
                         label: needLabel,
                         typisch: typischValue,
-                        modifiedTypisch: modifiedTypisch,
+                        modifiedTypisch: modifiedTypisch,  // NEU: Für Anzeige
                         actual: actualValue,
+                        diff: diff,
+                        diffColor: diffColor,
                         modifiers: modDetails,
-                        locked: isNeedLocked(needId)
+                        isLocked: needIsLocked  // NEU: Lock-Status
                     });
                 }
             }
@@ -14843,12 +15188,21 @@
             const uebereinstimmung = 1 - (avgDiff / 100);
             const calculatedR = Math.round((0.5 + (uebereinstimmung * 1.0)) * 1000) / 1000;
 
+            // Berechne auch den "typischen" R-Wert (wenn gesperrte Bedürfnisse auf typische Werte gesetzt wären)
+            const avgDiffTypisch = count > 0 ? totalDiffTypisch / count : 0;
+            const uebereinstimmungTypisch = 1 - (avgDiffTypisch / 100);
+            const calculatedRTypisch = Math.round((0.5 + (uebereinstimmungTypisch * 1.0)) * 1000) / 1000;
+
+            // Lade gespeicherte Werte für Lock-Status Anzeige
+            let storedValue = 1.0;
+            let isLocked = false;
+
             // Prüfe ob der gespeicherte Wert vom berechneten abweicht und aktualisiere ihn
             // Nur wenn nicht gelockt und Differenz > 0.01
             if (typeof ResonanzCard !== 'undefined') {
                 const storedData = ResonanzCard.load(person);
-                const storedValue = storedData[rKey]?.value || 1.0;
-                const isLocked = storedData[rKey]?.locked || false;
+                storedValue = storedData[rKey]?.value || 1.0;
+                isLocked = storedData[rKey]?.locked || false;
                 const diff = Math.abs(storedValue - calculatedR);
 
                 if (!isLocked && diff > 0.01) {
@@ -14865,6 +15219,9 @@
                     }
                 }
             }
+
+            // Sortiere nach Abweichung (größte zuerst)
+            rows.sort((a, b) => b.diff - a.diff);
 
             // Sammle alle Modifikatorwerte für die Zusammenfassung
             const modSummary = {
@@ -14910,10 +15267,11 @@
                     ? '<span style="color: #f97316; margin-left: 2px;" title="Fixiert - bleibt bei Archetyp-Wechsel erhalten">🔒</span>'
                     : '';
 
+
                 return `
-                <tr style="border-bottom: 1px solid rgba(255,255,255,0.06);">
+                <tr style="border-bottom: 1px solid rgba(255,255,255,0.06); ${rowBg}">
                     <td style="padding: 6px 8px; font-size: 11px; color: var(--text-secondary);">
-                        <span style="color: var(--text-muted); font-size: 9px;">${r.id}</span><br>
+                        <span style="color: var(--text-muted); font-size: 9px;">${r.id}${needLockIcon}</span><br>
                         ${r.label}
                     </td>
                     <td style="padding: 6px 4px; text-align: center; font-size: 12px; color: var(--text-muted);">${r.typisch}</td>
@@ -14921,6 +15279,7 @@
                     <td style="padding: 6px 4px; text-align: center; font-size: 12px; color: #60a5fa; font-weight: ${modG !== 0 ? '600' : '400'};">${formatModValue(modG)}</td>
                     <td style="padding: 6px 4px; text-align: center; font-size: 12px; color: #f472b6; font-weight: ${modO !== 0 ? '600' : '400'};">${formatModValue(modO)}</td>
                     <td style="padding: 6px 4px; text-align: center; font-size: 12px; font-weight: 600;">${displayValue}${statusSymbol}</td>
+
                 </tr>
             `}).join('');
 
@@ -14966,18 +15325,61 @@
 
                     <!-- Ergebnis -->
                     <div style="padding: 16px 20px; background: rgba(0,0,0,0.2); border-bottom: 1px solid rgba(255,255,255,0.05);">
+                        ${lockedNeedsCount > 0 ? `
+                        <!-- Zwei Berechnungen: Typisch vs. Mit gesperrten Werten -->
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px;">
+                            <!-- Typisch berechnet (wenn alle Bedürfnisse auf Archetyp-Werten wären) -->
+                            <div style="background: rgba(34, 197, 94, 0.1); border: 1px solid rgba(34, 197, 94, 0.3); border-radius: 8px; padding: 10px; text-align: center;">
+                                <div style="font-size: 10px; color: var(--text-muted); margin-bottom: 4px;">Typisch berechnet</div>
+                                <div style="font-size: 18px; font-weight: 700; color: ${calculatedRTypisch >= 1.1 ? '#22c55e' : calculatedRTypisch <= 0.9 ? '#ef4444' : '#eab308'};">${calculatedRTypisch.toFixed(3)}</div>
+                                <div style="font-size: 9px; color: var(--text-muted); margin-top: 2px;">ohne ${lockedNeedsCount} gesperrte</div>
+                            </div>
+                            <!-- Mit gesperrten Werten berechnet -->
+                            <div style="background: rgba(245, 158, 11, 0.1); border: 1px solid rgba(245, 158, 11, 0.3); border-radius: 8px; padding: 10px; text-align: center;">
+                                <div style="font-size: 10px; color: var(--text-muted); margin-bottom: 4px;">Mit gesperrten Werten</div>
+                                <div style="font-size: 18px; font-weight: 700; color: ${calculatedR >= 1.1 ? '#22c55e' : calculatedR <= 0.9 ? '#ef4444' : '#eab308'};">${calculatedR.toFixed(3)}</div>
+                                <div style="font-size: 9px; color: var(--text-muted); margin-top: 2px;">inkl. ${lockedNeedsCount} gesperrte</div>
+                            </div>
+                        </div>
+                        <div style="font-size: 11px; color: var(--text-muted); margin-bottom: 12px; padding: 8px; background: rgba(139,92,246,0.08); border-radius: 6px;">
+                            <strong>Δ</strong> = ${Math.abs(calculatedRTypisch - calculatedR).toFixed(3)} Differenz durch ${lockedNeedsCount} gesperrte Bedürfnisse
+                        </div>
+                        ` : `
+                        <!-- Normale Anzeige ohne gesperrte Bedürfnisse -->
                         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
                             <span style="font-size: 13px; color: var(--text-secondary);">Berechneter Wert:</span>
                             <span style="font-size: 20px; font-weight: 700; color: ${calculatedR >= 1.1 ? '#22c55e' : calculatedR <= 0.9 ? '#ef4444' : '#eab308'};">${calculatedR.toFixed(3)}</span>
                         </div>
+                        `}
+
+                        ${isLocked ? `
+                        <!-- Locked Status Anzeige für R-Faktor selbst -->
+                        <div style="background: linear-gradient(135deg, rgba(245, 158, 11, 0.15), rgba(245, 158, 11, 0.05)); border: 1px solid rgba(245, 158, 11, 0.4); border-radius: 8px; padding: 12px; margin-bottom: 12px;">
+                            <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
+                                <span style="font-size: 16px;">🔒</span>
+                                <span style="font-size: 13px; font-weight: 600; color: #f59e0b;">${rKey} manuell gesperrt</span>
+                            </div>
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                                <span style="font-size: 12px; color: var(--text-secondary);">Verwendeter Wert:</span>
+                                <span style="font-size: 18px; font-weight: 700; color: #f59e0b;">${storedValue.toFixed(2)}</span>
+                            </div>
+                            <div style="font-size: 11px; color: var(--text-muted); line-height: 1.4;">
+                                <strong style="color: #f59e0b;">Konsequenz:</strong> Der berechnete Wert (${calculatedR.toFixed(3)}) wird ignoriert.
+                                Stattdessen wird der manuell gesetzte Wert (${storedValue.toFixed(2)}) für alle Score-Berechnungen verwendet.
+                            </div>
+                            <div style="margin-top: 8px; font-size: 10px; color: var(--text-muted); opacity: 0.8;">
+                                Ändern: Attribute → Resonanzfaktoren → Schloss-Symbol klicken
+                            </div>
+                        </div>
+                        ` : ''}
 
                         <!-- Formel -->
                         <div style="background: rgba(139,92,246,0.1); border-radius: 8px; padding: 12px; font-family: monospace; font-size: 11px; color: var(--text-secondary); line-height: 1.8;">
                             <div><strong>Formel:</strong> R = 0.5 + (Übereinstimmung × 1.0)</div>
                             <div style="margin-top: 8px; padding-top: 8px; border-top: 1px solid rgba(255,255,255,0.1);">
-                                <div>Summe Abweichungen: <strong>${totalDiff.toFixed(0)}</strong></div>
-                                <div>Anzahl Bedürfnisse: <strong>${count}</strong></div>
-                                <div>Ø Abweichung: <strong>${avgDiff.toFixed(1)}</strong></div>
+                                <div>Summe Abweichungen: <strong>${totalDiff.toFixed(0)}</strong>${lockedNeedsCount > 0 ? ` <span style="color: var(--text-muted);">(${totalDiffTypisch.toFixed(0)} ohne gesperrte)</span>` : ''}</div>
+                                <div>Anzahl Bedürfnisse: <strong>${count}</strong>${lockedNeedsCount > 0 ? ` <span style="color: #f59e0b;">(${lockedNeedsCount} gesperrt)</span>` : ''}</div>
+                                <div>Ø Abweichung: <strong>${avgDiff.toFixed(1)}</strong>${lockedNeedsCount > 0 ? ` <span style="color: var(--text-muted);">(${avgDiffTypisch.toFixed(1)} ohne gesperrte)</span>` : ''}</div>
                                 <div>Übereinstimmung: <strong>${(uebereinstimmung * 100).toFixed(1)}%</strong></div>
                                 <div style="margin-top: 4px;">R = 0.5 + (${uebereinstimmung.toFixed(3)} × 1.0) = <strong>${calculatedR.toFixed(3)}</strong></div>
                             </div>
@@ -15013,7 +15415,7 @@
                     <!-- Bedürfnis-Tabelle -->
                     <div style="padding: 16px 20px;">
                         <div style="font-size: 12px; color: var(--text-muted); margin-bottom: 10px;">
-                            ${count} Bedürfnisse${rows.some(r => r.locked) ? ' · <span style="color: #f97316;">🔒</span> fixiert (bleibt)' : ''}${rows.some(r => !r.locked && r.actual !== r.modifiedTypisch) ? ' · <span style="color: #eab308;">*</span> überschrieben (wird zurückgesetzt)' : ''}
+                            ${count} Bedürfnisse verglichen (sortiert nach Abweichung)${rows.some(r => r.actual !== r.modifiedTypisch) ? ' · <span style="color: #eab308;">*</span> = überschrieben' : ''}${lockedNeedsCount > 0 ? ` · <span style="color: #f59e0b;">🔒</span> = gesperrt (${lockedNeedsCount})` : ''}:
                         </div>
                         <div style="background: rgba(0,0,0,0.15); border-radius: 8px; overflow: hidden; border: 1px solid rgba(255,255,255,0.08);">
                             <table style="width: 100%; border-collapse: collapse;">
@@ -15025,6 +15427,7 @@
                                         <th style="padding: 10px 4px; text-align: center; font-size: 11px; color: #60a5fa; font-weight: 500;" title="Geschlecht">G</th>
                                         <th style="padding: 10px 4px; text-align: center; font-size: 11px; color: #f472b6; font-weight: 500;" title="Orientierung">O</th>
                                         <th style="padding: 10px 4px; text-align: center; font-size: 11px; color: ${personColor}; font-weight: 500;">${person === 'ich' ? 'Wert' : 'P.Wert'}</th>
+                                        <th style="padding: 10px 4px; text-align: center; font-size: 11px; color: var(--text-muted); font-weight: 500;">|Δ|</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -15650,13 +16053,59 @@
             const ichArchetyp = currentArchetype || '';
             const partnerArchetyp = selectedPartner || '';
 
-            if (!ichArchetyp || !partnerArchetyp || typeof GfkBeduerfnisse === 'undefined') {
+            if (!ichArchetyp || !partnerArchetyp) {
                 return '<p style="color: var(--text-muted);">Keine Daten verfügbar.</p>';
             }
 
-            const matching = GfkBeduerfnisse.berechneMatching(ichArchetyp, partnerArchetyp);
             const ichName = archetypeDescriptions[currentArchetype]?.name || 'ICH';
             const partnerName = archetypeDescriptions[selectedPartner]?.name || 'Partner';
+
+            // NEU: Direkt aus TiageState.flatNeeds lesen (inkl. lockedNeeds)
+            let matching = null;
+            let isFallback = false;
+
+            // Primär: Direkt aus TiageState.flatNeeds
+            const result = calculateNeedsMatchFromFlatNeeds();
+            if (result) {
+                // Format-Konvertierung: need → { label, id, wert1, wert2, diff }
+                const formatNeed = (item) => ({
+                    label: formatBeduerfnisLabel(item.need),
+                    id: item.need,
+                    wert1: item.wert1,
+                    wert2: item.wert2,
+                    diff: Math.abs(item.wert1 - item.wert2)
+                });
+
+                matching = {
+                    score: result.score,
+                    details: {
+                        uebereinstimmend: result.gemeinsam.map(formatNeed),
+                        komplementaer: result.komplementaer.map(formatNeed),
+                        konflikt: result.unterschiedlich.map(formatNeed)
+                    }
+                };
+                console.log('[getNeedsContent] ✓ Verwende individualisierte Werte aus TiageState.flatNeeds');
+            }
+
+            // Fallback: Alte Methode (nur Archetyp - falls flatNeeds leer)
+            if (!matching && typeof GfkBeduerfnisse !== 'undefined') {
+                matching = GfkBeduerfnisse.berechneMatching(ichArchetyp, partnerArchetyp);
+                isFallback = true;
+                console.log('[getNeedsContent] ⚠ Fallback: Verwende Archetyp-basierte Bedürfniswerte');
+            }
+
+            if (!matching) {
+                return '<p style="color: var(--text-muted);">Keine Daten verfügbar.</p>';
+            }
+
+            // Lock-Icons helper für Anzeige
+            const ichLockedNeeds = typeof TiageState !== 'undefined' ? (TiageState.getLockedNeeds('ich') || {}) : {};
+            const partnerLockedNeeds = typeof TiageState !== 'undefined' ? (TiageState.getLockedNeeds('partner') || {}) : {};
+
+            const isNeedLocked = (person, needId) => {
+                const lockedNeeds = person === 'ich' ? ichLockedNeeds : partnerLockedNeeds;
+                return lockedNeeds[needId] !== undefined && lockedNeeds[needId] !== null;
+            };
 
             // Score-Anzeige
             const scoreValue = matching.score || 0;
@@ -15674,6 +16123,30 @@
                     <div style="font-size: 12px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px;">Bedürfnis-Übereinstimmung</div>
                 </div>
             `;
+
+            // Fallback-Hinweis (nur wenn Archetyp-basierte Werte verwendet werden)
+            if (isFallback) {
+                html += `
+                    <div style="
+                        background: rgba(234, 179, 8, 0.1);
+                        border: 1px solid rgba(234, 179, 8, 0.3);
+                        border-radius: 6px;
+                        padding: 8px 12px;
+                        margin-bottom: 16px;
+                        display: flex;
+                        align-items: center;
+                        gap: 8px;
+                    ">
+                        <span style="font-size: 14px;">ℹ️</span>
+                        <div style="flex: 1;">
+                            <div style="font-size: 11px; font-weight: 600; color: #eab308; margin-bottom: 2px;">Archetyp-Basis-Werte</div>
+                            <div style="font-size: 10px; color: var(--text-muted); line-height: 1.4;">
+                                Individualisierte Werte nicht verfügbar. Es werden Standard-Archetyp-Werte angezeigt.
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
 
             // Gemeinsame & Kompatible Bedürfnisse
             const uebereinstimmend = matching.details?.uebereinstimmend || [];
@@ -15753,8 +16226,17 @@
                 gemeinsam.forEach(item => {
                     // item.label ist bereits der Display-Name
                     const label = item.label;
-                    const wert1 = item.wert1 || 0;
-                    const wert2 = item.wert2 || 0;
+
+                    // Use actual values from TiageState if available, otherwise fallback to archetyp values
+                    const actualWert1 = getActualNeedValue('ich', item.id);
+                    const actualWert2 = getActualNeedValue('partner', item.id);
+                    const wert1 = actualWert1 !== null ? actualWert1 : (item.wert1 || 0);
+                    const wert2 = actualWert2 !== null ? actualWert2 : (item.wert2 || 0);
+
+                    // Check if needs are locked
+                    const ichLocked = isNeedLocked('ich', item.id);
+                    const partnerLocked = isNeedLocked('partner', item.id);
+
                     const diff = Math.abs(wert1 - wert2);
 
                     let statusColor = '#22c55e';
@@ -15773,6 +16255,7 @@
                             </div>
                             <div style="display: grid; grid-template-columns: 1fr auto 1fr; gap: 8px; align-items: center;">
                                 <div style="display: flex; align-items: center; gap: 6px;">
+                                    ${ichLocked ? '<span style="font-size: 10px; color: #eab308;" title="Verschlossen">🔒</span>' : ''}
                                     <div style="flex: 1; height: 5px; background: rgba(255,255,255,0.1); border-radius: 3px; overflow: hidden;">
                                         <div style="width: ${wert1}%; height: 100%; background: var(--success); border-radius: 3px;"></div>
                                     </div>
@@ -15782,6 +16265,7 @@
                                     <span style="font-size: 11px; font-weight: 600; color: ${statusColor}; background: ${statusColor}22; padding: 2px 6px; border-radius: 4px;">${diff}</span>
                                 </div>
                                 <div style="display: flex; align-items: center; gap: 6px;">
+                                    ${partnerLocked ? '<span style="font-size: 10px; color: #eab308;" title="Verschlossen">🔒</span>' : ''}
                                     <div style="flex: 1; height: 5px; background: rgba(255,255,255,0.1); border-radius: 3px; overflow: hidden;">
                                         <div style="width: ${wert2}%; height: 100%; background: var(--danger); border-radius: 3px;"></div>
                                     </div>
@@ -15814,8 +16298,17 @@
                 konflikt.forEach(item => {
                     // item.label ist bereits der Display-Name
                     const label = item.label;
-                    const wert1 = item.wert1 || 0;
-                    const wert2 = item.wert2 || 0;
+
+                    // Use actual values from TiageState if available, otherwise fallback to archetyp values
+                    const actualWert1 = getActualNeedValue('ich', item.id);
+                    const actualWert2 = getActualNeedValue('partner', item.id);
+                    const wert1 = actualWert1 !== null ? actualWert1 : (item.wert1 || 0);
+                    const wert2 = actualWert2 !== null ? actualWert2 : (item.wert2 || 0);
+
+                    // Check if needs are locked
+                    const ichLocked = isNeedLocked('ich', item.id);
+                    const partnerLocked = isNeedLocked('partner', item.id);
+
                     const diff = Math.abs(wert1 - wert2);
 
                     let statusColor = '#22c55e';
@@ -15834,6 +16327,7 @@
                             </div>
                             <div style="display: grid; grid-template-columns: 1fr auto 1fr; gap: 8px; align-items: center;">
                                 <div style="display: flex; align-items: center; gap: 6px;">
+                                    ${ichLocked ? '<span style="font-size: 10px; color: #eab308;" title="Verschlossen">🔒</span>' : ''}
                                     <div style="flex: 1; height: 5px; background: rgba(255,255,255,0.1); border-radius: 3px; overflow: hidden;">
                                         <div style="width: ${wert1}%; height: 100%; background: var(--success); border-radius: 3px;"></div>
                                     </div>
@@ -15843,6 +16337,7 @@
                                     <span style="font-size: 11px; font-weight: 600; color: ${statusColor}; background: ${statusColor}22; padding: 2px 6px; border-radius: 4px;">${diff}</span>
                                 </div>
                                 <div style="display: flex; align-items: center; gap: 6px;">
+                                    ${partnerLocked ? '<span style="font-size: 10px; color: #eab308;" title="Verschlossen">🔒</span>' : ''}
                                     <div style="flex: 1; height: 5px; background: rgba(255,255,255,0.1); border-radius: 3px; overflow: hidden;">
                                         <div style="width: ${wert2}%; height: 100%; background: var(--danger); border-radius: 3px;"></div>
                                     </div>
