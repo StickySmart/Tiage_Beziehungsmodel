@@ -10921,6 +10921,22 @@
                     const oldSelect = document.getElementById('archetypeSelect');
                     if (oldSelect) oldSelect.value = e.target.value;
                     updateArchetypeGrid('ich', e.target.value);
+
+                    // ═══════════════════════════════════════════════════════════════
+                    // SSOT: Berechne flatNeeds + Resonanzfaktoren bei Archetyp-Wechsel
+                    // ProfileCalculator.loadProfile() schreibt direkt in TiageState
+                    // ═══════════════════════════════════════════════════════════════
+                    if (typeof ProfileCalculator !== 'undefined' && typeof TiageState !== 'undefined') {
+                        const profileData = {
+                            archetyp: e.target.value,
+                            geschlecht: TiageState.get('personDimensions.ich.geschlecht'),
+                            dominanz: TiageState.get('personDimensions.ich.dominanz'),
+                            orientierung: TiageState.get('personDimensions.ich.orientierung')
+                        };
+                        ProfileCalculator.loadProfile('ich', profileData);
+                        console.log('[SSOT] Profil für ICH neu berechnet:', e.target.value);
+                    }
+
                     updateComparisonView();
                     // GFK automatisch aus Archetypen-Matching ableiten
                     updateGfkFromArchetypes();
@@ -10938,6 +10954,22 @@
                         TiageState.setArchetype('partner', e.target.value);
                     }
                     updateArchetypeGrid('partner', e.target.value);
+
+                    // ═══════════════════════════════════════════════════════════════
+                    // SSOT: Berechne flatNeeds + Resonanzfaktoren bei Archetyp-Wechsel
+                    // ProfileCalculator.loadProfile() schreibt direkt in TiageState
+                    // ═══════════════════════════════════════════════════════════════
+                    if (typeof ProfileCalculator !== 'undefined' && typeof TiageState !== 'undefined') {
+                        const profileData = {
+                            archetyp: e.target.value,
+                            geschlecht: TiageState.get('personDimensions.partner.geschlecht'),
+                            dominanz: TiageState.get('personDimensions.partner.dominanz'),
+                            orientierung: TiageState.get('personDimensions.partner.orientierung')
+                        };
+                        ProfileCalculator.loadProfile('partner', profileData);
+                        console.log('[SSOT] Profil für PARTNER neu berechnet:', e.target.value);
+                    }
+
                     updateComparisonView();
                     // GFK automatisch aus Archetypen-Matching ableiten
                     updateGfkFromArchetypes();
@@ -12577,6 +12609,18 @@
                     currentArchetype = e.target.value;
                     // Sync archetype grid highlighting
                     updateArchetypeGrid('ich', e.target.value);
+
+                    // SSOT: Berechne flatNeeds + Resonanzfaktoren bei Archetyp-Wechsel
+                    if (typeof ProfileCalculator !== 'undefined' && typeof TiageState !== 'undefined') {
+                        const profileData = {
+                            archetyp: e.target.value,
+                            geschlecht: TiageState.get('personDimensions.ich.geschlecht'),
+                            dominanz: TiageState.get('personDimensions.ich.dominanz'),
+                            orientierung: TiageState.get('personDimensions.ich.orientierung')
+                        };
+                        ProfileCalculator.loadProfile('ich', profileData);
+                    }
+
                     updateComparisonView();
                     // GFK automatisch aus Archetypen-Matching ableiten
                     updateGfkFromArchetypes();
@@ -12598,6 +12642,18 @@
                     selectedPartner = e.target.value;
                     // Sync archetype grid highlighting
                     updateArchetypeGrid('partner', e.target.value);
+
+                    // SSOT: Berechne flatNeeds + Resonanzfaktoren bei Archetyp-Wechsel
+                    if (typeof ProfileCalculator !== 'undefined' && typeof TiageState !== 'undefined') {
+                        const profileData = {
+                            archetyp: e.target.value,
+                            geschlecht: TiageState.get('personDimensions.partner.geschlecht'),
+                            dominanz: TiageState.get('personDimensions.partner.dominanz'),
+                            orientierung: TiageState.get('personDimensions.partner.orientierung')
+                        };
+                        ProfileCalculator.loadProfile('partner', profileData);
+                    }
+
                     updateComparisonView();
                     // GFK automatisch aus Archetypen-Matching ableiten
                     updateGfkFromArchetypes();
@@ -13196,6 +13252,34 @@
                 // Load saved dimensions from TiageState AFTER initializing buttons
                 // so that UI sync functions can update the buttons
                 loadDimensionsFromState();
+
+                // ═══════════════════════════════════════════════════════════════════════════
+                // SSOT: Stelle sicher, dass flatNeeds + Resonanzfaktoren für beide Personen
+                // berechnet und in TiageState gespeichert sind (bei App-Start)
+                // ═══════════════════════════════════════════════════════════════════════════
+                if (typeof ProfileCalculator !== 'undefined' && typeof TiageState !== 'undefined') {
+                    ['ich', 'partner'].forEach(person => {
+                        const archetyp = person === 'ich' ? currentArchetype : selectedPartner;
+                        const flatNeeds = TiageState.get(`flatNeeds.${person}`);
+
+                        // Nur berechnen wenn flatNeeds leer oder nicht vorhanden
+                        if (!flatNeeds || Object.keys(flatNeeds).length === 0) {
+                            const profileData = {
+                                archetyp: archetyp,
+                                geschlecht: TiageState.get(`personDimensions.${person}.geschlecht`),
+                                dominanz: TiageState.get(`personDimensions.${person}.dominanz`),
+                                orientierung: TiageState.get(`personDimensions.${person}.orientierung`)
+                            };
+                            if (profileData.archetyp) {
+                                ProfileCalculator.loadProfile(person, profileData);
+                                console.log('[SSOT] Initial-Profil berechnet für', person, ':', archetyp);
+                            }
+                        } else {
+                            console.log('[SSOT] flatNeeds bereits vorhanden für', person, ':', Object.keys(flatNeeds).length, 'Einträge');
+                        }
+                    });
+                }
+
                 // Initialize all summary displays in header
                 updateGeschlechtSummary('ich');
                 updateGeschlechtSummary('partner');
