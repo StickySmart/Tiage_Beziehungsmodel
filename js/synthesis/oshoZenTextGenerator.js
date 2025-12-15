@@ -256,17 +256,14 @@ const OshoZenTextGenerator = (function() {
                     ${hasExpandableContent ? `
                     <div class="osho-zen-item-content" style="display: none;">
                         ${rest ? `<div class="osho-zen-text-full">${rest}</div>` : ''}
-                        ${match.bild ? `
+                        ${match.bild || match.osho ? `
                         <div class="osho-zen-bild">
-                            <div class="osho-zen-section-title">🎴 Bildbeschreibung</div>
-                            <p>${match.bild}</p>
-                        </div>
-                        ` : ''}
-                        ${match.osho ? `
-                        <div class="osho-zen-osho">
-                            <div class="osho-zen-section-title">🕉️ Osho</div>
-                            <blockquote>${match.osho}</blockquote>
+                            <div class="osho-zen-section-title">🎴 Stell Dir vor ...</div>
+                            ${match.bild ? `<p>${match.bild}</p>` : ''}
+                            ${match.osho ? `
+                            <blockquote class="osho-zen-statement">${match.osho}</blockquote>
                             ${match.quelle ? `<cite>— ${match.quelle}</cite>` : ''}
+                            ` : ''}
                         </div>
                         ` : ''}
                     </div>
@@ -545,6 +542,26 @@ const OshoZenTextGenerator = (function() {
                 color: var(--text-color, #333);
                 line-height: 1.6;
                 font-size: 0.9rem;
+            }
+
+            .osho-zen-bild .osho-zen-statement {
+                margin: 0.75rem 0 0 0;
+                padding: 0.75rem;
+                font-style: italic;
+                color: var(--text-color, #333);
+                line-height: 1.6;
+                font-size: 0.9rem;
+                background: var(--osho-bg, rgba(255, 152, 0, 0.08));
+                border-left: 3px solid var(--osho-accent, #FF9800);
+                border-radius: 4px;
+            }
+
+            .osho-zen-bild cite {
+                display: block;
+                margin-top: 0.5rem;
+                font-size: 0.8rem;
+                color: var(--text-muted, #888);
+                font-style: normal;
             }
 
             .osho-zen-osho {
