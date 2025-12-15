@@ -165,10 +165,25 @@ if (ichProfile?.needs && partnerProfile?.needs) {
 4. `a7e6b4f` - refactor: Use individualized needs values in renderNeedsFullModal()
 5. `d03cb30` - refactor: Use individualized needs values in getGfkBeduerfnisAnalyse()
 6. `f49ce1c` - refactor: Use individualized needs values in getScoreNeedsContent() fallback
+7. `298ab26` - docs: Update migration documentation with completion status
+8. `dc9c5bb` - Merge branch 'main' into claude/check-triage-needs-values-yspSK
+
+### 🔀 Merge-Konflikt mit PR #733
+
+**Konflikt**: PR #733 wurde während unserer Arbeit in `main` gemerged und modifizierte dieselbe `getNeedsContent()` Funktion.
+
+**Zwei Ansätze**:
+- **Unser Ansatz**: Komplette Ersetzung des Matching-Algorithmus mit `TiageProfileStore.calculateNeedsMatch()`
+- **PR #733**: Direkte Ladung von `flatNeeds`/`lockedNeeds` mit Lock-Icon-Anzeige (🔒)
+
+**Lösung**: Beide Ansätze kombiniert ✅
+- Kept individualized matching algorithm (lines 15876-15917)
+- Added lock icon helpers `getActualNeedValue()` und `isNeedLocked()` (lines 15919-15945)
+- Beide ergänzen sich: Umfassender Matching-Algorithmus + visuelle Rückmeldung für verschlossene Bedürfnisse
 
 ---
 
 **Erstellt am**: 2025-12-15
 **Aktualisiert am**: 2025-12-15
 **Branch**: `claude/check-triage-needs-values-yspSK`
-**Status**: ✅ PRIO 1 abgeschlossen, PRIO 2 optional
+**Status**: ✅ PRIO 1 abgeschlossen, Merge mit main erfolgreich, PRIO 2 optional
