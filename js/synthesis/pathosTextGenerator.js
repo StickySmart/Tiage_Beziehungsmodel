@@ -556,8 +556,9 @@ const PathosTextGenerator = (function() {
             }
         }
 
-        // 3. Dominanz-Energie
-        const dom = dimensions?.dominanz;
+        // 3. Dominanz-Energie (dominanz kann Objekt {primary, secondary} oder String sein)
+        const domRaw = dimensions?.dominanz;
+        const dom = typeof domRaw === 'object' ? (domRaw?.primary || null) : domRaw;
         if (dom && personPhrases.dominance[dom]) {
             parts.push(fillVariables(selectPhrase(personPhrases.dominance[dom], seed + 5), vars));
         }
