@@ -363,10 +363,18 @@
         }
 
         // Berechne dimensionale Resonanzen
+        console.log('[ProfileCalculator] calculateDimensionalResonance aufgerufen mit:', {
+            archetyp: profileContext.archetyp,
+            needsCount: profileContext.needs ? Object.keys(profileContext.needs).length : 0,
+            sampleNeeds: profileContext.needs ? Object.keys(profileContext.needs).slice(0, 5) : []
+        });
         const resonanz = TiageSynthesis.NeedsIntegration.calculateDimensionalResonance(profileContext);
 
         if (!resonanz || !resonanz.enabled) {
-            console.log('[ProfileCalculator] Resonanz-Berechnung nicht aktiviert, verwende Defaults');
+            console.log('[ProfileCalculator] Resonanz-Berechnung nicht aktiviert, verwende Defaults', {
+                resonanz: resonanz,
+                enabled: resonanz?.enabled
+            });
             return defaults;
         }
 
@@ -528,6 +536,7 @@
                     }
                 });
                 TiageState.set(`resonanzFaktoren.${person}`, newResonanz);
+                console.log(`[ProfileCalculator] resonanzFaktoren gesetzt für ${person}:`, JSON.stringify(newResonanz));
             }
         }
 
@@ -535,7 +544,8 @@
             archetyp: calculatedProfile.archetyp,
             flatNeedsCount: Object.keys(calculatedProfile.profileReview.flatNeeds).length,
             hasGewichtungen: !!calculatedProfile.gewichtungen,
-            hasResonanz: !!calculatedProfile.resonanzFaktoren
+            hasResonanz: !!calculatedProfile.resonanzFaktoren,
+            resonanzFaktoren: calculatedProfile.resonanzFaktoren
         });
 
         return true;
