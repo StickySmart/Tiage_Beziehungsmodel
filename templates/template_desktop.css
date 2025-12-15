@@ -156,6 +156,7 @@
         .header-score-btn,
         .header-pathos-btn,
         .header-logos-btn,
+        .header-oshozen-btn,
         .header-needs-btn,
         .header-resonanz-btn {
             padding: 8px 12px;
@@ -169,9 +170,17 @@
             backdrop-filter: blur(10px);
         }
 
+        /* Transparent style for OshoZen and Needs buttons (icon only with border) */
+        .header-oshozen-btn,
+        .header-needs-btn {
+            background: transparent;
+            border: 2px solid var(--border);
+        }
+
         .header-score-btn:hover,
         .header-pathos-btn:hover,
         .header-logos-btn:hover,
+        .header-oshozen-btn:hover,
         .header-needs-btn:hover,
         .header-resonanz-btn:hover {
             transform: scale(1.1);
@@ -182,6 +191,7 @@
         .header-score-btn.active,
         .header-pathos-btn.active,
         .header-logos-btn.active,
+        .header-oshozen-btn.active,
         .header-needs-btn.active,
         .header-resonanz-btn.active {
             color: var(--text-primary);
