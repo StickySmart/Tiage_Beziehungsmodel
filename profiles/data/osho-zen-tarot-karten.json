@@ -1,215 +1,286 @@
 {
-  "version": "1.0.0",
-  "beschreibung": "Vollständige Osho Zen Tarot Kartendatenbank mit allen 79 Karten",
+  "version": "2.0.0",
+  "beschreibung": "Vollständige Osho Zen Tarot Kartendatenbank mit allen 79 Karten, Bildbeschreibungen und Osho-Kommentaren",
   "quelle": "Osho Zen Tarot von Ma Deva Padma (St. Martins Press), basierend auf den Lehren von Osho",
-  "copyright": "Alle Rechte bei den jeweiligen Inhabern. Diese Beschreibungen sind freie Interpretationen.",
+  "kuenstlerin": "Ma Deva Padma (Susan Morgan)",
+  "copyright": "Alle Rechte bei den jeweiligen Inhabern. Diese Beschreibungen sind freie Interpretationen basierend auf öffentlich verfügbaren Quellen.",
 
   "major_arcana": {
     "0_the_fool": {
       "name": "The Fool",
+      "name_de": "Der Narr",
       "nummer": 0,
       "traditionell": "The Fool",
       "element": "Luft",
+      "bild": "Eine Gestalt steht am Rand einer Klippe, bereit zu springen ins Unbekannte. Die Augen sind geschlossen, das Gesicht zeigt vollkommenes Vertrauen. Keine Angst, nur Hingabe an den Moment. Der Himmel erstrahlt in warmen Farben.",
       "bedeutung": "Der Beginn einer Reise ins Unbekannte, kindliche Unschuld und Vertrauen",
       "weisheit": "Der Narr ist derjenige, der losgeht, ohne zu wissen, wohin – und genau das macht ihn weise. Er vertraut dem Unbekannten.",
+      "osho": "Der Narr ist der spirituellste aller Archetypen. Er hat keine Angst vor dem Unbekannten, denn er weiß, dass das Leben ihn tragen wird. Er ist wie ein Kind, das in die Arme seiner Mutter springt – ohne Zweifel, ohne Zögern.",
       "schatten": "Naivität, Leichtsinn, Realitätsflucht"
     },
     "1_existence": {
       "name": "Existence",
+      "name_de": "Existenz",
       "nummer": 1,
       "traditionell": "The Magician",
       "element": "Luft",
+      "bild": "Eine nackte Gestalt schwebt im kosmischen Raum, umgeben von Sternen und Galaxien. Die Arme sind ausgebreitet, der Körper strahlt Licht aus. Die Figur ist eins mit dem Universum – nicht getrennt, sondern Teil des großen Ganzen.",
       "bedeutung": "Die Fülle des Seins, alles ist bereits vorhanden",
       "weisheit": "Du bist nicht getrennt von der Existenz. Du bist ein Ausdruck des Ganzen – atme, und das Universum atmet durch dich.",
+      "osho": "Die Existenz ist nicht etwas, das außerhalb von dir ist. Du bist die Existenz. Jeder Atemzug ist das Universum, das durch dich atmet. Jeder Herzschlag ist der Puls des Kosmos.",
       "schatten": "Getrenntheit, Isolation, Manipulation"
     },
     "2_inner_voice": {
       "name": "Inner Voice",
+      "name_de": "Innere Stimme",
       "nummer": 2,
       "traditionell": "The High Priestess",
       "element": "Wasser",
+      "bild": "Eine weibliche Gestalt sitzt in tiefer Meditation. Aus ihrer Stirn – dem dritten Auge – strömt Licht. Delphine spielen um sie herum, Symbole für die spielerische Intelligenz der Intuition, die aus den Tiefen der Emotionen auftaucht und zum Himmel aufsteigt.",
       "bedeutung": "Die Stimme der inneren Weisheit, Intuition",
       "weisheit": "In der Stille spricht die innere Stimme. Sie kennt den Weg, auch wenn der Verstand zweifelt.",
+      "osho": "Die innere Stimme ist wie Delphine – sie taucht tief in die Emotionen ein und erhebt sich wieder zum Himmel. Sie ist spielerisch und intelligent zugleich. Höre auf sie, nicht auf den Lärm des Verstandes.",
       "schatten": "Verwirrung, Selbsttäuschung, Ignorieren der Intuition"
     },
     "3_creativity": {
       "name": "Creativity",
+      "name_de": "Kreativität",
       "nummer": 3,
       "traditionell": "The Empress",
       "element": "Erde",
+      "bild": "Eine üppige, fruchtbare Gestalt umgeben von Blumen, Pflanzen und Lebewesen. Alles um sie herum blüht und gedeiht. Sie ist die Mutter aller Schöpfung, der lebendige Ausdruck der kreativen Kraft des Universums.",
       "bedeutung": "Schöpferische Kraft, Fruchtbarkeit des Geistes",
       "weisheit": "Kreativität ist deine Natur. Wenn du schaffst, bist du eins mit dem Universum, das unaufhörlich erschafft.",
+      "osho": "Kreativität ist nicht etwas, das du tust – es ist etwas, das du bist. Wenn du kreativ bist, fließt das Universum durch dich. Du wirst zum Kanal des Göttlichen.",
       "schatten": "Blockade, Stagnation, unterdrückter Ausdruck"
     },
     "4_the_rebel": {
       "name": "The Rebel",
+      "name_de": "Der Rebell",
       "nummer": 4,
       "traditionell": "The Emperor",
       "element": "Feuer",
+      "bild": "Eine kraftvolle Gestalt steht aufrecht, in den Händen eine brennende Fackel. Die Augen blicken entschlossen nach vorn. Um die Figur herum bricht altes Mauerwerk zusammen – die Strukturen der Konditionierung fallen.",
       "bedeutung": "Authentische Selbstbestimmung, Mut zur eigenen Wahrheit",
       "weisheit": "Der wahre Rebell folgt nicht blindlings – weder der Masse noch dem Widerstand. Er folgt seiner eigenen Wahrheit.",
+      "osho": "Der Rebell ist nicht gegen etwas – er ist für seine eigene Wahrheit. Er rebelliert nicht aus Wut, sondern aus Liebe zur Freiheit. Er hat den Mut, allein zu stehen, wenn es sein muss.",
       "schatten": "Starrsinn, Rebellion ohne Sinn, Autoritätsprobleme"
     },
     "5_no_thingness": {
       "name": "No-Thingness",
+      "name_de": "Das Nichts",
       "nummer": 5,
       "traditionell": "The Hierophant",
       "element": "Erde",
+      "bild": "Eine Gestalt schwebt in vollkommener Leere – reinem, tiefem Blau oder Schwarz. Es gibt keine Objekte, keine Ablenkungen. Nur reine Präsenz im Nichts. Die Figur ist entspannt, friedlich, eins mit der Leere.",
       "bedeutung": "Die Leere als Quelle aller Möglichkeiten",
       "weisheit": "Im Nichts liegt alles. Wenn du leer wirst, kann das Ganze durch dich fließen.",
+      "osho": "Das Nichts ist nicht das Fehlen von etwas – es ist die Fülle aller Möglichkeiten. In der Leere findest du alles. Der Raum, der leer ist, kann gefüllt werden.",
       "schatten": "Leere als Mangel erleben, Sinnlosigkeit, Depression"
     },
     "6_the_lovers": {
       "name": "The Lovers",
+      "name_de": "Die Liebenden",
       "nummer": 6,
       "traditionell": "The Lovers",
       "element": "Luft",
+      "bild": "Zwei Liebende umarmen sich und bilden zusammen die Form eines Herzens mit Flügeln – Symbol der Freiheit in der Liebe. In der Mitte erscheint ein Shri Yantra, das heilige geometrische Symbol für die Vereinigung von männlich und weiblich. Ein zweites Paar erscheint, deren Haare zu Sternen werden. Rote Rosen umgeben die Szene.",
       "bedeutung": "Vereinigung von Gegensätzen, bewusste Wahl, tiefe Verbindung",
       "weisheit": "Wahre Liebe ist nicht Verschmelzung, sondern zwei Flammen, die nebeneinander leuchten – getrennt und doch eins.",
+      "osho": "Die niedrigste Form der Liebe ist Sex – sie ist körperlich. Die höchste Verfeinerung der Liebe ist Mitgefühl. Sex ist der Samen, Liebe ist die Blüte, Mitgefühl ist der Duft. Die Liebenden auf dieser Karte haben Flügel – ihre Liebe basiert auf Freiheit, nicht auf Hoffnung und Bedürftigkeit.",
       "schatten": "Abhängigkeit, Entscheidungsunfähigkeit, Projektion"
     },
     "7_awareness": {
       "name": "Awareness",
+      "name_de": "Bewusstheit",
       "nummer": 7,
       "traditionell": "The Chariot",
       "element": "Wasser",
+      "bild": "Eine wache, aufrechte Gestalt mit weit geöffneten Augen. Um den Kopf herum strahlt ein Lichtkranz – das Bewusstsein erleuchtet alles. Die Figur bewegt sich nicht, aber alles um sie herum ist in Bewegung.",
       "bedeutung": "Bewusstsein als Fahrzeug, achtsame Präsenz",
       "weisheit": "Bewusstheit ist der Schlüssel. Wenn du wach bist, bewegt sich das Leben mühelos durch dich.",
+      "osho": "Bewusstheit ist das einzige Fahrzeug, das dich irgendwohin bringen kann. Ohne Bewusstheit bewegst du dich im Kreis. Mit Bewusstheit wird jeder Schritt eine Reise zum Zentrum.",
       "schatten": "Unbewusstheit, reaktives Handeln, Kontrollsucht"
     },
     "8_courage": {
       "name": "Courage",
+      "name_de": "Mut",
       "nummer": 8,
       "traditionell": "Strength",
       "element": "Feuer",
+      "bild": "Eine kleine Wildblume hat sich ihren Weg durch Felsen und Steine gebahnt und erreicht das Tageslicht. Sie ist umgeben von einer Aura aus goldenem Licht und zeigt die Majestät ihres winzigen Selbst. Ohne Scham ist sie der hellsten Sonne ebenbürtig.",
       "bedeutung": "Innere Stärke, Mut zur Verletzlichkeit",
       "weisheit": "Mut ist nicht das Fehlen von Angst. Es ist die Bereitschaft, trotz der Angst weiterzugehen – mit offenem Herzen.",
+      "osho": "Der Same kann nicht wissen, was passieren wird. Er hat die Blume nie gekannt. Und doch versucht er es, er macht einen Versuch. Er lässt die harte Schale fallen, die seine Sicherheit war, und beginnt sich zu bewegen. Der Kampf beginnt: mit der Erde, mit den Steinen, mit den Felsen. Aber die Leidenschaft für das Leben führt ihn aus der Dunkelheit ins Licht.",
+      "quelle": "Osho, Dang Dang Doko Dang, Kapitel 4",
       "schatten": "Feigheit, Überkompensation, Aggression"
     },
     "9_aloneness": {
       "name": "Aloneness",
+      "name_de": "Alleinsein",
       "nummer": 9,
       "traditionell": "The Hermit",
       "element": "Erde",
+      "bild": "Eine kleine, bescheidene Gestalt leuchtet mit einem Licht, das von innen kommt. Sie steht allein in einem weiten Raum, aber nimmt ihr eigenes Licht mit sich. Das Licht strahlt unglaublich stark, und ihr Stab treibt Blätter! Kein Regenbogen von Farben, aber reines weißes Licht.",
       "bedeutung": "Alleinsein als Fülle, Selbstgenügsamkeit",
       "weisheit": "Alleinsein ist nicht Einsamkeit. Es ist der Raum, in dem du dich selbst findest – vollständig und ganz.",
+      "osho": "Wenn du allein bist, bist du nicht allein – du bist einfach einsam, und es gibt einen gewaltigen Unterschied zwischen Einsamkeit und Alleinsein. Einsamkeit ist ein negativer Zustand – das Fehlen des anderen. Alleinsein ist die Präsenz des Selbst. Es ist sehr positiv. Du bist so voll von Präsenz, dass du das ganze Universum mit deiner Präsenz füllen kannst.",
       "schatten": "Isolation, Einsamkeit, Weltflucht"
     },
     "10_change": {
       "name": "Change",
+      "name_de": "Veränderung",
       "nummer": 10,
       "traditionell": "Wheel of Fortune",
       "element": "Feuer",
+      "bild": "Ein großes Rad dreht sich unaufhörlich. Figuren steigen auf und fallen wieder ab. In der Mitte bleibt ein stilles Zentrum unberührt vom Wandel. Alles um das Rad herum ist in Bewegung – Jahreszeiten, Zyklen, Leben und Tod.",
       "bedeutung": "Der ewige Wandel, Transformation als Konstante",
       "weisheit": "Veränderung ist das einzig Beständige. Wer sich dem Fluss hingibt, findet Frieden mitten im Wandel.",
+      "osho": "Alles verändert sich. Das ist die einzige Wahrheit. Wenn du dich an etwas klammerst, wirst du leiden. Wenn du mit dem Fluss gehst, wirst du tanzen.",
       "schatten": "Widerstand gegen Veränderung, Festhalten, Angst"
     },
     "11_breakthrough": {
       "name": "Breakthrough",
+      "name_de": "Durchbruch",
       "nummer": 11,
       "traditionell": "Justice",
       "element": "Luft",
+      "bild": "Eine Gestalt durchbricht eine Wand oder Barriere. Auf der anderen Seite wartet Licht. Stücke der zerbrochenen Struktur fallen herab – alte Muster, Begrenzungen, Konditionierungen.",
       "bedeutung": "Durchbruch durch alte Muster, Befreiung",
       "weisheit": "Jeder Durchbruch beginnt mit dem Mut, das Alte loszulassen – auch wenn das Neue noch nicht sichtbar ist.",
+      "osho": "Der Durchbruch kommt nicht durch Kampf, sondern durch Klarheit. Wenn du siehst, was ist, fällt das Falsche von selbst ab.",
       "schatten": "Stagnation, Selbstgerechtigkeit, Blockade"
     },
     "12_new_vision": {
       "name": "New Vision",
+      "name_de": "Neue Sicht",
       "nummer": 12,
       "traditionell": "The Hanged Man",
       "element": "Wasser",
+      "bild": "Eine Gestalt hängt kopfüber, aber ihr Gesicht zeigt keinen Schmerz – nur Frieden und Erkenntnis. Die Welt ist auf den Kopf gestellt, und genau das ermöglicht eine völlig neue Perspektive.",
       "bedeutung": "Neue Perspektive durch Loslassen, Hingabe",
       "weisheit": "Manchmal musst du die Welt auf den Kopf stellen, um sie richtig zu sehen. Hingabe öffnet neue Augen.",
+      "osho": "Hingabe ist keine Niederlage – sie ist der größte Sieg. Wenn du aufhörst zu kämpfen, siehst du plötzlich, was immer schon da war.",
       "schatten": "Opferhaltung, Passivität, Starre"
     },
     "13_transformation": {
       "name": "Transformation",
+      "name_de": "Transformation",
       "nummer": 13,
       "traditionell": "Death",
       "element": "Wasser",
+      "bild": "Die zentrale Figur sitzt auf der großen Blume der Leere und hält die Symbole der Transformation: das Schwert, das durch Illusion schneidet; die Schlange, die sich durch Häutung erneuert; die gebrochene Kette der Begrenzungen; das Yin-Yang-Symbol der Transzendenz der Dualität. Ein Phönix erhebt sich aus den Flammen über dem Kopf der Figur. Eine Hand ruht offen und empfangend im Schoß, die andere berührt den Mund eines schlafenden Gesichts – Symbol der Stille.",
       "bedeutung": "Ende und Neuanfang, tiefgreifender Wandel",
       "weisheit": "Transformation ist der kleine Tod, der zum größeren Leben führt. Lass sterben, was sterben muss.",
+      "osho": "Transformation kommt wie der Tod – in ihrer eigenen Zeit. Nimm jeden Schmerz an, jede Trauer, jede Schwierigkeit. Gautam Buddha suchte Jahre lang, dann gab er auf – und in jener Nacht wurde er erleuchtet. Transformation nimmt dich von einer Dimension in eine andere.",
       "schatten": "Angst vor Veränderung, Festhalten am Alten, Stagnation"
     },
     "14_integration": {
       "name": "Integration",
+      "name_de": "Integration",
       "nummer": 14,
       "traditionell": "Temperance",
       "element": "Feuer",
+      "bild": "Die Gestalt repräsentiert die mystische Vereinigung, die Verschmelzung der Gegensätze. Adler und Schwan – Kraft und Reinheit – vereinen sich. Ein Ouroboros (Schlange, die ihren eigenen Schwanz frisst) symbolisiert Zyklizität. Yin und Yang verschmelzen endlos ineinander, jedes trägt in seinem tiefsten Kern den Samen des Gegenteils. Sonne und Mond sind vereint.",
       "bedeutung": "Harmonische Vereinigung aller Teile, innere Balance",
       "weisheit": "Integration geschieht, wenn du nichts mehr abspaltest – wenn Licht und Schatten sich die Hand reichen.",
+      "osho": "Anstatt dass die Nacht gegen den Tag kämpft, das Dunkel das Licht unterdrückt, arbeiten sie zusammen, um ein vereintes Ganzes zu schaffen. Sie verwandeln sich endlos ineinander. Wir sind die Integration von Adler und Schwan: Mann und Frau, Feuer und Wasser, Leben und Tod.",
       "schatten": "Innere Spaltung, Fragmentierung, Ungleichgewicht"
     },
     "15_conditioning": {
       "name": "Conditioning",
+      "name_de": "Konditionierung",
       "nummer": 15,
       "traditionell": "The Devil",
       "element": "Erde",
+      "bild": "Eine Gestalt sitzt gefangen in einem Käfig oder Netz – aber die Tür steht offen. Die Ketten sind aus Gewohnheit, nicht aus Stahl. Ein Affe sitzt auf den Schultern – Symbol des rastlosen, konditionierten Verstandes.",
       "bedeutung": "Konditionierung und Programmierung erkennen",
       "weisheit": "Die Ketten der Konditionierung sind unsichtbar – bis du sie siehst. Erkennen ist der erste Schritt zur Freiheit.",
+      "osho": "Der Teufel in diesem Deck ist die Konditionierung – das, was Osho als das wahre Übel betrachtete. Nicht ein äußerer Dämon, sondern die inneren Programme, die dich gefangen halten. Die Tür steht immer offen, aber du musst sie sehen.",
       "schatten": "Unbewusste Muster, Sucht, Fremdbestimmung"
     },
     "16_thunderbolt": {
       "name": "Thunderbolt",
+      "name_de": "Der Blitz",
       "nummer": 16,
       "traditionell": "The Tower",
       "element": "Feuer",
+      "bild": "Ein Blitz schlägt in einen Turm ein. Der Turm – Symbol für künstliche Strukturen, Ego-Konstruktionen – zerbricht. Figuren fallen heraus. Aber unter dem zerstörten Turm erscheint ein Lotus – das Wahre, Unzerstörbare.",
       "bedeutung": "Plötzliche Erkenntnis, Zerstörung von Illusionen",
       "weisheit": "Der Blitz zerstört nur, was ohnehin nicht echt war. Was bleibt, ist unzerstörbar.",
+      "osho": "Der Blitz ist Gnade – auch wenn er schmerzt. Er zerstört nicht dich, sondern das, was du nicht bist. Was übrig bleibt, ist dein wahres Wesen.",
       "schatten": "Schock, Zusammenbruch, Chaos"
     },
     "17_silence": {
       "name": "Silence",
+      "name_de": "Stille",
       "nummer": 17,
       "traditionell": "The Star",
       "element": "Luft",
+      "bild": "Eine friedliche Gestalt sitzt oder steht unter einem Sternenhimmel. Vollkommene Stille umgibt die Szene. Kein Wind, keine Bewegung – nur reine Präsenz. Ein einzelner Stern strahlt besonders hell.",
       "bedeutung": "Innere Stille, Hoffnung und Inspiration",
       "weisheit": "In der Stille findest du, was Worte nie erreichen können. Sie ist die Sprache des Universums.",
+      "osho": "Stille ist nicht das Fehlen von Geräuschen – sie ist die Präsenz von etwas Tieferem. In der Stille spricht das Universum zu dir.",
       "schatten": "Innere Unruhe, Hoffnungslosigkeit, Lärm des Geistes"
     },
     "18_past_lives": {
       "name": "Past Lives",
+      "name_de": "Vergangene Leben",
       "nummer": 18,
       "traditionell": "The Moon",
       "element": "Wasser",
+      "bild": "Schatten und Nebel umhüllen eine Gestalt. Vergangene Gesichter, Szenen aus anderen Zeiten tauchen auf und verschwinden wieder. Der Mond wirft ein unklares Licht auf die Szene – nichts ist, wie es scheint.",
       "bedeutung": "Unbewusste Muster aus der Vergangenheit",
       "weisheit": "Die Vergangenheit lebt in dir weiter – bis du sie bewusst anschaust und befreist.",
+      "osho": "Die Vergangenheit ist nicht vorbei – sie lebt in deinem Unbewussten weiter. Muster wiederholen sich, bis du sie erkennst und loslässt.",
       "schatten": "Unbewusste Wiederholungen, Illusionen, Täuschung"
     },
     "19_innocence": {
       "name": "Innocence",
+      "name_de": "Unschuld",
       "nummer": 19,
       "traditionell": "The Sun",
       "element": "Feuer",
+      "bild": "Ein weißhaariger alter Mann lacht fröhlich, völlig versunken in die Betrachtung einer Gottesanbeterin, die auf seinem Zeigefinger sitzt. Seine Augen leuchten vor Staunen wie die eines Kindes – obwohl sein Haar weiß ist, hat er die Unschuld wiedergefunden.",
       "bedeutung": "Wiedergewonnene Unschuld, kindliche Freude",
       "weisheit": "Unschuld ist nicht Unwissenheit. Sie ist die Weisheit, die nach allem Wissen zum Staunen zurückkehrt.",
+      "osho": "Das Kind geht zum Licht; der Erwachsene IST das Licht. Unschuld ist nicht naiv – sie ist die höchste Weisheit. Sie hat alles gesehen und kann trotzdem noch staunen.",
       "schatten": "Verlorene Freude, Zynismus, verhärtetes Herz"
     },
     "20_beyond_illusion": {
       "name": "Beyond Illusion",
+      "name_de": "Jenseits der Illusion",
       "nummer": 20,
       "traditionell": "Judgement",
       "element": "Feuer",
+      "bild": "Ein Schmetterling repräsentiert das Äußere – das, was ständig in Bewegung ist und nicht real, sondern Illusion ist. Hinter dem Schmetterling ist das Gesicht des Bewusstseins, das nach innen schaut zu dem, was ewig ist. Der Raum zwischen den Augen hat sich geöffnet und enthüllt den Lotus der spirituellen Entfaltung und die aufgehende Sonne des Bewusstseins.",
       "bedeutung": "Jenseits aller Illusionen, Erwachen",
       "weisheit": "Jenseits der Illusion liegt die Wahrheit – nicht als Konzept, sondern als lebendige Erfahrung.",
+      "osho": "Die Illusion ist der Schmetterling – schön, aber vergänglich. Das Bewusstsein hinter dem Schmetterling ist ewig. Erkenne den Unterschied.",
       "schatten": "Selbsttäuschung, falsche Urteile, Verleugnung"
     },
     "21_completion": {
       "name": "Completion",
+      "name_de": "Vollendung",
       "nummer": 21,
       "traditionell": "The World",
       "element": "Erde",
+      "bild": "Das letzte Puzzleteil wird an seinen Platz gesetzt – an der Position des dritten Auges, dem Ort der inneren Wahrnehmung. Das zuvor fragmentierte Gesicht wird ganz. Im sich ständig verändernden Fluss des Lebens gibt es Momente der Vollendung, in denen wir das ganze Bild wahrnehmen können.",
       "bedeutung": "Vollendung eines Zyklus, Ganzheit",
       "weisheit": "Vollendung ist nicht das Ende – sie ist der Moment, in dem sich der Kreis schließt und ein neuer beginnt.",
+      "osho": "Die Zen-Linse erinnert uns, dass Vollendung nicht Perfektion bedeutet. Es geht um Präsenz. Es geht darum, den gesamten Bogen der Erfahrung zu ehren und zu wissen, dass du ganz bist – auch wenn du wieder von vorn beginnst.",
       "schatten": "Unvollständigkeit, ewiges Streben, Unzufriedenheit"
     },
     "the_master": {
       "name": "The Master",
+      "name_de": "Der Meister",
       "nummer": null,
       "traditionell": null,
       "element": "Transzendenz",
+      "bild": "Ein Porträt von Osho selbst. Seine Augen zeigen unendliche Tiefe – manchmal sieht man Güte und Weisheit, manchmal ein wissendes Lächeln. Er sitzt in vollkommener Stille, umgeben von Licht. Diese Karte existiert nur in diesem Deck – sie zeigt, was jemand werden kann, wenn er den ewigen Kreislauf von Geburt und Tod durchbricht und Erleuchtung findet.",
       "bedeutung": "Meisterschaft über sich selbst, Erleuchtung",
       "weisheit": "Der Meister ist niemand, der über andere herrscht – er hat sich selbst gemeistert. Er ist frei vom Griff des Egos.",
+      "osho": "Der Meister im Zen ist nicht ein Meister über andere, sondern ein Meister seiner selbst. Jede Geste und jedes Wort reflektiert seinen erleuchteten Zustand. Er hat keinen persönlichen Zweck, kein Verlangen nach irgendetwas – er lässt die Dinge geschehen, wie sie sollen. In seinen Augen können die Schüler ihre eigene Wahrheit reflektiert finden, und in seiner Stille können sie leicht in ihre eigene Stille eintauchen.",
       "schatten": "Guru-Abhängigkeit, spirituelles Ego, falsche Meisterschaft"
     }
   },
@@ -220,103 +291,147 @@
       "thema": "Aktion, Kreativität, Leidenschaft, Energie",
       "traditionell": "Wands/Stäbe",
       "farbe": "Rot",
+      "richtung": "Süden",
       "karten": {
         "ace_source": {
           "name": "Source",
+          "name_de": "Quelle",
           "nummer": 1,
+          "bild": "Ein Brunnen oder eine Quelle sprudelt Licht statt Wasser. Alles beginnt hier – die Urquelle aller Kreativität und Energie.",
           "bedeutung": "Die Quelle aller Energie und Kreativität",
           "weisheit": "Die Quelle ist in dir. Wenn du dich mit ihr verbindest, fließt unendliche Energie durch dein Sein.",
+          "osho": "Suche nicht außen nach Energie – die Quelle ist in dir. Verbinde dich mit ihr, und du wirst nie wieder Mangel kennen.",
           "schatten": "Blockierte Energie, fehlendes Feuer"
         },
         "2_possibilities": {
           "name": "Possibilities",
+          "name_de": "Möglichkeiten",
           "nummer": 2,
+          "bild": "Viele Türen stehen offen. Jede führt in eine andere Richtung. Alle Wege sind möglich – die Wahl liegt bei dir.",
           "bedeutung": "Offenheit für alle Möglichkeiten",
           "weisheit": "In jedem Moment liegen unendliche Möglichkeiten. Öffne dich, und das Leben zeigt dir seinen Reichtum.",
+          "osho": "Das Leben ist voller Möglichkeiten. Wenn du dich für eine entscheidest, verschließt du dich nicht – du gehst tiefer.",
           "schatten": "Entscheidungslähmung, verpasste Chancen"
         },
         "3_experiencing": {
           "name": "Experiencing",
+          "name_de": "Erfahren",
           "nummer": 3,
+          "bild": "Eine Gestalt taucht vollständig in eine Erfahrung ein – mit allen Sinnen, ohne Zurückhaltung. Farben und Formen umhüllen sie.",
           "bedeutung": "Vollständiges Eintauchen in die Erfahrung",
           "weisheit": "Erfahrung ist der einzige Lehrer. Tauche ein, ohne zurückzuhalten – das Leben wartet darauf, gelebt zu werden.",
+          "osho": "Lebe nicht halb. Tauche ganz ein in jede Erfahrung. Nur so lernst du wirklich.",
           "schatten": "Oberflächlichkeit, Vermeidung, Abstumpfung"
         },
         "4_participation": {
           "name": "Participation",
+          "name_de": "Teilnahme",
           "nummer": 4,
+          "bild": "Mehrere Gestalten tanzen oder arbeiten zusammen. Jeder trägt bei, niemand steht abseits. Das Ganze ist mehr als die Summe seiner Teile.",
           "bedeutung": "Aktive Teilnahme am Leben",
           "weisheit": "Teilnahme bedeutet, ganz dabei zu sein – nicht als Zuschauer, sondern als Mitschöpfer des Lebens.",
+          "osho": "Sei kein Zuschauer deines eigenen Lebens. Nimm teil, engagiere dich, sei dabei.",
           "schatten": "Passivität, Isolation, Zuschauerhaltung"
         },
         "5_totality": {
           "name": "Totality",
+          "name_de": "Totalität",
           "nummer": 5,
+          "bild": "Eine Gestalt gibt sich vollständig einer Tätigkeit hin. Keine Ablenkung, keine Halbherzigkeit. Totale Hingabe.",
           "bedeutung": "Ganzheitliches Engagement, volle Hingabe",
           "weisheit": "Was auch immer du tust – tu es total. Halbherzigkeit ist der Tod der Lebendigkeit.",
+          "osho": "Totalität ist der Schlüssel. Egal was du tust – tu es ganz. Ein halbes Ja ist ein Nein.",
           "schatten": "Halbherzigkeit, Zersplitterung, mangelndes Engagement"
         },
         "6_success": {
           "name": "Success",
+          "name_de": "Erfolg",
           "nummer": 6,
-          "bedeutung": "Wahre Erfolg als innere Erfüllung",
+          "bild": "Eine Gestalt steht auf einem Gipfel, aber schaut nicht triumphierend nach unten, sondern friedlich nach innen. Wahrer Erfolg ist innere Erfüllung.",
+          "bedeutung": "Wahrer Erfolg als innere Erfüllung",
           "weisheit": "Erfolg ist nicht, was du erreichst – es ist, wer du dabei wirst. Wahrer Erfolg ist innere Blüte.",
+          "osho": "Der Erfolg, den die Welt kennt, ist leer. Wahrer Erfolg ist, wenn du innerlich erblühst.",
           "schatten": "Äußerlicher Erfolg ohne Erfüllung, Gier"
         },
         "7_stress": {
           "name": "Stress",
+          "name_de": "Stress",
           "nummer": 7,
+          "bild": "Eine Gestalt jongliert mit zu vielen Bällen – einige fallen bereits. Das Gesicht zeigt Anspannung. Zu viel auf einmal.",
           "bedeutung": "Überforderung, zu viele Bälle in der Luft",
           "weisheit": "Stress entsteht, wenn du mehr trägst, als dir gehört. Lege ab, was nicht deins ist.",
+          "osho": "Stress ist nicht die Situation – es ist deine Reaktion darauf. Lerne loszulassen, was nicht essentiell ist.",
           "schatten": "Burnout, Überlastung, Kontrollverlust"
         },
         "8_traveling": {
           "name": "Traveling",
+          "name_de": "Reisen",
           "nummer": 8,
+          "bild": "Eine Gestalt auf einem Weg, der sich in die Ferne windet. Kein Ziel in Sicht, aber das stört nicht. Die Reise selbst ist das Ziel.",
           "bedeutung": "Die Reise ist das Ziel, Bewegung",
           "weisheit": "Das Leben ist eine Reise ohne Ankunft. Genieße den Weg – er ist alles, was es gibt.",
+          "osho": "Es gibt kein Ziel – nur die Reise. Genieße jeden Schritt, denn der nächste ist nicht garantiert.",
           "schatten": "Rastlosigkeit, Flucht, Ziellosigkeit"
         },
         "9_exhaustion": {
           "name": "Exhaustion",
+          "name_de": "Erschöpfung",
           "nummer": 9,
+          "bild": "Eine völlig erschöpfte Gestalt, zusammengesunken. Die Energie ist aufgebraucht. Zeit innezuhalten.",
           "bedeutung": "Erschöpfung als Signal zur Pause",
           "weisheit": "Erschöpfung ist die Weisheit des Körpers. Sie ruft dich zur Ruhe – höre auf sie.",
+          "osho": "Der Körper ist weise. Wenn er sagt 'genug', höre zu. Erschöpfung ist kein Versagen – sie ist eine Einladung zur Erneuerung.",
           "schatten": "Ignorieren der Grenzen, Zusammenbruch"
         },
         "10_suppression": {
           "name": "Suppression",
+          "name_de": "Unterdrückung",
           "nummer": 10,
+          "bild": "Eine Gestalt sitzt auf einem Deckel, unter dem etwas brodelt und Dampf ablässt. Unterdrückte Energie sucht einen Ausweg.",
           "bedeutung": "Unterdrückte Energie sucht Ausdruck",
           "weisheit": "Was du unterdrückst, wird stärker. Lass es fließen, oder es wird explodieren.",
+          "osho": "Unterdrückung funktioniert nie. Was du unterdrückst, sammelt sich nur an und wird eines Tages explodieren.",
           "schatten": "Unterdrückte Wut, Explosion, Selbstsabotage"
         },
         "page_playfulness": {
           "name": "Playfulness",
+          "name_de": "Verspieltheit",
           "nummer": 11,
+          "bild": "Eine Frau feiert die Freude am Leben wie ein Schmetterling, der aus seinem Kokon ins Licht getreten ist. Sie erinnert an unsere Kindheit, als wir Muscheln sammelten oder Sandburgen bauten, ohne uns Sorgen zu machen, dass die Wellen sie wegspülen. Sie weiß, dass das Leben ein Spiel ist.",
           "bedeutung": "Spielerische Leichtigkeit, kindliche Freude",
           "weisheit": "Spielen ist die höchste Form des Forschens. Im Spiel bist du am nächsten an deiner wahren Natur.",
+          "osho": "In dem Moment, in dem du beginnst, das Leben als nicht-ernst zu sehen, als Spiel, verschwindet jede Last von deinem Herzen. Zen hat die ernste Welt verlassen. Es hat eine eigene Welt erschaffen, die sehr spielerisch ist, voller Lachen, wo selbst große Meister sich wie Kinder verhalten.",
+          "quelle": "Osho, Nansen: The Point of Departure, Kapitel 8",
           "schatten": "Übermäßiger Ernst, verlorene Freude"
         },
         "knight_intensity": {
           "name": "Intensity",
+          "name_de": "Intensität",
           "nummer": 12,
+          "bild": "Eine Gestalt in voller Konzentration, die Augen brennen mit Leidenschaft. Jede Faser des Seins ist auf einen Punkt gerichtet.",
           "bedeutung": "Leidenschaftliche Intensität, fokussierte Energie",
           "weisheit": "Intensität ist Leben in seiner reinsten Form. Brenne, ohne dich zu verzehren.",
+          "osho": "Intensität ist nicht Anspannung. Sie ist totale Präsenz, vollständiges Engagement mit dem Moment.",
           "schatten": "Fanatismus, Burnout, zerstörerische Leidenschaft"
         },
         "queen_sharing": {
           "name": "Sharing",
+          "name_de": "Teilen",
           "nummer": 13,
+          "bild": "Eine großzügige Gestalt mit ausgestreckten Händen, die Geschenke verteilt. Aber sie gibt nicht aus Mangel, sondern aus Überfluss.",
           "bedeutung": "Großzügiges Teilen aus der Fülle",
           "weisheit": "Teilen ist die natürliche Bewegung der Fülle. Wenn du überfliest, kannst du nicht anders als geben.",
+          "osho": "Teile nicht, weil du sollst – teile, weil du überfließest. Wahres Teilen kennt kein Opfer.",
           "schatten": "Zurückhalten, Geiz, Angst vor Mangel"
         },
         "king_the_creator": {
           "name": "The Creator",
+          "name_de": "Der Schöpfer",
           "nummer": 14,
+          "bild": "Eine majestätische Gestalt umgeben von Kunstwerken, Erfindungen, Schöpfungen aller Art. Nicht als Besitzer, sondern als Kanal.",
           "bedeutung": "Meisterschaft in kreativer Schöpfung",
           "weisheit": "Der Schöpfer erschafft nicht aus Mangel, sondern aus Überfluss. Kreativität ist sein natürlicher Zustand.",
+          "osho": "Du bist nicht der Schöpfer – du bist der Kanal. Wenn du dich leer machst, fließt die Schöpfung durch dich.",
           "schatten": "Kreative Blockade, Destruktivität"
         }
       }
@@ -326,103 +441,147 @@
       "thema": "Emotionen, Gefühle, Intuition, Beziehungen",
       "traditionell": "Cups/Kelche",
       "farbe": "Blau",
+      "richtung": "Westen",
       "karten": {
         "ace_going_with_the_flow": {
           "name": "Going With The Flow",
+          "name_de": "Mit dem Fluss gehen",
           "nummer": 1,
+          "bild": "Wasser fließt einen Bach hinunter, umfließt Steine, findet seinen Weg. Keine Kraft, kein Kampf – nur natürliches Fließen.",
           "bedeutung": "Mit dem Strom des Lebens fließen",
           "weisheit": "Das Wasser kämpft nicht gegen den Felsen – es fließt um ihn herum. So findet es seinen Weg zum Meer.",
+          "osho": "Wasser ist das perfekte Symbol für das Tao. Es fließt immer nach unten, sucht den tiefsten Punkt, und doch erreicht es den Ozean.",
           "schatten": "Widerstand, Starrheit, Kontrollsucht"
         },
         "2_friendliness": {
           "name": "Friendliness",
+          "name_de": "Freundlichkeit",
           "nummer": 2,
+          "bild": "Zwei Gestalten sitzen entspannt beieinander. Keine Anspannung, keine Erwartung – nur einfaches, warmes Beisammensein.",
           "bedeutung": "Warmherzige Freundlichkeit zu sich und anderen",
           "weisheit": "Freundlichkeit beginnt bei dir selbst. Wenn du dir selbst ein Freund bist, strahlst du Wärme in die Welt.",
+          "osho": "Sei zuerst dein eigener Freund. Nur dann kannst du wahrhaft freundlich zu anderen sein.",
           "schatten": "Selbstkritik, Kälte, Ablehnung"
         },
         "3_celebration": {
           "name": "Celebration",
+          "name_de": "Feier",
           "nummer": 3,
+          "bild": "Mehrere Gestalten tanzen und feiern zusammen. Freude strahlt aus allen Gesichtern. Das Leben selbst wird gefeiert.",
           "bedeutung": "Das Leben feiern, Freude teilen",
           "weisheit": "Das Leben selbst ist ein Fest. Du brauchst keinen Grund zum Feiern – dein Sein ist Grund genug.",
+          "osho": "Feiere ohne Grund. Das Leben selbst ist der Grund. Warte nicht auf einen besonderen Anlass – jeder Moment ist besonders.",
           "schatten": "Freudlosigkeit, Isolation, unterdrückte Emotionen"
         },
         "4_turning_in": {
           "name": "Turning In",
+          "name_de": "Nach innen wenden",
           "nummer": 4,
+          "bild": "Eine Gestalt wendet sich von der äußeren Welt ab und schaut nach innen. Die Augen sind geschlossen, aber das innere Licht leuchtet.",
           "bedeutung": "Nach innen wenden, Introspektion",
           "weisheit": "Manchmal ist der Weg nach außen verschlossen, damit du den Weg nach innen findest.",
+          "osho": "Die Reise nach außen hat ihre Grenzen. Die Reise nach innen ist grenzenlos.",
           "schatten": "Vermeidung, übermäßige Introvertiertheit"
         },
         "5_clinging_to_the_past": {
           "name": "Clinging to the Past",
+          "name_de": "Am Vergangenen festhalten",
           "nummer": 5,
+          "bild": "Eine Gestalt hält alte Fotos, verblasste Erinnerungen, Relikte der Vergangenheit fest umklammert. Die Augen schauen zurück, nicht nach vorn.",
           "bedeutung": "Festhalten an vergangenen Erfahrungen",
           "weisheit": "Die Vergangenheit ist ein Ort zum Besuchen, nicht zum Wohnen. Lass los, was war.",
+          "osho": "Die Vergangenheit ist tot. Warum trägst du eine Leiche mit dir herum? Lege sie ab und lebe.",
           "schatten": "Nostalgie, Trauer, Unfähigkeit loszulassen"
         },
         "6_the_dream": {
           "name": "The Dream",
+          "name_de": "Der Traum",
           "nummer": 6,
+          "bild": "Eine Gestalt schaut in Seifenblasen, die schöne Szenen zeigen – aber sie sind zerbrechlich, unwirklich. Träume und Illusionen.",
           "bedeutung": "Träume und Visionen, idealisierte Vorstellungen",
           "weisheit": "Träume sind Samen der Zukunft. Aber verwechsle den Traum nicht mit der Wirklichkeit.",
+          "osho": "Träume können inspirieren oder gefangen halten. Die Frage ist: Träumst du, um aufzuwachen, oder um weiterzuschlafen?",
           "schatten": "Illusion, Realitätsflucht, unerreichbare Ideale"
         },
         "7_projections": {
           "name": "Projections",
+          "name_de": "Projektionen",
           "nummer": 7,
+          "bild": "Eine Gestalt schaut auf eine Wand, auf der Schatten – eigene, projizierte Bilder – erscheinen. Was sie sieht, kommt von innen.",
           "bedeutung": "Projektionen erkennen und zurücknehmen",
           "weisheit": "Was du in anderen siehst, zeigt dir, was in dir lebt. Jede Projektion ist eine Einladung zur Selbsterkenntnis.",
+          "osho": "Du siehst nie den anderen – du siehst immer nur deine Projektion. Nimm sie zurück, und du erkennst dich selbst.",
           "schatten": "Blindheit für eigene Anteile, Schuldzuweisung"
         },
         "8_letting_go": {
           "name": "Letting Go",
+          "name_de": "Loslassen",
           "nummer": 8,
+          "bild": "Eine Gestalt öffnet die Hände und lässt etwas frei. Es fliegt davon wie ein Vogel. Erleichterung und Freiheit im Gesicht.",
           "bedeutung": "Loslassen von Anhaftungen",
           "weisheit": "Loslassen ist nicht Verlieren – es ist Raum schaffen für das Neue. Die leeren Hände können empfangen.",
+          "osho": "Loslassen ist keine Schwäche – es ist die größte Stärke. Nur wer loslassen kann, ist wirklich frei.",
           "schatten": "Festhalten, Kontrolle, Angst vor Verlust"
         },
         "9_laziness": {
           "name": "Laziness",
+          "name_de": "Trägheit",
           "nummer": 9,
+          "bild": "Eine Gestalt liegt faul herum, während die Welt an ihr vorbeizieht. Ist es Ruhe oder Vermeidung?",
           "bedeutung": "Trägheit als Vermeidung oder als heilsame Pause",
           "weisheit": "Manchmal ist Nichtstun die weiseste Handlung. Aber unterscheide Ruhe von Vermeidung.",
+          "osho": "Es gibt eine Faulheit, die Flucht ist, und eine, die tiefe Ruhe ist. Kenne den Unterschied.",
           "schatten": "Prokrastination, Stagnation, Depression"
         },
         "10_harmony": {
           "name": "Harmony",
+          "name_de": "Harmonie",
           "nummer": 10,
+          "bild": "Die Gestalt auf dieser Karte spiegelt die Süße und Zartheit dieser Erfahrung wider. Delphine tauchen aus dem Herzen auf und bilden einen Bogen zum dritten Auge – sie repräsentieren die Verspieltheit und Intelligenz, die entsteht, wenn wir uns mit dem Herzen verbinden und von dort aus in die Welt gehen.",
           "bedeutung": "Emotionale Harmonie und Erfüllung",
           "weisheit": "Harmonie ist der natürliche Zustand, wenn du aufhörst zu kämpfen. Sie wartet hinter jedem Konflikt.",
+          "osho": "Die Delphine, die aus dem Herzen auftauchen, zeigen die spielerische Intelligenz des Lebens. Wenn das Herz offen ist, tanzt das Leben.",
           "schatten": "Disharmonie, emotionales Chaos"
         },
         "page_trust": {
           "name": "Trust",
+          "name_de": "Vertrauen",
           "nummer": 11,
+          "bild": "Die Gestalt hat den Sprung gewagt – sie fliegt durch die Luft, ohne Seil, ohne Fallschirm, ohne Sicherheitsnetz. Totales und absolutes Vertrauen. Am anderen Ende wartet etwas Weiches, Einladendes – rosa Rosenblätter.",
           "bedeutung": "Vertrauen als Grundhaltung zum Leben",
           "weisheit": "Vertrauen ist der Sprung ins Unbekannte. Es sagt Ja zum Leben, bevor es Beweise gibt.",
+          "osho": "Vertraue dem Leben. Wenn du vertraust, kannst du dein Wissen fallen lassen, deinen Verstand beiseite legen. Mit Vertrauen öffnet sich etwas Unermessliches. Das Leben wird voller Gott, überfließend. Du wirst nicht getäuscht; es gibt nichts, das dir genommen werden kann.",
+          "quelle": "Osho, The Sun Rises in the Evening, Kapitel 9",
           "schatten": "Misstrauen, Kontrolle, Verschlossenheit"
         },
         "knight_understanding": {
           "name": "Understanding",
+          "name_de": "Verstehen",
           "nummer": 12,
+          "bild": "Eine Gestalt mit einem sanften, wissenden Blick. Sie schaut nicht mit den Augen des Urteils, sondern mit den Augen des Verstehens.",
           "bedeutung": "Tiefes Verstehen jenseits des Intellekts",
           "weisheit": "Verstehen geschieht nicht im Kopf – es geschieht im Herzen. Wenn du wirklich verstehst, urteilst du nicht mehr.",
+          "osho": "Verstehen ist nicht intellektuell – es ist existentiell. Wenn du wirklich verstehst, transformiert es dich.",
           "schatten": "Oberflächlichkeit, Vorurteile, Intellektualisieren"
         },
         "queen_receptivity": {
           "name": "Receptivity",
+          "name_de": "Empfänglichkeit",
           "nummer": 13,
+          "bild": "Eine weibliche Gestalt, deren Arme nach oben ausgestreckt sind, um zu empfangen. Sie ist vollständig ins Wasser getaucht. Sie hat keinen Kopf – keinen beschäftigten, aggressiven Verstand, der ihre reine Empfänglichkeit behindern könnte. Während sie gefüllt wird, leert sie sich kontinuierlich, fließt über und empfängt mehr. Das Lotus-Muster, das aus ihr hervorgeht, repräsentiert die perfekte Harmonie des Universums.",
           "bedeutung": "Empfänglichkeit und Offenheit",
           "weisheit": "Empfänglichkeit ist Stärke, nicht Schwäche. Der Kelch muss leer sein, um gefüllt zu werden.",
+          "osho": "Das Weibliche ist rezeptiv – nicht passiv. Es empfängt und transformiert. Es ist wie die Erde, die den Samen empfängt und eine Blume hervorbringt.",
           "schatten": "Verschlossenheit, Abwehr, Härte"
         },
         "king_healing": {
           "name": "Healing",
+          "name_de": "Heilung",
           "nummer": 14,
+          "bild": "Die Gestalt auf dieser Karte ist nackt, verletzlich, offen für die liebende Berührung der Existenz. Die Aura um seinen Körper ist voller Licht, und die Qualität von Entspannung, Fürsorge und Liebe, die ihn umgibt, löst seinen Kampf und sein Leiden auf. Lotusblumen aus Licht erscheinen auf seinem physischen Körper und um die subtilen Energiekörper herum. In jeder dieser feinstofflichen Schichten erscheint ein heilender Kristall.",
           "bedeutung": "Tiefe Heilung von emotionalen Wunden",
           "weisheit": "Heilung geschieht, wenn du aufhörst, dich vor deinen Wunden zu verstecken. Im Licht der Aufmerksamkeit lösen sie sich auf.",
+          "osho": "Du trägst deine Wunde mit dir herum. Mit dem Ego ist dein ganzes Sein eine Wunde. Der Mensch ohne Ego-Wunden kann nicht verletzt werden. Er ist gesund, geheilt, ganz. Das Wort 'heal' (heilen) kommt von 'whole' (ganz), und auch 'holy' (heilig) kommt von 'whole'. Er ist ganz, geheilt, heilig.",
           "schatten": "Unterdrückte Wunden, Vermeidung, chronischer Schmerz"
         }
       }
@@ -432,103 +591,146 @@
       "thema": "Gedanken, Verstand, Kommunikation, Herausforderungen",
       "traditionell": "Swords/Schwerter",
       "farbe": "Grau",
+      "richtung": "Norden",
       "karten": {
         "ace_consciousness": {
           "name": "Consciousness",
+          "name_de": "Bewusstsein",
           "nummer": 1,
+          "bild": "Ein klarer, blauer Himmel. Keine Wolken, keine Gedanken – nur reines, offenes Bewusstsein. Unendliche Weite.",
           "bedeutung": "Reines Bewusstsein, klarer Geist",
           "weisheit": "Bewusstsein ist der Himmel – Gedanken sind nur Wolken, die vorüberziehen. Du bist der Himmel, nicht die Wolken.",
+          "osho": "Du bist nicht deine Gedanken. Du bist das Bewusstsein, das die Gedanken beobachtet. Das zu erkennen ist Befreiung.",
           "schatten": "Unbewusstheit, Identifikation mit Gedanken"
         },
         "2_schizophrenia": {
           "name": "Schizophrenia",
+          "name_de": "Spaltung",
           "nummer": 2,
+          "bild": "Ein Kopf mit zwei Gesichtern, die in verschiedene Richtungen schauen. Innerer Konflikt, widerstreitende Stimmen.",
           "bedeutung": "Innere Spaltung, widerstreitende Stimmen",
           "weisheit": "Der gespaltene Geist ist der normale Zustand. Erkenne die vielen Stimmen – und finde den, der sie alle hört.",
+          "osho": "Wir sind alle ein wenig schizophren – viele Stimmen im Kopf. Die Frage ist: Wer hört sie alle?",
           "schatten": "Innerer Konflikt, Zerrissenheit, Verwirrung"
         },
         "3_ice_olation": {
           "name": "Ice-Olation",
+          "name_de": "Eis-Olation",
           "nummer": 3,
+          "bild": "Eine Gestalt eingefroren in einem Eisblock. Sie kann die Welt sehen, aber nicht berühren. Emotionale Erstarrung.",
           "bedeutung": "Emotionale Isolation, eingefrorene Gefühle",
           "weisheit": "Eis schmilzt in der Wärme der Aufmerksamkeit. Erlaube dem Gefrorenen aufzutauen.",
+          "osho": "Wenn du deine Gefühle einfrierst, frierst du auch dein Leben ein. Erlaube dir zu schmelzen – auch wenn es wehtut.",
           "schatten": "Kälte, Abgeschnittenheit, emotionale Taubheit"
         },
         "4_postponement": {
           "name": "Postponement",
+          "name_de": "Aufschieben",
           "nummer": 4,
+          "bild": "Eine Gestalt sitzt vor einer Aufgabe, aber schaut weg. 'Morgen' steht in der Luft. Immer morgen, nie jetzt.",
           "bedeutung": "Aufschieben, Vermeidung von Entscheidungen",
           "weisheit": "Morgen existiert nicht. Was du aufschiebst, schiebst du aus deinem Leben. Jetzt ist der einzige Moment.",
+          "osho": "Morgen ist die größte Lüge. Es gibt nur heute, nur jetzt. Was du heute nicht lebst, wird nie gelebt.",
           "schatten": "Prokrastination, Lähmung, verpasstes Leben"
         },
         "5_comparison": {
           "name": "Comparison",
+          "name_de": "Vergleich",
           "nummer": 5,
+          "bild": "Eine Gestalt schaut neidisch auf andere, misst sich an ihnen. Immer zu wenig, immer nicht genug.",
           "bedeutung": "Sich mit anderen vergleichen",
           "weisheit": "Vergleich ist der Tod der Freude. Du bist einzigartig – es gibt keinen Maßstab außer deiner eigenen Blüte.",
+          "osho": "Vergleiche dich nie. Du bist einzigartig. Es gibt keinen Maßstab, weil es niemanden wie dich gibt.",
           "schatten": "Neid, Minderwertigkeit, Konkurrenzdenken"
         },
         "6_the_burden": {
           "name": "The Burden",
+          "name_de": "Die Last",
           "nummer": 6,
+          "bild": "Eine gebeugte Gestalt trägt einen riesigen Rucksack – viel zu schwer. Darin: Pflichten, Erwartungen, Schulden anderer.",
           "bedeutung": "Lasten tragen, die nicht die eigenen sind",
           "weisheit": "Prüfe, was du trägst. Vieles davon gehört nicht dir. Lege ab, was andere dir aufgeladen haben.",
+          "osho": "Wessen Last trägst du? Prüfe es. Vieles davon ist nicht deins – es wurde dir aufgeladen.",
           "schatten": "Überlastung, Märtyrertum, Selbstaufgabe"
         },
         "7_politics": {
           "name": "Politics",
+          "name_de": "Politik",
           "nummer": 7,
+          "bild": "Gestalten in Masken, die Spiele spielen. Manipulation, versteckte Agenden, Machtspiele im Schatten.",
           "bedeutung": "Manipulation, Machtspiele, versteckte Agenden",
           "weisheit": "Politik ist das Spiel des Egos. Erkenne die Spiele – und wähle, nicht mitzuspielen.",
+          "osho": "Politik ist überall – nicht nur in der Regierung. Erkenne die politischen Spiele in deinem eigenen Leben.",
           "schatten": "Manipulation, Intrigen, Unehrlichkeit"
         },
         "8_guilt": {
           "name": "Guilt",
+          "name_de": "Schuld",
           "nummer": 8,
+          "bild": "Eine Gestalt trägt schwere Ketten – aber sie hat sie sich selbst angelegt. Schuld als selbst auferlegte Strafe.",
           "bedeutung": "Schuldgefühle und ihre Wurzeln",
           "weisheit": "Schuld ist eine Last, die du dir selbst auflegst. Vergib dir – das Leben kennt keine Schuld, nur Lernen.",
+          "osho": "Schuld ist eine Erfindung der Religion. Das Leben kennt keine Schuld – nur Erfahrung und Wachstum.",
           "schatten": "Chronische Schuld, Selbstbestrafung, Scham"
         },
         "9_sorrow": {
           "name": "Sorrow",
+          "name_de": "Trauer",
           "nummer": 9,
+          "bild": "Eine zusammengekauerte Gestalt in tiefem Schmerz. Tränen fließen. Die dunkelste Stunde vor der Morgendämmerung.",
           "bedeutung": "Tiefe Trauer, dunkle Nacht der Seele",
           "weisheit": "Trauer ist der Preis der Liebe. Erlaube ihr zu fließen – auf der anderen Seite wartet neue Tiefe.",
+          "osho": "Trauer ist nicht das Gegenteil von Freude – sie ist ihre Tiefe. Wer nicht trauern kann, kann auch nicht wirklich freuen.",
           "schatten": "Unterdrückte Trauer, Depression, Hoffnungslosigkeit"
         },
         "10_rebirth": {
           "name": "Rebirth",
+          "name_de": "Wiedergeburt",
           "nummer": 10,
+          "bild": "Die Evolution des Bewusstseins wie von Friedrich Nietzsche beschrieben: Ein junger Knabe erhebt sich aus einem Löwen, der sich aus einem Kamel erhebt. Die drei Stufen: Kamel (das Last trägt), Löwe (der kämpft), Kind (das spielt).",
           "bedeutung": "Wiedergeburt durch Transformation des Geistes",
           "weisheit": "Nach der dunkelsten Stunde kommt die Morgendämmerung. Wiedergeburt geschieht, wenn du durch das Feuer gehst.",
+          "osho": "Dein Bewusstsein ist nur ein Spiegel. Weder kommst du, noch gehst du. Du wirst jung, du wirst alt; du bist lebendig, du bist tot. All diese Zustände sind nur Spiegelungen in einem ewigen Teich des Bewusstseins.",
           "schatten": "Festhalten am Alten, Angst vor Neuanfang"
         },
         "page_mind": {
           "name": "Mind",
+          "name_de": "Verstand",
           "nummer": 11,
+          "bild": "Ein Kopf voller wirbelnder Gedanken, Konzepte, Ideen. Der Verstand – ein mächtiges Werkzeug, aber ein schlechter Meister.",
           "bedeutung": "Der Verstand als Werkzeug, nicht als Meister",
           "weisheit": "Der Verstand ist ein wunderbarer Diener, aber ein schrecklicher Herr. Nutze ihn, aber identifiziere dich nicht mit ihm.",
+          "osho": "Der Verstand ist ein Werkzeug. Benutze ihn, wenn du ihn brauchst, und lege ihn beiseite, wenn du ihn nicht brauchst.",
           "schatten": "Überidentifikation mit dem Verstand, Overthinking"
         },
         "knight_fighting": {
           "name": "Fighting",
+          "name_de": "Kämpfen",
           "nummer": 12,
+          "bild": "Zwei Gestalten im Kampf – oder eine Gestalt, die mit ihrem eigenen Schatten kämpft. Aggression und Konflikt.",
           "bedeutung": "Innerer und äußerer Kampf",
           "weisheit": "Der größte Kampf ist der gegen dich selbst. Aber irgendwann erkennst du: Es gibt keinen Feind.",
+          "osho": "Der äußere Kampf spiegelt immer den inneren. Finde Frieden in dir, und der äußere Kampf endet.",
           "schatten": "Aggression, Konfliktsucht, innerer Krieg"
         },
         "queen_morality": {
           "name": "Morality",
+          "name_de": "Moral",
           "nummer": 13,
+          "bild": "Eine strenge Gestalt mit erhobenem Zeigefinger. Richtig und Falsch, Gut und Böse – die Welt in Schwarz und Weiß.",
           "bedeutung": "Anerzogene vs. authentische Moral",
           "weisheit": "Wahre Moral kommt nicht von außen – sie entspringt deinem eigenen Bewusstsein, deiner eigenen Klarheit.",
+          "osho": "Moral, die von außen kommt, ist Gefängnis. Moral, die von innen wächst, ist Freiheit.",
           "schatten": "Rigide Moral, Heuchelei, Verurteilung"
         },
         "king_control": {
           "name": "Control",
+          "name_de": "Kontrolle",
           "nummer": 14,
+          "bild": "Eine Gestalt hält viele Fäden in der Hand wie ein Marionettenspieler. Aber ist sie der Spieler oder selbst die Marionette?",
           "bedeutung": "Kontrolle und ihre Grenzen",
           "weisheit": "Je mehr du kontrollierst, desto mehr entgleitet dir. Wahre Meisterschaft liegt im Loslassen der Kontrolle.",
+          "osho": "Kontrolle ist Illusion. Du kannst das Leben nicht kontrollieren – du kannst nur mit ihm fließen oder gegen es kämpfen.",
           "schatten": "Kontrollzwang, Angst, Mikromanagement"
         }
       }
@@ -537,104 +739,147 @@
       "element": "Erde",
       "thema": "Körper, Materie, Praktisches, Manifestation",
       "traditionell": "Pentacles/Münzen",
-      "farbe": "Regenbogen",
+      "farbe": "Regenbogen (sieben Farben)",
+      "richtung": "Osten",
       "karten": {
         "ace_maturity": {
           "name": "Maturity",
+          "name_de": "Reife",
           "nummer": 1,
+          "bild": "Ein alter, weiser Baum mit tiefen Wurzeln und weiter Krone. Viele Jahresringe, viele Erfahrungen – aber immer noch lebendig.",
           "bedeutung": "Reife als Integration aller Erfahrungen",
           "weisheit": "Reife ist nicht Alter – es ist die Frucht gelebten Lebens. Der reife Mensch hat aufgehört zu kämpfen.",
+          "osho": "Reife ist nicht eine Frage des Alters. Es ist eine Frage der Integration. Ein reifer Mensch hat seine Erfahrungen verdaut.",
           "schatten": "Unreife, Verweigerung zu wachsen"
         },
         "2_moment_to_moment": {
           "name": "Moment to Moment",
+          "name_de": "Moment zu Moment",
           "nummer": 2,
+          "bild": "Einzelne Momente wie Perlen auf einer Schnur. Jeder vollständig, jeder einzigartig. Kein Vorher, kein Nachher – nur Jetzt.",
           "bedeutung": "Leben im gegenwärtigen Augenblick",
           "weisheit": "Das Leben geschieht nur jetzt. Moment zu Moment – das ist die einzige Zeit, die existiert.",
+          "osho": "Es gibt keine Kontinuität – nur einzelne Momente. Lebe jeden, als wäre er der einzige.",
           "schatten": "Leben in Vergangenheit oder Zukunft"
         },
         "3_guidance": {
           "name": "Guidance",
+          "name_de": "Führung",
           "nummer": 3,
+          "bild": "Eine weise Gestalt weist den Weg. Nicht befehlend, sondern einladend. Der Finger zeigt, aber du musst selbst gehen.",
           "bedeutung": "Führung von innen und außen",
           "weisheit": "Führung kommt, wenn du offen bist. Das Leben sendet ständig Zeichen – lerne, sie zu lesen.",
+          "osho": "Der wahre Lehrer zeigt nicht den Weg – er zeigt auf den Mond. Schau nicht auf den Finger.",
           "schatten": "Orientierungslosigkeit, Ignorieren von Zeichen"
         },
         "4_the_miser": {
           "name": "The Miser",
+          "name_de": "Der Geizhals",
           "nummer": 4,
+          "bild": "Eine Gestalt hockt über einem Haufen Gold, hält es fest umklammert. Die Augen sind voller Angst vor Verlust.",
           "bedeutung": "Geiz und Festhalten an materiellen Dingen",
           "weisheit": "Der Geizhals stirbt arm, auch wenn er reich ist. Wahre Fülle liegt im Geben, nicht im Horten.",
+          "osho": "Der Geizhals ist der ärmste Mensch. Er hat alles und kann nichts genießen.",
           "schatten": "Geiz, Angst vor Mangel, Festhalten"
         },
         "5_the_outsider": {
           "name": "The Outsider",
+          "name_de": "Der Außenseiter",
           "nummer": 5,
+          "bild": "Eine Gestalt steht abseits einer Gruppe, schaut von außen zu. Anders, fremd – aber vielleicht mit einem klareren Blick.",
           "bedeutung": "Außenseiter sein, nicht dazugehören",
           "weisheit": "Der Außenseiter sieht, was die Insider nicht sehen können. Dein Anderssein ist dein Geschenk.",
+          "osho": "Außenseiter zu sein kann ein Segen sein. Du siehst Dinge, die die Insider nicht sehen können.",
           "schatten": "Isolation, Ablehnung, Fremdheit"
         },
         "6_compromise": {
           "name": "Compromise",
+          "name_de": "Kompromiss",
           "nummer": 6,
+          "bild": "Zwei Gestalten verhandeln. Beide geben etwas, beide bekommen etwas. Aber ist das Gleichgewicht echt?",
           "bedeutung": "Kompromisse und ihre Kosten",
           "weisheit": "Manche Kompromisse kosten deine Seele. Unterscheide zwischen Flexibilität und Selbstverrat.",
+          "osho": "Kompromisse können Weisheit sein oder Feigheit. Die Frage ist: Kompromittierst du deine Wahrheit?",
           "schatten": "Fauler Kompromiss, Selbstaufgabe, Anpassung"
         },
         "7_patience": {
           "name": "Patience",
+          "name_de": "Geduld",
           "nummer": 7,
+          "bild": "Ein Gärtner wartet geduldig, während die Pflanze wächst. Keine Hast, kein Ziehen – nur vertrauensvolles Warten.",
           "bedeutung": "Geduldiges Warten auf die richtige Zeit",
           "weisheit": "Geduld ist nicht passives Warten – sie ist aktives Vertrauen, dass die Frucht zur rechten Zeit reift.",
+          "osho": "Geduld ist nicht Passivität – sie ist aktives Warten. Der Gärtner wartet geduldig, aber er gießt weiter.",
           "schatten": "Ungeduld, Erzwingen, Frustration"
         },
         "8_ordinariness": {
           "name": "Ordinariness",
+          "name_de": "Gewöhnlichkeit",
           "nummer": 8,
+          "bild": "Eine einfache Szene: Tee trinken, Geschirr spülen, Wäsche falten. Gewöhnlich – und doch heilig.",
           "bedeutung": "Die Schönheit des Gewöhnlichen",
           "weisheit": "Das Außergewöhnliche versteckt sich im Gewöhnlichen. Wer das Einfache nicht sieht, verpasst das Wesentliche.",
+          "osho": "Zen sagt: Wenn du Hunger hast, iss. Wenn du müde bist, schlafe. Das Gewöhnliche ist das Heilige.",
           "schatten": "Suche nach dem Besonderen, Unzufriedenheit"
         },
         "9_ripeness": {
           "name": "Ripeness",
+          "name_de": "Reife",
           "nummer": 9,
+          "bild": "Eine Frucht am Baum – perfekt reif, kurz bevor sie von selbst fällt. Nicht zu früh, nicht zu spät – genau richtig.",
           "bedeutung": "Reife Zeit für die Ernte",
           "weisheit": "Wenn die Frucht reif ist, fällt sie von selbst. Erzwinge nichts – erkenne, wann die Zeit gekommen ist.",
+          "osho": "Es gibt eine Zeit für alles. Die reife Frucht fällt von selbst – du musst nicht ziehen.",
           "schatten": "Zu früh ernten, Ungeduld, verpasster Moment"
         },
         "10_we_are_the_world": {
           "name": "We Are the World",
+          "name_de": "Wir sind die Welt",
           "nummer": 10,
+          "bild": "Viele Gestalten, die zusammen einen Kreis bilden. Verschiedene Farben, verschiedene Formen – aber alle verbunden. Ein Netz des Lebens.",
           "bedeutung": "Verbundenheit mit allem Leben",
           "weisheit": "Wir sind nicht getrennt – wir sind Wellen desselben Ozeans. Was du einem antust, tust du allen an.",
+          "osho": "Du bist nicht eine Insel – du bist der ganze Ozean. Erkenne die Verbundenheit, und Mitgefühl entsteht von selbst.",
           "schatten": "Isolation, Trennung, Egoismus"
         },
         "page_adventure": {
           "name": "Adventure",
+          "name_de": "Abenteuer",
           "nummer": 11,
+          "bild": "Eine Gestalt am Beginn eines Weges, der in unbekanntes Terrain führt. Aufregung in den Augen, ein Rucksack auf dem Rücken.",
           "bedeutung": "Das Abenteuer des Lebens wagen",
           "weisheit": "Das Leben ist ein Abenteuer oder gar nichts. Wage den Sprung – das Netz erscheint im Fallen.",
+          "osho": "Das Leben ist das größte Abenteuer. Wenn du kein Risiko eingehst, lebst du nicht wirklich.",
           "schatten": "Angst vor dem Unbekannten, Sicherheitssucht"
         },
         "knight_slowing_down": {
           "name": "Slowing Down",
+          "name_de": "Verlangsamen",
           "nummer": 12,
+          "bild": "Eine Gestalt, die bewusst langsamer wird. Die Welt rast vorbei, aber sie geht in ihrem eigenen Tempo.",
           "bedeutung": "Entschleunigung und Präsenz",
           "weisheit": "Langsamer werden ist keine Schwäche – es ist die Kunst, das Leben nicht zu verpassen.",
+          "osho": "Die Welt sagt: Schneller! Zen sagt: Langsamer. Im Langsamen findest du die Tiefe.",
           "schatten": "Rastlosigkeit, Hetze, Oberflächlichkeit"
         },
         "queen_flowering": {
           "name": "Flowering",
+          "name_de": "Erblühen",
           "nummer": 13,
+          "bild": "Ein imaginärer Baum auf dem Höhepunkt seiner Blüte und Frische. Sie ist sehr erotisch, lebendig und voller Überraschungen. Ihre Ärmel enthalten viele Samen, und wenn der Wind bläst, werden die Samen verstreut, um Wurzeln zu schlagen, wo sie mögen. Sie kümmert sich nicht, ob sie auf Erde oder Felsen fallen – sie verstreut sie überall, während sie das Leben und die Liebe genießt.",
           "bedeutung": "Zur vollen Blüte kommen",
           "weisheit": "Blühen ist deine Natur. Wenn du aufhörst, dich zu beschneiden, entfaltest du dich von selbst.",
+          "osho": "Willkommen die Bienen und lade die Vögel ein, deinen Nektar zu trinken. Verbreite deine Freude für alle zum Teilen.",
           "schatten": "Unterdrücktes Potenzial, verwelkte Träume"
         },
         "king_abundance": {
           "name": "Abundance",
+          "name_de": "Fülle",
           "nummer": 14,
+          "bild": "Eine Gestalt umgeben von Reichtum – nicht nur materiell, sondern auch an Liebe, Freude, Erfahrungen. Überfließend.",
           "bedeutung": "Fülle in allen Lebensbereichen",
           "weisheit": "Fülle ist ein innerer Zustand. Wer sich innerlich reich fühlt, zieht äußeren Reichtum an.",
+          "osho": "Zen will, dass du lebst, in Fülle lebst, in Totalität lebst, intensiv lebst – nicht auf dem Minimum, sondern auf dem Maximum, überfließend.",
           "schatten": "Mangelbewusstsein, Gier, Unzufriedenheit"
         }
       }
@@ -642,70 +887,97 @@
   },
 
   "zusaetzliche_karten": {
-    "beschreibung": "Diese Karten werden in der App verwendet, sind aber keine Standard-Osho-Zen-Tarot-Karten. Sie wurden als ergänzende Konzepte hinzugefügt.",
+    "beschreibung": "Diese Karten werden in der App verwendet und sind ergänzende Konzepte basierend auf Osho-Lehren.",
     "karten": {
       "touch": {
         "name": "Touch",
-        "quelle": "Ergänzung basierend auf Osho-Lehren",
+        "name_de": "Berührung",
+        "bild": "Zwei Hände, die sich sanft berühren. Energieströme fließen zwischen den Fingerspitzen. Der Körper als erstes Kommunikationsmittel.",
         "bedeutung": "Die Kraft der achtsamen Berührung",
         "weisheit": "Berührung ist der erste Spiegel. Der Körper spricht, lange bevor Worte entstehen.",
+        "osho": "Der Körper ist nicht getrennt von der Seele – er ist ihr Tempel. Berührung kann heilen, was Worte nie erreichen.",
         "schatten": "Berührungsangst, körperliche Distanz"
       },
       "passion": {
         "name": "Passion",
-        "quelle": "Ergänzung basierend auf Osho-Lehren",
+        "name_de": "Leidenschaft",
+        "bild": "Flammen, die tanzen, ohne zu zerstören. Heiliges Feuer. Lebensenergie in ihrer reinsten Form.",
         "bedeutung": "Heilige Leidenschaft und Lebensfeuer",
         "weisheit": "Sexualität ist ein Feuer, das heilig ist – wenn du es nicht besitzen willst. Ausdruck, nicht Aneignung.",
+        "osho": "Sex ist die niedrigste Form der Energie, aber auch der Samen der höchsten. Transformiere sie, unterdrücke sie nicht.",
         "schatten": "Unterdrückte Leidenschaft, Besessenheit"
       },
       "protection": {
         "name": "Protection",
-        "quelle": "Ergänzung basierend auf Osho-Lehren",
+        "name_de": "Schutz",
+        "bild": "Ein warmes Licht umhüllt eine verletzliche Gestalt. Nicht als Mauer, sondern als sanfte Hülle, die Raum zum Wachsen lässt.",
         "bedeutung": "Schutzraum für Verletzlichkeit",
         "weisheit": "Schutz ist nicht Abschirmung – es ist der Raum, in dem du weich bleiben darfst.",
+        "osho": "Wahrer Schutz kommt nicht von außen – er kommt aus der inneren Stärke, verletzlich sein zu dürfen.",
         "schatten": "Überbeschützung, Mauern"
       },
       "warmth": {
         "name": "Warmth",
-        "quelle": "Ergänzung basierend auf Osho-Lehren",
+        "name_de": "Wärme",
+        "bild": "Sanftes, goldenes Licht, das von einer Gestalt ausstrahlt. Keine Sonne, sondern inneres Leuchten, das andere wärmt.",
         "bedeutung": "Emotionale Wärme und Präsenz",
         "weisheit": "Wärme ist kein Gefühl, sondern Präsenz, die nicht urteilt.",
+        "osho": "Wärme ist das natürliche Ausstrahlen eines Herzens, das offen ist. Du musst sie nicht erzeugen – nur das Herz öffnen.",
         "schatten": "Kälte, emotionale Distanz"
       },
       "acceptance": {
         "name": "Acceptance",
-        "quelle": "Ergänzung basierend auf Osho-Lehren",
+        "name_de": "Akzeptanz",
+        "bild": "Eine Gestalt mit offenen Armen, die alles willkommen heißt – Licht und Schatten, Freude und Schmerz. Keine Ablehnung.",
         "bedeutung": "Radikale Annahme dessen, was ist",
         "weisheit": "Akzeptanz ist der erste Atemzug von Freiheit. Du hörst auf zu kämpfen – und das Leben atmet durch dich.",
+        "osho": "Akzeptanz ist keine Resignation – sie ist das Aufhören des Kampfes. Im Kampf verlierst du Energie. In der Akzeptanz gewinnst du sie zurück.",
         "schatten": "Widerstand, Verleugnung"
       },
       "love": {
         "name": "Love",
-        "quelle": "Ergänzung basierend auf Osho-Lehren",
+        "name_de": "Liebe",
+        "bild": "Ein Herz, das Licht ausstrahlt – nicht nach innen gerichtet, sondern nach außen fließend. Liebe als Geben, nicht als Nehmen.",
         "bedeutung": "Bedingungslose Liebe als Seinsqualität",
         "weisheit": "Liebe ist nicht Beziehung. Sie ist Raum. Wenn du liebst, lässt du frei.",
+        "osho": "Liebe ist nicht etwas, das du bekommst – es ist etwas, das du bist. Wenn du liebst, fragst du nicht nach Gegenleistung.",
         "schatten": "Besitzergreifende Liebe, Liebesbedürftigkeit"
       },
       "compassion": {
         "name": "Compassion",
-        "quelle": "Ergänzung basierend auf Osho-Lehren",
+        "name_de": "Mitgefühl",
+        "bild": "Eine Gestalt beugt sich zu einer anderen herab – nicht von oben herab, sondern auf Augenhöhe. Gleichheit im Mitfühlen.",
         "bedeutung": "Mitgefühl ohne Mitleid",
         "weisheit": "Fürsorge ist Hingabe ohne Forderung – sie gießt, ohne zu zählen.",
+        "osho": "Mitgefühl ist nicht Mitleid. Mitleid schaut von oben herab. Mitgefühl ist auf Augenhöhe – es erkennt: Wir sind gleich.",
         "schatten": "Mitleid als Überlegenheit, Helfersyndrom"
       },
       "support": {
         "name": "Support",
-        "quelle": "Ergänzung basierend auf Osho-Lehren",
+        "name_de": "Unterstützung",
+        "bild": "Eine Hand unter einer anderen – tragend, nicht drückend. Unsichtbarer Halt, der Raum zum Wachsen gibt.",
         "bedeutung": "Tragender Grund unter den Füßen",
         "weisheit": "Unterstützung ist ein unsichtbarer Boden. Du weißt, er ist da – weil du wagst.",
+        "osho": "Wahre Unterstützung ist unsichtbar. Sie gibt dir nicht die Antwort – sie gibt dir den Mut, selbst zu suchen.",
         "schatten": "Mangelnde Unterstützung, Alleinkämpfertum"
       },
       "intimacy": {
         "name": "Intimacy",
-        "quelle": "Ergänzung basierend auf Osho-Lehren",
+        "name_de": "Intimität",
+        "bild": "Zwei Gestalten, die einander vollkommen offen begegnen. Keine Masken, keine Schutzmauern. Nackte Seelen.",
         "bedeutung": "Tiefe Nähe ohne Masken",
         "weisheit": "Intimität ist Nacktheit der Seele – nicht des Körpers.",
+        "osho": "Intimität erfordert Mut – den Mut, dich zu zeigen, wie du wirklich bist. Das ist das größte Risiko und das größte Geschenk.",
         "schatten": "Angst vor Nähe, oberflächliche Beziehungen"
+      },
+      "commitment": {
+        "name": "Commitment",
+        "name_de": "Verbindlichkeit",
+        "bild": "Zwei Hände, die einander halten – nicht krampfhaft, sondern bewusst. Ein Ja, das durch alle Jahreszeiten trägt.",
+        "bedeutung": "Bewusste Entscheidung zur Verbindlichkeit",
+        "weisheit": "Commitment ist ein bewusstes Ja. Es ist die Entscheidung, gemeinsam durch alle Jahreszeiten zu gehen.",
+        "osho": "Wahre Verbindlichkeit kommt nicht aus Pflicht, sondern aus Liebe. Sie ist keine Kette, sondern ein Tanz.",
+        "schatten": "Bindungsangst, falsche Versprechen"
       }
     }
   }
