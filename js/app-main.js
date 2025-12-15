@@ -15733,28 +15733,6 @@
             currentTiageSyntheseContent.logos = generateCombinedLogos(ichArch, partnerArch);
 
             // ═══════════════════════════════════════════════════════════════════════════
-            // FLATNEEDS neu berechnen für geänderten Archetyp (für Osho Zen Texte etc.)
-            // ═══════════════════════════════════════════════════════════════════════════
-            if (typeof ProfileCalculator !== 'undefined' && ProfileCalculator.calculateFlatNeeds) {
-                const personKey = person === 'ich' ? 'ich' : 'partner';
-                const newArchetype = person === 'ich' ? currentArchetype : selectedPartner;
-
-                // Hole aktuelle Dimensionen
-                const geschlecht = personDimensions[personKey]?.geschlecht || null;
-                const dominanz = personDimensions[personKey]?.dominanz || null;
-                const orientierung = personDimensions[personKey]?.orientierung || null;
-
-                // Berechne neue flatNeeds basierend auf neuem Archetyp
-                const newFlatNeeds = ProfileCalculator.calculateFlatNeeds(newArchetype, geschlecht, dominanz, orientierung);
-
-                // Setze in TiageState
-                if (typeof TiageState !== 'undefined' && newFlatNeeds && Object.keys(newFlatNeeds).length > 0) {
-                    TiageState.set(`flatNeeds.${personKey}`, newFlatNeeds);
-                    console.log(`[TIAGE] flatNeeds aktualisiert für ${personKey}:`, newArchetype, Object.keys(newFlatNeeds).length, 'Bedürfnisse');
-                }
-            }
-
-            // ═══════════════════════════════════════════════════════════════════════════
             // RESONANZFAKTOREN neu berechnen und in State speichern (VOR Content-Anzeige!)
             // Die Tabelle in getScoreContent() liest dann die gespeicherten Werte
             // ═══════════════════════════════════════════════════════════════════════════
