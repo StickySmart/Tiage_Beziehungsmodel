@@ -14757,7 +14757,17 @@
                 const actualValue = getNeedValue(needId, needKey);
 
                 if (actualValue !== null && typeof typischValue === 'number') {
-                    const diff = Math.abs(actualValue - typischValue);
+                    // Modifikator-Details ZUERST berechnen (für korrekte Abweichung)
+                    const modDetails = getModifikatorDetails(needKey);
+
+                    // Modifizierten typischen Wert berechnen: Typ + D + G + O
+                    const modifiedTypisch = typischValue +
+                        (modDetails.dominanz || 0) +
+                        (modDetails.geschlecht || 0) +
+                        (modDetails.orientierung || 0);
+
+                    // Abweichung gegen den MODIFIZIERTEN typischen Wert berechnen
+                    const diff = Math.abs(actualValue - modifiedTypisch);
                     totalDiff += diff;
                     count++;
 
@@ -14766,17 +14776,15 @@
                     if (diff > 30) diffColor = '#ef4444'; // rot
                     else if (diff > 15) diffColor = '#eab308'; // gelb
 
-                    // Modifikator-Details für dieses Bedürfnis berechnen
-                    const modDetails = getModifikatorDetails(needKey);
-
                     rows.push({
                         id: needId || needKey,  // Zeige id oder stringKey
                         label: needLabel,
                         typisch: typischValue,
+                        modifiedTypisch: modifiedTypisch,  // NEU: Für Anzeige
                         actual: actualValue,
                         diff: diff,
                         diffColor: diffColor,
-                        modifiers: modDetails  // NEU: Modifikator-Aufschlüsselung
+                        modifiers: modDetails
                     });
                 }
             }
@@ -14925,7 +14933,7 @@
                     ${(profilDominanz || profilGeschlecht || profilOrientierung) ? `
                     <div style="padding: 12px 20px; background: rgba(139,92,246,0.08); border-bottom: 1px solid rgba(255,255,255,0.05);">
                         <div style="font-size: 11px; color: var(--text-muted); margin-bottom: 8px;">
-                            <strong>Modifikator-Formel:</strong> Dein Wert = Typisch + D + G + O
+                            <strong>Modifikator-Formel:</strong> Erwartet = Typ + D + G + O &nbsp;→&nbsp; |Δ| = |Dein Wert − Erwartet|
                         </div>
                         <div style="display: flex; flex-wrap: wrap; gap: 16px; font-size: 11px;">
                             <div style="display: flex; align-items: center; gap: 6px;">
