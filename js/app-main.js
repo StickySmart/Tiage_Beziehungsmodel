@@ -16048,6 +16048,46 @@
         }
         window.sortNeedsSyntheseContent = sortNeedsSyntheseContent;
 
+        /**
+         * Helper function to get actual need value from TiageState
+         * @param {string} person - 'ich' or 'partner'
+         * @param {string} needId - Need ID like '#B1', '#B2', etc.
+         * @returns {number|null} - The actual value or null if not found
+         */
+        function getActualNeedValue(person, needId) {
+            if (typeof TiageState === 'undefined') {
+                return null;
+            }
+
+            // Get locked and flat needs
+            const lockedNeeds = TiageState.getLockedNeeds(person) || {};
+            const flatNeeds = TiageState.getFlatNeeds(person) || {};
+
+            // lockedNeeds have priority
+            if (lockedNeeds[needId] !== undefined && lockedNeeds[needId] !== null) {
+                return lockedNeeds[needId];
+            }
+            if (flatNeeds[needId] !== undefined && flatNeeds[needId] !== null) {
+                return flatNeeds[needId];
+            }
+            return null;
+        }
+
+        /**
+         * Helper function to check if a need is locked
+         * @param {string} person - 'ich' or 'partner'
+         * @param {string} needId - Need ID like '#B1', '#B2', etc.
+         * @returns {boolean} - True if the need is locked
+         */
+        function isNeedLocked(person, needId) {
+            if (typeof TiageState === 'undefined') {
+                return false;
+            }
+
+            const lockedNeeds = TiageState.getLockedNeeds(person) || {};
+            return lockedNeeds[needId] !== undefined && lockedNeeds[needId] !== null;
+        }
+
         function getNeedsContent() {
             // Matching-Daten holen - Schlüssel unverändert (duo_flex bleibt duo_flex)
             const ichArchetyp = currentArchetype || '';
