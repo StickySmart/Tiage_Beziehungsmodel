@@ -14880,12 +14880,15 @@
                 const modD = r.modifiers?.dominanz || 0;
                 const modG = r.modifiers?.geschlecht || 0;
                 const modO = r.modifiers?.orientierung || 0;
-                // Prüfe ob PWert manuell überschrieben wurde (weicht von Erwartet ab)
-                const isOverridden = r.actual !== r.modifiedTypisch;
-                // Status-Symbol: 🔒 wenn locked, * wenn nur überschrieben (wird bei Archetyp-Wechsel zurückgesetzt!)
+
+                // Wenn nicht gelockt: Zeige modifizierten Wert (Typ + D + G + O)
+                // Wenn gelockt: Zeige den tatsächlichen (manuell gesetzten) Wert
+                const displayValue = r.locked ? r.actual : r.modifiedTypisch;
+
+                // Status-Symbol: 🔒 nur wenn locked
                 const statusSymbol = r.locked
                     ? '<span style="color: #f97316; margin-left: 2px;" title="Fixiert - bleibt bei Archetyp-Wechsel erhalten">🔒</span>'
-                    : (isOverridden ? '<span style="color: #eab308;" title="Überschrieben - wird bei Archetyp-Wechsel zurückgesetzt!">*</span>' : '');
+                    : '';
 
                 return `
                 <tr style="border-bottom: 1px solid rgba(255,255,255,0.06);">
@@ -14897,7 +14900,7 @@
                     <td style="padding: 6px 4px; text-align: center; font-size: 12px; color: #a78bfa; font-weight: ${modD !== 0 ? '600' : '400'};">${formatModValue(modD)}</td>
                     <td style="padding: 6px 4px; text-align: center; font-size: 12px; color: #60a5fa; font-weight: ${modG !== 0 ? '600' : '400'};">${formatModValue(modG)}</td>
                     <td style="padding: 6px 4px; text-align: center; font-size: 12px; color: #f472b6; font-weight: ${modO !== 0 ? '600' : '400'};">${formatModValue(modO)}</td>
-                    <td style="padding: 6px 4px; text-align: center; font-size: 12px; font-weight: 600;">${r.actual}${statusSymbol}</td>
+                    <td style="padding: 6px 4px; text-align: center; font-size: 12px; font-weight: 600;">${displayValue}${statusSymbol}</td>
                 </tr>
             `}).join('');
 
