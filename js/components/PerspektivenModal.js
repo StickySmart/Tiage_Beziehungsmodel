@@ -503,6 +503,7 @@ const PerspektivenModal = {
      */
     getKategorieId: function(kategorieKey) {
         const mapping = {
+            // GFK Kern-Kategorien (#K1-#K10)
             'existenz': '#K1',
             'sicherheit': '#K2',
             'zuneigung': '#K3',
@@ -511,15 +512,24 @@ const PerspektivenModal = {
             'teilnahme': '#K6',
             'musse': '#K7',
             'identitaet': '#K8',
+            'identitaet_bedeutung': '#K8',  // Alternative Schreibweise
             'erschaffen': '#K9',
+            'etwas_erschaffen': '#K9',      // Alternative Schreibweise
             'verbundenheit': '#K10',
+            'verbunden_sein': '#K10',       // Alternative Schreibweise
+            // Dynamik-Kategorie (#K11)
             'dynamik': '#K11',
+            'dynamik_austausch': '#K11',    // Alternative Schreibweise
+            // Lebensbereiche (#K12-#K18)
             'lebensplanung': '#K12',
             'finanzen_karriere': '#K13',
             'kommunikation_stil': '#K14',
+            'kommunikationsstil': '#K14',   // Alternative Schreibweise
             'soziales_leben': '#K15',
             'intimitaet_beziehung': '#K16',
+            'intimitaet_romantik': '#K16',  // Alternative Schreibweise
             'werte_haltung': '#K17',
+            'werte_haltungen': '#K17',      // Alternative Schreibweise
             'praktisches_leben': '#K18'
         };
         return mapping[kategorieKey] || '';
@@ -905,55 +915,22 @@ const PerspektivenModal = {
                     ">${story}</p>
                 </div>
 
-                <!-- Werte-Vergleich -->
-                <div class="resonance-comparison" style="
-                    background: rgba(255,255,255,0.03);
-                    border-radius: 12px;
-                    padding: 16px;
+                <!-- Resonanz-Welle Animation -->
+                <div style="
+                    text-align: center;
+                    padding: 12px;
+                    background: ${statusColor}15;
+                    border-radius: 8px;
+                    border: 1px solid ${statusColor}30;
                     margin-bottom: 16px;
                 ">
-                    <div style="font-size: 12px; color: var(--text-muted); margin-bottom: 12px; text-transform: uppercase; letter-spacing: 1px;">
-                        Bedürfnis-Werte
+                    <div style="font-size: 20px; margin-bottom: 4px;">
+                        ~~~〉〉〉 ${resonance.statusEmoji} 〈〈〈~~~
                     </div>
-
-                    <!-- Ich-Wert -->
-                    <div style="margin-bottom: 12px;">
-                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
-                            <span style="font-size: 12px; color: #22c55e; font-weight: 600;">${ichName || 'Du'}</span>
-                            <span style="font-size: 14px; font-weight: 700; color: #22c55e;">${wert1}</span>
-                        </div>
-                        <div style="height: 8px; background: rgba(255,255,255,0.1); border-radius: 4px; overflow: hidden;">
-                            <div style="width: ${wert1}%; height: 100%; background: linear-gradient(90deg, #22c55e, #16a34a); border-radius: 4px; transition: width 0.5s;"></div>
-                        </div>
-                    </div>
-
-                    <!-- Partner-Wert -->
-                    <div style="margin-bottom: 16px;">
-                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
-                            <span style="font-size: 12px; color: #ef4444; font-weight: 600;">${partnerName || 'Partner'}</span>
-                            <span style="font-size: 14px; font-weight: 700; color: #ef4444;">${wert2}</span>
-                        </div>
-                        <div style="height: 8px; background: rgba(255,255,255,0.1); border-radius: 4px; overflow: hidden;">
-                            <div style="width: ${wert2}%; height: 100%; background: linear-gradient(90deg, #ef4444, #dc2626); border-radius: 4px; transition: width 0.5s;"></div>
-                        </div>
-                    </div>
-
-                    <!-- Resonanz-Welle Animation -->
-                    <div style="
-                        text-align: center;
-                        padding: 12px;
-                        background: ${statusColor}15;
-                        border-radius: 8px;
-                        border: 1px solid ${statusColor}30;
-                    ">
-                        <div style="font-size: 20px; margin-bottom: 4px;">
-                            ~~~〉〉〉 ${resonance.statusEmoji} 〈〈〈~~~
-                        </div>
-                        <div style="display: flex; justify-content: center; gap: 16px; align-items: center;">
-                            <span style="font-size: 11px; color: var(--text-muted);">Match: <strong style="color: ${statusColor};">${resonance.match}%</strong></span>
-                            <span style="font-size: 11px; color: var(--text-muted);">R = <strong style="color: ${statusColor};">${resonance.rValue}</strong></span>
-                            <span style="font-size: 12px; font-weight: 600; color: ${statusColor};">${resonance.statusText}</span>
-                        </div>
+                    <div style="display: flex; justify-content: center; gap: 16px; align-items: center;">
+                        <span style="font-size: 11px; color: var(--text-muted);">Match: <strong style="color: ${statusColor};">${resonance.match}%</strong></span>
+                        <span style="font-size: 11px; color: var(--text-muted);">R = <strong style="color: ${statusColor};">${resonance.rValue}</strong></span>
+                        <span style="font-size: 12px; font-weight: 600; color: ${statusColor};">${resonance.statusText}</span>
                     </div>
                 </div>
 
