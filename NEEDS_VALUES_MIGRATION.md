@@ -166,9 +166,11 @@ if (ichProfile?.needs && partnerProfile?.needs) {
 5. `d03cb30` - refactor: Use individualized needs values in getGfkBeduerfnisAnalyse()
 6. `f49ce1c` - refactor: Use individualized needs values in getScoreNeedsContent() fallback
 7. `298ab26` - docs: Update migration documentation with completion status
-8. `dc9c5bb` - Merge branch 'main' into claude/check-triage-needs-values-yspSK
+8. `dc9c5bb` - Merge branch 'main' (PR #733) - Konflikt #1 gelöst
+9. `ee586d9` - docs: Document merge conflict resolution with PR #733
+10. `f1ece84` - Merge latest main (PR #734) - Konflikt #2 gelöst
 
-### 🔀 Merge-Konflikt mit PR #733
+### 🔀 Merge-Konflikt #1: PR #733 (Commit: `dc9c5bb`)
 
 **Konflikt**: PR #733 wurde während unserer Arbeit in `main` gemerged und modifizierte dieselbe `getNeedsContent()` Funktion.
 
@@ -181,9 +183,25 @@ if (ichProfile?.needs && partnerProfile?.needs) {
 - Added lock icon helpers `getActualNeedValue()` und `isNeedLocked()` (lines 15919-15945)
 - Beide ergänzen sich: Umfassender Matching-Algorithmus + visuelle Rückmeldung für verschlossene Bedürfnisse
 
+### 🔀 Merge-Konflikt #2: PR #734 (Commit: `f1ece84`)
+
+**Konflikt**: PR #734 wurde nach unserem ersten Merge in `main` gemerged und hat `getNeedsContent()` zurück auf Archetyp-Matching revertiert.
+
+**Änderung in PR #734**:
+- PR #734 hat die Änderungen von PR #733 **rückgängig gemacht**
+- `getNeedsContent()` verwendet wieder `GfkBeduerfnisse.berechneMatching(ichArchetyp, partnerArchetyp)` (Archetyp-basiert)
+- Lock-Icons wurden komplett entfernt
+- Grund: Wahrscheinlich Konflikt mit R-Factor Derivation Änderungen in PR #734
+
+**Lösung**: Unsere Version beibehalten ✅
+- **Keep**: Individualisierte Matching-Algorithm mit `TiageProfileStore.calculateNeedsMatch()`
+- **Keep**: Lock-Icon helpers (getActualNeedValue, isNeedLocked)
+- **Accept**: Andere Änderungen aus PR #734 (profiles/archetypen/index.js, version bump)
+- **Begründung**: Unsere Implementation ist korrekter und vollständiger
+
 ---
 
 **Erstellt am**: 2025-12-15
 **Aktualisiert am**: 2025-12-15
 **Branch**: `claude/check-triage-needs-values-yspSK`
-**Status**: ✅ PRIO 1 abgeschlossen, Merge mit main erfolgreich, PRIO 2 optional
+**Status**: ✅ PRIO 1 abgeschlossen, 2 Merge-Konflikte gelöst, PRIO 2 optional
