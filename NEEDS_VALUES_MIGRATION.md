@@ -10,8 +10,9 @@ Umstellung von `GfkBeduerfnisse.berechneMatching()` auf `TiageProfileStore.calcu
 
 ---
 
-## ✅ Bereits umgestellt
+## ✅ Umgestellte Funktionen
 
+### PRIO 0 (Bereits umgestellt vor dieser Session)
 **Zeile 8147-8156** in `updateGfkFromArchetypes()`:
 ```javascript
 const ichProfile = getProfileFromStore(ichPerson);
@@ -20,50 +21,43 @@ const result = TiageProfileStore.calculateNeedsMatch(ichProfile, partnerProfile)
 ```
 ✅ **Verwendet bereits individualisierte Werte!**
 
----
+### ✅ PRIO 1: User-sichtbare Modals (UMGESTELLT)
 
-## 🔴 PRIO 1: User-sichtbare Modals (KRITISCH)
+Alle User-sichtbaren Modals wurden erfolgreich auf individualisierte Bedürfniswerte umgestellt:
 
-Diese Stellen zeigen dem User direkt Bedürfniswerte an und müssen zuerst umgestellt werden:
-
-### 1. **`getNeedsContent()` (Zeile 15639)**
+### 1. ✅ **`getNeedsContent()` (Commit: `b5ea97b`)**
    - **Funktion**: Generiert Needs-Content für die **Tiage-Synthese-Modal** (Haupt-Modal mit "Grenzen respektieren" etc.)
    - **Location**: `js/app-main.js:15630-15849`
-   - **Verwendung**: Zeigt Bedürfnis-Vergleich mit Sortierung, Differenzen, Resonanz-Storytelling
-   - **Aufruf von**: `openNeedDefinitionModal()` → `renderResonanceModal()` (Screenshot-Kontext!)
    - **Impact**: 🔥 **SEHR HOCH** - Direkter User-Kontakt im Haupt-Modal
+   - **Status**: ✅ Verwendet jetzt `TiageProfileStore.calculateNeedsMatch()` mit individualisiertem `flatNeeds`
 
-### 2. **`openNeedsCompareModal(type)` (Zeile 5048)**
+### 2. ✅ **`openNeedsCompareModal(type)` (Commit: `c2f3273`)**
    - **Funktion**: Öffnet **Bedürfnis-Vergleich Modal** (gemeinsam/unterschiedlich)
    - **Location**: `js/app-main.js:5030-5147`
-   - **Verwendung**: Zeigt Top-Übereinstimmungen und Top-Konflikte
-   - **Aufruf von**: UI-Buttons "Gemeinsame Bedürfnisse" / "Unterschiedliche Prioritäten"
    - **Impact**: 🔥 **HOCH** - Oft genutzt, User-sichtbar
+   - **Status**: ✅ Berechnet Top 10 gemeinsam/unterschiedlich aus `flatNeeds`
 
-### 3. **`renderNeedsFullModal()` (Zeile 7836)**
+### 3. ✅ **`renderNeedsFullModal()` (Commit: `a7e6b4f`)**
    - **Funktion**: Rendert **vollständiges Bedürfnis-Modal** mit Tabs und Sortierung
    - **Location**: `js/app-main.js:7818-8036`
-   - **Verwendung**: Zeigt alle Bedürfnisse sortierbar nach Ich/Diff/Partner
-   - **Aufruf von**: Modal-Rendering-Logik
    - **Impact**: 🔥 **HOCH** - Detaillierte Ansicht, User-sichtbar
+   - **Status**: ✅ Generiert vollständige Listen aus `flatNeeds`
 
-### 4. **`getGfkBeduerfnisAnalyse(type)` (Zeile 14137)**
+### 4. ✅ **`getGfkBeduerfnisAnalyse(type)` (Commit: `d03cb30`)**
    - **Funktion**: Generiert HTML für **GFK-Bedürfnis-Tags** im Pathos/Logos Modal
    - **Location**: `js/app-main.js:14116-14253`
-   - **Verwendung**: Zeigt gemeinsame/unterschiedliche Bedürfnisse als Tags
-   - **Aufruf von**: Pathos/Logos-Synthese-Ansicht
    - **Impact**: 🟠 **MITTEL** - Synthese-Modal, User-sichtbar
+   - **Status**: ✅ Berechnet Top 10 Übereinstimmungen aus `flatNeeds` mit stringKey für pathos/logos
 
-### 5. **`getScoreNeedsContent()` (Zeile 14031, Fallback)**
+### 5. ✅ **`getScoreNeedsContent()` (Commit: `f49ce1c`)**
    - **Funktion**: Generiert Bedürfnis-Matching-Content für **Score-Ansicht**
    - **Location**: `js/app-main.js:14011-14108`
-   - **Verwendung**: Fallback wenn keine vollständigen Daten aus `lastGfkMatchingResult`
-   - **Aufruf von**: Score-Synthese-Modal
    - **Impact**: 🟡 **NIEDRIG** - Nur Fallback, selten aktiv
+   - **Status**: ✅ Fallback verwendet jetzt `flatNeeds` statt Archetyp-Profile
 
 ---
 
-## 🟡 PRIO 2: Berechnungs-Funktionen (Fallbacks)
+## 🟡 PRIO 2: Berechnungs-Funktionen (TODO - Fallbacks)
 
 Diese verwenden `berechneMatching()` als Fallback, wenn keine individualisierten Werte vorhanden:
 
@@ -126,24 +120,55 @@ if (ichProfile?.needs && partnerProfile?.needs) {
 
 ## 📊 Zusammenfassung
 
-| Priorität | Anzahl | Beschreibung |
-|-----------|--------|--------------|
-| 🔴 **PRIO 1** | **5** | User-sichtbare Modals und Ansichten |
-| 🟡 **PRIO 2** | **3** | Berechnungs-Funktionen (Fallbacks) |
-| ✅ **Erledigt** | **1** | Bereits umgestellt (Zeile 8147) |
+| Priorität | Anzahl | Status | Beschreibung |
+|-----------|--------|--------|--------------|
+| ✅ **PRIO 0** | **1** | ✅ **Erledigt** | Bereits vor Session umgestellt (Zeile 8147) |
+| ✅ **PRIO 1** | **5** | ✅ **Erledigt** | User-sichtbare Modals und Ansichten |
+| 🟡 **PRIO 2** | **3** | ⏳ **TODO** | Berechnungs-Funktionen (Fallbacks) |
 
-**Total**: 8 Stellen + 1 bereits umgestellt = 9 Stellen
+**Total**: 9 Stellen, davon **6 umgestellt** (67%), **3 TODO** (33%)
 
 ---
 
 ## 🎯 Nächste Schritte
 
-1. **PRIO 1** Modals umstellen (Zeilen 15639, 5048, 7836, 14137, 14031)
-2. **PRIO 2** Berechnungs-Funktionen prüfen und ggf. umstellen (Zeilen 10122, 10249, 8112)
-3. Testen ob `getProfileFromStore()` immer korrekte `needs` zurückgibt
-4. Prüfen ob `TiageState.flatNeeds` immer aktuell ist
+### ✅ Erledigt (Session 2025-12-15)
+1. ✅ **PRIO 1** Alle User-sichtbaren Modals umgestellt:
+   - ✅ `getNeedsContent()` (Commit: `b5ea97b`)
+   - ✅ `openNeedsCompareModal()` (Commit: `c2f3273`)
+   - ✅ `renderNeedsFullModal()` (Commit: `a7e6b4f`)
+   - ✅ `getGfkBeduerfnisAnalyse()` (Commit: `d03cb30`)
+   - ✅ `getScoreNeedsContent()` (Commit: `f49ce1c`)
+
+### 🟡 Optional (Niedrige Priorität)
+2. **PRIO 2** Berechnungs-Funktionen prüfen und ggf. umstellen:
+   - `calculateGfkFactor()` (Zeile 10122)
+   - `calculateRelationshipQuality()` (Zeile 10249)
+   - `updateGfkFromArchetypes()` (Zeile 8112)
+
+   **Hinweis**: Diese sind nur Fallbacks und haben niedrigen Impact. Können bei Bedarf später umgestellt werden.
+
+### 🧪 Testing
+3. Testen ob:
+   - `getProfileFromStore()` immer korrekte `needs` zurückgibt
+   - `TiageState.flatNeeds` immer aktuell ist
+   - Individualisierte Werte korrekt im Modal angezeigt werden
+   - Fallback zu Archetyp-Profilen funktioniert
+
+---
+
+## 📝 Commits dieser Session
+
+1. `ead30fa` - docs: Add needs values migration documentation
+2. `b5ea97b` - refactor: Use individualized needs values in getNeedsContent()
+3. `c2f3273` - refactor: Use individualized needs values in openNeedsCompareModal()
+4. `a7e6b4f` - refactor: Use individualized needs values in renderNeedsFullModal()
+5. `d03cb30` - refactor: Use individualized needs values in getGfkBeduerfnisAnalyse()
+6. `f49ce1c` - refactor: Use individualized needs values in getScoreNeedsContent() fallback
 
 ---
 
 **Erstellt am**: 2025-12-15
+**Aktualisiert am**: 2025-12-15
 **Branch**: `claude/check-triage-needs-values-yspSK`
+**Status**: ✅ PRIO 1 abgeschlossen, PRIO 2 optional
