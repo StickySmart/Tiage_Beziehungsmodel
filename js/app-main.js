@@ -14725,9 +14725,45 @@
             // Sortiere nach Abweichung (größte zuerst)
             rows.sort((a, b) => b.diff - a.diff);
 
+            // Sammle alle Modifikatorwerte für die Zusammenfassung
+            const modSummary = {
+                dominanz: { values: new Set(), min: 0, max: 0 },
+                geschlecht: { values: new Set(), min: 0, max: 0 },
+                orientierung: { values: new Set(), min: 0, max: 0 }
+            };
+            rows.forEach(r => {
+                if (r.modifiers) {
+                    if (r.modifiers.dominanz !== 0) {
+                        modSummary.dominanz.values.add(r.modifiers.dominanz);
+                        modSummary.dominanz.min = Math.min(modSummary.dominanz.min, r.modifiers.dominanz);
+                        modSummary.dominanz.max = Math.max(modSummary.dominanz.max, r.modifiers.dominanz);
+                    }
+                    if (r.modifiers.geschlecht !== 0) {
+                        modSummary.geschlecht.values.add(r.modifiers.geschlecht);
+                        modSummary.geschlecht.min = Math.min(modSummary.geschlecht.min, r.modifiers.geschlecht);
+                        modSummary.geschlecht.max = Math.max(modSummary.geschlecht.max, r.modifiers.geschlecht);
+                    }
+                    if (r.modifiers.orientierung !== 0) {
+                        modSummary.orientierung.values.add(r.modifiers.orientierung);
+                        modSummary.orientierung.min = Math.min(modSummary.orientierung.min, r.modifiers.orientierung);
+                        modSummary.orientierung.max = Math.max(modSummary.orientierung.max, r.modifiers.orientierung);
+                    }
+                }
+            });
+
+            // Helper: Modifikatorbereich formatieren
+            const formatModRange = (summary) => {
+                if (summary.values.size === 0) return '±0';
+                if (summary.min === summary.max) {
+                    const sign = summary.min > 0 ? '+' : '';
+                    return `${sign}${summary.min}`;
+                }
+                return `${summary.min > 0 ? '+' : ''}${summary.min} bis ${summary.max > 0 ? '+' : ''}${summary.max}`;
+            };
+
             // HTML generieren mit Modifikator-Aufschlüsselung
             let tableHtml = rows.map(r => {
-                // Modifikator-Formel aufbauen
+                // Modifikator-Formel aufbauen - nur bei aktiven Modifikatoren
                 let modFormel = '';
                 if (r.modifiers && r.modifiers.hasModifiers) {
                     const parts = [];
@@ -14826,12 +14862,12 @@
                     ${(profilDominanz || profilGeschlecht || profilOrientierung) ? `
                     <div style="padding: 12px 20px; background: rgba(139,92,246,0.08); border-bottom: 1px solid rgba(255,255,255,0.05);">
                         <div style="font-size: 11px; color: var(--text-muted); margin-bottom: 8px;">
-                            <strong>Modifikator-Formel:</strong> Dein Wert = Typisch + Modifikatoren
+                            <strong>Modifikator-Formel:</strong> Dein Wert = Typisch + <span style="color: #a78bfa;">Dominanz</span> + <span style="color: #60a5fa;">Geschlecht</span> + <span style="color: #f472b6;">Orientierung</span>
                         </div>
                         <div style="display: flex; flex-wrap: wrap; gap: 12px; font-size: 10px;">
-                            ${profilDominanz ? `<span style="color: #a78bfa;">● Dominanz: ${profilDominanz}</span>` : ''}
-                            ${profilGeschlecht ? `<span style="color: #60a5fa;">● Geschlecht: ${profilGeschlecht.replace(/_/g, ' ')}</span>` : ''}
-                            ${profilOrientierung ? `<span style="color: #f472b6;">● Orientierung: ${profilOrientierung}</span>` : ''}
+                            ${profilDominanz ? `<span style="color: #a78bfa;">● Dominanz: ${profilDominanz} <strong>(${formatModRange(modSummary.dominanz)})</strong></span>` : ''}
+                            ${profilGeschlecht ? `<span style="color: #60a5fa;">● Geschlecht: ${profilGeschlecht.replace(/_/g, ' ')} <strong>(${formatModRange(modSummary.geschlecht)})</strong></span>` : ''}
+                            ${profilOrientierung ? `<span style="color: #f472b6;">● Orientierung: ${profilOrientierung} <strong>(${formatModRange(modSummary.orientierung)})</strong></span>` : ''}
                         </div>
                     </div>
                     ` : ''}
