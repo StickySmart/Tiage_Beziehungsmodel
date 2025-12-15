@@ -14116,42 +14116,84 @@
             let gemeinsam = matching.alleGemeinsam || [];
             let unterschiedlich = matching.alleUnterschiedlich || [];
 
-            // Fallback: Wenn keine vollständigen Daten, direkt aus GfkBeduerfnisse holen
-            if (gemeinsam.length === 0 && unterschiedlich.length === 0 && typeof GfkBeduerfnisse !== 'undefined') {
-                // Schlüssel unverändert verwenden (duo_flex bleibt duo_flex)
+            // Fallback: Wenn keine vollständigen Daten, aus TiageState holen
+            if (gemeinsam.length === 0 && unterschiedlich.length === 0) {
                 const ichArchetyp = currentArchetype || '';
                 const partnerArchetyp = selectedPartner || '';
-                const fullMatching = GfkBeduerfnisse.berechneMatching(ichArchetyp, partnerArchetyp);
-                if (fullMatching && fullMatching.details) {
-                    const uebereinstimmend = (fullMatching.details.uebereinstimmend || []).map(b => ({
-                        label: b.label,
-                        id: b.id,                  // "#B34"
-                        key: b.key,                // 34 (numerisch)
-                        stringKey: b.stringKey,    // "selbstbestimmung"
-                        wert1: b.wert1,
-                        wert2: b.wert2,
-                        diff: b.diff
-                    }));
-                    const komplementaer = (fullMatching.details.komplementaer || []).map(b => ({
-                        label: b.label,
-                        id: b.id,                  // "#B34"
-                        key: b.key,                // 34 (numerisch)
-                        stringKey: b.stringKey,    // "selbstbestimmung"
-                        wert1: b.wert1,
-                        wert2: b.wert2,
-                        diff: b.diff
-                    }));
-                    gemeinsam = [...uebereinstimmend, ...komplementaer].sort((a, b) =>
-                        ((b.wert1 + b.wert2) / 2) - ((a.wert1 + a.wert2) / 2)
-                    );
-                    unterschiedlich = (fullMatching.details.konflikt || []).map(b => ({
-                        label: b.label,
-                        id: b.id,                  // "#B34"
-                        key: b.key,                // 34 (numerisch)
-                        stringKey: b.stringKey,    // "selbstbestimmung"
-                        wert1: b.wert1,
-                        wert2: b.wert2
-                    }));
+
+                // NEU: Individualisierte Profile aus Store holen
+                let fullMatching = null;
+                if (typeof TiageProfileStore !== 'undefined' && typeof getProfileFromStore === 'function') {
+                    const ichPerson = { archetyp: ichArchetyp, ...personDimensions.ich };
+                    const partnerPerson = { archetyp: partnerArchetyp, ...personDimensions.partner };
+
+                    const ichProfile = getProfileFromStore(ichPerson);
+                    const partnerProfile = getProfileFromStore(partnerPerson);
+
+                    if (ichProfile?.needs && partnerProfile?.needs) {
+                        const result = TiageProfileStore.calculateNeedsMatch(ichProfile, partnerProfile);
+
+                        // Format-Konvertierung: need → { label, id, wert1, wert2, stringKey }
+                        const formatNeed = (item) => {
+                            const stringKey = item.need.startsWith('#B') && typeof BeduerfnisIds !== 'undefined' && BeduerfnisIds.toKey
+                                ? BeduerfnisIds.toKey(item.need)
+                                : item.need;
+                            return {
+                                label: formatBeduerfnisLabel(item.need),
+                                id: item.need,
+                                key: item.need,
+                                stringKey: stringKey,
+                                wert1: item.wert1,
+                                wert2: item.wert2,
+                                diff: Math.abs(item.wert1 - item.wert2)
+                            };
+                        };
+
+                        const uebereinstimmend = result.gemeinsam.map(formatNeed);
+                        const komplementaer = result.komplementaer.map(formatNeed);
+                        gemeinsam = [...uebereinstimmend, ...komplementaer].sort((a, b) =>
+                            ((b.wert1 + b.wert2) / 2) - ((a.wert1 + a.wert2) / 2)
+                        );
+                        unterschiedlich = result.unterschiedlich.map(formatNeed);
+                        console.log('[getScoreNeedsContent] Verwende individualisierte Bedürfniswerte aus TiageState');
+                    }
+                }
+
+                // Fallback: Alte Methode (nur Archetyp)
+                if (!fullMatching && gemeinsam.length === 0 && typeof GfkBeduerfnisse !== 'undefined') {
+                    fullMatching = GfkBeduerfnisse.berechneMatching(ichArchetyp, partnerArchetyp);
+                    if (fullMatching && fullMatching.details) {
+                        const uebereinstimmend = (fullMatching.details.uebereinstimmend || []).map(b => ({
+                            label: b.label,
+                            id: b.id,
+                            key: b.key,
+                            stringKey: b.stringKey,
+                            wert1: b.wert1,
+                            wert2: b.wert2,
+                            diff: b.diff
+                        }));
+                        const komplementaer = (fullMatching.details.komplementaer || []).map(b => ({
+                            label: b.label,
+                            id: b.id,
+                            key: b.key,
+                            stringKey: b.stringKey,
+                            wert1: b.wert1,
+                            wert2: b.wert2,
+                            diff: b.diff
+                        }));
+                        gemeinsam = [...uebereinstimmend, ...komplementaer].sort((a, b) =>
+                            ((b.wert1 + b.wert2) / 2) - ((a.wert1 + a.wert2) / 2)
+                        );
+                        unterschiedlich = (fullMatching.details.konflikt || []).map(b => ({
+                            label: b.label,
+                            id: b.id,
+                            key: b.key,
+                            stringKey: b.stringKey,
+                            wert1: b.wert1,
+                            wert2: b.wert2
+                        }));
+                        console.log('[getScoreNeedsContent] Fallback: Verwende Archetyp-basierte Bedürfniswerte');
+                    }
                 }
             }
 
