@@ -5038,16 +5038,65 @@
             const ichArchetyp = currentArchetype || '';
             const partnerArchetyp = selectedPartner || '';
 
-            if (!ichArchetyp || !partnerArchetyp || typeof GfkBeduerfnisse === 'undefined') {
+            if (!ichArchetyp || !partnerArchetyp) {
                 body.innerHTML = '<p style="color: var(--text-muted);">Keine Daten verfügbar.</p>';
                 modal.classList.add('active');
                 document.body.style.overflow = 'hidden';
                 return;
             }
 
-            const matching = GfkBeduerfnisse.berechneMatching(ichArchetyp, partnerArchetyp);
             const ichName = archetypeDescriptions[currentArchetype]?.name || 'ICH';
             const partnerName = archetypeDescriptions[selectedPartner]?.name || 'Partner';
+
+            // NEU: Individualisierte Profile aus Store holen
+            let matching = null;
+            if (typeof TiageProfileStore !== 'undefined' && typeof getProfileFromStore === 'function') {
+                const ichPerson = { archetyp: ichArchetyp, ...personDimensions.ich };
+                const partnerPerson = { archetyp: partnerArchetyp, ...personDimensions.partner };
+
+                const ichProfile = getProfileFromStore(ichPerson);
+                const partnerProfile = getProfileFromStore(partnerPerson);
+
+                if (ichProfile?.needs && partnerProfile?.needs) {
+                    const result = TiageProfileStore.calculateNeedsMatch(ichProfile, partnerProfile);
+
+                    // Format-Konvertierung: need → { label, id, wert1, wert2, diff }
+                    const formatNeed = (item) => ({
+                        label: formatBeduerfnisLabel(item.need),
+                        id: item.need,
+                        wert1: item.wert1,
+                        wert2: item.wert2,
+                        diff: Math.abs(item.wert1 - item.wert2)
+                    });
+
+                    // Top 10 für gemeinsam/unterschiedlich
+                    const allGemeinsam = [...result.gemeinsam, ...result.komplementaer].map(formatNeed);
+                    const allUnterschiedlich = result.unterschiedlich.map(formatNeed);
+
+                    // Nach Durchschnittswert sortieren (höchste zuerst)
+                    allGemeinsam.sort((a, b) => ((b.wert1 + b.wert2) / 2) - ((a.wert1 + a.wert2) / 2));
+                    allUnterschiedlich.sort((a, b) => ((b.wert1 + b.wert2) / 2) - ((a.wert1 + a.wert2) / 2));
+
+                    matching = {
+                        topUebereinstimmungen: allGemeinsam.slice(0, 10),
+                        topKonflikte: allUnterschiedlich.slice(0, 10)
+                    };
+                    console.log('[openNeedsCompareModal] Verwende individualisierte Bedürfniswerte aus TiageState');
+                }
+            }
+
+            // Fallback: Alte Methode (nur Archetyp)
+            if (!matching && typeof GfkBeduerfnisse !== 'undefined') {
+                matching = GfkBeduerfnisse.berechneMatching(ichArchetyp, partnerArchetyp);
+                console.log('[openNeedsCompareModal] Fallback: Verwende Archetyp-basierte Bedürfniswerte');
+            }
+
+            if (!matching) {
+                body.innerHTML = '<p style="color: var(--text-muted);">Keine Daten verfügbar.</p>';
+                modal.classList.add('active');
+                document.body.style.overflow = 'hidden';
+                return;
+            }
 
             // Titel setzen
             if (type === 'gemeinsam') {
