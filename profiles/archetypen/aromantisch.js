@@ -180,9 +180,26 @@ const AromantischProfil = {
         '#B95': 30,  // verbindlichkeit - Niedrig - keine romantische Bindung
         '#B96': 35,  // langfristige_bindung - Niedrig - nicht romantisch
         '#B97': 25,  // rechtliche_sicherheit - Niedrig - nicht relevant
+        '#B98': 10,  // treueversprechen - Sehr niedrig - keine romantische Exklusivität
         '#B99': 25,  // gemeinsamer_wohnraum - Niedrig - eventuell mit Freunden
         '#B100': 60, // haeuslichkeit - Mittel-hoch - eigenes Zuhause
+        '#B101': 40, // nest_bauen - Niedrig-mittel - für sich oder mit Freunden
+        '#B102': 30, // alltag_teilen - Niedrig - eventuell mit Freunden
+        '#B103': 85, // eigener_raum - Sehr hoch - wichtig
         '#B104': 90, // rueckzugsort - Sehr hoch - wichtig
+        '#B105': 50, // tierliebe - Mittel - Haustiere als Begleiter
+        '#B106': 50, // fuersorge_tiere - Mittel
+        '#B107': 60, // begleiter - Mittel-hoch - Tier als Begleiter
+        '#B108': 50, // verantwortung_tier - Mittel
+        '#B109': 45, // sesshaftigkeit - Mittel
+        '#B110': 50, // verwurzelung - Mittel
+        '#B111': 70, // mobilitaet - Hoch - flexibel
+        '#B112': 55, // heimat - Mittel - eigenes Zuhause
+        '#B113': 70, // neue_orte - Hoch - Entdeckungslust
+        '#B114': 40, // familienbindung - Niedrig-mittel - eigene Definition
+        '#B115': 35, // herkunftsfamilie - Niedrig - auf Distanz
+        '#B116': 35, // familientreffen - Niedrig
+        '#B117': 30, // generationenverbund - Niedrig
         '#B118': 20, // biologisches_muster - Niedrig
         '#B119': 20, // soziales_muster - Niedrig - Normen abgelehnt
         '#B120': 45, // statische_stabilitaet - Mittel
@@ -199,7 +216,15 @@ const AromantischProfil = {
         // Aromantisch: Vollständige Eigenständigkeit
         '#B127': 95, // finanzielle_unabhaengigkeit - Sehr hoch - essentiell
         '#B128': 10, // gemeinsame_finanzen - Sehr niedrig - nur evtl. mit Freunden
+        '#B129': 50, // finanzielle_transparenz - Mittel - für sich relevant
+        '#B130': 70, // finanzielle_sicherheit - Hoch - eigene Absicherung
+        '#B131': 55, // sparsamkeit - Mittel
+        '#B132': 55, // grosszuegigkeit - Mittel - für Freunde
+        '#B133': 80, // berufliche_erfuellung - Hoch - Karriere wichtig
+        '#B134': 70, // karriereambition - Hoch - persönlicher Erfolg
         '#B135': 80, // work_life_balance - Hoch
+        '#B137': 20, // zeit_fuer_beziehung - Niedrig - keine romantische Beziehung
+        '#B138': 75, // berufliche_flexibilitaet - Hoch
         '#B136': 75, // berufliche_anerkennung - Hoch
         '#B139': 80, // gumption - Hoch
         '#B140': 80, // qualitaet_der_arbeit - Hoch
@@ -216,9 +241,23 @@ const AromantischProfil = {
         // KOMMUNIKATIONSSTIL (#B149-#B176)
         // ═══════════════════════════════════════════════════════════════════════
         // Aromantisch: Kommunikation über Identität wichtig
+        '#B149': 50, // taeglicher_austausch - Mittel - mit Freunden
         '#B150': 70, // tiefgehende_gespraeche - Hoch - intellektuell/philosophisch
         '#B151': 55, // small_talk - Mittel
+        '#B152': 80, // stille_gemeinsam - Hoch - Stille schätzen
+        '#B153': 60, // verbale_verbindung - Mittel - mit Freunden
+        '#B154': 70, // zuhoeren - Hoch - für Freunde
         '#B155': 55, // emotionale_offenheit - Mittel - mit Freunden
+        '#B156': 50, // gefuehle_zeigen - Mittel - selektiv
+        '#B157': 45, // verletzlichkeit - Mittel - mit engen Freunden
+        '#B158': 60, // emotionale_zurueckhaltung - Mittel-hoch - nicht romantisch
+        '#B159': 65, // emotionale_sicherheit - Mittel-hoch - in sich selbst
+        '#B160': 50, // gefuehle_teilen - Mittel - mit Freunden
+        '#B161': 70, // konfliktklaerung - Hoch - kann Konflikte klären
+        '#B162': 65, // aussprache - Mittel-hoch
+        '#B163': 45, // konflikt_vermeiden - Mittel
+        '#B164': 65, // streitkultur - Mittel-hoch - sachlich
+        '#B165': 60, // versoehnlichkeit - Mittel - in Freundschaften
         '#B166': 30, // romantisches_verstehen - Niedrig - nicht romantisch
         '#B167': 80, // klassische_klarheit - Hoch
         '#B168': 75, // dialektik - Hoch
@@ -235,10 +274,23 @@ const AromantischProfil = {
         // SOZIALES LEBEN (#B177-#B203)
         // ═══════════════════════════════════════════════════════════════════════
         // Aromantisch: Freundschaften statt romantische Beziehungen
+        '#B177': 65, // soziale_energie - Mittel-hoch - für Freunde
+        '#B178': 60, // geselligkeit - Mittel - mit Freunden
+        '#B179': 70, // ruhe_von_menschen - Hoch - braucht auch Ruhe
+        '#B180': 75, // allein_aufladen - Hoch
+        '#B181': 60, // menschen_treffen - Mittel - selektiv
+        '#B182': 70, // kleine_gruppen - Hoch - bevorzugt
         '#B183': 90, // zeit_fuer_sich - Sehr hoch - Kernbedürfnis
         '#B184': 90, // eigene_hobbys - Sehr hoch - wichtig
         '#B185': 55, // gemeinsame_zeit - Mittel - mit Freunden
+        '#B186': 15, // partnerzeit - Sehr niedrig - keine romantische Beziehung
+        '#B187': 90, // eigene_interessen - Sehr hoch - Kernbedürfnis
+        '#B188': 80, // eigene_freunde - Hoch - Freundeskreis wichtig
         '#B189': 70, // gemeinsame_freunde - Hoch - Freundeskreis
+        '#B190': 55, // freundeskreis_teilen - Mittel
+        '#B191': 75, // soziales_netz - Hoch - Freundschaftsnetzwerk
+        '#B192': 70, // freunde_pflegen - Hoch - wichtig
+        '#B193': 60, // neue_freundschaften - Mittel - offen für neue Freunde
         '#B194': 85, // soziale_qualitaet - Sehr hoch - tiefe Freundschaften
         '#B195': 60, // tribe_muster - Mittel - Freundeskreis
         '#B196': 85, // intellektuelle_gemeinschaft - Sehr hoch
@@ -255,7 +307,26 @@ const AromantischProfil = {
         // ═══════════════════════════════════════════════════════════════════════
         // Aromantisch: Keine romantische Intimität, platonische Nähe möglich
         '#B204': 35, // koerpernaehe - Niedrig - platonisch ok
-        '#B205': 35  // kuscheln - Niedrig - mit Freunden evtl.
+        '#B205': 35, // kuscheln - Niedrig - mit Freunden evtl.
+        '#B206': 70, // physische_distanz - Hoch - Distanz bevorzugt
+        '#B207': 35, // koerperkontakt - Niedrig - platonisch ok
+        '#B208': 40, // umarmungen - Niedrig-mittel - mit Freunden
+
+        // ═══════════════════════════════════════════════════════════════════════
+        // ERWEITERTE DYNAMIK (#B209-#B220) - Kink/BDSM
+        // ═══════════════════════════════════════════════════════════════════════
+        '#B209': 30, // schmerzerleben - Niedrig
+        '#B210': 25, // schmerz_geben - Niedrig
+        '#B211': 30, // bondage_erleben - Niedrig
+        '#B212': 30, // bondage_geben - Niedrig
+        '#B213': 25, // devotion - Niedrig - keine romantische Hingabe
+        '#B214': 20, // anbetung - Niedrig
+        '#B215': 25, // demuetig_sein - Niedrig
+        '#B216': 35, // dominieren - Niedrig
+        '#B217': 20, // bestrafung_erhalten - Niedrig
+        '#B218': 20, // bestrafen - Niedrig
+        '#B219': 35, // service_orientierung - Niedrig - für Freunde
+        '#B220': 35  // service_empfangen - Niedrig
     },
 
     kernwerte: ["Authentizität", "Freundschaft", "Selbstgenügsamkeit", "Anti-Amatonormativität", "Autonomie"],
