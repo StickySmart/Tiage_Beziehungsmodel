@@ -231,6 +231,125 @@ const PhilosophyHint = (function() {
     }
 
     /**
+     * Aktuelle Modal-Referenz
+     */
+    let currentModal = null;
+
+    /**
+     * Zeigt einen Hint als zentriertes Popup-Modal
+     * @param {HTMLElement} hint - Die Hint-Komponente
+     * @param {Object} [options] - Optionen
+     * @param {Function} [options.onClose] - Callback beim Schließen
+     * @returns {HTMLElement} Das Modal-Overlay Element
+     */
+    function showModal(hint, options = {}) {
+        if (!hint) return null;
+
+        // Falls bereits ein Modal offen ist, schließen
+        if (currentModal) {
+            closeModal();
+        }
+
+        // Modal-Overlay erstellen
+        const overlay = document.createElement('div');
+        overlay.className = 'moments-modal-overlay';
+        overlay.setAttribute('role', 'dialog');
+        overlay.setAttribute('aria-modal', 'true');
+        overlay.setAttribute('aria-label', 'Philosophischer Moment');
+
+        // Modal-Container
+        const modal = document.createElement('div');
+        modal.className = 'moments-modal';
+
+        // Close Button
+        const closeBtn = document.createElement('button');
+        closeBtn.className = 'moments-modal__close';
+        closeBtn.innerHTML = '&times;';
+        closeBtn.setAttribute('aria-label', 'Schließen');
+        closeBtn.setAttribute('title', 'Schließen');
+
+        // Content Container
+        const content = document.createElement('div');
+        content.className = 'moments-modal__content';
+        content.appendChild(hint);
+
+        // Modal zusammenbauen
+        modal.appendChild(closeBtn);
+        modal.appendChild(content);
+        overlay.appendChild(modal);
+
+        // Zum Body hinzufügen
+        document.body.appendChild(overlay);
+        currentModal = overlay;
+
+        // Animation triggern
+        requestAnimationFrame(() => {
+            requestAnimationFrame(() => {
+                overlay.classList.add('moments-modal-overlay--visible');
+            });
+        });
+
+        // Close-Handler
+        function handleClose() {
+            overlay.classList.remove('moments-modal-overlay--visible');
+            setTimeout(() => {
+                overlay.remove();
+                currentModal = null;
+                if (typeof options.onClose === 'function') {
+                    options.onClose();
+                }
+            }, 300);
+        }
+
+        // Event-Listener
+        closeBtn.addEventListener('click', handleClose);
+
+        // Overlay-Klick schließt Modal
+        overlay.addEventListener('click', (e) => {
+            if (e.target === overlay) {
+                handleClose();
+            }
+        });
+
+        // Escape-Taste schließt Modal
+        function handleEscape(e) {
+            if (e.key === 'Escape' && currentModal === overlay) {
+                handleClose();
+                document.removeEventListener('keydown', handleEscape);
+            }
+        }
+        document.addEventListener('keydown', handleEscape);
+
+        // Focus auf Close-Button setzen
+        closeBtn.focus();
+
+        return overlay;
+    }
+
+    /**
+     * Schließt das aktuelle Modal
+     */
+    function closeModal() {
+        if (currentModal) {
+            currentModal.classList.remove('moments-modal-overlay--visible');
+            setTimeout(() => {
+                if (currentModal) {
+                    currentModal.remove();
+                    currentModal = null;
+                }
+            }, 300);
+        }
+    }
+
+    /**
+     * Prüft ob ein Modal geöffnet ist
+     * @returns {boolean}
+     */
+    function isModalOpen() {
+        return currentModal !== null;
+    }
+
+    /**
      * Setzt alle dismissed hints zurück
      */
     function resetDismissed() {
@@ -247,6 +366,9 @@ const PhilosophyHint = (function() {
         create,
         show,
         hide,
+        showModal,
+        closeModal,
+        isModalOpen,
         dismissHint,
         isHintDismissed,
         resetDismissed,

@@ -1293,6 +1293,7 @@
         /**
          * Initialize Philosophy Greeting Hints
          * Shows Moment 0a for new users, Moment 0b for returning users
+         * Displays as centered popup modal controlled by global moments toggle
          */
         function initGreetingHint() {
             // Check if PhilosophyHints is available
@@ -1301,9 +1302,9 @@
                 return;
             }
 
-            const container = document.getElementById('greetingHintContainer');
-            if (!container) {
-                console.warn('[PhilosophyHints] Greeting container not found');
+            // Check if moments are globally enabled
+            if (!PhilosophyHints.areMomentsEnabled()) {
+                console.log('[PhilosophyHints] Moments disabled - skipping greeting hint');
                 return;
             }
 
@@ -1324,12 +1325,12 @@
                 }
             }
 
-            // Create appropriate greeting hint
+            // Create appropriate greeting hint (without dismissable option - controlled via global toggle)
             let hintElement;
             if (hasExistingProfile) {
                 // Moment 0b: Returning user
                 hintElement = PhilosophyHints.createMoment0bReturning({
-                    dismissable: true,
+                    dismissable: false,
                     onExpand: function(id) {
                         if (typeof HintState !== 'undefined') {
                             HintState.trackHintEvent('expanded', id);
@@ -1339,7 +1340,7 @@
             } else {
                 // Moment 0a: New user / Landing
                 hintElement = PhilosophyHints.createMoment0aLanding({
-                    dismissable: true,
+                    dismissable: false,
                     onExpand: function(id) {
                         if (typeof HintState !== 'undefined') {
                             HintState.trackHintEvent('expanded', id);
@@ -1348,8 +1349,14 @@
                 });
             }
 
-            // Show the hint
-            PhilosophyHint.show(hintElement, container);
+            // Show as centered popup modal
+            PhilosophyHint.showModal(hintElement, {
+                onClose: function() {
+                    if (typeof HintState !== 'undefined') {
+                        HintState.trackHintEvent('closed', hasExistingProfile ? 'moment-0b-returning' : 'moment-0a-landing');
+                    }
+                }
+            });
         }
 
         /**
