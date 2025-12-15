@@ -10933,8 +10933,12 @@
                             dominanz: TiageState.get('personDimensions.ich.dominanz'),
                             orientierung: TiageState.get('personDimensions.ich.orientierung')
                         };
+                        console.log('[SSOT] Rufe ProfileCalculator.loadProfile auf mit:', JSON.stringify(profileData));
                         ProfileCalculator.loadProfile('ich', profileData);
                         console.log('[SSOT] Profil für ICH neu berechnet:', e.target.value);
+                        // Debug: Was steht jetzt in TiageState?
+                        const resonanzNachBerechnung = TiageState.get('resonanzFaktoren.ich');
+                        console.log('[SSOT] resonanzFaktoren nach Berechnung:', JSON.stringify(resonanzNachBerechnung));
                     }
 
                     updateComparisonView();
