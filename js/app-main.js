@@ -11935,11 +11935,15 @@
             // NUTZE PATHOS TEXT GENERATOR (wenn verfügbar)
             // ═══════════════════════════════════════════════════════════════
             if (typeof PathosTextGenerator !== 'undefined') {
+                // Extrahiere primitive Werte für Hash (dominanz kann Objekt sein)
+                const dom1 = typeof person1.dominanz === 'object' ? (person1.dominanz?.primary || 'none') : (person1.dominanz || 'none');
+                const dom2 = typeof person2.dominanz === 'object' ? (person2.dominanz?.primary || 'none') : (person2.dominanz || 'none');
+
                 // Generiere deterministischen Hash für Varianz
                 const seed = PathosTextGenerator.generateHash(
                     ichId, partnerId,
-                    person1.dominanz || 'none',
-                    person2.dominanz || 'none',
+                    dom1,
+                    dom2,
                     overallScore
                 );
 
@@ -12148,11 +12152,15 @@
             // NUTZE LOGOS TEXT GENERATOR (wenn verfügbar)
             // ═══════════════════════════════════════════════════════════════
             if (typeof LogosTextGenerator !== 'undefined') {
+                // Extrahiere primitive Werte für Hash (dominanz kann Objekt sein)
+                const dom1 = typeof person1.dominanz === 'object' ? (person1.dominanz?.primary || 'none') : (person1.dominanz || 'none');
+                const dom2 = typeof person2.dominanz === 'object' ? (person2.dominanz?.primary || 'none') : (person2.dominanz || 'none');
+
                 // Generiere deterministischen Hash für Varianz
                 const seed = LogosTextGenerator.generateHash(
                     ichId, partnerId,
-                    person1.dominanz || 'none',
-                    person2.dominanz || 'none',
+                    dom1,
+                    dom2,
                     overallScore
                 );
 
