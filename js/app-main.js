@@ -14832,40 +14832,30 @@
                 return `${sign}${sum}`;
             };
 
-            // HTML generieren mit Modifikator-Aufschlüsselung
+            // HTML generieren mit Modifikator-Spalten
+            const formatModValue = (val) => {
+                if (val === 0) return '<span style="color: var(--text-muted); opacity: 0.4;">—</span>';
+                const sign = val > 0 ? '+' : '';
+                return `${sign}${val}`;
+            };
+
             let tableHtml = rows.map(r => {
-                // Modifikator-Formel aufbauen - nur bei aktiven Modifikatoren
-                let modFormel = '';
-                if (r.modifiers && r.modifiers.hasModifiers) {
-                    const parts = [];
-                    parts.push(`<span style="color: var(--text-muted);">${r.typisch}</span>`);
-                    if (r.modifiers.dominanz !== 0) {
-                        const sign = r.modifiers.dominanz > 0 ? '+' : '';
-                        parts.push(`<span style="color: #a78bfa;" title="Dominanz: ${profilDominanz || '?'}">${sign}${r.modifiers.dominanz}</span>`);
-                    }
-                    if (r.modifiers.geschlecht !== 0) {
-                        const sign = r.modifiers.geschlecht > 0 ? '+' : '';
-                        parts.push(`<span style="color: #60a5fa;" title="Geschlecht: ${profilGeschlecht || '?'}">${sign}${r.modifiers.geschlecht}</span>`);
-                    }
-                    if (r.modifiers.orientierung !== 0) {
-                        const sign = r.modifiers.orientierung > 0 ? '+' : '';
-                        parts.push(`<span style="color: #f472b6;" title="Orientierung: ${profilOrientierung || '?'}">${sign}${r.modifiers.orientierung}</span>`);
-                    }
-                    modFormel = `<div style="font-size: 10px; margin-top: 4px; font-family: monospace; opacity: 0.8;">
-                        ${parts.join(' ')} = <strong>${r.actual}</strong>
-                    </div>`;
-                }
+                const modD = r.modifiers?.dominanz || 0;
+                const modG = r.modifiers?.geschlecht || 0;
+                const modO = r.modifiers?.orientierung || 0;
 
                 return `
                 <tr style="border-bottom: 1px solid rgba(255,255,255,0.06);">
-                    <td style="padding: 8px 10px; font-size: 12px; color: var(--text-secondary);">
-                        <span style="color: var(--text-muted); font-size: 10px;">${r.id}</span><br>
+                    <td style="padding: 6px 8px; font-size: 11px; color: var(--text-secondary);">
+                        <span style="color: var(--text-muted); font-size: 9px;">${r.id}</span><br>
                         ${r.label}
-                        ${modFormel}
                     </td>
-                    <td style="padding: 8px 6px; text-align: center; font-size: 13px; color: var(--text-muted);">${r.typisch}</td>
-                    <td style="padding: 8px 6px; text-align: center; font-size: 13px; font-weight: 600;">${r.actual}</td>
-                    <td style="padding: 8px 6px; text-align: center; font-size: 13px; font-weight: 600; color: ${r.diffColor};">${r.diff}</td>
+                    <td style="padding: 6px 4px; text-align: center; font-size: 12px; color: var(--text-muted);">${r.typisch}</td>
+                    <td style="padding: 6px 4px; text-align: center; font-size: 12px; color: #a78bfa; font-weight: ${modD !== 0 ? '600' : '400'};">${formatModValue(modD)}</td>
+                    <td style="padding: 6px 4px; text-align: center; font-size: 12px; color: #60a5fa; font-weight: ${modG !== 0 ? '600' : '400'};">${formatModValue(modG)}</td>
+                    <td style="padding: 6px 4px; text-align: center; font-size: 12px; color: #f472b6; font-weight: ${modO !== 0 ? '600' : '400'};">${formatModValue(modO)}</td>
+                    <td style="padding: 6px 4px; text-align: center; font-size: 12px; font-weight: 600;">${r.actual}</td>
+                    <td style="padding: 6px 4px; text-align: center; font-size: 12px; font-weight: 600; color: ${r.diffColor};">${r.diff}</td>
                 </tr>
             `}).join('');
 
@@ -14929,16 +14919,28 @@
                         </div>
                     </div>
 
-                    <!-- Modifikator-Erklärung -->
+                    <!-- Modifikator-Farblegende -->
                     ${(profilDominanz || profilGeschlecht || profilOrientierung) ? `
                     <div style="padding: 12px 20px; background: rgba(139,92,246,0.08); border-bottom: 1px solid rgba(255,255,255,0.05);">
                         <div style="font-size: 11px; color: var(--text-muted); margin-bottom: 8px;">
-                            <strong>Modifikator-Formel:</strong> Dein Wert = Typisch + <span style="color: #a78bfa;">Dominanz</span> + <span style="color: #60a5fa;">Geschlecht</span> + <span style="color: #f472b6;">Orientierung</span>
+                            <strong>Modifikator-Formel:</strong> Dein Wert = Typisch + D + G + O
                         </div>
-                        <div style="display: flex; flex-wrap: wrap; gap: 12px; font-size: 10px;">
-                            ${profilDominanz ? `<span style="color: #a78bfa;">● Dominanz: ${profilDominanz} <strong>(${formatModSum(modSummary.dominanz.sum)})</strong></span>` : ''}
-                            ${profilGeschlecht ? `<span style="color: #60a5fa;">● Geschlecht: ${profilGeschlecht.replace(/_/g, ' ')} <strong>(${formatModSum(modSummary.geschlecht.sum)})</strong></span>` : ''}
-                            ${profilOrientierung ? `<span style="color: #f472b6;">● Orientierung: ${profilOrientierung} <strong>(${formatModSum(modSummary.orientierung.sum)})</strong></span>` : ''}
+                        <div style="display: flex; flex-wrap: wrap; gap: 16px; font-size: 11px;">
+                            <div style="display: flex; align-items: center; gap: 6px;">
+                                <span style="display: inline-block; width: 12px; height: 12px; border-radius: 3px; background: #a78bfa;"></span>
+                                <span style="color: var(--text-secondary);">D = Dominanz</span>
+                                ${profilDominanz ? `<span style="color: var(--text-muted); font-size: 10px;">(${profilDominanz})</span>` : ''}
+                            </div>
+                            <div style="display: flex; align-items: center; gap: 6px;">
+                                <span style="display: inline-block; width: 12px; height: 12px; border-radius: 3px; background: #60a5fa;"></span>
+                                <span style="color: var(--text-secondary);">G = Geschlecht</span>
+                                ${profilGeschlecht ? `<span style="color: var(--text-muted); font-size: 10px;">(${profilGeschlecht.replace(/_/g, ' ')})</span>` : ''}
+                            </div>
+                            <div style="display: flex; align-items: center; gap: 6px;">
+                                <span style="display: inline-block; width: 12px; height: 12px; border-radius: 3px; background: #f472b6;"></span>
+                                <span style="color: var(--text-secondary);">O = Orientierung</span>
+                                ${profilOrientierung ? `<span style="color: var(--text-muted); font-size: 10px;">(${profilOrientierung})</span>` : ''}
+                            </div>
                         </div>
                     </div>
                     ` : ''}
@@ -14953,9 +14955,12 @@
                                 <thead>
                                     <tr style="background: rgba(0,0,0,0.3);">
                                         <th style="padding: 10px; text-align: left; font-size: 11px; color: var(--text-muted); font-weight: 500;">Bedürfnis</th>
-                                        <th style="padding: 10px 6px; text-align: center; font-size: 11px; color: var(--text-muted); font-weight: 500;">Typisch</th>
-                                        <th style="padding: 10px 6px; text-align: center; font-size: 11px; color: ${personColor}; font-weight: 500;">${person === 'ich' ? 'Dein Wert' : 'Partner Wert'}</th>
-                                        <th style="padding: 10px 6px; text-align: center; font-size: 11px; color: var(--text-muted); font-weight: 500;">|Δ|</th>
+                                        <th style="padding: 10px 4px; text-align: center; font-size: 11px; color: var(--text-muted); font-weight: 500;">Typ.</th>
+                                        <th style="padding: 10px 4px; text-align: center; font-size: 11px; color: #a78bfa; font-weight: 500;" title="Dominanz">D</th>
+                                        <th style="padding: 10px 4px; text-align: center; font-size: 11px; color: #60a5fa; font-weight: 500;" title="Geschlecht">G</th>
+                                        <th style="padding: 10px 4px; text-align: center; font-size: 11px; color: #f472b6; font-weight: 500;" title="Orientierung">O</th>
+                                        <th style="padding: 10px 4px; text-align: center; font-size: 11px; color: ${personColor}; font-weight: 500;">${person === 'ich' ? 'Wert' : 'P.Wert'}</th>
+                                        <th style="padding: 10px 4px; text-align: center; font-size: 11px; color: var(--text-muted); font-weight: 500;">|Δ|</th>
                                     </tr>
                                 </thead>
                                 <tbody>
