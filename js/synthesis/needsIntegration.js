@@ -312,7 +312,21 @@ TiageSynthesis.NeedsIntegration = {
         // Needs können in person.needs oder person.profileReview.flatNeeds sein
         var needs = person.needs || (person.profileReview && person.profileReview.flatNeeds);
 
+        // Debug-Logging für Diagnose
+        console.log('[NeedsIntegration.calculateDimensionalResonance] Input:', {
+            hasKohaerenz: !!kohaerenz,
+            archetyp: person.archetyp,
+            needsType: needs ? (Array.isArray(needs) ? 'array' : 'object') : 'null',
+            needsCount: needs ? Object.keys(needs).length : 0,
+            sampleNeeds: needs ? Object.keys(needs).slice(0, 5) : []
+        });
+
         if (!kohaerenz || !person.archetyp || !needs) {
+            console.warn('[NeedsIntegration.calculateDimensionalResonance] ABBRUCH - Fehlende Daten:', {
+                kohaerenz: !!kohaerenz,
+                archetyp: person.archetyp,
+                needs: !!needs
+            });
             return {
                 leben: 1.0,
                 dynamik: 1.0,
@@ -324,7 +338,7 @@ TiageSynthesis.NeedsIntegration = {
 
         var archetyp = person.archetyp.key || person.archetyp;
 
-        return {
+        var result = {
             leben: this._calculateSingleResonance(needs, kohaerenz.leben, archetyp),
             dynamik: this._calculateSingleResonance(needs, kohaerenz.dynamik, archetyp),
             identitaet: this._calculateSingleResonance(needs, kohaerenz.identitaet, archetyp),
@@ -332,6 +346,16 @@ TiageSynthesis.NeedsIntegration = {
             enabled: true,
             archetyp: archetyp
         };
+
+        // Log das Ergebnis für Diagnose
+        console.log('[NeedsIntegration.calculateDimensionalResonance] Ergebnis für', archetyp + ':', {
+            R1_leben: result.leben,
+            R2_philosophie: result.philosophie,
+            R3_dynamik: result.dynamik,
+            R4_identitaet: result.identitaet
+        });
+
+        return result;
     },
 
     /**
@@ -348,12 +372,14 @@ TiageSynthesis.NeedsIntegration = {
      */
     _calculateSingleResonance: function(needs, dimensionKohaerenz, archetyp) {
         if (!dimensionKohaerenz || !dimensionKohaerenz[archetyp]) {
+            console.warn('[NeedsIntegration._calculateSingleResonance] Keine Kohärenz-Daten für Archetyp:', archetyp);
             return 1.0; // Neutral wenn keine Daten
         }
 
         var archetypTypisch = dimensionKohaerenz[archetyp];
         var totalDiff = 0;
         var count = 0;
+        var debugMatches = [];
 
         for (var needKey in archetypTypisch) {
             if (archetypTypisch.hasOwnProperty(needKey) && archetypTypisch[needKey] !== null) {
@@ -376,12 +402,19 @@ TiageSynthesis.NeedsIntegration = {
                     var diff = Math.abs(actualValue - typischValue);
                     totalDiff += diff;
                     count++;
+                    debugMatches.push({ key: needKey, id: needId, actual: actualValue, typisch: typischValue, diff: diff });
                 }
             }
         }
 
         if (count === 0) {
+            console.warn('[NeedsIntegration._calculateSingleResonance] Keine vergleichbaren Bedürfnisse gefunden für:', archetyp, '- Needs-Keys:', Object.keys(needs || {}).slice(0, 5));
             return 1.0; // Neutral wenn keine vergleichbaren Bedürfnisse
+        }
+
+        // Debug-Output für Diagnose
+        if (debugMatches.length > 0) {
+            console.log('[NeedsIntegration._calculateSingleResonance] Archetyp:', archetyp, '- Matches:', debugMatches);
         }
 
         var avgDiff = totalDiff / count;
