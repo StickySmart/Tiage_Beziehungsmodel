@@ -15702,6 +15702,34 @@
             const ichName = archetypeDescriptions[currentArchetype]?.name || 'ICH';
             const partnerName = archetypeDescriptions[selectedPartner]?.name || 'Partner';
 
+            // LOAD ACTUAL VALUES FROM TIAGESTATE
+            // Get flatNeeds and lockedNeeds from TiageState
+            const ichFlatNeeds = typeof TiageState !== 'undefined' ? (TiageState.getFlatNeeds('ich') || {}) : {};
+            const partnerFlatNeeds = typeof TiageState !== 'undefined' ? (TiageState.getFlatNeeds('partner') || {}) : {};
+            const ichLockedNeeds = typeof TiageState !== 'undefined' ? (TiageState.getLockedNeeds('ich') || {}) : {};
+            const partnerLockedNeeds = typeof TiageState !== 'undefined' ? (TiageState.getLockedNeeds('partner') || {}) : {};
+
+            // Helper function to get actual value for a need (flatNeeds overridden by lockedNeeds)
+            const getActualNeedValue = (person, needId) => {
+                const flatNeeds = person === 'ich' ? ichFlatNeeds : partnerFlatNeeds;
+                const lockedNeeds = person === 'ich' ? ichLockedNeeds : partnerLockedNeeds;
+
+                // lockedNeeds override flatNeeds
+                if (lockedNeeds[needId] !== undefined && lockedNeeds[needId] !== null) {
+                    return lockedNeeds[needId];
+                }
+                if (flatNeeds[needId] !== undefined && flatNeeds[needId] !== null) {
+                    return flatNeeds[needId];
+                }
+                return null;
+            };
+
+            // Helper function to check if a need is locked
+            const isNeedLocked = (person, needId) => {
+                const lockedNeeds = person === 'ich' ? ichLockedNeeds : partnerLockedNeeds;
+                return lockedNeeds[needId] !== undefined && lockedNeeds[needId] !== null;
+            };
+
             // Score-Anzeige
             const scoreValue = matching.score || 0;
             let scoreColor = '#ef4444';
@@ -15797,8 +15825,17 @@
                 gemeinsam.forEach(item => {
                     // item.label ist bereits der Display-Name
                     const label = item.label;
-                    const wert1 = item.wert1 || 0;
-                    const wert2 = item.wert2 || 0;
+
+                    // Use actual values from TiageState if available, otherwise fallback to archetyp values
+                    const actualWert1 = getActualNeedValue('ich', item.id);
+                    const actualWert2 = getActualNeedValue('partner', item.id);
+                    const wert1 = actualWert1 !== null ? actualWert1 : (item.wert1 || 0);
+                    const wert2 = actualWert2 !== null ? actualWert2 : (item.wert2 || 0);
+
+                    // Check if needs are locked
+                    const ichLocked = isNeedLocked('ich', item.id);
+                    const partnerLocked = isNeedLocked('partner', item.id);
+
                     const diff = Math.abs(wert1 - wert2);
 
                     let statusColor = '#22c55e';
@@ -15817,6 +15854,7 @@
                             </div>
                             <div style="display: grid; grid-template-columns: 1fr auto 1fr; gap: 8px; align-items: center;">
                                 <div style="display: flex; align-items: center; gap: 6px;">
+                                    ${ichLocked ? '<span style="font-size: 10px; color: #eab308;" title="Verschlossen">🔒</span>' : ''}
                                     <div style="flex: 1; height: 5px; background: rgba(255,255,255,0.1); border-radius: 3px; overflow: hidden;">
                                         <div style="width: ${wert1}%; height: 100%; background: var(--success); border-radius: 3px;"></div>
                                     </div>
@@ -15826,6 +15864,7 @@
                                     <span style="font-size: 11px; font-weight: 600; color: ${statusColor}; background: ${statusColor}22; padding: 2px 6px; border-radius: 4px;">${diff}</span>
                                 </div>
                                 <div style="display: flex; align-items: center; gap: 6px;">
+                                    ${partnerLocked ? '<span style="font-size: 10px; color: #eab308;" title="Verschlossen">🔒</span>' : ''}
                                     <div style="flex: 1; height: 5px; background: rgba(255,255,255,0.1); border-radius: 3px; overflow: hidden;">
                                         <div style="width: ${wert2}%; height: 100%; background: var(--danger); border-radius: 3px;"></div>
                                     </div>
@@ -15858,8 +15897,17 @@
                 konflikt.forEach(item => {
                     // item.label ist bereits der Display-Name
                     const label = item.label;
-                    const wert1 = item.wert1 || 0;
-                    const wert2 = item.wert2 || 0;
+
+                    // Use actual values from TiageState if available, otherwise fallback to archetyp values
+                    const actualWert1 = getActualNeedValue('ich', item.id);
+                    const actualWert2 = getActualNeedValue('partner', item.id);
+                    const wert1 = actualWert1 !== null ? actualWert1 : (item.wert1 || 0);
+                    const wert2 = actualWert2 !== null ? actualWert2 : (item.wert2 || 0);
+
+                    // Check if needs are locked
+                    const ichLocked = isNeedLocked('ich', item.id);
+                    const partnerLocked = isNeedLocked('partner', item.id);
+
                     const diff = Math.abs(wert1 - wert2);
 
                     let statusColor = '#22c55e';
@@ -15878,6 +15926,7 @@
                             </div>
                             <div style="display: grid; grid-template-columns: 1fr auto 1fr; gap: 8px; align-items: center;">
                                 <div style="display: flex; align-items: center; gap: 6px;">
+                                    ${ichLocked ? '<span style="font-size: 10px; color: #eab308;" title="Verschlossen">🔒</span>' : ''}
                                     <div style="flex: 1; height: 5px; background: rgba(255,255,255,0.1); border-radius: 3px; overflow: hidden;">
                                         <div style="width: ${wert1}%; height: 100%; background: var(--success); border-radius: 3px;"></div>
                                     </div>
@@ -15887,6 +15936,7 @@
                                     <span style="font-size: 11px; font-weight: 600; color: ${statusColor}; background: ${statusColor}22; padding: 2px 6px; border-radius: 4px;">${diff}</span>
                                 </div>
                                 <div style="display: flex; align-items: center; gap: 6px;">
+                                    ${partnerLocked ? '<span style="font-size: 10px; color: #eab308;" title="Verschlossen">🔒</span>' : ''}
                                     <div style="flex: 1; height: 5px; background: rgba(255,255,255,0.1); border-radius: 3px; overflow: hidden;">
                                         <div style="width: ${wert2}%; height: 100%; background: var(--danger); border-radius: 3px;"></div>
                                     </div>
