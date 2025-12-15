@@ -394,6 +394,19 @@ const OshoZenTextGenerator = (function() {
                 font-family: var(--font-family, 'Segoe UI', sans-serif);
                 max-width: 100%;
                 padding: 1rem;
+                /* Dark theme as default - matching Ti-Age app design */
+                --text-color: #e0e0e0;
+                --text-muted: #a0a0b0;
+                --card-bg: rgba(30, 30, 45, 0.95);
+                --border-color: rgba(255, 255, 255, 0.1);
+                --hover-bg: rgba(255, 255, 255, 0.08);
+                --content-bg: rgba(20, 20, 35, 0.95);
+                --footer-bg: rgba(0, 0, 0, 0.2);
+                --id-bg: rgba(139, 92, 246, 0.25);
+                --bild-bg: rgba(139, 92, 246, 0.12);
+                --osho-bg: rgba(255, 152, 0, 0.15);
+                --osho-accent: #FFB74D;
+                --primary-color: var(--primary, #9b59b6);
             }
 
             .osho-zen-header {
@@ -409,7 +422,7 @@ const OshoZenTextGenerator = (function() {
             }
 
             .osho-zen-subtitle {
-                color: var(--text-muted, #666);
+                color: var(--text-muted);
                 font-size: 0.9rem;
                 margin: 0;
             }
@@ -421,19 +434,20 @@ const OshoZenTextGenerator = (function() {
             }
 
             .osho-zen-item {
-                background: var(--card-bg, #f8f9fa);
+                background: var(--card-bg);
                 border-radius: 8px;
                 overflow: hidden;
-                border: 1px solid var(--border-color, #e0e0e0);
-                transition: box-shadow 0.2s ease;
+                border: 1px solid var(--border-color);
+                transition: box-shadow 0.2s ease, border-color 0.2s ease;
             }
 
             .osho-zen-item:hover {
-                box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+                box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+                border-color: rgba(255, 255, 255, 0.2);
             }
 
             .osho-zen-item.expanded {
-                border-color: var(--primary-color, #8B5CF6);
+                border-color: var(--primary-color);
             }
 
             .osho-zen-item-header {
@@ -446,7 +460,7 @@ const OshoZenTextGenerator = (function() {
             }
 
             .osho-zen-item-header:hover {
-                background: var(--hover-bg, rgba(0,0,0,0.03));
+                background: var(--hover-bg);
             }
 
             .osho-zen-item-left {
@@ -462,7 +476,7 @@ const OshoZenTextGenerator = (function() {
                 justify-content: center;
                 width: 24px;
                 height: 24px;
-                background: var(--primary-color, #8B5CF6);
+                background: var(--primary-color);
                 color: white;
                 border-radius: 50%;
                 font-size: 0.8rem;
@@ -471,11 +485,11 @@ const OshoZenTextGenerator = (function() {
 
             .osho-zen-label {
                 font-weight: 600;
-                color: var(--text-color, #333);
+                color: var(--text-color);
             }
 
             .osho-zen-karte {
-                color: var(--text-muted, #888);
+                color: var(--text-muted);
                 font-style: italic;
                 font-size: 0.9rem;
             }
@@ -487,7 +501,7 @@ const OshoZenTextGenerator = (function() {
             }
 
             .osho-zen-toggle {
-                color: var(--text-muted, #888);
+                color: var(--text-muted);
                 font-size: 0.8rem;
                 transition: transform 0.2s ease;
             }
@@ -498,8 +512,8 @@ const OshoZenTextGenerator = (function() {
 
             .osho-zen-id {
                 font-size: 0.75rem;
-                color: var(--text-muted, #888);
-                background: var(--id-bg, rgba(139, 92, 246, 0.1));
+                color: var(--text-muted);
+                background: var(--id-bg);
                 padding: 0.15rem 0.4rem;
                 border-radius: 4px;
                 font-family: monospace;
@@ -508,19 +522,19 @@ const OshoZenTextGenerator = (function() {
             .osho-zen-text-preview {
                 padding: 0.75rem 1rem;
                 font-style: italic;
-                color: var(--text-color, #333);
+                color: var(--text-color);
                 line-height: 1.5;
-                border-top: 1px solid var(--border-color, #e0e0e0);
+                border-top: 1px solid var(--border-color);
             }
 
             .osho-zen-item-content {
                 padding: 0 1rem 0.75rem 1rem;
-                background: var(--content-bg, white);
+                background: var(--content-bg);
             }
 
             .osho-zen-text-full {
                 font-style: italic;
-                color: var(--text-color, #333);
+                color: var(--text-color);
                 line-height: 1.5;
                 margin-bottom: 0.75rem;
             }
@@ -528,37 +542,37 @@ const OshoZenTextGenerator = (function() {
             .osho-zen-section-title {
                 font-size: 0.85rem;
                 font-weight: 600;
-                color: var(--primary-color, #8B5CF6);
+                color: var(--primary-color);
                 margin-bottom: 0.5rem;
                 margin-top: 0.75rem;
             }
 
             .osho-zen-bild {
                 padding: 0.75rem;
-                background: var(--bild-bg, rgba(139, 92, 246, 0.05));
+                background: var(--bild-bg);
                 border-radius: 6px;
                 margin-bottom: 0.75rem;
             }
 
             .osho-zen-bild p {
                 margin: 0;
-                color: var(--text-color, #333);
+                color: var(--text-color);
                 line-height: 1.6;
                 font-size: 0.9rem;
             }
 
             .osho-zen-osho {
                 padding: 0.75rem;
-                background: var(--osho-bg, rgba(255, 152, 0, 0.08));
+                background: var(--osho-bg);
                 border-radius: 6px;
-                border-left: 3px solid var(--osho-accent, #FF9800);
+                border-left: 3px solid var(--osho-accent);
             }
 
             .osho-zen-osho blockquote {
                 margin: 0;
                 padding: 0;
                 font-style: italic;
-                color: var(--text-color, #333);
+                color: var(--text-color);
                 line-height: 1.6;
                 font-size: 0.9rem;
             }
@@ -567,7 +581,7 @@ const OshoZenTextGenerator = (function() {
                 display: block;
                 margin-top: 0.5rem;
                 font-size: 0.8rem;
-                color: var(--text-muted, #888);
+                color: var(--text-muted);
                 font-style: normal;
             }
 
@@ -576,13 +590,13 @@ const OshoZenTextGenerator = (function() {
                 justify-content: flex-end;
                 gap: 1rem;
                 padding: 0.5rem 1rem;
-                border-top: 1px solid var(--border-color, #e0e0e0);
-                background: var(--footer-bg, rgba(0,0,0,0.02));
+                border-top: 1px solid var(--border-color);
+                background: var(--footer-bg);
             }
 
             .osho-zen-footer-stat {
                 font-size: 0.7rem;
-                color: var(--text-muted, #888);
+                color: var(--text-muted);
             }
 
             .osho-zen-karte-icon {
@@ -592,15 +606,15 @@ const OshoZenTextGenerator = (function() {
             .osho-zen-footer {
                 margin-top: 1.5rem;
                 padding-top: 1rem;
-                border-top: 1px solid var(--border-color, #e0e0e0);
+                border-top: 1px solid var(--border-color);
                 text-align: center;
-                color: var(--text-muted, #888);
+                color: var(--text-muted);
             }
 
             .osho-zen-empty {
                 text-align: center;
                 padding: 2rem;
-                color: var(--text-muted, #666);
+                color: var(--text-muted);
             }
 
             .osho-zen-empty .hint {
@@ -611,26 +625,7 @@ const OshoZenTextGenerator = (function() {
             .osho-zen-loading {
                 text-align: center;
                 padding: 2rem;
-                color: var(--text-muted, #666);
-            }
-
-            /* Dark Mode Support */
-            @media (prefers-color-scheme: dark) {
-                .osho-zen-container {
-                    --text-color: #e0e0e0;
-                    --text-muted: #a0a0a0;
-                    --card-bg: #2d2d2d;
-                    --border-color: #404040;
-                    --hover-bg: rgba(255,255,255,0.05);
-                    --content-bg: #1e1e1e;
-                    --footer-bg: rgba(255,255,255,0.03);
-                    --id-bg: rgba(139, 92, 246, 0.2);
-                    --bild-bg: rgba(139, 92, 246, 0.1);
-                    --osho-bg: rgba(255, 152, 0, 0.15);
-                    --osho-accent: #FFB74D;
-                    --success-bg: #1e4620;
-                    --success-color: #90ee90;
-                }
+                color: var(--text-muted);
             }
         `;
 
