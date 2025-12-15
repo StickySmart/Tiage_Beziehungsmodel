@@ -5050,6 +5050,7 @@
 
             // NEU: Individualisierte Profile aus Store holen
             let matching = null;
+            let isFallback = false;
             if (typeof TiageProfileStore !== 'undefined' && typeof getProfileFromStore === 'function') {
                 const ichPerson = { archetyp: ichArchetyp, ...personDimensions.ich };
                 const partnerPerson = { archetyp: partnerArchetyp, ...personDimensions.partner };
@@ -5088,6 +5089,7 @@
             // Fallback: Alte Methode (nur Archetyp)
             if (!matching && typeof GfkBeduerfnisse !== 'undefined') {
                 matching = GfkBeduerfnisse.berechneMatching(ichArchetyp, partnerArchetyp);
+                isFallback = true;
                 console.log('[openNeedsCompareModal] Fallback: Verwende Archetyp-basierte Bedürfniswerte');
             }
 
@@ -5113,7 +5115,33 @@
             if (items.length === 0) {
                 body.innerHTML = '<p style="color: var(--text-muted);">Keine Einträge vorhanden.</p>';
             } else {
-                let html = `
+                let html = '';
+
+                // Fallback-Hinweis (nur wenn Archetyp-basierte Werte verwendet werden)
+                if (isFallback) {
+                    html += `
+                        <div style="
+                            background: rgba(234, 179, 8, 0.1);
+                            border: 1px solid rgba(234, 179, 8, 0.3);
+                            border-radius: 6px;
+                            padding: 8px 12px;
+                            margin-bottom: 16px;
+                            display: flex;
+                            align-items: center;
+                            gap: 8px;
+                        ">
+                            <span style="font-size: 14px;">ℹ️</span>
+                            <div style="flex: 1;">
+                                <div style="font-size: 11px; font-weight: 600; color: #eab308; margin-bottom: 2px;">Archetyp-Basis-Werte</div>
+                                <div style="font-size: 10px; color: var(--text-muted); line-height: 1.4;">
+                                    Individualisierte Werte nicht verfügbar. Es werden Standard-Archetyp-Werte angezeigt.
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                }
+
+                html += `
                     <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 16px;">
                         <div style="text-align: center; font-weight: 600; color: var(--success); font-size: 12px; text-transform: uppercase; letter-spacing: 1px;">
                             ${ichName}
@@ -7887,6 +7915,7 @@
 
             // NEU: Individualisierte Profile aus Store holen
             let matching = null;
+            let isFallback = false;
             if (typeof TiageProfileStore !== 'undefined' && typeof getProfileFromStore === 'function') {
                 const ichPerson = { archetyp: ichArchetyp, ...personDimensions.ich };
                 const partnerPerson = { archetyp: partnerArchetyp, ...personDimensions.partner };
@@ -7919,6 +7948,7 @@
 
             // Fallback: Alte Methode (nur Archetyp)
             if (!matching && typeof GfkBeduerfnisse !== 'undefined') {
+                isFallback = true;
                 matching = GfkBeduerfnisse.berechneMatching(ichArchetyp, partnerArchetyp);
                 console.log('[renderNeedsFullModal] Fallback: Verwende Archetyp-basierte Bedürfniswerte');
             }
@@ -8073,7 +8103,32 @@
                 </div>
             `;
 
-            body.innerHTML = toggleHtml + headerHtml + listHtml + countHtml;
+            // Fallback Banner
+            let fallbackBannerHtml = '';
+            if (isFallback) {
+                fallbackBannerHtml = `
+                    <div style="
+                        background: rgba(234, 179, 8, 0.1);
+                        border: 1px solid rgba(234, 179, 8, 0.3);
+                        border-radius: 6px;
+                        padding: 8px 12px;
+                        margin-bottom: 16px;
+                        display: flex;
+                        align-items: center;
+                        gap: 8px;
+                    ">
+                        <span style="font-size: 14px;">ℹ️</span>
+                        <div style="flex: 1;">
+                            <div style="font-size: 11px; font-weight: 600; color: #eab308; margin-bottom: 2px;">Archetyp-Basis-Werte</div>
+                            <div style="font-size: 10px; color: var(--text-muted); line-height: 1.4;">
+                                Individualisierte Werte nicht verfügbar. Es werden Standard-Archetyp-Werte angezeigt.
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+
+            body.innerHTML = toggleHtml + fallbackBannerHtml + headerHtml + listHtml + countHtml;
 
             modal.classList.add('active');
             document.body.style.overflow = 'hidden';
@@ -14115,6 +14170,7 @@
             // Vollständige Daten holen - entweder aus dynamischer Berechnung oder aus GfkBeduerfnisse.details
             let gemeinsam = matching.alleGemeinsam || [];
             let unterschiedlich = matching.alleUnterschiedlich || [];
+            let isFallback = false;
 
             // Fallback: Wenn keine vollständigen Daten, aus TiageState holen
             if (gemeinsam.length === 0 && unterschiedlich.length === 0) {
@@ -14161,6 +14217,7 @@
 
                 // Fallback: Alte Methode (nur Archetyp)
                 if (!fullMatching && gemeinsam.length === 0 && typeof GfkBeduerfnisse !== 'undefined') {
+                    isFallback = true;
                     fullMatching = GfkBeduerfnisse.berechneMatching(ichArchetyp, partnerArchetyp);
                     if (fullMatching && fullMatching.details) {
                         const uebereinstimmend = (fullMatching.details.uebereinstimmend || []).map(b => ({
@@ -14221,6 +14278,26 @@
 
             return `
                 <div style="margin-top: 20px; padding-top: 20px; border-top: 1px solid var(--border);">
+                    ${isFallback ? `
+                        <div style="
+                            background: rgba(234, 179, 8, 0.1);
+                            border: 1px solid rgba(234, 179, 8, 0.3);
+                            border-radius: 6px;
+                            padding: 8px 12px;
+                            margin-bottom: 16px;
+                            display: flex;
+                            align-items: center;
+                            gap: 8px;
+                        ">
+                            <span style="font-size: 14px;">ℹ️</span>
+                            <div style="flex: 1;">
+                                <div style="font-size: 11px; font-weight: 600; color: #eab308; margin-bottom: 2px;">Archetyp-Basis-Werte</div>
+                                <div style="font-size: 10px; color: var(--text-muted); line-height: 1.4;">
+                                    Individualisierte Werte nicht verfügbar. Es werden Standard-Archetyp-Werte angezeigt.
+                                </div>
+                            </div>
+                        </div>
+                    ` : ''}
                     <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 15px;">
                         <span style="font-size: 16px;">🤝</span>
                         <span style="font-size: 13px; color: var(--text-muted);">Bedürfnis-Übereinstimmung:</span>
@@ -14265,6 +14342,7 @@
 
             // NEU: Individualisierte Profile aus Store holen
             let matching = null;
+            let isFallback = false;
             if (typeof TiageProfileStore !== 'undefined' && typeof getProfileFromStore === 'function') {
                 const ichPerson = { archetyp: ichArchetyp, ...personDimensions.ich };
                 const partnerPerson = { archetyp: partnerArchetyp, ...personDimensions.partner };
@@ -14303,6 +14381,7 @@
 
             // Fallback: Alte Methode (nur Archetyp)
             if (!matching && typeof GfkBeduerfnisse !== 'undefined') {
+                isFallback = true;
                 matching = GfkBeduerfnisse.berechneMatching(ichArchetyp, partnerArchetyp);
                 console.log('[getGfkBeduerfnisAnalyse] Fallback: Verwende Archetyp-basierte Bedürfniswerte');
             }
@@ -14330,7 +14409,33 @@
                 const sectionTitle = type === 'pathos'
                     ? TiageI18n.t('needs.sharedTitle', 'GEMEINSAME & KOMPATIBLE BEDÜRFNISSE')
                     : TiageI18n.t('needs.valuesTitle', 'GEMEINSAME & KOMPATIBLE WERTE');
-                result.gemeinsamSection = `
+
+                // Fallback Banner
+                let fallbackBanner = '';
+                if (isFallback) {
+                    fallbackBanner = `
+                        <div style="
+                            background: rgba(234, 179, 8, 0.1);
+                            border: 1px solid rgba(234, 179, 8, 0.3);
+                            border-radius: 6px;
+                            padding: 8px 12px;
+                            margin-bottom: 16px;
+                            display: flex;
+                            align-items: center;
+                            gap: 8px;
+                        ">
+                            <span style="font-size: 14px;">ℹ️</span>
+                            <div style="flex: 1;">
+                                <div style="font-size: 11px; font-weight: 600; color: #eab308; margin-bottom: 2px;">Archetyp-Basis-Werte</div>
+                                <div style="font-size: 10px; color: var(--text-muted); line-height: 1.4;">
+                                    Individualisierte Werte nicht verfügbar. Es werden Standard-Archetyp-Werte angezeigt.
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                }
+
+                result.gemeinsamSection = fallbackBanner + `
                 <div style="margin-bottom: 16px;">
                     <div style="padding: 12px; background: rgba(34,197,94,0.08); border-radius: 10px; border: 1px solid rgba(34,197,94,0.25);">
                         <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
@@ -15875,6 +15980,7 @@
 
             // NEU: Individualisierte Profile aus Store holen
             let matching = null;
+            let isFallback = false;
             if (typeof TiageProfileStore !== 'undefined' && typeof getProfileFromStore === 'function') {
                 const ichPerson = { archetyp: ichArchetyp, ...personDimensions.ich };
                 const partnerPerson = { archetyp: partnerArchetyp, ...personDimensions.partner };
@@ -15909,6 +16015,7 @@
             // Fallback: Alte Methode (nur Archetyp)
             if (!matching && typeof GfkBeduerfnisse !== 'undefined') {
                 matching = GfkBeduerfnisse.berechneMatching(ichArchetyp, partnerArchetyp);
+                isFallback = true;
                 console.log('[getNeedsContent] Fallback: Verwende Archetyp-basierte Bedürfniswerte');
             }
 
@@ -15960,6 +16067,30 @@
                     <div style="font-size: 12px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px;">Bedürfnis-Übereinstimmung</div>
                 </div>
             `;
+
+            // Fallback-Hinweis (nur wenn Archetyp-basierte Werte verwendet werden)
+            if (isFallback) {
+                html += `
+                    <div style="
+                        background: rgba(234, 179, 8, 0.1);
+                        border: 1px solid rgba(234, 179, 8, 0.3);
+                        border-radius: 6px;
+                        padding: 8px 12px;
+                        margin-bottom: 16px;
+                        display: flex;
+                        align-items: center;
+                        gap: 8px;
+                    ">
+                        <span style="font-size: 14px;">ℹ️</span>
+                        <div style="flex: 1;">
+                            <div style="font-size: 11px; font-weight: 600; color: #eab308; margin-bottom: 2px;">Archetyp-Basis-Werte</div>
+                            <div style="font-size: 10px; color: var(--text-muted); line-height: 1.4;">
+                                Individualisierte Werte nicht verfügbar. Es werden Standard-Archetyp-Werte angezeigt.
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
 
             // Gemeinsame & Kompatible Bedürfnisse
             const uebereinstimmend = matching.details?.uebereinstimmend || [];
