@@ -125,7 +125,27 @@ const OshoZenTextGenerator = (function() {
     // ═══════════════════════════════════════════════════════════════════════════
 
     /**
+     * Extrahiert den ersten Satz aus einem Text
+     * @param {string} text - Der vollständige Text
+     * @returns {Object} { firstSentence, rest }
+     */
+    function extractFirstSentence(text) {
+        if (!text) return { firstSentence: '', rest: '' };
+
+        // Finde das Ende des ersten Satzes (., !, ?)
+        const match = text.match(/^([^.!?]+[.!?])\s*(.*)/s);
+        if (match) {
+            return {
+                firstSentence: match[1].trim(),
+                rest: match[2].trim()
+            };
+        }
+        return { firstSentence: text, rest: '' };
+    }
+
+    /**
      * Generiert HTML für die Top 5 gemeinsamen Bedürfnisse mit Accordion
+     * Zeigt nur Text und Bedürfnis mit ID - ohne Balken und Zahlen
      *
      * @param {Array} topMatches - Array von Match-Objekten
      * @param {string} name1 - Name von Person 1
@@ -152,9 +172,8 @@ const OshoZenTextGenerator = (function() {
         `;
 
         topMatches.forEach((match, index) => {
-            const matchPercent = Math.round((match.matchScore / 100) * 100);
-            const barWidth1 = match.score1;
-            const barWidth2 = match.score2;
+            const { firstSentence, rest } = extractFirstSentence(match.text);
+            const hasMoreText = rest.length > 0;
 
             html += `
                 <div class="osho-zen-item" data-index="${index}">
@@ -162,36 +181,28 @@ const OshoZenTextGenerator = (function() {
                         <div class="osho-zen-item-left">
                             <span class="osho-zen-rank">${index + 1}</span>
                             <span class="osho-zen-label">${match.label}</span>
+                            <span class="osho-zen-id">${match.id}</span>
                             <span class="osho-zen-karte">— ${match.karte}</span>
                         </div>
                         <div class="osho-zen-item-right">
-                            <span class="osho-zen-match">${matchPercent}%</span>
-                            <span class="osho-zen-toggle">▶</span>
+                            <span class="osho-zen-toggle">${hasMoreText ? '▶' : ''}</span>
                         </div>
                     </div>
+                    <div class="osho-zen-text-preview">
+                        <span class="osho-zen-karte-icon">🃏</span>
+                        <strong>${match.karte}:</strong> ${firstSentence}
+                    </div>
+                    ${hasMoreText ? `
                     <div class="osho-zen-item-content" style="display: none;">
-                        <div class="osho-zen-scores">
-                            <div class="osho-zen-score-row">
-                                <span class="osho-zen-name">${name1}</span>
-                                <div class="osho-zen-bar-container">
-                                    <div class="osho-zen-bar" style="width: ${barWidth1}%"></div>
-                                </div>
-                                <span class="osho-zen-value">${match.score1}%</span>
-                            </div>
-                            <div class="osho-zen-score-row">
-                                <span class="osho-zen-name">${name2}</span>
-                                <div class="osho-zen-bar-container">
-                                    <div class="osho-zen-bar bar-partner" style="width: ${barWidth2}%"></div>
-                                </div>
-                                <span class="osho-zen-value">${match.score2}%</span>
-                            </div>
+                        <div class="osho-zen-text-full">
+                            ${rest}
                         </div>
-                        <div class="osho-zen-text">
-                            <blockquote>
-                                <span class="osho-zen-karte-icon">🃏</span>
-                                <strong>${match.karte}:</strong> ${match.text}
-                            </blockquote>
-                        </div>
+                    </div>
+                    ` : ''}
+                    <div class="osho-zen-item-footer">
+                        <span class="osho-zen-footer-stat">${name1}: ${match.score1}%</span>
+                        <span class="osho-zen-footer-stat">${name2}: ${match.score2}%</span>
+                        <span class="osho-zen-footer-stat">Match: ${match.matchScore}%</span>
                     </div>
                 </div>
             `;
@@ -402,15 +413,6 @@ const OshoZenTextGenerator = (function() {
                 gap: 0.75rem;
             }
 
-            .osho-zen-match {
-                background: var(--success-bg, #d4edda);
-                color: var(--success-color, #155724);
-                padding: 0.25rem 0.5rem;
-                border-radius: 4px;
-                font-size: 0.85rem;
-                font-weight: 600;
-            }
-
             .osho-zen-toggle {
                 color: var(--text-muted, #888);
                 font-size: 0.8rem;
@@ -421,69 +423,46 @@ const OshoZenTextGenerator = (function() {
                 transform: rotate(90deg);
             }
 
-            .osho-zen-item-content {
-                padding: 1rem;
+            .osho-zen-id {
+                font-size: 0.75rem;
+                color: var(--text-muted, #888);
+                background: var(--id-bg, rgba(139, 92, 246, 0.1));
+                padding: 0.15rem 0.4rem;
+                border-radius: 4px;
+                font-family: monospace;
+            }
+
+            .osho-zen-text-preview {
+                padding: 0.75rem 1rem;
+                font-style: italic;
+                color: var(--text-color, #333);
+                line-height: 1.5;
                 border-top: 1px solid var(--border-color, #e0e0e0);
+            }
+
+            .osho-zen-item-content {
+                padding: 0 1rem 0.75rem 1rem;
                 background: var(--content-bg, white);
             }
 
-            .osho-zen-scores {
-                margin-bottom: 1rem;
-            }
-
-            .osho-zen-score-row {
-                display: flex;
-                align-items: center;
-                gap: 0.75rem;
-                margin-bottom: 0.5rem;
-            }
-
-            .osho-zen-name {
-                width: 80px;
-                font-size: 0.85rem;
-                color: var(--text-muted, #666);
-            }
-
-            .osho-zen-bar-container {
-                flex: 1;
-                height: 8px;
-                background: var(--bar-bg, #e9ecef);
-                border-radius: 4px;
-                overflow: hidden;
-            }
-
-            .osho-zen-bar {
-                height: 100%;
-                background: var(--primary-color, #8B5CF6);
-                border-radius: 4px;
-                transition: width 0.3s ease;
-            }
-
-            .osho-zen-bar.bar-partner {
-                background: var(--secondary-color, #EC4899);
-            }
-
-            .osho-zen-value {
-                width: 40px;
-                text-align: right;
-                font-size: 0.85rem;
-                color: var(--text-color, #333);
-                font-weight: 500;
-            }
-
-            .osho-zen-text {
-                margin-top: 1rem;
-            }
-
-            .osho-zen-text blockquote {
-                margin: 0;
-                padding: 1rem;
-                background: var(--quote-bg, #f0f0f5);
-                border-left: 4px solid var(--primary-color, #8B5CF6);
-                border-radius: 0 8px 8px 0;
+            .osho-zen-text-full {
                 font-style: italic;
                 color: var(--text-color, #333);
-                line-height: 1.6;
+                line-height: 1.5;
+            }
+
+            .osho-zen-item-footer {
+                display: flex;
+                justify-content: flex-end;
+                gap: 1rem;
+                padding: 0.5rem 1rem;
+                border-top: 1px solid var(--border-color, #e0e0e0);
+                background: var(--footer-bg, rgba(0,0,0,0.02));
+            }
+
+            .osho-zen-footer-stat {
+                font-size: 0.7rem;
+                color: var(--text-muted, #888);
             }
 
             .osho-zen-karte-icon {
@@ -524,8 +503,8 @@ const OshoZenTextGenerator = (function() {
                     --border-color: #404040;
                     --hover-bg: rgba(255,255,255,0.05);
                     --content-bg: #1e1e1e;
-                    --bar-bg: #404040;
-                    --quote-bg: #2d2d2d;
+                    --footer-bg: rgba(255,255,255,0.03);
+                    --id-bg: rgba(139, 92, 246, 0.2);
                     --success-bg: #1e4620;
                     --success-color: #90ee90;
                 }
