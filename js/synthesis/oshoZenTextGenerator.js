@@ -17,8 +17,12 @@ const OshoZenTextGenerator = (function() {
 
     // Cache für die geladenen Osho Zen Daten
     let oshoZenData = null;
+    let tarotKartenData = null;
     let isLoading = false;
     let loadPromise = null;
+
+    // Lookup-Map für schnellen Kartenzugriff nach Name
+    let kartenLookup = null;
 
     // ═══════════════════════════════════════════════════════════════════════════
     // DATEN LADEN
@@ -29,7 +33,7 @@ const OshoZenTextGenerator = (function() {
      * @returns {Promise<Object>} Die geladenen Daten
      */
     async function loadOshoZenData() {
-        if (oshoZenData) {
+        if (oshoZenData && tarotKartenData) {
             return oshoZenData;
         }
 
@@ -38,17 +42,16 @@ const OshoZenTextGenerator = (function() {
         }
 
         isLoading = true;
-        loadPromise = fetch('profiles/data/osho-zen-beduerfnisse.json')
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Osho Zen Daten konnten nicht geladen werden');
-                }
-                return response.json();
-            })
-            .then(data => {
-                oshoZenData = data;
+        loadPromise = Promise.all([
+            fetch('profiles/data/osho-zen-beduerfnisse.json').then(r => r.ok ? r.json() : Promise.reject('Bedürfnisse nicht geladen')),
+            fetch('profiles/data/osho-zen-tarot-karten.json').then(r => r.ok ? r.json() : Promise.reject('Tarot-Karten nicht geladen'))
+        ])
+            .then(([beduerfnisseData, kartenData]) => {
+                oshoZenData = beduerfnisseData;
+                tarotKartenData = kartenData;
+                buildKartenLookup();
                 isLoading = false;
-                return data;
+                return oshoZenData;
             })
             .catch(error => {
                 console.error('Fehler beim Laden der Osho Zen Daten:', error);
@@ -57,6 +60,59 @@ const OshoZenTextGenerator = (function() {
             });
 
         return loadPromise;
+    }
+
+    /**
+     * Baut eine Lookup-Map für Karten nach Name
+     */
+    function buildKartenLookup() {
+        kartenLookup = {};
+        if (!tarotKartenData) return;
+
+        // Major Arcana
+        if (tarotKartenData.major_arcana) {
+            for (const key in tarotKartenData.major_arcana) {
+                const karte = tarotKartenData.major_arcana[key];
+                if (karte.name) {
+                    kartenLookup[karte.name.toLowerCase()] = karte;
+                }
+            }
+        }
+
+        // Minor Arcana
+        if (tarotKartenData.minor_arcana) {
+            for (const suit in tarotKartenData.minor_arcana) {
+                const suitData = tarotKartenData.minor_arcana[suit];
+                if (suitData.karten) {
+                    for (const key in suitData.karten) {
+                        const karte = suitData.karten[key];
+                        if (karte.name) {
+                            kartenLookup[karte.name.toLowerCase()] = { ...karte, element: suitData.element };
+                        }
+                    }
+                }
+            }
+        }
+
+        // Zusätzliche Karten
+        if (tarotKartenData.zusaetzliche_karten?.karten) {
+            for (const key in tarotKartenData.zusaetzliche_karten.karten) {
+                const karte = tarotKartenData.zusaetzliche_karten.karten[key];
+                if (karte.name) {
+                    kartenLookup[karte.name.toLowerCase()] = karte;
+                }
+            }
+        }
+    }
+
+    /**
+     * Findet Kartendetails nach Name
+     * @param {string} karteName - Name der Karte (z.B. "Courage")
+     * @returns {Object|null} Kartendetails mit bild, osho, etc.
+     */
+    function getKartenDetails(karteName) {
+        if (!kartenLookup || !karteName) return null;
+        return kartenLookup[karteName.toLowerCase()] || null;
     }
 
     // ═══════════════════════════════════════════════════════════════════════════
@@ -99,6 +155,7 @@ const OshoZenTextGenerator = (function() {
                     const matchScore = average * similarity;
 
                     const zenData = beduerfnisse[needId];
+                    const kartenDetails = getKartenDetails(zenData.karte);
                     matches.push({
                         id: needId,
                         label: zenData.label || needId,
@@ -107,7 +164,11 @@ const OshoZenTextGenerator = (function() {
                         score2: Math.round(score2),
                         matchScore: Math.round(matchScore),
                         karte: zenData.karte || 'Unknown',
-                        text: zenData.text || ''
+                        karteName_de: kartenDetails?.name_de || zenData.karte,
+                        text: zenData.text || '',
+                        bild: kartenDetails?.bild || '',
+                        osho: kartenDetails?.osho || '',
+                        quelle: kartenDetails?.quelle || ''
                     });
                 }
             }
@@ -173,7 +234,7 @@ const OshoZenTextGenerator = (function() {
 
         topMatches.forEach((match, index) => {
             const { firstSentence, rest } = extractFirstSentence(match.text);
-            const hasMoreText = rest.length > 0;
+            const hasExpandableContent = rest.length > 0 || match.bild || match.osho;
 
             html += `
                 <div class="osho-zen-item" data-index="${index}">
@@ -182,21 +243,32 @@ const OshoZenTextGenerator = (function() {
                             <span class="osho-zen-rank">${index + 1}</span>
                             <span class="osho-zen-label">${match.label}</span>
                             <span class="osho-zen-id">${match.id}</span>
-                            <span class="osho-zen-karte">— ${match.karte}</span>
+                            <span class="osho-zen-karte">— ${match.karte}${match.karteName_de && match.karteName_de !== match.karte ? ` (${match.karteName_de})` : ''}</span>
                         </div>
                         <div class="osho-zen-item-right">
-                            <span class="osho-zen-toggle">${hasMoreText ? '▶' : ''}</span>
+                            <span class="osho-zen-toggle">${hasExpandableContent ? '▶' : ''}</span>
                         </div>
                     </div>
                     <div class="osho-zen-text-preview">
                         <span class="osho-zen-karte-icon">🃏</span>
                         <strong>${match.karte}:</strong> ${firstSentence}
                     </div>
-                    ${hasMoreText ? `
+                    ${hasExpandableContent ? `
                     <div class="osho-zen-item-content" style="display: none;">
-                        <div class="osho-zen-text-full">
-                            ${rest}
+                        ${rest ? `<div class="osho-zen-text-full">${rest}</div>` : ''}
+                        ${match.bild ? `
+                        <div class="osho-zen-bild">
+                            <div class="osho-zen-section-title">🎴 Bildbeschreibung</div>
+                            <p>${match.bild}</p>
                         </div>
+                        ` : ''}
+                        ${match.osho ? `
+                        <div class="osho-zen-osho">
+                            <div class="osho-zen-section-title">🕉️ Osho</div>
+                            <blockquote>${match.osho}</blockquote>
+                            ${match.quelle ? `<cite>— ${match.quelle}</cite>` : ''}
+                        </div>
+                        ` : ''}
                     </div>
                     ` : ''}
                     <div class="osho-zen-item-footer">
@@ -449,6 +521,53 @@ const OshoZenTextGenerator = (function() {
                 font-style: italic;
                 color: var(--text-color, #333);
                 line-height: 1.5;
+                margin-bottom: 0.75rem;
+            }
+
+            .osho-zen-section-title {
+                font-size: 0.85rem;
+                font-weight: 600;
+                color: var(--primary-color, #8B5CF6);
+                margin-bottom: 0.5rem;
+                margin-top: 0.75rem;
+            }
+
+            .osho-zen-bild {
+                padding: 0.75rem;
+                background: var(--bild-bg, rgba(139, 92, 246, 0.05));
+                border-radius: 6px;
+                margin-bottom: 0.75rem;
+            }
+
+            .osho-zen-bild p {
+                margin: 0;
+                color: var(--text-color, #333);
+                line-height: 1.6;
+                font-size: 0.9rem;
+            }
+
+            .osho-zen-osho {
+                padding: 0.75rem;
+                background: var(--osho-bg, rgba(255, 152, 0, 0.08));
+                border-radius: 6px;
+                border-left: 3px solid var(--osho-accent, #FF9800);
+            }
+
+            .osho-zen-osho blockquote {
+                margin: 0;
+                padding: 0;
+                font-style: italic;
+                color: var(--text-color, #333);
+                line-height: 1.6;
+                font-size: 0.9rem;
+            }
+
+            .osho-zen-osho cite {
+                display: block;
+                margin-top: 0.5rem;
+                font-size: 0.8rem;
+                color: var(--text-muted, #888);
+                font-style: normal;
             }
 
             .osho-zen-item-footer {
@@ -505,6 +624,9 @@ const OshoZenTextGenerator = (function() {
                     --content-bg: #1e1e1e;
                     --footer-bg: rgba(255,255,255,0.03);
                     --id-bg: rgba(139, 92, 246, 0.2);
+                    --bild-bg: rgba(139, 92, 246, 0.1);
+                    --osho-bg: rgba(255, 152, 0, 0.15);
+                    --osho-accent: #FFB74D;
                     --success-bg: #1e4620;
                     --success-color: #90ee90;
                 }
