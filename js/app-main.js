@@ -14763,21 +14763,27 @@
 
             // HTML generieren mit Modifikator-Aufschlüsselung
             let tableHtml = rows.map(r => {
-                // Modifikator-Formel aufbauen - IMMER anzeigen
-                const domSign = r.modifiers?.dominanz > 0 ? '+' : '';
-                const geschSign = r.modifiers?.geschlecht > 0 ? '+' : '';
-                const oriSign = r.modifiers?.orientierung > 0 ? '+' : '';
-                const domVal = r.modifiers?.dominanz || 0;
-                const geschVal = r.modifiers?.geschlecht || 0;
-                const oriVal = r.modifiers?.orientierung || 0;
-
-                const modFormel = `<div style="font-size: 10px; margin-top: 4px; font-family: monospace; opacity: 0.8;">
-                    <span style="color: var(--text-muted);">${r.typisch}</span>
-                    <span style="color: #a78bfa;" title="Dominanz: ${profilDominanz || '-'}">${domSign}${domVal}</span>
-                    <span style="color: #60a5fa;" title="Geschlecht: ${profilGeschlecht || '-'}">${geschSign}${geschVal}</span>
-                    <span style="color: #f472b6;" title="Orientierung: ${profilOrientierung || '-'}">${oriSign}${oriVal}</span>
-                    = <strong>${r.actual}</strong>
-                </div>`;
+                // Modifikator-Formel aufbauen - nur bei aktiven Modifikatoren
+                let modFormel = '';
+                if (r.modifiers && r.modifiers.hasModifiers) {
+                    const parts = [];
+                    parts.push(`<span style="color: var(--text-muted);">${r.typisch}</span>`);
+                    if (r.modifiers.dominanz !== 0) {
+                        const sign = r.modifiers.dominanz > 0 ? '+' : '';
+                        parts.push(`<span style="color: #a78bfa;" title="Dominanz: ${profilDominanz || '?'}">${sign}${r.modifiers.dominanz}</span>`);
+                    }
+                    if (r.modifiers.geschlecht !== 0) {
+                        const sign = r.modifiers.geschlecht > 0 ? '+' : '';
+                        parts.push(`<span style="color: #60a5fa;" title="Geschlecht: ${profilGeschlecht || '?'}">${sign}${r.modifiers.geschlecht}</span>`);
+                    }
+                    if (r.modifiers.orientierung !== 0) {
+                        const sign = r.modifiers.orientierung > 0 ? '+' : '';
+                        parts.push(`<span style="color: #f472b6;" title="Orientierung: ${profilOrientierung || '?'}">${sign}${r.modifiers.orientierung}</span>`);
+                    }
+                    modFormel = `<div style="font-size: 10px; margin-top: 4px; font-family: monospace; opacity: 0.8;">
+                        ${parts.join(' ')} = <strong>${r.actual}</strong>
+                    </div>`;
+                }
 
                 return `
                 <tr style="border-bottom: 1px solid rgba(255,255,255,0.06);">
