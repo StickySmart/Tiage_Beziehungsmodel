@@ -14733,6 +14733,16 @@
                 console.log('[showValueDerivation] Fallback: BaseArchetypProfile für', person);
             }
 
+            // Locked-Status aus AttributeSummaryCard holen (für ICH)
+            // Für Partner: aus Storage oder TiageState
+            let lockedNeeds = {};
+            if (person === 'ich' && typeof AttributeSummaryCard !== 'undefined' && AttributeSummaryCard.getFlatNeeds) {
+                const flatNeedsArray = AttributeSummaryCard.getFlatNeeds();
+                flatNeedsArray.forEach(n => {
+                    if (n.locked) lockedNeeds[n.id] = true;
+                });
+            }
+
             // Helper: Wert aus needs extrahieren (unterstützt id und stringKey lookup)
             const getNeedValue = (needId, stringKey) => {
                 if (!needs) return null;
@@ -14747,6 +14757,11 @@
                     return (typeof entry === 'object' && entry.value !== undefined) ? entry.value : entry;
                 }
                 return null;
+            };
+
+            // Helper: Prüft ob ein Need locked ist
+            const isNeedLocked = (needId) => {
+                return lockedNeeds[needId] === true;
             };
 
             // Berechnung durchführen
@@ -14798,7 +14813,8 @@
                         typisch: typischValue,
                         modifiedTypisch: modifiedTypisch,
                         actual: actualValue,
-                        modifiers: modDetails
+                        modifiers: modDetails,
+                        locked: isNeedLocked(needId)
                     });
                 }
             }
@@ -14866,6 +14882,10 @@
                 const modO = r.modifiers?.orientierung || 0;
                 // Prüfe ob PWert manuell überschrieben wurde (weicht von Erwartet ab)
                 const isOverridden = r.actual !== r.modifiedTypisch;
+                // Status-Symbol: 🔒 wenn locked, * wenn nur überschrieben
+                const statusSymbol = r.locked
+                    ? '<span style="color: #f97316; margin-left: 2px;" title="Fixiert">🔒</span>'
+                    : (isOverridden ? '<span style="color: #eab308;" title="Überschrieben">*</span>' : '');
 
                 return `
                 <tr style="border-bottom: 1px solid rgba(255,255,255,0.06);">
@@ -14877,7 +14897,7 @@
                     <td style="padding: 6px 4px; text-align: center; font-size: 12px; color: #a78bfa; font-weight: ${modD !== 0 ? '600' : '400'};">${formatModValue(modD)}</td>
                     <td style="padding: 6px 4px; text-align: center; font-size: 12px; color: #60a5fa; font-weight: ${modG !== 0 ? '600' : '400'};">${formatModValue(modG)}</td>
                     <td style="padding: 6px 4px; text-align: center; font-size: 12px; color: #f472b6; font-weight: ${modO !== 0 ? '600' : '400'};">${formatModValue(modO)}</td>
-                    <td style="padding: 6px 4px; text-align: center; font-size: 12px; font-weight: 600;">${r.actual}${isOverridden ? '<span style="color: #eab308;" title="Manuell überschrieben">*</span>' : ''}</td>
+                    <td style="padding: 6px 4px; text-align: center; font-size: 12px; font-weight: 600;">${r.actual}${statusSymbol}</td>
                 </tr>
             `}).join('');
 
@@ -14970,7 +14990,7 @@
                     <!-- Bedürfnis-Tabelle -->
                     <div style="padding: 16px 20px;">
                         <div style="font-size: 12px; color: var(--text-muted); margin-bottom: 10px;">
-                            ${count} Bedürfnisse${rows.some(r => r.actual !== r.modifiedTypisch) ? ' · <span style="color: #eab308;">*</span> = überschrieben' : ''}
+                            ${count} Bedürfnisse${rows.some(r => r.locked) ? ' · <span style="color: #f97316;">🔒</span> = fixiert' : ''}${rows.some(r => !r.locked && r.actual !== r.modifiedTypisch) ? ' · <span style="color: #eab308;">*</span> = überschrieben' : ''}
                         </div>
                         <div style="background: rgba(0,0,0,0.15); border-radius: 8px; overflow: hidden; border: 1px solid rgba(255,255,255,0.08);">
                             <table style="width: 100%; border-collapse: collapse;">
