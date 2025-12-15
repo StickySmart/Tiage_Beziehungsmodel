@@ -14203,13 +14203,35 @@
                 contraListHtml = '<li style="color: var(--text-muted);">Keine Daten verfügbar</li>';
             }
 
-            // Get needs matching content
-            const needsHtml = getScoreNeedsContent();
+            // Calculate base archetype score (without modifiers)
+            const baseArchetypeScore = getArchetypeScore(currentArchetype, selectedPartner);
 
             return `
                 <!-- Score Display -->
                 <div style="text-align: center; margin-bottom: 20px;">
                     <div style="font-size: 3rem; font-weight: 700; color: ${scoreColor};">${currentScore}</div>
+                    <div style="margin-top: 12px; padding: 12px; background: rgba(100,100,110,0.15); border-radius: 8px; font-size: 13px; color: var(--text-muted);">
+                        <div style="display: flex; justify-content: center; align-items: center; gap: 20px; flex-wrap: wrap;">
+                            <div>
+                                <span style="font-weight: 600; color: var(--text-secondary);">Basis-Archetyp:</span>
+                                <span style="margin-left: 6px; font-weight: 700; color: var(--primary);">${baseArchetypeScore}</span>
+                                <span style="margin-left: 4px; font-size: 11px;">(Forschungsdaten)</span>
+                            </div>
+                            <div style="color: var(--border);">→</div>
+                            <div>
+                                <span style="font-weight: 600; color: var(--text-secondary);">Gesamt-Score:</span>
+                                <span style="margin-left: 6px; font-weight: 700; color: ${scoreColor};">${scoreValue}</span>
+                                <span style="margin-left: 4px; font-size: 11px;">(mit Modifikatoren)</span>
+                            </div>
+                        </div>
+                        <div style="margin-top: 8px; font-size: 11px; text-align: center; opacity: 0.8;">
+                            ${scoreValue > baseArchetypeScore ?
+                                `Modifikatoren erhöhen den Score um +${scoreValue - baseArchetypeScore} Punkte` :
+                                scoreValue < baseArchetypeScore ?
+                                `Modifikatoren senken den Score um ${baseArchetypeScore - scoreValue} Punkte` :
+                                'Keine Modifikatoren aktiv'}
+                        </div>
+                    </div>
                 </div>
                 <!-- Pro/Contra Lists -->
                 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px;">
@@ -14222,8 +14244,6 @@
                         <ul style="list-style: none; padding: 0; margin: 0;">${contraListHtml}</ul>
                     </div>
                 </div>
-                <!-- Bedürfnis-Übereinstimmung Section -->
-                ${needsHtml}
             `;
         }
 
