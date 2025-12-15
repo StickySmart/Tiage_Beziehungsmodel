@@ -14785,12 +14785,16 @@
             const uebereinstimmung = 1 - (avgDiff / 100);
             const calculatedR = Math.round((0.5 + (uebereinstimmung * 1.0)) * 1000) / 1000;
 
+            // Lade gespeicherte Werte für Lock-Status Anzeige
+            let storedValue = 1.0;
+            let isLocked = false;
+
             // Prüfe ob der gespeicherte Wert vom berechneten abweicht und aktualisiere ihn
             // Nur wenn nicht gelockt und Differenz > 0.01
             if (typeof ResonanzCard !== 'undefined') {
                 const storedData = ResonanzCard.load(person);
-                const storedValue = storedData[rKey]?.value || 1.0;
-                const isLocked = storedData[rKey]?.locked || false;
+                storedValue = storedData[rKey]?.value || 1.0;
+                isLocked = storedData[rKey]?.locked || false;
                 const diff = Math.abs(storedValue - calculatedR);
 
                 if (!isLocked && diff > 0.01) {
@@ -14907,6 +14911,27 @@
                             <span style="font-size: 13px; color: var(--text-secondary);">Berechneter Wert:</span>
                             <span style="font-size: 20px; font-weight: 700; color: ${calculatedR >= 1.1 ? '#22c55e' : calculatedR <= 0.9 ? '#ef4444' : '#eab308'};">${calculatedR.toFixed(3)}</span>
                         </div>
+
+                        ${isLocked ? `
+                        <!-- Locked Status Anzeige -->
+                        <div style="background: linear-gradient(135deg, rgba(245, 158, 11, 0.15), rgba(245, 158, 11, 0.05)); border: 1px solid rgba(245, 158, 11, 0.4); border-radius: 8px; padding: 12px; margin-bottom: 12px;">
+                            <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
+                                <span style="font-size: 16px;">🔒</span>
+                                <span style="font-size: 13px; font-weight: 600; color: #f59e0b;">Manuell gesperrt</span>
+                            </div>
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                                <span style="font-size: 12px; color: var(--text-secondary);">Verwendeter Wert:</span>
+                                <span style="font-size: 18px; font-weight: 700; color: #f59e0b;">${storedValue.toFixed(2)}</span>
+                            </div>
+                            <div style="font-size: 11px; color: var(--text-muted); line-height: 1.4;">
+                                <strong style="color: #f59e0b;">Konsequenz:</strong> Der berechnete Wert (${calculatedR.toFixed(3)}) wird ignoriert.
+                                Stattdessen wird der manuell gesetzte Wert (${storedValue.toFixed(2)}) für alle Score-Berechnungen verwendet.
+                            </div>
+                            <div style="margin-top: 8px; font-size: 10px; color: var(--text-muted); opacity: 0.8;">
+                                Ändern: Attribute → Resonanzfaktoren → Schloss-Symbol klicken
+                            </div>
+                        </div>
+                        ` : ''}
 
                         <!-- Formel -->
                         <div style="background: rgba(139,92,246,0.1); border-radius: 8px; padding: 12px; font-family: monospace; font-size: 11px; color: var(--text-secondary); line-height: 1.8;">
