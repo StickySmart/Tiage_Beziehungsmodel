@@ -15267,6 +15267,11 @@
                     ? '<span style="color: #f97316; margin-left: 2px;" title="Fixiert - bleibt bei Archetyp-Wechsel erhalten">🔒</span>'
                     : '';
 
+                // Row background (empty for now, can be used for highlighting)
+                const rowBg = '';
+
+                // Lock icon for need ID (show if locked)
+                const needLockIcon = '';
 
                 return `
                 <tr style="border-bottom: 1px solid rgba(255,255,255,0.06); ${rowBg}">
