@@ -14757,7 +14757,17 @@
                 const actualValue = getNeedValue(needId, needKey);
 
                 if (actualValue !== null && typeof typischValue === 'number') {
-                    const diff = Math.abs(actualValue - typischValue);
+                    // Modifikator-Details ZUERST berechnen (für korrekte Abweichung)
+                    const modDetails = getModifikatorDetails(needKey);
+
+                    // Modifizierten typischen Wert berechnen: Typ + D + G + O
+                    const modifiedTypisch = typischValue +
+                        (modDetails.dominanz || 0) +
+                        (modDetails.geschlecht || 0) +
+                        (modDetails.orientierung || 0);
+
+                    // Abweichung gegen den MODIFIZIERTEN typischen Wert berechnen
+                    const diff = Math.abs(actualValue - modifiedTypisch);
                     totalDiff += diff;
                     count++;
 
@@ -14766,17 +14776,15 @@
                     if (diff > 30) diffColor = '#ef4444'; // rot
                     else if (diff > 15) diffColor = '#eab308'; // gelb
 
-                    // Modifikator-Details für dieses Bedürfnis berechnen
-                    const modDetails = getModifikatorDetails(needKey);
-
                     rows.push({
                         id: needId || needKey,  // Zeige id oder stringKey
                         label: needLabel,
                         typisch: typischValue,
+                        modifiedTypisch: modifiedTypisch,  // NEU: Für Anzeige
                         actual: actualValue,
                         diff: diff,
                         diffColor: diffColor,
-                        modifiers: modDetails  // NEU: Modifikator-Aufschlüsselung
+                        modifiers: modDetails
                     });
                 }
             }
@@ -14849,6 +14857,8 @@
                 const modD = r.modifiers?.dominanz || 0;
                 const modG = r.modifiers?.geschlecht || 0;
                 const modO = r.modifiers?.orientierung || 0;
+                // Prüfe ob PWert manuell überschrieben wurde (weicht von Erwartet ab)
+                const isOverridden = r.actual !== r.modifiedTypisch;
 
                 return `
                 <tr style="border-bottom: 1px solid rgba(255,255,255,0.06);">
@@ -14860,7 +14870,7 @@
                     <td style="padding: 6px 4px; text-align: center; font-size: 12px; color: #a78bfa; font-weight: ${modD !== 0 ? '600' : '400'};">${formatModValue(modD)}</td>
                     <td style="padding: 6px 4px; text-align: center; font-size: 12px; color: #60a5fa; font-weight: ${modG !== 0 ? '600' : '400'};">${formatModValue(modG)}</td>
                     <td style="padding: 6px 4px; text-align: center; font-size: 12px; color: #f472b6; font-weight: ${modO !== 0 ? '600' : '400'};">${formatModValue(modO)}</td>
-                    <td style="padding: 6px 4px; text-align: center; font-size: 12px; font-weight: 600;">${r.actual}</td>
+                    <td style="padding: 6px 4px; text-align: center; font-size: 12px; font-weight: 600;">${r.actual}${isOverridden ? '<span style="color: #eab308;" title="Manuell überschrieben">*</span>' : ''}</td>
                     <td style="padding: 6px 4px; text-align: center; font-size: 12px; font-weight: 600; color: ${r.diffColor};">${r.diff}</td>
                 </tr>
             `}).join('');
@@ -14950,7 +14960,7 @@
                     ${(profilDominanz || profilGeschlecht || profilOrientierung) ? `
                     <div style="padding: 12px 20px; background: rgba(139,92,246,0.08); border-bottom: 1px solid rgba(255,255,255,0.05);">
                         <div style="font-size: 11px; color: var(--text-muted); margin-bottom: 8px;">
-                            <strong>Modifikator-Formel:</strong> Dein Wert = Typisch + D + G + O
+                            <strong>Modifikator-Formel:</strong> Erwartet = Typ + D + G + O &nbsp;→&nbsp; |Δ| = |Dein Wert − Erwartet|
                         </div>
                         <div style="display: flex; flex-wrap: wrap; gap: 16px; font-size: 11px;">
                             <div style="display: flex; align-items: center; gap: 6px;">
@@ -14975,7 +14985,7 @@
                     <!-- Bedürfnis-Tabelle -->
                     <div style="padding: 16px 20px;">
                         <div style="font-size: 12px; color: var(--text-muted); margin-bottom: 10px;">
-                            ${count} Bedürfnisse verglichen (sortiert nach Abweichung):
+                            ${count} Bedürfnisse verglichen (sortiert nach Abweichung)${rows.some(r => r.actual !== r.modifiedTypisch) ? ' · <span style="color: #eab308;">*</span> = überschrieben' : ''}:
                         </div>
                         <div style="background: rgba(0,0,0,0.15); border-radius: 8px; overflow: hidden; border: 1px solid rgba(255,255,255,0.08);">
                             <table style="width: 100%; border-collapse: collapse;">
