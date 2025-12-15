@@ -14430,8 +14430,8 @@
             let isFallback = false;
 
             // Primär: Direkt aus TiageState.flatNeeds
-            const result = calculateNeedsMatchFromFlatNeeds();
-            if (result) {
+            const matchResult = calculateNeedsMatchFromFlatNeeds();
+            if (matchResult) {
                 // Format-Konvertierung: need → { label, id, wert1, wert2, stringKey }
                 const formatNeed = (item) => {
                     const stringKey = item.need.startsWith('#B') && typeof BeduerfnisIds !== 'undefined' && BeduerfnisIds.toKey
@@ -14448,7 +14448,7 @@
                 };
 
                 // Top 10 Übereinstimmungen (gemeinsam + komplementär)
-                const allGemeinsam = [...result.gemeinsam, ...result.komplementaer].map(formatNeed);
+                const allGemeinsam = [...matchResult.gemeinsam, ...matchResult.komplementaer].map(formatNeed);
                 allGemeinsam.sort((a, b) => ((b.wert1 + b.wert2) / 2) - ((a.wert1 + a.wert2) / 2));
 
                 matching = {
