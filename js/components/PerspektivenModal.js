@@ -503,6 +503,7 @@ const PerspektivenModal = {
      */
     getKategorieId: function(kategorieKey) {
         const mapping = {
+            // GFK Kern-Kategorien (#K1-#K10)
             'existenz': '#K1',
             'sicherheit': '#K2',
             'zuneigung': '#K3',
@@ -511,15 +512,24 @@ const PerspektivenModal = {
             'teilnahme': '#K6',
             'musse': '#K7',
             'identitaet': '#K8',
+            'identitaet_bedeutung': '#K8',  // Alternative Schreibweise
             'erschaffen': '#K9',
+            'etwas_erschaffen': '#K9',      // Alternative Schreibweise
             'verbundenheit': '#K10',
+            'verbunden_sein': '#K10',       // Alternative Schreibweise
+            // Dynamik-Kategorie (#K11)
             'dynamik': '#K11',
+            'dynamik_austausch': '#K11',    // Alternative Schreibweise
+            // Lebensbereiche (#K12-#K18)
             'lebensplanung': '#K12',
             'finanzen_karriere': '#K13',
             'kommunikation_stil': '#K14',
+            'kommunikationsstil': '#K14',   // Alternative Schreibweise
             'soziales_leben': '#K15',
             'intimitaet_beziehung': '#K16',
+            'intimitaet_romantik': '#K16',  // Alternative Schreibweise
             'werte_haltung': '#K17',
+            'werte_haltungen': '#K17',      // Alternative Schreibweise
             'praktisches_leben': '#K18'
         };
         return mapping[kategorieKey] || '';
