@@ -14714,12 +14714,24 @@
             };
 
             // ═══════════════════════════════════════════════════════════════════
-            // ZENTRALE HELPER-FUNKTION für korrekte Person-spezifische Needs
-            // Verwendet ResonanzCard.getPersonNeeds() für konsistente Datenquellen
+            // NEEDS LADEN: Direkt aus TiageState.flatNeeds (enthält Modifikatoren!)
+            // Fallback auf BaseArchetypProfile nur wenn TiageState nicht verfügbar
             // ═══════════════════════════════════════════════════════════════════
-            const needs = (typeof ResonanzCard !== 'undefined' && ResonanzCard.getPersonNeeds)
-                ? ResonanzCard.getPersonNeeds(person, archetyp)
-                : null;
+            let needs = null;
+
+            // Primär: TiageState.flatNeeds (enthält bereits Basis + Modifikatoren)
+            if (typeof TiageState !== 'undefined') {
+                needs = TiageState.get(`flatNeeds.${person}`);
+                if (needs && Object.keys(needs).length > 0) {
+                    console.log('[showValueDerivation] Needs aus TiageState.flatNeeds für', person);
+                }
+            }
+
+            // Fallback: BaseArchetypProfile (nur Basis-Werte)
+            if (!needs || Object.keys(needs).length === 0) {
+                needs = archetypProfil;
+                console.log('[showValueDerivation] Fallback: BaseArchetypProfile für', person);
+            }
 
             // Helper: Wert aus needs extrahieren (unterstützt id und stringKey lookup)
             const getNeedValue = (needId, stringKey) => {
