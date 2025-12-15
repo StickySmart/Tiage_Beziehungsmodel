@@ -525,8 +525,9 @@ const LogosTextGenerator = (function() {
             parts.push(fillVariables(selectPhrase(personPhrases.avoidsIntro, seed + 5), vars));
         }
 
-        // 5. Dominanz-Rolle
-        const dom = dimensions?.dominanz;
+        // 5. Dominanz-Rolle (dominanz kann Objekt {primary, secondary} oder String sein)
+        const domRaw = dimensions?.dominanz;
+        const dom = typeof domRaw === 'object' ? (domRaw?.primary || null) : domRaw;
         if (dom && personPhrases.dominance[dom]) {
             parts.push(fillVariables(selectPhrase(personPhrases.dominance[dom], seed + 7), vars));
         }
