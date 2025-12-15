@@ -324,12 +324,12 @@
                         : stringKey;
 
                     if (flatNeeds[hashId] !== undefined) {
-                        // Wert modifizieren und auf 0-100 begrenzen
-                        flatNeeds[hashId] = Math.min(100, Math.max(0, flatNeeds[hashId] + deltas[stringKey]));
+                        // Wert modifizieren (keine Obergrenze, nur >= 0)
+                        flatNeeds[hashId] = Math.max(0, flatNeeds[hashId] + deltas[stringKey]);
                         appliedCount++;
                     } else if (flatNeeds[stringKey] !== undefined) {
                         // Fallback: try direct string key lookup
-                        flatNeeds[stringKey] = Math.min(100, Math.max(0, flatNeeds[stringKey] + deltas[stringKey]));
+                        flatNeeds[stringKey] = Math.max(0, flatNeeds[stringKey] + deltas[stringKey]);
                         appliedCount++;
                     }
                 });
