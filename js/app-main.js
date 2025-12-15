@@ -14778,7 +14778,7 @@
                 const actualValue = getNeedValue(needId, needKey);
 
                 if (actualValue !== null && typeof typischValue === 'number') {
-                    // Modifikator-Details ZUERST berechnen (für korrekte Abweichung)
+                    // Modifikator-Details berechnen
                     const modDetails = getModifikatorDetails(needKey);
 
                     // Modifizierten typischen Wert berechnen: Typ + D + G + O
@@ -14787,24 +14787,17 @@
                         (modDetails.geschlecht || 0) +
                         (modDetails.orientierung || 0);
 
-                    // Abweichung gegen den MODIFIZIERTEN typischen Wert berechnen
+                    // Für R-Wert Berechnung
                     const diff = Math.abs(actualValue - modifiedTypisch);
                     totalDiff += diff;
                     count++;
 
-                    // Farbcodierung für Abweichung
-                    let diffColor = '#22c55e'; // grün
-                    if (diff > 30) diffColor = '#ef4444'; // rot
-                    else if (diff > 15) diffColor = '#eab308'; // gelb
-
                     rows.push({
-                        id: needId || needKey,  // Zeige id oder stringKey
+                        id: needId || needKey,
                         label: needLabel,
                         typisch: typischValue,
-                        modifiedTypisch: modifiedTypisch,  // NEU: Für Anzeige
+                        modifiedTypisch: modifiedTypisch,
                         actual: actualValue,
-                        diff: diff,
-                        diffColor: diffColor,
                         modifiers: modDetails
                     });
                 }
@@ -14836,9 +14829,6 @@
                     }
                 }
             }
-
-            // Sortiere nach Abweichung (größte zuerst)
-            rows.sort((a, b) => b.diff - a.diff);
 
             // Sammle alle Modifikatorwerte für die Zusammenfassung
             const modSummary = {
@@ -14888,7 +14878,6 @@
                     <td style="padding: 6px 4px; text-align: center; font-size: 12px; color: #60a5fa; font-weight: ${modG !== 0 ? '600' : '400'};">${formatModValue(modG)}</td>
                     <td style="padding: 6px 4px; text-align: center; font-size: 12px; color: #f472b6; font-weight: ${modO !== 0 ? '600' : '400'};">${formatModValue(modO)}</td>
                     <td style="padding: 6px 4px; text-align: center; font-size: 12px; font-weight: 600;">${r.actual}${isOverridden ? '<span style="color: #eab308;" title="Manuell überschrieben">*</span>' : ''}</td>
-                    <td style="padding: 6px 4px; text-align: center; font-size: 12px; font-weight: 600; color: ${r.diffColor};">${r.diff}</td>
                 </tr>
             `}).join('');
 
@@ -14981,7 +14970,7 @@
                     <!-- Bedürfnis-Tabelle -->
                     <div style="padding: 16px 20px;">
                         <div style="font-size: 12px; color: var(--text-muted); margin-bottom: 10px;">
-                            ${count} Bedürfnisse verglichen (sortiert nach Abweichung)${rows.some(r => r.actual !== r.modifiedTypisch) ? ' · <span style="color: #eab308;">*</span> = überschrieben' : ''}:
+                            ${count} Bedürfnisse${rows.some(r => r.actual !== r.modifiedTypisch) ? ' · <span style="color: #eab308;">*</span> = überschrieben' : ''}
                         </div>
                         <div style="background: rgba(0,0,0,0.15); border-radius: 8px; overflow: hidden; border: 1px solid rgba(255,255,255,0.08);">
                             <table style="width: 100%; border-collapse: collapse;">
@@ -14993,7 +14982,6 @@
                                         <th style="padding: 10px 4px; text-align: center; font-size: 11px; color: #60a5fa; font-weight: 500;" title="Geschlecht">G</th>
                                         <th style="padding: 10px 4px; text-align: center; font-size: 11px; color: #f472b6; font-weight: 500;" title="Orientierung">O</th>
                                         <th style="padding: 10px 4px; text-align: center; font-size: 11px; color: ${personColor}; font-weight: 500;">${person === 'ich' ? 'Wert' : 'P.Wert'}</th>
-                                        <th style="padding: 10px 4px; text-align: center; font-size: 11px; color: var(--text-muted); font-weight: 500;">|Δ|</th>
                                     </tr>
                                 </thead>
                                 <tbody>
