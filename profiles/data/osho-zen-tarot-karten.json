@@ -1,0 +1,712 @@
+{
+  "version": "1.0.0",
+  "beschreibung": "Vollständige Osho Zen Tarot Kartendatenbank mit allen 79 Karten",
+  "quelle": "Osho Zen Tarot von Ma Deva Padma (St. Martins Press), basierend auf den Lehren von Osho",
+  "copyright": "Alle Rechte bei den jeweiligen Inhabern. Diese Beschreibungen sind freie Interpretationen.",
+
+  "major_arcana": {
+    "0_the_fool": {
+      "name": "The Fool",
+      "nummer": 0,
+      "traditionell": "The Fool",
+      "element": "Luft",
+      "bedeutung": "Der Beginn einer Reise ins Unbekannte, kindliche Unschuld und Vertrauen",
+      "weisheit": "Der Narr ist derjenige, der losgeht, ohne zu wissen, wohin – und genau das macht ihn weise. Er vertraut dem Unbekannten.",
+      "schatten": "Naivität, Leichtsinn, Realitätsflucht"
+    },
+    "1_existence": {
+      "name": "Existence",
+      "nummer": 1,
+      "traditionell": "The Magician",
+      "element": "Luft",
+      "bedeutung": "Die Fülle des Seins, alles ist bereits vorhanden",
+      "weisheit": "Du bist nicht getrennt von der Existenz. Du bist ein Ausdruck des Ganzen – atme, und das Universum atmet durch dich.",
+      "schatten": "Getrenntheit, Isolation, Manipulation"
+    },
+    "2_inner_voice": {
+      "name": "Inner Voice",
+      "nummer": 2,
+      "traditionell": "The High Priestess",
+      "element": "Wasser",
+      "bedeutung": "Die Stimme der inneren Weisheit, Intuition",
+      "weisheit": "In der Stille spricht die innere Stimme. Sie kennt den Weg, auch wenn der Verstand zweifelt.",
+      "schatten": "Verwirrung, Selbsttäuschung, Ignorieren der Intuition"
+    },
+    "3_creativity": {
+      "name": "Creativity",
+      "nummer": 3,
+      "traditionell": "The Empress",
+      "element": "Erde",
+      "bedeutung": "Schöpferische Kraft, Fruchtbarkeit des Geistes",
+      "weisheit": "Kreativität ist deine Natur. Wenn du schaffst, bist du eins mit dem Universum, das unaufhörlich erschafft.",
+      "schatten": "Blockade, Stagnation, unterdrückter Ausdruck"
+    },
+    "4_the_rebel": {
+      "name": "The Rebel",
+      "nummer": 4,
+      "traditionell": "The Emperor",
+      "element": "Feuer",
+      "bedeutung": "Authentische Selbstbestimmung, Mut zur eigenen Wahrheit",
+      "weisheit": "Der wahre Rebell folgt nicht blindlings – weder der Masse noch dem Widerstand. Er folgt seiner eigenen Wahrheit.",
+      "schatten": "Starrsinn, Rebellion ohne Sinn, Autoritätsprobleme"
+    },
+    "5_no_thingness": {
+      "name": "No-Thingness",
+      "nummer": 5,
+      "traditionell": "The Hierophant",
+      "element": "Erde",
+      "bedeutung": "Die Leere als Quelle aller Möglichkeiten",
+      "weisheit": "Im Nichts liegt alles. Wenn du leer wirst, kann das Ganze durch dich fließen.",
+      "schatten": "Leere als Mangel erleben, Sinnlosigkeit, Depression"
+    },
+    "6_the_lovers": {
+      "name": "The Lovers",
+      "nummer": 6,
+      "traditionell": "The Lovers",
+      "element": "Luft",
+      "bedeutung": "Vereinigung von Gegensätzen, bewusste Wahl, tiefe Verbindung",
+      "weisheit": "Wahre Liebe ist nicht Verschmelzung, sondern zwei Flammen, die nebeneinander leuchten – getrennt und doch eins.",
+      "schatten": "Abhängigkeit, Entscheidungsunfähigkeit, Projektion"
+    },
+    "7_awareness": {
+      "name": "Awareness",
+      "nummer": 7,
+      "traditionell": "The Chariot",
+      "element": "Wasser",
+      "bedeutung": "Bewusstsein als Fahrzeug, achtsame Präsenz",
+      "weisheit": "Bewusstheit ist der Schlüssel. Wenn du wach bist, bewegt sich das Leben mühelos durch dich.",
+      "schatten": "Unbewusstheit, reaktives Handeln, Kontrollsucht"
+    },
+    "8_courage": {
+      "name": "Courage",
+      "nummer": 8,
+      "traditionell": "Strength",
+      "element": "Feuer",
+      "bedeutung": "Innere Stärke, Mut zur Verletzlichkeit",
+      "weisheit": "Mut ist nicht das Fehlen von Angst. Es ist die Bereitschaft, trotz der Angst weiterzugehen – mit offenem Herzen.",
+      "schatten": "Feigheit, Überkompensation, Aggression"
+    },
+    "9_aloneness": {
+      "name": "Aloneness",
+      "nummer": 9,
+      "traditionell": "The Hermit",
+      "element": "Erde",
+      "bedeutung": "Alleinsein als Fülle, Selbstgenügsamkeit",
+      "weisheit": "Alleinsein ist nicht Einsamkeit. Es ist der Raum, in dem du dich selbst findest – vollständig und ganz.",
+      "schatten": "Isolation, Einsamkeit, Weltflucht"
+    },
+    "10_change": {
+      "name": "Change",
+      "nummer": 10,
+      "traditionell": "Wheel of Fortune",
+      "element": "Feuer",
+      "bedeutung": "Der ewige Wandel, Transformation als Konstante",
+      "weisheit": "Veränderung ist das einzig Beständige. Wer sich dem Fluss hingibt, findet Frieden mitten im Wandel.",
+      "schatten": "Widerstand gegen Veränderung, Festhalten, Angst"
+    },
+    "11_breakthrough": {
+      "name": "Breakthrough",
+      "nummer": 11,
+      "traditionell": "Justice",
+      "element": "Luft",
+      "bedeutung": "Durchbruch durch alte Muster, Befreiung",
+      "weisheit": "Jeder Durchbruch beginnt mit dem Mut, das Alte loszulassen – auch wenn das Neue noch nicht sichtbar ist.",
+      "schatten": "Stagnation, Selbstgerechtigkeit, Blockade"
+    },
+    "12_new_vision": {
+      "name": "New Vision",
+      "nummer": 12,
+      "traditionell": "The Hanged Man",
+      "element": "Wasser",
+      "bedeutung": "Neue Perspektive durch Loslassen, Hingabe",
+      "weisheit": "Manchmal musst du die Welt auf den Kopf stellen, um sie richtig zu sehen. Hingabe öffnet neue Augen.",
+      "schatten": "Opferhaltung, Passivität, Starre"
+    },
+    "13_transformation": {
+      "name": "Transformation",
+      "nummer": 13,
+      "traditionell": "Death",
+      "element": "Wasser",
+      "bedeutung": "Ende und Neuanfang, tiefgreifender Wandel",
+      "weisheit": "Transformation ist der kleine Tod, der zum größeren Leben führt. Lass sterben, was sterben muss.",
+      "schatten": "Angst vor Veränderung, Festhalten am Alten, Stagnation"
+    },
+    "14_integration": {
+      "name": "Integration",
+      "nummer": 14,
+      "traditionell": "Temperance",
+      "element": "Feuer",
+      "bedeutung": "Harmonische Vereinigung aller Teile, innere Balance",
+      "weisheit": "Integration geschieht, wenn du nichts mehr abspaltest – wenn Licht und Schatten sich die Hand reichen.",
+      "schatten": "Innere Spaltung, Fragmentierung, Ungleichgewicht"
+    },
+    "15_conditioning": {
+      "name": "Conditioning",
+      "nummer": 15,
+      "traditionell": "The Devil",
+      "element": "Erde",
+      "bedeutung": "Konditionierung und Programmierung erkennen",
+      "weisheit": "Die Ketten der Konditionierung sind unsichtbar – bis du sie siehst. Erkennen ist der erste Schritt zur Freiheit.",
+      "schatten": "Unbewusste Muster, Sucht, Fremdbestimmung"
+    },
+    "16_thunderbolt": {
+      "name": "Thunderbolt",
+      "nummer": 16,
+      "traditionell": "The Tower",
+      "element": "Feuer",
+      "bedeutung": "Plötzliche Erkenntnis, Zerstörung von Illusionen",
+      "weisheit": "Der Blitz zerstört nur, was ohnehin nicht echt war. Was bleibt, ist unzerstörbar.",
+      "schatten": "Schock, Zusammenbruch, Chaos"
+    },
+    "17_silence": {
+      "name": "Silence",
+      "nummer": 17,
+      "traditionell": "The Star",
+      "element": "Luft",
+      "bedeutung": "Innere Stille, Hoffnung und Inspiration",
+      "weisheit": "In der Stille findest du, was Worte nie erreichen können. Sie ist die Sprache des Universums.",
+      "schatten": "Innere Unruhe, Hoffnungslosigkeit, Lärm des Geistes"
+    },
+    "18_past_lives": {
+      "name": "Past Lives",
+      "nummer": 18,
+      "traditionell": "The Moon",
+      "element": "Wasser",
+      "bedeutung": "Unbewusste Muster aus der Vergangenheit",
+      "weisheit": "Die Vergangenheit lebt in dir weiter – bis du sie bewusst anschaust und befreist.",
+      "schatten": "Unbewusste Wiederholungen, Illusionen, Täuschung"
+    },
+    "19_innocence": {
+      "name": "Innocence",
+      "nummer": 19,
+      "traditionell": "The Sun",
+      "element": "Feuer",
+      "bedeutung": "Wiedergewonnene Unschuld, kindliche Freude",
+      "weisheit": "Unschuld ist nicht Unwissenheit. Sie ist die Weisheit, die nach allem Wissen zum Staunen zurückkehrt.",
+      "schatten": "Verlorene Freude, Zynismus, verhärtetes Herz"
+    },
+    "20_beyond_illusion": {
+      "name": "Beyond Illusion",
+      "nummer": 20,
+      "traditionell": "Judgement",
+      "element": "Feuer",
+      "bedeutung": "Jenseits aller Illusionen, Erwachen",
+      "weisheit": "Jenseits der Illusion liegt die Wahrheit – nicht als Konzept, sondern als lebendige Erfahrung.",
+      "schatten": "Selbsttäuschung, falsche Urteile, Verleugnung"
+    },
+    "21_completion": {
+      "name": "Completion",
+      "nummer": 21,
+      "traditionell": "The World",
+      "element": "Erde",
+      "bedeutung": "Vollendung eines Zyklus, Ganzheit",
+      "weisheit": "Vollendung ist nicht das Ende – sie ist der Moment, in dem sich der Kreis schließt und ein neuer beginnt.",
+      "schatten": "Unvollständigkeit, ewiges Streben, Unzufriedenheit"
+    },
+    "the_master": {
+      "name": "The Master",
+      "nummer": null,
+      "traditionell": null,
+      "element": "Transzendenz",
+      "bedeutung": "Meisterschaft über sich selbst, Erleuchtung",
+      "weisheit": "Der Meister ist niemand, der über andere herrscht – er hat sich selbst gemeistert. Er ist frei vom Griff des Egos.",
+      "schatten": "Guru-Abhängigkeit, spirituelles Ego, falsche Meisterschaft"
+    }
+  },
+
+  "minor_arcana": {
+    "fire": {
+      "element": "Feuer",
+      "thema": "Aktion, Kreativität, Leidenschaft, Energie",
+      "traditionell": "Wands/Stäbe",
+      "farbe": "Rot",
+      "karten": {
+        "ace_source": {
+          "name": "Source",
+          "nummer": 1,
+          "bedeutung": "Die Quelle aller Energie und Kreativität",
+          "weisheit": "Die Quelle ist in dir. Wenn du dich mit ihr verbindest, fließt unendliche Energie durch dein Sein.",
+          "schatten": "Blockierte Energie, fehlendes Feuer"
+        },
+        "2_possibilities": {
+          "name": "Possibilities",
+          "nummer": 2,
+          "bedeutung": "Offenheit für alle Möglichkeiten",
+          "weisheit": "In jedem Moment liegen unendliche Möglichkeiten. Öffne dich, und das Leben zeigt dir seinen Reichtum.",
+          "schatten": "Entscheidungslähmung, verpasste Chancen"
+        },
+        "3_experiencing": {
+          "name": "Experiencing",
+          "nummer": 3,
+          "bedeutung": "Vollständiges Eintauchen in die Erfahrung",
+          "weisheit": "Erfahrung ist der einzige Lehrer. Tauche ein, ohne zurückzuhalten – das Leben wartet darauf, gelebt zu werden.",
+          "schatten": "Oberflächlichkeit, Vermeidung, Abstumpfung"
+        },
+        "4_participation": {
+          "name": "Participation",
+          "nummer": 4,
+          "bedeutung": "Aktive Teilnahme am Leben",
+          "weisheit": "Teilnahme bedeutet, ganz dabei zu sein – nicht als Zuschauer, sondern als Mitschöpfer des Lebens.",
+          "schatten": "Passivität, Isolation, Zuschauerhaltung"
+        },
+        "5_totality": {
+          "name": "Totality",
+          "nummer": 5,
+          "bedeutung": "Ganzheitliches Engagement, volle Hingabe",
+          "weisheit": "Was auch immer du tust – tu es total. Halbherzigkeit ist der Tod der Lebendigkeit.",
+          "schatten": "Halbherzigkeit, Zersplitterung, mangelndes Engagement"
+        },
+        "6_success": {
+          "name": "Success",
+          "nummer": 6,
+          "bedeutung": "Wahre Erfolg als innere Erfüllung",
+          "weisheit": "Erfolg ist nicht, was du erreichst – es ist, wer du dabei wirst. Wahrer Erfolg ist innere Blüte.",
+          "schatten": "Äußerlicher Erfolg ohne Erfüllung, Gier"
+        },
+        "7_stress": {
+          "name": "Stress",
+          "nummer": 7,
+          "bedeutung": "Überforderung, zu viele Bälle in der Luft",
+          "weisheit": "Stress entsteht, wenn du mehr trägst, als dir gehört. Lege ab, was nicht deins ist.",
+          "schatten": "Burnout, Überlastung, Kontrollverlust"
+        },
+        "8_traveling": {
+          "name": "Traveling",
+          "nummer": 8,
+          "bedeutung": "Die Reise ist das Ziel, Bewegung",
+          "weisheit": "Das Leben ist eine Reise ohne Ankunft. Genieße den Weg – er ist alles, was es gibt.",
+          "schatten": "Rastlosigkeit, Flucht, Ziellosigkeit"
+        },
+        "9_exhaustion": {
+          "name": "Exhaustion",
+          "nummer": 9,
+          "bedeutung": "Erschöpfung als Signal zur Pause",
+          "weisheit": "Erschöpfung ist die Weisheit des Körpers. Sie ruft dich zur Ruhe – höre auf sie.",
+          "schatten": "Ignorieren der Grenzen, Zusammenbruch"
+        },
+        "10_suppression": {
+          "name": "Suppression",
+          "nummer": 10,
+          "bedeutung": "Unterdrückte Energie sucht Ausdruck",
+          "weisheit": "Was du unterdrückst, wird stärker. Lass es fließen, oder es wird explodieren.",
+          "schatten": "Unterdrückte Wut, Explosion, Selbstsabotage"
+        },
+        "page_playfulness": {
+          "name": "Playfulness",
+          "nummer": 11,
+          "bedeutung": "Spielerische Leichtigkeit, kindliche Freude",
+          "weisheit": "Spielen ist die höchste Form des Forschens. Im Spiel bist du am nächsten an deiner wahren Natur.",
+          "schatten": "Übermäßiger Ernst, verlorene Freude"
+        },
+        "knight_intensity": {
+          "name": "Intensity",
+          "nummer": 12,
+          "bedeutung": "Leidenschaftliche Intensität, fokussierte Energie",
+          "weisheit": "Intensität ist Leben in seiner reinsten Form. Brenne, ohne dich zu verzehren.",
+          "schatten": "Fanatismus, Burnout, zerstörerische Leidenschaft"
+        },
+        "queen_sharing": {
+          "name": "Sharing",
+          "nummer": 13,
+          "bedeutung": "Großzügiges Teilen aus der Fülle",
+          "weisheit": "Teilen ist die natürliche Bewegung der Fülle. Wenn du überfliest, kannst du nicht anders als geben.",
+          "schatten": "Zurückhalten, Geiz, Angst vor Mangel"
+        },
+        "king_the_creator": {
+          "name": "The Creator",
+          "nummer": 14,
+          "bedeutung": "Meisterschaft in kreativer Schöpfung",
+          "weisheit": "Der Schöpfer erschafft nicht aus Mangel, sondern aus Überfluss. Kreativität ist sein natürlicher Zustand.",
+          "schatten": "Kreative Blockade, Destruktivität"
+        }
+      }
+    },
+    "water": {
+      "element": "Wasser",
+      "thema": "Emotionen, Gefühle, Intuition, Beziehungen",
+      "traditionell": "Cups/Kelche",
+      "farbe": "Blau",
+      "karten": {
+        "ace_going_with_the_flow": {
+          "name": "Going With The Flow",
+          "nummer": 1,
+          "bedeutung": "Mit dem Strom des Lebens fließen",
+          "weisheit": "Das Wasser kämpft nicht gegen den Felsen – es fließt um ihn herum. So findet es seinen Weg zum Meer.",
+          "schatten": "Widerstand, Starrheit, Kontrollsucht"
+        },
+        "2_friendliness": {
+          "name": "Friendliness",
+          "nummer": 2,
+          "bedeutung": "Warmherzige Freundlichkeit zu sich und anderen",
+          "weisheit": "Freundlichkeit beginnt bei dir selbst. Wenn du dir selbst ein Freund bist, strahlst du Wärme in die Welt.",
+          "schatten": "Selbstkritik, Kälte, Ablehnung"
+        },
+        "3_celebration": {
+          "name": "Celebration",
+          "nummer": 3,
+          "bedeutung": "Das Leben feiern, Freude teilen",
+          "weisheit": "Das Leben selbst ist ein Fest. Du brauchst keinen Grund zum Feiern – dein Sein ist Grund genug.",
+          "schatten": "Freudlosigkeit, Isolation, unterdrückte Emotionen"
+        },
+        "4_turning_in": {
+          "name": "Turning In",
+          "nummer": 4,
+          "bedeutung": "Nach innen wenden, Introspektion",
+          "weisheit": "Manchmal ist der Weg nach außen verschlossen, damit du den Weg nach innen findest.",
+          "schatten": "Vermeidung, übermäßige Introvertiertheit"
+        },
+        "5_clinging_to_the_past": {
+          "name": "Clinging to the Past",
+          "nummer": 5,
+          "bedeutung": "Festhalten an vergangenen Erfahrungen",
+          "weisheit": "Die Vergangenheit ist ein Ort zum Besuchen, nicht zum Wohnen. Lass los, was war.",
+          "schatten": "Nostalgie, Trauer, Unfähigkeit loszulassen"
+        },
+        "6_the_dream": {
+          "name": "The Dream",
+          "nummer": 6,
+          "bedeutung": "Träume und Visionen, idealisierte Vorstellungen",
+          "weisheit": "Träume sind Samen der Zukunft. Aber verwechsle den Traum nicht mit der Wirklichkeit.",
+          "schatten": "Illusion, Realitätsflucht, unerreichbare Ideale"
+        },
+        "7_projections": {
+          "name": "Projections",
+          "nummer": 7,
+          "bedeutung": "Projektionen erkennen und zurücknehmen",
+          "weisheit": "Was du in anderen siehst, zeigt dir, was in dir lebt. Jede Projektion ist eine Einladung zur Selbsterkenntnis.",
+          "schatten": "Blindheit für eigene Anteile, Schuldzuweisung"
+        },
+        "8_letting_go": {
+          "name": "Letting Go",
+          "nummer": 8,
+          "bedeutung": "Loslassen von Anhaftungen",
+          "weisheit": "Loslassen ist nicht Verlieren – es ist Raum schaffen für das Neue. Die leeren Hände können empfangen.",
+          "schatten": "Festhalten, Kontrolle, Angst vor Verlust"
+        },
+        "9_laziness": {
+          "name": "Laziness",
+          "nummer": 9,
+          "bedeutung": "Trägheit als Vermeidung oder als heilsame Pause",
+          "weisheit": "Manchmal ist Nichtstun die weiseste Handlung. Aber unterscheide Ruhe von Vermeidung.",
+          "schatten": "Prokrastination, Stagnation, Depression"
+        },
+        "10_harmony": {
+          "name": "Harmony",
+          "nummer": 10,
+          "bedeutung": "Emotionale Harmonie und Erfüllung",
+          "weisheit": "Harmonie ist der natürliche Zustand, wenn du aufhörst zu kämpfen. Sie wartet hinter jedem Konflikt.",
+          "schatten": "Disharmonie, emotionales Chaos"
+        },
+        "page_trust": {
+          "name": "Trust",
+          "nummer": 11,
+          "bedeutung": "Vertrauen als Grundhaltung zum Leben",
+          "weisheit": "Vertrauen ist der Sprung ins Unbekannte. Es sagt Ja zum Leben, bevor es Beweise gibt.",
+          "schatten": "Misstrauen, Kontrolle, Verschlossenheit"
+        },
+        "knight_understanding": {
+          "name": "Understanding",
+          "nummer": 12,
+          "bedeutung": "Tiefes Verstehen jenseits des Intellekts",
+          "weisheit": "Verstehen geschieht nicht im Kopf – es geschieht im Herzen. Wenn du wirklich verstehst, urteilst du nicht mehr.",
+          "schatten": "Oberflächlichkeit, Vorurteile, Intellektualisieren"
+        },
+        "queen_receptivity": {
+          "name": "Receptivity",
+          "nummer": 13,
+          "bedeutung": "Empfänglichkeit und Offenheit",
+          "weisheit": "Empfänglichkeit ist Stärke, nicht Schwäche. Der Kelch muss leer sein, um gefüllt zu werden.",
+          "schatten": "Verschlossenheit, Abwehr, Härte"
+        },
+        "king_healing": {
+          "name": "Healing",
+          "nummer": 14,
+          "bedeutung": "Tiefe Heilung von emotionalen Wunden",
+          "weisheit": "Heilung geschieht, wenn du aufhörst, dich vor deinen Wunden zu verstecken. Im Licht der Aufmerksamkeit lösen sie sich auf.",
+          "schatten": "Unterdrückte Wunden, Vermeidung, chronischer Schmerz"
+        }
+      }
+    },
+    "clouds": {
+      "element": "Luft",
+      "thema": "Gedanken, Verstand, Kommunikation, Herausforderungen",
+      "traditionell": "Swords/Schwerter",
+      "farbe": "Grau",
+      "karten": {
+        "ace_consciousness": {
+          "name": "Consciousness",
+          "nummer": 1,
+          "bedeutung": "Reines Bewusstsein, klarer Geist",
+          "weisheit": "Bewusstsein ist der Himmel – Gedanken sind nur Wolken, die vorüberziehen. Du bist der Himmel, nicht die Wolken.",
+          "schatten": "Unbewusstheit, Identifikation mit Gedanken"
+        },
+        "2_schizophrenia": {
+          "name": "Schizophrenia",
+          "nummer": 2,
+          "bedeutung": "Innere Spaltung, widerstreitende Stimmen",
+          "weisheit": "Der gespaltene Geist ist der normale Zustand. Erkenne die vielen Stimmen – und finde den, der sie alle hört.",
+          "schatten": "Innerer Konflikt, Zerrissenheit, Verwirrung"
+        },
+        "3_ice_olation": {
+          "name": "Ice-Olation",
+          "nummer": 3,
+          "bedeutung": "Emotionale Isolation, eingefrorene Gefühle",
+          "weisheit": "Eis schmilzt in der Wärme der Aufmerksamkeit. Erlaube dem Gefrorenen aufzutauen.",
+          "schatten": "Kälte, Abgeschnittenheit, emotionale Taubheit"
+        },
+        "4_postponement": {
+          "name": "Postponement",
+          "nummer": 4,
+          "bedeutung": "Aufschieben, Vermeidung von Entscheidungen",
+          "weisheit": "Morgen existiert nicht. Was du aufschiebst, schiebst du aus deinem Leben. Jetzt ist der einzige Moment.",
+          "schatten": "Prokrastination, Lähmung, verpasstes Leben"
+        },
+        "5_comparison": {
+          "name": "Comparison",
+          "nummer": 5,
+          "bedeutung": "Sich mit anderen vergleichen",
+          "weisheit": "Vergleich ist der Tod der Freude. Du bist einzigartig – es gibt keinen Maßstab außer deiner eigenen Blüte.",
+          "schatten": "Neid, Minderwertigkeit, Konkurrenzdenken"
+        },
+        "6_the_burden": {
+          "name": "The Burden",
+          "nummer": 6,
+          "bedeutung": "Lasten tragen, die nicht die eigenen sind",
+          "weisheit": "Prüfe, was du trägst. Vieles davon gehört nicht dir. Lege ab, was andere dir aufgeladen haben.",
+          "schatten": "Überlastung, Märtyrertum, Selbstaufgabe"
+        },
+        "7_politics": {
+          "name": "Politics",
+          "nummer": 7,
+          "bedeutung": "Manipulation, Machtspiele, versteckte Agenden",
+          "weisheit": "Politik ist das Spiel des Egos. Erkenne die Spiele – und wähle, nicht mitzuspielen.",
+          "schatten": "Manipulation, Intrigen, Unehrlichkeit"
+        },
+        "8_guilt": {
+          "name": "Guilt",
+          "nummer": 8,
+          "bedeutung": "Schuldgefühle und ihre Wurzeln",
+          "weisheit": "Schuld ist eine Last, die du dir selbst auflegst. Vergib dir – das Leben kennt keine Schuld, nur Lernen.",
+          "schatten": "Chronische Schuld, Selbstbestrafung, Scham"
+        },
+        "9_sorrow": {
+          "name": "Sorrow",
+          "nummer": 9,
+          "bedeutung": "Tiefe Trauer, dunkle Nacht der Seele",
+          "weisheit": "Trauer ist der Preis der Liebe. Erlaube ihr zu fließen – auf der anderen Seite wartet neue Tiefe.",
+          "schatten": "Unterdrückte Trauer, Depression, Hoffnungslosigkeit"
+        },
+        "10_rebirth": {
+          "name": "Rebirth",
+          "nummer": 10,
+          "bedeutung": "Wiedergeburt durch Transformation des Geistes",
+          "weisheit": "Nach der dunkelsten Stunde kommt die Morgendämmerung. Wiedergeburt geschieht, wenn du durch das Feuer gehst.",
+          "schatten": "Festhalten am Alten, Angst vor Neuanfang"
+        },
+        "page_mind": {
+          "name": "Mind",
+          "nummer": 11,
+          "bedeutung": "Der Verstand als Werkzeug, nicht als Meister",
+          "weisheit": "Der Verstand ist ein wunderbarer Diener, aber ein schrecklicher Herr. Nutze ihn, aber identifiziere dich nicht mit ihm.",
+          "schatten": "Überidentifikation mit dem Verstand, Overthinking"
+        },
+        "knight_fighting": {
+          "name": "Fighting",
+          "nummer": 12,
+          "bedeutung": "Innerer und äußerer Kampf",
+          "weisheit": "Der größte Kampf ist der gegen dich selbst. Aber irgendwann erkennst du: Es gibt keinen Feind.",
+          "schatten": "Aggression, Konfliktsucht, innerer Krieg"
+        },
+        "queen_morality": {
+          "name": "Morality",
+          "nummer": 13,
+          "bedeutung": "Anerzogene vs. authentische Moral",
+          "weisheit": "Wahre Moral kommt nicht von außen – sie entspringt deinem eigenen Bewusstsein, deiner eigenen Klarheit.",
+          "schatten": "Rigide Moral, Heuchelei, Verurteilung"
+        },
+        "king_control": {
+          "name": "Control",
+          "nummer": 14,
+          "bedeutung": "Kontrolle und ihre Grenzen",
+          "weisheit": "Je mehr du kontrollierst, desto mehr entgleitet dir. Wahre Meisterschaft liegt im Loslassen der Kontrolle.",
+          "schatten": "Kontrollzwang, Angst, Mikromanagement"
+        }
+      }
+    },
+    "rainbows": {
+      "element": "Erde",
+      "thema": "Körper, Materie, Praktisches, Manifestation",
+      "traditionell": "Pentacles/Münzen",
+      "farbe": "Regenbogen",
+      "karten": {
+        "ace_maturity": {
+          "name": "Maturity",
+          "nummer": 1,
+          "bedeutung": "Reife als Integration aller Erfahrungen",
+          "weisheit": "Reife ist nicht Alter – es ist die Frucht gelebten Lebens. Der reife Mensch hat aufgehört zu kämpfen.",
+          "schatten": "Unreife, Verweigerung zu wachsen"
+        },
+        "2_moment_to_moment": {
+          "name": "Moment to Moment",
+          "nummer": 2,
+          "bedeutung": "Leben im gegenwärtigen Augenblick",
+          "weisheit": "Das Leben geschieht nur jetzt. Moment zu Moment – das ist die einzige Zeit, die existiert.",
+          "schatten": "Leben in Vergangenheit oder Zukunft"
+        },
+        "3_guidance": {
+          "name": "Guidance",
+          "nummer": 3,
+          "bedeutung": "Führung von innen und außen",
+          "weisheit": "Führung kommt, wenn du offen bist. Das Leben sendet ständig Zeichen – lerne, sie zu lesen.",
+          "schatten": "Orientierungslosigkeit, Ignorieren von Zeichen"
+        },
+        "4_the_miser": {
+          "name": "The Miser",
+          "nummer": 4,
+          "bedeutung": "Geiz und Festhalten an materiellen Dingen",
+          "weisheit": "Der Geizhals stirbt arm, auch wenn er reich ist. Wahre Fülle liegt im Geben, nicht im Horten.",
+          "schatten": "Geiz, Angst vor Mangel, Festhalten"
+        },
+        "5_the_outsider": {
+          "name": "The Outsider",
+          "nummer": 5,
+          "bedeutung": "Außenseiter sein, nicht dazugehören",
+          "weisheit": "Der Außenseiter sieht, was die Insider nicht sehen können. Dein Anderssein ist dein Geschenk.",
+          "schatten": "Isolation, Ablehnung, Fremdheit"
+        },
+        "6_compromise": {
+          "name": "Compromise",
+          "nummer": 6,
+          "bedeutung": "Kompromisse und ihre Kosten",
+          "weisheit": "Manche Kompromisse kosten deine Seele. Unterscheide zwischen Flexibilität und Selbstverrat.",
+          "schatten": "Fauler Kompromiss, Selbstaufgabe, Anpassung"
+        },
+        "7_patience": {
+          "name": "Patience",
+          "nummer": 7,
+          "bedeutung": "Geduldiges Warten auf die richtige Zeit",
+          "weisheit": "Geduld ist nicht passives Warten – sie ist aktives Vertrauen, dass die Frucht zur rechten Zeit reift.",
+          "schatten": "Ungeduld, Erzwingen, Frustration"
+        },
+        "8_ordinariness": {
+          "name": "Ordinariness",
+          "nummer": 8,
+          "bedeutung": "Die Schönheit des Gewöhnlichen",
+          "weisheit": "Das Außergewöhnliche versteckt sich im Gewöhnlichen. Wer das Einfache nicht sieht, verpasst das Wesentliche.",
+          "schatten": "Suche nach dem Besonderen, Unzufriedenheit"
+        },
+        "9_ripeness": {
+          "name": "Ripeness",
+          "nummer": 9,
+          "bedeutung": "Reife Zeit für die Ernte",
+          "weisheit": "Wenn die Frucht reif ist, fällt sie von selbst. Erzwinge nichts – erkenne, wann die Zeit gekommen ist.",
+          "schatten": "Zu früh ernten, Ungeduld, verpasster Moment"
+        },
+        "10_we_are_the_world": {
+          "name": "We Are the World",
+          "nummer": 10,
+          "bedeutung": "Verbundenheit mit allem Leben",
+          "weisheit": "Wir sind nicht getrennt – wir sind Wellen desselben Ozeans. Was du einem antust, tust du allen an.",
+          "schatten": "Isolation, Trennung, Egoismus"
+        },
+        "page_adventure": {
+          "name": "Adventure",
+          "nummer": 11,
+          "bedeutung": "Das Abenteuer des Lebens wagen",
+          "weisheit": "Das Leben ist ein Abenteuer oder gar nichts. Wage den Sprung – das Netz erscheint im Fallen.",
+          "schatten": "Angst vor dem Unbekannten, Sicherheitssucht"
+        },
+        "knight_slowing_down": {
+          "name": "Slowing Down",
+          "nummer": 12,
+          "bedeutung": "Entschleunigung und Präsenz",
+          "weisheit": "Langsamer werden ist keine Schwäche – es ist die Kunst, das Leben nicht zu verpassen.",
+          "schatten": "Rastlosigkeit, Hetze, Oberflächlichkeit"
+        },
+        "queen_flowering": {
+          "name": "Flowering",
+          "nummer": 13,
+          "bedeutung": "Zur vollen Blüte kommen",
+          "weisheit": "Blühen ist deine Natur. Wenn du aufhörst, dich zu beschneiden, entfaltest du dich von selbst.",
+          "schatten": "Unterdrücktes Potenzial, verwelkte Träume"
+        },
+        "king_abundance": {
+          "name": "Abundance",
+          "nummer": 14,
+          "bedeutung": "Fülle in allen Lebensbereichen",
+          "weisheit": "Fülle ist ein innerer Zustand. Wer sich innerlich reich fühlt, zieht äußeren Reichtum an.",
+          "schatten": "Mangelbewusstsein, Gier, Unzufriedenheit"
+        }
+      }
+    }
+  },
+
+  "zusaetzliche_karten": {
+    "beschreibung": "Diese Karten werden in der App verwendet, sind aber keine Standard-Osho-Zen-Tarot-Karten. Sie wurden als ergänzende Konzepte hinzugefügt.",
+    "karten": {
+      "touch": {
+        "name": "Touch",
+        "quelle": "Ergänzung basierend auf Osho-Lehren",
+        "bedeutung": "Die Kraft der achtsamen Berührung",
+        "weisheit": "Berührung ist der erste Spiegel. Der Körper spricht, lange bevor Worte entstehen.",
+        "schatten": "Berührungsangst, körperliche Distanz"
+      },
+      "passion": {
+        "name": "Passion",
+        "quelle": "Ergänzung basierend auf Osho-Lehren",
+        "bedeutung": "Heilige Leidenschaft und Lebensfeuer",
+        "weisheit": "Sexualität ist ein Feuer, das heilig ist – wenn du es nicht besitzen willst. Ausdruck, nicht Aneignung.",
+        "schatten": "Unterdrückte Leidenschaft, Besessenheit"
+      },
+      "protection": {
+        "name": "Protection",
+        "quelle": "Ergänzung basierend auf Osho-Lehren",
+        "bedeutung": "Schutzraum für Verletzlichkeit",
+        "weisheit": "Schutz ist nicht Abschirmung – es ist der Raum, in dem du weich bleiben darfst.",
+        "schatten": "Überbeschützung, Mauern"
+      },
+      "warmth": {
+        "name": "Warmth",
+        "quelle": "Ergänzung basierend auf Osho-Lehren",
+        "bedeutung": "Emotionale Wärme und Präsenz",
+        "weisheit": "Wärme ist kein Gefühl, sondern Präsenz, die nicht urteilt.",
+        "schatten": "Kälte, emotionale Distanz"
+      },
+      "acceptance": {
+        "name": "Acceptance",
+        "quelle": "Ergänzung basierend auf Osho-Lehren",
+        "bedeutung": "Radikale Annahme dessen, was ist",
+        "weisheit": "Akzeptanz ist der erste Atemzug von Freiheit. Du hörst auf zu kämpfen – und das Leben atmet durch dich.",
+        "schatten": "Widerstand, Verleugnung"
+      },
+      "love": {
+        "name": "Love",
+        "quelle": "Ergänzung basierend auf Osho-Lehren",
+        "bedeutung": "Bedingungslose Liebe als Seinsqualität",
+        "weisheit": "Liebe ist nicht Beziehung. Sie ist Raum. Wenn du liebst, lässt du frei.",
+        "schatten": "Besitzergreifende Liebe, Liebesbedürftigkeit"
+      },
+      "compassion": {
+        "name": "Compassion",
+        "quelle": "Ergänzung basierend auf Osho-Lehren",
+        "bedeutung": "Mitgefühl ohne Mitleid",
+        "weisheit": "Fürsorge ist Hingabe ohne Forderung – sie gießt, ohne zu zählen.",
+        "schatten": "Mitleid als Überlegenheit, Helfersyndrom"
+      },
+      "support": {
+        "name": "Support",
+        "quelle": "Ergänzung basierend auf Osho-Lehren",
+        "bedeutung": "Tragender Grund unter den Füßen",
+        "weisheit": "Unterstützung ist ein unsichtbarer Boden. Du weißt, er ist da – weil du wagst.",
+        "schatten": "Mangelnde Unterstützung, Alleinkämpfertum"
+      },
+      "intimacy": {
+        "name": "Intimacy",
+        "quelle": "Ergänzung basierend auf Osho-Lehren",
+        "bedeutung": "Tiefe Nähe ohne Masken",
+        "weisheit": "Intimität ist Nacktheit der Seele – nicht des Körpers.",
+        "schatten": "Angst vor Nähe, oberflächliche Beziehungen"
+      }
+    }
+  }
+}
