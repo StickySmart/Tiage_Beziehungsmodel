@@ -179,9 +179,26 @@ const RAProfil = {
         '#B95': 25,  // verbindlichkeit - Niedrig - keine festen Commitments
         '#B96': 30,  // langfristige_bindung - Niedrig - Wandel akzeptiert
         '#B97': 15,  // rechtliche_sicherheit - Sehr niedrig - institutionell abgelehnt
+        '#B98': 10,  // treueversprechen - Sehr niedrig - keine Exklusivität
         '#B99': 25,  // gemeinsamer_wohnraum - Niedrig - kann, muss nicht
         '#B100': 50, // haeuslichkeit - Mittel - eigene Definition
+        '#B101': 25, // nest_bauen - Niedrig - keine festen Strukturen
+        '#B102': 20, // alltag_teilen - Niedrig - individuelle Alltage
+        '#B103': 90, // eigener_raum - Sehr hoch - Autonomie wichtig
         '#B104': 90, // rueckzugsort - Sehr hoch - eigener Raum wichtig
+        '#B105': 45, // tierliebe - Mittel
+        '#B106': 45, // fuersorge_tiere - Mittel
+        '#B107': 50, // begleiter - Mittel
+        '#B108': 45, // verantwortung_tier - Mittel
+        '#B109': 20, // sesshaftigkeit - Niedrig - Wandel akzeptiert
+        '#B110': 25, // verwurzelung - Niedrig - nicht verwurzelt
+        '#B111': 90, // mobilitaet - Sehr hoch - maximale Flexibilität
+        '#B112': 30, // heimat - Niedrig - nicht ortsgebunden
+        '#B113': 85, // neue_orte - Sehr hoch - Entdeckungslust
+        '#B114': 30, // familienbindung - Niedrig - eigene Definition
+        '#B115': 25, // herkunftsfamilie - Niedrig - Distanz zur Tradition
+        '#B116': 25, // familientreffen - Niedrig
+        '#B117': 20, // generationenverbund - Niedrig
         '#B118': 20, // biologisches_muster - Niedrig
         '#B119': 15, // soziales_muster - Sehr niedrig - abgelehnt
         '#B120': 20, // statische_stabilitaet - Niedrig
@@ -198,7 +215,15 @@ const RAProfil = {
         // RA: Vollständige finanzielle Autonomie
         '#B127': 95, // finanzielle_unabhaengigkeit - Sehr hoch - essentiell
         '#B128': 10, // gemeinsame_finanzen - Sehr niedrig - vermeidet
+        '#B129': 55, // finanzielle_transparenz - Mittel - situativ
+        '#B130': 60, // finanzielle_sicherheit - Mittel - aber nicht materialistisch
+        '#B131': 45, // sparsamkeit - Mittel
+        '#B132': 55, // grosszuegigkeit - Mittel - freiwillig
+        '#B133': 75, // berufliche_erfuellung - Hoch - Sinn wichtiger als Karriere
+        '#B134': 55, // karriereambition - Mittel - nicht priorisiert
         '#B135': 80, // work_life_balance - Hoch - Freiheit wichtig
+        '#B137': 25, // zeit_fuer_beziehung - Niedrig - alle gleich wichtig
+        '#B138': 85, // berufliche_flexibilitaet - Sehr hoch - Flexibilität wichtig
         '#B136': 65, // berufliche_anerkennung - Mittel-hoch
         '#B139': 80, // gumption - Hoch
         '#B140': 75, // qualitaet_der_arbeit - Hoch
@@ -215,9 +240,23 @@ const RAProfil = {
         // KOMMUNIKATIONSSTIL (#B149-#B176)
         // ═══════════════════════════════════════════════════════════════════════
         // RA: Ehrlich, direkt, ohne Zwang
+        '#B149': 45, // taeglicher_austausch - Mittel - keine Verpflichtung
         '#B150': 70, // tiefgehende_gespraeche - Hoch - philosophisch
         '#B151': 50, // small_talk - Mittel
+        '#B152': 80, // stille_gemeinsam - Hoch - Stille schätzen
+        '#B153': 60, // verbale_verbindung - Mittel - situativ
+        '#B154': 70, // zuhoeren - Hoch - respektvoll
         '#B155': 65, // emotionale_offenheit - Mittel-hoch - authentisch
+        '#B156': 55, // gefuehle_zeigen - Mittel - authentisch
+        '#B157': 50, // verletzlichkeit - Mittel - situativ
+        '#B158': 50, // emotionale_zurueckhaltung - Mittel - Balance
+        '#B159': 60, // emotionale_sicherheit - Mittel - in sich selbst
+        '#B160': 55, // gefuehle_teilen - Mittel - freiwillig
+        '#B161': 70, // konfliktklaerung - Hoch - direkt
+        '#B162': 70, // aussprache - Hoch - ehrlich
+        '#B163': 35, // konflikt_vermeiden - Niedrig - offen für Konflikt
+        '#B164': 75, // streitkultur - Hoch - konstruktiv
+        '#B165': 55, // versoehnlichkeit - Mittel - keine Verpflichtung
         '#B166': 50, // romantisches_verstehen - Mittel
         '#B167': 80, // klassische_klarheit - Hoch
         '#B168': 85, // dialektik - Sehr hoch - philosophisch
@@ -234,10 +273,23 @@ const RAProfil = {
         // SOZIALES LEBEN (#B177-#B203)
         // ═══════════════════════════════════════════════════════════════════════
         // RA: Alle Beziehungen gleichwertig, keine Hierarchie
+        '#B177': 65, // soziale_energie - Mittel-hoch - Netzwerk wichtig
+        '#B178': 60, // geselligkeit - Mittel - in eigenen Begriffen
+        '#B179': 70, // ruhe_von_menschen - Hoch - braucht Ruhe
+        '#B180': 80, // allein_aufladen - Hoch - Autonomie
+        '#B181': 60, // menschen_treffen - Mittel - ohne Verpflichtung
+        '#B182': 65, // kleine_gruppen - Mittel-hoch - flexibel
         '#B183': 90, // zeit_fuer_sich - Sehr hoch - essentiell
         '#B184': 90, // eigene_hobbys - Sehr hoch - wichtig
         '#B185': 45, // gemeinsame_zeit - Mittel - freiwillig
+        '#B186': 40, // partnerzeit - Niedrig-mittel - alle gleich wichtig
+        '#B187': 95, // eigene_interessen - Sehr hoch - Kernbedürfnis
+        '#B188': 80, // eigene_freunde - Hoch - keine Trennung Freund/Partner
         '#B189': 55, // gemeinsame_freunde - Mittel - keine Trennung
+        '#B190': 50, // freundeskreis_teilen - Mittel - organisch
+        '#B191': 70, // soziales_netz - Hoch - Netzwerk statt Hierarchie
+        '#B192': 60, // freunde_pflegen - Mittel - ohne Verpflichtung
+        '#B193': 65, // neue_freundschaften - Mittel-hoch - offen
         '#B194': 70, // soziale_qualitaet - Hoch
         '#B195': 40, // tribe_muster - Niedrig-mittel
         '#B196': 85, // intellektuelle_gemeinschaft - Sehr hoch
@@ -254,7 +306,26 @@ const RAProfil = {
         // ═══════════════════════════════════════════════════════════════════════
         // RA: Intimität nicht hierarchisiert, situativ
         '#B204': 50, // koerpernaehe - Mittel - situativ
-        '#B205': 45  // kuscheln - Mittel - nicht priorisiert
+        '#B205': 45, // kuscheln - Mittel - nicht priorisiert
+        '#B206': 55, // physische_distanz - Mittel - situativ
+        '#B207': 50, // koerperkontakt - Mittel - situativ
+        '#B208': 50, // umarmungen - Mittel - situativ
+
+        // ═══════════════════════════════════════════════════════════════════════
+        // ERWEITERTE DYNAMIK (#B209-#B220) - Kink/BDSM
+        // ═══════════════════════════════════════════════════════════════════════
+        '#B209': 40, // schmerzerleben - Niedrig-mittel - individuell
+        '#B210': 35, // schmerz_geben - Niedrig
+        '#B211': 40, // bondage_erleben - Niedrig-mittel - situativ
+        '#B212': 40, // bondage_geben - Niedrig-mittel
+        '#B213': 30, // devotion - Niedrig - vermeidet Hierarchie
+        '#B214': 30, // anbetung - Niedrig - keine Hierarchie
+        '#B215': 25, // demuetig_sein - Niedrig - Autonomie wichtiger
+        '#B216': 40, // dominieren - Niedrig-mittel - situativ
+        '#B217': 25, // bestrafung_erhalten - Niedrig
+        '#B218': 25, // bestrafen - Niedrig
+        '#B219': 30, // service_orientierung - Niedrig - freiwillig
+        '#B220': 35  // service_empfangen - Niedrig - freiwillig
     },
 
     kernwerte: ["Freiheit", "Gleichwertigkeit", "Autonomie", "Anti-Hierarchie", "Selbstbestimmung"],

@@ -618,7 +618,93 @@
     console.log('ProfileCalculator bereit');
 
     // ═══════════════════════════════════════════════════════════════════════════
-    // 5. AUTO-INITIALISIERUNG - Lade Profile aus TiageState nach DOM-Ready
+    // 5. SSOT REACTIVE SUBSCRIBERS - Automatische flatNeeds-Aktualisierung
+    // ═══════════════════════════════════════════════════════════════════════════
+    //
+    // Diese Subscriber stellen sicher, dass flatNeeds automatisch neu berechnet
+    // werden, wenn sich der Archetyp oder die personDimensions ändern.
+    // Das ist die korrekte SSOT-Architektur: Eine zentrale Stelle reagiert auf
+    // State-Änderungen, statt manuelle Patches in der gesamten Anwendung.
+    //
+    // ═══════════════════════════════════════════════════════════════════════════
+
+    /**
+     * Berechnet und aktualisiert flatNeeds für eine Person basierend auf aktuellem State
+     * @param {string} person - 'ich' oder 'partner'
+     */
+    function recalculateFlatNeedsForPerson(person) {
+        if (typeof TiageState === 'undefined') return;
+
+        // Hole aktuellen Archetyp
+        const archetyp = TiageState.get(`archetypes.${person}.primary`);
+        if (!archetyp) return;
+
+        // Hole aktuelle Dimensionen
+        const geschlecht = TiageState.get(`personDimensions.${person}.geschlecht`) || null;
+        const dominanz = TiageState.get(`personDimensions.${person}.dominanz`) || null;
+        const orientierung = TiageState.get(`personDimensions.${person}.orientierung`) || null;
+
+        // Berechne neue flatNeeds
+        const newFlatNeeds = calculateFlatNeeds(archetyp, geschlecht, dominanz, orientierung);
+
+        if (newFlatNeeds && Object.keys(newFlatNeeds).length > 0) {
+            // Prüfe ob sich die Werte tatsächlich geändert haben (verhindert unnötige Updates)
+            const currentFlatNeeds = TiageState.get(`flatNeeds.${person}`);
+            const needsChanged = !currentFlatNeeds ||
+                JSON.stringify(newFlatNeeds) !== JSON.stringify(currentFlatNeeds);
+
+            if (needsChanged) {
+                TiageState.set(`flatNeeds.${person}`, newFlatNeeds);
+                console.log(`[ProfileCalculator] flatNeeds reaktiv aktualisiert für ${person}:`, archetyp, Object.keys(newFlatNeeds).length, 'Bedürfnisse');
+            }
+        }
+    }
+
+    /**
+     * Registriert die Subscriber für automatische flatNeeds-Aktualisierung
+     */
+    function registerFlatNeedsSubscribers() {
+        if (typeof TiageState === 'undefined' || typeof TiageState.subscribe !== 'function') {
+            console.warn('[ProfileCalculator] TiageState.subscribe nicht verfügbar - reaktive Updates deaktiviert');
+            return;
+        }
+
+        // Subscriber für Archetyp-Änderungen
+        TiageState.subscribe('archetypes.ich', (event) => {
+            if (event.path === 'archetypes.ich.primary' || event.path === 'archetypes.ich') {
+                recalculateFlatNeedsForPerson('ich');
+            }
+        });
+
+        TiageState.subscribe('archetypes.partner', (event) => {
+            if (event.path === 'archetypes.partner.primary' || event.path === 'archetypes.partner') {
+                recalculateFlatNeedsForPerson('partner');
+            }
+        });
+
+        // Subscriber für Dimensions-Änderungen (geschlecht, dominanz, orientierung)
+        TiageState.subscribe('personDimensions.ich', (event) => {
+            recalculateFlatNeedsForPerson('ich');
+        });
+
+        TiageState.subscribe('personDimensions.partner', (event) => {
+            recalculateFlatNeedsForPerson('partner');
+        });
+
+        console.log('[ProfileCalculator] SSOT Subscriber für reaktive flatNeeds-Updates registriert');
+    }
+
+    // Subscriber nach kurzer Verzögerung registrieren (TiageState muss bereit sein)
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', function() {
+            setTimeout(registerFlatNeedsSubscribers, 50);
+        });
+    } else {
+        setTimeout(registerFlatNeedsSubscribers, 50);
+    }
+
+    // ═══════════════════════════════════════════════════════════════════════════
+    // 6. AUTO-INITIALISIERUNG - Lade Profile aus TiageState nach DOM-Ready
     // ═══════════════════════════════════════════════════════════════════════════
 
     // Verzögerte Initialisierung, damit TiageState Zeit hat zu laden

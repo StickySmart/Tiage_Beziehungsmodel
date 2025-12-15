@@ -14811,9 +14811,32 @@
             // Sortiere nach Abweichung (größte zuerst)
             rows.sort((a, b) => b.diff - a.diff);
 
+            // Sammle alle Modifikatorwerte für die Zusammenfassung
+            const modSummary = {
+                dominanz: { sum: 0, count: 0 },
+                geschlecht: { sum: 0, count: 0 },
+                orientierung: { sum: 0, count: 0 }
+            };
+            rows.forEach(r => {
+                if (r.modifiers) {
+                    modSummary.dominanz.sum += r.modifiers.dominanz || 0;
+                    modSummary.geschlecht.sum += r.modifiers.geschlecht || 0;
+                    modSummary.orientierung.sum += r.modifiers.orientierung || 0;
+                    modSummary.dominanz.count++;
+                    modSummary.geschlecht.count++;
+                    modSummary.orientierung.count++;
+                }
+            });
+
+            // Helper: Modifikator-Summe formatieren
+            const formatModSum = (sum) => {
+                const sign = sum > 0 ? '+' : '';
+                return `${sign}${sum}`;
+            };
+
             // HTML generieren mit Modifikator-Aufschlüsselung
             let tableHtml = rows.map(r => {
-                // Modifikator-Formel aufbauen
+                // Modifikator-Formel aufbauen - nur bei aktiven Modifikatoren
                 let modFormel = '';
                 if (r.modifiers && r.modifiers.hasModifiers) {
                     const parts = [];
@@ -14912,12 +14935,12 @@
                     ${(profilDominanz || profilGeschlecht || profilOrientierung) ? `
                     <div style="padding: 12px 20px; background: rgba(139,92,246,0.08); border-bottom: 1px solid rgba(255,255,255,0.05);">
                         <div style="font-size: 11px; color: var(--text-muted); margin-bottom: 8px;">
-                            <strong>Modifikator-Formel:</strong> Dein Wert = Typisch + Modifikatoren
+                            <strong>Modifikator-Formel:</strong> Dein Wert = Typisch + <span style="color: #a78bfa;">Dominanz</span> + <span style="color: #60a5fa;">Geschlecht</span> + <span style="color: #f472b6;">Orientierung</span>
                         </div>
                         <div style="display: flex; flex-wrap: wrap; gap: 12px; font-size: 10px;">
-                            ${profilDominanz ? `<span style="color: #a78bfa;">● Dominanz: ${profilDominanz}</span>` : ''}
-                            ${profilGeschlecht ? `<span style="color: #60a5fa;">● Geschlecht: ${profilGeschlecht.replace(/_/g, ' ')}</span>` : ''}
-                            ${profilOrientierung ? `<span style="color: #f472b6;">● Orientierung: ${profilOrientierung}</span>` : ''}
+                            ${profilDominanz ? `<span style="color: #a78bfa;">● Dominanz: ${profilDominanz} <strong>(${formatModSum(modSummary.dominanz.sum)})</strong></span>` : ''}
+                            ${profilGeschlecht ? `<span style="color: #60a5fa;">● Geschlecht: ${profilGeschlecht.replace(/_/g, ' ')} <strong>(${formatModSum(modSummary.geschlecht.sum)})</strong></span>` : ''}
+                            ${profilOrientierung ? `<span style="color: #f472b6;">● Orientierung: ${profilOrientierung} <strong>(${formatModSum(modSummary.orientierung.sum)})</strong></span>` : ''}
                         </div>
                     </div>
                     ` : ''}
