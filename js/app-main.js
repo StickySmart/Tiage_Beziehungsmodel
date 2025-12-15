@@ -14882,10 +14882,10 @@
                 const modO = r.modifiers?.orientierung || 0;
                 // Prüfe ob PWert manuell überschrieben wurde (weicht von Erwartet ab)
                 const isOverridden = r.actual !== r.modifiedTypisch;
-                // Status-Symbol: 🔒 wenn locked, * wenn nur überschrieben
+                // Status-Symbol: 🔒 wenn locked, * wenn nur überschrieben (wird bei Archetyp-Wechsel zurückgesetzt!)
                 const statusSymbol = r.locked
-                    ? '<span style="color: #f97316; margin-left: 2px;" title="Fixiert">🔒</span>'
-                    : (isOverridden ? '<span style="color: #eab308;" title="Überschrieben">*</span>' : '');
+                    ? '<span style="color: #f97316; margin-left: 2px;" title="Fixiert - bleibt bei Archetyp-Wechsel erhalten">🔒</span>'
+                    : (isOverridden ? '<span style="color: #eab308;" title="Überschrieben - wird bei Archetyp-Wechsel zurückgesetzt!">*</span>' : '');
 
                 return `
                 <tr style="border-bottom: 1px solid rgba(255,255,255,0.06);">
@@ -14990,7 +14990,7 @@
                     <!-- Bedürfnis-Tabelle -->
                     <div style="padding: 16px 20px;">
                         <div style="font-size: 12px; color: var(--text-muted); margin-bottom: 10px;">
-                            ${count} Bedürfnisse${rows.some(r => r.locked) ? ' · <span style="color: #f97316;">🔒</span> = fixiert' : ''}${rows.some(r => !r.locked && r.actual !== r.modifiedTypisch) ? ' · <span style="color: #eab308;">*</span> = überschrieben' : ''}
+                            ${count} Bedürfnisse${rows.some(r => r.locked) ? ' · <span style="color: #f97316;">🔒</span> fixiert (bleibt)' : ''}${rows.some(r => !r.locked && r.actual !== r.modifiedTypisch) ? ' · <span style="color: #eab308;">*</span> überschrieben (wird zurückgesetzt)' : ''}
                         </div>
                         <div style="background: rgba(0,0,0,0.15); border-radius: 8px; overflow: hidden; border: 1px solid rgba(255,255,255,0.08);">
                             <table style="width: 100%; border-collapse: collapse;">
