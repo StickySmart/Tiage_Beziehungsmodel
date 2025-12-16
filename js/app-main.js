@@ -17706,48 +17706,158 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
         // VISITOR ID & RATE LIMITING
         // ========================================
 
+        // Browser fingerprinting for additional security
+        function generateBrowserFingerprint() {
+            const canvas = document.createElement('canvas');
+            const ctx = canvas.getContext('2d');
+            ctx.textBaseline = 'top';
+            ctx.font = '14px Arial';
+            ctx.fillText('TIAGE', 2, 2);
+            const canvasHash = canvas.toDataURL().slice(-50);
+
+            const fingerprint = {
+                userAgent: navigator.userAgent,
+                language: navigator.language,
+                platform: navigator.platform,
+                screenResolution: `${screen.width}x${screen.height}`,
+                timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+                canvasHash: canvasHash
+            };
+
+            const fpString = JSON.stringify(fingerprint);
+            let hash = 0;
+            for (let i = 0; i < fpString.length; i++) {
+                const char = fpString.charCodeAt(i);
+                hash = ((hash << 5) - hash) + char;
+                hash = hash & hash;
+            }
+            return 'FP' + Math.abs(hash).toString(36);
+        }
+
         // Get or create a unique visitor ID
         function getOrCreateVisitorId() {
             return localStorage.getItem('tiage_visitor_id') || null;
         }
 
-        // Fetch total visitors count from server
-        async function fetchTotalVisitors() {
-            if (typeof GOOGLE_SCRIPT_URL !== 'undefined' && GOOGLE_SCRIPT_URL) {
-                try {
-                    const response = await fetch(GOOGLE_SCRIPT_URL + '?action=getStats', {
-                        method: 'GET'
-                    });
-                    const data = await response.json();
-                    return data.totalVisitors || null;
-                } catch (e) {
-                    console.log('Could not fetch stats');
-                }
+        // Get browser fingerprint
+        function getBrowserFingerprint() {
+            let fingerprint = localStorage.getItem('tiage_fingerprint');
+            if (!fingerprint) {
+                fingerprint = generateBrowserFingerprint();
+                localStorage.setItem('tiage_fingerprint', fingerprint);
+            }
+            return fingerprint;
+        }
+
+        // LocalStorage backup for total visitors count
+        function getCachedTotalVisitors() {
+            const cached = localStorage.getItem('tiage_total_visitors');
+            const timestamp = localStorage.getItem('tiage_total_visitors_timestamp');
+            const maxAge = 5 * 60 * 1000; // 5 minutes
+
+            if (cached && timestamp && (Date.now() - parseInt(timestamp)) < maxAge) {
+                return parseInt(cached);
             }
             return null;
+        }
+
+        function setCachedTotalVisitors(total) {
+            if (total !== null && total !== undefined) {
+                localStorage.setItem('tiage_total_visitors', total.toString());
+                localStorage.setItem('tiage_total_visitors_timestamp', Date.now().toString());
+            }
+        }
+
+        // Retry logic with exponential backoff
+        async function fetchWithRetry(url, options = {}, maxRetries = 3) {
+            for (let attempt = 0; attempt < maxRetries; attempt++) {
+                try {
+                    const controller = new AbortController();
+                    const timeout = setTimeout(() => controller.abort(), 10000); // 10s timeout
+
+                    const response = await fetch(url, {
+                        ...options,
+                        signal: controller.signal
+                    });
+
+                    clearTimeout(timeout);
+
+                    if (!response.ok) {
+                        throw new Error(`HTTP ${response.status}`);
+                    }
+
+                    return await response.json();
+                } catch (e) {
+                    const isLastAttempt = attempt === maxRetries - 1;
+
+                    if (isLastAttempt) {
+                        console.log(`Fetch failed after ${maxRetries} attempts:`, e.message);
+                        throw e;
+                    }
+
+                    // Exponential backoff: 1s, 2s, 4s
+                    const delay = Math.pow(2, attempt) * 1000;
+                    console.log(`Retry attempt ${attempt + 1} after ${delay}ms`);
+                    await new Promise(resolve => setTimeout(resolve, delay));
+                }
+            }
+        }
+
+        // Fetch total visitors count from server with backup
+        async function fetchTotalVisitors() {
+            // Try cached value first
+            const cached = getCachedTotalVisitors();
+
+            if (typeof GOOGLE_SCRIPT_URL !== 'undefined' && GOOGLE_SCRIPT_URL) {
+                try {
+                    const fingerprint = getBrowserFingerprint();
+                    const data = await fetchWithRetry(
+                        GOOGLE_SCRIPT_URL + '?action=getStats&fp=' + encodeURIComponent(fingerprint),
+                        { method: 'GET' }
+                    );
+
+                    if (data.totalVisitors !== null && data.totalVisitors !== undefined) {
+                        setCachedTotalVisitors(data.totalVisitors);
+                        return data.totalVisitors;
+                    }
+                } catch (e) {
+                    console.log('Could not fetch stats, using backup');
+                }
+            }
+
+            // Return cached value as backup
+            return cached;
         }
 
         // Fetch visitor ID from server or generate local fallback
         async function fetchOrCreateVisitorId() {
             let visitorId = localStorage.getItem('tiage_visitor_id');
+            const fingerprint = getBrowserFingerprint();
 
             // Existing visitor - just fetch stats
             if (visitorId) {
                 const total = await fetchTotalVisitors();
-                return { visitorId, totalVisitors: total };
+                return { visitorId, totalVisitors: total, fingerprint };
             }
 
-            // Try to get new ID from server (using GET to avoid CORS preflight)
+            // Try to get new ID from server with retry logic
             if (typeof GOOGLE_SCRIPT_URL !== 'undefined' && GOOGLE_SCRIPT_URL) {
                 try {
-                    const response = await fetch(GOOGLE_SCRIPT_URL + '?action=getVisitorId', {
-                        method: 'GET'
-                    });
-                    const data = await response.json();
+                    const data = await fetchWithRetry(
+                        GOOGLE_SCRIPT_URL + '?action=getVisitorId&fp=' + encodeURIComponent(fingerprint),
+                        { method: 'GET' }
+                    );
+
                     if (data.visitorId) {
                         visitorId = data.visitorId;
                         localStorage.setItem('tiage_visitor_id', visitorId);
-                        return { visitorId, totalVisitors: data.totalVisitors || null };
+
+                        // Cache total visitors count
+                        if (data.totalVisitors !== null && data.totalVisitors !== undefined) {
+                            setCachedTotalVisitors(data.totalVisitors);
+                        }
+
+                        return { visitorId, totalVisitors: data.totalVisitors || null, fingerprint };
                     }
                 } catch (e) {
                     console.log('Server not available, using local ID');
@@ -17759,7 +17869,10 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
             const random = Math.floor(Math.random() * 100).toString().padStart(2, '0');
             visitorId = 'L' + timestamp + random; // L prefix = local
             localStorage.setItem('tiage_visitor_id', visitorId);
-            return { visitorId, totalVisitors: null };
+
+            // Try to use cached total visitors count
+            const cachedTotal = getCachedTotalVisitors();
+            return { visitorId, totalVisitors: cachedTotal, fingerprint };
         }
 
         // Format visitor display text
