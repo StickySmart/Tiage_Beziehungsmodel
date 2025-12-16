@@ -15529,14 +15529,27 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
                                 <strong style="color: #f59e0b;">Konsequenz:</strong> Der berechnete Wert (${calculatedR.toFixed(3)}) wird ignoriert.
                                 Stattdessen wird der manuell gesetzte Wert (${storedValue.toFixed(2)}) für alle Score-Berechnungen verwendet.
                             </div>
-                            <div style="margin-top: 10px; padding: 10px; background: rgba(139, 92, 246, 0.12); border-left: 3px solid #8B5CF6; border-radius: 4px; font-size: 11px; line-height: 1.5;">
-                                <strong style="color: #a78bfa;">Einfluss auf Endscore:</strong><br>
-                                Der ${rKey}-Faktor wird direkt mit dem ${rKey === 'R1' ? 'Orientierungs-' : rKey === 'R2' ? 'Archetyp-' : rKey === 'R3' ? 'Dominanz-' : 'Geschlechts-'}Score multipliziert.<br>
-                                <span style="color: var(--text-muted); font-size: 10px;">
-                                Formel: Q = (A×wA×<strong style="color: #f59e0b;">R2</strong>) + (O×wO×R1) + (D×wD×R3) + (G×wG×R4)<br>
-                                Ein R-Faktor < 1.0 schwächt den Score, R > 1.0 verstärkt ihn
-                                </span>
-                            </div>
+                            ${(function() {
+                                // SSOT: Use centralized help text from help-texts.js
+                                if (typeof TiageHelpTexts !== 'undefined') {
+                                    const helpInfo = TiageHelpTexts.getRFactorInfluenceExplanation(rKey);
+                                    return `
+                                    <div style="margin-top: 10px; padding: 10px; background: rgba(139, 92, 246, 0.12); border-left: 3px solid #8B5CF6; border-radius: 4px; font-size: 11px; line-height: 1.5;">
+                                        <strong style="color: #a78bfa;">${helpInfo.title}:</strong><br>
+                                        ${helpInfo.description}<br>
+                                        <span style="color: var(--text-muted); font-size: 10px;">
+                                        Formel: ${helpInfo.formula.replace(rKey, '<strong style="color: #f59e0b;">' + rKey + '</strong>')}<br>
+                                        ${helpInfo.interpretation.join(', ')}
+                                        </span>
+                                    </div>`;
+                                }
+                                // Fallback if help-texts.js not loaded
+                                return `
+                                <div style="margin-top: 10px; padding: 10px; background: rgba(139, 92, 246, 0.12); border-left: 3px solid #8B5CF6; border-radius: 4px; font-size: 11px; line-height: 1.5;">
+                                    <strong style="color: #a78bfa;">Einfluss auf Endscore:</strong><br>
+                                    Der ${rKey}-Faktor wird direkt mit dem Score multipliziert.
+                                </div>`;
+                            })()}
                             <div style="margin-top: 8px; font-size: 10px; color: var(--text-muted); opacity: 0.8;">
                                 Ändern: Attribute → Resonanzfaktoren → Schloss-Symbol klicken
                             </div>
