@@ -7840,6 +7840,183 @@
         window.openAttributeDefinitionModal = openAttributeDefinitionModal;
         window.closeAttributeDefinitionModal = closeAttributeDefinitionModal;
 
+        /**
+         * Öffnet das Resonanzfaktor-Hilfe Modal
+         * @param {string} rKey - Optional: Spezifischer R-Faktor (R1-R4) für Kurzform
+         */
+        function openResonanzHelpModal(rKey) {
+            const modal = document.getElementById('resonanzHelpModal');
+            const body = document.getElementById('resonanzHelpModalBody');
+            const title = document.getElementById('resonanzHelpModalTitle');
+
+            if (!modal || !body) return;
+
+            // Hole Hilfe-Texte (check if TiageHelpTexts is loaded)
+            if (typeof TiageHelpTexts === 'undefined') {
+                console.warn('[TiageHelpTexts] nicht geladen - kann Resonanz-Hilfe nicht anzeigen');
+                return;
+            }
+
+            let content = '';
+
+            if (rKey && (rKey === 'R1' || rKey === 'R2' || rKey === 'R3' || rKey === 'R4')) {
+                // Kurzform für einzelnen R-Faktor
+                const quickHelp = TiageHelpTexts.getResonanzQuickHelp(rKey);
+                title.textContent = quickHelp.titel;
+
+                content = `
+                    <div style="font-size: 14px; line-height: 1.7; color: var(--text-primary);">
+                        <p style="margin: 0 0 16px 0; padding: 12px; background: rgba(139,92,246,0.1); border-left: 3px solid #8B5CF6; border-radius: 4px;">
+                            ${quickHelp.beschreibung}
+                        </p>
+
+                        <h3 style="font-size: 16px; font-weight: 600; margin: 20px 0 12px 0; color: #8B5CF6;">Berechnungsformel</h3>
+                        <pre style="background: rgba(255,255,255,0.05); padding: 12px; border-radius: 6px; font-size: 12px; overflow-x: auto; margin: 0 0 16px 0;">${quickHelp.formel}</pre>
+
+                        <p style="margin: 0 0 16px 0; font-size: 13px; color: var(--text-secondary);">
+                            Ø = Durchschnitt über alle 4 Perspektiven (#P1 GFK, #P2 Osho, #P3 Pirsig, #P4 Kink)
+                        </p>
+
+                        <h3 style="font-size: 16px; font-weight: 600; margin: 20px 0 12px 0; color: #8B5CF6;">Einfluss auf Endscore</h3>
+                        <pre style="background: rgba(255,255,255,0.05); padding: 12px; border-radius: 6px; font-size: 12px; overflow-x: auto; margin: 0 0 16px 0;">${quickHelp.einfluss}</pre>
+
+                        <div style="margin: 20px 0 0 0; padding: 12px; background: rgba(234,179,8,0.1); border-left: 3px solid #eab308; border-radius: 4px; font-size: 13px;">
+                            <strong>💡 Tipp:</strong> Klicke auf "Alle Details" unten, um die vollständige Erklärung mit Praxisbeispielen zu sehen.
+                        </div>
+
+                        <button class="profile-review-triple-btn" onclick="openResonanzHelpModal()" style="margin-top: 16px; width: 100%;">
+                            📚 Alle Details anzeigen
+                        </button>
+                    </div>
+                `;
+            } else {
+                // Vollständige Erklärung
+                const help = TiageHelpTexts.getResonanzCalculationExplanation();
+                title.textContent = help.title;
+
+                content = `
+                    <div style="font-size: 14px; line-height: 1.7; color: var(--text-primary);">
+                        <p style="margin: 0 0 8px 0; font-size: 13px; color: var(--text-secondary);">
+                            ${help.subtitle}
+                        </p>
+
+                        <h3 style="font-size: 16px; font-weight: 600; margin: 20px 0 12px 0; color: #8B5CF6;">Übersicht</h3>
+                        <p style="margin: 0 0 12px 0;">
+                            ${help.overview.description}
+                        </p>
+                        <pre style="background: rgba(255,255,255,0.05); padding: 12px; border-radius: 6px; font-size: 12px; overflow-x: auto; margin: 0 0 8px 0;">${help.overview.formula}</pre>
+                        <ul style="font-size: 13px; margin: 0 0 16px 0; padding-left: 20px; color: var(--text-secondary);">
+                            <li>${help.overview.range.min}</li>
+                            <li>${help.overview.range.neutral}</li>
+                            <li>${help.overview.range.max}</li>
+                        </ul>
+
+                        <h3 style="font-size: 16px; font-weight: 600; margin: 20px 0 12px 0; color: #8B5CF6;">${help.perspektiven.title}</h3>
+                        <p style="margin: 0 0 12px 0; font-size: 13px; color: var(--text-secondary);">
+                            ${help.perspektiven.description}
+                        </p>
+                        ${help.perspektiven.list.map(p => `
+                            <div style="margin: 0 0 12px 0; padding: 12px; background: rgba(255,255,255,0.03); border-radius: 6px; border-left: 3px solid rgba(139,92,246,0.5);">
+                                <div style="font-weight: 600; margin-bottom: 4px;">${p.id} ${p.name}</div>
+                                <div style="font-size: 13px; color: var(--text-secondary); margin-bottom: 4px;">${p.beschreibung}</div>
+                                <div style="font-size: 12px; color: var(--text-tertiary);"><em>Beispiele: ${p.beispiele}</em></div>
+                            </div>
+                        `).join('')}
+
+                        <h3 style="font-size: 16px; font-weight: 600; margin: 20px 0 12px 0; color: #8B5CF6;">${help.calculation.title}</h3>
+                        ${help.calculation.steps.map(step => `
+                            <div style="margin: 0 0 16px 0; padding: 12px; background: rgba(255,255,255,0.03); border-radius: 6px;">
+                                <div style="font-weight: 600; margin-bottom: 8px;">Schritt ${step.nr}: ${step.titel}</div>
+                                <div style="font-size: 13px; color: var(--text-secondary); margin-bottom: 8px;">${step.beschreibung}</div>
+                                ${step.formel ? `<pre style="background: rgba(255,255,255,0.05); padding: 8px; border-radius: 4px; font-size: 11px; overflow-x: auto; margin: 0 0 8px 0;">${step.formel}</pre>` : ''}
+                                ${step.beispiel && typeof step.beispiel === 'string' ? `
+                                    <div style="font-size: 12px; padding: 8px; background: rgba(234,179,8,0.1); border-radius: 4px; color: var(--text-tertiary);">
+                                        <strong>Beispiel:</strong> ${step.beispiel}
+                                    </div>
+                                ` : ''}
+                                ${step.beispiel && typeof step.beispiel === 'object' && step.beispiel.titel ? `
+                                    <div style="font-size: 12px; padding: 8px; background: rgba(234,179,8,0.1); border-radius: 4px;">
+                                        <div style="font-weight: 600; margin-bottom: 4px;">${step.beispiel.titel}</div>
+                                        ${Object.keys(step.beispiel.perspektiveScores || {}).map(k => `
+                                            <div style="margin: 2px 0; color: var(--text-tertiary);">${k}: ${step.beispiel.perspektiveScores[k]}</div>
+                                        `).join('')}
+                                        ${step.beispiel.durchschnitt ? `<div style="margin: 4px 0 2px 0; font-weight: 600;">→ ${step.beispiel.durchschnitt}</div>` : ''}
+                                        ${step.beispiel.rWert ? `<div style="margin: 2px 0; font-weight: 600; color: #8B5CF6;">→ ${step.beispiel.rWert}</div>` : ''}
+                                        ${step.beispiel.person1 ? `<div style="margin: 2px 0; color: var(--text-tertiary);">Person 1: ${step.beispiel.person1}</div>` : ''}
+                                        ${step.beispiel.person2 ? `<div style="margin: 2px 0; color: var(--text-tertiary);">Person 2: ${step.beispiel.person2}</div>` : ''}
+                                        ${step.beispiel.kombiniert ? `<div style="margin: 4px 0 0 0; font-weight: 600; color: #8B5CF6;">→ ${step.beispiel.kombiniert}</div>` : ''}
+                                    </div>
+                                ` : ''}
+                                ${step.interpretation ? `
+                                    <div style="font-size: 12px; margin-top: 8px; color: var(--text-secondary); font-style: italic;">
+                                        💡 ${step.interpretation}
+                                    </div>
+                                ` : ''}
+                            </div>
+                        `).join('')}
+
+                        <h3 style="font-size: 16px; font-weight: 600; margin: 20px 0 12px 0; color: #8B5CF6;">${help.faktoren.title}</h3>
+                        <p style="margin: 0 0 12px 0; font-size: 13px; color: var(--text-secondary);">
+                            ${help.faktoren.description}
+                        </p>
+                        ${help.faktoren.list.map(f => `
+                            <div style="margin: 0 0 12px 0; padding: 12px; background: rgba(255,255,255,0.03); border-radius: 6px;">
+                                <div style="font-weight: 600; margin-bottom: 4px;">${f.id} ${f.name} ${f.sourceLabel}</div>
+                                <div style="font-size: 13px; color: var(--text-secondary); margin-bottom: 4px;">
+                                    Kategorien: ${f.kategorien.join(', ')}
+                                </div>
+                                <pre style="background: rgba(255,255,255,0.05); padding: 8px; border-radius: 4px; font-size: 11px; overflow-x: auto; margin: 0;">${f.einfluss}</pre>
+                            </div>
+                        `).join('')}
+
+                        <h3 style="font-size: 16px; font-weight: 600; margin: 20px 0 12px 0; color: #8B5CF6;">${help.praxisbeispiel.title}</h3>
+                        <div style="padding: 12px; background: rgba(234,179,8,0.1); border-left: 3px solid #eab308; border-radius: 4px; margin-bottom: 16px;">
+                            <div style="font-weight: 600; margin-bottom: 8px;">${help.praxisbeispiel.situation}</div>
+                            ${help.praxisbeispiel.bedürfnisse.map(b => `
+                                <div style="margin: 4px 0; font-size: 12px; color: var(--text-tertiary);">
+                                    • ${b.key} (${b.perspektive}): Archetyp ${b.solopoly}, Dein Wert ${b.dein} → Δ ${b.diff}
+                                </div>
+                            `).join('')}
+                            <div style="margin-top: 12px; padding-top: 12px; border-top: 1px solid rgba(234,179,8,0.3);">
+                                <div style="font-weight: 600; margin-bottom: 4px;">Auswirkung:</div>
+                                <div style="font-size: 13px; color: var(--text-secondary); margin-bottom: 8px;">${help.praxisbeispiel.auswirkung.beschreibung}</div>
+                                ${Object.keys(help.praxisbeispiel.auswirkung.perspektivenAuswertung).map(k => `
+                                    <div style="margin: 2px 0; font-size: 12px; color: var(--text-tertiary);">
+                                        • ${k}: ${help.praxisbeispiel.auswirkung.perspektivenAuswertung[k]}
+                                    </div>
+                                `).join('')}
+                                <div style="margin-top: 8px; padding: 8px; background: rgba(255,255,255,0.05); border-radius: 4px; font-size: 12px;">
+                                    <strong>💡 Empfehlung:</strong> ${help.praxisbeispiel.auswirkung.empfehlung}
+                                </div>
+                            </div>
+                        </div>
+
+                        <h3 style="font-size: 16px; font-weight: 600; margin: 20px 0 12px 0; color: #8B5CF6;">Wichtige Hinweise</h3>
+                        <ul style="font-size: 13px; margin: 0; padding-left: 20px; color: var(--text-secondary);">
+                            ${help.wichtigeHinweise.map(h => `<li style="margin-bottom: 8px;">${h}</li>`).join('')}
+                        </ul>
+                    </div>
+                `;
+            }
+
+            body.innerHTML = content;
+            modal.classList.add('active');
+        }
+
+        /**
+         * Schließt das Resonanzfaktor-Hilfe Modal
+         */
+        function closeResonanzHelpModal(event) {
+            if (event && event.target !== event.currentTarget) return;
+            const modal = document.getElementById('resonanzHelpModal');
+            if (modal) {
+                modal.classList.remove('active');
+            }
+        }
+
+        window.openResonanzHelpModal = openResonanzHelpModal;
+        window.closeResonanzHelpModal = closeResonanzHelpModal;
+
         // Aktueller Tab für das vollständige Modal
         let needsFullModalCurrentTab = 'gemeinsam';
         // Sortierung: 'duo' oder 'ra', und Richtung: 'asc' oder 'desc'

@@ -257,6 +257,19 @@
         </div>
     </div>
 
+    <!-- Resonanzfaktor-Hilfe Modal -->
+    <div class="modal-overlay" id="resonanzHelpModal" onclick="closeResonanzHelpModal(event)" style="z-index: 2450;">
+        <div class="modal" onclick="event.stopPropagation()" style="max-width: 700px; max-height: 85vh; overflow-y: auto;">
+            <div class="modal-header" style="border-bottom: 2px solid rgba(139,92,246,0.3);">
+                <span class="modal-title" style="color: #8B5CF6;" id="resonanzHelpModalTitle">Resonanzfaktoren - Berechnung</span>
+                <button class="modal-close" onclick="closeResonanzHelpModal()">&times;</button>
+            </div>
+            <div class="modal-body" id="resonanzHelpModalBody" style="padding: 20px;">
+                <!-- Content wird dynamisch gefüllt -->
+            </div>
+        </div>
+    </div>
+
     <!-- Comment Modal -->
     <div class="comment-modal-overlay" id="commentModal" onclick="closeCommentModal(event)">
         <div class="comment-modal" onclick="event.stopPropagation()">
@@ -594,6 +607,11 @@
                 <button class="modal-close" onclick="closeResonanzfaktorenModal()">&times;</button>
             </div>
             <div class="modal-body" style="padding: 20px;">
+                <div style="display: flex; justify-content: flex-end; margin-bottom: 12px;">
+                    <button class="profile-review-triple-btn" onclick="openResonanzHelpModal()" style="padding: 6px 12px; font-size: 11px;" title="Wie werden R-Faktoren berechnet?">
+                        ℹ Berechnung anzeigen
+                    </button>
+                </div>
                 <div id="resonanzfaktorenModalContent">
                     <!-- Content will be injected here -->
                 </div>

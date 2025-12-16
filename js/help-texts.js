@@ -129,6 +129,208 @@ var TiageHelpTexts = (function() {
         };
     }
 
+    /**
+     * Resonanzfaktor-Berechnungslogik (v3.2)
+     * Erklärt wie R1-R4 aus Perspektiven berechnet werden
+     */
+    function getResonanzCalculationExplanation() {
+        return {
+            title: 'Resonanzfaktoren (R1-R4): Berechnung',
+            subtitle: 'Wie entstehen die R-Werte aus Perspektiven und Archetyp-Kohärenz?',
+
+            overview: {
+                description: 'Resonanzfaktoren messen die Kohärenz zwischen deinen Bedürfnissen und dem gewählten Archetyp, aufgeschlüsselt nach 4 philosophischen Perspektiven.',
+                formula: 'R = 0.5 + (Kohärenz × 1.0)',
+                range: {
+                    min: '0.5 (keine Kohärenz → schwächt Score)',
+                    neutral: '1.0 (neutral)',
+                    max: '1.5 (perfekte Kohärenz → verstärkt Score)'
+                }
+            },
+
+            perspektiven: {
+                title: '4 Perspektiven auf Bedürfnisse',
+                description: 'Jede Perspektive betrachtet deine Bedürfnisse aus einem anderen philosophischen Blickwinkel:',
+                list: [
+                    {
+                        id: '#P1',
+                        name: 'GFK (Rosenberg)',
+                        beschreibung: 'Gewaltfreie Kommunikation – universelle menschliche Bedürfnisse',
+                        beispiele: 'Empathie, Verständnis, Akzeptanz'
+                    },
+                    {
+                        id: '#P2',
+                        name: 'Osho (Zen/Tantra)',
+                        beschreibung: 'Nicht-Anhaften, Authentizität, Hier-und-Jetzt',
+                        beispiele: 'Meditation zu zweit, radikale Ehrlichkeit, orgastisches Leben'
+                    },
+                    {
+                        id: '#P3',
+                        name: 'Pirsig (Qualität)',
+                        beschreibung: 'Statische vs. Dynamische Qualität, Evolution',
+                        beispiele: 'Biologische Anziehung, dynamische Evolution, statische Stabilität'
+                    },
+                    {
+                        id: '#P4',
+                        name: 'Kink (BDSM)',
+                        beschreibung: 'Macht-Dynamiken, Intensität, bewusste Hingabe',
+                        beispiele: 'Kontrolle ausüben, Hingabe, Machtaustausch, Vertrauen schenken'
+                    }
+                ]
+            },
+
+            calculation: {
+                title: 'Berechnungsschritte',
+                steps: [
+                    {
+                        nr: 1,
+                        titel: 'Individuelle Kohärenz-Matrix',
+                        beschreibung: 'Für jede Person wird berechnet, wie gut die Bedürfnisse zum Archetyp passen',
+                        formel: 'Kohärenz = 1 - (Durchschnittliche Abweichung / 100)',
+                        beispiel: 'Solopoly-Archetyp hat typischerweise "nicht_anhaften_an_partner" = 85. Dein Wert: 70 → Abweichung = 15 → Kohärenz = 85%'
+                    },
+                    {
+                        nr: 2,
+                        titel: 'Matrix-Struktur (4×4)',
+                        beschreibung: 'Jeder Resonanzfaktor (R1-R4) wird über alle 4 Perspektiven berechnet',
+                        struktur: {
+                            beschreibung: 'Matrix-Aufbau:',
+                            tabelle: [
+                                { faktor: 'R1 Leben', perspektiven: ['GFK', 'Osho', 'Pirsig', 'Kink'] },
+                                { faktor: 'R2 Philosophie', perspektiven: ['GFK', 'Osho', 'Pirsig', 'Kink'] },
+                                { faktor: 'R3 Dynamik', perspektiven: ['GFK', 'Osho', 'Pirsig', 'Kink'] },
+                                { faktor: 'R4 Identität', perspektiven: ['GFK', 'Osho', 'Pirsig', 'Kink'] }
+                            ]
+                        }
+                    },
+                    {
+                        nr: 3,
+                        titel: 'Durchschnitt über Perspektiven',
+                        beschreibung: 'Pro Resonanzfaktor wird der Durchschnitt über alle 4 Perspektiven gebildet',
+                        beispiel: {
+                            titel: 'Beispiel für R2 (Philosophie):',
+                            perspektiveScores: {
+                                '#P1 GFK': '+8%',
+                                '#P2 Osho': '+12%',
+                                '#P3 Pirsig': '+5%',
+                                '#P4 Kink': '+3%'
+                            },
+                            durchschnitt: '(8 + 12 + 5 + 3) / 4 = 7%',
+                            rWert: 'R2 = 1 + 0.07 = 1.07'
+                        }
+                    },
+                    {
+                        nr: 4,
+                        titel: 'Kombination bei Paarungen (Produkt)',
+                        beschreibung: 'Bei der Paarungsberechnung werden die R-Werte beider Personen multipliziert',
+                        formel: 'R_kombiniert = R_Person1 × R_Person2',
+                        beispiel: {
+                            person1: 'R2 = 1.07',
+                            person2: 'R2 = 1.10',
+                            kombiniert: 'R2_kombiniert = 1.07 × 1.10 = 1.177'
+                        },
+                        interpretation: 'Beide Personen müssen kohärent sein, damit die Resonanz verstärkt wird'
+                    }
+                ]
+            },
+
+            faktoren: {
+                title: 'Was beeinflusst welchen R-Faktor?',
+                description: 'Jeder Resonanzfaktor aggregiert verschiedene Bedürfniskategorien:',
+                list: [
+                    {
+                        id: 'R1',
+                        name: 'Leben',
+                        sourceLabel: '← Orientierung',
+                        kategorien: ['Existenz', 'Zuneigung', 'Muße', 'Intimität & Romantik'],
+                        einfluss: 'Wirkt direkt auf den Orientierungs-Score in der Formel: O × wO × R1'
+                    },
+                    {
+                        id: 'R2',
+                        name: 'Philosophie',
+                        sourceLabel: '← Archetyp',
+                        kategorien: ['Freiheit', 'Teilnahme', 'Identität', 'Lebensplanung', 'Finanzen & Karriere', 'Werte & Haltungen', 'Soziales Leben', 'Praktisches Leben'],
+                        einfluss: 'Wirkt direkt auf den Archetyp-Score in der Formel: A × wA × R2'
+                    },
+                    {
+                        id: 'R3',
+                        name: 'Dynamik',
+                        sourceLabel: '← Dominanz',
+                        kategorien: ['Dynamik (Kink)', 'Sicherheit'],
+                        einfluss: 'Wirkt direkt auf den Dominanz-Score in der Formel: D × wD × R3'
+                    },
+                    {
+                        id: 'R4',
+                        name: 'Identität',
+                        sourceLabel: '← Geschlecht',
+                        kategorien: ['Verständnis', 'Erschaffen', 'Verbundenheit', 'Kommunikationsstil'],
+                        einfluss: 'Wirkt direkt auf den Geschlechts-Score in der Formel: G × wG × R4'
+                    }
+                ]
+            },
+
+            praxisbeispiel: {
+                title: 'Praxisbeispiel: Wie Perspektiven den R-Wert beeinflussen',
+                situation: 'Du hast den Archetyp "Solopoly" gewählt, aber deine Bedürfnisse sind teilweise traditioneller',
+                bedürfnisse: [
+                    { key: 'nicht_anhaften_an_partner', perspektive: '#P2 Osho', solopoly: 85, dein: 50, diff: 35 },
+                    { key: 'langfristige_bindung', perspektive: '#P1 GFK', solopoly: 30, dein: 70, diff: 40 },
+                    { key: 'polyamore_energie', perspektive: '#P2 Osho', solopoly: 80, dein: 40, diff: 40 }
+                ],
+                auswirkung: {
+                    beschreibung: 'Die hohen Abweichungen senken die Kohärenz',
+                    perspektivenAuswertung: {
+                        '#P2 Osho': 'Große Abweichungen bei Osho-Bedürfnissen → niedriger Score',
+                        '#P1 GFK': 'Mittlere Abweichung bei GFK-Bedürfnissen → mittlerer Score',
+                        durchschnitt: 'R2 könnte bei ~0.85 liegen (schwächt Archetyp-Score)'
+                    },
+                    empfehlung: 'Erwäge einen Archetyp zu wählen, der besser zu deinen Bedürfnissen passt, z.B. "Duo" oder "LAT"'
+                }
+            },
+
+            wichtigeHinweise: [
+                'Perspektiven-Buttons im UI zeigen, welche Bedürfnisse zu welcher Perspektive gehören',
+                'Du kannst R-Werte manuell sperren (🔒), um automatische Berechnung zu deaktivieren',
+                'R-Werte werden bei jeder Änderung der Bedürfnisse oder des Archetyps neu berechnet',
+                'Die Perspektiven-basierte Berechnung sorgt für eine differenziertere Bewertung als nur der Archetyp allein'
+            ]
+        };
+    }
+
+    /**
+     * Kurzform für AttributeSummaryCard
+     */
+    function getResonanzQuickHelp(rKey) {
+        const info = {
+            R1: {
+                titel: 'R1 Leben (← Orientierung)',
+                beschreibung: 'Misst Kohärenz zwischen deinen Bedürfnissen und dem Archetyp in den Kategorien: Existenz, Zuneigung, Muße, Intimität',
+                formel: 'R1 = Ø(GFK-Score, Osho-Score, Pirsig-Score, Kink-Score)',
+                einfluss: 'Wirkt auf Orientierungs-Score: O × wO × R1'
+            },
+            R2: {
+                titel: 'R2 Philosophie (← Archetyp)',
+                beschreibung: 'Misst Kohärenz zwischen deinen Bedürfnissen und dem Archetyp in den Kategorien: Freiheit, Teilnahme, Identität, Lebensplanung, Finanzen, Werte, Soziales, Praktisches',
+                formel: 'R2 = Ø(GFK-Score, Osho-Score, Pirsig-Score, Kink-Score)',
+                einfluss: 'Wirkt auf Archetyp-Score: A × wA × R2'
+            },
+            R3: {
+                titel: 'R3 Dynamik (← Dominanz)',
+                beschreibung: 'Misst Kohärenz zwischen deinen Bedürfnissen und dem Archetyp in den Kategorien: Dynamik (Kink), Sicherheit',
+                formel: 'R3 = Ø(GFK-Score, Osho-Score, Pirsig-Score, Kink-Score)',
+                einfluss: 'Wirkt auf Dominanz-Score: D × wD × R3'
+            },
+            R4: {
+                titel: 'R4 Identität (← Geschlecht)',
+                beschreibung: 'Misst Kohärenz zwischen deinen Bedürfnissen und dem Archetyp in den Kategorien: Verständnis, Erschaffen, Verbundenheit, Kommunikation',
+                formel: 'R4 = Ø(GFK-Score, Osho-Score, Pirsig-Score, Kink-Score)',
+                einfluss: 'Wirkt auf Geschlechts-Score: G × wG × R4'
+            }
+        };
+
+        return info[rKey] || info.R1;
+    }
+
     // ═══════════════════════════════════════════════════════════════════════
     // PUBLIC API
     // ═══════════════════════════════════════════════════════════════════════
@@ -141,7 +343,11 @@ var TiageHelpTexts = (function() {
 
         // Erklärungen
         getRFactorInfluenceExplanation: getRFactorInfluenceExplanation,
-        getNeedsScoreExplanation: getNeedsScoreExplanation
+        getNeedsScoreExplanation: getNeedsScoreExplanation,
+
+        // NEU: Resonanzfaktor-Berechnungslogik
+        getResonanzCalculationExplanation: getResonanzCalculationExplanation,
+        getResonanzQuickHelp: getResonanzQuickHelp
     };
 })();
 

@@ -266,7 +266,10 @@ const ResonanzCard = (function() {
             <div class="profile-review-card resonanz-card${lockedClass}" data-resonanz="${faktor}">
                 <div class="resonanz-card-content">
                     <div class="resonanz-card-header">
-                        <span class="resonanz-card-label">${info.label} #${faktor} (← ${info.sourceLabel})</span>
+                        <span class="resonanz-card-label">
+                            ${info.label} #${faktor} (← ${info.sourceLabel})
+                            <span class="attr-info-icon" onclick="event.stopPropagation(); openResonanzHelpModal('${faktor}')" title="Berechnung anzeigen" style="margin-left: 6px; cursor: pointer;">ℹ</span>
+                        </span>
                         <span class="resonanz-card-beschreibung">${info.beschreibung}</span>
                     </div>
                     <div class="resonanz-slider-row">
@@ -318,6 +321,9 @@ const ResonanzCard = (function() {
             <div class="resonanz-footer-bar">
                 <span class="resonanz-hint">GFK-Kompetenz: <span id="resonanz-gfk">${gfk}</span> | ${personLabel}</span>
                 <div style="display: flex; gap: 8px;">
+                    <button class="profile-review-triple-btn" onclick="openResonanzHelpModal()" style="padding: 6px 12px; font-size: 11px;" title="Wie werden R-Faktoren berechnet?">
+                        ℹ Hilfe
+                    </button>
                     <button class="profile-review-triple-btn" onclick="ResonanzCard.reset()" style="padding: 6px 12px; font-size: 11px;">
                         🔄 Standard
                     </button>
