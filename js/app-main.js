@@ -18380,7 +18380,7 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
                     localStorage.setItem('tiage_visitor_id', visitorId);
                 }
 
-                // Memory-Slots wiederherstellen (falls durch TiageStorage.clear() gelöscht)
+                // Memory-Slots wiederherstellen
                 Object.entries(memorySlots).forEach(([key, value]) => {
                     if (value) {
                         localStorage.setItem(key, value);
