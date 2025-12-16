@@ -347,7 +347,7 @@ var TiageProfileStore = (function() {
     };
 
     // ════════════════════════════════════════════════════════════════════════
-    // DOMINANZ-MODIFIKATOREN (aus dominance-definitions.js)
+    // DOMINANZ-MODIFIKATOREN
     // ════════════════════════════════════════════════════════════════════════
 
     var dominanceModifiers = {

@@ -16,6 +16,8 @@
 const COMMENTS_SHEET = 'Kommentare';
 const VISITORS_SHEET = 'Besucher';
 const CONFIG_SHEET = 'Config';
+const RATE_LIMIT_SHEET = 'RateLimit';
+const SECURITY_LOG_SHEET = 'SecurityLog';
 
 /**
  * Initialisiert die Sheets beim ersten Aufruf
@@ -50,13 +52,149 @@ function initializeSheets() {
     configSheet.getRange(1, 1, 1, 2).setFontWeight('bold');
   }
 
+  // Rate Limit Sheet
+  let rateLimitSheet = ss.getSheetByName(RATE_LIMIT_SHEET);
+  if (!rateLimitSheet) {
+    rateLimitSheet = ss.insertSheet(RATE_LIMIT_SHEET);
+    rateLimitSheet.appendRow(['Fingerprint', 'LastRequest', 'RequestCount', 'Blocked']);
+    rateLimitSheet.getRange(1, 1, 1, 4).setFontWeight('bold');
+  }
+
+  // Security Log Sheet
+  let securityLogSheet = ss.getSheetByName(SECURITY_LOG_SHEET);
+  if (!securityLogSheet) {
+    securityLogSheet = ss.insertSheet(SECURITY_LOG_SHEET);
+    securityLogSheet.appendRow(['Timestamp', 'Event', 'Fingerprint', 'VisitorID', 'Details']);
+    securityLogSheet.getRange(1, 1, 1, 5).setFontWeight('bold');
+  }
+
   return ss;
+}
+
+/**
+ * Security Logging
+ */
+function logSecurityEvent(event, fingerprint, visitorId, details) {
+  try {
+    const ss = SpreadsheetApp.getActiveSpreadsheet();
+    let logSheet = ss.getSheetByName(SECURITY_LOG_SHEET);
+
+    if (!logSheet) {
+      initializeSheets();
+      logSheet = ss.getSheetByName(SECURITY_LOG_SHEET);
+    }
+
+    logSheet.appendRow([
+      new Date().toISOString(),
+      event,
+      fingerprint || 'N/A',
+      visitorId || 'N/A',
+      details || ''
+    ]);
+
+    // Keep only last 1000 entries to avoid sheet bloat
+    const lastRow = logSheet.getLastRow();
+    if (lastRow > 1001) {
+      logSheet.deleteRows(2, lastRow - 1001);
+    }
+  } catch (e) {
+    // Don't fail the request if logging fails
+    console.log('Logging error:', e.message);
+  }
+}
+
+/**
+ * Rate Limiting: Check if fingerprint is allowed to make request
+ * Returns { allowed: true/false, reason: string }
+ */
+function checkRateLimit(fingerprint) {
+  if (!fingerprint) {
+    return { allowed: true, reason: 'No fingerprint provided' };
+  }
+
+  const ss = SpreadsheetApp.getActiveSpreadsheet();
+  let rateLimitSheet = ss.getSheetByName(RATE_LIMIT_SHEET);
+
+  if (!rateLimitSheet) {
+    initializeSheets();
+    rateLimitSheet = ss.getSheetByName(RATE_LIMIT_SHEET);
+  }
+
+  const now = new Date().getTime();
+  const data = rateLimitSheet.getDataRange().getValues();
+
+  // Rate limit: max 10 requests per hour per fingerprint for new IDs
+  const MAX_REQUESTS_PER_HOUR = 10;
+  const ONE_HOUR = 60 * 60 * 1000;
+
+  // Find existing fingerprint
+  for (let i = 1; i < data.length; i++) {
+    if (data[i][0] === fingerprint) {
+      const lastRequest = new Date(data[i][1]).getTime();
+      const requestCount = parseInt(data[i][2]) || 0;
+      const isBlocked = data[i][3] === true || data[i][3] === 'TRUE';
+
+      // Check if blocked
+      if (isBlocked) {
+        logSecurityEvent('RATE_LIMIT_BLOCKED', fingerprint, null, 'Permanently blocked');
+        return { allowed: false, reason: 'Blocked due to suspicious activity' };
+      }
+
+      // Reset counter if more than 1 hour passed
+      if (now - lastRequest > ONE_HOUR) {
+        rateLimitSheet.getRange(i + 1, 2).setValue(new Date().toISOString());
+        rateLimitSheet.getRange(i + 1, 3).setValue(1);
+        return { allowed: true, reason: 'Rate limit reset' };
+      }
+
+      // Check if over limit
+      if (requestCount >= MAX_REQUESTS_PER_HOUR) {
+        logSecurityEvent('RATE_LIMIT_EXCEEDED', fingerprint, null, `${requestCount} requests in last hour`);
+        return { allowed: false, reason: 'Rate limit exceeded (max 10 per hour)' };
+      }
+
+      // Increment counter
+      rateLimitSheet.getRange(i + 1, 2).setValue(new Date().toISOString());
+      rateLimitSheet.getRange(i + 1, 3).setValue(requestCount + 1);
+
+      return { allowed: true, reason: `Request ${requestCount + 1}/${MAX_REQUESTS_PER_HOUR}` };
+    }
+  }
+
+  // New fingerprint - add to tracking
+  rateLimitSheet.appendRow([fingerprint, new Date().toISOString(), 1, false]);
+  return { allowed: true, reason: 'New fingerprint registered' };
+}
+
+/**
+ * Clean up old rate limit entries (older than 24 hours)
+ */
+function cleanupRateLimits() {
+  const ss = SpreadsheetApp.getActiveSpreadsheet();
+  const rateLimitSheet = ss.getSheetByName(RATE_LIMIT_SHEET);
+
+  if (!rateLimitSheet) return;
+
+  const now = new Date().getTime();
+  const ONE_DAY = 24 * 60 * 60 * 1000;
+  const data = rateLimitSheet.getDataRange().getValues();
+
+  // Delete rows from bottom to top to avoid index issues
+  for (let i = data.length - 1; i >= 1; i--) {
+    const lastRequest = new Date(data[i][1]).getTime();
+    const isBlocked = data[i][3] === true || data[i][3] === 'TRUE';
+
+    // Keep blocked entries, delete old non-blocked entries
+    if (!isBlocked && (now - lastRequest > ONE_DAY)) {
+      rateLimitSheet.deleteRow(i + 1);
+    }
+  }
 }
 
 /**
  * Holt den nächsten Besucher-Zähler und erhöht ihn
  */
-function getNextVisitorId() {
+function getNextVisitorId(fingerprint) {
   const ss = SpreadsheetApp.getActiveSpreadsheet();
   let configSheet = ss.getSheetByName(CONFIG_SHEET);
 
@@ -80,12 +218,16 @@ function getNextVisitorId() {
 
   if (counterRow === -1) {
     configSheet.appendRow(['visitorCounter', '2']);
+    logSecurityEvent('NEW_VISITOR_ID', fingerprint, '1', 'Counter initialized');
     return '1';
   }
 
   // Erhöhe den Zähler
   const newValue = currentValue + 1;
   configSheet.getRange(counterRow, 2).setValue(newValue);
+
+  // Log new visitor ID assignment
+  logSecurityEvent('NEW_VISITOR_ID', fingerprint, currentValue.toString(), 'ID assigned');
 
   return currentValue.toString();
 }
@@ -264,6 +406,7 @@ function doPost(e) {
 function doGet(e) {
   try {
     const action = e.parameter.action;
+    const fingerprint = e.parameter.fp || null;
 
     if (action === 'getComments') {
       const comments = getAllComments();
@@ -272,7 +415,19 @@ function doGet(e) {
     }
 
     if (action === 'getVisitorId') {
-      const newId = getNextVisitorId();
+      // Check rate limit for new visitor ID requests
+      const rateLimitCheck = checkRateLimit(fingerprint);
+
+      if (!rateLimitCheck.allowed) {
+        logSecurityEvent('RATE_LIMIT_DENIED', fingerprint, null, rateLimitCheck.reason);
+        return ContentService.createTextOutput(JSON.stringify({
+          error: 'Rate limit exceeded',
+          message: rateLimitCheck.reason
+        }))
+          .setMimeType(ContentService.MimeType.JSON);
+      }
+
+      const newId = getNextVisitorId(fingerprint);
       const total = getTotalVisitors();
       return ContentService.createTextOutput(JSON.stringify({ visitorId: newId, totalVisitors: total }))
         .setMimeType(ContentService.MimeType.JSON);
@@ -284,12 +439,20 @@ function doGet(e) {
         .setMimeType(ContentService.MimeType.JSON);
     }
 
+    if (action === 'cleanup') {
+      // Manual cleanup trigger (can be called periodically)
+      cleanupRateLimits();
+      return ContentService.createTextOutput(JSON.stringify({ success: true, message: 'Cleanup completed' }))
+        .setMimeType(ContentService.MimeType.JSON);
+    }
+
     // Standard: Alle Kommentare zurückgeben
     const comments = getAllComments();
     return ContentService.createTextOutput(JSON.stringify(comments))
       .setMimeType(ContentService.MimeType.JSON);
 
   } catch (error) {
+    logSecurityEvent('ERROR', null, null, error.message);
     return ContentService.createTextOutput(JSON.stringify({ error: error.message }))
       .setMimeType(ContentService.MimeType.JSON);
   }
