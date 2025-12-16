@@ -1012,8 +1012,11 @@ const ResonanzCard = (function() {
                 </div>
                 <div style="text-align: center; margin-top: 16px; padding: 12px; background: ${scoreDiff > 0 ? '#e8f5e9' : '#ffebee'}; border-radius: 8px;">
                     <strong style="font-size: 18px; color: ${scoreDiff > 0 ? '#4caf50' : '#f44336'};">
-                        Unterschied: ${scoreDiff > 0 ? '+' : ''}${scoreDiff} Punkte (${((scoreDiff / lockedScore) * 100).toFixed(1)}%)
+                        Unterschied: ${scoreDiff > 0 ? '+' : ''}${scoreDiff} Punkte
                     </strong>
+                    <div style="font-size: 13px; color: #666; margin-top: 8px;">
+                        Das sind ${Math.abs(((scoreDiff / exampleArchetypScore) * 100)).toFixed(0)}% vom Archetyp-Score (${Math.abs(scoreDiff)} von ${exampleArchetypScore} Punkten)
+                    </div>
                 </div>
             </div>
 
