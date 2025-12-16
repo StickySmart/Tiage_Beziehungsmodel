@@ -218,10 +218,14 @@ TiageSynthesis.Calculator = {
                 };
             }
         } else {
-            // Fallback: Nur Matrix-Scores (alte Berechnung)
-            console.warn('[TIAGE Calculator] NeedsIntegration nicht verfügbar oder deaktiviert - verwende nur Matrix-Scores');
-            scores = matrixScores;
-            needsIntegrationDetails = { enabled: false };
+            // FEHLER: NeedsIntegration MUSS verfügbar sein (v3.1)
+            throw new Error(
+                '[TIAGE Calculator] KRITISCHER FEHLER: NeedsIntegration nicht verfügbar oder deaktiviert!\n' +
+                'Prüfe ob:\n' +
+                '1. needsIntegration.js geladen ist\n' +
+                '2. NEEDS_INTEGRATION.ENABLED = true in constants.js\n' +
+                '3. TiageSynthesis.NeedsIntegration verfügbar ist'
+            );
         }
 
         // ═══════════════════════════════════════════════════════════════════
@@ -274,9 +278,15 @@ TiageSynthesis.Calculator = {
                 (scores.geschlecht * weights.geschlecht * dim.dimensions.identitaet.rValue)
             );
         } else {
-            // Legacy: Gesamt-R auf baseScore
-            console.warn('[TIAGE Calculator] Dimensionale Resonanz nicht verfügbar - verwende Legacy-Berechnung (Gesamt-R auf baseScore)');
-            finalScore = Math.round(baseScore * resonanz.coefficient);
+            // FEHLER: Dimensionale Resonanz MUSS verfügbar sein (v3.1)
+            throw new Error(
+                '[TIAGE Calculator] KRITISCHER FEHLER: Dimensionale Resonanz nicht verfügbar!\n' +
+                'Prüfe ob:\n' +
+                '1. RESONANCE_DIMENSIONAL.ENABLED = true in constants.js\n' +
+                '2. Profile haben needs-Daten\n' +
+                '3. NeedsIntegration.calculateResonanceFromPerspectives() funktioniert\n' +
+                'Dimensional: ' + JSON.stringify(dim)
+            );
         }
 
         // ═══════════════════════════════════════════════════════════════════
@@ -870,16 +880,17 @@ TiageSynthesis.Calculator = {
             }
         }
 
-        // Fallback zur Legacy-Berechnung wenn dimensional nicht verfügbar
+        // FEHLER wenn dimensional nicht verfügbar
         if (!dimensional) {
-            console.warn('[TIAGE Calculator] Dimensionale Resonanz-Berechnung fehlgeschlagen - verwende Legacy-Resonanz-Formel');
-            coefficient = cfg.BASE +
-                (
-                    ((profilMatch / 100) * cfg.PROFILE_WEIGHT) +
-                    (balance * cfg.BALANCE_WEIGHT) +
-                    (gfkValue * cfg.GFK_WEIGHT)
-                ) * cfg.MAX_BOOST;
-            coefficient = Math.round(coefficient * 1000) / 1000;
+            throw new Error(
+                '[TIAGE Calculator] KRITISCHER FEHLER: Dimensionale Resonanz-Berechnung fehlgeschlagen!\n' +
+                'Prüfe ob:\n' +
+                '1. RESONANCE_DIMENSIONAL.ENABLED = true in constants.js\n' +
+                '2. profil1 und profil2 haben needs-Daten: ' +
+                    'profil1=' + (profil1 ? 'OK' : 'NULL') + ', profil2=' + (profil2 ? 'OK' : 'NULL') + '\n' +
+                '3. NeedsIntegration._calculateDimensionalResonance() ist verfügbar\n' +
+                '4. Gespeicherte R-Werte in ResonanzCard/TiageState vorhanden'
+            );
         }
 
         return {
@@ -926,8 +937,13 @@ TiageSynthesis.Calculator = {
         var cfg = constants.RESONANCE_DIMENSIONAL;
 
         if (!cfg || !cfg.ENABLED) {
-            console.warn('[TIAGE Calculator] RESONANCE_DIMENSIONAL nicht konfiguriert oder deaktiviert - Fallback zur alten Berechnung');
-            return null; // Fallback zur alten Berechnung
+            throw new Error(
+                '[TIAGE Calculator] KRITISCHER FEHLER: RESONANCE_DIMENSIONAL nicht konfiguriert oder deaktiviert!\n' +
+                'Prüfe ob:\n' +
+                '1. RESONANCE_DIMENSIONAL existiert in constants.js\n' +
+                '2. RESONANCE_DIMENSIONAL.ENABLED = true\n' +
+                'Config: ' + JSON.stringify(cfg)
+            );
         }
 
         // ═══════════════════════════════════════════════════════════════════
@@ -1067,54 +1083,16 @@ TiageSynthesis.Calculator = {
         }
 
         // ═══════════════════════════════════════════════════════════════════
-        // LEGACY FALLBACK: Alte Berechnung wenn NeedsIntegration nicht verfügbar
+        // FEHLER: Perspektivenbasierte Berechnung MUSS verfügbar sein
         // ═══════════════════════════════════════════════════════════════════
-        console.warn('[TIAGE Calculator] NeedsIntegration.calculateResonanceFromPerspectives nicht verfügbar - verwende Legacy-Fallback für dimensionale Resonanz');
-        var needsIntegration = constants.NEEDS_INTEGRATION;
-        var dimensions = {};
-        var totalR = 0;
-        var totalWeight = 0;
-
-        for (var dimKey in cfg.DIMENSIONS) {
-            var dim = cfg.DIMENSIONS[dimKey];
-            var needsList = this._getDimensionNeeds(dim.source, needsIntegration);
-            var match = this._calculatePartialMatch(profil1, profil2, needsList);
-
-            var rValue = 0.9 + (match * 0.2);
-            rValue = Math.round(rValue * 1000) / 1000;
-
-            var status = 'neutral';
-            var emoji = '➡️';
-            if (rValue >= cfg.THRESHOLDS.resonanz) {
-                status = 'resonanz';
-                emoji = '⬆️';
-            } else if (rValue <= cfg.THRESHOLDS.dissonanz) {
-                status = 'dissonanz';
-                emoji = '⬇️';
-            }
-
-            dimensions[dimKey] = {
-                name: dim.name,
-                emoji: dim.emoji,
-                match: Math.round(match * 100),
-                rValue: rValue,
-                status: status,
-                statusEmoji: emoji,
-                weight: dim.weight
-            };
-
-            totalR += rValue * dim.weight;
-            totalWeight += dim.weight;
-        }
-
-        var coefficient = totalWeight > 0 ? totalR / totalWeight : 0.9;
-        coefficient = Math.round(coefficient * 1000) / 1000;
-
-        return {
-            coefficient: coefficient,
-            dimensions: dimensions,
-            interpretation: this._interpretDimensionalResonance(coefficient, dimensions, cfg.THRESHOLDS)
-        };
+        throw new Error(
+            '[TIAGE Calculator] KRITISCHER FEHLER: NeedsIntegration.calculateResonanceFromPerspectives nicht verfügbar!\n' +
+            'Prüfe ob:\n' +
+            '1. needsIntegration.js geladen ist\n' +
+            '2. TiageSynthesis.NeedsIntegration.calculateResonanceFromPerspectives() verfügbar ist\n' +
+            '3. Keine gespeicherten R-Werte in ResonanzCard/TiageState gefunden\n' +
+            'perspectiveResult war null - Berechnung fehlgeschlagen'
+        );
     },
 
     /**
