@@ -194,6 +194,19 @@
         </div>
     </div>
 
+    <!-- Bedürfnis-Score Erklärung Modal -->
+    <div class="modal-overlay" id="needsScoreExplanationModal" onclick="closeNeedsScoreExplanation(event)" style="z-index: 2600;">
+        <div class="modal" onclick="event.stopPropagation()" style="max-width: 600px; max-height: 85vh; overflow-y: auto;">
+            <div class="modal-header" style="border-bottom: 2px solid rgba(34,197,94,0.3);">
+                <span class="modal-title" style="color: #22c55e;">Bedürfnis-Übereinstimmung - Berechnung</span>
+                <button class="modal-close" onclick="closeNeedsScoreExplanation()">&times;</button>
+            </div>
+            <div class="modal-body" id="needsScoreExplanationBody" style="padding: 20px;">
+                <!-- Content wird dynamisch gefüllt -->
+            </div>
+        </div>
+    </div>
+
     <!-- GFK Begriffserklärung Modal -->
     <div class="modal-overlay" id="gfkExplanationModal" onclick="closeGfkExplanationModal(event)" style="z-index: 2400;">
         <div class="modal" onclick="event.stopPropagation()" style="max-width: 400px;">

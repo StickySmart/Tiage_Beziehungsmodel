@@ -7857,6 +7857,133 @@
         }
 
         /**
+         * Öffnet das Modal mit der Erklärung zur Bedürfnis-Score-Berechnung
+         */
+        function openNeedsScoreExplanation() {
+            const modal = document.getElementById('needsScoreExplanationModal');
+            const body = document.getElementById('needsScoreExplanationBody');
+
+            if (!modal || !body) return;
+
+            // Erklärungstext als HTML
+            const explanationHTML = `
+                <div style="font-size: 14px; line-height: 1.7; color: var(--text-primary);">
+                    <h3 style="font-size: 16px; font-weight: 600; margin: 0 0 12px 0; color: #22c55e;">Was bedeutet die Zahl?</h3>
+                    <p style="margin: 0 0 16px 0;">
+                        Die Prozentanzeige zeigt die <strong>gewichtete Übereinstimmung über alle 220 Bedürfnisse</strong> zwischen beiden Profilen.
+                    </p>
+                    <p style="margin: 0 0 20px 0; padding: 12px; background: rgba(34,197,94,0.1); border-left: 3px solid #22c55e; border-radius: 4px; font-size: 13px;">
+                        <strong>Nicht:</strong> Eine Schätzung oder theoretischer Wert<br>
+                        <strong>Sondern:</strong> Empirisch berechnet aus euren tatsächlichen Bedürfnis-Profilen
+                    </p>
+
+                    <h3 style="font-size: 16px; font-weight: 600; margin: 20px 0 12px 0; color: #22c55e;">Wie wird sie berechnet?</h3>
+                    <p style="margin: 0 0 12px 0;">
+                        <strong>Formel</strong> (identisch mit individueller Bedürfnis-Berechnung):
+                    </p>
+                    <pre style="background: rgba(255,255,255,0.05); padding: 12px; border-radius: 6px; font-size: 12px; overflow-x: auto; margin: 0 0 12px 0; line-height: 1.6;">Für JEDES der 220 Bedürfnisse:
+    Ähnlichkeit = 100 - |Wert Person 1 - Wert Person 2|
+    Gewicht = (Wert Person 1 + Wert Person 2) / 2
+    Beitrag = Ähnlichkeit × Gewicht
+
+Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
+
+                    <p style="margin: 0 0 16px 0; padding: 12px; background: rgba(234,179,8,0.1); border-left: 3px solid #eab308; border-radius: 4px; font-size: 13px;">
+                        <strong>Beispiel #B90 Kinderwunsch:</strong><br>
+                        Person 1 = 85, Person 2 = 40<br>
+                        → Ähnlichkeit = 100 - |85 - 40| = <strong>55</strong><br>
+                        → Gewicht = (85 + 40) / 2 = <strong>62.5</strong><br>
+                        → Beitrag = 55 × 62.5 = <strong>3437.5</strong>
+                    </p>
+
+                    <h3 style="font-size: 16px; font-weight: 600; margin: 20px 0 12px 0; color: #22c55e;">Alle 220 Bedürfnisse</h3>
+                    <table style="width: 100%; font-size: 12px; border-collapse: collapse; margin: 0 0 20px 0;">
+                        <thead>
+                            <tr style="background: rgba(255,255,255,0.05);">
+                                <th style="padding: 8px; text-align: left; border-bottom: 1px solid rgba(255,255,255,0.1);">Kategorie</th>
+                                <th style="padding: 8px; text-align: right; border-bottom: 1px solid rgba(255,255,255,0.1);">Anzahl</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td style="padding: 6px 8px;">#B1-#B88: GFK-Kern</td><td style="padding: 6px 8px; text-align: right;">88</td></tr>
+                            <tr><td style="padding: 6px 8px;">#B90-#B126: Lebensplanung</td><td style="padding: 6px 8px; text-align: right;">37</td></tr>
+                            <tr><td style="padding: 6px 8px;">#B127-#B148: Finanzen & Karriere</td><td style="padding: 6px 8px; text-align: right;">22</td></tr>
+                            <tr><td style="padding: 6px 8px;">#B149-#B176: Kommunikationsstil</td><td style="padding: 6px 8px; text-align: right;">28</td></tr>
+                            <tr><td style="padding: 6px 8px;">#B177-#B203: Soziales Leben</td><td style="padding: 6px 8px; text-align: right;">27</td></tr>
+                            <tr><td style="padding: 6px 8px;">#B204-#B208: Intimität & Romantik</td><td style="padding: 6px 8px; text-align: right;">5</td></tr>
+                            <tr><td style="padding: 6px 8px;">#B209-#B220: Dynamik erweitert</td><td style="padding: 6px 8px; text-align: right;">12</td></tr>
+                            <tr style="border-top: 2px solid rgba(34,197,94,0.3); font-weight: 600;">
+                                <td style="padding: 8px;"><strong>Total</strong></td>
+                                <td style="padding: 8px; text-align: right;"><strong>220</strong></td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <h3 style="font-size: 16px; font-weight: 600; margin: 20px 0 12px 0; color: #22c55e;">Farbliche Bewertung</h3>
+                    <div style="display: flex; flex-direction: column; gap: 8px; margin: 0 0 20px 0;">
+                        <div style="display: flex; align-items: center; gap: 12px; padding: 8px; background: rgba(34,197,94,0.1); border-radius: 4px;">
+                            <span style="font-size: 20px;">🟢</span>
+                            <div style="flex: 1;">
+                                <div style="font-weight: 600;">60-100% - Hoch</div>
+                                <div style="font-size: 12px; opacity: 0.8;">Starke Übereinstimmung</div>
+                            </div>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 12px; padding: 8px; background: rgba(234,179,8,0.1); border-radius: 4px;">
+                            <span style="font-size: 20px;">🟡</span>
+                            <div style="flex: 1;">
+                                <div style="font-weight: 600;">40-59% - Mittel</div>
+                                <div style="font-size: 12px; opacity: 0.8;">Moderate Übereinstimmung</div>
+                            </div>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 12px; padding: 8px; background: rgba(239,68,68,0.1); border-radius: 4px;">
+                            <span style="font-size: 20px;">🔴</span>
+                            <div style="flex: 1;">
+                                <div style="font-weight: 600;">0-39% - Niedrig</div>
+                                <div style="font-size: 12px; opacity: 0.8;">Geringe Übereinstimmung</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <h3 style="font-size: 16px; font-weight: 600; margin: 20px 0 12px 0; color: #22c55e;">Vorteile der Berechnung</h3>
+                    <div style="display: flex; flex-direction: column; gap: 6px; font-size: 13px;">
+                        <div style="display: flex; align-items: start; gap: 8px;">
+                            <span style="color: #22c55e; font-weight: 600;">✅</span>
+                            <div><strong>Empirisch statt willkürlich</strong> - Basiert auf tatsächlichen Bedürfnis-Profilen</div>
+                        </div>
+                        <div style="display: flex; align-items: start; gap: 8px;">
+                            <span style="color: #22c55e; font-weight: 600;">✅</span>
+                            <div><strong>Transparent</strong> - Jeder Wert ist nachvollziehbar</div>
+                        </div>
+                        <div style="display: flex; align-items: start; gap: 8px;">
+                            <span style="color: #22c55e; font-weight: 600;">✅</span>
+                            <div><strong>Individualisiert</strong> - Berücksichtigt eure persönlichen Modifikatoren</div>
+                        </div>
+                        <div style="display: flex; align-items: start; gap: 8px;">
+                            <span style="color: #22c55e; font-weight: 600;">✅</span>
+                            <div><strong>Konsistent</strong> - Dieselbe Formel wie die Gesamt-Bedürfnis-Berechnung</div>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            body.innerHTML = explanationHTML;
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        /**
+         * Schließt das Score-Erklärungsmodal
+         */
+        function closeNeedsScoreExplanation(event) {
+            if (event && event.target.id !== 'needsScoreExplanationModal') return;
+            const modal = document.getElementById('needsScoreExplanationModal');
+            if (modal) {
+                modal.classList.remove('active');
+                document.body.style.overflow = '';
+            }
+        }
+
+        /**
          * Wechselt den Tab im vollständigen Modal
          */
         function switchNeedsFullModalTab(tab) {
@@ -7984,6 +8111,21 @@
                     return needsFullModalSortDir === 'desc' ? valB - valA : valA - valB;
                 });
             }
+
+            // Explanation HTML
+            const explanationHtml = `
+                <div style="background: rgba(34,197,94,0.08); border-left: 3px solid #22c55e; border-radius: 4px; padding: 10px 12px; margin-bottom: 16px; font-size: 12px; line-height: 1.6;">
+                    <div style="display: flex; align-items: start; gap: 8px;">
+                        <div style="flex: 1;">
+                            <div style="font-weight: 600; margin-bottom: 4px; color: #22c55e;">Berechnung über alle 220 Bedürfnisse</div>
+                            <div style="color: var(--text-secondary); font-size: 11px;">
+                                Gewichtete Übereinstimmung basierend auf euren tatsächlichen Profilen.
+                                <span onclick="openNeedsScoreExplanation();" style="color: #22c55e; cursor: pointer; text-decoration: underline; margin-left: 4px;">Mehr erfahren ⓘ</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
 
             // Toggle-Button HTML
             const toggleHtml = `
@@ -8114,7 +8256,7 @@
                 `;
             }
 
-            body.innerHTML = toggleHtml + fallbackBannerHtml + headerHtml + listHtml + countHtml;
+            body.innerHTML = explanationHtml + toggleHtml + fallbackBannerHtml + headerHtml + listHtml + countHtml;
 
             modal.classList.add('active');
             document.body.style.overflow = 'hidden';
@@ -8551,6 +8693,7 @@
                 <div class="gfk-matching-header" onclick="openNeedsFullModal()" style="cursor: pointer;" title="Klicken für vollständige Liste">
                     <div class="gfk-score-display">
                         <span class="gfk-score" style="color: ${scoreColor}">${matching.score}</span>
+                        <span onclick="event.stopPropagation(); openNeedsScoreExplanation();" style="cursor: help; margin-left: 6px; opacity: 0.6; font-size: 0.85em;" title="Wie wird dieser Wert berechnet?">ⓘ</span>
                         <span class="gfk-level-label">${beduerfnisLabel}</span>
                     </div>
                 </div>

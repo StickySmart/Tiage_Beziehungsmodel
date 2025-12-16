@@ -89,6 +89,66 @@ Match = Σ(100 - |Wert_P1 - Wert_P2|) / 100 / n
 
 *Beispiel: Bei 80% Match in der Philosophie-Dimension: R_Phil = 0.9 + (0.8 × 0.2) = 1.06 ⬆️*
 
+---
+
+## Bedürfnis-Übereinstimmung (220 Bedürfnisse)
+
+### Was bedeutet die Prozentanzeige?
+
+Die **Bedürfnis-Übereinstimmung** zeigt die gewichtete Übereinstimmung über **alle 220 Bedürfnisse** zwischen beiden Profilen.
+
+**Wichtig:** Dies ist keine Schätzung, sondern wird **empirisch berechnet** aus den tatsächlichen Bedürfnis-Profilen beider Personen.
+
+### Berechnungsformel
+
+Die Berechnung erfolgt identisch zur individuellen Bedürfnis-Berechnung:
+
+```
+Für JEDES der 220 Bedürfnisse:
+    Ähnlichkeit = 100 - |Wert Person 1 - Wert Person 2|
+    Gewicht = (Wert Person 1 + Wert Person 2) / 2
+    Beitrag = Ähnlichkeit × Gewicht
+
+Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)
+```
+
+**Beispiel #B90 Kinderwunsch:**
+- Person 1 = 85, Person 2 = 40
+- Ähnlichkeit = 100 - |85 - 40| = **55**
+- Gewicht = (85 + 40) / 2 = **62.5**
+- Beitrag = 55 × 62.5 = **3437.5**
+
+### Alle 220 Bedürfnisse im Überblick
+
+| Kategorie | Bedürfnisse | Anzahl |
+|-----------|-------------|--------|
+| GFK-Kern | #B1-#B88 | 88 |
+| Lebensplanung | #B90-#B126 | 37 |
+| Finanzen & Karriere | #B127-#B148 | 22 |
+| Kommunikationsstil | #B149-#B176 | 28 |
+| Soziales Leben | #B177-#B203 | 27 |
+| Intimität & Romantik | #B204-#B208 | 5 |
+| Dynamik erweitert | #B209-#B220 | 12 |
+| **Total** | | **220** |
+
+### Bewertungsstufen
+
+| Score | Level | Bedeutung |
+|-------|-------|-----------|
+| **60-100%** | 🟢 Hoch | Starke Übereinstimmung in den Bedürfnissen |
+| **40-59%** | 🟡 Mittel | Moderate Übereinstimmung, bewusste Kommunikation wichtig |
+| **0-39%** | 🔴 Niedrig | Geringe Übereinstimmung, fundamentale Unterschiede |
+
+### Vorteile dieser Berechnung
+
+✅ **Empirisch statt willkürlich** - Basiert auf tatsächlichen Bedürfnis-Profilen
+✅ **Transparent** - Jeder Wert ist nachvollziehbar und zu den Profilen zurückverfolgbar
+✅ **Individualisiert** - Berücksichtigt persönliche Modifikatoren (Dominanz, Geschlecht, Orientierung)
+✅ **Konsistent** - Dieselbe Formel wie die Gesamt-Bedürfnis-Berechnung
+✅ **Automatisch aktualisiert** - Änderungen an Profilen werden sofort reflektiert
+
+---
+
 ### GFK-Kommunikationsfaktor (K)
 
 Die Gewaltfreie Kommunikation (GFK) nach Marshall Rosenberg moduliert den dimensionalen Koeffizienten:
