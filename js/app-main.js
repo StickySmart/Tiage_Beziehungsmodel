@@ -9479,6 +9479,23 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
             return { score: 50, note: 'Keine spezifischen Daten verfügbar' };
         }
 
+        // Helper function to format orientierung object to string
+        function formatOrientierung(orientierung) {
+            if (!orientierung) return '?';
+            if (typeof orientierung === 'object') {
+                const parts = [];
+                if (orientierung.primary) {
+                    parts.push(orientierung.primary + ' (P)');
+                }
+                if (orientierung.secondary) {
+                    parts.push(orientierung.secondary + ' (S)');
+                }
+                return parts.length > 0 ? parts.join(', ') : '?';
+            }
+            // Backwards compatibility for old single-value format
+            return orientierung;
+        }
+
         function formatPersonSummary(person) {
             // Extract primary gender from object format { primary: 'cis_mann', secondary: null }
             let geschlecht = person.geschlecht || '?';
@@ -9487,20 +9504,7 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
             }
 
             // Handle Primary/Secondary orientierung structure
-            let orientierungStr = '?';
-            if (person.orientierung && typeof person.orientierung === 'object') {
-                const parts = [];
-                if (person.orientierung.primary) {
-                    parts.push(person.orientierung.primary + ' (P)');
-                }
-                if (person.orientierung.secondary) {
-                    parts.push(person.orientierung.secondary + ' (S)');
-                }
-                orientierungStr = parts.length > 0 ? parts.join(', ') : '?';
-            } else if (person.orientierung) {
-                // Backwards compatibility for old single-value format
-                orientierungStr = person.orientierung;
-            }
+            const orientierungStr = formatOrientierung(person.orientierung);
 
             return `${geschlecht}, ${orientierungStr}`;
         }
@@ -9561,7 +9565,7 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
                 // Double Warning
                 document.getElementById('doubleWarning').classList.add('active');
                 document.getElementById('doubleWarningPathos').textContent =
-                    `${person2.orientierung} (${person2.orientierungStatus}) → Exploration-Phase`;
+                    `${formatOrientierung(person2.orientierung)} (${person2.orientierungStatus}) → Exploration-Phase`;
                 document.getElementById('doubleWarningLogos').textContent =
                     `Beziehungsphilosophie: ${logosCheck.score} → ${data?.archetypes[person1.archetyp]?.name || person1.archetyp} vs. ${data?.archetypes[person2.archetyp]?.name || person2.archetyp}`;
             } else {
