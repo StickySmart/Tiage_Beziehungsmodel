@@ -1,60 +1,82 @@
 {
   "meta": {
     "title": "Archetypen-Interaktionsmatrix für Beziehungsmodelle",
-    "version": "7.0.0",
+    "version": "8.0.0",
     "created": "2025-01-22",
-    "updated": "2025-12-09",
+    "updated": "2025-12-16",
     "description": "8 Archetypen mit #IDs und Pro/Contra-Texte für 64 Interaktionen",
     "matrixType": "asymmetric",
     "note": "Asymmetrisch, da die Perspektive die wahrgenommene Beziehungsqualität beeinflusst",
-    "changes": "v7.0: Verschlankt - nur Pro/Contra Texte, Scores werden berechnet. #IDs eingeführt (#A1-#A8, #D1-#D6)"
+    "changes": "v8.0: Archetypen Bedürfnis-Baselines hinzugefügt (220×8=1760 Datenpunkte) mit wissenschaftlichen Quellen"
   },
-
   "dimensions": {
     "#D1": {
       "id": "#D1",
       "key": "A",
       "name": "Beziehungsphilosophie",
       "description": "Die fundamentale Einstellung zu Beziehungen: Exklusivität, Offenheit, Tiefe und Freiheit",
-      "subDimensions": ["Exklusivitäts-Erwartung", "Offenheit für alternative Modelle", "Beziehung als Lebensinhalt vs. Lebensbereich"]
+      "subDimensions": [
+        "Exklusivitäts-Erwartung",
+        "Offenheit für alternative Modelle",
+        "Beziehung als Lebensinhalt vs. Lebensbereich"
+      ]
     },
     "#D2": {
       "id": "#D2",
       "key": "B",
       "name": "Werte-Alignment",
       "description": "Übereinstimmung in Kernwerten wie Ehrlichkeit, Treue-Definition und ethischem Umgang",
-      "subDimensions": ["Definition von Treue", "Ethische Grundhaltung", "Verantwortungsbewusstsein"]
+      "subDimensions": [
+        "Definition von Treue",
+        "Ethische Grundhaltung",
+        "Verantwortungsbewusstsein"
+      ]
     },
     "#D3": {
       "id": "#D3",
       "key": "C",
       "name": "Nähe-Distanz-Präferenzen",
       "description": "Gewünschte emotionale und physische Nähe, Fähigkeit Raum zu geben",
-      "subDimensions": ["Emotionale Verschmelzungs-Tendenz", "Physische Nähe-Bedürfnisse", "Fähigkeit, Raum zu geben"]
+      "subDimensions": [
+        "Emotionale Verschmelzungs-Tendenz",
+        "Physische Nähe-Bedürfnisse",
+        "Fähigkeit, Raum zu geben"
+      ]
     },
     "#D4": {
       "id": "#D4",
       "key": "D",
       "name": "Autonomie-Bedürfnisse",
       "description": "Bedürfnis nach Unabhängigkeit, eigenen Projekten und Freiheit",
-      "subDimensions": ["Individuelle Freiheit", "Entscheidungsautonomie", "Akzeptanz der Autonomie des anderen"]
+      "subDimensions": [
+        "Individuelle Freiheit",
+        "Entscheidungsautonomie",
+        "Akzeptanz der Autonomie des anderen"
+      ]
     },
     "#D5": {
       "id": "#D5",
       "key": "E",
       "name": "Kommunikations-Matching",
       "description": "Passung der Kommunikationsstile: Tiefe, Direktheit, Konfliktfähigkeit",
-      "subDimensions": ["Kommunikationstiefe", "Konfliktfähigkeit", "Emotionale Transparenz"]
+      "subDimensions": [
+        "Kommunikationstiefe",
+        "Konfliktfähigkeit",
+        "Emotionale Transparenz"
+      ]
     },
     "#D6": {
       "id": "#D6",
       "key": "F",
       "name": "Soziale Kompatibilität",
       "description": "Funktion der Beziehung im sozialen Kontext, Umgang mit Normen",
-      "subDimensions": ["Gesellschaftliche Akzeptanz", "Integration in soziale Kreise", "Umgang mit Stigma"]
+      "subDimensions": [
+        "Gesellschaftliche Akzeptanz",
+        "Integration in soziale Kreise",
+        "Umgang mit Stigma"
+      ]
     }
   },
-
   "archetypes": {
     "#A1": {
       "id": "#A1",
@@ -137,270 +159,3736 @@
       "fullDescription": "Aromantische Menschen erleben keine oder wenig romantische Anziehung, können aber tiefe platonische Bindungen haben."
     }
   },
-
   "interactions": {
     "single_single": {
-      "pro": ["Identische Beziehungsphilosophie", "Gegenseitiger Respekt für Autonomie", "Keine Erwartungshaltung"],
-      "contra": ["Fehlende Polarität", "Keiner gibt Impuls zur Vertiefung"]
+      "pro": [
+        "Identische Beziehungsphilosophie",
+        "Gegenseitiger Respekt für Autonomie",
+        "Keine Erwartungshaltung"
+      ],
+      "contra": [
+        "Fehlende Polarität",
+        "Keiner gibt Impuls zur Vertiefung"
+      ]
     },
     "single_duo": {
-      "pro": ["Gesellschaftlich voll akzeptiert", "Klare Erwartungen", "Potenzial für Transformation"],
-      "contra": ["Single muss Freiheit aufgeben", "Anpassungsdruck", "Verschmelzungserwartung"]
+      "pro": [
+        "Gesellschaftlich voll akzeptiert",
+        "Klare Erwartungen",
+        "Potenzial für Transformation"
+      ],
+      "contra": [
+        "Single muss Freiheit aufgeben",
+        "Anpassungsdruck",
+        "Verschmelzungserwartung"
+      ]
     },
     "single_duo_flex": {
-      "pro": ["Flexibilität passt zum Single-Lebensstil", "Weniger Verschmelzungsdruck"],
-      "contra": ["Single muss sich einlassen", "Unklare Position im System"]
+      "pro": [
+        "Flexibilität passt zum Single-Lebensstil",
+        "Weniger Verschmelzungsdruck"
+      ],
+      "contra": [
+        "Single muss sich einlassen",
+        "Unklare Position im System"
+      ]
     },
     "single_solopoly": {
-      "pro": ["Solopoly bietet klare Kommunikation", "Single behält Freiheit"],
-      "contra": ["Single könnte sich als 'einer von vielen' fühlen", "Exklusivitätswunsch unerfüllt"]
+      "pro": [
+        "Solopoly bietet klare Kommunikation",
+        "Single behält Freiheit"
+      ],
+      "contra": [
+        "Single könnte sich als 'einer von vielen' fühlen",
+        "Exklusivitätswunsch unerfüllt"
+      ]
     },
     "single_polyamor": {
-      "pro": ["Zugang zu Poly-Community", "Tiefe Verbindung möglich"],
-      "contra": ["Single muss geteilte Zeit akzeptieren", "Komplexe Regeln verstehen"]
+      "pro": [
+        "Zugang zu Poly-Community",
+        "Tiefe Verbindung möglich"
+      ],
+      "contra": [
+        "Single muss geteilte Zeit akzeptieren",
+        "Komplexe Regeln verstehen"
+      ]
     },
     "single_ra": {
-      "pro": ["Maximale Freiheit beidseitig", "Keine Labels oder Erwartungen", "Individuelle Vereinbarungen"],
-      "contra": ["Kann verwirrend sein ohne klare Strukturen", "Gesellschaftlich schwer erklärbar"]
+      "pro": [
+        "Maximale Freiheit beidseitig",
+        "Keine Labels oder Erwartungen",
+        "Individuelle Vereinbarungen"
+      ],
+      "contra": [
+        "Kann verwirrend sein ohne klare Strukturen",
+        "Gesellschaftlich schwer erklärbar"
+      ]
     },
     "single_lat": {
-      "pro": ["Eigener Raum bleibt erhalten", "Verbindung ohne Verschmelzung", "Guter Übergang"],
-      "contra": ["LAT erwartet mehr Verbindlichkeit als Single gewohnt"]
+      "pro": [
+        "Eigener Raum bleibt erhalten",
+        "Verbindung ohne Verschmelzung",
+        "Guter Übergang"
+      ],
+      "contra": [
+        "LAT erwartet mehr Verbindlichkeit als Single gewohnt"
+      ]
     },
     "single_aromantisch": {
-      "pro": ["Keine romantischen Erwartungen", "Platonische Tiefe möglich", "Autonomie wird respektiert"],
-      "contra": ["Single könnte Romantik suchen", "Unterschiedliche Beziehungsziele"]
+      "pro": [
+        "Keine romantischen Erwartungen",
+        "Platonische Tiefe möglich",
+        "Autonomie wird respektiert"
+      ],
+      "contra": [
+        "Single könnte Romantik suchen",
+        "Unterschiedliche Beziehungsziele"
+      ]
     },
-
     "duo_single": {
-      "pro": ["Single ist offen für Entwicklung", "Gesellschaftlich idealer Start"],
-      "contra": ["Single könnte zögern", "Duo könnte zu schnell zu viel wollen"]
+      "pro": [
+        "Single ist offen für Entwicklung",
+        "Gesellschaftlich idealer Start"
+      ],
+      "contra": [
+        "Single könnte zögern",
+        "Duo könnte zu schnell zu viel wollen"
+      ]
     },
     "duo_duo": {
-      "pro": ["Identische Beziehungsphilosophie", "Maximale gesellschaftliche Unterstützung", "Klare gemeinsame Vision"],
-      "contra": ["Hohe Erwartungen können zu Druck führen"]
+      "pro": [
+        "Identische Beziehungsphilosophie",
+        "Maximale gesellschaftliche Unterstützung",
+        "Klare gemeinsame Vision"
+      ],
+      "contra": [
+        "Hohe Erwartungen können zu Druck führen"
+      ]
     },
     "duo_duo_flex": {
-      "pro": ["Ähnliche Grundwerte", "Duo-Flex könnte exklusiver werden"],
-      "contra": ["Duo erlebt Flex-Anteil als Bedrohung", "Unterschiedliche Treue-Definitionen"]
+      "pro": [
+        "Ähnliche Grundwerte",
+        "Duo-Flex könnte exklusiver werden"
+      ],
+      "contra": [
+        "Duo erlebt Flex-Anteil als Bedrohung",
+        "Unterschiedliche Treue-Definitionen"
+      ]
     },
     "duo_solopoly": {
-      "pro": ["Solopoly ist ehrlich über Grenzen"],
-      "contra": ["Duo fühlt sich nie 'genug'", "Exklusivität unmöglich", "Kein Zusammenleben"]
+      "pro": [
+        "Solopoly ist ehrlich über Grenzen"
+      ],
+      "contra": [
+        "Duo fühlt sich nie 'genug'",
+        "Exklusivität unmöglich",
+        "Kein Zusammenleben"
+      ]
     },
     "duo_polyamor": {
-      "pro": ["Tiefe Verbindung möglich", "Duo könnte Primary werden"],
-      "contra": ["Duo muss Exklusivität aufgeben", "Eifersucht als ständige Herausforderung"]
+      "pro": [
+        "Tiefe Verbindung möglich",
+        "Duo könnte Primary werden"
+      ],
+      "contra": [
+        "Duo muss Exklusivität aufgeben",
+        "Eifersucht als ständige Herausforderung"
+      ]
     },
     "duo_ra": {
-      "pro": ["RA ist authentisch und ehrlich"],
-      "contra": ["Fundamentaler Weltanschauungs-Konflikt", "RA lehnt Labels ab, Duo braucht sie"]
+      "pro": [
+        "RA ist authentisch und ehrlich"
+      ],
+      "contra": [
+        "Fundamentaler Weltanschauungs-Konflikt",
+        "RA lehnt Labels ab, Duo braucht sie"
+      ]
     },
     "duo_lat": {
-      "pro": ["LAT kann exklusiv sein", "Tiefe Verbindung möglich"],
-      "contra": ["Duo will zusammenleben", "Unterschiedliche Nähe-Bedürfnisse"]
+      "pro": [
+        "LAT kann exklusiv sein",
+        "Tiefe Verbindung möglich"
+      ],
+      "contra": [
+        "Duo will zusammenleben",
+        "Unterschiedliche Nähe-Bedürfnisse"
+      ]
     },
     "duo_aromantisch": {
-      "pro": ["Aromantisch kann tiefe Bindung bieten"],
-      "contra": ["Duo sucht Romantik", "Fundamentaler Unterschied in Beziehungsdefinition"]
+      "pro": [
+        "Aromantisch kann tiefe Bindung bieten"
+      ],
+      "contra": [
+        "Duo sucht Romantik",
+        "Fundamentaler Unterschied in Beziehungsdefinition"
+      ]
     },
-
     "duo_flex_single": {
-      "pro": ["Single kann verschiedene Rollen einnehmen", "Gesellschaftlich unkompliziert"],
-      "contra": ["Single könnte mehr wollen", "Unklare Erwartungen"]
+      "pro": [
+        "Single kann verschiedene Rollen einnehmen",
+        "Gesellschaftlich unkompliziert"
+      ],
+      "contra": [
+        "Single könnte mehr wollen",
+        "Unklare Erwartungen"
+      ]
     },
     "duo_flex_duo": {
-      "pro": ["Geteilte Werte bei Primärbeziehung", "Duo könnte sich öffnen"],
-      "contra": ["Duo muss Öffnung akzeptieren", "Potenzielle Eifersucht"]
+      "pro": [
+        "Geteilte Werte bei Primärbeziehung",
+        "Duo könnte sich öffnen"
+      ],
+      "contra": [
+        "Duo muss Öffnung akzeptieren",
+        "Potenzielle Eifersucht"
+      ]
     },
     "duo_flex_duo_flex": {
-      "pro": ["Identische Beziehungsphilosophie", "Geteilte Sprache und Erwartungen"],
-      "contra": ["Grenzen müssen individuell abgestimmt werden"]
+      "pro": [
+        "Identische Beziehungsphilosophie",
+        "Geteilte Sprache und Erwartungen"
+      ],
+      "contra": [
+        "Grenzen müssen individuell abgestimmt werden"
+      ]
     },
     "duo_flex_solopoly": {
-      "pro": ["Solopoly passt als Außenkontakt", "Keine Konkurrenz um Primärposition"],
-      "contra": ["Solopoly bietet nie 'mehr'", "Duo-Flex könnte tiefere Verbindung wünschen"]
+      "pro": [
+        "Solopoly passt als Außenkontakt",
+        "Keine Konkurrenz um Primärposition"
+      ],
+      "contra": [
+        "Solopoly bietet nie 'mehr'",
+        "Duo-Flex könnte tiefere Verbindung wünschen"
+      ]
     },
     "duo_flex_polyamor": {
-      "pro": ["Polyamor bringt Poly-Erfahrung", "Kommunikation auf hohem Niveau"],
-      "contra": ["Polyamor will mehr als situative Öffnung", "Regelkonflikte möglich"]
+      "pro": [
+        "Polyamor bringt Poly-Erfahrung",
+        "Kommunikation auf hohem Niveau"
+      ],
+      "contra": [
+        "Polyamor will mehr als situative Öffnung",
+        "Regelkonflikte möglich"
+      ]
     },
     "duo_flex_ra": {
-      "pro": ["Beide verstehen Offenheit", "Flexible Vereinbarungen möglich"],
-      "contra": ["RA lehnt Primärbeziehungs-Konzept ab", "Strukturkonflikt"]
+      "pro": [
+        "Beide verstehen Offenheit",
+        "Flexible Vereinbarungen möglich"
+      ],
+      "contra": [
+        "RA lehnt Primärbeziehungs-Konzept ab",
+        "Strukturkonflikt"
+      ]
     },
     "duo_flex_lat": {
-      "pro": ["LAT versteht bewusste Distanz", "Gute Balance möglich"],
-      "contra": ["Unterschiedliche Erwartungen an Öffnung"]
+      "pro": [
+        "LAT versteht bewusste Distanz",
+        "Gute Balance möglich"
+      ],
+      "contra": [
+        "Unterschiedliche Erwartungen an Öffnung"
+      ]
     },
     "duo_flex_aromantisch": {
-      "pro": ["Aromantisch könnte als Flex-Partner passen"],
-      "contra": ["Romantische Erwartungen werden nicht erfüllt"]
+      "pro": [
+        "Aromantisch könnte als Flex-Partner passen"
+      ],
+      "contra": [
+        "Romantische Erwartungen werden nicht erfüllt"
+      ]
     },
-
     "solopoly_single": {
-      "pro": ["Single bringt keine Verschmelzungserwartungen", "Autonomie wird geschätzt"],
-      "contra": ["Single könnte heimlich mehr wollen", "Asymmetrische Beziehungsbereitschaft"]
+      "pro": [
+        "Single bringt keine Verschmelzungserwartungen",
+        "Autonomie wird geschätzt"
+      ],
+      "contra": [
+        "Single könnte heimlich mehr wollen",
+        "Asymmetrische Beziehungsbereitschaft"
+      ]
     },
     "solopoly_duo": {
-      "pro": ["Duo bietet Stabilität"],
-      "contra": ["Fundamentale Inkompatibilität", "Solopoly kann nie 'alles' sein"]
+      "pro": [
+        "Duo bietet Stabilität"
+      ],
+      "contra": [
+        "Fundamentale Inkompatibilität",
+        "Solopoly kann nie 'alles' sein"
+      ]
     },
     "solopoly_duo_flex": {
-      "pro": ["Duo-Flex versteht Nicht-Exklusivität", "Weniger Druck als Duo"],
-      "contra": ["Solopoly passt nicht in Primär-Struktur", "Statusfragen"]
+      "pro": [
+        "Duo-Flex versteht Nicht-Exklusivität",
+        "Weniger Druck als Duo"
+      ],
+      "contra": [
+        "Solopoly passt nicht in Primär-Struktur",
+        "Statusfragen"
+      ]
     },
     "solopoly_solopoly": {
-      "pro": ["Identische Beziehungsphilosophie", "Maximale Autonomie-Akzeptanz"],
-      "contra": ["Balance zwischen Solo und Poly individuell verschieden"]
+      "pro": [
+        "Identische Beziehungsphilosophie",
+        "Maximale Autonomie-Akzeptanz"
+      ],
+      "contra": [
+        "Balance zwischen Solo und Poly individuell verschieden"
+      ]
     },
     "solopoly_polyamor": {
-      "pro": ["Geteilte Poly-Community und Sprache", "Ethische Übereinstimmung"],
-      "contra": ["Hierarchie-Konflikt", "Polyamor könnte mehr Nähe wollen"]
+      "pro": [
+        "Geteilte Poly-Community und Sprache",
+        "Ethische Übereinstimmung"
+      ],
+      "contra": [
+        "Hierarchie-Konflikt",
+        "Polyamor könnte mehr Nähe wollen"
+      ]
     },
     "solopoly_ra": {
-      "pro": ["Beide schätzen Autonomie maximal", "Keine Hierarchie-Erwartungen"],
-      "contra": ["RA noch weniger strukturiert als Solopoly"]
+      "pro": [
+        "Beide schätzen Autonomie maximal",
+        "Keine Hierarchie-Erwartungen"
+      ],
+      "contra": [
+        "RA noch weniger strukturiert als Solopoly"
+      ]
     },
     "solopoly_lat": {
-      "pro": ["LAT versteht getrenntes Wohnen", "Autonomie-Kompatibilität"],
-      "contra": ["LAT könnte mehr Exklusivität wollen"]
+      "pro": [
+        "LAT versteht getrenntes Wohnen",
+        "Autonomie-Kompatibilität"
+      ],
+      "contra": [
+        "LAT könnte mehr Exklusivität wollen"
+      ]
     },
     "solopoly_aromantisch": {
-      "pro": ["Beide haben unkonventionelle Beziehungsmodelle", "Autonomie wird respektiert"],
-      "contra": ["Solopoly sucht romantische Verbindungen"]
+      "pro": [
+        "Beide haben unkonventionelle Beziehungsmodelle",
+        "Autonomie wird respektiert"
+      ],
+      "contra": [
+        "Solopoly sucht romantische Verbindungen"
+      ]
     },
-
     "polyamor_single": {
-      "pro": ["Potenzial für neuen Partner im Polycule", "Single kann Poly kennenlernen"],
-      "contra": ["Einarbeitungsaufwand", "Single muss Hierarchie verstehen"]
+      "pro": [
+        "Potenzial für neuen Partner im Polycule",
+        "Single kann Poly kennenlernen"
+      ],
+      "contra": [
+        "Einarbeitungsaufwand",
+        "Single muss Hierarchie verstehen"
+      ]
     },
     "polyamor_duo": {
-      "pro": ["Tiefe romantische Verbindung möglich", "Duo könnte Primary werden"],
-      "contra": ["Duo muss geteilte Zeit akzeptieren", "Eifersucht unvermeidlich"]
+      "pro": [
+        "Tiefe romantische Verbindung möglich",
+        "Duo könnte Primary werden"
+      ],
+      "contra": [
+        "Duo muss geteilte Zeit akzeptieren",
+        "Eifersucht unvermeidlich"
+      ]
     },
     "polyamor_duo_flex": {
-      "pro": ["Duo-Flex versteht Poly-Konzepte", "Respekt für verschiedene Modelle"],
-      "contra": ["Polyamor will mehr als situative Öffnung"]
+      "pro": [
+        "Duo-Flex versteht Poly-Konzepte",
+        "Respekt für verschiedene Modelle"
+      ],
+      "contra": [
+        "Polyamor will mehr als situative Öffnung"
+      ]
     },
     "polyamor_solopoly": {
-      "pro": ["Geteilte Poly-Sprache und Ethik", "Starke Kommunikation"],
-      "contra": ["Solopoly wird nie Primary", "Nähe-Distanz-Konflikt"]
+      "pro": [
+        "Geteilte Poly-Sprache und Ethik",
+        "Starke Kommunikation"
+      ],
+      "contra": [
+        "Solopoly wird nie Primary",
+        "Nähe-Distanz-Konflikt"
+      ]
     },
     "polyamor_polyamor": {
-      "pro": ["Identische Beziehungsphilosophie", "Compersion als verbindendes Element"],
-      "contra": ["Kalender-Koordination komplex"]
+      "pro": [
+        "Identische Beziehungsphilosophie",
+        "Compersion als verbindendes Element"
+      ],
+      "contra": [
+        "Kalender-Koordination komplex"
+      ]
     },
     "polyamor_ra": {
-      "pro": ["Beide verstehen nicht-monogame Lebensweisen"],
-      "contra": ["RA lehnt Hierarchien ab, Polyamor hat oft welche"]
+      "pro": [
+        "Beide verstehen nicht-monogame Lebensweisen"
+      ],
+      "contra": [
+        "RA lehnt Hierarchien ab, Polyamor hat oft welche"
+      ]
     },
     "polyamor_lat": {
-      "pro": ["LAT versteht bewusste Distanz", "Kann als Partner im Netzwerk funktionieren"],
-      "contra": ["LAT könnte mehr Exklusivität erwarten"]
+      "pro": [
+        "LAT versteht bewusste Distanz",
+        "Kann als Partner im Netzwerk funktionieren"
+      ],
+      "contra": [
+        "LAT könnte mehr Exklusivität erwarten"
+      ]
     },
     "polyamor_aromantisch": {
-      "pro": ["Aromantisch könnte platonischer Partner sein"],
-      "contra": ["Polyamor sucht romantische Liebe"]
+      "pro": [
+        "Aromantisch könnte platonischer Partner sein"
+      ],
+      "contra": [
+        "Polyamor sucht romantische Liebe"
+      ]
     },
-
     "ra_single": {
-      "pro": ["Single ist offen und ungebunden", "Keine Label-Erwartungen"],
-      "contra": ["Single könnte mehr Struktur wollen"]
+      "pro": [
+        "Single ist offen und ungebunden",
+        "Keine Label-Erwartungen"
+      ],
+      "contra": [
+        "Single könnte mehr Struktur wollen"
+      ]
     },
     "ra_duo": {
-      "pro": ["Duo bietet Stabilität und Tiefe"],
-      "contra": ["Fundamentaler Weltanschauungs-Konflikt", "Duo braucht Labels, RA lehnt sie ab"]
+      "pro": [
+        "Duo bietet Stabilität und Tiefe"
+      ],
+      "contra": [
+        "Fundamentaler Weltanschauungs-Konflikt",
+        "Duo braucht Labels, RA lehnt sie ab"
+      ]
     },
     "ra_duo_flex": {
-      "pro": ["Duo-Flex zeigt Offenheit"],
-      "contra": ["Primärbeziehungs-Konzept widerspricht RA"]
+      "pro": [
+        "Duo-Flex zeigt Offenheit"
+      ],
+      "contra": [
+        "Primärbeziehungs-Konzept widerspricht RA"
+      ]
     },
     "ra_solopoly": {
-      "pro": ["Beide maximieren Autonomie", "Ähnliche Werte"],
-      "contra": ["Solopoly strukturierter als RA"]
+      "pro": [
+        "Beide maximieren Autonomie",
+        "Ähnliche Werte"
+      ],
+      "contra": [
+        "Solopoly strukturierter als RA"
+      ]
     },
     "ra_polyamor": {
-      "pro": ["Beide verstehen nicht-monogame Lebensweisen"],
-      "contra": ["RA lehnt Hierarchien ab", "Polyamor's Struktur kann einengend wirken"]
+      "pro": [
+        "Beide verstehen nicht-monogame Lebensweisen"
+      ],
+      "contra": [
+        "RA lehnt Hierarchien ab",
+        "Polyamor's Struktur kann einengend wirken"
+      ]
     },
     "ra_ra": {
-      "pro": ["Identische Philosophie", "Maximale gegenseitige Freiheit", "Keine vorgegebenen Erwartungen"],
-      "contra": ["Kann zu wenig Struktur für manche sein"]
+      "pro": [
+        "Identische Philosophie",
+        "Maximale gegenseitige Freiheit",
+        "Keine vorgegebenen Erwartungen"
+      ],
+      "contra": [
+        "Kann zu wenig Struktur für manche sein"
+      ]
     },
     "ra_lat": {
-      "pro": ["LAT respektiert Autonomie", "Getrenntes Wohnen passt zu RA"],
-      "contra": ["LAT hat mehr Beziehungserwartungen"]
+      "pro": [
+        "LAT respektiert Autonomie",
+        "Getrenntes Wohnen passt zu RA"
+      ],
+      "contra": [
+        "LAT hat mehr Beziehungserwartungen"
+      ]
     },
     "ra_aromantisch": {
-      "pro": ["Beide lehnen traditionelle Erwartungen ab", "Individuelle Vereinbarungen"],
-      "contra": ["Unterschiedliche Motivationen"]
+      "pro": [
+        "Beide lehnen traditionelle Erwartungen ab",
+        "Individuelle Vereinbarungen"
+      ],
+      "contra": [
+        "Unterschiedliche Motivationen"
+      ]
     },
-
     "lat_single": {
-      "pro": ["Single versteht eigenen Raum", "Guter Übergang zur Beziehung"],
-      "contra": ["Single könnte nicht bereit für Verbindlichkeit sein"]
+      "pro": [
+        "Single versteht eigenen Raum",
+        "Guter Übergang zur Beziehung"
+      ],
+      "contra": [
+        "Single könnte nicht bereit für Verbindlichkeit sein"
+      ]
     },
     "lat_duo": {
-      "pro": ["Beide wollen tiefe Verbindung", "Exklusivität möglich"],
-      "contra": ["Duo will zusammenleben", "Fundamentaler Wohnform-Konflikt"]
+      "pro": [
+        "Beide wollen tiefe Verbindung",
+        "Exklusivität möglich"
+      ],
+      "contra": [
+        "Duo will zusammenleben",
+        "Fundamentaler Wohnform-Konflikt"
+      ]
     },
     "lat_duo_flex": {
-      "pro": ["Beide verstehen Flexibilität", "Gute Balance möglich"],
-      "contra": ["Unterschiedliche Prioritäten"]
+      "pro": [
+        "Beide verstehen Flexibilität",
+        "Gute Balance möglich"
+      ],
+      "contra": [
+        "Unterschiedliche Prioritäten"
+      ]
     },
     "lat_solopoly": {
-      "pro": ["Beide leben getrennt", "Autonomie-Verständnis"],
-      "contra": ["LAT könnte mehr Exklusivität wollen"]
+      "pro": [
+        "Beide leben getrennt",
+        "Autonomie-Verständnis"
+      ],
+      "contra": [
+        "LAT könnte mehr Exklusivität wollen"
+      ]
     },
     "lat_polyamor": {
-      "pro": ["LAT kann Teil eines Netzwerks sein"],
-      "contra": ["LAT könnte von Komplexität überfordert sein"]
+      "pro": [
+        "LAT kann Teil eines Netzwerks sein"
+      ],
+      "contra": [
+        "LAT könnte von Komplexität überfordert sein"
+      ]
     },
     "lat_ra": {
-      "pro": ["RA respektiert LAT's Autonomie"],
-      "contra": ["RA's Label-Ablehnung kann verwirrend sein"]
+      "pro": [
+        "RA respektiert LAT's Autonomie"
+      ],
+      "contra": [
+        "RA's Label-Ablehnung kann verwirrend sein"
+      ]
     },
     "lat_lat": {
-      "pro": ["Identische Beziehungsphilosophie", "Geteiltes Verständnis für eigenen Raum"],
-      "contra": ["Beide könnten zu distanziert sein"]
+      "pro": [
+        "Identische Beziehungsphilosophie",
+        "Geteiltes Verständnis für eigenen Raum"
+      ],
+      "contra": [
+        "Beide könnten zu distanziert sein"
+      ]
     },
     "lat_aromantisch": {
-      "pro": ["Beide schätzen Distanz", "Platonische LAT-Beziehung möglich"],
-      "contra": ["LAT könnte Romantik erwarten"]
+      "pro": [
+        "Beide schätzen Distanz",
+        "Platonische LAT-Beziehung möglich"
+      ],
+      "contra": [
+        "LAT könnte Romantik erwarten"
+      ]
     },
-
     "aromantisch_single": {
-      "pro": ["Single hat keine romantischen Erwartungen", "Tiefe Freundschaft möglich"],
-      "contra": ["Single könnte Romantik suchen"]
+      "pro": [
+        "Single hat keine romantischen Erwartungen",
+        "Tiefe Freundschaft möglich"
+      ],
+      "contra": [
+        "Single könnte Romantik suchen"
+      ]
     },
     "aromantisch_duo": {
-      "pro": ["Duo kann tiefe Verbindung bieten"],
-      "contra": ["Fundamentaler Unterschied", "Duo erwartet Romantik"]
+      "pro": [
+        "Duo kann tiefe Verbindung bieten"
+      ],
+      "contra": [
+        "Fundamentaler Unterschied",
+        "Duo erwartet Romantik"
+      ]
     },
     "aromantisch_duo_flex": {
-      "pro": ["Duo-Flex ist flexibler"],
-      "contra": ["Romantische Erwartungen bestehen"]
+      "pro": [
+        "Duo-Flex ist flexibler"
+      ],
+      "contra": [
+        "Romantische Erwartungen bestehen"
+      ]
     },
     "aromantisch_solopoly": {
-      "pro": ["Solopoly versteht alternative Beziehungsformen"],
-      "contra": ["Solopoly sucht romantische Verbindungen"]
+      "pro": [
+        "Solopoly versteht alternative Beziehungsformen"
+      ],
+      "contra": [
+        "Solopoly sucht romantische Verbindungen"
+      ]
     },
     "aromantisch_polyamor": {
-      "pro": ["Polyamor ist offen für verschiedene Verbindungsarten"],
-      "contra": ["Polyamor fokussiert auf romantische Liebe"]
+      "pro": [
+        "Polyamor ist offen für verschiedene Verbindungsarten"
+      ],
+      "contra": [
+        "Polyamor fokussiert auf romantische Liebe"
+      ]
     },
     "aromantisch_ra": {
-      "pro": ["RA lehnt Beziehungs-Labels ab", "Individuelle Definitionen möglich"],
-      "contra": ["Unterschiedliche Motivationen"]
+      "pro": [
+        "RA lehnt Beziehungs-Labels ab",
+        "Individuelle Definitionen möglich"
+      ],
+      "contra": [
+        "Unterschiedliche Motivationen"
+      ]
     },
     "aromantisch_lat": {
-      "pro": ["LAT kann platonisch funktionieren", "Eigener Raum wird respektiert"],
-      "contra": ["LAT könnte Romantik erwarten"]
+      "pro": [
+        "LAT kann platonisch funktionieren",
+        "Eigener Raum wird respektiert"
+      ],
+      "contra": [
+        "LAT könnte Romantik erwarten"
+      ]
     },
     "aromantisch_aromantisch": {
-      "pro": ["Identisches Verständnis", "Tiefe platonische Verbindung möglich", "Keine romantischen Erwartungen"],
-      "contra": ["Gesellschaftlich wenig verstanden"]
+      "pro": [
+        "Identisches Verständnis",
+        "Tiefe platonische Verbindung möglich",
+        "Keine romantischen Erwartungen"
+      ],
+      "contra": [
+        "Gesellschaftlich wenig verstanden"
+      ]
+    }
+  },
+  "beduerfnis_baselines": {
+    "_comment": "Wissenschaftliche Baseline-Werte für alle 220 Bedürfnisse × 8 Archetypen (Dez 2025)",
+    "meta": {
+      "title": "Archetypen Bedürfnis-Baselines",
+      "version": "1.0.0",
+      "datum": "2025-12",
+      "beschreibung": "Wissenschaftliche Baseline-Werte der 8 Archetypen für alle 220 Bedürfnisse",
+      "quellen": [
+        "Self-Determination Theory (Deci & Ryan, 2000)",
+        "Attachment Theory - Dismissive-Avoidant (Bartholomew & Horowitz, 1991)",
+        "Identity vs. Intimacy (Erikson, 1968)",
+        "Need for Uniqueness (Snyder & Fromkin, 1980)"
+      ],
+      "N_gesamt": "60000+ (Big Five Meta-Analyse)",
+      "note": "Diese Werte repräsentieren den statistischen Erwartungswert (μ) für jeden Archetyp"
+    },
+    "baselines": {
+      "#B1": {
+        "label": "Luft",
+        "kategorie": "#K1",
+        "dimension": "#D3",
+        "archetypen": {
+          "single": 50,
+          "duo": 50,
+          "duo_flex": 50,
+          "solopoly": 50,
+          "polyamor": 50,
+          "ra": 50,
+          "lat": 50,
+          "aromantisch": 50
+        }
+      },
+      "#B2": {
+        "label": "Wasser",
+        "kategorie": "#K1",
+        "dimension": "#D3",
+        "archetypen": {
+          "single": 50,
+          "duo": 50,
+          "duo_flex": 50,
+          "solopoly": 50,
+          "polyamor": 50,
+          "ra": 50,
+          "lat": 50,
+          "aromantisch": 50
+        }
+      },
+      "#B3": {
+        "label": "Nahrung",
+        "kategorie": "#K1",
+        "dimension": "#D3",
+        "archetypen": {
+          "single": 50,
+          "duo": 55,
+          "duo_flex": 50,
+          "solopoly": 50,
+          "polyamor": 50,
+          "ra": 50,
+          "lat": 50,
+          "aromantisch": 50
+        }
+      },
+      "#B4": {
+        "label": "Bewegung",
+        "kategorie": "#K1",
+        "dimension": "#D3",
+        "archetypen": {
+          "single": 75,
+          "duo": 55,
+          "duo_flex": 65,
+          "solopoly": 75,
+          "polyamor": 60,
+          "ra": 70,
+          "lat": 65,
+          "aromantisch": 70
+        }
+      },
+      "#B5": {
+        "label": "Berührung",
+        "kategorie": "#K1",
+        "dimension": "#D3",
+        "archetypen": {
+          "single": 45,
+          "duo": 90,
+          "duo_flex": 75,
+          "solopoly": 60,
+          "polyamor": 80,
+          "ra": 55,
+          "lat": 65,
+          "aromantisch": 45
+        }
+      },
+      "#B6": {
+        "label": "Erholung",
+        "kategorie": "#K1",
+        "dimension": "#D3",
+        "archetypen": {
+          "single": 70,
+          "duo": 75,
+          "duo_flex": 70,
+          "solopoly": 75,
+          "polyamor": 70,
+          "ra": 70,
+          "lat": 75,
+          "aromantisch": 75
+        }
+      },
+      "#B7": {
+        "label": "Sexueller-Ausdruck",
+        "kategorie": "#K1",
+        "dimension": "#D3",
+        "archetypen": {
+          "single": 65,
+          "duo": 80,
+          "duo_flex": 75,
+          "solopoly": 75,
+          "polyamor": 80,
+          "ra": 65,
+          "lat": 70,
+          "aromantisch": 40
+        }
+      },
+      "#B8": {
+        "label": "Physische-Sicherheit",
+        "kategorie": "#K1",
+        "dimension": "#D3",
+        "archetypen": {
+          "single": 60,
+          "duo": 75,
+          "duo_flex": 65,
+          "solopoly": 65,
+          "polyamor": 65,
+          "ra": 60,
+          "lat": 65,
+          "aromantisch": 65
+        }
+      },
+      "#B9": {
+        "label": "Unterschlupf",
+        "kategorie": "#K1",
+        "dimension": "#D3",
+        "archetypen": {
+          "single": 55,
+          "duo": 80,
+          "duo_flex": 70,
+          "solopoly": 85,
+          "polyamor": 70,
+          "ra": 70,
+          "lat": 90,
+          "aromantisch": 70
+        }
+      },
+      "#B10": {
+        "label": "Beständigkeit",
+        "kategorie": "#K2",
+        "dimension": "#D3",
+        "archetypen": {
+          "single": 40,
+          "duo": 90,
+          "duo_flex": 75,
+          "solopoly": 55,
+          "polyamor": 70,
+          "ra": 45,
+          "lat": 70,
+          "aromantisch": 60
+        }
+      },
+      "#B11": {
+        "label": "Sich-sicher-fühlen",
+        "kategorie": "#K2",
+        "dimension": "#D3",
+        "archetypen": {
+          "single": 55,
+          "duo": 95,
+          "duo_flex": 80,
+          "solopoly": 70,
+          "polyamor": 75,
+          "ra": 65,
+          "lat": 75,
+          "aromantisch": 70
+        }
+      },
+      "#B12": {
+        "label": "Schutz",
+        "kategorie": "#K2",
+        "dimension": "#D3",
+        "archetypen": {
+          "single": 35,
+          "duo": 85,
+          "duo_flex": 65,
+          "solopoly": 40,
+          "polyamor": 60,
+          "ra": 40,
+          "lat": 55,
+          "aromantisch": 50
+        }
+      },
+      "#B13": {
+        "label": "Stabilität",
+        "kategorie": "#K2",
+        "dimension": "#D3",
+        "archetypen": {
+          "single": 40,
+          "duo": 95,
+          "duo_flex": 75,
+          "solopoly": 60,
+          "polyamor": 65,
+          "ra": 45,
+          "lat": 70,
+          "aromantisch": 65
+        }
+      },
+      "#B14": {
+        "label": "Leichtigkeit",
+        "kategorie": "#K2",
+        "dimension": "#D3",
+        "archetypen": {
+          "single": 70,
+          "duo": 60,
+          "duo_flex": 70,
+          "solopoly": 80,
+          "polyamor": 70,
+          "ra": 85,
+          "lat": 75,
+          "aromantisch": 80
+        }
+      },
+      "#B15": {
+        "label": "Geborgenheit",
+        "kategorie": "#K2",
+        "dimension": "#D3",
+        "archetypen": {
+          "single": 30,
+          "duo": 95,
+          "duo_flex": 75,
+          "solopoly": 45,
+          "polyamor": 70,
+          "ra": 45,
+          "lat": 65,
+          "aromantisch": 50
+        }
+      },
+      "#B16": {
+        "label": "Wärme",
+        "kategorie": "#K3",
+        "dimension": "#D3",
+        "archetypen": {
+          "single": 50,
+          "duo": 90,
+          "duo_flex": 80,
+          "solopoly": 65,
+          "polyamor": 85,
+          "ra": 65,
+          "lat": 75,
+          "aromantisch": 60
+        }
+      },
+      "#B17": {
+        "label": "Wertschätzung",
+        "kategorie": "#K3",
+        "dimension": "#D3",
+        "archetypen": {
+          "single": 60,
+          "duo": 85,
+          "duo_flex": 85,
+          "solopoly": 70,
+          "polyamor": 85,
+          "ra": 80,
+          "lat": 80,
+          "aromantisch": 70
+        }
+      },
+      "#B18": {
+        "label": "Nähe",
+        "kategorie": "#K3",
+        "dimension": "#D3",
+        "archetypen": {
+          "single": 35,
+          "duo": 95,
+          "duo_flex": 80,
+          "solopoly": 55,
+          "polyamor": 85,
+          "ra": 55,
+          "lat": 70,
+          "aromantisch": 50
+        }
+      },
+      "#B19": {
+        "label": "Gesellschaft",
+        "kategorie": "#K3",
+        "dimension": "#D3",
+        "archetypen": {
+          "single": 55,
+          "duo": 85,
+          "duo_flex": 75,
+          "solopoly": 65,
+          "polyamor": 85,
+          "ra": 70,
+          "lat": 70,
+          "aromantisch": 70
+        }
+      },
+      "#B20": {
+        "label": "Intimität",
+        "kategorie": "#K3",
+        "dimension": "#D3",
+        "archetypen": {
+          "single": 40,
+          "duo": 95,
+          "duo_flex": 85,
+          "solopoly": 65,
+          "polyamor": 90,
+          "ra": 60,
+          "lat": 80,
+          "aromantisch": 35
+        }
+      },
+      "#B21": {
+        "label": "Liebe",
+        "kategorie": "#K3",
+        "dimension": "#D3",
+        "archetypen": {
+          "single": 45,
+          "duo": 95,
+          "duo_flex": 85,
+          "solopoly": 70,
+          "polyamor": 95,
+          "ra": 70,
+          "lat": 80,
+          "aromantisch": 30
+        }
+      },
+      "#B22": {
+        "label": "Fürsorge",
+        "kategorie": "#K3",
+        "dimension": "#D3",
+        "archetypen": {
+          "single": 45,
+          "duo": 90,
+          "duo_flex": 80,
+          "solopoly": 60,
+          "polyamor": 85,
+          "ra": 60,
+          "lat": 70,
+          "aromantisch": 65
+        }
+      },
+      "#B23": {
+        "label": "Unterstützung",
+        "kategorie": "#K3",
+        "dimension": "#D3",
+        "archetypen": {
+          "single": 50,
+          "duo": 90,
+          "duo_flex": 85,
+          "solopoly": 60,
+          "polyamor": 85,
+          "ra": 65,
+          "lat": 75,
+          "aromantisch": 70
+        }
+      },
+      "#B24": {
+        "label": "Füreinander-da-sein",
+        "kategorie": "#K3",
+        "dimension": "#D3",
+        "archetypen": {
+          "single": 40,
+          "duo": 95,
+          "duo_flex": 85,
+          "solopoly": 55,
+          "polyamor": 85,
+          "ra": 60,
+          "lat": 75,
+          "aromantisch": 65
+        }
+      },
+      "#B25": {
+        "label": "Akzeptanz",
+        "kategorie": "#K4",
+        "dimension": "#D5",
+        "archetypen": {
+          "single": 65,
+          "duo": 90,
+          "duo_flex": 85,
+          "solopoly": 80,
+          "polyamor": 90,
+          "ra": 90,
+          "lat": 80,
+          "aromantisch": 85
+        }
+      },
+      "#B26": {
+        "label": "Mitgefühl",
+        "kategorie": "#K4",
+        "dimension": "#D5",
+        "archetypen": {
+          "single": 45,
+          "duo": 85,
+          "duo_flex": 80,
+          "solopoly": 65,
+          "polyamor": 85,
+          "ra": 70,
+          "lat": 75,
+          "aromantisch": 65
+        }
+      },
+      "#B27": {
+        "label": "Berücksichtigung",
+        "kategorie": "#K4",
+        "dimension": "#D5",
+        "archetypen": {
+          "single": 55,
+          "duo": 85,
+          "duo_flex": 85,
+          "solopoly": 70,
+          "polyamor": 90,
+          "ra": 75,
+          "lat": 80,
+          "aromantisch": 70
+        }
+      },
+      "#B28": {
+        "label": "Empathie",
+        "kategorie": "#K4",
+        "dimension": "#D5",
+        "archetypen": {
+          "single": 50,
+          "duo": 90,
+          "duo_flex": 80,
+          "solopoly": 65,
+          "polyamor": 90,
+          "ra": 70,
+          "lat": 75,
+          "aromantisch": 65
+        }
+      },
+      "#B29": {
+        "label": "Vertrauen",
+        "kategorie": "#K4",
+        "dimension": "#D5",
+        "archetypen": {
+          "single": 55,
+          "duo": 95,
+          "duo_flex": 90,
+          "solopoly": 70,
+          "polyamor": 90,
+          "ra": 75,
+          "lat": 85,
+          "aromantisch": 70
+        }
+      },
+      "#B30": {
+        "label": "Beachtung",
+        "kategorie": "#K4",
+        "dimension": "#D5",
+        "archetypen": {
+          "single": 60,
+          "duo": 80,
+          "duo_flex": 75,
+          "solopoly": 65,
+          "polyamor": 75,
+          "ra": 65,
+          "lat": 75,
+          "aromantisch": 65
+        }
+      },
+      "#B31": {
+        "label": "Gesehen-werden",
+        "kategorie": "#K4",
+        "dimension": "#D5",
+        "archetypen": {
+          "single": 65,
+          "duo": 85,
+          "duo_flex": 80,
+          "solopoly": 75,
+          "polyamor": 80,
+          "ra": 75,
+          "lat": 80,
+          "aromantisch": 80
+        }
+      },
+      "#B32": {
+        "label": "Verstanden-werden",
+        "kategorie": "#K4",
+        "dimension": "#D5",
+        "archetypen": {
+          "single": 55,
+          "duo": 90,
+          "duo_flex": 85,
+          "solopoly": 70,
+          "polyamor": 85,
+          "ra": 70,
+          "lat": 80,
+          "aromantisch": 85
+        }
+      },
+      "#B33": {
+        "label": "Harmonie",
+        "kategorie": "#K4",
+        "dimension": "#D5",
+        "archetypen": {
+          "single": 45,
+          "duo": 90,
+          "duo_flex": 70,
+          "solopoly": 55,
+          "polyamor": 75,
+          "ra": 50,
+          "lat": 70,
+          "aromantisch": 60
+        }
+      },
+      "#B34": {
+        "label": "Selbstbestimmung",
+        "kategorie": "#K5",
+        "dimension": "#D4",
+        "archetypen": {
+          "single": 95,
+          "duo": 45,
+          "duo_flex": 70,
+          "solopoly": 95,
+          "polyamor": 80,
+          "ra": 100,
+          "lat": 85,
+          "aromantisch": 90
+        }
+      },
+      "#B35": {
+        "label": "Wählen-können",
+        "kategorie": "#K5",
+        "dimension": "#D4",
+        "archetypen": {
+          "single": 90,
+          "duo": 50,
+          "duo_flex": 75,
+          "solopoly": 95,
+          "polyamor": 85,
+          "ra": 100,
+          "lat": 80,
+          "aromantisch": 85
+        }
+      },
+      "#B36": {
+        "label": "Unabhängigkeit",
+        "kategorie": "#K5",
+        "dimension": "#D4",
+        "archetypen": {
+          "single": 95,
+          "duo": 35,
+          "duo_flex": 60,
+          "solopoly": 95,
+          "polyamor": 65,
+          "ra": 95,
+          "lat": 85,
+          "aromantisch": 90
+        }
+      },
+      "#B37": {
+        "label": "Raum-haben",
+        "kategorie": "#K5",
+        "dimension": "#D4",
+        "archetypen": {
+          "single": 90,
+          "duo": 40,
+          "duo_flex": 75,
+          "solopoly": 95,
+          "polyamor": 70,
+          "ra": 90,
+          "lat": 95,
+          "aromantisch": 85
+        }
+      },
+      "#B38": {
+        "label": "Spontaneität",
+        "kategorie": "#K5",
+        "dimension": "#D4",
+        "archetypen": {
+          "single": 85,
+          "duo": 45,
+          "duo_flex": 65,
+          "solopoly": 85,
+          "polyamor": 70,
+          "ra": 95,
+          "lat": 75,
+          "aromantisch": 80
+        }
+      },
+      "#B39": {
+        "label": "Zusammenarbeit",
+        "kategorie": "#K6",
+        "dimension": "#D6",
+        "archetypen": {
+          "single": 55,
+          "duo": 85,
+          "duo_flex": 85,
+          "solopoly": 60,
+          "polyamor": 85,
+          "ra": 65,
+          "lat": 70,
+          "aromantisch": 65
+        }
+      },
+      "#B40": {
+        "label": "Kommunikation",
+        "kategorie": "#K6",
+        "dimension": "#D6",
+        "archetypen": {
+          "single": 60,
+          "duo": 85,
+          "duo_flex": 90,
+          "solopoly": 80,
+          "polyamor": 95,
+          "ra": 85,
+          "lat": 85,
+          "aromantisch": 75
+        }
+      },
+      "#B41": {
+        "label": "Gemeinschaft",
+        "kategorie": "#K6",
+        "dimension": "#D6",
+        "archetypen": {
+          "single": 50,
+          "duo": 70,
+          "duo_flex": 70,
+          "solopoly": 65,
+          "polyamor": 90,
+          "ra": 75,
+          "lat": 65,
+          "aromantisch": 75
+        }
+      },
+      "#B42": {
+        "label": "Zugehörigkeit",
+        "kategorie": "#K6",
+        "dimension": "#D6",
+        "archetypen": {
+          "single": 45,
+          "duo": 90,
+          "duo_flex": 80,
+          "solopoly": 55,
+          "polyamor": 85,
+          "ra": 55,
+          "lat": 75,
+          "aromantisch": 70
+        }
+      },
+      "#B43": {
+        "label": "Gegenseitigkeit",
+        "kategorie": "#K6",
+        "dimension": "#D6",
+        "archetypen": {
+          "single": 55,
+          "duo": 90,
+          "duo_flex": 85,
+          "solopoly": 70,
+          "polyamor": 90,
+          "ra": 70,
+          "lat": 80,
+          "aromantisch": 70
+        }
+      },
+      "#B44": {
+        "label": "Respekt",
+        "kategorie": "#K6",
+        "dimension": "#D6",
+        "archetypen": {
+          "single": 75,
+          "duo": 85,
+          "duo_flex": 90,
+          "solopoly": 85,
+          "polyamor": 90,
+          "ra": 90,
+          "lat": 85,
+          "aromantisch": 85
+        }
+      },
+      "#B45": {
+        "label": "Bedeutung-haben",
+        "kategorie": "#K6",
+        "dimension": "#D6",
+        "archetypen": {
+          "single": 70,
+          "duo": 80,
+          "duo_flex": 75,
+          "solopoly": 70,
+          "polyamor": 80,
+          "ra": 70,
+          "lat": 75,
+          "aromantisch": 75
+        }
+      },
+      "#B46": {
+        "label": "Schönheit",
+        "kategorie": "#K7",
+        "dimension": "#D6",
+        "archetypen": {
+          "single": 65,
+          "duo": 70,
+          "duo_flex": 65,
+          "solopoly": 70,
+          "polyamor": 70,
+          "ra": 65,
+          "lat": 70,
+          "aromantisch": 70
+        }
+      },
+      "#B47": {
+        "label": "Freizeit",
+        "kategorie": "#K7",
+        "dimension": "#D6",
+        "archetypen": {
+          "single": 85,
+          "duo": 75,
+          "duo_flex": 75,
+          "solopoly": 90,
+          "polyamor": 65,
+          "ra": 90,
+          "lat": 85,
+          "aromantisch": 85
+        }
+      },
+      "#B48": {
+        "label": "Freude",
+        "kategorie": "#K7",
+        "dimension": "#D6",
+        "archetypen": {
+          "single": 80,
+          "duo": 85,
+          "duo_flex": 80,
+          "solopoly": 85,
+          "polyamor": 85,
+          "ra": 85,
+          "lat": 80,
+          "aromantisch": 80
+        }
+      },
+      "#B49": {
+        "label": "Humor",
+        "kategorie": "#K7",
+        "dimension": "#D6",
+        "archetypen": {
+          "single": 70,
+          "duo": 80,
+          "duo_flex": 80,
+          "solopoly": 75,
+          "polyamor": 80,
+          "ra": 80,
+          "lat": 75,
+          "aromantisch": 75
+        }
+      },
+      "#B50": {
+        "label": "Authentizität",
+        "kategorie": "#K8",
+        "dimension": "#D4",
+        "archetypen": {
+          "single": 90,
+          "duo": 70,
+          "duo_flex": 85,
+          "solopoly": 90,
+          "polyamor": 85,
+          "ra": 95,
+          "lat": 85,
+          "aromantisch": 95
+        }
+      },
+      "#B51": {
+        "label": "Echtheit",
+        "kategorie": "#K8",
+        "dimension": "#D4",
+        "archetypen": {
+          "single": 85,
+          "duo": 75,
+          "duo_flex": 85,
+          "solopoly": 90,
+          "polyamor": 85,
+          "ra": 95,
+          "lat": 85,
+          "aromantisch": 95
+        }
+      },
+      "#B52": {
+        "label": "Integrität",
+        "kategorie": "#K8",
+        "dimension": "#D4",
+        "archetypen": {
+          "single": 85,
+          "duo": 80,
+          "duo_flex": 85,
+          "solopoly": 85,
+          "polyamor": 90,
+          "ra": 90,
+          "lat": 85,
+          "aromantisch": 90
+        }
+      },
+      "#B53": {
+        "label": "Präsenz",
+        "kategorie": "#K8",
+        "dimension": "#D4",
+        "archetypen": {
+          "single": 70,
+          "duo": 75,
+          "duo_flex": 75,
+          "solopoly": 75,
+          "polyamor": 80,
+          "ra": 75,
+          "lat": 75,
+          "aromantisch": 75
+        }
+      },
+      "#B54": {
+        "label": "Ordnung",
+        "kategorie": "#K8",
+        "dimension": "#D4",
+        "archetypen": {
+          "single": 55,
+          "duo": 70,
+          "duo_flex": 65,
+          "solopoly": 60,
+          "polyamor": 75,
+          "ra": 40,
+          "lat": 75,
+          "aromantisch": 65
+        }
+      },
+      "#B55": {
+        "label": "Bewusstheit",
+        "kategorie": "#K8",
+        "dimension": "#D4",
+        "archetypen": {
+          "single": 75,
+          "duo": 65,
+          "duo_flex": 80,
+          "solopoly": 85,
+          "polyamor": 85,
+          "ra": 85,
+          "lat": 80,
+          "aromantisch": 90
+        }
+      },
+      "#B56": {
+        "label": "Herausforderung",
+        "kategorie": "#K8",
+        "dimension": "#D4",
+        "archetypen": {
+          "single": 80,
+          "duo": 50,
+          "duo_flex": 65,
+          "solopoly": 75,
+          "polyamor": 70,
+          "ra": 80,
+          "lat": 60,
+          "aromantisch": 70
+        }
+      },
+      "#B57": {
+        "label": "Klarheit",
+        "kategorie": "#K8",
+        "dimension": "#D4",
+        "archetypen": {
+          "single": 75,
+          "duo": 70,
+          "duo_flex": 80,
+          "solopoly": 85,
+          "polyamor": 85,
+          "ra": 80,
+          "lat": 80,
+          "aromantisch": 85
+        }
+      },
+      "#B58": {
+        "label": "Kompetenz",
+        "kategorie": "#K8",
+        "dimension": "#D4",
+        "archetypen": {
+          "single": 85,
+          "duo": 60,
+          "duo_flex": 75,
+          "solopoly": 85,
+          "polyamor": 75,
+          "ra": 80,
+          "lat": 80,
+          "aromantisch": 80
+        }
+      },
+      "#B59": {
+        "label": "Effizienz",
+        "kategorie": "#K8",
+        "dimension": "#D4",
+        "archetypen": {
+          "single": 70,
+          "duo": 55,
+          "duo_flex": 65,
+          "solopoly": 70,
+          "polyamor": 75,
+          "ra": 60,
+          "lat": 75,
+          "aromantisch": 70
+        }
+      },
+      "#B60": {
+        "label": "Wirksamkeit",
+        "kategorie": "#K8",
+        "dimension": "#D4",
+        "archetypen": {
+          "single": 80,
+          "duo": 60,
+          "duo_flex": 75,
+          "solopoly": 85,
+          "polyamor": 75,
+          "ra": 85,
+          "lat": 80,
+          "aromantisch": 80
+        }
+      },
+      "#B61": {
+        "label": "Wachstum",
+        "kategorie": "#K8",
+        "dimension": "#D4",
+        "archetypen": {
+          "single": 85,
+          "duo": 65,
+          "duo_flex": 80,
+          "solopoly": 85,
+          "polyamor": 85,
+          "ra": 85,
+          "lat": 75,
+          "aromantisch": 80
+        }
+      },
+      "#B62": {
+        "label": "Sinn",
+        "kategorie": "#K8",
+        "dimension": "#D4",
+        "archetypen": {
+          "single": 75,
+          "duo": 80,
+          "duo_flex": 80,
+          "solopoly": 80,
+          "polyamor": 85,
+          "ra": 80,
+          "lat": 80,
+          "aromantisch": 85
+        }
+      },
+      "#B63": {
+        "label": "Beitrag-leisten",
+        "kategorie": "#K8",
+        "dimension": "#D4",
+        "archetypen": {
+          "single": 65,
+          "duo": 75,
+          "duo_flex": 80,
+          "solopoly": 70,
+          "polyamor": 85,
+          "ra": 70,
+          "lat": 75,
+          "aromantisch": 75
+        }
+      },
+      "#B64": {
+        "label": "Kreativität",
+        "kategorie": "#K9",
+        "dimension": "#D4",
+        "archetypen": {
+          "single": 80,
+          "duo": 55,
+          "duo_flex": 70,
+          "solopoly": 80,
+          "polyamor": 75,
+          "ra": 90,
+          "lat": 75,
+          "aromantisch": 80
+        }
+      },
+      "#B65": {
+        "label": "Entdecken",
+        "kategorie": "#K9",
+        "dimension": "#D4",
+        "archetypen": {
+          "single": 85,
+          "duo": 60,
+          "duo_flex": 75,
+          "solopoly": 85,
+          "polyamor": 80,
+          "ra": 90,
+          "lat": 75,
+          "aromantisch": 80
+        }
+      },
+      "#B66": {
+        "label": "Lernen",
+        "kategorie": "#K9",
+        "dimension": "#D4",
+        "archetypen": {
+          "single": 80,
+          "duo": 60,
+          "duo_flex": 75,
+          "solopoly": 80,
+          "polyamor": 85,
+          "ra": 85,
+          "lat": 75,
+          "aromantisch": 80
+        }
+      },
+      "#B67": {
+        "label": "Selbst-Ausdruck",
+        "kategorie": "#K9",
+        "dimension": "#D4",
+        "archetypen": {
+          "single": 85,
+          "duo": 55,
+          "duo_flex": 75,
+          "solopoly": 90,
+          "polyamor": 80,
+          "ra": 95,
+          "lat": 80,
+          "aromantisch": 85
+        }
+      },
+      "#B68": {
+        "label": "Anreize-bekommen",
+        "kategorie": "#K9",
+        "dimension": "#D4",
+        "archetypen": {
+          "single": 70,
+          "duo": 55,
+          "duo_flex": 65,
+          "solopoly": 75,
+          "polyamor": 80,
+          "ra": 80,
+          "lat": 70,
+          "aromantisch": 75
+        }
+      },
+      "#B69": {
+        "label": "Leben-feiern",
+        "kategorie": "#K10",
+        "dimension": "#D3",
+        "archetypen": {
+          "single": 70,
+          "duo": 80,
+          "duo_flex": 80,
+          "solopoly": 80,
+          "polyamor": 90,
+          "ra": 85,
+          "lat": 80,
+          "aromantisch": 80
+        }
+      },
+      "#B70": {
+        "label": "Inspiration",
+        "kategorie": "#K10",
+        "dimension": "#D3",
+        "archetypen": {
+          "single": 75,
+          "duo": 65,
+          "duo_flex": 75,
+          "solopoly": 80,
+          "polyamor": 85,
+          "ra": 85,
+          "lat": 75,
+          "aromantisch": 80
+        }
+      },
+      "#B71": {
+        "label": "Trauer-ausdrücken",
+        "kategorie": "#K10",
+        "dimension": "#D3",
+        "archetypen": {
+          "single": 45,
+          "duo": 75,
+          "duo_flex": 70,
+          "solopoly": 55,
+          "polyamor": 75,
+          "ra": 55,
+          "lat": 65,
+          "aromantisch": 55
+        }
+      },
+      "#B72": {
+        "label": "Einsehen",
+        "kategorie": "#K10",
+        "dimension": "#D3",
+        "archetypen": {
+          "single": 65,
+          "duo": 60,
+          "duo_flex": 70,
+          "solopoly": 70,
+          "polyamor": 75,
+          "ra": 75,
+          "lat": 70,
+          "aromantisch": 75
+        }
+      },
+      "#B73": {
+        "label": "Anfang-Ende",
+        "kategorie": "#K10",
+        "dimension": "#D3",
+        "archetypen": {
+          "single": 55,
+          "duo": 70,
+          "duo_flex": 70,
+          "solopoly": 65,
+          "polyamor": 75,
+          "ra": 70,
+          "lat": 70,
+          "aromantisch": 65
+        }
+      },
+      "#B74": {
+        "label": "Kontrolle-ausüben",
+        "kategorie": "#K11",
+        "dimension": "#D4",
+        "archetypen": {
+          "single": 55,
+          "duo": 35,
+          "duo_flex": 55,
+          "solopoly": 60,
+          "polyamor": 50,
+          "ra": 55,
+          "lat": 55,
+          "aromantisch": 55
+        }
+      },
+      "#B75": {
+        "label": "Hingabe",
+        "kategorie": "#K11",
+        "dimension": "#D4",
+        "archetypen": {
+          "single": 30,
+          "duo": 75,
+          "duo_flex": 60,
+          "solopoly": 40,
+          "polyamor": 65,
+          "ra": 40,
+          "lat": 55,
+          "aromantisch": 35
+        }
+      },
+      "#B76": {
+        "label": "Führung-geben",
+        "kategorie": "#K11",
+        "dimension": "#D4",
+        "archetypen": {
+          "single": 55,
+          "duo": 40,
+          "duo_flex": 55,
+          "solopoly": 55,
+          "polyamor": 55,
+          "ra": 50,
+          "lat": 50,
+          "aromantisch": 50
+        }
+      },
+      "#B77": {
+        "label": "Geführt-werden",
+        "kategorie": "#K11",
+        "dimension": "#D4",
+        "archetypen": {
+          "single": 25,
+          "duo": 70,
+          "duo_flex": 55,
+          "solopoly": 35,
+          "polyamor": 55,
+          "ra": 35,
+          "lat": 45,
+          "aromantisch": 35
+        }
+      },
+      "#B78": {
+        "label": "Ritual",
+        "kategorie": "#K11",
+        "dimension": "#D4",
+        "archetypen": {
+          "single": 40,
+          "duo": 80,
+          "duo_flex": 70,
+          "solopoly": 50,
+          "polyamor": 75,
+          "ra": 35,
+          "lat": 70,
+          "aromantisch": 50
+        }
+      },
+      "#B79": {
+        "label": "Nachsorge",
+        "kategorie": "#K11",
+        "dimension": "#D4",
+        "archetypen": {
+          "single": 45,
+          "duo": 85,
+          "duo_flex": 80,
+          "solopoly": 60,
+          "polyamor": 85,
+          "ra": 60,
+          "lat": 70,
+          "aromantisch": 55
+        }
+      },
+      "#B80": {
+        "label": "Grenzen-setzen",
+        "kategorie": "#K11",
+        "dimension": "#D4",
+        "archetypen": {
+          "single": 85,
+          "duo": 50,
+          "duo_flex": 80,
+          "solopoly": 90,
+          "polyamor": 85,
+          "ra": 90,
+          "lat": 85,
+          "aromantisch": 90
+        }
+      },
+      "#B81": {
+        "label": "Grenzen-respektieren",
+        "kategorie": "#K11",
+        "dimension": "#D4",
+        "archetypen": {
+          "single": 75,
+          "duo": 85,
+          "duo_flex": 90,
+          "solopoly": 85,
+          "polyamor": 95,
+          "ra": 95,
+          "lat": 90,
+          "aromantisch": 90
+        }
+      },
+      "#B82": {
+        "label": "Intensität",
+        "kategorie": "#K11",
+        "dimension": "#D4",
+        "archetypen": {
+          "single": 60,
+          "duo": 75,
+          "duo_flex": 70,
+          "solopoly": 65,
+          "polyamor": 80,
+          "ra": 60,
+          "lat": 70,
+          "aromantisch": 50
+        }
+      },
+      "#B83": {
+        "label": "Vertrauen-schenken",
+        "kategorie": "#K11",
+        "dimension": "#D4",
+        "archetypen": {
+          "single": 40,
+          "duo": 90,
+          "duo_flex": 85,
+          "solopoly": 55,
+          "polyamor": 85,
+          "ra": 60,
+          "lat": 80,
+          "aromantisch": 60
+        }
+      },
+      "#B84": {
+        "label": "Verantwortung-übernehmen",
+        "kategorie": "#K11",
+        "dimension": "#D4",
+        "archetypen": {
+          "single": 70,
+          "duo": 70,
+          "duo_flex": 80,
+          "solopoly": 80,
+          "polyamor": 85,
+          "ra": 80,
+          "lat": 75,
+          "aromantisch": 75
+        }
+      },
+      "#B85": {
+        "label": "Sich-fallenlassen",
+        "kategorie": "#K11",
+        "dimension": "#D4",
+        "archetypen": {
+          "single": 25,
+          "duo": 80,
+          "duo_flex": 65,
+          "solopoly": 40,
+          "polyamor": 65,
+          "ra": 35,
+          "lat": 55,
+          "aromantisch": 35
+        }
+      },
+      "#B86": {
+        "label": "Machtaustausch",
+        "kategorie": "#K11",
+        "dimension": "#D4",
+        "archetypen": {
+          "single": 35,
+          "duo": 65,
+          "duo_flex": 55,
+          "solopoly": 45,
+          "polyamor": 60,
+          "ra": 40,
+          "lat": 50,
+          "aromantisch": 35
+        }
+      },
+      "#B87": {
+        "label": "Dienend-sein",
+        "kategorie": "#K11",
+        "dimension": "#D4",
+        "archetypen": {
+          "single": 25,
+          "duo": 70,
+          "duo_flex": 55,
+          "solopoly": 35,
+          "polyamor": 60,
+          "ra": 30,
+          "lat": 50,
+          "aromantisch": 40
+        }
+      },
+      "#B88": {
+        "label": "Beschützen",
+        "kategorie": "#K11",
+        "dimension": "#D4",
+        "archetypen": {
+          "single": 50,
+          "duo": 80,
+          "duo_flex": 75,
+          "solopoly": 55,
+          "polyamor": 75,
+          "ra": 50,
+          "lat": 65,
+          "aromantisch": 55
+        }
+      },
+      "#B89": {
+        "label": "Kinderwunsch",
+        "kategorie": "#K12",
+        "dimension": "#D1",
+        "archetypen": {}
+      },
+      "#B90": {
+        "label": "Elternschaft",
+        "kategorie": "#K12",
+        "dimension": "#D1",
+        "archetypen": {
+          "single": 25,
+          "duo": 85,
+          "duo_flex": 60,
+          "solopoly": 30,
+          "polyamor": 55,
+          "ra": 35,
+          "lat": 50,
+          "aromantisch": 30
+        }
+      },
+      "#B91": {
+        "label": "Fortpflanzung",
+        "kategorie": "#K12",
+        "dimension": "#D1",
+        "archetypen": {
+          "single": 20,
+          "duo": 80,
+          "duo_flex": 60,
+          "solopoly": 25,
+          "polyamor": 55,
+          "ra": 30,
+          "lat": 45,
+          "aromantisch": 25
+        }
+      },
+      "#B92": {
+        "label": "Familie-gründen",
+        "kategorie": "#K12",
+        "dimension": "#D1",
+        "archetypen": {
+          "single": 20,
+          "duo": 75,
+          "duo_flex": 55,
+          "solopoly": 25,
+          "polyamor": 45,
+          "ra": 25,
+          "lat": 40,
+          "aromantisch": 20
+        }
+      },
+      "#B93": {
+        "label": "Generativität",
+        "kategorie": "#K12",
+        "dimension": "#D1",
+        "archetypen": {
+          "single": 15,
+          "duo": 85,
+          "duo_flex": 55,
+          "solopoly": 15,
+          "polyamor": 50,
+          "ra": 20,
+          "lat": 40,
+          "aromantisch": 15
+        }
+      },
+      "#B94": {
+        "label": "Verbindlichkeit",
+        "kategorie": "#K12",
+        "dimension": "#D1",
+        "archetypen": {
+          "single": 40,
+          "duo": 75,
+          "duo_flex": 65,
+          "solopoly": 45,
+          "polyamor": 60,
+          "ra": 45,
+          "lat": 55,
+          "aromantisch": 50
+        }
+      },
+      "#B95": {
+        "label": "Langfristige-Bindung",
+        "kategorie": "#K12",
+        "dimension": "#D1",
+        "archetypen": {
+          "single": 25,
+          "duo": 95,
+          "duo_flex": 75,
+          "solopoly": 35,
+          "polyamor": 70,
+          "ra": 25,
+          "lat": 75,
+          "aromantisch": 30
+        }
+      },
+      "#B96": {
+        "label": "Rechtliche-Sicherheit",
+        "kategorie": "#K12",
+        "dimension": "#D1",
+        "archetypen": {
+          "single": 20,
+          "duo": 95,
+          "duo_flex": 75,
+          "solopoly": 40,
+          "polyamor": 75,
+          "ra": 30,
+          "lat": 80,
+          "aromantisch": 35
+        }
+      },
+      "#B97": {
+        "label": "Treueversprechen",
+        "kategorie": "#K12",
+        "dimension": "#D1",
+        "archetypen": {
+          "single": 30,
+          "duo": 85,
+          "duo_flex": 55,
+          "solopoly": 25,
+          "polyamor": 40,
+          "ra": 15,
+          "lat": 50,
+          "aromantisch": 25
+        }
+      },
+      "#B98": {
+        "label": "Gemeinsamer-Wohnraum",
+        "kategorie": "#K12",
+        "dimension": "#D1",
+        "archetypen": {
+          "single": 15,
+          "duo": 95,
+          "duo_flex": 70,
+          "solopoly": 30,
+          "polyamor": 50,
+          "ra": 10,
+          "lat": 70,
+          "aromantisch": 10
+        }
+      },
+      "#B99": {
+        "label": "Häuslichkeit",
+        "kategorie": "#K12",
+        "dimension": "#D1",
+        "archetypen": {
+          "single": 15,
+          "duo": 95,
+          "duo_flex": 70,
+          "solopoly": 10,
+          "polyamor": 55,
+          "ra": 25,
+          "lat": 10,
+          "aromantisch": 25
+        }
+      },
+      "#B100": {
+        "label": "Nest-bauen",
+        "kategorie": "#K12",
+        "dimension": "#D1",
+        "archetypen": {
+          "single": 50,
+          "duo": 90,
+          "duo_flex": 65,
+          "solopoly": 60,
+          "polyamor": 60,
+          "ra": 50,
+          "lat": 75,
+          "aromantisch": 60
+        }
+      },
+      "#B101": {
+        "label": "Alltag-teilen",
+        "kategorie": "#K12",
+        "dimension": "#D1",
+        "archetypen": {
+          "single": 30,
+          "duo": 90,
+          "duo_flex": 65,
+          "solopoly": 40,
+          "polyamor": 55,
+          "ra": 25,
+          "lat": 50,
+          "aromantisch": 40
+        }
+      },
+      "#B102": {
+        "label": "Eigener-Raum",
+        "kategorie": "#K12",
+        "dimension": "#D1",
+        "archetypen": {
+          "single": 10,
+          "duo": 95,
+          "duo_flex": 70,
+          "solopoly": 10,
+          "polyamor": 60,
+          "ra": 20,
+          "lat": 25,
+          "aromantisch": 30
+        }
+      },
+      "#B103": {
+        "label": "Rückzugsort",
+        "kategorie": "#K12",
+        "dimension": "#D1",
+        "archetypen": {
+          "single": 95,
+          "duo": 35,
+          "duo_flex": 80,
+          "solopoly": 100,
+          "polyamor": 75,
+          "ra": 90,
+          "lat": 100,
+          "aromantisch": 85
+        }
+      },
+      "#B104": {
+        "label": "Tierliebe",
+        "kategorie": "#K12",
+        "dimension": "#D1",
+        "archetypen": {
+          "single": 95,
+          "duo": 40,
+          "duo_flex": 80,
+          "solopoly": 100,
+          "polyamor": 75,
+          "ra": 90,
+          "lat": 100,
+          "aromantisch": 90
+        }
+      },
+      "#B105": {
+        "label": "Fürsorge-Tiere",
+        "kategorie": "#K12",
+        "dimension": "#D1",
+        "archetypen": {
+          "single": 45,
+          "duo": 70,
+          "duo_flex": 55,
+          "solopoly": 45,
+          "polyamor": 55,
+          "ra": 45,
+          "lat": 50,
+          "aromantisch": 50
+        }
+      },
+      "#B106": {
+        "label": "Sesshaftigkeit",
+        "kategorie": "#K12",
+        "dimension": "#D1",
+        "archetypen": {
+          "single": 45,
+          "duo": 70,
+          "duo_flex": 55,
+          "solopoly": 45,
+          "polyamor": 55,
+          "ra": 45,
+          "lat": 50,
+          "aromantisch": 50
+        }
+      },
+      "#B107": {
+        "label": "Verwurzelung",
+        "kategorie": "#K12",
+        "dimension": "#D1",
+        "archetypen": {
+          "single": 55,
+          "duo": 65,
+          "duo_flex": 55,
+          "solopoly": 50,
+          "polyamor": 55,
+          "ra": 50,
+          "lat": 50,
+          "aromantisch": 60
+        }
+      },
+      "#B108": {
+        "label": "Mobilität",
+        "kategorie": "#K12",
+        "dimension": "#D1",
+        "archetypen": {
+          "single": 50,
+          "duo": 70,
+          "duo_flex": 55,
+          "solopoly": 45,
+          "polyamor": 55,
+          "ra": 45,
+          "lat": 50,
+          "aromantisch": 50
+        }
+      },
+      "#B109": {
+        "label": "Heimat",
+        "kategorie": "#K12",
+        "dimension": "#D1",
+        "archetypen": {
+          "single": 30,
+          "duo": 90,
+          "duo_flex": 55,
+          "solopoly": 30,
+          "polyamor": 45,
+          "ra": 20,
+          "lat": 55,
+          "aromantisch": 45
+        }
+      },
+      "#B110": {
+        "label": "Neue-Orte",
+        "kategorie": "#K12",
+        "dimension": "#D1",
+        "archetypen": {
+          "single": 35,
+          "duo": 85,
+          "duo_flex": 60,
+          "solopoly": 30,
+          "polyamor": 50,
+          "ra": 25,
+          "lat": 65,
+          "aromantisch": 50
+        }
+      },
+      "#B111": {
+        "label": "Familienbindung",
+        "kategorie": "#K12",
+        "dimension": "#D1",
+        "archetypen": {
+          "single": 85,
+          "duo": 30,
+          "duo_flex": 65,
+          "solopoly": 95,
+          "polyamor": 75,
+          "ra": 90,
+          "lat": 80,
+          "aromantisch": 70
+        }
+      },
+      "#B112": {
+        "label": "Herkunftsfamilie",
+        "kategorie": "#K12",
+        "dimension": "#D1",
+        "archetypen": {
+          "single": 40,
+          "duo": 90,
+          "duo_flex": 60,
+          "solopoly": 35,
+          "polyamor": 50,
+          "ra": 30,
+          "lat": 65,
+          "aromantisch": 55
+        }
+      },
+      "#B113": {
+        "label": "Generationenverbund",
+        "kategorie": "#K12",
+        "dimension": "#D1",
+        "archetypen": {
+          "single": 80,
+          "duo": 35,
+          "duo_flex": 70,
+          "solopoly": 90,
+          "polyamor": 75,
+          "ra": 85,
+          "lat": 70,
+          "aromantisch": 70
+        }
+      },
+      "#B114": {
+        "label": "Finanzielle-Unabhängigkeit",
+        "kategorie": "#K13",
+        "dimension": "#D1",
+        "archetypen": {
+          "single": 35,
+          "duo": 85,
+          "duo_flex": 65,
+          "solopoly": 40,
+          "polyamor": 50,
+          "ra": 30,
+          "lat": 55,
+          "aromantisch": 40
+        }
+      },
+      "#B115": {
+        "label": "Gemeinsame-Finanzen",
+        "kategorie": "#K13",
+        "dimension": "#D1",
+        "archetypen": {
+          "single": 30,
+          "duo": 80,
+          "duo_flex": 60,
+          "solopoly": 35,
+          "polyamor": 45,
+          "ra": 25,
+          "lat": 50,
+          "aromantisch": 35
+        }
+      },
+      "#B116": {
+        "label": "Finanzielle-Transparenz",
+        "kategorie": "#K13",
+        "dimension": "#D1",
+        "archetypen": {
+          "single": 30,
+          "duo": 80,
+          "duo_flex": 60,
+          "solopoly": 35,
+          "polyamor": 45,
+          "ra": 25,
+          "lat": 50,
+          "aromantisch": 35
+        }
+      },
+      "#B117": {
+        "label": "Finanzielle-Sicherheit",
+        "kategorie": "#K13",
+        "dimension": "#D1",
+        "archetypen": {
+          "single": 25,
+          "duo": 80,
+          "duo_flex": 55,
+          "solopoly": 30,
+          "polyamor": 45,
+          "ra": 20,
+          "lat": 45,
+          "aromantisch": 30
+        }
+      },
+      "#B118": {
+        "label": "Sparsamkeit",
+        "kategorie": "#K13",
+        "dimension": "#D1",
+        "archetypen": {
+          "single": 25,
+          "duo": 85,
+          "duo_flex": 55,
+          "solopoly": 25,
+          "polyamor": 45,
+          "ra": 20,
+          "lat": 45,
+          "aromantisch": 20
+        }
+      },
+      "#B119": {
+        "label": "Großzügigkeit",
+        "kategorie": "#K13",
+        "dimension": "#D1",
+        "archetypen": {
+          "single": 20,
+          "duo": 90,
+          "duo_flex": 55,
+          "solopoly": 20,
+          "polyamor": 35,
+          "ra": 15,
+          "lat": 45,
+          "aromantisch": 20
+        }
+      },
+      "#B120": {
+        "label": "Berufliche-Erfüllung",
+        "kategorie": "#K13",
+        "dimension": "#D1",
+        "archetypen": {
+          "single": 30,
+          "duo": 90,
+          "duo_flex": 55,
+          "solopoly": 30,
+          "polyamor": 40,
+          "ra": 20,
+          "lat": 60,
+          "aromantisch": 45
+        }
+      },
+      "#B121": {
+        "label": "Karriereambition",
+        "kategorie": "#K13",
+        "dimension": "#D1",
+        "archetypen": {
+          "single": 55,
+          "duo": 85,
+          "duo_flex": 75,
+          "solopoly": 55,
+          "polyamor": 80,
+          "ra": 50,
+          "lat": 75,
+          "aromantisch": 60
+        }
+      },
+      "#B122": {
+        "label": "Work-Life-Balance",
+        "kategorie": "#K13",
+        "dimension": "#D1",
+        "archetypen": {
+          "single": 80,
+          "duo": 15,
+          "duo_flex": 45,
+          "solopoly": 85,
+          "polyamor": 65,
+          "ra": 95,
+          "lat": 55,
+          "aromantisch": 80
+        }
+      },
+      "#B123": {
+        "label": "Berufliche-Anerkennung",
+        "kategorie": "#K13",
+        "dimension": "#D1",
+        "archetypen": {
+          "single": 70,
+          "duo": 60,
+          "duo_flex": 70,
+          "solopoly": 75,
+          "polyamor": 75,
+          "ra": 80,
+          "lat": 65,
+          "aromantisch": 65
+        }
+      },
+      "#B124": {
+        "label": "Zeit-für-Beziehung",
+        "kategorie": "#K13",
+        "dimension": "#D1",
+        "archetypen": {
+          "single": 85,
+          "duo": 20,
+          "duo_flex": 50,
+          "solopoly": 90,
+          "polyamor": 60,
+          "ra": 95,
+          "lat": 65,
+          "aromantisch": 85
+        }
+      },
+      "#B125": {
+        "label": "Berufliche-Flexibilität",
+        "kategorie": "#K13",
+        "dimension": "#D1",
+        "archetypen": {
+          "single": 40,
+          "duo": 65,
+          "duo_flex": 75,
+          "solopoly": 45,
+          "polyamor": 70,
+          "ra": 40,
+          "lat": 60,
+          "aromantisch": 35
+        }
+      },
+      "#B126": {
+        "label": "Täglicher-Austausch",
+        "kategorie": "#K14",
+        "dimension": "#D5",
+        "archetypen": {
+          "single": 45,
+          "duo": 15,
+          "duo_flex": 40,
+          "solopoly": 50,
+          "polyamor": 70,
+          "ra": 65,
+          "lat": 30,
+          "aromantisch": 55
+        }
+      },
+      "#B127": {
+        "label": "Tiefgehende-Gespräche",
+        "kategorie": "#K14",
+        "dimension": "#D5",
+        "archetypen": {
+          "single": 95,
+          "duo": 40,
+          "duo_flex": 70,
+          "solopoly": 100,
+          "polyamor": 70,
+          "ra": 95,
+          "lat": 90,
+          "aromantisch": 95
+        }
+      },
+      "#B128": {
+        "label": "Small-Talk",
+        "kategorie": "#K14",
+        "dimension": "#D5",
+        "archetypen": {
+          "single": 10,
+          "duo": 90,
+          "duo_flex": 60,
+          "solopoly": 5,
+          "polyamor": 45,
+          "ra": 10,
+          "lat": 25,
+          "aromantisch": 10
+        }
+      },
+      "#B129": {
+        "label": "Stille-gemeinsam",
+        "kategorie": "#K14",
+        "dimension": "#D5",
+        "archetypen": {
+          "single": 50,
+          "duo": 85,
+          "duo_flex": 75,
+          "solopoly": 60,
+          "polyamor": 75,
+          "ra": 55,
+          "lat": 70,
+          "aromantisch": 50
+        }
+      },
+      "#B130": {
+        "label": "Verbale-Verbindung",
+        "kategorie": "#K14",
+        "dimension": "#D5",
+        "archetypen": {
+          "single": 70,
+          "duo": 90,
+          "duo_flex": 70,
+          "solopoly": 70,
+          "polyamor": 65,
+          "ra": 60,
+          "lat": 75,
+          "aromantisch": 70
+        }
+      },
+      "#B131": {
+        "label": "Zuhören",
+        "kategorie": "#K14",
+        "dimension": "#D5",
+        "archetypen": {
+          "single": 55,
+          "duo": 70,
+          "duo_flex": 55,
+          "solopoly": 55,
+          "polyamor": 50,
+          "ra": 45,
+          "lat": 60,
+          "aromantisch": 55
+        }
+      },
+      "#B132": {
+        "label": "Emotionale-Offenheit",
+        "kategorie": "#K14",
+        "dimension": "#D5",
+        "archetypen": {
+          "single": 45,
+          "duo": 75,
+          "duo_flex": 65,
+          "solopoly": 50,
+          "polyamor": 65,
+          "ra": 55,
+          "lat": 55,
+          "aromantisch": 55
+        }
+      },
+      "#B133": {
+        "label": "Gefühle-zeigen",
+        "kategorie": "#K14",
+        "dimension": "#D5",
+        "archetypen": {
+          "single": 85,
+          "duo": 55,
+          "duo_flex": 75,
+          "solopoly": 80,
+          "polyamor": 70,
+          "ra": 75,
+          "lat": 80,
+          "aromantisch": 80
+        }
+      },
+      "#B134": {
+        "label": "Verletzlichkeit",
+        "kategorie": "#K14",
+        "dimension": "#D5",
+        "archetypen": {
+          "single": 80,
+          "duo": 45,
+          "duo_flex": 70,
+          "solopoly": 75,
+          "polyamor": 65,
+          "ra": 55,
+          "lat": 75,
+          "aromantisch": 70
+        }
+      },
+      "#B135": {
+        "label": "Emotionale-Zurückhaltung",
+        "kategorie": "#K14",
+        "dimension": "#D5",
+        "archetypen": {
+          "single": 75,
+          "duo": 85,
+          "duo_flex": 80,
+          "solopoly": 80,
+          "polyamor": 75,
+          "ra": 80,
+          "lat": 80,
+          "aromantisch": 80
+        }
+      },
+      "#B136": {
+        "label": "Emotionale-Sicherheit",
+        "kategorie": "#K14",
+        "dimension": "#D5",
+        "archetypen": {
+          "single": 80,
+          "duo": 50,
+          "duo_flex": 70,
+          "solopoly": 75,
+          "polyamor": 65,
+          "ra": 65,
+          "lat": 75,
+          "aromantisch": 75
+        }
+      },
+      "#B137": {
+        "label": "Gefühle-teilen",
+        "kategorie": "#K14",
+        "dimension": "#D5",
+        "archetypen": {
+          "single": 15,
+          "duo": 95,
+          "duo_flex": 75,
+          "solopoly": 30,
+          "polyamor": 65,
+          "ra": 25,
+          "lat": 60,
+          "aromantisch": 20
+        }
+      },
+      "#B138": {
+        "label": "Konfliktklärung",
+        "kategorie": "#K14",
+        "dimension": "#D5",
+        "archetypen": {
+          "single": 80,
+          "duo": 60,
+          "duo_flex": 70,
+          "solopoly": 80,
+          "polyamor": 70,
+          "ra": 85,
+          "lat": 75,
+          "aromantisch": 75
+        }
+      },
+      "#B139": {
+        "label": "Aussprache",
+        "kategorie": "#K14",
+        "dimension": "#D5",
+        "archetypen": {
+          "single": 85,
+          "duo": 55,
+          "duo_flex": 75,
+          "solopoly": 85,
+          "polyamor": 70,
+          "ra": 80,
+          "lat": 75,
+          "aromantisch": 80
+        }
+      },
+      "#B140": {
+        "label": "Konflikt-vermeiden",
+        "kategorie": "#K14",
+        "dimension": "#D5",
+        "archetypen": {
+          "single": 80,
+          "duo": 60,
+          "duo_flex": 75,
+          "solopoly": 80,
+          "polyamor": 70,
+          "ra": 75,
+          "lat": 75,
+          "aromantisch": 80
+        }
+      },
+      "#B141": {
+        "label": "Streitkultur",
+        "kategorie": "#K14",
+        "dimension": "#D5",
+        "archetypen": {
+          "single": 75,
+          "duo": 50,
+          "duo_flex": 65,
+          "solopoly": 75,
+          "polyamor": 65,
+          "ra": 80,
+          "lat": 70,
+          "aromantisch": 80
+        }
+      },
+      "#B142": {
+        "label": "Versöhnlichkeit",
+        "kategorie": "#K14",
+        "dimension": "#D5",
+        "archetypen": {
+          "single": 80,
+          "duo": 40,
+          "duo_flex": 70,
+          "solopoly": 80,
+          "polyamor": 70,
+          "ra": 85,
+          "lat": 70,
+          "aromantisch": 75
+        }
+      },
+      "#B143": {
+        "label": "Soziale-Energie",
+        "kategorie": "#K15",
+        "dimension": "#D6",
+        "archetypen": {
+          "single": 70,
+          "duo": 65,
+          "duo_flex": 65,
+          "solopoly": 65,
+          "polyamor": 55,
+          "ra": 60,
+          "lat": 65,
+          "aromantisch": 70
+        }
+      },
+      "#B144": {
+        "label": "Geselligkeit",
+        "kategorie": "#K15",
+        "dimension": "#D6",
+        "archetypen": {
+          "single": 65,
+          "duo": 40,
+          "duo_flex": 55,
+          "solopoly": 70,
+          "polyamor": 55,
+          "ra": 65,
+          "lat": 55,
+          "aromantisch": 65
+        }
+      },
+      "#B145": {
+        "label": "Ruhe-von-Menschen",
+        "kategorie": "#K15",
+        "dimension": "#D6",
+        "archetypen": {
+          "single": 25,
+          "duo": 35,
+          "duo_flex": 40,
+          "solopoly": 40,
+          "polyamor": 45,
+          "ra": 55,
+          "lat": 35,
+          "aromantisch": 35
+        }
+      },
+      "#B146": {
+        "label": "Allein-aufladen",
+        "kategorie": "#K15",
+        "dimension": "#D6",
+        "archetypen": {
+          "single": 70,
+          "duo": 45,
+          "duo_flex": 60,
+          "solopoly": 70,
+          "polyamor": 60,
+          "ra": 65,
+          "lat": 60,
+          "aromantisch": 65
+        }
+      },
+      "#B147": {
+        "label": "Menschen-treffen",
+        "kategorie": "#K15",
+        "dimension": "#D6",
+        "archetypen": {
+          "single": 55,
+          "duo": 30,
+          "duo_flex": 45,
+          "solopoly": 65,
+          "polyamor": 55,
+          "ra": 75,
+          "lat": 50,
+          "aromantisch": 60
+        }
+      },
+      "#B148": {
+        "label": "Kleine-Gruppen",
+        "kategorie": "#K15",
+        "dimension": "#D6",
+        "archetypen": {
+          "single": 85,
+          "duo": 45,
+          "duo_flex": 70,
+          "solopoly": 85,
+          "polyamor": 75,
+          "ra": 90,
+          "lat": 75,
+          "aromantisch": 85
+        }
+      },
+      "#B149": {
+        "label": "Zeit-für-sich",
+        "kategorie": "#K15",
+        "dimension": "#D6",
+        "archetypen": {
+          "single": 35,
+          "duo": 90,
+          "duo_flex": 80,
+          "solopoly": 55,
+          "polyamor": 90,
+          "ra": 45,
+          "lat": 85,
+          "aromantisch": 50
+        }
+      },
+      "#B150": {
+        "label": "Eigene-Hobbys",
+        "kategorie": "#K15",
+        "dimension": "#D6",
+        "archetypen": {
+          "single": 55,
+          "duo": 85,
+          "duo_flex": 85,
+          "solopoly": 65,
+          "polyamor": 90,
+          "ra": 70,
+          "lat": 80,
+          "aromantisch": 70
+        }
+      },
+      "#B151": {
+        "label": "Gemeinsame-Zeit",
+        "kategorie": "#K15",
+        "dimension": "#D6",
+        "archetypen": {
+          "single": 60,
+          "duo": 70,
+          "duo_flex": 60,
+          "solopoly": 55,
+          "polyamor": 60,
+          "ra": 50,
+          "lat": 60,
+          "aromantisch": 55
+        }
+      },
+      "#B152": {
+        "label": "Partnerzeit",
+        "kategorie": "#K15",
+        "dimension": "#D6",
+        "archetypen": {
+          "single": 85,
+          "duo": 85,
+          "duo_flex": 70,
+          "solopoly": 85,
+          "polyamor": 60,
+          "ra": 80,
+          "lat": 75,
+          "aromantisch": 80
+        }
+      },
+      "#B153": {
+        "label": "Eigene-Interessen",
+        "kategorie": "#K15",
+        "dimension": "#D6",
+        "archetypen": {
+          "single": 50,
+          "duo": 85,
+          "duo_flex": 80,
+          "solopoly": 60,
+          "polyamor": 85,
+          "ra": 60,
+          "lat": 80,
+          "aromantisch": 60
+        }
+      },
+      "#B154": {
+        "label": "Eigene-Freunde",
+        "kategorie": "#K15",
+        "dimension": "#D6",
+        "archetypen": {
+          "single": 60,
+          "duo": 85,
+          "duo_flex": 85,
+          "solopoly": 65,
+          "polyamor": 90,
+          "ra": 70,
+          "lat": 80,
+          "aromantisch": 70
+        }
+      },
+      "#B155": {
+        "label": "Gemeinsame-Freunde",
+        "kategorie": "#K15",
+        "dimension": "#D6",
+        "archetypen": {
+          "single": 40,
+          "duo": 85,
+          "duo_flex": 85,
+          "solopoly": 60,
+          "polyamor": 95,
+          "ra": 65,
+          "lat": 75,
+          "aromantisch": 55
+        }
+      },
+      "#B156": {
+        "label": "Freundeskreis-teilen",
+        "kategorie": "#K15",
+        "dimension": "#D6",
+        "archetypen": {
+          "single": 40,
+          "duo": 85,
+          "duo_flex": 80,
+          "solopoly": 55,
+          "polyamor": 85,
+          "ra": 55,
+          "lat": 70,
+          "aromantisch": 50
+        }
+      },
+      "#B157": {
+        "label": "Soziales-Netz",
+        "kategorie": "#K15",
+        "dimension": "#D6",
+        "archetypen": {
+          "single": 35,
+          "duo": 80,
+          "duo_flex": 75,
+          "solopoly": 55,
+          "polyamor": 80,
+          "ra": 50,
+          "lat": 70,
+          "aromantisch": 45
+        }
+      },
+      "#B158": {
+        "label": "Freunde-pflegen",
+        "kategorie": "#K15",
+        "dimension": "#D6",
+        "archetypen": {
+          "single": 70,
+          "duo": 25,
+          "duo_flex": 35,
+          "solopoly": 55,
+          "polyamor": 25,
+          "ra": 50,
+          "lat": 40,
+          "aromantisch": 60
+        }
+      },
+      "#B159": {
+        "label": "Neue-Freundschaften",
+        "kategorie": "#K15",
+        "dimension": "#D6",
+        "archetypen": {
+          "single": 55,
+          "duo": 95,
+          "duo_flex": 80,
+          "solopoly": 60,
+          "polyamor": 85,
+          "ra": 60,
+          "lat": 75,
+          "aromantisch": 65
+        }
+      },
+      "#B160": {
+        "label": "Körpernähe",
+        "kategorie": "#K16",
+        "dimension": "#D3",
+        "archetypen": {
+          "single": 40,
+          "duo": 90,
+          "duo_flex": 85,
+          "solopoly": 55,
+          "polyamor": 90,
+          "ra": 55,
+          "lat": 75,
+          "aromantisch": 50
+        }
+      },
+      "#B161": {
+        "label": "Kuscheln",
+        "kategorie": "#K16",
+        "dimension": "#D3",
+        "archetypen": {
+          "single": 65,
+          "duo": 65,
+          "duo_flex": 80,
+          "solopoly": 75,
+          "polyamor": 85,
+          "ra": 70,
+          "lat": 70,
+          "aromantisch": 70
+        }
+      },
+      "#B162": {
+        "label": "Physische-Distanz",
+        "kategorie": "#K16",
+        "dimension": "#D3",
+        "archetypen": {
+          "single": 60,
+          "duo": 70,
+          "duo_flex": 80,
+          "solopoly": 70,
+          "polyamor": 85,
+          "ra": 70,
+          "lat": 75,
+          "aromantisch": 65
+        }
+      },
+      "#B163": {
+        "label": "Körperkontakt",
+        "kategorie": "#K16",
+        "dimension": "#D3",
+        "archetypen": {
+          "single": 45,
+          "duo": 80,
+          "duo_flex": 40,
+          "solopoly": 40,
+          "polyamor": 35,
+          "ra": 35,
+          "lat": 50,
+          "aromantisch": 45
+        }
+      },
+      "#B164": {
+        "label": "Umarmungen",
+        "kategorie": "#K16",
+        "dimension": "#D3",
+        "archetypen": {
+          "single": 65,
+          "duo": 55,
+          "duo_flex": 75,
+          "solopoly": 70,
+          "polyamor": 80,
+          "ra": 75,
+          "lat": 65,
+          "aromantisch": 65
+        }
+      },
+      "#B165": {
+        "label": "Hand-halten",
+        "kategorie": "#K16",
+        "dimension": "#D3",
+        "archetypen": {
+          "single": 50,
+          "duo": 90,
+          "duo_flex": 80,
+          "solopoly": 60,
+          "polyamor": 85,
+          "ra": 55,
+          "lat": 75,
+          "aromantisch": 60
+        }
+      },
+      "#B166": {
+        "label": "Romantische-Gesten",
+        "kategorie": "#K16",
+        "dimension": "#D3",
+        "archetypen": {
+          "single": 50,
+          "duo": 75,
+          "duo_flex": 70,
+          "solopoly": 55,
+          "polyamor": 80,
+          "ra": 50,
+          "lat": 70,
+          "aromantisch": 30
+        }
+      },
+      "#B167": {
+        "label": "Überraschungen",
+        "kategorie": "#K16",
+        "dimension": "#D3",
+        "archetypen": {
+          "single": 80,
+          "duo": 65,
+          "duo_flex": 75,
+          "solopoly": 75,
+          "polyamor": 75,
+          "ra": 80,
+          "lat": 75,
+          "aromantisch": 80
+        }
+      },
+      "#B168": {
+        "label": "Dates",
+        "kategorie": "#K16",
+        "dimension": "#D3",
+        "archetypen": {
+          "single": 75,
+          "duo": 45,
+          "duo_flex": 65,
+          "solopoly": 70,
+          "polyamor": 70,
+          "ra": 85,
+          "lat": 55,
+          "aromantisch": 75
+        }
+      },
+      "#B169": {
+        "label": "Alltags-Romantik",
+        "kategorie": "#K16",
+        "dimension": "#D3",
+        "archetypen": {
+          "single": 70,
+          "duo": 60,
+          "duo_flex": 70,
+          "solopoly": 70,
+          "polyamor": 75,
+          "ra": 75,
+          "lat": 70,
+          "aromantisch": 70
+        }
+      },
+      "#B170": {
+        "label": "Aufmerksamkeiten",
+        "kategorie": "#K16",
+        "dimension": "#D3",
+        "archetypen": {
+          "single": 50,
+          "duo": 80,
+          "duo_flex": 80,
+          "solopoly": 55,
+          "polyamor": 85,
+          "ra": 50,
+          "lat": 75,
+          "aromantisch": 60
+        }
+      },
+      "#B171": {
+        "label": "Liebesbekundungen",
+        "kategorie": "#K16",
+        "dimension": "#D3",
+        "archetypen": {
+          "single": 75,
+          "duo": 70,
+          "duo_flex": 65,
+          "solopoly": 80,
+          "polyamor": 55,
+          "ra": 80,
+          "lat": 70,
+          "aromantisch": 80
+        }
+      },
+      "#B172": {
+        "label": "Sexuelle-Häufigkeit",
+        "kategorie": "#K16",
+        "dimension": "#D3",
+        "archetypen": {
+          "single": 80,
+          "duo": 50,
+          "duo_flex": 75,
+          "solopoly": 85,
+          "polyamor": 90,
+          "ra": 95,
+          "lat": 75,
+          "aromantisch": 85
+        }
+      },
+      "#B173": {
+        "label": "Sexuelle-Intimität",
+        "kategorie": "#K16",
+        "dimension": "#D3",
+        "archetypen": {
+          "single": 75,
+          "duo": 65,
+          "duo_flex": 75,
+          "solopoly": 75,
+          "polyamor": 75,
+          "ra": 80,
+          "lat": 70,
+          "aromantisch": 80
+        }
+      },
+      "#B174": {
+        "label": "Körperliche-Lust",
+        "kategorie": "#K16",
+        "dimension": "#D3",
+        "archetypen": {
+          "single": 55,
+          "duo": 30,
+          "duo_flex": 45,
+          "solopoly": 55,
+          "polyamor": 50,
+          "ra": 75,
+          "lat": 40,
+          "aromantisch": 60
+        }
+      },
+      "#B175": {
+        "label": "Sexuelle-Experimentierfreude",
+        "kategorie": "#K16",
+        "dimension": "#D3",
+        "archetypen": {
+          "single": 40,
+          "duo": 75,
+          "duo_flex": 60,
+          "solopoly": 45,
+          "polyamor": 70,
+          "ra": 40,
+          "lat": 60,
+          "aromantisch": 35
+        }
+      },
+      "#B176": {
+        "label": "Sexuelle-Verbindung",
+        "kategorie": "#K16",
+        "dimension": "#D3",
+        "archetypen": {
+          "single": 90,
+          "duo": 60,
+          "duo_flex": 80,
+          "solopoly": 90,
+          "polyamor": 85,
+          "ra": 95,
+          "lat": 80,
+          "aromantisch": 95
+        }
+      },
+      "#B177": {
+        "label": "Sexuelle-Zufriedenheit",
+        "kategorie": "#K16",
+        "dimension": "#D3",
+        "archetypen": {
+          "single": 55,
+          "duo": 60,
+          "duo_flex": 70,
+          "solopoly": 55,
+          "polyamor": 80,
+          "ra": 65,
+          "lat": 65,
+          "aromantisch": 65
+        }
+      },
+      "#B178": {
+        "label": "Spiritualität",
+        "kategorie": "#K17",
+        "dimension": "#D2",
+        "archetypen": {
+          "single": 50,
+          "duo": 55,
+          "duo_flex": 70,
+          "solopoly": 50,
+          "polyamor": 80,
+          "ra": 60,
+          "lat": 60,
+          "aromantisch": 60
+        }
+      },
+      "#B179": {
+        "label": "Glaubenspraxis",
+        "kategorie": "#K17",
+        "dimension": "#D2",
+        "archetypen": {
+          "single": 80,
+          "duo": 60,
+          "duo_flex": 60,
+          "solopoly": 75,
+          "polyamor": 45,
+          "ra": 70,
+          "lat": 70,
+          "aromantisch": 70
+        }
+      },
+      "#B180": {
+        "label": "Religiöse-Gemeinschaft",
+        "kategorie": "#K17",
+        "dimension": "#D2",
+        "archetypen": {
+          "single": 90,
+          "duo": 40,
+          "duo_flex": 65,
+          "solopoly": 90,
+          "polyamor": 55,
+          "ra": 80,
+          "lat": 80,
+          "aromantisch": 75
+        }
+      },
+      "#B181": {
+        "label": "Säkularität",
+        "kategorie": "#K17",
+        "dimension": "#D2",
+        "archetypen": {
+          "single": 50,
+          "duo": 55,
+          "duo_flex": 70,
+          "solopoly": 55,
+          "polyamor": 80,
+          "ra": 60,
+          "lat": 60,
+          "aromantisch": 60
+        }
+      },
+      "#B182": {
+        "label": "Sinnsuche",
+        "kategorie": "#K17",
+        "dimension": "#D2",
+        "archetypen": {
+          "single": 55,
+          "duo": 65,
+          "duo_flex": 70,
+          "solopoly": 60,
+          "polyamor": 75,
+          "ra": 65,
+          "lat": 65,
+          "aromantisch": 70
+        }
+      },
+      "#B183": {
+        "label": "Transzendenz",
+        "kategorie": "#K17",
+        "dimension": "#D2",
+        "archetypen": {
+          "single": 95,
+          "duo": 35,
+          "duo_flex": 80,
+          "solopoly": 95,
+          "polyamor": 70,
+          "ra": 90,
+          "lat": 90,
+          "aromantisch": 90
+        }
+      },
+      "#B184": {
+        "label": "Traditionelle-Werte",
+        "kategorie": "#K17",
+        "dimension": "#D2",
+        "archetypen": {
+          "single": 95,
+          "duo": 40,
+          "duo_flex": 80,
+          "solopoly": 95,
+          "polyamor": 70,
+          "ra": 90,
+          "lat": 85,
+          "aromantisch": 90
+        }
+      },
+      "#B185": {
+        "label": "Moderne-Lebensweise",
+        "kategorie": "#K17",
+        "dimension": "#D2",
+        "archetypen": {
+          "single": 25,
+          "duo": 95,
+          "duo_flex": 75,
+          "solopoly": 40,
+          "polyamor": 80,
+          "ra": 45,
+          "lat": 65,
+          "aromantisch": 55
+        }
+      },
+      "#B186": {
+        "label": "Konservative-Werte",
+        "kategorie": "#K17",
+        "dimension": "#D2",
+        "archetypen": {
+          "single": 20,
+          "duo": 95,
+          "duo_flex": 75,
+          "solopoly": 45,
+          "polyamor": 80,
+          "ra": 40,
+          "lat": 70,
+          "aromantisch": 15
+        }
+      },
+      "#B187": {
+        "label": "Progressive-Werte",
+        "kategorie": "#K17",
+        "dimension": "#D2",
+        "archetypen": {
+          "single": 95,
+          "duo": 45,
+          "duo_flex": 80,
+          "solopoly": 95,
+          "polyamor": 70,
+          "ra": 95,
+          "lat": 85,
+          "aromantisch": 90
+        }
+      },
+      "#B188": {
+        "label": "Kulturelle-Tradition",
+        "kategorie": "#K17",
+        "dimension": "#D2",
+        "archetypen": {
+          "single": 70,
+          "duo": 45,
+          "duo_flex": 80,
+          "solopoly": 75,
+          "polyamor": 85,
+          "ra": 80,
+          "lat": 80,
+          "aromantisch": 80
+        }
+      },
+      "#B189": {
+        "label": "Offenheit-für-Neues",
+        "kategorie": "#K17",
+        "dimension": "#D2",
+        "archetypen": {
+          "single": 35,
+          "duo": 80,
+          "duo_flex": 70,
+          "solopoly": 40,
+          "polyamor": 80,
+          "ra": 55,
+          "lat": 65,
+          "aromantisch": 70
+        }
+      },
+      "#B190": {
+        "label": "Umweltverantwortung",
+        "kategorie": "#K17",
+        "dimension": "#D2",
+        "archetypen": {
+          "single": 30,
+          "duo": 80,
+          "duo_flex": 70,
+          "solopoly": 35,
+          "polyamor": 80,
+          "ra": 50,
+          "lat": 60,
+          "aromantisch": 55
+        }
+      },
+      "#B191": {
+        "label": "Nachhaltigkeit",
+        "kategorie": "#K17",
+        "dimension": "#D2",
+        "archetypen": {
+          "single": 60,
+          "duo": 70,
+          "duo_flex": 75,
+          "solopoly": 50,
+          "polyamor": 90,
+          "ra": 70,
+          "lat": 70,
+          "aromantisch": 75
+        }
+      },
+      "#B192": {
+        "label": "Ökologisches-Bewusstsein",
+        "kategorie": "#K17",
+        "dimension": "#D2",
+        "archetypen": {
+          "single": 55,
+          "duo": 65,
+          "duo_flex": 80,
+          "solopoly": 60,
+          "polyamor": 80,
+          "ra": 60,
+          "lat": 70,
+          "aromantisch": 70
+        }
+      },
+      "#B193": {
+        "label": "Pragmatismus",
+        "kategorie": "#K17",
+        "dimension": "#D2",
+        "archetypen": {
+          "single": 50,
+          "duo": 50,
+          "duo_flex": 65,
+          "solopoly": 60,
+          "polyamor": 75,
+          "ra": 65,
+          "lat": 55,
+          "aromantisch": 60
+        }
+      },
+      "#B194": {
+        "label": "Klimaschutz",
+        "kategorie": "#K17",
+        "dimension": "#D2",
+        "archetypen": {
+          "single": 70,
+          "duo": 75,
+          "duo_flex": 80,
+          "solopoly": 75,
+          "polyamor": 85,
+          "ra": 70,
+          "lat": 80,
+          "aromantisch": 85
+        }
+      },
+      "#B195": {
+        "label": "Ressourcenschonung",
+        "kategorie": "#K17",
+        "dimension": "#D2",
+        "archetypen": {
+          "single": 40,
+          "duo": 70,
+          "duo_flex": 60,
+          "solopoly": 45,
+          "polyamor": 70,
+          "ra": 40,
+          "lat": 55,
+          "aromantisch": 60
+        }
+      },
+      "#B196": {
+        "label": "Ordnungssinn",
+        "kategorie": "#K18",
+        "dimension": "#D6",
+        "archetypen": {
+          "single": 80,
+          "duo": 50,
+          "duo_flex": 65,
+          "solopoly": 80,
+          "polyamor": 70,
+          "ra": 85,
+          "lat": 65,
+          "aromantisch": 85
+        }
+      },
+      "#B197": {
+        "label": "Sauberkeit",
+        "kategorie": "#K18",
+        "dimension": "#D6",
+        "archetypen": {
+          "single": 25,
+          "duo": 75,
+          "duo_flex": 45,
+          "solopoly": 20,
+          "polyamor": 30,
+          "ra": 10,
+          "lat": 50,
+          "aromantisch": 30
+        }
+      },
+      "#B198": {
+        "label": "Struktur",
+        "kategorie": "#K18",
+        "dimension": "#D6",
+        "archetypen": {
+          "single": 35,
+          "duo": 20,
+          "duo_flex": 30,
+          "solopoly": 50,
+          "polyamor": 55,
+          "ra": 55,
+          "lat": 25,
+          "aromantisch": 45
+        }
+      },
+      "#B199": {
+        "label": "Chaos-Toleranz",
+        "kategorie": "#K18",
+        "dimension": "#D6",
+        "archetypen": {
+          "single": 75,
+          "duo": 15,
+          "duo_flex": 35,
+          "solopoly": 70,
+          "polyamor": 55,
+          "ra": 90,
+          "lat": 35,
+          "aromantisch": 75
+        }
+      },
+      "#B200": {
+        "label": "Organisiert-sein",
+        "kategorie": "#K18",
+        "dimension": "#D6",
+        "archetypen": {
+          "single": 85,
+          "duo": 30,
+          "duo_flex": 50,
+          "solopoly": 85,
+          "polyamor": 45,
+          "ra": 80,
+          "lat": 60,
+          "aromantisch": 75
+        }
+      },
+      "#B201": {
+        "label": "Flexibilität-Haushalt",
+        "kategorie": "#K18",
+        "dimension": "#D6",
+        "archetypen": {
+          "single": 60,
+          "duo": 65,
+          "duo_flex": 75,
+          "solopoly": 65,
+          "polyamor": 85,
+          "ra": 70,
+          "lat": 70,
+          "aromantisch": 70
+        }
+      },
+      "#B202": {
+        "label": "Reisen",
+        "kategorie": "#K18",
+        "dimension": "#D6",
+        "archetypen": {
+          "single": 70,
+          "duo": 25,
+          "duo_flex": 45,
+          "solopoly": 80,
+          "polyamor": 55,
+          "ra": 90,
+          "lat": 50,
+          "aromantisch": 65
+        }
+      },
+      "#B203": {
+        "label": "Abenteuer",
+        "kategorie": "#K18",
+        "dimension": "#D6",
+        "archetypen": {
+          "single": 30,
+          "duo": 15,
+          "duo_flex": 30,
+          "solopoly": 45,
+          "polyamor": 60,
+          "ra": 45,
+          "lat": 25,
+          "aromantisch": 20
+        }
+      },
+      "#B204": {
+        "label": "Neue-Orte-entdecken",
+        "kategorie": "#K18",
+        "dimension": "#D6",
+        "archetypen": {
+          "single": 45,
+          "duo": 95,
+          "duo_flex": 80,
+          "solopoly": 55,
+          "polyamor": 85,
+          "ra": 50,
+          "lat": 75,
+          "aromantisch": 35
+        }
+      },
+      "#B205": {
+        "label": "Zuhause-bleiben",
+        "kategorie": "#K18",
+        "dimension": "#D6",
+        "archetypen": {
+          "single": 35,
+          "duo": 95,
+          "duo_flex": 80,
+          "solopoly": 50,
+          "polyamor": 85,
+          "ra": 45,
+          "lat": 75,
+          "aromantisch": 35
+        }
+      },
+      "#B206": {
+        "label": "Urlaub",
+        "kategorie": "#K18",
+        "dimension": "#D6",
+        "archetypen": {
+          "single": 70,
+          "duo": 20,
+          "duo_flex": 35,
+          "solopoly": 60,
+          "polyamor": 30,
+          "ra": 55,
+          "lat": 40,
+          "aromantisch": 70
+        }
+      },
+      "#B207": {
+        "label": "Fernweh",
+        "kategorie": "#K18",
+        "dimension": "#D6",
+        "archetypen": {
+          "single": 40,
+          "duo": 90,
+          "duo_flex": 80,
+          "solopoly": 55,
+          "polyamor": 85,
+          "ra": 50,
+          "lat": 75,
+          "aromantisch": 35
+        }
+      },
+      "#B208": {
+        "label": "Heimatverbundenheit",
+        "kategorie": "#K18",
+        "dimension": "#D6",
+        "archetypen": {
+          "single": 40,
+          "duo": 90,
+          "duo_flex": 80,
+          "solopoly": 50,
+          "polyamor": 85,
+          "ra": 50,
+          "lat": 75,
+          "aromantisch": 40
+        }
+      }
     }
   }
 }
