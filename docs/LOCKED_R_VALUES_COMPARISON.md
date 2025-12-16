@@ -77,7 +77,9 @@ R = 0.5 + (Übereinstimmung × 1.0)
 | Szenario | Berechnung | Teil-Score | Differenz |
 |----------|------------|------------|-----------|
 | 🔒 **Gesperrt (0.50)** | 80 × 0.25 × 0.50 | **10 Punkte** | - |
-| 🔓 **Ungesperrt (1.46)** | 80 × 0.25 × 1.46 | **29.2 Punkte** | **+19.2 (+192%)** |
+| 🔓 **Ungesperrt (1.46)** | 80 × 0.25 × 1.46 | **29.2 Punkte** | **+19.2 Punkte** |
+
+**Prozentuale Steigerung:** +192% (relativ zum gesperrten Teil-Score: 10 → 29 Punkte)
 
 ### Interpretation
 
@@ -85,8 +87,8 @@ R = 0.5 + (Übereinstimmung × 1.0)
 
 Die Sperrung auf 0.50 bedeutet:
 - ❌ 96% Philosophie-Kohärenz wird **ignoriert**
-- ❌ Score wird auf **Minimum** (0.5) reduziert
-- ❌ **Fast 200% Score-Verlust** im Philosophie-Bereich
+- ❌ R2-Wert wird auf **Minimum** (0.5) reduziert statt 1.46
+- ❌ Teil-Score sinkt von 29 auf 10 Punkte (**-19 Punkte Verlust**)
 - ⚠️ Endergebnis spiegelt **nicht** die tatsächliche Übereinstimmung wider
 
 ## UI-Komponenten
