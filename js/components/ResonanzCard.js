@@ -262,7 +262,7 @@ const ResonanzCard = (function() {
             <div class="profile-review-card resonanz-card${lockedClass}" data-resonanz="${faktor}">
                 <div class="resonanz-card-content">
                     <div class="resonanz-card-header">
-                        <span class="resonanz-card-label">${info.label}</span>
+                        <span class="resonanz-card-label">${info.label} #${faktor}</span>
                         <span class="resonanz-card-beschreibung">${info.beschreibung}</span>
                     </div>
                     <div class="resonanz-slider-row">
