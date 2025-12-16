@@ -14203,8 +14203,22 @@
                 contraListHtml = '<li style="color: var(--text-muted);">Keine Daten verfügbar</li>';
             }
 
-            // Calculate base archetype score (without modifiers)
-            const baseArchetypeScore = getArchetypeScore(currentArchetype, selectedPartner);
+            // Use overall needs matching score (all 220 needs) instead of matrix fallback
+            let baseArchetypeScore = null;
+            let scoreLabel = 'Theoretischer Wert';
+
+            // Try to get actual needs matching score
+            const matching = lastGfkMatchingResult;
+            if (matching && matching.score !== undefined) {
+                baseArchetypeScore = matching.score;
+                scoreLabel = 'Bedürfnis-Übereinstimmung';
+            }
+
+            // Fallback: Matrix-Score if needs not available
+            if (baseArchetypeScore === null) {
+                baseArchetypeScore = getArchetypeScore(currentArchetype, selectedPartner);
+                scoreLabel = 'Theoretischer Wert';
+            }
 
             return `
                 <!-- Score Display -->
@@ -14215,7 +14229,7 @@
                             <div>
                                 <span style="font-weight: 600; color: var(--text-secondary);">Basis-Archetyp:</span>
                                 <span style="margin-left: 6px; font-weight: 700; color: var(--primary);">${baseArchetypeScore}</span>
-                                <span style="margin-left: 4px; font-size: 11px;">(Forschungsdaten)</span>
+                                <span style="margin-left: 4px; font-size: 11px;">(${scoreLabel})</span>
                             </div>
                             <div style="color: var(--border);">→</div>
                             <div>
