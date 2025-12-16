@@ -1,10 +1,10 @@
 {
-  "version": "2.5.0",
+  "version": "2.6.0",
   "beschreibung": "Ti-age Bedürfnis-Katalog - Single Source of Truth mit #IDs",
   "format": "#[Typ][Nr]-[Label]",
   "erstellt": "2025-12-09",
   "aktualisiert": "2025-12-16",
-  "changelog": "v2.5: K12 Lebensplanung (25→6) + K13 Finanzen/Karriere (12→3) konsolidiert. Insgesamt 11 Kategorien konsolidiert.",
+  "changelog": "v2.6: K15 Soziales Leben (17→5) vollständig konsolidiert. Insgesamt 12 Kategorien konsolidiert.",
 
   "perspektiven": {
     "#P1": { "id": "#P1", "key": "statistik", "label": "Statistik", "beschreibung": "Empirische Forschung - Gaußsche Übereinstimmung der Werte", "quelle": "McCrae & Costa (Big Five), Wismeijer & van Assen (BDSM)" },
@@ -290,7 +290,7 @@
     "#B142": { "id": "#B142", "label": "Versöhnlichkeit", "kategorie": "#K14", "dimension": "#D5", "skala": [0, 100], "sekundaer": ["#K3", "#K4"], "frage": "Wie wichtig ist Ihnen Versöhnung nach Konflikten?", "frageTyp": "haupt" },
 
     "_comment_soziales": "═══ SOZIALES LEBEN (#K15) ═══",
-    "#B143": { "id": "#B143", "label": "Soziale-Energie", "kategorie": "#K15", "dimension": "#D6", "skala": [0, 100] },
+    "#B143": { "id": "#B143", "label": "Soziale-Energie", "kategorie": "#K15", "dimension": "#D6", "skala": [0, 100], "frage": "Wie wichtig ist soziale Energie für Sie?", "frageTyp": "haupt" },
     "#B144": { "id": "#B144", "label": "Geselligkeit", "kategorie": "#K15", "dimension": "#D6", "skala": [0, 100], "sekundaer": ["#K6"], "frage": "Wie gerne sind Sie unter Menschen?", "frageTyp": "nuance", "hauptbeduerfnis": "#B151", "kontext": "soziale Interaktion" },
     "#B145": { "id": "#B145", "label": "Ruhe-von-Menschen", "kategorie": "#K15", "dimension": "#D6", "skala": [0, 100], "sekundaer": ["#K5"], "frage": "Wie stark brauchen Sie Ruhe von Menschen?", "frageTyp": "nuance", "hauptbeduerfnis": "#B149", "kontext": "bewusster Rückzug" },
     "#B146": { "id": "#B146", "label": "Allein-aufladen", "kategorie": "#K15", "dimension": "#D6", "skala": [0, 100], "sekundaer": ["#K5"], "frage": "Wie wichtig ist alleine Energie tanken?", "frageTyp": "nuance", "hauptbeduerfnis": "#B149", "kontext": "Energie tanken" },
@@ -301,12 +301,12 @@
     "#B151": { "id": "#B151", "label": "Zeit-mit-Anderen", "kategorie": "#K15", "dimension": "#D6", "skala": [0, 100], "sekundaer": ["#K3"], "frage": "Wie wichtig ist Ihnen Zeit mit Freunden und Gruppen?", "frageTyp": "haupt", "nuancen": ["#B144", "#B147", "#B148", "#B155"] },
     "#B152": { "id": "#B152", "label": "Partnerzeit", "kategorie": "#K15", "dimension": "#D6", "skala": [0, 100], "sekundaer": ["#K3"], "frage": "Wie wichtig ist Ihnen exklusive Zeit zu zweit?", "frageTyp": "haupt" },
     "#B153": { "id": "#B153", "label": "Eigene-Interessen", "kategorie": "#K15", "dimension": "#D6", "skala": [0, 100], "sekundaer": ["#K5", "#K8"], "frage": "Wie wichtig sind eigene Interessen?", "frageTyp": "nuance", "hauptbeduerfnis": "#B149", "kontext": "persönliche Entfaltung" },
-    "#B154": { "id": "#B154", "label": "Eigene-Freunde", "kategorie": "#K15", "dimension": "#D6", "skala": [0, 100], "sekundaer": ["#K5", "#K6"] },
+    "#B154": { "id": "#B154", "label": "Freundeskreis", "kategorie": "#K15", "dimension": "#D6", "skala": [0, 100], "sekundaer": ["#K5", "#K6"], "frage": "Wie wichtig ist Ihnen Ihr Freundeskreis?", "frageTyp": "haupt", "nuancen": ["#B156", "#B157", "#B158", "#B159"] },
     "#B155": { "id": "#B155", "label": "Gemeinsame-Freunde", "kategorie": "#K15", "dimension": "#D6", "skala": [0, 100], "sekundaer": ["#K6"], "frage": "Wie wichtig sind gemeinsame Freunde?", "frageTyp": "nuance", "hauptbeduerfnis": "#B151", "kontext": "gemeinsamer Freundeskreis" },
-    "#B156": { "id": "#B156", "label": "Freundeskreis-teilen", "kategorie": "#K15", "dimension": "#D6", "skala": [0, 100], "sekundaer": ["#K6"] },
-    "#B157": { "id": "#B157", "label": "Soziales-Netz", "kategorie": "#K15", "dimension": "#D6", "skala": [0, 100], "sekundaer": ["#K2", "#K6"] },
-    "#B158": { "id": "#B158", "label": "Freunde-pflegen", "kategorie": "#K15", "dimension": "#D6", "skala": [0, 100], "sekundaer": ["#K6"] },
-    "#B159": { "id": "#B159", "label": "Neue-Freundschaften", "kategorie": "#K15", "dimension": "#D6", "skala": [0, 100], "sekundaer": ["#K9", "#K6"] },
+    "#B156": { "id": "#B156", "label": "Freundeskreis-teilen", "kategorie": "#K15", "dimension": "#D6", "skala": [0, 100], "sekundaer": ["#K6"], "frageTyp": "nuance", "hauptbeduerfnis": "#B154", "kontext": "Freunde mit Partner teilen" },
+    "#B157": { "id": "#B157", "label": "Soziales-Netz", "kategorie": "#K15", "dimension": "#D6", "skala": [0, 100], "sekundaer": ["#K2", "#K6"], "frageTyp": "nuance", "hauptbeduerfnis": "#B154", "kontext": "stabiles soziales Netzwerk" },
+    "#B158": { "id": "#B158", "label": "Freunde-pflegen", "kategorie": "#K15", "dimension": "#D6", "skala": [0, 100], "sekundaer": ["#K6"], "frageTyp": "nuance", "hauptbeduerfnis": "#B154", "kontext": "Freundschaften pflegen" },
+    "#B159": { "id": "#B159", "label": "Neue-Freundschaften", "kategorie": "#K15", "dimension": "#D6", "skala": [0, 100], "sekundaer": ["#K9", "#K6"], "frageTyp": "nuance", "hauptbeduerfnis": "#B154", "kontext": "neue Freunde finden" },
 
     "_comment_intimitaet": "═══ INTIMITÄT & ROMANTIK (#K16) ═══",
     "#B160": { "id": "#B160", "label": "Körperliche-Nähe", "kategorie": "#K16", "dimension": "#D3", "skala": [0, 100], "sekundaer": ["#K3", "#K1"], "frage": "Wie wichtig ist Ihnen körperliche Nähe?", "frageTyp": "haupt", "nuancen": ["#B161", "#B162", "#B163", "#B164", "#B165"] },
