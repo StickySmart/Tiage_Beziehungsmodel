@@ -120,9 +120,30 @@ TiageSynthesis.Factors.Archetyp = {
     },
 
     /**
-     * Holt Score aus der Fallback-Matrix
+     * Holt Score aus der berechneten oder Fallback-Matrix
+     *
+     * PRIORITÄT:
+     * 1. Dynamisch berechnete Matrix (aus ArchetypeMatrixCalculator)
+     * 2. Hardcodierte Fallback-Matrix (nur wenn Berechnung nicht verfügbar)
      */
     _getFallbackScore: function(type1, type2) {
+        // Priorität 1: Nutze dynamisch berechnete Matrix falls verfügbar
+        if (typeof TiageSynthesis !== 'undefined' &&
+            TiageSynthesis.ArchetypeMatrixCalculator &&
+            TiageSynthesis.ArchetypeMatrixCalculator._cachedMatrix) {
+
+            var calculatedMatrix = TiageSynthesis.ArchetypeMatrixCalculator._cachedMatrix;
+
+            if (calculatedMatrix[type1] && typeof calculatedMatrix[type1][type2] === 'number') {
+                return calculatedMatrix[type1][type2];
+            }
+            // Versuche umgekehrt
+            if (calculatedMatrix[type2] && typeof calculatedMatrix[type2][type1] === 'number') {
+                return calculatedMatrix[type2][type1];
+            }
+        }
+
+        // Priorität 2: Fallback auf hardcodierte Matrix
         if (this._fallbackMatrix[type1] && typeof this._fallbackMatrix[type1][type2] === 'number') {
             return this._fallbackMatrix[type1][type2];
         }
