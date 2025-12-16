@@ -8550,6 +8550,7 @@
             let html = `
                 <div class="gfk-matching-header" onclick="openNeedsFullModal()" style="cursor: pointer;" title="Klicken für vollständige Liste">
                     <div class="gfk-score-display">
+                        <span class="gfk-score" style="color: ${scoreColor}">${matching.score}</span>
                         <span class="gfk-level-label">${beduerfnisLabel}</span>
                     </div>
                 </div>
