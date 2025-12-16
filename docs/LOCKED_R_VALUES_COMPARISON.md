@@ -79,7 +79,7 @@ R = 0.5 + (Übereinstimmung × 1.0)
 | 🔒 **Gesperrt (0.50)** | 80 × 0.25 × 0.50 | **10 Punkte** | - |
 | 🔓 **Ungesperrt (1.46)** | 80 × 0.25 × 1.46 | **29.2 Punkte** | **+19.2 Punkte** |
 
-**Prozentuale Steigerung:** +192% (relativ zum gesperrten Teil-Score: 10 → 29 Punkte)
+**Auswirkung auf Gesamt-Score:** 19 Punkte von 80 Archetyp-Punkten = **~24% Unterschied**
 
 ### Interpretation
 

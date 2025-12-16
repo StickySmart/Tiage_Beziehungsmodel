@@ -1015,7 +1015,7 @@ const ResonanzCard = (function() {
                         Unterschied: ${scoreDiff > 0 ? '+' : ''}${scoreDiff} Punkte
                     </strong>
                     <div style="font-size: 13px; color: #666; margin-top: 8px;">
-                        Das sind ${((scoreDiff / lockedScore) * 100).toFixed(0)}% mehr als der gesperrte Wert (${lockedScore} → ${unlockedScore})
+                        Das sind ${Math.abs(((scoreDiff / exampleArchetypScore) * 100)).toFixed(0)}% vom Archetyp-Score (${Math.abs(scoreDiff)} von ${exampleArchetypScore} Punkten)
                     </div>
                 </div>
             </div>
