@@ -1,10 +1,10 @@
 {
-  "version": "2.3.0",
+  "version": "2.4.0",
   "beschreibung": "Ti-age Bedürfnis-Katalog - Single Source of Truth mit #IDs",
   "format": "#[Typ][Nr]-[Label]",
   "erstellt": "2025-12-09",
   "aktualisiert": "2025-12-16",
-  "changelog": "v2.3: Umfassende Bedürfnis-Konsolidierung abgeschlossen - 8 Kategorien (K2, K3, K4, K11, K14, K16, K17, K18) mit Haupt-/Nuancen-Struktur. Fragebogen von 220 auf ~80 Hauptfragen reduziert (63% kürzer), alle Details als Nuancen erhalten.",
+  "changelog": "v2.4: K7 (Muße) konsolidiert + Genussmittel (Alkohol/Cannabis) hinzugefügt. Insgesamt 9 Kategorien konsolidiert (K2, K3, K4, K7, K11, K14, K16, K17, K18).",
 
   "perspektiven": {
     "#P1": { "id": "#P1", "key": "statistik", "label": "Statistik", "beschreibung": "Empirische Forschung - Gaußsche Übereinstimmung der Werte", "quelle": "McCrae & Costa (Big Five), Wismeijer & van Assen (BDSM)" },
@@ -181,10 +181,10 @@
     "#B44":  { "id": "#B44",  "label": "Respekt", "kategorie": "#K6", "dimension": "#D6", "skala": [0, 100], "sekundaer": ["#K4", "#K11", "#K8"] },
     "#B45":  { "id": "#B45",  "label": "Bedeutung-haben", "kategorie": "#K6", "dimension": "#D6", "skala": [0, 100], "sekundaer": ["#K8", "#K10"] },
 
-    "#B46":  { "id": "#B46",  "label": "Schönheit", "kategorie": "#K7", "dimension": "#D6", "skala": [0, 100], "sekundaer": ["#K10", "#K9"] },
+    "#B46":  { "id": "#B46",  "label": "Schönheit", "kategorie": "#K7", "dimension": "#D6", "skala": [0, 100], "sekundaer": ["#K10", "#K9"], "frageTyp": "nuance", "hauptbeduerfnis": "#B48", "kontext": "Schönheit erleben" },
     "#B47":  { "id": "#B47",  "label": "Freizeit", "kategorie": "#K7", "dimension": "#D6", "skala": [0, 100], "sekundaer": ["#K5"], "frage": "Wie wichtig ist Ihnen unverplante Freizeit?", "frageTyp": "nuance", "hauptbeduerfnis": "#B6", "kontext": "unverplante Zeit" },
-    "#B48":  { "id": "#B48",  "label": "Freude", "kategorie": "#K7", "dimension": "#D6", "skala": [0, 100], "sekundaer": ["#K10", "#K3"] },
-    "#B49":  { "id": "#B49",  "label": "Humor", "kategorie": "#K7", "dimension": "#D6", "skala": [0, 100], "sekundaer": ["#K10", "#K3"] },
+    "#B48":  { "id": "#B48",  "label": "Freude-&-Lebensgenuss", "kategorie": "#K7", "dimension": "#D6", "skala": [0, 100], "sekundaer": ["#K10", "#K3"], "frage": "Wie wichtig ist Ihnen Freude und Lebensgenuss?", "frageTyp": "haupt", "nuancen": ["#B46", "#B49"] },
+    "#B49":  { "id": "#B49",  "label": "Humor", "kategorie": "#K7", "dimension": "#D6", "skala": [0, 100], "sekundaer": ["#K10", "#K3"], "frageTyp": "nuance", "hauptbeduerfnis": "#B48", "kontext": "Humor & Lachen" },
 
     "#B50":  { "id": "#B50",  "label": "Authentizität", "kategorie": "#K8", "dimension": "#D4", "skala": [0, 100], "sekundaer": ["#K5", "#K4"] },
     "#B51":  { "id": "#B51",  "label": "Echtheit", "kategorie": "#K8", "dimension": "#D4", "skala": [0, 100], "sekundaer": ["#K4", "#K10"] },
@@ -361,7 +361,12 @@
     "#B205": { "id": "#B205", "label": "Heimatverbundenheit", "kategorie": "#K18", "dimension": "#D6", "skala": [0, 100], "sekundaer": ["#K2"], "frage": "Wie wichtig ist Ihnen Heimat und Zuhause?", "frageTyp": "haupt", "nuancen": ["#B208"] },
     "#B206": { "id": "#B206", "label": "Urlaub", "kategorie": "#K18", "dimension": "#D6", "skala": [0, 100], "sekundaer": ["#K7"], "frageTyp": "nuance", "hauptbeduerfnis": "#B202", "kontext": "Urlaubsreisen" },
     "#B207": { "id": "#B207", "label": "Fernweh", "kategorie": "#K18", "dimension": "#D6", "skala": [0, 100], "sekundaer": ["#K5", "#K9"], "frageTyp": "nuance", "hauptbeduerfnis": "#B202", "kontext": "Sehnsucht nach Ferne" },
-    "#B208": { "id": "#B208", "label": "Heimatverbundenheit", "kategorie": "#K18", "dimension": "#D6", "skala": [0, 100], "sekundaer": ["#K2", "#K6"], "frageTyp": "nuance", "hauptbeduerfnis": "#B205", "kontext": "Verbundenheit mit Heimat" }
+    "#B208": { "id": "#B208", "label": "Heimatverbundenheit", "kategorie": "#K18", "dimension": "#D6", "skala": [0, 100], "sekundaer": ["#K2", "#K6"], "frageTyp": "nuance", "hauptbeduerfnis": "#B205", "kontext": "Verbundenheit mit Heimat" },
+
+    "_comment_genussmittel": "═══ GENUSSMITTEL (K7 Ergänzung) ═══",
+    "#B209": { "id": "#B209", "label": "Genussmittel", "kategorie": "#K7", "dimension": "#D6", "skala": [0, 100], "sekundaer": ["#K15"], "frage": "Wie wichtig sind Ihnen Genussmittel wie Alkohol oder Cannabis?", "frageTyp": "haupt", "nuancen": ["#B210", "#B211"] },
+    "#B210": { "id": "#B210", "label": "Alkohol", "kategorie": "#K7", "dimension": "#D6", "skala": [0, 100], "frageTyp": "nuance", "hauptbeduerfnis": "#B209", "kontext": "Alkoholkonsum" },
+    "#B211": { "id": "#B211", "label": "Cannabis", "kategorie": "#K7", "dimension": "#D6", "skala": [0, 100], "frageTyp": "nuance", "hauptbeduerfnis": "#B209", "kontext": "Cannabis-Konsum" }
   },
 
   "mapping": {
@@ -588,6 +593,11 @@
     "zuhause_bleiben": "#B205",
     "urlaub": "#B206",
     "fernweh": "#B207",
-    "heimatverbundenheit": "#B208"
+    "heimatverbundenheit": "#B208",
+
+    "_comment_genussmittel_mapping": "═══ GENUSSMITTEL ═══",
+    "genussmittel": "#B209",
+    "alkohol": "#B210",
+    "cannabis": "#B211"
   }
 }
