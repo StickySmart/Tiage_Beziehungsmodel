@@ -106,28 +106,28 @@ const ResonanzCard = (function() {
     const FAKTOR_INFO = {
         R1: {
             label: 'Leben',
-            dimensionId: '#D3',
+            sourceLabel: 'Orientierung',
             beschreibung: 'Existenz, Zuneigung, Muße, Intimität & Romantik',
             kategorien: ['existenz', 'zuneigung', 'musse', 'intimitaet_romantik'],
             color: '#E63946'
         },
         R2: {
             label: 'Philosophie',
-            dimensionId: '#D1',
+            sourceLabel: 'Archetyp',
             beschreibung: 'Freiheit, Teilnahme, Identität, Lebensplanung, Finanzen, Werte, Soziales, Praktisches',
             kategorien: ['freiheit', 'teilnahme', 'identitaet', 'lebensplanung', 'finanzen_karriere', 'werte_haltungen', 'soziales_leben', 'praktisches_leben'],
             color: '#2A9D8F'
         },
         R3: {
             label: 'Dynamik',
-            dimensionId: '#D4',
+            sourceLabel: 'Dominanz',
             beschreibung: 'Dynamik, Sicherheit',
             kategorien: ['dynamik', 'sicherheit'],
             color: '#8B5CF6'
         },
         R4: {
             label: 'Identität',
-            dimensionId: '#D5',
+            sourceLabel: 'Geschlecht',
             beschreibung: 'Verständnis, Erschaffen, Verbundenheit, Kommunikation',
             kategorien: ['verstaendnis', 'erschaffen', 'verbundenheit', 'kommunikation_stil'],
             color: '#F4A261'
@@ -266,7 +266,7 @@ const ResonanzCard = (function() {
             <div class="profile-review-card resonanz-card${lockedClass}" data-resonanz="${faktor}">
                 <div class="resonanz-card-content">
                     <div class="resonanz-card-header">
-                        <span class="resonanz-card-label">${info.label} #${faktor} ${info.dimensionId}</span>
+                        <span class="resonanz-card-label">${info.label} #${faktor} (← ${info.sourceLabel})</span>
                         <span class="resonanz-card-beschreibung">${info.beschreibung}</span>
                     </div>
                     <div class="resonanz-slider-row">
