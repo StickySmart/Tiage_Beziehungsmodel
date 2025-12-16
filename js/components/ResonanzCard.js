@@ -589,6 +589,7 @@ const ResonanzCard = (function() {
         person = person || getCurrentPerson();
         const currentValues = load(person);
         let hasChanges = false;
+        const lockedDifferences = {}; // Speichere Unterschiede bei gesperrten Werten
 
         ['R1', 'R2', 'R3', 'R4'].forEach(faktor => {
             const newValue = calculatedValues[faktor];
@@ -597,6 +598,18 @@ const ResonanzCard = (function() {
             // 1. Wert vorhanden ist
             // 2. Nicht gelockt ODER forceOverwrite
             if (newValue !== undefined && newValue !== null) {
+                // Prüfe ob gesperrt und Wert unterschiedlich ist
+                if (currentValues[faktor].locked && !forceOverwrite) {
+                    const diff = Math.abs(newValue - currentValues[faktor].value);
+                    if (diff > 0.01) { // Nur signifikante Unterschiede
+                        lockedDifferences[faktor] = {
+                            locked: currentValues[faktor].value,
+                            calculated: newValue,
+                            difference: newValue - currentValues[faktor].value
+                        };
+                    }
+                }
+
                 if (!currentValues[faktor].locked || forceOverwrite) {
                     const clampedValue = clampValue(newValue);
                     currentValues[faktor].value = clampedValue;
@@ -614,6 +627,11 @@ const ResonanzCard = (function() {
             }
         });
 
+        // Zeige Warnung wenn gesperrte Werte von berechneten Werten abweichen
+        if (Object.keys(lockedDifferences).length > 0 && person === getCurrentPerson()) {
+            showLockedDifferenceWarning(lockedDifferences);
+        }
+
         if (hasChanges) {
             save(currentValues, person);
             if (person === getCurrentPerson()) {
@@ -622,6 +640,448 @@ const ResonanzCard = (function() {
             // Alle Listener benachrichtigen
             notifyChange(person, 'calculated');
         }
+    }
+
+    /**
+     * Zeigt eine Warnung an, wenn gesperrte Werte von berechneten Werten abweichen
+     * und berechnet die Score-Auswirkung
+     *
+     * @param {Object} lockedDifferences - { faktor: { locked, calculated, difference } }
+     */
+    function showLockedDifferenceWarning(lockedDifferences) {
+        // Entferne alte Warnungen
+        const existingWarning = document.querySelector('.resonanz-locked-warning');
+        if (existingWarning) {
+            existingWarning.remove();
+        }
+
+        // Erstelle Warnung
+        const warningDiv = document.createElement('div');
+        warningDiv.className = 'resonanz-locked-warning';
+        warningDiv.style.cssText = `
+            background: linear-gradient(135deg, #fff3cd 0%, #fcf8e3 100%);
+            border: 2px solid #ff9800;
+            border-radius: 12px;
+            padding: 16px;
+            margin: 16px 0;
+            box-shadow: 0 4px 12px rgba(255, 152, 0, 0.2);
+        `;
+
+        let warningHTML = `
+            <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 12px;">
+                <span style="font-size: 24px;">⚠️</span>
+                <div>
+                    <strong style="color: #e65100; font-size: 16px;">Gesperrte Werte weichen von Berechnung ab</strong>
+                    <p style="margin: 4px 0 0 0; color: #f57c00; font-size: 13px;">
+                        Die gesperrten Werte unterscheiden sich von den berechneten Werten. Dies beeinflusst Ihr Endergebnis.
+                    </p>
+                </div>
+            </div>
+            <div style="background: white; border-radius: 8px; padding: 12px; margin-top: 12px;">
+        `;
+
+        // Zeige Details für jeden gesperrten Faktor
+        for (const [faktor, diff] of Object.entries(lockedDifferences)) {
+            const info = FAKTOR_INFO[faktor];
+            const percentChange = ((diff.difference / diff.locked) * 100).toFixed(1);
+            const arrow = diff.difference > 0 ? '↑' : '↓';
+            const colorClass = diff.difference > 0 ? '#4caf50' : '#f44336';
+
+            warningHTML += `
+                <div style="margin-bottom: 12px; padding-bottom: 12px; border-bottom: 1px solid #e0e0e0;">
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <strong style="color: ${info.color};">${info.label} (${faktor})</strong>
+                        <button onclick="ResonanzCard.unlockAndApply('${faktor}')"
+                                style="background: #2196f3; color: white; border: none; padding: 4px 12px;
+                                       border-radius: 6px; cursor: pointer; font-size: 11px; font-weight: bold;">
+                            🔓 Entsperren & Übernehmen
+                        </button>
+                    </div>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; margin-top: 8px; font-size: 13px;">
+                        <div>
+                            <div style="color: #666; font-size: 11px;">🔒 Gesperrt:</div>
+                            <strong>${diff.locked.toFixed(3)}</strong>
+                        </div>
+                        <div>
+                            <div style="color: #666; font-size: 11px;">📊 Berechnet:</div>
+                            <strong style="color: ${colorClass};">${diff.calculated.toFixed(3)}</strong>
+                        </div>
+                        <div>
+                            <div style="color: #666; font-size: 11px;">Δ Unterschied:</div>
+                            <strong style="color: ${colorClass};">
+                                ${arrow} ${Math.abs(diff.difference).toFixed(3)} (${percentChange}%)
+                            </strong>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        warningHTML += `
+            </div>
+            <div style="margin-top: 12px; display: flex; gap: 8px; justify-content: flex-end;">
+                <button onclick="ResonanzCard.compareScores()"
+                        style="background: #673ab7; color: white; border: none; padding: 8px 16px;
+                               border-radius: 8px; cursor: pointer; font-weight: bold; font-size: 13px;">
+                    📊 Score-Vergleich anzeigen
+                </button>
+                <button onclick="ResonanzCard.unlockAllAndApply()"
+                        style="background: #4caf50; color: white; border: none; padding: 8px 16px;
+                               border-radius: 8px; cursor: pointer; font-weight: bold; font-size: 13px;">
+                    🔓 Alle entsperren & übernehmen
+                </button>
+            </div>
+        `;
+
+        warningDiv.innerHTML = warningHTML;
+
+        // Füge Warnung nach dem ersten Resonanz-Card ein
+        const firstCard = document.querySelector('.resonanz-card');
+        if (firstCard && firstCard.parentNode) {
+            firstCard.parentNode.insertBefore(warningDiv, firstCard);
+        }
+    }
+
+    /**
+     * Entsperrt einen einzelnen Faktor und übernimmt den berechneten Wert
+     * @param {string} faktor - Faktor-Name (R1, R2, R3, R4)
+     */
+    function unlockAndApply(faktor) {
+        const person = getCurrentPerson();
+
+        // Berechne Werte neu
+        const archetypeKey = person === 'ich'
+            ? (typeof currentArchetype !== 'undefined' ? currentArchetype : 'duo')
+            : (typeof selectedPartner !== 'undefined' ? selectedPartner : 'duo');
+
+        const needs = getPersonNeeds(person, archetypeKey);
+        let dominanz = null, orientierung = null, geschlecht = null;
+        if (typeof personDimensions !== 'undefined' && personDimensions[person]) {
+            dominanz = personDimensions[person].dominanz;
+            orientierung = personDimensions[person].orientierung;
+            geschlecht = personDimensions[person].geschlecht;
+        }
+
+        const profileContext = {
+            archetyp: archetypeKey,
+            needs: needs,
+            dominanz: dominanz,
+            orientierung: orientierung,
+            geschlecht: geschlecht
+        };
+
+        const calculatedValues = calculateFromProfile(profileContext);
+        if (!calculatedValues || !calculatedValues[faktor]) {
+            console.warn('[ResonanzCard] Keine berechneten Werte verfügbar für', faktor);
+            return;
+        }
+
+        // Entsperre und übernimme Wert
+        const values = load(person);
+        values[faktor].locked = false;
+        values[faktor].value = clampValue(calculatedValues[faktor]);
+        save(values, person);
+
+        // UI aktualisieren
+        const card = document.querySelector(`[data-resonanz="${faktor}"]`);
+        const input = document.getElementById(`resonanz-${faktor}`);
+        const slider = document.getElementById(`resonanz-slider-${faktor}`);
+
+        if (card) card.classList.remove('locked');
+        if (input) {
+            input.value = values[faktor].value.toFixed(2);
+            input.readOnly = false;
+        }
+        if (slider) {
+            slider.value = valueToSlider(values[faktor].value);
+            slider.disabled = false;
+        }
+
+        updateGfkDisplay();
+        notifyChange(person, 'unlocked');
+
+        // Entferne Warnung wenn keine gesperrten Unterschiede mehr
+        setTimeout(() => {
+            const warning = document.querySelector('.resonanz-locked-warning');
+            if (warning) warning.remove();
+        }, 500);
+    }
+
+    /**
+     * Entsperrt alle Faktoren und übernimmt die berechneten Werte
+     */
+    function unlockAllAndApply() {
+        ['R1', 'R2', 'R3', 'R4'].forEach(faktor => {
+            unlockAndApply(faktor);
+        });
+    }
+
+    /**
+     * Zeigt einen detaillierten Vergleich zwischen gesperrten und ungesperrten Scores
+     */
+    function compareScores() {
+        const person = getCurrentPerson();
+        const currentValues = load(person);
+
+        // Berechne Werte
+        const archetypeKey = person === 'ich'
+            ? (typeof currentArchetype !== 'undefined' ? currentArchetype : 'duo')
+            : (typeof selectedPartner !== 'undefined' ? selectedPartner : 'duo');
+
+        const needs = getPersonNeeds(person, archetypeKey);
+        let dominanz = null, orientierung = null, geschlecht = null;
+        if (typeof personDimensions !== 'undefined' && personDimensions[person]) {
+            dominanz = personDimensions[person].dominanz;
+            orientierung = personDimensions[person].orientierung;
+            geschlecht = personDimensions[person].geschlecht;
+        }
+
+        const profileContext = {
+            archetyp: archetypeKey,
+            needs: needs,
+            dominanz: dominanz,
+            orientierung: orientierung,
+            geschlecht: geschlecht
+        };
+
+        const calculatedValues = calculateFromProfile(profileContext);
+        if (!calculatedValues) {
+            alert('Konnte berechnete Werte nicht ermitteln.');
+            return;
+        }
+
+        // Erstelle Vergleichs-Modal
+        showScoreComparisonModal(currentValues, calculatedValues, person);
+    }
+
+    /**
+     * Zeigt ein detailliertes Modal mit Score-Vergleich
+     * @param {Object} currentValues - Aktuelle (gesperrte) Werte
+     * @param {Object} calculatedValues - Berechnete (ungesperrte) Werte
+     * @param {string} person - Person ('ich' oder 'partner')
+     */
+    function showScoreComparisonModal(currentValues, calculatedValues, person) {
+        // Erstelle Overlay
+        const overlay = document.createElement('div');
+        overlay.style.cssText = `
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.75);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10000;
+            backdrop-filter: blur(4px);
+        `;
+
+        // Erstelle Modal
+        const modal = document.createElement('div');
+        modal.style.cssText = `
+            background: white;
+            border-radius: 16px;
+            padding: 24px;
+            max-width: 900px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        `;
+
+        // Berechne R-Werte für beide Szenarien
+        const lockedR = {
+            R1: currentValues.R1.value,
+            R2: currentValues.R2.value,
+            R3: currentValues.R3.value,
+            R4: currentValues.R4.value
+        };
+
+        const unlockedR = {
+            R1: calculatedValues.R1 || currentValues.R1.value,
+            R2: calculatedValues.R2 || currentValues.R2.value,
+            R3: calculatedValues.R3 || currentValues.R3.value,
+            R4: calculatedValues.R4 || currentValues.R4.value
+        };
+
+        // Erstelle Vergleichstabelle
+        let modalHTML = `
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                <h2 style="margin: 0; color: #1a237e;">📊 Score-Vergleich: Gesperrt vs. Ungesperrt</h2>
+                <button onclick="this.closest('div').parentElement.parentElement.remove()"
+                        style="background: #f44336; color: white; border: none; padding: 8px 16px;
+                               border-radius: 8px; cursor: pointer; font-weight: bold;">
+                    ✕ Schließen
+                </button>
+            </div>
+
+            <div style="background: linear-gradient(135deg, #e3f2fd 0%, #f3e5f5 100%); padding: 16px; border-radius: 12px; margin-bottom: 20px;">
+                <p style="margin: 0; color: #1565c0; font-weight: bold;">
+                    ⚠️ Diese Analyse zeigt, wie sich gesperrte R-Werte auf Ihr Endergebnis auswirken
+                </p>
+            </div>
+
+            <h3 style="color: #1a237e; margin: 20px 0 12px 0;">🔢 R-Werte Vergleich</h3>
+            <div style="overflow-x: auto;">
+                <table style="width: 100%; border-collapse: collapse; margin-bottom: 24px;">
+                    <thead>
+                        <tr style="background: linear-gradient(135deg, #5e35b1 0%, #7e57c2 100%); color: white;">
+                            <th style="padding: 12px; text-align: left; border-radius: 8px 0 0 0;">Faktor</th>
+                            <th style="padding: 12px; text-align: center;">🔒 Gesperrt</th>
+                            <th style="padding: 12px; text-align: center;">🔓 Berechnet</th>
+                            <th style="padding: 12px; text-align: center;">Δ Unterschied</th>
+                            <th style="padding: 12px; text-align: center; border-radius: 0 8px 0 0;">% Änderung</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+        `;
+
+        ['R1', 'R2', 'R3', 'R4'].forEach((faktor, index) => {
+            const info = FAKTOR_INFO[faktor];
+            const locked = lockedR[faktor];
+            const unlocked = unlockedR[faktor];
+            const diff = unlocked - locked;
+            const percentChange = ((diff / locked) * 100).toFixed(1);
+            const isLocked = currentValues[faktor].locked;
+            const rowBg = index % 2 === 0 ? '#f5f5f5' : 'white';
+            const highlightBg = isLocked && Math.abs(diff) > 0.01 ? '#fff3e0' : rowBg;
+            const diffColor = diff > 0 ? '#4caf50' : (diff < 0 ? '#f44336' : '#666');
+
+            modalHTML += `
+                <tr style="background: ${highlightBg};">
+                    <td style="padding: 12px; font-weight: bold; color: ${info.color};">
+                        ${isLocked ? '🔒 ' : ''}${info.label} (${faktor})
+                    </td>
+                    <td style="padding: 12px; text-align: center; font-weight: bold;">
+                        ${locked.toFixed(3)}
+                    </td>
+                    <td style="padding: 12px; text-align: center; font-weight: bold; color: ${diffColor};">
+                        ${unlocked.toFixed(3)}
+                    </td>
+                    <td style="padding: 12px; text-align: center; font-weight: bold; color: ${diffColor};">
+                        ${diff > 0 ? '+' : ''}${diff.toFixed(3)}
+                    </td>
+                    <td style="padding: 12px; text-align: center; font-weight: bold; color: ${diffColor};">
+                        ${percentChange > 0 ? '+' : ''}${percentChange}%
+                    </td>
+                </tr>
+            `;
+        });
+
+        modalHTML += `
+                    </tbody>
+                </table>
+            </div>
+
+            <h3 style="color: #1a237e; margin: 24px 0 12px 0;">📈 Score-Auswirkung (Beispiel)</h3>
+            <div style="background: #f5f5f5; padding: 16px; border-radius: 12px; margin-bottom: 16px;">
+                <p style="margin: 0 0 12px 0; color: #666; font-size: 13px;">
+                    <strong>Annahme:</strong> Archetyp-Score = 80, Gewicht = 0.25 (typische Werte)
+                </p>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+        `;
+
+        // Beispiel-Berechnung für R2 (Philosophie)
+        const exampleArchetypScore = 80;
+        const exampleWeight = 0.25;
+
+        const lockedScore = Math.round(exampleArchetypScore * exampleWeight * lockedR.R2);
+        const unlockedScore = Math.round(exampleArchetypScore * exampleWeight * unlockedR.R2);
+        const scoreDiff = unlockedScore - lockedScore;
+
+        modalHTML += `
+                    <div style="background: white; padding: 16px; border-radius: 8px; border: 2px solid #f44336;">
+                        <div style="font-size: 12px; color: #666; margin-bottom: 8px;">🔒 Mit gesperrtem R2 (${lockedR.R2.toFixed(3)})</div>
+                        <div style="font-size: 28px; font-weight: bold; color: #f44336;">
+                            ${lockedScore} Punkte
+                        </div>
+                        <div style="font-size: 11px; color: #999; margin-top: 4px;">
+                            ${exampleArchetypScore} × ${exampleWeight} × ${lockedR.R2.toFixed(3)}
+                        </div>
+                    </div>
+                    <div style="background: white; padding: 16px; border-radius: 8px; border: 2px solid #4caf50;">
+                        <div style="font-size: 12px; color: #666; margin-bottom: 8px;">🔓 Mit berechnetem R2 (${unlockedR.R2.toFixed(3)})</div>
+                        <div style="font-size: 28px; font-weight: bold; color: #4caf50;">
+                            ${unlockedScore} Punkte
+                        </div>
+                        <div style="font-size: 11px; color: #999; margin-top: 4px;">
+                            ${exampleArchetypScore} × ${exampleWeight} × ${unlockedR.R2.toFixed(3)}
+                        </div>
+                    </div>
+                </div>
+                <div style="text-align: center; margin-top: 16px; padding: 12px; background: ${scoreDiff > 0 ? '#e8f5e9' : '#ffebee'}; border-radius: 8px;">
+                    <strong style="font-size: 18px; color: ${scoreDiff > 0 ? '#4caf50' : '#f44336'};">
+                        Unterschied: ${scoreDiff > 0 ? '+' : ''}${scoreDiff} Punkte (${((scoreDiff / lockedScore) * 100).toFixed(1)}%)
+                    </strong>
+                </div>
+            </div>
+
+            <h3 style="color: #1a237e; margin: 24px 0 12px 0;">💡 Interpretation</h3>
+            <div style="background: linear-gradient(135deg, #fff3e0 0%, #ffe0b2 100%); padding: 16px; border-radius: 12px; margin-bottom: 20px;">
+        `;
+
+        // Interpretation basierend auf R2-Wert
+        const r2Diff = unlockedR.R2 - lockedR.R2;
+        if (r2Diff > 0.5) {
+            modalHTML += `
+                <p style="margin: 0 0 8px 0; font-weight: bold; color: #e65100;">
+                    ⚠️ Stark reduzierter Score durch Sperrung
+                </p>
+                <p style="margin: 0; color: #f57c00; font-size: 14px;">
+                    Ihr gesperrter R2-Wert (${lockedR.R2.toFixed(3)}) liegt <strong>signifikant unter</strong> dem berechneten Wert (${unlockedR.R2.toFixed(3)}).
+                    Dies bedeutet, dass Ihre tatsächliche Philosophie-Kohärenz von <strong>${((unlockedR.R2 - 0.5) * 100).toFixed(0)}%</strong> auf nur
+                    <strong>${((lockedR.R2 - 0.5) * 100).toFixed(0)}%</strong> reduziert wird.
+                </p>
+            `;
+        } else if (r2Diff < -0.5) {
+            modalHTML += `
+                <p style="margin: 0 0 8px 0; font-weight: bold; color: #2e7d32;">
+                    ⚠️ Künstlich erhöhter Score durch Sperrung
+                </p>
+                <p style="margin: 0; color: #388e3c; font-size: 14px;">
+                    Ihr gesperrter R2-Wert (${lockedR.R2.toFixed(3)}) liegt <strong>deutlich über</strong> dem berechneten Wert (${unlockedR.R2.toFixed(3)}).
+                    Der Score wird dadurch künstlich erhöht und spiegelt nicht Ihre tatsächliche Kohärenz wider.
+                </p>
+            `;
+        } else {
+            modalHTML += `
+                <p style="margin: 0 0 8px 0; font-weight: bold; color: #1976d2;">
+                    ✓ Geringe Abweichung
+                </p>
+                <p style="margin: 0; color: #0288d1; font-size: 14px;">
+                    Die Sperrung hat nur minimale Auswirkungen auf Ihr Ergebnis (Differenz: ${Math.abs(r2Diff).toFixed(3)}).
+                </p>
+            `;
+        }
+
+        modalHTML += `
+            </div>
+
+            <div style="display: flex; gap: 12px; justify-content: flex-end; margin-top: 24px;">
+                <button onclick="this.closest('div').parentElement.parentElement.remove()"
+                        style="background: #9e9e9e; color: white; border: none; padding: 10px 20px;
+                               border-radius: 8px; cursor: pointer; font-weight: bold; font-size: 14px;">
+                    Schließen
+                </button>
+                <button onclick="ResonanzCard.unlockAllAndApply(); this.closest('div').parentElement.parentElement.remove();"
+                        style="background: #4caf50; color: white; border: none; padding: 10px 20px;
+                               border-radius: 8px; cursor: pointer; font-weight: bold; font-size: 14px;">
+                    🔓 Alle entsperren & berechnete Werte übernehmen
+                </button>
+            </div>
+        `;
+
+        modal.innerHTML = modalHTML;
+        overlay.appendChild(modal);
+        document.body.appendChild(overlay);
+
+        // Schließen bei Klick auf Overlay
+        overlay.addEventListener('click', (e) => {
+            if (e.target === overlay) {
+                overlay.remove();
+            }
+        });
     }
 
     /**
@@ -811,6 +1271,9 @@ const ResonanzCard = (function() {
         getCurrentPerson,
         getStorageKey,
         getPersonNeeds,
+        unlockAndApply,
+        unlockAllAndApply,
+        compareScores,
         DEFAULT_VALUES,
         FAKTOR_INFO,
         STORAGE_KEY_ICH,
