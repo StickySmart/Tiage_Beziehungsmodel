@@ -1,14 +1,100 @@
 {
-  "version": "2.0.0",
+  "version": "2.1.0",
   "beschreibung": "Ti-age Bedürfnis-Katalog - Single Source of Truth mit #IDs",
   "format": "#[Typ][Nr]-[Label]",
   "erstellt": "2025-12-09",
+  "aktualisiert": "2025-12-16",
+  "changelog": "v2.1: Archetypen (#A1-#A8) hinzugefügt. Interactions in archetype-matrix.json ausgelagert (Trennung: Basis-Definitionen vs. Paarungs-Matrix)",
 
   "perspektiven": {
     "#P1": { "id": "#P1", "key": "statistik", "label": "Statistik", "beschreibung": "Empirische Forschung - Gaußsche Übereinstimmung der Werte", "quelle": "McCrae & Costa (Big Five), Wismeijer & van Assen (BDSM)" },
     "#P2": { "id": "#P2", "key": "osho", "label": "Osho", "beschreibung": "Tantra, Polarität, Natürlichkeit vs. Konditionierung", "quelle": "Osho Rajneesh - Vorträge über Liebe und Beziehungen" },
     "#P3": { "id": "#P3", "key": "pirsig", "label": "Pirsig", "beschreibung": "Static vs. Dynamic Quality - Qualität als Fundament", "quelle": "Robert M. Pirsig - Zen und die Kunst ein Motorrad zu warten (1974)" },
     "#P4": { "id": "#P4", "key": "sexpositiv", "label": "SexPositiv", "beschreibung": "Sex-Positive Movement, Consent, Autonomie, BDSM/Kink", "quelle": "Dossie Easton, Janet Hardy, Jay Wiseman" }
+  },
+
+  "archetypes": {
+    "_comment": "8 Beziehungs-Archetypen (konsolidiert aus archetype-matrix.json v7.0.0)",
+    "#A1": {
+      "id": "#A1",
+      "key": "single",
+      "label": "Single",
+      "color": "#E63946",
+      "colorLight": "#FFB4A2",
+      "colorDark": "#9D2933",
+      "kurzBeschreibung": "Fokus auf Selbstentwicklung, temporär oder bewusst ungebunden. Maximale persönliche Freiheit.",
+      "vollBeschreibung": "Der Single-Archetyp lebt primär für sich selbst und eigene Projekte. Dies kann eine bewusste Lebensphase oder eine dauerhafte Entscheidung sein."
+    },
+    "#A2": {
+      "id": "#A2",
+      "key": "duo",
+      "label": "Duo",
+      "color": "#E84393",
+      "colorLight": "#FDA7DF",
+      "colorDark": "#B53471",
+      "kurzBeschreibung": "Klassische monogame Zweierbeziehung. Exklusivität, Tiefe und Verbindlichkeit mit einer Person.",
+      "vollBeschreibung": "Das Duo-Modell repräsentiert die traditionelle monogame Partnerschaft: Eine tiefe, exklusive Verbindung zwischen zwei Menschen."
+    },
+    "#A3": {
+      "id": "#A3",
+      "key": "duo_flex",
+      "label": "Duo-Flex",
+      "color": "#FF6B6B",
+      "colorLight": "#FFA5A5",
+      "colorDark": "#CC5555",
+      "kurzBeschreibung": "Primär Zweierbeziehung mit situativer Öffnung. Monogamisch mit Flexibilität nach Absprache.",
+      "vollBeschreibung": "Das Duo-Flex-Modell vereint die Stabilität einer Hauptbeziehung mit situativer Offenheit."
+    },
+    "#A4": {
+      "id": "#A4",
+      "key": "solopoly",
+      "label": "Solopoly",
+      "color": "#2A9D8F",
+      "colorLight": "#A8DADC",
+      "colorDark": "#1D7069",
+      "kurzBeschreibung": "Polyamor mit maximaler Autonomie. Keine Primärbeziehung, kein Zusammenleben.",
+      "vollBeschreibung": "Solopoly vereint polyamore Offenheit mit konsequenter Autonomie. Der Fokus liegt auf dem 'Solo'."
+    },
+    "#A5": {
+      "id": "#A5",
+      "key": "polyamor",
+      "label": "Polyamor",
+      "color": "#F4A261",
+      "colorLight": "#FFE5B4",
+      "colorDark": "#C07B3E",
+      "kurzBeschreibung": "Strukturierte, ethische Mehrfachbeziehungen mit Fokus auf tiefe romantische Bindungen.",
+      "vollBeschreibung": "Klassisches Polyamory mit Betonung auf Ethik, Kommunikation und oft einer hierarchischen Struktur."
+    },
+    "#A6": {
+      "id": "#A6",
+      "key": "ra",
+      "label": "RA",
+      "color": "#9B5DE5",
+      "colorLight": "#D4A5FF",
+      "colorDark": "#7340B0",
+      "kurzBeschreibung": "Relationship Anarchy - Ablehnung aller Beziehungs-Hierarchien und Labels.",
+      "vollBeschreibung": "RA lehnt gesellschaftliche Beziehungsnormen ab. Jede Verbindung wird individuell definiert ohne vorgegebene Kategorien."
+    },
+    "#A7": {
+      "id": "#A7",
+      "key": "lat",
+      "label": "LAT",
+      "color": "#06D6A0",
+      "colorLight": "#B5EAD7",
+      "colorDark": "#048A65",
+      "kurzBeschreibung": "Living Apart Together - Feste Partnerschaft ohne Zusammenleben.",
+      "vollBeschreibung": "LAT beschreibt eine verbindliche Beziehung, bei der beide Partner bewusst getrennte Wohnungen behalten."
+    },
+    "#A8": {
+      "id": "#A8",
+      "key": "aromantisch",
+      "label": "Aromantisch",
+      "color": "#118AB2",
+      "colorLight": "#83C5D8",
+      "colorDark": "#0C5F7A",
+      "kurzBeschreibung": "Fokus auf platonische Verbindungen ohne romantische Komponente.",
+      "vollBeschreibung": "Aromantische Menschen erleben keine oder wenig romantische Anziehung, können aber tiefe platonische Bindungen haben."
+    }
   },
 
   "dimensionen": {
