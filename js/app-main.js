@@ -8603,20 +8603,16 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
          */
         function calculateDynamicBeduerfnisMatch(ichArchetyp, partnerArchetyp) {
             // ════════════════════════════════════════════════════════════════════
-            // NEU: KONSISTENTE BERECHNUNG - Nutze TiageProfileStore wenn verfügbar
+            // NEU: KONSISTENTE BERECHNUNG - Nutze individualisierte Bedürfnisse
+            // Verwendet flatNeeds (Archetyp + D/G/O Modifikatoren) + lockedNeeds
             // Dies stellt sicher, dass der Score hier identisch ist mit dem
             // Score in der Tiagesynthese-Ansicht (EINE QUELLE DER WAHRHEIT)
             // ════════════════════════════════════════════════════════════════════
-            if (typeof TiageProfileStore !== 'undefined' && typeof getProfileFromStore === 'function') {
-                const ichPerson = { archetyp: ichArchetyp, ...personDimensions.ich };
-                const partnerPerson = { archetyp: partnerArchetyp, ...personDimensions.partner };
+            if (typeof TiageState !== 'undefined' && typeof calculateNeedsMatchFromFlatNeeds === 'function') {
+                console.log('[GFK] Verwende calculateNeedsMatchFromFlatNeeds für konsistente Berechnung (individualisierte Daten)');
+                const result = calculateNeedsMatchFromFlatNeeds();
 
-                const ichProfile = getProfileFromStore(ichPerson);
-                const partnerProfile = getProfileFromStore(partnerPerson);
-
-                if (ichProfile && ichProfile.needs && partnerProfile && partnerProfile.needs) {
-                    console.log('[GFK] Verwende TiageProfileStore.calculateNeedsMatch für konsistente Berechnung');
-                    const result = TiageProfileStore.calculateNeedsMatch(ichProfile, partnerProfile);
+                if (result && result.score !== undefined) {
 
                     // Level basierend auf Score bestimmen
                     let level = 'niedrig';
@@ -8673,7 +8669,7 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
                         alleGemeinsam: allGemeinsamUndKompatibel,
                         alleUnterschiedlich: allUnterschiedlich,
                         alleKomplementaer: allKomplementaer,
-                        source: 'TiageProfileStore'  // Markierung: Konsistente Berechnung
+                        source: 'calculateNeedsMatchFromFlatNeeds'  // Markierung: Individualisierte Bedürfnisse (flatNeeds + lockedNeeds)
                     };
                 }
             }
@@ -14562,21 +14558,21 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
                         <div style="display: flex; justify-content: center; align-items: center; gap: 20px; flex-wrap: wrap;">
                             <div>
                                 <span style="font-weight: 600; color: var(--text-secondary);">Basis-Archetyp:</span>
-                                <span style="margin-left: 6px; font-weight: 700; color: var(--primary);">${baseArchetypeScore}</span>
+                                <span style="margin-left: 6px; font-weight: 700; color: var(--primary);">${baseArchetypeScore}%</span>
                                 <span style="margin-left: 4px; font-size: 11px;">(${scoreLabel})</span>
                             </div>
                             <div style="color: var(--border);">→</div>
                             <div>
                                 <span style="font-weight: 600; color: var(--text-secondary);">Gesamt-Score:</span>
-                                <span style="margin-left: 6px; font-weight: 700; color: ${scoreColor};">${scoreValue}</span>
+                                <span style="margin-left: 6px; font-weight: 700; color: ${scoreColor};">${scoreValue}%</span>
                                 <span style="margin-left: 4px; font-size: 11px;">(mit Modifikatoren)</span>
                             </div>
                         </div>
                         <div style="margin-top: 8px; font-size: 11px; text-align: center; opacity: 0.8;">
                             ${scoreValue > baseArchetypeScore ?
-                                `Modifikatoren erhöhen den Score um +${scoreValue - baseArchetypeScore} Punkte` :
+                                `Modifikatoren erhöhen den Score um +${scoreValue - baseArchetypeScore} Prozentpunkte` :
                                 scoreValue < baseArchetypeScore ?
-                                `Modifikatoren senken den Score um ${baseArchetypeScore - scoreValue} Punkte` :
+                                `Modifikatoren senken den Score um ${baseArchetypeScore - scoreValue} Prozentpunkte` :
                                 'Keine Modifikatoren aktiv'}
                         </div>
                     </div>
