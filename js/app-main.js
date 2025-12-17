@@ -20025,11 +20025,16 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
         document.addEventListener('click', function(event) {
             var searchWrapper = document.querySelector('.profile-review-search-wrapper');
             var dropdown = document.getElementById('searchSuggestionsDropdown');
+            var searchInput = document.getElementById('profileReviewSearchInput');
 
             if (searchWrapper && dropdown &&
                 !searchWrapper.contains(event.target) &&
                 !dropdown.contains(event.target)) {
                 hideSearchSuggestions();
+                // Blur search input to close virtual keyboard and remove focus
+                if (searchInput && document.activeElement === searchInput) {
+                    searchInput.blur();
+                }
             }
         });
 
