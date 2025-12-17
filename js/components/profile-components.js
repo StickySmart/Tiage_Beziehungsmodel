@@ -85,16 +85,16 @@ const ProfileReviewRenderer = (function() {
         // Gewichtungs-Sektion
         const gewichtungHtml = renderGewichtungSection();
 
-        // Resonanz-Sektion
-        const resonanzHtml = renderResonanzSection();
+        // Resonanz-Sektion wurde in den Header von "Alle Bedürfnisse" verschoben
+        // und wird in AttributeSummaryCard.renderAllNeedsFlat() gerendert
 
-        // Bedürfnis-Darstellung
+        // Bedürfnis-Darstellung (enthält jetzt Resonanz-Anzeige im Header)
         let needsHtml = '';
         if (typeof AttributeSummaryCard !== 'undefined' && AttributeSummaryCard.renderAllNeedsFlat) {
             needsHtml = AttributeSummaryCard.renderAllNeedsFlat(archetyp, archetypLabel);
         }
 
-        return gewichtungHtml + '\n' + resonanzHtml + '\n' + needsHtml;
+        return gewichtungHtml + '\n' + needsHtml;
     }
 
     /**
