@@ -116,15 +116,9 @@ const ProfileReviewRenderer = (function() {
         contentContainer.innerHTML = renderModalBody(archetyp, archetypLabel) +
             '\n<div style="height: 20px;"></div>';
 
-        // Initialisiere Resonanzfaktoren-Anzeige und Filter nach DOM-Einfügung
-        if (typeof AttributeSummaryCard !== 'undefined') {
-            // Resonanzfaktoren-Anzeige wurde ausgeblendet (Duplikat)
-            // if (AttributeSummaryCard.initResonanzDisplay) {
-            //     AttributeSummaryCard.initResonanzDisplay();
-            // }
-            if (AttributeSummaryCard.initDimensionFilter) {
-                AttributeSummaryCard.initDimensionFilter();
-            }
+        // Initialisiere Filter nach DOM-Einfügung
+        if (typeof AttributeSummaryCard !== 'undefined' && AttributeSummaryCard.initDimensionFilter) {
+            AttributeSummaryCard.initDimensionFilter();
         }
 
         console.log('ProfileReviewRenderer: Modal initialized for', archetyp);
