@@ -237,7 +237,7 @@ const OshoZenTextGenerator = (function() {
             const hasExpandableContent = rest.length > 0 || match.bild || match.osho;
 
             html += `
-                <div class="osho-zen-item" data-index="${index}">
+                <div class="osho-zen-item ${hasExpandableContent ? 'expanded' : ''}" data-index="${index}">
                     <div class="osho-zen-item-header" onclick="OshoZenTextGenerator.toggleItem(${index})">
                         <div class="osho-zen-item-left">
                             <span class="osho-zen-rank">${index + 1}</span>
@@ -246,7 +246,7 @@ const OshoZenTextGenerator = (function() {
                             <span class="osho-zen-karte">— ${match.karte}${match.karteName_de && match.karteName_de !== match.karte ? ` (${match.karteName_de})` : ''}</span>
                         </div>
                         <div class="osho-zen-item-right">
-                            <span class="osho-zen-toggle">${hasExpandableContent ? '▶' : ''}</span>
+                            <span class="osho-zen-toggle">${hasExpandableContent ? '▼' : ''}</span>
                         </div>
                     </div>
                     <div class="osho-zen-text-preview">
@@ -254,7 +254,7 @@ const OshoZenTextGenerator = (function() {
                         <strong>${match.karte}:</strong> ${firstSentence}
                     </div>
                     ${hasExpandableContent ? `
-                    <div class="osho-zen-item-content" style="display: none;">
+                    <div class="osho-zen-item-content" style="display: block;">
                         ${rest ? `<div class="osho-zen-text-full">${rest}</div>` : ''}
                         ${match.bild || match.osho ? `
                         <div class="osho-zen-bild">
@@ -537,9 +537,9 @@ const OshoZenTextGenerator = (function() {
             }
 
             .osho-zen-section-title {
-                font-size: 0.85rem;
-                font-weight: 600;
-                color: var(--primary-color);
+                font-size: 1.2rem;
+                font-weight: 700;
+                color: #FFD700;
                 margin-bottom: 0.5rem;
                 margin-top: 0.75rem;
             }
