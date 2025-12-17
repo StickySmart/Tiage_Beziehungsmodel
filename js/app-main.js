@@ -19798,6 +19798,45 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
                 });
             }
 
+            // Search in resonance factors (Resonanzfaktoren R1-R4)
+            var resonanzfaktoren = {
+                'R1': { id: 'R1', label: 'Leben', icon: '🔥', beschreibung: 'Orientierung - Existenz, Zuneigung, Muße, Intimität' },
+                'R2': { id: 'R2', label: 'Philosophie', icon: '🧠', beschreibung: 'Archetyp - Lebensplanung, Werte, Finanzen' },
+                'R3': { id: 'R3', label: 'Dynamik', icon: '⚡', beschreibung: 'Dominanz - Machtdynamik, BDSM, Sicherheit' },
+                'R4': { id: 'R4', label: 'Identität', icon: '💚', beschreibung: 'Geschlecht - Authentizität, Kommunikation, Selbstausdruck' }
+            };
+
+            Object.values(resonanzfaktoren).forEach(function(resonanz) {
+                var matchScore = 0;
+
+                // Check label
+                if (resonanz.label && resonanz.label.toLowerCase().includes(lowerQuery)) {
+                    matchScore = 8;
+                }
+
+                // Check description
+                if (resonanz.beschreibung && resonanz.beschreibung.toLowerCase().includes(lowerQuery)) {
+                    matchScore = Math.max(matchScore, 6);
+                }
+
+                // Check ID
+                if (resonanz.id && resonanz.id.toLowerCase().includes(lowerQuery)) {
+                    matchScore = Math.max(matchScore, 7);
+                }
+
+                if (matchScore > 0) {
+                    suggestions.push({
+                        type: 'resonanz',
+                        id: resonanz.id,
+                        label: resonanz.label,
+                        icon: resonanz.icon,
+                        description: resonanz.beschreibung,
+                        perspective: null,
+                        score: matchScore
+                        });
+                }
+            });
+
             // Sort by score and limit results
             suggestions.sort(function(a, b) {
                 return (b.score || 0) - (a.score || 0);
@@ -19814,6 +19853,7 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
                 'need': 'Bedürfnis',
                 'category': 'Kategorie',
                 'dimension': 'Dimension',
+                'resonanz': 'Resonanzfaktor',
                 'perspective': 'Perspektive'
             }[suggestion.type] || suggestion.type;
 
@@ -19836,12 +19876,15 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
                 descriptionHTML = '<div class="suggestion-item-description">' + desc + '</div>';
             }
 
+            // Add icon for resonanz type
+            var iconPrefix = suggestion.icon ? suggestion.icon + ' ' : '';
+
             return '<div class="suggestion-item' + (index === suggestionState.selectedIndex ? ' active' : '') + '" ' +
                    'data-index="' + index + '" ' +
                    'data-value="' + suggestion.label + '">' +
                    '<div class="suggestion-item-header">' +
                    '<span class="suggestion-item-type type-' + suggestion.type + '">' + typeLabel + '</span>' +
-                   '<span class="suggestion-item-label">' + suggestion.label + '</span>' +
+                   '<span class="suggestion-item-label">' + iconPrefix + suggestion.label + '</span>' +
                    '<span class="suggestion-item-id">' + suggestion.id + '</span>' +
                    '</div>' +
                    descriptionHTML +
@@ -19872,6 +19915,7 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
                 'need': [],
                 'category': [],
                 'dimension': [],
+                'resonanz': [],
                 'perspective': []
             };
 
@@ -19884,12 +19928,13 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
             var html = '';
             var currentIndex = 0;
 
-            // Render in order: needs, categories, dimensions, perspectives
-            var order = ['need', 'category', 'dimension', 'perspective'];
+            // Render in order: needs, categories, dimensions, resonanz, perspectives
+            var order = ['need', 'category', 'dimension', 'resonanz', 'perspective'];
             var headers = {
                 'need': 'Bedürfnisse',
                 'category': 'Kategorien',
                 'dimension': 'Dimensionen',
+                'resonanz': 'Resonanzfaktoren',
                 'perspective': 'Perspektiven'
             };
 
