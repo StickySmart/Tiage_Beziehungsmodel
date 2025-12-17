@@ -89,12 +89,13 @@ const ProfileReviewRenderer = (function() {
         // und wird in AttributeSummaryCard.renderAllNeedsFlat() gerendert
 
         // Bedürfnis-Darstellung (enthält jetzt Resonanz-Anzeige im Header)
-        let needsHtml = '';
-        if (typeof AttributeSummaryCard !== 'undefined' && AttributeSummaryCard.renderAllNeedsFlat) {
-            needsHtml = AttributeSummaryCard.renderAllNeedsFlat(archetyp, archetypLabel);
-        }
+        // AUSGEBLENDET: "Alle Bedürfnisse" Sektion wird nicht mehr angezeigt (Duplikat der RA-Profil Karten)
+        // let needsHtml = '';
+        // if (typeof AttributeSummaryCard !== 'undefined' && AttributeSummaryCard.renderAllNeedsFlat) {
+        //     needsHtml = AttributeSummaryCard.renderAllNeedsFlat(archetyp, archetypLabel);
+        // }
 
-        return gewichtungHtml + '\n' + needsHtml;
+        return gewichtungHtml;
     }
 
     /**
@@ -117,14 +118,15 @@ const ProfileReviewRenderer = (function() {
             '\n<div style="height: 20px;"></div>';
 
         // Initialisiere Resonanzfaktoren-Anzeige und Filter nach DOM-Einfügung
-        if (typeof AttributeSummaryCard !== 'undefined') {
-            if (AttributeSummaryCard.initResonanzDisplay) {
-                AttributeSummaryCard.initResonanzDisplay();
-            }
-            if (AttributeSummaryCard.initDimensionFilter) {
-                AttributeSummaryCard.initDimensionFilter();
-            }
-        }
+        // AUSGEBLENDET: Diese Initialisierungen sind nicht mehr nötig, da "Alle Bedürfnisse" nicht mehr angezeigt wird
+        // if (typeof AttributeSummaryCard !== 'undefined') {
+        //     if (AttributeSummaryCard.initResonanzDisplay) {
+        //         AttributeSummaryCard.initResonanzDisplay();
+        //     }
+        //     if (AttributeSummaryCard.initDimensionFilter) {
+        //         AttributeSummaryCard.initDimensionFilter();
+        //     }
+        // }
 
         console.log('ProfileReviewRenderer: Modal initialized for', archetyp);
     }
