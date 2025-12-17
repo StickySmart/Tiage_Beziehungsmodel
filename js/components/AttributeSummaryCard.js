@@ -770,9 +770,8 @@ const AttributeSummaryCard = (function() {
                 return;
             }
 
-            // Rendere Resonanz-Anzeige
-            const resonanzHtml = ResonanzCard.renderAll();
-            resonanzContainer.innerHTML = resonanzHtml;
+            // Berechne initiale Werte aus aktuellen Bedürfnissen
+            updateResonanzValues();
 
             console.log('[AttributeSummaryCard] Resonanzfaktoren-Anzeige initialisiert');
         }, 100);
@@ -791,6 +790,37 @@ const AttributeSummaryCard = (function() {
     function updateResonanzValues() {
         const resonanzContainer = document.querySelector('#flat-needs-resonanz-display');
         if (!resonanzContainer || typeof ResonanzCard === 'undefined') return;
+
+        // Berechne Resonanzfaktoren aus aktuellen Bedürfnissen
+        if (typeof NeedsIntegration !== 'undefined' && currentFlatArchetyp) {
+            // Hole aktuelle Bedürfnis-Werte
+            const needsValues = getFlatNeedsValues();
+
+            // Hole Archetyp-Info für Berechnung
+            const person = {
+                archetyp: currentFlatArchetyp
+            };
+
+            // Berechne Resonanzfaktoren
+            const resonanz = NeedsIntegration.calculateDimensionalResonance(needsValues, person);
+
+            if (resonanz && resonanz.enabled) {
+                // Aktualisiere ResonanzCard mit berechneten Werten
+                ResonanzCard.setValues('ich', {
+                    R1: resonanz.leben || 1.0,
+                    R2: resonanz.philosophie || 1.0,
+                    R3: resonanz.dynamik || 1.0,
+                    R4: resonanz.identitaet || 1.0
+                });
+
+                console.log('[AttributeSummaryCard] Resonanzfaktoren berechnet:', {
+                    R1: resonanz.leben,
+                    R2: resonanz.philosophie,
+                    R3: resonanz.dynamik,
+                    R4: resonanz.identitaet
+                });
+            }
+        }
 
         // Trigger Re-Render der Resonanz-Werte
         const resonanzHtml = ResonanzCard.renderAll();
