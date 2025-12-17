@@ -668,6 +668,11 @@ const AttributeSummaryCard = (function() {
         let filteredNeeds = sortedNeeds;
         if (typeof DimensionKategorieFilter !== 'undefined') {
             filteredNeeds = sortedNeeds.filter(need => DimensionKategorieFilter.shouldShowNeed(need.id));
+            console.log('[AttributeSummaryCard] Filter angewendet:', {
+                vorher: sortedNeeds.length,
+                nachher: filteredNeeds.length,
+                filterAktiv: filteredNeeds.length < sortedNeeds.length
+            });
         }
 
         // Subtitle mit Filter-Info
