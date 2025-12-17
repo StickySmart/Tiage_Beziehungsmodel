@@ -761,6 +761,28 @@ const AttributeSummaryCard = (function() {
     }
 
     /**
+     * Debounce Timer für Resonanzberechnung
+     */
+    let resonanzUpdateTimeout = null;
+
+    /**
+     * Debounced Version der Resonanzberechnung
+     * Verhindert, dass bei schnellen Slider-Bewegungen zu viele Berechnungen ausgeführt werden
+     */
+    function debouncedUpdateResonanzValues() {
+        // Clear existing timeout
+        if (resonanzUpdateTimeout) {
+            clearTimeout(resonanzUpdateTimeout);
+        }
+
+        // Set new timeout - führe Berechnung nach 150ms Pause aus
+        resonanzUpdateTimeout = setTimeout(() => {
+            updateResonanzValues();
+            resonanzUpdateTimeout = null;
+        }, 150);
+    }
+
+    /**
      * Initialisiert die Resonanzfaktoren-Anzeige
      */
     function initResonanzDisplay() {
@@ -769,22 +791,20 @@ const AttributeSummaryCard = (function() {
             return;
         }
 
-        setTimeout(() => {
-            const resonanzContainer = document.querySelector('#flat-needs-resonanz-display');
-            if (!resonanzContainer) {
-                console.warn('[AttributeSummaryCard] Resonanz container nicht gefunden');
-                return;
-            }
+        const resonanzContainer = document.querySelector('#flat-needs-resonanz-display');
+        if (!resonanzContainer) {
+            console.warn('[AttributeSummaryCard] Resonanz container nicht gefunden');
+            return;
+        }
 
-            // Berechne initiale Werte aus aktuellen Bedürfnissen
-            updateResonanzValues();
+        // Berechne initiale Werte aus aktuellen Bedürfnissen sofort
+        updateResonanzValues();
 
-            console.log('[AttributeSummaryCard] Resonanzfaktoren-Anzeige initialisiert');
-        }, 100);
+        console.log('[AttributeSummaryCard] Resonanzfaktoren-Anzeige initialisiert');
 
-        // Event-Listener für Live-Updates (nur einmal registrieren)
+        // Event-Listener für Live-Updates mit Debouncing (nur einmal registrieren)
         if (!window._resonanzUpdateListenerAdded) {
-            document.addEventListener('flatNeedChange', updateResonanzValues);
+            document.addEventListener('flatNeedChange', debouncedUpdateResonanzValues);
             window._resonanzUpdateListenerAdded = true;
             console.log('[AttributeSummaryCard] Event-Listener für Resonanz-Updates registriert');
         }
@@ -812,12 +832,13 @@ const AttributeSummaryCard = (function() {
 
             if (resonanz && resonanz.enabled) {
                 // Aktualisiere ResonanzCard mit berechneten Werten
-                ResonanzCard.setValues('ich', {
+                // Verwende setCalculatedValues() um Lock-Status zu respektieren
+                ResonanzCard.setCalculatedValues({
                     R1: resonanz.leben || 1.0,
                     R2: resonanz.philosophie || 1.0,
                     R3: resonanz.dynamik || 1.0,
                     R4: resonanz.identitaet || 1.0
-                });
+                }, false, 'ich'); // forceOverwrite=false, person='ich'
 
                 console.log('[AttributeSummaryCard] Resonanzfaktoren berechnet:', {
                     R1: resonanz.leben,
