@@ -657,6 +657,12 @@ input.resonanz-input:focus {
 .resonanz-card-compact {
     border-left: 3px solid #22C55E !important;
     padding: 16px !important;
+    position: sticky !important;
+    top: 0;
+    z-index: 9;
+    background: var(--bg-primary, #1a1a1a) !important;
+    margin-bottom: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
 }
 
 .resonanz-values-row {
