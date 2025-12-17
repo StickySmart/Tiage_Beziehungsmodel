@@ -2385,3 +2385,162 @@ input.resonanz-input:focus {
         transform: translateY(0);
     }
 }
+
+/* ═══════════════════════════════════════════════════════════════════════
+   RA PROFILE MODAL CARD (außerhalb Scrollbereich im Modal Header)
+   ─────────────────────────────────────────────────────────────────────── */
+
+.ra-profile-modal-card {
+    background: linear-gradient(135deg, rgba(26, 26, 46, 0.6) 0%, rgba(15, 15, 26, 0.4) 100%);
+    border: 2px solid rgba(139, 92, 246, 0.25);
+    border-radius: 12px;
+    padding: 16px;
+    margin: 12px 16px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2),
+                inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+.ra-profile-modal-title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 12px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid rgba(139, 92, 246, 0.15);
+}
+
+.ra-profile-modal-icon {
+    font-size: 20px;
+    filter: drop-shadow(0 2px 4px rgba(139, 92, 246, 0.4));
+}
+
+.ra-profile-modal-text {
+    font-size: 15px;
+    font-weight: 700;
+    color: #f0f0f0;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+    letter-spacing: 0.3px;
+}
+
+.ra-profile-modal-count {
+    font-size: 12px;
+    color: rgba(139, 92, 246, 0.7);
+    font-weight: 500;
+    margin-left: auto;
+}
+
+.ra-profile-modal-values {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+}
+
+.ra-profile-value-item {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.04) 0%, rgba(255, 255, 255, 0.02) 100%);
+    border: 1.5px solid var(--dimension-color, rgba(139, 92, 246, 0.25));
+    border-radius: 10px;
+    padding: 12px 8px;
+    text-align: center;
+    transition: all 0.25s ease;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    position: relative;
+    overflow: hidden;
+}
+
+.ra-profile-value-item::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: var(--dimension-color, rgba(139, 92, 246, 0.7));
+    box-shadow: 0 1px 6px var(--dimension-color, rgba(139, 92, 246, 0.5));
+}
+
+.ra-profile-value-item:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.25),
+                0 0 15px var(--dimension-color, rgba(139, 92, 246, 0.3));
+    border-color: var(--dimension-color, rgba(139, 92, 246, 0.5));
+}
+
+.ra-profile-value-label {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--dimension-color, #8B5CF6);
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    margin-bottom: 4px;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+}
+
+.ra-profile-value-id {
+    font-size: 9px;
+    color: rgba(255, 255, 255, 0.45);
+    font-weight: 600;
+    margin-bottom: 6px;
+    letter-spacing: 0.3px;
+}
+
+.ra-profile-value-number {
+    font-size: 24px;
+    font-weight: 900;
+    color: #22c55e;
+    text-shadow: 0 2px 6px rgba(34, 197, 94, 0.5),
+                 0 3px 12px rgba(34, 197, 94, 0.3);
+    letter-spacing: 0.5px;
+    font-variant-numeric: tabular-nums;
+}
+
+/* Responsive Design für Modal */
+@media (max-width: 600px) {
+    .ra-profile-modal-card {
+        padding: 12px;
+        margin: 10px 12px;
+    }
+
+    .ra-profile-modal-title {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 6px;
+    }
+
+    .ra-profile-modal-count {
+        margin-left: 0;
+    }
+
+    .ra-profile-modal-values {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 8px;
+    }
+
+    .ra-profile-value-item {
+        padding: 10px 6px;
+    }
+
+    .ra-profile-value-number {
+        font-size: 20px;
+    }
+
+    .ra-profile-value-label {
+        font-size: 10px;
+    }
+}
+
+/* Animation für Werte-Updates */
+@keyframes valueUpdate {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.08);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+.ra-profile-value-number.updating {
+    animation: valueUpdate 0.35s ease-in-out;
+}
