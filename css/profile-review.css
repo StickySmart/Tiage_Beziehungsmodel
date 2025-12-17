@@ -657,12 +657,15 @@ input.resonanz-input:focus {
 .resonanz-card-compact {
     border-left: 3px solid #22C55E !important;
     padding: 16px !important;
+    position: -webkit-sticky !important;
     position: sticky !important;
-    top: 0;
-    z-index: 9;
-    background: var(--bg-primary, #1a1a1a) !important;
-    margin-bottom: 8px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+    top: 0 !important;
+    z-index: 100 !important;
+    background: linear-gradient(180deg, #1a1a1a 0%, #1a1a1a 85%, rgba(26, 26, 26, 0.95) 100%) !important;
+    margin-bottom: 0 !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
 }
 
 .resonanz-values-row {
@@ -1730,14 +1733,9 @@ input.resonanz-input:focus {
     border-color: var(--primary, #FFD700);
 }
 
-/* Sortierleiste */
+/* Sortierleiste - AUSGEBLENDET */
 .flat-needs-sort-bar {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    margin-top: 12px;
-    padding-top: 12px;
-    border-top: 1px solid rgba(255,255,255,0.1);
+    display: none !important;
 }
 
 .flat-needs-sort-label {
@@ -1929,6 +1927,12 @@ input.resonanz-input:focus {
     background: rgba(255,255,255,0.03);
     border-radius: 10px;
     border: 1px solid rgba(255,255,255,0.08);
+    position: sticky;
+    top: 0;
+    z-index: 99;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    margin-bottom: 12px;
 }
 
 .dimension-filter-bar .filter-label {
