@@ -19625,25 +19625,11 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
             var suggestions = [];
             var lowerQuery = query.toLowerCase().trim();
 
-            // If query is empty, show popular items
+            // If query is empty, show all items for browsing
             if (!lowerQuery) {
-                // Show top perspectives
-                if (window.TiageTaxonomie && window.TiageTaxonomie.perspektiven) {
-                    Object.values(window.TiageTaxonomie.perspektiven).slice(0, 4).forEach(function(persp) {
-                        suggestions.push({
-                            type: 'perspective',
-                            id: persp.id,
-                            label: persp.label,
-                            description: persp.beschreibung,
-                            source: persp.quelle,
-                            perspective: null
-                        });
-                    });
-                }
-
-                // Show top categories
+                // Show all categories (18 total)
                 if (window.TiageTaxonomie && window.TiageTaxonomie.kategorien) {
-                    Object.values(window.TiageTaxonomie.kategorien).slice(0, 6).forEach(function(kat) {
+                    Object.values(window.TiageTaxonomie.kategorien).forEach(function(kat) {
                         var persp = getPerspectiveForCategory(kat.key);
                         suggestions.push({
                             type: 'category',
@@ -19655,7 +19641,52 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
                     });
                 }
 
-                return suggestions.slice(0, 10);
+                // Show all dimensions (6 total)
+                if (window.TiageTaxonomie && window.TiageTaxonomie.dimensionen) {
+                    Object.values(window.TiageTaxonomie.dimensionen).forEach(function(dim) {
+                        suggestions.push({
+                            type: 'dimension',
+                            id: dim.id,
+                            label: dim.label,
+                            description: dim.beschreibung,
+                            perspective: null
+                        });
+                    });
+                }
+
+                // Show all resonance factors (4 total)
+                var resonanzfaktoren = {
+                    'R1': { id: 'R1', label: 'Leben', icon: '🔥', beschreibung: 'Orientierung - Existenz, Zuneigung, Muße, Intimität' },
+                    'R2': { id: 'R2', label: 'Philosophie', icon: '🧠', beschreibung: 'Archetyp - Lebensplanung, Werte, Finanzen' },
+                    'R3': { id: 'R3', label: 'Dynamik', icon: '⚡', beschreibung: 'Dominanz - Machtdynamik, BDSM, Sicherheit' },
+                    'R4': { id: 'R4', label: 'Identität', icon: '💚', beschreibung: 'Geschlecht - Authentizität, Kommunikation, Selbstausdruck' }
+                };
+                Object.values(resonanzfaktoren).forEach(function(resonanz) {
+                    suggestions.push({
+                        type: 'resonanz',
+                        id: resonanz.id,
+                        label: resonanz.label,
+                        icon: resonanz.icon,
+                        description: resonanz.beschreibung,
+                        perspective: null
+                    });
+                });
+
+                // Show all perspectives (4 total)
+                if (window.TiageTaxonomie && window.TiageTaxonomie.perspektiven) {
+                    Object.values(window.TiageTaxonomie.perspektiven).forEach(function(persp) {
+                        suggestions.push({
+                            type: 'perspective',
+                            id: persp.id,
+                            label: persp.label,
+                            description: persp.beschreibung,
+                            source: persp.quelle,
+                            perspective: null
+                        });
+                    });
+                }
+
+                return suggestions; // Return all (18+6+4+4 = 32 items)
             }
 
             // Search in needs (Bedürfnisse)
