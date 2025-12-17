@@ -698,17 +698,16 @@ const AttributeSummaryCard = (function() {
                 <button class="flat-needs-sort-btn${currentFlatSortMode === 'name' ? ' active' : ''}" onclick="AttributeSummaryCard.setSortMode('name')">Name</button>
                 <button class="flat-needs-sort-btn${currentFlatSortMode === 'id' ? ' active' : ''}" onclick="AttributeSummaryCard.setSortMode('id')">#B Nr.</button>
                 <button class="flat-needs-sort-btn${currentFlatSortMode === 'status' ? ' active' : ''}" onclick="AttributeSummaryCard.setSortMode('status')">Status</button>
-                <button class="flat-needs-sort-btn${currentFlatSortMode === 'kategorie' ? ' active' : ''}" onclick="AttributeSummaryCard.setSortMode('kategorie')">Kategorie</button>
             </div>
         </div>`;
 
         // Direkte flache Liste ohne Kategorien-Wrapper
-        html += `<div class="flat-needs-list${currentFlatSortMode === 'kategorie' ? ' kategorie-mode' : ''}">`;
+        html += `<div class="flat-needs-list kategorie-mode">`;
         filteredNeeds.forEach(need => {
             const needObj = findNeedById(need.id);
             const isLocked = needObj?.locked || false;
-            // Bei Kategorie-Sortierung: Dimension-Farbe anzeigen
-            const dimColor = currentFlatSortMode === 'kategorie' ? getDimensionColor(need.id) : null;
+            // Zeige immer Dimension-Farbe
+            const dimColor = getDimensionColor(need.id);
             html += renderFlatNeedItem(need.id, need.label, need.value, isLocked, dimColor);
         });
         html += `</div>`;
@@ -719,14 +718,10 @@ const AttributeSummaryCard = (function() {
 
     /**
      * Setzt den Sortiermodus und rendert die Liste neu
-     * @param {string} mode - 'value', 'name', 'id', 'status', 'kategorie'
+     * @param {string} mode - 'value', 'name', 'id', 'status'
      */
     function setSortMode(mode) {
         currentFlatSortMode = mode;
-        // Perspektiven-Filter zurücksetzen wenn nicht Kategorie-Modus
-        if (mode !== 'kategorie') {
-            activePerspektiveFilters.clear();
-        }
         reRenderFlatNeeds();
     }
 
@@ -764,21 +759,33 @@ const AttributeSummaryCard = (function() {
             return;
         }
 
-        const filterContainer = document.querySelector('#flat-needs-dimension-filter');
-        if (!filterContainer) return;
+        // Warte bis DOM bereit ist
+        setTimeout(() => {
+            const filterContainer = document.querySelector('#flat-needs-dimension-filter');
+            if (!filterContainer) {
+                console.warn('[AttributeSummaryCard] Filter container nicht gefunden');
+                return;
+            }
 
-        // Rendere Filter
-        const filterHtml = DimensionKategorieFilter.render('#flat-needs-dimension-filter');
-        filterContainer.innerHTML = filterHtml;
+            // Rendere Filter
+            const filterHtml = DimensionKategorieFilter.render('#flat-needs-dimension-filter');
+            filterContainer.innerHTML = filterHtml;
 
-        // Event-Listener für Filter-Änderungen
-        document.addEventListener('dimensionKategorieFilterChange', handleFilterChange);
+            console.log('[AttributeSummaryCard] DimensionKategorieFilter initialisiert');
+        }, 100);
+
+        // Event-Listener nur einmal registrieren
+        if (!window._dimensionFilterListenerAdded) {
+            document.addEventListener('dimensionKategorieFilterChange', handleFilterChange);
+            window._dimensionFilterListenerAdded = true;
+        }
     }
 
     /**
      * Handler für Filter-Änderungen
      */
     function handleFilterChange(event) {
+        console.log('[AttributeSummaryCard] Filter geändert:', event.detail);
         // Re-render der Bedürfnisliste mit neuen Filtern
         reRenderFlatNeeds();
     }
@@ -847,12 +854,10 @@ const AttributeSummaryCard = (function() {
             const input = needItem.querySelector('.flat-need-input');
             if (input) input.value = numValue;
 
-            // Bei Kategorie-Modus: Slider-Track-Hintergrund aktualisieren
-            if (currentFlatSortMode === 'kategorie') {
-                const dimColor = getDimensionColor(needId);
-                if (dimColor) {
-                    sliderElement.style.background = `linear-gradient(to right, ${dimColor} 0%, ${dimColor} ${numValue}%, rgba(255,255,255,0.15) ${numValue}%, rgba(255,255,255,0.15) 100%)`;
-                }
+            // Slider-Track-Hintergrund aktualisieren mit Dimension-Farbe
+            const dimColor = getDimensionColor(needId);
+            if (dimColor) {
+                sliderElement.style.background = `linear-gradient(to right, ${dimColor} 0%, ${dimColor} ${numValue}%, rgba(255,255,255,0.15) ${numValue}%, rgba(255,255,255,0.15) 100%)`;
             }
         }
 
