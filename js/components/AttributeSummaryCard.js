@@ -694,11 +694,7 @@ const AttributeSummaryCard = (function() {
                 </button>
             </div>
 
-            <!-- RESONANZFAKTOREN-ANZEIGE (STICKY) -->
-            <!-- AUSGEBLENDET: Doppelte Anzeige der Resonanzfaktoren (werden bereits oben in "Dein RA-Profil" angezeigt) -->
-            <!-- <div id="flat-needs-resonanz-display"></div> -->
-
-            <!-- NEUER DIMENSION-KATEGORIE-FILTER -->
+            <!-- DIMENSION-KATEGORIE-FILTER -->
             <div id="flat-needs-dimension-filter"></div>
 
             <div class="flat-needs-sort-bar">
@@ -754,106 +750,9 @@ const AttributeSummaryCard = (function() {
         if (newContainer) {
             container.replaceWith(newContainer);
 
-            // Re-initialisiere Resonanz-Anzeige und Filter
-            initResonanzDisplay();
+            // Re-initialisiere Filter
             initDimensionFilter();
         }
-    }
-
-    /**
-     * Debounce Timer für Resonanzberechnung
-     */
-    let resonanzUpdateTimeout = null;
-
-    /**
-     * Debounced Version der Resonanzberechnung
-     * Verhindert, dass bei schnellen Slider-Bewegungen zu viele Berechnungen ausgeführt werden
-     */
-    function debouncedUpdateResonanzValues() {
-        // Clear existing timeout
-        if (resonanzUpdateTimeout) {
-            clearTimeout(resonanzUpdateTimeout);
-        }
-
-        // Set new timeout - führe Berechnung nach 150ms Pause aus
-        resonanzUpdateTimeout = setTimeout(() => {
-            updateResonanzValues();
-            resonanzUpdateTimeout = null;
-        }, 150);
-    }
-
-    /**
-     * Initialisiert die Resonanzfaktoren-Anzeige
-     */
-    function initResonanzDisplay() {
-        if (typeof ResonanzCard === 'undefined') {
-            console.warn('[AttributeSummaryCard] ResonanzCard nicht geladen');
-            return;
-        }
-
-        const resonanzContainer = document.querySelector('#flat-needs-resonanz-display');
-        if (!resonanzContainer) {
-            console.warn('[AttributeSummaryCard] Resonanz container nicht gefunden');
-            return;
-        }
-
-        // Berechne initiale Werte aus aktuellen Bedürfnissen sofort
-        updateResonanzValues();
-
-        console.log('[AttributeSummaryCard] Resonanzfaktoren-Anzeige initialisiert');
-
-        // Event-Listener für Live-Updates mit Debouncing (nur einmal registrieren)
-        if (!window._resonanzUpdateListenerAdded) {
-            document.addEventListener('flatNeedChange', debouncedUpdateResonanzValues);
-            window._resonanzUpdateListenerAdded = true;
-            console.log('[AttributeSummaryCard] Event-Listener für Resonanz-Updates registriert');
-        }
-    }
-
-    /**
-     * Aktualisiert die Resonanzfaktoren-Werte wenn sich Bedürfnisse ändern
-     */
-    function updateResonanzValues() {
-        const resonanzContainer = document.querySelector('#flat-needs-resonanz-display');
-        if (!resonanzContainer || typeof ResonanzCard === 'undefined') return;
-
-        // Berechne Resonanzfaktoren aus aktuellen Bedürfnissen
-        if (typeof NeedsIntegration !== 'undefined' && currentFlatArchetyp) {
-            // Hole aktuelle Bedürfnis-Werte
-            const needsValues = getFlatNeedsValues();
-
-            // Hole Archetyp-Info für Berechnung
-            const person = {
-                archetyp: currentFlatArchetyp
-            };
-
-            // Berechne Resonanzfaktoren
-            const resonanz = NeedsIntegration.calculateDimensionalResonance(needsValues, person);
-
-            if (resonanz && resonanz.enabled) {
-                // Aktualisiere ResonanzCard mit berechneten Werten
-                // Verwende setCalculatedValues() um Lock-Status zu respektieren
-                ResonanzCard.setCalculatedValues({
-                    R1: resonanz.leben || 1.0,
-                    R2: resonanz.philosophie || 1.0,
-                    R3: resonanz.dynamik || 1.0,
-                    R4: resonanz.identitaet || 1.0
-                }, false, 'ich'); // forceOverwrite=false, person='ich'
-
-                console.log('[AttributeSummaryCard] Resonanzfaktoren berechnet:', {
-                    R1: resonanz.leben,
-                    R2: resonanz.philosophie,
-                    R3: resonanz.dynamik,
-                    R4: resonanz.identitaet
-                });
-            }
-        }
-
-        // Trigger Re-Render der Resonanz-Werte
-        const resonanzHtml = ResonanzCard.renderAll();
-        resonanzContainer.innerHTML = resonanzHtml;
-
-        console.log('[AttributeSummaryCard] Resonanzfaktoren aktualisiert');
     }
 
     /**
@@ -1756,9 +1655,6 @@ const AttributeSummaryCard = (function() {
         setSortMode,
         // NEU: DimensionKategorieFilter Integration
         initDimensionFilter,
-        // NEU: Resonanzfaktoren-Anzeige Integration
-        initResonanzDisplay,
-        updateResonanzValues,
         // DEPRECATED: Alte Filter-Funktionen (für Rückwärtskompatibilität)
         togglePerspektiveFilter,
         clearPerspektiveFilters,
