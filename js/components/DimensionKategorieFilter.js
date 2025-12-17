@@ -100,6 +100,7 @@ const DimensionKategorieFilter = (function() {
     let activeDimension = null;  // Aktuell gewählte Dimension (null = Alle)
     let activeKategorie = null;  // Aktuell gewählte Kategorie (null = Alle)
     let containerId = null;      // Container-ID für Rendering
+    let viewMode = 'tags';       // 'tags' oder 'tree' - aktueller Anzeigemodus
 
     // ═══════════════════════════════════════════════════════════════════════════
     // FILTER-LOGIK
@@ -183,15 +184,57 @@ const DimensionKategorieFilter = (function() {
 
         let html = '<div class="dimension-kategorie-filter">';
 
-        // Ebene 1: Dimensionen
-        html += renderDimensionBar();
+        // View-Toggle-Button (Tags vs. Tree)
+        html += renderViewToggle();
 
-        // Ebene 2: Kategorien (nur sichtbar wenn Dimension gewählt)
-        html += renderKategorieBar();
+        // Ebene 1: Dimensionen (nur bei Tags-Modus)
+        if (viewMode === 'tags') {
+            html += renderDimensionBar();
+
+            // Ebene 2: Kategorien (nur sichtbar wenn Dimension gewählt)
+            html += renderKategorieBar();
+        } else {
+            // Tree-Ansicht
+            html += renderTreeView();
+        }
 
         html += '</div>';
 
         return html;
+    }
+
+    /**
+     * Rendert den View-Toggle-Button
+     */
+    function renderViewToggle() {
+        const tagsActive = viewMode === 'tags' ? ' active' : '';
+        const treeActive = viewMode === 'tree' ? ' active' : '';
+
+        return `
+        <div class="filter-view-toggle">
+            <button class="view-toggle-btn${tagsActive}"
+                    onclick="DimensionKategorieFilter.setViewMode('tags')"
+                    title="Tag-Ansicht">
+                🏷️ Tags
+            </button>
+            <button class="view-toggle-btn${treeActive}"
+                    onclick="DimensionKategorieFilter.setViewMode('tree')"
+                    title="Baum-Ansicht">
+                🌳 Tree
+            </button>
+        </div>`;
+    }
+
+    /**
+     * Rendert die Tree-Ansicht
+     */
+    function renderTreeView() {
+        if (typeof ResonanzTreeView === 'undefined') {
+            return '<div class="tree-view-container"><p style="color: rgba(255,255,255,0.5);">Tree-View nicht geladen</p></div>';
+        }
+
+        // Tree-View als inline HTML generieren
+        return `<div class="tree-view-container" id="tree-view-inline-container"></div>`;
     }
 
     /**
@@ -366,6 +409,38 @@ const DimensionKategorieFilter = (function() {
     }
 
     /**
+     * Setzt den View-Modus (tags oder tree)
+     * @param {string} mode - 'tags' oder 'tree'
+     */
+    function setViewMode(mode) {
+        if (mode !== 'tags' && mode !== 'tree') {
+            console.warn('DimensionKategorieFilter: Ungültiger ViewMode:', mode);
+            return;
+        }
+
+        viewMode = mode;
+        reRender();
+
+        // Bei Tree-Mode: Initialisiere ResonanzTreeView nach DOM-Update
+        if (mode === 'tree' && typeof ResonanzTreeView !== 'undefined') {
+            setTimeout(() => {
+                const treeContainer = document.querySelector('#tree-view-inline-container');
+                if (treeContainer) {
+                    const treeHtml = ResonanzTreeView.render('#tree-view-inline-container');
+                    treeContainer.innerHTML = treeHtml;
+                    console.log('[DimensionKategorieFilter] Tree-View initialisiert');
+                }
+            }, 50);
+        }
+
+        // Event feuern
+        document.dispatchEvent(new CustomEvent('filterViewModeChange', {
+            bubbles: true,
+            detail: { mode }
+        }));
+    }
+
+    /**
      * Holt aktuellen Filter-State
      */
     function getState() {
@@ -402,6 +477,9 @@ const DimensionKategorieFilter = (function() {
         setDimension,
         setKategorie,
         reset,
+
+        // View-Mode
+        setViewMode,
 
         // Filter prüfen
         shouldShowNeed,

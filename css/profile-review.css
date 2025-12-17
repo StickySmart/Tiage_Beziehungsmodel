@@ -1922,6 +1922,75 @@ input.resonanz-input:focus {
 }
 
 /* ─────────────────────────────────────────────────────────────────────────
+   VIEW TOGGLE (Tags vs. Tree)
+   ───────────────────────────────────────────────────────────────────────── */
+
+.filter-view-toggle {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 12px;
+    padding: 4px;
+    background: rgba(255,255,255,0.03);
+    border-radius: 8px;
+    border: 1px solid rgba(255,255,255,0.08);
+}
+
+.view-toggle-btn {
+    flex: 1;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 8px 16px;
+    background: transparent;
+    border: none;
+    border-radius: 6px;
+    color: rgba(255,255,255,0.6);
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.view-toggle-btn:hover {
+    background: rgba(255,255,255,0.05);
+    color: rgba(255,255,255,0.8);
+}
+
+.view-toggle-btn.active {
+    background: rgba(139, 92, 246, 0.2);
+    border: 1px solid rgba(139, 92, 246, 0.3);
+    color: #8B5CF6;
+    font-weight: 600;
+}
+
+/* ─────────────────────────────────────────────────────────────────────────
+   TREE VIEW CONTAINER
+   ───────────────────────────────────────────────────────────────────────── */
+
+.tree-view-container {
+    background: rgba(255,255,255,0.02);
+    border-radius: 10px;
+    border: 1px solid rgba(255,255,255,0.08);
+    padding: 16px;
+    margin-bottom: 12px;
+}
+
+/* Tree View innerhalb des Filter-Containers anpassen */
+.tree-view-container .resonanz-tree-view {
+    background: transparent;
+    padding: 0;
+    margin: 0;
+    box-shadow: none;
+}
+
+.tree-view-container .tree-header {
+    margin-bottom: 16px;
+    padding-bottom: 10px;
+}
+
+/* ─────────────────────────────────────────────────────────────────────────
    EBENE 1: DIMENSIONEN
    ───────────────────────────────────────────────────────────────────────── */
 
