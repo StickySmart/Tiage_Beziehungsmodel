@@ -311,14 +311,14 @@ const PhilosophyHint = (function() {
             }
         });
 
-        // Escape-Taste schließt Modal
-        function handleEscape(e) {
-            if (e.key === 'Escape' && currentModal === overlay) {
+        // Escape-Taste und Enter-Taste schließen Modal
+        function handleKeydown(e) {
+            if ((e.key === 'Escape' || e.key === 'Enter') && currentModal === overlay) {
                 handleClose();
-                document.removeEventListener('keydown', handleEscape);
+                document.removeEventListener('keydown', handleKeydown);
             }
         }
-        document.addEventListener('keydown', handleEscape);
+        document.addEventListener('keydown', handleKeydown);
 
         // Focus auf Close-Button setzen
         closeBtn.focus();
