@@ -690,7 +690,8 @@ const AttributeSummaryCard = (function() {
             </div>
 
             <!-- RESONANZFAKTOREN-ANZEIGE (STICKY) -->
-            <div id="flat-needs-resonanz-display"></div>
+            <!-- AUSGEBLENDET: Doppelte Anzeige der Resonanzfaktoren (werden bereits oben in "Dein RA-Profil" angezeigt) -->
+            <!-- <div id="flat-needs-resonanz-display"></div> -->
 
             <!-- NEUER DIMENSION-KATEGORIE-FILTER -->
             <div id="flat-needs-dimension-filter"></div>

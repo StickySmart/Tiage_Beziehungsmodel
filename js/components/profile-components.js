@@ -118,9 +118,10 @@ const ProfileReviewRenderer = (function() {
 
         // Initialisiere Resonanzfaktoren-Anzeige und Filter nach DOM-Einfügung
         if (typeof AttributeSummaryCard !== 'undefined') {
-            if (AttributeSummaryCard.initResonanzDisplay) {
-                AttributeSummaryCard.initResonanzDisplay();
-            }
+            // Resonanzfaktoren-Anzeige wurde ausgeblendet (Duplikat)
+            // if (AttributeSummaryCard.initResonanzDisplay) {
+            //     AttributeSummaryCard.initResonanzDisplay();
+            // }
             if (AttributeSummaryCard.initDimensionFilter) {
                 AttributeSummaryCard.initDimensionFilter();
             }
