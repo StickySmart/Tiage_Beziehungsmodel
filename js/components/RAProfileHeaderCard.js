@@ -219,15 +219,15 @@ const RAProfileHeaderCard = (function() {
     };
 })();
 
-// Auto-Initialisierung wenn DOM geladen ist
-if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', function() {
-        RAProfileHeaderCard.init();
-    });
-} else {
-    // DOM bereits geladen
-    RAProfileHeaderCard.init();
-}
+// Auto-Initialisierung deaktiviert - Resonanzfaktoren werden nicht mehr auf der Hauptseite angezeigt
+// if (document.readyState === 'loading') {
+//     document.addEventListener('DOMContentLoaded', function() {
+//         RAProfileHeaderCard.init();
+//     });
+// } else {
+//     // DOM bereits geladen
+//     RAProfileHeaderCard.init();
+// }
 
 // Export für Module-System
 if (typeof module !== 'undefined' && module.exports) {
