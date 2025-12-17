@@ -850,6 +850,9 @@ const AttributeSummaryCard = (function() {
             const filterHtml = DimensionKategorieFilter.render('#flat-needs-dimension-filter');
             filterContainer.innerHTML = filterHtml;
 
+            // Initialisiere Tree-View nach DOM-Insertion
+            DimensionKategorieFilter.initTreeView();
+
             console.log('[AttributeSummaryCard] DimensionKategorieFilter initialisiert');
         }, 100);
 
