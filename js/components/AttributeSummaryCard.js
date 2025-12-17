@@ -306,16 +306,17 @@ const AttributeSummaryCard = (function() {
     let currentFlatSortMode = 'value';
 
     /**
-     * Aktive Perspektiven-Filter (nur bei Kategorie-Sortierung)
-     * Set von Perspektiven-IDs ('#P1', '#P2', '#P3', '#P4') oder leer für "Alle"
+     * DEPRECATED: Perspektiven-Filter wurden durch DimensionKategorieFilter ersetzt
+     * Kept for backward compatibility
      */
     let activePerspektiveFilters = new Set();
 
     /**
-     * Zeige nur Hauptfragen (frageTyp: "haupt") oder alle Bedürfnisse
-     * true = nur Hauptfragen (70), false = alle (219)
+     * OPTIONAL: Hauptfragen-Filter (v3.0.0 - konsolidierte Bedürfnisse)
+     * Standardmäßig false (zeigt alle 219 Bedürfnisse)
+     * Kann per Toggle auf true gesetzt werden (zeigt nur 70 Hauptfragen)
      */
-    let showOnlyHauptfragen = true;
+    let showOnlyHauptfragen = false;
 
     /**
      * GFK-Kategorien mit Labels und Icons
@@ -453,40 +454,30 @@ const AttributeSummaryCard = (function() {
     }
 
     /**
-     * Filtert Bedürfnisse nach aktiven Perspektiven-Filtern
+     * DEPRECATED: Ersetzt durch DimensionKategorieFilter
      * @param {Array} needs - Array von {id, value, label}
-     * @returns {Array} Gefilterte Array
+     * @returns {Array} Unveränderte Array (Filter-Logik in DimensionKategorieFilter)
      */
     function filterNeedsByPerspektive(needs) {
-        // Kein Filter aktiv = alle anzeigen
-        if (activePerspektiveFilters.size === 0) {
-            return needs;
-        }
-        return needs.filter(need => {
-            const perspektiveId = getPerspektiveIdForNeed(need.id);
-            return activePerspektiveFilters.has(perspektiveId);
-        });
+        console.warn('[AttributeSummaryCard] filterNeedsByPerspektive ist deprecated. Verwende DimensionKategorieFilter.');
+        return needs; // Keine Filterung mehr, DimensionKategorieFilter übernimmt
     }
 
     /**
-     * Toggle einen Perspektiven-Filter
+     * DEPRECATED: Ersetzt durch DimensionKategorieFilter
      * @param {string} perspektiveId - '#P1', '#P2', '#P3', '#P4'
      */
     function togglePerspektiveFilter(perspektiveId) {
-        if (activePerspektiveFilters.has(perspektiveId)) {
-            activePerspektiveFilters.delete(perspektiveId);
-        } else {
-            activePerspektiveFilters.add(perspektiveId);
-        }
-        reRenderFlatNeeds();
+        console.warn('[AttributeSummaryCard] togglePerspektiveFilter ist deprecated. Verwende DimensionKategorieFilter.');
+        // No-op für Rückwärtskompatibilität
     }
 
     /**
-     * Setzt alle Perspektiven-Filter zurück (zeigt alle)
+     * DEPRECATED: Ersetzt durch DimensionKategorieFilter
      */
     function clearPerspektiveFilters() {
-        activePerspektiveFilters.clear();
-        reRenderFlatNeeds();
+        console.warn('[AttributeSummaryCard] clearPerspektiveFilters ist deprecated. Verwende DimensionKategorieFilter.');
+        // No-op für Rückwärtskompatibilität
     }
 
     /**
@@ -665,25 +656,19 @@ const AttributeSummaryCard = (function() {
         // Sortiere nach aktuellem Modus
         const sortedNeeds = sortNeedsList(allNeeds, currentFlatSortMode);
 
-        // Bei Kategorie-Sortierung: Perspektiven-Filter anwenden
-        const filteredNeeds = currentFlatSortMode === 'kategorie'
-            ? filterNeedsByPerspektive(sortedNeeds)
-            : sortedNeeds;
+        // Filter durch DimensionKategorieFilter anwenden (wenn geladen)
+        let filteredNeeds = sortedNeeds;
+        if (typeof DimensionKategorieFilter !== 'undefined') {
+            filteredNeeds = sortedNeeds.filter(need => DimensionKategorieFilter.shouldShowNeed(need.id));
+        }
 
         // Subtitle mit Filter-Info
-        const perspektiveFilterActive = currentFlatSortMode === 'kategorie' && activePerspektiveFilters.size > 0;
-        let subtitleText;
-        if (showOnlyHauptfragen) {
-            // Zeige Hauptfragen-Anzahl
-            subtitleText = perspektiveFilterActive
-                ? `Dein ${archetypLabel}-Profil (${filteredNeeds.length} von ${allNeeds.length} Hauptfragen)`
-                : `Dein ${archetypLabel}-Profil (${allNeeds.length} Hauptfragen)`;
-        } else {
-            // Zeige alle Bedürfnisse
-            subtitleText = perspektiveFilterActive
-                ? `Dein ${archetypLabel}-Profil (${filteredNeeds.length} von ${totalNeedsCount} Bedürfnisse)`
-                : `Dein ${archetypLabel}-Profil (${totalNeedsCount} Bedürfnisse)`;
-        }
+        const filterActive = filteredNeeds.length < (showOnlyHauptfragen ? allNeeds.length : totalNeedsCount);
+        const baseCount = showOnlyHauptfragen ? allNeeds.length : totalNeedsCount;
+        const countLabel = showOnlyHauptfragen ? 'Hauptfragen' : 'Bedürfnisse';
+        const subtitleText = filterActive
+            ? `Dein ${archetypLabel}-Profil (${filteredNeeds.length} von ${baseCount} ${countLabel})`
+            : `Dein ${archetypLabel}-Profil (${baseCount} ${countLabel})`;
 
         // Rendere HTML - flache Liste ohne Kategorien
         let html = `<div class="flat-needs-container flat-needs-no-categories" data-archetyp="${archetyp}">`;
@@ -709,34 +694,6 @@ const AttributeSummaryCard = (function() {
                 <button class="flat-needs-sort-btn${currentFlatSortMode === 'status' ? ' active' : ''}" onclick="AttributeSummaryCard.setSortMode('status')">Status</button>
                 <button class="flat-needs-sort-btn${currentFlatSortMode === 'kategorie' ? ' active' : ''}" onclick="AttributeSummaryCard.setSortMode('kategorie')">Kategorie</button>
             </div>`;
-
-        // Perspektiven-Filter (nur bei Kategorie-Sortierung)
-        if (currentFlatSortMode === 'kategorie') {
-            const noFilter = activePerspektiveFilters.size === 0;
-            html += `
-            <div class="flat-needs-perspektive-bar">
-                <span class="flat-needs-perspektive-label">Perspektive:</span>
-                <button class="flat-needs-perspektive-btn${noFilter ? ' active' : ''}"
-                        onclick="AttributeSummaryCard.clearPerspektiveFilters()"
-                        title="Alle Perspektiven anzeigen">Alle</button>
-                <button class="flat-needs-perspektive-btn perspektive-p1${activePerspektiveFilters.has('#P1') ? ' active' : ''}"
-                        onclick="AttributeSummaryCard.togglePerspektiveFilter('#P1')"
-                        title="Statistik/GFK - Universelle Bedürfnisse nach Marshall Rosenberg"
-                        style="--perspektive-color: #3B82F6;">📊 Statistik</button>
-                <button class="flat-needs-perspektive-btn perspektive-p2${activePerspektiveFilters.has('#P2') ? ' active' : ''}"
-                        onclick="AttributeSummaryCard.togglePerspektiveFilter('#P2')"
-                        title="Osho - Tantrische Weisheit, Freiheit IN der Beziehung"
-                        style="--perspektive-color: #F59E0B;">🕉️ Osho</button>
-                <button class="flat-needs-perspektive-btn perspektive-p3${activePerspektiveFilters.has('#P3') ? ' active' : ''}"
-                        onclick="AttributeSummaryCard.togglePerspektiveFilter('#P3')"
-                        title="Pirsig - Qualität als Lebensphilosophie"
-                        style="--perspektive-color: #10B981;">🔧 Pirsig</button>
-                <button class="flat-needs-perspektive-btn perspektive-p4${activePerspektiveFilters.has('#P4') ? ' active' : ''}"
-                        onclick="AttributeSummaryCard.togglePerspektiveFilter('#P4')"
-                        title="SexPositiv/Kink - Consent, Kommunikation, Machtaustausch"
-                        style="--perspektive-color: #8B5CF6;">💜 SexPositiv</button>
-            </div>`;
-        }
 
         html += `</div>`;
 
@@ -1647,7 +1604,7 @@ const AttributeSummaryCard = (function() {
         resetFlatNeeds,
         reRenderFlatNeeds,
         setSortMode,
-        // NEU: Perspektiven-Filter für Kategorie-Sortierung
+        // DEPRECATED: Alte Filter-Funktionen (für Rückwärtskompatibilität)
         togglePerspektiveFilter,
         clearPerspektiveFilters,
         // NEU: Hauptfragen-Filter (v3.0.0 - konsolidierte Bedürfnisse)
