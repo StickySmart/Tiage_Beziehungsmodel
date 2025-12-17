@@ -120,7 +120,11 @@ const DimensionKategorieFilter = (function() {
 
         // Hole Bedürfnis-Metadaten
         const need = getNeedMetadata(needId);
-        if (!need) return true; // Fallback: Anzeigen wenn keine Metadaten
+        if (!need) {
+            // FIX: Bedürfnis NICHT anzeigen wenn keine Metadaten verfügbar
+            // (Vorheriges Verhalten: return true - zeigte ALLE Bedürfnisse an)
+            return false;
+        }
 
         // Mehrfachauswahl: Prüfe ob Bedürfnis zu einer der aktiven Kategorien gehört
         return activeKategorien.has(need.kategorieId);
@@ -137,6 +141,7 @@ const DimensionKategorieFilter = (function() {
         const taxonomie = typeof TiageTaxonomie !== 'undefined' ? TiageTaxonomie : null;
 
         if (!beduerfnisIds || !beduerfnisIds.beduerfnisse || !taxonomie) {
+            console.error('[DimensionKategorieFilter] BeduerfnisIds oder TiageTaxonomie nicht geladen');
             return null;
         }
 
