@@ -19188,7 +19188,21 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
 
         // Close Profile Review Modal
         function closeProfileReviewModal(event) {
+            // Prüfe ob das Klick-Event auf dem Overlay selbst stattfand (nicht auf Kind-Elementen)
             if (event && event.target !== event.currentTarget) return;
+
+            // Zusätzliche Prüfung: Wenn innerhalb des Modal-Contents geklickt wurde, nicht schließen
+            if (event) {
+                var modalContent = document.querySelector('.profile-review-modal');
+                if (modalContent && modalContent.contains(event.target)) {
+                    // Klick war innerhalb des Modal-Contents - nur Such-Dropdown schließen
+                    if (typeof hideSearchSuggestions === 'function') {
+                        hideSearchSuggestions();
+                    }
+                    return;
+                }
+            }
+
             var modal = document.getElementById('profileReviewModal');
             if (modal) {
                 modal.style.display = 'none';
@@ -19913,6 +19927,7 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
             }
             suggestionState.selectedIndex = -1;
         }
+        window.hideSearchSuggestions = hideSearchSuggestions;
 
         /**
          * Handle intelligent search input
