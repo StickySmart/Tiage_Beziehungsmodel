@@ -1471,7 +1471,7 @@ input.resonanz-input:focus {
 }
 
 .search-suggestions-content {
-    padding: 4px;
+    padding: 4px 4px 12px 4px;
     min-height: 0;
 }
 
@@ -1484,6 +1484,10 @@ input.resonanz-input:focus {
     flex-direction: column;
     gap: 4px;
     margin-bottom: 2px;
+}
+
+.suggestion-item:last-child {
+    margin-bottom: 0;
 }
 
 .suggestion-item:hover,
