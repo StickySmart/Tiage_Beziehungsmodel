@@ -356,10 +356,17 @@
                                id="profileReviewSearchInput"
                                class="profile-review-search-input"
                                placeholder="Bedürfnis suchen... (* = Platzhalter)"
-                               oninput="filterProfileReviewByNeed(this.value)">
+                               oninput="handleIntelligentSearch(this.value)"
+                               onkeydown="handleSearchKeydown(event)"
+                               onfocus="showSearchSuggestions()"
+                               autocomplete="off">
                         <button class="profile-review-search-clear"
                                 onclick="clearProfileReviewSearch()"
                                 title="Suche leeren">×</button>
+                        <!-- Intelligent Suggestions Dropdown -->
+                        <div id="searchSuggestionsDropdown" class="search-suggestions-dropdown" style="display: none;">
+                            <div class="search-suggestions-content"></div>
+                        </div>
                     </div>
                     <div class="profile-review-search-hint" id="profileReviewSearchHint"></div>
                 </div>

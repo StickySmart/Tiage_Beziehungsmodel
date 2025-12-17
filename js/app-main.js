@@ -19573,6 +19573,475 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
         }
         window.clearProfileReviewSearch = clearProfileReviewSearch;
 
+        /**
+         * ═══════════════════════════════════════════════════════════════════════════
+         * INTELLIGENT SEARCH SUGGESTIONS
+         * ═══════════════════════════════════════════════════════════════════════════
+         */
+
+        // Global state for suggestions
+        var suggestionState = {
+            selectedIndex: -1,
+            suggestions: []
+        };
+
+        /**
+         * Get perspective information for a category
+         */
+        function getPerspectiveForCategory(categoryKey) {
+            // Check if PerspektivenModal component exists
+            if (window.PerspektivenModal && window.PerspektivenModal.kategoriePerspektiven) {
+                var perspId = window.PerspektivenModal.kategoriePerspektiven[categoryKey];
+                if (perspId && window.PerspektivenModal.perspektiven[perspId]) {
+                    return window.PerspektivenModal.perspektiven[perspId];
+                }
+            }
+            return null;
+        }
+
+        /**
+         * Get perspective information for a need
+         */
+        function getPerspectiveForNeed(needId) {
+            if (!window.BeduerfnisKatalog || !window.BeduerfnisKatalog.beduerfnisse) return null;
+
+            var need = window.BeduerfnisKatalog.beduerfnisse[needId];
+            if (!need || !need.kategorie) return null;
+
+            // Get category from need
+            var categoryId = need.kategorie;
+            if (!window.TiageTaxonomie || !window.TiageTaxonomie.kategorien) return null;
+
+            var category = window.TiageTaxonomie.kategorien[categoryId];
+            if (!category || !category.key) return null;
+
+            return getPerspectiveForCategory(category.key);
+        }
+
+        /**
+         * Generate search suggestions based on query
+         */
+        function generateSearchSuggestions(query) {
+            var suggestions = [];
+            var lowerQuery = query.toLowerCase().trim();
+
+            // If query is empty, show popular items
+            if (!lowerQuery) {
+                // Show top perspectives
+                if (window.TiageTaxonomie && window.TiageTaxonomie.perspektiven) {
+                    Object.values(window.TiageTaxonomie.perspektiven).slice(0, 4).forEach(function(persp) {
+                        suggestions.push({
+                            type: 'perspective',
+                            id: persp.id,
+                            label: persp.label,
+                            description: persp.beschreibung,
+                            source: persp.quelle,
+                            perspective: null
+                        });
+                    });
+                }
+
+                // Show top categories
+                if (window.TiageTaxonomie && window.TiageTaxonomie.kategorien) {
+                    Object.values(window.TiageTaxonomie.kategorien).slice(0, 6).forEach(function(kat) {
+                        var persp = getPerspectiveForCategory(kat.key);
+                        suggestions.push({
+                            type: 'category',
+                            id: kat.id,
+                            label: kat.label,
+                            description: kat.beschreibung,
+                            perspective: persp
+                        });
+                    });
+                }
+
+                return suggestions.slice(0, 10);
+            }
+
+            // Search in needs (Bedürfnisse)
+            if (window.BeduerfnisKatalog && window.BeduerfnisKatalog.beduerfnisse) {
+                Object.values(window.BeduerfnisKatalog.beduerfnisse).forEach(function(need) {
+                    var matchScore = 0;
+
+                    // Check label
+                    if (need.label && need.label.toLowerCase().includes(lowerQuery)) {
+                        matchScore = 10;
+                    }
+
+                    // Check ID
+                    if (need.id && need.id.toLowerCase().includes(lowerQuery)) {
+                        matchScore = Math.max(matchScore, 8);
+                    }
+
+                    if (matchScore > 0) {
+                        var persp = getPerspectiveForNeed(need.id);
+                        suggestions.push({
+                            type: 'need',
+                            id: need.id,
+                            label: need.label,
+                            description: need.frage || '',
+                            perspective: persp,
+                            score: matchScore
+                        });
+                    }
+                });
+            }
+
+            // Search in categories (Kategorien)
+            if (window.TiageTaxonomie && window.TiageTaxonomie.kategorien) {
+                Object.values(window.TiageTaxonomie.kategorien).forEach(function(kat) {
+                    var matchScore = 0;
+
+                    // Check label
+                    if (kat.label && kat.label.toLowerCase().includes(lowerQuery)) {
+                        matchScore = 9;
+                    }
+
+                    // Check description
+                    if (kat.beschreibung && kat.beschreibung.toLowerCase().includes(lowerQuery)) {
+                        matchScore = Math.max(matchScore, 7);
+                    }
+
+                    // Check ID
+                    if (kat.id && kat.id.toLowerCase().includes(lowerQuery)) {
+                        matchScore = Math.max(matchScore, 8);
+                    }
+
+                    if (matchScore > 0) {
+                        var persp = getPerspectiveForCategory(kat.key);
+                        suggestions.push({
+                            type: 'category',
+                            id: kat.id,
+                            label: kat.label,
+                            description: kat.beschreibung,
+                            perspective: persp,
+                            score: matchScore
+                        });
+                    }
+                });
+            }
+
+            // Search in dimensions (Dimensionen)
+            if (window.TiageTaxonomie && window.TiageTaxonomie.dimensionen) {
+                Object.values(window.TiageTaxonomie.dimensionen).forEach(function(dim) {
+                    var matchScore = 0;
+
+                    // Check label
+                    if (dim.label && dim.label.toLowerCase().includes(lowerQuery)) {
+                        matchScore = 8;
+                    }
+
+                    // Check description
+                    if (dim.beschreibung && dim.beschreibung.toLowerCase().includes(lowerQuery)) {
+                        matchScore = Math.max(matchScore, 6);
+                    }
+
+                    // Check ID
+                    if (dim.id && dim.id.toLowerCase().includes(lowerQuery)) {
+                        matchScore = Math.max(matchScore, 7);
+                    }
+
+                    if (matchScore > 0) {
+                        suggestions.push({
+                            type: 'dimension',
+                            id: dim.id,
+                            label: dim.label,
+                            description: dim.beschreibung,
+                            perspective: null,
+                            score: matchScore
+                        });
+                    }
+                });
+            }
+
+            // Search in perspectives (Perspektiven)
+            if (window.TiageTaxonomie && window.TiageTaxonomie.perspektiven) {
+                Object.values(window.TiageTaxonomie.perspektiven).forEach(function(persp) {
+                    var matchScore = 0;
+
+                    // Check label
+                    if (persp.label && persp.label.toLowerCase().includes(lowerQuery)) {
+                        matchScore = 7;
+                    }
+
+                    // Check description
+                    if (persp.beschreibung && persp.beschreibung.toLowerCase().includes(lowerQuery)) {
+                        matchScore = Math.max(matchScore, 5);
+                    }
+
+                    // Check ID
+                    if (persp.id && persp.id.toLowerCase().includes(lowerQuery)) {
+                        matchScore = Math.max(matchScore, 6);
+                    }
+
+                    if (matchScore > 0) {
+                        suggestions.push({
+                            type: 'perspective',
+                            id: persp.id,
+                            label: persp.label,
+                            description: persp.beschreibung,
+                            source: persp.quelle,
+                            perspective: null,
+                            score: matchScore
+                        });
+                    }
+                });
+            }
+
+            // Sort by score and limit results
+            suggestions.sort(function(a, b) {
+                return (b.score || 0) - (a.score || 0);
+            });
+
+            return suggestions.slice(0, 15);
+        }
+
+        /**
+         * Render suggestion item HTML
+         */
+        function renderSuggestionItem(suggestion, index) {
+            var typeLabel = {
+                'need': 'Bedürfnis',
+                'category': 'Kategorie',
+                'dimension': 'Dimension',
+                'perspective': 'Perspektive'
+            }[suggestion.type] || suggestion.type;
+
+            var perspectiveHTML = '';
+            if (suggestion.perspective) {
+                var icon = suggestion.perspective.icon || '📊';
+                var label = suggestion.perspective.label || '';
+                perspectiveHTML = '<div class="suggestion-item-perspective">' +
+                    '<span class="suggestion-item-perspective-icon">' + icon + '</span>' +
+                    '<span>Perspektive: ' + label + '</span>' +
+                    '</div>';
+            }
+
+            var descriptionHTML = '';
+            if (suggestion.description) {
+                var desc = suggestion.description;
+                if (desc.length > 120) {
+                    desc = desc.substring(0, 120) + '...';
+                }
+                descriptionHTML = '<div class="suggestion-item-description">' + desc + '</div>';
+            }
+
+            return '<div class="suggestion-item' + (index === suggestionState.selectedIndex ? ' active' : '') + '" ' +
+                   'data-index="' + index + '" ' +
+                   'data-value="' + suggestion.label + '">' +
+                   '<div class="suggestion-item-header">' +
+                   '<span class="suggestion-item-type type-' + suggestion.type + '">' + typeLabel + '</span>' +
+                   '<span class="suggestion-item-label">' + suggestion.label + '</span>' +
+                   '<span class="suggestion-item-id">' + suggestion.id + '</span>' +
+                   '</div>' +
+                   descriptionHTML +
+                   perspectiveHTML +
+                   '</div>';
+        }
+
+        /**
+         * Display search suggestions
+         */
+        function displaySearchSuggestions(suggestions) {
+            var dropdown = document.getElementById('searchSuggestionsDropdown');
+            var content = dropdown ? dropdown.querySelector('.search-suggestions-content') : null;
+
+            if (!dropdown || !content) return;
+
+            suggestionState.suggestions = suggestions;
+            suggestionState.selectedIndex = -1;
+
+            if (suggestions.length === 0) {
+                content.innerHTML = '<div class="search-suggestions-empty">Keine Vorschläge gefunden</div>';
+                dropdown.style.display = 'block';
+                return;
+            }
+
+            // Group suggestions by type
+            var grouped = {
+                'need': [],
+                'category': [],
+                'dimension': [],
+                'perspective': []
+            };
+
+            suggestions.forEach(function(suggestion, index) {
+                if (grouped[suggestion.type]) {
+                    grouped[suggestion.type].push({suggestion: suggestion, index: index});
+                }
+            });
+
+            var html = '';
+            var currentIndex = 0;
+
+            // Render in order: needs, categories, dimensions, perspectives
+            var order = ['need', 'category', 'dimension', 'perspective'];
+            var headers = {
+                'need': 'Bedürfnisse',
+                'category': 'Kategorien',
+                'dimension': 'Dimensionen',
+                'perspective': 'Perspektiven'
+            };
+
+            order.forEach(function(type) {
+                if (grouped[type].length > 0) {
+                    html += '<div class="suggestion-section-header">' + headers[type] + '</div>';
+                    grouped[type].forEach(function(item) {
+                        html += renderSuggestionItem(item.suggestion, item.index);
+                    });
+                }
+            });
+
+            content.innerHTML = html;
+            dropdown.style.display = 'block';
+
+            // Add click handlers
+            content.querySelectorAll('.suggestion-item').forEach(function(item) {
+                item.addEventListener('click', function() {
+                    selectSuggestion(parseInt(item.getAttribute('data-index')));
+                });
+            });
+        }
+
+        /**
+         * Hide search suggestions
+         */
+        function hideSearchSuggestions() {
+            var dropdown = document.getElementById('searchSuggestionsDropdown');
+            if (dropdown) {
+                dropdown.style.display = 'none';
+            }
+            suggestionState.selectedIndex = -1;
+        }
+
+        /**
+         * Handle intelligent search input
+         */
+        function handleIntelligentSearch(query) {
+            // Call original filter function
+            filterProfileReviewByNeed(query);
+
+            // Generate and display suggestions
+            var suggestions = generateSearchSuggestions(query);
+            displaySearchSuggestions(suggestions);
+        }
+        window.handleIntelligentSearch = handleIntelligentSearch;
+
+        /**
+         * Show search suggestions on focus
+         */
+        function showSearchSuggestions() {
+            var input = document.getElementById('profileReviewSearchInput');
+            if (!input) return;
+
+            var query = input.value || '';
+            var suggestions = generateSearchSuggestions(query);
+            displaySearchSuggestions(suggestions);
+        }
+        window.showSearchSuggestions = showSearchSuggestions;
+
+        /**
+         * Select a suggestion
+         */
+        function selectSuggestion(index) {
+            if (index < 0 || index >= suggestionState.suggestions.length) return;
+
+            var suggestion = suggestionState.suggestions[index];
+            var input = document.getElementById('profileReviewSearchInput');
+
+            if (input) {
+                input.value = suggestion.label;
+                handleIntelligentSearch(suggestion.label);
+            }
+
+            hideSearchSuggestions();
+        }
+
+        /**
+         * Handle keyboard navigation in search
+         */
+        function handleSearchKeydown(event) {
+            var dropdown = document.getElementById('searchSuggestionsDropdown');
+            if (!dropdown || dropdown.style.display === 'none') return;
+
+            var suggestions = suggestionState.suggestions;
+            if (suggestions.length === 0) return;
+
+            switch (event.key) {
+                case 'ArrowDown':
+                    event.preventDefault();
+                    suggestionState.selectedIndex = Math.min(
+                        suggestionState.selectedIndex + 1,
+                        suggestions.length - 1
+                    );
+                    updateSuggestionSelection();
+                    break;
+
+                case 'ArrowUp':
+                    event.preventDefault();
+                    suggestionState.selectedIndex = Math.max(
+                        suggestionState.selectedIndex - 1,
+                        -1
+                    );
+                    updateSuggestionSelection();
+                    break;
+
+                case 'Enter':
+                    event.preventDefault();
+                    if (suggestionState.selectedIndex >= 0) {
+                        selectSuggestion(suggestionState.selectedIndex);
+                    }
+                    break;
+
+                case 'Escape':
+                    event.preventDefault();
+                    hideSearchSuggestions();
+                    break;
+            }
+        }
+        window.handleSearchKeydown = handleSearchKeydown;
+
+        /**
+         * Update suggestion selection visual state
+         */
+        function updateSuggestionSelection() {
+            var content = document.querySelector('.search-suggestions-content');
+            if (!content) return;
+
+            var items = content.querySelectorAll('.suggestion-item');
+            items.forEach(function(item, index) {
+                if (index === suggestionState.selectedIndex) {
+                    item.classList.add('active');
+                    item.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+                } else {
+                    item.classList.remove('active');
+                }
+            });
+        }
+
+        /**
+         * Close suggestions when clicking outside
+         */
+        document.addEventListener('click', function(event) {
+            var searchWrapper = document.querySelector('.profile-review-search-wrapper');
+            var dropdown = document.getElementById('searchSuggestionsDropdown');
+
+            if (searchWrapper && dropdown &&
+                !searchWrapper.contains(event.target) &&
+                !dropdown.contains(event.target)) {
+                hideSearchSuggestions();
+            }
+        });
+
+        /**
+         * Update clearProfileReviewSearch to also hide suggestions
+         */
+        var originalClear = window.clearProfileReviewSearch;
+        window.clearProfileReviewSearch = function() {
+            originalClear();
+            hideSearchSuggestions();
+        };
+
         // ═══════════════════════════════════════════════════════════════════════════
 
         // Update Source Explanation with current factors
