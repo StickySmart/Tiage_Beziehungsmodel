@@ -697,6 +697,29 @@ const AttributeSummaryCard = (function() {
             <!-- DIMENSION-KATEGORIE-FILTER -->
             <div id="flat-needs-dimension-filter"></div>
 
+            <!-- SEARCH CONTAINER (moved from external to internal) -->
+            <div class="profile-review-search-container-internal">
+                <div class="profile-review-search-wrapper">
+                    <span class="profile-review-search-icon">🔍</span>
+                    <input type="text"
+                           id="profileReviewSearchInput"
+                           class="profile-review-search-input"
+                           placeholder="Such..."
+                           oninput="handleIntelligentSearch(this.value)"
+                           onkeydown="handleSearchKeydown(event)"
+                           onfocus="showSearchSuggestions()"
+                           autocomplete="off">
+                    <button class="profile-review-search-clear"
+                            onclick="clearProfileReviewSearch()"
+                            title="Suche leeren">×</button>
+                    <!-- Intelligent Suggestions Dropdown -->
+                    <div id="searchSuggestionsDropdown" class="search-suggestions-dropdown" style="display: none;">
+                        <div class="search-suggestions-content"></div>
+                    </div>
+                </div>
+                <div class="profile-review-search-hint" id="profileReviewSearchHint"></div>
+            </div>
+
             <div class="flat-needs-sort-bar">
                 <span class="flat-needs-sort-label">Sortieren:</span>
                 <button class="flat-needs-sort-btn${currentFlatSortMode === 'value' ? ' active' : ''}" onclick="AttributeSummaryCard.setSortMode('value')">Wert</button>
@@ -706,8 +729,16 @@ const AttributeSummaryCard = (function() {
             </div>
         </div>`;
 
-        // Direkte flache Liste ohne Kategorien-Wrapper
-        html += `<div class="flat-needs-list kategorie-mode">`;
+        // Collapsible Section für Faktor-Gewichtung (Sliders)
+        html += `
+        <div class="flat-needs-collapse-header" onclick="AttributeSummaryCard.toggleFlatNeedsCollapse()">
+            <span class="flat-needs-collapse-title">Faktor-Gewichtung</span>
+            <span class="flat-needs-collapse-icon">▼</span>
+        </div>`;
+
+        // Direkte flache Liste ohne Kategorien-Wrapper - jetzt in collapsible wrapper
+        html += `<div class="flat-needs-list-wrapper">
+            <div class="flat-needs-list kategorie-mode">`;
         filteredNeeds.forEach(need => {
             const needObj = findNeedById(need.id);
             const isLocked = needObj?.locked || false;
@@ -715,9 +746,9 @@ const AttributeSummaryCard = (function() {
             const dimColor = getDimensionColor(need.id);
             html += renderFlatNeedItem(need.id, need.label, need.value, isLocked, dimColor);
         });
-        html += `</div>`;
+        html += `</div></div>`; // Close flat-needs-list and flat-needs-list-wrapper
 
-        html += '</div>';
+        html += '</div>'; // Close flat-needs-container
         return html;
     }
 
@@ -752,6 +783,19 @@ const AttributeSummaryCard = (function() {
 
             // Re-initialisiere Filter
             initDimensionFilter();
+
+            // Verstecke externe Suche (da wir interne Suche haben)
+            hideExternalSearch();
+        }
+    }
+
+    /**
+     * Versteckt die externe Suche, da die Suche jetzt intern im flat-needs-header ist
+     */
+    function hideExternalSearch() {
+        const externalSearch = document.querySelector('.profile-review-search-container');
+        if (externalSearch) {
+            externalSearch.style.display = 'none';
         }
     }
 
@@ -778,6 +822,9 @@ const AttributeSummaryCard = (function() {
 
             // Initialisiere Tree-View nach DOM-Insertion
             DimensionKategorieFilter.initTreeView();
+
+            // Verstecke externe Suche (da wir interne Suche haben)
+            hideExternalSearch();
 
             console.log('[AttributeSummaryCard] DimensionKategorieFilter initialisiert');
         }, 100);
@@ -1618,6 +1665,19 @@ const AttributeSummaryCard = (function() {
         return result;
     }
 
+    /**
+     * Togglet den Collapse-Status der Faktor-Gewichtung (Sliders)
+     */
+    function toggleFlatNeedsCollapse() {
+        const wrapper = document.querySelector('.flat-needs-list-wrapper');
+        const icon = document.querySelector('.flat-needs-collapse-icon');
+
+        if (wrapper && icon) {
+            wrapper.classList.toggle('collapsed');
+            icon.classList.toggle('collapsed');
+        }
+    }
+
     return {
         render,
         renderMany,
@@ -1641,6 +1701,7 @@ const AttributeSummaryCard = (function() {
         onFlatSliderInput,
         updateFlatNeedValue,
         toggleFlatNeedLock,
+        toggleFlatNeedsCollapse,
         // NEU (v1.8.89): Integrierte Struktur { needId: { value, locked } }
         getFlatNeeds,
         setFlatNeeds,
