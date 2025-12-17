@@ -89,13 +89,12 @@ const ProfileReviewRenderer = (function() {
         // und wird in AttributeSummaryCard.renderAllNeedsFlat() gerendert
 
         // Bedürfnis-Darstellung (enthält jetzt Resonanz-Anzeige im Header)
-        // AUSGEBLENDET: "Alle Bedürfnisse" Sektion wird nicht mehr angezeigt (Duplikat der RA-Profil Karten)
-        // let needsHtml = '';
-        // if (typeof AttributeSummaryCard !== 'undefined' && AttributeSummaryCard.renderAllNeedsFlat) {
-        //     needsHtml = AttributeSummaryCard.renderAllNeedsFlat(archetyp, archetypLabel);
-        // }
+        let needsHtml = '';
+        if (typeof AttributeSummaryCard !== 'undefined' && AttributeSummaryCard.renderAllNeedsFlat) {
+            needsHtml = AttributeSummaryCard.renderAllNeedsFlat(archetyp, archetypLabel);
+        }
 
-        return gewichtungHtml;
+        return gewichtungHtml + '\n' + needsHtml;
     }
 
     /**
@@ -118,15 +117,15 @@ const ProfileReviewRenderer = (function() {
             '\n<div style="height: 20px;"></div>';
 
         // Initialisiere Resonanzfaktoren-Anzeige und Filter nach DOM-Einfügung
-        // AUSGEBLENDET: Diese Initialisierungen sind nicht mehr nötig, da "Alle Bedürfnisse" nicht mehr angezeigt wird
-        // if (typeof AttributeSummaryCard !== 'undefined') {
-        //     if (AttributeSummaryCard.initResonanzDisplay) {
-        //         AttributeSummaryCard.initResonanzDisplay();
-        //     }
-        //     if (AttributeSummaryCard.initDimensionFilter) {
-        //         AttributeSummaryCard.initDimensionFilter();
-        //     }
-        // }
+        if (typeof AttributeSummaryCard !== 'undefined') {
+            // Resonanzfaktoren-Anzeige wurde ausgeblendet (Duplikat)
+            // if (AttributeSummaryCard.initResonanzDisplay) {
+            //     AttributeSummaryCard.initResonanzDisplay();
+            // }
+            if (AttributeSummaryCard.initDimensionFilter) {
+                AttributeSummaryCard.initDimensionFilter();
+            }
+        }
 
         console.log('ProfileReviewRenderer: Modal initialized for', archetyp);
     }
