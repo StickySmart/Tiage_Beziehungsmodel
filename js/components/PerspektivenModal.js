@@ -366,9 +366,155 @@ const PerspektivenModal = {
     /**
      * Rendert die Bedürfnis-Definition mit ID
      */
+    /**
+     * Holt Haupt/Nuance-Informationen für ein Bedürfnis
+     * @param {string} needId - #B-ID (z.B. '#B21')
+     * @returns {object|null} { frageTyp, hauptbeduerfnis, nuancen, kontext, frage }
+     */
+    getHauptNuanceInfo: function(needId) {
+        if (typeof BeduerfnisIds === 'undefined' || !BeduerfnisIds.beduerfnisse) {
+            return null;
+        }
+        const need = BeduerfnisIds.beduerfnisse[needId];
+        if (!need) return null;
+
+        return {
+            frageTyp: need.frageTyp || null,
+            hauptbeduerfnis: need.hauptbeduerfnis || null,
+            nuancen: need.nuancen || null,
+            kontext: need.kontext || null,
+            frage: need.frage || null
+        };
+    },
+
+    /**
+     * Holt Label für ein Bedürfnis
+     * @param {string} needId - #B-ID
+     * @returns {string} Label
+     */
+    getNeedLabel: function(needId) {
+        if (typeof BeduerfnisIds === 'undefined' || !BeduerfnisIds.beduerfnisse) {
+            return needId;
+        }
+        const need = BeduerfnisIds.beduerfnisse[needId];
+        return need?.label || needId;
+    },
+
     renderDefinition: function(needDef, kategorieColor) {
         const needId = needDef['#ID'] || needDef.id || '';
+        const hauptNuanceInfo = this.getHauptNuanceInfo(needId);
+
+        // Haupt/Nuance Badge und Beziehungen
+        let hierarchyHtml = '';
+        if (hauptNuanceInfo) {
+            if (hauptNuanceInfo.frageTyp === 'haupt') {
+                // HAUPTFRAGE - Zeige Nuancen
+                const nuancenHtml = hauptNuanceInfo.nuancen && hauptNuanceInfo.nuancen.length > 0
+                    ? hauptNuanceInfo.nuancen.map(nuanceId => {
+                        const label = this.getNeedLabel(nuanceId);
+                        return `
+                            <div style="
+                                display: inline-flex;
+                                align-items: center;
+                                gap: 4px;
+                                padding: 3px 8px;
+                                background: rgba(139,92,246,0.15);
+                                border: 1px solid rgba(139,92,246,0.3);
+                                border-radius: 12px;
+                                font-size: 11px;
+                                color: var(--text-secondary);
+                                margin: 2px;
+                            ">
+                                <span style="font-family: monospace; opacity: 0.6;">${nuanceId}</span>
+                                <span>${label}</span>
+                            </div>
+                        `;
+                    }).join('')
+                    : '';
+
+                hierarchyHtml = `
+                    <div style="
+                        background: rgba(59,130,246,0.1);
+                        border: 1px solid rgba(59,130,246,0.3);
+                        border-radius: 8px;
+                        padding: 10px;
+                        margin-bottom: 12px;
+                    ">
+                        <div style="display: flex; align-items: center; gap: 6px; margin-bottom: 6px;">
+                            <span style="font-size: 14px;">📋</span>
+                            <strong style="font-size: 11px; color: #3B82F6; text-transform: uppercase; letter-spacing: 0.5px;">Hauptfrage</strong>
+                            <span style="
+                                font-size: 10px;
+                                color: var(--text-muted);
+                                background: rgba(255,255,255,0.05);
+                                padding: 2px 6px;
+                                border-radius: 3px;
+                            ">v3.0.0 Konsolidiert</span>
+                        </div>
+                        ${hauptNuanceInfo.frage ? `
+                            <p style="font-size: 11px; color: var(--text-secondary); margin: 0 0 8px 0; font-style: italic;">
+                                „${hauptNuanceInfo.frage}"
+                            </p>
+                        ` : ''}
+                        ${nuancenHtml ? `
+                            <div style="margin-top: 8px;">
+                                <div style="font-size: 10px; color: var(--text-muted); margin-bottom: 4px; text-transform: uppercase; letter-spacing: 0.5px;">Enthält ${hauptNuanceInfo.nuancen.length} Nuancen:</div>
+                                <div style="display: flex; flex-wrap: wrap; gap: 4px;">
+                                    ${nuancenHtml}
+                                </div>
+                            </div>
+                        ` : ''}
+                    </div>
+                `;
+            } else if (hauptNuanceInfo.frageTyp === 'nuance') {
+                // NUANCE - Zeige Hauptbedürfnis
+                const hauptLabel = hauptNuanceInfo.hauptbeduerfnis
+                    ? this.getNeedLabel(hauptNuanceInfo.hauptbeduerfnis)
+                    : '';
+
+                hierarchyHtml = `
+                    <div style="
+                        background: rgba(139,92,246,0.1);
+                        border: 1px solid rgba(139,92,246,0.3);
+                        border-radius: 8px;
+                        padding: 10px;
+                        margin-bottom: 12px;
+                    ">
+                        <div style="display: flex; align-items: center; gap: 6px; margin-bottom: 6px;">
+                            <span style="font-size: 14px;">📑</span>
+                            <strong style="font-size: 11px; color: #8B5CF6; text-transform: uppercase; letter-spacing: 0.5px;">Nuance</strong>
+                        </div>
+                        ${hauptNuanceInfo.kontext ? `
+                            <p style="font-size: 11px; color: var(--text-secondary); margin: 0 0 8px 0; font-style: italic;">
+                                ${hauptNuanceInfo.kontext}
+                            </p>
+                        ` : ''}
+                        ${hauptNuanceInfo.hauptbeduerfnis ? `
+                            <div style="margin-top: 8px;">
+                                <div style="font-size: 10px; color: var(--text-muted); margin-bottom: 4px; text-transform: uppercase; letter-spacing: 0.5px;">Teil von Hauptfrage:</div>
+                                <div style="
+                                    display: inline-flex;
+                                    align-items: center;
+                                    gap: 6px;
+                                    padding: 4px 10px;
+                                    background: rgba(59,130,246,0.15);
+                                    border: 1px solid rgba(59,130,246,0.3);
+                                    border-radius: 12px;
+                                    font-size: 11px;
+                                    color: var(--text-primary);
+                                ">
+                                    <span style="font-family: monospace; opacity: 0.6;">${hauptNuanceInfo.hauptbeduerfnis}</span>
+                                    <span>${hauptLabel}</span>
+                                </div>
+                            </div>
+                        ` : ''}
+                    </div>
+                `;
+            }
+        }
+
         return `
+            ${hierarchyHtml}
             <div class="definition-box" style="
                 background: rgba(255,255,255,0.03);
                 border-radius: 12px;
@@ -876,6 +1022,54 @@ const PerspektivenModal = {
         else if (resonance.status === 'dissonanz') statusColor = '#ef4444';
         else statusColor = '#eab308';
 
+        // Haupt/Nuance-Info holen
+        const needId = needDef['#ID'] || needDef.id || '';
+        const hauptNuanceInfo = this.getHauptNuanceInfo(needId);
+        let hierarchyHtml = '';
+        if (hauptNuanceInfo && hauptNuanceInfo.frageTyp) {
+            if (hauptNuanceInfo.frageTyp === 'haupt') {
+                hierarchyHtml = `
+                    <div style="
+                        background: rgba(59,130,246,0.15);
+                        border: 1px solid rgba(59,130,246,0.4);
+                        border-radius: 8px;
+                        padding: 8px 12px;
+                        margin-bottom: 12px;
+                        display: inline-block;
+                    ">
+                        <div style="display: flex; align-items: center; gap: 6px;">
+                            <span style="font-size: 12px;">📋</span>
+                            <strong style="font-size: 10px; color: #3B82F6; text-transform: uppercase; letter-spacing: 0.5px;">Hauptfrage</strong>
+                            <span style="
+                                font-size: 9px;
+                                color: rgba(255,255,255,0.6);
+                                background: rgba(255,255,255,0.1);
+                                padding: 1px 4px;
+                                border-radius: 2px;
+                            ">v3.0</span>
+                        </div>
+                    </div>
+                `;
+            } else if (hauptNuanceInfo.frageTyp === 'nuance') {
+                hierarchyHtml = `
+                    <div style="
+                        background: rgba(139,92,246,0.15);
+                        border: 1px solid rgba(139,92,246,0.4);
+                        border-radius: 8px;
+                        padding: 8px 12px;
+                        margin-bottom: 12px;
+                        display: inline-block;
+                    ">
+                        <div style="display: flex; align-items: center; gap: 6px;">
+                            <span style="font-size: 12px;">📑</span>
+                            <strong style="font-size: 10px; color: #8B5CF6; text-transform: uppercase; letter-spacing: 0.5px;">Nuance</strong>
+                            ${hauptNuanceInfo.kontext ? `<span style="font-size: 9px; color: rgba(255,255,255,0.6);">· ${hauptNuanceInfo.kontext}</span>` : ''}
+                        </div>
+                    </div>
+                `;
+            }
+        }
+
         return `
             <div class="resonance-modal-content" style="display: flex; flex-direction: column; gap: 0;">
 
@@ -896,6 +1090,7 @@ const PerspektivenModal = {
                             </div>
                         </div>
                     </div>
+                    ${hierarchyHtml}
                 </div>
 
                 <!-- Storytelling-Box -->
