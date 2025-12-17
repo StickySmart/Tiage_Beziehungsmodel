@@ -114,7 +114,6 @@ const RAProfileHeaderCard = (function() {
             <div class="ra-profile-header-title">
                 <span class="ra-profile-header-icon">📊</span>
                 <span class="ra-profile-header-text">Dein RA-Profil</span>
-                <span class="ra-profile-header-count">(${counts.total} von 219 Bedürfnissen)</span>
             </div>
             <div class="ra-profile-header-values">`;
 
@@ -184,13 +183,6 @@ const RAProfileHeaderCard = (function() {
         }
 
         const values = getCurrentValues();
-        const counts = getNeedsCounts();
-
-        // Aktualisiere Count
-        const countElement = card.querySelector('.ra-profile-header-count');
-        if (countElement) {
-            countElement.textContent = `(${counts.total} von 219 Bedürfnissen)`;
-        }
 
         // Aktualisiere Werte
         ['R1', 'R2', 'R3', 'R4'].forEach(key => {
