@@ -124,8 +124,25 @@
             console.log('confirmAge called:', isAdult);
             try {
                 var modal = document.getElementById('ageVerificationModal');
+                var cookieCheckbox = document.getElementById('cookieConsentCheckbox');
+
                 if (isAdult) {
-                    // Just hide the modal for this session - no localStorage
+                    // Check if cookie consent is given
+                    if (!cookieCheckbox || !cookieCheckbox.checked) {
+                        // Show warning message
+                        alert('Bitte akzeptiere die Verwendung von Cookies und LocalStorage, um fortzufahren.\n\nPlease accept the use of cookies and LocalStorage to continue.');
+                        return false;
+                    }
+
+                    // Save cookie consent to localStorage
+                    try {
+                        localStorage.setItem('tiage_cookie_consent', 'true');
+                        localStorage.setItem('tiage_cookie_consent_timestamp', new Date().toISOString());
+                    } catch(e) {
+                        console.warn('Could not save cookie consent:', e);
+                    }
+
+                    // Hide the modal for this session
                     if (modal) {
                         modal.classList.add('hidden');
                         modal.style.display = 'none';
@@ -485,6 +502,21 @@
             <div class="age-verification-question">
                 <strong data-i18n="ageVerification.question">Bist du mindestens 18 Jahre alt?</strong>
             </div>
+
+            <!-- Cookie Consent Checkbox -->
+            <div style="margin: 20px 0; padding: 15px; background: rgba(255,255,255,0.05); border-radius: 8px; border: 1px solid rgba(255,255,255,0.1);">
+                <label style="display: flex; align-items: flex-start; cursor: pointer; gap: 12px;">
+                    <input type="checkbox" id="cookieConsentCheckbox" style="margin-top: 3px; width: 18px; height: 18px; cursor: pointer; flex-shrink: 0;">
+                    <span style="font-size: 13px; line-height: 1.5; color: rgba(255,255,255,0.9);">
+                        <span data-i18n="ageVerification.cookieConsent">
+                            Ich akzeptiere die Verwendung von Cookies und LocalStorage zur Speicherung meiner Eingaben und Präferenzen.
+                            Diese Daten werden nur lokal in meinem Browser gespeichert.
+                        </span>
+                        <a href="datenschutz.html" target="_blank" style="color: #4A90E2; text-decoration: underline; white-space: nowrap;">Mehr erfahren</a>
+                    </span>
+                </label>
+            </div>
+
             <!-- Buttons -->
             <div class="age-verification-buttons">
                 <button class="age-btn age-btn-yes" id="ageVerifyYes" type="button" onclick="window.confirmAge(true); return false;" data-i18n="ageVerification.confirm">
