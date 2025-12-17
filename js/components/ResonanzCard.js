@@ -263,7 +263,8 @@ const ResonanzCard = (function() {
 
         return `
             <div class="resonanz-value-item${lockedClass}" data-resonanz="${faktor}">
-                <div class="resonanz-value-label">${faktor}</div>
+                <div class="resonanz-value-label-top">${info.label}</div>
+                <div class="resonanz-value-label-sub">${faktor}</div>
                 <div class="resonanz-value-display" id="resonanz-${faktor}">${displayValue}</div>
             </div>`;
     }
