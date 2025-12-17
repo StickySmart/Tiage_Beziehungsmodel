@@ -244,6 +244,12 @@ const AttributeSummaryCard = (function() {
     let flatNeeds = [];
 
     /**
+     * MULTI-SELECT FEATURE: Set zum Speichern ausgewählter Bedürfnisse
+     * Enthält die IDs der ausgewählten Bedürfnisse (#B1, #B2, etc.)
+     */
+    let selectedNeeds = new Set();
+
+    /**
      * Helper: Findet ein Bedürfnis nach ID im flatNeeds Array
      * @param {string} id - Die #B-ID (z.B. "#B34")
      * @returns {Object|undefined} Das Bedürfnis-Objekt oder undefined
@@ -286,6 +292,121 @@ const AttributeSummaryCard = (function() {
                 locked: false,
                 ...updates
             });
+        }
+    }
+
+    /**
+     * MULTI-SELECT: Togglet die Auswahl eines Bedürfnisses
+     * @param {string} needId - Die #B-ID
+     */
+    function toggleNeedSelection(needId) {
+        if (selectedNeeds.has(needId)) {
+            selectedNeeds.delete(needId);
+        } else {
+            selectedNeeds.add(needId);
+        }
+
+        // Update UI
+        const needItem = document.querySelector(`.flat-need-item[data-need="${needId}"]`);
+        if (needItem) {
+            const isSelected = selectedNeeds.has(needId);
+            needItem.classList.toggle('need-selected', isSelected);
+
+            // Update checkbox
+            const checkbox = needItem.querySelector('.need-checkbox');
+            if (checkbox) {
+                checkbox.checked = isSelected;
+            }
+        }
+
+        // Update control panel visibility
+        updateMultiSelectControlPanel();
+
+        // Event
+        document.dispatchEvent(new CustomEvent('needSelectionChange', {
+            bubbles: true,
+            detail: { needId, selected: selectedNeeds.has(needId), totalSelected: selectedNeeds.size }
+        }));
+    }
+
+    /**
+     * MULTI-SELECT: Löscht alle Auswahlen
+     */
+    function clearNeedSelection() {
+        selectedNeeds.forEach(needId => {
+            const needItem = document.querySelector(`.flat-need-item[data-need="${needId}"]`);
+            if (needItem) {
+                needItem.classList.remove('need-selected');
+            }
+        });
+        selectedNeeds.clear();
+        updateMultiSelectControlPanel();
+    }
+
+    /**
+     * MULTI-SELECT: Aktualisiert alle ausgewählten Bedürfnisse auf einen neuen Wert
+     * @param {number} value - Der neue Wert (0-100)
+     */
+    function updateSelectedNeedsValue(value) {
+        const numValue = parseInt(value, 10);
+        if (isNaN(numValue) || numValue < 0 || numValue > 100) return;
+
+        // Sync control panel slider and input
+        const panel = document.querySelector('#multi-select-control-panel');
+        if (panel) {
+            const controlSlider = panel.querySelector('.multi-select-slider');
+            const controlInput = panel.querySelector('.multi-select-input');
+            if (controlSlider) controlSlider.value = numValue;
+            if (controlInput) controlInput.value = numValue;
+        }
+
+        selectedNeeds.forEach(needId => {
+            const needObj = findNeedById(needId);
+            if (needObj?.locked) return; // Skip locked needs
+
+            // Update value
+            upsertNeed(needId, { value: numValue });
+
+            // Update UI
+            const needItem = document.querySelector(`.flat-need-item[data-need="${needId}"]`);
+            if (needItem) {
+                const slider = needItem.querySelector('.need-slider');
+                const input = needItem.querySelector('.flat-need-input');
+                if (slider) {
+                    slider.value = numValue;
+                    // Update slider background with dimension color
+                    const dimColor = getDimensionColor(needId);
+                    if (dimColor) {
+                        slider.style.background = `linear-gradient(to right, ${dimColor} 0%, ${dimColor} ${numValue}%, rgba(255,255,255,0.15) ${numValue}%, rgba(255,255,255,0.15) 100%)`;
+                    }
+                }
+                if (input) input.value = numValue;
+            }
+
+            // Event für Änderungstracking
+            document.dispatchEvent(new CustomEvent('flatNeedChange', {
+                bubbles: true,
+                detail: { needId, value: numValue }
+            }));
+        });
+    }
+
+    /**
+     * MULTI-SELECT: Aktualisiert die Sichtbarkeit und den Status des Control Panels
+     */
+    function updateMultiSelectControlPanel() {
+        const panel = document.querySelector('#multi-select-control-panel');
+        if (!panel) return;
+
+        const count = selectedNeeds.size;
+        if (count === 0) {
+            panel.style.display = 'none';
+        } else {
+            panel.style.display = 'flex';
+            const countLabel = panel.querySelector('.multi-select-count');
+            if (countLabel) {
+                countLabel.textContent = `${count} ausgewählt`;
+            }
         }
     }
 
@@ -694,6 +815,27 @@ const AttributeSummaryCard = (function() {
                 </button>
             </div>
 
+            <!-- MULTI-SELECT CONTROL PANEL -->
+            <div id="multi-select-control-panel" class="multi-select-control-panel" style="display: none;">
+                <div class="multi-select-info">
+                    <span class="multi-select-count">0 ausgewählt</span>
+                    <button class="multi-select-clear-btn" onclick="AttributeSummaryCard.clearNeedSelection();" title="Auswahl aufheben">
+                        ✕ Auswahl aufheben
+                    </button>
+                </div>
+                <div class="multi-select-slider-container">
+                    <span class="multi-select-slider-label">Alle auf:</span>
+                    <input type="range" class="multi-select-slider" min="0" max="100" value="50"
+                           oninput="AttributeSummaryCard.updateSelectedNeedsValue(this.value)">
+                    <input type="text" class="multi-select-input" value="50" maxlength="3"
+                           onchange="AttributeSummaryCard.updateSelectedNeedsValue(this.value)">
+                </div>
+            </div>
+
+            <!-- RESONANZFAKTOREN-ANZEIGE (STICKY) -->
+            <!-- AUSGEBLENDET: Doppelte Anzeige der Resonanzfaktoren (werden bereits oben in "Dein RA-Profil" angezeigt) -->
+            <!-- <div id="flat-needs-resonanz-display"></div> -->
+
             <!-- DIMENSION-KATEGORIE-FILTER -->
             <div id="flat-needs-dimension-filter"></div>
 
@@ -859,13 +1001,20 @@ const AttributeSummaryCard = (function() {
             ? `style="border-left: 5px solid ${dimensionColor}; --dimension-color: ${dimensionColor};"`
             : '';
         const colorClass = dimensionColor ? ' has-dimension-color' : '';
+        const isSelected = selectedNeeds.has(needId);
+        const selectedClass = isSelected ? ' need-selected' : '';
         // Slider-Track-Hintergrund: gefüllt bis zum Wert mit Dimensionsfarbe
         const sliderStyle = dimensionColor
             ? `style="background: linear-gradient(to right, ${dimensionColor} 0%, ${dimensionColor} ${value}%, rgba(255,255,255,0.15) ${value}%, rgba(255,255,255,0.15) 100%);"`
             : '';
         return `
-        <div class="flat-need-item${isLocked ? ' need-locked' : ''}${colorClass}" data-need="${needId}" ${itemStyle}>
+        <div class="flat-need-item${isLocked ? ' need-locked' : ''}${colorClass}${selectedClass}" data-need="${needId}" ${itemStyle}
+             onclick="AttributeSummaryCard.toggleNeedSelection('${needId}')">
             <div class="flat-need-header">
+                <div class="flat-need-select-indicator">
+                    <input type="checkbox" class="need-checkbox" ${isSelected ? 'checked' : ''}
+                           onclick="event.stopPropagation(); AttributeSummaryCard.toggleNeedSelection('${needId}')">
+                </div>
                 <span class="flat-need-label clickable"
                       onclick="event.stopPropagation(); openNeedWithResonance('${needId}')"
                       title="Klicken für Resonanz-Details">${label}</span>
@@ -1165,7 +1314,7 @@ const AttributeSummaryCard = (function() {
 
     /**
      * Setzt alle flachen Bedürfniswerte zurück auf Profil-Werte
-     * WICHTIG: Setzt auch alle Sperren zurück!
+     * WICHTIG: Setzt auch alle Sperren und Auswahlen zurück!
      */
     function resetFlatNeeds() {
         if (!currentFlatArchetyp || typeof GfkBeduerfnisse === 'undefined') return;
@@ -1175,6 +1324,9 @@ const AttributeSummaryCard = (function() {
 
         // ERST alle Sperren löschen, DANN alle Werte zurücksetzen
         clearFlatLockedNeeds();
+
+        // Multi-Select Auswahl löschen
+        clearNeedSelection();
 
         // Alle Werte zurücksetzen
         Object.keys(kernbeduerfnisse).forEach(needId => {
@@ -1720,7 +1872,11 @@ const AttributeSummaryCard = (function() {
         togglePerspektiveFilter,
         clearPerspektiveFilters,
         toggleHauptfragenFilter,
-        GFK_KATEGORIEN
+        GFK_KATEGORIEN,
+        // NEU: Multi-Select Feature für Bedürfnisse
+        toggleNeedSelection,
+        clearNeedSelection,
+        updateSelectedNeedsValue
     };
 })();
 
