@@ -116,6 +116,16 @@ const ProfileReviewRenderer = (function() {
         contentContainer.innerHTML = renderModalBody(archetyp, archetypLabel) +
             '\n<div style="height: 20px;"></div>';
 
+        // Initialisiere Resonanzfaktoren-Anzeige und Filter nach DOM-Einfügung
+        if (typeof AttributeSummaryCard !== 'undefined') {
+            if (AttributeSummaryCard.initResonanzDisplay) {
+                AttributeSummaryCard.initResonanzDisplay();
+            }
+            if (AttributeSummaryCard.initDimensionFilter) {
+                AttributeSummaryCard.initDimensionFilter();
+            }
+        }
+
         console.log('ProfileReviewRenderer: Modal initialized for', archetyp);
     }
 

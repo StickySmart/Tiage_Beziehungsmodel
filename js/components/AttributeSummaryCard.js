@@ -1696,6 +1696,9 @@ const AttributeSummaryCard = (function() {
         setSortMode,
         // NEU: DimensionKategorieFilter Integration
         initDimensionFilter,
+        // NEU: Resonanzfaktoren-Anzeige Integration
+        initResonanzDisplay,
+        updateResonanzValues,
         // DEPRECATED: Alte Filter-Funktionen (für Rückwärtskompatibilität)
         togglePerspektiveFilter,
         clearPerspektiveFilters,
