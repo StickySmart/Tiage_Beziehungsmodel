@@ -136,6 +136,40 @@
     background: rgba(255, 255, 255, 0.08);
 }
 
+/* Aktive Kategorien - Farbliche Hervorhebung */
+.tree-node-kategorie.active > .tree-node-header {
+    background: var(--node-color, #8B5CF6) !important;
+    border-color: var(--node-color, #8B5CF6) !important;
+    box-shadow: 0 0 12px rgba(var(--node-color-rgb, 139, 92, 246), 0.3);
+}
+
+.tree-node-kategorie.active > .tree-node-header .tree-node-label {
+    color: #ffffff;
+    font-weight: 600;
+}
+
+.tree-node-kategorie.active > .tree-node-header .tree-node-id {
+    background: rgba(255, 255, 255, 0.2);
+    color: #ffffff;
+}
+
+.tree-node-kategorie.active > .tree-node-header .tree-node-count {
+    color: rgba(255, 255, 255, 0.9);
+}
+
+/* Tree Node Content - Anklickbar für Filter */
+.tree-node-content {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex: 1;
+    cursor: pointer;
+}
+
+.tree-expand-icon {
+    cursor: pointer;
+}
+
 /* ═══════════════════════════════════════════════════════════════════════════
    EBENE 3 - NUANCEN/BEDÜRFNISSE (#B1-#B220)
    ═══════════════════════════════════════════════════════════════════════════ */
@@ -329,5 +363,38 @@
 }
 
 .tree-toolbar-btn:active {
+    transform: translateY(0);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   TREE VIEW HEADER & RESET BUTTON
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.tree-view-header {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 12px;
+}
+
+.tree-reset-btn {
+    padding: 8px 16px;
+    background: rgba(255, 59, 48, 0.1);
+    border: 1px solid rgba(255, 59, 48, 0.3);
+    border-radius: 8px;
+    color: #ff3b30;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.tree-reset-btn:hover {
+    background: rgba(255, 59, 48, 0.2);
+    border-color: rgba(255, 59, 48, 0.5);
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px rgba(255, 59, 48, 0.2);
+}
+
+.tree-reset-btn:active {
     transform: translateY(0);
 }
