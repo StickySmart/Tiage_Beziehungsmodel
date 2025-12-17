@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resonanz Tree View - Test</title>
+
+    <!-- Zentrale CSS-Variablen -->
+    <link rel="stylesheet" href="templates/variables.css">
+
+    <!-- Tree View CSS -->
+    <link rel="stylesheet" href="css/resonanz-tree-view.css">
+
+    <style>
+        body {
+            background: #0f0f1a;
+            color: #f0f0f0;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            padding: 40px 20px;
+            margin: 0;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 40px;
+            color: #8B5CF6;
+        }
+
+        .toolbar {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 20px;
+            justify-content: center;
+        }
+
+        .toolbar button {
+            padding: 10px 20px;
+            background: rgba(139, 92, 246, 0.2);
+            border: 1px solid rgba(139, 92, 246, 0.4);
+            border-radius: 8px;
+            color: #f0f0f0;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .toolbar button:hover {
+            background: rgba(139, 92, 246, 0.3);
+            border-color: rgba(139, 92, 246, 0.5);
+            transform: translateY(-2px);
+        }
+
+        .info-box {
+            background: rgba(42, 157, 143, 0.1);
+            border: 1px solid rgba(42, 157, 143, 0.3);
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 20px;
+        }
+
+        .info-box h3 {
+            margin: 0 0 8px 0;
+            color: #2A9D8F;
+        }
+
+        .info-box ul {
+            margin: 8px 0;
+            padding-left: 20px;
+        }
+
+        .info-box li {
+            margin: 4px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🌳 Resonanz Tree View Demo</h1>
+
+        <div class="info-box">
+            <h3>Über diese Ansicht</h3>
+            <p>Diese hierarchische Baumansicht zeigt die vollständige Struktur Ihrer Bedürfnis-Taxonomie:</p>
+            <ul>
+                <li><strong>Ebene 1 - Resonanz (R1-R4):</strong> Leben, Philosophie, Dynamik, Identität</li>
+                <li><strong>Ebene 2 - Kategorien (#K1-#K18):</strong> z.B. Verständnis, Kreativität & Erschaffen</li>
+                <li><strong>Ebene 3 - Nuancen (#B1-#B220):</strong> Einzelne Bedürfnisse</li>
+            </ul>
+            <p><em>Klicken Sie auf die Pfeile (▶/▼), um Bereiche auf- und zuzuklappen.</em></p>
+        </div>
+
+        <div class="toolbar">
+            <button onclick="ResonanzTreeView.expandAll()">🔽 Alle aufklappen</button>
+            <button onclick="ResonanzTreeView.collapseAll()">🔼 Alle zuklappen</button>
+            <button onclick="ResonanzTreeView.reset()">🔄 Zurücksetzen</button>
+        </div>
+
+        <div id="treeContainer"></div>
+    </div>
+
+    <!-- Dependencies -->
+    <script src="profiles/definitions/taxonomie.js"></script>
+    <script src="profiles/definitions/beduerfnis-ids.js"></script>
+
+    <!-- Tree View Component -->
+    <script src="js/components/ResonanzTreeView.js"></script>
+
+    <script>
+        // Initialize Tree View
+        document.addEventListener('DOMContentLoaded', function() {
+            const container = document.getElementById('treeContainer');
+            const html = ResonanzTreeView.render('#treeContainer');
+            container.innerHTML = html;
+
+            console.log('🌳 Resonanz Tree View initialized');
+            console.log('Tree Data:', ResonanzTreeView.getTreeData());
+        });
+    </script>
+</body>
+</html>
