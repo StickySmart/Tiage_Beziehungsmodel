@@ -22,8 +22,6 @@
     <link rel="stylesheet" href="css/philosophy-hint.css">
     <!-- Resonanz Tree View Styling -->
     <link rel="stylesheet" href="css/resonanz-tree-view.css">
-    <!-- RA Profile Header Card Styling -->
-    <link rel="stylesheet" href="css/ra-profile-header-card.css">
 
     <!-- LocalForage - Browser-Datenbank für Profile -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/localforage/1.10.0/localforage.min.js"></script>
@@ -323,6 +321,38 @@
                     <span class="profile-review-badge" id="profileReviewBadge">Duo-Profil</span>
                 </div>
                 <button class="modal-close" onclick="closeProfileReviewModal()">&times;</button>
+            </div>
+
+            <!-- RA Profile Summary Card (outside scrollable area) -->
+            <div class="ra-profile-modal-card" id="raProfileModalCard">
+                <div class="ra-profile-modal-title">
+                    <span class="ra-profile-modal-icon">📊</span>
+                    <span class="ra-profile-modal-text">Dein RA-Profil</span>
+                    <span class="ra-profile-modal-count" id="raProfileModalCount">(37 von 219 Bedürfnissen)</span>
+                </div>
+                <div class="ra-profile-modal-values" id="raProfileModalValues">
+                    <!-- Values will be rendered dynamically -->
+                    <div class="ra-profile-value-item" style="--dimension-color: #E63946;">
+                        <div class="ra-profile-value-label">Leben</div>
+                        <div class="ra-profile-value-id">R1</div>
+                        <div class="ra-profile-value-number" id="raProfileValue-R1">1.50</div>
+                    </div>
+                    <div class="ra-profile-value-item" style="--dimension-color: #2A9D8F;">
+                        <div class="ra-profile-value-label">Philosophie</div>
+                        <div class="ra-profile-value-id">R2</div>
+                        <div class="ra-profile-value-number" id="raProfileValue-R2">1.41</div>
+                    </div>
+                    <div class="ra-profile-value-item" style="--dimension-color: #8B5CF6;">
+                        <div class="ra-profile-value-label">Dynamik</div>
+                        <div class="ra-profile-value-id">R3</div>
+                        <div class="ra-profile-value-number" id="raProfileValue-R3">1.37</div>
+                    </div>
+                    <div class="ra-profile-value-item" style="--dimension-color: #F4A261;">
+                        <div class="ra-profile-value-label">Identität</div>
+                        <div class="ra-profile-value-id">R4</div>
+                        <div class="ra-profile-value-number" id="raProfileValue-R4">1.45</div>
+                    </div>
+                </div>
             </div>
 
             <!-- Scrollable Content - Dynamically rendered by ProfileReviewRenderer -->
@@ -2174,7 +2204,6 @@
     <script src="js/components/ProfileCard.js"></script>
     <script src="js/components/GewichtungCard.js"></script>
     <script src="js/components/ResonanzCard.js"></script>
-    <script src="js/components/RAProfileHeaderCard.js"></script>
     <script src="js/components/CategorySection.js"></script>
     <script src="js/components/profile-config.js"></script>
     <!-- NEU: Universeller Dimension-Kategorie-Filter -->
@@ -2192,5 +2221,89 @@
     <script src="js/components/hints/MomentsToggle.js"></script>
 
     <script src="js/app-main.js"></script>
+
+    <!-- RA Profile Modal Card Update Script -->
+    <script>
+        /**
+         * Aktualisiert die RA-Profil-Karte im Profile Review Modal
+         * mit den aktuellen Resonanzfaktoren der Person
+         */
+        function updateRAProfileModalCard() {
+            // Prüfe ob ResonanzCard verfügbar ist
+            if (typeof ResonanzCard === 'undefined' || typeof ResonanzCard.getValues !== 'function') {
+                console.warn('[RA Profile Modal Card] ResonanzCard nicht verfügbar');
+                return;
+            }
+
+            // Hole aktuelle Person aus dem Kontext
+            const person = (typeof ResonanzCard.getCurrentPerson === 'function')
+                ? ResonanzCard.getCurrentPerson()
+                : 'ich';
+
+            // Hole Resonanzwerte für die Person
+            const values = ResonanzCard.getValues(person);
+            if (!values) {
+                console.warn('[RA Profile Modal Card] Keine Werte verfügbar');
+                return;
+            }
+
+            // Aktualisiere die HTML-Elemente
+            ['R1', 'R2', 'R3', 'R4'].forEach(key => {
+                const valueElement = document.getElementById(`raProfileValue-${key}`);
+                if (valueElement && values[key] !== undefined) {
+                    const newValue = values[key].toFixed(2);
+
+                    // Nur aktualisieren wenn sich der Wert geändert hat
+                    if (valueElement.textContent !== newValue) {
+                        valueElement.textContent = newValue;
+                        valueElement.classList.add('updating');
+                        setTimeout(() => valueElement.classList.remove('updating'), 350);
+                    }
+                }
+            });
+
+            console.log('[RA Profile Modal Card] Werte aktualisiert für', person, values);
+        }
+
+        // Lausche auf Resonanzfaktoren-Änderungen
+        window.addEventListener('resonanzfaktoren-changed', function(event) {
+            // Nur aktualisieren wenn Modal sichtbar ist
+            const modal = document.getElementById('profileReviewModal');
+            if (modal && !modal.classList.contains('hidden') && modal.style.display !== 'none') {
+                updateRAProfileModalCard();
+            }
+        });
+
+        // Beobachte wenn das Modal geöffnet wird
+        const profileReviewModal = document.getElementById('profileReviewModal');
+        if (profileReviewModal) {
+            const observer = new MutationObserver(function(mutations) {
+                mutations.forEach(function(mutation) {
+                    if (mutation.type === 'attributes' &&
+                        (mutation.attributeName === 'style' || mutation.attributeName === 'class')) {
+                        // Prüfe ob Modal jetzt sichtbar ist
+                        const isVisible = profileReviewModal.style.display !== 'none' &&
+                                        !profileReviewModal.classList.contains('hidden');
+                        if (isVisible) {
+                            // Kurze Verzögerung für DOM-Updates
+                            setTimeout(updateRAProfileModalCard, 100);
+                        }
+                    }
+                });
+            });
+
+            observer.observe(profileReviewModal, {
+                attributes: true,
+                attributeFilter: ['style', 'class']
+            });
+        }
+
+        // Initial-Update wenn DOM geladen ist
+        if (document.readyState === 'complete') {
+            updateRAProfileModalCard();
+        } else {
+            window.addEventListener('load', updateRAProfileModalCard);
+        }
+    </script>
 </body>
 </html>
