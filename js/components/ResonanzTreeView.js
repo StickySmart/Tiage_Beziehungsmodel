@@ -166,9 +166,8 @@ const ResonanzTreeView = (function() {
         html += '<span class="tree-subtitle">Resonanz → Kategorien → Nuancen</span>';
         html += '</div>';
 
-        // Resonanz-Ebenen rendern (standardmäßig erste 2 Ebenen ausgeklappt)
+        // Resonanz-Ebenen rendern (standardmäßig eingeklappt)
         for (const resId in tree) {
-            expandedNodes.add(resId); // Auto-expand Resonanz-Ebenen
             html += renderResonanzNode(tree[resId]);
         }
 

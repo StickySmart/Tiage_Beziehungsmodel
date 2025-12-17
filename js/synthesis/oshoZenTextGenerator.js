@@ -481,8 +481,10 @@ const OshoZenTextGenerator = (function() {
             }
 
             .osho-zen-label {
-                font-weight: 600;
-                color: var(--text-color);
+                font-weight: 700;
+                font-size: 1.3rem;
+                color: #FFD700;  /* Gold/Gelb */
+                text-transform: uppercase;
             }
 
             .osho-zen-karte {
@@ -537,9 +539,9 @@ const OshoZenTextGenerator = (function() {
             }
 
             .osho-zen-section-title {
-                font-size: 1.2rem;
-                font-weight: 700;
-                color: #FFD700;
+                font-size: 0.95rem;
+                font-weight: 600;
+                color: var(--text-muted);
                 margin-bottom: 0.5rem;
                 margin-top: 0.75rem;
             }
