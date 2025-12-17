@@ -312,9 +312,8 @@ const AttributeSummaryCard = (function() {
     let activePerspektiveFilters = new Set();
 
     /**
-     * OPTIONAL: Hauptfragen-Filter (v3.0.0 - konsolidierte Bedürfnisse)
-     * Standardmäßig false (zeigt alle 219 Bedürfnisse)
-     * Kann per Toggle auf true gesetzt werden (zeigt nur 70 Hauptfragen)
+     * ENTFERNT: Hauptfragen-Filter (Benutzer-Feedback: zu komplex, nicht nötig)
+     * Zeige IMMER alle Bedürfnisse (219)
      */
     let showOnlyHauptfragen = false;
 
@@ -454,17 +453,24 @@ const AttributeSummaryCard = (function() {
     }
 
     /**
-     * DEPRECATED: Ersetzt durch DimensionKategorieFilter
+     * Filtert Bedürfnisse nach aktiven Perspektiven-Filtern
      * @param {Array} needs - Array von {id, value, label}
-     * @returns {Array} Unveränderte Array (Filter-Logik in DimensionKategorieFilter)
+     * @returns {Array} Gefilterte Array
      */
     function filterNeedsByPerspektive(needs) {
-        console.warn('[AttributeSummaryCard] filterNeedsByPerspektive ist deprecated. Verwende DimensionKategorieFilter.');
-        return needs; // Keine Filterung mehr, DimensionKategorieFilter übernimmt
+        // Kein Filter aktiv = alle anzeigen
+        if (activePerspektiveFilters.size === 0) {
+            return needs;
+        }
+        return needs.filter(need => {
+            const perspektiveId = getPerspektiveIdForNeed(need.id);
+            return activePerspektiveFilters.has(perspektiveId);
+        });
     }
 
     /**
-     * DEPRECATED: Ersetzt durch DimensionKategorieFilter
+     * DEPRECATED: Toggle einen Perspektiven-Filter
+     * Ersetzt durch DimensionKategorieFilter
      * @param {string} perspektiveId - '#P1', '#P2', '#P3', '#P4'
      */
     function togglePerspektiveFilter(perspektiveId) {
@@ -473,19 +479,23 @@ const AttributeSummaryCard = (function() {
     }
 
     /**
-     * DEPRECATED: Ersetzt durch DimensionKategorieFilter
+     * DEPRECATED: Setzt alle Perspektiven-Filter zurück
+     * Ersetzt durch DimensionKategorieFilter.reset()
      */
     function clearPerspektiveFilters() {
-        console.warn('[AttributeSummaryCard] clearPerspektiveFilters ist deprecated. Verwende DimensionKategorieFilter.');
-        // No-op für Rückwärtskompatibilität
+        console.warn('[AttributeSummaryCard] clearPerspektiveFilters ist deprecated. Verwende DimensionKategorieFilter.reset().');
+        if (typeof DimensionKategorieFilter !== 'undefined') {
+            DimensionKategorieFilter.reset();
+        }
     }
 
     /**
-     * Toggle zwischen Hauptfragen und allen Bedürfnissen
+     * DEPRECATED: Toggle zwischen Hauptfragen und allen Bedürfnissen
+     * Hauptfragen-Filter wurde entfernt (Benutzer-Feedback)
      */
     function toggleHauptfragenFilter() {
-        showOnlyHauptfragen = !showOnlyHauptfragen;
-        reRenderFlatNeeds();
+        console.warn('[AttributeSummaryCard] toggleHauptfragenFilter ist deprecated. Hauptfragen-Filter wurde entfernt.');
+        // No-op - showOnlyHauptfragen ist immer false
     }
 
     /**
@@ -648,10 +658,8 @@ const AttributeSummaryCard = (function() {
         // Zähle Gesamt vor dem Filtern
         const totalNeedsCount = allNeeds.length;
 
-        // Bei Hauptfragen-Filter: Nur frageTyp "haupt" anzeigen
-        if (showOnlyHauptfragen) {
-            allNeeds = allNeeds.filter(need => getFrageTyp(need.id) === 'haupt');
-        }
+        // HAUPTFRAGEN-FILTER ENTFERNT (showOnlyHauptfragen immer false)
+        // Zeige IMMER alle 219 Bedürfnisse
 
         // Sortiere nach aktuellem Modus
         const sortedNeeds = sortNeedsList(allNeeds, currentFlatSortMode);
@@ -663,12 +671,10 @@ const AttributeSummaryCard = (function() {
         }
 
         // Subtitle mit Filter-Info
-        const filterActive = filteredNeeds.length < (showOnlyHauptfragen ? allNeeds.length : totalNeedsCount);
-        const baseCount = showOnlyHauptfragen ? allNeeds.length : totalNeedsCount;
-        const countLabel = showOnlyHauptfragen ? 'Hauptfragen' : 'Bedürfnisse';
+        const filterActive = filteredNeeds.length < totalNeedsCount;
         const subtitleText = filterActive
-            ? `Dein ${archetypLabel}-Profil (${filteredNeeds.length} von ${baseCount} ${countLabel})`
-            : `Dein ${archetypLabel}-Profil (${baseCount} ${countLabel})`;
+            ? `Dein ${archetypLabel}-Profil (${filteredNeeds.length} von ${totalNeedsCount} Bedürfnissen)`
+            : `Dein ${archetypLabel}-Profil (${totalNeedsCount} Bedürfnisse)`;
 
         // Rendere HTML - flache Liste ohne Kategorien
         let html = `<div class="flat-needs-container flat-needs-no-categories" data-archetyp="${archetyp}">`;
@@ -682,28 +688,26 @@ const AttributeSummaryCard = (function() {
                     🔄 Standard
                 </button>
             </div>
+
+            <!-- NEUER DIMENSION-KATEGORIE-FILTER -->
+            <div id="flat-needs-dimension-filter"></div>
+
             <div class="flat-needs-sort-bar">
-                <span class="flat-needs-sort-label">Ansicht:</span>
-                <button class="flat-needs-sort-btn${showOnlyHauptfragen ? ' active' : ''}" onclick="AttributeSummaryCard.toggleHauptfragenFilter()" title="Nur konsolidierte Hauptfragen anzeigen (70 statt 219)">📋 Hauptfragen</button>
-                <button class="flat-needs-sort-btn${!showOnlyHauptfragen ? ' active' : ''}" onclick="AttributeSummaryCard.toggleHauptfragenFilter()" title="Alle Bedürfnisse inkl. Nuancen anzeigen (219)">📚 Alle</button>
-                <span class="flat-needs-sort-separator">|</span>
                 <span class="flat-needs-sort-label">Sortieren:</span>
                 <button class="flat-needs-sort-btn${currentFlatSortMode === 'value' ? ' active' : ''}" onclick="AttributeSummaryCard.setSortMode('value')">Wert</button>
                 <button class="flat-needs-sort-btn${currentFlatSortMode === 'name' ? ' active' : ''}" onclick="AttributeSummaryCard.setSortMode('name')">Name</button>
                 <button class="flat-needs-sort-btn${currentFlatSortMode === 'id' ? ' active' : ''}" onclick="AttributeSummaryCard.setSortMode('id')">#B Nr.</button>
                 <button class="flat-needs-sort-btn${currentFlatSortMode === 'status' ? ' active' : ''}" onclick="AttributeSummaryCard.setSortMode('status')">Status</button>
-                <button class="flat-needs-sort-btn${currentFlatSortMode === 'kategorie' ? ' active' : ''}" onclick="AttributeSummaryCard.setSortMode('kategorie')">Kategorie</button>
-            </div>`;
-
-        html += `</div>`;
+            </div>
+        </div>`;
 
         // Direkte flache Liste ohne Kategorien-Wrapper
-        html += `<div class="flat-needs-list${currentFlatSortMode === 'kategorie' ? ' kategorie-mode' : ''}">`;
+        html += `<div class="flat-needs-list kategorie-mode">`;
         filteredNeeds.forEach(need => {
             const needObj = findNeedById(need.id);
             const isLocked = needObj?.locked || false;
-            // Bei Kategorie-Sortierung: Dimension-Farbe anzeigen
-            const dimColor = currentFlatSortMode === 'kategorie' ? getDimensionColor(need.id) : null;
+            // Zeige immer Dimension-Farbe
+            const dimColor = getDimensionColor(need.id);
             html += renderFlatNeedItem(need.id, need.label, need.value, isLocked, dimColor);
         });
         html += `</div>`;
@@ -714,14 +718,10 @@ const AttributeSummaryCard = (function() {
 
     /**
      * Setzt den Sortiermodus und rendert die Liste neu
-     * @param {string} mode - 'value', 'name', 'id', 'status', 'kategorie'
+     * @param {string} mode - 'value', 'name', 'id', 'status'
      */
     function setSortMode(mode) {
         currentFlatSortMode = mode;
-        // Perspektiven-Filter zurücksetzen wenn nicht Kategorie-Modus
-        if (mode !== 'kategorie') {
-            activePerspektiveFilters.clear();
-        }
         reRenderFlatNeeds();
     }
 
@@ -744,7 +744,50 @@ const AttributeSummaryCard = (function() {
 
         if (newContainer) {
             container.replaceWith(newContainer);
+
+            // Re-initialisiere DimensionKategorieFilter
+            initDimensionFilter();
         }
+    }
+
+    /**
+     * Initialisiert den DimensionKategorieFilter im Container
+     */
+    function initDimensionFilter() {
+        if (typeof DimensionKategorieFilter === 'undefined') {
+            console.warn('[AttributeSummaryCard] DimensionKategorieFilter nicht geladen');
+            return;
+        }
+
+        // Warte bis DOM bereit ist
+        setTimeout(() => {
+            const filterContainer = document.querySelector('#flat-needs-dimension-filter');
+            if (!filterContainer) {
+                console.warn('[AttributeSummaryCard] Filter container nicht gefunden');
+                return;
+            }
+
+            // Rendere Filter
+            const filterHtml = DimensionKategorieFilter.render('#flat-needs-dimension-filter');
+            filterContainer.innerHTML = filterHtml;
+
+            console.log('[AttributeSummaryCard] DimensionKategorieFilter initialisiert');
+        }, 100);
+
+        // Event-Listener nur einmal registrieren
+        if (!window._dimensionFilterListenerAdded) {
+            document.addEventListener('dimensionKategorieFilterChange', handleFilterChange);
+            window._dimensionFilterListenerAdded = true;
+        }
+    }
+
+    /**
+     * Handler für Filter-Änderungen
+     */
+    function handleFilterChange(event) {
+        console.log('[AttributeSummaryCard] Filter geändert:', event.detail);
+        // Re-render der Bedürfnisliste mit neuen Filtern
+        reRenderFlatNeeds();
     }
 
     /**
@@ -811,12 +854,10 @@ const AttributeSummaryCard = (function() {
             const input = needItem.querySelector('.flat-need-input');
             if (input) input.value = numValue;
 
-            // Bei Kategorie-Modus: Slider-Track-Hintergrund aktualisieren
-            if (currentFlatSortMode === 'kategorie') {
-                const dimColor = getDimensionColor(needId);
-                if (dimColor) {
-                    sliderElement.style.background = `linear-gradient(to right, ${dimColor} 0%, ${dimColor} ${numValue}%, rgba(255,255,255,0.15) ${numValue}%, rgba(255,255,255,0.15) 100%)`;
-                }
+            // Slider-Track-Hintergrund aktualisieren mit Dimension-Farbe
+            const dimColor = getDimensionColor(needId);
+            if (dimColor) {
+                sliderElement.style.background = `linear-gradient(to right, ${dimColor} 0%, ${dimColor} ${numValue}%, rgba(255,255,255,0.15) ${numValue}%, rgba(255,255,255,0.15) 100%)`;
             }
         }
 
@@ -1604,10 +1645,11 @@ const AttributeSummaryCard = (function() {
         resetFlatNeeds,
         reRenderFlatNeeds,
         setSortMode,
+        // NEU: DimensionKategorieFilter Integration
+        initDimensionFilter,
         // DEPRECATED: Alte Filter-Funktionen (für Rückwärtskompatibilität)
         togglePerspektiveFilter,
         clearPerspektiveFilters,
-        // NEU: Hauptfragen-Filter (v3.0.0 - konsolidierte Bedürfnisse)
         toggleHauptfragenFilter,
         GFK_KATEGORIEN
     };
