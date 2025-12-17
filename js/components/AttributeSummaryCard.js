@@ -312,6 +312,12 @@ const AttributeSummaryCard = (function() {
     let activePerspektiveFilters = new Set();
 
     /**
+     * Zeige nur Hauptfragen (frageTyp: "haupt") oder alle Bedürfnisse
+     * true = nur Hauptfragen (70), false = alle (219)
+     */
+    let showOnlyHauptfragen = true;
+
+    /**
      * GFK-Kategorien mit Labels und Icons
      */
     const GFK_KATEGORIEN = {
@@ -484,6 +490,27 @@ const AttributeSummaryCard = (function() {
     }
 
     /**
+     * Toggle zwischen Hauptfragen und allen Bedürfnissen
+     */
+    function toggleHauptfragenFilter() {
+        showOnlyHauptfragen = !showOnlyHauptfragen;
+        reRenderFlatNeeds();
+    }
+
+    /**
+     * Holt den frageTyp für ein Bedürfnis aus dem Katalog
+     * @param {string} needId - #B-ID (z.B. '#B34')
+     * @returns {string} 'haupt', 'nuance', oder null
+     */
+    function getFrageTyp(needId) {
+        if (typeof BeduerfnisIds === 'undefined' || !BeduerfnisIds.beduerfnisse) {
+            return null;
+        }
+        const need = BeduerfnisIds.beduerfnisse[needId];
+        return need?.frageTyp || null;
+    }
+
+    /**
      * Sortiert die Bedürfnis-Liste nach dem aktuellen Modus
      * @param {Array} needs - Array von {id, value, label}
      * @param {string} mode - 'value', 'name', 'id', 'status', 'kategorie'
@@ -621,11 +648,19 @@ const AttributeSummaryCard = (function() {
         });
 
         // Sammle ALLE Bedürfnisse - nutze direkt flatNeeds Array
-        const allNeeds = flatNeeds.map(need => ({
+        let allNeeds = flatNeeds.map(need => ({
             id: need.id,
             value: need.value,
             label: `${need.id} ${need.label}` // Format: "#B34 Selbstbestimmung"
         }));
+
+        // Zähle Gesamt vor dem Filtern
+        const totalNeedsCount = allNeeds.length;
+
+        // Bei Hauptfragen-Filter: Nur frageTyp "haupt" anzeigen
+        if (showOnlyHauptfragen) {
+            allNeeds = allNeeds.filter(need => getFrageTyp(need.id) === 'haupt');
+        }
 
         // Sortiere nach aktuellem Modus
         const sortedNeeds = sortNeedsList(allNeeds, currentFlatSortMode);
@@ -636,10 +671,19 @@ const AttributeSummaryCard = (function() {
             : sortedNeeds;
 
         // Subtitle mit Filter-Info
-        const filterActive = currentFlatSortMode === 'kategorie' && activePerspektiveFilters.size > 0;
-        const subtitleText = filterActive
-            ? `Dein ${archetypLabel}-Profil (${filteredNeeds.length} von ${allNeeds.length} Bedürfnisse)`
-            : `Dein ${archetypLabel}-Profil (${allNeeds.length} Bedürfnisse)`;
+        const perspektiveFilterActive = currentFlatSortMode === 'kategorie' && activePerspektiveFilters.size > 0;
+        let subtitleText;
+        if (showOnlyHauptfragen) {
+            // Zeige Hauptfragen-Anzahl
+            subtitleText = perspektiveFilterActive
+                ? `Dein ${archetypLabel}-Profil (${filteredNeeds.length} von ${allNeeds.length} Hauptfragen)`
+                : `Dein ${archetypLabel}-Profil (${allNeeds.length} Hauptfragen)`;
+        } else {
+            // Zeige alle Bedürfnisse
+            subtitleText = perspektiveFilterActive
+                ? `Dein ${archetypLabel}-Profil (${filteredNeeds.length} von ${totalNeedsCount} Bedürfnisse)`
+                : `Dein ${archetypLabel}-Profil (${totalNeedsCount} Bedürfnisse)`;
+        }
 
         // Rendere HTML - flache Liste ohne Kategorien
         let html = `<div class="flat-needs-container flat-needs-no-categories" data-archetyp="${archetyp}">`;
@@ -654,6 +698,10 @@ const AttributeSummaryCard = (function() {
                 </button>
             </div>
             <div class="flat-needs-sort-bar">
+                <span class="flat-needs-sort-label">Ansicht:</span>
+                <button class="flat-needs-sort-btn${showOnlyHauptfragen ? ' active' : ''}" onclick="AttributeSummaryCard.toggleHauptfragenFilter()" title="Nur konsolidierte Hauptfragen anzeigen (70 statt 219)">📋 Hauptfragen</button>
+                <button class="flat-needs-sort-btn${!showOnlyHauptfragen ? ' active' : ''}" onclick="AttributeSummaryCard.toggleHauptfragenFilter()" title="Alle Bedürfnisse inkl. Nuancen anzeigen (219)">📚 Alle</button>
+                <span class="flat-needs-sort-separator">|</span>
                 <span class="flat-needs-sort-label">Sortieren:</span>
                 <button class="flat-needs-sort-btn${currentFlatSortMode === 'value' ? ' active' : ''}" onclick="AttributeSummaryCard.setSortMode('value')">Wert</button>
                 <button class="flat-needs-sort-btn${currentFlatSortMode === 'name' ? ' active' : ''}" onclick="AttributeSummaryCard.setSortMode('name')">Name</button>
@@ -1602,6 +1650,8 @@ const AttributeSummaryCard = (function() {
         // NEU: Perspektiven-Filter für Kategorie-Sortierung
         togglePerspektiveFilter,
         clearPerspektiveFilters,
+        // NEU: Hauptfragen-Filter (v3.0.0 - konsolidierte Bedürfnisse)
+        toggleHauptfragenFilter,
         GFK_KATEGORIEN
     };
 })();
