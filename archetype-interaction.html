@@ -126,17 +126,9 @@
             console.log('confirmAge called:', isAdult);
             try {
                 var modal = document.getElementById('ageVerificationModal');
-                var cookieCheckbox = document.getElementById('cookieConsentCheckbox');
 
                 if (isAdult) {
-                    // Check if cookie consent is given
-                    if (!cookieCheckbox || !cookieCheckbox.checked) {
-                        // Show warning message
-                        alert('Bitte akzeptiere die Verwendung von Cookies und LocalStorage, um fortzufahren.\n\nPlease accept the use of cookies and LocalStorage to continue.');
-                        return false;
-                    }
-
-                    // Save cookie consent to localStorage
+                    // Automatically save cookie consent when user confirms age
                     try {
                         localStorage.setItem('tiage_cookie_consent', 'true');
                         localStorage.setItem('tiage_cookie_consent_timestamp', new Date().toISOString());
@@ -498,25 +490,12 @@
                 Mit dem Klick auf "Ja" bestätigst du, dass du:<br>
                 • volljährig bist (mindestens 18 Jahre alt)<br>
                 • die <a href="nutzungsbedingungen.html" target="_blank" style="color: #4A90E2; text-decoration: underline;">Nutzungsbedingungen</a> und <a href="datenschutz.html" target="_blank" style="color: #4A90E2; text-decoration: underline;">Datenschutzerklärung</a> akzeptierst<br>
+                • die Verwendung von Cookies und LocalStorage zur Speicherung deiner Eingaben und Präferenzen akzeptierst<br>
                 • zur Kenntnis nimmst, dass alle Inhalte urheberrechtlich geschützt sind<br>
                 • die Inhalte nur für persönliche, nicht-kommerzielle Zwecke nutzt
             </p>
             <div class="age-verification-question">
                 <strong data-i18n="ageVerification.question">Bist du mindestens 18 Jahre alt?</strong>
-            </div>
-
-            <!-- Cookie Consent Checkbox -->
-            <div style="margin: 20px 0; padding: 15px; background: rgba(255,255,255,0.05); border-radius: 8px; border: 1px solid rgba(255,255,255,0.1);">
-                <label style="display: flex; align-items: flex-start; cursor: pointer; gap: 12px;">
-                    <input type="checkbox" id="cookieConsentCheckbox" style="margin-top: 3px; width: 18px; height: 18px; cursor: pointer; flex-shrink: 0;">
-                    <span style="font-size: 13px; line-height: 1.5; color: rgba(255,255,255,0.9);">
-                        <span data-i18n="ageVerification.cookieConsent">
-                            Ich akzeptiere die Verwendung von Cookies und LocalStorage zur Speicherung meiner Eingaben und Präferenzen.
-                            Diese Daten werden nur lokal in meinem Browser gespeichert.
-                        </span>
-                        <a href="datenschutz.html" target="_blank" style="color: #4A90E2; text-decoration: underline; white-space: nowrap;">Mehr erfahren</a>
-                    </span>
-                </label>
             </div>
 
             <!-- Buttons -->
