@@ -3318,10 +3318,27 @@
             }
         }
 
-        // Make confirmAge globally available - no localStorage storage
+        // Make confirmAge globally available - with cookie consent check
         window.confirmAge = function(isAdult) {
             console.log('confirmAge called with:', isAdult);
+
             if (isAdult) {
+                // Check cookie consent checkbox
+                var cookieCheckbox = document.getElementById('cookieConsentCheckbox');
+                if (!cookieCheckbox || !cookieCheckbox.checked) {
+                    alert('Bitte akzeptiere die Verwendung von Cookies und LocalStorage, um fortzufahren.\n\nPlease accept the use of cookies and LocalStorage to continue.');
+                    return false;
+                }
+
+                // Save cookie consent
+                try {
+                    localStorage.setItem('tiage_cookie_consent', 'true');
+                    localStorage.setItem('tiage_cookie_consent_timestamp', new Date().toISOString());
+                } catch(e) {
+                    console.warn('Could not save cookie consent:', e);
+                }
+
+                // Hide modal
                 var modal = document.getElementById('ageVerificationModal');
                 if (modal) {
                     modal.classList.add('hidden');

@@ -4,13 +4,42 @@
  * Dieses Script empfängt Kommentare und speichert sie in Google Sheets.
  * Es verwaltet auch einen globalen Besucher-Zähler.
  *
+ * @version 2.0.0
+ * @date 2025-12-17
+ * @lastUpdate 2025-12-17 04:32 AM
+ *
+ * CHANGELOG v2.0.0:
+ * - Browser-Fingerprinting für eindeutige Identifikation
+ * - Rate Limiting (max 10 Requests/Stunde pro Fingerprint)
+ * - Security Logging (alle Events werden geloggt)
+ * - Automatische Bereinigung alter Rate Limit Einträge
+ * - Neue Sheets: RateLimit, SecurityLog
+ *
  * SETUP:
  * 1. Erstelle ein neues Google Sheet
  * 2. Gehe zu Erweiterungen > Apps Script
  * 3. Kopiere diesen Code in Code.gs
  * 4. Deploye als Web-App (Ausführen als: Ich, Zugriff: Jeder)
  * 5. Kopiere die Web-App URL in dein HTML
+ * 6. Führe testInit() aus um die Sheets zu initialisieren
  */
+
+// ============================================================================
+// VERSION INFO - Beim Deployen prüfen!
+// ============================================================================
+const SCRIPT_VERSION = '2.0.0';
+const SCRIPT_DATE = '2025-12-17';
+const SCRIPT_FEATURES = [
+  'Browser Fingerprinting',
+  'Rate Limiting (10/hour)',
+  'Security Logging',
+  'Visitor Counter',
+  'Comment System'
+];
+
+// ============================================================================
+// SHEET CONFIGURATION
+// ============================================================================
 
 // Sheet-Namen
 const COMMENTS_SHEET = 'Kommentare';
@@ -446,6 +475,13 @@ function doGet(e) {
         .setMimeType(ContentService.MimeType.JSON);
     }
 
+    if (action === 'version') {
+      // Return script version info
+      const versionInfo = getScriptVersion();
+      return ContentService.createTextOutput(JSON.stringify(versionInfo))
+        .setMimeType(ContentService.MimeType.JSON);
+    }
+
     // Standard: Alle Kommentare zurückgeben
     const comments = getAllComments();
     return ContentService.createTextOutput(JSON.stringify(comments))
@@ -459,9 +495,24 @@ function doGet(e) {
 }
 
 /**
+ * Gibt die Script-Version zurück
+ * Kann via API aufgerufen werden: ?action=version
+ */
+function getScriptVersion() {
+  return {
+    version: SCRIPT_VERSION,
+    date: SCRIPT_DATE,
+    features: SCRIPT_FEATURES,
+    lastUpdate: '2025-12-17 04:32 AM'
+  };
+}
+
+/**
  * Test-Funktion zum manuellen Initialisieren
  */
 function testInit() {
   initializeSheets();
   Logger.log('Sheets initialized!');
+  Logger.log('Version: ' + SCRIPT_VERSION);
+  Logger.log('Date: ' + SCRIPT_DATE);
 }

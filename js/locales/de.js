@@ -586,6 +586,7 @@ const TiageLocale_DE = {
         termsAge: 'volljährig bist (mindestens 18 Jahre alt)',
         termsAccept: 'die',
         termsLinkText: 'Nutzungsbedingungen und Datenschutzerklärung',
+        cookieConsent: 'Ich akzeptiere die Verwendung von Cookies und LocalStorage zur Speicherung meiner Eingaben und Präferenzen. Diese Daten werden nur lokal in meinem Browser gespeichert.',
         termsCopyright: 'zur Kenntnis nimmst, dass alle Inhalte urheberrechtlich geschützt sind',
         termsPersonal: 'die Inhalte nur für persönliche, nicht-kommerzielle Zwecke nutzt'
     },

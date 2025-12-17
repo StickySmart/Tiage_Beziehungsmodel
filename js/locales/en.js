@@ -586,6 +586,7 @@ const TiageLocale_EN = {
         termsAge: 'are of legal age (at least 18 years old)',
         termsAccept: 'accept the',
         termsLinkText: 'Terms of Use and Privacy Policy',
+        cookieConsent: 'I accept the use of cookies and LocalStorage to save my inputs and preferences. This data is only stored locally in my browser.',
         termsCopyright: 'acknowledge that all content is protected by copyright',
         termsPersonal: 'will use the content only for personal, non-commercial purposes'
     },
