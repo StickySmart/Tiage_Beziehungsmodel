@@ -75,6 +75,8 @@ const ResonanzTreeView = (function() {
     let expandedNodes = new Set(); // Welche Knoten sind ausgeklappt?
     let treeData = null; // Cache für Baum-Daten
     let containerId = null;
+    let onKategorieClickCallback = null; // Callback für Kategorie-Klicks
+    let isKategorieActiveCallback = null; // Callback für Kategorie-Aktiv-Status
 
     // ═══════════════════════════════════════════════════════════════════════════
     // DATEN-STRUKTUR AUFBAU
@@ -148,10 +150,14 @@ const ResonanzTreeView = (function() {
     /**
      * Rendert den kompletten Baum
      * @param {string} container - Container-Selektor oder ID
+     * @param {Object} options - Optionen {onKategorieClick, isKategorieActive}
      * @returns {string} HTML-String
      */
-    function render(container) {
+    function render(container, options = {}) {
         containerId = container;
+        onKategorieClickCallback = options.onKategorieClick || null;
+        isKategorieActiveCallback = options.isKategorieActive || null;
+
         const tree = buildTreeData();
 
         let html = '<div class="resonanz-tree-view">';
@@ -160,8 +166,9 @@ const ResonanzTreeView = (function() {
         html += '<span class="tree-subtitle">Resonanz → Kategorien → Nuancen</span>';
         html += '</div>';
 
-        // Resonanz-Ebenen rendern
+        // Resonanz-Ebenen rendern (standardmäßig erste 2 Ebenen ausgeklappt)
         for (const resId in tree) {
+            expandedNodes.add(resId); // Auto-expand Resonanz-Ebenen
             html += renderResonanzNode(tree[resId]);
         }
 
@@ -211,15 +218,20 @@ const ResonanzTreeView = (function() {
         const expandIcon = isExpanded ? '▼' : '▶';
         const expandedClass = isExpanded ? ' expanded' : '';
 
+        // Prüfe ob Kategorie aktiv ist (für Mehrfachauswahl-Filter)
+        const isActive = isKategorieActiveCallback ? isKategorieActiveCallback(kategorie.id) : false;
+        const activeClass = isActive ? ' active' : '';
+
         let html = `
-        <div class="tree-node tree-node-kategorie${expandedClass}" data-node-id="${nodeId}">
+        <div class="tree-node tree-node-kategorie${expandedClass}${activeClass}" data-node-id="${nodeId}" data-kategorie-id="${kategorie.id}">
             <div class="tree-node-header"
-                 onclick="ResonanzTreeView.toggleNode('${nodeId}')"
                  style="--node-color: ${kategorie.color};">
-                <span class="tree-expand-icon">${expandIcon}</span>
-                <span class="tree-node-label">${kategorie.label}</span>
-                <span class="tree-node-id">${kategorie.id}</span>
-                <span class="tree-node-count">(${kategorie.count})</span>
+                <span class="tree-expand-icon" onclick="ResonanzTreeView.toggleNode('${nodeId}'); event.stopPropagation();">${expandIcon}</span>
+                <span class="tree-node-content" onclick="ResonanzTreeView.onKategorieClick('${kategorie.id}'); event.stopPropagation();">
+                    <span class="tree-node-label">${kategorie.label}</span>
+                    <span class="tree-node-id">${kategorie.id}</span>
+                    <span class="tree-node-count">(${kategorie.count})</span>
+                </span>
             </div>`;
 
         // Nuancen/Bedürfnisse (Ebene 3)
@@ -263,6 +275,15 @@ const ResonanzTreeView = (function() {
             expandedNodes.add(nodeId);
         }
         reRender();
+    }
+
+    /**
+     * Behandelt Klick auf eine Kategorie (für Filter)
+     */
+    function onKategorieClick(kategorieId) {
+        if (onKategorieClickCallback) {
+            onKategorieClickCallback(kategorieId);
+        }
     }
 
     /**
@@ -325,6 +346,7 @@ const ResonanzTreeView = (function() {
 
         // Interaktion
         toggleNode,
+        onKategorieClick,
         expandAll,
         collapseAll,
         reset,

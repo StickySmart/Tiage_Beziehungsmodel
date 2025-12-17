@@ -99,8 +99,9 @@ const DimensionKategorieFilter = (function() {
 
     let activeDimension = null;  // Aktuell gewählte Dimension (null = Alle)
     let activeKategorie = null;  // Aktuell gewählte Kategorie (null = Alle)
+    let activeKategorien = new Set();  // Mehrfachauswahl: Set der aktiven Kategorien
     let containerId = null;      // Container-ID für Rendering
-    let viewMode = 'tags';       // 'tags' oder 'tree' - aktueller Anzeigemodus
+    let viewMode = 'tree';       // Nur noch 'tree' - Tags-Modus entfernt
 
     // ═══════════════════════════════════════════════════════════════════════════
     // FILTER-LOGIK
@@ -113,7 +114,7 @@ const DimensionKategorieFilter = (function() {
      */
     function shouldShowNeed(needId) {
         // Kein Filter aktiv → Alles anzeigen
-        if (!activeDimension && !activeKategorie) {
+        if (activeKategorien.size === 0) {
             return true;
         }
 
@@ -121,21 +122,8 @@ const DimensionKategorieFilter = (function() {
         const need = getNeedMetadata(needId);
         if (!need) return true; // Fallback: Anzeigen wenn keine Metadaten
 
-        // Kategorie-Filter aktiv → Nur Bedürfnisse dieser Kategorie
-        if (activeKategorie) {
-            return need.kategorieId === activeKategorie;
-        }
-
-        // Resonanz-Dimensions-Filter aktiv (R1-R4) → Filter über Kategorien-Mapping
-        if (activeDimension) {
-            const allowedKategorien = KATEGORIEN_PRO_DIMENSION[activeDimension];
-            if (!allowedKategorien) return true;
-
-            // Prüfe ob Bedürfnis zu einer der erlaubten Kategorien gehört
-            return allowedKategorien.some(kat => kat.id === need.kategorieId);
-        }
-
-        return true;
+        // Mehrfachauswahl: Prüfe ob Bedürfnis zu einer der aktiven Kategorien gehört
+        return activeKategorien.has(need.kategorieId);
     }
 
     /**
@@ -184,134 +172,38 @@ const DimensionKategorieFilter = (function() {
 
         let html = '<div class="dimension-kategorie-filter">';
 
-        // View-Toggle-Button (Tags vs. Tree)
-        html += renderViewToggle();
-
-        // Ebene 1: Dimensionen (nur bei Tags-Modus)
-        if (viewMode === 'tags') {
-            html += renderDimensionBar();
-
-            // Ebene 2: Kategorien (nur sichtbar wenn Dimension gewählt)
-            html += renderKategorieBar();
-        } else {
-            // Tree-Ansicht
-            html += renderTreeView();
-        }
+        // Nur noch Tree-Ansicht (Tags-Modus entfernt)
+        html += renderTreeView();
 
         html += '</div>';
 
         return html;
     }
 
-    /**
-     * Rendert den View-Toggle-Button
-     */
-    function renderViewToggle() {
-        const tagsActive = viewMode === 'tags' ? ' active' : '';
-        const treeActive = viewMode === 'tree' ? ' active' : '';
-
-        return `
-        <div class="filter-view-toggle">
-            <button class="view-toggle-btn${tagsActive}"
-                    onclick="DimensionKategorieFilter.setViewMode('tags')"
-                    title="Tag-Ansicht">
-                🏷️ Tags
-            </button>
-            <button class="view-toggle-btn${treeActive}"
-                    onclick="DimensionKategorieFilter.setViewMode('tree')"
-                    title="Baum-Ansicht">
-                🌳 Tree
-            </button>
-        </div>`;
-    }
 
     /**
-     * Rendert die Tree-Ansicht
+     * Rendert die Tree-Ansicht mit Reset-Button
      */
     function renderTreeView() {
         if (typeof ResonanzTreeView === 'undefined') {
             return '<div class="tree-view-container"><p style="color: rgba(255,255,255,0.5);">Tree-View nicht geladen</p></div>';
         }
 
-        // Tree-View als inline HTML generieren
-        return `<div class="tree-view-container" id="tree-view-inline-container"></div>`;
+        // Reset-Button + Tree-View Container
+        const hasActiveFilters = activeKategorien.size > 0;
+        const resetButtonVisible = hasActiveFilters ? '' : ' style="display: none;"';
+
+        return `
+        <div class="tree-view-header">
+            <button class="tree-reset-btn"
+                    onclick="DimensionKategorieFilter.reset()"
+                    title="Filter zurücksetzen"${resetButtonVisible}>
+                ↺ Zurücksetzen
+            </button>
+        </div>
+        <div class="tree-view-container" id="tree-view-inline-container"></div>`;
     }
 
-    /**
-     * Rendert die Resonanz-Dimensions-Buttons (Ebene 1)
-     */
-    function renderDimensionBar() {
-        const allActive = !activeDimension ? ' active' : '';
-
-        let html = `
-        <div class="dimension-filter-bar">
-            <span class="filter-label">Resonanz:</span>
-            <button class="dimension-btn${allActive}"
-                    data-dim="alle"
-                    onclick="DimensionKategorieFilter.setDimension(null)"
-                    title="Alle Resonanzbereiche anzeigen">
-                Alle
-            </button>`;
-
-        // Resonanz-Dimensions-Buttons
-        for (const dimId in DIMENSIONEN) {
-            const dim = DIMENSIONEN[dimId];
-            const isActive = activeDimension === dimId ? ' active' : '';
-            html += `
-            <button class="dimension-btn${isActive}"
-                    data-dim="${dim.id}"
-                    onclick="DimensionKategorieFilter.setDimension('${dim.id}')"
-                    style="--dimension-color: ${dim.color};"
-                    title="${dim.beschreibung}">
-                <span class="dim-icon">${dim.icon}</span>
-                <span class="dim-label">${dim.label}</span>
-            </button>`;
-        }
-
-        html += '</div>';
-        return html;
-    }
-
-    /**
-     * Rendert die Kategorien-Buttons (Ebene 2)
-     */
-    function renderKategorieBar() {
-        // Nur anzeigen wenn Dimension gewählt
-        if (!activeDimension) {
-            return '<div class="kategorie-filter-bar" style="display: none;"></div>';
-        }
-
-        const kategorien = KATEGORIEN_PRO_DIMENSION[activeDimension] || [];
-        const allActive = !activeKategorie ? ' active' : '';
-        const dimension = DIMENSIONEN[activeDimension];
-
-        let html = `
-        <div class="kategorie-filter-bar" style="display: flex;">
-            <span class="filter-label">Kategorie:</span>
-            <button class="kategorie-btn${allActive}"
-                    data-kat="alle"
-                    onclick="DimensionKategorieFilter.setKategorie(null)"
-                    title="Alle Kategorien in ${dimension.label}">
-                Alle
-            </button>`;
-
-        // Kategorien-Buttons
-        kategorien.forEach(kat => {
-            const isActive = activeKategorie === kat.id ? ' active' : '';
-            html += `
-            <button class="kategorie-btn${isActive}"
-                    data-kat="${kat.id}"
-                    onclick="DimensionKategorieFilter.setKategorie('${kat.id}')"
-                    style="--kategorie-color: ${kat.color};"
-                    title="${kat.beschreibung}">
-                <span class="kat-label">${kat.label}</span>
-                <span class="kat-id">${kat.id}</span>
-            </button>`;
-        });
-
-        html += '</div>';
-        return html;
-    }
 
     /**
      * Re-rendert den Filter (nach State-Änderung)
@@ -335,6 +227,9 @@ const DimensionKategorieFilter = (function() {
                 container.insertAdjacentElement('afterbegin', newFilter);
             }
         }
+
+        // Tree-View nach Rendering initialisieren
+        initTreeView();
     }
 
     // ═══════════════════════════════════════════════════════════════════════════
@@ -342,12 +237,15 @@ const DimensionKategorieFilter = (function() {
     // ═══════════════════════════════════════════════════════════════════════════
 
     /**
-     * Setzt die aktive Dimension
-     * @param {string|null} dimensionId - '#D1' bis '#D6' oder null für Alle
+     * Toggle eine Kategorie in der Mehrfachauswahl
+     * @param {string} kategorieId - '#K1' bis '#K18'
      */
-    function setDimension(dimensionId) {
-        activeDimension = dimensionId;
-        activeKategorie = null; // Reset Kategorie-Filter
+    function toggleKategorie(kategorieId) {
+        if (activeKategorien.has(kategorieId)) {
+            activeKategorien.delete(kategorieId);
+        } else {
+            activeKategorien.add(kategorieId);
+        }
 
         // Re-render Filter
         reRender();
@@ -357,11 +255,25 @@ const DimensionKategorieFilter = (function() {
     }
 
     /**
-     * Setzt die aktive Kategorie
+     * Prüft ob eine Kategorie aktiv ist
+     * @param {string} kategorieId - '#K1' bis '#K18'
+     * @returns {boolean}
+     */
+    function isKategorieActive(kategorieId) {
+        return activeKategorien.has(kategorieId);
+    }
+
+    /**
+     * Setzt die aktive Kategorie (deprecated - für Rückwärtskompatibilität)
      * @param {string|null} kategorieId - '#K1' bis '#K18' oder null für Alle
      */
     function setKategorie(kategorieId) {
-        activeKategorie = kategorieId;
+        if (kategorieId === null) {
+            activeKategorien.clear();
+        } else {
+            activeKategorien.clear();
+            activeKategorien.add(kategorieId);
+        }
 
         // Re-render Filter
         reRender();
@@ -377,10 +289,8 @@ const DimensionKategorieFilter = (function() {
         const event = new CustomEvent('dimensionKategorieFilterChange', {
             bubbles: true,
             detail: {
-                dimension: activeDimension,
-                kategorie: activeKategorie,
-                dimensionInfo: activeDimension ? DIMENSIONEN[activeDimension] : null,
-                kategorieInfo: activeKategorie ? getKategorieInfo(activeKategorie) : null
+                kategorien: Array.from(activeKategorien),
+                kategorienInfo: Array.from(activeKategorien).map(id => getKategorieInfo(id))
             }
         });
         document.dispatchEvent(event);
@@ -402,42 +312,28 @@ const DimensionKategorieFilter = (function() {
      * Reset Filter (zeige alles)
      */
     function reset() {
-        activeDimension = null;
-        activeKategorie = null;
+        activeKategorien.clear();
         reRender();
         dispatchFilterChange();
     }
 
     /**
-     * Setzt den View-Modus (tags oder tree)
-     * @param {string} mode - 'tags' oder 'tree'
+     * Initialisiert den Tree-View nach DOM-Update
      */
-    function setViewMode(mode) {
-        if (mode !== 'tags' && mode !== 'tree') {
-            console.warn('DimensionKategorieFilter: Ungültiger ViewMode:', mode);
-            return;
-        }
-
-        viewMode = mode;
-        reRender();
-
-        // Bei Tree-Mode: Initialisiere ResonanzTreeView nach DOM-Update
-        if (mode === 'tree' && typeof ResonanzTreeView !== 'undefined') {
+    function initTreeView() {
+        if (typeof ResonanzTreeView !== 'undefined') {
             setTimeout(() => {
                 const treeContainer = document.querySelector('#tree-view-inline-container');
                 if (treeContainer) {
-                    const treeHtml = ResonanzTreeView.render('#tree-view-inline-container');
+                    const treeHtml = ResonanzTreeView.render('#tree-view-inline-container', {
+                        onKategorieClick: toggleKategorie,
+                        isKategorieActive: isKategorieActive
+                    });
                     treeContainer.innerHTML = treeHtml;
                     console.log('[DimensionKategorieFilter] Tree-View initialisiert');
                 }
             }, 50);
         }
-
-        // Event feuern
-        document.dispatchEvent(new CustomEvent('filterViewModeChange', {
-            bubbles: true,
-            detail: { mode }
-        }));
     }
 
     /**
@@ -445,8 +341,7 @@ const DimensionKategorieFilter = (function() {
      */
     function getState() {
         return {
-            dimension: activeDimension,
-            kategorie: activeKategorie
+            kategorien: Array.from(activeKategorien)
         };
     }
 
@@ -472,14 +367,13 @@ const DimensionKategorieFilter = (function() {
         // Rendering
         render,
         reRender,
+        initTreeView,
 
-        // Filter setzen
-        setDimension,
-        setKategorie,
+        // Filter setzen (Mehrfachauswahl)
+        toggleKategorie,
+        isKategorieActive,
+        setKategorie,  // Deprecated - für Rückwärtskompatibilität
         reset,
-
-        // View-Mode
-        setViewMode,
 
         // Filter prüfen
         shouldShowNeed,
