@@ -1899,9 +1899,15 @@ input.resonanz-input:focus {
     border-color: var(--primary, #FFD700);
 }
 
-/* Sortierleiste - AUSGEBLENDET */
+/* Sortierleiste */
 .flat-needs-sort-bar {
-    display: none !important;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 12px;
+    padding: 8px 12px;
+    background: rgba(255,255,255,0.03);
+    border-radius: 6px;
 }
 
 .flat-needs-sort-label {
