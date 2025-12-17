@@ -689,6 +689,9 @@ const AttributeSummaryCard = (function() {
                 </button>
             </div>
 
+            <!-- RESONANZFAKTOREN-ANZEIGE (STICKY) -->
+            <div id="flat-needs-resonanz-display"></div>
+
             <!-- NEUER DIMENSION-KATEGORIE-FILTER -->
             <div id="flat-needs-dimension-filter"></div>
 
@@ -745,9 +748,55 @@ const AttributeSummaryCard = (function() {
         if (newContainer) {
             container.replaceWith(newContainer);
 
-            // Re-initialisiere DimensionKategorieFilter
+            // Re-initialisiere Resonanz-Anzeige und Filter
+            initResonanzDisplay();
             initDimensionFilter();
         }
+    }
+
+    /**
+     * Initialisiert die Resonanzfaktoren-Anzeige
+     */
+    function initResonanzDisplay() {
+        if (typeof ResonanzCard === 'undefined') {
+            console.warn('[AttributeSummaryCard] ResonanzCard nicht geladen');
+            return;
+        }
+
+        setTimeout(() => {
+            const resonanzContainer = document.querySelector('#flat-needs-resonanz-display');
+            if (!resonanzContainer) {
+                console.warn('[AttributeSummaryCard] Resonanz container nicht gefunden');
+                return;
+            }
+
+            // Rendere Resonanz-Anzeige
+            const resonanzHtml = ResonanzCard.renderAll();
+            resonanzContainer.innerHTML = resonanzHtml;
+
+            console.log('[AttributeSummaryCard] Resonanzfaktoren-Anzeige initialisiert');
+        }, 100);
+
+        // Event-Listener für Live-Updates (nur einmal registrieren)
+        if (!window._resonanzUpdateListenerAdded) {
+            document.addEventListener('flatNeedChange', updateResonanzValues);
+            window._resonanzUpdateListenerAdded = true;
+            console.log('[AttributeSummaryCard] Event-Listener für Resonanz-Updates registriert');
+        }
+    }
+
+    /**
+     * Aktualisiert die Resonanzfaktoren-Werte wenn sich Bedürfnisse ändern
+     */
+    function updateResonanzValues() {
+        const resonanzContainer = document.querySelector('#flat-needs-resonanz-display');
+        if (!resonanzContainer || typeof ResonanzCard === 'undefined') return;
+
+        // Trigger Re-Render der Resonanz-Werte
+        const resonanzHtml = ResonanzCard.renderAll();
+        resonanzContainer.innerHTML = resonanzHtml;
+
+        console.log('[AttributeSummaryCard] Resonanzfaktoren aktualisiert');
     }
 
     /**
@@ -1647,6 +1696,9 @@ const AttributeSummaryCard = (function() {
         setSortMode,
         // NEU: DimensionKategorieFilter Integration
         initDimensionFilter,
+        // NEU: Resonanzfaktoren-Anzeige Integration
+        initResonanzDisplay,
+        updateResonanzValues,
         // DEPRECATED: Alte Filter-Funktionen (für Rückwärtskompatibilität)
         togglePerspektiveFilter,
         clearPerspektiveFilters,

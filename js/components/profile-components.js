@@ -85,16 +85,16 @@ const ProfileReviewRenderer = (function() {
         // Gewichtungs-Sektion
         const gewichtungHtml = renderGewichtungSection();
 
-        // Resonanz-Sektion
-        const resonanzHtml = renderResonanzSection();
+        // Resonanz-Sektion wurde in den Header von "Alle Bedürfnisse" verschoben
+        // und wird in AttributeSummaryCard.renderAllNeedsFlat() gerendert
 
-        // Bedürfnis-Darstellung
+        // Bedürfnis-Darstellung (enthält jetzt Resonanz-Anzeige im Header)
         let needsHtml = '';
         if (typeof AttributeSummaryCard !== 'undefined' && AttributeSummaryCard.renderAllNeedsFlat) {
             needsHtml = AttributeSummaryCard.renderAllNeedsFlat(archetyp, archetypLabel);
         }
 
-        return gewichtungHtml + '\n' + resonanzHtml + '\n' + needsHtml;
+        return gewichtungHtml + '\n' + needsHtml;
     }
 
     /**
@@ -115,6 +115,16 @@ const ProfileReviewRenderer = (function() {
         // Generiere Content
         contentContainer.innerHTML = renderModalBody(archetyp, archetypLabel) +
             '\n<div style="height: 20px;"></div>';
+
+        // Initialisiere Resonanzfaktoren-Anzeige und Filter nach DOM-Einfügung
+        if (typeof AttributeSummaryCard !== 'undefined') {
+            if (AttributeSummaryCard.initResonanzDisplay) {
+                AttributeSummaryCard.initResonanzDisplay();
+            }
+            if (AttributeSummaryCard.initDimensionFilter) {
+                AttributeSummaryCard.initDimensionFilter();
+            }
+        }
 
         console.log('ProfileReviewRenderer: Modal initialized for', archetyp);
     }
