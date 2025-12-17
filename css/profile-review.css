@@ -659,8 +659,8 @@ input.resonanz-input:focus {
     padding: 16px !important;
     position: -webkit-sticky !important;
     position: sticky !important;
-    top: 0 !important;
-    z-index: 100 !important;
+    top: 60px !important;
+    z-index: 101 !important;
     background: linear-gradient(180deg, #1a1a1a 0%, #1a1a1a 85%, rgba(26, 26, 26, 0.95) 100%) !important;
     margin-bottom: 0 !important;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
@@ -1358,7 +1358,9 @@ input.resonanz-input:focus {
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
     position: sticky;
     top: 0;
-    z-index: 10;
+    z-index: 102;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
 }
 
 /* Search Wrapper */
@@ -1928,8 +1930,8 @@ input.resonanz-input:focus {
     border-radius: 10px;
     border: 1px solid rgba(255,255,255,0.08);
     position: sticky;
-    top: 0;
-    z-index: 99;
+    top: 160px;
+    z-index: 100;
     backdrop-filter: blur(8px);
     -webkit-backdrop-filter: blur(8px);
     margin-bottom: 12px;

@@ -125,9 +125,13 @@ const DimensionKategorieFilter = (function() {
             return need.kategorieId === activeKategorie;
         }
 
-        // Dimensions-Filter aktiv → Nur Bedürfnisse deren Kategorien zu dieser Dimension gehören
+        // Resonanz-Dimensions-Filter aktiv (R1-R4) → Filter über Kategorien-Mapping
         if (activeDimension) {
-            return need.dimensionId === activeDimension;
+            const allowedKategorien = KATEGORIEN_PRO_DIMENSION[activeDimension];
+            if (!allowedKategorien) return true;
+
+            // Prüfe ob Bedürfnis zu einer der erlaubten Kategorien gehört
+            return allowedKategorien.some(kat => kat.id === need.kategorieId);
         }
 
         return true;
