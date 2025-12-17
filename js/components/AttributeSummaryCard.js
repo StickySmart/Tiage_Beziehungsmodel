@@ -791,7 +791,6 @@ const AttributeSummaryCard = (function() {
         const resonanzContainer = document.querySelector('#flat-needs-resonanz-display');
         if (!resonanzContainer || typeof ResonanzCard === 'undefined') return;
 
-<<<<<<< HEAD
         // Berechne Resonanzfaktoren aus aktuellen Bedürfnissen
         if (typeof NeedsIntegration !== 'undefined' && currentFlatArchetyp) {
             // Hole aktuelle Bedürfnis-Werte
