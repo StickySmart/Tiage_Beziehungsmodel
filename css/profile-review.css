@@ -1460,7 +1460,7 @@ input.resonanz-input:focus {
     background: rgba(20, 20, 30, 0.98);
     border: 1px solid rgba(255, 255, 255, 0.2);
     border-radius: 8px;
-    max-height: 500px;
+    max-height: 300px;
     overflow-y: auto;
     overflow-x: hidden;
     z-index: 1000;
