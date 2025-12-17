@@ -13,6 +13,7 @@
    ═══════════════════════════════════════════════════════════════════════════ */
 
 .resonanz-tree-view {
+    display: none; /* Standardmäßig ausgeblendet */
     background: var(--bg-card, #1a1a2e);
     border-radius: 12px;
     padding: 20px;
