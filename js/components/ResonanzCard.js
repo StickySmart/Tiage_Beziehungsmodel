@@ -250,60 +250,41 @@ const ResonanzCard = (function() {
     }
 
     /**
-     * Erstellt HTML für eine Resonanz-Card
+     * Erstellt HTML für eine Resonanz-Card (kompakte Anzeige)
      * @param {string} faktor - Faktor-Name (R1, R2, R3, R4)
      * @param {number} value - Aktueller Wert
      * @param {boolean} locked - Lock-Status
-     * @returns {string} HTML-String
+     * @returns {string} HTML-String (nur für Wert-Anzeige)
      */
     function renderCard(faktor, value, locked) {
         const info = FAKTOR_INFO[faktor];
-        const sliderValue = valueToSlider(value);
         const displayValue = value.toFixed(2);
         const lockedClass = locked ? ' locked' : '';
 
         return `
-            <div class="profile-review-card resonanz-card${lockedClass}" data-resonanz="${faktor}">
-                <div class="resonanz-card-content">
-                    <div class="resonanz-card-header">
-                        <span class="resonanz-card-label">
-                            ${info.label} #${faktor} (← ${info.sourceLabel})
-                            <span class="attr-info-icon" onclick="event.stopPropagation(); openResonanzHelpModal('${faktor}')" title="Berechnung anzeigen" style="margin-left: 6px; cursor: pointer;">ℹ</span>
-                        </span>
-                        <span class="resonanz-card-beschreibung">${info.beschreibung}</span>
-                    </div>
-                    <div class="resonanz-slider-row">
-                        <span class="resonanz-range-label">0.5</span>
-                        <input type="range" class="resonanz-slider" id="resonanz-slider-${faktor}"
-                               min="50" max="150" value="${sliderValue}"
-                               oninput="ResonanzCard.onSliderInput('${faktor}', this.value)"
-                               onclick="event.stopPropagation()"
-                               ${locked ? 'disabled' : ''}>
-                        <span class="resonanz-range-label">1.5</span>
-                    </div>
-                    <div class="resonanz-card-input-group">
-                        <input type="text" class="resonanz-input" id="resonanz-${faktor}"
-                               value="${displayValue}" maxlength="4"
-                               oninput="ResonanzCard.onInputChange('${faktor}', this.value)"
-                               onclick="event.stopPropagation()"
-                               ${locked ? 'readonly' : ''}>
-                        <span class="resonanz-lock-indicator"
-                              onclick="event.stopPropagation(); ResonanzCard.toggleLock('${faktor}');"
-                              title="Klicken zum Sperren/Entsperren"></span>
-                    </div>
-                </div>
+            <div class="resonanz-value-item${lockedClass}" data-resonanz="${faktor}">
+                <div class="resonanz-value-label-top">${info.label}</div>
+                <div class="resonanz-value-label-sub">${faktor}</div>
+                <div class="resonanz-value-display" id="resonanz-${faktor}">${displayValue}</div>
             </div>`;
     }
 
     /**
-     * Erstellt alle Resonanz-Cards
+     * Erstellt alle Resonanz-Cards (kompakte Anzeige als Zeile)
      * @returns {string} HTML-String
      */
     function renderAll() {
         const values = load();
-        return ['R1', 'R2', 'R3', 'R4']
+        const cardsHtml = ['R1', 'R2', 'R3', 'R4']
             .map(f => renderCard(f, values[f].value, values[f].locked))
             .join('\n');
+
+        return `
+            <div class="profile-review-card resonanz-card-compact">
+                <div class="resonanz-values-row">
+                    ${cardsHtml}
+                </div>
+            </div>`;
     }
 
     /**

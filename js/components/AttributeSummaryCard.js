@@ -306,10 +306,16 @@ const AttributeSummaryCard = (function() {
     let currentFlatSortMode = 'value';
 
     /**
-     * Aktive Perspektiven-Filter (nur bei Kategorie-Sortierung)
-     * Set von Perspektiven-IDs ('#P1', '#P2', '#P3', '#P4') oder leer für "Alle"
+     * DEPRECATED: Perspektiven-Filter wurden durch DimensionKategorieFilter ersetzt
+     * Kept for backward compatibility
      */
     let activePerspektiveFilters = new Set();
+
+    /**
+     * ENTFERNT: Hauptfragen-Filter (Benutzer-Feedback: zu komplex, nicht nötig)
+     * Zeige IMMER alle Bedürfnisse (219)
+     */
+    let showOnlyHauptfragen = false;
 
     /**
      * GFK-Kategorien mit Labels und Icons
@@ -463,24 +469,46 @@ const AttributeSummaryCard = (function() {
     }
 
     /**
-     * Toggle einen Perspektiven-Filter
+     * DEPRECATED: Toggle einen Perspektiven-Filter
+     * Ersetzt durch DimensionKategorieFilter
      * @param {string} perspektiveId - '#P1', '#P2', '#P3', '#P4'
      */
     function togglePerspektiveFilter(perspektiveId) {
-        if (activePerspektiveFilters.has(perspektiveId)) {
-            activePerspektiveFilters.delete(perspektiveId);
-        } else {
-            activePerspektiveFilters.add(perspektiveId);
-        }
-        reRenderFlatNeeds();
+        console.warn('[AttributeSummaryCard] togglePerspektiveFilter ist deprecated. Verwende DimensionKategorieFilter.');
+        // No-op für Rückwärtskompatibilität
     }
 
     /**
-     * Setzt alle Perspektiven-Filter zurück (zeigt alle)
+     * DEPRECATED: Setzt alle Perspektiven-Filter zurück
+     * Ersetzt durch DimensionKategorieFilter.reset()
      */
     function clearPerspektiveFilters() {
-        activePerspektiveFilters.clear();
-        reRenderFlatNeeds();
+        console.warn('[AttributeSummaryCard] clearPerspektiveFilters ist deprecated. Verwende DimensionKategorieFilter.reset().');
+        if (typeof DimensionKategorieFilter !== 'undefined') {
+            DimensionKategorieFilter.reset();
+        }
+    }
+
+    /**
+     * DEPRECATED: Toggle zwischen Hauptfragen und allen Bedürfnissen
+     * Hauptfragen-Filter wurde entfernt (Benutzer-Feedback)
+     */
+    function toggleHauptfragenFilter() {
+        console.warn('[AttributeSummaryCard] toggleHauptfragenFilter ist deprecated. Hauptfragen-Filter wurde entfernt.');
+        // No-op - showOnlyHauptfragen ist immer false
+    }
+
+    /**
+     * Holt den frageTyp für ein Bedürfnis aus dem Katalog
+     * @param {string} needId - #B-ID (z.B. '#B34')
+     * @returns {string} 'haupt', 'nuance', oder null
+     */
+    function getFrageTyp(needId) {
+        if (typeof BeduerfnisIds === 'undefined' || !BeduerfnisIds.beduerfnisse) {
+            return null;
+        }
+        const need = BeduerfnisIds.beduerfnisse[needId];
+        return need?.frageTyp || null;
     }
 
     /**
@@ -621,25 +649,32 @@ const AttributeSummaryCard = (function() {
         });
 
         // Sammle ALLE Bedürfnisse - nutze direkt flatNeeds Array
-        const allNeeds = flatNeeds.map(need => ({
+        let allNeeds = flatNeeds.map(need => ({
             id: need.id,
             value: need.value,
             label: `${need.id} ${need.label}` // Format: "#B34 Selbstbestimmung"
         }));
 
+        // Zähle Gesamt vor dem Filtern
+        const totalNeedsCount = allNeeds.length;
+
+        // HAUPTFRAGEN-FILTER ENTFERNT (showOnlyHauptfragen immer false)
+        // Zeige IMMER alle 219 Bedürfnisse
+
         // Sortiere nach aktuellem Modus
         const sortedNeeds = sortNeedsList(allNeeds, currentFlatSortMode);
 
-        // Bei Kategorie-Sortierung: Perspektiven-Filter anwenden
-        const filteredNeeds = currentFlatSortMode === 'kategorie'
-            ? filterNeedsByPerspektive(sortedNeeds)
-            : sortedNeeds;
+        // Filter durch DimensionKategorieFilter anwenden (wenn geladen)
+        let filteredNeeds = sortedNeeds;
+        if (typeof DimensionKategorieFilter !== 'undefined') {
+            filteredNeeds = sortedNeeds.filter(need => DimensionKategorieFilter.shouldShowNeed(need.id));
+        }
 
         // Subtitle mit Filter-Info
-        const filterActive = currentFlatSortMode === 'kategorie' && activePerspektiveFilters.size > 0;
+        const filterActive = filteredNeeds.length < totalNeedsCount;
         const subtitleText = filterActive
-            ? `Dein ${archetypLabel}-Profil (${filteredNeeds.length} von ${allNeeds.length} Bedürfnisse)`
-            : `Dein ${archetypLabel}-Profil (${allNeeds.length} Bedürfnisse)`;
+            ? `Dein ${archetypLabel}-Profil (${filteredNeeds.length} von ${totalNeedsCount} Bedürfnissen)`
+            : `Dein ${archetypLabel}-Profil (${totalNeedsCount} Bedürfnisse)`;
 
         // Rendere HTML - flache Liste ohne Kategorien
         let html = `<div class="flat-needs-container flat-needs-no-categories" data-archetyp="${archetyp}">`;
@@ -653,52 +688,26 @@ const AttributeSummaryCard = (function() {
                     🔄 Standard
                 </button>
             </div>
+
+            <!-- NEUER DIMENSION-KATEGORIE-FILTER -->
+            <div id="flat-needs-dimension-filter"></div>
+
             <div class="flat-needs-sort-bar">
                 <span class="flat-needs-sort-label">Sortieren:</span>
                 <button class="flat-needs-sort-btn${currentFlatSortMode === 'value' ? ' active' : ''}" onclick="AttributeSummaryCard.setSortMode('value')">Wert</button>
                 <button class="flat-needs-sort-btn${currentFlatSortMode === 'name' ? ' active' : ''}" onclick="AttributeSummaryCard.setSortMode('name')">Name</button>
                 <button class="flat-needs-sort-btn${currentFlatSortMode === 'id' ? ' active' : ''}" onclick="AttributeSummaryCard.setSortMode('id')">#B Nr.</button>
                 <button class="flat-needs-sort-btn${currentFlatSortMode === 'status' ? ' active' : ''}" onclick="AttributeSummaryCard.setSortMode('status')">Status</button>
-                <button class="flat-needs-sort-btn${currentFlatSortMode === 'kategorie' ? ' active' : ''}" onclick="AttributeSummaryCard.setSortMode('kategorie')">Kategorie</button>
-            </div>`;
-
-        // Perspektiven-Filter (nur bei Kategorie-Sortierung)
-        if (currentFlatSortMode === 'kategorie') {
-            const noFilter = activePerspektiveFilters.size === 0;
-            html += `
-            <div class="flat-needs-perspektive-bar">
-                <span class="flat-needs-perspektive-label">Perspektive:</span>
-                <button class="flat-needs-perspektive-btn${noFilter ? ' active' : ''}"
-                        onclick="AttributeSummaryCard.clearPerspektiveFilters()"
-                        title="Alle Perspektiven anzeigen">Alle</button>
-                <button class="flat-needs-perspektive-btn perspektive-p1${activePerspektiveFilters.has('#P1') ? ' active' : ''}"
-                        onclick="AttributeSummaryCard.togglePerspektiveFilter('#P1')"
-                        title="Statistik/GFK - Universelle Bedürfnisse nach Marshall Rosenberg"
-                        style="--perspektive-color: #3B82F6;">📊 Statistik</button>
-                <button class="flat-needs-perspektive-btn perspektive-p2${activePerspektiveFilters.has('#P2') ? ' active' : ''}"
-                        onclick="AttributeSummaryCard.togglePerspektiveFilter('#P2')"
-                        title="Osho - Tantrische Weisheit, Freiheit IN der Beziehung"
-                        style="--perspektive-color: #F59E0B;">🕉️ Osho</button>
-                <button class="flat-needs-perspektive-btn perspektive-p3${activePerspektiveFilters.has('#P3') ? ' active' : ''}"
-                        onclick="AttributeSummaryCard.togglePerspektiveFilter('#P3')"
-                        title="Pirsig - Qualität als Lebensphilosophie"
-                        style="--perspektive-color: #10B981;">🔧 Pirsig</button>
-                <button class="flat-needs-perspektive-btn perspektive-p4${activePerspektiveFilters.has('#P4') ? ' active' : ''}"
-                        onclick="AttributeSummaryCard.togglePerspektiveFilter('#P4')"
-                        title="SexPositiv/Kink - Consent, Kommunikation, Machtaustausch"
-                        style="--perspektive-color: #8B5CF6;">💜 SexPositiv</button>
-            </div>`;
-        }
-
-        html += `</div>`;
+            </div>
+        </div>`;
 
         // Direkte flache Liste ohne Kategorien-Wrapper
-        html += `<div class="flat-needs-list${currentFlatSortMode === 'kategorie' ? ' kategorie-mode' : ''}">`;
+        html += `<div class="flat-needs-list kategorie-mode">`;
         filteredNeeds.forEach(need => {
             const needObj = findNeedById(need.id);
             const isLocked = needObj?.locked || false;
-            // Bei Kategorie-Sortierung: Dimension-Farbe anzeigen
-            const dimColor = currentFlatSortMode === 'kategorie' ? getDimensionColor(need.id) : null;
+            // Zeige immer Dimension-Farbe
+            const dimColor = getDimensionColor(need.id);
             html += renderFlatNeedItem(need.id, need.label, need.value, isLocked, dimColor);
         });
         html += `</div>`;
@@ -709,14 +718,10 @@ const AttributeSummaryCard = (function() {
 
     /**
      * Setzt den Sortiermodus und rendert die Liste neu
-     * @param {string} mode - 'value', 'name', 'id', 'status', 'kategorie'
+     * @param {string} mode - 'value', 'name', 'id', 'status'
      */
     function setSortMode(mode) {
         currentFlatSortMode = mode;
-        // Perspektiven-Filter zurücksetzen wenn nicht Kategorie-Modus
-        if (mode !== 'kategorie') {
-            activePerspektiveFilters.clear();
-        }
         reRenderFlatNeeds();
     }
 
@@ -739,7 +744,50 @@ const AttributeSummaryCard = (function() {
 
         if (newContainer) {
             container.replaceWith(newContainer);
+
+            // Re-initialisiere DimensionKategorieFilter
+            initDimensionFilter();
         }
+    }
+
+    /**
+     * Initialisiert den DimensionKategorieFilter im Container
+     */
+    function initDimensionFilter() {
+        if (typeof DimensionKategorieFilter === 'undefined') {
+            console.warn('[AttributeSummaryCard] DimensionKategorieFilter nicht geladen');
+            return;
+        }
+
+        // Warte bis DOM bereit ist
+        setTimeout(() => {
+            const filterContainer = document.querySelector('#flat-needs-dimension-filter');
+            if (!filterContainer) {
+                console.warn('[AttributeSummaryCard] Filter container nicht gefunden');
+                return;
+            }
+
+            // Rendere Filter
+            const filterHtml = DimensionKategorieFilter.render('#flat-needs-dimension-filter');
+            filterContainer.innerHTML = filterHtml;
+
+            console.log('[AttributeSummaryCard] DimensionKategorieFilter initialisiert');
+        }, 100);
+
+        // Event-Listener nur einmal registrieren
+        if (!window._dimensionFilterListenerAdded) {
+            document.addEventListener('dimensionKategorieFilterChange', handleFilterChange);
+            window._dimensionFilterListenerAdded = true;
+        }
+    }
+
+    /**
+     * Handler für Filter-Änderungen
+     */
+    function handleFilterChange(event) {
+        console.log('[AttributeSummaryCard] Filter geändert:', event.detail);
+        // Re-render der Bedürfnisliste mit neuen Filtern
+        reRenderFlatNeeds();
     }
 
     /**
@@ -806,12 +854,10 @@ const AttributeSummaryCard = (function() {
             const input = needItem.querySelector('.flat-need-input');
             if (input) input.value = numValue;
 
-            // Bei Kategorie-Modus: Slider-Track-Hintergrund aktualisieren
-            if (currentFlatSortMode === 'kategorie') {
-                const dimColor = getDimensionColor(needId);
-                if (dimColor) {
-                    sliderElement.style.background = `linear-gradient(to right, ${dimColor} 0%, ${dimColor} ${numValue}%, rgba(255,255,255,0.15) ${numValue}%, rgba(255,255,255,0.15) 100%)`;
-                }
+            // Slider-Track-Hintergrund aktualisieren mit Dimension-Farbe
+            const dimColor = getDimensionColor(needId);
+            if (dimColor) {
+                sliderElement.style.background = `linear-gradient(to right, ${dimColor} 0%, ${dimColor} ${numValue}%, rgba(255,255,255,0.15) ${numValue}%, rgba(255,255,255,0.15) 100%)`;
             }
         }
 
@@ -1599,9 +1645,12 @@ const AttributeSummaryCard = (function() {
         resetFlatNeeds,
         reRenderFlatNeeds,
         setSortMode,
-        // NEU: Perspektiven-Filter für Kategorie-Sortierung
+        // NEU: DimensionKategorieFilter Integration
+        initDimensionFilter,
+        // DEPRECATED: Alte Filter-Funktionen (für Rückwärtskompatibilität)
         togglePerspektiveFilter,
         clearPerspektiveFilters,
+        toggleHauptfragenFilter,
         GFK_KATEGORIEN
     };
 })();
