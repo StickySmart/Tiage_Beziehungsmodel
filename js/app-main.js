@@ -19179,6 +19179,60 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
             // Show modal
             modal.style.display = 'flex';
             modal.classList.add('active');
+
+            // ═══════════════════════════════════════════════════════════════════════════
+            // CLICK HANDLER FÜR RA-PROFIL PERSPEKTIVEN
+            // Beim Klicken auf eine Perspektive wird der entsprechende Resonanzfaktor in die Suche eingegeben
+            // ═══════════════════════════════════════════════════════════════════════════
+            setTimeout(function() {
+                var raProfileCards = document.querySelectorAll('#raProfileModalValues .ra-profile-value-item');
+                if (raProfileCards && raProfileCards.length > 0) {
+                    raProfileCards.forEach(function(card) {
+                        // Entferne alte Event-Listener falls vorhanden
+                        var oldCard = card.cloneNode(true);
+                        card.parentNode.replaceChild(oldCard, card);
+
+                        // Füge neuen Click-Handler hinzu
+                        oldCard.addEventListener('click', function() {
+                            // Extrahiere den Resonanzfaktor (R1, R2, R3, R4) aus dem Element
+                            var resonanzIdElement = oldCard.querySelector('.ra-profile-value-id');
+                            if (resonanzIdElement) {
+                                var resonanzFaktor = resonanzIdElement.textContent.trim();
+
+                                // Finde das Suchfeld
+                                var searchInput = document.getElementById('profileReviewSearchInput');
+                                if (searchInput && typeof handleIntelligentSearch === 'function') {
+                                    // Setze den Resonanzfaktor in das Suchfeld
+                                    searchInput.value = resonanzFaktor;
+
+                                    // Trigger die Suchfunktion
+                                    handleIntelligentSearch(resonanzFaktor);
+
+                                    // Fokussiere das Suchfeld für bessere UX
+                                    searchInput.focus();
+
+                                    console.log('[RAProfile] Suche nach Resonanzfaktor:', resonanzFaktor);
+                                }
+                            }
+                        });
+
+                        // Füge hover-Stil hinzu um Klickbarkeit zu signalisieren
+                        oldCard.style.cursor = 'pointer';
+                        oldCard.style.transition = 'transform 0.2s ease, box-shadow 0.2s ease';
+
+                        oldCard.addEventListener('mouseenter', function() {
+                            oldCard.style.transform = 'translateY(-2px)';
+                            oldCard.style.boxShadow = '0 4px 8px rgba(0,0,0,0.2)';
+                        });
+
+                        oldCard.addEventListener('mouseleave', function() {
+                            oldCard.style.transform = 'translateY(0)';
+                            oldCard.style.boxShadow = 'none';
+                        });
+                    });
+                    console.log('[RAProfile] Click-Handler für', raProfileCards.length, 'Perspektiven hinzugefügt');
+                }
+            }, 100); // Kurzes Timeout um sicherzustellen dass DOM vollständig gerendert ist
         }
         window.openProfileReviewModal = openProfileReviewModal;
 
