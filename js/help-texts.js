@@ -1,8 +1,11 @@
 /**
  * TIAGE HELP TEXTS - Zentrale Dokumentation
  *
- * Single Source of Truth für alle Erklärungstexte und Formeln.
+ * ECHTES SSOT: Referenziert TiageSynthesis.Constants.FORMULAS (kein Hardcoding!)
  * Separation of Concerns: Dokumentation getrennt von UI-Rendering.
+ *
+ * WICHTIG: Diese Datei LIEST aus constants.js, statt Werte zu duplizieren.
+ * Änderungen an Formeln müssen nur in constants.js gemacht werden.
  *
  * © 2025 Ti-age.de Alle Rechte vorbehalten.
  */
@@ -11,30 +14,63 @@ var TiageHelpTexts = (function() {
     'use strict';
 
     // ═══════════════════════════════════════════════════════════════════════
-    // FORMELN (SSOT - referenziert aus constants.js)
+    // SSOT-HELPER: Zugriff auf TiageSynthesis.Constants.FORMULAS
     // ═══════════════════════════════════════════════════════════════════════
 
     /**
-     * Holt die Hauptformel aus constants.js (SSOT)
-     * Fallback wenn constants.js nicht geladen
+     * Prüft ob constants.js geladen ist
+     */
+    function hasConstants() {
+        return typeof TiageSynthesis !== 'undefined' &&
+               TiageSynthesis.Constants &&
+               TiageSynthesis.Constants.FORMULAS;
+    }
+
+    /**
+     * SSOT: Holt die Hauptformel aus constants.js
+     * Echte Referenz statt Hardcoding!
      */
     function getMainFormula() {
-        // SSOT: constants.js Zeile 7
+        if (hasConstants()) {
+            // SSOT: Liest wirklich aus constants.js!
+            return TiageSynthesis.Constants.FORMULAS.main;
+        }
+
+        // Fallback wenn constants.js nicht geladen
+        console.warn('[TiageHelpTexts] WARNUNG: constants.js nicht geladen - verwende Fallback');
         return {
-            text: 'Q = [(A × wₐ × R₂) + (O × wₒ × R₁) + (D × wᵈ × R₃) + (G × wᵍ × R₄)]',
-            html: 'Q = (A×w<sub>A</sub>×R₂) + (O×w<sub>O</sub>×R₁) + (D×w<sub>D</sub>×R₃) + (G×w<sub>G</sub>×R₄)',
-            description: 'Beziehungsqualitäts-Score mit Resonanzfaktoren'
+            text: 'Q = [(O × wO × r1) + (A × wA × r2) + (D × wD × r3) + (G × wG × r4)]',
+            html: 'Q = (O×w<sub>O</sub>×r₁) + (A×w<sub>A</sub>×r₂) + (D×w<sub>D</sub>×r₃) + (G×w<sub>G</sub>×r₄)',
+            description: 'Beziehungsqualitäts-Score mit Resonanzfaktoren (Fallback)'
         };
     }
 
     /**
-     * Holt die R-Faktor-Formel aus constants.js (SSOT)
+     * SSOT: Holt die R-Faktor-Formel aus constants.js
+     * Echte Referenz statt Hardcoding!
      */
     function getRFactorFormula() {
-        // SSOT: constants.js Zeile 84
+        if (hasConstants()) {
+            // SSOT: Liest wirklich aus constants.js!
+            var formula = TiageSynthesis.Constants.FORMULAS.r_factor;
+            return {
+                text: formula.text,
+                html: formula.html,
+                description: formula.description,
+                range: { min: formula.params.min, max: formula.params.max },
+                interpretation: {
+                    weak: { threshold: formula.thresholds.dissonance, label: 'schwächt Score' },
+                    neutral: { range: formula.thresholds.neutral, label: 'neutral' },
+                    strong: { threshold: formula.thresholds.resonance, label: 'verstärkt Score' }
+                }
+            };
+        }
+
+        // Fallback wenn constants.js nicht geladen
+        console.warn('[TiageHelpTexts] WARNUNG: constants.js nicht geladen - verwende Fallback');
         return {
             text: 'R = 0.5 + (Übereinstimmung × 1.0)',
-            description: 'Resonanzfaktor pro Dimension',
+            description: 'Resonanzfaktor pro Dimension (Fallback)',
             range: { min: 0.5, max: 1.5 },
             interpretation: {
                 weak: { threshold: 0.97, label: 'schwächt Score' },
@@ -45,9 +81,23 @@ var TiageHelpTexts = (function() {
     }
 
     /**
-     * Holt die Bedürfnis-Matching-Formel (SSOT aus needsIntegration.js)
+     * SSOT: Holt die Bedürfnis-Matching-Formeln aus constants.js
+     * Echte Referenz statt Hardcoding!
      */
     function getNeedsMatchingFormula() {
+        if (hasConstants()) {
+            // SSOT: Liest wirklich aus constants.js!
+            var formulas = TiageSynthesis.Constants.FORMULAS.needs_matching;
+            return {
+                similarity: formulas.similarity.text,
+                weight: formulas.weight.text,
+                contribution: formulas.contribution.text,
+                total: formulas.total.text
+            };
+        }
+
+        // Fallback wenn constants.js nicht geladen
+        console.warn('[TiageHelpTexts] WARNUNG: constants.js nicht geladen - verwende Fallback');
         return {
             similarity: 'Ähnlichkeit = 100 - |Wert₁ - Wert₂|',
             weight: 'Gewicht = (Wert₁ + Wert₂) / 2',
