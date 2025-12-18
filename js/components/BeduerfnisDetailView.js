@@ -378,28 +378,35 @@ const BeduerfnisDetailView = (function() {
 
     /**
      * Holt Basis-Wert für Bedürfnis
+     * WICHTIG: Basis-Wert sollte standardmäßig dem typischen Umfrage-Wert entsprechen!
      */
     function getBaseValue(needId, person) {
-        // Versuche aus TiageState
+        // 1. Prüfe ob Benutzer einen eigenen Basis-Wert gesetzt hat
         if (typeof TiageState !== 'undefined') {
-            const value = TiageState.get(`${person}.needs.${needId}.base`);
-            if (value !== undefined && value !== null) {
-                return value;
+            const customValue = TiageState.get(`${person}.needs.${needId}.customBase`);
+            if (customValue !== undefined && customValue !== null) {
+                return customValue;
             }
         }
 
-        // Versuche aus LoadedArchetypProfile
+        // 2. Versuche aus LoadedArchetypProfile (falls explizit gesetzt)
         if (typeof window.LoadedArchetypProfile !== 'undefined') {
             const flatNeeds = window.LoadedArchetypProfile?.[person]?.profileReview?.flatNeeds;
             if (flatNeeds && Array.isArray(flatNeeds)) {
                 const found = flatNeeds.find(n => n.id === needId || n.stringKey === needId);
-                if (found && found.baseValue !== undefined) {
-                    return found.baseValue;
+                if (found && found.customBase !== undefined) {
+                    return found.customBase;
                 }
             }
         }
 
-        // Fallback: 50 (Standard)
+        // 3. STANDARD: Verwende typischen Archetyp-Wert aus Umfrage (SSOT)
+        const typicalData = getTypicalValue(needId, person);
+        if (typicalData && typicalData.value !== null) {
+            return typicalData.value;
+        }
+
+        // 4. Letzter Fallback: 50 (nur wenn keine Umfragedaten vorhanden)
         return 50;
     }
 
@@ -683,18 +690,27 @@ const BeduerfnisDetailView = (function() {
 
     /**
      * Basis-Wert ändern
+     * Speichert als customBase um zu kennzeichnen, dass der Benutzer den Wert manuell geändert hat
      */
     function editBase(needId, person) {
         const currentBase = getBaseValue(needId, person);
-        const newBase = prompt(`Neuer Basis-Wert für ${needId}:`, currentBase);
+        const typicalData = getTypicalValue(needId, person);
+        const typicalValue = typicalData ? typicalData.value : null;
+
+        let promptMessage = `Neuer Basis-Wert für ${needId}:`;
+        if (typicalValue !== null) {
+            promptMessage += `\n(Typisch für deinen Archetyp: ${typicalValue})`;
+        }
+
+        const newBase = prompt(promptMessage, currentBase);
 
         if (newBase !== null && !isNaN(newBase)) {
             const value = parseInt(newBase, 10);
 
-            // Speichern in TiageState
+            // Speichern als customBase in TiageState
             if (typeof TiageState !== 'undefined') {
-                TiageState.set(`${person}.needs.${needId}.base`, value);
-                console.log(`[BeduerfnisDetailView] Basis-Wert geändert: ${needId} = ${value}`);
+                TiageState.set(`${person}.needs.${needId}.customBase`, value);
+                console.log(`[BeduerfnisDetailView] Basis-Wert geändert: ${needId} = ${value} (typisch: ${typicalValue})`);
 
                 // Neu rendern
                 const container = document.querySelector(`[data-need-id="${needId}"]`);

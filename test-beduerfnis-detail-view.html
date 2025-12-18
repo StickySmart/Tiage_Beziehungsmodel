@@ -53,7 +53,9 @@
     <div class="test-info">
         <strong>📋 Test-Spezifikation:</strong> docs/BEDUERFNIS_DETAIL_VIEW_SPEC.md v1.0.0<br>
         <strong>✅ Status:</strong> Finalisiert - In Stein gemeißelt<br>
-        <strong>🎯 Zweck:</strong> Verifizierung der UI-Komponente mit Beispieldaten
+        <strong>🎯 Zweck:</strong> Verifizierung der UI-Komponente mit Beispieldaten<br><br>
+        <strong>⚠️ WICHTIG:</strong> Basis-Wert wird standardmäßig aus Umfrage-Daten (ARCHETYP_KOHAERENZ) geladen!<br>
+        <em>Beispiel: Für Archetyp "Solopoly" und Bedürfnis "Kinderwunsch" ist Basis = 20 (nicht 50)</em>
     </div>
 
     <div class="test-controls">
@@ -162,8 +164,10 @@
             data: {
                 ich: {
                     needs: {
-                        '#B90': { base: 50 },
-                        '#B45': { base: 60 }
+                        // WICHTIG: Keine base-Werte hier definiert!
+                        // Basis sollte automatisch aus Umfrage-Daten kommen
+                        '#B90': {},
+                        '#B45': {}
                     }
                 }
             },
@@ -188,7 +192,7 @@
                     current = current[part];
                 }
                 current[last] = value;
-                console.log(`TiageState.set('${path}', ${value})`);
+                console.log(`✓ TiageState.set('${path}', ${value})`);
             }
         };
 
@@ -249,16 +253,21 @@
         }
 
         function testScenario4() {
-            console.log('🧪 Test 4: Hohe Abweichung');
+            console.log('🧪 Test 4: Hohe Abweichung (Custom Basis-Wert)');
 
-            // Setze extremen Basis-Wert
-            window.TiageState.set('ich.needs.#B90.base', 90);
+            // Setze extremen Custom-Basis-Wert (überschreibt Umfrage-Standard)
+            window.TiageState.set('ich.needs.#B90.customBase', 90);
 
-            container.innerHTML = '<h2>Test 4: Hohe Abweichung (Δ>35)</h2>' +
+            container.innerHTML = '<h2>Test 4: Hohe Abweichung (Δ>35, Custom Basis)</h2>' +
+                '<p style="background: #fff9c4; padding: 12px; border-radius: 8px; margin-bottom: 16px;">' +
+                '💡 <strong>Info:</strong> Hier wurde ein eigener Basis-Wert (90) gesetzt, ' +
+                'der vom typischen Archetyp-Wert (20) abweicht. ' +
+                'Final-Wert = 90 + 10 (Gender) + 5 (Orientierung) + 5 (Dominanz) = 110' +
+                '</p>' +
                 BeduerfnisDetailView.render('#B90', 'ich', { expanded: true });
 
-            // Zurücksetzen
-            window.TiageState.set('ich.needs.#B90.base', 50);
+            // Hinweis: Zum Zurücksetzen auf Standard kann man customBase auf undefined setzen
+            // window.TiageState.set('ich.needs.#B90.customBase', undefined);
         }
 
         // Starte mit Test 1

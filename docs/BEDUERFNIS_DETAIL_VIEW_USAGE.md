@@ -19,6 +19,52 @@ Die **Bedürfnis Detail-View** Komponente zeigt detaillierte Informationen zu ei
 
 ---
 
+## ⚠️ WICHTIG: Basis-Wert aus Umfrage-Daten
+
+**Zentrale Änderung:** Der Basis-Wert eines Bedürfnisses wird **standardmäßig aus den Umfrage-Daten** (ARCHETYP_KOHAERENZ) geladen, nicht aus einem fixen Wert!
+
+### Wie funktioniert es?
+
+```javascript
+// Beispiel: Archetyp = Solopoly, Bedürfnis = #B90 (Kinderwunsch)
+
+// 1. Basis-Wert wird aus Umfrage geladen
+// Basis = 20 (typischer Wert für Solopoly aus ARCHETYP_KOHAERENZ)
+
+// 2. GOD-Modifier werden hinzugefügt
+// + Gender: +10 (Mann-Cis)
+// + Orientierung: +5 (Heterosexuell)
+// + Dominanz: +5 (Ausgeglichen)
+
+// 3. Final-Wert = Basis + Modifier
+// Final = 20 + 10 + 5 + 5 = 40
+
+// 4. Abweichung = Final - Typisch
+// Abweichung = 40 - 20 = 20 (da Basis = Typisch)
+```
+
+### Benutzer kann Basis überschreiben
+
+Der Benutzer kann mit dem Button **"Basis ändern"** einen eigenen Wert setzen:
+
+```javascript
+// Benutzer setzt customBase auf 70
+TiageState.set('ich.needs.#B90.customBase', 70);
+
+// Dann:
+// Basis = 70 (custom)
+// Final = 70 + 10 + 5 + 5 = 90
+// Abweichung = 90 - 20 = 70 (🔴 hohe Abweichung)
+```
+
+### Fallback-Hierarchie
+
+1. **Erster Check**: `customBase` (vom Benutzer manuell gesetzt)
+2. **Zweiter Check**: Typischer Archetyp-Wert aus `ARCHETYP_KOHAERENZ` ✅ **STANDARD**
+3. **Letzter Fallback**: 50 (nur wenn keine Umfrage-Daten vorhanden)
+
+---
+
 ## 🚀 Schnellstart
 
 ### 1. Dateien einbinden
