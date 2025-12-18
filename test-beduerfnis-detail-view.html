@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bedürfnis Detail-View Test</title>
+    <link rel="stylesheet" href="css/beduerfnis-detail-view.css">
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            max-width: 1200px;
+            margin: 50px auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        h1 {
+            text-align: center;
+            color: #1a237e;
+            margin-bottom: 40px;
+        }
+        .test-info {
+            background: #e3f2fd;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+            border-left: 4px solid #2196f3;
+        }
+        .test-controls {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        }
+        .test-controls button {
+            margin: 5px;
+            padding: 10px 20px;
+            background: #2196f3;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        .test-controls button:hover {
+            background: #1976d2;
+        }
+    </style>
+</head>
+<body>
+    <h1>🧪 Bedürfnis Detail-View - Test Suite</h1>
+
+    <div class="test-info">
+        <strong>📋 Test-Spezifikation:</strong> docs/BEDUERFNIS_DETAIL_VIEW_SPEC.md v1.0.0<br>
+        <strong>✅ Status:</strong> Finalisiert - In Stein gemeißelt<br>
+        <strong>🎯 Zweck:</strong> Verifizierung der UI-Komponente mit Beispieldaten
+    </div>
+
+    <div class="test-controls">
+        <strong>Test-Szenarien:</strong><br><br>
+        <button onclick="testScenario1()">Test 1: Standard-Anzeige (Kinderwunsch)</button>
+        <button onclick="testScenario2()">Test 2: Negative Modifier</button>
+        <button onclick="testScenario3()">Test 3: Keine typischen Daten</button>
+        <button onclick="testScenario4()">Test 4: Hohe Abweichung</button>
+    </div>
+
+    <!-- Test-Container -->
+    <div id="test-container"></div>
+
+    <!-- Mock-Daten und Dependencies -->
+    <script>
+        // Mock GfkBeduerfnisse
+        window.GfkBeduerfnisse = {
+            catalogue: {
+                'B90': {
+                    id: '#B90',
+                    name: 'Kinderwunsch',
+                    stringKey: 'kinderwunsch',
+                    tags: ['#K11', '#D1', '#P1']
+                },
+                'B45': {
+                    id: '#B45',
+                    name: 'Emotionale Sicherheit',
+                    stringKey: 'emotionale_sicherheit',
+                    tags: ['#K5', '#D3', '#P2']
+                }
+            }
+        };
+
+        // Mock TiageTaxonomie
+        window.TiageTaxonomie = {
+            kategorien: {
+                '#K11': { label: 'Lebensplanung' },
+                '#K5': { label: 'Sicherheit' }
+            },
+            dimensionen: {
+                '#D1': { label: 'Beziehungsphilosophie' },
+                '#D3': { label: 'Emotionale Verbindung' }
+            },
+            perspektiven: {
+                '#P1': { label: 'Statistik' },
+                '#P2': { label: 'Osho' }
+            }
+        };
+
+        // Mock TiageSynthesis
+        window.TiageSynthesis = {
+            Constants: {
+                ARCHETYP_KOHAERENZ: {
+                    beziehungsphilosophie: {
+                        solopoly: {
+                            '#B90': {
+                                value: 20,
+                                percentile: 78,
+                                range: '10-30',
+                                stdDev: 20
+                            }
+                        },
+                        duo: {
+                            '#B45': {
+                                value: 75,
+                                percentile: 65,
+                                range: '60-85',
+                                stdDev: 15
+                            }
+                        }
+                    }
+                }
+            }
+        };
+
+        // Mock TiageModifiers
+        window.TiageModifiers = {
+            Gender: {
+                'mann-cis': {
+                    deltas: {
+                        '#B90': 10,
+                        '#B45': -5
+                    }
+                }
+            },
+            Orientierung: {
+                'heterosexuell': {
+                    deltas: {
+                        '#B90': 5,
+                        '#B45': 0
+                    }
+                }
+            },
+            Dominanz: {
+                'ausgeglichen': {
+                    deltas: {
+                        '#B90': 5,
+                        '#B45': 10
+                    }
+                }
+            }
+        };
+
+        // Mock TiageState
+        window.TiageState = {
+            data: {
+                ich: {
+                    needs: {
+                        '#B90': { base: 50 },
+                        '#B45': { base: 60 }
+                    }
+                }
+            },
+            get: function(path) {
+                const parts = path.split('.');
+                let current = this.data;
+                for (const part of parts) {
+                    if (current && current[part] !== undefined) {
+                        current = current[part];
+                    } else {
+                        return undefined;
+                    }
+                }
+                return current;
+            },
+            set: function(path, value) {
+                const parts = path.split('.');
+                const last = parts.pop();
+                let current = this.data;
+                for (const part of parts) {
+                    if (!current[part]) current[part] = {};
+                    current = current[part];
+                }
+                current[last] = value;
+                console.log(`TiageState.set('${path}', ${value})`);
+            }
+        };
+
+        // Mock personDimensions
+        window.personDimensions = {
+            ich: {
+                geschlecht: 'mann-cis',
+                orientierung: 'heterosexuell',
+                dominanz: 'ausgeglichen'
+            }
+        };
+
+        // Mock LoadedArchetypProfile
+        window.LoadedArchetypProfile = {
+            ich: {
+                archetyp: 'solopoly',
+                profileReview: {
+                    flatNeeds: [
+                        { id: '#B90', stringKey: 'kinderwunsch', baseValue: 50 },
+                        { id: '#B45', stringKey: 'emotionale_sicherheit', baseValue: 60 }
+                    ]
+                }
+            }
+        };
+    </script>
+
+    <!-- Load Component -->
+    <script src="js/components/BeduerfnisDetailView.js"></script>
+
+    <!-- Test-Szenarien -->
+    <script>
+        const container = document.getElementById('test-container');
+
+        function testScenario1() {
+            console.log('🧪 Test 1: Standard-Anzeige (Kinderwunsch)');
+            container.innerHTML = '<h2>Test 1: Standard-Anzeige</h2>' +
+                BeduerfnisDetailView.render('#B90', 'ich', { expanded: true });
+        }
+
+        function testScenario2() {
+            console.log('🧪 Test 2: Negative Modifier');
+            container.innerHTML = '<h2>Test 2: Negative Modifier</h2>' +
+                BeduerfnisDetailView.render('#B45', 'ich', { expanded: true });
+        }
+
+        function testScenario3() {
+            console.log('🧪 Test 3: Keine typischen Daten');
+
+            // Temporär ARCHETYP_KOHAERENZ leeren
+            const backup = window.TiageSynthesis.Constants.ARCHETYP_KOHAERENZ;
+            window.TiageSynthesis.Constants.ARCHETYP_KOHAERENZ = {};
+
+            container.innerHTML = '<h2>Test 3: Keine typischen Daten</h2>' +
+                BeduerfnisDetailView.render('#B90', 'ich');
+
+            // Wiederherstellen
+            window.TiageSynthesis.Constants.ARCHETYP_KOHAERENZ = backup;
+        }
+
+        function testScenario4() {
+            console.log('🧪 Test 4: Hohe Abweichung');
+
+            // Setze extremen Basis-Wert
+            window.TiageState.set('ich.needs.#B90.base', 90);
+
+            container.innerHTML = '<h2>Test 4: Hohe Abweichung (Δ>35)</h2>' +
+                BeduerfnisDetailView.render('#B90', 'ich', { expanded: true });
+
+            // Zurücksetzen
+            window.TiageState.set('ich.needs.#B90.base', 50);
+        }
+
+        // Starte mit Test 1
+        testScenario1();
+
+        // Zeige Test-Zusammenfassung
+        console.log('═══════════════════════════════════════════════════════════');
+        console.log('✓ Bedürfnis Detail-View geladen');
+        console.log('✓ Mock-Daten initialisiert');
+        console.log('✓ Test 1 ausgeführt (Standard-Anzeige)');
+        console.log('═══════════════════════════════════════════════════════════');
+        console.log('Verwende die Buttons oben um weitere Tests auszuführen.');
+        console.log('═══════════════════════════════════════════════════════════');
+    </script>
+</body>
+</html>
