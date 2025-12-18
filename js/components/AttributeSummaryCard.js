@@ -1449,7 +1449,8 @@ const AttributeSummaryCard = (function() {
 
     /**
      * Setzt alle flachen Bedürfniswerte zurück auf Profil-Werte
-     * WICHTIG: Setzt auch alle Sperren und Auswahlen zurück!
+     * WICHTIG: Respektiert gesperrte Werte - nur ungesperrte Werte werden zurückgesetzt!
+     * Löscht die Auswahl (setzt auf 0)
      */
     function resetFlatNeeds() {
         if (!currentFlatArchetyp || typeof GfkBeduerfnisse === 'undefined') return;
@@ -1457,20 +1458,24 @@ const AttributeSummaryCard = (function() {
         const profil = GfkBeduerfnisse.archetypProfile[currentFlatArchetyp];
         const kernbeduerfnisse = profil?.kernbeduerfnisse || {};
 
-        // ERST alle Sperren löschen, DANN alle Werte zurücksetzen
-        clearFlatLockedNeeds();
-
-        // Multi-Select Auswahl löschen
+        // Multi-Select Auswahl löschen (auf 0 setzen)
         clearNeedSelection();
 
-        // Alle Werte zurücksetzen
+        // Alle Werte zurücksetzen - ABER NUR wenn nicht gesperrt!
         Object.keys(kernbeduerfnisse).forEach(needId => {
-            const newValue = kernbeduerfnisse[needId];
             const needObj = findNeedById(needId);
+
+            // Überspringe gesperrte Bedürfnisse
+            if (needObj && needObj.locked) {
+                console.log(`[AttributeSummaryCard] ${needId} ist gesperrt - Reset übersprungen`);
+                return;
+            }
+
+            const newValue = kernbeduerfnisse[needId];
 
             if (needObj) {
                 needObj.value = newValue;
-                needObj.locked = false;
+                // locked-Status bleibt unverändert
             } else {
                 // Sollte nicht passieren, aber sicherheitshalber
                 upsertNeed(needId, { value: newValue, locked: false });
@@ -1483,8 +1488,17 @@ const AttributeSummaryCard = (function() {
                 const input = needItem.querySelector('.flat-need-input');
                 if (slider) slider.value = newValue;
                 if (input) input.value = newValue;
+
+                // Slider-Track-Hintergrund aktualisieren mit Dimension-Farbe
+                const dimColor = getDimensionColor(needId);
+                if (dimColor && slider) {
+                    slider.style.background = `linear-gradient(to right, ${dimColor} 0%, ${dimColor} ${newValue}%, rgba(255,255,255,0.15) ${newValue}%, rgba(255,255,255,0.15) 100%)`;
+                }
             }
         });
+
+        // Event für Resonanz-Neuberechnung
+        document.dispatchEvent(new CustomEvent('flatNeedChange', { bubbles: true }));
     }
 
     /**
