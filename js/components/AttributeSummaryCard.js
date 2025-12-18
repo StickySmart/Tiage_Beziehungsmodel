@@ -490,14 +490,11 @@ const AttributeSummaryCard = (function() {
         if (!panel) return;
 
         const count = selectedNeeds.size;
-        if (count === 0) {
-            panel.style.display = 'none';
-        } else {
-            panel.style.display = 'flex';
-            const countLabel = panel.querySelector('.multi-select-count');
-            if (countLabel) {
-                countLabel.textContent = `${count} ausgewählt`;
-            }
+        // Panel bleibt immer sichtbar
+        panel.style.display = 'flex';
+        const countLabel = panel.querySelector('.multi-select-count');
+        if (countLabel) {
+            countLabel.textContent = `${count} ausgewählt`;
         }
     }
 
@@ -975,8 +972,8 @@ const AttributeSummaryCard = (function() {
                 </button>
             </div>
 
-            <!-- MULTI-SELECT CONTROL PANEL -->
-            <div id="multi-select-control-panel" class="multi-select-control-panel" style="display: none;">
+            <!-- MULTI-SELECT CONTROL PANEL (immer sichtbar) -->
+            <div id="multi-select-control-panel" class="multi-select-control-panel" style="display: flex;">
                 <div class="multi-select-info">
                     <span class="multi-select-count">0 ausgewählt</span>
                     <div class="multi-select-actions">
