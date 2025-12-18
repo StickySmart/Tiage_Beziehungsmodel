@@ -1613,89 +1613,6 @@ input.resonanz-input:focus {
 }
 
 /* ═══════════════════════════════════════════════════════════════════════════ */
-/* ACTIVE SEARCH SELECTION DISPLAY                                               */
-/* ═══════════════════════════════════════════════════════════════════════════ */
-
-.profile-review-search-hint.has-active-selection {
-    margin-top: 8px;
-    padding: 0;
-}
-
-.search-active-selection {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    background: rgba(69, 123, 157, 0.25);
-    border: 1px solid rgba(69, 123, 157, 0.4);
-    border-radius: 6px;
-    padding: 6px 10px;
-    font-size: 13px;
-}
-
-.search-active-type {
-    font-size: 10px;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    padding: 2px 6px;
-    border-radius: 3px;
-    color: #fff;
-}
-
-.search-active-type.type-need {
-    background: linear-gradient(135deg, #22c55e, #16a34a);
-}
-
-.search-active-type.type-category {
-    background: linear-gradient(135deg, #a855f7, #9333ea);
-}
-
-.search-active-type.type-dimension {
-    background: linear-gradient(135deg, #f97316, #ea580c);
-}
-
-.search-active-type.type-resonanz {
-    background: linear-gradient(135deg, #3b82f6, #2563eb);
-}
-
-.search-active-type.type-perspective {
-    background: linear-gradient(135deg, #06b6d4, #0891b2);
-}
-
-.search-active-label {
-    color: rgba(255, 255, 255, 0.95);
-    font-weight: 500;
-}
-
-.search-active-id {
-    color: rgba(255, 255, 255, 0.5);
-    font-size: 11px;
-    font-family: 'Fira Code', monospace;
-}
-
-.search-active-clear {
-    background: rgba(255, 255, 255, 0.1);
-    border: none;
-    border-radius: 50%;
-    width: 20px;
-    height: 20px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    color: rgba(255, 255, 255, 0.6);
-    font-size: 14px;
-    line-height: 1;
-    transition: all 0.2s ease;
-    margin-left: 4px;
-}
-
-.search-active-clear:hover {
-    background: rgba(239, 68, 68, 0.3);
-    color: #ef4444;
-}
-
-/* ═══════════════════════════════════════════════════════════════════════════ */
 /* FILTER VISIBILITY STATES                                                      */
 /* ═══════════════════════════════════════════════════════════════════════════ */
 
@@ -2801,31 +2718,6 @@ input.resonanz-input:focus {
     box-shadow: 0 6px 16px rgba(0, 0, 0, 0.25),
                 0 0 15px var(--dimension-color, rgba(139, 92, 246, 0.3));
     border-color: var(--dimension-color, rgba(139, 92, 246, 0.5));
-}
-
-/* Aktiver/Ausgewählter State für Perspektive-Karten */
-.ra-profile-value-item.active,
-.ra-profile-value-item.selected {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3),
-                0 0 25px var(--dimension-color, rgba(139, 92, 246, 0.5)),
-                inset 0 0 0 2px var(--dimension-color, rgba(139, 92, 246, 0.8));
-    border-color: var(--dimension-color, rgba(139, 92, 246, 0.8));
-    background: linear-gradient(135deg,
-        rgba(255, 255, 255, 0.08) 0%,
-        var(--dimension-color, rgba(139, 92, 246, 0.15)) 100%);
-}
-
-.ra-profile-value-item.active::after,
-.ra-profile-value-item.selected::after {
-    content: '✓';
-    position: absolute;
-    top: 6px;
-    right: 6px;
-    font-size: 12px;
-    color: var(--dimension-color, #8B5CF6);
-    font-weight: bold;
-    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
 }
 
 .ra-profile-value-label {
