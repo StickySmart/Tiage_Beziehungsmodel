@@ -19689,6 +19689,11 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
             var suggestions = [];
             var lowerQuery = query.toLowerCase().trim();
 
+            // DEBUG: Check data sources
+            console.log('[Suche] Query:', query);
+            console.log('[Suche] BeduerfnisKatalog verfügbar:', !!(window.BeduerfnisKatalog && window.BeduerfnisKatalog.beduerfnisse));
+            console.log('[Suche] BeduerfnisIds verfügbar:', !!(typeof BeduerfnisIds !== 'undefined' && BeduerfnisIds.beduerfnisse));
+
             // If query is empty, show all items for browsing
             if (!lowerQuery) {
                 // Show all categories (18 total)
@@ -19754,8 +19759,16 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
             }
 
             // Search in needs (Bedürfnisse)
+            // Try BeduerfnisKatalog first, fallback to BeduerfnisIds
+            var needsSource = null;
             if (window.BeduerfnisKatalog && window.BeduerfnisKatalog.beduerfnisse) {
-                Object.values(window.BeduerfnisKatalog.beduerfnisse).forEach(function(need) {
+                needsSource = window.BeduerfnisKatalog.beduerfnisse;
+            } else if (typeof BeduerfnisIds !== 'undefined' && BeduerfnisIds.beduerfnisse) {
+                needsSource = BeduerfnisIds.beduerfnisse;
+            }
+
+            if (needsSource) {
+                Object.values(needsSource).forEach(function(need) {
                     var matchScore = 0;
 
                     // Check label
@@ -19926,6 +19939,12 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
             suggestions.sort(function(a, b) {
                 return (b.score || 0) - (a.score || 0);
             });
+
+            // DEBUG: Log results
+            console.log('[Suche] Gefundene Vorschläge:', suggestions.length);
+            if (suggestions.length > 0) {
+                console.log('[Suche] Top 3:', suggestions.slice(0, 3).map(function(s) { return s.label; }).join(', '));
+            }
 
             return suggestions.slice(0, 15);
         }
