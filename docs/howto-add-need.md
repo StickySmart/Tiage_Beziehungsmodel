@@ -282,7 +282,7 @@ orientierung: {
 
 ### single.js
 ```javascript
-kernbeduerfnisse: {
+umfrageWerte: {
     // ... bestehende ...
     '#BXXX': 50,  // interesse_an_metaphysik - Neutral
 }

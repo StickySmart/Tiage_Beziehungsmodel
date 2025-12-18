@@ -1239,7 +1239,7 @@ const GfkBeduerfnisse = {
             console.log('GfkBeduerfnisse: Profile geladen mit je ~216 Bedürfnissen');
             Object.keys(window.BaseArchetypProfile).forEach(key => {
                 const profil = window.BaseArchetypProfile[key];
-                console.log(`  - ${key}: ${Object.keys(profil.kernbeduerfnisse).length} Bedürfnisse`);
+                console.log(`  - ${key}: ${Object.keys(profil.umfrageWerte).length} Bedürfnisse`);
             });
         } else {
             console.error('GfkBeduerfnisse: FEHLER - BaseArchetypProfile nicht verfügbar!');
@@ -1264,8 +1264,8 @@ const GfkBeduerfnisse = {
             return { score: 0, fehler: "Unbekannter Archetyp" };
         }
 
-        const bed1 = profil1.kernbeduerfnisse;
-        const bed2 = profil2.kernbeduerfnisse;
+        const bed1 = profil1.umfrageWerte;
+        const bed2 = profil2.umfrageWerte;
 
         // Alle Bedürfnisse sammeln
         const alleBed = new Set([...Object.keys(bed1), ...Object.keys(bed2)]);
@@ -1359,7 +1359,7 @@ const GfkBeduerfnisse = {
         if (!profil) return [];
 
         const self = this;
-        return Object.entries(profil.kernbeduerfnisse)
+        return Object.entries(profil.umfrageWerte)
             .sort((a, b) => b[1] - a[1])
             .slice(0, anzahl)
             .map(([id, wert]) => {
@@ -1390,8 +1390,8 @@ const GfkBeduerfnisse = {
             let anzahl = 0;
 
             kat.beduerfnisse.forEach(bed => {
-                if (profil.kernbeduerfnisse[bed]) {
-                    summe += profil.kernbeduerfnisse[bed];
+                if (profil.umfrageWerte[bed]) {
+                    summe += profil.umfrageWerte[bed];
                     anzahl++;
                 }
             });
@@ -1565,10 +1565,10 @@ const GfkBeduerfnisse = {
      */
     getArchetypJungFunktion: function(archetypId) {
         const profil = this.archetypProfile[archetypId];
-        if (!profil || !profil.kernbeduerfnisse) {
+        if (!profil || !profil.umfrageWerte) {
             return null;
         }
-        return this.berechneJungFunktion(profil.kernbeduerfnisse);
+        return this.berechneJungFunktion(profil.umfrageWerte);
     },
 
     /**
@@ -1630,8 +1630,8 @@ const GfkBeduerfnisse = {
             }
         };
 
-        const bed1 = profil1.kernbeduerfnisse;
-        const bed2 = profil2.kernbeduerfnisse;
+        const bed1 = profil1.umfrageWerte;
+        const bed2 = profil2.umfrageWerte;
         const alleBed = new Set([...Object.keys(bed1), ...Object.keys(bed2)]);
 
         alleBed.forEach(bed => {
@@ -1751,8 +1751,8 @@ const GfkBeduerfnisse = {
             return { pathos: 0, logos: 0 };
         }
 
-        const bed1 = profil1.kernbeduerfnisse;
-        const bed2 = profil2.kernbeduerfnisse;
+        const bed1 = profil1.umfrageWerte;
+        const bed2 = profil2.umfrageWerte;
 
         let pathosSum = 0, pathosCount = 0;
         let logosSum = 0, logosCount = 0;
