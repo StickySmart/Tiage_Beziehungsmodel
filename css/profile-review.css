@@ -1735,6 +1735,18 @@ input.resonanz-input:focus {
     color: #ef4444;
 }
 
+.multi-select-reset-btn:hover {
+    background: rgba(251, 191, 36, 0.2);
+    border-color: #fbbf24;
+    color: #fbbf24;
+}
+
+.multi-select-ok-btn:hover {
+    background: rgba(34, 197, 94, 0.2);
+    border-color: #22c55e;
+    color: #22c55e;
+}
+
 .multi-select-slider-container {
     display: flex;
     align-items: center;

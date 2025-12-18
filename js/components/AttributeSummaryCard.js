@@ -250,6 +250,12 @@ const AttributeSummaryCard = (function() {
     let selectedNeeds = new Set();
 
     /**
+     * MULTI-SELECT FEATURE: Map zum Speichern der ursprünglichen Werte
+     * Speichert die Werte der Bedürfnisse vor Änderungen (needId -> originalValue)
+     */
+    let originalNeedValues = new Map();
+
+    /**
      * Helper: Findet ein Bedürfnis nach ID im flatNeeds Array
      * @param {string} id - Die #B-ID (z.B. "#B34")
      * @returns {Object|undefined} Das Bedürfnis-Objekt oder undefined
@@ -302,8 +308,15 @@ const AttributeSummaryCard = (function() {
     function toggleNeedSelection(needId) {
         if (selectedNeeds.has(needId)) {
             selectedNeeds.delete(needId);
+            // Entferne auch den ursprünglichen Wert
+            originalNeedValues.delete(needId);
         } else {
             selectedNeeds.add(needId);
+            // Speichere den aktuellen Wert als Original
+            const needObj = findNeedById(needId);
+            if (needObj) {
+                originalNeedValues.set(needId, needObj.value);
+            }
         }
 
         // Update UI
@@ -346,7 +359,38 @@ const AttributeSummaryCard = (function() {
             }
         });
         selectedNeeds.clear();
+        originalNeedValues.clear();
         updateMultiSelectControlPanel();
+    }
+
+    /**
+     * MULTI-SELECT: Setzt alle ausgewählten Bedürfnisse auf ihre ursprünglichen Werte zurück
+     */
+    function resetSelectedNeedsValues() {
+        selectedNeeds.forEach(needId => {
+            const originalValue = originalNeedValues.get(needId);
+            if (originalValue !== undefined) {
+                const needObj = findNeedById(needId);
+                if (needObj && !needObj.locked) {
+                    // Setze den Wert auf den ursprünglichen Wert zurück
+                    upsertNeed(needId, { value: originalValue });
+
+                    // Update UI
+                    const needItem = document.querySelector(`.flat-need-item[data-need="${needId}"]`);
+                    if (needItem) {
+                        const slider = needItem.querySelector('.need-slider');
+                        const input = needItem.querySelector('.flat-need-input');
+                        if (slider) slider.value = originalValue;
+                        if (input) input.value = originalValue;
+                    }
+                }
+            }
+        });
+
+        // Trigger event for resonance recalculation
+        if (selectedNeeds.size > 0) {
+            document.dispatchEvent(new CustomEvent('flatNeedChange', { bubbles: true }));
+        }
     }
 
     /**
@@ -863,8 +907,11 @@ const AttributeSummaryCard = (function() {
                         <button class="multi-select-unlock-btn" onclick="AttributeSummaryCard.lockSelectedNeeds(false);" title="Ausgewählte entsperren">
                             🔓 Entsperren
                         </button>
-                        <button class="multi-select-clear-btn" onclick="AttributeSummaryCard.clearNeedSelection();" title="Auswahl aufheben">
-                            ✕ Aufheben
+                        <button class="multi-select-reset-btn" onclick="AttributeSummaryCard.resetSelectedNeedsValues();" title="Werte zurücksetzen">
+                            ↶ Zurücksetzen
+                        </button>
+                        <button class="multi-select-ok-btn" onclick="AttributeSummaryCard.clearNeedSelection();" title="Bestätigen und Auswahl aufheben">
+                            ✓ OK
                         </button>
                     </div>
                 </div>
@@ -1914,6 +1961,7 @@ const AttributeSummaryCard = (function() {
         // NEU: Multi-Select Feature für Bedürfnisse
         toggleNeedSelection,
         clearNeedSelection,
+        resetSelectedNeedsValues,
         updateSelectedNeedsValue,
         lockSelectedNeeds
     };
