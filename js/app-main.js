@@ -19232,6 +19232,44 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
                     });
                     console.log('[RAProfile] Click-Handler für', raProfileCards.length, 'Perspektiven hinzugefügt');
                 }
+
+                // ═══════════════════════════════════════════════════════════════════════════
+                // FIX: Suchfeld Event-Listener direkt hinzufügen
+                // Das oninput-Attribut wird überschrieben, daher expliziter Listener
+                // ═══════════════════════════════════════════════════════════════════════════
+                var searchInput = document.getElementById('profileReviewSearchInput');
+                if (searchInput) {
+                    console.log('[Search FIX] Adding input event listener to search field');
+
+                    // Entferne alte Listener durch Klonen
+                    var newSearchInput = searchInput.cloneNode(true);
+                    searchInput.parentNode.replaceChild(newSearchInput, searchInput);
+
+                    // Input Event
+                    newSearchInput.addEventListener('input', function(e) {
+                        var query = e.target.value;
+                        console.log('[Search FIX] Input event, query:', query);
+                        if (typeof handleIntelligentSearch === 'function') {
+                            handleIntelligentSearch(query);
+                        }
+                    });
+
+                    // Focus Event
+                    newSearchInput.addEventListener('focus', function() {
+                        if (typeof showSearchSuggestions === 'function') {
+                            showSearchSuggestions();
+                        }
+                    });
+
+                    // Keydown Event
+                    newSearchInput.addEventListener('keydown', function(e) {
+                        if (typeof handleSearchKeydown === 'function') {
+                            handleSearchKeydown(e);
+                        }
+                    });
+
+                    console.log('[Search FIX] Event listeners attached');
+                }
             }, 100); // Kurzes Timeout um sicherzustellen dass DOM vollständig gerendert ist
         }
         window.openProfileReviewModal = openProfileReviewModal;
