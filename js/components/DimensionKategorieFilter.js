@@ -191,10 +191,10 @@ const DimensionKategorieFilter = (function() {
      */
     function renderTreeView() {
         if (typeof ResonanzTreeView === 'undefined') {
-            return '<div class="tree-view-container"><p style="color: rgba(255,255,255,0.5);">Tree-View nicht geladen</p></div>';
+            return '<p style="color: rgba(255,255,255,0.5);">Tree-View nicht geladen</p>';
         }
 
-        // Reset-Button + Tree-View Container
+        // Reset-Button only
         const hasActiveFilters = activeKategorien.size > 0;
         const resetButtonVisible = hasActiveFilters ? '' : ' style="display: none;"';
 
@@ -205,8 +205,7 @@ const DimensionKategorieFilter = (function() {
                     title="Filter zurücksetzen"${resetButtonVisible}>
                 ↺ Zurücksetzen
             </button>
-        </div>
-        <div class="tree-view-container" id="tree-view-inline-container"></div>`;
+        </div>`;
     }
 
 
