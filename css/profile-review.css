@@ -1951,6 +1951,14 @@ input.resonanz-input:focus {
     text-decoration: underline;
 }
 
+/* Sternchen-Indikator für geänderte Werte */
+.value-changed-indicator {
+    color: var(--primary, #FFD700);
+    font-weight: bold;
+    margin-left: 4px;
+    font-size: 14px;
+}
+
 .flat-need-controls {
     display: flex;
     align-items: center;
