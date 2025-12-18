@@ -581,6 +581,30 @@ const AttributeSummaryCard = (function() {
     }
 
     /**
+     * Prüft ob ein Bedürfniswert vom Archetyp-Standard abweicht
+     * @param {string} needId - #B-ID (z.B. '#B34')
+     * @param {number} currentValue - Aktueller Wert
+     * @returns {boolean} true wenn Wert geändert wurde, false wenn Standard
+     */
+    function isValueChanged(needId, currentValue) {
+        if (!currentFlatArchetyp || typeof GfkBeduerfnisse === 'undefined') {
+            return false;
+        }
+
+        const profil = GfkBeduerfnisse.archetypProfile?.[currentFlatArchetyp];
+        if (!profil || !profil.kernbeduerfnisse) {
+            return false;
+        }
+
+        const defaultValue = profil.kernbeduerfnisse[needId];
+        if (defaultValue === undefined) {
+            return false;
+        }
+
+        return currentValue !== defaultValue;
+    }
+
+    /**
      * Gibt die Perspektiven-ID für ein Bedürfnis zurück
      * @param {string} needId - #B-ID (z.B. '#B34')
      * @returns {string} Perspektiven-ID ('#P1', '#P2', '#P3', '#P4')
@@ -672,7 +696,7 @@ const AttributeSummaryCard = (function() {
     /**
      * Sortiert die Bedürfnis-Liste nach dem aktuellen Modus
      * @param {Array} needs - Array von {id, value, label}
-     * @param {string} mode - 'value', 'name', 'id', 'status', 'kategorie'
+     * @param {string} mode - 'value', 'name', 'id', 'status', 'kategorie', 'changed'
      * @returns {Array} Sortiertes Array
      */
     function sortNeedsList(needs, mode) {
@@ -715,6 +739,19 @@ const AttributeSummaryCard = (function() {
                         return catA - catB;
                     }
                     // Bei gleicher Kategorie nach Wert absteigend
+                    return b.value - a.value;
+                });
+                break;
+            case 'changed':
+                // Nach geänderten Werten: Geänderte zuerst, dann nach Wert absteigend
+                sorted.sort((a, b) => {
+                    const aChanged = isValueChanged(a.id, a.value) ? 1 : 0;
+                    const bChanged = isValueChanged(b.id, b.value) ? 1 : 0;
+                    // Geänderte zuerst
+                    if (bChanged !== aChanged) {
+                        return bChanged - aChanged;
+                    }
+                    // Bei gleichem Status nach Wert absteigend
                     return b.value - a.value;
                 });
                 break;
@@ -913,6 +950,7 @@ const AttributeSummaryCard = (function() {
                 <button class="flat-needs-sort-btn${currentFlatSortMode === 'name' ? ' active' : ''}" onclick="AttributeSummaryCard.setSortMode('name')">Name</button>
                 <button class="flat-needs-sort-btn${currentFlatSortMode === 'id' ? ' active' : ''}" onclick="AttributeSummaryCard.setSortMode('id')">#B Nr.</button>
                 <button class="flat-needs-sort-btn${currentFlatSortMode === 'status' ? ' active' : ''}" onclick="AttributeSummaryCard.setSortMode('status')">Status</button>
+                <button class="flat-needs-sort-btn${currentFlatSortMode === 'changed' ? ' active' : ''}" onclick="AttributeSummaryCard.setSortMode('changed')">Geändert</button>
             </div>
         </div>`;
 
@@ -1045,6 +1083,8 @@ const AttributeSummaryCard = (function() {
         const sliderStyle = dimensionColor
             ? `style="background: linear-gradient(to right, ${dimensionColor} 0%, ${dimensionColor} ${value}%, rgba(255,255,255,0.15) ${value}%, rgba(255,255,255,0.15) 100%);"`
             : '';
+        // Sternchen (*) wenn Wert vom Standard abweicht
+        const changedIndicator = isValueChanged(needId, value) ? ' <span class="value-changed-indicator" title="Wert wurde geändert">*</span>' : '';
         return `
         <div class="flat-need-item${isLocked ? ' need-locked' : ''}${colorClass}${selectedClass}" data-need="${needId}" ${itemStyle}
              onclick="AttributeSummaryCard.toggleNeedSelection('${needId}')">
@@ -1055,7 +1095,7 @@ const AttributeSummaryCard = (function() {
                 </div>
                 <span class="flat-need-label clickable"
                       onclick="event.stopPropagation(); openNeedWithResonance('${needId}')"
-                      title="Klicken für Resonanz-Details">${label}</span>
+                      title="Klicken für Resonanz-Details">${label}${changedIndicator}</span>
                 <div class="flat-need-controls">
                     <span class="need-lock-icon"
                           onclick="event.stopPropagation(); AttributeSummaryCard.toggleFlatNeedLock('${needId}', this)"
