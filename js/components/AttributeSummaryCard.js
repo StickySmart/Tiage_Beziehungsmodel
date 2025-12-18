@@ -364,31 +364,72 @@ const AttributeSummaryCard = (function() {
     }
 
     /**
-     * MULTI-SELECT: Setzt alle ausgewählten Bedürfnisse auf ihre ursprünglichen Werte zurück
+     * MULTI-SELECT: Setzt alle ausgewählten Bedürfnisse auf ihre Original-Profil-Werte zurück
+     * Lädt die Werte aus LoadedArchetypProfile oder Fallback auf statische umfrageWerte
      */
     function resetSelectedNeedsValues() {
-        selectedNeeds.forEach(needId => {
-            const originalValue = originalNeedValues.get(needId);
-            if (originalValue !== undefined) {
-                const needObj = findNeedById(needId);
-                if (needObj && !needObj.locked) {
-                    // Setze den Wert auf den ursprünglichen Wert zurück
-                    upsertNeed(needId, { value: originalValue });
+        // Hole Original-Profil-Werte (gleiche Logik wie beim Initialisieren)
+        const profil = GfkBeduerfnisse.archetypProfile[currentFlatArchetyp];
+        if (!profil) {
+            console.warn('[AttributeSummaryCard] Kein Profil gefunden für Archetyp:', currentFlatArchetyp);
+            return;
+        }
 
-                    // Update UI
-                    const needItem = document.querySelector(`.flat-need-item[data-need="${needId}"]`);
-                    if (needItem) {
-                        const slider = needItem.querySelector('.need-slider');
-                        const input = needItem.querySelector('.flat-need-input');
-                        if (slider) slider.value = originalValue;
-                        if (input) input.value = originalValue;
-                    }
+        // Ermittle aktuelle Person aus Kontext
+        let currentPerson = 'ich';
+        if (typeof window !== 'undefined' && window.currentProfileReviewContext?.person) {
+            currentPerson = window.currentProfileReviewContext.person;
+        }
+
+        // Hole berechnete Werte aus LoadedArchetypProfile oder Fallback auf statische Werte
+        let umfrageWerte = {};
+        const loadedProfile = (typeof window !== 'undefined' && window.LoadedArchetypProfile)
+            ? window.LoadedArchetypProfile[currentPerson]
+            : null;
+
+        if (!loadedProfile?.profileReview?.flatNeeds) {
+            console.error('[AttributeSummaryCard] Keine Original-Werte gefunden in LoadedArchetypProfile für', currentPerson);
+            alert('Zurücksetzen nicht möglich: Keine Original-Profil-Werte gefunden. Bitte laden Sie zuerst ein Profil.');
+            return;
+        }
+
+        umfrageWerte = loadedProfile.profileReview.flatNeeds;
+        console.log('[AttributeSummaryCard] Reset mit berechneten Werten aus LoadedArchetypProfile für', currentPerson);
+
+        let resetCount = 0;
+        selectedNeeds.forEach(needId => {
+            const needObj = findNeedById(needId);
+
+            // WICHTIG: Gesperrte Bedürfnisse NICHT zurücksetzen
+            if (needObj?.locked) {
+                console.log(`[AttributeSummaryCard] ${needId} ist gesperrt - Reset übersprungen`);
+                return;
+            }
+
+            const originalValue = umfrageWerte[needId];
+            if (originalValue !== undefined && needObj) {
+                // Setze den Wert auf den Original-Profil-Wert zurück
+                upsertNeed(needId, { value: originalValue });
+
+                // Update UI
+                const needItem = document.querySelector(`.flat-need-item[data-need="${needId}"]`);
+                if (needItem) {
+                    const slider = needItem.querySelector('.need-slider');
+                    const input = needItem.querySelector('.flat-need-input');
+                    if (slider) slider.value = originalValue;
+                    if (input) input.value = originalValue;
                 }
+
+                // Aktualisiere auch den gespeicherten Original-Wert
+                originalNeedValues.set(needId, originalValue);
+                resetCount++;
             }
         });
 
+        console.log(`[AttributeSummaryCard] ${resetCount} Bedürfnisse auf Original-Werte zurückgesetzt`);
+
         // Trigger event for resonance recalculation
-        if (selectedNeeds.size > 0) {
+        if (resetCount > 0) {
             document.dispatchEvent(new CustomEvent('flatNeedChange', { bubbles: true }));
         }
     }
@@ -449,14 +490,11 @@ const AttributeSummaryCard = (function() {
         if (!panel) return;
 
         const count = selectedNeeds.size;
-        if (count === 0) {
-            panel.style.display = 'none';
-        } else {
-            panel.style.display = 'flex';
-            const countLabel = panel.querySelector('.multi-select-count');
-            if (countLabel) {
-                countLabel.textContent = `${count} ausgewählt`;
-            }
+        // Panel bleibt immer sichtbar
+        panel.style.display = 'flex';
+        const countLabel = panel.querySelector('.multi-select-count');
+        if (countLabel) {
+            countLabel.textContent = `${count} ausgewählt`;
         }
     }
 
@@ -636,11 +674,11 @@ const AttributeSummaryCard = (function() {
         }
 
         const profil = GfkBeduerfnisse.archetypProfile?.[currentFlatArchetyp];
-        if (!profil || !profil.kernbeduerfnisse) {
+        if (!profil || !profil.umfrageWerte) {
             return false;
         }
 
-        const defaultValue = profil.kernbeduerfnisse[needId];
+        const defaultValue = profil.umfrageWerte[needId];
         if (defaultValue === undefined) {
             return false;
         }
@@ -824,7 +862,7 @@ const AttributeSummaryCard = (function() {
         }
 
         const profil = GfkBeduerfnisse.archetypProfile[archetyp];
-        if (!profil || !profil.kernbeduerfnisse) {
+        if (!profil || !profil.umfrageWerte) {
             console.warn('renderAllNeedsFlat: Profil nicht gefunden:', archetyp);
             return '<p style="color: var(--text-muted);">Profil nicht gefunden</p>';
         }
@@ -844,7 +882,7 @@ const AttributeSummaryCard = (function() {
         }
 
         // Hole ALLE Bedürfnisse - BEVORZUGE berechnete Werte aus LoadedArchetypProfile (Basis + Modifikatoren)
-        let kernbeduerfnisse = {};
+        let umfrageWerte = {};
 
         // Ermittle aktuelle Person aus Kontext
         let currentPerson = 'ich';
@@ -858,12 +896,12 @@ const AttributeSummaryCard = (function() {
             : null;
 
         if (loadedProfile?.profileReview?.flatNeeds) {
-            kernbeduerfnisse = loadedProfile.profileReview.flatNeeds;
+            umfrageWerte = loadedProfile.profileReview.flatNeeds;
             console.log('[AttributeSummaryCard] Verwende berechnete Werte aus LoadedArchetypProfile für', currentPerson);
         } else {
             // 2. Fallback: Statische Archetyp-Werte
-            kernbeduerfnisse = profil.kernbeduerfnisse || {};
-            console.log('[AttributeSummaryCard] Fallback auf statische kernbeduerfnisse für', currentPerson);
+            umfrageWerte = profil.umfrageWerte || {};
+            console.log('[AttributeSummaryCard] Fallback auf statische umfrageWerte für', currentPerson);
         }
 
         // ═══════════════════════════════════════════════════════════════════════════
@@ -943,8 +981,8 @@ const AttributeSummaryCard = (function() {
                 </button>
             </div>
 
-            <!-- MULTI-SELECT CONTROL PANEL -->
-            <div id="multi-select-control-panel" class="multi-select-control-panel" style="display: none;">
+            <!-- MULTI-SELECT CONTROL PANEL (immer sichtbar) -->
+            <div id="multi-select-control-panel" class="multi-select-control-panel" style="display: flex;">
                 <div class="multi-select-info">
                     <span class="multi-select-count">0 ausgewählt</span>
                     <div class="multi-select-actions">
@@ -1465,13 +1503,13 @@ const AttributeSummaryCard = (function() {
         if (!currentFlatArchetyp || typeof GfkBeduerfnisse === 'undefined') return;
 
         const profil = GfkBeduerfnisse.archetypProfile[currentFlatArchetyp];
-        const kernbeduerfnisse = profil?.kernbeduerfnisse || {};
+        const umfrageWerte = profil?.umfrageWerte || {};
 
         // Multi-Select Auswahl löschen (auf 0 setzen)
         clearNeedSelection();
 
         // Alle Werte zurücksetzen - ABER NUR wenn nicht gesperrt!
-        Object.keys(kernbeduerfnisse).forEach(needId => {
+        Object.keys(umfrageWerte).forEach(needId => {
             const needObj = findNeedById(needId);
 
             // Überspringe gesperrte Bedürfnisse
@@ -1480,7 +1518,7 @@ const AttributeSummaryCard = (function() {
                 return;
             }
 
-            const newValue = kernbeduerfnisse[needId];
+            const newValue = umfrageWerte[needId];
 
             if (needObj) {
                 needObj.value = newValue;

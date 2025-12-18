@@ -3620,7 +3620,7 @@
                 if (!needs || Object.keys(needs).length === 0) {
                     if (typeof GfkBeduerfnisse !== 'undefined' &&
                         GfkBeduerfnisse.archetypProfile && GfkBeduerfnisse.archetypProfile[personArchetyp]) {
-                        needs = GfkBeduerfnisse.archetypProfile[personArchetyp].kernbeduerfnisse || {};
+                        needs = GfkBeduerfnisse.archetypProfile[personArchetyp].umfrageWerte || {};
                     }
                 }
 
@@ -3709,7 +3709,7 @@
                 if (!needs || Object.keys(needs).length === 0) {
                     if (typeof GfkBeduerfnisse !== 'undefined' &&
                         GfkBeduerfnisse.archetypProfile && GfkBeduerfnisse.archetypProfile[personArchetyp]) {
-                        needs = GfkBeduerfnisse.archetypProfile[personArchetyp].kernbeduerfnisse || {};
+                        needs = GfkBeduerfnisse.archetypProfile[personArchetyp].umfrageWerte || {};
                     }
                 }
 
@@ -3788,7 +3788,7 @@
                 if (!needs || Object.keys(needs).length === 0) {
                     if (typeof GfkBeduerfnisse !== 'undefined' &&
                         GfkBeduerfnisse.archetypProfile && GfkBeduerfnisse.archetypProfile[personArchetyp]) {
-                        needs = GfkBeduerfnisse.archetypProfile[personArchetyp].kernbeduerfnisse || {};
+                        needs = GfkBeduerfnisse.archetypProfile[personArchetyp].umfrageWerte || {};
                     }
                 }
 
@@ -4423,7 +4423,7 @@
                 if (!needs || Object.keys(needs).length === 0) {
                     if (typeof GfkBeduerfnisse !== 'undefined' &&
                         GfkBeduerfnisse.archetypProfile && GfkBeduerfnisse.archetypProfile[personArchetyp]) {
-                        needs = GfkBeduerfnisse.archetypProfile[personArchetyp].kernbeduerfnisse || {};
+                        needs = GfkBeduerfnisse.archetypProfile[personArchetyp].umfrageWerte || {};
                     }
                 }
 
@@ -4706,7 +4706,7 @@
                 if (!needs || Object.keys(needs).length === 0) {
                     if (typeof GfkBeduerfnisse !== 'undefined' &&
                         GfkBeduerfnisse.archetypProfile && GfkBeduerfnisse.archetypProfile[personArchetyp]) {
-                        needs = GfkBeduerfnisse.archetypProfile[personArchetyp].kernbeduerfnisse || {};
+                        needs = GfkBeduerfnisse.archetypProfile[personArchetyp].umfrageWerte || {};
                     }
                 }
 
@@ -8683,7 +8683,7 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
             const ichBasis = GfkBeduerfnisse.archetypProfile[ichArchetyp];
             const partnerBasis = GfkBeduerfnisse.archetypProfile[partnerArchetyp];
 
-            if (!ichBasis || !ichBasis.kernbeduerfnisse || !partnerBasis || !partnerBasis.kernbeduerfnisse) {
+            if (!ichBasis || !ichBasis.umfrageWerte || !partnerBasis || !partnerBasis.umfrageWerte) {
                 console.warn('Archetyp-Basis nicht gefunden:', ichArchetyp, partnerArchetyp);
                 return null;
             }
@@ -8721,7 +8721,7 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
             // Dimensionen für "ich" sammeln
             const ichDims = personDimensions.ich;
             const ichParams = {
-                basisBedürfnisse: ichBasis.kernbeduerfnisse,
+                basisBedürfnisse: ichBasis.umfrageWerte,
                 dominanz: extractDominanz(ichDims.dominanz),
                 dominanzStatus: ichDims.dominanzStatus || 'gelebt',
                 geschlechtPrimary: extractGeschlecht(ichDims.geschlecht),
@@ -8735,7 +8735,7 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
             // Dimensionen für "partner" sammeln
             const partnerDims = personDimensions.partner;
             const partnerParams = {
-                basisBedürfnisse: partnerBasis.kernbeduerfnisse,
+                basisBedürfnisse: partnerBasis.umfrageWerte,
                 dominanz: extractDominanz(partnerDims.dominanz),
                 dominanzStatus: partnerDims.dominanzStatus || 'gelebt',
                 geschlechtPrimary: extractGeschlecht(partnerDims.geschlecht),
@@ -15370,7 +15370,7 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
             }
 
             // Archetyp-Profil laden für KORREKTE typische Werte (Single Source of Truth)
-            const archetypProfil = GfkBeduerfnisse?.archetypProfile?.[archetyp]?.kernbeduerfnisse || {};
+            const archetypProfil = GfkBeduerfnisse?.archetypProfile?.[archetyp]?.umfrageWerte || {};
 
             // ═══════════════════════════════════════════════════════════════════
             // PROFIL-ATTRIBUTE LADEN für Modifikator-Aufschlüsselung
@@ -16880,7 +16880,7 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
                 if (!needs || Object.keys(needs).length === 0) {
                     if (typeof GfkBeduerfnisse !== 'undefined' &&
                         GfkBeduerfnisse.archetypProfile && GfkBeduerfnisse.archetypProfile[newArchetype]) {
-                        needs = GfkBeduerfnisse.archetypProfile[newArchetype].kernbeduerfnisse || {};
+                        needs = GfkBeduerfnisse.archetypProfile[newArchetype].umfrageWerte || {};
                     }
                 }
 
@@ -19199,36 +19199,49 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
                             if (resonanzIdElement) {
                                 var resonanzFaktor = resonanzIdElement.textContent.trim();
 
+                                // Prüfe ob diese Karte bereits aktiv ist (Toggle-Verhalten)
+                                var wasActive = oldCard.classList.contains('active');
+
+                                // Entferne aktiven State von allen Perspektive-Karten
+                                var allCards = document.querySelectorAll('#raProfileModalValues .ra-profile-value-item');
+                                allCards.forEach(function(c) {
+                                    c.classList.remove('active');
+                                });
+
                                 // Finde das Suchfeld
                                 var searchInput = document.getElementById('profileReviewSearchInput');
-                                if (searchInput && typeof handleIntelligentSearch === 'function') {
-                                    // Setze den Resonanzfaktor in das Suchfeld
-                                    searchInput.value = resonanzFaktor;
 
-                                    // Trigger die Suchfunktion
-                                    handleIntelligentSearch(resonanzFaktor);
+                                if (wasActive) {
+                                    // Toggle: Wenn bereits aktiv, deaktiviere und leere die Suche
+                                    if (searchInput) {
+                                        searchInput.value = '';
+                                        if (typeof clearProfileReviewSearch === 'function') {
+                                            clearProfileReviewSearch();
+                                        }
+                                    }
+                                    console.log('[RAProfile] Perspektive deaktiviert:', resonanzFaktor);
+                                } else {
+                                    // Setze aktiven State auf diese Karte
+                                    oldCard.classList.add('active');
 
-                                    // Fokussiere das Suchfeld für bessere UX
-                                    searchInput.focus();
+                                    if (searchInput && typeof handleIntelligentSearch === 'function') {
+                                        // Setze den Resonanzfaktor in das Suchfeld
+                                        searchInput.value = resonanzFaktor;
 
-                                    console.log('[RAProfile] Suche nach Resonanzfaktor:', resonanzFaktor);
+                                        // Trigger die Suchfunktion
+                                        handleIntelligentSearch(resonanzFaktor);
+
+                                        // Fokussiere das Suchfeld für bessere UX
+                                        searchInput.focus();
+
+                                        console.log('[RAProfile] Suche nach Resonanzfaktor:', resonanzFaktor);
+                                    }
                                 }
                             }
                         });
 
                         // Füge hover-Stil hinzu um Klickbarkeit zu signalisieren
                         oldCard.style.cursor = 'pointer';
-                        oldCard.style.transition = 'transform 0.2s ease, box-shadow 0.2s ease';
-
-                        oldCard.addEventListener('mouseenter', function() {
-                            oldCard.style.transform = 'translateY(-2px)';
-                            oldCard.style.boxShadow = '0 4px 8px rgba(0,0,0,0.2)';
-                        });
-
-                        oldCard.addEventListener('mouseleave', function() {
-                            oldCard.style.transform = 'translateY(0)';
-                            oldCard.style.boxShadow = 'none';
-                        });
                     });
                     console.log('[RAProfile] Click-Handler für', raProfileCards.length, 'Perspektiven hinzugefügt');
                 }
@@ -19672,16 +19685,27 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
             }
             resetProfileReviewFilter();
 
+            // Lösche auch die aktive Suggestion
+            if (typeof suggestionState !== 'undefined') {
+                suggestionState.activeSuggestion = null;
+            }
+
             var hint = document.getElementById('profileReviewSearchHint');
             if (hint) {
-                hint.textContent = '';
-                hint.classList.remove('has-results', 'no-results');
+                hint.innerHTML = '';
+                hint.classList.remove('has-results', 'no-results', 'has-active-selection');
             }
 
             var searchWrapper = document.querySelector('.profile-review-search-wrapper');
             if (searchWrapper) {
                 searchWrapper.classList.remove('has-value');
             }
+
+            // Entferne aktiven State von allen Perspektive-Karten
+            var raProfileCards = document.querySelectorAll('#raProfileModalValues .ra-profile-value-item');
+            raProfileCards.forEach(function(card) {
+                card.classList.remove('active');
+            });
         }
         window.clearProfileReviewSearch = clearProfileReviewSearch;
 
@@ -19694,7 +19718,8 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
         // Global state for suggestions
         var suggestionState = {
             selectedIndex: -1,
-            suggestions: []
+            suggestions: [],
+            activeSuggestion: null  // Speichert die ausgewählte Suggestion
         };
 
         /**
@@ -20178,13 +20203,89 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
             var suggestion = suggestionState.suggestions[index];
             var input = document.getElementById('profileReviewSearchInput');
 
+            // Speichere die ausgewählte Suggestion
+            suggestionState.activeSuggestion = suggestion;
+
+            // Entferne aktiven State von allen Perspektive-Karten
+            var raProfileCards = document.querySelectorAll('#raProfileModalValues .ra-profile-value-item');
+            raProfileCards.forEach(function(card) {
+                card.classList.remove('active');
+            });
+
+            // Wenn die Suggestion ein Resonanzfaktor ist, setze den entsprechenden aktiven State
+            if (suggestion.type === 'resonanz' && suggestion.id) {
+                raProfileCards.forEach(function(card) {
+                    var idElement = card.querySelector('.ra-profile-value-id');
+                    if (idElement && idElement.textContent.trim() === suggestion.id) {
+                        card.classList.add('active');
+                    }
+                });
+            }
+
             if (input) {
                 input.value = suggestion.label;
-                handleIntelligentSearch(suggestion.label);
+                // Rufe nur filterProfileReviewByNeed auf, nicht handleIntelligentSearch
+                // um das erneute Öffnen des Dropdowns zu vermeiden
+                filterProfileReviewByNeed(suggestion.label);
             }
 
             hideSearchSuggestions();
+
+            // Zeige die ausgewählte Suggestion an
+            displayActiveSuggestion();
         }
+
+        /**
+         * Display the active/selected suggestion as a tag
+         */
+        function displayActiveSuggestion() {
+            var hint = document.getElementById('profileReviewSearchHint');
+            if (!hint) return;
+
+            var suggestion = suggestionState.activeSuggestion;
+            if (!suggestion) {
+                return;
+            }
+
+            var typeLabel = {
+                'need': 'Bedürfnis',
+                'category': 'Kategorie',
+                'dimension': 'Dimension',
+                'resonanz': 'Resonanzfaktor',
+                'perspective': 'Perspektive'
+            }[suggestion.type] || suggestion.type;
+
+            var iconPrefix = suggestion.icon ? suggestion.icon + ' ' : '';
+
+            // Zeige die Auswahl als Tag
+            hint.innerHTML = '<span class="search-active-selection">' +
+                '<span class="search-active-type type-' + suggestion.type + '">' + typeLabel + '</span>' +
+                '<span class="search-active-label">' + iconPrefix + suggestion.label + '</span>' +
+                '<span class="search-active-id">' + suggestion.id + '</span>' +
+                '<button class="search-active-clear" onclick="clearActiveSuggestion()" title="Auswahl entfernen">×</button>' +
+                '</span>';
+            hint.classList.add('has-active-selection');
+            hint.classList.remove('has-results', 'no-results');
+        }
+        window.displayActiveSuggestion = displayActiveSuggestion;
+
+        /**
+         * Clear the active suggestion
+         */
+        function clearActiveSuggestion() {
+            suggestionState.activeSuggestion = null;
+            var hint = document.getElementById('profileReviewSearchHint');
+            if (hint) {
+                hint.innerHTML = '';
+                hint.classList.remove('has-active-selection');
+            }
+            // Trigger search with current input value
+            var input = document.getElementById('profileReviewSearchInput');
+            if (input && input.value) {
+                handleIntelligentSearch(input.value);
+            }
+        }
+        window.clearActiveSuggestion = clearActiveSuggestion;
 
         /**
          * Handle keyboard navigation in search

@@ -154,7 +154,7 @@ const ProfileReviewRenderer = (function() {
         }
 
         const archetype = window.BaseArchetypProfile[archetypeKey];
-        if (!archetype || !archetype.kernbeduerfnisse) {
+        if (!archetype || !archetype.umfrageWerte) {
             return 50;
         }
 
@@ -174,7 +174,7 @@ const ProfileReviewRenderer = (function() {
         let count = 0;
 
         needs.forEach(needId => {
-            const value = archetype.kernbeduerfnisse[needId];
+            const value = archetype.umfrageWerte[needId];
             if (typeof value === 'number') {
                 sum += value;
                 count++;

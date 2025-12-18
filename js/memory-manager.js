@@ -107,8 +107,8 @@ const MemoryManager = (function() {
             // Lade Bedürfnisse aus Archetyp-Profil
             if (archetyp && typeof GfkBeduerfnisse !== 'undefined' && GfkBeduerfnisse.archetypProfile) {
                 const profil = GfkBeduerfnisse.archetypProfile[archetyp];
-                if (profil && profil.kernbeduerfnisse) {
-                    state.flatNeeds = { ...profil.kernbeduerfnisse };
+                if (profil && profil.umfrageWerte) {
+                    state.flatNeeds = { ...profil.umfrageWerte };
                     console.log('[MemoryManager] flatNeeds aus Archetyp-Profil geladen:', archetyp, 'Anzahl:', Object.keys(state.flatNeeds).length);
                 }
             }
@@ -1422,8 +1422,8 @@ function generateNeedsBreakdown(data) {
     let baseNeeds = {};
     if (typeof GfkBeduerfnisse !== 'undefined' && GfkBeduerfnisse.archetypProfile) {
         const profil = GfkBeduerfnisse.archetypProfile[archetyp];
-        if (profil && profil.kernbeduerfnisse) {
-            baseNeeds = profil.kernbeduerfnisse;
+        if (profil && profil.umfrageWerte) {
+            baseNeeds = profil.umfrageWerte;
         }
     }
 
@@ -1485,7 +1485,7 @@ function generateNeedsBreakdown(data) {
         needsWithBreakdown.forEach(need => {
             const stringKey = need.stringKey;
             const finalValue = need.value;
-            // Convert string key to #ID for lookup in kernbeduerfnisse (which uses #ID keys)
+            // Convert string key to #ID for lookup in umfrageWerte (which uses #ID keys)
             const hashId = (typeof BeduerfnisIds !== 'undefined' && BeduerfnisIds.toId)
                 ? BeduerfnisIds.toId(stringKey)
                 : stringKey;
