@@ -687,13 +687,13 @@ var TiageProfileStore = (function() {
         }
 
         var archetypProfile = GfkBeduerfnisse.archetypProfile[archetypeKey];
-        if (!archetypProfile || !archetypProfile.kernbeduerfnisse) {
+        if (!archetypProfile || !archetypProfile.umfrageWerte) {
             console.warn('Archetyp-Needs nicht gefunden:', archetypeKey);
             return null;
         }
 
         // Tiefe Kopie der Kern-Bedürfnisse
-        return Object.assign({}, archetypProfile.kernbeduerfnisse);
+        return Object.assign({}, archetypProfile.umfrageWerte);
     }
 
     /**

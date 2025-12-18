@@ -3620,7 +3620,7 @@
                 if (!needs || Object.keys(needs).length === 0) {
                     if (typeof GfkBeduerfnisse !== 'undefined' &&
                         GfkBeduerfnisse.archetypProfile && GfkBeduerfnisse.archetypProfile[personArchetyp]) {
-                        needs = GfkBeduerfnisse.archetypProfile[personArchetyp].kernbeduerfnisse || {};
+                        needs = GfkBeduerfnisse.archetypProfile[personArchetyp].umfrageWerte || {};
                     }
                 }
 
@@ -3709,7 +3709,7 @@
                 if (!needs || Object.keys(needs).length === 0) {
                     if (typeof GfkBeduerfnisse !== 'undefined' &&
                         GfkBeduerfnisse.archetypProfile && GfkBeduerfnisse.archetypProfile[personArchetyp]) {
-                        needs = GfkBeduerfnisse.archetypProfile[personArchetyp].kernbeduerfnisse || {};
+                        needs = GfkBeduerfnisse.archetypProfile[personArchetyp].umfrageWerte || {};
                     }
                 }
 
@@ -3788,7 +3788,7 @@
                 if (!needs || Object.keys(needs).length === 0) {
                     if (typeof GfkBeduerfnisse !== 'undefined' &&
                         GfkBeduerfnisse.archetypProfile && GfkBeduerfnisse.archetypProfile[personArchetyp]) {
-                        needs = GfkBeduerfnisse.archetypProfile[personArchetyp].kernbeduerfnisse || {};
+                        needs = GfkBeduerfnisse.archetypProfile[personArchetyp].umfrageWerte || {};
                     }
                 }
 
@@ -4423,7 +4423,7 @@
                 if (!needs || Object.keys(needs).length === 0) {
                     if (typeof GfkBeduerfnisse !== 'undefined' &&
                         GfkBeduerfnisse.archetypProfile && GfkBeduerfnisse.archetypProfile[personArchetyp]) {
-                        needs = GfkBeduerfnisse.archetypProfile[personArchetyp].kernbeduerfnisse || {};
+                        needs = GfkBeduerfnisse.archetypProfile[personArchetyp].umfrageWerte || {};
                     }
                 }
 
@@ -4706,7 +4706,7 @@
                 if (!needs || Object.keys(needs).length === 0) {
                     if (typeof GfkBeduerfnisse !== 'undefined' &&
                         GfkBeduerfnisse.archetypProfile && GfkBeduerfnisse.archetypProfile[personArchetyp]) {
-                        needs = GfkBeduerfnisse.archetypProfile[personArchetyp].kernbeduerfnisse || {};
+                        needs = GfkBeduerfnisse.archetypProfile[personArchetyp].umfrageWerte || {};
                     }
                 }
 
@@ -8683,7 +8683,7 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
             const ichBasis = GfkBeduerfnisse.archetypProfile[ichArchetyp];
             const partnerBasis = GfkBeduerfnisse.archetypProfile[partnerArchetyp];
 
-            if (!ichBasis || !ichBasis.kernbeduerfnisse || !partnerBasis || !partnerBasis.kernbeduerfnisse) {
+            if (!ichBasis || !ichBasis.umfrageWerte || !partnerBasis || !partnerBasis.umfrageWerte) {
                 console.warn('Archetyp-Basis nicht gefunden:', ichArchetyp, partnerArchetyp);
                 return null;
             }
@@ -8721,7 +8721,7 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
             // Dimensionen für "ich" sammeln
             const ichDims = personDimensions.ich;
             const ichParams = {
-                basisBedürfnisse: ichBasis.kernbeduerfnisse,
+                basisBedürfnisse: ichBasis.umfrageWerte,
                 dominanz: extractDominanz(ichDims.dominanz),
                 dominanzStatus: ichDims.dominanzStatus || 'gelebt',
                 geschlechtPrimary: extractGeschlecht(ichDims.geschlecht),
@@ -8735,7 +8735,7 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
             // Dimensionen für "partner" sammeln
             const partnerDims = personDimensions.partner;
             const partnerParams = {
-                basisBedürfnisse: partnerBasis.kernbeduerfnisse,
+                basisBedürfnisse: partnerBasis.umfrageWerte,
                 dominanz: extractDominanz(partnerDims.dominanz),
                 dominanzStatus: partnerDims.dominanzStatus || 'gelebt',
                 geschlechtPrimary: extractGeschlecht(partnerDims.geschlecht),
@@ -15370,7 +15370,7 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
             }
 
             // Archetyp-Profil laden für KORREKTE typische Werte (Single Source of Truth)
-            const archetypProfil = GfkBeduerfnisse?.archetypProfile?.[archetyp]?.kernbeduerfnisse || {};
+            const archetypProfil = GfkBeduerfnisse?.archetypProfile?.[archetyp]?.umfrageWerte || {};
 
             // ═══════════════════════════════════════════════════════════════════
             // PROFIL-ATTRIBUTE LADEN für Modifikator-Aufschlüsselung
@@ -16880,7 +16880,7 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
                 if (!needs || Object.keys(needs).length === 0) {
                     if (typeof GfkBeduerfnisse !== 'undefined' &&
                         GfkBeduerfnisse.archetypProfile && GfkBeduerfnisse.archetypProfile[newArchetype]) {
-                        needs = GfkBeduerfnisse.archetypProfile[newArchetype].kernbeduerfnisse || {};
+                        needs = GfkBeduerfnisse.archetypProfile[newArchetype].umfrageWerte || {};
                     }
                 }
 

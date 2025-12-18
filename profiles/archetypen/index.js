@@ -46,10 +46,8 @@
             label: profil.name,
             name: profil.name,
             beschreibung: profil.beschreibung,
-            // Basis-Bedürfnisse (Umfragewerte)
-            beduerfnisse: profil.beduerfnisse,
-            // Abwärtskompatibilität
-            kernbeduerfnisse: profil.beduerfnisse,
+            // Statistische Umfragewerte für alle ~220 Bedürfnisse
+            umfrageWerte: profil.beduerfnisse,
             // Zusätzliche Infos
             quellen: profil.quellen || [],
             kernwerte: profil.kernwerte || [],

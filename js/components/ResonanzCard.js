@@ -1195,7 +1195,7 @@ const ResonanzCard = (function() {
         // ═══════════════════════════════════════════════════════════════════
         if (archetypKey && typeof GfkBeduerfnisse !== 'undefined' &&
             GfkBeduerfnisse.archetypProfile?.[archetypKey]) {
-            const needs = GfkBeduerfnisse.archetypProfile[archetypKey].kernbeduerfnisse || {};
+            const needs = GfkBeduerfnisse.archetypProfile[archetypKey].umfrageWerte || {};
             if (Object.keys(needs).length > 0) {
                 console.log('[ResonanzCard.getPersonNeeds] Fallback: Archetyp-Standard für', archetypKey);
                 return needs;

@@ -583,14 +583,14 @@ TiageSynthesis.Calculator = {
         var basis1 = archetypProfile[person1.archetyp];
         var basis2 = archetypProfile[person2.archetyp];
 
-        if (!basis1 || !basis1.kernbeduerfnisse || !basis2 || !basis2.kernbeduerfnisse) {
+        if (!basis1 || !basis1.umfrageWerte || !basis2 || !basis2.umfrageWerte) {
             console.warn('Archetyp nicht gefunden:', person1.archetyp, person2.archetyp);
             return null;
         }
 
         // Vollständige Bedürfnis-Profile berechnen (ALTER WEG)
         var profil1 = BeduerfnisModifikatoren.berechneVollständigesBedürfnisProfil({
-            basisBedürfnisse: basis1.kernbeduerfnisse,
+            basisBedürfnisse: basis1.umfrageWerte,
             dominanz: this._extractDominanz(person1.dominanz),
             dominanzStatus: this._extractStatus(person1.dominanz),
             geschlechtPrimary: this._extractGeschlechtPrimary(person1.geschlecht),
@@ -604,7 +604,7 @@ TiageSynthesis.Calculator = {
         });
 
         var profil2 = BeduerfnisModifikatoren.berechneVollständigesBedürfnisProfil({
-            basisBedürfnisse: basis2.kernbeduerfnisse,
+            basisBedürfnisse: basis2.umfrageWerte,
             dominanz: this._extractDominanz(person2.dominanz),
             dominanzStatus: this._extractStatus(person2.dominanz),
             geschlechtPrimary: this._extractGeschlechtPrimary(person2.geschlecht),

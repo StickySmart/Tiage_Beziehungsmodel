@@ -365,7 +365,7 @@ const AttributeSummaryCard = (function() {
 
     /**
      * MULTI-SELECT: Setzt alle ausgewählten Bedürfnisse auf ihre Original-Profil-Werte zurück
-     * Lädt die Werte aus LoadedArchetypProfile oder Fallback auf statische kernbeduerfnisse
+     * Lädt die Werte aus LoadedArchetypProfile oder Fallback auf statische umfrageWerte
      */
     function resetSelectedNeedsValues() {
         // Hole Original-Profil-Werte (gleiche Logik wie beim Initialisieren)
@@ -382,7 +382,7 @@ const AttributeSummaryCard = (function() {
         }
 
         // Hole berechnete Werte aus LoadedArchetypProfile oder Fallback auf statische Werte
-        let kernbeduerfnisse = {};
+        let umfrageWerte = {};
         const loadedProfile = (typeof window !== 'undefined' && window.LoadedArchetypProfile)
             ? window.LoadedArchetypProfile[currentPerson]
             : null;
@@ -393,7 +393,7 @@ const AttributeSummaryCard = (function() {
             return;
         }
 
-        kernbeduerfnisse = loadedProfile.profileReview.flatNeeds;
+        umfrageWerte = loadedProfile.profileReview.flatNeeds;
         console.log('[AttributeSummaryCard] Reset mit berechneten Werten aus LoadedArchetypProfile für', currentPerson);
 
         let resetCount = 0;
@@ -406,7 +406,7 @@ const AttributeSummaryCard = (function() {
                 return;
             }
 
-            const originalValue = kernbeduerfnisse[needId];
+            const originalValue = umfrageWerte[needId];
             if (originalValue !== undefined && needObj) {
                 // Setze den Wert auf den Original-Profil-Wert zurück
                 upsertNeed(needId, { value: originalValue });
@@ -677,11 +677,11 @@ const AttributeSummaryCard = (function() {
         }
 
         const profil = GfkBeduerfnisse.archetypProfile?.[currentFlatArchetyp];
-        if (!profil || !profil.kernbeduerfnisse) {
+        if (!profil || !profil.umfrageWerte) {
             return false;
         }
 
-        const defaultValue = profil.kernbeduerfnisse[needId];
+        const defaultValue = profil.umfrageWerte[needId];
         if (defaultValue === undefined) {
             return false;
         }
@@ -865,7 +865,7 @@ const AttributeSummaryCard = (function() {
         }
 
         const profil = GfkBeduerfnisse.archetypProfile[archetyp];
-        if (!profil || !profil.kernbeduerfnisse) {
+        if (!profil || !profil.umfrageWerte) {
             console.warn('renderAllNeedsFlat: Profil nicht gefunden:', archetyp);
             return '<p style="color: var(--text-muted);">Profil nicht gefunden</p>';
         }
@@ -885,7 +885,7 @@ const AttributeSummaryCard = (function() {
         }
 
         // Hole ALLE Bedürfnisse - BEVORZUGE berechnete Werte aus LoadedArchetypProfile (Basis + Modifikatoren)
-        let kernbeduerfnisse = {};
+        let umfrageWerte = {};
 
         // Ermittle aktuelle Person aus Kontext
         let currentPerson = 'ich';
@@ -899,16 +899,16 @@ const AttributeSummaryCard = (function() {
             : null;
 
         if (loadedProfile?.profileReview?.flatNeeds) {
-            kernbeduerfnisse = loadedProfile.profileReview.flatNeeds;
+            umfrageWerte = loadedProfile.profileReview.flatNeeds;
             console.log('[AttributeSummaryCard] Verwende berechnete Werte aus LoadedArchetypProfile für', currentPerson);
         } else {
             // 2. Fallback: Statische Archetyp-Werte
-            kernbeduerfnisse = profil.kernbeduerfnisse || {};
-            console.log('[AttributeSummaryCard] Fallback auf statische kernbeduerfnisse für', currentPerson);
+            umfrageWerte = profil.umfrageWerte || {};
+            console.log('[AttributeSummaryCard] Fallback auf statische umfrageWerte für', currentPerson);
         }
 
         // Initialisiere Werte aus Profil (neue Array-Struktur)
-        Object.keys(kernbeduerfnisse).forEach(needId => {
+        Object.keys(umfrageWerte).forEach(needId => {
             const existing = findNeedById(needId);
             if (!existing) {
                 // Erstelle vollständiges Bedürfnis-Objekt
@@ -922,7 +922,7 @@ const AttributeSummaryCard = (function() {
                     key: numKey,
                     stringKey: stringKey,
                     label: getNeedLabel(needId).replace(/^#B\d+\s*/, ''),
-                    value: kernbeduerfnisse[needId],
+                    value: umfrageWerte[needId],
                     locked: false
                 });
             }
@@ -1497,13 +1497,13 @@ const AttributeSummaryCard = (function() {
         if (!currentFlatArchetyp || typeof GfkBeduerfnisse === 'undefined') return;
 
         const profil = GfkBeduerfnisse.archetypProfile[currentFlatArchetyp];
-        const kernbeduerfnisse = profil?.kernbeduerfnisse || {};
+        const umfrageWerte = profil?.umfrageWerte || {};
 
         // Multi-Select Auswahl löschen (auf 0 setzen)
         clearNeedSelection();
 
         // Alle Werte zurücksetzen - ABER NUR wenn nicht gesperrt!
-        Object.keys(kernbeduerfnisse).forEach(needId => {
+        Object.keys(umfrageWerte).forEach(needId => {
             const needObj = findNeedById(needId);
 
             // Überspringe gesperrte Bedürfnisse
@@ -1512,7 +1512,7 @@ const AttributeSummaryCard = (function() {
                 return;
             }
 
-            const newValue = kernbeduerfnisse[needId];
+            const newValue = umfrageWerte[needId];
 
             if (needObj) {
                 needObj.value = newValue;
