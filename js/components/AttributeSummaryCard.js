@@ -888,7 +888,7 @@ const AttributeSummaryCard = (function() {
             const dimColor = getDimensionColor(need.id);
             html += renderFlatNeedItem(need.id, need.label, need.value, isLocked, dimColor);
         });
-        html += `</div></div>`; // Close flat-needs-list and flat-needs-list-wrapper
+        html += `</div>`; // Close flat-needs-list
 
         html += '</div>'; // Close flat-needs-container
         return html;
