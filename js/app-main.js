@@ -13804,6 +13804,13 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
                 initDimensionButtons();
                 console.log('[TIAGE DEBUG] After initDimensionButtons');
                 initGeschlechtHoverEvents();
+
+                // FIX: Stelle sicher, dass Subscriber registriert sind BEVOR loadFromStorage()
+                // aufgerufen wird, damit flatNeeds reaktiv berechnet werden
+                if (typeof ProfileCalculator !== 'undefined' && ProfileCalculator.registerSubscribers) {
+                    ProfileCalculator.registerSubscribers();
+                }
+
                 console.log('[TIAGE DEBUG] Before loadDimensionsFromState');
                 // Load saved dimensions from TiageState AFTER initializing buttons
                 // so that UI sync functions can update the buttons
