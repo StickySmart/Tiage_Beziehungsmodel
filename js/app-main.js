@@ -19184,8 +19184,11 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
             profileReviewInitialState = getProfileReviewState();
 
             // Show modal
+            console.log('[DEBUG] About to show modal, modal element:', modal);
+            console.log('[DEBUG] modal.style before:', modal.style.display);
             modal.style.display = 'flex';
             modal.classList.add('active');
+            console.log('[DEBUG] modal.style after:', modal.style.display, 'classes:', modal.className);
 
             // ═══════════════════════════════════════════════════════════════════════════
             // CLICK HANDLER FÜR RA-PROFIL PERSPEKTIVEN
