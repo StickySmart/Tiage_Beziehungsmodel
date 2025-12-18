@@ -124,7 +124,10 @@ const RAProfileHeaderCard = (function() {
             const displayValue = value.toFixed(2);
 
             html += `
-                <div class="ra-profile-value-item" style="--dimension-color: ${config.color};">
+                <div class="ra-profile-value-item clickable"
+                     style="--dimension-color: ${config.color};"
+                     onclick="RAProfileHeaderCard.searchByResonanz('${key}')"
+                     title="Klicke um nach ${key} Bedürfnissen zu suchen">
                     <div class="ra-profile-value-label">${config.label}</div>
                     <div class="ra-profile-value-id">${key}</div>
                     <div class="ra-profile-value-number">${displayValue}</div>
@@ -197,6 +200,34 @@ const RAProfileHeaderCard = (function() {
         console.log('[RAProfileHeaderCard] Aktualisiert');
     }
 
+    /**
+     * Sucht nach Bedürfnissen eines Resonanzfaktors (R1-R4)
+     * @param {string} resonanzId - R1, R2, R3 oder R4
+     */
+    function searchByResonanz(resonanzId) {
+        // Finde Suchfeld
+        const searchInput = document.getElementById('profileReviewSearchInput');
+        if (!searchInput) {
+            console.warn('[RAProfileHeaderCard] Suchfeld nicht gefunden');
+            return;
+        }
+
+        // Setze Suchtext auf Resonanz-ID
+        searchInput.value = resonanzId;
+
+        // Trigger Suche
+        if (typeof handleIntelligentSearch === 'function') {
+            handleIntelligentSearch(resonanzId);
+        } else if (typeof filterProfileReviewByNeed === 'function') {
+            filterProfileReviewByNeed(resonanzId);
+        }
+
+        // Fokussiere Suchfeld
+        searchInput.focus();
+
+        console.log('[RAProfileHeaderCard] Suche nach', resonanzId);
+    }
+
     // Lausche auf Resonanzfaktoren-Änderungen
     window.addEventListener('resonanzfaktoren-changed', function(event) {
         if (event.detail && event.detail.person === 'ich') {
@@ -207,7 +238,8 @@ const RAProfileHeaderCard = (function() {
     return {
         render,
         init,
-        update
+        update,
+        searchByResonanz
     };
 })();
 

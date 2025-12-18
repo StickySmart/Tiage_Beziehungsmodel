@@ -64,6 +64,15 @@
     overflow: hidden;
 }
 
+.ra-profile-value-item.clickable {
+    cursor: pointer;
+    user-select: none;
+}
+
+.ra-profile-value-item.clickable:active {
+    transform: translateY(-2px) scale(0.98);
+}
+
 .ra-profile-value-item::before {
     content: '';
     position: absolute;
