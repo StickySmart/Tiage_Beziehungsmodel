@@ -729,16 +729,8 @@ const AttributeSummaryCard = (function() {
             </div>
         </div>`;
 
-        // Collapsible Section für Faktor-Gewichtung (Sliders)
-        html += `
-        <div class="flat-needs-collapse-header" onclick="AttributeSummaryCard.toggleFlatNeedsCollapse()">
-            <span class="flat-needs-collapse-title">Faktor-Gewichtung</span>
-            <span class="flat-needs-collapse-icon">▼</span>
-        </div>`;
-
-        // Direkte flache Liste ohne Kategorien-Wrapper - jetzt in collapsible wrapper
-        html += `<div class="flat-needs-list-wrapper">
-            <div class="flat-needs-list kategorie-mode">`;
+        // Direkte flache Liste ohne Kategorien-Wrapper
+        html += `<div class="flat-needs-list kategorie-mode">`;
         filteredNeeds.forEach(need => {
             const needObj = findNeedById(need.id);
             const isLocked = needObj?.locked || false;
@@ -746,7 +738,7 @@ const AttributeSummaryCard = (function() {
             const dimColor = getDimensionColor(need.id);
             html += renderFlatNeedItem(need.id, need.label, need.value, isLocked, dimColor);
         });
-        html += `</div></div>`; // Close flat-needs-list and flat-needs-list-wrapper
+        html += `</div>`; // Close flat-needs-list
 
         html += '</div>'; // Close flat-needs-container
         return html;
@@ -1665,19 +1657,6 @@ const AttributeSummaryCard = (function() {
         return result;
     }
 
-    /**
-     * Togglet den Collapse-Status der Faktor-Gewichtung (Sliders)
-     */
-    function toggleFlatNeedsCollapse() {
-        const wrapper = document.querySelector('.flat-needs-list-wrapper');
-        const icon = document.querySelector('.flat-needs-collapse-icon');
-
-        if (wrapper && icon) {
-            wrapper.classList.toggle('collapsed');
-            icon.classList.toggle('collapsed');
-        }
-    }
-
     return {
         render,
         renderMany,
@@ -1701,7 +1680,6 @@ const AttributeSummaryCard = (function() {
         onFlatSliderInput,
         updateFlatNeedValue,
         toggleFlatNeedLock,
-        toggleFlatNeedsCollapse,
         // NEU (v1.8.89): Integrierte Struktur { needId: { value, locked } }
         getFlatNeeds,
         setFlatNeeds,
