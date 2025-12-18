@@ -19232,6 +19232,44 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
                     });
                     console.log('[RAProfile] Click-Handler für', raProfileCards.length, 'Perspektiven hinzugefügt');
                 }
+
+                // ═══════════════════════════════════════════════════════════════════════════
+                // FIX: Suchfeld Event-Listener direkt hinzufügen
+                // Das oninput-Attribut wird überschrieben, daher expliziter Listener
+                // ═══════════════════════════════════════════════════════════════════════════
+                var searchInput = document.getElementById('profileReviewSearchInput');
+                if (searchInput) {
+                    console.log('[Search FIX] Adding input event listener to search field');
+
+                    // Entferne alte Listener durch Klonen
+                    var newSearchInput = searchInput.cloneNode(true);
+                    searchInput.parentNode.replaceChild(newSearchInput, searchInput);
+
+                    // Input Event
+                    newSearchInput.addEventListener('input', function(e) {
+                        var query = e.target.value;
+                        console.log('[Search FIX] Input event, query:', query);
+                        if (typeof handleIntelligentSearch === 'function') {
+                            handleIntelligentSearch(query);
+                        }
+                    });
+
+                    // Focus Event
+                    newSearchInput.addEventListener('focus', function() {
+                        if (typeof showSearchSuggestions === 'function') {
+                            showSearchSuggestions();
+                        }
+                    });
+
+                    // Keydown Event
+                    newSearchInput.addEventListener('keydown', function(e) {
+                        if (typeof handleSearchKeydown === 'function') {
+                            handleSearchKeydown(e);
+                        }
+                    });
+
+                    console.log('[Search FIX] Event listeners attached');
+                }
             }, 100); // Kurzes Timeout um sicherzustellen dass DOM vollständig gerendert ist
         }
         window.openProfileReviewModal = openProfileReviewModal;
@@ -19298,9 +19336,13 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
          * @param {string} query - Search query (supports * wildcard)
          */
         function filterProfileReviewByNeed(query) {
+            console.log('[Filter] filterProfileReviewByNeed called with query:', query);
+
             var searchWrapper = document.querySelector('.profile-review-search-wrapper');
             var hint = document.getElementById('profileReviewSearchHint');
             var contentContainer = document.getElementById('profileReviewContent');
+
+            console.log('[Filter] contentContainer found:', !!contentContainer);
 
             if (!contentContainer) return;
 
@@ -19329,9 +19371,13 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
             var flatContainer = contentContainer.querySelector('.flat-needs-container');
             var isFlatView = !!flatContainer;
 
+            console.log('[Filter] isFlatView:', isFlatView);
+
             if (isFlatView) {
                 // FLAT VIEW: Search in flat-need-item elements
                 var flatNeedItems = contentContainer.querySelectorAll('.flat-need-item');
+
+                console.log('[Filter] Found flat need items:', flatNeedItems.length);
 
                 flatNeedItems.forEach(function(needItem) {
                     var needLabel = needItem.querySelector('.flat-need-label');
@@ -19420,6 +19466,8 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
                         totalMatches++;
                     }
                 });
+
+                console.log('[Filter] Total matches found:', totalMatches);
 
                 // In flat view, count visible items as "matched attributes"
                 matchedAttributes = totalMatches > 0 ? 1 : 0;
@@ -20003,7 +20051,14 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
             var dropdown = document.getElementById('searchSuggestionsDropdown');
             var content = dropdown ? dropdown.querySelector('.search-suggestions-content') : null;
 
-            if (!dropdown || !content) return;
+            console.log('[Suche] displaySearchSuggestions called, suggestions:', suggestions.length);
+            console.log('[Suche] Dropdown element:', !!dropdown);
+            console.log('[Suche] Content element:', !!content);
+
+            if (!dropdown || !content) {
+                console.warn('[Suche] Dropdown oder Content nicht gefunden!');
+                return;
+            }
 
             suggestionState.suggestions = suggestions;
             suggestionState.selectedIndex = -1;
@@ -20011,6 +20066,7 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
             if (suggestions.length === 0) {
                 content.innerHTML = '<div class="search-suggestions-empty">Keine Vorschläge gefunden</div>';
                 dropdown.style.display = 'block';
+                console.log('[Suche] Showing empty dropdown');
                 return;
             }
 
@@ -20053,6 +20109,7 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
 
             content.innerHTML = html;
             dropdown.style.display = 'block';
+            console.log('[Suche] Dropdown angezeigt mit', suggestions.length, 'Vorschlägen');
 
             // Add click handlers
             content.querySelectorAll('.suggestion-item').forEach(function(item) {
