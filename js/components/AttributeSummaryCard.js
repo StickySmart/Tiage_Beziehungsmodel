@@ -411,6 +411,37 @@ const AttributeSummaryCard = (function() {
     }
 
     /**
+     * MULTI-SELECT: Sperrt/entsperrt alle ausgewählten Bedürfnisse
+     * @param {boolean} lockState - true = sperren, false = entsperren
+     */
+    function lockSelectedNeeds(lockState) {
+        selectedNeeds.forEach(needId => {
+            const needObj = findNeedById(needId);
+            if (needObj) {
+                needObj.locked = lockState;
+            } else {
+                upsertNeed(needId, { locked: lockState });
+            }
+
+            // Update UI
+            const needItem = document.querySelector(`.flat-need-item[data-need="${needId}"]`);
+            if (needItem) {
+                needItem.classList.toggle('need-locked', lockState);
+                const slider = needItem.querySelector('.need-slider');
+                const input = needItem.querySelector('.flat-need-input');
+                if (slider) slider.disabled = lockState;
+                if (input) input.readOnly = lockState;
+            }
+
+            // Event
+            document.dispatchEvent(new CustomEvent('flatNeedLockChange', {
+                bubbles: true,
+                detail: { needId, locked: lockState }
+            }));
+        });
+    }
+
+    /**
      * Aktueller Archetyp für flache Darstellung
      */
     let currentFlatArchetyp = null;
@@ -819,9 +850,17 @@ const AttributeSummaryCard = (function() {
             <div id="multi-select-control-panel" class="multi-select-control-panel" style="display: none;">
                 <div class="multi-select-info">
                     <span class="multi-select-count">0 ausgewählt</span>
-                    <button class="multi-select-clear-btn" onclick="AttributeSummaryCard.clearNeedSelection();" title="Auswahl aufheben">
-                        ✕ Auswahl aufheben
-                    </button>
+                    <div class="multi-select-actions">
+                        <button class="multi-select-lock-btn" onclick="AttributeSummaryCard.lockSelectedNeeds(true);" title="Ausgewählte sperren">
+                            🔒 Sperren
+                        </button>
+                        <button class="multi-select-unlock-btn" onclick="AttributeSummaryCard.lockSelectedNeeds(false);" title="Ausgewählte entsperren">
+                            🔓 Entsperren
+                        </button>
+                        <button class="multi-select-clear-btn" onclick="AttributeSummaryCard.clearNeedSelection();" title="Auswahl aufheben">
+                            ✕ Aufheben
+                        </button>
+                    </div>
                 </div>
                 <div class="multi-select-slider-container">
                     <span class="multi-select-slider-label">Alle auf:</span>
@@ -1815,7 +1854,8 @@ const AttributeSummaryCard = (function() {
         // NEU: Multi-Select Feature für Bedürfnisse
         toggleNeedSelection,
         clearNeedSelection,
-        updateSelectedNeedsValue
+        updateSelectedNeedsValue,
+        lockSelectedNeeds
     };
 })();
 
