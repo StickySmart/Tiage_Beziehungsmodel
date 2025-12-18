@@ -1688,6 +1688,7 @@ input.resonanz-input:focus {
     justify-content: space-between;
     align-items: center;
     gap: 10px;
+    flex-wrap: wrap;
 }
 
 .multi-select-count {
@@ -1696,6 +1697,14 @@ input.resonanz-input:focus {
     color: #22c55e;
 }
 
+.multi-select-actions {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+}
+
+.multi-select-lock-btn,
+.multi-select-unlock-btn,
 .multi-select-clear-btn {
     padding: 4px 10px;
     font-size: 11px;
@@ -1705,6 +1714,19 @@ input.resonanz-input:focus {
     color: var(--text-muted, #888);
     cursor: pointer;
     transition: all 0.2s;
+    white-space: nowrap;
+}
+
+.multi-select-lock-btn:hover {
+    background: rgba(245, 158, 11, 0.2);
+    border-color: #f59e0b;
+    color: #f59e0b;
+}
+
+.multi-select-unlock-btn:hover {
+    background: rgba(34, 197, 94, 0.2);
+    border-color: #22c55e;
+    color: #22c55e;
 }
 
 .multi-select-clear-btn:hover {
