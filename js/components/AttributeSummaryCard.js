@@ -980,26 +980,35 @@ const AttributeSummaryCard = (function() {
             console.log('[AttributeSummaryCard] Fallback auf statische umfrageWerte für', currentPerson);
         }
 
-        // Initialisiere Werte aus Profil (neue Array-Struktur)
-        Object.keys(umfrageWerte).forEach(needId => {
+        // ═══════════════════════════════════════════════════════════════════════════
+        // SSOT: Initialisiere ALLE 219 Bedürfnisse aus BeduerfnisIds (Single Source of Truth)
+        // BeduerfnisIds ist die einzige Quelle für die Bedürfnis-Definition
+        // Werte kommen aus LoadedArchetypProfile (SSOT für berechnete Werte)
+        // ═══════════════════════════════════════════════════════════════════════════
+        if (typeof BeduerfnisIds === 'undefined' || !BeduerfnisIds.beduerfnisse) {
+            console.error('[AttributeSummaryCard] SSOT FEHLER: BeduerfnisIds nicht verfügbar! Kann keine Bedürfnisse laden.');
+            return '<p style="color: var(--error-color);">Fehler: BeduerfnisIds nicht geladen. Bitte Seite neu laden.</p>';
+        }
+
+        Object.keys(BeduerfnisIds.beduerfnisse).forEach(needId => {
             const existing = findNeedById(needId);
             if (!existing) {
-                // Erstelle vollständiges Bedürfnis-Objekt
                 const numKey = parseInt(needId.replace('#B', ''), 10) || 0;
-                let stringKey = '';
-                if (typeof BeduerfnisIds !== 'undefined' && BeduerfnisIds.toKey) {
-                    stringKey = BeduerfnisIds.toKey(needId) || '';
-                }
+                const needData = BeduerfnisIds.beduerfnisse[needId];
+                const stringKey = needData?.key || '';
+                // Wert aus SSOT (kernbeduerfnisse = LoadedArchetypProfile.flatNeeds)
+                const value = kernbeduerfnisse[needId];
                 flatNeeds.push({
                     id: needId,
                     key: numKey,
                     stringKey: stringKey,
-                    label: getNeedLabel(needId).replace(/^#B\d+\s*/, ''),
-                    value: umfrageWerte[needId],
+                    label: needData?.label || getNeedLabel(needId).replace(/^#B\d+\s*/, ''),
+                    value: value, // undefined wenn nicht in SSOT vorhanden
                     locked: false
                 });
             }
         });
+        console.log('[AttributeSummaryCard] Alle', flatNeeds.length, 'Bedürfnisse aus BeduerfnisIds geladen');
 
         // Sammle ALLE Bedürfnisse - nutze direkt flatNeeds Array
         let allNeeds = flatNeeds.map(need => ({

@@ -20078,10 +20078,12 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
 
         /**
          * Display search suggestions
+         * FIX: Verwendet position:fixed um overflow:auto des Modal-Body zu umgehen
          */
         function displaySearchSuggestions(suggestions) {
             var dropdown = document.getElementById('searchSuggestionsDropdown');
             var content = dropdown ? dropdown.querySelector('.search-suggestions-content') : null;
+            var searchWrapper = document.querySelector('.profile-review-search-wrapper');
 
             console.log('[Suche] displaySearchSuggestions called, suggestions:', suggestions.length);
             console.log('[Suche] Dropdown element:', !!dropdown);
@@ -20094,6 +20096,16 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
 
             suggestionState.suggestions = suggestions;
             suggestionState.selectedIndex = -1;
+
+            // FIX: Position dropdown using fixed positioning to escape overflow:auto
+            if (searchWrapper) {
+                var rect = searchWrapper.getBoundingClientRect();
+                dropdown.style.position = 'fixed';
+                dropdown.style.top = (rect.bottom + 4) + 'px';
+                dropdown.style.left = rect.left + 'px';
+                dropdown.style.width = rect.width + 'px';
+                dropdown.style.maxHeight = 'min(300px, calc(100vh - ' + (rect.bottom + 20) + 'px))';
+            }
 
             if (suggestions.length === 0) {
                 content.innerHTML = '<div class="search-suggestions-empty">Keine Vorschläge gefunden</div>';
@@ -20362,6 +20374,16 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
                 }
             }
         });
+
+        /**
+         * Hide suggestions when scrolling modal body (fixed positioning würde sonst falsch sein)
+         */
+        document.addEventListener('scroll', function(event) {
+            var modalBody = document.getElementById('profileReviewBody');
+            if (modalBody && (event.target === modalBody || modalBody.contains(event.target))) {
+                hideSearchSuggestions();
+            }
+        }, true);
 
         /**
          * Update clearProfileReviewSearch to also hide suggestions
