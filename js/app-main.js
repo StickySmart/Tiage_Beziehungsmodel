@@ -19376,6 +19376,38 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
                 return;
             }
 
+            // ═══════════════════════════════════════════════════════════════════════════
+            // RESONANZFAKTOR-FILTER (R1, R2, R3, R4)
+            // Wenn ein Resonanzfaktor eingegeben wird, filtere nach zugehörigen Kategorien
+            // Mapping aus TiageSynthesis.NeedsIntegration.KATEGORIE_TO_RESONANZ
+            // ═══════════════════════════════════════════════════════════════════════════
+            var resonanzKategorien = {
+                'R1': [
+                    'existenz', 'zuneigung', 'musse', 'intimitaet_romantik',
+                    'Existenz', 'Zuneigung', 'Muße', 'Intimität & Romantik'
+                ],
+                'R2': [
+                    'freiheit', 'teilnahme', 'identitaet', 'lebensplanung',
+                    'finanzen_karriere', 'werte_haltungen', 'soziales_leben', 'praktisches_leben',
+                    'Freiheit', 'Teilnahme', 'Identität & Bedeutung', 'Lebensplanung',
+                    'Finanzen & Karriere', 'Werte & Haltungen', 'Soziales Leben', 'Praktisches Leben'
+                ],
+                'R3': [
+                    'dynamik', 'sicherheit',
+                    'Dynamik & Austausch', 'Sicherheit'
+                ],
+                'R4': [
+                    'verstaendnis', 'erschaffen', 'verbundenheit', 'kommunikation',
+                    'Verstehen', 'Erschaffen', 'Verbunden sein', 'Kommunikationsstil'
+                ]
+            };
+
+            var trimmedQuery = query.trim().toUpperCase();
+            var isResonanzFilter = resonanzKategorien.hasOwnProperty(trimmedQuery);
+            var filterKategorien = isResonanzFilter ? resonanzKategorien[trimmedQuery] : null;
+
+            console.log('[Filter] isResonanzFilter:', isResonanzFilter, 'filterKategorien:', filterKategorien);
+
             var searchPattern = needWildcardToRegex(query.trim());
             var totalMatches = 0;
             var matchedAttributes = 0;
@@ -19399,11 +19431,46 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
                     var labelText = needLabel.textContent || '';
                     var needId = needItem.getAttribute('data-need') || '';
 
-                    // Check if need matches the search pattern (label or ID)
-                    var matches = searchPattern.test(labelText) || searchPattern.test(needId);
+                    var matches = false;
+
+                    // ═══════════════════════════════════════════════════════════════════════════
+                    // RESONANZFAKTOR-FILTER: Filtere nach zugehörigen Kategorien
+                    // ═══════════════════════════════════════════════════════════════════════════
+                    if (isResonanzFilter && filterKategorien) {
+                        // Hole Kategorie des Bedürfnisses
+                        var needKategorie = null;
+
+                        // Versuche Kategorie aus BeduerfnisIds zu holen
+                        if (typeof BeduerfnisIds !== 'undefined' && BeduerfnisIds.beduerfnisse && BeduerfnisIds.beduerfnisse[needId]) {
+                            needKategorie = BeduerfnisIds.beduerfnisse[needId].kategorie;
+                        }
+                        // Fallback: GfkBeduerfnisse
+                        if (!needKategorie && typeof GfkBeduerfnisse !== 'undefined') {
+                            var needDef = GfkBeduerfnisse.getDefinition
+                                ? GfkBeduerfnisse.getDefinition(needId)
+                                : GfkBeduerfnisse.definitionen[needId];
+                            if (needDef) {
+                                needKategorie = needDef.kategorie;
+                            }
+                        }
+
+                        // Prüfe ob Kategorie zu Resonanzfaktor gehört
+                        if (needKategorie) {
+                            var kategorieKey = needKategorie.toLowerCase().replace(/\s+&\s+/g, ' ').replace(/ä/g, 'ae').replace(/ö/g, 'oe').replace(/ü/g, 'ue').replace(/ß/g, 'ss');
+                            matches = filterKategorien.some(function(k) {
+                                return k.toLowerCase() === kategorieKey ||
+                                       k.toLowerCase() === needKategorie.toLowerCase() ||
+                                       needKategorie.toLowerCase().includes(k.toLowerCase());
+                            });
+                        }
+                        console.log('[Filter] Resonanz check for', needId, '- kategorie:', needKategorie, 'matches:', matches);
+                    } else {
+                        // NORMALE SUCHE: Check if need matches the search pattern (label or ID)
+                        matches = searchPattern.test(labelText) || searchPattern.test(needId);
+                    }
 
                     // Also check category, dimension, perspective names and need description
-                    if (!matches && typeof GfkBeduerfnisse !== 'undefined') {
+                    if (!matches && !isResonanzFilter && typeof GfkBeduerfnisse !== 'undefined') {
                         // Use getDefinition() which supports both #B-IDs and String-Keys
                         var needDef = GfkBeduerfnisse.getDefinition
                             ? GfkBeduerfnisse.getDefinition(needId)
@@ -19613,16 +19680,28 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
             // Update hint
             if (hint) {
                 if (totalMatches > 0) {
+                    var resonanzLabels = {
+                        'R1': 'Leben (Nähe)',
+                        'R2': 'Philosophie',
+                        'R3': 'Dynamik',
+                        'R4': 'Identität'
+                    };
+                    var filterInfo = isResonanzFilter ? ' für ' + resonanzLabels[trimmedQuery] : '';
+
                     if (isFlatView) {
-                        hint.textContent = totalMatches + ' Bedürfnis' + (totalMatches !== 1 ? 'se' : '') + ' gefunden';
+                        hint.textContent = totalMatches + ' Bedürfnis' + (totalMatches !== 1 ? 'se' : '') + filterInfo + ' gefunden';
                     } else {
                         hint.textContent = totalMatches + ' Bedürfnis' + (totalMatches !== 1 ? 'se' : '') +
                                           ' in ' + matchedAttributes + ' Attribut' + (matchedAttributes !== 1 ? 'en' : '') +
-                                          ' gefunden';
+                                          filterInfo + ' gefunden';
                     }
                     hint.classList.add('has-results');
                 } else {
-                    hint.textContent = 'Keine Bedürfnisse gefunden. Tipp: Verwende * als Platzhalter (z.B. *kind*) - sucht in #B, #K, #D, #P';
+                    if (isResonanzFilter) {
+                        hint.textContent = 'Keine Bedürfnisse für ' + trimmedQuery + ' gefunden.';
+                    } else {
+                        hint.textContent = 'Keine Bedürfnisse gefunden. Tipp: Verwende * als Platzhalter (z.B. *kind*) - sucht in #B, #K, #D, #P';
+                    }
                     hint.classList.add('no-results');
                 }
             }
