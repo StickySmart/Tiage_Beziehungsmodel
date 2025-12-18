@@ -822,21 +822,22 @@ const AttributeSummaryCard = (function() {
         // Sortiere nach aktuellem Modus
         const sortedNeeds = sortNeedsList(allNeeds, currentFlatSortMode);
 
-        // Filter durch DimensionKategorieFilter anwenden (wenn geladen)
-        let filteredNeeds = sortedNeeds;
+        // FIX: Zähle gefilterte Bedürfnisse (für Anzeige), aber rendere ALLE
+        // Dies ermöglicht, dass die Suche funktioniert, auch wenn Filter aktiv sind
+        let filteredCount = sortedNeeds.length;
         if (typeof DimensionKategorieFilter !== 'undefined') {
-            filteredNeeds = sortedNeeds.filter(need => DimensionKategorieFilter.shouldShowNeed(need.id));
-            console.log('[AttributeSummaryCard] Filter angewendet:', {
-                vorher: sortedNeeds.length,
-                nachher: filteredNeeds.length,
-                filterAktiv: filteredNeeds.length < sortedNeeds.length
+            filteredCount = sortedNeeds.filter(need => DimensionKategorieFilter.shouldShowNeed(need.id)).length;
+            console.log('[AttributeSummaryCard] Filter gezählt:', {
+                gesamt: sortedNeeds.length,
+                sichtbar: filteredCount,
+                filterAktiv: filteredCount < sortedNeeds.length
             });
         }
 
         // Subtitle mit Filter-Info
-        const filterActive = filteredNeeds.length < totalNeedsCount;
+        const filterActive = filteredCount < totalNeedsCount;
         const subtitleText = filterActive
-            ? `Dein ${archetypLabel}-Profil (${filteredNeeds.length} von ${totalNeedsCount} Bedürfnissen)`
+            ? `Dein ${archetypLabel}-Profil (${filteredCount} von ${totalNeedsCount} Bedürfnissen)`
             : `Dein ${archetypLabel}-Profil (${totalNeedsCount} Bedürfnisse)`;
 
         // Rendere HTML - flache Liste ohne Kategorien
@@ -919,12 +920,19 @@ const AttributeSummaryCard = (function() {
         // Direkte flache Liste ohne Kategorien-Wrapper
         html += `<div class="flat-needs-list-wrapper">
             <div class="flat-needs-list kategorie-mode">`;
-        filteredNeeds.forEach(need => {
+        // FIX: Rendere ALLE Bedürfnisse, auch gefilterte (für Suche)
+        // Der DimensionKategorieFilter wird als CSS-Klasse angewendet
+        sortedNeeds.forEach(need => {
             const needObj = findNeedById(need.id);
             const isLocked = needObj?.locked || false;
             // Zeige immer Dimension-Farbe
             const dimColor = getDimensionColor(need.id);
-            html += renderFlatNeedItem(need.id, need.label, need.value, isLocked, dimColor);
+
+            // Prüfe ob Bedürfnis durch DimensionKategorieFilter versteckt werden soll
+            const shouldHide = (typeof DimensionKategorieFilter !== 'undefined')
+                && !DimensionKategorieFilter.shouldShowNeed(need.id);
+
+            html += renderFlatNeedItem(need.id, need.label, need.value, isLocked, dimColor, shouldHide);
         });
         html += `</div>`; // Close flat-needs-list
 
@@ -1032,8 +1040,9 @@ const AttributeSummaryCard = (function() {
      * @param {number} value - Wert 0-100
      * @param {boolean} isLocked - Ob fixiert
      * @param {string|null} dimensionColor - Optional: Farbe für border-left (bei Kategorie-Sortierung)
+     * @param {boolean} shouldHide - Ob durch DimensionKategorieFilter versteckt
      */
-    function renderFlatNeedItem(needId, label, value, isLocked, dimensionColor) {
+    function renderFlatNeedItem(needId, label, value, isLocked, dimensionColor, shouldHide = false) {
         // Bei Dimensionsfarbe: Border-left + CSS-Variable für Slider-Thumb
         const itemStyle = dimensionColor
             ? `style="border-left: 5px solid ${dimensionColor}; --dimension-color: ${dimensionColor};"`
@@ -1041,12 +1050,13 @@ const AttributeSummaryCard = (function() {
         const colorClass = dimensionColor ? ' has-dimension-color' : '';
         const isSelected = selectedNeeds.has(needId);
         const selectedClass = isSelected ? ' need-selected' : '';
+        const filterHiddenClass = shouldHide ? ' dimension-filter-hidden' : '';
         // Slider-Track-Hintergrund: gefüllt bis zum Wert mit Dimensionsfarbe
         const sliderStyle = dimensionColor
             ? `style="background: linear-gradient(to right, ${dimensionColor} 0%, ${dimensionColor} ${value}%, rgba(255,255,255,0.15) ${value}%, rgba(255,255,255,0.15) 100%);"`
             : '';
         return `
-        <div class="flat-need-item${isLocked ? ' need-locked' : ''}${colorClass}${selectedClass}" data-need="${needId}" ${itemStyle}
+        <div class="flat-need-item${isLocked ? ' need-locked' : ''}${colorClass}${selectedClass}${filterHiddenClass}" data-need="${needId}" ${itemStyle}
              onclick="AttributeSummaryCard.toggleNeedSelection('${needId}')">
             <div class="flat-need-header">
                 <div class="flat-need-select-indicator">
