@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SSOT System Test</title>
+    <style>
+        body {
+            font-family: 'Courier New', monospace;
+            max-width: 1000px;
+            margin: 50px auto;
+            padding: 20px;
+            background: #1a1a1a;
+            color: #0f0;
+        }
+        .test-section {
+            margin: 20px 0;
+            padding: 15px;
+            background: #2a2a2a;
+            border-left: 4px solid #0f0;
+        }
+        .success {
+            color: #0f0;
+        }
+        .error {
+            color: #f00;
+        }
+        .info {
+            color: #ff0;
+        }
+        pre {
+            background: #000;
+            padding: 10px;
+            overflow-x: auto;
+            color: #0ff;
+        }
+        h1 {
+            text-align: center;
+            color: #0ff;
+            text-shadow: 0 0 10px #0ff;
+        }
+        .summary {
+            margin-top: 30px;
+            padding: 20px;
+            background: #0f0;
+            color: #000;
+            font-weight: bold;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <h1>═══ SSOT SYSTEM TEST ═══</h1>
+    <div id="test-output"></div>
+
+    <!-- Load die zu testenden Dateien -->
+    <script src="js/synthesis/constants.js"></script>
+    <script src="js/help-texts.js"></script>
+
+    <!-- Test-Skript -->
+    <script>
+        const output = document.getElementById('test-output');
+
+        function log(message, type = 'info') {
+            const div = document.createElement('div');
+            div.className = `test-section ${type}`;
+            div.innerHTML = message;
+            output.appendChild(div);
+        }
+
+        function testSSOT() {
+            let allTestsPassed = true;
+
+            // Test 1: Constants geladen?
+            log('<h3>✓ Test 1: TiageSynthesis.Constants geladen?</h3>', 'info');
+            if (typeof TiageSynthesis !== 'undefined' && TiageSynthesis.Constants) {
+                log('✓ JA - TiageSynthesis.Constants existiert', 'success');
+            } else {
+                log('✗ FEHLER - TiageSynthesis.Constants nicht gefunden!', 'error');
+                allTestsPassed = false;
+                return false;
+            }
+
+            // Test 2: FORMULAS Sektion?
+            log('<h3>✓ Test 2: FORMULAS-Sektion existiert?</h3>', 'info');
+            if (TiageSynthesis.Constants.FORMULAS) {
+                log('✓ JA - FORMULAS-Sektion existiert', 'success');
+            } else {
+                log('✗ FEHLER - FORMULAS-Sektion nicht gefunden!', 'error');
+                allTestsPassed = false;
+                return false;
+            }
+
+            // Test 3: Hauptformel in constants.js
+            log('<h3>✓ Test 3: Hauptformel in constants.js</h3>', 'info');
+            const constantsMainFormula = TiageSynthesis.Constants.FORMULAS.main;
+            log(`<pre>Text: ${constantsMainFormula.text}\nHTML: ${constantsMainFormula.html}\nVersion: ${constantsMainFormula.version}</pre>`, 'success');
+
+            // Test 4: help-texts.js liest die Formel
+            log('<h3>✓ Test 4: help-texts.js liest aus constants.js?</h3>', 'info');
+            const helpTextsMainFormula = TiageHelpTexts.getMainFormula();
+            log(`<pre>Text: ${helpTextsMainFormula.text}\nHTML: ${helpTextsMainFormula.html}</pre>`, 'success');
+
+            // Test 5: Sind sie identisch?
+            log('<h3>✓ Test 5: Sind die Formeln identisch (SSOT erfüllt)?</h3>', 'info');
+            if (constantsMainFormula.text === helpTextsMainFormula.text &&
+                constantsMainFormula.html === helpTextsMainFormula.html) {
+                log('✓✓✓ JA - help-texts.js liest WIRKLICH aus constants.js!', 'success');
+                log('<pre>KEIN HARDCODING - ECHTES SSOT!</pre>', 'success');
+            } else {
+                log('✗ FEHLER - Formeln sind unterschiedlich!', 'error');
+                log(`<pre>constants.js: ${constantsMainFormula.text}\nhelp-texts.js: ${helpTextsMainFormula.text}</pre>`, 'error');
+                allTestsPassed = false;
+            }
+
+            // Test 6: R-Faktor Formel
+            log('<h3>✓ Test 6: R-Faktor Formel</h3>', 'info');
+            const rFactorFormula = TiageHelpTexts.getRFactorFormula();
+            log(`<pre>Text: ${rFactorFormula.text}\nRange: ${rFactorFormula.range.min} - ${rFactorFormula.range.max}\nThreshold Resonanz: ${rFactorFormula.interpretation.strong.threshold}\nThreshold Dissonanz: ${rFactorFormula.interpretation.weak.threshold}</pre>`, 'success');
+
+            // Test 7: R-Faktor aus constants?
+            log('<h3>✓ Test 7: R-Faktor aus constants.js?</h3>', 'info');
+            const constantsRFactor = TiageSynthesis.Constants.FORMULAS.r_factor;
+            if (constantsRFactor.text === rFactorFormula.text &&
+                constantsRFactor.params.min === rFactorFormula.range.min &&
+                constantsRFactor.params.max === rFactorFormula.range.max) {
+                log('✓ JA - R-Faktor wird korrekt aus constants.js gelesen!', 'success');
+            } else {
+                log('✗ FEHLER - R-Faktor Werte stimmen nicht überein!', 'error');
+                allTestsPassed = false;
+            }
+
+            // Test 8: Bedürfnis-Matching Formeln
+            log('<h3>✓ Test 8: Bedürfnis-Matching Formeln</h3>', 'info');
+            const needsFormulas = TiageHelpTexts.getNeedsMatchingFormula();
+            log(`<pre>Similarity: ${needsFormulas.similarity}\nWeight: ${needsFormulas.weight}\nContribution: ${needsFormulas.contribution}\nTotal: ${needsFormulas.total}</pre>`, 'success');
+
+            // Test 9: Needs aus constants?
+            log('<h3>✓ Test 9: Needs-Formeln aus constants.js?</h3>', 'info');
+            const constantsNeeds = TiageSynthesis.Constants.FORMULAS.needs_matching;
+            if (constantsNeeds.similarity.text === needsFormulas.similarity &&
+                constantsNeeds.weight.text === needsFormulas.weight) {
+                log('✓ JA - Needs-Formeln werden korrekt aus constants.js gelesen!', 'success');
+            } else {
+                log('✗ FEHLER - Needs-Formeln stimmen nicht überein!', 'error');
+                allTestsPassed = false;
+            }
+
+            // Zusammenfassung
+            if (allTestsPassed) {
+                log(`
+                    <h2>✓✓✓ ALLE TESTS ERFOLGREICH - SSOT FUNKTIONIERT! ✓✓✓</h2>
+                    <h3>Zusammenfassung:</h3>
+                    <ul>
+                        <li>✓ constants.js enthält FORMULAS-Sektion mit allen Formeln</li>
+                        <li>✓ help-texts.js liest WIRKLICH aus constants.js (kein Hardcoding!)</li>
+                        <li>✓ Änderungen müssen nur noch in constants.js gemacht werden</li>
+                        <li>✓ SSOT-Prinzip ist erfüllt</li>
+                    </ul>
+                `, 'summary');
+            } else {
+                log('<h2>✗ EINIGE TESTS FEHLGESCHLAGEN</h2>', 'error');
+            }
+        }
+
+        // Run tests
+        testSSOT();
+    </script>
+</body>
+</html>

@@ -1,15 +1,86 @@
 /**
  * TIAGE SYNTHESE - Konstanten
  *
- * Zentrale Definition aller Gewichte, Matrizen und Konfigurationen
- * für die Beziehungsqualitäts-Berechnung.
+ * SSOT (Single Source of Truth) für alle Gewichte, Matrizen, Formeln
+ * und Konfigurationen der Beziehungsqualitäts-Berechnung.
  *
- * Formel: Q = [(A × wₐ) + (O × wₒ) + (D × wᵈ) + (G × wᵍ)] × R
+ * Hauptformel (v3.1): Q = [(O × wO × r1) + (A × wA × r2) + (D × wD × r3) + (G × wG × r4)]
  */
 
 var TiageSynthesis = TiageSynthesis || {};
 
 TiageSynthesis.Constants = {
+
+    // ═══════════════════════════════════════════════════════════════════════
+    // FORMELN (SSOT für Dokumentation und UI)
+    // ═══════════════════════════════════════════════════════════════════════
+    // Alle Formeln zentral definiert - help-texts.js referenziert diese Werte
+
+    FORMULAS: {
+        // Hauptformel v3.1 mit dimensionalen Resonanzfaktoren
+        main: {
+            text: 'Q = [(O × wO × r1) + (A × wA × r2) + (D × wD × r3) + (G × wG × r4)]',
+            html: 'Q = (O×w<sub>O</sub>×r₁) + (A×w<sub>A</sub>×r₂) + (D×w<sub>D</sub>×r₃) + (G×w<sub>G</sub>×r₄)',
+            description: 'Beziehungsqualitäts-Score mit dimensionalen Resonanzfaktoren (v3.1)',
+            version: '3.1'
+        },
+
+        // R-Faktor Formel (dimensional)
+        r_factor: {
+            text: 'R = 0.5 + (Übereinstimmung × 1.0)',
+            html: 'R = 0.5 + (Übereinstimmung × 1.0)',
+            description: 'Dimensionaler Resonanzfaktor',
+            params: {
+                base: 0.5,
+                multiplier: 1.0,
+                min: 0.5,
+                max: 1.5
+            },
+            thresholds: {
+                resonance: 1.05,    // R ≥ 1.05 = verstärkt Score
+                dissonance: 0.97,   // R ≤ 0.97 = schwächt Score
+                neutral: [0.97, 1.05]  // Dazwischen = neutral
+            }
+        },
+
+        // Legacy Resonanzformel (Fallback, wird nicht mehr aktiv genutzt)
+        r_legacy: {
+            text: 'R = 0.9 + [(M/100 × 0.35) + (B × 0.35) + (K × 0.30)] × 0.2',
+            html: 'R = 0.9 + [(M/100 × 0.35) + (B × 0.35) + (K × 0.30)] × 0.2',
+            description: 'Legacy Resonanzformel (v2.x, nicht mehr aktiv)',
+            params: {
+                base: 0.9,
+                max_boost: 0.2,
+                profile_weight: 0.35,
+                balance_weight: 0.35,
+                gfk_weight: 0.30
+            }
+        },
+
+        // Bedürfnis-Matching Formeln
+        needs_matching: {
+            similarity: {
+                text: 'Ähnlichkeit = 100 - |Wert₁ - Wert₂|',
+                html: 'Ähnlichkeit = 100 - |Wert<sub>1</sub> - Wert<sub>2</sub>|',
+                description: 'Ähnlichkeit zwischen zwei Bedürfniswerten'
+            },
+            weight: {
+                text: 'Gewicht = (Wert₁ + Wert₂) / 2',
+                html: 'Gewicht = (Wert<sub>1</sub> + Wert<sub>2</sub>) / 2',
+                description: 'Gewichtung basiert auf durchschnittlicher Wichtigkeit'
+            },
+            contribution: {
+                text: 'Beitrag = Ähnlichkeit × Gewicht',
+                html: 'Beitrag = Ähnlichkeit × Gewicht',
+                description: 'Gewichteter Beitrag eines Bedürfnisses zum Gesamtscore'
+            },
+            total: {
+                text: 'Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)',
+                html: 'Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)',
+                description: 'Gesamtscore über alle Bedürfnisse'
+            }
+        }
+    },
 
     // ═══════════════════════════════════════════════════════════════════════
     // FAKTOR-GEWICHTE

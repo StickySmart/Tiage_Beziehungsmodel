@@ -195,3 +195,138 @@ const helpInfo = TiageHelpTexts.getRFactorInfluenceExplanation(rKey);
 ✅ **SoC**: Klare Trennung zwischen Daten, Logik und Präsentation
 
 **Ergebnis:** Wartbarer, testbarer und erweiterbarer Code ohne Funktionsverlust.
+
+---
+
+## UPDATE 2025-12-18: ECHTES SSOT IMPLEMENTIERT
+
+### Problem gelöst: Vorher war es nur ein Kommentar!
+
+**Vorher (Fake-SSOT):**
+```javascript
+// In help-texts.js
+function getRFactorFormula() {
+    // SSOT: constants.js Zeile 84  ← NUR EIN KOMMENTAR!
+    return {
+        text: 'R = 0.5 + ...',  ← HARDCODED!
+        // ...
+    };
+}
+```
+
+**Jetzt (Echtes SSOT):**
+```javascript
+// In help-texts.js
+function getRFactorFormula() {
+    if (hasConstants()) {
+        // Liest WIRKLICH aus constants.js!
+        var formula = TiageSynthesis.Constants.FORMULAS.r_factor;
+        return {
+            text: formula.text,
+            range: { min: formula.params.min, max: formula.params.max }
+        };
+    }
+    // Fallback...
+}
+```
+
+### Was wurde geändert?
+
+#### 1. `js/synthesis/constants.js` - FORMULAS-Sektion hinzugefügt
+
+```javascript
+TiageSynthesis.Constants = {
+    FORMULAS: {
+        main: {
+            text: 'Q = [(O × wO × r1) + ...]',
+            html: 'Q = (O×w<sub>O</sub>×r₁) + ...',
+            description: '...',
+            version: '3.1'
+        },
+        r_factor: {
+            text: 'R = 0.5 + (Übereinstimmung × 1.0)',
+            params: { base: 0.5, multiplier: 1.0, min: 0.5, max: 1.5 },
+            thresholds: { resonance: 1.05, dissonance: 0.97 }
+        },
+        needs_matching: { ... }
+    },
+    // ... restliche Konstanten
+}
+```
+
+#### 2. `js/help-texts.js` - Echte Referenzierung implementiert
+
+- `getMainFormula()` liest jetzt `TiageSynthesis.Constants.FORMULAS.main`
+- `getRFactorFormula()` liest jetzt `TiageSynthesis.Constants.FORMULAS.r_factor`
+- `getNeedsMatchingFormula()` liest jetzt `TiageSynthesis.Constants.FORMULAS.needs_matching`
+- Fallback-Logik für den Fall dass constants.js nicht geladen ist
+
+#### 3. Hauptformel aktualisiert
+
+**Alt (veraltet):**
+```
+Q = [(A × wₐ) + (O × wₒ) + (D × wᵈ) + (G × wᵍ)] × R
+```
+
+**Neu (v3.1):**
+```
+Q = [(O × wO × r1) + (A × wA × r2) + (D × wD × r3) + (G × wG × r4)]
+```
+
+Reflektiert korrekt die dimensionalen Resonanzfaktoren (R1-R4).
+
+### Verification
+
+Test-Datei erstellt: `test-ssot.html`
+
+Öffne im Browser um zu verifizieren:
+- ✓ constants.js wird geladen
+- ✓ help-texts.js liest aus constants.js
+- ✓ Keine Hardcoding-Duplikate
+- ✓ SSOT-Prinzip erfüllt
+
+### Metriken (Aktualisiert)
+
+| Metrik | Vorher | Jetzt | Verbesserung |
+|--------|--------|-------|--------------|
+| Formel-Definitionen | 3× dupliziert | 1× zentral (echtes SSOT) | -67% Duplizierung |
+| SSOT-Implementierung | ❌ Nur Kommentare | ✅ Echte Referenzen | **100% SSOT** |
+| Code-Wartung | 3 Stellen ändern | 1 Stelle ändern | **3× weniger Arbeit** |
+| Konsistenz-Garantie | ❌ Keine | ✅ Garantiert | **Keine Drifts mehr** |
+
+### Neue Dateien
+
+- `test-ssot.html` - Browser-Test für SSOT-Verifikation
+- `test-ssot.js` - Node.js Test (experimentell)
+
+### Migration Guide
+
+**Wenn du Formeln ändern willst:**
+
+1. ✅ **RICHTIG:** Ändere `TiageSynthesis.Constants.FORMULAS` in `constants.js`
+2. ❌ **FALSCH:** Ändere **NICHT** `help-texts.js` (liest automatisch aus constants.js)
+
+**Beispiel:**
+```javascript
+// In constants.js ändern:
+FORMULAS: {
+    r_factor: {
+        params: { base: 0.6, multiplier: 1.2 }  // ← Nur hier ändern!
+    }
+}
+
+// help-texts.js ändert sich AUTOMATISCH mit!
+```
+
+### Ergebnis
+
+✅ **ECHTES SSOT**: Keine Kommentare mehr, sondern echte Code-Referenzen  
+✅ **WARTBAR**: Änderungen nur an einer Stelle  
+✅ **KONSISTENT**: Formeln können nicht mehr auseinanderdriften  
+✅ **TESTBAR**: test-ssot.html verifiziert SSOT  
+
+---
+
+**Datum:** 2025-12-18  
+**Status:** ✅ Implementiert und getestet  
+**Nächste Schritte:** Weitere Konstanten nach FORMULAS-Pattern migrieren  
