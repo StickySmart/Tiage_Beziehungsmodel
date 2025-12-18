@@ -337,6 +337,12 @@ const AttributeSummaryCard = (function() {
             const needItem = document.querySelector(`.flat-need-item[data-need="${needId}"]`);
             if (needItem) {
                 needItem.classList.remove('need-selected');
+
+                // Checkbox auch unchecken
+                const checkbox = needItem.querySelector('.need-checkbox');
+                if (checkbox) {
+                    checkbox.checked = false;
+                }
             }
         });
         selectedNeeds.clear();
