@@ -1715,7 +1715,9 @@ input.resonanz-input:focus {
 
 .multi-select-lock-btn,
 .multi-select-unlock-btn,
-.multi-select-clear-btn {
+.multi-select-clear-btn,
+.multi-select-reset-btn,
+.multi-select-ok-btn {
     padding: 4px 10px;
     font-size: 11px;
     background: rgba(255,255,255,0.08);
