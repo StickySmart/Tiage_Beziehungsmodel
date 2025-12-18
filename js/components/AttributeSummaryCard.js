@@ -364,6 +364,82 @@ const AttributeSummaryCard = (function() {
     }
 
     /**
+     * MULTI-SELECT: Wählt alle gefilterten (sichtbaren) Bedürfnisse aus oder ab
+     * Toggle-Logik: Wenn alle gefilterten bereits ausgewählt → alle abwählen, sonst alle auswählen
+     */
+    function selectAllFilteredNeeds() {
+        // Ermittle alle sichtbaren (nicht gefilterten) Bedürfnisse
+        const visibleNeeds = flatNeeds.filter(need => {
+            // Prüfe DimensionKategorieFilter
+            if (typeof DimensionKategorieFilter !== 'undefined' && !DimensionKategorieFilter.shouldShowNeed(need.id)) {
+                return false;
+            }
+            // Prüfe auch Suchfilter (dimension-filter-hidden Klasse)
+            const needItem = document.querySelector(`.flat-need-item[data-need="${need.id}"]`);
+            if (needItem && needItem.classList.contains('dimension-filter-hidden')) {
+                return false;
+            }
+            return true;
+        });
+
+        if (visibleNeeds.length === 0) {
+            return;
+        }
+
+        // Prüfe, ob alle sichtbaren bereits ausgewählt sind
+        const allSelected = visibleNeeds.every(need => selectedNeeds.has(need.id));
+
+        if (allSelected) {
+            // Alle abwählen (nur die sichtbaren)
+            visibleNeeds.forEach(need => {
+                if (selectedNeeds.has(need.id)) {
+                    selectedNeeds.delete(need.id);
+                    originalNeedValues.delete(need.id);
+
+                    const needItem = document.querySelector(`.flat-need-item[data-need="${need.id}"]`);
+                    if (needItem) {
+                        needItem.classList.remove('need-selected');
+                        const checkbox = needItem.querySelector('.need-checkbox');
+                        if (checkbox) {
+                            checkbox.checked = false;
+                        }
+                    }
+                }
+            });
+        } else {
+            // Alle sichtbaren auswählen
+            visibleNeeds.forEach(need => {
+                if (!selectedNeeds.has(need.id)) {
+                    selectedNeeds.add(need.id);
+                    // Speichere den aktuellen Wert als Original
+                    const needObj = findNeedById(need.id);
+                    if (needObj) {
+                        originalNeedValues.set(need.id, needObj.value);
+                    }
+
+                    const needItem = document.querySelector(`.flat-need-item[data-need="${need.id}"]`);
+                    if (needItem) {
+                        needItem.classList.add('need-selected');
+                        const checkbox = needItem.querySelector('.need-checkbox');
+                        if (checkbox) {
+                            checkbox.checked = true;
+                        }
+                    }
+                }
+            });
+        }
+
+        // Update control panel
+        updateMultiSelectControlPanel();
+
+        // Event
+        document.dispatchEvent(new CustomEvent('needSelectionChange', {
+            bubbles: true,
+            detail: { action: allSelected ? 'deselectAll' : 'selectAll', totalSelected: selectedNeeds.size }
+        }));
+    }
+
+    /**
      * MULTI-SELECT: Setzt alle ausgewählten Bedürfnisse auf ihre Original-Profil-Werte zurück
      * Lädt die Werte aus LoadedArchetypProfile oder Fallback auf statische umfrageWerte
      */
@@ -975,6 +1051,9 @@ const AttributeSummaryCard = (function() {
             <!-- MULTI-SELECT CONTROL PANEL (immer sichtbar) -->
             <div id="multi-select-control-panel" class="multi-select-control-panel" style="display: flex;">
                 <div class="multi-select-info">
+                    <button class="multi-select-toggle-all-btn" onclick="AttributeSummaryCard.selectAllFilteredNeeds();" title="Alle gefilterten auswählen/abwählen">
+                        ☑ Alle/Keine
+                    </button>
                     <span class="multi-select-count">0 ausgewählt</span>
                     <div class="multi-select-actions">
                         <button class="multi-select-lock-btn" onclick="AttributeSummaryCard.lockSelectedNeeds(true);" title="Ausgewählte sperren">
@@ -2063,6 +2142,7 @@ const AttributeSummaryCard = (function() {
         // NEU: Multi-Select Feature für Bedürfnisse
         toggleNeedSelection,
         clearNeedSelection,
+        selectAllFilteredNeeds,
         resetSelectedNeedsValues,
         updateSelectedNeedsValue,
         lockSelectedNeeds
