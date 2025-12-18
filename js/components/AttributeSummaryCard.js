@@ -364,31 +364,71 @@ const AttributeSummaryCard = (function() {
     }
 
     /**
-     * MULTI-SELECT: Setzt alle ausgewählten Bedürfnisse auf ihre ursprünglichen Werte zurück
+     * MULTI-SELECT: Setzt alle ausgewählten Bedürfnisse auf ihre Original-Profil-Werte zurück
+     * Lädt die Werte aus LoadedArchetypProfile oder Fallback auf statische kernbeduerfnisse
      */
     function resetSelectedNeedsValues() {
-        selectedNeeds.forEach(needId => {
-            const originalValue = originalNeedValues.get(needId);
-            if (originalValue !== undefined) {
-                const needObj = findNeedById(needId);
-                if (needObj && !needObj.locked) {
-                    // Setze den Wert auf den ursprünglichen Wert zurück
-                    upsertNeed(needId, { value: originalValue });
+        // Hole Original-Profil-Werte (gleiche Logik wie beim Initialisieren)
+        const profil = GfkBeduerfnisse.archetypProfile[currentFlatArchetyp];
+        if (!profil) {
+            console.warn('[AttributeSummaryCard] Kein Profil gefunden für Archetyp:', currentFlatArchetyp);
+            return;
+        }
 
-                    // Update UI
-                    const needItem = document.querySelector(`.flat-need-item[data-need="${needId}"]`);
-                    if (needItem) {
-                        const slider = needItem.querySelector('.need-slider');
-                        const input = needItem.querySelector('.flat-need-input');
-                        if (slider) slider.value = originalValue;
-                        if (input) input.value = originalValue;
-                    }
+        // Ermittle aktuelle Person aus Kontext
+        let currentPerson = 'ich';
+        if (typeof window !== 'undefined' && window.currentProfileReviewContext?.person) {
+            currentPerson = window.currentProfileReviewContext.person;
+        }
+
+        // Hole berechnete Werte aus LoadedArchetypProfile oder Fallback auf statische Werte
+        let kernbeduerfnisse = {};
+        const loadedProfile = (typeof window !== 'undefined' && window.LoadedArchetypProfile)
+            ? window.LoadedArchetypProfile[currentPerson]
+            : null;
+
+        if (loadedProfile?.profileReview?.flatNeeds) {
+            kernbeduerfnisse = loadedProfile.profileReview.flatNeeds;
+            console.log('[AttributeSummaryCard] Reset mit berechneten Werten aus LoadedArchetypProfile für', currentPerson);
+        } else {
+            kernbeduerfnisse = profil.kernbeduerfnisse || {};
+            console.log('[AttributeSummaryCard] Reset mit statischen kernbeduerfnisse für', currentPerson);
+        }
+
+        let resetCount = 0;
+        selectedNeeds.forEach(needId => {
+            const needObj = findNeedById(needId);
+
+            // WICHTIG: Gesperrte Bedürfnisse NICHT zurücksetzen
+            if (needObj?.locked) {
+                console.log(`[AttributeSummaryCard] ${needId} ist gesperrt - Reset übersprungen`);
+                return;
+            }
+
+            const originalValue = kernbeduerfnisse[needId];
+            if (originalValue !== undefined && needObj) {
+                // Setze den Wert auf den Original-Profil-Wert zurück
+                upsertNeed(needId, { value: originalValue });
+
+                // Update UI
+                const needItem = document.querySelector(`.flat-need-item[data-need="${needId}"]`);
+                if (needItem) {
+                    const slider = needItem.querySelector('.need-slider');
+                    const input = needItem.querySelector('.flat-need-input');
+                    if (slider) slider.value = originalValue;
+                    if (input) input.value = originalValue;
                 }
+
+                // Aktualisiere auch den gespeicherten Original-Wert
+                originalNeedValues.set(needId, originalValue);
+                resetCount++;
             }
         });
 
+        console.log(`[AttributeSummaryCard] ${resetCount} Bedürfnisse auf Original-Werte zurückgesetzt`);
+
         // Trigger event for resonance recalculation
-        if (selectedNeeds.size > 0) {
+        if (resetCount > 0) {
             document.dispatchEvent(new CustomEvent('flatNeedChange', { bubbles: true }));
         }
     }
