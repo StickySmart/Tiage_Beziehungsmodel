@@ -916,14 +916,7 @@ const AttributeSummaryCard = (function() {
             </div>
         </div>`;
 
-        // Collapsible Section für Faktor-Gewichtung (Sliders)
-        html += `
-        <div class="flat-needs-collapse-header" onclick="AttributeSummaryCard.toggleFlatNeedsCollapse()">
-            <span class="flat-needs-collapse-title">Faktor-Gewichtung</span>
-            <span class="flat-needs-collapse-icon">▼</span>
-        </div>`;
-
-        // Direkte flache Liste ohne Kategorien-Wrapper - jetzt in collapsible wrapper
+        // Direkte flache Liste ohne Kategorien-Wrapper
         html += `<div class="flat-needs-list-wrapper">
             <div class="flat-needs-list kategorie-mode">`;
         filteredNeeds.forEach(need => {
