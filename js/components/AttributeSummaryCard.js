@@ -387,13 +387,14 @@ const AttributeSummaryCard = (function() {
             ? window.LoadedArchetypProfile[currentPerson]
             : null;
 
-        if (loadedProfile?.profileReview?.flatNeeds) {
-            kernbeduerfnisse = loadedProfile.profileReview.flatNeeds;
-            console.log('[AttributeSummaryCard] Reset mit berechneten Werten aus LoadedArchetypProfile für', currentPerson);
-        } else {
-            kernbeduerfnisse = profil.kernbeduerfnisse || {};
-            console.log('[AttributeSummaryCard] Reset mit statischen kernbeduerfnisse für', currentPerson);
+        if (!loadedProfile?.profileReview?.flatNeeds) {
+            console.error('[AttributeSummaryCard] Keine Original-Werte gefunden in LoadedArchetypProfile für', currentPerson);
+            alert('Zurücksetzen nicht möglich: Keine Original-Profil-Werte gefunden. Bitte laden Sie zuerst ein Profil.');
+            return;
         }
+
+        kernbeduerfnisse = loadedProfile.profileReview.flatNeeds;
+        console.log('[AttributeSummaryCard] Reset mit berechneten Werten aus LoadedArchetypProfile für', currentPerson);
 
         let resetCount = 0;
         selectedNeeds.forEach(needId => {
