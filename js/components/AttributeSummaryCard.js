@@ -1920,6 +1920,14 @@ const AttributeSummaryCard = (function() {
                 summaryInput.value = calculateAggregatedValue(attrId);
             }
         }
+
+        // Custom Event für Änderungstracking (wie bei updateNeedValue)
+        // Ermöglicht Live-Sync mit TiageState während Slider-Drag
+        const event = new CustomEvent('attributeNeedChange', {
+            bubbles: true,
+            detail: { attrId, needId, value: numValue }
+        });
+        document.dispatchEvent(event);
     }
 
     /**
