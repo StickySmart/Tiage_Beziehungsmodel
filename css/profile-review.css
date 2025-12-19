@@ -1799,6 +1799,7 @@ input.resonanz-input:focus {
 }
 
 .multi-select-toggle-all-btn,
+.multi-select-toggle-changed-btn,
 .multi-select-lock-btn,
 .multi-select-unlock-btn,
 .multi-select-clear-btn,
@@ -1825,6 +1826,25 @@ input.resonanz-input:focus {
     background: rgba(59, 130, 246, 0.3);
     border-color: #3b82f6;
     color: #3b82f6;
+}
+
+.multi-select-toggle-changed-btn {
+    background: rgba(168, 85, 247, 0.15);
+    border-color: rgba(168, 85, 247, 0.4);
+    color: #c084fc;
+}
+
+.multi-select-toggle-changed-btn:hover {
+    background: rgba(168, 85, 247, 0.3);
+    border-color: #a855f7;
+    color: #a855f7;
+}
+
+.multi-select-toggle-changed-btn.active {
+    background: rgba(168, 85, 247, 0.4);
+    border-color: #a855f7;
+    color: #fff;
+    box-shadow: 0 0 8px rgba(168, 85, 247, 0.5);
 }
 
 .multi-select-lock-btn:hover {
