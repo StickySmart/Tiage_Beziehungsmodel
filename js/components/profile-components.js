@@ -82,18 +82,23 @@ const ProfileReviewRenderer = (function() {
      * @returns {string} HTML-String
      */
     function renderModalBody(archetyp, archetypLabel) {
+        console.log('[DEBUG-PC] renderModalBody START');
         // Gewichtungs-Sektion
         const gewichtungHtml = renderGewichtungSection();
+        console.log('[DEBUG-PC] gewichtungHtml done, length:', gewichtungHtml?.length);
 
         // Resonanz-Sektion wurde in den Header von "Alle Bedürfnisse" verschoben
         // und wird in AttributeSummaryCard.renderAllNeedsFlat() gerendert
 
         // Bedürfnis-Darstellung (enthält jetzt Resonanz-Anzeige im Header)
         let needsHtml = '';
+        console.log('[DEBUG-PC] before renderAllNeedsFlat');
         if (typeof AttributeSummaryCard !== 'undefined' && AttributeSummaryCard.renderAllNeedsFlat) {
             needsHtml = AttributeSummaryCard.renderAllNeedsFlat(archetyp, archetypLabel);
         }
+        console.log('[DEBUG-PC] needsHtml done, length:', needsHtml?.length);
 
+        console.log('[DEBUG-PC] renderModalBody returning');
         return gewichtungHtml + '\n' + needsHtml;
     }
 
