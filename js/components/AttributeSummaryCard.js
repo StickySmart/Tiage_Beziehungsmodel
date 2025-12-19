@@ -364,25 +364,93 @@ const AttributeSummaryCard = (function() {
     }
 
     /**
-     * MULTI-SELECT: Setzt alle ausgewählten Bedürfnisse auf ihre Original-Profil-Werte zurück
-     * Lädt die Werte aus LoadedArchetypProfile oder Fallback auf statische umfrageWerte
+     * MULTI-SELECT: Wählt alle gefilterten (sichtbaren) Bedürfnisse aus oder ab
+     * Toggle-Logik: Wenn alle gefilterten bereits ausgewählt → alle abwählen, sonst alle auswählen
      */
-    function resetSelectedNeedsValues() {
-        // Hole Original-Profil-Werte (gleiche Logik wie beim Initialisieren)
-        const profil = GfkBeduerfnisse.archetypProfile[currentFlatArchetyp];
-        if (!profil) {
-            console.warn('[AttributeSummaryCard] Kein Profil gefunden für Archetyp:', currentFlatArchetyp);
+    function selectAllFilteredNeeds() {
+        // Ermittle alle sichtbaren (nicht gefilterten) Bedürfnisse
+        const visibleNeeds = flatNeeds.filter(need => {
+            // Prüfe DimensionKategorieFilter
+            if (typeof DimensionKategorieFilter !== 'undefined' && !DimensionKategorieFilter.shouldShowNeed(need.id)) {
+                return false;
+            }
+            // Prüfe auch Suchfilter (dimension-filter-hidden Klasse)
+            const needItem = document.querySelector(`.flat-need-item[data-need="${need.id}"]`);
+            if (needItem && needItem.classList.contains('dimension-filter-hidden')) {
+                return false;
+            }
+            return true;
+        });
+
+        if (visibleNeeds.length === 0) {
             return;
         }
 
+        // Prüfe, ob alle sichtbaren bereits ausgewählt sind
+        const allSelected = visibleNeeds.every(need => selectedNeeds.has(need.id));
+
+        if (allSelected) {
+            // Alle abwählen (nur die sichtbaren)
+            visibleNeeds.forEach(need => {
+                if (selectedNeeds.has(need.id)) {
+                    selectedNeeds.delete(need.id);
+                    originalNeedValues.delete(need.id);
+
+                    const needItem = document.querySelector(`.flat-need-item[data-need="${need.id}"]`);
+                    if (needItem) {
+                        needItem.classList.remove('need-selected');
+                        const checkbox = needItem.querySelector('.need-checkbox');
+                        if (checkbox) {
+                            checkbox.checked = false;
+                        }
+                    }
+                }
+            });
+        } else {
+            // Alle sichtbaren auswählen
+            visibleNeeds.forEach(need => {
+                if (!selectedNeeds.has(need.id)) {
+                    selectedNeeds.add(need.id);
+                    // Speichere den aktuellen Wert als Original
+                    const needObj = findNeedById(need.id);
+                    if (needObj) {
+                        originalNeedValues.set(need.id, needObj.value);
+                    }
+
+                    const needItem = document.querySelector(`.flat-need-item[data-need="${need.id}"]`);
+                    if (needItem) {
+                        needItem.classList.add('need-selected');
+                        const checkbox = needItem.querySelector('.need-checkbox');
+                        if (checkbox) {
+                            checkbox.checked = true;
+                        }
+                    }
+                }
+            });
+        }
+
+        // Update control panel
+        updateMultiSelectControlPanel();
+
+        // Event
+        document.dispatchEvent(new CustomEvent('needSelectionChange', {
+            bubbles: true,
+            detail: { action: allSelected ? 'deselectAll' : 'selectAll', totalSelected: selectedNeeds.size }
+        }));
+    }
+
+    /**
+     * MULTI-SELECT: Setzt alle ausgewählten Bedürfnisse auf ihre Original-Profil-Werte zurück
+     * Lädt die Werte aus LoadedArchetypProfile (SSOT) - kein Fallback
+     */
+    function resetSelectedNeedsValues() {
         // Ermittle aktuelle Person aus Kontext
         let currentPerson = 'ich';
         if (typeof window !== 'undefined' && window.currentProfileReviewContext?.person) {
             currentPerson = window.currentProfileReviewContext.person;
         }
 
-        // Hole berechnete Werte aus LoadedArchetypProfile oder Fallback auf statische Werte
-        let umfrageWerte = {};
+        // Hole berechnete Werte aus LoadedArchetypProfile (SSOT)
         const loadedProfile = (typeof window !== 'undefined' && window.LoadedArchetypProfile)
             ? window.LoadedArchetypProfile[currentPerson]
             : null;
@@ -393,7 +461,7 @@ const AttributeSummaryCard = (function() {
             return;
         }
 
-        umfrageWerte = loadedProfile.profileReview.flatNeeds;
+        const umfrageWerte = loadedProfile.profileReview.flatNeeds;
         console.log('[AttributeSummaryCard] Reset mit berechneten Werten aus LoadedArchetypProfile für', currentPerson);
 
         let resetCount = 0;
@@ -490,14 +558,11 @@ const AttributeSummaryCard = (function() {
         if (!panel) return;
 
         const count = selectedNeeds.size;
-        if (count === 0) {
-            panel.style.display = 'none';
-        } else {
-            panel.style.display = 'flex';
-            const countLabel = panel.querySelector('.multi-select-count');
-            if (countLabel) {
-                countLabel.textContent = `${count} ausgewählt`;
-            }
+        // Panel bleibt immer sichtbar
+        panel.style.display = 'flex';
+        const countLabel = panel.querySelector('.multi-select-count');
+        if (countLabel) {
+            countLabel.textContent = `${count} ausgewählt`;
         }
     }
 
@@ -907,26 +972,35 @@ const AttributeSummaryCard = (function() {
             console.log('[AttributeSummaryCard] Fallback auf statische umfrageWerte für', currentPerson);
         }
 
-        // Initialisiere Werte aus Profil (neue Array-Struktur)
-        Object.keys(umfrageWerte).forEach(needId => {
+        // ═══════════════════════════════════════════════════════════════════════════
+        // SSOT: Initialisiere ALLE 219 Bedürfnisse aus BeduerfnisIds (Single Source of Truth)
+        // BeduerfnisIds ist die einzige Quelle für die Bedürfnis-Definition
+        // Werte kommen aus LoadedArchetypProfile (SSOT für berechnete Werte)
+        // ═══════════════════════════════════════════════════════════════════════════
+        if (typeof BeduerfnisIds === 'undefined' || !BeduerfnisIds.beduerfnisse) {
+            console.error('[AttributeSummaryCard] SSOT FEHLER: BeduerfnisIds nicht verfügbar! Kann keine Bedürfnisse laden.');
+            return '<p style="color: var(--error-color);">Fehler: BeduerfnisIds nicht geladen. Bitte Seite neu laden.</p>';
+        }
+
+        Object.keys(BeduerfnisIds.beduerfnisse).forEach(needId => {
             const existing = findNeedById(needId);
             if (!existing) {
-                // Erstelle vollständiges Bedürfnis-Objekt
                 const numKey = parseInt(needId.replace('#B', ''), 10) || 0;
-                let stringKey = '';
-                if (typeof BeduerfnisIds !== 'undefined' && BeduerfnisIds.toKey) {
-                    stringKey = BeduerfnisIds.toKey(needId) || '';
-                }
+                const needData = BeduerfnisIds.beduerfnisse[needId];
+                const stringKey = needData?.key || '';
+                // Wert aus SSOT (umfrageWerte = LoadedArchetypProfile.flatNeeds)
+                const value = umfrageWerte[needId];
                 flatNeeds.push({
                     id: needId,
                     key: numKey,
                     stringKey: stringKey,
-                    label: getNeedLabel(needId).replace(/^#B\d+\s*/, ''),
-                    value: umfrageWerte[needId],
+                    label: needData?.label || getNeedLabel(needId).replace(/^#B\d+\s*/, ''),
+                    value: value, // undefined wenn nicht in SSOT vorhanden
                     locked: false
                 });
             }
         });
+        console.log('[AttributeSummaryCard] Alle', flatNeeds.length, 'Bedürfnisse aus BeduerfnisIds geladen');
 
         // Sammle ALLE Bedürfnisse - nutze direkt flatNeeds Array
         let allNeeds = flatNeeds.map(need => ({
@@ -975,9 +1049,12 @@ const AttributeSummaryCard = (function() {
                 </button>
             </div>
 
-            <!-- MULTI-SELECT CONTROL PANEL -->
-            <div id="multi-select-control-panel" class="multi-select-control-panel" style="display: none;">
+            <!-- MULTI-SELECT CONTROL PANEL (immer sichtbar) -->
+            <div id="multi-select-control-panel" class="multi-select-control-panel" style="display: flex;">
                 <div class="multi-select-info">
+                    <button class="multi-select-toggle-all-btn" onclick="AttributeSummaryCard.selectAllFilteredNeeds();" title="Alle gefilterten auswählen/abwählen">
+                        ☑ Alle/Keine
+                    </button>
                     <span class="multi-select-count">0 ausgewählt</span>
                     <div class="multi-select-actions">
                         <button class="multi-select-lock-btn" onclick="AttributeSummaryCard.lockSelectedNeeds(true);" title="Ausgewählte sperren">
@@ -2066,6 +2143,7 @@ const AttributeSummaryCard = (function() {
         // NEU: Multi-Select Feature für Bedürfnisse
         toggleNeedSelection,
         clearNeedSelection,
+        selectAllFilteredNeeds,
         resetSelectedNeedsValues,
         updateSelectedNeedsValue,
         lockSelectedNeeds
