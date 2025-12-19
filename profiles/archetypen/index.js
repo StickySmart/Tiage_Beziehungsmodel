@@ -19,7 +19,7 @@
  * }
  *
  * Berechnung:
- * - flatNeeds = BaseArchetypProfile[archetyp].beduerfnisse (Umfragewerte) + ProfileModifiers.calculateProfileDeltas()
+ * - flatNeeds = BaseArchetypProfile[archetyp].umfrageWerte + ProfileModifiers.calculateProfileDeltas()
  * - gewichtungen = Defaults { O: 25, A: 25, D: 25, G: 25 } oder aus Storage
  * - resonanzFaktoren = TiageSynthesis.NeedsIntegration.calculateDimensionalResonance()
  */
@@ -294,13 +294,13 @@
     function calculateFlatNeeds(archetyp, geschlecht, dominanz, orientierung) {
         // 1. Basis-Bedürfnisse holen
         const baseProfil = window.BaseArchetypProfile[archetyp];
-        if (!baseProfil || !baseProfil.beduerfnisse) {
+        if (!baseProfil || !baseProfil.umfrageWerte) {
             console.warn('[ProfileCalculator] Basis-Profil nicht gefunden:', archetyp);
             return {};
         }
 
-        // Kopie der Basis-Bedürfnisse
-        const flatNeeds = { ...baseProfil.beduerfnisse };
+        // Kopie der Umfragewerte
+        const flatNeeds = { ...baseProfil.umfrageWerte };
 
         // 2. Modifier berechnen und anwenden
         if (window.ProfileModifiers) {

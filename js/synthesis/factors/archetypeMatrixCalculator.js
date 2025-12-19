@@ -114,7 +114,7 @@ TiageSynthesis.ArchetypeMatrixCalculator = (function() {
             var archetype1 = archetypes[i];
             var profile1 = window.BaseArchetypProfile[archetype1];
 
-            if (!profile1 || !profile1.beduerfnisse) {
+            if (!profile1 || !profile1.umfrageWerte) {
                 console.warn('[ArchetypeMatrixCalculator] Profil nicht gefunden:', archetype1);
                 continue;
             }
@@ -125,13 +125,13 @@ TiageSynthesis.ArchetypeMatrixCalculator = (function() {
                 var archetype2 = archetypes[j];
                 var profile2 = window.BaseArchetypProfile[archetype2];
 
-                if (!profile2 || !profile2.beduerfnisse) {
+                if (!profile2 || !profile2.umfrageWerte) {
                     console.warn('[ArchetypeMatrixCalculator] Profil nicht gefunden:', archetype2);
                     continue;
                 }
 
                 // Berechne Kompatibilität zwischen den beiden Profilen
-                var score = calculateArchetypeMatch(profile1.beduerfnisse, profile2.beduerfnisse);
+                var score = calculateArchetypeMatch(profile1.umfrageWerte, profile2.umfrageWerte);
                 matrix[archetype1][archetype2] = score;
 
                 console.log('[ArchetypeMatrixCalculator] ' + archetype1 + ' + ' + archetype2 + ' = ' + score);
