@@ -1087,29 +1087,6 @@ const AttributeSummaryCard = (function() {
             <!-- DIMENSION-KATEGORIE-FILTER -->
             <div id="flat-needs-dimension-filter"></div>
 
-            <!-- SEARCH CONTAINER (moved from external to internal) -->
-            <div class="profile-review-search-container-internal">
-                <div class="profile-review-search-wrapper">
-                    <span class="profile-review-search-icon">🔍</span>
-                    <input type="text"
-                           id="profileReviewSearchInput"
-                           class="profile-review-search-input"
-                           placeholder="Such..."
-                           oninput="handleIntelligentSearch(this.value)"
-                           onkeydown="handleSearchKeydown(event)"
-                           onfocus="showSearchSuggestions()"
-                           autocomplete="off">
-                    <button class="profile-review-search-clear"
-                            onclick="clearProfileReviewSearch()"
-                            title="Suche leeren">×</button>
-                    <!-- Intelligent Suggestions Dropdown -->
-                    <div id="searchSuggestionsDropdown" class="search-suggestions-dropdown" style="display: none;">
-                        <div class="search-suggestions-content"></div>
-                    </div>
-                </div>
-                <div class="profile-review-search-hint" id="profileReviewSearchHint"></div>
-            </div>
-
             <div class="flat-needs-sort-bar">
                 <span class="flat-needs-sort-label">Sortieren:</span>
                 <button class="flat-needs-sort-btn${currentFlatSortMode === 'value' ? ' active' : ''}" onclick="AttributeSummaryCard.setSortMode('value')">Wert</button>
@@ -1174,19 +1151,6 @@ const AttributeSummaryCard = (function() {
 
             // Re-initialisiere Filter
             initDimensionFilter();
-
-            // Verstecke externe Suche (da wir interne Suche haben)
-            hideExternalSearch();
-        }
-    }
-
-    /**
-     * Versteckt die externe Suche, da die Suche jetzt intern im flat-needs-header ist
-     */
-    function hideExternalSearch() {
-        const externalSearch = document.querySelector('.profile-review-search-container');
-        if (externalSearch) {
-            externalSearch.style.display = 'none';
         }
     }
 
@@ -1213,9 +1177,6 @@ const AttributeSummaryCard = (function() {
 
             // Initialisiere Tree-View nach DOM-Insertion
             DimensionKategorieFilter.initTreeView();
-
-            // Verstecke externe Suche (da wir interne Suche haben)
-            hideExternalSearch();
 
             console.log('[AttributeSummaryCard] DimensionKategorieFilter initialisiert');
         }, 100);
