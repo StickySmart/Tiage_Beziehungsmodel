@@ -1061,7 +1061,10 @@ const AttributeSummaryCard = (function() {
                     🔄 Standard
                 </button>
             </div>
+        </div>
 
+        <!-- STICKY CONTROLS CONTAINER -->
+        <div class="flat-needs-sticky-controls">
             <!-- MULTI-SELECT CONTROL PANEL (immer sichtbar) -->
             <div id="multi-select-control-panel" class="multi-select-control-panel" style="display: flex;">
                 <div class="multi-select-info">
@@ -1111,7 +1114,7 @@ const AttributeSummaryCard = (function() {
                 <button class="flat-needs-sort-btn${currentFlatSortMode === 'status' ? ' active' : ''}" onclick="AttributeSummaryCard.setSortMode('status')">Status</button>
                 <button class="flat-needs-sort-btn${currentFlatSortMode === 'changed' ? ' active' : ''}" onclick="AttributeSummaryCard.setSortMode('changed')">Geändert</button>
             </div>
-        </div>`;
+        </div>`; // Ende sticky-controls
 
         // Direkte flache Liste ohne Kategorien-Wrapper
         html += `<div class="flat-needs-list-wrapper">
