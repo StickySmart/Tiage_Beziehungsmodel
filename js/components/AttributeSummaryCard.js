@@ -1572,6 +1572,9 @@ const AttributeSummaryCard = (function() {
      * Setzt alle flachen Bedürfniswerte zurück auf Profil-Werte
      * WICHTIG: Respektiert gesperrte Werte - nur ungesperrte Werte werden zurückgesetzt!
      * Löscht die Auswahl (setzt auf 0)
+     *
+     * Verwendet LoadedArchetypProfile (Basis + Modifikatoren) als SSOT,
+     * damit die "Geändert"-Kennzeichnung korrekt funktioniert.
      */
     function resetFlatNeeds() {
         // Ermittle aktuelle Person aus Kontext
@@ -1580,23 +1583,18 @@ const AttributeSummaryCard = (function() {
             currentPerson = window.currentProfileReviewContext.person;
         }
 
-        // WICHTIG: Verwende LoadedArchetypProfile (berechnete Werte mit Modifiers)
-        // NICHT GfkBeduerfnisse.archetypProfile (Base-Werte ohne Modifiers)
-        // Damit stimmt der Reset-Wert mit dem Vergleichswert in isValueChanged() überein
-        const loadedProfile = (typeof window !== 'undefined' && window.LoadedArchetypProfile)
-            ? window.LoadedArchetypProfile[currentPerson]
-            : null;
+        // LoadedArchetypProfile ist die einzige Quelle (SSOT)
+        const loadedProfile = window?.LoadedArchetypProfile?.[currentPerson];
 
         if (!loadedProfile?.profileReview?.flatNeeds) {
-            console.warn('[AttributeSummaryCard] Keine berechneten Werte in LoadedArchetypProfile für', currentPerson);
-            // Fallback auf alte Logik nur wenn LoadedArchetypProfile nicht verfügbar
-            if (!currentFlatArchetyp || typeof GfkBeduerfnisse === 'undefined') return;
-            console.log('[AttributeSummaryCard] Fallback auf GfkBeduerfnisse Base-Werte');
+            const errorMsg = 'Reset nicht möglich: Profil-Werte nicht geladen. Bitte laden Sie zuerst ein Profil.';
+            console.error('[AttributeSummaryCard]', errorMsg);
+            alert(errorMsg);
+            return;
         }
 
-        const umfrageWerte = loadedProfile?.profileReview?.flatNeeds
-            || GfkBeduerfnisse?.archetypProfile?.[currentFlatArchetyp]?.umfrageWerte
-            || {};
+        const umfrageWerte = loadedProfile.profileReview.flatNeeds;
+        console.log('[AttributeSummaryCard] Reset mit berechneten Werten (Basis + Modifikatoren) für', currentPerson);
 
         // Multi-Select Auswahl löschen (auf 0 setzen)
         clearNeedSelection();

@@ -19353,6 +19353,26 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
         }
 
         /**
+         * Check if text matches all comma-separated criteria (AND logic)
+         * @param {string} searchableText - Text to search in
+         * @param {string} query - Comma-separated search criteria
+         * @returns {boolean} True if ALL criteria match
+         */
+        function matchesAllCriteria(searchableText, query) {
+            var criteria = query.split(',').map(function(c) { return c.trim(); }).filter(function(c) { return c.length > 0; });
+
+            if (criteria.length === 0) return false;
+
+            for (var i = 0; i < criteria.length; i++) {
+                var pattern = needWildcardToRegex(criteria[i]);
+                if (!pattern.test(searchableText)) {
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        /**
          * Filter profile review modal by need name
          * @param {string} query - Search query (supports * wildcard)
          */
@@ -19384,7 +19404,6 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
                 return;
             }
 
-            var searchPattern = needWildcardToRegex(query.trim());
             var totalMatches = 0;
             var matchedAttributes = 0;
 
@@ -19407,77 +19426,43 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
                     var labelText = needLabel.textContent || '';
                     var needId = needItem.getAttribute('data-need') || '';
 
-                    // Check if need matches the search pattern (label or ID)
-                    var matches = searchPattern.test(labelText) || searchPattern.test(needId);
+                    // Collect all searchable text for this need
+                    var searchableTexts = [labelText, needId];
 
-                    // Also check category, dimension, perspective names and need description
-                    if (!matches && typeof GfkBeduerfnisse !== 'undefined') {
-                        // Use getDefinition() which supports both #B-IDs and String-Keys
+                    if (typeof GfkBeduerfnisse !== 'undefined') {
                         var needDef = GfkBeduerfnisse.getDefinition
                             ? GfkBeduerfnisse.getDefinition(needId)
                             : GfkBeduerfnisse.definitionen[needId];
                         if (needDef) {
-                            // Check need description (#B)
-                            if (needDef.description && searchPattern.test(needDef.description)) {
-                                matches = true;
-                            }
-
-                            // Check category name (#K)
+                            if (needDef.description) searchableTexts.push(needDef.description);
                             var kategorie = needDef.kategorie || '';
-                            if (!matches && kategorie && searchPattern.test(kategorie)) {
-                                matches = true;
-                            }
+                            if (kategorie) searchableTexts.push(kategorie);
 
-                            // Check category label from taxonomy
-                            if (!matches && typeof TiageTaxonomie !== 'undefined') {
-                                var katData = TiageTaxonomie.kategorien && TiageTaxonomie.getKategorie
+                            if (typeof TiageTaxonomie !== 'undefined') {
+                                var katData = TiageTaxonomie.getKategorie
                                     ? TiageTaxonomie.getKategorie(kategorie)
                                     : null;
                                 if (katData) {
-                                    if (katData.label && searchPattern.test(katData.label)) {
-                                        matches = true;
-                                    }
-                                    if (!matches && katData.beschreibung && searchPattern.test(katData.beschreibung)) {
-                                        matches = true;
-                                    }
-                                    // Check dimension (#D)
-                                    if (!matches && katData.dimension) {
+                                    if (katData.label) searchableTexts.push(katData.label);
+                                    if (katData.beschreibung) searchableTexts.push(katData.beschreibung);
+                                    if (katData.id) searchableTexts.push(katData.id);
+                                    if (katData.dimension) {
                                         var dimData = TiageTaxonomie.getDimension
                                             ? TiageTaxonomie.getDimension(katData.dimension)
                                             : null;
                                         if (dimData) {
-                                            if (dimData.label && searchPattern.test(dimData.label)) {
-                                                matches = true;
-                                            }
-                                            if (!matches && dimData.beschreibung && searchPattern.test(dimData.beschreibung)) {
-                                                matches = true;
-                                            }
-                                        }
-                                    }
-                                }
-
-                                // Check all perspectives (#P)
-                                if (!matches && TiageTaxonomie.perspektiven) {
-                                    var perspektiven = Object.values(TiageTaxonomie.perspektiven);
-                                    for (var p = 0; p < perspektiven.length; p++) {
-                                        var perspektive = perspektiven[p];
-                                        if (perspektive.label && searchPattern.test(perspektive.label)) {
-                                            matches = true;
-                                            break;
-                                        }
-                                        if (perspektive.beschreibung && searchPattern.test(perspektive.beschreibung)) {
-                                            matches = true;
-                                            break;
-                                        }
-                                        if (perspektive.quelle && searchPattern.test(perspektive.quelle)) {
-                                            matches = true;
-                                            break;
+                                            if (dimData.label) searchableTexts.push(dimData.label);
+                                            if (dimData.beschreibung) searchableTexts.push(dimData.beschreibung);
+                                            if (dimData.id) searchableTexts.push(dimData.id);
                                         }
                                     }
                                 }
                             }
                         }
                     }
+
+                    // Check if ALL comma-separated criteria match (AND logic)
+                    var matches = matchesAllCriteria(searchableTexts.join(' '), query.trim());
 
                     // Toggle visibility and match class for flat view
                     needItem.classList.toggle('filter-hidden', !matches);
@@ -19510,77 +19495,43 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
                         var labelText = needLabel.textContent || '';
                         var needId = needItem.getAttribute('data-need') || '';
 
-                        // Check if need matches the search pattern (label or ID)
-                        var matches = searchPattern.test(labelText) || searchPattern.test(needId);
+                        // Collect all searchable text for this need
+                        var searchableTexts = [labelText, needId];
 
-                        // Also check category, dimension, perspective names and need description
-                        if (!matches && typeof GfkBeduerfnisse !== 'undefined') {
-                            // Use getDefinition() which supports both #B-IDs and String-Keys
+                        if (typeof GfkBeduerfnisse !== 'undefined') {
                             var needDef = GfkBeduerfnisse.getDefinition
                                 ? GfkBeduerfnisse.getDefinition(needId)
                                 : GfkBeduerfnisse.definitionen[needId];
                             if (needDef) {
-                                // Check need description (#B)
-                                if (needDef.description && searchPattern.test(needDef.description)) {
-                                    matches = true;
-                                }
-
-                                // Check category name (#K)
+                                if (needDef.description) searchableTexts.push(needDef.description);
                                 var kategorie = needDef.kategorie || '';
-                                if (!matches && kategorie && searchPattern.test(kategorie)) {
-                                    matches = true;
-                                }
+                                if (kategorie) searchableTexts.push(kategorie);
 
-                                // Check category label from taxonomy
-                                if (!matches && typeof TiageTaxonomie !== 'undefined') {
-                                    var katData = TiageTaxonomie.kategorien && TiageTaxonomie.getKategorie
+                                if (typeof TiageTaxonomie !== 'undefined') {
+                                    var katData = TiageTaxonomie.getKategorie
                                         ? TiageTaxonomie.getKategorie(kategorie)
                                         : null;
                                     if (katData) {
-                                        if (katData.label && searchPattern.test(katData.label)) {
-                                            matches = true;
-                                        }
-                                        if (!matches && katData.beschreibung && searchPattern.test(katData.beschreibung)) {
-                                            matches = true;
-                                        }
-                                        // Check dimension (#D)
-                                        if (!matches && katData.dimension) {
+                                        if (katData.label) searchableTexts.push(katData.label);
+                                        if (katData.beschreibung) searchableTexts.push(katData.beschreibung);
+                                        if (katData.id) searchableTexts.push(katData.id);
+                                        if (katData.dimension) {
                                             var dimData = TiageTaxonomie.getDimension
                                                 ? TiageTaxonomie.getDimension(katData.dimension)
                                                 : null;
                                             if (dimData) {
-                                                if (dimData.label && searchPattern.test(dimData.label)) {
-                                                    matches = true;
-                                                }
-                                                if (!matches && dimData.beschreibung && searchPattern.test(dimData.beschreibung)) {
-                                                    matches = true;
-                                                }
-                                            }
-                                        }
-                                    }
-
-                                    // Check all perspectives (#P)
-                                    if (!matches && TiageTaxonomie.perspektiven) {
-                                        var perspektiven = Object.values(TiageTaxonomie.perspektiven);
-                                        for (var p = 0; p < perspektiven.length; p++) {
-                                            var perspektive = perspektiven[p];
-                                            if (perspektive.label && searchPattern.test(perspektive.label)) {
-                                                matches = true;
-                                                break;
-                                            }
-                                            if (perspektive.beschreibung && searchPattern.test(perspektive.beschreibung)) {
-                                                matches = true;
-                                                break;
-                                            }
-                                            if (perspektive.quelle && searchPattern.test(perspektive.quelle)) {
-                                                matches = true;
-                                                break;
+                                                if (dimData.label) searchableTexts.push(dimData.label);
+                                                if (dimData.beschreibung) searchableTexts.push(dimData.beschreibung);
+                                                if (dimData.id) searchableTexts.push(dimData.id);
                                             }
                                         }
                                     }
                                 }
                             }
                         }
+
+                        // Check if ALL comma-separated criteria match (AND logic)
+                        var matches = matchesAllCriteria(searchableTexts.join(' '), query.trim());
 
                         // Toggle match class
                         needItem.classList.toggle('filter-match', matches);
@@ -19765,12 +19716,17 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
 
         /**
          * Generate search suggestions based on query
+         * For comma-separated queries, only suggest for the last criterion
          */
         function generateSearchSuggestions(query) {
             var suggestions = [];
-            var lowerQuery = query.toLowerCase().trim();
 
-            // If query is empty, show all items for browsing
+            // For comma-separated queries, only use the last criterion for suggestions
+            var parts = query.split(',');
+            var lastPart = parts[parts.length - 1].trim();
+            var lowerQuery = lastPart.toLowerCase();
+
+            // If last part is empty, show all items for browsing
             if (!lowerQuery) {
                 // Show all categories (18 total)
                 if (window.TiageTaxonomie && window.TiageTaxonomie.kategorien) {
@@ -20201,10 +20157,16 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
             }
 
             if (input) {
-                input.value = suggestion.label;
+                // Preserve previous criteria (before last comma) and replace last part
+                var currentValue = input.value;
+                var parts = currentValue.split(',');
+                parts[parts.length - 1] = suggestion.label;
+                var newValue = parts.join(',');
+
+                input.value = newValue;
                 // Rufe nur filterProfileReviewByNeed auf, nicht handleIntelligentSearch
                 // um das erneute Öffnen des Dropdowns zu vermeiden
-                filterProfileReviewByNeed(suggestion.label);
+                filterProfileReviewByNeed(newValue);
             }
 
             hideSearchSuggestions();
