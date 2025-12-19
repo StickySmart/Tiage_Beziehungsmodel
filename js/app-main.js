@@ -18930,9 +18930,11 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
                     archetypLabel = archDef.name;
                 }
                 ProfileReviewRenderer.initializeFlatModal(archetypeKey || 'duo', archetypLabel);
+                console.log('[DEBUG] Step 0a: initializeFlatModal done');
             } else {
                 console.log('[TIAGE] ProfileReviewRenderer NOT defined!');
             }
+            console.log('[DEBUG] Step 0b: before loadGewichtungenIntoUI');
 
             // Lade Gewichtungen in UI
             loadGewichtungenIntoUI();
