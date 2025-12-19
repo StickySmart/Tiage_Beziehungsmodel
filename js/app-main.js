@@ -18873,46 +18873,36 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
             currentProfileReviewContext.person = person || 'ich';
 
             // ════════════════════════════════════════════════════════════════════════
-            // NEU (v1.8.89): Lade gespeicherte Bedürfnisse mit integrierter Struktur
-            // Format: { needId: { value, locked } }
-            // Mit Migration für alte Daten (getrennte values + locks)
+            // FIX: Lade Bedürfnisse aus TiageState (SSOT) statt localStorage
+            // TiageState.flatNeeds.{person} enthält die berechneten Werte
             // ════════════════════════════════════════════════════════════════════════
             if (typeof AttributeSummaryCard !== 'undefined') {
                 try {
-                    // Versuche zuerst neue integrierte Struktur zu laden
-                    var storedFlatNeeds = localStorage.getItem('tiage_flat_needs');
+                    var loadedFromTiageState = false;
 
-                    if (storedFlatNeeds) {
-                        // Neue Struktur (v1.8.89+): { needId: { value, locked } }
-                        var parsedNeeds = JSON.parse(storedFlatNeeds);
-                        if (AttributeSummaryCard.setFlatNeeds) {
-                            AttributeSummaryCard.setFlatNeeds(parsedNeeds);
-                            console.log('[ProfileReview] Bedürfnisse geladen (neue Struktur):', Object.keys(parsedNeeds).length, 'Einträge');
+                    // PRIMÄR: Lade aus TiageState (Single Source of Truth)
+                    if (typeof TiageState !== 'undefined') {
+                        var tiageStateFlatNeeds = TiageState.get('flatNeeds.' + person);
+                        if (tiageStateFlatNeeds && Object.keys(tiageStateFlatNeeds).length > 0) {
+                            if (AttributeSummaryCard.setFlatNeeds) {
+                                AttributeSummaryCard.setFlatNeeds(tiageStateFlatNeeds);
+                                console.log('[ProfileReview] Bedürfnisse aus TiageState geladen für', person, ':', Object.keys(tiageStateFlatNeeds).length, 'Einträge');
+                                loadedFromTiageState = true;
+                            }
+                        } else {
+                            console.log('[ProfileReview] TiageState.flatNeeds.' + person + ' ist leer, versuche localStorage Fallback');
                         }
-                    } else {
-                        // Migration: Lade alte getrennte Struktur falls vorhanden
-                        var storedNeedsValues = localStorage.getItem('tiage_flat_needs_values');
-                        var storedNeedsLocks = localStorage.getItem('tiage_flat_needs_locks');
+                    }
 
-                        if (storedNeedsValues) {
-                            var parsedValues = JSON.parse(storedNeedsValues);
-                            AttributeSummaryCard.setFlatNeedsValues(parsedValues);
-                            console.log('[ProfileReview] Bedürfniswerte migriert (Legacy):', Object.keys(parsedValues).length, 'Werte');
-                        }
-
-                        if (storedNeedsLocks) {
-                            var parsedLocks = JSON.parse(storedNeedsLocks);
-                            AttributeSummaryCard.setFlatLockedNeeds(parsedLocks);
-                            console.log('[ProfileReview] Locks migriert (Legacy):', Object.keys(parsedLocks).length, 'Locks');
-                        }
-
-                        // Nach Migration: Alte Keys entfernen und neue speichern
-                        if (storedNeedsValues && AttributeSummaryCard.getFlatNeeds) {
-                            var migratedNeeds = AttributeSummaryCard.getFlatNeeds();
-                            localStorage.setItem('tiage_flat_needs', JSON.stringify(migratedNeeds));
-                            localStorage.removeItem('tiage_flat_needs_values');
-                            localStorage.removeItem('tiage_flat_needs_locks');
-                            console.log('[ProfileReview] Migration abgeschlossen - alte Keys entfernt');
+                    // FALLBACK: localStorage nur wenn TiageState leer
+                    if (!loadedFromTiageState) {
+                        var storedFlatNeeds = localStorage.getItem('tiage_flat_needs');
+                        if (storedFlatNeeds) {
+                            var parsedNeeds = JSON.parse(storedFlatNeeds);
+                            if (AttributeSummaryCard.setFlatNeeds) {
+                                AttributeSummaryCard.setFlatNeeds(parsedNeeds);
+                                console.log('[ProfileReview] Bedürfnisse aus localStorage geladen (Fallback):', Object.keys(parsedNeeds).length, 'Einträge');
+                            }
                         }
                     }
                 } catch (e) {
