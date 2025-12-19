@@ -366,6 +366,7 @@ const AttributeSummaryCard = (function() {
     /**
      * MULTI-SELECT: Wählt alle gefilterten (sichtbaren) Bedürfnisse aus oder ab
      * Toggle-Logik: Wenn alle gefilterten bereits ausgewählt → alle abwählen, sonst alle auswählen
+     * WICHTIG: Bei aktiven Filtern werden NUR die gefilterten Bedürfnisse berücksichtigt
      */
     function selectAllFilteredNeeds() {
         // Ermittle alle sichtbaren (nicht gefilterten) Bedürfnisse
@@ -382,6 +383,20 @@ const AttributeSummaryCard = (function() {
             return true;
         });
 
+        // Ermittle nicht-sichtbare (gefilterte) Bedürfnisse
+        const hiddenNeeds = flatNeeds.filter(need => {
+            // Prüfe DimensionKategorieFilter
+            if (typeof DimensionKategorieFilter !== 'undefined' && !DimensionKategorieFilter.shouldShowNeed(need.id)) {
+                return true;
+            }
+            // Prüfe auch Suchfilter (dimension-filter-hidden und filter-hidden Klassen)
+            const needItem = document.querySelector(`.flat-need-item[data-need="${need.id}"]`);
+            if (needItem && (needItem.classList.contains('dimension-filter-hidden') || needItem.classList.contains('filter-hidden'))) {
+                return true;
+            }
+            return false;
+        });
+
         if (visibleNeeds.length === 0) {
             return;
         }
@@ -389,8 +404,26 @@ const AttributeSummaryCard = (function() {
         // Prüfe, ob alle sichtbaren bereits ausgewählt sind
         const allSelected = visibleNeeds.every(need => selectedNeeds.has(need.id));
 
+        // ZUERST: Alle nicht-sichtbaren (gefilterten) Bedürfnisse abwählen
+        // Dies stellt sicher, dass NUR die gefilterten Bedürfnisse ausgewählt werden
+        hiddenNeeds.forEach(need => {
+            if (selectedNeeds.has(need.id)) {
+                selectedNeeds.delete(need.id);
+                originalNeedValues.delete(need.id);
+
+                const needItem = document.querySelector(`.flat-need-item[data-need="${need.id}"]`);
+                if (needItem) {
+                    needItem.classList.remove('need-selected');
+                    const checkbox = needItem.querySelector('.need-checkbox');
+                    if (checkbox) {
+                        checkbox.checked = false;
+                    }
+                }
+            }
+        });
+
         if (allSelected) {
-            // Alle abwählen (nur die sichtbaren)
+            // Alle sichtbaren abwählen
             visibleNeeds.forEach(need => {
                 if (selectedNeeds.has(need.id)) {
                     selectedNeeds.delete(need.id);
