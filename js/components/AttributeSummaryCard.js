@@ -626,6 +626,12 @@ const AttributeSummaryCard = (function() {
     let showOnlyHauptfragen = false;
 
     /**
+     * Filter: Zeigt nur geänderte Bedürfnisse an
+     * (Bedürfnisse deren Wert vom Archetyp-Standard abweicht)
+     */
+    let showOnlyChangedNeeds = false;
+
+    /**
      * GFK-Kategorien mit Labels und Icons
      */
     const GFK_KATEGORIEN = {
@@ -1055,6 +1061,9 @@ const AttributeSummaryCard = (function() {
                     <button class="multi-select-toggle-all-btn" onclick="AttributeSummaryCard.selectAllFilteredNeeds();" title="Alle gefilterten auswählen/abwählen">
                         ☑ Alle/Keine
                     </button>
+                    <button class="multi-select-toggle-changed-btn${showOnlyChangedNeeds ? ' active' : ''}" onclick="AttributeSummaryCard.toggleShowOnlyChanged();" title="Nur geänderte Bedürfnisse anzeigen">
+                        ✎ Geänderte
+                    </button>
                     <span class="multi-select-count">0 ausgewählt</span>
                     <div class="multi-select-actions">
                         <button class="multi-select-lock-btn" onclick="AttributeSummaryCard.lockSelectedNeeds(true);" title="Ausgewählte sperren">
@@ -1132,8 +1141,13 @@ const AttributeSummaryCard = (function() {
             const dimColor = getDimensionColor(need.id);
 
             // Prüfe ob Bedürfnis durch DimensionKategorieFilter versteckt werden soll
-            const shouldHide = (typeof DimensionKategorieFilter !== 'undefined')
+            const hiddenByDimensionFilter = (typeof DimensionKategorieFilter !== 'undefined')
                 && !DimensionKategorieFilter.shouldShowNeed(need.id);
+
+            // Prüfe ob Bedürfnis durch "Nur Geänderte" Filter versteckt werden soll
+            const hiddenByChangedFilter = showOnlyChangedNeeds && !isValueChanged(need.id, need.value);
+
+            const shouldHide = hiddenByDimensionFilter || hiddenByChangedFilter;
 
             html += renderFlatNeedItem(need.id, need.label, need.value, isLocked, dimColor, shouldHide);
         });
@@ -1149,6 +1163,15 @@ const AttributeSummaryCard = (function() {
      */
     function setSortMode(mode) {
         currentFlatSortMode = mode;
+        reRenderFlatNeeds();
+    }
+
+    /**
+     * Toggled den "Nur Geänderte" Filter und rendert die Liste neu
+     */
+    function toggleShowOnlyChanged() {
+        showOnlyChangedNeeds = !showOnlyChangedNeeds;
+        console.log('[AttributeSummaryCard] showOnlyChangedNeeds:', showOnlyChangedNeeds);
         reRenderFlatNeeds();
     }
 
@@ -2133,6 +2156,7 @@ const AttributeSummaryCard = (function() {
         resetFlatNeeds,
         reRenderFlatNeeds,
         setSortMode,
+        toggleShowOnlyChanged,
         // NEU: DimensionKategorieFilter Integration
         initDimensionFilter,
         // DEPRECATED: Alte Filter-Funktionen (für Rückwärtskompatibilität)
