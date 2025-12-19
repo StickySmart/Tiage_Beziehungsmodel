@@ -103,23 +103,29 @@ const ProfileReviewRenderer = (function() {
      * @param {string} archetypLabel - Anzeige-Label des Archetyps
      */
     function initializeModal(archetyp, archetypLabel) {
+        console.log('[DEBUG-PC] initializeModal START');
         const contentContainer = document.getElementById('profileReviewContent');
         if (!contentContainer) {
             console.warn('ProfileReviewRenderer: Content container not found');
             return;
         }
+        console.log('[DEBUG-PC] contentContainer found');
 
         // Speichere Archetyp für Re-Rendering
         contentContainer.dataset.archetyp = archetyp;
 
         // Generiere Content
+        console.log('[DEBUG-PC] before renderModalBody');
         contentContainer.innerHTML = renderModalBody(archetyp, archetypLabel) +
             '\n<div style="height: 20px;"></div>';
+        console.log('[DEBUG-PC] after renderModalBody');
 
         // Initialisiere Filter nach DOM-Einfügung
+        console.log('[DEBUG-PC] before initDimensionFilter');
         if (typeof AttributeSummaryCard !== 'undefined' && AttributeSummaryCard.initDimensionFilter) {
             AttributeSummaryCard.initDimensionFilter();
         }
+        console.log('[DEBUG-PC] after initDimensionFilter');
 
         console.log('ProfileReviewRenderer: Modal initialized for', archetyp);
     }
