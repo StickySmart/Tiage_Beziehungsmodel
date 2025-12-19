@@ -211,54 +211,54 @@ TiageSynthesis.Constants = {
     ARCHETYP_KOHAERENZ: {
         // ═══════════════════════════════════════════════════════════════════
         // R_Leben (Orientierungs-Bedürfnisse) - für R1
-        // HINWEIS: sexuelle_experimentierfreude, sexuelle_verbindung fehlen in beduerfnis-ids.js
+        // Alle 4 Bedürfnisse haben nun #B-IDs: #B221, #B222, #B204, #B20
         // ═══════════════════════════════════════════════════════════════════
         leben: {
             single: {
-                sexuelle_experimentierfreude: { value: 50, id: null, label: 'Sexuelle Experimentierfreude' },
-                sexuelle_verbindung:          { value: 30, id: null, label: 'Sexuelle Verbindung' },
+                sexuelle_experimentierfreude: { value: 50, id: '#B221', label: 'Sexuelle Experimentierfreude' },
+                sexuelle_verbindung:          { value: 30, id: '#B222', label: 'Sexuelle Verbindung' },
                 koerpernaehe:                 { value: 40, id: '#B204', label: 'Körpernähe' },
                 intimitaet:                   { value: 30, id: '#B20', label: 'Intimität' }
             },
             duo: {
-                sexuelle_experimentierfreude: { value: 40, id: null, label: 'Sexuelle Experimentierfreude' },
-                sexuelle_verbindung:          { value: 90, id: null, label: 'Sexuelle Verbindung' },
+                sexuelle_experimentierfreude: { value: 40, id: '#B221', label: 'Sexuelle Experimentierfreude' },
+                sexuelle_verbindung:          { value: 90, id: '#B222', label: 'Sexuelle Verbindung' },
                 koerpernaehe:                 { value: 85, id: '#B204', label: 'Körpernähe' },
                 intimitaet:                   { value: 90, id: '#B20', label: 'Intimität' }
             },
             duo_flex: {
-                sexuelle_experimentierfreude: { value: 70, id: null, label: 'Sexuelle Experimentierfreude' },
-                sexuelle_verbindung:          { value: 75, id: null, label: 'Sexuelle Verbindung' },
+                sexuelle_experimentierfreude: { value: 70, id: '#B221', label: 'Sexuelle Experimentierfreude' },
+                sexuelle_verbindung:          { value: 75, id: '#B222', label: 'Sexuelle Verbindung' },
                 koerpernaehe:                 { value: 75, id: '#B204', label: 'Körpernähe' },
                 intimitaet:                   { value: 80, id: '#B20', label: 'Intimität' }
             },
             solopoly: {
-                sexuelle_experimentierfreude: { value: 85, id: null, label: 'Sexuelle Experimentierfreude' },
-                sexuelle_verbindung:          { value: 60, id: null, label: 'Sexuelle Verbindung' },
+                sexuelle_experimentierfreude: { value: 85, id: '#B221', label: 'Sexuelle Experimentierfreude' },
+                sexuelle_verbindung:          { value: 60, id: '#B222', label: 'Sexuelle Verbindung' },
                 koerpernaehe:                 { value: 60, id: '#B204', label: 'Körpernähe' },
                 intimitaet:                   { value: 50, id: '#B20', label: 'Intimität' }
             },
             polyamor: {
-                sexuelle_experimentierfreude: { value: 80, id: null, label: 'Sexuelle Experimentierfreude' },
-                sexuelle_verbindung:          { value: 85, id: null, label: 'Sexuelle Verbindung' },
+                sexuelle_experimentierfreude: { value: 80, id: '#B221', label: 'Sexuelle Experimentierfreude' },
+                sexuelle_verbindung:          { value: 85, id: '#B222', label: 'Sexuelle Verbindung' },
                 koerpernaehe:                 { value: 75, id: '#B204', label: 'Körpernähe' },
                 intimitaet:                   { value: 85, id: '#B20', label: 'Intimität' }
             },
             ra: {
-                sexuelle_experimentierfreude: { value: 75, id: null, label: 'Sexuelle Experimentierfreude' },
-                sexuelle_verbindung:          { value: 60, id: null, label: 'Sexuelle Verbindung' },
+                sexuelle_experimentierfreude: { value: 75, id: '#B221', label: 'Sexuelle Experimentierfreude' },
+                sexuelle_verbindung:          { value: 60, id: '#B222', label: 'Sexuelle Verbindung' },
                 koerpernaehe:                 { value: 50, id: '#B204', label: 'Körpernähe' },
                 intimitaet:                   { value: 60, id: '#B20', label: 'Intimität' }
             },
             lat: {
-                sexuelle_experimentierfreude: { value: 50, id: null, label: 'Sexuelle Experimentierfreude' },
-                sexuelle_verbindung:          { value: 80, id: null, label: 'Sexuelle Verbindung' },
+                sexuelle_experimentierfreude: { value: 50, id: '#B221', label: 'Sexuelle Experimentierfreude' },
+                sexuelle_verbindung:          { value: 80, id: '#B222', label: 'Sexuelle Verbindung' },
                 koerpernaehe:                 { value: 60, id: '#B204', label: 'Körpernähe' },
                 intimitaet:                   { value: 75, id: '#B20', label: 'Intimität' }
             },
             aromantisch: {
-                sexuelle_experimentierfreude: { value: 40, id: null, label: 'Sexuelle Experimentierfreude' },
-                sexuelle_verbindung:          { value: 20, id: null, label: 'Sexuelle Verbindung' },
+                sexuelle_experimentierfreude: { value: 40, id: '#B221', label: 'Sexuelle Experimentierfreude' },
+                sexuelle_verbindung:          { value: 20, id: '#B222', label: 'Sexuelle Verbindung' },
                 koerpernaehe:                 { value: 30, id: '#B204', label: 'Körpernähe' },
                 intimitaet:                   { value: 25, id: '#B20', label: 'Intimität' }
             }

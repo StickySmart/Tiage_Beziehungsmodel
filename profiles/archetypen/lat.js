@@ -311,6 +311,9 @@ const LATProfil = {
         '#B206': 40,  // physische_distanz - Niedrig-mittel
         '#B207': 75,  // koerperkontakt - Hoch
         '#B208': 75,  // umarmungen - Hoch
+        // NEU: Sexuelle Bedürfnisse für R1-Berechnung
+        '#B221': 50,  // sexuelle_experimentierfreude - Mittel - bei Treffen
+        '#B222': 80,  // sexuelle_verbindung - Hoch - bei Treffen intensiv
 
         // ─────────────────────────────────────────────────────────────────────────
         // ERWEITERTE DYNAMIK (#B209-#B220) - Kink/BDSM

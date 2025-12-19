@@ -311,6 +311,9 @@ const AromantischProfil = {
         '#B206': 70, // physische_distanz - Hoch - Distanz bevorzugt
         '#B207': 35, // koerperkontakt - Niedrig - platonisch ok
         '#B208': 40, // umarmungen - Niedrig-mittel - mit Freunden
+        // NEU: Sexuelle Bedürfnisse für R1-Berechnung
+        '#B221': 40, // sexuelle_experimentierfreude - Niedrig-mittel - möglich
+        '#B222': 20, // sexuelle_verbindung - Niedrig - keine romantische
 
         // ═══════════════════════════════════════════════════════════════════════
         // ERWEITERTE DYNAMIK (#B209-#B220) - Kink/BDSM
