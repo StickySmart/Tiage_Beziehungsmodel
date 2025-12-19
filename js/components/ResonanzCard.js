@@ -1275,6 +1275,162 @@ const ResonanzCard = (function() {
     };
 })();
 
+// ═══════════════════════════════════════════════════════════════════════════
+// AUTOMATISCHE SYNCHRONISATION: FlatNeeds → Resonanzfaktoren
+// ═══════════════════════════════════════════════════════════════════════════
+//
+// Wenn Bedürfniswerte (flatNeeds) geändert werden, müssen die Resonanzfaktoren
+// automatisch neu berechnet werden, damit die Anzeige immer aktuell ist.
+//
+// Dieser Subscriber reagiert auf TiageState.set('flatNeeds.ich/partner', ...)
+// und triggert eine Neuberechnung der R-Faktoren (R1-R4).
+// ═══════════════════════════════════════════════════════════════════════════
+
+(function initResonanzSubscribers() {
+    'use strict';
+
+    // Warte auf TiageState
+    if (typeof TiageState === 'undefined') {
+        console.warn('[ResonanzCard] TiageState nicht verfügbar - Subscriber wird später initialisiert');
+        // Retry nach kurzer Verzögerung
+        setTimeout(initResonanzSubscribers, 100);
+        return;
+    }
+
+    // Debounce-Helper um mehrfache schnelle Updates zu vermeiden
+    let debounceTimerIch = null;
+    let debounceTimerPartner = null;
+    const DEBOUNCE_DELAY = 150; // ms
+
+    /**
+     * Berechnet Resonanzfaktoren für eine Person neu basierend auf aktuellen Bedürfnissen
+     * @param {string} person - 'ich' oder 'partner'
+     */
+    function recalculateResonanzForPerson(person) {
+        // Hole aktuellen Archetyp
+        let archetypeKey = 'duo';
+        if (typeof window !== 'undefined') {
+            if (person === 'ich' && typeof currentArchetype !== 'undefined') {
+                archetypeKey = currentArchetype;
+            } else if (person === 'partner' && typeof selectedPartner !== 'undefined') {
+                archetypeKey = selectedPartner;
+            }
+        }
+
+        // Hole Bedürfnisse (getPersonNeeds ist Teil von ResonanzCard)
+        const needs = ResonanzCard.getPersonNeeds(person, archetypeKey);
+        if (!needs || Object.keys(needs).length === 0) {
+            console.log('[ResonanzCard] Keine Needs für Neuberechnung vorhanden:', person);
+            return;
+        }
+
+        // Hole Dimensions-Daten
+        let dominanz = null, orientierung = null, geschlecht = null;
+        if (typeof personDimensions !== 'undefined' && personDimensions[person]) {
+            dominanz = personDimensions[person].dominanz;
+            orientierung = personDimensions[person].orientierung;
+            geschlecht = personDimensions[person].geschlecht;
+        }
+
+        // Baue Profil-Kontext
+        const profileContext = {
+            archetyp: archetypeKey,
+            needs: needs,
+            dominanz: dominanz,
+            orientierung: orientierung,
+            geschlecht: geschlecht
+        };
+
+        // Berechne neue Resonanzwerte
+        const calculatedValues = ResonanzCard.calculateFromProfile(profileContext);
+        if (calculatedValues) {
+            // Setze die berechneten Werte (respektiert gesperrte Werte)
+            ResonanzCard.setCalculatedValues(calculatedValues, false, person);
+            console.log('[ResonanzCard] Resonanz automatisch neu berechnet für', person, ':', calculatedValues);
+        }
+    }
+
+    // Subscriber für ICH
+    TiageState.subscribe('flatNeeds.ich', function(event) {
+        // Debounce um mehrfache schnelle Updates zu vermeiden
+        if (debounceTimerIch) {
+            clearTimeout(debounceTimerIch);
+        }
+        debounceTimerIch = setTimeout(function() {
+            console.log('[ResonanzCard] FlatNeeds geändert für ICH - Neuberechnung der Resonanzfaktoren');
+            recalculateResonanzForPerson('ich');
+        }, DEBOUNCE_DELAY);
+    });
+
+    // Subscriber für PARTNER
+    TiageState.subscribe('flatNeeds.partner', function(event) {
+        // Debounce um mehrfache schnelle Updates zu vermeiden
+        if (debounceTimerPartner) {
+            clearTimeout(debounceTimerPartner);
+        }
+        debounceTimerPartner = setTimeout(function() {
+            console.log('[ResonanzCard] FlatNeeds geändert für PARTNER - Neuberechnung der Resonanzfaktoren');
+            recalculateResonanzForPerson('partner');
+        }, DEBOUNCE_DELAY);
+    });
+
+    console.log('[ResonanzCard] FlatNeeds → Resonanz Synchronisation aktiviert');
+
+    // ═══════════════════════════════════════════════════════════════════
+    // EVENT LISTENER: attributeNeedChange → TiageState.flatNeeds Sync
+    // ═══════════════════════════════════════════════════════════════════
+    // Fängt Änderungen aus AttributeSummaryCard ab und propagiert sie
+    // an TiageState.flatNeeds, was dann den Subscriber oben triggert.
+    // ═══════════════════════════════════════════════════════════════════
+
+    let needsSyncDebounceTimer = null;
+    const NEEDS_SYNC_DEBOUNCE = 200; // ms
+
+    document.addEventListener('attributeNeedChange', function(event) {
+        const { attrId, needId, value } = event.detail || {};
+
+        if (!needId || value === undefined) {
+            console.warn('[ResonanzCard] attributeNeedChange ohne gültige Daten:', event.detail);
+            return;
+        }
+
+        console.log('[ResonanzCard] attributeNeedChange empfangen:', attrId, needId, value);
+
+        // Ermittle aktuelle Person aus ProfileReview-Kontext
+        let person = 'ich';
+        if (typeof currentProfileReviewContext !== 'undefined' && currentProfileReviewContext.person) {
+            person = currentProfileReviewContext.person;
+        }
+
+        // Debounce um mehrfache schnelle Updates zu sammeln
+        if (needsSyncDebounceTimer) {
+            clearTimeout(needsSyncDebounceTimer);
+        }
+
+        needsSyncDebounceTimer = setTimeout(function() {
+            // Aktualisiere TiageState.flatNeeds
+            // Hole aktuelle flatNeeds und aktualisiere den Wert
+            const currentNeeds = TiageState.get(`flatNeeds.${person}`) || {};
+
+            // Konvertiere needId zu Hash-ID falls nötig
+            let hashId = needId;
+            if (!needId.startsWith('#B') && typeof BeduerfnisIds !== 'undefined' && BeduerfnisIds.toId) {
+                hashId = BeduerfnisIds.toId(needId) || needId;
+            }
+
+            // Setze den neuen Wert
+            currentNeeds[hashId] = parseInt(value, 10);
+
+            // Aktualisiere TiageState (dies triggert den Subscriber oben)
+            TiageState.set(`flatNeeds.${person}`, currentNeeds);
+
+            console.log('[ResonanzCard] FlatNeeds aktualisiert:', person, hashId, value);
+        }, NEEDS_SYNC_DEBOUNCE);
+    });
+
+    console.log('[ResonanzCard] attributeNeedChange → TiageState Listener aktiviert');
+})();
+
 // Export für Module-System
 if (typeof module !== 'undefined' && module.exports) {
     module.exports = ResonanzCard;
