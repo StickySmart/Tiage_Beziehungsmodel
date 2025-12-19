@@ -441,24 +441,16 @@ const AttributeSummaryCard = (function() {
 
     /**
      * MULTI-SELECT: Setzt alle ausgewählten Bedürfnisse auf ihre Original-Profil-Werte zurück
-     * Lädt die Werte aus LoadedArchetypProfile oder Fallback auf statische umfrageWerte
+     * Lädt die Werte aus LoadedArchetypProfile (SSOT) - kein Fallback
      */
     function resetSelectedNeedsValues() {
-        // Hole Original-Profil-Werte (gleiche Logik wie beim Initialisieren)
-        const profil = GfkBeduerfnisse.archetypProfile[currentFlatArchetyp];
-        if (!profil) {
-            console.warn('[AttributeSummaryCard] Kein Profil gefunden für Archetyp:', currentFlatArchetyp);
-            return;
-        }
-
         // Ermittle aktuelle Person aus Kontext
         let currentPerson = 'ich';
         if (typeof window !== 'undefined' && window.currentProfileReviewContext?.person) {
             currentPerson = window.currentProfileReviewContext.person;
         }
 
-        // Hole berechnete Werte aus LoadedArchetypProfile oder Fallback auf statische Werte
-        let umfrageWerte = {};
+        // Hole berechnete Werte aus LoadedArchetypProfile (SSOT)
         const loadedProfile = (typeof window !== 'undefined' && window.LoadedArchetypProfile)
             ? window.LoadedArchetypProfile[currentPerson]
             : null;
@@ -469,7 +461,7 @@ const AttributeSummaryCard = (function() {
             return;
         }
 
-        umfrageWerte = loadedProfile.profileReview.flatNeeds;
+        const umfrageWerte = loadedProfile.profileReview.flatNeeds;
         console.log('[AttributeSummaryCard] Reset mit berechneten Werten aus LoadedArchetypProfile für', currentPerson);
 
         let resetCount = 0;

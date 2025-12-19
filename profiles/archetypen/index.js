@@ -19,7 +19,7 @@
  * }
  *
  * Berechnung:
- * - flatNeeds = BaseArchetypProfile[archetyp].beduerfnisse (Umfragewerte) + ProfileModifiers.calculateProfileDeltas()
+ * - flatNeeds = BaseArchetypProfile[archetyp].umfrageWerte + ProfileModifiers.calculateProfileDeltas()
  * - gewichtungen = Defaults { O: 25, A: 25, D: 25, G: 25 } oder aus Storage
  * - resonanzFaktoren = TiageSynthesis.NeedsIntegration.calculateDimensionalResonance()
  */
@@ -299,7 +299,7 @@
             return {};
         }
 
-        // Kopie der Basis-Bedürfnisse (umfrageWerte ist der formatierte Property-Name)
+        // Kopie der Umfragewerte (SSOT für statistische Basis-Werte)
         const flatNeeds = { ...baseProfil.umfrageWerte };
 
         // 2. Modifier berechnen und anwenden
