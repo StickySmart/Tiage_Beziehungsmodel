@@ -302,7 +302,7 @@ const RAProfil = {
         '#B203': 45, // tantra_gruppe - Mittel
 
         // ═══════════════════════════════════════════════════════════════════════
-        // INTIMITÄT & ROMANTIK (#B204-#B208)
+        // INTIMITÄT & ROMANTIK (#B204-#B208, #B221-#B222)
         // ═══════════════════════════════════════════════════════════════════════
         // RA: Intimität nicht hierarchisiert, situativ
         '#B204': 50, // koerpernaehe - Mittel - situativ
@@ -310,6 +310,9 @@ const RAProfil = {
         '#B206': 55, // physische_distanz - Mittel - situativ
         '#B207': 50, // koerperkontakt - Mittel - situativ
         '#B208': 50, // umarmungen - Mittel - situativ
+        // NEU: Sexuelle Bedürfnisse für R1-Berechnung
+        '#B221': 75, // sexuelle_experimentierfreude - Hoch - Freiheit im Ausdruck
+        '#B222': 60, // sexuelle_verbindung - Mittel - nicht hierarchisiert
 
         // ═══════════════════════════════════════════════════════════════════════
         // ERWEITERTE DYNAMIK (#B209-#B220) - Kink/BDSM

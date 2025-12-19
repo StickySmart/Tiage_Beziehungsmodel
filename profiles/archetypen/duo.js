@@ -317,6 +317,9 @@ const DuoProfil = {
         '#B206': 20,  // physische_distanz - Niedrig - will Nähe
         '#B207': 90,  // koerperkontakt - Sehr hoch
         '#B208': 90,  // umarmungen - Sehr hoch
+        // NEU: Sexuelle Bedürfnisse für R1-Berechnung
+        '#B221': 40,  // sexuelle_experimentierfreude - Niedrig-mittel - traditionell
+        '#B222': 90,  // sexuelle_verbindung - Sehr hoch - mit Partner
 
         // ─────────────────────────────────────────────────────────────────────────
         // ERWEITERTE DYNAMIK (#B209-#B220) - Kink/BDSM

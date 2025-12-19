@@ -311,6 +311,9 @@ const SolopolyProfil = {
         '#B206': 60,  // physische_distanz - Mittel - ok mit Distanz
         '#B207': 55,  // koerperkontakt - Mittel
         '#B208': 50,  // umarmungen - Mittel
+        // NEU: Sexuelle Bedürfnisse für R1-Berechnung
+        '#B221': 85,  // sexuelle_experimentierfreude - Sehr hoch - offen für alles
+        '#B222': 60,  // sexuelle_verbindung - Mittel - ohne Bindung
 
         // ─────────────────────────────────────────────────────────────────────────
         // ERWEITERTE DYNAMIK (#B209-#B220) - Kink/BDSM

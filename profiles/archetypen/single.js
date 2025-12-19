@@ -317,6 +317,9 @@ const SingleProfil = {
         '#B206': 70, // physische_distanz - Hoch - Distanz bevorzugt
         '#B207': 40, // koerperkontakt - Niedrig-mittel - dosiert
         '#B208': 40, // umarmungen - Niedrig-mittel - selektiv
+        // NEU: Sexuelle Bedürfnisse für R1-Berechnung
+        '#B221': 50, // sexuelle_experimentierfreude - Mittel - offen für Neues
+        '#B222': 30, // sexuelle_verbindung - Niedrig - keine Bindung
 
         // ═══════════════════════════════════════════════════════════════════════
         // ERWEITERTE DYNAMIK (#B209-#B220) - Kink/BDSM

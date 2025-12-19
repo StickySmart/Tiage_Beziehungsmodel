@@ -486,6 +486,15 @@ const AttributeSummaryCard = (function() {
                     const input = needItem.querySelector('.flat-need-input');
                     if (slider) slider.value = originalValue;
                     if (input) input.value = originalValue;
+
+                    // Slider-Track-Hintergrund aktualisieren
+                    const dimColor = getDimensionColor(needId);
+                    if (dimColor && slider) {
+                        slider.style.background = `linear-gradient(to right, ${dimColor} 0%, ${dimColor} ${originalValue}%, rgba(255,255,255,0.15) ${originalValue}%, rgba(255,255,255,0.15) 100%)`;
+                    }
+
+                    // Changed-Indicator (*) aktualisieren
+                    updateChangedIndicator(needItem, needId, originalValue);
                 }
 
                 // Aktualisiere auch den gespeicherten Original-Wert
@@ -540,6 +549,9 @@ const AttributeSummaryCard = (function() {
                     }
                 }
                 if (input) input.value = numValue;
+
+                // Changed-Indicator (*) aktualisieren
+                updateChangedIndicator(needItem, needId, numValue);
             }
 
             // Event für Änderungstracking
@@ -1620,11 +1632,40 @@ const AttributeSummaryCard = (function() {
                 if (dimColor && slider) {
                     slider.style.background = `linear-gradient(to right, ${dimColor} 0%, ${dimColor} ${newValue}%, rgba(255,255,255,0.15) ${newValue}%, rgba(255,255,255,0.15) 100%)`;
                 }
+
+                // Changed-Indicator (*) aktualisieren
+                updateChangedIndicator(needItem, needId, newValue);
             }
         });
 
         // Event für Resonanz-Neuberechnung
         document.dispatchEvent(new CustomEvent('flatNeedChange', { bubbles: true }));
+    }
+
+    /**
+     * Aktualisiert den Changed-Indicator (*) für ein Bedürfnis-Element
+     * @param {HTMLElement} needItem - Das .flat-need-item Element
+     * @param {string} needId - Die #B-ID
+     * @param {number} currentValue - Der aktuelle Wert
+     */
+    function updateChangedIndicator(needItem, needId, currentValue) {
+        const labelElement = needItem.querySelector('.flat-need-label');
+        if (!labelElement) return;
+
+        const existingIndicator = labelElement.querySelector('.value-changed-indicator');
+        const shouldShowIndicator = isValueChanged(needId, currentValue);
+
+        if (shouldShowIndicator && !existingIndicator) {
+            // Indikator hinzufügen
+            const indicator = document.createElement('span');
+            indicator.className = 'value-changed-indicator';
+            indicator.title = 'Wert wurde geändert';
+            indicator.textContent = ' *';
+            labelElement.appendChild(indicator);
+        } else if (!shouldShowIndicator && existingIndicator) {
+            // Indikator entfernen
+            existingIndicator.remove();
+        }
     }
 
     /**

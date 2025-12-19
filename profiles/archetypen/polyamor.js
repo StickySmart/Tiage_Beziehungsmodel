@@ -311,6 +311,9 @@ const PolyamorProfil = {
         '#B206': 30,  // physische_distanz - Niedrig - offen für Nähe
         '#B207': 85,  // koerperkontakt - Sehr hoch
         '#B208': 85,  // umarmungen - Sehr hoch
+        // NEU: Sexuelle Bedürfnisse für R1-Berechnung
+        '#B221': 80,  // sexuelle_experimentierfreude - Hoch - offen
+        '#B222': 85,  // sexuelle_verbindung - Sehr hoch - mit mehreren
 
         // ─────────────────────────────────────────────────────────────────────────
         // ERWEITERTE DYNAMIK (#B209-#B220) - Kink/BDSM

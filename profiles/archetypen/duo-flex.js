@@ -311,6 +311,9 @@ const DuoFlexProfil = {
         '#B206': 35,  // physische_distanz - Niedrig - will Nähe
         '#B207': 80,  // koerperkontakt - Hoch
         '#B208': 80,  // umarmungen - Hoch
+        // NEU: Sexuelle Bedürfnisse für R1-Berechnung
+        '#B221': 70,  // sexuelle_experimentierfreude - Hoch - offen
+        '#B222': 75,  // sexuelle_verbindung - Hoch - mit Flexibilität
 
         // ─────────────────────────────────────────────────────────────────────────
         // ERWEITERTE DYNAMIK (#B209-#B220) - Kink/BDSM

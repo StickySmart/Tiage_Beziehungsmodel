@@ -14,6 +14,7 @@
  * #B89      → Spezial (Geduld)
  * #B90-#B208 → 119 Lebensthemen-Bedürfnisse
  * #B209-#B220 → 12 Erweiterte Kink/BDSM-Bedürfnisse
+ * #B221-#B222 → 2 Sexuelle Bedürfnisse für R1-Berechnung
  *
  * Kategorien-Zuordnung:
  * #K11 Dynamik (Basis):      #B74-#B88  (15) - Kontrolle, Hingabe, Führung...
@@ -22,9 +23,9 @@
  * #K13 Finanzen/Karriere:    #B127-#B148 (22)
  * #K14 Kommunikationsstil:   #B149-#B176 (28)
  * #K15 Soziales Leben:       #B177-#B203 (27)
- * #K16 Intimität/Romantik:   #B204-#B208 (5)
+ * #K16 Intimität/Romantik:   #B204-#B208, #B221-#B222 (7)
  *
- * TOTAL: 220 Bedürfnisse
+ * TOTAL: 222 Bedürfnisse
  */
 
 const BeduerfnisIds = {
@@ -353,13 +354,16 @@ const BeduerfnisIds = {
         '#B203': { key: 'tantra_gruppe', kategorie: '#K15', label: 'Tantra-Gruppe' },
 
         // ─────────────────────────────────────────────────────────────────────────
-        // INTIMITÄT & ROMANTIK (#B204-#B208) - Kategorie #K16
+        // INTIMITÄT & ROMANTIK (#B204-#B208, #B221-#B222) - Kategorie #K16
         // ─────────────────────────────────────────────────────────────────────────
         '#B204': { key: 'koerpernaehe', kategorie: '#K16', label: 'Körpernähe' },
         '#B205': { key: 'kuscheln', kategorie: '#K16', label: 'Kuscheln' },
         '#B206': { key: 'physische_distanz', kategorie: '#K16', label: 'Physische Distanz' },
         '#B207': { key: 'koerperkontakt', kategorie: '#K16', label: 'Körperkontakt' },
         '#B208': { key: 'umarmungen', kategorie: '#K16', label: 'Umarmungen' },
+        // NEU: Sexuelle Bedürfnisse für R1-Berechnung (vorher fehlende IDs)
+        '#B221': { key: 'sexuelle_experimentierfreude', kategorie: '#K16', label: 'Sexuelle Experimentierfreude' },
+        '#B222': { key: 'sexuelle_verbindung', kategorie: '#K16', label: 'Sexuelle Verbindung' },
 
         // ─────────────────────────────────────────────────────────────────────────
         // ERWEITERTE KINK/DYNAMIK (#B209-#B220) - Kategorie #K11
