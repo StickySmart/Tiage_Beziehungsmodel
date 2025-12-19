@@ -19770,11 +19770,6 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
             var suggestions = [];
             var lowerQuery = query.toLowerCase().trim();
 
-            // DEBUG: Check data sources
-            console.log('[Suche] Query:', query);
-            console.log('[Suche] BeduerfnisKatalog verfügbar:', !!(window.BeduerfnisKatalog && window.BeduerfnisKatalog.beduerfnisse));
-            console.log('[Suche] BeduerfnisIds verfügbar:', !!(typeof BeduerfnisIds !== 'undefined' && BeduerfnisIds.beduerfnisse));
-
             // If query is empty, show all items for browsing
             if (!lowerQuery) {
                 // Show all categories (18 total)
@@ -20021,12 +20016,6 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
                 return (b.score || 0) - (a.score || 0);
             });
 
-            // DEBUG: Log results
-            console.log('[Suche] Gefundene Vorschläge:', suggestions.length);
-            if (suggestions.length > 0) {
-                console.log('[Suche] Top 3:', suggestions.slice(0, 3).map(function(s) { return s.label; }).join(', '));
-            }
-
             return suggestions.slice(0, 15);
         }
 
@@ -20079,47 +20068,21 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
 
         /**
          * Display search suggestions
-         * FIX: Verwendet position:fixed um overflow:auto des Modal-Body zu umgehen
          */
         function displaySearchSuggestions(suggestions) {
             var dropdown = document.getElementById('searchSuggestionsDropdown');
             var content = dropdown ? dropdown.querySelector('.search-suggestions-content') : null;
-            var searchInput = document.getElementById('profileReviewSearchInput');
-            var searchWrapper = searchInput ? searchInput.closest('.profile-review-search-wrapper') : null;
-
-            console.log('[Suche] displaySearchSuggestions called, suggestions:', suggestions.length);
-            console.log('[Suche] Dropdown element:', !!dropdown);
-            console.log('[Suche] Content element:', !!content);
-            console.log('[Suche] SearchInput element:', !!searchInput);
-            console.log('[Suche] SearchWrapper element:', !!searchWrapper);
 
             if (!dropdown || !content) {
-                console.warn('[Suche] Dropdown oder Content nicht gefunden!');
                 return;
             }
 
             suggestionState.suggestions = suggestions;
             suggestionState.selectedIndex = -1;
 
-            // FIX: Position dropdown using fixed positioning to escape overflow:auto
-            // Verwende Input-Element als Referenz falls Wrapper nicht gefunden
-            var referenceEl = searchWrapper || searchInput;
-            if (referenceEl) {
-                var rect = referenceEl.getBoundingClientRect();
-                dropdown.style.position = 'fixed';
-                dropdown.style.top = (rect.bottom + 4) + 'px';
-                dropdown.style.left = rect.left + 'px';
-                dropdown.style.width = rect.width + 'px';
-                dropdown.style.maxHeight = 'min(300px, calc(100vh - ' + (rect.bottom + 20) + 'px))';
-                console.log('[Suche] Dropdown positioniert:', {top: rect.bottom + 4, left: rect.left, width: rect.width});
-            } else {
-                console.warn('[Suche] Kein Referenz-Element für Positionierung gefunden!');
-            }
-
             if (suggestions.length === 0) {
                 content.innerHTML = '<div class="search-suggestions-empty">Keine Vorschläge gefunden</div>';
                 dropdown.style.display = 'block';
-                console.log('[Suche] Showing empty dropdown');
                 return;
             }
 
@@ -20162,7 +20125,6 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
 
             content.innerHTML = html;
             dropdown.style.display = 'block';
-            console.log('[Suche] Dropdown angezeigt mit', suggestions.length, 'Vorschlägen');
 
             // Add click handlers
             content.querySelectorAll('.suggestion-item').forEach(function(item) {
@@ -20383,16 +20345,6 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
                 }
             }
         });
-
-        /**
-         * Hide suggestions when scrolling modal body (fixed positioning würde sonst falsch sein)
-         */
-        document.addEventListener('scroll', function(event) {
-            var modalBody = document.getElementById('profileReviewBody');
-            if (modalBody && (event.target === modalBody || modalBody.contains(event.target))) {
-                hideSearchSuggestions();
-            }
-        }, true);
 
         /**
          * Update clearProfileReviewSearch to also hide suggestions

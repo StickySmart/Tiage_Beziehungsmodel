@@ -357,10 +357,35 @@
                 </div>
             </div>
 
-            <!-- Scrollable Content - Dynamically rendered by ProfileReviewRenderer -->
-            <div class="modal-body profile-review-body" id="profileReviewBody" style="flex: 1; overflow-y: auto;">
-                <!-- Source Explanation Banner (inside scrollable area) -->
-                <div class="profile-review-source-explanation" id="profileReviewSourceExplanation">
+            <!-- Content Area - Search fixed, rest scrollable -->
+            <div class="modal-body profile-review-body" id="profileReviewBody" style="flex: 1; display: flex; flex-direction: column; overflow: hidden;">
+                <!-- Search/Filter Input - OUTSIDE scrollable area so dropdown isn't clipped -->
+                <div class="profile-review-search-container">
+                    <div class="profile-review-search-wrapper">
+                        <span class="profile-review-search-icon">🔍</span>
+                        <input type="text"
+                               id="profileReviewSearchInput"
+                               class="profile-review-search-input"
+                               placeholder="Such..."
+                               oninput="handleIntelligentSearch(this.value)"
+                               onkeydown="handleSearchKeydown(event)"
+                               onfocus="showSearchSuggestions()"
+                               autocomplete="off">
+                        <button class="profile-review-search-clear"
+                                onclick="clearProfileReviewSearch()"
+                                title="Suche leeren">×</button>
+                        <!-- Intelligent Suggestions Dropdown - position:absolute works now! -->
+                        <div id="searchSuggestionsDropdown" class="search-suggestions-dropdown" style="display: none;">
+                            <div class="search-suggestions-content"></div>
+                        </div>
+                    </div>
+                    <div class="profile-review-search-hint" id="profileReviewSearchHint"></div>
+                </div>
+
+                <!-- Scrollable Content Wrapper -->
+                <div class="profile-review-scrollable" style="flex: 1; overflow-y: auto;">
+                    <!-- Source Explanation Banner -->
+                    <div class="profile-review-source-explanation" id="profileReviewSourceExplanation">
                     <div class="source-explanation-header" onclick="toggleSourceExplanation()">
                         <span class="source-explanation-icon">&#x2139;</span>
                         <span class="source-explanation-title" data-i18n="profileReview.sourceExplanation.title">Woher kommen diese Werte?</span>
@@ -380,34 +405,13 @@
                         </p>
                     </div>
                 </div>
-                <!-- Search/Filter Input for Bedürfnisse -->
-                <div class="profile-review-search-container">
-                    <div class="profile-review-search-wrapper">
-                        <span class="profile-review-search-icon">🔍</span>
-                        <input type="text"
-                               id="profileReviewSearchInput"
-                               class="profile-review-search-input"
-                               placeholder="Such..."
-                               oninput="handleIntelligentSearch(this.value)"
-                               onkeydown="handleSearchKeydown(event)"
-                               onfocus="showSearchSuggestions()"
-                               autocomplete="off">
-                        <button class="profile-review-search-clear"
-                                onclick="clearProfileReviewSearch()"
-                                title="Suche leeren">×</button>
-                        <!-- Intelligent Suggestions Dropdown -->
-                        <div id="searchSuggestionsDropdown" class="search-suggestions-dropdown" style="display: none;">
-                            <div class="search-suggestions-content"></div>
-                        </div>
-                    </div>
-                    <div class="profile-review-search-hint" id="profileReviewSearchHint"></div>
-                </div>
                 <!-- Content wird dynamisch durch ProfileReviewRenderer.initializeModal() generiert -->
                 <div id="profileReviewContent">
                     <div class="profile-review-loading" style="padding: 40px; text-align: center; color: rgba(255,255,255,0.6);">
                         Lade Profile-Attribute...
                     </div>
                 </div>
+                </div><!-- /profile-review-scrollable -->
             </div>
 
             <!-- Sticky Footer Actions -->
