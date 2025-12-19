@@ -1760,8 +1760,22 @@ input.resonanz-input:focus {
     flex-direction: column;
     gap: 4px;
     padding: 16px 12px;
-    border-bottom: 1px solid rgba(255,255,255,0.1);
-    margin-bottom: 12px;
+    border-bottom: none;
+    margin-bottom: 0;
+}
+
+/* STICKY CONTROLS CONTAINER - Multi-Select + Filter + Sortierung */
+.flat-needs-sticky-controls {
+    position: -webkit-sticky;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: var(--bg-card, #1a1a2e);
+    backdrop-filter: blur(12px);
+    padding: 12px;
+    margin: 0 -4px;
+    border-bottom: 1px solid rgba(255,255,255,0.15);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
 }
 
 /* MULTI-SELECT CONTROL PANEL */
@@ -2263,7 +2277,8 @@ input.resonanz-input:focus {
     display: flex;
     align-items: center;
     gap: 8px;
-    margin-bottom: 12px;
+    margin-bottom: 0;
+    margin-top: 8px;
     padding: 8px 12px;
     background: rgba(255,255,255,0.03);
     border-radius: 6px;

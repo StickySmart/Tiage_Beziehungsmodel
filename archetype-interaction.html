@@ -323,37 +323,7 @@
                 <button class="modal-close" onclick="closeProfileReviewModal()">&times;</button>
             </div>
 
-            <!-- RA Profile Summary Card (outside scrollable area) -->
-            <div class="ra-profile-modal-card" id="raProfileModalCard">
-                <div class="ra-profile-modal-title">
-                    <span class="ra-profile-modal-icon">📊</span>
-                    <span class="ra-profile-modal-text">Dein RA-Profil</span>
-                    <span class="ra-profile-modal-count" id="raProfileModalCount">(37 von 219 Bedürfnissen)</span>
-                </div>
-                <div class="ra-profile-modal-values" id="raProfileModalValues">
-                    <!-- Values will be rendered dynamically -->
-                    <div class="ra-profile-value-item" style="--dimension-color: #E63946;">
-                        <div class="ra-profile-value-label">Leben</div>
-                        <div class="ra-profile-value-id">R1</div>
-                        <div class="ra-profile-value-number" id="raProfileValue-R1">1.50</div>
-                    </div>
-                    <div class="ra-profile-value-item" style="--dimension-color: #2A9D8F;">
-                        <div class="ra-profile-value-label">Philosophie</div>
-                        <div class="ra-profile-value-id">R2</div>
-                        <div class="ra-profile-value-number" id="raProfileValue-R2">1.41</div>
-                    </div>
-                    <div class="ra-profile-value-item" style="--dimension-color: #8B5CF6;">
-                        <div class="ra-profile-value-label">Dynamik</div>
-                        <div class="ra-profile-value-id">R3</div>
-                        <div class="ra-profile-value-number" id="raProfileValue-R3">1.37</div>
-                    </div>
-                    <div class="ra-profile-value-item" style="--dimension-color: #F4A261;">
-                        <div class="ra-profile-value-label">Identität</div>
-                        <div class="ra-profile-value-id">R4</div>
-                        <div class="ra-profile-value-number" id="raProfileValue-R4">1.45</div>
-                    </div>
-                </div>
-            </div>
+            <!-- RA Profile Summary Card - ENTFERNT (doppelte Anzeige, R1-R4 Zeile reicht) -->
 
             <!-- Content Area - Search fixed, rest scrollable -->
             <div class="modal-body profile-review-body" id="profileReviewBody" style="flex: 1; display: flex; flex-direction: column; overflow: hidden;">
@@ -379,6 +349,9 @@
                     </div>
                     <div class="profile-review-search-hint" id="profileReviewSearchHint"></div>
                 </div>
+
+                <!-- Controls Container (Multi-Select + Sortierung) - außerhalb scrollable -->
+                <div id="profileReviewControlsContainer" class="profile-review-controls-container"></div>
 
                 <!-- Scrollable Content Wrapper -->
                 <div class="profile-review-scrollable" style="flex: 1; overflow-y: auto;">
