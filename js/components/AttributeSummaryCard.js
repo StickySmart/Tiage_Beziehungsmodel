@@ -743,21 +743,28 @@ const AttributeSummaryCard = (function() {
      * @returns {boolean} true wenn Wert geändert wurde, false wenn Standard
      */
     function isValueChanged(needId, currentValue) {
-        if (!currentFlatArchetyp || typeof GfkBeduerfnisse === 'undefined') {
+        // Ermittle aktuelle Person aus Kontext
+        let currentPerson = 'ich';
+        if (typeof window !== 'undefined' && window.currentProfileReviewContext?.person) {
+            currentPerson = window.currentProfileReviewContext.person;
+        }
+
+        // Vergleiche gegen die berechneten Anfangswerte (Basis + Modifiers)
+        // aus LoadedArchetypProfile - diese sind die SSOT für die initialen Werte
+        const loadedProfile = (typeof window !== 'undefined' && window.LoadedArchetypProfile)
+            ? window.LoadedArchetypProfile[currentPerson]
+            : null;
+
+        if (!loadedProfile?.profileReview?.flatNeeds) {
             return false;
         }
 
-        const profil = GfkBeduerfnisse.archetypProfile?.[currentFlatArchetyp];
-        if (!profil || !profil.umfrageWerte) {
+        const initialValue = loadedProfile.profileReview.flatNeeds[needId];
+        if (initialValue === undefined) {
             return false;
         }
 
-        const defaultValue = profil.umfrageWerte[needId];
-        if (defaultValue === undefined) {
-            return false;
-        }
-
-        return currentValue !== defaultValue;
+        return currentValue !== initialValue;
     }
 
     /**
