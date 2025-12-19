@@ -326,7 +326,8 @@
             <!-- RA Profile Summary Card - ENTFERNT (doppelte Anzeige, R1-R4 Zeile reicht) -->
 
             <!-- Content Area - Search fixed, rest scrollable -->
-            <div class="modal-body profile-review-body" id="profileReviewBody" style="flex: 1; display: flex; flex-direction: column; overflow: hidden;">
+            <!-- NOTE: overflow:visible is required so search dropdown isn't clipped! Scrolling is on .profile-review-scrollable -->
+            <div class="modal-body profile-review-body" id="profileReviewBody" style="flex: 1; display: flex; flex-direction: column; overflow: visible;">
                 <!-- Search/Filter Input - OUTSIDE scrollable area so dropdown isn't clipped -->
                 <div class="profile-review-search-container">
                     <div class="profile-review-search-wrapper">
