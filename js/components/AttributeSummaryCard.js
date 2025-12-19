@@ -374,9 +374,9 @@ const AttributeSummaryCard = (function() {
             if (typeof DimensionKategorieFilter !== 'undefined' && !DimensionKategorieFilter.shouldShowNeed(need.id)) {
                 return false;
             }
-            // Prüfe auch Suchfilter (dimension-filter-hidden Klasse)
+            // Prüfe auch Suchfilter (dimension-filter-hidden und filter-hidden Klassen)
             const needItem = document.querySelector(`.flat-need-item[data-need="${need.id}"]`);
-            if (needItem && needItem.classList.contains('dimension-filter-hidden')) {
+            if (needItem && (needItem.classList.contains('dimension-filter-hidden') || needItem.classList.contains('filter-hidden'))) {
                 return false;
             }
             return true;
