@@ -746,7 +746,7 @@
                     </select>
                     <button class="archetype-nav-btn" onclick="navigateArchetype('ich', 1)" title="Nächster Archetyp">&#9654;</button>
                     <button class="archetype-info-btn" onclick="showArchetypeInfo('ich')" title="Info zum Archetyp">INFO</button>
-                    <button class="archetype-attributes-btn" onclick="openProfileReviewModal(getSelectedArchetype('ich'), 'ich')" title="Attribute bearbeiten">⚙️ ATTRIBUTE</button>
+                    <button class="archetype-attributes-btn" onclick="openNeedsEditorPage(getSelectedArchetype('ich'), 'ich')" title="Attribute bearbeiten">⚙️ ATTRIBUTE</button>
                 </div>
                 <!-- Archetypen-Symbol-Grid für ICH -->
                 <div class="archetype-symbols-grid" id="ich-archetype-grid">
@@ -860,7 +860,7 @@
                     </select>
                     <button class="archetype-nav-btn" onclick="navigateArchetype('partner', 1)" title="Nächster Archetyp">&#9654;</button>
                     <button class="archetype-info-btn" onclick="showArchetypeInfo('partner')" title="Info zum Archetyp">INFO</button>
-                    <button class="archetype-attributes-btn" onclick="openProfileReviewModal(getSelectedArchetype('partner'), 'partner')" title="Attribute bearbeiten">⚙️ ATTRIBUTE</button>
+                    <button class="archetype-attributes-btn" onclick="openNeedsEditorPage(getSelectedArchetype('partner'), 'partner')" title="Attribute bearbeiten">⚙️ ATTRIBUTE</button>
                 </div>
                 <!-- Archetypen-Symbol-Grid für PARTNER -->
                 <div class="archetype-symbols-grid" id="partner-archetype-grid">
@@ -982,7 +982,7 @@
                     <button onclick="openArchetypeInfo(document.getElementById('mobileIchSelect').value, 'ich')" style="padding: 12px 16px; background: rgba(255,255,255,0.1); border: 1px solid var(--border); border-radius: 8px; color: var(--text-secondary); cursor: pointer; font-size: 14px; font-weight: 600; letter-spacing: 0.5px;" title="Info zum Archetyp">INFO</button>
                 </div>
                 <!-- ATTRIBUTE Button für ICH (Mobile) -->
-                <button class="archetype-attributes-btn mobile-attributes-btn" onclick="openProfileReviewModal(document.getElementById('mobileIchSelect').value, 'ich')" title="Attribute bearbeiten" style="width: 100%; margin-top: 8px;">⚙️ ATTRIBUTE</button>
+                <button class="archetype-attributes-btn mobile-attributes-btn" onclick="openNeedsEditorPage(document.getElementById('mobileIchSelect').value, 'ich')" title="Attribute bearbeiten" style="width: 100%; margin-top: 8px;">⚙️ ATTRIBUTE</button>
                 <!-- Archetypen-Symbol-Grid für ICH (Mobile) -->
                 <div class="archetype-symbols-grid" id="mobile-ich-archetype-grid">
                     <div class="archetype-symbol-item active" data-archetype="single" onclick="selectArchetypeFromGrid('ich', 'single')">
@@ -1146,7 +1146,7 @@
                     <button onclick="openArchetypeInfo(document.getElementById('mobilePartnerSelect').value, 'partner')" style="padding: 12px 16px; background: rgba(255,255,255,0.1); border: 1px solid var(--border); border-radius: 8px; color: var(--text-secondary); cursor: pointer; font-size: 14px; font-weight: 600; letter-spacing: 0.5px;" title="Info zum Archetyp">INFO</button>
                 </div>
                 <!-- ATTRIBUTE Button für PARTNER (Mobile) -->
-                <button class="archetype-attributes-btn mobile-attributes-btn" onclick="openProfileReviewModal(document.getElementById('mobilePartnerSelect').value, 'partner')" title="Attribute bearbeiten" style="width: 100%; margin-top: 8px;">⚙️ ATTRIBUTE</button>
+                <button class="archetype-attributes-btn mobile-attributes-btn" onclick="openNeedsEditorPage(document.getElementById('mobilePartnerSelect').value, 'partner')" title="Attribute bearbeiten" style="width: 100%; margin-top: 8px;">⚙️ ATTRIBUTE</button>
                 <!-- Archetypen-Symbol-Grid für PARTNER (Mobile) -->
                 <div class="archetype-symbols-grid" id="mobile-partner-archetype-grid">
                     <div class="archetype-symbol-item" data-archetype="single" onclick="selectArchetypeFromGrid('partner', 'single')">
@@ -2314,6 +2314,20 @@
             updateRAProfileModalCard();
         } else {
             window.addEventListener('load', updateRAProfileModalCard);
+        }
+
+        /**
+         * Öffnet die Bedürfnis-Editor Seite
+         * @param {string} archetype - Der Archetyp (z.B. 'polyamor', 'duo')
+         * @param {string} person - Die Person ('ich' oder 'partner')
+         */
+        function openNeedsEditorPage(archetype, person) {
+            // Speichere aktuelle Auswahl
+            localStorage.setItem('tiage_selected_archetype_' + person, archetype);
+            localStorage.setItem('tiage_needs_editor_person', person);
+
+            // Navigiere zur Bedürfnis-Editor Seite
+            window.location.href = 'needs-editor.html?archetype=' + encodeURIComponent(archetype) + '&person=' + encodeURIComponent(person);
         }
     </script>
 </body>

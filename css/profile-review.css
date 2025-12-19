@@ -2215,8 +2215,8 @@ input.resonanz-input:focus {
 
 /* Collapsible Wrapper */
 .flat-needs-list-wrapper {
-    max-height: 100vh;
-    overflow: hidden;
+    max-height: none;
+    overflow: visible;
     transition: max-height 0.3s ease, opacity 0.3s ease;
     opacity: 1;
 }
@@ -2224,6 +2224,7 @@ input.resonanz-input:focus {
 .flat-needs-list-wrapper.collapsed {
     max-height: 0;
     opacity: 0;
+    overflow: hidden;
 }
 
 /* Header mit Sortierung und Standard-Button */

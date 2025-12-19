@@ -1,0 +1,599 @@
+<!--
+ * © 2025 Ti-age.de Alle Rechte vorbehalten.
+ * Dieses Werk ist urheberrechtlich geschützt.
+ * Jegliche Nutzung ohne ausdrückliche Genehmigung ist untersagt.
+ -->
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Bedürfnis-Editor | Ti-Age</title>
+    <link rel="canonical" href="https://ti-age.de/needs-editor.html">
+    <!-- Zentrale CSS-Variablen - EINZIGE QUELLE -->
+    <link rel="stylesheet" href="templates/variables.css?v=20251205c">
+    <link rel="stylesheet" href="templates/template_desktop.css?v=20251205c">
+    <link rel="stylesheet" href="templates/template_mobile.css?v=20251205c" media="(max-width: 768px)">
+    <!-- Profile Review Styling -->
+    <link rel="stylesheet" href="css/profile-review.css">
+    <!-- RA Profile Header Card Styling -->
+    <link rel="stylesheet" href="css/ra-profile-header-card.css">
+    <!-- Resonanz Tree View Styling -->
+    <link rel="stylesheet" href="css/resonanz-tree-view.css">
+
+    <!-- LocalForage - Browser-Datenbank für Profile -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/localforage/1.10.0/localforage.min.js"></script>
+
+    <!-- TIAGE i18n - Internationalisierung -->
+    <script src="js/locales/de.js"></script>
+    <script src="js/locales/en.js"></script>
+    <script src="js/i18n.js"></script>
+    <script src="js/version.js"></script>
+
+    <!-- TIAGE Micro-Statements Databases -->
+    <script src="statements/archetypeStatements.js"></script>
+    <script src="statements/archetypeStatements_EN.js"></script>
+    <script src="statements/dominanceStatements.js"></script>
+    <script src="statements/orientationStatements.js"></script>
+    <script src="statements/statusStatements.js"></script>
+    <script src="statements/gfkStatements.js"></script>
+    <script src="statements/resonanceQuotesTable.js"></script>
+
+    <!-- TIAGE SYNTHESE - Zentralisierte Berechnungslogik -->
+    <script src="js/synthesis/constants.js"></script>
+    <script src="js/help-texts.js"></script>
+    <script src="js/synthesis/needsIntegration.js"></script>
+    <script src="js/synthesis/factors/archetypeMatrixCalculator.js"></script>
+    <script src="js/synthesis/factors/archetypeFactor.js"></script>
+    <script src="js/synthesis/factors/dominanceFactor.js"></script>
+    <script src="js/synthesis/factors/orientationFactor.js"></script>
+    <script src="js/synthesis/factors/genderFactor.js"></script>
+    <script src="js/synthesis/lifestyleFilter.js"></script>
+    <script src="js/utils/statistics.js"></script>
+    <script src="js/synthesis/synthesisCalculator.js"></script>
+    <script src="js/synthesis/pathosTextGenerator.js"></script>
+    <script src="js/synthesis/logosTextGenerator.js"></script>
+    <script src="js/synthesis/oshoZenTextGenerator.js"></script>
+    <script src="js/synthesis/integratedSynthesisTextGenerator.js"></script>
+
+    <!-- TIAGE COMPATIBILITY -->
+    <script src="js/compatibility/physicalCompatibility.js"></script>
+    <script src="js/compatibility/philosophyCompatibility.js"></script>
+    <script src="js/compatibility/compatibilityOrchestrator.js"></script>
+
+    <!-- TIAGE DIMENSIONS -->
+    <script src="js/dimensions/tagDimensionRelevance.js"></script>
+    <script src="js/dimensions/dominanzModifier.js"></script>
+    <script src="js/dimensions/tagCalculator.js"></script>
+    <!-- BEDÜRFNIS-IDs -->
+    <script src="profiles/definitions/beduerfnis-ids.js"></script>
+    <!-- BEDÜRFNIS-KATALOG v3.0.0 Loader -->
+    <script src="profiles/data/beduerfnis-katalog-loader.js"></script>
+    <!-- ARCHETYP PROFILE -->
+    <script src="profiles/archetypen/single.js"></script>
+    <script src="profiles/archetypen/duo.js"></script>
+    <script src="profiles/archetypen/duo-flex.js"></script>
+    <script src="profiles/archetypen/solopoly.js"></script>
+    <script src="profiles/archetypen/polyamor.js"></script>
+    <script src="profiles/archetypen/ra.js"></script>
+    <script src="profiles/archetypen/lat.js"></script>
+    <script src="profiles/archetypen/aromantisch.js"></script>
+    <script src="profiles/archetypen/index.js"></script>
+    <!-- GESCHLECHTSIDENTITÄT MODIFIER -->
+    <script src="profiles/modifiers/gender/mann-cis.js"></script>
+    <script src="profiles/modifiers/gender/mann-trans.js"></script>
+    <script src="profiles/modifiers/gender/mann-suchend.js"></script>
+    <script src="profiles/modifiers/gender/frau-cis.js"></script>
+    <script src="profiles/modifiers/gender/frau-trans.js"></script>
+    <script src="profiles/modifiers/gender/frau-suchend.js"></script>
+    <script src="profiles/modifiers/gender/inter-nonbinaer.js"></script>
+    <script src="profiles/modifiers/gender/inter-fluid.js"></script>
+    <script src="profiles/modifiers/gender/inter-suchend.js"></script>
+    <!-- DOMINANZ MODIFIER -->
+    <script src="profiles/modifiers/dominanz/dominant.js"></script>
+    <script src="profiles/modifiers/dominanz/submissiv.js"></script>
+    <script src="profiles/modifiers/dominanz/switch.js"></script>
+    <script src="profiles/modifiers/dominanz/ausgeglichen.js"></script>
+    <!-- ORIENTIERUNG MODIFIER -->
+    <script src="profiles/modifiers/orientierung/heterosexuell.js"></script>
+    <script src="profiles/modifiers/orientierung/homosexuell.js"></script>
+    <script src="profiles/modifiers/orientierung/bisexuell.js"></script>
+    <!-- MODIFIER INDEX -->
+    <script src="profiles/modifiers/index.js"></script>
+    <!-- SSOT Taxonomie -->
+    <script src="profiles/definitions/taxonomie.js"></script>
+    <!-- GFK Bedürfnisse & Modifikatoren -->
+    <script src="profiles/definitions/gfk-beduerfnisse.js"></script>
+    <script src="profiles/beduerfnis-modifikatoren.js"></script>
+    <script src="profiles/definitions/archetyp-definitions.js"></script>
+    <script src="profiles/profile-store.js"></script>
+
+    <style>
+        /* Page-specific styles for full-screen needs editor */
+        .needs-editor-page {
+            min-height: 100vh;
+            background: var(--bg-dark, #0a0a0f);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .needs-editor-header {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: var(--bg-card, #1a1a2e);
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            padding: 12px 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .needs-editor-header-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .needs-editor-back-btn {
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.2);
+            color: var(--text-primary, #fff);
+            padding: 8px 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .needs-editor-back-btn:hover {
+            background: rgba(255,255,255,0.15);
+            border-color: var(--primary, #FFD700);
+        }
+
+        .needs-editor-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--text-primary, #fff);
+        }
+
+        .needs-editor-badge {
+            background: var(--primary, #FFD700);
+            color: #000;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .needs-editor-header-right {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .needs-editor-save-btn {
+            background: var(--success, #10B981);
+            border: none;
+            color: #fff;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+
+        .needs-editor-save-btn:hover {
+            background: var(--success-hover, #059669);
+            transform: translateY(-1px);
+        }
+
+        .needs-editor-content {
+            flex: 1;
+            padding: 16px;
+            max-width: 900px;
+            margin: 0 auto;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        /* RA Profile Card at top */
+        .needs-editor-ra-card {
+            background: var(--bg-card, #1a1a2e);
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 16px;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        /* Search container */
+        .needs-editor-search {
+            background: var(--bg-card, #1a1a2e);
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 16px;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .needs-editor-search-input {
+            width: 100%;
+            padding: 12px 16px;
+            border-radius: 8px;
+            border: 1px solid rgba(255,255,255,0.2);
+            background: rgba(0,0,0,0.3);
+            color: var(--text-primary, #fff);
+            font-size: 14px;
+            box-sizing: border-box;
+        }
+
+        .needs-editor-search-input:focus {
+            outline: none;
+            border-color: var(--primary, #FFD700);
+        }
+
+        /* Needs list container */
+        .needs-editor-list-container {
+            background: var(--bg-card, #1a1a2e);
+            border-radius: 12px;
+            border: 1px solid rgba(255,255,255,0.1);
+            overflow: hidden;
+        }
+
+        /* Override profile-review styles for full page */
+        .needs-editor-list-container .flat-needs-container {
+            padding: 0;
+        }
+
+        .needs-editor-list-container .flat-needs-header {
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            background: var(--bg-card, #1a1a2e);
+        }
+
+        .needs-editor-list-container .flat-needs-list-wrapper {
+            max-height: none;
+            overflow: visible;
+        }
+
+        .needs-editor-list-container .flat-needs-list {
+            max-height: none;
+        }
+
+        /* Person toggle */
+        .needs-editor-person-toggle {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 16px;
+            justify-content: center;
+        }
+
+        .needs-editor-person-btn {
+            padding: 10px 24px;
+            border-radius: 8px;
+            border: 1px solid rgba(255,255,255,0.2);
+            background: rgba(255,255,255,0.05);
+            color: var(--text-secondary, #999);
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+
+        .needs-editor-person-btn.active {
+            background: var(--primary, #FFD700);
+            color: #000;
+            border-color: var(--primary, #FFD700);
+        }
+
+        .needs-editor-person-btn:hover:not(.active) {
+            background: rgba(255,255,255,0.1);
+            border-color: rgba(255,255,255,0.3);
+        }
+
+        /* Mobile adjustments */
+        @media (max-width: 768px) {
+            .needs-editor-header {
+                flex-wrap: wrap;
+            }
+
+            .needs-editor-title {
+                font-size: 16px;
+            }
+
+            .needs-editor-content {
+                padding: 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="needs-editor-page">
+        <!-- Header -->
+        <header class="needs-editor-header">
+            <div class="needs-editor-header-left">
+                <button class="needs-editor-back-btn" onclick="goBack()">
+                    <span>&#x2190;</span>
+                    <span>Zurück</span>
+                </button>
+                <h1 class="needs-editor-title">Alle Bedürfnisse</h1>
+                <span class="needs-editor-badge" id="needsEditorBadge">Profil</span>
+            </div>
+            <div class="needs-editor-header-right">
+                <button class="needs-editor-save-btn" onclick="saveAndGoBack()">
+                    Speichern
+                </button>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="needs-editor-content">
+            <!-- Person Toggle -->
+            <div class="needs-editor-person-toggle">
+                <button class="needs-editor-person-btn active" id="btnPersonIch" onclick="switchPerson('ich')">
+                    ME
+                </button>
+                <button class="needs-editor-person-btn" id="btnPersonPartner" onclick="switchPerson('partner')">
+                    PARTNER
+                </button>
+            </div>
+
+            <!-- RA Profile Summary -->
+            <div class="needs-editor-ra-card" id="needsEditorRACard">
+                <!-- Will be populated by JavaScript -->
+            </div>
+
+            <!-- Search -->
+            <div class="needs-editor-search">
+                <input type="text"
+                       class="needs-editor-search-input"
+                       id="needsEditorSearchInput"
+                       placeholder="Suche nach Bedürfnis..."
+                       oninput="handleNeedsSearch(this.value)">
+            </div>
+
+            <!-- Needs List -->
+            <div class="needs-editor-list-container" id="needsEditorListContainer">
+                <div style="padding: 40px; text-align: center; color: rgba(255,255,255,0.6);">
+                    Lade Bedürfnisse...
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- State Management - Single Source of Truth -->
+    <script src="js/state.js"></script>
+    <!-- Memory Manager -->
+    <script src="js/memory-manager.js"></script>
+
+    <script src="js/app-i18n.js"></script>
+
+    <!-- Profile UI Components -->
+    <script src="js/components/TripleButtonGroup.js"></script>
+    <script src="js/components/ProfileCard.js"></script>
+    <script src="js/components/GewichtungCard.js"></script>
+    <script src="js/components/ResonanzCard.js"></script>
+    <script src="js/components/RAProfileHeaderCard.js"></script>
+    <script src="js/components/CategorySection.js"></script>
+    <script src="js/components/profile-config.js"></script>
+    <!-- Universeller Dimension-Kategorie-Filter -->
+    <script src="js/components/DimensionKategorieFilter.js"></script>
+    <!-- Resonanz Tree View -->
+    <script src="js/components/ResonanzTreeView.js"></script>
+    <script src="js/components/AttributeSummaryCard.js"></script>
+    <script src="js/components/profile-components.js"></script>
+
+    <script>
+        // Current state
+        let currentPerson = 'ich';
+        let currentArchetype = 'polyamor';
+
+        // Initialize page
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeNeedsEditor();
+        });
+
+        function initializeNeedsEditor() {
+            // Get params from URL or localStorage
+            const urlParams = new URLSearchParams(window.location.search);
+            currentPerson = urlParams.get('person') || localStorage.getItem('tiage_needs_editor_person') || 'ich';
+            currentArchetype = urlParams.get('archetype') || localStorage.getItem('tiage_selected_archetype_ich') || 'polyamor';
+
+            // Update person toggle
+            updatePersonToggle();
+
+            // Update badge
+            updateBadge();
+
+            // Load data from TiageState or localStorage
+            loadNeedsData();
+
+            // Render the needs list
+            renderNeedsList();
+
+            // Render RA Profile card
+            renderRACard();
+        }
+
+        function updatePersonToggle() {
+            document.getElementById('btnPersonIch').classList.toggle('active', currentPerson === 'ich');
+            document.getElementById('btnPersonPartner').classList.toggle('active', currentPerson === 'partner');
+        }
+
+        function updateBadge() {
+            const badge = document.getElementById('needsEditorBadge');
+            const archetypeLabels = {
+                'single': 'Single',
+                'duo': 'Duo',
+                'duo-flex': 'Duo-Flex',
+                'solopoly': 'Solo-Poly',
+                'polyamor': 'Polyamor',
+                'ra': 'RA',
+                'lat': 'LAT',
+                'aromantisch': 'Aromantisch'
+            };
+            badge.textContent = archetypeLabels[currentArchetype] || currentArchetype;
+        }
+
+        function loadNeedsData() {
+            // Try to load from TiageState first
+            if (typeof TiageState !== 'undefined') {
+                const flatNeeds = TiageState.get('flatNeeds.' + currentPerson);
+                if (flatNeeds && flatNeeds.length > 0) {
+                    console.log('[NeedsEditor] Loaded from TiageState:', flatNeeds.length, 'needs');
+                    return;
+                }
+            }
+
+            // Fallback to localStorage
+            const stored = localStorage.getItem('tiage_flat_needs');
+            if (stored) {
+                try {
+                    const parsed = JSON.parse(stored);
+                    if (typeof AttributeSummaryCard !== 'undefined') {
+                        AttributeSummaryCard.setFlatNeeds(parsed);
+                    }
+                    console.log('[NeedsEditor] Loaded from localStorage');
+                } catch (e) {
+                    console.error('[NeedsEditor] Error parsing localStorage:', e);
+                }
+            }
+        }
+
+        function renderNeedsList() {
+            const container = document.getElementById('needsEditorListContainer');
+
+            if (typeof AttributeSummaryCard === 'undefined') {
+                container.innerHTML = '<div style="padding: 40px; text-align: center; color: #f87171;">Fehler: AttributeSummaryCard nicht geladen</div>';
+                return;
+            }
+
+            // Get archetype for person
+            const archetype = currentPerson === 'ich'
+                ? (localStorage.getItem('tiage_selected_archetype_ich') || 'polyamor')
+                : (localStorage.getItem('tiage_selected_archetype_partner') || 'polyamor');
+
+            // Render using AttributeSummaryCard
+            const html = AttributeSummaryCard.renderAllNeedsFlat(archetype);
+            container.innerHTML = html;
+
+            console.log('[NeedsEditor] Rendered needs list for', currentPerson, 'with archetype', archetype);
+        }
+
+        function renderRACard() {
+            const card = document.getElementById('needsEditorRACard');
+
+            if (typeof ResonanzCard === 'undefined') {
+                card.innerHTML = '';
+                return;
+            }
+
+            // Get current resonance values
+            const values = ResonanzCard.getValues(currentPerson);
+            if (!values) {
+                card.innerHTML = '';
+                return;
+            }
+
+            card.innerHTML = `
+                <div style="display: flex; justify-content: space-around; align-items: center; flex-wrap: wrap; gap: 12px;">
+                    <div style="text-align: center;">
+                        <div style="font-size: 12px; color: rgba(255,255,255,0.6); margin-bottom: 4px;">R1</div>
+                        <div style="font-size: 20px; font-weight: 600; color: var(--primary, #FFD700);" id="raValue-R1">${values.R1?.toFixed(2) || '0.00'}</div>
+                    </div>
+                    <div style="text-align: center;">
+                        <div style="font-size: 12px; color: rgba(255,255,255,0.6); margin-bottom: 4px;">R2</div>
+                        <div style="font-size: 20px; font-weight: 600; color: var(--primary, #FFD700);" id="raValue-R2">${values.R2?.toFixed(2) || '0.00'}</div>
+                    </div>
+                    <div style="text-align: center;">
+                        <div style="font-size: 12px; color: rgba(255,255,255,0.6); margin-bottom: 4px;">R3</div>
+                        <div style="font-size: 20px; font-weight: 600; color: var(--primary, #FFD700);" id="raValue-R3">${values.R3?.toFixed(2) || '0.00'}</div>
+                    </div>
+                    <div style="text-align: center;">
+                        <div style="font-size: 12px; color: rgba(255,255,255,0.6); margin-bottom: 4px;">R4</div>
+                        <div style="font-size: 20px; font-weight: 600; color: var(--primary, #FFD700);" id="raValue-R4">${values.R4?.toFixed(2) || '0.00'}</div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function switchPerson(person) {
+            // Save current state first
+            saveCurrentState();
+
+            currentPerson = person;
+            localStorage.setItem('tiage_needs_editor_person', person);
+
+            // Update UI
+            updatePersonToggle();
+
+            // Update archetype for this person
+            currentArchetype = person === 'ich'
+                ? (localStorage.getItem('tiage_selected_archetype_ich') || 'polyamor')
+                : (localStorage.getItem('tiage_selected_archetype_partner') || 'polyamor');
+            updateBadge();
+
+            // Reload data and re-render
+            loadNeedsData();
+            renderNeedsList();
+            renderRACard();
+        }
+
+        function saveCurrentState() {
+            if (typeof AttributeSummaryCard !== 'undefined') {
+                const flatNeeds = AttributeSummaryCard.getFlatNeeds();
+                if (flatNeeds) {
+                    // Save to localStorage
+                    localStorage.setItem('tiage_flat_needs', JSON.stringify(flatNeeds));
+
+                    // Save to TiageState if available
+                    if (typeof TiageState !== 'undefined') {
+                        TiageState.set('flatNeeds.' + currentPerson, flatNeeds);
+                    }
+                }
+            }
+        }
+
+        function handleNeedsSearch(query) {
+            if (typeof AttributeSummaryCard !== 'undefined' && typeof AttributeSummaryCard.filterBySearch === 'function') {
+                AttributeSummaryCard.filterBySearch(query);
+            }
+        }
+
+        function goBack() {
+            // Check if there's a referrer
+            if (document.referrer && document.referrer.includes(window.location.hostname)) {
+                window.history.back();
+            } else {
+                window.location.href = 'archetype-interaction.html';
+            }
+        }
+
+        function saveAndGoBack() {
+            saveCurrentState();
+
+            // Dispatch event for main page to update
+            window.dispatchEvent(new CustomEvent('flatNeedsUpdated', {
+                detail: { person: currentPerson }
+            }));
+
+            goBack();
+        }
+
+        // Listen for resonance changes to update RA card
+        window.addEventListener('resonanzfaktoren-changed', function() {
+            renderRACard();
+        });
+
+        // Listen for need changes
+        window.addEventListener('flatNeedChange', function() {
+            renderRACard();
+        });
+    </script>
+</body>
+</html>
