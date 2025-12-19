@@ -605,6 +605,9 @@
         loadProfile: loadProfile,
         initFromState: initFromState,
 
+        // Subscriber-Registrierung (für expliziten Aufruf vor loadFromStorage)
+        registerSubscribers: registerFlatNeedsSubscribers,
+
         // Defaults
         getDefaultGewichtungen: getDefaultGewichtungen,
         getDefaultResonanzFaktoren: getDefaultResonanzFaktoren,
@@ -658,14 +661,24 @@
         }
     }
 
+    // Flag um doppelte Subscriber-Registrierung zu vermeiden
+    let subscribersRegistered = false;
+
     /**
      * Registriert die Subscriber für automatische flatNeeds-Aktualisierung
      */
     function registerFlatNeedsSubscribers() {
+        // Verhindere doppelte Registrierung
+        if (subscribersRegistered) {
+            return;
+        }
+
         if (typeof TiageState === 'undefined' || typeof TiageState.subscribe !== 'function') {
             console.warn('[ProfileCalculator] TiageState.subscribe nicht verfügbar - reaktive Updates deaktiviert');
             return;
         }
+
+        subscribersRegistered = true;
 
         // Subscriber für Archetyp-Änderungen
         TiageState.subscribe('archetypes.ich', (event) => {

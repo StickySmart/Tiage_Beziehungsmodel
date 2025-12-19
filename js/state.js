@@ -1041,7 +1041,20 @@ const TiageState = (function() {
                             parsed.archetypes.partner.primary = convertArchetypeId(parsed.archetypes.partner.primary);
                             parsed.archetypes.partner.secondary = convertArchetypeId(parsed.archetypes.partner.secondary);
                         }
-                        this.set('archetypes', parsed.archetypes);
+                        // FIX: Setze Archetypen einzeln, damit Child-Subscriber (archetypes.ich, archetypes.partner)
+                        // getriggert werden und flatNeeds neu berechnet werden
+                        if (parsed.archetypes.ich?.primary) {
+                            this.set('archetypes.ich.primary', parsed.archetypes.ich.primary);
+                        }
+                        if (parsed.archetypes.ich?.secondary) {
+                            this.set('archetypes.ich.secondary', parsed.archetypes.ich.secondary);
+                        }
+                        if (parsed.archetypes.partner?.primary) {
+                            this.set('archetypes.partner.primary', parsed.archetypes.partner.primary);
+                        }
+                        if (parsed.archetypes.partner?.secondary) {
+                            this.set('archetypes.partner.secondary', parsed.archetypes.partner.secondary);
+                        }
                     }
                     // Neue Felder laden
                     if (parsed.gewichtungen) {
