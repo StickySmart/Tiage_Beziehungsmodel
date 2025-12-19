@@ -294,13 +294,13 @@
     function calculateFlatNeeds(archetyp, geschlecht, dominanz, orientierung) {
         // 1. Basis-Bedürfnisse holen
         const baseProfil = window.BaseArchetypProfile[archetyp];
-        if (!baseProfil || !baseProfil.beduerfnisse) {
+        if (!baseProfil || !baseProfil.umfrageWerte) {
             console.warn('[ProfileCalculator] Basis-Profil nicht gefunden:', archetyp);
             return {};
         }
 
-        // Kopie der Basis-Bedürfnisse
-        const flatNeeds = { ...baseProfil.beduerfnisse };
+        // Kopie der Basis-Bedürfnisse (umfrageWerte ist der formatierte Property-Name)
+        const flatNeeds = { ...baseProfil.umfrageWerte };
 
         // 2. Modifier berechnen und anwenden
         if (window.ProfileModifiers) {
