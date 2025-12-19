@@ -20084,11 +20084,14 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
         function displaySearchSuggestions(suggestions) {
             var dropdown = document.getElementById('searchSuggestionsDropdown');
             var content = dropdown ? dropdown.querySelector('.search-suggestions-content') : null;
-            var searchWrapper = document.querySelector('.profile-review-search-wrapper');
+            var searchInput = document.getElementById('profileReviewSearchInput');
+            var searchWrapper = searchInput ? searchInput.closest('.profile-review-search-wrapper') : null;
 
             console.log('[Suche] displaySearchSuggestions called, suggestions:', suggestions.length);
             console.log('[Suche] Dropdown element:', !!dropdown);
             console.log('[Suche] Content element:', !!content);
+            console.log('[Suche] SearchInput element:', !!searchInput);
+            console.log('[Suche] SearchWrapper element:', !!searchWrapper);
 
             if (!dropdown || !content) {
                 console.warn('[Suche] Dropdown oder Content nicht gefunden!');
@@ -20099,13 +20102,18 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
             suggestionState.selectedIndex = -1;
 
             // FIX: Position dropdown using fixed positioning to escape overflow:auto
-            if (searchWrapper) {
-                var rect = searchWrapper.getBoundingClientRect();
+            // Verwende Input-Element als Referenz falls Wrapper nicht gefunden
+            var referenceEl = searchWrapper || searchInput;
+            if (referenceEl) {
+                var rect = referenceEl.getBoundingClientRect();
                 dropdown.style.position = 'fixed';
                 dropdown.style.top = (rect.bottom + 4) + 'px';
                 dropdown.style.left = rect.left + 'px';
                 dropdown.style.width = rect.width + 'px';
                 dropdown.style.maxHeight = 'min(300px, calc(100vh - ' + (rect.bottom + 20) + 'px))';
+                console.log('[Suche] Dropdown positioniert:', {top: rect.bottom + 4, left: rect.left, width: rect.width});
+            } else {
+                console.warn('[Suche] Kein Referenz-Element für Positionierung gefunden!');
             }
 
             if (suggestions.length === 0) {
