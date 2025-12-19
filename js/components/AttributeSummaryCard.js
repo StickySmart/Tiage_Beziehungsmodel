@@ -1560,12 +1560,29 @@ const AttributeSummaryCard = (function() {
      * Setzt alle flachen Bedürfniswerte zurück auf Profil-Werte
      * WICHTIG: Respektiert gesperrte Werte - nur ungesperrte Werte werden zurückgesetzt!
      * Löscht die Auswahl (setzt auf 0)
+     *
+     * Verwendet LoadedArchetypProfile (Basis + Modifikatoren) als SSOT,
+     * damit die "Geändert"-Kennzeichnung korrekt funktioniert.
      */
     function resetFlatNeeds() {
-        if (!currentFlatArchetyp || typeof GfkBeduerfnisse === 'undefined') return;
+        // Ermittle aktuelle Person aus Kontext
+        let currentPerson = 'ich';
+        if (typeof window !== 'undefined' && window.currentProfileReviewContext?.person) {
+            currentPerson = window.currentProfileReviewContext.person;
+        }
 
-        const profil = GfkBeduerfnisse.archetypProfile[currentFlatArchetyp];
-        const umfrageWerte = profil?.umfrageWerte || {};
+        // LoadedArchetypProfile ist die einzige Quelle (SSOT)
+        const loadedProfile = window?.LoadedArchetypProfile?.[currentPerson];
+
+        if (!loadedProfile?.profileReview?.flatNeeds) {
+            const errorMsg = 'Reset nicht möglich: Profil-Werte nicht geladen. Bitte laden Sie zuerst ein Profil.';
+            console.error('[AttributeSummaryCard]', errorMsg);
+            alert(errorMsg);
+            return;
+        }
+
+        const umfrageWerte = loadedProfile.profileReview.flatNeeds;
+        console.log('[AttributeSummaryCard] Reset mit berechneten Werten (Basis + Modifikatoren) für', currentPerson);
 
         // Multi-Select Auswahl löschen (auf 0 setzen)
         clearNeedSelection();
