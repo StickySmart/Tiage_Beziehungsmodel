@@ -18930,15 +18930,12 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
                     archetypLabel = archDef.name;
                 }
                 ProfileReviewRenderer.initializeFlatModal(archetypeKey || 'duo', archetypLabel);
-                console.log('[DEBUG] Step 0a: initializeFlatModal done');
             } else {
                 console.log('[TIAGE] ProfileReviewRenderer NOT defined!');
             }
-            console.log('[DEBUG] Step 0b: before loadGewichtungenIntoUI');
 
             // Lade Gewichtungen in UI
             loadGewichtungenIntoUI();
-            console.log('[DEBUG] Step 1: loadGewichtungenIntoUI done');
 
             // Get archetype data
             archetypeKey = archetypeKey || 'duo';
@@ -18999,9 +18996,7 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
             }
 
             // Update Source Explanation with current factors
-            console.log('[DEBUG] Step 2: before updateSourceExplanation');
             updateSourceExplanation(archetypeKey, personData, dominanz, orientierung);
-            console.log('[DEBUG] Step 3: after updateSourceExplanation');
 
             // Load default values from profile
             if (inferences) {
@@ -19180,23 +19175,17 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
                 }
             }
 
-            console.log('[DEBUG] Step 4: before reset changes counter');
             // Reset changes counter
             profileReviewChangesCount = 0;
             var badge = document.getElementById('profileReviewChangesBadge');
             if (badge) badge.style.display = 'none';
 
             // Save initial state
-            console.log('[DEBUG] Step 5: before getProfileReviewState');
             profileReviewInitialState = getProfileReviewState();
-            console.log('[DEBUG] Step 6: after getProfileReviewState');
 
             // Show modal
-            console.log('[DEBUG] About to show modal, modal element:', modal);
-            console.log('[DEBUG] modal.style before:', modal.style.display);
             modal.style.display = 'flex';
             modal.classList.add('active');
-            console.log('[DEBUG] modal.style after:', modal.style.display, 'classes:', modal.className);
 
             // ═══════════════════════════════════════════════════════════════════════════
             // CLICK HANDLER FÜR RA-PROFIL PERSPEKTIVEN

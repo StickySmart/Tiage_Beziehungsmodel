@@ -996,8 +996,8 @@ const AttributeSummaryCard = (function() {
                 const numKey = parseInt(needId.replace('#B', ''), 10) || 0;
                 const needData = BeduerfnisIds.beduerfnisse[needId];
                 const stringKey = needData?.key || '';
-                // Wert aus SSOT (kernbeduerfnisse = LoadedArchetypProfile.flatNeeds)
-                const value = kernbeduerfnisse[needId];
+                // Wert aus SSOT (umfrageWerte = LoadedArchetypProfile.flatNeeds)
+                const value = umfrageWerte[needId];
                 flatNeeds.push({
                     id: needId,
                     key: numKey,
