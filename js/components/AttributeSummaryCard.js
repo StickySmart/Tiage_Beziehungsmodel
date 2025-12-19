@@ -1560,12 +1560,37 @@ const AttributeSummaryCard = (function() {
      * Setzt alle flachen Bedürfniswerte zurück auf Profil-Werte
      * WICHTIG: Respektiert gesperrte Werte - nur ungesperrte Werte werden zurückgesetzt!
      * Löscht die Auswahl (setzt auf 0)
+     *
+     * FIX: Verwendet LoadedArchetypProfile (Basis + Modifikatoren) statt nur Basis-Werte,
+     * damit die "Geändert"-Kennzeichnung korrekt funktioniert.
      */
     function resetFlatNeeds() {
-        if (!currentFlatArchetyp || typeof GfkBeduerfnisse === 'undefined') return;
+        // Ermittle aktuelle Person aus Kontext
+        let currentPerson = 'ich';
+        if (typeof window !== 'undefined' && window.currentProfileReviewContext?.person) {
+            currentPerson = window.currentProfileReviewContext.person;
+        }
 
-        const profil = GfkBeduerfnisse.archetypProfile[currentFlatArchetyp];
-        const umfrageWerte = profil?.umfrageWerte || {};
+        // Versuche zuerst LoadedArchetypProfile (enthält Basis + Modifikatoren)
+        const loadedProfile = (typeof window !== 'undefined' && window.LoadedArchetypProfile)
+            ? window.LoadedArchetypProfile[currentPerson]
+            : null;
+
+        let umfrageWerte = {};
+
+        if (loadedProfile?.profileReview?.flatNeeds) {
+            // SSOT: Berechnete Werte (Basis + Modifikatoren) aus LoadedArchetypProfile
+            umfrageWerte = loadedProfile.profileReview.flatNeeds;
+            console.log('[AttributeSummaryCard] Reset mit berechneten Werten (Basis + Modifikatoren) für', currentPerson);
+        } else if (currentFlatArchetyp && typeof GfkBeduerfnisse !== 'undefined') {
+            // Fallback: Reine Basis-Werte ohne Modifikatoren
+            const profil = GfkBeduerfnisse.archetypProfile[currentFlatArchetyp];
+            umfrageWerte = profil?.umfrageWerte || {};
+            console.warn('[AttributeSummaryCard] Fallback: Reset mit reinen Basis-Werten (ohne Modifikatoren)');
+        } else {
+            console.error('[AttributeSummaryCard] Reset nicht möglich: Keine Profil-Werte verfügbar');
+            return;
+        }
 
         // Multi-Select Auswahl löschen (auf 0 setzen)
         clearNeedSelection();
