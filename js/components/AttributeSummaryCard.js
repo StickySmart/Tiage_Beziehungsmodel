@@ -542,6 +542,16 @@ const AttributeSummaryCard = (function() {
         if (resetCount > 0) {
             document.dispatchEvent(new CustomEvent('flatNeedChange', { bubbles: true }));
         }
+
+        // Filter zurücksetzen (Kategorien + "Nur Geänderte")
+        if (typeof DimensionKategorieFilter !== 'undefined') {
+            DimensionKategorieFilter.reset();
+        }
+        showOnlyChangedNeeds = false;
+
+        // Auswahl löschen und Liste neu rendern
+        clearNeedSelection();
+        reRenderFlatNeeds();
     }
 
     /**
@@ -1608,6 +1618,7 @@ const AttributeSummaryCard = (function() {
      *
      * Verwendet LoadedArchetypProfile (Basis + Modifikatoren) als SSOT,
      * damit die "Geändert"-Kennzeichnung korrekt funktioniert.
+     * Filter bleiben UNVERÄNDERT (nur Werte werden neu geladen)
      */
     function resetFlatNeeds() {
         // Ermittle aktuelle Person aus Kontext
@@ -1669,6 +1680,9 @@ const AttributeSummaryCard = (function() {
                 // Changed-Indicator (*) aktualisieren
                 updateChangedIndicator(needItem, needId, newValue);
             }
+
+            // Aktualisiere gespeicherten Original-Wert für isValueChanged-Prüfung
+            originalNeedValues.set(needId, newValue);
         });
 
         // Event für Resonanz-Neuberechnung
