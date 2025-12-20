@@ -1,5 +1,5 @@
 {
-  "version": "3.0.1",
+  "version": "3.0.2",
   "beschreibung": "Ti-age Bedürfnis-Katalog - Metadaten & Hierarchien (SSOT für IDs: beduerfnis-ids.js)",
   "format": "#[Typ][Nr]-[Label]",
   "erstellt": "2025-12-09",
@@ -4148,6 +4148,24 @@
     "#B220": {
       "label": "Service-empfangen",
       "frage": "Wie wichtig ist Ihnen Service-empfangen?",
+      "frageTyp": "nuance",
+      "kategorie": "#K11"
+    },
+    "#B221": {
+      "label": "Schmerzerleben",
+      "frage": "Wie wichtig ist Ihnen Schmerzerleben?",
+      "frageTyp": "nuance",
+      "kategorie": "#K11"
+    },
+    "#B222": {
+      "label": "Schmerz-geben",
+      "frage": "Wie wichtig ist Ihnen Schmerz-geben?",
+      "frageTyp": "nuance",
+      "kategorie": "#K11"
+    },
+    "#B223": {
+      "label": "Bondage-erleben",
+      "frage": "Wie wichtig ist Ihnen Bondage-erleben?",
       "frageTyp": "nuance",
       "kategorie": "#K11"
     }
