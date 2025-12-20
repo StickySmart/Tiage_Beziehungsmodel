@@ -128,50 +128,50 @@ const BeduerfnisIds = {
         '#B33': { key: 'harmonie', kategorie: '#K4', label: 'Harmonie' },
 
         // ─────────────────────────────────────────────────────────────────────────
-        // FREIHEIT (#B34-#B38) - Kategorie #K6
+        // FREIHEIT (#B34-#B38) - Kategorie #K5
         // ─────────────────────────────────────────────────────────────────────────
-        '#B34': { key: 'selbstbestimmung', kategorie: '#K6', label: 'Selbstbestimmung' },
-        '#B35': { key: 'waehlen_koennen', kategorie: '#K6', label: 'Wählen können' },
-        '#B36': { key: 'unabhaengigkeit', kategorie: '#K6', label: 'Unabhängigkeit' },
-        '#B37': { key: 'raum_haben', kategorie: '#K6', label: 'Raum haben' },
-        '#B38': { key: 'spontaneitaet', kategorie: '#K6', label: 'Spontaneität' },
+        '#B34': { key: 'selbstbestimmung', kategorie: '#K5', label: 'Selbstbestimmung' },
+        '#B35': { key: 'waehlen_koennen', kategorie: '#K5', label: 'Wählen können' },
+        '#B36': { key: 'unabhaengigkeit', kategorie: '#K5', label: 'Unabhängigkeit' },
+        '#B37': { key: 'raum_haben', kategorie: '#K5', label: 'Raum haben' },
+        '#B38': { key: 'spontaneitaet', kategorie: '#K5', label: 'Spontaneität' },
 
         // ─────────────────────────────────────────────────────────────────────────
-        // TEILNAHME (#B39-#B45) - Kategorie #K5
+        // TEILNAHME (#B39-#B45) - Kategorie #K6
         // ─────────────────────────────────────────────────────────────────────────
-        '#B39': { key: 'zusammenarbeit', kategorie: '#K5', label: 'Zusammenarbeit' },
-        '#B40': { key: 'kommunikation', kategorie: '#K5', label: 'Kommunikation' },
-        '#B41': { key: 'gemeinschaft', kategorie: '#K5', label: 'Gemeinschaft' },
-        '#B42': { key: 'zugehoerigkeit', kategorie: '#K5', label: 'Zugehörigkeit' },
-        '#B43': { key: 'gegenseitigkeit', kategorie: '#K5', label: 'Gegenseitigkeit' },
-        '#B44': { key: 'respekt', kategorie: '#K5', label: 'Respekt' },
-        '#B45': { key: 'bedeutung_haben', kategorie: '#K5', label: 'Bedeutung haben' },
+        '#B39': { key: 'zusammenarbeit', kategorie: '#K6', label: 'Zusammenarbeit' },
+        '#B40': { key: 'kommunikation', kategorie: '#K6', label: 'Kommunikation' },
+        '#B41': { key: 'gemeinschaft', kategorie: '#K6', label: 'Gemeinschaft' },
+        '#B42': { key: 'zugehoerigkeit', kategorie: '#K6', label: 'Zugehörigkeit' },
+        '#B43': { key: 'gegenseitigkeit', kategorie: '#K6', label: 'Gegenseitigkeit' },
+        '#B44': { key: 'respekt', kategorie: '#K6', label: 'Respekt' },
+        '#B45': { key: 'bedeutung_haben', kategorie: '#K6', label: 'Bedeutung haben' },
 
         // ─────────────────────────────────────────────────────────────────────────
-        // MUSSE (#B46-#B49) - Kategorie #K8
+        // MUSSE (#B46-#B49) - Kategorie #K7
         // ─────────────────────────────────────────────────────────────────────────
-        '#B46': { key: 'schoenheit', kategorie: '#K8', label: 'Schönheit' },
-        '#B47': { key: 'freizeit', kategorie: '#K8', label: 'Freizeit' },
-        '#B48': { key: 'freude', kategorie: '#K8', label: 'Freude' },
-        '#B49': { key: 'humor', kategorie: '#K8', label: 'Humor' },
+        '#B46': { key: 'schoenheit', kategorie: '#K7', label: 'Schönheit' },
+        '#B47': { key: 'freizeit', kategorie: '#K7', label: 'Freizeit' },
+        '#B48': { key: 'freude', kategorie: '#K7', label: 'Freude' },
+        '#B49': { key: 'humor', kategorie: '#K7', label: 'Humor' },
 
         // ─────────────────────────────────────────────────────────────────────────
-        // IDENTITÄT (#B50-#B63) - Kategorie #K7
+        // IDENTITÄT (#B50-#B63) - Kategorie #K8
         // ─────────────────────────────────────────────────────────────────────────
-        '#B50': { key: 'authentizitaet', kategorie: '#K7', label: 'Authentizität' },
-        '#B51': { key: 'echtheit', kategorie: '#K7', label: 'Echtheit' },
-        '#B52': { key: 'integritaet', kategorie: '#K7', label: 'Integrität' },
-        '#B53': { key: 'praesenz', kategorie: '#K7', label: 'Präsenz' },
-        '#B54': { key: 'ordnung', kategorie: '#K7', label: 'Ordnung' },
-        '#B55': { key: 'bewusstheit', kategorie: '#K7', label: 'Bewusstheit' },
-        '#B56': { key: 'herausforderung', kategorie: '#K7', label: 'Herausforderung' },
-        '#B57': { key: 'klarheit', kategorie: '#K7', label: 'Klarheit' },
-        '#B58': { key: 'kompetenz', kategorie: '#K7', label: 'Kompetenz' },
-        '#B59': { key: 'effizienz', kategorie: '#K7', label: 'Effizienz' },
-        '#B60': { key: 'wirksamkeit', kategorie: '#K7', label: 'Wirksamkeit' },
-        '#B61': { key: 'wachstum', kategorie: '#K7', label: 'Wachstum' },
-        '#B62': { key: 'sinn', kategorie: '#K7', label: 'Sinn' },
-        '#B63': { key: 'beitrag_leisten', kategorie: '#K7', label: 'Einen Beitrag leisten' },
+        '#B50': { key: 'authentizitaet', kategorie: '#K8', label: 'Authentizität' },
+        '#B51': { key: 'echtheit', kategorie: '#K8', label: 'Echtheit' },
+        '#B52': { key: 'integritaet', kategorie: '#K8', label: 'Integrität' },
+        '#B53': { key: 'praesenz', kategorie: '#K8', label: 'Präsenz' },
+        '#B54': { key: 'ordnung', kategorie: '#K8', label: 'Ordnung' },
+        '#B55': { key: 'bewusstheit', kategorie: '#K8', label: 'Bewusstheit' },
+        '#B56': { key: 'herausforderung', kategorie: '#K8', label: 'Herausforderung' },
+        '#B57': { key: 'klarheit', kategorie: '#K8', label: 'Klarheit' },
+        '#B58': { key: 'kompetenz', kategorie: '#K8', label: 'Kompetenz' },
+        '#B59': { key: 'effizienz', kategorie: '#K8', label: 'Effizienz' },
+        '#B60': { key: 'wirksamkeit', kategorie: '#K8', label: 'Wirksamkeit' },
+        '#B61': { key: 'wachstum', kategorie: '#K8', label: 'Wachstum' },
+        '#B62': { key: 'sinn', kategorie: '#K8', label: 'Sinn' },
+        '#B63': { key: 'beitrag_leisten', kategorie: '#K8', label: 'Einen Beitrag leisten' },
 
         // ─────────────────────────────────────────────────────────────────────────
         // ERSCHAFFEN (#B64-#B68) - Kategorie #K9
