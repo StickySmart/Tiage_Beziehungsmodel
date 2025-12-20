@@ -646,11 +646,7 @@ body {
         padding: 3px 8px;
     }
 
-    .profile-review-modal {
-        max-width: 100%;
-        margin: 10px;
-        border-radius: 12px;
-    }
+    /* DEPRECATED: .profile-review-modal entfernt (Modal durch needs-editor.html ersetzt) */
 
     .profile-review-actions {
         grid-template-columns: 1fr 1fr;
