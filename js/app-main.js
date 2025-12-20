@@ -19293,9 +19293,10 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
                 }
             }, 100); // Kurzes Timeout um sicherzustellen dass DOM vollständig gerendert ist
         }
-        window.openProfileReviewModal = openProfileReviewModal;
+        // DEPRECATED: Modal wurde durch needs-editor.html Seite ersetzt
+        // window.openProfileReviewModal = openProfileReviewModal;
 
-        // Close Profile Review Modal
+        // Close Profile Review Modal (DEPRECATED)
         function closeProfileReviewModal(event) {
             // Prüfe ob das Klick-Event auf dem Overlay selbst stattfand (nicht auf Kind-Elementen)
             if (event && event.target !== event.currentTarget) return;
@@ -19322,9 +19323,9 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
                 clearProfileReviewSearch();
             }
         }
-        window.closeProfileReviewModal = closeProfileReviewModal;
+        // DEPRECATED: window.closeProfileReviewModal = closeProfileReviewModal;
 
-        // Toggle Source Explanation Section
+        // Toggle Source Explanation Section (DEPRECATED)
         function toggleSourceExplanation() {
             var content = document.getElementById('sourceExplanationContent');
             var toggle = document.getElementById('sourceExplanationToggle');
@@ -19333,7 +19334,7 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
                 toggle.classList.toggle('collapsed');
             }
         }
-        window.toggleSourceExplanation = toggleSourceExplanation;
+        // DEPRECATED: window.toggleSourceExplanation = toggleSourceExplanation;
 
         // ═══════════════════════════════════════════════════════════════════════════
         // BEDÜRFNIS SEARCH/FILTER FUNCTIONALITY
@@ -20778,7 +20779,7 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
                 }
             }
         }
-        window.resetProfileReview = resetProfileReview;
+        // DEPRECATED: window.resetProfileReview = resetProfileReview;
 
         /**
          * Updates the geschlechtsidentität card options based on primary geschlecht
@@ -20957,7 +20958,7 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
             // Optional: Show success message
             // alert('Profil gespeichert! ' + profileReviewChangesCount + ' Änderungen übernommen.');
         }
-        window.saveProfileReview = saveProfileReview;
+        // DEPRECATED: window.saveProfileReview = saveProfileReview;
 
         // Close modal on ESC
         document.addEventListener('keydown', function(e) {

@@ -5832,14 +5832,10 @@
         }
 
 /* ═══════════════════════════════════════════════════════════════════════════════ */
-/* PROFILE REVIEW MODAL - Styles für Profil-Attribut-Überprüfung */
+/* PROFILE REVIEW STYLES - Auch für needs-editor.html verwendet */
 /* ═══════════════════════════════════════════════════════════════════════════════ */
 
-.profile-review-modal {
-    background: var(--bg-card);
-    border: 1px solid var(--border);
-    border-radius: 16px;
-}
+/* DEPRECATED: .profile-review-modal wurde entfernt (Modal durch needs-editor.html ersetzt) */
 
 .profile-review-header {
     display: flex;
@@ -6262,10 +6258,7 @@
 
 /* Responsive */
 @media (max-width: 640px) {
-    .profile-review-modal {
-        max-width: 95vw !important;
-        max-height: 95vh !important;
-    }
+    /* DEPRECATED: .profile-review-modal entfernt */
 
     .profile-review-header-left {
         flex-direction: column;

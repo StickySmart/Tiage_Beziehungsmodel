@@ -1,7 +1,14 @@
 # Legacy Code Cleanup: Profile Review Modal
 
 > **Datum:** 2025-12-20
-> **Status:** Modal wurde durch `needs-editor.html` Seite ersetzt
+> **Status:** ERLEDIGT - Modal wurde durch `needs-editor.html` Seite ersetzt
+
+## Durchgeführte Änderungen
+
+1. **HTML entfernt:** `archetype-interaction.html` - Modal-Overlay (Zeilen 308-404)
+2. **JS deprecated:** `app-main.js` - window-Exports auskommentiert (openProfileReviewModal, closeProfileReviewModal, saveProfileReview, resetProfileReview, toggleSourceExplanation)
+3. **CSS deprecated:** `.profile-review-modal` Klasse in beiden CSS-Dateien als deprecated markiert
+4. **Behalten:** Alle anderen `.profile-review-*` CSS-Klassen werden noch von `needs-editor.html` verwendet!
 
 ---
 
