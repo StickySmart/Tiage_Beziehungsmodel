@@ -165,21 +165,7 @@
     }
 }
 
-/* Dark Mode Unterstützung */
-@media (prefers-color-scheme: light) {
-    .resonanz-profile-header-card {
-        background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-        border-color: rgba(139, 92, 246, 0.3);
-    }
-
-    .resonanz-profile-header-text {
-        color: #212529;
-    }
-
-    .resonanz-profile-value-item {
-        background: linear-gradient(135deg, rgba(255, 255, 255, 0.8) 0%, rgba(255, 255, 255, 0.6) 100%);
-    }
-}
+/* Dark Mode ist immer aktiv - kein Light-Mode Override */
 
 /* Animation für Werte-Updates */
 @keyframes valueUpdate {
