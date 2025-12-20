@@ -16,29 +16,33 @@ const ResonanzProfileHeaderCard = (function() {
 
     /**
      * Resonanz-Dimensionen Konfiguration
+     *
+     * HINWEIS: Nutzt DimensionKategorieFilter.DIMENSIONEN als Single Source of Truth.
+     * Falls nicht verfügbar, wird der lokale Fallback verwendet.
      */
-    const RESONANZ_CONFIG = {
-        'R1': {
-            label: 'Leben',
-            color: '#E63946',
-            icon: '🔥'
-        },
-        'R2': {
-            label: 'Philosophie',
-            color: '#2A9D8F',
-            icon: '🧠'
-        },
-        'R3': {
-            label: 'Dynamik',
-            color: '#8B5CF6',
-            icon: '⚡'
-        },
-        'R4': {
-            label: 'Identität',
-            color: '#F4A261',
-            icon: '💚'
+    function getResonanzConfig() {
+        // SSOT: Nutze DimensionKategorieFilter wenn verfügbar
+        if (typeof DimensionKategorieFilter !== 'undefined' && DimensionKategorieFilter.DIMENSIONEN) {
+            const ssot = DimensionKategorieFilter.DIMENSIONEN;
+            return {
+                'R1': { label: ssot.R1.label, color: ssot.R1.color, icon: ssot.R1.icon },
+                'R2': { label: ssot.R2.label, color: ssot.R2.color, icon: ssot.R2.icon },
+                'R3': { label: ssot.R3.label, color: ssot.R3.color, icon: ssot.R3.icon },
+                'R4': { label: ssot.R4.label, color: ssot.R4.color, icon: ssot.R4.icon }
+            };
         }
-    };
+
+        // Fallback: Lokale Definition
+        return {
+            'R1': { label: 'Leben', color: '#E63946', icon: '🔥' },
+            'R2': { label: 'Philosophie', color: '#2A9D8F', icon: '🧠' },
+            'R3': { label: 'Dynamik', color: '#8B5CF6', icon: '⚡' },
+            'R4': { label: 'Identität', color: '#F4A261', icon: '💚' }
+        };
+    }
+
+    // Für Rückwärtskompatibilität
+    const RESONANZ_CONFIG = getResonanzConfig();
 
     /**
      * Holt die aktuellen Resonanzwerte für die aktuelle Person

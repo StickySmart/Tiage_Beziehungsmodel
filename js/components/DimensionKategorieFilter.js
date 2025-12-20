@@ -22,7 +22,25 @@ const DimensionKategorieFilter = (function() {
     // ═══════════════════════════════════════════════════════════════════════════
 
     /**
-     * Resonanz-Dimensionen (R1-R4) für Filter
+     * ═══════════════════════════════════════════════════════════════════════════
+     * SINGLE SOURCE OF TRUTH: Resonanz-Dimensionen (R1-R4)
+     * ═══════════════════════════════════════════════════════════════════════════
+     *
+     * Diese Definition ist die EINZIGE Quelle für R1-R4 Konfiguration.
+     * Alle anderen Komponenten (ResonanzCard, ResonanzTreeView, ResonanzProfileHeaderCard)
+     * sollen diese Konstante verwenden.
+     *
+     * Felder:
+     * - id: R1, R2, R3, R4
+     * - key: leben, philosophie, dynamik, identitaet
+     * - kurzform: R1, R2, R3, R4 (für Anzeige)
+     * - label: Menschenlesbare Bezeichnung
+     * - icon: Emoji für visuelle Darstellung
+     * - color: Farbe für UI-Elemente
+     * - beschreibung: Kurzbeschreibung
+     * - sourceLabel: Ursprünglicher Dimensionsname (für ResonanzCard)
+     * - kategorienKeys: Kategorie-Keys als Array (für Score-Berechnung)
+     * - taxonomieDimensionen: Mapping zu TiageTaxonomie-Dimensionen (für TreeView)
      */
     const DIMENSIONEN = {
         'R1': {
@@ -32,7 +50,10 @@ const DimensionKategorieFilter = (function() {
             label: 'Leben',
             icon: '🔥',
             color: '#E63946',
-            beschreibung: 'Orientierung - Existenz, Zuneigung, Muße'
+            beschreibung: 'Orientierung - Existenz, Zuneigung, Muße',
+            sourceLabel: 'Orientierung',
+            kategorienKeys: ['existenz', 'zuneigung', 'musse', 'intimitaet_romantik'],
+            taxonomieDimensionen: ['#D3'] // Nähe-Distanz
         },
         'R2': {
             id: 'R2',
@@ -41,7 +62,10 @@ const DimensionKategorieFilter = (function() {
             label: 'Philosophie',
             icon: '🧠',
             color: '#2A9D8F',
-            beschreibung: 'Archetyp - Lebensplanung, Finanzen, Werte'
+            beschreibung: 'Archetyp - Lebensplanung, Finanzen, Werte',
+            sourceLabel: 'Archetyp',
+            kategorienKeys: ['freiheit', 'teilnahme', 'identitaet', 'lebensplanung', 'finanzen_karriere', 'werte_haltungen', 'soziales_leben', 'praktisches_leben'],
+            taxonomieDimensionen: ['#D1', '#D2'] // Beziehungsphilosophie, Werte-Alignment
         },
         'R3': {
             id: 'R3',
@@ -50,7 +74,10 @@ const DimensionKategorieFilter = (function() {
             label: 'Dynamik',
             icon: '⚡',
             color: '#8B5CF6',
-            beschreibung: 'Dominanz - Kontrolle, Hingabe, Macht'
+            beschreibung: 'Dominanz - Kontrolle, Hingabe, Macht',
+            sourceLabel: 'Dominanz',
+            kategorienKeys: ['dynamik', 'sicherheit'],
+            taxonomieDimensionen: ['#D4'] // Autonomie
         },
         'R4': {
             id: 'R4',
@@ -59,7 +86,10 @@ const DimensionKategorieFilter = (function() {
             label: 'Identität',
             icon: '💚',
             color: '#F4A261',
-            beschreibung: 'Geschlecht - Authentizität, Selbstausdruck'
+            beschreibung: 'Geschlecht - Authentizität, Selbstausdruck',
+            sourceLabel: 'Geschlecht',
+            kategorienKeys: ['verstaendnis', 'erschaffen', 'verbundenheit', 'kommunikation_stil'],
+            taxonomieDimensionen: ['#D5', '#D6'] // Kommunikation, Soziale-Kompatibilität
         }
     };
 
