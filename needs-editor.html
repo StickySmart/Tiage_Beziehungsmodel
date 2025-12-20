@@ -857,6 +857,325 @@
                 });
             }
         });
+
+        // ═══════════════════════════════════════════════════════════════════════════
+        // INTELLIGENT SEARCH SUGGESTIONS (adapted from app-main.js)
+        // ═══════════════════════════════════════════════════════════════════════════
+
+        var suggestionState = {
+            selectedIndex: -1,
+            suggestions: [],
+            activeSuggestion: null
+        };
+
+        function getPerspectiveForCategory(categoryKey) {
+            if (window.PerspektivenModal && window.PerspektivenModal.kategoriePerspektiven) {
+                var perspId = window.PerspektivenModal.kategoriePerspektiven[categoryKey];
+                if (perspId && window.PerspektivenModal.perspektiven[perspId]) {
+                    return window.PerspektivenModal.perspektiven[perspId];
+                }
+            }
+            return null;
+        }
+
+        function getPerspectiveForNeed(needId) {
+            if (!window.BeduerfnisKatalog || !window.BeduerfnisKatalog.beduerfnisse) return null;
+            var need = window.BeduerfnisKatalog.beduerfnisse[needId];
+            if (!need || !need.kategorie) return null;
+            var categoryId = need.kategorie;
+            if (!window.TiageTaxonomie || !window.TiageTaxonomie.kategorien) return null;
+            var category = window.TiageTaxonomie.kategorien[categoryId];
+            if (!category || !category.key) return null;
+            return getPerspectiveForCategory(category.key);
+        }
+
+        function generateSearchSuggestions(query) {
+            var suggestions = [];
+            var parts = query.split(',');
+            var lastPart = parts[parts.length - 1].trim();
+            var lowerQuery = lastPart.toLowerCase();
+
+            if (!lowerQuery) {
+                // Show all categories
+                if (window.TiageTaxonomie && window.TiageTaxonomie.kategorien) {
+                    Object.values(window.TiageTaxonomie.kategorien).forEach(function(kat) {
+                        suggestions.push({ type: 'category', id: kat.id, label: kat.label, description: kat.beschreibung, perspective: getPerspectiveForCategory(kat.key) });
+                    });
+                }
+                // Show all dimensions
+                if (window.TiageTaxonomie && window.TiageTaxonomie.dimensionen) {
+                    Object.values(window.TiageTaxonomie.dimensionen).forEach(function(dim) {
+                        suggestions.push({ type: 'dimension', id: dim.id, label: dim.label, description: dim.beschreibung, perspective: null });
+                    });
+                }
+                // Show all resonance factors
+                var resonanzfaktoren = {
+                    'R1': { id: 'R1', label: 'Leben', icon: '🔥', beschreibung: 'Orientierung - Existenz, Zuneigung, Muße, Intimität' },
+                    'R2': { id: 'R2', label: 'Philosophie', icon: '🧠', beschreibung: 'Archetyp - Lebensplanung, Werte, Finanzen' },
+                    'R3': { id: 'R3', label: 'Dynamik', icon: '⚡', beschreibung: 'Dominanz - Machtdynamik, BDSM, Sicherheit' },
+                    'R4': { id: 'R4', label: 'Identität', icon: '💚', beschreibung: 'Geschlecht - Authentizität, Kommunikation, Selbstausdruck' }
+                };
+                Object.values(resonanzfaktoren).forEach(function(r) {
+                    suggestions.push({ type: 'resonanz', id: r.id, label: r.label, icon: r.icon, description: r.beschreibung, perspective: null });
+                });
+                // Show all perspectives
+                if (window.TiageTaxonomie && window.TiageTaxonomie.perspektiven) {
+                    Object.values(window.TiageTaxonomie.perspektiven).forEach(function(p) {
+                        suggestions.push({ type: 'perspective', id: p.id, label: p.label, description: p.beschreibung, perspective: null });
+                    });
+                }
+                return suggestions;
+            }
+
+            // Search in needs
+            var needsSource = window.BeduerfnisKatalog?.beduerfnisse || (typeof BeduerfnisIds !== 'undefined' ? BeduerfnisIds.beduerfnisse : null);
+            if (needsSource) {
+                Object.values(needsSource).forEach(function(need) {
+                    var matchScore = 0;
+                    if (need.label && need.label.toLowerCase().includes(lowerQuery)) matchScore = 10;
+                    if (need.id && need.id.toLowerCase().includes(lowerQuery)) matchScore = Math.max(matchScore, 8);
+                    if (matchScore > 0) {
+                        suggestions.push({ type: 'need', id: need.id, label: need.label, description: need.frage || '', perspective: getPerspectiveForNeed(need.id), score: matchScore });
+                    }
+                });
+            }
+
+            // Search in categories
+            if (window.TiageTaxonomie && window.TiageTaxonomie.kategorien) {
+                Object.values(window.TiageTaxonomie.kategorien).forEach(function(kat) {
+                    var matchScore = 0;
+                    if (kat.label && kat.label.toLowerCase().includes(lowerQuery)) matchScore = 9;
+                    if (kat.beschreibung && kat.beschreibung.toLowerCase().includes(lowerQuery)) matchScore = Math.max(matchScore, 7);
+                    if (kat.id && kat.id.toLowerCase().includes(lowerQuery)) matchScore = Math.max(matchScore, 8);
+                    if (matchScore > 0) {
+                        suggestions.push({ type: 'category', id: kat.id, label: kat.label, description: kat.beschreibung, perspective: getPerspectiveForCategory(kat.key), score: matchScore });
+                    }
+                });
+            }
+
+            // Search in dimensions
+            if (window.TiageTaxonomie && window.TiageTaxonomie.dimensionen) {
+                Object.values(window.TiageTaxonomie.dimensionen).forEach(function(dim) {
+                    var matchScore = 0;
+                    if (dim.label && dim.label.toLowerCase().includes(lowerQuery)) matchScore = 8;
+                    if (dim.beschreibung && dim.beschreibung.toLowerCase().includes(lowerQuery)) matchScore = Math.max(matchScore, 6);
+                    if (dim.id && dim.id.toLowerCase().includes(lowerQuery)) matchScore = Math.max(matchScore, 7);
+                    if (matchScore > 0) {
+                        suggestions.push({ type: 'dimension', id: dim.id, label: dim.label, description: dim.beschreibung, perspective: null, score: matchScore });
+                    }
+                });
+            }
+
+            // Search in resonance factors
+            var resonanzfaktoren = {
+                'R1': { id: 'R1', label: 'Leben', icon: '🔥', beschreibung: 'Orientierung - Existenz, Zuneigung, Muße, Intimität' },
+                'R2': { id: 'R2', label: 'Philosophie', icon: '🧠', beschreibung: 'Archetyp - Lebensplanung, Werte, Finanzen' },
+                'R3': { id: 'R3', label: 'Dynamik', icon: '⚡', beschreibung: 'Dominanz - Machtdynamik, BDSM, Sicherheit' },
+                'R4': { id: 'R4', label: 'Identität', icon: '💚', beschreibung: 'Geschlecht - Authentizität, Kommunikation, Selbstausdruck' }
+            };
+            Object.values(resonanzfaktoren).forEach(function(r) {
+                var matchScore = 0;
+                if (r.label && r.label.toLowerCase().includes(lowerQuery)) matchScore = 8;
+                if (r.beschreibung && r.beschreibung.toLowerCase().includes(lowerQuery)) matchScore = Math.max(matchScore, 6);
+                if (r.id && r.id.toLowerCase().includes(lowerQuery)) matchScore = Math.max(matchScore, 7);
+                if (matchScore > 0) {
+                    suggestions.push({ type: 'resonanz', id: r.id, label: r.label, icon: r.icon, description: r.beschreibung, perspective: null, score: matchScore });
+                }
+            });
+
+            suggestions.sort(function(a, b) { return (b.score || 0) - (a.score || 0); });
+            return suggestions.slice(0, 15);
+        }
+
+        function renderSuggestionItem(suggestion, index) {
+            var typeLabel = { 'need': 'Bedürfnis', 'category': 'Kategorie', 'dimension': 'Dimension', 'resonanz': 'Resonanzfaktor', 'perspective': 'Perspektive' }[suggestion.type] || suggestion.type;
+            var iconPrefix = suggestion.icon ? suggestion.icon + ' ' : '';
+            var descriptionHTML = suggestion.description ? '<div class="suggestion-item-description">' + (suggestion.description.length > 120 ? suggestion.description.substring(0, 120) + '...' : suggestion.description) + '</div>' : '';
+            return '<div class="suggestion-item' + (index === suggestionState.selectedIndex ? ' active' : '') + '" data-index="' + index + '" data-value="' + suggestion.label + '">' +
+                '<div class="suggestion-item-header">' +
+                '<span class="suggestion-item-type type-' + suggestion.type + '">' + typeLabel + '</span>' +
+                '<span class="suggestion-item-label">' + iconPrefix + suggestion.label + '</span>' +
+                '<span class="suggestion-item-id">' + suggestion.id + '</span>' +
+                '</div>' + descriptionHTML + '</div>';
+        }
+
+        function displaySearchSuggestions(suggestions) {
+            var dropdown = document.getElementById('searchSuggestionsDropdown');
+            var content = dropdown ? dropdown.querySelector('.search-suggestions-content') : null;
+            if (!dropdown || !content) return;
+
+            suggestionState.suggestions = suggestions;
+            suggestionState.selectedIndex = -1;
+
+            if (suggestions.length === 0) {
+                content.innerHTML = '<div class="search-suggestions-empty">Keine Vorschläge gefunden</div>';
+                dropdown.style.display = 'block';
+                return;
+            }
+
+            var grouped = { 'need': [], 'category': [], 'dimension': [], 'resonanz': [], 'perspective': [] };
+            suggestions.forEach(function(s, i) { if (grouped[s.type]) grouped[s.type].push({suggestion: s, index: i}); });
+
+            var html = '';
+            var order = ['need', 'category', 'dimension', 'resonanz', 'perspective'];
+            var headers = { 'need': 'Bedürfnisse', 'category': 'Kategorien', 'dimension': 'Dimensionen', 'resonanz': 'Resonanzfaktoren', 'perspective': 'Perspektiven' };
+            order.forEach(function(type) {
+                if (grouped[type].length > 0) {
+                    html += '<div class="suggestion-section-header">' + headers[type] + '</div>';
+                    grouped[type].forEach(function(item) { html += renderSuggestionItem(item.suggestion, item.index); });
+                }
+            });
+
+            content.innerHTML = html;
+            dropdown.style.display = 'block';
+            content.querySelectorAll('.suggestion-item').forEach(function(item) {
+                item.addEventListener('click', function() { selectSuggestion(parseInt(item.getAttribute('data-index'))); });
+            });
+        }
+
+        function hideSearchSuggestions() {
+            var dropdown = document.getElementById('searchSuggestionsDropdown');
+            if (dropdown) dropdown.style.display = 'none';
+            suggestionState.selectedIndex = -1;
+        }
+        window.hideSearchSuggestions = hideSearchSuggestions;
+
+        function filterProfileReviewByNeed(query) {
+            // Use AttributeSummaryCard's filter function for the needs-editor page
+            if (typeof AttributeSummaryCard !== 'undefined' && typeof AttributeSummaryCard.filterBySearch === 'function') {
+                AttributeSummaryCard.filterBySearch(query);
+            }
+        }
+
+        function handleIntelligentSearch(query) {
+            filterProfileReviewByNeed(query);
+            var suggestions = generateSearchSuggestions(query);
+            displaySearchSuggestions(suggestions);
+        }
+        window.handleIntelligentSearch = handleIntelligentSearch;
+
+        function showSearchSuggestions() {
+            var input = document.getElementById('profileReviewSearchInput');
+            if (!input) return;
+            var suggestions = generateSearchSuggestions(input.value || '');
+            displaySearchSuggestions(suggestions);
+        }
+        window.showSearchSuggestions = showSearchSuggestions;
+
+        function selectSuggestion(index) {
+            if (index < 0 || index >= suggestionState.suggestions.length) return;
+            var suggestion = suggestionState.suggestions[index];
+            var input = document.getElementById('profileReviewSearchInput');
+            suggestionState.activeSuggestion = suggestion;
+
+            if (input) {
+                var parts = input.value.split(',');
+                parts[parts.length - 1] = suggestion.label;
+                input.value = parts.join(',');
+                filterProfileReviewByNeed(input.value);
+            }
+            hideSearchSuggestions();
+            displayActiveSuggestion();
+        }
+
+        function displayActiveSuggestion() {
+            var hint = document.getElementById('profileReviewSearchHint');
+            if (!hint) return;
+            var suggestion = suggestionState.activeSuggestion;
+            if (!suggestion) return;
+            var typeLabel = { 'need': 'Bedürfnis', 'category': 'Kategorie', 'dimension': 'Dimension', 'resonanz': 'Resonanzfaktor', 'perspective': 'Perspektive' }[suggestion.type] || suggestion.type;
+            var iconPrefix = suggestion.icon ? suggestion.icon + ' ' : '';
+            hint.innerHTML = '<span class="search-active-selection">' +
+                '<span class="search-active-type type-' + suggestion.type + '">' + typeLabel + '</span>' +
+                '<span class="search-active-label">' + iconPrefix + suggestion.label + '</span>' +
+                '<span class="search-active-id">' + suggestion.id + '</span>' +
+                '<button class="search-active-clear" onclick="clearActiveSuggestion()" title="Auswahl entfernen">×</button></span>';
+            hint.classList.add('has-active-selection');
+        }
+        window.displayActiveSuggestion = displayActiveSuggestion;
+
+        function clearActiveSuggestion() {
+            suggestionState.activeSuggestion = null;
+            var hint = document.getElementById('profileReviewSearchHint');
+            if (hint) { hint.innerHTML = ''; hint.classList.remove('has-active-selection'); }
+            var input = document.getElementById('profileReviewSearchInput');
+            if (input && input.value) handleIntelligentSearch(input.value);
+        }
+        window.clearActiveSuggestion = clearActiveSuggestion;
+
+        function handleSearchKeydown(event) {
+            var dropdown = document.getElementById('searchSuggestionsDropdown');
+            if (!dropdown || dropdown.style.display === 'none') return;
+            var suggestions = suggestionState.suggestions;
+            if (suggestions.length === 0) return;
+
+            switch (event.key) {
+                case 'ArrowDown':
+                    event.preventDefault();
+                    suggestionState.selectedIndex = Math.min(suggestionState.selectedIndex + 1, suggestions.length - 1);
+                    updateSuggestionSelection();
+                    break;
+                case 'ArrowUp':
+                    event.preventDefault();
+                    suggestionState.selectedIndex = Math.max(suggestionState.selectedIndex - 1, -1);
+                    updateSuggestionSelection();
+                    break;
+                case 'Enter':
+                    event.preventDefault();
+                    if (suggestionState.selectedIndex >= 0) selectSuggestion(suggestionState.selectedIndex);
+                    break;
+                case 'Escape':
+                    event.preventDefault();
+                    hideSearchSuggestions();
+                    break;
+            }
+        }
+        window.handleSearchKeydown = handleSearchKeydown;
+
+        function updateSuggestionSelection() {
+            var content = document.querySelector('.search-suggestions-content');
+            if (!content) return;
+            content.querySelectorAll('.suggestion-item').forEach(function(item, index) {
+                if (index === suggestionState.selectedIndex) {
+                    item.classList.add('active');
+                    item.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+                } else {
+                    item.classList.remove('active');
+                }
+            });
+        }
+
+        function clearProfileReviewSearch() {
+            var input = document.getElementById('profileReviewSearchInput');
+            if (input) input.value = '';
+            filterProfileReviewByNeed('');
+            hideSearchSuggestions();
+            clearActiveSuggestion();
+            // Update clear button visibility
+            var wrapper = document.querySelector('.profile-review-search-wrapper');
+            if (wrapper) wrapper.classList.remove('has-value');
+        }
+        window.clearProfileReviewSearch = clearProfileReviewSearch;
+
+        // Close suggestions when clicking outside
+        document.addEventListener('click', function(event) {
+            var searchWrapper = document.querySelector('.profile-review-search-wrapper');
+            var dropdown = document.getElementById('searchSuggestionsDropdown');
+            if (searchWrapper && dropdown && !searchWrapper.contains(event.target) && !dropdown.contains(event.target)) {
+                hideSearchSuggestions();
+            }
+        });
+
+        // Update clear button visibility on input
+        document.addEventListener('DOMContentLoaded', function() {
+            var input = document.getElementById('profileReviewSearchInput');
+            if (input) {
+                input.addEventListener('input', function() {
+                    var wrapper = document.querySelector('.profile-review-search-wrapper');
+                    if (wrapper) wrapper.classList.toggle('has-value', this.value.length > 0);
+                });
+            }
+        });
     </script>
 </body>
 </html>
