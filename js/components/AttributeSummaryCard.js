@@ -1142,9 +1142,6 @@ const AttributeSummaryCard = (function() {
                     <span class="flat-needs-title">Alle Bedürfnisse</span>
                     <span class="flat-needs-subtitle">${subtitleText}</span>
                 </div>
-                <button class="flat-needs-reset-btn" onclick="AttributeSummaryCard.resetFlatNeeds(); AttributeSummaryCard.reRenderFlatNeeds();" title="Auf Profil-Standard zurücksetzen">
-                    🔄 Standard
-                </button>
             </div>
 
             <!-- MULTI-SELECT CONTROL PANEL (immer sichtbar) -->
