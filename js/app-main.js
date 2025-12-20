@@ -20206,6 +20206,38 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
                 });
             }
 
+            // FIX #865: Aktiviere die entsprechenden Kategorien im DimensionKategorieFilter
+            if (typeof DimensionKategorieFilter !== 'undefined') {
+                // Erst alle bestehenden Filter zurücksetzen
+                DimensionKategorieFilter.reset();
+
+                if (suggestion.type === 'dimension' && suggestion.id) {
+                    // Bei Dimension: Aktiviere alle Kategorien, die zu dieser Dimension gehören
+                    if (typeof TiageTaxonomie !== 'undefined') {
+                        var kategorien = TiageTaxonomie.getKategorienFuerDimension
+                            ? TiageTaxonomie.getKategorienFuerDimension(suggestion.id)
+                            : [];
+                        kategorien.forEach(function(kat) {
+                            DimensionKategorieFilter.toggleKategorie(kat.id);
+                        });
+                        console.log('[selectSuggestion] Dimension aktiviert:', suggestion.id, '- Kategorien:', kategorien.map(function(k) { return k.id; }));
+                    }
+                } else if (suggestion.type === 'category' && suggestion.id) {
+                    // Bei Kategorie: Aktiviere diese Kategorie
+                    DimensionKategorieFilter.toggleKategorie(suggestion.id);
+                    console.log('[selectSuggestion] Kategorie aktiviert:', suggestion.id);
+                } else if (suggestion.type === 'resonanz' && suggestion.id) {
+                    // Bei Resonanzfaktor: Aktiviere alle zugehörigen Kategorien
+                    var resonanzKategorien = DimensionKategorieFilter.KATEGORIEN_PRO_DIMENSION[suggestion.id];
+                    if (resonanzKategorien && resonanzKategorien.length > 0) {
+                        resonanzKategorien.forEach(function(kat) {
+                            DimensionKategorieFilter.toggleKategorie(kat.id);
+                        });
+                        console.log('[selectSuggestion] Resonanzfaktor aktiviert:', suggestion.id, '- Kategorien:', resonanzKategorien.map(function(k) { return k.id; }));
+                    }
+                }
+            }
+
             if (input) {
                 // Preserve previous criteria (before last comma) and replace last part
                 var currentValue = input.value;
@@ -20276,6 +20308,10 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
             }
             // Reset filter to show all items
             filterProfileReviewByNeed('');
+            // FIX #865: Setze auch den DimensionKategorieFilter zurück
+            if (typeof DimensionKategorieFilter !== 'undefined') {
+                DimensionKategorieFilter.reset();
+            }
             // Hide suggestions dropdown
             hideSearchSuggestions();
         }
