@@ -761,8 +761,77 @@
         }
         window.hideSearchSuggestions = hideSearchSuggestions;
 
+        /**
+         * Hilfsfunktion: Kategorie-ID eines Bedürfnisses ermitteln
+         */
+        function getNeedCategoryId(needId) {
+            if (!window.BeduerfnisKatalog || !window.BeduerfnisKatalog.beduerfnisse) return null;
+            var need = window.BeduerfnisKatalog.beduerfnisse[needId];
+            return need ? need.kategorie : null;
+        }
+
+        /**
+         * Hilfsfunktion: Dimension-ID eines Bedürfnisses ermitteln
+         */
+        function getNeedDimensionId(needId) {
+            var categoryId = getNeedCategoryId(needId);
+            if (!categoryId) return null;
+            if (!window.TiageTaxonomie || !window.TiageTaxonomie.kategorien) return null;
+            var category = window.TiageTaxonomie.kategorien[categoryId];
+            return category ? category.dimension : null;
+        }
+
+        /**
+         * Hilfsfunktion: Alle durchsuchbaren Texte für ein Bedürfnis sammeln
+         */
+        function getSearchableTextsForNeed(needId, labelText) {
+            var texts = [labelText, needId];
+
+            // Kategorie-Info hinzufügen
+            var categoryId = getNeedCategoryId(needId);
+            if (categoryId && window.TiageTaxonomie && window.TiageTaxonomie.kategorien) {
+                var category = window.TiageTaxonomie.kategorien[categoryId];
+                if (category) {
+                    if (category.label) texts.push(category.label);
+                    if (category.key) texts.push(category.key);
+                    // Dimension-Info
+                    if (category.dimension && window.TiageTaxonomie.dimensionen) {
+                        var dimension = window.TiageTaxonomie.dimensionen[category.dimension];
+                        if (dimension) {
+                            if (dimension.label) texts.push(dimension.label);
+                            if (dimension.id) texts.push(dimension.id);
+                        }
+                    }
+                }
+            }
+
+            // Perspektive-Info hinzufügen
+            var perspective = getPerspectiveForNeed(needId);
+            if (perspective) {
+                if (perspective.label) texts.push(perspective.label);
+                if (perspective.id) texts.push(perspective.id);
+            }
+
+            return texts.join(' ').toLowerCase();
+        }
+
+        /**
+         * Prüft ob alle Komma-separierten Kriterien im Text gefunden werden (AND-Logik)
+         */
+        function matchesAllCriteria(searchableText, criteria) {
+            if (!criteria || criteria.length === 0) return true;
+
+            for (var i = 0; i < criteria.length; i++) {
+                var criterion = criteria[i].toLowerCase();
+                if (criterion && !searchableText.includes(criterion)) {
+                    return false;
+                }
+            }
+            return true;
+        }
+
         function filterProfileReviewByNeed(query) {
-            // Direkte Filterung der flat-need-item Elemente (SSOT: gleiche Logik wie app-main.js)
+            // Direkte Filterung der flat-need-item Elemente
             var flatNeedItems = document.querySelectorAll('.flat-need-item');
             if (!flatNeedItems.length) return;
 
@@ -774,16 +843,21 @@
                 return;
             }
 
+            // Komma-separierte Kriterien extrahieren (AND-Logik)
+            // "LIe,schm" → ["lie", "schm"] - beide müssen matchen
+            var criteria = query.split(',').map(function(c) { return c.trim().toLowerCase(); }).filter(function(c) { return c.length > 0; });
+
             var totalMatches = 0;
-            var lowerQuery = query.trim().toLowerCase();
 
             flatNeedItems.forEach(function(item) {
+                var needId = item.getAttribute('data-need') || '';
                 var needLabel = item.querySelector('.flat-need-label');
-                var labelText = needLabel ? needLabel.textContent.toLowerCase() : '';
-                var needId = (item.getAttribute('data-need') || '').toLowerCase();
+                var labelText = needLabel ? needLabel.textContent : '';
 
-                // Suche in Label und ID
-                var matches = labelText.includes(lowerQuery) || needId.includes(lowerQuery);
+                // Alle durchsuchbaren Texte sammeln (Label, ID, Kategorie, Dimension, Perspektive)
+                // und prüfen ob ALLE Kriterien irgendwo vorkommen
+                var searchableText = getSearchableTextsForNeed(needId, labelText);
+                var matches = matchesAllCriteria(searchableText, criteria);
 
                 item.classList.toggle('filter-hidden', !matches);
                 item.classList.toggle('filter-match', matches);
@@ -1111,8 +1185,77 @@
         }
         window.hideSearchSuggestions = hideSearchSuggestions;
 
+        /**
+         * Hilfsfunktion: Kategorie-ID eines Bedürfnisses ermitteln
+         */
+        function getNeedCategoryId(needId) {
+            if (!window.BeduerfnisKatalog || !window.BeduerfnisKatalog.beduerfnisse) return null;
+            var need = window.BeduerfnisKatalog.beduerfnisse[needId];
+            return need ? need.kategorie : null;
+        }
+
+        /**
+         * Hilfsfunktion: Dimension-ID eines Bedürfnisses ermitteln
+         */
+        function getNeedDimensionId(needId) {
+            var categoryId = getNeedCategoryId(needId);
+            if (!categoryId) return null;
+            if (!window.TiageTaxonomie || !window.TiageTaxonomie.kategorien) return null;
+            var category = window.TiageTaxonomie.kategorien[categoryId];
+            return category ? category.dimension : null;
+        }
+
+        /**
+         * Hilfsfunktion: Alle durchsuchbaren Texte für ein Bedürfnis sammeln
+         */
+        function getSearchableTextsForNeed(needId, labelText) {
+            var texts = [labelText, needId];
+
+            // Kategorie-Info hinzufügen
+            var categoryId = getNeedCategoryId(needId);
+            if (categoryId && window.TiageTaxonomie && window.TiageTaxonomie.kategorien) {
+                var category = window.TiageTaxonomie.kategorien[categoryId];
+                if (category) {
+                    if (category.label) texts.push(category.label);
+                    if (category.key) texts.push(category.key);
+                    // Dimension-Info
+                    if (category.dimension && window.TiageTaxonomie.dimensionen) {
+                        var dimension = window.TiageTaxonomie.dimensionen[category.dimension];
+                        if (dimension) {
+                            if (dimension.label) texts.push(dimension.label);
+                            if (dimension.id) texts.push(dimension.id);
+                        }
+                    }
+                }
+            }
+
+            // Perspektive-Info hinzufügen
+            var perspective = getPerspectiveForNeed(needId);
+            if (perspective) {
+                if (perspective.label) texts.push(perspective.label);
+                if (perspective.id) texts.push(perspective.id);
+            }
+
+            return texts.join(' ').toLowerCase();
+        }
+
+        /**
+         * Prüft ob alle Komma-separierten Kriterien im Text gefunden werden (AND-Logik)
+         */
+        function matchesAllCriteria(searchableText, criteria) {
+            if (!criteria || criteria.length === 0) return true;
+
+            for (var i = 0; i < criteria.length; i++) {
+                var criterion = criteria[i].toLowerCase();
+                if (criterion && !searchableText.includes(criterion)) {
+                    return false;
+                }
+            }
+            return true;
+        }
+
         function filterProfileReviewByNeed(query) {
-            // Direkte Filterung der flat-need-item Elemente (SSOT: gleiche Logik wie app-main.js)
+            // Direkte Filterung der flat-need-item Elemente
             var flatNeedItems = document.querySelectorAll('.flat-need-item');
             if (!flatNeedItems.length) return;
 
@@ -1124,16 +1267,21 @@
                 return;
             }
 
+            // Komma-separierte Kriterien extrahieren (AND-Logik)
+            // "LIe,schm" → ["lie", "schm"] - beide müssen matchen
+            var criteria = query.split(',').map(function(c) { return c.trim().toLowerCase(); }).filter(function(c) { return c.length > 0; });
+
             var totalMatches = 0;
-            var lowerQuery = query.trim().toLowerCase();
 
             flatNeedItems.forEach(function(item) {
+                var needId = item.getAttribute('data-need') || '';
                 var needLabel = item.querySelector('.flat-need-label');
-                var labelText = needLabel ? needLabel.textContent.toLowerCase() : '';
-                var needId = (item.getAttribute('data-need') || '').toLowerCase();
+                var labelText = needLabel ? needLabel.textContent : '';
 
-                // Suche in Label und ID
-                var matches = labelText.includes(lowerQuery) || needId.includes(lowerQuery);
+                // Alle durchsuchbaren Texte sammeln (Label, ID, Kategorie, Dimension, Perspektive)
+                // und prüfen ob ALLE Kriterien irgendwo vorkommen
+                var searchableText = getSearchableTextsForNeed(needId, labelText);
+                var matches = matchesAllCriteria(searchableText, criteria);
 
                 item.classList.toggle('filter-hidden', !matches);
                 item.classList.toggle('filter-match', matches);
