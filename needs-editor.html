@@ -371,28 +371,142 @@
     <script src="js/components/ResonanzTreeView.js"></script>
     <script src="js/components/AttributeSummaryCard.js"></script>
     <script src="js/components/profile-components.js"></script>
+    <!-- PerspektivenModal für Need-Details -->
+    <script src="js/components/PerspektivenModal.js"></script>
 
     <script>
-        // openNeedWithResonance für needs-editor.html
-        // Scrollt zum Need und hebt es hervor
-        window.openNeedWithResonance = function(needId) {
-            // Finde das Need-Element (in AttributeSummaryCard oder flat-needs)
-            const needElement = document.querySelector(`[data-need="${needId}"]`) ||
-                               document.querySelector(`[data-need-id="${needId}"]`) ||
-                               document.querySelector(`.flat-need-item[data-need-id="${needId}"]`);
+        // ═══════════════════════════════════════════════════════════════════════════
+        // NEED DEFINITION MODAL FÜR NEEDS-EDITOR
+        // ═══════════════════════════════════════════════════════════════════════════
 
-            if (needElement) {
-                // Scroll zum Element
-                needElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        /**
+         * Öffnet das Bedürfnis-Modal mit Details
+         */
+        window.openNeedDefinitionModal = function(needId) {
+            const modal = document.getElementById('needDefinitionModal');
+            const body = document.getElementById('needDefinitionModalBody');
+            const title = document.getElementById('needDefinitionModalTitle');
 
-                // Highlight-Effekt
-                needElement.classList.add('need-highlight-flash');
-                setTimeout(() => {
-                    needElement.classList.remove('need-highlight-flash');
-                }, 1500);
-            } else {
-                console.log('[NeedsEditor] Need nicht gefunden:', needId);
+            if (!modal || !body) return;
+
+            // Need-Key ermitteln (kann #B-ID oder string-key sein)
+            let needKey = needId;
+            let needInfo = null;
+
+            // Versuche Need-Info aus BeduerfnisIds zu holen
+            if (typeof BeduerfnisIds !== 'undefined') {
+                if (needId.startsWith('#B')) {
+                    needInfo = BeduerfnisIds.beduerfnisse[needId];
+                    needKey = BeduerfnisIds.toKey(needId) || needId;
+                } else {
+                    // String-key zu #B-ID konvertieren
+                    const bId = BeduerfnisIds.toId(needId);
+                    if (bId) {
+                        needInfo = BeduerfnisIds.beduerfnisse[bId];
+                    }
+                }
             }
+
+            // Label ermitteln
+            const label = needInfo?.label || needKey.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
+            title.textContent = label;
+
+            // Kategorie ermitteln
+            let kategorie = 'Unbekannt';
+            let kategorieColor = '#888';
+            let kategorieKey = '';
+
+            if (needInfo?.kategorie && typeof TiageTaxonomie !== 'undefined') {
+                const katInfo = TiageTaxonomie.getKategorie(needInfo.kategorie);
+                if (katInfo) {
+                    kategorie = katInfo.label || katInfo.name;
+                    kategorieColor = katInfo.color || '#888';
+                    kategorieKey = katInfo.key || '';
+                }
+            }
+
+            // Aktuellen Wert aus TiageState holen
+            let currentValue = null;
+            if (typeof TiageState !== 'undefined') {
+                const flatNeeds = TiageState.get('flatNeeds.' + currentPerson) || {};
+                currentValue = flatNeeds[needKey] ?? flatNeeds[needId];
+            }
+
+            // PerspektivenModal für erweiterte Darstellung nutzen
+            if (typeof PerspektivenModal !== 'undefined') {
+                const needDef = {
+                    key: needKey,
+                    label: label,
+                    kategorie: kategorie,
+                    kategorieColor: kategorieColor,
+                    '#ID': needInfo?.id || needId,
+                    definition: needInfo?.kontext || `Das Bedürfnis nach ${label} ist ein wichtiger Aspekt für Wohlbefinden und Beziehungsqualität.`
+                };
+
+                body.innerHTML = PerspektivenModal.renderNeedModal(needDef, kategorieKey);
+
+                // Aktuellen Wert hinzufügen
+                if (currentValue !== null && currentValue !== undefined) {
+                    const valueHtml = `
+                        <div style="margin-top: 16px; padding: 12px; background: rgba(74,144,217,0.1); border-radius: 8px; border: 1px solid rgba(74,144,217,0.3);">
+                            <div style="display: flex; align-items: center; justify-content: space-between;">
+                                <span style="font-size: 12px; color: var(--text-muted);">Dein aktueller Wert:</span>
+                                <span style="font-size: 18px; font-weight: 600; color: var(--accent-primary, #4a90d9);">${currentValue}</span>
+                            </div>
+                            <div style="margin-top: 8px; height: 6px; background: rgba(255,255,255,0.1); border-radius: 3px; overflow: hidden;">
+                                <div style="width: ${currentValue}%; height: 100%; background: var(--accent-primary, #4a90d9); border-radius: 3px;"></div>
+                            </div>
+                        </div>
+                    `;
+                    body.innerHTML += valueHtml;
+                }
+            } else {
+                // Fallback ohne PerspektivenModal
+                body.innerHTML = `
+                    <div style="display: flex; flex-direction: column; gap: 16px;">
+                        <div style="display: flex; align-items: center; gap: 8px;">
+                            <span style="width: 12px; height: 12px; border-radius: 50%; background: ${kategorieColor};"></span>
+                            <span style="font-size: 12px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px;">${kategorie}</span>
+                        </div>
+                        <div style="background: rgba(255,255,255,0.03); border-radius: 12px; padding: 16px; border-left: 3px solid ${kategorieColor};">
+                            <p style="font-size: 14px; line-height: 1.7; color: var(--text-primary); margin: 0;">
+                                Das Bedürfnis nach <strong>${label}</strong> beschreibt einen wichtigen Aspekt für persönliches Wohlbefinden und Beziehungsqualität.
+                            </p>
+                        </div>
+                        ${currentValue !== null ? `
+                        <div style="padding: 12px; background: rgba(74,144,217,0.1); border-radius: 8px;">
+                            <div style="display: flex; align-items: center; justify-content: space-between;">
+                                <span style="font-size: 12px; color: var(--text-muted);">Dein aktueller Wert:</span>
+                                <span style="font-size: 18px; font-weight: 600; color: var(--accent-primary, #4a90d9);">${currentValue}</span>
+                            </div>
+                        </div>
+                        ` : ''}
+                    </div>
+                `;
+            }
+
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        };
+
+        /**
+         * Schließt das Bedürfnis-Modal
+         */
+        window.closeNeedDefinitionModal = function(event) {
+            if (event && event.target !== event.currentTarget) return;
+            const modal = document.getElementById('needDefinitionModal');
+            if (modal) {
+                modal.classList.remove('active');
+                document.body.style.overflow = '';
+            }
+        };
+
+        /**
+         * Öffnet Need mit Resonanz-Daten (wird von AttributeSummaryCard aufgerufen)
+         */
+        window.openNeedWithResonance = function(needId) {
+            // Modal öffnen
+            openNeedDefinitionModal(needId);
         };
 
         // Current state
@@ -1558,5 +1672,76 @@
             }
         });
     </script>
+
+    <!-- Need Definition Modal -->
+    <div id="needDefinitionModal" class="need-definition-modal" onclick="closeNeedDefinitionModal(event)">
+        <div class="need-definition-modal-content" onclick="event.stopPropagation()">
+            <div class="need-definition-modal-header">
+                <h3 id="needDefinitionModalTitle">Bedürfnis</h3>
+                <button class="need-definition-modal-close" onclick="closeNeedDefinitionModal()">&times;</button>
+            </div>
+            <div id="needDefinitionModalBody" class="need-definition-modal-body">
+                <!-- Content wird dynamisch generiert -->
+            </div>
+        </div>
+    </div>
+
+    <style>
+        /* Need Definition Modal Styles */
+        .need-definition-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.7);
+            backdrop-filter: blur(4px);
+            z-index: 10000;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        .need-definition-modal.active {
+            display: flex;
+        }
+        .need-definition-modal-content {
+            background: var(--card-bg, #1a1a2e);
+            border-radius: 16px;
+            max-width: 500px;
+            width: 100%;
+            max-height: 80vh;
+            overflow-y: auto;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        .need-definition-modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 20px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+        .need-definition-modal-header h3 {
+            margin: 0;
+            font-size: 18px;
+            color: var(--text-primary, #fff);
+        }
+        .need-definition-modal-close {
+            background: none;
+            border: none;
+            font-size: 24px;
+            color: var(--text-muted, #888);
+            cursor: pointer;
+            padding: 0;
+            line-height: 1;
+        }
+        .need-definition-modal-close:hover {
+            color: var(--text-primary, #fff);
+        }
+        .need-definition-modal-body {
+            padding: 20px;
+        }
+    </style>
 </body>
 </html>
