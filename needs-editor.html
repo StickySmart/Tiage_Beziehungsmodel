@@ -721,10 +721,36 @@
         window.hideSearchSuggestions = hideSearchSuggestions;
 
         function filterProfileReviewByNeed(query) {
-            // Use AttributeSummaryCard's filter function for the needs-editor page
-            if (typeof AttributeSummaryCard !== 'undefined' && typeof AttributeSummaryCard.filterBySearch === 'function') {
-                AttributeSummaryCard.filterBySearch(query);
+            // Direkte Filterung der flat-need-item Elemente (SSOT: gleiche Logik wie app-main.js)
+            var flatNeedItems = document.querySelectorAll('.flat-need-item');
+            if (!flatNeedItems.length) return;
+
+            // Wenn leer, alle anzeigen
+            if (!query || !query.trim()) {
+                flatNeedItems.forEach(function(item) {
+                    item.classList.remove('filter-hidden', 'filter-match');
+                });
+                return;
             }
+
+            var totalMatches = 0;
+            var lowerQuery = query.trim().toLowerCase();
+
+            flatNeedItems.forEach(function(item) {
+                var needLabel = item.querySelector('.flat-need-label');
+                var labelText = needLabel ? needLabel.textContent.toLowerCase() : '';
+                var needId = (item.getAttribute('data-need') || '').toLowerCase();
+
+                // Suche in Label und ID
+                var matches = labelText.includes(lowerQuery) || needId.includes(lowerQuery);
+
+                item.classList.toggle('filter-hidden', !matches);
+                item.classList.toggle('filter-match', matches);
+
+                if (matches) totalMatches++;
+            });
+
+            console.log('[Filter] needs-editor:', query, '- Matches:', totalMatches);
         }
 
         function handleIntelligentSearch(query) {
@@ -1040,10 +1066,36 @@
         window.hideSearchSuggestions = hideSearchSuggestions;
 
         function filterProfileReviewByNeed(query) {
-            // Use AttributeSummaryCard's filter function for the needs-editor page
-            if (typeof AttributeSummaryCard !== 'undefined' && typeof AttributeSummaryCard.filterBySearch === 'function') {
-                AttributeSummaryCard.filterBySearch(query);
+            // Direkte Filterung der flat-need-item Elemente (SSOT: gleiche Logik wie app-main.js)
+            var flatNeedItems = document.querySelectorAll('.flat-need-item');
+            if (!flatNeedItems.length) return;
+
+            // Wenn leer, alle anzeigen
+            if (!query || !query.trim()) {
+                flatNeedItems.forEach(function(item) {
+                    item.classList.remove('filter-hidden', 'filter-match');
+                });
+                return;
             }
+
+            var totalMatches = 0;
+            var lowerQuery = query.trim().toLowerCase();
+
+            flatNeedItems.forEach(function(item) {
+                var needLabel = item.querySelector('.flat-need-label');
+                var labelText = needLabel ? needLabel.textContent.toLowerCase() : '';
+                var needId = (item.getAttribute('data-need') || '').toLowerCase();
+
+                // Suche in Label und ID
+                var matches = labelText.includes(lowerQuery) || needId.includes(lowerQuery);
+
+                item.classList.toggle('filter-hidden', !matches);
+                item.classList.toggle('filter-match', matches);
+
+                if (matches) totalMatches++;
+            });
+
+            console.log('[Filter] needs-editor:', query, '- Matches:', totalMatches);
         }
 
         function handleIntelligentSearch(query) {
