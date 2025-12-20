@@ -376,7 +376,30 @@
             // Get params from URL or localStorage
             const urlParams = new URLSearchParams(window.location.search);
             currentPerson = urlParams.get('person') || localStorage.getItem('tiage_needs_editor_person') || 'ich';
-            currentArchetype = urlParams.get('archetype') || localStorage.getItem('tiage_selected_archetype_ich') || 'polyamor';
+            currentArchetype = urlParams.get('archetype') || localStorage.getItem('tiage_selected_archetype_' + currentPerson) || 'polyamor';
+
+            // WICHTIG: Setze Archetyp in TiageState und lade Profil
+            // Damit TiageState.flatNeeds korrekt initialisiert wird
+            if (typeof TiageState !== 'undefined' && typeof ProfileCalculator !== 'undefined') {
+                // Setze den Archetyp in TiageState
+                TiageState.set('archetypes.' + currentPerson + '.primary', currentArchetype);
+
+                // Lade das Profil (berechnet flatNeeds und schreibt in TiageState)
+                const profileData = {
+                    archetyp: currentArchetype,
+                    geschlecht: TiageState.get('personDimensions.' + currentPerson + '.geschlecht') || null,
+                    dominanz: TiageState.get('personDimensions.' + currentPerson + '.dominanz') || null,
+                    orientierung: TiageState.get('personDimensions.' + currentPerson + '.orientierung') || null
+                };
+                ProfileCalculator.loadProfile(currentPerson, profileData);
+                console.log('[NeedsEditor] Profil geladen für', currentPerson, ':', currentArchetype);
+            }
+
+            // Set context for AttributeSummaryCard
+            window.currentProfileReviewContext = {
+                person: currentPerson,
+                archetypeKey: currentArchetype
+            };
 
             // Update person toggle
             updatePersonToggle();
@@ -487,10 +510,28 @@
             updatePersonToggle();
 
             // Update archetype for this person
-            currentArchetype = person === 'ich'
-                ? (localStorage.getItem('tiage_selected_archetype_ich') || 'polyamor')
-                : (localStorage.getItem('tiage_selected_archetype_partner') || 'polyamor');
+            currentArchetype = localStorage.getItem('tiage_selected_archetype_' + person) || 'polyamor';
             updateBadge();
+
+            // WICHTIG: Lade Profil für die neue Person
+            if (typeof TiageState !== 'undefined' && typeof ProfileCalculator !== 'undefined') {
+                TiageState.set('archetypes.' + person + '.primary', currentArchetype);
+
+                const profileData = {
+                    archetyp: currentArchetype,
+                    geschlecht: TiageState.get('personDimensions.' + person + '.geschlecht') || null,
+                    dominanz: TiageState.get('personDimensions.' + person + '.dominanz') || null,
+                    orientierung: TiageState.get('personDimensions.' + person + '.orientierung') || null
+                };
+                ProfileCalculator.loadProfile(person, profileData);
+                console.log('[NeedsEditor] Profil gewechselt zu', person, ':', currentArchetype);
+            }
+
+            // Update context for AttributeSummaryCard
+            window.currentProfileReviewContext = {
+                person: person,
+                archetypeKey: currentArchetype
+            };
 
             // Reload data and re-render
             loadNeedsData();
