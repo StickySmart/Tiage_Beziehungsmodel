@@ -2774,10 +2774,10 @@ input.resonanz-input:focus {
 }
 
 /* ═══════════════════════════════════════════════════════════════════════
-   RA PROFILE MODAL CARD (außerhalb Scrollbereich im Modal Header)
+   RESONANZ PROFILE MODAL CARD (außerhalb Scrollbereich im Modal Header)
    ─────────────────────────────────────────────────────────────────────── */
 
-.ra-profile-modal-card {
+.resonanz-profile-modal-card {
     background: linear-gradient(135deg, rgba(26, 26, 46, 0.6) 0%, rgba(15, 15, 26, 0.4) 100%);
     border: 2px solid rgba(139, 92, 246, 0.25);
     border-radius: 12px;
@@ -2787,7 +2787,7 @@ input.resonanz-input:focus {
                 inset 0 1px 0 rgba(255, 255, 255, 0.05);
 }
 
-.ra-profile-modal-title {
+.resonanz-profile-modal-title {
     display: flex;
     align-items: center;
     gap: 10px;
@@ -2796,12 +2796,12 @@ input.resonanz-input:focus {
     border-bottom: 1px solid rgba(139, 92, 246, 0.15);
 }
 
-.ra-profile-modal-icon {
+.resonanz-profile-modal-icon {
     font-size: 20px;
     filter: drop-shadow(0 2px 4px rgba(139, 92, 246, 0.4));
 }
 
-.ra-profile-modal-text {
+.resonanz-profile-modal-text {
     font-size: 15px;
     font-weight: 700;
     color: #f0f0f0;
@@ -2809,20 +2809,20 @@ input.resonanz-input:focus {
     letter-spacing: 0.3px;
 }
 
-.ra-profile-modal-count {
+.resonanz-profile-modal-count {
     font-size: 12px;
     color: rgba(139, 92, 246, 0.7);
     font-weight: 500;
     margin-left: auto;
 }
 
-.ra-profile-modal-values {
+.resonanz-profile-modal-values {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     gap: 10px;
 }
 
-.ra-profile-value-item {
+.resonanz-profile-value-item {
     background: linear-gradient(135deg, rgba(255, 255, 255, 0.04) 0%, rgba(255, 255, 255, 0.02) 100%);
     border: 1.5px solid var(--dimension-color, rgba(139, 92, 246, 0.25));
     border-radius: 10px;
@@ -2834,7 +2834,7 @@ input.resonanz-input:focus {
     overflow: hidden;
 }
 
-.ra-profile-value-item::before {
+.resonanz-profile-value-item::before {
     content: '';
     position: absolute;
     top: 0;
@@ -2845,7 +2845,7 @@ input.resonanz-input:focus {
     box-shadow: 0 1px 6px var(--dimension-color, rgba(139, 92, 246, 0.5));
 }
 
-.ra-profile-value-item:hover {
+.resonanz-profile-value-item:hover {
     transform: translateY(-2px);
     box-shadow: 0 6px 16px rgba(0, 0, 0, 0.25),
                 0 0 15px var(--dimension-color, rgba(139, 92, 246, 0.3));
@@ -2853,8 +2853,8 @@ input.resonanz-input:focus {
 }
 
 /* Aktiver/Ausgewählter State für Perspektive-Karten */
-.ra-profile-value-item.active,
-.ra-profile-value-item.selected {
+.resonanz-profile-value-item.active,
+.resonanz-profile-value-item.selected {
     transform: translateY(-2px);
     box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3),
                 0 0 25px var(--dimension-color, rgba(139, 92, 246, 0.5)),
@@ -2865,8 +2865,8 @@ input.resonanz-input:focus {
         var(--dimension-color, rgba(139, 92, 246, 0.15)) 100%);
 }
 
-.ra-profile-value-item.active::after,
-.ra-profile-value-item.selected::after {
+.resonanz-profile-value-item.active::after,
+.resonanz-profile-value-item.selected::after {
     content: '✓';
     position: absolute;
     top: 6px;
@@ -2877,7 +2877,7 @@ input.resonanz-input:focus {
     text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
 }
 
-.ra-profile-value-label {
+.resonanz-profile-value-label {
     font-size: 11px;
     font-weight: 700;
     color: var(--dimension-color, #8B5CF6);
@@ -2887,7 +2887,7 @@ input.resonanz-input:focus {
     text-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
 }
 
-.ra-profile-value-id {
+.resonanz-profile-value-id {
     font-size: 9px;
     color: rgba(255, 255, 255, 0.45);
     font-weight: 600;
@@ -2895,7 +2895,7 @@ input.resonanz-input:focus {
     letter-spacing: 0.3px;
 }
 
-.ra-profile-value-number {
+.resonanz-profile-value-number {
     font-size: 24px;
     font-weight: 900;
     color: #22c55e;
@@ -2907,35 +2907,35 @@ input.resonanz-input:focus {
 
 /* Responsive Design für Modal */
 @media (max-width: 600px) {
-    .ra-profile-modal-card {
+    .resonanz-profile-modal-card {
         padding: 12px;
         margin: 10px 12px;
     }
 
-    .ra-profile-modal-title {
+    .resonanz-profile-modal-title {
         flex-direction: column;
         align-items: flex-start;
         gap: 6px;
     }
 
-    .ra-profile-modal-count {
+    .resonanz-profile-modal-count {
         margin-left: 0;
     }
 
-    .ra-profile-modal-values {
+    .resonanz-profile-modal-values {
         grid-template-columns: repeat(2, 1fr);
         gap: 8px;
     }
 
-    .ra-profile-value-item {
+    .resonanz-profile-value-item {
         padding: 10px 6px;
     }
 
-    .ra-profile-value-number {
+    .resonanz-profile-value-number {
         font-size: 20px;
     }
 
-    .ra-profile-value-label {
+    .resonanz-profile-value-label {
         font-size: 10px;
     }
 }
@@ -2953,6 +2953,6 @@ input.resonanz-input:focus {
     }
 }
 
-.ra-profile-value-number.updating {
+.resonanz-profile-value-number.updating {
     animation: valueUpdate 0.35s ease-in-out;
 }

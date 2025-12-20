@@ -19193,9 +19193,9 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
             // Beim Klicken auf eine Perspektive wird der entsprechende Resonanzfaktor in die Suche eingegeben
             // ═══════════════════════════════════════════════════════════════════════════
             setTimeout(function() {
-                var raProfileCards = document.querySelectorAll('#raProfileModalValues .ra-profile-value-item');
-                if (raProfileCards && raProfileCards.length > 0) {
-                    raProfileCards.forEach(function(card) {
+                var resonanzProfileCards = document.querySelectorAll('#resonanzProfileModalValues .resonanz-profile-value-item');
+                if (resonanzProfileCards && resonanzProfileCards.length > 0) {
+                    resonanzProfileCards.forEach(function(card) {
                         // Entferne alte Event-Listener falls vorhanden
                         var oldCard = card.cloneNode(true);
                         card.parentNode.replaceChild(oldCard, card);
@@ -19203,7 +19203,7 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
                         // Füge neuen Click-Handler hinzu
                         oldCard.addEventListener('click', function() {
                             // Extrahiere den Resonanzfaktor (R1, R2, R3, R4) aus dem Element
-                            var resonanzIdElement = oldCard.querySelector('.ra-profile-value-id');
+                            var resonanzIdElement = oldCard.querySelector('.resonanz-profile-value-id');
                             if (resonanzIdElement) {
                                 var resonanzFaktor = resonanzIdElement.textContent.trim();
 
@@ -19211,7 +19211,7 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
                                 var wasActive = oldCard.classList.contains('active');
 
                                 // Entferne aktiven State von allen Perspektive-Karten
-                                var allCards = document.querySelectorAll('#raProfileModalValues .ra-profile-value-item');
+                                var allCards = document.querySelectorAll('#resonanzProfileModalValues .resonanz-profile-value-item');
                                 allCards.forEach(function(c) {
                                     c.classList.remove('active');
                                 });
@@ -19227,7 +19227,7 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
                                             clearProfileReviewSearch();
                                         }
                                     }
-                                    console.log('[RAProfile] Perspektive deaktiviert:', resonanzFaktor);
+                                    console.log('[ResonanzProfile] Perspektive deaktiviert:', resonanzFaktor);
                                 } else {
                                     // Setze aktiven State auf diese Karte
                                     oldCard.classList.add('active');
@@ -19242,7 +19242,7 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
                                         // Fokussiere das Suchfeld für bessere UX
                                         searchInput.focus();
 
-                                        console.log('[RAProfile] Suche nach Resonanzfaktor:', resonanzFaktor);
+                                        console.log('[ResonanzProfile] Suche nach Resonanzfaktor:', resonanzFaktor);
                                     }
                                 }
                             }
@@ -19251,7 +19251,7 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
                         // Füge hover-Stil hinzu um Klickbarkeit zu signalisieren
                         oldCard.style.cursor = 'pointer';
                     });
-                    console.log('[RAProfile] Click-Handler für', raProfileCards.length, 'Perspektiven hinzugefügt');
+                    console.log('[ResonanzProfile] Click-Handler für', resonanzProfileCards.length, 'Perspektiven hinzugefügt');
                 }
 
                 // ═══════════════════════════════════════════════════════════════════════════
@@ -19661,8 +19661,8 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
             }
 
             // Entferne aktiven State von allen Perspektive-Karten
-            var raProfileCards = document.querySelectorAll('#raProfileModalValues .ra-profile-value-item');
-            raProfileCards.forEach(function(card) {
+            var resonanzProfileCards = document.querySelectorAll('#resonanzProfileModalValues .resonanz-profile-value-item');
+            resonanzProfileCards.forEach(function(card) {
                 card.classList.remove('active');
             });
         }
@@ -20141,15 +20141,15 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
             suggestionState.activeSuggestion = suggestion;
 
             // Entferne aktiven State von allen Perspektive-Karten
-            var raProfileCards = document.querySelectorAll('#raProfileModalValues .ra-profile-value-item');
-            raProfileCards.forEach(function(card) {
+            var resonanzProfileCards = document.querySelectorAll('#resonanzProfileModalValues .resonanz-profile-value-item');
+            resonanzProfileCards.forEach(function(card) {
                 card.classList.remove('active');
             });
 
             // Wenn die Suggestion ein Resonanzfaktor ist, setze den entsprechenden aktiven State
             if (suggestion.type === 'resonanz' && suggestion.id) {
-                raProfileCards.forEach(function(card) {
-                    var idElement = card.querySelector('.ra-profile-value-id');
+                resonanzProfileCards.forEach(function(card) {
+                    var idElement = card.querySelector('.resonanz-profile-value-id');
                     if (idElement && idElement.textContent.trim() === suggestion.id) {
                         card.classList.add('active');
                     }

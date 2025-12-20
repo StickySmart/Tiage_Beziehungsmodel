@@ -1,11 +1,11 @@
 /**
- * RA PROFILE HEADER CARD STYLING
+ * RESONANZ PROFILE HEADER CARD STYLING
  * ═══════════════════════════════════════════════════════════════════════
- * Styling für die RA-Profil-Karte im Header (außerhalb Scrollbereich)
+ * Styling für die Resonanz-Profil-Karte im Header (außerhalb Scrollbereich)
  * © 2025 Ti-age.de Alle Rechte vorbehalten.
  */
 
-.ra-profile-header-card {
+.resonanz-profile-header-card {
     background: linear-gradient(135deg, #1a1a2e 0%, #0f0f1a 100%);
     border: 2px solid rgba(139, 92, 246, 0.3);
     border-radius: 16px;
@@ -17,7 +17,7 @@
     backdrop-filter: blur(10px);
 }
 
-.ra-profile-header-title {
+.resonanz-profile-header-title {
     display: flex;
     align-items: center;
     gap: 12px;
@@ -26,12 +26,12 @@
     border-bottom: 2px solid rgba(139, 92, 246, 0.2);
 }
 
-.ra-profile-header-icon {
+.resonanz-profile-header-icon {
     font-size: 24px;
     filter: drop-shadow(0 2px 4px rgba(139, 92, 246, 0.5));
 }
 
-.ra-profile-header-text {
+.resonanz-profile-header-text {
     font-size: 18px;
     font-weight: 700;
     color: #f0f0f0;
@@ -39,20 +39,20 @@
     letter-spacing: 0.5px;
 }
 
-.ra-profile-header-count {
+.resonanz-profile-header-count {
     font-size: 14px;
     color: rgba(139, 92, 246, 0.8);
     font-weight: 500;
     margin-left: auto;
 }
 
-.ra-profile-header-values {
+.resonanz-profile-header-values {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     gap: 16px;
 }
 
-.ra-profile-value-item {
+.resonanz-profile-value-item {
     background: linear-gradient(135deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.02) 100%);
     border: 2px solid var(--dimension-color, rgba(139, 92, 246, 0.3));
     border-radius: 12px;
@@ -64,16 +64,16 @@
     overflow: hidden;
 }
 
-.ra-profile-value-item.clickable {
+.resonanz-profile-value-item.clickable {
     cursor: pointer;
     user-select: none;
 }
 
-.ra-profile-value-item.clickable:active {
+.resonanz-profile-value-item.clickable:active {
     transform: translateY(-2px) scale(0.98);
 }
 
-.ra-profile-value-item::before {
+.resonanz-profile-value-item::before {
     content: '';
     position: absolute;
     top: 0;
@@ -84,14 +84,14 @@
     box-shadow: 0 2px 8px var(--dimension-color, rgba(139, 92, 246, 0.6));
 }
 
-.ra-profile-value-item:hover {
+.resonanz-profile-value-item:hover {
     transform: translateY(-4px);
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3),
                 0 0 20px var(--dimension-color, rgba(139, 92, 246, 0.4));
     border-color: var(--dimension-color, rgba(139, 92, 246, 0.6));
 }
 
-.ra-profile-value-label {
+.resonanz-profile-value-label {
     font-size: 14px;
     font-weight: 700;
     color: var(--dimension-color, #8B5CF6);
@@ -101,7 +101,7 @@
     text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
 }
 
-.ra-profile-value-id {
+.resonanz-profile-value-id {
     font-size: 11px;
     color: rgba(255, 255, 255, 0.5);
     font-weight: 600;
@@ -109,7 +109,7 @@
     letter-spacing: 0.5px;
 }
 
-.ra-profile-value-number {
+.resonanz-profile-value-number {
     font-size: 32px;
     font-weight: 900;
     color: #22c55e;
@@ -121,46 +121,46 @@
 
 /* Responsive Design */
 @media (max-width: 768px) {
-    .ra-profile-header-card {
+    .resonanz-profile-header-card {
         margin: 12px;
         padding: 16px;
     }
 
-    .ra-profile-header-title {
+    .resonanz-profile-header-title {
         flex-direction: column;
         align-items: flex-start;
         gap: 8px;
     }
 
-    .ra-profile-header-count {
+    .resonanz-profile-header-count {
         margin-left: 0;
     }
 
-    .ra-profile-header-values {
+    .resonanz-profile-header-values {
         grid-template-columns: repeat(2, 1fr);
         gap: 12px;
     }
 
-    .ra-profile-value-item {
+    .resonanz-profile-value-item {
         padding: 12px;
     }
 
-    .ra-profile-value-number {
+    .resonanz-profile-value-number {
         font-size: 24px;
     }
 }
 
 @media (max-width: 480px) {
-    .ra-profile-header-values {
+    .resonanz-profile-header-values {
         grid-template-columns: repeat(2, 1fr);
         gap: 8px;
     }
 
-    .ra-profile-value-label {
+    .resonanz-profile-value-label {
         font-size: 12px;
     }
 
-    .ra-profile-value-number {
+    .resonanz-profile-value-number {
         font-size: 20px;
     }
 }
@@ -180,6 +180,6 @@
     }
 }
 
-.ra-profile-value-number.updating {
+.resonanz-profile-value-number.updating {
     animation: valueUpdate 0.4s ease-in-out;
 }

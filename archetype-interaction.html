@@ -323,7 +323,7 @@
                 <button class="modal-close" onclick="closeProfileReviewModal()">&times;</button>
             </div>
 
-            <!-- RA Profile Summary Card - ENTFERNT (doppelte Anzeige, R1-R4 Zeile reicht) -->
+            <!-- Resonanz Profile Summary Card - ENTFERNT (doppelte Anzeige, R1-R4 Zeile reicht) -->
 
             <!-- Content Area - Search fixed, rest scrollable -->
             <!-- NOTE: overflow:visible is required so search dropdown isn't clipped! Scrolling is on .profile-review-scrollable -->
@@ -2207,16 +2207,16 @@
 
     <script src="js/app-main.js"></script>
 
-    <!-- RA Profile Modal Card Update Script -->
+    <!-- Resonanz Profile Modal Card Update Script -->
     <script>
         /**
-         * Aktualisiert die RA-Profil-Karte im Profile Review Modal
+         * Aktualisiert die Resonanz-Profil-Karte im Profile Review Modal
          * mit den aktuellen Resonanzfaktoren der Person
          */
-        function updateRAProfileModalCard() {
+        function updateResonanzProfileModalCard() {
             // Prüfe ob ResonanzCard verfügbar ist
             if (typeof ResonanzCard === 'undefined' || typeof ResonanzCard.getValues !== 'function') {
-                console.warn('[RA Profile Modal Card] ResonanzCard nicht verfügbar');
+                console.warn('[Resonanz Profile Modal Card] ResonanzCard nicht verfügbar');
                 return;
             }
 
@@ -2228,13 +2228,13 @@
             // Hole Resonanzwerte für die Person
             const values = ResonanzCard.getValues(person);
             if (!values) {
-                console.warn('[RA Profile Modal Card] Keine Werte verfügbar');
+                console.warn('[Resonanz Profile Modal Card] Keine Werte verfügbar');
                 return;
             }
 
             // Aktualisiere die HTML-Elemente
             ['R1', 'R2', 'R3', 'R4'].forEach(key => {
-                const valueElement = document.getElementById(`raProfileValue-${key}`);
+                const valueElement = document.getElementById(`resonanzProfileValue-${key}`);
                 if (valueElement && values[key] !== undefined) {
                     const newValue = values[key].toFixed(2);
 
@@ -2247,7 +2247,7 @@
                 }
             });
 
-            console.log('[RA Profile Modal Card] Werte aktualisiert für', person, values);
+            console.log('[Resonanz Profile Modal Card] Werte aktualisiert für', person, values);
         }
 
         // Lausche auf Resonanzfaktoren-Änderungen
@@ -2255,7 +2255,7 @@
             // Nur aktualisieren wenn Modal sichtbar ist
             const modal = document.getElementById('profileReviewModal');
             if (modal && !modal.classList.contains('hidden') && modal.style.display !== 'none') {
-                updateRAProfileModalCard();
+                updateResonanzProfileModalCard();
             }
         });
 
@@ -2271,7 +2271,7 @@
                                         !profileReviewModal.classList.contains('hidden');
                         if (isVisible) {
                             // Kurze Verzögerung für DOM-Updates
-                            setTimeout(updateRAProfileModalCard, 100);
+                            setTimeout(updateResonanzProfileModalCard, 100);
                         }
                     }
                 });
@@ -2285,9 +2285,9 @@
 
         // Initial-Update wenn DOM geladen ist
         if (document.readyState === 'complete') {
-            updateRAProfileModalCard();
+            updateResonanzProfileModalCard();
         } else {
-            window.addEventListener('load', updateRAProfileModalCard);
+            window.addEventListener('load', updateResonanzProfileModalCard);
         }
 
         /**
