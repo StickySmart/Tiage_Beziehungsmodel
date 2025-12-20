@@ -371,28 +371,212 @@
     <script src="js/components/ResonanzTreeView.js"></script>
     <script src="js/components/AttributeSummaryCard.js"></script>
     <script src="js/components/profile-components.js"></script>
+    <!-- PerspektivenModal für Need-Details -->
+    <script src="js/components/PerspektivenModal.js"></script>
 
     <script>
-        // openNeedWithResonance für needs-editor.html
-        // Scrollt zum Need und hebt es hervor
-        window.openNeedWithResonance = function(needId) {
-            // Finde das Need-Element (in AttributeSummaryCard oder flat-needs)
-            const needElement = document.querySelector(`[data-need="${needId}"]`) ||
-                               document.querySelector(`[data-need-id="${needId}"]`) ||
-                               document.querySelector(`.flat-need-item[data-need-id="${needId}"]`);
+        // ═══════════════════════════════════════════════════════════════════════════
+        // NEED DEFINITION MODAL - DIREKT AUS BEDUERFNIS-KATALOG
+        // ═══════════════════════════════════════════════════════════════════════════
 
-            if (needElement) {
-                // Scroll zum Element
-                needElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        /**
+         * Öffnet das Bedürfnis-Modal mit Details direkt aus BeduerfnisKatalog
+         */
+        window.openNeedDefinitionModal = function(needId) {
+            const modal = document.getElementById('needDefinitionModal');
+            const body = document.getElementById('needDefinitionModalBody');
+            const title = document.getElementById('needDefinitionModalTitle');
 
-                // Highlight-Effekt
-                needElement.classList.add('need-highlight-flash');
-                setTimeout(() => {
-                    needElement.classList.remove('need-highlight-flash');
-                }, 1500);
-            } else {
-                console.log('[NeedsEditor] Need nicht gefunden:', needId);
+            if (!modal || !body) return;
+
+            // Katalog prüfen
+            const katalog = window.BeduerfnisKatalog;
+            if (!katalog) {
+                body.innerHTML = '<p style="color: var(--text-muted);">Katalog nicht geladen.</p>';
+                modal.classList.add('active');
+                return;
             }
+
+            // Need-ID ermitteln (kann #B-ID oder string-key sein)
+            let bId = needId;
+            if (!needId.startsWith('#B') && typeof BeduerfnisIds !== 'undefined') {
+                bId = BeduerfnisIds.toId(needId) || needId;
+            }
+
+            // Need aus Katalog holen
+            const need = katalog.beduerfnisse[bId];
+            if (!need) {
+                body.innerHTML = `<p style="color: var(--text-muted);">Bedürfnis ${needId} nicht gefunden.</p>`;
+                modal.classList.add('active');
+                return;
+            }
+
+            // Titel setzen
+            title.textContent = need.label;
+
+            // Kategorie, Dimension, Perspektive aus Katalog holen
+            const kategorie = katalog.kategorien[need.kategorie];
+            const dimension = katalog.dimensionen[need.dimension];
+            const perspektive = kategorie ? katalog.perspektiven[getPerspektiveForKategorie(need.kategorie)] : null;
+
+            // Aktuellen Wert aus TiageState holen
+            let currentValue = null;
+            let needKey = typeof BeduerfnisIds !== 'undefined' ? BeduerfnisIds.toKey(bId) : bId;
+            if (typeof TiageState !== 'undefined') {
+                const flatNeeds = TiageState.get('flatNeeds.' + currentPerson) || {};
+                currentValue = flatNeeds[needKey] ?? flatNeeds[bId];
+            }
+
+            // HTML aufbauen
+            let html = '<div class="need-modal-content">';
+
+            // ID Badge
+            html += `
+                <div class="need-modal-id-row">
+                    <span class="need-modal-id">${need.id}</span>
+                    ${need.frageTyp ? `<span class="need-modal-type need-modal-type-${need.frageTyp}">${need.frageTyp === 'haupt' ? '📋 Hauptfrage' : '📑 Nuance'}</span>` : ''}
+                </div>
+            `;
+
+            // Kategorie & Dimension
+            html += `<div class="need-modal-meta-grid">`;
+
+            if (kategorie) {
+                html += `
+                    <div class="need-modal-meta-item">
+                        <span class="need-modal-meta-label">Kategorie</span>
+                        <span class="need-modal-meta-value" style="color: ${kategorie.color}">
+                            <span class="need-modal-dot" style="background: ${kategorie.color}"></span>
+                            ${kategorie.label}
+                        </span>
+                    </div>
+                `;
+            }
+
+            if (dimension) {
+                html += `
+                    <div class="need-modal-meta-item">
+                        <span class="need-modal-meta-label">Dimension</span>
+                        <span class="need-modal-meta-value" style="color: ${dimension.color}">
+                            <span class="need-modal-badge" style="background: ${dimension.color}">${dimension.kurzform}</span>
+                            ${dimension.label}
+                        </span>
+                    </div>
+                `;
+            }
+
+            if (perspektive) {
+                html += `
+                    <div class="need-modal-meta-item">
+                        <span class="need-modal-meta-label">Perspektive</span>
+                        <span class="need-modal-meta-value">
+                            ${perspektive.id} ${perspektive.label}
+                        </span>
+                    </div>
+                `;
+            }
+
+            html += `</div>`;
+
+            // Frage (wenn vorhanden)
+            if (need.frage) {
+                html += `
+                    <div class="need-modal-question">
+                        <span class="need-modal-question-icon">❓</span>
+                        <span class="need-modal-question-text">${need.frage}</span>
+                    </div>
+                `;
+            }
+
+            // Kontext (bei Nuancen)
+            if (need.kontext) {
+                html += `
+                    <div class="need-modal-context">
+                        <span class="need-modal-context-label">Kontext:</span>
+                        <span class="need-modal-context-text">${need.kontext}</span>
+                    </div>
+                `;
+            }
+
+            // Hauptbedürfnis-Referenz (bei Nuancen)
+            if (need.hauptbeduerfnis) {
+                const hauptNeed = katalog.beduerfnisse[need.hauptbeduerfnis];
+                if (hauptNeed) {
+                    html += `
+                        <div class="need-modal-parent">
+                            <span class="need-modal-parent-label">Gehört zu:</span>
+                            <span class="need-modal-parent-link" onclick="openNeedDefinitionModal('${need.hauptbeduerfnis}')">${hauptNeed.label} (${need.hauptbeduerfnis})</span>
+                        </div>
+                    `;
+                }
+            }
+
+            // Nuancen (bei Hauptfragen)
+            if (need.nuancen && need.nuancen.length > 0) {
+                html += `
+                    <div class="need-modal-nuancen">
+                        <span class="need-modal-nuancen-label">Nuancen:</span>
+                        <div class="need-modal-nuancen-list">
+                            ${need.nuancen.map(nId => {
+                                const n = katalog.beduerfnisse[nId];
+                                return n ? `<span class="need-modal-nuance-tag" onclick="openNeedDefinitionModal('${nId}')">${n.label}</span>` : '';
+                            }).join('')}
+                        </div>
+                    </div>
+                `;
+            }
+
+            // Aktueller Wert
+            if (currentValue !== null && currentValue !== undefined) {
+                html += `
+                    <div class="need-modal-value">
+                        <div class="need-modal-value-header">
+                            <span class="need-modal-value-label">Dein aktueller Wert</span>
+                            <span class="need-modal-value-number">${currentValue}</span>
+                        </div>
+                        <div class="need-modal-value-bar">
+                            <div class="need-modal-value-fill" style="width: ${currentValue}%"></div>
+                        </div>
+                    </div>
+                `;
+            }
+
+            html += '</div>';
+            body.innerHTML = html;
+
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        };
+
+        /**
+         * Hilfsfunktion: Perspektive für Kategorie ermitteln
+         */
+        function getPerspektiveForKategorie(katId) {
+            // GFK-Kern (#K1-#K10) → #P1 (Statistik/GFK)
+            // Dynamik (#K11) → #P4 (SexPositiv)
+            // Lebensthemen (#K12-#K18) → #P1
+            const katNum = parseInt(katId.replace('#K', ''));
+            if (katNum === 11) return '#P4';
+            return '#P1';
+        }
+
+        /**
+         * Schließt das Bedürfnis-Modal
+         */
+        window.closeNeedDefinitionModal = function(event) {
+            if (event && event.target !== event.currentTarget) return;
+            const modal = document.getElementById('needDefinitionModal');
+            if (modal) {
+                modal.classList.remove('active');
+                document.body.style.overflow = '';
+            }
+        };
+
+        /**
+         * Öffnet Need mit Resonanz-Daten (wird von AttributeSummaryCard aufgerufen)
+         */
+        window.openNeedWithResonance = function(needId) {
+            openNeedDefinitionModal(needId);
         };
 
         // Current state
@@ -1558,5 +1742,289 @@
             }
         });
     </script>
+
+    <!-- Need Definition Modal -->
+    <div id="needDefinitionModal" class="need-definition-modal" onclick="closeNeedDefinitionModal(event)">
+        <div class="need-definition-modal-content" onclick="event.stopPropagation()">
+            <div class="need-definition-modal-header">
+                <h3 id="needDefinitionModalTitle">Bedürfnis</h3>
+                <button class="need-definition-modal-close" onclick="closeNeedDefinitionModal()">&times;</button>
+            </div>
+            <div id="needDefinitionModalBody" class="need-definition-modal-body">
+                <!-- Content wird dynamisch generiert -->
+            </div>
+        </div>
+    </div>
+
+    <style>
+        /* Need Definition Modal Styles */
+        .need-definition-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.7);
+            backdrop-filter: blur(4px);
+            z-index: 10000;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        .need-definition-modal.active {
+            display: flex;
+        }
+        .need-definition-modal-content {
+            background: var(--card-bg, #1a1a2e);
+            border-radius: 16px;
+            max-width: 500px;
+            width: 100%;
+            max-height: 80vh;
+            overflow-y: auto;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        .need-definition-modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 20px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+        .need-definition-modal-header h3 {
+            margin: 0;
+            font-size: 18px;
+            color: var(--text-primary, #fff);
+        }
+        .need-definition-modal-close {
+            background: none;
+            border: none;
+            font-size: 24px;
+            color: var(--text-muted, #888);
+            cursor: pointer;
+            padding: 0;
+            line-height: 1;
+        }
+        .need-definition-modal-close:hover {
+            color: var(--text-primary, #fff);
+        }
+        .need-definition-modal-body {
+            padding: 20px;
+        }
+
+        /* Need Modal Content Styles */
+        .need-modal-content {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .need-modal-id-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .need-modal-id {
+            font-family: monospace;
+            font-size: 11px;
+            color: var(--text-muted, #888);
+            background: rgba(255,255,255,0.05);
+            padding: 3px 8px;
+            border-radius: 4px;
+        }
+
+        .need-modal-type {
+            font-size: 11px;
+            padding: 3px 8px;
+            border-radius: 4px;
+        }
+
+        .need-modal-type-haupt {
+            background: rgba(59,130,246,0.15);
+            color: #3B82F6;
+        }
+
+        .need-modal-type-nuance {
+            background: rgba(139,92,246,0.15);
+            color: #8B5CF6;
+        }
+
+        .need-modal-meta-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 12px;
+        }
+
+        .need-modal-meta-item {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .need-modal-meta-label {
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--text-muted, #888);
+        }
+
+        .need-modal-meta-value {
+            font-size: 13px;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .need-modal-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        .need-modal-badge {
+            font-size: 10px;
+            font-weight: 700;
+            color: #fff;
+            padding: 2px 6px;
+            border-radius: 4px;
+        }
+
+        .need-modal-question {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            padding: 14px;
+            background: rgba(59,130,246,0.08);
+            border-radius: 10px;
+            border-left: 3px solid #3B82F6;
+        }
+
+        .need-modal-question-icon {
+            font-size: 16px;
+            flex-shrink: 0;
+        }
+
+        .need-modal-question-text {
+            font-size: 14px;
+            line-height: 1.5;
+            color: var(--text-primary, #fff);
+            font-style: italic;
+        }
+
+        .need-modal-context {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 13px;
+        }
+
+        .need-modal-context-label {
+            color: var(--text-muted, #888);
+        }
+
+        .need-modal-context-text {
+            color: var(--text-primary, #fff);
+        }
+
+        .need-modal-parent {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 12px;
+        }
+
+        .need-modal-parent-label {
+            color: var(--text-muted, #888);
+        }
+
+        .need-modal-parent-link {
+            color: #3B82F6;
+            cursor: pointer;
+            text-decoration: underline;
+        }
+
+        .need-modal-parent-link:hover {
+            color: #60a5fa;
+        }
+
+        .need-modal-nuancen {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .need-modal-nuancen-label {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--text-muted, #888);
+        }
+
+        .need-modal-nuancen-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+
+        .need-modal-nuance-tag {
+            font-size: 11px;
+            padding: 4px 10px;
+            background: rgba(139,92,246,0.1);
+            color: #a78bfa;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .need-modal-nuance-tag:hover {
+            background: rgba(139,92,246,0.2);
+            color: #c4b5fd;
+        }
+
+        .need-modal-value {
+            margin-top: 8px;
+            padding: 14px;
+            background: rgba(74,144,217,0.08);
+            border-radius: 10px;
+            border: 1px solid rgba(74,144,217,0.2);
+        }
+
+        .need-modal-value-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .need-modal-value-label {
+            font-size: 12px;
+            color: var(--text-muted, #888);
+        }
+
+        .need-modal-value-number {
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--accent-primary, #4a90d9);
+        }
+
+        .need-modal-value-bar {
+            height: 8px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .need-modal-value-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--accent-primary, #4a90d9), #60a5fa);
+            border-radius: 4px;
+            transition: width 0.3s ease;
+        }
+    </style>
 </body>
 </html>
