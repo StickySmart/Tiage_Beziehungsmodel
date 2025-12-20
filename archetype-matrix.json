@@ -2099,10 +2099,19 @@
         }
       },
       "#B89": {
-        "label": "Kinderwunsch",
+        "label": "Kinder-&-Elternschaft",
         "kategorie": "#K12",
         "dimension": "#D1",
-        "archetypen": {}
+        "archetypen": {
+          "single": 25,
+          "duo": 85,
+          "duo_flex": 60,
+          "solopoly": 30,
+          "polyamor": 55,
+          "ra": 35,
+          "lat": 50,
+          "aromantisch": 30
+        }
       },
       "#B90": {
         "label": "Elternschaft",
