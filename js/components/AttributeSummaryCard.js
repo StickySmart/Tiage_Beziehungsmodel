@@ -1123,6 +1123,55 @@ const AttributeSummaryCard = (function() {
                     🔄 Standard
                 </button>
             </div>
+
+            <!-- MULTI-SELECT CONTROL PANEL (immer sichtbar) -->
+            <div id="multi-select-control-panel" class="multi-select-control-panel" style="display: flex;">
+                <div class="multi-select-info">
+                    <button class="multi-select-toggle-all-btn" onclick="AttributeSummaryCard.selectAllFilteredNeeds();" title="Alle gefilterten auswählen/abwählen">
+                        ☑ Alle/Keine
+                    </button>
+                    <button class="multi-select-toggle-changed-btn${showOnlyChangedNeeds ? ' active' : ''}" onclick="AttributeSummaryCard.toggleShowOnlyChanged();" title="Nur geänderte Bedürfnisse anzeigen">
+                        ✎ Geänderte
+                    </button>
+                    <span class="multi-select-count">0 ausgewählt</span>
+                    <div class="multi-select-actions">
+                        <button class="multi-select-lock-btn" onclick="AttributeSummaryCard.lockSelectedNeeds(true);" title="Ausgewählte sperren">
+                            🔒 Sperren
+                        </button>
+                        <button class="multi-select-unlock-btn" onclick="AttributeSummaryCard.lockSelectedNeeds(false);" title="Ausgewählte entsperren">
+                            🔓 Entsperren
+                        </button>
+                        <button class="multi-select-reset-btn" onclick="AttributeSummaryCard.resetSelectedNeedsValues();" title="Werte zurücksetzen">
+                            ↶ Zurücksetzen
+                        </button>
+                        <button class="multi-select-ok-btn" onclick="AttributeSummaryCard.clearNeedSelection();" title="Bestätigen und Auswahl aufheben">
+                            ✓ OK
+                        </button>
+                    </div>
+                </div>
+                <div class="multi-select-slider-container">
+                    <span class="multi-select-slider-label">Alle auf:</span>
+                    <input type="range" class="multi-select-slider" min="0" max="100" value="50"
+                           oninput="AttributeSummaryCard.updateSelectedNeedsValue(this.value)">
+                    <input type="text" class="multi-select-input" value="50" maxlength="3"
+                           onchange="AttributeSummaryCard.updateSelectedNeedsValue(this.value)">
+                </div>
+            </div>
+
+            <!-- DIMENSION-KATEGORIE-FILTER -->
+            <div id="flat-needs-dimension-filter"></div>
+
+            <!-- TREE-VIEW CONTAINER (für ResonanzTreeView) -->
+            <div id="tree-view-inline-container"></div>
+
+            <div class="flat-needs-sort-bar">
+                <span class="flat-needs-sort-label">Sortieren:</span>
+                <button class="flat-needs-sort-btn${currentFlatSortMode === 'value' ? ' active' : ''}" onclick="AttributeSummaryCard.setSortMode('value')">Wert</button>
+                <button class="flat-needs-sort-btn${currentFlatSortMode === 'name' ? ' active' : ''}" onclick="AttributeSummaryCard.setSortMode('name')">Name</button>
+                <button class="flat-needs-sort-btn${currentFlatSortMode === 'id' ? ' active' : ''}" onclick="AttributeSummaryCard.setSortMode('id')">#B Nr.</button>
+                <button class="flat-needs-sort-btn${currentFlatSortMode === 'status' ? ' active' : ''}" onclick="AttributeSummaryCard.setSortMode('status')">Status</button>
+                <button class="flat-needs-sort-btn${currentFlatSortMode === 'changed' ? ' active' : ''}" onclick="AttributeSummaryCard.setSortMode('changed')">Geändert</button>
+            </div>
         </div>`;
 
         // Direkte flache Liste ohne Kategorien-Wrapper
@@ -1148,6 +1197,7 @@ const AttributeSummaryCard = (function() {
             html += renderFlatNeedItem(need.id, need.label, need.value, isLocked, dimColor, shouldHide);
         });
         html += `</div>`; // Close flat-needs-list
+        html += '</div>'; // Close flat-needs-list-wrapper
 
         html += '</div>'; // Close flat-needs-container
         return html;
