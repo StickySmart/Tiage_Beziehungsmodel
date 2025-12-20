@@ -831,25 +831,21 @@
         }
 
         function filterProfileReviewByNeed(query) {
-            // Direkte Filterung der flat-need-item Elemente (SSOT: gleiche Logik wie app-main.js)
+            // Direkte Filterung der flat-need-item Elemente
             var flatNeedItems = document.querySelectorAll('.flat-need-item');
             if (!flatNeedItems.length) return;
 
-            var activeSuggestion = suggestionState.activeSuggestion;
-
-            // Wenn leer und keine aktive Suggestion, alle anzeigen
-            if ((!query || !query.trim()) && !activeSuggestion) {
+            // Wenn leer, alle anzeigen
+            if (!query || !query.trim()) {
                 flatNeedItems.forEach(function(item) {
                     item.classList.remove('filter-hidden', 'filter-match');
                 });
                 return;
             }
 
-            // Komma-separierte Kriterien extrahieren (ohne das activeSuggestion-Label)
-            var allCriteria = (query || '').split(',').map(function(c) { return c.trim(); }).filter(function(c) { return c.length > 0; });
-            var additionalCriteria = activeSuggestion
-                ? allCriteria.filter(function(c) { return c.toLowerCase() !== activeSuggestion.label.toLowerCase(); })
-                : allCriteria;
+            // Komma-separierte Kriterien extrahieren (AND-Logik)
+            // "LIe,schm" → ["lie", "schm"] - beide müssen matchen
+            var criteria = query.split(',').map(function(c) { return c.trim().toLowerCase(); }).filter(function(c) { return c.length > 0; });
 
             var totalMatches = 0;
 
@@ -857,36 +853,11 @@
                 var needId = item.getAttribute('data-need') || '';
                 var needLabel = item.querySelector('.flat-need-label');
                 var labelText = needLabel ? needLabel.textContent : '';
-                var matches = false;
 
-                // Schritt 1: Strukturierter Filter (Perspektive/Kategorie/Dimension)
-                if (activeSuggestion && activeSuggestion.type) {
-                    if (activeSuggestion.type === 'perspective') {
-                        var needPerspective = getPerspectiveForNeed(needId);
-                        matches = needPerspective && needPerspective.id === activeSuggestion.id;
-                    } else if (activeSuggestion.type === 'category') {
-                        matches = getNeedCategoryId(needId) === activeSuggestion.id;
-                    } else if (activeSuggestion.type === 'dimension' || activeSuggestion.type === 'resonanz') {
-                        matches = getNeedDimensionId(needId) === activeSuggestion.id;
-                    } else if (activeSuggestion.type === 'need') {
-                        matches = needId === activeSuggestion.id;
-                    } else {
-                        matches = true; // Unbekannter Typ, weiter mit Text-Suche
-                    }
-                } else {
-                    matches = true; // Keine Suggestion, weiter mit Text-Suche
-                }
-
-                // Schritt 2: Zusätzliche Text-Kriterien (AND-Logik)
-                if (matches && additionalCriteria.length > 0) {
-                    var searchableText = getSearchableTextsForNeed(needId, labelText);
-                    matches = matchesAllCriteria(searchableText, additionalCriteria);
-                }
-
-                // Wenn keine activeSuggestion und keine Kriterien, alle anzeigen
-                if (!activeSuggestion && allCriteria.length === 0) {
-                    matches = true;
-                }
+                // Alle durchsuchbaren Texte sammeln (Label, ID, Kategorie, Dimension, Perspektive)
+                // und prüfen ob ALLE Kriterien irgendwo vorkommen
+                var searchableText = getSearchableTextsForNeed(needId, labelText);
+                var matches = matchesAllCriteria(searchableText, criteria);
 
                 item.classList.toggle('filter-hidden', !matches);
                 item.classList.toggle('filter-match', matches);
@@ -894,9 +865,7 @@
                 if (matches) totalMatches++;
             });
 
-            console.log('[Filter] needs-editor:', query, '- Matches:', totalMatches,
-                activeSuggestion ? '(type: ' + activeSuggestion.type + ')' : '',
-                additionalCriteria.length > 0 ? '(+' + additionalCriteria.length + ' text criteria)' : '');
+            console.log('[Filter] needs-editor:', query, '- Matches:', totalMatches);
         }
 
         function handleIntelligentSearch(query) {
@@ -1286,25 +1255,21 @@
         }
 
         function filterProfileReviewByNeed(query) {
-            // Direkte Filterung der flat-need-item Elemente (SSOT: gleiche Logik wie app-main.js)
+            // Direkte Filterung der flat-need-item Elemente
             var flatNeedItems = document.querySelectorAll('.flat-need-item');
             if (!flatNeedItems.length) return;
 
-            var activeSuggestion = suggestionState.activeSuggestion;
-
-            // Wenn leer und keine aktive Suggestion, alle anzeigen
-            if ((!query || !query.trim()) && !activeSuggestion) {
+            // Wenn leer, alle anzeigen
+            if (!query || !query.trim()) {
                 flatNeedItems.forEach(function(item) {
                     item.classList.remove('filter-hidden', 'filter-match');
                 });
                 return;
             }
 
-            // Komma-separierte Kriterien extrahieren (ohne das activeSuggestion-Label)
-            var allCriteria = (query || '').split(',').map(function(c) { return c.trim(); }).filter(function(c) { return c.length > 0; });
-            var additionalCriteria = activeSuggestion
-                ? allCriteria.filter(function(c) { return c.toLowerCase() !== activeSuggestion.label.toLowerCase(); })
-                : allCriteria;
+            // Komma-separierte Kriterien extrahieren (AND-Logik)
+            // "LIe,schm" → ["lie", "schm"] - beide müssen matchen
+            var criteria = query.split(',').map(function(c) { return c.trim().toLowerCase(); }).filter(function(c) { return c.length > 0; });
 
             var totalMatches = 0;
 
@@ -1312,36 +1277,11 @@
                 var needId = item.getAttribute('data-need') || '';
                 var needLabel = item.querySelector('.flat-need-label');
                 var labelText = needLabel ? needLabel.textContent : '';
-                var matches = false;
 
-                // Schritt 1: Strukturierter Filter (Perspektive/Kategorie/Dimension)
-                if (activeSuggestion && activeSuggestion.type) {
-                    if (activeSuggestion.type === 'perspective') {
-                        var needPerspective = getPerspectiveForNeed(needId);
-                        matches = needPerspective && needPerspective.id === activeSuggestion.id;
-                    } else if (activeSuggestion.type === 'category') {
-                        matches = getNeedCategoryId(needId) === activeSuggestion.id;
-                    } else if (activeSuggestion.type === 'dimension' || activeSuggestion.type === 'resonanz') {
-                        matches = getNeedDimensionId(needId) === activeSuggestion.id;
-                    } else if (activeSuggestion.type === 'need') {
-                        matches = needId === activeSuggestion.id;
-                    } else {
-                        matches = true; // Unbekannter Typ, weiter mit Text-Suche
-                    }
-                } else {
-                    matches = true; // Keine Suggestion, weiter mit Text-Suche
-                }
-
-                // Schritt 2: Zusätzliche Text-Kriterien (AND-Logik)
-                if (matches && additionalCriteria.length > 0) {
-                    var searchableText = getSearchableTextsForNeed(needId, labelText);
-                    matches = matchesAllCriteria(searchableText, additionalCriteria);
-                }
-
-                // Wenn keine activeSuggestion und keine Kriterien, alle anzeigen
-                if (!activeSuggestion && allCriteria.length === 0) {
-                    matches = true;
-                }
+                // Alle durchsuchbaren Texte sammeln (Label, ID, Kategorie, Dimension, Perspektive)
+                // und prüfen ob ALLE Kriterien irgendwo vorkommen
+                var searchableText = getSearchableTextsForNeed(needId, labelText);
+                var matches = matchesAllCriteria(searchableText, criteria);
 
                 item.classList.toggle('filter-hidden', !matches);
                 item.classList.toggle('filter-match', matches);
@@ -1349,9 +1289,7 @@
                 if (matches) totalMatches++;
             });
 
-            console.log('[Filter] needs-editor:', query, '- Matches:', totalMatches,
-                activeSuggestion ? '(type: ' + activeSuggestion.type + ')' : '',
-                additionalCriteria.length > 0 ? '(+' + additionalCriteria.length + ' text criteria)' : '');
+            console.log('[Filter] needs-editor:', query, '- Matches:', totalMatches);
         }
 
         function handleIntelligentSearch(query) {
