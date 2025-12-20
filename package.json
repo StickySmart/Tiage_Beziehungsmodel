@@ -5,7 +5,11 @@
   "private": true,
   "scripts": {
     "version:show": "node -p \"require('./package.json').version\"",
-    "version:bump": "node scripts/bump-version.js"
+    "version:bump": "node scripts/bump-version.js",
+    "test": "node tests/ssot-validation.test.js && node tests/statistics.test.js",
+    "test:ssot": "node tests/ssot-validation.test.js",
+    "test:statistics": "node tests/statistics.test.js",
+    "validate": "node tests/ssot-validation.test.js"
   },
   "repository": {
     "type": "git",
