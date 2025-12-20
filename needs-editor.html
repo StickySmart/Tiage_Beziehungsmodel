@@ -893,8 +893,36 @@
                 var parts = input.value.split(',');
                 parts[parts.length - 1] = suggestion.label;
                 input.value = parts.join(',');
-                filterProfileReviewByNeed(input.value);
             }
+
+            // FIX: Bei Resonanzfaktor-Auswahl den DimensionKategorieFilter aktivieren
+            if (suggestion.type === 'resonanz' && typeof DimensionKategorieFilter !== 'undefined') {
+                // Erst alle Filter zurücksetzen
+                DimensionKategorieFilter.reset();
+                // Dann alle Kategorien des Resonanzfaktors aktivieren
+                var kategorien = DimensionKategorieFilter.KATEGORIEN_PRO_DIMENSION[suggestion.id];
+                if (kategorien && kategorien.length > 0) {
+                    kategorien.forEach(function(kat) {
+                        DimensionKategorieFilter.toggleKategorie(kat.id);
+                    });
+                    console.log('[Filter] Resonanzfaktor aktiviert:', suggestion.id, '- Kategorien:', kategorien.map(function(k) { return k.id; }));
+                }
+                // Textfilter leeren (da wir jetzt nach Kategorien filtern)
+                if (input) input.value = '';
+                filterProfileReviewByNeed('');
+            } else if (suggestion.type === 'category' && typeof DimensionKategorieFilter !== 'undefined') {
+                // Bei Kategorie-Auswahl nur diese Kategorie aktivieren
+                DimensionKategorieFilter.reset();
+                DimensionKategorieFilter.toggleKategorie(suggestion.id);
+                console.log('[Filter] Kategorie aktiviert:', suggestion.id);
+                // Textfilter leeren
+                if (input) input.value = '';
+                filterProfileReviewByNeed('');
+            } else {
+                // Für andere Typen (need, dimension, perspective) weiterhin Textfilter nutzen
+                filterProfileReviewByNeed(input ? input.value : '');
+            }
+
             hideSearchSuggestions();
             displayActiveSuggestion();
         }
@@ -1317,8 +1345,36 @@
                 var parts = input.value.split(',');
                 parts[parts.length - 1] = suggestion.label;
                 input.value = parts.join(',');
-                filterProfileReviewByNeed(input.value);
             }
+
+            // FIX: Bei Resonanzfaktor-Auswahl den DimensionKategorieFilter aktivieren
+            if (suggestion.type === 'resonanz' && typeof DimensionKategorieFilter !== 'undefined') {
+                // Erst alle Filter zurücksetzen
+                DimensionKategorieFilter.reset();
+                // Dann alle Kategorien des Resonanzfaktors aktivieren
+                var kategorien = DimensionKategorieFilter.KATEGORIEN_PRO_DIMENSION[suggestion.id];
+                if (kategorien && kategorien.length > 0) {
+                    kategorien.forEach(function(kat) {
+                        DimensionKategorieFilter.toggleKategorie(kat.id);
+                    });
+                    console.log('[Filter] Resonanzfaktor aktiviert:', suggestion.id, '- Kategorien:', kategorien.map(function(k) { return k.id; }));
+                }
+                // Textfilter leeren (da wir jetzt nach Kategorien filtern)
+                if (input) input.value = '';
+                filterProfileReviewByNeed('');
+            } else if (suggestion.type === 'category' && typeof DimensionKategorieFilter !== 'undefined') {
+                // Bei Kategorie-Auswahl nur diese Kategorie aktivieren
+                DimensionKategorieFilter.reset();
+                DimensionKategorieFilter.toggleKategorie(suggestion.id);
+                console.log('[Filter] Kategorie aktiviert:', suggestion.id);
+                // Textfilter leeren
+                if (input) input.value = '';
+                filterProfileReviewByNeed('');
+            } else {
+                // Für andere Typen (need, dimension, perspective) weiterhin Textfilter nutzen
+                filterProfileReviewByNeed(input ? input.value : '');
+            }
+
             hideSearchSuggestions();
             displayActiveSuggestion();
         }
@@ -1424,6 +1480,33 @@
                     var wrapper = document.querySelector('.profile-review-search-wrapper');
                     if (wrapper) wrapper.classList.toggle('has-value', this.value.length > 0);
                 });
+            }
+        });
+
+        // FIX: Bei Filter-Reset auch Suchstring und aktive Suggestion löschen
+        document.addEventListener('dimensionKategorieFilterChange', function(event) {
+            var kategorien = event.detail && event.detail.kategorien;
+            // Wenn Filter zurückgesetzt wurde (keine Kategorien aktiv)
+            if (!kategorien || kategorien.length === 0) {
+                // Suchstring leeren
+                var input = document.getElementById('profileReviewSearchInput');
+                if (input && input.value) {
+                    input.value = '';
+                    filterProfileReviewByNeed('');
+                }
+                // Aktive Suggestion löschen
+                if (suggestionState.activeSuggestion) {
+                    suggestionState.activeSuggestion = null;
+                    var hint = document.getElementById('profileReviewSearchHint');
+                    if (hint) {
+                        hint.innerHTML = '';
+                        hint.classList.remove('has-active-selection');
+                    }
+                }
+                // Clear button visibility aktualisieren
+                var wrapper = document.querySelector('.profile-review-search-wrapper');
+                if (wrapper) wrapper.classList.remove('has-value');
+                console.log('[Filter] Reset: Suchstring und aktive Suggestion gelöscht');
             }
         });
     </script>
