@@ -550,14 +550,27 @@ const AttributeSummaryCard = (function() {
             document.dispatchEvent(new CustomEvent('flatNeedChange', { bubbles: true }));
         }
 
-        // Filter zurücksetzen (Kategorien + "Nur Geänderte")
+        // Auswahl löschen und Liste neu rendern
+        clearNeedSelection();
+        reRenderFlatNeeds();
+    }
+
+    /**
+     * Setzt alle Filter zurück (Kategorien-Filter + "Nur Geänderte" Filter)
+     * OHNE Werte zu ändern
+     */
+    function resetFilters() {
+        console.log('[AttributeSummaryCard] Filter zurücksetzen');
+
+        // Kategorien-Filter zurücksetzen
         if (typeof DimensionKategorieFilter !== 'undefined') {
             DimensionKategorieFilter.reset();
         }
+
+        // "Nur Geänderte" Filter zurücksetzen
         showOnlyChangedNeeds = false;
 
-        // Auswahl löschen und Liste neu rendern
-        clearNeedSelection();
+        // Liste neu rendern
         reRenderFlatNeeds();
     }
 
@@ -1161,8 +1174,11 @@ const AttributeSummaryCard = (function() {
                         <button class="multi-select-unlock-btn" onclick="AttributeSummaryCard.lockSelectedNeeds(false);" title="Ausgewählte entsperren">
                             🔓 Entsperren
                         </button>
-                        <button class="multi-select-reset-btn" onclick="AttributeSummaryCard.resetSelectedNeedsValues();" title="Werte zurücksetzen">
-                            ↶ Zurücksetzen
+                        <button class="multi-select-reset-btn" onclick="AttributeSummaryCard.resetSelectedNeedsValues();" title="Werte aus Profil neu laden">
+                            ↶ Werte laden
+                        </button>
+                        <button class="multi-select-filter-reset-btn" onclick="AttributeSummaryCard.resetFilters();" title="Filter zurücksetzen">
+                            ↺ Filter
                         </button>
                         <button class="multi-select-ok-btn" onclick="AttributeSummaryCard.clearNeedSelection();" title="Bestätigen und Auswahl aufheben">
                             ✓ OK
@@ -2282,6 +2298,7 @@ const AttributeSummaryCard = (function() {
         clearNeedSelection,
         selectAllFilteredNeeds,
         resetSelectedNeedsValues,
+        resetFilters,
         updateSelectedNeedsValue,
         lockSelectedNeeds
     };
