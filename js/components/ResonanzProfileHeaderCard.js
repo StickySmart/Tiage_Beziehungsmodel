@@ -11,7 +11,7 @@
  * © 2025 Ti-age.de Alle Rechte vorbehalten.
  */
 
-const RAProfileHeaderCard = (function() {
+const ResonanzProfileHeaderCard = (function() {
     'use strict';
 
     /**
@@ -110,12 +110,12 @@ const RAProfileHeaderCard = (function() {
         const counts = getNeedsCounts();
 
         let html = `
-        <div class="ra-profile-header-card">
-            <div class="ra-profile-header-title">
-                <span class="ra-profile-header-icon">📊</span>
-                <span class="ra-profile-header-text">Dein Resonanz-Profil</span>
+        <div class="resonanz-profile-header-card">
+            <div class="resonanz-profile-header-title">
+                <span class="resonanz-profile-header-icon">📊</span>
+                <span class="resonanz-profile-header-text">Dein Resonanz-Profil</span>
             </div>
-            <div class="ra-profile-header-values">`;
+            <div class="resonanz-profile-header-values">`;
 
         // Render jede Resonanz-Dimension
         ['R1', 'R2', 'R3', 'R4'].forEach(key => {
@@ -124,13 +124,13 @@ const RAProfileHeaderCard = (function() {
             const displayValue = value.toFixed(2);
 
             html += `
-                <div class="ra-profile-value-item clickable"
+                <div class="resonanz-profile-value-item clickable"
                      style="--dimension-color: ${config.color};"
-                     onclick="RAProfileHeaderCard.searchByResonanz('${key}')"
+                     onclick="ResonanzProfileHeaderCard.searchByResonanz('${key}')"
                      title="Klicke um nach ${key} Bedürfnissen zu suchen">
-                    <div class="ra-profile-value-label">${config.label}</div>
-                    <div class="ra-profile-value-id">${key}</div>
-                    <div class="ra-profile-value-number">${displayValue}</div>
+                    <div class="resonanz-profile-value-label">${config.label}</div>
+                    <div class="resonanz-profile-value-id">${key}</div>
+                    <div class="resonanz-profile-value-number">${displayValue}</div>
                 </div>`;
         });
 
@@ -147,7 +147,7 @@ const RAProfileHeaderCard = (function() {
      */
     function init(targetSelector) {
         // Entferne alte Karte falls vorhanden
-        const oldCard = document.querySelector('.ra-profile-header-card');
+        const oldCard = document.querySelector('.resonanz-profile-header-card');
         if (oldCard) {
             oldCard.remove();
         }
@@ -171,16 +171,16 @@ const RAProfileHeaderCard = (function() {
             }
         }
 
-        console.log('[RAProfileHeaderCard] Initialisiert');
+        console.log('[ResonanzProfileHeaderCard] Initialisiert');
     }
 
     /**
      * Aktualisiert die Header-Karte mit neuen Werten
      */
     function update() {
-        const card = document.querySelector('.ra-profile-header-card');
+        const card = document.querySelector('.resonanz-profile-header-card');
         if (!card) {
-            console.warn('[RAProfileHeaderCard] Karte nicht gefunden, initialisiere neu');
+            console.warn('[ResonanzProfileHeaderCard] Karte nicht gefunden, initialisiere neu');
             init();
             return;
         }
@@ -191,13 +191,13 @@ const RAProfileHeaderCard = (function() {
         ['R1', 'R2', 'R3', 'R4'].forEach(key => {
             const value = values[key];
             const displayValue = value.toFixed(2);
-            const valueElement = card.querySelector(`.ra-profile-value-item[style*="${RESONANZ_CONFIG[key].color}"] .ra-profile-value-number`);
+            const valueElement = card.querySelector(`.resonanz-profile-value-item[style*="${RESONANZ_CONFIG[key].color}"] .resonanz-profile-value-number`);
             if (valueElement) {
                 valueElement.textContent = displayValue;
             }
         });
 
-        console.log('[RAProfileHeaderCard] Aktualisiert');
+        console.log('[ResonanzProfileHeaderCard] Aktualisiert');
     }
 
     /**
@@ -208,7 +208,7 @@ const RAProfileHeaderCard = (function() {
         // Finde Suchfeld
         const searchInput = document.getElementById('profileReviewSearchInput');
         if (!searchInput) {
-            console.warn('[RAProfileHeaderCard] Suchfeld nicht gefunden');
+            console.warn('[ResonanzProfileHeaderCard] Suchfeld nicht gefunden');
             return;
         }
 
@@ -225,7 +225,7 @@ const RAProfileHeaderCard = (function() {
         // Fokussiere Suchfeld
         searchInput.focus();
 
-        console.log('[RAProfileHeaderCard] Suche nach', resonanzId);
+        console.log('[ResonanzProfileHeaderCard] Suche nach', resonanzId);
     }
 
     // Lausche auf Resonanzfaktoren-Änderungen
@@ -246,14 +246,14 @@ const RAProfileHeaderCard = (function() {
 // Auto-Initialisierung
 if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', function() {
-        RAProfileHeaderCard.init();
+        ResonanzProfileHeaderCard.init();
     });
 } else {
     // DOM bereits geladen
-    RAProfileHeaderCard.init();
+    ResonanzProfileHeaderCard.init();
 }
 
 // Export für Module-System
 if (typeof module !== 'undefined' && module.exports) {
-    module.exports = RAProfileHeaderCard;
+    module.exports = ResonanzProfileHeaderCard;
 }
