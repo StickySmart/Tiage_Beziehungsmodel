@@ -484,7 +484,99 @@ const BeduerfnisIds = {
 
     // Aliase für Kompatibilität
     objectToIds: function(obj) { return this.convertObjToIds(obj); },
-    objectToKeys: function(obj) { return this.convertObjToKeys(obj); }
+    objectToKeys: function(obj) { return this.convertObjToKeys(obj); },
+
+    // ═══════════════════════════════════════════════════════════════════════════
+    // SSOT VALIDIERUNG
+    // ═══════════════════════════════════════════════════════════════════════════
+
+    /**
+     * Validiert alle Kategorien in beduerfnisse gegen TiageTaxonomie (SSOT)
+     * @param {Object} options - { throwOnError: boolean, logWarnings: boolean }
+     * @returns {Object} - { valid: boolean, errors: [], warnings: [] }
+     */
+    validateKategorien: function(options) {
+        options = options || {};
+        var throwOnError = options.throwOnError || false;
+        var logWarnings = options.logWarnings !== false; // default: true
+
+        var result = {
+            valid: true,
+            errors: [],
+            warnings: [],
+            checked: 0,
+            kategorienFound: {}
+        };
+
+        var taxonomie = this._getTaxonomie();
+        if (!taxonomie) {
+            result.warnings.push('TiageTaxonomie nicht verfügbar - Validierung übersprungen');
+            if (logWarnings) console.warn('[BeduerfnisIds] ' + result.warnings[0]);
+            return result;
+        }
+
+        taxonomie.init();
+        var validKategorien = taxonomie.kategorien;
+
+        // Prüfe jedes Bedürfnis
+        for (var id in this.beduerfnisse) {
+            var need = this.beduerfnisse[id];
+            result.checked++;
+
+            if (!need.kategorie) {
+                result.warnings.push(id + ' (' + need.label + '): Keine Kategorie definiert');
+                continue;
+            }
+
+            // Prüfe ob Kategorie in Taxonomie existiert
+            if (!validKategorien[need.kategorie]) {
+                var error = id + ' (' + need.label + '): Ungültige Kategorie "' + need.kategorie + '" - existiert nicht in Taxonomie';
+                result.errors.push(error);
+                result.valid = false;
+                continue;
+            }
+
+            // Zähle Kategorien
+            if (!result.kategorienFound[need.kategorie]) {
+                result.kategorienFound[need.kategorie] = [];
+            }
+            result.kategorienFound[need.kategorie].push(id);
+        }
+
+        // Ausgabe
+        if (logWarnings && result.errors.length > 0) {
+            console.error('[BeduerfnisIds] SSOT-Validierung fehlgeschlagen:');
+            result.errors.forEach(function(e) { console.error('  ❌ ' + e); });
+        }
+        if (logWarnings && result.warnings.length > 0) {
+            result.warnings.forEach(function(w) { console.warn('  ⚠️ ' + w); });
+        }
+        if (logWarnings && result.valid) {
+            console.log('[BeduerfnisIds] ✅ SSOT-Validierung erfolgreich: ' + result.checked + ' Bedürfnisse geprüft');
+        }
+
+        if (throwOnError && !result.valid) {
+            throw new Error('SSOT-Validierung fehlgeschlagen: ' + result.errors.join('; '));
+        }
+
+        return result;
+    },
+
+    /**
+     * Führt Validierung beim Init aus (kann in Produktion deaktiviert werden)
+     */
+    validateOnInit: true,
+
+    /**
+     * Erweiterte Init-Funktion mit optionaler Validierung
+     */
+    initWithValidation: function(options) {
+        this.init();
+        if (this.validateOnInit) {
+            this.validateKategorien(options);
+        }
+        return this;
+    }
 };
 
 // Export für Node.js und Browser
