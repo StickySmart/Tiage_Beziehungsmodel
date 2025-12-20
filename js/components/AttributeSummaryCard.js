@@ -1064,8 +1064,7 @@ const AttributeSummaryCard = (function() {
                 const needData = BeduerfnisIds.beduerfnisse[needId];
                 const stringKey = needData?.key || '';
                 // Wert aus SSOT (umfrageWerte = LoadedArchetypProfile.flatNeeds)
-                // Fallback auf 50 wenn kein Wert vorhanden (Mitte des Bereichs 0-100)
-                const value = umfrageWerte[needId] !== undefined ? umfrageWerte[needId] : 50;
+                const value = umfrageWerte[needId];
                 flatNeeds.push({
                     id: needId,
                     key: numKey,
@@ -1303,9 +1302,6 @@ const AttributeSummaryCard = (function() {
      * @param {boolean} shouldHide - Ob durch DimensionKategorieFilter versteckt
      */
     function renderFlatNeedItem(needId, label, value, isLocked, dimensionColor, shouldHide = false) {
-        // Sicherstellen dass value immer eine Zahl ist (Fallback auf 50)
-        const safeValue = (value !== undefined && value !== null && !isNaN(value)) ? value : 50;
-
         // Bei Dimensionsfarbe: Border-left + CSS-Variable für Slider-Thumb
         const itemStyle = dimensionColor
             ? `style="border-left: 5px solid ${dimensionColor}; --dimension-color: ${dimensionColor};"`
@@ -1316,10 +1312,10 @@ const AttributeSummaryCard = (function() {
         const filterHiddenClass = shouldHide ? ' dimension-filter-hidden' : '';
         // Slider-Track-Hintergrund: gefüllt bis zum Wert mit Dimensionsfarbe
         const sliderStyle = dimensionColor
-            ? `style="background: linear-gradient(to right, ${dimensionColor} 0%, ${dimensionColor} ${safeValue}%, rgba(255,255,255,0.15) ${safeValue}%, rgba(255,255,255,0.15) 100%);"`
+            ? `style="background: linear-gradient(to right, ${dimensionColor} 0%, ${dimensionColor} ${value}%, rgba(255,255,255,0.15) ${value}%, rgba(255,255,255,0.15) 100%);"`
             : '';
         // Sternchen (*) wenn Wert vom Standard abweicht
-        const changedIndicator = isValueChanged(needId, safeValue) ? ' <span class="value-changed-indicator" title="Wert wurde geändert">*</span>' : '';
+        const changedIndicator = isValueChanged(needId, value) ? ' <span class="value-changed-indicator" title="Wert wurde geändert">*</span>' : '';
         return `
         <div class="flat-need-item${isLocked ? ' need-locked' : ''}${colorClass}${selectedClass}${filterHiddenClass}" data-need="${needId}" ${itemStyle}
              onclick="AttributeSummaryCard.toggleNeedSelection('${needId}')">
@@ -1339,12 +1335,12 @@ const AttributeSummaryCard = (function() {
             </div>
             <div class="flat-need-slider-row">
                 <input type="range" class="need-slider"
-                       min="0" max="100" value="${safeValue}"
+                       min="0" max="100" value="${value}"
                        oninput="AttributeSummaryCard.onFlatSliderInput('${needId}', this.value, this)"
                        onclick="event.stopPropagation()"
                        ${sliderStyle}
                        ${isLocked ? 'disabled' : ''}>
-                <input type="text" class="flat-need-input" value="${safeValue}" maxlength="3"
+                <input type="text" class="flat-need-input" value="${value}" maxlength="3"
                        onchange="AttributeSummaryCard.updateFlatNeedValue('${needId}', this.value)"
                        onclick="event.stopPropagation()"
                        ${isLocked ? 'readonly' : ''}>
