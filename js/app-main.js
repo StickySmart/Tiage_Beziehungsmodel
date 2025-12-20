@@ -19597,10 +19597,15 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
                     var totalNeeds = allFlatItems.length;
                     var visibleNeeds = contentContainer.querySelectorAll('.flat-need-item:not(.filter-hidden)').length;
 
-                    // Extract archetype label from current subtitle
-                    var currentText = subtitle.textContent || '';
-                    var archetypMatch = currentText.match(/Dein\s+(\S+)-Profil/);
-                    var archetypLabel = archetypMatch ? archetypMatch[1] : 'RA';
+                    // Get archetype label from AttributeSummaryCard or extract from subtitle
+                    var archetypLabel = (typeof AttributeSummaryCard !== 'undefined' && AttributeSummaryCard.getCurrentArchetypLabel)
+                        ? AttributeSummaryCard.getCurrentArchetypLabel()
+                        : null;
+                    if (!archetypLabel) {
+                        var currentText = subtitle.textContent || '';
+                        var archetypMatch = currentText.match(/Dein\s+(\S+)-Profil/);
+                        archetypLabel = archetypMatch ? archetypMatch[1] : 'Profil';
+                    }
 
                     if (query && query.trim() !== '' && visibleNeeds < totalNeeds) {
                         subtitle.textContent = 'Dein ' + archetypLabel + '-Profil (' + visibleNeeds + ' von ' + totalNeeds + ' Bedürfnissen)';
@@ -19663,10 +19668,15 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
                 var allFlatItems = contentContainer.querySelectorAll('.flat-need-item');
                 var totalNeeds = allFlatItems.length;
 
-                // Extract archetype label from current subtitle
-                var currentText = subtitle.textContent || '';
-                var archetypMatch = currentText.match(/Dein\s+(\S+)-Profil/);
-                var archetypLabel = archetypMatch ? archetypMatch[1] : 'RA';
+                // Get archetype label from AttributeSummaryCard or extract from subtitle
+                var archetypLabel = (typeof AttributeSummaryCard !== 'undefined' && AttributeSummaryCard.getCurrentArchetypLabel)
+                    ? AttributeSummaryCard.getCurrentArchetypLabel()
+                    : null;
+                if (!archetypLabel) {
+                    var currentText = subtitle.textContent || '';
+                    var archetypMatch = currentText.match(/Dein\s+(\S+)-Profil/);
+                    archetypLabel = archetypMatch ? archetypMatch[1] : 'Profil';
+                }
 
                 subtitle.textContent = 'Dein ' + archetypLabel + '-Profil (' + totalNeeds + ' Bedürfnisse)';
             }

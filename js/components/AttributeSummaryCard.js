@@ -2271,6 +2271,8 @@ const AttributeSummaryCard = (function() {
         reRenderFlatNeeds,
         setSortMode,
         toggleShowOnlyChanged,
+        // Getter für aktuellen Archetyp-Label (für Filter-Updates)
+        getCurrentArchetypLabel: function() { return currentFlatArchetypLabel; },
         // NEU: DimensionKategorieFilter Integration
         initDimensionFilter,
         // DEPRECATED: Alte Filter-Funktionen (für Rückwärtskompatibilität)
