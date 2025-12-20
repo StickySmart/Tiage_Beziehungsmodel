@@ -19869,7 +19869,13 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
             var lowerQuery = lastPart.toLowerCase();
 
             // If last part is empty, show all items for browsing
+            // But only if this is the FIRST part (no previous criteria exist)
+            // If there are previous criteria (trailing comma), return empty suggestions instead
             if (!lowerQuery) {
+                // Trailing comma with existing criteria - don't show all items, just return empty
+                if (parts.length > 1) {
+                    return suggestions;
+                }
                 // Show all categories (18 total)
                 if (window.TiageTaxonomie && window.TiageTaxonomie.kategorien) {
                     Object.values(window.TiageTaxonomie.kategorien).forEach(function(kat) {
