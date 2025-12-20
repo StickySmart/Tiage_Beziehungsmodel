@@ -761,13 +761,35 @@
         }
         window.hideSearchSuggestions = hideSearchSuggestions;
 
+        /**
+         * Hilfsfunktion: Kategorie-ID eines Bedürfnisses ermitteln
+         */
+        function getNeedCategoryId(needId) {
+            if (!window.BeduerfnisKatalog || !window.BeduerfnisKatalog.beduerfnisse) return null;
+            var need = window.BeduerfnisKatalog.beduerfnisse[needId];
+            return need ? need.kategorie : null;
+        }
+
+        /**
+         * Hilfsfunktion: Dimension-ID eines Bedürfnisses ermitteln
+         */
+        function getNeedDimensionId(needId) {
+            var categoryId = getNeedCategoryId(needId);
+            if (!categoryId) return null;
+            if (!window.TiageTaxonomie || !window.TiageTaxonomie.kategorien) return null;
+            var category = window.TiageTaxonomie.kategorien[categoryId];
+            return category ? category.dimension : null;
+        }
+
         function filterProfileReviewByNeed(query) {
             // Direkte Filterung der flat-need-item Elemente (SSOT: gleiche Logik wie app-main.js)
             var flatNeedItems = document.querySelectorAll('.flat-need-item');
             if (!flatNeedItems.length) return;
 
-            // Wenn leer, alle anzeigen
-            if (!query || !query.trim()) {
+            var activeSuggestion = suggestionState.activeSuggestion;
+
+            // Wenn leer und keine aktive Suggestion, alle anzeigen
+            if ((!query || !query.trim()) && !activeSuggestion) {
                 flatNeedItems.forEach(function(item) {
                     item.classList.remove('filter-hidden', 'filter-match');
                 });
@@ -775,15 +797,42 @@
             }
 
             var totalMatches = 0;
-            var lowerQuery = query.trim().toLowerCase();
+            var lowerQuery = (query || '').trim().toLowerCase();
 
             flatNeedItems.forEach(function(item) {
-                var needLabel = item.querySelector('.flat-need-label');
-                var labelText = needLabel ? needLabel.textContent.toLowerCase() : '';
-                var needId = (item.getAttribute('data-need') || '').toLowerCase();
+                var needId = item.getAttribute('data-need') || '';
+                var matches = false;
 
-                // Suche in Label und ID
-                var matches = labelText.includes(lowerQuery) || needId.includes(lowerQuery);
+                // Wenn eine aktive Suggestion vorhanden ist, nach deren Typ filtern
+                if (activeSuggestion && activeSuggestion.type) {
+                    if (activeSuggestion.type === 'perspective') {
+                        // Nach Perspektive filtern
+                        var needPerspective = getPerspectiveForNeed(needId);
+                        matches = needPerspective && needPerspective.id === activeSuggestion.id;
+                    } else if (activeSuggestion.type === 'category') {
+                        // Nach Kategorie filtern
+                        matches = getNeedCategoryId(needId) === activeSuggestion.id;
+                    } else if (activeSuggestion.type === 'dimension' || activeSuggestion.type === 'resonanz') {
+                        // Nach Dimension/Resonanzfaktor filtern
+                        matches = getNeedDimensionId(needId) === activeSuggestion.id;
+                    } else if (activeSuggestion.type === 'need') {
+                        // Genau das eine Bedürfnis
+                        matches = needId === activeSuggestion.id;
+                    } else {
+                        // Unbekannter Typ: Text-Suche
+                        var needLabel = item.querySelector('.flat-need-label');
+                        var labelText = needLabel ? needLabel.textContent.toLowerCase() : '';
+                        matches = labelText.includes(lowerQuery) || needId.toLowerCase().includes(lowerQuery);
+                    }
+                } else if (lowerQuery) {
+                    // Keine aktive Suggestion: Text-Suche
+                    var needLabel = item.querySelector('.flat-need-label');
+                    var labelText = needLabel ? needLabel.textContent.toLowerCase() : '';
+                    matches = labelText.includes(lowerQuery) || needId.toLowerCase().includes(lowerQuery);
+                } else {
+                    // Weder Query noch Suggestion: alle anzeigen
+                    matches = true;
+                }
 
                 item.classList.toggle('filter-hidden', !matches);
                 item.classList.toggle('filter-match', matches);
@@ -791,7 +840,7 @@
                 if (matches) totalMatches++;
             });
 
-            console.log('[Filter] needs-editor:', query, '- Matches:', totalMatches);
+            console.log('[Filter] needs-editor:', query, '- Matches:', totalMatches, activeSuggestion ? '(type: ' + activeSuggestion.type + ')' : '');
         }
 
         function handleIntelligentSearch(query) {
@@ -1111,13 +1160,35 @@
         }
         window.hideSearchSuggestions = hideSearchSuggestions;
 
+        /**
+         * Hilfsfunktion: Kategorie-ID eines Bedürfnisses ermitteln
+         */
+        function getNeedCategoryId(needId) {
+            if (!window.BeduerfnisKatalog || !window.BeduerfnisKatalog.beduerfnisse) return null;
+            var need = window.BeduerfnisKatalog.beduerfnisse[needId];
+            return need ? need.kategorie : null;
+        }
+
+        /**
+         * Hilfsfunktion: Dimension-ID eines Bedürfnisses ermitteln
+         */
+        function getNeedDimensionId(needId) {
+            var categoryId = getNeedCategoryId(needId);
+            if (!categoryId) return null;
+            if (!window.TiageTaxonomie || !window.TiageTaxonomie.kategorien) return null;
+            var category = window.TiageTaxonomie.kategorien[categoryId];
+            return category ? category.dimension : null;
+        }
+
         function filterProfileReviewByNeed(query) {
             // Direkte Filterung der flat-need-item Elemente (SSOT: gleiche Logik wie app-main.js)
             var flatNeedItems = document.querySelectorAll('.flat-need-item');
             if (!flatNeedItems.length) return;
 
-            // Wenn leer, alle anzeigen
-            if (!query || !query.trim()) {
+            var activeSuggestion = suggestionState.activeSuggestion;
+
+            // Wenn leer und keine aktive Suggestion, alle anzeigen
+            if ((!query || !query.trim()) && !activeSuggestion) {
                 flatNeedItems.forEach(function(item) {
                     item.classList.remove('filter-hidden', 'filter-match');
                 });
@@ -1125,15 +1196,42 @@
             }
 
             var totalMatches = 0;
-            var lowerQuery = query.trim().toLowerCase();
+            var lowerQuery = (query || '').trim().toLowerCase();
 
             flatNeedItems.forEach(function(item) {
-                var needLabel = item.querySelector('.flat-need-label');
-                var labelText = needLabel ? needLabel.textContent.toLowerCase() : '';
-                var needId = (item.getAttribute('data-need') || '').toLowerCase();
+                var needId = item.getAttribute('data-need') || '';
+                var matches = false;
 
-                // Suche in Label und ID
-                var matches = labelText.includes(lowerQuery) || needId.includes(lowerQuery);
+                // Wenn eine aktive Suggestion vorhanden ist, nach deren Typ filtern
+                if (activeSuggestion && activeSuggestion.type) {
+                    if (activeSuggestion.type === 'perspective') {
+                        // Nach Perspektive filtern
+                        var needPerspective = getPerspectiveForNeed(needId);
+                        matches = needPerspective && needPerspective.id === activeSuggestion.id;
+                    } else if (activeSuggestion.type === 'category') {
+                        // Nach Kategorie filtern
+                        matches = getNeedCategoryId(needId) === activeSuggestion.id;
+                    } else if (activeSuggestion.type === 'dimension' || activeSuggestion.type === 'resonanz') {
+                        // Nach Dimension/Resonanzfaktor filtern
+                        matches = getNeedDimensionId(needId) === activeSuggestion.id;
+                    } else if (activeSuggestion.type === 'need') {
+                        // Genau das eine Bedürfnis
+                        matches = needId === activeSuggestion.id;
+                    } else {
+                        // Unbekannter Typ: Text-Suche
+                        var needLabel = item.querySelector('.flat-need-label');
+                        var labelText = needLabel ? needLabel.textContent.toLowerCase() : '';
+                        matches = labelText.includes(lowerQuery) || needId.toLowerCase().includes(lowerQuery);
+                    }
+                } else if (lowerQuery) {
+                    // Keine aktive Suggestion: Text-Suche
+                    var needLabel = item.querySelector('.flat-need-label');
+                    var labelText = needLabel ? needLabel.textContent.toLowerCase() : '';
+                    matches = labelText.includes(lowerQuery) || needId.toLowerCase().includes(lowerQuery);
+                } else {
+                    // Weder Query noch Suggestion: alle anzeigen
+                    matches = true;
+                }
 
                 item.classList.toggle('filter-hidden', !matches);
                 item.classList.toggle('filter-match', matches);
@@ -1141,7 +1239,7 @@
                 if (matches) totalMatches++;
             });
 
-            console.log('[Filter] needs-editor:', query, '- Matches:', totalMatches);
+            console.log('[Filter] needs-editor:', query, '- Matches:', totalMatches, activeSuggestion ? '(type: ' + activeSuggestion.type + ')' : '');
         }
 
         function handleIntelligentSearch(query) {
