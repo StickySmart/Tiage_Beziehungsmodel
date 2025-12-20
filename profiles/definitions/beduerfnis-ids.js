@@ -14,16 +14,16 @@
  * #P1-#P4   → 4 Perspektiven    (siehe taxonomie.js)
  * #D1-#D6   → 6 Dimensionen     (siehe taxonomie.js, Kurzform A-F)
  * #K1-#K18  → 18 Kategorien     (siehe taxonomie.js)
- * #B1-#B211  → 211 Bedürfnisse
+ * #B1-#B223  → 223 Bedürfnisse
  *
- * TOTAL: 211 Bedürfnisse
+ * TOTAL: 223 Bedürfnisse
  */
 
 const BeduerfnisIds = {
 
     version: '3.0.0',
     generatedFrom: 'beduerfnis-katalog.json',
-    generatedAt: '2025-12-20T07:29:38.861Z',
+    generatedAt: '2025-12-20T10:46:43.004Z',
 
     // ═══════════════════════════════════════════════════════════════════════════
     // TAXONOMIE-REFERENZ (SSOT)
@@ -182,7 +182,7 @@ const BeduerfnisIds = {
         '#B73': { key: 'anfang_ende', kategorie: '#K10', label: 'Anfang-Ende' },
 
         // ─────────────────────────────────────────────────────────────────────────
-        // DYNAMIK (#B74-#B88) - Kategorie #K11
+        // DYNAMIK (#B74-#B223) - Kategorie #K11
         // ─────────────────────────────────────────────────────────────────────────
         '#B74': { key: 'kontrolle_ausueben', kategorie: '#K11', label: 'Kontrolle-ausüben' },
         '#B75': { key: 'hingabe', kategorie: '#K11', label: 'Hingabe' },
@@ -353,7 +353,23 @@ const BeduerfnisIds = {
         // ─────────────────────────────────────────────────────────────────────────
         '#B209': { key: 'genussmittel', kategorie: '#K7', label: 'Genussmittel' },
         '#B210': { key: 'alkohol', kategorie: '#K7', label: 'Alkohol' },
-        '#B211': { key: 'cannabis', kategorie: '#K7', label: 'Cannabis' }
+        '#B211': { key: 'cannabis', kategorie: '#K7', label: 'Cannabis' },
+
+        // ─────────────────────────────────────────────────────────────────────────
+        // DYNAMIK (#B74-#B223) - Kategorie #K11
+        // ─────────────────────────────────────────────────────────────────────────
+        '#B212': { key: 'bondage_geben', kategorie: '#K11', label: 'Bondage-geben' },
+        '#B213': { key: 'devotion', kategorie: '#K11', label: 'Devotion' },
+        '#B214': { key: 'anbetung', kategorie: '#K11', label: 'Anbetung' },
+        '#B215': { key: 'demuetig_sein', kategorie: '#K11', label: 'Demütig-sein' },
+        '#B216': { key: 'dominieren', kategorie: '#K11', label: 'Dominieren' },
+        '#B217': { key: 'bestrafung_erhalten', kategorie: '#K11', label: 'Bestrafung-erhalten' },
+        '#B218': { key: 'bestrafen', kategorie: '#K11', label: 'Bestrafen' },
+        '#B219': { key: 'service_orientierung', kategorie: '#K11', label: 'Service-Orientierung' },
+        '#B220': { key: 'service_empfangen', kategorie: '#K11', label: 'Service-empfangen' },
+        '#B221': { key: 'schmerzerleben', kategorie: '#K11', label: 'Schmerzerleben' },
+        '#B222': { key: 'schmerz_geben', kategorie: '#K11', label: 'Schmerz-geben' },
+        '#B223': { key: 'bondage_erleben', kategorie: '#K11', label: 'Bondage-erleben' }
     },
 
     // ═══════════════════════════════════════════════════════════════════════════

@@ -19765,6 +19765,98 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
         }
 
         /**
+         * Check if a string starts with the query (case-insensitive)
+         * @param {string} text - Text to check
+         * @param {string} query - Query to match against
+         * @returns {boolean} True if text starts with query
+         */
+        function startsWithQuery(text, query) {
+            if (!text || !query) return false;
+            return text.toLowerCase().startsWith(query.toLowerCase());
+        }
+
+        /**
+         * Calculate simple Levenshtein distance for fuzzy matching
+         * @param {string} a - First string
+         * @param {string} b - Second string
+         * @returns {number} Edit distance between strings
+         */
+        function levenshteinDistance(a, b) {
+            if (!a || !b) return Math.max((a || '').length, (b || '').length);
+            a = a.toLowerCase();
+            b = b.toLowerCase();
+
+            if (a.length === 0) return b.length;
+            if (b.length === 0) return a.length;
+
+            var matrix = [];
+            for (var i = 0; i <= b.length; i++) {
+                matrix[i] = [i];
+            }
+            for (var j = 0; j <= a.length; j++) {
+                matrix[0][j] = j;
+            }
+
+            for (i = 1; i <= b.length; i++) {
+                for (j = 1; j <= a.length; j++) {
+                    if (b.charAt(i - 1) === a.charAt(j - 1)) {
+                        matrix[i][j] = matrix[i - 1][j - 1];
+                    } else {
+                        matrix[i][j] = Math.min(
+                            matrix[i - 1][j - 1] + 1,
+                            matrix[i][j - 1] + 1,
+                            matrix[i - 1][j] + 1
+                        );
+                    }
+                }
+            }
+            return matrix[b.length][a.length];
+        }
+
+        /**
+         * Check if query fuzzy-matches text (allows for typos)
+         * @param {string} text - Text to check
+         * @param {string} query - Query to match against
+         * @param {number} maxDistance - Maximum allowed edit distance (default: 2)
+         * @returns {number} Match score (0 = no match, higher = better match)
+         */
+        function fuzzyMatchScore(text, query, maxDistance) {
+            if (!text || !query) return 0;
+            maxDistance = maxDistance || 2;
+
+            var lowerText = text.toLowerCase();
+            var lowerQuery = query.toLowerCase();
+
+            // Exact match = highest score
+            if (lowerText === lowerQuery) return 100;
+
+            // Starts with = very high score
+            if (lowerText.startsWith(lowerQuery)) return 90;
+
+            // Contains = high score
+            if (lowerText.includes(lowerQuery)) return 80;
+
+            // For short queries (< 3 chars), only do prefix matching
+            if (query.length < 3) return 0;
+
+            // Check fuzzy match on each word
+            var words = lowerText.split(/\s+/);
+            for (var i = 0; i < words.length; i++) {
+                var word = words[i];
+                // Check if the query is close to the start of any word
+                var compareLength = Math.min(query.length, word.length);
+                var wordPrefix = word.substring(0, compareLength);
+                var distance = levenshteinDistance(lowerQuery, wordPrefix);
+
+                if (distance <= maxDistance) {
+                    return 70 - (distance * 10); // 70 for distance 0, 60 for 1, 50 for 2
+                }
+            }
+
+            return 0;
+        }
+
+        /**
          * Generate search suggestions based on query
          * For comma-separated queries, only suggest for the last criterion
          */
@@ -19853,14 +19945,26 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
                 Object.values(needsSource).forEach(function(need) {
                     var matchScore = 0;
 
-                    // Check label
-                    if (need.label && need.label.toLowerCase().includes(lowerQuery)) {
-                        matchScore = 10;
+                    // Check label with fuzzy matching
+                    if (need.label) {
+                        var labelScore = fuzzyMatchScore(need.label, lastPart, 2);
+                        if (labelScore > 0) {
+                            // Scale fuzzy score to our scoring system (max 10 for needs label)
+                            matchScore = Math.round(labelScore / 10);
+                        }
                     }
 
-                    // Check ID
+                    // Check ID (exact match only for IDs)
                     if (need.id && need.id.toLowerCase().includes(lowerQuery)) {
                         matchScore = Math.max(matchScore, 8);
+                    }
+
+                    // Check description/frage with fuzzy matching
+                    if (need.frage) {
+                        var frageScore = fuzzyMatchScore(need.frage, lastPart, 2);
+                        if (frageScore > 0) {
+                            matchScore = Math.max(matchScore, Math.round(frageScore / 15));
+                        }
                     }
 
                     if (matchScore > 0) {
@@ -19882,17 +19986,23 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
                 Object.values(window.TiageTaxonomie.kategorien).forEach(function(kat) {
                     var matchScore = 0;
 
-                    // Check label
-                    if (kat.label && kat.label.toLowerCase().includes(lowerQuery)) {
-                        matchScore = 9;
+                    // Check label with fuzzy matching
+                    if (kat.label) {
+                        var labelScore = fuzzyMatchScore(kat.label, lastPart, 2);
+                        if (labelScore > 0) {
+                            matchScore = Math.round(labelScore / 11); // Scale to max 9
+                        }
                     }
 
-                    // Check description
-                    if (kat.beschreibung && kat.beschreibung.toLowerCase().includes(lowerQuery)) {
-                        matchScore = Math.max(matchScore, 7);
+                    // Check description with fuzzy matching
+                    if (kat.beschreibung) {
+                        var descScore = fuzzyMatchScore(kat.beschreibung, lastPart, 2);
+                        if (descScore > 0) {
+                            matchScore = Math.max(matchScore, Math.round(descScore / 14)); // Scale to max 7
+                        }
                     }
 
-                    // Check ID
+                    // Check ID (exact match only)
                     if (kat.id && kat.id.toLowerCase().includes(lowerQuery)) {
                         matchScore = Math.max(matchScore, 8);
                     }
@@ -19916,17 +20026,23 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
                 Object.values(window.TiageTaxonomie.dimensionen).forEach(function(dim) {
                     var matchScore = 0;
 
-                    // Check label
-                    if (dim.label && dim.label.toLowerCase().includes(lowerQuery)) {
-                        matchScore = 8;
+                    // Check label with fuzzy matching
+                    if (dim.label) {
+                        var labelScore = fuzzyMatchScore(dim.label, lastPart, 2);
+                        if (labelScore > 0) {
+                            matchScore = Math.round(labelScore / 12); // Scale to max 8
+                        }
                     }
 
-                    // Check description
-                    if (dim.beschreibung && dim.beschreibung.toLowerCase().includes(lowerQuery)) {
-                        matchScore = Math.max(matchScore, 6);
+                    // Check description with fuzzy matching
+                    if (dim.beschreibung) {
+                        var descScore = fuzzyMatchScore(dim.beschreibung, lastPart, 2);
+                        if (descScore > 0) {
+                            matchScore = Math.max(matchScore, Math.round(descScore / 16)); // Scale to max 6
+                        }
                     }
 
-                    // Check ID
+                    // Check ID (exact match only)
                     if (dim.id && dim.id.toLowerCase().includes(lowerQuery)) {
                         matchScore = Math.max(matchScore, 7);
                     }
@@ -19949,14 +20065,20 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
                 Object.values(window.TiageTaxonomie.perspektiven).forEach(function(persp) {
                     var matchScore = 0;
 
-                    // Check label
-                    if (persp.label && persp.label.toLowerCase().includes(lowerQuery)) {
-                        matchScore = 7;
+                    // Check label with fuzzy matching
+                    if (persp.label) {
+                        var labelScore = fuzzyMatchScore(persp.label, lastPart, 2);
+                        if (labelScore > 0) {
+                            matchScore = Math.round(labelScore / 14); // Scale to max 7
+                        }
                     }
 
-                    // Check description
-                    if (persp.beschreibung && persp.beschreibung.toLowerCase().includes(lowerQuery)) {
-                        matchScore = Math.max(matchScore, 5);
+                    // Check description with fuzzy matching
+                    if (persp.beschreibung) {
+                        var descScore = fuzzyMatchScore(persp.beschreibung, lastPart, 2);
+                        if (descScore > 0) {
+                            matchScore = Math.max(matchScore, Math.round(descScore / 20)); // Scale to max 5
+                        }
                     }
 
                     // Check ID
@@ -19989,17 +20111,23 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
             Object.values(resonanzfaktoren).forEach(function(resonanz) {
                 var matchScore = 0;
 
-                // Check label
-                if (resonanz.label && resonanz.label.toLowerCase().includes(lowerQuery)) {
-                    matchScore = 8;
+                // Check label with fuzzy matching
+                if (resonanz.label) {
+                    var labelScore = fuzzyMatchScore(resonanz.label, lastPart, 2);
+                    if (labelScore > 0) {
+                        matchScore = Math.round(labelScore / 12); // Scale to max 8
+                    }
                 }
 
-                // Check description
-                if (resonanz.beschreibung && resonanz.beschreibung.toLowerCase().includes(lowerQuery)) {
-                    matchScore = Math.max(matchScore, 6);
+                // Check description with fuzzy matching
+                if (resonanz.beschreibung) {
+                    var descScore = fuzzyMatchScore(resonanz.beschreibung, lastPart, 2);
+                    if (descScore > 0) {
+                        matchScore = Math.max(matchScore, Math.round(descScore / 16)); // Scale to max 6
+                    }
                 }
 
-                // Check ID
+                // Check ID (exact match only)
                 if (resonanz.id && resonanz.id.toLowerCase().includes(lowerQuery)) {
                     matchScore = Math.max(matchScore, 7);
                 }
@@ -20087,7 +20215,21 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
             suggestionState.selectedIndex = -1;
 
             if (suggestions.length === 0) {
-                content.innerHTML = '<div class="search-suggestions-empty">Keine Vorschläge gefunden</div>';
+                var searchInput = document.getElementById('profileReviewSearchInput');
+                var currentQuery = searchInput ? searchInput.value : '';
+                var parts = currentQuery.split(',');
+                var lastPart = parts[parts.length - 1].trim();
+
+                var helpMessage = '<div class="search-suggestions-empty">' +
+                    '<div style="font-weight: bold; margin-bottom: 8px;">Keine Vorschläge für "' + lastPart + '"</div>' +
+                    '<div style="font-size: 0.85em; color: #888;">' +
+                    'Tipps:' +
+                    '<ul style="margin: 4px 0; padding-left: 16px;">' +
+                    '<li>Verwende längere Suchbegriffe (mind. 3 Zeichen)</li>' +
+                    '<li>Prüfe die Schreibweise</li>' +
+                    '<li>Nutze * als Wildcard (z.B. "lieb*")</li>' +
+                    '</ul></div></div>';
+                content.innerHTML = helpMessage;
                 dropdown.style.display = 'block';
                 return;
             }
