@@ -1,7 +1,7 @@
 /**
- * RA PROFILE HEADER CARD COMPONENT
+ * RESONANZ PROFILE HEADER CARD COMPONENT
  *
- * Zeigt die RA-Profil-Werte (R1-R4) als kompakte Karte im Header an.
+ * Zeigt die Resonanz-Profil-Werte (R1-R4) als kompakte Karte im Header an.
  * Die Karte ist außerhalb des Scrollbereichs fixiert und zeigt:
  * - Leben (R1)
  * - Philosophie (R2)
@@ -113,7 +113,7 @@ const RAProfileHeaderCard = (function() {
         <div class="ra-profile-header-card">
             <div class="ra-profile-header-title">
                 <span class="ra-profile-header-icon">📊</span>
-                <span class="ra-profile-header-text">Dein RA-Profil</span>
+                <span class="ra-profile-header-text">Dein Resonanz-Profil</span>
             </div>
             <div class="ra-profile-header-values">`;
 
