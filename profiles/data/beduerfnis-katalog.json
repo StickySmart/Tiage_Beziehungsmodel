@@ -1,18 +1,40 @@
 {
-  "version": "3.0.0",
+  "version": "3.0.1",
   "beschreibung": "Ti-age Bedürfnis-Katalog - Metadaten & Hierarchien (SSOT für IDs: beduerfnis-ids.js)",
   "format": "#[Typ][Nr]-[Label]",
   "erstellt": "2025-12-09",
-  "aktualisiert": "2025-12-16",
-  "changelog": "v3.0.0: 🎉 COMPLETE - Alle 18 Kategorien konsolidiert! 219 Bedürfnisse → 70 Hauptfragen (68% Reduktion). Hierarchische Struktur mit Haupt-/Nuancen vollständig implementiert.",
-
+  "aktualisiert": "2025-12-20",
+  "changelog": "v3.0.1: 9 fehlende Bedürfnisse aus osho-zen hinzugefügt (#B212-#B220).",
   "perspektiven": {
-    "#P1": { "id": "#P1", "key": "statistik", "label": "Statistik", "beschreibung": "Empirische Forschung - Gaußsche Übereinstimmung der Werte", "quelle": "McCrae & Costa (Big Five), Wismeijer & van Assen (BDSM)" },
-    "#P2": { "id": "#P2", "key": "osho", "label": "Osho", "beschreibung": "Tantra, Polarität, Natürlichkeit vs. Konditionierung", "quelle": "Osho Rajneesh - Vorträge über Liebe und Beziehungen" },
-    "#P3": { "id": "#P3", "key": "pirsig", "label": "Pirsig", "beschreibung": "Static vs. Dynamic Quality - Qualität als Fundament", "quelle": "Robert M. Pirsig - Zen und die Kunst ein Motorrad zu warten (1974)" },
-    "#P4": { "id": "#P4", "key": "sexpositiv", "label": "SexPositiv", "beschreibung": "Sex-Positive Movement, Consent, Autonomie, BDSM/Kink", "quelle": "Dossie Easton, Janet Hardy, Jay Wiseman" }
+    "#P1": {
+      "id": "#P1",
+      "key": "statistik",
+      "label": "Statistik",
+      "beschreibung": "Empirische Forschung - Gaußsche Übereinstimmung der Werte",
+      "quelle": "McCrae & Costa (Big Five), Wismeijer & van Assen (BDSM)"
+    },
+    "#P2": {
+      "id": "#P2",
+      "key": "osho",
+      "label": "Osho",
+      "beschreibung": "Tantra, Polarität, Natürlichkeit vs. Konditionierung",
+      "quelle": "Osho Rajneesh - Vorträge über Liebe und Beziehungen"
+    },
+    "#P3": {
+      "id": "#P3",
+      "key": "pirsig",
+      "label": "Pirsig",
+      "beschreibung": "Static vs. Dynamic Quality - Qualität als Fundament",
+      "quelle": "Robert M. Pirsig - Zen und die Kunst ein Motorrad zu warten (1974)"
+    },
+    "#P4": {
+      "id": "#P4",
+      "key": "sexpositiv",
+      "label": "SexPositiv",
+      "beschreibung": "Sex-Positive Movement, Consent, Autonomie, BDSM/Kink",
+      "quelle": "Dossie Easton, Janet Hardy, Jay Wiseman"
+    }
   },
-
   "archetypes": {
     "_comment": "8 Beziehungs-Archetypen (konsolidiert aus archetype-matrix.json v7.0.0)",
     "#A1": {
@@ -96,276 +118,4038 @@
       "vollBeschreibung": "Aromantische Menschen erleben keine oder wenig romantische Anziehung, können aber tiefe platonische Bindungen haben."
     }
   },
-
   "dimensionen": {
-    "#D1": { "id": "#D1", "key": "beziehungsphilosophie", "label": "Beziehungsphilosophie", "kurzform": "A", "color": "#E63946", "beschreibung": "Grundlegende Beziehungsform und Lebensplanung", "beispiele": ["Mono vs. Poly", "Kinderwunsch", "Wohnsituation", "Ehe"] },
-    "#D2": { "id": "#D2", "key": "werte_alignment", "label": "Werte-Alignment", "kurzform": "B", "color": "#F4A261", "beschreibung": "Weltanschauung, Religion, Tradition", "beispiele": ["Spiritualität", "Politische Werte", "Umwelt", "Traditionen"] },
-    "#D3": { "id": "#D3", "key": "naehe_distanz", "label": "Nähe-Distanz", "kurzform": "C", "color": "#E84393", "beschreibung": "Körperliche und emotionale Nähe", "beispiele": ["Kuscheln", "Intimität", "Romantik", "Sicherheitsbedürfnis"] },
-    "#D4": { "id": "#D4", "key": "autonomie", "label": "Autonomie", "kurzform": "D", "color": "#2A9D8F", "beschreibung": "Freiheit, Selbstbestimmung, Dynamik", "beispiele": ["Unabhängigkeit", "Machtdynamik", "Kreativität", "Identität"] },
-    "#D5": { "id": "#D5", "key": "kommunikation", "label": "Kommunikation", "kurzform": "E", "color": "#8B5CF6", "beschreibung": "Austausch, Verständnis, Konfliktverhalten", "beispiele": ["Gesprächsstil", "Emotionale Offenheit", "Streitkultur"] },
-    "#D6": { "id": "#D6", "key": "soziale_kompatibilitaet", "label": "Soziale-Kompatibilität", "kurzform": "F", "color": "#3B82F6", "beschreibung": "Soziales Leben, Praktisches, Alltag", "beispiele": ["Intro/Extroversion", "Freundeskreis", "Ordnung", "Reisen"] }
+    "#D1": {
+      "id": "#D1",
+      "key": "beziehungsphilosophie",
+      "label": "Beziehungsphilosophie",
+      "kurzform": "A",
+      "color": "#E63946",
+      "beschreibung": "Grundlegende Beziehungsform und Lebensplanung",
+      "beispiele": [
+        "Mono vs. Poly",
+        "Kinderwunsch",
+        "Wohnsituation",
+        "Ehe"
+      ]
+    },
+    "#D2": {
+      "id": "#D2",
+      "key": "werte_alignment",
+      "label": "Werte-Alignment",
+      "kurzform": "B",
+      "color": "#F4A261",
+      "beschreibung": "Weltanschauung, Religion, Tradition",
+      "beispiele": [
+        "Spiritualität",
+        "Politische Werte",
+        "Umwelt",
+        "Traditionen"
+      ]
+    },
+    "#D3": {
+      "id": "#D3",
+      "key": "naehe_distanz",
+      "label": "Nähe-Distanz",
+      "kurzform": "C",
+      "color": "#E84393",
+      "beschreibung": "Körperliche und emotionale Nähe",
+      "beispiele": [
+        "Kuscheln",
+        "Intimität",
+        "Romantik",
+        "Sicherheitsbedürfnis"
+      ]
+    },
+    "#D4": {
+      "id": "#D4",
+      "key": "autonomie",
+      "label": "Autonomie",
+      "kurzform": "D",
+      "color": "#2A9D8F",
+      "beschreibung": "Freiheit, Selbstbestimmung, Dynamik",
+      "beispiele": [
+        "Unabhängigkeit",
+        "Machtdynamik",
+        "Kreativität",
+        "Identität"
+      ]
+    },
+    "#D5": {
+      "id": "#D5",
+      "key": "kommunikation",
+      "label": "Kommunikation",
+      "kurzform": "E",
+      "color": "#8B5CF6",
+      "beschreibung": "Austausch, Verständnis, Konfliktverhalten",
+      "beispiele": [
+        "Gesprächsstil",
+        "Emotionale Offenheit",
+        "Streitkultur"
+      ]
+    },
+    "#D6": {
+      "id": "#D6",
+      "key": "soziale_kompatibilitaet",
+      "label": "Soziale-Kompatibilität",
+      "kurzform": "F",
+      "color": "#3B82F6",
+      "beschreibung": "Soziales Leben, Praktisches, Alltag",
+      "beispiele": [
+        "Intro/Extroversion",
+        "Freundeskreis",
+        "Ordnung",
+        "Reisen"
+      ]
+    }
   },
-
   "kategorien": {
-    "#K1":  { "id": "#K1",  "key": "existenz", "label": "Existenz", "dimension": "#D3", "sigma": 11, "color": "#E63946", "beschreibung": "Grundlegende physische Bedürfnisse", "quelle": "GFK (Rosenberg)" },
-    "#K2":  { "id": "#K2",  "key": "sicherheit", "label": "Sicherheit", "dimension": "#D3", "sigma": 11, "color": "#F4A261", "beschreibung": "Emotionale und psychische Sicherheit", "quelle": "GFK (Rosenberg)" },
-    "#K3":  { "id": "#K3",  "key": "zuneigung", "label": "Zuneigung", "dimension": "#D3", "sigma": 12, "color": "#E84393", "beschreibung": "Liebe, Nähe und emotionale Verbindung", "quelle": "GFK (Rosenberg)" },
-    "#K4":  { "id": "#K4",  "key": "verstaendnis", "label": "Verständnis", "dimension": "#D5", "sigma": 13, "color": "#9B5DE5", "beschreibung": "Gesehen und verstanden werden", "quelle": "GFK (Rosenberg)" },
-    "#K5":  { "id": "#K5",  "key": "freiheit", "label": "Freiheit", "dimension": "#D4", "sigma": 14, "color": "#2A9D8F", "beschreibung": "Autonomie und Selbstbestimmung", "quelle": "GFK (Rosenberg)" },
-    "#K6":  { "id": "#K6",  "key": "teilnahme", "label": "Teilnahme", "dimension": "#D6", "sigma": 13, "color": "#06D6A0", "beschreibung": "Gemeinschaft und Zugehörigkeit", "quelle": "GFK (Rosenberg)" },
-    "#K7":  { "id": "#K7",  "key": "musse", "label": "Muße", "dimension": "#D6", "sigma": 15, "color": "#118AB2", "beschreibung": "Erholung, Freude und Genuss", "quelle": "GFK (Rosenberg)" },
-    "#K8":  { "id": "#K8",  "key": "identitaet", "label": "Identität", "dimension": "#D4", "sigma": 14, "color": "#FFD166", "beschreibung": "Selbstverwirklichung und Sinn", "quelle": "GFK (Rosenberg)" },
-    "#K9":  { "id": "#K9",  "key": "erschaffen", "label": "Erschaffen", "dimension": "#D4", "sigma": 16, "color": "#FF6B6B", "beschreibung": "Kreativität und Lernen", "quelle": "GFK (Rosenberg)" },
-    "#K10": { "id": "#K10", "key": "verbundenheit", "label": "Verbundenheit", "dimension": "#D3", "sigma": 16, "color": "#A8DADC", "beschreibung": "Tiefe existenzielle Verbindung", "quelle": "GFK (Rosenberg)" },
-    "#K11": { "id": "#K11", "key": "dynamik", "label": "Dynamik & Austausch", "dimension": "#D4", "sigma": 17, "color": "#8B5CF6", "beschreibung": "Machtdynamik und bewusster Austausch (BDSM/Kink)", "quelle": "Easton/Hardy (Topping/Bottoming), Wiseman (SM 101)" },
-    "#K12": { "id": "#K12", "key": "lebensplanung", "label": "Lebensplanung", "dimension": "#D1", "sigma": 14, "color": "#10B981", "beschreibung": "Kinder, Ehe, Wohnen, Familie", "quelle": "Tiage Erweiterung" },
-    "#K13": { "id": "#K13", "key": "finanzen_karriere", "label": "Finanzen & Karriere", "dimension": "#D1", "sigma": 14, "color": "#F59E0B", "beschreibung": "Geld, Beruf, Work-Life-Balance", "quelle": "Tiage Erweiterung" },
-    "#K14": { "id": "#K14", "key": "kommunikation_stil", "label": "Kommunikationsstil", "dimension": "#D5", "sigma": 13, "color": "#3B82F6", "beschreibung": "Gespräche, Emotionen, Konflikte", "quelle": "Tiage Erweiterung" },
-    "#K15": { "id": "#K15", "key": "soziales_leben", "label": "Soziales Leben", "dimension": "#D6", "sigma": 14, "color": "#8B5CF6", "beschreibung": "Introversion/Extroversion, Freunde", "quelle": "Tiage Erweiterung" },
-    "#K16": { "id": "#K16", "key": "intimitaet_romantik", "label": "Intimität & Romantik", "dimension": "#D3", "sigma": 16, "color": "#EC4899", "beschreibung": "Körperliche Nähe, Romantik, Sexualität", "quelle": "Tiage Erweiterung" },
-    "#K17": { "id": "#K17", "key": "werte_haltungen", "label": "Werte & Haltungen", "dimension": "#D2", "sigma": 15, "color": "#6366F1", "beschreibung": "Religion, Tradition, Umwelt", "quelle": "Tiage Erweiterung" },
-    "#K18": { "id": "#K18", "key": "praktisches_leben", "label": "Praktisches Leben", "dimension": "#D6", "sigma": 14, "color": "#14B8A6", "beschreibung": "Ordnung, Reisen, Alltag", "quelle": "Tiage Erweiterung" }
+    "#K1": {
+      "id": "#K1",
+      "key": "existenz",
+      "label": "Existenz",
+      "dimension": "#D3",
+      "sigma": 11,
+      "color": "#E63946",
+      "beschreibung": "Grundlegende physische Bedürfnisse",
+      "quelle": "GFK (Rosenberg)"
+    },
+    "#K2": {
+      "id": "#K2",
+      "key": "sicherheit",
+      "label": "Sicherheit",
+      "dimension": "#D3",
+      "sigma": 11,
+      "color": "#F4A261",
+      "beschreibung": "Emotionale und psychische Sicherheit",
+      "quelle": "GFK (Rosenberg)"
+    },
+    "#K3": {
+      "id": "#K3",
+      "key": "zuneigung",
+      "label": "Zuneigung",
+      "dimension": "#D3",
+      "sigma": 12,
+      "color": "#E84393",
+      "beschreibung": "Liebe, Nähe und emotionale Verbindung",
+      "quelle": "GFK (Rosenberg)"
+    },
+    "#K4": {
+      "id": "#K4",
+      "key": "verstaendnis",
+      "label": "Verständnis",
+      "dimension": "#D5",
+      "sigma": 13,
+      "color": "#9B5DE5",
+      "beschreibung": "Gesehen und verstanden werden",
+      "quelle": "GFK (Rosenberg)"
+    },
+    "#K5": {
+      "id": "#K5",
+      "key": "freiheit",
+      "label": "Freiheit",
+      "dimension": "#D4",
+      "sigma": 14,
+      "color": "#2A9D8F",
+      "beschreibung": "Autonomie und Selbstbestimmung",
+      "quelle": "GFK (Rosenberg)"
+    },
+    "#K6": {
+      "id": "#K6",
+      "key": "teilnahme",
+      "label": "Teilnahme",
+      "dimension": "#D6",
+      "sigma": 13,
+      "color": "#06D6A0",
+      "beschreibung": "Gemeinschaft und Zugehörigkeit",
+      "quelle": "GFK (Rosenberg)"
+    },
+    "#K7": {
+      "id": "#K7",
+      "key": "musse",
+      "label": "Muße",
+      "dimension": "#D6",
+      "sigma": 15,
+      "color": "#118AB2",
+      "beschreibung": "Erholung, Freude und Genuss",
+      "quelle": "GFK (Rosenberg)"
+    },
+    "#K8": {
+      "id": "#K8",
+      "key": "identitaet",
+      "label": "Identität",
+      "dimension": "#D4",
+      "sigma": 14,
+      "color": "#FFD166",
+      "beschreibung": "Selbstverwirklichung und Sinn",
+      "quelle": "GFK (Rosenberg)"
+    },
+    "#K9": {
+      "id": "#K9",
+      "key": "erschaffen",
+      "label": "Erschaffen",
+      "dimension": "#D4",
+      "sigma": 16,
+      "color": "#FF6B6B",
+      "beschreibung": "Kreativität und Lernen",
+      "quelle": "GFK (Rosenberg)"
+    },
+    "#K10": {
+      "id": "#K10",
+      "key": "verbundenheit",
+      "label": "Verbundenheit",
+      "dimension": "#D3",
+      "sigma": 16,
+      "color": "#A8DADC",
+      "beschreibung": "Tiefe existenzielle Verbindung",
+      "quelle": "GFK (Rosenberg)"
+    },
+    "#K11": {
+      "id": "#K11",
+      "key": "dynamik",
+      "label": "Dynamik & Austausch",
+      "dimension": "#D4",
+      "sigma": 17,
+      "color": "#8B5CF6",
+      "beschreibung": "Machtdynamik und bewusster Austausch (BDSM/Kink)",
+      "quelle": "Easton/Hardy (Topping/Bottoming), Wiseman (SM 101)"
+    },
+    "#K12": {
+      "id": "#K12",
+      "key": "lebensplanung",
+      "label": "Lebensplanung",
+      "dimension": "#D1",
+      "sigma": 14,
+      "color": "#10B981",
+      "beschreibung": "Kinder, Ehe, Wohnen, Familie",
+      "quelle": "Tiage Erweiterung"
+    },
+    "#K13": {
+      "id": "#K13",
+      "key": "finanzen_karriere",
+      "label": "Finanzen & Karriere",
+      "dimension": "#D1",
+      "sigma": 14,
+      "color": "#F59E0B",
+      "beschreibung": "Geld, Beruf, Work-Life-Balance",
+      "quelle": "Tiage Erweiterung"
+    },
+    "#K14": {
+      "id": "#K14",
+      "key": "kommunikation_stil",
+      "label": "Kommunikationsstil",
+      "dimension": "#D5",
+      "sigma": 13,
+      "color": "#3B82F6",
+      "beschreibung": "Gespräche, Emotionen, Konflikte",
+      "quelle": "Tiage Erweiterung"
+    },
+    "#K15": {
+      "id": "#K15",
+      "key": "soziales_leben",
+      "label": "Soziales Leben",
+      "dimension": "#D6",
+      "sigma": 14,
+      "color": "#8B5CF6",
+      "beschreibung": "Introversion/Extroversion, Freunde",
+      "quelle": "Tiage Erweiterung"
+    },
+    "#K16": {
+      "id": "#K16",
+      "key": "intimitaet_romantik",
+      "label": "Intimität & Romantik",
+      "dimension": "#D3",
+      "sigma": 16,
+      "color": "#EC4899",
+      "beschreibung": "Körperliche Nähe, Romantik, Sexualität",
+      "quelle": "Tiage Erweiterung"
+    },
+    "#K17": {
+      "id": "#K17",
+      "key": "werte_haltungen",
+      "label": "Werte & Haltungen",
+      "dimension": "#D2",
+      "sigma": 15,
+      "color": "#6366F1",
+      "beschreibung": "Religion, Tradition, Umwelt",
+      "quelle": "Tiage Erweiterung"
+    },
+    "#K18": {
+      "id": "#K18",
+      "key": "praktisches_leben",
+      "label": "Praktisches Leben",
+      "dimension": "#D6",
+      "sigma": 14,
+      "color": "#14B8A6",
+      "beschreibung": "Ordnung, Reisen, Alltag",
+      "quelle": "Tiage Erweiterung"
+    }
   },
-
   "beduerfnisse": {
     "_comment": "GFK-KERN (88 Bedürfnisse) + LEBENSTHEMEN (132 Bedürfnisse) = 220 total",
-
-    "#B1":   { "id": "#B1",   "label": "Körperliche-Grundbedürfnisse", "kategorie": "#K1", "dimension": "#D3", "skala": [0, 100], "frage": "Wie wichtig sind Ihnen körperliche Grundbedürfnisse?", "frageTyp": "haupt", "nuancen": ["#B2", "#B3", "#B4"] },
-    "#B2":   { "id": "#B2",   "label": "Wasser", "kategorie": "#K1", "dimension": "#D3", "skala": [0, 100], "frageTyp": "nuance", "hauptbeduerfnis": "#B1", "kontext": "ausreichend trinken" },
-    "#B3":   { "id": "#B3",   "label": "Nahrung", "kategorie": "#K1", "dimension": "#D3", "skala": [0, 100], "frageTyp": "nuance", "hauptbeduerfnis": "#B1", "kontext": "gesunde Ernährung" },
-    "#B4":   { "id": "#B4",   "label": "Bewegung", "kategorie": "#K1", "dimension": "#D3", "skala": [0, 100], "sekundaer": ["#K8", "#K7"], "frageTyp": "nuance", "hauptbeduerfnis": "#B1", "kontext": "körperliche Aktivität" },
-    "#B5":   { "id": "#B5",   "label": "Berührung-&-Körperkontakt", "kategorie": "#K1", "dimension": "#D3", "skala": [0, 100], "sekundaer": ["#K3", "#K11", "#K2"], "frage": "Wie wichtig ist Ihnen Berührung und Körperkontakt?", "frageTyp": "haupt", "nuancen": ["#B7"] },
-    "#B6":   { "id": "#B6",   "label": "Erholung", "kategorie": "#K1", "dimension": "#D3", "skala": [0, 100], "sekundaer": ["#K2", "#K7"], "frage": "Wie wichtig ist Ihnen Erholung und Entspannung?", "frageTyp": "haupt", "nuancen": ["#B47"] },
-    "#B7":   { "id": "#B7",   "label": "Sexueller-Ausdruck", "kategorie": "#K1", "dimension": "#D3", "skala": [0, 100], "sekundaer": ["#K3", "#K11", "#K8", "#K10"], "frageTyp": "nuance", "hauptbeduerfnis": "#B5", "kontext": "sexuelle Bedürfnisse" },
-    "#B8":   { "id": "#B8",   "label": "Physische-Sicherheit", "kategorie": "#K1", "dimension": "#D3", "skala": [0, 100], "sekundaer": ["#K2"], "frage": "Wie wichtig ist Ihnen physische Sicherheit?", "frageTyp": "haupt", "nuancen": ["#B9"] },
-    "#B9":   { "id": "#B9",   "label": "Unterschlupf", "kategorie": "#K1", "dimension": "#D3", "skala": [0, 100], "sekundaer": ["#K2"], "frageTyp": "nuance", "hauptbeduerfnis": "#B8", "kontext": "sicherer Wohnraum" },
-
-    "#B10":  { "id": "#B10",  "label": "Beständigkeit", "kategorie": "#K2", "dimension": "#D3", "skala": [0, 100], "sekundaer": ["#K4", "#K3"], "frageTyp": "nuance", "hauptbeduerfnis": "#B11", "kontext": "Beständigkeit im Leben" },
-    "#B11":  { "id": "#B11",  "label": "Stabilität-&-Sicherheit", "kategorie": "#K2", "dimension": "#D3", "skala": [0, 100], "sekundaer": ["#K3", "#K4", "#K11"], "frage": "Wie wichtig ist Ihnen Sicherheit und Stabilität?", "frageTyp": "haupt", "nuancen": ["#B10", "#B12", "#B13", "#B15"] },
-    "#B12":  { "id": "#B12",  "label": "Schutz", "kategorie": "#K2", "dimension": "#D3", "skala": [0, 100], "sekundaer": ["#K3", "#K11"], "frageTyp": "nuance", "hauptbeduerfnis": "#B11", "kontext": "Schutz & Geborgenheit" },
-    "#B13":  { "id": "#B13",  "label": "Stabilität", "kategorie": "#K2", "dimension": "#D3", "skala": [0, 100], "sekundaer": ["#K8", "#K4"], "frageTyp": "nuance", "hauptbeduerfnis": "#B11", "kontext": "stabile Verhältnisse" },
-    "#B14":  { "id": "#B14",  "label": "Leichtigkeit", "kategorie": "#K2", "dimension": "#D3", "skala": [0, 100], "sekundaer": ["#K7", "#K5"], "frage": "Wie wichtig ist Ihnen Leichtigkeit im Leben?", "frageTyp": "haupt" },
-    "#B15":  { "id": "#B15",  "label": "Geborgenheit", "kategorie": "#K2", "dimension": "#D3", "skala": [0, 100], "sekundaer": ["#K3", "#K11"], "frageTyp": "nuance", "hauptbeduerfnis": "#B11", "kontext": "sich geborgen fühlen" },
-
-    "#B16":  { "id": "#B16",  "label": "Wärme", "kategorie": "#K3", "dimension": "#D3", "skala": [0, 100], "sekundaer": ["#K2"], "frageTyp": "nuance", "hauptbeduerfnis": "#B18", "kontext": "emotionale Wärme" },
-    "#B17":  { "id": "#B17",  "label": "Wertschätzung", "kategorie": "#K3", "dimension": "#D3", "skala": [0, 100], "sekundaer": ["#K4", "#K8"], "frage": "Wie wichtig ist Ihnen Wertschätzung?", "frageTyp": "haupt" },
-    "#B18":  { "id": "#B18",  "label": "Emotionale-Nähe", "kategorie": "#K3", "dimension": "#D3", "skala": [0, 100], "sekundaer": ["#K2", "#K10"], "frage": "Wie wichtig ist Ihnen emotionale Nähe?", "frageTyp": "haupt", "nuancen": ["#B16", "#B20", "#B21"] },
-    "#B19":  { "id": "#B19",  "label": "Gesellschaft", "kategorie": "#K3", "dimension": "#D3", "skala": [0, 100], "sekundaer": ["#K6"], "frage": "Wie wichtig ist Ihnen Gesellschaft?", "frageTyp": "haupt" },
-    "#B20":  { "id": "#B20",  "label": "Intimität", "kategorie": "#K3", "dimension": "#D3", "skala": [0, 100], "sekundaer": ["#K4", "#K11", "#K10"], "frageTyp": "nuance", "hauptbeduerfnis": "#B18", "kontext": "tiefe Intimität" },
-    "#B21":  { "id": "#B21",  "label": "Liebe", "kategorie": "#K3", "dimension": "#D3", "skala": [0, 100], "sekundaer": ["#K2", "#K10", "#K8"], "frageTyp": "nuance", "hauptbeduerfnis": "#B18", "kontext": "Liebe spüren & geben" },
-    "#B22":  { "id": "#B22",  "label": "Fürsorge-&-Unterstützung", "kategorie": "#K3", "dimension": "#D3", "skala": [0, 100], "sekundaer": ["#K11", "#K2"], "frage": "Wie wichtig ist gegenseitige Fürsorge?", "frageTyp": "haupt", "nuancen": ["#B23", "#B24"] },
-    "#B23":  { "id": "#B23",  "label": "Unterstützung", "kategorie": "#K3", "dimension": "#D3", "skala": [0, 100], "sekundaer": ["#K6", "#K2"], "frageTyp": "nuance", "hauptbeduerfnis": "#B22", "kontext": "Unterstützung erhalten" },
-    "#B24":  { "id": "#B24",  "label": "Füreinander-da-sein", "kategorie": "#K3", "dimension": "#D3", "skala": [0, 100], "sekundaer": ["#K2", "#K10"], "frageTyp": "nuance", "hauptbeduerfnis": "#B22", "kontext": "füreinander da sein" },
-
-    "#B25":  { "id": "#B25",  "label": "Akzeptanz-&-Empathie", "kategorie": "#K4", "dimension": "#D5", "skala": [0, 100], "sekundaer": ["#K3", "#K8"], "frage": "Wie wichtig ist Ihnen Akzeptanz und Empathie?", "frageTyp": "haupt", "nuancen": ["#B26", "#B27", "#B28"] },
-    "#B26":  { "id": "#B26",  "label": "Mitgefühl", "kategorie": "#K4", "dimension": "#D5", "skala": [0, 100], "sekundaer": ["#K3", "#K10"], "frageTyp": "nuance", "hauptbeduerfnis": "#B25", "kontext": "Mitgefühl erfahren" },
-    "#B27":  { "id": "#B27",  "label": "Berücksichtigung", "kategorie": "#K4", "dimension": "#D5", "skala": [0, 100], "sekundaer": ["#K6"], "frageTyp": "nuance", "hauptbeduerfnis": "#B25", "kontext": "berücksichtigt werden" },
-    "#B28":  { "id": "#B28",  "label": "Empathie", "kategorie": "#K4", "dimension": "#D5", "skala": [0, 100], "sekundaer": ["#K3", "#K10"], "frageTyp": "nuance", "hauptbeduerfnis": "#B25", "kontext": "empathisches Verständnis" },
-    "#B29":  { "id": "#B29",  "label": "Vertrauen", "kategorie": "#K4", "dimension": "#D5", "skala": [0, 100], "sekundaer": ["#K2", "#K11", "#K3"], "frage": "Wie wichtig ist Ihnen Vertrauen?", "frageTyp": "haupt" },
-    "#B30":  { "id": "#B30",  "label": "Beachtung", "kategorie": "#K4", "dimension": "#D5", "skala": [0, 100], "sekundaer": ["#K8", "#K3"], "frageTyp": "nuance", "hauptbeduerfnis": "#B31", "kontext": "Beachtung finden" },
-    "#B31":  { "id": "#B31",  "label": "Gesehen-&-Verstanden-werden", "kategorie": "#K4", "dimension": "#D5", "skala": [0, 100], "sekundaer": ["#K8", "#K3"], "frage": "Wie wichtig ist es Ihnen, gesehen und verstanden zu werden?", "frageTyp": "haupt", "nuancen": ["#B30", "#B32"] },
-    "#B32":  { "id": "#B32",  "label": "Verstanden-werden", "kategorie": "#K4", "dimension": "#D5", "skala": [0, 100], "sekundaer": ["#K3", "#K10"], "frageTyp": "nuance", "hauptbeduerfnis": "#B31", "kontext": "verstanden werden" },
-    "#B33":  { "id": "#B33",  "label": "Harmonie", "kategorie": "#K4", "dimension": "#D5", "skala": [0, 100], "sekundaer": ["#K2", "#K6"], "frage": "Wie wichtig ist Ihnen Harmonie?", "frageTyp": "haupt" },
-
-    "#B34":  { "id": "#B34",  "label": "Selbstbestimmung-&-Unabhängigkeit", "kategorie": "#K5", "dimension": "#D4", "skala": [0, 100], "sekundaer": ["#K8", "#K11"], "frage": "Wie wichtig ist Ihnen Selbstbestimmung?", "frageTyp": "haupt", "nuancen": ["#B35", "#B36", "#B37"] },
-    "#B35":  { "id": "#B35",  "label": "Wählen-können", "kategorie": "#K5", "dimension": "#D4", "skala": [0, 100], "sekundaer": ["#K8"], "frageTyp": "nuance", "hauptbeduerfnis": "#B34", "kontext": "eigene Wahl treffen" },
-    "#B36":  { "id": "#B36",  "label": "Unabhängigkeit", "kategorie": "#K5", "dimension": "#D4", "skala": [0, 100], "sekundaer": ["#K8", "#K2"], "frageTyp": "nuance", "hauptbeduerfnis": "#B34", "kontext": "unabhängig sein" },
-    "#B37":  { "id": "#B37",  "label": "Raum-haben", "kategorie": "#K5", "dimension": "#D4", "skala": [0, 100], "sekundaer": ["#K2", "#K8"], "frageTyp": "nuance", "hauptbeduerfnis": "#B34", "kontext": "eigenen Raum haben" },
-    "#B38":  { "id": "#B38",  "label": "Spontaneität", "kategorie": "#K5", "dimension": "#D4", "skala": [0, 100], "sekundaer": ["#K7", "#K9"], "frage": "Wie wichtig ist Ihnen Spontaneität?", "frageTyp": "haupt" },
-
-    "#B39":  { "id": "#B39",  "label": "Zusammenarbeit", "kategorie": "#K6", "dimension": "#D6", "skala": [0, 100], "sekundaer": ["#K3", "#K8"], "frage": "Wie wichtig ist Ihnen Zusammenarbeit?", "frageTyp": "haupt", "nuancen": ["#B40", "#B43"] },
-    "#B40":  { "id": "#B40",  "label": "Kommunikation", "kategorie": "#K6", "dimension": "#D6", "skala": [0, 100], "sekundaer": ["#K4", "#K3"], "frageTyp": "nuance", "hauptbeduerfnis": "#B39", "kontext": "gute Kommunikation" },
-    "#B41":  { "id": "#B41",  "label": "Gemeinschaft", "kategorie": "#K6", "dimension": "#D6", "skala": [0, 100], "sekundaer": ["#K3", "#K2"], "frageTyp": "nuance", "hauptbeduerfnis": "#B42", "kontext": "Teil einer Gemeinschaft" },
-    "#B42":  { "id": "#B42",  "label": "Zugehörigkeit", "kategorie": "#K6", "dimension": "#D6", "skala": [0, 100], "sekundaer": ["#K2", "#K8"], "frage": "Wie wichtig ist Ihnen Zugehörigkeit?", "frageTyp": "haupt", "nuancen": ["#B41", "#B45"] },
-    "#B43":  { "id": "#B43",  "label": "Gegenseitigkeit", "kategorie": "#K6", "dimension": "#D6", "skala": [0, 100], "sekundaer": ["#K3", "#K11"], "frageTyp": "nuance", "hauptbeduerfnis": "#B39", "kontext": "gegenseitiges Geben" },
-    "#B44":  { "id": "#B44",  "label": "Respekt", "kategorie": "#K6", "dimension": "#D6", "skala": [0, 100], "sekundaer": ["#K4", "#K11", "#K8"], "frage": "Wie wichtig ist Ihnen Respekt?", "frageTyp": "haupt" },
-    "#B45":  { "id": "#B45",  "label": "Bedeutung-haben", "kategorie": "#K6", "dimension": "#D6", "skala": [0, 100], "sekundaer": ["#K8", "#K10"], "frageTyp": "nuance", "hauptbeduerfnis": "#B42", "kontext": "Bedeutung für andere haben" },
-
-    "#B46":  { "id": "#B46",  "label": "Schönheit", "kategorie": "#K7", "dimension": "#D6", "skala": [0, 100], "sekundaer": ["#K10", "#K9"], "frageTyp": "nuance", "hauptbeduerfnis": "#B48", "kontext": "Schönheit erleben" },
-    "#B47":  { "id": "#B47",  "label": "Freizeit", "kategorie": "#K7", "dimension": "#D6", "skala": [0, 100], "sekundaer": ["#K5"], "frage": "Wie wichtig ist Ihnen unverplante Freizeit?", "frageTyp": "nuance", "hauptbeduerfnis": "#B6", "kontext": "unverplante Zeit" },
-    "#B48":  { "id": "#B48",  "label": "Freude-&-Lebensgenuss", "kategorie": "#K7", "dimension": "#D6", "skala": [0, 100], "sekundaer": ["#K10", "#K3"], "frage": "Wie wichtig ist Ihnen Freude und Lebensgenuss?", "frageTyp": "haupt", "nuancen": ["#B46", "#B49"] },
-    "#B49":  { "id": "#B49",  "label": "Humor", "kategorie": "#K7", "dimension": "#D6", "skala": [0, 100], "sekundaer": ["#K10", "#K3"], "frageTyp": "nuance", "hauptbeduerfnis": "#B48", "kontext": "Humor & Lachen" },
-
-    "#B50":  { "id": "#B50",  "label": "Authentizität", "kategorie": "#K8", "dimension": "#D4", "skala": [0, 100], "sekundaer": ["#K5", "#K4"], "frage": "Wie wichtig ist Ihnen Authentizität?", "frageTyp": "haupt", "nuancen": ["#B51", "#B52"] },
-    "#B51":  { "id": "#B51",  "label": "Echtheit", "kategorie": "#K8", "dimension": "#D4", "skala": [0, 100], "sekundaer": ["#K4", "#K10"], "frageTyp": "nuance", "hauptbeduerfnis": "#B50", "kontext": "echtes Sein" },
-    "#B52":  { "id": "#B52",  "label": "Integrität", "kategorie": "#K8", "dimension": "#D4", "skala": [0, 100], "sekundaer": ["#K4", "#K11"], "frageTyp": "nuance", "hauptbeduerfnis": "#B50", "kontext": "integer handeln" },
-    "#B53":  { "id": "#B53",  "label": "Präsenz", "kategorie": "#K8", "dimension": "#D4", "skala": [0, 100], "sekundaer": ["#K10", "#K4"], "frageTyp": "nuance", "hauptbeduerfnis": "#B55", "kontext": "im Moment sein" },
-    "#B54":  { "id": "#B54",  "label": "Ordnung", "kategorie": "#K8", "dimension": "#D4", "skala": [0, 100], "sekundaer": ["#K2"], "frageTyp": "nuance", "hauptbeduerfnis": "#B55", "kontext": "geordnetes Denken" },
-    "#B55":  { "id": "#B55",  "label": "Bewusstheit-&-Klarheit", "kategorie": "#K8", "dimension": "#D4", "skala": [0, 100], "sekundaer": ["#K10", "#K4"], "frage": "Wie wichtig ist Ihnen Bewusstheit und Klarheit?", "frageTyp": "haupt", "nuancen": ["#B53", "#B54", "#B57"] },
-    "#B56":  { "id": "#B56",  "label": "Herausforderung", "kategorie": "#K8", "dimension": "#D4", "skala": [0, 100], "sekundaer": ["#K9", "#K5"], "frageTyp": "nuance", "hauptbeduerfnis": "#B58", "kontext": "Herausforderungen suchen" },
-    "#B57":  { "id": "#B57",  "label": "Klarheit", "kategorie": "#K8", "dimension": "#D4", "skala": [0, 100], "sekundaer": ["#K4", "#K2"], "frageTyp": "nuance", "hauptbeduerfnis": "#B55", "kontext": "klare Gedanken" },
-    "#B58":  { "id": "#B58",  "label": "Kompetenz-&-Wirksamkeit", "kategorie": "#K8", "dimension": "#D4", "skala": [0, 100], "sekundaer": ["#K9", "#K6"], "frage": "Wie wichtig ist Ihnen Kompetenz und Wirksamkeit?", "frageTyp": "haupt", "nuancen": ["#B56", "#B59", "#B60"] },
-    "#B59":  { "id": "#B59",  "label": "Effizienz", "kategorie": "#K8", "dimension": "#D4", "skala": [0, 100], "sekundaer": ["#K5"], "frageTyp": "nuance", "hauptbeduerfnis": "#B58", "kontext": "effizient arbeiten" },
-    "#B60":  { "id": "#B60",  "label": "Wirksamkeit", "kategorie": "#K8", "dimension": "#D4", "skala": [0, 100], "sekundaer": ["#K11", "#K6"], "frageTyp": "nuance", "hauptbeduerfnis": "#B58", "kontext": "wirksam sein" },
-    "#B61":  { "id": "#B61",  "label": "Wachstum-&-Sinn", "kategorie": "#K8", "dimension": "#D4", "skala": [0, 100], "sekundaer": ["#K9", "#K10"], "frage": "Wie wichtig ist Ihnen persönliches Wachstum?", "frageTyp": "haupt", "nuancen": ["#B62", "#B63"] },
-    "#B62":  { "id": "#B62",  "label": "Sinn", "kategorie": "#K8", "dimension": "#D4", "skala": [0, 100], "sekundaer": ["#K10"], "frageTyp": "nuance", "hauptbeduerfnis": "#B61", "kontext": "Sinn finden" },
-    "#B63":  { "id": "#B63",  "label": "Beitrag-leisten", "kategorie": "#K8", "dimension": "#D4", "skala": [0, 100], "sekundaer": ["#K6", "#K10"], "frageTyp": "nuance", "hauptbeduerfnis": "#B61", "kontext": "etwas beitragen" },
-
-    "#B64":  { "id": "#B64",  "label": "Kreativität-&-Selbstausdruck", "kategorie": "#K9", "dimension": "#D4", "skala": [0, 100], "sekundaer": ["#K5", "#K8"], "frage": "Wie wichtig ist Ihnen Kreativität und Selbstausdruck?", "frageTyp": "haupt", "nuancen": ["#B67"] },
-    "#B65":  { "id": "#B65",  "label": "Entdecken-&-Lernen", "kategorie": "#K9", "dimension": "#D4", "skala": [0, 100], "sekundaer": ["#K5", "#K10"], "frage": "Wie wichtig ist Ihnen Entdecken und Lernen?", "frageTyp": "haupt", "nuancen": ["#B66", "#B68"] },
-    "#B66":  { "id": "#B66",  "label": "Lernen", "kategorie": "#K9", "dimension": "#D4", "skala": [0, 100], "sekundaer": ["#K8", "#K10"], "frageTyp": "nuance", "hauptbeduerfnis": "#B65", "kontext": "Neues lernen" },
-    "#B67":  { "id": "#B67",  "label": "Selbst-Ausdruck", "kategorie": "#K9", "dimension": "#D4", "skala": [0, 100], "sekundaer": ["#K8", "#K5"], "frageTyp": "nuance", "hauptbeduerfnis": "#B64", "kontext": "sich ausdrücken" },
-    "#B68":  { "id": "#B68",  "label": "Anreize-bekommen", "kategorie": "#K9", "dimension": "#D4", "skala": [0, 100], "sekundaer": ["#K10", "#K6"], "frageTyp": "nuance", "hauptbeduerfnis": "#B65", "kontext": "Anreize & Impulse" },
-
-    "#B69":  { "id": "#B69",  "label": "Lebensfreude", "kategorie": "#K10", "dimension": "#D3", "skala": [0, 100], "sekundaer": ["#K7", "#K3"], "frage": "Wie wichtig ist Ihnen Lebensfreude?", "frageTyp": "haupt", "nuancen": ["#B70"] },
-    "#B70":  { "id": "#B70",  "label": "Inspiration", "kategorie": "#K10", "dimension": "#D3", "skala": [0, 100], "sekundaer": ["#K9", "#K8"], "frageTyp": "nuance", "hauptbeduerfnis": "#B69", "kontext": "Inspiration & Begeisterung" },
-    "#B71":  { "id": "#B71",  "label": "Emotionale-Tiefe", "kategorie": "#K10", "dimension": "#D3", "skala": [0, 100], "sekundaer": ["#K4", "#K3"], "frage": "Wie wichtig ist Ihnen emotionale Tiefe?", "frageTyp": "haupt", "nuancen": ["#B72", "#B73"] },
-    "#B72":  { "id": "#B72",  "label": "Einsehen", "kategorie": "#K10", "dimension": "#D3", "skala": [0, 100], "sekundaer": ["#K4", "#K8"], "frageTyp": "nuance", "hauptbeduerfnis": "#B71", "kontext": "Einsicht & Erkenntnis" },
-    "#B73":  { "id": "#B73",  "label": "Anfang-Ende", "kategorie": "#K10", "dimension": "#D3", "skala": [0, 100], "sekundaer": ["#K8", "#K2"], "frageTyp": "nuance", "hauptbeduerfnis": "#B71", "kontext": "Vergänglichkeit akzeptieren" },
-
-    "#B74":  { "id": "#B74",  "label": "Kontrolle-ausüben", "kategorie": "#K11", "dimension": "#D4", "skala": [0, 100], "sekundaer": ["#K5", "#K8", "#K2"], "frage": "Wie wichtig ist Kontrolle ausüben?", "frageTyp": "nuance", "hauptbeduerfnis": "#B86", "kontext": "Kontrolle & Dominanz" },
-    "#B75":  { "id": "#B75",  "label": "Hingabe", "kategorie": "#K11", "dimension": "#D4", "skala": [0, 100], "sekundaer": ["#K3", "#K4", "#K2"], "frage": "Wie wichtig ist Hingabe?", "frageTyp": "nuance", "hauptbeduerfnis": "#B86", "kontext": "Hingabe & Submission" },
-    "#B76":  { "id": "#B76",  "label": "Führung-geben", "kategorie": "#K11", "dimension": "#D4", "skala": [0, 100], "sekundaer": ["#K8", "#K6", "#K3"], "frage": "Wie wichtig ist Führung geben?", "frageTyp": "nuance", "hauptbeduerfnis": "#B86", "kontext": "führende Rolle" },
-    "#B77":  { "id": "#B77",  "label": "Geführt-werden", "kategorie": "#K11", "dimension": "#D4", "skala": [0, 100], "sekundaer": ["#K2", "#K3", "#K4"], "frage": "Wie wichtig ist geführt werden?", "frageTyp": "nuance", "hauptbeduerfnis": "#B86", "kontext": "geführt werden" },
-    "#B78":  { "id": "#B78",  "label": "Ritual", "kategorie": "#K11", "dimension": "#D4", "skala": [0, 100], "sekundaer": ["#K2", "#K10", "#K8"], "frage": "Wie wichtig sind Rituale und Strukturen?", "frageTyp": "haupt", "nuancen": ["#B79"] },
-    "#B79":  { "id": "#B79",  "label": "Nachsorge", "kategorie": "#K11", "dimension": "#D4", "skala": [0, 100], "sekundaer": ["#K3", "#K2", "#K4"], "frage": "Wie wichtig ist Aftercare?", "frageTyp": "nuance", "hauptbeduerfnis": "#B78", "kontext": "Aftercare & Fürsorge" },
-    "#B80":  { "id": "#B80",  "label": "Grenzen-setzen", "kategorie": "#K11", "dimension": "#D4", "skala": [0, 100], "sekundaer": ["#K5", "#K2", "#K8"], "frage": "Wie wichtig ist klare Grenzkommunikation?", "frageTyp": "haupt", "nuancen": ["#B81", "#B83"] },
-    "#B81":  { "id": "#B81",  "label": "Grenzen-respektieren", "kategorie": "#K11", "dimension": "#D4", "skala": [0, 100], "sekundaer": ["#K4", "#K6"], "frage": "Wie wichtig ist Grenzen respektieren?", "frageTyp": "nuance", "hauptbeduerfnis": "#B80", "kontext": "Grenzen anderer respektieren" },
-    "#B82":  { "id": "#B82",  "label": "Intensität", "kategorie": "#K11", "dimension": "#D4", "skala": [0, 100], "sekundaer": ["#K10", "#K1"], "frage": "Wie wichtig ist emotionale/körperliche Intensität?", "frageTyp": "haupt", "nuancen": ["#B85"] },
-    "#B83":  { "id": "#B83",  "label": "Vertrauen-schenken", "kategorie": "#K11", "dimension": "#D4", "skala": [0, 100], "sekundaer": ["#K4", "#K3", "#K2"], "frage": "Wie wichtig ist Vertrauen schenken?", "frageTyp": "nuance", "hauptbeduerfnis": "#B80", "kontext": "Vertrauen aufbauen" },
-    "#B84":  { "id": "#B84",  "label": "Verantwortung-übernehmen", "kategorie": "#K11", "dimension": "#D4", "skala": [0, 100], "sekundaer": ["#K8", "#K3"], "frage": "Wie wichtig ist Verantwortung übernehmen?", "frageTyp": "nuance", "hauptbeduerfnis": "#B87", "kontext": "Verantwortung für andere" },
-    "#B85":  { "id": "#B85",  "label": "Sich-fallenlassen", "kategorie": "#K11", "dimension": "#D4", "skala": [0, 100], "sekundaer": ["#K4", "#K2", "#K3"], "frage": "Wie wichtig ist sich fallenlassen?", "frageTyp": "nuance", "hauptbeduerfnis": "#B82", "kontext": "Kontrolle abgeben" },
-    "#B86":  { "id": "#B86",  "label": "Machtdynamik", "kategorie": "#K11", "dimension": "#D4", "skala": [0, 100], "sekundaer": ["#K10", "#K3"], "frage": "Wie wichtig ist Ihnen Machtdynamik in Beziehungen?", "frageTyp": "haupt", "nuancen": ["#B74", "#B75", "#B76", "#B77"] },
-    "#B87":  { "id": "#B87",  "label": "Rollenausdruck", "kategorie": "#K11", "dimension": "#D4", "skala": [0, 100], "sekundaer": ["#K3", "#K8"], "frage": "Wie wichtig ist Rollenausdruck in Beziehungen?", "frageTyp": "haupt", "nuancen": ["#B84", "#B88"] },
-    "#B88":  { "id": "#B88",  "label": "Beschützen", "kategorie": "#K11", "dimension": "#D4", "skala": [0, 100], "sekundaer": ["#K3", "#K2", "#K8"], "frage": "Wie wichtig ist beschützen?", "frageTyp": "nuance", "hauptbeduerfnis": "#B87", "kontext": "beschützende Rolle" },
-
+    "#B1": {
+      "id": "#B1",
+      "label": "Körperliche-Grundbedürfnisse",
+      "kategorie": "#K1",
+      "dimension": "#D3",
+      "skala": [
+        0,
+        100
+      ],
+      "frage": "Wie wichtig sind Ihnen körperliche Grundbedürfnisse?",
+      "frageTyp": "haupt",
+      "nuancen": [
+        "#B2",
+        "#B3",
+        "#B4"
+      ]
+    },
+    "#B2": {
+      "id": "#B2",
+      "label": "Wasser",
+      "kategorie": "#K1",
+      "dimension": "#D3",
+      "skala": [
+        0,
+        100
+      ],
+      "frageTyp": "nuance",
+      "hauptbeduerfnis": "#B1",
+      "kontext": "ausreichend trinken"
+    },
+    "#B3": {
+      "id": "#B3",
+      "label": "Nahrung",
+      "kategorie": "#K1",
+      "dimension": "#D3",
+      "skala": [
+        0,
+        100
+      ],
+      "frageTyp": "nuance",
+      "hauptbeduerfnis": "#B1",
+      "kontext": "gesunde Ernährung"
+    },
+    "#B4": {
+      "id": "#B4",
+      "label": "Bewegung",
+      "kategorie": "#K1",
+      "dimension": "#D3",
+      "skala": [
+        0,
+        100
+      ],
+      "sekundaer": [
+        "#K8",
+        "#K7"
+      ],
+      "frageTyp": "nuance",
+      "hauptbeduerfnis": "#B1",
+      "kontext": "körperliche Aktivität"
+    },
+    "#B5": {
+      "id": "#B5",
+      "label": "Berührung-&-Körperkontakt",
+      "kategorie": "#K1",
+      "dimension": "#D3",
+      "skala": [
+        0,
+        100
+      ],
+      "sekundaer": [
+        "#K3",
+        "#K11",
+        "#K2"
+      ],
+      "frage": "Wie wichtig ist Ihnen Berührung und Körperkontakt?",
+      "frageTyp": "haupt",
+      "nuancen": [
+        "#B7"
+      ]
+    },
+    "#B6": {
+      "id": "#B6",
+      "label": "Erholung",
+      "kategorie": "#K1",
+      "dimension": "#D3",
+      "skala": [
+        0,
+        100
+      ],
+      "sekundaer": [
+        "#K2",
+        "#K7"
+      ],
+      "frage": "Wie wichtig ist Ihnen Erholung und Entspannung?",
+      "frageTyp": "haupt",
+      "nuancen": [
+        "#B47"
+      ]
+    },
+    "#B7": {
+      "id": "#B7",
+      "label": "Sexueller-Ausdruck",
+      "kategorie": "#K1",
+      "dimension": "#D3",
+      "skala": [
+        0,
+        100
+      ],
+      "sekundaer": [
+        "#K3",
+        "#K11",
+        "#K8",
+        "#K10"
+      ],
+      "frageTyp": "nuance",
+      "hauptbeduerfnis": "#B5",
+      "kontext": "sexuelle Bedürfnisse"
+    },
+    "#B8": {
+      "id": "#B8",
+      "label": "Physische-Sicherheit",
+      "kategorie": "#K1",
+      "dimension": "#D3",
+      "skala": [
+        0,
+        100
+      ],
+      "sekundaer": [
+        "#K2"
+      ],
+      "frage": "Wie wichtig ist Ihnen physische Sicherheit?",
+      "frageTyp": "haupt",
+      "nuancen": [
+        "#B9"
+      ]
+    },
+    "#B9": {
+      "id": "#B9",
+      "label": "Unterschlupf",
+      "kategorie": "#K1",
+      "dimension": "#D3",
+      "skala": [
+        0,
+        100
+      ],
+      "sekundaer": [
+        "#K2"
+      ],
+      "frageTyp": "nuance",
+      "hauptbeduerfnis": "#B8",
+      "kontext": "sicherer Wohnraum"
+    },
+    "#B10": {
+      "id": "#B10",
+      "label": "Beständigkeit",
+      "kategorie": "#K2",
+      "dimension": "#D3",
+      "skala": [
+        0,
+        100
+      ],
+      "sekundaer": [
+        "#K4",
+        "#K3"
+      ],
+      "frageTyp": "nuance",
+      "hauptbeduerfnis": "#B11",
+      "kontext": "Beständigkeit im Leben"
+    },
+    "#B11": {
+      "id": "#B11",
+      "label": "Stabilität-&-Sicherheit",
+      "kategorie": "#K2",
+      "dimension": "#D3",
+      "skala": [
+        0,
+        100
+      ],
+      "sekundaer": [
+        "#K3",
+        "#K4",
+        "#K11"
+      ],
+      "frage": "Wie wichtig ist Ihnen Sicherheit und Stabilität?",
+      "frageTyp": "haupt",
+      "nuancen": [
+        "#B10",
+        "#B12",
+        "#B13",
+        "#B15"
+      ]
+    },
+    "#B12": {
+      "id": "#B12",
+      "label": "Schutz",
+      "kategorie": "#K2",
+      "dimension": "#D3",
+      "skala": [
+        0,
+        100
+      ],
+      "sekundaer": [
+        "#K3",
+        "#K11"
+      ],
+      "frageTyp": "nuance",
+      "hauptbeduerfnis": "#B11",
+      "kontext": "Schutz & Geborgenheit"
+    },
+    "#B13": {
+      "id": "#B13",
+      "label": "Stabilität",
+      "kategorie": "#K2",
+      "dimension": "#D3",
+      "skala": [
+        0,
+        100
+      ],
+      "sekundaer": [
+        "#K8",
+        "#K4"
+      ],
+      "frageTyp": "nuance",
+      "hauptbeduerfnis": "#B11",
+      "kontext": "stabile Verhältnisse"
+    },
+    "#B14": {
+      "id": "#B14",
+      "label": "Leichtigkeit",
+      "kategorie": "#K2",
+      "dimension": "#D3",
+      "skala": [
+        0,
+        100
+      ],
+      "sekundaer": [
+        "#K7",
+        "#K5"
+      ],
+      "frage": "Wie wichtig ist Ihnen Leichtigkeit im Leben?",
+      "frageTyp": "haupt"
+    },
+    "#B15": {
+      "id": "#B15",
+      "label": "Geborgenheit",
+      "kategorie": "#K2",
+      "dimension": "#D3",
+      "skala": [
+        0,
+        100
+      ],
+      "sekundaer": [
+        "#K3",
+        "#K11"
+      ],
+      "frageTyp": "nuance",
+      "hauptbeduerfnis": "#B11",
+      "kontext": "sich geborgen fühlen"
+    },
+    "#B16": {
+      "id": "#B16",
+      "label": "Wärme",
+      "kategorie": "#K3",
+      "dimension": "#D3",
+      "skala": [
+        0,
+        100
+      ],
+      "sekundaer": [
+        "#K2"
+      ],
+      "frageTyp": "nuance",
+      "hauptbeduerfnis": "#B18",
+      "kontext": "emotionale Wärme"
+    },
+    "#B17": {
+      "id": "#B17",
+      "label": "Wertschätzung",
+      "kategorie": "#K3",
+      "dimension": "#D3",
+      "skala": [
+        0,
+        100
+      ],
+      "sekundaer": [
+        "#K4",
+        "#K8"
+      ],
+      "frage": "Wie wichtig ist Ihnen Wertschätzung?",
+      "frageTyp": "haupt"
+    },
+    "#B18": {
+      "id": "#B18",
+      "label": "Emotionale-Nähe",
+      "kategorie": "#K3",
+      "dimension": "#D3",
+      "skala": [
+        0,
+        100
+      ],
+      "sekundaer": [
+        "#K2",
+        "#K10"
+      ],
+      "frage": "Wie wichtig ist Ihnen emotionale Nähe?",
+      "frageTyp": "haupt",
+      "nuancen": [
+        "#B16",
+        "#B20",
+        "#B21"
+      ]
+    },
+    "#B19": {
+      "id": "#B19",
+      "label": "Gesellschaft",
+      "kategorie": "#K3",
+      "dimension": "#D3",
+      "skala": [
+        0,
+        100
+      ],
+      "sekundaer": [
+        "#K6"
+      ],
+      "frage": "Wie wichtig ist Ihnen Gesellschaft?",
+      "frageTyp": "haupt"
+    },
+    "#B20": {
+      "id": "#B20",
+      "label": "Intimität",
+      "kategorie": "#K3",
+      "dimension": "#D3",
+      "skala": [
+        0,
+        100
+      ],
+      "sekundaer": [
+        "#K4",
+        "#K11",
+        "#K10"
+      ],
+      "frageTyp": "nuance",
+      "hauptbeduerfnis": "#B18",
+      "kontext": "tiefe Intimität"
+    },
+    "#B21": {
+      "id": "#B21",
+      "label": "Liebe",
+      "kategorie": "#K3",
+      "dimension": "#D3",
+      "skala": [
+        0,
+        100
+      ],
+      "sekundaer": [
+        "#K2",
+        "#K10",
+        "#K8"
+      ],
+      "frageTyp": "nuance",
+      "hauptbeduerfnis": "#B18",
+      "kontext": "Liebe spüren & geben"
+    },
+    "#B22": {
+      "id": "#B22",
+      "label": "Fürsorge-&-Unterstützung",
+      "kategorie": "#K3",
+      "dimension": "#D3",
+      "skala": [
+        0,
+        100
+      ],
+      "sekundaer": [
+        "#K11",
+        "#K2"
+      ],
+      "frage": "Wie wichtig ist gegenseitige Fürsorge?",
+      "frageTyp": "haupt",
+      "nuancen": [
+        "#B23",
+        "#B24"
+      ]
+    },
+    "#B23": {
+      "id": "#B23",
+      "label": "Unterstützung",
+      "kategorie": "#K3",
+      "dimension": "#D3",
+      "skala": [
+        0,
+        100
+      ],
+      "sekundaer": [
+        "#K6",
+        "#K2"
+      ],
+      "frageTyp": "nuance",
+      "hauptbeduerfnis": "#B22",
+      "kontext": "Unterstützung erhalten"
+    },
+    "#B24": {
+      "id": "#B24",
+      "label": "Füreinander-da-sein",
+      "kategorie": "#K3",
+      "dimension": "#D3",
+      "skala": [
+        0,
+        100
+      ],
+      "sekundaer": [
+        "#K2",
+        "#K10"
+      ],
+      "frageTyp": "nuance",
+      "hauptbeduerfnis": "#B22",
+      "kontext": "füreinander da sein"
+    },
+    "#B25": {
+      "id": "#B25",
+      "label": "Akzeptanz-&-Empathie",
+      "kategorie": "#K4",
+      "dimension": "#D5",
+      "skala": [
+        0,
+        100
+      ],
+      "sekundaer": [
+        "#K3",
+        "#K8"
+      ],
+      "frage": "Wie wichtig ist Ihnen Akzeptanz und Empathie?",
+      "frageTyp": "haupt",
+      "nuancen": [
+        "#B26",
+        "#B27",
+        "#B28"
+      ]
+    },
+    "#B26": {
+      "id": "#B26",
+      "label": "Mitgefühl",
+      "kategorie": "#K4",
+      "dimension": "#D5",
+      "skala": [
+        0,
+        100
+      ],
+      "sekundaer": [
+        "#K3",
+        "#K10"
+      ],
+      "frageTyp": "nuance",
+      "hauptbeduerfnis": "#B25",
+      "kontext": "Mitgefühl erfahren"
+    },
+    "#B27": {
+      "id": "#B27",
+      "label": "Berücksichtigung",
+      "kategorie": "#K4",
+      "dimension": "#D5",
+      "skala": [
+        0,
+        100
+      ],
+      "sekundaer": [
+        "#K6"
+      ],
+      "frageTyp": "nuance",
+      "hauptbeduerfnis": "#B25",
+      "kontext": "berücksichtigt werden"
+    },
+    "#B28": {
+      "id": "#B28",
+      "label": "Empathie",
+      "kategorie": "#K4",
+      "dimension": "#D5",
+      "skala": [
+        0,
+        100
+      ],
+      "sekundaer": [
+        "#K3",
+        "#K10"
+      ],
+      "frageTyp": "nuance",
+      "hauptbeduerfnis": "#B25",
+      "kontext": "empathisches Verständnis"
+    },
+    "#B29": {
+      "id": "#B29",
+      "label": "Vertrauen",
+      "kategorie": "#K4",
+      "dimension": "#D5",
+      "skala": [
+        0,
+        100
+      ],
+      "sekundaer": [
+        "#K2",
+        "#K11",
+        "#K3"
+      ],
+      "frage": "Wie wichtig ist Ihnen Vertrauen?",
+      "frageTyp": "haupt"
+    },
+    "#B30": {
+      "id": "#B30",
+      "label": "Beachtung",
+      "kategorie": "#K4",
+      "dimension": "#D5",
+      "skala": [
+        0,
+        100
+      ],
+      "sekundaer": [
+        "#K8",
+        "#K3"
+      ],
+      "frageTyp": "nuance",
+      "hauptbeduerfnis": "#B31",
+      "kontext": "Beachtung finden"
+    },
+    "#B31": {
+      "id": "#B31",
+      "label": "Gesehen-&-Verstanden-werden",
+      "kategorie": "#K4",
+      "dimension": "#D5",
+      "skala": [
+        0,
+        100
+      ],
+      "sekundaer": [
+        "#K8",
+        "#K3"
+      ],
+      "frage": "Wie wichtig ist es Ihnen, gesehen und verstanden zu werden?",
+      "frageTyp": "haupt",
+      "nuancen": [
+        "#B30",
+        "#B32"
+      ]
+    },
+    "#B32": {
+      "id": "#B32",
+      "label": "Verstanden-werden",
+      "kategorie": "#K4",
+      "dimension": "#D5",
+      "skala": [
+        0,
+        100
+      ],
+      "sekundaer": [
+        "#K3",
+        "#K10"
+      ],
+      "frageTyp": "nuance",
+      "hauptbeduerfnis": "#B31",
+      "kontext": "verstanden werden"
+    },
+    "#B33": {
+      "id": "#B33",
+      "label": "Harmonie",
+      "kategorie": "#K4",
+      "dimension": "#D5",
+      "skala": [
+        0,
+        100
+      ],
+      "sekundaer": [
+        "#K2",
+        "#K6"
+      ],
+      "frage": "Wie wichtig ist Ihnen Harmonie?",
+      "frageTyp": "haupt"
+    },
+    "#B34": {
+      "id": "#B34",
+      "label": "Selbstbestimmung-&-Unabhängigkeit",
+      "kategorie": "#K5",
+      "dimension": "#D4",
+      "skala": [
+        0,
+        100
+      ],
+      "sekundaer": [
+        "#K8",
+        "#K11"
+      ],
+      "frage": "Wie wichtig ist Ihnen Selbstbestimmung?",
+      "frageTyp": "haupt",
+      "nuancen": [
+        "#B35",
+        "#B36",
+        "#B37"
+      ]
+    },
+    "#B35": {
+      "id": "#B35",
+      "label": "Wählen-können",
+      "kategorie": "#K5",
+      "dimension": "#D4",
+      "skala": [
+        0,
+        100
+      ],
+      "sekundaer": [
+        "#K8"
+      ],
+      "frageTyp": "nuance",
+      "hauptbeduerfnis": "#B34",
+      "kontext": "eigene Wahl treffen"
+    },
+    "#B36": {
+      "id": "#B36",
+      "label": "Unabhängigkeit",
+      "kategorie": "#K5",
+      "dimension": "#D4",
+      "skala": [
+        0,
+        100
+      ],
+      "sekundaer": [
+        "#K8",
+        "#K2"
+      ],
+      "frageTyp": "nuance",
+      "hauptbeduerfnis": "#B34",
+      "kontext": "unabhängig sein"
+    },
+    "#B37": {
+      "id": "#B37",
+      "label": "Raum-haben",
+      "kategorie": "#K5",
+      "dimension": "#D4",
+      "skala": [
+        0,
+        100
+      ],
+      "sekundaer": [
+        "#K2",
+        "#K8"
+      ],
+      "frageTyp": "nuance",
+      "hauptbeduerfnis": "#B34",
+      "kontext": "eigenen Raum haben"
+    },
+    "#B38": {
+      "id": "#B38",
+      "label": "Spontaneität",
+      "kategorie": "#K5",
+      "dimension": "#D4",
+      "skala": [
+        0,
+        100
+      ],
+      "sekundaer": [
+        "#K7",
+        "#K9"
+      ],
+      "frage": "Wie wichtig ist Ihnen Spontaneität?",
+      "frageTyp": "haupt"
+    },
+    "#B39": {
+      "id": "#B39",
+      "label": "Zusammenarbeit",
+      "kategorie": "#K6",
+      "dimension": "#D6",
+      "skala": [
+        0,
+        100
+      ],
+      "sekundaer": [
+        "#K3",
+        "#K8"
+      ],
+      "frage": "Wie wichtig ist Ihnen Zusammenarbeit?",
+      "frageTyp": "haupt",
+      "nuancen": [
+        "#B40",
+        "#B43"
+      ]
+    },
+    "#B40": {
+      "id": "#B40",
+      "label": "Kommunikation",
+      "kategorie": "#K6",
+      "dimension": "#D6",
+      "skala": [
+        0,
+        100
+      ],
+      "sekundaer": [
+        "#K4",
+        "#K3"
+      ],
+      "frageTyp": "nuance",
+      "hauptbeduerfnis": "#B39",
+      "kontext": "gute Kommunikation"
+    },
+    "#B41": {
+      "id": "#B41",
+      "label": "Gemeinschaft",
+      "kategorie": "#K6",
+      "dimension": "#D6",
+      "skala": [
+        0,
+        100
+      ],
+      "sekundaer": [
+        "#K3",
+        "#K2"
+      ],
+      "frageTyp": "nuance",
+      "hauptbeduerfnis": "#B42",
+      "kontext": "Teil einer Gemeinschaft"
+    },
+    "#B42": {
+      "id": "#B42",
+      "label": "Zugehörigkeit",
+      "kategorie": "#K6",
+      "dimension": "#D6",
+      "skala": [
+        0,
+        100
+      ],
+      "sekundaer": [
+        "#K2",
+        "#K8"
+      ],
+      "frage": "Wie wichtig ist Ihnen Zugehörigkeit?",
+      "frageTyp": "haupt",
+      "nuancen": [
+        "#B41",
+        "#B45"
+      ]
+    },
+    "#B43": {
+      "id": "#B43",
+      "label": "Gegenseitigkeit",
+      "kategorie": "#K6",
+      "dimension": "#D6",
+      "skala": [
+        0,
+        100
+      ],
+      "sekundaer": [
+        "#K3",
+        "#K11"
+      ],
+      "frageTyp": "nuance",
+      "hauptbeduerfnis": "#B39",
+      "kontext": "gegenseitiges Geben"
+    },
+    "#B44": {
+      "id": "#B44",
+      "label": "Respekt",
+      "kategorie": "#K6",
+      "dimension": "#D6",
+      "skala": [
+        0,
+        100
+      ],
+      "sekundaer": [
+        "#K4",
+        "#K11",
+        "#K8"
+      ],
+      "frage": "Wie wichtig ist Ihnen Respekt?",
+      "frageTyp": "haupt"
+    },
+    "#B45": {
+      "id": "#B45",
+      "label": "Bedeutung-haben",
+      "kategorie": "#K6",
+      "dimension": "#D6",
+      "skala": [
+        0,
+        100
+      ],
+      "sekundaer": [
+        "#K8",
+        "#K10"
+      ],
+      "frageTyp": "nuance",
+      "hauptbeduerfnis": "#B42",
+      "kontext": "Bedeutung für andere haben"
+    },
+    "#B46": {
+      "id": "#B46",
+      "label": "Schönheit",
+      "kategorie": "#K7",
+      "dimension": "#D6",
+      "skala": [
+        0,
+        100
+      ],
+      "sekundaer": [
+        "#K10",
+        "#K9"
+      ],
+      "frageTyp": "nuance",
+      "hauptbeduerfnis": "#B48",
+      "kontext": "Schönheit erleben"
+    },
+    "#B47": {
+      "id": "#B47",
+      "label": "Freizeit",
+      "kategorie": "#K7",
+      "dimension": "#D6",
+      "skala": [
+        0,
+        100
+      ],
+      "sekundaer": [
+        "#K5"
+      ],
+      "frage": "Wie wichtig ist Ihnen unverplante Freizeit?",
+      "frageTyp": "nuance",
+      "hauptbeduerfnis": "#B6",
+      "kontext": "unverplante Zeit"
+    },
+    "#B48": {
+      "id": "#B48",
+      "label": "Freude-&-Lebensgenuss",
+      "kategorie": "#K7",
+      "dimension": "#D6",
+      "skala": [
+        0,
+        100
+      ],
+      "sekundaer": [
+        "#K10",
+        "#K3"
+      ],
+      "frage": "Wie wichtig ist Ihnen Freude und Lebensgenuss?",
+      "frageTyp": "haupt",
+      "nuancen": [
+        "#B46",
+        "#B49"
+      ]
+    },
+    "#B49": {
+      "id": "#B49",
+      "label": "Humor",
+      "kategorie": "#K7",
+      "dimension": "#D6",
+      "skala": [
+        0,
+        100
+      ],
+      "sekundaer": [
+        "#K10",
+        "#K3"
+      ],
+      "frageTyp": "nuance",
+      "hauptbeduerfnis": "#B48",
+      "kontext": "Humor & Lachen"
+    },
+    "#B50": {
+      "id": "#B50",
+      "label": "Authentizität",
+      "kategorie": "#K8",
+      "dimension": "#D4",
+      "skala": [
+        0,
+        100
+      ],
+      "sekundaer": [
+        "#K5",
+        "#K4"
+      ],
+      "frage": "Wie wichtig ist Ihnen Authentizität?",
+      "frageTyp": "haupt",
+      "nuancen": [
+        "#B51",
+        "#B52"
+      ]
+    },
+    "#B51": {
+      "id": "#B51",
+      "label": "Echtheit",
+      "kategorie": "#K8",
+      "dimension": "#D4",
+      "skala": [
+        0,
+        100
+      ],
+      "sekundaer": [
+        "#K4",
+        "#K10"
+      ],
+      "frageTyp": "nuance",
+      "hauptbeduerfnis": "#B50",
+      "kontext": "echtes Sein"
+    },
+    "#B52": {
+      "id": "#B52",
+      "label": "Integrität",
+      "kategorie": "#K8",
+      "dimension": "#D4",
+      "skala": [
+        0,
+        100
+      ],
+      "sekundaer": [
+        "#K4",
+        "#K11"
+      ],
+      "frageTyp": "nuance",
+      "hauptbeduerfnis": "#B50",
+      "kontext": "integer handeln"
+    },
+    "#B53": {
+      "id": "#B53",
+      "label": "Präsenz",
+      "kategorie": "#K8",
+      "dimension": "#D4",
+      "skala": [
+        0,
+        100
+      ],
+      "sekundaer": [
+        "#K10",
+        "#K4"
+      ],
+      "frageTyp": "nuance",
+      "hauptbeduerfnis": "#B55",
+      "kontext": "im Moment sein"
+    },
+    "#B54": {
+      "id": "#B54",
+      "label": "Ordnung",
+      "kategorie": "#K8",
+      "dimension": "#D4",
+      "skala": [
+        0,
+        100
+      ],
+      "sekundaer": [
+        "#K2"
+      ],
+      "frageTyp": "nuance",
+      "hauptbeduerfnis": "#B55",
+      "kontext": "geordnetes Denken"
+    },
+    "#B55": {
+      "id": "#B55",
+      "label": "Bewusstheit-&-Klarheit",
+      "kategorie": "#K8",
+      "dimension": "#D4",
+      "skala": [
+        0,
+        100
+      ],
+      "sekundaer": [
+        "#K10",
+        "#K4"
+      ],
+      "frage": "Wie wichtig ist Ihnen Bewusstheit und Klarheit?",
+      "frageTyp": "haupt",
+      "nuancen": [
+        "#B53",
+        "#B54",
+        "#B57"
+      ]
+    },
+    "#B56": {
+      "id": "#B56",
+      "label": "Herausforderung",
+      "kategorie": "#K8",
+      "dimension": "#D4",
+      "skala": [
+        0,
+        100
+      ],
+      "sekundaer": [
+        "#K9",
+        "#K5"
+      ],
+      "frageTyp": "nuance",
+      "hauptbeduerfnis": "#B58",
+      "kontext": "Herausforderungen suchen"
+    },
+    "#B57": {
+      "id": "#B57",
+      "label": "Klarheit",
+      "kategorie": "#K8",
+      "dimension": "#D4",
+      "skala": [
+        0,
+        100
+      ],
+      "sekundaer": [
+        "#K4",
+        "#K2"
+      ],
+      "frageTyp": "nuance",
+      "hauptbeduerfnis": "#B55",
+      "kontext": "klare Gedanken"
+    },
+    "#B58": {
+      "id": "#B58",
+      "label": "Kompetenz-&-Wirksamkeit",
+      "kategorie": "#K8",
+      "dimension": "#D4",
+      "skala": [
+        0,
+        100
+      ],
+      "sekundaer": [
+        "#K9",
+        "#K6"
+      ],
+      "frage": "Wie wichtig ist Ihnen Kompetenz und Wirksamkeit?",
+      "frageTyp": "haupt",
+      "nuancen": [
+        "#B56",
+        "#B59",
+        "#B60"
+      ]
+    },
+    "#B59": {
+      "id": "#B59",
+      "label": "Effizienz",
+      "kategorie": "#K8",
+      "dimension": "#D4",
+      "skala": [
+        0,
+        100
+      ],
+      "sekundaer": [
+        "#K5"
+      ],
+      "frageTyp": "nuance",
+      "hauptbeduerfnis": "#B58",
+      "kontext": "effizient arbeiten"
+    },
+    "#B60": {
+      "id": "#B60",
+      "label": "Wirksamkeit",
+      "kategorie": "#K8",
+      "dimension": "#D4",
+      "skala": [
+        0,
+        100
+      ],
+      "sekundaer": [
+        "#K11",
+        "#K6"
+      ],
+      "frageTyp": "nuance",
+      "hauptbeduerfnis": "#B58",
+      "kontext": "wirksam sein"
+    },
+    "#B61": {
+      "id": "#B61",
+      "label": "Wachstum-&-Sinn",
+      "kategorie": "#K8",
+      "dimension": "#D4",
+      "skala": [
+        0,
+        100
+      ],
+      "sekundaer": [
+        "#K9",
+        "#K10"
+      ],
+      "frage": "Wie wichtig ist Ihnen persönliches Wachstum?",
+      "frageTyp": "haupt",
+      "nuancen": [
+        "#B62",
+        "#B63"
+      ]
+    },
+    "#B62": {
+      "id": "#B62",
+      "label": "Sinn",
+      "kategorie": "#K8",
+      "dimension": "#D4",
+      "skala": [
+        0,
+        100
+      ],
+      "sekundaer": [
+        "#K10"
+      ],
+      "frageTyp": "nuance",
+      "hauptbeduerfnis": "#B61",
+      "kontext": "Sinn finden"
+    },
+    "#B63": {
+      "id": "#B63",
+      "label": "Beitrag-leisten",
+      "kategorie": "#K8",
+      "dimension": "#D4",
+      "skala": [
+        0,
+        100
+      ],
+      "sekundaer": [
+        "#K6",
+        "#K10"
+      ],
+      "frageTyp": "nuance",
+      "hauptbeduerfnis": "#B61",
+      "kontext": "etwas beitragen"
+    },
+    "#B64": {
+      "id": "#B64",
+      "label": "Kreativität-&-Selbstausdruck",
+      "kategorie": "#K9",
+      "dimension": "#D4",
+      "skala": [
+        0,
+        100
+      ],
+      "sekundaer": [
+        "#K5",
+        "#K8"
+      ],
+      "frage": "Wie wichtig ist Ihnen Kreativität und Selbstausdruck?",
+      "frageTyp": "haupt",
+      "nuancen": [
+        "#B67"
+      ]
+    },
+    "#B65": {
+      "id": "#B65",
+      "label": "Entdecken-&-Lernen",
+      "kategorie": "#K9",
+      "dimension": "#D4",
+      "skala": [
+        0,
+        100
+      ],
+      "sekundaer": [
+        "#K5",
+        "#K10"
+      ],
+      "frage": "Wie wichtig ist Ihnen Entdecken und Lernen?",
+      "frageTyp": "haupt",
+      "nuancen": [
+        "#B66",
+        "#B68"
+      ]
+    },
+    "#B66": {
+      "id": "#B66",
+      "label": "Lernen",
+      "kategorie": "#K9",
+      "dimension": "#D4",
+      "skala": [
+        0,
+        100
+      ],
+      "sekundaer": [
+        "#K8",
+        "#K10"
+      ],
+      "frageTyp": "nuance",
+      "hauptbeduerfnis": "#B65",
+      "kontext": "Neues lernen"
+    },
+    "#B67": {
+      "id": "#B67",
+      "label": "Selbst-Ausdruck",
+      "kategorie": "#K9",
+      "dimension": "#D4",
+      "skala": [
+        0,
+        100
+      ],
+      "sekundaer": [
+        "#K8",
+        "#K5"
+      ],
+      "frageTyp": "nuance",
+      "hauptbeduerfnis": "#B64",
+      "kontext": "sich ausdrücken"
+    },
+    "#B68": {
+      "id": "#B68",
+      "label": "Anreize-bekommen",
+      "kategorie": "#K9",
+      "dimension": "#D4",
+      "skala": [
+        0,
+        100
+      ],
+      "sekundaer": [
+        "#K10",
+        "#K6"
+      ],
+      "frageTyp": "nuance",
+      "hauptbeduerfnis": "#B65",
+      "kontext": "Anreize & Impulse"
+    },
+    "#B69": {
+      "id": "#B69",
+      "label": "Lebensfreude",
+      "kategorie": "#K10",
+      "dimension": "#D3",
+      "skala": [
+        0,
+        100
+      ],
+      "sekundaer": [
+        "#K7",
+        "#K3"
+      ],
+      "frage": "Wie wichtig ist Ihnen Lebensfreude?",
+      "frageTyp": "haupt",
+      "nuancen": [
+        "#B70"
+      ]
+    },
+    "#B70": {
+      "id": "#B70",
+      "label": "Inspiration",
+      "kategorie": "#K10",
+      "dimension": "#D3",
+      "skala": [
+        0,
+        100
+      ],
+      "sekundaer": [
+        "#K9",
+        "#K8"
+      ],
+      "frageTyp": "nuance",
+      "hauptbeduerfnis": "#B69",
+      "kontext": "Inspiration & Begeisterung"
+    },
+    "#B71": {
+      "id": "#B71",
+      "label": "Emotionale-Tiefe",
+      "kategorie": "#K10",
+      "dimension": "#D3",
+      "skala": [
+        0,
+        100
+      ],
+      "sekundaer": [
+        "#K4",
+        "#K3"
+      ],
+      "frage": "Wie wichtig ist Ihnen emotionale Tiefe?",
+      "frageTyp": "haupt",
+      "nuancen": [
+        "#B72",
+        "#B73"
+      ]
+    },
+    "#B72": {
+      "id": "#B72",
+      "label": "Einsehen",
+      "kategorie": "#K10",
+      "dimension": "#D3",
+      "skala": [
+        0,
+        100
+      ],
+      "sekundaer": [
+        "#K4",
+        "#K8"
+      ],
+      "frageTyp": "nuance",
+      "hauptbeduerfnis": "#B71",
+      "kontext": "Einsicht & Erkenntnis"
+    },
+    "#B73": {
+      "id": "#B73",
+      "label": "Anfang-Ende",
+      "kategorie": "#K10",
+      "dimension": "#D3",
+      "skala": [
+        0,
+        100
+      ],
+      "sekundaer": [
+        "#K8",
+        "#K2"
+      ],
+      "frageTyp": "nuance",
+      "hauptbeduerfnis": "#B71",
+      "kontext": "Vergänglichkeit akzeptieren"
+    },
+    "#B74": {
+      "id": "#B74",
+      "label": "Kontrolle-ausüben",
+      "kategorie": "#K11",
+      "dimension": "#D4",
+      "skala": [
+        0,
+        100
+      ],
+      "sekundaer": [
+        "#K5",
+        "#K8",
+        "#K2"
+      ],
+      "frage": "Wie wichtig ist Kontrolle ausüben?",
+      "frageTyp": "nuance",
+      "hauptbeduerfnis": "#B86",
+      "kontext": "Kontrolle & Dominanz"
+    },
+    "#B75": {
+      "id": "#B75",
+      "label": "Hingabe",
+      "kategorie": "#K11",
+      "dimension": "#D4",
+      "skala": [
+        0,
+        100
+      ],
+      "sekundaer": [
+        "#K3",
+        "#K4",
+        "#K2"
+      ],
+      "frage": "Wie wichtig ist Hingabe?",
+      "frageTyp": "nuance",
+      "hauptbeduerfnis": "#B86",
+      "kontext": "Hingabe & Submission"
+    },
+    "#B76": {
+      "id": "#B76",
+      "label": "Führung-geben",
+      "kategorie": "#K11",
+      "dimension": "#D4",
+      "skala": [
+        0,
+        100
+      ],
+      "sekundaer": [
+        "#K8",
+        "#K6",
+        "#K3"
+      ],
+      "frage": "Wie wichtig ist Führung geben?",
+      "frageTyp": "nuance",
+      "hauptbeduerfnis": "#B86",
+      "kontext": "führende Rolle"
+    },
+    "#B77": {
+      "id": "#B77",
+      "label": "Geführt-werden",
+      "kategorie": "#K11",
+      "dimension": "#D4",
+      "skala": [
+        0,
+        100
+      ],
+      "sekundaer": [
+        "#K2",
+        "#K3",
+        "#K4"
+      ],
+      "frage": "Wie wichtig ist geführt werden?",
+      "frageTyp": "nuance",
+      "hauptbeduerfnis": "#B86",
+      "kontext": "geführt werden"
+    },
+    "#B78": {
+      "id": "#B78",
+      "label": "Ritual",
+      "kategorie": "#K11",
+      "dimension": "#D4",
+      "skala": [
+        0,
+        100
+      ],
+      "sekundaer": [
+        "#K2",
+        "#K10",
+        "#K8"
+      ],
+      "frage": "Wie wichtig sind Rituale und Strukturen?",
+      "frageTyp": "haupt",
+      "nuancen": [
+        "#B79"
+      ]
+    },
+    "#B79": {
+      "id": "#B79",
+      "label": "Nachsorge",
+      "kategorie": "#K11",
+      "dimension": "#D4",
+      "skala": [
+        0,
+        100
+      ],
+      "sekundaer": [
+        "#K3",
+        "#K2",
+        "#K4"
+      ],
+      "frage": "Wie wichtig ist Aftercare?",
+      "frageTyp": "nuance",
+      "hauptbeduerfnis": "#B78",
+      "kontext": "Aftercare & Fürsorge"
+    },
+    "#B80": {
+      "id": "#B80",
+      "label": "Grenzen-setzen",
+      "kategorie": "#K11",
+      "dimension": "#D4",
+      "skala": [
+        0,
+        100
+      ],
+      "sekundaer": [
+        "#K5",
+        "#K2",
+        "#K8"
+      ],
+      "frage": "Wie wichtig ist klare Grenzkommunikation?",
+      "frageTyp": "haupt",
+      "nuancen": [
+        "#B81",
+        "#B83"
+      ]
+    },
+    "#B81": {
+      "id": "#B81",
+      "label": "Grenzen-respektieren",
+      "kategorie": "#K11",
+      "dimension": "#D4",
+      "skala": [
+        0,
+        100
+      ],
+      "sekundaer": [
+        "#K4",
+        "#K6"
+      ],
+      "frage": "Wie wichtig ist Grenzen respektieren?",
+      "frageTyp": "nuance",
+      "hauptbeduerfnis": "#B80",
+      "kontext": "Grenzen anderer respektieren"
+    },
+    "#B82": {
+      "id": "#B82",
+      "label": "Intensität",
+      "kategorie": "#K11",
+      "dimension": "#D4",
+      "skala": [
+        0,
+        100
+      ],
+      "sekundaer": [
+        "#K10",
+        "#K1"
+      ],
+      "frage": "Wie wichtig ist emotionale/körperliche Intensität?",
+      "frageTyp": "haupt",
+      "nuancen": [
+        "#B85"
+      ]
+    },
+    "#B83": {
+      "id": "#B83",
+      "label": "Vertrauen-schenken",
+      "kategorie": "#K11",
+      "dimension": "#D4",
+      "skala": [
+        0,
+        100
+      ],
+      "sekundaer": [
+        "#K4",
+        "#K3",
+        "#K2"
+      ],
+      "frage": "Wie wichtig ist Vertrauen schenken?",
+      "frageTyp": "nuance",
+      "hauptbeduerfnis": "#B80",
+      "kontext": "Vertrauen aufbauen"
+    },
+    "#B84": {
+      "id": "#B84",
+      "label": "Verantwortung-übernehmen",
+      "kategorie": "#K11",
+      "dimension": "#D4",
+      "skala": [
+        0,
+        100
+      ],
+      "sekundaer": [
+        "#K8",
+        "#K3"
+      ],
+      "frage": "Wie wichtig ist Verantwortung übernehmen?",
+      "frageTyp": "nuance",
+      "hauptbeduerfnis": "#B87",
+      "kontext": "Verantwortung für andere"
+    },
+    "#B85": {
+      "id": "#B85",
+      "label": "Sich-fallenlassen",
+      "kategorie": "#K11",
+      "dimension": "#D4",
+      "skala": [
+        0,
+        100
+      ],
+      "sekundaer": [
+        "#K4",
+        "#K2",
+        "#K3"
+      ],
+      "frage": "Wie wichtig ist sich fallenlassen?",
+      "frageTyp": "nuance",
+      "hauptbeduerfnis": "#B82",
+      "kontext": "Kontrolle abgeben"
+    },
+    "#B86": {
+      "id": "#B86",
+      "label": "Machtdynamik",
+      "kategorie": "#K11",
+      "dimension": "#D4",
+      "skala": [
+        0,
+        100
+      ],
+      "sekundaer": [
+        "#K10",
+        "#K3"
+      ],
+      "frage": "Wie wichtig ist Ihnen Machtdynamik in Beziehungen?",
+      "frageTyp": "haupt",
+      "nuancen": [
+        "#B74",
+        "#B75",
+        "#B76",
+        "#B77"
+      ]
+    },
+    "#B87": {
+      "id": "#B87",
+      "label": "Rollenausdruck",
+      "kategorie": "#K11",
+      "dimension": "#D4",
+      "skala": [
+        0,
+        100
+      ],
+      "sekundaer": [
+        "#K3",
+        "#K8"
+      ],
+      "frage": "Wie wichtig ist Rollenausdruck in Beziehungen?",
+      "frageTyp": "haupt",
+      "nuancen": [
+        "#B84",
+        "#B88"
+      ]
+    },
+    "#B88": {
+      "id": "#B88",
+      "label": "Beschützen",
+      "kategorie": "#K11",
+      "dimension": "#D4",
+      "skala": [
+        0,
+        100
+      ],
+      "sekundaer": [
+        "#K3",
+        "#K2",
+        "#K8"
+      ],
+      "frage": "Wie wichtig ist beschützen?",
+      "frageTyp": "nuance",
+      "hauptbeduerfnis": "#B87",
+      "kontext": "beschützende Rolle"
+    },
     "_comment_lebensplanung": "═══ LEBENSPLANUNG (#K12) ═══",
-    "#B89":  { "id": "#B89",  "label": "Kinder-&-Elternschaft", "kategorie": "#K12", "dimension": "#D1", "skala": [0, 100], "frage": "Wie wichtig ist Ihnen Elternschaft und Kinder?", "frageTyp": "haupt", "nuancen": ["#B90", "#B91", "#B92", "#B93"] },
-    "#B90":  { "id": "#B90",  "label": "Elternschaft", "kategorie": "#K12", "dimension": "#D1", "skala": [0, 100], "frageTyp": "nuance", "hauptbeduerfnis": "#B89", "kontext": "Eltern werden" },
-    "#B91":  { "id": "#B91",  "label": "Fortpflanzung", "kategorie": "#K12", "dimension": "#D1", "skala": [0, 100], "frageTyp": "nuance", "hauptbeduerfnis": "#B89", "kontext": "biologische Kinder" },
-    "#B92":  { "id": "#B92",  "label": "Familie-gründen", "kategorie": "#K12", "dimension": "#D1", "skala": [0, 100], "frageTyp": "nuance", "hauptbeduerfnis": "#B89", "kontext": "eigene Familie gründen" },
-    "#B93":  { "id": "#B93",  "label": "Generativität", "kategorie": "#K12", "dimension": "#D1", "skala": [0, 100], "frageTyp": "nuance", "hauptbeduerfnis": "#B89", "kontext": "nächste Generation prägen" },
-    "#B94":  { "id": "#B94",  "label": "Verbindlichkeit", "kategorie": "#K12", "dimension": "#D1", "skala": [0, 100], "sekundaer": ["#K2"], "frageTyp": "nuance", "hauptbeduerfnis": "#B95", "kontext": "verbindliche Partnerschaft" },
-    "#B95":  { "id": "#B95",  "label": "Langfristige-Bindung", "kategorie": "#K12", "dimension": "#D1", "skala": [0, 100], "sekundaer": ["#K2", "#K3"], "frage": "Wie wichtig ist Ihnen eine langfristige Bindung?", "frageTyp": "haupt", "nuancen": ["#B94", "#B96", "#B97"] },
-    "#B96":  { "id": "#B96",  "label": "Rechtliche-Sicherheit", "kategorie": "#K12", "dimension": "#D1", "skala": [0, 100], "sekundaer": ["#K2"], "frageTyp": "nuance", "hauptbeduerfnis": "#B95", "kontext": "Ehe/eingetragene Partnerschaft" },
-    "#B97":  { "id": "#B97",  "label": "Treueversprechen", "kategorie": "#K12", "dimension": "#D1", "skala": [0, 100], "sekundaer": ["#K4"], "frageTyp": "nuance", "hauptbeduerfnis": "#B95", "kontext": "Treue versprechen" },
-    "#B98":  { "id": "#B98",  "label": "Zusammenleben", "kategorie": "#K12", "dimension": "#D1", "skala": [0, 100], "frage": "Wie wichtig ist Ihnen gemeinsames Wohnen?", "frageTyp": "haupt", "nuancen": ["#B99", "#B100", "#B101", "#B102", "#B103"] },
-    "#B99":  { "id": "#B99",  "label": "Häuslichkeit", "kategorie": "#K12", "dimension": "#D1", "skala": [0, 100], "sekundaer": ["#K2"], "frageTyp": "nuance", "hauptbeduerfnis": "#B98", "kontext": "häusliches Leben" },
-    "#B100": { "id": "#B100", "label": "Nest-bauen", "kategorie": "#K12", "dimension": "#D1", "skala": [0, 100], "sekundaer": ["#K3"], "frageTyp": "nuance", "hauptbeduerfnis": "#B98", "kontext": "gemeinsames Zuhause schaffen" },
-    "#B101": { "id": "#B101", "label": "Alltag-teilen", "kategorie": "#K12", "dimension": "#D1", "skala": [0, 100], "sekundaer": ["#K3", "#K6"], "frageTyp": "nuance", "hauptbeduerfnis": "#B98", "kontext": "Alltag gemeinsam leben" },
-    "#B102": { "id": "#B102", "label": "Eigener-Raum", "kategorie": "#K12", "dimension": "#D1", "skala": [0, 100], "sekundaer": ["#K5"], "frageTyp": "nuance", "hauptbeduerfnis": "#B98", "kontext": "eigenes Zimmer/Raum" },
-    "#B103": { "id": "#B103", "label": "Rückzugsort", "kategorie": "#K12", "dimension": "#D1", "skala": [0, 100], "sekundaer": ["#K5", "#K2"], "frageTyp": "nuance", "hauptbeduerfnis": "#B98", "kontext": "Rückzugsmöglichkeit" },
-    "#B104": { "id": "#B104", "label": "Haustiere", "kategorie": "#K12", "dimension": "#D1", "skala": [0, 100], "frage": "Wie wichtig sind Ihnen Haustiere?", "frageTyp": "haupt", "nuancen": ["#B105"] },
-    "#B105": { "id": "#B105", "label": "Fürsorge-Tiere", "kategorie": "#K12", "dimension": "#D1", "skala": [0, 100], "sekundaer": ["#K3"], "frageTyp": "nuance", "hauptbeduerfnis": "#B104", "kontext": "für Tiere sorgen" },
-    "#B106": { "id": "#B106", "label": "Sesshaftigkeit", "kategorie": "#K12", "dimension": "#D1", "skala": [0, 100], "sekundaer": ["#K2"], "frage": "Wie wichtig ist Ihnen Sesshaftigkeit vs. Mobilität?", "frageTyp": "haupt", "nuancen": ["#B107", "#B108", "#B109", "#B110"] },
-    "#B107": { "id": "#B107", "label": "Verwurzelung", "kategorie": "#K12", "dimension": "#D1", "skala": [0, 100], "sekundaer": ["#K2", "#K6"], "frageTyp": "nuance", "hauptbeduerfnis": "#B106", "kontext": "an einem Ort verwurzelt sein" },
-    "#B108": { "id": "#B108", "label": "Mobilität", "kategorie": "#K12", "dimension": "#D1", "skala": [0, 100], "sekundaer": ["#K5"], "frageTyp": "nuance", "hauptbeduerfnis": "#B106", "kontext": "mobil & flexibel leben" },
-    "#B109": { "id": "#B109", "label": "Heimat", "kategorie": "#K12", "dimension": "#D1", "skala": [0, 100], "sekundaer": ["#K2", "#K6"], "frageTyp": "nuance", "hauptbeduerfnis": "#B106", "kontext": "Heimatgefühl" },
-    "#B110": { "id": "#B110", "label": "Neue-Orte", "kategorie": "#K12", "dimension": "#D1", "skala": [0, 100], "sekundaer": ["#K5", "#K9"], "frageTyp": "nuance", "hauptbeduerfnis": "#B106", "kontext": "oft umziehen" },
-    "#B111": { "id": "#B111", "label": "Herkunftsfamilie", "kategorie": "#K12", "dimension": "#D1", "skala": [0, 100], "sekundaer": ["#K6"], "frage": "Wie wichtig ist Ihnen Nähe zur Herkunftsfamilie?", "frageTyp": "haupt", "nuancen": ["#B112", "#B113"] },
-    "#B112": { "id": "#B112", "label": "Herkunftsfamilie", "kategorie": "#K12", "dimension": "#D1", "skala": [0, 100], "sekundaer": ["#K6"], "frageTyp": "nuance", "hauptbeduerfnis": "#B111", "kontext": "Kontakt zu Eltern/Geschwistern" },
-    "#B113": { "id": "#B113", "label": "Generationenverbund", "kategorie": "#K12", "dimension": "#D1", "skala": [0, 100], "sekundaer": ["#K6", "#K10"], "frageTyp": "nuance", "hauptbeduerfnis": "#B111", "kontext": "Mehrgenerationen-Nähe" },
-
+    "#B89": {
+      "id": "#B89",
+      "label": "Kinder-&-Elternschaft",
+      "kategorie": "#K12",
+      "dimension": "#D1",
+      "skala": [
+        0,
+        100
+      ],
+      "frage": "Wie wichtig ist Ihnen Elternschaft und Kinder?",
+      "frageTyp": "haupt",
+      "nuancen": [
+        "#B90",
+        "#B91",
+        "#B92",
+        "#B93"
+      ]
+    },
+    "#B90": {
+      "id": "#B90",
+      "label": "Elternschaft",
+      "kategorie": "#K12",
+      "dimension": "#D1",
+      "skala": [
+        0,
+        100
+      ],
+      "frageTyp": "nuance",
+      "hauptbeduerfnis": "#B89",
+      "kontext": "Eltern werden"
+    },
+    "#B91": {
+      "id": "#B91",
+      "label": "Fortpflanzung",
+      "kategorie": "#K12",
+      "dimension": "#D1",
+      "skala": [
+        0,
+        100
+      ],
+      "frageTyp": "nuance",
+      "hauptbeduerfnis": "#B89",
+      "kontext": "biologische Kinder"
+    },
+    "#B92": {
+      "id": "#B92",
+      "label": "Familie-gründen",
+      "kategorie": "#K12",
+      "dimension": "#D1",
+      "skala": [
+        0,
+        100
+      ],
+      "frageTyp": "nuance",
+      "hauptbeduerfnis": "#B89",
+      "kontext": "eigene Familie gründen"
+    },
+    "#B93": {
+      "id": "#B93",
+      "label": "Generativität",
+      "kategorie": "#K12",
+      "dimension": "#D1",
+      "skala": [
+        0,
+        100
+      ],
+      "frageTyp": "nuance",
+      "hauptbeduerfnis": "#B89",
+      "kontext": "nächste Generation prägen"
+    },
+    "#B94": {
+      "id": "#B94",
+      "label": "Verbindlichkeit",
+      "kategorie": "#K12",
+      "dimension": "#D1",
+      "skala": [
+        0,
+        100
+      ],
+      "sekundaer": [
+        "#K2"
+      ],
+      "frageTyp": "nuance",
+      "hauptbeduerfnis": "#B95",
+      "kontext": "verbindliche Partnerschaft"
+    },
+    "#B95": {
+      "id": "#B95",
+      "label": "Langfristige-Bindung",
+      "kategorie": "#K12",
+      "dimension": "#D1",
+      "skala": [
+        0,
+        100
+      ],
+      "sekundaer": [
+        "#K2",
+        "#K3"
+      ],
+      "frage": "Wie wichtig ist Ihnen eine langfristige Bindung?",
+      "frageTyp": "haupt",
+      "nuancen": [
+        "#B94",
+        "#B96",
+        "#B97"
+      ]
+    },
+    "#B96": {
+      "id": "#B96",
+      "label": "Rechtliche-Sicherheit",
+      "kategorie": "#K12",
+      "dimension": "#D1",
+      "skala": [
+        0,
+        100
+      ],
+      "sekundaer": [
+        "#K2"
+      ],
+      "frageTyp": "nuance",
+      "hauptbeduerfnis": "#B95",
+      "kontext": "Ehe/eingetragene Partnerschaft"
+    },
+    "#B97": {
+      "id": "#B97",
+      "label": "Treueversprechen",
+      "kategorie": "#K12",
+      "dimension": "#D1",
+      "skala": [
+        0,
+        100
+      ],
+      "sekundaer": [
+        "#K4"
+      ],
+      "frageTyp": "nuance",
+      "hauptbeduerfnis": "#B95",
+      "kontext": "Treue versprechen"
+    },
+    "#B98": {
+      "id": "#B98",
+      "label": "Zusammenleben",
+      "kategorie": "#K12",
+      "dimension": "#D1",
+      "skala": [
+        0,
+        100
+      ],
+      "frage": "Wie wichtig ist Ihnen gemeinsames Wohnen?",
+      "frageTyp": "haupt",
+      "nuancen": [
+        "#B99",
+        "#B100",
+        "#B101",
+        "#B102",
+        "#B103"
+      ]
+    },
+    "#B99": {
+      "id": "#B99",
+      "label": "Häuslichkeit",
+      "kategorie": "#K12",
+      "dimension": "#D1",
+      "skala": [
+        0,
+        100
+      ],
+      "sekundaer": [
+        "#K2"
+      ],
+      "frageTyp": "nuance",
+      "hauptbeduerfnis": "#B98",
+      "kontext": "häusliches Leben"
+    },
+    "#B100": {
+      "id": "#B100",
+      "label": "Nest-bauen",
+      "kategorie": "#K12",
+      "dimension": "#D1",
+      "skala": [
+        0,
+        100
+      ],
+      "sekundaer": [
+        "#K3"
+      ],
+      "frageTyp": "nuance",
+      "hauptbeduerfnis": "#B98",
+      "kontext": "gemeinsames Zuhause schaffen"
+    },
+    "#B101": {
+      "id": "#B101",
+      "label": "Alltag-teilen",
+      "kategorie": "#K12",
+      "dimension": "#D1",
+      "skala": [
+        0,
+        100
+      ],
+      "sekundaer": [
+        "#K3",
+        "#K6"
+      ],
+      "frageTyp": "nuance",
+      "hauptbeduerfnis": "#B98",
+      "kontext": "Alltag gemeinsam leben"
+    },
+    "#B102": {
+      "id": "#B102",
+      "label": "Eigener-Raum",
+      "kategorie": "#K12",
+      "dimension": "#D1",
+      "skala": [
+        0,
+        100
+      ],
+      "sekundaer": [
+        "#K5"
+      ],
+      "frageTyp": "nuance",
+      "hauptbeduerfnis": "#B98",
+      "kontext": "eigenes Zimmer/Raum"
+    },
+    "#B103": {
+      "id": "#B103",
+      "label": "Rückzugsort",
+      "kategorie": "#K12",
+      "dimension": "#D1",
+      "skala": [
+        0,
+        100
+      ],
+      "sekundaer": [
+        "#K5",
+        "#K2"
+      ],
+      "frageTyp": "nuance",
+      "hauptbeduerfnis": "#B98",
+      "kontext": "Rückzugsmöglichkeit"
+    },
+    "#B104": {
+      "id": "#B104",
+      "label": "Haustiere",
+      "kategorie": "#K12",
+      "dimension": "#D1",
+      "skala": [
+        0,
+        100
+      ],
+      "frage": "Wie wichtig sind Ihnen Haustiere?",
+      "frageTyp": "haupt",
+      "nuancen": [
+        "#B105"
+      ]
+    },
+    "#B105": {
+      "id": "#B105",
+      "label": "Fürsorge-Tiere",
+      "kategorie": "#K12",
+      "dimension": "#D1",
+      "skala": [
+        0,
+        100
+      ],
+      "sekundaer": [
+        "#K3"
+      ],
+      "frageTyp": "nuance",
+      "hauptbeduerfnis": "#B104",
+      "kontext": "für Tiere sorgen"
+    },
+    "#B106": {
+      "id": "#B106",
+      "label": "Sesshaftigkeit",
+      "kategorie": "#K12",
+      "dimension": "#D1",
+      "skala": [
+        0,
+        100
+      ],
+      "sekundaer": [
+        "#K2"
+      ],
+      "frage": "Wie wichtig ist Ihnen Sesshaftigkeit vs. Mobilität?",
+      "frageTyp": "haupt",
+      "nuancen": [
+        "#B107",
+        "#B108",
+        "#B109",
+        "#B110"
+      ]
+    },
+    "#B107": {
+      "id": "#B107",
+      "label": "Verwurzelung",
+      "kategorie": "#K12",
+      "dimension": "#D1",
+      "skala": [
+        0,
+        100
+      ],
+      "sekundaer": [
+        "#K2",
+        "#K6"
+      ],
+      "frageTyp": "nuance",
+      "hauptbeduerfnis": "#B106",
+      "kontext": "an einem Ort verwurzelt sein"
+    },
+    "#B108": {
+      "id": "#B108",
+      "label": "Mobilität",
+      "kategorie": "#K12",
+      "dimension": "#D1",
+      "skala": [
+        0,
+        100
+      ],
+      "sekundaer": [
+        "#K5"
+      ],
+      "frageTyp": "nuance",
+      "hauptbeduerfnis": "#B106",
+      "kontext": "mobil & flexibel leben"
+    },
+    "#B109": {
+      "id": "#B109",
+      "label": "Heimat",
+      "kategorie": "#K12",
+      "dimension": "#D1",
+      "skala": [
+        0,
+        100
+      ],
+      "sekundaer": [
+        "#K2",
+        "#K6"
+      ],
+      "frageTyp": "nuance",
+      "hauptbeduerfnis": "#B106",
+      "kontext": "Heimatgefühl"
+    },
+    "#B110": {
+      "id": "#B110",
+      "label": "Neue-Orte",
+      "kategorie": "#K12",
+      "dimension": "#D1",
+      "skala": [
+        0,
+        100
+      ],
+      "sekundaer": [
+        "#K5",
+        "#K9"
+      ],
+      "frageTyp": "nuance",
+      "hauptbeduerfnis": "#B106",
+      "kontext": "oft umziehen"
+    },
+    "#B111": {
+      "id": "#B111",
+      "label": "Herkunftsfamilie",
+      "kategorie": "#K12",
+      "dimension": "#D1",
+      "skala": [
+        0,
+        100
+      ],
+      "sekundaer": [
+        "#K6"
+      ],
+      "frage": "Wie wichtig ist Ihnen Nähe zur Herkunftsfamilie?",
+      "frageTyp": "haupt",
+      "nuancen": [
+        "#B112",
+        "#B113"
+      ]
+    },
+    "#B112": {
+      "id": "#B112",
+      "label": "Herkunftsfamilie",
+      "kategorie": "#K12",
+      "dimension": "#D1",
+      "skala": [
+        0,
+        100
+      ],
+      "sekundaer": [
+        "#K6"
+      ],
+      "frageTyp": "nuance",
+      "hauptbeduerfnis": "#B111",
+      "kontext": "Kontakt zu Eltern/Geschwistern"
+    },
+    "#B113": {
+      "id": "#B113",
+      "label": "Generationenverbund",
+      "kategorie": "#K12",
+      "dimension": "#D1",
+      "skala": [
+        0,
+        100
+      ],
+      "sekundaer": [
+        "#K6",
+        "#K10"
+      ],
+      "frageTyp": "nuance",
+      "hauptbeduerfnis": "#B111",
+      "kontext": "Mehrgenerationen-Nähe"
+    },
     "_comment_finanzen": "═══ FINANZEN & KARRIERE (#K13) ═══",
-    "#B114": { "id": "#B114", "label": "Finanzielle-Unabhängigkeit", "kategorie": "#K13", "dimension": "#D1", "skala": [0, 100], "sekundaer": ["#K5"], "frageTyp": "nuance", "hauptbeduerfnis": "#B117", "kontext": "finanziell unabhängig" },
-    "#B115": { "id": "#B115", "label": "Gemeinsame-Finanzen", "kategorie": "#K13", "dimension": "#D1", "skala": [0, 100], "sekundaer": ["#K6"], "frageTyp": "nuance", "hauptbeduerfnis": "#B117", "kontext": "Finanzen gemeinsam verwalten" },
-    "#B116": { "id": "#B116", "label": "Finanzielle-Transparenz", "kategorie": "#K13", "dimension": "#D1", "skala": [0, 100], "sekundaer": ["#K4"], "frageTyp": "nuance", "hauptbeduerfnis": "#B117", "kontext": "Offenheit über Geld" },
-    "#B117": { "id": "#B117", "label": "Finanzen-&-Geld", "kategorie": "#K13", "dimension": "#D1", "skala": [0, 100], "sekundaer": ["#K2"], "frage": "Wie wichtig ist Ihnen finanzielles Management?", "frageTyp": "haupt", "nuancen": ["#B114", "#B115", "#B116", "#B118", "#B119"] },
-    "#B118": { "id": "#B118", "label": "Sparsamkeit", "kategorie": "#K13", "dimension": "#D1", "skala": [0, 100], "frageTyp": "nuance", "hauptbeduerfnis": "#B117", "kontext": "sparsam leben" },
-    "#B119": { "id": "#B119", "label": "Großzügigkeit", "kategorie": "#K13", "dimension": "#D1", "skala": [0, 100], "sekundaer": ["#K3"], "frageTyp": "nuance", "hauptbeduerfnis": "#B117", "kontext": "großzügig sein" },
-    "#B120": { "id": "#B120", "label": "Berufliche-Erfüllung", "kategorie": "#K13", "dimension": "#D1", "skala": [0, 100], "sekundaer": ["#K8"], "frage": "Wie wichtig ist Ihnen berufliche Erfüllung?", "frageTyp": "haupt", "nuancen": ["#B121", "#B123", "#B125"] },
-    "#B121": { "id": "#B121", "label": "Karriereambition", "kategorie": "#K13", "dimension": "#D1", "skala": [0, 100], "sekundaer": ["#K8"], "frageTyp": "nuance", "hauptbeduerfnis": "#B120", "kontext": "Karriere vorantreiben" },
-    "#B122": { "id": "#B122", "label": "Work-Life-Balance", "kategorie": "#K13", "dimension": "#D1", "skala": [0, 100], "sekundaer": ["#K7", "#K3"], "frage": "Wie wichtig ist Ihnen Work-Life-Balance?", "frageTyp": "haupt", "nuancen": ["#B124"] },
-    "#B123": { "id": "#B123", "label": "Berufliche-Anerkennung", "kategorie": "#K13", "dimension": "#D1", "skala": [0, 100], "sekundaer": ["#K8", "#K4"], "frageTyp": "nuance", "hauptbeduerfnis": "#B120", "kontext": "berufliche Anerkennung" },
-    "#B124": { "id": "#B124", "label": "Zeit-für-Beziehung", "kategorie": "#K13", "dimension": "#D1", "skala": [0, 100], "sekundaer": ["#K3"], "frageTyp": "nuance", "hauptbeduerfnis": "#B122", "kontext": "Zeit für Partnerschaft" },
-    "#B125": { "id": "#B125", "label": "Berufliche-Flexibilität", "kategorie": "#K13", "dimension": "#D1", "skala": [0, 100], "sekundaer": ["#K5"], "frageTyp": "nuance", "hauptbeduerfnis": "#B120", "kontext": "flexible Arbeitsgestaltung" },
-
+    "#B114": {
+      "id": "#B114",
+      "label": "Finanzielle-Unabhängigkeit",
+      "kategorie": "#K13",
+      "dimension": "#D1",
+      "skala": [
+        0,
+        100
+      ],
+      "sekundaer": [
+        "#K5"
+      ],
+      "frageTyp": "nuance",
+      "hauptbeduerfnis": "#B117",
+      "kontext": "finanziell unabhängig"
+    },
+    "#B115": {
+      "id": "#B115",
+      "label": "Gemeinsame-Finanzen",
+      "kategorie": "#K13",
+      "dimension": "#D1",
+      "skala": [
+        0,
+        100
+      ],
+      "sekundaer": [
+        "#K6"
+      ],
+      "frageTyp": "nuance",
+      "hauptbeduerfnis": "#B117",
+      "kontext": "Finanzen gemeinsam verwalten"
+    },
+    "#B116": {
+      "id": "#B116",
+      "label": "Finanzielle-Transparenz",
+      "kategorie": "#K13",
+      "dimension": "#D1",
+      "skala": [
+        0,
+        100
+      ],
+      "sekundaer": [
+        "#K4"
+      ],
+      "frageTyp": "nuance",
+      "hauptbeduerfnis": "#B117",
+      "kontext": "Offenheit über Geld"
+    },
+    "#B117": {
+      "id": "#B117",
+      "label": "Finanzen-&-Geld",
+      "kategorie": "#K13",
+      "dimension": "#D1",
+      "skala": [
+        0,
+        100
+      ],
+      "sekundaer": [
+        "#K2"
+      ],
+      "frage": "Wie wichtig ist Ihnen finanzielles Management?",
+      "frageTyp": "haupt",
+      "nuancen": [
+        "#B114",
+        "#B115",
+        "#B116",
+        "#B118",
+        "#B119"
+      ]
+    },
+    "#B118": {
+      "id": "#B118",
+      "label": "Sparsamkeit",
+      "kategorie": "#K13",
+      "dimension": "#D1",
+      "skala": [
+        0,
+        100
+      ],
+      "frageTyp": "nuance",
+      "hauptbeduerfnis": "#B117",
+      "kontext": "sparsam leben"
+    },
+    "#B119": {
+      "id": "#B119",
+      "label": "Großzügigkeit",
+      "kategorie": "#K13",
+      "dimension": "#D1",
+      "skala": [
+        0,
+        100
+      ],
+      "sekundaer": [
+        "#K3"
+      ],
+      "frageTyp": "nuance",
+      "hauptbeduerfnis": "#B117",
+      "kontext": "großzügig sein"
+    },
+    "#B120": {
+      "id": "#B120",
+      "label": "Berufliche-Erfüllung",
+      "kategorie": "#K13",
+      "dimension": "#D1",
+      "skala": [
+        0,
+        100
+      ],
+      "sekundaer": [
+        "#K8"
+      ],
+      "frage": "Wie wichtig ist Ihnen berufliche Erfüllung?",
+      "frageTyp": "haupt",
+      "nuancen": [
+        "#B121",
+        "#B123",
+        "#B125"
+      ]
+    },
+    "#B121": {
+      "id": "#B121",
+      "label": "Karriereambition",
+      "kategorie": "#K13",
+      "dimension": "#D1",
+      "skala": [
+        0,
+        100
+      ],
+      "sekundaer": [
+        "#K8"
+      ],
+      "frageTyp": "nuance",
+      "hauptbeduerfnis": "#B120",
+      "kontext": "Karriere vorantreiben"
+    },
+    "#B122": {
+      "id": "#B122",
+      "label": "Work-Life-Balance",
+      "kategorie": "#K13",
+      "dimension": "#D1",
+      "skala": [
+        0,
+        100
+      ],
+      "sekundaer": [
+        "#K7",
+        "#K3"
+      ],
+      "frage": "Wie wichtig ist Ihnen Work-Life-Balance?",
+      "frageTyp": "haupt",
+      "nuancen": [
+        "#B124"
+      ]
+    },
+    "#B123": {
+      "id": "#B123",
+      "label": "Berufliche-Anerkennung",
+      "kategorie": "#K13",
+      "dimension": "#D1",
+      "skala": [
+        0,
+        100
+      ],
+      "sekundaer": [
+        "#K8",
+        "#K4"
+      ],
+      "frageTyp": "nuance",
+      "hauptbeduerfnis": "#B120",
+      "kontext": "berufliche Anerkennung"
+    },
+    "#B124": {
+      "id": "#B124",
+      "label": "Zeit-für-Beziehung",
+      "kategorie": "#K13",
+      "dimension": "#D1",
+      "skala": [
+        0,
+        100
+      ],
+      "sekundaer": [
+        "#K3"
+      ],
+      "frageTyp": "nuance",
+      "hauptbeduerfnis": "#B122",
+      "kontext": "Zeit für Partnerschaft"
+    },
+    "#B125": {
+      "id": "#B125",
+      "label": "Berufliche-Flexibilität",
+      "kategorie": "#K13",
+      "dimension": "#D1",
+      "skala": [
+        0,
+        100
+      ],
+      "sekundaer": [
+        "#K5"
+      ],
+      "frageTyp": "nuance",
+      "hauptbeduerfnis": "#B120",
+      "kontext": "flexible Arbeitsgestaltung"
+    },
     "_comment_kommunikationsstil": "═══ KOMMUNIKATIONSSTIL (#K14) ═══",
-    "#B126": { "id": "#B126", "label": "Gesprächstiefe", "kategorie": "#K14", "dimension": "#D5", "skala": [0, 100], "sekundaer": ["#K6"], "frage": "Welcher Kommunikationsstil ist Ihnen wichtig?", "frageTyp": "haupt", "nuancen": ["#B127", "#B128", "#B129", "#B130"] },
-    "#B127": { "id": "#B127", "label": "Tiefgehende-Gespräche", "kategorie": "#K14", "dimension": "#D5", "skala": [0, 100], "sekundaer": ["#K4", "#K10"], "frage": "Wie wichtig sind tiefgehende Gespräche?", "frageTyp": "nuance", "hauptbeduerfnis": "#B126", "kontext": "tiefe Themen" },
-    "#B128": { "id": "#B128", "label": "Small-Talk", "kategorie": "#K14", "dimension": "#D5", "skala": [0, 100], "sekundaer": ["#K6"], "frage": "Wie wichtig ist Small Talk?", "frageTyp": "nuance", "hauptbeduerfnis": "#B126", "kontext": "leichter Austausch" },
-    "#B129": { "id": "#B129", "label": "Stille-gemeinsam", "kategorie": "#K14", "dimension": "#D5", "skala": [0, 100], "sekundaer": ["#K3", "#K2"], "frage": "Wie wichtig ist gemeinsames Schweigen?", "frageTyp": "nuance", "hauptbeduerfnis": "#B126", "kontext": "gemeinsames Schweigen" },
-    "#B130": { "id": "#B130", "label": "Verbale-Verbindung", "kategorie": "#K14", "dimension": "#D5", "skala": [0, 100], "sekundaer": ["#K6", "#K4"], "frage": "Wie wichtig ist verbale Verbindung?", "frageTyp": "nuance", "hauptbeduerfnis": "#B126", "kontext": "Verbindung durch Worte" },
-    "#B131": { "id": "#B131", "label": "Zuhören", "kategorie": "#K14", "dimension": "#D5", "skala": [0, 100], "sekundaer": ["#K4", "#K3"], "frage": "Wie wichtig ist Ihnen aktives Zuhören?", "frageTyp": "haupt" },
-    "#B132": { "id": "#B132", "label": "Emotionaler-Ausdruck", "kategorie": "#K14", "dimension": "#D5", "skala": [0, 100], "sekundaer": ["#K4", "#K3"], "frage": "Wie offen möchten Sie Gefühle zeigen?", "frageTyp": "haupt", "nuancen": ["#B133", "#B134", "#B135", "#B136", "#B137"] },
-    "#B133": { "id": "#B133", "label": "Gefühle-zeigen", "kategorie": "#K14", "dimension": "#D5", "skala": [0, 100], "sekundaer": ["#K4"], "frage": "Wie wichtig ist Gefühle zeigen?", "frageTyp": "nuance", "hauptbeduerfnis": "#B132", "kontext": "Emotionen ausdrücken" },
-    "#B134": { "id": "#B134", "label": "Verletzlichkeit", "kategorie": "#K14", "dimension": "#D5", "skala": [0, 100], "sekundaer": ["#K4", "#K3"], "frage": "Wie wichtig ist Verletzlichkeit zeigen?", "frageTyp": "nuance", "hauptbeduerfnis": "#B132", "kontext": "verletzlich sein" },
-    "#B135": { "id": "#B135", "label": "Emotionale-Zurückhaltung", "kategorie": "#K14", "dimension": "#D5", "skala": [0, 100], "frage": "Wie wichtig ist emotionale Zurückhaltung?", "frageTyp": "nuance", "hauptbeduerfnis": "#B132", "kontext": "Gefühle für sich behalten" },
-    "#B136": { "id": "#B136", "label": "Emotionale-Sicherheit", "kategorie": "#K14", "dimension": "#D5", "skala": [0, 100], "sekundaer": ["#K2"], "frage": "Wie wichtig ist emotionale Sicherheit?", "frageTyp": "nuance", "hauptbeduerfnis": "#B132", "kontext": "sichere emotionale Basis" },
-    "#B137": { "id": "#B137", "label": "Gefühle-teilen", "kategorie": "#K14", "dimension": "#D5", "skala": [0, 100], "sekundaer": ["#K4", "#K3"], "frage": "Wie wichtig ist Gefühle teilen?", "frageTyp": "nuance", "hauptbeduerfnis": "#B132", "kontext": "emotionale Intimität" },
-    "#B138": { "id": "#B138", "label": "Konfliktverhalten", "kategorie": "#K14", "dimension": "#D5", "skala": [0, 100], "sekundaer": ["#K6"], "frage": "Wie gehen Sie mit Konflikten um?", "frageTyp": "haupt", "nuancen": ["#B139", "#B140", "#B141"] },
-    "#B139": { "id": "#B139", "label": "Aussprache", "kategorie": "#K14", "dimension": "#D5", "skala": [0, 100], "sekundaer": ["#K6", "#K4"], "frage": "Wie wichtig ist offene Aussprache?", "frageTyp": "nuance", "hauptbeduerfnis": "#B138", "kontext": "offene Auseinandersetzung" },
-    "#B140": { "id": "#B140", "label": "Konflikt-vermeiden", "kategorie": "#K14", "dimension": "#D5", "skala": [0, 100], "sekundaer": ["#K2"], "frage": "Wie stark vermeiden Sie Konflikte?", "frageTyp": "nuance", "hauptbeduerfnis": "#B138", "kontext": "Konflikte meiden" },
-    "#B141": { "id": "#B141", "label": "Streitkultur", "kategorie": "#K14", "dimension": "#D5", "skala": [0, 100], "sekundaer": ["#K6"], "frage": "Wie wichtig ist konstruktives Streiten?", "frageTyp": "nuance", "hauptbeduerfnis": "#B138", "kontext": "konstruktives Streiten" },
-    "#B142": { "id": "#B142", "label": "Versöhnlichkeit", "kategorie": "#K14", "dimension": "#D5", "skala": [0, 100], "sekundaer": ["#K3", "#K4"], "frage": "Wie wichtig ist Ihnen Versöhnung nach Konflikten?", "frageTyp": "haupt" },
-
+    "#B126": {
+      "id": "#B126",
+      "label": "Gesprächstiefe",
+      "kategorie": "#K14",
+      "dimension": "#D5",
+      "skala": [
+        0,
+        100
+      ],
+      "sekundaer": [
+        "#K6"
+      ],
+      "frage": "Welcher Kommunikationsstil ist Ihnen wichtig?",
+      "frageTyp": "haupt",
+      "nuancen": [
+        "#B127",
+        "#B128",
+        "#B129",
+        "#B130"
+      ]
+    },
+    "#B127": {
+      "id": "#B127",
+      "label": "Tiefgehende-Gespräche",
+      "kategorie": "#K14",
+      "dimension": "#D5",
+      "skala": [
+        0,
+        100
+      ],
+      "sekundaer": [
+        "#K4",
+        "#K10"
+      ],
+      "frage": "Wie wichtig sind tiefgehende Gespräche?",
+      "frageTyp": "nuance",
+      "hauptbeduerfnis": "#B126",
+      "kontext": "tiefe Themen"
+    },
+    "#B128": {
+      "id": "#B128",
+      "label": "Small-Talk",
+      "kategorie": "#K14",
+      "dimension": "#D5",
+      "skala": [
+        0,
+        100
+      ],
+      "sekundaer": [
+        "#K6"
+      ],
+      "frage": "Wie wichtig ist Small Talk?",
+      "frageTyp": "nuance",
+      "hauptbeduerfnis": "#B126",
+      "kontext": "leichter Austausch"
+    },
+    "#B129": {
+      "id": "#B129",
+      "label": "Stille-gemeinsam",
+      "kategorie": "#K14",
+      "dimension": "#D5",
+      "skala": [
+        0,
+        100
+      ],
+      "sekundaer": [
+        "#K3",
+        "#K2"
+      ],
+      "frage": "Wie wichtig ist gemeinsames Schweigen?",
+      "frageTyp": "nuance",
+      "hauptbeduerfnis": "#B126",
+      "kontext": "gemeinsames Schweigen"
+    },
+    "#B130": {
+      "id": "#B130",
+      "label": "Verbale-Verbindung",
+      "kategorie": "#K14",
+      "dimension": "#D5",
+      "skala": [
+        0,
+        100
+      ],
+      "sekundaer": [
+        "#K6",
+        "#K4"
+      ],
+      "frage": "Wie wichtig ist verbale Verbindung?",
+      "frageTyp": "nuance",
+      "hauptbeduerfnis": "#B126",
+      "kontext": "Verbindung durch Worte"
+    },
+    "#B131": {
+      "id": "#B131",
+      "label": "Zuhören",
+      "kategorie": "#K14",
+      "dimension": "#D5",
+      "skala": [
+        0,
+        100
+      ],
+      "sekundaer": [
+        "#K4",
+        "#K3"
+      ],
+      "frage": "Wie wichtig ist Ihnen aktives Zuhören?",
+      "frageTyp": "haupt"
+    },
+    "#B132": {
+      "id": "#B132",
+      "label": "Emotionaler-Ausdruck",
+      "kategorie": "#K14",
+      "dimension": "#D5",
+      "skala": [
+        0,
+        100
+      ],
+      "sekundaer": [
+        "#K4",
+        "#K3"
+      ],
+      "frage": "Wie offen möchten Sie Gefühle zeigen?",
+      "frageTyp": "haupt",
+      "nuancen": [
+        "#B133",
+        "#B134",
+        "#B135",
+        "#B136",
+        "#B137"
+      ]
+    },
+    "#B133": {
+      "id": "#B133",
+      "label": "Gefühle-zeigen",
+      "kategorie": "#K14",
+      "dimension": "#D5",
+      "skala": [
+        0,
+        100
+      ],
+      "sekundaer": [
+        "#K4"
+      ],
+      "frage": "Wie wichtig ist Gefühle zeigen?",
+      "frageTyp": "nuance",
+      "hauptbeduerfnis": "#B132",
+      "kontext": "Emotionen ausdrücken"
+    },
+    "#B134": {
+      "id": "#B134",
+      "label": "Verletzlichkeit",
+      "kategorie": "#K14",
+      "dimension": "#D5",
+      "skala": [
+        0,
+        100
+      ],
+      "sekundaer": [
+        "#K4",
+        "#K3"
+      ],
+      "frage": "Wie wichtig ist Verletzlichkeit zeigen?",
+      "frageTyp": "nuance",
+      "hauptbeduerfnis": "#B132",
+      "kontext": "verletzlich sein"
+    },
+    "#B135": {
+      "id": "#B135",
+      "label": "Emotionale-Zurückhaltung",
+      "kategorie": "#K14",
+      "dimension": "#D5",
+      "skala": [
+        0,
+        100
+      ],
+      "frage": "Wie wichtig ist emotionale Zurückhaltung?",
+      "frageTyp": "nuance",
+      "hauptbeduerfnis": "#B132",
+      "kontext": "Gefühle für sich behalten"
+    },
+    "#B136": {
+      "id": "#B136",
+      "label": "Emotionale-Sicherheit",
+      "kategorie": "#K14",
+      "dimension": "#D5",
+      "skala": [
+        0,
+        100
+      ],
+      "sekundaer": [
+        "#K2"
+      ],
+      "frage": "Wie wichtig ist emotionale Sicherheit?",
+      "frageTyp": "nuance",
+      "hauptbeduerfnis": "#B132",
+      "kontext": "sichere emotionale Basis"
+    },
+    "#B137": {
+      "id": "#B137",
+      "label": "Gefühle-teilen",
+      "kategorie": "#K14",
+      "dimension": "#D5",
+      "skala": [
+        0,
+        100
+      ],
+      "sekundaer": [
+        "#K4",
+        "#K3"
+      ],
+      "frage": "Wie wichtig ist Gefühle teilen?",
+      "frageTyp": "nuance",
+      "hauptbeduerfnis": "#B132",
+      "kontext": "emotionale Intimität"
+    },
+    "#B138": {
+      "id": "#B138",
+      "label": "Konfliktverhalten",
+      "kategorie": "#K14",
+      "dimension": "#D5",
+      "skala": [
+        0,
+        100
+      ],
+      "sekundaer": [
+        "#K6"
+      ],
+      "frage": "Wie gehen Sie mit Konflikten um?",
+      "frageTyp": "haupt",
+      "nuancen": [
+        "#B139",
+        "#B140",
+        "#B141"
+      ]
+    },
+    "#B139": {
+      "id": "#B139",
+      "label": "Aussprache",
+      "kategorie": "#K14",
+      "dimension": "#D5",
+      "skala": [
+        0,
+        100
+      ],
+      "sekundaer": [
+        "#K6",
+        "#K4"
+      ],
+      "frage": "Wie wichtig ist offene Aussprache?",
+      "frageTyp": "nuance",
+      "hauptbeduerfnis": "#B138",
+      "kontext": "offene Auseinandersetzung"
+    },
+    "#B140": {
+      "id": "#B140",
+      "label": "Konflikt-vermeiden",
+      "kategorie": "#K14",
+      "dimension": "#D5",
+      "skala": [
+        0,
+        100
+      ],
+      "sekundaer": [
+        "#K2"
+      ],
+      "frage": "Wie stark vermeiden Sie Konflikte?",
+      "frageTyp": "nuance",
+      "hauptbeduerfnis": "#B138",
+      "kontext": "Konflikte meiden"
+    },
+    "#B141": {
+      "id": "#B141",
+      "label": "Streitkultur",
+      "kategorie": "#K14",
+      "dimension": "#D5",
+      "skala": [
+        0,
+        100
+      ],
+      "sekundaer": [
+        "#K6"
+      ],
+      "frage": "Wie wichtig ist konstruktives Streiten?",
+      "frageTyp": "nuance",
+      "hauptbeduerfnis": "#B138",
+      "kontext": "konstruktives Streiten"
+    },
+    "#B142": {
+      "id": "#B142",
+      "label": "Versöhnlichkeit",
+      "kategorie": "#K14",
+      "dimension": "#D5",
+      "skala": [
+        0,
+        100
+      ],
+      "sekundaer": [
+        "#K3",
+        "#K4"
+      ],
+      "frage": "Wie wichtig ist Ihnen Versöhnung nach Konflikten?",
+      "frageTyp": "haupt"
+    },
     "_comment_soziales": "═══ SOZIALES LEBEN (#K15) ═══",
-    "#B143": { "id": "#B143", "label": "Soziale-Energie", "kategorie": "#K15", "dimension": "#D6", "skala": [0, 100], "frage": "Wie wichtig ist soziale Energie für Sie?", "frageTyp": "haupt" },
-    "#B144": { "id": "#B144", "label": "Geselligkeit", "kategorie": "#K15", "dimension": "#D6", "skala": [0, 100], "sekundaer": ["#K6"], "frage": "Wie gerne sind Sie unter Menschen?", "frageTyp": "nuance", "hauptbeduerfnis": "#B151", "kontext": "soziale Interaktion" },
-    "#B145": { "id": "#B145", "label": "Ruhe-von-Menschen", "kategorie": "#K15", "dimension": "#D6", "skala": [0, 100], "sekundaer": ["#K5"], "frage": "Wie stark brauchen Sie Ruhe von Menschen?", "frageTyp": "nuance", "hauptbeduerfnis": "#B149", "kontext": "bewusster Rückzug" },
-    "#B146": { "id": "#B146", "label": "Allein-aufladen", "kategorie": "#K15", "dimension": "#D6", "skala": [0, 100], "sekundaer": ["#K5"], "frage": "Wie wichtig ist alleine Energie tanken?", "frageTyp": "nuance", "hauptbeduerfnis": "#B149", "kontext": "Energie tanken" },
-    "#B147": { "id": "#B147", "label": "Menschen-treffen", "kategorie": "#K15", "dimension": "#D6", "skala": [0, 100], "sekundaer": ["#K6"], "frage": "Wie wichtig ist regelmäßig Menschen treffen?", "frageTyp": "nuance", "hauptbeduerfnis": "#B151", "kontext": "aktiv Kontakte pflegen" },
-    "#B148": { "id": "#B148", "label": "Kleine-Gruppen", "kategorie": "#K15", "dimension": "#D6", "skala": [0, 100], "sekundaer": ["#K6"], "frage": "Wie stark bevorzugen Sie kleine Gruppen?", "frageTyp": "nuance", "hauptbeduerfnis": "#B151", "kontext": "intime Gruppengröße" },
-    "#B149": { "id": "#B149", "label": "Zeit-für-sich", "kategorie": "#K15", "dimension": "#D6", "skala": [0, 100], "sekundaer": ["#K5"], "frage": "Wie wichtig ist Ihnen Zeit für sich selbst?", "frageTyp": "haupt", "nuancen": ["#B145", "#B146", "#B150", "#B153"] },
-    "#B150": { "id": "#B150", "label": "Eigene-Hobbys", "kategorie": "#K15", "dimension": "#D6", "skala": [0, 100], "sekundaer": ["#K5", "#K8"], "frage": "Wie wichtig ist Raum für eigene Hobbys?", "frageTyp": "nuance", "hauptbeduerfnis": "#B149", "kontext": "eigene Aktivitäten" },
-    "#B151": { "id": "#B151", "label": "Zeit-mit-Anderen", "kategorie": "#K15", "dimension": "#D6", "skala": [0, 100], "sekundaer": ["#K3"], "frage": "Wie wichtig ist Ihnen Zeit mit Freunden und Gruppen?", "frageTyp": "haupt", "nuancen": ["#B144", "#B147", "#B148", "#B155"] },
-    "#B152": { "id": "#B152", "label": "Partnerzeit", "kategorie": "#K15", "dimension": "#D6", "skala": [0, 100], "sekundaer": ["#K3"], "frage": "Wie wichtig ist Ihnen exklusive Zeit zu zweit?", "frageTyp": "haupt" },
-    "#B153": { "id": "#B153", "label": "Eigene-Interessen", "kategorie": "#K15", "dimension": "#D6", "skala": [0, 100], "sekundaer": ["#K5", "#K8"], "frage": "Wie wichtig sind eigene Interessen?", "frageTyp": "nuance", "hauptbeduerfnis": "#B149", "kontext": "persönliche Entfaltung" },
-    "#B154": { "id": "#B154", "label": "Freundeskreis", "kategorie": "#K15", "dimension": "#D6", "skala": [0, 100], "sekundaer": ["#K5", "#K6"], "frage": "Wie wichtig ist Ihnen Ihr Freundeskreis?", "frageTyp": "haupt", "nuancen": ["#B156", "#B157", "#B158", "#B159"] },
-    "#B155": { "id": "#B155", "label": "Gemeinsame-Freunde", "kategorie": "#K15", "dimension": "#D6", "skala": [0, 100], "sekundaer": ["#K6"], "frage": "Wie wichtig sind gemeinsame Freunde?", "frageTyp": "nuance", "hauptbeduerfnis": "#B151", "kontext": "gemeinsamer Freundeskreis" },
-    "#B156": { "id": "#B156", "label": "Freundeskreis-teilen", "kategorie": "#K15", "dimension": "#D6", "skala": [0, 100], "sekundaer": ["#K6"], "frageTyp": "nuance", "hauptbeduerfnis": "#B154", "kontext": "Freunde mit Partner teilen" },
-    "#B157": { "id": "#B157", "label": "Soziales-Netz", "kategorie": "#K15", "dimension": "#D6", "skala": [0, 100], "sekundaer": ["#K2", "#K6"], "frageTyp": "nuance", "hauptbeduerfnis": "#B154", "kontext": "stabiles soziales Netzwerk" },
-    "#B158": { "id": "#B158", "label": "Freunde-pflegen", "kategorie": "#K15", "dimension": "#D6", "skala": [0, 100], "sekundaer": ["#K6"], "frageTyp": "nuance", "hauptbeduerfnis": "#B154", "kontext": "Freundschaften pflegen" },
-    "#B159": { "id": "#B159", "label": "Neue-Freundschaften", "kategorie": "#K15", "dimension": "#D6", "skala": [0, 100], "sekundaer": ["#K9", "#K6"], "frageTyp": "nuance", "hauptbeduerfnis": "#B154", "kontext": "neue Freunde finden" },
-
+    "#B143": {
+      "id": "#B143",
+      "label": "Soziale-Energie",
+      "kategorie": "#K15",
+      "dimension": "#D6",
+      "skala": [
+        0,
+        100
+      ],
+      "frage": "Wie wichtig ist soziale Energie für Sie?",
+      "frageTyp": "haupt"
+    },
+    "#B144": {
+      "id": "#B144",
+      "label": "Geselligkeit",
+      "kategorie": "#K15",
+      "dimension": "#D6",
+      "skala": [
+        0,
+        100
+      ],
+      "sekundaer": [
+        "#K6"
+      ],
+      "frage": "Wie gerne sind Sie unter Menschen?",
+      "frageTyp": "nuance",
+      "hauptbeduerfnis": "#B151",
+      "kontext": "soziale Interaktion"
+    },
+    "#B145": {
+      "id": "#B145",
+      "label": "Ruhe-von-Menschen",
+      "kategorie": "#K15",
+      "dimension": "#D6",
+      "skala": [
+        0,
+        100
+      ],
+      "sekundaer": [
+        "#K5"
+      ],
+      "frage": "Wie stark brauchen Sie Ruhe von Menschen?",
+      "frageTyp": "nuance",
+      "hauptbeduerfnis": "#B149",
+      "kontext": "bewusster Rückzug"
+    },
+    "#B146": {
+      "id": "#B146",
+      "label": "Allein-aufladen",
+      "kategorie": "#K15",
+      "dimension": "#D6",
+      "skala": [
+        0,
+        100
+      ],
+      "sekundaer": [
+        "#K5"
+      ],
+      "frage": "Wie wichtig ist alleine Energie tanken?",
+      "frageTyp": "nuance",
+      "hauptbeduerfnis": "#B149",
+      "kontext": "Energie tanken"
+    },
+    "#B147": {
+      "id": "#B147",
+      "label": "Menschen-treffen",
+      "kategorie": "#K15",
+      "dimension": "#D6",
+      "skala": [
+        0,
+        100
+      ],
+      "sekundaer": [
+        "#K6"
+      ],
+      "frage": "Wie wichtig ist regelmäßig Menschen treffen?",
+      "frageTyp": "nuance",
+      "hauptbeduerfnis": "#B151",
+      "kontext": "aktiv Kontakte pflegen"
+    },
+    "#B148": {
+      "id": "#B148",
+      "label": "Kleine-Gruppen",
+      "kategorie": "#K15",
+      "dimension": "#D6",
+      "skala": [
+        0,
+        100
+      ],
+      "sekundaer": [
+        "#K6"
+      ],
+      "frage": "Wie stark bevorzugen Sie kleine Gruppen?",
+      "frageTyp": "nuance",
+      "hauptbeduerfnis": "#B151",
+      "kontext": "intime Gruppengröße"
+    },
+    "#B149": {
+      "id": "#B149",
+      "label": "Zeit-für-sich",
+      "kategorie": "#K15",
+      "dimension": "#D6",
+      "skala": [
+        0,
+        100
+      ],
+      "sekundaer": [
+        "#K5"
+      ],
+      "frage": "Wie wichtig ist Ihnen Zeit für sich selbst?",
+      "frageTyp": "haupt",
+      "nuancen": [
+        "#B145",
+        "#B146",
+        "#B150",
+        "#B153"
+      ]
+    },
+    "#B150": {
+      "id": "#B150",
+      "label": "Eigene-Hobbys",
+      "kategorie": "#K15",
+      "dimension": "#D6",
+      "skala": [
+        0,
+        100
+      ],
+      "sekundaer": [
+        "#K5",
+        "#K8"
+      ],
+      "frage": "Wie wichtig ist Raum für eigene Hobbys?",
+      "frageTyp": "nuance",
+      "hauptbeduerfnis": "#B149",
+      "kontext": "eigene Aktivitäten"
+    },
+    "#B151": {
+      "id": "#B151",
+      "label": "Zeit-mit-Anderen",
+      "kategorie": "#K15",
+      "dimension": "#D6",
+      "skala": [
+        0,
+        100
+      ],
+      "sekundaer": [
+        "#K3"
+      ],
+      "frage": "Wie wichtig ist Ihnen Zeit mit Freunden und Gruppen?",
+      "frageTyp": "haupt",
+      "nuancen": [
+        "#B144",
+        "#B147",
+        "#B148",
+        "#B155"
+      ]
+    },
+    "#B152": {
+      "id": "#B152",
+      "label": "Partnerzeit",
+      "kategorie": "#K15",
+      "dimension": "#D6",
+      "skala": [
+        0,
+        100
+      ],
+      "sekundaer": [
+        "#K3"
+      ],
+      "frage": "Wie wichtig ist Ihnen exklusive Zeit zu zweit?",
+      "frageTyp": "haupt"
+    },
+    "#B153": {
+      "id": "#B153",
+      "label": "Eigene-Interessen",
+      "kategorie": "#K15",
+      "dimension": "#D6",
+      "skala": [
+        0,
+        100
+      ],
+      "sekundaer": [
+        "#K5",
+        "#K8"
+      ],
+      "frage": "Wie wichtig sind eigene Interessen?",
+      "frageTyp": "nuance",
+      "hauptbeduerfnis": "#B149",
+      "kontext": "persönliche Entfaltung"
+    },
+    "#B154": {
+      "id": "#B154",
+      "label": "Freundeskreis",
+      "kategorie": "#K15",
+      "dimension": "#D6",
+      "skala": [
+        0,
+        100
+      ],
+      "sekundaer": [
+        "#K5",
+        "#K6"
+      ],
+      "frage": "Wie wichtig ist Ihnen Ihr Freundeskreis?",
+      "frageTyp": "haupt",
+      "nuancen": [
+        "#B156",
+        "#B157",
+        "#B158",
+        "#B159"
+      ]
+    },
+    "#B155": {
+      "id": "#B155",
+      "label": "Gemeinsame-Freunde",
+      "kategorie": "#K15",
+      "dimension": "#D6",
+      "skala": [
+        0,
+        100
+      ],
+      "sekundaer": [
+        "#K6"
+      ],
+      "frage": "Wie wichtig sind gemeinsame Freunde?",
+      "frageTyp": "nuance",
+      "hauptbeduerfnis": "#B151",
+      "kontext": "gemeinsamer Freundeskreis"
+    },
+    "#B156": {
+      "id": "#B156",
+      "label": "Freundeskreis-teilen",
+      "kategorie": "#K15",
+      "dimension": "#D6",
+      "skala": [
+        0,
+        100
+      ],
+      "sekundaer": [
+        "#K6"
+      ],
+      "frageTyp": "nuance",
+      "hauptbeduerfnis": "#B154",
+      "kontext": "Freunde mit Partner teilen"
+    },
+    "#B157": {
+      "id": "#B157",
+      "label": "Soziales-Netz",
+      "kategorie": "#K15",
+      "dimension": "#D6",
+      "skala": [
+        0,
+        100
+      ],
+      "sekundaer": [
+        "#K2",
+        "#K6"
+      ],
+      "frageTyp": "nuance",
+      "hauptbeduerfnis": "#B154",
+      "kontext": "stabiles soziales Netzwerk"
+    },
+    "#B158": {
+      "id": "#B158",
+      "label": "Freunde-pflegen",
+      "kategorie": "#K15",
+      "dimension": "#D6",
+      "skala": [
+        0,
+        100
+      ],
+      "sekundaer": [
+        "#K6"
+      ],
+      "frageTyp": "nuance",
+      "hauptbeduerfnis": "#B154",
+      "kontext": "Freundschaften pflegen"
+    },
+    "#B159": {
+      "id": "#B159",
+      "label": "Neue-Freundschaften",
+      "kategorie": "#K15",
+      "dimension": "#D6",
+      "skala": [
+        0,
+        100
+      ],
+      "sekundaer": [
+        "#K9",
+        "#K6"
+      ],
+      "frageTyp": "nuance",
+      "hauptbeduerfnis": "#B154",
+      "kontext": "neue Freunde finden"
+    },
     "_comment_intimitaet": "═══ INTIMITÄT & ROMANTIK (#K16) ═══",
-    "#B160": { "id": "#B160", "label": "Körperliche-Nähe", "kategorie": "#K16", "dimension": "#D3", "skala": [0, 100], "sekundaer": ["#K3", "#K1"], "frage": "Wie wichtig ist Ihnen körperliche Nähe?", "frageTyp": "haupt", "nuancen": ["#B161", "#B162", "#B163", "#B164", "#B165"] },
-    "#B161": { "id": "#B161", "label": "Kuscheln", "kategorie": "#K16", "dimension": "#D3", "skala": [0, 100], "sekundaer": ["#K3", "#K2"], "frage": "Wie wichtig ist Kuscheln?", "frageTyp": "nuance", "hauptbeduerfnis": "#B160", "kontext": "Kuscheln & Schmusen" },
-    "#B162": { "id": "#B162", "label": "Physische-Distanz", "kategorie": "#K16", "dimension": "#D3", "skala": [0, 100], "sekundaer": ["#K5"], "frage": "Wie wichtig ist körperlicher Abstand?", "frageTyp": "nuance", "hauptbeduerfnis": "#B160", "kontext": "körperlicher Abstand" },
-    "#B163": { "id": "#B163", "label": "Körperkontakt", "kategorie": "#K16", "dimension": "#D3", "skala": [0, 100], "sekundaer": ["#K3", "#K1"], "frage": "Wie wichtig ist Körperkontakt?", "frageTyp": "nuance", "hauptbeduerfnis": "#B160", "kontext": "physischer Kontakt" },
-    "#B164": { "id": "#B164", "label": "Umarmungen", "kategorie": "#K16", "dimension": "#D3", "skala": [0, 100], "sekundaer": ["#K3", "#K2"], "frage": "Wie wichtig sind Umarmungen?", "frageTyp": "nuance", "hauptbeduerfnis": "#B160", "kontext": "Umarmungen" },
-    "#B165": { "id": "#B165", "label": "Hand-halten", "kategorie": "#K16", "dimension": "#D3", "skala": [0, 100], "sekundaer": ["#K3"], "frage": "Wie wichtig ist Händchenhalten?", "frageTyp": "nuance", "hauptbeduerfnis": "#B160", "kontext": "Händchenhalten" },
-    "#B166": { "id": "#B166", "label": "Romantik", "kategorie": "#K16", "dimension": "#D3", "skala": [0, 100], "sekundaer": ["#K3"], "frage": "Wie wichtig sind Ihnen romantische Gesten?", "frageTyp": "haupt", "nuancen": ["#B167", "#B168", "#B169", "#B170", "#B171"] },
-    "#B167": { "id": "#B167", "label": "Überraschungen", "kategorie": "#K16", "dimension": "#D3", "skala": [0, 100], "sekundaer": ["#K3", "#K7"], "frage": "Wie wichtig sind Überraschungen?", "frageTyp": "nuance", "hauptbeduerfnis": "#B166", "kontext": "spontane Freuden" },
-    "#B168": { "id": "#B168", "label": "Dates", "kategorie": "#K16", "dimension": "#D3", "skala": [0, 100], "sekundaer": ["#K3"], "frage": "Wie wichtig sind Dates?", "frageTyp": "nuance", "hauptbeduerfnis": "#B166", "kontext": "gemeinsame Dates" },
-    "#B169": { "id": "#B169", "label": "Alltags-Romantik", "kategorie": "#K16", "dimension": "#D3", "skala": [0, 100], "sekundaer": ["#K3"], "frage": "Wie wichtig ist Romantik im Alltag?", "frageTyp": "nuance", "hauptbeduerfnis": "#B166", "kontext": "Romantik im Alltag" },
-    "#B170": { "id": "#B170", "label": "Aufmerksamkeiten", "kategorie": "#K16", "dimension": "#D3", "skala": [0, 100], "sekundaer": ["#K3", "#K4"], "frage": "Wie wichtig sind kleine Aufmerksamkeiten?", "frageTyp": "nuance", "hauptbeduerfnis": "#B166", "kontext": "kleine Aufmerksamkeiten" },
-    "#B171": { "id": "#B171", "label": "Liebesbekundungen", "kategorie": "#K16", "dimension": "#D3", "skala": [0, 100], "sekundaer": ["#K3"], "frage": "Wie wichtig sind Liebesbekundungen?", "frageTyp": "nuance", "hauptbeduerfnis": "#B166", "kontext": "Liebesworte & -gesten" },
-    "#B172": { "id": "#B172", "label": "Sexualität", "kategorie": "#K16", "dimension": "#D3", "skala": [0, 100], "sekundaer": ["#K1"], "frage": "Wie wichtig ist Ihnen Sexualität in der Beziehung?", "frageTyp": "haupt", "nuancen": ["#B173", "#B174", "#B175", "#B176", "#B177"] },
-    "#B173": { "id": "#B173", "label": "Sexuelle-Intimität", "kategorie": "#K16", "dimension": "#D3", "skala": [0, 100], "sekundaer": ["#K3", "#K10"], "frage": "Wie wichtig ist sexuelle Intimität?", "frageTyp": "nuance", "hauptbeduerfnis": "#B172", "kontext": "sexuelle Verbundenheit" },
-    "#B174": { "id": "#B174", "label": "Körperliche-Lust", "kategorie": "#K16", "dimension": "#D3", "skala": [0, 100], "sekundaer": ["#K1", "#K7"], "frage": "Wie wichtig ist körperliche Lust?", "frageTyp": "nuance", "hauptbeduerfnis": "#B172", "kontext": "körperliches Verlangen" },
-    "#B175": { "id": "#B175", "label": "Sexuelle-Experimentierfreude", "kategorie": "#K16", "dimension": "#D3", "skala": [0, 100], "sekundaer": ["#K9", "#K5"], "frage": "Wie wichtig ist sexuelle Offenheit?", "frageTyp": "nuance", "hauptbeduerfnis": "#B172", "kontext": "sexuelle Offenheit" },
-    "#B176": { "id": "#B176", "label": "Sexuelle-Verbindung", "kategorie": "#K16", "dimension": "#D3", "skala": [0, 100], "sekundaer": ["#K10", "#K3"], "frage": "Wie wichtig ist tiefe sexuelle Verbindung?", "frageTyp": "nuance", "hauptbeduerfnis": "#B172", "kontext": "tiefe sexuelle Verbindung" },
-    "#B177": { "id": "#B177", "label": "Sexuelle-Zufriedenheit", "kategorie": "#K16", "dimension": "#D3", "skala": [0, 100], "sekundaer": ["#K7"], "frage": "Wie wichtig ist sexuelle Zufriedenheit?", "frageTyp": "nuance", "hauptbeduerfnis": "#B172", "kontext": "erfülltes Sexleben" },
-
+    "#B160": {
+      "id": "#B160",
+      "label": "Körperliche-Nähe",
+      "kategorie": "#K16",
+      "dimension": "#D3",
+      "skala": [
+        0,
+        100
+      ],
+      "sekundaer": [
+        "#K3",
+        "#K1"
+      ],
+      "frage": "Wie wichtig ist Ihnen körperliche Nähe?",
+      "frageTyp": "haupt",
+      "nuancen": [
+        "#B161",
+        "#B162",
+        "#B163",
+        "#B164",
+        "#B165"
+      ]
+    },
+    "#B161": {
+      "id": "#B161",
+      "label": "Kuscheln",
+      "kategorie": "#K16",
+      "dimension": "#D3",
+      "skala": [
+        0,
+        100
+      ],
+      "sekundaer": [
+        "#K3",
+        "#K2"
+      ],
+      "frage": "Wie wichtig ist Kuscheln?",
+      "frageTyp": "nuance",
+      "hauptbeduerfnis": "#B160",
+      "kontext": "Kuscheln & Schmusen"
+    },
+    "#B162": {
+      "id": "#B162",
+      "label": "Physische-Distanz",
+      "kategorie": "#K16",
+      "dimension": "#D3",
+      "skala": [
+        0,
+        100
+      ],
+      "sekundaer": [
+        "#K5"
+      ],
+      "frage": "Wie wichtig ist körperlicher Abstand?",
+      "frageTyp": "nuance",
+      "hauptbeduerfnis": "#B160",
+      "kontext": "körperlicher Abstand"
+    },
+    "#B163": {
+      "id": "#B163",
+      "label": "Körperkontakt",
+      "kategorie": "#K16",
+      "dimension": "#D3",
+      "skala": [
+        0,
+        100
+      ],
+      "sekundaer": [
+        "#K3",
+        "#K1"
+      ],
+      "frage": "Wie wichtig ist Körperkontakt?",
+      "frageTyp": "nuance",
+      "hauptbeduerfnis": "#B160",
+      "kontext": "physischer Kontakt"
+    },
+    "#B164": {
+      "id": "#B164",
+      "label": "Umarmungen",
+      "kategorie": "#K16",
+      "dimension": "#D3",
+      "skala": [
+        0,
+        100
+      ],
+      "sekundaer": [
+        "#K3",
+        "#K2"
+      ],
+      "frage": "Wie wichtig sind Umarmungen?",
+      "frageTyp": "nuance",
+      "hauptbeduerfnis": "#B160",
+      "kontext": "Umarmungen"
+    },
+    "#B165": {
+      "id": "#B165",
+      "label": "Hand-halten",
+      "kategorie": "#K16",
+      "dimension": "#D3",
+      "skala": [
+        0,
+        100
+      ],
+      "sekundaer": [
+        "#K3"
+      ],
+      "frage": "Wie wichtig ist Händchenhalten?",
+      "frageTyp": "nuance",
+      "hauptbeduerfnis": "#B160",
+      "kontext": "Händchenhalten"
+    },
+    "#B166": {
+      "id": "#B166",
+      "label": "Romantik",
+      "kategorie": "#K16",
+      "dimension": "#D3",
+      "skala": [
+        0,
+        100
+      ],
+      "sekundaer": [
+        "#K3"
+      ],
+      "frage": "Wie wichtig sind Ihnen romantische Gesten?",
+      "frageTyp": "haupt",
+      "nuancen": [
+        "#B167",
+        "#B168",
+        "#B169",
+        "#B170",
+        "#B171"
+      ]
+    },
+    "#B167": {
+      "id": "#B167",
+      "label": "Überraschungen",
+      "kategorie": "#K16",
+      "dimension": "#D3",
+      "skala": [
+        0,
+        100
+      ],
+      "sekundaer": [
+        "#K3",
+        "#K7"
+      ],
+      "frage": "Wie wichtig sind Überraschungen?",
+      "frageTyp": "nuance",
+      "hauptbeduerfnis": "#B166",
+      "kontext": "spontane Freuden"
+    },
+    "#B168": {
+      "id": "#B168",
+      "label": "Dates",
+      "kategorie": "#K16",
+      "dimension": "#D3",
+      "skala": [
+        0,
+        100
+      ],
+      "sekundaer": [
+        "#K3"
+      ],
+      "frage": "Wie wichtig sind Dates?",
+      "frageTyp": "nuance",
+      "hauptbeduerfnis": "#B166",
+      "kontext": "gemeinsame Dates"
+    },
+    "#B169": {
+      "id": "#B169",
+      "label": "Alltags-Romantik",
+      "kategorie": "#K16",
+      "dimension": "#D3",
+      "skala": [
+        0,
+        100
+      ],
+      "sekundaer": [
+        "#K3"
+      ],
+      "frage": "Wie wichtig ist Romantik im Alltag?",
+      "frageTyp": "nuance",
+      "hauptbeduerfnis": "#B166",
+      "kontext": "Romantik im Alltag"
+    },
+    "#B170": {
+      "id": "#B170",
+      "label": "Aufmerksamkeiten",
+      "kategorie": "#K16",
+      "dimension": "#D3",
+      "skala": [
+        0,
+        100
+      ],
+      "sekundaer": [
+        "#K3",
+        "#K4"
+      ],
+      "frage": "Wie wichtig sind kleine Aufmerksamkeiten?",
+      "frageTyp": "nuance",
+      "hauptbeduerfnis": "#B166",
+      "kontext": "kleine Aufmerksamkeiten"
+    },
+    "#B171": {
+      "id": "#B171",
+      "label": "Liebesbekundungen",
+      "kategorie": "#K16",
+      "dimension": "#D3",
+      "skala": [
+        0,
+        100
+      ],
+      "sekundaer": [
+        "#K3"
+      ],
+      "frage": "Wie wichtig sind Liebesbekundungen?",
+      "frageTyp": "nuance",
+      "hauptbeduerfnis": "#B166",
+      "kontext": "Liebesworte & -gesten"
+    },
+    "#B172": {
+      "id": "#B172",
+      "label": "Sexualität",
+      "kategorie": "#K16",
+      "dimension": "#D3",
+      "skala": [
+        0,
+        100
+      ],
+      "sekundaer": [
+        "#K1"
+      ],
+      "frage": "Wie wichtig ist Ihnen Sexualität in der Beziehung?",
+      "frageTyp": "haupt",
+      "nuancen": [
+        "#B173",
+        "#B174",
+        "#B175",
+        "#B176",
+        "#B177"
+      ]
+    },
+    "#B173": {
+      "id": "#B173",
+      "label": "Sexuelle-Intimität",
+      "kategorie": "#K16",
+      "dimension": "#D3",
+      "skala": [
+        0,
+        100
+      ],
+      "sekundaer": [
+        "#K3",
+        "#K10"
+      ],
+      "frage": "Wie wichtig ist sexuelle Intimität?",
+      "frageTyp": "nuance",
+      "hauptbeduerfnis": "#B172",
+      "kontext": "sexuelle Verbundenheit"
+    },
+    "#B174": {
+      "id": "#B174",
+      "label": "Körperliche-Lust",
+      "kategorie": "#K16",
+      "dimension": "#D3",
+      "skala": [
+        0,
+        100
+      ],
+      "sekundaer": [
+        "#K1",
+        "#K7"
+      ],
+      "frage": "Wie wichtig ist körperliche Lust?",
+      "frageTyp": "nuance",
+      "hauptbeduerfnis": "#B172",
+      "kontext": "körperliches Verlangen"
+    },
+    "#B175": {
+      "id": "#B175",
+      "label": "Sexuelle-Experimentierfreude",
+      "kategorie": "#K16",
+      "dimension": "#D3",
+      "skala": [
+        0,
+        100
+      ],
+      "sekundaer": [
+        "#K9",
+        "#K5"
+      ],
+      "frage": "Wie wichtig ist sexuelle Offenheit?",
+      "frageTyp": "nuance",
+      "hauptbeduerfnis": "#B172",
+      "kontext": "sexuelle Offenheit"
+    },
+    "#B176": {
+      "id": "#B176",
+      "label": "Sexuelle-Verbindung",
+      "kategorie": "#K16",
+      "dimension": "#D3",
+      "skala": [
+        0,
+        100
+      ],
+      "sekundaer": [
+        "#K10",
+        "#K3"
+      ],
+      "frage": "Wie wichtig ist tiefe sexuelle Verbindung?",
+      "frageTyp": "nuance",
+      "hauptbeduerfnis": "#B172",
+      "kontext": "tiefe sexuelle Verbindung"
+    },
+    "#B177": {
+      "id": "#B177",
+      "label": "Sexuelle-Zufriedenheit",
+      "kategorie": "#K16",
+      "dimension": "#D3",
+      "skala": [
+        0,
+        100
+      ],
+      "sekundaer": [
+        "#K7"
+      ],
+      "frage": "Wie wichtig ist sexuelle Zufriedenheit?",
+      "frageTyp": "nuance",
+      "hauptbeduerfnis": "#B172",
+      "kontext": "erfülltes Sexleben"
+    },
     "_comment_werte": "═══ WERTE & HALTUNGEN (#K17) ═══",
-    "#B178": { "id": "#B178", "label": "Spiritualität", "kategorie": "#K17", "dimension": "#D2", "skala": [0, 100], "sekundaer": ["#K10"], "frage": "Wie wichtig ist Ihnen Spiritualität und Sinnsuche?", "frageTyp": "haupt", "nuancen": ["#B179", "#B180", "#B182", "#B183"] },
-    "#B179": { "id": "#B179", "label": "Glaubenspraxis", "kategorie": "#K17", "dimension": "#D2", "skala": [0, 100], "sekundaer": ["#K6"], "frage": "Wie wichtig ist religiöse Praxis?", "frageTyp": "nuance", "hauptbeduerfnis": "#B178", "kontext": "religiöse Praxis" },
-    "#B180": { "id": "#B180", "label": "Religiöse-Gemeinschaft", "kategorie": "#K17", "dimension": "#D2", "skala": [0, 100], "sekundaer": ["#K6"], "frage": "Wie wichtig ist religiöse Gemeinschaft?", "frageTyp": "nuance", "hauptbeduerfnis": "#B178", "kontext": "spirituelle Gemeinschaft" },
-    "#B181": { "id": "#B181", "label": "Säkularität", "kategorie": "#K17", "dimension": "#D2", "skala": [0, 100], "sekundaer": ["#K5"], "frage": "Wie wichtig ist Ihnen eine säkulare Lebensweise?", "frageTyp": "haupt" },
-    "#B182": { "id": "#B182", "label": "Sinnsuche", "kategorie": "#K17", "dimension": "#D2", "skala": [0, 100], "sekundaer": ["#K8", "#K10"], "frage": "Wie wichtig ist Sinnsuche?", "frageTyp": "nuance", "hauptbeduerfnis": "#B178", "kontext": "existenzielle Fragen" },
-    "#B183": { "id": "#B183", "label": "Transzendenz", "kategorie": "#K17", "dimension": "#D2", "skala": [0, 100], "sekundaer": ["#K10"], "frage": "Wie wichtig ist Transzendenz?", "frageTyp": "nuance", "hauptbeduerfnis": "#B178", "kontext": "über sich hinaus" },
-    "#B184": { "id": "#B184", "label": "Tradition-&-Moderne", "kategorie": "#K17", "dimension": "#D2", "skala": [0, 100], "sekundaer": ["#K2"], "frage": "Wie wichtig sind Ihnen traditionelle vs. moderne Werte?", "frageTyp": "haupt", "nuancen": ["#B185", "#B186", "#B187", "#B188", "#B189"] },
-    "#B185": { "id": "#B185", "label": "Moderne-Lebensweise", "kategorie": "#K17", "dimension": "#D2", "skala": [0, 100], "sekundaer": ["#K5"], "frage": "Wie wichtig ist moderne Lebensführung?", "frageTyp": "nuance", "hauptbeduerfnis": "#B184", "kontext": "zeitgemäße Lebensführung" },
-    "#B186": { "id": "#B186", "label": "Konservative-Werte", "kategorie": "#K17", "dimension": "#D2", "skala": [0, 100], "sekundaer": ["#K2"], "frage": "Wie wichtig sind konservative Werte?", "frageTyp": "nuance", "hauptbeduerfnis": "#B184", "kontext": "konservative Haltung" },
-    "#B187": { "id": "#B187", "label": "Progressive-Werte", "kategorie": "#K17", "dimension": "#D2", "skala": [0, 100], "sekundaer": ["#K5", "#K9"], "frage": "Wie wichtig sind progressive Werte?", "frageTyp": "nuance", "hauptbeduerfnis": "#B184", "kontext": "progressive Haltung" },
-    "#B188": { "id": "#B188", "label": "Kulturelle-Tradition", "kategorie": "#K17", "dimension": "#D2", "skala": [0, 100], "sekundaer": ["#K6"], "frage": "Wie wichtig ist kulturelle Tradition?", "frageTyp": "nuance", "hauptbeduerfnis": "#B184", "kontext": "kulturelles Erbe" },
-    "#B189": { "id": "#B189", "label": "Offenheit-für-Neues", "kategorie": "#K17", "dimension": "#D2", "skala": [0, 100], "sekundaer": ["#K5", "#K9"], "frage": "Wie wichtig ist Offenheit für Neues?", "frageTyp": "nuance", "hauptbeduerfnis": "#B184", "kontext": "Innovation" },
-    "#B190": { "id": "#B190", "label": "Umweltbewusstsein", "kategorie": "#K17", "dimension": "#D2", "skala": [0, 100], "sekundaer": ["#K8"], "frage": "Wie wichtig ist Ihnen Umwelt- und Klimaschutz?", "frageTyp": "haupt", "nuancen": ["#B191", "#B192", "#B194", "#B195"] },
-    "#B191": { "id": "#B191", "label": "Nachhaltigkeit", "kategorie": "#K17", "dimension": "#D2", "skala": [0, 100], "sekundaer": ["#K8"], "frage": "Wie wichtig ist nachhaltige Lebensweise?", "frageTyp": "nuance", "hauptbeduerfnis": "#B190", "kontext": "nachhaltige Lebensweise" },
-    "#B192": { "id": "#B192", "label": "Ökologisches-Bewusstsein", "kategorie": "#K17", "dimension": "#D2", "skala": [0, 100], "sekundaer": ["#K8"], "frage": "Wie wichtig ist ökologisches Denken?", "frageTyp": "nuance", "hauptbeduerfnis": "#B190", "kontext": "ökologisches Denken" },
-    "#B193": { "id": "#B193", "label": "Pragmatismus", "kategorie": "#K17", "dimension": "#D2", "skala": [0, 100], "frage": "Wie wichtig ist Ihnen pragmatisches Handeln?", "frageTyp": "haupt" },
-    "#B194": { "id": "#B194", "label": "Klimaschutz", "kategorie": "#K17", "dimension": "#D2", "skala": [0, 100], "sekundaer": ["#K8"], "frage": "Wie wichtig sind Klimaschutzmaßnahmen?", "frageTyp": "nuance", "hauptbeduerfnis": "#B190", "kontext": "Klimamaßnahmen" },
-    "#B195": { "id": "#B195", "label": "Ressourcenschonung", "kategorie": "#K17", "dimension": "#D2", "skala": [0, 100], "sekundaer": ["#K8"], "frage": "Wie wichtig ist sparsamer Umgang mit Ressourcen?", "frageTyp": "nuance", "hauptbeduerfnis": "#B190", "kontext": "sparsamer Umgang" },
-
+    "#B178": {
+      "id": "#B178",
+      "label": "Spiritualität",
+      "kategorie": "#K17",
+      "dimension": "#D2",
+      "skala": [
+        0,
+        100
+      ],
+      "sekundaer": [
+        "#K10"
+      ],
+      "frage": "Wie wichtig ist Ihnen Spiritualität und Sinnsuche?",
+      "frageTyp": "haupt",
+      "nuancen": [
+        "#B179",
+        "#B180",
+        "#B182",
+        "#B183"
+      ]
+    },
+    "#B179": {
+      "id": "#B179",
+      "label": "Glaubenspraxis",
+      "kategorie": "#K17",
+      "dimension": "#D2",
+      "skala": [
+        0,
+        100
+      ],
+      "sekundaer": [
+        "#K6"
+      ],
+      "frage": "Wie wichtig ist religiöse Praxis?",
+      "frageTyp": "nuance",
+      "hauptbeduerfnis": "#B178",
+      "kontext": "religiöse Praxis"
+    },
+    "#B180": {
+      "id": "#B180",
+      "label": "Religiöse-Gemeinschaft",
+      "kategorie": "#K17",
+      "dimension": "#D2",
+      "skala": [
+        0,
+        100
+      ],
+      "sekundaer": [
+        "#K6"
+      ],
+      "frage": "Wie wichtig ist religiöse Gemeinschaft?",
+      "frageTyp": "nuance",
+      "hauptbeduerfnis": "#B178",
+      "kontext": "spirituelle Gemeinschaft"
+    },
+    "#B181": {
+      "id": "#B181",
+      "label": "Säkularität",
+      "kategorie": "#K17",
+      "dimension": "#D2",
+      "skala": [
+        0,
+        100
+      ],
+      "sekundaer": [
+        "#K5"
+      ],
+      "frage": "Wie wichtig ist Ihnen eine säkulare Lebensweise?",
+      "frageTyp": "haupt"
+    },
+    "#B182": {
+      "id": "#B182",
+      "label": "Sinnsuche",
+      "kategorie": "#K17",
+      "dimension": "#D2",
+      "skala": [
+        0,
+        100
+      ],
+      "sekundaer": [
+        "#K8",
+        "#K10"
+      ],
+      "frage": "Wie wichtig ist Sinnsuche?",
+      "frageTyp": "nuance",
+      "hauptbeduerfnis": "#B178",
+      "kontext": "existenzielle Fragen"
+    },
+    "#B183": {
+      "id": "#B183",
+      "label": "Transzendenz",
+      "kategorie": "#K17",
+      "dimension": "#D2",
+      "skala": [
+        0,
+        100
+      ],
+      "sekundaer": [
+        "#K10"
+      ],
+      "frage": "Wie wichtig ist Transzendenz?",
+      "frageTyp": "nuance",
+      "hauptbeduerfnis": "#B178",
+      "kontext": "über sich hinaus"
+    },
+    "#B184": {
+      "id": "#B184",
+      "label": "Tradition-&-Moderne",
+      "kategorie": "#K17",
+      "dimension": "#D2",
+      "skala": [
+        0,
+        100
+      ],
+      "sekundaer": [
+        "#K2"
+      ],
+      "frage": "Wie wichtig sind Ihnen traditionelle vs. moderne Werte?",
+      "frageTyp": "haupt",
+      "nuancen": [
+        "#B185",
+        "#B186",
+        "#B187",
+        "#B188",
+        "#B189"
+      ]
+    },
+    "#B185": {
+      "id": "#B185",
+      "label": "Moderne-Lebensweise",
+      "kategorie": "#K17",
+      "dimension": "#D2",
+      "skala": [
+        0,
+        100
+      ],
+      "sekundaer": [
+        "#K5"
+      ],
+      "frage": "Wie wichtig ist moderne Lebensführung?",
+      "frageTyp": "nuance",
+      "hauptbeduerfnis": "#B184",
+      "kontext": "zeitgemäße Lebensführung"
+    },
+    "#B186": {
+      "id": "#B186",
+      "label": "Konservative-Werte",
+      "kategorie": "#K17",
+      "dimension": "#D2",
+      "skala": [
+        0,
+        100
+      ],
+      "sekundaer": [
+        "#K2"
+      ],
+      "frage": "Wie wichtig sind konservative Werte?",
+      "frageTyp": "nuance",
+      "hauptbeduerfnis": "#B184",
+      "kontext": "konservative Haltung"
+    },
+    "#B187": {
+      "id": "#B187",
+      "label": "Progressive-Werte",
+      "kategorie": "#K17",
+      "dimension": "#D2",
+      "skala": [
+        0,
+        100
+      ],
+      "sekundaer": [
+        "#K5",
+        "#K9"
+      ],
+      "frage": "Wie wichtig sind progressive Werte?",
+      "frageTyp": "nuance",
+      "hauptbeduerfnis": "#B184",
+      "kontext": "progressive Haltung"
+    },
+    "#B188": {
+      "id": "#B188",
+      "label": "Kulturelle-Tradition",
+      "kategorie": "#K17",
+      "dimension": "#D2",
+      "skala": [
+        0,
+        100
+      ],
+      "sekundaer": [
+        "#K6"
+      ],
+      "frage": "Wie wichtig ist kulturelle Tradition?",
+      "frageTyp": "nuance",
+      "hauptbeduerfnis": "#B184",
+      "kontext": "kulturelles Erbe"
+    },
+    "#B189": {
+      "id": "#B189",
+      "label": "Offenheit-für-Neues",
+      "kategorie": "#K17",
+      "dimension": "#D2",
+      "skala": [
+        0,
+        100
+      ],
+      "sekundaer": [
+        "#K5",
+        "#K9"
+      ],
+      "frage": "Wie wichtig ist Offenheit für Neues?",
+      "frageTyp": "nuance",
+      "hauptbeduerfnis": "#B184",
+      "kontext": "Innovation"
+    },
+    "#B190": {
+      "id": "#B190",
+      "label": "Umweltbewusstsein",
+      "kategorie": "#K17",
+      "dimension": "#D2",
+      "skala": [
+        0,
+        100
+      ],
+      "sekundaer": [
+        "#K8"
+      ],
+      "frage": "Wie wichtig ist Ihnen Umwelt- und Klimaschutz?",
+      "frageTyp": "haupt",
+      "nuancen": [
+        "#B191",
+        "#B192",
+        "#B194",
+        "#B195"
+      ]
+    },
+    "#B191": {
+      "id": "#B191",
+      "label": "Nachhaltigkeit",
+      "kategorie": "#K17",
+      "dimension": "#D2",
+      "skala": [
+        0,
+        100
+      ],
+      "sekundaer": [
+        "#K8"
+      ],
+      "frage": "Wie wichtig ist nachhaltige Lebensweise?",
+      "frageTyp": "nuance",
+      "hauptbeduerfnis": "#B190",
+      "kontext": "nachhaltige Lebensweise"
+    },
+    "#B192": {
+      "id": "#B192",
+      "label": "Ökologisches-Bewusstsein",
+      "kategorie": "#K17",
+      "dimension": "#D2",
+      "skala": [
+        0,
+        100
+      ],
+      "sekundaer": [
+        "#K8"
+      ],
+      "frage": "Wie wichtig ist ökologisches Denken?",
+      "frageTyp": "nuance",
+      "hauptbeduerfnis": "#B190",
+      "kontext": "ökologisches Denken"
+    },
+    "#B193": {
+      "id": "#B193",
+      "label": "Pragmatismus",
+      "kategorie": "#K17",
+      "dimension": "#D2",
+      "skala": [
+        0,
+        100
+      ],
+      "frage": "Wie wichtig ist Ihnen pragmatisches Handeln?",
+      "frageTyp": "haupt"
+    },
+    "#B194": {
+      "id": "#B194",
+      "label": "Klimaschutz",
+      "kategorie": "#K17",
+      "dimension": "#D2",
+      "skala": [
+        0,
+        100
+      ],
+      "sekundaer": [
+        "#K8"
+      ],
+      "frage": "Wie wichtig sind Klimaschutzmaßnahmen?",
+      "frageTyp": "nuance",
+      "hauptbeduerfnis": "#B190",
+      "kontext": "Klimamaßnahmen"
+    },
+    "#B195": {
+      "id": "#B195",
+      "label": "Ressourcenschonung",
+      "kategorie": "#K17",
+      "dimension": "#D2",
+      "skala": [
+        0,
+        100
+      ],
+      "sekundaer": [
+        "#K8"
+      ],
+      "frage": "Wie wichtig ist sparsamer Umgang mit Ressourcen?",
+      "frageTyp": "nuance",
+      "hauptbeduerfnis": "#B190",
+      "kontext": "sparsamer Umgang"
+    },
     "_comment_praktisches": "═══ PRAKTISCHES LEBEN (#K18) ═══",
-    "#B196": { "id": "#B196", "label": "Ordnung-&-Struktur", "kategorie": "#K18", "dimension": "#D6", "skala": [0, 100], "sekundaer": ["#K8"], "frage": "Wie wichtig ist Ihnen Ordnung im Alltag?", "frageTyp": "haupt", "nuancen": ["#B197", "#B198", "#B200", "#B199", "#B201"] },
-    "#B197": { "id": "#B197", "label": "Sauberkeit", "kategorie": "#K18", "dimension": "#D6", "skala": [0, 100], "frageTyp": "nuance", "hauptbeduerfnis": "#B196", "kontext": "Sauberkeit & Hygiene" },
-    "#B198": { "id": "#B198", "label": "Struktur", "kategorie": "#K18", "dimension": "#D6", "skala": [0, 100], "sekundaer": ["#K2"], "frageTyp": "nuance", "hauptbeduerfnis": "#B196", "kontext": "strukturierte Abläufe" },
-    "#B199": { "id": "#B199", "label": "Chaos-Toleranz", "kategorie": "#K18", "dimension": "#D6", "skala": [0, 100], "sekundaer": ["#K5"], "frageTyp": "nuance", "hauptbeduerfnis": "#B196", "kontext": "Unordnung aushalten" },
-    "#B200": { "id": "#B200", "label": "Organisiert-sein", "kategorie": "#K18", "dimension": "#D6", "skala": [0, 100], "sekundaer": ["#K8"], "frageTyp": "nuance", "hauptbeduerfnis": "#B196", "kontext": "gute Organisation" },
-    "#B201": { "id": "#B201", "label": "Flexibilität-Haushalt", "kategorie": "#K18", "dimension": "#D6", "skala": [0, 100], "sekundaer": ["#K5"], "frageTyp": "nuance", "hauptbeduerfnis": "#B196", "kontext": "flexible Haushaltsführung" },
-    "#B202": { "id": "#B202", "label": "Reisen-&-Abenteuer", "kategorie": "#K18", "dimension": "#D6", "skala": [0, 100], "sekundaer": ["#K9", "#K7"], "frage": "Wie wichtig ist Ihnen Reisen und neue Erfahrungen?", "frageTyp": "haupt", "nuancen": ["#B203", "#B204", "#B206", "#B207"] },
-    "#B203": { "id": "#B203", "label": "Abenteuer", "kategorie": "#K18", "dimension": "#D6", "skala": [0, 100], "sekundaer": ["#K9", "#K5"], "frageTyp": "nuance", "hauptbeduerfnis": "#B202", "kontext": "abenteuerliche Erlebnisse" },
-    "#B204": { "id": "#B204", "label": "Neue-Orte-entdecken", "kategorie": "#K18", "dimension": "#D6", "skala": [0, 100], "sekundaer": ["#K9"], "frageTyp": "nuance", "hauptbeduerfnis": "#B202", "kontext": "neue Orte erkunden" },
-    "#B205": { "id": "#B205", "label": "Heimatverbundenheit", "kategorie": "#K18", "dimension": "#D6", "skala": [0, 100], "sekundaer": ["#K2"], "frage": "Wie wichtig ist Ihnen Heimat und Zuhause?", "frageTyp": "haupt", "nuancen": ["#B208"] },
-    "#B206": { "id": "#B206", "label": "Urlaub", "kategorie": "#K18", "dimension": "#D6", "skala": [0, 100], "sekundaer": ["#K7"], "frageTyp": "nuance", "hauptbeduerfnis": "#B202", "kontext": "Urlaubsreisen" },
-    "#B207": { "id": "#B207", "label": "Fernweh", "kategorie": "#K18", "dimension": "#D6", "skala": [0, 100], "sekundaer": ["#K5", "#K9"], "frageTyp": "nuance", "hauptbeduerfnis": "#B202", "kontext": "Sehnsucht nach Ferne" },
-    "#B208": { "id": "#B208", "label": "Heimatverbundenheit", "kategorie": "#K18", "dimension": "#D6", "skala": [0, 100], "sekundaer": ["#K2", "#K6"], "frageTyp": "nuance", "hauptbeduerfnis": "#B205", "kontext": "Verbundenheit mit Heimat" },
-
+    "#B196": {
+      "id": "#B196",
+      "label": "Ordnung-&-Struktur",
+      "kategorie": "#K18",
+      "dimension": "#D6",
+      "skala": [
+        0,
+        100
+      ],
+      "sekundaer": [
+        "#K8"
+      ],
+      "frage": "Wie wichtig ist Ihnen Ordnung im Alltag?",
+      "frageTyp": "haupt",
+      "nuancen": [
+        "#B197",
+        "#B198",
+        "#B200",
+        "#B199",
+        "#B201"
+      ]
+    },
+    "#B197": {
+      "id": "#B197",
+      "label": "Sauberkeit",
+      "kategorie": "#K18",
+      "dimension": "#D6",
+      "skala": [
+        0,
+        100
+      ],
+      "frageTyp": "nuance",
+      "hauptbeduerfnis": "#B196",
+      "kontext": "Sauberkeit & Hygiene"
+    },
+    "#B198": {
+      "id": "#B198",
+      "label": "Struktur",
+      "kategorie": "#K18",
+      "dimension": "#D6",
+      "skala": [
+        0,
+        100
+      ],
+      "sekundaer": [
+        "#K2"
+      ],
+      "frageTyp": "nuance",
+      "hauptbeduerfnis": "#B196",
+      "kontext": "strukturierte Abläufe"
+    },
+    "#B199": {
+      "id": "#B199",
+      "label": "Chaos-Toleranz",
+      "kategorie": "#K18",
+      "dimension": "#D6",
+      "skala": [
+        0,
+        100
+      ],
+      "sekundaer": [
+        "#K5"
+      ],
+      "frageTyp": "nuance",
+      "hauptbeduerfnis": "#B196",
+      "kontext": "Unordnung aushalten"
+    },
+    "#B200": {
+      "id": "#B200",
+      "label": "Organisiert-sein",
+      "kategorie": "#K18",
+      "dimension": "#D6",
+      "skala": [
+        0,
+        100
+      ],
+      "sekundaer": [
+        "#K8"
+      ],
+      "frageTyp": "nuance",
+      "hauptbeduerfnis": "#B196",
+      "kontext": "gute Organisation"
+    },
+    "#B201": {
+      "id": "#B201",
+      "label": "Flexibilität-Haushalt",
+      "kategorie": "#K18",
+      "dimension": "#D6",
+      "skala": [
+        0,
+        100
+      ],
+      "sekundaer": [
+        "#K5"
+      ],
+      "frageTyp": "nuance",
+      "hauptbeduerfnis": "#B196",
+      "kontext": "flexible Haushaltsführung"
+    },
+    "#B202": {
+      "id": "#B202",
+      "label": "Reisen-&-Abenteuer",
+      "kategorie": "#K18",
+      "dimension": "#D6",
+      "skala": [
+        0,
+        100
+      ],
+      "sekundaer": [
+        "#K9",
+        "#K7"
+      ],
+      "frage": "Wie wichtig ist Ihnen Reisen und neue Erfahrungen?",
+      "frageTyp": "haupt",
+      "nuancen": [
+        "#B203",
+        "#B204",
+        "#B206",
+        "#B207"
+      ]
+    },
+    "#B203": {
+      "id": "#B203",
+      "label": "Abenteuer",
+      "kategorie": "#K18",
+      "dimension": "#D6",
+      "skala": [
+        0,
+        100
+      ],
+      "sekundaer": [
+        "#K9",
+        "#K5"
+      ],
+      "frageTyp": "nuance",
+      "hauptbeduerfnis": "#B202",
+      "kontext": "abenteuerliche Erlebnisse"
+    },
+    "#B204": {
+      "id": "#B204",
+      "label": "Neue-Orte-entdecken",
+      "kategorie": "#K18",
+      "dimension": "#D6",
+      "skala": [
+        0,
+        100
+      ],
+      "sekundaer": [
+        "#K9"
+      ],
+      "frageTyp": "nuance",
+      "hauptbeduerfnis": "#B202",
+      "kontext": "neue Orte erkunden"
+    },
+    "#B205": {
+      "id": "#B205",
+      "label": "Heimatverbundenheit",
+      "kategorie": "#K18",
+      "dimension": "#D6",
+      "skala": [
+        0,
+        100
+      ],
+      "sekundaer": [
+        "#K2"
+      ],
+      "frage": "Wie wichtig ist Ihnen Heimat und Zuhause?",
+      "frageTyp": "haupt",
+      "nuancen": [
+        "#B208"
+      ]
+    },
+    "#B206": {
+      "id": "#B206",
+      "label": "Urlaub",
+      "kategorie": "#K18",
+      "dimension": "#D6",
+      "skala": [
+        0,
+        100
+      ],
+      "sekundaer": [
+        "#K7"
+      ],
+      "frageTyp": "nuance",
+      "hauptbeduerfnis": "#B202",
+      "kontext": "Urlaubsreisen"
+    },
+    "#B207": {
+      "id": "#B207",
+      "label": "Fernweh",
+      "kategorie": "#K18",
+      "dimension": "#D6",
+      "skala": [
+        0,
+        100
+      ],
+      "sekundaer": [
+        "#K5",
+        "#K9"
+      ],
+      "frageTyp": "nuance",
+      "hauptbeduerfnis": "#B202",
+      "kontext": "Sehnsucht nach Ferne"
+    },
+    "#B208": {
+      "id": "#B208",
+      "label": "Heimatverbundenheit",
+      "kategorie": "#K18",
+      "dimension": "#D6",
+      "skala": [
+        0,
+        100
+      ],
+      "sekundaer": [
+        "#K2",
+        "#K6"
+      ],
+      "frageTyp": "nuance",
+      "hauptbeduerfnis": "#B205",
+      "kontext": "Verbundenheit mit Heimat"
+    },
     "_comment_genussmittel": "═══ GENUSSMITTEL (K7 Ergänzung) ═══",
-    "#B209": { "id": "#B209", "label": "Genussmittel", "kategorie": "#K7", "dimension": "#D6", "skala": [0, 100], "sekundaer": ["#K15"], "frage": "Wie wichtig sind Ihnen Genussmittel wie Alkohol oder Cannabis?", "frageTyp": "haupt", "nuancen": ["#B210", "#B211"] },
-    "#B210": { "id": "#B210", "label": "Alkohol", "kategorie": "#K7", "dimension": "#D6", "skala": [0, 100], "frageTyp": "nuance", "hauptbeduerfnis": "#B209", "kontext": "Alkoholkonsum" },
-    "#B211": { "id": "#B211", "label": "Cannabis", "kategorie": "#K7", "dimension": "#D6", "skala": [0, 100], "frageTyp": "nuance", "hauptbeduerfnis": "#B209", "kontext": "Cannabis-Konsum" }
+    "#B209": {
+      "id": "#B209",
+      "label": "Genussmittel",
+      "kategorie": "#K7",
+      "dimension": "#D6",
+      "skala": [
+        0,
+        100
+      ],
+      "sekundaer": [
+        "#K15"
+      ],
+      "frage": "Wie wichtig sind Ihnen Genussmittel wie Alkohol oder Cannabis?",
+      "frageTyp": "haupt",
+      "nuancen": [
+        "#B210",
+        "#B211"
+      ]
+    },
+    "#B210": {
+      "id": "#B210",
+      "label": "Alkohol",
+      "kategorie": "#K7",
+      "dimension": "#D6",
+      "skala": [
+        0,
+        100
+      ],
+      "frageTyp": "nuance",
+      "hauptbeduerfnis": "#B209",
+      "kontext": "Alkoholkonsum"
+    },
+    "#B211": {
+      "id": "#B211",
+      "label": "Cannabis",
+      "kategorie": "#K7",
+      "dimension": "#D6",
+      "skala": [
+        0,
+        100
+      ],
+      "frageTyp": "nuance",
+      "hauptbeduerfnis": "#B209",
+      "kontext": "Cannabis-Konsum"
+    },
+    "#B212": {
+      "label": "Bondage-geben",
+      "frage": "Wie wichtig ist Ihnen Bondage-geben?",
+      "frageTyp": "nuance",
+      "kategorie": "#K11"
+    },
+    "#B213": {
+      "label": "Devotion",
+      "frage": "Wie wichtig ist Ihnen Devotion?",
+      "frageTyp": "nuance",
+      "kategorie": "#K11"
+    },
+    "#B214": {
+      "label": "Anbetung",
+      "frage": "Wie wichtig ist Ihnen Anbetung?",
+      "frageTyp": "nuance",
+      "kategorie": "#K11"
+    },
+    "#B215": {
+      "label": "Demütig-sein",
+      "frage": "Wie wichtig ist Ihnen Demütig-sein?",
+      "frageTyp": "nuance",
+      "kategorie": "#K11"
+    },
+    "#B216": {
+      "label": "Dominieren",
+      "frage": "Wie wichtig ist Ihnen Dominieren?",
+      "frageTyp": "nuance",
+      "kategorie": "#K11"
+    },
+    "#B217": {
+      "label": "Bestrafung-erhalten",
+      "frage": "Wie wichtig ist Ihnen Bestrafung-erhalten?",
+      "frageTyp": "nuance",
+      "kategorie": "#K11"
+    },
+    "#B218": {
+      "label": "Bestrafen",
+      "frage": "Wie wichtig ist Ihnen Bestrafen?",
+      "frageTyp": "nuance",
+      "kategorie": "#K11"
+    },
+    "#B219": {
+      "label": "Service-Orientierung",
+      "frage": "Wie wichtig ist Ihnen Service-Orientierung?",
+      "frageTyp": "nuance",
+      "kategorie": "#K11"
+    },
+    "#B220": {
+      "label": "Service-empfangen",
+      "frage": "Wie wichtig ist Ihnen Service-empfangen?",
+      "frageTyp": "nuance",
+      "kategorie": "#K11"
+    }
   }
 }
