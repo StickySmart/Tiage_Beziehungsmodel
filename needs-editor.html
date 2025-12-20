@@ -1143,15 +1143,36 @@
                 if (input) input.value = '';
                 filterProfileReviewByNeed('');
             } else if (suggestion.type === 'category' && typeof DimensionKategorieFilter !== 'undefined') {
-                // Bei Kategorie-Auswahl nur diese Kategorie aktivieren
+                // Bei Kategorie-Auswahl: Kategorie aktivieren + Komma hinzufügen für weitere Eingabe
                 DimensionKategorieFilter.reset();
                 DimensionKategorieFilter.toggleKategorie(suggestion.id);
                 console.log('[Filter] Kategorie aktiviert:', suggestion.id);
-                // Textfilter leeren
-                if (input) input.value = '';
+                // Komma hinzufügen für weitere Eingabe
+                if (input) {
+                    input.value = suggestion.label + ', ';
+                    input.focus();
+                }
                 filterProfileReviewByNeed('');
+            } else if (suggestion.type === 'need') {
+                // Bei Bedürfnis-Auswahl: Filter zurücksetzen + Komma hinzufügen
+                if (typeof DimensionKategorieFilter !== 'undefined') {
+                    DimensionKategorieFilter.reset();
+                }
+                // Komma hinzufügen für weitere Eingabe
+                if (input) {
+                    input.value = suggestion.label + ', ';
+                    input.focus();
+                }
+                filterProfileReviewByNeed(suggestion.label);
             } else {
-                // Für andere Typen (need, dimension, perspective) weiterhin Textfilter nutzen
+                // Für andere Typen (dimension, perspective) Filter zurücksetzen + Komma
+                if (typeof DimensionKategorieFilter !== 'undefined') {
+                    DimensionKategorieFilter.reset();
+                }
+                if (input) {
+                    input.value = suggestion.label + ', ';
+                    input.focus();
+                }
                 filterProfileReviewByNeed(input ? input.value : '');
             }
 
@@ -1595,15 +1616,36 @@
                 if (input) input.value = '';
                 filterProfileReviewByNeed('');
             } else if (suggestion.type === 'category' && typeof DimensionKategorieFilter !== 'undefined') {
-                // Bei Kategorie-Auswahl nur diese Kategorie aktivieren
+                // Bei Kategorie-Auswahl: Kategorie aktivieren + Komma hinzufügen für weitere Eingabe
                 DimensionKategorieFilter.reset();
                 DimensionKategorieFilter.toggleKategorie(suggestion.id);
                 console.log('[Filter] Kategorie aktiviert:', suggestion.id);
-                // Textfilter leeren
-                if (input) input.value = '';
+                // Komma hinzufügen für weitere Eingabe
+                if (input) {
+                    input.value = suggestion.label + ', ';
+                    input.focus();
+                }
                 filterProfileReviewByNeed('');
+            } else if (suggestion.type === 'need') {
+                // Bei Bedürfnis-Auswahl: Filter zurücksetzen + Komma hinzufügen
+                if (typeof DimensionKategorieFilter !== 'undefined') {
+                    DimensionKategorieFilter.reset();
+                }
+                // Komma hinzufügen für weitere Eingabe
+                if (input) {
+                    input.value = suggestion.label + ', ';
+                    input.focus();
+                }
+                filterProfileReviewByNeed(suggestion.label);
             } else {
-                // Für andere Typen (need, dimension, perspective) weiterhin Textfilter nutzen
+                // Für andere Typen (dimension, perspective) Filter zurücksetzen + Komma
+                if (typeof DimensionKategorieFilter !== 'undefined') {
+                    DimensionKategorieFilter.reset();
+                }
+                if (input) {
+                    input.value = suggestion.label + ', ';
+                    input.focus();
+                }
                 filterProfileReviewByNeed(input ? input.value : '');
             }
 
