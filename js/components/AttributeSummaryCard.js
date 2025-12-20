@@ -8,6 +8,13 @@
  * © 2025 Ti-age.de Alle Rechte vorbehalten.
  */
 
+// Fallback für Seiten ohne app-main.js (z.B. needs-editor.html)
+if (typeof window.openNeedWithResonance !== 'function') {
+    window.openNeedWithResonance = function(needId) {
+        console.log('[AttributeSummaryCard] openNeedWithResonance not available, needId:', needId);
+    };
+}
+
 const AttributeSummaryCard = (function() {
     'use strict';
 
