@@ -19381,7 +19381,9 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
 
             var searchWrapper = document.querySelector('.profile-review-search-wrapper');
             var hint = document.getElementById('profileReviewSearchHint');
-            var contentContainer = document.getElementById('profileReviewContent');
+            // SSOT: Suche zuerst im Modal-Container, dann Fallback auf flat-needs-container (needs-editor.html)
+            var contentContainer = document.getElementById('profileReviewContent')
+                || document.querySelector('.flat-needs-container')?.parentElement;
 
             console.log('[Filter] contentContainer found:', !!contentContainer);
 
