@@ -14,16 +14,16 @@
  * #P1-#P4   → 4 Perspektiven    (siehe taxonomie.js)
  * #D1-#D6   → 6 Dimensionen     (siehe taxonomie.js, Kurzform A-F)
  * #K1-#K18  → 18 Kategorien     (siehe taxonomie.js)
- * #B1-#B211  → 211 Bedürfnisse
+ * #B1-#B220  → 220 Bedürfnisse
  *
- * TOTAL: 211 Bedürfnisse
+ * TOTAL: 220 Bedürfnisse
  */
 
 const BeduerfnisIds = {
 
     version: '3.0.0',
     generatedFrom: 'beduerfnis-katalog.json',
-    generatedAt: '2025-12-20T07:29:38.861Z',
+    generatedAt: '2025-12-20T10:39:53.506Z',
 
     // ═══════════════════════════════════════════════════════════════════════════
     // TAXONOMIE-REFERENZ (SSOT)
@@ -71,11 +71,11 @@ const BeduerfnisIds = {
         // ─────────────────────────────────────────────────────────────────────────
         // EXISTENZ (#B1-#B9) - Kategorie #K1
         // ─────────────────────────────────────────────────────────────────────────
-        '#B1': { key: 'koerperliche_grundbeduerfnisse', kategorie: '#K1', label: 'Körperliche-Grundbedürfnisse' },
+        '#B1': { key: 'luft', kategorie: '#K1', label: 'Luft' },
         '#B2': { key: 'wasser', kategorie: '#K1', label: 'Wasser' },
         '#B3': { key: 'nahrung', kategorie: '#K1', label: 'Nahrung' },
         '#B4': { key: 'bewegung', kategorie: '#K1', label: 'Bewegung' },
-        '#B5': { key: 'beruehrung_und_koerperkontakt', kategorie: '#K1', label: 'Berührung-&-Körperkontakt' },
+        '#B5': { key: 'beruehrung', kategorie: '#K1', label: 'Berührung' },
         '#B6': { key: 'erholung', kategorie: '#K1', label: 'Erholung' },
         '#B7': { key: 'sexueller_ausdruck', kategorie: '#K1', label: 'Sexueller-Ausdruck' },
         '#B8': { key: 'physische_sicherheit', kategorie: '#K1', label: 'Physische-Sicherheit' },
@@ -85,7 +85,7 @@ const BeduerfnisIds = {
         // SICHERHEIT (#B10-#B15) - Kategorie #K2
         // ─────────────────────────────────────────────────────────────────────────
         '#B10': { key: 'bestaendigkeit', kategorie: '#K2', label: 'Beständigkeit' },
-        '#B11': { key: 'stabilitaet_und_sicherheit', kategorie: '#K2', label: 'Stabilität-&-Sicherheit' },
+        '#B11': { key: 'sich_sicher_fuehlen', kategorie: '#K2', label: 'Sich-sicher-fühlen' },
         '#B12': { key: 'schutz', kategorie: '#K2', label: 'Schutz' },
         '#B13': { key: 'stabilitaet', kategorie: '#K2', label: 'Stabilität' },
         '#B14': { key: 'leichtigkeit', kategorie: '#K2', label: 'Leichtigkeit' },
@@ -96,31 +96,31 @@ const BeduerfnisIds = {
         // ─────────────────────────────────────────────────────────────────────────
         '#B16': { key: 'waerme', kategorie: '#K3', label: 'Wärme' },
         '#B17': { key: 'wertschaetzung', kategorie: '#K3', label: 'Wertschätzung' },
-        '#B18': { key: 'emotionale_naehe', kategorie: '#K3', label: 'Emotionale-Nähe' },
+        '#B18': { key: 'naehe', kategorie: '#K3', label: 'Nähe' },
         '#B19': { key: 'gesellschaft', kategorie: '#K3', label: 'Gesellschaft' },
         '#B20': { key: 'intimitaet', kategorie: '#K3', label: 'Intimität' },
         '#B21': { key: 'liebe', kategorie: '#K3', label: 'Liebe' },
-        '#B22': { key: 'fuersorge_und_unterstuetzung', kategorie: '#K3', label: 'Fürsorge-&-Unterstützung' },
+        '#B22': { key: 'fuersorge', kategorie: '#K3', label: 'Fürsorge' },
         '#B23': { key: 'unterstuetzung', kategorie: '#K3', label: 'Unterstützung' },
         '#B24': { key: 'fuereinander_da_sein', kategorie: '#K3', label: 'Füreinander-da-sein' },
 
         // ─────────────────────────────────────────────────────────────────────────
         // VERSTÄNDNIS (#B25-#B33) - Kategorie #K4
         // ─────────────────────────────────────────────────────────────────────────
-        '#B25': { key: 'akzeptanz_und_empathie', kategorie: '#K4', label: 'Akzeptanz-&-Empathie' },
+        '#B25': { key: 'akzeptanz', kategorie: '#K4', label: 'Akzeptanz' },
         '#B26': { key: 'mitgefuehl', kategorie: '#K4', label: 'Mitgefühl' },
         '#B27': { key: 'beruecksichtigung', kategorie: '#K4', label: 'Berücksichtigung' },
         '#B28': { key: 'empathie', kategorie: '#K4', label: 'Empathie' },
         '#B29': { key: 'vertrauen', kategorie: '#K4', label: 'Vertrauen' },
         '#B30': { key: 'beachtung', kategorie: '#K4', label: 'Beachtung' },
-        '#B31': { key: 'gesehen_und_verstanden_werden', kategorie: '#K4', label: 'Gesehen-&-Verstanden-werden' },
+        '#B31': { key: 'gesehen_werden', kategorie: '#K4', label: 'Gesehen-werden' },
         '#B32': { key: 'verstanden_werden', kategorie: '#K4', label: 'Verstanden-werden' },
         '#B33': { key: 'harmonie', kategorie: '#K4', label: 'Harmonie' },
 
         // ─────────────────────────────────────────────────────────────────────────
         // FREIHEIT (#B34-#B38) - Kategorie #K5
         // ─────────────────────────────────────────────────────────────────────────
-        '#B34': { key: 'selbstbestimmung_und_unabhaengigkeit', kategorie: '#K5', label: 'Selbstbestimmung-&-Unabhängigkeit' },
+        '#B34': { key: 'selbstbestimmung', kategorie: '#K5', label: 'Selbstbestimmung' },
         '#B35': { key: 'waehlen_koennen', kategorie: '#K5', label: 'Wählen-können' },
         '#B36': { key: 'unabhaengigkeit', kategorie: '#K5', label: 'Unabhängigkeit' },
         '#B37': { key: 'raum_haben', kategorie: '#K5', label: 'Raum-haben' },
@@ -142,7 +142,7 @@ const BeduerfnisIds = {
         // ─────────────────────────────────────────────────────────────────────────
         '#B46': { key: 'schoenheit', kategorie: '#K7', label: 'Schönheit' },
         '#B47': { key: 'freizeit', kategorie: '#K7', label: 'Freizeit' },
-        '#B48': { key: 'freude_und_lebensgenuss', kategorie: '#K7', label: 'Freude-&-Lebensgenuss' },
+        '#B48': { key: 'freude', kategorie: '#K7', label: 'Freude' },
         '#B49': { key: 'humor', kategorie: '#K7', label: 'Humor' },
 
         // ─────────────────────────────────────────────────────────────────────────
@@ -153,21 +153,21 @@ const BeduerfnisIds = {
         '#B52': { key: 'integritaet', kategorie: '#K8', label: 'Integrität' },
         '#B53': { key: 'praesenz', kategorie: '#K8', label: 'Präsenz' },
         '#B54': { key: 'ordnung', kategorie: '#K8', label: 'Ordnung' },
-        '#B55': { key: 'bewusstheit_und_klarheit', kategorie: '#K8', label: 'Bewusstheit-&-Klarheit' },
+        '#B55': { key: 'bewusstheit', kategorie: '#K8', label: 'Bewusstheit' },
         '#B56': { key: 'herausforderung', kategorie: '#K8', label: 'Herausforderung' },
         '#B57': { key: 'klarheit', kategorie: '#K8', label: 'Klarheit' },
-        '#B58': { key: 'kompetenz_und_wirksamkeit', kategorie: '#K8', label: 'Kompetenz-&-Wirksamkeit' },
+        '#B58': { key: 'kompetenz', kategorie: '#K8', label: 'Kompetenz' },
         '#B59': { key: 'effizienz', kategorie: '#K8', label: 'Effizienz' },
         '#B60': { key: 'wirksamkeit', kategorie: '#K8', label: 'Wirksamkeit' },
-        '#B61': { key: 'wachstum_und_sinn', kategorie: '#K8', label: 'Wachstum-&-Sinn' },
+        '#B61': { key: 'wachstum', kategorie: '#K8', label: 'Wachstum' },
         '#B62': { key: 'sinn', kategorie: '#K8', label: 'Sinn' },
         '#B63': { key: 'beitrag_leisten', kategorie: '#K8', label: 'Beitrag-leisten' },
 
         // ─────────────────────────────────────────────────────────────────────────
         // ERSCHAFFEN (#B64-#B68) - Kategorie #K9
         // ─────────────────────────────────────────────────────────────────────────
-        '#B64': { key: 'kreativitaet_und_selbstausdruck', kategorie: '#K9', label: 'Kreativität-&-Selbstausdruck' },
-        '#B65': { key: 'entdecken_und_lernen', kategorie: '#K9', label: 'Entdecken-&-Lernen' },
+        '#B64': { key: 'kreativitaet', kategorie: '#K9', label: 'Kreativität' },
+        '#B65': { key: 'entdecken', kategorie: '#K9', label: 'Entdecken' },
         '#B66': { key: 'lernen', kategorie: '#K9', label: 'Lernen' },
         '#B67': { key: 'selbst_ausdruck', kategorie: '#K9', label: 'Selbst-Ausdruck' },
         '#B68': { key: 'anreize_bekommen', kategorie: '#K9', label: 'Anreize-bekommen' },
@@ -175,14 +175,14 @@ const BeduerfnisIds = {
         // ─────────────────────────────────────────────────────────────────────────
         // VERBUNDENHEIT (#B69-#B73) - Kategorie #K10
         // ─────────────────────────────────────────────────────────────────────────
-        '#B69': { key: 'lebensfreude', kategorie: '#K10', label: 'Lebensfreude' },
+        '#B69': { key: 'leben_feiern', kategorie: '#K10', label: 'Leben-feiern' },
         '#B70': { key: 'inspiration', kategorie: '#K10', label: 'Inspiration' },
-        '#B71': { key: 'emotionale_tiefe', kategorie: '#K10', label: 'Emotionale-Tiefe' },
+        '#B71': { key: 'trauer_ausdruecken', kategorie: '#K10', label: 'Trauer-ausdrücken' },
         '#B72': { key: 'einsehen', kategorie: '#K10', label: 'Einsehen' },
         '#B73': { key: 'anfang_ende', kategorie: '#K10', label: 'Anfang-Ende' },
 
         // ─────────────────────────────────────────────────────────────────────────
-        // DYNAMIK (#B74-#B88) - Kategorie #K11
+        // DYNAMIK (#B74-#B220) - Kategorie #K11
         // ─────────────────────────────────────────────────────────────────────────
         '#B74': { key: 'kontrolle_ausueben', kategorie: '#K11', label: 'Kontrolle-ausüben' },
         '#B75': { key: 'hingabe', kategorie: '#K11', label: 'Hingabe' },
@@ -196,164 +196,177 @@ const BeduerfnisIds = {
         '#B83': { key: 'vertrauen_schenken', kategorie: '#K11', label: 'Vertrauen-schenken' },
         '#B84': { key: 'verantwortung_uebernehmen', kategorie: '#K11', label: 'Verantwortung-übernehmen' },
         '#B85': { key: 'sich_fallenlassen', kategorie: '#K11', label: 'Sich-fallenlassen' },
-        '#B86': { key: 'machtdynamik', kategorie: '#K11', label: 'Machtdynamik' },
-        '#B87': { key: 'rollenausdruck', kategorie: '#K11', label: 'Rollenausdruck' },
+        '#B86': { key: 'machtaustausch', kategorie: '#K11', label: 'Machtaustausch' },
+        '#B87': { key: 'dienend_sein', kategorie: '#K11', label: 'Dienend-sein' },
         '#B88': { key: 'beschuetzen', kategorie: '#K11', label: 'Beschützen' },
 
         // ─────────────────────────────────────────────────────────────────────────
         // LEBENSPLANUNG (#B89-#B113) - Kategorie #K12
         // ─────────────────────────────────────────────────────────────────────────
-        '#B89': { key: 'kinder_und_elternschaft', kategorie: '#K12', label: 'Kinder-&-Elternschaft' },
+        '#B89': { key: 'kinderwunsch', kategorie: '#K12', label: 'Kinderwunsch' },
         '#B90': { key: 'elternschaft', kategorie: '#K12', label: 'Elternschaft' },
         '#B91': { key: 'fortpflanzung', kategorie: '#K12', label: 'Fortpflanzung' },
         '#B92': { key: 'familie_gruenden', kategorie: '#K12', label: 'Familie-gründen' },
-        '#B93': { key: 'generativitaet', kategorie: '#K12', label: 'Generativität' },
-        '#B94': { key: 'verbindlichkeit', kategorie: '#K12', label: 'Verbindlichkeit' },
-        '#B95': { key: 'langfristige_bindung', kategorie: '#K12', label: 'Langfristige-Bindung' },
-        '#B96': { key: 'rechtliche_sicherheit', kategorie: '#K12', label: 'Rechtliche-Sicherheit' },
-        '#B97': { key: 'treueversprechen', kategorie: '#K12', label: 'Treueversprechen' },
-        '#B98': { key: 'zusammenleben', kategorie: '#K12', label: 'Zusammenleben' },
-        '#B99': { key: 'haeuslichkeit', kategorie: '#K12', label: 'Häuslichkeit' },
-        '#B100': { key: 'nest_bauen', kategorie: '#K12', label: 'Nest-bauen' },
-        '#B101': { key: 'alltag_teilen', kategorie: '#K12', label: 'Alltag-teilen' },
-        '#B102': { key: 'eigener_raum', kategorie: '#K12', label: 'Eigener-Raum' },
-        '#B103': { key: 'rueckzugsort', kategorie: '#K12', label: 'Rückzugsort' },
-        '#B104': { key: 'haustiere', kategorie: '#K12', label: 'Haustiere' },
-        '#B105': { key: 'fuersorge_tiere', kategorie: '#K12', label: 'Fürsorge-Tiere' },
-        '#B106': { key: 'sesshaftigkeit', kategorie: '#K12', label: 'Sesshaftigkeit' },
-        '#B107': { key: 'verwurzelung', kategorie: '#K12', label: 'Verwurzelung' },
-        '#B108': { key: 'mobilitaet', kategorie: '#K12', label: 'Mobilität' },
-        '#B109': { key: 'heimat', kategorie: '#K12', label: 'Heimat' },
-        '#B110': { key: 'neue_orte', kategorie: '#K12', label: 'Neue-Orte' },
-        '#B111': { key: 'herkunftsfamilie', kategorie: '#K12', label: 'Herkunftsfamilie' },
-        '#B112': { key: 'herkunftsfamilie', kategorie: '#K12', label: 'Herkunftsfamilie' },
-        '#B113': { key: 'generationenverbund', kategorie: '#K12', label: 'Generationenverbund' },
+        '#B93': { key: 'patchwork_familie', kategorie: '#K12', label: 'Patchwork-Familie' },
+        '#B94': { key: 'kinderfreies_leben', kategorie: '#K12', label: 'Kinderfreies-Leben' },
+        '#B95': { key: 'adoption', kategorie: '#K12', label: 'Adoption' },
+        '#B96': { key: 'pflegekinder', kategorie: '#K12', label: 'Pflegekinder' },
+        '#B97': { key: 'zusammenziehen', kategorie: '#K12', label: 'Zusammenziehen' },
+        '#B98': { key: 'getrennt_wohnen', kategorie: '#K12', label: 'Getrennt-wohnen' },
+        '#B99': { key: 'wg_leben', kategorie: '#K12', label: 'WG-Leben' },
+        '#B100': { key: 'eigenes_zimmer', kategorie: '#K12', label: 'Eigenes-Zimmer' },
+        '#B101': { key: 'stadt_leben', kategorie: '#K12', label: 'Stadt-Leben' },
+        '#B102': { key: 'land_leben', kategorie: '#K12', label: 'Land-Leben' },
+        '#B103': { key: 'mobilitaet', kategorie: '#K12', label: 'Mobilität' },
+        '#B104': { key: 'sesshaftigkeit', kategorie: '#K12', label: 'Sesshaftigkeit' },
+        '#B105': { key: 'heiraten', kategorie: '#K12', label: 'Heiraten' },
+        '#B106': { key: 'ohne_trauschein', kategorie: '#K12', label: 'Ohne-Trauschein' },
+        '#B107': { key: 'verpartnerung', kategorie: '#K12', label: 'Verpartnerung' },
+        '#B108': { key: 'haustiere', kategorie: '#K12', label: 'Haustiere' },
+        '#B109': { key: 'keine_haustiere', kategorie: '#K12', label: 'Keine-Haustiere' },
+        '#B110': { key: 'gemeinsame_hobbys', kategorie: '#K12', label: 'Gemeinsame-Hobbys' },
+        '#B111': { key: 'eigene_hobbys', kategorie: '#K12', label: 'Eigene-Hobbys' },
+        '#B112': { key: 'gemeinsamer_urlaub', kategorie: '#K12', label: 'Gemeinsamer-Urlaub' },
+        '#B113': { key: 'getrennter_urlaub', kategorie: '#K12', label: 'Getrennter-Urlaub' },
 
         // ─────────────────────────────────────────────────────────────────────────
         // FINANZEN & KARRIERE (#B114-#B125) - Kategorie #K13
         // ─────────────────────────────────────────────────────────────────────────
-        '#B114': { key: 'finanzielle_unabhaengigkeit', kategorie: '#K13', label: 'Finanzielle-Unabhängigkeit' },
-        '#B115': { key: 'gemeinsame_finanzen', kategorie: '#K13', label: 'Gemeinsame-Finanzen' },
-        '#B116': { key: 'finanzielle_transparenz', kategorie: '#K13', label: 'Finanzielle-Transparenz' },
-        '#B117': { key: 'finanzen_und_geld', kategorie: '#K13', label: 'Finanzen-&-Geld' },
-        '#B118': { key: 'sparsamkeit', kategorie: '#K13', label: 'Sparsamkeit' },
-        '#B119': { key: 'grosszuegigkeit', kategorie: '#K13', label: 'Großzügigkeit' },
-        '#B120': { key: 'berufliche_erfuellung', kategorie: '#K13', label: 'Berufliche-Erfüllung' },
-        '#B121': { key: 'karriereambition', kategorie: '#K13', label: 'Karriereambition' },
-        '#B122': { key: 'work_life_balance', kategorie: '#K13', label: 'Work-Life-Balance' },
-        '#B123': { key: 'berufliche_anerkennung', kategorie: '#K13', label: 'Berufliche-Anerkennung' },
-        '#B124': { key: 'zeit_fuer_beziehung', kategorie: '#K13', label: 'Zeit-für-Beziehung' },
-        '#B125': { key: 'berufliche_flexibilitaet', kategorie: '#K13', label: 'Berufliche-Flexibilität' },
+        '#B114': { key: 'langzeit_planung', kategorie: '#K13', label: 'Langzeit-Planung' },
+        '#B115': { key: 'im_moment_leben', kategorie: '#K13', label: 'Im-Moment-leben' },
+        '#B116': { key: 'karriere_fokus', kategorie: '#K13', label: 'Karriere-Fokus' },
+        '#B117': { key: 'familie_fokus', kategorie: '#K13', label: 'Familie-Fokus' },
+        '#B118': { key: 'balance_arbeit_leben', kategorie: '#K13', label: 'Balance-Arbeit-Leben' },
+        '#B119': { key: 'gemeinsame_werte', kategorie: '#K13', label: 'Gemeinsame-Werte' },
+        '#B120': { key: 'respekt_unterschiede', kategorie: '#K13', label: 'Respekt-Unterschiede' },
+        '#B121': { key: 'traditionen_pflegen', kategorie: '#K13', label: 'Traditionen-pflegen' },
+        '#B122': { key: 'neue_wege_gehen', kategorie: '#K13', label: 'Neue-Wege-gehen' },
+        '#B123': { key: 'spiritualitaet_teilen', kategorie: '#K13', label: 'Spiritualität-teilen' },
+        '#B124': { key: 'saekulares_leben', kategorie: '#K13', label: 'Säkulares-Leben' },
+        '#B125': { key: 'gesunde_ernaehrung', kategorie: '#K13', label: 'Gesunde-Ernährung' },
 
         // ─────────────────────────────────────────────────────────────────────────
         // KOMMUNIKATIONSSTIL (#B126-#B142) - Kategorie #K14
         // ─────────────────────────────────────────────────────────────────────────
-        '#B126': { key: 'gespraechstiefe', kategorie: '#K14', label: 'Gesprächstiefe' },
-        '#B127': { key: 'tiefgehende_gespraeche', kategorie: '#K14', label: 'Tiefgehende-Gespräche' },
-        '#B128': { key: 'small_talk', kategorie: '#K14', label: 'Small-Talk' },
-        '#B129': { key: 'stille_gemeinsam', kategorie: '#K14', label: 'Stille-gemeinsam' },
-        '#B130': { key: 'verbale_verbindung', kategorie: '#K14', label: 'Verbale-Verbindung' },
-        '#B131': { key: 'zuhoeren', kategorie: '#K14', label: 'Zuhören' },
-        '#B132': { key: 'emotionaler_ausdruck', kategorie: '#K14', label: 'Emotionaler-Ausdruck' },
-        '#B133': { key: 'gefuehle_zeigen', kategorie: '#K14', label: 'Gefühle-zeigen' },
-        '#B134': { key: 'verletzlichkeit', kategorie: '#K14', label: 'Verletzlichkeit' },
-        '#B135': { key: 'emotionale_zurueckhaltung', kategorie: '#K14', label: 'Emotionale-Zurückhaltung' },
-        '#B136': { key: 'emotionale_sicherheit', kategorie: '#K14', label: 'Emotionale-Sicherheit' },
-        '#B137': { key: 'gefuehle_teilen', kategorie: '#K14', label: 'Gefühle-teilen' },
-        '#B138': { key: 'konfliktverhalten', kategorie: '#K14', label: 'Konfliktverhalten' },
-        '#B139': { key: 'aussprache', kategorie: '#K14', label: 'Aussprache' },
-        '#B140': { key: 'konflikt_vermeiden', kategorie: '#K14', label: 'Konflikt-vermeiden' },
-        '#B141': { key: 'streitkultur', kategorie: '#K14', label: 'Streitkultur' },
-        '#B142': { key: 'versoehnlichkeit', kategorie: '#K14', label: 'Versöhnlichkeit' },
+        '#B126': { key: 'sport_fitness', kategorie: '#K14', label: 'Sport-Fitness' },
+        '#B127': { key: 'finanzielle_unabhaengigkeit', kategorie: '#K14', label: 'Finanzielle-Unabhängigkeit' },
+        '#B128': { key: 'gemeinsame_finanzen', kategorie: '#K14', label: 'Gemeinsame-Finanzen' },
+        '#B129': { key: 'getrennte_finanzen', kategorie: '#K14', label: 'Getrennte-Finanzen' },
+        '#B130': { key: 'sparsamkeit', kategorie: '#K14', label: 'Sparsamkeit' },
+        '#B131': { key: 'grosszuegigkeit', kategorie: '#K14', label: 'Großzügigkeit' },
+        '#B132': { key: 'vermoegensaufbau', kategorie: '#K14', label: 'Vermögensaufbau' },
+        '#B133': { key: 'minimalismus', kategorie: '#K14', label: 'Minimalismus' },
+        '#B134': { key: 'berufliche_erfuellung', kategorie: '#K14', label: 'Berufliche-Erfüllung' },
+        '#B135': { key: 'arbeit_als_mittel', kategorie: '#K14', label: 'Arbeit-als-Mittel' },
+        '#B136': { key: 'selbststaendigkeit', kategorie: '#K14', label: 'Selbstständigkeit' },
+        '#B137': { key: 'angestellten_dasein', kategorie: '#K14', label: 'Angestellten-Dasein' },
+        '#B138': { key: 'fuehrungsposition', kategorie: '#K14', label: 'Führungsposition' },
+        '#B139': { key: 'team_arbeit', kategorie: '#K14', label: 'Team-Arbeit' },
+        '#B140': { key: 'home_office', kategorie: '#K14', label: 'Home-Office' },
+        '#B141': { key: 'buero_praesenz', kategorie: '#K14', label: 'Büro-Präsenz' },
+        '#B142': { key: 'flexible_arbeitszeit', kategorie: '#K14', label: 'Flexible-Arbeitszeit' },
 
         // ─────────────────────────────────────────────────────────────────────────
         // SOZIALES LEBEN (#B143-#B159) - Kategorie #K15
         // ─────────────────────────────────────────────────────────────────────────
-        '#B143': { key: 'soziale_energie', kategorie: '#K15', label: 'Soziale-Energie' },
-        '#B144': { key: 'geselligkeit', kategorie: '#K15', label: 'Geselligkeit' },
-        '#B145': { key: 'ruhe_von_menschen', kategorie: '#K15', label: 'Ruhe-von-Menschen' },
-        '#B146': { key: 'allein_aufladen', kategorie: '#K15', label: 'Allein-aufladen' },
-        '#B147': { key: 'menschen_treffen', kategorie: '#K15', label: 'Menschen-treffen' },
-        '#B148': { key: 'kleine_gruppen', kategorie: '#K15', label: 'Kleine-Gruppen' },
-        '#B149': { key: 'zeit_fuer_sich', kategorie: '#K15', label: 'Zeit-für-sich' },
-        '#B150': { key: 'eigene_hobbys', kategorie: '#K15', label: 'Eigene-Hobbys' },
-        '#B151': { key: 'zeit_mit_anderen', kategorie: '#K15', label: 'Zeit-mit-Anderen' },
-        '#B152': { key: 'partnerzeit', kategorie: '#K15', label: 'Partnerzeit' },
-        '#B153': { key: 'eigene_interessen', kategorie: '#K15', label: 'Eigene-Interessen' },
-        '#B154': { key: 'freundeskreis', kategorie: '#K15', label: 'Freundeskreis' },
-        '#B155': { key: 'gemeinsame_freunde', kategorie: '#K15', label: 'Gemeinsame-Freunde' },
-        '#B156': { key: 'freundeskreis_teilen', kategorie: '#K15', label: 'Freundeskreis-teilen' },
-        '#B157': { key: 'soziales_netz', kategorie: '#K15', label: 'Soziales-Netz' },
-        '#B158': { key: 'freunde_pflegen', kategorie: '#K15', label: 'Freunde-pflegen' },
-        '#B159': { key: 'neue_freundschaften', kategorie: '#K15', label: 'Neue-Freundschaften' },
+        '#B143': { key: 'feste_strukturen', kategorie: '#K15', label: 'Feste-Strukturen' },
+        '#B144': { key: 'weiterbildung', kategorie: '#K15', label: 'Weiterbildung' },
+        '#B145': { key: 'ruhestand_planung', kategorie: '#K15', label: 'Ruhestand-Planung' },
+        '#B146': { key: 'sabbatical', kategorie: '#K15', label: 'Sabbatical' },
+        '#B147': { key: 'risiko_bereitschaft', kategorie: '#K15', label: 'Risiko-Bereitschaft' },
+        '#B148': { key: 'sicherheits_orientierung', kategorie: '#K15', label: 'Sicherheits-Orientierung' },
+        '#B149': { key: 'taeglicher_austausch', kategorie: '#K15', label: 'Täglicher-Austausch' },
+        '#B150': { key: 'qualitaets_zeit', kategorie: '#K15', label: 'Qualitäts-Zeit' },
+        '#B151': { key: 'tiefgehende_gespraeche', kategorie: '#K15', label: 'Tiefgehende-Gespräche' },
+        '#B152': { key: 'leichte_unterhaltung', kategorie: '#K15', label: 'Leichte-Unterhaltung' },
+        '#B153': { key: 'emotionale_offenheit', kategorie: '#K15', label: 'Emotionale-Offenheit' },
+        '#B154': { key: 'sachliche_kommunikation', kategorie: '#K15', label: 'Sachliche-Kommunikation' },
+        '#B155': { key: 'konflikt_ansprechen', kategorie: '#K15', label: 'Konflikt-Ansprechen' },
+        '#B156': { key: 'harmonie_bewahren', kategorie: '#K15', label: 'Harmonie-Bewahren' },
+        '#B157': { key: 'direkte_kommunikation', kategorie: '#K15', label: 'Direkte-Kommunikation' },
+        '#B158': { key: 'diplomatische_kommunikation', kategorie: '#K15', label: 'Diplomatische-Kommunikation' },
+        '#B159': { key: 'feedback_kultur', kategorie: '#K15', label: 'Feedback-Kultur' },
 
         // ─────────────────────────────────────────────────────────────────────────
         // INTIMITÄT & ROMANTIK (#B160-#B177) - Kategorie #K16
         // ─────────────────────────────────────────────────────────────────────────
-        '#B160': { key: 'koerperliche_naehe', kategorie: '#K16', label: 'Körperliche-Nähe' },
-        '#B161': { key: 'kuscheln', kategorie: '#K16', label: 'Kuscheln' },
-        '#B162': { key: 'physische_distanz', kategorie: '#K16', label: 'Physische-Distanz' },
-        '#B163': { key: 'koerperkontakt', kategorie: '#K16', label: 'Körperkontakt' },
-        '#B164': { key: 'umarmungen', kategorie: '#K16', label: 'Umarmungen' },
-        '#B165': { key: 'hand_halten', kategorie: '#K16', label: 'Hand-halten' },
-        '#B166': { key: 'romantik', kategorie: '#K16', label: 'Romantik' },
-        '#B167': { key: 'ueberraschungen', kategorie: '#K16', label: 'Überraschungen' },
-        '#B168': { key: 'dates', kategorie: '#K16', label: 'Dates' },
-        '#B169': { key: 'alltags_romantik', kategorie: '#K16', label: 'Alltags-Romantik' },
-        '#B170': { key: 'aufmerksamkeiten', kategorie: '#K16', label: 'Aufmerksamkeiten' },
-        '#B171': { key: 'liebesbekundungen', kategorie: '#K16', label: 'Liebesbekundungen' },
-        '#B172': { key: 'sexualitaet', kategorie: '#K16', label: 'Sexualität' },
-        '#B173': { key: 'sexuelle_intimitaet', kategorie: '#K16', label: 'Sexuelle-Intimität' },
-        '#B174': { key: 'koerperliche_lust', kategorie: '#K16', label: 'Körperliche-Lust' },
-        '#B175': { key: 'sexuelle_experimentierfreude', kategorie: '#K16', label: 'Sexuelle-Experimentierfreude' },
-        '#B176': { key: 'sexuelle_verbindung', kategorie: '#K16', label: 'Sexuelle-Verbindung' },
-        '#B177': { key: 'sexuelle_zufriedenheit', kategorie: '#K16', label: 'Sexuelle-Zufriedenheit' },
+        '#B160': { key: 'nonverbale_kommunikation', kategorie: '#K16', label: 'Nonverbale-Kommunikation' },
+        '#B161': { key: 'aktives_zuhoeren', kategorie: '#K16', label: 'Aktives-Zuhören' },
+        '#B162': { key: 'humor_im_gespraech', kategorie: '#K16', label: 'Humor-im-Gespräch' },
+        '#B163': { key: 'ernsthaftigkeit', kategorie: '#K16', label: 'Ernsthaftigkeit' },
+        '#B164': { key: 'spontane_gespraeche', kategorie: '#K16', label: 'Spontane-Gespräche' },
+        '#B165': { key: 'geplante_gespraeche', kategorie: '#K16', label: 'Geplante-Gespräche' },
+        '#B166': { key: 'schriftliche_kommunikation', kategorie: '#K16', label: 'Schriftliche-Kommunikation' },
+        '#B167': { key: 'muendliche_kommunikation', kategorie: '#K16', label: 'Mündliche-Kommunikation' },
+        '#B168': { key: 'gemeinsam_entscheiden', kategorie: '#K16', label: 'Gemeinsam-Entscheiden' },
+        '#B169': { key: 'eigenstaendige_entscheidungen', kategorie: '#K16', label: 'Eigenständige-Entscheidungen' },
+        '#B170': { key: 'kompromiss_bereitschaft', kategorie: '#K16', label: 'Kompromiss-Bereitschaft' },
+        '#B171': { key: 'klare_standpunkte', kategorie: '#K16', label: 'Klare-Standpunkte' },
+        '#B172': { key: 'emotionale_unterstuetzung', kategorie: '#K16', label: 'Emotionale-Unterstützung' },
+        '#B173': { key: 'praktische_unterstuetzung', kategorie: '#K16', label: 'Praktische-Unterstützung' },
+        '#B174': { key: 'regelmaessige_check_ins', kategorie: '#K16', label: 'Regelmäßige-Check-Ins' },
+        '#B175': { key: 'beziehungs_reflexion', kategorie: '#K16', label: 'Beziehungs-Reflexion' },
+        '#B176': { key: 'natuerlicher_flow', kategorie: '#K16', label: 'Natürlicher-Flow' },
+        '#B177': { key: 'soziale_energie', kategorie: '#K16', label: 'Soziale-Energie' },
 
         // ─────────────────────────────────────────────────────────────────────────
         // WERTE & HALTUNGEN (#B178-#B195) - Kategorie #K17
         // ─────────────────────────────────────────────────────────────────────────
-        '#B178': { key: 'spiritualitaet', kategorie: '#K17', label: 'Spiritualität' },
-        '#B179': { key: 'glaubenspraxis', kategorie: '#K17', label: 'Glaubenspraxis' },
-        '#B180': { key: 'religioese_gemeinschaft', kategorie: '#K17', label: 'Religiöse-Gemeinschaft' },
-        '#B181': { key: 'saekularitaet', kategorie: '#K17', label: 'Säkularität' },
-        '#B182': { key: 'sinnsuche', kategorie: '#K17', label: 'Sinnsuche' },
-        '#B183': { key: 'transzendenz', kategorie: '#K17', label: 'Transzendenz' },
-        '#B184': { key: 'tradition_und_moderne', kategorie: '#K17', label: 'Tradition-&-Moderne' },
-        '#B185': { key: 'moderne_lebensweise', kategorie: '#K17', label: 'Moderne-Lebensweise' },
-        '#B186': { key: 'konservative_werte', kategorie: '#K17', label: 'Konservative-Werte' },
-        '#B187': { key: 'progressive_werte', kategorie: '#K17', label: 'Progressive-Werte' },
-        '#B188': { key: 'kulturelle_tradition', kategorie: '#K17', label: 'Kulturelle-Tradition' },
-        '#B189': { key: 'offenheit_fuer_neues', kategorie: '#K17', label: 'Offenheit-für-Neues' },
-        '#B190': { key: 'umweltbewusstsein', kategorie: '#K17', label: 'Umweltbewusstsein' },
-        '#B191': { key: 'nachhaltigkeit', kategorie: '#K17', label: 'Nachhaltigkeit' },
-        '#B192': { key: 'oekologisches_bewusstsein', kategorie: '#K17', label: 'Ökologisches-Bewusstsein' },
-        '#B193': { key: 'pragmatismus', kategorie: '#K17', label: 'Pragmatismus' },
-        '#B194': { key: 'klimaschutz', kategorie: '#K17', label: 'Klimaschutz' },
-        '#B195': { key: 'ressourcenschonung', kategorie: '#K17', label: 'Ressourcenschonung' },
+        '#B178': { key: 'geselligkeit', kategorie: '#K17', label: 'Geselligkeit' },
+        '#B179': { key: 'ruhe_von_menschen', kategorie: '#K17', label: 'Ruhe-von-Menschen' },
+        '#B180': { key: 'freunde_pflegen', kategorie: '#K17', label: 'Freunde-pflegen' },
+        '#B181': { key: 'paar_zeit_fokus', kategorie: '#K17', label: 'Paar-Zeit-Fokus' },
+        '#B182': { key: 'gemeinsame_freunde', kategorie: '#K17', label: 'Gemeinsame-Freunde' },
+        '#B183': { key: 'eigene_freunde', kategorie: '#K17', label: 'Eigene-Freunde' },
+        '#B184': { key: 'familie_treffen', kategorie: '#K17', label: 'Familie-treffen' },
+        '#B185': { key: 'familie_distanz', kategorie: '#K17', label: 'Familie-Distanz' },
+        '#B186': { key: 'partys_events', kategorie: '#K17', label: 'Partys-Events' },
+        '#B187': { key: 'ruhige_abende', kategorie: '#K17', label: 'Ruhige-Abende' },
+        '#B188': { key: 'neue_leute_treffen', kategorie: '#K17', label: 'Neue-Leute-treffen' },
+        '#B189': { key: 'vertrauter_kreis', kategorie: '#K17', label: 'Vertrauter-Kreis' },
+        '#B190': { key: 'allein_zeit', kategorie: '#K17', label: 'Allein-Zeit' },
+        '#B191': { key: 'gemeinsam_sein', kategorie: '#K17', label: 'Gemeinsam-sein' },
+        '#B192': { key: 'spontane_besuche', kategorie: '#K17', label: 'Spontane-Besuche' },
+        '#B193': { key: 'geplante_treffen', kategorie: '#K17', label: 'Geplante-Treffen' },
+        '#B194': { key: 'gastgeber_sein', kategorie: '#K17', label: 'Gastgeber-sein' },
+        '#B195': { key: 'gast_sein', kategorie: '#K17', label: 'Gast-sein' },
 
         // ─────────────────────────────────────────────────────────────────────────
         // PRAKTISCHES LEBEN (#B196-#B208) - Kategorie #K18
         // ─────────────────────────────────────────────────────────────────────────
-        '#B196': { key: 'ordnung_und_struktur', kategorie: '#K18', label: 'Ordnung-&-Struktur' },
-        '#B197': { key: 'sauberkeit', kategorie: '#K18', label: 'Sauberkeit' },
-        '#B198': { key: 'struktur', kategorie: '#K18', label: 'Struktur' },
-        '#B199': { key: 'chaos_toleranz', kategorie: '#K18', label: 'Chaos-Toleranz' },
-        '#B200': { key: 'organisiert_sein', kategorie: '#K18', label: 'Organisiert-sein' },
-        '#B201': { key: 'flexibilitaet_haushalt', kategorie: '#K18', label: 'Flexibilität-Haushalt' },
-        '#B202': { key: 'reisen_und_abenteuer', kategorie: '#K18', label: 'Reisen-&-Abenteuer' },
-        '#B203': { key: 'abenteuer', kategorie: '#K18', label: 'Abenteuer' },
-        '#B204': { key: 'neue_orte_entdecken', kategorie: '#K18', label: 'Neue-Orte-entdecken' },
-        '#B205': { key: 'heimatverbundenheit', kategorie: '#K18', label: 'Heimatverbundenheit' },
-        '#B206': { key: 'urlaub', kategorie: '#K18', label: 'Urlaub' },
-        '#B207': { key: 'fernweh', kategorie: '#K18', label: 'Fernweh' },
-        '#B208': { key: 'heimatverbundenheit', kategorie: '#K18', label: 'Heimatverbundenheit' },
+        '#B196': { key: 'online_kontakte', kategorie: '#K18', label: 'Online-Kontakte' },
+        '#B197': { key: 'persoenliche_treffen', kategorie: '#K18', label: 'Persönliche-Treffen' },
+        '#B198': { key: 'community_engagement', kategorie: '#K18', label: 'Community-Engagement' },
+        '#B199': { key: 'privat_leben', kategorie: '#K18', label: 'Privat-Leben' },
+        '#B200': { key: 'netzwerken', kategorie: '#K18', label: 'Netzwerken' },
+        '#B201': { key: 'wenige_tiefe_beziehungen', kategorie: '#K18', label: 'Wenige-tiefe-Beziehungen' },
+        '#B202': { key: 'viele_bekanntschaften', kategorie: '#K18', label: 'Viele-Bekanntschaften' },
+        '#B203': { key: 'kulturelle_events', kategorie: '#K18', label: 'Kulturelle-Events' },
+        '#B204': { key: 'koerpernaehe', kategorie: '#K18', label: 'Körpernähe' },
+        '#B205': { key: 'kuscheln', kategorie: '#K18', label: 'Kuscheln' },
+        '#B206': { key: 'physische_distanz', kategorie: '#K18', label: 'Physische-Distanz' },
+        '#B207': { key: 'koerperkontakt', kategorie: '#K18', label: 'Körperkontakt' },
+        '#B208': { key: 'umarmungen', kategorie: '#K18', label: 'Umarmungen' },
 
         // ─────────────────────────────────────────────────────────────────────────
         // MUSSE (#B46-#B211) - Kategorie #K7
         // ─────────────────────────────────────────────────────────────────────────
-        '#B209': { key: 'genussmittel', kategorie: '#K7', label: 'Genussmittel' },
-        '#B210': { key: 'alkohol', kategorie: '#K7', label: 'Alkohol' },
-        '#B211': { key: 'cannabis', kategorie: '#K7', label: 'Cannabis' }
+        '#B209': { key: 'schmerzerleben', kategorie: '#K7', label: 'Schmerzerleben' },
+        '#B210': { key: 'schmerz_geben', kategorie: '#K7', label: 'Schmerz-geben' },
+        '#B211': { key: 'bondage_erleben', kategorie: '#K7', label: 'Bondage-erleben' },
+
+        // ─────────────────────────────────────────────────────────────────────────
+        // DYNAMIK (#B74-#B220) - Kategorie #K11
+        // ─────────────────────────────────────────────────────────────────────────
+        '#B212': { key: 'bondage_geben', kategorie: '#K11', label: 'Bondage-geben' },
+        '#B213': { key: 'devotion', kategorie: '#K11', label: 'Devotion' },
+        '#B214': { key: 'anbetung', kategorie: '#K11', label: 'Anbetung' },
+        '#B215': { key: 'demuetig_sein', kategorie: '#K11', label: 'Demütig-sein' },
+        '#B216': { key: 'dominieren', kategorie: '#K11', label: 'Dominieren' },
+        '#B217': { key: 'bestrafung_erhalten', kategorie: '#K11', label: 'Bestrafung-erhalten' },
+        '#B218': { key: 'bestrafen', kategorie: '#K11', label: 'Bestrafen' },
+        '#B219': { key: 'service_orientierung', kategorie: '#K11', label: 'Service-Orientierung' },
+        '#B220': { key: 'service_empfangen', kategorie: '#K11', label: 'Service-empfangen' }
     },
 
     // ═══════════════════════════════════════════════════════════════════════════
