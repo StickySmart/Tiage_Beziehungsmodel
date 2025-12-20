@@ -15,6 +15,8 @@
  * #B90-#B208 → 119 Lebensthemen-Bedürfnisse
  * #B209-#B220 → 12 Erweiterte Kink/BDSM-Bedürfnisse
  * #B221-#B222 → 2 Sexuelle Bedürfnisse für R1-Berechnung
+ * #B223-#B240 → 18 Werte & Haltungen (#K17)
+ * #B241-#B253 → 13 Praktisches Leben (#K18)
  *
  * Kategorien-Zuordnung:
  * #K11 Dynamik (Basis):      #B74-#B88  (15) - Kontrolle, Hingabe, Führung...
@@ -24,8 +26,10 @@
  * #K14 Kommunikationsstil:   #B149-#B176 (28)
  * #K15 Soziales Leben:       #B177-#B203 (27)
  * #K16 Intimität/Romantik:   #B204-#B208, #B221-#B222 (7)
+ * #K17 Werte & Haltungen:    #B223-#B240 (18) - Religion, Tradition, Umwelt
+ * #K18 Praktisches Leben:    #B241-#B253 (13) - Ordnung, Reisen, Alltag
  *
- * TOTAL: 222 Bedürfnisse
+ * TOTAL: 253 Bedürfnisse
  */
 
 const BeduerfnisIds = {
@@ -380,7 +384,48 @@ const BeduerfnisIds = {
         '#B217': { key: 'bestrafung_erhalten', kategorie: '#K11', label: 'Bestrafung erhalten' },
         '#B218': { key: 'bestrafen', kategorie: '#K11', label: 'Bestrafen (Disziplin geben)' },
         '#B219': { key: 'service_orientierung', kategorie: '#K11', label: 'Service-Orientierung (dienen wollen)' },
-        '#B220': { key: 'service_empfangen', kategorie: '#K11', label: 'Service empfangen (bedient werden)' }
+        '#B220': { key: 'service_empfangen', kategorie: '#K11', label: 'Service empfangen (bedient werden)' },
+
+        // ─────────────────────────────────────────────────────────────────────────
+        // WERTE & HALTUNGEN (#B223-#B240) - Kategorie #K17
+        // ─────────────────────────────────────────────────────────────────────────
+        // Religion, Tradition, Umwelt - aus beduerfnis-katalog.json synchronisiert
+        '#B223': { key: 'spiritualitaet', kategorie: '#K17', label: 'Spiritualität' },
+        '#B224': { key: 'glaubenspraxis', kategorie: '#K17', label: 'Glaubenspraxis' },
+        '#B225': { key: 'religioese_gemeinschaft', kategorie: '#K17', label: 'Religiöse Gemeinschaft' },
+        '#B226': { key: 'saekularitaet', kategorie: '#K17', label: 'Säkularität' },
+        '#B227': { key: 'sinnsuche', kategorie: '#K17', label: 'Sinnsuche' },
+        '#B228': { key: 'transzendenz', kategorie: '#K17', label: 'Transzendenz' },
+        '#B229': { key: 'tradition_moderne', kategorie: '#K17', label: 'Tradition & Moderne' },
+        '#B230': { key: 'moderne_lebensweise', kategorie: '#K17', label: 'Moderne Lebensweise' },
+        '#B231': { key: 'konservative_werte', kategorie: '#K17', label: 'Konservative Werte' },
+        '#B232': { key: 'progressive_werte', kategorie: '#K17', label: 'Progressive Werte' },
+        '#B233': { key: 'kulturelle_tradition', kategorie: '#K17', label: 'Kulturelle Tradition' },
+        '#B234': { key: 'offenheit_neues', kategorie: '#K17', label: 'Offenheit für Neues' },
+        '#B235': { key: 'umweltbewusstsein', kategorie: '#K17', label: 'Umweltbewusstsein' },
+        '#B236': { key: 'nachhaltigkeit', kategorie: '#K17', label: 'Nachhaltigkeit' },
+        '#B237': { key: 'oekologisches_bewusstsein', kategorie: '#K17', label: 'Ökologisches Bewusstsein' },
+        '#B238': { key: 'pragmatismus', kategorie: '#K17', label: 'Pragmatismus' },
+        '#B239': { key: 'klimaschutz', kategorie: '#K17', label: 'Klimaschutz' },
+        '#B240': { key: 'ressourcenschonung', kategorie: '#K17', label: 'Ressourcenschonung' },
+
+        // ─────────────────────────────────────────────────────────────────────────
+        // PRAKTISCHES LEBEN (#B241-#B253) - Kategorie #K18
+        // ─────────────────────────────────────────────────────────────────────────
+        // Ordnung, Reisen, Alltag - aus beduerfnis-katalog.json synchronisiert
+        '#B241': { key: 'ordnung_struktur', kategorie: '#K18', label: 'Ordnung & Struktur' },
+        '#B242': { key: 'sauberkeit', kategorie: '#K18', label: 'Sauberkeit' },
+        '#B243': { key: 'struktur_alltag', kategorie: '#K18', label: 'Struktur im Alltag' },
+        '#B244': { key: 'chaos_toleranz', kategorie: '#K18', label: 'Chaos-Toleranz' },
+        '#B245': { key: 'organisiert_sein', kategorie: '#K18', label: 'Organisiert sein' },
+        '#B246': { key: 'flexibilitaet_haushalt', kategorie: '#K18', label: 'Flexibilität Haushalt' },
+        '#B247': { key: 'reisen_abenteuer', kategorie: '#K18', label: 'Reisen & Abenteuer' },
+        '#B248': { key: 'abenteuer', kategorie: '#K18', label: 'Abenteuer' },
+        '#B249': { key: 'neue_orte_entdecken', kategorie: '#K18', label: 'Neue Orte entdecken' },
+        '#B250': { key: 'heimatverbundenheit', kategorie: '#K18', label: 'Heimatverbundenheit' },
+        '#B251': { key: 'urlaub', kategorie: '#K18', label: 'Urlaub' },
+        '#B252': { key: 'fernweh', kategorie: '#K18', label: 'Fernweh' },
+        '#B253': { key: 'zuhause_gefuehl', kategorie: '#K18', label: 'Zuhause-Gefühl' }
     },
 
     // ═══════════════════════════════════════════════════════════════════════════
