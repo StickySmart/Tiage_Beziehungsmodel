@@ -1,0 +1,28 @@
+name: Validate Bedürfnis-IDs
+
+on:
+  push:
+    paths:
+      - 'profiles/data/beduerfnis-katalog.json'
+      - 'profiles/definitions/beduerfnis-ids.js'
+  pull_request:
+    paths:
+      - 'profiles/data/beduerfnis-katalog.json'
+      - 'profiles/definitions/beduerfnis-ids.js'
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    name: Check ID Consistency
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Validate Bedürfnis-IDs
+        run: node scripts/validate-beduerfnis-ids.js
