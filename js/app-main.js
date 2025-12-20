@@ -20213,7 +20213,7 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
         window.displayActiveSuggestion = displayActiveSuggestion;
 
         /**
-         * Clear the active suggestion
+         * Clear the active suggestion and reset search filter
          */
         function clearActiveSuggestion() {
             suggestionState.activeSuggestion = null;
@@ -20222,11 +20222,15 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
                 hint.innerHTML = '';
                 hint.classList.remove('has-active-selection');
             }
-            // Trigger search with current input value
+            // Clear the search input and reset filter
             var input = document.getElementById('profileReviewSearchInput');
-            if (input && input.value) {
-                handleIntelligentSearch(input.value);
+            if (input) {
+                input.value = '';
             }
+            // Reset filter to show all items
+            filterProfileReviewByNeed('');
+            // Hide suggestions dropdown
+            hideSearchSuggestions();
         }
         window.clearActiveSuggestion = clearActiveSuggestion;
 

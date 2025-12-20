@@ -804,8 +804,13 @@
             suggestionState.activeSuggestion = null;
             var hint = document.getElementById('profileReviewSearchHint');
             if (hint) { hint.innerHTML = ''; hint.classList.remove('has-active-selection'); }
+            // Clear the search input and reset filter
             var input = document.getElementById('profileReviewSearchInput');
-            if (input && input.value) handleIntelligentSearch(input.value);
+            if (input) { input.value = ''; }
+            // Reset filter to show all items
+            filterProfileReviewByNeed('');
+            // Hide suggestions dropdown
+            hideSearchSuggestions();
         }
         window.clearActiveSuggestion = clearActiveSuggestion;
 
@@ -1149,8 +1154,13 @@
             suggestionState.activeSuggestion = null;
             var hint = document.getElementById('profileReviewSearchHint');
             if (hint) { hint.innerHTML = ''; hint.classList.remove('has-active-selection'); }
+            // Clear the search input and reset filter
             var input = document.getElementById('profileReviewSearchInput');
-            if (input && input.value) handleIntelligentSearch(input.value);
+            if (input) { input.value = ''; }
+            // Reset filter to show all items
+            filterProfileReviewByNeed('');
+            // Hide suggestions dropdown
+            hideSearchSuggestions();
         }
         window.clearActiveSuggestion = clearActiveSuggestion;
 
