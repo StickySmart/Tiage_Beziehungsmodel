@@ -187,19 +187,35 @@ const DimensionKategorieFilter = (function() {
 
 
     /**
-     * Rendert die Tree-Ansicht mit Reset-Button
+     * Rendert die Tree-Ansicht mit Reset-Button und aktiven Filtern
      */
     function renderTreeView() {
         if (typeof ResonanzTreeView === 'undefined') {
             return '<p style="color: rgba(255,255,255,0.5);">Tree-View nicht geladen</p>';
         }
 
-        // Reset-Button only
+        // Reset-Button und aktive Filter
         const hasActiveFilters = activeKategorien.size > 0;
         const resetButtonVisible = hasActiveFilters ? '' : ' style="display: none;"';
 
+        // Aktive Filter-Tags generieren
+        let activeFilterTags = '';
+        if (hasActiveFilters) {
+            const tags = Array.from(activeKategorien).map(kategorieId => {
+                const info = getKategorieInfo(kategorieId);
+                if (info) {
+                    return `<span class="active-filter-tag" style="--tag-color: ${info.color}">
+                        ${info.label}
+                    </span>`;
+                }
+                return '';
+            }).join('');
+            activeFilterTags = `<div class="active-filter-tags">${tags}</div>`;
+        }
+
         return `
         <div class="tree-view-header">
+            ${activeFilterTags}
             <button class="tree-reset-btn"
                     onclick="DimensionKategorieFilter.reset()"
                     title="Filter zurücksetzen"${resetButtonVisible}>

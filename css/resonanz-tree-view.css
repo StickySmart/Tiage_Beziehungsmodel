@@ -374,6 +374,9 @@
 .tree-view-header {
     display: flex;
     justify-content: flex-end;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
     margin-bottom: 12px;
 }
 
@@ -398,4 +401,26 @@
 
 .tree-reset-btn:active {
     transform: translateY(0);
+}
+
+/* Aktive Filter-Tags Anzeige */
+.active-filter-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    align-items: center;
+    margin-right: 12px;
+}
+
+.active-filter-tag {
+    display: inline-flex;
+    align-items: center;
+    padding: 4px 10px;
+    background: color-mix(in srgb, var(--tag-color) 15%, transparent);
+    border: 1px solid color-mix(in srgb, var(--tag-color) 40%, transparent);
+    border-radius: 12px;
+    color: var(--tag-color);
+    font-size: 12px;
+    font-weight: 500;
+    white-space: nowrap;
 }
