@@ -1121,57 +1121,59 @@
             var input = document.getElementById('profileReviewSearchInput');
             suggestionState.activeSuggestion = suggestion;
 
+            // Prüfe ob bereits mehrere Begriffe vorhanden sind (Komma = UND-Verknüpfung)
+            var hasMultipleTerms = input && input.value.includes(',');
+
             if (input) {
-                var parts = input.value.split(',');
-                parts[parts.length - 1] = suggestion.label;
-                input.value = parts.join(',');
+                var parts = input.value.split(',').map(function(p) { return p.trim(); }).filter(function(p) { return p.length > 0; });
+                // Letzten (unvollständigen) Teil ersetzen
+                if (parts.length > 0) {
+                    parts[parts.length - 1] = suggestion.label;
+                } else {
+                    parts.push(suggestion.label);
+                }
+                input.value = parts.join(', ') + ', ';
+                input.focus();
             }
 
             // FIX: Bei Resonanzfaktor-Auswahl den DimensionKategorieFilter aktivieren
             if (suggestion.type === 'resonanz' && typeof DimensionKategorieFilter !== 'undefined') {
-                // Erst alle Filter zurücksetzen
-                DimensionKategorieFilter.reset();
-                // Dann alle Kategorien des Resonanzfaktors aktivieren
+                // Bei Mehrfach-Auswahl: NICHT resetten, sondern hinzufügen
+                if (!hasMultipleTerms) {
+                    DimensionKategorieFilter.reset();
+                }
+                // Alle Kategorien des Resonanzfaktors aktivieren
                 var kategorien = DimensionKategorieFilter.KATEGORIEN_PRO_DIMENSION[suggestion.id];
                 if (kategorien && kategorien.length > 0) {
                     kategorien.forEach(function(kat) {
-                        DimensionKategorieFilter.toggleKategorie(kat.id);
+                        if (!DimensionKategorieFilter.isKategorieActive(kat.id)) {
+                            DimensionKategorieFilter.toggleKategorie(kat.id);
+                        }
                     });
-                    console.log('[Filter] Resonanzfaktor aktiviert:', suggestion.id, '- Kategorien:', kategorien.map(function(k) { return k.id; }));
+                    console.log('[Filter] Resonanzfaktor aktiviert:', suggestion.id);
                 }
-                // Textfilter leeren (da wir jetzt nach Kategorien filtern)
-                if (input) input.value = '';
                 filterProfileReviewByNeed('');
             } else if (suggestion.type === 'category' && typeof DimensionKategorieFilter !== 'undefined') {
-                // Bei Kategorie-Auswahl: Kategorie aktivieren + Komma hinzufügen für weitere Eingabe
-                DimensionKategorieFilter.reset();
-                DimensionKategorieFilter.toggleKategorie(suggestion.id);
-                console.log('[Filter] Kategorie aktiviert:', suggestion.id);
-                // Komma hinzufügen für weitere Eingabe
-                if (input) {
-                    input.value = suggestion.label + ', ';
-                    input.focus();
+                // Bei Kategorie-Auswahl: NICHT resetten bei Mehrfach-Auswahl
+                if (!hasMultipleTerms) {
+                    DimensionKategorieFilter.reset();
                 }
+                // Kategorie hinzufügen (nur wenn nicht bereits aktiv)
+                if (!DimensionKategorieFilter.isKategorieActive(suggestion.id)) {
+                    DimensionKategorieFilter.toggleKategorie(suggestion.id);
+                }
+                console.log('[Filter] Kategorie aktiviert:', suggestion.id);
                 filterProfileReviewByNeed('');
             } else if (suggestion.type === 'need') {
-                // Bei Bedürfnis-Auswahl: Filter zurücksetzen + Komma hinzufügen
-                if (typeof DimensionKategorieFilter !== 'undefined') {
+                // Bei Bedürfnis-Auswahl: Bei Mehrfach nicht resetten
+                if (typeof DimensionKategorieFilter !== 'undefined' && !hasMultipleTerms) {
                     DimensionKategorieFilter.reset();
                 }
-                // Komma hinzufügen für weitere Eingabe
-                if (input) {
-                    input.value = suggestion.label + ', ';
-                    input.focus();
-                }
-                filterProfileReviewByNeed(suggestion.label);
+                filterProfileReviewByNeed(input ? input.value : suggestion.label);
             } else {
-                // Für andere Typen (dimension, perspective) Filter zurücksetzen + Komma
-                if (typeof DimensionKategorieFilter !== 'undefined') {
+                // Für andere Typen (dimension, perspective)
+                if (typeof DimensionKategorieFilter !== 'undefined' && !hasMultipleTerms) {
                     DimensionKategorieFilter.reset();
-                }
-                if (input) {
-                    input.value = suggestion.label + ', ';
-                    input.focus();
                 }
                 filterProfileReviewByNeed(input ? input.value : '');
             }
@@ -1594,57 +1596,59 @@
             var input = document.getElementById('profileReviewSearchInput');
             suggestionState.activeSuggestion = suggestion;
 
+            // Prüfe ob bereits mehrere Begriffe vorhanden sind (Komma = UND-Verknüpfung)
+            var hasMultipleTerms = input && input.value.includes(',');
+
             if (input) {
-                var parts = input.value.split(',');
-                parts[parts.length - 1] = suggestion.label;
-                input.value = parts.join(',');
+                var parts = input.value.split(',').map(function(p) { return p.trim(); }).filter(function(p) { return p.length > 0; });
+                // Letzten (unvollständigen) Teil ersetzen
+                if (parts.length > 0) {
+                    parts[parts.length - 1] = suggestion.label;
+                } else {
+                    parts.push(suggestion.label);
+                }
+                input.value = parts.join(', ') + ', ';
+                input.focus();
             }
 
             // FIX: Bei Resonanzfaktor-Auswahl den DimensionKategorieFilter aktivieren
             if (suggestion.type === 'resonanz' && typeof DimensionKategorieFilter !== 'undefined') {
-                // Erst alle Filter zurücksetzen
-                DimensionKategorieFilter.reset();
-                // Dann alle Kategorien des Resonanzfaktors aktivieren
+                // Bei Mehrfach-Auswahl: NICHT resetten, sondern hinzufügen
+                if (!hasMultipleTerms) {
+                    DimensionKategorieFilter.reset();
+                }
+                // Alle Kategorien des Resonanzfaktors aktivieren
                 var kategorien = DimensionKategorieFilter.KATEGORIEN_PRO_DIMENSION[suggestion.id];
                 if (kategorien && kategorien.length > 0) {
                     kategorien.forEach(function(kat) {
-                        DimensionKategorieFilter.toggleKategorie(kat.id);
+                        if (!DimensionKategorieFilter.isKategorieActive(kat.id)) {
+                            DimensionKategorieFilter.toggleKategorie(kat.id);
+                        }
                     });
-                    console.log('[Filter] Resonanzfaktor aktiviert:', suggestion.id, '- Kategorien:', kategorien.map(function(k) { return k.id; }));
+                    console.log('[Filter] Resonanzfaktor aktiviert:', suggestion.id);
                 }
-                // Textfilter leeren (da wir jetzt nach Kategorien filtern)
-                if (input) input.value = '';
                 filterProfileReviewByNeed('');
             } else if (suggestion.type === 'category' && typeof DimensionKategorieFilter !== 'undefined') {
-                // Bei Kategorie-Auswahl: Kategorie aktivieren + Komma hinzufügen für weitere Eingabe
-                DimensionKategorieFilter.reset();
-                DimensionKategorieFilter.toggleKategorie(suggestion.id);
-                console.log('[Filter] Kategorie aktiviert:', suggestion.id);
-                // Komma hinzufügen für weitere Eingabe
-                if (input) {
-                    input.value = suggestion.label + ', ';
-                    input.focus();
+                // Bei Kategorie-Auswahl: NICHT resetten bei Mehrfach-Auswahl
+                if (!hasMultipleTerms) {
+                    DimensionKategorieFilter.reset();
                 }
+                // Kategorie hinzufügen (nur wenn nicht bereits aktiv)
+                if (!DimensionKategorieFilter.isKategorieActive(suggestion.id)) {
+                    DimensionKategorieFilter.toggleKategorie(suggestion.id);
+                }
+                console.log('[Filter] Kategorie aktiviert:', suggestion.id);
                 filterProfileReviewByNeed('');
             } else if (suggestion.type === 'need') {
-                // Bei Bedürfnis-Auswahl: Filter zurücksetzen + Komma hinzufügen
-                if (typeof DimensionKategorieFilter !== 'undefined') {
+                // Bei Bedürfnis-Auswahl: Bei Mehrfach nicht resetten
+                if (typeof DimensionKategorieFilter !== 'undefined' && !hasMultipleTerms) {
                     DimensionKategorieFilter.reset();
                 }
-                // Komma hinzufügen für weitere Eingabe
-                if (input) {
-                    input.value = suggestion.label + ', ';
-                    input.focus();
-                }
-                filterProfileReviewByNeed(suggestion.label);
+                filterProfileReviewByNeed(input ? input.value : suggestion.label);
             } else {
-                // Für andere Typen (dimension, perspective) Filter zurücksetzen + Komma
-                if (typeof DimensionKategorieFilter !== 'undefined') {
+                // Für andere Typen (dimension, perspective)
+                if (typeof DimensionKategorieFilter !== 'undefined' && !hasMultipleTerms) {
                     DimensionKategorieFilter.reset();
-                }
-                if (input) {
-                    input.value = suggestion.label + ', ';
-                    input.focus();
                 }
                 filterProfileReviewByNeed(input ? input.value : '');
             }
