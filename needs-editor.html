@@ -170,29 +170,6 @@
             font-weight: 600;
         }
 
-        .needs-editor-header-right {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .needs-editor-save-btn {
-            background: var(--success, #10B981);
-            border: none;
-            color: #fff;
-            padding: 10px 20px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 14px;
-            font-weight: 600;
-            transition: all 0.2s;
-        }
-
-        .needs-editor-save-btn:hover {
-            background: var(--success-hover, #059669);
-            transform: translateY(-1px);
-        }
-
         .needs-editor-content {
             flex: 1;
             padding: 16px;
@@ -200,15 +177,6 @@
             margin: 0 auto;
             width: 100%;
             box-sizing: border-box;
-        }
-
-        /* RA Profile Card at top */
-        .needs-editor-ra-card {
-            background: var(--bg-card, #1a1a2e);
-            border-radius: 12px;
-            padding: 16px;
-            margin-bottom: 16px;
-            border: 1px solid rgba(255,255,255,0.1);
         }
 
         /* Search container */
@@ -324,11 +292,6 @@
                 <h1 class="needs-editor-title">Alle Bedürfnisse</h1>
                 <span class="needs-editor-badge" id="needsEditorBadge">Profil</span>
             </div>
-            <div class="needs-editor-header-right">
-                <button class="needs-editor-save-btn" onclick="saveAndGoBack()">
-                    Speichern
-                </button>
-            </div>
         </header>
 
         <!-- Main Content -->
@@ -336,16 +299,11 @@
             <!-- Person Toggle -->
             <div class="needs-editor-person-toggle">
                 <button class="needs-editor-person-btn active" id="btnPersonIch" onclick="switchPerson('ich')">
-                    ME
+                    ICH
                 </button>
                 <button class="needs-editor-person-btn" id="btnPersonPartner" onclick="switchPerson('partner')">
                     PARTNER
                 </button>
-            </div>
-
-            <!-- RA Profile Summary -->
-            <div class="needs-editor-ra-card" id="needsEditorRACard">
-                <!-- Will be populated by JavaScript -->
             </div>
 
             <!-- Search/Filter - using profile-review styles -->
@@ -432,9 +390,6 @@
 
             // Render the needs list
             renderNeedsList();
-
-            // Render RA Profile card
-            renderRACard();
         }
 
         function updatePersonToggle() {
@@ -495,48 +450,31 @@
                 ? (localStorage.getItem('tiage_selected_archetype_ich') || 'polyamor')
                 : (localStorage.getItem('tiage_selected_archetype_partner') || 'polyamor');
 
-            // Render using AttributeSummaryCard
-            const html = AttributeSummaryCard.renderAllNeedsFlat(archetype);
+            // Get archetype label
+            const archetypeLabels = {
+                'single': 'Single',
+                'duo': 'Duo',
+                'duo-flex': 'Duo-Flex',
+                'solopoly': 'Solo-Poly',
+                'polyamor': 'Polyamor',
+                'ra': 'RA',
+                'lat': 'LAT',
+                'aromantisch': 'Aromantisch'
+            };
+            const archetypeLabel = archetypeLabels[archetype] || archetype;
+
+            // Render using AttributeSummaryCard with both archetype and label
+            const html = AttributeSummaryCard.renderAllNeedsFlat(archetype, archetypeLabel);
             container.innerHTML = html;
 
+            // Initialize multi-select controls if available
+            if (typeof AttributeSummaryCard.initDimensionFilter === 'function') {
+                setTimeout(function() {
+                    AttributeSummaryCard.initDimensionFilter();
+                }, 100);
+            }
+
             console.log('[NeedsEditor] Rendered needs list for', currentPerson, 'with archetype', archetype);
-        }
-
-        function renderRACard() {
-            const card = document.getElementById('needsEditorRACard');
-
-            if (typeof ResonanzCard === 'undefined') {
-                card.innerHTML = '';
-                return;
-            }
-
-            // Get current resonance values
-            const values = ResonanzCard.getValues(currentPerson);
-            if (!values) {
-                card.innerHTML = '';
-                return;
-            }
-
-            card.innerHTML = `
-                <div style="display: flex; justify-content: space-around; align-items: center; flex-wrap: wrap; gap: 12px;">
-                    <div style="text-align: center;">
-                        <div style="font-size: 12px; color: rgba(255,255,255,0.6); margin-bottom: 4px;">R1</div>
-                        <div style="font-size: 20px; font-weight: 600; color: var(--primary, #FFD700);" id="raValue-R1">${values.R1?.toFixed(2) || '0.00'}</div>
-                    </div>
-                    <div style="text-align: center;">
-                        <div style="font-size: 12px; color: rgba(255,255,255,0.6); margin-bottom: 4px;">R2</div>
-                        <div style="font-size: 20px; font-weight: 600; color: var(--primary, #FFD700);" id="raValue-R2">${values.R2?.toFixed(2) || '0.00'}</div>
-                    </div>
-                    <div style="text-align: center;">
-                        <div style="font-size: 12px; color: rgba(255,255,255,0.6); margin-bottom: 4px;">R3</div>
-                        <div style="font-size: 20px; font-weight: 600; color: var(--primary, #FFD700);" id="raValue-R3">${values.R3?.toFixed(2) || '0.00'}</div>
-                    </div>
-                    <div style="text-align: center;">
-                        <div style="font-size: 12px; color: rgba(255,255,255,0.6); margin-bottom: 4px;">R4</div>
-                        <div style="font-size: 20px; font-weight: 600; color: var(--primary, #FFD700);" id="raValue-R4">${values.R4?.toFixed(2) || '0.00'}</div>
-                    </div>
-                </div>
-            `;
         }
 
         function switchPerson(person) {
@@ -558,7 +496,6 @@
             // Reload data and re-render
             loadNeedsData();
             renderNeedsList();
-            renderRACard();
         }
 
         function saveCurrentState() {
@@ -601,16 +538,6 @@
 
             goBack();
         }
-
-        // Listen for resonance changes to update RA card
-        window.addEventListener('resonanzfaktoren-changed', function() {
-            renderRACard();
-        });
-
-        // Listen for need changes
-        window.addEventListener('flatNeedChange', function() {
-            renderRACard();
-        });
 
         // ═══════════════════════════════════════════════════════════════════════════
         // INTELLIGENT SEARCH SUGGESTIONS (adapted from app-main.js)
