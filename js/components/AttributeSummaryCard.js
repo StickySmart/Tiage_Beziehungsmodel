@@ -1038,13 +1038,22 @@ const AttributeSummaryCard = (function() {
             ? window.LoadedArchetypProfile[currentPerson]
             : null;
 
-        if (loadedProfile?.profileReview?.flatNeeds) {
-            umfrageWerte = loadedProfile.profileReview.flatNeeds;
-            console.log('[AttributeSummaryCard] Verwende berechnete Werte aus LoadedArchetypProfile für', currentPerson, 'Anzahl:', Object.keys(umfrageWerte).length);
+        // Prüfe ob flatNeeds existiert UND nicht leer ist (leeres {} ist truthy!)
+        const loadedFlatNeeds = loadedProfile?.profileReview?.flatNeeds;
+        const hasFlatNeeds = loadedFlatNeeds && Object.keys(loadedFlatNeeds).length > 0;
+
+        if (hasFlatNeeds) {
+            umfrageWerte = loadedFlatNeeds;
+            console.log('[AttributeSummaryCard] Verwende berechnete Werte aus TiageState.flatNeeds für', currentPerson, 'Anzahl:', Object.keys(umfrageWerte).length);
         } else {
-            // 2. Fallback: Statische Archetyp-Werte
+            // 2. Fallback: Statische Archetyp-Werte aus BaseArchetypProfile
             umfrageWerte = profil.umfrageWerte || {};
-            console.log('[AttributeSummaryCard] Fallback auf statische umfrageWerte für', currentPerson, 'Anzahl:', Object.keys(umfrageWerte).length);
+            console.log('[AttributeSummaryCard] Verwende statische umfrageWerte aus BaseArchetypProfile für', currentPerson, 'Anzahl:', Object.keys(umfrageWerte).length);
+
+            // Warnung wenn TiageState.flatNeeds leer ist (sollte nicht passieren)
+            if (loadedFlatNeeds && Object.keys(loadedFlatNeeds).length === 0) {
+                console.warn('[AttributeSummaryCard] TiageState.flatNeeds.' + currentPerson + ' ist leer! Verwende Fallback aus BaseArchetypProfile.');
+            }
         }
 
         // DEBUG: Prüfe ob umfrageWerte korrekt geladen wurden
