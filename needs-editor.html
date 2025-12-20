@@ -278,6 +278,16 @@
                 padding: 12px;
             }
         }
+
+        /* Highlight-Animation für openNeedWithResonance */
+        .need-highlight-flash {
+            animation: needHighlight 1.5s ease-out;
+        }
+
+        @keyframes needHighlight {
+            0% { background-color: var(--accent-primary, #4a90d9); box-shadow: 0 0 10px var(--accent-primary, #4a90d9); }
+            100% { background-color: transparent; box-shadow: none; }
+        }
     </style>
 </head>
 <body>
@@ -363,6 +373,28 @@
     <script src="js/components/profile-components.js"></script>
 
     <script>
+        // openNeedWithResonance für needs-editor.html
+        // Scrollt zum Need und hebt es hervor
+        window.openNeedWithResonance = function(needId) {
+            // Finde das Need-Element (in AttributeSummaryCard oder flat-needs)
+            const needElement = document.querySelector(`[data-need="${needId}"]`) ||
+                               document.querySelector(`[data-need-id="${needId}"]`) ||
+                               document.querySelector(`.flat-need-item[data-need-id="${needId}"]`);
+
+            if (needElement) {
+                // Scroll zum Element
+                needElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+                // Highlight-Effekt
+                needElement.classList.add('need-highlight-flash');
+                setTimeout(() => {
+                    needElement.classList.remove('need-highlight-flash');
+                }, 1500);
+            } else {
+                console.log('[NeedsEditor] Need nicht gefunden:', needId);
+            }
+        };
+
         // Current state
         let currentPerson = 'ich';
         let currentArchetype = 'polyamor';
