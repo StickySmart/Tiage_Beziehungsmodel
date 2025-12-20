@@ -373,6 +373,11 @@
         });
 
         function initializeNeedsEditor() {
+            // FIX: Filter zurücksetzen beim Initialisieren (Clean State)
+            if (typeof DimensionKategorieFilter !== 'undefined') {
+                DimensionKategorieFilter.reset();
+            }
+
             // Get params from URL or localStorage
             const urlParams = new URLSearchParams(window.location.search);
             currentPerson = urlParams.get('person') || localStorage.getItem('tiage_needs_editor_person') || 'ich';
@@ -506,6 +511,11 @@
         function switchPerson(person) {
             // Save current state first
             saveCurrentState();
+
+            // FIX: Filter zurücksetzen beim Person-Wechsel
+            if (typeof DimensionKategorieFilter !== 'undefined') {
+                DimensionKategorieFilter.reset();
+            }
 
             currentPerson = person;
             localStorage.setItem('tiage_needs_editor_person', person);
