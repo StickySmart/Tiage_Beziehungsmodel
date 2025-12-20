@@ -19588,6 +19588,27 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
                     hint.classList.add('no-results');
                 }
             }
+
+            // Update subtitle with filtered count (FIX: #859)
+            if (isFlatView) {
+                var subtitle = contentContainer.querySelector('.flat-needs-subtitle');
+                if (subtitle) {
+                    var allFlatItems = contentContainer.querySelectorAll('.flat-need-item');
+                    var totalNeeds = allFlatItems.length;
+                    var visibleNeeds = contentContainer.querySelectorAll('.flat-need-item:not(.filter-hidden)').length;
+
+                    // Extract archetype label from current subtitle
+                    var currentText = subtitle.textContent || '';
+                    var archetypMatch = currentText.match(/Dein\s+(\S+)-Profil/);
+                    var archetypLabel = archetypMatch ? archetypMatch[1] : 'RA';
+
+                    if (query && query.trim() !== '' && visibleNeeds < totalNeeds) {
+                        subtitle.textContent = 'Dein ' + archetypLabel + '-Profil (' + visibleNeeds + ' von ' + totalNeeds + ' Bedürfnissen)';
+                    } else {
+                        subtitle.textContent = 'Dein ' + archetypLabel + '-Profil (' + totalNeeds + ' Bedürfnisse)';
+                    }
+                }
+            }
         }
         window.filterProfileReviewByNeed = filterProfileReviewByNeed;
 
@@ -19595,7 +19616,9 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
          * Reset all filter states
          */
         function resetProfileReviewFilter() {
-            var contentContainer = document.getElementById('profileReviewContent');
+            // SSOT: Suche zuerst im Modal-Container, dann Fallback auf flat-needs-container (needs-editor.html)
+            var contentContainer = document.getElementById('profileReviewContent')
+                || document.querySelector('.flat-needs-container')?.parentElement;
             if (!contentContainer) return;
 
             // Remove all filter classes
@@ -19633,6 +19656,20 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
                     badge.textContent = '(' + totalCards + ')';
                 }
             });
+
+            // Reset subtitle to show total count (FIX: #859)
+            var subtitle = contentContainer.querySelector('.flat-needs-subtitle');
+            if (subtitle) {
+                var allFlatItems = contentContainer.querySelectorAll('.flat-need-item');
+                var totalNeeds = allFlatItems.length;
+
+                // Extract archetype label from current subtitle
+                var currentText = subtitle.textContent || '';
+                var archetypMatch = currentText.match(/Dein\s+(\S+)-Profil/);
+                var archetypLabel = archetypMatch ? archetypMatch[1] : 'RA';
+
+                subtitle.textContent = 'Dein ' + archetypLabel + '-Profil (' + totalNeeds + ' Bedürfnisse)';
+            }
         }
         window.resetProfileReviewFilter = resetProfileReviewFilter;
 
