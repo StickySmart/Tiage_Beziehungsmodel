@@ -29,45 +29,59 @@ const ResonanzTreeView = (function() {
 
     /**
      * Resonanz-Dimensionen (R1-R4) - Mapping zu Taxonomie-Dimensionen
+     *
+     * HINWEIS: Nutzt DimensionKategorieFilter.DIMENSIONEN als Single Source of Truth.
+     * Falls nicht verfügbar, wird der lokale Fallback verwendet.
      */
-    const RESONANZ_DIMENSIONEN = {
-        'R1': {
-            id: 'R1',
-            key: 'leben',
-            label: 'Leben',
-            icon: '🔥',
-            color: '#E63946',
-            beschreibung: 'Orientierung - Existenz, Zuneigung, Muße',
-            taxonomieDimensionen: ['#D3'] // Nähe-Distanz
-        },
-        'R2': {
-            id: 'R2',
-            key: 'philosophie',
-            label: 'Philosophie',
-            icon: '🧠',
-            color: '#2A9D8F',
-            beschreibung: 'Archetyp - Lebensplanung, Finanzen, Werte',
-            taxonomieDimensionen: ['#D1', '#D2'] // Beziehungsphilosophie, Werte-Alignment
-        },
-        'R3': {
-            id: 'R3',
-            key: 'dynamik',
-            label: 'Dynamik',
-            icon: '⚡',
-            color: '#8B5CF6',
-            beschreibung: 'Dominanz - Kontrolle, Hingabe, Macht',
-            taxonomieDimensionen: ['#D4'] // Autonomie
-        },
-        'R4': {
-            id: 'R4',
-            key: 'identitaet',
-            label: 'Identität',
-            icon: '💚',
-            color: '#F4A261',
-            beschreibung: 'Geschlecht - Authentizität, Selbstausdruck',
-            taxonomieDimensionen: ['#D5', '#D6'] // Kommunikation, Soziale-Kompatibilität
+    function getResonanzDimensionen() {
+        // SSOT: Nutze DimensionKategorieFilter wenn verfügbar
+        if (typeof DimensionKategorieFilter !== 'undefined' && DimensionKategorieFilter.DIMENSIONEN) {
+            return DimensionKategorieFilter.DIMENSIONEN;
         }
-    };
+
+        // Fallback: Lokale Definition
+        return {
+            'R1': {
+                id: 'R1',
+                key: 'leben',
+                label: 'Leben',
+                icon: '🔥',
+                color: '#E63946',
+                beschreibung: 'Orientierung - Existenz, Zuneigung, Muße',
+                taxonomieDimensionen: ['#D3']
+            },
+            'R2': {
+                id: 'R2',
+                key: 'philosophie',
+                label: 'Philosophie',
+                icon: '🧠',
+                color: '#2A9D8F',
+                beschreibung: 'Archetyp - Lebensplanung, Finanzen, Werte',
+                taxonomieDimensionen: ['#D1', '#D2']
+            },
+            'R3': {
+                id: 'R3',
+                key: 'dynamik',
+                label: 'Dynamik',
+                icon: '⚡',
+                color: '#8B5CF6',
+                beschreibung: 'Dominanz - Kontrolle, Hingabe, Macht',
+                taxonomieDimensionen: ['#D4']
+            },
+            'R4': {
+                id: 'R4',
+                key: 'identitaet',
+                label: 'Identität',
+                icon: '💚',
+                color: '#F4A261',
+                beschreibung: 'Geschlecht - Authentizität, Selbstausdruck',
+                taxonomieDimensionen: ['#D5', '#D6']
+            }
+        };
+    }
+
+    // Für Rückwärtskompatibilität
+    const RESONANZ_DIMENSIONEN = getResonanzDimensionen();
 
     /**
      * State

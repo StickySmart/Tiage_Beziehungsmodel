@@ -102,37 +102,81 @@ const ResonanzCard = (function() {
      *
      * Die 18 GFK-Kategorien werden auf 4 Resonanzfaktoren aggregiert.
      * Sekundäre Kategorien fließen mit 30% Gewichtung ein.
+     *
+     * HINWEIS: Nutzt DimensionKategorieFilter.DIMENSIONEN als Single Source of Truth.
+     * Falls nicht verfügbar, wird der lokale Fallback verwendet.
      */
-    const FAKTOR_INFO = {
-        R1: {
-            label: 'Leben',
-            sourceLabel: 'Orientierung',
-            beschreibung: 'Existenz, Zuneigung, Muße, Intimität & Romantik',
-            kategorien: ['existenz', 'zuneigung', 'musse', 'intimitaet_romantik'],
-            color: '#E63946'
-        },
-        R2: {
-            label: 'Philosophie',
-            sourceLabel: 'Archetyp',
-            beschreibung: 'Freiheit, Teilnahme, Identität, Lebensplanung, Finanzen, Werte, Soziales, Praktisches',
-            kategorien: ['freiheit', 'teilnahme', 'identitaet', 'lebensplanung', 'finanzen_karriere', 'werte_haltungen', 'soziales_leben', 'praktisches_leben'],
-            color: '#2A9D8F'
-        },
-        R3: {
-            label: 'Dynamik',
-            sourceLabel: 'Dominanz',
-            beschreibung: 'Dynamik, Sicherheit',
-            kategorien: ['dynamik', 'sicherheit'],
-            color: '#8B5CF6'
-        },
-        R4: {
-            label: 'Identität',
-            sourceLabel: 'Geschlecht',
-            beschreibung: 'Verständnis, Erschaffen, Verbundenheit, Kommunikation',
-            kategorien: ['verstaendnis', 'erschaffen', 'verbundenheit', 'kommunikation_stil'],
-            color: '#F4A261'
+    function getFaktorInfo() {
+        // SSOT: Nutze DimensionKategorieFilter wenn verfügbar
+        if (typeof DimensionKategorieFilter !== 'undefined' && DimensionKategorieFilter.DIMENSIONEN) {
+            const ssot = DimensionKategorieFilter.DIMENSIONEN;
+            return {
+                R1: {
+                    label: ssot.R1.label,
+                    sourceLabel: ssot.R1.sourceLabel,
+                    beschreibung: ssot.R1.beschreibung,
+                    kategorien: ssot.R1.kategorienKeys,
+                    color: ssot.R1.color
+                },
+                R2: {
+                    label: ssot.R2.label,
+                    sourceLabel: ssot.R2.sourceLabel,
+                    beschreibung: ssot.R2.beschreibung,
+                    kategorien: ssot.R2.kategorienKeys,
+                    color: ssot.R2.color
+                },
+                R3: {
+                    label: ssot.R3.label,
+                    sourceLabel: ssot.R3.sourceLabel,
+                    beschreibung: ssot.R3.beschreibung,
+                    kategorien: ssot.R3.kategorienKeys,
+                    color: ssot.R3.color
+                },
+                R4: {
+                    label: ssot.R4.label,
+                    sourceLabel: ssot.R4.sourceLabel,
+                    beschreibung: ssot.R4.beschreibung,
+                    kategorien: ssot.R4.kategorienKeys,
+                    color: ssot.R4.color
+                }
+            };
         }
-    };
+
+        // Fallback: Lokale Definition (für Fälle ohne DimensionKategorieFilter)
+        return {
+            R1: {
+                label: 'Leben',
+                sourceLabel: 'Orientierung',
+                beschreibung: 'Existenz, Zuneigung, Muße, Intimität & Romantik',
+                kategorien: ['existenz', 'zuneigung', 'musse', 'intimitaet_romantik'],
+                color: '#E63946'
+            },
+            R2: {
+                label: 'Philosophie',
+                sourceLabel: 'Archetyp',
+                beschreibung: 'Freiheit, Teilnahme, Identität, Lebensplanung, Finanzen, Werte, Soziales, Praktisches',
+                kategorien: ['freiheit', 'teilnahme', 'identitaet', 'lebensplanung', 'finanzen_karriere', 'werte_haltungen', 'soziales_leben', 'praktisches_leben'],
+                color: '#2A9D8F'
+            },
+            R3: {
+                label: 'Dynamik',
+                sourceLabel: 'Dominanz',
+                beschreibung: 'Dynamik, Sicherheit',
+                kategorien: ['dynamik', 'sicherheit'],
+                color: '#8B5CF6'
+            },
+            R4: {
+                label: 'Identität',
+                sourceLabel: 'Geschlecht',
+                beschreibung: 'Verständnis, Erschaffen, Verbundenheit, Kommunikation',
+                kategorien: ['verstaendnis', 'erschaffen', 'verbundenheit', 'kommunikation_stil'],
+                color: '#F4A261'
+            }
+        };
+    }
+
+    // Für Rückwärtskompatibilität: FAKTOR_INFO als Getter
+    const FAKTOR_INFO = getFaktorInfo();
 
     /**
      * Lädt Resonanzwerte aus TiageState (Single Source of Truth)
