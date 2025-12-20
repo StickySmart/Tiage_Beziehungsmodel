@@ -1174,6 +1174,9 @@ const AttributeSummaryCard = (function() {
             </div>
         </div>`;
 
+        // Filter-Container für DimensionKategorieFilter (wird in initDimensionFilter befüllt)
+        html += `<div id="flat-needs-dimension-filter" class="profile-review-controls-container"></div>`;
+
         // Direkte flache Liste ohne Kategorien-Wrapper
         html += `<div class="flat-needs-list-wrapper">
             <div class="flat-needs-list kategorie-mode">`;
