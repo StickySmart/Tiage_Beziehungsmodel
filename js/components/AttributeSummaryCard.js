@@ -1040,11 +1040,25 @@ const AttributeSummaryCard = (function() {
 
         if (loadedProfile?.profileReview?.flatNeeds) {
             umfrageWerte = loadedProfile.profileReview.flatNeeds;
-            console.log('[AttributeSummaryCard] Verwende berechnete Werte aus LoadedArchetypProfile für', currentPerson);
+            console.log('[AttributeSummaryCard] Verwende berechnete Werte aus LoadedArchetypProfile für', currentPerson, 'Anzahl:', Object.keys(umfrageWerte).length);
         } else {
             // 2. Fallback: Statische Archetyp-Werte
             umfrageWerte = profil.umfrageWerte || {};
-            console.log('[AttributeSummaryCard] Fallback auf statische umfrageWerte für', currentPerson);
+            console.log('[AttributeSummaryCard] Fallback auf statische umfrageWerte für', currentPerson, 'Anzahl:', Object.keys(umfrageWerte).length);
+        }
+
+        // DEBUG: Prüfe ob umfrageWerte korrekt geladen wurden
+        if (Object.keys(umfrageWerte).length === 0) {
+            console.error('[AttributeSummaryCard] FEHLER: umfrageWerte ist leer!', {
+                loadedProfile: !!loadedProfile,
+                flatNeeds: loadedProfile?.profileReview?.flatNeeds,
+                profilUmfrageWerte: profil?.umfrageWerte,
+                archetyp: archetyp
+            });
+        } else {
+            // Sample check: Zeige erste 3 Werte
+            const sampleKeys = Object.keys(umfrageWerte).slice(0, 3);
+            console.log('[AttributeSummaryCard] Sample umfrageWerte:', sampleKeys.map(k => `${k}=${umfrageWerte[k]}`));
         }
 
         // ═══════════════════════════════════════════════════════════════════════════
