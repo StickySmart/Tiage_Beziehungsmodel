@@ -376,7 +376,11 @@
             // Get params from URL or localStorage
             const urlParams = new URLSearchParams(window.location.search);
             currentPerson = urlParams.get('person') || localStorage.getItem('tiage_needs_editor_person') || 'ich';
-            currentArchetype = urlParams.get('archetype') || localStorage.getItem('tiage_selected_archetype_' + currentPerson) || 'polyamor';
+            // Priorität: URL-Parameter > TiageState > localStorage > Fallback
+            currentArchetype = urlParams.get('archetype') ||
+                (typeof TiageState !== 'undefined' ? TiageState.getArchetype(currentPerson) : null) ||
+                localStorage.getItem('tiage_selected_archetype_' + currentPerson) ||
+                'polyamor';
 
             // WICHTIG: Setze Archetyp in TiageState und lade Profil
             // Damit TiageState.flatNeeds korrekt initialisiert wird
@@ -467,10 +471,10 @@
                 return;
             }
 
-            // Get archetype for person
-            const archetype = currentPerson === 'ich'
-                ? (localStorage.getItem('tiage_selected_archetype_ich') || 'polyamor')
-                : (localStorage.getItem('tiage_selected_archetype_partner') || 'polyamor');
+            // Get archetype for person - Priorität: TiageState > localStorage > Fallback
+            const archetype = (typeof TiageState !== 'undefined' ? TiageState.getArchetype(currentPerson) : null) ||
+                localStorage.getItem('tiage_selected_archetype_' + currentPerson) ||
+                'polyamor';
 
             // Get archetype label
             const archetypeLabels = {
@@ -509,8 +513,10 @@
             // Update UI
             updatePersonToggle();
 
-            // Update archetype for this person
-            currentArchetype = localStorage.getItem('tiage_selected_archetype_' + person) || 'polyamor';
+            // Update archetype for this person - Priorität: TiageState > localStorage > Fallback
+            currentArchetype = (typeof TiageState !== 'undefined' ? TiageState.getArchetype(person) : null) ||
+                localStorage.getItem('tiage_selected_archetype_' + person) ||
+                'polyamor';
             updateBadge();
 
             // WICHTIG: Lade Profil für die neue Person
