@@ -20358,6 +20358,7 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
             }
 
             // FIX #865: Aktiviere die entsprechenden Kategorien im DimensionKategorieFilter
+            // FIX #879: Bei Bedürfnis-Auswahl NUR Textfilter verwenden (nicht Kategorie-Filter)
             if (typeof DimensionKategorieFilter !== 'undefined') {
                 // Erst alle bestehenden Filter zurücksetzen
                 DimensionKategorieFilter.reset();
@@ -20387,12 +20388,10 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
                         console.log('[selectSuggestion] Resonanzfaktor aktiviert:', suggestion.id, '- Kategorien:', resonanzKategorien.map(function(k) { return k.id; }));
                     }
                 } else if (suggestion.type === 'need' && suggestion.id) {
-                    // Bei Bedürfnis: Aktiviere die zugehörige Kategorie
-                    var needMetadata = DimensionKategorieFilter.getNeedMetadata(suggestion.id);
-                    if (needMetadata && needMetadata.kategorieId) {
-                        DimensionKategorieFilter.toggleKategorie(needMetadata.kategorieId);
-                        console.log('[selectSuggestion] Bedürfnis aktiviert:', suggestion.id, '- Kategorie:', needMetadata.kategorieId);
-                    }
+                    // FIX #879: Bei Bedürfnis-Auswahl NUR Textfilter verwenden
+                    // Der Textfilter zeigt alle Bedürfnisse mit dem Suchbegriff im Namen
+                    // (z.B. "Liebe" zeigt "Liebe" und "Liebesbekundungen")
+                    console.log('[selectSuggestion] Bedürfnis als Textsuche:', suggestion.label);
                 }
             }
 
@@ -20427,8 +20426,20 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
                 return;
             }
 
+            // FIX #879: Bei Bedürfnis-Auswahl Textsuche-Tag anzeigen
+            if (suggestion.type === 'need') {
+                // Textsuche-Modus: Zeige Suchbegriff mit Lupe-Icon
+                hint.innerHTML = '<span class="search-active-selection">' +
+                    '<span class="search-active-type type-textsearch">🔍 Textsuche</span>' +
+                    '<span class="search-active-label">"' + suggestion.label + '"</span>' +
+                    '<button class="search-active-clear" onclick="clearActiveSuggestion()" title="Suche entfernen">×</button>' +
+                    '</span>';
+                hint.classList.add('has-active-selection');
+                hint.classList.remove('has-results', 'no-results');
+                return;
+            }
+
             var typeLabel = {
-                'need': 'Bedürfnis',
                 'category': 'Kategorie',
                 'dimension': 'Dimension',
                 'resonanz': 'Resonanzfaktor',
