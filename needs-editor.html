@@ -662,6 +662,10 @@
             if (typeof TiageState !== 'undefined') {
                 const flatNeeds = TiageState.get('flatNeeds.' + currentPerson);
                 if (flatNeeds && flatNeeds.length > 0) {
+                    // FIX: Die Daten müssen auch an AttributeSummaryCard übergeben werden!
+                    if (typeof AttributeSummaryCard !== 'undefined') {
+                        AttributeSummaryCard.setFlatNeeds(flatNeeds);
+                    }
                     console.log('[NeedsEditor] Loaded from TiageState:', flatNeeds.length, 'needs');
                     return;
                 }
