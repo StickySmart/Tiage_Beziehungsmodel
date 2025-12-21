@@ -422,7 +422,13 @@
             let needKey = typeof BeduerfnisIds !== 'undefined' ? BeduerfnisIds.toKey(bId) : bId;
             if (typeof TiageState !== 'undefined') {
                 const flatNeeds = TiageState.get('flatNeeds.' + currentPerson) || {};
-                currentValue = flatNeeds[needKey] ?? flatNeeds[bId];
+                // Handle both array format (from AttributeSummaryCard) and object format
+                if (Array.isArray(flatNeeds)) {
+                    const found = flatNeeds.find(n => n.id === bId || n.id === needKey);
+                    currentValue = found ? found.value : null;
+                } else {
+                    currentValue = flatNeeds[needKey] ?? flatNeeds[bId];
+                }
             }
 
             // HTML aufbauen
