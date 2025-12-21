@@ -1,0 +1,351 @@
+<!--
+ * © 2025 Ti-age.de Alle Rechte vorbehalten.
+ * Dieses Werk ist urheberrechtlich geschützt.
+ * Jegliche Nutzung ohne ausdrückliche Genehmigung ist untersagt.
+ -->
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Bedürfnis-Detail | Ti-Age Synthese</title>
+    <link rel="canonical" href="https://ti-age.de/tiagesynthese.html">
+    <!-- Zentrale CSS-Variablen - EINZIGE QUELLE -->
+    <link rel="stylesheet" href="templates/variables.css?v=20251205c">
+    <link rel="stylesheet" href="templates/template_desktop.css?v=20251205c">
+    <link rel="stylesheet" href="templates/template_mobile.css?v=20251205c" media="(max-width: 768px)">
+
+    <!-- TIAGE Core Scripts -->
+    <script src="js/version.js"></script>
+    <script src="js/utils/statistics.js"></script>
+
+    <!-- BEDÜRFNIS-KATALOG (SSOT) -->
+    <script src="profiles/definitions/beduerfnis-katalog.js"></script>
+
+    <style>
+        .synthese-page {
+            min-height: 100vh;
+            background: var(--bg-dark);
+            padding: 20px;
+        }
+
+        .synthese-container {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .synthese-header {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 24px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .synthese-back {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            color: var(--text-primary);
+            cursor: pointer;
+            transition: all 0.2s;
+            text-decoration: none;
+        }
+
+        .synthese-back:hover {
+            background: rgba(255,255,255,0.1);
+        }
+
+        .synthese-title {
+            font-size: 24px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .synthese-card {
+            background: var(--bg-card);
+            border-radius: 16px;
+            padding: 24px;
+            border: 1px solid var(--border);
+        }
+
+        .synthese-error {
+            text-align: center;
+            padding: 40px;
+            color: var(--text-muted);
+        }
+
+        .synthese-error-icon {
+            font-size: 48px;
+            margin-bottom: 16px;
+        }
+    </style>
+</head>
+<body>
+    <div class="synthese-page">
+        <div class="synthese-container">
+            <div class="synthese-header">
+                <a href="javascript:history.back()" class="synthese-back">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M19 12H5M12 19l-7-7 7-7"/>
+                    </svg>
+                </a>
+                <h1 class="synthese-title" id="pageTitle">Bedürfnis-Detail</h1>
+            </div>
+
+            <div class="synthese-card" id="syntheseContent">
+                <div class="synthese-error">
+                    <div class="synthese-error-icon">⏳</div>
+                    <p>Lade Daten...</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ═══════════════════════════════════════════════════════════════════════════
+        // TIAGE SYNTHESE PAGE - SSOT RENDERING
+        // Verwendet BeduerfnisKatalog als einzige Datenquelle
+        // ═══════════════════════════════════════════════════════════════════════════
+
+        /**
+         * Hilfsfunktion: Perspektive für Kategorie ermitteln
+         */
+        function getPerspektiveForKategorie(katId) {
+            const katNum = parseInt(katId.replace('#K', ''));
+            if (katNum === 11) return '#P4';
+            return '#P1';
+        }
+
+        /**
+         * Rendert den Bedürfnis-Inhalt (SSOT - gleiche Logik wie Modal)
+         */
+        function renderNeedContent(needId, resonanceData) {
+            const container = document.getElementById('syntheseContent');
+            const pageTitle = document.getElementById('pageTitle');
+
+            // Katalog prüfen
+            const katalog = window.BeduerfnisKatalog;
+            if (!katalog) {
+                container.innerHTML = '<div class="synthese-error"><div class="synthese-error-icon">⚠️</div><p>Katalog nicht geladen.</p></div>';
+                return;
+            }
+
+            // Need-ID ermitteln (kann #B-ID oder string-key sein)
+            let bId = needId;
+            if (needId && !needId.startsWith('#B') && typeof BeduerfnisIds !== 'undefined') {
+                bId = BeduerfnisIds.toId(needId) || needId;
+            }
+
+            // Need aus Katalog holen
+            const need = katalog.beduerfnisse[bId];
+            if (!need) {
+                container.innerHTML = '<div class="synthese-error"><div class="synthese-error-icon">❓</div><p>Bedürfnis "' + needId + '" nicht gefunden.</p></div>';
+                return;
+            }
+
+            // Titel setzen
+            pageTitle.textContent = need.label;
+            document.title = need.label + ' | Ti-Age Synthese';
+
+            // Kategorie, Dimension, Perspektive aus Katalog holen
+            const kategorie = katalog.kategorien[need.kategorie];
+            const dimension = katalog.dimensionen[need.dimension];
+            const perspektive = kategorie ? katalog.perspektiven[getPerspektiveForKategorie(need.kategorie)] : null;
+
+            // HTML aufbauen (SSOT - gleiche Struktur wie Modal)
+            let html = '<div class="need-modal-content">';
+
+            // ID Badge
+            html += '\
+                <div class="need-modal-id-row">\
+                    <span class="need-modal-id">' + need.id + '</span>\
+                    ' + (need.frageTyp ? '<span class="need-modal-type need-modal-type-' + need.frageTyp + '">' + (need.frageTyp === 'haupt' ? '📋 Hauptfrage' : '📑 Nuance') + '</span>' : '') + '\
+                </div>\
+            ';
+
+            // Kategorie & Dimension
+            html += '<div class="need-modal-meta-grid">';
+
+            if (kategorie) {
+                html += '\
+                    <div class="need-modal-meta-item">\
+                        <span class="need-modal-meta-label">Kategorie</span>\
+                        <span class="need-modal-meta-value" style="color: ' + kategorie.color + '">\
+                            <span class="need-modal-dot" style="background: ' + kategorie.color + '"></span>\
+                            ' + kategorie.label + '\
+                        </span>\
+                    </div>\
+                ';
+            }
+
+            if (dimension) {
+                html += '\
+                    <div class="need-modal-meta-item">\
+                        <span class="need-modal-meta-label">Dimension</span>\
+                        <span class="need-modal-meta-value" style="color: ' + dimension.color + '">\
+                            <span class="need-modal-badge" style="background: ' + dimension.color + '">' + dimension.kurzform + '</span>\
+                            ' + dimension.label + '\
+                        </span>\
+                    </div>\
+                ';
+            }
+
+            if (perspektive) {
+                html += '\
+                    <div class="need-modal-meta-item">\
+                        <span class="need-modal-meta-label">Perspektive</span>\
+                        <span class="need-modal-meta-value">\
+                            ' + perspektive.id + ' ' + perspektive.label + '\
+                        </span>\
+                    </div>\
+                ';
+            }
+
+            html += '</div>';
+
+            // Frage (wenn vorhanden)
+            if (need.frage) {
+                html += '\
+                    <div class="need-modal-question">\
+                        <span class="need-modal-question-icon">❓</span>\
+                        <span class="need-modal-question-text">' + need.frage + '</span>\
+                    </div>\
+                ';
+            }
+
+            // Kontext (bei Nuancen)
+            if (need.kontext) {
+                html += '\
+                    <div class="need-modal-context">\
+                        <span class="need-modal-context-label">Kontext:</span>\
+                        <span class="need-modal-context-text">' + need.kontext + '</span>\
+                    </div>\
+                ';
+            }
+
+            // Hauptbedürfnis-Referenz (bei Nuancen)
+            if (need.hauptbeduerfnis) {
+                const hauptNeed = katalog.beduerfnisse[need.hauptbeduerfnis];
+                if (hauptNeed) {
+                    html += '\
+                        <div class="need-modal-parent">\
+                            <span class="need-modal-parent-label">Gehört zu:</span>\
+                            <a class="need-modal-parent-link" href="tiagesynthese.html?need=' + need.hauptbeduerfnis + '">' + hauptNeed.label + ' (' + need.hauptbeduerfnis + ')</a>\
+                        </div>\
+                    ';
+                }
+            }
+
+            // Nuancen (bei Hauptfragen)
+            if (need.nuancen && need.nuancen.length > 0) {
+                html += '\
+                    <div class="need-modal-nuancen">\
+                        <span class="need-modal-nuancen-label">Nuancen:</span>\
+                        <div class="need-modal-nuancen-list">\
+                            ' + need.nuancen.map(function(nId) {
+                                const n = katalog.beduerfnisse[nId];
+                                return n ? '<a class="need-modal-nuance-tag" href="tiagesynthese.html?need=' + nId + '">' + n.label + '</a>' : '';
+                            }).join('') + '\
+                        </div>\
+                    </div>\
+                ';
+            }
+
+            // Match-Resonanz Anzeige (wenn Daten vorhanden)
+            if (resonanceData && resonanceData.wert1 !== undefined) {
+                const matchPercent = 100 - Math.abs(resonanceData.wert1 - resonanceData.wert2);
+                const rValue = (matchPercent / 100 * 1.1).toFixed(2);
+                html += '\
+                    <div class="need-modal-resonance">\
+                        <div class="need-modal-resonance-header">\
+                            <span class="need-modal-resonance-icon">🎯</span>\
+                            <span class="need-modal-resonance-label">Match-Resonanz</span>\
+                        </div>\
+                        <div class="need-modal-resonance-content">\
+                            <div class="need-modal-resonance-values">\
+                                <span class="need-modal-resonance-person">' + (resonanceData.ichName || 'Ich') + ': <strong>' + resonanceData.wert1 + '</strong></span>\
+                                <span class="need-modal-resonance-vs">vs</span>\
+                                <span class="need-modal-resonance-person">' + (resonanceData.partnerName || 'Partner') + ': <strong>' + resonanceData.wert2 + '</strong></span>\
+                            </div>\
+                            <div class="need-modal-resonance-match">\
+                                <span class="need-modal-resonance-percent">Match: <strong>' + Math.round(matchPercent) + '%</strong></span>\
+                                <span class="need-modal-resonance-r">R = ' + rValue + '</span>\
+                            </div>\
+                        </div>\
+                    </div>\
+                ';
+            }
+
+            // Statistische Daten berechnen (80% Konfidenzintervall)
+            const sigma = (kategorie && kategorie.sigma) || (typeof TiageStatistics !== 'undefined' ? TiageStatistics.DEFAULT_SIGMA : 14);
+            const typicalValue = 50;
+            if (typeof TiageStatistics !== 'undefined') {
+                const interval = TiageStatistics.calculateConfidenceInterval(typicalValue, sigma, 80);
+                html += '\
+                    <div class="need-modal-statistics">\
+                        <div class="need-modal-statistics-header">\
+                            <span class="need-modal-statistics-icon">📊</span>\
+                            <span class="need-modal-statistics-label">Statistischer Hintergrund</span>\
+                        </div>\
+                        <div class="need-modal-statistics-content">\
+                            <div class="need-modal-statistics-text">\
+                                80% der Befragten antworteten mit <strong>' + Math.round(interval.lower) + '-' + Math.round(interval.upper) + '</strong>\
+                            </div>\
+                            <div class="need-modal-statistics-sub">\
+                                (Normalverteilung, σ=' + sigma + ', Konfidenzintervall ±' + Math.round(interval.margin) + ')\
+                            </div>\
+                        </div>\
+                    </div>\
+                ';
+            }
+
+            html += '</div>';
+            container.innerHTML = html;
+        }
+
+        /**
+         * Parst URL-Parameter
+         */
+        function getUrlParams() {
+            const params = new URLSearchParams(window.location.search);
+            return {
+                needId: params.get('need') || params.get('needId'),
+                wert1: params.get('wert1') ? parseInt(params.get('wert1')) : undefined,
+                wert2: params.get('wert2') ? parseInt(params.get('wert2')) : undefined,
+                ichName: params.get('ich') || params.get('ichName'),
+                partnerName: params.get('partner') || params.get('partnerName')
+            };
+        }
+
+        /**
+         * Initialisierung
+         */
+        document.addEventListener('DOMContentLoaded', function() {
+            const params = getUrlParams();
+
+            if (!params.needId) {
+                document.getElementById('syntheseContent').innerHTML =
+                    '<div class="synthese-error"><div class="synthese-error-icon">❓</div><p>Kein Bedürfnis angegeben.<br><small>URL-Parameter: ?need=bedürfnis_id</small></p></div>';
+                return;
+            }
+
+            // Resonanz-Daten aus URL-Parametern
+            const resonanceData = (params.wert1 !== undefined && params.wert2 !== undefined) ? {
+                wert1: params.wert1,
+                wert2: params.wert2,
+                ichName: params.ichName,
+                partnerName: params.partnerName
+            } : null;
+
+            renderNeedContent(params.needId, resonanceData);
+        });
+    </script>
+</body>
+</html>
