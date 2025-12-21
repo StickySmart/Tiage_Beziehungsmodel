@@ -2,7 +2,7 @@
  * SSOT-Validierungs-Tests
  *
  * Prüft die Konsistenz zwischen:
- * - beduerfnis-ids.js (Bedürfnisse mit Kategorien)
+ * - beduerfnis-katalog.js (Wrapper für beduerfnis-katalog.json)
  * - taxonomie.js (SSOT für Kategorien #K1-#K18)
  *
  * Ausführung: node tests/ssot-validation.test.js
@@ -10,7 +10,7 @@
 
 // Load modules
 var TiageTaxonomie = require('../profiles/definitions/taxonomie.js');
-var BeduerfnisIds = require('../profiles/definitions/beduerfnis-ids.js');
+var BeduerfnisIds = require('../profiles/definitions/beduerfnis-katalog.js');
 
 // Simple test framework
 var tests = [];

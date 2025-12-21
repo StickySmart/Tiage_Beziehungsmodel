@@ -21,31 +21,48 @@ const path = require('path');
 // KONFIGURATION
 // ═══════════════════════════════════════════════════════════════════════════
 
-const SSOT_PATH = path.join(__dirname, '../profiles/definitions/beduerfnis-ids.js');
+const SSOT_PATH = path.join(__dirname, '../profiles/data/beduerfnis-katalog.json');
 const PROFILES_DIR = path.join(__dirname, '../profiles/archetypen');
 const ARCHETYPEN = ['single', 'duo', 'duo-flex', 'solopoly', 'polyamor', 'ra', 'lat', 'aromantisch'];
 
 // ═══════════════════════════════════════════════════════════════════════════
-// SSOT LADEN
+// SSOT LADEN (direkt aus JSON - keine separate IDS-Datei mehr!)
 // ═══════════════════════════════════════════════════════════════════════════
 
+function labelToKey(label) {
+    return label
+        .toLowerCase()
+        .replace(/ä/g, 'ae')
+        .replace(/ö/g, 'oe')
+        .replace(/ü/g, 'ue')
+        .replace(/ß/g, 'ss')
+        .replace(/&/g, '_und_')
+        .replace(/-/g, '_')
+        .replace(/\s+/g, '_')
+        .replace(/[^a-z0-9_]/g, '')
+        .replace(/_+/g, '_')
+        .replace(/^_|_$/g, '');
+}
+
 function loadSSOT() {
-    console.log('📚 Lade SSOT (beduerfnis-ids.js)...');
+    console.log('📚 Lade SSOT (beduerfnis-katalog.json)...');
     const content = fs.readFileSync(SSOT_PATH, 'utf8');
+    const katalog = JSON.parse(content);
 
-    // Extrahiere das beduerfnisse-Objekt
     const ssot = {};
-    const regex = /'(#B\d+)':\s*\{\s*key:\s*'([^']+)',\s*kategorie:\s*'([^']+)',\s*label:\s*'([^']+)'/g;
-    let match;
+    const beduerfnisse = katalog.beduerfnisse || {};
 
-    while ((match = regex.exec(content)) !== null) {
-        ssot[match[1]] = {
-            id: match[1],
-            key: match[2],
-            kategorie: match[3],
-            label: match[4]
-        };
-    }
+    Object.keys(beduerfnisse).forEach(id => {
+        if (id.startsWith('#B')) {
+            const need = beduerfnisse[id];
+            ssot[id] = {
+                id: id,
+                key: labelToKey(need.label),
+                kategorie: need.kategorie,
+                label: need.label
+            };
+        }
+    });
 
     console.log(`   ✓ ${Object.keys(ssot).length} Bedürfnisse geladen\n`);
     return ssot;
