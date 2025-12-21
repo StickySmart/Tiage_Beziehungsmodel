@@ -1408,6 +1408,9 @@ const AttributeSummaryCard = (function() {
             if (dimColor) {
                 sliderElement.style.background = `linear-gradient(to right, ${dimColor} 0%, ${dimColor} ${numValue}%, rgba(255,255,255,0.15) ${numValue}%, rgba(255,255,255,0.15) 100%)`;
             }
+
+            // Changed-Indicator (*) aktualisieren
+            updateChangedIndicator(needItem, needId, numValue);
         }
 
         // Event für Änderungstracking
@@ -1435,6 +1438,9 @@ const AttributeSummaryCard = (function() {
         if (needItem) {
             const slider = needItem.querySelector('.need-slider');
             if (slider) slider.value = numValue;
+
+            // Changed-Indicator (*) aktualisieren
+            updateChangedIndicator(needItem, needId, numValue);
         }
 
         // Event
