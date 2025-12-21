@@ -274,6 +274,14 @@ const BeduerfnisDetailView = (function() {
                         👓 ${data.taxonomy.perspektive.id} ${data.taxonomy.perspektive.label}
                     </div>
                     ` : ''}
+                    ${data.taxonomy.resonanz ? `
+                    <div class="beduerfnis-detail-view__classification-item beduerfnis-detail-view__classification-item--resonanz" style="color: ${data.taxonomy.resonanz.color};">
+                        ${data.taxonomy.resonanz.emoji} Resonanz: ${data.taxonomy.resonanz.label}
+                        <span class="beduerfnis-detail-view__resonanz-question" style="font-size: 0.85em; opacity: 0.8; display: block; margin-left: 1.5em;">
+                            „${data.taxonomy.resonanz.question}"
+                        </span>
+                    </div>
+                    ` : ''}
                 </div>
             </div>
         `;
@@ -548,7 +556,8 @@ const BeduerfnisDetailView = (function() {
         const taxonomy = {
             kategorie: null,
             dimension: null,
-            perspektive: null
+            perspektive: null,
+            resonanz: null
         };
 
         // Extrahiere aus Tags
@@ -573,7 +582,68 @@ const BeduerfnisDetailView = (function() {
             });
         }
 
+        // Hole Resonanz-Dimension aus PerspektivenModal
+        taxonomy.resonanz = getResonanzDimension(need.stringKey || needId);
+
         return taxonomy;
+    }
+
+    /**
+     * Holt Resonanz-Dimension für ein Bedürfnis
+     * Mapping: Leben, Dynamik, Identität, Philosophie
+     */
+    function getResonanzDimension(needKey) {
+        // Versuche aus PerspektivenModal zu holen
+        if (typeof PerspektivenModal !== 'undefined' && PerspektivenModal.needToDimension) {
+            const dimKey = PerspektivenModal.needToDimension[needKey];
+            if (dimKey && PerspektivenModal.dimensionConfig?.[dimKey]) {
+                const config = PerspektivenModal.dimensionConfig[dimKey];
+                return {
+                    key: dimKey,
+                    label: config.name,
+                    emoji: config.emoji,
+                    color: config.color,
+                    question: config.question
+                };
+            }
+        }
+
+        // Fallback: Versuche aus Need-Key abzuleiten
+        const resonanzMapping = {
+            // IDENTITÄT (💚)
+            'authentizitaet': { key: 'identitaet', label: 'Identität', emoji: '💚', color: '#22c55e', question: 'Wer bin ich, wer bist du?' },
+            'selbst_ausdruck': { key: 'identitaet', label: 'Identität', emoji: '💚', color: '#22c55e', question: 'Wer bin ich, wer bist du?' },
+            'echtheit': { key: 'identitaet', label: 'Identität', emoji: '💚', color: '#22c55e', question: 'Wer bin ich, wer bist du?' },
+            'integritaet': { key: 'identitaet', label: 'Identität', emoji: '💚', color: '#22c55e', question: 'Wer bin ich, wer bist du?' },
+            'akzeptanz': { key: 'identitaet', label: 'Identität', emoji: '💚', color: '#22c55e', question: 'Wer bin ich, wer bist du?' },
+            'gesehen_werden': { key: 'identitaet', label: 'Identität', emoji: '💚', color: '#22c55e', question: 'Wer bin ich, wer bist du?' },
+            'verstanden_werden': { key: 'identitaet', label: 'Identität', emoji: '💚', color: '#22c55e', question: 'Wer bin ich, wer bist du?' },
+
+            // PHILOSOPHIE (🧠)
+            'kinderwunsch': { key: 'philosophie', label: 'Philosophie', emoji: '🧠', color: '#6366f1', question: 'Wie wollen wir Beziehung leben?' },
+            'langfristige_bindung': { key: 'philosophie', label: 'Philosophie', emoji: '🧠', color: '#6366f1', question: 'Wie wollen wir Beziehung leben?' },
+            'verbindlichkeit': { key: 'philosophie', label: 'Philosophie', emoji: '🧠', color: '#6366f1', question: 'Wie wollen wir Beziehung leben?' },
+            'gemeinsamer_wohnraum': { key: 'philosophie', label: 'Philosophie', emoji: '🧠', color: '#6366f1', question: 'Wie wollen wir Beziehung leben?' },
+            'treueversprechen': { key: 'philosophie', label: 'Philosophie', emoji: '🧠', color: '#6366f1', question: 'Wie wollen wir Beziehung leben?' },
+
+            // LEBEN (🔥)
+            'sexuelle_haeufigkeit': { key: 'leben', label: 'Leben', emoji: '🔥', color: '#f97316', question: 'Was zieht uns an?' },
+            'sexuelle_experimentierfreude': { key: 'leben', label: 'Leben', emoji: '🔥', color: '#f97316', question: 'Was zieht uns an?' },
+            'sexuelle_verbindung': { key: 'leben', label: 'Leben', emoji: '🔥', color: '#f97316', question: 'Was zieht uns an?' },
+            'koerpernaehe': { key: 'leben', label: 'Leben', emoji: '🔥', color: '#f97316', question: 'Was zieht uns an?' },
+            'koerperkontakt': { key: 'leben', label: 'Leben', emoji: '🔥', color: '#f97316', question: 'Was zieht uns an?' },
+            'intimitaet': { key: 'leben', label: 'Leben', emoji: '🔥', color: '#f97316', question: 'Was zieht uns an?' },
+
+            // DYNAMIK (⚡)
+            'kontrolle_ausueben': { key: 'dynamik', label: 'Dynamik', emoji: '⚡', color: '#eab308', question: 'Wer führt, wer folgt?' },
+            'hingabe': { key: 'dynamik', label: 'Dynamik', emoji: '⚡', color: '#eab308', question: 'Wer führt, wer folgt?' },
+            'fuehrung_geben': { key: 'dynamik', label: 'Dynamik', emoji: '⚡', color: '#eab308', question: 'Wer führt, wer folgt?' },
+            'gefuehrt_werden': { key: 'dynamik', label: 'Dynamik', emoji: '⚡', color: '#eab308', question: 'Wer führt, wer folgt?' },
+            'machtaustausch': { key: 'dynamik', label: 'Dynamik', emoji: '⚡', color: '#eab308', question: 'Wer führt, wer folgt?' },
+            'sich_fallenlassen': { key: 'dynamik', label: 'Dynamik', emoji: '⚡', color: '#eab308', question: 'Wer führt, wer folgt?' }
+        };
+
+        return resonanzMapping[needKey] || null;
     }
 
     /**
