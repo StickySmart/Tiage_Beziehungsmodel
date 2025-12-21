@@ -20383,6 +20383,13 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
                         });
                         console.log('[selectSuggestion] Resonanzfaktor aktiviert:', suggestion.id, '- Kategorien:', resonanzKategorien.map(function(k) { return k.id; }));
                     }
+                } else if (suggestion.type === 'need' && suggestion.id) {
+                    // Bei Bedürfnis: Aktiviere die zugehörige Kategorie
+                    var needMetadata = DimensionKategorieFilter.getNeedMetadata(suggestion.id);
+                    if (needMetadata && needMetadata.kategorieId) {
+                        DimensionKategorieFilter.toggleKategorie(needMetadata.kategorieId);
+                        console.log('[selectSuggestion] Bedürfnis aktiviert:', suggestion.id, '- Kategorie:', needMetadata.kategorieId);
+                    }
                 }
             }
 
