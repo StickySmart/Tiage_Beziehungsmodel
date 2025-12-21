@@ -7835,21 +7835,35 @@
          * @param {string} needId - Die ID des Bedürfnisses
          */
         function openNeedWithResonance(needId) {
-            const resonanceData = getResonanceDataForNeed(needId);
+            // Komplette Matching-Daten in sessionStorage speichern (SSOT)
+            if (lastGfkMatchingResult && lastGfkMatchingResult.details) {
+                const allNeeds = [
+                    ...(lastGfkMatchingResult.details.uebereinstimmend || []),
+                    ...(lastGfkMatchingResult.details.komplementaer || []),
+                    ...(lastGfkMatchingResult.details.konflikt || [])
+                ];
 
-            // URL aufbauen
-            let url = 'tiagesynthese.html?need=' + encodeURIComponent(needId);
+                const ichName = archetypeDescriptions[currentArchetype]?.name || 'Du';
+                const partnerName = archetypeDescriptions[selectedPartner]?.name || 'Partner';
 
-            // Resonanz-Daten als Parameter anhängen (falls vorhanden)
-            if (resonanceData) {
-                url += '&wert1=' + resonanceData.wert1;
-                url += '&wert2=' + resonanceData.wert2;
-                if (resonanceData.ichName) url += '&ich=' + encodeURIComponent(resonanceData.ichName);
-                if (resonanceData.partnerName) url += '&partner=' + encodeURIComponent(resonanceData.partnerName);
+                // Alle Resonanz-Daten als Map speichern
+                const resonanceMap = {};
+                allNeeds.forEach(function(n) {
+                    resonanceMap[n.id] = {
+                        wert1: n.wert1 || 0,
+                        wert2: n.wert2 || 0
+                    };
+                });
+
+                sessionStorage.setItem('tiageSyntheseData', JSON.stringify({
+                    resonanceMap: resonanceMap,
+                    ichName: ichName,
+                    partnerName: partnerName
+                }));
             }
 
-            // Zur Seite navigieren
-            window.location.href = url;
+            // Zur Seite navigieren (nur needId, Resonanz kommt aus sessionStorage)
+            window.location.href = 'tiagesynthese.html?need=' + encodeURIComponent(needId);
         }
 
         /**
