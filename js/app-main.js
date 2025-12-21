@@ -11135,14 +11135,102 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
             const validIchGeschlecht = ensureValidGeschlecht(ichDims.geschlecht);
             const validIchDominanz = ensureValidDominanz(ichDims.dominanz);
             const validIchOrientierung = ensureValidOrientierung(ichDims.orientierung);
-            const validPartnerGeschlecht = ensureValidGeschlecht(partnerDims.geschlecht);
-            const validPartnerDominanz = ensureValidDominanz(partnerDims.dominanz);
-            const validPartnerOrientierung = ensureValidOrientierung(partnerDims.orientierung);
+
+            // BUGFIX: Wenn Partner-Dimensionen fehlen, verwende kompatible Defaults
+            // statt feste Defaults die möglicherweise inkompatibel sind
+            const partnerHasGeschlecht = partnerDims.geschlecht && partnerDims.geschlecht.primary;
+            const partnerHasOrientierung = partnerDims.orientierung && partnerDims.orientierung.primary;
+
+            let validPartnerGeschlecht;
+            if (partnerHasGeschlecht) {
+                validPartnerGeschlecht = ensureValidGeschlecht(partnerDims.geschlecht);
+            } else {
+                // Setze kompatibles Geschlecht basierend auf ICH-Orientierung
+                const ichOriPrimary = validIchOrientierung.primary;
+                const ichGeschPrimary = validIchGeschlecht.primary;
+                if (ichOriPrimary === 'heterosexuell') {
+                    // Heterosexuell: Partner sollte anderes Geschlecht haben
+                    validPartnerGeschlecht = {
+                        primary: ichGeschPrimary === 'mann' ? 'frau' : 'mann',
+                        secondary: 'cis'
+                    };
+                } else {
+                    // Homosexuell/bi-pansexuell: Gleiches Geschlecht ist kompatibel
+                    validPartnerGeschlecht = {
+                        primary: ichGeschPrimary,
+                        secondary: 'cis'
+                    };
+                }
+                console.log('[findBestPartnerMatch] Partner-Geschlecht nicht gesetzt, verwende kompatiblen Default:', validPartnerGeschlecht);
+            }
+
+            let validPartnerOrientierung;
+            if (partnerHasOrientierung) {
+                validPartnerOrientierung = ensureValidOrientierung(partnerDims.orientierung);
+            } else {
+                // Setze kompatible Orientierung basierend auf ICH
+                validPartnerOrientierung = {
+                    primary: validIchOrientierung.primary,
+                    secondary: validIchOrientierung.secondary
+                };
+                console.log('[findBestPartnerMatch] Partner-Orientierung nicht gesetzt, verwende ICH-Orientierung:', validPartnerOrientierung);
+            }
+
+            // FEATURE: Dominanz-Auto-Korrelation - komplementäre Dominanz für beste Kompatibilität
+            const partnerHasDominanz = partnerDims.dominanz && partnerDims.dominanz.primary;
+            let validPartnerDominanz;
+            if (partnerHasDominanz) {
+                validPartnerDominanz = ensureValidDominanz(partnerDims.dominanz);
+            } else {
+                // Setze komplementäre Dominanz basierend auf ICH für maximalen Modifier (+8)
+                const ichDomPrimary = validIchDominanz.primary;
+                if (ichDomPrimary === 'dominant') {
+                    // dominant + submissiv = +8 Modifier (beste Kombination)
+                    validPartnerDominanz = { primary: 'submissiv', secondary: null };
+                } else if (ichDomPrimary === 'submissiv') {
+                    // submissiv + dominant = +8 Modifier (beste Kombination)
+                    validPartnerDominanz = { primary: 'dominant', secondary: null };
+                } else if (ichDomPrimary === 'switch') {
+                    // switch + switch = +3 Modifier
+                    validPartnerDominanz = { primary: 'switch', secondary: null };
+                } else {
+                    // ausgeglichen + ausgeglichen = +5 Modifier
+                    validPartnerDominanz = { primary: 'ausgeglichen', secondary: null };
+                }
+                console.log('[findBestPartnerMatch] Partner-Dominanz nicht gesetzt, verwende komplementären Default:', validPartnerDominanz);
+            }
+
+            // FEATURE: GFK-Auto-Korrelation - gleiche oder höhere GFK-Kompetenz
+            const partnerHasGfk = partnerDims.gfk && partnerDims.gfk !== '';
+            let validPartnerGfk;
+            if (partnerHasGfk) {
+                validPartnerGfk = partnerDims.gfk;
+            } else {
+                // Setze GFK basierend auf ICH - gleich oder höher für beste Kompatibilität
+                const ichGfk = ichDims.gfk || 'mittel';
+                // hoch-hoch = 100, mittel-mittel = 65, niedrig-niedrig = 25
+                // Für beste Kompatibilität: Gleiche Stufe oder höher
+                if (ichGfk === 'hoch') {
+                    validPartnerGfk = 'hoch'; // hoch-hoch = 100
+                } else if (ichGfk === 'mittel') {
+                    validPartnerGfk = 'hoch'; // mittel-hoch = 75 (besser als mittel-mittel = 65)
+                } else {
+                    validPartnerGfk = 'mittel'; // niedrig-mittel = 45 (besser als niedrig-niedrig = 25)
+                }
+                console.log('[findBestPartnerMatch] Partner-GFK nicht gesetzt, verwende optimalen Default:', validPartnerGfk);
+            }
 
             console.log('[findBestPartnerMatch] Validierte ICH-Dimensionen:', {
                 geschlecht: validIchGeschlecht,
                 dominanz: validIchDominanz,
-                orientierung: validIchOrientierung
+                orientierung: validIchOrientierung,
+                gfk: ichDims.gfk || 'mittel'
+            });
+            console.log('[findBestPartnerMatch] Validierte Partner-Dimensionen:', {
+                geschlecht: validPartnerGeschlecht,
+                dominanz: validPartnerDominanz,
+                orientierung: validPartnerOrientierung,
+                gfk: validPartnerGfk
             });
 
             let bestMatch = null;
@@ -11168,7 +11256,7 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
                         dominanz: validPartnerDominanz,
                         geschlecht: validPartnerGeschlecht,
                         orientierung: validPartnerOrientierung,
-                        gfk: partnerDims.gfk || 'mittel'
+                        gfk: validPartnerGfk
                     };
 
                     let score = 0;
@@ -11309,15 +11397,98 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
             const validIchGeschlecht = ensureValidGeschlecht(ichDims.geschlecht);
             const validIchDominanz = ensureValidDominanz(ichDims.dominanz);
             const validIchOrientierung = ensureValidOrientierung(ichDims.orientierung);
-            const validPartnerGeschlecht = ensureValidGeschlecht(partnerDims.geschlecht);
-            const validPartnerDominanz = ensureValidDominanz(partnerDims.dominanz);
-            const validPartnerOrientierung = ensureValidOrientierung(partnerDims.orientierung);
+
+            // BUGFIX: Wenn Partner-Dimensionen fehlen, verwende kompatible Defaults
+            // statt feste Defaults die möglicherweise inkompatibel sind
+            const partnerHasGeschlecht = partnerDims.geschlecht && partnerDims.geschlecht.primary;
+            const partnerHasOrientierung = partnerDims.orientierung && partnerDims.orientierung.primary;
+
+            let validPartnerGeschlecht;
+            if (partnerHasGeschlecht) {
+                validPartnerGeschlecht = ensureValidGeschlecht(partnerDims.geschlecht);
+            } else {
+                // Setze kompatibles Geschlecht basierend auf ICH-Orientierung
+                // Für heterosexuell: gegengeschlechtlich, sonst gleiches Geschlecht
+                const ichOriPrimary = validIchOrientierung.primary;
+                const ichGeschPrimary = validIchGeschlecht.primary;
+                if (ichOriPrimary === 'heterosexuell') {
+                    // Heterosexuell: Partner sollte anderes Geschlecht haben
+                    validPartnerGeschlecht = {
+                        primary: ichGeschPrimary === 'mann' ? 'frau' : 'mann',
+                        secondary: 'cis'
+                    };
+                } else {
+                    // Homosexuell/bi-pansexuell: Gleiches Geschlecht ist kompatibel
+                    validPartnerGeschlecht = {
+                        primary: ichGeschPrimary,
+                        secondary: 'cis'
+                    };
+                }
+                console.log('[findBestIchMatch] Partner-Geschlecht nicht gesetzt, verwende kompatiblen Default:', validPartnerGeschlecht);
+            }
+
+            let validPartnerOrientierung;
+            if (partnerHasOrientierung) {
+                validPartnerOrientierung = ensureValidOrientierung(partnerDims.orientierung);
+            } else {
+                // Setze kompatible Orientierung basierend auf ICH
+                validPartnerOrientierung = {
+                    primary: validIchOrientierung.primary,
+                    secondary: validIchOrientierung.secondary
+                };
+                console.log('[findBestIchMatch] Partner-Orientierung nicht gesetzt, verwende ICH-Orientierung:', validPartnerOrientierung);
+            }
+
+            // FEATURE: Dominanz-Auto-Korrelation - komplementäre Dominanz für beste Kompatibilität
+            const partnerHasDominanz = partnerDims.dominanz && partnerDims.dominanz.primary;
+            let validPartnerDominanz;
+            if (partnerHasDominanz) {
+                validPartnerDominanz = ensureValidDominanz(partnerDims.dominanz);
+            } else {
+                // Setze komplementäre Dominanz basierend auf ICH für maximalen Modifier (+8)
+                const ichDomPrimary = validIchDominanz.primary;
+                if (ichDomPrimary === 'dominant') {
+                    // dominant + submissiv = +8 Modifier (beste Kombination)
+                    validPartnerDominanz = { primary: 'submissiv', secondary: null };
+                } else if (ichDomPrimary === 'submissiv') {
+                    // submissiv + dominant = +8 Modifier (beste Kombination)
+                    validPartnerDominanz = { primary: 'dominant', secondary: null };
+                } else if (ichDomPrimary === 'switch') {
+                    // switch + switch = +3 Modifier
+                    validPartnerDominanz = { primary: 'switch', secondary: null };
+                } else {
+                    // ausgeglichen + ausgeglichen = +5 Modifier
+                    validPartnerDominanz = { primary: 'ausgeglichen', secondary: null };
+                }
+                console.log('[findBestIchMatch] Partner-Dominanz nicht gesetzt, verwende komplementären Default:', validPartnerDominanz);
+            }
+
+            // FEATURE: GFK-Auto-Korrelation - gleiche oder höhere GFK-Kompetenz
+            const partnerHasGfk = partnerDims.gfk && partnerDims.gfk !== '';
+            let validPartnerGfk;
+            if (partnerHasGfk) {
+                validPartnerGfk = partnerDims.gfk;
+            } else {
+                // Setze GFK basierend auf ICH - gleich oder höher für beste Kompatibilität
+                const ichGfk = ichDims.gfk || 'mittel';
+                // hoch-hoch = 100, mittel-mittel = 65, niedrig-niedrig = 25
+                // Für beste Kompatibilität: Gleiche Stufe oder höher
+                if (ichGfk === 'hoch') {
+                    validPartnerGfk = 'hoch'; // hoch-hoch = 100
+                } else if (ichGfk === 'mittel') {
+                    validPartnerGfk = 'hoch'; // mittel-hoch = 75 (besser als mittel-mittel = 65)
+                } else {
+                    validPartnerGfk = 'mittel'; // niedrig-mittel = 45 (besser als niedrig-niedrig = 25)
+                }
+                console.log('[findBestIchMatch] Partner-GFK nicht gesetzt, verwende optimalen Default:', validPartnerGfk);
+            }
 
             console.log('[findBestIchMatch] selectedPartner:', selectedPartner, '-> verwendet:', partnerArchetype);
             console.log('[findBestIchMatch] Validierte Partner-Dimensionen:', {
                 geschlecht: validPartnerGeschlecht,
                 dominanz: validPartnerDominanz,
-                orientierung: validPartnerOrientierung
+                orientierung: validPartnerOrientierung,
+                gfk: validPartnerGfk
             });
 
             let bestMatch = null;
@@ -11343,7 +11514,7 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
                         dominanz: validPartnerDominanz,
                         geschlecht: validPartnerGeschlecht,
                         orientierung: validPartnerOrientierung,
-                        gfk: partnerDims.gfk || 'mittel'
+                        gfk: validPartnerGfk
                     };
 
                     let score = 0;
