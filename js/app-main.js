@@ -19948,7 +19948,10 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
             }
 
             if (needsSource) {
-                Object.values(needsSource).forEach(function(need) {
+                // FIX #878: Object.entries statt Object.values um die ID (Schlüssel) zu erhalten
+                Object.entries(needsSource).forEach(function(entry) {
+                    var needId = entry[0];  // '#B21' etc.
+                    var need = entry[1];    // { key, kategorie, label, frage? }
                     var matchScore = 0;
 
                     // Check label with fuzzy matching
@@ -19961,7 +19964,7 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
                     }
 
                     // Check ID (exact match only for IDs)
-                    if (need.id && need.id.toLowerCase().includes(lowerQuery)) {
+                    if (needId && needId.toLowerCase().includes(lowerQuery)) {
                         matchScore = Math.max(matchScore, 8);
                     }
 
@@ -19974,10 +19977,10 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
                     }
 
                     if (matchScore > 0) {
-                        var persp = getPerspectiveForNeed(need.id);
+                        var persp = getPerspectiveForNeed(needId);
                         suggestions.push({
                             type: 'need',
-                            id: need.id,
+                            id: needId,
                             label: need.label,
                             description: need.frage || '',
                             perspective: persp,
