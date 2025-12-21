@@ -20491,9 +20491,37 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
          */
         function handleSearchKeydown(event) {
             var dropdown = document.getElementById('searchSuggestionsDropdown');
-            if (!dropdown || dropdown.style.display === 'none') return;
+            var dropdownVisible = dropdown && dropdown.style.display !== 'none';
+            var suggestions = suggestionState.suggestions || [];
 
-            var suggestions = suggestionState.suggestions;
+            // Enter funktioniert auch ohne sichtbares Dropdown (für Textsuche)
+            if (event.key === 'Enter') {
+                event.preventDefault();
+                if (dropdownVisible && suggestionState.selectedIndex >= 0) {
+                    selectSuggestion(suggestionState.selectedIndex);
+                } else {
+                    // FIX: Bei Enter ohne Vorschlagsauswahl -> Textsuche aktivieren
+                    var input = document.getElementById('profileReviewSearchInput');
+                    var query = input ? input.value.trim() : '';
+                    if (query.length > 0) {
+                        // Erstelle eine manuelle Textsuche-Suggestion
+                        suggestionState.activeSuggestion = {
+                            type: 'need',
+                            id: null,
+                            label: query
+                        };
+                        // Zeige den Textsuche-Tag an
+                        displayActiveSuggestion();
+                        // Schließe das Dropdown
+                        hideSearchSuggestions();
+                        console.log('[handleSearchKeydown] Textsuche aktiviert für:', query);
+                    }
+                }
+                return;
+            }
+
+            // Für andere Tasten: Dropdown muss sichtbar sein
+            if (!dropdownVisible) return;
             if (suggestions.length === 0) return;
 
             switch (event.key) {
@@ -20513,13 +20541,6 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
                         -1
                     );
                     updateSuggestionSelection();
-                    break;
-
-                case 'Enter':
-                    event.preventDefault();
-                    if (suggestionState.selectedIndex >= 0) {
-                        selectSuggestion(suggestionState.selectedIndex);
-                    }
                     break;
 
                 case 'Escape':

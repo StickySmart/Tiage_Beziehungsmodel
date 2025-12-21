@@ -1185,7 +1185,18 @@
             if (!hint) return;
             var suggestion = suggestionState.activeSuggestion;
             if (!suggestion) return;
-            var typeLabel = { 'need': 'Bedürfnis', 'category': 'Kategorie', 'dimension': 'Dimension', 'resonanz': 'Resonanzfaktor', 'perspective': 'Perspektive' }[suggestion.type] || suggestion.type;
+
+            // FIX: Bei Bedürfnis/Textsuche spezielle Anzeige
+            if (suggestion.type === 'need') {
+                hint.innerHTML = '<span class="search-active-selection">' +
+                    '<span class="search-active-type type-textsearch">🔍 Textsuche</span>' +
+                    '<span class="search-active-label">"' + suggestion.label + '"</span>' +
+                    '<button class="search-active-clear" onclick="clearActiveSuggestion()" title="Suche entfernen">×</button></span>';
+                hint.classList.add('has-active-selection');
+                return;
+            }
+
+            var typeLabel = { 'category': 'Kategorie', 'dimension': 'Dimension', 'resonanz': 'Resonanzfaktor', 'perspective': 'Perspektive' }[suggestion.type] || suggestion.type;
             var iconPrefix = suggestion.icon ? suggestion.icon + ' ' : '';
             hint.innerHTML = '<span class="search-active-selection">' +
                 '<span class="search-active-type type-' + suggestion.type + '">' + typeLabel + '</span>' +
@@ -1212,8 +1223,34 @@
 
         function handleSearchKeydown(event) {
             var dropdown = document.getElementById('searchSuggestionsDropdown');
-            if (!dropdown || dropdown.style.display === 'none') return;
-            var suggestions = suggestionState.suggestions;
+            var dropdownVisible = dropdown && dropdown.style.display !== 'none';
+            var suggestions = suggestionState.suggestions || [];
+
+            // Enter funktioniert auch ohne sichtbares Dropdown (für Textsuche)
+            if (event.key === 'Enter') {
+                event.preventDefault();
+                if (dropdownVisible && suggestionState.selectedIndex >= 0) {
+                    selectSuggestion(suggestionState.selectedIndex);
+                } else {
+                    // FIX: Bei Enter ohne Vorschlagsauswahl -> Textsuche aktivieren
+                    var input = document.getElementById('profileReviewSearchInput');
+                    var query = input ? input.value.trim() : '';
+                    if (query.length > 0) {
+                        suggestionState.activeSuggestion = {
+                            type: 'need',
+                            id: null,
+                            label: query
+                        };
+                        displayActiveSuggestion();
+                        hideSearchSuggestions();
+                        console.log('[handleSearchKeydown] Textsuche aktiviert für:', query);
+                    }
+                }
+                return;
+            }
+
+            // Für andere Tasten: Dropdown muss sichtbar sein
+            if (!dropdownVisible) return;
             if (suggestions.length === 0) return;
 
             switch (event.key) {
@@ -1226,10 +1263,6 @@
                     event.preventDefault();
                     suggestionState.selectedIndex = Math.max(suggestionState.selectedIndex - 1, -1);
                     updateSuggestionSelection();
-                    break;
-                case 'Enter':
-                    event.preventDefault();
-                    if (suggestionState.selectedIndex >= 0) selectSuggestion(suggestionState.selectedIndex);
                     break;
                 case 'Escape':
                     event.preventDefault();
@@ -1660,7 +1693,18 @@
             if (!hint) return;
             var suggestion = suggestionState.activeSuggestion;
             if (!suggestion) return;
-            var typeLabel = { 'need': 'Bedürfnis', 'category': 'Kategorie', 'dimension': 'Dimension', 'resonanz': 'Resonanzfaktor', 'perspective': 'Perspektive' }[suggestion.type] || suggestion.type;
+
+            // FIX: Bei Bedürfnis/Textsuche spezielle Anzeige
+            if (suggestion.type === 'need') {
+                hint.innerHTML = '<span class="search-active-selection">' +
+                    '<span class="search-active-type type-textsearch">🔍 Textsuche</span>' +
+                    '<span class="search-active-label">"' + suggestion.label + '"</span>' +
+                    '<button class="search-active-clear" onclick="clearActiveSuggestion()" title="Suche entfernen">×</button></span>';
+                hint.classList.add('has-active-selection');
+                return;
+            }
+
+            var typeLabel = { 'category': 'Kategorie', 'dimension': 'Dimension', 'resonanz': 'Resonanzfaktor', 'perspective': 'Perspektive' }[suggestion.type] || suggestion.type;
             var iconPrefix = suggestion.icon ? suggestion.icon + ' ' : '';
             hint.innerHTML = '<span class="search-active-selection">' +
                 '<span class="search-active-type type-' + suggestion.type + '">' + typeLabel + '</span>' +
@@ -1687,8 +1731,34 @@
 
         function handleSearchKeydown(event) {
             var dropdown = document.getElementById('searchSuggestionsDropdown');
-            if (!dropdown || dropdown.style.display === 'none') return;
-            var suggestions = suggestionState.suggestions;
+            var dropdownVisible = dropdown && dropdown.style.display !== 'none';
+            var suggestions = suggestionState.suggestions || [];
+
+            // Enter funktioniert auch ohne sichtbares Dropdown (für Textsuche)
+            if (event.key === 'Enter') {
+                event.preventDefault();
+                if (dropdownVisible && suggestionState.selectedIndex >= 0) {
+                    selectSuggestion(suggestionState.selectedIndex);
+                } else {
+                    // FIX: Bei Enter ohne Vorschlagsauswahl -> Textsuche aktivieren
+                    var input = document.getElementById('profileReviewSearchInput');
+                    var query = input ? input.value.trim() : '';
+                    if (query.length > 0) {
+                        suggestionState.activeSuggestion = {
+                            type: 'need',
+                            id: null,
+                            label: query
+                        };
+                        displayActiveSuggestion();
+                        hideSearchSuggestions();
+                        console.log('[handleSearchKeydown] Textsuche aktiviert für:', query);
+                    }
+                }
+                return;
+            }
+
+            // Für andere Tasten: Dropdown muss sichtbar sein
+            if (!dropdownVisible) return;
             if (suggestions.length === 0) return;
 
             switch (event.key) {
@@ -1701,10 +1771,6 @@
                     event.preventDefault();
                     suggestionState.selectedIndex = Math.max(suggestionState.selectedIndex - 1, -1);
                     updateSuggestionSelection();
-                    break;
-                case 'Enter':
-                    event.preventDefault();
-                    if (suggestionState.selectedIndex >= 0) selectSuggestion(suggestionState.selectedIndex);
                     break;
                 case 'Escape':
                     event.preventDefault();
