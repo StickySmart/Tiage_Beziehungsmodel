@@ -524,20 +524,44 @@
                 `;
             }
 
-            // Aktueller Wert
-            if (currentValue !== null && currentValue !== undefined) {
-                html += `
-                    <div class="need-modal-value">
-                        <div class="need-modal-value-header">
-                            <span class="need-modal-value-label">Dein aktueller Wert</span>
-                            <span class="need-modal-value-number">${currentValue}</span>
+            // Statistische Daten berechnen (80% Konfidenzintervall)
+            let statisticsHtml = '';
+            const sigma = kategorie?.sigma || (typeof TiageStatistics !== 'undefined' ? TiageStatistics.DEFAULT_SIGMA : 14);
+            const typicalValue = 50; // Default mean
+            if (typeof TiageStatistics !== 'undefined') {
+                const interval = TiageStatistics.calculateConfidenceInterval(typicalValue, sigma, 80);
+                statisticsHtml = `
+                    <div class="need-modal-statistics">
+                        <div class="need-modal-statistics-header">
+                            <span class="need-modal-statistics-icon">📊</span>
+                            <span class="need-modal-statistics-label">Statistischer Hintergrund</span>
                         </div>
-                        <div class="need-modal-value-bar">
-                            <div class="need-modal-value-fill" style="width: ${currentValue}%"></div>
+                        <div class="need-modal-statistics-content">
+                            <div class="need-modal-statistics-text">
+                                80% der Befragten antworteten mit <strong>${Math.round(interval.lower)}-${Math.round(interval.upper)}</strong>
+                            </div>
+                            <div class="need-modal-statistics-sub">
+                                (Normalverteilung, σ=${sigma}, Konfidenzintervall ±${Math.round(interval.margin)})
+                            </div>
                         </div>
                     </div>
                 `;
             }
+
+            // Aktueller Wert (wird automatisch aktualisiert wenn Slider außerhalb geändert wird)
+            const displayValue = currentValue !== null && currentValue !== undefined ? currentValue : 50;
+            html += `
+                <div class="need-modal-value" data-need-id="${bId}" data-need-key="${needKey}">
+                    <div class="need-modal-value-header">
+                        <span class="need-modal-value-label">Dein aktueller Wert</span>
+                        <span class="need-modal-value-number" id="needModalValueDisplay">${displayValue}</span>
+                    </div>
+                    <div class="need-modal-value-bar">
+                        <div class="need-modal-value-fill" id="needModalValueFill" style="width: ${displayValue}%"></div>
+                    </div>
+                </div>
+                ${statisticsHtml}
+            `;
 
             html += '</div>';
             body.innerHTML = html;
@@ -569,6 +593,46 @@
                 document.body.style.overflow = '';
             }
         };
+
+        /**
+         * Aktualisiert die Wert-Anzeige im Info-Panel in Echtzeit
+         * Wird von Slidern in der Hauptansicht aufgerufen
+         */
+        window.updateNeedModalValueDisplay = function(value) {
+            const intValue = parseInt(value, 10);
+
+            // Wert-Anzeige im Modal aktualisieren
+            const valueDisplay = document.getElementById('needModalValueDisplay');
+            if (valueDisplay) {
+                valueDisplay.textContent = intValue;
+            }
+
+            // Fortschrittsbalken im Modal aktualisieren
+            const valueFill = document.getElementById('needModalValueFill');
+            if (valueFill) {
+                valueFill.style.width = intValue + '%';
+            }
+        };
+
+        // Event-Listener für Änderungen von Slidern in der Hauptansicht (flatNeedChange)
+        document.addEventListener('flatNeedChange', function(event) {
+            const modal = document.getElementById('needDefinitionModal');
+            if (modal && modal.classList.contains('active') && event.detail) {
+                const modalValue = document.querySelector('.need-modal-value');
+                if (modalValue) {
+                    const currentNeedId = modalValue.getAttribute('data-need-id');
+                    const currentNeedKey = modalValue.getAttribute('data-need-key');
+                    const changedNeedId = event.detail.needId;
+
+                    // Prüfen ob das geänderte Bedürfnis dem im Modal entspricht
+                    // (needId kann #B-Format oder String-Key sein)
+                    if (changedNeedId === currentNeedId || changedNeedId === currentNeedKey) {
+                        updateNeedModalValueDisplay(event.detail.value);
+                        console.log('[NeedsEditor] Modal aktualisiert:', changedNeedId, '=', event.detail.value);
+                    }
+                }
+            }
+        });
 
         /**
          * Öffnet Need mit Resonanz-Daten (wird von AttributeSummaryCard aufgerufen)
@@ -2175,7 +2239,59 @@
             height: 100%;
             background: linear-gradient(90deg, var(--accent-primary, #4a90d9), #60a5fa);
             border-radius: 4px;
-            transition: width 0.3s ease;
+            transition: width 0.15s ease;
+        }
+
+        /* Statistics Section Styles */
+        .need-modal-statistics {
+            margin-top: 12px;
+            padding: 14px;
+            background: rgba(34, 197, 94, 0.08);
+            border-radius: 10px;
+            border: 1px solid rgba(34, 197, 94, 0.2);
+            border-left: 3px solid #22c55e;
+        }
+
+        .need-modal-statistics-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 10px;
+        }
+
+        .need-modal-statistics-icon {
+            font-size: 16px;
+        }
+
+        .need-modal-statistics-label {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: #22c55e;
+            font-weight: 600;
+        }
+
+        .need-modal-statistics-content {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .need-modal-statistics-text {
+            font-size: 14px;
+            color: var(--text-primary, #fff);
+            line-height: 1.5;
+        }
+
+        .need-modal-statistics-text strong {
+            color: #22c55e;
+            font-weight: 700;
+        }
+
+        .need-modal-statistics-sub {
+            font-size: 11px;
+            color: var(--text-muted, #888);
+            font-style: italic;
         }
     </style>
 </body>
