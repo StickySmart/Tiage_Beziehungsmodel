@@ -360,11 +360,14 @@ const DimensionKategorieFilter = (function() {
 
     /**
      * Reset Filter (zeige alles)
+     * @param {boolean} silent - Wenn true, wird kein Event ausgelöst
      */
-    function reset() {
+    function reset(silent) {
         activeKategorien.clear();
         reRender();
-        dispatchFilterChange();
+        if (!silent) {
+            dispatchFilterChange();
+        }
     }
 
     /**

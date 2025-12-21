@@ -1128,9 +1128,9 @@
                 if (input) {
                     input.value = suggestion.label;
                 }
-                // Filter zurücksetzen und Textsuche aktivieren
+                // Filter zurücksetzen OHNE Event auszulösen (sonst wird activeSuggestion gelöscht)
                 if (typeof DimensionKategorieFilter !== 'undefined') {
-                    DimensionKategorieFilter.reset();
+                    DimensionKategorieFilter.reset(true); // silent = true
                 }
                 filterProfileReviewByNeed(suggestion.label);
                 console.log('[Filter] Bedürfnis als Textsuche:', suggestion.label);
@@ -1657,9 +1657,9 @@
                 if (input) {
                     input.value = suggestion.label;
                 }
-                // Filter zurücksetzen und Textsuche aktivieren
+                // Filter zurücksetzen OHNE Event auszulösen (sonst wird activeSuggestion gelöscht)
                 if (typeof DimensionKategorieFilter !== 'undefined') {
-                    DimensionKategorieFilter.reset();
+                    DimensionKategorieFilter.reset(true); // silent = true
                 }
                 filterProfileReviewByNeed(suggestion.label);
                 console.log('[Filter] Bedürfnis als Textsuche:', suggestion.label);
