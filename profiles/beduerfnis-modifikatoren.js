@@ -1600,7 +1600,7 @@ const BeduerfnisModifikatoren = {
             this._beduerfnisIds = BeduerfnisIds;
         } else if (typeof require !== 'undefined') {
             try {
-                this._beduerfnisIds = require('./definitions/beduerfnis-ids.js');
+                this._beduerfnisIds = require('./definitions/beduerfnis-katalog.js');
             } catch (e) {
                 console.warn('BeduerfnisIds nicht verfügbar:', e.message);
             }

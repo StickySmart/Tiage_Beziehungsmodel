@@ -175,10 +175,11 @@ const DuoProfil = {
         '#B88': 80,  // beschuetzen - Hoch - will beschützen
 
         // ─────────────────────────────────────────────────────────────────────────
-        // LEBENSPLANUNG (#B90-#B126) - Kinder, Ehe, Wohnen, Familie
+        // LEBENSPLANUNG (#B89-#B126) - Kinder, Ehe, Wohnen, Familie
         // Traditionelle Lebensplanung, Familie als Ziel
         // ─────────────────────────────────────────────────────────────────────────
-        '#B90': 85,   // kinderwunsch - Sehr hoch - Familie gründen
+        '#B89': 85,   // kinder_und_elternschaft - Sehr hoch - Familie gründen
+        '#B90': 85,   // elternschaft - Sehr hoch - Familie gründen
         '#B91': 80,   // elternschaft - Hoch - gemeinsam Eltern sein
         '#B92': 75,   // fortpflanzung - Hoch - biologisches Bedürfnis
         '#B93': 85,   // familie_gruenden - Sehr hoch - Kernwunsch
