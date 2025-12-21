@@ -1,0 +1,252 @@
+
+╔═══════════════════════════════════════════════════════════════════════════════╗
+║                    ARCHETYPEN-PROFIL VALIDIERUNGS-REPORT                      ║
+║                              2025-12-21                                    ║
+╚═══════════════════════════════════════════════════════════════════════════════╝
+
+═══ ZUSAMMENFASSUNG ═══
+
+| Archetyp    | Total | Korrekt | Falsch | Fehlend | Extra |
+|-------------|-------|---------|--------|---------|-------|
+| single      |   223 |      89 |    132 |       2 |     0 |
+| duo         |   223 |      91 |    131 |       1 |     0 |
+| duo-flex    |   223 |      89 |    132 |       2 |     0 |
+| solopoly    |   223 |      89 |    132 |       2 |     0 |
+| polyamor    |   223 |      89 |    132 |       2 |     0 |
+| ra          |   223 |      89 |    132 |       2 |     0 |
+| lat         |   223 |      89 |    132 |       2 |     0 |
+| aromantisch |   223 |      89 |    132 |       2 |     0 |
+
+📊 GESAMT: 1055 Diskrepanzen, 15 fehlende IDs
+
+
+═══ SINGLE ═══
+
+🔴 DISKREPANZEN (132):
+   #B1: SSOT="koerperliche_grundbeduerfnisse" vs Profil="luft" (Zeile 38)
+   #B8: SSOT="physische_sicherheit" vs Profil="sicherheit_physisch" (Zeile 45)
+   #B11: SSOT="stabilitaet_und_sicherheit" vs Profil="sich_sicher_fuehlen" (Zeile 53)
+   #B31: SSOT="gesehen_und_verstanden_werden" vs Profil="gesehen_werden" (Zeile 83)
+   #B69: SSOT="lebensfreude" vs Profil="leben_feiern" (Zeile 151)
+   #B71: SSOT="emotionale_tiefe" vs Profil="trauer_ausdruecken" (Zeile 153)
+   #B86: SSOT="machtdynamik" vs Profil="machtaustausch" (Zeile 173)
+   #B87: SSOT="rollenausdruck" vs Profil="dienend_sein" (Zeile 174)
+   #B90: SSOT="elternschaft" vs Profil="kinderwunsch" (Zeile 181)
+   #B91: SSOT="fortpflanzung" vs Profil="elternschaft" (Zeile 182)
+   #B92: SSOT="familie_gruenden" vs Profil="fortpflanzung" (Zeile 183)
+   #B93: SSOT="generativitaet" vs Profil="familie_gruenden" (Zeile 184)
+   #B94: SSOT="verbindlichkeit" vs Profil="generativitaet" (Zeile 185)
+   #B95: SSOT="langfristige_bindung" vs Profil="verbindlichkeit" (Zeile 186)
+   #B96: SSOT="rechtliche_sicherheit" vs Profil="langfristige_bindung" (Zeile 187)
+   #B97: SSOT="treueversprechen" vs Profil="rechtliche_sicherheit" (Zeile 188)
+   #B98: SSOT="zusammenleben" vs Profil="treueversprechen" (Zeile 189)
+   #B99: SSOT="haeuslichkeit" vs Profil="gemeinsamer_wohnraum" (Zeile 190)
+   #B100: SSOT="nest_bauen" vs Profil="haeuslichkeit" (Zeile 191)
+   #B101: SSOT="alltag_teilen" vs Profil="nest_bauen" (Zeile 192)
+   ... und 112 weitere
+
+🟡 FEHLEND (2):
+   #B89: kinder_und_elternschaft (Kinder-&-Elternschaft)
+   #B223: bondage_erleben (Bondage-erleben)
+
+═══ DUO ═══
+
+🔴 DISKREPANZEN (131):
+   #B1: SSOT="koerperliche_grundbeduerfnisse" vs Profil="luft" (Zeile 43)
+   #B8: SSOT="physische_sicherheit" vs Profil="sicherheit_physisch" (Zeile 50)
+   #B11: SSOT="stabilitaet_und_sicherheit" vs Profil="sich_sicher_fuehlen" (Zeile 58)
+   #B31: SSOT="gesehen_und_verstanden_werden" vs Profil="gesehen_werden" (Zeile 87)
+   #B69: SSOT="lebensfreude" vs Profil="leben_feiern" (Zeile 151)
+   #B71: SSOT="emotionale_tiefe" vs Profil="trauer_ausdruecken" (Zeile 153)
+   #B86: SSOT="machtdynamik" vs Profil="machtaustausch" (Zeile 173)
+   #B87: SSOT="rollenausdruck" vs Profil="dienend_sein" (Zeile 174)
+   #B91: SSOT="fortpflanzung" vs Profil="elternschaft" (Zeile 183)
+   #B92: SSOT="familie_gruenden" vs Profil="fortpflanzung" (Zeile 184)
+   #B93: SSOT="generativitaet" vs Profil="familie_gruenden" (Zeile 185)
+   #B94: SSOT="verbindlichkeit" vs Profil="generativitaet" (Zeile 186)
+   #B95: SSOT="langfristige_bindung" vs Profil="verbindlichkeit" (Zeile 187)
+   #B96: SSOT="rechtliche_sicherheit" vs Profil="langfristige_bindung" (Zeile 188)
+   #B97: SSOT="treueversprechen" vs Profil="rechtliche_sicherheit" (Zeile 189)
+   #B98: SSOT="zusammenleben" vs Profil="treueversprechen" (Zeile 190)
+   #B99: SSOT="haeuslichkeit" vs Profil="gemeinsamer_wohnraum" (Zeile 191)
+   #B100: SSOT="nest_bauen" vs Profil="haeuslichkeit" (Zeile 192)
+   #B101: SSOT="alltag_teilen" vs Profil="nest_bauen" (Zeile 193)
+   #B102: SSOT="eigener_raum" vs Profil="alltag_teilen" (Zeile 194)
+   ... und 111 weitere
+
+🟡 FEHLEND (1):
+   #B223: bondage_erleben (Bondage-erleben)
+
+═══ DUO-FLEX ═══
+
+🔴 DISKREPANZEN (132):
+   #B1: SSOT="koerperliche_grundbeduerfnisse" vs Profil="luft" (Zeile 43)
+   #B8: SSOT="physische_sicherheit" vs Profil="sicherheit_physisch" (Zeile 50)
+   #B11: SSOT="stabilitaet_und_sicherheit" vs Profil="sich_sicher_fuehlen" (Zeile 57)
+   #B31: SSOT="gesehen_und_verstanden_werden" vs Profil="gesehen_werden" (Zeile 85)
+   #B69: SSOT="lebensfreude" vs Profil="leben_feiern" (Zeile 147)
+   #B71: SSOT="emotionale_tiefe" vs Profil="trauer_ausdruecken" (Zeile 149)
+   #B86: SSOT="machtdynamik" vs Profil="machtaustausch" (Zeile 168)
+   #B87: SSOT="rollenausdruck" vs Profil="dienend_sein" (Zeile 169)
+   #B90: SSOT="elternschaft" vs Profil="kinderwunsch" (Zeile 175)
+   #B91: SSOT="fortpflanzung" vs Profil="elternschaft" (Zeile 176)
+   #B92: SSOT="familie_gruenden" vs Profil="fortpflanzung" (Zeile 177)
+   #B93: SSOT="generativitaet" vs Profil="familie_gruenden" (Zeile 178)
+   #B94: SSOT="verbindlichkeit" vs Profil="generativitaet" (Zeile 179)
+   #B95: SSOT="langfristige_bindung" vs Profil="verbindlichkeit" (Zeile 180)
+   #B96: SSOT="rechtliche_sicherheit" vs Profil="langfristige_bindung" (Zeile 181)
+   #B97: SSOT="treueversprechen" vs Profil="rechtliche_sicherheit" (Zeile 182)
+   #B98: SSOT="zusammenleben" vs Profil="treueversprechen" (Zeile 183)
+   #B99: SSOT="haeuslichkeit" vs Profil="gemeinsamer_wohnraum" (Zeile 184)
+   #B100: SSOT="nest_bauen" vs Profil="haeuslichkeit" (Zeile 185)
+   #B101: SSOT="alltag_teilen" vs Profil="nest_bauen" (Zeile 186)
+   ... und 112 weitere
+
+🟡 FEHLEND (2):
+   #B89: kinder_und_elternschaft (Kinder-&-Elternschaft)
+   #B223: bondage_erleben (Bondage-erleben)
+
+═══ SOLOPOLY ═══
+
+🔴 DISKREPANZEN (132):
+   #B1: SSOT="koerperliche_grundbeduerfnisse" vs Profil="luft" (Zeile 43)
+   #B8: SSOT="physische_sicherheit" vs Profil="sicherheit_physisch" (Zeile 50)
+   #B11: SSOT="stabilitaet_und_sicherheit" vs Profil="sich_sicher_fuehlen" (Zeile 57)
+   #B31: SSOT="gesehen_und_verstanden_werden" vs Profil="gesehen_werden" (Zeile 85)
+   #B69: SSOT="lebensfreude" vs Profil="leben_feiern" (Zeile 147)
+   #B71: SSOT="emotionale_tiefe" vs Profil="trauer_ausdruecken" (Zeile 149)
+   #B86: SSOT="machtdynamik" vs Profil="machtaustausch" (Zeile 168)
+   #B87: SSOT="rollenausdruck" vs Profil="dienend_sein" (Zeile 169)
+   #B90: SSOT="elternschaft" vs Profil="kinderwunsch" (Zeile 175)
+   #B91: SSOT="fortpflanzung" vs Profil="elternschaft" (Zeile 176)
+   #B92: SSOT="familie_gruenden" vs Profil="fortpflanzung" (Zeile 177)
+   #B93: SSOT="generativitaet" vs Profil="familie_gruenden" (Zeile 178)
+   #B94: SSOT="verbindlichkeit" vs Profil="generativitaet" (Zeile 179)
+   #B95: SSOT="langfristige_bindung" vs Profil="verbindlichkeit" (Zeile 180)
+   #B96: SSOT="rechtliche_sicherheit" vs Profil="langfristige_bindung" (Zeile 181)
+   #B97: SSOT="treueversprechen" vs Profil="rechtliche_sicherheit" (Zeile 182)
+   #B98: SSOT="zusammenleben" vs Profil="treueversprechen" (Zeile 183)
+   #B99: SSOT="haeuslichkeit" vs Profil="gemeinsamer_wohnraum" (Zeile 184)
+   #B100: SSOT="nest_bauen" vs Profil="haeuslichkeit" (Zeile 185)
+   #B101: SSOT="alltag_teilen" vs Profil="nest_bauen" (Zeile 186)
+   ... und 112 weitere
+
+🟡 FEHLEND (2):
+   #B89: kinder_und_elternschaft (Kinder-&-Elternschaft)
+   #B223: bondage_erleben (Bondage-erleben)
+
+═══ POLYAMOR ═══
+
+🔴 DISKREPANZEN (132):
+   #B1: SSOT="koerperliche_grundbeduerfnisse" vs Profil="luft" (Zeile 43)
+   #B8: SSOT="physische_sicherheit" vs Profil="sicherheit_physisch" (Zeile 50)
+   #B11: SSOT="stabilitaet_und_sicherheit" vs Profil="sich_sicher_fuehlen" (Zeile 57)
+   #B31: SSOT="gesehen_und_verstanden_werden" vs Profil="gesehen_werden" (Zeile 85)
+   #B69: SSOT="lebensfreude" vs Profil="leben_feiern" (Zeile 147)
+   #B71: SSOT="emotionale_tiefe" vs Profil="trauer_ausdruecken" (Zeile 149)
+   #B86: SSOT="machtdynamik" vs Profil="machtaustausch" (Zeile 168)
+   #B87: SSOT="rollenausdruck" vs Profil="dienend_sein" (Zeile 169)
+   #B90: SSOT="elternschaft" vs Profil="kinderwunsch" (Zeile 175)
+   #B91: SSOT="fortpflanzung" vs Profil="elternschaft" (Zeile 176)
+   #B92: SSOT="familie_gruenden" vs Profil="fortpflanzung" (Zeile 177)
+   #B93: SSOT="generativitaet" vs Profil="familie_gruenden" (Zeile 178)
+   #B94: SSOT="verbindlichkeit" vs Profil="generativitaet" (Zeile 179)
+   #B95: SSOT="langfristige_bindung" vs Profil="verbindlichkeit" (Zeile 180)
+   #B96: SSOT="rechtliche_sicherheit" vs Profil="langfristige_bindung" (Zeile 181)
+   #B97: SSOT="treueversprechen" vs Profil="rechtliche_sicherheit" (Zeile 182)
+   #B98: SSOT="zusammenleben" vs Profil="treueversprechen" (Zeile 183)
+   #B99: SSOT="haeuslichkeit" vs Profil="gemeinsamer_wohnraum" (Zeile 184)
+   #B100: SSOT="nest_bauen" vs Profil="haeuslichkeit" (Zeile 185)
+   #B101: SSOT="alltag_teilen" vs Profil="nest_bauen" (Zeile 186)
+   ... und 112 weitere
+
+🟡 FEHLEND (2):
+   #B89: kinder_und_elternschaft (Kinder-&-Elternschaft)
+   #B223: bondage_erleben (Bondage-erleben)
+
+═══ RA ═══
+
+🔴 DISKREPANZEN (132):
+   #B1: SSOT="koerperliche_grundbeduerfnisse" vs Profil="luft" (Zeile 37)
+   #B8: SSOT="physische_sicherheit" vs Profil="sicherheit_physisch" (Zeile 44)
+   #B11: SSOT="stabilitaet_und_sicherheit" vs Profil="sich_sicher_fuehlen" (Zeile 52)
+   #B31: SSOT="gesehen_und_verstanden_werden" vs Profil="gesehen_werden" (Zeile 81)
+   #B69: SSOT="lebensfreude" vs Profil="leben_feiern" (Zeile 144)
+   #B71: SSOT="emotionale_tiefe" vs Profil="trauer_ausdruecken" (Zeile 146)
+   #B86: SSOT="machtdynamik" vs Profil="machtaustausch" (Zeile 166)
+   #B87: SSOT="rollenausdruck" vs Profil="dienend_sein" (Zeile 167)
+   #B90: SSOT="elternschaft" vs Profil="kinderwunsch" (Zeile 174)
+   #B91: SSOT="fortpflanzung" vs Profil="elternschaft" (Zeile 175)
+   #B92: SSOT="familie_gruenden" vs Profil="fortpflanzung" (Zeile 176)
+   #B93: SSOT="generativitaet" vs Profil="familie_gruenden" (Zeile 177)
+   #B94: SSOT="verbindlichkeit" vs Profil="generativitaet" (Zeile 178)
+   #B95: SSOT="langfristige_bindung" vs Profil="verbindlichkeit" (Zeile 179)
+   #B96: SSOT="rechtliche_sicherheit" vs Profil="langfristige_bindung" (Zeile 180)
+   #B97: SSOT="treueversprechen" vs Profil="rechtliche_sicherheit" (Zeile 181)
+   #B98: SSOT="zusammenleben" vs Profil="treueversprechen" (Zeile 182)
+   #B99: SSOT="haeuslichkeit" vs Profil="gemeinsamer_wohnraum" (Zeile 183)
+   #B100: SSOT="nest_bauen" vs Profil="haeuslichkeit" (Zeile 184)
+   #B101: SSOT="alltag_teilen" vs Profil="nest_bauen" (Zeile 185)
+   ... und 112 weitere
+
+🟡 FEHLEND (2):
+   #B89: kinder_und_elternschaft (Kinder-&-Elternschaft)
+   #B223: bondage_erleben (Bondage-erleben)
+
+═══ LAT ═══
+
+🔴 DISKREPANZEN (132):
+   #B1: SSOT="koerperliche_grundbeduerfnisse" vs Profil="luft" (Zeile 43)
+   #B8: SSOT="physische_sicherheit" vs Profil="sicherheit_physisch" (Zeile 50)
+   #B11: SSOT="stabilitaet_und_sicherheit" vs Profil="sich_sicher_fuehlen" (Zeile 57)
+   #B31: SSOT="gesehen_und_verstanden_werden" vs Profil="gesehen_werden" (Zeile 85)
+   #B69: SSOT="lebensfreude" vs Profil="leben_feiern" (Zeile 147)
+   #B71: SSOT="emotionale_tiefe" vs Profil="trauer_ausdruecken" (Zeile 149)
+   #B86: SSOT="machtdynamik" vs Profil="machtaustausch" (Zeile 168)
+   #B87: SSOT="rollenausdruck" vs Profil="dienend_sein" (Zeile 169)
+   #B90: SSOT="elternschaft" vs Profil="kinderwunsch" (Zeile 175)
+   #B91: SSOT="fortpflanzung" vs Profil="elternschaft" (Zeile 176)
+   #B92: SSOT="familie_gruenden" vs Profil="fortpflanzung" (Zeile 177)
+   #B93: SSOT="generativitaet" vs Profil="familie_gruenden" (Zeile 178)
+   #B94: SSOT="verbindlichkeit" vs Profil="generativitaet" (Zeile 179)
+   #B95: SSOT="langfristige_bindung" vs Profil="verbindlichkeit" (Zeile 180)
+   #B96: SSOT="rechtliche_sicherheit" vs Profil="langfristige_bindung" (Zeile 181)
+   #B97: SSOT="treueversprechen" vs Profil="rechtliche_sicherheit" (Zeile 182)
+   #B98: SSOT="zusammenleben" vs Profil="treueversprechen" (Zeile 183)
+   #B99: SSOT="haeuslichkeit" vs Profil="gemeinsamer_wohnraum" (Zeile 184)
+   #B100: SSOT="nest_bauen" vs Profil="haeuslichkeit" (Zeile 185)
+   #B101: SSOT="alltag_teilen" vs Profil="nest_bauen" (Zeile 186)
+   ... und 112 weitere
+
+🟡 FEHLEND (2):
+   #B89: kinder_und_elternschaft (Kinder-&-Elternschaft)
+   #B223: bondage_erleben (Bondage-erleben)
+
+═══ AROMANTISCH ═══
+
+🔴 DISKREPANZEN (132):
+   #B1: SSOT="koerperliche_grundbeduerfnisse" vs Profil="luft" (Zeile 37)
+   #B8: SSOT="physische_sicherheit" vs Profil="sicherheit_physisch" (Zeile 44)
+   #B11: SSOT="stabilitaet_und_sicherheit" vs Profil="sich_sicher_fuehlen" (Zeile 52)
+   #B31: SSOT="gesehen_und_verstanden_werden" vs Profil="gesehen_werden" (Zeile 81)
+   #B69: SSOT="lebensfreude" vs Profil="leben_feiern" (Zeile 145)
+   #B71: SSOT="emotionale_tiefe" vs Profil="trauer_ausdruecken" (Zeile 147)
+   #B86: SSOT="machtdynamik" vs Profil="machtaustausch" (Zeile 167)
+   #B87: SSOT="rollenausdruck" vs Profil="dienend_sein" (Zeile 168)
+   #B90: SSOT="elternschaft" vs Profil="kinderwunsch" (Zeile 175)
+   #B91: SSOT="fortpflanzung" vs Profil="elternschaft" (Zeile 176)
+   #B92: SSOT="familie_gruenden" vs Profil="fortpflanzung" (Zeile 177)
+   #B93: SSOT="generativitaet" vs Profil="familie_gruenden" (Zeile 178)
+   #B94: SSOT="verbindlichkeit" vs Profil="generativitaet" (Zeile 179)
+   #B95: SSOT="langfristige_bindung" vs Profil="verbindlichkeit" (Zeile 180)
+   #B96: SSOT="rechtliche_sicherheit" vs Profil="langfristige_bindung" (Zeile 181)
+   #B97: SSOT="treueversprechen" vs Profil="rechtliche_sicherheit" (Zeile 182)
+   #B98: SSOT="zusammenleben" vs Profil="treueversprechen" (Zeile 183)
+   #B99: SSOT="haeuslichkeit" vs Profil="gemeinsamer_wohnraum" (Zeile 184)
+   #B100: SSOT="nest_bauen" vs Profil="haeuslichkeit" (Zeile 185)
+   #B101: SSOT="alltag_teilen" vs Profil="nest_bauen" (Zeile 186)
+   ... und 112 weitere
+
+🟡 FEHLEND (2):
+   #B89: kinder_und_elternschaft (Kinder-&-Elternschaft)
+   #B223: bondage_erleben (Bondage-erleben)
