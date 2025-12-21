@@ -1122,6 +1122,24 @@
             // Prüfe ob bereits mehrere Begriffe vorhanden sind (Komma = UND-Verknüpfung)
             var hasMultipleTerms = input && input.value.includes(',');
 
+            // FIX: Bei Bedürfnis-Auswahl -> Textsuche mit dem Label
+            if (suggestion.type === 'need') {
+                // Setze das Suchfeld auf das Bedürfnis-Label (ohne Komma am Ende)
+                if (input) {
+                    input.value = suggestion.label;
+                }
+                // Filter zurücksetzen und Textsuche aktivieren
+                if (typeof DimensionKategorieFilter !== 'undefined') {
+                    DimensionKategorieFilter.reset();
+                }
+                filterProfileReviewByNeed(suggestion.label);
+                console.log('[Filter] Bedürfnis als Textsuche:', suggestion.label);
+                hideSearchSuggestions();
+                displayActiveSuggestion();
+                return;
+            }
+
+            // Für andere Typen: Komma-Logik beibehalten
             if (input) {
                 var parts = input.value.split(',').map(function(p) { return p.trim(); }).filter(function(p) { return p.length > 0; });
                 // Letzten (unvollständigen) Teil ersetzen
@@ -1162,12 +1180,6 @@
                 }
                 console.log('[Filter] Kategorie aktiviert:', suggestion.id);
                 filterProfileReviewByNeed('');
-            } else if (suggestion.type === 'need') {
-                // Bei Bedürfnis-Auswahl: Bei Mehrfach nicht resetten
-                if (typeof DimensionKategorieFilter !== 'undefined' && !hasMultipleTerms) {
-                    DimensionKategorieFilter.reset();
-                }
-                filterProfileReviewByNeed(input ? input.value : suggestion.label);
             } else {
                 // Für andere Typen (dimension, perspective)
                 if (typeof DimensionKategorieFilter !== 'undefined' && !hasMultipleTerms) {
@@ -1630,6 +1642,24 @@
             // Prüfe ob bereits mehrere Begriffe vorhanden sind (Komma = UND-Verknüpfung)
             var hasMultipleTerms = input && input.value.includes(',');
 
+            // FIX: Bei Bedürfnis-Auswahl -> Textsuche mit dem Label
+            if (suggestion.type === 'need') {
+                // Setze das Suchfeld auf das Bedürfnis-Label (ohne Komma am Ende)
+                if (input) {
+                    input.value = suggestion.label;
+                }
+                // Filter zurücksetzen und Textsuche aktivieren
+                if (typeof DimensionKategorieFilter !== 'undefined') {
+                    DimensionKategorieFilter.reset();
+                }
+                filterProfileReviewByNeed(suggestion.label);
+                console.log('[Filter] Bedürfnis als Textsuche:', suggestion.label);
+                hideSearchSuggestions();
+                displayActiveSuggestion();
+                return;
+            }
+
+            // Für andere Typen: Komma-Logik beibehalten
             if (input) {
                 var parts = input.value.split(',').map(function(p) { return p.trim(); }).filter(function(p) { return p.length > 0; });
                 // Letzten (unvollständigen) Teil ersetzen
@@ -1670,12 +1700,6 @@
                 }
                 console.log('[Filter] Kategorie aktiviert:', suggestion.id);
                 filterProfileReviewByNeed('');
-            } else if (suggestion.type === 'need') {
-                // Bei Bedürfnis-Auswahl: Bei Mehrfach nicht resetten
-                if (typeof DimensionKategorieFilter !== 'undefined' && !hasMultipleTerms) {
-                    DimensionKategorieFilter.reset();
-                }
-                filterProfileReviewByNeed(input ? input.value : suggestion.label);
             } else {
                 // Für andere Typen (dimension, perspective)
                 if (typeof DimensionKategorieFilter !== 'undefined' && !hasMultipleTerms) {
