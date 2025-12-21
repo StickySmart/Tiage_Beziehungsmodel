@@ -7830,18 +7830,26 @@
         }
 
         /**
-         * Öffnet das Bedürfnis-Modal im Resonanz-Modus (falls Daten verfügbar)
+         * Öffnet die Bedürfnis-Detail-Seite (tiagesynthese.html)
          * Diese Funktion wird von der AttributeSummaryCard aufgerufen
          * @param {string} needId - Die ID des Bedürfnisses
          */
         function openNeedWithResonance(needId) {
             const resonanceData = getResonanceDataForNeed(needId);
+
+            // URL aufbauen
+            let url = 'tiagesynthese.html?need=' + encodeURIComponent(needId);
+
+            // Resonanz-Daten als Parameter anhängen (falls vorhanden)
             if (resonanceData) {
-                openNeedDefinitionModal(needId, 'resonance', resonanceData);
-            } else {
-                // Fallback: Standard Info-Modal
-                openNeedDefinitionModal(needId);
+                url += '&wert1=' + resonanceData.wert1;
+                url += '&wert2=' + resonanceData.wert2;
+                if (resonanceData.ichName) url += '&ich=' + encodeURIComponent(resonanceData.ichName);
+                if (resonanceData.partnerName) url += '&partner=' + encodeURIComponent(resonanceData.partnerName);
             }
+
+            // Zur Seite navigieren
+            window.location.href = url;
         }
 
         /**
