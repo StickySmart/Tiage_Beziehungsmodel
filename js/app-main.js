@@ -7573,9 +7573,21 @@
         };
 
         /**
+         * Hilfsfunktion: Perspektive für Kategorie ermitteln
+         */
+        function getPerspektiveForKategorieModal(katId) {
+            // GFK-Kern (#K1-#K10) → #P1 (Statistik/GFK)
+            // Dynamik (#K11) → #P4 (SexPositiv)
+            // Lebensthemen (#K12-#K18) → #P1
+            const katNum = parseInt(katId.replace('#K', ''));
+            if (katNum === 11) return '#P4';
+            return '#P1';
+        }
+
+        /**
          * Öffnet das Bedürfnis-Definition Modal
          * @param {string} needId - Die ID des Bedürfnisses
-         * @param {string} context - Kontext: 'resonance' für Storytelling-Modal, 'info' für Standard (default)
+         * @param {string} context - Kontext: 'resonance' für Match-Resonanz-Anzeige, 'info' für Standard (default)
          * @param {object} resonanceData - Optionale Resonanz-Daten {wert1, wert2, ichName, partnerName}
          */
         function openNeedDefinitionModal(needId, context, resonanceData) {
@@ -7589,78 +7601,187 @@
                 return;
             }
 
-            // Definition suchen - unterstützt sowohl #B-IDs als auch string-keys
-            let lookupKey = needId;
-            if (needId && needId.startsWith('#B') && typeof BeduerfnisIds !== 'undefined' && BeduerfnisIds.toKey) {
-                // Konvertiere #B-ID zu string-key für Lookup
-                lookupKey = BeduerfnisIds.toKey(needId);
+            // Katalog prüfen
+            const katalog = window.BeduerfnisKatalog;
+            if (!katalog) {
+                body.innerHTML = '<p style="color: var(--text-muted);">Katalog nicht geladen.</p>';
+                modal.classList.add('active');
+                return;
             }
-            const def = needDefinitions[lookupKey];
-            if (!def) {
-                body.innerHTML = '<p style="color: var(--text-muted);">Keine Definition verfügbar.</p>';
+
+            // Need-ID ermitteln (kann #B-ID oder string-key sein)
+            let bId = needId;
+            if (needId && !needId.startsWith('#B') && typeof BeduerfnisIds !== 'undefined') {
+                bId = BeduerfnisIds.toId(needId) || needId;
+            }
+
+            // Need aus Katalog holen
+            const need = katalog.beduerfnisse[bId];
+            if (!need) {
+                body.innerHTML = '<p style="color: var(--text-muted);">Bedürfnis ' + needId + ' nicht gefunden.</p>';
                 modal.classList.add('active');
                 return;
             }
 
             // Titel setzen
-            title.textContent = def.label;
+            title.textContent = need.label;
 
-            // Kategorie-Key für PerspektivenModal ermitteln
-            const kategorieKey = def.kategorie ? def.kategorie.toLowerCase()
-                .replace(/ä/g, 'ae').replace(/ö/g, 'oe').replace(/ü/g, 'ue').replace(/ß/g, 'ss')
-                .replace(/\s+&\s+/g, '_').replace(/\s+/g, '_') : '';
+            // Kategorie, Dimension, Perspektive aus Katalog holen
+            const kategorie = katalog.kategorien[need.kategorie];
+            const dimension = katalog.dimensionen[need.dimension];
+            const perspektive = kategorie ? katalog.perspektiven[getPerspektiveForKategorieModal(need.kategorie)] : null;
 
-            // Erweiterte Definition mit key für PerspektivenModal
-            // WICHTIG: lookupKey verwenden (string-key wie "grenzen_setzen"), nicht needId (#B-ID wie "#B80")
-            // damit PerspektivenModal.getPerspektiveForNeed() das richtige Mapping findet
-            const extendedDef = {
-                ...def,
-                key: lookupKey,
-                id: def['#ID'] || ''
-            };
+            // HTML aufbauen
+            let html = '<div class="need-modal-content">';
 
-            // PerspektivenModal verwenden für den Inhalt
-            if (typeof PerspektivenModal !== 'undefined') {
-                // Kontext-abhängiges Rendering
-                if (context === 'resonance' && resonanceData) {
-                    // Storytelling-Resonanz-Modal
-                    body.innerHTML = PerspektivenModal.renderResonanceModal(extendedDef, kategorieKey, resonanceData);
-                } else {
-                    // Standard Info-Modal
-                    body.innerHTML = PerspektivenModal.renderNeedModal(extendedDef, kategorieKey);
-                }
-            } else {
-                // Fallback: Alte Darstellung
-                const quelleHtml = def.quelle ? `
-                    <div style="padding: 12px; background: rgba(16,185,129,0.08); border-radius: 8px; border: 1px solid rgba(16,185,129,0.2);">
-                        <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
-                            <span style="font-size: 14px;">📚</span>
-                            <strong style="font-size: 12px; color: #10B981;">Quelle & Begründung</strong>
-                        </div>
-                        <p style="font-size: 12px; color: var(--text-primary); margin: 0 0 8px 0; font-weight: 500;">${def.quelle}</p>
-                        ${def.quelleDetail ? `<p style="font-size: 11px; color: var(--text-secondary); margin: 0; line-height: 1.5;">${def.quelleDetail}</p>` : ''}
-                    </div>
-                ` : '';
+            // ID Badge
+            html += '\
+                <div class="need-modal-id-row">\
+                    <span class="need-modal-id">' + need.id + '</span>\
+                    ' + (need.frageTyp ? '<span class="need-modal-type need-modal-type-' + need.frageTyp + '">' + (need.frageTyp === 'haupt' ? '📋 Hauptfrage' : '📑 Nuance') + '</span>' : '') + '\
+                </div>\
+            ';
 
-                body.innerHTML = `
-                    <div style="display: flex; flex-direction: column; gap: 16px;">
-                        <div style="display: flex; align-items: center; gap: 8px;">
-                            <span style="width: 12px; height: 12px; border-radius: 50%; background: ${def.kategorieColor};"></span>
-                            <span style="font-size: 12px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px;">${def.kategorie}</span>
-                        </div>
-                        <div style="background: rgba(255,255,255,0.03); border-radius: 12px; padding: 16px; border-left: 3px solid ${def.kategorieColor};">
-                            <p style="font-size: 14px; line-height: 1.7; color: var(--text-primary); margin: 0;">${def.definition}</p>
-                        </div>
-                        ${quelleHtml}
-                        <div style="padding: 12px; background: rgba(139,92,246,0.08); border-radius: 8px; border: 1px solid rgba(139,92,246,0.2);">
-                            <strong style="font-size: 12px; color: #8B5CF6;">Gewaltfreie Kommunikation (GFK)</strong>
-                            <p style="font-size: 11px; color: var(--text-secondary); margin: 8px 0 0 0; line-height: 1.5;">
-                                Das Bedürfnis nach <strong>${def.label}</strong> ist universell und frei von Bewertung.
-                            </p>
-                        </div>
-                    </div>
-                `;
+            // Kategorie & Dimension
+            html += '<div class="need-modal-meta-grid">';
+
+            if (kategorie) {
+                html += '\
+                    <div class="need-modal-meta-item">\
+                        <span class="need-modal-meta-label">Kategorie</span>\
+                        <span class="need-modal-meta-value" style="color: ' + kategorie.color + '">\
+                            <span class="need-modal-dot" style="background: ' + kategorie.color + '"></span>\
+                            ' + kategorie.label + '\
+                        </span>\
+                    </div>\
+                ';
             }
+
+            if (dimension) {
+                html += '\
+                    <div class="need-modal-meta-item">\
+                        <span class="need-modal-meta-label">Dimension</span>\
+                        <span class="need-modal-meta-value" style="color: ' + dimension.color + '">\
+                            <span class="need-modal-badge" style="background: ' + dimension.color + '">' + dimension.kurzform + '</span>\
+                            ' + dimension.label + '\
+                        </span>\
+                    </div>\
+                ';
+            }
+
+            if (perspektive) {
+                html += '\
+                    <div class="need-modal-meta-item">\
+                        <span class="need-modal-meta-label">Perspektive</span>\
+                        <span class="need-modal-meta-value">\
+                            ' + perspektive.id + ' ' + perspektive.label + '\
+                        </span>\
+                    </div>\
+                ';
+            }
+
+            html += '</div>';
+
+            // Frage (wenn vorhanden)
+            if (need.frage) {
+                html += '\
+                    <div class="need-modal-question">\
+                        <span class="need-modal-question-icon">❓</span>\
+                        <span class="need-modal-question-text">' + need.frage + '</span>\
+                    </div>\
+                ';
+            }
+
+            // Kontext (bei Nuancen)
+            if (need.kontext) {
+                html += '\
+                    <div class="need-modal-context">\
+                        <span class="need-modal-context-label">Kontext:</span>\
+                        <span class="need-modal-context-text">' + need.kontext + '</span>\
+                    </div>\
+                ';
+            }
+
+            // Hauptbedürfnis-Referenz (bei Nuancen)
+            if (need.hauptbeduerfnis) {
+                const hauptNeed = katalog.beduerfnisse[need.hauptbeduerfnis];
+                if (hauptNeed) {
+                    html += '\
+                        <div class="need-modal-parent">\
+                            <span class="need-modal-parent-label">Gehört zu:</span>\
+                            <span class="need-modal-parent-link" onclick="openNeedDefinitionModal(\'' + need.hauptbeduerfnis + '\')">' + hauptNeed.label + ' (' + need.hauptbeduerfnis + ')</span>\
+                        </div>\
+                    ';
+                }
+            }
+
+            // Nuancen (bei Hauptfragen)
+            if (need.nuancen && need.nuancen.length > 0) {
+                html += '\
+                    <div class="need-modal-nuancen">\
+                        <span class="need-modal-nuancen-label">Nuancen:</span>\
+                        <div class="need-modal-nuancen-list">\
+                            ' + need.nuancen.map(function(nId) {
+                                const n = katalog.beduerfnisse[nId];
+                                return n ? '<span class="need-modal-nuance-tag" onclick="openNeedDefinitionModal(\'' + nId + '\')">' + n.label + '</span>' : '';
+                            }).join('') + '\
+                        </div>\
+                    </div>\
+                ';
+            }
+
+            // Match-Resonanz Anzeige (nur bei TiageSynthese mit Resonanz-Daten)
+            if (context === 'resonance' && resonanceData) {
+                const matchPercent = 100 - Math.abs(resonanceData.wert1 - resonanceData.wert2);
+                const rValue = (matchPercent / 100 * 1.1).toFixed(2);
+                html += '\
+                    <div class="need-modal-resonance">\
+                        <div class="need-modal-resonance-header">\
+                            <span class="need-modal-resonance-icon">🎯</span>\
+                            <span class="need-modal-resonance-label">Match-Resonanz</span>\
+                        </div>\
+                        <div class="need-modal-resonance-content">\
+                            <div class="need-modal-resonance-values">\
+                                <span class="need-modal-resonance-person">' + resonanceData.ichName + ': <strong>' + resonanceData.wert1 + '</strong></span>\
+                                <span class="need-modal-resonance-vs">vs</span>\
+                                <span class="need-modal-resonance-person">' + resonanceData.partnerName + ': <strong>' + resonanceData.wert2 + '</strong></span>\
+                            </div>\
+                            <div class="need-modal-resonance-match">\
+                                <span class="need-modal-resonance-percent">Match: <strong>' + Math.round(matchPercent) + '%</strong></span>\
+                                <span class="need-modal-resonance-r">R = ' + rValue + '</span>\
+                            </div>\
+                        </div>\
+                    </div>\
+                ';
+            }
+
+            // Statistische Daten berechnen (80% Konfidenzintervall)
+            let statisticsHtml = '';
+            const sigma = (kategorie && kategorie.sigma) || (typeof TiageStatistics !== 'undefined' ? TiageStatistics.DEFAULT_SIGMA : 14);
+            const typicalValue = 50; // Default mean
+            if (typeof TiageStatistics !== 'undefined') {
+                const interval = TiageStatistics.calculateConfidenceInterval(typicalValue, sigma, 80);
+                statisticsHtml = '\
+                    <div class="need-modal-statistics">\
+                        <div class="need-modal-statistics-header">\
+                            <span class="need-modal-statistics-icon">📊</span>\
+                            <span class="need-modal-statistics-label">Statistischer Hintergrund</span>\
+                        </div>\
+                        <div class="need-modal-statistics-content">\
+                            <div class="need-modal-statistics-text">\
+                                80% der Befragten antworteten mit <strong>' + Math.round(interval.lower) + '-' + Math.round(interval.upper) + '</strong>\
+                            </div>\
+                            <div class="need-modal-statistics-sub">\
+                                (Normalverteilung, σ=' + sigma + ', Konfidenzintervall ±' + Math.round(interval.margin) + ')\
+                            </div>\
+                        </div>\
+                    </div>\
+                ';
+            }
+
+            html += statisticsHtml;
+            html += '</div>';
+            body.innerHTML = html;
 
             modal.classList.add('active');
         }
