@@ -504,8 +504,15 @@ const AttributeSummaryCard = (function() {
         const umfrageWerte = loadedProfile.profileReview.flatNeeds;
         console.log('[AttributeSummaryCard] Reset mit berechneten Werten aus LoadedArchetypProfile für', currentPerson);
 
+        // Wenn keine Bedürfnisse ausgewählt sind, alle ungesperrten Bedürfnisse zurücksetzen
+        const needsToReset = selectedNeeds.size > 0
+            ? Array.from(selectedNeeds)
+            : Object.keys(umfrageWerte);
+
+        console.log(`[AttributeSummaryCard] ${selectedNeeds.size > 0 ? 'Ausgewählte' : 'Alle'} Bedürfnisse werden zurückgesetzt:`, needsToReset.length);
+
         let resetCount = 0;
-        selectedNeeds.forEach(needId => {
+        needsToReset.forEach(needId => {
             const needObj = findNeedById(needId);
 
             // WICHTIG: Gesperrte Bedürfnisse NICHT zurücksetzen
