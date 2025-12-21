@@ -311,40 +311,65 @@
         }
 
         /**
-         * Parst URL-Parameter
+         * Holt Resonanz-Daten aus sessionStorage (SSOT)
+         * @param {string} needId - Die ID des Bedürfnisses
+         * @returns {object|null} Resonanz-Daten oder null
          */
-        function getUrlParams() {
-            const params = new URLSearchParams(window.location.search);
-            return {
-                needId: params.get('need') || params.get('needId'),
-                wert1: params.get('wert1') ? parseInt(params.get('wert1')) : undefined,
-                wert2: params.get('wert2') ? parseInt(params.get('wert2')) : undefined,
-                ichName: params.get('ich') || params.get('ichName'),
-                partnerName: params.get('partner') || params.get('partnerName')
-            };
+        function getResonanceDataFromStorage(needId) {
+            try {
+                const stored = sessionStorage.getItem('tiageSyntheseData');
+                if (!stored) return null;
+
+                const data = JSON.parse(stored);
+                if (!data.resonanceMap) return null;
+
+                // Suche nach needId (kann #B-ID oder string-key sein)
+                let resonance = data.resonanceMap[needId];
+
+                // Falls nicht gefunden, versuche Konvertierung
+                if (!resonance && typeof BeduerfnisIds !== 'undefined') {
+                    // Versuche #B-ID zu string-key
+                    const asKey = BeduerfnisIds.toKey(needId);
+                    if (asKey) resonance = data.resonanceMap[asKey];
+
+                    // Versuche string-key zu #B-ID
+                    if (!resonance) {
+                        const asId = BeduerfnisIds.toId(needId);
+                        if (asId) resonance = data.resonanceMap[asId];
+                    }
+                }
+
+                if (!resonance) return null;
+
+                return {
+                    wert1: resonance.wert1,
+                    wert2: resonance.wert2,
+                    ichName: data.ichName,
+                    partnerName: data.partnerName
+                };
+            } catch (e) {
+                console.warn('[TiageSynthese] Fehler beim Laden der Resonanz-Daten:', e);
+                return null;
+            }
         }
 
         /**
          * Initialisierung
          */
         document.addEventListener('DOMContentLoaded', function() {
-            const params = getUrlParams();
+            const params = new URLSearchParams(window.location.search);
+            const needId = params.get('need') || params.get('needId');
 
-            if (!params.needId) {
+            if (!needId) {
                 document.getElementById('syntheseContent').innerHTML =
                     '<div class="synthese-error"><div class="synthese-error-icon">❓</div><p>Kein Bedürfnis angegeben.<br><small>URL-Parameter: ?need=bedürfnis_id</small></p></div>';
                 return;
             }
 
-            // Resonanz-Daten aus URL-Parametern
-            const resonanceData = (params.wert1 !== undefined && params.wert2 !== undefined) ? {
-                wert1: params.wert1,
-                wert2: params.wert2,
-                ichName: params.ichName,
-                partnerName: params.partnerName
-            } : null;
+            // Resonanz-Daten aus sessionStorage laden (für alle verlinkten Bedürfnisse verfügbar)
+            const resonanceData = getResonanceDataFromStorage(needId);
 
-            renderNeedContent(params.needId, resonanceData);
+            renderNeedContent(needId, resonanceData);
         });
     </script>
 </body>
