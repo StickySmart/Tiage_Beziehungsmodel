@@ -11135,9 +11135,48 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
             const validIchGeschlecht = ensureValidGeschlecht(ichDims.geschlecht);
             const validIchDominanz = ensureValidDominanz(ichDims.dominanz);
             const validIchOrientierung = ensureValidOrientierung(ichDims.orientierung);
-            const validPartnerGeschlecht = ensureValidGeschlecht(partnerDims.geschlecht);
+
+            // BUGFIX: Wenn Partner-Dimensionen fehlen, verwende kompatible Defaults
+            // statt feste Defaults die möglicherweise inkompatibel sind
+            const partnerHasGeschlecht = partnerDims.geschlecht && partnerDims.geschlecht.primary;
+            const partnerHasOrientierung = partnerDims.orientierung && partnerDims.orientierung.primary;
+
+            let validPartnerGeschlecht;
+            if (partnerHasGeschlecht) {
+                validPartnerGeschlecht = ensureValidGeschlecht(partnerDims.geschlecht);
+            } else {
+                // Setze kompatibles Geschlecht basierend auf ICH-Orientierung
+                const ichOriPrimary = validIchOrientierung.primary;
+                const ichGeschPrimary = validIchGeschlecht.primary;
+                if (ichOriPrimary === 'heterosexuell') {
+                    // Heterosexuell: Partner sollte anderes Geschlecht haben
+                    validPartnerGeschlecht = {
+                        primary: ichGeschPrimary === 'mann' ? 'frau' : 'mann',
+                        secondary: 'cis'
+                    };
+                } else {
+                    // Homosexuell/bi-pansexuell: Gleiches Geschlecht ist kompatibel
+                    validPartnerGeschlecht = {
+                        primary: ichGeschPrimary,
+                        secondary: 'cis'
+                    };
+                }
+                console.log('[findBestPartnerMatch] Partner-Geschlecht nicht gesetzt, verwende kompatiblen Default:', validPartnerGeschlecht);
+            }
+
+            let validPartnerOrientierung;
+            if (partnerHasOrientierung) {
+                validPartnerOrientierung = ensureValidOrientierung(partnerDims.orientierung);
+            } else {
+                // Setze kompatible Orientierung basierend auf ICH
+                validPartnerOrientierung = {
+                    primary: validIchOrientierung.primary,
+                    secondary: validIchOrientierung.secondary
+                };
+                console.log('[findBestPartnerMatch] Partner-Orientierung nicht gesetzt, verwende ICH-Orientierung:', validPartnerOrientierung);
+            }
+
             const validPartnerDominanz = ensureValidDominanz(partnerDims.dominanz);
-            const validPartnerOrientierung = ensureValidOrientierung(partnerDims.orientierung);
 
             console.log('[findBestPartnerMatch] Validierte ICH-Dimensionen:', {
                 geschlecht: validIchGeschlecht,
@@ -11309,9 +11348,49 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
             const validIchGeschlecht = ensureValidGeschlecht(ichDims.geschlecht);
             const validIchDominanz = ensureValidDominanz(ichDims.dominanz);
             const validIchOrientierung = ensureValidOrientierung(ichDims.orientierung);
-            const validPartnerGeschlecht = ensureValidGeschlecht(partnerDims.geschlecht);
+
+            // BUGFIX: Wenn Partner-Dimensionen fehlen, verwende kompatible Defaults
+            // statt feste Defaults die möglicherweise inkompatibel sind
+            const partnerHasGeschlecht = partnerDims.geschlecht && partnerDims.geschlecht.primary;
+            const partnerHasOrientierung = partnerDims.orientierung && partnerDims.orientierung.primary;
+
+            let validPartnerGeschlecht;
+            if (partnerHasGeschlecht) {
+                validPartnerGeschlecht = ensureValidGeschlecht(partnerDims.geschlecht);
+            } else {
+                // Setze kompatibles Geschlecht basierend auf ICH-Orientierung
+                // Für heterosexuell: gegengeschlechtlich, sonst gleiches Geschlecht
+                const ichOriPrimary = validIchOrientierung.primary;
+                const ichGeschPrimary = validIchGeschlecht.primary;
+                if (ichOriPrimary === 'heterosexuell') {
+                    // Heterosexuell: Partner sollte anderes Geschlecht haben
+                    validPartnerGeschlecht = {
+                        primary: ichGeschPrimary === 'mann' ? 'frau' : 'mann',
+                        secondary: 'cis'
+                    };
+                } else {
+                    // Homosexuell/bi-pansexuell: Gleiches Geschlecht ist kompatibel
+                    validPartnerGeschlecht = {
+                        primary: ichGeschPrimary,
+                        secondary: 'cis'
+                    };
+                }
+                console.log('[findBestIchMatch] Partner-Geschlecht nicht gesetzt, verwende kompatiblen Default:', validPartnerGeschlecht);
+            }
+
+            let validPartnerOrientierung;
+            if (partnerHasOrientierung) {
+                validPartnerOrientierung = ensureValidOrientierung(partnerDims.orientierung);
+            } else {
+                // Setze kompatible Orientierung basierend auf ICH
+                validPartnerOrientierung = {
+                    primary: validIchOrientierung.primary,
+                    secondary: validIchOrientierung.secondary
+                };
+                console.log('[findBestIchMatch] Partner-Orientierung nicht gesetzt, verwende ICH-Orientierung:', validPartnerOrientierung);
+            }
+
             const validPartnerDominanz = ensureValidDominanz(partnerDims.dominanz);
-            const validPartnerOrientierung = ensureValidOrientierung(partnerDims.orientierung);
 
             console.log('[findBestIchMatch] selectedPartner:', selectedPartner, '-> verwendet:', partnerArchetype);
             console.log('[findBestIchMatch] Validierte Partner-Dimensionen:', {
