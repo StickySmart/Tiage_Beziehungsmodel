@@ -1194,12 +1194,21 @@
 
         function displayActiveSuggestion() {
             var hint = document.getElementById('profileReviewSearchHint');
-            if (!hint) return;
+            console.log('[displayActiveSuggestion] hint element:', hint);
+            if (!hint) {
+                console.error('[displayActiveSuggestion] profileReviewSearchHint nicht gefunden!');
+                return;
+            }
             var suggestion = suggestionState.activeSuggestion;
-            if (!suggestion) return;
+            console.log('[displayActiveSuggestion] suggestion:', suggestion);
+            if (!suggestion) {
+                console.warn('[displayActiveSuggestion] Keine activeSuggestion gesetzt');
+                return;
+            }
 
             // FIX: Bei Bedürfnis/Textsuche spezielle Anzeige
             if (suggestion.type === 'need') {
+                console.log('[displayActiveSuggestion] Zeige Textsuche-Tag für:', suggestion.label);
                 hint.innerHTML = '<span class="search-active-selection">' +
                     '<span class="search-active-type type-textsearch">🔍 Textsuche</span>' +
                     '<span class="search-active-label">"' + suggestion.label + '"</span>' +
@@ -1714,12 +1723,21 @@
 
         function displayActiveSuggestion() {
             var hint = document.getElementById('profileReviewSearchHint');
-            if (!hint) return;
+            console.log('[displayActiveSuggestion] hint element:', hint);
+            if (!hint) {
+                console.error('[displayActiveSuggestion] profileReviewSearchHint nicht gefunden!');
+                return;
+            }
             var suggestion = suggestionState.activeSuggestion;
-            if (!suggestion) return;
+            console.log('[displayActiveSuggestion] suggestion:', suggestion);
+            if (!suggestion) {
+                console.warn('[displayActiveSuggestion] Keine activeSuggestion gesetzt');
+                return;
+            }
 
             // FIX: Bei Bedürfnis/Textsuche spezielle Anzeige
             if (suggestion.type === 'need') {
+                console.log('[displayActiveSuggestion] Zeige Textsuche-Tag für:', suggestion.label);
                 hint.innerHTML = '<span class="search-active-selection">' +
                     '<span class="search-active-type type-textsearch">🔍 Textsuche</span>' +
                     '<span class="search-active-label">"' + suggestion.label + '"</span>' +
