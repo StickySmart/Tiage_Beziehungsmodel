@@ -237,14 +237,18 @@ const DimensionKategorieFilter = (function() {
         const hasActiveFilters = activeKategorien.size > 0;
         const resetButtonVisible = hasActiveFilters ? '' : ' style="display: none;"';
 
-        // Aktive Filter-Tags generieren
+        // Aktive Filter-Tags generieren (mit Entfernen-Button)
         let activeFilterTags = '';
         if (hasActiveFilters) {
             const tags = Array.from(activeKategorien).map(kategorieId => {
                 const info = getKategorieInfo(kategorieId);
                 if (info) {
                     return `<span class="active-filter-tag" style="--tag-color: ${info.color}">
-                        ${info.label}
+                        <span class="filter-tag-label">${info.label}</span>
+                        <button class="filter-tag-remove"
+                                onclick="DimensionKategorieFilter.removeKategorie('${kategorieId}'); event.stopPropagation();"
+                                title="${info.label} aus Filter entfernen"
+                                aria-label="${info.label} aus Filter entfernen">×</button>
                     </span>`;
                 }
                 return '';
@@ -311,6 +315,22 @@ const DimensionKategorieFilter = (function() {
 
         // Event feuern
         dispatchFilterChange();
+    }
+
+    /**
+     * Entfernt eine Kategorie aus dem aktiven Filter
+     * @param {string} kategorieId - '#K1' bis '#K18'
+     */
+    function removeKategorie(kategorieId) {
+        if (activeKategorien.has(kategorieId)) {
+            activeKategorien.delete(kategorieId);
+
+            // Re-render Filter
+            reRender();
+
+            // Event feuern
+            dispatchFilterChange();
+        }
     }
 
     /**
@@ -491,6 +511,7 @@ const DimensionKategorieFilter = (function() {
 
         // Filter setzen (Mehrfachauswahl)
         toggleKategorie,
+        removeKategorie,
         isKategorieActive,
         setKategorie,  // Deprecated - für Rückwärtskompatibilität
         reset,
