@@ -3304,9 +3304,24 @@
             initAdvancedFilters();
         }
 
-        // Age Verification - Modal shows on EVERY visit (no localStorage)
+        // Age Verification - Modal shows once per session (uses sessionStorage)
         function checkAgeVerification() {
-            // Modal always shows - no localStorage check
+            // Check if user already verified age in this session
+            try {
+                if (sessionStorage.getItem('tiage_age_verified') === 'true') {
+                    // Already verified in this session, don't show modal
+                    const modal = document.getElementById('ageVerificationModal');
+                    if (modal) {
+                        modal.classList.add('hidden');
+                        modal.style.display = 'none';
+                    }
+                    return;
+                }
+            } catch(e) {
+                console.warn('Could not check sessionStorage:', e);
+            }
+
+            // Show modal for age verification
             const modal = document.getElementById('ageVerificationModal');
             if (modal) {
                 modal.classList.remove('hidden');
@@ -3323,6 +3338,13 @@
             console.log('confirmAge called with:', isAdult);
 
             if (isAdult) {
+                // Save age verification for this session (prevents showing on back navigation)
+                try {
+                    sessionStorage.setItem('tiage_age_verified', 'true');
+                } catch(e) {
+                    console.warn('Could not save session age verification:', e);
+                }
+
                 // Automatically save cookie consent when user confirms age
                 try {
                     localStorage.setItem('tiage_cookie_consent', 'true');
@@ -3354,7 +3376,7 @@
             const yesButton = document.getElementById('ageVerifyYes');
             const noButton = document.getElementById('ageVerifyNo');
 
-            // Helper function to handle age confirmation - no localStorage
+            // Helper function to handle age confirmation - uses sessionStorage
             function handleAgeConfirm(isAdult, event) {
                 if (event) {
                     event.preventDefault();
@@ -3363,6 +3385,13 @@
                 console.log('handleAgeConfirm called:', isAdult);
 
                 if (isAdult) {
+                    // Save age verification for this session (prevents showing on back navigation)
+                    try {
+                        sessionStorage.setItem('tiage_age_verified', 'true');
+                    } catch(e) {
+                        console.warn('Could not save session age verification:', e);
+                    }
+
                     if (modal) {
                         modal.classList.add('hidden');
                         modal.style.display = 'none';
@@ -3437,7 +3466,21 @@
                 }, { passive: false, capture: true });
             }
 
-            // Always show modal on page load - no localStorage check
+            // Check if already verified in this session before showing modal
+            try {
+                if (sessionStorage.getItem('tiage_age_verified') === 'true') {
+                    // Already verified, hide modal
+                    if (modal) {
+                        modal.classList.add('hidden');
+                        modal.style.display = 'none';
+                    }
+                    return;
+                }
+            } catch(e) {
+                console.warn('Could not check sessionStorage:', e);
+            }
+
+            // Show modal on page load if not verified
             if (modal) {
                 modal.classList.remove('hidden');
                 modal.style.display = 'flex';

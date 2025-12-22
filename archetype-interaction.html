@@ -120,13 +120,20 @@
         const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzuHUlgKBXl_HCoTdddpYo97qo3sTf26ahkC-h04EPzKJJV-7bT3-h3qBkiXm30qk1HRg/exec';
 
         // Define confirmAge immediately so onclick handlers work
-        // Modal appears on EVERY visit (no localStorage storage)
+        // Modal appears once per session (uses sessionStorage)
         window.confirmAge = function(isAdult) {
             console.log('confirmAge called:', isAdult);
             try {
                 var modal = document.getElementById('ageVerificationModal');
 
                 if (isAdult) {
+                    // Save age verification for this session (prevents showing on back navigation)
+                    try {
+                        sessionStorage.setItem('tiage_age_verified', 'true');
+                    } catch(e) {
+                        console.warn('Could not save session age verification:', e);
+                    }
+
                     // Automatically save cookie consent when user confirms age
                     try {
                         localStorage.setItem('tiage_cookie_consent', 'true');
