@@ -1275,8 +1275,46 @@
                 }
                 console.log('[Filter] Kategorie aktiviert:', suggestion.id);
                 filterProfileReviewByNeed('');
+            } else if (suggestion.type === 'perspective' && typeof DimensionKategorieFilter !== 'undefined') {
+                // FIX: Perspektiven-Filter - Mappe Perspektiven auf entsprechende Kategorien
+                // SSOT: PerspektivenModal.js - kategoriePerspektiven + beduerfnisPerspektiven
+                //
+                // #P1 (Statistik) → Alle Kategorien außer #K11 (GFK + Lebensbereiche)
+                // #P2 (Konditionierung) → Spezifische Osho-Bedürfnisse (nicht kategorie-basiert!)
+                // #P3 (Qualität) → Spezifische Pirsig-Bedürfnisse (nicht kategorie-basiert!)
+                // #P4 (SexPositiv) → #K11 (Dynamik & Austausch)
+                var perspektiveToKategorien = {
+                    '#P1': null, // Statistik = Default, zeige alle (kein Kategorie-Filter)
+                    '#P2': null, // Konditionierung = Bedürfnis-basiert, nicht Kategorie-basiert
+                    '#P3': null, // Qualität = Bedürfnis-basiert, nicht Kategorie-basiert
+                    '#P4': ['#K11'] // SexPositiv → Dynamik & Austausch
+                };
+
+                var kategorien = perspektiveToKategorien[suggestion.id];
+
+                // Bei Mehrfach-Auswahl: NICHT resetten, sondern hinzufügen
+                if (!hasMultipleTerms) {
+                    DimensionKategorieFilter.reset(true); // silent reset
+                }
+
+                if (kategorien && kategorien.length > 0) {
+                    // Kategorie-basierte Filterung (#P4)
+                    kategorien.forEach(function(katId) {
+                        if (!DimensionKategorieFilter.isKategorieActive(katId)) {
+                            DimensionKategorieFilter.toggleKategorie(katId);
+                        }
+                    });
+                    console.log('[Filter] Perspektive aktiviert:', suggestion.id, '→ Kategorien:', kategorien);
+                    filterProfileReviewByNeed('');
+                } else {
+                    // Bedürfnis-basierte Filterung (#P1, #P2, #P3)
+                    // Verwende das Label der Perspektive als Textsuche-Kontext
+                    // (zeigt alle Bedürfnisse, da diese Perspektiven quer durch Kategorien gehen)
+                    console.log('[Filter] Perspektive ohne Kategorie-Mapping:', suggestion.id);
+                    filterProfileReviewByNeed('');
+                }
             } else {
-                // Für andere Typen (dimension, perspective)
+                // Für andere Typen (dimension)
                 if (typeof DimensionKategorieFilter !== 'undefined' && !hasMultipleTerms) {
                     DimensionKategorieFilter.reset();
                 }
@@ -1804,8 +1842,46 @@
                 }
                 console.log('[Filter] Kategorie aktiviert:', suggestion.id);
                 filterProfileReviewByNeed('');
+            } else if (suggestion.type === 'perspective' && typeof DimensionKategorieFilter !== 'undefined') {
+                // FIX: Perspektiven-Filter - Mappe Perspektiven auf entsprechende Kategorien
+                // SSOT: PerspektivenModal.js - kategoriePerspektiven + beduerfnisPerspektiven
+                //
+                // #P1 (Statistik) → Alle Kategorien außer #K11 (GFK + Lebensbereiche)
+                // #P2 (Konditionierung) → Spezifische Osho-Bedürfnisse (nicht kategorie-basiert!)
+                // #P3 (Qualität) → Spezifische Pirsig-Bedürfnisse (nicht kategorie-basiert!)
+                // #P4 (SexPositiv) → #K11 (Dynamik & Austausch)
+                var perspektiveToKategorien = {
+                    '#P1': null, // Statistik = Default, zeige alle (kein Kategorie-Filter)
+                    '#P2': null, // Konditionierung = Bedürfnis-basiert, nicht Kategorie-basiert
+                    '#P3': null, // Qualität = Bedürfnis-basiert, nicht Kategorie-basiert
+                    '#P4': ['#K11'] // SexPositiv → Dynamik & Austausch
+                };
+
+                var kategorien = perspektiveToKategorien[suggestion.id];
+
+                // Bei Mehrfach-Auswahl: NICHT resetten, sondern hinzufügen
+                if (!hasMultipleTerms) {
+                    DimensionKategorieFilter.reset(true); // silent reset
+                }
+
+                if (kategorien && kategorien.length > 0) {
+                    // Kategorie-basierte Filterung (#P4)
+                    kategorien.forEach(function(katId) {
+                        if (!DimensionKategorieFilter.isKategorieActive(katId)) {
+                            DimensionKategorieFilter.toggleKategorie(katId);
+                        }
+                    });
+                    console.log('[Filter] Perspektive aktiviert:', suggestion.id, '→ Kategorien:', kategorien);
+                    filterProfileReviewByNeed('');
+                } else {
+                    // Bedürfnis-basierte Filterung (#P1, #P2, #P3)
+                    // Verwende das Label der Perspektive als Textsuche-Kontext
+                    // (zeigt alle Bedürfnisse, da diese Perspektiven quer durch Kategorien gehen)
+                    console.log('[Filter] Perspektive ohne Kategorie-Mapping:', suggestion.id);
+                    filterProfileReviewByNeed('');
+                }
             } else {
-                // Für andere Typen (dimension, perspective)
+                // Für andere Typen (dimension)
                 if (typeof DimensionKategorieFilter !== 'undefined' && !hasMultipleTerms) {
                     DimensionKategorieFilter.reset();
                 }
