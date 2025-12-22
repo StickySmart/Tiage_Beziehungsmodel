@@ -40,6 +40,9 @@
     <script src="profiles/definitions/gfk-beduerfnisse.js"></script>
     <script src="profiles/definitions/beduerfnis-katalog.js"></script>
 
+    <!-- Archetypen Statements für dynamische Pro/Contra -->
+    <script src="statements/archetypeStatements.js"></script>
+
     <style>
         .synthese-page {
             min-height: 100vh;
@@ -529,21 +532,51 @@
         }
 
         /**
-         * Generiert Pro/Contra Listen (vereinfacht)
+         * Generiert Pro/Contra Listen basierend auf den ausgewählten Archetypen
+         * Verdrahtet mit archetypeStatements aus statements/archetypeStatements.js
          */
         function getProContra() {
-            // TODO: Aus SSOT (generateDynamicProContra) holen
+            // Normalisiere Archetyp-Keys für Statement-Lookup
+            const normalizeKey = (key) => {
+                const mapping = {
+                    'duoflex': 'duo_flex',
+                    'duo-flex': 'duo_flex'
+                };
+                return mapping[key] || key;
+            };
+
+            const type1 = normalizeKey(currentIchArchetype);
+            const type2 = normalizeKey(currentPartnerArchetype);
+
+            // Versuche beide Richtungen (type1_type2 und type2_type1)
+            const key1 = `${type1}_${type2}`;
+            const key2 = `${type2}_${type1}`;
+
+            // Lade Statements aus archetypeStatements
+            let statements = null;
+            if (typeof archetypeStatements !== 'undefined') {
+                statements = archetypeStatements[key1] || archetypeStatements[key2];
+            }
+
+            // Falls Statements gefunden wurden
+            if (statements) {
+                return {
+                    pro: statements.pro || [],
+                    contra: statements.contra || []
+                };
+            }
+
+            // Fallback: Generische Pro/Contra wenn keine spezifischen Statements vorhanden
             return {
                 pro: [
-                    'Hohe Grundkompatibilität der Archetypen',
-                    'Ergänzende Kommunikationsstile',
-                    'Ähnliche Werte bei Autonomie',
-                    'Gemeinsame Wachstumsorientierung'
+                    `${archetypeNames[currentIchArchetype] || currentIchArchetype} und ${archetypeNames[currentPartnerArchetype] || currentPartnerArchetype} können voneinander lernen`,
+                    'Unterschiedliche Perspektiven bereichern die Beziehung',
+                    'Potenzial für gegenseitiges Wachstum'
                 ],
                 contra: [
-                    'Unterschiedliche Exklusivitäts-Erwartungen',
-                    'Potenzielle Zeitmanagement-Konflikte',
-                    'Verschiedene Bindungsgeschwindigkeiten'
+                    'Unterschiedliche Beziehungsphilosophien erfordern Kommunikation',
+                    'Erwartungsmanagement notwendig',
+                    'Kompromissbereitschaft auf beiden Seiten erforderlich'
                 ]
             };
         }
@@ -597,7 +630,7 @@
                         <span class="synthese-section-icon">⚖️</span>
                         <div>
                             <div class="synthese-section-title">Pro & Contra</div>
-                            <div class="synthese-section-subtitle">Qualitätsfaktoren der Kombination</div>
+                            <div class="synthese-section-subtitle">Paarung</div>
                         </div>
                     </div>
 
