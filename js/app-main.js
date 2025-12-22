@@ -19304,23 +19304,8 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
                         var tiageStateFlatNeeds = TiageState.get('flatNeeds.' + person);
                         if (tiageStateFlatNeeds && Object.keys(tiageStateFlatNeeds).length > 0) {
                             if (AttributeSummaryCard.setFlatNeeds) {
-                                // FIX: Merge locked status from profileReview.lockedNeeds
-                                var lockedNeeds = TiageState.getLockedNeeds(person) || {};
-                                var mergedFlatNeeds = {};
-                                Object.keys(tiageStateFlatNeeds).forEach(function(needId) {
-                                    var value = tiageStateFlatNeeds[needId];
-                                    var isLocked = lockedNeeds.hasOwnProperty(needId);
-                                    // If locked, use the locked value (which may differ from calculated)
-                                    if (isLocked) {
-                                        value = lockedNeeds[needId];
-                                    }
-                                    mergedFlatNeeds[needId] = {
-                                        value: value,
-                                        locked: isLocked
-                                    };
-                                });
-                                AttributeSummaryCard.setFlatNeeds(mergedFlatNeeds);
-                                console.log('[ProfileReview] Bedürfnisse aus TiageState geladen für', person, ':', Object.keys(tiageStateFlatNeeds).length, 'Einträge, davon', Object.keys(lockedNeeds).length, 'gesperrt');
+                                AttributeSummaryCard.setFlatNeeds(tiageStateFlatNeeds);
+                                console.log('[ProfileReview] Bedürfnisse aus TiageState geladen für', person, ':', Object.keys(tiageStateFlatNeeds).length, 'Einträge');
                                 loadedFromTiageState = true;
                             }
                         } else {
