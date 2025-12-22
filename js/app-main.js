@@ -14241,7 +14241,9 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
                 // Event-Listener für Bedürfnis-Lock-Änderungen
                 // Synchronisiert Lock-Status mit TiageState.profileReview.{person}.lockedNeeds
                 // ═══════════════════════════════════════════════════════════════════════════
+                console.log('[DEBUG] Registering flatNeedLockChange listener');
                 document.addEventListener('flatNeedLockChange', function(e) {
+                    console.log('[DEBUG] flatNeedLockChange listener CALLED', e.detail);
                     var needId = e.detail && e.detail.needId;
                     var locked = e.detail && e.detail.locked;
 
