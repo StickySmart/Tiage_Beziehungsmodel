@@ -14218,6 +14218,26 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
                 });
 
                 // ═══════════════════════════════════════════════════════════════════════════
+                // Hilfsfunktion: Kurze Toast-Meldung für Lock-Speicherung
+                // ═══════════════════════════════════════════════════════════════════════════
+                function showLockSavedToast(message) {
+                    var existing = document.getElementById('lockSavedToast');
+                    if (existing) existing.remove();
+
+                    var toast = document.createElement('div');
+                    toast.id = 'lockSavedToast';
+                    toast.textContent = message;
+                    toast.style.cssText = 'position:fixed;bottom:80px;left:50%;transform:translateX(-50%);background:#22c55e;color:#fff;padding:8px 16px;border-radius:6px;font-size:13px;z-index:10000;opacity:0;transition:opacity 0.2s;box-shadow:0 2px 8px rgba(0,0,0,0.3);';
+                    document.body.appendChild(toast);
+
+                    requestAnimationFrame(function() { toast.style.opacity = '1'; });
+                    setTimeout(function() {
+                        toast.style.opacity = '0';
+                        setTimeout(function() { toast.remove(); }, 200);
+                    }, 1500);
+                }
+
+                // ═══════════════════════════════════════════════════════════════════════════
                 // Event-Listener für Bedürfnis-Lock-Änderungen
                 // Synchronisiert Lock-Status mit TiageState.profileReview.{person}.lockedNeeds
                 // ═══════════════════════════════════════════════════════════════════════════
@@ -14252,6 +14272,9 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
                     }
                     // Sofort in localStorage speichern
                     TiageState.saveToStorage();
+
+                    // Kurze Info einblenden
+                    showLockSavedToast(locked ? 'Wert gesperrt & gespeichert' : 'Wert entsperrt');
                 });
 
                 // ═══════════════════════════════════════════════════════════════════════════
