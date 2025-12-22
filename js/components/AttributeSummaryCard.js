@@ -1100,21 +1100,38 @@ const AttributeSummaryCard = (function() {
             return '<p style="color: var(--error-color);">Fehler: BeduerfnisIds nicht geladen. Bitte Seite neu laden.</p>';
         }
 
+        // ═══════════════════════════════════════════════════════════════════════════
+        // FIX: Lade gesperrte Bedürfnisse aus TiageState.profileReview.lockedNeeds
+        // Diese werden beim Sperren via toggleFlatNeedLock gespeichert
+        // ═══════════════════════════════════════════════════════════════════════════
+        let savedLockedNeeds = {};
+        if (typeof TiageState !== 'undefined') {
+            savedLockedNeeds = TiageState.getLockedNeeds(currentPerson) || {};
+            const lockedCount = Object.keys(savedLockedNeeds).length;
+            if (lockedCount > 0) {
+                console.log('[AttributeSummaryCard] Geladene gesperrte Bedürfnisse aus TiageState:', lockedCount, 'für', currentPerson);
+            }
+        }
+
         Object.keys(BeduerfnisIds.beduerfnisse).forEach(needId => {
             const existing = findNeedById(needId);
             if (!existing) {
                 const numKey = parseInt(needId.replace('#B', ''), 10) || 0;
                 const needData = BeduerfnisIds.beduerfnisse[needId];
                 const stringKey = needData?.key || '';
-                // Wert aus SSOT (umfrageWerte = LoadedArchetypProfile.flatNeeds)
-                const value = umfrageWerte[needId];
+
+                // Prüfe ob Bedürfnis gesperrt ist (aus TiageState.profileReview.lockedNeeds)
+                const isLocked = savedLockedNeeds.hasOwnProperty(needId);
+                // Wenn gesperrt: verwende gespeicherten Wert, sonst umfrageWert
+                const value = isLocked ? savedLockedNeeds[needId] : umfrageWerte[needId];
+
                 flatNeeds.push({
                     id: needId,
                     key: numKey,
                     stringKey: stringKey,
                     label: needData?.label || getNeedLabel(needId).replace(/^#B\d+\s*/, ''),
-                    value: value, // undefined wenn nicht in SSOT vorhanden
-                    locked: false
+                    value: value, // Gesperrter Wert oder umfrageWert
+                    locked: isLocked
                 });
             }
         });
