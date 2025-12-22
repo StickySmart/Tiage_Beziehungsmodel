@@ -1,0 +1,586 @@
+<!--
+ * © 2025 Ti-age.de Alle Rechte vorbehalten.
+ * Dieses Werk ist urheberrechtlich geschützt.
+ * Jegliche Nutzung ohne ausdrückliche Genehmigung ist untersagt.
+ -->
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Ti-Age Synthese | Übersicht</title>
+    <link rel="canonical" href="https://ti-age.de/tiagesyntheseUebersicht.html">
+    <!-- Zentrale CSS-Variablen - EINZIGE QUELLE -->
+    <link rel="stylesheet" href="templates/variables.css?v=20251222">
+    <link rel="stylesheet" href="templates/template_desktop.css?v=20251222">
+    <link rel="stylesheet" href="templates/template_mobile.css?v=20251222" media="(max-width: 768px)">
+
+    <!-- LocalForage -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/localforage/1.10.0/localforage.min.js"></script>
+
+    <!-- TIAGE Core Scripts -->
+    <script src="js/version.js"></script>
+    <script src="js/utils/statistics.js"></script>
+    <script src="js/state/TiageState.js"></script>
+
+    <!-- Archetypen für Navigation -->
+    <script src="profiles/archetypen/index.js"></script>
+
+    <style>
+        .synthese-page {
+            min-height: 100vh;
+            background: var(--bg-dark);
+            padding: 0;
+        }
+
+        .synthese-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 16px 20px;
+            background: rgba(30, 30, 45, 0.95);
+            border-bottom: 1px solid var(--border);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(10px);
+        }
+
+        .synthese-header-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .synthese-back {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 36px;
+            height: 36px;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--text-primary);
+            cursor: pointer;
+            transition: all 0.2s;
+            text-decoration: none;
+        }
+
+        .synthese-back:hover {
+            background: rgba(255,255,255,0.1);
+        }
+
+        .synthese-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .synthese-tabs {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .synthese-tab {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--text-muted);
+            cursor: pointer;
+            transition: all 0.2s;
+            text-decoration: none;
+            font-size: 18px;
+        }
+
+        .synthese-tab:hover {
+            background: rgba(255,255,255,0.1);
+            color: var(--text-primary);
+        }
+
+        .synthese-tab.active {
+            background: rgba(139, 92, 246, 0.3);
+            border-color: #8B5CF6;
+            color: var(--text-primary);
+        }
+
+        .synthese-close {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 36px;
+            height: 36px;
+            background: transparent;
+            border: none;
+            color: var(--text-muted);
+            cursor: pointer;
+            font-size: 24px;
+            transition: color 0.2s;
+        }
+
+        .synthese-close:hover {
+            color: var(--text-primary);
+        }
+
+        .synthese-archetype-nav {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            padding: 16px 20px;
+            background: rgba(255,255,255,0.03);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .archetype-selector {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .archetype-nav-btn {
+            width: 32px;
+            height: 32px;
+            border-radius: 6px;
+            border: 1px solid var(--border);
+            background: rgba(255,255,255,0.05);
+            color: var(--text-muted);
+            cursor: pointer;
+            font-size: 16px;
+            transition: all 0.2s;
+        }
+
+        .archetype-nav-btn:hover {
+            background: rgba(255,255,255,0.1);
+            color: var(--text-primary);
+        }
+
+        .archetype-info {
+            text-align: center;
+            min-width: 100px;
+        }
+
+        .archetype-label {
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .archetype-label.ich {
+            color: var(--success);
+        }
+
+        .archetype-label.partner {
+            color: var(--danger);
+        }
+
+        .archetype-name {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .archetype-separator {
+            font-size: 18px;
+            color: var(--text-muted);
+        }
+
+        .synthese-content {
+            padding: 20px;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .synthese-section {
+            background: var(--bg-card);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 16px;
+            border: 1px solid var(--border);
+        }
+
+        .synthese-section-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 16px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .synthese-section-icon {
+            font-size: 24px;
+        }
+
+        .synthese-section-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .synthese-section-subtitle {
+            font-size: 11px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* Score Circle */
+        .score-display {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px 0;
+        }
+
+        .score-circle-large {
+            position: relative;
+            width: 120px;
+            height: 120px;
+        }
+
+        .score-circle-large svg {
+            transform: rotate(-90deg);
+            width: 100%;
+            height: 100%;
+        }
+
+        .score-circle-large .score-bg {
+            fill: none;
+            stroke: rgba(255,255,255,0.1);
+            stroke-width: 8;
+        }
+
+        .score-circle-large .score-progress {
+            fill: none;
+            stroke: var(--success);
+            stroke-width: 8;
+            stroke-linecap: round;
+            transition: stroke-dashoffset 0.5s ease;
+        }
+
+        .score-value {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 32px;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .score-label {
+            margin-top: 12px;
+            font-size: 14px;
+            color: var(--text-muted);
+        }
+
+        /* R-Faktoren */
+        .r-faktoren-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+        }
+
+        .r-faktor-item {
+            background: rgba(255,255,255,0.03);
+            border-radius: 8px;
+            padding: 12px;
+        }
+
+        .r-faktor-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .r-faktor-name {
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        .r-faktor-value {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .r-faktor-bar {
+            height: 6px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 3px;
+            overflow: hidden;
+        }
+
+        .r-faktor-fill {
+            height: 100%;
+            border-radius: 3px;
+            transition: width 0.3s ease;
+        }
+
+        /* Loading */
+        .synthese-loading {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 60px 20px;
+            color: var(--text-muted);
+        }
+
+        .synthese-loading-spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid rgba(255,255,255,0.1);
+            border-top-color: var(--primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-bottom: 16px;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="synthese-page">
+        <!-- Header mit Navigation -->
+        <div class="synthese-header">
+            <div class="synthese-header-left">
+                <a href="archetype-interaction.html" class="synthese-back">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M19 12H5M12 19l-7-7 7-7"/>
+                    </svg>
+                </a>
+                <span class="synthese-title">Ti-Age Synthese</span>
+            </div>
+            <div class="synthese-tabs">
+                <a href="tiagesyntheseUebersicht.html" class="synthese-tab active" title="Score & Übersicht">📊</a>
+                <a href="tiagesyntheseResonanz.html" class="synthese-tab" title="Ti-Age Gemeinsame Bedürfnisse">🔥</a>
+                <a href="tiagesyntheseStatistik.html" class="synthese-tab" title="Ti-Age Bedürfnisanalyse">💚</a>
+                <a href="tiagesyntheseProContra.html" class="synthese-tab" title="Resonanzfaktoren">🎛️</a>
+            </div>
+            <a href="archetype-interaction.html" class="synthese-close">&times;</a>
+        </div>
+
+        <!-- Archetyp Navigation -->
+        <div class="synthese-archetype-nav">
+            <div class="archetype-selector">
+                <button class="archetype-nav-btn" onclick="navigateArchetype('ich', -1)">‹</button>
+                <div class="archetype-info">
+                    <div class="archetype-label ich">ICH</div>
+                    <div class="archetype-name" id="ichArchetypeName">-</div>
+                </div>
+                <button class="archetype-nav-btn" onclick="navigateArchetype('ich', 1)">›</button>
+            </div>
+            <span class="archetype-separator">×</span>
+            <div class="archetype-selector">
+                <button class="archetype-nav-btn" onclick="navigateArchetype('partner', -1)">‹</button>
+                <div class="archetype-info">
+                    <div class="archetype-label partner">PARTNER</div>
+                    <div class="archetype-name" id="partnerArchetypeName">-</div>
+                </div>
+                <button class="archetype-nav-btn" onclick="navigateArchetype('partner', 1)">›</button>
+            </div>
+        </div>
+
+        <!-- Content -->
+        <div class="synthese-content" id="syntheseContent">
+            <div class="synthese-loading">
+                <div class="synthese-loading-spinner"></div>
+                <p>Lade Synthese-Daten...</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ═══════════════════════════════════════════════════════════════════════════
+        // TIAGE SYNTHESE ÜBERSICHT - Score & R-Faktoren
+        // ═══════════════════════════════════════════════════════════════════════════
+
+        // Archetypen-Liste für Navigation
+        const archetypeOrder = ['single', 'duo', 'duoflex', 'solopoly', 'polyamor', 'ra', 'lat', 'aromantisch'];
+        const archetypeNames = {
+            'single': 'Single',
+            'duo': 'Duo',
+            'duoflex': 'Duo-Flex',
+            'solopoly': 'Solopoly',
+            'polyamor': 'Polyamor',
+            'ra': 'RA',
+            'lat': 'LAT',
+            'aromantisch': 'Aromantisch'
+        };
+
+        let currentIchArchetype = 'duo';
+        let currentPartnerArchetype = 'solopoly';
+
+        /**
+         * Initialisierung
+         */
+        document.addEventListener('DOMContentLoaded', async function() {
+            // Archetypen aus TiageState laden
+            if (typeof TiageState !== 'undefined') {
+                await TiageState.init();
+                currentIchArchetype = TiageState.get('archetypes.ich.primary') || 'duo';
+                currentPartnerArchetype = TiageState.get('archetypes.partner.primary') || 'solopoly';
+            }
+
+            // Aus sessionStorage laden (falls von archetype-interaction.html übergeben)
+            const stored = sessionStorage.getItem('tiageSyntheseData');
+            if (stored) {
+                try {
+                    const data = JSON.parse(stored);
+                    if (data.ichName) currentIchArchetype = findArchetypeKey(data.ichName);
+                    if (data.partnerName) currentPartnerArchetype = findArchetypeKey(data.partnerName);
+                } catch (e) {}
+            }
+
+            updateArchetypeDisplay();
+            renderContent();
+        });
+
+        /**
+         * Findet den Archetyp-Key anhand des Namens
+         */
+        function findArchetypeKey(name) {
+            for (const [key, val] of Object.entries(archetypeNames)) {
+                if (val.toLowerCase() === name.toLowerCase()) return key;
+            }
+            return name.toLowerCase().replace(/[^a-z]/g, '');
+        }
+
+        /**
+         * Aktualisiert die Archetyp-Anzeige
+         */
+        function updateArchetypeDisplay() {
+            document.getElementById('ichArchetypeName').textContent =
+                archetypeNames[currentIchArchetype] || currentIchArchetype;
+            document.getElementById('partnerArchetypeName').textContent =
+                archetypeNames[currentPartnerArchetype] || currentPartnerArchetype;
+        }
+
+        /**
+         * Navigation zwischen Archetypen
+         */
+        function navigateArchetype(person, direction) {
+            const current = person === 'ich' ? currentIchArchetype : currentPartnerArchetype;
+            const currentIndex = archetypeOrder.indexOf(current);
+            let newIndex = currentIndex + direction;
+
+            if (newIndex < 0) newIndex = archetypeOrder.length - 1;
+            if (newIndex >= archetypeOrder.length) newIndex = 0;
+
+            if (person === 'ich') {
+                currentIchArchetype = archetypeOrder[newIndex];
+            } else {
+                currentPartnerArchetype = archetypeOrder[newIndex];
+            }
+
+            updateArchetypeDisplay();
+            renderContent();
+        }
+
+        /**
+         * Rendert den Hauptinhalt
+         */
+        function renderContent() {
+            const container = document.getElementById('syntheseContent');
+
+            // Score berechnen (vereinfacht - sollte aus SSOT kommen)
+            const score = calculateScore();
+            const scoreColor = score >= 70 ? '#22c55e' : score >= 40 ? '#eab308' : '#ef4444';
+
+            // R-Faktoren (vereinfacht - sollte aus SSOT kommen)
+            const rFaktoren = getRFaktoren();
+
+            let html = '';
+
+            // Score Section
+            html += `
+                <div class="synthese-section">
+                    <div class="synthese-section-header">
+                        <span class="synthese-section-icon">📊</span>
+                        <div>
+                            <div class="synthese-section-title">Kompatibilitäts-Score</div>
+                            <div class="synthese-section-subtitle">Statistische Archetypen-Übereinstimmung</div>
+                        </div>
+                    </div>
+                    <div class="score-display">
+                        <div class="score-circle-large">
+                            <svg viewBox="0 0 100 100">
+                                <circle class="score-bg" cx="50" cy="50" r="42"></circle>
+                                <circle class="score-progress" cx="50" cy="50" r="42"
+                                        stroke="${scoreColor}"
+                                        stroke-dasharray="264"
+                                        stroke-dashoffset="${264 - (264 * score / 100)}"></circle>
+                            </svg>
+                            <div class="score-value">${score}%</div>
+                        </div>
+                        <div class="score-label">${archetypeNames[currentIchArchetype]} × ${archetypeNames[currentPartnerArchetype]}</div>
+                    </div>
+                </div>
+            `;
+
+            // R-Faktoren Section
+            html += `
+                <div class="synthese-section">
+                    <div class="synthese-section-header">
+                        <span class="synthese-section-icon">🎛️</span>
+                        <div>
+                            <div class="synthese-section-title">Resonanzfaktoren</div>
+                            <div class="synthese-section-subtitle">Dimensionale Übereinstimmung</div>
+                        </div>
+                    </div>
+                    <div class="r-faktoren-grid">
+                        ${rFaktoren.map(r => `
+                            <div class="r-faktor-item">
+                                <div class="r-faktor-header">
+                                    <span class="r-faktor-name">${r.name}</span>
+                                    <span class="r-faktor-value">${r.value.toFixed(2)}</span>
+                                </div>
+                                <div class="r-faktor-bar">
+                                    <div class="r-faktor-fill" style="width: ${r.value * 100 / 1.1}%; background: ${r.color};"></div>
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+            `;
+
+            container.innerHTML = html;
+        }
+
+        /**
+         * Berechnet den Score (vereinfacht)
+         */
+        function calculateScore() {
+            // TODO: Aus SSOT (SynthesisCalculator) berechnen
+            // Hier nur Placeholder
+            return Math.floor(Math.random() * 40) + 50;
+        }
+
+        /**
+         * Holt die R-Faktoren (vereinfacht)
+         */
+        function getRFaktoren() {
+            // TODO: Aus SSOT berechnen
+            return [
+                { name: 'R1 Identität', value: 0.85, color: '#22c55e' },
+                { name: 'R2 Philosophie', value: 0.72, color: '#3b82f6' },
+                { name: 'R3 Leben', value: 0.91, color: '#8b5cf6' },
+                { name: 'R4 Dynamik', value: 0.68, color: '#ec4899' }
+            ];
+        }
+    </script>
+</body>
+</html>

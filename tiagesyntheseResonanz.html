@@ -1,0 +1,532 @@
+<!--
+ * © 2025 Ti-age.de Alle Rechte vorbehalten.
+ * Dieses Werk ist urheberrechtlich geschützt.
+ * Jegliche Nutzung ohne ausdrückliche Genehmigung ist untersagt.
+ -->
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Ti-Age Synthese | Osho Zen Resonanz</title>
+    <link rel="canonical" href="https://ti-age.de/tiagesyntheseResonanz.html">
+    <!-- Zentrale CSS-Variablen - EINZIGE QUELLE -->
+    <link rel="stylesheet" href="templates/variables.css?v=20251222">
+    <link rel="stylesheet" href="templates/template_desktop.css?v=20251222">
+    <link rel="stylesheet" href="templates/template_mobile.css?v=20251222" media="(max-width: 768px)">
+
+    <!-- LocalForage -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/localforage/1.10.0/localforage.min.js"></script>
+
+    <!-- TIAGE Core Scripts -->
+    <script src="js/version.js"></script>
+    <script src="js/utils/statistics.js"></script>
+    <script src="js/state/TiageState.js"></script>
+
+    <!-- Archetypen für Navigation -->
+    <script src="profiles/archetypen/index.js"></script>
+
+    <!-- Osho Zen Text Generator -->
+    <script src="js/synthesis/oshoZenTextGenerator.js"></script>
+
+    <style>
+        .synthese-page {
+            min-height: 100vh;
+            background: var(--bg-dark);
+            padding: 0;
+        }
+
+        .synthese-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 16px 20px;
+            background: rgba(30, 30, 45, 0.95);
+            border-bottom: 1px solid var(--border);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(10px);
+        }
+
+        .synthese-header-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .synthese-back {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 36px;
+            height: 36px;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--text-primary);
+            cursor: pointer;
+            transition: all 0.2s;
+            text-decoration: none;
+        }
+
+        .synthese-back:hover {
+            background: rgba(255,255,255,0.1);
+        }
+
+        .synthese-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .synthese-tabs {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .synthese-tab {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--text-muted);
+            cursor: pointer;
+            transition: all 0.2s;
+            text-decoration: none;
+            font-size: 18px;
+        }
+
+        .synthese-tab:hover {
+            background: rgba(255,255,255,0.1);
+            color: var(--text-primary);
+        }
+
+        .synthese-tab.active {
+            background: rgba(236, 72, 153, 0.3);
+            border-color: #EC4899;
+            color: var(--text-primary);
+        }
+
+        .synthese-close {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 36px;
+            height: 36px;
+            background: transparent;
+            border: none;
+            color: var(--text-muted);
+            cursor: pointer;
+            font-size: 24px;
+            transition: color 0.2s;
+        }
+
+        .synthese-close:hover {
+            color: var(--text-primary);
+        }
+
+        .synthese-archetype-nav {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            padding: 16px 20px;
+            background: rgba(255,255,255,0.03);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .archetype-selector {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .archetype-nav-btn {
+            width: 32px;
+            height: 32px;
+            border-radius: 6px;
+            border: 1px solid var(--border);
+            background: rgba(255,255,255,0.05);
+            color: var(--text-muted);
+            cursor: pointer;
+            font-size: 16px;
+            transition: all 0.2s;
+        }
+
+        .archetype-nav-btn:hover {
+            background: rgba(255,255,255,0.1);
+            color: var(--text-primary);
+        }
+
+        .archetype-info {
+            text-align: center;
+            min-width: 100px;
+        }
+
+        .archetype-label {
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .archetype-label.ich {
+            color: var(--success);
+        }
+
+        .archetype-label.partner {
+            color: var(--danger);
+        }
+
+        .archetype-name {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .archetype-separator {
+            font-size: 18px;
+            color: var(--text-muted);
+        }
+
+        .synthese-content {
+            padding: 20px;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .synthese-section {
+            background: var(--bg-card);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 16px;
+            border: 1px solid var(--border);
+        }
+
+        .synthese-section-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 16px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .synthese-section-icon {
+            font-size: 24px;
+        }
+
+        .synthese-section-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .synthese-section-subtitle {
+            font-size: 11px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* Osho Zen Content Styles */
+        .osho-zen-content {
+            line-height: 1.7;
+            color: var(--text-secondary);
+        }
+
+        .osho-zen-content h3 {
+            color: var(--text-primary);
+            font-size: 16px;
+            margin: 16px 0 8px 0;
+        }
+
+        .osho-zen-content p {
+            margin: 8px 0;
+        }
+
+        .osho-zen-content .card-name {
+            color: #EC4899;
+            font-weight: 600;
+        }
+
+        .need-item {
+            background: rgba(236, 72, 153, 0.1);
+            border: 1px solid rgba(236, 72, 153, 0.3);
+            border-radius: 8px;
+            padding: 12px;
+            margin-bottom: 12px;
+        }
+
+        .need-item-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 8px;
+        }
+
+        .need-item-icon {
+            font-size: 18px;
+        }
+
+        .need-item-label {
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .need-item-text {
+            font-size: 13px;
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+
+        /* Loading */
+        .synthese-loading {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 60px 20px;
+            color: var(--text-muted);
+        }
+
+        .synthese-loading-spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid rgba(255,255,255,0.1);
+            border-top-color: #EC4899;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-bottom: 16px;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="synthese-page">
+        <!-- Header mit Navigation -->
+        <div class="synthese-header">
+            <div class="synthese-header-left">
+                <a href="archetype-interaction.html" class="synthese-back">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M19 12H5M12 19l-7-7 7-7"/>
+                    </svg>
+                </a>
+                <span class="synthese-title">Ti-Age Synthese</span>
+            </div>
+            <div class="synthese-tabs">
+                <a href="tiagesyntheseUebersicht.html" class="synthese-tab" title="Score & Übersicht">📊</a>
+                <a href="tiagesyntheseResonanz.html" class="synthese-tab active" title="Ti-Age Gemeinsame Bedürfnisse">🔥</a>
+                <a href="tiagesyntheseStatistik.html" class="synthese-tab" title="Ti-Age Bedürfnisanalyse">💚</a>
+                <a href="tiagesyntheseProContra.html" class="synthese-tab" title="Resonanzfaktoren">🎛️</a>
+            </div>
+            <a href="archetype-interaction.html" class="synthese-close">&times;</a>
+        </div>
+
+        <!-- Archetyp Navigation -->
+        <div class="synthese-archetype-nav">
+            <div class="archetype-selector">
+                <button class="archetype-nav-btn" onclick="navigateArchetype('ich', -1)">‹</button>
+                <div class="archetype-info">
+                    <div class="archetype-label ich">ICH</div>
+                    <div class="archetype-name" id="ichArchetypeName">-</div>
+                </div>
+                <button class="archetype-nav-btn" onclick="navigateArchetype('ich', 1)">›</button>
+            </div>
+            <span class="archetype-separator">×</span>
+            <div class="archetype-selector">
+                <button class="archetype-nav-btn" onclick="navigateArchetype('partner', -1)">‹</button>
+                <div class="archetype-info">
+                    <div class="archetype-label partner">PARTNER</div>
+                    <div class="archetype-name" id="partnerArchetypeName">-</div>
+                </div>
+                <button class="archetype-nav-btn" onclick="navigateArchetype('partner', 1)">›</button>
+            </div>
+        </div>
+
+        <!-- Content -->
+        <div class="synthese-content" id="syntheseContent">
+            <div class="synthese-loading">
+                <div class="synthese-loading-spinner"></div>
+                <p>Lade Osho Zen Resonanz...</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ═══════════════════════════════════════════════════════════════════════════
+        // TIAGE SYNTHESE RESONANZ - Osho Zen Gemeinsame Bedürfnisse
+        // ═══════════════════════════════════════════════════════════════════════════
+
+        // Archetypen-Liste für Navigation
+        const archetypeOrder = ['single', 'duo', 'duoflex', 'solopoly', 'polyamor', 'ra', 'lat', 'aromantisch'];
+        const archetypeNames = {
+            'single': 'Single',
+            'duo': 'Duo',
+            'duoflex': 'Duo-Flex',
+            'solopoly': 'Solopoly',
+            'polyamor': 'Polyamor',
+            'ra': 'RA',
+            'lat': 'LAT',
+            'aromantisch': 'Aromantisch'
+        };
+
+        let currentIchArchetype = 'duo';
+        let currentPartnerArchetype = 'solopoly';
+
+        /**
+         * Initialisierung
+         */
+        document.addEventListener('DOMContentLoaded', async function() {
+            // Archetypen aus TiageState laden
+            if (typeof TiageState !== 'undefined') {
+                await TiageState.init();
+                currentIchArchetype = TiageState.get('archetypes.ich.primary') || 'duo';
+                currentPartnerArchetype = TiageState.get('archetypes.partner.primary') || 'solopoly';
+            }
+
+            // Aus sessionStorage laden (falls von archetype-interaction.html übergeben)
+            const stored = sessionStorage.getItem('tiageSyntheseData');
+            if (stored) {
+                try {
+                    const data = JSON.parse(stored);
+                    if (data.ichName) currentIchArchetype = findArchetypeKey(data.ichName);
+                    if (data.partnerName) currentPartnerArchetype = findArchetypeKey(data.partnerName);
+                } catch (e) {}
+            }
+
+            updateArchetypeDisplay();
+            renderContent();
+        });
+
+        /**
+         * Findet den Archetyp-Key anhand des Namens
+         */
+        function findArchetypeKey(name) {
+            for (const [key, val] of Object.entries(archetypeNames)) {
+                if (val.toLowerCase() === name.toLowerCase()) return key;
+            }
+            return name.toLowerCase().replace(/[^a-z]/g, '');
+        }
+
+        /**
+         * Aktualisiert die Archetyp-Anzeige
+         */
+        function updateArchetypeDisplay() {
+            document.getElementById('ichArchetypeName').textContent =
+                archetypeNames[currentIchArchetype] || currentIchArchetype;
+            document.getElementById('partnerArchetypeName').textContent =
+                archetypeNames[currentPartnerArchetype] || currentPartnerArchetype;
+        }
+
+        /**
+         * Navigation zwischen Archetypen
+         */
+        function navigateArchetype(person, direction) {
+            const current = person === 'ich' ? currentIchArchetype : currentPartnerArchetype;
+            const currentIndex = archetypeOrder.indexOf(current);
+            let newIndex = currentIndex + direction;
+
+            if (newIndex < 0) newIndex = archetypeOrder.length - 1;
+            if (newIndex >= archetypeOrder.length) newIndex = 0;
+
+            if (person === 'ich') {
+                currentIchArchetype = archetypeOrder[newIndex];
+            } else {
+                currentPartnerArchetype = archetypeOrder[newIndex];
+            }
+
+            updateArchetypeDisplay();
+            renderContent();
+        }
+
+        /**
+         * Rendert den Hauptinhalt
+         */
+        async function renderContent() {
+            const container = document.getElementById('syntheseContent');
+
+            // Prüfe ob OshoZenTextGenerator verfügbar ist
+            if (typeof OshoZenTextGenerator === 'undefined') {
+                container.innerHTML = `
+                    <div class="synthese-section">
+                        <div style="text-align: center; padding: 40px 20px; color: var(--text-muted);">
+                            <div style="font-size: 48px; margin-bottom: 16px;">🔥</div>
+                            <p>Osho Zen Modul wird geladen...</p>
+                            <p style="font-size: 12px; margin-top: 8px;">
+                                Bitte stelle sicher, dass oshoZenTextGenerator.js geladen ist.
+                            </p>
+                        </div>
+                    </div>
+                `;
+                return;
+            }
+
+            // Daten laden falls nötig
+            if (!OshoZenTextGenerator.isDataLoaded()) {
+                container.innerHTML = `
+                    <div class="synthese-loading">
+                        <div class="synthese-loading-spinner"></div>
+                        <p>Lade Osho Zen Texte...</p>
+                    </div>
+                `;
+
+                try {
+                    await OshoZenTextGenerator.loadData();
+                } catch (err) {
+                    console.error('Fehler beim Laden der Osho Zen Daten:', err);
+                    container.innerHTML = `
+                        <div class="synthese-section">
+                            <div style="text-align: center; padding: 40px 20px; color: var(--text-muted);">
+                                <div style="font-size: 48px; margin-bottom: 16px;">⚠️</div>
+                                <p>Fehler beim Laden der Osho Zen Daten.</p>
+                            </div>
+                        </div>
+                    `;
+                    return;
+                }
+            }
+
+            // Profile erstellen (vereinfacht - basierend auf Archetyp)
+            const profile1 = { name: archetypeNames[currentIchArchetype] };
+            const profile2 = { name: archetypeNames[currentPartnerArchetype] };
+
+            // Content generieren
+            const oshoContent = OshoZenTextGenerator.generateSync({
+                profile1: profile1,
+                profile2: profile2,
+                name1: archetypeNames[currentIchArchetype],
+                name2: archetypeNames[currentPartnerArchetype],
+                topN: 5
+            });
+
+            let html = `
+                <div class="synthese-section">
+                    <div class="synthese-section-header">
+                        <span class="synthese-section-icon">🔥</span>
+                        <div>
+                            <div class="synthese-section-title">Ti-Age Gemeinsame Bedürfnisse</div>
+                            <div class="synthese-section-subtitle">Resonanz & Übereinstimmung</div>
+                        </div>
+                    </div>
+                    <div class="osho-zen-content">
+                        ${oshoContent}
+                    </div>
+                </div>
+            `;
+
+            container.innerHTML = html;
+        }
+    </script>
+</body>
+</html>
