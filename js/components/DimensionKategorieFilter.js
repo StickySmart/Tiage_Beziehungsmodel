@@ -134,6 +134,15 @@ const DimensionKategorieFilter = (function() {
     let viewMode = 'tree';       // Nur noch 'tree' - Tags-Modus entfernt
 
     // ═══════════════════════════════════════════════════════════════════════════
+    // PERSON-SPEZIFISCHE PERSISTENZ (FIX: Filter pro ICH/PARTNER speichern)
+    // ═══════════════════════════════════════════════════════════════════════════
+    const savedStatePerPerson = {
+        ich: { kategorien: [] },
+        partner: { kategorien: [] }
+    };
+    let currentPerson = 'ich';  // Aktuelle Person für Filter-Kontext
+
+    // ═══════════════════════════════════════════════════════════════════════════
     // FILTER-LOGIK
     // ═══════════════════════════════════════════════════════════════════════════
 
@@ -399,6 +408,64 @@ const DimensionKategorieFilter = (function() {
     }
 
     /**
+     * Speichert den aktuellen Filter-State für eine Person
+     * @param {string} person - 'ich' oder 'partner'
+     */
+    function saveStateForPerson(person) {
+        if (!person || (person !== 'ich' && person !== 'partner')) {
+            person = 'ich';
+        }
+        savedStatePerPerson[person] = {
+            kategorien: Array.from(activeKategorien)
+        };
+        console.log('[DimensionKategorieFilter] State gespeichert für', person, ':', savedStatePerPerson[person].kategorien);
+    }
+
+    /**
+     * Lädt den gespeicherten Filter-State für eine Person
+     * @param {string} person - 'ich' oder 'partner'
+     */
+    function loadStateForPerson(person) {
+        if (!person || (person !== 'ich' && person !== 'partner')) {
+            person = 'ich';
+        }
+        const savedState = savedStatePerPerson[person];
+        activeKategorien.clear();
+        if (savedState && savedState.kategorien && savedState.kategorien.length > 0) {
+            savedState.kategorien.forEach(k => activeKategorien.add(k));
+        }
+        currentPerson = person;
+        console.log('[DimensionKategorieFilter] State geladen für', person, ':', Array.from(activeKategorien));
+        reRender();
+        dispatchFilterChange();
+    }
+
+    /**
+     * Wechselt die Person und speichert/lädt den State entsprechend
+     * @param {string} newPerson - 'ich' oder 'partner'
+     */
+    function switchPerson(newPerson) {
+        if (!newPerson || (newPerson !== 'ich' && newPerson !== 'partner')) {
+            newPerson = 'ich';
+        }
+        if (newPerson === currentPerson) {
+            return; // Keine Änderung nötig
+        }
+        // Speichere State der vorherigen Person
+        saveStateForPerson(currentPerson);
+        // Lade State der neuen Person
+        loadStateForPerson(newPerson);
+    }
+
+    /**
+     * Gibt die aktuelle Person zurück
+     * @returns {string} 'ich' oder 'partner'
+     */
+    function getCurrentPerson() {
+        return currentPerson;
+    }
+
+    /**
      * Holt alle Dimensionen
      */
     function getDimensionen() {
@@ -437,6 +504,12 @@ const DimensionKategorieFilter = (function() {
         getDimensionen,
         getKategorienFuerDimension,
         getKategorieInfo,
+
+        // Person-spezifische Persistenz (FIX für ICH/PARTNER Tab-Wechsel)
+        saveStateForPerson,
+        loadStateForPerson,
+        switchPerson,
+        getCurrentPerson,
 
         // Konstanten (für externe Nutzung)
         DIMENSIONEN,

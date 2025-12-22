@@ -14324,7 +14324,8 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
 
                 // ═══════════════════════════════════════════════════════════════════════════
                 // Event-Listener für Bedürfnis-Wert-Änderungen
-                // Aktualisiert gesperrte Werte in TiageState.profileReview.{person}.lockedNeeds
+                // FIX v1.8.455: Speichere ALLE Wert-Änderungen in TiageState.flatNeeds
+                // Zusätzlich: Gesperrte Werte werden in profileReview.lockedNeeds gespeichert
                 // ═══════════════════════════════════════════════════════════════════════════
                 document.addEventListener('flatNeedChange', function(e) {
                     var needId = e.detail && e.detail.needId;
@@ -14338,11 +14339,15 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
                         currentPerson = window.currentProfileReviewContext.person;
                     }
 
-                    // Nur aktualisieren wenn das Bedürfnis gesperrt ist
+                    // FIX: IMMER in TiageState.flatNeeds speichern (damit Werte beim Tab-Wechsel erhalten bleiben)
+                    TiageState.setNeed(currentPerson, needId, value);
+                    console.log('[flatNeedChange] Wert in TiageState.flatNeeds gespeichert:', needId, '=', value, 'für', currentPerson);
+
+                    // Zusätzlich: Wenn gesperrt, auch in lockedNeeds speichern (für Persistenz über Page-Reload)
                     if (TiageState.isNeedLocked(currentPerson, needId)) {
                         TiageState.lockNeed(currentPerson, needId, value);
                         TiageState.saveToStorage();
-                        console.log('[flatNeedChange] Gesperrter Wert aktualisiert:', needId, '=', value, 'für', currentPerson);
+                        console.log('[flatNeedChange] Gesperrter Wert auch in lockedNeeds gespeichert:', needId);
                     }
                 });
 
@@ -19333,12 +19338,40 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
             }
 
             // Speichere Kontext für spätere Neuladung bei Gender-Änderung
+            var previousPerson = currentProfileReviewContext.person;
             currentProfileReviewContext.archetypeKey = archetypeKey || 'duo';
             currentProfileReviewContext.person = person || 'ich';
 
             // ════════════════════════════════════════════════════════════════════════
-            // FIX: Lade Bedürfnisse aus TiageState (SSOT) statt localStorage
-            // TiageState.flatNeeds.{person} enthält die berechneten Werte
+            // FIX v1.8.455: Person-spezifische Filter und Sortierung wiederherstellen
+            // Bei Wechsel zwischen ICH/PARTNER werden Filter und Sort-Mode gespeichert/geladen
+            // ════════════════════════════════════════════════════════════════════════
+            var newPerson = person || 'ich';
+            if (previousPerson && previousPerson !== newPerson) {
+                // Filter-State wechseln (DimensionKategorieFilter)
+                if (typeof DimensionKategorieFilter !== 'undefined' && DimensionKategorieFilter.switchPerson) {
+                    DimensionKategorieFilter.switchPerson(newPerson);
+                    console.log('[ProfileReview] Filter-State gewechselt von', previousPerson, 'zu', newPerson);
+                }
+                // Sort-State wechseln (AttributeSummaryCard)
+                if (typeof AttributeSummaryCard !== 'undefined' && AttributeSummaryCard.switchSortPerson) {
+                    AttributeSummaryCard.switchSortPerson(newPerson);
+                    console.log('[ProfileReview] Sort-State gewechselt von', previousPerson, 'zu', newPerson);
+                }
+            } else if (!previousPerson) {
+                // Erster Aufruf: Initialisiere States für die Person
+                if (typeof DimensionKategorieFilter !== 'undefined' && DimensionKategorieFilter.loadStateForPerson) {
+                    DimensionKategorieFilter.loadStateForPerson(newPerson);
+                }
+                if (typeof AttributeSummaryCard !== 'undefined' && AttributeSummaryCard.loadSortModeForPerson) {
+                    AttributeSummaryCard.loadSortModeForPerson(newPerson);
+                }
+            }
+
+            // ════════════════════════════════════════════════════════════════════════
+            // FIX v1.8.455: Lade Bedürfnisse UND gesperrte Werte aus TiageState
+            // 1. flatNeeds.{person} = berechnete Werte
+            // 2. profileReview.{person}.lockedNeeds = manuell gesperrte Werte (überschreiben flatNeeds)
             // ════════════════════════════════════════════════════════════════════════
             if (typeof AttributeSummaryCard !== 'undefined') {
                 try {
@@ -19347,10 +19380,28 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
                     // PRIMÄR: Lade aus TiageState (Single Source of Truth)
                     if (typeof TiageState !== 'undefined') {
                         var tiageStateFlatNeeds = TiageState.get('flatNeeds.' + person);
+                        var lockedNeeds = TiageState.getLockedNeeds ? TiageState.getLockedNeeds(person) : {};
+
                         if (tiageStateFlatNeeds && Object.keys(tiageStateFlatNeeds).length > 0) {
+                            // FIX: Konvertiere zu Array-Format mit Lock-Status aus lockedNeeds
+                            var needsArray = [];
+                            Object.keys(tiageStateFlatNeeds).forEach(function(needId) {
+                                var value = tiageStateFlatNeeds[needId];
+                                var isLocked = lockedNeeds && lockedNeeds[needId] !== undefined;
+                                // Wenn gesperrt, verwende den gesperrten Wert (überschreibt flatNeeds)
+                                var finalValue = isLocked ? lockedNeeds[needId] : value;
+
+                                needsArray.push({
+                                    id: needId,
+                                    value: finalValue,
+                                    locked: isLocked
+                                });
+                            });
+
                             if (AttributeSummaryCard.setFlatNeeds) {
-                                AttributeSummaryCard.setFlatNeeds(tiageStateFlatNeeds);
-                                console.log('[ProfileReview] Bedürfnisse aus TiageState geladen für', person, ':', Object.keys(tiageStateFlatNeeds).length, 'Einträge');
+                                AttributeSummaryCard.setFlatNeeds(needsArray);
+                                var lockedCount = Object.keys(lockedNeeds || {}).length;
+                                console.log('[ProfileReview] Bedürfnisse aus TiageState geladen für', person, ':', needsArray.length, 'Einträge,', lockedCount, 'gesperrt');
                                 loadedFromTiageState = true;
                             }
                         } else {

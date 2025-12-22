@@ -696,6 +696,15 @@ const AttributeSummaryCard = (function() {
     let currentFlatSortMode = 'value';
 
     /**
+     * Person-spezifische Persistenz für Sort-Mode (FIX: Sortierung pro ICH/PARTNER speichern)
+     */
+    const savedSortModePerPerson = {
+        ich: 'value',
+        partner: 'value'
+    };
+    let currentSortPerson = 'ich';  // Aktuelle Person für Sort-Kontext
+
+    /**
      * DEPRECATED: Perspektiven-Filter wurden durch DimensionKategorieFilter ersetzt
      * Kept for backward compatibility
      */
@@ -1272,7 +1281,51 @@ const AttributeSummaryCard = (function() {
      */
     function setSortMode(mode) {
         currentFlatSortMode = mode;
+        // Speichere auch für aktuelle Person
+        savedSortModePerPerson[currentSortPerson] = mode;
         reRenderFlatNeeds();
+    }
+
+    /**
+     * Speichert den aktuellen Sort-Mode für eine Person
+     * @param {string} person - 'ich' oder 'partner'
+     */
+    function saveSortModeForPerson(person) {
+        if (!person || (person !== 'ich' && person !== 'partner')) {
+            person = 'ich';
+        }
+        savedSortModePerPerson[person] = currentFlatSortMode;
+        console.log('[AttributeSummaryCard] Sort-Mode gespeichert für', person, ':', currentFlatSortMode);
+    }
+
+    /**
+     * Lädt den gespeicherten Sort-Mode für eine Person
+     * @param {string} person - 'ich' oder 'partner'
+     */
+    function loadSortModeForPerson(person) {
+        if (!person || (person !== 'ich' && person !== 'partner')) {
+            person = 'ich';
+        }
+        currentFlatSortMode = savedSortModePerPerson[person] || 'value';
+        currentSortPerson = person;
+        console.log('[AttributeSummaryCard] Sort-Mode geladen für', person, ':', currentFlatSortMode);
+    }
+
+    /**
+     * Wechselt die Person und speichert/lädt den Sort-Mode entsprechend
+     * @param {string} newPerson - 'ich' oder 'partner'
+     */
+    function switchSortPerson(newPerson) {
+        if (!newPerson || (newPerson !== 'ich' && newPerson !== 'partner')) {
+            newPerson = 'ich';
+        }
+        if (newPerson === currentSortPerson) {
+            return; // Keine Änderung nötig
+        }
+        // Speichere Sort-Mode der vorherigen Person
+        saveSortModeForPerson(currentSortPerson);
+        // Lade Sort-Mode der neuen Person
+        loadSortModeForPerson(newPerson);
     }
 
     /**
@@ -2362,6 +2415,10 @@ const AttributeSummaryCard = (function() {
         reRenderFlatNeeds,
         setSortMode,
         toggleShowOnlyChanged,
+        // Person-spezifische Sort-Persistenz (FIX für ICH/PARTNER Tab-Wechsel)
+        saveSortModeForPerson,
+        loadSortModeForPerson,
+        switchSortPerson,
         // Getter für aktuellen Archetyp-Label (für Filter-Updates)
         getCurrentArchetypLabel: function() { return currentFlatArchetypLabel; },
         // NEU: DimensionKategorieFilter Integration
