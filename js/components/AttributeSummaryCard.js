@@ -1482,13 +1482,57 @@ const AttributeSummaryCard = (function() {
             if (input) input.readOnly = isLocked;
         }
 
-        // Event
-        console.log('[DEBUG toggleFlatNeedLock] Dispatching flatNeedLockChange event');
+        // ═══════════════════════════════════════════════════════════════════════════
+        // DIREKT: Speichere Lock-Status in TiageState (SSOT)
+        // ═══════════════════════════════════════════════════════════════════════════
+        if (typeof TiageState !== 'undefined') {
+            // Ermittle aktuelle Person aus Kontext
+            var currentPerson = 'ich';
+            if (window.currentProfileReviewContext && window.currentProfileReviewContext.person) {
+                currentPerson = window.currentProfileReviewContext.person;
+            }
+
+            if (isLocked) {
+                // Beim Sperren: Speichere Wert
+                const currentValue = needObj ? needObj.value : 50;
+                TiageState.lockNeed(currentPerson, needId, currentValue);
+                console.log('[toggleFlatNeedLock] Gesperrt & gespeichert:', needId, '=', currentValue, 'für', currentPerson);
+            } else {
+                // Beim Entsperren: Entferne aus lockedNeeds
+                TiageState.unlockNeed(currentPerson, needId);
+                console.log('[toggleFlatNeedLock] Entsperrt:', needId, 'für', currentPerson);
+            }
+            TiageState.saveToStorage();
+
+            // Toast-Meldung
+            showLockToast(isLocked ? 'Wert gesperrt & gespeichert' : 'Wert entsperrt');
+        }
+
+        // Event (für andere Listener)
         document.dispatchEvent(new CustomEvent('flatNeedLockChange', {
             bubbles: true,
             detail: { needId, locked: isLocked }
         }));
-        console.log('[DEBUG toggleFlatNeedLock] Event dispatched');
+    }
+
+    /**
+     * Zeigt kurze Toast-Meldung für Lock-Aktionen
+     */
+    function showLockToast(message) {
+        var existing = document.getElementById('lockSavedToast');
+        if (existing) existing.remove();
+
+        var toast = document.createElement('div');
+        toast.id = 'lockSavedToast';
+        toast.textContent = message;
+        toast.style.cssText = 'position:fixed;bottom:80px;left:50%;transform:translateX(-50%);background:#22c55e;color:#fff;padding:8px 16px;border-radius:6px;font-size:13px;z-index:10000;opacity:0;transition:opacity 0.2s;box-shadow:0 2px 8px rgba(0,0,0,0.3);';
+        document.body.appendChild(toast);
+
+        requestAnimationFrame(function() { toast.style.opacity = '1'; });
+        setTimeout(function() {
+            toast.style.opacity = '0';
+            setTimeout(function() { toast.remove(); }, 200);
+        }, 1500);
     }
 
     /**
