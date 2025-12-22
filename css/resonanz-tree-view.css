@@ -113,6 +113,40 @@
     background: rgba(139, 92, 246, 0.2);
 }
 
+/* Aktive Dimensionen - Farbliche Hervorhebung (alle Kategorien aktiv) */
+.tree-node-resonanz.active > .tree-node-header {
+    background: var(--node-color, #8B5CF6) !important;
+    border-color: var(--node-color, #8B5CF6) !important;
+    box-shadow: 0 0 12px rgba(var(--node-color-rgb, 139, 92, 246), 0.3);
+}
+
+.tree-node-resonanz.active > .tree-node-header .tree-node-label,
+.tree-node-resonanz.active > .tree-node-header .tree-node-icon,
+.tree-node-resonanz.active > .tree-node-header .tree-node-count,
+.tree-node-resonanz.active > .tree-node-header .tree-node-description {
+    color: #ffffff;
+}
+
+/* Teilweise aktive Dimensionen - Dezente Hervorhebung (einige Kategorien aktiv) */
+.tree-node-resonanz.partially-active > .tree-node-header {
+    background: color-mix(in srgb, var(--node-color, #8B5CF6) 25%, transparent) !important;
+    border-color: var(--node-color, #8B5CF6) !important;
+    border-style: dashed;
+}
+
+.tree-node-resonanz.partially-active > .tree-node-header .tree-node-label {
+    color: var(--node-color, #8B5CF6);
+}
+
+/* Tree Node Content für Resonanz - Anklickbar für Filter */
+.tree-node-resonanz .tree-node-content {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex: 1;
+    cursor: pointer;
+}
+
 /* ═══════════════════════════════════════════════════════════════════════════
    EBENE 2 - KATEGORIEN (#K1-#K18)
    ═══════════════════════════════════════════════════════════════════════════ */

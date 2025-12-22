@@ -91,6 +91,9 @@ const ResonanzTreeView = (function() {
     let containerId = null;
     let onKategorieClickCallback = null; // Callback für Kategorie-Klicks
     let isKategorieActiveCallback = null; // Callback für Kategorie-Aktiv-Status
+    let onDimensionClickCallback = null; // Callback für Dimension-Klicks
+    let isDimensionActiveCallback = null; // Callback für Dimension-Aktiv-Status
+    let isDimensionPartiallyActiveCallback = null; // Callback für teilweise aktive Dimension
 
     // ═══════════════════════════════════════════════════════════════════════════
     // DATEN-STRUKTUR AUFBAU
@@ -164,13 +167,16 @@ const ResonanzTreeView = (function() {
     /**
      * Rendert den kompletten Baum
      * @param {string} container - Container-Selektor oder ID
-     * @param {Object} options - Optionen {onKategorieClick, isKategorieActive}
+     * @param {Object} options - Optionen {onKategorieClick, isKategorieActive, onDimensionClick, isDimensionActive, isDimensionPartiallyActive}
      * @returns {string} HTML-String
      */
     function render(container, options = {}) {
         containerId = container;
         onKategorieClickCallback = options.onKategorieClick || null;
         isKategorieActiveCallback = options.isKategorieActive || null;
+        onDimensionClickCallback = options.onDimensionClick || null;
+        isDimensionActiveCallback = options.isDimensionActive || null;
+        isDimensionPartiallyActiveCallback = options.isDimensionPartiallyActive || null;
 
         const tree = buildTreeData();
 
@@ -197,16 +203,22 @@ const ResonanzTreeView = (function() {
         const expandIcon = isExpanded ? '▼' : '▶';
         const expandedClass = isExpanded ? ' expanded' : '';
 
+        // Prüfe ob Dimension aktiv ist (für Filter-Visualisierung)
+        const isActive = isDimensionActiveCallback ? isDimensionActiveCallback(resonanz.id) : false;
+        const isPartiallyActive = isDimensionPartiallyActiveCallback ? isDimensionPartiallyActiveCallback(resonanz.id) : false;
+        const activeClass = isActive ? ' active' : (isPartiallyActive ? ' partially-active' : '');
+
         let html = `
-        <div class="tree-node tree-node-resonanz${expandedClass}" data-node-id="${resonanz.id}">
+        <div class="tree-node tree-node-resonanz${expandedClass}${activeClass}" data-node-id="${resonanz.id}">
             <div class="tree-node-header"
-                 onclick="ResonanzTreeView.toggleNode('${resonanz.id}')"
                  style="--node-color: ${resonanz.color};">
-                <span class="tree-expand-icon">${expandIcon}</span>
-                <span class="tree-node-icon">${resonanz.icon}</span>
-                <span class="tree-node-label">${resonanz.label}</span>
-                <span class="tree-node-count">(${resonanz.count})</span>
-                <span class="tree-node-description">${resonanz.beschreibung}</span>
+                <span class="tree-expand-icon" onclick="ResonanzTreeView.toggleNode('${resonanz.id}'); event.stopPropagation();">${expandIcon}</span>
+                <span class="tree-node-content" onclick="ResonanzTreeView.onDimensionClick('${resonanz.id}'); event.stopPropagation();">
+                    <span class="tree-node-icon">${resonanz.icon}</span>
+                    <span class="tree-node-label">${resonanz.label}</span>
+                    <span class="tree-node-count">(${resonanz.count})</span>
+                    <span class="tree-node-description">${resonanz.beschreibung}</span>
+                </span>
             </div>`;
 
         // Kategorien (Ebene 2)
@@ -300,6 +312,15 @@ const ResonanzTreeView = (function() {
     }
 
     /**
+     * Behandelt Klick auf eine Dimension (für Filter)
+     */
+    function onDimensionClick(dimensionId) {
+        if (onDimensionClickCallback) {
+            onDimensionClickCallback(dimensionId);
+        }
+    }
+
+    /**
      * Expandiert alle Knoten
      */
     function expandAll() {
@@ -360,6 +381,7 @@ const ResonanzTreeView = (function() {
         // Interaktion
         toggleNode,
         onKategorieClick,
+        onDimensionClick,
         expandAll,
         collapseAll,
         reset,

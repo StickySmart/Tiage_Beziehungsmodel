@@ -334,6 +334,60 @@ const DimensionKategorieFilter = (function() {
     }
 
     /**
+     * Toggle alle Kategorien einer Dimension (R1-R4)
+     * Wenn alle Kategorien der Dimension aktiv sind → alle deaktivieren
+     * Sonst → alle Kategorien der Dimension aktivieren
+     * @param {string} dimensionId - 'R1', 'R2', 'R3' oder 'R4'
+     */
+    function toggleDimension(dimensionId) {
+        const kategorien = KATEGORIEN_PRO_DIMENSION[dimensionId];
+        if (!kategorien || kategorien.length === 0) {
+            console.warn('[DimensionKategorieFilter] Unbekannte Dimension:', dimensionId);
+            return;
+        }
+
+        // Prüfe ob ALLE Kategorien dieser Dimension bereits aktiv sind
+        const kategorieIds = kategorien.map(k => k.id);
+        const allActive = kategorieIds.every(id => activeKategorien.has(id));
+
+        if (allActive) {
+            // Alle deaktivieren
+            kategorieIds.forEach(id => activeKategorien.delete(id));
+        } else {
+            // Alle aktivieren
+            kategorieIds.forEach(id => activeKategorien.add(id));
+        }
+
+        // Re-render Filter
+        reRender();
+
+        // Event feuern
+        dispatchFilterChange();
+    }
+
+    /**
+     * Prüft ob eine Dimension vollständig aktiv ist (alle Kategorien)
+     * @param {string} dimensionId - 'R1', 'R2', 'R3' oder 'R4'
+     * @returns {boolean}
+     */
+    function isDimensionActive(dimensionId) {
+        const kategorien = KATEGORIEN_PRO_DIMENSION[dimensionId];
+        if (!kategorien || kategorien.length === 0) return false;
+        return kategorien.every(k => activeKategorien.has(k.id));
+    }
+
+    /**
+     * Prüft ob eine Dimension teilweise aktiv ist (mindestens eine Kategorie)
+     * @param {string} dimensionId - 'R1', 'R2', 'R3' oder 'R4'
+     * @returns {boolean}
+     */
+    function isDimensionPartiallyActive(dimensionId) {
+        const kategorien = KATEGORIEN_PRO_DIMENSION[dimensionId];
+        if (!kategorien || kategorien.length === 0) return false;
+        return kategorien.some(k => activeKategorien.has(k.id)) && !kategorien.every(k => activeKategorien.has(k.id));
+    }
+
+    /**
      * Prüft ob eine Kategorie aktiv ist
      * @param {string} kategorieId - '#K1' bis '#K18'
      * @returns {boolean}
@@ -409,7 +463,10 @@ const DimensionKategorieFilter = (function() {
                 if (treeContainer) {
                     const treeHtml = ResonanzTreeView.render('#tree-view-inline-container', {
                         onKategorieClick: toggleKategorie,
-                        isKategorieActive: isKategorieActive
+                        isKategorieActive: isKategorieActive,
+                        onDimensionClick: toggleDimension,
+                        isDimensionActive: isDimensionActive,
+                        isDimensionPartiallyActive: isDimensionPartiallyActive
                     });
                     treeContainer.innerHTML = treeHtml;
                     console.log('[DimensionKategorieFilter] Tree-View initialisiert');
@@ -512,7 +569,10 @@ const DimensionKategorieFilter = (function() {
         // Filter setzen (Mehrfachauswahl)
         toggleKategorie,
         removeKategorie,
+        toggleDimension,
         isKategorieActive,
+        isDimensionActive,
+        isDimensionPartiallyActive,
         setKategorie,  // Deprecated - für Rückwärtskompatibilität
         reset,
 
