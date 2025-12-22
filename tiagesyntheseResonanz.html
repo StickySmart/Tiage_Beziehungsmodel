@@ -23,7 +23,17 @@
     <script src="js/utils/statistics.js"></script>
     <script src="js/state.js"></script>
 
-    <!-- Archetypen für Navigation -->
+    <!-- Archetypen Profile (müssen vor index.js geladen werden) -->
+    <script src="profiles/archetypen/single.js"></script>
+    <script src="profiles/archetypen/duo.js"></script>
+    <script src="profiles/archetypen/duo-flex.js"></script>
+    <script src="profiles/archetypen/solopoly.js"></script>
+    <script src="profiles/archetypen/polyamor.js"></script>
+    <script src="profiles/archetypen/ra.js"></script>
+    <script src="profiles/archetypen/lat.js"></script>
+    <script src="profiles/archetypen/aromantisch.js"></script>
+
+    <!-- Archetypen Index (BaseArchetypProfile) -->
     <script src="profiles/archetypen/index.js"></script>
 
     <!-- Osho Zen Text Generator -->
@@ -774,9 +784,50 @@
                 }
             }
 
-            // Profile erstellen (vereinfacht - basierend auf Archetyp)
-            const profile1 = { name: archetypeNames[currentIchArchetype] };
-            const profile2 = { name: archetypeNames[currentPartnerArchetype] };
+            // Profile mit Bedürfnisdaten erstellen
+            // Priorität: 1. TiageState.flatNeeds, 2. BaseArchetypProfile.umfrageWerte
+            let needs1 = {};
+            let needs2 = {};
+
+            // Bedürfnisse für ICH laden
+            if (typeof TiageState !== 'undefined') {
+                needs1 = TiageState.get('flatNeeds.ich') || {};
+            }
+            // Fallback auf Basis-Archetyp-Werte wenn TiageState leer
+            if (Object.keys(needs1).length === 0 && typeof BaseArchetypProfile !== 'undefined') {
+                const baseProfil1 = BaseArchetypProfile[currentIchArchetype];
+                if (baseProfil1 && baseProfil1.umfrageWerte) {
+                    needs1 = baseProfil1.umfrageWerte;
+                    console.log('[Resonanz] Fallback auf BaseArchetypProfile für ICH:', currentIchArchetype);
+                }
+            }
+
+            // Bedürfnisse für PARTNER laden
+            if (typeof TiageState !== 'undefined') {
+                needs2 = TiageState.get('flatNeeds.partner') || {};
+            }
+            // Fallback auf Basis-Archetyp-Werte wenn TiageState leer
+            if (Object.keys(needs2).length === 0 && typeof BaseArchetypProfile !== 'undefined') {
+                const baseProfil2 = BaseArchetypProfile[currentPartnerArchetype];
+                if (baseProfil2 && baseProfil2.umfrageWerte) {
+                    needs2 = baseProfil2.umfrageWerte;
+                    console.log('[Resonanz] Fallback auf BaseArchetypProfile für PARTNER:', currentPartnerArchetype);
+                }
+            }
+
+            console.log('[Resonanz] Bedürfnisse geladen - ICH:', Object.keys(needs1).length, 'PARTNER:', Object.keys(needs2).length);
+
+            // Profile mit Bedürfnissen erstellen
+            const profile1 = {
+                name: archetypeNames[currentIchArchetype],
+                needs: needs1,
+                beduerfnisse: needs1
+            };
+            const profile2 = {
+                name: archetypeNames[currentPartnerArchetype],
+                needs: needs2,
+                beduerfnisse: needs2
+            };
 
             // Content generieren
             const oshoContent = OshoZenTextGenerator.generateSync({
