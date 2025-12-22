@@ -14217,6 +14217,67 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
                     }
                 });
 
+                // ═══════════════════════════════════════════════════════════════════════════
+                // Event-Listener für Bedürfnis-Lock-Änderungen
+                // Synchronisiert Lock-Status mit TiageState.profileReview.{person}.lockedNeeds
+                // ═══════════════════════════════════════════════════════════════════════════
+                document.addEventListener('flatNeedLockChange', function(e) {
+                    var needId = e.detail && e.detail.needId;
+                    var locked = e.detail && e.detail.locked;
+
+                    if (!needId || typeof TiageState === 'undefined') return;
+
+                    // Ermittle aktuelle Person aus Kontext
+                    var currentPerson = 'ich';
+                    if (window.currentProfileReviewContext && window.currentProfileReviewContext.person) {
+                        currentPerson = window.currentProfileReviewContext.person;
+                    }
+
+                    if (locked) {
+                        // Beim Sperren: Hole aktuellen Wert aus AttributeSummaryCard
+                        var currentValue = 50; // Fallback
+                        if (typeof AttributeSummaryCard !== 'undefined' && AttributeSummaryCard.getFlatNeeds) {
+                            var flatNeeds = AttributeSummaryCard.getFlatNeeds();
+                            var needObj = flatNeeds.find(function(n) { return n.id === needId; });
+                            if (needObj) {
+                                currentValue = needObj.value;
+                            }
+                        }
+                        TiageState.lockNeed(currentPerson, needId, currentValue);
+                        console.log('[flatNeedLockChange] Bedürfnis gesperrt:', needId, '=', currentValue, 'für', currentPerson);
+                    } else {
+                        // Beim Entsperren: Entferne aus lockedNeeds
+                        TiageState.unlockNeed(currentPerson, needId);
+                        console.log('[flatNeedLockChange] Bedürfnis entsperrt:', needId, 'für', currentPerson);
+                    }
+                    // Sofort in localStorage speichern
+                    TiageState.saveToStorage();
+                });
+
+                // ═══════════════════════════════════════════════════════════════════════════
+                // Event-Listener für Bedürfnis-Wert-Änderungen
+                // Aktualisiert gesperrte Werte in TiageState.profileReview.{person}.lockedNeeds
+                // ═══════════════════════════════════════════════════════════════════════════
+                document.addEventListener('flatNeedChange', function(e) {
+                    var needId = e.detail && e.detail.needId;
+                    var value = e.detail && e.detail.value;
+
+                    if (!needId || value === undefined || typeof TiageState === 'undefined') return;
+
+                    // Ermittle aktuelle Person aus Kontext
+                    var currentPerson = 'ich';
+                    if (window.currentProfileReviewContext && window.currentProfileReviewContext.person) {
+                        currentPerson = window.currentProfileReviewContext.person;
+                    }
+
+                    // Nur aktualisieren wenn das Bedürfnis gesperrt ist
+                    if (TiageState.isNeedLocked(currentPerson, needId)) {
+                        TiageState.lockNeed(currentPerson, needId, value);
+                        TiageState.saveToStorage();
+                        console.log('[flatNeedChange] Gesperrter Wert aktualisiert:', needId, '=', value, 'für', currentPerson);
+                    }
+                });
+
                 // Initialize MomentsToggle in header
                 if (typeof MomentsToggle !== 'undefined' && typeof MomentsToggle.init === 'function') {
                     MomentsToggle.init();
