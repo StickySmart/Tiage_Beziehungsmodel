@@ -11,13 +11,14 @@
     <title>Bedürfnis-Detail | Ti-Age Synthese</title>
     <link rel="canonical" href="https://ti-age.de/tiagesynthese.html">
     <!-- Zentrale CSS-Variablen - EINZIGE QUELLE -->
-    <link rel="stylesheet" href="templates/variables.css?v=20251205c">
-    <link rel="stylesheet" href="templates/template_desktop.css?v=20251205c">
-    <link rel="stylesheet" href="templates/template_mobile.css?v=20251205c" media="(max-width: 768px)">
+    <link rel="stylesheet" href="templates/variables.css?v=20251222">
+    <link rel="stylesheet" href="templates/template_desktop.css?v=20251222">
+    <link rel="stylesheet" href="templates/template_mobile.css?v=20251222" media="(max-width: 768px)">
 
     <!-- TIAGE Core Scripts -->
     <script src="js/version.js"></script>
     <script src="js/utils/statistics.js"></script>
+    <script src="js/state.js"></script>
 
     <!-- BEDÜRFNIS-KATALOG (SSOT) -->
     <script src="profiles/definitions/beduerfnis-katalog.js"></script>
@@ -208,6 +209,272 @@
         .need-modal-comparison-diff-value.neutral {
             color: #eab308;
         }
+
+        /* Need Modal Content Styles (SSOT - identisch mit needs-editor.html) */
+        .need-modal-content {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .need-modal-id-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .need-modal-id {
+            font-family: monospace;
+            font-size: 11px;
+            color: var(--text-muted, #888);
+            background: rgba(255,255,255,0.05);
+            padding: 3px 8px;
+            border-radius: 4px;
+        }
+
+        .need-modal-type {
+            font-size: 11px;
+            padding: 3px 8px;
+            border-radius: 4px;
+        }
+
+        .need-modal-type-haupt {
+            background: rgba(59,130,246,0.15);
+            color: #3B82F6;
+        }
+
+        .need-modal-type-nuance {
+            background: rgba(139,92,246,0.15);
+            color: #8B5CF6;
+        }
+
+        .need-modal-meta-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 12px;
+        }
+
+        .need-modal-meta-item {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .need-modal-meta-label {
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--text-muted, #888);
+        }
+
+        .need-modal-meta-value {
+            font-size: 13px;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .need-modal-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        .need-modal-badge {
+            font-size: 10px;
+            font-weight: 700;
+            color: #fff;
+            padding: 2px 6px;
+            border-radius: 4px;
+        }
+
+        .need-modal-question {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            padding: 14px;
+            background: rgba(59,130,246,0.08);
+            border-radius: 10px;
+            border-left: 3px solid #3B82F6;
+        }
+
+        .need-modal-question-icon {
+            font-size: 16px;
+            flex-shrink: 0;
+        }
+
+        .need-modal-question-text {
+            font-size: 14px;
+            line-height: 1.5;
+            color: var(--text-primary, #fff);
+            font-style: italic;
+        }
+
+        .need-modal-context {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 13px;
+        }
+
+        .need-modal-context-label {
+            color: var(--text-muted, #888);
+        }
+
+        .need-modal-context-text {
+            color: var(--text-primary, #fff);
+        }
+
+        .need-modal-parent {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 12px;
+        }
+
+        .need-modal-parent-label {
+            color: var(--text-muted, #888);
+        }
+
+        .need-modal-parent-link {
+            color: #3B82F6;
+            cursor: pointer;
+            text-decoration: underline;
+        }
+
+        .need-modal-parent-link:hover {
+            color: #60a5fa;
+        }
+
+        .need-modal-nuancen {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .need-modal-nuancen-label {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--text-muted, #888);
+        }
+
+        .need-modal-nuancen-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+
+        .need-modal-nuance-tag {
+            font-size: 11px;
+            padding: 4px 10px;
+            background: rgba(139,92,246,0.1);
+            color: #a78bfa;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-decoration: none;
+        }
+
+        .need-modal-nuance-tag:hover {
+            background: rgba(139,92,246,0.2);
+            color: #c4b5fd;
+        }
+
+        .need-modal-value {
+            margin-top: 8px;
+            padding: 14px;
+            background: rgba(74,144,217,0.08);
+            border-radius: 10px;
+            border: 1px solid rgba(74,144,217,0.2);
+        }
+
+        .need-modal-value-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .need-modal-value-label {
+            font-size: 12px;
+            color: var(--text-muted, #888);
+        }
+
+        .need-modal-value-number {
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--accent-primary, #4a90d9);
+        }
+
+        .need-modal-value-bar {
+            height: 8px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .need-modal-value-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--accent-primary, #4a90d9), #60a5fa);
+            border-radius: 4px;
+            transition: width 0.15s ease;
+        }
+
+        /* Statistics Section Styles */
+        .need-modal-statistics {
+            margin-top: 12px;
+            padding: 14px;
+            background: rgba(34, 197, 94, 0.08);
+            border-radius: 10px;
+            border: 1px solid rgba(34, 197, 94, 0.2);
+            border-left: 3px solid #22c55e;
+        }
+
+        .need-modal-statistics-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 10px;
+        }
+
+        .need-modal-statistics-icon {
+            font-size: 16px;
+        }
+
+        .need-modal-statistics-label {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: #22c55e;
+            font-weight: 600;
+        }
+
+        .need-modal-statistics-content {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .need-modal-statistics-text {
+            font-size: 14px;
+            color: var(--text-primary, #fff);
+            line-height: 1.5;
+        }
+
+        .need-modal-statistics-text strong {
+            color: #22c55e;
+            font-weight: 700;
+        }
+
+        .need-modal-statistics-sub {
+            font-size: 11px;
+            color: var(--text-muted, #888);
+            font-style: italic;
+        }
     </style>
 </head>
 <body>
@@ -382,8 +649,8 @@
                 const ichWert = resonanceData.wert1;
                 const partnerWert = resonanceData.wert2;
                 const differenz = ichWert - partnerWert;
+                const absDifferenz = Math.abs(differenz);
                 const diffClass = differenz > 0 ? 'positive' : (differenz < 0 ? 'negative' : 'neutral');
-                const diffSign = differenz > 0 ? '+' : '';
 
                 html += '\
                     <div class="need-modal-comparison">\
@@ -407,7 +674,54 @@
                         </div>\
                         <div class="need-modal-comparison-diff">\
                             <span class="need-modal-comparison-diff-label">Differenz</span>\
-                            <span class="need-modal-comparison-diff-value ' + diffClass + '">' + diffSign + differenz + '</span>\
+                            <span class="need-modal-comparison-diff-value ' + diffClass + '">' + absDifferenz + '</span>\
+                        </div>\
+                    </div>\
+                ';
+            } else {
+                // Fallback: Nur "Dein aktueller Wert" wenn KEINE Vergleichsdaten vorhanden
+                let displayValue = 50; // Fallback
+
+                // 1. Versuche aus TiageState
+                if (typeof TiageState !== 'undefined') {
+                    const ichNeeds = TiageState.get('flatNeeds.ich');
+                    if (ichNeeds) {
+                        if (ichNeeds[bId] !== undefined) {
+                            displayValue = ichNeeds[bId];
+                        } else if (typeof BeduerfnisIds !== 'undefined') {
+                            const stringKey = BeduerfnisIds.toKey(bId);
+                            if (stringKey && ichNeeds[stringKey] !== undefined) {
+                                displayValue = ichNeeds[stringKey];
+                            }
+                        }
+                    }
+                }
+
+                // 2. Fallback: sessionStorage
+                if (displayValue === 50) {
+                    try {
+                        const stored = sessionStorage.getItem('tiageSyntheseData');
+                        if (stored) {
+                            const data = JSON.parse(stored);
+                            if (data.flatNeeds && data.flatNeeds[bId] !== undefined) {
+                                displayValue = data.flatNeeds[bId];
+                            } else if (data.flatNeeds && data.flatNeeds[needId] !== undefined) {
+                                displayValue = data.flatNeeds[needId];
+                            }
+                        }
+                    } catch (e) {
+                        console.warn('[TiageSynthese] Fehler beim Laden des aktuellen Werts:', e);
+                    }
+                }
+
+                html += '\
+                    <div class="need-modal-value" data-need-id="' + bId + '">\
+                        <div class="need-modal-value-header">\
+                            <span class="need-modal-value-label">Dein aktueller Wert</span>\
+                            <span class="need-modal-value-number">' + displayValue + '</span>\
+                        </div>\
+                        <div class="need-modal-value-bar">\
+                            <div class="need-modal-value-fill" style="width: ' + displayValue + '%"></div>\
                         </div>\
                     </div>\
                 ';
@@ -462,11 +776,54 @@
         }
 
         /**
-         * Holt Resonanz-Daten aus sessionStorage (SSOT)
-         * @param {string} needId - Die ID des Bedürfnisses
-         * @returns {object|null} Resonanz-Daten oder null
+         * Holt Vergleichs-Daten für ein Bedürfnis
+         * PRIORITÄT: 1. TiageState (live) → 2. sessionStorage (fallback)
+         * @param {string} needId - Die ID des Bedürfnisses (z.B. '#B102')
+         * @returns {object|null} { wert1, wert2, ichName, partnerName } oder null
          */
-        function getResonanceDataFromStorage(needId) {
+        function getComparisonData(needId) {
+            // Normalisiere needId zu #B-Format
+            let bId = needId;
+            if (needId && !needId.startsWith('#B') && typeof BeduerfnisIds !== 'undefined') {
+                bId = BeduerfnisIds.toId(needId) || needId;
+            }
+
+            // ═══════════════════════════════════════════════════════════════════
+            // PRIORITÄT 1: TiageState (Live-Daten)
+            // ═══════════════════════════════════════════════════════════════════
+            if (typeof TiageState !== 'undefined') {
+                const ichNeeds = TiageState.get('flatNeeds.ich');
+                const partnerNeeds = TiageState.get('flatNeeds.partner');
+
+                if (ichNeeds && partnerNeeds) {
+                    // Versuche mit #B-ID
+                    let wert1 = ichNeeds[bId];
+                    let wert2 = partnerNeeds[bId];
+
+                    // Fallback: Versuche mit string-key
+                    if (wert1 === undefined && typeof BeduerfnisIds !== 'undefined') {
+                        const stringKey = BeduerfnisIds.toKey(bId);
+                        if (stringKey) {
+                            wert1 = ichNeeds[stringKey];
+                            wert2 = partnerNeeds[stringKey];
+                        }
+                    }
+
+                    if (wert1 !== undefined && wert2 !== undefined) {
+                        console.log('[TiageSynthese] Daten aus TiageState:', bId, '→ Ich:', wert1, 'Partner:', wert2);
+                        return {
+                            wert1: wert1,
+                            wert2: wert2,
+                            ichName: 'Ich',      // TODO: Aus TiageState holen wenn verfügbar
+                            partnerName: 'Partner'
+                        };
+                    }
+                }
+            }
+
+            // ═══════════════════════════════════════════════════════════════════
+            // PRIORITÄT 2: sessionStorage (Fallback für Legacy-Support)
+            // ═══════════════════════════════════════════════════════════════════
             try {
                 const stored = sessionStorage.getItem('tiageSyntheseData');
                 if (!stored) return null;
@@ -474,32 +831,26 @@
                 const data = JSON.parse(stored);
                 if (!data.resonanceMap) return null;
 
-                // Suche nach needId (kann #B-ID oder string-key sein)
-                let resonance = data.resonanceMap[needId];
+                // Suche nach needId
+                let resonance = data.resonanceMap[bId] || data.resonanceMap[needId];
 
                 // Falls nicht gefunden, versuche Konvertierung
                 if (!resonance && typeof BeduerfnisIds !== 'undefined') {
-                    // Versuche #B-ID zu string-key
-                    const asKey = BeduerfnisIds.toKey(needId);
+                    const asKey = BeduerfnisIds.toKey(bId);
                     if (asKey) resonance = data.resonanceMap[asKey];
-
-                    // Versuche string-key zu #B-ID
-                    if (!resonance) {
-                        const asId = BeduerfnisIds.toId(needId);
-                        if (asId) resonance = data.resonanceMap[asId];
-                    }
                 }
 
                 if (!resonance) return null;
 
+                console.log('[TiageSynthese] Daten aus sessionStorage:', bId);
                 return {
                     wert1: resonance.wert1,
                     wert2: resonance.wert2,
-                    ichName: data.ichName,
-                    partnerName: data.partnerName
+                    ichName: data.ichName || 'Ich',
+                    partnerName: data.partnerName || 'Partner'
                 };
             } catch (e) {
-                console.warn('[TiageSynthese] Fehler beim Laden der Resonanz-Daten:', e);
+                console.warn('[TiageSynthese] Fehler beim Laden aus sessionStorage:', e);
                 return null;
             }
         }
@@ -526,10 +877,10 @@
                 }
             }
 
-            // Resonanz-Daten aus sessionStorage laden (für alle verlinkten Bedürfnisse verfügbar)
-            const resonanceData = getResonanceDataFromStorage(needId);
+            // Vergleichs-Daten laden (TiageState → sessionStorage)
+            const comparisonData = getComparisonData(needId);
 
-            renderNeedContent(needId, resonanceData);
+            renderNeedContent(needId, comparisonData);
         });
     </script>
 </body>
