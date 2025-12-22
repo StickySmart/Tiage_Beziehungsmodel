@@ -533,7 +533,28 @@
             // Statistische Daten berechnen (80% Konfidenzintervall)
             let statisticsHtml = '';
             const sigma = kategorie?.sigma || (typeof TiageStatistics !== 'undefined' ? TiageStatistics.DEFAULT_SIGMA : 14);
-            const typicalValue = 50; // Default mean
+
+            // Typischen Wert aus Archetyp-Umfragedaten holen (statt hardcoded 50)
+            let typicalValue = 50; // Fallback
+            let archetypForStats = null;
+
+            // 1. Versuche Archetyp aus TiageState zu holen
+            if (typeof TiageState !== 'undefined') {
+                archetypForStats = TiageState.get('archetypes.ich.primary');
+            }
+            // 2. Fallback: window.mobileIchArchetype
+            if (!archetypForStats && typeof window.mobileIchArchetype !== 'undefined') {
+                archetypForStats = window.mobileIchArchetype;
+            }
+
+            // 3. Hole typischen Wert aus BaseArchetypProfile
+            if (archetypForStats && typeof window.BaseArchetypProfile !== 'undefined') {
+                const baseProfil = window.BaseArchetypProfile[archetypForStats];
+                if (baseProfil && baseProfil.umfrageWerte && baseProfil.umfrageWerte[bId] !== undefined) {
+                    typicalValue = baseProfil.umfrageWerte[bId];
+                }
+            }
+
             if (typeof TiageStatistics !== 'undefined') {
                 const interval = TiageStatistics.calculateConfidenceInterval(typicalValue, sigma, 80);
                 statisticsHtml = `
