@@ -1339,6 +1339,13 @@ const AttributeSummaryCard = (function() {
         showOnlyChangedNeeds = !showOnlyChangedNeeds;
         // Speichere auch für aktuelle Person
         savedStatePerPerson[currentSortPerson].showOnlyChanged = showOnlyChangedNeeds;
+
+        // Automatisch auf "Geändert" sortieren wenn Filter aktiviert wird
+        if (showOnlyChangedNeeds && currentFlatSortMode !== 'changed') {
+            currentFlatSortMode = 'changed';
+            savedStatePerPerson[currentSortPerson].sortMode = 'changed';
+        }
+
         console.log('[AttributeSummaryCard] showOnlyChangedNeeds:', showOnlyChangedNeeds);
         reRenderFlatNeeds();
     }
