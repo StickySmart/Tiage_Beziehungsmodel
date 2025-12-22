@@ -413,6 +413,40 @@
                 ';
             }
 
+            // Aktueller Wert ermitteln (aus resonanceData oder sessionStorage)
+            let displayValue = 50; // Fallback
+            if (resonanceData && resonanceData.wert1 !== undefined) {
+                displayValue = resonanceData.wert1;
+            } else {
+                // Versuche aus sessionStorage flatNeeds zu holen
+                try {
+                    const stored = sessionStorage.getItem('tiageSyntheseData');
+                    if (stored) {
+                        const data = JSON.parse(stored);
+                        if (data.flatNeeds && data.flatNeeds[bId] !== undefined) {
+                            displayValue = data.flatNeeds[bId];
+                        } else if (data.flatNeeds && data.flatNeeds[needId] !== undefined) {
+                            displayValue = data.flatNeeds[needId];
+                        }
+                    }
+                } catch (e) {
+                    console.warn('[TiageSynthese] Fehler beim Laden des aktuellen Werts:', e);
+                }
+            }
+
+            // "Dein aktueller Wert" Anzeige (wie in needs-editor.html)
+            html += '\
+                <div class="need-modal-value" data-need-id="' + bId + '">\
+                    <div class="need-modal-value-header">\
+                        <span class="need-modal-value-label">Dein aktueller Wert</span>\
+                        <span class="need-modal-value-number">' + displayValue + '</span>\
+                    </div>\
+                    <div class="need-modal-value-bar">\
+                        <div class="need-modal-value-fill" style="width: ' + displayValue + '%"></div>\
+                    </div>\
+                </div>\
+            ';
+
             // Statistische Daten berechnen (80% Konfidenzintervall)
             const sigma = (kategorie && kategorie.sigma) || (typeof TiageStatistics !== 'undefined' ? TiageStatistics.DEFAULT_SIGMA : 14);
 
