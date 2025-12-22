@@ -293,50 +293,6 @@
             color: var(--text-muted);
         }
 
-        /* R-Faktoren */
-        .r-faktoren-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 12px;
-        }
-
-        .r-faktor-item {
-            background: rgba(255,255,255,0.03);
-            border-radius: 8px;
-            padding: 12px;
-        }
-
-        .r-faktor-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 8px;
-        }
-
-        .r-faktor-name {
-            font-size: 12px;
-            color: var(--text-muted);
-        }
-
-        .r-faktor-value {
-            font-size: 14px;
-            font-weight: 600;
-            color: var(--text-primary);
-        }
-
-        .r-faktor-bar {
-            height: 6px;
-            background: rgba(255,255,255,0.1);
-            border-radius: 3px;
-            overflow: hidden;
-        }
-
-        .r-faktor-fill {
-            height: 100%;
-            border-radius: 3px;
-            transition: width 0.3s ease;
-        }
-
         /* Loading */
         .synthese-loading {
             display: flex;
@@ -377,7 +333,7 @@
             <div class="synthese-tabs">
                 <a href="tiagesyntheseUebersicht.html" class="synthese-tab active" title="Score & Übersicht">📊</a>
                 <a href="tiagesyntheseResonanz.html" class="synthese-tab" title="Ti-Age Gemeinsame Bedürfnisse">🔥</a>
-                <a href="tiagesyntheseStatistik.html" class="synthese-tab" title="Ti-Age Bedürfnisanalyse">💚</a>
+                <a href="tiagesyntheseStatistik.html" class="synthese-tab" title="Ti-Age Nuancen">💚</a>
                 <a href="tiagesyntheseProContra.html" class="synthese-tab" title="Resonanzfaktoren">🎛️</a>
             </div>
             <a href="javascript:void(0)" class="synthese-close" onclick="window.location.href='archetype-interaction.html'">&times;</a>
@@ -510,9 +466,6 @@
             const score = calculateScore();
             const scoreColor = score >= 70 ? '#22c55e' : score >= 40 ? '#eab308' : '#ef4444';
 
-            // R-Faktoren (vereinfacht - sollte aus SSOT kommen)
-            const rFaktoren = getRFaktoren();
-
             let html = '';
 
             // Score Section
@@ -541,29 +494,12 @@
                 </div>
             `;
 
-            // R-Faktoren Section
+            // Hinweis auf Detail-Seiten
             html += `
-                <div class="synthese-section">
-                    <div class="synthese-section-header">
-                        <span class="synthese-section-icon">🎛️</span>
-                        <div>
-                            <div class="synthese-section-title">Resonanzfaktoren</div>
-                            <div class="synthese-section-subtitle">Dimensionale Übereinstimmung</div>
-                        </div>
-                    </div>
-                    <div class="r-faktoren-grid">
-                        ${rFaktoren.map(r => `
-                            <div class="r-faktor-item">
-                                <div class="r-faktor-header">
-                                    <span class="r-faktor-name">${r.name}</span>
-                                    <span class="r-faktor-value">${r.value.toFixed(2)}</span>
-                                </div>
-                                <div class="r-faktor-bar">
-                                    <div class="r-faktor-fill" style="width: ${r.value * 100 / 1.1}%; background: ${r.color};"></div>
-                                </div>
-                            </div>
-                        `).join('')}
-                    </div>
+                <div class="synthese-section" style="text-align: center; padding: 16px;">
+                    <p style="color: var(--text-muted); font-size: 12px; margin: 0;">
+                        Details zu R-Faktoren findest du unter 🔥
+                    </p>
                 </div>
             `;
 
@@ -577,19 +513,6 @@
             // TODO: Aus SSOT (SynthesisCalculator) berechnen
             // Hier nur Placeholder
             return Math.floor(Math.random() * 40) + 50;
-        }
-
-        /**
-         * Holt die R-Faktoren (vereinfacht)
-         */
-        function getRFaktoren() {
-            // TODO: Aus SSOT berechnen
-            return [
-                { name: 'R1 Identität', value: 0.85, color: '#22c55e' },
-                { name: 'R2 Philosophie', value: 0.72, color: '#3b82f6' },
-                { name: 'R3 Leben', value: 0.91, color: '#8b5cf6' },
-                { name: 'R4 Dynamik', value: 0.68, color: '#ec4899' }
-            ];
         }
     </script>
 </body>

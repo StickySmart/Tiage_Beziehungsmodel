@@ -36,7 +36,7 @@
     <!-- Archetypen Index (BaseArchetypProfile) -->
     <script src="profiles/archetypen/index.js"></script>
 
-    <!-- GFK und Resonanzfaktoren -->
+    <!-- Ti-Age Nuancen und Resonanzfaktoren -->
     <script src="profiles/definitions/gfk-beduerfnisse.js"></script>
     <script src="profiles/definitions/beduerfnis-katalog.js"></script>
 
@@ -247,59 +247,6 @@
             letter-spacing: 0.5px;
         }
 
-        /* R-Faktoren Grid */
-        .r-faktoren-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 12px;
-            margin-bottom: 20px;
-        }
-
-        .r-faktor-card {
-            background: rgba(255,255,255,0.03);
-            border-radius: 10px;
-            padding: 16px;
-            border: 1px solid var(--border);
-        }
-
-        .r-faktor-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 10px;
-        }
-
-        .r-faktor-name {
-            font-size: 13px;
-            font-weight: 600;
-            color: var(--text-primary);
-        }
-
-        .r-faktor-value {
-            font-size: 16px;
-            font-weight: 700;
-        }
-
-        .r-faktor-bar {
-            height: 8px;
-            background: rgba(255,255,255,0.1);
-            border-radius: 4px;
-            overflow: hidden;
-            margin-bottom: 8px;
-        }
-
-        .r-faktor-fill {
-            height: 100%;
-            border-radius: 4px;
-            transition: width 0.3s ease;
-        }
-
-        .r-faktor-desc {
-            font-size: 11px;
-            color: var(--text-muted);
-            line-height: 1.4;
-        }
-
         /* Pro/Contra Lists */
         .pro-contra-section {
             display: grid;
@@ -420,9 +367,6 @@
         }
 
         @media (max-width: 600px) {
-            .r-faktoren-grid {
-                grid-template-columns: 1fr;
-            }
             .pro-contra-section {
                 grid-template-columns: 1fr;
             }
@@ -447,7 +391,7 @@
             <div class="synthese-tabs">
                 <a href="tiagesyntheseUebersicht.html" class="synthese-tab" title="Score & Übersicht">📊</a>
                 <a href="tiagesyntheseResonanz.html" class="synthese-tab" title="Ti-Age Gemeinsame Bedürfnisse">🔥</a>
-                <a href="tiagesyntheseStatistik.html" class="synthese-tab" title="Ti-Age Bedürfnisanalyse">💚</a>
+                <a href="tiagesyntheseStatistik.html" class="synthese-tab" title="Ti-Age Nuancen">💚</a>
                 <a href="tiagesyntheseProContra.html" class="synthese-tab active" title="Resonanzfaktoren">🎛️</a>
             </div>
             <a href="javascript:void(0)" class="synthese-close" onclick="window.location.href='archetype-interaction.html'">&times;</a>
@@ -500,14 +444,6 @@
             'lat': 'LAT',
             'aromantisch': 'Aromantisch'
         };
-
-        // R-Faktoren Definitionen
-        const rFaktorenDefs = [
-            { id: 'R1', name: 'R1 Identität', color: '#22c55e', desc: 'Selbstbild und persönliche Werte' },
-            { id: 'R2', name: 'R2 Philosophie', color: '#3b82f6', desc: 'Weltanschauung und Lebensprinzipien' },
-            { id: 'R3', name: 'R3 Leben', color: '#8b5cf6', desc: 'Alltagsgestaltung und Lebensweise' },
-            { id: 'R4', name: 'R4 Dynamik', color: '#ec4899', desc: 'Beziehungsdynamik und Entwicklung' }
-        ];
 
         // Perspektiven Definitionen
         const perspektivenDefs = [
@@ -587,19 +523,6 @@
         }
 
         /**
-         * Berechnet R-Faktoren (vereinfacht)
-         */
-        function calculateRFaktoren() {
-            // TODO: Aus SSOT (ResonanzfaktorenBerechner) holen
-            // Hier nur Placeholder-Werte basierend auf Archetyp-Kombination
-            const seed = (currentIchArchetype + currentPartnerArchetype).length;
-            return rFaktorenDefs.map((def, i) => ({
-                ...def,
-                value: 0.5 + (Math.sin(seed + i) * 0.3)
-            }));
-        }
-
-        /**
          * Generiert Pro/Contra Listen (vereinfacht)
          */
         function getProContra() {
@@ -619,62 +542,45 @@
             };
         }
 
+        // Perspektiven Farben
+        const perspektivenColors = ['#22c55e', '#3b82f6', '#8b5cf6', '#ec4899'];
+
         /**
          * Rendert den Hauptinhalt
          */
         function renderContent() {
             const container = document.getElementById('syntheseContent');
-
-            // R-Faktoren berechnen
-            const rFaktoren = calculateRFaktoren();
             const proContra = getProContra();
 
             let html = '';
 
-            // R-Faktoren Section
+            // Perspektiven Section
             html += `
                 <div class="synthese-section">
                     <div class="synthese-section-header">
                         <span class="synthese-section-icon">🎛️</span>
                         <div>
-                            <div class="synthese-section-title">Resonanzfaktoren</div>
-                            <div class="synthese-section-subtitle">Dimensionale Übereinstimmung</div>
+                            <div class="synthese-section-title">Perspektiven-Gewichtung</div>
+                            <div class="synthese-section-subtitle">Betrachtungsebenen der Beziehung</div>
                         </div>
                     </div>
 
-                    <div class="r-faktoren-grid">
-                        ${rFaktoren.map(r => `
-                            <div class="r-faktor-card">
-                                <div class="r-faktor-header">
-                                    <span class="r-faktor-name">${r.name}</span>
-                                    <span class="r-faktor-value" style="color: ${r.color};">${r.value.toFixed(2)}</span>
+                    <div class="perspektiven-grid">
+                        ${perspektivenDefs.map((p, i) => {
+                            const val = 0.6 + (Math.random() * 0.4);
+                            return `
+                                <div class="perspektive-item">
+                                    <div class="perspektive-id">${p.id}</div>
+                                    <div class="perspektive-label">${p.label}</div>
+                                    <div class="perspektive-value" style="color: ${perspektivenColors[i]};">${val.toFixed(2)}</div>
                                 </div>
-                                <div class="r-faktor-bar">
-                                    <div class="r-faktor-fill" style="width: ${r.value * 100 / 1.1}%; background: ${r.color};"></div>
-                                </div>
-                                <div class="r-faktor-desc">${r.desc}</div>
-                            </div>
-                        `).join('')}
+                            `;
+                        }).join('')}
                     </div>
 
-                    <!-- Perspektiven -->
-                    <div style="margin-top: 20px; padding-top: 16px; border-top: 1px solid var(--border);">
-                        <div style="font-size: 12px; font-weight: 600; color: var(--text-primary); margin-bottom: 12px;">
-                            Perspektiven-Gewichtung
-                        </div>
-                        <div class="perspektiven-grid">
-                            ${perspektivenDefs.map((p, i) => {
-                                const val = 0.6 + (Math.random() * 0.4);
-                                return `
-                                    <div class="perspektive-item">
-                                        <div class="perspektive-id">${p.id}</div>
-                                        <div class="perspektive-label">${p.label}</div>
-                                        <div class="perspektive-value" style="color: ${rFaktorenDefs[i].color};">${val.toFixed(2)}</div>
-                                    </div>
-                                `;
-                            }).join('')}
-                        </div>
-                    </div>
+                    <p style="color: var(--text-muted); font-size: 11px; margin-top: 12px; text-align: center;">
+                        R-Faktoren Details findest du unter 🔥
+                    </p>
                 </div>
             `;
 

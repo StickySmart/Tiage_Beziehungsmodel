@@ -328,13 +328,6 @@
             border-top: 1px solid var(--border);
         }
 
-        .matrix-table-title {
-            font-size: 12px;
-            font-weight: 600;
-            color: var(--text-primary);
-            margin-bottom: 12px;
-        }
-
         .matrix-table {
             width: 100%;
             border-collapse: collapse;
@@ -436,26 +429,26 @@
         }
 
         .matrix-info {
-            margin-top: 12px;
-            padding: 10px 12px;
-            background: rgba(0,0,0,0.2);
-            border-radius: 8px;
-            font-size: 10px;
+            margin-top: 8px;
+            padding: 8px 12px;
+            background: rgba(0,0,0,0.15);
+            border-radius: 6px;
+            font-size: 11px;
             color: var(--text-muted);
-            line-height: 1.5;
-        }
-
-        .matrix-info-formula {
-            font-family: monospace;
-            margin-top: 6px;
-            font-size: 9px;
-        }
-
-        .matrix-info-legend {
             display: flex;
+            align-items: center;
             gap: 12px;
             flex-wrap: wrap;
-            margin-top: 8px;
+        }
+
+        .matrix-info .high { color: #22c55e; }
+        .matrix-info .neutral { color: #eab308; }
+        .matrix-info .low { color: #ef4444; }
+
+        .matrix-info .lock-info {
+            margin-left: auto;
+            cursor: help;
+            opacity: 0.7;
         }
 
         @media (max-width: 600px) {
@@ -485,7 +478,7 @@
             <div class="synthese-tabs">
                 <a href="tiagesyntheseUebersicht.html" class="synthese-tab" title="Score & Übersicht">📊</a>
                 <a href="tiagesyntheseResonanz.html" class="synthese-tab active" title="Ti-Age Gemeinsame Bedürfnisse">🔥</a>
-                <a href="tiagesyntheseStatistik.html" class="synthese-tab" title="Ti-Age Bedürfnisanalyse">💚</a>
+                <a href="tiagesyntheseStatistik.html" class="synthese-tab" title="Ti-Age Nuancen">💚</a>
                 <a href="tiagesyntheseProContra.html" class="synthese-tab" title="Resonanzfaktoren">🎛️</a>
             </div>
             <a href="javascript:void(0)" class="synthese-close" onclick="window.location.href='archetype-interaction.html'">&times;</a>
@@ -619,7 +612,6 @@
         function generateMatrixHTML(rFaktoren) {
             return `
                 <div class="matrix-table-container">
-                    <div class="matrix-table-title">R-Faktor Matrix (ICH × PARTNER)</div>
                     <table class="matrix-table">
                         <thead>
                             <tr>
@@ -637,15 +629,15 @@
                                             <span class="matrix-r-id" style="color: ${r.color};">${r.icon} ${r.id}</span>
                                             <span class="matrix-r-name">${r.label}</span>
                                         </div>
-                                        <div class="matrix-r-agod">→ multipliziert <strong>${r.agod}</strong> (${r.agodName})</div>
+                                        <div class="matrix-r-agod">→ ${r.agod} (${r.agodName})</div>
                                     </td>
                                     <td>
                                         <span class="matrix-value ${getValueClass(r.ich)}">${r.ich.toFixed(2)}</span>
-                                        <span class="matrix-lock">${r.lockedIch ? '🔒' : '🔓'}</span>
+                                        <span class="matrix-lock" title="${r.lockedIch ? 'Manuell gesperrt' : 'Automatisch berechnet'}">${r.lockedIch ? '🔒' : '🔓'}</span>
                                     </td>
                                     <td>
                                         <span class="matrix-value ${getValueClass(r.partner)}">${r.partner.toFixed(2)}</span>
-                                        <span class="matrix-lock">${r.lockedPartner ? '🔒' : '🔓'}</span>
+                                        <span class="matrix-lock" title="${r.lockedPartner ? 'Manuell gesperrt' : 'Automatisch berechnet'}">${r.lockedPartner ? '🔒' : '🔓'}</span>
                                     </td>
                                     <td class="col-kombi">
                                         <span class="matrix-value ${getValueClass(r.kombi)}">${r.kombi.toFixed(2)}</span>
@@ -655,17 +647,10 @@
                         </tbody>
                     </table>
                     <div class="matrix-info">
-                        <div><strong>Was zeigt diese Tabelle?</strong></div>
-                        <div>Jeder R-Faktor misst die <em>Kohärenz</em> zwischen Bedürfnissen und Archetyp. Der kombinierte Wert (ICH × PARTNER) multipliziert den jeweiligen AGOD-Score:</div>
-                        <div class="matrix-info-formula">Q = (O × wO × R₁) + (A × wA × R₂) + (D × wD × R₃) + (G × wG × R₄)</div>
-                        <div class="matrix-info-legend">
-                            <span style="color: #22c55e;">● &gt;1.0 = verstärkt</span>
-                            <span style="color: #eab308;">● =1.0 = neutral</span>
-                            <span style="color: #ef4444;">● &lt;1.0 = schwächt</span>
-                        </div>
-                        <div style="margin-top: 6px;">
-                            🔒 = manuell gesperrt &nbsp; 🔓 = automatisch berechnet
-                        </div>
+                        <span class="high">● &gt;1.0</span>
+                        <span class="neutral">● 1.0</span>
+                        <span class="low">● &lt;1.0</span>
+                        <span class="lock-info" title="🔒 manuell gesperrt | 🔓 automatisch berechnet">ℹ️</span>
                     </div>
                 </div>
             `;
