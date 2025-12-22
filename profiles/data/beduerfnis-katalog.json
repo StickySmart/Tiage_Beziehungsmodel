@@ -1,10 +1,10 @@
 {
-  "version": "3.0.2",
+  "version": "3.0.3",
   "beschreibung": "Ti-age Bedürfnis-Katalog - Metadaten & Hierarchien (SSOT für IDs: beduerfnis-ids.js)",
   "format": "#[Typ][Nr]-[Label]",
   "erstellt": "2025-12-09",
-  "aktualisiert": "2025-12-20",
-  "changelog": "v3.0.1: 9 fehlende Bedürfnisse aus osho-zen hinzugefügt (#B212-#B220).",
+  "aktualisiert": "2025-12-22",
+  "changelog": "v3.0.3: SSOT vervollständigt für #B212-#B223 (id, dimension, skala, hauptbeduerfnis, kontext). v3.0.1: 9 fehlende Bedürfnisse aus osho-zen hinzugefügt (#B212-#B220).",
   "perspektiven": {
     "#P1": {
       "id": "#P1",
@@ -1844,7 +1844,13 @@
       "frage": "Wie wichtig ist emotionale/körperliche Intensität?",
       "frageTyp": "haupt",
       "nuancen": [
-        "#B85"
+        "#B85",
+        "#B212",
+        "#B217",
+        "#B218",
+        "#B221",
+        "#B222",
+        "#B223"
       ]
     },
     "#B83": {
@@ -1922,7 +1928,11 @@
         "#B74",
         "#B75",
         "#B76",
-        "#B77"
+        "#B77",
+        "#B213",
+        "#B214",
+        "#B215",
+        "#B216"
       ]
     },
     "#B87": {
@@ -1942,7 +1952,9 @@
       "frageTyp": "haupt",
       "nuancen": [
         "#B84",
-        "#B88"
+        "#B88",
+        "#B219",
+        "#B220"
       ]
     },
     "#B88": {
@@ -4098,76 +4110,136 @@
       "kontext": "Cannabis-Konsum"
     },
     "#B212": {
+      "id": "#B212",
       "label": "Bondage-geben",
+      "kategorie": "#K11",
+      "dimension": "#D4",
+      "skala": [0, 100],
       "frage": "Wie wichtig ist Ihnen Bondage-geben?",
       "frageTyp": "nuance",
-      "kategorie": "#K11"
+      "hauptbeduerfnis": "#B82",
+      "kontext": "Bondage & Fesseln (aktiv)"
     },
     "#B213": {
+      "id": "#B213",
       "label": "Devotion",
+      "kategorie": "#K11",
+      "dimension": "#D4",
+      "skala": [0, 100],
       "frage": "Wie wichtig ist Ihnen Devotion?",
       "frageTyp": "nuance",
-      "kategorie": "#K11"
+      "hauptbeduerfnis": "#B86",
+      "kontext": "Hingabe & Verehrung"
     },
     "#B214": {
+      "id": "#B214",
       "label": "Anbetung",
+      "kategorie": "#K11",
+      "dimension": "#D4",
+      "skala": [0, 100],
       "frage": "Wie wichtig ist Ihnen Anbetung?",
       "frageTyp": "nuance",
-      "kategorie": "#K11"
+      "hauptbeduerfnis": "#B86",
+      "kontext": "Verehrung & Worship"
     },
     "#B215": {
+      "id": "#B215",
       "label": "Demütig-sein",
+      "kategorie": "#K11",
+      "dimension": "#D4",
+      "skala": [0, 100],
       "frage": "Wie wichtig ist Ihnen Demütig-sein?",
       "frageTyp": "nuance",
-      "kategorie": "#K11"
+      "hauptbeduerfnis": "#B86",
+      "kontext": "Demut & Unterwerfung"
     },
     "#B216": {
+      "id": "#B216",
       "label": "Dominieren",
+      "kategorie": "#K11",
+      "dimension": "#D4",
+      "skala": [0, 100],
       "frage": "Wie wichtig ist Ihnen Dominieren?",
       "frageTyp": "nuance",
-      "kategorie": "#K11"
+      "hauptbeduerfnis": "#B86",
+      "kontext": "Dominanz ausüben"
     },
     "#B217": {
+      "id": "#B217",
       "label": "Bestrafung-erhalten",
+      "kategorie": "#K11",
+      "dimension": "#D4",
+      "skala": [0, 100],
       "frage": "Wie wichtig ist Ihnen Bestrafung-erhalten?",
       "frageTyp": "nuance",
-      "kategorie": "#K11"
+      "hauptbeduerfnis": "#B82",
+      "kontext": "Punishment (passiv)"
     },
     "#B218": {
+      "id": "#B218",
       "label": "Bestrafen",
+      "kategorie": "#K11",
+      "dimension": "#D4",
+      "skala": [0, 100],
       "frage": "Wie wichtig ist Ihnen Bestrafen?",
       "frageTyp": "nuance",
-      "kategorie": "#K11"
+      "hauptbeduerfnis": "#B82",
+      "kontext": "Punishment (aktiv)"
     },
     "#B219": {
+      "id": "#B219",
       "label": "Service-Orientierung",
+      "kategorie": "#K11",
+      "dimension": "#D4",
+      "skala": [0, 100],
       "frage": "Wie wichtig ist Ihnen Service-Orientierung?",
       "frageTyp": "nuance",
-      "kategorie": "#K11"
+      "hauptbeduerfnis": "#B87",
+      "kontext": "Service & Dienen"
     },
     "#B220": {
+      "id": "#B220",
       "label": "Service-empfangen",
+      "kategorie": "#K11",
+      "dimension": "#D4",
+      "skala": [0, 100],
       "frage": "Wie wichtig ist Ihnen Service-empfangen?",
       "frageTyp": "nuance",
-      "kategorie": "#K11"
+      "hauptbeduerfnis": "#B87",
+      "kontext": "Service empfangen"
     },
     "#B221": {
+      "id": "#B221",
       "label": "Schmerzerleben",
+      "kategorie": "#K11",
+      "dimension": "#D4",
+      "skala": [0, 100],
       "frage": "Wie wichtig ist Ihnen Schmerzerleben?",
       "frageTyp": "nuance",
-      "kategorie": "#K11"
+      "hauptbeduerfnis": "#B82",
+      "kontext": "Schmerz (passiv)"
     },
     "#B222": {
+      "id": "#B222",
       "label": "Schmerz-geben",
+      "kategorie": "#K11",
+      "dimension": "#D4",
+      "skala": [0, 100],
       "frage": "Wie wichtig ist Ihnen Schmerz-geben?",
       "frageTyp": "nuance",
-      "kategorie": "#K11"
+      "hauptbeduerfnis": "#B82",
+      "kontext": "Schmerz (aktiv)"
     },
     "#B223": {
+      "id": "#B223",
       "label": "Bondage-erleben",
+      "kategorie": "#K11",
+      "dimension": "#D4",
+      "skala": [0, 100],
       "frage": "Wie wichtig ist Ihnen Bondage-erleben?",
       "frageTyp": "nuance",
-      "kategorie": "#K11"
+      "hauptbeduerfnis": "#B82",
+      "kontext": "Bondage & Fesseln (passiv)"
     }
   }
 }
