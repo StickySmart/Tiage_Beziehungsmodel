@@ -998,6 +998,16 @@ const TiageState = (function() {
         },
 
         /**
+         * Initialize TiageState - loads from storage
+         * Returns a Promise for async compatibility
+         * @returns {Promise<void>}
+         */
+        async init() {
+            this.loadFromStorage();
+            return Promise.resolve();
+        },
+
+        /**
          * Load state from localStorage
          */
         loadFromStorage() {
