@@ -1461,12 +1461,14 @@ const AttributeSummaryCard = (function() {
      * Toggle Lock für ein Bedürfnis in der flachen Darstellung
      */
     function toggleFlatNeedLock(needId, lockElement) {
+        console.log('[DEBUG toggleFlatNeedLock] Called with:', needId);
         const needObj = findNeedById(needId);
         const newLockState = needObj ? !needObj.locked : true;
 
         // Aktualisiere oder erstelle Bedürfnis
         upsertNeed(needId, { locked: newLockState });
         const isLocked = newLockState;
+        console.log('[DEBUG toggleFlatNeedLock] isLocked:', isLocked);
 
         // Update UI
         const needItem = lockElement.closest('.flat-need-item');
@@ -1481,10 +1483,12 @@ const AttributeSummaryCard = (function() {
         }
 
         // Event
+        console.log('[DEBUG toggleFlatNeedLock] Dispatching flatNeedLockChange event');
         document.dispatchEvent(new CustomEvent('flatNeedLockChange', {
             bubbles: true,
             detail: { needId, locked: isLocked }
         }));
+        console.log('[DEBUG toggleFlatNeedLock] Event dispatched');
     }
 
     /**
