@@ -23,56 +23,69 @@
     <script src="profiles/definitions/beduerfnis-katalog.js"></script>
 
     <style>
-        .synthese-page {
-            min-height: 100vh;
-            background: var(--bg-dark);
-            padding: 20px;
-        }
-
-        .synthese-container {
-            max-width: 600px;
-            margin: 0 auto;
-        }
-
-        .synthese-header {
-            display: flex;
-            align-items: center;
-            gap: 16px;
-            margin-bottom: 24px;
-            padding-bottom: 16px;
-            border-bottom: 1px solid var(--border);
-        }
-
-        .synthese-back {
+        /* Page als Modal-Overlay darstellen */
+        .need-modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.85);
             display: flex;
             align-items: center;
             justify-content: center;
-            width: 40px;
-            height: 40px;
-            background: rgba(255,255,255,0.05);
-            border: 1px solid var(--border);
-            border-radius: 10px;
-            color: var(--text-primary);
-            cursor: pointer;
-            transition: all 0.2s;
-            text-decoration: none;
+            z-index: 1000;
+            padding: 20px;
+            overflow-y: auto;
         }
 
-        .synthese-back:hover {
-            background: rgba(255,255,255,0.1);
-        }
-
-        .synthese-title {
-            font-size: 24px;
-            font-weight: 600;
-            color: var(--text-primary);
-        }
-
-        .synthese-card {
-            background: var(--bg-card);
+        .need-modal {
+            background: var(--bg-card, #1a1a2e);
             border-radius: 16px;
-            padding: 24px;
-            border: 1px solid var(--border);
+            max-width: 500px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            border: 1px solid var(--border, rgba(255,255,255,0.1));
+            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+        }
+
+        .need-modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 20px;
+            border-bottom: 1px solid var(--border, rgba(255,255,255,0.1));
+            position: sticky;
+            top: 0;
+            background: var(--bg-card, #1a1a2e);
+            z-index: 10;
+        }
+
+        .need-modal-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--text-primary, #fff);
+            margin: 0;
+        }
+
+        .need-modal-close {
+            background: none;
+            border: none;
+            color: var(--text-muted, #888);
+            font-size: 28px;
+            cursor: pointer;
+            padding: 0;
+            line-height: 1;
+            transition: color 0.2s;
+        }
+
+        .need-modal-close:hover {
+            color: var(--text-primary, #fff);
+        }
+
+        .need-modal-body {
+            padding: 20px;
         }
 
         .synthese-error {
@@ -85,21 +98,127 @@
             font-size: 48px;
             margin-bottom: 16px;
         }
+
+        /* Comparison Card Styles - Ich + Partner + Differenz */
+        .need-modal-comparison {
+            margin-top: 12px;
+            padding: 16px;
+            background: rgba(139, 92, 246, 0.08);
+            border-radius: 10px;
+            border: 1px solid rgba(139, 92, 246, 0.2);
+            border-left: 3px solid #8B5CF6;
+        }
+
+        .need-modal-comparison-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 14px;
+        }
+
+        .need-modal-comparison-icon {
+            font-size: 16px;
+        }
+
+        .need-modal-comparison-label {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: #8B5CF6;
+            font-weight: 600;
+        }
+
+        .need-modal-comparison-row {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 10px;
+        }
+
+        .need-modal-comparison-row:last-child {
+            margin-bottom: 0;
+        }
+
+        .need-modal-comparison-name {
+            width: 80px;
+            font-size: 13px;
+            color: var(--text-muted, #888);
+            flex-shrink: 0;
+        }
+
+        .need-modal-comparison-bar-container {
+            flex: 1;
+            height: 8px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .need-modal-comparison-bar {
+            height: 100%;
+            border-radius: 4px;
+            transition: width 0.3s ease;
+        }
+
+        .need-modal-comparison-bar.ich {
+            background: linear-gradient(90deg, #22c55e, #4ade80);
+        }
+
+        .need-modal-comparison-bar.partner {
+            background: linear-gradient(90deg, #3b82f6, #60a5fa);
+        }
+
+        .need-modal-comparison-value {
+            width: 40px;
+            text-align: right;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-primary, #fff);
+            flex-shrink: 0;
+        }
+
+        /* Differenz-Zeile */
+        .need-modal-comparison-diff {
+            margin-top: 12px;
+            padding-top: 12px;
+            border-top: 1px solid rgba(139, 92, 246, 0.2);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .need-modal-comparison-diff-label {
+            font-size: 13px;
+            color: var(--text-muted, #888);
+        }
+
+        .need-modal-comparison-diff-value {
+            font-size: 16px;
+            font-weight: 700;
+        }
+
+        .need-modal-comparison-diff-value.positive {
+            color: #22c55e;
+        }
+
+        .need-modal-comparison-diff-value.negative {
+            color: #ef4444;
+        }
+
+        .need-modal-comparison-diff-value.neutral {
+            color: #eab308;
+        }
     </style>
 </head>
 <body>
-    <div class="synthese-page">
-        <div class="synthese-container">
-            <div class="synthese-header">
-                <a href="javascript:history.back()" class="synthese-back">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M19 12H5M12 19l-7-7 7-7"/>
-                    </svg>
-                </a>
-                <h1 class="synthese-title" id="pageTitle">Bedürfnis-Detail</h1>
+    <!-- Modal-Style Container wie needs-editor.html -->
+    <div class="need-modal-overlay active" id="syntheseModal">
+        <div class="need-modal" onclick="event.stopPropagation()">
+            <div class="need-modal-header">
+                <h2 class="need-modal-title" id="pageTitle">Bedürfnis-Detail</h2>
+                <button class="need-modal-close" onclick="history.back()">×</button>
             </div>
-
-            <div class="synthese-card" id="syntheseContent">
+            <div class="need-modal-body" id="syntheseContent">
                 <div class="synthese-error">
                     <div class="synthese-error-icon">⏳</div>
                     <p>Lade Daten...</p>
@@ -258,26 +377,37 @@
                 ';
             }
 
-            // Match-Resonanz Anzeige (wenn Daten vorhanden)
+            // Ich + Partner + Differenz Karte (wenn Daten vorhanden)
             if (resonanceData && resonanceData.wert1 !== undefined) {
-                const matchPercent = 100 - Math.abs(resonanceData.wert1 - resonanceData.wert2);
-                const rValue = (matchPercent / 100 * 1.1).toFixed(2);
+                const ichWert = resonanceData.wert1;
+                const partnerWert = resonanceData.wert2;
+                const differenz = ichWert - partnerWert;
+                const diffClass = differenz > 0 ? 'positive' : (differenz < 0 ? 'negative' : 'neutral');
+                const diffSign = differenz > 0 ? '+' : '';
+
                 html += '\
-                    <div class="need-modal-resonance">\
-                        <div class="need-modal-resonance-header">\
-                            <span class="need-modal-resonance-icon">🎯</span>\
-                            <span class="need-modal-resonance-label">Match-Resonanz</span>\
+                    <div class="need-modal-comparison">\
+                        <div class="need-modal-comparison-header">\
+                            <span class="need-modal-comparison-icon">👥</span>\
+                            <span class="need-modal-comparison-label">Werte-Vergleich</span>\
                         </div>\
-                        <div class="need-modal-resonance-content">\
-                            <div class="need-modal-resonance-values">\
-                                <span class="need-modal-resonance-person">' + (resonanceData.ichName || 'Ich') + ': <strong>' + resonanceData.wert1 + '</strong></span>\
-                                <span class="need-modal-resonance-vs">vs</span>\
-                                <span class="need-modal-resonance-person">' + (resonanceData.partnerName || 'Partner') + ': <strong>' + resonanceData.wert2 + '</strong></span>\
+                        <div class="need-modal-comparison-row">\
+                            <span class="need-modal-comparison-name">' + (resonanceData.ichName || 'Ich') + '</span>\
+                            <div class="need-modal-comparison-bar-container">\
+                                <div class="need-modal-comparison-bar ich" style="width: ' + ichWert + '%"></div>\
                             </div>\
-                            <div class="need-modal-resonance-match">\
-                                <span class="need-modal-resonance-percent">Match: <strong>' + Math.round(matchPercent) + '%</strong></span>\
-                                <span class="need-modal-resonance-r">R = ' + rValue + '</span>\
+                            <span class="need-modal-comparison-value">' + ichWert + '</span>\
+                        </div>\
+                        <div class="need-modal-comparison-row">\
+                            <span class="need-modal-comparison-name">' + (resonanceData.partnerName || 'Partner') + '</span>\
+                            <div class="need-modal-comparison-bar-container">\
+                                <div class="need-modal-comparison-bar partner" style="width: ' + partnerWert + '%"></div>\
                             </div>\
+                            <span class="need-modal-comparison-value">' + partnerWert + '</span>\
+                        </div>\
+                        <div class="need-modal-comparison-diff">\
+                            <span class="need-modal-comparison-diff-label">Differenz</span>\
+                            <span class="need-modal-comparison-diff-value ' + diffClass + '">' + diffSign + differenz + '</span>\
                         </div>\
                     </div>\
                 ';
