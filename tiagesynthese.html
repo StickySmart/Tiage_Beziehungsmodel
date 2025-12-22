@@ -377,7 +377,7 @@
         /**
          * Initialisierung
          */
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', async function() {
             const params = new URLSearchParams(window.location.search);
             const needId = params.get('need') || params.get('needId');
 
@@ -385,6 +385,15 @@
                 document.getElementById('syntheseContent').innerHTML =
                     '<div class="synthese-error"><div class="synthese-error-icon">❓</div><p>Kein Bedürfnis angegeben.<br><small>URL-Parameter: ?need=bedürfnis_id</small></p></div>';
                 return;
+            }
+
+            // Auf das Laden des Katalogs warten (wichtig für async JSON-Loading!)
+            if (typeof BeduerfnisIds !== 'undefined' && typeof BeduerfnisIds.load === 'function') {
+                try {
+                    await BeduerfnisIds.load();
+                } catch (e) {
+                    console.warn('[TiageSynthese] Katalog-Laden fehlgeschlagen:', e);
+                }
             }
 
             // Resonanz-Daten aus sessionStorage laden (für alle verlinkten Bedürfnisse verfügbar)
