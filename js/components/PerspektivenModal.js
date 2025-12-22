@@ -5,9 +5,9 @@
  * Zeigt Bedürfnisse mit ihrer Perspektive, Kategorie und IDs an.
  *
  * Die 4 Perspektiven sind verschiedene "Brillen" auf Beziehungen:
- * - #P1 Statistik (GFK) - Empirische Bedürfnisforschung
- * - #P2 Osho - Tantra, Freiheit, Nicht-Anhaften
- * - #P3 Pirsig - Qualität als Lebensphilosophie
+ * - #P1 Statistik - Empirische Bedürfnisforschung (GFK-basiert)
+ * - #P2 Konditionierung - Natürlichkeit vs. Anerzogenes (Osho-inspiriert)
+ * - #P3 Qualität - Static vs. Dynamic Quality (Pirsig)
  * - #P4 SexPositiv - Consent, Kink, bewusste Dynamik
  */
 
@@ -22,7 +22,7 @@ const PerspektivenModal = {
             id: '#P1',
             key: 'statistik',
             label: 'Statistik',
-            shortLabel: 'GFK',
+            shortLabel: 'Stats',
             icon: '📊',
             color: '#3B82F6',
             gradient: 'linear-gradient(135deg, #3B82F6 0%, #1D4ED8 100%)',
@@ -33,35 +33,35 @@ const PerspektivenModal = {
         },
         '#P2': {
             id: '#P2',
-            key: 'osho',
-            label: 'Osho',
-            shortLabel: 'Tantra',
-            icon: '🕉️',
+            key: 'konditionierung',
+            label: 'Konditionierung',
+            shortLabel: 'Natur',
+            icon: '🌱',
             color: '#F59E0B',
             gradient: 'linear-gradient(135deg, #F59E0B 0%, #D97706 100%)',
-            motto: 'Liebe ohne Anhaften',
-            beschreibung: 'Tantrische Weisheit – Freiheit IN der Beziehung, Präsenz statt Besitz, Wildheit und Zärtlichkeit.',
+            motto: 'Natürlich vs. Anerzogen',
+            beschreibung: 'Was ist authentisch, was konditioniert? Freiheit IN der Beziehung, Präsenz statt Besitz.',
             quelle: 'Osho Rajneesh: Vorträge über Liebe, Sex und Meditation',
-            vibe: 'Frei. Präsent. Intensiv.'
+            vibe: 'Authentisch. Frei. Bewusst.'
         },
         '#P3': {
             id: '#P3',
-            key: 'pirsig',
-            label: 'Pirsig',
+            key: 'qualitaet',
+            label: 'Qualität',
             shortLabel: 'Quality',
-            icon: '🔧',
+            icon: '⚖️',
             color: '#10B981',
             gradient: 'linear-gradient(135deg, #10B981 0%, #059669 100%)',
-            motto: 'Qualität ist alles',
-            beschreibung: 'Zen und Motorrad-Wartung – achtsame Pflege der Beziehung, Handwerk der Liebe.',
+            motto: 'Static vs. Dynamic Quality',
+            beschreibung: 'Statische Qualität (Stabilität) vs. Dynamische Qualität (Wachstum) – Balance als Kunst.',
             quelle: 'Robert M. Pirsig: Zen und die Kunst ein Motorrad zu warten (1974)',
-            vibe: 'Achtsam. Sorgfältig. Meisterhaft.'
+            vibe: 'Achtsam. Balanciert. Meisterhaft.'
         },
         '#P4': {
             id: '#P4',
             key: 'sexpositiv',
             label: 'SexPositiv',
-            shortLabel: 'Kink',
+            shortLabel: 'SexPos',
             icon: '💜',
             color: '#8B5CF6',
             gradient: 'linear-gradient(135deg, #8B5CF6 0%, #7C3AED 100%)',
