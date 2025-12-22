@@ -1275,8 +1275,29 @@
                 }
                 console.log('[Filter] Kategorie aktiviert:', suggestion.id);
                 filterProfileReviewByNeed('');
+            } else if (suggestion.type === 'perspective' && typeof DimensionKategorieFilter !== 'undefined') {
+                // Perspektiven-Filter - Kategorien aus SSOT (TiageTaxonomie.perspektiven)
+                var kategorien = [];
+                if (window.TiageTaxonomie && window.TiageTaxonomie.perspektiven && window.TiageTaxonomie.perspektiven[suggestion.id]) {
+                    kategorien = window.TiageTaxonomie.perspektiven[suggestion.id].kategorien || [];
+                }
+
+                // Bei Mehrfach-Auswahl: NICHT resetten, sondern hinzufügen
+                if (!hasMultipleTerms) {
+                    DimensionKategorieFilter.reset();
+                }
+
+                if (kategorien.length > 0) {
+                    kategorien.forEach(function(katId) {
+                        if (!DimensionKategorieFilter.isKategorieActive(katId)) {
+                            DimensionKategorieFilter.toggleKategorie(katId);
+                        }
+                    });
+                    console.log('[Filter] Perspektive aktiviert:', suggestion.id, '→ Kategorien:', kategorien);
+                }
+                filterProfileReviewByNeed('');
             } else {
-                // Für andere Typen (dimension, perspective)
+                // Für andere Typen (dimension)
                 if (typeof DimensionKategorieFilter !== 'undefined' && !hasMultipleTerms) {
                     DimensionKategorieFilter.reset();
                 }
@@ -1804,8 +1825,29 @@
                 }
                 console.log('[Filter] Kategorie aktiviert:', suggestion.id);
                 filterProfileReviewByNeed('');
+            } else if (suggestion.type === 'perspective' && typeof DimensionKategorieFilter !== 'undefined') {
+                // Perspektiven-Filter - Kategorien aus SSOT (TiageTaxonomie.perspektiven)
+                var kategorien = [];
+                if (window.TiageTaxonomie && window.TiageTaxonomie.perspektiven && window.TiageTaxonomie.perspektiven[suggestion.id]) {
+                    kategorien = window.TiageTaxonomie.perspektiven[suggestion.id].kategorien || [];
+                }
+
+                // Bei Mehrfach-Auswahl: NICHT resetten, sondern hinzufügen
+                if (!hasMultipleTerms) {
+                    DimensionKategorieFilter.reset();
+                }
+
+                if (kategorien.length > 0) {
+                    kategorien.forEach(function(katId) {
+                        if (!DimensionKategorieFilter.isKategorieActive(katId)) {
+                            DimensionKategorieFilter.toggleKategorie(katId);
+                        }
+                    });
+                    console.log('[Filter] Perspektive aktiviert:', suggestion.id, '→ Kategorien:', kategorien);
+                }
+                filterProfileReviewByNeed('');
             } else {
-                // Für andere Typen (dimension, perspective)
+                // Für andere Typen (dimension)
                 if (typeof DimensionKategorieFilter !== 'undefined' && !hasMultipleTerms) {
                     DimensionKategorieFilter.reset();
                 }
