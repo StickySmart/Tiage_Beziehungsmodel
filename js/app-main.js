@@ -19333,8 +19333,35 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
             }
 
             // Speichere Kontext für spätere Neuladung bei Gender-Änderung
+            var previousPerson = currentProfileReviewContext.person;
             currentProfileReviewContext.archetypeKey = archetypeKey || 'duo';
             currentProfileReviewContext.person = person || 'ich';
+
+            // ════════════════════════════════════════════════════════════════════════
+            // FIX v1.8.455: Person-spezifische Filter und Sortierung wiederherstellen
+            // Bei Wechsel zwischen ICH/PARTNER werden Filter und Sort-Mode gespeichert/geladen
+            // ════════════════════════════════════════════════════════════════════════
+            var newPerson = person || 'ich';
+            if (previousPerson && previousPerson !== newPerson) {
+                // Filter-State wechseln (DimensionKategorieFilter)
+                if (typeof DimensionKategorieFilter !== 'undefined' && DimensionKategorieFilter.switchPerson) {
+                    DimensionKategorieFilter.switchPerson(newPerson);
+                    console.log('[ProfileReview] Filter-State gewechselt von', previousPerson, 'zu', newPerson);
+                }
+                // Sort-State wechseln (AttributeSummaryCard)
+                if (typeof AttributeSummaryCard !== 'undefined' && AttributeSummaryCard.switchSortPerson) {
+                    AttributeSummaryCard.switchSortPerson(newPerson);
+                    console.log('[ProfileReview] Sort-State gewechselt von', previousPerson, 'zu', newPerson);
+                }
+            } else if (!previousPerson) {
+                // Erster Aufruf: Initialisiere States für die Person
+                if (typeof DimensionKategorieFilter !== 'undefined' && DimensionKategorieFilter.loadStateForPerson) {
+                    DimensionKategorieFilter.loadStateForPerson(newPerson);
+                }
+                if (typeof AttributeSummaryCard !== 'undefined' && AttributeSummaryCard.loadSortModeForPerson) {
+                    AttributeSummaryCard.loadSortModeForPerson(newPerson);
+                }
+            }
 
             // ════════════════════════════════════════════════════════════════════════
             // FIX: Lade Bedürfnisse aus TiageState (SSOT) statt localStorage
