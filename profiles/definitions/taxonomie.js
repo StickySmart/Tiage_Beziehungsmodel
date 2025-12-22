@@ -36,28 +36,32 @@ const TiageTaxonomie = {
             key: 'statistik',
             label: 'Statistik',
             beschreibung: 'Empirische Forschung - Gaußsche Übereinstimmung der Werte',
-            quelle: 'McCrae & Costa (Big Five), Wismeijer & van Assen (BDSM)'
+            quelle: 'McCrae & Costa (Big Five), Wismeijer & van Assen (BDSM)',
+            kategorien: ['#K1', '#K2', '#K3', '#K4', '#K5', '#K6', '#K7', '#K8', '#K9', '#K10', '#K12', '#K13', '#K14', '#K15', '#K16', '#K17', '#K18']
         },
         '#P2': {
             id: '#P2',
             key: 'konditionierung',
             label: 'Konditionierung',
             beschreibung: 'Natürlichkeit vs. Konditionierung - was ist anerzogen, was authentisch?',
-            quelle: 'Osho Rajneesh - Vorträge über Liebe und Beziehungen'
+            quelle: 'Osho Rajneesh - Vorträge über Liebe und Beziehungen',
+            kategorien: ['#K1', '#K3', '#K5', '#K6', '#K7', '#K8', '#K10', '#K12', '#K13', '#K15', '#K17']
         },
         '#P3': {
             id: '#P3',
             key: 'qualitaet',
             label: 'Qualität',
             beschreibung: 'Static vs. Dynamic Quality - Qualität als Fundament',
-            quelle: 'Robert M. Pirsig - Zen und die Kunst ein Motorrad zu warten (1974)'
+            quelle: 'Robert M. Pirsig - Zen und die Kunst ein Motorrad zu warten (1974)',
+            kategorien: ['#K3', '#K4', '#K6', '#K8', '#K9', '#K10', '#K14', '#K17']
         },
         '#P4': {
             id: '#P4',
             key: 'sexpositiv',
             label: 'SexPositiv',
             beschreibung: 'Sex-Positive Movement, Consent, Autonomie, BDSM/Kink',
-            quelle: 'Dossie Easton, Janet Hardy, Jay Wiseman'
+            quelle: 'Dossie Easton, Janet Hardy, Jay Wiseman',
+            kategorien: ['#K11']
         }
     },
 
