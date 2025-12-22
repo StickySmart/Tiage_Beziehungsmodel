@@ -11,9 +11,9 @@
     <title>Bedürfnis-Detail | Ti-Age Synthese</title>
     <link rel="canonical" href="https://ti-age.de/tiagesynthese.html">
     <!-- Zentrale CSS-Variablen - EINZIGE QUELLE -->
-    <link rel="stylesheet" href="templates/variables.css?v=20251205c">
-    <link rel="stylesheet" href="templates/template_desktop.css?v=20251205c">
-    <link rel="stylesheet" href="templates/template_mobile.css?v=20251205c" media="(max-width: 768px)">
+    <link rel="stylesheet" href="templates/variables.css?v=20251222">
+    <link rel="stylesheet" href="templates/template_desktop.css?v=20251222">
+    <link rel="stylesheet" href="templates/template_mobile.css?v=20251222" media="(max-width: 768px)">
 
     <!-- TIAGE Core Scripts -->
     <script src="js/version.js"></script>
@@ -207,6 +207,272 @@
 
         .need-modal-comparison-diff-value.neutral {
             color: #eab308;
+        }
+
+        /* Need Modal Content Styles (SSOT - identisch mit needs-editor.html) */
+        .need-modal-content {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .need-modal-id-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .need-modal-id {
+            font-family: monospace;
+            font-size: 11px;
+            color: var(--text-muted, #888);
+            background: rgba(255,255,255,0.05);
+            padding: 3px 8px;
+            border-radius: 4px;
+        }
+
+        .need-modal-type {
+            font-size: 11px;
+            padding: 3px 8px;
+            border-radius: 4px;
+        }
+
+        .need-modal-type-haupt {
+            background: rgba(59,130,246,0.15);
+            color: #3B82F6;
+        }
+
+        .need-modal-type-nuance {
+            background: rgba(139,92,246,0.15);
+            color: #8B5CF6;
+        }
+
+        .need-modal-meta-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 12px;
+        }
+
+        .need-modal-meta-item {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .need-modal-meta-label {
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--text-muted, #888);
+        }
+
+        .need-modal-meta-value {
+            font-size: 13px;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .need-modal-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        .need-modal-badge {
+            font-size: 10px;
+            font-weight: 700;
+            color: #fff;
+            padding: 2px 6px;
+            border-radius: 4px;
+        }
+
+        .need-modal-question {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            padding: 14px;
+            background: rgba(59,130,246,0.08);
+            border-radius: 10px;
+            border-left: 3px solid #3B82F6;
+        }
+
+        .need-modal-question-icon {
+            font-size: 16px;
+            flex-shrink: 0;
+        }
+
+        .need-modal-question-text {
+            font-size: 14px;
+            line-height: 1.5;
+            color: var(--text-primary, #fff);
+            font-style: italic;
+        }
+
+        .need-modal-context {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 13px;
+        }
+
+        .need-modal-context-label {
+            color: var(--text-muted, #888);
+        }
+
+        .need-modal-context-text {
+            color: var(--text-primary, #fff);
+        }
+
+        .need-modal-parent {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 12px;
+        }
+
+        .need-modal-parent-label {
+            color: var(--text-muted, #888);
+        }
+
+        .need-modal-parent-link {
+            color: #3B82F6;
+            cursor: pointer;
+            text-decoration: underline;
+        }
+
+        .need-modal-parent-link:hover {
+            color: #60a5fa;
+        }
+
+        .need-modal-nuancen {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .need-modal-nuancen-label {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--text-muted, #888);
+        }
+
+        .need-modal-nuancen-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+
+        .need-modal-nuance-tag {
+            font-size: 11px;
+            padding: 4px 10px;
+            background: rgba(139,92,246,0.1);
+            color: #a78bfa;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-decoration: none;
+        }
+
+        .need-modal-nuance-tag:hover {
+            background: rgba(139,92,246,0.2);
+            color: #c4b5fd;
+        }
+
+        .need-modal-value {
+            margin-top: 8px;
+            padding: 14px;
+            background: rgba(74,144,217,0.08);
+            border-radius: 10px;
+            border: 1px solid rgba(74,144,217,0.2);
+        }
+
+        .need-modal-value-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .need-modal-value-label {
+            font-size: 12px;
+            color: var(--text-muted, #888);
+        }
+
+        .need-modal-value-number {
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--accent-primary, #4a90d9);
+        }
+
+        .need-modal-value-bar {
+            height: 8px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .need-modal-value-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--accent-primary, #4a90d9), #60a5fa);
+            border-radius: 4px;
+            transition: width 0.15s ease;
+        }
+
+        /* Statistics Section Styles */
+        .need-modal-statistics {
+            margin-top: 12px;
+            padding: 14px;
+            background: rgba(34, 197, 94, 0.08);
+            border-radius: 10px;
+            border: 1px solid rgba(34, 197, 94, 0.2);
+            border-left: 3px solid #22c55e;
+        }
+
+        .need-modal-statistics-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 10px;
+        }
+
+        .need-modal-statistics-icon {
+            font-size: 16px;
+        }
+
+        .need-modal-statistics-label {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: #22c55e;
+            font-weight: 600;
+        }
+
+        .need-modal-statistics-content {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .need-modal-statistics-text {
+            font-size: 14px;
+            color: var(--text-primary, #fff);
+            line-height: 1.5;
+        }
+
+        .need-modal-statistics-text strong {
+            color: #22c55e;
+            font-weight: 700;
+        }
+
+        .need-modal-statistics-sub {
+            font-size: 11px;
+            color: var(--text-muted, #888);
+            font-style: italic;
         }
     </style>
 </head>
