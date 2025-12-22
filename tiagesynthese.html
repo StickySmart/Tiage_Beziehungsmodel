@@ -644,11 +644,10 @@
                 ';
             }
 
-            // Ich + Partner + Differenz Karte (wenn BEIDE Profile vorhanden)
+            // Ich + Partner + Differenz Karte (Tiagesynthese zeigt NUR den Vergleich beider Profile)
             const hasBothProfiles = resonanceData &&
                                     resonanceData.wert1 !== undefined &&
-                                    resonanceData.wert2 !== undefined &&
-                                    !resonanceData.singleProfile;
+                                    resonanceData.wert2 !== undefined;
 
             if (hasBothProfiles) {
                 const ichWert = resonanceData.wert1;
@@ -684,35 +683,12 @@
                     </div>\
                 ';
             } else {
-                // Nur "Dein aktueller Wert" (Single-Profile oder keine Daten)
-                let displayValue = 50; // Fallback
-
-                // 1. Aus resonanceData (wenn singleProfile)
-                if (resonanceData && resonanceData.wert1 !== undefined) {
-                    displayValue = resonanceData.wert1;
-                }
-                // 2. Aus LoadedArchetypProfile
-                else if (typeof window !== 'undefined' && window.LoadedArchetypProfile) {
-                    const ichFlatNeeds = window.LoadedArchetypProfile.ich?.profileReview?.flatNeeds;
-                    const val = getNeedValueFromFlatNeeds(ichFlatNeeds, bId);
-                    if (val !== undefined) displayValue = val;
-                }
-                // 3. Aus TiageState
-                else if (typeof TiageState !== 'undefined') {
-                    const ichNeeds = TiageState.get('flatNeeds.ich');
-                    if (ichNeeds && ichNeeds[bId] !== undefined) {
-                        displayValue = ichNeeds[bId];
-                    }
-                }
-
+                // Tiagesynthese: Hinweis wenn nicht beide Profile geladen
                 html += '\
-                    <div class="need-modal-value" data-need-id="' + bId + '">\
-                        <div class="need-modal-value-header">\
-                            <span class="need-modal-value-label">Dein aktueller Wert</span>\
-                            <span class="need-modal-value-number">' + displayValue + '</span>\
-                        </div>\
-                        <div class="need-modal-value-bar">\
-                            <div class="need-modal-value-fill" style="width: ' + displayValue + '%"></div>\
+                    <div class="need-modal-value" style="background: rgba(234, 179, 8, 0.08); border-color: rgba(234, 179, 8, 0.2);">\
+                        <div style="display: flex; align-items: center; gap: 10px; color: var(--text-muted, #888);">\
+                            <span style="font-size: 20px;">⚠️</span>\
+                            <span style="font-size: 13px;">Für den Werte-Vergleich müssen beide Profile (Ich und Partner) geladen sein.</span>\
                         </div>\
                     </div>\
                 ';
@@ -851,21 +827,7 @@
                     }
                 }
 
-                // Nur ICH-Profil vorhanden (needs-editor.html?person=ich)
-                if (ichProfile && !partnerProfile) {
-                    const ichFlatNeeds = ichProfile.profileReview?.flatNeeds;
-                    const wert1 = getNeedValueFromFlatNeeds(ichFlatNeeds, bId);
-                    if (wert1 !== undefined) {
-                        console.log('[TiageSynthese] Nur ICH-Profil:', bId, '→', wert1);
-                        return {
-                            wert1: wert1,
-                            wert2: undefined,
-                            ichName: 'Ich',
-                            partnerName: null,
-                            singleProfile: true
-                        };
-                    }
-                }
+                // Tiagesynthese benötigt BEIDE Profile - kein singleProfile-Fallback
             }
 
             // ═══════════════════════════════════════════════════════════════════
@@ -875,17 +837,14 @@
                 const ichNeeds = TiageState.get('flatNeeds.ich');
                 const partnerNeeds = TiageState.get('flatNeeds.partner');
 
-                if (ichNeeds && Object.keys(ichNeeds).length > 0) {
+                // Tiagesynthese benötigt BEIDE Profile
+                if (ichNeeds && partnerNeeds && Object.keys(ichNeeds).length > 0 && Object.keys(partnerNeeds).length > 0) {
                     const wert1 = ichNeeds[bId];
-                    const wert2 = partnerNeeds ? partnerNeeds[bId] : undefined;
+                    const wert2 = partnerNeeds[bId];
 
-                    if (wert1 !== undefined) {
-                        if (wert2 !== undefined) {
-                            console.log('[TiageSynthese] Daten aus TiageState:', bId, '→ Ich:', wert1, 'Partner:', wert2);
-                            return { wert1, wert2, ichName: 'Ich', partnerName: 'Partner' };
-                        } else {
-                            return { wert1, wert2: undefined, ichName: 'Ich', partnerName: null, singleProfile: true };
-                        }
+                    if (wert1 !== undefined && wert2 !== undefined) {
+                        console.log('[TiageSynthese] Daten aus TiageState:', bId, '→ Ich:', wert1, 'Partner:', wert2);
+                        return { wert1, wert2, ichName: 'Ich', partnerName: 'Partner' };
                     }
                 }
             }
