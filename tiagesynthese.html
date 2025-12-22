@@ -677,14 +677,9 @@
                         </div>\
                     </div>\
                 ';
-            }
-
-            // Aktueller Wert ermitteln (aus resonanceData oder sessionStorage)
-            let displayValue = 50; // Fallback
-            if (resonanceData && resonanceData.wert1 !== undefined) {
-                displayValue = resonanceData.wert1;
             } else {
-                // Versuche aus sessionStorage flatNeeds zu holen
+                // Fallback: Nur "Dein aktueller Wert" wenn KEINE Vergleichsdaten vorhanden
+                let displayValue = 50; // Fallback
                 try {
                     const stored = sessionStorage.getItem('tiageSyntheseData');
                     if (stored) {
@@ -698,20 +693,19 @@
                 } catch (e) {
                     console.warn('[TiageSynthese] Fehler beim Laden des aktuellen Werts:', e);
                 }
-            }
 
-            // "Dein aktueller Wert" Anzeige (wie in needs-editor.html)
-            html += '\
-                <div class="need-modal-value" data-need-id="' + bId + '">\
-                    <div class="need-modal-value-header">\
-                        <span class="need-modal-value-label">Dein aktueller Wert</span>\
-                        <span class="need-modal-value-number">' + displayValue + '</span>\
+                html += '\
+                    <div class="need-modal-value" data-need-id="' + bId + '">\
+                        <div class="need-modal-value-header">\
+                            <span class="need-modal-value-label">Dein aktueller Wert</span>\
+                            <span class="need-modal-value-number">' + displayValue + '</span>\
+                        </div>\
+                        <div class="need-modal-value-bar">\
+                            <div class="need-modal-value-fill" style="width: ' + displayValue + '%"></div>\
+                        </div>\
                     </div>\
-                    <div class="need-modal-value-bar">\
-                        <div class="need-modal-value-fill" style="width: ' + displayValue + '%"></div>\
-                    </div>\
-                </div>\
-            ';
+                ';
+            }
 
             // Statistische Daten berechnen (80% Konfidenzintervall)
             const sigma = (kategorie && kategorie.sigma) || (typeof TiageStatistics !== 'undefined' ? TiageStatistics.DEFAULT_SIGMA : 14);
