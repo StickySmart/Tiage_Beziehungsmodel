@@ -7894,12 +7894,13 @@
         }
 
         /**
-         * Öffnet die Bedürfnis-Detail-Seite (tiagesynthese.html)
+         * Öffnet das Bedürfnis-Detail-Modal
          * Diese Funktion wird von der AttributeSummaryCard aufgerufen
          * @param {string} needId - Die ID des Bedürfnisses
          */
         function openNeedWithResonance(needId) {
-            // Komplette Matching-Daten in sessionStorage speichern (SSOT)
+            // Resonanz-Daten aus lastGfkMatchingResult sammeln
+            let resonanceData = null;
             if (lastGfkMatchingResult && lastGfkMatchingResult.details) {
                 const allNeeds = [
                     ...(lastGfkMatchingResult.details.uebereinstimmend || []),
@@ -7910,24 +7911,23 @@
                 const ichName = archetypeDescriptions[currentArchetype]?.name || 'Du';
                 const partnerName = archetypeDescriptions[selectedPartner]?.name || 'Partner';
 
-                // Alle Resonanz-Daten als Map speichern
-                const resonanceMap = {};
-                allNeeds.forEach(function(n) {
-                    resonanceMap[n.id] = {
-                        wert1: n.wert1 || 0,
-                        wert2: n.wert2 || 0
-                    };
+                // Resonanz-Daten für dieses Need suchen
+                const needData = allNeeds.find(function(n) {
+                    return n.id === needId;
                 });
 
-                sessionStorage.setItem('tiageSyntheseData', JSON.stringify({
-                    resonanceMap: resonanceMap,
-                    ichName: ichName,
-                    partnerName: partnerName
-                }));
+                if (needData) {
+                    resonanceData = {
+                        wert1: needData.wert1 || 0,
+                        wert2: needData.wert2 || 0,
+                        ichName: ichName,
+                        partnerName: partnerName
+                    };
+                }
             }
 
-            // Zur Seite navigieren (nur needId, Resonanz kommt aus sessionStorage)
-            window.location.href = 'tiagesynthese.html?need=' + encodeURIComponent(needId);
+            // Modal öffnen (mit Resonanz-Daten wenn vorhanden)
+            openNeedDefinitionModal(needId, resonanceData ? 'resonance' : 'info', resonanceData);
         }
 
         /**
