@@ -696,11 +696,12 @@ const AttributeSummaryCard = (function() {
     let currentFlatSortMode = 'value';
 
     /**
-     * Person-spezifische Persistenz für Sort-Mode (FIX: Sortierung pro ICH/PARTNER speichern)
+     * Person-spezifische Persistenz für Sort-Mode UND "Geänderte"-Filter
+     * (FIX: Sortierung und Filter pro ICH/PARTNER speichern)
      */
-    const savedSortModePerPerson = {
-        ich: 'value',
-        partner: 'value'
+    const savedStatePerPerson = {
+        ich: { sortMode: 'value', showOnlyChanged: false },
+        partner: { sortMode: 'value', showOnlyChanged: false }
     };
     let currentSortPerson = 'ich';  // Aktuelle Person für Sort-Kontext
 
@@ -1282,37 +1283,40 @@ const AttributeSummaryCard = (function() {
     function setSortMode(mode) {
         currentFlatSortMode = mode;
         // Speichere auch für aktuelle Person
-        savedSortModePerPerson[currentSortPerson] = mode;
+        savedStatePerPerson[currentSortPerson].sortMode = mode;
         reRenderFlatNeeds();
     }
 
     /**
-     * Speichert den aktuellen Sort-Mode für eine Person
+     * Speichert den aktuellen State (Sort-Mode + Filter) für eine Person
      * @param {string} person - 'ich' oder 'partner'
      */
     function saveSortModeForPerson(person) {
         if (!person || (person !== 'ich' && person !== 'partner')) {
             person = 'ich';
         }
-        savedSortModePerPerson[person] = currentFlatSortMode;
-        console.log('[AttributeSummaryCard] Sort-Mode gespeichert für', person, ':', currentFlatSortMode);
+        savedStatePerPerson[person].sortMode = currentFlatSortMode;
+        savedStatePerPerson[person].showOnlyChanged = showOnlyChangedNeeds;
+        console.log('[AttributeSummaryCard] State gespeichert für', person, ':', savedStatePerPerson[person]);
     }
 
     /**
-     * Lädt den gespeicherten Sort-Mode für eine Person
+     * Lädt den gespeicherten State (Sort-Mode + Filter) für eine Person
      * @param {string} person - 'ich' oder 'partner'
      */
     function loadSortModeForPerson(person) {
         if (!person || (person !== 'ich' && person !== 'partner')) {
             person = 'ich';
         }
-        currentFlatSortMode = savedSortModePerPerson[person] || 'value';
+        const state = savedStatePerPerson[person];
+        currentFlatSortMode = state?.sortMode || 'value';
+        showOnlyChangedNeeds = state?.showOnlyChanged || false;
         currentSortPerson = person;
-        console.log('[AttributeSummaryCard] Sort-Mode geladen für', person, ':', currentFlatSortMode);
+        console.log('[AttributeSummaryCard] State geladen für', person, ':', { sortMode: currentFlatSortMode, showOnlyChanged: showOnlyChangedNeeds });
     }
 
     /**
-     * Wechselt die Person und speichert/lädt den Sort-Mode entsprechend
+     * Wechselt die Person und speichert/lädt den State entsprechend
      * @param {string} newPerson - 'ich' oder 'partner'
      */
     function switchSortPerson(newPerson) {
@@ -1322,9 +1326,9 @@ const AttributeSummaryCard = (function() {
         if (newPerson === currentSortPerson) {
             return; // Keine Änderung nötig
         }
-        // Speichere Sort-Mode der vorherigen Person
+        // Speichere State der vorherigen Person
         saveSortModeForPerson(currentSortPerson);
-        // Lade Sort-Mode der neuen Person
+        // Lade State der neuen Person
         loadSortModeForPerson(newPerson);
     }
 
@@ -1333,6 +1337,8 @@ const AttributeSummaryCard = (function() {
      */
     function toggleShowOnlyChanged() {
         showOnlyChangedNeeds = !showOnlyChangedNeeds;
+        // Speichere auch für aktuelle Person
+        savedStatePerPerson[currentSortPerson].showOnlyChanged = showOnlyChangedNeeds;
         console.log('[AttributeSummaryCard] showOnlyChangedNeeds:', showOnlyChangedNeeds);
         reRenderFlatNeeds();
     }
