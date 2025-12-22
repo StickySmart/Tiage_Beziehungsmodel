@@ -7911,10 +7911,22 @@
                 const ichName = archetypeDescriptions[currentArchetype]?.name || 'Du';
                 const partnerName = archetypeDescriptions[selectedPartner]?.name || 'Partner';
 
-                // Resonanz-Daten für dieses Need suchen
-                const needData = allNeeds.find(function(n) {
+                // Resonanz-Daten für dieses Need suchen (unterstützt verschiedene ID-Formate)
+                let needData = allNeeds.find(function(n) {
                     return n.id === needId;
                 });
+
+                // Falls nicht gefunden, versuche alternative ID-Formate
+                if (!needData && typeof BeduerfnisIds !== 'undefined') {
+                    const altId = needId.startsWith('#B')
+                        ? BeduerfnisIds.toKey(needId)
+                        : BeduerfnisIds.toId(needId);
+                    if (altId) {
+                        needData = allNeeds.find(function(n) {
+                            return n.id === altId || n.key === altId;
+                        });
+                    }
+                }
 
                 if (needData) {
                     resonanceData = {
