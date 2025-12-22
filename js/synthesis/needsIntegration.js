@@ -707,7 +707,7 @@ TiageSynthesis.NeedsIntegration = {
                 person1: individual1,
                 person2: individual2
             },
-            perspektivenLabels: { '#P1': 'GFK', '#P2': 'Osho', '#P3': 'Pirsig', '#P4': 'Kink' }
+            perspektivenLabels: { '#P1': 'Statistik', '#P2': 'Konditionierung', '#P3': 'Qualität', '#P4': 'SexPositiv' }
         };
     },
 

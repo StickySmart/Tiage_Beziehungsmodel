@@ -15515,10 +15515,10 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
 
             // Perspektiven-Konfiguration
             const perspektiven = {
-                P1: { icon: '📊', label: 'GFK', color: '#3B82F6' },
-                P2: { icon: '🕉️', label: 'Osho', color: '#F59E0B' },
-                P3: { icon: '🔧', label: 'Pirsig', color: '#10B981' },
-                P4: { icon: '💜', label: 'Kink', color: '#8B5CF6' }
+                P1: { icon: '📊', label: 'Statistik', color: '#3B82F6' },
+                P2: { icon: '🌱', label: 'Konditionierung', color: '#F59E0B' },
+                P3: { icon: '⚖️', label: 'Qualität', color: '#10B981' },
+                P4: { icon: '💜', label: 'SexPositiv', color: '#8B5CF6' }
             };
 
             // Resonanzfaktor-Konfiguration

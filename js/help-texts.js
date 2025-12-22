@@ -246,10 +246,10 @@ var TiageHelpTexts = (function() {
                         struktur: {
                             beschreibung: 'Matrix-Aufbau:',
                             tabelle: [
-                                { faktor: 'R1 Leben', perspektiven: ['GFK', 'Osho', 'Pirsig', 'Kink'] },
-                                { faktor: 'R2 Philosophie', perspektiven: ['GFK', 'Osho', 'Pirsig', 'Kink'] },
-                                { faktor: 'R3 Dynamik', perspektiven: ['GFK', 'Osho', 'Pirsig', 'Kink'] },
-                                { faktor: 'R4 Identität', perspektiven: ['GFK', 'Osho', 'Pirsig', 'Kink'] }
+                                { faktor: 'R1 Leben', perspektiven: ['Statistik', 'Konditionierung', 'Qualität', 'SexPositiv'] },
+                                { faktor: 'R2 Philosophie', perspektiven: ['Statistik', 'Konditionierung', 'Qualität', 'SexPositiv'] },
+                                { faktor: 'R3 Dynamik', perspektiven: ['Statistik', 'Konditionierung', 'Qualität', 'SexPositiv'] },
+                                { faktor: 'R4 Identität', perspektiven: ['Statistik', 'Konditionierung', 'Qualität', 'SexPositiv'] }
                             ]
                         }
                     },
@@ -260,10 +260,10 @@ var TiageHelpTexts = (function() {
                         beispiel: {
                             titel: 'Beispiel für R2 (Philosophie):',
                             perspektiveScores: {
-                                '#P1 GFK': '+8%',
-                                '#P2 Osho': '+12%',
-                                '#P3 Pirsig': '+5%',
-                                '#P4 Kink': '+3%'
+                                '#P1 Statistik': '+8%',
+                                '#P2 Konditionierung': '+12%',
+                                '#P3 Qualität': '+5%',
+                                '#P4 SexPositiv': '+3%'
                             },
                             durchschnitt: '(8 + 12 + 5 + 3) / 4 = 7%',
                             rWert: 'R2 = 1 + 0.07 = 1.07'

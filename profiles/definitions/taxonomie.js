@@ -40,15 +40,15 @@ const TiageTaxonomie = {
         },
         '#P2': {
             id: '#P2',
-            key: 'osho',
-            label: 'Osho',
-            beschreibung: 'Tantra, Polarität, Natürlichkeit vs. Konditionierung',
+            key: 'konditionierung',
+            label: 'Konditionierung',
+            beschreibung: 'Natürlichkeit vs. Konditionierung - was ist anerzogen, was authentisch?',
             quelle: 'Osho Rajneesh - Vorträge über Liebe und Beziehungen'
         },
         '#P3': {
             id: '#P3',
-            key: 'pirsig',
-            label: 'Pirsig',
+            key: 'qualitaet',
+            label: 'Qualität',
             beschreibung: 'Static vs. Dynamic Quality - Qualität als Fundament',
             quelle: 'Robert M. Pirsig - Zen und die Kunst ein Motorrad zu warten (1974)'
         },

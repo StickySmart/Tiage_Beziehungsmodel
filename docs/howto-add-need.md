@@ -65,13 +65,13 @@ Jedes Bedürfnis kann **zusätzlich zu seiner primären Kategorie** auch sekund�
 | ID | Perspektive | Passt für |
 |----|-------------|-----------|
 | #P1 | Statistik | Empirische Forschung, Gaußsche Übereinstimmung |
-| #P2 | Osho | Tantra, Polarität, Natürlichkeit vs. Konditionierung |
-| #P3 | Pirsig | Static vs. Dynamic Quality, Qualität als Fundament |
+| #P2 | Konditionierung | Natürlichkeit vs. Konditionierung - was ist authentisch? |
+| #P3 | Qualität | Static vs. Dynamic Quality - Balance als Fundament |
 | #P4 | SexPositiv | Sex-Positive Movement, Consent, Autonomie, BDSM/Kink |
 
 **Für "interesse_an_metaphysik":** Philosophie/Spiritualität
 
-→ Wir wählen: **#P3 (Pirsig)**
+→ Wir wählen: **#P3 (Qualität)**
 
 ---
 
