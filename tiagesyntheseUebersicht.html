@@ -448,8 +448,14 @@
 
             if (person === 'ich') {
                 currentIchArchetype = archetypeOrder[newIndex];
+                if (typeof TiageState !== 'undefined') {
+                    TiageState.setArchetype('ich', currentIchArchetype);
+                }
             } else {
                 currentPartnerArchetype = archetypeOrder[newIndex];
+                if (typeof TiageState !== 'undefined') {
+                    TiageState.setArchetype('partner', currentPartnerArchetype);
+                }
             }
 
             updateArchetypeDisplay();
