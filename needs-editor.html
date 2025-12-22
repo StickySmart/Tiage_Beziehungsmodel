@@ -286,6 +286,48 @@
             0% { background-color: var(--accent-primary, #4a90d9); box-shadow: 0 0 10px var(--accent-primary, #4a90d9); }
             100% { background-color: transparent; box-shadow: none; }
         }
+
+        /* Loading Indicator Styles */
+        .needs-loading-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 60px 20px;
+            gap: 20px;
+        }
+
+        .needs-loading-spinner {
+            width: 48px;
+            height: 48px;
+            border: 4px solid rgba(255, 215, 0, 0.2);
+            border-top-color: var(--primary, #FFD700);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .needs-loading-text {
+            color: var(--text-secondary, #999);
+            font-size: 15px;
+            text-align: center;
+            animation: pulse 1.5s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.6; }
+            50% { opacity: 1; }
+        }
+
+        .needs-loading-subtext {
+            color: rgba(255, 255, 255, 0.4);
+            font-size: 13px;
+            text-align: center;
+            margin-top: -10px;
+        }
     </style>
 </head>
 <body>
@@ -341,8 +383,10 @@
 
             <!-- Needs List -->
             <div class="needs-editor-list-container" id="needsEditorListContainer">
-                <div style="padding: 40px; text-align: center; color: rgba(255,255,255,0.6);">
-                    Lade Bedürfnisse...
+                <div class="needs-loading-container" id="needsLoadingIndicator">
+                    <div class="needs-loading-spinner"></div>
+                    <div class="needs-loading-text">Daten werden geladen und berechnet</div>
+                    <div class="needs-loading-subtext">219 Bedürfnisse werden analysiert...</div>
                 </div>
             </div>
         </main>
@@ -777,6 +821,22 @@
             }
         }
 
+        /**
+         * Zeigt den Ladeindikator an
+         */
+        function showLoadingIndicator() {
+            const container = document.getElementById('needsEditorListContainer');
+            if (container) {
+                container.innerHTML = `
+                    <div class="needs-loading-container" id="needsLoadingIndicator">
+                        <div class="needs-loading-spinner"></div>
+                        <div class="needs-loading-text">Daten werden geladen und berechnet</div>
+                        <div class="needs-loading-subtext">219 Bedürfnisse werden analysiert...</div>
+                    </div>
+                `;
+            }
+        }
+
         function renderNeedsList() {
             const container = document.getElementById('needsEditorListContainer');
 
@@ -838,29 +898,35 @@
                 'polyamor';
             updateBadge();
 
-            // WICHTIG: Lade Profil für die neue Person
-            if (typeof TiageState !== 'undefined' && typeof ProfileCalculator !== 'undefined') {
-                TiageState.set('archetypes.' + person + '.primary', currentArchetype);
+            // Zeige Ladeindikator während der Datenberechnung
+            showLoadingIndicator();
 
-                const profileData = {
-                    archetyp: currentArchetype,
-                    geschlecht: TiageState.get('personDimensions.' + person + '.geschlecht') || null,
-                    dominanz: TiageState.get('personDimensions.' + person + '.dominanz') || null,
-                    orientierung: TiageState.get('personDimensions.' + person + '.orientierung') || null
+            // Kurze Verzögerung damit der Ladeindikator sichtbar wird
+            setTimeout(function() {
+                // WICHTIG: Lade Profil für die neue Person
+                if (typeof TiageState !== 'undefined' && typeof ProfileCalculator !== 'undefined') {
+                    TiageState.set('archetypes.' + person + '.primary', currentArchetype);
+
+                    const profileData = {
+                        archetyp: currentArchetype,
+                        geschlecht: TiageState.get('personDimensions.' + person + '.geschlecht') || null,
+                        dominanz: TiageState.get('personDimensions.' + person + '.dominanz') || null,
+                        orientierung: TiageState.get('personDimensions.' + person + '.orientierung') || null
+                    };
+                    ProfileCalculator.loadProfile(person, profileData);
+                    console.log('[NeedsEditor] Profil gewechselt zu', person, ':', currentArchetype);
+                }
+
+                // Update context for AttributeSummaryCard
+                window.currentProfileReviewContext = {
+                    person: person,
+                    archetypeKey: currentArchetype
                 };
-                ProfileCalculator.loadProfile(person, profileData);
-                console.log('[NeedsEditor] Profil gewechselt zu', person, ':', currentArchetype);
-            }
 
-            // Update context for AttributeSummaryCard
-            window.currentProfileReviewContext = {
-                person: person,
-                archetypeKey: currentArchetype
-            };
-
-            // Reload data and re-render
-            loadNeedsData();
-            renderNeedsList();
+                // Reload data and re-render
+                loadNeedsData();
+                renderNeedsList();
+            }, 50);
         }
 
         function saveCurrentState() {
