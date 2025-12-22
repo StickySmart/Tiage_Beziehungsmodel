@@ -649,8 +649,8 @@
                 const ichWert = resonanceData.wert1;
                 const partnerWert = resonanceData.wert2;
                 const differenz = ichWert - partnerWert;
+                const absDifferenz = Math.abs(differenz);
                 const diffClass = differenz > 0 ? 'positive' : (differenz < 0 ? 'negative' : 'neutral');
-                const diffSign = differenz > 0 ? '+' : '';
 
                 html += '\
                     <div class="need-modal-comparison">\
@@ -674,7 +674,7 @@
                         </div>\
                         <div class="need-modal-comparison-diff">\
                             <span class="need-modal-comparison-diff-label">Differenz</span>\
-                            <span class="need-modal-comparison-diff-value ' + diffClass + '">' + diffSign + differenz + '</span>\
+                            <span class="need-modal-comparison-diff-value ' + diffClass + '">' + absDifferenz + '</span>\
                         </div>\
                     </div>\
                 ';
