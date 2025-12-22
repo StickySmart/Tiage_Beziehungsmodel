@@ -1487,6 +1487,12 @@ const AttributeSummaryCard = (function() {
         // Aktualisiere oder erstelle Bedürfnis
         upsertNeed(needId, { value: numValue });
 
+        // Auto-Sort auf "changed" wenn Wert geändert wird (ohne Rerender)
+        if (isValueChanged(needId, numValue) && currentFlatSortMode !== 'changed') {
+            currentFlatSortMode = 'changed';
+            savedStatePerPerson[currentSortPerson].sortMode = 'changed';
+        }
+
         // Sync Input-Feld
         const needItem = sliderElement.closest('.flat-need-item');
         if (needItem) {
@@ -1522,6 +1528,12 @@ const AttributeSummaryCard = (function() {
 
         // Aktualisiere oder erstelle Bedürfnis
         upsertNeed(needId, { value: numValue });
+
+        // Auto-Sort auf "changed" wenn Wert geändert wird
+        if (isValueChanged(needId, numValue) && currentFlatSortMode !== 'changed') {
+            currentFlatSortMode = 'changed';
+            savedStatePerPerson[currentSortPerson].sortMode = 'changed';
+        }
 
         // Sync Slider
         const needItem = document.querySelector(`.flat-need-item[data-need="${needId}"]`);
