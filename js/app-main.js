@@ -5182,7 +5182,7 @@
                     html += `
                         <div style="background: rgba(255,255,255,0.05); border-radius: 8px; padding: 12px; border-left: 3px solid ${statusColor};">
                             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
-                                <span onclick="openNeedDefinitionModal('${item.id}')" style="font-weight: 500; color: var(--text-primary); cursor: pointer; display: inline-flex; align-items: center; gap: 4px; transition: color 0.2s;" onmouseover="this.style.color='var(--primary)'" onmouseout="this.style.color='var(--text-primary)'">${label} <span style="font-size: 10px; opacity: 0.5;">ⓘ</span></span>
+                                <span onclick="openNeedWithResonance('${item.id}')" style="font-weight: 500; color: var(--text-primary); cursor: pointer; display: inline-flex; align-items: center; gap: 4px; transition: color 0.2s;" onmouseover="this.style.color='var(--primary)'" onmouseout="this.style.color='var(--text-primary)'">${label} <span style="font-size: 10px; opacity: 0.5;">ⓘ</span></span>
                                 <span style="color: ${statusColor}; font-size: 11px; font-weight: 600;">${statusIcon} ${statusText}</span>
                             </div>
                             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
@@ -7709,7 +7709,7 @@
                     html += '\
                         <div class="need-modal-parent">\
                             <span class="need-modal-parent-label">Gehört zu:</span>\
-                            <span class="need-modal-parent-link" onclick="openNeedDefinitionModal(\'' + need.hauptbeduerfnis + '\')">' + hauptNeed.label + ' (' + need.hauptbeduerfnis + ')</span>\
+                            <span class="need-modal-parent-link" onclick="openNeedWithResonance(\'' + need.hauptbeduerfnis + '\')">' + hauptNeed.label + ' (' + need.hauptbeduerfnis + ')</span>\
                         </div>\
                     ';
                 }
@@ -7723,7 +7723,7 @@
                         <div class="need-modal-nuancen-list">\
                             ' + need.nuancen.map(function(nId) {
                                 const n = katalog.beduerfnisse[nId];
-                                return n ? '<span class="need-modal-nuance-tag" onclick="openNeedDefinitionModal(\'' + nId + '\')">' + n.label + '</span>' : '';
+                                return n ? '<span class="need-modal-nuance-tag" onclick="openNeedWithResonance(\'' + nId + '\')">' + n.label + '</span>' : '';
                             }).join('') + '\
                         </div>\
                     </div>\
@@ -8547,7 +8547,7 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
 
                     listHtml += `
                         <div style="background: rgba(255,255,255,0.03); border-radius: 6px; padding: 10px 12px; border-left: 3px solid ${statusColor};">
-                            <div onclick="openNeedDefinitionModal('${item.id}')" style="font-weight: 500; color: var(--text-primary); font-size: 13px; margin-bottom: 6px; cursor: pointer; display: flex; align-items: center; gap: 6px; transition: color 0.2s;" onmouseover="this.style.color='var(--primary)'" onmouseout="this.style.color='var(--text-primary)'">
+                            <div onclick="openNeedWithResonance('${item.id}')" style="font-weight: 500; color: var(--text-primary); font-size: 13px; margin-bottom: 6px; cursor: pointer; display: flex; align-items: center; gap: 6px; transition: color 0.2s;" onmouseover="this.style.color='var(--primary)'" onmouseout="this.style.color='var(--text-primary)'">
                                 ${label}
                                 <span style="font-size: 10px; opacity: 0.5;">ⓘ</span>
                             </div>
@@ -9056,7 +9056,7 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
                             ${matching.topUebereinstimmungen.map(b => {
                                 // b.id ist jetzt bereits #B-ID (z.B. "#B34"), b.label ist der Display-Name
                                 const bidDisplay = b.id && b.id.startsWith('#B') ? `<span style="opacity: 0.6; font-size: 0.85em; margin-right: 4px;">${b.id}</span>` : '';
-                                return `<span class="gfk-tag gfk-tag-match gfk-tag-clickable" onclick="openNeedDefinitionModal('${b.id}')" title="Klicken für Definition">${bidDisplay}${b.label}</span>`;
+                                return `<span class="gfk-tag gfk-tag-match gfk-tag-clickable" onclick="openNeedWithResonance('${b.id}')" title="Klicken für Definition">${bidDisplay}${b.label}</span>`;
                             }).join('')}
                         </div>
                     </div>
@@ -9073,7 +9073,7 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
                             ${matching.topKonflikte.map(b => {
                                 // b.id ist jetzt bereits #B-ID (z.B. "#B34"), b.label ist der Display-Name
                                 const bidDisplay = b.id && b.id.startsWith('#B') ? `<span style="opacity: 0.6; font-size: 0.85em; margin-right: 4px;">${b.id}</span>` : '';
-                                return `<span class="gfk-tag gfk-tag-conflict gfk-tag-clickable" onclick="openNeedDefinitionModal('${b.id}')" title="Klicken für Definition | ${matching.archetyp1}: ${b.wert1} | ${matching.archetyp2}: ${b.wert2}">${bidDisplay}${b.label}</span>`;
+                                return `<span class="gfk-tag gfk-tag-conflict gfk-tag-clickable" onclick="openNeedWithResonance('${b.id}')" title="Klicken für Definition | ${matching.archetyp1}: ${b.wert1} | ${matching.archetyp2}: ${b.wert2}">${bidDisplay}${b.label}</span>`;
                             }).join('')}
                         </div>
                     </div>
@@ -15099,13 +15099,13 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
             // b.id ist jetzt #B-ID (z.B. "#B34"), b.key ist numerisch (34), b.label ist Display-Name
             const gemeinsamTags = gemeinsam.slice(0, 8).map(b => {
                 const bidDisplay = b.id && b.id.startsWith('#B') ? `<span style="opacity: 0.6; font-size: 0.85em; margin-right: 4px;">${b.id}</span>` : '';
-                return `<span style="${greenTagStyle}" onclick="openNeedDefinitionModal('${b.id}')" title="Klicken für Definition" onmouseover="this.style.transform='translateY(-1px)';this.style.boxShadow='0 2px 8px rgba(34,197,94,0.3)'" onmouseout="this.style.transform='';this.style.boxShadow=''">${bidDisplay}${b.label}</span>`;
+                return `<span style="${greenTagStyle}" onclick="openNeedWithResonance('${b.id}')" title="Klicken für Definition" onmouseover="this.style.transform='translateY(-1px)';this.style.boxShadow='0 2px 8px rgba(34,197,94,0.3)'" onmouseout="this.style.transform='';this.style.boxShadow=''">${bidDisplay}${b.label}</span>`;
             }).join('');
 
             // Unterschiedliche Bedürfnisse Tags (max 5) - clickable
             const unterschiedlichTags = unterschiedlich.slice(0, 5).map(b => {
                 const bidDisplay = b.id && b.id.startsWith('#B') ? `<span style="opacity: 0.6; font-size: 0.85em; margin-right: 4px;">${b.id}</span>` : '';
-                return `<span style="${redTagStyle}" onclick="openNeedDefinitionModal('${b.id}')" title="Klicken für Definition" onmouseover="this.style.transform='translateY(-1px)';this.style.boxShadow='0 2px 8px rgba(239,68,68,0.3)'" onmouseout="this.style.transform='';this.style.boxShadow=''">${bidDisplay}${b.label}</span>`;
+                return `<span style="${redTagStyle}" onclick="openNeedWithResonance('${b.id}')" title="Klicken für Definition" onmouseover="this.style.transform='translateY(-1px)';this.style.boxShadow='0 2px 8px rgba(239,68,68,0.3)'" onmouseout="this.style.transform='';this.style.boxShadow=''">${bidDisplay}${b.label}</span>`;
             }).join('');
 
             return `
@@ -17065,7 +17065,7 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
 
                     html += `
                         <div style="background: rgba(255,255,255,0.03); border-radius: 6px; padding: 10px 12px; border-left: 3px solid ${statusColor};">
-                            <div onclick="openNeedDefinitionModal('${item.id}', 'resonance', {wert1: ${wert1}, wert2: ${wert2}, ichName: '${safeIchName}', partnerName: '${safePartnerName}'})" style="font-weight: 500; color: var(--text-primary); font-size: 13px; margin-bottom: 6px; cursor: pointer; display: flex; align-items: center; gap: 6px; transition: color 0.2s;" onmouseover="this.style.color='var(--primary)'" onmouseout="this.style.color='var(--text-primary)'">
+                            <div onclick="openNeedWithResonance('${item.id}', 'resonance', {wert1: ${wert1}, wert2: ${wert2}, ichName: '${safeIchName}', partnerName: '${safePartnerName}'})" style="font-weight: 500; color: var(--text-primary); font-size: 13px; margin-bottom: 6px; cursor: pointer; display: flex; align-items: center; gap: 6px; transition: color 0.2s;" onmouseover="this.style.color='var(--primary)'" onmouseout="this.style.color='var(--text-primary)'">
                                 ${label}
                                 <span style="font-size: 10px; opacity: 0.5;">ⓘ</span>
                             </div>
@@ -17137,7 +17137,7 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
 
                     html += `
                         <div style="background: rgba(255,255,255,0.03); border-radius: 6px; padding: 10px 12px; border-left: 3px solid ${statusColor};">
-                            <div onclick="openNeedDefinitionModal('${item.id}', 'resonance', {wert1: ${wert1}, wert2: ${wert2}, ichName: '${safeIchName}', partnerName: '${safePartnerName}'})" style="font-weight: 500; color: var(--text-primary); font-size: 13px; margin-bottom: 6px; cursor: pointer; display: flex; align-items: center; gap: 6px; transition: color 0.2s;" onmouseover="this.style.color='var(--primary)'" onmouseout="this.style.color='var(--text-primary)'">
+                            <div onclick="openNeedWithResonance('${item.id}', 'resonance', {wert1: ${wert1}, wert2: ${wert2}, ichName: '${safeIchName}', partnerName: '${safePartnerName}'})" style="font-weight: 500; color: var(--text-primary); font-size: 13px; margin-bottom: 6px; cursor: pointer; display: flex; align-items: center; gap: 6px; transition: color 0.2s;" onmouseover="this.style.color='var(--primary)'" onmouseout="this.style.color='var(--text-primary)'">
                                 ${label}
                                 <span style="font-size: 10px; opacity: 0.5;">ⓘ</span>
                             </div>
