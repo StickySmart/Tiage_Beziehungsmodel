@@ -826,8 +826,6 @@
                         };
                     }
                 }
-
-                // Tiagesynthese benötigt BEIDE Profile - kein singleProfile-Fallback
             }
 
             // ═══════════════════════════════════════════════════════════════════
@@ -837,10 +835,19 @@
                 const ichNeeds = TiageState.get('flatNeeds.ich');
                 const partnerNeeds = TiageState.get('flatNeeds.partner');
 
-                // Tiagesynthese benötigt BEIDE Profile
                 if (ichNeeds && partnerNeeds && Object.keys(ichNeeds).length > 0 && Object.keys(partnerNeeds).length > 0) {
-                    const wert1 = ichNeeds[bId];
-                    const wert2 = partnerNeeds[bId];
+                    // Versuche mit #B-ID
+                    let wert1 = ichNeeds[bId];
+                    let wert2 = partnerNeeds[bId];
+
+                    // Fallback: Versuche mit string-key
+                    if (wert1 === undefined && typeof BeduerfnisIds !== 'undefined') {
+                        const stringKey = BeduerfnisIds.toKey(bId);
+                        if (stringKey) {
+                            wert1 = ichNeeds[stringKey];
+                            wert2 = partnerNeeds[stringKey];
+                        }
+                    }
 
                     if (wert1 !== undefined && wert2 !== undefined) {
                         console.log('[TiageSynthese] Daten aus TiageState:', bId, '→ Ich:', wert1, 'Partner:', wert2);
