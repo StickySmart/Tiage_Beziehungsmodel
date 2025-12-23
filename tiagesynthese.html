@@ -682,9 +682,17 @@
                         </div>\
                     </div>\
                 ';
+            } else {
+                // Warnung wenn nicht beide Profile geladen
+                html += '\
+                    <div class="need-modal-value" style="background: rgba(234, 179, 8, 0.08); border-color: rgba(234, 179, 8, 0.2);">\
+                        <div style="display: flex; align-items: center; gap: 10px; color: var(--text-muted, #888);">\
+                            <span style="font-size: 20px;">⚠️</span>\
+                            <span style="font-size: 13px;">Für den Werte-Vergleich müssen beide Profile (Ich und Partner) geladen sein.</span>\
+                        </div>\
+                    </div>\
+                ';
             }
-            // Keine else-Branch nötig - wenn beide Profile geladen sind (was bei tiagesynthese immer der Fall sein sollte),
-            // wird der Vergleich angezeigt. Andernfalls wird die Sektion einfach nicht gerendert.
 
             // Statistische Daten berechnen (80% Konfidenzintervall)
             const sigma = (kategorie && kategorie.sigma) || (typeof TiageStatistics !== 'undefined' ? TiageStatistics.DEFAULT_SIGMA : 14);
