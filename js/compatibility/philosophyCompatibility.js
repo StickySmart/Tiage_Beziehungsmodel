@@ -4,7 +4,10 @@
  * Prüft die philosophische Kompatibilität (Beziehungsphilosophie/Logos)
  * zwischen zwei Archetypen basierend auf der Interaktionsmatrix.
  *
- * Extrahiert aus app-main.js für bessere Wartbarkeit und Testbarkeit.
+ * ═══════════════════════════════════════════════════════════════════════════
+ * SSOT: Nutzt ArchetypeMatrixCalculator.getScore() für Live-Berechnung
+ * KEINE Fallback-Matrix - Werte werden aus Bedürfnis-Profilen berechnet
+ * ═══════════════════════════════════════════════════════════════════════════
  *
  * @module TiageCompatibility.Philosophy
  */
@@ -14,31 +17,21 @@ var TiageCompatibility = TiageCompatibility || {};
 TiageCompatibility.Philosophy = (function() {
     'use strict';
 
-    // Fallback-Kompatibilitätsmatrix - berechnet aus Bedürfnis-Profilen (220 Bedürfnisse)
-    // Stand: 2025-12-23 - Identisch mit archetypeFactor.js und archetypeMatrixCalculator.js
-    var FALLBACK_MATRIX = {
-        'single': { 'single': 100, 'duo': 68, 'duo_flex': 81, 'solopoly': 93, 'polyamor': 79, 'ra': 91, 'lat': 85, 'aromantisch': 92 },
-        'duo': { 'single': 68, 'duo': 100, 'duo_flex': 86, 'solopoly': 72, 'polyamor': 84, 'ra': 71, 'lat': 83, 'aromantisch': 73 },
-        'duo_flex': { 'single': 81, 'duo': 86, 'duo_flex': 100, 'solopoly': 85, 'polyamor': 94, 'ra': 84, 'lat': 94, 'aromantisch': 86 },
-        'solopoly': { 'single': 93, 'duo': 72, 'duo_flex': 85, 'solopoly': 100, 'polyamor': 84, 'ra': 95, 'lat': 89, 'aromantisch': 93 },
-        'polyamor': { 'single': 79, 'duo': 84, 'duo_flex': 94, 'solopoly': 84, 'polyamor': 100, 'ra': 83, 'lat': 90, 'aromantisch': 84 },
-        'ra': { 'single': 91, 'duo': 71, 'duo_flex': 84, 'solopoly': 95, 'polyamor': 83, 'ra': 100, 'lat': 87, 'aromantisch': 93 },
-        'lat': { 'single': 85, 'duo': 83, 'duo_flex': 94, 'solopoly': 89, 'polyamor': 90, 'ra': 87, 'lat': 100, 'aromantisch': 90 },
-        'aromantisch': { 'single': 92, 'duo': 73, 'duo_flex': 86, 'solopoly': 93, 'polyamor': 84, 'ra': 93, 'lat': 90, 'aromantisch': 100 }
-    };
-
     /**
-     * Holt Score aus der Fallback-Matrix
+     * Holt Score aus ArchetypeMatrixCalculator (SSOT)
+     * Live-Berechnung aus Bedürfnis-Profilen - KEINE Fallback-Matrix!
      */
     function getFallbackScore(type1, type2) {
-        if (FALLBACK_MATRIX[type1] && typeof FALLBACK_MATRIX[type1][type2] === 'number') {
-            return FALLBACK_MATRIX[type1][type2];
+        // SSOT: Nutze ArchetypeMatrixCalculator.getScore()
+        if (typeof TiageSynthesis !== 'undefined' &&
+            TiageSynthesis.ArchetypeMatrixCalculator &&
+            typeof TiageSynthesis.ArchetypeMatrixCalculator.getScore === 'function') {
+            return TiageSynthesis.ArchetypeMatrixCalculator.getScore(type1, type2);
         }
-        // Versuche umgekehrt
-        if (FALLBACK_MATRIX[type2] && typeof FALLBACK_MATRIX[type2][type1] === 'number') {
-            return FALLBACK_MATRIX[type2][type1];
-        }
-        return 50; // Default
+
+        // Warnung wenn SSOT nicht verfügbar
+        console.warn('[Philosophy Compatibility] ArchetypeMatrixCalculator nicht verfügbar!');
+        return 50; // Neutraler Default
     }
 
     /**
