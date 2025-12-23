@@ -270,13 +270,47 @@ TiageSynthesis.ArchetypeMatrixCalculator = (function() {
         return matrix;
     }
 
-    // Auto-Initialisierung bei DOM-Ready
+    // ═══════════════════════════════════════════════════════════════════════════
+    // Auto-Initialisierung: Warte auf 'base-archetype-profiles-ready' Event
+    // Das Event wird von profiles/archetypen/index.js gefeuert wenn alle 8 Profile geladen sind
+    // ═══════════════════════════════════════════════════════════════════════════
+
+    // Prüfe ob Profile bereits geladen sind
+    function checkAndInitialize() {
+        if (typeof window.BaseArchetypProfile !== 'undefined' &&
+            Object.keys(window.BaseArchetypProfile).length >= 8) {
+            console.log('[ArchetypeMatrixCalculator] Profile bereits geladen, initialisiere...');
+            initialize();
+            return true;
+        }
+        return false;
+    }
+
+    // Event-Listener für 'base-archetype-profiles-ready'
+    window.addEventListener('base-archetype-profiles-ready', function(event) {
+        console.log('[ArchetypeMatrixCalculator] Event "base-archetype-profiles-ready" empfangen:', event.detail);
+        if (!_isReady) {
+            initialize();
+        }
+    });
+
+    // Fallback: Wenn DOM bereits geladen ist, prüfe ob Profile verfügbar sind
     if (document.readyState === 'loading') {
         document.addEventListener('DOMContentLoaded', function() {
-            setTimeout(initialize, 100);
+            // Kurze Verzögerung, dann prüfen
+            setTimeout(function() {
+                if (!_isReady && !checkAndInitialize()) {
+                    console.log('[ArchetypeMatrixCalculator] Warte auf base-archetype-profiles-ready Event...');
+                }
+            }, 50);
         });
     } else {
-        setTimeout(initialize, 100);
+        // DOM bereits geladen
+        setTimeout(function() {
+            if (!_isReady && !checkAndInitialize()) {
+                console.log('[ArchetypeMatrixCalculator] Warte auf base-archetype-profiles-ready Event...');
+            }
+        }, 50);
     }
 
     // Lausche auf Profil-Änderungen um Matrix neu zu berechnen
