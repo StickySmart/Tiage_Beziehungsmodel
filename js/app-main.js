@@ -10153,16 +10153,17 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
                 return interaction.overall;
             }
 
-            // Lokale Fallback-Matrix (Kopie von archetypeFactor.js)
+            // Lokale Fallback-Matrix - berechnet aus Bedürfnis-Profilen (220 Bedürfnisse)
+            // Stand: 2025-12-23 - Identisch mit archetypeFactor.js
             const fallbackMatrix = {
-                'single': { 'single': 85, 'duo': 25, 'duo_flex': 45, 'ra': 75, 'lat': 70, 'aromantisch': 80, 'solopoly': 75, 'polyamor': 50 },
-                'duo': { 'single': 25, 'duo': 95, 'duo_flex': 65, 'ra': 15, 'lat': 55, 'aromantisch': 20, 'solopoly': 20, 'polyamor': 35 },
-                'duo_flex': { 'single': 45, 'duo': 65, 'duo_flex': 85, 'ra': 55, 'lat': 70, 'aromantisch': 45, 'solopoly': 60, 'polyamor': 75 },
-                'ra': { 'single': 75, 'duo': 15, 'duo_flex': 55, 'ra': 90, 'lat': 70, 'aromantisch': 75, 'solopoly': 85, 'polyamor': 70 },
-                'lat': { 'single': 70, 'duo': 55, 'duo_flex': 70, 'ra': 70, 'lat': 90, 'aromantisch': 75, 'solopoly': 65, 'polyamor': 60 },
-                'aromantisch': { 'single': 80, 'duo': 20, 'duo_flex': 45, 'ra': 75, 'lat': 75, 'aromantisch': 95, 'solopoly': 65, 'polyamor': 55 },
-                'solopoly': { 'single': 75, 'duo': 20, 'duo_flex': 60, 'ra': 85, 'lat': 65, 'aromantisch': 65, 'solopoly': 90, 'polyamor': 80 },
-                'polyamor': { 'single': 50, 'duo': 35, 'duo_flex': 75, 'ra': 70, 'lat': 60, 'aromantisch': 55, 'solopoly': 80, 'polyamor': 90 }
+                'single': { 'single': 100, 'duo': 68, 'duo_flex': 81, 'solopoly': 93, 'polyamor': 79, 'ra': 91, 'lat': 85, 'aromantisch': 92 },
+                'duo': { 'single': 68, 'duo': 100, 'duo_flex': 86, 'solopoly': 72, 'polyamor': 84, 'ra': 71, 'lat': 83, 'aromantisch': 73 },
+                'duo_flex': { 'single': 81, 'duo': 86, 'duo_flex': 100, 'solopoly': 85, 'polyamor': 94, 'ra': 84, 'lat': 94, 'aromantisch': 86 },
+                'solopoly': { 'single': 93, 'duo': 72, 'duo_flex': 85, 'solopoly': 100, 'polyamor': 84, 'ra': 95, 'lat': 89, 'aromantisch': 93 },
+                'polyamor': { 'single': 79, 'duo': 84, 'duo_flex': 94, 'solopoly': 84, 'polyamor': 100, 'ra': 83, 'lat': 90, 'aromantisch': 84 },
+                'ra': { 'single': 91, 'duo': 71, 'duo_flex': 84, 'solopoly': 95, 'polyamor': 83, 'ra': 100, 'lat': 87, 'aromantisch': 93 },
+                'lat': { 'single': 85, 'duo': 83, 'duo_flex': 94, 'solopoly': 89, 'polyamor': 90, 'ra': 87, 'lat': 100, 'aromantisch': 90 },
+                'aromantisch': { 'single': 92, 'duo': 73, 'duo_flex': 86, 'solopoly': 93, 'polyamor': 84, 'ra': 93, 'lat': 90, 'aromantisch': 100 }
             };
 
             // Lookup mit Fallback

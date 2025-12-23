@@ -31,88 +31,89 @@ const Top10RankingCalculator = (function() {
         'polyamor': 'Polyamor'
     };
 
-    // Vereinfachte Kompatibilitätsmatrix (basiert auf archetype-matrix.json Logik)
-    // Werte 0-100 für philosophische Grundkompatibilität
+    // Kompatibilitätsmatrix - berechnet aus Bedürfnis-Profilen (220 Bedürfnisse)
+    // Stand: 2025-12-23 - Identisch mit archetypeFactor.js
+    // Formel: Für jedes Bedürfnis: Ähnlichkeit = 100 - |Wert1 - Wert2|, Gewicht = (Wert1 + Wert2) / 2
     const COMPATIBILITY_MATRIX = {
         'single': {
-            'single': 85,      // Verstehen sich, aber keine Beziehung angestrebt
-            'duo': 25,         // Fundamentaler Konflikt
-            'duo_flex': 45,    // Möglich mit viel Raum
-            'ra': 75,          // Ähnliche Autonomie-Werte
-            'lat': 70,         // Raum-Bedürfnis passt
-            'aromantisch': 80, // Keine romantischen Erwartungen
-            'solopoly': 75,    // Autonomie-fokussiert
-            'polyamor': 50     // Kann funktionieren
+            'single': 100,
+            'duo': 68,
+            'duo_flex': 81,
+            'ra': 91,
+            'lat': 85,
+            'aromantisch': 92,
+            'solopoly': 93,
+            'polyamor': 79
         },
         'duo': {
-            'single': 25,
-            'duo': 95,         // Perfekte Übereinstimmung
-            'duo_flex': 65,    // Mit Verhandlung
-            'ra': 15,          // Starker Konflikt
-            'lat': 55,         // Raum-Konflikt
-            'aromantisch': 20, // Grundlegend inkompatibel
-            'solopoly': 20,    // Grundlegend inkompatibel
-            'polyamor': 35     // Schwieriger Konflikt
+            'single': 68,
+            'duo': 100,
+            'duo_flex': 86,
+            'ra': 71,
+            'lat': 83,
+            'aromantisch': 73,
+            'solopoly': 72,
+            'polyamor': 84
         },
         'duo_flex': {
-            'single': 45,
-            'duo': 65,
-            'duo_flex': 85,    // Gute Passung
-            'ra': 55,
-            'lat': 70,
-            'aromantisch': 45,
-            'solopoly': 60,
-            'polyamor': 75     // Gute Kompatibilität
+            'single': 81,
+            'duo': 86,
+            'duo_flex': 100,
+            'ra': 84,
+            'lat': 94,
+            'aromantisch': 86,
+            'solopoly': 85,
+            'polyamor': 94
         },
         'ra': {
-            'single': 75,
-            'duo': 15,
-            'duo_flex': 55,
-            'ra': 90,          // Gleiche Philosophie
-            'lat': 70,
-            'aromantisch': 75,
-            'solopoly': 85,    // Sehr ähnlich
-            'polyamor': 70
+            'single': 91,
+            'duo': 71,
+            'duo_flex': 84,
+            'ra': 100,
+            'lat': 87,
+            'aromantisch': 93,
+            'solopoly': 95,
+            'polyamor': 83
         },
         'lat': {
-            'single': 70,
-            'duo': 55,
-            'duo_flex': 70,
-            'ra': 70,
-            'lat': 90,         // Perfekte Übereinstimmung
-            'aromantisch': 75,
-            'solopoly': 65,
-            'polyamor': 60
+            'single': 85,
+            'duo': 83,
+            'duo_flex': 94,
+            'ra': 87,
+            'lat': 100,
+            'aromantisch': 90,
+            'solopoly': 89,
+            'polyamor': 90
         },
         'aromantisch': {
-            'single': 80,
-            'duo': 20,
-            'duo_flex': 45,
-            'ra': 75,
-            'lat': 75,
-            'aromantisch': 95, // Verstehen sich
-            'solopoly': 65,
-            'polyamor': 55
+            'single': 92,
+            'duo': 73,
+            'duo_flex': 86,
+            'ra': 93,
+            'lat': 90,
+            'aromantisch': 100,
+            'solopoly': 93,
+            'polyamor': 84
         },
         'solopoly': {
-            'single': 75,
-            'duo': 20,
-            'duo_flex': 60,
-            'ra': 85,
-            'lat': 65,
-            'aromantisch': 65,
-            'solopoly': 90,    // Gleiche Philosophie
-            'polyamor': 80
+            'single': 93,
+            'duo': 72,
+            'duo_flex': 85,
+            'ra': 95,
+            'lat': 89,
+            'aromantisch': 93,
+            'solopoly': 100,
+            'polyamor': 84
         },
         'polyamor': {
-            'single': 50,
-            'duo': 35,
-            'duo_flex': 75,
-            'ra': 70,
-            'lat': 60,
-            'aromantisch': 55,
-            'solopoly': 80,
-            'polyamor': 90     // Gleiche Philosophie
+            'single': 79,
+            'duo': 84,
+            'duo_flex': 94,
+            'ra': 83,
+            'lat': 90,
+            'aromantisch': 84,
+            'solopoly': 84,
+            'polyamor': 100
         }
     };
 
