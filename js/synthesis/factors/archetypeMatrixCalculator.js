@@ -1,33 +1,41 @@
 /**
- * ARCHETYP-MATRIX CALCULATOR
+ * ARCHETYP-MATRIX CALCULATOR - SINGLE SOURCE OF TRUTH (SSOT)
  *
  * Berechnet die Archetyp-zu-Archetyp Kompatibilitätsmatrix DYNAMISCH
  * aus den tatsächlichen Bedürfnis-Profilen (220 Bedürfnisse je Archetyp).
  *
- * ERSETZT: Hardcodierte _fallbackMatrix Werte
+ * ═══════════════════════════════════════════════════════════════════════════
+ * SSOT: KEINE FALLBACK-MATRIZEN - NUR LIVE-BERECHNUNG!
+ * ═══════════════════════════════════════════════════════════════════════════
  *
  * QUELLE: Jeder Archetyp hat ein vollständiges Bedürfnis-Profil mit 220 Werten
  *         (siehe profiles/archetypen/*.js)
  *
- * BERECHNUNG: Nutzt dieselbe Formel wie calculateNeedsMatch() in profile-store.js:
+ * BERECHNUNG:
  *   - Für jedes Bedürfnis: Ähnlichkeit = 100 - |Wert1 - Wert2|
- *   - Gewicht = (Wert1 + Wert2) / 2 / 100
- *   - Beitrag = Ähnlichkeit × Gewicht
- *   - Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)
+ *   - Gewicht = (Wert1 + Wert2) / 2
+ *   - Gesamt-Score = Σ(Ähnlichkeit × Gewicht) / Σ(Gewicht)
  *
- * VORTEILE:
- * ✅ Basiert auf tatsächlichen Bedürfnis-Profilen, nicht auf Schätzungen
- * ✅ Konsistent mit der individuellen Bedürfnis-Übereinstimmung (220-Werte)
- * ✅ Automatisch aktualisiert wenn Archetyp-Profile angepasst werden
- * ✅ Transparent und nachvollziehbar
+ * API:
+ *   - getScore(type1, type2): Gibt Score zurück (berechnet live wenn nötig)
+ *   - onReady(callback): Callback wenn Matrix bereit ist
+ *   - isReady(): Boolean ob Matrix initialisiert ist
+ *   - recalculate(): Neu berechnen wenn Bedürfnisse geändert wurden
  *
- * DATUM: 2025-12-16
- * AUTOR: Claude (based on user request)
+ * EVENTS:
+ *   - 'archetype-matrix-ready': Gefeuert wenn Matrix initialisiert ist
+ *   - 'archetype-matrix-updated': Gefeuert wenn Matrix neu berechnet wurde
+ *
+ * DATUM: 2025-12-23
  */
 
 var TiageSynthesis = TiageSynthesis || {};
 TiageSynthesis.ArchetypeMatrixCalculator = (function() {
     'use strict';
+
+    // Status-Tracking
+    var _isReady = false;
+    var _readyCallbacks = [];
 
     /**
      * Berechnet die Ähnlichkeit zwischen zwei Archetyp-Profilen
@@ -151,7 +159,8 @@ TiageSynthesis.ArchetypeMatrixCalculator = (function() {
         console.log('[ArchetypeMatrixCalculator] Initialisierung...');
 
         // Warte bis BaseArchetypProfile geladen ist
-        if (typeof window.BaseArchetypProfile === 'undefined') {
+        if (typeof window.BaseArchetypProfile === 'undefined' ||
+            Object.keys(window.BaseArchetypProfile).length < 8) {
             console.log('[ArchetypeMatrixCalculator] Warte auf BaseArchetypProfile...');
             // Retry nach kurzer Verzögerung
             setTimeout(initialize, 100);
@@ -161,28 +170,173 @@ TiageSynthesis.ArchetypeMatrixCalculator = (function() {
         var matrix = generateArchetypeMatrix();
 
         if (matrix) {
-            // Speichere die berechnete Matrix global für Zugriff durch archetypeFactor.js
+            // Speichere die berechnete Matrix
             TiageSynthesis.ArchetypeMatrixCalculator._cachedMatrix = matrix;
+            _isReady = true;
             console.log('[ArchetypeMatrixCalculator] Matrix erfolgreich initialisiert und gecached');
+
+            // Rufe alle wartenden Callbacks auf
+            _readyCallbacks.forEach(function(cb) {
+                try { cb(matrix); } catch (e) { console.error('[ArchetypeMatrixCalculator] Callback Error:', e); }
+            });
+            _readyCallbacks = [];
+
+            // Feuere Event
+            window.dispatchEvent(new CustomEvent('archetype-matrix-ready', { detail: { matrix: matrix } }));
         } else {
             console.error('[ArchetypeMatrixCalculator] Matrix-Initialisierung fehlgeschlagen');
         }
     }
 
-    // Auto-Initialisierung bei DOM-Ready
+    /**
+     * SSOT: Gibt Score für ein Archetyp-Paar zurück
+     * Berechnet live wenn Matrix noch nicht gecached ist
+     *
+     * @param {string} type1 - Archetyp 1 (z.B. 'polyamor')
+     * @param {string} type2 - Archetyp 2 (z.B. 'duo')
+     * @returns {number} Score 0-100
+     */
+    function getScore(type1, type2) {
+        // Normalisiere Archetyp-Namen
+        type1 = normalizeArchetypeName(type1);
+        type2 = normalizeArchetypeName(type2);
+
+        // 1. Versuche aus Cache
+        var cachedMatrix = TiageSynthesis.ArchetypeMatrixCalculator._cachedMatrix;
+        if (cachedMatrix && cachedMatrix[type1] && typeof cachedMatrix[type1][type2] === 'number') {
+            return cachedMatrix[type1][type2];
+        }
+
+        // 2. Live-Berechnung aus BaseArchetypProfile (SSOT)
+        if (typeof window.BaseArchetypProfile !== 'undefined') {
+            var profile1 = window.BaseArchetypProfile[type1];
+            var profile2 = window.BaseArchetypProfile[type2];
+
+            if (profile1 && profile1.umfrageWerte && profile2 && profile2.umfrageWerte) {
+                var score = calculateArchetypeMatch(profile1.umfrageWerte, profile2.umfrageWerte);
+                console.log('[ArchetypeMatrixCalculator] Live-Berechnung:', type1, '+', type2, '=', score);
+                return score;
+            }
+        }
+
+        // 3. Fallback nur wenn nichts geladen ist
+        console.warn('[ArchetypeMatrixCalculator] Keine Daten verfügbar für:', type1, type2);
+        return 50; // Neutraler Wert
+    }
+
+    /**
+     * Normalisiert Archetyp-Namen (z.B. 'duo-flex' → 'duo_flex')
+     */
+    function normalizeArchetypeName(name) {
+        if (!name) return '';
+        return name.toLowerCase().replace(/-/g, '_');
+    }
+
+    /**
+     * Registriert Callback für wenn Matrix bereit ist
+     * Callback wird sofort aufgerufen wenn Matrix bereits bereit
+     */
+    function onReady(callback) {
+        if (_isReady && TiageSynthesis.ArchetypeMatrixCalculator._cachedMatrix) {
+            callback(TiageSynthesis.ArchetypeMatrixCalculator._cachedMatrix);
+        } else {
+            _readyCallbacks.push(callback);
+        }
+    }
+
+    /**
+     * Prüft ob Matrix bereit ist
+     */
+    function isReady() {
+        return _isReady;
+    }
+
+    /**
+     * Berechnet Matrix neu (z.B. nach Änderung von Bedürfnis-Profilen)
+     */
+    function recalculate() {
+        console.log('[ArchetypeMatrixCalculator] Neuberechnung...');
+        var matrix = generateArchetypeMatrix();
+
+        if (matrix) {
+            TiageSynthesis.ArchetypeMatrixCalculator._cachedMatrix = matrix;
+            _isReady = true;
+            console.log('[ArchetypeMatrixCalculator] Matrix neu berechnet');
+
+            // Feuere Update-Event
+            window.dispatchEvent(new CustomEvent('archetype-matrix-updated', { detail: { matrix: matrix } }));
+        }
+
+        return matrix;
+    }
+
+    // ═══════════════════════════════════════════════════════════════════════════
+    // Auto-Initialisierung: Warte auf 'base-archetype-profiles-ready' Event
+    // Das Event wird von profiles/archetypen/index.js gefeuert wenn alle 8 Profile geladen sind
+    // ═══════════════════════════════════════════════════════════════════════════
+
+    // Prüfe ob Profile bereits geladen sind
+    function checkAndInitialize() {
+        if (typeof window.BaseArchetypProfile !== 'undefined' &&
+            Object.keys(window.BaseArchetypProfile).length >= 8) {
+            console.log('[ArchetypeMatrixCalculator] Profile bereits geladen, initialisiere...');
+            initialize();
+            return true;
+        }
+        return false;
+    }
+
+    // Event-Listener für 'base-archetype-profiles-ready'
+    window.addEventListener('base-archetype-profiles-ready', function(event) {
+        console.log('[ArchetypeMatrixCalculator] Event "base-archetype-profiles-ready" empfangen:', event.detail);
+        if (!_isReady) {
+            initialize();
+        }
+    });
+
+    // Fallback: Wenn DOM bereits geladen ist, prüfe ob Profile verfügbar sind
     if (document.readyState === 'loading') {
         document.addEventListener('DOMContentLoaded', function() {
-            setTimeout(initialize, 200); // Verzögerung für BaseArchetypProfile
+            // Kurze Verzögerung, dann prüfen
+            setTimeout(function() {
+                if (!_isReady && !checkAndInitialize()) {
+                    console.log('[ArchetypeMatrixCalculator] Warte auf base-archetype-profiles-ready Event...');
+                }
+            }, 50);
         });
     } else {
-        setTimeout(initialize, 200);
+        // DOM bereits geladen
+        setTimeout(function() {
+            if (!_isReady && !checkAndInitialize()) {
+                console.log('[ArchetypeMatrixCalculator] Warte auf base-archetype-profiles-ready Event...');
+            }
+        }, 50);
     }
+
+    // Lausche auf Profil-Änderungen um Matrix neu zu berechnen
+    window.addEventListener('archetype-profile-updated', function() {
+        console.log('[ArchetypeMatrixCalculator] Profil-Änderung erkannt, berechne neu...');
+        recalculate();
+    });
 
     // PUBLIC API
     return {
+        // SSOT Hauptfunktion
+        getScore: getScore,
+
+        // Status
+        isReady: isReady,
+        onReady: onReady,
+
+        // Verwaltung
+        initialize: initialize,
+        recalculate: recalculate,
+
+        // Interne Funktionen (für Tests/Debug)
         calculateArchetypeMatch: calculateArchetypeMatch,
         generateArchetypeMatrix: generateArchetypeMatrix,
-        initialize: initialize,
+
+        // Cache (wird intern verwaltet)
         _cachedMatrix: null
     };
 

@@ -31,90 +31,44 @@ const Top10RankingCalculator = (function() {
         'polyamor': 'Polyamor'
     };
 
-    // Vereinfachte Kompatibilitätsmatrix (basiert auf archetype-matrix.json Logik)
-    // Werte 0-100 für philosophische Grundkompatibilität
-    const COMPATIBILITY_MATRIX = {
-        'single': {
-            'single': 85,      // Verstehen sich, aber keine Beziehung angestrebt
-            'duo': 25,         // Fundamentaler Konflikt
-            'duo_flex': 45,    // Möglich mit viel Raum
-            'ra': 75,          // Ähnliche Autonomie-Werte
-            'lat': 70,         // Raum-Bedürfnis passt
-            'aromantisch': 80, // Keine romantischen Erwartungen
-            'solopoly': 75,    // Autonomie-fokussiert
-            'polyamor': 50     // Kann funktionieren
-        },
-        'duo': {
-            'single': 25,
-            'duo': 95,         // Perfekte Übereinstimmung
-            'duo_flex': 65,    // Mit Verhandlung
-            'ra': 15,          // Starker Konflikt
-            'lat': 55,         // Raum-Konflikt
-            'aromantisch': 20, // Grundlegend inkompatibel
-            'solopoly': 20,    // Grundlegend inkompatibel
-            'polyamor': 35     // Schwieriger Konflikt
-        },
-        'duo_flex': {
-            'single': 45,
-            'duo': 65,
-            'duo_flex': 85,    // Gute Passung
-            'ra': 55,
-            'lat': 70,
-            'aromantisch': 45,
-            'solopoly': 60,
-            'polyamor': 75     // Gute Kompatibilität
-        },
-        'ra': {
-            'single': 75,
-            'duo': 15,
-            'duo_flex': 55,
-            'ra': 90,          // Gleiche Philosophie
-            'lat': 70,
-            'aromantisch': 75,
-            'solopoly': 85,    // Sehr ähnlich
-            'polyamor': 70
-        },
-        'lat': {
-            'single': 70,
-            'duo': 55,
-            'duo_flex': 70,
-            'ra': 70,
-            'lat': 90,         // Perfekte Übereinstimmung
-            'aromantisch': 75,
-            'solopoly': 65,
-            'polyamor': 60
-        },
-        'aromantisch': {
-            'single': 80,
-            'duo': 20,
-            'duo_flex': 45,
-            'ra': 75,
-            'lat': 75,
-            'aromantisch': 95, // Verstehen sich
-            'solopoly': 65,
-            'polyamor': 55
-        },
-        'solopoly': {
-            'single': 75,
-            'duo': 20,
-            'duo_flex': 60,
-            'ra': 85,
-            'lat': 65,
-            'aromantisch': 65,
-            'solopoly': 90,    // Gleiche Philosophie
-            'polyamor': 80
-        },
-        'polyamor': {
-            'single': 50,
-            'duo': 35,
-            'duo_flex': 75,
-            'ra': 70,
-            'lat': 60,
-            'aromantisch': 55,
-            'solopoly': 80,
-            'polyamor': 90     // Gleiche Philosophie
+    // ═══════════════════════════════════════════════════════════════════════════
+    // SSOT: Archetyp-Kompatibilität aus ArchetypeMatrixCalculator
+    // KEINE Fallback-Matrix - Werte werden live aus Bedürfnis-Profilen berechnet
+    // ═══════════════════════════════════════════════════════════════════════════
+
+    /**
+     * Holt Archetyp-Kompatibilität aus SSOT (ArchetypeMatrixCalculator)
+     * @param {string} type1 - Erster Archetyp
+     * @param {string} type2 - Zweiter Archetyp
+     * @returns {number} Kompatibilitätsscore 0-100
+     */
+    function getArchetypeCompatibility(type1, type2) {
+        // SSOT: Nutze ArchetypeMatrixCalculator.getScore()
+        if (typeof TiageSynthesis !== 'undefined' &&
+            TiageSynthesis.ArchetypeMatrixCalculator &&
+            typeof TiageSynthesis.ArchetypeMatrixCalculator.getScore === 'function') {
+            return TiageSynthesis.ArchetypeMatrixCalculator.getScore(type1, type2);
         }
-    };
+
+        // Warnung wenn SSOT nicht verfügbar
+        console.warn('[Top10RankingCalculator] ArchetypeMatrixCalculator nicht verfügbar!');
+        return 50; // Neutraler Default
+    }
+
+    // Für Rückwärtskompatibilität: COMPATIBILITY_MATRIX als Proxy-Objekt
+    // Gibt immer die SSOT-Werte zurück
+    const COMPATIBILITY_MATRIX = new Proxy({}, {
+        get: function(target, prop) {
+            if (typeof prop !== 'string') return undefined;
+            // Rückgabe eines Proxy für die zweite Ebene
+            return new Proxy({}, {
+                get: function(target2, prop2) {
+                    if (typeof prop2 !== 'string') return undefined;
+                    return getArchetypeCompatibility(prop, prop2);
+                }
+            });
+        }
+    });
 
     // Dominanz-Kompatibilität
     const DOMINANCE_COMPATIBILITY = {

@@ -130,6 +130,23 @@
     console.log('BaseArchetypProfile geladen:', loadedCount, 'Basis-Definitionen');
 
     // ═══════════════════════════════════════════════════════════════════════════
+    // Event feuern wenn alle 8 Profile geladen sind
+    // Andere Module (z.B. ArchetypeMatrixCalculator) können darauf warten
+    // ═══════════════════════════════════════════════════════════════════════════
+    if (loadedCount === 8) {
+        window.dispatchEvent(new CustomEvent('base-archetype-profiles-ready', {
+            detail: { count: loadedCount, profiles: Object.keys(window.BaseArchetypProfile) }
+        }));
+        console.log('[BaseArchetypProfile] Event "base-archetype-profiles-ready" gefeuert');
+    } else {
+        console.warn('[BaseArchetypProfile] Nicht alle Profile geladen! Erwartet: 8, Geladen:', loadedCount);
+        // Trotzdem Event feuern damit andere Module nicht ewig warten
+        window.dispatchEvent(new CustomEvent('base-archetype-profiles-ready', {
+            detail: { count: loadedCount, profiles: Object.keys(window.BaseArchetypProfile), incomplete: true }
+        }));
+    }
+
+    // ═══════════════════════════════════════════════════════════════════════════
     // 2. LOADED ARCHETYP PROFILE - View auf TiageState (Single Source of Truth)
     // ═══════════════════════════════════════════════════════════════════════════
     // LoadedArchetypProfile ist jetzt ein "View" der direkt aus TiageState liest.

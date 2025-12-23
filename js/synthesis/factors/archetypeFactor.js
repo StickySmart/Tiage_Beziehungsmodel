@@ -8,25 +8,16 @@
  * - Wie wollen beide Partner zusammenleben?
  * - Die Archetyp-Frage stellt sich NACH den initialen Pathos-Faktoren
  *
- * Datenquelle: archetype-matrix.json (8x8 Matrix)
+ * ═══════════════════════════════════════════════════════════════════════════
+ * SSOT: Nutzt ArchetypeMatrixCalculator.getScore() für Live-Berechnung
+ * KEINE Fallback-Matrix - Werte werden aus Bedürfnis-Profilen berechnet
+ * ═══════════════════════════════════════════════════════════════════════════
  */
 
 var TiageSynthesis = TiageSynthesis || {};
 TiageSynthesis.Factors = TiageSynthesis.Factors || {};
 
 TiageSynthesis.Factors.Archetyp = {
-
-    // Fallback-Kompatibilitätsmatrix wenn keine overall Scores vorhanden
-    _fallbackMatrix: {
-        'single': { 'single': 85, 'duo': 25, 'duo_flex': 45, 'ra': 75, 'lat': 70, 'aromantisch': 80, 'solopoly': 75, 'polyamor': 50 },
-        'duo': { 'single': 25, 'duo': 95, 'duo_flex': 65, 'ra': 15, 'lat': 55, 'aromantisch': 20, 'solopoly': 20, 'polyamor': 35 },
-        'duo_flex': { 'single': 45, 'duo': 65, 'duo_flex': 85, 'ra': 55, 'lat': 70, 'aromantisch': 45, 'solopoly': 60, 'polyamor': 75 },
-        'ra': { 'single': 75, 'duo': 15, 'duo_flex': 55, 'ra': 90, 'lat': 70, 'aromantisch': 75, 'solopoly': 85, 'polyamor': 70 },
-        'lat': { 'single': 70, 'duo': 55, 'duo_flex': 70, 'ra': 70, 'lat': 90, 'aromantisch': 75, 'solopoly': 65, 'polyamor': 60 },
-        'aromantisch': { 'single': 80, 'duo': 20, 'duo_flex': 45, 'ra': 75, 'lat': 75, 'aromantisch': 95, 'solopoly': 65, 'polyamor': 55 },
-        'solopoly': { 'single': 75, 'duo': 20, 'duo_flex': 60, 'ra': 85, 'lat': 65, 'aromantisch': 65, 'solopoly': 90, 'polyamor': 80 },
-        'polyamor': { 'single': 50, 'duo': 35, 'duo_flex': 75, 'ra': 70, 'lat': 60, 'aromantisch': 55, 'solopoly': 80, 'polyamor': 90 }
-    },
 
     /**
      * Berechnet den Archetyp-Kompatibilitätsscore
@@ -120,38 +111,20 @@ TiageSynthesis.Factors.Archetyp = {
     },
 
     /**
-     * Holt Score aus der berechneten oder Fallback-Matrix
-     *
-     * PRIORITÄT:
-     * 1. Dynamisch berechnete Matrix (aus ArchetypeMatrixCalculator)
-     * 2. Hardcodierte Fallback-Matrix (nur wenn Berechnung nicht verfügbar)
+     * Holt Score aus ArchetypeMatrixCalculator (SSOT)
+     * Live-Berechnung aus Bedürfnis-Profilen - KEINE Fallback-Matrix!
      */
     _getFallbackScore: function(type1, type2) {
-        // Priorität 1: Nutze dynamisch berechnete Matrix falls verfügbar
+        // SSOT: Nutze ArchetypeMatrixCalculator.getScore()
         if (typeof TiageSynthesis !== 'undefined' &&
             TiageSynthesis.ArchetypeMatrixCalculator &&
-            TiageSynthesis.ArchetypeMatrixCalculator._cachedMatrix) {
-
-            var calculatedMatrix = TiageSynthesis.ArchetypeMatrixCalculator._cachedMatrix;
-
-            if (calculatedMatrix[type1] && typeof calculatedMatrix[type1][type2] === 'number') {
-                return calculatedMatrix[type1][type2];
-            }
-            // Versuche umgekehrt
-            if (calculatedMatrix[type2] && typeof calculatedMatrix[type2][type1] === 'number') {
-                return calculatedMatrix[type2][type1];
-            }
+            typeof TiageSynthesis.ArchetypeMatrixCalculator.getScore === 'function') {
+            return TiageSynthesis.ArchetypeMatrixCalculator.getScore(type1, type2);
         }
 
-        // Priorität 2: Fallback auf hardcodierte Matrix
-        if (this._fallbackMatrix[type1] && typeof this._fallbackMatrix[type1][type2] === 'number') {
-            return this._fallbackMatrix[type1][type2];
-        }
-        // Versuche umgekehrt
-        if (this._fallbackMatrix[type2] && typeof this._fallbackMatrix[type2][type1] === 'number') {
-            return this._fallbackMatrix[type2][type1];
-        }
-        return 50; // Default
+        // Warnung wenn SSOT nicht verfügbar
+        console.warn('[Archetyp Factor] ArchetypeMatrixCalculator nicht verfügbar!');
+        return 50; // Neutraler Default
     },
 
     /**
