@@ -508,6 +508,11 @@
                 currentIchArchetype = TiageState.get('archetypes.ich.primary') || 'duo';
                 currentPartnerArchetype = TiageState.get('archetypes.partner.primary') || 'solopoly';
 
+                // WICHTIG: ProfileCalculator synchron initialisieren, damit flatNeeds verfügbar sind
+                if (typeof ProfileCalculator !== 'undefined' && ProfileCalculator.initFromState) {
+                    ProfileCalculator.initFromState();
+                }
+
                 // SSOT: Reaktiv auf flatNeeds-Änderungen subscriben
                 TiageState.subscribe('flatNeeds.ich', function() {
                     updateArchetypeDisplay();
