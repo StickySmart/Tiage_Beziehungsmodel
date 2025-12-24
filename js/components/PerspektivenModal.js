@@ -99,7 +99,7 @@ const PerspektivenModal = {
         'finanzen_karriere': '#P1',
         'kommunikation_stil': '#P1',
         'soziales_leben': '#P1',
-        'intimitaet_beziehung': '#P1',
+        'intimitaet_romantik': '#P1',
         'werte_haltung': '#P1',
         'praktisches_leben': '#P1'
     },
@@ -672,8 +672,8 @@ const PerspektivenModal = {
             'kommunikation_stil': '#K14',
             'kommunikationsstil': '#K14',   // Alternative Schreibweise
             'soziales_leben': '#K15',
-            'intimitaet_beziehung': '#K16',
-            'intimitaet_romantik': '#K16',  // Alternative Schreibweise
+            'intimitaet_romantik': '#K16',
+            'intimitaet_beziehung': '#K16',  // Alternative Schreibweise (deprecated)
             'werte_haltung': '#K17',
             'werte_haltungen': '#K17',      // Alternative Schreibweise
             'praktisches_leben': '#K18'

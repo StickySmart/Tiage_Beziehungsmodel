@@ -343,7 +343,7 @@ const TiageBeduerfnisse = {
             ]
         },
 
-        intimitaet_beziehung: {
+        intimitaet_romantik: {
             name: "Intimität & Romantik",
             description: "Körperliche Nähe, Romantik, Sexualität",
             color: "#EC4899",
@@ -629,24 +629,24 @@ const TiageBeduerfnisse = {
         // ═══════════════════════════════════════════════════════════════════════
         // INTIMITÄT & ROMANTIK
         // ═══════════════════════════════════════════════════════════════════════
-        koerpernaehe: { "#ID": "#B204", label: "Körpernähe", kategorie: "intimitaet_beziehung", sekundaer: ["zuneigung", "existenz"] },
-        kuscheln: { "#ID": "#B205", label: "Kuscheln", kategorie: "intimitaet_beziehung", sekundaer: ["zuneigung", "sicherheit"] },
-        physische_distanz: { "#ID": "#B206", label: "Physische Distanz", kategorie: "intimitaet_beziehung", sekundaer: ["freiheit"] },
-        koerperkontakt: { "#ID": "#B207", label: "Körperkontakt", kategorie: "intimitaet_beziehung", sekundaer: ["zuneigung", "existenz"] },
-        umarmungen: { "#ID": "#B208", label: "Umarmungen", kategorie: "intimitaet_beziehung", sekundaer: ["zuneigung", "sicherheit"] },
-        hand_halten: { label: "Hand halten", kategorie: "intimitaet_beziehung", sekundaer: ["zuneigung"] },
-        romantische_gesten: { label: "Romantische Gesten", kategorie: "intimitaet_beziehung", sekundaer: ["zuneigung"] },
-        ueberraschungen: { label: "Überraschungen", kategorie: "intimitaet_beziehung", sekundaer: ["zuneigung", "musse"] },
-        dates: { label: "Dates", kategorie: "intimitaet_beziehung", sekundaer: ["zuneigung"] },
-        alltags_romantik: { label: "Alltags-Romantik", kategorie: "intimitaet_beziehung", sekundaer: ["zuneigung"] },
-        aufmerksamkeiten: { label: "Aufmerksamkeiten", kategorie: "intimitaet_beziehung", sekundaer: ["zuneigung", "verstaendnis"] },
-        liebesbekundungen: { label: "Liebesbekundungen", kategorie: "intimitaet_beziehung", sekundaer: ["zuneigung"] },
-        sexuelle_haeufigkeit: { label: "Sexuelle Häufigkeit", kategorie: "intimitaet_beziehung", sekundaer: ["existenz"] },
-        sexuelle_intimiaet: { label: "Sexuelle Intimität", kategorie: "intimitaet_beziehung", sekundaer: ["zuneigung", "verbundenheit"] },
-        koerperliche_lust: { label: "Körperliche Lust", kategorie: "intimitaet_beziehung", sekundaer: ["existenz", "musse"] },
-        sexuelle_experimentierfreude: { label: "Sexuelle Experimentierfreude", kategorie: "intimitaet_beziehung", sekundaer: ["erschaffen", "freiheit"] },
-        sexuelle_verbindung: { label: "Sexuelle Verbindung", kategorie: "intimitaet_beziehung", sekundaer: ["verbundenheit", "zuneigung"] },
-        sexuelle_zufriedenheit: { label: "Sexuelle Zufriedenheit", kategorie: "intimitaet_beziehung", sekundaer: ["musse"] },
+        koerpernaehe: { "#ID": "#B204", label: "Körpernähe", kategorie: "intimitaet_romantik", sekundaer: ["zuneigung", "existenz"] },
+        kuscheln: { "#ID": "#B205", label: "Kuscheln", kategorie: "intimitaet_romantik", sekundaer: ["zuneigung", "sicherheit"] },
+        physische_distanz: { "#ID": "#B206", label: "Physische Distanz", kategorie: "intimitaet_romantik", sekundaer: ["freiheit"] },
+        koerperkontakt: { "#ID": "#B207", label: "Körperkontakt", kategorie: "intimitaet_romantik", sekundaer: ["zuneigung", "existenz"] },
+        umarmungen: { "#ID": "#B208", label: "Umarmungen", kategorie: "intimitaet_romantik", sekundaer: ["zuneigung", "sicherheit"] },
+        hand_halten: { label: "Hand halten", kategorie: "intimitaet_romantik", sekundaer: ["zuneigung"] },
+        romantische_gesten: { label: "Romantische Gesten", kategorie: "intimitaet_romantik", sekundaer: ["zuneigung"] },
+        ueberraschungen: { label: "Überraschungen", kategorie: "intimitaet_romantik", sekundaer: ["zuneigung", "musse"] },
+        dates: { label: "Dates", kategorie: "intimitaet_romantik", sekundaer: ["zuneigung"] },
+        alltags_romantik: { label: "Alltags-Romantik", kategorie: "intimitaet_romantik", sekundaer: ["zuneigung"] },
+        aufmerksamkeiten: { label: "Aufmerksamkeiten", kategorie: "intimitaet_romantik", sekundaer: ["zuneigung", "verstaendnis"] },
+        liebesbekundungen: { label: "Liebesbekundungen", kategorie: "intimitaet_romantik", sekundaer: ["zuneigung"] },
+        sexuelle_haeufigkeit: { label: "Sexuelle Häufigkeit", kategorie: "intimitaet_romantik", sekundaer: ["existenz"] },
+        sexuelle_intimiaet: { label: "Sexuelle Intimität", kategorie: "intimitaet_romantik", sekundaer: ["zuneigung", "verbundenheit"] },
+        koerperliche_lust: { label: "Körperliche Lust", kategorie: "intimitaet_romantik", sekundaer: ["existenz", "musse"] },
+        sexuelle_experimentierfreude: { label: "Sexuelle Experimentierfreude", kategorie: "intimitaet_romantik", sekundaer: ["erschaffen", "freiheit"] },
+        sexuelle_verbindung: { label: "Sexuelle Verbindung", kategorie: "intimitaet_romantik", sekundaer: ["verbundenheit", "zuneigung"] },
+        sexuelle_zufriedenheit: { label: "Sexuelle Zufriedenheit", kategorie: "intimitaet_romantik", sekundaer: ["musse"] },
 
         // ═══════════════════════════════════════════════════════════════════════
         // WERTE & HALTUNGEN
@@ -784,23 +784,23 @@ const TiageBeduerfnisse = {
         // ─────────────────────────────────────────────────────────────────────
         // INTIMITÄT & BEZIEHUNG - Pirsig
         // ─────────────────────────────────────────────────────────────────────
-        biologische_anziehung: { label: "Biologische Anziehung", kategorie: "intimitaet_beziehung", sekundaer: ["existenz"], description: "Bedürfnis nach körperlicher Chemie, Instinkt, Pheromonen" },
-        intellektuelle_verbindung: { label: "Intellektuelle Verbindung", kategorie: "intimitaet_beziehung", sekundaer: ["verstaendnis", "erschaffen"], description: "Bedürfnis nach geistigem Match, gemeinsamer Wellenlänge" },
-        qualitaet_der_beruehrung: { label: "Qualität der Berührung", kategorie: "intimitaet_beziehung", sekundaer: ["zuneigung"], description: "Bedürfnis nach achtsamer, präsenter Berührung" },
-        dynamische_liebe: { label: "Dynamische Liebe", kategorie: "intimitaet_beziehung", sekundaer: ["zuneigung", "erschaffen"], description: "Bedürfnis nach sich entwickelnder, wachsender Liebe" },
-        care_in_intimitaet: { label: "Care in Intimität", kategorie: "intimitaet_beziehung", sekundaer: ["zuneigung", "sicherheit"], description: "Bedürfnis nach Sorgfalt, Aufmerksamkeit, Präzision" },
+        biologische_anziehung: { label: "Biologische Anziehung", kategorie: "intimitaet_romantik", sekundaer: ["existenz"], description: "Bedürfnis nach körperlicher Chemie, Instinkt, Pheromonen" },
+        intellektuelle_verbindung: { label: "Intellektuelle Verbindung", kategorie: "intimitaet_romantik", sekundaer: ["verstaendnis", "erschaffen"], description: "Bedürfnis nach geistigem Match, gemeinsamer Wellenlänge" },
+        qualitaet_der_beruehrung: { label: "Qualität der Berührung", kategorie: "intimitaet_romantik", sekundaer: ["zuneigung"], description: "Bedürfnis nach achtsamer, präsenter Berührung" },
+        dynamische_liebe: { label: "Dynamische Liebe", kategorie: "intimitaet_romantik", sekundaer: ["zuneigung", "erschaffen"], description: "Bedürfnis nach sich entwickelnder, wachsender Liebe" },
+        care_in_intimitaet: { label: "Care in Intimität", kategorie: "intimitaet_romantik", sekundaer: ["zuneigung", "sicherheit"], description: "Bedürfnis nach Sorgfalt, Aufmerksamkeit, Präzision" },
 
         // ─────────────────────────────────────────────────────────────────────
         // INTIMITÄT & BEZIEHUNG - Osho
         // ─────────────────────────────────────────────────────────────────────
-        sex_als_meditation: { label: "Sex als Meditation", kategorie: "intimitaet_beziehung", sekundaer: ["verbundenheit"], description: "Bedürfnis nach tantrischer Sexualität, spiritueller Vereinigung" },
-        liebe_ohne_beziehung: { label: "Liebe ohne Beziehung", kategorie: "intimitaet_beziehung", sekundaer: ["freiheit", "zuneigung"], description: "Bedürfnis nach Liebe OHNE Besitz, Eifersucht, Erwartung" },
-        orgastisches_leben: { label: "Orgastisches Leben", kategorie: "intimitaet_beziehung", sekundaer: ["existenz", "verbundenheit"], description: "Bedürfnis nach ganzem Körper als erogene Zone, totale Hingabe" },
-        nicht_anhaften_an_partner: { label: "Nicht-Anhaften an Partner", kategorie: "intimitaet_beziehung", sekundaer: ["freiheit"], description: "Bedürfnis nach Freiheit IN der Beziehung" },
-        hier_und_jetzt_intimitaet: { label: "Hier-und-Jetzt-Intimität", kategorie: "intimitaet_beziehung", sekundaer: ["verbundenheit"], description: "Bedürfnis nach völliger Präsenz, keine Vergangenheit/Zukunft" },
-        polyamore_energie: { label: "Polyamore Energie", kategorie: "intimitaet_beziehung", sekundaer: ["freiheit", "zuneigung"], description: "Bedürfnis nach Liebe zu vielen, keine Monogamie" },
-        wildheit_und_zartheit: { label: "Wildheit und Zartheit", kategorie: "intimitaet_beziehung", sekundaer: ["dynamik"], description: "Bedürfnis nach beidem: animalisch UND sanft" },
-        meditation_zu_zweit: { label: "Meditation zu zweit", kategorie: "intimitaet_beziehung", sekundaer: ["verbundenheit"], description: "Bedürfnis nach gemeinsamer Stille, energetischer Fusion" },
+        sex_als_meditation: { label: "Sex als Meditation", kategorie: "intimitaet_romantik", sekundaer: ["verbundenheit"], description: "Bedürfnis nach tantrischer Sexualität, spiritueller Vereinigung" },
+        liebe_ohne_beziehung: { label: "Liebe ohne Beziehung", kategorie: "intimitaet_romantik", sekundaer: ["freiheit", "zuneigung"], description: "Bedürfnis nach Liebe OHNE Besitz, Eifersucht, Erwartung" },
+        orgastisches_leben: { label: "Orgastisches Leben", kategorie: "intimitaet_romantik", sekundaer: ["existenz", "verbundenheit"], description: "Bedürfnis nach ganzem Körper als erogene Zone, totale Hingabe" },
+        nicht_anhaften_an_partner: { label: "Nicht-Anhaften an Partner", kategorie: "intimitaet_romantik", sekundaer: ["freiheit"], description: "Bedürfnis nach Freiheit IN der Beziehung" },
+        hier_und_jetzt_intimitaet: { label: "Hier-und-Jetzt-Intimität", kategorie: "intimitaet_romantik", sekundaer: ["verbundenheit"], description: "Bedürfnis nach völliger Präsenz, keine Vergangenheit/Zukunft" },
+        polyamore_energie: { label: "Polyamore Energie", kategorie: "intimitaet_romantik", sekundaer: ["freiheit", "zuneigung"], description: "Bedürfnis nach Liebe zu vielen, keine Monogamie" },
+        wildheit_und_zartheit: { label: "Wildheit und Zartheit", kategorie: "intimitaet_romantik", sekundaer: ["dynamik"], description: "Bedürfnis nach beidem: animalisch UND sanft" },
+        meditation_zu_zweit: { label: "Meditation zu zweit", kategorie: "intimitaet_romantik", sekundaer: ["verbundenheit"], description: "Bedürfnis nach gemeinsamer Stille, energetischer Fusion" },
 
         // ─────────────────────────────────────────────────────────────────────
         // WERTE & HALTUNG - Pirsig
