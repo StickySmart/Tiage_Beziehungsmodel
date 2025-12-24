@@ -36,6 +36,13 @@
     <!-- Archetypen Index (BaseArchetypProfile) -->
     <script src="profiles/archetypen/index.js"></script>
 
+    <!-- Ti-Age Bedürfnisse (SSOT) -->
+    <script src="profiles/definitions/tiage-beduerfnisse.js"></script>
+    <script src="profiles/definitions/beduerfnis-katalog.js"></script>
+
+    <!-- TiageSynthesis Module (für ArchetypeMatrixCalculator) -->
+    <script src="js/synthesis/factors/archetypeMatrixCalculator.js"></script>
+
     <style>
         .synthese-page {
             min-height: 100vh;
@@ -515,12 +522,13 @@
         // TIAGE SYNTHESE ÜBERSICHT - Score & R-Faktoren
         // ═══════════════════════════════════════════════════════════════════════════
 
-        // Archetypen-Liste für Navigation
-        const archetypeOrder = ['single', 'duo', 'duoflex', 'solopoly', 'polyamor', 'ra', 'lat', 'aromantisch'];
+        // Archetypen-Liste für Navigation (SSOT Keys verwenden duo_flex)
+        const archetypeOrder = ['single', 'duo', 'duo_flex', 'solopoly', 'polyamor', 'ra', 'lat', 'aromantisch'];
         const archetypeNames = {
             'single': 'Single',
             'duo': 'Duo',
-            'duoflex': 'Duo-Flex',
+            'duo_flex': 'Duo-Flex',
+            'duoflex': 'Duo-Flex',  // Legacy-Alias
             'solopoly': 'Solopoly',
             'polyamor': 'Polyamor',
             'ra': 'RA',
@@ -656,11 +664,40 @@
          * Initialisierung
          */
         document.addEventListener('DOMContentLoaded', async function() {
+            // Validiere ob ein Archetyp-Key gültig ist
+            function isValidArchetype(key) {
+                return archetypeOrder.includes(key) || key === 'duo_flex';
+            }
+
+            // Normalisiere Archetyp-Key (duoflex -> duo_flex)
+            function normalizeArchetype(key) {
+                if (!key) return null;
+                const normalized = key.toLowerCase().trim();
+                if (normalized === 'duoflex' || normalized === 'duo-flex') return 'duo_flex';
+                return normalized;
+            }
+
             // Archetypen aus TiageState laden
             if (typeof TiageState !== 'undefined') {
                 await TiageState.init();
-                currentIchArchetype = TiageState.get('archetypes.ich.primary') || 'duo';
-                currentPartnerArchetype = TiageState.get('archetypes.partner.primary') || 'solopoly';
+                let ichFromState = TiageState.get('archetypes.ich.primary');
+                let partnerFromState = TiageState.get('archetypes.partner.primary');
+
+                // Validiere und normalisiere die Werte
+                ichFromState = normalizeArchetype(ichFromState);
+                partnerFromState = normalizeArchetype(partnerFromState);
+
+                if (isValidArchetype(ichFromState)) {
+                    currentIchArchetype = ichFromState;
+                }
+                if (isValidArchetype(partnerFromState)) {
+                    currentPartnerArchetype = partnerFromState;
+                }
+
+                console.log('[tiagesyntheseUebersicht] Archetypen geladen:', {
+                    ichFromState, partnerFromState,
+                    currentIchArchetype, currentPartnerArchetype
+                });
             }
 
             // Aus sessionStorage laden (falls von archetype-interaction.html übergeben)
@@ -668,8 +705,14 @@
             if (stored) {
                 try {
                     const data = JSON.parse(stored);
-                    if (data.ichName) currentIchArchetype = findArchetypeKey(data.ichName);
-                    if (data.partnerName) currentPartnerArchetype = findArchetypeKey(data.partnerName);
+                    if (data.ichName) {
+                        const key = findArchetypeKey(data.ichName);
+                        if (isValidArchetype(key)) currentIchArchetype = key;
+                    }
+                    if (data.partnerName) {
+                        const key = findArchetypeKey(data.partnerName);
+                        if (isValidArchetype(key)) currentPartnerArchetype = key;
+                    }
                 } catch (e) {}
             }
 
