@@ -653,6 +653,13 @@ const AttributeSummaryCard = (function() {
      * @param {boolean} lockState - true = sperren, false = entsperren
      */
     function lockSelectedNeeds(lockState) {
+        // Ermittle aktuelle Person aus Kontext
+        let currentPerson = 'ich';
+        if (window.currentProfileReviewContext && window.currentProfileReviewContext.person) {
+            currentPerson = window.currentProfileReviewContext.person;
+        }
+
+        let lockedCount = 0;
         selectedNeeds.forEach(needId => {
             const needObj = findNeedById(needId);
             if (needObj) {
@@ -667,8 +674,25 @@ const AttributeSummaryCard = (function() {
                 needItem.classList.toggle('need-locked', lockState);
                 const slider = needItem.querySelector('.need-slider');
                 const input = needItem.querySelector('.flat-need-input');
+                const lockIcon = needItem.querySelector('.flat-need-lock');
                 if (slider) slider.disabled = lockState;
                 if (input) input.readOnly = lockState;
+                if (lockIcon) lockIcon.textContent = lockState ? '🔒' : '🔓';
+            }
+
+            // ═══════════════════════════════════════════════════════════════════════════
+            // FIX: Speichere Lock-Status in TiageState (SSOT)
+            // ═══════════════════════════════════════════════════════════════════════════
+            if (typeof TiageState !== 'undefined') {
+                if (lockState) {
+                    // Beim Sperren: Speichere Wert
+                    const currentValue = needObj ? needObj.value : 50;
+                    TiageState.lockNeed(currentPerson, needId, currentValue);
+                } else {
+                    // Beim Entsperren: Entferne aus lockedNeeds
+                    TiageState.unlockNeed(currentPerson, needId);
+                }
+                lockedCount++;
             }
 
             // Event
@@ -677,6 +701,13 @@ const AttributeSummaryCard = (function() {
                 detail: { needId, locked: lockState }
             }));
         });
+
+        // Einmal speichern nach allen Änderungen
+        if (typeof TiageState !== 'undefined' && lockedCount > 0) {
+            TiageState.saveToStorage();
+            console.log('[lockSelectedNeeds]', lockState ? 'Gesperrt' : 'Entsperrt', lockedCount, 'Bedürfnisse für', currentPerson);
+            showLockToast(lockState ? `${lockedCount} Werte gesperrt` : `${lockedCount} Werte entsperrt`);
+        }
     }
 
     /**
