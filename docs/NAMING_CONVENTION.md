@@ -52,7 +52,7 @@ KATEGORIE (BaseAttribute): lebensplanung
 | `finanzen_karriere` | Geld, Beruf, Work-Life-Balance | #F59E0B |
 | `kommunikation_stil` | Gespräche, Emotionen, Konflikte | #3B82F6 |
 | `soziales_leben` | Introversion/Extroversion, Freunde, Alleinzeit | #8B5CF6 |
-| `intimitaet_beziehung` | Körperliche Nähe, Romantik, Sexualität | #EC4899 |
+| `intimitaet_romantik` | Körperliche Nähe, Romantik, Sexualität | #EC4899 |
 | `werte_haltung` | Religion, Tradition, Umwelt | #6366F1 |
 | `praktisches_leben` | Ordnung, Reisen, Alltag | #14B8A6 |
 

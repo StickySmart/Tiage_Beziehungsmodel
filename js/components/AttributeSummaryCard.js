@@ -742,7 +742,7 @@ const AttributeSummaryCard = (function() {
         finanzen_karriere: { label: 'Finanzen & Karriere', icon: '💼' },
         kommunikation_stil: { label: 'Kommunikation', icon: '💬' },
         soziales_leben: { label: 'Soziales Leben', icon: '🎭' },
-        intimitaet_beziehung: { label: 'Intimität & Romantik', icon: '💋' },
+        intimitaet_romantik: { label: 'Intimität & Romantik', icon: '💋' },
         werte_haltung: { label: 'Werte & Haltungen', icon: '⚖️' },
         praktisches_leben: { label: 'Praktisches Leben', icon: '🧹' }
     };
