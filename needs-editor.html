@@ -705,6 +705,24 @@
             }
         });
 
+        // ═══════════════════════════════════════════════════════════════════════════
+        // FIX: Synchronisation von flatNeedChange → TiageState.flatNeeds
+        // Dieser Handler fehlt in needs-editor.html (existiert in app-main.js)
+        // Ohne diesen Handler werden die Resonanzfaktoren nicht live berechnet!
+        // ═══════════════════════════════════════════════════════════════════════════
+        document.addEventListener('flatNeedChange', function(event) {
+            const needId = event.detail && event.detail.needId;
+            const value = event.detail && event.detail.value;
+
+            if (!needId || value === undefined) return;
+
+            // Speichere in TiageState - dies triggert den Subscriber in ResonanzCard.js
+            if (typeof TiageState !== 'undefined' && TiageState.setNeed) {
+                TiageState.setNeed(currentPerson, needId, value);
+                console.log('[NeedsEditor] Wert in TiageState.flatNeeds gespeichert:', needId, '=', value, 'für', currentPerson);
+            }
+        });
+
         /**
          * Öffnet Need mit Resonanz-Daten (wird von AttributeSummaryCard aufgerufen)
          */

@@ -813,6 +813,11 @@ const MemoryManager = (function() {
                         R4: resonanzFaktoren.R4?.value || resonanzFaktoren.R4 || 1.0
                     };
                     ResonanzCard.setCalculatedValues(resonanzValues, false, 'ich');
+                    // FIX: Lock-UI synchronisieren (Desktop Lock Bug)
+                    if (typeof ResonanzCard.initializeUI === 'function') {
+                        ResonanzCard.initializeUI('ich');
+                        console.log('[MemoryManager] ResonanzCard Lock-UI (Ich) synchronisiert');
+                    }
                     console.log('[MemoryManager] ResonanzCard UI (Ich) aktualisiert mit berechneten Werten');
                 }
             }
@@ -938,6 +943,16 @@ const MemoryManager = (function() {
                     };
                     // Partner-Werte immer in Storage speichern, UI wird nur aktualisiert wenn Partner-Kontext aktiv
                     ResonanzCard.setCalculatedValues(resonanzValues, false, 'partner');
+                    // FIX: Lock-UI synchronisieren wenn Partner-Kontext aktiv (Desktop Lock Bug)
+                    if (typeof ResonanzCard.initializeUI === 'function') {
+                        const currentPerson = typeof currentProfileReviewContext !== 'undefined'
+                            ? currentProfileReviewContext.person
+                            : 'ich';
+                        if (currentPerson === 'partner') {
+                            ResonanzCard.initializeUI('partner');
+                            console.log('[MemoryManager] ResonanzCard Lock-UI (Partner) synchronisiert');
+                        }
+                    }
                     console.log('[MemoryManager] ResonanzCard Storage (Partner) aktualisiert');
                 }
             }
