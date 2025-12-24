@@ -626,8 +626,83 @@
                 return;
             }
 
-            // Score ermitteln
-            const scoreValue = matching.score || 0;
+            // TiageState.flatNeeds holen (umfrageWerte + Modifikatoren)
+            const ichFlatNeeds = typeof TiageState !== 'undefined' ? TiageState.get('flatNeeds.ich') : null;
+            const partnerFlatNeeds = typeof TiageState !== 'undefined' ? TiageState.get('flatNeeds.partner') : null;
+            const hasIchProfile = ichFlatNeeds && Object.keys(ichFlatNeeds).length > 0;
+            const hasPartnerProfile = partnerFlatNeeds && Object.keys(partnerFlatNeeds).length > 0;
+
+            // Prüfen ob beide PROFILE geladen sind
+            if (!hasIchProfile || !hasPartnerProfile) {
+                const missing = [];
+                if (!hasIchProfile) missing.push('ICH');
+                if (!hasPartnerProfile) missing.push('PARTNER');
+
+                container.innerHTML = `
+                    <div class="synthese-section">
+                        <div style="text-align: center; padding: 40px 20px; color: var(--text-muted);">
+                            <div style="font-size: 48px; margin-bottom: 16px;">⚠️</div>
+                            <p style="font-size: 16px; margin-bottom: 8px;">PROFILE nicht geladen</p>
+                            <p style="font-size: 14px; color: var(--text-secondary);">
+                                Folgende Profile fehlen: <strong>${missing.join(', ')}</strong>
+                            </p>
+                            <p style="font-size: 13px; color: var(--text-muted); margin-top: 16px;">
+                                Bitte stellen Sie sicher, dass beide Profile vollständig ausgefüllt sind, um die Nuancen-Analyse anzuzeigen.
+                            </p>
+                        </div>
+                    </div>
+                `;
+                return;
+            }
+
+            // Alle Bedürfnisse sammeln mit TiageState.flatNeeds (umfrageWerte + Modifikatoren)
+            const allNeeds = [];
+            const resonanceMap = {};
+
+            if (matching.details) {
+                const categories = ['uebereinstimmend', 'komplementaer', 'konflikt'];
+                categories.forEach(category => {
+                    if (matching.details[category]) {
+                        matching.details[category].forEach(n => {
+                            const needId = n.id || n.need;
+
+                            // Verwende TiageState.flatNeeds (umfrageWerte + Modifikatoren)
+                            const wert1 = needId && ichFlatNeeds[needId] !== undefined ? ichFlatNeeds[needId] : 0;
+                            const wert2 = needId && partnerFlatNeeds[needId] !== undefined ? partnerFlatNeeds[needId] : 0;
+
+                            const diff = Math.abs(wert1 - wert2);
+                            allNeeds.push({
+                                ...n,
+                                wert1: wert1,
+                                wert2: wert2,
+                                diff: diff,
+                                category: category
+                            });
+
+                            // Für sessionStorage/Modal
+                            if (needId) {
+                                resonanceMap[needId] = { wert1, wert2 };
+                            }
+                        });
+                    }
+                });
+            }
+
+            // Score berechnen basierend auf TiageState.flatNeeds (umfrageWerte + Modifikatoren)
+            let scoreValue = 0;
+            let summeUebereinstimmung = 0;
+            let summeGewicht = 0;
+            allNeeds.forEach(need => {
+                const gewicht = (need.wert1 + need.wert2) / 2;
+                if (gewicht > 30) {
+                    const uebereinstimmung = Math.max(0, 100 - need.diff);
+                    summeUebereinstimmung += uebereinstimmung * gewicht;
+                    summeGewicht += gewicht;
+                }
+            });
+            scoreValue = summeGewicht > 0 ? Math.round(summeUebereinstimmung / summeGewicht) : 0;
+
+            // Score-Farbe ermitteln
             let scoreColor = '#ef4444';
             if (scoreValue >= 80) {
                 scoreColor = '#22c55e';
@@ -635,26 +710,12 @@
                 scoreColor = '#eab308';
             }
 
-            // Alle Bedürfnisse sammeln und sortieren
-            const allNeeds = [];
-
-            if (matching.details) {
-                if (matching.details.uebereinstimmend) {
-                    matching.details.uebereinstimmend.forEach(n => {
-                        allNeeds.push({ ...n, category: 'uebereinstimmend' });
-                    });
-                }
-                if (matching.details.komplementaer) {
-                    matching.details.komplementaer.forEach(n => {
-                        allNeeds.push({ ...n, category: 'komplementaer' });
-                    });
-                }
-                if (matching.details.konflikt) {
-                    matching.details.konflikt.forEach(n => {
-                        allNeeds.push({ ...n, category: 'konflikt' });
-                    });
-                }
-            }
+            // Matching-Daten in sessionStorage speichern für Modal-Zugriff
+            sessionStorage.setItem('tiageSyntheseData', JSON.stringify({
+                resonanceMap: resonanceMap,
+                ichName: archetypeNames[currentIchArchetype] || currentIchArchetype,
+                partnerName: archetypeNames[currentPartnerArchetype] || currentPartnerArchetype
+            }));
 
             // Matching-Daten in sessionStorage speichern für Modal-Zugriff
             const resonanceMap = {};
