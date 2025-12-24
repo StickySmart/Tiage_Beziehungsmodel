@@ -15,7 +15,7 @@
  *
  * KOMPOSITION beinhaltet:
  * - baseAttributes (30 Profil-Parameter aus archetyp-definitions.js)
- * - needs (88 GFK-Bedürfnisse aus gfk-beduerfnisse.js) ← NEU!
+ * - needs (220+ TIAGE-Bedürfnisse aus tiage-beduerfnisse.js) ← NEU!
  * - Attribut-Modifikatoren (Gender + Dominanz + Orientierung)
  * - Needs-Modifikatoren (Gender + Dominanz + Orientierung) ← NEU!
  * - Kategorie-Scores A-F (Basis + categoryModifiers)

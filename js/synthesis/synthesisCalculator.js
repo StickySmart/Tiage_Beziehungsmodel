@@ -88,7 +88,7 @@ TiageSynthesis.Calculator = {
      * @param {object} options - Zusätzliche Optionen (optional)
      * @param {string} options.gfkPerson1 - GFK-Kompetenz Person 1 ("niedrig"|"mittel"|"hoch")
      * @param {string} options.gfkPerson2 - GFK-Kompetenz Person 2 ("niedrig"|"mittel"|"hoch")
-     * @param {object} options.archetypProfile - Archetyp-Basis-Profile (aus gfk-beduerfnisse.js)
+     * @param {object} options.archetypProfile - Archetyp-Basis-Profile (aus tiage-beduerfnisse.js)
      * @param {object} options.archetypeDefinitions - Archetyp-Definitionen mit baseAttributes
      * @returns {object} Vollständiges Ergebnis mit Score, Resonanz und Details
      */
@@ -1431,11 +1431,13 @@ TiageSynthesis.Calculator = {
             status.missing.push('NEEDS_INTEGRATION.ENABLED ist false oder nicht definiert');
         }
 
-        // Check 3: GfkBeduerfnisse geladen?
-        status.checks.gfkBeduerfnisseLoaded = typeof GfkBeduerfnisse !== 'undefined' &&
-                                               GfkBeduerfnisse.archetypProfile !== undefined;
-        if (!status.checks.gfkBeduerfnisseLoaded) {
-            status.missing.push('GfkBeduerfnisse nicht geladen (gfk-beduerfnisse.js fehlt)');
+        // Check 3: TiageBeduerfnisse geladen? (mit Rückwärtskompatibilität für GfkBeduerfnisse)
+        status.checks.tiageBeduerfnisseLoaded = (typeof TiageBeduerfnisse !== 'undefined' &&
+                                                  TiageBeduerfnisse.archetypProfile !== undefined) ||
+                                                 (typeof GfkBeduerfnisse !== 'undefined' &&
+                                                  GfkBeduerfnisse.archetypProfile !== undefined);
+        if (!status.checks.tiageBeduerfnisseLoaded) {
+            status.missing.push('TiageBeduerfnisse nicht geladen (tiage-beduerfnisse.js fehlt)');
         }
 
         // Check 4: TiageProfileStore verfügbar?

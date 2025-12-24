@@ -34,7 +34,7 @@
  *
  * NICHT HIER DEFINIERT (aber wichtig zu unterscheiden):
  * - personDimensions (js/state.js): Meta-Eigenschaften wie geschlecht, dominanz, orientierung
- * - needs/Bedürfnisse (gfk-beduerfnisse.js): 88 GFK-Bedürfnisse nach Marshall Rosenberg
+ * - needs/Bedürfnisse (tiage-beduerfnisse.js): 220+ TIAGE-Bedürfnisse
  * ═══════════════════════════════════════════════════════════════════════════════
  */
 

@@ -198,38 +198,113 @@ TiageSynthesis.ArchetypeMatrixCalculator = (function() {
      */
     function getScore(type1, type2) {
         // Normalisiere Archetyp-Namen
-        type1 = normalizeArchetypeName(type1);
-        type2 = normalizeArchetypeName(type2);
+        var normalizedType1 = normalizeArchetypeName(type1);
+        var normalizedType2 = normalizeArchetypeName(type2);
 
-        // 1. Versuche aus Cache
+        // 1. Versuche aus Cache (mit normalisierten Keys)
         var cachedMatrix = TiageSynthesis.ArchetypeMatrixCalculator._cachedMatrix;
-        if (cachedMatrix && cachedMatrix[type1] && typeof cachedMatrix[type1][type2] === 'number') {
-            return cachedMatrix[type1][type2];
+        if (cachedMatrix && cachedMatrix[normalizedType1] && typeof cachedMatrix[normalizedType1][normalizedType2] === 'number') {
+            return cachedMatrix[normalizedType1][normalizedType2];
         }
 
-        // 2. Live-Berechnung aus BaseArchetypProfile (SSOT)
-        if (typeof window.BaseArchetypProfile !== 'undefined') {
-            var profile1 = window.BaseArchetypProfile[type1];
-            var profile2 = window.BaseArchetypProfile[type2];
+        // 2. Live-Berechnung aus BaseArchetypProfile (SSOT) - IMMER versuchen!
+        var profile1 = findProfile(type1);
+        var profile2 = findProfile(type2);
 
-            if (profile1 && profile1.umfrageWerte && profile2 && profile2.umfrageWerte) {
-                var score = calculateArchetypeMatch(profile1.umfrageWerte, profile2.umfrageWerte);
-                console.log('[ArchetypeMatrixCalculator] Live-Berechnung:', type1, '+', type2, '=', score);
-                return score;
+        if (profile1 && profile1.umfrageWerte && profile2 && profile2.umfrageWerte) {
+            var score = calculateArchetypeMatch(profile1.umfrageWerte, profile2.umfrageWerte);
+            console.log('[ArchetypeMatrixCalculator] Live-Berechnung:', type1, '→', normalizedType1, '+', type2, '→', normalizedType2, '=', score);
+
+            // Cache das Ergebnis für spätere Aufrufe
+            if (!cachedMatrix) {
+                TiageSynthesis.ArchetypeMatrixCalculator._cachedMatrix = {};
+                cachedMatrix = TiageSynthesis.ArchetypeMatrixCalculator._cachedMatrix;
+            }
+            if (!cachedMatrix[normalizedType1]) {
+                cachedMatrix[normalizedType1] = {};
+            }
+            cachedMatrix[normalizedType1][normalizedType2] = score;
+
+            return score;
+        }
+
+        // 3. Detaillierte Fehlermeldung wenn Berechnung fehlschlägt
+        console.error('[ArchetypeMatrixCalculator] FEHLER - Keine SSOT-Berechnung möglich:', {
+            type1: type1,
+            normalizedType1: normalizedType1,
+            type2: type2,
+            normalizedType2: normalizedType2,
+            profile1Found: !!profile1,
+            profile1HasNeeds: !!(profile1 && profile1.umfrageWerte),
+            profile2Found: !!profile2,
+            profile2HasNeeds: !!(profile2 && profile2.umfrageWerte),
+            baseProfileKeys: typeof window.BaseArchetypProfile !== 'undefined' ? Object.keys(window.BaseArchetypProfile) : 'nicht geladen'
+        });
+
+        // KEIN Fallback 50 mehr! Wenn wir hier ankommen, ist etwas falsch.
+        // Wir versuchen trotzdem die GfkBeduerfnisse-Berechnung als letzte Option
+        if (typeof GfkBeduerfnisse !== 'undefined' && typeof GfkBeduerfnisse.berechneMatching === 'function') {
+            var matching = GfkBeduerfnisse.berechneMatching(normalizedType1, normalizedType2);
+            if (matching && !matching.fehler && typeof matching.score === 'number') {
+                console.log('[ArchetypeMatrixCalculator] Fallback via GfkBeduerfnisse:', matching.score);
+                return matching.score;
             }
         }
 
-        // 3. Fallback nur wenn nichts geladen ist
-        console.warn('[ArchetypeMatrixCalculator] Keine Daten verfügbar für:', type1, type2);
-        return 50; // Neutraler Wert
+        // Allerletzter Fallback - sollte NIE passieren wenn alles korrekt geladen ist
+        console.error('[ArchetypeMatrixCalculator] KRITISCH: Kein Score berechenbar für', type1, type2);
+        return 50;
     }
 
     /**
      * Normalisiert Archetyp-Namen (z.B. 'duo-flex' → 'duo_flex')
+     * Unterstützt verschiedene Schreibweisen und Aliase
      */
     function normalizeArchetypeName(name) {
         if (!name) return '';
-        return name.toLowerCase().replace(/-/g, '_');
+
+        // Basis-Normalisierung: lowercase und - zu _
+        var normalized = name.toLowerCase().replace(/-/g, '_');
+
+        // Aliase für bekannte Archetypen
+        var aliases = {
+            'duo flex': 'duo_flex',
+            'duoflex': 'duo_flex',
+            'solo poly': 'solopoly',
+            'solo_poly': 'solopoly',
+            'relationship anarchy': 'ra',
+            'relationship_anarchy': 'ra',
+            'aromantic': 'aromantisch'
+        };
+
+        return aliases[normalized] || normalized;
+    }
+
+    /**
+     * Findet das Profil für einen Archetyp (mit Fallback-Suche)
+     */
+    function findProfile(typeName) {
+        if (!typeName || typeof window.BaseArchetypProfile === 'undefined') {
+            return null;
+        }
+
+        var normalized = normalizeArchetypeName(typeName);
+
+        // Direkte Suche
+        if (window.BaseArchetypProfile[normalized]) {
+            return window.BaseArchetypProfile[normalized];
+        }
+
+        // Fallback: Suche nach ID-Match
+        var keys = Object.keys(window.BaseArchetypProfile);
+        for (var i = 0; i < keys.length; i++) {
+            var profile = window.BaseArchetypProfile[keys[i]];
+            if (profile && profile.id === normalized) {
+                return profile;
+            }
+        }
+
+        return null;
     }
 
     /**
