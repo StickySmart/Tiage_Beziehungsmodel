@@ -507,6 +507,16 @@
                 await TiageState.init();
                 currentIchArchetype = TiageState.get('archetypes.ich.primary') || 'duo';
                 currentPartnerArchetype = TiageState.get('archetypes.partner.primary') || 'solopoly';
+
+                // SSOT: Reaktiv auf flatNeeds-Änderungen subscriben
+                TiageState.subscribe('flatNeeds.ich', function() {
+                    updateArchetypeDisplay();
+                    renderContent();
+                });
+                TiageState.subscribe('flatNeeds.partner', function() {
+                    updateArchetypeDisplay();
+                    renderContent();
+                });
             }
 
             // Aus sessionStorage laden (falls von archetype-interaction.html übergeben)
