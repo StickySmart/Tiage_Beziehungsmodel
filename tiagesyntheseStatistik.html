@@ -626,13 +626,36 @@
                 return;
             }
 
-            // TiageState.flatNeeds holen (mit Modifikatoren)
+            // TiageState.flatNeeds holen (umfrageWerte + Modifikatoren)
             const ichFlatNeeds = typeof TiageState !== 'undefined' ? TiageState.get('flatNeeds.ich') : null;
             const partnerFlatNeeds = typeof TiageState !== 'undefined' ? TiageState.get('flatNeeds.partner') : null;
-            const hasUserProfiles = ichFlatNeeds && Object.keys(ichFlatNeeds).length > 0 &&
-                                    partnerFlatNeeds && Object.keys(partnerFlatNeeds).length > 0;
+            const hasIchProfile = ichFlatNeeds && Object.keys(ichFlatNeeds).length > 0;
+            const hasPartnerProfile = partnerFlatNeeds && Object.keys(partnerFlatNeeds).length > 0;
 
-            // Alle Bedürfnisse sammeln
+            // Prüfen ob beide PROFILE geladen sind
+            if (!hasIchProfile || !hasPartnerProfile) {
+                const missing = [];
+                if (!hasIchProfile) missing.push('ICH');
+                if (!hasPartnerProfile) missing.push('PARTNER');
+
+                container.innerHTML = `
+                    <div class="synthese-section">
+                        <div style="text-align: center; padding: 40px 20px; color: var(--text-muted);">
+                            <div style="font-size: 48px; margin-bottom: 16px;">⚠️</div>
+                            <p style="font-size: 16px; margin-bottom: 8px;">PROFILE nicht geladen</p>
+                            <p style="font-size: 14px; color: var(--text-secondary);">
+                                Folgende Profile fehlen: <strong>${missing.join(', ')}</strong>
+                            </p>
+                            <p style="font-size: 13px; color: var(--text-muted); margin-top: 16px;">
+                                Bitte laden Sie beide Profile, um die Nuancen-Analyse anzuzeigen.
+                            </p>
+                        </div>
+                    </div>
+                `;
+                return;
+            }
+
+            // Alle Bedürfnisse sammeln mit TiageState.flatNeeds (umfrageWerte + Modifikatoren)
             const allNeeds = [];
             const resonanceMap = {};
 
@@ -643,13 +666,9 @@
                         matching.details[category].forEach(n => {
                             const needId = n.id || n.need;
 
-                            // Verwende TiageState.flatNeeds (mit Modifikatoren) falls vorhanden
-                            let wert1 = n.wert1;
-                            let wert2 = n.wert2;
-                            if (hasUserProfiles && needId) {
-                                wert1 = ichFlatNeeds[needId] !== undefined ? ichFlatNeeds[needId] : n.wert1;
-                                wert2 = partnerFlatNeeds[needId] !== undefined ? partnerFlatNeeds[needId] : n.wert2;
-                            }
+                            // Verwende TiageState.flatNeeds (umfrageWerte + Modifikatoren)
+                            const wert1 = needId && ichFlatNeeds[needId] !== undefined ? ichFlatNeeds[needId] : 0;
+                            const wert2 = needId && partnerFlatNeeds[needId] !== undefined ? partnerFlatNeeds[needId] : 0;
 
                             const diff = Math.abs(wert1 - wert2);
                             allNeeds.push({
@@ -669,21 +688,19 @@
                 });
             }
 
-            // Score berechnen basierend auf den echten Werten (mit Modifikatoren)
-            let scoreValue = matching.score || 0;
-            if (hasUserProfiles && allNeeds.length > 0) {
-                let summeUebereinstimmung = 0;
-                let summeGewicht = 0;
-                allNeeds.forEach(need => {
-                    const gewicht = (need.wert1 + need.wert2) / 2;
-                    if (gewicht > 30) {
-                        const uebereinstimmung = Math.max(0, 100 - need.diff);
-                        summeUebereinstimmung += uebereinstimmung * gewicht;
-                        summeGewicht += gewicht;
-                    }
-                });
-                scoreValue = summeGewicht > 0 ? Math.round(summeUebereinstimmung / summeGewicht) : 0;
-            }
+            // Score berechnen basierend auf TiageState.flatNeeds (umfrageWerte + Modifikatoren)
+            let scoreValue = 0;
+            let summeUebereinstimmung = 0;
+            let summeGewicht = 0;
+            allNeeds.forEach(need => {
+                const gewicht = (need.wert1 + need.wert2) / 2;
+                if (gewicht > 30) {
+                    const uebereinstimmung = Math.max(0, 100 - need.diff);
+                    summeUebereinstimmung += uebereinstimmung * gewicht;
+                    summeGewicht += gewicht;
+                }
+            });
+            scoreValue = summeGewicht > 0 ? Math.round(summeUebereinstimmung / summeGewicht) : 0;
 
             // Score-Farbe ermitteln
             let scoreColor = '#ef4444';
