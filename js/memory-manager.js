@@ -292,7 +292,8 @@ const MemoryManager = (function() {
     /**
      * Collect current ME data from state (COMPLETE PROFILE)
      *
-     * Data Structure v3.1:
+     * Data Structure v3.2:
+     * - profileOwner: 'ich' | 'partner' - NEU v3.2: Explizite Profilzuordnung
      * - archetyp: string (nur primary, kein Object)
      * - geschlecht: { primary, secondary }
      * - dominanz: { primary, secondary }
@@ -305,8 +306,9 @@ const MemoryManager = (function() {
     function collectMeData() {
         const data = {
             timestamp: Date.now(),
-            dataVersion: '3.1',
+            dataVersion: '3.2',
             appVersion: getAppVersion(),
+            profileOwner: 'ich',  // NEU v3.2: Explizite Unterscheidung ME/Partner
             archetyp: null,
             geschlecht: null,
             dominanz: null,
@@ -363,7 +365,8 @@ const MemoryManager = (function() {
     /**
      * Collect current PARTNER data from state (COMPLETE PROFILE)
      *
-     * Data Structure v3.1 (same as ME):
+     * Data Structure v3.2 (same as ME):
+     * - profileOwner: 'ich' | 'partner' - NEU v3.2: Explizite Profilzuordnung
      * - archetyp: string (nur primary, kein Object)
      * - geschlecht: { primary, secondary }
      * - dominanz: { primary, secondary }
@@ -376,8 +379,9 @@ const MemoryManager = (function() {
     function collectPartnerData() {
         const data = {
             timestamp: Date.now(),
-            dataVersion: '3.1',
+            dataVersion: '3.2',
             appVersion: getAppVersion(),
+            profileOwner: 'partner',  // NEU v3.2: Explizite Unterscheidung ME/Partner
             archetyp: null,
             geschlecht: null,
             dominanz: null,
