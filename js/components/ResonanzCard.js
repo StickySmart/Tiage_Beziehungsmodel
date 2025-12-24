@@ -1223,7 +1223,18 @@ const ResonanzCard = (function() {
         person = person || getCurrentPerson();
 
         // ═══════════════════════════════════════════════════════════════════
-        // EINHEITLICH: LoadedArchetypProfile für BEIDE Personen
+        // PRIORITÄT 1: TiageState.flatNeeds (aktuelle Änderungen aus UI)
+        // ═══════════════════════════════════════════════════════════════════
+        if (typeof TiageState !== 'undefined') {
+            const stateNeeds = TiageState.getFlatNeeds?.(person);
+            if (stateNeeds && Object.keys(stateNeeds).length > 0) {
+                console.log('[ResonanzCard.getPersonNeeds] Needs aus TiageState.flatNeeds für', person);
+                return stateNeeds;
+            }
+        }
+
+        // ═══════════════════════════════════════════════════════════════════
+        // PRIORITÄT 2: LoadedArchetypProfile (geladene Profildaten)
         // ═══════════════════════════════════════════════════════════════════
         const flatNeeds = window.LoadedArchetypProfile?.[person]?.profileReview?.flatNeeds;
         if (flatNeeds) {
