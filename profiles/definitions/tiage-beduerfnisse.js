@@ -28,7 +28,7 @@
  * ─────────────────────────────────────────────────────────────────────────────
  */
 
-const GfkBeduerfnisse = {
+const TiageBeduerfnisse = {
 
     version: '2.0.0',
 
@@ -1224,7 +1224,7 @@ const GfkBeduerfnisse = {
     // Direkter Getter für archetypProfile - kein Legacy-Fallback
     get archetypProfile() {
         if (!window.BaseArchetypProfile || Object.keys(window.BaseArchetypProfile).length === 0) {
-            console.error('GfkBeduerfnisse: BaseArchetypProfile nicht geladen! Profile sind Pflicht.');
+            console.error('TiageBeduerfnisse: BaseArchetypProfile nicht geladen! Profile sind Pflicht.');
             return {};
         }
         return window.BaseArchetypProfile;
@@ -1236,13 +1236,13 @@ const GfkBeduerfnisse = {
      */
     initFromLoadedProfiles: function() {
         if (window.BaseArchetypProfile) {
-            console.log('GfkBeduerfnisse: Profile geladen mit je ~216 Bedürfnissen');
+            console.log('TiageBeduerfnisse: Profile geladen mit je ~216 Bedürfnissen');
             Object.keys(window.BaseArchetypProfile).forEach(key => {
                 const profil = window.BaseArchetypProfile[key];
                 console.log(`  - ${key}: ${Object.keys(profil.umfrageWerte).length} Bedürfnisse`);
             });
         } else {
-            console.error('GfkBeduerfnisse: FEHLER - BaseArchetypProfile nicht verfügbar!');
+            console.error('TiageBeduerfnisse: FEHLER - BaseArchetypProfile nicht verfügbar!');
         }
     },
 
@@ -1297,7 +1297,7 @@ const GfkBeduerfnisse = {
                 summeGewicht += gewicht;
 
                 // Nutze getDefinition() für #ID-Unterstützung
-                const def = GfkBeduerfnisse.getDefinition(bed);
+                const def = TiageBeduerfnisse.getDefinition(bed);
                 // Zeige #ID als Präfix wenn bed bereits eine #ID ist
                 const hashId = bed.startsWith('#B') ? bed + ' ' : '';
 
@@ -1364,7 +1364,7 @@ const GfkBeduerfnisse = {
             .slice(0, anzahl)
             .map(([id, wert]) => {
                 // Nutze getDefinition() für #ID-Unterstützung
-                const def = GfkBeduerfnisse.getDefinition(id);
+                const def = TiageBeduerfnisse.getDefinition(id);
                 // Zeige #ID als Präfix wenn id bereits eine #ID ist
                 const hashId = id.startsWith('#B') ? id + ' ' : '';
                 return {
@@ -2362,7 +2362,7 @@ const RechercheStatus = {
             return { ...this.osho[beduerfnisId], philosophie: "osho" };
         }
         // GFK-Kern und Lebensthemen sind validiert
-        if (GfkBeduerfnisse.definitionen[beduerfnisId]) {
+        if (TiageBeduerfnisse.definitionen[beduerfnisId]) {
             return { status: "validiert", philosophie: "gfk" };
         }
         return null;
@@ -2417,12 +2417,15 @@ const RechercheStatus = {
 // EXPORT
 // ═══════════════════════════════════════════════════════════════════════════
 if (typeof module !== 'undefined' && module.exports) {
-    module.exports = { GfkBeduerfnisse, RechercheStatus };
+    module.exports = { TiageBeduerfnisse, RechercheStatus };
 }
 
 // Browser-Export
 if (typeof window !== 'undefined') {
-    window.GfkBeduerfnisse = GfkBeduerfnisse;
+    window.TiageBeduerfnisse = TiageBeduerfnisse;
     window.RechercheStatus = RechercheStatus;
+
+    // Rückwärtskompatibilität: Alias für alten Namen
+    window.GfkBeduerfnisse = TiageBeduerfnisse;
 }
 
