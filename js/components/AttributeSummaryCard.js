@@ -1196,9 +1196,11 @@ const AttributeSummaryCard = (function() {
 
         // FIX: Zähle gefilterte Bedürfnisse (für Anzeige), aber rendere ALLE
         // Dies ermöglicht, dass die Suche funktioniert, auch wenn Filter aktiv sind
+        let filteredNeeds = sortedNeeds;
         let filteredCount = sortedNeeds.length;
         if (typeof DimensionKategorieFilter !== 'undefined') {
-            filteredCount = sortedNeeds.filter(need => DimensionKategorieFilter.shouldShowNeed(need.id)).length;
+            filteredNeeds = sortedNeeds.filter(need => DimensionKategorieFilter.shouldShowNeed(need.id));
+            filteredCount = filteredNeeds.length;
             console.log('[AttributeSummaryCard] Filter gezählt:', {
                 gesamt: sortedNeeds.length,
                 sichtbar: filteredCount,
@@ -1206,11 +1208,17 @@ const AttributeSummaryCard = (function() {
             });
         }
 
-        // Subtitle mit Filter-Info
+        // Zähle gesperrte Bedürfnisse innerhalb der gefilterten
+        const lockedCount = filteredNeeds.filter(need => {
+            const needObj = getNeed(need.id);
+            return needObj?.locked || false;
+        }).length;
+
+        // Subtitle mit Filter-Info und gesperrten Bedürfnissen
         const filterActive = filteredCount < totalNeedsCount;
         const subtitleText = filterActive
-            ? `Dein ${archetypLabel}-Profil (${filteredCount} von ${totalNeedsCount} Bedürfnissen)`
-            : `Dein ${archetypLabel}-Profil (${totalNeedsCount} Bedürfnisse)`;
+            ? `Dein ${archetypLabel}-Profil (Gefiltert: ${filteredCount}), davon gesperrt: ${lockedCount}`
+            : `Dein ${archetypLabel}-Profil (${totalNeedsCount} Bedürfnisse), davon gesperrt: ${lockedCount}`;
 
         // Rendere HTML - flache Liste ohne Kategorien
         let html = `<div class="flat-needs-container flat-needs-no-categories" data-archetyp="${archetyp}">`;
