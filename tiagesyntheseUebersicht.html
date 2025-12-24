@@ -772,12 +772,23 @@
         }
 
         /**
-         * Berechnet den Score (vereinfacht)
+         * Berechnet den Score aus SSOT (ArchetypeMatrixCalculator)
          */
         function calculateScore() {
-            // TODO: Aus SSOT (SynthesisCalculator) berechnen
-            // Hier nur Placeholder
-            return Math.floor(Math.random() * 40) + 50;
+            // SSOT: Use ArchetypeMatrixCalculator.getScore()
+            if (typeof TiageSynthesis !== 'undefined' &&
+                TiageSynthesis.ArchetypeMatrixCalculator &&
+                typeof TiageSynthesis.ArchetypeMatrixCalculator.getScore === 'function') {
+                const score = TiageSynthesis.ArchetypeMatrixCalculator.getScore(
+                    currentIchArchetype,
+                    currentPartnerArchetype
+                );
+                if (score !== null && score !== undefined) {
+                    return Math.round(score);
+                }
+            }
+            // Fallback: Neutral default wenn SSOT nicht verfügbar
+            return 50;
         }
     </script>
 </body>
