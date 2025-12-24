@@ -607,26 +607,7 @@
         function renderContent() {
             const container = document.getElementById('syntheseContent');
 
-            // GFK Matching berechnen
-            let matching = null;
-
-            if (typeof GfkBeduerfnisse !== 'undefined') {
-                matching = GfkBeduerfnisse.berechneMatching(currentIchArchetype, currentPartnerArchetype);
-            }
-
-            if (!matching) {
-                container.innerHTML = `
-                    <div class="synthese-section">
-                        <div style="text-align: center; padding: 40px 20px; color: var(--text-muted);">
-                            <div style="font-size: 48px; margin-bottom: 16px;">💚</div>
-                            <p>Ti-Age Nuancen werden geladen...</p>
-                        </div>
-                    </div>
-                `;
-                return;
-            }
-
-            // TiageState.flatNeeds holen (umfrageWerte + Modifikatoren)
+            // ZUERST: TiageState.flatNeeds prüfen (umfrageWerte + Modifikatoren)
             const ichFlatNeeds = typeof TiageState !== 'undefined' ? TiageState.get('flatNeeds.ich') : null;
             const partnerFlatNeeds = typeof TiageState !== 'undefined' ? TiageState.get('flatNeeds.partner') : null;
             const hasIchProfile = ichFlatNeeds && Object.keys(ichFlatNeeds).length > 0;
@@ -649,6 +630,24 @@
                             <p style="font-size: 13px; color: var(--text-muted); margin-top: 16px;">
                                 Bitte stellen Sie sicher, dass beide Profile vollständig ausgefüllt sind, um die Nuancen-Analyse anzuzeigen.
                             </p>
+                        </div>
+                    </div>
+                `;
+                return;
+            }
+
+            // DANN: GFK Matching berechnen (für Struktur der Bedürfnis-Kategorien)
+            let matching = null;
+            if (typeof GfkBeduerfnisse !== 'undefined') {
+                matching = GfkBeduerfnisse.berechneMatching(currentIchArchetype, currentPartnerArchetype);
+            }
+
+            if (!matching) {
+                container.innerHTML = `
+                    <div class="synthese-section">
+                        <div style="text-align: center; padding: 40px 20px; color: var(--text-muted);">
+                            <div style="font-size: 48px; margin-bottom: 16px;">⚠️</div>
+                            <p>Fehler beim Laden der Bedürfnis-Struktur.</p>
                         </div>
                     </div>
                 `;
