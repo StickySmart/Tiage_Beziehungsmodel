@@ -11203,6 +11203,11 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
                 mobilePartnerArchetype = newValue;
             }
 
+            // Sync with TiageState for persistence (WICHTIG: Sofort speichern!)
+            if (typeof TiageState !== 'undefined') {
+                TiageState.setArchetype(person, newValue);
+            }
+
             // Trigger change event on the active select
             activeSelect.dispatchEvent(new Event('change'));
 

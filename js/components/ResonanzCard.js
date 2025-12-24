@@ -489,9 +489,12 @@ const ResonanzCard = (function() {
         const person = getCurrentPerson();
         let calculatedValues = null;
 
-        // Hole aktuellen Archetyp aus globalen Variablen
+        // SSOT: Hole aktuellen Archetyp aus TiageState
         let archetypeKey = 'duo';
-        if (typeof window !== 'undefined') {
+        if (typeof TiageState !== 'undefined') {
+            archetypeKey = TiageState.get(`archetypes.${person}.primary`) || 'duo';
+        } else if (typeof window !== 'undefined') {
+            // Fallback auf globale Variablen (nur für Legacy-Kompatibilität)
             if (person === 'ich' && typeof currentArchetype !== 'undefined') {
                 archetypeKey = currentArchetype;
             } else if (person === 'partner' && typeof selectedPartner !== 'undefined') {
@@ -504,9 +507,13 @@ const ResonanzCard = (function() {
         // ═══════════════════════════════════════════════════════════════════
         const needs = getPersonNeeds(person, archetypeKey);
 
-        // Hole aktuelle Dimensions-Daten
+        // SSOT: Hole Dimensions-Daten aus TiageState
         let dominanz = null, orientierung = null, geschlecht = null;
-        if (typeof personDimensions !== 'undefined' && personDimensions[person]) {
+        if (typeof TiageState !== 'undefined') {
+            dominanz = TiageState.get(`personDimensions.${person}.dominanz`) || null;
+            orientierung = TiageState.get(`personDimensions.${person}.orientierung`) || null;
+            geschlecht = TiageState.get(`personDimensions.${person}.geschlecht`) || null;
+        } else if (typeof personDimensions !== 'undefined' && personDimensions[person]) {
             dominanz = personDimensions[person].dominanz;
             orientierung = personDimensions[person].orientierung;
             geschlecht = personDimensions[person].geschlecht;
@@ -784,14 +791,25 @@ const ResonanzCard = (function() {
     function unlockAndApply(faktor) {
         const person = getCurrentPerson();
 
-        // Berechne Werte neu
-        const archetypeKey = person === 'ich'
-            ? (typeof currentArchetype !== 'undefined' ? currentArchetype : 'duo')
-            : (typeof selectedPartner !== 'undefined' ? selectedPartner : 'duo');
+        // SSOT: Hole Archetyp aus TiageState
+        let archetypeKey = 'duo';
+        if (typeof TiageState !== 'undefined') {
+            archetypeKey = TiageState.get(`archetypes.${person}.primary`) || 'duo';
+        } else {
+            archetypeKey = person === 'ich'
+                ? (typeof currentArchetype !== 'undefined' ? currentArchetype : 'duo')
+                : (typeof selectedPartner !== 'undefined' ? selectedPartner : 'duo');
+        }
 
         const needs = getPersonNeeds(person, archetypeKey);
+
+        // SSOT: Hole Dimensions-Daten aus TiageState
         let dominanz = null, orientierung = null, geschlecht = null;
-        if (typeof personDimensions !== 'undefined' && personDimensions[person]) {
+        if (typeof TiageState !== 'undefined') {
+            dominanz = TiageState.get(`personDimensions.${person}.dominanz`) || null;
+            orientierung = TiageState.get(`personDimensions.${person}.orientierung`) || null;
+            geschlecht = TiageState.get(`personDimensions.${person}.geschlecht`) || null;
+        } else if (typeof personDimensions !== 'undefined' && personDimensions[person]) {
             dominanz = personDimensions[person].dominanz;
             orientierung = personDimensions[person].orientierung;
             geschlecht = personDimensions[person].geschlecht;
@@ -858,14 +876,25 @@ const ResonanzCard = (function() {
         const person = getCurrentPerson();
         const currentValues = load(person);
 
-        // Berechne Werte
-        const archetypeKey = person === 'ich'
-            ? (typeof currentArchetype !== 'undefined' ? currentArchetype : 'duo')
-            : (typeof selectedPartner !== 'undefined' ? selectedPartner : 'duo');
+        // SSOT: Hole Archetyp aus TiageState
+        let archetypeKey = 'duo';
+        if (typeof TiageState !== 'undefined') {
+            archetypeKey = TiageState.get(`archetypes.${person}.primary`) || 'duo';
+        } else {
+            archetypeKey = person === 'ich'
+                ? (typeof currentArchetype !== 'undefined' ? currentArchetype : 'duo')
+                : (typeof selectedPartner !== 'undefined' ? selectedPartner : 'duo');
+        }
 
         const needs = getPersonNeeds(person, archetypeKey);
+
+        // SSOT: Hole Dimensions-Daten aus TiageState
         let dominanz = null, orientierung = null, geschlecht = null;
-        if (typeof personDimensions !== 'undefined' && personDimensions[person]) {
+        if (typeof TiageState !== 'undefined') {
+            dominanz = TiageState.get(`personDimensions.${person}.dominanz`) || null;
+            orientierung = TiageState.get(`personDimensions.${person}.orientierung`) || null;
+            geschlecht = TiageState.get(`personDimensions.${person}.geschlecht`) || null;
+        } else if (typeof personDimensions !== 'undefined' && personDimensions[person]) {
             dominanz = personDimensions[person].dominanz;
             orientierung = personDimensions[person].orientierung;
             geschlecht = personDimensions[person].geschlecht;
@@ -1350,9 +1379,12 @@ const ResonanzCard = (function() {
      * @param {string} person - 'ich' oder 'partner'
      */
     function recalculateResonanzForPerson(person) {
-        // Hole aktuellen Archetyp
+        // SSOT: Hole aktuellen Archetyp aus TiageState
         let archetypeKey = 'duo';
-        if (typeof window !== 'undefined') {
+        if (typeof TiageState !== 'undefined') {
+            archetypeKey = TiageState.get(`archetypes.${person}.primary`) || 'duo';
+        } else if (typeof window !== 'undefined') {
+            // Fallback auf globale Variablen (nur für Legacy-Kompatibilität)
             if (person === 'ich' && typeof currentArchetype !== 'undefined') {
                 archetypeKey = currentArchetype;
             } else if (person === 'partner' && typeof selectedPartner !== 'undefined') {
@@ -1367,9 +1399,14 @@ const ResonanzCard = (function() {
             return;
         }
 
-        // Hole Dimensions-Daten
+        // SSOT: Hole Dimensions-Daten aus TiageState
         let dominanz = null, orientierung = null, geschlecht = null;
-        if (typeof personDimensions !== 'undefined' && personDimensions[person]) {
+        if (typeof TiageState !== 'undefined') {
+            dominanz = TiageState.get(`personDimensions.${person}.dominanz`) || null;
+            orientierung = TiageState.get(`personDimensions.${person}.orientierung`) || null;
+            geschlecht = TiageState.get(`personDimensions.${person}.geschlecht`) || null;
+        } else if (typeof personDimensions !== 'undefined' && personDimensions[person]) {
+            // Fallback auf globale Variable
             dominanz = personDimensions[person].dominanz;
             orientierung = personDimensions[person].orientierung;
             geschlecht = personDimensions[person].geschlecht;

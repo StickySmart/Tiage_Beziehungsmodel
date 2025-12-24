@@ -557,8 +557,9 @@
             let lockStatusPartner = { R1: false, R2: false, R3: false, R4: false };
 
             if (typeof TiageState !== 'undefined') {
-                const ichData = TiageState.get('profiles.ich.resonanzFaktoren');
-                const partnerData = TiageState.get('profiles.partner.resonanzFaktoren');
+                // SSOT: resonanzFaktoren sind direkt unter resonanzFaktoren.{person} gespeichert
+                const ichData = TiageState.get('resonanzFaktoren.ich');
+                const partnerData = TiageState.get('resonanzFaktoren.partner');
 
                 if (ichData) {
                     resonanzIch = {
@@ -693,6 +694,28 @@
                 if (isValidArchetype(partnerFromState)) {
                     currentPartnerArchetype = partnerFromState;
                 }
+
+                // WICHTIG: ProfileCalculator synchron initialisieren, damit flatNeeds und resonanzFaktoren verfügbar sind
+                if (typeof ProfileCalculator !== 'undefined' && ProfileCalculator.initFromState) {
+                    ProfileCalculator.initFromState();
+                }
+
+                // SSOT: Reaktiv auf flatNeeds-Änderungen subscriben
+                TiageState.subscribe('flatNeeds.ich', function() {
+                    updateArchetypeDisplay();
+                    renderContent();
+                });
+                TiageState.subscribe('flatNeeds.partner', function() {
+                    updateArchetypeDisplay();
+                    renderContent();
+                });
+                // Auch auf resonanzFaktoren-Änderungen reagieren
+                TiageState.subscribe('resonanzFaktoren.ich', function() {
+                    renderContent();
+                });
+                TiageState.subscribe('resonanzFaktoren.partner', function() {
+                    renderContent();
+                });
 
                 console.log('[tiagesyntheseUebersicht] Archetypen geladen:', {
                     ichFromState, partnerFromState,
