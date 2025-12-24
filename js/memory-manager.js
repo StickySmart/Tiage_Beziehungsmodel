@@ -62,6 +62,9 @@ const MemoryManager = (function() {
      * STRUKTUR (v1.8.128): flatNeeds ist jetzt ein Array:
      * [{ id, key, stringKey, label, value, locked }, ...]
      *
+     * NEU (v3.1): lockedNeeds wird separat gespeichert für Transparenz
+     * { '#B15': 90, '#B42': 30 } - manuell gesetzte Werte
+     *
      * MIGRATION v1.8.84: attributes werden nicht mehr gespeichert, da sie redundant sind.
      * Die Kategorie-Werte können aus flatNeeds berechnet werden.
      * Beim Laden werden Legacy-Dateien (alle Formate) weiterhin unterstützt.
@@ -70,8 +73,8 @@ const MemoryManager = (function() {
      */
     function collectProfileReviewState(person) {
         const state = {
-            flatNeeds: null
-            // flatLockedNeeds entfernt - jetzt integriert in flatNeeds
+            flatNeeds: null,
+            lockedNeeds: {}  // NEU v3.1: Separat für Transparenz
         };
 
         // NEU (v1.8.128): Sammle Array-Struktur aus AttributeSummaryCard
@@ -87,6 +90,11 @@ const MemoryManager = (function() {
                     state.flatLockedNeeds = AttributeSummaryCard.getFlatLockedNeeds();
                 }
             }
+        }
+
+        // NEU v3.1: Sammle lockedNeeds aus TiageState für Transparenz
+        if (typeof TiageState !== 'undefined' && TiageState.getLockedNeeds) {
+            state.lockedNeeds = TiageState.getLockedNeeds(person) || {};
         }
 
         // FIX v1.8.89: Fallback - wenn flatNeeds leer ist, lade aus Archetyp-Profil
@@ -118,6 +126,49 @@ const MemoryManager = (function() {
         // Die Kategorie-Werte können beim Laden aus flatNeeds berechnet werden
 
         return state;
+    }
+
+    /**
+     * Collect Attribute Modifiers for a specific person
+     * NEU v3.1: Zeigt die Modifikatoren von Geschlecht, Dominanz und Orientierung
+     *
+     * @param {string} person - 'ich' oder 'partner'
+     * @param {Object} dimensions - { geschlecht, dominanz, orientierung } mit primary/secondary
+     * @returns {Object} { gender: {...}, dominance: {...}, orientation: {...} }
+     */
+    function collectAttributeModifiers(person, dimensions) {
+        const modifiers = {
+            gender: {},
+            dominance: {},
+            orientation: {}
+        };
+
+        if (typeof TiageProfileStore === 'undefined' || !TiageProfileStore.getNeedsModifiers) {
+            return modifiers;
+        }
+
+        const allMods = TiageProfileStore.getNeedsModifiers();
+        if (!allMods) return modifiers;
+
+        // Gender modifiers
+        const geschlechtKey = dimensions?.geschlecht?.primary;
+        if (geschlechtKey && allMods.gender?.[geschlechtKey]) {
+            modifiers.gender = allMods.gender[geschlechtKey];
+        }
+
+        // Dominance modifiers
+        const dominanzKey = dimensions?.dominanz?.primary;
+        if (dominanzKey && allMods.dominance?.[dominanzKey]) {
+            modifiers.dominance = allMods.dominance[dominanzKey];
+        }
+
+        // Orientation modifiers
+        const orientierungKey = dimensions?.orientierung?.primary;
+        if (orientierungKey && allMods.orientation?.[orientierungKey]) {
+            modifiers.orientation = allMods.orientation[orientierungKey];
+        }
+
+        return modifiers;
     }
 
     /**
@@ -241,19 +292,20 @@ const MemoryManager = (function() {
     /**
      * Collect current ME data from state (COMPLETE PROFILE)
      *
-     * Data Structure v3.0:
+     * Data Structure v3.1:
      * - archetyp: string (nur primary, kein Object)
      * - geschlecht: { primary, secondary }
      * - dominanz: { primary, secondary }
      * - orientierung: { primary, secondary }
-     * - profileReview: { flatNeeds: [...] } (220 Bedürfnisse)
+     * - profileReview: { flatNeeds: [...], lockedNeeds: {...} } (220 Bedürfnisse)
      * - gewichtungen: { O, A, D, G } mit value + locked
      * - resonanzfaktoren: { R1, R2, R3, R4 } mit value + locked
+     * - attributeModifiers: { gender: {...}, dominance: {...}, orientation: {...} } NEU v3.1
      */
     function collectMeData() {
         const data = {
             timestamp: Date.now(),
-            dataVersion: '3.0',
+            dataVersion: '3.1',
             appVersion: getAppVersion(),
             archetyp: null,
             geschlecht: null,
@@ -261,7 +313,8 @@ const MemoryManager = (function() {
             orientierung: null,
             profileReview: null,
             gewichtungen: null,
-            resonanzfaktoren: null
+            resonanzfaktoren: null,
+            attributeModifiers: null  // NEU v3.1
         };
 
         // Get from TiageState if available
@@ -297,25 +350,33 @@ const MemoryManager = (function() {
         // Collect Resonanzfaktoren für ICH (person-spezifisch)
         data.resonanzfaktoren = collectResonanzfaktoren('ich');
 
+        // NEU v3.1: Collect Attribute Modifiers für Transparenz
+        data.attributeModifiers = collectAttributeModifiers('ich', {
+            geschlecht: data.geschlecht,
+            dominanz: data.dominanz,
+            orientierung: data.orientierung
+        });
+
         return data;
     }
 
     /**
      * Collect current PARTNER data from state (COMPLETE PROFILE)
      *
-     * Data Structure v3.0 (same as ME):
+     * Data Structure v3.1 (same as ME):
      * - archetyp: string (nur primary, kein Object)
      * - geschlecht: { primary, secondary }
      * - dominanz: { primary, secondary }
      * - orientierung: { primary, secondary }
-     * - profileReview: { flatNeeds: [...] } (220 Bedürfnisse)
+     * - profileReview: { flatNeeds: [...], lockedNeeds: {...} } (220 Bedürfnisse)
      * - gewichtungen: { O, A, D, G } mit value + locked
      * - resonanzfaktoren: { R1, R2, R3, R4 } mit value + locked
+     * - attributeModifiers: { gender: {...}, dominance: {...}, orientation: {...} } NEU v3.1
      */
     function collectPartnerData() {
         const data = {
             timestamp: Date.now(),
-            dataVersion: '3.0',
+            dataVersion: '3.1',
             appVersion: getAppVersion(),
             archetyp: null,
             geschlecht: null,
@@ -323,7 +384,8 @@ const MemoryManager = (function() {
             orientierung: null,
             profileReview: null,
             gewichtungen: null,
-            resonanzfaktoren: null
+            resonanzfaktoren: null,
+            attributeModifiers: null  // NEU v3.1
         };
 
         // Get from TiageState if available
@@ -358,6 +420,13 @@ const MemoryManager = (function() {
 
         // Collect Resonanzfaktoren für PARTNER (person-spezifisch)
         data.resonanzfaktoren = collectResonanzfaktoren('partner');
+
+        // NEU v3.1: Collect Attribute Modifiers für Transparenz
+        data.attributeModifiers = collectAttributeModifiers('partner', {
+            geschlecht: data.geschlecht,
+            dominanz: data.dominanz,
+            orientierung: data.orientierung
+        });
 
         return data;
     }
