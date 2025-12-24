@@ -644,8 +644,8 @@ const TiageBeduerfnisse = {
         sexuelle_haeufigkeit: { label: "Sexuelle Häufigkeit", kategorie: "intimitaet_romantik", sekundaer: ["existenz"] },
         sexuelle_intimiaet: { label: "Sexuelle Intimität", kategorie: "intimitaet_romantik", sekundaer: ["zuneigung", "verbundenheit"] },
         koerperliche_lust: { label: "Körperliche Lust", kategorie: "intimitaet_romantik", sekundaer: ["existenz", "musse"] },
-        sexuelle_experimentierfreude: { label: "Sexuelle Experimentierfreude", kategorie: "intimitaet_romantik", sekundaer: ["erschaffen", "freiheit"] },
-        sexuelle_verbindung: { label: "Sexuelle Verbindung", kategorie: "intimitaet_romantik", sekundaer: ["verbundenheit", "zuneigung"] },
+        sexuelle_experimentierfreude: { "#ID": "#B221", label: "Sexuelle Experimentierfreude", kategorie: "intimitaet_romantik", sekundaer: ["erschaffen", "freiheit"] },
+        sexuelle_verbindung: { "#ID": "#B222", label: "Sexuelle Verbindung", kategorie: "intimitaet_romantik", sekundaer: ["verbundenheit", "zuneigung"] },
         sexuelle_zufriedenheit: { label: "Sexuelle Zufriedenheit", kategorie: "intimitaet_romantik", sekundaer: ["musse"] },
 
         // ═══════════════════════════════════════════════════════════════════════
