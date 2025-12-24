@@ -835,19 +835,14 @@
                 const ichNeeds = TiageState.get('flatNeeds.ich');
                 const partnerNeeds = TiageState.get('flatNeeds.partner');
 
-                if (ichNeeds && partnerNeeds && Object.keys(ichNeeds).length > 0 && Object.keys(partnerNeeds).length > 0) {
-                    // Versuche mit #B-ID
-                    let wert1 = ichNeeds[bId];
-                    let wert2 = partnerNeeds[bId];
+                // Prüfe ob beide vorhanden (Array oder Object)
+                const ichHasData = ichNeeds && (Array.isArray(ichNeeds) ? ichNeeds.length > 0 : Object.keys(ichNeeds).length > 0);
+                const partnerHasData = partnerNeeds && (Array.isArray(partnerNeeds) ? partnerNeeds.length > 0 : Object.keys(partnerNeeds).length > 0);
 
-                    // Fallback: Versuche mit string-key
-                    if (wert1 === undefined && typeof BeduerfnisIds !== 'undefined') {
-                        const stringKey = BeduerfnisIds.toKey(bId);
-                        if (stringKey) {
-                            wert1 = ichNeeds[stringKey];
-                            wert2 = partnerNeeds[stringKey];
-                        }
-                    }
+                if (ichHasData && partnerHasData) {
+                    // Verwende getNeedValueFromFlatNeeds für beide Formate (Array/Object)
+                    const wert1 = getNeedValueFromFlatNeeds(ichNeeds, bId);
+                    const wert2 = getNeedValueFromFlatNeeds(partnerNeeds, bId);
 
                     if (wert1 !== undefined && wert2 !== undefined) {
                         console.log('[TiageSynthese] Daten aus TiageState:', bId, '→ Ich:', wert1, 'Partner:', wert2);
