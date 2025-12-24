@@ -1251,17 +1251,86 @@ const TiageBeduerfnisse = {
     // ═══════════════════════════════════════════════════════════════════════════
 
     /**
+     * Normalisiert Archetyp-Namen auf die internen Keys
+     * Akzeptiert: "RA", "ra", "Relationship Anarchy", "Aromantisch", etc.
+     * Gibt zurück: "ra", "aromantisch", etc.
+     */
+    normalizeArchetypeName: function(name) {
+        if (!name) return '';
+
+        const normalized = String(name).toLowerCase().trim();
+
+        // Direkte Keys
+        const validKeys = ['single', 'duo', 'duo_flex', 'solopoly', 'polyamor', 'ra', 'lat', 'aromantisch'];
+        if (validKeys.includes(normalized)) {
+            return normalized;
+        }
+
+        // Alias-Mapping für Display-Namen und Varianten
+        const aliases = {
+            // RA Varianten
+            'relationship anarchy': 'ra',
+            'relationship-anarchy': 'ra',
+            'relationshipanarchy': 'ra',
+            'beziehungsanarchie': 'ra',
+
+            // Duo-Flex Varianten
+            'duo flex': 'duo_flex',
+            'duo-flex': 'duo_flex',
+            'duoflex': 'duo_flex',
+            'flexibel': 'duo_flex',
+
+            // LAT Varianten
+            'living apart together': 'lat',
+            'living-apart-together': 'lat',
+
+            // Polyamor Varianten
+            'poly': 'polyamor',
+            'polyamorie': 'polyamor',
+            'polyamory': 'polyamor',
+
+            // Solo-Poly Varianten
+            'solo poly': 'solopoly',
+            'solo-poly': 'solopoly',
+            'solopolyamor': 'solopoly',
+
+            // Aromantisch Varianten
+            'aro': 'aromantisch',
+            'aromantic': 'aromantisch'
+        };
+
+        if (aliases[normalized]) {
+            return aliases[normalized];
+        }
+
+        // Fallback: versuche ersten Teil vor Leerzeichen
+        const firstPart = normalized.split(/[\s_-]/)[0];
+        if (validKeys.includes(firstPart)) {
+            return firstPart;
+        }
+
+        // Letzter Versuch: gib den normalisierten Namen zurück
+        return normalized;
+    },
+
+    /**
      * Berechnet die Bedürfnis-Übereinstimmung zwischen zwei Archetypen
      * @param {string} archetyp1 - ID des ersten Archetyps
      * @param {string} archetyp2 - ID des zweiten Archetyps
      * @returns {Object} Matching-Ergebnis mit Score und Details
      */
     berechneMatching: function(archetyp1, archetyp2) {
-        const profil1 = this.archetypProfile[archetyp1];
-        const profil2 = this.archetypProfile[archetyp2];
+        // Normalisiere Archetyp-Namen auf interne Keys
+        const key1 = this.normalizeArchetypeName(archetyp1);
+        const key2 = this.normalizeArchetypeName(archetyp2);
+
+        const profil1 = this.archetypProfile[key1];
+        const profil2 = this.archetypProfile[key2];
 
         if (!profil1 || !profil2) {
-            return { score: 0, fehler: "Unbekannter Archetyp" };
+            console.warn('[TiageBeduerfnisse.berechneMatching] Profil nicht gefunden:',
+                { input1: archetyp1, key1, found1: !!profil1, input2: archetyp2, key2, found2: !!profil2 });
+            return { score: 0, fehler: `Unbekannter Archetyp: ${!profil1 ? archetyp1 : archetyp2}` };
         }
 
         const bed1 = profil1.umfrageWerte;
@@ -1355,7 +1424,8 @@ const TiageBeduerfnisse = {
      * @param {number} anzahl - Anzahl der Top-Bedürfnisse
      */
     getTopBeduerfnisse: function(archetyp, anzahl = 5) {
-        const profil = this.archetypProfile[archetyp];
+        const key = this.normalizeArchetypeName(archetyp);
+        const profil = this.archetypProfile[key];
         if (!profil) return [];
 
         const self = this;
@@ -1380,7 +1450,8 @@ const TiageBeduerfnisse = {
      * Berechnet Kategorie-Scores für einen Archetyp
      */
     getKategorieScores: function(archetyp) {
-        const profil = this.archetypProfile[archetyp];
+        const key = this.normalizeArchetypeName(archetyp);
+        const profil = this.archetypProfile[key];
         if (!profil) return {};
 
         const scores = {};
@@ -1564,7 +1635,8 @@ const TiageBeduerfnisse = {
      * @returns {object|null} Jung-Funktions-Ergebnis oder null wenn Archetyp nicht gefunden
      */
     getArchetypJungFunktion: function(archetypId) {
-        const profil = this.archetypProfile[archetypId];
+        const key = this.normalizeArchetypeName(archetypId);
+        const profil = this.archetypProfile[key];
         if (!profil || !profil.umfrageWerte) {
             return null;
         }
@@ -1600,8 +1672,10 @@ const TiageBeduerfnisse = {
      * @returns {Object} Detaillierte Analyse für Pathos/Logos Ansicht
      */
     analysiereWerBringtWasMit: function(archetyp1, archetyp2) {
-        const profil1 = this.archetypProfile[archetyp1];
-        const profil2 = this.archetypProfile[archetyp2];
+        const key1 = this.normalizeArchetypeName(archetyp1);
+        const key2 = this.normalizeArchetypeName(archetyp2);
+        const profil1 = this.archetypProfile[key1];
+        const profil2 = this.archetypProfile[key2];
 
         if (!profil1 || !profil2) {
             return { fehler: "Unbekannter Archetyp" };
@@ -1744,8 +1818,10 @@ const TiageBeduerfnisse = {
      * Berechnet Pathos- und Logos-Scores für ein Archetyp-Paar
      */
     berechnePathosLogosScores: function(archetyp1, archetyp2) {
-        const profil1 = this.archetypProfile[archetyp1];
-        const profil2 = this.archetypProfile[archetyp2];
+        const key1 = this.normalizeArchetypeName(archetyp1);
+        const key2 = this.normalizeArchetypeName(archetyp2);
+        const profil1 = this.archetypProfile[key1];
+        const profil2 = this.archetypProfile[key2];
 
         if (!profil1 || !profil2) {
             return { pathos: 0, logos: 0 };
