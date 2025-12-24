@@ -607,84 +607,83 @@
         function renderContent() {
             const container = document.getElementById('syntheseContent');
 
-            // TiageState.flatNeeds = SINGLE SOURCE OF TRUTH (umfrageWerte + Modifikatoren)
-            const ichFlatNeeds = typeof TiageState !== 'undefined' ? TiageState.get('flatNeeds.ich') : null;
-            const partnerFlatNeeds = typeof TiageState !== 'undefined' ? TiageState.get('flatNeeds.partner') : null;
-            const hasIchProfile = ichFlatNeeds && Object.keys(ichFlatNeeds).length > 0;
-            const hasPartnerProfile = partnerFlatNeeds && Object.keys(partnerFlatNeeds).length > 0;
+            // GFK Matching berechnen
+            let matching = null;
 
-            // Prüfen ob beide PROFILE geladen sind
-            if (!hasIchProfile || !hasPartnerProfile) {
-                const missing = [];
-                if (!hasIchProfile) missing.push('ICH');
-                if (!hasPartnerProfile) missing.push('PARTNER');
+            if (typeof GfkBeduerfnisse !== 'undefined') {
+                matching = GfkBeduerfnisse.berechneMatching(currentIchArchetype, currentPartnerArchetype);
+            }
 
+            if (!matching) {
                 container.innerHTML = `
                     <div class="synthese-section">
                         <div style="text-align: center; padding: 40px 20px; color: var(--text-muted);">
-                            <div style="font-size: 48px; margin-bottom: 16px;">⚠️</div>
-                            <p style="font-size: 16px; margin-bottom: 8px;">PROFILE nicht geladen</p>
-                            <p style="font-size: 14px; color: var(--text-secondary);">
-                                Folgende Profile fehlen: <strong>${missing.join(', ')}</strong>
-                            </p>
-                            <p style="font-size: 13px; color: var(--text-muted); margin-top: 16px;">
-                                Bitte stellen Sie sicher, dass beide Profile vollständig ausgefüllt sind, um die Nuancen-Analyse anzuzeigen.
-                            </p>
+                            <div style="font-size: 48px; margin-bottom: 16px;">💚</div>
+                            <p>Ti-Age Nuancen werden geladen...</p>
                         </div>
                     </div>
                 `;
                 return;
             }
 
-            // Alle Bedürfnisse aus flatNeeds sammeln (SSOT)
-            const allNeedIds = new Set([...Object.keys(ichFlatNeeds), ...Object.keys(partnerFlatNeeds)]);
+            // TiageState.flatNeeds holen (mit Modifikatoren)
+            const ichFlatNeeds = typeof TiageState !== 'undefined' ? TiageState.get('flatNeeds.ich') : null;
+            const partnerFlatNeeds = typeof TiageState !== 'undefined' ? TiageState.get('flatNeeds.partner') : null;
+            const hasUserProfiles = ichFlatNeeds && Object.keys(ichFlatNeeds).length > 0 &&
+                                    partnerFlatNeeds && Object.keys(partnerFlatNeeds).length > 0;
+
+            // Alle Bedürfnisse sammeln
             const allNeeds = [];
             const resonanceMap = {};
 
-            allNeedIds.forEach(needId => {
-                const wert1 = ichFlatNeeds[needId] !== undefined ? ichFlatNeeds[needId] : 0;
-                const wert2 = partnerFlatNeeds[needId] !== undefined ? partnerFlatNeeds[needId] : 0;
-                const diff = Math.abs(wert1 - wert2);
-                const gewicht = (wert1 + wert2) / 2;
+            if (matching.details) {
+                const categories = ['uebereinstimmend', 'komplementaer', 'konflikt'];
+                categories.forEach(category => {
+                    if (matching.details[category]) {
+                        matching.details[category].forEach(n => {
+                            const needId = n.id || n.need;
 
-                // Nur relevante Bedürfnisse (Gewicht > 30)
-                if (gewicht > 30) {
-                    // Kategorie basierend auf Differenz
-                    let category;
-                    if (diff <= 15) category = 'uebereinstimmend';
-                    else if (diff <= 35) category = 'komplementaer';
-                    else category = 'konflikt';
+                            // Verwende TiageState.flatNeeds (mit Modifikatoren) falls vorhanden
+                            let wert1 = n.wert1;
+                            let wert2 = n.wert2;
+                            if (hasUserProfiles && needId) {
+                                wert1 = ichFlatNeeds[needId] !== undefined ? ichFlatNeeds[needId] : n.wert1;
+                                wert2 = partnerFlatNeeds[needId] !== undefined ? partnerFlatNeeds[needId] : n.wert2;
+                            }
 
-                    // Label holen
-                    let label = needId;
-                    if (typeof BeduerfnisKatalog !== 'undefined' && BeduerfnisKatalog.beduerfnisse[needId]) {
-                        label = BeduerfnisKatalog.beduerfnisse[needId].label;
+                            const diff = Math.abs(wert1 - wert2);
+                            allNeeds.push({
+                                ...n,
+                                wert1: wert1,
+                                wert2: wert2,
+                                diff: diff,
+                                category: category
+                            });
+
+                            // Für sessionStorage/Modal
+                            if (needId) {
+                                resonanceMap[needId] = { wert1, wert2 };
+                            }
+                        });
                     }
+                });
+            }
 
-                    allNeeds.push({
-                        id: needId,
-                        label: label,
-                        wert1: wert1,
-                        wert2: wert2,
-                        diff: diff,
-                        category: category
-                    });
-
-                    resonanceMap[needId] = { wert1, wert2 };
-                }
-            });
-
-            // Score berechnen (SSOT)
-            let scoreValue = 0;
-            let summeUebereinstimmung = 0;
-            let summeGewicht = 0;
-            allNeeds.forEach(need => {
-                const gewicht = (need.wert1 + need.wert2) / 2;
-                const uebereinstimmung = Math.max(0, 100 - need.diff);
-                summeUebereinstimmung += uebereinstimmung * gewicht;
-                summeGewicht += gewicht;
-            });
-            scoreValue = summeGewicht > 0 ? Math.round(summeUebereinstimmung / summeGewicht) : 0;
+            // Score berechnen basierend auf den echten Werten (mit Modifikatoren)
+            let scoreValue = matching.score || 0;
+            if (hasUserProfiles && allNeeds.length > 0) {
+                let summeUebereinstimmung = 0;
+                let summeGewicht = 0;
+                allNeeds.forEach(need => {
+                    const gewicht = (need.wert1 + need.wert2) / 2;
+                    if (gewicht > 30) {
+                        const uebereinstimmung = Math.max(0, 100 - need.diff);
+                        summeUebereinstimmung += uebereinstimmung * gewicht;
+                        summeGewicht += gewicht;
+                    }
+                });
+                scoreValue = summeGewicht > 0 ? Math.round(summeUebereinstimmung / summeGewicht) : 0;
+            }
 
             // Score-Farbe ermitteln
             let scoreColor = '#ef4444';
@@ -695,37 +694,6 @@
             }
 
             // Matching-Daten in sessionStorage speichern für Modal-Zugriff
-            sessionStorage.setItem('tiageSyntheseData', JSON.stringify({
-                resonanceMap: resonanceMap,
-                ichName: archetypeNames[currentIchArchetype] || currentIchArchetype,
-                partnerName: archetypeNames[currentPartnerArchetype] || currentPartnerArchetype
-            }));
-
-            // Matching-Daten in sessionStorage speichern für Modal-Zugriff
-            // Priorisiere TiageState.flatNeeds falls vorhanden, sonst Matching-Werte
-            const resonanceMap = {};
-            const ichFlatNeeds = typeof TiageState !== 'undefined' ? TiageState.get('flatNeeds.ich') : null;
-            const partnerFlatNeeds = typeof TiageState !== 'undefined' ? TiageState.get('flatNeeds.partner') : null;
-            const hasUserProfiles = ichFlatNeeds && Object.keys(ichFlatNeeds).length > 0 &&
-                                    partnerFlatNeeds && Object.keys(partnerFlatNeeds).length > 0;
-
-            allNeeds.forEach(need => {
-                const needId = need.id || need.need;
-                if (needId) {
-                    // Verwende TiageState flatNeeds falls vorhanden, sonst Matching-Werte
-                    if (hasUserProfiles) {
-                        resonanceMap[needId] = {
-                            wert1: ichFlatNeeds[needId] !== undefined ? ichFlatNeeds[needId] : need.wert1,
-                            wert2: partnerFlatNeeds[needId] !== undefined ? partnerFlatNeeds[needId] : need.wert2
-                        };
-                    } else {
-                        resonanceMap[needId] = {
-                            wert1: need.wert1,
-                            wert2: need.wert2
-                        };
-                    }
-                }
-            });
             sessionStorage.setItem('tiageSyntheseData', JSON.stringify({
                 resonanceMap: resonanceMap,
                 ichName: archetypeNames[currentIchArchetype] || currentIchArchetype,
