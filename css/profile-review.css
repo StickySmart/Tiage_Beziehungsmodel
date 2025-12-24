@@ -1196,25 +1196,28 @@ input.resonanz-input:focus {
 
 /* Need Lock Icon */
 .need-lock-icon {
-    width: 18px;
-    height: 18px;
+    width: 24px;
+    height: 24px;
+    min-width: 24px;
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    opacity: 0.5;
-    font-size: 11px;
-    transition: opacity 0.2s, transform 0.1s;
+    opacity: 0.7;
+    font-size: 14px;
+    transition: opacity 0.2s, transform 0.15s;
     border-radius: 4px;
+    touch-action: manipulation;
 }
 
 .need-lock-icon:hover {
     opacity: 1;
     background: rgba(255,255,255,0.1);
+    transform: scale(1.1);
 }
 
 .need-lock-icon:active {
-    transform: scale(0.9);
+    transform: scale(0.95);
 }
 
 .need-lock-icon::before {
@@ -2166,23 +2169,32 @@ input.resonanz-input:focus {
 
 /* Lock Icon für flache Darstellung */
 .flat-need-item .need-lock-icon {
-    width: 20px;
-    height: 20px;
+    width: 28px;
+    height: 28px;
+    min-width: 28px;
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    opacity: 0.4;
-    transition: opacity 0.2s;
+    opacity: 0.7;
+    transition: opacity 0.2s, transform 0.15s;
+    border-radius: 4px;
+    margin-left: 4px;
+    pointer-events: auto;
+    position: relative;
+    z-index: 2;
+    touch-action: manipulation;
 }
 
 .flat-need-item .need-lock-icon::before {
     content: "🔓";
-    font-size: 14px;
+    font-size: 16px;
 }
 
 .flat-need-item .need-lock-icon:hover {
     opacity: 1;
+    transform: scale(1.1);
+    background: rgba(255, 255, 255, 0.1);
 }
 
 .flat-need-item.need-locked .need-lock-icon {
