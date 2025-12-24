@@ -626,8 +626,66 @@
                 return;
             }
 
-            // Score ermitteln
-            const scoreValue = matching.score || 0;
+            // TiageState.flatNeeds holen (mit Modifikatoren)
+            const ichFlatNeeds = typeof TiageState !== 'undefined' ? TiageState.get('flatNeeds.ich') : null;
+            const partnerFlatNeeds = typeof TiageState !== 'undefined' ? TiageState.get('flatNeeds.partner') : null;
+            const hasUserProfiles = ichFlatNeeds && Object.keys(ichFlatNeeds).length > 0 &&
+                                    partnerFlatNeeds && Object.keys(partnerFlatNeeds).length > 0;
+
+            // Alle Bedürfnisse sammeln
+            const allNeeds = [];
+            const resonanceMap = {};
+
+            if (matching.details) {
+                const categories = ['uebereinstimmend', 'komplementaer', 'konflikt'];
+                categories.forEach(category => {
+                    if (matching.details[category]) {
+                        matching.details[category].forEach(n => {
+                            const needId = n.id || n.need;
+
+                            // Verwende TiageState.flatNeeds (mit Modifikatoren) falls vorhanden
+                            let wert1 = n.wert1;
+                            let wert2 = n.wert2;
+                            if (hasUserProfiles && needId) {
+                                wert1 = ichFlatNeeds[needId] !== undefined ? ichFlatNeeds[needId] : n.wert1;
+                                wert2 = partnerFlatNeeds[needId] !== undefined ? partnerFlatNeeds[needId] : n.wert2;
+                            }
+
+                            const diff = Math.abs(wert1 - wert2);
+                            allNeeds.push({
+                                ...n,
+                                wert1: wert1,
+                                wert2: wert2,
+                                diff: diff,
+                                category: category
+                            });
+
+                            // Für sessionStorage/Modal
+                            if (needId) {
+                                resonanceMap[needId] = { wert1, wert2 };
+                            }
+                        });
+                    }
+                });
+            }
+
+            // Score berechnen basierend auf den echten Werten (mit Modifikatoren)
+            let scoreValue = matching.score || 0;
+            if (hasUserProfiles && allNeeds.length > 0) {
+                let summeUebereinstimmung = 0;
+                let summeGewicht = 0;
+                allNeeds.forEach(need => {
+                    const gewicht = (need.wert1 + need.wert2) / 2;
+                    if (gewicht > 30) {
+                        const uebereinstimmung = Math.max(0, 100 - need.diff);
+                        summeUebereinstimmung += uebereinstimmung * gewicht;
+                        summeGewicht += gewicht;
+                    }
+                });
+                scoreValue = summeGewicht > 0 ? Math.round(summeUebereinstimmung / summeGewicht) : 0;
+            }
+
+            // Score-Farbe ermitteln
             let scoreColor = '#ef4444';
             if (scoreValue >= 80) {
                 scoreColor = '#22c55e';
@@ -635,52 +693,7 @@
                 scoreColor = '#eab308';
             }
 
-            // Alle Bedürfnisse sammeln und sortieren
-            const allNeeds = [];
-
-            if (matching.details) {
-                if (matching.details.uebereinstimmend) {
-                    matching.details.uebereinstimmend.forEach(n => {
-                        allNeeds.push({ ...n, category: 'uebereinstimmend' });
-                    });
-                }
-                if (matching.details.komplementaer) {
-                    matching.details.komplementaer.forEach(n => {
-                        allNeeds.push({ ...n, category: 'komplementaer' });
-                    });
-                }
-                if (matching.details.konflikt) {
-                    matching.details.konflikt.forEach(n => {
-                        allNeeds.push({ ...n, category: 'konflikt' });
-                    });
-                }
-            }
-
             // Matching-Daten in sessionStorage speichern für Modal-Zugriff
-            // Priorisiere TiageState.flatNeeds falls vorhanden, sonst Matching-Werte
-            const resonanceMap = {};
-            const ichFlatNeeds = typeof TiageState !== 'undefined' ? TiageState.get('flatNeeds.ich') : null;
-            const partnerFlatNeeds = typeof TiageState !== 'undefined' ? TiageState.get('flatNeeds.partner') : null;
-            const hasUserProfiles = ichFlatNeeds && Object.keys(ichFlatNeeds).length > 0 &&
-                                    partnerFlatNeeds && Object.keys(partnerFlatNeeds).length > 0;
-
-            allNeeds.forEach(need => {
-                const needId = need.id || need.need;
-                if (needId) {
-                    // Verwende TiageState flatNeeds falls vorhanden, sonst Matching-Werte
-                    if (hasUserProfiles) {
-                        resonanceMap[needId] = {
-                            wert1: ichFlatNeeds[needId] !== undefined ? ichFlatNeeds[needId] : need.wert1,
-                            wert2: partnerFlatNeeds[needId] !== undefined ? partnerFlatNeeds[needId] : need.wert2
-                        };
-                    } else {
-                        resonanceMap[needId] = {
-                            wert1: need.wert1,
-                            wert2: need.wert2
-                        };
-                    }
-                }
-            });
             sessionStorage.setItem('tiageSyntheseData', JSON.stringify({
                 resonanceMap: resonanceMap,
                 ichName: archetypeNames[currentIchArchetype] || currentIchArchetype,
