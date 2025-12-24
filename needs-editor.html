@@ -814,25 +814,32 @@
             // Try to load from TiageState first
             if (typeof TiageState !== 'undefined') {
                 const flatNeeds = TiageState.get('flatNeeds.' + currentPerson);
-                if (flatNeeds && flatNeeds.length > 0) {
+                // FIX: Unterstütze beide Formate (Array und Object)
+                // TiageState kann Array oder Object zurückgeben
+                const hasData = Array.isArray(flatNeeds)
+                    ? flatNeeds.length > 0
+                    : (flatNeeds && Object.keys(flatNeeds).length > 0);
+                if (hasData) {
                     // FIX: Die Daten müssen auch an AttributeSummaryCard übergeben werden!
                     if (typeof AttributeSummaryCard !== 'undefined') {
                         AttributeSummaryCard.setFlatNeeds(flatNeeds);
                     }
-                    console.log('[NeedsEditor] Loaded from TiageState:', flatNeeds.length, 'needs');
+                    const count = Array.isArray(flatNeeds) ? flatNeeds.length : Object.keys(flatNeeds).length;
+                    console.log('[NeedsEditor] Loaded from TiageState:', count, 'needs for', currentPerson);
                     return;
                 }
             }
 
-            // Fallback to localStorage
-            const stored = localStorage.getItem('tiage_flat_needs');
+            // Fallback to localStorage (person-specific key)
+            const stored = localStorage.getItem('tiage_flat_needs_' + currentPerson)
+                || localStorage.getItem('tiage_flat_needs'); // Legacy fallback
             if (stored) {
                 try {
                     const parsed = JSON.parse(stored);
                     if (typeof AttributeSummaryCard !== 'undefined') {
                         AttributeSummaryCard.setFlatNeeds(parsed);
                     }
-                    console.log('[NeedsEditor] Loaded from localStorage');
+                    console.log('[NeedsEditor] Loaded from localStorage for', currentPerson);
                 } catch (e) {
                     console.error('[NeedsEditor] Error parsing localStorage:', e);
                 }
@@ -951,12 +958,14 @@
             if (typeof AttributeSummaryCard !== 'undefined') {
                 const flatNeeds = AttributeSummaryCard.getFlatNeeds();
                 if (flatNeeds) {
-                    // Save to localStorage
-                    localStorage.setItem('tiage_flat_needs', JSON.stringify(flatNeeds));
+                    // FIX: Save to localStorage with person-specific key
+                    localStorage.setItem('tiage_flat_needs_' + currentPerson, JSON.stringify(flatNeeds));
 
-                    // Save to TiageState if available
+                    // Save to TiageState if available (primary storage)
                     if (typeof TiageState !== 'undefined') {
                         TiageState.set('flatNeeds.' + currentPerson, flatNeeds);
+                        console.log('[NeedsEditor] State gespeichert für', currentPerson, ':',
+                            Array.isArray(flatNeeds) ? flatNeeds.length : Object.keys(flatNeeds).length, 'needs');
                     }
                 }
             }
