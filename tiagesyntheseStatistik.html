@@ -656,6 +656,37 @@
                 }
             }
 
+            // Matching-Daten in sessionStorage speichern für Modal-Zugriff
+            // Priorisiere TiageState.flatNeeds falls vorhanden, sonst Matching-Werte
+            const resonanceMap = {};
+            const ichFlatNeeds = typeof TiageState !== 'undefined' ? TiageState.get('flatNeeds.ich') : null;
+            const partnerFlatNeeds = typeof TiageState !== 'undefined' ? TiageState.get('flatNeeds.partner') : null;
+            const hasUserProfiles = ichFlatNeeds && Object.keys(ichFlatNeeds).length > 0 &&
+                                    partnerFlatNeeds && Object.keys(partnerFlatNeeds).length > 0;
+
+            allNeeds.forEach(need => {
+                const needId = need.id || need.need;
+                if (needId) {
+                    // Verwende TiageState flatNeeds falls vorhanden, sonst Matching-Werte
+                    if (hasUserProfiles) {
+                        resonanceMap[needId] = {
+                            wert1: ichFlatNeeds[needId] !== undefined ? ichFlatNeeds[needId] : need.wert1,
+                            wert2: partnerFlatNeeds[needId] !== undefined ? partnerFlatNeeds[needId] : need.wert2
+                        };
+                    } else {
+                        resonanceMap[needId] = {
+                            wert1: need.wert1,
+                            wert2: need.wert2
+                        };
+                    }
+                }
+            });
+            sessionStorage.setItem('tiageSyntheseData', JSON.stringify({
+                resonanceMap: resonanceMap,
+                ichName: archetypeNames[currentIchArchetype] || currentIchArchetype,
+                partnerName: archetypeNames[currentPartnerArchetype] || currentPartnerArchetype
+            }));
+
             // Sortieren
             allNeeds.sort((a, b) => {
                 let valA, valB;
