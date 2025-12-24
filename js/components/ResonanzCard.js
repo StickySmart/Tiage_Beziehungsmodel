@@ -1223,30 +1223,18 @@ const ResonanzCard = (function() {
         person = person || getCurrentPerson();
 
         // ═══════════════════════════════════════════════════════════════════
-        // PRIORITÄT 1: TiageState.flatNeeds (aktuelle Änderungen aus UI)
+        // SSOT: TiageState.flatNeeds ist die einzige Datenquelle
         // ═══════════════════════════════════════════════════════════════════
         if (typeof TiageState !== 'undefined') {
             const stateNeeds = TiageState.getFlatNeeds?.(person);
             if (stateNeeds && Object.keys(stateNeeds).length > 0) {
-                console.log('[ResonanzCard.getPersonNeeds] Needs aus TiageState.flatNeeds für', person);
+                console.log('[ResonanzCard.getPersonNeeds] SSOT: Needs aus TiageState.flatNeeds für', person);
                 return stateNeeds;
             }
         }
 
         // ═══════════════════════════════════════════════════════════════════
-        // PRIORITÄT 2: LoadedArchetypProfile (geladene Profildaten)
-        // ═══════════════════════════════════════════════════════════════════
-        const flatNeeds = window.LoadedArchetypProfile?.[person]?.profileReview?.flatNeeds;
-        if (flatNeeds) {
-            const needs = _normalizeNeeds(flatNeeds);
-            if (needs && Object.keys(needs).length > 0) {
-                console.log('[ResonanzCard.getPersonNeeds] Needs aus LoadedArchetypProfile für', person);
-                return needs;
-            }
-        }
-
-        // ═══════════════════════════════════════════════════════════════════
-        // FALLBACK: Standard-Werte des Archetyps
+        // FALLBACK: Standard-Werte des Archetyps (wenn TiageState leer)
         // ═══════════════════════════════════════════════════════════════════
         if (archetypKey && typeof GfkBeduerfnisse !== 'undefined' &&
             GfkBeduerfnisse.archetypProfile?.[archetypKey]) {

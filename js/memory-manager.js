@@ -450,6 +450,39 @@ const MemoryManager = (function() {
     }
 
     /**
+     * Normalisiert flatNeeds in das TiageState-Format: { '#B1': value, '#B2': value, ... }
+     *
+     * @param {Array|Object} flatNeeds - flatNeeds in beliebigem Format
+     * @returns {Object} Normalisiertes Format für TiageState
+     */
+    function normalizeFlatNeedsForState(flatNeeds) {
+        const normalized = {};
+
+        if (Array.isArray(flatNeeds)) {
+            // Format: [{ id, stringKey, value }, ...]
+            flatNeeds.forEach(n => {
+                if (n.id && typeof n.value === 'number') {
+                    normalized[n.id] = n.value;
+                }
+            });
+        } else if (typeof flatNeeds === 'object') {
+            // Format: { needId: value } oder { needId: { value } }
+            for (const key in flatNeeds) {
+                if (flatNeeds.hasOwnProperty(key)) {
+                    const entry = flatNeeds[key];
+                    if (typeof entry === 'number') {
+                        normalized[key] = entry;
+                    } else if (typeof entry === 'object' && entry.value !== undefined) {
+                        normalized[key] = entry.value;
+                    }
+                }
+            }
+        }
+
+        return normalized;
+    }
+
+    /**
      * Apply ProfileReview state - Flat Needs + berechnete Kategorien
      *
      * MIGRATION: Unterstützt mehrere Datenformate:
@@ -457,11 +490,24 @@ const MemoryManager = (function() {
      * 2. v1.8.89-127: flatNeeds als { needId: { value, locked } }
      * 3. v1.8.84-88: flatNeeds als { needId: value } + flatLockedNeeds separat
      * 4. Legacy: Nur attributes → Direkt für Triple-Buttons verwenden
+     *
+     * @param {Object} profileReview - Die ProfileReview-Daten
+     * @param {string} person - 'ich' oder 'partner'
      */
-    function applyProfileReviewState(profileReview) {
+    function applyProfileReviewState(profileReview, person) {
         if (!profileReview) return;
+        person = person || 'ich';
 
-        // Lade flatNeeds in AttributeSummaryCard (Primary Source)
+        // ═══════════════════════════════════════════════════════════════════════
+        // SSOT: Lade flatNeeds in TiageState (Single Source of Truth)
+        // ═══════════════════════════════════════════════════════════════════════
+        if (profileReview.flatNeeds && typeof TiageState !== 'undefined') {
+            const normalizedNeeds = normalizeFlatNeedsForState(profileReview.flatNeeds);
+            TiageState.setFlatNeeds(person, normalizedNeeds);
+            console.log('[MemoryManager] SSOT: FlatNeeds in TiageState.flatNeeds.' + person + ' geladen:', Object.keys(normalizedNeeds).length, 'Einträge');
+        }
+
+        // Lade flatNeeds in AttributeSummaryCard (UI-Komponente)
         if (profileReview.flatNeeds && typeof AttributeSummaryCard !== 'undefined') {
             // setFlatNeeds() erkennt automatisch das Format (Array, Object v1.8.89+, Legacy)
             if (AttributeSummaryCard.setFlatNeeds) {
@@ -469,7 +515,7 @@ const MemoryManager = (function() {
                 const count = Array.isArray(profileReview.flatNeeds)
                     ? profileReview.flatNeeds.length
                     : Object.keys(profileReview.flatNeeds).length;
-                console.log('[MemoryManager] FlatNeeds geladen:', count, 'Einträge');
+                console.log('[MemoryManager] FlatNeeds in AttributeSummaryCard geladen:', count, 'Einträge');
             }
 
             // Lade separate Locks falls vorhanden (Legacy v1.8.84-88)
@@ -738,9 +784,9 @@ const MemoryManager = (function() {
                 }
             }
 
-            // Apply ProfileReview state (220 Bedürfnisse)
+            // Apply ProfileReview state (220 Bedürfnisse) - SSOT: Lade in TiageState.flatNeeds.ich
             if (data.profileReview) {
-                applyProfileReviewState(data.profileReview);
+                applyProfileReviewState(data.profileReview, 'ich');
             }
 
             // ═══════════════════════════════════════════════════════════════════════════
@@ -862,9 +908,9 @@ const MemoryManager = (function() {
                 }
             }
 
-            // Apply ProfileReview state (220 Bedürfnisse)
+            // Apply ProfileReview state (220 Bedürfnisse) - SSOT: Lade in TiageState.flatNeeds.partner
             if (data.profileReview) {
-                applyProfileReviewState(data.profileReview);
+                applyProfileReviewState(data.profileReview, 'partner');
             }
 
             // ═══════════════════════════════════════════════════════════════════════════
