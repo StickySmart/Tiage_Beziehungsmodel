@@ -11028,15 +11028,9 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
             let R1 = 1.0, R2 = 1.0, R3 = 1.0, R4 = 1.0;  // Default: neutral
             let matching = null;
 
-            // Prüfe ob benutzerdefinierte Resonanzwerte aus ResonanzCard vorhanden sind
-            if (typeof ResonanzCard !== 'undefined' && typeof ResonanzCard.getValues === 'function') {
-                const customR = ResonanzCard.getValues();
-                R1 = customR.R1;
-                R2 = customR.R2;
-                R3 = customR.R3;
-                R4 = customR.R4;
-            } else if (typeof GfkBeduerfnisse !== 'undefined' && ichArchetyp && partnerArchetyp) {
-                // Fallback: Automatisch aus GFK-Matching berechnen
+            // SSOT: Berechne R-Faktoren IMMER aus Bedürfnissen wenn verfügbar
+            // Nur locked (vom User manuell gesetzte) Werte überschreiben die Berechnung
+            if (typeof GfkBeduerfnisse !== 'undefined' && ichArchetyp && partnerArchetyp) {
                 matching = GfkBeduerfnisse.berechneMatching(ichArchetyp, partnerArchetyp);
 
                 if (matching && !matching.fehler) {
@@ -11051,7 +11045,20 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
                     R2 = 0.5 + match2;
                     R3 = 0.5 + match3;
                     R4 = 0.5 + match4;
+
+                    console.log('[calculateRelationshipQuality] R-Faktoren aus SSOT berechnet:', { R1, R2, R3, R4, matching: matching.score });
                 }
+            }
+
+            // Überschreibe mit benutzerdefinierten (locked) Werten falls vorhanden
+            if (typeof ResonanzCard !== 'undefined' && typeof ResonanzCard.load === 'function') {
+                const storedR = ResonanzCard.load();
+
+                // Nur locked Werte übernehmen, sonst berechnete SSOT-Werte behalten
+                if (storedR && storedR.R1 && storedR.R1.locked) R1 = storedR.R1.value;
+                if (storedR && storedR.R2 && storedR.R2.locked) R2 = storedR.R2.value;
+                if (storedR && storedR.R3 && storedR.R3.locked) R3 = storedR.R3.value;
+                if (storedR && storedR.R4 && storedR.R4.locked) R4 = storedR.R4.value;
             }
 
             // ═══════════════════════════════════════
