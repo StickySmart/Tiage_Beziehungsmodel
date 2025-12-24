@@ -607,7 +607,7 @@
         function renderContent() {
             const container = document.getElementById('syntheseContent');
 
-            // ZUERST: TiageState.flatNeeds prüfen (umfrageWerte + Modifikatoren)
+            // TiageState.flatNeeds = SINGLE SOURCE OF TRUTH (umfrageWerte + Modifikatoren)
             const ichFlatNeeds = typeof TiageState !== 'undefined' ? TiageState.get('flatNeeds.ich') : null;
             const partnerFlatNeeds = typeof TiageState !== 'undefined' ? TiageState.get('flatNeeds.partner') : null;
             const hasIchProfile = ichFlatNeeds && Object.keys(ichFlatNeeds).length > 0;
@@ -636,68 +636,53 @@
                 return;
             }
 
-            // DANN: GFK Matching berechnen (für Struktur der Bedürfnis-Kategorien)
-            let matching = null;
-            if (typeof GfkBeduerfnisse !== 'undefined') {
-                matching = GfkBeduerfnisse.berechneMatching(currentIchArchetype, currentPartnerArchetype);
-            }
-
-            if (!matching) {
-                container.innerHTML = `
-                    <div class="synthese-section">
-                        <div style="text-align: center; padding: 40px 20px; color: var(--text-muted);">
-                            <div style="font-size: 48px; margin-bottom: 16px;">⚠️</div>
-                            <p>Fehler beim Laden der Bedürfnis-Struktur.</p>
-                        </div>
-                    </div>
-                `;
-                return;
-            }
-
-            // Alle Bedürfnisse sammeln mit TiageState.flatNeeds (umfrageWerte + Modifikatoren)
+            // Alle Bedürfnisse aus flatNeeds sammeln (SSOT)
+            const allNeedIds = new Set([...Object.keys(ichFlatNeeds), ...Object.keys(partnerFlatNeeds)]);
             const allNeeds = [];
             const resonanceMap = {};
 
-            if (matching.details) {
-                const categories = ['uebereinstimmend', 'komplementaer', 'konflikt'];
-                categories.forEach(category => {
-                    if (matching.details[category]) {
-                        matching.details[category].forEach(n => {
-                            const needId = n.id || n.need;
+            allNeedIds.forEach(needId => {
+                const wert1 = ichFlatNeeds[needId] !== undefined ? ichFlatNeeds[needId] : 0;
+                const wert2 = partnerFlatNeeds[needId] !== undefined ? partnerFlatNeeds[needId] : 0;
+                const diff = Math.abs(wert1 - wert2);
+                const gewicht = (wert1 + wert2) / 2;
 
-                            // Verwende TiageState.flatNeeds (umfrageWerte + Modifikatoren)
-                            const wert1 = needId && ichFlatNeeds[needId] !== undefined ? ichFlatNeeds[needId] : 0;
-                            const wert2 = needId && partnerFlatNeeds[needId] !== undefined ? partnerFlatNeeds[needId] : 0;
+                // Nur relevante Bedürfnisse (Gewicht > 30)
+                if (gewicht > 30) {
+                    // Kategorie basierend auf Differenz
+                    let category;
+                    if (diff <= 15) category = 'uebereinstimmend';
+                    else if (diff <= 35) category = 'komplementaer';
+                    else category = 'konflikt';
 
-                            const diff = Math.abs(wert1 - wert2);
-                            allNeeds.push({
-                                ...n,
-                                wert1: wert1,
-                                wert2: wert2,
-                                diff: diff,
-                                category: category
-                            });
-
-                            // Für sessionStorage/Modal
-                            if (needId) {
-                                resonanceMap[needId] = { wert1, wert2 };
-                            }
-                        });
+                    // Label holen
+                    let label = needId;
+                    if (typeof BeduerfnisKatalog !== 'undefined' && BeduerfnisKatalog.beduerfnisse[needId]) {
+                        label = BeduerfnisKatalog.beduerfnisse[needId].label;
                     }
-                });
-            }
 
-            // Score berechnen basierend auf TiageState.flatNeeds (umfrageWerte + Modifikatoren)
+                    allNeeds.push({
+                        id: needId,
+                        label: label,
+                        wert1: wert1,
+                        wert2: wert2,
+                        diff: diff,
+                        category: category
+                    });
+
+                    resonanceMap[needId] = { wert1, wert2 };
+                }
+            });
+
+            // Score berechnen (SSOT)
             let scoreValue = 0;
             let summeUebereinstimmung = 0;
             let summeGewicht = 0;
             allNeeds.forEach(need => {
                 const gewicht = (need.wert1 + need.wert2) / 2;
-                if (gewicht > 30) {
-                    const uebereinstimmung = Math.max(0, 100 - need.diff);
-                    summeUebereinstimmung += uebereinstimmung * gewicht;
-                    summeGewicht += gewicht;
-                }
+                const uebereinstimmung = Math.max(0, 100 - need.diff);
+                summeUebereinstimmung += uebereinstimmung * gewicht;
+                summeGewicht += gewicht;
             });
             scoreValue = summeGewicht > 0 ? Math.round(summeUebereinstimmung / summeGewicht) : 0;
 
