@@ -13691,6 +13691,10 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
                     e.target.closest('.compact-dimension').classList.remove('needs-selection');
                     syncDimensionToDesktop('ich-dominanz-status-new', e.target.value);
                     updateComparisonView();
+                    // Fix: Speichere Änderungen sofort
+                    if (typeof saveSelectionToStorage === 'function') {
+                        saveSelectionToStorage();
+                    }
                 });
             });
 
@@ -13715,6 +13719,10 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
                     e.target.closest('.compact-dimension').classList.remove('needs-selection');
                     syncDimensionToDesktop('partner-dominanz-status-new', e.target.value);
                     updateComparisonView();
+                    // Fix: Speichere Änderungen sofort
+                    if (typeof saveSelectionToStorage === 'function') {
+                        saveSelectionToStorage();
+                    }
                 });
             });
         }
