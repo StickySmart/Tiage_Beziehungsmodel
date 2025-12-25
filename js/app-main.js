@@ -9252,6 +9252,12 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
             if (data) {
                 updatePartnerView();
             }
+
+            // WICHTIG: Speichere Änderungen sofort, um Datenverlust zu verhindern
+            // (Fix für GOD-Einstellungen die bei Navigation verloren gingen)
+            if (typeof saveSelectionToStorage === 'function') {
+                saveSelectionToStorage();
+            }
         }
 
         function getGeschlechtKurz(geschlecht) {
@@ -13524,6 +13530,12 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
         }
 
         function mobileGoToPage(pageNumber, skipPushState = false) {
+            // WICHTIG: Speichere alle Einstellungen BEVOR navigiert wird
+            // Dies verhindert Datenverlust bei Zurück-Navigation (Fix für GOD-Einstellungen)
+            if (typeof saveSelectionToStorage === 'function') {
+                saveSelectionToStorage();
+            }
+
             // Validate before moving to page 3 (Synthese) - ensure all dimensions are complete
             if (currentMobilePage === 2 && pageNumber === 3 && !validateDimensionsComplete()) {
                 showValidationWarning();
@@ -13679,6 +13691,10 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
                     e.target.closest('.compact-dimension').classList.remove('needs-selection');
                     syncDimensionToDesktop('ich-dominanz-status-new', e.target.value);
                     updateComparisonView();
+                    // Fix: Speichere Änderungen sofort
+                    if (typeof saveSelectionToStorage === 'function') {
+                        saveSelectionToStorage();
+                    }
                 });
             });
 
@@ -13703,6 +13719,10 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
                     e.target.closest('.compact-dimension').classList.remove('needs-selection');
                     syncDimensionToDesktop('partner-dominanz-status-new', e.target.value);
                     updateComparisonView();
+                    // Fix: Speichere Änderungen sofort
+                    if (typeof saveSelectionToStorage === 'function') {
+                        saveSelectionToStorage();
+                    }
                 });
             });
         }
