@@ -299,8 +299,148 @@ TiageSynthesis.NeedsIntegration = {
     },
 
     /**
+     * ═══════════════════════════════════════════════════════════════════════════
+     * PAARUNGS-RESONANZ: Misst die Ähnlichkeit zwischen ICH und PARTNER
+     * ═══════════════════════════════════════════════════════════════════════════
+     *
+     * Diese Funktion berechnet R-Werte basierend auf der direkten Ähnlichkeit
+     * zwischen den Bedürfnissen von ICH und PARTNER.
+     *
+     * Bei identischen Werten: R = 1.5 (Maximum)
+     * Bei komplett unterschiedlichen Werten: R = 0.5 (Minimum)
+     *
+     * @param {object} ichNeeds - Bedürfnisse von ICH { needKey: value }
+     * @param {object} partnerNeeds - Bedürfnisse von PARTNER { needKey: value }
+     * @returns {object} { R1, R2, R3, R4, leben, philosophie, dynamik, identitaet, enabled }
+     */
+    calculatePaarungsResonance: function(ichNeeds, partnerNeeds) {
+        var self = this;
+        var constants = TiageSynthesis.Constants;
+
+        if (!ichNeeds || !partnerNeeds) {
+            console.warn('[NeedsIntegration.calculatePaarungsResonance] Fehlende Needs-Daten');
+            return {
+                R1: 1.0, R2: 1.0, R3: 1.0, R4: 1.0,
+                leben: 1.0, philosophie: 1.0, dynamik: 1.0, identitaet: 1.0,
+                enabled: false
+            };
+        }
+
+        // Hole relevante Bedürfnisse pro Dimension aus NEEDS_INTEGRATION
+        var needsGroups = {
+            leben: constants.NEEDS_INTEGRATION?.ORIENTIERUNG_NEEDS || [],
+            philosophie: constants.NEEDS_INTEGRATION?.ARCHETYP_NEEDS || [],
+            dynamik: constants.NEEDS_INTEGRATION?.DOMINANZ_NEEDS || [],
+            identitaet: constants.NEEDS_INTEGRATION?.GESCHLECHT_NEEDS || []
+        };
+
+        // Berechne Ähnlichkeit pro Dimension
+        var result = {
+            leben: this._calculatePaarungsSingleResonance(ichNeeds, partnerNeeds, needsGroups.leben),
+            philosophie: this._calculatePaarungsSingleResonance(ichNeeds, partnerNeeds, needsGroups.philosophie),
+            dynamik: this._calculatePaarungsSingleResonance(ichNeeds, partnerNeeds, needsGroups.dynamik),
+            identitaet: this._calculatePaarungsSingleResonance(ichNeeds, partnerNeeds, needsGroups.identitaet),
+            enabled: true
+        };
+
+        // Mapping zu R1-R4
+        result.R1 = result.leben;
+        result.R2 = result.philosophie;
+        result.R3 = result.dynamik;
+        result.R4 = result.identitaet;
+
+        console.log('[NeedsIntegration.calculatePaarungsResonance] PAARUNG Ergebnis:', {
+            R1_leben: result.R1,
+            R2_philosophie: result.R2,
+            R3_dynamik: result.R3,
+            R4_identitaet: result.R4
+        });
+
+        return result;
+    },
+
+    /**
+     * Berechnet R für eine einzelne Dimension basierend auf ICH vs PARTNER Ähnlichkeit
+     *
+     * Formel: R = 0.5 + (Ähnlichkeit × 1.0)
+     * Ähnlichkeit = 1 - (durchschnittliche Abweichung / 100)
+     *
+     * @private
+     */
+    _calculatePaarungsSingleResonance: function(ichNeeds, partnerNeeds, needsList) {
+        var self = this;
+
+        if (!needsList || needsList.length === 0) {
+            // Fallback: Vergleiche ALLE gemeinsamen Needs
+            return this._calculateAllNeedsSimilarity(ichNeeds, partnerNeeds);
+        }
+
+        var totalDiff = 0;
+        var count = 0;
+
+        for (var i = 0; i < needsList.length; i++) {
+            var needKey = needsList[i];
+            var ichVal = this._getNeedValue(ichNeeds, null, needKey);
+            var partnerVal = this._getNeedValue(partnerNeeds, null, needKey);
+
+            if (ichVal !== undefined && partnerVal !== undefined) {
+                var diff = Math.abs(ichVal - partnerVal);
+                totalDiff += diff;
+                count++;
+            }
+        }
+
+        if (count === 0) {
+            return 1.0; // Neutral wenn keine vergleichbaren Bedürfnisse
+        }
+
+        var avgDiff = totalDiff / count;
+        var similarity = 1 - (avgDiff / 100);
+
+        // R = 0.5 + (similarity × 1.0)
+        // Bei avgDiff=0 (identisch): R = 0.5 + 1.0 = 1.5
+        // Bei avgDiff=50: R = 0.5 + 0.5 = 1.0
+        // Bei avgDiff=100: R = 0.5 + 0.0 = 0.5
+        var rValue = 0.5 + (similarity * 1.0);
+
+        return Math.round(Math.max(0.5, Math.min(1.5, rValue)) * 1000) / 1000;
+    },
+
+    /**
+     * Fallback: Berechnet Ähnlichkeit über ALLE gemeinsamen Needs
+     * @private
+     */
+    _calculateAllNeedsSimilarity: function(ichNeeds, partnerNeeds) {
+        var totalDiff = 0;
+        var count = 0;
+
+        for (var key in ichNeeds) {
+            if (ichNeeds.hasOwnProperty(key)) {
+                var ichVal = this._getNeedValue(ichNeeds, null, key);
+                var partnerVal = this._getNeedValue(partnerNeeds, null, key);
+
+                if (ichVal !== undefined && partnerVal !== undefined) {
+                    totalDiff += Math.abs(ichVal - partnerVal);
+                    count++;
+                }
+            }
+        }
+
+        if (count === 0) return 1.0;
+
+        var avgDiff = totalDiff / count;
+        var similarity = 1 - (avgDiff / 100);
+        var rValue = 0.5 + (similarity * 1.0);
+
+        return Math.round(Math.max(0.5, Math.min(1.5, rValue)) * 1000) / 1000;
+    },
+
+    /**
      * Berechnet die dimensionalen Resonanzen R_Leben, R_Dynamik, R_Identität, R_Philosophie
      * basierend auf der Kohärenz zwischen Archetyp und Bedürfnissen.
+     *
+     * HINWEIS: Diese Funktion berechnet INDIVIDUELLE R-Werte (Person vs Archetyp).
+     * Für PAARUNGS-R-Werte (ICH vs PARTNER) verwende calculatePaarungsResonance().
      *
      * @param {object} person - Profil mit archetyp und needs
      * @returns {object} { leben: R, dynamik: R, identitaet: R, philosophie: R }

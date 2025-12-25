@@ -16416,15 +16416,46 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
                 }
             }
 
-            // Kombinierte Resonanz berechnen (Produkt - wie im synthesisCalculator)
-            const resonanzWerte = {
-                R1: Math.round(resonanzIch.R1 * resonanzPartner.R1 * 1000) / 1000,
-                R2: Math.round(resonanzIch.R2 * resonanzPartner.R2 * 1000) / 1000,
-                R3: Math.round(resonanzIch.R3 * resonanzPartner.R3 * 1000) / 1000,
-                R4: Math.round(resonanzIch.R4 * resonanzPartner.R4 * 1000) / 1000
-            };
+            // ═══════════════════════════════════════════════════════════════════════════
+            // PAARUNGS-Resonanz berechnen (Ähnlichkeit zwischen ICH und PARTNER)
+            // Bei identischen Needs: R = 1.5, bei komplett unterschiedlichen: R = 0.5
+            // ═══════════════════════════════════════════════════════════════════════════
+            let resonanzWerte = { R1: 1.0, R2: 1.0, R3: 1.0, R4: 1.0 };
 
-            console.log('[ResonanzModal] ICH:', resonanzIch, 'PARTNER:', resonanzPartner, 'KOMBINIERT:', resonanzWerte);
+            // Versuche PAARUNGS-Berechnung mit Needs
+            if (typeof TiageSynthesis !== 'undefined' &&
+                typeof TiageSynthesis.NeedsIntegration !== 'undefined' &&
+                typeof TiageSynthesis.NeedsIntegration.calculatePaarungsResonance === 'function') {
+
+                // Hole Needs von ICH und PARTNER
+                let ichNeeds = null;
+                let partnerNeeds = null;
+
+                if (typeof TiageState !== 'undefined') {
+                    ichNeeds = TiageState.getFlatNeeds?.('ich');
+                    partnerNeeds = TiageState.getFlatNeeds?.('partner');
+                }
+
+                if (ichNeeds && partnerNeeds && Object.keys(ichNeeds).length > 0 && Object.keys(partnerNeeds).length > 0) {
+                    // Berechne PAARUNGS-Resonanz basierend auf Ähnlichkeit
+                    const paarungsResult = TiageSynthesis.NeedsIntegration.calculatePaarungsResonance(ichNeeds, partnerNeeds);
+                    if (paarungsResult && paarungsResult.enabled) {
+                        resonanzWerte = {
+                            R1: paarungsResult.R1,
+                            R2: paarungsResult.R2,
+                            R3: paarungsResult.R3,
+                            R4: paarungsResult.R4
+                        };
+                        console.log('[ResonanzModal] PAARUNGS-Resonanz (Ähnlichkeit ICH↔PARTNER):', resonanzWerte);
+                    }
+                } else {
+                    console.log('[ResonanzModal] Keine Needs verfügbar, verwende Default-Werte');
+                }
+            } else {
+                console.warn('[ResonanzModal] calculatePaarungsResonance nicht verfügbar');
+            }
+
+            console.log('[ResonanzModal] ICH:', resonanzIch, 'PARTNER:', resonanzPartner, 'PAARUNG:', resonanzWerte);
 
             // R-Faktoren Konfiguration mit AGOD-Zuordnung (v3.3: 18 Kategorien)
             // Die 18 GFK-Kategorien werden auf 4 Resonanzfaktoren aggregiert.
@@ -16578,7 +16609,7 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
                                         <th style="padding: 12px 14px; text-align: left; color: var(--text-muted); font-weight: 500; font-size: 12px;">R-Faktor → AGOD</th>
                                         <th style="padding: 12px 10px; text-align: center; color: var(--success); font-weight: 500; font-size: 12px;">ICH</th>
                                         <th style="padding: 12px 10px; text-align: center; color: var(--danger); font-weight: 500; font-size: 12px;">PARTNER</th>
-                                        <th style="padding: 12px 10px; text-align: center; color: #8B5CF6; font-weight: 600; font-size: 12px; background: rgba(139,92,246,0.1);">ICH × PARTNER</th>
+                                        <th style="padding: 12px 10px; text-align: center; color: #8B5CF6; font-weight: 600; font-size: 12px; background: rgba(139,92,246,0.1);">PAARUNG</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -16593,8 +16624,11 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
                                 <strong style="color: var(--text-secondary);">Was zeigt diese Tabelle?</strong>
                             </div>
                             <div>
-                                Jeder R-Faktor misst die <em>Kohärenz</em> zwischen deinen Bedürfnissen und dem gewählten Archetyp.
-                                Der kombinierte Wert (ICH × PARTNER) multipliziert den jeweiligen AGOD-Score:
+                                <strong style="color: #22c55e;">ICH</strong> / <strong style="color: #ef4444;">PARTNER</strong>:
+                                <em>Kohärenz</em> zwischen Bedürfnissen und gewähltem Archetyp.<br>
+                                <strong style="color: #8B5CF6;">PAARUNG</strong>:
+                                <em>Ähnlichkeit</em> zwischen ICH und PARTNER (identische Werte = 1.5).<br>
+                                Der PAARUNGS-Wert multipliziert den jeweiligen AGOD-Score:
                             </div>
                             <div style="margin-top: 8px; font-family: monospace; font-size: 10px;">
                                 Q = (O × wO × R₁) + (A × wA × R₂) + (D × wD × R₃) + (G × wG × R₄)
