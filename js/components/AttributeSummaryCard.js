@@ -2045,6 +2045,28 @@ const AttributeSummaryCard = (function() {
             lockedNeeds[attrId] = {};
         }
 
+        // ═══════════════════════════════════════════════════════════════════
+        // FIX: Lade Lock-Status aus TiageState.profileReview.lockedNeeds (SSOT)
+        // ═══════════════════════════════════════════════════════════════════
+        if (typeof TiageState !== 'undefined') {
+            const savedLockedNeeds = TiageState.getLockedNeeds(currentPerson) || {};
+            // Prüfe jedes Bedürfnis im Mapping ob es in TiageState gesperrt ist
+            mapping.needs.forEach(need => {
+                let hashId = need;
+                if (!need.startsWith('#B') && typeof BeduerfnisIds !== 'undefined' && BeduerfnisIds.toId) {
+                    hashId = BeduerfnisIds.toId(need) || need;
+                }
+                // Wenn in TiageState gesperrt, auch lokal markieren
+                if (savedLockedNeeds.hasOwnProperty(hashId)) {
+                    lockedNeeds[attrId][need] = true;
+                    // Auch den Wert übernehmen
+                    if (needsValues[attrId]) {
+                        needsValues[attrId][need] = savedLockedNeeds[hashId];
+                    }
+                }
+            });
+        }
+
         const aggregatedValue = calculateAggregatedValue(attrId);
         const hintHtml = hint ? ` <span class="dimension-hint">(${hint})</span>` : '';
         const infoIconHtml = description
@@ -2270,7 +2292,7 @@ const AttributeSummaryCard = (function() {
     /**
      * Togglet den Lock-Status eines einzelnen Bedürfnisses
      * @param {string} attrId - Attribut-ID
-     * @param {string} needId - Bedürfnis-ID
+     * @param {string} needId - Bedürfnis-ID (String-Key wie 'akzeptanz')
      * @param {HTMLElement} lockElement - Das Lock-Icon Element
      */
     function toggleNeedLock(attrId, needId, lockElement) {
@@ -2279,9 +2301,32 @@ const AttributeSummaryCard = (function() {
             lockedNeeds[attrId] = {};
         }
 
-        // Toggle Lock-Status
+        // Toggle Lock-Status (lokal für UI)
         lockedNeeds[attrId][needId] = !lockedNeeds[attrId][needId];
         const isLocked = lockedNeeds[attrId][needId];
+
+        // ═══════════════════════════════════════════════════════════════════
+        // FIX: Synchronisiere mit TiageState.profileReview.lockedNeeds (SSOT)
+        // ═══════════════════════════════════════════════════════════════════
+        if (typeof TiageState !== 'undefined') {
+            // Konvertiere String-Key (z.B. 'akzeptanz') zu #B-ID (z.B. '#B15')
+            let hashId = needId;
+            if (!needId.startsWith('#B') && typeof BeduerfnisIds !== 'undefined' && BeduerfnisIds.toId) {
+                hashId = BeduerfnisIds.toId(needId) || needId;
+            }
+
+            if (isLocked) {
+                // Beim Sperren: Speichere aktuellen Wert
+                const currentValue = needsValues[attrId]?.[needId] ?? 50;
+                TiageState.lockNeed(currentPerson, hashId, currentValue);
+                console.log('[toggleNeedLock] Gesperrt & gespeichert:', hashId, '=', currentValue, 'für', currentPerson);
+            } else {
+                // Beim Entsperren: Entferne aus lockedNeeds
+                TiageState.unlockNeed(currentPerson, hashId);
+                console.log('[toggleNeedLock] Entsperrt:', hashId, 'für', currentPerson);
+            }
+            TiageState.saveToStorage();
+        }
 
         // Update UI
         const needItem = lockElement.closest('.attribute-need-item');
