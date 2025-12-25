@@ -585,6 +585,15 @@ const MemoryManager = (function() {
             console.log('[MemoryManager] SSOT: FlatNeeds in TiageState.flatNeeds.' + person + ' geladen:', Object.keys(normalizedNeeds).length, 'Einträge');
         }
 
+        // ═══════════════════════════════════════════════════════════════════════
+        // FIX: Lade lockedNeeds in TiageState (Single Source of Truth)
+        // Ohne diesen Code gehen gesperrte Bedürfnis-Werte beim Laden verloren!
+        // ═══════════════════════════════════════════════════════════════════════
+        if (profileReview.lockedNeeds && typeof TiageState !== 'undefined' && Object.keys(profileReview.lockedNeeds).length > 0) {
+            TiageState.set(`profileReview.${person}.lockedNeeds`, profileReview.lockedNeeds);
+            console.log('[MemoryManager] SSOT: lockedNeeds in TiageState geladen:', Object.keys(profileReview.lockedNeeds).length, 'Einträge für', person);
+        }
+
         // Lade flatNeeds in AttributeSummaryCard (UI-Komponente)
         if (profileReview.flatNeeds && typeof AttributeSummaryCard !== 'undefined') {
             // setFlatNeeds() erkennt automatisch das Format (Array, Object v1.8.89+, Legacy)
