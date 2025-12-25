@@ -1209,9 +1209,9 @@ const AttributeSummaryCard = (function() {
         }
 
         // Zähle gesperrte Bedürfnisse innerhalb der gefilterten
+        // Verwende savedLockedNeeds die bereits aus TiageState geladen wurden (Zeile 1150)
         const lockedCount = filteredNeeds.filter(need => {
-            const needObj = getNeed(need.id);
-            return needObj?.locked || false;
+            return savedLockedNeeds.hasOwnProperty(need.id);
         }).length;
 
         // Subtitle mit Filter-Info und gesperrten Bedürfnissen
