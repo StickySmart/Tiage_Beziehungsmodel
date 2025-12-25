@@ -707,6 +707,8 @@ const AttributeSummaryCard = (function() {
             TiageState.saveToStorage();
             console.log('[lockSelectedNeeds]', lockState ? 'Gesperrt' : 'Entsperrt', lockedCount, 'Bedürfnisse für', currentPerson);
             showLockToast(lockState ? `${lockedCount} Werte gesperrt` : `${lockedCount} Werte entsperrt`);
+            // Aktualisiere die "davon gesperrt: X" Anzeige im Subtitle
+            updateLockedCountDisplay();
         }
     }
 
@@ -1640,6 +1642,9 @@ const AttributeSummaryCard = (function() {
 
             // Toast-Meldung
             showLockToast(isLocked ? 'Wert gesperrt & gespeichert' : 'Wert entsperrt');
+
+            // Aktualisiere die "davon gesperrt: X" Anzeige im Subtitle
+            updateLockedCountDisplay();
         }
 
         // Event (für andere Listener)
@@ -1667,6 +1672,35 @@ const AttributeSummaryCard = (function() {
             toast.style.opacity = '0';
             setTimeout(function() { toast.remove(); }, 200);
         }, 1500);
+    }
+
+    /**
+     * Aktualisiert die Anzeige der gesperrten Bedürfnisse im Subtitle
+     * Wird nach Lock/Unlock-Aktionen aufgerufen
+     */
+    function updateLockedCountDisplay() {
+        // Ermittle aktuelle Person aus Kontext
+        let currentPerson = 'ich';
+        if (window.currentProfileReviewContext && window.currentProfileReviewContext.person) {
+            currentPerson = window.currentProfileReviewContext.person;
+        }
+
+        // Hole aktuelle locked needs aus TiageState
+        let lockedNeedsCount = 0;
+        if (typeof TiageState !== 'undefined') {
+            const lockedNeeds = TiageState.getLockedNeeds(currentPerson) || {};
+            lockedNeedsCount = Object.keys(lockedNeeds).length;
+        }
+
+        // Finde das Subtitle-Element und aktualisiere den Text
+        const subtitleElement = document.querySelector('.flat-needs-subtitle');
+        if (subtitleElement) {
+            const currentText = subtitleElement.textContent;
+            // Ersetze den "davon gesperrt: X" Teil
+            const updatedText = currentText.replace(/davon gesperrt: \d+/, `davon gesperrt: ${lockedNeedsCount}`);
+            subtitleElement.textContent = updatedText;
+            console.log('[updateLockedCountDisplay] Subtitle aktualisiert:', lockedNeedsCount, 'gesperrt');
+        }
     }
 
     /**
