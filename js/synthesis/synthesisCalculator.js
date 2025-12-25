@@ -966,10 +966,24 @@ TiageSynthesis.Calculator = {
         // Option 2: LoadedArchetypProfile
         if (!r1_ich && typeof window !== 'undefined' && window.LoadedArchetypProfile) {
             if (window.LoadedArchetypProfile.ich && window.LoadedArchetypProfile.ich.resonanzFaktoren) {
-                r1_ich = window.LoadedArchetypProfile.ich.resonanzFaktoren;
+                var rf = window.LoadedArchetypProfile.ich.resonanzFaktoren;
+                // Konvertiere { R1: { value, locked } } → { R1: value }
+                r1_ich = {
+                    R1: (rf.R1 && typeof rf.R1 === 'object') ? rf.R1.value : rf.R1,
+                    R2: (rf.R2 && typeof rf.R2 === 'object') ? rf.R2.value : rf.R2,
+                    R3: (rf.R3 && typeof rf.R3 === 'object') ? rf.R3.value : rf.R3,
+                    R4: (rf.R4 && typeof rf.R4 === 'object') ? rf.R4.value : rf.R4
+                };
             }
             if (window.LoadedArchetypProfile.partner && window.LoadedArchetypProfile.partner.resonanzFaktoren) {
-                r1_partner = window.LoadedArchetypProfile.partner.resonanzFaktoren;
+                var rfp = window.LoadedArchetypProfile.partner.resonanzFaktoren;
+                // Konvertiere { R1: { value, locked } } → { R1: value }
+                r1_partner = {
+                    R1: (rfp.R1 && typeof rfp.R1 === 'object') ? rfp.R1.value : rfp.R1,
+                    R2: (rfp.R2 && typeof rfp.R2 === 'object') ? rfp.R2.value : rfp.R2,
+                    R3: (rfp.R3 && typeof rfp.R3 === 'object') ? rfp.R3.value : rfp.R3,
+                    R4: (rfp.R4 && typeof rfp.R4 === 'object') ? rfp.R4.value : rfp.R4
+                };
             }
         }
 
@@ -978,20 +992,44 @@ TiageSynthesis.Calculator = {
             try {
                 var storedIch = TiageState.get('archetypes.ich.resonanzFaktoren');
                 var storedPartner = TiageState.get('archetypes.partner.resonanzFaktoren');
-                if (storedIch) r1_ich = storedIch;
-                if (storedPartner) r1_partner = storedPartner;
+                if (storedIch) {
+                    // Konvertiere { R1: { value, locked } } → { R1: value }
+                    r1_ich = {
+                        R1: (storedIch.R1 && typeof storedIch.R1 === 'object') ? storedIch.R1.value : storedIch.R1,
+                        R2: (storedIch.R2 && typeof storedIch.R2 === 'object') ? storedIch.R2.value : storedIch.R2,
+                        R3: (storedIch.R3 && typeof storedIch.R3 === 'object') ? storedIch.R3.value : storedIch.R3,
+                        R4: (storedIch.R4 && typeof storedIch.R4 === 'object') ? storedIch.R4.value : storedIch.R4
+                    };
+                }
+                if (storedPartner) {
+                    // Konvertiere { R1: { value, locked } } → { R1: value }
+                    r1_partner = {
+                        R1: (storedPartner.R1 && typeof storedPartner.R1 === 'object') ? storedPartner.R1.value : storedPartner.R1,
+                        R2: (storedPartner.R2 && typeof storedPartner.R2 === 'object') ? storedPartner.R2.value : storedPartner.R2,
+                        R3: (storedPartner.R3 && typeof storedPartner.R3 === 'object') ? storedPartner.R3.value : storedPartner.R3,
+                        R4: (storedPartner.R4 && typeof storedPartner.R4 === 'object') ? storedPartner.R4.value : storedPartner.R4
+                    };
+                }
             } catch (e) {
                 console.warn('Konnte gespeicherte R-Werte nicht laden:', e);
             }
         }
 
+        // Hilfsfunktion: Extrahiere numerischen Wert aus R-Faktor (number oder { value, locked })
+        function extractRValue(rValue) {
+            if (rValue === undefined || rValue === null) return 1.0;
+            if (typeof rValue === 'number') return rValue;
+            if (typeof rValue === 'object' && rValue.value !== undefined) return rValue.value;
+            return 1.0;
+        }
+
         // Wenn beide R-Werte verfügbar: Kombiniere via Produkt
-        if (r1_ich && r1_partner && r1_ich.R1 && r1_partner.R1) {
+        if (r1_ich && r1_partner && r1_ich.R1 !== undefined && r1_partner.R1 !== undefined) {
             // Kombination via Produkt: verstärkt wenn beide kohärent, dämpft wenn beide inkohärent
-            var R1_combined = r1_ich.R1 * r1_partner.R1;
-            var R2_combined = r1_ich.R2 * r1_partner.R2;
-            var R3_combined = r1_ich.R3 * r1_partner.R3;
-            var R4_combined = r1_ich.R4 * r1_partner.R4;
+            var R1_combined = extractRValue(r1_ich.R1) * extractRValue(r1_partner.R1);
+            var R2_combined = extractRValue(r1_ich.R2) * extractRValue(r1_partner.R2);
+            var R3_combined = extractRValue(r1_ich.R3) * extractRValue(r1_partner.R3);
+            var R4_combined = extractRValue(r1_ich.R4) * extractRValue(r1_partner.R4);
 
             // Runden auf 3 Dezimalstellen
             R1_combined = Math.round(R1_combined * 1000) / 1000;
