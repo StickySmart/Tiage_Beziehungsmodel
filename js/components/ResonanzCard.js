@@ -1152,41 +1152,13 @@ const ResonanzCard = (function() {
     }
 
     /**
-     * Prüft ob wir im Duo-Modus sind (ICH + PARTNER Vergleich)
-     * @returns {boolean} true wenn Duo-Modus aktiv
-     */
-    function isDuoMode() {
-        // Prüfe ob Partner-Daten vorhanden sind
-        if (typeof TiageState !== 'undefined') {
-            const partnerNeeds = TiageState.getFlatNeeds?.('partner');
-            const partnerArchetyp = TiageState.get('archetypes.partner.primary');
-            return !!(partnerNeeds && Object.keys(partnerNeeds).length > 0 && partnerArchetyp);
-        }
-        return false;
-    }
-
-    /**
-     * Holt die Needs für Partner (für Duo-Modus Berechnung)
-     * @returns {Object|null} Partner-Needs oder null
-     */
-    function getPartnerNeeds() {
-        if (typeof TiageState !== 'undefined') {
-            return TiageState.getFlatNeeds?.('partner') || null;
-        }
-        return null;
-    }
-
-    /**
      * Berechnet die Resonanzwerte basierend auf Profil-Kontext
-     *
-     * Im DUO-MODUS: Vergleicht ICH vs. PARTNER Bedürfnisse direkt
-     * Im EINZEL-MODUS: Vergleicht gegen archetyp-typische Werte (Legacy)
+     * Nutzt NeedsIntegration.calculateDimensionalResonance wenn verfügbar
      *
      * @param {Object} profileContext - { archetyp, needs, dominanz, orientierung, geschlecht }
-     * @param {string} person - 'ich' oder 'partner' (optional)
      * @returns {Object|null} { R1, R2, R3, R4 } oder null bei Fehler
      */
-    function calculateFromProfile(profileContext, person) {
+    function calculateFromProfile(profileContext) {
         // Prüfe ob NeedsIntegration verfügbar ist
         if (typeof TiageSynthesis === 'undefined' ||
             typeof TiageSynthesis.NeedsIntegration === 'undefined') {
@@ -1194,37 +1166,13 @@ const ResonanzCard = (function() {
             return null;
         }
 
-        if (!profileContext || !profileContext.needs) {
-            console.warn('[ResonanzCard] Kein gültiger Profil-Kontext oder keine Needs');
+        if (!profileContext || !profileContext.archetyp) {
+            console.warn('[ResonanzCard] Kein gültiger Profil-Kontext');
             return null;
         }
 
-        let resonanz = null;
-
-        // ═══════════════════════════════════════════════════════════════════
-        // DUO-MODUS: Vergleiche ICH vs. PARTNER direkt
-        // ═══════════════════════════════════════════════════════════════════
-        if (isDuoMode() && typeof TiageSynthesis.NeedsIntegration.calculateDuoResonance === 'function') {
-            const ichNeeds = person === 'partner' ? getPartnerNeeds() : profileContext.needs;
-            const partnerNeeds = person === 'partner' ? profileContext.needs : getPartnerNeeds();
-
-            if (ichNeeds && partnerNeeds) {
-                resonanz = TiageSynthesis.NeedsIntegration.calculateDuoResonance(ichNeeds, partnerNeeds);
-                console.log('[ResonanzCard] DUO-MODUS: Berechne ICH vs. PARTNER Resonanz');
-            }
-        }
-
-        // ═══════════════════════════════════════════════════════════════════
-        // FALLBACK/EINZEL-MODUS: Vergleiche gegen Archetyp-typische Werte
-        // ═══════════════════════════════════════════════════════════════════
-        if (!resonanz || !resonanz.enabled) {
-            if (!profileContext.archetyp) {
-                console.warn('[ResonanzCard] Kein Archetyp für Einzel-Berechnung');
-                return null;
-            }
-            resonanz = TiageSynthesis.NeedsIntegration.calculateDimensionalResonance(profileContext);
-            console.log('[ResonanzCard] EINZEL-MODUS: Berechne gegen Archetyp-typische Werte');
-        }
+        // Berechne dimensionale Resonanzen
+        const resonanz = TiageSynthesis.NeedsIntegration.calculateDimensionalResonance(profileContext);
 
         if (!resonanz || !resonanz.enabled) {
             console.warn('[ResonanzCard] Resonanz-Berechnung nicht aktiviert oder fehlgeschlagen');
@@ -1237,10 +1185,10 @@ const ResonanzCard = (function() {
         // R3 = Dominanz → dynamik
         // R4 = Geschlecht → identitaet
         const result = {
-            R1: resonanz.leben || resonanz.R1 || 1.0,
-            R2: resonanz.philosophie || resonanz.R2 || 1.0,
-            R3: resonanz.dynamik || resonanz.R3 || 1.0,
-            R4: resonanz.identitaet || resonanz.R4 || 1.0
+            R1: resonanz.leben || 1.0,
+            R2: resonanz.philosophie || 1.0,
+            R3: resonanz.dynamik || 1.0,
+            R4: resonanz.identitaet || 1.0
         };
 
         console.log('[ResonanzCard] Berechnete Resonanz aus Profil:', result);
@@ -1392,8 +1340,6 @@ const ResonanzCard = (function() {
         unlockAndApply,
         unlockAllAndApply,
         compareScores,
-        isDuoMode,
-        getPartnerNeeds,
         DEFAULT_VALUES,
         FAKTOR_INFO,
         STORAGE_KEY_ICH,
@@ -1430,14 +1376,9 @@ const ResonanzCard = (function() {
 
     /**
      * Berechnet Resonanzfaktoren für eine Person neu basierend auf aktuellen Bedürfnissen
-     *
-     * Im DUO-MODUS: Die R-Werte basieren auf dem Vergleich ICH vs. PARTNER.
-     * Wenn sich die Needs einer Person ändern, müssen BEIDE neu berechnet werden!
-     *
      * @param {string} person - 'ich' oder 'partner'
-     * @param {boolean} skipOtherPerson - true um rekursive Aufrufe zu vermeiden
      */
-    function recalculateResonanzForPerson(person, skipOtherPerson) {
+    function recalculateResonanzForPerson(person) {
         // SSOT: Hole aktuellen Archetyp aus TiageState
         let archetypeKey = 'duo';
         if (typeof TiageState !== 'undefined') {
@@ -1480,22 +1421,12 @@ const ResonanzCard = (function() {
             geschlecht: geschlecht
         };
 
-        // Berechne neue Resonanzwerte (calculateFromProfile kennt den Duo-Modus)
-        const calculatedValues = ResonanzCard.calculateFromProfile(profileContext, person);
+        // Berechne neue Resonanzwerte
+        const calculatedValues = ResonanzCard.calculateFromProfile(profileContext);
         if (calculatedValues) {
             // Setze die berechneten Werte (respektiert gesperrte Werte)
             ResonanzCard.setCalculatedValues(calculatedValues, false, person);
             console.log('[ResonanzCard] Resonanz automatisch neu berechnet für', person, ':', calculatedValues);
-        }
-
-        // ═══════════════════════════════════════════════════════════════════
-        // DUO-MODUS: Auch die andere Person neu berechnen!
-        // (weil sich bei ICH vs. PARTNER Vergleich beide R-Werte ändern)
-        // ═══════════════════════════════════════════════════════════════════
-        if (!skipOtherPerson && typeof ResonanzCard.isDuoMode === 'function' && ResonanzCard.isDuoMode()) {
-            const otherPerson = person === 'ich' ? 'partner' : 'ich';
-            console.log('[ResonanzCard] DUO-MODUS: Berechne auch', otherPerson, 'neu');
-            recalculateResonanzForPerson(otherPerson, true); // skipOtherPerson=true verhindert Endlosschleife
         }
     }
 
