@@ -427,10 +427,12 @@
             color: #ef4444;
         }
 
-        .matrix-lock {
-            margin-left: 4px;
-            opacity: 0.5;
-            font-size: 11px;
+        .matrix-modified {
+            margin-left: 2px;
+            color: #eab308;
+            font-weight: bold;
+            font-size: 14px;
+            cursor: help;
         }
 
         .matrix-info {
@@ -450,10 +452,12 @@
         .matrix-info .neutral { color: #eab308; }
         .matrix-info .low { color: #ef4444; }
 
-        .matrix-info .lock-info {
+        .matrix-info .modified-info {
             margin-left: auto;
             cursor: help;
-            opacity: 0.7;
+            color: #eab308;
+            font-weight: bold;
+            font-size: 14px;
         }
 
         @media (max-width: 600px) {
@@ -550,16 +554,58 @@
         ];
 
         /**
-         * Berechnet R-Faktoren mit ICH, PARTNER und kombiniertem Wert
+         * Berechnet R-Faktoren direkt via TiageSynthesis.NeedsIntegration
+         * Falls nicht verfügbar, Fallback auf TiageState oder Defaults
          */
         function calculateRFaktoren() {
             let resonanzIch = { R1: 1.0, R2: 1.0, R3: 1.0, R4: 1.0 };
             let resonanzPartner = { R1: 1.0, R2: 1.0, R3: 1.0, R4: 1.0 };
-            let lockStatusIch = { R1: false, R2: false, R3: false, R4: false };
-            let lockStatusPartner = { R1: false, R2: false, R3: false, R4: false };
+            let modifiedIch = { R1: false, R2: false, R3: false, R4: false };
+            let modifiedPartner = { R1: false, R2: false, R3: false, R4: false };
 
-            if (typeof TiageState !== 'undefined') {
-                // SSOT: resonanzFaktoren sind direkt unter resonanzFaktoren.{person} gespeichert
+            // Versuche direkte Berechnung via NeedsIntegration
+            if (typeof TiageSynthesis !== 'undefined' &&
+                TiageSynthesis.NeedsIntegration &&
+                typeof TiageSynthesis.NeedsIntegration.calculateDimensionalResonance === 'function' &&
+                typeof TiageState !== 'undefined') {
+
+                // ICH berechnen
+                const ichNeeds = TiageState.get('flatNeeds.ich');
+                const ichArchetyp = TiageState.get('archetypes.ich.primary') || currentIchArchetype;
+                if (ichNeeds && Object.keys(ichNeeds).length > 0 && ichArchetyp) {
+                    const ichResult = TiageSynthesis.NeedsIntegration.calculateDimensionalResonance({
+                        archetyp: ichArchetyp,
+                        needs: ichNeeds
+                    });
+                    if (ichResult && ichResult.enabled) {
+                        resonanzIch = {
+                            R1: ichResult.leben || 1.0,
+                            R2: ichResult.philosophie || 1.0,
+                            R3: ichResult.dynamik || 1.0,
+                            R4: ichResult.identitaet || 1.0
+                        };
+                    }
+                }
+
+                // PARTNER berechnen
+                const partnerNeeds = TiageState.get('flatNeeds.partner');
+                const partnerArchetyp = TiageState.get('archetypes.partner.primary') || currentPartnerArchetype;
+                if (partnerNeeds && Object.keys(partnerNeeds).length > 0 && partnerArchetyp) {
+                    const partnerResult = TiageSynthesis.NeedsIntegration.calculateDimensionalResonance({
+                        archetyp: partnerArchetyp,
+                        needs: partnerNeeds
+                    });
+                    if (partnerResult && partnerResult.enabled) {
+                        resonanzPartner = {
+                            R1: partnerResult.leben || 1.0,
+                            R2: partnerResult.philosophie || 1.0,
+                            R3: partnerResult.dynamik || 1.0,
+                            R4: partnerResult.identitaet || 1.0
+                        };
+                    }
+                }
+            } else if (typeof TiageState !== 'undefined') {
+                // Fallback: Aus TiageState lesen
                 const ichData = TiageState.get('resonanzFaktoren.ich');
                 const partnerData = TiageState.get('resonanzFaktoren.partner');
 
@@ -570,14 +616,7 @@
                         R3: ichData.R3?.value ?? ichData.R3 ?? 1.0,
                         R4: ichData.R4?.value ?? ichData.R4 ?? 1.0
                     };
-                    lockStatusIch = {
-                        R1: ichData.R1?.locked ?? false,
-                        R2: ichData.R2?.locked ?? false,
-                        R3: ichData.R3?.locked ?? false,
-                        R4: ichData.R4?.locked ?? false
-                    };
                 }
-
                 if (partnerData) {
                     resonanzPartner = {
                         R1: partnerData.R1?.value ?? partnerData.R1 ?? 1.0,
@@ -585,14 +624,12 @@
                         R3: partnerData.R3?.value ?? partnerData.R3 ?? 1.0,
                         R4: partnerData.R4?.value ?? partnerData.R4 ?? 1.0
                     };
-                    lockStatusPartner = {
-                        R1: partnerData.R1?.locked ?? false,
-                        R2: partnerData.R2?.locked ?? false,
-                        R3: partnerData.R3?.locked ?? false,
-                        R4: partnerData.R4?.locked ?? false
-                    };
                 }
             }
+
+            // Prüfen ob Bedürfnisse in der jeweiligen Dimension modifiziert wurden
+            modifiedIch = checkModifiedNeeds('ich');
+            modifiedPartner = checkModifiedNeeds('partner');
 
             return rFaktorenDefs.map(def => {
                 const ichVal = resonanzIch[def.id] || 1.0;
@@ -604,10 +641,62 @@
                     ich: ichVal,
                     partner: partnerVal,
                     kombi: kombiVal,
-                    lockedIch: lockStatusIch[def.id],
-                    lockedPartner: lockStatusPartner[def.id]
+                    modifiedIch: modifiedIch[def.id],
+                    modifiedPartner: modifiedPartner[def.id]
                 };
             });
+        }
+
+        /**
+         * Prüft ob Bedürfnisse in einer Dimension manuell geändert wurden
+         * @param {string} person - 'ich' oder 'partner'
+         * @returns {Object} { R1: boolean, R2: boolean, R3: boolean, R4: boolean }
+         */
+        function checkModifiedNeeds(person) {
+            const result = { R1: false, R2: false, R3: false, R4: false };
+
+            if (typeof TiageState === 'undefined') return result;
+
+            const flatNeeds = TiageState.get(`flatNeeds.${person}`);
+            const archetyp = TiageState.get(`archetypes.${person}.primary`);
+
+            if (!flatNeeds || !archetyp || typeof window.BaseArchetypProfile === 'undefined') {
+                return result;
+            }
+
+            const baseProfil = window.BaseArchetypProfile[archetyp];
+            if (!baseProfil || !baseProfil.umfrageWerte) return result;
+
+            // Kohärenz-Daten für die Dimensions-Prüfung
+            const kohaerenz = typeof TiageSynthesis !== 'undefined' ?
+                TiageSynthesis.Constants?.ARCHETYP_KOHAERENZ : null;
+
+            if (!kohaerenz) return result;
+
+            // R1 = leben, R2 = philosophie, R3 = dynamik, R4 = identitaet
+            const dimensionMap = {
+                R1: kohaerenz.leben?.[archetyp],
+                R2: kohaerenz.philosophie?.[archetyp],
+                R3: kohaerenz.dynamik?.[archetyp],
+                R4: kohaerenz.identitaet?.[archetyp]
+            };
+
+            for (const [rKey, typisch] of Object.entries(dimensionMap)) {
+                if (!typisch) continue;
+                for (const [needKey, needDef] of Object.entries(typisch)) {
+                    const needId = needDef?.id || needKey;
+                    const baseValue = baseProfil.umfrageWerte[needId];
+                    const currentValue = flatNeeds[needId];
+                    // Als modifiziert markieren wenn > 5 Punkte Unterschied
+                    if (baseValue !== undefined && currentValue !== undefined &&
+                        Math.abs(baseValue - currentValue) > 5) {
+                        result[rKey] = true;
+                        break;
+                    }
+                }
+            }
+
+            return result;
         }
 
         function getValueClass(val) {
@@ -640,11 +729,11 @@
                                     </td>
                                     <td>
                                         <span class="matrix-value ${getValueClass(r.ich)}">${r.ich.toFixed(2)}</span>
-                                        <span class="matrix-lock" title="${r.lockedIch ? 'Manuell gesperrt' : 'Automatisch berechnet'}">${r.lockedIch ? '🔒' : '🔓'}</span>
+                                        ${r.modifiedIch ? '<span class="matrix-modified" title="Bedürfnis(se) manuell angepasst">*</span>' : ''}
                                     </td>
                                     <td>
                                         <span class="matrix-value ${getValueClass(r.partner)}">${r.partner.toFixed(2)}</span>
-                                        <span class="matrix-lock" title="${r.lockedPartner ? 'Manuell gesperrt' : 'Automatisch berechnet'}">${r.lockedPartner ? '🔒' : '🔓'}</span>
+                                        ${r.modifiedPartner ? '<span class="matrix-modified" title="Bedürfnis(se) manuell angepasst">*</span>' : ''}
                                     </td>
                                     <td class="col-kombi">
                                         <span class="matrix-value ${getValueClass(r.kombi)}">${r.kombi.toFixed(2)}</span>
@@ -657,7 +746,7 @@
                         <span class="high">● >1.0</span>
                         <span class="neutral">● 1.0</span>
                         <span class="low">● <1.0</span>
-                        <span class="lock-info" title="🔒 manuell gesperrt | 🔓 automatisch berechnet">ℹ️</span>
+                        <span class="modified-info" title="* = Bedürfnis(se) in dieser Dimension wurden manuell angepasst">*</span>
                     </div>
                 </div>
             `;
