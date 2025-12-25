@@ -306,6 +306,16 @@ const AttributeSummaryCard = (function() {
                 ...updates
             });
         }
+
+        // FIX: Direkt in TiageState synchronisieren (SSOT)
+        // Ohne diesen Code werden Änderungen auf Seiten ohne flatNeedChange-Handler nicht synchronisiert
+        if (updates.value !== undefined && typeof TiageState !== 'undefined' && TiageState.setNeed) {
+            let currentPerson = 'ich';
+            if (window.currentProfileReviewContext && window.currentProfileReviewContext.person) {
+                currentPerson = window.currentProfileReviewContext.person;
+            }
+            TiageState.setNeed(currentPerson, id, updates.value);
+        }
     }
 
     /**
