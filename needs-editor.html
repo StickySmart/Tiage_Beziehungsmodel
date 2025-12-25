@@ -818,24 +818,9 @@
                     }
                 });
 
-                // Setze aktiveSuggestion für Anzeige
-                const perspektivenLabels = {
-                    '#P1': 'Statistik',
-                    '#P2': 'Konditionierung',
-                    '#P3': 'Qualität',
-                    '#P4': 'SexPositiv'
-                };
-                suggestionState.activeSuggestion = {
-                    type: 'perspective',
-                    id: perspektiveId,
-                    label: perspektivenLabels[perspektiveId] || perspektiveId,
-                    icon: '🎛️'
-                };
-                displayActiveSuggestion();
-
                 console.log('[NeedsEditor] Perspektive aktiviert via URL:', perspektiveId, '→ Kategorien:', kategorien);
 
-                // Filter anwenden
+                // Filter anwenden - Kategorien-Chips zeigen den aktiven Filter
                 filterProfileReviewByNeed('');
             } else {
                 console.warn('[NeedsEditor] Keine Kategorien für Perspektive gefunden:', perspektiveId);
