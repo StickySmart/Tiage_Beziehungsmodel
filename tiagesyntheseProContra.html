@@ -558,6 +558,81 @@
         }
 
         /**
+         * Berechnet die Perspektiven-Werte (P1-P4) basierend auf den Profil-Daten
+         * @returns {Object} { '#P1': number, '#P2': number, '#P3': number, '#P4': number }
+         */
+        function getPerspektivenWerte() {
+            const perspektiven = ['#P1', '#P2', '#P3', '#P4'];
+            const defaultWerte = { '#P1': 1.0, '#P2': 1.0, '#P3': 1.0, '#P4': 1.0 };
+
+            // Prüfe ob NeedsIntegration verfügbar ist
+            if (typeof TiageSynthesis === 'undefined' ||
+                !TiageSynthesis.NeedsIntegration ||
+                !TiageSynthesis.NeedsIntegration.calculateResonanceFromPerspectives) {
+                console.warn('[ProContra] NeedsIntegration nicht verfügbar, verwende Standardwerte');
+                return defaultWerte;
+            }
+
+            // Hole Bedürfnisse aus TiageState (flatNeeds)
+            let needs1 = {};
+            let needs2 = {};
+
+            if (typeof TiageState !== 'undefined') {
+                needs1 = TiageState.get('flatNeeds.ich') || {};
+                needs2 = TiageState.get('flatNeeds.partner') || {};
+            }
+
+            // Fallback auf ProfileCalculator wenn flatNeeds leer
+            if (Object.keys(needs1).length === 0 && typeof ProfileCalculator !== 'undefined') {
+                needs1 = ProfileCalculator.getProfileValues('ich') || {};
+            }
+            if (Object.keys(needs2).length === 0 && typeof ProfileCalculator !== 'undefined') {
+                needs2 = ProfileCalculator.getProfileValues('partner') || {};
+            }
+
+            // Wenn immer noch keine Daten, verwende Standardwerte
+            if (Object.keys(needs1).length === 0 || Object.keys(needs2).length === 0) {
+                console.warn('[ProContra] Keine Bedürfnis-Daten verfügbar, verwende Standardwerte');
+                return defaultWerte;
+            }
+
+            try {
+                // Berechne Perspektiven-Matrix
+                const result = TiageSynthesis.NeedsIntegration.calculateResonanceFromPerspectives(
+                    needs1, currentIchArchetype,
+                    needs2, currentPartnerArchetype
+                );
+
+                // Matrix: matrix[faktorKey][perspektive] - mittele über alle Faktoren pro Perspektive
+                const matrix = result.matrix;
+                const faktorKeys = ['orientierung', 'archetyp', 'dominanz', 'geschlecht'];
+                const werte = {};
+
+                for (const perspektive of perspektiven) {
+                    let sum = 0;
+                    let count = 0;
+
+                    for (const faktor of faktorKeys) {
+                        const val = matrix[faktor] && matrix[faktor][perspektive];
+                        if (val !== null && val !== undefined) {
+                            sum += val;
+                            count++;
+                        }
+                    }
+
+                    // Konvertiere von Prozent-Differenz zu R-Wert (z.B. 5% -> 1.05)
+                    const avgPercent = count > 0 ? sum / count : 0;
+                    werte[perspektive] = Math.round((1 + avgPercent / 100) * 100) / 100;
+                }
+
+                return werte;
+            } catch (e) {
+                console.error('[ProContra] Fehler bei Perspektiven-Berechnung:', e);
+                return defaultWerte;
+            }
+        }
+
+        /**
          * Generiert Pro/Contra Listen basierend auf den ausgewählten Archetypen
          * Verdrahtet mit archetypeStatements aus statements/archetypeStatements.js
          */
@@ -631,16 +706,19 @@
                     </div>
 
                     <div class="perspektiven-grid">
-                        ${perspektivenDefs.map((p, i) => {
-                            const val = 0.6 + (Math.random() * 0.4);
-                            return `
-                                <div class="perspektive-item">
-                                    <div class="perspektive-id">${p.id}</div>
-                                    <div class="perspektive-label">${p.label}</div>
-                                    <div class="perspektive-value" style="color: ${perspektivenColors[i]};">${val.toFixed(2)}</div>
-                                </div>
-                            `;
-                        }).join('')}
+                        ${(() => {
+                            const werte = getPerspektivenWerte();
+                            return perspektivenDefs.map((p, i) => {
+                                const val = werte[p.id] || 1.0;
+                                return `
+                                    <div class="perspektive-item">
+                                        <div class="perspektive-id">${p.id}</div>
+                                        <div class="perspektive-label">${p.label}</div>
+                                        <div class="perspektive-value" style="color: ${perspektivenColors[i]};">${val.toFixed(2)}</div>
+                                    </div>
+                                `;
+                            }).join('');
+                        })()}
                     </div>
 
                 </div>
