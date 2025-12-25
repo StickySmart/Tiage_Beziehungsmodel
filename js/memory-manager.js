@@ -585,6 +585,15 @@ const MemoryManager = (function() {
             console.log('[MemoryManager] SSOT: FlatNeeds in TiageState.flatNeeds.' + person + ' geladen:', Object.keys(normalizedNeeds).length, 'Einträge');
         }
 
+        // ═══════════════════════════════════════════════════════════════════════
+        // FIX: Lade lockedNeeds in TiageState (Single Source of Truth)
+        // Ohne diesen Code gehen gesperrte Bedürfnis-Werte beim Laden verloren!
+        // ═══════════════════════════════════════════════════════════════════════
+        if (profileReview.lockedNeeds && typeof TiageState !== 'undefined' && Object.keys(profileReview.lockedNeeds).length > 0) {
+            TiageState.set(`profileReview.${person}.lockedNeeds`, profileReview.lockedNeeds);
+            console.log('[MemoryManager] SSOT: lockedNeeds in TiageState geladen:', Object.keys(profileReview.lockedNeeds).length, 'Einträge für', person);
+        }
+
         // Lade flatNeeds in AttributeSummaryCard (UI-Komponente)
         if (profileReview.flatNeeds && typeof AttributeSummaryCard !== 'undefined') {
             // setFlatNeeds() erkennt automatisch das Format (Array, Object v1.8.89+, Legacy)
@@ -1521,6 +1530,10 @@ function generateNeedsBreakdown(data) {
         } else if (data.geschlecht.primary && data.geschlecht.secondary) {
             geschlechtKey = `${data.geschlecht.primary}-${data.geschlecht.secondary}`;
             geschlechtDisplay = geschlechtKey;
+        } else if (data.geschlecht.primary) {
+            // FIX: Fallback wenn nur primary vorhanden (konsistent mit collectAttributeModifiers)
+            geschlechtKey = data.geschlecht.primary;
+            geschlechtDisplay = geschlechtKey;
         }
     }
 
@@ -1592,11 +1605,26 @@ function generateNeedsBreakdown(data) {
     </div>`;
 
     // Convert flatNeeds to array if it's an object
-    const needsArray = Array.isArray(flatNeeds) ? flatNeeds :
-        Object.entries(flatNeeds).map(([key, val]) => ({
-            stringKey: key,
+    // FIX: Konvertiere #ID zu stringKey für Modifier-Lookup
+    const needsArray = Array.isArray(flatNeeds) ? flatNeeds.map(need => {
+        // Wenn stringKey fehlt aber id vorhanden, konvertiere
+        let stringKey = need.stringKey;
+        if (!stringKey && need.id && need.id.startsWith('#') && typeof BeduerfnisIds !== 'undefined' && BeduerfnisIds.getKey) {
+            stringKey = BeduerfnisIds.getKey(need.id) || need.id;
+        }
+        return { ...need, stringKey: stringKey || need.id };
+    }) : Object.entries(flatNeeds).map(([key, val]) => {
+        // Konvertiere #ID zu stringKey
+        let stringKey = key;
+        if (key.startsWith('#') && typeof BeduerfnisIds !== 'undefined' && BeduerfnisIds.getKey) {
+            stringKey = BeduerfnisIds.getKey(key) || key;
+        }
+        return {
+            id: key,
+            stringKey: stringKey,
             value: typeof val === 'object' ? val.value : val
-        }));
+        };
+    });
 
     // Filter to show only needs with modifiers or significant differences
     const needsWithBreakdown = needsArray
