@@ -329,9 +329,17 @@
 
             const deltas = window.ProfileModifiers.calculateProfileDeltas(profileContext);
 
+            // DEBUG: Log berechnete Deltas
+            console.log('[ProfileCalculator] GOD-Deltas berechnet:', {
+                profileContext: profileContext,
+                deltasCount: deltas ? Object.keys(deltas).length : 0,
+                deltas: deltas
+            });
+
             if (deltas && Object.keys(deltas).length > 0) {
                 // Deltas anwenden - convert string keys to #IDs for lookup
                 let appliedCount = 0;
+                const appliedDeltas = [];
                 Object.keys(deltas).forEach(stringKey => {
                     // Convert string key to #ID for lookup in flatNeeds (which uses #ID keys)
                     const hashId = (typeof BeduerfnisIds !== 'undefined' && BeduerfnisIds.toId)
@@ -339,16 +347,25 @@
                         : stringKey;
 
                     if (flatNeeds[hashId] !== undefined) {
+                        const oldVal = flatNeeds[hashId];
                         // Wert modifizieren (keine Obergrenze, nur >= 0)
                         flatNeeds[hashId] = Math.max(0, flatNeeds[hashId] + deltas[stringKey]);
+                        appliedDeltas.push(`${stringKey} (${hashId}): ${oldVal} → ${flatNeeds[hashId]}`);
                         appliedCount++;
                     } else if (flatNeeds[stringKey] !== undefined) {
+                        const oldVal = flatNeeds[stringKey];
                         // Fallback: try direct string key lookup
                         flatNeeds[stringKey] = Math.max(0, flatNeeds[stringKey] + deltas[stringKey]);
+                        appliedDeltas.push(`${stringKey}: ${oldVal} → ${flatNeeds[stringKey]}`);
                         appliedCount++;
+                    } else {
+                        console.warn(`[ProfileCalculator] Delta-Key nicht gefunden: ${stringKey} (hashId: ${hashId})`);
                     }
                 });
                 console.log('[ProfileCalculator] Modifier angewendet:', appliedCount, 'von', Object.keys(deltas).length, 'Deltas');
+                if (appliedDeltas.length > 0) {
+                    console.log('[ProfileCalculator] Angewendete Deltas:', appliedDeltas);
+                }
             }
         }
 
@@ -661,6 +678,14 @@
         const geschlecht = TiageState.get(`personDimensions.${person}.geschlecht`) || null;
         const dominanz = TiageState.get(`personDimensions.${person}.dominanz`) || null;
         const orientierung = TiageState.get(`personDimensions.${person}.orientierung`) || null;
+
+        // DEBUG: Log GOD settings pro Person
+        console.log(`[ProfileCalculator] recalculateFlatNeeds für ${person.toUpperCase()}:`, {
+            archetyp: archetyp,
+            geschlecht: geschlecht,
+            dominanz: dominanz,
+            orientierung: orientierung
+        });
 
         // Berechne neue flatNeeds
         const newFlatNeeds = calculateFlatNeeds(archetyp, geschlecht, dominanz, orientierung);

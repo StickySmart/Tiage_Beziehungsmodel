@@ -10519,6 +10519,16 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
             const ichKeys = Object.keys(ichFlatNeeds);
             const partnerKeys = Object.keys(partnerFlatNeeds);
 
+            // DEBUG: Log flatNeeds für beide Personen
+            console.log('[calculateNeedsMatchFromFlatNeeds] Vergleich:', {
+                ichCount: ichKeys.length,
+                partnerCount: partnerKeys.length,
+                ichSample: ichKeys.slice(0, 5).reduce((o, k) => ({ ...o, [k]: ichFlatNeeds[k] }), {}),
+                partnerSample: partnerKeys.slice(0, 5).reduce((o, k) => ({ ...o, [k]: partnerFlatNeeds[k] }), {}),
+                ichDimensions: TiageState.get('personDimensions.ich'),
+                partnerDimensions: TiageState.get('personDimensions.partner')
+            });
+
             if (ichKeys.length === 0 || partnerKeys.length === 0) {
                 return null; // Keine Daten verfügbar
             }
@@ -10526,6 +10536,16 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
             // lockedNeeds holen (überschreiben flatNeeds)
             const ichLockedNeeds = TiageState.getLockedNeeds('ich') || {};
             const partnerLockedNeeds = TiageState.getLockedNeeds('partner') || {};
+
+            // DEBUG: Log lockedNeeds
+            const ichLockedCount = Object.keys(ichLockedNeeds).length;
+            const partnerLockedCount = Object.keys(partnerLockedNeeds).length;
+            if (ichLockedCount > 0 || partnerLockedCount > 0) {
+                console.log('[calculateNeedsMatchFromFlatNeeds] LockedNeeds:', {
+                    ichLocked: ichLockedCount,
+                    partnerLocked: partnerLockedCount
+                });
+            }
 
             // Finale Werte: lockedNeeds überschreiben flatNeeds
             const getFinalValue = (person, needId) => {
