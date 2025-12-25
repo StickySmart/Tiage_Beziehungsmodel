@@ -420,14 +420,21 @@
                 });
             }
 
-            // Aus sessionStorage laden (falls von archetype-interaction.html übergeben)
-            const stored = sessionStorage.getItem('tiageSyntheseData');
-            if (stored) {
-                try {
-                    const data = JSON.parse(stored);
-                    if (data.ichName) currentIchArchetype = findArchetypeKey(data.ichName);
-                    if (data.partnerName) currentPartnerArchetype = findArchetypeKey(data.partnerName);
-                } catch (e) {}
+            // Aus sessionStorage laden (nur als Fallback, wenn TiageState keine Daten hat)
+            // TiageState ist SSOT - sessionStorage darf TiageState-Werte NICHT überschreiben
+            const tiageStateHasData = typeof TiageState !== 'undefined' &&
+                TiageState.get('archetypes.ich.primary') &&
+                TiageState.get('archetypes.partner.primary');
+
+            if (!tiageStateHasData) {
+                const stored = sessionStorage.getItem('tiageSyntheseData');
+                if (stored) {
+                    try {
+                        const data = JSON.parse(stored);
+                        if (data.ichName) currentIchArchetype = findArchetypeKey(data.ichName);
+                        if (data.partnerName) currentPartnerArchetype = findArchetypeKey(data.partnerName);
+                    } catch (e) {}
+                }
             }
 
             updateArchetypeDisplay();
