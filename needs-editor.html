@@ -789,6 +789,12 @@
             // Render the needs list
             renderNeedsList();
 
+            // Perspektiven-Filter aus URL-Parameter anwenden (nach Rendering)
+            const perspectiveParam = urlParams.get('perspective');
+            if (perspectiveParam && typeof DimensionKategorieFilter !== 'undefined') {
+                applyPerspectiveFilter(perspectiveParam);
+            }
+
             // NEU: Dimension-Filter aus URL-Parameter setzen (R1, R2, R3, R4)
             const dimensionParam = urlParams.get('dimension');
             if (dimensionParam && typeof DimensionKategorieFilter !== 'undefined') {
@@ -800,6 +806,49 @@
                         console.log('[NeedsEditor] Dimension-Filter gesetzt:', dimensionParam.toUpperCase());
                     }
                 }, 100);
+            }
+        }
+
+        /**
+         * Wendet einen Perspektiven-Filter an (von URL-Parameter oder externem Aufruf)
+         * @param {string} perspektiveId - z.B. '#P1', '#P2', '#P3', '#P4'
+         */
+        function applyPerspectiveFilter(perspektiveId) {
+            // Hole Kategorien für diese Perspektive aus SSOT
+            var kategorien = [];
+            if (window.TiageTaxonomie && window.TiageTaxonomie.perspektiven && window.TiageTaxonomie.perspektiven[perspektiveId]) {
+                kategorien = window.TiageTaxonomie.perspektiven[perspektiveId].kategorien || [];
+            }
+
+            if (kategorien.length > 0) {
+                // Reset bestehende Filter
+                DimensionKategorieFilter.reset();
+
+                // Aktiviere alle Kategorien dieser Perspektive
+                kategorien.forEach(function(katId) {
+                    if (!DimensionKategorieFilter.isKategorieActive(katId)) {
+                        DimensionKategorieFilter.toggleKategorie(katId);
+                    }
+                });
+
+                // Setze Suchfeld-Text wie bei Dropdown-Auswahl
+                const perspektivenLabels = {
+                    '#P1': 'Statistik',
+                    '#P2': 'Konditionierung',
+                    '#P3': 'Qualität',
+                    '#P4': 'SexPositiv'
+                };
+                var input = document.getElementById('profileReviewSearchInput');
+                if (input) {
+                    input.value = perspektiveId + ' ' + (perspektivenLabels[perspektiveId] || '');
+                }
+
+                console.log('[NeedsEditor] Perspektive aktiviert via URL:', perspektiveId);
+
+                // Filter anwenden
+                filterProfileReviewByNeed('');
+            } else {
+                console.warn('[NeedsEditor] Keine Kategorien für Perspektive gefunden:', perspektiveId);
             }
         }
 

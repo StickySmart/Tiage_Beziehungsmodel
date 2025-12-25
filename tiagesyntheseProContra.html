@@ -355,6 +355,21 @@
             border: 1px solid var(--border);
         }
 
+        .perspektive-clickable {
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .perspektive-clickable:hover {
+            background: rgba(255,255,255,0.08);
+            border-color: rgba(255,255,255,0.2);
+            transform: translateY(-2px);
+        }
+
+        .perspektive-clickable:active {
+            transform: translateY(0);
+        }
+
         .perspektive-id {
             font-size: 12px;
             font-weight: 600;
@@ -686,6 +701,19 @@
         const perspektivenColors = ['#22c55e', '#3b82f6', '#8b5cf6', '#ec4899'];
 
         /**
+         * Navigiert zur Bedürfnis-Ansicht mit Perspektiven-Filter
+         * @param {string} perspektiveId - z.B. '#P1', '#P2', '#P3', '#P4'
+         */
+        function navigateToPerspektive(perspektiveId) {
+            // Navigiere zu needs-editor.html mit person=ich und perspektive-Filter
+            const url = new URL('needs-editor.html', window.location.href);
+            url.searchParams.set('person', 'ich');
+            url.searchParams.set('archetype', currentIchArchetype);
+            url.searchParams.set('perspective', perspektiveId);
+            window.location.href = url.toString();
+        }
+
+        /**
          * Rendert den Hauptinhalt
          */
         function renderContent() {
@@ -711,7 +739,9 @@
                             return perspektivenDefs.map((p, i) => {
                                 const val = werte[p.id] || 1.0;
                                 return `
-                                    <div class="perspektive-item">
+                                    <div class="perspektive-item perspektive-clickable"
+                                         onclick="navigateToPerspektive('${p.id}')"
+                                         title="Klicken um Bedürfnisse mit ${p.label}-Perspektive zu sehen">
                                         <div class="perspektive-id">${p.id}</div>
                                         <div class="perspektive-label">${p.label}</div>
                                         <div class="perspektive-value" style="color: ${perspektivenColors[i]};">${val.toFixed(2)}</div>
