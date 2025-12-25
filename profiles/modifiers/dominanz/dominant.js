@@ -66,22 +66,16 @@ TiageModifiers.Dominanz.Dominant = {
     // ═══════════════════════════════════════════════════════════════════════
 
     deltas: {
-        // Positive Modifikatoren
-        fuehrungskompetenz: 5,              // Kernmerkmal
-        verantwortungsbewusstsein: 4,       // Für Partner sorgen
-        entscheidungsfreude: 5,             // Klare Entscheidungen
-        empathie: 3,                        // Wider Erwarten hoch (Forschung)
-        strukturgebung: 4,                  // Klare Rahmen setzen
-
-        // Beziehungsdynamik
-        komplementaritaetMitSubmissiv: 8,   // Optimale Ergänzung
-        komplementaritaetMitDominant: -5,   // Machtkampf-Risiko
-        komplementaritaetMitSwitch: 2,      // Flexibel
-        komplementaritaetMitAusgeglichen: 2,// Flexibel
+        // Positive Modifikatoren (Keys müssen Need-IDs aus beduerfnis-katalog.json entsprechen)
+        fuehrung_geben: 5,                  // #B76 Kernmerkmal
+        verantwortung_uebernehmen: 4,       // #B84 Für Partner sorgen
+        selbstbestimmung_und_unabhaengigkeit: 5, // #B34 Klare Entscheidungen
+        empathie: 3,                        // #B28 Wider Erwarten hoch (Forschung)
+        struktur: 4,                        // #B198 Klare Rahmen setzen
 
         // Herausforderungen
-        kontrollbedarf: -2,                 // Kann zu rigide werden
-        kompromissbereitschaft: -1          // Schwieriger bei Gleichrangigen
+        kontrolle_ausueben: -2,             // #B74 Kann zu rigide werden
+        gegenseitigkeit: -1                 // #B43 Kompromissbereitschaft schwieriger
     },
 
     // ═══════════════════════════════════════════════════════════════════════

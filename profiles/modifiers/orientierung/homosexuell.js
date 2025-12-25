@@ -67,24 +67,14 @@ TiageModifiers.Orientierung.Homosexuell = {
     // ═══════════════════════════════════════════════════════════════════════
 
     deltas: {
-        // Basis-Kompatibilität
-        kompatibilitaetMitHomo: 5,           // Gegenseitige Anziehung
-        kompatibilitaetMitHetero: -5,        // Keine gegenseitige Anziehung
-        kompatibilitaetMitBi: 3,             // Teilweise Kompatibilität
+        // Positive Modifikatoren (Keys müssen Need-IDs aus beduerfnis-katalog.json entsprechen)
+        integritaet: 4,                      // #B52 Identitätsstärke nach Coming-Out
+        gemeinschaft: 4,                     // #B41 Community-Verbundenheit
+        wachstum_und_sinn: 4,                // #B61 Resilienz
+        rollenausdruck: 4,                   // #B87 Weniger starre Geschlechterrollen
 
-        // Identitätsfaktoren
-        identitaetsstaerke: 4,               // Nach Coming-Out oft stark
-        communityVerbundenheit: 4,           // LGBTQ+ Community
-        resilienz: 4,                        // Durch Überwindung von Herausforderungen
-
-        // Gesellschaftliche Faktoren
-        gesellschaftlicheAkzeptanz: 2,       // Wachsend aber nicht vollständig
-        diskriminierungsrisiko: -3,          // Minority Stress
-        sichtbarkeit: 3,                     // Zunehmende Repräsentation
-
-        // Beziehungsdynamik
-        beziehungsZufriedenheit: 4,          // Hohe Zufriedenheit bei offenen Paaren
-        rollenflexibilitaet: 4               // Weniger starre Geschlechterrollen
+        // Herausforderungen
+        gesellschaft: -3                     // #B19 Gesellschaftliche Akzeptanz wachsend
     },
 
     // ═══════════════════════════════════════════════════════════════════════

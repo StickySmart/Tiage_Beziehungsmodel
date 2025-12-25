@@ -66,20 +66,10 @@ TiageModifiers.Orientierung.Heterosexuell = {
     // ═══════════════════════════════════════════════════════════════════════
 
     deltas: {
-        // Basis-Kompatibilität
-        kompatibilitaetMitHetero: 5,         // Gegenseitige Anziehung gegeben
-        kompatibilitaetMitHomo: -5,          // Keine gegenseitige Anziehung
-        kompatibilitaetMitBi: 3,             // Einseitige Kompatibilität möglich
-
-        // Gesellschaftliche Faktoren
-        gesellschaftlicheAkzeptanz: 5,       // Normative Position
-        sichtbarkeit: 5,                     // Dominante Repräsentation
-        diskriminierungsrisiko: 0,           // Kein orientierungsbedingtes Risiko
-
-        // Beziehungsdynamik
-        rollenerwartungen: 2,                // Traditionelle Erwartungen vorhanden
-        beziehungsmodelle: 4,                // Viele Vorbilder verfügbar
-        familiengruendung: 4                 // Gesellschaftlich unterstützt
+        // Positive Modifikatoren (Keys müssen Need-IDs aus beduerfnis-katalog.json entsprechen)
+        gesellschaft: 5,                     // #B19 Gesellschaftliche Akzeptanz - normative Position
+        langfristige_bindung: 4,             // #B95 Familienplanung unterstützt
+        rollenausdruck: 2                    // #B87 Traditionelle Rollenerwartungen
     },
 
     // ═══════════════════════════════════════════════════════════════════════

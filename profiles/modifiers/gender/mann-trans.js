@@ -68,21 +68,17 @@ TiageModifiers.Gender.MannTrans = {
     // ═══════════════════════════════════════════════════════════════════════
 
     deltas: {
-        // Positive Modifikatoren (aus Forschung)
-        emotionaleKontrolle: 3,             // Höher als bei cis-Männern
-        selbststaendigkeit: 4,              // Signifikant höher
-        selbstreflexion: 4,                 // Durch Transition entwickelt
-        kommunikationsfaehigkeit: 3,        // Verbessert durch Transition
-        resilienz: 4,                       // Durch Überwindung von Herausforderungen
+        // Positive Modifikatoren (Keys müssen Need-IDs aus beduerfnis-katalog.json entsprechen)
+        emotionale_sicherheit: 3,           // #B136 Emotionale Kontrolle
+        selbstbestimmung_und_unabhaengigkeit: 4, // #B34 Selbstständigkeit
+        authentizitaet: 5,                  // #B50 Durch Transition erreicht
+        kommunikation: 3,                   // #B40 Verbessert durch Transition
+        wachstum_und_sinn: 4,               // #B61 Resilienz durch Herausforderungen
+        emotionale_tiefe: 3,                // #B71 Beziehungstiefe
 
         // Herausforderungen
-        gesellschaftlicherDruck: -2,        // Minority Stress
-        diskriminierungsrisiko: -3,         // Externe Faktoren
-
-        // Beziehungsdynamik
-        beziehungstiefe: 3,                 // Oft tiefere Reflexion
-        authentizitaet: 5,                  // Hohe Authentizität durch Selbstfindung
-        partnerUnterstuetzungsBedarf: 2     // Wichtigkeit von Support
+        gesellschaft: -2,                   // #B19 Gesellschaftlicher Druck
+        akzeptanz_und_empathie: 2           // #B25 Unterstützungsbedarf
     },
 
     // ═══════════════════════════════════════════════════════════════════════

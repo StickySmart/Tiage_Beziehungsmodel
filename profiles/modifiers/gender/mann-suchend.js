@@ -60,21 +60,19 @@ TiageModifiers.Gender.MannSuchend = {
     // ═══════════════════════════════════════════════════════════════════════
 
     deltas: {
-        // Positive Modifikatoren
-        selbstreflexion: 5,                 // Intensive Selbstbefragung
-        offenheitFuerWachstum: 4,           // Bereitschaft zur Entwicklung
-        ehrlichkeit: 4,                     // Anerkennung der Unsicherheit
+        // Positive Modifikatoren (Keys müssen Need-IDs aus beduerfnis-katalog.json entsprechen)
+        authentizitaet: 5,                  // #B50 Selbstreflexion
+        wachstum_und_sinn: 4,               // #B61 Offenheit für Wachstum
+        integritaet: 4,                     // #B52 Ehrlichkeit
 
         // Herausforderungen
-        identitaetsStabilitaet: -4,         // Per Definition unsicher
-        zukunftsplanung: -3,                // Ungewissheit über Entwicklung
-        psychischeBelastung: -3,            // Erhöhte Angst und Depression während Exploration
+        stabilitaet: -4,                    // #B13 Identitätsstabilität unsicher
+        langfristige_bindung: -3,           // #B95 Zukunftsplanung schwierig
+        stabilitaet_und_sicherheit: -3,     // #B11 Psychische Belastung
 
-        // Beziehungsdynamik
-        partnerGeduld: -2,                  // Erfordert geduldigen Partner
-        kommunikationsbedarf: 4,            // Hoher Bedarf an Austausch
-        unterstuetzungsbedarf: 5,           // Wichtigkeit von Akzeptanz
-        entwicklungspotential: 5            // Raum für Wachstum
+        // Support
+        kommunikation: 4,                   // #B40 Kommunikationsbedarf
+        akzeptanz_und_empathie: 5           // #B25 Unterstützungsbedarf
     },
 
     // ═══════════════════════════════════════════════════════════════════════

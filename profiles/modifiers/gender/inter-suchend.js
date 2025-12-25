@@ -68,23 +68,19 @@ TiageModifiers.Gender.InterSuchend = {
     // ═══════════════════════════════════════════════════════════════════════
 
     deltas: {
-        // Positive Modifikatoren
-        selbstreflexion: 5,                 // Intensive Auseinandersetzung
-        koerperlicheEinzigartigkeit: 5,     // Biologische Gegebenheit
-        offenheitFuerWachstum: 4,           // Bereitschaft zur Entwicklung
-        ehrlichkeit: 4,                     // Anerkennung der Komplexität
+        // Positive Modifikatoren (Keys müssen Need-IDs aus beduerfnis-katalog.json entsprechen)
+        authentizitaet: 5,                  // #B50 Selbstreflexion
+        wachstum_und_sinn: 5,               // #B61 Offenheit für Wachstum & Entwicklungspotential
+        integritaet: 4,                     // #B52 Ehrlichkeit
 
         // Herausforderungen (verstärkt durch Intersex-Status)
-        identitaetsStabilitaet: -5,         // Doppelte Unsicherheit
-        medizinischeTraumata: -4,           // Häufige Eingriffe
-        psychischeBelastung: -4,            // Erhöhtes Risiko
-        gesellschaftlicherDruck: -4,        // Binäre Zuweisungen
+        stabilitaet: -5,                    // #B13 Identitätsstabilität - doppelte Unsicherheit
+        stabilitaet_und_sicherheit: -4,     // #B11 Psychische Belastung
+        gesellschaft: -4,                   // #B19 Gesellschaftlicher Druck
 
-        // Beziehungsdynamik
-        unterstuetzungsbedarf: 5,           // Kritisch wichtig
-        kommunikationsbedarf: 5,            // Sehr hoch
-        partnerGeduld: -3,                  // Erfordert sehr geduldigen Partner
-        entwicklungspotential: 5            // Großer Raum für Wachstum
+        // Support
+        akzeptanz_und_empathie: 5,          // #B25 Unterstützungsbedarf kritisch wichtig
+        kommunikation: 5                    // #B40 Kommunikationsbedarf sehr hoch
     },
 
     // ═══════════════════════════════════════════════════════════════════════
