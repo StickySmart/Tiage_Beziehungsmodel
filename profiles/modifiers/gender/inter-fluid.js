@@ -60,23 +60,18 @@ TiageModifiers.Gender.InterFluid = {
     // ═══════════════════════════════════════════════════════════════════════
 
     deltas: {
-        // Positive Modifikatoren
-        koerperlicheEinzigartigkeit: 5,     // Biologische Varianz
-        genderFlexibilitaet: 5,             // Kombinierte Fluidität
-        anpassungsfaehigkeit: 5,            // Hohe Flexibilität
-        selbstbestimmung: 4,                // Aktive Identitätsgestaltung
-        wohlbefinden: 3,                    // Durch Fluidität erhöht
+        // Positive Modifikatoren (Keys müssen Need-IDs aus beduerfnis-katalog.json entsprechen)
+        rollenausdruck: 5,                  // #B87 Gender-Flexibilität & Rollenwechsel
+        offenheit_fuer_neues: 5,            // #B189 Anpassungsfähigkeit
+        selbstbestimmung_und_unabhaengigkeit: 4, // #B34 Aktive Identitätsgestaltung
+        stabilitaet_und_sicherheit: 3,      // #B11 Wohlbefinden durch Fluidität
+        authentizitaet: 5,                  // #B50 Maximale Selbstbestimmung
 
         // Herausforderungen
-        gesellschaftlicheKomplexitaet: -4,  // Doppelte Erklärungslast
-        medizinischeTraumata: -4,           // Häufige Eingriffe
-        verstehbarkeit: -3,                 // Komplexe Identität
+        gesellschaft: -4,                   // #B19 Gesellschaftliche Komplexität
 
-        // Beziehungsdynamik
-        rollenwechsel: 5,                   // Natürlich und körperlich begründet
-        kommunikationsbedarf: 5,            // Sehr hoch
-        partnerFlexibilitaet: 4,            // Erfordert flexiblen Partner
-        authentizitaet: 5                   // Maximale Selbstbestimmung
+        // Support
+        kommunikation: 5                    // #B40 Kommunikationsbedarf sehr hoch
     },
 
     // ═══════════════════════════════════════════════════════════════════════

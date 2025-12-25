@@ -60,22 +60,20 @@ TiageModifiers.Gender.FrauSuchend = {
     // ═══════════════════════════════════════════════════════════════════════
 
     deltas: {
-        // Positive Modifikatoren
-        selbstreflexion: 5,                 // Intensive innere Arbeit
-        offenheitFuerWachstum: 5,           // Bereitschaft zur Veränderung
-        ehrlichkeit: 4,                     // Anerkennung der Unsicherheit
-        vulnerabilitaet: 3,                 // Authentische Verletzlichkeit
+        // Positive Modifikatoren (Keys müssen Need-IDs aus beduerfnis-katalog.json entsprechen)
+        authentizitaet: 5,                  // #B50 Selbstreflexion
+        wachstum_und_sinn: 5,               // #B61 Offenheit für Wachstum
+        integritaet: 4,                     // #B52 Ehrlichkeit
+        vertrauen_schenken: 3,              // #B83 Authentische Verletzlichkeit
 
         // Herausforderungen
-        identitaetsStabilitaet: -4,         // Definitionsgemäß unsicher
-        zukunftsplanung: -3,                // Ungewissheit
-        psychischeBelastung: -3,            // Erhöhte Angst/Depression
+        stabilitaet: -4,                    // #B13 Identitätsstabilität unsicher
+        langfristige_bindung: -3,           // #B95 Zukunftsplanung schwierig
+        stabilitaet_und_sicherheit: -3,     // #B11 Psychische Belastung
 
-        // Beziehungsdynamik
-        unterstuetzungsbedarf: 5,           // Hohe Wichtigkeit
-        kommunikationsbedarf: 4,            // Offener Austausch nötig
-        partnerGeduld: -2,                  // Erfordert geduldigen Partner
-        entwicklungspotential: 5            // Großer Raum für Wachstum
+        // Support
+        akzeptanz_und_empathie: 5,          // #B25 Unterstützungsbedarf
+        kommunikation: 4                    // #B40 Kommunikationsbedarf
     },
 
     // ═══════════════════════════════════════════════════════════════════════

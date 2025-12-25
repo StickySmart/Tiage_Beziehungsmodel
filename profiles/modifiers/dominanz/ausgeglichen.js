@@ -57,22 +57,13 @@ TiageModifiers.Dominanz.Ausgeglichen = {
     // ═══════════════════════════════════════════════════════════════════════
 
     deltas: {
-        // Positive Modifikatoren
-        egalitaet: 5,                       // Kernmerkmal
-        partnerschaftlichkeit: 5,           // Gleichberechtigte Zusammenarbeit
-        kompromissbereitschaft: 4,          // Notwendig für Balance
-        respekt: 4,                         // Gegenseitige Wertschätzung
-        stabilitaet: 4,                     // Keine extremen Schwankungen
-
-        // Beziehungsdynamik
-        komplementaritaetMitDominant: 2,    // Kann sich anpassen
-        komplementaritaetMitSubmissiv: 2,   // Kann sich anpassen
-        komplementaritaetMitSwitch: 3,      // Beide flexibel
-        komplementaritaetMitAusgeglichen: 5,// Optimale Passung
+        // Positive Modifikatoren (Keys müssen Need-IDs aus beduerfnis-katalog.json entsprechen)
+        gegenseitigkeit: 5,                 // #B43 Egalität & Partnerschaftlichkeit
+        akzeptanz_und_empathie: 4,          // #B25 Respekt & gegenseitige Wertschätzung
+        stabilitaet: 4,                     // #B13 Keine extremen Schwankungen
 
         // Herausforderungen
-        entscheidungsgeschwindigkeit: -1,   // Konsens braucht Zeit
-        rollenKlarheit: 0                   // Neutral - situationsabhängig
+        wirksamkeit: -1                     // #B60 Entscheidungsgeschwindigkeit - Konsens braucht Zeit
     },
 
     // ═══════════════════════════════════════════════════════════════════════

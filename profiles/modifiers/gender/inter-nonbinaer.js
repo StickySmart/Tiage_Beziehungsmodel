@@ -68,23 +68,20 @@ TiageModifiers.Gender.InterNonbinaer = {
     // ═══════════════════════════════════════════════════════════════════════
 
     deltas: {
-        // Positive Modifikatoren
-        koerperlicheEinzigartigkeit: 5,     // Biologische Varianz
-        identitaetsIntegration: 4,          // Wenn gelungen, sehr stark
-        resilienz: 4,                       // Durch Überwindung von Herausforderungen
-        authentizitaet: 5,                  // Eigener Weg jenseits binärer Normen
+        // Positive Modifikatoren (Keys müssen Need-IDs aus beduerfnis-katalog.json entsprechen)
+        integritaet: 4,                     // #B52 Identitätsintegration
+        wachstum_und_sinn: 4,               // #B61 Resilienz
+        authentizitaet: 5,                  // #B50 Eigener Weg jenseits binärer Normen
+        gemeinschaft: 4,                    // #B41 Wichtigkeit von Community
 
         // Herausforderungen
-        medizinischeTraumata: -4,           // Häufige nicht-konsensuelle OPs
-        gesellschaftlicheUnsichtbarkeit: -3,// Mangelndes Bewusstsein
-        psychischeBelastung: -3,            // Höhere Raten Depression/Angst
-        partnerschaftlicheHerausforderungen: -2, // Zögerlichkeit bei Beziehungen
+        gesellschaft: -3,                   // #B19 Gesellschaftliche Unsichtbarkeit
+        stabilitaet_und_sicherheit: -3,     // #B11 Psychische Belastung
+        langfristige_bindung: -2,           // #B95 Partnerschaftliche Herausforderungen
 
-        // Beziehungsdynamik
-        kommunikationsbedarf: 5,            // Hoher Erklärungsbedarf
-        unterstuetzungswichtigkeit: 5,      // Akzeptanz kritisch wichtig
-        sexuelleEntwicklung: -2,            // Spezifische Herausforderungen
-        gemeinschaftsverbundenheit: 4       // Wichtigkeit von Community
+        // Support
+        kommunikation: 5,                   // #B40 Kommunikationsbedarf
+        akzeptanz_und_empathie: 5           // #B25 Unterstützung kritisch wichtig
     },
 
     // ═══════════════════════════════════════════════════════════════════════

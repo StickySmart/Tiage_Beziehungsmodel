@@ -68,25 +68,14 @@ TiageModifiers.Orientierung.Bisexuell = {
     // ═══════════════════════════════════════════════════════════════════════
 
     deltas: {
-        // Basis-Kompatibilität (breiter Pool)
-        kompatibilitaetMitHetero: 3,         // Teilweise möglich
-        kompatibilitaetMitHomo: 3,           // Teilweise möglich
-        kompatibilitaetMitBi: 5,             // Volles gegenseitiges Verständnis
-
-        // Positive Faktoren
-        anziehungsflexibilitaet: 5,          // Kernmerkmal
-        offenheitFuerVielfalt: 5,            // Breiteres Spektrum
-        empathie: 4,                         // Verständnis für verschiedene Orientierungen
+        // Positive Modifikatoren (Keys müssen Need-IDs aus beduerfnis-katalog.json entsprechen)
+        offenheit_fuer_neues: 5,             // #B189 Anziehungsflexibilität & Vielfalt
+        sexualitaet: 5,                      // #B172 Breiteres Spektrum
+        empathie: 4,                         // #B28 Verständnis für verschiedene Orientierungen
 
         // Herausforderungen
-        biErasure: -3,                       // Identitätsleugnung
-        doppelteAussenseiterrolle: -2,       // Weder hetero- noch homo-akzeptiert
-        outingRate: -2,                      // Niedrigste Coming-Out-Rate
-
-        // Beziehungsdynamik
-        beziehungsFlexibilitaet: 4,          // Verschiedene Beziehungsformen möglich
-        biCycle: 0,                          // Wechselnde Anziehung (neutral)
-        monogamieVerhandlung: 2              // Explizite Aushandlung notwendig
+        gesellschaft: -3,                    // #B19 Bi-Erasure & Außenseiterrolle
+        integritaet: -2                      // #B52 Identitätsdruck durch Umfeld
     },
 
     // ═══════════════════════════════════════════════════════════════════════

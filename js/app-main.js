@@ -16416,7 +16416,9 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
                 }
             }
 
-            // Kombinierte Resonanz berechnen (Produkt - wie im synthesisCalculator)
+            // ═══════════════════════════════════════════════════════════════════════════
+            // PAARUNGS-Resonanz berechnen: R_PAARUNG = R_ICH × R_PARTNER (Produkt)
+            // ═══════════════════════════════════════════════════════════════════════════
             const resonanzWerte = {
                 R1: Math.round(resonanzIch.R1 * resonanzPartner.R1 * 1000) / 1000,
                 R2: Math.round(resonanzIch.R2 * resonanzPartner.R2 * 1000) / 1000,
@@ -16424,7 +16426,7 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
                 R4: Math.round(resonanzIch.R4 * resonanzPartner.R4 * 1000) / 1000
             };
 
-            console.log('[ResonanzModal] ICH:', resonanzIch, 'PARTNER:', resonanzPartner, 'KOMBINIERT:', resonanzWerte);
+            console.log('[ResonanzModal] ICH:', resonanzIch, 'PARTNER:', resonanzPartner, 'PAARUNG (Produkt):', resonanzWerte);
 
             // R-Faktoren Konfiguration mit AGOD-Zuordnung (v3.3: 18 Kategorien)
             // Die 18 GFK-Kategorien werden auf 4 Resonanzfaktoren aggregiert.
@@ -16578,7 +16580,7 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
                                         <th style="padding: 12px 14px; text-align: left; color: var(--text-muted); font-weight: 500; font-size: 12px;">R-Faktor → AGOD</th>
                                         <th style="padding: 12px 10px; text-align: center; color: var(--success); font-weight: 500; font-size: 12px;">ICH</th>
                                         <th style="padding: 12px 10px; text-align: center; color: var(--danger); font-weight: 500; font-size: 12px;">PARTNER</th>
-                                        <th style="padding: 12px 10px; text-align: center; color: #8B5CF6; font-weight: 600; font-size: 12px; background: rgba(139,92,246,0.1);">ICH × PARTNER</th>
+                                        <th style="padding: 12px 10px; text-align: center; color: #8B5CF6; font-weight: 600; font-size: 12px; background: rgba(139,92,246,0.1);">PAARUNG</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -16593,8 +16595,11 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
                                 <strong style="color: var(--text-secondary);">Was zeigt diese Tabelle?</strong>
                             </div>
                             <div>
-                                Jeder R-Faktor misst die <em>Kohärenz</em> zwischen deinen Bedürfnissen und dem gewählten Archetyp.
-                                Der kombinierte Wert (ICH × PARTNER) multipliziert den jeweiligen AGOD-Score:
+                                <strong style="color: #22c55e;">ICH</strong> / <strong style="color: #ef4444;">PARTNER</strong>:
+                                <em>Kohärenz</em> zwischen Bedürfnissen und gewähltem Archetyp.<br>
+                                <strong style="color: #8B5CF6;">PAARUNG</strong>:
+                                R_ICH × R_PARTNER (Produkt der individuellen Kohärenz-Werte).<br>
+                                Der PAARUNGS-Wert multipliziert den jeweiligen AGOD-Score:
                             </div>
                             <div style="margin-top: 8px; font-family: monospace; font-size: 10px;">
                                 Q = (O × wO × R₁) + (A × wA × R₂) + (D × wD × R₃) + (G × wG × R₄)

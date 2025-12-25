@@ -66,22 +66,16 @@ TiageModifiers.Dominanz.Submissiv = {
     // ═══════════════════════════════════════════════════════════════════════
 
     deltas: {
-        // Positive Modifikatoren
-        hingabe: 5,                         // Kernmerkmal
-        vertrauen: 5,                       // Notwendig für Submission
-        loslassenKoennen: 5,                // Psychologische Erleichterung
-        dienstbereitschaft: 4,              // Wunsch zu gefallen
-        anpassungsfaehigkeit: 4,            // Flexibilität
-
-        // Beziehungsdynamik
-        komplementaritaetMitDominant: 8,    // Optimale Ergänzung
-        komplementaritaetMitSubmissiv: -5,  // Führungsvakuum
-        komplementaritaetMitSwitch: 2,      // Flexibel
-        komplementaritaetMitAusgeglichen: 2,// Flexibel
+        // Positive Modifikatoren (Keys müssen Need-IDs aus beduerfnis-katalog.json entsprechen)
+        hingabe: 5,                         // #B75 Kernmerkmal
+        vertrauen: 5,                       // #B29 Notwendig für Submission
+        leichtigkeit: 5,                    // #B14 Loslassen können
+        service_orientierung: 4,            // #B219 Wunsch zu gefallen
+        offenheit_fuer_neues: 4,            // #B189 Anpassungsfähigkeit
 
         // Herausforderungen
-        selbstbehauptung: -2,               // Kann schwieriger sein
-        initiativeErgreifen: -2             // Erwartet eher Führung
+        selbst_ausdruck: -2,                // #B67 Selbstbehauptung schwieriger
+        wirksamkeit: -2                     // #B60 Initiative ergreifen seltener
     },
 
     // ═══════════════════════════════════════════════════════════════════════

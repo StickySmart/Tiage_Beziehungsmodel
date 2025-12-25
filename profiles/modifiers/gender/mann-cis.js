@@ -59,19 +59,13 @@ TiageModifiers.Gender.MannCis = {
     // ═══════════════════════════════════════════════════════════════════════
 
     deltas: {
-        // Positive Modifikatoren
-        emotionaleStabilitaet: 2,          // Tendenz zu emotionaler Kontrolle
-        selbststaendigkeit: 3,              // Hohe Selbstständigkeitswerte
-        fuehrungsbereitschaft: 2,           // Gesellschaftliche Erwartung
+        // Positive Modifikatoren (Keys müssen Need-IDs aus beduerfnis-katalog.json entsprechen)
+        stabilitaet_und_sicherheit: 2,      // #B11 Emotionale Stabilität
+        selbstbestimmung_und_unabhaengigkeit: 3, // #B34 Selbstständigkeit
+        fuehrung_geben: 2,                  // #B76 Führungsbereitschaft
 
-        // Neutrale/Variable Modifikatoren
-        kommunikationsoffenheit: 0,         // Stark individuell variabel
-        emotionaleVerletzlichkeit: -1,      // Gesellschaftlicher Druck zur Unterdrückung
-
-        // Beziehungsdynamik
-        komplementaritaetMitFrauCis: 3,     // Traditionelle Komplementarität
-        komplementaritaetMitMannCis: -2,    // Gesellschaftliche Herausforderungen
-        offenheitFuerVielfalt: 0            // Stark individuell
+        // Herausforderungen
+        vertrauen_schenken: -1              // #B83 Emotionale Verletzlichkeit schwieriger
     },
 
     // ═══════════════════════════════════════════════════════════════════════
