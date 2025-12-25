@@ -19426,6 +19426,18 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
                 return;
             }
 
+            // ════════════════════════════════════════════════════════════════════════
+            // Zeige Ladeindikator während Daten geladen werden
+            // ════════════════════════════════════════════════════════════════════════
+            if (typeof ResonanzProfileHeaderCard !== 'undefined' && ResonanzProfileHeaderCard.setLoading) {
+                ResonanzProfileHeaderCard.setLoading(true);
+            }
+            // Auch Modal-Card in Ladezustand versetzen
+            var modalValuesContainer = document.getElementById('resonanzProfileModalValues');
+            if (modalValuesContainer) {
+                modalValuesContainer.classList.add('loading');
+            }
+
             // Speichere Kontext für spätere Neuladung bei Gender-Änderung
             var previousPerson = currentProfileReviewContext.person;
             currentProfileReviewContext.archetypeKey = archetypeKey || 'duo';
@@ -19791,6 +19803,24 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
             modal.style.display = 'flex';
             modal.classList.add('active');
             console.log('[DEBUG] modal.style after:', modal.style.display, 'classes:', modal.className);
+
+            // ════════════════════════════════════════════════════════════════════════
+            // Beende Ladeindikator nach kurzer Verzögerung für visuelles Feedback
+            // ════════════════════════════════════════════════════════════════════════
+            setTimeout(function() {
+                if (typeof ResonanzProfileHeaderCard !== 'undefined' && ResonanzProfileHeaderCard.setLoading) {
+                    ResonanzProfileHeaderCard.setLoading(false);
+                }
+                // Auch Modal-Card Ladezustand beenden
+                var modalValuesContainer = document.getElementById('resonanzProfileModalValues');
+                if (modalValuesContainer) {
+                    modalValuesContainer.classList.remove('loading');
+                }
+                // Aktualisiere auch die Resonanz-Karte mit den richtigen Werten
+                if (typeof ResonanzProfileHeaderCard !== 'undefined' && ResonanzProfileHeaderCard.update) {
+                    ResonanzProfileHeaderCard.update();
+                }
+            }, 150);
 
             // ═══════════════════════════════════════════════════════════════════════════
             // CLICK HANDLER FÜR RA-PROFIL PERSPEKTIVEN
