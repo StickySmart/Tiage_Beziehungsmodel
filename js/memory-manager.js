@@ -150,8 +150,13 @@ const MemoryManager = (function() {
         const allMods = TiageProfileStore.getNeedsModifiers();
         if (!allMods) return modifiers;
 
-        // Gender modifiers
-        const geschlechtKey = dimensions?.geschlecht?.primary;
+        // Gender modifiers - use full compound key (e.g., "mann-cis", "frau-trans")
+        let geschlechtKey = null;
+        if (dimensions?.geschlecht?.primary && dimensions?.geschlecht?.secondary) {
+            geschlechtKey = `${dimensions.geschlecht.primary}-${dimensions.geschlecht.secondary}`;
+        } else if (dimensions?.geschlecht?.primary) {
+            geschlechtKey = dimensions.geschlecht.primary;
+        }
         if (geschlechtKey && allMods.gender?.[geschlechtKey]) {
             modifiers.gender = allMods.gender[geschlechtKey];
         }
