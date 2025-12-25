@@ -914,6 +914,11 @@
             currentPerson = person;
             localStorage.setItem('tiage_needs_editor_person', person);
 
+            // FIX: URL aktualisieren, damit person-Parameter synchron bleibt
+            const url = new URL(window.location);
+            url.searchParams.set('person', person);
+            history.replaceState(null, '', url);
+
             // Update UI
             updatePersonToggle();
 
