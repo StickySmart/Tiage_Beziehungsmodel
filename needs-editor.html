@@ -932,14 +932,29 @@
                 if (typeof TiageState !== 'undefined' && typeof ProfileCalculator !== 'undefined') {
                     TiageState.set('archetypes.' + person + '.primary', currentArchetype);
 
-                    const profileData = {
-                        archetyp: currentArchetype,
-                        geschlecht: TiageState.get('personDimensions.' + person + '.geschlecht') || null,
-                        dominanz: TiageState.get('personDimensions.' + person + '.dominanz') || null,
-                        orientierung: TiageState.get('personDimensions.' + person + '.orientierung') || null
-                    };
-                    ProfileCalculator.loadProfile(person, profileData);
-                    console.log('[NeedsEditor] Profil gewechselt zu', person, ':', currentArchetype);
+                    // FIX: Prüfe ob bereits flatNeeds für diese Person existieren
+                    // Wenn ja: NICHT neu berechnen, da das User-Änderungen überschreiben würde!
+                    // loadProfile() soll nur bei erstem Laden oder Archetyp-Wechsel aufgerufen werden
+                    const existingFlatNeeds = TiageState.get('flatNeeds.' + person);
+                    const hasExistingData = existingFlatNeeds && (
+                        Array.isArray(existingFlatNeeds) ? existingFlatNeeds.length > 0 : Object.keys(existingFlatNeeds).length > 0
+                    );
+
+                    if (!hasExistingData) {
+                        // Noch keine Daten für diese Person - Profil neu berechnen
+                        const profileData = {
+                            archetyp: currentArchetype,
+                            geschlecht: TiageState.get('personDimensions.' + person + '.geschlecht') || null,
+                            dominanz: TiageState.get('personDimensions.' + person + '.dominanz') || null,
+                            orientierung: TiageState.get('personDimensions.' + person + '.orientierung') || null
+                        };
+                        ProfileCalculator.loadProfile(person, profileData);
+                        console.log('[NeedsEditor] Profil NEU berechnet für', person, ':', currentArchetype);
+                    } else {
+                        // Bereits Daten vorhanden - NICHT überschreiben!
+                        console.log('[NeedsEditor] Existierende Daten für', person, 'beibehalten:',
+                            Array.isArray(existingFlatNeeds) ? existingFlatNeeds.length : Object.keys(existingFlatNeeds).length, 'needs');
+                    }
                 }
 
                 // Update context for AttributeSummaryCard
