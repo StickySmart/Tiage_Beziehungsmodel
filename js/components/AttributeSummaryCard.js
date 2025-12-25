@@ -306,6 +306,33 @@ const AttributeSummaryCard = (function() {
                 ...updates
             });
         }
+
+        // FIX: Direkt in TiageState synchronisieren (SSOT)
+        // Ohne diesen Code werden Änderungen auf Seiten ohne flatNeedChange-Handler nicht synchronisiert
+        if (typeof TiageState !== 'undefined') {
+            let currentPerson = 'ich';
+            if (window.currentProfileReviewContext && window.currentProfileReviewContext.person) {
+                currentPerson = window.currentProfileReviewContext.person;
+            }
+
+            // Value synchronisieren
+            if (updates.value !== undefined && TiageState.setNeed) {
+                TiageState.setNeed(currentPerson, id, updates.value);
+            }
+
+            // Lock-Status synchronisieren (SSOT für Locks ist TiageState.profileReview.lockedNeeds)
+            if (updates.locked !== undefined) {
+                if (updates.locked && TiageState.lockNeed) {
+                    // Beim Sperren: Wert in lockedNeeds speichern
+                    const currentValue = updates.value !== undefined ? updates.value :
+                        (findNeedById(id)?.value || 50);
+                    TiageState.lockNeed(currentPerson, id, currentValue);
+                } else if (!updates.locked && TiageState.unlockNeed) {
+                    // Beim Entsperren: Aus lockedNeeds entfernen
+                    TiageState.unlockNeed(currentPerson, id);
+                }
+            }
+        }
     }
 
     /**
@@ -1746,6 +1773,8 @@ const AttributeSummaryCard = (function() {
                 };
             }).filter(Boolean);
             console.log('[AttributeSummaryCard] Flat needs geladen (Array-Format v1.8.128+):', newFormatCount, 'Einträge');
+            // FIX: Auch bei Array-Format Lock-Status aus TiageState synchronisieren
+            syncLocksFromTiageState();
             return;
         }
 
@@ -1798,6 +1827,38 @@ const AttributeSummaryCard = (function() {
             if (newFormatCount > 0) {
                 console.log('[AttributeSummaryCard] Flat needs migriert (v1.8.89-127 Object):', newFormatCount, 'Werte');
             }
+        }
+
+        // FIX: Synchronisiere Lock-Status aus TiageState.lockedNeeds (SSOT)
+        // Ohne diesen Code werden gesperrte Bedürfnisse beim Laden nicht wiederhergestellt
+        syncLocksFromTiageState();
+    }
+
+    /**
+     * Synchronisiert Lock-Status aus TiageState.profileReview.lockedNeeds in flatNeeds
+     * TiageState ist SSOT für Lock-Status, flatNeeds.locked ist nur UI-Cache
+     */
+    function syncLocksFromTiageState() {
+        if (typeof TiageState === 'undefined' || !TiageState.getLockedNeeds) return;
+
+        let currentPerson = 'ich';
+        if (window.currentProfileReviewContext && window.currentProfileReviewContext.person) {
+            currentPerson = window.currentProfileReviewContext.person;
+        }
+
+        const lockedNeeds = TiageState.getLockedNeeds(currentPerson) || {};
+        let syncedCount = 0;
+
+        flatNeeds.forEach(need => {
+            if (lockedNeeds.hasOwnProperty(need.id)) {
+                need.locked = true;
+                need.value = lockedNeeds[need.id]; // Übernehme auch den gesperrten Wert
+                syncedCount++;
+            }
+        });
+
+        if (syncedCount > 0) {
+            console.log('[AttributeSummaryCard] Lock-Status aus TiageState synchronisiert:', syncedCount, 'für', currentPerson);
         }
     }
 
