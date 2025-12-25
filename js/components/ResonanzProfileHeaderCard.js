@@ -44,14 +44,49 @@ const ResonanzProfileHeaderCard = (function() {
     // Für Rückwärtskompatibilität
     const RESONANZ_CONFIG = getResonanzConfig();
 
+    // Loading state
+    let isLoading = false;
+
+    /**
+     * Setzt den Lade-Status und aktualisiert die Anzeige
+     * @param {boolean} loading - true wenn Daten geladen werden
+     */
+    function setLoading(loading) {
+        isLoading = loading;
+        const card = document.querySelector('.resonanz-profile-header-card');
+        if (card) {
+            const valuesContainer = card.querySelector('.resonanz-profile-header-values');
+            if (valuesContainer) {
+                if (loading) {
+                    valuesContainer.classList.add('loading');
+                } else {
+                    valuesContainer.classList.remove('loading');
+                }
+            }
+        }
+    }
+
+    /**
+     * Ermittelt die aktuell angezeigte Person (ich/partner)
+     * @returns {string} 'ich' oder 'partner'
+     */
+    function getCurrentPerson() {
+        if (typeof window !== 'undefined' && window.currentProfileReviewContext?.person) {
+            return window.currentProfileReviewContext.person;
+        }
+        return 'ich';
+    }
+
     /**
      * Holt die aktuellen Resonanzwerte für die aktuelle Person
      * @returns {Object} Resonanzwerte { R1, R2, R3, R4 }
      */
     function getCurrentValues() {
+        const person = getCurrentPerson();
+
         // Versuche Werte aus ResonanzCard zu holen (wenn verfügbar)
         if (typeof ResonanzCard !== 'undefined' && typeof ResonanzCard.getValues === 'function') {
-            return ResonanzCard.getValues('ich');
+            return ResonanzCard.getValues(person);
         }
 
         // Fallback: Default-Werte
@@ -76,13 +111,15 @@ const ResonanzProfileHeaderCard = (function() {
             total: 0
         };
 
-        // Hole aktuelle Needs für ICH
-        if (typeof window.LoadedArchetypProfile !== 'undefined' &&
-            window.LoadedArchetypProfile.ich &&
-            window.LoadedArchetypProfile.ich.profileReview &&
-            window.LoadedArchetypProfile.ich.profileReview.flatNeeds) {
+        const person = getCurrentPerson();
 
-            const flatNeeds = window.LoadedArchetypProfile.ich.profileReview.flatNeeds;
+        // Hole aktuelle Needs für die angezeigte Person
+        if (typeof window.LoadedArchetypProfile !== 'undefined' &&
+            window.LoadedArchetypProfile[person] &&
+            window.LoadedArchetypProfile[person].profileReview &&
+            window.LoadedArchetypProfile[person].profileReview.flatNeeds) {
+
+            const flatNeeds = window.LoadedArchetypProfile[person].profileReview.flatNeeds;
             const totalNeeds = Array.isArray(flatNeeds) ? flatNeeds.length : Object.keys(flatNeeds).length;
             counts.total = totalNeeds;
 
@@ -258,7 +295,9 @@ const ResonanzProfileHeaderCard = (function() {
 
     // Lausche auf Resonanzfaktoren-Änderungen
     window.addEventListener('resonanzfaktoren-changed', function(event) {
-        if (event.detail && event.detail.person === 'ich') {
+        // Update nur, wenn sich die Werte der aktuell angezeigten Person ändern
+        const currentPerson = getCurrentPerson();
+        if (event.detail && event.detail.person === currentPerson) {
             update();
         }
     });
@@ -267,7 +306,8 @@ const ResonanzProfileHeaderCard = (function() {
         render,
         init,
         update,
-        searchByResonanz
+        searchByResonanz,
+        setLoading
     };
 })();
 

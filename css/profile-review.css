@@ -2974,3 +2974,52 @@ input.resonanz-input:focus {
 .resonanz-profile-value-number.updating {
     animation: valueUpdate 0.35s ease-in-out;
 }
+
+/* Loading State Animation für Modal Card */
+@keyframes shimmerModal {
+    0% {
+        background-position: -200% 0;
+    }
+    100% {
+        background-position: 200% 0;
+    }
+}
+
+@keyframes pulseModal {
+    0%, 100% {
+        opacity: 0.6;
+    }
+    50% {
+        opacity: 1;
+    }
+}
+
+.resonanz-profile-modal-values.loading .resonanz-profile-value-item {
+    position: relative;
+    pointer-events: none;
+}
+
+.resonanz-profile-modal-values.loading .resonanz-profile-value-item::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(139, 92, 246, 0.2),
+        transparent
+    );
+    background-size: 200% 100%;
+    animation: shimmerModal 1.5s infinite;
+    border-radius: 10px;
+    z-index: 1;
+}
+
+.resonanz-profile-modal-values.loading .resonanz-profile-value-number {
+    animation: pulseModal 1s infinite;
+    color: rgba(255, 255, 255, 0.4);
+    text-shadow: none;
+}
