@@ -788,6 +788,19 @@
 
             // Render the needs list
             renderNeedsList();
+
+            // NEU: Dimension-Filter aus URL-Parameter setzen (R1, R2, R3, R4)
+            const dimensionParam = urlParams.get('dimension');
+            if (dimensionParam && typeof DimensionKategorieFilter !== 'undefined') {
+                // Warte kurz bis UI gerendert ist
+                setTimeout(() => {
+                    const validDimensions = ['R1', 'R2', 'R3', 'R4'];
+                    if (validDimensions.includes(dimensionParam.toUpperCase())) {
+                        DimensionKategorieFilter.toggleDimension(dimensionParam.toUpperCase());
+                        console.log('[NeedsEditor] Dimension-Filter gesetzt:', dimensionParam.toUpperCase());
+                    }
+                }, 100);
+            }
         }
 
         function updatePersonToggle() {

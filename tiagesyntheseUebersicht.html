@@ -456,6 +456,32 @@
             opacity: 0.7;
         }
 
+        /* Klickbare Matrix-Zellen */
+        .matrix-cell-clickable {
+            cursor: pointer;
+            transition: all 0.2s ease;
+            position: relative;
+        }
+
+        .matrix-cell-clickable:hover {
+            background: rgba(139, 92, 246, 0.2);
+            transform: scale(1.02);
+        }
+
+        .matrix-cell-clickable:hover::after {
+            content: '→';
+            position: absolute;
+            right: 4px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 10px;
+            color: rgba(139, 92, 246, 0.8);
+        }
+
+        .matrix-cell-clickable:active {
+            transform: scale(0.98);
+        }
+
         @media (max-width: 600px) {
             .matrix-table th,
             .matrix-table td {
@@ -616,6 +642,17 @@
             return 'neutral';
         }
 
+        /**
+         * Navigiert zu den Einstellungen mit Filter
+         * @param {string} person - 'ich' oder 'partner'
+         * @param {string} dimension - 'R1', 'R2', 'R3' oder 'R4'
+         */
+        function navigateToSettings(person, dimension) {
+            const archetype = person === 'ich' ? currentIchArchetype : currentPartnerArchetype;
+            const url = `needs-editor.html?person=${encodeURIComponent(person)}&archetype=${encodeURIComponent(archetype)}&dimension=${encodeURIComponent(dimension)}`;
+            window.location.href = url;
+        }
+
         function generateMatrixHTML(rFaktoren) {
             return `
                 <div class="matrix-table-container">
@@ -638,11 +675,11 @@
                                         </div>
                                         <div class="matrix-r-agod">→ ${r.agod} (${r.agodName})</div>
                                     </td>
-                                    <td>
+                                    <td class="matrix-cell-clickable" onclick="navigateToSettings('ich', '${r.id}')" title="Klicken um ICH/${r.label} in Einstellungen zu öffnen">
                                         <span class="matrix-value ${getValueClass(r.ich)}">${r.ich.toFixed(2)}</span>
                                         <span class="matrix-lock" title="${r.lockedIch ? 'Manuell gesperrt' : 'Automatisch berechnet'}">${r.lockedIch ? '🔒' : '🔓'}</span>
                                     </td>
-                                    <td>
+                                    <td class="matrix-cell-clickable" onclick="navigateToSettings('partner', '${r.id}')" title="Klicken um PARTNER/${r.label} in Einstellungen zu öffnen">
                                         <span class="matrix-value ${getValueClass(r.partner)}">${r.partner.toFixed(2)}</span>
                                         <span class="matrix-lock" title="${r.lockedPartner ? 'Manuell gesperrt' : 'Automatisch berechnet'}">${r.lockedPartner ? '🔒' : '🔓'}</span>
                                     </td>
