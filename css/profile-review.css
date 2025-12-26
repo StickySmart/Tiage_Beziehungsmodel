@@ -2065,21 +2065,6 @@ input.resonanz-input:focus {
     background: rgba(34, 197, 94, 0.25);
 }
 
-/* Checkbox for selection */
-.flat-need-select-indicator {
-    display: flex;
-    align-items: center;
-    margin-right: 8px;
-}
-
-.need-checkbox {
-    width: 18px;
-    height: 18px;
-    cursor: pointer;
-    accent-color: #22c55e;
-    margin: 0;
-}
-
 .flat-need-header {
     display: flex;
     align-items: center;
