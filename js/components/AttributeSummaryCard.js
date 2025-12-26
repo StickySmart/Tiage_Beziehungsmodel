@@ -1750,6 +1750,38 @@ const AttributeSummaryCard = (function() {
             if (valueSpan) {
                 valueSpan.textContent = newValue !== null ? newValue : '-';
             }
+
+            // Aktualisiere die Änderungsmarkierung für diese Hauptfrage
+            const nuancen = hauptfrage.nuancen || [];
+            const changedNuancenCount = nuancen.filter(nId => {
+                const nuanceObj = findNeedById(nId);
+                return nuanceObj && isValueChanged(nId, nuanceObj.value);
+            }).length;
+            const hasChangedNuancen = changedNuancenCount > 0;
+
+            // CSS-Klasse aktualisieren
+            if (hasChangedNuancen) {
+                hauptfrageItem.classList.add('has-changed-nuancen');
+            } else {
+                hauptfrageItem.classList.remove('has-changed-nuancen');
+            }
+
+            // Sternchen-Indikator aktualisieren
+            const labelSpan = hauptfrageItem.querySelector('.hauptfrage-label');
+            if (labelSpan) {
+                let indicator = labelSpan.querySelector('.hauptfrage-changed-indicator');
+                if (hasChangedNuancen) {
+                    if (!indicator) {
+                        indicator = document.createElement('span');
+                        indicator.className = 'hauptfrage-changed-indicator';
+                        indicator.textContent = '*';
+                        labelSpan.appendChild(indicator);
+                    }
+                    indicator.title = `${changedNuancenCount} Nuance(n) geändert`;
+                } else if (indicator) {
+                    indicator.remove();
+                }
+            }
         }
     }
 
