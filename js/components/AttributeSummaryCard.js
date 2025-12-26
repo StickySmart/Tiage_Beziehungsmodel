@@ -358,12 +358,6 @@ const AttributeSummaryCard = (function() {
         if (needItem) {
             const isSelected = selectedNeeds.has(needId);
             needItem.classList.toggle('need-selected', isSelected);
-
-            // Update checkbox
-            const checkbox = needItem.querySelector('.need-checkbox');
-            if (checkbox) {
-                checkbox.checked = isSelected;
-            }
         }
 
         // Update control panel visibility
@@ -384,12 +378,6 @@ const AttributeSummaryCard = (function() {
             const needItem = document.querySelector(`.flat-need-item[data-need="${needId}"]`);
             if (needItem) {
                 needItem.classList.remove('need-selected');
-
-                // Checkbox auch unchecken
-                const checkbox = needItem.querySelector('.need-checkbox');
-                if (checkbox) {
-                    checkbox.checked = false;
-                }
             }
         });
         selectedNeeds.clear();
@@ -448,10 +436,6 @@ const AttributeSummaryCard = (function() {
                 const needItem = document.querySelector(`.flat-need-item[data-need="${need.id}"]`);
                 if (needItem) {
                     needItem.classList.remove('need-selected');
-                    const checkbox = needItem.querySelector('.need-checkbox');
-                    if (checkbox) {
-                        checkbox.checked = false;
-                    }
                 }
             }
         });
@@ -466,10 +450,6 @@ const AttributeSummaryCard = (function() {
                     const needItem = document.querySelector(`.flat-need-item[data-need="${need.id}"]`);
                     if (needItem) {
                         needItem.classList.remove('need-selected');
-                        const checkbox = needItem.querySelector('.need-checkbox');
-                        if (checkbox) {
-                            checkbox.checked = false;
-                        }
                     }
                 }
             });
@@ -487,10 +467,6 @@ const AttributeSummaryCard = (function() {
                     const needItem = document.querySelector(`.flat-need-item[data-need="${need.id}"]`);
                     if (needItem) {
                         needItem.classList.add('need-selected');
-                        const checkbox = needItem.querySelector('.need-checkbox');
-                        if (checkbox) {
-                            checkbox.checked = true;
-                        }
                     }
                 }
             });
@@ -1642,10 +1618,6 @@ const AttributeSummaryCard = (function() {
         <div class="flat-need-item${isLocked ? ' need-locked' : ''}${colorClass}${selectedClass}${filterHiddenClass}" data-need="${needId}" ${itemStyle}
              onclick="AttributeSummaryCard.toggleNeedSelection('${needId}')">
             <div class="flat-need-header">
-                <div class="flat-need-select-indicator">
-                    <input type="checkbox" class="need-checkbox" ${isSelected ? 'checked' : ''}
-                           onclick="event.stopPropagation(); AttributeSummaryCard.toggleNeedSelection('${needId}')">
-                </div>
                 <span class="flat-need-label clickable"
                       onclick="event.stopPropagation(); openNeedWithResonance('${needId}')"
                       title="Klicken für Resonanz-Details">${label}${changedIndicator}</span>
