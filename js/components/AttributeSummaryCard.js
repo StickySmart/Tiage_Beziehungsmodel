@@ -584,6 +584,17 @@ const AttributeSummaryCard = (function() {
             document.dispatchEvent(new CustomEvent('flatNeedChange', { bubbles: true }));
         }
 
+        // FIX: Auch Filter zurücksetzen um das konsolidierte Layout zu zeigen
+        if (typeof DimensionKategorieFilter !== 'undefined') {
+            DimensionKategorieFilter.reset(true);
+            const currentPerson = DimensionKategorieFilter.getCurrentPerson ?
+                DimensionKategorieFilter.getCurrentPerson() : 'ich';
+            if (DimensionKategorieFilter.saveStateForPerson) {
+                DimensionKategorieFilter.saveStateForPerson(currentPerson);
+            }
+        }
+        showOnlyChangedNeeds = false;
+
         // Auswahl löschen und Liste neu rendern
         clearNeedSelection();
         reRenderFlatNeeds();
@@ -596,15 +607,24 @@ const AttributeSummaryCard = (function() {
     function resetFilters() {
         console.log('[AttributeSummaryCard] Filter zurücksetzen');
 
-        // Kategorien-Filter zurücksetzen
+        // Kategorien-Filter zurücksetzen (silent=true um double reRender zu vermeiden)
+        // reset() würde sonst via Event auch reRenderFlatNeeds() triggern
         if (typeof DimensionKategorieFilter !== 'undefined') {
-            DimensionKategorieFilter.reset();
+            DimensionKategorieFilter.reset(true);
+
+            // FIX: Auch den gespeicherten State für die aktuelle Person löschen
+            // damit Filter nicht bei Tab-Wechsel wiederhergestellt werden
+            const currentPerson = DimensionKategorieFilter.getCurrentPerson ?
+                DimensionKategorieFilter.getCurrentPerson() : 'ich';
+            if (DimensionKategorieFilter.saveStateForPerson) {
+                DimensionKategorieFilter.saveStateForPerson(currentPerson);
+            }
         }
 
         // "Nur Geänderte" Filter zurücksetzen
         showOnlyChangedNeeds = false;
 
-        // Liste neu rendern
+        // Liste neu rendern (nur einmal, da reset() jetzt silent ist)
         reRenderFlatNeeds();
     }
 
@@ -1358,8 +1378,8 @@ const AttributeSummaryCard = (function() {
             </div>
         </div>`;
 
-        // Filter-Container für DimensionKategorieFilter (wird in initDimensionFilter befüllt)
-        html += `<div id="flat-needs-dimension-filter" class="profile-review-controls-container"></div>`;
+        // NOTE: Filter-Container ist bereits oben in der Header-Sektion (Zeile ~1346)
+        // Kein zweiter Container nötig - wurde entfernt um duplicate ID zu vermeiden
 
         // ═══════════════════════════════════════════════════════════════════════════
         // BEDINGTE RENDER-LOGIK: Hauptfragen-Ansicht vs. Detail-Ansicht
