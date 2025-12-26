@@ -3023,3 +3023,169 @@ input.resonanz-input:focus {
     color: rgba(255, 255, 255, 0.4);
     text-shadow: none;
 }
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   HAUPTFRAGEN-ANSICHT - Konsolidierte Bedürfnisse mit aufklappbaren Nuancen
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* Hauptfragen-Modus Container */
+.flat-needs-list.hauptfragen-mode {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+/* Einzelnes Hauptfrage-Item */
+.hauptfrage-item {
+    background: var(--bg-secondary, rgba(255, 255, 255, 0.03));
+    border-radius: 8px;
+    overflow: hidden;
+    transition: all 0.2s ease;
+}
+
+.hauptfrage-item:hover {
+    background: var(--bg-tertiary, rgba(255, 255, 255, 0.05));
+}
+
+.hauptfrage-item.expanded {
+    background: var(--bg-tertiary, rgba(255, 255, 255, 0.05));
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Hauptfrage Header (klickbar) */
+.hauptfrage-header {
+    display: flex;
+    align-items: center;
+    padding: 12px 14px;
+    cursor: pointer;
+    gap: 10px;
+    min-height: 48px;
+}
+
+.hauptfrage-header:hover {
+    background: rgba(255, 255, 255, 0.02);
+}
+
+/* Expand Icon */
+.hauptfrage-expand-icon {
+    font-size: 10px;
+    color: var(--text-muted, #888);
+    width: 16px;
+    flex-shrink: 0;
+    transition: transform 0.2s ease;
+}
+
+.hauptfrage-item.expanded .hauptfrage-expand-icon {
+    color: var(--accent-color, #22c55e);
+}
+
+/* Hauptfrage Label */
+.hauptfrage-label {
+    flex: 1;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text-primary, #fff);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Nuancen-Zähler */
+.hauptfrage-nuancen-count {
+    font-size: 11px;
+    color: var(--text-muted, #666);
+    margin-right: 12px;
+    white-space: nowrap;
+}
+
+/* Wert-Container mit Bar */
+.hauptfrage-value-container {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    min-width: 100px;
+    position: relative;
+}
+
+.hauptfrage-bar {
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    height: 4px;
+    border-radius: 2px;
+    opacity: 0.6;
+    transition: width 0.3s ease;
+}
+
+.hauptfrage-value {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-primary, #fff);
+    min-width: 32px;
+    text-align: right;
+    position: relative;
+    z-index: 1;
+    margin-left: auto;
+}
+
+/* Nuancen-Liste (expandiert) */
+.nuancen-list {
+    padding: 0 8px 8px 28px;
+    background: rgba(0, 0, 0, 0.15);
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.nuancen-list .flat-need-item {
+    background: transparent;
+    border-left-width: 2px;
+    padding: 8px 10px;
+    margin: 4px 0;
+}
+
+.nuancen-list .flat-need-item:hover {
+    background: rgba(255, 255, 255, 0.03);
+}
+
+/* Toggle-Button Styling für Hauptfragen-Ansicht */
+.multi-select-toggle-view-btn {
+    padding: 6px 12px !important;
+    border-radius: 6px !important;
+    font-size: 12px !important;
+    font-weight: 500 !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    transition: all 0.2s ease !important;
+}
+
+.multi-select-toggle-view-btn:hover {
+    border-color: var(--accent-color, #22c55e) !important;
+}
+
+.multi-select-toggle-view-btn.active {
+    background: var(--accent-color, #22c55e) !important;
+    color: #000 !important;
+    border-color: var(--accent-color, #22c55e) !important;
+}
+
+/* Mobile Anpassungen */
+@media (max-width: 768px) {
+    .hauptfrage-header {
+        padding: 10px 12px;
+    }
+
+    .hauptfrage-label {
+        font-size: 12px;
+    }
+
+    .hauptfrage-nuancen-count {
+        display: none;
+    }
+
+    .hauptfrage-value-container {
+        min-width: 60px;
+    }
+
+    .nuancen-list {
+        padding-left: 20px;
+    }
+}

@@ -23,8 +23,8 @@ const HauptfrageAggregation = (function() {
     // ═══════════════════════════════════════════════════════════════════════════
 
     const CONFIG = {
-        // Aggregationsmethode: 'average' | 'weighted' | 'median'
-        method: 'average',
+        // Aggregationsmethode: 'weighted' - höhere Werte = mehr Gewicht (wichtiger = relevanter)
+        method: 'weighted',
 
         // Default-Wert wenn Nuance nicht beantwortet (null = ignorieren)
         defaultNuanceValue: null,
