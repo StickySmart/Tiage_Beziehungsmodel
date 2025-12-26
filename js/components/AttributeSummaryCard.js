@@ -1264,10 +1264,34 @@ const AttributeSummaryCard = (function() {
         let hauptfragenCount = 0;
         let hauptfragenData = [];
         if (typeof HauptfrageAggregation !== 'undefined') {
+            // Mapping der UI-Sortieroptionen auf HauptfrageAggregation-Parameter
+            // UI: 'value', 'name', 'id', 'status', 'changed'
+            // HauptfrageAggregation: 'value', 'label', 'kategorie', 'id'
+            let sortParam = 'value';
+            let sortDescending = true;
+
+            switch (currentFlatSortMode) {
+                case 'name':
+                    sortParam = 'label';
+                    sortDescending = false; // A-Z aufsteigend
+                    break;
+                case 'id':
+                    sortParam = 'id';
+                    sortDescending = false; // #B1, #B2, ... aufsteigend
+                    break;
+                case 'status':
+                case 'changed':
+                case 'value':
+                default:
+                    sortParam = 'value';
+                    sortDescending = true; // Höchste zuerst
+                    break;
+            }
+
             hauptfragenData = HauptfrageAggregation.getAggregatedHauptfragenList(
                 Object.fromEntries(flatNeeds.map(n => [n.id, n.value])),
-                'value',
-                true
+                sortParam,
+                sortDescending
             );
             hauptfragenCount = hauptfragenData.length;
         }

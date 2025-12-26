@@ -281,6 +281,12 @@ const HauptfrageAggregation = (function() {
                 case 'kategorie':
                     comparison = (a.kategorie || '').localeCompare(b.kategorie || '');
                     break;
+                case 'id':
+                    // Sortiere nach #B-Nummer (extrahiere Zahl aus '#B1', '#B2', etc.)
+                    const numA = parseInt((a.id || '').replace('#B', ''), 10) || 0;
+                    const numB = parseInt((b.id || '').replace('#B', ''), 10) || 0;
+                    comparison = numA - numB;
+                    break;
                 case 'value':
                 default:
                     comparison = (a.aggregatedValue || 0) - (b.aggregatedValue || 0);
