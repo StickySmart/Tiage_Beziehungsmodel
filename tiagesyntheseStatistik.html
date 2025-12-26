@@ -758,37 +758,55 @@
                 return;
             }
 
-            // HauptfrageAggregation nutzen für aggregierte Hauptfragen-Vergleich
-            let hauptfragenComparison = [];
+            // Alle einzelnen Bedürfnisse direkt vergleichen (ohne Konsolidierung)
+            let needsComparison = [];
             let scoreValue = 0;
 
-            if (typeof HauptfrageAggregation !== 'undefined') {
-                // Sortierung für compareHauptfragen bestimmen
-                let sortParam = 'differenz';
-                if (currentSortBy === 'ich' || currentSortBy === 'partner') {
-                    sortParam = 'label'; // Fallback, wird später neu sortiert
-                }
+            // Alle Bedürfnis-IDs sammeln (Union beider Profile)
+            const allNeedIds = new Set([
+                ...Object.keys(ichFlatNeeds || {}),
+                ...Object.keys(partnerFlatNeeds || {})
+            ]);
 
-                hauptfragenComparison = HauptfrageAggregation.compareHauptfragen(ichFlatNeeds, partnerFlatNeeds, sortParam);
+            // Vergleichsdaten für jedes Bedürfnis erstellen
+            let totalDiff = 0;
+            let count = 0;
+            allNeedIds.forEach(needId => {
+                const ichValue = ichFlatNeeds[needId] || 0;
+                const partnerValue = partnerFlatNeeds[needId] || 0;
+                const diff = Math.abs(ichValue - partnerValue);
 
-                // Overall Match berechnen
-                const matchResult = HauptfrageAggregation.calculateOverallMatch(ichFlatNeeds, partnerFlatNeeds);
-                scoreValue = matchResult.score || 0;
+                needsComparison.push({
+                    id: needId,
+                    label: formatLabel(needId),
+                    value1: ichValue,
+                    value2: partnerValue,
+                    differenz: diff
+                });
 
-                // Nachträgliche Sortierung für ICH/PARTNER
-                if (currentSortBy === 'ich') {
-                    hauptfragenComparison.sort((a, b) => {
-                        return currentSortDir === 'desc' ? b.value1 - a.value1 : a.value1 - b.value1;
-                    });
-                } else if (currentSortBy === 'partner') {
-                    hauptfragenComparison.sort((a, b) => {
-                        return currentSortDir === 'desc' ? b.value2 - a.value2 : a.value2 - b.value2;
-                    });
-                } else if (currentSortBy === 'diff') {
-                    hauptfragenComparison.sort((a, b) => {
-                        return currentSortDir === 'desc' ? b.differenz - a.differenz : a.differenz - b.differenz;
-                    });
-                }
+                totalDiff += diff;
+                count++;
+            });
+
+            // Overall Match berechnen (100% - durchschnittliche Differenz)
+            if (count > 0) {
+                const avgDiff = totalDiff / count;
+                scoreValue = Math.round(Math.max(0, 100 - avgDiff));
+            }
+
+            // Sortierung anwenden
+            if (currentSortBy === 'ich') {
+                needsComparison.sort((a, b) => {
+                    return currentSortDir === 'desc' ? b.value1 - a.value1 : a.value1 - b.value1;
+                });
+            } else if (currentSortBy === 'partner') {
+                needsComparison.sort((a, b) => {
+                    return currentSortDir === 'desc' ? b.value2 - a.value2 : a.value2 - b.value2;
+                });
+            } else if (currentSortBy === 'diff') {
+                needsComparison.sort((a, b) => {
+                    return currentSortDir === 'desc' ? b.differenz - a.differenz : a.differenz - b.differenz;
+                });
             }
 
             // Score-Farbe ermitteln
@@ -835,47 +853,32 @@
                     </div>
             `;
 
-            // Hauptfragen mit Nuancen anzeigen
-            if (hauptfragenComparison.length > 0) {
-                hauptfragenComparison.forEach(hf => {
-                    const diff = hf.differenz || 0;
+            // Alle einzelnen Bedürfnisse anzeigen (ohne Konsolidierung)
+            if (needsComparison.length > 0) {
+                needsComparison.forEach(need => {
+                    const diff = need.differenz || 0;
                     let diffClass = 'low';
                     if (diff > 30) diffClass = 'high';
                     else if (diff > 15) diffClass = 'medium';
 
-                    // Nuancen-Tags erstellen
-                    let nuancenTags = '';
-                    if (hf.nuancen1 && hf.nuancen1.length > 0) {
-                        nuancenTags = hf.nuancen1.map(n => {
-                            const nuanceLabel = formatLabel(n.id);
-                            return `<span class="nuance-tag" onclick="event.stopPropagation(); openNeedDetail('${n.id}')">${nuanceLabel}</span>`;
-                        }).join('');
-                    }
-
                     html += `
                         <div class="hauptfrage-item">
-                            <div class="hauptfrage-row" onclick="openNeedDetail('${hf.id}')">
+                            <div class="hauptfrage-row" onclick="openNeedDetail('${need.id}')">
                                 <div class="hauptfrage-left">
-                                    <span class="hauptfrage-label">${hf.label}</span>
-                                    <span class="hauptfrage-id">${hf.id}</span>
+                                    <span class="hauptfrage-label">${need.label}</span>
+                                    <span class="hauptfrage-id">${need.id}</span>
                                 </div>
                                 <div class="hauptfrage-values">
-                                    <span class="need-value ich">${Math.round(hf.value1)}</span>
+                                    <span class="need-value ich">${Math.round(need.value1)}</span>
                                     <span class="need-diff ${diffClass}">±${Math.round(diff)}</span>
-                                    <span class="need-value partner">${Math.round(hf.value2)}</span>
+                                    <span class="need-value partner">${Math.round(need.value2)}</span>
                                 </div>
                             </div>
-                            ${nuancenTags ? `
-                            <div class="nuancen-row">
-                                <span class="nuancen-prefix">↳</span>
-                                ${nuancenTags}
-                            </div>
-                            ` : ''}
                         </div>
                     `;
                 });
             } else {
-                html += `<p style="color: var(--text-muted); text-align: center;">Keine Hauptfragen gefunden.</p>`;
+                html += `<p style="color: var(--text-muted); text-align: center;">Keine Bedürfnisse gefunden.</p>`;
             }
 
             html += `</div>`;
