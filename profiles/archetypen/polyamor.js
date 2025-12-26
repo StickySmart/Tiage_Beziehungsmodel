@@ -321,6 +321,7 @@ const PolyamorProfil = {
         '#B209': 45,  // schmerzerleben - Mittel
         '#B210': 45,  // schmerz_geben - Mittel
         '#B211': 50,  // bondage_erleben - Mittel
+        '#B224': 55,  // Zucker - Mittel
         '#B212': 50,  // bondage_geben - Mittel
         '#B213': 55,  // devotion - Mittel
         '#B214': 50,  // anbetung - Mittel

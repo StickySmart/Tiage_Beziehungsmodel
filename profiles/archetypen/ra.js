@@ -320,6 +320,7 @@ const RAProfil = {
         '#B209': 40, // schmerzerleben - Niedrig-mittel - individuell
         '#B210': 35, // schmerz_geben - Niedrig
         '#B211': 40, // bondage_erleben - Niedrig-mittel - situativ
+        '#B224': 45, // Zucker - Mittel
         '#B212': 40, // bondage_geben - Niedrig-mittel
         '#B213': 30, // devotion - Niedrig - vermeidet Hierarchie
         '#B214': 30, // anbetung - Niedrig - keine Hierarchie
