@@ -1651,6 +1651,43 @@ const AttributeSummaryCard = (function() {
             bubbles: true,
             detail: { needId, value: numValue }
         }));
+
+        // Aktualisiere den aggregierten Wert der übergeordneten Hauptfrage
+        updateParentHauptfrageValue(needId);
+    }
+
+    /**
+     * Aktualisiert den aggregierten Wert einer Hauptfrage in der UI
+     * wenn eine ihrer Nuancen geändert wurde
+     * @param {string} nuanceId - Die ID der geänderten Nuance
+     */
+    function updateParentHauptfrageValue(nuanceId) {
+        if (typeof HauptfrageAggregation === 'undefined') return;
+
+        // Finde die übergeordnete Hauptfrage
+        const hauptfrage = HauptfrageAggregation.getHauptfrageForNuance(nuanceId);
+        if (!hauptfrage) return;
+
+        // Berechne den neuen aggregierten Wert
+        const currentNeeds = {};
+        flatNeeds.forEach(n => { currentNeeds[n.id] = n.value; });
+
+        const aggregation = HauptfrageAggregation.aggregateHauptfrage(hauptfrage.id, currentNeeds);
+        const newValue = aggregation.value;
+
+        // Aktualisiere die UI
+        const hauptfrageItem = document.querySelector(`.hauptfrage-item[data-hauptfrage-id="${hauptfrage.id}"]`);
+        if (hauptfrageItem) {
+            const bar = hauptfrageItem.querySelector('.hauptfrage-bar');
+            const valueSpan = hauptfrageItem.querySelector('.hauptfrage-value');
+
+            if (bar) {
+                bar.style.width = `${newValue || 0}%`;
+            }
+            if (valueSpan) {
+                valueSpan.textContent = newValue !== null ? newValue : '-';
+            }
+        }
     }
 
     /**
@@ -1687,6 +1724,9 @@ const AttributeSummaryCard = (function() {
             bubbles: true,
             detail: { needId, value: numValue }
         }));
+
+        // Aktualisiere den aggregierten Wert der übergeordneten Hauptfrage
+        updateParentHauptfrageValue(needId);
     }
 
     /**
