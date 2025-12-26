@@ -8306,7 +8306,7 @@
                 <div style="font-size: 14px; line-height: 1.7; color: var(--text-primary);">
                     <h3 style="font-size: 16px; font-weight: 600; margin: 0 0 12px 0; color: #22c55e;">Was bedeutet die Zahl?</h3>
                     <p style="margin: 0 0 16px 0;">
-                        Die Prozentanzeige zeigt die <strong>gewichtete Übereinstimmung über alle 220 Bedürfnisse</strong> zwischen beiden Profilen.
+                        Die Prozentanzeige zeigt die <strong>gewichtete Übereinstimmung über alle 224 Bedürfnisse</strong> zwischen beiden Profilen.
                     </p>
                     <p style="margin: 0 0 20px 0; padding: 12px; background: rgba(34,197,94,0.1); border-left: 3px solid #22c55e; border-radius: 4px; font-size: 13px;">
                         <strong>Nicht:</strong> Eine Schätzung oder theoretischer Wert<br>
@@ -8317,7 +8317,7 @@
                     <p style="margin: 0 0 12px 0;">
                         <strong>Formel</strong> (identisch mit individueller Bedürfnis-Berechnung):
                     </p>
-                    <pre style="background: rgba(255,255,255,0.05); padding: 12px; border-radius: 6px; font-size: 12px; overflow-x: auto; margin: 0 0 12px 0; line-height: 1.6;">Für JEDES der 220 Bedürfnisse:
+                    <pre style="background: rgba(255,255,255,0.05); padding: 12px; border-radius: 6px; font-size: 12px; overflow-x: auto; margin: 0 0 12px 0; line-height: 1.6;">Für JEDES der 224 Bedürfnisse:
     Ähnlichkeit = 100 - |Wert Person 1 - Wert Person 2|
     Gewicht = (Wert Person 1 + Wert Person 2) / 2
     Beitrag = Ähnlichkeit × Gewicht
@@ -8332,7 +8332,7 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
                         → Beitrag = 55 × 62.5 = <strong>3437.5</strong>
                     </p>
 
-                    <h3 style="font-size: 16px; font-weight: 600; margin: 20px 0 12px 0; color: #22c55e;">Alle 220 Bedürfnisse</h3>
+                    <h3 style="font-size: 16px; font-weight: 600; margin: 20px 0 12px 0; color: #22c55e;">Alle 224 Bedürfnisse</h3>
                     <table style="width: 100%; font-size: 12px; border-collapse: collapse; margin: 0 0 20px 0;">
                         <thead>
                             <tr style="background: rgba(255,255,255,0.05);">
@@ -8347,10 +8347,10 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
                             <tr><td style="padding: 6px 8px;">#B149-#B176: Kommunikationsstil</td><td style="padding: 6px 8px; text-align: right;">28</td></tr>
                             <tr><td style="padding: 6px 8px;">#B177-#B203: Soziales Leben</td><td style="padding: 6px 8px; text-align: right;">27</td></tr>
                             <tr><td style="padding: 6px 8px;">#B204-#B208: Intimität & Romantik</td><td style="padding: 6px 8px; text-align: right;">5</td></tr>
-                            <tr><td style="padding: 6px 8px;">#B209-#B220: Dynamik erweitert</td><td style="padding: 6px 8px; text-align: right;">12</td></tr>
+                            <tr><td style="padding: 6px 8px;">#B209-#B224: Dynamik & Genussmittel erweitert</td><td style="padding: 6px 8px; text-align: right;">16</td></tr>
                             <tr style="border-top: 2px solid rgba(34,197,94,0.3); font-weight: 600;">
                                 <td style="padding: 8px;"><strong>Total</strong></td>
-                                <td style="padding: 8px; text-align: right;"><strong>220</strong></td>
+                                <td style="padding: 8px; text-align: right;"><strong>224</strong></td>
                             </tr>
                         </tbody>
                     </table>
@@ -8553,7 +8553,7 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
                 <div style="background: rgba(34,197,94,0.08); border-left: 3px solid #22c55e; border-radius: 4px; padding: 10px 12px; margin-bottom: 16px; font-size: 12px; line-height: 1.6;">
                     <div style="display: flex; align-items: start; gap: 8px;">
                         <div style="flex: 1;">
-                            <div style="font-weight: 600; margin-bottom: 4px; color: #22c55e;">Berechnung über alle 220 Bedürfnisse</div>
+                            <div style="font-weight: 600; margin-bottom: 4px; color: #22c55e;">Berechnung über alle 224 Bedürfnisse</div>
                             <div style="color: var(--text-secondary); font-size: 11px;">
                                 Gewichtete Übereinstimmung basierend auf euren tatsächlichen Profilen.
                                 <span onclick="openNeedsScoreExplanation();" style="color: #22c55e; cursor: pointer; text-decoration: underline; margin-left: 4px;">Mehr erfahren ⓘ</span>
@@ -11044,7 +11044,7 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
             // ═══════════════════════════════════════
             // SCHRITT 2: Resonanz-Faktoren R1-R4 (0.5-1.5)
             // ═══════════════════════════════════════
-            // Basierend auf 220 Bedürfnissen (#B1-#B220), aufgeteilt nach Faktor
+            // Basierend auf 224 Bedürfnissen (#B1-#B224), aufgeteilt nach Faktor
             // ODER benutzerdefinierten Werten aus ResonanzCard
 
             // Schlüssel unverändert verwenden (duo_flex bleibt duo_flex)
@@ -15093,7 +15093,7 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
                 contraListHtml = '<li style="color: var(--text-muted);">Keine Daten verfügbar</li>';
             }
 
-            // Use overall needs matching score (all 220 needs) instead of matrix fallback
+            // Use overall needs matching score (all 224 needs) instead of matrix fallback
             let baseArchetypeScore = null;
             let scoreLabel = 'Theoretischer Wert';
 
