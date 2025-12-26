@@ -1798,6 +1798,24 @@ const AttributeSummaryCard = (function() {
                 valueSpan.textContent = newValue !== null ? newValue : '-';
             }
 
+            // NEU: Aktualisiere auch Slider und Input (wenn nicht gelockt)
+            if (!lockedHauptfragen.has(hauptfrage.id)) {
+                const slider = hauptfrageItem.querySelector('.hauptfrage-slider');
+                const input = hauptfrageItem.querySelector('.hauptfrage-input');
+
+                if (slider && newValue !== null) {
+                    slider.value = newValue;
+                    // Slider-Track-Hintergrund aktualisieren
+                    const dimColor = getDimensionColor(hauptfrage.id);
+                    if (dimColor) {
+                        slider.style.background = `linear-gradient(to right, ${dimColor} 0%, ${dimColor} ${newValue}%, rgba(255,255,255,0.15) ${newValue}%, rgba(255,255,255,0.15) 100%)`;
+                    }
+                }
+                if (input && newValue !== null) {
+                    input.value = newValue;
+                }
+            }
+
             // Aktualisiere die Änderungsmarkierung für diese Hauptfrage
             const nuancen = hauptfrage.nuancen || [];
             const changedNuancenCount = nuancen.filter(nId => {
