@@ -321,6 +321,7 @@ const DuoFlexProfil = {
         '#B209': 35,  // schmerzerleben - Niedrig
         '#B210': 35,  // schmerz_geben - Niedrig
         '#B211': 40,  // bondage_erleben - Niedrig-mittel
+        '#B224': 50,  // Zucker - Mittel
         '#B212': 40,  // bondage_geben - Niedrig-mittel
         '#B213': 45,  // devotion - Mittel
         '#B214': 45,  // anbetung - Mittel

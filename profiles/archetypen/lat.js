@@ -321,6 +321,7 @@ const LATProfil = {
         '#B209': 35,  // schmerzerleben - Niedrig
         '#B210': 30,  // schmerz_geben - Niedrig
         '#B211': 40,  // bondage_erleben - Niedrig-mittel
+        '#B224': 45,  // Zucker - Mittel
         '#B212': 35,  // bondage_geben - Niedrig
         '#B213': 45,  // devotion - Mittel
         '#B214': 40,  // anbetung - Niedrig-mittel

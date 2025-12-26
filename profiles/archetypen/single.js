@@ -327,6 +327,7 @@ const SingleProfil = {
         '#B209': 35, // schmerzerleben - Niedrig
         '#B210': 30, // schmerz_geben - Niedrig
         '#B211': 35, // bondage_erleben - Niedrig
+        '#B224': 45, // Zucker - Mittel
         '#B212': 35, // bondage_geben - Niedrig
         '#B213': 25, // devotion - Niedrig - vermeidet Hingabe
         '#B214': 30, // anbetung - Niedrig

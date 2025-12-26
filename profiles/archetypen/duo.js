@@ -328,6 +328,7 @@ const DuoProfil = {
         '#B209': 30,  // schmerzerleben - Niedrig
         '#B210': 25,  // schmerz_geben - Niedrig
         '#B211': 45,  // bondage_erleben - Niedrig-mittel
+        '#B224': 50,  // Zucker - Mittel
         '#B212': 35,  // bondage_geben - Niedrig
         '#B213': 60,  // devotion - Mittel - Hingabe an Partner
         '#B214': 40,  // anbetung - Niedrig-mittel

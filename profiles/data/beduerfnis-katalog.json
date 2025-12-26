@@ -4076,11 +4076,12 @@
       "sekundaer": [
         "#K15"
       ],
-      "frage": "Wie wichtig sind Ihnen Genussmittel wie Alkohol oder Cannabis?",
+      "frage": "Wie wichtig sind Ihnen Genussmittel wie Alkohol, Cannabis oder Zucker?",
       "frageTyp": "haupt",
       "nuancen": [
         "#B210",
-        "#B211"
+        "#B211",
+        "#B224"
       ]
     },
     "#B210": {
@@ -4108,6 +4109,19 @@
       "frageTyp": "nuance",
       "hauptbeduerfnis": "#B209",
       "kontext": "Cannabis-Konsum"
+    },
+    "#B224": {
+      "id": "#B224",
+      "label": "Zucker",
+      "kategorie": "#K7",
+      "dimension": "#D6",
+      "skala": [
+        0,
+        100
+      ],
+      "frageTyp": "nuance",
+      "hauptbeduerfnis": "#B209",
+      "kontext": "Zuckerkonsum"
     },
     "#B212": {
       "id": "#B212",
