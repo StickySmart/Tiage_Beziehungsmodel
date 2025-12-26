@@ -321,6 +321,7 @@ const DuoProfil = {
         // NEU: Sexuelle Bedürfnisse für R1-Berechnung
         '#B221': 40,  // sexuelle_experimentierfreude - Niedrig-mittel - traditionell
         '#B222': 90,  // sexuelle_verbindung - Sehr hoch - mit Partner
+        '#B223': 45,  // bondage_erleben - Niedrig-mittel
 
         // ─────────────────────────────────────────────────────────────────────────
         // ERWEITERTE DYNAMIK (#B209-#B220) - Kink/BDSM

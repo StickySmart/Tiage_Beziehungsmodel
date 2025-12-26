@@ -149,7 +149,7 @@ var TiageHelpTexts = (function() {
 
         return {
             title: 'Bedürfnis-Übereinstimmung',
-            subtitle: 'Gewichtete Übereinstimmung über alle 220 Bedürfnisse',
+            subtitle: 'Gewichtete Übereinstimmung über alle 224 Bedürfnisse',
             formula: {
                 similarity: formula.similarity,
                 weight: formula.weight,
@@ -168,14 +168,14 @@ var TiageHelpTexts = (function() {
             },
             categories: [
                 { label: '#B1-#B88: GFK-Kern', count: 88 },
-                { label: '#B90-#B126: Lebensplanung', count: 37 },
+                { label: '#B89-#B126: Lebensplanung', count: 38 },
                 { label: '#B127-#B148: Finanzen & Karriere', count: 22 },
                 { label: '#B149-#B176: Kommunikationsstil', count: 28 },
                 { label: '#B177-#B203: Soziales Leben', count: 27 },
                 { label: '#B204-#B208: Intimität & Romantik', count: 5 },
-                { label: '#B209-#B220: Dynamik erweitert', count: 12 }
+                { label: '#B209-#B224: Dynamik & Genussmittel erweitert', count: 16 }
             ],
-            total: 220
+            total: 224
         };
     }
 

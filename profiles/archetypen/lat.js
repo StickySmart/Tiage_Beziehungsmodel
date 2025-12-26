@@ -168,9 +168,10 @@ const LATProfil = {
         '#B86': 50,  // machtaustausch - Mittel
         '#B87': 50,  // dienend_sein - Mittel
         '#B88': 65,  // beschuetzen - Mittel-hoch
+        '#B89': 50,  // kinder_und_elternschaft - Mittel
 
         // ─────────────────────────────────────────────────────────────────────────
-        // LEBENSPLANUNG (#B90-#B126) - Feste Beziehung, aber getrennt wohnen
+        // LEBENSPLANUNG (#B89-#B126) - Feste Beziehung, aber getrennt wohnen
         // ─────────────────────────────────────────────────────────────────────────
         '#B90': 50,   // kinderwunsch - Mittel - individuell
         '#B91': 45,   // elternschaft - Mittel - kann kompliziert sein mit LAT
@@ -314,6 +315,7 @@ const LATProfil = {
         // NEU: Sexuelle Bedürfnisse für R1-Berechnung
         '#B221': 50,  // sexuelle_experimentierfreude - Mittel - bei Treffen
         '#B222': 80,  // sexuelle_verbindung - Hoch - bei Treffen intensiv
+        '#B223': 40,  // bondage_erleben - Niedrig-mittel
 
         // ─────────────────────────────────────────────────────────────────────────
         // ERWEITERTE DYNAMIK (#B209-#B220) - Kink/BDSM

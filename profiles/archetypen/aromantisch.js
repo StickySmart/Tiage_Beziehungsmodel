@@ -167,9 +167,10 @@ const AromantischProfil = {
         '#B86': 35,  // machtaustausch - Niedrig
         '#B87': 40,  // dienend_sein - Niedrig-mittel
         '#B88': 55,  // beschuetzen - Mittel
+        '#B89': 30,  // kinder_und_elternschaft - Niedrig
 
         // ═══════════════════════════════════════════════════════════════════════
-        // LEBENSPLANUNG (#B90-#B126)
+        // LEBENSPLANUNG (#B89-#B126)
         // ═══════════════════════════════════════════════════════════════════════
         // Aromantisch: Kein romantischer Rahmen für Lebensplanung
         '#B90': 30,  // kinderwunsch - Niedrig - nicht durch Partnerschaft
@@ -314,6 +315,7 @@ const AromantischProfil = {
         // NEU: Sexuelle Bedürfnisse für R1-Berechnung
         '#B221': 40, // sexuelle_experimentierfreude - Niedrig-mittel - möglich
         '#B222': 20, // sexuelle_verbindung - Niedrig - keine romantische
+        '#B223': 30, // bondage_erleben - Niedrig
 
         // ═══════════════════════════════════════════════════════════════════════
         // ERWEITERTE DYNAMIK (#B209-#B220) - Kink/BDSM

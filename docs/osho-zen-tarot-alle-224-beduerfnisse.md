@@ -1,4 +1,4 @@
-# Osho Zen Tarot Interpretationen für alle 220 Bedürfnisse
+# Osho Zen Tarot Interpretationen für alle 224 Bedürfnisse
 
 **Version:** 2.0.0  
 **Datum:** 2025-12-16  
@@ -8,7 +8,7 @@
 
 ## Über diese Sammlung
 
-Diese Datei vereint alle 220 Bedürfnisse des Tiage-Beziehungsmodells mit ihren Osho Zen Tarot Interpretationen. Jedes Bedürfnis ist einer Tarot-Karte zugeordnet, deren Weisheit die tiefere Bedeutung des Bedürfnisses beleuchtet.
+Diese Datei vereint alle 224 Bedürfnisse des Tiage-Beziehungsmodells mit ihren Osho Zen Tarot Interpretationen. Jedes Bedürfnis ist einer Tarot-Karte zugeordnet, deren Weisheit die tiefere Bedeutung des Bedürfnisses beleuchtet.
 
 **Alle Rechte bei den jeweiligen Inhabern. Diese Beschreibungen sind freie Interpretationen.**
 

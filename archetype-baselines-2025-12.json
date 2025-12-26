@@ -3,7 +3,7 @@
     "title": "Archetypen Bedürfnis-Baselines",
     "version": "1.0.0",
     "datum": "2025-12",
-    "beschreibung": "Wissenschaftliche Baseline-Werte der 8 Archetypen für alle 220 Bedürfnisse",
+    "beschreibung": "Wissenschaftliche Baseline-Werte der 8 Archetypen für alle 224 Bedürfnisse",
     "quellen": [
       "Self-Determination Theory (Deci & Ryan, 2000)",
       "Attachment Theory - Dismissive-Avoidant (Bartholomew & Horowitz, 1991)",
@@ -3131,6 +3131,246 @@
         "polyamor": 85,
         "ra": 50,
         "lat": 75,
+        "aromantisch": 40
+      }
+    },
+    "#B209": {
+      "label": "Genussmittel",
+      "kategorie": "#K7",
+      "dimension": "#D6",
+      "archetypen": {
+        "single": 35,
+        "duo": 30,
+        "duo_flex": 35,
+        "solopoly": 40,
+        "polyamor": 45,
+        "ra": 40,
+        "lat": 35,
+        "aromantisch": 30
+      }
+    },
+    "#B210": {
+      "label": "Alkohol",
+      "kategorie": "#K7",
+      "dimension": "#D6",
+      "archetypen": {
+        "single": 30,
+        "duo": 25,
+        "duo_flex": 35,
+        "solopoly": 40,
+        "polyamor": 45,
+        "ra": 35,
+        "lat": 30,
+        "aromantisch": 25
+      }
+    },
+    "#B211": {
+      "label": "Cannabis",
+      "kategorie": "#K7",
+      "dimension": "#D6",
+      "archetypen": {
+        "single": 35,
+        "duo": 45,
+        "duo_flex": 40,
+        "solopoly": 40,
+        "polyamor": 50,
+        "ra": 40,
+        "lat": 40,
+        "aromantisch": 30
+      }
+    },
+    "#B212": {
+      "label": "Bondage-geben",
+      "kategorie": "#K11",
+      "dimension": "#D4",
+      "archetypen": {
+        "single": 35,
+        "duo": 35,
+        "duo_flex": 40,
+        "solopoly": 45,
+        "polyamor": 50,
+        "ra": 40,
+        "lat": 35,
+        "aromantisch": 30
+      }
+    },
+    "#B213": {
+      "label": "Devotion",
+      "kategorie": "#K11",
+      "dimension": "#D4",
+      "archetypen": {
+        "single": 25,
+        "duo": 60,
+        "duo_flex": 45,
+        "solopoly": 35,
+        "polyamor": 55,
+        "ra": 30,
+        "lat": 45,
+        "aromantisch": 25
+      }
+    },
+    "#B214": {
+      "label": "Anbetung",
+      "kategorie": "#K11",
+      "dimension": "#D4",
+      "archetypen": {
+        "single": 30,
+        "duo": 40,
+        "duo_flex": 45,
+        "solopoly": 40,
+        "polyamor": 50,
+        "ra": 30,
+        "lat": 40,
+        "aromantisch": 20
+      }
+    },
+    "#B215": {
+      "label": "Demütig-sein",
+      "kategorie": "#K11",
+      "dimension": "#D4",
+      "archetypen": {
+        "single": 20,
+        "duo": 50,
+        "duo_flex": 40,
+        "solopoly": 30,
+        "polyamor": 45,
+        "ra": 25,
+        "lat": 35,
+        "aromantisch": 25
+      }
+    },
+    "#B216": {
+      "label": "Dominieren",
+      "kategorie": "#K11",
+      "dimension": "#D4",
+      "archetypen": {
+        "single": 45,
+        "duo": 35,
+        "duo_flex": 45,
+        "solopoly": 50,
+        "polyamor": 50,
+        "ra": 40,
+        "lat": 40,
+        "aromantisch": 35
+      }
+    },
+    "#B217": {
+      "label": "Bestrafung-erhalten",
+      "kategorie": "#K11",
+      "dimension": "#D4",
+      "archetypen": {
+        "single": 20,
+        "duo": 40,
+        "duo_flex": 35,
+        "solopoly": 30,
+        "polyamor": 40,
+        "ra": 25,
+        "lat": 30,
+        "aromantisch": 20
+      }
+    },
+    "#B218": {
+      "label": "Bestrafen",
+      "kategorie": "#K11",
+      "dimension": "#D4",
+      "archetypen": {
+        "single": 25,
+        "duo": 35,
+        "duo_flex": 40,
+        "solopoly": 35,
+        "polyamor": 45,
+        "ra": 30,
+        "lat": 35,
+        "aromantisch": 25
+      }
+    },
+    "#B219": {
+      "label": "Service-Orientierung",
+      "kategorie": "#K11",
+      "dimension": "#D4",
+      "archetypen": {
+        "single": 25,
+        "duo": 65,
+        "duo_flex": 50,
+        "solopoly": 35,
+        "polyamor": 55,
+        "ra": 30,
+        "lat": 45,
+        "aromantisch": 30
+      }
+    },
+    "#B220": {
+      "label": "Service-empfangen",
+      "kategorie": "#K11",
+      "dimension": "#D4",
+      "archetypen": {
+        "single": 40,
+        "duo": 60,
+        "duo_flex": 55,
+        "solopoly": 45,
+        "polyamor": 55,
+        "ra": 40,
+        "lat": 50,
+        "aromantisch": 35
+      }
+    },
+    "#B221": {
+      "label": "Schmerzerleben",
+      "kategorie": "#K11",
+      "dimension": "#D4",
+      "archetypen": {
+        "single": 50,
+        "duo": 40,
+        "duo_flex": 70,
+        "solopoly": 85,
+        "polyamor": 80,
+        "ra": 75,
+        "lat": 50,
+        "aromantisch": 40
+      }
+    },
+    "#B222": {
+      "label": "Schmerz-geben",
+      "kategorie": "#K11",
+      "dimension": "#D4",
+      "archetypen": {
+        "single": 30,
+        "duo": 90,
+        "duo_flex": 75,
+        "solopoly": 60,
+        "polyamor": 85,
+        "ra": 60,
+        "lat": 80,
+        "aromantisch": 20
+      }
+    },
+    "#B223": {
+      "label": "Bondage-erleben",
+      "kategorie": "#K11",
+      "dimension": "#D4",
+      "archetypen": {
+        "single": 35,
+        "duo": 45,
+        "duo_flex": 40,
+        "solopoly": 40,
+        "polyamor": 50,
+        "ra": 40,
+        "lat": 40,
+        "aromantisch": 30
+      }
+    },
+    "#B224": {
+      "label": "Zucker",
+      "kategorie": "#K7",
+      "dimension": "#D6",
+      "archetypen": {
+        "single": 45,
+        "duo": 50,
+        "duo_flex": 50,
+        "solopoly": 50,
+        "polyamor": 55,
+        "ra": 45,
+        "lat": 45,
         "aromantisch": 40
       }
     }
