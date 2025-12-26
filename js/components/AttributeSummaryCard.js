@@ -360,9 +360,6 @@ const AttributeSummaryCard = (function() {
             needItem.classList.toggle('need-selected', isSelected);
         }
 
-        // Update control panel visibility
-        updateMultiSelectControlPanel();
-
         // Event
         document.dispatchEvent(new CustomEvent('needSelectionChange', {
             bubbles: true,
@@ -382,7 +379,6 @@ const AttributeSummaryCard = (function() {
         });
         selectedNeeds.clear();
         originalNeedValues.clear();
-        updateMultiSelectControlPanel();
     }
 
     /**
@@ -473,9 +469,6 @@ const AttributeSummaryCard = (function() {
                 }
             });
         }
-
-        // Update control panel
-        updateMultiSelectControlPanel();
 
         // Event
         document.dispatchEvent(new CustomEvent('needSelectionChange', {
@@ -1302,47 +1295,6 @@ const AttributeSummaryCard = (function() {
                     <span class="flat-needs-subtitle">${subtitleText}</span>
                 </div>
             </div>
-
-            <!-- MULTI-SELECT CONTROL PANEL (immer sichtbar) -->
-            <div id="multi-select-control-panel" class="multi-select-control-panel" style="display: flex;">
-                <div class="multi-select-info">
-                    <button class="multi-select-toggle-view-btn${showOnlyHauptfragen ? ' active' : ''}" onclick="AttributeSummaryCard.toggleHauptfragenFilter();" title="Zwischen Hauptfragen und Details wechseln" style="background: ${showOnlyHauptfragen ? 'var(--accent-color)' : 'var(--bg-tertiary)'};">
-                        ${showOnlyHauptfragen ? '📋 Hauptfragen' : '📝 Details'}
-                    </button>
-                    <button class="multi-select-toggle-all-btn" onclick="AttributeSummaryCard.selectAllFilteredNeeds();" title="Alle gefilterten auswählen/abwählen">
-                        ☑ Alle/Keine
-                    </button>
-                    <!-- FILTER DEAKTIVIERT für SSOT-Refactoring -->
-                    <span class="multi-select-count">0 ausgewählt</span>
-                    <div class="multi-select-actions">
-                        <button class="multi-select-lock-btn" onclick="AttributeSummaryCard.lockSelectedNeeds(true);" title="Ausgewählte sperren">
-                            🔒 Sperren
-                        </button>
-                        <button class="multi-select-unlock-btn" onclick="AttributeSummaryCard.lockSelectedNeeds(false);" title="Ausgewählte entsperren">
-                            🔓 Entsperren
-                        </button>
-                        <button class="multi-select-reset-btn" onclick="AttributeSummaryCard.resetSelectedNeedsValues();" title="Werte aus Profil neu laden">
-                            ↶ Werte laden
-                        </button>
-                        <button class="multi-select-ok-btn" onclick="AttributeSummaryCard.clearNeedSelection();" title="Bestätigen und Auswahl aufheben">
-                            ✓ OK
-                        </button>
-                    </div>
-                </div>
-                <div class="multi-select-slider-container">
-                    <span class="multi-select-slider-label">Alle auf:</span>
-                    <input type="range" class="multi-select-slider" min="0" max="100" value="50"
-                           oninput="AttributeSummaryCard.updateSelectedNeedsValue(this.value)">
-                    <input type="text" class="multi-select-input" value="50" maxlength="3"
-                           onchange="AttributeSummaryCard.updateSelectedNeedsValue(this.value)">
-                </div>
-            </div>
-
-            <!-- DIMENSION-KATEGORIE-FILTER - DEAKTIVIERT für SSOT-Refactoring -->
-            <div id="flat-needs-dimension-filter" style="display: none;"></div>
-
-            <!-- TREE-VIEW CONTAINER - DEAKTIVIERT für SSOT-Refactoring -->
-            <div id="tree-view-inline-container" style="display: none;"></div>
 
             <div class="flat-needs-sort-bar">
                 <span class="flat-needs-sort-label">Sortieren:</span>
