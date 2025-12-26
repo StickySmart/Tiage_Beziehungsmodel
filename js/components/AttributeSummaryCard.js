@@ -1269,6 +1269,7 @@ const AttributeSummaryCard = (function() {
             // HauptfrageAggregation: 'value', 'label', 'kategorie', 'id'
             let sortParam = 'value';
             let sortDescending = true;
+            let needsCustomChangedSort = false;
 
             switch (currentFlatSortMode) {
                 case 'name':
@@ -1279,8 +1280,13 @@ const AttributeSummaryCard = (function() {
                     sortParam = 'id';
                     sortDescending = false; // #B1, #B2, ... aufsteigend
                     break;
-                case 'status':
                 case 'changed':
+                    // Spezielle Sortierung: Hauptfragen mit geänderten Nuancen zuerst
+                    sortParam = 'value'; // Initial nach Wert
+                    sortDescending = true;
+                    needsCustomChangedSort = true;
+                    break;
+                case 'status':
                 case 'value':
                 default:
                     sortParam = 'value';
@@ -1293,6 +1299,28 @@ const AttributeSummaryCard = (function() {
                 sortParam,
                 sortDescending
             );
+
+            // Spezielle "Geändert"-Sortierung für Hauptfragen:
+            // Hauptfragen mit geänderten Nuancen zuerst, dann nach Anzahl geänderter Nuancen
+            if (needsCustomChangedSort) {
+                hauptfragenData.sort((a, b) => {
+                    const aChangedCount = (a.nuancen || []).filter(nuanceId => {
+                        const nuanceObj = findNeedById(nuanceId);
+                        return nuanceObj && isValueChanged(nuanceId, nuanceObj.value);
+                    }).length;
+                    const bChangedCount = (b.nuancen || []).filter(nuanceId => {
+                        const nuanceObj = findNeedById(nuanceId);
+                        return nuanceObj && isValueChanged(nuanceId, nuanceObj.value);
+                    }).length;
+                    // Mehr geänderte Nuancen zuerst
+                    if (bChangedCount !== aChangedCount) {
+                        return bChangedCount - aChangedCount;
+                    }
+                    // Bei gleicher Anzahl nach Wert absteigend
+                    return (b.aggregatedValue || 0) - (a.aggregatedValue || 0);
+                });
+            }
+
             hauptfragenCount = hauptfragenData.length;
         }
 
@@ -1350,13 +1378,24 @@ const AttributeSummaryCard = (function() {
                 const nuancenCount = hf.nuancenCount || 0;
                 const aggregatedValue = hf.aggregatedValue;
 
+                // Prüfe ob mindestens eine Nuance dieser Hauptfrage geändert wurde
+                const changedNuancenCount = (hf.nuancen || []).filter(nuanceId => {
+                    const nuanceObj = findNeedById(nuanceId);
+                    return nuanceObj && isValueChanged(nuanceId, nuanceObj.value);
+                }).length;
+                const hasChangedNuancen = changedNuancenCount > 0;
+                const changedClass = hasChangedNuancen ? ' has-changed-nuancen' : '';
+                const changedIndicator = hasChangedNuancen
+                    ? `<span class="hauptfrage-changed-indicator" title="${changedNuancenCount} Nuance(n) geändert">*</span>`
+                    : '';
+
                 // Hauptfrage-Item mit Expand-Toggle
                 html += `
-                <div class="hauptfrage-item${isExpanded ? ' expanded' : ''}" data-hauptfrage-id="${hf.id}">
+                <div class="hauptfrage-item${isExpanded ? ' expanded' : ''}${changedClass}" data-hauptfrage-id="${hf.id}">
                     <div class="hauptfrage-header" onclick="AttributeSummaryCard.toggleHauptfrageExpand('${hf.id}')">
                         <span class="hauptfrage-expand-icon">${isExpanded ? '▼' : '▶'}</span>
                         <span class="hauptfrage-label" style="border-left: 3px solid ${dimColor}; padding-left: 8px;">
-                            ${hf.id} ${hf.label}
+                            ${hf.id} ${hf.label}${changedIndicator}
                         </span>
                         <span class="hauptfrage-nuancen-count">(${nuancenCount} Nuancen)</span>
                         <div class="hauptfrage-value-container">

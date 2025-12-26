@@ -2880,6 +2880,18 @@ input.resonanz-input:focus {
     color: var(--accent-color, #22c55e);
 }
 
+/* Hauptfrage mit geänderten Nuancen */
+.hauptfrage-item.has-changed-nuancen {
+    border-left: 3px solid var(--primary, #c084fc);
+}
+
+.hauptfrage-changed-indicator {
+    color: var(--primary, #c084fc);
+    font-weight: bold;
+    margin-left: 4px;
+    font-size: 14px;
+}
+
 /* Hauptfrage Label */
 .hauptfrage-label {
     flex: 1;
