@@ -21837,7 +21837,17 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
 
             // Store in TiageState if available
             if (typeof TiageState !== 'undefined') {
-                TiageState.set('profileReview', state);
+                // FIX: Preserve existing lockedNeeds when saving profileReview UI state
+                // profileReview has two data types:
+                // 1. UI state (geschlechtsidentitaet, kinder, etc.) - flat structure
+                // 2. Lock state (ich.lockedNeeds, partner.lockedNeeds) - nested structure
+                var existingProfileReview = TiageState.get('profileReview') || {};
+                var mergedState = Object.assign({}, state, {
+                    ich: existingProfileReview.ich || { lockedNeeds: {} },
+                    partner: existingProfileReview.partner || { lockedNeeds: {} }
+                });
+                TiageState.set('profileReview', mergedState);
+                TiageState.saveToStorage(); // Persist merged state including lockedNeeds
 
                 // Apply geschlechtsidentität to main gender selection for 'ich'
                 if (state.geschlechtsidentitaet !== undefined) {
