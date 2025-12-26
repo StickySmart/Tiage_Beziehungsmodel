@@ -915,8 +915,9 @@
         function showLoadingIndicator() {
             const container = document.getElementById('needsEditorListContainer');
             if (container) {
+                // NOTE: ID removed to avoid duplicate ID with static HTML version (line ~387)
                 container.innerHTML = `
-                    <div class="needs-loading-container" id="needsLoadingIndicator">
+                    <div class="needs-loading-container">
                         <div class="needs-loading-spinner"></div>
                         <div class="needs-loading-text">Daten werden geladen und berechnet</div>
                         <div class="needs-loading-subtext">219 Bedürfnisse werden analysiert...</div>
