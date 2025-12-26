@@ -2766,3 +2766,18 @@ const AttributeSummaryCard = (function() {
 if (typeof module !== 'undefined' && module.exports) {
     module.exports = AttributeSummaryCard;
 }
+
+// FIX: Event-Listener für Katalog-Laden - UI aktualisieren wenn Katalog fertig lädt
+if (typeof document !== 'undefined') {
+    document.addEventListener('beduerfnisIdsLoaded', function() {
+        console.log('[AttributeSummaryCard] Katalog geladen - UI wird aktualisiert');
+        // Re-render wenn die Komponente bereits sichtbar ist
+        const container = document.querySelector('.flat-needs-container');
+        if (container && typeof AttributeSummaryCard !== 'undefined' && AttributeSummaryCard.reRenderFlatNeeds) {
+            // Kurze Verzögerung um sicherzustellen dass der Cache invalidiert wurde
+            setTimeout(function() {
+                AttributeSummaryCard.reRenderFlatNeeds();
+            }, 50);
+        }
+    });
+}
