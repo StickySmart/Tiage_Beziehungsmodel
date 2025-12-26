@@ -55,6 +55,14 @@ const HauptfrageAggregation = (function() {
             || (typeof BeduerfnisIds !== 'undefined' ? BeduerfnisIds.beduerfnisse : null)
             || {};
 
+        // FIX: Prüfe ob der Katalog tatsächlich geladen ist (nicht leer)
+        // Wenn der Katalog noch nicht geladen ist, setze keinen Cache
+        const katalogKeys = Object.keys(katalog);
+        if (katalogKeys.length === 0) {
+            console.log('[HauptfrageAggregation] Katalog noch nicht geladen - kein Cache gesetzt');
+            return {};
+        }
+
         hauptfragenCache = {};
 
         for (const [id, beduerfnis] of Object.entries(katalog)) {
@@ -504,4 +512,12 @@ const HauptfrageAggregation = (function() {
 // Export für Module-System
 if (typeof module !== 'undefined' && module.exports) {
     module.exports = HauptfrageAggregation;
+}
+
+// FIX: Event-Listener für Katalog-Laden - Cache invalidieren wenn Katalog fertig lädt
+if (typeof document !== 'undefined') {
+    document.addEventListener('beduerfnisIdsLoaded', function() {
+        console.log('[HauptfrageAggregation] Katalog geladen - Cache wird invalidiert');
+        HauptfrageAggregation.clearCache();
+    });
 }
