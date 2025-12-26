@@ -772,10 +772,16 @@ const AttributeSummaryCard = (function() {
     let activePerspektiveFilters = new Set();
 
     /**
-     * ENTFERNT: Hauptfragen-Filter (Benutzer-Feedback: zu komplex, nicht nötig)
-     * Zeige IMMER alle Bedürfnisse (219)
+     * Hauptfragen-Ansicht: Zeigt nur Hauptfragen mit aggregierten Werten
+     * Nuancen werden als aufklappbare Details darunter angezeigt
+     * Default: true (vereinfachte Ansicht)
      */
-    let showOnlyHauptfragen = false;
+    let showOnlyHauptfragen = true;
+
+    /**
+     * Set der aufgeklappten Hauptfragen (speichert IDs der expandierten Hauptfragen)
+     */
+    let expandedHauptfragen = new Set();
 
     /**
      * Filter: Zeigt nur geänderte Bedürfnisse an
@@ -990,9 +996,26 @@ const AttributeSummaryCard = (function() {
      * DEPRECATED: Toggle zwischen Hauptfragen und allen Bedürfnissen
      * Hauptfragen-Filter wurde entfernt (Benutzer-Feedback)
      */
+    /**
+     * Toggle zwischen Hauptfragen-Ansicht und Detail-Ansicht
+     */
     function toggleHauptfragenFilter() {
-        console.warn('[AttributeSummaryCard] toggleHauptfragenFilter ist deprecated. Hauptfragen-Filter wurde entfernt.');
-        // No-op - showOnlyHauptfragen ist immer false
+        showOnlyHauptfragen = !showOnlyHauptfragen;
+        console.log('[AttributeSummaryCard] Hauptfragen-Ansicht:', showOnlyHauptfragen ? 'AN' : 'AUS');
+        reRenderFlatNeeds();
+    }
+
+    /**
+     * Toggle einer einzelnen Hauptfrage (aufklappen/zuklappen der Nuancen)
+     * @param {string} hauptfrageId - Die #B-ID der Hauptfrage
+     */
+    function toggleHauptfrageExpand(hauptfrageId) {
+        if (expandedHauptfragen.has(hauptfrageId)) {
+            expandedHauptfragen.delete(hauptfrageId);
+        } else {
+            expandedHauptfragen.add(hauptfrageId);
+        }
+        reRenderFlatNeeds();
     }
 
     /**
@@ -1243,18 +1266,38 @@ const AttributeSummaryCard = (function() {
             return savedLockedNeeds.hasOwnProperty(need.id);
         }).length;
 
+        // Hauptfragen-Daten für aggregierte Ansicht
+        let hauptfragenCount = 0;
+        let hauptfragenData = [];
+        if (typeof HauptfrageAggregation !== 'undefined') {
+            hauptfragenData = HauptfrageAggregation.getAggregatedHauptfragenList(
+                Object.fromEntries(flatNeeds.map(n => [n.id, n.value])),
+                'value',
+                true
+            );
+            hauptfragenCount = hauptfragenData.length;
+        }
+
         // Subtitle mit Filter-Info und gesperrten Bedürfnissen
         const filterActive = filteredCount < totalNeedsCount;
-        const subtitleText = filterActive
-            ? `Dein ${archetypLabel}-Profil (Gefiltert: ${filteredCount}), davon gesperrt: ${lockedCount}`
-            : `Dein ${archetypLabel}-Profil (${totalNeedsCount} Bedürfnisse), davon gesperrt: ${lockedCount}`;
+        let subtitleText;
+        if (showOnlyHauptfragen) {
+            subtitleText = `Dein ${archetypLabel}-Profil (${hauptfragenCount} Hauptfragen), davon gesperrt: ${lockedCount}`;
+        } else {
+            subtitleText = filterActive
+                ? `Dein ${archetypLabel}-Profil (Gefiltert: ${filteredCount}), davon gesperrt: ${lockedCount}`
+                : `Dein ${archetypLabel}-Profil (${totalNeedsCount} Bedürfnisse), davon gesperrt: ${lockedCount}`;
+        }
+
+        // Titel je nach Ansichtsmodus
+        const titleText = showOnlyHauptfragen ? 'Bedürfnisse (Hauptfragen)' : 'Alle Bedürfnisse';
 
         // Rendere HTML - flache Liste ohne Kategorien
         let html = `<div class="flat-needs-container flat-needs-no-categories" data-archetyp="${archetyp}">`;
         html += `<div class="flat-needs-header">
             <div class="flat-needs-header-top">
                 <div class="flat-needs-header-left">
-                    <span class="flat-needs-title">Alle Bedürfnisse</span>
+                    <span class="flat-needs-title">${titleText}</span>
                     <span class="flat-needs-subtitle">${subtitleText}</span>
                 </div>
             </div>
@@ -1262,6 +1305,9 @@ const AttributeSummaryCard = (function() {
             <!-- MULTI-SELECT CONTROL PANEL (immer sichtbar) -->
             <div id="multi-select-control-panel" class="multi-select-control-panel" style="display: flex;">
                 <div class="multi-select-info">
+                    <button class="multi-select-toggle-view-btn${showOnlyHauptfragen ? ' active' : ''}" onclick="AttributeSummaryCard.toggleHauptfragenFilter();" title="Zwischen Hauptfragen und Details wechseln" style="background: ${showOnlyHauptfragen ? 'var(--accent-color)' : 'var(--bg-tertiary)'};">
+                        ${showOnlyHauptfragen ? '📋 Hauptfragen' : '📝 Details'}
+                    </button>
                     <button class="multi-select-toggle-all-btn" onclick="AttributeSummaryCard.selectAllFilteredNeeds();" title="Alle gefilterten auswählen/abwählen">
                         ☑ Alle/Keine
                     </button>
@@ -1315,30 +1361,92 @@ const AttributeSummaryCard = (function() {
         // Filter-Container für DimensionKategorieFilter (wird in initDimensionFilter befüllt)
         html += `<div id="flat-needs-dimension-filter" class="profile-review-controls-container"></div>`;
 
-        // Direkte flache Liste ohne Kategorien-Wrapper
-        html += `<div class="flat-needs-list-wrapper">
-            <div class="flat-needs-list kategorie-mode">`;
-        // FIX: Rendere ALLE Bedürfnisse, auch gefilterte (für Suche)
-        // Der DimensionKategorieFilter wird als CSS-Klasse angewendet
-        sortedNeeds.forEach(need => {
-            const needObj = findNeedById(need.id);
-            const isLocked = needObj?.locked || false;
-            // Zeige immer Dimension-Farbe
-            const dimColor = getDimensionColor(need.id);
+        // ═══════════════════════════════════════════════════════════════════════════
+        // BEDINGTE RENDER-LOGIK: Hauptfragen-Ansicht vs. Detail-Ansicht
+        // ═══════════════════════════════════════════════════════════════════════════
 
-            // Prüfe ob Bedürfnis durch DimensionKategorieFilter versteckt werden soll
-            const hiddenByDimensionFilter = (typeof DimensionKategorieFilter !== 'undefined')
-                && !DimensionKategorieFilter.shouldShowNeed(need.id);
+        if (showOnlyHauptfragen && hauptfragenData.length > 0) {
+            // ═══════════════════════════════════════════════════════════════════════════
+            // HAUPTFRAGEN-ANSICHT: Zeigt nur Hauptfragen mit aggregierten Werten
+            // ═══════════════════════════════════════════════════════════════════════════
+            html += `<div class="flat-needs-list-wrapper">
+                <div class="flat-needs-list hauptfragen-mode">`;
 
-            // Prüfe ob Bedürfnis durch "Nur Geänderte" Filter versteckt werden soll
-            const hiddenByChangedFilter = showOnlyChangedNeeds && !isValueChanged(need.id, need.value);
+            hauptfragenData.forEach(hf => {
+                const isExpanded = expandedHauptfragen.has(hf.id);
+                const dimColor = getDimensionColor(hf.id);
+                const nuancenCount = hf.nuancenCount || 0;
+                const aggregatedValue = hf.aggregatedValue;
 
-            const shouldHide = hiddenByDimensionFilter || hiddenByChangedFilter;
+                // Hauptfrage-Item mit Expand-Toggle
+                html += `
+                <div class="hauptfrage-item${isExpanded ? ' expanded' : ''}" data-hauptfrage-id="${hf.id}">
+                    <div class="hauptfrage-header" onclick="AttributeSummaryCard.toggleHauptfrageExpand('${hf.id}')">
+                        <span class="hauptfrage-expand-icon">${isExpanded ? '▼' : '▶'}</span>
+                        <span class="hauptfrage-label" style="border-left: 3px solid ${dimColor}; padding-left: 8px;">
+                            ${hf.id} ${hf.label}
+                        </span>
+                        <span class="hauptfrage-nuancen-count">(${nuancenCount} Nuancen)</span>
+                        <div class="hauptfrage-value-container">
+                            <div class="hauptfrage-bar" style="width: ${aggregatedValue || 0}%; background: ${dimColor};"></div>
+                            <span class="hauptfrage-value">${aggregatedValue !== null ? aggregatedValue : '-'}</span>
+                        </div>
+                    </div>`;
 
-            html += renderFlatNeedItem(need.id, need.label, need.value, isLocked, dimColor, shouldHide);
-        });
-        html += `</div>`; // Close flat-needs-list
-        html += '</div>'; // Close flat-needs-list-wrapper
+                // Nuancen-Liste (wenn aufgeklappt)
+                if (isExpanded && hf.nuancen && hf.nuancen.length > 0) {
+                    html += `<div class="nuancen-list">`;
+                    hf.nuancen.forEach(nuanceId => {
+                        const nuanceObj = findNeedById(nuanceId);
+                        if (nuanceObj) {
+                            const isLocked = nuanceObj.locked || false;
+                            const nuanceValue = nuanceObj.value;
+                            html += renderFlatNeedItem(
+                                nuanceId,
+                                `${nuanceId} ${nuanceObj.label}`,
+                                nuanceValue,
+                                isLocked,
+                                dimColor,
+                                false // Nicht verstecken in expandierter Ansicht
+                            );
+                        }
+                    });
+                    html += `</div>`; // Close nuancen-list
+                }
+
+                html += `</div>`; // Close hauptfrage-item
+            });
+
+            html += `</div>`; // Close flat-needs-list
+            html += `</div>`; // Close flat-needs-list-wrapper
+        } else {
+            // ═══════════════════════════════════════════════════════════════════════════
+            // DETAIL-ANSICHT: Zeigt alle Bedürfnisse flach
+            // ═══════════════════════════════════════════════════════════════════════════
+            html += `<div class="flat-needs-list-wrapper">
+                <div class="flat-needs-list kategorie-mode">`;
+            // FIX: Rendere ALLE Bedürfnisse, auch gefilterte (für Suche)
+            // Der DimensionKategorieFilter wird als CSS-Klasse angewendet
+            sortedNeeds.forEach(need => {
+                const needObj = findNeedById(need.id);
+                const isLocked = needObj?.locked || false;
+                // Zeige immer Dimension-Farbe
+                const dimColor = getDimensionColor(need.id);
+
+                // Prüfe ob Bedürfnis durch DimensionKategorieFilter versteckt werden soll
+                const hiddenByDimensionFilter = (typeof DimensionKategorieFilter !== 'undefined')
+                    && !DimensionKategorieFilter.shouldShowNeed(need.id);
+
+                // Prüfe ob Bedürfnis durch "Nur Geänderte" Filter versteckt werden soll
+                const hiddenByChangedFilter = showOnlyChangedNeeds && !isValueChanged(need.id, need.value);
+
+                const shouldHide = hiddenByDimensionFilter || hiddenByChangedFilter;
+
+                html += renderFlatNeedItem(need.id, need.label, need.value, isLocked, dimColor, shouldHide);
+            });
+            html += `</div>`; // Close flat-needs-list
+            html += `</div>`; // Close flat-needs-list-wrapper
+        }
 
         html += '</div>'; // Close flat-needs-container
         return html;
@@ -2631,6 +2739,8 @@ const AttributeSummaryCard = (function() {
         togglePerspektiveFilter,
         clearPerspektiveFilters,
         toggleHauptfragenFilter,
+        // NEU: Hauptfragen-Ansicht mit aufklappbaren Nuancen
+        toggleHauptfrageExpand,
         GFK_KATEGORIEN,
         // NEU: Multi-Select Feature für Bedürfnisse
         toggleNeedSelection,
