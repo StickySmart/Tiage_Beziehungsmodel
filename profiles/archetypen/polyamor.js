@@ -168,9 +168,10 @@ const PolyamorProfil = {
         '#B86': 60,  // machtaustausch - Mittel - offen
         '#B87': 60,  // dienend_sein - Mittel
         '#B88': 75,  // beschuetzen - Hoch
+        '#B89': 55,  // kinder_und_elternschaft - Mittel
 
         // ─────────────────────────────────────────────────────────────────────────
-        // LEBENSPLANUNG (#B90-#B126) - Offen für verschiedene Konstellationen
+        // LEBENSPLANUNG (#B89-#B126) - Offen für verschiedene Konstellationen
         // ─────────────────────────────────────────────────────────────────────────
         '#B90': 55,   // kinderwunsch - Mittel - kann, muss nicht
         '#B91': 55,   // elternschaft - Mittel - Co-Parenting möglich
@@ -314,6 +315,7 @@ const PolyamorProfil = {
         // NEU: Sexuelle Bedürfnisse für R1-Berechnung
         '#B221': 80,  // sexuelle_experimentierfreude - Hoch - offen
         '#B222': 85,  // sexuelle_verbindung - Sehr hoch - mit mehreren
+        '#B223': 50,  // bondage_erleben - Mittel
 
         // ─────────────────────────────────────────────────────────────────────────
         // ERWEITERTE DYNAMIK (#B209-#B220) - Kink/BDSM

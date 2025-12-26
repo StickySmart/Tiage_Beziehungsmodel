@@ -168,9 +168,10 @@ const SolopolyProfil = {
         '#B86': 45,  // machtaustausch - Mittel - situativ
         '#B87': 35,  // dienend_sein - Niedrig
         '#B88': 55,  // beschuetzen - Mittel
+        '#B89': 30,  // kinder_und_elternschaft - Niedrig
 
         // ─────────────────────────────────────────────────────────────────────────
-        // LEBENSPLANUNG (#B90-#B126) - Keine Lebensplanung mit anderen
+        // LEBENSPLANUNG (#B89-#B126) - Keine Lebensplanung mit anderen
         // ─────────────────────────────────────────────────────────────────────────
         '#B90': 30,   // kinderwunsch - Niedrig - nicht priorisiert
         '#B91': 25,   // elternschaft - Niedrig - würde Autonomie einschränken
@@ -314,6 +315,7 @@ const SolopolyProfil = {
         // NEU: Sexuelle Bedürfnisse für R1-Berechnung
         '#B221': 85,  // sexuelle_experimentierfreude - Sehr hoch - offen für alles
         '#B222': 60,  // sexuelle_verbindung - Mittel - ohne Bindung
+        '#B223': 40,  // bondage_erleben - Niedrig-mittel
 
         // ─────────────────────────────────────────────────────────────────────────
         // ERWEITERTE DYNAMIK (#B209-#B220) - Kink/BDSM

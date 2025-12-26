@@ -168,9 +168,10 @@ const DuoFlexProfil = {
         '#B86': 55,  // machtaustausch - Mittel - wenn gewünscht
         '#B87': 55,  // dienend_sein - Mittel - gegenseitig
         '#B88': 75,  // beschuetzen - Hoch - gegenseitig
+        '#B89': 60,  // kinder_und_elternschaft - Mittel-hoch
 
         // ─────────────────────────────────────────────────────────────────────────
-        // LEBENSPLANUNG (#B90-#B126) - Offen für beides, individuelle Entscheidung
+        // LEBENSPLANUNG (#B89-#B126) - Offen für beides, individuelle Entscheidung
         // ─────────────────────────────────────────────────────────────────────────
         '#B90': 60,   // kinderwunsch - Mittel-hoch - offen
         '#B91': 60,   // elternschaft - Mittel-hoch - wenn gewünscht
@@ -314,6 +315,7 @@ const DuoFlexProfil = {
         // NEU: Sexuelle Bedürfnisse für R1-Berechnung
         '#B221': 70,  // sexuelle_experimentierfreude - Hoch - offen
         '#B222': 75,  // sexuelle_verbindung - Hoch - mit Flexibilität
+        '#B223': 40,  // bondage_erleben - Niedrig-mittel
 
         // ─────────────────────────────────────────────────────────────────────────
         // ERWEITERTE DYNAMIK (#B209-#B220) - Kink/BDSM

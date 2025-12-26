@@ -166,9 +166,10 @@ const RAProfil = {
         '#B86': 40,  // machtaustausch - Niedrig-mittel
         '#B87': 30,  // dienend_sein - Niedrig
         '#B88': 50,  // beschuetzen - Mittel
+        '#B89': 35,  // kinder_und_elternschaft - Niedrig-mittel
 
         // ═══════════════════════════════════════════════════════════════════════
-        // LEBENSPLANUNG (#B90-#B126)
+        // LEBENSPLANUNG (#B89-#B126)
         // ═══════════════════════════════════════════════════════════════════════
         // RA: Keine vordefinierten Strukturen, alles individuell verhandelbar
         '#B90': 35,  // kinderwunsch - Niedrig-mittel - individuell
@@ -313,6 +314,7 @@ const RAProfil = {
         // NEU: Sexuelle Bedürfnisse für R1-Berechnung
         '#B221': 75, // sexuelle_experimentierfreude - Hoch - Freiheit im Ausdruck
         '#B222': 60, // sexuelle_verbindung - Mittel - nicht hierarchisiert
+        '#B223': 40, // bondage_erleben - Niedrig-mittel
 
         // ═══════════════════════════════════════════════════════════════════════
         // ERWEITERTE DYNAMIK (#B209-#B220) - Kink/BDSM

@@ -173,9 +173,10 @@ const SingleProfil = {
         '#B86': 35,  // machtaustausch - Niedrig - vermeidet
         '#B87': 25,  // dienend_sein - Niedrig - nicht unterwürfig
         '#B88': 50,  // beschuetzen - Mittel - kann beschützen
+        '#B89': 25,  // kinder_und_elternschaft - Niedrig - nicht priorisiert
 
         // ═══════════════════════════════════════════════════════════════════════
-        // LEBENSPLANUNG (#B90-#B126)
+        // LEBENSPLANUNG (#B89-#B126)
         // ═══════════════════════════════════════════════════════════════════════
         // Singles: Niedrig - Freiheit und Flexibilität priorisiert
         '#B90': 25,  // kinderwunsch - Niedrig - oft kein aktiver Wunsch
@@ -320,6 +321,7 @@ const SingleProfil = {
         // NEU: Sexuelle Bedürfnisse für R1-Berechnung
         '#B221': 50, // sexuelle_experimentierfreude - Mittel - offen für Neues
         '#B222': 30, // sexuelle_verbindung - Niedrig - keine Bindung
+        '#B223': 35, // bondage_erleben - Niedrig
 
         // ═══════════════════════════════════════════════════════════════════════
         // ERWEITERTE DYNAMIK (#B209-#B220) - Kink/BDSM

@@ -1,6 +1,6 @@
 {
   "version": "2.0.0",
-  "beschreibung": "Osho Zen Tarot Texte zu den 220 Bedürfnissen - Erweiterte Version mit individuellen Weisheitstexten",
+  "beschreibung": "Osho Zen Tarot Texte zu den 224 Bedürfnissen - Erweiterte Version mit individuellen Weisheitstexten",
   "quelle": "Osho Zen Tarot von Ma Deva Padma (St. Martins Press), basierend auf den Lehren von Osho",
   "copyright": "Alle Rechte bei den jeweiligen Inhabern. Diese Beschreibungen sind freie Interpretationen.",
 
@@ -1324,6 +1324,30 @@
       "frage": "Wie wichtig ist Ihnen Service-empfangen?",
       "karte": "Receptivity",
       "text": "Service empfangen ist empfängliche Demut. Annehmen zu können ist eine eigene Kunst."
+    },
+    "#B221": {
+      "label": "Schmerzerleben",
+      "frage": "Wie wichtig ist Ihnen Schmerzerleben?",
+      "karte": "Transformation",
+      "text": "Schmerz bewusst zu erleben ist ein Tor zur Transformation. In der Intensität liegt Befreiung."
+    },
+    "#B222": {
+      "label": "Schmerz-geben",
+      "frage": "Wie wichtig ist Ihnen Schmerz-geben?",
+      "karte": "Trust",
+      "text": "Schmerz zu geben erfordert tiefes Vertrauen. Der bewusste Geber trägt Verantwortung wie ein Heiler."
+    },
+    "#B223": {
+      "label": "Bondage-erleben",
+      "frage": "Wie wichtig ist Ihnen Bondage-erleben?",
+      "karte": "Surrender",
+      "text": "In der Hingabe an Fesseln liegt paradoxe Freiheit. Loslassen beginnt, wo Kontrolle aufhört."
+    },
+    "#B224": {
+      "label": "Zucker",
+      "frage": "Wie wichtig ist Ihnen Zuckerkonsum?",
+      "karte": "Moment to Moment",
+      "text": "Süße ist ein Genuss des Augenblicks. Die Frage ist: Genießt du bewusst oder flüchtest du?"
     }
   }
 }
