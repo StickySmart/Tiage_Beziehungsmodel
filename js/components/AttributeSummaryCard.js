@@ -404,11 +404,12 @@ const AttributeSummaryCard = (function() {
      */
     function selectAllFilteredNeeds() {
         // Ermittle alle sichtbaren (nicht gefilterten) Bedürfnisse
+        // FILTER DEAKTIVIERT - Zeige alle Bedürfnisse ohne DimensionKategorieFilter
         const visibleNeeds = flatNeeds.filter(need => {
-            // Prüfe DimensionKategorieFilter
-            if (typeof DimensionKategorieFilter !== 'undefined' && !DimensionKategorieFilter.shouldShowNeed(need.id)) {
-                return false;
-            }
+            // DimensionKategorieFilter DEAKTIVIERT für SSOT-Refactoring
+            // if (typeof DimensionKategorieFilter !== 'undefined' && !DimensionKategorieFilter.shouldShowNeed(need.id)) {
+            //     return false;
+            // }
             // Prüfe auch Suchfilter (dimension-filter-hidden und filter-hidden Klassen)
             const needItem = document.querySelector(`.flat-need-item[data-need="${need.id}"]`);
             if (needItem && (needItem.classList.contains('dimension-filter-hidden') || needItem.classList.contains('filter-hidden'))) {
@@ -418,11 +419,12 @@ const AttributeSummaryCard = (function() {
         });
 
         // Ermittle nicht-sichtbare (gefilterte) Bedürfnisse
+        // FILTER DEAKTIVIERT - DimensionKategorieFilter für SSOT-Refactoring
         const hiddenNeeds = flatNeeds.filter(need => {
-            // Prüfe DimensionKategorieFilter
-            if (typeof DimensionKategorieFilter !== 'undefined' && !DimensionKategorieFilter.shouldShowNeed(need.id)) {
-                return true;
-            }
+            // DimensionKategorieFilter DEAKTIVIERT für SSOT-Refactoring
+            // if (typeof DimensionKategorieFilter !== 'undefined' && !DimensionKategorieFilter.shouldShowNeed(need.id)) {
+            //     return true;
+            // }
             // Prüfe auch Suchfilter (dimension-filter-hidden und filter-hidden Klassen)
             const needItem = document.querySelector(`.flat-need-item[data-need="${need.id}"]`);
             if (needItem && (needItem.classList.contains('dimension-filter-hidden') || needItem.classList.contains('filter-hidden'))) {
@@ -1268,17 +1270,20 @@ const AttributeSummaryCard = (function() {
 
         // FIX: Zähle gefilterte Bedürfnisse (für Anzeige), aber rendere ALLE
         // Dies ermöglicht, dass die Suche funktioniert, auch wenn Filter aktiv sind
+        // FILTER DEAKTIVIERT - DimensionKategorieFilter für SSOT-Refactoring
         let filteredNeeds = sortedNeeds;
         let filteredCount = sortedNeeds.length;
-        if (typeof DimensionKategorieFilter !== 'undefined') {
-            filteredNeeds = sortedNeeds.filter(need => DimensionKategorieFilter.shouldShowNeed(need.id));
-            filteredCount = filteredNeeds.length;
-            console.log('[AttributeSummaryCard] Filter gezählt:', {
-                gesamt: sortedNeeds.length,
-                sichtbar: filteredCount,
-                filterAktiv: filteredCount < sortedNeeds.length
-            });
-        }
+        // DimensionKategorieFilter DEAKTIVIERT:
+        // if (typeof DimensionKategorieFilter !== 'undefined') {
+        //     filteredNeeds = sortedNeeds.filter(need => DimensionKategorieFilter.shouldShowNeed(need.id));
+        //     filteredCount = filteredNeeds.length;
+        //     console.log('[AttributeSummaryCard] Filter gezählt:', {
+        //         gesamt: sortedNeeds.length,
+        //         sichtbar: filteredCount,
+        //         filterAktiv: filteredCount < sortedNeeds.length
+        //     });
+        // }
+        console.log('[AttributeSummaryCard] FILTER DEAKTIVIERT - Zeige alle', sortedNeeds.length, 'Bedürfnisse');
 
         // Zähle gesperrte Bedürfnisse innerhalb der gefilterten
         // Verwende savedLockedNeeds die bereits aus TiageState geladen wurden (Zeile 1150)
@@ -1331,9 +1336,7 @@ const AttributeSummaryCard = (function() {
                     <button class="multi-select-toggle-all-btn" onclick="AttributeSummaryCard.selectAllFilteredNeeds();" title="Alle gefilterten auswählen/abwählen">
                         ☑ Alle/Keine
                     </button>
-                    <button class="multi-select-toggle-changed-btn${showOnlyChangedNeeds ? ' active' : ''}" onclick="AttributeSummaryCard.toggleShowOnlyChanged();" title="Nur geänderte Bedürfnisse anzeigen">
-                        ✎ Geänderte
-                    </button>
+                    <!-- FILTER DEAKTIVIERT für SSOT-Refactoring -->
                     <span class="multi-select-count">0 ausgewählt</span>
                     <div class="multi-select-actions">
                         <button class="multi-select-lock-btn" onclick="AttributeSummaryCard.lockSelectedNeeds(true);" title="Ausgewählte sperren">
@@ -1344,9 +1347,6 @@ const AttributeSummaryCard = (function() {
                         </button>
                         <button class="multi-select-reset-btn" onclick="AttributeSummaryCard.resetSelectedNeedsValues();" title="Werte aus Profil neu laden">
                             ↶ Werte laden
-                        </button>
-                        <button class="multi-select-filter-reset-btn" onclick="AttributeSummaryCard.resetFilters();" title="Filter zurücksetzen">
-                            ↺ Filter
                         </button>
                         <button class="multi-select-ok-btn" onclick="AttributeSummaryCard.clearNeedSelection();" title="Bestätigen und Auswahl aufheben">
                             ✓ OK
@@ -1362,11 +1362,11 @@ const AttributeSummaryCard = (function() {
                 </div>
             </div>
 
-            <!-- DIMENSION-KATEGORIE-FILTER -->
-            <div id="flat-needs-dimension-filter"></div>
+            <!-- DIMENSION-KATEGORIE-FILTER - DEAKTIVIERT für SSOT-Refactoring -->
+            <div id="flat-needs-dimension-filter" style="display: none;"></div>
 
-            <!-- TREE-VIEW CONTAINER (für ResonanzTreeView) -->
-            <div id="tree-view-inline-container"></div>
+            <!-- TREE-VIEW CONTAINER - DEAKTIVIERT für SSOT-Refactoring -->
+            <div id="tree-view-inline-container" style="display: none;"></div>
 
             <div class="flat-needs-sort-bar">
                 <span class="flat-needs-sort-label">Sortieren:</span>
@@ -1445,22 +1445,23 @@ const AttributeSummaryCard = (function() {
             // ═══════════════════════════════════════════════════════════════════════════
             html += `<div class="flat-needs-list-wrapper">
                 <div class="flat-needs-list kategorie-mode">`;
-            // FIX: Rendere ALLE Bedürfnisse, auch gefilterte (für Suche)
-            // Der DimensionKategorieFilter wird als CSS-Klasse angewendet
+            // FIX: Rendere ALLE Bedürfnisse ohne Filter
+            // FILTER DEAKTIVIERT - DimensionKategorieFilter für SSOT-Refactoring
             sortedNeeds.forEach(need => {
                 const needObj = findNeedById(need.id);
                 const isLocked = needObj?.locked || false;
                 // Zeige immer Dimension-Farbe
                 const dimColor = getDimensionColor(need.id);
 
-                // Prüfe ob Bedürfnis durch DimensionKategorieFilter versteckt werden soll
-                const hiddenByDimensionFilter = (typeof DimensionKategorieFilter !== 'undefined')
-                    && !DimensionKategorieFilter.shouldShowNeed(need.id);
+                // DimensionKategorieFilter DEAKTIVIERT für SSOT-Refactoring
+                // const hiddenByDimensionFilter = (typeof DimensionKategorieFilter !== 'undefined')
+                //     && !DimensionKategorieFilter.shouldShowNeed(need.id);
 
-                // Prüfe ob Bedürfnis durch "Nur Geänderte" Filter versteckt werden soll
-                const hiddenByChangedFilter = showOnlyChangedNeeds && !isValueChanged(need.id, need.value);
+                // "Nur Geänderte" Filter DEAKTIVIERT für SSOT-Refactoring
+                // const hiddenByChangedFilter = showOnlyChangedNeeds && !isValueChanged(need.id, need.value);
 
-                const shouldHide = hiddenByDimensionFilter || hiddenByChangedFilter;
+                // ALLE Filter deaktiviert - zeige alle Bedürfnisse
+                const shouldHide = false;
 
                 html += renderFlatNeedItem(need.id, need.label, need.value, isLocked, dimColor, shouldHide);
             });
@@ -1573,8 +1574,23 @@ const AttributeSummaryCard = (function() {
 
     /**
      * Initialisiert den DimensionKategorieFilter im Container
+     * DEAKTIVIERT für SSOT-Refactoring
      */
     function initDimensionFilter() {
+        // FILTER DEAKTIVIERT für SSOT-Refactoring
+        console.log('[AttributeSummaryCard] DimensionKategorieFilter DEAKTIVIERT für SSOT-Refactoring');
+
+        // Verstecke Filter-Container falls vorhanden
+        setTimeout(() => {
+            const filterContainer = document.querySelector('#flat-needs-dimension-filter');
+            if (filterContainer) {
+                filterContainer.style.display = 'none';
+            }
+        }, 50);
+
+        return;
+
+        /* ORIGINAL CODE - DEAKTIVIERT:
         if (typeof DimensionKategorieFilter === 'undefined') {
             console.warn('[AttributeSummaryCard] DimensionKategorieFilter nicht geladen');
             return;
@@ -1603,6 +1619,7 @@ const AttributeSummaryCard = (function() {
             document.addEventListener('dimensionKategorieFilterChange', handleFilterChange);
             window._dimensionFilterListenerAdded = true;
         }
+        */
     }
 
     /**
