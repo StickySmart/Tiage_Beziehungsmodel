@@ -321,6 +321,7 @@ const SolopolyProfil = {
         '#B209': 40,  // schmerzerleben - Niedrig-mittel
         '#B210': 40,  // schmerz_geben - Niedrig-mittel
         '#B211': 40,  // bondage_erleben - Niedrig-mittel
+        '#B224': 50,  // Zucker - Mittel
         '#B212': 45,  // bondage_geben - Mittel
         '#B213': 35,  // devotion - Niedrig
         '#B214': 40,  // anbetung - Niedrig-mittel

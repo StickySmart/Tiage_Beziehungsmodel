@@ -321,6 +321,7 @@ const AromantischProfil = {
         '#B209': 30, // schmerzerleben - Niedrig
         '#B210': 25, // schmerz_geben - Niedrig
         '#B211': 30, // bondage_erleben - Niedrig
+        '#B224': 40, // Zucker - Niedrig-mittel
         '#B212': 30, // bondage_geben - Niedrig
         '#B213': 25, // devotion - Niedrig - keine romantische Hingabe
         '#B214': 20, // anbetung - Niedrig
