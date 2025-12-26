@@ -908,7 +908,19 @@ const AttributeSummaryCard = (function() {
             return false;
         }
 
-        const initialValue = loadedProfile.profileReview.flatNeeds[needId];
+        const flatNeedsData = loadedProfile.profileReview.flatNeeds;
+        let initialValue;
+
+        // Unterstütze sowohl Array- als auch Object-Format
+        if (Array.isArray(flatNeedsData)) {
+            // Array-Format: [{ id: '#B16', value: 95, ... }, ...]
+            const needEntry = flatNeedsData.find(n => n.id === needId);
+            initialValue = needEntry?.value;
+        } else {
+            // Object-Format: { '#B16': 95, ... }
+            initialValue = flatNeedsData[needId];
+        }
+
         if (initialValue === undefined) {
             return false;
         }
