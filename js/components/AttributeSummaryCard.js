@@ -263,6 +263,13 @@ const AttributeSummaryCard = (function() {
     let originalNeedValues = new Map();
 
     /**
+     * HAUPTFRAGEN-LOCK FEATURE: Set zum Speichern gelockter Hauptfragen
+     * Wenn eine Hauptfrage gelockt ist, sind auch alle ihre Nuancen gelockt.
+     * Der Slider-Wert der Hauptfrage wird direkt gesetzt (nicht aus Nuancen berechnet).
+     */
+    let lockedHauptfragen = new Set();
+
+    /**
      * Helper: Findet ein Bedürfnis nach ID im flatNeeds Array
      * @param {string} id - Die #B-ID (z.B. "#B34")
      * @returns {Object|undefined} Das Bedürfnis-Objekt oder undefined
@@ -1389,6 +1396,8 @@ const AttributeSummaryCard = (function() {
                 const dimColor = getDimensionColor(hf.id);
                 const nuancenCount = hf.nuancenCount || 0;
                 const aggregatedValue = hf.aggregatedValue;
+                const isHauptfrageLocked = lockedHauptfragen.has(hf.id);
+                const hasNuancen = nuancenCount > 0;
 
                 // Prüfe ob mindestens eine Nuance dieser Hauptfrage geändert wurde
                 const changedNuancenCount = (hf.nuancen || []).filter(nuanceId => {
@@ -1397,32 +1406,54 @@ const AttributeSummaryCard = (function() {
                 }).length;
                 const hasChangedNuancen = changedNuancenCount > 0;
                 const changedClass = hasChangedNuancen ? ' has-changed-nuancen' : '';
+                const lockedClass = isHauptfrageLocked ? ' hauptfrage-locked' : '';
                 const changedIndicator = hasChangedNuancen
                     ? `<span class="hauptfrage-changed-indicator" title="${changedNuancenCount} Nuance(n) geändert">*</span>`
                     : '';
 
-                // Hauptfrage-Item mit Expand-Toggle
+                // Slider-Style für Hauptfrage
+                const sliderValue = aggregatedValue !== null ? aggregatedValue : 50;
+                const sliderStyle = dimColor
+                    ? `style="background: linear-gradient(to right, ${dimColor} 0%, ${dimColor} ${sliderValue}%, rgba(255,255,255,0.15) ${sliderValue}%, rgba(255,255,255,0.15) 100%);"`
+                    : '';
+
+                // Hauptfrage-Item mit Expand-Toggle und Slider
                 html += `
-                <div class="hauptfrage-item${isExpanded ? ' expanded' : ''}${changedClass}" data-hauptfrage-id="${hf.id}">
-                    <div class="hauptfrage-header" onclick="AttributeSummaryCard.toggleHauptfrageExpand('${hf.id}')">
-                        <span class="hauptfrage-expand-icon">${isExpanded ? '▼' : '▶'}</span>
-                        <span class="hauptfrage-label" style="border-left: 3px solid ${dimColor}; padding-left: 8px;">
+                <div class="hauptfrage-item${isExpanded ? ' expanded' : ''}${changedClass}${lockedClass}" data-hauptfrage-id="${hf.id}">
+                    <div class="hauptfrage-header">
+                        <span class="hauptfrage-expand-icon" onclick="AttributeSummaryCard.toggleHauptfrageExpand('${hf.id}')">${isExpanded ? '▼' : '▶'}</span>
+                        <span class="hauptfrage-label" style="border-left: 3px solid ${dimColor}; padding-left: 8px;"
+                              onclick="AttributeSummaryCard.toggleHauptfrageExpand('${hf.id}')">
                             ${hf.id} ${hf.label}${changedIndicator}
                         </span>
-                        <span class="hauptfrage-nuancen-count">(${nuancenCount} Nuancen)</span>
-                        <div class="hauptfrage-value-container">
-                            <div class="hauptfrage-bar" style="width: ${aggregatedValue || 0}%; background: ${dimColor};"></div>
-                            <span class="hauptfrage-value">${aggregatedValue !== null ? aggregatedValue : '-'}</span>
+                        <span class="hauptfrage-nuancen-count" onclick="AttributeSummaryCard.toggleHauptfrageExpand('${hf.id}')">${hasNuancen ? `(${nuancenCount} Nuancen)` : '(direkt)'}</span>
+                        <div class="hauptfrage-controls">
+                            <span class="hauptfrage-lock-icon ${isHauptfrageLocked ? 'locked' : ''}"
+                                  onclick="event.stopPropagation(); AttributeSummaryCard.toggleHauptfrageLock('${hf.id}', this)"
+                                  title="${isHauptfrageLocked ? 'Entsperren (Nuancen wieder editierbar)' : 'Sperren (fixiert Wert, sperrt Nuancen)'}"></span>
                         </div>
+                    </div>
+                    <div class="hauptfrage-slider-row">
+                        <input type="range" class="hauptfrage-slider"
+                               min="0" max="100" value="${sliderValue}"
+                               oninput="AttributeSummaryCard.onHauptfrageSliderInput('${hf.id}', this.value, this)"
+                               onclick="event.stopPropagation()"
+                               ${sliderStyle}
+                               ${(isHauptfrageLocked || !hasNuancen) ? '' : 'disabled'}>
+                        <input type="text" class="hauptfrage-input" value="${sliderValue}" maxlength="3"
+                               onchange="AttributeSummaryCard.updateHauptfrageValue('${hf.id}', this.value)"
+                               onclick="event.stopPropagation()"
+                               ${(isHauptfrageLocked || !hasNuancen) ? '' : 'readonly'}>
                     </div>`;
 
-                // Nuancen-Liste (wenn aufgeklappt)
+                // Nuancen-Liste (wenn aufgeklappt und Nuancen vorhanden)
                 if (isExpanded && hf.nuancen && hf.nuancen.length > 0) {
-                    html += `<div class="nuancen-list">`;
+                    html += `<div class="nuancen-list${isHauptfrageLocked ? ' nuancen-locked-by-parent' : ''}">`;
                     hf.nuancen.forEach(nuanceId => {
                         const nuanceObj = findNeedById(nuanceId);
                         if (nuanceObj) {
-                            const isLocked = nuanceObj.locked || false;
+                            // Wenn Hauptfrage gelockt → Nuancen auch gelockt
+                            const isLocked = isHauptfrageLocked || nuanceObj.locked || false;
                             const nuanceValue = nuanceObj.value;
                             html += renderFlatNeedItem(
                                 nuanceId,
@@ -1512,6 +1543,10 @@ const AttributeSummaryCard = (function() {
         currentFlatSortMode = state?.sortMode || 'value';
         showOnlyChangedNeeds = state?.showOnlyChanged || false;
         currentSortPerson = person;
+
+        // Lade auch gelockte Hauptfragen für diese Person
+        loadLockedHauptfragen(person);
+
         console.log('[AttributeSummaryCard] State geladen für', person, ':', { sortMode: currentFlatSortMode, showOnlyChanged: showOnlyChangedNeeds });
     }
 
@@ -1796,6 +1831,229 @@ const AttributeSummaryCard = (function() {
             }
         }
     }
+
+    // ═══════════════════════════════════════════════════════════════════════════
+    // HAUPTFRAGEN-SLIDER UND LOCK FUNKTIONEN
+    // ═══════════════════════════════════════════════════════════════════════════
+
+    /**
+     * Toggle Lock für eine Hauptfrage
+     * Wenn gelockt: Slider ist editierbar, Nuancen sind gesperrt
+     * Wenn entsperrt: Slider zeigt aggregierten Wert, Nuancen sind editierbar
+     * @param {string} hauptfrageId - Die #B-ID der Hauptfrage
+     * @param {HTMLElement} lockElement - Das Lock-Icon-Element
+     */
+    function toggleHauptfrageLock(hauptfrageId, lockElement) {
+        const isCurrentlyLocked = lockedHauptfragen.has(hauptfrageId);
+        const newLockState = !isCurrentlyLocked;
+
+        if (newLockState) {
+            lockedHauptfragen.add(hauptfrageId);
+        } else {
+            lockedHauptfragen.delete(hauptfrageId);
+        }
+
+        console.log(`[AttributeSummaryCard] Hauptfrage ${hauptfrageId} Lock: ${newLockState}`);
+
+        // Speichere Lock-Status in TiageState
+        if (typeof TiageState !== 'undefined') {
+            let currentPerson = 'ich';
+            if (window.currentProfileReviewContext && window.currentProfileReviewContext.person) {
+                currentPerson = window.currentProfileReviewContext.person;
+            }
+
+            // Speichere gelockte Hauptfragen als Array
+            const lockedArray = Array.from(lockedHauptfragen);
+            TiageState.set(`profileReview.${currentPerson}.lockedHauptfragen`, lockedArray);
+
+            // Wenn gelockt: Speichere auch den aktuellen Wert
+            if (newLockState) {
+                const hauptfrageItem = document.querySelector(`.hauptfrage-item[data-hauptfrage-id="${hauptfrageId}"]`);
+                if (hauptfrageItem) {
+                    const input = hauptfrageItem.querySelector('.hauptfrage-input');
+                    const currentValue = parseInt(input?.value, 10) || 50;
+                    TiageState.set(`profileReview.${currentPerson}.lockedHauptfragenValues.${hauptfrageId}`, currentValue);
+                }
+            }
+        }
+
+        // UI aktualisieren - komplettes Re-Render für konsistente Darstellung
+        reRenderFlatNeeds();
+    }
+
+    /**
+     * Handler für Hauptfrage-Slider Input
+     * Erlaubt wenn: Hauptfrage gelockt ODER keine Nuancen vorhanden
+     * @param {string} hauptfrageId - Die #B-ID der Hauptfrage
+     * @param {string|number} value - Der neue Slider-Wert
+     * @param {HTMLElement} sliderElement - Das Slider-Element
+     */
+    function onHauptfrageSliderInput(hauptfrageId, value, sliderElement) {
+        // Prüfe ob Hauptfrage Nuancen hat
+        const hasNuancen = checkHauptfrageHasNuancen(hauptfrageId);
+
+        // Nur erlaubt wenn Hauptfrage gelockt ist ODER keine Nuancen hat
+        if (!lockedHauptfragen.has(hauptfrageId) && hasNuancen) {
+            return;
+        }
+
+        const numValue = parseInt(value, 10);
+        if (isNaN(numValue)) return;
+
+        // Sync Input-Feld
+        const hauptfrageItem = sliderElement.closest('.hauptfrage-item');
+        if (hauptfrageItem) {
+            const input = hauptfrageItem.querySelector('.hauptfrage-input');
+            if (input) input.value = numValue;
+
+            // Slider-Track-Hintergrund aktualisieren
+            const dimColor = getDimensionColor(hauptfrageId);
+            if (dimColor) {
+                sliderElement.style.background = `linear-gradient(to right, ${dimColor} 0%, ${dimColor} ${numValue}%, rgba(255,255,255,0.15) ${numValue}%, rgba(255,255,255,0.15) 100%)`;
+            }
+        }
+
+        // Speichere den Wert in TiageState und flatNeeds
+        if (typeof TiageState !== 'undefined') {
+            let currentPerson = 'ich';
+            if (window.currentProfileReviewContext && window.currentProfileReviewContext.person) {
+                currentPerson = window.currentProfileReviewContext.person;
+            }
+            TiageState.set(`profileReview.${currentPerson}.lockedHauptfragenValues.${hauptfrageId}`, numValue);
+        }
+
+        // Für Hauptfragen ohne Nuancen: Speichere den Wert auch in flatNeeds
+        if (!hasNuancen) {
+            upsertNeed(hauptfrageId, { value: numValue });
+        }
+
+        // Event für externe Listener
+        document.dispatchEvent(new CustomEvent('hauptfrageValueChange', {
+            bubbles: true,
+            detail: { hauptfrageId, value: numValue, isLocked: lockedHauptfragen.has(hauptfrageId), hasNuancen }
+        }));
+    }
+
+    /**
+     * Prüft ob eine Hauptfrage Nuancen hat
+     * @param {string} hauptfrageId - Die #B-ID der Hauptfrage
+     * @returns {boolean} True wenn Nuancen vorhanden
+     */
+    function checkHauptfrageHasNuancen(hauptfrageId) {
+        if (typeof HauptfrageAggregation === 'undefined') return true; // Fallback: annehmen dass Nuancen existieren
+
+        const hauptfragen = HauptfrageAggregation.getHauptfragen();
+        const hauptfrage = hauptfragen[hauptfrageId];
+
+        if (!hauptfrage) return true; // Fallback
+
+        return (hauptfrage.nuancen && hauptfrage.nuancen.length > 0);
+    }
+
+    /**
+     * Aktualisiert den Wert einer Hauptfrage (via Input-Feld)
+     * Erlaubt wenn: Hauptfrage gelockt ODER keine Nuancen vorhanden
+     * @param {string} hauptfrageId - Die #B-ID der Hauptfrage
+     * @param {string|number} value - Der neue Wert
+     */
+    function updateHauptfrageValue(hauptfrageId, value) {
+        // Prüfe ob Hauptfrage Nuancen hat
+        const hasNuancen = checkHauptfrageHasNuancen(hauptfrageId);
+
+        // Nur erlaubt wenn Hauptfrage gelockt ist ODER keine Nuancen hat
+        if (!lockedHauptfragen.has(hauptfrageId) && hasNuancen) {
+            return;
+        }
+
+        const numValue = parseInt(value, 10);
+        if (isNaN(numValue) || numValue < 0 || numValue > 100) return;
+
+        // Sync Slider
+        const hauptfrageItem = document.querySelector(`.hauptfrage-item[data-hauptfrage-id="${hauptfrageId}"]`);
+        if (hauptfrageItem) {
+            const slider = hauptfrageItem.querySelector('.hauptfrage-slider');
+            if (slider) {
+                slider.value = numValue;
+
+                // Slider-Track-Hintergrund aktualisieren
+                const dimColor = getDimensionColor(hauptfrageId);
+                if (dimColor) {
+                    slider.style.background = `linear-gradient(to right, ${dimColor} 0%, ${dimColor} ${numValue}%, rgba(255,255,255,0.15) ${numValue}%, rgba(255,255,255,0.15) 100%)`;
+                }
+            }
+        }
+
+        // Speichere den Wert in TiageState und flatNeeds
+        if (typeof TiageState !== 'undefined') {
+            let currentPerson = 'ich';
+            if (window.currentProfileReviewContext && window.currentProfileReviewContext.person) {
+                currentPerson = window.currentProfileReviewContext.person;
+            }
+            TiageState.set(`profileReview.${currentPerson}.lockedHauptfragenValues.${hauptfrageId}`, numValue);
+        }
+
+        // Für Hauptfragen ohne Nuancen: Speichere den Wert auch in flatNeeds
+        if (!hasNuancen) {
+            upsertNeed(hauptfrageId, { value: numValue });
+        }
+
+        // Event für externe Listener
+        document.dispatchEvent(new CustomEvent('hauptfrageValueChange', {
+            bubbles: true,
+            detail: { hauptfrageId, value: numValue, isLocked: lockedHauptfragen.has(hauptfrageId), hasNuancen }
+        }));
+    }
+
+    /**
+     * Prüft ob eine Nuance durch ihre Hauptfrage gelockt ist
+     * @param {string} nuanceId - Die #B-ID der Nuance
+     * @returns {boolean} True wenn die übergeordnete Hauptfrage gelockt ist
+     */
+    function isNuanceLockedByHauptfrage(nuanceId) {
+        if (typeof HauptfrageAggregation === 'undefined') return false;
+
+        const hauptfrage = HauptfrageAggregation.getHauptfrageForNuance(nuanceId);
+        if (!hauptfrage) return false;
+
+        return lockedHauptfragen.has(hauptfrage.id);
+    }
+
+    /**
+     * Lädt gelockte Hauptfragen aus TiageState
+     * @param {string} person - 'ich' oder 'partner'
+     */
+    function loadLockedHauptfragen(person) {
+        lockedHauptfragen.clear();
+
+        if (typeof TiageState !== 'undefined') {
+            const lockedArray = TiageState.get(`profileReview.${person}.lockedHauptfragen`);
+            if (Array.isArray(lockedArray)) {
+                lockedArray.forEach(id => lockedHauptfragen.add(id));
+                console.log(`[AttributeSummaryCard] ${lockedHauptfragen.size} gelockte Hauptfragen geladen für ${person}`);
+            }
+        }
+    }
+
+    /**
+     * Gibt den gelockten Wert einer Hauptfrage zurück (oder null wenn nicht gelockt)
+     * @param {string} hauptfrageId - Die #B-ID der Hauptfrage
+     * @returns {number|null} Der gelockte Wert oder null
+     */
+    function getLockedHauptfrageValue(hauptfrageId) {
+        if (!lockedHauptfragen.has(hauptfrageId)) return null;
+
+        if (typeof TiageState !== 'undefined') {
+            let currentPerson = 'ich';
+            if (window.currentProfileReviewContext && window.currentProfileReviewContext.person) {
+                currentPerson = window.currentProfileReviewContext.person;
+            }
+            return TiageState.get(`profileReview.${currentPerson}.lockedHauptfragenValues.${hauptfrageId}`) || null;
+        }
+
+        return null;
+    }
+
+    // ═══════════════════════════════════════════════════════════════════════════
 
     /**
      * Aktualisiert einen Bedürfniswert in der flachen Darstellung
@@ -2849,6 +3107,13 @@ const AttributeSummaryCard = (function() {
         toggleHauptfragenFilter,
         // NEU: Hauptfragen-Ansicht mit aufklappbaren Nuancen
         toggleHauptfrageExpand,
+        // NEU: Hauptfragen-Slider mit Lock-Mechanismus
+        toggleHauptfrageLock,
+        onHauptfrageSliderInput,
+        updateHauptfrageValue,
+        isNuanceLockedByHauptfrage,
+        loadLockedHauptfragen,
+        getLockedHauptfrageValue,
         GFK_KATEGORIEN,
         // NEU: Multi-Select Feature für Bedürfnisse
         toggleNeedSelection,
