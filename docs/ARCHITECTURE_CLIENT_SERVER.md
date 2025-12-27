@@ -48,12 +48,12 @@
 │  ───────────────────────────────────────────────────────────────────────────│
 │                                                                             │
 │  DEBUG (für Entwickler):                                                    │
-│  • Orchestrator: Unsichtbar (kein UI, kein Debug-Output)                   │
-│  • Alle anderen Berechnungen: Über Browser-Konsole abfragbar              │
-│    - Q-Formel Ergebnisse                                                    │
-│    - R-Faktoren                                                             │
-│    - Matrix-Werte                                                           │
-│    - Pathos/Logos Scores                                                    │
+│  Alle Berechnungen über Browser-Konsole abfragbar:                         │
+│    • Orchestrator (bisher kein UI, aber debugbar)                          │
+│    • Q-Formel Ergebnisse                                                    │
+│    • R-Faktoren                                                             │
+│    • Matrix-Werte                                                           │
+│    • Pathos/Logos Scores                                                    │
 │                                                                             │
 └─────────────────────────────────────────────────────────────────────────────┘
 ```
