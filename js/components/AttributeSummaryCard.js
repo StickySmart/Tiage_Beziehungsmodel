@@ -2138,6 +2138,20 @@ const AttributeSummaryCard = (function() {
             return { handled: true, finalValue: currentValue };
         }
 
+        // Spezialfall: Bei Zielwert 0 oder 100 alle Nuancen direkt setzen
+        // (vermeidet Rundungsprobleme wie 99+100/2 = 99.5 → 100)
+        if (clampedTarget === 0 || clampedTarget === 100) {
+            for (const nuance of unlockedNuancen) {
+                nuance.value = clampedTarget;
+            }
+            // Finale Werte in State und UI übertragen
+            for (const nuance of unlockedNuancen) {
+                updateNuanceSlider(nuance.id, nuance.value);
+            }
+            updateHauptfrageUI(sliderElement, hauptfrageItem, hauptfrageId, clampedTarget);
+            return { handled: true, finalValue: clampedTarget };
+        }
+
         // Iterative Anpassung der nicht-gelockten Nuancen
         const maxIterations = 20;
         let iteration = 0;
