@@ -1,0 +1,19 @@
+{
+  "name": "tiage-server",
+  "version": "1.0.0",
+  "description": "Tiage Beziehungsmodell - API Server",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "node --watch index.js"
+  },
+  "dependencies": {
+    "express": "^5.0.0",
+    "better-sqlite3": "^11.0.0",
+    "cors": "^2.8.5"
+  },
+  "engines": {
+    "node": ">=20.0.0"
+  }
+}
