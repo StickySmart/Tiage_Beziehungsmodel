@@ -1990,8 +1990,9 @@ const AttributeSummaryCard = (function() {
     }
 
     /**
-     * Aktualisiert alle Nuancen einer Hauptfrage proportional,
-     * wenn der Hauptslider bewegt wird.
+     * Aktualisiert alle Nuancen einer Hauptfrage iterativ,
+     * bis der aggregierte Wert dem Zielwert entspricht.
+     * Berücksichtigt die gewichtete Durchschnittsberechnung und Grenzwerte.
      * @param {string} hauptfrageId - Die #B-ID der Hauptfrage
      * @param {number} newHauptfrageValue - Der neue Wert des Hauptsliders
      */
@@ -2005,48 +2006,96 @@ const AttributeSummaryCard = (function() {
             return;
         }
 
-        // Berechne den aktuellen aggregierten Wert
-        const currentNeeds = {};
-        flatNeeds.forEach(n => { currentNeeds[n.id] = n.value; });
-
-        const aggregation = HauptfrageAggregation.aggregateHauptfrage(hauptfrageId, currentNeeds);
-        const currentAggregatedValue = aggregation.value;
-
-        if (currentAggregatedValue === null || currentAggregatedValue === 0) {
-            // Kein aktueller Wert: Setze alle Nuancen auf den neuen Wert
-            hauptfrage.nuancen.forEach(nuanceId => {
-                const nuanceObj = findNeedById(nuanceId);
-                if (nuanceObj?.locked) return; // Gelockte Nuancen nicht ändern
-
-                updateNuanceSlider(nuanceId, newHauptfrageValue);
-            });
-            return;
+        // Sammle nicht-gelockte Nuancen mit ihren aktuellen Werten
+        const nuancenWithValues = [];
+        for (const nuanceId of hauptfrage.nuancen) {
+            const nuanceObj = findNeedById(nuanceId);
+            if (!nuanceObj?.locked) {
+                nuancenWithValues.push({
+                    id: nuanceId,
+                    value: nuanceObj?.value ?? 50
+                });
+            }
         }
 
-        // Berechne die Differenz
-        const diff = newHauptfrageValue - currentAggregatedValue;
+        if (nuancenWithValues.length === 0) return; // Alle gelockt
 
-        // Sammle nicht-gelockte Nuancen
-        const unlockedNuancen = hauptfrage.nuancen.filter(nuanceId => {
-            const nuanceObj = findNeedById(nuanceId);
-            return !nuanceObj?.locked;
-        });
+        // Hilfsfunktion: Berechne aggregierten Wert mit temporären Nuancen-Werten
+        const calculateAggregatedValue = (tempValues) => {
+            const currentNeeds = {};
+            flatNeeds.forEach(n => { currentNeeds[n.id] = n.value; });
+            // Überschreibe mit temporären Werten
+            for (const nuance of tempValues) {
+                currentNeeds[nuance.id] = nuance.value;
+            }
+            const aggregation = HauptfrageAggregation.aggregateHauptfrage(hauptfrageId, currentNeeds);
+            return aggregation.value;
+        };
 
-        if (unlockedNuancen.length === 0) return; // Alle gelockt
+        // Initiale Prüfung
+        let currentAggregatedValue = calculateAggregatedValue(nuancenWithValues);
 
-        // Verteile die Differenz gleichmäßig auf alle nicht-gelockten Nuancen
-        const diffPerNuance = diff / unlockedNuancen.length;
+        // Sonderfall: Kein aktueller Wert - setze alle auf Zielwert
+        if (currentAggregatedValue === null || currentAggregatedValue === 0) {
+            nuancenWithValues.forEach(nuance => {
+                nuance.value = newHauptfrageValue;
+            });
+        } else {
+            // Iterative Anpassung bis Zielwert erreicht (max 15 Iterationen)
+            const maxIterations = 15;
+            let iteration = 0;
 
-        unlockedNuancen.forEach(nuanceId => {
-            const nuanceObj = findNeedById(nuanceId);
-            const currentValue = nuanceObj?.value ?? 50;
-            let newValue = Math.round(currentValue + diffPerNuance);
+            while (iteration < maxIterations) {
+                const diff = newHauptfrageValue - currentAggregatedValue;
 
-            // Begrenze auf 0-100
-            newValue = Math.max(0, Math.min(100, newValue));
+                // Zielwert erreicht? (Toleranz: 0.5)
+                if (Math.abs(diff) < 0.5) {
+                    break;
+                }
 
-            updateNuanceSlider(nuanceId, newValue);
-        });
+                // Finde Nuancen die noch angepasst werden können
+                const adjustableNuancen = nuancenWithValues.filter(n => {
+                    if (diff > 0) {
+                        return n.value < 100; // Kann erhöht werden
+                    } else {
+                        return n.value > 0; // Kann verringert werden
+                    }
+                });
+
+                if (adjustableNuancen.length === 0) {
+                    break; // Keine weitere Anpassung möglich (alle an Grenzen)
+                }
+
+                // Erhöhe Schrittstärke bei größerer Differenz für schnellere Konvergenz
+                const stepMultiplier = Math.abs(diff) > 10 ? 1.5 : 1.0;
+                const diffPerNuance = (diff / adjustableNuancen.length) * stepMultiplier;
+
+                let anyChanged = false;
+                for (const nuance of adjustableNuancen) {
+                    const oldValue = nuance.value;
+                    let newValue = nuance.value + diffPerNuance;
+                    newValue = Math.max(0, Math.min(100, Math.round(newValue)));
+
+                    if (newValue !== oldValue) {
+                        nuance.value = newValue;
+                        anyChanged = true;
+                    }
+                }
+
+                if (!anyChanged) {
+                    break; // Keine Änderung mehr möglich
+                }
+
+                // Neu berechnen
+                currentAggregatedValue = calculateAggregatedValue(nuancenWithValues);
+                iteration++;
+            }
+        }
+
+        // Finale Werte an UI und State übertragen
+        for (const nuance of nuancenWithValues) {
+            updateNuanceSlider(nuance.id, nuance.value);
+        }
     }
 
     /**
