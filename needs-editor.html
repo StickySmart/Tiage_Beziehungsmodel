@@ -884,6 +884,15 @@
                     // FIX: Die Daten müssen auch an AttributeSummaryCard übergeben werden!
                     if (typeof AttributeSummaryCard !== 'undefined') {
                         AttributeSummaryCard.setFlatNeeds(flatNeeds);
+                        // FIX v1.8.559: Synchronisiere Locks aus TiageState für aktuelle Person
+                        // Locks werden personenspezifisch in profileReview.{person}.lockedNeeds gespeichert
+                        if (AttributeSummaryCard.syncLocksFromState) {
+                            AttributeSummaryCard.syncLocksFromState();
+                        }
+                        // Lade auch gelockte Hauptfragen für diese Person
+                        if (AttributeSummaryCard.loadLockedHauptfragen) {
+                            AttributeSummaryCard.loadLockedHauptfragen(currentPerson);
+                        }
                     }
                     const count = Array.isArray(flatNeeds) ? flatNeeds.length : Object.keys(flatNeeds).length;
                     console.log('[NeedsEditor] Loaded from TiageState:', count, 'needs for', currentPerson);
@@ -899,6 +908,13 @@
                     const parsed = JSON.parse(stored);
                     if (typeof AttributeSummaryCard !== 'undefined') {
                         AttributeSummaryCard.setFlatNeeds(parsed);
+                        // FIX v1.8.559: Auch bei localStorage-Fallback Locks synchronisieren
+                        if (AttributeSummaryCard.syncLocksFromState) {
+                            AttributeSummaryCard.syncLocksFromState();
+                        }
+                        if (AttributeSummaryCard.loadLockedHauptfragen) {
+                            AttributeSummaryCard.loadLockedHauptfragen(currentPerson);
+                        }
                     }
                     console.log('[NeedsEditor] Loaded from localStorage for', currentPerson);
                 } catch (e) {

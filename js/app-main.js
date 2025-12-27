@@ -19501,6 +19501,14 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
 
                             if (AttributeSummaryCard.setFlatNeeds) {
                                 AttributeSummaryCard.setFlatNeeds(needsArray);
+                                // FIX v1.8.559: Synchronisiere Locks aus TiageState für korrekte Person
+                                if (AttributeSummaryCard.syncLocksFromState) {
+                                    AttributeSummaryCard.syncLocksFromState();
+                                }
+                                // Lade auch gelockte Hauptfragen
+                                if (AttributeSummaryCard.loadLockedHauptfragen) {
+                                    AttributeSummaryCard.loadLockedHauptfragen(person);
+                                }
                                 var lockedCount = Object.keys(lockedNeeds || {}).length;
                                 console.log('[ProfileReview] Bedürfnisse aus TiageState geladen für', person, ':', needsArray.length, 'Einträge,', lockedCount, 'gesperrt');
                                 loadedFromTiageState = true;
@@ -19517,6 +19525,13 @@ Gesamt-Score = Σ(Beitrag) / Σ(Gewicht)</pre>
                             var parsedNeeds = JSON.parse(storedFlatNeeds);
                             if (AttributeSummaryCard.setFlatNeeds) {
                                 AttributeSummaryCard.setFlatNeeds(parsedNeeds);
+                                // FIX v1.8.559: Auch bei Fallback Locks synchronisieren
+                                if (AttributeSummaryCard.syncLocksFromState) {
+                                    AttributeSummaryCard.syncLocksFromState();
+                                }
+                                if (AttributeSummaryCard.loadLockedHauptfragen) {
+                                    AttributeSummaryCard.loadLockedHauptfragen(person);
+                                }
                                 console.log('[ProfileReview] Bedürfnisse aus localStorage geladen (Fallback):', Object.keys(parsedNeeds).length, 'Einträge');
                             }
                         }

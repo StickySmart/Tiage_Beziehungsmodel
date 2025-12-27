@@ -2727,6 +2727,7 @@ const AttributeSummaryCard = (function() {
     /**
      * Synchronisiert Lock-Status aus TiageState.profileReview.lockedNeeds in flatNeeds
      * TiageState ist SSOT für Lock-Status, flatNeeds.locked ist nur UI-Cache
+     * FIX v1.8.559: Resette zuerst alle Locks, dann setze nur die für aktuelle Person
      */
     function syncLocksFromTiageState() {
         if (typeof TiageState === 'undefined' || !TiageState.getLockedNeeds) return;
@@ -2738,17 +2739,26 @@ const AttributeSummaryCard = (function() {
 
         const lockedNeeds = TiageState.getLockedNeeds(currentPerson) || {};
         let syncedCount = 0;
+        let unlockedCount = 0;
 
+        // FIX v1.8.559: Zuerst ALLE Locks resetten, dann nur die für aktuelle Person setzen
+        // Dies verhindert dass Locks von der anderen Person übertragen werden beim Wechsel
         flatNeeds.forEach(need => {
+            const wasLocked = need.locked;
             if (lockedNeeds.hasOwnProperty(need.id)) {
                 need.locked = true;
                 need.value = lockedNeeds[need.id]; // Übernehme auch den gesperrten Wert
                 syncedCount++;
+            } else if (wasLocked) {
+                // War vorher gelockt (von anderer Person), jetzt nicht mehr
+                need.locked = false;
+                unlockedCount++;
             }
         });
 
-        if (syncedCount > 0) {
-            console.log('[AttributeSummaryCard] Lock-Status aus TiageState synchronisiert:', syncedCount, 'für', currentPerson);
+        if (syncedCount > 0 || unlockedCount > 0) {
+            console.log('[AttributeSummaryCard] Lock-Status synchronisiert für', currentPerson,
+                '- gesperrt:', syncedCount, ', entsperrt:', unlockedCount);
         }
     }
 
@@ -3538,7 +3548,9 @@ const AttributeSummaryCard = (function() {
         resetSelectedNeedsValues,
         resetFilters,
         updateSelectedNeedsValue,
-        lockSelectedNeeds
+        lockSelectedNeeds,
+        // NEU: Person-spezifische Lock-Synchronisierung
+        syncLocksFromState: syncLocksFromTiageState
     };
 })();
 
