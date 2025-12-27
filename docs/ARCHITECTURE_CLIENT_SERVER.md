@@ -180,6 +180,60 @@ Alle Daten haben genau EINE autoritative Quelle:
 
 ---
 
+### 1.1 API-Endpoints (Übersicht)
+
+```
+┌─────────────────────────────────────────────────────────────────────────────┐
+│  API-ENDPOINTS (19 Stück)                                                   │
+│  ═══════════════════════════════════════════════════════════════════════════│
+│                                                                             │
+│  BERECHNUNG (4)                                                             │
+│  ──────────────────────────────────────────────────────────────────────────│
+│  POST /api/calculate/synthesis      → Q-Formel, Gesamtkompatibilität       │
+│  POST /api/calculate/resonance      → R-Faktoren (R1-R4) aus Profil        │
+│  POST /api/calculate/matrix         → 8×8 Archetyp-Kompatibilitäts-Matrix  │
+│  POST /api/calculate/compatibility  → Pathos + Logos Orchestrator          │
+│                                                                             │
+│  SORTIERUNG (2)                                                             │
+│  ──────────────────────────────────────────────────────────────────────────│
+│  POST /api/sort/needs               → 224 Bedürfnisse sortieren            │
+│  POST /api/sort/categories          → 18 Kategorien nach Durchschnitt      │
+│                                                                             │
+│  FILTER (2)                                                                 │
+│  ──────────────────────────────────────────────────────────────────────────│
+│  POST /api/filter/lifestyle         → K.O.-Kriterien prüfen                │
+│  POST /api/filter/needs             → Bedürfnisse nach Schwellwert         │
+│                                                                             │
+│  TEXT-GENERIERUNG (3)                                                       │
+│  ──────────────────────────────────────────────────────────────────────────│
+│  POST /api/generate/pathos          → Emotionale Beziehungstexte           │
+│  POST /api/generate/logos           → Rationale Analyse-Texte              │
+│  POST /api/generate/oshozen         → Spirituelle Interpretationen         │
+│                                                                             │
+│  PROFIL-VERWALTUNG (4)                                                      │
+│  ──────────────────────────────────────────────────────────────────────────│
+│  POST   /api/profile/save           → Profil speichern (slot 1-4)          │
+│  GET    /api/profile/load/:slot/:person → Profil laden                     │
+│  GET    /api/profile/list           → Alle Profile auflisten               │
+│  DELETE /api/profile/:slot/:person  → Profil löschen                       │
+│                                                                             │
+│  SYNC (2)                                                                   │
+│  ──────────────────────────────────────────────────────────────────────────│
+│  POST /api/sync/state               → Client ↔ Server synchronisieren     │
+│  POST /api/sync/recalculate         → Alle Werte neu berechnen             │
+│                                                                             │
+│  STAMMDATEN - READ-ONLY (4)                                                 │
+│  ──────────────────────────────────────────────────────────────────────────│
+│  GET /api/data/needs                → 224 Bedürfnisse (Katalog/Definition) │
+│  GET /api/data/archetypes           → 8 Archetypen-Definitionen            │
+│  GET /api/data/taxonomy             → Perspektiven, Dimensionen, Kategorien│
+│  GET /api/data/archetype-profile/:name → 224 Gewichtungen für Archetyp     │
+│                                                                             │
+└─────────────────────────────────────────────────────────────────────────────┘
+```
+
+---
+
 ## 2. Server-Operationen (Commands)
 
 ### 2.1 CALCULATE_SYNTHESIS
