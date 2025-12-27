@@ -421,8 +421,10 @@ Das Tiage-System hat ein **zweistufiges Lock-System** + dynamische R-Faktoren:
 │  BERECHNUNG: NeedsIntegration.calculateDimensionalResonance(person)         │
 │  FORMEL: R = 0.5 + (Übereinstimmung × 1.0)                                  │
 │                                                                             │
-│  HINWEIS: R-Faktoren werden NICHT vom User gesperrt, sondern automatisch   │
-│           aus dem Profil berechnet. Der UI-Slider zeigt nur den Wert an.   │
+│  HINWEIS: R-Faktoren werden AUTOMATISCH aus dem Profil berechnet.          │
+│           In der Haupt-App (index.html) gibt es KEINE Slider dafür.        │
+│           Nur in archetype-interaction.html und needs-editor.html          │
+│           existieren optionale Slider zur manuellen Anpassung.             │
 └─────────────────────────────────────────────────────────────────────────────┘
 
 ┌─────────────────────────────────────────────────────────────────────────────┐
