@@ -436,21 +436,30 @@ const TiageAPIClient = (function() {
 
     /**
      * POST /api/sync/state
-     * Client ↔ Server synchronisieren
+     * Client ↔ Server synchronisieren (Last-Write-Wins)
+     *
+     * @param {Object} syncData - { state, lastSyncAt, clientTimestamp }
+     * @returns {Object} { success, result: { synced, serverTime, action, changes } }
      */
-    async function syncState(clientState) {
-        return withFallback(
-            () => apiRequest('/sync/state', {
+    async function syncState(syncData) {
+        // Bei bekanntem Server-Ausfall: Keine Fallback-Logik für Sync
+        // (Sync macht nur Sinn wenn Server erreichbar)
+        if (serverAvailable === false) {
+            console.warn('[TiageAPI] syncState: Server nicht erreichbar');
+            throw new Error('Kein Kontakt zum Server');
+        }
+
+        try {
+            const response = await apiRequest('/sync/state', {
                 method: 'POST',
-                body: { state: clientState }
-            }),
-            () => {
-                // Lokaler Fallback: Keine Sync nötig
-                console.info('[TiageAPI] syncState: Lokaler Modus, keine Synchronisation');
-                return { synced: false, reason: 'local_mode' };
-            },
-            'syncState'
-        );
+                body: syncData
+            });
+            return response;
+        } catch (error) {
+            // Bei Sync-Fehler: Kein lokaler Fallback, Fehler durchreichen
+            console.error('[TiageAPI] syncState fehlgeschlagen:', error.message);
+            throw new Error('Kein Kontakt zum Server');
+        }
     }
 
     /**
