@@ -243,26 +243,23 @@ const ResonanzProfileHeaderCard = (function() {
 
     /**
      * Sucht nach Bedürfnissen eines Resonanzfaktors (R1-R4)
-     * Setzt einfach den Suchtext im Suchfeld
+     * Fügt Filter zur ActiveFilterCard hinzu
      * @param {string} resonanzId - R1, R2, R3 oder R4
      */
     function searchByResonanz(resonanzId) {
-        // Finde Suchfeld
-        const searchInput = document.getElementById('profileReviewSearchInput');
-
-        if (searchInput) {
-            // Setze Suchtext
-            searchInput.value = resonanzId;
-            searchInput.focus();
-
-            // Trigger die Suche
-            if (typeof handleIntelligentSearch === 'function') {
-                handleIntelligentSearch(resonanzId);
-            } else if (typeof filterProfileReviewByNeed === 'function') {
-                filterProfileReviewByNeed(resonanzId);
+        // Nutze ActiveFilterCard für Multi-Filter
+        if (typeof ActiveFilterCard !== 'undefined' && ActiveFilterCard.addFilter) {
+            ActiveFilterCard.addFilter(resonanzId);
+            console.log('[ResonanzProfileHeaderCard] Filter hinzugefügt:', resonanzId);
+        } else {
+            // Fallback: Direkter Suchfeld-Eintrag
+            const searchInput = document.getElementById('profileReviewSearchInput');
+            if (searchInput) {
+                searchInput.value = resonanzId;
+                if (typeof handleIntelligentSearch === 'function') {
+                    handleIntelligentSearch(resonanzId);
+                }
             }
-
-            console.log('[ResonanzProfileHeaderCard] Suche nach:', resonanzId);
         }
     }
 
