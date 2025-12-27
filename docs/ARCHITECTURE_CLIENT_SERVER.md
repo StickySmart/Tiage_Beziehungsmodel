@@ -45,6 +45,16 @@
 │  PRINZIP: Der User merkt keinen Unterschied.                                │
 │           Nur der "Motor" wechselt von Client → Server.                    │
 │                                                                             │
+│  ───────────────────────────────────────────────────────────────────────────│
+│                                                                             │
+│  DEBUG (für Entwickler):                                                    │
+│  • Orchestrator: Unsichtbar (kein UI, kein Debug-Output)                   │
+│  • Alle anderen Berechnungen: Über Browser-Konsole abfragbar              │
+│    - Q-Formel Ergebnisse                                                    │
+│    - R-Faktoren                                                             │
+│    - Matrix-Werte                                                           │
+│    - Pathos/Logos Scores                                                    │
+│                                                                             │
 └─────────────────────────────────────────────────────────────────────────────┘
 ```
 
