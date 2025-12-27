@@ -1454,7 +1454,7 @@ const TiageAutoSync = (function() {
         }
 
         if (typeof TiageAPIClient === 'undefined') {
-            console.warn('[TiageAutoSync] TiageAPIClient nicht verfügbar');
+            console.debug('[TiageAutoSync] TiageAPIClient nicht verfügbar');
             return;
         }
 
@@ -1527,6 +1527,12 @@ const TiageAutoSync = (function() {
 
         if (typeof TiageState === 'undefined') {
             console.warn('[TiageAutoSync] TiageState nicht verfügbar');
+            return;
+        }
+
+        // Ohne API-Client keinen Sync starten
+        if (typeof TiageAPIClient === 'undefined') {
+            console.debug('[TiageAutoSync] Kein API-Client - Sync deaktiviert');
             return;
         }
 
