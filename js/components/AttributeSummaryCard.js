@@ -19,6 +19,42 @@ const AttributeSummaryCard = (function() {
     'use strict';
 
     /**
+     * Berechnet den korrekten Fill-Prozentsatz für Slider-Track-Hintergrund.
+     * Berücksichtigt die Thumb-Breite (16px), damit der Gradient mit dem
+     * Thumb-Mittelpunkt übereinstimmt statt mit dem Raw-Wert.
+     *
+     * @param {number} value - Der Slider-Wert (0-100)
+     * @param {HTMLElement} [sliderElement] - Optional: Das Slider-Element für exakte Berechnung
+     * @returns {number} Der korrigierte Fill-Prozentsatz
+     */
+    function getSliderFillPercent(value, sliderElement = null) {
+        const thumbWidth = 16;
+
+        if (sliderElement && sliderElement.offsetWidth > 0) {
+            const trackWidth = sliderElement.offsetWidth;
+            const thumbOffset = thumbWidth / 2;
+            const fillPx = thumbOffset + (value / 100) * (trackWidth - thumbWidth);
+            return (fillPx / trackWidth) * 100;
+        }
+
+        // Fallback: Lineare Approximation für ~200-300px breite Slider
+        // Gibt ca. 3% bei 0 und 97% bei 100
+        return 3 + value * 0.94;
+    }
+
+    /**
+     * Erzeugt den CSS linear-gradient String für Slider-Track-Fill.
+     * @param {string} color - Die Füllfarbe
+     * @param {number} value - Der Slider-Wert (0-100)
+     * @param {HTMLElement} [sliderElement] - Optional: Das Slider-Element
+     * @returns {string} Der CSS linear-gradient String
+     */
+    function getSliderFillGradient(color, value, sliderElement = null) {
+        const fillPercent = getSliderFillPercent(value, sliderElement);
+        return `linear-gradient(to right, ${color} 0%, ${color} ${fillPercent}%, rgba(255,255,255,0.15) ${fillPercent}%, rgba(255,255,255,0.15) 100%)`;
+    }
+
+    /**
      * SINGLE SOURCE OF TRUTH für Bedürfnis-Labels
      * Greift dynamisch auf GfkBeduerfnisse.getDefinition() zu.
      * Unterstützt sowohl #B-IDs als auch String-Keys.
@@ -542,7 +578,7 @@ const AttributeSummaryCard = (function() {
                     // Slider-Track-Hintergrund aktualisieren
                     const dimColor = getDimensionColor(needId);
                     if (dimColor && slider) {
-                        slider.style.background = `linear-gradient(to right, ${dimColor} 0%, ${dimColor} ${originalValue}%, rgba(255,255,255,0.15) ${originalValue}%, rgba(255,255,255,0.15) 100%)`;
+                        slider.style.background = getSliderFillGradient(dimColor, originalValue, slider);
                     }
 
                     // Changed-Indicator (*) aktualisieren
@@ -640,7 +676,7 @@ const AttributeSummaryCard = (function() {
                     // Update slider background with dimension color
                     const dimColor = getDimensionColor(needId);
                     if (dimColor) {
-                        slider.style.background = `linear-gradient(to right, ${dimColor} 0%, ${dimColor} ${numValue}%, rgba(255,255,255,0.15) ${numValue}%, rgba(255,255,255,0.15) 100%)`;
+                        slider.style.background = getSliderFillGradient(dimColor, numValue, slider);
                     }
                 }
                 if (input) input.value = numValue;
@@ -1431,7 +1467,7 @@ const AttributeSummaryCard = (function() {
                 // Slider-Style für Hauptfrage
                 const sliderValue = aggregatedValue !== null ? aggregatedValue : 50;
                 const sliderStyle = dimColor
-                    ? `style="background: linear-gradient(to right, ${dimColor} 0%, ${dimColor} ${sliderValue}%, rgba(255,255,255,0.15) ${sliderValue}%, rgba(255,255,255,0.15) 100%);"`
+                    ? `style="background: ${getSliderFillGradient(dimColor, sliderValue)};"`
                     : '';
 
                 // Lock-Icon Tooltip
@@ -1716,7 +1752,7 @@ const AttributeSummaryCard = (function() {
         const filterHiddenClass = shouldHide ? ' dimension-filter-hidden' : '';
         // Slider-Track-Hintergrund: gefüllt bis zum Wert mit Dimensionsfarbe
         const sliderStyle = dimensionColor
-            ? `style="background: linear-gradient(to right, ${dimensionColor} 0%, ${dimensionColor} ${value}%, rgba(255,255,255,0.15) ${value}%, rgba(255,255,255,0.15) 100%);"`
+            ? `style="background: ${getSliderFillGradient(dimensionColor, value)};"`
             : '';
         // Sternchen (*) wenn Wert vom Standard abweicht
         const changedIndicator = isValueChanged(needId, value) ? ' <span class="value-changed-indicator" title="Wert wurde geändert">*</span>' : '';
@@ -1776,7 +1812,7 @@ const AttributeSummaryCard = (function() {
             // Slider-Track-Hintergrund aktualisieren mit Dimension-Farbe
             const dimColor = getDimensionColor(needId);
             if (dimColor) {
-                sliderElement.style.background = `linear-gradient(to right, ${dimColor} 0%, ${dimColor} ${numValue}%, rgba(255,255,255,0.15) ${numValue}%, rgba(255,255,255,0.15) 100%)`;
+                sliderElement.style.background = getSliderFillGradient(dimColor, numValue, sliderElement);
             }
 
             // Changed-Indicator (*) aktualisieren
@@ -1835,7 +1871,7 @@ const AttributeSummaryCard = (function() {
                     // Slider-Track-Hintergrund aktualisieren
                     const dimColor = getDimensionColor(hauptfrage.id);
                     if (dimColor) {
-                        slider.style.background = `linear-gradient(to right, ${dimColor} 0%, ${dimColor} ${newValue}%, rgba(255,255,255,0.15) ${newValue}%, rgba(255,255,255,0.15) 100%)`;
+                        slider.style.background = getSliderFillGradient(dimColor, newValue, slider);
                     }
                 }
                 if (input && newValue !== null) {
@@ -1959,7 +1995,7 @@ const AttributeSummaryCard = (function() {
             // Slider-Track-Hintergrund aktualisieren
             const dimColor = getDimensionColor(hauptfrageId);
             if (dimColor) {
-                sliderElement.style.background = `linear-gradient(to right, ${dimColor} 0%, ${dimColor} ${numValue}%, rgba(255,255,255,0.15) ${numValue}%, rgba(255,255,255,0.15) 100%)`;
+                sliderElement.style.background = getSliderFillGradient(dimColor, numValue, sliderElement);
             }
         }
 
@@ -2102,6 +2138,20 @@ const AttributeSummaryCard = (function() {
             return { handled: true, finalValue: currentValue };
         }
 
+        // Spezialfall: Bei Zielwert 0 oder 100 alle Nuancen direkt setzen
+        // (vermeidet Rundungsprobleme wie 99+100/2 = 99.5 → 100)
+        if (clampedTarget === 0 || clampedTarget === 100) {
+            for (const nuance of unlockedNuancen) {
+                nuance.value = clampedTarget;
+            }
+            // Finale Werte in State und UI übertragen
+            for (const nuance of unlockedNuancen) {
+                updateNuanceSlider(nuance.id, nuance.value);
+            }
+            updateHauptfrageUI(sliderElement, hauptfrageItem, hauptfrageId, clampedTarget);
+            return { handled: true, finalValue: clampedTarget };
+        }
+
         // Iterative Anpassung der nicht-gelockten Nuancen
         const maxIterations = 20;
         let iteration = 0;
@@ -2178,7 +2228,7 @@ const AttributeSummaryCard = (function() {
 
         const dimColor = getDimensionColor(hauptfrageId);
         if (dimColor) {
-            sliderElement.style.background = `linear-gradient(to right, ${dimColor} 0%, ${dimColor} ${value}%, rgba(255,255,255,0.15) ${value}%, rgba(255,255,255,0.15) 100%)`;
+            sliderElement.style.background = getSliderFillGradient(dimColor, value, sliderElement);
         }
     }
 
@@ -2202,7 +2252,7 @@ const AttributeSummaryCard = (function() {
                 // Slider-Track-Hintergrund aktualisieren
                 const dimColor = getDimensionColor(nuanceId);
                 if (dimColor) {
-                    slider.style.background = `linear-gradient(to right, ${dimColor} 0%, ${dimColor} ${newValue}%, rgba(255,255,255,0.15) ${newValue}%, rgba(255,255,255,0.15) 100%)`;
+                    slider.style.background = getSliderFillGradient(dimColor, newValue, slider);
                 }
             }
             if (input) {
@@ -2297,7 +2347,7 @@ const AttributeSummaryCard = (function() {
 
             const dimColor = getDimensionColor(hauptfrageId);
             if (dimColor) {
-                slider.style.background = `linear-gradient(to right, ${dimColor} 0%, ${dimColor} ${numValue}%, rgba(255,255,255,0.15) ${numValue}%, rgba(255,255,255,0.15) 100%)`;
+                slider.style.background = getSliderFillGradient(dimColor, numValue, slider);
             }
         }
 
@@ -2850,7 +2900,7 @@ const AttributeSummaryCard = (function() {
                 // Slider-Track-Hintergrund aktualisieren mit Dimension-Farbe
                 const dimColor = getDimensionColor(needId);
                 if (dimColor && slider) {
-                    slider.style.background = `linear-gradient(to right, ${dimColor} 0%, ${dimColor} ${newValue}%, rgba(255,255,255,0.15) ${newValue}%, rgba(255,255,255,0.15) 100%)`;
+                    slider.style.background = getSliderFillGradient(dimColor, newValue, slider);
                 }
 
                 // Changed-Indicator (*) aktualisieren
