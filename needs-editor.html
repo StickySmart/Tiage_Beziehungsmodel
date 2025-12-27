@@ -804,44 +804,44 @@
 
             // Perspektiven-Filter aus URL-Parameter anwenden (nach Rendering)
             const perspectiveParam = urlParams.get('perspective');
-            if (perspectiveParam && typeof DimensionKategorieFilter !== 'undefined') {
-                applyPerspectiveFilter(perspectiveParam);
+            if (perspectiveParam) {
+                // Normalisiere: '#P1' → 'P1'
+                const normalizedPerspective = perspectiveParam.replace('#', '').toUpperCase();
+                if (typeof ActiveFilterCard !== 'undefined' && ActiveFilterCard.addFilter) {
+                    ActiveFilterCard.addFilter(normalizedPerspective);
+                    console.log('[NeedsEditor] Perspektive-Filter aus URL:', normalizedPerspective);
+                }
             }
 
-            // NEU: Dimension-Filter aus URL-Parameter setzen (R1, R2, R3, R4)
+            // Dimension-Filter aus URL-Parameter setzen (R1, R2, R3, R4)
             const dimensionParam = urlParams.get('dimension');
-            if (dimensionParam && typeof DimensionKategorieFilter !== 'undefined') {
-                // Warte kurz bis UI gerendert ist
-                setTimeout(() => {
-                    const validDimensions = ['R1', 'R2', 'R3', 'R4'];
-                    if (validDimensions.includes(dimensionParam.toUpperCase())) {
-                        // Nutze neue Quick-Filter API
-                        if (DimensionKategorieFilter.setQuickFilter) {
-                            DimensionKategorieFilter.setQuickFilter(dimensionParam.toUpperCase());
-                        } else {
-                            DimensionKategorieFilter.toggleDimension(dimensionParam.toUpperCase());
-                        }
-                        console.log('[NeedsEditor] Dimension-Filter gesetzt:', dimensionParam.toUpperCase());
+            if (dimensionParam) {
+                const normalizedDimension = dimensionParam.toUpperCase();
+                const validDimensions = ['R1', 'R2', 'R3', 'R4'];
+                if (validDimensions.includes(normalizedDimension)) {
+                    if (typeof ActiveFilterCard !== 'undefined' && ActiveFilterCard.addFilter) {
+                        ActiveFilterCard.addFilter(normalizedDimension);
+                        console.log('[NeedsEditor] Dimension-Filter aus URL:', normalizedDimension);
                     }
-                }, 100);
+                }
             }
         }
 
         /**
-         * Wendet einen Perspektiven-Filter an (von URL-Parameter oder externem Aufruf)
-         * Nutzt neue Quick-Filter API
+         * Wendet einen Perspektiven-Filter an (von externem Aufruf)
+         * Nutzt ActiveFilterCard für Multi-Filter
          * @param {string} perspektiveId - z.B. '#P1', '#P2', '#P3', '#P4' oder 'P1', 'P2', 'P3', 'P4'
          */
         function applyPerspectiveFilter(perspektiveId) {
             // Normalisiere: '#P1' → 'P1'
             const normalizedId = perspektiveId.replace('#', '').toUpperCase();
 
-            // Nutze neue Quick-Filter API
-            if (typeof DimensionKategorieFilter !== 'undefined' && DimensionKategorieFilter.setQuickFilter) {
-                DimensionKategorieFilter.setQuickFilter(normalizedId);
-                console.log('[NeedsEditor] Quick-Filter gesetzt:', normalizedId);
+            // Nutze ActiveFilterCard für Multi-Filter
+            if (typeof ActiveFilterCard !== 'undefined' && ActiveFilterCard.addFilter) {
+                ActiveFilterCard.addFilter(normalizedId);
+                console.log('[NeedsEditor] Filter hinzugefügt:', normalizedId);
             } else {
-                console.warn('[NeedsEditor] Quick-Filter API nicht verfügbar');
+                console.warn('[NeedsEditor] ActiveFilterCard nicht verfügbar');
             }
         }
 
