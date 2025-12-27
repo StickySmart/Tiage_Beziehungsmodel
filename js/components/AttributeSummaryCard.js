@@ -2059,9 +2059,9 @@ const AttributeSummaryCard = (function() {
         upsertNeed(nuanceId, { value: newValue });
 
         // Finde das DOM-Element und aktualisiere die UI
-        const nuanceItem = document.querySelector(`.flat-need-item[data-need-id="${nuanceId}"]`);
+        const nuanceItem = document.querySelector(`.flat-need-item[data-need="${nuanceId}"]`);
         if (nuanceItem) {
-            const slider = nuanceItem.querySelector('.flat-need-slider');
+            const slider = nuanceItem.querySelector('.need-slider');
             const input = nuanceItem.querySelector('.flat-need-input');
 
             if (slider) {
