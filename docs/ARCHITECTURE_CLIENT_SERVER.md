@@ -422,9 +422,9 @@ Das Tiage-System hat ein **zweistufiges Lock-System** + dynamische R-Faktoren:
 │  FORMEL: R = 0.5 + (Übereinstimmung × 1.0)                                  │
 │                                                                             │
 │  HINWEIS: R-Faktoren werden AUTOMATISCH aus dem Profil berechnet.          │
-│           In der Haupt-App (index.html) gibt es KEINE Slider dafür.        │
-│           Nur in archetype-interaction.html und needs-editor.html          │
-│           existieren optionale Slider zur manuellen Anpassung.             │
+│           Es gibt KEINE Slider zur manuellen Anpassung.                    │
+│           Die Werte werden nur als Read-Only im UI angezeigt.              │
+│           (Haupt-App: archetype-interaction.html)                          │
 └─────────────────────────────────────────────────────────────────────────────┘
 
 ┌─────────────────────────────────────────────────────────────────────────────┐
