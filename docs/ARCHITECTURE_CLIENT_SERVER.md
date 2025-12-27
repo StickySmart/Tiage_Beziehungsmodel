@@ -61,7 +61,7 @@
 │                                     ▼                                       │
 │  ┌─────────────────────────────────────────────────────────────────────┐    │
 │  │  DATA LAYER                                                         │    │
-│  │  ├── profiles/archetypen/*.js (220 Bedürfnisse pro Archetyp)        │    │
+│  │  ├── profiles/archetypen/*.js (233 Bedürfnisse pro Archetyp)        │    │
 │  │  ├── beduerfnis-katalog.json (Bedürfnis-Definitionen)               │    │
 │  │  ├── archetype-matrix.json (nur Archetyp-Definitionen, keine Matrix)│    │
 │  │  ├── Profile-Storage (MongoDB / PostgreSQL)                         │    │
@@ -382,9 +382,9 @@
 
 ## 2.6 Lock-System (Wichtig!)
 
-Das Tiage-System hat ein **dreistufiges Lock-System**, das User-Overrides ermöglicht:
+Das Tiage-System hat ein **zweistufiges Lock-System** + dynamische R-Faktoren:
 
-### Lock-Ebenen
+### Lock-Ebenen (User-Overrides)
 
 ```
 ┌─────────────────────────────────────────────────────────────────────────────┐
@@ -405,24 +405,28 @@ Das Tiage-System hat ein **dreistufiges Lock-System**, das User-Overrides ermög
 └─────────────────────────────────────────────────────────────────────────────┘
 
 ┌─────────────────────────────────────────────────────────────────────────────┐
-│  LOCK-EBENE 2: Resonanzfaktoren (R1, R2, R3, R4)                            │
+│  RESONANZFAKTOREN (R1, R2, R3, R4) - DYNAMISCH BERECHNET                    │
 │  ═══════════════════════════════════════════════════════════════════════════│
 │                                                                             │
 │  resonanzFaktoren: {                                                        │
 │    ich: {                                                                   │
-│      R1: { value: 1.2, locked: true },   ← User hat manuell gesetzt        │
-│      R2: { value: 0.9, locked: false },  ← Wird aus Profil berechnet       │
+│      R1: { value: 1.2, locked: false },  ← DYNAMISCH aus Profil berechnet  │
+│      R2: { value: 0.9, locked: false },  ← Kohärenz Archetyp ↔ Bedürfnisse │
 │      R3: { value: 1.0, locked: false },                                     │
 │      R4: { value: 1.1, locked: false }                                      │
 │    }                                                                        │
 │  }                                                                          │
 │                                                                             │
 │  Wertebereich: 0.5 - 1.5                                                    │
-│  Berechnung: Kohärenz zwischen Archetyp und Bedürfnissen                   │
+│  BERECHNUNG: NeedsIntegration.calculateDimensionalResonance(person)         │
+│  FORMEL: R = 0.5 + (Übereinstimmung × 1.0)                                  │
+│                                                                             │
+│  HINWEIS: R-Faktoren werden NICHT vom User gesperrt, sondern automatisch   │
+│           aus dem Profil berechnet. Der UI-Slider zeigt nur den Wert an.   │
 └─────────────────────────────────────────────────────────────────────────────┘
 
 ┌─────────────────────────────────────────────────────────────────────────────┐
-│  LOCK-EBENE 3: Einzelne Bedürfnisse (lockedNeeds)                           │
+│  LOCK-EBENE 2: Einzelne Bedürfnisse (lockedNeeds)                           │
 │  ═══════════════════════════════════════════════════════════════════════════│
 │                                                                             │
 │  profileReview: {                                                           │
@@ -457,7 +461,7 @@ Das Tiage-System hat ein **dreistufiges Lock-System**, das User-Overrides ermög
 │    ├── personDimensions (geschlecht, dominanz, orientierung)                │
 │    ├── gewichtungen (O, A, D, G mit value + locked)                         │
 │    ├── resonanzFaktoren (R1-R4 mit value + locked)                          │
-│    ├── flatNeeds (220 Bedürfnisse als Array)                                │
+│    ├── flatNeeds (233 Bedürfnisse als Array)                                │
 │    ├── lockedNeeds (manuell überschriebene Werte)                           │
 │    └── savedAt (Timestamp)                                                  │
 └─────────────────────────────────────────────────────────────────────────────┘
@@ -574,7 +578,7 @@ function validateSliderValue(value) {
 - [ ] `needsIntegration.js` → Server
 - [ ] `archetypeMatrixCalculator.js` → Server (berechnet Matrix aus Bedürfnissen)
 - [ ] Text-Generatoren → Server
-- [ ] `profiles/archetypen/*.js` → Server (220 Bedürfnisse/Archetyp)
+- [ ] `profiles/archetypen/*.js` → Server (233 Bedürfnisse/Archetyp)
 
 **Hinweis:** `top10RankingCalculator.js` ist bereits Dead Code (nicht in HTML geladen)
 
