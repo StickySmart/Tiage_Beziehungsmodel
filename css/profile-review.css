@@ -2976,6 +2976,28 @@ input.resonanz-input:focus {
     color: #22c55e;
 }
 
+/* Auto-gelockt durch Nuancen - andere Farbe (orange) */
+.hauptfrage-lock-icon.auto-locked {
+    color: #f59e0b;
+}
+
+.hauptfrage-lock-icon.auto-locked::before {
+    content: "🔐";
+}
+
+/* Hauptfrage durch Nuancen gelockt */
+.hauptfrage-item.locked-by-nuancen {
+    border-left: 3px solid #f59e0b;
+}
+
+.hauptfrage-item.locked-by-nuancen .hauptfrage-header {
+    background: rgba(245, 158, 11, 0.08);
+}
+
+.hauptfrage-item.locked-by-nuancen .hauptfrage-slider-row {
+    background: rgba(245, 158, 11, 0.05);
+}
+
 /* Hauptfrage-Slider-Row */
 .hauptfrage-slider-row {
     display: flex;
