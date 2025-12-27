@@ -4,6 +4,60 @@
 
 ---
 
+## 0. SSOT (Single Source of Truth)
+
+Alle Daten haben genau EINE autoritative Quelle:
+
+```
+┌─────────────────────────────────────────────────────────────────────────────┐
+│  SSOT-VERZEICHNIS                                                           │
+│  ═══════════════════════════════════════════════════════════════════════════│
+│                                                                             │
+│  BEDÜRFNISSE (224 Stück, #B1-#B224)                                         │
+│  └── profiles/data/beduerfnis-katalog.json                                  │
+│      ├── Wrapper: profiles/definitions/beduerfnis-katalog.js                │
+│      └── Stellt BeduerfnisIds API bereit (beduerfnis-ids.js existiert nicht)│
+│                                                                             │
+│  TAXONOMIE (Perspektiven, Dimensionen, Kategorien)                          │
+│  └── profiles/definitions/taxonomie.js                                      │
+│      ├── #P1-#P4  → 4 Perspektiven                                         │
+│      ├── #D1-#D6  → 6 Dimensionen (Kurzform A-F)                           │
+│      └── #K1-#K18 → 18 Kategorien                                          │
+│                                                                             │
+│  ARCHETYP-PROFILE (8 Archetypen mit je 224 Bedürfnissen)                    │
+│  └── profiles/archetypen/*.js                                               │
+│      ├── single.js, duo.js, duo_flex.js, lat.js                            │
+│      ├── solopoly.js, polyamor.js, ra.js, aromantisch.js                   │
+│      └── Matrix-Berechnung: js/synthesis/factors/archetypeMatrixCalculator.js│
+│                                                                             │
+│  ARCHETYP-DEFINITIONEN (Namen, Beschreibungen, Werte)                       │
+│  └── archetype-matrix.json                                                  │
+│      └── HINWEIS: Enthält KEINE Kompatibilitäts-Matrix mehr!               │
+│                   Matrix wird dynamisch aus Bedürfnis-Profilen berechnet.   │
+│                                                                             │
+│  FORMELN & KONSTANTEN                                                       │
+│  └── js/synthesis/constants.js                                              │
+│      ├── Q-Formel: Q = Σ(Faktor × Gewicht × R)                             │
+│      ├── Thresholds, Gewichtungen                                          │
+│      └── Kohärenz-Definitionen (ARCHETYP_KOHAERENZ)                        │
+│                                                                             │
+│  LAUFZEIT-STATE (Browser)                                                   │
+│  └── js/state.js (TiageState)                                               │
+│      ├── personDimensions (ich/partner)                                     │
+│      ├── archetypes, gewichtungen, resonanzFaktoren                         │
+│      ├── flatNeeds, profileReview.lockedNeeds                               │
+│      └── Pub/Sub für reaktive Updates                                       │
+│                                                                             │
+│  PROFIL-SPEICHERUNG (LocalStorage)                                          │
+│  └── js/memory-manager.js                                                   │
+│      └── 4 Slots pro Person (tiage_memory_ME001-004, PART001-004)          │
+└─────────────────────────────────────────────────────────────────────────────┘
+```
+
+**Regel:** Niemals Daten duplizieren. Immer zur SSOT referenzieren.
+
+---
+
 ## 1. Architektur-Übersicht
 
 ```
