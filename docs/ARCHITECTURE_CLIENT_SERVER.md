@@ -53,7 +53,7 @@
 │  │  ├── TiageSynthesis.Calculator     → Q-Formel, Resonanz            │    │
 │  │  ├── TiageSynthesis.NeedsIntegration → Bedürfnis-Matching           │    │
 │  │  ├── TiageCompatibility.Orchestrator → Pathos + Logos               │    │
-│  │  ├── Top10RankingCalculator        → Alle Kombinationen berechnen   │    │
+│  │  ├── ArchetypeMatrixCalculator     → Matrix aus Bedürfnissen (SSOT) │    │
 │  │  ├── TextGenerators (Pathos, Logos, OshoZen)                        │    │
 │  │  └── LifestyleFilter               → K.O.-Kriterien                 │    │
 │  └─────────────────────────────────────────────────────────────────────┘    │
@@ -61,9 +61,9 @@
 │                                     ▼                                       │
 │  ┌─────────────────────────────────────────────────────────────────────┐    │
 │  │  DATA LAYER                                                         │    │
-│  │  ├── archetype-matrix.json (8×8 Kompatibilität)                     │    │
-│  │  ├── kategorien.json (220 Bedürfnisse)                              │    │
-│  │  ├── Archetyp-Profile (8 × Bedürfnis-Sets)                          │    │
+│  │  ├── profiles/archetypen/*.js (220 Bedürfnisse pro Archetyp)        │    │
+│  │  ├── beduerfnis-katalog.json (Bedürfnis-Definitionen)               │    │
+│  │  ├── archetype-matrix.json (nur Archetyp-Definitionen, keine Matrix)│    │
 │  │  ├── Profile-Storage (MongoDB / PostgreSQL)                         │    │
 │  │  └── Constants (Gewichtungen, Thresholds, Konfiguration)            │    │
 │  └─────────────────────────────────────────────────────────────────────┘    │
@@ -429,8 +429,11 @@ function validateSliderValue(value) {
 ### Phase 3: Logik migrieren (Woche 4-6)
 - [ ] `synthesisCalculator.js` → Server
 - [ ] `needsIntegration.js` → Server
-- [ ] `top10RankingCalculator.js` → Server
+- [ ] `archetypeMatrixCalculator.js` → Server (berechnet Matrix aus Bedürfnissen)
 - [ ] Text-Generatoren → Server
+- [ ] `profiles/archetypen/*.js` → Server (220 Bedürfnisse/Archetyp)
+
+**Hinweis:** `top10RankingCalculator.js` ist bereits Dead Code (nicht in HTML geladen)
 
 ### Phase 4: Client verschlanken (Woche 6-8)
 - [ ] Entferne migrierte Logik aus Client
