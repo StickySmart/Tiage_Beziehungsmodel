@@ -1994,6 +1994,27 @@ input.resonanz-input:focus {
     content: "🔒";
 }
 
+/* Value Changed State - Bedürfnis dessen Wert vom Standard abweicht */
+.flat-need-item.value-changed {
+    background: rgba(168, 85, 247, 0.08);
+}
+
+.flat-need-item.value-changed .flat-need-label {
+    color: #a855f7;
+}
+
+/* Changed Indicator (Sternchen) */
+.value-changed-indicator {
+    color: #a855f7;
+    font-weight: bold;
+    margin-left: 4px;
+}
+
+/* Combined: Locked AND Changed */
+.flat-need-item.need-locked.value-changed {
+    background: linear-gradient(90deg, rgba(245, 158, 11, 0.1) 0%, rgba(168, 85, 247, 0.08) 100%);
+}
+
 /* ═══════════════════════════════════════════════════════════════════════════ */
 /* FLAT NEEDS LIST - Flache Liste ohne Kategorien-Gruppierung                   */
 /* ═══════════════════════════════════════════════════════════════════════════ */

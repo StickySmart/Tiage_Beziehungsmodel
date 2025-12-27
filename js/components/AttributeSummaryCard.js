@@ -1550,15 +1550,11 @@ const AttributeSummaryCard = (function() {
                 // Zeige immer Dimension-Farbe
                 const dimColor = getDimensionColor(need.id);
 
-                // DimensionKategorieFilter DEAKTIVIERT für SSOT-Refactoring
-                // const hiddenByDimensionFilter = (typeof DimensionKategorieFilter !== 'undefined')
-                //     && !DimensionKategorieFilter.shouldShowNeed(need.id);
+                // "Nur Geänderte" Filter - zeigt nur Bedürfnisse deren Wert vom Standard abweicht
+                const hiddenByChangedFilter = showOnlyChangedNeeds && !isValueChanged(need.id, need.value);
 
-                // "Nur Geänderte" Filter DEAKTIVIERT für SSOT-Refactoring
-                // const hiddenByChangedFilter = showOnlyChangedNeeds && !isValueChanged(need.id, need.value);
-
-                // ALLE Filter deaktiviert - zeige alle Bedürfnisse
-                const shouldHide = false;
+                // Filter anwenden
+                const shouldHide = hiddenByChangedFilter;
 
                 html += renderFlatNeedItem(need.id, need.label, need.value, isLocked, dimColor, shouldHide);
             });
@@ -1754,10 +1750,13 @@ const AttributeSummaryCard = (function() {
         const sliderStyle = dimensionColor
             ? `style="background: ${getSliderFillGradient(dimensionColor, value)};"`
             : '';
-        // Sternchen (*) wenn Wert vom Standard abweicht
-        const changedIndicator = isValueChanged(needId, value) ? ' <span class="value-changed-indicator" title="Wert wurde geändert">*</span>' : '';
+        // Prüfe ob Wert geändert wurde (für Markierung und Filter)
+        const valueChanged = isValueChanged(needId, value);
+        const changedIndicator = valueChanged ? ' <span class="value-changed-indicator" title="Wert wurde geändert">*</span>' : '';
+        // CSS-Klasse für geänderte Werte (visuelle Hervorhebung)
+        const changedClass = valueChanged ? ' value-changed' : '';
         return `
-        <div class="flat-need-item${isLocked ? ' need-locked' : ''}${colorClass}${selectedClass}${filterHiddenClass}" data-need="${needId}" ${itemStyle}
+        <div class="flat-need-item${isLocked ? ' need-locked' : ''}${colorClass}${selectedClass}${filterHiddenClass}${changedClass}" data-need="${needId}" ${itemStyle}
              onclick="AttributeSummaryCard.toggleNeedSelection('${needId}')">
             <div class="flat-need-header">
                 <span class="flat-need-label clickable"
