@@ -1963,23 +1963,12 @@ const AttributeSummaryCard = (function() {
             }
         }
 
-        // Wenn Nuancen vorhanden: Hauptslider auf aggregierten Wert begrenzen
-        // (Nuancen werden NICHT geändert - der Slider zeigt nur den Durchschnitt)
+        // Wenn Nuancen vorhanden: Nuancen anpassen um Zielwert zu erreichen
+        // Begrenzt durch gelockte Nuancen (max/min erreichbarer Wert)
         if (hasNuancen) {
-            const aggregatedValue = getAggregatedValueForHauptfrage(hauptfrageId);
-            if (aggregatedValue !== null) {
-                // Slider und Input auf aggregierten Wert setzen
-                sliderElement.value = aggregatedValue;
-                if (hauptfrageItem) {
-                    const input = hauptfrageItem.querySelector('.hauptfrage-input');
-                    if (input) input.value = aggregatedValue;
-
-                    const dimColor = getDimensionColor(hauptfrageId);
-                    if (dimColor) {
-                        sliderElement.style.background = `linear-gradient(to right, ${dimColor} 0%, ${dimColor} ${aggregatedValue}%, rgba(255,255,255,0.15) ${aggregatedValue}%, rgba(255,255,255,0.15) 100%)`;
-                    }
-                }
-                return; // Keine weitere Verarbeitung - Wert ist durch Nuancen bestimmt
+            const result = adjustNuancenToTarget(hauptfrageId, numValue, sliderElement, hauptfrageItem);
+            if (result.handled) {
+                return; // Nuancen wurden angepasst
             }
         }
 
@@ -2014,6 +2003,183 @@ const AttributeSummaryCard = (function() {
 
         const aggregation = HauptfrageAggregation.aggregateHauptfrage(hauptfrageId, currentNeeds);
         return aggregation.value;
+    }
+
+    /**
+     * Berechnet den min/max erreichbaren aggregierten Wert basierend auf gelockten Nuancen.
+     * @param {string} hauptfrageId - Die #B-ID der Hauptfrage
+     * @returns {Object} { min, max, hasLockedNuancen }
+     */
+    function getAggregatedValueLimits(hauptfrageId) {
+        if (typeof HauptfrageAggregation === 'undefined') return { min: 0, max: 100, hasLockedNuancen: false };
+
+        const hauptfragen = HauptfrageAggregation.getHauptfragen();
+        const hauptfrage = hauptfragen[hauptfrageId];
+
+        if (!hauptfrage || !hauptfrage.nuancen || hauptfrage.nuancen.length === 0) {
+            return { min: 0, max: 100, hasLockedNuancen: false };
+        }
+
+        // Sammle gelockte und nicht-gelockte Nuancen
+        const lockedNuancen = [];
+        const unlockedNuancen = [];
+
+        for (const nuanceId of hauptfrage.nuancen) {
+            const nuanceObj = findNeedById(nuanceId);
+            if (nuanceObj?.locked) {
+                lockedNuancen.push({ id: nuanceId, value: nuanceObj.value ?? 50 });
+            } else {
+                unlockedNuancen.push({ id: nuanceId, value: nuanceObj?.value ?? 50 });
+            }
+        }
+
+        if (lockedNuancen.length === 0) {
+            // Keine gelockten Nuancen = voller Bereich
+            return { min: 0, max: 100, hasLockedNuancen: false };
+        }
+
+        // Berechne Min: alle nicht-gelockten auf 0
+        const minNeeds = {};
+        flatNeeds.forEach(n => { minNeeds[n.id] = n.value; });
+        unlockedNuancen.forEach(n => { minNeeds[n.id] = 0; });
+        const minAgg = HauptfrageAggregation.aggregateHauptfrage(hauptfrageId, minNeeds);
+
+        // Berechne Max: alle nicht-gelockten auf 100
+        const maxNeeds = {};
+        flatNeeds.forEach(n => { maxNeeds[n.id] = n.value; });
+        unlockedNuancen.forEach(n => { maxNeeds[n.id] = 100; });
+        const maxAgg = HauptfrageAggregation.aggregateHauptfrage(hauptfrageId, maxNeeds);
+
+        return {
+            min: minAgg.value ?? 0,
+            max: maxAgg.value ?? 100,
+            hasLockedNuancen: true
+        };
+    }
+
+    /**
+     * Passt die nicht-gelockten Nuancen einer Hauptfrage an, um den Zielwert zu erreichen.
+     * Begrenzt den Slider auf den erreichbaren Bereich wenn Nuancen gelockt sind.
+     * @param {string} hauptfrageId - Die #B-ID der Hauptfrage
+     * @param {number} targetValue - Der gewünschte Zielwert
+     * @param {HTMLElement} sliderElement - Das Slider-Element
+     * @param {HTMLElement} hauptfrageItem - Das Hauptfrage-Container-Element
+     * @returns {Object} { handled: boolean, finalValue: number }
+     */
+    function adjustNuancenToTarget(hauptfrageId, targetValue, sliderElement, hauptfrageItem) {
+        if (typeof HauptfrageAggregation === 'undefined') return { handled: false };
+
+        const hauptfragen = HauptfrageAggregation.getHauptfragen();
+        const hauptfrage = hauptfragen[hauptfrageId];
+
+        if (!hauptfrage || !hauptfrage.nuancen || hauptfrage.nuancen.length === 0) {
+            return { handled: false };
+        }
+
+        // Hole die Grenzen basierend auf gelockten Nuancen
+        const limits = getAggregatedValueLimits(hauptfrageId);
+
+        // Begrenze den Zielwert auf den erreichbaren Bereich
+        let clampedTarget = Math.max(limits.min, Math.min(limits.max, targetValue));
+        clampedTarget = Math.round(clampedTarget);
+
+        // Sammle nicht-gelockte Nuancen
+        const unlockedNuancen = [];
+        for (const nuanceId of hauptfrage.nuancen) {
+            const nuanceObj = findNeedById(nuanceId);
+            if (!nuanceObj?.locked) {
+                unlockedNuancen.push({
+                    id: nuanceId,
+                    value: nuanceObj?.value ?? 50
+                });
+            }
+        }
+
+        if (unlockedNuancen.length === 0) {
+            // Alle gelockt - zeige nur aktuellen Wert
+            const currentValue = getAggregatedValueForHauptfrage(hauptfrageId);
+            updateHauptfrageUI(sliderElement, hauptfrageItem, hauptfrageId, currentValue);
+            return { handled: true, finalValue: currentValue };
+        }
+
+        // Iterative Anpassung der nicht-gelockten Nuancen
+        const maxIterations = 20;
+        let iteration = 0;
+
+        while (iteration < maxIterations) {
+            // Berechne aktuellen aggregierten Wert
+            const currentNeeds = {};
+            flatNeeds.forEach(n => { currentNeeds[n.id] = n.value; });
+            unlockedNuancen.forEach(n => { currentNeeds[n.id] = n.value; });
+
+            const aggregation = HauptfrageAggregation.aggregateHauptfrage(hauptfrageId, currentNeeds);
+            const currentValue = aggregation.value;
+
+            if (currentValue === null) break;
+
+            const diff = clampedTarget - currentValue;
+
+            // Ziel erreicht? (Toleranz: 0.5)
+            if (Math.abs(diff) < 0.5) break;
+
+            // Finde anpassbare Nuancen (nicht an Grenzen)
+            const adjustable = unlockedNuancen.filter(n => {
+                if (diff > 0) return n.value < 100;
+                return n.value > 0;
+            });
+
+            if (adjustable.length === 0) break;
+
+            // Verteile Differenz
+            const diffPerNuance = diff / adjustable.length;
+            let anyChanged = false;
+
+            for (const nuance of adjustable) {
+                const oldValue = nuance.value;
+                let newValue = nuance.value + diffPerNuance * 1.2; // Leichte Überkorrektur für schnellere Konvergenz
+                newValue = Math.max(0, Math.min(100, Math.round(newValue)));
+
+                if (newValue !== oldValue) {
+                    nuance.value = newValue;
+                    anyChanged = true;
+                }
+            }
+
+            if (!anyChanged) break;
+            iteration++;
+        }
+
+        // Finale Werte in State und UI übertragen
+        for (const nuance of unlockedNuancen) {
+            updateNuanceSlider(nuance.id, nuance.value);
+        }
+
+        // Berechne finalen aggregierten Wert
+        const finalValue = getAggregatedValueForHauptfrage(hauptfrageId);
+
+        // Aktualisiere Hauptfrage UI
+        updateHauptfrageUI(sliderElement, hauptfrageItem, hauptfrageId, finalValue);
+
+        return { handled: true, finalValue };
+    }
+
+    /**
+     * Aktualisiert die UI-Elemente einer Hauptfrage (Slider, Input, Track)
+     */
+    function updateHauptfrageUI(sliderElement, hauptfrageItem, hauptfrageId, value) {
+        if (value === null) return;
+
+        sliderElement.value = value;
+
+        if (hauptfrageItem) {
+            const input = hauptfrageItem.querySelector('.hauptfrage-input');
+            if (input) input.value = value;
+        }
+
+        const dimColor = getDimensionColor(hauptfrageId);
+        if (dimColor) {
+            sliderElement.style.background = `linear-gradient(to right, ${dimColor} 0%, ${dimColor} ${value}%, rgba(255,255,255,0.15) ${value}%, rgba(255,255,255,0.15) 100%)`;
+        }
     }
 
     /**
@@ -2114,40 +2280,24 @@ const AttributeSummaryCard = (function() {
         const numValue = parseInt(value, 10);
         if (isNaN(numValue) || numValue < 0 || numValue > 100) return;
 
-        // Wenn Nuancen vorhanden: Input auf aggregierten Wert zurücksetzen
-        // (Nuancen werden NICHT geändert - der Wert ist durch Nuancen bestimmt)
-        if (hasNuancen) {
-            const aggregatedValue = getAggregatedValueForHauptfrage(hauptfrageId);
-            if (aggregatedValue !== null) {
-                const hauptfrageItem = document.querySelector(`.hauptfrage-item[data-hauptfrage-id="${hauptfrageId}"]`);
-                if (hauptfrageItem) {
-                    const slider = hauptfrageItem.querySelector('.hauptfrage-slider');
-                    const input = hauptfrageItem.querySelector('.hauptfrage-input');
+        const hauptfrageItem = document.querySelector(`.hauptfrage-item[data-hauptfrage-id="${hauptfrageId}"]`);
+        const slider = hauptfrageItem?.querySelector('.hauptfrage-slider');
 
-                    if (slider) {
-                        slider.value = aggregatedValue;
-                        const dimColor = getDimensionColor(hauptfrageId);
-                        if (dimColor) {
-                            slider.style.background = `linear-gradient(to right, ${dimColor} 0%, ${dimColor} ${aggregatedValue}%, rgba(255,255,255,0.15) ${aggregatedValue}%, rgba(255,255,255,0.15) 100%)`;
-                        }
-                    }
-                    if (input) input.value = aggregatedValue;
-                }
-                return; // Keine weitere Verarbeitung - Wert ist durch Nuancen bestimmt
+        // Wenn Nuancen vorhanden: Nuancen anpassen um Zielwert zu erreichen
+        if (hasNuancen && slider) {
+            const result = adjustNuancenToTarget(hauptfrageId, numValue, slider, hauptfrageItem);
+            if (result.handled) {
+                return; // Nuancen wurden angepasst
             }
         }
 
         // Sync Slider (nur für Hauptfragen OHNE Nuancen)
-        const hauptfrageItem = document.querySelector(`.hauptfrage-item[data-hauptfrage-id="${hauptfrageId}"]`);
-        if (hauptfrageItem) {
-            const slider = hauptfrageItem.querySelector('.hauptfrage-slider');
-            if (slider) {
-                slider.value = numValue;
+        if (hauptfrageItem && slider) {
+            slider.value = numValue;
 
-                const dimColor = getDimensionColor(hauptfrageId);
-                if (dimColor) {
-                    slider.style.background = `linear-gradient(to right, ${dimColor} 0%, ${dimColor} ${numValue}%, rgba(255,255,255,0.15) ${numValue}%, rgba(255,255,255,0.15) 100%)`;
-                }
+            const dimColor = getDimensionColor(hauptfrageId);
+            if (dimColor) {
+                slider.style.background = `linear-gradient(to right, ${dimColor} 0%, ${dimColor} ${numValue}%, rgba(255,255,255,0.15) ${numValue}%, rgba(255,255,255,0.15) 100%)`;
             }
         }
 
