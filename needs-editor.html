@@ -20,6 +20,8 @@
     <link rel="stylesheet" href="css/resonanz-profile-header-card.css">
     <!-- Resonanz Tree View Styling -->
     <link rel="stylesheet" href="css/resonanz-tree-view.css">
+    <!-- Active Filter Card Styling -->
+    <link rel="stylesheet" href="css/active-filter-card.css">
 
     <!-- LocalForage - Browser-Datenbank für Profile -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/localforage/1.10.0/localforage.min.js"></script>
@@ -357,6 +359,9 @@
                 </button>
             </div>
 
+            <!-- Active Filter Card Container -->
+            <div id="activeFilterCardContainer"></div>
+
             <!-- Search/Filter - using profile-review styles -->
             <div class="profile-review-search-container" style="position: relative; z-index: 102;">
                 <div class="profile-review-search-wrapper">
@@ -416,6 +421,8 @@
     <script src="js/components/profile-components.js"></script>
     <!-- PerspektivenModal für Need-Details -->
     <script src="js/components/PerspektivenModal.js"></script>
+    <!-- Active Filter Card -->
+    <script src="js/components/ActiveFilterCard.js"></script>
 
     <script>
         // ═══════════════════════════════════════════════════════════════════════════
@@ -790,6 +797,11 @@
             // Render the needs list
             renderNeedsList();
 
+            // Initialize Active Filter Card
+            if (typeof ActiveFilterCard !== 'undefined') {
+                ActiveFilterCard.init('#activeFilterCardContainer');
+            }
+
             // Perspektiven-Filter aus URL-Parameter anwenden (nach Rendering)
             const perspectiveParam = urlParams.get('perspective');
             if (perspectiveParam && typeof DimensionKategorieFilter !== 'undefined') {
@@ -803,7 +815,12 @@
                 setTimeout(() => {
                     const validDimensions = ['R1', 'R2', 'R3', 'R4'];
                     if (validDimensions.includes(dimensionParam.toUpperCase())) {
-                        DimensionKategorieFilter.toggleDimension(dimensionParam.toUpperCase());
+                        // Nutze neue Quick-Filter API
+                        if (DimensionKategorieFilter.setQuickFilter) {
+                            DimensionKategorieFilter.setQuickFilter(dimensionParam.toUpperCase());
+                        } else {
+                            DimensionKategorieFilter.toggleDimension(dimensionParam.toUpperCase());
+                        }
                         console.log('[NeedsEditor] Dimension-Filter gesetzt:', dimensionParam.toUpperCase());
                     }
                 }, 100);
@@ -812,44 +829,19 @@
 
         /**
          * Wendet einen Perspektiven-Filter an (von URL-Parameter oder externem Aufruf)
-         * @param {string} perspektiveId - z.B. '#P1', '#P2', '#P3', '#P4'
+         * Nutzt neue Quick-Filter API
+         * @param {string} perspektiveId - z.B. '#P1', '#P2', '#P3', '#P4' oder 'P1', 'P2', 'P3', 'P4'
          */
         function applyPerspectiveFilter(perspektiveId) {
-            // Hole Kategorien für diese Perspektive aus SSOT
-            var kategorien = [];
-            if (window.TiageTaxonomie && window.TiageTaxonomie.perspektiven && window.TiageTaxonomie.perspektiven[perspektiveId]) {
-                kategorien = window.TiageTaxonomie.perspektiven[perspektiveId].kategorien || [];
-            }
+            // Normalisiere: '#P1' → 'P1'
+            const normalizedId = perspektiveId.replace('#', '').toUpperCase();
 
-            if (kategorien.length > 0) {
-                // Reset bestehende Filter
-                DimensionKategorieFilter.reset();
-
-                // Aktiviere alle Kategorien dieser Perspektive
-                kategorien.forEach(function(katId) {
-                    if (!DimensionKategorieFilter.isKategorieActive(katId)) {
-                        DimensionKategorieFilter.toggleKategorie(katId);
-                    }
-                });
-
-                // Setze Suchfeld-Text wie bei Dropdown-Auswahl
-                const perspektivenLabels = {
-                    '#P1': 'Statistik',
-                    '#P2': 'Konditionierung',
-                    '#P3': 'Qualität',
-                    '#P4': 'SexPositiv'
-                };
-                var input = document.getElementById('profileReviewSearchInput');
-                if (input) {
-                    input.value = perspektiveId + ' ' + (perspektivenLabels[perspektiveId] || '');
-                }
-
-                console.log('[NeedsEditor] Perspektive aktiviert via URL:', perspektiveId);
-
-                // Filter anwenden
-                filterProfileReviewByNeed('');
+            // Nutze neue Quick-Filter API
+            if (typeof DimensionKategorieFilter !== 'undefined' && DimensionKategorieFilter.setQuickFilter) {
+                DimensionKategorieFilter.setQuickFilter(normalizedId);
+                console.log('[NeedsEditor] Quick-Filter gesetzt:', normalizedId);
             } else {
-                console.warn('[NeedsEditor] Keine Kategorien für Perspektive gefunden:', perspektiveId);
+                console.warn('[NeedsEditor] Quick-Filter API nicht verfügbar');
             }
         }
 

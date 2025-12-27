@@ -94,6 +94,52 @@ const DimensionKategorieFilter = (function() {
     };
 
     /**
+     * ═══════════════════════════════════════════════════════════════════════════
+     * SINGLE SOURCE OF TRUTH: Perspektiven (P1-P4)
+     * ═══════════════════════════════════════════════════════════════════════════
+     *
+     * Die 4 Perspektiven sind verschiedene "Brillen" auf Beziehungen.
+     */
+    const PERSPEKTIVEN = {
+        'P1': {
+            id: 'P1',
+            key: 'statistik',
+            kurzform: '#P1',
+            label: 'Statistik',
+            icon: '📊',
+            color: '#3B82F6',
+            beschreibung: 'Universelle Bedürfnisse nach GFK'
+        },
+        'P2': {
+            id: 'P2',
+            key: 'konditionierung',
+            kurzform: '#P2',
+            label: 'Konditionierung',
+            icon: '🌱',
+            color: '#F59E0B',
+            beschreibung: 'Natürlichkeit vs. Anerzogenes'
+        },
+        'P3': {
+            id: 'P3',
+            key: 'qualitaet',
+            kurzform: '#P3',
+            label: 'Qualität',
+            icon: '⚖️',
+            color: '#10B981',
+            beschreibung: 'Static vs. Dynamic Quality'
+        },
+        'P4': {
+            id: 'P4',
+            key: 'sexpositiv',
+            kurzform: '#P4',
+            label: 'SexPositiv',
+            icon: '💜',
+            color: '#8B5CF6',
+            beschreibung: 'Consent, Kink, bewusste Dynamik'
+        }
+    };
+
+    /**
      * Kategorien gruppiert nach Resonanz-Dimensionen
      * Mapping: R1-R4 → Kategorien aus Taxonomie
      */
@@ -132,6 +178,13 @@ const DimensionKategorieFilter = (function() {
     let activeKategorien = new Set();  // Mehrfachauswahl: Set der aktiven Kategorien
     let containerId = null;      // Container-ID für Rendering
     let viewMode = 'tree';       // Nur noch 'tree' - Tags-Modus entfernt
+
+    /**
+     * ═══════════════════════════════════════════════════════════════════════════
+     * QUICK FILTER STATE - Einfache String-basierte Filter (R1-R4, P1-P4)
+     * ═══════════════════════════════════════════════════════════════════════════
+     */
+    let activeQuickFilter = null;  // Aktuell aktiver Quick-Filter: 'R1', 'R2', 'R3', 'R4', 'P1', 'P2', 'P3', 'P4' oder null
 
     // ═══════════════════════════════════════════════════════════════════════════
     // PERSON-SPEZIFISCHE PERSISTENZ (FIX: Filter pro ICH/PARTNER speichern)
@@ -423,7 +476,9 @@ const DimensionKategorieFilter = (function() {
             bubbles: true,
             detail: {
                 kategorien: Array.from(activeKategorien),
-                kategorienInfo: Array.from(activeKategorien).map(id => getKategorieInfo(id))
+                kategorienInfo: Array.from(activeKategorien).map(id => getKategorieInfo(id)),
+                quickFilter: activeQuickFilter,
+                quickFilterInfo: getActiveQuickFilterInfo()
             }
         });
         document.dispatchEvent(event);
@@ -447,10 +502,157 @@ const DimensionKategorieFilter = (function() {
      */
     function reset(silent) {
         activeKategorien.clear();
+        activeQuickFilter = null;
         reRender();
         if (!silent) {
             dispatchFilterChange();
         }
+    }
+
+    // ═══════════════════════════════════════════════════════════════════════════
+    // QUICK FILTER API - Einfache String-basierte Filter (R1-R4, P1-P4)
+    // ═══════════════════════════════════════════════════════════════════════════
+
+    /**
+     * Setzt einen Quick-Filter nach String (R1, R2, R3, R4, P1, P2, P3, P4)
+     * @param {string} filterString - 'R1', 'R2', 'R3', 'R4', 'P1', 'P2', 'P3', 'P4'
+     */
+    function setQuickFilter(filterString) {
+        // Normalisiere Input
+        const filter = filterString?.toUpperCase?.();
+
+        // Toggle-Verhalten: Wenn gleicher Filter schon aktiv, deaktivieren
+        if (activeQuickFilter === filter) {
+            clearQuickFilter();
+            return;
+        }
+
+        // Prüfe ob gültiger Filter
+        if (!filter || (!DIMENSIONEN[filter] && !PERSPEKTIVEN[filter])) {
+            console.warn('[DimensionKategorieFilter] Ungültiger Quick-Filter:', filterString);
+            return;
+        }
+
+        // Setze neuen Quick-Filter
+        activeQuickFilter = filter;
+
+        // Bei R1-R4: Aktiviere zugehörige Kategorien
+        if (DIMENSIONEN[filter]) {
+            activeKategorien.clear();
+            const kategorien = KATEGORIEN_PRO_DIMENSION[filter];
+            if (kategorien) {
+                kategorien.forEach(k => activeKategorien.add(k.id));
+            }
+        }
+        // Bei P1-P4: Kategorien werden nicht geändert (Perspektiven-Filter)
+        else if (PERSPEKTIVEN[filter]) {
+            activeKategorien.clear();
+        }
+
+        console.log('[DimensionKategorieFilter] Quick-Filter gesetzt:', filter);
+        reRender();
+        dispatchFilterChange();
+    }
+
+    /**
+     * Löscht den Quick-Filter
+     */
+    function clearQuickFilter() {
+        activeQuickFilter = null;
+        activeKategorien.clear();
+        console.log('[DimensionKategorieFilter] Quick-Filter gelöscht');
+        reRender();
+        dispatchFilterChange();
+    }
+
+    /**
+     * Gibt den aktuell aktiven Quick-Filter zurück
+     * @returns {string|null} 'R1', 'R2', etc. oder null
+     */
+    function getActiveQuickFilter() {
+        return activeQuickFilter;
+    }
+
+    /**
+     * Gibt Info zum aktuellen Quick-Filter zurück
+     * @returns {object|null} {id, label, icon, color, type: 'dimension'|'perspektive'}
+     */
+    function getActiveQuickFilterInfo() {
+        if (!activeQuickFilter) return null;
+
+        if (DIMENSIONEN[activeQuickFilter]) {
+            const dim = DIMENSIONEN[activeQuickFilter];
+            return {
+                id: dim.id,
+                label: dim.label,
+                icon: dim.icon,
+                color: dim.color,
+                type: 'dimension'
+            };
+        }
+
+        if (PERSPEKTIVEN[activeQuickFilter]) {
+            const persp = PERSPEKTIVEN[activeQuickFilter];
+            return {
+                id: persp.id,
+                label: persp.label,
+                icon: persp.icon,
+                color: persp.color,
+                type: 'perspektive'
+            };
+        }
+
+        return null;
+    }
+
+    /**
+     * Prüft ob ein Bedürfnis durch Quick-Filter sichtbar ist
+     * @param {string} needId - Bedürfnis-ID (#B1-#B220)
+     * @returns {boolean}
+     */
+    function shouldShowNeedByQuickFilter(needId) {
+        // Kein Quick-Filter aktiv → true (normales Verhalten)
+        if (!activeQuickFilter) {
+            return shouldShowNeed(needId);
+        }
+
+        // R1-R4 Filter: Nutze bestehende Kategorien-Logik
+        if (DIMENSIONEN[activeQuickFilter]) {
+            return shouldShowNeed(needId);
+        }
+
+        // P1-P4 Filter: Prüfe Perspektive des Bedürfnisses
+        if (PERSPEKTIVEN[activeQuickFilter]) {
+            const perspektiveId = getPerspektiveForNeed(needId);
+            return perspektiveId === activeQuickFilter || perspektiveId === '#' + activeQuickFilter;
+        }
+
+        return true;
+    }
+
+    /**
+     * Ermittelt die Perspektive für ein Bedürfnis
+     * @param {string} needId - Bedürfnis-ID (#B1-#B220)
+     * @returns {string} 'P1', 'P2', 'P3' oder 'P4'
+     */
+    function getPerspektiveForNeed(needId) {
+        // Nutze PerspektivenModal wenn verfügbar
+        if (typeof PerspektivenModal !== 'undefined' && PerspektivenModal.getPerspektiveForNeed) {
+            const beduerfnisIds = typeof BeduerfnisIds !== 'undefined' ? BeduerfnisIds : null;
+            const taxonomie = typeof TiageTaxonomie !== 'undefined' ? TiageTaxonomie : null;
+
+            if (beduerfnisIds && beduerfnisIds.beduerfnisse) {
+                const need = beduerfnisIds.beduerfnisse[needId];
+                if (need) {
+                    const needKey = need.key;
+                    const kategorieKey = taxonomie?.kategorien?.[need.kategorie]?.key;
+                    const perspektive = PerspektivenModal.getPerspektiveForNeed(needKey, kategorieKey);
+                    // Normalisiere: '#P1' → 'P1'
+                    return perspektive?.id?.replace('#', '') || 'P1';
+                }
+            }
+        }
+        return 'P1';
     }
 
     /**
@@ -480,7 +682,9 @@ const DimensionKategorieFilter = (function() {
      */
     function getState() {
         return {
-            kategorien: Array.from(activeKategorien)
+            kategorien: Array.from(activeKategorien),
+            quickFilter: activeQuickFilter,
+            quickFilterInfo: getActiveQuickFilterInfo()
         };
     }
 
@@ -556,6 +760,13 @@ const DimensionKategorieFilter = (function() {
         return KATEGORIEN_PRO_DIMENSION[dimensionId] || [];
     }
 
+    /**
+     * Holt alle Perspektiven
+     */
+    function getPerspektiven() {
+        return PERSPEKTIVEN;
+    }
+
     // ═══════════════════════════════════════════════════════════════════════════
     // EXPORT
     // ═══════════════════════════════════════════════════════════════════════════
@@ -576,6 +787,14 @@ const DimensionKategorieFilter = (function() {
         setKategorie,  // Deprecated - für Rückwärtskompatibilität
         reset,
 
+        // Quick Filter (einfache String-basierte Filter)
+        setQuickFilter,
+        clearQuickFilter,
+        getActiveQuickFilter,
+        getActiveQuickFilterInfo,
+        shouldShowNeedByQuickFilter,
+        getPerspektiveForNeed,
+
         // Filter prüfen
         shouldShowNeed,
         getNeedMetadata,
@@ -583,6 +802,7 @@ const DimensionKategorieFilter = (function() {
         // State abrufen
         getState,
         getDimensionen,
+        getPerspektiven,
         getKategorienFuerDimension,
         getKategorieInfo,
 
@@ -594,7 +814,8 @@ const DimensionKategorieFilter = (function() {
 
         // Konstanten (für externe Nutzung)
         DIMENSIONEN,
-        KATEGORIEN_PRO_DIMENSION
+        KATEGORIEN_PRO_DIMENSION,
+        PERSPEKTIVEN
     };
 })();
 
