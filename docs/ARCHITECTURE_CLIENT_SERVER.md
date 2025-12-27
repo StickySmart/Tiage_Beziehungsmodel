@@ -4,7 +4,51 @@
 
 ---
 
-## 0. SSOT (Single Source of Truth)
+## 0. Grundprinzipien
+
+### 0.1 UI bleibt 100% unverändert
+
+```
+┌─────────────────────────────────────────────────────────────────────────────┐
+│  REGEL: Keine visuelle Änderung am UI                                       │
+│  ═══════════════════════════════════════════════════════════════════════════│
+│                                                                             │
+│  CLIENT (Browser)              SERVER                                       │
+│  ─────────────────────────     ──────────────────────────────────          │
+│                                                                             │
+│  ┌───────────────────┐         ┌───────────────────────────────┐           │
+│  │                   │         │                               │           │
+│  │   GLEICHES UI     │ ──────► │  Orchestrator                 │           │
+│  │                   │         │  Pathos                       │           │
+│  │   • Keine neuen   │ ◄────── │  Logos                        │           │
+│  │     Elemente      │         │  Q-Formel                     │           │
+│  │   • Keine neuen   │         │  Matrix-Berechnung            │           │
+│  │     Screens       │         │  ...                          │           │
+│  │   • Exakt wie     │         │                               │           │
+│  │     heute         │         │   (Unsichtbar für User)       │           │
+│  │                   │         │                               │           │
+│  └───────────────────┘         └───────────────────────────────┘           │
+│                                                                             │
+│  ───────────────────────────────────────────────────────────────────────────│
+│                                                                             │
+│  WAS SICH ÄNDERT:                                                           │
+│  ✓ Berechnungen laufen auf dem Server statt im Browser                     │
+│  ✓ Daten werden über API statt lokal berechnet                             │
+│  ✓ Profile werden serverseitig gespeichert                                 │
+│                                                                             │
+│  WAS GLEICH BLEIBT:                                                         │
+│  ✗ Alle UI-Komponenten (Slider, Cards, Modals)                             │
+│  ✗ Alle Screens und Navigation                                              │
+│  ✗ Das gesamte Look & Feel                                                  │
+│  ✗ Die User Experience                                                      │
+│                                                                             │
+│  PRINZIP: Der User merkt keinen Unterschied.                                │
+│           Nur der "Motor" wechselt von Client → Server.                    │
+│                                                                             │
+└─────────────────────────────────────────────────────────────────────────────┘
+```
+
+### 0.2 SSOT (Single Source of Truth)
 
 Alle Daten haben genau EINE autoritative Quelle:
 
