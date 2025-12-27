@@ -1,0 +1,486 @@
+# TIAGE Client-Server Architektur
+
+## Ziel: Nachhaltige, wartbare Codebasis
+
+---
+
+## 1. Architektur-Übersicht
+
+```
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                              BROWSER (CLIENT)                               │
+│                                                                             │
+│  ┌─────────────────────────────────────────────────────────────────────┐    │
+│  │  UI-LAYER (bleibt im Browser)                                       │    │
+│  │  ├── Slider, Buttons, Cards, Modals                                │    │
+│  │  ├── Event-Handling (Klicks, Drag, Touch)                          │    │
+│  │  ├── Lokaler UI-State (was gerade angezeigt wird)                  │    │
+│  │  ├── Input-Validierung (sofortiges Feedback)                       │    │
+│  │  └── Rendering (DOM-Manipulation)                                  │    │
+│  └─────────────────────────────────────────────────────────────────────┘    │
+│                                     │                                       │
+│                                     │ Commands                              │
+│                                     ▼                                       │
+│  ┌─────────────────────────────────────────────────────────────────────┐    │
+│  │  API-CLIENT (neu zu erstellen)                                      │    │
+│  │  ├── TiageAPIClient.calculateSynthesis(ichProfile, partnerProfile)  │    │
+│  │  ├── TiageAPIClient.sortNeeds(needs, sortBy)                        │    │
+│  │  ├── TiageAPIClient.saveProfile(person, profile)                    │    │
+│  │  ├── TiageAPIClient.loadProfile(person, slot)                       │    │
+│  │  ├── TiageAPIClient.getTop10Ranking(baseArchetype)                  │    │
+│  │  └── TiageAPIClient.generateText(synthesisResult)                   │    │
+│  └─────────────────────────────────────────────────────────────────────┘    │
+│                                     │                                       │
+└─────────────────────────────────────│───────────────────────────────────────┘
+                                      │ HTTP/WebSocket
+                                      ▼
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                                SERVER                                        │
+│                                                                             │
+│  ┌─────────────────────────────────────────────────────────────────────┐    │
+│  │  API-ENDPOINTS                                                      │    │
+│  │  POST /api/synthesis/calculate                                      │    │
+│  │  POST /api/needs/sort                                               │    │
+│  │  POST /api/profile/save                                             │    │
+│  │  GET  /api/profile/load/:person/:slot                               │    │
+│  │  POST /api/ranking/top10                                            │    │
+│  │  POST /api/text/generate                                            │    │
+│  └─────────────────────────────────────────────────────────────────────┘    │
+│                                     │                                       │
+│                                     ▼                                       │
+│  ┌─────────────────────────────────────────────────────────────────────┐    │
+│  │  BUSINESS LOGIC (wandert zum Server)                                │    │
+│  │  ├── TiageSynthesis.Calculator     → Q-Formel, Resonanz            │    │
+│  │  ├── TiageSynthesis.NeedsIntegration → Bedürfnis-Matching           │    │
+│  │  ├── TiageCompatibility.Orchestrator → Pathos + Logos               │    │
+│  │  ├── Top10RankingCalculator        → Alle Kombinationen berechnen   │    │
+│  │  ├── TextGenerators (Pathos, Logos, OshoZen)                        │    │
+│  │  └── LifestyleFilter               → K.O.-Kriterien                 │    │
+│  └─────────────────────────────────────────────────────────────────────┘    │
+│                                     │                                       │
+│                                     ▼                                       │
+│  ┌─────────────────────────────────────────────────────────────────────┐    │
+│  │  DATA LAYER                                                         │    │
+│  │  ├── archetype-matrix.json (8×8 Kompatibilität)                     │    │
+│  │  ├── kategorien.json (220 Bedürfnisse)                              │    │
+│  │  ├── Archetyp-Profile (8 × Bedürfnis-Sets)                          │    │
+│  │  ├── Profile-Storage (MongoDB / PostgreSQL)                         │    │
+│  │  └── Constants (Gewichtungen, Thresholds, Konfiguration)            │    │
+│  └─────────────────────────────────────────────────────────────────────┘    │
+└─────────────────────────────────────────────────────────────────────────────┘
+```
+
+---
+
+## 2. Server-Operationen (Commands)
+
+### 2.1 CALCULATE_SYNTHESIS
+
+**Zweck:** Berechnet den Gesamt-Score für eine Paarung
+
+**Request:**
+```json
+{
+  "command": "CALCULATE_SYNTHESIS",
+  "ich": {
+    "archetyp": "lat",
+    "geschlecht": { "primary": "mann", "secondary": "cis" },
+    "dominanz": { "primary": "switch", "secondary": null },
+    "orientierung": { "primary": "bisexuell", "secondary": null },
+    "needs": { "#B1": 75, "#B2": 60, ... },
+    "gewichtungen": { "O": 25, "A": 25, "D": 25, "G": 25 },
+    "resonanzFaktoren": { "R1": 1.2, "R2": 0.9, "R3": 1.0, "R4": 1.1 }
+  },
+  "partner": {
+    "archetyp": "duo",
+    "geschlecht": { "primary": "frau", "secondary": "cis" },
+    "dominanz": { "primary": "submissiv", "secondary": null },
+    "orientierung": { "primary": "bisexuell", "secondary": null },
+    "needs": { "#B1": 80, "#B2": 45, ... },
+    "gewichtungen": { "O": 25, "A": 25, "D": 25, "G": 25 },
+    "resonanzFaktoren": { "R1": 1.0, "R2": 1.1, "R3": 0.8, "R4": 1.0 }
+  },
+  "options": {
+    "gfkPerson1": "mittel",
+    "gfkPerson2": "hoch"
+  }
+}
+```
+
+**Response:**
+```json
+{
+  "success": true,
+  "result": {
+    "score": 78,
+    "baseScore": 72,
+    "resonanz": {
+      "coefficient": 1.08,
+      "dimensional": {
+        "leben": { "rValue": 1.15, "status": "resonanz" },
+        "philosophie": { "rValue": 0.95, "status": "neutral" },
+        "dynamik": { "rValue": 1.20, "status": "resonanz" },
+        "identitaet": { "rValue": 1.05, "status": "neutral" }
+      }
+    },
+    "logos": { "score": 65, "weight": 0.25 },
+    "pathos": { "score": 82, "weight": 0.75 },
+    "breakdown": {
+      "archetyp": { "score": 65, "category": "logos" },
+      "orientierung": { "score": 90, "category": "pathos" },
+      "dominanz": { "score": 85, "category": "pathos" },
+      "geschlecht": { "score": 70, "category": "pathos" }
+    },
+    "beduerfnisse": {
+      "score": 74,
+      "gemeinsam": [...],
+      "unterschiedlich": [...]
+    },
+    "meta": {
+      "isHardKO": false,
+      "isSoftKO": false,
+      "lifestyleWarnings": []
+    },
+    "uncertainty": {
+      "margin": 12,
+      "lower": 66,
+      "upper": 90,
+      "confidence": 80
+    }
+  }
+}
+```
+
+---
+
+### 2.2 SORT_NEEDS
+
+**Zweck:** Sortiert Bedürfnisse nach verschiedenen Kriterien
+
+**Request:**
+```json
+{
+  "command": "SORT_NEEDS",
+  "ichNeeds": { "#B1": 75, "#B2": 60, ... },
+  "partnerNeeds": { "#B1": 80, "#B2": 45, ... },
+  "sortBy": "difference",
+  "limit": 10
+}
+```
+
+**sortBy Optionen:**
+- `"difference"` - Größte Unterschiede zuerst
+- `"similarity"` - Größte Übereinstimmungen zuerst
+- `"importance"` - Höchste Durchschnittswerte zuerst
+- `"complementary"` - Komplementäre Bedürfnisse
+
+**Response:**
+```json
+{
+  "success": true,
+  "result": {
+    "sorted": [
+      {
+        "id": "#B42",
+        "key": "kontrolle_ausueben",
+        "label": "Kontrolle ausüben",
+        "ichValue": 85,
+        "partnerValue": 20,
+        "difference": 65,
+        "category": "dynamik"
+      },
+      ...
+    ],
+    "stats": {
+      "avgDifference": 28.5,
+      "avgSimilarity": 71.5,
+      "matchScore": 74
+    }
+  }
+}
+```
+
+---
+
+### 2.3 SAVE_PROFILE / LOAD_PROFILE
+
+**Zweck:** Profile zentral speichern und laden
+
+**SAVE Request:**
+```json
+{
+  "command": "SAVE_PROFILE",
+  "person": "ich",
+  "slot": 1,
+  "profile": {
+    "archetyp": "lat",
+    "geschlecht": { "primary": "mann", "secondary": "cis" },
+    "dominanz": { "primary": "switch", "secondary": null },
+    "orientierung": { "primary": "bisexuell", "secondary": null },
+    "needs": { "#B1": 75, ... },
+    "gewichtungen": { "O": 25, "A": 25, "D": 25, "G": 25 },
+    "resonanzFaktoren": { "R1": 1.2, "R2": 0.9, "R3": 1.0, "R4": 1.1 },
+    "lockedNeeds": { "#B15": 90 }
+  }
+}
+```
+
+**SAVE Response:**
+```json
+{
+  "success": true,
+  "result": {
+    "profileId": "prof_abc123",
+    "savedAt": "2025-12-27T14:30:00Z",
+    "slot": 1,
+    "person": "ich"
+  }
+}
+```
+
+**LOAD Request:**
+```json
+{
+  "command": "LOAD_PROFILE",
+  "person": "ich",
+  "slot": 1
+}
+```
+
+**LOAD Response:**
+```json
+{
+  "success": true,
+  "result": {
+    "profile": { ... },
+    "savedAt": "2025-12-27T14:30:00Z",
+    "version": "3.1"
+  }
+}
+```
+
+---
+
+### 2.4 GET_TOP10_RANKING
+
+**Zweck:** Berechnet alle Archetyp-Kombinationen für eine Person
+
+**Request:**
+```json
+{
+  "command": "GET_TOP10_RANKING",
+  "baseArchetype": "lat",
+  "baseDimensions": {
+    "dominanz": "switch",
+    "gfk": "mittel"
+  },
+  "includeTexts": true
+}
+```
+
+**Response:**
+```json
+{
+  "success": true,
+  "result": {
+    "baseArchetype": "lat",
+    "top10": [
+      {
+        "rank": 1,
+        "archetype": "duo_flex",
+        "displayName": "Duo-Flex",
+        "overallScore": 87,
+        "pathosScore": 85,
+        "logosScore": 89,
+        "resonance": 1.02,
+        "synthesis": {
+          "opening": "Eine Verbindung zwischen LAT und Duo-Flex...",
+          "tonality": "positiv"
+        },
+        "lifestyle": { "isKO": false, "warnings": [] }
+      },
+      ...
+    ],
+    "summary": {
+      "bestMatch": "duo_flex",
+      "averageScore": 68
+    }
+  }
+}
+```
+
+---
+
+### 2.5 GENERATE_TEXT
+
+**Zweck:** Generiert psychologische Synthese-Texte
+
+**Request:**
+```json
+{
+  "command": "GENERATE_TEXT",
+  "textType": "integrated",
+  "synthesisResult": { ... },
+  "ichArchetype": "lat",
+  "partnerArchetype": "duo",
+  "seed": 12345
+}
+```
+
+**textType Optionen:**
+- `"integrated"` - Vollständige Synthese
+- `"pathos"` - Emotionale Analyse
+- `"logos"` - Rationale Analyse
+- `"oshoZen"` - Philosophische Perspektive
+
+**Response:**
+```json
+{
+  "success": true,
+  "result": {
+    "opening": "Die Verbindung zwischen LAT und Duo...",
+    "pathosSection": "Emotional zeigt sich...",
+    "logosSection": "Rational betrachtet...",
+    "synthesis": "Im Zusammenspiel...",
+    "innerConflicts": {
+      "ich": { "core": "Nähe vs. Autonomie", "text": "..." },
+      "partner": { "core": "Sicherheit vs. Freiheit", "text": "..." }
+    },
+    "recommendations": [
+      "Regelmäßige Kommunikation über Freiräume",
+      "..."
+    ]
+  }
+}
+```
+
+---
+
+## 3. Client-Operationen (bleiben im Browser)
+
+### 3.1 UI-State Management
+
+```javascript
+// TiageState bleibt im Browser, aber vereinfacht
+const TiageState = {
+  // Nur UI-relevanter State
+  ui: {
+    currentView: 'desktop',
+    activeModal: null,
+    selectedCategory: null
+  },
+
+  // Lokaler Cache (optional, für Performance)
+  cache: {
+    lastSynthesisResult: null,
+    lastTop10: null
+  }
+};
+```
+
+### 3.2 Event-Handling
+
+```javascript
+// Bleibt im Browser
+document.querySelector('#calculate-btn').addEventListener('click', async () => {
+  // 1. Zeige Loading-Spinner
+  UI.showLoading();
+
+  // 2. Sammle Daten aus UI
+  const ichProfile = UI.collectProfile('ich');
+  const partnerProfile = UI.collectProfile('partner');
+
+  // 3. Sende an Server
+  const result = await TiageAPIClient.calculateSynthesis(ichProfile, partnerProfile);
+
+  // 4. Zeige Ergebnis
+  UI.hideLoading();
+  UI.showResult(result);
+});
+```
+
+### 3.3 Input-Validierung
+
+```javascript
+// Sofortiges Feedback bleibt im Browser
+function validateSliderValue(value) {
+  if (value < 0 || value > 100) {
+    showError('Wert muss zwischen 0 und 100 liegen');
+    return false;
+  }
+  return true;
+}
+```
+
+---
+
+## 4. Migration-Strategie
+
+### Phase 1: API-Client erstellen (Woche 1-2)
+- [ ] `TiageAPIClient` Klasse erstellen
+- [ ] Alle Server-Calls abstrahieren
+- [ ] Lokaler Fallback (aktuelle Logik) als Backup
+
+### Phase 2: Server aufsetzen (Woche 2-4)
+- [ ] Node.js/Express Server
+- [ ] Endpoints implementieren
+- [ ] Datenbank für Profile (MongoDB/PostgreSQL)
+
+### Phase 3: Logik migrieren (Woche 4-6)
+- [ ] `synthesisCalculator.js` → Server
+- [ ] `needsIntegration.js` → Server
+- [ ] `top10RankingCalculator.js` → Server
+- [ ] Text-Generatoren → Server
+
+### Phase 4: Client verschlanken (Woche 6-8)
+- [ ] Entferne migrierte Logik aus Client
+- [ ] Optimiere Bundle-Größe
+- [ ] Teste alle Flows
+
+---
+
+## 5. Technologie-Empfehlungen
+
+### Server-Stack
+| Komponente | Empfehlung | Warum |
+|------------|------------|-------|
+| Runtime | Node.js 20+ | Gleiche Sprache wie Frontend |
+| Framework | Express.js / Fastify | Einfach, bewährt |
+| Datenbank | MongoDB | Flexible Dokumente für Profile |
+| Auth | JWT | Stateless, skalierbar |
+| Hosting | Railway / Render / Fly.io | Einfaches Deployment |
+
+### Kommunikation
+| Szenario | Protokoll |
+|----------|-----------|
+| Standard-Requests | REST (HTTP/JSON) |
+| Echtzeit-Updates | WebSocket (optional) |
+| Batch-Operationen | REST mit Bulk-Endpoints |
+
+---
+
+## 6. Vorteile dieser Architektur
+
+| Vorteil | Beschreibung |
+|---------|--------------|
+| **Wartbarkeit** | Bug-Fixes nur am Server, sofort für alle aktiv |
+| **Sicherheit** | Algorithmen nicht im Browser sichtbar |
+| **Performance** | Client-Bundle von ~22KB auf ~5KB |
+| **Konsistenz** | Alle Clients bekommen identische Ergebnisse |
+| **Multi-Client** | Web, Mobile-App, Desktop-App nutzen gleiche API |
+| **Skalierbarkeit** | Server kann horizontal skalieren |
+| **A/B-Testing** | Neue Formeln serverseitig testen |
+
+---
+
+## 7. Nächste Schritte
+
+1. **Entscheidung:** Server-Stack festlegen
+2. **API-Design:** OpenAPI/Swagger Spezifikation erstellen
+3. **Proof-of-Concept:** Einen Endpoint implementieren
+4. **Schrittweise Migration:** Endpoint für Endpoint
+
+---
+
+*Erstellt: 27.12.2025*
+*Version: 1.0*
