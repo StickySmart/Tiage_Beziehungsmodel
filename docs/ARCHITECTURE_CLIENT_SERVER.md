@@ -88,8 +88,20 @@
     "dominanz": { "primary": "switch", "secondary": null },
     "orientierung": { "primary": "bisexuell", "secondary": null },
     "needs": { "#B1": 75, "#B2": 60, ... },
-    "gewichtungen": { "O": 25, "A": 25, "D": 25, "G": 25 },
-    "resonanzFaktoren": { "R1": 1.2, "R2": 0.9, "R3": 1.0, "R4": 1.1 }
+    "lockedNeeds": { "#B15": 90 },
+    "gewichtungen": {
+      "O": { "value": 25, "locked": false },
+      "A": { "value": 25, "locked": false },
+      "D": { "value": 25, "locked": false },
+      "G": { "value": 25, "locked": false },
+      "summeLock": { "enabled": true, "target": 100 }
+    },
+    "resonanzFaktoren": {
+      "R1": { "value": 1.2, "locked": true },
+      "R2": { "value": 0.9, "locked": false },
+      "R3": { "value": 1.0, "locked": false },
+      "R4": { "value": 1.1, "locked": false }
+    }
   },
   "partner": {
     "archetyp": "duo",
@@ -97,8 +109,20 @@
     "dominanz": { "primary": "submissiv", "secondary": null },
     "orientierung": { "primary": "bisexuell", "secondary": null },
     "needs": { "#B1": 80, "#B2": 45, ... },
-    "gewichtungen": { "O": 25, "A": 25, "D": 25, "G": 25 },
-    "resonanzFaktoren": { "R1": 1.0, "R2": 1.1, "R3": 0.8, "R4": 1.0 }
+    "lockedNeeds": {},
+    "gewichtungen": {
+      "O": { "value": 25, "locked": false },
+      "A": { "value": 25, "locked": false },
+      "D": { "value": 25, "locked": false },
+      "G": { "value": 25, "locked": false },
+      "summeLock": { "enabled": true, "target": 100 }
+    },
+    "resonanzFaktoren": {
+      "R1": { "value": 1.0, "locked": false },
+      "R2": { "value": 1.1, "locked": false },
+      "R3": { "value": 0.8, "locked": false },
+      "R4": { "value": 1.0, "locked": false }
+    }
   },
   "options": {
     "gfkPerson1": "mittel",
@@ -353,6 +377,125 @@
   }
 }
 ```
+
+---
+
+## 2.6 Lock-System (Wichtig!)
+
+Das Tiage-System hat ein **dreistufiges Lock-System**, das User-Overrides ermöglicht:
+
+### Lock-Ebenen
+
+```
+┌─────────────────────────────────────────────────────────────────────────────┐
+│  LOCK-EBENE 1: Gewichtungen (O, A, D, G)                                    │
+│  ═══════════════════════════════════════════════════════════════════════════│
+│                                                                             │
+│  gewichtungen: {                                                            │
+│    ich: {                                                                   │
+│      O: { value: 25, locked: false },  ← Kann vom User gesperrt werden     │
+│      A: { value: 30, locked: true },   ← Gesperrt = ändert sich nicht      │
+│      D: { value: 20, locked: false },                                       │
+│      G: { value: 25, locked: false },                                       │
+│      summeLock: { enabled: true, target: 100 }  ← Hält Summe bei 100       │
+│    }                                                                        │
+│  }                                                                          │
+│                                                                             │
+│  Logik: Wenn User einen Slider bewegt, werden UNGESPERRTE neu verteilt     │
+└─────────────────────────────────────────────────────────────────────────────┘
+
+┌─────────────────────────────────────────────────────────────────────────────┐
+│  LOCK-EBENE 2: Resonanzfaktoren (R1, R2, R3, R4)                            │
+│  ═══════════════════════════════════════════════════════════════════════════│
+│                                                                             │
+│  resonanzFaktoren: {                                                        │
+│    ich: {                                                                   │
+│      R1: { value: 1.2, locked: true },   ← User hat manuell gesetzt        │
+│      R2: { value: 0.9, locked: false },  ← Wird aus Profil berechnet       │
+│      R3: { value: 1.0, locked: false },                                     │
+│      R4: { value: 1.1, locked: false }                                      │
+│    }                                                                        │
+│  }                                                                          │
+│                                                                             │
+│  Wertebereich: 0.5 - 1.5                                                    │
+│  Berechnung: Kohärenz zwischen Archetyp und Bedürfnissen                   │
+└─────────────────────────────────────────────────────────────────────────────┘
+
+┌─────────────────────────────────────────────────────────────────────────────┐
+│  LOCK-EBENE 3: Einzelne Bedürfnisse (lockedNeeds)                           │
+│  ═══════════════════════════════════════════════════════════════════════════│
+│                                                                             │
+│  profileReview: {                                                           │
+│    ich: {                                                                   │
+│      lockedNeeds: {                                                         │
+│        "#B15": 90,   ← User hat Bedürfnis #B15 auf 90 gesetzt              │
+│        "#B42": 30    ← User hat Bedürfnis #B42 auf 30 gesetzt              │
+│      }                                                                      │
+│    }                                                                        │
+│  }                                                                          │
+│                                                                             │
+│  Priorität: lockedNeeds > flatNeeds (berechnete Werte aus Archetyp)        │
+└─────────────────────────────────────────────────────────────────────────────┘
+```
+
+### Speicherung (MemoryManager)
+
+```
+┌─────────────────────────────────────────────────────────────────────────────┐
+│  SPEICHER-SLOTS                                                             │
+│  ═══════════════════════════════════════════════════════════════════════════│
+│                                                                             │
+│  4 Slots pro Person:                                                        │
+│    tiage_memory_ME001  ─┬─ Slot 1 (Paar)                                   │
+│    tiage_memory_PART001─┘                                                   │
+│    tiage_memory_ME002  ─┬─ Slot 2 (Paar)                                   │
+│    tiage_memory_PART002─┘                                                   │
+│    ... usw.                                                                 │
+│                                                                             │
+│  Was gespeichert wird:                                                      │
+│    ├── archetyp (primary, secondary)                                        │
+│    ├── personDimensions (geschlecht, dominanz, orientierung)                │
+│    ├── gewichtungen (O, A, D, G mit value + locked)                         │
+│    ├── resonanzFaktoren (R1-R4 mit value + locked)                          │
+│    ├── flatNeeds (220 Bedürfnisse als Array)                                │
+│    ├── lockedNeeds (manuell überschriebene Werte)                           │
+│    └── savedAt (Timestamp)                                                  │
+└─────────────────────────────────────────────────────────────────────────────┘
+```
+
+### Server-Implikationen
+
+Bei Client-Server müssen Locks **mitgesendet** werden:
+
+**Request mit Locks:**
+```json
+{
+  "command": "CALCULATE_SYNTHESIS",
+  "ich": {
+    "archetyp": "lat",
+    "gewichtungen": {
+      "O": { "value": 25, "locked": false },
+      "A": { "value": 30, "locked": true },
+      "D": { "value": 20, "locked": false },
+      "G": { "value": 25, "locked": false }
+    },
+    "resonanzFaktoren": {
+      "R1": { "value": 1.2, "locked": true },
+      "R2": { "value": 0.9, "locked": false },
+      "R3": { "value": 1.0, "locked": false },
+      "R4": { "value": 1.1, "locked": false }
+    },
+    "needs": { "#B1": 75, "#B2": 60, ... },
+    "lockedNeeds": { "#B15": 90, "#B42": 30 }
+  }
+}
+```
+
+**Server-Logik:**
+1. Berechne Basis-Werte aus Archetyp + Dimensionen
+2. Überschreibe mit `lockedNeeds` (Priorität!)
+3. Verwende `locked: true` Gewichtungen/R-Faktoren unverändert
+4. Berechne nur `locked: false` Werte neu
 
 ---
 
