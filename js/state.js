@@ -1295,7 +1295,286 @@ if (typeof window !== 'undefined') {
     console.log('[TiageState] Proxy-Layer aktiviert: window.personDimensions → TiageState');
 }
 
+// ═══════════════════════════════════════════════════════════════════════════
+// AUTO-SYNC: Automatische Server-Synchronisation bei State-Änderungen
+// ═══════════════════════════════════════════════════════════════════════════
+//
+// Strategie: Debounced Sync (500ms) bei jeder State-Änderung
+// Bei Server-Fehler: Toast "Kein Kontakt zum Server"
+// Last-Write-Wins: Neuerer Timestamp gewinnt
+//
+// © 2025 Ti-age.de Alle Rechte vorbehalten.
+// ═══════════════════════════════════════════════════════════════════════════
+
+const TiageAutoSync = (function() {
+    'use strict';
+
+    // Konfiguration
+    const DEBOUNCE_MS = 500;  // 500ms Debounce
+    const STORAGE_KEY_LAST_SYNC = 'tiage_last_sync';
+
+    // State
+    let debounceTimer = null;
+    let isInitialized = false;
+    let isSyncing = false;
+
+    /**
+     * Zeigt eine Toast-Benachrichtigung an
+     * @param {string} message - Nachricht
+     * @param {string} type - 'success', 'error', 'warning'
+     */
+    function showToast(message, type = 'info') {
+        // Nutze existierende Toast-Funktion falls vorhanden
+        if (typeof showMemoryToast === 'function') {
+            showMemoryToast(message, type);
+            return;
+        }
+
+        // Fallback: Eigene Toast-Implementierung
+        const existing = document.querySelector('.tiage-sync-toast');
+        if (existing) existing.remove();
+
+        const toast = document.createElement('div');
+        toast.className = `tiage-sync-toast ${type}`;
+        toast.style.cssText = `
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            padding: 12px 20px;
+            border-radius: 8px;
+            color: white;
+            font-size: 14px;
+            z-index: 10000;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            background: ${type === 'error' ? '#e74c3c' : type === 'warning' ? '#f39c12' : '#27ae60'};
+        `;
+        toast.textContent = message;
+        document.body.appendChild(toast);
+
+        requestAnimationFrame(() => {
+            toast.style.opacity = '1';
+        });
+
+        setTimeout(() => {
+            toast.style.opacity = '0';
+            setTimeout(() => toast.remove(), 300);
+        }, 3000);
+    }
+
+    /**
+     * Holt den letzten Sync-Zeitpunkt aus localStorage
+     * @returns {string|null} ISO-Timestamp oder null
+     */
+    function getLastSyncAt() {
+        try {
+            return localStorage.getItem(STORAGE_KEY_LAST_SYNC);
+        } catch (e) {
+            return null;
+        }
+    }
+
+    /**
+     * Speichert den letzten Sync-Zeitpunkt in localStorage
+     * @param {string} timestamp - ISO-Timestamp
+     */
+    function setLastSyncAt(timestamp) {
+        try {
+            localStorage.setItem(STORAGE_KEY_LAST_SYNC, timestamp);
+        } catch (e) {
+            console.warn('[TiageAutoSync] Konnte lastSyncAt nicht speichern:', e);
+        }
+    }
+
+    /**
+     * Wendet Server-Änderungen auf den lokalen State an
+     * @param {Object} changes - { ich: {...}, partner: {...} }
+     */
+    function applyServerChanges(changes) {
+        if (!changes) return;
+
+        console.log('[TiageAutoSync] Wende Server-Änderungen an:', Object.keys(changes));
+
+        ['ich', 'partner'].forEach(person => {
+            const profile = changes[person];
+            if (!profile) return;
+
+            // Archetyp
+            if (profile.archetyp) {
+                TiageState.set(`archetypes.${person}.primary`, profile.archetyp);
+            }
+
+            // PersonDimensions
+            if (profile.geschlecht) {
+                TiageState.set(`personDimensions.${person}.geschlecht`, profile.geschlecht);
+            }
+            if (profile.dominanz) {
+                TiageState.set(`personDimensions.${person}.dominanz`, profile.dominanz);
+            }
+            if (profile.orientierung) {
+                TiageState.set(`personDimensions.${person}.orientierung`, profile.orientierung);
+            }
+
+            // Gewichtungen
+            if (profile.gewichtungen) {
+                TiageState.set(`gewichtungen.${person}`, profile.gewichtungen);
+            }
+
+            // Resonanzfaktoren
+            if (profile.resonanzFaktoren) {
+                TiageState.set(`resonanzFaktoren.${person}`, profile.resonanzFaktoren);
+            }
+
+            // FlatNeeds
+            if (profile.needs && Object.keys(profile.needs).length > 0) {
+                TiageState.set(`flatNeeds.${person}`, profile.needs);
+            }
+
+            // LockedNeeds
+            if (profile.lockedNeeds && Object.keys(profile.lockedNeeds).length > 0) {
+                TiageState.set(`profileReview.${person}.lockedNeeds`, profile.lockedNeeds);
+            }
+        });
+
+        // UI aktualisieren
+        if (typeof window.updateAll === 'function') {
+            window.updateAll();
+        }
+
+        showToast('Server-Daten synchronisiert', 'success');
+    }
+
+    /**
+     * Führt die Synchronisation mit dem Server durch
+     */
+    async function performSync() {
+        if (isSyncing) {
+            console.log('[TiageAutoSync] Sync bereits aktiv, überspringe');
+            return;
+        }
+
+        if (typeof TiageAPIClient === 'undefined') {
+            console.warn('[TiageAutoSync] TiageAPIClient nicht verfügbar');
+            return;
+        }
+
+        isSyncing = true;
+
+        try {
+            const state = TiageState.get();
+            const lastSyncAt = getLastSyncAt();
+            const clientTimestamp = new Date().toISOString();
+
+            console.log('[TiageAutoSync] Starte Sync...', { lastSyncAt });
+
+            const response = await TiageAPIClient.syncState({
+                state,
+                lastSyncAt,
+                clientTimestamp
+            });
+
+            if (response && response.success !== false) {
+                const result = response.result || response;
+
+                // Speichere neuen Sync-Zeitpunkt
+                if (result.serverTime) {
+                    setLastSyncAt(result.serverTime);
+                }
+
+                // Prüfe auf Server-Änderungen
+                if (result.action === 'server_wins' && result.changes) {
+                    console.log('[TiageAutoSync] Server hat neuere Daten');
+                    applyServerChanges(result.changes);
+                } else if (result.action === 'client_wins') {
+                    console.log('[TiageAutoSync] Client-Daten gespeichert');
+                } else if (result.action === 'no_server_data') {
+                    console.log('[TiageAutoSync] Erste Synchronisation');
+                }
+            }
+        } catch (error) {
+            console.error('[TiageAutoSync] Sync fehlgeschlagen:', error);
+            showToast('Kein Kontakt zum Server', 'error');
+        } finally {
+            isSyncing = false;
+        }
+    }
+
+    /**
+     * Debounced Sync-Trigger
+     * Wird bei jeder State-Änderung aufgerufen
+     */
+    function triggerSync() {
+        // Vorherigen Timer abbrechen
+        if (debounceTimer) {
+            clearTimeout(debounceTimer);
+        }
+
+        // Neuen Timer starten
+        debounceTimer = setTimeout(() => {
+            performSync();
+        }, DEBOUNCE_MS);
+    }
+
+    /**
+     * Initialisiert den Auto-Sync
+     * Registriert Wildcard-Subscriber auf TiageState
+     */
+    function init() {
+        if (isInitialized) {
+            console.log('[TiageAutoSync] Bereits initialisiert');
+            return;
+        }
+
+        if (typeof TiageState === 'undefined') {
+            console.warn('[TiageAutoSync] TiageState nicht verfügbar');
+            return;
+        }
+
+        // Wildcard-Subscriber: Wird bei JEDER State-Änderung aufgerufen
+        TiageState.subscribe('*', (event) => {
+            // UI-Änderungen nicht synchronisieren (nur Daten-State)
+            if (event.path.startsWith('ui.')) {
+                return;
+            }
+
+            // Debounced Sync triggern
+            triggerSync();
+        });
+
+        // Initialen Sync beim App-Start
+        setTimeout(() => {
+            console.log('[TiageAutoSync] Initialer Sync...');
+            performSync();
+        }, 1000);  // 1 Sekunde warten bis App geladen
+
+        isInitialized = true;
+        console.log('[TiageAutoSync] Initialisiert mit Debounce:', DEBOUNCE_MS, 'ms');
+    }
+
+    // Public API
+    return {
+        init,
+        triggerSync,
+        performSync,
+        getLastSyncAt,
+        isInitialized: () => isInitialized,
+        isSyncing: () => isSyncing
+    };
+})();
+
+// Auto-Init wenn DOM geladen
+if (typeof window !== 'undefined') {
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', () => {
+            TiageAutoSync.init();
+        });
+    } else {
+        // DOM bereits geladen
+        TiageAutoSync.init();
+    }
+}
+
 // Export for ES6 modules (optional)
 if (typeof module !== 'undefined' && module.exports) {
-    module.exports = TiageState;
+    module.exports = { TiageState, TiageAutoSync };
 }
