@@ -1963,12 +1963,27 @@ const AttributeSummaryCard = (function() {
             }
         }
 
-        // Wenn Nuancen vorhanden: Aktualisiere die Nuancen proportional
+        // Wenn Nuancen vorhanden: Hauptslider auf aggregierten Wert begrenzen
+        // (Nuancen werden NICHT geändert - der Slider zeigt nur den Durchschnitt)
         if (hasNuancen) {
-            updateNuancenFromHauptfrage(hauptfrageId, numValue);
+            const aggregatedValue = getAggregatedValueForHauptfrage(hauptfrageId);
+            if (aggregatedValue !== null) {
+                // Slider und Input auf aggregierten Wert setzen
+                sliderElement.value = aggregatedValue;
+                if (hauptfrageItem) {
+                    const input = hauptfrageItem.querySelector('.hauptfrage-input');
+                    if (input) input.value = aggregatedValue;
+
+                    const dimColor = getDimensionColor(hauptfrageId);
+                    if (dimColor) {
+                        sliderElement.style.background = `linear-gradient(to right, ${dimColor} 0%, ${dimColor} ${aggregatedValue}%, rgba(255,255,255,0.15) ${aggregatedValue}%, rgba(255,255,255,0.15) 100%)`;
+                    }
+                }
+                return; // Keine weitere Verarbeitung - Wert ist durch Nuancen bestimmt
+            }
         }
 
-        // Speichere den Wert in TiageState und flatNeeds
+        // Speichere den Wert in TiageState und flatNeeds (nur für Hauptfragen OHNE Nuancen)
         if (typeof TiageState !== 'undefined') {
             let currentPerson = 'ich';
             if (window.currentProfileReviewContext && window.currentProfileReviewContext.person) {
@@ -1977,10 +1992,7 @@ const AttributeSummaryCard = (function() {
             TiageState.set(`profileReview.${currentPerson}.lockedHauptfragenValues.${hauptfrageId}`, numValue);
         }
 
-        // Für Hauptfragen ohne Nuancen: Speichere den Wert auch in flatNeeds
-        if (!hasNuancen) {
-            upsertNeed(hauptfrageId, { value: numValue });
-        }
+        upsertNeed(hauptfrageId, { value: numValue });
 
         // Event für externe Listener
         document.dispatchEvent(new CustomEvent('hauptfrageValueChange', {
@@ -1990,112 +2002,18 @@ const AttributeSummaryCard = (function() {
     }
 
     /**
-     * Aktualisiert alle Nuancen einer Hauptfrage iterativ,
-     * bis der aggregierte Wert dem Zielwert entspricht.
-     * Berücksichtigt die gewichtete Durchschnittsberechnung und Grenzwerte.
+     * Berechnet den aggregierten Wert der Nuancen einer Hauptfrage.
      * @param {string} hauptfrageId - Die #B-ID der Hauptfrage
-     * @param {number} newHauptfrageValue - Der neue Wert des Hauptsliders
+     * @returns {number|null} Der aggregierte Wert oder null
      */
-    function updateNuancenFromHauptfrage(hauptfrageId, newHauptfrageValue) {
-        if (typeof HauptfrageAggregation === 'undefined') return;
+    function getAggregatedValueForHauptfrage(hauptfrageId) {
+        if (typeof HauptfrageAggregation === 'undefined') return null;
 
-        const hauptfragen = HauptfrageAggregation.getHauptfragen();
-        const hauptfrage = hauptfragen[hauptfrageId];
+        const currentNeeds = {};
+        flatNeeds.forEach(n => { currentNeeds[n.id] = n.value; });
 
-        if (!hauptfrage || !hauptfrage.nuancen || hauptfrage.nuancen.length === 0) {
-            return;
-        }
-
-        // Sammle nicht-gelockte Nuancen mit ihren aktuellen Werten
-        const nuancenWithValues = [];
-        for (const nuanceId of hauptfrage.nuancen) {
-            const nuanceObj = findNeedById(nuanceId);
-            if (!nuanceObj?.locked) {
-                nuancenWithValues.push({
-                    id: nuanceId,
-                    value: nuanceObj?.value ?? 50
-                });
-            }
-        }
-
-        if (nuancenWithValues.length === 0) return; // Alle gelockt
-
-        // Hilfsfunktion: Berechne aggregierten Wert mit temporären Nuancen-Werten
-        const calculateAggregatedValue = (tempValues) => {
-            const currentNeeds = {};
-            flatNeeds.forEach(n => { currentNeeds[n.id] = n.value; });
-            // Überschreibe mit temporären Werten
-            for (const nuance of tempValues) {
-                currentNeeds[nuance.id] = nuance.value;
-            }
-            const aggregation = HauptfrageAggregation.aggregateHauptfrage(hauptfrageId, currentNeeds);
-            return aggregation.value;
-        };
-
-        // Initiale Prüfung
-        let currentAggregatedValue = calculateAggregatedValue(nuancenWithValues);
-
-        // Sonderfall: Kein aktueller Wert - setze alle auf Zielwert
-        if (currentAggregatedValue === null || currentAggregatedValue === 0) {
-            nuancenWithValues.forEach(nuance => {
-                nuance.value = newHauptfrageValue;
-            });
-        } else {
-            // Iterative Anpassung bis Zielwert erreicht (max 15 Iterationen)
-            const maxIterations = 15;
-            let iteration = 0;
-
-            while (iteration < maxIterations) {
-                const diff = newHauptfrageValue - currentAggregatedValue;
-
-                // Zielwert erreicht? (Toleranz: 0.5)
-                if (Math.abs(diff) < 0.5) {
-                    break;
-                }
-
-                // Finde Nuancen die noch angepasst werden können
-                const adjustableNuancen = nuancenWithValues.filter(n => {
-                    if (diff > 0) {
-                        return n.value < 100; // Kann erhöht werden
-                    } else {
-                        return n.value > 0; // Kann verringert werden
-                    }
-                });
-
-                if (adjustableNuancen.length === 0) {
-                    break; // Keine weitere Anpassung möglich (alle an Grenzen)
-                }
-
-                // Erhöhe Schrittstärke bei größerer Differenz für schnellere Konvergenz
-                const stepMultiplier = Math.abs(diff) > 10 ? 1.5 : 1.0;
-                const diffPerNuance = (diff / adjustableNuancen.length) * stepMultiplier;
-
-                let anyChanged = false;
-                for (const nuance of adjustableNuancen) {
-                    const oldValue = nuance.value;
-                    let newValue = nuance.value + diffPerNuance;
-                    newValue = Math.max(0, Math.min(100, Math.round(newValue)));
-
-                    if (newValue !== oldValue) {
-                        nuance.value = newValue;
-                        anyChanged = true;
-                    }
-                }
-
-                if (!anyChanged) {
-                    break; // Keine Änderung mehr möglich
-                }
-
-                // Neu berechnen
-                currentAggregatedValue = calculateAggregatedValue(nuancenWithValues);
-                iteration++;
-            }
-        }
-
-        // Finale Werte an UI und State übertragen
-        for (const nuance of nuancenWithValues) {
-            updateNuanceSlider(nuance.id, nuance.value);
-        }
+        const aggregation = HauptfrageAggregation.aggregateHauptfrage(hauptfrageId, currentNeeds);
+        return aggregation.value;
     }
 
     /**
@@ -2196,24 +2114,41 @@ const AttributeSummaryCard = (function() {
         const numValue = parseInt(value, 10);
         if (isNaN(numValue) || numValue < 0 || numValue > 100) return;
 
-        // Sync Slider
+        // Wenn Nuancen vorhanden: Input auf aggregierten Wert zurücksetzen
+        // (Nuancen werden NICHT geändert - der Wert ist durch Nuancen bestimmt)
+        if (hasNuancen) {
+            const aggregatedValue = getAggregatedValueForHauptfrage(hauptfrageId);
+            if (aggregatedValue !== null) {
+                const hauptfrageItem = document.querySelector(`.hauptfrage-item[data-hauptfrage-id="${hauptfrageId}"]`);
+                if (hauptfrageItem) {
+                    const slider = hauptfrageItem.querySelector('.hauptfrage-slider');
+                    const input = hauptfrageItem.querySelector('.hauptfrage-input');
+
+                    if (slider) {
+                        slider.value = aggregatedValue;
+                        const dimColor = getDimensionColor(hauptfrageId);
+                        if (dimColor) {
+                            slider.style.background = `linear-gradient(to right, ${dimColor} 0%, ${dimColor} ${aggregatedValue}%, rgba(255,255,255,0.15) ${aggregatedValue}%, rgba(255,255,255,0.15) 100%)`;
+                        }
+                    }
+                    if (input) input.value = aggregatedValue;
+                }
+                return; // Keine weitere Verarbeitung - Wert ist durch Nuancen bestimmt
+            }
+        }
+
+        // Sync Slider (nur für Hauptfragen OHNE Nuancen)
         const hauptfrageItem = document.querySelector(`.hauptfrage-item[data-hauptfrage-id="${hauptfrageId}"]`);
         if (hauptfrageItem) {
             const slider = hauptfrageItem.querySelector('.hauptfrage-slider');
             if (slider) {
                 slider.value = numValue;
 
-                // Slider-Track-Hintergrund aktualisieren
                 const dimColor = getDimensionColor(hauptfrageId);
                 if (dimColor) {
                     slider.style.background = `linear-gradient(to right, ${dimColor} 0%, ${dimColor} ${numValue}%, rgba(255,255,255,0.15) ${numValue}%, rgba(255,255,255,0.15) 100%)`;
                 }
             }
-        }
-
-        // Wenn Nuancen vorhanden: Aktualisiere die Nuancen proportional
-        if (hasNuancen) {
-            updateNuancenFromHauptfrage(hauptfrageId, numValue);
         }
 
         // Speichere den Wert in TiageState und flatNeeds
@@ -2225,10 +2160,7 @@ const AttributeSummaryCard = (function() {
             TiageState.set(`profileReview.${currentPerson}.lockedHauptfragenValues.${hauptfrageId}`, numValue);
         }
 
-        // Für Hauptfragen ohne Nuancen: Speichere den Wert auch in flatNeeds
-        if (!hasNuancen) {
-            upsertNeed(hauptfrageId, { value: numValue });
-        }
+        upsertNeed(hauptfrageId, { value: numValue });
 
         // Event für externe Listener
         document.dispatchEvent(new CustomEvent('hauptfrageValueChange', {
