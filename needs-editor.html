@@ -331,6 +331,12 @@
             text-align: center;
             margin-top: -10px;
         }
+
+        /* Filter-aktiv Anzeige im Subtitle */
+        .flat-needs-subtitle.filter-active {
+            color: #a78bfa;
+            font-weight: 600;
+        }
     </style>
 </head>
 <body>
@@ -1404,6 +1410,8 @@
                 flatNeedItems.forEach(function(item) {
                     item.classList.remove('filter-hidden', 'filter-match');
                 });
+                // Stelle Original-Anzeige wieder her
+                updateFilteredCountDisplay(flatNeedItems.length, flatNeedItems.length, false);
                 console.log('[ActiveFilter] Keine Filter aktiv - zeige alle');
                 return;
             }
@@ -1437,7 +1445,38 @@
                 if (matches) totalMatches++;
             });
 
+            // Aktualisiere Subtitle mit Filter-Ergebnis
+            updateFilteredCountDisplay(totalMatches, flatNeedItems.length, filters.length > 0);
+
             console.log('[ActiveFilter] Mode:', mode, '- Filter:', filters.map(function(f) { return f.label; }).join(', '), '- Matches:', totalMatches);
+        }
+
+        /**
+         * Aktualisiert die Anzeige der gefilterten Ergebnisse im Subtitle
+         */
+        function updateFilteredCountDisplay(matchCount, totalCount, hasFilters) {
+            var subtitleElement = document.querySelector('.flat-needs-subtitle');
+            if (!subtitleElement) return;
+
+            var originalText = subtitleElement.getAttribute('data-original-text');
+            if (!originalText) {
+                // Speichere Original-Text beim ersten Aufruf
+                originalText = subtitleElement.textContent;
+                subtitleElement.setAttribute('data-original-text', originalText);
+            }
+
+            if (hasFilters) {
+                // Zeige gefilterte Anzahl
+                var filterInfo = '(Gefiltert: ' + matchCount + ' von ' + totalCount + ')';
+                // Ersetze den Klammer-Teil im Original-Text
+                var newText = originalText.replace(/\([^)]+\)/, filterInfo);
+                subtitleElement.textContent = newText;
+                subtitleElement.classList.add('filter-active');
+            } else {
+                // Stelle Original-Text wieder her
+                subtitleElement.textContent = originalText;
+                subtitleElement.classList.remove('filter-active');
+            }
         }
 
         // Lausche auf ActiveFilterCard Änderungen
