@@ -1947,11 +1947,6 @@ const AttributeSummaryCard = (function() {
             return; // Alle Nuancen gelockt = nicht editierbar
         }
 
-        // Nur editierbar wenn: keine Nuancen (direkter Wert) ODER Nuancen vorhanden aber nicht alle gelockt
-        if (hasNuancen) {
-            return; // Hat Nuancen aber nicht gelockt = Wert ergibt sich aus Nuancen
-        }
-
         const numValue = parseInt(value, 10);
         if (isNaN(numValue)) return;
 
@@ -1966,6 +1961,11 @@ const AttributeSummaryCard = (function() {
             if (dimColor) {
                 sliderElement.style.background = `linear-gradient(to right, ${dimColor} 0%, ${dimColor} ${numValue}%, rgba(255,255,255,0.15) ${numValue}%, rgba(255,255,255,0.15) 100%)`;
             }
+        }
+
+        // Wenn Nuancen vorhanden: Aktualisiere die Nuancen proportional
+        if (hasNuancen) {
+            updateNuancenFromHauptfrage(hauptfrageId, numValue);
         }
 
         // Speichere den Wert in TiageState und flatNeeds
@@ -1986,6 +1986,104 @@ const AttributeSummaryCard = (function() {
         document.dispatchEvent(new CustomEvent('hauptfrageValueChange', {
             bubbles: true,
             detail: { hauptfrageId, value: numValue, isLocked: lockedHauptfragen.has(hauptfrageId), hasNuancen }
+        }));
+    }
+
+    /**
+     * Aktualisiert alle Nuancen einer Hauptfrage proportional,
+     * wenn der Hauptslider bewegt wird.
+     * @param {string} hauptfrageId - Die #B-ID der Hauptfrage
+     * @param {number} newHauptfrageValue - Der neue Wert des Hauptsliders
+     */
+    function updateNuancenFromHauptfrage(hauptfrageId, newHauptfrageValue) {
+        if (typeof HauptfrageAggregation === 'undefined') return;
+
+        const hauptfragen = HauptfrageAggregation.getHauptfragen();
+        const hauptfrage = hauptfragen[hauptfrageId];
+
+        if (!hauptfrage || !hauptfrage.nuancen || hauptfrage.nuancen.length === 0) {
+            return;
+        }
+
+        // Berechne den aktuellen aggregierten Wert
+        const currentNeeds = {};
+        flatNeeds.forEach(n => { currentNeeds[n.id] = n.value; });
+
+        const aggregation = HauptfrageAggregation.aggregateHauptfrage(hauptfrageId, currentNeeds);
+        const currentAggregatedValue = aggregation.value;
+
+        if (currentAggregatedValue === null || currentAggregatedValue === 0) {
+            // Kein aktueller Wert: Setze alle Nuancen auf den neuen Wert
+            hauptfrage.nuancen.forEach(nuanceId => {
+                const nuanceObj = findNeedById(nuanceId);
+                if (nuanceObj?.locked) return; // Gelockte Nuancen nicht ändern
+
+                updateNuanceSlider(nuanceId, newHauptfrageValue);
+            });
+            return;
+        }
+
+        // Berechne die Differenz
+        const diff = newHauptfrageValue - currentAggregatedValue;
+
+        // Sammle nicht-gelockte Nuancen
+        const unlockedNuancen = hauptfrage.nuancen.filter(nuanceId => {
+            const nuanceObj = findNeedById(nuanceId);
+            return !nuanceObj?.locked;
+        });
+
+        if (unlockedNuancen.length === 0) return; // Alle gelockt
+
+        // Verteile die Differenz gleichmäßig auf alle nicht-gelockten Nuancen
+        const diffPerNuance = diff / unlockedNuancen.length;
+
+        unlockedNuancen.forEach(nuanceId => {
+            const nuanceObj = findNeedById(nuanceId);
+            const currentValue = nuanceObj?.value ?? 50;
+            let newValue = Math.round(currentValue + diffPerNuance);
+
+            // Begrenze auf 0-100
+            newValue = Math.max(0, Math.min(100, newValue));
+
+            updateNuanceSlider(nuanceId, newValue);
+        });
+    }
+
+    /**
+     * Aktualisiert einen einzelnen Nuance-Slider (Wert, UI, State)
+     * @param {string} nuanceId - Die #B-ID der Nuance
+     * @param {number} newValue - Der neue Wert
+     */
+    function updateNuanceSlider(nuanceId, newValue) {
+        // Speichere den Wert
+        upsertNeed(nuanceId, { value: newValue });
+
+        // Finde das DOM-Element und aktualisiere die UI
+        const nuanceItem = document.querySelector(`.flat-need-item[data-need-id="${nuanceId}"]`);
+        if (nuanceItem) {
+            const slider = nuanceItem.querySelector('.flat-need-slider');
+            const input = nuanceItem.querySelector('.flat-need-input');
+
+            if (slider) {
+                slider.value = newValue;
+                // Slider-Track-Hintergrund aktualisieren
+                const dimColor = getDimensionColor(nuanceId);
+                if (dimColor) {
+                    slider.style.background = `linear-gradient(to right, ${dimColor} 0%, ${dimColor} ${newValue}%, rgba(255,255,255,0.15) ${newValue}%, rgba(255,255,255,0.15) 100%)`;
+                }
+            }
+            if (input) {
+                input.value = newValue;
+            }
+
+            // Changed-Indicator aktualisieren
+            updateChangedIndicator(nuanceItem, nuanceId, newValue);
+        }
+
+        // Event für Änderungstracking
+        document.dispatchEvent(new CustomEvent('flatNeedChange', {
+            bubbles: true,
+            detail: { needId: nuanceId, value: newValue, fromHauptfrage: true }
         }));
     }
 
@@ -2046,11 +2144,6 @@ const AttributeSummaryCard = (function() {
             return; // Alle Nuancen gelockt = nicht editierbar
         }
 
-        // Nur editierbar wenn keine Nuancen (direkter Wert)
-        if (hasNuancen) {
-            return; // Hat Nuancen = Wert ergibt sich aus Nuancen
-        }
-
         const numValue = parseInt(value, 10);
         if (isNaN(numValue) || numValue < 0 || numValue > 100) return;
 
@@ -2067,6 +2160,11 @@ const AttributeSummaryCard = (function() {
                     slider.style.background = `linear-gradient(to right, ${dimColor} 0%, ${dimColor} ${numValue}%, rgba(255,255,255,0.15) ${numValue}%, rgba(255,255,255,0.15) 100%)`;
                 }
             }
+        }
+
+        // Wenn Nuancen vorhanden: Aktualisiere die Nuancen proportional
+        if (hasNuancen) {
+            updateNuancenFromHauptfrage(hauptfrageId, numValue);
         }
 
         // Speichere den Wert in TiageState und flatNeeds
