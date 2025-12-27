@@ -1,0 +1,14 @@
+# Dependencies
+node_modules/
+
+# Database (generated at runtime)
+data/*.db
+data/*.db-shm
+data/*.db-wal
+
+# Logs
+*.log
+
+# Environment
+.env
+.env.local
