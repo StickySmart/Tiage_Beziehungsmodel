@@ -1538,18 +1538,25 @@
                 if (dropdownVisible && suggestionState.selectedIndex >= 0) {
                     selectSuggestion(suggestionState.selectedIndex);
                 } else {
-                    // FIX: Bei Enter ohne Vorschlagsauswahl -> Textsuche aktivieren
+                    // Filter zur ActiveFilterCard hinzufügen
                     var input = document.getElementById('profileReviewSearchInput');
                     var query = input ? input.value.trim() : '';
                     if (query.length > 0) {
-                        suggestionState.activeSuggestion = {
-                            type: 'need',
-                            id: null,
-                            label: query
-                        };
-                        displayActiveSuggestion();
+                        // Nutze ActiveFilterCard für Multi-Filter
+                        if (typeof ActiveFilterCard !== 'undefined' && ActiveFilterCard.addFilter) {
+                            ActiveFilterCard.addFilter(query);
+                            input.value = '';  // Suchfeld leeren nach Hinzufügen
+                            console.log('[handleSearchKeydown] Filter hinzugefügt:', query);
+                        } else {
+                            // Fallback: alte Logik
+                            suggestionState.activeSuggestion = {
+                                type: 'need',
+                                id: null,
+                                label: query
+                            };
+                            displayActiveSuggestion();
+                        }
                         hideSearchSuggestions();
-                        console.log('[handleSearchKeydown] Textsuche aktiviert für:', query);
                     }
                 }
                 return;
@@ -2088,18 +2095,25 @@
                 if (dropdownVisible && suggestionState.selectedIndex >= 0) {
                     selectSuggestion(suggestionState.selectedIndex);
                 } else {
-                    // FIX: Bei Enter ohne Vorschlagsauswahl -> Textsuche aktivieren
+                    // Filter zur ActiveFilterCard hinzufügen
                     var input = document.getElementById('profileReviewSearchInput');
                     var query = input ? input.value.trim() : '';
                     if (query.length > 0) {
-                        suggestionState.activeSuggestion = {
-                            type: 'need',
-                            id: null,
-                            label: query
-                        };
-                        displayActiveSuggestion();
+                        // Nutze ActiveFilterCard für Multi-Filter
+                        if (typeof ActiveFilterCard !== 'undefined' && ActiveFilterCard.addFilter) {
+                            ActiveFilterCard.addFilter(query);
+                            input.value = '';  // Suchfeld leeren nach Hinzufügen
+                            console.log('[handleSearchKeydown] Filter hinzugefügt:', query);
+                        } else {
+                            // Fallback: alte Logik
+                            suggestionState.activeSuggestion = {
+                                type: 'need',
+                                id: null,
+                                label: query
+                            };
+                            displayActiveSuggestion();
+                        }
                         hideSearchSuggestions();
-                        console.log('[handleSearchKeydown] Textsuche aktiviert für:', query);
                     }
                 }
                 return;

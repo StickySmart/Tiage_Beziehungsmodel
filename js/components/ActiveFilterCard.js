@@ -2,8 +2,11 @@
  * ACTIVE FILTER CARD COMPONENT
  * ═══════════════════════════════════════════════════════════════════════════════
  *
- * Zeigt den aktuell aktiven Filter (R1-R4, P1-P4) als Card an.
- * Enthält eine Anzeige des aktiven Filters und einen Reset-Button.
+ * Zeigt alle aktiven Filter als Card an.
+ * - Mehrere Filter können addiert werden (P1 + Liebe + R2...)
+ * - UND/ODER Umschalter für Verknüpfung
+ * - Einzelne Filter entfernbar
+ * - Zurücksetzen löscht alle
  *
  * © 2025 Ti-age.de Alle Rechte vorbehalten.
  */
@@ -13,36 +16,168 @@ const ActiveFilterCard = (function() {
 
     let containerId = null;
 
+    // Multi-Filter State
+    let activeFilters = [];  // [{id: 'P1', label: 'Statistik', type: 'perspektive', color: '#3B82F6'}, {id: 'Liebe', label: 'Liebe', type: 'text', color: '#9CA3AF'}]
+    let filterMode = 'AND';  // 'AND' oder 'OR'
+
+    // Filter-Definitionen für R1-R4, P1-P4
+    const FILTER_DEFS = {
+        'R1': { label: 'Leben', icon: '🔥', color: '#E63946', type: 'dimension' },
+        'R2': { label: 'Philosophie', icon: '🧠', color: '#2A9D8F', type: 'dimension' },
+        'R3': { label: 'Dynamik', icon: '⚡', color: '#8B5CF6', type: 'dimension' },
+        'R4': { label: 'Identität', icon: '💚', color: '#F4A261', type: 'dimension' },
+        'P1': { label: 'Statistik', icon: '📊', color: '#3B82F6', type: 'perspektive' },
+        'P2': { label: 'Konditionierung', icon: '🌱', color: '#F59E0B', type: 'perspektive' },
+        'P3': { label: 'Qualität', icon: '⚖️', color: '#10B981', type: 'perspektive' },
+        'P4': { label: 'SexPositiv', icon: '💜', color: '#8B5CF6', type: 'perspektive' }
+    };
+
+    /**
+     * Fügt einen Filter hinzu (addiert, ersetzt nicht)
+     * @param {string} filterText - Der Filter-Text (R1, P1, Liebe, etc.)
+     */
+    function addFilter(filterText) {
+        if (!filterText || filterText.trim() === '') return;
+
+        const normalizedId = filterText.trim().toUpperCase();
+
+        // Prüfe ob bereits vorhanden
+        if (activeFilters.some(f => f.id.toUpperCase() === normalizedId)) {
+            console.log('[ActiveFilterCard] Filter bereits aktiv:', filterText);
+            return;
+        }
+
+        // Erstelle Filter-Objekt
+        let filterObj;
+        const def = FILTER_DEFS[normalizedId];
+
+        if (def) {
+            // Bekannter Filter (R1-R4, P1-P4)
+            filterObj = {
+                id: normalizedId,
+                label: def.label,
+                icon: def.icon,
+                color: def.color,
+                type: def.type
+            };
+        } else {
+            // Text-Filter
+            filterObj = {
+                id: filterText.trim(),
+                label: filterText.trim(),
+                icon: '🔍',
+                color: '#9CA3AF',
+                type: 'text'
+            };
+        }
+
+        activeFilters.push(filterObj);
+        console.log('[ActiveFilterCard] Filter hinzugefügt:', filterObj.id, '- Gesamt:', activeFilters.length);
+
+        update();
+        dispatchFilterChange();
+    }
+
+    /**
+     * Entfernt einen einzelnen Filter
+     * @param {string} filterId - Die Filter-ID
+     */
+    function removeFilter(filterId) {
+        const index = activeFilters.findIndex(f => f.id === filterId);
+        if (index > -1) {
+            activeFilters.splice(index, 1);
+            console.log('[ActiveFilterCard] Filter entfernt:', filterId);
+            update();
+            dispatchFilterChange();
+        }
+    }
+
+    /**
+     * Löscht alle Filter
+     */
+    function resetFilters() {
+        activeFilters = [];
+        console.log('[ActiveFilterCard] Alle Filter gelöscht');
+        update();
+        dispatchFilterChange();
+
+        // Auch Suchfeld leeren
+        const searchInput = document.getElementById('profileReviewSearchInput');
+        if (searchInput) {
+            searchInput.value = '';
+        }
+    }
+
+    /**
+     * Schaltet zwischen UND/ODER um
+     */
+    function toggleMode() {
+        filterMode = filterMode === 'AND' ? 'OR' : 'AND';
+        console.log('[ActiveFilterCard] Modus gewechselt zu:', filterMode);
+        update();
+        dispatchFilterChange();
+    }
+
+    /**
+     * Feuert Event bei Filter-Änderung
+     */
+    function dispatchFilterChange() {
+        const event = new CustomEvent('activeFilterChange', {
+            bubbles: true,
+            detail: {
+                filters: [...activeFilters],
+                mode: filterMode
+            }
+        });
+        document.dispatchEvent(event);
+    }
+
     /**
      * Rendert die Filter-Card
      * @returns {string} HTML-String
      */
     function render() {
-        const filterInfo = getActiveFilterInfo();
-
-        if (!filterInfo) {
-            // Keine aktive Filter - Card ausblenden
+        if (activeFilters.length === 0) {
             return '';
         }
 
-        const typeLabel = filterInfo.type === 'dimension' ? 'Resonanz' : 'Perspektive';
+        const modeLabel = filterMode === 'AND' ? 'UND' : 'ODER';
+        const modeIcon = filterMode === 'AND' ? '∩' : '∪';
+        const modeTitle = filterMode === 'AND'
+            ? 'Alle Filter müssen zutreffen'
+            : 'Mindestens ein Filter muss zutreffen';
+
+        const filterBadges = activeFilters.map(f => `
+            <div class="active-filter-badge" style="--filter-color: ${f.color};">
+                <span class="active-filter-icon">${f.icon}</span>
+                <span class="active-filter-label">${f.label}</span>
+                <button class="active-filter-remove"
+                        onclick="ActiveFilterCard.removeFilter('${f.id.replace(/'/g, "\\'")}')"
+                        title="Filter entfernen">×</button>
+            </div>
+        `).join(activeFilters.length > 1 ? `<span class="filter-connector">${modeLabel}</span>` : '');
 
         return `
         <div class="active-filter-card">
             <div class="active-filter-card-header">
                 <span class="active-filter-card-icon">🔍</span>
-                <span class="active-filter-card-title">Aktiver Filter</span>
+                <span class="active-filter-card-title">Aktive Filter (${activeFilters.length})</span>
+                ${activeFilters.length > 1 ? `
+                <button class="filter-mode-toggle"
+                        onclick="ActiveFilterCard.toggleMode()"
+                        title="${modeTitle}">
+                    <span class="mode-icon">${modeIcon}</span>
+                    <span class="mode-label">${modeLabel}</span>
+                </button>
+                ` : ''}
             </div>
             <div class="active-filter-card-content">
-                <div class="active-filter-badge" style="--filter-color: ${filterInfo.color};">
-                    <span class="active-filter-icon">${filterInfo.icon}</span>
-                    <span class="active-filter-id">${filterInfo.id}</span>
-                    <span class="active-filter-label">${filterInfo.label}</span>
-                    <span class="active-filter-type">${typeLabel}</span>
+                <div class="active-filter-badges">
+                    ${filterBadges}
                 </div>
                 <button class="active-filter-reset-btn"
-                        onclick="ActiveFilterCard.resetFilter()"
-                        title="Filter zurücksetzen">
+                        onclick="ActiveFilterCard.resetFilters()"
+                        title="Alle Filter zurücksetzen">
                     <span class="reset-icon">✕</span>
                     <span class="reset-text">Zurücksetzen</span>
                 </button>
@@ -52,27 +187,12 @@ const ActiveFilterCard = (function() {
     }
 
     /**
-     * Holt Info zum aktiven Filter
-     * @returns {object|null} {id, label, icon, color, type}
-     */
-    function getActiveFilterInfo() {
-        if (typeof DimensionKategorieFilter !== 'undefined' && DimensionKategorieFilter.getActiveQuickFilterInfo) {
-            return DimensionKategorieFilter.getActiveQuickFilterInfo();
-        }
-        return null;
-    }
-
-    /**
-     * Initialisiert die Card und fügt sie dem DOM hinzu
+     * Initialisiert die Card
      * @param {string} targetSelector - CSS-Selektor für den Container
      */
     function init(targetSelector) {
         containerId = targetSelector;
         update();
-
-        // Lausche auf Filter-Änderungen
-        document.addEventListener('dimensionKategorieFilterChange', update);
-
         console.log('[ActiveFilterCard] Initialisiert');
     }
 
@@ -99,28 +219,55 @@ const ActiveFilterCard = (function() {
     }
 
     /**
-     * Setzt den Filter zurück
+     * Gibt alle aktiven Filter zurück
+     * @returns {Array} Array von Filter-Objekten
      */
-    function resetFilter() {
-        if (typeof DimensionKategorieFilter !== 'undefined') {
-            DimensionKategorieFilter.clearQuickFilter();
-        }
+    function getFilters() {
+        return [...activeFilters];
     }
 
     /**
-     * Zeigt ob ein Filter aktiv ist
+     * Gibt den aktuellen Modus zurück
+     * @returns {string} 'AND' oder 'OR'
+     */
+    function getMode() {
+        return filterMode;
+    }
+
+    /**
+     * Prüft ob Filter aktiv sind
      * @returns {boolean}
      */
-    function hasActiveFilter() {
-        return getActiveFilterInfo() !== null;
+    function hasActiveFilters() {
+        return activeFilters.length > 0;
+    }
+
+    /**
+     * Prüft ob ein bestimmter Filter aktiv ist
+     * @param {string} filterId
+     * @returns {boolean}
+     */
+    function isFilterActive(filterId) {
+        return activeFilters.some(f => f.id.toUpperCase() === filterId.toUpperCase());
     }
 
     return {
+        // Haupt-API
+        addFilter,
+        removeFilter,
+        resetFilters,
+        toggleMode,
+
+        // State-Abfragen
+        getFilters,
+        getMode,
+        hasActiveFilters,
+        isFilterActive,
+
+        // Rendering
         render,
         init,
-        update,
-        resetFilter,
-        hasActiveFilter
+        update
     };
 })();
 

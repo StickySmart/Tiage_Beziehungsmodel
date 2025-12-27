@@ -243,17 +243,23 @@ const ResonanzProfileHeaderCard = (function() {
 
     /**
      * Sucht nach Bedürfnissen eines Resonanzfaktors (R1-R4)
-     * Nutzt einfache String-basierte Quick-Filter
+     * Fügt Filter zur ActiveFilterCard hinzu
      * @param {string} resonanzId - R1, R2, R3 oder R4
      */
     function searchByResonanz(resonanzId) {
-        // Nutze Quick-Filter API
-        if (typeof DimensionKategorieFilter !== 'undefined' && DimensionKategorieFilter.setQuickFilter) {
-            DimensionKategorieFilter.setQuickFilter(resonanzId);
-            console.log('[ResonanzProfileHeaderCard] Quick-Filter gesetzt:', resonanzId);
+        // Nutze ActiveFilterCard für Multi-Filter
+        if (typeof ActiveFilterCard !== 'undefined' && ActiveFilterCard.addFilter) {
+            ActiveFilterCard.addFilter(resonanzId);
+            console.log('[ResonanzProfileHeaderCard] Filter hinzugefügt:', resonanzId);
         } else {
-            // Fallback: alte Logik
-            console.warn('[ResonanzProfileHeaderCard] Quick-Filter API nicht verfügbar');
+            // Fallback: Direkter Suchfeld-Eintrag
+            const searchInput = document.getElementById('profileReviewSearchInput');
+            if (searchInput) {
+                searchInput.value = resonanzId;
+                if (typeof handleIntelligentSearch === 'function') {
+                    handleIntelligentSearch(resonanzId);
+                }
+            }
         }
     }
 
