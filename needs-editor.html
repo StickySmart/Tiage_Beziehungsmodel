@@ -1362,8 +1362,71 @@
             console.log('[Filter] needs-editor:', query, '- Matches:', totalMatches);
         }
 
+        /**
+         * Filtert Bedürfnisse basierend auf ActiveFilterCard
+         * Wird bei jeder Filter-Änderung aufgerufen
+         */
+        function applyActiveFilters() {
+            var flatNeedItems = document.querySelectorAll('.flat-need-item');
+            if (!flatNeedItems.length) return;
+
+            // Hole Filter von ActiveFilterCard
+            var filters = [];
+            var mode = 'AND';
+            if (typeof ActiveFilterCard !== 'undefined') {
+                filters = ActiveFilterCard.getFilters() || [];
+                mode = ActiveFilterCard.getMode() || 'AND';
+            }
+
+            // Keine Filter aktiv → alle anzeigen
+            if (filters.length === 0) {
+                flatNeedItems.forEach(function(item) {
+                    item.classList.remove('filter-hidden', 'filter-match');
+                });
+                console.log('[ActiveFilter] Keine Filter aktiv - zeige alle');
+                return;
+            }
+
+            var totalMatches = 0;
+
+            flatNeedItems.forEach(function(item) {
+                var needId = item.getAttribute('data-need') || '';
+                var needLabel = item.querySelector('.flat-need-label');
+                var labelText = needLabel ? needLabel.textContent : '';
+                var searchableText = getSearchableTextsForNeed(needId, labelText);
+
+                var matches;
+                if (mode === 'AND') {
+                    // Alle Filter müssen zutreffen
+                    matches = filters.every(function(f) {
+                        return searchableText.includes(f.id.toLowerCase()) ||
+                               searchableText.includes(f.label.toLowerCase());
+                    });
+                } else {
+                    // Mindestens ein Filter muss zutreffen (OR)
+                    matches = filters.some(function(f) {
+                        return searchableText.includes(f.id.toLowerCase()) ||
+                               searchableText.includes(f.label.toLowerCase());
+                    });
+                }
+
+                item.classList.toggle('filter-hidden', !matches);
+                item.classList.toggle('filter-match', matches);
+
+                if (matches) totalMatches++;
+            });
+
+            console.log('[ActiveFilter] Mode:', mode, '- Filter:', filters.map(function(f) { return f.label; }).join(', '), '- Matches:', totalMatches);
+        }
+
+        // Lausche auf ActiveFilterCard Änderungen
+        document.addEventListener('activeFilterChange', function(event) {
+            applyActiveFilters();
+        });
+
         function handleIntelligentSearch(query) {
-            filterProfileReviewByNeed(query);
+            // Nur Vorschläge anzeigen während der Eingabe, NICHT filtern
+            // Die Filterung passiert über ActiveFilterCard
             var suggestions = generateSearchSuggestions(query);
             displaySearchSuggestions(suggestions);
         }
@@ -1919,8 +1982,71 @@
             console.log('[Filter] needs-editor:', query, '- Matches:', totalMatches);
         }
 
+        /**
+         * Filtert Bedürfnisse basierend auf ActiveFilterCard
+         * Wird bei jeder Filter-Änderung aufgerufen
+         */
+        function applyActiveFilters() {
+            var flatNeedItems = document.querySelectorAll('.flat-need-item');
+            if (!flatNeedItems.length) return;
+
+            // Hole Filter von ActiveFilterCard
+            var filters = [];
+            var mode = 'AND';
+            if (typeof ActiveFilterCard !== 'undefined') {
+                filters = ActiveFilterCard.getFilters() || [];
+                mode = ActiveFilterCard.getMode() || 'AND';
+            }
+
+            // Keine Filter aktiv → alle anzeigen
+            if (filters.length === 0) {
+                flatNeedItems.forEach(function(item) {
+                    item.classList.remove('filter-hidden', 'filter-match');
+                });
+                console.log('[ActiveFilter] Keine Filter aktiv - zeige alle');
+                return;
+            }
+
+            var totalMatches = 0;
+
+            flatNeedItems.forEach(function(item) {
+                var needId = item.getAttribute('data-need') || '';
+                var needLabel = item.querySelector('.flat-need-label');
+                var labelText = needLabel ? needLabel.textContent : '';
+                var searchableText = getSearchableTextsForNeed(needId, labelText);
+
+                var matches;
+                if (mode === 'AND') {
+                    // Alle Filter müssen zutreffen
+                    matches = filters.every(function(f) {
+                        return searchableText.includes(f.id.toLowerCase()) ||
+                               searchableText.includes(f.label.toLowerCase());
+                    });
+                } else {
+                    // Mindestens ein Filter muss zutreffen (OR)
+                    matches = filters.some(function(f) {
+                        return searchableText.includes(f.id.toLowerCase()) ||
+                               searchableText.includes(f.label.toLowerCase());
+                    });
+                }
+
+                item.classList.toggle('filter-hidden', !matches);
+                item.classList.toggle('filter-match', matches);
+
+                if (matches) totalMatches++;
+            });
+
+            console.log('[ActiveFilter] Mode:', mode, '- Filter:', filters.map(function(f) { return f.label; }).join(', '), '- Matches:', totalMatches);
+        }
+
+        // Lausche auf ActiveFilterCard Änderungen
+        document.addEventListener('activeFilterChange', function(event) {
+            applyActiveFilters();
+        });
+
         function handleIntelligentSearch(query) {
-            filterProfileReviewByNeed(query);
+            // Nur Vorschläge anzeigen während der Eingabe, NICHT filtern
+            // Die Filterung passiert über ActiveFilterCard
             var suggestions = generateSearchSuggestions(query);
             displaySearchSuggestions(suggestions);
         }
