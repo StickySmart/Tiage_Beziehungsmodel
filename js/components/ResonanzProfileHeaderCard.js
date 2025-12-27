@@ -243,54 +243,18 @@ const ResonanzProfileHeaderCard = (function() {
 
     /**
      * Sucht nach Bedürfnissen eines Resonanzfaktors (R1-R4)
+     * Nutzt einfache String-basierte Quick-Filter
      * @param {string} resonanzId - R1, R2, R3 oder R4
      */
     function searchByResonanz(resonanzId) {
-        // Finde Suchfeld
-        const searchInput = document.getElementById('profileReviewSearchInput');
-
-        // Verwende DimensionKategorieFilter für Resonanzfaktor-Filterung
-        if (typeof DimensionKategorieFilter !== 'undefined') {
-            // Erst alle Filter zurücksetzen
-            DimensionKategorieFilter.reset();
-
-            // Dann alle Kategorien des Resonanzfaktors aktivieren
-            const kategorien = DimensionKategorieFilter.KATEGORIEN_PRO_DIMENSION[resonanzId];
-            if (kategorien && kategorien.length > 0) {
-                kategorien.forEach(function(kat) {
-                    DimensionKategorieFilter.toggleKategorie(kat.id);
-                });
-                console.log('[ResonanzProfileHeaderCard] Resonanzfaktor aktiviert:', resonanzId, '- Kategorien:', kategorien.map(k => k.id));
-            }
-
-            // Textfilter leeren (da wir jetzt nach Kategorien filtern)
-            if (searchInput) {
-                searchInput.value = '';
-            }
-
-            // Textfilter zurücksetzen
-            if (typeof filterProfileReviewByNeed === 'function') {
-                filterProfileReviewByNeed('');
-            }
+        // Nutze Quick-Filter API
+        if (typeof DimensionKategorieFilter !== 'undefined' && DimensionKategorieFilter.setQuickFilter) {
+            DimensionKategorieFilter.setQuickFilter(resonanzId);
+            console.log('[ResonanzProfileHeaderCard] Quick-Filter gesetzt:', resonanzId);
         } else {
-            // Fallback: Text-Suche (funktioniert nicht optimal für R1-R4)
-            console.warn('[ResonanzProfileHeaderCard] DimensionKategorieFilter nicht verfügbar, verwende Text-Suche');
-            if (searchInput) {
-                searchInput.value = resonanzId;
-            }
-            if (typeof handleIntelligentSearch === 'function') {
-                handleIntelligentSearch(resonanzId);
-            } else if (typeof filterProfileReviewByNeed === 'function') {
-                filterProfileReviewByNeed(resonanzId);
-            }
+            // Fallback: alte Logik
+            console.warn('[ResonanzProfileHeaderCard] Quick-Filter API nicht verfügbar');
         }
-
-        // Fokussiere Suchfeld
-        if (searchInput) {
-            searchInput.focus();
-        }
-
-        console.log('[ResonanzProfileHeaderCard] Suche nach', resonanzId);
     }
 
     // Lausche auf Resonanzfaktoren-Änderungen
