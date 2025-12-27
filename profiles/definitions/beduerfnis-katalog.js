@@ -13,7 +13,7 @@
  * #P1-#P4   → 4 Perspektiven    (siehe taxonomie.js)
  * #D1-#D6   → 6 Dimensionen     (siehe taxonomie.js, Kurzform A-F)
  * #K1-#K18  → 18 Kategorien     (siehe taxonomie.js)
- * #B1-#B223 → 223 Bedürfnisse
+ * #B1-#B224 → 224 Bedürfnisse   (SSOT: beduerfnis-katalog.json)
  */
 
 const BeduerfnisIds = {

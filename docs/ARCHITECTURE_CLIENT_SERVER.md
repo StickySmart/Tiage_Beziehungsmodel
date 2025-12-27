@@ -61,7 +61,7 @@
 │                                     ▼                                       │
 │  ┌─────────────────────────────────────────────────────────────────────┐    │
 │  │  DATA LAYER                                                         │    │
-│  │  ├── profiles/archetypen/*.js (233 Bedürfnisse pro Archetyp)        │    │
+│  │  ├── profiles/archetypen/*.js (224 Bedürfnisse pro Archetyp)        │    │
 │  │  ├── beduerfnis-katalog.json (Bedürfnis-Definitionen)               │    │
 │  │  ├── archetype-matrix.json (nur Archetyp-Definitionen, keine Matrix)│    │
 │  │  ├── Profile-Storage (MongoDB / PostgreSQL)                         │    │
@@ -463,7 +463,7 @@ Das Tiage-System hat ein **zweistufiges Lock-System** + dynamische R-Faktoren:
 │    ├── personDimensions (geschlecht, dominanz, orientierung)                │
 │    ├── gewichtungen (O, A, D, G mit value + locked)                         │
 │    ├── resonanzFaktoren (R1-R4 mit value + locked)                          │
-│    ├── flatNeeds (233 Bedürfnisse als Array)                                │
+│    ├── flatNeeds (224 Bedürfnisse als Array)                                │
 │    ├── lockedNeeds (manuell überschriebene Werte)                           │
 │    └── savedAt (Timestamp)                                                  │
 └─────────────────────────────────────────────────────────────────────────────┘
@@ -580,7 +580,7 @@ function validateSliderValue(value) {
 - [ ] `needsIntegration.js` → Server
 - [ ] `archetypeMatrixCalculator.js` → Server (berechnet Matrix aus Bedürfnissen)
 - [ ] Text-Generatoren → Server
-- [ ] `profiles/archetypen/*.js` → Server (233 Bedürfnisse/Archetyp)
+- [ ] `profiles/archetypen/*.js` → Server (224 Bedürfnisse/Archetyp)
 
 **Hinweis:** `top10RankingCalculator.js` ist bereits Dead Code (nicht in HTML geladen)
 
